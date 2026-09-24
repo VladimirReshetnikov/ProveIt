@@ -1,0 +1,1290 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{Ink}{HTML}{17324D}
+\definecolor{Accent}{HTML}{176B78}
+\definecolor{Pale}{HTML}{F1F6F8}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Finite Hankel Certificates for Three Somos-8 Conjectures},
+ pdfauthor={Research report prepared with ChatGPT},
+ pdfsubject={Proofs of the Somos-8 assertions in Barry's Conjectures 11--13}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Finite Hankel certificates}
+\fancyhead[R]{\small Somos--8 conjectures}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\calV}{\mathcal V}
+\newcommand{\Res}{\mathcal R}
+\newcommand{\Bcal}{\mathcal B}
+\newtcolorbox{resultbox}[1][]{enhanced,breakable,colback=Pale,colframe=Accent,
+ boxrule=0.65pt,arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{Accent},
+ backgroundcolor=\color{Pale}}
+
+\begin{document}
+\begin{titlepage}
+\color{Ink}
+\noindent\textsc{Integer sequences \enspace / \enspace generating functions \enspace / \enspace exact proof}
+\vspace{1.0in}
+\begin{flushleft}
+{\Huge\bfseries Finite Hankel Certificates\par}
+\vspace{0.12in}
+{\Huge\bfseries for Three Somos--8\par}
+\vspace{0.12in}
+{\Huge\bfseries Conjectures\par}
+\vspace{0.35in}
+{\Large The Somos--8 assertions in Barry's Conjectures 11--13,\par}
+\vspace{0.07in}
+{\Large singular specializations, and coefficient asymptotics\par}
+\end{flushleft}
+\vspace{0.45in}
+\noindent\textbf{Prepared for Vladimir Reshetnikov}\par
+\noindent 19 September 2026
+\vspace{0.35in}
+\begin{resultbox}[title={\bfseries Result and proof status}]
+The three parameterized bilinear Hankel identities are established by combining
+Hone's published genus-two theorem with a specialization argument and twelve
+exact polynomial identities. The local certificates are reproduced by a
+standard-library Python verifier and independently checked with SymPy.
+
+The proof does not assume the conjectured recurrences to generate its data.
+It remains valid in denominator-cleared form at singular parameter values.
+For Conjecture 13, the defining continued fraction is used; a sign error in the
+source's separate Catalan display is corrected explicitly.
+
+No earlier resolution of these three Somos--8 assertions was located in the
+focused literature search. This is not an exhaustive certification of novelty.
+\end{resultbox}
+\vfill
+\noindent\small Research article and reproducibility package. The genus-two existence theorem
+is an external mathematical input, not a theorem reproved in this report.
+\end{titlepage}
+
+\begin{abstract}
+Barry proposed three one-parameter families of algebraic generating functions
+whose Hankel transforms were conjectured to satisfy explicit Somos--8
+recurrences. We prove the three bilinear assertions, namely the Somos--8
+parts of Conjectures 11, 12, and 13 in arXiv:2211.12637. The argument makes a
+finite computation logically sufficient: Hone's genus-two Hankel theorem
+implies that an infinite matrix of quadratic products has rank at most four;
+a binomial translation puts each proposed family into the corresponding
+universal moment class; and four symbolic rows determine the recurrence.
+A polynomial-specialization argument is essential because the proposed
+families lie on a degenerate parameter locus of the usual continued-fraction
+coordinates. We give denominator-free formulas, exact nonzero rank witnesses,
+and executable integer-polynomial certificates. For the second family we
+also derive two Somos--6 specializations, a positive finite coefficient
+formula with a tree interpretation, and an all-orders dominant-singularity
+expansion of its generating-function coefficients. These asymptotics concern
+the moments, not their Hankel determinants.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The selected problem and its provenance}
+\label{sec:provenance}
+
+A useful research target should have an unambiguous published statement, enough
+structure to support an all-index argument, and a feasible independent
+verification path. The Somos--8 conjectures in Barry's 2022 preprint
+\cite{Barry} meet these requirements. They concern an algebraic power series
+\(g(x)=\sum_{n\geq0}a_nx^n\) and its Hankel transform
+\begin{equation}
+ h_n=\det(a_{i+j})_{0\leq i,j\leq n},\qquad n\geq0.
+ \label{eq:hankel}
+\end{equation}
+The striking assertion is not integrality of \(h_n\), which follows directly
+when the \(a_n\) are integers. It is that the determinants obey a fixed
+short bilinear recurrence with explicitly conjectured rational coefficients.
+
+Our main target is Conjecture 12. Its generating function is the unique formal
+power-series solution with constant term one of
+\begin{equation}
+ g(x)=\frac{1}{1-x-\dfrac{x^2}{1-rx}-x^3g(x)}.
+ \label{eq:c12cf}
+\end{equation}
+The proposed Hankel recurrence has order eight. The proof developed for this
+family also proves the adjacent Conjectures 11 and 13 with no new structural
+input, so all three are treated together.
+
+There are important distinctions in the literature. Wang and Zhang
+\cite{WangZhang} prove the four Somos--4 conjectures in Barry's paper, not the
+three Somos--8 assertions studied here. Hone's earlier work \cite{Hone}
+provides the general genus-two theorem that makes our proof possible, but its
+statement does not list Barry's later one-parameter coefficient formulas.
+The July 2026 paper of Liu, Wang, and Zhang \cite{LiuWangZhang}, despite its
+similar title, concerns four conjectures about a \emph{central transform}.
+The September 2026 note of Scheuerle \cite{Scheuerle} studies inverse
+realization of prescribed Somos--4 Hankel data. These are different problems.
+
+The search leading to this report checked the original preprint, the cited
+Somos--4 resolution, Hone's theorem and its moment parameterization, and
+recent papers surfaced by searches for Barry's Hankel conjectures. No prior
+proof of the three precise Somos--8 formulas was located. This supports
+selecting them as conjectural targets, but it does not prove that no such
+proof exists elsewhere. The mathematical claims below are proofs of the
+stated identities; historical priority is a separate question.
+
+\subsection{What is established, and what is imported}
+
+The only substantial structural input is Hone's genus-two theorem
+\cite[Theorem 5.4]{Hone}. Its use is explicit. We prove the translation,
+the polynomial-specialization step, the finite-certification lemma, the
+parameter substitutions, the exceptional-parameter consequences, and the
+coefficient formulas and asymptotics. The finite identities needed to
+identify the recurrence are evaluated exactly in \(\Z[r]\), using two
+independent determinant implementations.
+
+This is therefore not merely a numerical confirmation, and it is not a
+self-contained rederivation of genus-two integrability. It is a proof by
+reduction to a published theorem, with all family-specific algebra made
+reproducible. We do not claim a proof of the other conjectures in Barry's
+paper, nor a classification of all algebraic generating functions with
+Somos Hankel transforms.
+
+\section{Precise statements of the three identities}
+\label{sec:main}
+
+\subsection{Uniform notation}
+
+Let \(r\) be an indeterminate and set \(B(x)=1-rx\). Define
+\begin{align}
+ A_{11}(x)&=1-(r+1)x-x^2+rx^3,\label{eq:A11}\\
+ A_{12}(x)&=1-(r+1)x+(r-1)x^2,\label{eq:A12}\\
+ A_{13}(x)&=1-(r+1)x+(r-2)x^2+rx^3.\label{eq:A13}
+\end{align}
+For \(k\in\{11,12,13\}\), define \(g^{(k)}(x)\in\Z[r][[x]]\) by
+\begin{equation}
+ A_k(x)g^{(k)}(x)=B(x)+x^3B(x)g^{(k)}(x)^2,
+ \qquad g^{(k)}(0)=1.
+ \label{eq:uniform}
+\end{equation}
+Write its coefficients as \(a_n^{(k)}\), and use \eqref{eq:hankel} for
+\(h_n^{(k)}\). We also define the empty determinant
+\begin{equation}
+ h_{-1}^{(k)}=1.
+ \label{eq:empty}
+\end{equation}
+The extra index allows the bilinear identity to start at \(n=7\), one step
+before the customary recurrence written solely with nonnegative indices.
+
+Dividing \eqref{eq:uniform} by \(B(x)g^{(k)}(x)\) yields respectively
+\begin{align}
+ g^{(11)}(x)&=\frac1{1-\dfrac{x}{1-rx}-x^2-x^3g^{(11)}(x)},\label{eq:CF11}\\
+ g^{(12)}(x)&=\frac1{1-x-\dfrac{x^2}{1-rx}-x^3g^{(12)}(x)},\label{eq:CF12}\\
+ g^{(13)}(x)&=\frac1{1-\dfrac{x(1-(r-1)x)}{1-rx}-x^2-x^3g^{(13)}(x)}.
+ \label{eq:CF13}
+\end{align}
+These are the defining continued fractions in Barry's Conjectures 11--13.
+
+\begin{remark}[A source correction, not a counterexample]
+In the separate Catalan generating-function display for Conjecture 13,
+Barry prints \(1+(r+1)x+(r-2)x^2+rx^3\). The defining continued fraction
+\eqref{eq:CF13} instead gives \eqref{eq:A13}, with a minus sign before
+\((r+1)x\). This follows by multiplying its denominator by \(1-rx\).
+We use the continued-fraction definition throughout. The claimed Somos
+parameters require no change. Our result establishes that substantive
+recurrence claim, not the inconsistent pair of generating-function displays
+read literally.
+\end{remark}
+
+\subsection{Denominator-free coefficient tables}
+
+The following polynomials specify the answer. The subscript on \(P_{k,j}\)
+is the family number followed by the position of the quadratic product.
+Using a common denominator avoids spurious exclusions at its roots.
+
+For the family \(k=12\), the simplest of the three, let
+\begin{align}
+ D_{12}&=r^2-4r+3=(r-1)(r-3),\label{eq:D12}\\
+ P_{12,1}&=r^4-11r^3+26r^2-16r-5,\label{eq:P121}\\
+ P_{12,2}&=2r^5-19r^4+40r^3-13r^2-5r,\label{eq:P122}\\
+ P_{12,3}&=(r-1)(3r^6-12r^5+15r^4+25r^3-62r^2-36r-5),\label{eq:P123}\\
+ P_{12,4}&=r^9-8r^8+26r^7-43r^6+40r^5-17r^4\notag\\
+ &\hspace{1.8em}{}-23r^3+27r^2+19r+3.\label{eq:P124}
+\end{align}
+For \(k=11\), put
+\begin{align}
+ D_{11}&=r^4-2r^3+8r^2+2r-9
+       =(r^2-1)(r^2-2r+9),\label{eq:D11}\\
+ P_{11,1}&=r^8-8r^7+21r^6-40r^5+35r^4-24r^3+71r^2+8r,\\
+ P_{11,2}&=8(r^9-6r^8+17r^7-30r^6+15r^5-14r^4-r^3-14r^2),\\
+ P_{11,3}&=8(r-1)\bigl(r^{10}-2r^8+29r^7-32r^6+39r^5\notag\\
+ &\hspace{6.7em}{}+18r^4+11r^3-r^2+r\bigr),\\
+ P_{11,4}&=2r^{13}-13r^{12}+48r^{11}-85r^{10}+83r^9-11r^8
+             +124r^7\notag\\
+ &\hspace{1.8em}{}-454r^6+364r^5-263r^4-84r^3-189r^2-25r-9.
+ \label{eq:P11last}
+\end{align}
+Finally, for \(k=13\), put
+\begin{align}
+ D_{13}&=2(r^3-3r^2-5r+7)=2(r-1)(r^2-2r-7),\label{eq:D13}\\
+ P_{13,1}&=-(r^7-8r^6+25r^5-20r^4-37r^3+75r+28),\\
+ P_{13,2}&=(r+1)\bigl(r^8-11r^7+47r^6-83r^5+17r^4\notag\\
+ &\hspace{6.2em}{}+71r^3+45r^2-169r+210\bigr),\\
+ P_{13,3}&=(r^2-1)\bigl(3r^8-29r^7+115r^6-225r^5+181r^4\notag\\
+ &\hspace{6.7em}{}+105r^3-255r^2-235r+84\bigr),\\
+ P_{13,4}&=-\bigl(r^{10}-17r^9+96r^8-212r^7+54r^6+594r^5\notag\\
+ &\hspace{3.5em}{}-796r^4-36r^3+721r^2-329r-588\bigr).
+ \label{eq:P13last}
+\end{align}
+
+\begin{theorem}[Three Somos--8 identities]
+\label{thm:main}
+For every \(k\in\{11,12,13\}\) and every integer \(n\geq7\), the identity
+\begin{equation}
+ \boxed{\quad
+ D_k(r)h_n^{(k)}h_{n-8}^{(k)}
+ =\sum_{j=1}^4P_{k,j}(r)h_{n-j}^{(k)}h_{n-8+j}^{(k)}
+ \quad}
+ \label{eq:main}
+\end{equation}
+holds in \(\Z[r]\). In particular, for a complex parameter \(r\) with
+\(D_k(r)\ne0\), these Hankel determinants satisfy the Somos--8 bilinear
+relation with coefficients
+\begin{equation}
+ (\alpha,\beta,\gamma,\delta)
+ =D_k(r)^{-1}(P_{k,1},P_{k,2},P_{k,3},P_{k,4}).
+ \label{eq:normalized}
+\end{equation}
+These are precisely the Somos--8 coefficient formulas in Barry's
+Conjectures 11, 12, and 13, interpreted using their defining continued
+fractions. At roots of \(D_k\), the polynomial relation \eqref{eq:main}
+still holds.
+\end{theorem}
+
+The proof is given in Sections~\ref{sec:rank}--\ref{sec:certificate}.
+For \(k=11\), the factor \(r-1\) in \(P_{11,3}\) explains why the source
+uses a smaller denominator for \(\gamma\); for \(k=12\), the analogous
+factor accounts for its denominator \(r-3\). Thus no coefficients have
+been fitted approximately or altered to obtain the theorem.
+
+\begin{corollary}[Integrality and arbitrary specializations]
+\label{cor:integral}
+For every integer \(r\), all moments and Hankel determinants are integers.
+More generally, \eqref{eq:main} specializes to every commutative ring with
+identity by sending \(r\) to any element of that ring.
+\end{corollary}
+\begin{proof}
+The coefficient recursion from \eqref{eq:uniform} uses only addition and
+multiplication in \(\Z[r]\); see \eqref{eq:momentrec} below. Determinants
+therefore also belong to \(\Z[r]\). Apply a ring homomorphism to the
+polynomial identity in Theorem~\ref{thm:main}.
+\end{proof}
+This last statement does not apply a genus-two analytic theorem directly in
+positive characteristic. It specializes an integral polynomial identity
+already proved in characteristic zero.
+
+\section{Formal power series and exact moment generation}
+\label{sec:moments}
+
+Write \(A_k(x)=1+A_1x+A_2x^2+A_3x^3\), with \(A_3=0\) when \(k=12\).
+In all three cases \(A_1=-(r+1)\). Set \(a_n=0\) for negative \(n\), and
+\begin{equation}
+ c_m=\begin{cases}\displaystyle\sum_{i=0}^m a_i a_{m-i},&m\geq0,\\
+                  0,&m<0.
+      \end{cases}
+\end{equation}
+Equating coefficients in \eqref{eq:uniform} gives \(a_0=1\) and
+\begin{equation}
+ a_n=-A_1a_{n-1}-A_2a_{n-2}-A_3a_{n-3}
+      +c_{n-3}-rc_{n-4}-r\,\mathbf1_{n=1},\qquad n\geq1.
+ \label{eq:momentrec}
+\end{equation}
+Every term on the right is already known at stage \(n\). This proves both
+existence and uniqueness of the formal series, as well as the asserted
+integral-polynomial coefficient property. The first coefficients are
+\begin{equation}
+ a_0=1,\qquad a_1=1,\qquad
+ a_2=\begin{cases}r+2,&k=11,\\2,&k=12,\\3,&k=13.\end{cases}
+ \label{eq:firstmoments}
+\end{equation}
+
+If \(C(z)=\sum_{m\geq0}C_mz^m\) is the Catalan series, characterized by
+\(C(z)=1+zC(z)^2\), then
+\begin{equation}
+ g^{(k)}(x)=\frac{B(x)}{A_k(x)}
+ C\!\left(\frac{x^3B(x)^2}{A_k(x)^2}\right).
+ \label{eq:catalan}
+\end{equation}
+This follows by substitution, or from the branch
+\begin{equation}
+ g^{(k)}(x)=\frac{A_k(x)-\sqrt{A_k(x)^2-4x^3B(x)^2}}{2x^3B(x)},
+ \label{eq:root}
+\end{equation}
+where the square root has constant term one. The apparent singularity at
+\(x=0\) in \eqref{eq:root} is removable as a formal series.
+
+It is essential that our computation proceeds from \eqref{eq:momentrec}
+and then evaluates determinants. Generating \(h_n\) from the proposed
+Somos recurrence and comparing those values with the same recurrence
+would be circular. No such step is used in the verifier.
+
+For orientation, the first few Hankel polynomials for \(k=12\) are
+\begin{align}
+ h_{-1}=h_0=h_1&=1,\qquad h_2=-2r,\notag\\
+ h_3&=-r^4+2r^3-r^2-4r-1,\notag\\
+ h_4&=-r^6+4r^5-5r^4+r^3-6r^2-5r-1,\notag\\
+ h_5&=r^7-5r^6+r^5+12r^4+12r^3-7r^2-6r-1.
+ \label{eq:initialpolys}
+\end{align}
+The relatively small degrees of these polynomials make exact family-level
+certification much less expensive than a general seven-parameter calculation.
+
+\section{The structural input: a rank-four theorem}
+\label{sec:rank}
+
+\subsection{A universal genus-two moment class}
+
+Introduce seven algebraically independent parameters
+\(u,v,b_2,b_3,c_2,c_3,c_4\), and moments
+\(s_0=1,s_1=u,s_2=v\). For \(m\geq3\), define
+\begin{align}
+ s_m={}&b_2s_{m-2}+b_3s_{m-3}
+       +c_2\sum_{i=0}^{m-2}s_is_{m-2-i}\notag\\
+     &+c_3\sum_{i=0}^{m-3}s_is_{m-3-i}
+       +c_4\sum_{i=0}^{m-4}s_is_{m-4-i},
+ \label{eq:universal}
+\end{align}
+with an empty sum equal to zero. Let
+\begin{equation}
+ H_N=\det(s_{i+j})_{0\leq i,j<N},\qquad H_0=1.
+ \label{eq:HN}
+\end{equation}
+Notice the size convention: \(H_N\) is an \(N\)-by-\(N\) determinant,
+whereas \(h_n\) is an \((n+1)\)-by-\((n+1)\) determinant.
+
+\begin{theorem}[Hone's genus-two theorem, the form used here]
+\label{thm:hone}
+For the generic moment sequence \eqref{eq:universal}, the determinants
+\eqref{eq:HN} satisfy a nontrivial relation
+\begin{equation}
+ q_0H_{N+8}H_N+q_1H_{N+7}H_{N+1}
+ +q_2H_{N+6}H_{N+2}+q_3H_{N+5}H_{N+3}
+ +q_4H_{N+4}^2=0,
+ \label{eq:Hone}
+\end{equation}
+where the coefficients are independent of \(N\).
+\end{theorem}
+
+This is the input from \cite[Theorem 5.4, equation (4.22), and the
+seven-parameter formulation in its proof]{Hone}. We require existence and
+index-independence of the relation, not the large general formulas for the
+\(q_j\). In the generic setting, the relation holds for \(N\geq0\).
+
+For clarity, the link from \eqref{eq:universal} to Hone's curve coordinates
+can be exhibited directly. Put
+\begin{equation}
+ G(X)=\sum_{m\geq0}s_mX^{-m-1},
+\end{equation}
+and define
+\begin{align}
+ P(X)&=X^3-b_2X-b_3,\notag\\
+ S(X)&=c_2X^2+c_3X+c_4,\notag\\
+ T(X)&=X^2+uX+v-b_2-c_2.
+ \label{eq:univPST}
+\end{align}
+The coefficient recursion is equivalent to
+\begin{equation}
+ P(X)G(X)-S(X)G(X)^2=T(X).
+ \label{eq:PGST}
+\end{equation}
+Indeed, its polynomial part specifies \(s_0,s_1,s_2\), while each negative
+power of \(X\) gives \eqref{eq:universal}. Setting
+\begin{equation}
+ Y=P-2SG
+\end{equation}
+yields
+\begin{equation}
+ Y^2=P^2-4ST.
+ \label{eq:sextic}
+\end{equation}
+Generically this is a nonsingular sextic model of a genus-two curve. Moreover,
+\(Q_0=-2S\) and \(Q_1=2T\) put \eqref{eq:PGST} into Hone's equation
+\(PG+Q_0G^2/2=Q_1/2\). The polynomial part of the square root at infinity is
+\begin{equation}
+ X^3-(b_2+2c_2)X-(b_3+2c_2u+2c_3).
+\end{equation}
+Thus the seven parameters in \eqref{eq:universal} are the generic moment
+parameters of the cited theorem, not an additional unproved generalization
+of it.
+
+\subsection{Why specialization needs an argument}
+
+All moments in \eqref{eq:universal}, and hence all \(H_N\), are polynomials
+in the seven parameters. Consider the infinite matrix whose row indexed by
+\(N\geq0\) is
+\begin{equation}
+ (H_{N+8}H_N,\ H_{N+7}H_{N+1},\ H_{N+6}H_{N+2},\
+  H_{N+5}H_{N+3},\ H_{N+4}^2).
+ \label{eq:universalmatrix}
+\end{equation}
+Theorem~\ref{thm:hone} implies that its five columns are linearly dependent
+over the generic parameter field.
+
+\begin{lemma}[Polynomial rank specialization]
+\label{lem:specialization}
+Every five-by-five minor of \eqref{eq:universalmatrix}, using any five row
+indices, is the zero polynomial. Consequently, after any specialization of
+the seven parameters into a characteristic-zero field, the specialized
+matrix has rank at most four.
+\end{lemma}
+\begin{proof}
+Fix any five row indices. Their minor is a polynomial in the seven
+parameters. It is zero in the generic field by Theorem~\ref{thm:hone}, so
+it is the zero polynomial. Equivalently, it vanishes on the generic set
+where the theorem applies and hence identically. Substitution in a zero
+polynomial preserves zero. Since the chosen rows were arbitrary, all
+five-by-five minors vanish after specialization.
+\end{proof}
+
+The lemma concerns \emph{arbitrary} row selections, not merely five
+consecutive rows. The existence of a single index-independent relation in
+Hone's theorem is what supplies this stronger conclusion. Also, the rank
+cannot rise when specializing polynomial data, although it can drop.
+
+This step matters here because the desired families will have \(c_2=0\).
+In the direct continued-fraction chart, \(Q_0\) then loses degree and some
+coordinate formulas divide by \(c_2\). Substituting zero into those rational
+formulas would be invalid. Specializing the polynomial minors instead is
+valid and is sufficient for the proof.
+
+\section{Binomial translation and the three parameter substitutions}
+\label{sec:translation}
+
+\subsection{Hankel invariance under translating moments}
+
+\begin{lemma}[Binomial translation]
+\label{lem:binomial}
+For any sequence \((a_n)\) and scalar \(c\), define
+\begin{equation}
+ s_n=\sum_{j=0}^n\binom nj(-c)^{n-j}a_j.
+ \label{eq:binomial}
+\end{equation}
+Then for every \(N\geq0\),
+\begin{equation}
+ \det(s_{i+j})_{0\leq i,j<N}
+ =\det(a_{i+j})_{0\leq i,j<N}.
+ \label{eq:invariance}
+\end{equation}
+In Laurent-series notation, if \(F(X)=\sum_{n\geq0}a_nX^{-n-1}\), then
+\begin{equation}
+ F(X+c)=\sum_{n\geq0}s_nX^{-n-1}.
+ \label{eq:Laurenttranslate}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let \(\mathscr L\) be the linear functional on polynomials with
+\(\mathscr L(X^n)=a_n\). Then \(s_n=\mathscr L((X-c)^n)\). The change of
+basis from \(1,X,\ldots,X^{N-1}\) to
+\(1,X-c,\ldots,(X-c)^{N-1}\) is lower triangular with diagonal entries one.
+If its matrix is \(U\), the new moment matrix is
+\(U(a_{i+j})U^{\mathsf T}\), so its determinant is unchanged.
+For the Laurent identity, expand each \((X+c)^{-j-1}\) using the binomial
+series and collect the coefficient of \(X^{-n-1}\); it is exactly
+\eqref{eq:binomial}.
+\end{proof}
+
+\subsection{Removing the quadratic term in the cubic}
+
+For a fixed family, suppress its superscript. Put
+\begin{equation}
+ F(X)=X^{-1}g(X^{-1}),\qquad
+ \mathcal A(X)=X^3A(X^{-1})=X^3-(r+1)X^2+A_2X+A_3.
+\end{equation}
+Substituting into \eqref{eq:uniform} and multiplying by \(X^2\) gives
+\begin{equation}
+ \mathcal A(X)F(X)-(X-r)F(X)^2=X(X-r).
+ \label{eq:Laurentquadratic}
+\end{equation}
+The powers of \(X\) in this step are important: \(g(X^{-1})=XF(X)\),
+not \(F(X)\).
+
+Set
+\begin{equation}
+ c=\frac{r+1}{3},\qquad
+ p=A_2-3c^2,\qquad q=A_3+A_2c-2c^3,
+ \label{eq:cpq}
+\end{equation}
+and let \(G(X)=F(X+c)\). Since
+\(\mathcal A(X+c)=X^3+pX+q\), equation \eqref{eq:Laurentquadratic} becomes
+\begin{equation}
+ (X^3+pX+q)G-(X+c-r)G^2=(X+c)(X+c-r).
+ \label{eq:translatedquadratic}
+\end{equation}
+Its coefficients at negative powers of \(X\) give, for \(m\geq3\),
+\begin{equation}
+ s_m=-ps_{m-2}-qs_{m-3}
+       +\sum_{i=0}^{m-3}s_is_{m-3-i}
+       +(c-r)\sum_{i=0}^{m-4}s_is_{m-4-i}.
+ \label{eq:specialmoment}
+\end{equation}
+The initial data are
+\begin{equation}
+ s_0=1,\qquad s_1=1-c,\qquad s_2=a_2-2c+c^2.
+ \label{eq:specialinitial}
+\end{equation}
+Thus the required substitution into \eqref{eq:universal} is
+\begin{equation}
+ \boxed{\quad
+ (u,v,b_2,b_3,c_2,c_3,c_4)
+ =(1-c,\ a_2-2c+c^2,\ -p,\ -q,\ 0,\ 1,\ c-r).
+ \quad}
+ \label{eq:sevenparameters}
+\end{equation}
+The only family-dependent input is
+\begin{center}
+\begin{tabular}{c r r r}
+\toprule
+Family & \(A_2\) & \(A_3\) & \(a_2\)\\
+\midrule
+11 & \(-1\) & \(r\) & \(r+2\)\\
+12 & \(r-1\) & \(0\) & \(2\)\\
+13 & \(r-2\) & \(r\) & \(3\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+By Lemma~\ref{lem:binomial}, the translated sequence has the same Hankel
+determinants. Lemma~\ref{lem:specialization}, applied over \(\Q(r)\),
+therefore proves that the infinite matrix with rows
+\begin{equation}
+ \bigl(h_nh_{n-8},\ h_{n-1}h_{n-7},\ h_{n-2}h_{n-6},\
+ h_{n-3}h_{n-5},\ h_{n-4}^2\bigr),\qquad n\geq7,
+ \label{eq:familymatrix}
+\end{equation}
+has rank at most four for each of the three families. We have established
+an all-index structural bound before checking any of the conjectured
+coefficient formulas.
+
+\section{Why four exact rows complete the proof}
+\label{sec:finite}
+
+\begin{lemma}[Finite certification of a fixed recurrence]
+\label{lem:finite}
+Let \(K\) be a field and \(h_{-1},h_0,\ldots\) a sequence in \(K\).
+For \(n\geq7\), set
+\begin{equation}
+ y_n=h_nh_{n-8},\qquad
+ v_n=(h_{n-1}h_{n-7},\ h_{n-2}h_{n-6},\ h_{n-3}h_{n-5},\ h_{n-4}^2).
+\end{equation}
+Assume that the matrix with rows \((y_n,v_n)\) has rank at most four.
+Choose four row indices \(n_1,\ldots,n_4\), and suppose that the matrix
+\(M=(v_{n_i})_{i=1}^4\) is invertible. If \(D,P_1,\ldots,P_4\in K\)
+satisfy
+\begin{equation}
+ Dy_{n_i}=v_{n_i}\begin{pmatrix}P_1&P_2&P_3&P_4\end{pmatrix}^{\mathsf T}
+ \qquad(1\leq i\leq4),
+ \label{eq:fourchecks}
+\end{equation}
+then the same identity holds for every \(n\geq7\).
+\end{lemma}
+\begin{proof}
+Take the five-by-five matrix with columns \((v,y)\), using the four chosen
+rows and an arbitrary fifth row \(n\). Its determinant is zero by the rank
+hypothesis. Replace its last column by \(D\) times that column minus
+\(\sum_{j=1}^4P_j\) times the corresponding first four columns.
+The new determinant is still zero. By \eqref{eq:fourchecks}, its first
+four entries in the last column are zero. Expanding on that column yields
+\begin{equation}
+ \det(M)\left(Dy_n-v_nP\right)=0.
+\end{equation}
+Invertibility of \(M\) gives the conclusion. A repeated fifth row causes
+no difficulty; the desired identity for the original four rows was already
+assumed.
+\end{proof}
+
+The rank hypothesis is indispensable. For an arbitrary sequence, four or
+four million initial recurrence checks do not prove the next check. Here
+the rank theorem bounds the entire infinite family of possible quadratic
+rows in advance. The finite computation only identifies the one relation
+already forced to exist.
+
+\section{Exact certificates and completion of the main proof}
+\label{sec:certificate}
+
+We use the four rows \(n=7,8,9,10\). They require only
+\(h_{-1},h_0,\ldots,h_{10}\), and thus only
+\(a_0,a_1,\ldots,a_{20}\). For each family, \eqref{eq:momentrec}
+computes these as integer polynomials, and direct determinants give the
+needed Hankel polynomials.
+
+Define the residual polynomials
+\begin{equation}
+ E_{k,n}(r)=D_kh_nh_{n-8}
+ -\sum_{j=1}^4P_{k,j}h_{n-j}h_{n-8+j}.
+ \label{eq:residual}
+\end{equation}
+The exact computations yield
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+Family & \(E_{k,7}\) & \(E_{k,8}\) & \(E_{k,9}\) & \(E_{k,10}\)\\
+\midrule
+11 & \(0\) & \(0\) & \(0\) & \(0\)\\
+12 & \(0\) & \(0\) & \(0\) & \(0\)\\
+13 & \(0\) & \(0\) & \(0\) & \(0\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here each zero means the \emph{zero polynomial in \(\Z[r]\)}, not a
+floating-point value and not an interpolation guess.
+
+The polynomial degrees involved are modest:
+\begin{center}
+\small
+\begin{tabular}{c rrrrrrrrrrr}
+\toprule
+ & \multicolumn{11}{c}{Degree of \(h_n(r)\)}\\
+Family / \(n\) &0&1&2&3&4&5&6&7&8&9&10\\
+\midrule
+11&0&1&3&5&7&11&15&19&24&30&36\\
+12&0&0&1&4&6&7&10&15&19&22&27\\
+13&0&0&2&3&6&8&11&15&18&23&27\\
+\bottomrule
+\end{tabular}
+\end{center}
+The actual coefficient arrays, including every polynomial needed to rerun
+the verification, are recorded in \texttt{data/certificates.json}.
+
+To prove that the four product rows are independent over \(\Q(r)\), one
+nonzero specialization suffices. At \(r=2\), the respective four-by-four
+determinants are
+\begin{align}
+ \det M_{11}(2)&=844298284526087295172008083616,\notag\\
+ \det M_{12}(2)&=-1967013462528657296,\notag\\
+ \det M_{13}(2)&=-83222140602851259464.
+ \label{eq:witnesses}
+\end{align}
+In particular none of the three determinant polynomials is identically zero.
+For the central family, the entire witness is small enough to display:
+\begin{equation}
+ M_{12}(2)=
+ \begin{pmatrix}
+ 2512&87&172&169\\
+ 22041&-10048&-1131&1849\\
+ -719780&-286533&-108016&7569\\
+ 89140155&-7737635&1917567&6310144
+ \end{pmatrix}.
+ \label{eq:M12}
+\end{equation}
+The other two matrices are included in Appendix~\ref{app:witness} and the
+JSON certificate.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix one of the three families and work first over \(K=\Q(r)\).
+Section~\ref{sec:translation} proves that the matrix \eqref{eq:familymatrix}
+has rank at most four, including the specialization \(c_2=0\).
+The appropriate nonzero value in \eqref{eq:witnesses} proves that the
+four-row product matrix is invertible over \(K\). The four zero
+polynomials in the certificate table are exactly
+\eqref{eq:fourchecks}. Lemma~\ref{lem:finite} therefore gives
+\eqref{eq:main} for every \(n\geq7\) as an identity in \(\Q(r)\).
+Both sides are in \(\Z[r]\), so their difference is the zero polynomial
+in \(\Z[r]\). This proves the denominator-free statement at every
+parameter value. Division by \(D_k(r)\) where nonzero gives
+\eqref{eq:normalized} and the proposed Somos--8 coefficients.
+\end{proof}
+
+\subsection{How the finite algebra is verified}
+
+The primary verifier uses only the Python standard library. Integer
+polynomials are stored as coefficient tuples in ascending degree. Addition
+and multiplication are elementary operations, and every polynomial division
+is checked for an exactly zero remainder.
+
+Determinants are evaluated by fraction-free Bareiss elimination with row
+pivoting. If \(p\) is the current pivot and \(p_{\rm old}\) the previous
+pivot, an elimination update is
+\begin{equation}
+ a'_{ij}=\frac{p\,a_{ij}-a_{ik}a_{kj}}{p_{\rm old}}.
+ \label{eq:bareiss}
+\end{equation}
+The previous pivot is initialized to one. Divisions in this algorithm are
+exact; the implementation raises an exception if either an integer
+remainder or a polynomial remainder occurs. A row exchange is accounted
+for in the determinant sign. An identically zero pivot column returns a
+zero determinant rather than dividing by zero.
+
+The optional independent check constructs the moments afresh in SymPy's
+\(\Z[r]\) domain and evaluates all the Hankel determinants using its
+\texttt{DomainMatrix.det} implementation. In the execution accompanying
+this report, all 21 moments and all 12 determinants, including the empty
+one, agree for each family using SymPy 1.14.0.
+
+A further exact audit evaluates the denominator-cleared recurrence for
+all three families, each integer \(r=-5,-4,\ldots,7\), and each
+\(n=7,8,\ldots,28\). All
+\begin{equation}
+ 3\cdot13\cdot22=858
+\end{equation}
+checks pass, including roots of the denominators. These are useful tests
+against implementation errors, but the all-index proof is the rank argument
+plus the polynomial certificates, not the number 858.
+
+\section{Singular parameters, zeros, and lower-order relations}
+\label{sec:singular}
+
+\subsection{Bilinear identity versus forward division}
+
+Even when \(D_k(r)\ne0\), a forward update
+\begin{equation}
+ h_n=\frac{\sum_{j=1}^4P_{k,j}(r)h_{n-j}h_{n-8+j}}
+              {D_k(r)h_{n-8}}
+ \label{eq:forward}
+\end{equation}
+is only legal when \(h_{n-8}\ne0\). The polynomial statement
+\eqref{eq:main} needs neither this assumption nor nonvanishing of other
+Hankel determinants. The moment recursion and determinant definition always
+select a sequence, even when a quotient recurrence does not uniquely
+continue it.
+
+For example, at \(r=0\), the families 11 and 12 have the same generating
+function. Their Hankel determinants begin
+\begin{equation}
+ 1,1,0,-1,-1,-1,0,1,1,1,0,-1,-1,-1,\ldots.
+\end{equation}
+The zero terms are already enough to show why unrestricted forward division
+is not the right theorem. In this same specialization, family 11 yields
+coefficients \((0,0,0,1)\), whereas family 12 yields
+\((-5/3,0,5/3,1)\). Both identities hold: uniqueness of the coefficient
+vector over \(\Q(r)\) does not imply uniqueness after a special rank drop.
+We do not infer a global periodicity theorem here merely from the displayed
+initial segment.
+
+\subsection{Two explicit Somos--6 consequences of Conjecture 12}
+
+At \(r=1\), the denominator \(D_{12}\) vanishes but the numerator vector is
+\begin{equation}
+ (P_{12,1},P_{12,2},P_{12,3},P_{12,4})=(-5,5,0,25).
+\end{equation}
+At \(r=3\), it is
+\begin{equation}
+ (-35,-105,980,735).
+\end{equation}
+After moving the outermost surviving product to the left and replacing
+\(n-1\) by \(m\), Theorem~\ref{thm:main} gives the following.
+
+\begin{corollary}[Order reduction at the exceptional parameters]
+For the family \(k=12\), the following identities hold for every \(m\geq6\):
+\begin{align}
+ r=1:\qquad
+ h_mh_{m-6}&=h_{m-1}h_{m-5}+5h_{m-3}^2,\label{eq:r1}\\
+ r=3:\qquad
+ h_mh_{m-6}&=-3h_{m-1}h_{m-5}
+              +28h_{m-2}h_{m-4}+21h_{m-3}^2.
+ \label{eq:r3}
+\end{align}
+\end{corollary}
+
+These are genuine denominator-free consequences, not limits of an
+ill-defined quotient. Their initial values provide useful direct examples:
+\begin{center}
+\begin{tabular}{c rrrrrrr}
+\toprule
+ &\(h_0\)&\(h_1\)&\(h_2\)&\(h_3\)&\(h_4\)&\(h_5\)&\(h_6\)\\
+\midrule
+\(r=1\)&1&1&$-2$&$-5$&$-13$&7&132\\
+\(r=3\)&1&1&$-6$&$-49$&$-205$&$-1$&84864\\
+\bottomrule
+\end{tabular}
+\end{center}
+For instance, the first step of \eqref{eq:r3} reads
+\(84864=3+34440+50421\).
+
+The denominator roots of the other two families are also transparent from
+\eqref{eq:D11} and \eqref{eq:D13}. We assert the specialized polynomial
+identities there, but do not claim to classify every further reduction or
+every vanishing numerator configuration.
+
+\subsection{Two nonsingular integer examples}
+
+For family 12 at \(r=2\), the recurrence becomes
+\begin{equation}
+ h_nh_{n-8}=5h_{n-1}h_{n-7}-18h_{n-2}h_{n-6}
+             +77h_{n-3}h_{n-5}-13h_{n-4}^2.
+ \label{eq:r2rec}
+\end{equation}
+The sequence, from \(h_0\), starts
+\begin{equation}
+ 1,1,-4,-13,-43,87,2512,22041,179945,-6856935,
+ -162649748,\ldots.
+\end{equation}
+At \(r=4\), the parameters are
+\begin{equation}
+ (\alpha,\beta,\gamma,\delta)
+ =\left(-\frac{101}{3},-\frac{484}{3},4299,\frac{23359}{3}\right).
+\end{equation}
+This also proves the specific Somos--8 assertion in Barry's Example 14:
+its denominator uses
+\(x(1-3x)/(1-4x)=x+x^2/(1-4x)\), so its generating function is precisely
+our family 12 at \(r=4\). The relevant moments and Hankel values can be
+regenerated without using that assertion; files for \(r=0,1,2,3,4\) are
+included in the package.
+
+\section{A positive coefficient formula and a tree model}
+\label{sec:combinatorics}
+
+This section concerns the moments \(a_n^{(12)}\), not the determinant
+sequence. In the second family, define
+\begin{equation}
+ L(x)=x+\frac{x^2}{1-rx}.
+ \label{eq:L}
+\end{equation}
+Equation \eqref{eq:c12cf} is equivalent to
+\begin{equation}
+ g(x)=1+L(x)g(x)+x^3g(x)^2.
+ \label{eq:tree}
+\end{equation}
+Thus for a nonnegative integer \(r\), \(a_n\) counts rooted ordered trees
+with the following decorations. A leaf has size zero. A unary vertex is
+of one of two types: a short unary vertex of size one, or a long unary
+vertex of size two carrying an additional possibly empty word on an
+\(r\)-letter alphabet, each letter contributing one to the size. A binary
+vertex has two ordered children and size three. The size of a decorated
+tree is the sum of its vertex and word sizes.
+
+There are finitely many such trees of each size because every non-leaf
+vertex has positive size. The root decomposition is exactly
+\eqref{eq:tree}; hence this interpretation follows from formal uniqueness.
+In particular \(a_n(r)\in\mathbb N[r]\), even though the compact recurrence
+\eqref{eq:momentrec} contains subtraction.
+
+For nonnegative integers \(j,\ell\), put
+\begin{equation}
+ W(j,\ell)=
+ \begin{cases}
+ 1,&j=\ell=0,\\
+ 0,&j=0,\ \ell>0,\\
+ \displaystyle\binom{j+\ell-1}{\ell},&j\geq1.
+ \end{cases}
+ \label{eq:W}
+\end{equation}
+
+\begin{proposition}[Finite positive sum]
+\label{prop:coeff}
+For every \(n\geq0\),
+\begin{equation}
+ a_n^{(12)}(r)=
+ \sum_{\substack{k,q,j,\ell\geq0\\j\leq q\\3k+q+j+\ell=n}}
+ C_k\binom{2k+q}{q}\binom qj W(j,\ell)r^\ell,
+ \qquad C_k=\frac1{k+1}\binom{2k}{k}.
+ \label{eq:positiveformula}
+\end{equation}
+The formula is a polynomial identity, so it also holds for negative or
+complex \(r\), although the counting interpretation then no longer applies.
+\end{proposition}
+\begin{proof}
+Solving \eqref{eq:tree} in Catalan form gives
+\begin{equation}
+ g(x)=\sum_{k\geq0}C_kx^{3k}(1-L(x))^{-2k-1}.
+\end{equation}
+Expand
+\begin{equation}
+ (1-L)^{-2k-1}=\sum_{q\geq0}\binom{2k+q}{q}L^q,
+ \qquad
+ L^q=\sum_{j=0}^q\binom qj x^{q+j}(1-rx)^{-j}.
+\end{equation}
+The coefficient of \(x^\ell\) in the last factor is
+\(W(j,\ell)r^\ell\). Collecting all contributions to \(x^n\) gives
+\eqref{eq:positiveformula}.
+
+Alternatively, take a full binary tree with \(k\) binary vertices, in
+\(C_k\) ways. It has \(2k+1\) vertices at which chains of unary vertices
+can be inserted, including above its root. Distributing \(q\) unary
+vertices among these positions gives \(\binom{2k+q}{q}\) choices.
+Choose \(j\) of the \(q\) unary vertices to be long. Distribute a total of
+\(\ell\) additional letters among their words in \(W(j,\ell)\) ways and
+color the letters in \(r^\ell\) ways. The total size is
+\(3k+q+j+\ell\), exactly as in the sum.
+\end{proof}
+
+The generating function also gives a manifestly nonnegative recursion:
+\begin{equation}
+ a_n=a_{n-1}+\sum_{j=0}^{n-2}r^ja_{n-2-j}
+                    +\sum_{i=0}^{n-3}a_ia_{n-3-i},\qquad n\geq1,
+ \label{eq:positiverec}
+\end{equation}
+with negative-index terms and empty sums zero. This provides a useful
+independent way to check the compact moment recursion.
+
+\section{Dominant-singularity asymptotics for the second family}
+\label{sec:asymptotic}
+
+Fix a real \(r\geq0\) throughout this section. Set
+\begin{equation}
+ \Delta(x)=(1-L(x))^2-4x^3,
+ \label{eq:Delta}
+\end{equation}
+so that
+\begin{equation}
+ g(x)=\frac{1-L(x)-\sqrt{\Delta(x)}}{2x^3}.
+ \label{eq:asymroot}
+\end{equation}
+We give the full inverse-power expansion associated with the dominant
+singularity. This is not an asymptotic theorem for the Hankel determinants,
+and it is not a claim to include exponentially smaller contributions from
+every other algebraic singularity.
+
+\begin{lemma}[Unique dominant singularity]
+\label{lem:rho}
+There is a unique positive number \(\rho\) satisfying
+\begin{equation}
+ \rho+\frac{\rho^2}{1-r\rho}+2\rho^{3/2}=1.
+ \label{eq:rhoequality}
+\end{equation}
+It lies in \((0,1/r)\) when \(r>0\), and in \((0,1)\) when \(r=0\).
+The function \(g\) has no singularity in \(|x|<\rho\), and \(\rho\) is
+its only singularity on \(|x|=\rho\). Moreover,
+\begin{equation}
+ \Delta'(\rho)
+ =-4\rho^{3/2}L'(\rho)-12\rho^2<0.
+ \label{eq:Deltaprime}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The left side of \eqref{eq:rhoequality} is strictly increasing from zero
+on the stated positive interval and exceeds one before the upper endpoint.
+This proves existence and uniqueness. The equality gives
+\(1-L(\rho)=2\rho^{3/2}\), hence \(\Delta(\rho)=0\) and
+\eqref{eq:Deltaprime}.
+
+For \(|z|<\rho\), the nonnegative coefficients of \(L\) imply
+\(L(|z|)+2|z|^{3/2}<1\). A zero of \(\Delta(z)\) would give a complex
+number \(w\) with \(w^2=z^3\) and \(1=L(z)\pm2w\), contradicting
+\[
+ 1\leq |L(z)|+2|z|^{3/2}\leq L(|z|)+2|z|^{3/2}<1.
+\]
+Thus the square-root branch extends analytically inside that disk, and its
+apparent singularity at zero is removable.
+
+If \(|z|=\rho\) and \(\Delta(z)=0\), equality must hold throughout the
+same triangle inequalities. In particular \(|L(z)|=L(\rho)\). The
+coefficients of both \(x\) and \(x^2\) in \(L\) are positive; equality
+forces these two summands to have the same argument. Writing
+\(z=\rho e^{i\theta}\), this requires
+\(e^{i\theta}=e^{2i\theta}\), so \(z=\rho\).
+The rational coefficients have no pole on the disk because \(r\rho<1\).
+Finally, the simple zero \eqref{eq:Deltaprime} gives a nonzero square-root
+term, so \(\rho\) really is a singularity.
+\end{proof}
+
+\begin{theorem}[Leading term and first correction]
+\label{thm:asymptotic}
+Define
+\begin{equation}
+ \lambda=\frac{\sqrt{-\rho\Delta'(\rho)}}{2\rho^3},\qquad
+ C=\frac{\lambda}{2\sqrt\pi},\qquad
+ c_1=-\frac{33}{8}+\frac{3\rho\Delta''(\rho)}{8\Delta'(\rho)}.
+ \label{eq:asymconstants}
+\end{equation}
+Then, as \(n\to\infty\),
+\begin{equation}
+ a_n^{(12)}(r)=C\rho^{-n}n^{-3/2}
+             \left(1+\frac{c_1}{n}+O(n^{-2})\right).
+ \label{eq:asymptotic}
+\end{equation}
+The estimate is for each fixed \(r\geq0\); no uniformity in an unbounded
+range of \(r\) is asserted.
+\end{theorem}
+\begin{proof}
+Set \(t=1-x/\rho\). The nonanalytic part of \eqref{eq:asymroot} is
+\begin{equation}
+ -\lambda t^{1/2}R(t),\qquad
+ R(t)=(1-t)^{-3}
+ \sqrt{\frac{\Delta(\rho(1-t))}{-\rho\Delta'(\rho)t}}.
+ \label{eq:R}
+\end{equation}
+The quotient under the square root is analytic at zero with value one.
+Therefore \(R\) is analytic there, \(R(0)=1\), and
+\begin{equation}
+ R(t)=1+R_1t+O(t^2),\qquad
+ R_1=3-\frac{\rho\Delta''(\rho)}{4\Delta'(\rho)}.
+ \label{eq:R1}
+\end{equation}
+The algebraic function has a suitable indented complex neighborhood of its
+unique dominant singularity, by Lemma~\ref{lem:rho}; the other zeros and
+poles are separated from it. Singularity transfer \cite{FlajoletOdlyzko}
+applies to these half-integer terms.
+
+For nonintegral \(a\), the binomial coefficient identity is
+\begin{equation}
+ [x^n](1-x/\rho)^a
+ =\rho^{-n}\frac{\Gamma(n-a)}{\Gamma(-a)\Gamma(n+1)}.
+ \label{eq:gammaidentity}
+\end{equation}
+For \(a=1/2\), its gamma ratio is
+\(n^{-3/2}(1+3/(8n)+O(n^{-2}))\), and
+\(\Gamma(-1/2)=-2\sqrt\pi\). For \(a=3/2\), the relative contribution
+to the first correction is \(-3R_1/(2n)\). Hence the correction is
+\(3/8-3R_1/2\), which simplifies to \eqref{eq:asymconstants}.
+The analytic part does not contribute to these algebraic-order dominant
+terms. This proves \eqref{eq:asymptotic}.
+\end{proof}
+
+\subsection{An explicit all-orders prescription}
+
+Write \(R(t)=\sum_{j\geq0}R_jt^j\) in \eqref{eq:R}. For every fixed
+integer \(J\geq0\), singularity transfer gives
+\begin{align}
+ a_n={}&-\lambda\rho^{-n}
+ \sum_{j=0}^{J}R_j
+ \frac{\Gamma(n-j-\tfrac12)}{\Gamma(-j-\tfrac12)\Gamma(n+1)}
+ \notag\\
+ &\hspace{2em}{}+O\!\left(\rho^{-n}n^{-J-5/2}\right).
+ \label{eq:allorders}
+\end{align}
+Thus the coefficients of the complete dominant inverse-power expansion are
+obtained by differentiating the explicit analytic function \(R\) and
+expanding elementary gamma ratios. This prescription avoids an auxiliary
+unknown recurrence for the asymptotic coefficients. It also makes the
+error order at every finite truncation explicit.
+
+At \(r=2\), the computations supplied with this report give
+\begin{align}
+ \rho&\approx0.32542163481800348746,\notag\\
+ \rho^{-1}&\approx3.07293644001039978597,\notag\\
+ C&\approx5.05502055022293177233,\notag\\
+ c_1&\approx-4.11576700299955384839.
+ \label{eq:numericalconstants}
+\end{align}
+The table compares exact coefficients with the first two approximations:
+\begin{center}
+\begin{tabular}{r rr}
+\toprule
+\(n\)&\(a_n/(C\rho^{-n}n^{-3/2})\)
+ &\(a_n/(C\rho^{-n}n^{-3/2}(1+c_1/n))\)\\
+\midrule
+25 &0.8421704141&1.0081414221\\
+50 &0.9207369642&1.0033260927\\
+100&0.9597064447&1.0009012063\\
+200&0.9796476789&1.0002312733\\
+400&0.9897684471&1.0000584662\\
+\bottomrule
+\end{tabular}
+\end{center}
+The numerical script uses 80-digit decimal arithmetic for the constants
+and integer arithmetic for the coefficients. These values illustrate the
+proved asymptotics; they are not used in the Somos proof.
+
+\section{Reproducibility and audit trail}
+\label{sec:reproduce}
+
+The archive is organized so that the exact proof checks can be run without
+installing a computer algebra system. From its root directory, execute
+\begin{lstlisting}
+python3 code/verify_certificates.py --audit
+python3 code/examples.py
+\end{lstlisting}
+The first command recomputes all certificate polynomials and the rank
+witnesses, then performs the 858 integer audits. The second regenerates
+sequence files and the asymptotic comparison data. An optional independent
+symbolic check is
+\begin{lstlisting}
+python3 code/cross_check_sympy.py
+\end{lstlisting}
+which requires SymPy. The standard-library verifier requires Python 3.10
+or later and makes no network calls.
+
+The main certificate file records integer coefficients in ascending powers
+of \(r\). For example, \([1,-2,3]\) denotes \(1-2r+3r^2\), and the zero
+polynomial is \([0]\). Its moment array is indexed from 0 through 20; its
+Hankel array is indexed from \(-1\) through 10. This convention is explicitly
+stored and used by both verifiers, avoiding silent off-by-one shifts.
+
+The delivered files have the following roles:
+\begin{center}
+\small
+\begin{tabular}{p{0.43\textwidth}p{0.49\textwidth}}
+\toprule
+File or directory&Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf}&The mathematical report and its editable source.\\
+\texttt{code/verify\_certificates.py}&Exact integer-polynomial determinant proof checks.\\
+\texttt{code/cross\_check\_sympy.py}&Independent optional symbolic audit.\\
+\texttt{code/examples.py}&Exact moment/Hankel data and decimal asymptotic comparisons.\\
+\texttt{data/certificates.json}&All finite polynomial certificates and rank witnesses.\\
+\texttt{data/numeric\_audit.json}&The scope and result of the 858 auxiliary checks.\\
+\texttt{data/C12\_r*\_*.txt}&Indexed moment and Hankel sequences at five integer parameters.\\
+\texttt{data/asymptotics\_C12\_r2.json}&High-precision constants and comparison ratios.\\
+\texttt{README.md}, \texttt{build.sh}&Usage, proof dependencies, and compilation instructions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The TeX source compiles with pdfLaTeX. The build script runs it twice to
+resolve references and the table of contents. No font files or copies of
+third-party papers are redistributed. The bibliography links to the
+original sources.
+
+\section{Scope, significance, and remaining questions}
+\label{sec:conclusion}
+
+The main outcome is a proof of three precise published Somos--8 assertions,
+not merely the discovery of matching initial terms. The decisive observation
+is that the universal genus-two theorem should be used as a \emph{polynomial
+rank bound}, rather than by substituting into its potentially singular
+rational coordinate formulas. This both validates the degenerate
+\(c_2=0\) specialization and makes a small family-specific certificate
+sufficient.
+
+The work also separates three issues that can otherwise be conflated.
+Integrality follows from the moment construction. A bilinear identity follows
+from the rank theorem and exact coefficient identification. A division-based
+recurrence additionally requires nonzero divisors. Our theorem settles the
+first two without silently assuming the third.
+
+The exceptional values \(r=1,3\) in the second family are not discarded;
+they yield explicit order-six relations. The positive tree formula and the
+asymptotic expansion add information about the underlying moment sequence.
+They do not provide Hankel determinant asymptotics, which would require
+further analysis of the relevant genus-two dynamics and its degenerations.
+
+Several natural directions remain: classifying all rank drops and all zero
+patterns at specialized parameters; obtaining similarly compact certificates
+for other low-degree algebraic moment families; developing a direct
+family-specific determinant or continued-fraction proof that does not import
+Hone's general theorem; and deriving asymptotics for the determinant sequences
+themselves. These directions are not asserted to be solved here.
+
+Finally, the novelty qualification remains important. The theorem and its
+certificates are fully specified and independently reproducible, but an
+unlocated prior application of Hone's theorem would change the historical
+claim, not the validity of these identities. External mathematical review
+would be appropriate before treating the report as a publication-ready
+priority claim.
+
+\appendix
+\section{The other two rank witnesses}
+\label{app:witness}
+
+For reference, the matrices formed from rows \(7,8,9,10\) at \(r=2\)
+for the other two families are
+\begin{equation}
+ M_{11}(2)=
+ \begin{pmatrix}
+ -135120&-34593&-1430&1681\\
+ 14703657&-270240&472771&511225\\
+ 1376443582&-200949979&96610800&132963961\\
+ -2390410472409&-492078580565&-56515956289&18257414400
+ \end{pmatrix},
+\end{equation}
+and
+\begin{equation}
+ M_{13}(2)=
+ \begin{pmatrix}
+ -1733&-1186&-78&169\\
+ 57264&-1733&7709&6084\\
+ 1058325&-372216&135174&351649\\
+ -259181611&-82549350&-16978776&3003289
+ \end{pmatrix}.
+\end{equation}
+Their exact determinants are listed in \eqref{eq:witnesses}. The witness
+calculation does not claim that \(M_k(r)\) is invertible for every \(r\).
+It proves invertibility over the rational function field, which is all the
+finite-certification lemma needs before polynomial specialization.
+
+\section{A compact logical checklist}
+\label{app:checklist}
+
+The proof can be audited in the following order.
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+\item Confirm the three continued fractions and recurrence parameters in
+Barry's Conjectures 11--13, with the stated correction to the separate
+Catalan display for Conjecture 13.
+\item Verify the compact moment recursion \eqref{eq:momentrec} by multiplying
+out \eqref{eq:uniform}.
+\item Verify the universal moment form \eqref{eq:universal} and its match to
+Hone's Theorem 5.4 via \eqref{eq:PGST}.
+\item Pass to polynomial minors before setting \(c_2=0\), using
+Lemma~\ref{lem:specialization}.
+\item Check the binomial translation and the seven substituted parameters
+in \eqref{eq:sevenparameters}.
+\item Recompute the twelve zero residual polynomials and the three nonzero
+rank witnesses.
+\item Apply Lemma~\ref{lem:finite}, then specialize the resulting
+\(\Z[r]\)-identities, without dividing by a Hankel determinant.
+\end{enumerate}
+Every family-specific claim needed for the all-index result is covered by
+these steps. The auxiliary numerical tests and the asymptotic section are
+not premises of the main theorem.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Barry}
+P. Barry,
+\emph{Conjectures on Somos 4, 6 and 8 sequences using Riordan arrays and the
+Catalan numbers}, arXiv:2211.12637v1, 22 November 2022.
+Conjectures 11--13 are in Section 6, pp.\ 8--10; Example 14 is on p.\ 10.
+\url{https://arxiv.org/abs/2211.12637}.
+
+\bibitem{Hone}
+A. N. W. Hone,
+\emph{Continued fractions and Hankel determinants from hyperelliptic curves},
+Communications on Pure and Applied Mathematics \textbf{74} (2021),
+2310--2347, doi:10.1002/cpa.21923.
+The version used for equation and theorem numbers is arXiv:1907.05204v3,
+30 December 2019, especially equation (4.22) and Theorem 5.4.
+\url{https://arxiv.org/abs/1907.05204}.
+
+\bibitem{WangZhang}
+Y. Wang and Z. Zhang,
+\emph{A sufficient condition for $(\alpha,\beta)$ Somos 4 Hankel determinants},
+arXiv:2305.05995v2, 15 June 2023; published in Discrete Mathematics (2024).
+The four corollaries address Barry's Somos--4 conjectures.
+\url{https://arxiv.org/abs/2305.05995}.
+
+\bibitem{LiuWangZhang}
+F. Liu, Y. Wang, and Z. Zhang,
+\emph{Proof of Barry's Four Hankel Determinant Conjectures},
+arXiv:2607.18644, 2026. This paper concerns the central transform of four
+rational families, a distinct set of conjectures.
+\url{https://arxiv.org/abs/2607.18644}.
+
+\bibitem{Scheuerle}
+T. Scheuerle,
+\emph{Direct Generation of a Somos--4 Sequence from an Algebraic Generating
+Function}, arXiv:2609.15754v1, 14 September 2026.
+\url{https://arxiv.org/abs/2609.15754}.
+
+\bibitem{FlajoletOdlyzko}
+P. Flajolet and A. Odlyzko,
+\emph{Singularity analysis of generating functions},
+SIAM Journal on Discrete Mathematics \textbf{3} (1990), 216--240,
+doi:10.1137/0403019.
+\url{https://algo.inria.fr/flajolet/Publications/FlOd90b.pdf}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,1030 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small OEIS A352969}
+\fancyhead[R]{\small Correctness and quantitative growth}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[1]
+\raggedbottom
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb{N}}
+\renewcommand{\lg}{\log_2}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\D}{\mathcal D}
+\DeclareMathOperator{\height}{ht}
+\lstset{language=Python,basicstyle=\small\ttfamily,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,breaklines=true,frame=single,
+  framerule=0.3pt,xleftmargin=0.6em,xrightmargin=0.6em,
+  aboveskip=1em,belowskip=0.8em,tabsize=4}
+\hypersetup{pdftitle={Correctness and Quantitative Growth of OEIS A352969},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov},
+ pdfsubject={Iterated pairwise sums and products; constructive formula depth; asymptotics}}
+
+\title{\textbf{Iterated Sums and Products from One}\\[0.45em]
+  \large Correctness and Quantitative Growth of OEIS A352969}
+\author{A research note prepared for Vladimir Reshetnikov}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $S_0=\{1\}$ and let $S_{n+1}$ consist of all sums and products of two
+members of $S_n$, allowing equal operands. We prove that the Python program
+linked from OEIS A352969 computes $S_n$ exactly, under its natural input
+and cache-integrity assumptions. We then establish unconditional quantitative
+growth estimates. Writing $a_n=\card{S_n}$, we prove
+\[
+ \lg\lg a_n=n+O(\sqrt{\log n}),\qquad
+ \frac{\log a_{n+1}}{\log a_n}\longrightarrow 2.
+\]
+The first estimate is made explicit: for $n\ge16$, if
+$t=\ceil{\lg(2n)}$ and $r$ is the smallest integer with $t\le r(r+1)/2$,
+then $2^{\,2^{n-r-4}}\le a_n\le2^{\,2^{n-1}}$.
+The proof combines a low-depth radix construction for arbitrary positive
+integers with collision-free products of prime multisets. An elementary
+divisor bound then controls the loss in one multiplication step.
+The normalized logarithms $2^{-n}\lg a_n$ decrease to a limit, but its
+value and strict positivity are not determined here. Thus the result is a
+sharp logarithmic-scale growth theorem, not a claimed multiplicative
+asymptotic equivalent for $a_n$. Reproducible code, independently checked
+small-stage data, and an executable expression certificate accompany the article.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The sequence and the main results}\label{sec:main}
+For a finite set $A$ of positive integers, write
+\[
+ A+A=\{x+y:x,y\in A\},\qquad
+ AA=\{xy:x,y\in A\},\qquad \Phi(A)=(A+A)\cup AA.
+\]
+The sequence under consideration is
+\begin{equation}\label{eq:definition}
+ S_0=\{1\},\qquad S_{n+1}=\Phi(S_n),\qquad a_n=\card{S_n}.
+\end{equation}
+This is OEIS A352969, entered by Vladimir Reshetnikov in April 2022.
+The entry attributes its Python program to Chai Wah Wu and currently lists
+\begin{equation}\label{eq:terms}
+ 1,\ 2,\ 4,\ 11,\ 52,\ 678,\ 67144,\ 357306081
+\end{equation}
+for $n=0,\ldots,7$~\cite{oeis}. We independently recomputed the first seven
+of these values, through $n=6$; the value at $n=7$ is used only as reported
+OEIS data. All logarithms denoted by $\log$ are natural, and $\lg$ denotes
+base two.
+
+Two distinct tasks must be separated. Proving the program correct amounts
+to checking that its enumeration implements \eqref{eq:definition} without
+omissions or spurious values. Estimating $a_n$ is harder: the program
+counts \emph{values}, not arithmetic expressions, and many expressions
+have the same value.
+
+\begin{theorem}[Quantitative growth]\label{thm:main}
+For $n\ge16$, define
+\[
+ t_n=\ceil{\lg(2n)},\qquad
+ r_n=\min\{r\in\NN:t_n\le r(r+1)/2\}.
+\]
+Then
+\begin{equation}\label{eq:explicit-main}
+ \boxed{\quad 2^{\,2^{n-r_n-4}}\le a_n\le2^{\,2^{n-1}}.\quad}
+\end{equation}
+In particular,
+\begin{align}
+ n-\sqrt{2\lg n}-O(1)&\le \lg\lg a_n\le n-1,\label{eq:doublelog}\\
+ \lim_{n\to\infty}\frac{\log\log a_n}{n}&=\log2,\label{eq:limit-main}\\
+ \log a_n&=\frac{2^n}{n^{o(1)}}.\label{eq:subpoly}
+\end{align}
+Moreover, there is a nonnegative sequence $\varepsilon_n$ such that
+\begin{equation}\label{eq:local-main}
+ a_{n+1}=a_n^{\,2-\varepsilon_n},\qquad
+ 0\le\varepsilon_n\le n^{-1+o(1)}.
+\end{equation}
+Consequently $\log a_{n+1}/\log a_n\to2$.
+\end{theorem}
+
+The notation in \eqref{eq:subpoly} means that the positive factor
+$2^n/\log a_n$ grows more slowly than every fixed positive power of $n$;
+it is not an assertion that this factor tends to infinity.
+An equivalent and less compressed statement is that for every $\delta>0$
+and all sufficiently large $n$,
+\[
+ \frac{2^n}{n^\delta}\le\log a_n\le\frac{\log2}{2}\,2^n.
+\]
+The threshold in the lower bound may depend on $\delta$.
+
+\begin{theorem}[Normalized logarithms]\label{thm:entropy-intro}
+The sequence
+\[
+ \beta_n=2^{-n}\lg a_n\qquad(n\ge1)
+\]
+is nonincreasing and has a limit $\theta\ge0$. Thus
+\begin{equation}\label{eq:theta-form}
+ a_n=2^{(\theta+o(1))2^n}.
+\end{equation}
+The independently recomputed data imply
+$\theta\le0.2505464198$; the reported OEIS value of $a_7$ improves this to
+$\theta\le0.2219733221$.
+\end{theorem}
+
+Formula \eqref{eq:theta-form} does not by itself prove $\theta>0$.
+Even a positive value of $\theta$ would give an equivalent for $\log a_n$,
+not automatically a multiplicative equivalent
+$a_n\sim2^{\theta2^n}$. These distinctions matter for a doubly exponential
+sequence.
+
+\section{What the Python program does}\label{sec:program}
+The OEIS listing defines a cached function named \texttt{A352969\_set}.
+Its base case returns $\{1\}$. At a positive argument it forms two sets:
+one from the sums, the other from the products, of
+\texttt{combinations\_with\_replacement(previous, 2)}, and returns their
+union. A final wrapper takes the cardinality. In the retrieved listing
+that wrapper is named \texttt{A353969}; this is a naming typo, not a
+mathematical change~\cite{oeis}.
+
+The following independently written version expresses the same recurrence
+in one pass over the pairs. It deliberately returns immutable results and
+validates the public input before entering the cache.
+\begin{lstlisting}
+from functools import lru_cache
+from itertools import combinations_with_replacement
+
+@lru_cache(maxsize=None)
+def _stage(n):
+    if n == 0:
+        return frozenset((1,))
+    result = set()
+    for x, y in combinations_with_replacement(_stage(n - 1), 2):
+        result.add(x + y)
+        result.add(x * y)
+    return frozenset(result)
+
+def reachable(n):
+    if isinstance(n, bool) or not isinstance(n, int):
+        raise TypeError("n must be an integer")
+    if n < 0:
+        raise ValueError("n must be nonnegative")
+    return _stage(n)
+
+def A352969(n):
+    return len(reachable(n))
+\end{lstlisting}
+The package contains both cached and iterative variants, with additional
+input checks and an optional pair-count budget. The compact listing above
+is for exposition; the executable implementation is
+\texttt{code/a352969.py}.
+
+\subsection{Why unordered pairs are sufficient}
+Fix an arbitrary enumeration $A=\{u_1,\ldots,u_m\}$.
+The iterator with replacement and length two visits exactly the index pairs
+\[
+ (i,j)\quad\text{with}\quad1\le i\le j\le m.
+\]
+Its ordering is determined by the input iterable, not by the numerical
+order of its elements~\cite{itertools}. A Python set therefore need not be
+sorted before it is passed to the iterator.
+
+For every ordered pair $(x,y)\in A^2$, exactly one of $(x,y)$ and $(y,x)$
+occurs in this unordered enumeration, except that $(x,x)$ occurs once.
+Both operations commute, so replacing an ordered pair by its reversal
+changes neither output. Equal pairs must be retained: for example, the
+first step needs $1+1$ and $1\cdot1$.
+
+\begin{lemma}[One-step enumeration]\label{lem:onestep}
+For any finite set $A$ of positive integers, the union of the sum outputs
+and product outputs from the unordered enumeration with replacement is
+exactly $\Phi(A)$.
+\end{lemma}
+\begin{proof}
+Every emitted sum or product has both operands in $A$, so no emitted value
+lies outside $\Phi(A)$. Conversely, if $z=x+y$ or $z=xy$ with $x,y\in A$,
+the iterator visits the unordered pair containing $x$ and $y$.
+Commutativity ensures that the corresponding output equals $z$.
+Set insertion discards repeated values but never discards their membership.
+Taking the union retains values produced by either operation.
+\end{proof}
+
+\subsection{Correctness and termination}
+\begin{theorem}[Correctness of the OEIS algorithm]\label{thm:correct}
+For every nonnegative integer $n$, the OEIS set function returns $S_n$,
+provided its previously cached sets have not been externally modified and
+the execution has sufficient memory and stack capacity. Its cardinality
+wrapper therefore returns $a_n$.
+\end{theorem}
+\begin{proof}
+Induct on $n$. At $n=0$, the returned set is $\{1\}=S_0$.
+For $n>0$, the induction hypothesis identifies the recursively returned
+set with $S_{n-1}$. Lemma~\ref{lem:onestep} identifies the two comprehensions
+and their union with $\Phi(S_{n-1})=S_n$.
+The wrapper applies cardinality to this exact set.
+
+For mathematical termination, the recursion decreases the nonnegative
+integer argument by one. At each level the previous set is finite, and
+there are only $m(m+1)/2$ unordered pairs. Thus each loop is finite.
+Python's integer operations are exact on integer operands; there is no
+fixed-width overflow that silently changes the values~\cite{types,math}.
+Resource exceptions are a separate issue from the mathematical termination
+of this finite procedure.
+\end{proof}
+
+The cache changes reuse, not the recurrence. In a single-threaded cold
+call, each stage is actually computed once; the second reference to the
+previous stage in the original two-comprehension implementation reuses its
+cached value. The cache retains references to returned objects rather
+than defensive copies~\cite{functools}. This explains the qualification
+about external mutation: inserting a foreign integer into a cached mutable
+set invalidates the induction hypothesis for later calls. Returning a
+\texttt{frozenset} removes that particular failure mode~\cite{types}.
+
+The original listing is intended for $n\in\NN$. A negative input never
+reaches the base case by decrementing, and a noninteger input is not part
+of its mathematical contract. The public validation in the supplied
+implementation makes this contract explicit. The distinction between
+booleans and integers is checked deliberately, since Python booleans are
+an integer subtype~\cite{types}.
+
+\section{Structural facts about the generated sets}\label{sec:structure}
+\subsection{Persistence and arithmetic-expression height}
+\begin{lemma}\label{lem:nested}
+For every $n$, $1\in S_n$ and $S_n\subseteq S_{n+1}$.
+\end{lemma}
+\begin{proof}
+The first assertion follows from $1\cdot1=1$.
+If $x\in S_n$, then $x=x\cdot1\in S_{n+1}$.
+\end{proof}
+
+A legal expression has leaves all equal to $1$ and internal vertices labeled
+$+$ or $\times$, each with two children. Its height is zero for a leaf
+and one plus the maximum child height at an internal vertex. Define
+\[
+ h(m)=\min\{\height(E):E\text{ is a legal expression with value }m\}.
+\]
+Every positive integer has such an expression, for example a sum of ones.
+This $h$ minimizes height without first minimizing the number of leaves.
+It is therefore not the ordinary integer complexity recorded in
+A005245, nor the leaf-optimal depth convention of A210659~\cite{complexity,depth}.
+
+\begin{proposition}\label{prop:height}
+For every $n\ge0$,
+\begin{equation}\label{eq:height-set}
+ S_n=\{m\ge1:h(m)\le n\}.
+\end{equation}
+For $m>1$, $h(m)$ is also specified by the finite recurrence
+\begin{equation}\label{eq:h-dp}
+ h(m)=1+\min\left\{
+ \begin{array}{ll}
+ \max(h(u),h(v)) &: u+v=m,\quad u,v\ge1,\\
+ \max(h(u),h(v)) &: uv=m,\quad u,v\ge2.
+ \end{array}\right.
+\end{equation}
+\end{proposition}
+\begin{proof}
+An expression of height at most $n+1$ has root operands of height at most
+$n$, except for the leaf expression, whose value $1$ persists by
+Lemma~\ref{lem:nested}. Induction on $n$ proves \eqref{eq:height-set} in
+both directions. Alternatively, shorter expressions can be padded by
+multiplications by $1$.
+
+An optimal expression for $m>1$ cannot have a root multiplication by $1$:
+removing that root would strictly lower its height. Every remaining root
+has one of the proper decompositions in \eqref{eq:h-dp}, whose operands
+are smaller than $m$. Optimizing over these roots proves the recurrence.
+\end{proof}
+
+The program for \eqref{eq:h-dp} supplies a useful independent test oracle:
+it indexes the computation by the numerical value $m$, whereas the OEIS
+algorithm indexes it by the stage $n$.
+
+\subsection{Maximum value and powers of two}
+\begin{proposition}\label{prop:maximum}
+Let $M_n=\max S_n$. Then
+\begin{equation}\label{eq:max}
+ M_0=1,\qquad M_n=2^{2^{n-1}}\quad(n\ge1).
+\end{equation}
+In particular $a_n\le M_n$. For every integer $e\ge1$,
+\begin{equation}\label{eq:powerheight}
+ h(2^e)=1+\ceil{\lg e}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The largest sum and product from $S_n$ are $2M_n$ and $M_n^2$, respectively.
+Thus $M_{n+1}=\max(2M_n,M_n^2)$. The first step gives $M_1=2$;
+thereafter $M_n^2\ge2M_n$, giving \eqref{eq:max} by repeated squaring.
+Every member is a positive integer at most $M_n$, so $a_n\le M_n$.
+
+For \eqref{eq:powerheight}, form a balanced product of $e$ copies of
+$2=1+1$. It has height at most $1+\ceil{\lg e}$.
+Conversely $2^e\in S_j$ requires $2^e\le2^{2^{j-1}}$, hence
+$j\ge1+\ceil{\lg e}$. The two bounds coincide.
+\end{proof}
+
+\subsection{Cardinality bounds and the entropy limit}
+\begin{proposition}\label{prop:cardbounds}
+For all $n\ge0$, $a_{n+1}\ge2a_n$. For all $n\ge1$,
+\begin{equation}\label{eq:square}
+ a_{n+1}\le a_n^2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write the elements of $A=S_n$ increasingly as
+$1=u_1<u_2<\cdots<u_m$. The sums
+\[
+ u_1+u_1<\cdots<u_1+u_m<u_2+u_m<\cdots<u_m+u_m
+\]
+are $2m-1$ distinct members of $A+A$. The additional value $1\in AA$ is
+not in $A+A$, proving $\card{\Phi(A)}\ge2m$.
+
+For the upper bound, take $n\ge1$, so $2\in A$.
+Each of $A+A$ and $AA$ has at most $m(m+1)/2$ members.
+Their intersection contains the $m$ distinct values $2x$, $x\in A$:
+they occur both as $x+x$ and as $2\cdot x$. Inclusion--exclusion gives
+\[
+ \card{\Phi(A)}\le m(m+1)-m=m^2.
+\]
+\end{proof}
+
+Dividing the logarithm of \eqref{eq:square} by $2^{n+1}$ proves that
+$\beta_{n+1}\le\beta_n$. Nonnegativity gives its limit $\theta$, proving
+the existence assertion of Theorem~\ref{thm:entropy-intro}.
+For every fixed $j\ge1$,
+\begin{equation}\label{eq:finite-upper}
+ a_n\le a_j^{2^{n-j}}\qquad(n\ge j).
+\end{equation}
+The numerical upper bounds for $\theta$ follow by substituting the data
+at $j=6$ or $j=7$.
+
+A useful consequence is that the sets are extremely sparse relative to
+the interval allowed by their largest element. Since $a_3=11$ and
+$M_3=16$, \eqref{eq:finite-upper} and \eqref{eq:max} give
+\begin{equation}\label{eq:density}
+ \frac{a_n}{M_n}\le\left(\frac{11}{16}\right)^{2^{n-3}}
+ \longrightarrow0\qquad(n\ge3).
+\end{equation}
+Thus having the same leading double-logarithmic scale as $M_n$ does not
+mean that $S_n$ has appreciable density in $[1,M_n]$.
+
+\section{Why a lower bound needs a construction}\label{sec:collision}
+The raw number of candidate outputs at a stage is $a_n(a_n+1)$.
+This is an upper bound, not a lower bound. Commutativity, associativity,
+distributivity, and numerical coincidences create many collisions.
+For instance $2+2=2\cdot2$, and $2\cdot6=3\cdot4$.
+Neither counting expression trees nor treating candidate values as
+independent random integers proves a lower bound for $a_n$.
+
+We will instead use a family whose collisions are completely understood.
+The strategy has three parts: construct a long initial interval at a
+moderate height, select the primes in that interval, and multiply a
+prescribed number of them in a balanced tree. Unique factorization makes
+the last counting step exact. In particular, no assumption about the
+primality of specially structured expressions is needed: \emph{every}
+integer in the chosen interval is constructible.
+
+\begin{lemma}[Prime-multiset amplification]\label{lem:amplify}
+If $S_k$ contains $P$ distinct primes, then for every $n\ge k$, putting
+$R=2^{n-k}$ gives
+\begin{equation}\label{eq:primecount}
+ a_n\ge\binom{P+R-1}{R}\ge\left(\frac{P}{R}\right)^R.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose a multiset of exactly $R$ primes from the $P$ available primes,
+and multiply its elements in a complete balanced tree with $R$ leaves.
+The multiplication tree adds exactly $n-k$ to the maximum input height,
+so its value belongs to $S_n$.
+
+The prime multiplicities are recovered uniquely from the resulting
+integer. Hence different multisets give different values. The number of
+multisets is the binomial coefficient in \eqref{eq:primecount}. Finally,
+\[
+ \binom{P+R-1}{R}
+ =\frac{P(P+1)\cdots(P+R-1)}{R!}
+ \ge\frac{P^R}{R^R}.
+\]
+\end{proof}
+
+The first inequality remains valid for any fixed family of pairwise
+coprime integers greater than one. Primes are convenient because an
+initial interval contains sufficiently many of them, as the next section
+proves without using the prime number theorem.
+
+\section{An elementary supply of primes}\label{sec:primes}
+\begin{lemma}\label{lem:chebyshev}
+For every even integer $X\ge16$,
+\begin{equation}\label{eq:prime-lower}
+ \pi(X)\ge\frac{X}{2\log X},
+\end{equation}
+where $\pi(X)$ counts primes at most $X$.
+\end{lemma}
+\begin{proof}
+Write $X=2m$. The central binomial coefficient is the largest of the
+$2m+1$ binomial coefficients in the expansion of $(1+1)^{2m}$. Therefore
+\[
+ \binom{2m}{m}\ge\frac{2^{2m}}{2m+1}=\frac{2^X}{X+1}.
+\]
+For a prime $p$, counting multiples of each prime power in the factorials
+gives
+\[
+ v_p\binom{2m}{m}
+ =\sum_{j\ge1}\left(\floor{2m/p^j}-2\floor{m/p^j}\right).
+\]
+Each summand is either zero or one and vanishes for $p^j>X$.
+Consequently $v_p\binom{2m}{m}\le\floor{\log_p X}$, so the full power of
+$p$ dividing the binomial coefficient is at most $X$. All its prime
+factors are at most $X$, and hence
+\[
+ \binom{2m}{m}\le X^{\pi(X)}.
+\]
+Taking logarithms of both estimates yields
+\[
+ \pi(X)\ge\frac{X\log2-\log(X+1)}{\log X}.
+\]
+For $X\ge16$, the numerator is at least $X/2$: this holds at $16$, and
+$X(\log2-1/2)-\log(X+1)$ is increasing on $[16,\infty)$.
+This proves \eqref{eq:prime-lower}.
+\end{proof}
+
+Only a positive constant times $X/\log X$ is needed later. The explicit
+constant $1/2$ keeps the finite bounds transparent; optimizing it would
+not change the principal growth rate.
+
+\section{A first complete growth proof}\label{sec:first-growth}
+Before sharpening the construction, it is useful to see why the base of
+the double exponential is already forced to be two.
+
+\begin{lemma}[Binary expansion bound]\label{lem:binary}
+For every integer $t\ge1$, every positive integer $m<2^{2^t}$ has an
+expression of height at most $2t+1$.
+\end{lemma}
+\begin{proof}
+Expand $m$ in binary. It is a sum of at most $2^t$ powers $2^e$ with
+$0\le e<2^t$. The power $1=2^0$ has height zero, and all the other powers
+have height at most $t+1$ by \eqref{eq:powerheight}.
+A balanced sum of at most $2^t$ positive terms adds at most $t$ levels.
+Zero binary digits are omitted; zero is not used as an expression leaf.
+\end{proof}
+
+Fix $n\ge16$, put $t=\ceil{\lg(2n)}$, and let $k=2t+1$.
+All primes at most $X=2^{2n}$ are strictly below $2^{2^t}$, even when
+$2^t=2n$, because the upper endpoint $X$ is composite. They therefore
+belong to $S_k$. Also $k\le n$, and
+\[
+ P=\pi(X)\ge\frac{2^{2n}}{4n\log2},\qquad R=2^{n-k}.
+\]
+Since $2^k\ge8n^2$, one has $P/R\ge2^n$. Lemma~\ref{lem:amplify} now gives
+\[
+ \lg a_n\ge R\lg(P/R)\ge nR.
+\]
+Finally $2^t<4n$ implies $2^k=2(2^t)^2<32n^2$, giving
+\begin{equation}\label{eq:coarse}
+ \boxed{\qquad a_n\ge2^{2^n/(32n)}\qquad(n\ge16).\qquad}
+\end{equation}
+For completeness, $k\le n$ follows from
+$k\le2\lg n+5\le n$ for $n\ge16$.
+Combining \eqref{eq:coarse} with \eqref{eq:max} already proves
+\[
+ n-\lg n-5\le\lg\lg a_n\le n-1,
+\]
+and hence \eqref{eq:limit-main}. The next section improves the logarithmic
+error to a square root of a logarithm. That improvement will also make a
+one-step growth theorem possible.
+
+\section{A sharper construction for arbitrary integers}\label{sec:radix}
+Define the uniform height requirement
+\[
+ \D(t)=\max_{1\le m<2^{2^t}}h(m)\qquad(t\ge0).
+\]
+The interval is finite and nonempty, and $\D(0)=0$.
+Define the triangular index
+\begin{equation}\label{eq:triangular}
+ r(t)=\min\{r\ge0:t\le r(r+1)/2\}
+ =\ceil{\frac{\sqrt{8t+1}-1}{2}}.
+\end{equation}
+
+\begin{theorem}[Uniform low-depth construction]\label{thm:radix}
+For every integer $t\ge0$,
+\begin{equation}\label{eq:uniform}
+ \D(t)\le t+r(t)+2.
+\end{equation}
+In particular, every positive integer with at most $2^t$ binary digits
+has such a representation using only $1$, addition, and multiplication.
+\end{theorem}
+\begin{proof}
+The case $t=0$ is immediate. Induct on $t\ge1$ and put $r=r(t)$.
+Minimality of $r$ gives
+\[
+ \frac{(r-1)r}{2}<t\le\frac{r(r+1)}2.
+\]
+In particular $1\le r\le t$. Set $q=t-r$. Then
+\begin{equation}\label{eq:qtriangle}
+ 0\le q\le\frac{(r-1)r}{2},\qquad r(q)\le r-1.
+\end{equation}
+
+Split the binary digits of $m<2^{2^t}$ into $2^r$ blocks, each of width
+$w=2^q$ bits. Equivalently,
+\begin{equation}\label{eq:radixexpand}
+ m=\sum_{j=0}^{2^r-1}d_j2^{jw},\qquad0\le d_j<2^w.
+\end{equation}
+For every nonzero digit $d_j$, the induction hypothesis and
+\eqref{eq:qtriangle} give
+\[
+ h(d_j)\le\D(q)\le q+r(q)+2\le(t-r)+(r-1)+2=t+1.
+\]
+If $j>0$, then $1\le jw<2^t$, so
+$h(2^{jw})\le t+1$ by \eqref{eq:powerheight}.
+The product $d_j2^{jw}$ consequently has height at most $t+2$.
+The $j=0$ term needs no multiplication, but the same upper bound applies.
+
+Discard zero terms in \eqref{eq:radixexpand}; at least one term remains.
+Their number is at most $2^r$, so a balanced sum adds at most $r$ levels.
+The complete expression has height at most $t+r+2$, as required.
+\end{proof}
+
+The particular triangular numbers are not an unexplained guess. The
+construction uses $r$ levels to add $2^r$ blocks. It is viable whenever
+the smaller coefficient problem at parameter $t-r$ has an overhead one
+unit below the current overhead. The recurrence
+\[
+ T_r=T_{r-1}+r,\qquad T_0=0,
+\]
+for the largest permitted parameter gives exactly $T_r=r(r+1)/2$.
+
+\subsection{What the construction proves about individual integers}
+For $m\ge2$, take $t=\ceil{\lg(\lg(m+1))}$, or equivalently choose the
+least $t$ for which $m<2^{2^t}$. The maximum-value obstruction and
+Theorem~\ref{thm:radix} give
+\begin{equation}\label{eq:height-asymptotic}
+ h(m)=\lg\lg m+O(\sqrt{\log\log m})\qquad(m\to\infty),
+\end{equation}
+and in particular $h(m)/\lg\lg m\to1$.
+Here additive bounded errors caused by rounding or changing $m$ to $m+1$
+are absorbed in the stated error. The lower bound is
+$h(m)\ge1+\lg\lg m$ from \eqref{eq:max}.
+
+This conclusion concerns depth, not expression size. Reusing powers of
+two in a DAG makes a convenient certificate, but reuse is not needed for
+the mathematical result: unfold the DAG into a tree, preserving height.
+Every leaf of the unfolded expression is still $1$. No large constant is
+introduced for free.
+
+\subsection{Executable realization}
+The class \texttt{ExpressionBuilder} implements the proof directly.
+It constructs the nonzero block coefficients recursively, builds powers
+of two by balanced products of copies of $1+1$, multiplies the terms, and
+adds them in a balanced tree. A node table records only three operations:
+\texttt{one}, \texttt{add}, and \texttt{mul}.
+
+The supplied independent checker evaluates the node table in topological
+order and recomputes every node height. The included 256-bit witness has
+165 serialized nodes and height 14; its parameter is $t=8$, for which the
+proved bound is $8+4+2=14$. Tests also exercise arbitrary-looking,
+all-ones, and single-bit inputs up to 16,384 bits. These are implementation
+checks of a construction already proved for all inputs, not empirical
+substitutes for Theorem~\ref{thm:radix}.
+
+\section{Proof of the explicit counting bound}\label{sec:sharp-growth}
+We now prove the first part of Theorem~\ref{thm:main}.
+Fix $n\ge16$ and abbreviate
+\[
+ t=\ceil{\lg(2n)},\qquad r=r(t),\qquad k=t+r+2,
+ \qquad R=2^{n-k}.
+\]
+The inequality $r\le t$ gives
+\[
+ k\le2t+2\le2\lg n+6\le n\qquad(n\ge16),
+\]
+so $R$ is a positive integer power of two.
+
+Take $X=2^{2n}$. As in Section~\ref{sec:first-growth}, every prime at most
+$X$ is strictly below $2^{2^t}$. Theorem~\ref{thm:radix} puts all these
+primes in $S_k$, and Lemma~\ref{lem:chebyshev} supplies
+\[
+ P\ge\frac{2^{2n}}{4n\log2}.
+\]
+Since $2^k\ge2^{t+2}\ge8n$, we have
+\[
+ \frac{P}{R}\ge\frac{2^{n+k}}{4n\log2}\ge2^n.
+\]
+Prime-multiset amplification therefore yields
+\begin{equation}\label{eq:amplified-final}
+ \lg a_n\ge R\lg(P/R)\ge nR=n2^{n-k}.
+\end{equation}
+Using $2^t<4n$ in the final expression gives
+\[
+ n2^{n-k}
+ =\frac{n2^n}{2^t2^{r+2}}
+ >2^{n-r-4}.
+\]
+Weakening the strict inequality proves the lower half of
+\eqref{eq:explicit-main}. The upper half is Proposition~\ref{prop:maximum}.
+
+Finally, \eqref{eq:triangular} gives
+\[
+ r_n=\sqrt{2\lg n}+O(1).
+\]
+Taking $\lg$ twice in \eqref{eq:explicit-main} proves
+\eqref{eq:doublelog}. Since $\sqrt{\log n}=o(\log n)$, taking the natural
+logarithm once gives \eqref{eq:subpoly}.
+This establishes the asserted global growth without any sum--product
+conjecture or prime-distribution hypothesis.
+
+\begin{center}
+\begin{tabular}{r r r r r r}
+\toprule
+$n$ & $t_n$ & $r_n$ & $k$ & lower bound for $\lg\lg a_n$
+ & upper bound\\
+\midrule
+16 & 5 & 3 & 10 & 9 & 15\\
+32 & 6 & 3 & 11 & 25 & 31\\
+64 & 7 & 4 & 13 & 56 & 63\\
+128 & 8 & 4 & 14 & 120 & 127\\
+256 & 9 & 4 & 15 & 248 & 255\\
+1024 & 11 & 5 & 18 & 1015 & 1023\\
+10000 & 15 & 5 & 22 & 9991 & 9999\\
+1000000 & 21 & 6 & 29 & 999990 & 999999\\
+\bottomrule
+\end{tabular}
+\end{center}
+These rows evaluate the theorem, not the enormous sequence terms.
+For example, the row $n=16$ asserts $a_{16}\ge2^{512}$, not that $a_{16}$
+has been enumerated.
+
+\section{One-step growth through a divisor bound}\label{sec:local}
+The global estimate alone does not force
+$\log a_{n+1}/\log a_n\to2$: broad upper and lower bounds do not rule out
+irregular local behavior. We control that behavior separately by bounding
+multiplicative collisions.
+
+Let $\tau(z)$ denote the number of positive divisors of $z$.
+\begin{lemma}[Uniform divisor upper bound]\label{lem:divisor}
+As $N\to\infty$,
+\begin{equation}\label{eq:divisor}
+ \log\max_{1\le z\le N}\tau(z)
+ \le(\log2+o(1))\frac{\log N}{\log\log N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $L=\log N$ and $y=L/(\log L)^3$; take $N$ sufficiently large that
+$y>1$. Factor $z=\prod p^{e_p}$. For primes $p\le y$, there are at most
+$y$ possible primes, and each exponent is at most $L/\log2$. Their total
+contribution to $\log\tau(z)=\sum_p\log(e_p+1)$ is at most
+\[
+ y\log(1+L/\log2)
+ =O\!\left(\frac{L}{(\log L)^2}\right).
+\]
+For primes $p>y$, the inequality $e+1\le2^e$ gives
+\[
+ \sum_{p>y}\log(e_p+1)
+ \le(\log2)\sum_{p>y}e_p
+ \le\frac{(\log2)L}{\log y}.
+\]
+The last step uses $\sum e_p\log p=\log z\le L$.
+Since $\log y=\log L-3\log\log L$, this last expression is
+$(\log2+o(1))L/\log L$. Both bounds are uniform in $z\le N$,
+proving \eqref{eq:divisor}.
+\end{proof}
+
+\begin{proposition}\label{prop:local}
+Writing $b_n=\log a_n$, one has
+\begin{equation}\label{eq:local-b}
+ 2b_n-(\log2+o(1))\frac{2^n}{n}
+ \le b_{n+1}\le2b_n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Consider all $a_n^2$ \emph{ordered} pairs in $S_n\times S_n$ and map
+$(x,y)$ to $xy$. For a fixed product $z$, at most $\tau(z)$ ordered pairs
+of positive integers can yield $z$, since the first operand is a divisor
+and determines the second. All these products are at most
+\[
+ M_n^2=M_{n+1}=2^{2^n}.
+\]
+Hence, with $D_n=\max_{z\le2^{2^n}}\tau(z)$,
+\[
+ a_{n+1}\ge\card{S_nS_n}\ge\frac{a_n^2}{D_n}.
+\]
+Apply Lemma~\ref{lem:divisor} at $N=2^{2^n}$. Since
+$\log N=(\log2)2^n$ and $\log\log N=n\log2+O(1)$,
+\[
+ \log D_n\le(\log2+o(1))\frac{2^n}{n}.
+\]
+Taking logarithms proves the lower bound. The upper bound is
+\eqref{eq:square}.
+\end{proof}
+
+To finish Theorem~\ref{thm:main}, define
+$\varepsilon_n=2-b_{n+1}/b_n$ for $n\ge1$.
+Proposition~\ref{prop:local} and \eqref{eq:explicit-main} give
+\begin{align*}
+ 0\le\varepsilon_n
+ &\le\frac{(\log2+o(1))2^n}{n\,b_n}\\
+ &\le\frac{(16+o(1))2^{r_n}}{n}
+ =n^{-1+o(1)}.
+\end{align*}
+Here $2^{r_n}=\exp(O(\sqrt{\log n}))=n^{o(1)}$.
+This proves \eqref{eq:local-main}, with all collision losses accounted for.
+
+\section{The precise computational cost}\label{sec:cost}
+\subsection{Candidate counts and unit-cost arithmetic}
+If $m=a_{j-1}$, one step has $m(m+1)/2$ unordered pairs and two mathematical
+candidate values per pair. Thus the exact candidate count in a cold run
+through stage $n$ is
+\begin{equation}\label{eq:candidates}
+ Q_n=\sum_{j=1}^{n}a_{j-1}(a_{j-1}+1).
+\end{equation}
+This counts evaluated sum/product candidates, not distinct outputs.
+The original program runs the pair iterator twice; the one-pass variant
+runs it once and computes both outputs inside the loop. The internal
+identity operations used by the built-in \texttt{sum} and \texttt{prod}
+only affect constant factors in this analysis.
+
+By Proposition~\ref{prop:cardbounds}, successive cardinalities at least
+double. For $m=a_{n-1}$,
+\[
+ m(m+1)\le Q_n\le\frac43m^2+2m,
+\]
+so $Q_n=\Theta(a_{n-1}^2)$. In a unit-cost arithmetic model with bounded
+amortized set-operation cost, this is also the running-time order.
+The assertion about $Q_n$ itself is deterministic and does not need a
+hash-table assumption.
+
+For $n=7$, the input size $a_6=67144$ gives
+\[
+ \binom{67145}{2}=2\,254\,191\,940
+\]
+unordered pairs, or $4\,508\,383\,880$ candidate values. The output is
+reported to contain $357\,306\,081$ distinct integers. This jump explains
+why verifying through $n=6$ is modest while casually rerunning the next
+stage is not. We did not run that next stage.
+
+\subsection{Bit operations and memory}
+The largest integer in $S_n$ has
+\[
+ B_n=2^{n-1}+1\qquad(n\ge1)
+\]
+binary digits. Treating its arithmetic as permanently constant-time would
+therefore be inappropriate for an asymptotic bit-complexity claim.
+Let $\mathsf M(B)$ be an upper bound for multiplying two $B$-bit integers.
+Under the usual bounded-average-probe hash-table model, an upper bound for
+a complete run is
+\begin{equation}\label{eq:bitcost}
+ O\!\left(a_{n-1}^2\bigl(\mathsf M(B_{n-1})+B_n\bigr)\right).
+\end{equation}
+The $B_n$ term covers additions, hashing, and integer comparisons per
+bounded number of probes. This is a stated computational model, not a
+worst-case guarantee about every hash pattern in a particular interpreter.
+Hash collisions affect time but not the mathematical equality semantics
+of the set.
+
+Even with every stage cached,
+\[
+ \sum_{j=0}^{n}a_j<2a_n.
+\]
+The old stage, the new stage, and the original program's temporary sum,
+product, and union sets therefore require $\Theta(a_n)$ stored entries
+up to fixed multiplicative factors, not $\Theta(na_n)$.
+A bit-storage upper bound is $O(a_n2^n)$. An explicit, uncompressed
+collection of $a_n$ distinct positive integers requires
+$\Omega(a_n\log a_n)$ bits: at least half of them are at least $a_n/2$.
+The ratio between these two bounds is only $n^{o(1)}$ by
+\eqref{eq:subpoly}. Object headers and table slack affect practical memory
+constants, which are not estimated here.
+
+\subsection{An output-sensitive consequence}
+The local growth theorem implies
+\[
+ \frac{2\log a_{n-1}}{\log a_n}\longrightarrow1.
+\]
+Therefore the candidate count satisfies
+\begin{equation}\label{eq:outputcost}
+ Q_n=a_n^{1+o(1)}.
+\end{equation}
+This is logarithmic-scale near-linearity in the number of output integers,
+not near-linearity in $n$. The computation remains doubly exponential in
+$n$.
+
+Using even schoolbook multiplication, the arithmetic factors in
+\eqref{eq:bitcost} are $2^{O(n)}$; their logarithms are negligible compared
+with $\log a_n$. Thus the same $a_n^{1+o(1)}$ conclusion holds for bit time
+under the stated hash-table model. A deterministic alternative is to
+sort and deduplicate the integer candidates. Its sorting factor and
+integer-comparison cost are also $a_n^{o(1)}$, so it attains the same
+logarithmic output exponent without a hashing assumption, though its
+memory layout and constants differ. No implementation of that large-scale
+sorting variant is claimed in the accompanying package.
+
+\section{Recomputed data and verification}\label{sec:verification}
+The executable tests compare the one-pass and cached enumerators, a
+separate two-comprehension implementation, ordered Cartesian-pair
+enumeration through $n=5$, and the value-indexed recurrence
+\eqref{eq:h-dp} for every $m\le2000$. These checks exercise distinct ways
+of organizing the computation.
+
+Let $L_n$ be the largest integer with $[1,L_n]\subseteq S_n$, and let $P_n$
+be the number of primes in $S_n$. The following data were computed in the
+supplied run. A dash means that a quantity was not recomputed.
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $a_n$ & $L_n$ & $P_n$ & $\beta_n=2^{-n}\lg a_n$\\
+\midrule
+0 & 1 & 1 & 0 & 0.0000000000\\
+1 & 2 & 2 & 1 & 0.5000000000\\
+2 & 4 & 4 & 2 & 0.5000000000\\
+3 & 11 & 9 & 4 & 0.4324289523\\
+4 & 52 & 25 & 9 & 0.3562774824\\
+5 & 678 & 177 & 56 & 0.2939106707\\
+6 & 67144 & 7390 & 2033 & 0.2505464198\\
+7 & $357306081^{\ast}$ & --- & --- & $0.2219733221^{\ast}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent $\ast$ Reported OEIS term; not independently enumerated here.
+The small initial gaps are already visible at $n=3$:
+\[
+ S_3=\{1,2,3,4,5,6,7,8,9,12,16\}.
+\]
+For $S_6$, the sumset has $21676$ elements, the product set has $55883$,
+and their intersection has $10415$, giving
+\[
+ 21676+55883-10415=67144.
+\]
+These values refer to the sumset and product set formed \emph{from $S_5$}.
+
+The prime counts do not require sieving all the way to $M_n$.
+A prime $p\in S_n$ has a minimum-height expression whose root cannot be a
+proper product. Its root is a sum of two elements of $S_{n-1}$, so
+$p\le2M_{n-1}$. For $n=6$ this is $131072$, despite
+$M_6=4294967296$. The data generator sieves only this smaller interval.
+
+All 16 tests in the final test suite pass. They include input validation
+before deduplication, immutable-cache behavior, exact maxima, nesting,
+cardinality inequalities, power-of-two depths, the triangular recurrence,
+and independently evaluated expression certificates. The supplied run used
+Python 3.13.5; the implementation targets Python 3.9 or later and has no
+third-party dependencies. The runtime and platform are recorded in
+\texttt{verification/metadata.json}. The tests are finite validation;
+the all-$n$ conclusions come from the proofs above.
+
+\section{What is established, and what remains to refine}\label{sec:scope}
+The central established result is not merely that $a_n$ is ``very large.''
+Its double logarithm has slope exactly one in base two, with an explicit
+one-sided error of order $\sqrt{\log n}$; successive ordinary logarithms
+have ratio tending to two. The proof is constructive and every
+number-theoretic estimate used in it has been proved in this article.
+
+There is also an exact way to express the remaining normalized constant.
+Define
+\[
+ d_n=\lg\left(\frac{a_n^2}{a_{n+1}}\right)\ge0.
+\]
+Then
+\[
+ \beta_n-\beta_{n+1}=\frac{d_n}{2^{n+1}},\qquad
+ \theta=\frac12-\sum_{n=1}^{\infty}\frac{d_n}{2^{n+1}}.
+\]
+The series converges because its partial sums telescope and are bounded
+above by $1/2$. Its terms measure logarithmic collision loss relative to
+perfect squaring.
+
+The present estimates do not decide whether that series exhausts $1/2$.
+If $\theta>0$, then $\log a_n\sim(\theta\log2)2^n$.
+If $\theta=0$, the proved lower bound still forces an unusually slow
+vanishing: for every $\delta>0$, eventually
+$2^{-n}\log a_n\ge n^{-\delta}$. Both possibilities are consistent with
+the results proved here. The first eight terms alone cannot choose
+between them, and their normalized logarithms are upper bounds for
+$\theta$, not estimates with a certified error bar.
+
+A route to a finer result would require tighter information about the
+multiplicative collision fibers of the actual sets $S_n$, or a more
+efficient source of multiplicatively independent constructible integers.
+The uniform divisor bound controls all integers up to $M_{n+1}$, including
+exceptional integers that need not be representative of these sets.
+Improving that specific overestimate is a concrete mathematical issue;
+it is not addressed by additional memoization or by counting expression
+syntax.
+
+\appendix
+\section{Contents and reproduction instructions}\label{app:reproduce}
+The archive includes the following components.
+\begin{description}[style=nextline]
+\item[\texttt{article.tex}, \texttt{article.pdf}]
+The complete mathematical article and its typeset version.
+\item[\texttt{code/a352969.py}]
+Validated cached and iterative enumerators, a proper-decomposition depth
+oracle, exact bound-parameter routines, the constructive expression
+builder, and the independent certificate checker.
+\item[\texttt{code/test\_a352969.py}, \texttt{code/reproduce.py}]
+The regression tests and data-generation script.
+\item[\texttt{data/}]
+Statistics in CSV, all sets $S_0,\ldots,S_6$ as compressed JSON,
+explicit-bound examples, and the expression witness.
+\item[\texttt{verification/}]
+Test output, data-generation output, and execution metadata.
+\end{description}
+
+From the archive root, reproduce the data with
+\begin{lstlisting}[language={}]
+python code/reproduce.py
+python -m unittest discover -s code -p "test_*.py" -v
+\end{lstlisting}
+To compile the article, run \texttt{python build.py}, or use
+\begin{lstlisting}[language={}]
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+\begin{minipage}{\linewidth}
+The default reproduction stops at $n=6$. The general enumerator accepts a
+\texttt{pair\_budget} keyword so a caller can reject an unexpectedly large
+stage before allocating its output. For example:
+\begin{lstlisting}
+from a352969 import reachable, counting_bound_parameters
+
+assert len(reachable(6, pair_budget=1_000_000)) == 67144
+print(counting_bound_parameters(1_000_000))
+\end{lstlisting}
+\end{minipage}
+The parameter routine uses exact integer arithmetic and does not try to
+allocate $2^{2^n}$. Its returned exponents specify a theorem-backed bound,
+not a numerical enumeration.
+
+\section{Source provenance}
+The OEIS page was retrieved on September 20, 2026. Its text-format record
+identifies revision 30, dated April 26, 2022. The mathematical definition,
+the listed terms, the program attribution, and the wrapper-name typo are
+source facts. The correctness proof, constructions, asymptotic estimates,
+complexity analysis, and executable package were developed for this note.
+No claim of priority over all prior mathematical literature is made.
+The original OEIS program is described rather than redistributed verbatim;
+the accompanying implementation is independently written.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+V. Reshetnikov, \emph{A352969}, The On-Line Encyclopedia of Integer
+Sequences. Python program credited to C. W. Wu, April 15, 2022.
+\url{https://oeis.org/A352969}.
+Text-format record: \url{https://oeis.org/search?q=id:A352969&fmt=text}.
+Accessed September 20, 2026.
+
+\bibitem{itertools}
+Python Software Foundation, \emph{itertools---Functions creating iterators
+for efficient looping}, documentation of
+\texttt{combinations\_with\_replacement}.
+\url{https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement}.
+Accessed September 20, 2026.
+
+\bibitem{functools}
+Python Software Foundation, \emph{functools---Higher-order functions and
+operations on callable objects}, documentation of \texttt{lru\_cache}.
+\url{https://docs.python.org/3/library/functools.html#functools.lru_cache}.
+Accessed September 20, 2026.
+
+\bibitem{types}
+Python Software Foundation, \emph{Built-in Types}, integer arithmetic and
+set/frozenset semantics.
+\url{https://docs.python.org/3/library/stdtypes.html}.
+Accessed September 20, 2026.
+
+\bibitem{math}
+Python Software Foundation, \emph{math---Mathematical functions},
+documentation of \texttt{prod}.
+\url{https://docs.python.org/3/library/math.html#math.prod}.
+Accessed September 20, 2026.
+
+\bibitem{complexity}
+The OEIS Foundation, \emph{A005245}, integer complexity measured by the
+minimum number of ones.
+\url{https://oeis.org/A005245}.
+Accessed September 20, 2026.
+
+\bibitem{depth}
+The OEIS Foundation, \emph{A210659}, depth among representations having
+minimum operand complexity.
+\url{https://oeis.org/A210659}.
+Accessed September 20, 2026.
+\end{thebibliography}
+\end{document}

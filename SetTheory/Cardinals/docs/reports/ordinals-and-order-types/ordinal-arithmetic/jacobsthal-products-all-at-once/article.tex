@@ -1,0 +1,1617 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Jacobsthal Products All at Once},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={An order-theoretic construction for Altman's Question 2.16}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Jacobsthal products all at once}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.3em}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\J}{\mathbin{\times_{\!J}}}
+\newcommand{\natsum}{\mathbin{\oplus}}
+\newcommand{\natprod}{\mathbin{\otimes}}
+\newcommand{\FF}{\mathfrak F}
+\newcommand{\LL}{\mathfrak L}
+\newcommand{\BB}{\mathfrak B}
+\newcommand{\CC}{\mathfrak C}
+\newcommand{\otp}{\operatorname{otp}}
+\newcommand{\CNF}{\operatorname{CNF}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\fs}{\operatorname{FS}}
+\newcommand{\colex}{\operatorname{Colex}}
+\newcommand{\lead}{\operatorname{lm}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\tail}{\operatorname{tail}}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newcommand{\emptyword}{\langle\rangle}
+\newcommand{\ep}{\varepsilon_0}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{black!25},showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.7in}
+{\large\sffamily ORDER THEORY \quad / \quad ORDINAL ARITHMETIC\par}
+\vspace{0.35in}
+{\Huge\bfseries Jacobsthal Products\\[5pt] All at Once\par}
+\vspace{0.22in}
+{\Large A Cantor-block construction and a finite-tail reduction\par}
+\vspace{0.28in}
+{\large A research attempt on Altman's Question 2.16\par}
+\vspace{0.22in}
+{20 September 2026\par}
+\vspace{0.32in}
+\begin{minipage}{0.92\textwidth}
+\begin{abstract}
+Jacobsthal multiplication is obtained by transfinitely iterating natural
+addition. Its associativity is classical, but Altman asked for a direct
+interpretation of products of several, and even transfinitely many, factors
+without defining the answer by parenthesized iteration or a limit. We give a
+Cantor-normal-form-based construction on the actual Cartesian product in the
+finite case and on the finite-support Cartesian product in the transfinite
+case.
+
+For finitely many factors, a tuple is assigned a pivot: the last coordinate,
+other than the first, lying in a positive-exponent Cantor block. The resulting
+finitely many cells receive ordinary reverse-lexicographic orders and are
+placed in decreasing order of their monomial types. A block comparison proves
+compatibility with finite regrouping without assuming Jacobsthal
+associativity. The construction is a componentwise linear extension and is
+maximal among orders subject to its within-cell constraints.
+
+For arbitrary nonzero factors, ordinary and Jacobsthal partial products have
+the same Cantor exponents and the same leading monomial. A uniform bound
+$O_\xi\leq J_\xi<O_\xi\cdot2$ implies equality at every limit with cofinally
+many nonunit factors. Removing units leaves an active index of the form
+$\lambda+n$, where $\lambda$ is zero or a limit and $n$ is finite. The entire
+product is an ordinary finite-support prefix followed by a single finite
+pivot product. We also obtain an exact three-state test for equality with the
+ordinary product and an order-theoretic proof of the binary natural-product
+upper bound. Exact computational checks accompany, but do not replace, the
+proofs.
+\end{abstract}
+\vspace{0.12in}
+\noindent\textbf{Status.} This is an unrefereed, AI-assisted research
+manuscript, not a priority certification or a proof-assistant formalization.
+The proposed answer uses a precise CNF-based meaning of ``all at once.''
+The scope of the claim and the limitations of the literature search are
+stated explicitly in Sections~\ref{sec:problem} and~\ref{sec:scope}.
+\end{minipage}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The selected problem and the proposed answer}\label{sec:problem}
+
+\subsection{A published question, rather than a newly invented conjecture}
+
+The selected problem is Question~2.16 in Harry Altman's
+\emph{Intermediate arithmetic operations on ordinal numbers}
+\cite{altman}. In the notation of this manuscript, it asks for an
+order-theoretic meaning of $a\J b\J c$ that does not first choose parentheses,
+and an interpretation of a transfinitely indexed Jacobsthal product other
+than its recursive limit definition. The operation $\J$ is Altman's
+$\times$; we reserve ordinary juxtaposition for ordinary ordinal
+multiplication.
+
+The associativity identity itself is not an open problem. It is a classical
+result of Jacobsthal, reproduced in Altman's Theorem~2.13. Nor is the binary
+Cantor-normal-form formula new. The objective here is to construct the
+underlying ordered objects directly and explain how the already known
+arithmetic emerges from them.
+
+There is relevant prior work on infinitary natural sums and products.
+Lipparini's work on transfinite natural sums provides related
+order-theoretic descriptions \cite{lip-sums}; his countable natural-product
+construction combines finite natural-product behavior with ordinary
+finite-support products \cite{lip-product}. The ordinary finite-support
+model used below is standard, not a new construction. A recent general
+framework for noncommutative infinitary operations appears in
+\cite{lip-semigroup}. Our proposed construction concerns Jacobsthal
+multiplication specifically.
+
+A targeted literature search on 20 September 2026 located the published
+question and these related works, but did not locate a subsequent solution
+to Question~2.16. This is a statement about the search, not a proof of
+worldwide novelty. The mathematical arguments below can be assessed
+independently of that unresolved bibliographic question.
+
+\subsection{What ``all at once'' means here}
+
+We impose the following concrete requirements. The object must be defined
+on tuples, or on finite-support functions when the index is transfinite.
+Its comparison rule must use only the input well-orders and explicitly
+specified ordinary order constructions. Neither a parenthesized
+Jacobsthal product nor the supremum of its partial values may occur in the
+definition of that comparison rule. We also require invariance under order
+isomorphisms of the inputs and extension of the componentwise partial
+order.
+
+These requirements permit the canonical Cantor decomposition of each input
+well-order. They do not require the comparison rule to be preserved by
+arbitrary order embeddings. They also do not require the usual flattening
+bijection between nested tuples to be the associativity isomorphism. These
+distinctions are substantive, not merely terminological.
+
+\subsection{The shape of the answer}
+
+For a finite list, we construct a well-order
+$\FF(A_1,\ldots,A_r)$ on $A_1\times\cdots\times A_r$.
+Write $F(a_1,\ldots,a_r)$ for its order type. Its definition, given in
+Section~\ref{sec:finite}, is a single rule for all finite arities.
+Section~\ref{sec:grouping} proves
+\begin{equation}\label{eq:intro-group}
+ \FF(U\concat V)\cong \FF\bigl(\FF(U),\FF(V)\bigr),
+\end{equation}
+where $U,V$ are finite lists of well-orders. This proof compares monomial
+cells and does not assume associativity of $\J$.
+
+For a sequence $(a_i)_{i<\kappa}$ of nonzero ordinals, remove all factors
+$1$ and let the remaining, or \emph{active}, index have order type
+$\tau=\lambda+n$, with $\lambda=0$ or $\lambda$ a nonzero limit ordinal,
+and $n<\omega$. Denote the reindexed active factors by $(b_\eta)_{\eta<\tau}$.
+The main reduction is
+\begin{equation}\label{eq:intro-reduction}
+ \boxed{\quad
+ J((a_i)_{i<\kappa})
+   =p\,F(b_\lambda,\ldots,b_{\lambda+n-1}),\qquad
+ p=\prod_{\eta<\lambda}b_\eta .\quad}
+\end{equation}
+Here the product defining $p$ is \emph{ordinary}; $p=1$ when $\lambda=0$.
+When $\lambda>0$, $p$ is a pure power of $\omega$.
+The right side is realized by a direct order on finite-support functions:
+compare the finite terminal tuples using $\FF$; when they agree, compare
+the prefix functions by their largest differing coordinate. Thus the
+\emph{definition of the final ordered set} contains no limit of Jacobsthal
+products.
+
+Two further results make the reduction checkable and useful. At every
+partial stage ordinary and Jacobsthal products have identical CNF exponent
+supports and identical leading monomials. Moreover, equality of the two
+full products is decided by a three-state computation on the finite active
+suffix alone. Both statements are proved below for arbitrary ordinals,
+not merely for the computable ordinals used in the tests.
+
+\section{Conventions and the binary arithmetic}\label{sec:background}
+
+\subsection{Cantor blocks, tails, and three multiplications}
+
+For a nonzero ordinal $a$, write
+\begin{equation}\label{eq:cnf}
+ a=\omega^{\rho_1}c_1+\cdots+\omega^{\rho_s}c_s,
+ \qquad \rho_1>\cdots>\rho_s,\qquad 0<c_i<\omega.
+\end{equation}
+Its degree is $d(a)=\rho_1$, its leading monomial is
+$\lead(a)=\omega^{\rho_1}c_1$, and its CNF exponent support is
+$\supp_{\CNF}(a)=\{\rho_1,\ldots,\rho_s\}$.
+A \emph{monomial} has one distinct exponent, with any positive finite
+coefficient. A \emph{pure power} has the more restrictive form $\omega^\rho$.
+In particular, every positive finite ordinal is a monomial, but only $1$
+is a finite pure power.
+
+There is a unique decomposition
+\begin{equation}\label{eq:tail}
+ a=a^++t(a),\qquad t(a)<\omega,
+\end{equation}
+where $a^+$ is zero or a nonzero limit ordinal. The number $t(a)$ is the
+coefficient of exponent $0$, or zero if that exponent is absent.
+For a well-order $A$ of type $a$, let $T_A$ be its final finite interval of
+length $t(a)$.
+
+Expand every coefficient in \eqref{eq:cnf} into repeated unit blocks:
+\begin{equation}\label{eq:unit-cnf}
+ a=\omega^{\sigma_1}+\cdots+\omega^{\sigma_m},
+ \qquad \sigma_1\geq\cdots\geq\sigma_m.
+\end{equation}
+Transporting the corresponding intervals along the unique isomorphism
+$A\cong a$ gives canonical convex blocks $B_{A,q}$ of type
+$\omega^{\sigma_q}$. Blocks of exponent $0$ are singletons and together
+form $T_A$. No choice of a noncanonical presentation is involved.
+
+Natural sum $\oplus$ adds CNF coefficients at equal exponents. Natural
+product $\otimes$ multiplies the resulting formal polynomials, using
+natural addition for the exponents. In particular,
+\begin{equation}\label{eq:finite-natural}
+ a\otimes n=\sum_{j=1}^{s}\omega^{\rho_j}(c_jn)
+ \quad(n<\omega),
+\end{equation}
+with zero terms omitted. In contrast, for $n>0$,
+\begin{equation}\label{eq:finite-ordinary}
+ an=\omega^{\rho_1}(c_1n)+\omega^{\rho_2}c_2+\cdots+
+      \omega^{\rho_s}c_s.
+\end{equation}
+Thus ordinary multiplication by a positive finite integer changes only
+the leading coefficient, whereas natural multiplication changes them all.
+
+Jacobsthal multiplication is defined by
+\begin{equation}\label{eq:J-def}
+ a\J0=0,\qquad a\J(\beta+1)=(a\J\beta)\oplus a,
+ \qquad a\J\lambda=\sup_{\beta<\lambda}(a\J\beta)
+\end{equation}
+at nonzero limit $\lambda$. We use these equations only to identify our
+constructed objects with the standard operation.
+
+\subsection{Ordinary absorption and a self-contained binary calculation}
+
+\begin{lemma}\label{lem:ordinary}
+Let $a>0$, $d=d(a)$, and $\sigma>0$. Then
+\begin{equation}\label{eq:absorb}
+ a\omega^\sigma=\omega^{d+\sigma}.
+\end{equation}
+For $b=b^++t$ as in \eqref{eq:tail},
+\begin{equation}\label{eq:ordinary-binary}
+ ab=\omega^d b^++at.
+\end{equation}
+Consequently $d(ab)=d(a)+d(b)$ when $a,b>0$.
+\end{lemma}
+
+\begin{proof}
+The equality $a\omega=\omega^{d+1}$ follows by taking the supremum of the
+finite multiples in \eqref{eq:finite-ordinary}. Induction on positive
+$\sigma$, using ordinary associativity at successors and continuity at
+limits, gives \eqref{eq:absorb}. Expanding $b^+$ into its positive-exponent
+CNF terms and using left distributivity of ordinary multiplication gives
+\eqref{eq:ordinary-binary}. Its highest exponent is $d(a)+d(b)$ when
+$b$ is infinite. When $b$ is finite and positive, the highest exponent
+remains $d(a)=d(a)+0$.
+\end{proof}
+
+\begin{proposition}[Classical Jacobsthal formula]\label{prop:binary}
+For $a>0$, $d=d(a)$, and $b=b^++t$, one has
+\begin{equation}\label{eq:J-binary}
+ \boxed{a\J b=\omega^d b^++(a\otimes t).}
+\end{equation}
+This is the formula in Jacobsthal's theorem, restated in
+\cite[Theorem~2.10]{altman}. The proof below is included to isolate precisely
+the arithmetic input needed later.
+\end{proposition}
+
+\begin{proof}
+Let $H(b)$ denote the right side of \eqref{eq:J-binary}. Plainly $H(0)=0$.
+All exponents in $\omega^d b^+$ are strictly greater than $d$. Therefore
+adding $a$ naturally changes only the finite-tail contribution, and
+\[
+ H(b)\oplus a=\omega^d b^++(a\otimes(t+1))=H(b+1).
+\]
+Now let $\lambda$ be a nonzero limit. Equations
+\eqref{eq:finite-natural}--\eqref{eq:ordinary-binary} imply $ab\leq H(b)$.
+For $b<\lambda$, every exponent in $a\otimes t(b)$ is at most $d$, so
+\[
+ H(b)<\omega^d b^++\omega^{d+1}
+      =\omega^d(b^++\omega)\leq\omega^d\lambda.
+\]
+The last inequality uses $b^++\omega\leq\lambda$, since $\lambda$ is a
+limit larger than $b$. On the other hand, ordinary continuity gives
+\[
+ \sup_{b<\lambda}ab=a\lambda=\omega^d\lambda.
+\]
+Hence $\sup_{b<\lambda}H(b)=\omega^d\lambda=H(\lambda)$. The defining
+recursion \eqref{eq:J-def} proves the assertion.
+\end{proof}
+
+\begin{corollary}\label{cor:binary-equality}
+For nonzero $a,b$,
+\begin{equation}\label{eq:binary-equality}
+ a\J b=ab
+ \quad\Longleftrightarrow\quad
+ t(b)\leq1\ \text{or $a$ is a monomial}.
+\end{equation}
+In particular, $a\J\omega^\sigma=a\omega^\sigma$ for $\sigma>0$,
+and $\omega^\delta\J b=\omega^\delta b$ for every $b$.
+\end{corollary}
+
+\begin{proof}
+The positive-exponent contributions in \eqref{eq:ordinary-binary} and
+\eqref{eq:J-binary} coincide and lie above all exponents in the remaining
+terms. The two remaining terms agree when $t=0$ or $1$. For $t\geq2$,
+comparison of \eqref{eq:finite-natural} and \eqref{eq:finite-ordinary}
+shows that they agree exactly when there are no lower CNF terms of $a$.
+\end{proof}
+
+\begin{remark}
+Ordinary addition in exponents is essential. It is strictly increasing
+in its right argument but need not be strictly increasing in its left
+argument. We repeatedly use $\delta+\sigma>\delta$ for $\sigma>0$.
+We never replace the ordinary prefix-degree sums below by natural sums.
+All statements here make sense beyond $\ep$, even when an ordinal appears
+as its own leading exponent. Only the testing implementation is restricted
+to hereditary CNF expressions below $\ep$.
+\end{remark}
+
+\section{The finite pivot construction}\label{sec:finite}
+
+\subsection{A partition of the Cartesian product}
+
+Let $A_1,\ldots,A_r$ be nonempty well-orders with types
+$a_1,\ldots,a_r$, where $r\geq1$. Write $B_{j,q}$ for the unit CNF blocks
+of $A_j$, with exponents $\sigma_{j,q}$, and put $T_j=T_{A_j}$.
+Set
+\begin{equation}\label{eq:prefix-degree}
+ D_0=0,\qquad D_j=d(a_1)+\cdots+d(a_j).
+\end{equation}
+These are ordinary finite sums.
+
+\begin{definition}[Pivot and cell]\label{def:pivot}
+For a tuple $x=(x_1,\ldots,x_r)$, its pivot is the largest index
+$j\in\{2,\ldots,r\}$ for which $x_j\notin T_j$, if such an index exists;
+otherwise its pivot is $1$.
+
+A cell with pivot $j\geq2$ has the form
+\begin{equation}\label{eq:cell}
+ C(j,q;u_{j+1},\ldots,u_r)
+ =A_1\times\cdots\times A_{j-1}\times B_{j,q}
+      \times\{u_{j+1}\}\times\cdots\times\{u_r\},
+\end{equation}
+where $\sigma_{j,q}>0$ and $u_i\in T_i$. With pivot $1$, the same formula
+means $B_{1,q}\times\{u_2\}\times\cdots\times\{u_r\}$, and all blocks
+of $A_1$, including exponent-zero blocks, are allowed.
+\end{definition}
+
+The cells are disjoint and cover the product. Indeed, the pivot is unique,
+its block is unique, and every later coordinate is necessarily in its
+finite tail. There are finitely many cells: each factor has finitely many
+unit blocks and each $T_i$ is finite. Some possible pivot indices contribute
+no cells because a required later tail is empty.
+
+Within a cell use ordinary \emph{colexicographic} order: compare the first
+$j$ coordinates at the largest coordinate where they differ. This is the
+usual order model of an ordinary ordinal product. Define the exponent of
+the cell by
+\begin{equation}\label{eq:cell-exponent}
+ e(C)=D_{j-1}+\sigma_{j,q}.
+\end{equation}
+For $j=1$ this is simply $\sigma_{1,q}$.
+
+\begin{lemma}\label{lem:cell-type}
+Every cell, with its colexicographic order, has type $\omega^{e(C)}$.
+\end{lemma}
+
+\begin{proof}
+For $j=1$ this is the definition of a unit block. For $j\geq2$, the ordinary
+product of the first $j-1$ factors has degree $D_{j-1}$ by
+Lemma~\ref{lem:ordinary}. Its product with $\omega^{\sigma_{j,q}}$ is
+$\omega^{D_{j-1}+\sigma_{j,q}}$, because the pivot exponent is positive.
+The fixed later coordinates do not affect the order type.
+\end{proof}
+
+\begin{lemma}[Separation of pivot layers]\label{lem:pivot-separation}
+If cells $C$ and $C'$ have pivots $j<k$, then $e(C)<e(C')$.
+For cells with the same pivot, comparison of their exponents $e(C)$ is
+exactly comparison of their input block exponents $\sigma_{j,q}$.
+\end{lemma}
+
+\begin{proof}
+For the first assertion,
+\[
+ e(C)\leq D_j\leq D_{k-1}<D_{k-1}+\sigma_{k,q'}=e(C'),
+\]
+because $k\geq2$ and its pivot block has positive exponent. The second
+assertion is strict monotonicity of addition by a fixed ordinal on the
+left. In particular, cell exponents from different pivot layers never
+collide, even when ordinary exponent addition absorbs a prefix.
+\end{proof}
+
+\subsection{The comparison rule}
+
+\begin{definition}[Finite all-at-once order]\label{def:F}
+Order the cells first by \emph{decreasing pivot index} $j$, then by
+\emph{decreasing input block exponent} $\sigma_{j,q}$. For ties, order
+by the colexicographic order of the finite tuple
+$(u_{j+1},\ldots,u_r)$, then by increasing block index $q$.
+Inside each cell retain its colexicographic order. Denote the concatenation
+by $\FF(A_1,\ldots,A_r)$ and its type by $F(a_1,\ldots,a_r)$.
+
+For the empty list put $\FF(\emptyword)=\one$, a singleton. If a factor is
+empty, put $\FF(A_1,\ldots,A_r)=\varnothing$.
+\end{definition}
+
+The order is a well-order because it is a finite concatenation of
+well-orders. By Lemma~\ref{lem:pivot-separation}, it also lists the cells
+in decreasing order of their monomial exponents $e(C)$. The tie rule is
+deterministic; different reasonable tie rules among equal monomial types
+need not give the same pointwise order, but give the same order type.
+The chosen rule agrees with ordinary colex when all factors are finite.
+For a single factor it gives its original well-order.
+
+Most importantly, Definition~\ref{def:F} never evaluates a Jacobsthal
+product. It uses canonical convex blocks, finite tags, and ordinary
+colexicographic comparison. The prefix-degree sums $D_j$ are needed
+only to \emph{prove the resulting order type}, not to compare tuples.
+Thus the comparison rule is even more elementary than a rule that first
+computes all the monomial types, and is not a recursive definition
+disguised as an $r$-ary notation.
+
+\begin{theorem}[Componentwise extension]\label{thm:extension}
+The order $\FF(A_1,\ldots,A_r)$ extends the componentwise partial order on
+$A_1\times\cdots\times A_r$.
+\end{theorem}
+
+\begin{proof}
+Suppose $x_i\leq y_i$ for every $i$, and let $j_x,j_y$ be the pivots.
+A coordinate in a final finite interval cannot leave that interval by
+increasing. Hence $j_y\leq j_x$.
+
+First suppose $j_y<j_x$. Since $j_x\geq2$, its pivot exponent is positive.
+The exponent of the cell of $y$ satisfies
+\[
+ e(C_y)\leq D_{j_y}\leq D_{j_x-1}
+          <D_{j_x-1}+\sigma_{j_x,q_x}=e(C_x).
+\]
+Here the first inequality also covers $j_y=1$. The cell of $x$ is therefore
+placed before that of $y$.
+
+Now suppose $j_x=j_y=j$. Increasing $x_j$ cannot decrease its block index,
+and so cannot increase its block exponent. Strict monotonicity of ordinary
+addition in the right argument gives $e(C_y)\leq e(C_x)$. A strict
+inequality again puts $x$ first. In the equality case the pivot exponents
+are equal. The later tail tuples are coordinatewise ordered, and hence are
+ordered in their colexicographic tie rule. If they agree, the block index
+of $x_j$ is no larger than that of $y_j$. Finally, if both tuples lie in
+the same cell, its internal colex order respects every coordinatewise
+comparison. These cases prove $x\leq_{\FF}y$.
+\end{proof}
+
+\subsection{The explicit all-arity formula}
+
+For $j\leq r$, write
+$T_{j,r}=\prod_{i=j}^{r}t(a_i)$, an ordinary finite integer product, and
+set $T_{r+1,r}=1$. Terms with coefficient zero are omitted.
+
+\begin{theorem}[Cell formula]\label{thm:formula}
+For nonzero $a_1,\ldots,a_r$,
+\begin{align}\label{eq:pivot-formula}
+ F(a_1,\ldots,a_r)
+ &=a_1\otimes T_{2,r}\notag\\
+ &\quad\oplus
+ \bigoplus_{j=2}^{r}
+ \ \bigoplus_{\substack{(\sigma,c)\in\CNF(a_j)\\\sigma>0}}
+      \omega^{D_{j-1}+\sigma}\bigl(cT_{j+1,r}\bigr).
+\end{align}
+All natural sums displayed here are finite.
+\end{theorem}
+
+\begin{proof}
+Every unit block of $a_1$ gives one pivot-$1$ cell for each choice of later
+tail coordinates, hence $T_{2,r}$ copies of its monomial. Every
+positive-exponent unit block of $a_j$ gives $T_{j+1,r}$ cells of degree
+$D_{j-1}+\sigma$. Lemma~\ref{lem:cell-type} identifies the types. Sorting
+the finitely many monomials in decreasing exponent produces their natural
+sum. Collecting repeated unit blocks yields \eqref{eq:pivot-formula}.
+\end{proof}
+
+\begin{corollary}[Binary identification]\label{cor:F-binary}
+For all ordinals $a,b$,
+\[
+ F(a,b)=a\J b.
+\]
+\end{corollary}
+
+\begin{proof}
+Zero factors are immediate. The positive blocks of $b$ contribute
+$\omega^{d(a)}b^+$. Their exponents are strictly greater than $d(a)$, so
+they precede every term of the contribution $a\otimes t(b)$. Therefore
+the cell formula is exactly \eqref{eq:J-binary}.
+\end{proof}
+
+\begin{lemma}[Degree and terminal cardinality]\label{lem:metadata}
+For a nonempty finite list of nonzero factors,
+\begin{equation}\label{eq:metadata}
+ d(F(a_1,\ldots,a_r))=D_r,
+ \qquad t(F(a_1,\ldots,a_r))=\prod_{i=1}^{r}t(a_i).
+\end{equation}
+The final finite interval of $\FF$ consists precisely of the tuples all
+of whose coordinates belong to their final finite intervals.
+\end{lemma}
+
+\begin{proof}
+If all factors are finite, the claims follow directly. Otherwise let $h$
+be the last index with $d(a_h)>0$. All later factors are positive finite
+ordinals, so a cell using the leading block at $h$ exists. Its exponent
+is $D_{h-1}+d(a_h)=D_r$. Every other cell has exponent at most $D_r$,
+which proves the degree assertion. This argument includes $h=1$.
+
+A pivot at $j\geq2$ always has positive exponent. Thus exponent-zero cells
+arise exactly from an exponent-zero block at index $1$ and choices in all
+later finite tails. They are singletons, and their number is the stated
+product. Every positive-exponent cell precedes them.
+\end{proof}
+
+\section{Regrouping and a restricted maximality principle}\label{sec:grouping}
+
+\subsection{Why associativity follows from the construction}
+
+\begin{theorem}[Finite concatenation]\label{thm:grouping}
+For finite lists $U,V$ of well-orders,
+\begin{equation}\label{eq:grouping}
+ \FF(U\concat V)\cong\FF\bigl(\FF(U),\FF(V)\bigr).
+\end{equation}
+The isomorphism is the unique order isomorphism between the two well-orders.
+The proof does not use Jacobsthal associativity.
+\end{theorem}
+
+\begin{proof}
+Empty factors give empty orders on both sides. An empty list gives a
+singleton, which is a unit for the binary construction by its definition
+or by \eqref{eq:J-binary}. We may therefore suppose both lists are
+nonempty and all factors are nonzero.
+
+Let $\delta_U$ be the ordinary sum of degrees in $U$. By
+Lemma~\ref{lem:metadata}, it is the degree of $\FF(U)$. The canonical
+unit CNF blocks of $\FF(V)$ are precisely its cells, listed in the order
+of their exponents and tags: each such cell has a pure monomial type.
+We compare the monomial cells obtained on the right with those on the
+left in two groups.
+
+A positive-exponent cell of $\FF(V)$ has some exponent $\eta>0$. In the
+outer binary construction, it contributes one cell of type
+$\omega^{\delta_U+\eta}$. If its pivot was the $j$th coordinate of $V$,
+then
+\[
+ \eta=D^{V}_{j-1}+\sigma_{j,q},
+ \qquad
+ \delta_U+\eta=(\delta_U+D^{V}_{j-1})+\sigma_{j,q}.
+\]
+The second expression is exactly the exponent of the corresponding global
+cell whose pivot is in $V$. Its later tail coordinates have not changed.
+When the local pivot is $1$, positivity means that its first block has
+positive exponent, as required for a global pivot beyond the first
+coordinate. Thus this correspondence preserves all multiplicities.
+
+Next consider the exponent-zero cells of $\FF(V)$. By
+Lemma~\ref{lem:metadata}, these are its terminal points, in bijection with
+tuples of terminal points of the factors in $V$. For each such point, the
+outer construction takes every unit block of $\FF(U)$. These are exactly
+the cells of $\FF(U)$, and their exponents remain unchanged. They match
+the global cells whose pivot is in $U$, with all $V$-coordinates terminal.
+
+We have matched the two finite multisets of pure monomial cell types.
+Each construction sorts this multiset in decreasing exponent. Consequently
+the ordered runs of equal exponents have the same finite lengths.
+Match the first block of each run on one side to the first block on the
+other, and so on. Inside matched blocks take the unique isomorphism of
+well-orders of type $\omega^\eta$. Their union is the required order
+isomorphism.
+\end{proof}
+
+\begin{corollary}\label{cor:finite-assoc}
+For every finite list, $F(a_1,\ldots,a_r)$ equals every parenthesized
+Jacobsthal product of its entries. In particular, $\J$ is associative.
+All coherence diagrams made from the order isomorphisms in
+Theorem~\ref{thm:grouping} commute.
+\end{corollary}
+
+\begin{proof}
+Use Corollary~\ref{cor:F-binary} at each binary vertex and
+Theorem~\ref{thm:grouping} to identify the result with the common
+all-arity object. A well-order has at most one order isomorphism to a
+given well-order, so two composites with the same endpoints coincide.
+\end{proof}
+
+\begin{remark}[The flattening bijection is not the associator]\label{rem:flatten}
+The assertion is an order isomorphism, not equality of comparison rules
+under naive tuple flattening. Take factors $\omega+1,2,\omega$. The
+direct three-factor construction has a single pivot-$3$ cell, ordered by
+ordinary colex. It places $(\omega,0,0)$ before $(0,1,0)$. In the nested
+order $\FF(\FF(\omega+1,2),\omega)$, the inner order places $(0,1)$
+before $(\omega,0)$, reversing that comparison. Both total orders have
+type $\omega^2$; their unique isomorphism is not the flattening identity.
+This is precisely why the block-isomorphism argument is needed.
+\end{remark}
+
+\subsection{A maximum without building the target value into the definition}
+
+The preceding definition selects an order. There is also an extremal
+characterization which removes the significance of its particular tie
+rule.
+
+\begin{lemma}[Finite interleaving bound]\label{lem:shuffle}
+Let a set be partitioned into finitely many well-orders $C_1,\ldots,C_m$
+of types $\alpha_1,\ldots,\alpha_m$. Every linear order on their union
+whose restrictions are the given cell orders is a well-order of type at
+most $\alpha_1\oplus\cdots\oplus\alpha_m$.
+\end{lemma}
+
+\begin{proof}
+For a point $z$ and a cell $C_i$, let $r_i(z)$ be the order type of the
+points of $C_i$ preceding $z$ in the proposed linear order. This is an
+initial segment of $C_i$, so $r_i(z)\leq\alpha_i$. If $z<z'$, all these
+ranks are nondecreasing, and the rank of the cell containing $z$ strictly
+increases: that cell counts $z$ before $z'$ but not before itself.
+Strict monotonicity of finite natural sum therefore makes
+\[
+ z\longmapsto r_1(z)\oplus\cdots\oplus r_m(z)
+\]
+strictly increasing. Its value is strictly below
+$\alpha_1\oplus\cdots\oplus\alpha_m$, because at $z$ the rank in its
+own cell is strictly smaller than the full cell type. Thus it embeds the
+linear order into the indicated ordinal, proving both assertions.
+\end{proof}
+
+\begin{theorem}[Pivot-cell maximality]\label{thm:maximality}
+Among linear extensions of the componentwise order on
+$A_1\times\cdots\times A_r$ whose restriction to every pivot cell is
+ordinary colexicographic order, $\FF(A_1,\ldots,A_r)$ has the largest
+possible order type.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:extension}, $\FF$ is an admissible order. Every
+admissible order is bounded by the finite natural sum of the cell types,
+by Lemma~\ref{lem:shuffle}. Since those types are pure powers, concatenating
+them in decreasing exponent attains that bound. This is exactly $\FF$.
+\end{proof}
+
+The constraints in this theorem refer only to the input CNF blocks and
+the ordinary orders inside explicitly described subsets. They do not
+refer to $\J$ or to the desired order type. The result is therefore more
+than the tautology that a computed ordinal can order a set of suitable
+cardinality. It remains a \emph{restricted} maximality theorem: if the
+within-cell restrictions are removed, the maximum is generally larger.
+
+\subsection{An order-theoretic comparison with natural multiplication}
+
+\begin{corollary}\label{cor:natural-upper}
+For every finite list,
+\[
+ F(a_1,\ldots,a_r)\leq a_1\otimes\cdots\otimes a_r.
+\]
+In particular, $a\J b\leq a\otimes b$ has an order-theoretic proof.
+\end{corollary}
+
+\begin{proof}
+Carruth's theorem identifies the natural product of finitely many
+ordinals as the maximum order type of a linear extension of their
+componentwise Cartesian product \cite{carruth}; see also the explicit
+statement in \cite[Section~3.3]{lip-product}. Our construction is one such
+extension, by Theorem~\ref{thm:extension}. Zero factors are immediate.
+\end{proof}
+
+The numerical inequality is already known. What this corollary supplies
+is the interpretation requested for the \emph{binary multiplication
+part} of Altman's Question~5.2 \cite{altman}. It is not a claimed solution
+to all the exponentiation and infinitary comparison questions grouped
+there.
+
+\section{Synchronization of ordinary and Jacobsthal products}\label{sec:sync}
+
+\subsection{The common-support invariant}
+
+Fix a sequence $(a_i)_{i<\kappa}$ of \emph{nonzero} ordinals. Define
+ordinary and Jacobsthal partial products by
+\begin{align}\label{eq:partial-products}
+ O_0=J_0&=1,\notag\\
+ O_{\xi+1}&=O_\xi a_\xi,&
+ J_{\xi+1}&=J_\xi\J a_\xi,
+\end{align}
+and at nonzero limits use the suprema of the preceding partial products.
+All factors are at least $1$, so both sequences are nondecreasing.
+The treatment of a zero factor is separated in
+Section~\ref{subsec:zero}; a supremum formula for nondecreasing products
+must not be used carelessly after multiplication by zero.
+
+\begin{lemma}[One-step synchronization]\label{lem:one-step}
+Suppose $x,y>0$ have the same CNF exponent support and leading monomial,
+and every CNF coefficient of $x$ is at most the corresponding coefficient
+of $y$. For every $b>0$, the pair $xb,y\J b$ has the same properties.
+If $t(b)=0$, then $xb=y\J b$.
+\end{lemma}
+
+\begin{proof}
+Let $d=d(x)=d(y)$ and $b=b^++t$. The two outputs are
+\[
+ \omega^d b^++xt,
+ \qquad
+ \omega^d b^++(y\otimes t).
+\]
+When $t=0$ they coincide. When $t>0$, the terms contributed by $b^+$
+are identical and have exponents strictly above $d$. In the remaining
+terms, $xt$ multiplies the common leading coefficient by $t$ and leaves
+all lower coefficients of $x$ unchanged. The ordinal $y\otimes t$
+multiplies every coefficient of $y$ by $t$. Thus the remaining exponent
+supports are identical and all coefficient inequalities are preserved.
+If $b^+\neq0$, the leading monomial comes from the identical upper part.
+If $b^+=0$, it comes from the identically scaled old leading monomial.
+\end{proof}
+
+\begin{lemma}[A uniform one-step-scale bound]\label{lem:factor-two}
+If $x,y>0$ have the same leading monomial and $x\leq y$, then
+\[
+ x\leq y<x\cdot2.
+\]
+\end{lemma}
+
+\begin{proof}
+Write their leading monomial as $\omega^d c$, with $c\geq1$ finite.
+Both ordinals are less than $\omega^d(c+1)$, while
+\[
+ \omega^d(c+1)\leq\omega^d(2c)\leq x\cdot2.
+\]
+The first of these inequalities also covers $d=0$. The result follows.
+\end{proof}
+
+\begin{theorem}[Synchronization at every ordinal stage]\label{thm:sync}
+For every $\xi\leq\kappa$,
+\begin{equation}\label{eq:support-sync}
+ \supp_{\CNF}(O_\xi)=\supp_{\CNF}(J_\xi),
+ \qquad \lead(O_\xi)=\lead(J_\xi).
+\end{equation}
+Every coefficient of $O_\xi$ is at most its corresponding coefficient in
+$J_\xi$, and consequently
+\begin{equation}\label{eq:uniform-bound}
+ \boxed{O_\xi\leq J_\xi<O_\xi\cdot2.}
+\end{equation}
+If $\lambda\leq\kappa$ is a nonzero limit and
+$\{i<\lambda:a_i>1\}$ is cofinal in $\lambda$, then
+\begin{equation}\label{eq:limit-equality}
+ O_\lambda=J_\lambda.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We prove all the assertions simultaneously by transfinite induction.
+They hold at stage $0$. The successor step follows from
+Lemma~\ref{lem:one-step}; coefficient domination implies ordinal domination,
+and Lemma~\ref{lem:factor-two} gives the strict upper bound.
+
+Let $\lambda$ be a nonzero limit. If the indices $i<\lambda$ with $a_i>1$
+are bounded, choose a stage below $\lambda$ after all of them. Every later
+factor is $1$, so both product sequences are constant from that stage
+onward. Their limit values retain all the inductive properties.
+
+Otherwise those indices are cofinal. For each $\xi<\lambda$, choose
+$i$ with $\xi\leq i<\lambda$ and $a_i>1$. Since $\lambda$ is a limit,
+$i+1<\lambda$. The inductive bound and monotonicity give
+\begin{equation}\label{eq:catch-up}
+ J_\xi<O_\xi\cdot2\leq O_i\cdot2
+         \leq O_i a_i=O_{i+1}\leq O_\lambda.
+\end{equation}
+Taking the supremum over $\xi$ yields $J_\lambda\leq O_\lambda$.
+The reverse inequality follows from $O_\xi\leq J_\xi$ at earlier stages.
+Hence the limit values agree. Their supports, leading monomials, and
+coefficients therefore agree as well; the strict factor-two bound is
+immediate for a positive ordinal compared with itself. This completes
+the induction.
+\end{proof}
+
+Leading-monomial estimates also play a role in the natural-product
+analysis in \cite[Lemmas~2.4--2.5]{lip-product}. Here the invariant
+compares \emph{ordinary and Jacobsthal} partial products at arbitrary
+ordinal stages.
+
+The critical point is \eqref{eq:catch-up}. It does not presume that natural
+sum or Jacobsthal multiplication is continuous in an inappropriate
+argument. A later nonunit ordinary factor overtakes any current
+Jacobsthal value, because the discrepancy never reaches the next doubling
+of the leading scale.
+
+\subsection{Why the cofinally active limit is a pure power}
+
+\begin{proposition}\label{prop:pure-limit}
+Under the cofinality hypothesis of \eqref{eq:limit-equality}, the common
+value $p=O_\lambda=J_\lambda$ has the form $\omega^\delta$ with $\delta>0$.
+\end{proposition}
+
+\begin{proof}
+Every partial product is strictly below $p$. Indeed, after any stage
+there is a nonunit factor, which makes a subsequent ordinary partial
+product strictly larger. Given $u,v<p$, select $\xi<\lambda$ with
+$u,v<O_\xi$. Choose a later nonunit factor as in the preceding proof.
+Then
+\[
+ u+v<O_\xi\cdot2\leq O_{i+1}<p.
+\]
+Thus $p$ is additively indecomposable. For completeness, the CNF criterion
+for a positive ordinal to have this property is that it be a pure power
+of $\omega$: if its leading coefficient is at least two, or if it has a
+nonzero lower tail, one can split off a leading monomial to express it
+as the sum of two smaller ordinals. Conversely, ordinals below a pure
+power have sum below that power, by ordinary CNF addition.
+
+Cofinitely many stages are not needed, but cofinally many nonunit stages
+ensure that the value exceeds every finite integer: choose arbitrarily
+many such stages and compare with the corresponding product of $2$'s.
+Hence $p\geq\omega$, giving $\delta>0$.
+\end{proof}
+
+\begin{example}[A limit index by itself is insufficient]\label{ex:units}
+Let $a_0=\omega+1$, $a_1=2$, and $a_i=1$ for $2\leq i<\omega$.
+Then
+\[
+ O_\omega=\omega\cdot2+1,
+ \qquad J_\omega=\omega\cdot2+2.
+\]
+Both sequences stabilize after the second factor. The ambient index is
+a limit, but the active index is the finite ordinal $2$.
+\end{example}
+
+\begin{remark}
+Finite degree sums do not directly extend to all transfinite stages.
+For example, every factor in the constant sequence $2,2,\ldots$ has degree
+zero, but its ordinary and Jacobsthal products at $\omega$ are both
+$\omega$, of degree one. The colexicographic prefix construction avoids
+any need for a false transfinite extension of \eqref{eq:metadata}.
+\end{remark}
+
+\section{Removing units and isolating the finite active tail}\label{sec:active}
+
+\subsection{The active index}
+
+\begin{definition}
+For a nonzero sequence $(a_i)_{i<\kappa}$ let
+\[
+ S=\{i<\kappa:a_i>1\}.
+\]
+Give $S$ its inherited well-order, write $\tau=\otp(S)$, and let
+$e:\tau\to S$ be its increasing enumeration. Put $b_\eta=a_{e(\eta)}$.
+Write uniquely
+\begin{equation}\label{eq:active-tail}
+ \tau=\lambda+n,\qquad n<\omega,
+\end{equation}
+where $\lambda$ is zero or a nonzero limit. The factors indexed by
+$\lambda,\ldots,\lambda+n-1$ form the \emph{finite active suffix}.
+\end{definition}
+
+The decomposition \eqref{eq:active-tail} is simply the removal of the
+finite terminal part of the ordinal $\tau$. It is not the assertion
+that all but finitely many original factors equal $1$. There may be
+arbitrarily many nonunit factors in the initial part $\lambda$.
+
+\begin{lemma}[Unit erasure]\label{lem:unit-erasure}
+Deleting all factors equal to $1$ does not change either the ordinary
+or the Jacobsthal product.
+\end{lemma}
+
+\begin{proof}
+For $\xi\leq\kappa$, let $s(\xi)=\otp(S\cap\xi)$. Compare the original
+partial product at $\xi$ with the active partial product at $s(\xi)$.
+Induction on $\xi$ proves equality for each of the two operations.
+At a successor, either the new factor is $1$ and neither active count
+nor value changes, or the new active factor is appended on both sides.
+At a limit, if the active indices below it are bounded, the values
+stabilize after the last relevant initial segment. Otherwise their
+counts are cofinal in the limit active count, and the two suprema are
+taken over cofinal copies of the same nondecreasing sequence. This
+includes the possibility of infinitely many active indices in a bounded
+initial segment; after that segment the value is simply constant.
+\end{proof}
+
+\begin{theorem}[Finite-tail reduction]\label{thm:tail-reduction}
+With the above notation, let
+\[
+ p=\prod_{\eta<\lambda}b_\eta
+\]
+be the ordinary product, with $p=1$ when $\lambda=0$. Then
+\begin{align}\label{eq:tail-reduction}
+ J((a_i)_{i<\kappa})
+    &=p\,F(b_\lambda,\ldots,b_{\lambda+n-1}),\notag\\
+ O((a_i)_{i<\kappa})
+    &=p\,(b_\lambda\cdots b_{\lambda+n-1}).
+\end{align}
+When $\lambda>0$, $p=\omega^\delta$ for some $\delta>0$. Empty suffixes
+have value $1$.
+\end{theorem}
+
+\begin{proof}
+First erase units. If $\lambda=0$, the first identity is the finite
+identification in Corollary~\ref{cor:finite-assoc}; the second is the
+definition of a finite ordinary product.
+
+Suppose $\lambda>0$. Every active factor is greater than $1$, so
+Theorem~\ref{thm:sync} and Proposition~\ref{prop:pure-limit} give
+$J_\lambda=O_\lambda=p=\omega^\delta$. Only $n$ successor stages remain.
+Finite associativity, already proved from the cell construction, yields
+\[
+ J_{\lambda+n}
+   =p\J F(b_\lambda,\ldots,b_{\lambda+n-1})
+   =p\,F(b_\lambda,\ldots,b_{\lambda+n-1}).
+\]
+The last equality follows from Corollary~\ref{cor:binary-equality}, because
+$p$ is a monomial. Ordinary associativity gives the second identity.
+\end{proof}
+
+\begin{corollary}\label{cor:equality-tail}
+The full ordinary and Jacobsthal products are equal if and only if their
+finite active suffixes have equal ordinary and Jacobsthal products.
+\end{corollary}
+
+\begin{proof}
+Left multiplication by a fixed nonzero ordinal is strictly increasing
+in the right operand. The common nonzero factor $p$ in
+\eqref{eq:tail-reduction} can therefore be cancelled for equality.
+\end{proof}
+
+The reduction is stronger than a numerical estimate: all possible
+Jacobsthal-specific behavior can be moved into one finite product at the
+end of the active ordering. The prefix need not be small, countable, or
+computably presented.
+
+\section{A direct model for every ordinal-indexed product}\label{sec:transfinite}
+
+\subsection{The ordinary finite-support prefix}
+
+Let $(A_i)_{i<\theta}$ be nonempty well-orders, each with its least element
+denoted $0_i$. Define
+\begin{equation}\label{eq:fs-set}
+ \fs((A_i)_{i<\theta})
+ =\left\{f\in\prod_{i<\theta}A_i:
+        \{i:f(i)\ne0_i\}\text{ is finite}\right\}.
+\end{equation}
+For distinct $f,g$, their finite union of supports contains a largest
+coordinate at which they differ. Put $f<_{\CC}g$ when $f(i)<g(i)$ at
+that coordinate. Write $\CC((A_i)_{i<\theta})$ for this ordered set.
+The comparison rule is defined simultaneously on the full set
+\eqref{eq:fs-set}.
+
+\begin{lemma}[Standard finite-support model]\label{lem:ordinary-model}
+The order $\CC((A_i)_{i<\theta})$ is a well-order extending the
+componentwise partial order. Its type is the ordinary ordinal product
+$\prod_{i<\theta}\otp(A_i)$.
+\end{lemma}
+
+\begin{proof}
+The componentwise assertion follows immediately from the largest-difference
+rule. For the type and well-order assertions, induct on $\theta$.
+At zero the set is a singleton. At a successor, it is the ordinary colex
+product of the previous finite-support order and the last factor, so its
+type is multiplied on the right by that factor's type.
+
+At a limit, every finite support is contained in some proper initial
+segment of the index. The orders on these initial segments, extended by
+zero on later coordinates, form an increasing family of \emph{initial
+suborders}: any function with a nonzero later coordinate is larger than
+all functions supported in the earlier segment. Their union is therefore
+a well-order of type the supremum of their types. This proves the
+recursion for the ordinary product. It is a proof of the direct model,
+not its definition.
+\end{proof}
+
+This construction is recalled, with references to earlier sources, in
+\cite[Section~3.2]{lip-product}. Finite support is essential. For example,
+the full Cartesian product of countably many copies of $2$ has uncountable
+cardinality, whereas the ordinary product $2^\omega$ is $\omega$.
+
+\subsection{The final comparison rule}
+
+Return to the original nonzero factors and their active enumeration.
+Use the corresponding well-orders $B_\eta$ for $b_\eta$. Define
+\[
+ \BB=\CC((B_\eta)_{\eta<\lambda}),\qquad
+ \mathfrak T=\FF(B_\lambda,\ldots,B_{\lambda+n-1}).
+\]
+When a list or prefix is empty, the associated order is a singleton.
+
+\begin{definition}[The transfinite all-at-once order]\label{def:L}
+On
+$\fs((B_\eta)_{\eta<\tau})$, split a function into its prefix $f^-$
+on $\lambda$ and its finite terminal tuple $f^+$. Put
+\begin{equation}\label{eq:L-rule}
+ f<_{\LL}g\quad\Longleftrightarrow\quad
+ \bigl(f^+<_{\mathfrak T}g^+\bigr)
+ \ \text{or}\
+ \bigl(f^+=g^+\ \text{and}\ f^-<_{\BB}g^-\bigr).
+\end{equation}
+Restore the original unit coordinates, each of which has only its least
+point, to regard this as an order on
+$\fs((A_i)_{i<\kappa})$. Denote it by $\LL((A_i)_{i<\kappa})$.
+\end{definition}
+
+This is simply the ordinary colex product $\colex(\BB,\mathfrak T)$,
+with the terminal tuple the more significant coordinate. No ordinal
+value $J_\xi$, no iteration of $\J$, and no supremum occurs in the
+comparison rule. Even the order type of $\BB$ need not be calculated to
+compare two given prefix functions.
+
+\begin{theorem}[All-at-once representation]\label{thm:transfinite}
+For every set-sized ordinal-indexed family of nonempty well-orders,
+$\LL$ is a well-order extending the componentwise order, and
+\begin{equation}\label{eq:L-type}
+ \otp\bigl(\LL((A_i)_{i<\kappa})\bigr)
+     =J((\otp(A_i))_{i<\kappa}).
+\end{equation}
+The construction is invariant under order isomorphisms of the index
+and of all factors.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:ordinary-model}, $\BB$ is a well-order of type $p$.
+The finite order $\mathfrak T$ has type
+$F(b_\lambda,\ldots,b_{\lambda+n-1})$. Their ordinary colex product is a
+well-order of the product of these types. Theorem~\ref{thm:tail-reduction}
+identifies this type with the desired Jacobsthal product.
+
+If $f\leq g$ componentwise, their suffixes are componentwise ordered.
+If the suffixes differ, Theorem~\ref{thm:extension} compares them in the
+required direction. If they agree, Lemma~\ref{lem:ordinary-model} compares
+the prefixes in that direction. Thus \eqref{eq:L-rule} extends the full
+componentwise order. Restoring unit coordinates is a bijection preserving
+that partial order.
+
+Every operation in the definition is preserved by isomorphisms: the
+active index, its finite terminal part, the canonical CNF blocks, their
+exponents, the least points, finite support, and largest-coordinate
+comparison. This proves invariance.
+\end{proof}
+
+\begin{corollary}[Finite-cell maximality in the transfinite case]
+If the active suffix is nonempty, partition its tuple set into its finite
+pivot cells $C$. Partition the full finite-support set into the
+corresponding subsets $\BB\times C$, ordered internally by ordinary
+colex. Among componentwise linear extensions having these specified
+within-cell orders, $\LL$ has the largest order type. If the suffix is
+empty, its one prescribed cell is the ordinary prefix order itself.
+\end{corollary}
+
+\begin{proof}
+The type of $\BB$ is a pure power $\omega^\delta$, allowing $\delta=0$
+when the prefix is empty. A suffix cell of type $\omega^e$ gives a full
+cell of type $\omega^{\delta+e}$. Since $e\mapsto\delta+e$ is strictly
+increasing, the decreasing-exponent order of the suffix cells also sorts
+the full cells correctly. The same finite interleaving bound
+(Lemma~\ref{lem:shuffle}) proves maximality.
+\end{proof}
+
+\subsection{Zero factors and the empty product}\label{subsec:zero}
+
+The empty product is a singleton of type $1$. If some factor is empty,
+the corresponding Cartesian set of finite-support functions is empty,
+and we define $\LL$ to be empty, of type $0$. On the arithmetic side use
+the usual absorbing-zero convention: any product with a zero factor is
+zero. This agrees with successor multiplication and with the eventual
+limit value after the zero has occurred.
+
+One must not replace this convention by the supremum of \emph{all}
+earlier partial products after a drop to zero. For instance, a sequence
+beginning with a positive factor and then a zero has eventual value zero,
+although the supremum of its entire earlier history is positive. All
+supremum arguments in this manuscript were explicitly restricted to
+nonzero factors, where the partial products are nondecreasing.
+
+\subsection{What has, and has not, been made nonrecursive}
+
+Definitions~\ref{def:F} and~\ref{def:L} are nonrecursive with respect to
+Jacobsthal arithmetic. Their proofs of correctness use finite and
+transfinite induction, just as the correctness proof for the ordinary
+finite-support construction does. That is not a limit \emph{definition}
+of the ordered set.
+
+The finite regrouping theorem supplies a direct common-object proof of
+ordinary binary associativity for $\J$. The transfinite model supplies a
+single ordered set for every arity. It also inherits the known numerical
+generalized associativity law once its type has been identified. We do
+not assert that flattening an arbitrarily nested family is automatically
+an order-preserving map, or give a separate pointwise formula for all
+such transfinite regrouping isomorphisms.
+
+\section{An exact three-state equality test}\label{sec:automaton}
+
+\subsection{States and transitions}
+
+At a nonzero partial stage compare the ordinary and Jacobsthal values.
+Synchronization leaves only three relevant possibilities:
+\[
+ \mathsf M:\ \text{equal and monomial},\qquad
+ \mathsf E:\ \text{equal and nonmonomial},\qquad
+ \mathsf D:\ \text{different}.
+\]
+In state $\mathsf D$ neither value can be a monomial, because their
+supports and leading coefficients agree. Let $q(b)$ be the number of
+\emph{distinct positive exponents} in the CNF of a nonzero factor $b$,
+and let $t=t(b)$.
+
+\begin{theorem}[Transition table]\label{thm:automaton}
+Starting from state $\mathsf M$ at the empty product, a finite list of
+nonzero factors is classified exactly by Table~\ref{tab:states}.
+For an arbitrary ordinal-indexed nonzero list, start from $\mathsf M$
+and read only the finite active suffix. The full ordinary and Jacobsthal
+products agree exactly when the final state is not $\mathsf D$.
+\end{theorem}
+
+\begin{table}[htbp]
+\centering
+\caption{Exact transitions after multiplication by a nonzero factor $b$.}
+\label{tab:states}
+\begin{tabular}{@{}p{0.48\textwidth}ccc@{}}
+\toprule
+Condition on $b$ & From $\mathsf M$ & From $\mathsf E$ & From $\mathsf D$\\
+\midrule
+$t=0$, $q(b)=1$ & $\mathsf M$ & $\mathsf M$ & $\mathsf M$\\
+$t=0$, $q(b)\geq2$ & $\mathsf E$ & $\mathsf E$ & $\mathsf E$\\
+$t=1$, $q(b)=0$ (the unit $1$) & $\mathsf M$ & $\mathsf E$ & $\mathsf D$\\
+$t=1$, $q(b)\geq1$ & $\mathsf E$ & $\mathsf E$ & $\mathsf D$\\
+$t\geq2$, $q(b)=0$ & $\mathsf M$ & $\mathsf D$ & $\mathsf D$\\
+$t\geq2$, $q(b)\geq1$ & $\mathsf E$ & $\mathsf D$ & $\mathsf D$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{proof}
+Let $x,y$ be the synchronized ordinary and Jacobsthal values before the
+step. If $t=0$, Lemma~\ref{lem:one-step} shows that both new values are
+$\omega^{d(x)}b$. Strict increase of $\sigma\mapsto d(x)+\sigma$
+means their support has exactly $q(b)$ elements. Thus they reset to
+$\mathsf M$ when $q(b)=1$ and to $\mathsf E$ otherwise.
+
+Suppose $t>0$. The old exponent support survives in the terminal
+contribution, and the $q(b)$ new positive-block exponents are distinct
+and all lie strictly above it. Therefore the new support size is
+\begin{equation}\label{eq:support-size}
+ s_{\mathrm{new}}=s_{\mathrm{old}}+q(b).
+\end{equation}
+If $x\neq y$, their leading terms agree, so some lower coefficient of
+$y$ is strictly greater than that of $x$. That inequality survives and
+can only grow when all the coefficients of $y$ are multiplied by $t$.
+Hence state $\mathsf D$ persists for $t>0$.
+
+If $x=y$, the outputs are equal exactly when $t=1$ or $x$ is a monomial,
+by the calculation behind Corollary~\ref{cor:binary-equality}. Combining
+this condition with \eqref{eq:support-size} gives all four remaining
+rows of the table. The initial value $1$ is monomial, so the initial
+state is $\mathsf M$.
+
+Finally, Corollary~\ref{cor:equality-tail} reduces equality of arbitrary
+products to equality on the finite active suffix. The same finite table
+therefore decides it. Equivalently, the preceding active limit produces
+an equal pure-power prefix and thus resets the state to $\mathsf M$.
+\end{proof}
+
+\subsection{Interpretation and examples}
+
+The automaton has two sources of reset. A nonzero limit factor removes
+all dependence on previous lower coefficients. A cofinally active limit
+of stages does the same, and additionally makes the result a pure power.
+Between resets, discrepancy is created precisely when a finite tail of
+size at least two multiplies an already nonmonomial equal value.
+Once discrepancy exists, a factor with positive finite tail cannot
+remove it.
+
+For example, the active word $(\omega+1,2)$ gives
+$\mathsf M\to\mathsf E\to\mathsf D$, so its two products differ.
+Appending $\omega$ gives a reset to $\mathsf M$:
+\[
+ ((\omega+1)\cdot2)\omega=\omega^2
+   =((\omega+1)\J2)\J\omega.
+\]
+Appending $\omega^2+\omega$ instead resets to $\mathsf E$: the new values
+agree but have two positive-exponent terms. A later factor $2$ creates
+discrepancy again.
+
+Only the categories of $t(b)$ and $q(b)$ enter the equality decision.
+The actual ordinal sizes of the exponents and the positive-exponent
+coefficients do not. This does not mean that the product values are
+independent of those data; it means precisely that the yes/no comparison
+with the ordinary product is independent of them once the state is known.
+The theorem is a finite decision procedure only when the finite active
+suffix itself is available. It is not an algorithm for discovering that
+suffix from an arbitrary oracle presentation of an infinite sequence.
+
+\section{Worked families and boundary cases}\label{sec:examples}
+
+\subsection{Three factors with visible cell contributions}
+
+Let $a=\omega+2$. Its square illustrates the distinction between all
+three multiplications:
+\begin{align*}
+ aa&=\omega^2+\omega\cdot2+2,\\
+ a\J a&=\omega^2+\omega\cdot2+4,\\
+ a\otimes a&=\omega^2+\omega\cdot4+4.
+\end{align*}
+For the direct triple product, a pivot at coordinate $3$ contributes
+one cell of type $\omega^3$. A pivot at coordinate $2$ contributes two
+cells of type $\omega^2$, one for each terminal point at coordinate $3$.
+A pivot at coordinate $1$ contributes four $\omega$-cells and eight
+singletons. Thus
+\begin{equation}\label{eq:a-cube}
+ F(a,a,a)=\omega^3+\omega^2\cdot2+\omega\cdot4+8.
+\end{equation}
+The ordinary cube is
+$\omega^3+\omega^2\cdot2+\omega\cdot2+2$. The support and leading
+monomial agree, while the lower coefficients differ exactly as the
+synchronization theorem permits.
+
+\subsection{A closed form for \texorpdfstring{$(\omega+c)^{\J n}$}{finite Jacobsthal powers of omega+c}}
+
+For $c\geq1$ finite and $n\geq1$, write $J_n(c)$ for the product of $n$
+copies of $\omega+c$. The cell formula immediately gives
+\begin{equation}\label{eq:wc-finite}
+ J_n(c)=\sum_{j=n}^{0}\omega^j c^{\,n-j}.
+\end{equation}
+In contrast,
+\begin{align}\label{eq:wc-ordinary-natural}
+ (\omega+c)^n
+    &=\omega^n+\sum_{j=n-1}^{0}\omega^j c,\notag\\
+ \underbrace{(\omega+c)\otimes\cdots\otimes(\omega+c)}_{n\text{ factors}}
+    &=\sum_{j=n}^{0}\omega^j\binom{n}{j}c^{\,n-j}.
+\end{align}
+Every descending summation here means ordinary CNF concatenation in
+the displayed decreasing order of exponents. Thus the formulas also
+apply without ambiguous ellipses when $n=1$.
+
+To verify \eqref{eq:wc-finite} directly, the final pivot contributes
+$\omega^n$, the preceding pivot contributes $c$ copies at exponent
+$n-1$, and so on. The finite-only tuples contribute $c^n$ singletons.
+The ordinary formula follows by induction using
+\eqref{eq:finite-ordinary}. The natural formula is the finite binomial
+theorem for the natural semiring; its exponents here are finite, so
+natural and ordinary addition of exponents agree.
+
+These are applications of the construction, not claims that the
+numerical finite-power identities were previously unknown. They also
+show that the coefficient differences can be very large while
+$O_n\leq J_n<O_n\cdot2$ still holds. An ordinal-scale bound is not a
+coefficientwise ratio bound.
+
+\subsection{Passing through a genuine limit and then taking successors}
+
+For the constant sequence $a=\omega+2$ indexed by $\omega$, all indices
+are active. The common prefix product is $\omega^\omega$. At index
+$\omega+2$, the last two factors constitute the finite active suffix.
+Hence
+\begin{align*}
+ J_{\omega+2}
+ &=\omega^{\omega+2}+\omega^{\omega+1}\cdot2+\omega^\omega\cdot4,\\
+ O_{\omega+2}
+ &=\omega^{\omega+2}+\omega^{\omega+1}\cdot2+\omega^\omega\cdot2.
+\end{align*}
+Discrepancy has disappeared at $\omega$ and reappeared after two successor
+factors. The automaton reads only $(\omega+2,\omega+2)$ and ends in
+$\mathsf D$.
+
+More generally, for any $a>1$ and $\beta=\lambda+n$ with $\lambda=0$
+or a nonzero limit,
+\begin{equation}\label{eq:power-reduction}
+ a^{\J\beta}=a^\lambda
+       F(\underbrace{a,\ldots,a}_{n\text{ copies}}).
+\end{equation}
+This is Jacobsthal exponentiation, the iteration of $\J$. It is not
+super-Jacobsthal exponentiation, which iterates $\otimes$.
+The direct finite-support construction therefore also supplies a model
+for the operation in \eqref{eq:power-reduction}.
+
+\subsection{Exponent absorption and the separation of pivot layers}
+
+Suppose the degrees of successive factors include $\omega$ and $\omega$.
+Their ordinary sum is $\omega\cdot2$, not a polynomial operation on
+integer degrees. Suppose instead a prefix degree is finite and a later
+pivot exponent is $\omega$; that finite prefix is absorbed:
+$k+\omega=\omega$. Such absorption affects the calculated type and must
+be handled correctly in any implementation of the cell formula.
+
+It does \emph{not}, however, cause a collision between different pivot
+layers. Lemma~\ref{lem:pivot-separation} shows that a pivot-$j$ exponent
+lies above all preceding prefix degrees and at most $D_j$; all later
+pivot layers lie strictly higher. Within one pivot layer, distinct input
+block exponents remain distinct after addition of the common prefix
+degree. Equal cell exponents therefore arise only from repeated blocks
+of the same exponent and their different finite tail choices.
+
+This separation explains why the primitive comparison rule needs no
+prefix arithmetic at all. It also prevents a tempting but incorrect
+concern that ordinary exponent absorption might reverse the order of
+pivots. Regrouping still requires matching ordered blocks rather than
+raw coordinate tags: the inner colex orders change under grouping, as
+Remark~\ref{rem:flatten} demonstrates.
+
+\subsection{Why an unrestricted infinite maximum is the wrong target}
+
+The componentwise order on finite-support functions from $\omega$ to
+$2$ has an infinite antichain: the functions supported at a single
+coordinate. Thus the finite Cartesian-product maximal-order theorem
+cannot simply be applied to the full finite-support product. Lipparini
+discusses this obstruction and the need for additional restrictions in
+\cite[Section~3.4]{lip-product}.
+
+Our transfinite maximality statement deliberately fixes the ordinary
+order within its finitely many large prefix--suffix cells. It does not
+claim that Jacobsthal multiplication, or infinitary natural multiplication,
+is the maximum over all linear extensions of the unrestricted componentwise
+finite-support order.
+
+\section{Reproducible checks and their limitations}\label{sec:checks}
+
+\subsection{The exact ordinal kernel}
+
+The archive contains a standard-library-only Python implementation of
+hereditary Cantor normal forms below $\ep$. An ordinal is an immutable
+finite tuple of strictly decreasing exponent--coefficient pairs; each
+exponent is itself an ordinal in the same representation. Zero is the
+empty tuple. The implementation provides ordinary addition and
+multiplication, natural addition and multiplication, the classical binary
+Jacobsthal formula, and a separate implementation of the all-arity pivot
+formula.
+
+The pivot routine never invokes the binary Jacobsthal routine. It computes
+all ordinary prefix degrees, all finite suffix-tail products, and the
+resulting cell monomials, then combines equal exponents. This provides a
+useful comparison between independently organized formulas, although they
+share the same low-level ordinal kernel.
+
+The actual tuple comparison rule is also implemented for sampled points
+in canonical blocks. A point records its block index, block exponent,
+offset within the block, and position in the factor. This allows checks
+of the componentwise-extension property independently of the type formula.
+A second comparator uses the calculated cell degrees; it is checked
+against the primitive, prefix-arithmetic-free rule on every tested pair.
+
+\subsection{Test families and recorded results}
+
+The test run in the archive used random seed $20260920$. All assertions
+passed. Table~\ref{tab:tests} records the executed counts, rather than
+planned counts.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact checks recorded in \texttt{results/verification\_results.json}.}
+\label{tab:tests}
+\begin{tabular}{@{}p{0.77\textwidth}r@{}}
+\toprule
+Test family & Count\\
+\midrule
+Binary pairs, including zero, over the small CNF domain & 729\\
+Exhaustive triples over 26 positive polynomials below $\omega^3$ & 17,576\\
+Additional finite lists with nested transfinite exponents & 3,500\\
+Finite split/regrouping comparisons & 86,216\\
+Explicit lists containing a zero factor & 15\\
+Explicit empty-list case & 1\\
+Sampled or exhaustively enumerated tuple-pair comparisons & 56,769\\
+Agreements of primitive and cell-degree comparison rules & 56,769\\
+Componentwise-comparable pairs within that set & 12,107\\
+Additional tuple-triple transitivity checks & 4,000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The small domain contains all nonzero expressions
+$\omega^2c_2+\omega c_1+c_0$ with $c_i\in\{0,1,2\}$, giving $3^3-1=26$
+values. The additional lists have lengths from zero to seven and use
+exponents selected from a pool containing $0,1,2,3,\omega,\omega+1,
+\omega\cdot2,\omega^2,\omega^\omega$, and $\omega^\omega+\omega$.
+Positive coefficients range from one to four.
+
+For every nonzero list, the test checks the direct formula against binary
+iteration; all finite split points; equality of supports and leading
+monomials; coefficient domination; the strict factor-two bound; the degree
+and finite-tail formulas; the natural-product upper bound; and the
+three-state classification. Binary tests also check the defining successor
+equation and the exact binary equality criterion.
+
+The tuple tests check comparison antisymmetry, separation of distinct
+points, componentwise extension, and sampled transitivity. Some small
+families are exhausted, but only among the selected points; an infinite
+block is never replaced by a claim that its finite sample is exhaustive.
+
+\subsection{What the tests cannot establish}
+
+The computational domain is below $\ep$, whereas the theorems are stated
+for all ordinals. No arbitrary transfinite limit is evaluated by the
+program. The displayed $\omega+2$ examples are computed \emph{after}
+substituting the prefix value justified by the proof. In particular,
+random tests do not certify the limit argument, the pure-power theorem,
+or the correctness of the reduction for arbitrary cofinalities.
+
+The implementation is not a formalization in Lean, Isabelle, or another
+proof assistant. Sharing the low-level CNF routines creates a possibility
+of correlated implementation mistakes. The checks should be viewed as
+structured attempts to falsify finite consequences and catch transcription
+errors, not as substitutes for the English proofs.
+
+\section{Assessment, scope, and remaining questions}\label{sec:scope}
+
+\subsection{The precise positive result}
+
+The manuscript gives an affirmative construction for the following
+precise version of the selected question: there is an isomorphism-invariant,
+CNF-based well-order on finite tuples, and on finite-support tuples at
+arbitrary ordinal arities, defined without Jacobsthal iteration or its
+limit value, whose type is the Jacobsthal product. The finite objects
+prove associativity through an explicit comparison of their blocks.
+The restricted maximality theorems describe the same values without
+choosing a tie-breaking order.
+
+The binary comparison with natural multiplication also has the requested
+order-theoretic explanation: the constructed order is one componentwise
+linear extension, while the natural product is the maximum among all
+such extensions. This addresses the binary inequality part of
+Question~5.2, not every question listed there.
+
+These statements are stronger than exhibiting a CNF formula for a
+parenthesized product: the underlying sets, cells, comparison rules,
+componentwise compatibility, and regrouping argument have all been
+specified. On the other hand, the adjective ``natural'' in the original
+question has no unique formal definition. The construction uses canonical
+Cantor blocks and should be judged against that explicit design choice.
+
+\subsection{Claims not made}
+
+We do not claim the classical associativity law, the classical binary
+CNF formula, the ordinary finite-support representation, or the numerical
+inequalities as new. We do not claim that our comparison rule is preserved
+by arbitrary embeddings, that it is independent of canonical CNF
+structure, or that the tuple-flattening map is the associator.
+We do not settle Altman's separate questions about super-Jacobsthal
+exponentiation or all infinitary natural-product inequalities.
+
+The literature search did not establish a priority theorem. In
+particular, the synchronization and finite-tail observations may have
+antecedents not found by the targeted search. The contribution presented
+for evaluation is the combination of the concrete pivot model,
+its finite-cell extremal description, its blockwise associativity proof,
+and the arbitrary-index finite-tail representation, with all dependencies
+made explicit.
+
+\subsection{Further research directions suggested by the construction}
+
+A useful next mathematical question is whether the pivot-cell constraints
+can be replaced by an intrinsic condition on order embeddings, convex
+suborders, or initial segments, without first displaying the CNF blocks.
+Such a characterization would clarify how canonical this model is among
+other possible answers to the same informal question.
+
+A second question is how to describe the unique regrouping isomorphisms
+by explicit coordinate transformations. The example in
+Remark~\ref{rem:flatten} shows that coordinate flattening is insufficient;
+some absorption isomorphisms inside monomial cells are unavoidable.
+An effective description for hereditary CNFs could be suitable for
+formalization.
+
+A third direction is to identify the exact relationship between the
+finite-suffix maximality condition here and the finite-prefix conditions
+used for countable natural products. Their orientations differ: the
+Jacobsthal discrepancy is confined to the \emph{end} of the active index,
+whereas the countable natural-product construction in
+\cite{lip-product} uses a finite initial part followed by ordinary
+infinite behavior. This comparison is a research direction, not a claimed
+new equivalence.
+
+\section{Conclusion}
+
+The main obstruction to a direct infinitary Jacobsthal model turns out,
+in this approach, not to be an infinite combinatorial object of a new
+kind. The relevant infinite object is the ordinary finite-support product.
+What is different is a finite terminal rearrangement, organized by the
+last coordinate occupying a positive-exponent Cantor block.
+
+The finite partition makes the all-arity object explicit. The common
+leading monomial bounds every discrepancy by the next ordinary doubling.
+Cofinal activity then forces the two operations to agree at a limit,
+leaving only finitely many active successor factors to be handled by the
+pivot construction. Together these observations yield a concrete proposed
+answer to the selected open-ended order-theoretic question, with a clear
+account of both its mathematical strength and its limitations.
+
+\appendix
+\section{Proof dependency map and audit checklist}\label{app:audit}
+
+The mathematical dependency chain is as follows. Ordinary CNF absorption
+proves the classical binary formula directly from the defining recursion.
+The pivot partition and ordinary cell orders give their monomial types.
+The explicit finite cell formula then proves the binary identification,
+the metadata lemma, and the finite regrouping theorem. None of these
+steps invokes Jacobsthal associativity as a premise.
+
+Separately, the binary formula gives the one-step synchronization lemma.
+That lemma and the factor-two estimate are proved simultaneously through
+all ordinal stages. At a cofinally active limit the estimate yields
+mutual cofinal domination, hence equality; additive indecomposability then
+yields a pure power. Unit erasure and finite associativity produce the
+finite-tail reduction. The direct ordinary finite-support model, together
+with the finite pivot model, gives the final all-at-once order.
+
+The three most delicate checks are worth isolating. First, the global
+pivot can only move left under a coordinatewise increase, and such a move
+strictly lowers its cell exponent. Second, at a cofinally active limit,
+for each earlier stage $\xi$ there really is a later successor stage
+$i+1<\lambda$ that overtakes $J_\xi$; the limit hypothesis ensures this
+successor is still below the endpoint. Third, the active index, not the
+ambient ordinal index, controls the finite suffix. Example~\ref{ex:units}
+shows exactly what would go wrong if units were not removed.
+
+The mathematical argument is not restricted to countable ordinals.
+Every invocation of cofinality chooses a later active index individually;
+no countable cofinal sequence is assumed. The CNF decomposition has
+finitely many terms for each input ordinal, regardless of its cardinality.
+The number of factors may be any set-sized ordinal, but proper-class
+products are outside the scope of the construction.
+
+\section{Using and rebuilding the archive}\label{app:archive}
+
+The principal files are \texttt{article.tex}, \texttt{article.pdf},
+\texttt{code/ordinals.py}, and \texttt{code/verify.py}. The results directory
+contains machine-readable and plain-text records of the executed checks.
+The notes directory contains a short proof audit and a source-search log.
+No downloaded third-party article PDFs or font files are redistributed.
+
+From the archive's top-level directory, run
+\begin{lstlisting}
+python3 code/verify.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The supplied \texttt{Makefile} provides \texttt{make check},
+\texttt{make pdf}, and \texttt{make clean}. The source has an internal
+bibliography, so no separate bibliography processor is required. The
+Python checks require only the standard library. The LaTeX document uses
+common packages included in standard TeX Live installations.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{altman}
+H. Altman,
+\emph{Intermediate arithmetic operations on ordinal numbers},
+Mathematical Logic Quarterly \textbf{63} (2017), 228--242.
+DOI: \href{https://doi.org/10.1002/malq.201600006}{10.1002/malq.201600006}.
+Author version: \href{https://arxiv.org/abs/1501.05747}{arXiv:1501.05747},
+version 9, 18 September 2017. Questions 2.16 and 5.2 are the selected
+problem references.
+
+\bibitem{jacobsthal}
+E. Jacobsthal,
+\emph{Zur Arithmetik der transfiniten Zahlen},
+Mathematische Annalen \textbf{67} (1909), 130--143.
+The binary formula and algebraic laws used for historical context are
+also restated in \cite{altman}; the binary formula is reproved here.
+
+\bibitem{carruth}
+P. W. Carruth,
+\emph{Arithmetic of ordinals with applications to the theory of ordered
+Abelian groups},
+Bulletin of the American Mathematical Society \textbf{48} (1942), 262--271.
+\href{https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-48/issue-4/Arithmetic-of-ordinals-with-applications-to-the-theory-of-ordered/bams/1183504256.full}{Project Euclid record}.
+The finite-product maximum theorem is also explicitly recalled in
+\cite[Section~3.3]{lip-product}.
+
+\bibitem{lip-sums}
+P. Lipparini,
+\emph{Some transfinite natural sums},
+Mathematical Logic Quarterly \textbf{64} (2018), 514--528.
+\href{https://arxiv.org/abs/1509.04078}{arXiv:1509.04078}.
+The earlier title cited by Altman was \emph{Some iterated natural sums}.
+
+\bibitem{lip-product}
+P. Lipparini,
+\emph{An infinite natural product},
+Annales Mathematicae Silesianae \textbf{32}(1) (2018), 247--262.
+\href{https://arxiv.org/abs/1703.06908}{arXiv:1703.06908}, version 2.
+Sections 3.2--3.4 describe the ordinary finite-support product, the
+finite natural-product maximum theorem, and the obstruction to an
+unrestricted infinitary extension.
+
+\bibitem{lip-semigroup}
+P. Lipparini,
+\emph{Noncommutative infinitary semigroups},
+\href{https://arxiv.org/abs/2605.28413}{arXiv:2605.28413},
+version 1, 27 May 2026.
+Cited as related general context, not as a source of the Jacobsthal
+construction proposed here.
+
+\end{thebibliography}
+\end{document}

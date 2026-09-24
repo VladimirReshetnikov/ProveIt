@@ -1,0 +1,48 @@
+Suggested update for OEIS A267220 — NOT SUBMITTED
+September 20, 2026
+
+Both supercongruences of October 17, 2024 hold for every integer m.
+For every odd prime p, nonzero integer m, and positive N divisible by p,
+the differences u_m(N)-u_m(N/p) and v_m(N)-v_m(N/p) are divisible by
+p^(2*valuation_p(N)+valuation_p(m)). For m=0 the positive-index terms
+vanish. The v_m congruence modulo p^(2*valuation_p(N)) holds also for p=2.
+
+Proof outline:
+Let D=x*A'/A and define X_m=y*A(X_m)^m. If
+D(X_m)/(1-m*D(X_m)) = Sum_{n>=1} b_m(n)*y^n, then all b_m(n) are integers.
+Lagrange inversion gives, for n>=1,
+
+  u_m(n)=m*b_m(n),    v_m(n)=m*b_(m-1)(n),    b_0(n)=A005259(n).
+
+The signed sequence (-1)^(m*n)*b_m(n) satisfies second-order Gauss
+congruences by the established framing-integrality principle of
+Schwarz–Vologodsky–Walcher. The input second-order Gauss congruences for
+the Apéry numbers follow by separating multiples of p in the binomial
+sum. The attached mathematical note supplies the full coefficient proof,
+including parameter divisibility and the prime 2.
+
+The all-prime signed refinements, for p|N and m!=0, are
+
+  (-1)^(m*N)*u_m(N) == (-1)^(m*N/p)*u_m(N/p),
+  (-1)^((m-1)*N)*v_m(N) == (-1)^((m-1)*N/p)*v_m(N/p),
+
+both modulo p^(2*valuation_p(N)+valuation_p(m)). The unsigned u_m
+congruence at 2 holds for even m or valuation_2(N)>=2, but not in full
+generality: u_1(2)-u_1(1)=118 is not divisible by 4.
+
+Second order cannot uniformly be replaced by third order:
+u_1(7)-u_1(1)=49*103720679, and 103720679 == 6 (mod 7).
+The identity v_2(n)=2*u_1(n), n>=1, supplies the same obstruction for v.
+
+Prior framing theory:
+A. Schwarz, V. Vologodsky, J. Walcher,
+Framing the Di-Logarithm (over Z), arXiv:1306.4298 (2013).
+https://arxiv.org/abs/1306.4298
+
+A. Schwarz, V. Vologodsky, J. Walcher,
+Integrality of Framing and Geometric Origin of 2-functions
+(with algebraic coefficients), arXiv:1702.07135v2 (2017), Section 3.
+https://arxiv.org/abs/1702.07135
+
+This is a proposed mathematical annotation and proof outline, not an
+accepted OEIS submission or a claim of first historical priority.

@@ -1,0 +1,1020 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=29mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Four Motzkin congruences}
+\fancyhead[R]{\small OEIS A001006}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\CT}{CT}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\M}{M}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+  frame=single,framerule=0.3pt,breaklines=true,showstringspaces=false,
+  xleftmargin=0.6em,xrightmargin=0.6em,aboveskip=0.8em,belowskip=0.8em}
+\hypersetup{pdftitle={Four Motzkin Congruences: A Constant-Term Proof with Sharp Ranges},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={Proofs of the four Peter Bala conjectures recorded in OEIS A001006}}
+
+\title{\textbf{Four Motzkin Congruences}\\[0.3em]
+\large A Constant-Term Proof with Sharp Ranges}
+\author{Prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The OEIS entry for the Motzkin numbers records four congruences proposed by
+Peter Bala on 10 February 2022. We give self-contained proofs of all four.
+Two concern indices immediately preceding multiples of prime powers; two
+assert repetition of an initial block modulo a prime or its square.
+A single constant-term transfer theorem explains the block phenomena at
+arbitrary prime-power precision. For the prime-square case, the arithmetic
+input is obtained by factoring a quadratic over the sixth roots of unity
+and proving a binomial coefficient congruence directly. We further show
+that the two proposed initial-block ranges are optimal for every prime and
+exponent in their respective statements, and compute the first nonzero
+error explicitly. The boundary-index formulas are extended to all powers
+of every odd prime. A digit algorithm evaluates a Motzkin number modulo an
+odd prime without constructing the integer itself. Reproducible Python
+programs accompany the article; 276,814 finite checks pass. The proofs are
+mathematical arguments, not deductions from these computations. Related
+results of Kohen and Pan--Sun are identified explicitly; no claim of
+publication priority is inferred from an OEIS conjecture label.
+\end{abstract}
+
+\vspace{0.4em}
+\noindent\textbf{Main outcome.} All four targeted formulas are true. In particular,
+for every prime $p\geq5$ and $k\geq2$,
+\[
+ M_{p^k+n}\equiv M_n\pmod{p^2}
+ \qquad(0\leq n\leq p^{k-1}-3),
+\]
+whereas at the very next index the difference is
+\[
+ M_{p^k+p^{k-1}-2}-M_{p^{k-1}-2}
+ \equiv
+ \begin{cases}-2p,&p\equiv1\pmod6,\\p,&p\equiv5\pmod6\end{cases}
+ \pmod{p^2}.
+\]
+\newpage
+{\small\setlength{\parskip}{0pt}
+\tableofcontents
+}
+\newpage
+
+\section{The sequence and the four targets}\label{sec:targets}
+
+\subsection{Why the Motzkin numbers are a substantial target}
+The Motzkin number $M_n$ counts paths from $(0,0)$ to $(n,0)$ whose steps
+are $(1,1)$, $(1,0)$, and $(1,-1)$, and whose height never becomes negative.
+The sequence starts
+\[
+ 1,1,2,4,9,21,51,127,323,835,2188,5798,\ldots.
+\]
+It is \oeis{A001006}. Its many interpretations include noncrossing partial
+matchings and restricted trees and permutations; the entry provides
+references and numerous equivalent formulas~\cite{oeisM}. Thus the target
+is a classical combinatorial sequence, not an isolated artificial example.
+
+Our auxiliary sequences are the central and adjacent trinomial
+coefficients. Put
+\begin{equation}\label{eq:PQ}
+ P(x)=x^{-1}+1+x,\qquad F(x)=1+x+x^2=xP(x),\qquad Q(x)=1-x^2,
+\end{equation}
+and define
+\begin{equation}\label{eq:TU}
+ T_n=\CT\,P(x)^n,\qquad U_n=[x^1]P(x)^n\qquad(n\geq0).
+\end{equation}
+Here $\CT$ extracts the coefficient of $x^0$ from a Laurent polynomial.
+The $T_n$ form \oeis{A002426}, and the $U_n$ for $n\geq1$ form
+\oeis{A005717}; we explicitly set $U_0=0$~\cite{oeisT,oeisU}.
+Also write
+\begin{equation}\label{eq:D}
+ D_0=1,\qquad D_n=T_{n-1}+U_{n-1}\quad(n\geq1).
+\end{equation}
+This is \oeis{A005773}, the directed-animal counting sequence; the identity
+in \eqref{eq:D} is recorded in that entry~\cite{oeisD}. The present proof
+needs only its coefficient formulation.
+
+\subsection{The exact statements to be proved}
+The following are the four formulas in Bala's comment dated
+10 February 2022 in \oeis{A001006}, with notation replaced by that just
+introduced~\cite{oeisM}. The quantifier on $n$ is important, as are the
+upper endpoints of the two ranges.
+
+\begin{description}[style=nextline,leftmargin=1.5em,labelindent=0pt,labelwidth=0pt,font=\normalfont\bfseries]
+\item[(B1) Boundary indices, first prime class.]
+If $p\equiv1\pmod6$ is prime and $n,r\geq1$, then
+\begin{equation}\tag{B1}\label{eq:B1}
+ M_{np^r-2}\equiv-U_{n-1}\pmod p.
+\end{equation}
+\item[(B2) Boundary indices, second prime class.]
+If $p\equiv5\pmod6$ is prime and $n\geq1$, then
+\begin{equation}\tag{B2}\label{eq:B2}
+ M_{np-2}\equiv-D_n\pmod p.
+\end{equation}
+\item[(B3) Repetition modulo a prime.]
+If $p\geq3$ is prime and $k\geq1$, then
+\begin{equation}\tag{B3}\label{eq:B3}
+ M_{n+p^k}\equiv M_n\pmod p
+ \qquad(0\leq n\leq p^k-3).
+\end{equation}
+\item[(B4) Repetition modulo the square of a prime.]
+If $p\geq5$ is prime and $k\geq2$, then
+\begin{equation}\tag{B4}\label{eq:B4}
+ M_{n+p^k}\equiv M_n\pmod{p^2}
+ \qquad(0\leq n\leq p^{k-1}-3).
+\end{equation}
+\end{description}
+
+The proofs below resolve precisely these four assertions, not every
+conjecture mentioned elsewhere in the Motzkin entry.
+
+\subsection{Status, attribution, and what is established here}\label{sec:status}
+The four formulas above were still grouped under a conjecture heading in
+the OEIS entry consulted for this article. A database label is not a
+reliable certificate that a statement is absent from the literature.
+The entry itself includes a November 2024 comment by Rob Burns pointing
+out that the $n=1$ boundary cases were already consequences of his
+2017 work~\cite{oeisM}.
+Kohen's 2024 work develops constant-term and base-$p$ methods for Motzkin
+and central trinomial numbers~\cite{kohenUniform,kohenDensity}. In
+particular, the prime-modulus formulas here overlap with consequences of
+his digit decompositions and boundary identities. Pan and Sun establish
+considerably stronger central-trinomial congruences than the prime-square
+input needed here~\cite{panSun}; their paper first appeared as a preprint
+in 2020 and its final version appeared in 2026.
+
+The contribution of this note is a complete, directly checkable treatment
+of the four OEIS-listed formulas together, including the extension to
+higher prime powers, the optimality of both initial-block ranges, and the
+explicit first errors. Every lemma needed for (B1)--(B4) is proved below.
+Neither the proofs nor the claims of sharpness depend on a literature
+search establishing novelty. No priority claim is made for the auxiliary
+congruences or for consequences already implicit in the cited work.
+
+\section{Constant terms and elementary identities}\label{sec:constant}
+
+\subsection{A reflection argument}
+\begin{lemma}\label{lem:reflection}
+For all $n\geq0$,
+\begin{equation}\label{eq:Mct}
+ M_n=\CT\,Q(x)P(x)^n=[x^n](1-x^2)F(x)^n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The coefficient of $x^h$ in $P(x)^n$ counts unrestricted paths of length
+$n$ ending at height $h$. Thus $T_n$ counts all paths ending at height
+zero. A path of this kind that reaches height $-1$ has a first visit to
+$-1$. Exchange its up-steps and down-steps through that visit and leave
+all later steps unchanged. The transformed path ends at height $2$.
+Conversely, any unrestricted path ending at height $2$ has a first visit
+to height $1$; exchanging up and down through that visit recovers the bad
+path. Horizontal steps are unchanged in both directions.
+
+Consequently $M_n=[x^0]P^n-[x^2]P^n$. The polynomial $P^n$ is symmetric
+under $x\mapsto x^{-1}$, so this difference is $\CT(1-x^2)P^n$.
+Multiplication by $x^n$ gives the second expression.
+\end{proof}
+
+For later use observe the exact support bound
+\begin{equation}\label{eq:support}
+ \supp\bigl(Q(x)P(x)^n\bigr)\subseteq[-n,n+2]\cap\Z.
+\end{equation}
+It is the extra two units at the right edge, caused by $-x^2$, that
+produce both the range cutoffs and their first corrections.
+
+\subsection{The three neighboring coefficients}
+Multiplication by $P(x)$ and symmetry give
+\begin{equation}\label{eq:Uidentity}
+ T_{n+1}=T_n+2U_n.
+\end{equation}
+Writing $V_n=[x^2]P(x)^n$, we also have
+$T_{n+2}=3T_n+4U_n+2V_n$. Since $M_n=T_n-V_n$, elimination yields
+\begin{equation}\label{eq:MTidentity}
+ \boxed{\quad 2M_n=3T_n+2T_{n+1}-T_{n+2}.\quad}
+\end{equation}
+This is the identity that will turn the digit rule for $T_n$ into a fast
+algorithm for $M_n$.
+
+\subsection{Generating functions and exact recurrences}
+Selecting the up- and down-steps of an unrestricted path gives
+\begin{equation}\label{eq:Tsum}
+ T_n=\sum_{j=0}^{\lfloor n/2\rfloor}\binom n{2j}\binom{2j}j.
+\end{equation}
+Consequently, as formal power series,
+\begin{align}
+ \mathcal T(z)=\sum_{n\geq0}T_nz^n
+ &=\frac1{1-z}\sum_{j\geq0}\binom{2j}j
+       \left(\frac{z^2}{(1-z)^2}\right)^j\notag\\
+ &=\frac1{\sqrt{1-2z-3z^2}}.\label{eq:Tgf}
+\end{align}
+Differentiation gives
+\begin{equation}\label{eq:Trec}
+ (n+1)T_{n+1}=(2n+1)T_n+3nT_{n-1}\qquad(n\geq1).
+\end{equation}
+
+A nonempty Motzkin path either begins with a horizontal step, or has a
+unique decomposition $U\pi D\rho$, where $D$ is the step of its first
+return to height zero. Both $\pi$ and $\rho$ are Motzkin paths after a
+vertical translation when needed. Therefore
+\begin{equation}\label{eq:Mgf}
+ \mathcal M(z)=1+z\mathcal M(z)+z^2\mathcal M(z)^2
+ =\frac{1-z-\sqrt{1-2z-3z^2}}{2z^2}.
+\end{equation}
+Deleting horizontal steps from a path with $j$ up-steps leaves a Dyck
+path of semilength $j$. Hence
+\begin{equation}\label{eq:Msum}
+ M_n=\sum_{j=0}^{\lfloor n/2\rfloor}\binom n{2j}
+                  \frac1{j+1}\binom{2j}j.
+\end{equation}
+From \eqref{eq:Mgf}, differentiation and simplification give
+\[
+ z(1-2z-3z^2)\mathcal M'(z)
+ +(2-3z-3z^2)\mathcal M(z)=2.
+\]
+Comparing coefficients yields the exact integer recurrence
+\begin{equation}\label{eq:Mrec}
+ (n+2)M_n=(2n+1)M_{n-1}+3(n-1)M_{n-2}\quad(n\geq2),
+ \qquad M_0=M_1=1.
+\end{equation}
+These recurrences are useful for exact verification. In modular
+arithmetic their denominators must not be inverted when divisible by the
+modulus's prime; this point matters in the supplied implementation.
+
+\section{Prime powers spread the exponents apart}\label{sec:transfer}
+
+\subsection{Lifting a polynomial congruence}
+All congruences between Laurent polynomials in this section are
+coefficientwise. They take place in $\Z[x,x^{-1}]$.
+
+\begin{lemma}\label{lem:lift}
+Let $p$ be prime. If $A\equiv B\pmod{p^a}$ for $a\geq1$, then
+$A^p\equiv B^p\pmod{p^{a+1}}$.
+\end{lemma}
+\begin{proof}
+Write $A=B+p^aC$ and expand. The $j=1$ term is divisible by $p^{a+1}$.
+For $1<j<p$, the factor $\binom pj$ contributes $p$, and the other
+factor contributes $p^{aj}$, which is more than sufficient. The final
+term is divisible by $p^{ap}$, and $ap\geq a+1$.
+\end{proof}
+
+\begin{lemma}\label{lem:spread}
+For a Laurent polynomial $L$ with integer coefficients, a prime $p$, and
+integers $1\leq s\leq k$, put $q=p^{k-s+1}$. Then
+\begin{equation}\label{eq:spread}
+ L(x)^{p^k}\equiv L(x^q)^{p^{s-1}}\pmod{p^s}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The Frobenius congruence in characteristic $p$ gives
+$L(x)^q\equiv L(x^q)\pmod p$. Applying \cref{lem:lift} successively
+$s-1$ times raises the exponent on both sides to $p^{s-1}$ and the
+modulus to $p^s$.
+\end{proof}
+
+Notice the difference between precision and shift. To retain $s$ digits
+of $p$-adic precision, we replace the large exponent $p^k$ by the smaller
+exponent $p^{s-1}$, but the surviving exponents of $x$ are then spaced
+by $q=p^{k-s+1}$. Only the coefficients near exponent zero can interact
+with a sufficiently short factor $QP^n$.
+
+\subsection{The full local-block theorem}
+\begin{theorem}[Prime-power block transfer]\label{thm:block}
+Let $p$ be an odd prime, $m\geq0$, and $1\leq s\leq k$. Set
+\[
+ q=p^{k-s+1},\qquad h=mp^{s-1}.
+\]
+Then, for $0\leq d<q$,
+\begin{equation}\label{eq:block}
+ M_{mp^k+d}\equiv
+ \begin{cases}
+ T_hM_d,&0\leq d\leq q-3,\\
+ T_hM_{q-2}-U_h,&d=q-2,\\
+ T_hM_{q-1}-(q-1)U_h,&d=q-1
+ \end{cases}
+ \pmod{p^s}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{lem:spread}, raising to the nonnegative integer power $m$ gives
+\[
+ P(x)^{mp^k}\equiv P(x^q)^h\pmod{p^s}.
+\]
+Thus \cref{lem:reflection} gives
+\begin{equation}\label{eq:blockCT}
+ M_{mp^k+d}\equiv\CT\bigl(Q(x)P(x)^dP(x^q)^h\bigr)\pmod{p^s}.
+\end{equation}
+Every exponent in the last factor is a multiple of $q$.
+
+If $d\leq q-3$, the support of $QP^d$ lies strictly between $-q$ and
+$q$, by \eqref{eq:support}. Only its constant term can meet an opposite
+exponent from the last factor. The constant term of $P(x^q)^h$ is
+$T_h$, and the first case follows.
+
+If $d=q-2$, the support is contained in $[-q+2,q]$. Besides the constant
+term, exactly one possible multiple of $q$ remains, namely $q$. Its
+coefficient is $-1$: it comes from $-x^2$ times the top monomial
+$x^{q-2}$ of $P^{q-2}$. The coefficient of $x^{-q}$ in $P(x^q)^h$ is
+$U_h$ by symmetry. This gives the second case.
+
+If $d=q-1$, the support is contained in $[-q+1,q+1]$. Since $q\geq3$,
+again the only nonzero multiple of $q$ that can occur is $q$. Its
+coefficient is
+\[
+ [x^q]QP^{q-1}=-[x^{q-2}]P^{q-1}=-(q-1).
+\]
+Indeed, an exponent one below the maximum is obtained by choosing the
+constant monomial from exactly one of the $q-1$ factors, and $x$ from
+all the others. Substitution in \eqref{eq:blockCT} gives the last case.
+\end{proof}
+
+\begin{remark}
+The theorem is uniform in $m$ and contains all three residues near the
+end of a block. It is not an assertion of global periodicity. In the
+interior, the multiplying factor is a central trinomial coefficient; at
+the boundary, an adjacent coefficient enters as well.
+\end{remark}
+
+\subsection{Proof and exact range of (B3)}
+Taking $s=1$ and $m=1$ in \cref{thm:block} gives $q=p^k$, $h=1$, and
+$T_1=U_1=1$. The interior case is exactly (B3). The next case gives
+\begin{corollary}\label{cor:sharpP}
+For every odd prime $p$ and $k\geq1$,
+\begin{equation}\label{eq:sharpP}
+ M_{2p^k-2}-M_{p^k-2}\equiv-1\pmod p.
+\end{equation}
+Consequently $p^k-3$ is the largest upper endpoint $L$ for which
+$M_{p^k+n}\equiv M_n\pmod p$ holds for every $0\leq n\leq L$.
+\end{corollary}
+For example, when $p=5$ and $k=1$, the differences for $n=0,1,2$ vanish
+modulo $5$, whereas $M_8-M_3=323-4=319\equiv-1\pmod5$.
+
+\section{Boundary residues and proofs of (B1) and (B2)}\label{sec:boundary}
+
+\subsection{An elementary period-three coefficient sequence}
+For an odd prime $p$, define
+\begin{equation}\label{eq:eps}
+ \eps_p=
+ \begin{cases}
+ 0,&p=3,\\
+ 1,&p\equiv1\pmod3,\\
+ -1,&p\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+No quadratic reciprocity is needed for the following calculation.
+We use only
+\begin{equation}\label{eq:inverseF}
+ \frac1{F(x)}=\frac{1-x}{1-x^3}=\sum_{j\geq0}c_jx^j,
+ \qquad
+ c_j=\begin{cases}1,&j\equiv0\pmod3,\\-1,&j\equiv1\pmod3,\\0,&j\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+
+\begin{lemma}\label{lem:baseboundary}
+For every odd prime $p$, every $r\geq1$, and $q=p^r$,
+\begin{align}
+ T_{q-1}&\equiv\eps_p^r\pmod p,\label{eq:Tqminus1}\\
+ M_{q-2}&\equiv\frac{\eps_p^r-1}{2}\pmod p,\label{eq:Mqminus2}\\
+ M_{q-1}&\equiv\frac{1+3\eps_p^r}{2}\pmod p.\label{eq:Mqminus1}
+\end{align}
+The fractions mean multiplication by the inverse of $2$ modulo $p$.
+\end{lemma}
+\begin{proof}
+Since $F(x)^q\equiv F(x^q)\pmod p$ and $F(0)=1$, division by $F$ or
+$F^2$ is legitimate in $\F_p[[x]]$. At any degree below $q$, the
+factor $F(x^q)=1+x^q+x^{2q}$ contributes only its constant term.
+Therefore
+\[
+ T_{q-1}=[x^{q-1}]F^{q-1}\equiv[x^{q-1}]F^{-1}=c_{q-1}.
+\]
+If $p\ne3$, the residue of $q=p^r$ modulo $3$ is determined by the
+parity of $r$ when $p\equiv2\pmod3$; the result is $\eps_p^r$.
+If $p=3$, the coefficient is $c_{q-1}=0$. This proves
+\eqref{eq:Tqminus1}.
+
+For the second identity, \eqref{eq:Mct} gives
+\[
+ M_{q-2}\equiv[x^{q-2}]\frac{1-x^2}{F(x)^2}.
+\]
+The rational function here is a derivative:
+\begin{equation}\label{eq:derivative}
+ \frac{1-x^2}{F(x)^2}=\left(\frac{x}{F(x)}\right)'.
+\end{equation}
+Thus $M_{q-2}\equiv(q-1)c_{q-2}\equiv-c_{q-2}\pmod p$.
+If $q\equiv1\pmod3$ this is zero; if $q\equiv2\pmod3$ it is $-1$.
+For $p=3$ it is $1$, which equals $-1/2$ modulo $3$. These are precisely
+\eqref{eq:Mqminus2}.
+
+Finally,
+\[
+ M_{q-1}\equiv[x^{q-1}]\frac{1-x^2}{F(x)}=c_{q-1}-c_{q-3}.
+\]
+The three cases are respectively $2$, $-1$, and $-1$ when $q$ is
+$1$, $2$, or $0$ modulo $3$. They give \eqref{eq:Mqminus1}, including
+$p=3$ where $1/2\equiv-1\pmod3$.
+\end{proof}
+
+\subsection{A single formula covering every odd prime}
+\begin{theorem}[Boundary-index formula]\label{thm:boundary}
+For every odd prime $p$ and every $n,r\geq1$,
+\begin{equation}\label{eq:unified}
+ \boxed{\quad M_{np^r-2}\equiv
+       \frac{\eps_p^r-1}{2}\,T_{n-1}-U_{n-1}\pmod p.\quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use \cref{thm:block} with precision $s=1$, exponent $k=r$, multiplier
+$m=n-1$, and offset $d=p^r-2$. Its second case gives
+\[
+ M_{np^r-2}\equiv T_{n-1}M_{p^r-2}-U_{n-1}\pmod p.
+\]
+Now use \eqref{eq:Mqminus2}.
+\end{proof}
+
+If $p\equiv1\pmod6$, then $\eps_p=1$ and the first term vanishes.
+This proves (B1), including $n=1$ because $U_0=0$.
+If $p\equiv5\pmod6$ and $r=1$, then $\eps_p=-1$, so the right-hand
+side is $-T_{n-1}-U_{n-1}=-D_n$. This proves (B2).
+
+The same theorem provides a useful extension that is not present in the
+wording of (B2):
+\begin{equation}\label{eq:alternation}
+ M_{np^r-2}\equiv
+ \begin{cases}
+ -D_n,&p\equiv5\pmod6,\ r\text{ odd},\\
+ -U_{n-1},&p\equiv5\pmod6,\ r\text{ even}
+ \end{cases}
+ \pmod p.
+\end{equation}
+At $p=3$ it becomes
+\begin{equation}\label{eq:p3boundary}
+ M_{n3^r-2}\equiv T_{n-1}-U_{n-1}\pmod3.
+\end{equation}
+Thus simply replacing $p$ by $p^r$ on the left of (B2), without regard
+to the parity of $r$, would give the wrong result.
+
+\section{The prime-square arithmetic input}\label{sec:squareinput}
+
+The transfer theorem at precision two leaves the scalar $T_{mp}$.
+We now prove $T_{mp}\equiv T_m\pmod{p^2}$ for $p\geq5$. The proof
+uses neither a classification of Motzkin automata nor a preexisting
+supercongruence theorem. A related root-of-unity identity is central to
+the stronger results of Pan and Sun~\cite{panSun}.
+
+\subsection{A binomial coefficient congruence}
+\begin{lemma}[Babbage congruence]\label{lem:babbage}
+For every prime $p$, integer $m\geq0$, and $0\leq j\leq m$,
+\begin{equation}\label{eq:babbage}
+ \binom{mp}{jp}\equiv\binom mj\pmod{p^2}.
+\end{equation}
+Also $p\mid\binom{mp}{j}$ whenever $0\leq j\leq mp$ and $p\nmid j$.
+\end{lemma}
+\begin{proof}
+There is an integer polynomial $E(x)$ supported on exponents
+$1,\ldots,p-1$ such that
+\[
+ (1+x)^p=1+x^p+pE(x).
+\]
+For $m\geq1$, expansion to first order in $p$ gives
+\[
+ (1+x)^{mp}\equiv(1+x^p)^m+mpE(x)(1+x^p)^{m-1}\pmod{p^2}.
+\]
+The second term has no exponent divisible by $p$. Extracting $[x^{jp}]$
+proves \eqref{eq:babbage}. The case $m=0$ is immediate.
+For the final assertion use
+$j\binom{mp}{j}=mp\binom{mp-1}{j-1}$ and invert $j$ modulo $p$.
+\end{proof}
+
+\subsection{Why the second power of the prime appears}
+Let
+\[
+ \alpha=\frac{1+\sqrt{-3}}2,\qquad
+ \beta=\frac{1-\sqrt{-3}}2.
+\]
+Then $\alpha+\beta=1$, $\alpha\beta=1$, and
+$\alpha^6=\beta^6=1$. Moreover
+\begin{equation}\label{eq:factor}
+ F(x)=(x+\alpha)(x+\beta).
+\end{equation}
+Extracting the central coefficient of the $n$th power gives
+\begin{equation}\label{eq:roots}
+ T_n=\sum_{j=0}^n\binom nj^2\alpha^{n-j}\beta^j.
+\end{equation}
+The two binomial coefficients, arising from the two linear factors,
+explain the extra $p$-divisibility.
+
+To be precise about the ambient ring, work in
+$R=\Z[\alpha]$, with $\beta=1-\alpha$. It is a free abelian group
+with basis $1,\alpha$. In particular
+\begin{equation}\label{eq:intersection}
+ p^aR\cap\Z=p^a\Z.
+\end{equation}
+Indeed, the coefficient of $\alpha$ in an integer is zero, and its
+coefficient of $1$ is that integer. Thus a congruence between integers
+proved coefficientwise in this basis is an ordinary integer congruence.
+
+\begin{theorem}\label{thm:Tp}
+For all primes $p\geq5$ and integers $m\geq0$,
+\begin{equation}\label{eq:Tp}
+ T_{mp}\equiv T_m\pmod{p^2}.
+\end{equation}
+In particular $T_p\equiv1\pmod{p^2}$.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:roots} with $n=mp$, any term for which $p\nmid j$
+vanishes modulo $p^2$, by \cref{lem:babbage}. For $j=ip$, the same
+lemma allows replacement of $\binom{mp}{ip}^2$ by $\binom mi^2$.
+Consequently
+\[
+ T_{mp}\equiv\sum_{i=0}^m\binom mi^2
+                    (\alpha^p)^{m-i}(\beta^p)^i\pmod{p^2R}.
+\]
+Every prime $p\geq5$ is $1$ or $5$ modulo $6$. In the first case
+$(\alpha^p,\beta^p)=(\alpha,\beta)$; in the second it is
+$(\beta,\alpha)$. The sum is therefore $T_m$ in either case, using
+$i\mapsto m-i$ in the second. Finally apply \eqref{eq:intersection}.
+\end{proof}
+
+\begin{remark}
+The exclusion of $p=3$ has a visible algebraic cause: both
+$\alpha^3$ and $\beta^3$ equal $-1$, rather than preserving or
+exchanging the roots. Indeed $T_3=7\not\equiv1\pmod9$.
+This is not a technical omission in the proof.
+\end{remark}
+
+\section{Proof of (B4), multiplier extension, and sharpness}\label{sec:B4}
+
+\subsection{A stronger interior congruence}
+\begin{theorem}\label{thm:multiplier}
+For every prime $p\geq5$, $k\geq2$, and $m\geq0$,
+\begin{equation}\label{eq:multiplier}
+ \boxed{\quad M_{mp^k+n}\equiv T_mM_n\pmod{p^2}
+ \quad(0\leq n\leq p^{k-1}-3).\quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $s=2$ in \cref{thm:block}. Its interior term is
+$T_{mp}M_n$, and \cref{thm:Tp} replaces $T_{mp}$ by $T_m$ modulo
+$p^2$.
+\end{proof}
+Taking $m=1$ proves (B4), since $T_1=1$. This completes the proof of
+all four OEIS-listed targets.
+
+\subsection{The first adjacent coefficient modulo \texorpdfstring{$p^2$}{p squared}}
+\begin{lemma}\label{lem:Up}
+For $p\geq5$ prime,
+\begin{equation}\label{eq:Up}
+ U_p\equiv\frac p2(1+3\eps_p)\equiv
+ \begin{cases}2p,&p\equiv1\pmod6,\\-p,&p\equiv5\pmod6\end{cases}
+ \pmod{p^2}.
+\end{equation}
+More generally, for $m\geq1$,
+\begin{equation}\label{eq:Ump}
+ U_{mp}\equiv\frac{mp}{2}
+            \bigl(T_m+3\eps_pT_{m-1}\bigr)\pmod{p^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Combining \eqref{eq:Trec} with \eqref{eq:Uidentity} gives the exact
+identity
+\begin{equation}\label{eq:Urec}
+ 2(N+1)U_N=N\bigl(T_N+3T_{N-1}\bigr)\qquad(N\geq1).
+\end{equation}
+For $N=mp$, the factor $N+1$ is invertible modulo $p^2$, and
+$N/(N+1)\equiv N\pmod{p^2}$. It is enough to know the coefficients
+inside the parentheses modulo $p$.
+
+Theorem~\ref{thm:Tp} gives $T_{mp}\equiv T_m\pmod p$. Also,
+by Frobenius,
+\[
+ T_{mp-1}=\CT\,P^{(m-1)p}P^{p-1}
+ \equiv\CT\,P(x^p)^{m-1}P(x)^{p-1}
+ =T_{m-1}T_{p-1}\pmod p.
+\]
+The last equality holds because the support of $P^{p-1}$ is strictly
+between $-p$ and $p$. Equation~\eqref{eq:Tqminus1} gives
+$T_{p-1}\equiv\eps_p$. Substituting in \eqref{eq:Urec} proves
+\eqref{eq:Ump}. Its case $m=1$ is \eqref{eq:Up}.
+\end{proof}
+
+\subsection{The maximal initial interval}
+\begin{theorem}[Exact first failure modulo $p^2$]\label{thm:sharpP2}
+For every prime $p\geq5$ and integer $k\geq2$,
+\begin{equation}\label{eq:sharpP2}
+ \boxed{\quad
+ M_{p^k+p^{k-1}-2}-M_{p^{k-1}-2}
+ \equiv
+ \begin{cases}
+ -2p,&p\equiv1\pmod6,\\
+ p,&p\equiv5\pmod6
+ \end{cases}
+ \pmod{p^2}.\quad}
+\end{equation}
+In particular $p^{k-1}-3$ is the largest upper endpoint $L$ for which
+$M_{p^k+n}\equiv M_n\pmod{p^2}$ holds for every $0\leq n\leq L$.
+\end{theorem}
+\begin{proof}
+Use the second case of \cref{thm:block} with $s=2$, $m=1$, and
+$q=p^{k-1}$. It gives
+\[
+ M_{p^k+q-2}-M_{q-2}
+ \equiv(T_p-1)M_{q-2}-U_p\equiv-U_p\pmod{p^2}.
+\]
+Now apply \cref{lem:Up}. Both resulting residues are nonzero modulo
+$p^2$ because $p\geq5$. The preceding interior interval is valid by
+\cref{thm:multiplier}, so its endpoint is maximal.
+\end{proof}
+
+The assertion is about the maximal interval \emph{starting at zero}.
+Some later individual offsets may again satisfy the congruence; that does
+not contradict the exact first failure.
+
+\begin{example}
+For $p=5$, $k=2$, (B4) applies to offsets $0,1,2$. At the next offset,
+\[
+ M_{28}=208023278209,\qquad M_3=4,
+\]
+so $M_{28}-M_3\equiv5\pmod{25}$. For $p=7$, $k=2$, the first
+excluded offset is $5$, and the difference is $35$ modulo $49$, equivalently $-14$ modulo $49$.
+The same defect $35$ occurs at offset $47$ for the shift $7^3$.
+\end{example}
+
+\section{Higher precision: the correct extension and its limitations}\label{sec:higher}
+
+\subsection{A transfer formula, not unrestricted periodicity}
+The interior of \cref{thm:block} already proves
+\begin{equation}\label{eq:precision}
+ M_{mp^k+n}\equiv T_{mp^{s-1}}M_n\pmod{p^s},
+ \quad
+ \begin{gathered}
+ p\text{ odd prime},\quad 1\leq s\leq k,\quad m\geq0,\\
+ 0\leq n\leq p^{k-s+1}-3.
+ \end{gathered}
+\end{equation}
+At $s=1$ the scalar is $T_m$, and at $s=2$ it can again be replaced
+by $T_m$ for $p\geq5$. At higher precision it is generally incorrect
+to replace it by $T_m$, even when $m=1$.
+
+For instance, choose $p=5$, $s=k=3$, and $n=0$. The theorem says
+\[
+ M_{125}\equiv T_{25}\pmod{125}.
+\]
+Exact integer computation gives
+\begin{equation}\label{eq:p3counter}
+ M_{125}\equiv T_{25}\equiv51\not\equiv1=M_0\pmod{125}.
+\end{equation}
+Thus even the reduced range $0\leq n\leq p^{k-2}-3$ does not make
+the unweighted analogue of (B4) true modulo $p^3$.
+This is a counterexample to a \emph{possible strengthening}, not to any
+of the four original statements.
+
+The prime restriction in (B4) is also essential:
+\begin{equation}\label{eq:p3failure}
+ M_9=835\equiv7\not\equiv1=M_0\pmod9.
+\end{equation}
+The transfer theorem correctly predicts the factor $T_3=7$ here.
+
+\subsection{Relationship to stronger known arithmetic}
+Pan--Sun's theorem gives, for $p>3$ and $a\geq1$,
+\[
+ T_{mp^a}\equiv T_{mp^{a-1}}\pmod{p^{2a+2v_p(m)}}
+ \qquad(m\geq1),
+\]
+as a consequence of the $p$-adic integrality of
+$(T_{pN}-T_N)/(pN)^2$~\cite{panSun}. This is much stronger than
+\cref{thm:Tp}. It can be inserted into \eqref{eq:precision} to reduce
+its scalar further. For example, for $s\geq2$, put
+$t=\lfloor(s-1)/2\rfloor$. All successive reductions from exponent
+$s-1$ down to $t$ have modulus at least $p^s$, so
+\begin{equation}\label{eq:panrefine}
+ T_{mp^{s-1}}\equiv T_{mp^t}\pmod{p^s}.
+\end{equation}
+For $m=0$ the equality is immediate. This optional refinement depends
+on the cited stronger theorem, unlike (B1)--(B4) and the block theorem,
+whose proofs above are self-contained.
+
+\section{A digit algorithm for enormous indices}\label{sec:algorithm}
+
+\subsection{The Lucas rule for central trinomial coefficients}
+\begin{proposition}\label{prop:Lucas}
+For a prime $p$, $a\geq0$, and $0\leq b<p$,
+\begin{equation}\label{eq:Lucas}
+ T_{ap+b}\equiv T_aT_b\pmod p.
+\end{equation}
+Consequently, if $N=d_0+d_1p+\cdots+d_\ell p^\ell$ with
+$0\leq d_i<p$, then
+\begin{equation}\label{eq:digits}
+ T_N\equiv\prod_{i=0}^{\ell}T_{d_i}\pmod p.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Frobenius gives
+$T_{ap+b}\equiv\CT\,P(x^p)^aP(x)^b\pmod p$.
+All exponents of $P(x)^b$ lie in $[-b,b]\subset(-p,p)$, so only
+constant terms can interact. This proves \eqref{eq:Lucas}, and
+iteration gives \eqref{eq:digits}.
+\end{proof}
+This digit rule is also the foundation of the corresponding results in
+Kohen's work~\cite{kohenUniform,kohenDensity}. Its proof is included so
+that the algorithm's correctness does not rely on a black box.
+
+\subsection{Evaluation and arithmetic complexity}
+For an odd prime $p$, first compute $t_j=T_j\bmod p$ for $0\leq j<p$.
+Recurrence~\eqref{eq:Trec} can be used here because its divisors are
+strictly less than $p$. The inverses $1^{-1},\ldots,(p-1)^{-1}$ may be
+computed in $O(p)$ field operations using
+\[
+ \operatorname{inv}(i)\equiv
+ -\left\lfloor\frac pi\right\rfloor\operatorname{inv}(p\bmod i)\pmod p
+ \qquad(2\leq i<p).
+\]
+This follows by dividing the identity
+$p=\lfloor p/i\rfloor i+(p\bmod i)$ by $i(p\bmod i)$ in $\F_p$.
+
+Use the base-$p$ digits of $N$, $N+1$, and $N+2$ to evaluate their
+three central trinomial coefficients, and then apply
+\begin{equation}\label{eq:Mfast}
+ M_N\equiv2^{-1}\bigl(3T_N+2T_{N+1}-T_{N+2}\bigr)\pmod p.
+\end{equation}
+The table takes $O(p)$ storage and $O(p)$ field operations; each query
+then takes $O(1+\log_p(N+2))$ field multiplications and integer digit
+extractions. These are arithmetic-operation counts. For a growing input
+integer $N$, the bit cost of repeated division to extract digits must
+also be included; the statement is not a unit-cost bit-complexity bound.
+
+A compact version of the evaluation stage is:
+\begin{lstlisting}[language=Python]
+def trinomial_from_digits(n, p, table):
+    value = 1
+    while n:
+        n, digit = divmod(n, p)
+        value = value * table[digit] % p
+    return value
+
+
+def motzkin_mod_prime(n, p, table):
+    a = trinomial_from_digits(n, p, table)
+    b = trinomial_from_digits(n + 1, p, table)
+    c = trinomial_from_digits(n + 2, p, table)
+    return (3*a + 2*b - c) * ((p + 1)//2) % p
+\end{lstlisting}
+The supplied module adds validation, construction of the table, exact
+arithmetic routines, and a command-line interface.
+
+\subsection{Prime-power block evaluation}
+For an index of the form $mp^k+d$ covered by \cref{thm:block}, computation
+modulo $p^s$ needs only $M_d$, $T_h$, and possibly $U_h$, where
+$h=mp^{s-1}$. When $k$ is large relative to $s$, these can be dramatically
+smaller than the target index. The implementation
+\texttt{block\_mod\_prime\_power} uses precisely the three cases of
+\eqref{eq:block}.
+
+This is a specialized block algorithm, not a general fast algorithm for
+arbitrary indices modulo arbitrary prime powers. Its local exact
+computations grow with $d$ and $h$. Stating that restriction avoids
+confusing a useful reduction with a universal complexity result.
+
+\section{Reproducible checks and artifact contents}\label{sec:verification}
+
+\subsection{Independent finite verification}
+The accompanying verifier constructs $M_0,\ldots,M_{20000}$ and enough
+$T_n$ values by the exact integer recurrences. Each division is checked
+for a zero remainder before its result is used. It does not generate
+these values using the congruences under test.
+
+The first 151 values are independently checked against the binomial
+sums \eqref{eq:Tsum} and \eqref{eq:Msum}; the first 81 Motzkin numbers
+are also checked by height-by-height path dynamic programming. The
+congruence checks cover odd primes up to $97$, with parameters restricted
+so that the exact oracle contains the required indices. Multiplier
+bounds and the complete iteration limits are explicit in the script.
+The higher-precision block checks use $p\in\{3,5,7,11,13\}$,
+$s\leq4$, and the same index cap.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check family & Number of checks\\
+\midrule
+Bala (B1) & 251\\
+Bala (B2) & 144\\
+Bala (B3) & 98,471\\
+Bala (B4) & 10,476\\
+Full prime-power block theorem & 96,478\\
+Prime-modulus digit algorithm & 28,824\\
+Three-trinomial identity & 20,001\\
+Prime-square multiplier extension & 12,735\\
+All remaining checks & 9,434\\
+\midrule
+Total & 276,814\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exact first failure modulo $p^2$ was checked for 36 admissible
+prime--exponent pairs. A few rows of the full CSV are:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$p$ & $k$ & First excluded offset & Observed error & Modulus\\
+\midrule
+5 & 2 & 3 & 5 & 25\\
+5 & 3 & 23 & 5 & 25\\
+7 & 2 & 5 & 35 & 49\\
+7 & 3 & 47 & 35 & 49\\
+11 & 2 & 9 & 11 & 121\\
+13 & 2 & 11 & 143 & 169\\
+\bottomrule
+\end{tabular}
+\end{center}
+These observations are consequences of \cref{thm:sharpP2}, not the
+basis of its proof. The programs are not a formal proof-assistant
+verification of the mathematical arguments.
+
+\subsection{Example commands}
+The code uses only the Python standard library and is written for
+Python 3.9 or later. The included run was executed with Python 3.13.5.
+From the archive's top-level directory:
+\begin{lstlisting}
+python code/verify.py
+python code/motzkin.py exact 28
+python code/motzkin.py mod 12345678901234567890 97
+python code/motzkin.py block 1 3 0 5 3
+\end{lstlisting}
+The last command returns $51$, illustrating \eqref{eq:p3counter}.
+The command
+\begin{lstlisting}
+python code/verify.py --max-index 20000 --prime-limit 97
+\end{lstlisting}
+recreates the checked JSON report and CSV data. Increasing the exact
+index cap consumes more memory because the verifier deliberately stores
+large exact integers; this is verification infrastructure rather than the
+space-efficient query algorithm.
+
+For the much larger index $N=10^{100}+123456789$, the digit evaluator
+returns the following residues:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$p$ & 5 & 7 & 11 & 97\\
+\midrule
+$M_N\bmod p$ & 1 & 0 & 1 & 28\\
+\bottomrule
+\end{tabular}
+\end{center}
+These last outputs illustrate the proved algorithm. They were not
+independently compared with a construction of the enormous exact $M_N$,
+and are not included as independent oracle checks.
+
+\subsection{Files supplied}
+The archive contains the \LaTeX{} source and its compiled PDF,
+\nolinkurl{code/motzkin.py}, \nolinkurl{code/verify.py},
+\nolinkurl{data/verification.json}, \nolinkurl{data/sharp_boundaries.csv},
+and \nolinkurl{data/initial_values.csv}. The last file contains values
+through index $200$, with sequence IDs and the $U_0=0$ convention made
+explicit. A README gives build and execution instructions. Notes record
+the source locations and a proposed OEIS update; nothing has been
+submitted to or changed in OEIS.
+
+\section{Conclusion}\label{sec:conclusion}
+All four of Bala's formulas follow from a small set of exact mechanisms.
+The factor $1-x^2$ imposes the nonnegativity condition on paths. Frobenius
+and its elementary lifting spread the exponents far apart. In the
+interior of a block, only the central coefficient survives. At its last
+two offsets, a single adjacent coefficient survives as well. Finally,
+factorization over sixth roots of unity turns prime divisibility of a
+binomial coefficient into prime-square divisibility of its square.
+
+The same reasoning settles the two natural questions that the original
+congruences leave implicit. The prime-$5\bmod6$ boundary formula
+alternates with the parity of the exponent, and both stated repetition
+ranges end exactly where the first nonzero support interaction occurs.
+The errors are explicit and never vanish in the relevant moduli:
+$-1$ modulo $p$, and either $-2p$ or $p$ modulo $p^2$.
+The higher-precision theorem retains the necessary central-trinomial
+factor rather than asserting an invalid stronger periodicity.
+
+\clearpage
+\appendix
+\section{An alternative rational proof of \texorpdfstring{$T_p\equiv1\pmod{p^2}$}{the scalar congruence}}
+\label{app:rational}
+The root-of-unity proof gives the useful multiplier statement
+$T_{mp}\equiv T_m\pmod{p^2}$. For readers preferring a proof entirely
+in rational arithmetic, the special case needed for (B4) has the
+following independent derivation.
+
+Let $L_0=2$, $L_1=1$, and $L_n=L_{n-1}-L_{n-2}$. The sequence is
+periodic with period six:
+\[
+ 2,1,-1,-2,-1,1,2,1,\ldots.
+\]
+In particular $L_p=1$ for every prime $p\geq5$. Its generating
+identity is
+\[
+ -\log(1-z+z^2)=\sum_{n\geq1}\frac{L_n}{n}z^n.
+\]
+This can be checked by differentiation and the initial values. Expanding
+$-\log(1-(z-z^2))$ and extracting coefficients gives, for $n\geq1$,
+\begin{equation}\label{eq:Lucaspoly}
+ L_n=\sum_{j=0}^{\lfloor n/2\rfloor}
+ (-1)^j\frac{n}{n-j}\binom{n-j}{j}.
+\end{equation}
+Take $n=p$. For $1\leq j\leq(p-1)/2$,
+\[
+ \binom p{2j}\binom{2j}j
+ =\frac p{2j}\binom{p-1}{2j-1}\binom{2j}j
+ \equiv-\frac p{2j}\binom{2j}j\pmod{p^2}.
+\]
+On the other hand, the $j$th summand of \eqref{eq:Lucaspoly} is
+\begin{align*}
+ (-1)^j\frac p{p-j}\binom{p-j}j
+ &=(-1)^j\frac pj\binom{p-j-1}{j-1}\\
+ &\equiv-\frac pj\binom{2j-1}{j-1}
+ =-\frac p{2j}\binom{2j}j\pmod{p^2}.
+\end{align*}
+All denominators in these congruences are prime to $p$. The $j=0$
+summand in both expressions is $1$. Comparing with \eqref{eq:Tsum}
+therefore proves $T_p\equiv L_p=1\pmod{p^2}$. This also explains
+why the period-six distinction appears without requiring arithmetic in
+an extension ring.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\bibitem{oeisM}
+The OEIS Foundation Inc., \emph{A001006: Motzkin numbers},
+\url{https://oeis.org/A001006}. Consulted 20 September 2026.
+The four target conjectures are the comment by Peter Bala dated
+10 February 2022.
+
+\bibitem{oeisT}
+The OEIS Foundation Inc., \emph{A002426: Central trinomial coefficients},
+\url{https://oeis.org/A002426}. Consulted 20 September 2026.
+
+\bibitem{oeisU}
+The OEIS Foundation Inc., \emph{A005717: Next-to-central trinomial
+coefficients}, \url{https://oeis.org/A005717}.
+Consulted 20 September 2026. The present article extends the offset by
+setting $U_0=0$.
+
+\bibitem{oeisD}
+The OEIS Foundation Inc., \emph{A005773: Number of directed animals of
+size $n$}, \url{https://oeis.org/A005773}.
+Consulted 20 September 2026. See the coefficient identity in David
+Callan's comment dated 7 February 2004.
+
+\bibitem{kohenUniform}
+N.~Kohen, \emph{Uniform Recurrence in the Motzkin Numbers and Related
+Sequences mod $p$}, arXiv:2403.00149v1 (2024).
+\url{https://arxiv.org/abs/2403.00149}.
+See the central-trinomial digit rule and the use of
+$2M_n=3T_n+2T_{n+1}-T_{n+2}$.
+
+\bibitem{kohenDensity}
+N.~Kohen, \emph{Density and Symmetry in the Generalized Motzkin Numbers
+mod $p$}, arXiv:2411.03681v1 (2024).
+\url{https://arxiv.org/abs/2411.03681}.
+See Proposition 6 for $M_{p-2}$, Proposition 7 for digit
+multiplicativity, and Proposition 9 for boundary digit patterns.
+
+\bibitem{panSun}
+H.~Pan and Z.-W.~Sun, \emph{Supercongruences for central trinomial
+coefficients}, Frontiers in Combinatorics and Number Theory
+\textbf{2} (2026), 55--62.
+\url{https://arxiv.org/abs/2012.05121v3}.
+First preprint posted 9 December 2020; final arXiv revision
+13 March 2026. See Theorem 1.1 and Lemma 2.1.
+\end{thebibliography}
+\end{document}

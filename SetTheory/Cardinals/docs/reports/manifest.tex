@@ -1,0 +1,1572 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,
+            citecolor=MidnightBlue]{hyperref}
+
+\hypersetup{%
+  pdftitle={A manifest of the research reports in docs/reports},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Catalogue of 104 independent mathematical research packages}}
+
+\definecolor{Ink}{HTML}{16324F}
+\definecolor{Accent}{HTML}{4E5C3D}
+
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+
+\newcounter{entrynum}
+\setcounter{entrynum}{0}
+
+\emergencystretch=1.6em
+
+\def\UrlBreaks{\do\/\do\-\do\_\do\.}
+\def\UrlBigBreaks{\do\/}
+
+% \entry{title}{directory}{main document}{source archive}{description}
+\newcommand{\entry}[5]{%
+  \par\medskip\noindent
+  \refstepcounter{entrynum}%
+  \textbf{\theentrynum.\; #1}\par\nopagebreak
+  \nopagebreak{\raggedright\small\color{Ink}%
+    \nolinkurl{#2/}\textbf{\nolinkurl{#3}}\par}\nopagebreak
+  \nopagebreak{\raggedright\footnotesize\color{gray}%
+    from \texttt{#4}\par}\nopagebreak
+  \smallskip\noindent #5\par}
+
+\newcommand{\dir}[1]{\texttt{#1}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
+  {\large One hundred and four independent mathematical research packages,\\
+   classified by subject}\\[1.0em]
+  {\normalsize Vladimir Reshetnikov}\\[0.3em]
+  {\normalsize 20 September 2026}
+\end{center}
+
+\vspace{0.8em}
+
+\section{Scope and conventions}
+
+This document catalogues the one hundred and four research packages stored
+under \dir{docs/reports}.  The seven surreal-number reports that this catalogue
+used to carry were moved out to a repository of their own, with their history,
+and are no longer listed here.  They arrived as one hundred and twenty-five ZIP
+archives, in seven deliveries, which have been unpacked and grouped into the
+subject hierarchy described in Section~\ref{sec:tree}.  The archives themselves
+are no longer kept in the repository.
+
+One hundred and twenty-five archives yield one hundred and three reports for
+two different reasons.  Twenty archives duplicated another: sixteen pairs, three
+three-way clusters and one four-way cluster.  Two more were folded into a
+neighbour not because they repeated it but because they shared a subject --- the
+three reports on term counts in the derivatives of power towers are now one
+article with a common framework and three parts.  That consolidation is
+editorial, and the distinction matters: those three were put through the
+duplicate sweep and cleared it, and their three theorems are three different
+theorems.  The seventh delivery of eighteen contained no duplicate at all, which
+is worth recording: a sweep that finds nothing is evidence about the collection,
+not a sweep that failed.
+Each pair has been merged into one report that proves the
+shared theorem once and keeps everything both originals built on top of it.
+Where the two reached a result by genuinely different routes, both proofs are
+kept and marked as alternatives, with a sentence on what each one buys; the
+merged shuffle report keeps three independent finite certifications of one
+theorem, and the merged report on surreal option graphs kept two different
+five-vertex counterexamples for the same reason before it moved out with the
+other surreal-number reports.  A merged entry below names both of its
+source archives and says what was doubled.
+
+Not every pair aimed at one problem is a duplicate.  The two Gonshor
+reports both prove his product-birthday bound, but on domains that are
+incomparable in both directions, so neither theorem contains the other and they
+are catalogued separately; the same holds for reports answering different numbered problems of
+one paper, noted where it occurs.
+
+Every package is self-contained and follows the same shape: a typeset article
+(\texttt{*.pdf}) with its complete \LaTeX{} source, a \texttt{README.md}
+summarising the result, usually a \texttt{code/} directory with exact-arithmetic
+verification scripts, a \texttt{data/} or \texttt{results/} directory holding the
+recorded output of those scripts, and often \texttt{STATUS.md},
+\texttt{sources.md} or \texttt{notes/} files auditing the sources consulted and
+the precise limits of the claim.
+
+Two cautions apply uniformly and are therefore not repeated in the individual
+entries.  First, these are AI-assisted research drafts: none has been
+independently refereed, and none has been checked in a proof assistant.  Second,
+the descriptions below record \emph{what each report sets out to settle and what
+it claims to prove}.  Compiling this manifest involved reading each package's
+statement of its problem and result; it did not involve checking any proof.
+Where a report itself flags a limitation --- a prior disproof, an imported
+theorem, a correction to the source, or an exception left open --- that is noted,
+because it changes what the report is.
+
+The naming of the directories is editorial.  Several distinct reports attack the
+same published problem, and some arrived under colliding archive names, so each
+directory has been given a name describing its own angle on the problem; the
+merged directories are named for their combined scope, which is why none of them
+still carries the name that once distinguished it from its partner.  The
+original archive names are recorded with every entry.
+
+\clearpage
+\section{The directory tree}
+\label{sec:tree}
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\toprule
+\textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
+\midrule
+\dir{enumerative-combinatorics} & --- & 21\\
+\midrule
+\dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 4\\
+ & \dir{wqo-powersets-and-statures} & 4\\
+ & \dir{friendly-order-types} & 3\\
+ & \dir{games-on-ordinals} & 3\\
+ & \dir{transfinite-words} & 2\\
+ & (top level) & 4\\
+\midrule
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 8\\
+ & \dir{binary-product-coefficient-counts} & 3\\
+ & (top level) & 5\\
+\midrule
+\dir{log-concavity-and-unimodality} & --- & 12\\
+\midrule
+\dir{hankel-determinants} & \dir{catalan-and-ballot} & 4\\
+ & \dir{somos-and-elliptic} & 3\\
+ & \dir{growth-and-runs} & 2\\
+ & (top level) & 1\\
+\midrule
+\dir{congruences-and-valuations} & \dir{supercongruences} & 4\\
+ & \dir{iterated-series} & 2\\
+ & (top level) & 3\\
+\midrule
+\dir{automata-and-formal-languages} & --- & 6\\
+\midrule
+\dir{tetration-and-digit-stabilization} & --- & 6\\
+\midrule
+\dir{graph-theory} & --- & 3\\
+\midrule
+\dir{quaternionic-analysis} & --- & 1\\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{104}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent
+More than a quarter of the collection consists of counterexamples and
+corrections rather than proofs.  Ordinal Chomp, open-query games, compositional
+tree series, the secant numbers, the decimal-length bound for tetration
+stabilization, power-tower stabilization, iterated-power digit stabilization,
+cluster variables, chromatic coefficients of cycles, products of $q$-integers,
+domination roots, Hardinian array constants, the mixed-base counterexample,
+recursive exponents, Gregory sign thresholds and binary substitution discrepancy
+all refute, or replace with a proved statement, an assertion published or
+catalogued elsewhere.  Several reports whose main outcome is a proof still
+correct the statement they prove: the Somos-8 certificates, the shifted Catalan
+Hankel polynomials and the Rueppel determinants record a sign error, a missing
+one-unit shift and a numbering ambiguity in their sources, and the
+independence-system thresholds report refines its target after finding that the
+original conjecture had already been disproved by someone else.
+
+\section{Ordinals and order types}
+
+\subsection{Friendly order types}
+
+Three reports on Isa Vialard's \emph{friendly order type} $f(P)$, the rank of
+the tree of open-ended bad sequences in which every chosen point has an
+incomparable partner in the current residual.  All three prove the same finite
+formula; they differ in what they build on top of it, and in how they prove it
+--- one by a forest-rank monovariant that survives moves deleting a whole upset,
+one through a lemma bounding the cut maxima.  A fourth report proved the formula
+by the first report's argument almost verbatim and has been merged into it.
+
+\entry{Friendly Order Types Through Incomparability Components}
+{ordinals-and-order-types/friendly-order-types/incomparability-components-and-infinite-tails}
+{friendly\_order\_types.pdf}{friendly\_order\_type\_research (1).zip}
+{The same component formula, together with an exact friendly rank for connected
+infinite well-partial-orders: writing $o(C)=\lambda+n$ with $\lambda$ the limit
+part and $T(C)$ the finite set of points with finite principal upsets.
+Includes an exhaustive finite verification and a proof audit.}
+
+\entry{Friendly Order Type Through Incomparability Components}
+{ordinals-and-order-types/friendly-order-types/matroid-rank-and-ordinal-sums}
+{article.pdf}{friendly\_order\_type\_research (3).zip}
+{Identifies $|P|-c(P)$ with the graphic-matroid rank and the incidence-matrix
+rank of the incomparability graph.  Adds a substitution formula, a finite
+Cartesian-product formula, and additivity over arbitrary well-ordered ordinal
+sums; evaluates every well-partial-order whose incomparability components are
+finite, and gives countable counterexamples delimiting stronger infinite
+extrapolations.}
+
+\entry{Friendly Order Types of Finite Posets and Ordinal Products}
+{ordinals-and-order-types/friendly-order-types/components-forests-and-ordinal-products}
+{friendly\_order\_types.pdf}{friendly\_order\_types\_research.zip + friendly\_order\_type\_research.zip}
+{Proves $f(P)=|P|-c(\mathrm{Inc}(P))$ for a finite poset $P$, where $c$ counts
+connected components of the incomparability graph (isolated vertices included),
+and classifies the witnesses: every maximum friendly subset is $P$ minus one
+minimal root per component, counted by $\prod|\mathrm{Min}(C_i)|$.  With
+Vialard's width-transfer theorem this gives ordinal width $\omega^{f(P)}$ for
+the Dershowitz--Manna multiset ordering.  On the transfinite side it proves
+$f(\alpha_1\times\cdots\times\alpha_r\times B)=\Theta$, the natural product,
+except that it is the predecessor of $\Theta$ when every $\alpha_i$ is a
+successor and $B$ has a greatest element, and classifies arbitrary finite
+ordinal boxes.  Also: spanning-forest certificates, exact monotonicity under
+added comparisons, a bivariate generating function, and explicit four-point
+factors with equal $(o,h,w,f)$ whose products differ.  \emph{Merged; the
+Cartesian-product formula is proved twice, once by corner deletion and once by
+a chain-grid spanning-subgraph argument.}}
+
+\subsection{Well-quasi-ordered powersets and statures}
+
+Four reports on the open questions in Section~6 of Abriola, Halfon, Lopez,
+Schmitz, Schnoebelen and Vialard, \emph{Measuring well-quasi-ordered finitary
+powersets} (arXiv:2312.14587v2), and on the corresponding topological invariant.
+
+\entry{Cofinal strata and ordinal absorption}
+{ordinals-and-order-types/wqo-powersets-and-statures/cofinal-strata-of-finitary-powersets}
+{article.pdf}{cofinal\_strata\_ordinal\_powersets.zip}
+{For $S_\alpha(Q)$, a finite poset $Q$ with each point replaced by a chain
+$\alpha=\omega^\rho$, proves
+$o(K(S_\alpha(Q)))=\sum_k \omega^{\rho\otimes k}c_k(Q)$ and
+$h(K(S_\alpha(Q)))=\alpha\cdot\mathrm{height}(M(Q))$, where $c_k$ counts size-$k$
+maximal antichains not dominated by a larger one.  The maximal-order-type
+theorem allows nonuniform pure well-partial-order fibers and is proved by a
+finite cofinal-stratification argument.}
+
+\entry{Intrinsic ordinal approximations for finitary powersets}
+{ordinals-and-order-types/wqo-powersets-and-statures/intrinsic-ordinal-approximations}
+{article.pdf}{intrinsic\_ordinal\_approximations.zip}
+{Studies the intrinsic invariant
+$a_o(A)=\sup\{o(B)+1: \mathrm{Idl}(B)\hookrightarrow A\}$.  Proves the universal
+bound $a_o(A)\le h(P_f(A))$ with equality exactly when every finitely generated
+downset of $A$ is an algebraic dcpo, gives the closed formula
+$h(P_f(\prod_i\alpha_i))=\sup(\bigotimes_i(1+a_i)+1)$, and shows the universal
+identity fails on $\lambda+F$.}
+
+\entry{Ordinal Order Maps and Finitary Powersets of Ordinal--Finite Grids}
+{ordinals-and-order-types/wqo-powersets-and-statures/ordinal-order-maps-and-grids}
+{ordinal\_order\_maps.pdf}{ordinal\_order\_maps\_research.zip}
+{Exact maximal order types and heights for finite Hoare powersets of
+$\beta\times Q$ with $Q$ a finite poset: for
+$\beta=\omega^{\gamma_0}+\cdots+\omega^{\gamma_{m-1}}$,
+$o(\mathrm{Mon}(Q,\beta))=\bigoplus_{s\,\text{isotone}}\omega^{\bigoplus_q\gamma_{s(q)}}$.}
+
+\entry{Sharp ordinal bounds for Hoare powerspaces}
+{ordinals-and-order-types/wqo-powersets-and-statures/hoare-powerspace-statures}
+{article.pdf}{hoare\_statures\_research.zip}
+{For all Noetherian spaces, $1+\|X\|\le\|HX\|\le 2^{\|X\|}$, with witnesses
+attaining both endpoints at every ordinal and $T_1$ upper witnesses; the older
+$\omega^\alpha$ bound is attainable at infinite input stature $\alpha$ exactly
+when $\omega\cdot\alpha=\alpha$; the complete spectrum at $\omega+n$ is
+$\omega\cdot j(U)+(j(Q)-j(U))$.  Extends the known well-quasi-order results of
+Abriola et al.\ to arbitrary Noetherian spaces.}
+
+\subsection{Transfinite words}
+
+Two reports on Harry Altman, \emph{Bounding finite-image sequences of length
+$\omega^k$} (arXiv:2409.03199v2), Example~3.15: is the bound
+$\omega^{\omega^4}$ sharp for words of length ${<}\,\omega^2$ over the
+two-element antichain?  A third report matched the first lemma for lemma and has
+been merged into it.
+
+\entry{Exact maximal order types of finite-alphabet transfinite words}
+{ordinals-and-order-types/transfinite-words/finite-alphabet-transfinite-words}
+{article.pdf}{finite\_alphabet\_transfinite\_words.zip}
+{Proves $o(W_k(P))=\omega^{\omega^{N_k(P)-1}}$ for words of ordinal length
+${<}\,\omega^k$ over a finite poset $P$ under subsequence embedding, where
+$N_k$ counts indecomposable classes of a canonical finite atom poset
+$I_k(P)$, with $N_1(P)=|P|$ and $N_{k+1}(P)=|P|+J(I_k(P))-1$.  For $k=2$ the
+binary antichain gives $\omega^{\omega^4}$ --- the tightness Altman leaves
+open --- and the binary chain gives $\omega^{\omega^3}$.}
+
+\entry{Guarded periodic blocks and exact maximal order types below omega squared}
+{ordinals-and-order-types/transfinite-words/order-types-below-omega-squared}
+{article.pdf}{omega2\_order\_types\_proposed\_solution.zip + ordinal\_words\_research.zip}
+{Proves $o(s_{\omega^2}(P))=\omega^{\omega^{n+j(P)-2}}$ for $n=|P|\ge2$, with
+$j(P)$ the number of downsets including the empty one; the empty and singleton
+alphabets are genuine exceptions.  The binary antichain gives $\omega^{\omega^4}$
+--- the tightness Altman leaves open --- and the binary chain $\omega^{\omega^3}$.
+Adds an extremality corollary with both equality characterisations (among
+$n$-element posets only the chain minimises and only the antichain maximises),
+the $j(P)$ toolkit, the arbitrary-support-family classification, and an
+exact-length stratum calculus showing the supremum over lengths is only
+$\omega^{\omega^n}$, strictly below the answer --- so the theorem cannot be
+obtained stratum by stratum.  \emph{Merged; the product amplification is done
+twice, once via de Jongh--Parikh and once by an elementary hand proof that
+removes the import.}}
+
+\subsection{Ordinal arithmetic}
+
+Four reports on ordinal and infinitary arithmetic, two of them independent
+proposed solutions to Problem~6.2 of Paolo Lipparini,
+\emph{Monotone infinitary operations on ordinals} (arXiv:2505.00424v2): define
+and study the least weakly monotone, $e$-special strictly increasing operation
+on countable sequences of ordinals.
+
+\entry{An Explicit Formula for the Minimal $e$-Monotone Infinitary Ordinal Sum}
+{ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-infinitary-sum}
+{article/explicit\_ordinal\_sum.pdf}{lipparini\_problem\_6\_2\_proposed\_solution.zip}
+{An explicit formula for the least admissible operation, proved by an arithmetic
+admissibility upper bound and a rank-theoretic minimality lower bound, using an
+explicit countable-multiset profile order, its rank, absorption and correction
+rules, bounded-poset heights and finite-cap ranks.  Imports Lipparini's
+formula and minimality theorem for the weaker operation $S$.}
+
+\entry{An Explicit Formula for Lipparini's Minimal Infinitary Ordinal Operation}
+{ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-operation-formula}
+{article.pdf}{ordinal\_operation\_research.zip}
+{A three-case finite ordinal-arithmetic formula with proofs of admissibility and
+pointwise minimality.  Relative to Lipparini's already evaluated $S$, the
+correction is zero, a finite increment, or one \emph{natural} summand $\omega$
+--- ordinary addition of $\omega$ is not a substitute.}
+
+\entry{Jacobsthal Products All at Once}
+{ordinals-and-order-types/ordinal-arithmetic/jacobsthal-products-all-at-once}
+{article.pdf}{Jacobsthal\_Products\_All\_at\_Once.zip}
+{Question~2.16 of Altman, \emph{Intermediate arithmetic operations on ordinal
+numbers} (MLQ 63 (2017) 228--242), asks for an all-at-once order-theoretic model
+of finite and infinitary Jacobsthal products, rather than one built from
+parenthesized binary multiplication or a limit.  Gives a constructive
+affirmative answer: a Cantor-normal-form comparison rule on actual tuples or
+finite-support functions, invariant under order isomorphisms and extending the
+componentwise order, whose definition never evaluates a Jacobsthal product.
+Adds a restricted maximality characterisation and a finite-tail reduction.
+The associativity identity and the binary normal-form formula are classical and
+are not claimed here; the construction is not claimed to be preserved by
+arbitrary order embeddings.}
+
+\entry{Pairwise Coherence Does Not Guarantee Completion}
+{ordinals-and-order-types/ordinal-arithmetic/pairwise-coherence-of-infinitary-products}
+{ordinal\_product\_coherence.pdf}{ordinal\_product\_coherence.zip}
+{Answers the pairwise-coherence sufficiency question of Lipparini,
+\emph{Noncommutative infinitary semigroups} (arXiv:2605.28413v1, Remark~7.1(b)),
+negatively.  On the two-element group $C_2$, retaining every finite product and
+declaring every infinite all-$e$ product to be $e$ gives a partial system
+satisfying full pairwise regrouping, even for arbitrary partitions, yet with no
+injective extension defining all finite and $\omega$-indexed products; two
+elements is minimal.  Adds: for any monoid $M$ the canonical partial domain
+$P(M)$ is coherent, and for directly finite $M$ it completes exactly when the
+unit group is trivial; and for every $r$ a system on $3r+4$ elements coherent
+through nesting depth $r$ but conflicting at depth $r+1$, so no fixed finite
+depth of the coherence test characterises completability.}
+
+\subsection{Games on ordinals}
+
+\entry{An ordinal Chomp transition at 2}
+{ordinals-and-order-types/games-on-ordinals/ordinal-chomp-transition-at-two}
+{ordinal\_chomp\_counterexample.pdf}{ordinal\_chomp\_transition\_counterexample.zip + ordinal\_chomp\_counterexample.zip}
+{For a numerical semigroup $S$ ordered by $x\le_S y$ iff $y-x\in S$, and the
+ordinal extension ordered by ordinary ordinal subtraction (so $S^2$ is the
+\emph{lexicographic}, not coordinatewise, square), Chomp on $S$ is a
+second-player win while Chomp on $S^\sigma$ is a first-player win for every
+$\sigma\ge2$, and $\omega\cdot4+4$ is the \emph{least} winning opening.  Hence
+$\mathrm{ch}(\langle4,5,6\rangle)=\mathrm{ch}(\langle4,6,9\rangle)=2$, a negative
+answer to Question~4.6 of Rivero Herrera (arXiv:2504.07317v3) and a refutation of
+Conjecture~4.1 of v1, already for three small natural-number generators.  The
+proof reduces the infinite game to a finite spectral statement via a
+finite-window recurrence and an exact finite-state certificate, then transfers
+it by an explicit response procedure.  \emph{Merged; the shared
+$\langle4,6,9\rangle$ certificates were verified to hold the same 253 rows
+entry for entry, and the two reports' poisoned and unpoisoned conventions are
+reconciled by an explicit dictionary.}}
+
+\entry{Every ordinal as a point-separating game value}
+{ordinals-and-order-types/games-on-ordinals/point-separating-game-values}
+{ordinal\_separation.pdf}{ordinal\_separation\_research.zip}
+{For every ordinal $\lambda$, orders $\{0,1\}^\lambda$ lexicographically and
+gives it the topology of all downward-closed sets, and the refinement generated
+by downward-closed sets minus finite sets.  The point-separating game value is
+exactly $\lambda$ for both: the first space is compact $T_0$, the second compact
+$T_1$, and for infinite $\lambda$ neither is Hausdorff.  Taking
+$\lambda=\omega^2+1$ supplies a compact $T_1$ witness of cardinality continuum
+for Problem~1.2 of Chiozini, Csern\'ak and Soukup (arXiv:2510.05754v3), with no
+CH, forcing or large-cardinal hypothesis.  Hausdorff witnesses are not claimed.
+This is a different problem of that paper from the one the open-query games
+report answers.}
+
+\entry{Open-query games on ordinal spaces}
+{ordinals-and-order-types/games-on-ordinals/open-query-membership-games}
+{article.pdf}{ordinal\_membership\_games.zip}
+{A negative answer to Problem~1.3 of Chiozini, Csern\'ak and Soukup
+(arXiv:2510.05754v3): two copies of $[0,\omega]$ each have set-membership
+number~1, but their topological sum has value~2.  The general theorem computes
+the invariant for every nonempty Hausdorff space of finite Cantor--Bendixson
+height~$h$ as $\lceil\log_2(h+1)\rceil$ when the last nonempty derivative is a
+singleton and $\lceil\log_2(h+2)\rceil$ otherwise.}
+
+\subsection{Order-theoretic invariants without a subcategory}
+
+Two reports whose objects sit outside every subcategory above: the minor order
+on finite graphs, and a site of filters on $\omega$.
+
+\entry{Ordinal complexity of graph minors}
+{ordinals-and-order-types/graph-minor-ordinals}
+{graph\_minor\_ordinals.pdf}{graph\_minor\_ordinals.zip}
+{For finite simple graphs of maximum degree at most two under minor
+containment, computes maximal order type, ordinal antichain-tree width and
+descending-tree height: $o(D)=w(D)=\omega^{\omega\cdot2}$ and $h(D)=\omega$,
+with exact values $\omega^{b+k}$ and $\omega^{b+k-1}$ for the subfamilies
+bounded by path size $b$ and cyclic-component count $k$.  The general theorem is
+that a wqo $C$ of connected graphs with $o(C)=\alpha<\varepsilon_0$ has finite
+disjoint-union closure of type $\omega^\alpha$, proved by a component-splitting
+argument, since minor containment is not multiset embedding.  A corollary is
+that continuity fails for increasing unions of minor-closed classes.  The
+report is explicit that it does not compute the maximal order type of the minor
+order on all finite graphs and settles no named conjecture.}
+
+\entry{A two-valued obstruction to gluing Fr\'echet powers}
+{ordinals-and-order-types/frechet-two-valued-obstruction}
+{article.pdf}{frechet\_two\_valued\_obstruction.zip}
+{For the presheaf $F\mapsto A^\omega/{\sim_F}$ on proper filters on $\omega$
+containing the cofinite filter, with the dense Grothendieck topology, proves in
+ZF that it is a sheaf if and only if $|A|\le1$.  The counterexample is an
+explicit matching family of constant sections using two values, on a covering
+sieve with countably many generators each of countable base; the distinction
+between the number of sieve generators and the size of the full sieve is
+essential to it.  The question is Massas, \emph{A Semi-Constructive Approach to
+the Hyperreal Line} (2023), p.~517 after Fact~5.10, repeated in the 2024
+dissertation \emph{Duality and Infinity}, p.~249.}
+
+\entry{A sharp cover bound for congruences of finite lattices}
+{ordinals-and-order-types/lattice-congruence-cover-bound}
+{sharp\_cover\_bound.pdf}{lattice\_cover\_bound\_research.zip}
+{If a finite $n$-element lattice has an element with at least $k\ge3$ upper
+covers then $|\mathrm{Con}(L)|\le2^{\,n-k-1}$, with equality exactly for the
+glued sums $C_s\oplus M_k\oplus C_t$.  This replaces the multicolour Ramsey
+threshold $R_{k-1}(k)$ of the source's Lemma~4.4 (arXiv:2603.11454) by $k$
+itself.  Adds a sharp nonextremal gap, a fan-label ideal refinement, and a
+bound on the size of Cz\'edli's skeleton in terms of congruence density.  All
+congruence machinery, including Freese's maximum, is proved from scratch.  The
+target is an informal suggestion in the source, not a numbered conjecture.}
+
+\entry{A non-Baire translation-invariant ideal}
+{ordinals-and-order-types/non-baire-translation-invariant-ideal}
+{article.pdf}{non\_baire\_ideal\_research.zip}
+{An affirmative construction for Question~1 of Filipów and Tryba,
+\emph{Densities for sets of natural numbers vanishing on a given family}
+(J.\ Number Theory 211 (2020) 371--382; arXiv:2309.00982, p.~7): a
+translation-invariant ideal that is not Baire and carries a perfect
+translation-almost-disjoint family.}
+
+\section{Automata and formal languages}
+
+Five reports on state complexity, synchronization and language hierarchies.
+The first two are each a merge: the shuffle bound arrived four times and the
+DFAO reversal bound twice.
+
+\entry{The six-state shuffle bound}
+{automata-and-formal-languages/shuffle-six-state-bound}
+{shuffle\_six\_state.pdf}{shuffle\_six\_state\_research (1).zip + shuffle\_six\_state\_research.zip + Shuffle\_Six\_State\_Theorem.zip + six\_state\_shuffle\_research.zip}
+{For complete DFAs with $m,n\ge2$ and $\min(m,n)\le6$, the worst-case
+deterministic state complexity of the shuffle is
+$F(m,n)=2^{mn-1}+2^{(m-1)(n-1)}(2^{m-1}-1)(2^{n-1}-1)$, over a finite alphabet
+allowed to depend on $m$ and $n$; the unrestricted conjecture stays open.  The
+route is a reachability theorem in the universal shuffle automaton --- a subset
+is reachable exactly when it meets the initial row and the initial column ---
+proved by induction on $(m+n,|S|)$ down to a finite certificate obligation.
+\emph{Merged from four reports.  Two shipped the same 10{,}642 witnesses; a
+third supplies an independent database of 10{,}619 witnesses sharing no witness
+with them, so the finite step is certified twice over; a fourth adds a fifth
+analytic reduction that cuts the obligation to 453 certificates and replaces
+the solver search with a deterministic enumeration.  All three routes are
+kept.}}
+
+\entry{A coloring obstruction to maximal binary DFAO reversal}
+{automata-and-formal-languages/dfao-reversal-coloring-obstruction}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip}
+{For transformations $a,b$ on an $n$-element set and an output map to $k$
+labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
+with $g(k)$ the largest order of a permutation of $k$ symbols --- the
+binary-alphabet nonattainment question of Davies, arXiv:1705.07150v2,
+Section~5.  The mechanism is a collision-orbit graph, a rightmost singular
+factorization, and a cyclic relabeling bound.  Adds an abelian-permutation
+extension, a structural universal bound matching the published lower
+construction on all 372 pairs with $7\le n\le30$, and polynomial-time
+missing-coloring certificates.  \emph{Merged; the two originals ran the same
+three-case argument, and both a qualitative short proof and the counting proof
+are kept.}}
+
+\entry{Synchronizing D\.zyga's automata by a cyclic retract}
+{automata-and-formal-languages/dzyga-synchronizing-retract}
+{article.pdf}{Dzyga\_Automata\_Cyclic\_Retract\_Research.zip}
+{For the Figure-3-complete automaton $A_k$ of Conjecture~8 in Szyku\l{}a's 2026
+survey, exhibits an explicit word $R_k=p(ec^{r-1})^{r-2}e$ with $r=k+4$ that
+sends every state to $q_2$ for every $k\ge1$, of expanded length
+$8k^2+54k+92=\tfrac89n^2+\tfrac{22}3n+16$ for $n=3k+6$.  The proof is a cyclic
+retraction with two projected reflections whose discrepancy supplies one
+adjacent merger, and does not depend on the finite computations; shortening the
+reflected tail by one state gives a nonsynchronizing automaton with a dihedral
+permutation quotient.  This settles the synchronization clause of the stated
+model, not the numerical threshold conjecture, and the universal lower bound
+$\tau(q_0)\ge4k+8$ is not proved.}
+
+\entry{Gaps in bounded-shuffle hierarchies}
+{automata-and-formal-languages/insertion-degree-spectra}
+{article.pdf}{shuffle\_spectra\_research.zip}
+{A counterexample to the insertion-degree No-Gap Conjecture of Hughes,
+arXiv:2608.27755v1, Section~11, followed by positive results: every finite set
+of positive integers containing~1 is the insertion-degree spectrum of two
+nonempty finite languages over a suitable alphabet, and any prescribed finite
+list of degrees above~1 is realizable with every other output of degree~1.  A
+ternary pair has spectrum $\{1,3\}$ with sole difficult output \texttt{abcba},
+whose length~5 is the minimum possible for a gap witness; a binary pair has
+spectrum $\{1,2,4\}$ while all 18 singleton source-pair spectra are initial
+intervals, so source-pair ambiguity can erase a degree.  The separate
+iteration-depth no-gap conjecture is proved for arbitrary languages.}
+
+\entry{A cut-sensitive attack on the first open MIX grammar case}
+{automata-and-formal-languages/mix-grammar-cut-sensitive}
+{mix\_grammar\_report.pdf}{mix\_grammar\_research.zip}
+{The selected question --- whether $L_3=\mathrm{MIX}$ for the canonical tuple
+grammars of Yuyama, \emph{On the Kanazawa--Salvati Conjecture}
+(arXiv:2609.13871v1) --- is \emph{not} settled here, and the report says so at
+the front.  What it does contain, with complete written proofs, is a
+cut-sensitive membership recurrence, a broad three-component positive family,
+an infinite family in $L_3\setminus L_2$, and an exhaustive computation through
+length~21.}
+
+\entry{Natural densities of the Tribonacci word's additive complexities}
+{automata-and-formal-languages/tribonacci-additive-complexity}
+{article.pdf}{tribonacci\_additive\_density\_research.zip}
+{Answers Remark~19 of Popoli, Shallit and Stipulanti (arXiv:2410.02409).  With
+$\beta$ the Tribonacci constant, the additive complexity of the Tribonacci word
+takes values in $\{3,4,5\}$ with natural densities
+$d_3=(21\beta^2-38\beta+5)/22$, $d_4=(-55\beta^2+72\beta+67)/22$ and
+$d_5=(17\beta^2-17\beta-25)/11$, all positive and summing to~1, with a
+power-saving error $O(N^\theta)$, $\theta=\log(7/5)/\log\beta$, at
+\emph{every} integer cutoff rather than only along Tribonacci cutoffs.  The
+76-state output automaton is reconstructed independently rather than copied,
+and certified by evaluating its degree-76 characteristic polynomial at the
+adjacency matrix.}
+
+\section{Hankel determinants and continued fractions}
+
+\subsection{Somos sequences and elliptic curves}
+
+\entry{A proof of Barry's Hankel--Somos-6 conjecture}
+{hankel-determinants/somos-and-elliptic/barry-somos-6-hankel-recurrence}
+{article.pdf}{barry\_somos6\_research.zip}
+{Conjecture~7 of Paul Barry, arXiv:2211.12637: for the Hankel determinants
+$H_N$ of a four-parameter Jacobi-type generating function,
+$H_NH_{N-6}=\alpha H_{N-1}H_{N-5}+\gamma H_{N-3}^2$ with
+$\alpha=t^2(r+2)^2$ and
+$\gamma=t^3((s+t)(r+s+t+2)^2+t(r+2)^3)$.  Also proves a homogeneous
+four-parameter form and a seven-parameter polynomial Hankel theorem making
+exceptional specialisations rigorous; the verifier never divides by a
+determinant.}
+
+\entry{Finite Hankel Certificates for Three Somos-8 Conjectures}
+{hankel-determinants/somos-and-elliptic/somos-8-hankel-certificates}
+{article.pdf}{somos\_hankel\_proofs.zip}
+{Conjectures~11, 12 and~13 of the same Barry paper, by importing Hone's
+genus-two Hankel theorem (arXiv:1907.05204v3, Thm.~5.4) and supplying a
+binomial translation, a polynomial-minor specialisation valid on the degenerate
+locus, and a rank-bound lemma that turns four symbolic rows into an all-index
+identity.  Identifies a sign error in the source's Catalan expression for
+Conjecture~13.}
+
+\entry{Elliptic addition and Jacobi continued fractions}
+{hankel-determinants/somos-and-elliptic/elliptic-addition-and-jacobi-fractions}
+{article.pdf}{elliptic\_continued\_fraction\_research.zip}
+{A consistently indexed, non-torsion version of Barry's 2023 Conjecture~4, with
+the coordinate formulas of Conjecture~3: every continued-fraction tail is given
+explicitly and removing one layer is shown to be elliptic translation.
+Hypotheses: characteristic zero, $Y^2+aXY+bY=X^3+cX^2+dX$ nonsingular,
+$b\ne 0$, and $P=(0,0)$ of infinite order; order-three and order-four examples
+show the regular fraction genuinely needs the last one.}
+
+\subsection{Catalan and ballot moments}
+
+\entry{Shifted Catalan Hankel Polynomials}
+{hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials}
+{article.pdf}{catalan\_hankel\_conjecture\_solution.zip}
+{For $D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})$, proves the
+denominator-exponent assertion on page~4 of Barry, arXiv:2011.10827v1, and
+shows the separately printed Conjecture~2 needs an explicit one-unit shift
+correction.  The minimal characteristic polynomial is
+$(X^2-(a+2b)X+b^2)^{m(m-1)/2+1}$, so the minimal order is $m(m-1)+2$; all
+exceptional reduced denominators, the exact coefficient formula, numerator
+degree and reciprocal symmetry are supplied.}
+
+\entry{Product formulas for ballot-polynomial Hankel determinants}
+{hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants}
+{article.pdf}{Cigler\_Hankel\_Conjectures\_13\_15.zip}
+{Conjectures 13, 14 and 15 in Section~5 of Johann Cigler, arXiv:2111.14492v3.
+An explicit coefficient product gives the sign and exact support of the
+normalised shift-$k$ Hankel determinant of the ballot moments and positivity of
+every residual coefficient for $n\ge1$; the same products give the conjectured
+generating-function denominators, exact numerator degrees and reciprocal
+numerator identities.  Adds strict log-concavity of the residual coefficients
+and their limiting binomial profile.}
+
+\entry{Rectangular Schur polynomials and Cigler's Conjecture 8}
+{hankel-determinants/catalan-and-ballot/cigler-conjecture-8-schur}
+{article.pdf}{cigler\_conjecture8\_research.zip}
+{A complete proof of Conjecture~8 in Cigler, arXiv:2111.14492v3, Section~4
+(printed pp.~16--17), for the Hankel determinants of
+$b_m(t)=\sum_r\binom{\lfloor m/2\rfloor}{r}\binom{\lceil m/2\rceil}{r}t^r$,
+including the numerator-polynomial degree and reciprocity assertions.  A
+different conjecture of that paper from the ballot-polynomial entry
+(Conjectures 13--15) and from the parity entry (Conjecture~16).}
+
+\entry{A parity factorization for Cigler's Conjecture 16}
+{hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity}
+{article.pdf}{cigler\_conjecture16\_research.zip}
+{A complete proof of Conjecture~16 in Cigler, arXiv:2111.14492v3, Section~6
+(pp.~21--22), on the Hankel polynomials, together with a sharp stabilization
+statement: the report also determines the first coefficient at which the
+conjectured stabilization fails.  Its own README explains why this is a
+different problem from the other Cigler entries in this collection.}
+
+\subsection{Arithmetic Hankel determinants}
+
+The numerator formula recorded as a conjecture in OEIS A122251, with A122249 as
+its binary special case.  Two reports attacked it and proved it the same way,
+sharing even their worked counterexamples; they are merged here into one.  The
+merged report sits at the category's top level.
+
+\entry{A Proof of an OEIS Hankel-Numerator Conjecture}
+{hankel-determinants/a122251-numerators-and-denominators}
+{report.pdf}{hankel\_numerator\_research.zip + hankel\_oeis\_conjecture\_proof.zip}
+{For $H_n(m,a)=\det(1/(a+m(i+j)))_{0\le i,j\le n}$, the reduced numerator is
+$\prod_{p\mid m}p^{\,n(n+1)v_p(m)+2\sum_{k\le n}v_p(k!)}$: independent of the
+coprime offset $a$, a perfect square, and supported on the primes dividing $m$.
+Taking $m=p$ and $a=1$ settles the OEIS A122251 conjecture, with A122249 as the
+binary case.  Also gives a closed form for the reduced denominator and all its
+local valuations, a sharp gcd theorem over the allowed offsets realised at just
+two explicitly constructed shifts, the extension to unequal row and column steps
+$\det(1/(a+m_1i+m_2j))$, recurrences, digit-sum asymptotics, and a Lambert-series
+generating function with a natural boundary.  \emph{Merged; the determinant is
+evaluated three independent ways, and a second proof of the numerator formula
+runs through an explicit inverse matrix and MacMahon's boxed plane partitions.}}
+
+\subsection{Growth laws and run statistics}
+
+\entry{A proof of the Ap\'ery Hankel growth conjecture}
+{hankel-determinants/growth-and-runs/apery-hankel-determinant-growth}
+{apery\_hankel\_growth.pdf}{apery\_hankel\_research.zip}
+{For $A_k=\sum_j\binom{k}{j}^2\binom{k+j}{j}^2$ and $D_n=\det(A_{i+j})$, proves
+$\log D_n=n(n+1)\log\frac{17+12\sqrt2}{4}+O(n)$ --- the limit conjectured in the
+September 2026 revision of OEIS A228143 --- using Edgar's moment-density
+theorem.  Also an explicit law for $\det(A_{m(i+j)+r_n})$ with $r_n/n\to\rho$,
+and non-D-finiteness of the formal generating series of $D_n$.}
+
+\entry{Binary Runs in Rueppel Hankel Determinants}
+{hankel-determinants/growth-and-runs/rueppel-binary-run-determinants}
+{rueppel\_hankel.pdf}{rueppel\_hankel\_research.zip}
+{For the Rueppel series $r(x)=\sum_{j\ge0}x^{2^j-1}$, the polynomial identity
+$H_n(tx+1/r(x^2))=(-1)^{1+\varepsilon+\lfloor R(n)/2\rfloor}
+(\varepsilon+(R(n)-\varepsilon)t^2)$, where $R(n)$ counts runs of equal bits in
+the binary expansion of $n$ and $\varepsilon$ is the low bit of
+the Gray code $n\oplus\lfloor n/2\rfloor$.  Settles statements 8, 10, 13 and 23 of Barry's 2021 paper
+(not the identically numbered ones elsewhere), with a correction.}
+
+\section{Congruences and $p$-adic valuations}
+
+\subsection{Supercongruences}
+
+\entry{Congruences for OEIS A348410 at every prime}
+{congruences-and-valuations/supercongruences/a348410-all-prime-congruences}
+{article.pdf}{a348410\_supercongruence.zip + A348410\_Supercongruence\_Research.zip}
+{For $A_{\alpha,\beta}(n)=[x^n](1-x)^{-\alpha n}(1+x)^{-\beta n}$ proves the
+odd-prime cubic supercongruence $v_p(A(Np)-A(N))\ge 3v_p(N)-\varepsilon_p$ with
+$\varepsilon_3=1$, $\varepsilon_p=0$ for $p\ge5$, and no coprimality condition;
+$(\alpha,\beta)=(2,1)$ is Bala's A348410 conjecture.  Separately proves an exact
+binary leading-defect formula, $A(m2^r)-A(m2^{r-1})\equiv
+2^{3r-3}\alpha\beta\binom{(\alpha+\beta+1)m-1}{m-1}$ mod $2^{3r-2}$, hence the
+all-prime bound $3r-v_p(12)$ and sharp denominators $12$ and $24$.  An appendix
+audits arXiv:2104.10754v1, whose framing conclusion and weighted harmonic
+assertion fail on its own displayed examples.  \emph{Merged; the odd-prime and
+binary halves run on different mechanisms --- a doubling automorphism, and
+reflection with formal integration by parts --- and both are kept.}
+\par\smallskip\noindent\textbf{Not a duplicate of
+\emph{signed-binomial-supercongruences}, and checked.}  That report's
+$a_{r,s,t}(n)=[x^{tn}](1+x)^{rn}(1-x)^{sn}$ specializes at $t=1$,
+$(r,s)=(-\beta,-\alpha)$ to the coefficient studied here, and the two
+odd-prime statements then agree.  Neither contains the other.  That one is
+general in the extraction step $t$, which is fixed at $1$ here; this one adds
+the prime $2$ with an exact defect and its sharpness, every prime at once,
+minimal common denominators, the primitive-cyclic-word interpretation, the
+Lambert/Euler product, the algebraic generating functions, a
+spacing-three counterexample, and a sufficient criterion beyond the family.
+The proofs are different arguments: that one imports Jacobsthal's congruence,
+this one uses none and pairs a quadratic-tail estimate with a coefficient
+estimate.
+}
+
+\entry{Signed binomial supercongruences and OEIS A352373}
+{congruences-and-valuations/supercongruences/a352373-signed-binomial-supercongruences}
+{signed\_binomial\_supercongruence.pdf}{OEIS\_A352373\_supercongruence.zip}
+{For $a(n)=[x^{tn}](1+x)^{rn}(1-x)^{sn}$ proves
+$a(mp^h)\equiv a(mp^{h-1})\bmod p^{3h}$ for $p\ge5$ and
+$a(m3^h)\equiv a(m3^{h-1})\bmod 3^{3h-1}$, with $m$ not required coprime to
+$p$.  Covers A352373, A348410, A351856 and A351857 as specialisations; the only
+non-elementary import is the classical Jacobsthal binomial congruence.
+\par\smallskip\noindent\textbf{Not a duplicate of
+\emph{all-prime-congruences}, and checked.}  Setting $t=1$ and
+$(r,s)=(-\beta,-\alpha)$ turns the theorem below into that report's
+odd-prime tower, and the moduli agree after reindexing the multiplier.
+Neither contains the other: this one is general in the extraction step $t$,
+that one is fixed at $t=1$ but proves the prime~$2$ case, the all-prime
+bound, the sharp denominators and much else.  The two proofs are genuinely
+different --- this one imports Jacobsthal's congruence, that one does not use
+it at all.
+}
+
+\entry{Apéry numbers under exponentiation and series reversion}
+{congruences-and-valuations/supercongruences/a267220-apery-transform-supercongruences}
+{article.pdf}{Apery\_OEIS\_Supercongruences.zip, apery\_oeis\_conjectures(1).zip}
+{Proves both supercongruence conjectures contributed by Peter Bala to OEIS
+A267220 on 17 October 2024, for every integer parameter including negative and
+zero.  With $A(x)=\exp\sum_{n\ge1}a_nx^n/n$ for the Apéry numbers $a_n$,
+$F(x)=x/\mathrm{Rev}(xA(x))$, $u_m(n)=[x^n]A(x)^{mn}$ and
+$v_m(n)=[x^n]F(x)^{mn}$: for odd $p$ and $R=\nu_p(N)$ both families satisfy
+$\nu_p(u_m(N)-u_m(N/p))\ge2R+\nu_p(m)$, the unsigned statement for $v_m$ holds
+at \emph{every} prime including $2$, and a \emph{signed} refinement
+$(-1)^{mN}u_m(N)\equiv(-1)^{mN/p}u_m(N/p)$ recovers full precision at $p=2$,
+where the unsigned bound genuinely loses one power.  Merged from two reports
+that share a seed lemma and a Möbius/dilogarithm layer but diverge at the crux;
+both routes are kept, and the merged text is careful that the signed and
+unsigned $2$-adic statements are different statements, not a sharper and a
+weaker version of one.}
+
+\entry{Four Motzkin congruences}
+{congruences-and-valuations/supercongruences/a001006-motzkin-congruences}
+{article.pdf}{motzkin\_congruences.zip}
+{Proves all four conjectures in Peter Bala's comment of 10 February 2022 on OEIS
+A001006, with sharp ranges.  The engine is a prime-power block-transfer theorem:
+for odd $p$ and $q=p^{k-s+1}$, $h=mp^{s-1}$, the Motzkin numbers satisfy
+$M_{mp^k+d}\equiv T_hM_d$ for $0\le d\le q-3$, with explicit corrections at
+$d=q-2$ and $d=q-1$; the boundary case gives
+$M_{np^r-2}\equiv\tfrac{\varepsilon_p^r-1}{2}T_{n-1}-U_{n-1}\pmod p$.  Adds the
+exact first failures beyond the two initial-block ranges, arbitrary-multiplier
+and all-prime-power boundary extensions, a prime-modulus digit algorithm, and
+examples showing why unweighted repetition modulo a prime cube is generally
+false.  Discusses Burns, Kohen and Pan--Sun rather than claiming novelty.}
+
+\subsection{Congruences for iterated and compositional series}
+
+\entry{Arithmetic of a Self-Iterating Generating Function}
+{congruences-and-valuations/iterated-series/a396807-self-iterating-series}
+{article.pdf}{A396807\_congruences\_and\_prime\_power\_lifts.zip}
+{Both conjectures in OEIS A396807 for $A(x)=x+A^{[5]}(x)A^{[6]}(x)$ (functional
+iteration): $A(x)\equiv x/(1-x)$ and $A^{[k]}(x)\equiv x/(1-kx)$ modulo $10$ for
+every integer $k$, negative iterates included.  Adds a sharp modulus theorem
+for $F=x+cF^{[r]}F^{[s]}$, rational lifts at every selected prime power, and
+minimal period $46860$ for A396807 modulo $100$ starting at index~1.}
+
+\entry{Prime-power congruences for compositional tree series}
+{congruences-and-valuations/iterated-series/compositional-tree-series-congruences}
+{article.pdf}{compositional\_tree\_congruences.zip}
+{For $A_l(x)=x\exp(A_l^{\circ l})$, shows the OEIS A396805 claim
+$a_5(n)\equiv n\ (\mathrm{mod}\ 5)$ is \emph{false}: first failure $n=23$, with
+exception set $\{20j+3,\,20j+4: j\ge1\}$ and residue~2 throughout.  Proves
+eleven other conjectural assertions in A396803--A396806 via a general reduction
+of coefficients mod $p^\alpha$ to typed rooted trees on fewer than $p^\alpha$
+labels, yielding eventual periods, rational residue generating functions, and
+an exact classification of $a_l(n)\equiv n\pmod p$.}
+
+\subsection{Valuations, divisibility and periodicity}
+
+\entry{Binary Carries and the Divisibility of Two-Stack-Sortable Permutation Numbers}
+{congruences-and-valuations/a000139-binary-carries-parity}
+{research.pdf}{a000139\_carries\_research.zip}
+{Proves Peter Bala's parity conjecture for OEIS A000139,
+$a(n)=2(3n)!/((n+1)!(2n+1)!)$: $a(n)$ is odd exactly when $n$ is odd and its
+binary expansion contains no \texttt{11}.  The full valuation is
+$v_2(a(n))=s(n)+s(n+1)-s(3n)$ in binary digit sums.  Two independent parity
+proofs, plus exact valuation distributions, recurrences, asymptotics, extremal
+formulas and limit laws.}
+
+\entry{Polynomial divisibility of height-one factorial ratios}
+{congruences-and-valuations/factorial-ratio-polynomial-divisibility}
+{article.pdf}{bala\_factorial\_divisibility\_research.zip}
+{A general rational-root criterion for uniform polynomial divisibility of
+balanced integral factorial ratios, applied to Peter Bala's uniform-product
+conjectures for OEIS A211417 and A295431: explicit multipliers for every product
+length, with the least multipliers certified in eight particular examples.
+Includes an atlas of the 52 sporadic height-one ratios with recurrences,
+generating functions and asymptotic expansions.}
+
+\entry{When the Secant Numbers Become Periodic}
+{congruences-and-valuations/secant-number-periodicity}
+{article.pdf}{secant\_periodicity\_research.zip}
+{Refutes the OEIS A000364 conjecture that the secant numbers from $n=1$ are
+purely periodic modulo every $m$: at $m=27$, $a(1)\equiv1$ but
+$a(19)\equiv10$.  The exact replacement is that pure periodicity from index one
+holds if and only if no odd prime cube divides $m$; the least eventual period
+always divides $\varphi(m)$.  Determines the least eventual period and exact
+onset for every modulus, with densities and a certified mean onset.}
+
+\section{Tetration and digit stabilization}
+
+\entry{A Counterexample to a Decimal-Length Bound for Tetration Stabilization}
+{tetration-and-digit-stabilization/congruence-speed-decimal-length-bound}
+{article.pdf}{tetration\_counterexample.zip}
+{An explicit 2544-digit base $A=1+qu$ ($q=5^{2547}$) for which
+$\nu_{10}(T_{n+1}-T_n)=\min(1+2548n,\,2547(n+1))$ at every height, so the
+congruence speed at height $\mathrm{len}(A)+2$ is $2548$ while the permanent
+value is $2547$.  This contradicts the decimal-length form of Conjecture~1 of
+Marco Rip\`a, \emph{The congruence speed formula} (NNTDM 27(4), 2021).  The
+report audits the later Rip\`a--Onnis confirmation: their weaker valuation
+bound is compatible with the counterexample, the decimal-length bound is not.}
+
+\entry{Tetration, perfect powers, and frozen decimal digits}
+{tetration-and-digit-stabilization/perfect-power-minima-for-frozen-digits}
+{article.pdf}{tetration\_perfect\_power\_minima.zip}
+{Determines $\rho(n)$, the smallest $n$th perfect power $x^n>1$ whose eventual
+number of newly frozen terminal decimal digits is exactly $n$:
+$\rho(1)=2$, $\rho(2)=49$, and $\rho(n)=B(s)^n$ for $n\ge3$ with
+$s=n-v_2(n)$ and $B(s)\in\{2^s\pm1,\,3\cdot2^s\pm1\}$ according to
+$s\bmod4$.  All other roots are ruled out by a deterministic quadratic size
+barrier plus small exact certificates.}
+
+\entry{Phase-shift classification for integer tetration}
+{tetration-and-digit-stabilization/phase-shift-classification}
+{tetration\_phase\_classification.pdf}{tetration\_phase\_classification.zip}
+{Proves the 21-word phase-shift conjecture in OEIS A376842, the 14-word
+even-base restriction from the appendix of Rip\`a's 2025 paper, and the
+28-word prescribed-anchor conjecture in OEIS A376446.  The mechanism compares
+the 2-adic and 5-adic valuations of $D_b=T_{b+1}-T_b$ at the first
+permanently constant-speed height: strict 2-adic dominance gives phase 5,
+strict 5-adic dominance a multiplicative orbit in $\mathbb{F}_5^\times$, and
+balanced valuations exactly four further anchored words.}
+
+\entry{A Sharp Convergence Theorem for the $q$-Newton Series of Subcritical Tetration}
+{tetration-and-digit-stabilization/q-newton-series-convergence}
+{article/tetration\_qnewton.pdf}{tetration\_qnewton\_research.zip}
+{Proves convergence of the explicit $q$-binomial interpolation series of
+MathOverflow question 259278 for every real base $1<a<e^{1/e}$, with
+$\log a=qe^{-q}$: the grouped series converges absolutely and locally uniformly
+for $\mathrm{Re}\,z>-2$, converges conditionally on $\mathrm{Re}\,z=-2$ except
+at $z=-2+2\pi ik/(-\log q)$, and diverges for $\mathrm{Re}\,z<-2$.  Adds strict
+complete monotonicity and uniqueness under an eventual log-convexity
+condition.}
+
+\entry{Stabilization of integer power towers}
+{tetration-and-digit-stabilization/power-tower-stabilization}
+{article.pdf}{tetration\_stabilization\_research.zip + tetration\_exact\_digits.zip}
+{Refutes the claim that every prime base ending in 9 reaches its permanent
+decimal congruence speed by height~2 (Rip\`a, Conjecture~2; arXiv:2208.02622v1,
+Conjecture~4.1): $2749$ is the smallest prime counterexample, with
+$H(2749)=3$.  Proves exact formulas for $C_a(h)$, $V(a)$ and $H(a)$, an exact
+natural density for onsets, and infinitely many primes at each prescribed onset
+via CRT and Dirichlet.  Also resolves the three conjectural comments in OEIS
+A324017 --- two proved, the third disproved, with
+$3\uparrow\uparrow2\equiv27$ and $3\uparrow\uparrow3\equiv59\pmod{64}$ --- via
+$T_{h+r}-T_h\equiv-2q^h\pmod{q^{h+1}}$ for even $q\ge4$, so exactly one radix-$q$
+digit freezes per height.  Adds a factorization-free digit-lifting algorithm,
+modular saturation across Knuth arrow ranks, and a sign-sensitive local $p$-adic
+Lambert $W$ formula.  \emph{Merged; the shared one-digit-per-height theorem was
+proved identically in both originals and is proved once here.}}
+
+\entry{Delayed digit stabilization: a counterexample and sharp bounds}
+{tetration-and-digit-stabilization/iterated-power-digit-stabilization}
+{delayed\_digit\_stabilization.pdf}{digit\_stabilization\_research.zip}
+{For $S_a(b)=v_{10}(a^{10^{b+1}}-a^{10^b})$ and $D_a(b)=S_a(b)-S_a(b-1)$,
+answers negatively the question whether $D_a(b)=1$ for all $b\ge3$: the
+smallest counterexample is $a=3\cdot2^{99}+1$, with $S_a(2)=100$,
+$S_a(3)=102$, $D_a(3)=2$.  Proves minimality, an exact onset formula, the
+smallest counterexample at every stage, the natural density of exceptions, and
+arbitrary-radix extensions.  The article is explicit that $a^{10^b}$ is not
+genuine tetration and derives the tower formulas separately.}
+
+\section{Log-concavity, unimodality and positivity}
+
+\entry{Single curves do not force log-concavity}
+{log-concavity-and-unimodality/cluster-variable-log-concavity-counterexample}
+{article.pdf}{annular\_single\_lamination\_counterexample.zip}
+{An unpunctured annulus with one marked point on each boundary and a single
+unit-weight simple lamination curve gives, after mutations $2,1,2$ with the two
+mutable variables specialised to~1, the polynomial
+$1+3q^2+2q^3+4q^4+2q^5+q^6$; the consecutive coefficients $3,2,4$ form a strict
+valley, refuting Conjecture~1 of arXiv:2508.04396v3 and conflicting with its
+general unpunctured-surface unimodality statement.  The geometric realisation
+is proved, not merely the matrix calculation, and a fixed seed gives infinitely
+many such examples.}
+
+\entry{Cycles refute infinite log-concavity for chromatic coefficients}
+{log-concavity-and-unimodality/infinite-log-concavity-of-cycles}
+{article.pdf}{chromatic\_cycle\_logconcavity.zip}
+{For the cycle $C_n$ with absolute chromatic coefficients under the iterated
+operator $L(a)_k=a_k^2-a_{k-1}a_{k+1}$: infinitely log-concave for
+$3\le n\le11$; first failure at depth 5 for $n=12$, depth 4 for
+$13\le n\le16$, and depth 3 for $n\ge17$.  So $C_{12}$ is the smallest cycle
+counterexample (no minimum over all graphs is claimed), with an explicit
+third-iterate witness polynomial valid for all $n\ge3$.}
+
+\entry{Oscillating Log-Concavity in Geometric Generating Functions}
+{log-concavity-and-unimodality/oscillating-log-concavity-geometric-transform}
+{article.pdf}{oscillating\_log\_concavity\_research.zip}
+{Challenges 2 and 3 in Section~3 of Heim and Neuhauser, arXiv:2302.13327v1, for
+the \emph{geometric} transform $1/(1-uG(z))$.  For divisor-sum weights, every
+real exponent and every $u>0$ give infinitely many strict log-concavity and
+log-convexity indices with eventually bounded gaps; likewise for integer power
+weights with exponent ${\ge}\,2$, the exponents $0$ and $1$ being explicitly
+exceptional.  For square weights at $u=1$, every four consecutive indices carry
+both signs (sharp), each with density $1/2$ in every arithmetic progression.
+A subdominant-pole theorem is the common mechanism.}
+
+\entry{A counterexample and a sharp spacing-three criterion for products of $q$-integers}
+{log-concavity-and-unimodality/q-integer-product-unimodality}
+{report.pdf}{q\_unimodality\_attack.zip}
+{The necessity half of Conjecture~5.4 of Connelly, Ito, Martinez, Shevchenko and
+Yang (arXiv:2605.12822v1) is false: $(1+q)^6(1+q^3)$ is symmetric and weakly
+unimodal although no $a_i$ is divisible by 3 and $b=2$ exceeds the asserted
+bound, and the example lies inside the source's claimed range.  The report also
+proves the proposed sufficient condition for every $r\ge2$, a necessary degree
+bound in the absence of an $r$-divisible ordinary factor, and a complete
+classification of spacings two and three.}
+
+\entry{Sharp size thresholds for failures of log-concavity in independence systems}
+{log-concavity-and-unimodality/independence-system-thresholds}
+{article.pdf}{sharp\_log\_concavity\_thresholds.zip}
+{For each rank $r\ge4$, determines the smallest ambient ground-set size
+admitting failure of ordinary, ordered and ultra log-concavity, and shows the
+three thresholds coincide across all independence systems, those satisfying
+Xie--Xu's augmentation bound, and those with additive augmentation parameter~3
+(values $7/6/5$, $7/7/6$, $8/7/7$, and $r+1$ throughout for $r\ge7$).  The
+initial target, Xie--Xu Conjecture~4.8 (arXiv:2408.09152v1), had already been
+disproved by Alex Chengyu Li in September 2026; the report states this and
+refines the target to the rankwise minimum-size question.}
+
+\entry{A sharp order-five threshold for higher-order Stirling subset log-concavity}
+{log-concavity-and-unimodality/higher-order-stirling-rows}
+{article.pdf}{stirling\_log\_concavity.zip}
+{For $S^{(r)}_{n,k}$, the number of partitions of $n+(r-1)k$ labels into $k$
+blocks of size ${\ge}\,r$, proves that all rows are log-concave if and only if
+$1\le r\le5$, with strict inequalities in the interior --- the log-concavity
+assertion of Deb--Sokal Conjecture~1.4(c) (arXiv:2507.18959v1).  Also proves the
+cycle cases $r=3,4$; the fifth-order \emph{cycle} conjecture is explicitly left
+unresolved, and the included operator counterexample is flagged as not being a
+counterexample to it.}
+
+\entry{A sum-of-squares proof of Ulas's real-zero conjecture}
+{log-concavity-and-unimodality/stern-polynomial-positivity}
+{stern\_conjecture\_note.pdf}{stern\_conjecture\_research.zip}
+{Conjecture~4.4 of Maciej Ulas, arXiv:1909.10844v1, for the Stern polynomials
+indexed by $a_n=(4^n-1)/3$ and $h_n=2(4^n-1)(2\cdot4^n+1)/3+1$: for every
+$n\ge0$ and every real $t$,
+$W_n(t)=(A_{n+1}(t)-tA_n(t)/2)^2+3t^2A_n(t)^2/4>0$.  The adjacent-polynomial
+quadratic identity behind it was already in Ulas's paper and is re-derived, not
+claimed as new.}
+
+\entry{Two-coin counterexamples to generalized Shepp--Olkin thresholds}
+{log-concavity-and-unimodality/bernoulli-entropy-quasiconcavity}
+{article.pdf}{bernoulli\_entropy\_research.zip}
+{For every finite real $q>1$, both the R\'enyi-$q$ and the Tsallis-$q$ entropy of
+a sum of independent Bernoulli variables fail even \emph{quasi}concavity as a
+function of the parameter vector, already on the open square $(0,1)^2$ with two
+coins.  This disproves the proposed thresholds --- R\'enyi~2 and Tsallis
+$3.65986\ldots$ --- adjoined to Conjecture~4.2 of arXiv:1503.01570 and restated
+in arXiv:1510.05390, Section~8.}
+
+\entry{Nonreal roots survive in polynomial iterative equations}
+{log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}
+{article.pdf}{nonreal\_roots\_research.zip}
+{Here $P[f]=\sum_ja_jf^{\circ j}$ means a combination of \emph{iterates}, not a
+polynomial in pointwise values.  Gives a negative answer to Problem~6.1 of
+Draga--Morawiec (arXiv:1503.00570), which proposed deleting nonreal
+maximal-modulus characteristic roots: an explicit odd, strictly increasing,
+globally bi-Lipschitz homeomorphism realises a cubic whose nonreal root cannot
+be discarded.  Adds a classification of the circular root spectra that occur.}
+
+\entry{Canonical binomial decomposition does not preserve real roots}
+{log-concavity-and-unimodality/binomial-decomposition-real-roots}
+{article.pdf}{mu\_welker\_recursive\_decomposition.zip + recursive\_binomial\_counterexample.zip}
+{A negative answer to Question~3.10 of Mu and Welker (arXiv:2503.24076v1) for
+their canonical decomposition $F(t)=G(t)+tH(t)$ built from the integer binomial
+expansion of every coefficient: real-rootedness of $F$ does not pass to the
+parts.  Two cubic witnesses are carried, one with a repeated root and one with
+simple roots, each with its own digit table, discriminant pair and exact
+nonreal zeros; the report also gives the minimal witness within cubics, two
+all-degree thresholds neither of which implies the other, and a two-sided
+limit.  \emph{Merged; the two originals were two write-ups of one proof
+program, each already containing both witnesses with the headline and the
+co-star swapped.}}
+
+\entry{A first-triple criterion for log-concavity of MDS weight distributions}
+{log-concavity-and-unimodality/mds-weight-log-concavity}
+{article.pdf}{mds\_log\_concavity\_research.zip}
+{For $d=n-k+1\ge2$, $k\ge3$ and $q>d$, the compressed formal MDS weight
+distribution $(1,A_d,\ldots,A_n)$ is log-concave if and only if the single
+inequality $A_{d+1}^2\ge A_dA_{d+2}$ holds --- the whole sequence is controlled
+by its first triple.}
+
+\entry{A uniform Hankel obstruction for higher-order Stirling subset polynomials}
+{log-concavity-and-unimodality/stirling-hankel-obstruction}
+{article.pdf}{stirling\_hankel\_obstruction.zip}
+{Proves the higher-order negative assertion of Deb--Sokal Conjecture~1.4(d),
+with a stronger statement at every positive shift: for $r\ge3$ and $a\ge1$ the
+$3\times3$ Hankel determinant $\det(s_{r,a+i+j}(x))$ of the row-generating
+polynomials fails the required positivity.  Clause~(d) of that conjecture;
+clause~(c) is the subject of the higher-order Stirling rows entry.}
+
+\section{Quaternionic analysis}
+
+One report, merged from ten manuscripts.  The subject is new to this
+collection, and the delivery was unusual: one expository survey and nine
+independent attempts at the same follow-up problem, all written on the same
+day.  The nine agree, which is the substance of the entry.
+
+\entry{Slice regularity and the global inverse Fueter problem}
+{quaternionic-analysis/slice-regularity-and-fueter-inversion}
+{article.pdf}{quaternionic\_analysis.zip and nine companion archives}
+{One article assembled from ten manuscripts.  Part~I is the delivered
+expository survey: slice regularity and Cauchy--Fueter regularity side by side,
+with Cauchy formulas, Taylor and Laurent expansions, the regular product and
+the geometry of zeros, the argument principle, Rouch\'e, open mappings,
+Schwarz--Pick and an intrinsic Riemann mapping theorem.  Parts~II--XI answer
+the follow-up question the other nine manuscripts all attacked independently:
+for an axially monogenic $g=P+IQ$, when is there a single-valued slice-regular
+$f$ with $\Delta_4 f=g$?  The answer is a two-period obstruction.  The closed
+one-forms $\omega_g=\tfrac12(-P\,dx+Q\,dy)$ and
+$\theta_g=\tfrac12((xP+yQ)dx+(yP-xQ)dy)$ have vanishing periods exactly when a
+global primitive exists, and then $f(x+Iy)=(x+Iy)C+V$ with $dC=\omega_g$,
+$dV=\theta_g$, unique modulo $q\mapsto qa+b$; the monodromy is affine, and the
+cokernel of the Fueter map has real dimension $8m$.  The point the nine exist
+to make is that $\theta_g$ is computed from the target, with no first primitive
+chosen.  \textbf{Nine independent derivations reaching the same two forms, the
+same $8m$ and the same logarithmic energy constant is the evidence the entry
+rests on.}  Where they differed it was almost always notation --- thirteen
+conflicts are recorded and resolved in \nolinkurl{MERGE_NOTES.md} --- but two
+were mathematical and would have produced a false statement if the merge had
+been mechanical: the size law at a critical singularity has genuinely different
+sharp constants in two norms that four manuscripts both called $M_g$, and the
+conserved flux recovering the slope residue needs the weight
+$3(\operatorname{Re}q-u)+\operatorname{Im}q$ rather than $q-u$, the coefficient $3$ being exactly what
+makes it right-Fueter-regular.  All ten source manuscripts and all ten
+verification programs are kept; the deduplication is in the article.}
+
+\section{Graph theory}
+
+\entry{Mutual-visibility sets in Andr\'asfai graphs}
+{graph-theory/andrasfai-mutual-visibility}
+{article.pdf}{andrasfai\_visibility\_research.zip}
+{Proves the generating function attributed to Andrew Howroyd in OEIS A391632,
+$\sum a(n)x^n = x(4-19x+33x^2-40x^3+8x^4)/(1-10x+29x^2-32x^3+8x^4)$, by an
+exact weight-preserving bijection between mutual-visibility sets of the
+$n$-Andr\'asfai graph and anchored closed walks of length $3n-1$ in a
+four-state labelled graph.  Adds the full bivariate generating function, an
+exact binomial formula for every cardinality, maximum-set classification,
+eventual polynomiality at each fixed deficit, exponential asymptotics, a
+central limit theorem, and linear-time recognition and exact uniform sampling.}
+
+\entry{A bicyclic 30-vertex graph with domination root $-4$}
+{graph-theory/domination-root-minus-four-order-30}
+{domination\_root\_30.pdf}{domination\_root\_30\_research.zip}
+{An explicit connected planar graph on 30 vertices and 31 edges, treewidth 2 and
+domination number 10, with $D(G,x)=x^{10}(x+4)Q_{19}(x)$ --- a negative answer
+to question~2 of Section~4 in Alikhani and Griswold, arXiv:2608.00109v1, which
+asks whether 33 is the minimum order.  Their 33-vertex example had already
+disproved the original integer-root conjecture; no claim of global minimality
+at 30 is made.  Three independent exact polynomial computations agree.}
+
+\entry{A marked-cycle proof of the trapezohedral domination conjecture}
+{graph-theory/trapezohedral-minimal-dominating-sets}
+{article.pdf}{trapezohedral\_domination\_research.zip, A381190\_proof\_package.zip}
+{Proves the generating function labelled conjectural in OEIS A381190: for the
+$n$-trapezohedral graph, the number of dominating sets that are
+inclusion-minimal among all dominating sets and induce a connected subgraph is
+$a_n=2n(2p_{n-2}+p_{n-3})$ with $p_m=p_{m-2}+p_{m-3}$ (Padovan).  The proof
+classifies such sets by a cyclic arrangement of gaps of length 2 and 3 with a
+restricted marked edge.  Adds the size distribution, strict log-concavity, an
+unbiased sampler, a Binet formula and a central limit theorem.}
+
+\section{Enumerative combinatorics}
+
+\entry{A Twelve-Value Proof of the A181280 Formula}
+{enumerative-combinatorics/a181280-binary-matrix-formula}
+{article.pdf}{A181280\_research\_package.zip}
+{The binary-matrix formula recorded as Conjecture~20 by Kauers and Koutschan
+(2023) and still marked conjectural in OEIS A181280: an explicit spectral
+recurrence bound and a finite certificate resting on twelve decisive counts,
+together with further consequences.  \texttt{STATUS.md} records that general
+C-finiteness was already proved in Kauers's December 2025 lecture slides.}
+
+\entry{Esthetic Numbers, Folded Paths, and Algebraic Diagonals}
+{enumerative-combinatorics/esthetic-numbers-and-folded-paths}
+{article.pdf}{esthetic\_walks\_research.zip}
+{The diagonal conjecture $T(q,q-2)=A182555(q-2)$ in OEIS A377000, where
+$T(q,k)$ counts base-$q$ positive integers of length $k$ whose adjacent digits
+differ by one.  Proves it exactly, proves the entry's other two conjectures as
+retrieved, and derives formulas for every fixed-offset diagonal $q=k+d$.}
+
+\entry{Diagonal Hardinian Arrays: A Fixed-Parameter Asymptotic Formula}
+{enumerative-combinatorics/hardinian-array-diagonal-asymptotics}
+{article.pdf}{hardinian\_arrays\_research.zip}
+{For every fixed $r\ge0$, $H_r(n,n)\sim C_r4^{rn}n^{-r(r-1)/2}$ with an explicit
+$C_r$ in Gamma values.  The formula confirms the constants tabulated by
+Dougherty-Bliss and Kauers (2024) but refutes their proposed restriction to
+powers of 2, 3 and $\pi$: $C_7=2^{18}5^2/(3^{45}\pi^3)$.  Adds an exact finite
+determinant at fixed array size, an exact enumeration algorithm, and a limiting
+negative-binomial law for total deficits.}
+
+\entry{An explicit formula for lucky parking spots}
+{enumerative-combinatorics/lucky-parking-spots}
+{article.pdf}{lucky\_parking\_spots\_research.zip}
+{Proves Conjecture~13 of Butler, Hadaway, Lenius, Martens and Moats (JIS 29
+(2026), Article 26.1.1): a closed form for $C(n,j)$, the number of parking
+functions in which \emph{spot} $j$ is lucky.  Adds an exact reflection law, all
+fixed right-edge columns, a closed form for OEIS A374533, Poisson edge limits,
+uniform bulk convergence, polynomial reciprocity and asymptotic expansions.}
+
+\entry{A hexagonal-lattice proof of the A195806 conjecture}
+{enumerative-combinatorics/a195806-hexagonal-lattice}
+{article.pdf}{A195806\_hexagonal\_proof.zip}
+{An elementary derivation of the six residue-class formulas and the
+constant-coefficient recurrence recorded as conjectural in OEIS A195806,
+starting from the original triangular-array constraints rather than from
+interpolation.  The steps are an integral six-parameter bijection, four
+independent translation intervals, a dihedral chamber reduction, and an exact
+lattice count.}
+
+\entry{Leaves of large type in the numerical-semigroup tree}
+{enumerative-combinatorics/numerical-semigroup-leaf-types}
+{article.pdf}{leaf\_type\_counterexample.zip}
+{Disproves Conjecture~4.4 of Chappelon, Ram\'irez Alfons\'in and Stamate,
+\emph{Numerical semigroup tree: type-representation} (arXiv:2507.15006v2), with
+an explicit genus-34 counterexample, and establishes a sharp asymptotic order
+for the type of leaves in that tree.}
+
+\entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
+{enumerative-combinatorics/adjacency-bounded-132-avoiders}
+{article.pdf}{strict\_growth\_132.zip}
+{For $132$-avoiding permutations with every adjacent difference at most $m$ and
+growth constant $\alpha_m$: proves $\alpha_{m+1}>\alpha_m$ for all $m\ge1$ ---
+the remaining strict-inequality part of Nadler's Conjecture~2 --- and the
+refinement $4-\alpha_m=(2\log m+4\log\log m+O(1))/m$, with
+$2\log\pi-4\log2\le\liminf E_m\le\limsup E_m\le2\log\pi$.  The all-$m$
+component ordering and convergence of $E_m$ are explicitly not claimed.}
+
+\entry{Throwback Dynamics with Repeated Entries}
+{enumerative-combinatorics/throwback-queue-dynamics}
+{throwback\_research.pdf}{throwback\_research.zip}
+{For the queue process that removes the head and reinserts it at the zero-based
+position equal to its weight: every token recurs if and only if at most $m$
+input tokens have weight at most $m$, for every $m\ge1$, with an explicit
+description of the recurrent tokens when that fails.  Adds exact cycle periods
+and frequencies, a coprimality criterion for perfect mixing, Catalan and
+prime-parking counts for recurrent cores, and the largest labelled period of a
+core of size $r$.}
+
+\entry{Reciprocity and Matrix Duality for Preorder Polytopes}
+{enumerative-combinatorics/preorder-polytope-reciprocity}
+{article.pdf}{preorder\_reciprocity.zip}
+{Proves Conjectures 7.2, 4.2 and 4.4 of Athanasiadis and Chapoton,
+\emph{Polytopes and posets associated to preorders} (arXiv:2605.26916v1), and
+the ordinary $q=1$ case of their Conjecture~4.9 (not its full $q$-refinement).
+Two mechanisms: Ehrhart--Macdonald reciprocity after subtracting the all-ones
+vector, extending the double identity to independently weighted capacities; and
+duplication of both colour classes of the bipartite graph followed by
+Postnikov's lattice-point formula, giving the conjectured matrix transpose.}
+
+\entry{Support reciprocity and the $q$-zeta polynomial of preorder lattice-point posets}
+{enumerative-combinatorics/preorder-q-zeta-reciprocity}
+{article.pdf}{preorder\_qzeta\_reciprocity.zip + preorder\_q\_zeta\_reciprocity.zip + preorder\_q\_reciprocity\_research.zip}
+{Proves the full $q$-refinement of Athanasiadis--Chapoton Conjecture~4.9,
+equation~(21): for a preorder $\tau$ on $[n]$, with $P_\tau$ the nonnegative
+integer vectors satisfying $a(I)\le|I|$ on every order ideal and $B_\tau$ its
+maximal elements, $Z_q(P_\tau,[-1]_q)=(-1)^n\sum_{b\in B_\tau}q^{-|\mathrm{supp}(b)|}$,
+together with the stronger identity at each exact support.  The $q=1$ case was
+already covered by the preorder-polytope reciprocity report and is cited, not
+reclaimed.  \emph{Merged from three reports that reached the same two theorems
+by three architecturally independent routes --- an incidence inversion with
+Boolean localization, the same with a Hall-based privatization and a
+self-contained Euler identity, and a capacity-enumerator reciprocity with a
+transfer involution --- and all three survive.}}
+
+\entry{An explicit shelling for preorder lattice-point posets}
+{enumerative-combinatorics/preorder-shellability}
+{article.pdf}{preorder\_shellability\_research.zip}
+{An affirmative solution to Question~4.6 of Athanasiadis and Chapoton
+(arXiv:2605.26916v1, p.~13): an explicit pure shelling of the order complex of
+$P_\tau$ with its minimum removed, and a coning that shells the order complex
+of $P_\tau$ itself.  Both complexes are therefore Cohen--Macaulay over the
+integers and over every field.  A different question of that paper from the
+three other preorder entries.}
+
+\entry{Multiple-chain preorder polytopes}
+{enumerative-combinatorics/multiple-chain-exponential-formula}
+{article.pdf}{multiple\_chain\_exponential\_formula\_research.zip + multiple\_chains\_research.zip}
+{Proves the exponential generating-function identity proposed in Section~9.5 of
+Athanasiadis and Chapoton (arXiv:2605.26916v1) for lattice points of
+multiple-chain preorder polytopes counted by number of nonzero coordinates, in
+a rectangular generalization with independent block width and height.  Adds a
+duality corollary, an Ehrhart evaluation, a degree-$2^d$ root theorem with a
+quartic elimination certificate, two treatments of the $\gamma$-vector, a
+Stieltjes moment representation, the boundary constant in two forms, and a
+central limit theorem with exact variance.  \emph{Merged; the identity is
+proved twice, once through a subset encoding with a bounded symbol and once
+through slack meanders in a Laurent ring, and the eleven deliberate
+redundancies are listed in the text.}}
+
+\entry{Rationality and growth of stabilized permutation-weight series}
+{enumerative-combinatorics/stabilized-permutation-weights}
+{article.pdf}{stabilized\_permutation\_weights.zip}
+{Studies the full stabilized generating functions of the permutation-weight
+$q$-Eulerian polynomials, beyond their initial connection with OEIS A256193:
+an all-$d$ finite-spectrum theorem, rationality, a universal integer
+denominator, the exact radius of convergence and residue-class asymptotics.
+The two-descent sequence gets an explicit formula in powers of 3, powers of 2
+and Fibonacci numbers.}
+
+\entry{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}
+{enumerative-combinatorics/preorder-root-polytopes}
+{article.pdf}{preorder\_root\_polytopes.zip}
+{Proves Conjecture~5.1(c) of Athanasiadis and Chapoton (arXiv:2605.26916v1): for
+a preorder $\tau$ on $[n]$ the directed root polytope
+$C_\tau=\mathrm{conv}(\{\pm e_i\}\cup\{e_i-e_j: j\le_\tau i\})$ is reflexive with
+$h^*(C_\tau,t)=h_\tau(t)$, and any pulling triangulation of its boundary is
+combinatorially the boundary of a simplicial polytope with that $h$-polynomial.
+Palindromicity and unimodality, Conjecture~5.1(a,b), follow, as do the full
+$g$-theorem conditions.  The higher-dimensional augmented bipartite identity and
+preorder duality are credited to Dai, Hou, Liu, Thawinrak and Wang
+(arXiv:2608.16037v2); flag realizability, $\gamma$-positivity and real-rootedness
+are not proved.  A different conjecture of the same paper from the preorder-polytope
+reciprocity report.}
+
+\entry{Largest Simplex Faces under Ordinal Sums}
+{enumerative-combinatorics/simplex-faces-of-order-and-chain-polytopes}
+{Largest\_Simplex\_Faces.pdf}{Series\_Parallel\_Simplex\_Faces\_Research.zip}
+{Answers the concluding open question of Freij-Hollanti and Lundstr\"om,
+\emph{Simplex inequalities of order and chain polytopes of recursively defined
+posets} (Order 43 (2026), article~31).  For $s_O(P)$ and $s_C(P)$, the largest
+dimensions of simplex \emph{faces} of the order and chain polytopes: both are
+computable in $O(n)$ on any series-parallel decomposition, the order case
+carrying eight normalized endpoint states.  For an ordinal sum of antichains,
+$s_O=r+\nu$ with $\nu$ a maximum $b$-matching of the layer path under capacities
+$\min(a_i-1,2)$, and $s_C=r+\max(0,k-1)$.  The extremal gap is sharp:
+$0\le s_C-s_O\le\lfloor(n-2)/3\rfloor$, attained for every $n\ge2$.}
+
+\entry{Skew partitions, continued fractions and connected components}
+{enumerative-combinatorics/skew-partition-continued-fractions}
+{article.pdf}{A225114\_proof\_bundle.zip}
+{Proves the repeated-power continued-fraction formula recorded as conjectural in
+OEIS A225114, which counts skew partition diagrams with no empty row or column.
+Unique concatenation gives $A(q)=1/(1-P(q))$ for the edge-connected diagrams,
+and a boundary-path encoding followed by a weighted two-coloured Motzkin-path
+decomposition gives
+$P(q)=q/(1-2q-q^3/(1-2q^2-q^5/(1-2q^3-\cdots)))$, whence $A(q)=1/(2-C(q))$ with
+$C=1+P$.  Adds a four-variable refinement, a formula by height, width and
+component count, a sharp truncation bound, exponential asymptotics and a central
+limit theorem for the number of components.  \textbf{Explicitly not a novelty
+claim}: a prior-art check found Pasechnik's MathOverflow sketch of ten September
+2024, and the entry credits Kurkov; the report says so first and credits both.}
+
+\entry{From mesh avoidance to Catalan inflation}
+{enumerative-combinatorics/mesh-avoidance-catalan-inflation}
+{article.pdf}{A289587\_proof.zip, OEIS\_A289587\_proof.zip}
+{Proves Scheuerle's generating-function conjecture in OEIS A289587 for
+permutations avoiding $321$ and the mesh pattern $(12,174)$, and the equal count
+for $(12,234)$ by inversion: with $D=x^4-2x^3-5x^2-2x+1$,
+$P=x^4+4x^3+11x^2+10x+3$ and $Q=x^2+5x+3$, the generating function is
+$(P-Q\sqrt D)/(8x(1+x)^2)$.  The headline structural result is the exact
+\emph{occurrence count} $\mathrm{occ}=\binom{f}{2}+\sum_U\binom{|U|}{2}$, of
+which avoidance is the case $\mathrm{occ}=0$.  Merged from two reports that
+reached the identical generating function by the identical run-contraction
+substitution $u\mapsto u/(1+xu)$; the merge keeps \emph{both} refinements,
+because they refine the same sequence by different statistics --- excedances and
+records --- and are genuinely different theorems, agreeing only in total.  The
+two local predicates they are built on disagree on $31$ of the $321$-avoiders of
+length at most six, the smallest being $12$, and the merged article proves where
+they coincide rather than assuming it.}
+
+\entry{Prescribed coefficient-lattice minima}
+{enumerative-combinatorics/coefficient-lattice-minima}
+{article.pdf}{coefficient\_lattice\_minima\_research.zip}
+{Settles the unnumbered realization conjecture after Lemma~1 of O'Bryant,
+\emph{On Nathanson's Triangular Number Phenomenon} (arXiv:2506.20836): every
+nondecreasing list of even integers is the list of successive $L^1$-minima of
+the coefficient lattice of some finite integer set.  The witness is the
+mixed-radix set $A=\{0,1,h_1,h_1h_2,\ldots\}$, whose minima are exactly
+$(2h_1,\ldots,2h_r)$ with $r+2$ distinct elements, and the radices may be given
+in any order.}
+
+\entry{Coefficientwise magic positivity through dimension ten}
+{enumerative-combinatorics/magic-positivity-parking-polytopes}
+{article.pdf}{magic\_positivity\_research.zip}
+{A polytope is \emph{magic positive} when its Ehrhart polynomial has nonnegative
+coefficients in the basis $t^j(t+1)^{n-j}$.  Proves, in exact arithmetic, that
+the generalized parking-function polytope $X_n(b)$ is magic positive for every
+dimension $3\le n\le10$ and \emph{every} positive integer parameter vector,
+uniformly in $b$ rather than on a sampled box --- a partial solution of
+Conjecture~8.1 of Hill, Luo, Trinh and Vindas-Mel\'endez (arXiv:2607.15503v1).
+Dimension three is proved by printed algebraic formulas; the first-coefficient
+harmonic-number formula and the endpoint identities hold in every dimension.
+The conjecture in unrestricted dimension remains open.}
+
+\entry{Monotone blocks and reverse replies}
+{enumerative-combinatorics/reverse-reply-avoidance-game}
+{article.pdf}{reverse\_reply\_solution.zip}
+{Proves Conjecture~2.9 of Ulfarsson (arXiv:2603.16004): for every $k\ge3$ and
+every $n\ge R(k)=k^4-2k^3-3k^2+5k+5$, the second player wins the normal-play
+permutation-avoidance game on $S_n$ with pattern length $k$ by always replying
+with the reversal, so the Sprague--Grundy value is~0.  The proof is elementary,
+with no computer search: a minimal-support lemma isolates one pattern inside a
+family built from singletons plus one inflatable monotone interval, and
+inflation restores the original length so the reply is legal.  $R(k)$ is
+asserted sufficient, not minimal.}
+
+\entry{Nonintegral tropical degree from two horizontal segments}
+{enumerative-combinatorics/tropical-hilbert-nonintegral-degree}
+{article.pdf}{tropical\_hilbert\_counterexample.zip}
+{Computes the strict-witness tropical Hilbert function of Grigoriev
+(arXiv:2404.06440v2) exactly for a two-segment set:
+$\mathrm{TH}_{V_d}(k)=k+\min\{k,\lceil k/d\rceil\}+1$.  Taking $d=3$ gives
+tropical degree $4/3$ --- not an integer --- and a quasipolynomial of least
+period~3, so eventual polynomiality fails.  Every rational in $(1,2]$ is
+realized, denominators are unbounded, and for $d=p/q>1$ in lowest terms the
+least eventual period is exactly $p$.  Both bounds are proved by hand.}
+
+\section{Generating functions and asymptotics}
+
+\subsection{Coefficient counts of binary products}
+
+Three reports on counting coefficients of $\prod_i(1+x^{G_i})$.  The first two
+answer, independently, the universal-rationality part of Richard Stanley's
+MathOverflow question 431075 (``A conjectured rational generating function'',
+2022), which had no posted answer when checked on 19 September 2026.  A third
+answer used the same mixed-base construction and the same enumerative argument
+as the first, and has been merged into it.
+
+\entry{A Mixed-Base Counterexample to Stanley's Rationality Question}
+{generating-functions-and-asymptotics/binary-product-coefficient-counts/mixed-base-counterexample}
+{article.pdf}{stanley\_mixed\_base\_counterexample.zip + Stanley\_Rationality\_Counterexample.zip}
+{With $G_{2j+1}=2^j$ and $G_{2j+2}=3^j$ the exponent generating function is
+rational, while $\nu(2n)=2^{\,n-\lfloor(n+1)\alpha\rfloor}$ for
+$\alpha=\log_3 2$ counts the coefficients equal to one in
+$\prod_{i\le N}(1+x^{G_i})$ and its generating function is not rational, not
+D-finite, not P-recursive, and has a natural boundary.  Classifies rationality
+in the family interleaving $a^j$ and $q^j$ with digit polynomial
+$1+y+\cdots+y^{a-1}$ for all $2\le a<q$ --- Stanley's general $r=a-1$ --- as
+holding exactly when $q^u=a^v$.  Adds a finite-quotient rigidity theorem, an
+abstract natural-boundary theorem for $\sum q^{\lfloor n\theta\rfloor}t^n$ at
+every irrational $\theta$, the exact limit set of $a_n/\lambda^n$, and a
+streaming recurrence making the point that non-P-recursive does not mean hard to
+compute.  \emph{Merged; the enumerative half was the same argument in both
+originals, but the two routes to non-rationality differ and both are kept ---
+an elementary finite-state reduction mod $p$, and the rigidity route that
+reaches the stronger transcendence conclusions.}}
+
+\entry{Rational exponents, nonrational coefficient counts}
+{generating-functions-and-asymptotics/binary-product-coefficient-counts/recursive-exponent-construction}
+{research.pdf}{stanley\_counterexample.zip}
+{A different negative answer, from the recursion $a_0=2$, $a_1=1$,
+$a_n=a_{n-1}-2a_{n-2}$, with $b_n=T_{n-1}+2^n-1+a_n$, $T_n=T_{n-1}+b_n$,
+$G_{2n-1}=2^{n-1}$ and $G_{2n}=b_n$: the counting series has a natural boundary
+on the unit circle, hence is neither rational, algebraic nor D-finite.}
+
+\entry{Coefficient residues in generalized Fibonacci products}
+{generating-functions-and-asymptotics/binary-product-coefficient-counts/kbonacci-coefficient-residues}
+{article.pdf}{stanley\_kbonacci\_research.zip + quasifibonacci\_parity\_research.zip}
+{Settles Conjectures 6.2 and 6.3 of Stanley, \emph{Theorems and Conjectures on
+Some Rational Generating Functions} (arXiv:2101.02131v3, pp.~23--24).  For
+$k$-bonacci seeds each exceeding the sum of their predecessors, the number of
+odd coefficients of $\prod_{i\le n}(1+x^{w_i})$ has generating function
+$(1+2z^k)/(1-2z+2z^k-2z^{k+1})$, independently of the seeds; the proof builds
+periodic signs of block length $k+1$ and block product $-1$ and shows every
+signed finite product is flat.  \emph{Merged; the Conjecture 6.3 halves proved
+the same statement on the same domain, and the surviving report adds
+Conjecture~6.2 and the asymptotic analysis.}}
+
+\subsection{Single-sequence OEIS studies}
+
+Nine reports on the growth or the closed form of a single OEIS sequence.  Three
+of them count the terms in the derivatives of a power tower --- of $x^{x^x}$,
+$x^{x^2}$ and $x^x$ --- and reach three different answers by three different
+recurrences; two more share a Bell-scale saddle-point method on unrelated
+sequences.  Shared technique is not shared theorem, and none of these nine
+duplicates another.
+
+\entry{Bell-scale growth of OEIS A088714}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}
+{article.pdf}{A088714\_asymptotic\_growth.zip}
+{For the unique formal series with $A(x)=1+xA(x)^2A(xA(x))$, proves
+$\log a_n=n\log n-n\log\log n-n+O(n\log\log n/\log n)$, so
+$(e\log n/n)\,a_n^{1/n}\to1$ and the ordinary generating function has radius of
+convergence zero while the exponential one is entire.  The lower bound comes
+from a single explicit path through an exact triangular recurrence, the upper
+from a Stirling-positivity comparison with derivatives of Touchard
+polynomials.  The multiplicative equivalent is \emph{not} claimed, and the
+finer Bell-number form is labelled a conjecture with a sufficient ratio
+condition isolated.}
+
+\entry{The exponential growth constant of OEIS A158415}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant}
+{article.pdf}{A158415\_asymptotic\_growth.zip}
+{For the number of distinct values expressible with $n$ symbols from
+$E::=1\mid\sqrt E\mid(E+E)$, proves a computable $\gamma>1$ exists with
+$a(n)^{1/n}\to\gamma$ and $1.86204<\gamma<1.9208$, gives an effective
+characterisation as a supremum of algebraic finite-data bounds, and proves the
+boundary identity $\sum a(n)\gamma^{-n}=\gamma^2$, which rules out a pure
+$C\gamma^n$ prefactor.  The rigorous lower bounds rest on a uniform injectivity
+theorem: any finite alphabet of representable values can serve as nested-radical
+digits, via an odd valuation at a prime above~2.  No closed form for $\gamma$ is
+claimed, and terms 22--28 get certified intervals rather than exact values.}
+
+\entry{An exact coefficient formula for Ramanujan's theta function}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260306-formula-proof}
+{a260306\_proof.pdf}{A260306\_formula\_proof.zip}
+{Proves both finite formulas recorded in OEIS A260306, for every coefficient
+index, for the expansion $\theta(N)\sim\sum c_nN^{-n}$ defined by
+$\sum_{k<N}N^k/k!+\theta(N)N^N/N!=e^N/2$.  The route is an exact Laplace-integral
+difference, an analytic change of variable with $F(\psi(w))=w^2/2$, and Lagrange
+inversion reducing each $c_n$ to one coefficient extraction, then a finite
+change of basis into the entry's double and triple sums.  Includes the analytic
+error estimate the identification needs, rather than only checking the two sums
+agree, and identifies A065973 as the reduced denominators.}
+
+\entry{The maximal positive coefficient of a Hermite polynomial}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277280-hermite-maximum}
+{article.pdf}{A277280\_asymptotics.zip}
+{An exact closed form for OEIS A277280, the largest coefficient of the
+physicists' Hermite polynomial $H_n$ with signs retained: with
+$k_n=\lfloor(2n+6-\lfloor\sqrt{8n+21}\rfloor)/8\rfloor$ and $d_n=n-4k_n$, the
+exponent $d_n$ is the unique maximizer and $a(n)=n!\,2^{d_n}/((2k_n)!\,d_n!)$.
+The distinction from the largest coefficient in absolute value is kept explicit
+throughout.}
+
+\entry{Asymptotics of OEIS A277364}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics}
+{A277364\_asymptotics.pdf}{A277364\_asymptotics.zip}
+{For $a(n)=\sum_{k\le n/2}S(n,k)$, partitions of an $n$-set into at most
+$\lfloor n/2\rfloor$ blocks, proves $a(n)\sim B_n$ with an explicit first
+correction: writing $r=W_0(n)$,
+$a(n)=\exp\{n(r-1+1/r)-1\}(1+r)^{-1/2}\,(1-P(r)/n+O(r^2/n^2))$ for an explicit
+rational $P$.  Also gives a parity-split equivalent for the omitted tail
+$B_n-a(n)$.}
+
+\entry{Term counts in the derivatives of power towers}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts}
+{article.pdf}{A293239\_research\_report.zip, A290268\_partial\_results.zip,
+A281434\_exact\_algorithm\_and\_cubic\_growth.zip}
+{One article on three OEIS sequences that ask the same question of three
+functions: how many distinct monomials are in the fully collected $n$th
+derivative of $x^x$ (A293239), $x^{x^2}$ (A290268) and $x^{x^x}$ (A281434)?
+Part~I proves once the apparatus all three had established separately --- the
+canonical differential-polynomial form $f^{(n)}=fP_n$ or $fx^{-n}P_n$ with its
+first-order integer recurrence, the independence of logarithmic monomials that
+makes the count an invariant of $f$ rather than of a differentiation algorithm,
+the identity $a(n)=|\operatorname{supp}P_n|$, and the envelope bound.  Two
+normalizations are needed, because neither clause covers all three in the frames
+the parts use.  \textbf{None of the three headline questions is fully settled,
+and the article says so in its abstract}: for $x^x$ the count
+reduces exactly to zeros of the first-kind Lehmer--Comtet triangle A008296 and
+$a(n)=\Theta(n^2)$, but the closed formula needs an isolated nonvanishing step
+--- and separately the recurrence printed in the entry for $n>6$ is
+\emph{disproved} at $n=8$; for $x^{x^2}$ the conjectured expression is proved to
+be an upper bound and $a(n)=\Theta(n^2)$, but not the constant $\tfrac12$; for
+$x^{x^x}$ explicit bounds give $a(n)=\Theta(n^3)$ but not $a(n)\sim\tfrac23n^3$,
+and there the obstruction is not a nonvanishing statement but a density one,
+since further zeros provably exist.  A closing part sets the three side by side
+and records what they share beyond the framework: every cancellation any of them
+can prove is a parity zero of the same falling factorial.  This is a thematic consolidation,
+not a deduplication: the three were checked and are not duplicates, and all
+fifty numbered results of the three originals are preserved unchanged.}
+
+\entry{Iterated sums and products from one}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a352969-correctness-and-growth}
+{article.pdf}{A352969\_correctness\_and\_growth.zip}
+{For $S_0=\{1\}$, $S_{n+1}=(S_n+S_n)\cup(S_n\cdot S_n)$ and $a_n=|S_n|$ (OEIS
+A352969), proves correctness of the listed terms and the doubly exponential law
+$2^{2^{\,n-r_n-4}}\le a_n\le 2^{2^{\,n-1}}$, hence
+$\log\log a_n=n+O(\sqrt{\log n})$.  The step is simultaneous, not repeated
+closure --- a distinction the report is careful about.}
+
+\entry{Distinct third derivatives of a power tower}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a199085-exponentiation-derivative-values}
+{article.pdf}{A199085\_generating\_function.zip}
+{For OEIS A199085, the number of distinct values taken by the third derivative
+at $x=1$ over all fully parenthesized exponentiations of $n$ copies of $x$,
+proves $a(1)=a(2)=1$ and $a(n)=\lfloor(n^2-2)/3\rfloor$ for $n\ge3$, with the
+rational generating function $z/(1-z)+z^3/(1-z)^3-z^7/((1-z)^2(1-z^3))$.  The
+proof is for all $n$, not an extrapolation: every attainable pair of second and
+third derivatives is classified and a witness constructed for each admissible
+pair.  Despite the shared vocabulary this is a different question from
+\emph{power-tower-derivative-term-counts}, which fixes the function and varies
+the derivative order; here the order is fixed at three and the parenthesization
+varies.}
+
+\subsection{Asymptotics, records and discrepancy}
+
+\entry{The Exponential Scale of Gregory Sign Thresholds}
+{generating-functions-and-asymptotics/gregory-coefficient-sign-thresholds}
+{gregory\_sign\_threshold.pdf}{gregory\_sign\_threshold\_research.zip}
+{For $(x/\log(1+x))^m=\sum_n G^{(m)}_nx^n$ and $\mathrm{Gr}(m)$ the least $N$
+beyond which $(-1)^{n-1}G^{(m)}_n>0$, proves
+$\log\mathrm{Gr}(m)=m+1-\gamma-(\zeta(2)+\zeta(3))/m+C_2/m^2+O(m^{-3})$ with
+$C_2$ explicit, plus a finite algorithm for every coefficient of the complete
+expansion; in particular $\mathrm{Gr}(m)/e^m\to e^{1-\gamma}$ and
+$\mathrm{Gr}(m)/3^m\to0$.  This replaces Conjecture~6.1 of Xu and Zhao
+(arXiv:2609.11072v1), whose printed lower bound already conflicts with its own
+reported $\mathrm{Gr}(5)=113$; that value is independently certified here.}
+
+\entry{Exact Records in the Square-Root-of-Three Walk}
+{generating-functions-and-asymptotics/sqrt-three-walk-records}
+{article.pdf}{sqrt3\_record\_recurrence.zip}
+{Proves the four-phase record recurrence for
+$S(N)=\sum_{n\le N}(-1)^{\lfloor n\sqrt3\rfloor}$ in the corrected form on
+page~7 of Bruin and Fokkink, \emph{On the records and zeros of a deterministic
+random walk} (arXiv:2503.11734v2), where it is experimental and attributed to
+Arias de Reyna and van de Lune.  Includes minimality of every claimed first
+passage, a rational generating function, closed forms, sharp logarithmic
+extrema, and an extension to every even integer trace $D\ge4$.}
+
+\entry{Sharp discrepancy for a family of binary substitutions}
+{generating-functions-and-asymptotics/binary-substitution-discrepancy}
+{article.pdf}{oeis\_discrepancy\_counterexamples.zip}
+{For the fixed word of $0\mapsto1$, $1\mapsto101010$, the position sequences
+A284365 and A284366 both carry a conjectured upper position error below~2, and
+both conjectures are false: the first counterexamples are at ranks
+$2{,}977{,}771$ and $8{,}933{,}313$, with common error
+$(2977771\sqrt{21}-13645857)/2\approx2.00487$ and sharp common upper bound
+$(6+\sqrt{21})/5\approx2.11652$.  Proves complete discrepancy limit intervals
+for every substitution $0\mapsto1$, $1\mapsto(10)^m$, with infinite
+counterexample families and exact recurrences for their indices.}
+
+\entry{Exact eventual maximizers of Rudin--Shapiro autocorrelations}
+{generating-functions-and-asymptotics/rudin-shapiro-autocorrelation-maximizers}
+{article.pdf}{rudin\_shapiro\_maximizers.zip}
+{For the aperiodic autocorrelation $C_m(k)$ of the level-$m$ Rudin--Shapiro
+sequence, classifies the maximizing shift exactly for all large $m$:
+$k_m^\ast=(2^{m+1}+(-1)^m)/3$, with $A_m=b_{m-2}$, settling the discrete
+uniqueness-and-location conjecture of Tarnu (J.~Approx.\ Theory 287 (2023)
+105866), repeated as Conjecture~1.5 of Choi--Tarnu (2025), including the limit
+$k_m^\ast/2^m\to2/3$.  The certificate is a rational polytope argument with
+exact arithmetic.}
+
+\entry{Apéry arrays and conjectural zeta accelerations}
+{generating-functions-and-asymptotics/apery-array-zeta-accelerations}
+{article.pdf}{Apery\_OEIS\_Conjectures\_Proofs.zip, apery\_oeis\_conjectures.zip}
+{Proves the entire shifted-diagonal $\zeta(3)$ family recorded as conjectural in
+OEIS A143007, and both the super- and subdiagonal $\zeta(2)$ families of
+A108625, at every nonnegative offset: for all $k\ge0$,
+$\zeta(3)=H_k^{(3)}+\sum_{n\ge1}(2n+k)(3n^2+3nk+k^2)/
+(n^3(n+k)^3T_{n-1,n+k-1}T_{n,n+k})$.  The main diagonals are the classical
+Apéry sequences A005259 and A005258.  Proofs are finite telescoping identities
+with rational lattice potentials and explicit limit estimates; no computer test
+or unproved conjecture enters.  Adds rational error bounds, numerator and
+denominator recurrences, a three-term recurrence along every shifted diagonal,
+and sharp fixed-offset asymptotic constants.  Merged from two reports whose
+boxed identities were character-identical up to macro names.}
+
+\end{document}

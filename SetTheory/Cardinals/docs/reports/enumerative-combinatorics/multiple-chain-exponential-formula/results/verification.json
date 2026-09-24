@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "arithmetic": "exact Python integers and fractions.Fraction",
+  "python_version": "3.14.4",
+  "assertions": "explicit require(); active under python -O",
+  "suite_1_rectangular": {
+    "three_method_parameter_triples": 315,
+    "three_method_range": "1<=d<=5, 0<=c<=6, 0<=n<=8",
+    "independent_methods": [
+      "coordinate dynamic programming",
+      "subset-walk dynamic programming",
+      "exponential-formula recurrence"
+    ],
+    "exhaustive_array_cases": 48,
+    "exhaustive_feasible_arrays_visited": 34689,
+    "exhaustive_range": "1<=d<=3, 0<=c<=3, 0<=n<=3",
+    "support_preserving_duality_checks": 225,
+    "gamma_expansion_checks": 54,
+    "gamma_range": "1<=d<=6, 0<=n<=8",
+    "exact_variance_checks": 54,
+    "quartic_checked_through_z_degree": 16,
+    "source_d2_examples_matched": 4
+  },
+  "suite_2_diagonal_deeper": {
+    "block_weight_dp_vs_exponential": {
+      "cases": 104,
+      "d": "1..8",
+      "n": "0..12"
+    },
+    "individual_lattice_point_enumeration": {
+      "cases": 28,
+      "dimension_at_most": 8
+    },
+    "gamma_transform_vs_exponential": {
+      "cases": 104
+    },
+    "endpoint_refinement": {
+      "cases": 112,
+      "d": "1..4",
+      "n": "0..6",
+      "t": [
+        0,
+        1,
+        2,
+        7
+      ]
+    },
+    "fixed_support_finite_differences": {
+      "cases": 40,
+      "support": "1..5",
+      "d": "1..8"
+    },
+    "first_two_support_coefficients": "all 104 diagonal cases",
+    "double_chain_quartic": "zero through z^16, as polynomials in t",
+    "mixed_size_identity": {
+      "block_sizes": [
+        1,
+        2,
+        3
+      ],
+      "maximum_blocks": 4,
+      "multiplicity_vectors": 35,
+      "ordered_compositions": 121
+    },
+    "mixed_size_counterexample_to_order_invariance": {
+      "1,1,2": [
+        1,
+        11,
+        23,
+        11,
+        1
+      ],
+      "1,2,1": [
+        1,
+        11,
+        22,
+        11,
+        1
+      ],
+      "2,1,1": [
+        1,
+        11,
+        23,
+        11,
+        1
+      ]
+    }
+  },
+  "limitations": "Finite checks only; no proof assistant or external referee. The two suites use different methods over disjoint ranges and neither subsumes the other."
+}

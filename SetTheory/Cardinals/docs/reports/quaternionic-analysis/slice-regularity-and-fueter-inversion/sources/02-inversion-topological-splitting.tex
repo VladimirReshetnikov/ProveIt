@@ -1,0 +1,1451 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,hyperref,bookmark}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Global Fueter Inversion: Period Obstructions, Topological Splitting, and Spherical Singularities},
+ pdfauthor={OpenAI},pdfsubject={Research article extending the supplied quaternionic-analysis exposition}}
+\urlstyle{same}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\HC}{\mathbb H_{\C}}
+\newcommand{\SSS}{\mathbb S}
+\newcommand{\SR}{\mathcal{SR}}
+\newcommand{\AM}{\mathcal{AM}}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\lap}{\Delta_4}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\wind}{\operatorname{wind}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathbf i}
+\newcommand{\jj}{\mathbf j}
+\newcommand{\kk}{\mathbf k}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\Kzero}{K_p^{(0)}}
+\newcommand{\Kone}{K_p^{(1)}}
+\newcommand{\Gzero}{G_p^{(0)}}
+\newcommand{\Gone}{G_p^{(1)}}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\supp}{supp}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{2pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Global Fueter inversion and spherical singularities}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\vspace{-10mm}\textbf{Global Fueter Inversion}\\[4pt]
+\large Period obstructions, topological splitting,\\and spherical singularities}
+\author{A research article developed from the supplied quaternionic-analysis manuscript}
+\date{21 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The local inverse of the quaternionic Fueter map is unique up to an affine
+slice-regular function. We determine exactly how this ambiguity obstructs a
+global inverse. For an axially monogenic function $g=P+IQ$, two explicit closed
+quaternion-valued one-forms give necessary and sufficient period conditions for
+$g=\Delta_4 f$. They also give the complete affine monodromy of every local
+primitive. On finite-hole product domains the cokernel has right quaternionic
+dimension twice the number of holes. On conjugation-symmetric domains meeting
+the real axis, only pairs of exchanged holes contribute; holes fixed by
+conjugation contribute nothing. Normalized logarithmic Fueter kernels split the
+resulting exact sequence and yield quantitative non-approximation bounds and an
+augmented rational approximation theorem.
+
+The same invariants classify isolated nonreal spherical singularities. A
+singularity of growth $O(\rho^{-N})$, where $\rho$ is distance to the singular
+sphere and $N\geq1$, has a unique finite Laurent--logarithmic singular part of
+real dimension $8N$. At the critical order $O(\rho^{-1})$, its two quaternionic
+periods are exactly the coefficients of an affine surface-source density for
+the Cauchy--Fueter operator. We compute the logarithmic energy divergence and
+prove both the sharp $o(\rho^{-1})$ and the $L^2$ removability criteria. All
+classification statements are proved in the axial class. Local Fueter inversion
+and the basic logarithmic kernels are established mathematics; the proposed
+contribution is the explicit global obstruction and singularity package.
+\end{abstract}
+\medskip
+\noindent\textbf{Keywords.} Quaternionic analysis; inverse Fueter map; periods;
+affine monodromy; axial monogenicity; spherical singularities; removable
+singularities; approximation.
+
+\medskip
+\noindent\textbf{Status.} This is a research manuscript with complete analytic
+proofs and supplementary formula checks, not a peer-reviewed publication or a
+formal proof certificate. A targeted literature check did not locate the full
+period, splitting, and singularity classification in the form proved here.
+This is a qualified novelty assessment, not a guarantee of priority.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question and the contribution}
+\label{sec:introduction}
+
+The supplied manuscript \cite{Source} ends its constructive inverse Fueter
+theorem with a precise limitation: two closed one-forms can be integrated on a
+simply connected planar set, but nonzero periods may prevent a global
+primitive. The missing issue is therefore not local solvability. It is the
+identification, realization, and analytic significance of the global
+obstruction.
+
+The inverse Fueter theory of Colombo, Sabadini, and Sommen \cite{CSS}, and its
+integral development by Colombo, Pe\~na Pe\~na, Sabadini, and Sommen
+\cite{CPSS}, already supplies local inverses and their polynomial ambiguity.
+Perotti's Theorem~2 in \cite{Perotti} proves surjectivity when every component of
+the underlying symmetric planar set is simply connected. We retain the same
+notions of slice regularity and axial monogenicity, but remove that sufficient
+topological hypothesis by replacing it with an exact criterion. The distinction
+matters: some multiply connected domains are still globally surjective, while
+others have a nonzero finite-dimensional cokernel.
+
+\subsection{A useful change of unknowns}
+Write a local slice-regular primitive as $f(x+Iy)=A(x,y)+IB(x,y)$, with $y>0$.
+The conventional first integration constructs $C=B/y$. The conventional second
+integration constructs $A$ using a form that already contains $C$. This makes
+the second obstruction look dependent on a first choice of primitive. Instead
+we use
+\begin{equation}\label{eq:change-unknowns}
+ C=\frac{B}{y},\qquad H=A-xC,\qquad f(x+Iy)=H+(x+Iy)C.
+\end{equation}
+Both $dC$ and $dH$ can then be written directly in terms of $g=\lap f$.
+There are two independent periods, with no iterated integration or choice of
+branch in their definition. The first is the coefficient of $q$ in the
+monodromy; the second is its constant coefficient.
+
+\subsection{What is proved}
+The main results form one chain of consequences. The global criterion is
+Theorem~\ref{thm:global}, including its real-axis version
+Theorem~\ref{thm:real-axis}. The complete finite-hole obstruction space and its
+explicit splitting are Theorem~\ref{thm:split}. A holomorphic detector converts
+the periods into ordinary complex residues in
+Theorem~\ref{thm:detector}. Theorem~\ref{thm:laurent-log} gives the finite-growth
+classification at a nonreal sphere. Theorems~\ref{thm:source} and
+\ref{thm:energy} identify the critical singularities as surface charges and
+compute their energy. Quantitative approximation and removability consequences
+are included because they show that the obstruction is analytically effective,
+not merely an abstract dimension count.
+
+These conclusions answer the extension question left open in the supplied
+exposition. We do not identify that question with a named longstanding
+conjecture in the published literature. The alternative requested here is to
+prove substantial candidate-new theorems, with their relationship to established
+work made explicit.
+
+\subsection{What is not claimed as new}
+Fueter's mapping theorem, its affine kernel in quaternionic dimension one,
+the Vekua system, local inverse formulas, and the use of complex stems are not
+new. In particular, the spherical integral kernels with primitives proportional
+to $\arctan z$ and $z\arctan z$ already appear in \cite[Example~2]{CPSS}, with
+attribution there to \cite{CSS}. Our logarithmic kernels are normalized and
+translated versions of these established constructions, not newly discovered
+special functions. What is proposed as the contribution is their role as a
+complete period basis, together with the symmetry-sensitive global theorem and
+the finite-order singularity, source, and energy classifications.
+
+\section{Conventions and the differential system}
+\label{sec:preliminaries}
+
+\subsection{Quaternions, stems, and domains}
+Let $\HH$ be the real quaternion algebra, with basis $1,\ii,\jj,\kk$ and
+$\ii^2=\jj^2=\kk^2=\ii\jj\kk=-1$. Write
+\[
+ \SSS=\{I\in\HH:I^2=-1\},\qquad q=x+Iy,
+ \quad x\in\R,\ y>0,\ I\in\SSS.
+\]
+We reserve $\iota$ for the central imaginary unit in
+$\HC=\HH\otimes_{\R}\C$. Thus $\iota$ commutes with quaternionic coefficients
+and is not a selected member of $\SSS$. The conjugation
+$\kappa(A+\iota B)=A-\iota B$ acts only on this central complex factor.
+
+For a conjugation-invariant planar open set $D$, put
+\[
+ \Omega_D=\{x+Iy:x+\iota y\in D,\ I\in\SSS\}.
+\]
+We consider connected circularizations of two kinds. A \emph{product domain}
+comes from $D=U\cup\bar U$, where $U$ is a connected open subset of the upper
+half-plane. A \emph{slice domain} comes from a connected symmetric $D$ meeting
+$\R$. On a product domain, specifying a function on $U$ and reflecting it
+specifies its stem on all of $D$.
+
+A holomorphic stem is a holomorphic $F:D\to\HC$ satisfying
+$F(\bar z)=\kappa F(z)$. Write $F=A+\iota B$, where $A,B$ are quaternion
+valued. Its induced left slice-regular function is
+\begin{equation}\label{eq:stem}
+ \cI(F)(x+Iy)=A(x,y)+IB(x,y),\qquad
+ A_x=B_y,\quad A_y=-B_x.
+\end{equation}
+These are the conventions of the supplied exposition and of the stem approach
+\cite{GP}. All constant quaternionic coefficients in this article are multiplied
+on the right. In particular, $\cI(z a+b)(q)=qa+b$ for $a,b\in\HH$.
+
+The norm on $\HC$ used in coefficient estimates is the Euclidean norm
+\[
+ \norm{A+\iota B}_{\HC}^2=|A|^2+|B|^2.
+\]
+Multiplication by a central complex number of modulus one preserves this norm.
+It is not the quaternionic norm of a slice evaluation.
+
+\subsection{Axial monogenicity}
+Our Cauchy--Fueter operator has no factor $1/2$:
+\begin{equation}\label{eq:Dirac}
+ \cD=\partial_{x_0}+\ii\partial_{x_1}
+       +\jj\partial_{x_2}+\kk\partial_{x_3},\qquad
+ \overline{\cD}\cD=\lap=\sum_{\mu=0}^3\partial_{x_\mu}^2.
+\end{equation}
+An \emph{axially monogenic} function has the form
+$g(x+Iy)=P(x,y)+IQ(x,y)$, with smooth quaternion-valued $P,Q$, and satisfies
+$\cD g=0$. On a slice domain we require smooth stem coefficients on $D$, with
+$P$ even and $Q$ odd in $y$; the induced function is smooth across the real
+axis. This is the monogenic slice-function class, denoted by $\AM(\Omega_D)$.
+The space of slice-regular functions is denoted by $\SR(\Omega_D)$.
+
+\begin{lemma}[Axial identities]\label{lem:axial}
+For $y>0$,
+\begin{align}
+ \cD(P+IQ)&=P_x-Q_y-\frac{2Q}{y}+I(Q_x+P_y),\label{eq:axial-D}\\
+ \lap(A+IB)&=A_{xx}+A_{yy}+\frac{2A_y}{y}
+ +I\left(B_{xx}+B_{yy}+\frac{2B_y}{y}-\frac{2B}{y^2}\right).
+ \label{eq:axial-lap}
+\end{align}
+Consequently, axial monogenicity is equivalent to
+\begin{equation}\label{eq:Vekua}
+ P_x-Q_y=\frac{2Q}{y},\qquad Q_x+P_y=0.
+\end{equation}
+For a slice-regular $f=A+IB$,
+\begin{equation}\label{eq:Fueter-formula}
+ \lap f=\frac{2A_y}{y}
+       +I\left(\frac{2B_y}{y}-\frac{2B}{y^2}\right).
+\end{equation}
+The function $\lap f$ is axially monogenic.
+\end{lemma}
+\begin{proof}
+Put $v=\Ima q$ and $I=v/y$. For $\ell=1,2,3$,
+\[
+ \partial_{x_\ell}y=\frac{x_\ell}{y},\qquad
+ \partial_{x_\ell}I=\frac{e_\ell}{y}-\frac{v x_\ell}{y^3},
+ \quad (e_1,e_2,e_3)=(\ii,\jj,\kk).
+\]
+It follows that
+$\sum e_\ell\partial_{x_\ell}I=-2/y$,
+$\Delta_{\R^3}I=-2I/y^2$, and
+$\sum(\partial_{x_\ell}I)(\partial_{x_\ell}y)=0$.
+The product rule gives \eqref{eq:axial-D} and \eqref{eq:axial-lap}.
+Evaluating at $I$ and $-I$ separates the two coefficients, proving
+\eqref{eq:Vekua}. The Cauchy--Riemann equations make both $A,B$ planar
+harmonic, giving \eqref{eq:Fueter-formula}. If its two coefficients are $P,Q$,
+direct differentiation using \eqref{eq:stem} gives \eqref{eq:Vekua}.
+On a slice domain the identities extend across the real axis by smoothness.
+\end{proof}
+This calculation fixes all signs and normalizations needed below. For example,
+$\lap q^2=-4$. At a real point, a holomorphic symmetric stem satisfies
+\begin{equation}\label{eq:real-trace}
+ (\lap\cI(F))(x)=-2F''(x).
+\end{equation}
+Indeed, its Taylor expansion has quaternionic coefficients, and only its
+quadratic term contributes to the Laplacian at the center.
+
+\section{Two explicit periods and the global inverse}
+\label{sec:periods}
+
+For $g=P+IQ\in\AM(\Omega_U)$ on a product domain, define
+\begin{align}
+ \alpha_0(g)&=-\frac{P}{2}\dd x+\frac{Q}{2}\dd y,
+ \label{eq:alpha0}\\
+ \alpha_1(g)&=\frac{xP+yQ}{2}\dd x+
+              \frac{yP-xQ}{2}\dd y.
+ \label{eq:alpha1}
+\end{align}
+Quaternion-valued forms are integrated componentwise over real curves.
+For an oriented piecewise smooth closed curve $\gamma\subset U$, set
+\begin{equation}\label{eq:period-def}
+ a_\gamma(g)=\oint_\gamma\alpha_0(g),\qquad
+ b_\gamma(g)=\oint_\gamma\alpha_1(g).
+\end{equation}
+
+\begin{lemma}[Closedness]\label{lem:closed}
+Both forms in \eqref{eq:alpha0}--\eqref{eq:alpha1} are closed.
+\end{lemma}
+\begin{proof}
+The coefficient of $dx\wedge dy$ in $d\alpha_0$ is $(Q_x+P_y)/2$.
+The corresponding coefficient for $d\alpha_1$ is
+\[
+ \frac12\{y(P_x-Q_y)-2Q-x(Q_x+P_y)\}.
+\]
+Both vanish by \eqref{eq:Vekua}.
+\end{proof}
+
+\begin{theorem}[Complete period criterion]\label{thm:global}
+Let $U$ be any connected open subset of $\{y>0\}$, and let
+$g\in\AM(\Omega_U)$. The following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a single-valued $f\in\SR(\Omega_U)$ with $\lap f=g$.
+\item Both $\alpha_0(g)$ and $\alpha_1(g)$ are exact on $U$.
+\item $a_\gamma(g)=b_\gamma(g)=0$ for every closed curve $\gamma\subset U$.
+\end{enumerate}
+When these conditions hold, choose primitives $C,H$ of $\alpha_0,\alpha_1$.
+Every inverse is
+\begin{equation}\label{eq:global-inverse}
+ f(x+Iy)=H(x,y)+(x+Iy)C(x,y),
+\end{equation}
+up to addition of $qa+b$ with $a,b\in\HH$.
+\end{theorem}
+\begin{proof}
+Suppose first that $f=A+IB$ is an inverse, and define $C,H$ by
+\eqref{eq:change-unknowns}. From \eqref{eq:Fueter-formula} and
+$B_x=-A_y$,
+\[
+ C_x=-\frac P2,\qquad C_y=\frac Q2.
+\]
+Also,
+\begin{align*}
+ H_x&=A_x-C-xC_x=B_y-C+\frac{xP}{2}
+       =\frac{yQ+xP}{2},\\
+ H_y&=A_y-xC_y=\frac{yP-xQ}{2}.
+\end{align*}
+Thus $dC=\alpha_0$ and $dH=\alpha_1$.
+
+Conversely, take primitives $C,H$, put $A=H+xC$ and $B=yC$, and compute
+\[
+ A_x=C+\frac{yQ}{2}=B_y,\qquad
+ A_y=\frac{yP}{2}=-B_x.
+\]
+The resulting stem is holomorphic on $U$. Reflection supplies a holomorphic
+symmetric stem on $U\cup\bar U$. Formula \eqref{eq:Fueter-formula} gives
+$\lap f=g$.
+
+A closed one-form has a primitive if and only if all its closed-curve integrals
+vanish: fix a base point, integrate along a path, and use the loop condition
+to prove path independence. This works for each real component. Finally, two
+pairs of primitives differ by constant quaternions; their induced functions
+differ by $qa+b$. Conversely, every such affine addition has zero Laplacian.
+\end{proof}
+
+\begin{remark}[Why there are two independent conditions]
+The second period is not just the period of the form used to recover $A$ after
+choosing $C$. It is already the period of an explicit form of $g$. The identity
+$H=A-xC$ removes that apparent dependence. In particular, changing the first
+primitive cannot remove a nonzero $b_\gamma$.
+\end{remark}
+
+\begin{corollary}[Affine monodromy]\label{cor:monodromy}
+A local inverse continues along every path in $U$. Continuing it around a
+closed curve $\gamma$ changes its value by
+\begin{equation}\label{eq:monodromy}
+ f^\gamma(q)-f(q)=q\,a_\gamma(g)+b_\gamma(g).
+\end{equation}
+The map $\gamma\mapsto(a_\gamma,b_\gamma)$ factors through
+$H_1(U;\mathbb Z)$ and is additive. Equivalently, on the universal cover the
+inverse is a single-valued function with this affine deck transformation law.
+\end{corollary}
+\begin{proof}
+Integrate the two closed forms along paths from a fixed point. Their changes
+under a loop are precisely their periods. Substituting in
+\eqref{eq:global-inverse} proves the formula. Closed-form integration is
+invariant under homology, and integration over concatenated paths is additive.
+\end{proof}
+
+This monodromy is not a quaternionic fractional-linear action. It is translation
+by an element of the fixed eight-real-dimensional space
+$\{q\mapsto qa+b:a,b\in\HH\}$. Noncommutativity has no hidden role in the
+composition law because the coefficients remain on the right.
+
+\section{Reflection, the real axis, and topology}
+\label{sec:reflection}
+
+Let $D$ now be connected, symmetric under
+$\tau(x,y)=(x,-y)$, and meeting $\R$. Define $\alpha_0,\alpha_1$ by the same
+formulas on all of $D$. No division by $y$ occurs in those definitions.
+
+\begin{theorem}[Global inversion across the real axis]\label{thm:real-axis}
+For $g\in\AM(\Omega_D)$, the forms $\alpha_0(g),\alpha_1(g)$ are smooth,
+closed, and $\tau$-invariant. A global slice-regular inverse exists if and only
+if both have zero periods on $D$. The inverse is unique modulo $qa+b$.
+The obstruction belongs to
+\begin{equation}\label{eq:invariant-cohom}
+ H^1_{\mathrm{dR}}(D;\HH)^+\oplus H^1_{\mathrm{dR}}(D;\HH)^+,
+\end{equation}
+where the superscript denotes the $+1$ eigenspace of $\tau^*$.
+\end{theorem}
+\begin{proof}
+Smoothness follows from the smooth stem coefficients. Closedness holds off
+$\R$ by Lemma~\ref{lem:closed} and on $\R$ by continuity. The parity of $P,Q$
+and the sign change of $dy$ prove $\tau^*\alpha_j=\alpha_j$.
+
+If the periods vanish, choose primitives and replace them, if necessary, by
+\[
+ C_e=\tfrac12(C+C\circ\tau),\qquad
+ H_e=\tfrac12(H+H\circ\tau).
+\]
+They have the same differentials and are even in $y$. Put
+$A=H_e+xC_e$, $B=yC_e$. These have the required parities and satisfy the
+Cauchy--Riemann equations off the real axis, hence everywhere by continuity.
+They therefore define a holomorphic symmetric stem and the desired inverse.
+
+For necessity, the odd smooth coefficient $B$ of any slice-regular inverse
+has a smooth even quotient $B/y$ across $y=0$; for instance,
+$B(x,y)/y=\int_0^1B_y(x,ty)\dd t$ near the axis. The computations in the
+proof of Theorem~\ref{thm:global} extend by continuity and make both forms exact.
+The same computation gives the affine kernel. Finally, invariance of the
+forms gives \eqref{eq:invariant-cohom}.
+\end{proof}
+
+\subsection{A precise finite-hole setting}
+For the finite-dimensional results, a \emph{finite-hole planar domain} will mean
+a simply connected planar domain $V$ from which finitely many pairwise disjoint
+compact holes have been removed. Each hole is either a point or the closure of
+a Jordan domain, is contained in $V$, and is disjoint from the other holes.
+We assume the remaining domain is connected. The outer domain $V$ may be
+unbounded. In the product case $V\subset\{y>0\}$. In the slice case $V$ and
+the family of holes are conjugation invariant, and the resulting domain meets
+$\R$. These hypotheses include disks and half-planes with punctures, ordinary
+annuli, and the punctured plane examples below.
+
+Choose counterclockwise loops $\gamma_j$ with winding number one around the
+$j$th hole and zero around the other holes. Their classes form a basis of the
+first homology. One way to see this is to join the holes to the outer boundary,
+or to a cut going to infinity, by disjoint arcs. Cutting along these arcs gives
+a simply connected planar region; restoring each arc adds exactly one loop.
+Replacing a point hole by a sufficiently small disk does not change this
+argument. Only this elementary winding description of topology is needed.
+
+\begin{lemma}[Which holes contribute]\label{lem:holes}
+Suppose a symmetric finite-hole domain has $s$ holes fixed by conjugation and
+$h$ pairs of holes exchanged by conjugation. Then
+\[
+ \dim_{\R}H^1_{\mathrm{dR}}(D;\R)^+=h.
+\]
+An invariant closed form has period zero around each fixed hole, and its
+counterclockwise periods around a conjugate pair are negatives of one another.
+\end{lemma}
+\begin{proof}
+Reflection reverses planar orientation. On winding generators it sends the
+class around a fixed hole to its negative, and sends the class around one
+member of an exchanged pair to the negative class around the other member.
+For an invariant form $\alpha$,
+$\int_{\tau\gamma}\alpha=\int_\gamma\tau^*\alpha=\int_\gamma\alpha$.
+This proves the asserted relations. Conversely, those are the only relations
+on a winding basis, leaving one real coordinate per exchanged pair.
+\end{proof}
+
+\begin{corollary}[Multiply connected surjectivity]\label{cor:annulus}
+If every hole of a symmetric finite-hole slice domain is fixed by conjugation,
+then $\lap:\SR(\Omega_D)\to\AM(\Omega_D)$ is surjective. In particular this
+holds for $D=\{r<|z|<R\}$, with $0<r<R$.
+\end{corollary}
+\begin{proof}
+All periods of both invariant forms vanish by Lemma~\ref{lem:holes}; apply
+Theorem~\ref{thm:real-axis}.
+\end{proof}
+
+Thus the first Betti number alone does not measure the obstruction. The
+conjugation action on the first homology is essential. An annulus has a
+nonzero first Betti number but no invariant period obstruction.
+
+\section{Logarithmic kernels and the split exact sequence}
+\label{sec:kernels}
+
+\subsection{Single-valued Fueter images of multivalued stems}
+Fix $p=u+\iota v$ with $v\ne0$. On local branches away from $p$, write
+\begin{equation}\label{eq:logstem}
+ h_p(z)=\frac{\log(z-p)}{2\pi\iota}.
+\end{equation}
+A counterclockwise circuit around $p$ changes $h_p$ by $1$ and $zh_p$ by $z$.
+These changes induce affine slice functions, whose Laplacians vanish. It is
+therefore meaningful on $\{y>0\}\setminus\{p\}$ to define the single-valued
+axially monogenic functions
+\begin{equation}\label{eq:K-definition}
+ \Kzero=\lap\cI(h_p),\qquad \Kone=\lap\cI(zh_p).
+\end{equation}
+The notation means the common result from local branches; it does not assert
+a global logarithm or a global primitive.
+
+Put $X=x-u$, $Y=y-v$, $R_p^2=X^2+Y^2$, and $L_p=\log R_p$. For
+$K_p^{(j)}=P_j+IQ_j$, direct formulas are
+\begin{align}
+ P_0&=\frac{X}{\pi yR_p^2},&
+ Q_0&=-\frac{Y}{\pi yR_p^2}+\frac{L_p}{\pi y^2},
+ \label{eq:K0}\\
+ P_1&=\frac{xX+yY}{\pi yR_p^2}+\frac{L_p}{\pi y},&
+ Q_1&=\frac{X}{\pi R_p^2}-\frac{xY}{\pi yR_p^2}
+                +\frac{xL_p}{\pi y^2}.
+ \label{eq:K1}
+\end{align}
+Every term is single valued. In particular, the arguments of the logarithms
+have disappeared.
+
+\begin{proposition}[Normalized periods]\label{prop:K-periods}
+For every closed curve $\gamma$ in the upper half-plane avoiding $p$,
+\begin{align}
+ (a_\gamma(\Kzero),b_\gamma(\Kzero))
+   &=(0,\wind(\gamma,p)),\label{eq:K-period0}\\
+ (a_\gamma(\Kone),b_\gamma(\Kone))
+   &=(\wind(\gamma,p),0).\label{eq:K-period1}
+\end{align}
+\end{proposition}
+\begin{proof}
+Take a local argument $\theta=\arg(z-p)$. For $h_p$ the stem coefficients are
+$A=\theta/(2\pi)$ and $B=-L_p/(2\pi)$. Hence
+\[
+ C_0=-\frac{L_p}{2\pi y},\qquad
+ H_0=\frac{\theta}{2\pi}+\frac{xL_p}{2\pi y}.
+\]
+For $zh_p$ the analogous functions are
+\[
+ C_1=\frac{\theta}{2\pi}-\frac{xL_p}{2\pi y},\qquad
+ H_1=\frac{(x^2+y^2)L_p}{2\pi y}.
+\]
+Their differentials are $\alpha_0,\alpha_1$ by
+Theorem~\ref{thm:global}. Along a loop $L_p$ returns to its initial value and
+$\theta$ increases by $2\pi\wind(\gamma,p)$. The displayed periods follow.
+Differentiating the same stems with \eqref{eq:Fueter-formula} also proves
+\eqref{eq:K0}--\eqref{eq:K1}.
+\end{proof}
+
+\subsection{The symmetric kernels}
+For $v>0$, define on the upper half-plane
+\begin{equation}\label{eq:G-definition}
+ G_p^{(j)}=K_p^{(j)}-K_{\bar p}^{(j)},\qquad j=0,1.
+\end{equation}
+They extend to smooth axially monogenic functions on
+$\HH\setminus S_p$, where
+\[
+ S_p=u+v\SSS.
+\]
+To prove this at the real axis, use local branches of
+\begin{equation}\label{eq:paired-log}
+ \ell_p(z)=\frac{\log(z-p)-\log(z-\bar p)}{2\pi\iota},\qquad
+ \ell_p'(z)=\frac{v}{\pi((z-u)^2+v^2)}.
+\end{equation}
+Near any real point the derivative is holomorphic and real on the real axis.
+A local primitive with a real integration constant is therefore symmetric.
+It agrees with a branch of \eqref{eq:paired-log} up to a real constant. Its
+Fueter image, or that of $z\ell_p$, gives the asserted smooth extension.
+On overlapping branches the difference is affine, so these extensions agree.
+
+The counterclockwise periods around $p$ are $(0,1)$ and $(1,0)$; around
+$\bar p$ they are their negatives. The real traces, useful for checking
+normalizations, are
+\begin{align}
+ G_p^{(0)}(x)&=\frac{4v(x-u)}{\pi((x-u)^2+v^2)^2},\label{eq:G0-real}\\
+ G_p^{(1)}(x)&=\frac{4v\{u(x-u)-v^2\}}
+                    {\pi((x-u)^2+v^2)^2}.\label{eq:G1-real}
+\end{align}
+These follow at once from \eqref{eq:real-trace} and \eqref{eq:paired-log}.
+For $p=\iota$, $\ell_p$ agrees locally, up to a real constant, with
+$\pi^{-1}\arctan z$. Thus these are the familiar arctangent-based inverse
+Fueter kernels, with a normalization chosen to make their periods equal to
+one; compare \cite[Example~2]{CPSS}.
+
+\subsection{The complete obstruction space}
+In a finite-hole product domain choose a point $p_j$ in the $j$th omitted hole
+and take $\mathcal K_j^{(r)}=K_{p_j}^{(r)}$. In a symmetric finite-hole slice
+domain choose one upper hole from each exchanged pair, a point $p_j$ in it,
+and take $\mathcal K_j^{(r)}=G_{p_j}^{(r)}$. Let $h$ be the number of chosen
+holes. In both cases let $\gamma_j$ be the corresponding positive winding
+loops and define
+\begin{equation}\label{eq:Per-finite}
+ \Per(g)=\bigl((a_j,b_j)\bigr)_{j=1}^h,
+ \quad a_j=a_{\gamma_j}(g),\quad b_j=b_{\gamma_j}(g).
+\end{equation}
+
+\begin{theorem}[Split global obstruction sequence]\label{thm:split}
+For either finite-hole setting just described, the following sequence of
+right quaternionic vector spaces is exact:
+\begin{equation}\label{eq:exact-sequence}
+ 0\longrightarrow\HH^2
+ \xrightarrow{\ (a,b)\mapsto qa+b\ }\SR(\Omega_D)
+ \xrightarrow{\ \lap\ }\AM(\Omega_D)
+ \xrightarrow{\ \Per\ }(\HH^2)^h\longrightarrow0.
+\end{equation}
+The final arrow has the explicit right-linear section
+\begin{equation}\label{eq:section-J}
+ J\bigl((a_j,b_j)_{j=1}^h\bigr)
+   =\sum_{j=1}^h\bigl(\mathcal K_j^{(1)}a_j+
+                       \mathcal K_j^{(0)}b_j\bigr).
+\end{equation}
+Consequently every $g\in\AM(\Omega_D)$ has a decomposition
+\begin{equation}\label{eq:normal-form}
+ g=\lap f+\sum_{j=1}^h
+      \bigl(\mathcal K_j^{(1)}a_j+\mathcal K_j^{(0)}b_j\bigr),
+\end{equation}
+with uniquely determined period coefficients and with $f$ unique modulo
+$qa+b$. The cokernel of $\lap$ has right quaternionic dimension $2h$, or real
+dimension $8h$.
+\end{theorem}
+\begin{proof}
+The affine-kernel statement and exactness at $\AM$ are the global period
+criterion. In the slice case Lemma~\ref{lem:holes} says that the selected upper
+periods are all the independent periods. Proposition~\ref{prop:K-periods} and
+its paired version give
+\[
+ \Per\bigl(\mathcal K_j^{(1)}a+\mathcal K_j^{(0)}b\bigr)
+   =(0,\ldots,0,(a,b),0,\ldots,0).
+\]
+Thus $\Per J$ is the identity. Subtract $J\Per(g)$ from $g$ and apply the
+period criterion to the resulting zero-period function. Applying $\Per$ to
+any putative decomposition proves uniqueness of its coefficients. The
+dimension statement follows from the explicit isomorphism of the quotient
+with $(\HH^2)^h$.
+\end{proof}
+
+\begin{remark}[Canonical quotient, noncanonical representatives]
+Moving the point $p_j$ inside its omitted hole changes the kernel representative
+but not its period vector. The difference is therefore the Fueter image of a
+global slice-regular function. The quotient and its period coordinates do not
+depend on those auxiliary pole locations; the section $J$ does.
+\end{remark}
+
+\begin{example}[A sphere removed from quaternionic space]\label{ex:removed-sphere}
+Let $D=\C\setminus\{\iota,-\iota\}$, so
+$\Omega_D=\HH\setminus\SSS$. There is one exchanged pair of holes, hence the
+cokernel has real dimension eight. The functions $G_{\iota}^{(0)}$ and
+$G_{\iota}^{(1)}$ are globally axially monogenic, but neither is the Laplacian
+of a global slice-regular function on this domain. Their local primitives are
+$\pi^{-1}\arctan z$ and $\pi^{-1}z\arctan z$; going once around $\iota$
+adds $1$ or $z$. The local primitives are not global despite the global
+single-valuedness of their Fueter images.
+\end{example}
+
+\section{A holomorphic detector and residue formulas}
+\label{sec:detector}
+
+The closed forms are directly usable with real coordinates. A second
+formulation is convenient when meromorphic complex formulas are available.
+
+\begin{theorem}[Second-derivative detector]\label{thm:detector}
+For $g=P+IQ\in\AM(\Omega_U)$ define the $\HC$-valued function
+\begin{equation}\label{eq:W}
+ W_g(z)=-\frac12\bigl(P+yP_y+\iota yP_x\bigr).
+\end{equation}
+It is globally holomorphic. If $F$ is the stem of any local Fueter primitive,
+then $W_g=F''$. For every closed curve $\gamma$,
+\begin{equation}\label{eq:W-periods}
+ \oint_\gamma W_g(z)\dd z=a_\gamma(g),\qquad
+ \oint_\gamma zW_g(z)\dd z=-b_\gamma(g).
+\end{equation}
+On a slice domain $W_g$ extends holomorphically across $\R$ and is symmetric
+under $\kappa$.
+\end{theorem}
+\begin{proof}
+A local primitive exists on every small disk in the upper half-plane. In the
+notation of Theorem~\ref{thm:global}, its complex derivative is
+\[
+ F'=A_x+\iota B_x=C+\frac{yQ}{2}-\iota\frac{yP}{2}.
+\]
+Differentiate with respect to $x$ and use $C_x=-P/2$ and $Q_x=-P_y$.
+This gives \eqref{eq:W}, proving both holomorphy and independence of the local
+primitive. Along an analytically continued branch, the monodromy of $F$ is
+$za_\gamma+b_\gamma$, and that of $F'$ is $a_\gamma$. Integrating
+$dF'=W_g\,dz$ gives the first formula. Integrating
+$d(zF'-F)=zW_g\,dz$ gives the second. Near a real point the local construction
+in Theorem~\ref{thm:real-axis} gives a holomorphic symmetric $F$, which proves
+the final assertion.
+\end{proof}
+
+\begin{corollary}[Residue extraction at a nonreal puncture]\label{cor:residues}
+Suppose $W_g$ is meromorphic at $p$ and has Laurent expansion
+$W_g(z)=\sum_n c_n(z-p)^n$. For a small counterclockwise circle around $p$,
+\begin{equation}\label{eq:residue-periods}
+ a=2\pi\iota\,c_{-1},\qquad
+ b=-2\pi\iota\,(p c_{-1}+c_{-2}).
+\end{equation}
+Although computed in $\HC$, both expressions belong to the real subspace
+$\HH\subset\HC$. The two periods vanish exactly when
+$c_{-1}=c_{-2}=0$.
+\end{corollary}
+\begin{proof}
+Apply the componentwise complex residue theorem to
+\eqref{eq:W-periods}. Membership in $\HH$ follows independently from the
+real quaternion-valued integrals \eqref{eq:period-def}. Since
+$2\pi\iota$ is invertible, the vanishing criterion follows.
+\end{proof}
+
+For the two logarithmic generators the detector is particularly simple:
+\begin{equation}\label{eq:W-logs}
+ W_{\Kone a+\Kzero b}(z)=\frac{1}{2\pi\iota}
+ \left(\frac{a}{z-p}-\frac{pa+b}{(z-p)^2}\right).
+\end{equation}
+This follows by differentiating
+$(za+b)\log(z-p)/(2\pi\iota)$ twice. Thus the only meromorphic terms that
+obstruct a single-valued second primitive are precisely those that encode
+Fueter monodromy.
+
+\begin{remark}[The detector is not injective]
+It would be incorrect to infer $g=0$ from $W_g=0$ on a product domain. An
+affine holomorphic stem with arbitrary $\HC$ coefficients need not induce a
+Fueter-harmonic slice function. For example, $F(z)=\iota$ gives
+$f(x+Iy)=I$ and $\lap f=-2I/y^2$, although $F''=0$. The affine kernel of
+$\lap$ consists only of $za+b$ with $a,b\in\HH$, not all complexified affine
+stems. The proof of the detector theorem uses actual local primitives, not
+an injectivity assertion.
+\end{remark}
+
+\section{Quantitative inversion and approximation}
+\label{sec:approximation}
+
+\subsection{Period bounds and a quantitative obstruction}
+For a compact planar curve $\gamma$, let $\Omega_\gamma$ be its circularization,
+and put
+\[
+ L_\gamma=\int_\gamma ds,\qquad
+ R_\gamma=\int_\gamma |z|\dd s.
+\]
+These definitions also apply to curves crossing the real axis in a slice
+domain.
+
+\begin{proposition}[Norm bounds for the periods]\label{prop:bounds}
+Let $M=\sup_{q\in\Omega_\gamma}|g(q)|$. Then
+\begin{equation}\label{eq:period-bounds}
+ |a_\gamma(g)|\le\frac{L_\gamma M}{2},\qquad
+ |b_\gamma(g)|\le\frac{R_\gamma M}{2}.
+\end{equation}
+In particular, for every global single-valued slice-regular $f$,
+\begin{equation}\label{eq:distance-bound}
+ \sup_{\Omega_\gamma}|g-\lap f|\ \geq\
+ \max\left\{\frac{2|a_\gamma(g)|}{L_\gamma},
+             \frac{2|b_\gamma(g)|}{R_\gamma}\right\}.
+\end{equation}
+Terms with a zero denominator may be omitted; for a nonconstant closed curve
+both displayed denominators are positive.
+\end{proposition}
+\begin{proof}
+The parallelogram identity gives
+\[
+ |P|^2+|Q|^2=\tfrac12\bigl(|P+IQ|^2+|P-IQ|^2\bigr)\leq M^2.
+\]
+For a real unit tangent $(\dot x,\dot y)$, the norm of
+$-P\dot x+Q\dot y$ is at most $(|P|^2+|Q|^2)^{1/2}$ by the Euclidean
+Cauchy--Schwarz inequality. The two real coefficients of $P,Q$ in
+$2\alpha_1(\dot\gamma)$ are
+$x\dot x+y\dot y$ and $y\dot x-x\dot y$; their squared sum is $|z|^2$.
+Integrating proves \eqref{eq:period-bounds}. Apply the same estimates to
+$g-\lap f$, whose periods are those of $g$, to obtain
+\eqref{eq:distance-bound}.
+\end{proof}
+
+The bound proves more than the failure of exact inversion: a nonzero period
+prevents arbitrarily accurate uniform approximation on a compact circular
+curve by Fueter images of global slice functions.
+
+\subsection{A normalized right inverse on the zero-period space}
+Fix $z_*=x_*+\iota y_*$ in $U$ and normalize $C(z_*)=H(z_*)=0$. For zero-period
+$g$, the path-independent formula is
+\begin{equation}\label{eq:path-inverse}
+ f(q)=q\int_{z_*}^{z}\alpha_0(g)+\int_{z_*}^{z}\alpha_1(g),
+ \qquad q=x+Iy,
+\end{equation}
+where the factors $q$ remain on the left of the quaternion-valued integrals.
+For any chosen path $\sigma$ from $z_*$ to $z$, if
+$M_\sigma=\sup_{\Omega_\sigma}|g|$, then
+\begin{equation}\label{eq:path-bound}
+ |f(q)|\leq\frac{M_\sigma}{2}
+  \left(|q|L_\sigma+\int_\sigma|w|\dd s\right).
+\end{equation}
+This follows from the proof of Proposition~\ref{prop:bounds} applied to an
+open path. The normalization means that $f$ vanishes on the full sphere over
+$z_*$. It removes precisely the eight real affine degrees of freedom. On a
+slice domain one may instead choose $z_*=x_*\in\R$; the same normalization
+is $f(x_*)=\partial_c f(x_*)=0$.
+
+\begin{proposition}[Closed range and continuous splitting]\label{prop:closed-range}
+Within $\AM(\Omega_D)$ equipped with locally uniform convergence,
+$\lap\SR(\Omega_D)$ is closed. In the finite-hole setting,
+\[
+ g\longmapsto g-J\Per(g)
+\]
+is a continuous projection onto this range. A base-point-normalized inverse
+on the range is continuous for locally uniform convergence.
+\end{proposition}
+\begin{proof}
+Every period is a continuous functional of $g$ on a compact circularized loop,
+by \eqref{eq:period-bounds}. The range is the intersection of their kernels,
+so is closed. In finite connectivity, $J$ is a finite sum of fixed smooth
+functions times period coordinates and is continuous; $\Per J$ is the identity.
+
+For the normalized inverse, cover a compact set by finitely many small disks
+and choose finitely many connecting paths from the base point. All required
+path integrals can then be taken in one larger compact set, with uniformly
+bounded lengths. The estimate \eqref{eq:path-bound} applied to differences
+proves locally uniform convergence of the inverses. The same construction,
+with symmetric paths or even primitives, handles the real axis. Holomorphic
+Cauchy estimates then also give convergence of derivatives on smaller compact
+sets.
+\end{proof}
+
+\subsection{An augmented rational approximation theorem}
+By a \emph{rational stem} we mean an $\HC$-valued rational function $R$ of the
+central complex variable, with no poles in $D$ and with
+$R(\bar z)=\kappa R(z)$. Its induced slice function $\cI(R)$ is globally
+single valued and slice regular on $\Omega_D$.
+
+\begin{theorem}[Approximation with the minimal obstruction space]
+\label{thm:Runge}
+In the finite-hole setting, let $(a_j,b_j)=\Per(g)$. There are rational stems
+$R_n$, with poles outside $D$, such that
+\begin{equation}\label{eq:augmented-Runge}
+ g=\lim_{n\to\infty}\left[
+   \lap\cI(R_n)+\sum_{j=1}^h
+   \bigl(\mathcal K_j^{(1)}a_j+\mathcal K_j^{(0)}b_j\bigr)\right]
+\end{equation}
+locally uniformly, with all derivatives on compact subsets. Conversely, $g$
+is a locally uniform limit of Fueter images of global slice-regular functions
+if and only if $\Per(g)=0$. Any fixed right quaternionic linear augmentation
+that makes such approximation possible for every $g$ must have dimension at
+least $2h$ modulo $\lap\SR$.
+\end{theorem}
+\begin{proof}
+Subtract the displayed kernel sum and use Theorem~\ref{thm:split} to obtain
+$\lap f$ for a global slice-regular $f=\cI(F)$. The ordinary scalar Runge
+theorem, applied to the four complex coordinates of $F$ on an exhaustion of
+$D$, gives rational approximants with poles outside $D$. Replacing an
+approximant $R$ by
+\[
+ \frac12\bigl(R(z)+\kappa R(\bar z)\bigr)
+\]
+preserves rationality, moves no pole into $D$, enforces stem symmetry, and
+preserves convergence on symmetric compact sets. Complex Cauchy estimates give
+convergence of all holomorphic derivatives locally. The induced slice
+functions then converge with all real derivatives; near the real axis this
+can be read from their convergent symmetric Taylor expansions. Applying $\lap$
+proves \eqref{eq:augmented-Runge}.
+
+The converse follows either from Proposition~\ref{prop:closed-range} or by
+passing to the limit in every period. Finally, the images of any augmentation
+must span the quotient $(\HH^2)^h$ under $\Per$. Its dimension is $2h$, so
+fewer right quaternionic directions cannot suffice.
+\end{proof}
+
+The ordinary Runge theorem is the only approximation theorem imported in this
+argument. The specifically quaternionic conclusion is the exact finite
+augmentation required by the Fueter map; it is not a claim that all monogenic
+functions are approximable by this axial construction.
+
+\section{An isolated nonreal sphere: Laurent--logarithmic classification}
+\label{sec:singularities}
+
+Fix $p=u+\iota v$ with $v>0$ and choose $0<\varepsilon<v$. Let
+\begin{equation}\label{eq:tube}
+ U_p^*=\{z:0<|z-p|<\varepsilon\},\qquad
+ T_p^*=\Omega_{U_p^*},\qquad S_p=u+v\SSS.
+\end{equation}
+For $q=x+Iy\in T_p^*$,
+\[
+ \rho=|z-p|=\sqrt{(x-u)^2+(y-v)^2}=\dist(q,S_p).
+\]
+The equality follows by minimizing the Euclidean distance from $q$ to
+$u+vJ$, $J\in\SSS$; the minimizer is $J=I$. Define
+\begin{equation}\label{eq:M-rho}
+ M_g(\rho)=\sup_{\substack{|z-p|=\rho\\ I\in\SSS}}|g(x+Iy)|.
+\end{equation}
+All extensions below are through the \emph{whole sphere}, not through one point
+of it. A regular part means an axially monogenic function extending to the full
+tube $\Omega_{\{|z-p|<\varepsilon\}}$ after decreasing $\varepsilon$ if needed.
+
+\subsection{The unrestricted local normal form}
+\begin{proposition}[Holomorphic part plus two logarithmic modes]
+\label{prop:local-normal}
+For $g\in\AM(T_p^*)$, let $(a,b)$ be its periods around $p$. There is a
+single-valued holomorphic $F_0:U_p^*\to\HC$ such that
+\begin{equation}\label{eq:unrestricted-normal}
+ g=\lap\cI(F_0)+\Kone a+\Kzero b.
+\end{equation}
+The coefficients $a,b$ are unique, and $F_0$ is unique up to $zc+d$ with
+$c,d\in\HH$.
+\end{proposition}
+\begin{proof}
+The punctured disk has one winding generator. Subtracting the two kernels with
+the indicated coefficients kills its periods. Apply Theorem~\ref{thm:global}.
+Uniqueness follows from periods and the affine-kernel statement.
+\end{proof}
+No growth hypothesis is needed here. The holomorphic $F_0$ may have an
+essential singularity. A finite-growth assumption makes its singular part
+finite and gives a precise dimension count.
+
+\begin{lemma}[From growth of $g$ to growth of its detector]
+\label{lem:detector-growth}
+If $M_g(\rho)=O(\rho^{-N})$ for an integer $N\geq1$, then
+\[
+ W_g(z)=O(|z-p|^{-N-1}).
+\]
+Consequently $W_g$ is meromorphic at $p$ with pole order at most $N+1$.
+\end{lemma}
+\begin{proof}
+Every real component of $g$ is harmonic because
+$\overline{\cD}\cD g=\lap g=0$. A ball centered at a point of distance $\rho$
+from $S_p$, with radius $\rho/2$, stays away from the sphere. Throughout that
+ball the distance to the sphere is between $\rho/2$ and $3\rho/2$.
+The harmonic interior gradient estimate therefore gives
+$|\nabla g|=O(\rho^{-N-1})$, uniformly in $I$.
+
+For completeness, the estimate follows directly from the ball mean-value
+formula. For a harmonic real function $h$ on $B(a,r)$, differentiation under
+its translated volume mean and the divergence theorem yield
+\[
+ \partial_\mu h(a)=\frac1{|B_r|}\int_{\partial B_r}h(a+\xi)n_\mu(\xi)\dd S,
+ \qquad |\partial_\mu h(a)|\leq\frac4r\sup_{B(a,r)}|h|.
+\]
+A fixed pair of opposite slices recovers $P,Q$ and their planar derivatives
+from values and derivatives of $g$, with bounded constants. Since $y$ stays
+bounded away from zero, formula \eqref{eq:W} gives the desired estimate.
+The Laurent coefficient estimate for a holomorphic function with this growth
+forces all coefficients below degree $-N-1$ to vanish, componentwise.
+\end{proof}
+
+\begin{theorem}[Finite Laurent--logarithmic classification]
+\label{thm:laurent-log}
+Let $N\geq1$ be an integer and let $g\in\AM(T_p^*)$ satisfy
+$M_g(\rho)=O(\rho^{-N})$. Then
+\begin{equation}\label{eq:finite-normal}
+ \boxed{\displaystyle
+ g=g_{\mathrm{reg}}+
+   \lap\cI\left(\sum_{k=1}^{N-1}(z-p)^{-k}c_{-k}\right)
+   +\Kone a+\Kzero b,}
+\end{equation}
+where $c_{-k}\in\HC$, $a,b\in\HH$, and $g_{\mathrm{reg}}$ extends axially
+monogenically through $S_p$. The singular coefficients, and hence the regular
+part, are unique. Conversely every expression of this form has the stated
+growth. Modulo extendible germs, the space of these singularities has real
+dimension $8N$, or right quaternionic dimension $2N$.
+\end{theorem}
+\begin{proof}
+Use Proposition~\ref{prop:local-normal} to subtract the logarithmic modes.
+Each kernel in \eqref{eq:K0}--\eqref{eq:K1} is $O(\rho^{-1})$ because $y$
+is bounded away from zero and $\log\rho=O(\rho^{-1})$. The remaining
+zero-period function still has $O(\rho^{-N})$ growth. Write it as
+$\lap\cI(F_0)$, where $F_0$ is single-valued holomorphic on the punctured disk.
+Lemma~\ref{lem:detector-growth} says that $F_0''$ has a pole of order at most
+$N+1$.
+
+Expand $F_0(z)=\sum_{n\in\mathbb Z}d_n(z-p)^n$. For $n<0$, its second
+derivative has coefficient $n(n-1)d_n$ at degree $n-2$. Since $n(n-1)\ne0$,
+the pole-order bound implies $d_n=0$ for $n<-(N-1)$. Thus
+\[
+ F_0(z)=\sum_{k=1}^{N-1}(z-p)^{-k}c_{-k}+F_{\mathrm{reg}}(z),
+\]
+where $F_{\mathrm{reg}}$ is holomorphic on the full disk. Its induced Fueter
+image is the required regular part. This argument also explains why terms
+$\log(z-p)$ and $z\log(z-p)$ must be separated before applying an ordinary
+Laurent expansion.
+
+For uniqueness, subtract two decompositions. The period criterion makes the
+two logarithmic coefficients zero. If the Fueter image of a finite principal
+part extends monogenically, take a slice-regular primitive of that extension
+on the full disk by the local inverse theorem. Subtract it from the principal
+part. The difference has zero Fueter image on the punctured disk, so is
+$zc+d$ with $c,d\in\HH$. An affine function cannot cancel a nonzero Laurent
+principal part; all its coefficients therefore vanish.
+
+For the converse, formula \eqref{eq:Fueter-formula} shows that the image of
+$(z-p)^{-k}c$ is $O(\rho^{-k-1})$, and the kernels are
+$O(\rho^{-1})$. Each $c_{-k}$ has eight real components, and $a,b$ have eight
+real components together. Uniqueness proves that the resulting
+$8(N-1)+8=8N$ parameters are independent modulo extendible germs.
+\end{proof}
+
+A convenient right quaternionic basis of the singular quotient consists of
+$K_p^{(0)},K_p^{(1)}$ and, for $1\leq k\leq N-1$,
+\begin{equation}\label{eq:sing-basis}
+ \lap\cI((z-p)^{-k}),\qquad
+ \lap\cI(\iota(z-p)^{-k}).
+\end{equation}
+The second generator at each order is essential: on a product domain,
+complexified Laurent coefficients have two independent quaternionic parts.
+
+\subsection{The sharp critical growth threshold}
+\begin{corollary}[Critical order and subcritical removability]
+\label{cor:critical}
+If $M_g(\rho)=O(\rho^{-1})$, then
+\begin{equation}\label{eq:critical-normal}
+ g=g_{\mathrm{reg}}+\Kone a+\Kzero b.
+\end{equation}
+Such a function extends through $S_p$ if and only if $a=b=0$. In particular,
+\begin{equation}\label{eq:small-o}
+ M_g(\rho)=o(\rho^{-1})\quad\Longrightarrow\quad
+ g\text{ extends axially monogenically through }S_p.
+\end{equation}
+The little-$o$ hypothesis cannot be replaced by $O(\rho^{-1})$.
+\end{corollary}
+\begin{proof}
+The classification with $N=1$ has no Laurent principal part, proving the first
+assertion. On a radius-$\rho$ circle,
+$L_\gamma=2\pi\rho$ and
+$R_\gamma\leq2\pi\rho(|p|+\rho)$. Proposition~\ref{prop:bounds} therefore
+implies
+\[
+ |a|\leq\pi\rho M_g(\rho),\qquad
+ |b|\leq\pi\rho(|p|+\rho)M_g(\rho).
+\]
+Under the little-$o$ hypothesis both periods vanish. A nonzero normalized
+kernel has nonzero period and $O(\rho^{-1})$ growth, proving sharpness.
+\end{proof}
+
+The exponent here is one because the singular set is a nonreal two-sphere of
+real codimension two. It is different from the isolated-point exponent three
+in the Cauchy--Fueter removability theorem discussed in the supplied manuscript.
+No statement for arbitrary nonaxial fields near arbitrary surfaces is being
+inferred from this axial calculation.
+
+\section{Spherical source densities and energy}
+\label{sec:sources}
+
+\subsection{The leading critical asymptotic}
+Let $X=x-u$, $Y=y-v$ and $q_0(I)=u+Iv$. In the critical case
+\eqref{eq:critical-normal}, the formulas for $K_p^{(0)},K_p^{(1)}$ give
+\begin{equation}\label{eq:leading}
+ g(x+Iy)=\frac{X-IY}{\pi v\rho^2}
+                \bigl(q_0(I)a+b\bigr)+O(1+|\log\rho|).
+\end{equation}
+The remainder estimate is uniform in $I$ and in the polar angle of $(X,Y)$.
+For example, the leading terms of $K_p^{(1)}$ are
+\[
+ P_1=\frac{uX+vY}{\pi v\rho^2}+O(1+|\log\rho|),\qquad
+ Q_1=\frac{vX-uY}{\pi v\rho^2}+O(1+|\log\rho|).
+\]
+Together they are $(X-IY)(u+Iv)/(\pi v\rho^2)$. This verifies the order of
+quaternionic multiplication in \eqref{eq:leading}.
+
+Denote by $\delta_{S_p}$ the distribution given by Euclidean area measure on
+$S_p$. A quaternion-valued density is placed on its left in the notation below;
+thus $\sigma\delta_{S_p}$ acts on a real scalar test function $\varphi$ by
+$\int_{S_p}\sigma(q)\varphi(q)\dd S_q$.
+
+\begin{theorem}[The affine spherical charge]\label{thm:source}
+An axially monogenic $g$ with $M_g(\rho)=O(\rho^{-1})$ is locally integrable
+through $S_p$. Its distributional Cauchy--Fueter derivative in the full tube is
+\begin{equation}\label{eq:source-density}
+ \boxed{\displaystyle
+ \cD g=\frac{2}{v}(q a+b)\,\delta_{S_p},}
+\end{equation}
+where $(a,b)$ are its two periods. In particular, the critical singular quotient
+is identified with the space of affine quaternionic surface densities
+$q\mapsto(2/v)(qa+b)$ on $S_p$.
+\end{theorem}
+\begin{proof}
+In tubular coordinates
+\[
+ x=u+\rho\cos\theta,\qquad y=v+\rho\sin\theta,
+ \qquad 0\leq\theta<2\pi,
+\]
+the volume measure is $y^2\rho\,d\rho\,d\theta\,d\sigma(I)$, where
+$d\sigma$ is area measure on the unit sphere $\SSS$. Thus $O(\rho^{-1})$
+is locally integrable.
+
+Remove the tube $\rho<\delta$ and integrate the definition of the
+distributional derivative by parts against a real scalar smooth compactly
+supported $\varphi$. Since $\cD g=0$ off the sphere, the result is the limit of
+the flux over the boundary of the removed tube, with normal directed away from
+$S_p$. This normal and the area measure are
+\[
+ n_\delta=\cos\theta+I\sin\theta
+         =\frac{X+IY}{\delta},\qquad
+ dS=y^2\delta\,d\theta\,d\sigma(I).
+\]
+The sign is positive: the outward normal of the punctured domain on its inner
+boundary is $-n_\delta$.
+
+By \eqref{eq:leading},
+\[
+ n_\delta g=\frac{q_0(I)a+b}{\pi v\delta}
+                 +O(1+|\log\delta|).
+\]
+After multiplication by $dS$, the remainder tends to zero in the flux integral.
+Also $y^2\to v^2$ and $\varphi(x+Iy)\to\varphi(q_0(I))$ uniformly. The
+limiting distribution is therefore
+\[
+ \int_{\SSS}2v\bigl(q_0(I)a+b\bigr)\varphi(q_0(I))\dd\sigma(I).
+\]
+Since $dS_{S_p}=v^2d\sigma(I)$, this is exactly
+\eqref{eq:source-density}. The map from $(a,b)$ to the density is injective:
+subtracting its values at $u+Iv$ and $u-Iv$ forces $a=0$, and then $b=0$.
+Surjectivity onto the displayed affine density space follows from the kernels.
+\end{proof}
+
+\begin{corollary}[Total flux and first angular moment]\label{cor:moments}
+For $\sigma(q)=(2/v)(qa+b)$ on $S_p$, define
+\[
+ M_0=\int_{S_p}\sigma(q)\dd S_q,\qquad
+ M_1=\int_{S_p}(q-u)\sigma(q)\dd S_q.
+\]
+Then
+\begin{equation}\label{eq:moments}
+ M_0=8\pi v(ua+b),\qquad M_1=-8\pi v^3a.
+\end{equation}
+Thus the charge moments recover both periods:
+\begin{equation}\label{eq:moment-inversion}
+ a=-\frac{M_1}{8\pi v^3},\qquad
+ b=\frac{M_0}{8\pi v}-ua.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use $q=u+Iv$, $|S_p|=4\pi v^2$, and $\int_{\SSS}I\dd\sigma=0$.
+For the first moment, $(q-u)^2=-v^2$ and the remaining terms have zero spherical
+average. The displayed factors follow. The weight in $M_1$ is multiplied on
+the left, as required by the calculation.
+\end{proof}
+
+A total flux alone does not classify a spherical singularity. For $u=0$, $b=0$
+and $a\ne0$, it vanishes although the singularity is nonremovable. The first
+angular moment detects exactly the missing affine slope. This is a concrete
+reason to retain both period invariants rather than introduce only one
+quaternionic ``residue.''
+
+\subsection{The exact logarithmic energy coefficient}
+\begin{theorem}[Critical energy divergence]\label{thm:energy}
+If $g$ has the critical decomposition \eqref{eq:critical-normal}, then, for a
+fixed sufficiently small $\varepsilon_0>0$,
+\begin{equation}\label{eq:energy}
+ \int_{\delta<\dist(q,S_p)<\varepsilon_0}|g(q)|^2\dd V_q
+ =8\bigl(|ua+b|^2+v^2|a|^2\bigr)
+          \log\frac{\varepsilon_0}{\delta}+O(1)
+ \quad(\delta\downarrow0).
+\end{equation}
+The coefficient is strictly positive for every nonremovable critical
+singularity.
+\end{theorem}
+\begin{proof}
+Write $X=\rho\cos\theta$, $Y=\rho\sin\theta$. Multiplicativity of the
+quaternionic norm gives
+\[
+ \left|\frac{X-IY}{\pi v\rho^2}(q_0(I)a+b)\right|^2
+     =\frac{|q_0(I)a+b|^2}{\pi^2v^2\rho^2}.
+\]
+The cross term with the remainder in \eqref{eq:leading} is
+$O(\rho^{-1}(1+|\log\rho|))$, and the squared remainder is
+$O((1+|\log\rho|)^2)$. Both are integrable against the tubular volume measure
+near zero. Replacing $y^2$ by $v^2$ in the leading energy changes it by an
+integrable term as well. Finally,
+\[
+ \int_{\SSS}|(u+Iv)a+b|^2\dd\sigma(I)
+       =4\pi\bigl(|ua+b|^2+v^2|a|^2\bigr),
+\]
+because the term linear in $I$ averages to zero. Integration in $\theta$
+contributes $2\pi$, and the remaining radial integral is
+$\int_\delta^{\varepsilon_0}d\rho/\rho$. The total coefficient is
+$(2\pi/\pi^2)4\pi=8$. Positivity follows from $v>0$.
+\end{proof}
+
+This energy formula is independent of the regular part. It assigns a positive
+definite quadratic norm to the eight-real-dimensional critical obstruction
+space, with a direct geometric meaning as the coefficient of logarithmic
+energy concentration around the sphere.
+
+\section{An integrability removability theorem}
+\label{sec:L2}
+
+The growth classification also yields an integrability statement without any
+assumed pointwise growth bound.
+
+\begin{lemma}[A nonzero Laurent mode cannot have finite $L^2$ energy]
+\label{lem:pole-energy}
+Suppose the finite normal form \eqref{eq:finite-normal} has a highest nonzero
+Laurent coefficient $c_{-m}$, with $m\geq1$. Then $g$ is not locally in $L^2$
+near $S_p$.
+\end{lemma}
+\begin{proof}
+For a holomorphic stem $F=A+\iota B$, formula \eqref{eq:Fueter-formula} can
+also be written
+\begin{equation}\label{eq:first-derivative-leading}
+ \lap\cI(F)=\frac{2I}{y}\cI(F')-\frac{2IB}{y^2}.
+\end{equation}
+For $F=(z-p)^{-m}c_{-m}$, the first term has order $\rho^{-m-1}$ and the
+second has order at most $\rho^{-m}$. Replacing $y$ by $v$ in the first term
+also changes it by only $O(\rho^{-m})$. All lower Laurent terms and the
+logarithmic modes are of lower order than $\rho^{-m-1}$.
+
+If $c=A_0+\iota B_0\ne0$, the spherical average satisfies
+\[
+ \frac1{4\pi}\int_{\SSS}|\cI(e^{\iota t}c)(I)|^2\dd\sigma(I)
+   =\norm{c}_{\HC}^2.
+\]
+Here $\cI(e^{\iota t}c)(I)$ means evaluation of the constant complexified
+coefficient at $I$; the identity follows by expanding its two quaternionic
+parts and averaging the term linear in $I$. The central rotation preserves
+their squared norm. Hence the squared leading term, integrated in $I$ and
+$\theta$, is a strictly positive constant times $\rho^{-2m-2}$, while all
+lower terms have smaller angular $L^2$ norm. The tubular volume contributes
+$\rho\,d\rho$, so the energy dominates a positive multiple of
+$\int_0 \rho^{-2m-1}\dd\rho$, which diverges.
+\end{proof}
+
+\begin{theorem}[$L^2$ removability at a nonreal sphere]\label{thm:L2}
+Let $g\in\AM(T_p^*)$. If $g$ is locally square integrable through $S_p$, then
+it extends axially monogenically through $S_p$. The exponent is sharp among
+$L^p$ conditions: nonremovable critical kernels belong locally to $L^p$ for
+every $0<p<2$.
+\end{theorem}
+\begin{proof}
+Choose a fixed full tube on which the $L^2$ norm is finite. Harmonicity of the
+components and the volume mean-value formula, followed by Cauchy--Schwarz,
+give, on a ball of radius $\rho/2$ centered at $q$,
+\[
+ |g(q)|\leq |B_{\rho/2}|^{-1/2}\norm{g}_{L^2(B(q,\rho/2))}
+       \leq C\rho^{-2}.
+\]
+For sufficiently small $\rho=\dist(q,S_p)$ these balls lie in the fixed
+punctured tube, and the constant is uniform in $q$. Thus the classification
+Theorem~\ref{thm:laurent-log} applies with $N=2$. There is at most one Laurent
+coefficient $c_{-1}$, which must vanish by Lemma~\ref{lem:pole-energy}.
+The critical energy formula then forces $a=b=0$. What remains is the
+extendible regular part.
+
+Conversely, a critical kernel is $O(\rho^{-1})$, so its $p$th power is
+integrable against $\rho\,d\rho$ when $p<2$. Its nonzero period makes it
+nonremovable. This proves sharpness.
+\end{proof}
+
+The proof separates two possible failures of removability: a meromorphic
+principal part creates a power-law divergence, while nonzero affine monodromy
+creates a logarithmic divergence. Finite $L^2$ energy excludes both.
+
+\section{Worked examples and consequences}
+\label{sec:examples}
+
+\subsection{A pure constant monodromy}
+Take $p=u+\iota v$ and $g=K_p^{(0)}b$, $b\ne0$, on a punctured tubular
+neighborhood. Its period pair is $(0,b)$, its critical density is
+$(2/v)b$ times area measure on $S_p$, and its energy coefficient is $8|b|^2$.
+The local primitive $h_p(z)b$ returns with the constant increment $b$.
+No Laurent principal part of a single-valued holomorphic stem can produce this
+period, regardless of how high a pole is allowed.
+
+\subsection{A pure slope invisible to total flux}
+For $u=0$, let $g=K_p^{(1)}a$ with $a\ne0$. The period pair is $(a,0)$.
+The density is $2Ia$ on $S_p=v\SSS$, whose integral is zero. Nevertheless,
+\[
+ M_1=-8\pi v^3a,\qquad
+ \int_{\delta<\rho<\varepsilon_0}|g|^2\dd V
+       =8v^2|a|^2\log(\varepsilon_0/\delta)+O(1).
+\]
+Thus zero total flux does not imply removability even at the weakest
+nonremovable growth order. The obstruction is an affine monodromy, not a
+higher-order pole hidden in the regular part.
+
+\subsection{A pole with no period obstruction}
+Let $F(z)=(z-p)^{-1}c$ with $c\in\HC\setminus\{0\}$, and set
+$g=\lap\cI(F)$. It has zero periods because it already has a single-valued
+slice-regular primitive. It is nevertheless singular on $S_p$, of growth
+$O(\rho^{-2})$. Its detector is
+\[
+ W_g(z)=2(z-p)^{-3}c,
+\]
+which has no simple or double Laurent term and hence no period by
+Corollary~\ref{cor:residues}. This distinguishes two notions:
+\emph{global invertibility on a punctured domain} does not imply
+\emph{removability through its missing sphere}.
+
+\subsection{Several removed spheres}
+Let $p_j=u_j+\iota v_j$ ($v_j>0$), $1\leq j\leq h$, be distinct points, and take
+\[
+ D=\C\setminus\{p_1,\bar p_1,\ldots,p_h,\bar p_h\}.
+\]
+Then $\Omega_D=\HH\setminus\bigcup_j S_{p_j}$, and every axially monogenic
+function on this complement has a unique period part
+\[
+ \sum_{j=1}^h\bigl(G_{p_j}^{(1)}a_j+G_{p_j}^{(0)}b_j\bigr)
+\]
+modulo a global Fueter image. If it has at most critical growth near each
+sphere, the local distributional source is
+\[
+ \cD g=\sum_{j=1}^h\frac{2}{v_j}(q a_j+b_j)\delta_{S_{p_j}}
+\]
+in any region where those are its only singularities. The periods can be measured on disjoint small loops, so charges at different
+spheres are independent.
+
+\subsection{Fixed and paired holes have different effects}
+Start with a disk centered on the real axis. Removing a smaller concentric
+closed disk creates one fixed hole but no Fueter obstruction. Removing instead
+two small conjugate disks off the real axis creates one exchanged pair and an
+eight-real-dimensional obstruction space. Removing both kinds simultaneously
+leaves that dimension equal to eight. The geometric sizes of the holes affect
+norm estimates and convenient kernel representatives, but not the quotient
+dimension.
+
+\section{Verification, scope, and further questions}
+\label{sec:verification}
+
+\subsection{What the supplementary computation checks}
+The accompanying script \texttt{verify\_results.py} uses exact symbolic
+simplification to check the Cauchy--Riemann equations, the displayed kernel
+formulas, both Vekua equations, all four primitive derivatives, and the
+holomorphic detectors for $K_p^{(0)}$ and $K_p^{(1)}$. Nine further symbolic checks use generic quaternionic right coefficients
+to verify the charge moments and the energy quadratic form. There are 31
+symbolic zero-residual checks in total. At 50-decimal-digit precision it also checks eight
+period pairs: enclosing and nonenclosing loops for unpaired kernels and upper
+and lower loops for paired kernels. Their maximum errors are below
+$10^{-42}$. Four normal-circle flux calculations check convergence to the
+surface density in Theorem~\ref{thm:source}; four further calculations check
+the limiting logarithmic energy slope for noncommuting right coefficients.
+The resulting version information,
+values, and residuals are recorded in \texttt{verification\_results.json}.
+
+These tests check arithmetic, signs, normalization, and numerical consistency.
+They do not establish the global theorems, the topology argument, the Laurent
+classification, or priority. Those claims rest on the proofs in this article.
+No theorem prover was used, and no formal verification is claimed.
+
+\subsection{Literature boundary and novelty assessment}
+The targeted search was made on 21 September 2026. It included the established
+inverse Fueter sources \cite{CSS,CPSS}, the global simply connected statement
+in \cite{Perotti}, and searches for inverse Fueter periods, monodromy,
+multiply connected inversion, and axial spherical singularities. Current
+related preprints \cite{DS26,GGBS26} were also checked for scope. The first
+concerns a polyanalytic variation of inverse Fueter theory and the second
+operator connections; they are not the basis of any proof here.
+
+No identical complete statement of the two-form obstruction, the
+reflection-sensitive split sequence, or the $8N$ spherical singularity quotient
+was located in that search. This supports treating those formulations and
+their source/energy consequences as candidate original contributions, but does
+not exclude an earlier treatment in the broader literature on Vekua systems,
+Clifford analysis, or monodromy. In particular, standard cohomological
+principles explain why a local inverse with an affine kernel should have
+period obstructions. The value of the present result is the explicit complete
+calculation, its realization by known kernels, and the further classifications,
+not a claim to have invented that general principle.
+
+\subsection{Boundaries of the proved results}
+The global zero-period criterion is proved for arbitrary connected planar
+bases of the two stated types. The explicit finite-dimensional surjectivity
+onto all period vectors is proved for the finite-hole class specified in
+Section~\ref{sec:reflection}; no infinite series of kernel generators is
+silently assumed for infinitely connected domains. Rational approximation uses
+ordinary Runge approximation and does not assert arbitrary prescribed boundary
+values. All spherical singularity results concern axially monogenic functions
+near a \emph{nonreal} sphere of positive radius. Real points and nonaxial fields
+are different local problems.
+
+Several extensions remain natural research questions. In infinitely connected
+domains one can ask for a convergent kernel splitting with sharp norm control.
+In higher odd spatial dimensions the local inverse kernel is a larger polynomial
+space, suggesting higher polynomial monodromy and a corresponding family of
+moment forms; that extension is not proved here. A further problem is a
+weighted Hilbert-space theory in which the explicit critical energy norm
+controls a canonical inverse after period subtraction. These are directions
+suggested by the proved structure, not additional conclusions of this paper.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The global Fueter inversion problem becomes explicit after replacing the two
+primitive coefficients by $C=B/y$ and $H=A-xC$. Their differentials are closed
+forms of the given monogenic function, and their periods give all affine
+monodromy. This yields an exact global criterion, an explicit finite-hole
+splitting, and quantitative restrictions on approximation. At a nonreal sphere,
+the same two invariants are the logarithmic part of a finite Laurent--logarithmic
+classification; at critical growth they are exactly an affine surface charge
+and the coefficients of a positive logarithmic energy divergence. The local
+inverse construction in the supplied exposition thereby extends to a global
+and singularity-sensitive theory with fully specified topology and
+multiplication conventions.
+
+\appendix
+\section{A compact audit of signs, dimensions, and normalizations}
+\label{app:audit}
+The central convention is $\cD=\partial_0+\ii\partial_1+\jj\partial_2+
+\kk\partial_3$ and $\lap q^2=-4$. The affine monodromy is $qa+b$ with
+coefficients on the right. Thus the slope period is $\oint\alpha_0$ and the
+constant period is $\oint\alpha_1$; swapping them would reverse the roles of
+the two logarithmic kernels.
+
+For a local logarithmic primitive,
+\[
+ F(z)=\frac{(za+b)\log(z-p)}{2\pi\iota},\qquad
+ F''(z)=\frac1{2\pi\iota}
+   \left(\frac a{z-p}-\frac{pa+b}{(z-p)^2}\right).
+\]
+Hence $\oint F''dz=a$ and $\oint zF''dz=-b$, agreeing with the real-form
+calculation. Reflection changes the sign of a counterclockwise winding loop,
+which is why a fixed hole has no invariant period.
+
+At a sphere $S_p=u+v\SSS$, a radius-$\rho$ normal circle has length $2\pi\rho$;
+the sphere has area $4\pi v^2$; and the tube boundary element is
+$y^2\rho\,d\theta\,d\sigma$. These give, respectively, the period estimates,
+the source density $(2/v)(qa+b)$, and the energy coefficient
+$8(|ua+b|^2+v^2|a|^2)$. No $2\pi^2$ appears in this codimension-two normal-circle
+calculation. The $2\pi^2$ in the point Cauchy--Fueter kernel is the area of a
+unit three-sphere and belongs to a different geometry.
+
+Finally, at growth $O(\rho^{-N})$ there are $N-1$ complexified Laurent
+coefficients, each of real dimension eight, plus two quaternionic logarithmic
+coefficients, together of real dimension eight. The total is $8N$, not
+$4N$, $8N+8$, or a count based only on isolated point residues.
+
+\begin{thebibliography}{10}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Source}
+Supplied manuscript,
+\emph{Classical Complex Theorems over the Quaternions: Slice-regular and
+Cauchy--Fueter analogues, with proofs}, 20 September 2026.
+Unpublished expository source supplied as \texttt{quaternionic\_analysis.tex}.
+The present article develops the global extension question following its
+constructive axial inverse theorem.
+
+\bibitem{GP}
+R.~Ghiloni and A.~Perotti,
+\emph{Slice regular functions on real alternative algebras},
+Advances in Mathematics \textbf{226} (2011), 1662--1691.
+\href{https://arxiv.org/abs/1008.4318}{arXiv:1008.4318}.
+
+\bibitem{CSS}
+F.~Colombo, I.~Sabadini, and F.~Sommen,
+\emph{The inverse Fueter mapping theorem},
+Communications on Pure and Applied Analysis \textbf{10} (2011), 1165--1181.
+\href{https://doi.org/10.3934/cpaa.2011.10.1165}{doi:10.3934/cpaa.2011.10.1165}.
+
+\bibitem{CPSS}
+F.~Colombo, D.~Pe\~na Pe\~na, I.~Sabadini, and F.~Sommen,
+\emph{A new integral formula for the inverse Fueter mapping theorem},
+Journal of Mathematical Analysis and Applications \textbf{417} (2014), 112--122.
+\href{https://doi.org/10.1016/j.jmaa.2014.03.016}{doi:10.1016/j.jmaa.2014.03.016};
+\href{https://arxiv.org/abs/1302.0685}{arXiv:1302.0685}.
+
+\bibitem{Perotti}
+A.~Perotti,
+\emph{A local Cauchy integral formula for slice-regular functions},
+Computational Methods and Function Theory \textbf{24} (2024), 185--203.
+Published online 30 May 2023.
+\href{https://doi.org/10.1007/s40315-023-00485-5}{doi:10.1007/s40315-023-00485-5}.
+
+\bibitem{DS26}
+A.~De Martino and S.~Pinton,
+\emph{A variation of the inverse Fueter theorem and the generalized
+polyanalytic Cauchy--Kovalevskaya extension of order 2}, preprint (2026).
+\href{https://arxiv.org/abs/2608.07711}{arXiv:2608.07711}.
+
+\bibitem{GGBS26}
+J.~O.~Gonz\'alez-Cervantes, D.~Gonz\'alez-Campos, J.~Bory-Reyes, and B.~Schneider,
+\emph{A connection between quaternionic slice regular and Fueter
+hyperholormorphic functions}, preprint (2026).
+\href{https://arxiv.org/abs/2607.19496}{arXiv:2607.19496}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,608 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{shuffle}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!45!black,
+ pdftitle={Gaps in Bounded-Shuffle Hierarchies},pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Gaps in bounded-shuffle hierarchies}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.3em}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sh}{\mathbin{\shuffle}}
+\newcommand{\ins}[3]{\mathcal I_{#1}(#2,#3)}
+\newcommand{\spec}[2]{\mathcal D(#1,#2)}
+\newcommand{\word}[1]{\mathtt{#1}}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\DeclareMathOperator{\runs}{runs}
+\DeclareMathOperator{\supp}{supp}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{black!25},xleftmargin=0.5em,xrightmargin=0.5em}
+
+\title{\vspace{-1.4em}\textbf{Gaps in Bounded-Shuffle Hierarchies}\\[0.45em]
+\large Counterexamples, arbitrary finite spectra,\\and a no-gap theorem for iteration depth}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For languages $A,B$, let $\mathcal I_k(A,B)$ consist of the words formed by splitting one word of $A$ into at most $k$ pieces and inserting those pieces, in order, into one word of $B$. The minimum required number of pieces defines an insertion-degree spectrum. We give a negative answer to the proposed assertion that this spectrum must be an initial interval. A ternary example has spectrum $\{1,3\}$ and satisfies
+\[
+ \mathcal I_1(A,B)=\mathcal I_2(A,B)=\{a,b,c\}^5\setminus\{abcba\},
+ \qquad \mathcal I_3(A,B)=\{a,b,c\}^5.
+\]
+The five-letter exceptional word has the smallest possible length for any gap witness. More generally, we construct finite homogeneous languages realizing every prescribed finite spectrum containing $1$, and even prescribe the number of exceptional words added at each degree greater than $1$. Thus arbitrarily long plateaus can precede renewed growth. A binary example with spectrum $\{1,2,4\}$ shows that two letters already suffice; all of its singleton source-pair spectra are initial intervals. In contrast, the iteration-depth spectrum has no gaps for arbitrary languages, by a shortest-derivation argument. Complete proofs accompany the constructions. Independent exhaustive enumeration and dynamic programming verify the small examples; the accompanying code requires only Python's standard library.
+\end{abstract}
+
+\noindent\textbf{Scope and status.} The statements proved below address the indicated no-gap questions, not the surrounding undecidability results. The unrestricted singleton conjecture is not settled here. The proofs have not been checked in a proof assistant or independently peer reviewed.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the outcome}
+
+The question investigated here is whether an increasing hierarchy of bounded interleavings can pause and subsequently grow. It is elementary to state, concerns finite words rather than encodings of computations, and admits exact finite experiments. It also makes a useful distinction between a resource bound and the number of applications of a fixed operation.
+
+Hughes~\cite[Sections 10--11]{Hughes2026} formulates an insertion-degree no-gap conjecture, its singleton restriction, a finite representation-erasure problem, and a separate iteration-depth conjecture. The cited version is arXiv:2608.27755v1, submitted 27 August 2026. Searches by title and conjecture terminology on 20 September 2026 found that version and no subsequent resolution; this is a search record, not a guarantee of priority.
+
+Here is the precise answer developed in this note. Among pairs of nonempty finite languages, the possible insertion-degree spectra are \emph{exactly} the finite subsets of the positive integers containing $1$. There is no additional interval condition. Moreover, these spectra can be realized with every word of $A$ having one common length and every word of $B$ having another common length. Infinite languages, ambiguous grammars, and unbounded word lengths are unnecessary.
+
+The proof is constructive. It first makes almost every output word easy: a local defect produces a contiguous source factor, hence insertion degree $1$. The few outputs with no local defect are rigid, explicitly designated words. Their unique source-position assignments determine their degrees. Selecting those assignments selects the spectrum.
+
+Three complementary constructions make the result transparent. Section~\ref{sec:ternary} gives a small counterexample that can be checked without a computer. Sections~\ref{sec:delay}--\ref{sec:realization} give the general theorem. Section~\ref{sec:binary} supplies a binary counterexample and a finite certificate demonstrating that source-pair ambiguity can erase an entire intermediate degree even when each individual pair has no gap.
+
+The iteration-depth problem has the opposite answer. Once a word is reached by a shortest sequence of insertions, every intermediate word on that sequence must have the corresponding shortest depth. This statement does not require finiteness, regularity, or an empty-word assumption.
+
+\section{Definitions and elementary bounds}\label{sec:definitions}
+
+Let $\Sigma$ be a finite alphabet, $\Sigma^*$ its free monoid, and $\eps$ the empty word. The length of a word $w$ is $|w|$. Concatenation is written by juxtaposition. A \emph{factor} is contiguous; a \emph{subsequence} need not be.
+
+\begin{definition}
+For $A,B\subseteq\Sigma^*$ and $k\geq1$, define
+\begin{align}
+ \ins{k}{A}{B}=\{\,&x_0y_1x_1\cdots y_kx_k:\notag\\[-0.4em]
+ &y_1\cdots y_k\in A,\quad x_0\cdots x_k\in B,\quad x_i,y_j\in\Sigma^*\,\}.
+ \label{eq:insertion}
+\end{align}
+The inserted source is $A$ and the target source is $B$. All factors may be empty. The shuffle is
+\[
+ A\sh B=\bigcup_{k\geq1}\ins{k}{A}{B}.
+\]
+For $w\in A\sh B$, put
+\[
+ d_{A,B}(w)=\min\{k\geq1:w\in\ins{k}{A}{B}\},
+ \qquad \spec{A}{B}=\{d_{A,B}(w):w\in A\sh B\}.
+\]
+\end{definition}
+
+The allowance of empty factors is important. It makes $\ins{k}{A}{B}\subseteq\ins{k+1}{A}{B}$, and it ensures that ``at most $k$ pieces'' and the displayed $k$-factor definition agree. The degree is oriented: the number counted is the number of runs belonging to $A$, not the number of runs of both sources combined.
+
+\subsection{Assignment masks}
+
+For fixed words $u,v$, a shuffle representation can be recorded by a mask over $\{A,B\}$. Reading the $A$-positions in order gives $u$, and reading the $B$-positions gives $v$. For instance,
+\[
+ \begin{array}{c|ccccc}
+ \text{output}&a&b&c&b&a\\
+ \text{mask}&A&B&A&B&A
+ \end{array}
+ \qquad\text{represents }u=aca,\quad v=bb.
+\]
+A nonempty maximal block of $A$'s is an $A$-run.
+
+\begin{lemma}[Run characterization]\label{lem:runs}
+For a nonempty inserted word, the minimum insertion degree of an output is the minimum number of $A$-runs among all its valid source pairs and assignment masks. An empty inserted word contributes degree $1$.
+\end{lemma}
+\begin{proof}
+A factorization in~\eqref{eq:insertion} has at most $k$ nonempty $A$-runs: empty target pieces may cause two displayed inserted pieces to merge. Conversely, the maximal $A$-runs of any mask give a factorization of the required form. Minimize in both directions. When the inserted word is empty there are no $A$-runs, but the definition starts at degree $1$.
+\end{proof}
+
+For fixed lengths $m=|u|$ and $n=|v|$, there are exactly $\binom{m+n}{m}$ masks. Different masks, and even different source pairs, can produce the same unlabelled output. It is essential to minimize over these representations instead of merely counting the runs in a convenient one. Source-position masks are a particular instance of the trajectory viewpoint on shuffle; the broader framework is developed in~\cite{Mateescu1998}.
+
+\begin{proposition}[Elementary restrictions]\label{prop:bounds}
+The following statements hold.
+\begin{enumerate}[label=(\roman*),nosep]
+\item If $A$ and $B$ are nonempty, then $1\in\spec{A}{B}$.
+\item If $d_{A,B}(w)=r\geq2$, then $|w|\geq2r-1$.
+\item If $A\subseteq\Sigma^m$, $B\subseteq\Sigma^n$, and $m>0$, then every degree is at most $\min(m,n+1)$.
+\item Over a one-letter alphabet, nonempty language pairs have spectrum $\{1\}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+For (i), choose $u\in A,v\in B$; the concatenation $uv$ has a one-piece representation. For (ii), a minimal mask with $r$ $A$-runs contains at least $r$ $A$-positions and at least $r-1$ separating $B$-positions. For (iii), there are at most $m$ nonempty $A$-runs and at most $n+1$ gaps around the target letters. For (iv), every shuffle of $a^i$ and $a^j$ is the concatenation $a^{i+j}$ and therefore has degree $1$.
+\end{proof}
+
+\subsection{Gaps and plateaus are equivalent}
+
+The spectrum records exactly when new output words appear:
+\begin{equation}
+ k\in\spec{A}{B}\quad\Longleftrightarrow\quad
+ \ins{k-1}{A}{B}\subsetneq\ins{k}{A}{B}\qquad(k\geq2).
+ \label{eq:new-degree}
+\end{equation}
+Thus $\ins{k}{A}{B}=\ins{k+1}{A}{B}$ says only that degree $k+1$ is absent. It says nothing purely set-theoretic about later degrees. The no-gap conjecture supplies precisely the missing assertion; the constructions below disprove it.
+
+\section{A five-letter counterexample}\label{sec:ternary}
+
+Let $\Sigma=\{a,b,c\}$, and set
+\begin{equation}
+ F=\{aba,abb,abc,acb,bba,bca,bcb,cba\},\qquad
+ A=\Sigma^3\setminus F,\qquad B=\Sigma^2.
+ \label{eq:ternary}
+\end{equation}
+Thus $|A|=19$ and $|B|=9$. Explicitly,
+\begin{align*}
+ A=\{&aaa,aab,aac,aca,acc,baa,bab,bac,bbb,bbc,\\
+     &bcc,caa,cab,cac,cbb,cbc,cca,ccb,ccc\}.
+\end{align*}
+
+\begin{theorem}\label{thm:ternary}
+For the languages in~\eqref{eq:ternary},
+\begin{align*}
+ \ins{1}{A}{B}=\ins{2}{A}{B}&=\Sigma^5\setminus\{abcba\},\\
+ \ins{k}{A}{B}&=\Sigma^5\qquad(k\geq3).
+\end{align*}
+Consequently $\spec{A}{B}=\{1,3\}$.
+\end{theorem}
+
+\subsection{All other words have a one-piece representation}
+
+A five-letter word belongs to $\ins{1}{A}{B}$ exactly when one of its three length-three factors belongs to $A$. Indeed, remove that contiguous factor; the remaining two letters form a word of $B$. Conversely, a one-piece insertion exhibits such a factor.
+
+We therefore need to find the five-letter words all of whose length-three factors belong to $F$. Regard a triple $xyz\in F$ as a directed edge from $xy$ to $yz$. The complete edge table is
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Vertex & Outgoing vertices\\
+\midrule
+$ab$ & $ba,bb,bc$\\
+$ac$ & $cb$\\
+$bb$ & $ba$\\
+$bc$ & $ca,cb$\\
+$cb$ & $ba$\\
+$ba,ca$ & none\\
+\bottomrule
+\end{tabular}
+\end{center}
+Other two-letter vertices have no outgoing edges. The only path consisting of three edges is
+\[
+ ab\longrightarrow bc\longrightarrow cb\longrightarrow ba.
+\]
+It spells $abcba$. Thus every other five-letter word has an $A$-factor and has degree $1$. This proves the first equality in
+\[
+ \ins{1}{A}{B}=\Sigma^5\setminus\{abcba\}
+ \subseteq\ins{2}{A}{B}\subseteq\ins{3}{A}{B}\subseteq\Sigma^5.
+\]
+
+\subsection{The exceptional word requires three pieces}
+
+The distinct length-three subsequences of $abcba$ are
+\[
+ abc,\ abb,\ aba,\ acb,\ aca,\ bcb,\ bca,\ bba,\ cba.
+\]
+Exactly one is in $A$: $aca$. Its occurrence is unique, at positions $1,3,5$. The complementary source is $bb$, so its mask is $ABABA$ and has three $A$-runs. There is no alternative source pair or alignment that could lower this cost. Hence
+\[
+ d_{A,B}(abcba)=3.
+\]
+All output words have length five, so this completes the proof of Theorem~\ref{thm:ternary}.
+
+\begin{corollary}[Minimum possible witness length]
+Five is the smallest length of a word that can witness a gap in an insertion-degree spectrum.
+\end{corollary}
+\begin{proof}
+Degree $1$ cannot be missing for a nonempty pair. Any gap must therefore have a word of degree at least $3$ above it, whose length is at least $5$ by Proposition~\ref{prop:bounds}. The example attains this bound.
+\end{proof}
+
+This does not assert that $19$ and $9$ are minimum language sizes. The exact optimality claim concerns witness length only.
+
+\section{An arbitrarily delayed final word}\label{sec:delay}
+
+The small example suggests a more systematic device: make all but one full-length word contain an easy contiguous source factor.
+
+Fix $r\geq2$, put $N=2r-1$, and use the ordered alphabet
+\[
+ \Sigma_r=\{1,2,\ldots,N\}.
+\]
+These integers denote individual alphabet symbols, not decimal strings. Let
+\[
+ W_r=1\,2\,\cdots\,N,
+ \qquad U_r=1\,3\,5\,\cdots\,N.
+\]
+Define
+\begin{align}
+  A_r&=\{u\in\Sigma_r^r:u\text{ is not strictly increasing}\}\cup\{U_r\},\notag\\
+ B_r&=\Sigma_r^{r-1}.
+ \label{eq:one-block}
+\end{align}
+
+\begin{lemma}[A local defect supplies a factor]\label{lem:defect}
+Every word $w\in\Sigma_r^N$ other than $W_r$ has a length-$r$ factor that is not strictly increasing.
+\end{lemma}
+\begin{proof}
+A strictly increasing word of length $N$ over an $N$-letter ordered alphabet is necessarily $W_r$. Thus $w\neq W_r$ has an adjacent pair $w_i\geq w_{i+1}$. Any adjacent pair in a word of length at least $r\geq2$ is contained in a factor of length $r$: extend the pair to the left and right within the word until the length is $r$. That factor is not strictly increasing.
+\end{proof}
+
+\begin{theorem}[One-word delay]\label{thm:delay}
+For every $r\geq2$, the pair in~\eqref{eq:one-block} satisfies
+\begin{equation}
+ \ins{k}{A_r}{B_r}=
+ \begin{cases}
+  \Sigma_r^N\setminus\{W_r\},&1\leq k<r,\\
+  \Sigma_r^N,&k\geq r.
+ \end{cases}
+ \label{eq:delay}
+\end{equation}
+In particular, $\spec{A_r}{B_r}=\{1,r\}$.
+\end{theorem}
+\begin{proof}
+For $w\neq W_r$, Lemma~\ref{lem:defect} provides a contiguous factor in $A_r$. Deleting it leaves $r-1$ symbols, automatically a word of $B_r$. Hence $d_{A_r,B_r}(w)=1$.
+
+Every subsequence of $W_r$ is strictly increasing. The only length-$r$ subsequence accepted by $A_r$ is therefore $U_r$. Since all letters of $W_r$ are distinct, this subsequence has exactly one alignment, using positions $1,3,\ldots,2r-1$. Its complement is in $B_r$, and its mask has exactly $r$ $A$-runs. Thus $d_{A_r,B_r}(W_r)=r$. All shuffles have length $N$, and the displayed formula follows.
+\end{proof}
+
+The language sizes and stage sizes are explicit:
+\begin{align*}
+ |A_r|&=(2r-1)^r-\binom{2r-1}{r}+1,\\
+ |B_r|&=(2r-1)^{r-1},\\
+ |\ins{k}{A_r}{B_r}|&=(2r-1)^{2r-1}-1\quad(1\leq k<r).
+\end{align*}
+For $r=3$, this gives an especially simple ordered-alphabet construction with $|A_3|=116$, $|B_3|=25$, and a single exceptional word among $3125$ possible outputs. Section~\ref{sec:ternary} uses fewer symbols and fewer source words, but the ordered construction scales immediately.
+
+\begin{corollary}[No fixed plateau test is sound]\label{cor:plateau}
+There is no constant $h\geq1$ such that, for all finite language pairs, observing $h$ consecutive equalities in the degree hierarchy guarantees permanent stabilization.
+\end{corollary}
+\begin{proof}
+Take $r=h+2$. Then stages $1$ through $h+1$ are equal, giving $h$ consecutive equalities, but stage $h+2$ adds $W_r$.
+\end{proof}
+
+This is a statement about tests based solely on a fixed number of repeated stages, not an undecidability claim. For explicitly finite input languages, the elementary length bound still supplies a termination bound.
+
+\section{Every finite spectrum can be realized}\label{sec:realization}
+
+We now prescribe several exceptional outputs independently. Disjoint alphabet blocks prevent one exception from supplying a representation of another.
+
+\begin{theorem}[Finite delay-profile realization]\label{thm:profile}
+Let $t_1,\ldots,t_q$ be any nonempty finite list of integers at least $2$, and choose $m\geq\max_i t_i$. There are a finite alphabet $\Sigma$, finite languages
+\[
+ A\subseteq\Sigma^m,\qquad B=\Sigma^{m-1},
+\]
+and distinct words $W_1,\ldots,W_q\in\Sigma^{2m-1}$ such that
+\begin{equation}
+ \ins{k}{A}{B}
+ =\Sigma^{2m-1}\setminus\{W_i:t_i>k\}
+ \qquad(k\geq1).
+ \label{eq:profile}
+\end{equation}
+Thus $\spec{A}{B}=\{1,t_1,\ldots,t_q\}$, and the number of words first added at degree $k\geq2$ is exactly $|\{i:t_i=k\}|$.
+\end{theorem}
+
+\subsection{Choosing positions with a prescribed number of runs}
+
+Set $N=2m-1$. For $1\leq t\leq m$, define a subset of positions
+\begin{equation}
+ J_{m,t}=\{1,\ldots,m-t+1\}
+ \cup\{m-t+1+2j:1\leq j\leq t-1\}.
+ \label{eq:positions}
+\end{equation}
+It has $(m-t+1)+(t-1)=m$ elements. Its largest position is $m+t-1\leq N$. Its first $m-t+1$ elements form one interval, and each of its remaining $t-1$ elements is separated from the preceding selected position by one unselected position. Hence its indicator mask has exactly $t$ runs.
+
+For $m=4$, three examples are
+\[
+ \begin{array}{c|c|c}
+ t&J_{4,t}&\text{mask}\\
+ \hline
+ 2&\{1,2,3,5\}&AAABABB\\
+ 3&\{1,2,4,6\}&AABABAB\\
+ 4&\{1,3,5,7\}&ABABABA
+ \end{array}
+\]
+This explicit position formula avoids any existential choice in the construction.
+
+\subsection{The alphabet and the languages}
+
+Use $q$ disjoint ordered blocks
+\[
+ C_i=\{c_{i,1},\ldots,c_{i,N}\},\qquad
+ \Sigma=C_1\mathbin{\dot\cup}\cdots\mathbin{\dot\cup}C_q,
+\]
+and define
+\[
+ W_i=c_{i,1}c_{i,2}\cdots c_{i,N}.
+\]
+Call a word \emph{block-increasing} if all its letters belong to one block $C_i$ and their second indices are strictly increasing. Let $U_i$ be the subsequence of $W_i$ at the positions $J_{m,t_i}$. Finally set
+\begin{equation}
+ A=\{u\in\Sigma^m:u\text{ is not block-increasing}\}
+   \cup\{U_1,\ldots,U_q\},
+ \qquad B=\Sigma^{m-1}.
+ \label{eq:profile-construction}
+\end{equation}
+
+\subsection{Proof of the realization theorem}
+
+Suppose $w\in\Sigma^N$ is not one of the $W_i$. If every adjacent pair of $w$ belonged to a common block and increased within that block, all letters of $w$ would lie in one block and form a strictly increasing sequence. Since its length is the block size $N$, it would be that block's $W_i$, a contradiction.
+
+Therefore $w$ contains an adjacent pair that either crosses between blocks or fails to increase. Extend that pair to a length-$m$ factor. This factor is not block-increasing, belongs to $A$, and leaves a complementary word of length $m-1$ in $B$. Consequently,
+\[
+ w\notin\{W_1,\ldots,W_q\}\quad\Longrightarrow\quad d_{A,B}(w)=1.
+\]
+
+Now fix $W_i$. Every one of its subsequences is block-increasing within $C_i$. The only such length-$m$ word accepted by $A$ is $U_i$: the other exceptional words $U_j$ use disjoint alphabets. The letters of $W_i$ are distinct, so the alignment of $U_i$ is unique. Its selected positions are exactly $J_{m,t_i}$ and have $t_i$ runs. The complementary word has length $m-1$, so it belongs to $B$. Hence
+\[
+ d_{A,B}(W_i)=t_i.
+\]
+These two calculations prove~\eqref{eq:profile}.\qed
+
+\begin{corollary}[Complete classification for finite languages]\label{cor:classification}
+A set $S\subseteq\N$ is the insertion-degree spectrum of a pair of nonempty finite languages over some finite alphabet if and only if $S$ is finite and $1\in S$.
+\end{corollary}
+\begin{proof}
+Necessity follows because a shuffle of two finite languages is finite and because degree $1$ is always attained. If $S=\{1\}$, take $A=\{a\}$ and $B=\{\eps\}$. Otherwise list the elements of $S\setminus\{1\}$ as $t_1,\ldots,t_q$ and apply Theorem~\ref{thm:profile} with $m=\max S$.
+\end{proof}
+
+The empty spectrum is realized by an empty source language. Thus, allowing empty inputs, the possible finite spectra are exactly $\varnothing$ and the finite sets containing $1$.
+
+\subsection{Sizes and an example}
+
+The construction has $qN$ alphabet symbols. Exactly $q\binom Nm$ length-$m$ words are block-increasing; we add back $q$ selected words. Therefore
+\begin{align*}
+ |A|&=(qN)^m-q\binom Nm+q,\qquad |B|=(qN)^{m-1},\\
+ |\ins{k}{A}{B}|&=(qN)^N-|\{i:t_i>k\}|.
+\end{align*}
+
+For example, choose the desired spectrum $\{1,2,4\}$, use two seven-letter blocks, and set $m=4$. From the first block select positions $1,2,3,5$; from the second select $1,3,5,7$. All length-seven outputs except the two increasing block words have degree $1$. The first exceptional word appears at degree $2$, degree $3$ adds nothing, and the second appears at degree $4$.
+
+Repeated values in the delay list are also meaningful. The list $(2,3,3,4)$ adds one exceptional word at degree $2$, two at degree $3$, and one at degree $4$. Thus the theorem controls the positive-degree increments, not merely their support.
+
+\section{Explicit grammars and automata}
+
+Although the displayed finite sets may be large, their descriptions need not enumerate every accepted word. This section gives direct language descriptions for the realization theorem.
+
+Let $E$ be the set of \emph{bad adjacent pairs}: ordered symbol pairs that either come from different blocks or fail to increase within a common block. The non-block-increasing part of $A$ is exactly
+\begin{equation}
+ A_{\mathrm{bad}}=
+ \bigcup_{j=0}^{m-2}\Sigma^j E\Sigma^{m-j-2}.
+ \label{eq:regex}
+\end{equation}
+Thus $A=A_{\mathrm{bad}}\cup\{U_1,\ldots,U_q\}$ is given by a finite regular expression, and $B=\Sigma^{m-1}$ is even simpler. The equivalence follows because a word is block-increasing exactly when every adjacent pair is good.
+
+For a grammar description, use a nonterminal $X$ with productions $X\to c$ for $c\in\Sigma$. Let $P_0\to\eps$ and $P_j\to XP_{j-1}$ for $1\leq j\leq m-1$. A nonterminal $E_0$ has productions $E_0\to cd$ for bad pairs $(c,d)\in E$. Then take
+\begin{align*}
+ S_A&\to P_jE_0P_{m-j-2} &&(0\leq j\leq m-2),\\
+ S_A&\to U_i &&(1\leq i\leq q),\\
+ S_B&\to P_{m-1}.&
+\end{align*}
+This is a finite acyclic context-free grammar for the required finite languages. It may have several parses when a word contains several bad pairs; that ambiguity is irrelevant to the insertion-degree definition. Regularity follows directly from~\eqref{eq:regex}, independently of the grammar presentation.
+
+Writing $Q=|\Sigma|$, the grammar uses $O(m+Q^2+qm)$ total right-hand-side symbols when the exceptional words are written explicitly. A direct automaton for $A_{\mathrm{bad}}$ tracks the length read, the preceding alphabet symbol, and whether a bad pair has occurred. Accepting at length $m$ in the bad state recognizes $A_{\mathrm{bad}}$. A finite trie for the $U_i$ supplies the exceptional part. These are construction bounds, not claims of minimal grammar or automaton size.
+
+For each fixed $k$, one may also recognize $\ins{k}{A}{B}$ by a finite automaton that nondeterministically assigns each input symbol to an $A$-automaton or a $B$-automaton, remembers the previous source, and counts starts of $A$-runs up to $k$. This automaton is finite whenever the source automata are finite. The gap phenomenon is therefore not caused by stepping outside regular languages.
+
+\section{A binary counterexample and representation erasure}\label{sec:binary}
+
+The parametric theorem uses an alphabet that grows with the prescribed profile. A separate small example demonstrates that a binary alphabet already supports a gap. Set
+\begin{equation}
+ A=\{aaba,aabb,abbb,bbaa,bbba,bbbb\},
+ \qquad B=\{aaa,aba,bab\}.
+ \label{eq:binary}
+\end{equation}
+All shuffles have length seven, and each source pair has $\binom74=35$ assignment masks.
+
+\begin{theorem}\label{thm:binary}
+For~\eqref{eq:binary}, the degree counts are
+\[
+ \begin{array}{c|rrrr}
+ k&1&2&3&4\\\hline
+ |\{w:d_{A,B}(w)=k\}|&57&53&0&1.
+ \end{array}
+\]
+The unique degree-four word is $bababab$. Every singleton pair $(u,v)\in A\times B$ has an initial-interval spectrum.
+\end{theorem}
+
+A finite certificate is given in Appendix~\ref{app:binary}, together with complete machine-readable degree and source-pair tables. The proof is an exhaustive check of $18\cdot35=630$ masks followed by minimization over equal outputs. It has also been checked independently by the dynamic program in Section~\ref{sec:algorithms}. The analytical realization theorem does not depend on this finite computation.
+
+There is a particularly short certificate for the absence of degree $3$. Across the eighteen singleton source pairs, exactly twenty-three distinct words have singleton minimum degree $3$. Appendix~\ref{app:binary} gives a source pair and a mask with at most two $A$-runs for each of those words. Therefore every candidate language-level degree-three word loses that degree to a competing representation. The remaining degree-four witness does not.
+
+For $bababab$, a source-pair check leaves only $(bbbb,aaa)$; its unique mask is $ABABABA$. To see the exclusion explicitly, a source $aba$ would leave either $abbb$ or $bbba$ by letter counts. The only possible projections of those forms leave respectively $baa$ and $aab$, not $aba$. A source $bab$ would leave either $aabb$ or $bbaa$; their possible projections leave respectively $bba$ and $abb$, not $bab$. The other source combinations fail letter counts. Thus the high-degree witness survives.
+
+\begin{corollary}
+Competing source-pair representations can create a gap even when every singleton source-pair spectrum is an initial interval. Moreover, two is the minimum alphabet size admitting any insertion-degree gap.
+\end{corollary}
+\begin{proof}
+The first assertion is exactly the binary example and its pair table, answering the finite representation-erasure question affirmatively. The example proves the binary upper bound; the unary impossibility is Proposition~\ref{prop:bounds}(iv).
+\end{proof}
+
+This does not disprove the singleton no-gap conjecture: the source languages in the counterexample have six and three words. It disproves the inference from good behavior of every individual source pair to good behavior of their union.
+
+\section{Iteration depth has no gaps}\label{sec:depth}
+
+Now hold the operation fixed and count applications rather than pieces. Put
+\[
+ X_0=B,\qquad X_{m+1}=A\sh X_m,
+\]
+and, for a word reachable at some finite stage, define
+\[
+ \iota_{A,B}(w)=\min\{m\geq0:w\in X_m\},\qquad
+ \mathcal T(A,B)=\{\iota_{A,B}(w):w\in\bigcup_{m\geq0}X_m\}.
+\]
+No monotonicity of the exact stages $X_m$ is assumed. For example, $A=\{a\}$ and $B=\{\eps\}$ give $X_m=\{a^m\}$.
+
+\begin{lemma}[Shortest-prefix lemma]\label{lem:prefix}
+Let $R$ be any binary relation on a set $V$, and let $B\subseteq V$. If a vertex $v$ has shortest $R$-path length $r$ from $B$, there is a vertex of shortest path length $j$ for every $0\leq j\leq r$.
+\end{lemma}
+\begin{proof}
+Choose a shortest path $v_0Rv_1R\cdots Rv_r=v$ with $v_0\in B$. Its prefix reaches $v_j$ in $j$ steps. A path to $v_j$ of length $\ell<j$, followed by the suffix $v_jR\cdots Rv_r$, would reach $v$ in $\ell+r-j<r$ steps. This contradicts the choice of the path. Thus $v_j$ has shortest length $j$.
+\end{proof}
+
+\begin{theorem}[Iteration-depth no-gap theorem]\label{thm:depth}
+For arbitrary languages $A,B$, $\mathcal T(A,B)$ is an initial interval of $\Nzero$, possibly empty or infinite. Equivalently,
+\[
+ r\in\mathcal T(A,B)\quad\Longrightarrow\quad
+ \{0,1,\ldots,r\}\subseteq\mathcal T(A,B).
+\]
+The same statement holds when each insertion is restricted to any one fixed degree bound.
+\end{theorem}
+\begin{proof}
+Take $V=\Sigma^*$ and let $xRy$ mean $y\in A\sh\{x\}$. The least number of relation steps from $B$ is exactly $\iota_{A,B}$, so apply Lemma~\ref{lem:prefix}. For a fixed degree bound $k$, replace the relation by $y\in\ins{k}{A}{\{x\}}$.
+\end{proof}
+
+\subsection{A uniform degree bound along a finite derivation}
+
+One formulation of the depth parameter minimizes $m$ subject to the existence of a single finite $k$ usable in every step of an $m$-step derivation. This gives the same depth as unrestricted shuffle at each step. One direction is immediate. For the other, a finite derivation uses finitely many assignment masks, hence finitely many degrees $k_1,\ldots,k_m$. Their maximum $K$ bounds every step, since empty pieces pad a representation to degree $K$. The case $m=0$ uses any $K\geq1$.
+
+Thus Theorem~\ref{thm:depth} applies to that formulation as well. Its argument does not require a largest word in either language. It also handles $B=\varnothing$, when the spectrum is empty, and $A=\varnothing$ with $B\neq\varnothing$, when the spectrum is $\{0\}$.
+
+\subsection{Why the degree hierarchy behaves differently}
+
+For an autonomous iteration $Y_{m+1}=F(Y_m)$, an equality $Y_m=Y_{m+1}$ immediately gives equality at every later stage, simply by applying $F$. If cumulative reachability is wanted, use
+\[
+ C_m=\bigcup_{j=0}^mX_j,\qquad C_{m+1}=C_m\cup(A\sh C_m).
+\]
+Shuffle distributes over unions in its second argument, so this is another autonomous iteration.
+
+By contrast, $\ins{k}{A}{B}$ increases the admissible number of source runs in a \emph{single} shuffle. It is not obtained by applying one fixed extension operator to the previous unlabelled output set. Minimizing over representations may discard the source information needed to extend a particular witness. The counterexamples show that this loss of information can hide every witness at one cost while preserving a witness at a later cost.
+
+\section{Exact algorithms and reproducibility}\label{sec:algorithms}
+
+\subsection{Exhaustive assignment enumeration}
+
+For each $u\in A$, $v\in B$, enumerate every $|u|$-element subset of the $|u|+|v|$ output positions. Merge the words according to that mask, count its $A$-runs, and retain the smallest count for each output word. A second minimum over source pairs gives the language-level degree.
+
+With $m=|u|$ and $n=|v|$, this takes
+\[
+ O\left((m+n)\binom{m+n}{m}\right)
+\]
+character operations per source pair, aside from ordinary dictionary costs. The implementation normalizes the empty-inserted-word case to degree $1$ and treats an absent output as nonmembership, not as degree zero.
+
+The raw masks are witnesses only of upper bounds. Exactness comes from exhaustive coverage of every mask and every source pair. This distinction is particularly important in a problem whose obstruction is competing representations.
+
+\subsection{An independent dynamic program}
+
+For a fixed triple $(u,v,w)$ with $|u|=m$, $|v|=n$, and $|w|=m+n$, define $D(i,j,s)$ as the minimum number of $A$-runs after matching the first $i$ letters of $u$ and $j$ letters of $v$ against the prefix of $w$ of length $i+j$. The value $s\in\{A,B\}$ records the most recently used source; the starting state is treated as $B$.
+
+Initialize $D(0,0,B)=0$ and all other states to $+\infty$. If $u_{i+1}=w_{i+j+1}$, relax
+\[
+ D(i+1,j,A)\gets\min\bigl(D(i+1,j,A),D(i,j,s)+[s\neq A]\bigr).
+\]
+If $v_{j+1}=w_{i+j+1}$, relax
+\[
+ D(i,j+1,B)\gets\min\bigl(D(i,j+1,B),D(i,j,s)\bigr).
+\]
+At the end, take $\min_sD(m,n,s)$ and normalize zero to one. Infinite cost means that $w$ is not a shuffle of the fixed pair.
+
+\begin{proposition}
+The dynamic program computes the exact singleton insertion degree in $O((m+1)(n+1))$ time and space.
+\end{proposition}
+\begin{proof}
+Every transition consumes exactly the next letter of one source and the next letter of the output. Paths therefore correspond bijectively to valid assignment masks. A transition into source $A$ charges one exactly at the start of an $A$-run. The state graph is acyclic because $i+j$ increases at every transition. Induction in that sum proves the recurrence computes minimum path cost. There are $2(m+1)(n+1)$ states and at most two outgoing transitions per state.
+\end{proof}
+
+Minimizing the dynamic-programming result over all pairs gives a second algorithm for $d_{A,B}(w)$. The verifier compares these two implementations for \emph{every} word in the complete small output universes, including words outside the shuffle.
+
+\subsection{Verification performed}
+
+The following counts come from the included run of \texttt{code/verify.py}.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Example & Source pairs & Masks & DP queries & Shuffle words\\
+\midrule
+Ternary, lengths $(3,2)$ & 171 & 1710 & 41553 & 243\\
+Binary, lengths $(4,3)$ & 18 & 630 & 2304 & 111\\
+\bottomrule
+\end{tabular}
+\end{center}
+The ternary singleton spectra comprise $27$ copies of $\{1\}$, $106$ copies of $\{1,2\}$, and $38$ copies of $\{1,2,3\}$. The archive also contains every individual pair's spectrum and degree histogram.
+
+For the general ordered construction, all $27$ output words at $r=2$ and all $3125$ output words at $r=3$ were checked by enumerating every possible source-position set. Larger single-block and multiblock instances were checked on all target words, all their single-letter substitutions, all adjacent swaps of targets, and reproducibly seeded random samples. Those larger checks are explicitly samples, not exhaustive tests or substitutes for the theorem's proof. Their exact counts are recorded in \texttt{data/verification.json}.
+
+An additional finite check enumerates all $52$ equality patterns among the five source positions of a pair of lengths $(3,2)$. It confirms the singleton no-gap property for every such pair over any alphabet: relabelling distinct symbols does not change the mask equalities. This bounded-length check should not be confused with a proof of the unrestricted singleton conjecture.
+
+\subsection{How the counterexample search was encoded}
+
+The initial search used Boolean variables $a_u,b_v$ selecting words into $A$ and $B$. For each potential output $w$, precompute its exact singleton degree for every potential pair. Define
+\[
+ Q_{w,k}=\bigvee_{d_{u,v}(w)\leq k}(a_u\wedge b_v).
+\]
+To forbid degree $g$, impose $Q_{w,g}\Rightarrow Q_{w,g-1}$ for every output. To require a larger degree, require at least one $w$ with $Q_{w,M}\wedge\neg Q_{w,g}$, where $M$ is the length-based maximum degree. These constraints express the actual minima, not merely a chosen mask's run count.
+
+A Z3 search suggested the small examples; the general construction was subsequently proved without relying on the solver. The archive includes a portable SMT-LIB instance and its generator. Neither Z3 nor the discovery search is needed to run the exact verifier. No minimality claim about the total number of source words rests on the solver's output.
+
+\section{What has and has not been settled}
+
+The insertion-degree no-gap assertion is false, already for finite regular languages. The finite representation-erasure question has an affirmative answer: the binary certificate exhibits the required source-pair behavior. The general finite-spectrum realization theorem strengthens the negative answer from an isolated gap to an arbitrary finite profile. Separately, the iteration-depth no-gap assertion is true for arbitrary languages.
+
+The unrestricted singleton insertion-degree question remains outside the proofs in this note. The arbitrary-spectrum construction intentionally exploits multiple possible source words and cannot be read as a singleton counterexample. Similarly, the argument does not classify infinite spectra over a fixed finite alphabet, and it does not establish which finite spectra can all be realized over one fixed binary alphabet.
+
+Several concrete problems are left by these results. One can seek smaller source languages for a specified spectrum, determine the least alphabet needed to realize $\{1,r\}$ as $r$ grows, or study descriptions by small deterministic automata rather than by cardinality. The proof of Theorem~\ref{thm:profile} also suggests investigating classes where competing source-pair representations are controlled strongly enough to restore an interval theorem. These are research directions, not additional claims of unresolved status in the published literature.
+
+The central lesson is specific: an insertion-degree spectrum is a minimum over representations, and taking that minimum can erase intermediate costs. The same phenomenon does not affect shortest derivation depth, because a cheaper prefix could always be substituted into a derivation. This difference accounts for the opposite answers without appealing to general undecidability machinery.
+
+\appendix
+\section{The binary finite certificate}\label{app:binary}
+
+For each source pair in~\eqref{eq:binary}, the table records the number of \emph{distinct} output words whose singleton minimum has the indicated value. It is obtained by enumerating all thirty-five masks, not by counting masks as distinct outputs. Every row has nonzero counts at every degree from $1$ through its maximum.
+
+\input{tex/binary_pairs.tex}
+
+Across these rows, the union of the singleton degree-three words contains twenty-three words. For each, the next table provides a competing source pair and a mask of cost at most two. Reading positions marked $A$ or $B$ reconstructs the displayed sources, so each row is directly checkable.
+
+\input{tex/binary_erasure.tex}
+
+These tables certify the missing degree as follows. A language-level degree-three output would have a singleton representation of minimum degree exactly three for some pair. It would therefore occur in the second table, which supplies a lower-cost representation, a contradiction. Degree four is witnessed by $bababab$ as proved in Section~\ref{sec:binary}. The complete degree map, including all fifty-seven degree-one and fifty-three degree-two outputs, is in \texttt{data/binary\_degrees.csv}.
+
+\section{Archive contents and rebuilding}
+
+The archive contains the complete \LaTeX\ source, the compiled PDF, the included table sources, the exact Python verifier, a portable search-instance generator, an SMT-LIB file, the verified degree tables, and a machine-readable verification report. The small examples and all input constants are embedded in the verifier, so no external data downloads are necessary.
+
+From the archive's root directory, verification is:
+\begin{lstlisting}
+python code/verify.py
+\end{lstlisting}
+This rewrites the data tables and the JSON report. Rebuilding the article uses a conventional TeX Live or MiKTeX installation with the packages named in the preamble:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The bibliography is embedded, so BibTeX is not required. The generated table fragments are included in the archive. The verifier needs Python 3.9 or newer and no third-party package. Optional discovery experiments use an external SMT solver; all mathematical results and verification commands remain available without it.
+
+\begin{thebibliography}{9}
+\bibitem{Hughes2026}
+Charles E. Hughes.
+\emph{Undecidability of Adjacent Equality for Insertion, Shuffle, and Crossover Language Operations}.
+arXiv:2608.27755v1, 27 August 2026.
+\url{https://arxiv.org/abs/2608.27755v1}.
+Sections 10--11 contain the no-gap questions addressed here.
+
+\bibitem{Mateescu1998}
+A. Mateescu, Grzegorz Rozenberg, and Arto Salomaa.
+Shuffle on trajectories: Syntactic constraints.
+\emph{Theoretical Computer Science} \textbf{197}(1--2), 1--56, 1998.
+\url{https://doi.org/10.1016/S0304-3975(97)00163-1}.
+\end{thebibliography}
+
+\end{document}

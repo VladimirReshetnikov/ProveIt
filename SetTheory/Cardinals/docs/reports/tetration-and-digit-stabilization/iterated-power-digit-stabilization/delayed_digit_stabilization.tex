@@ -1,0 +1,1269 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{Olive}{HTML}{536348}
+\definecolor{PaleOlive}{HTML}{F2F4ED}
+\definecolor{Ink}{HTML}{262B25}
+\definecolor{Muted}{HTML}{60665E}
+\hypersetup{colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,
+  pdftitle={Delayed digit stabilization: a counterexample and sharp bounds},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={An open stabilization conjecture, exact counterexamples, valuations, and fast-growing powers}}
+\titleformat{\section}{\Large\bfseries\color{Olive}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Olive}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Delayed digit stabilization}
+\fancyhead[R]{\small\color{Muted}Research note \textbullet\ September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2.5em}
+\setlist{nosep,leftmargin=1.8em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\vp}[2]{\nu_{#1}\!\left(#2\right)}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\gcdop}{\operatorname{gcd}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\astar}{a_{\star}}
+\newtcolorbox{resultbox}[1][]{colback=PaleOlive,colframe=Olive,
+  boxrule=0.5pt,arc=1.2mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable,#1}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{Olive},backgroundcolor=\color{PaleOlive},
+  showstringspaces=false,aboveskip=9pt,belowskip=9pt}
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{Olive}MODULAR ARITHMETIC OF RAPIDLY GROWING POWERS}\par\vspace{12pt}
+{\LARGE\bfseries Delayed digit stabilization}\par\vspace{6pt}
+{\Large A counterexample, exact minima, and sharp bounds}\par\vspace{14pt}
+{\normalsize Research note prepared for Vladimir Reshetnikov}\par\vspace{4pt}
+{\normalsize 19 September 2026}
+\end{center}
+\vspace{6pt}
+\begin{abstract}
+For $a\ge2$ not divisible by $10$, put
+$S_a(b)=\nu_{10}(a^{10^{b+1}}-a^{10^b})$ and
+$D_a(b)=S_a(b)-S_a(b-1)$. A publicly posed conjecture asks whether
+$D_a(b)=1$ always holds for $b\ge3$. We disprove it and prove that the
+smallest counterexample is
+$\astar=3\cdot2^{99}+1=1901475900342344102245054808065$:
+$S_{\astar}(2)=100$ and $S_{\astar}(3)=102$.
+The mechanism is competition between an exponentially growing valuation at
+one prime and an affine valuation at the other. We give exact formulas for
+all bases, determine the first permanently unit increment, construct
+arbitrarily delayed examples, and determine the least counterexample at
+every prescribed stage. An exact density formula quantifies the scarcity of
+exceptions. We then prove an arbitrary-radix local formula, characterize
+convergence and finite limit cycles, and explain how fast-growing changes
+of index transform the stabilization rate. A separate calculation for genuine
+integer tetration makes the distinction between the two iterations explicit.
+All mathematical claims are proved in ordinary mathematics; accompanying
+standard-library Python code supplies independent modular certificates and
+regression tests.
+\end{abstract}
+\begin{resultbox}
+\textbf{Outcome.} The uniform threshold is false, not merely unproved.
+Eventual unit speed for each fixed admissible base is true. The exact
+threshold is unbounded as the base varies, even though it grows only on a
+$\log\log a$ scale in the worst case.
+\end{resultbox}
+\vspace{4pt}
+\noindent\textbf{Keywords.} Trailing digits; lifting the exponent; tetration;
+$p$-adic valuation; finite iteration; Chinese remainder theorem.\par
+\noindent\textbf{Scope.} The conjecture concerns $a^{10^b}$, not $a\uparrow\uparrow b$.
+The relation to tetration and higher-growth indexing is developed in
+Sections~\ref{sec:time} and~\ref{sec:tetration}.
+\newpage
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The selected problem and its status}\label{sec:status}
+
+\subsection{A concrete, independently checkable target}
+The target is a question posed by Marco Rip\`a on Mathematics Stack Exchange
+on 24 October 2025~\cite{question}. With the notation used in the abstract,
+it asks whether every integer $a>1$ with $10\nmid a$ satisfies
+\begin{equation}\label{eq:conjecture}
+D_a(b)=1\qquad\text{for every }b\ge3.
+\end{equation}
+The source connects this question to earlier work on the congruence speed
+of integer tetration. Its retrieved public page displayed no answers during
+the literature check for this note. A targeted search did not locate a
+resolution of this exact question. That is a record of the checked sources,
+not a claim that every possible prior publication has been excluded.
+
+The advantage of this target is that the conjectural assertion has precise
+quantifiers and admits a finite certificate of failure. There is no need to
+choose an analytic extension of tetration or a convention for ordinal
+fundamental sequences. More importantly, the question can be reduced to a
+competition between two exactly computable integer quantities.
+
+\subsection{What is proved, and what is inherited}
+The proof of the counterexample is in Section~\ref{sec:counterexample}; its
+minimality is also proved there. The stronger least-counterexample theorem
+for every stage appears in Section~\ref{sec:minima}. The density calculation
+and the arbitrary-radix results are additional deductions developed here.
+Their proofs, rather than an assertion of novelty, are the basis for the
+claims made in this note.
+
+The lifting identities used below are classical. The question already reports
+a base-dependent sufficient onset bound~\cite{question}; pointwise eventual
+unit speed is not claimed here as new. Earlier tetration papers
+establish valuation formulas and eventual constant congruence speeds for
+integer towers~\cite{speed,stable}. Those results are relevant background,
+but they must not be substituted for the formulas of this note: the exponent
+schedule is different. Work on the stable digits of Graham's number provides
+another explicit application of valuation methods to very large
+integers~\cite{graham}. We do not claim a new solution of that problem.
+
+All calculations here use positive integer bases. Bases divisible by $10$
+are included in the general formulas but excluded from the conjecture.
+The base $1$ is excluded because every difference is zero and its valuation
+would be infinite.
+
+\subsection{The mathematical mechanism in one paragraph}
+An even base can be exceptionally close to a fourth root of unity in the
+$5$-adic metric while being divisible by exactly one power of $2$.
+Conversely, an odd multiple of $5$ can be exceptionally close to $1$ or $-1$
+in the $2$-adic metric while containing only one factor of $5$.
+The number of matching decimal digits is the \emph{smaller} of the two local
+valuations. A large constant in the affine local valuation can therefore
+postpone the point at which it becomes the smaller one. This is the missing
+uniformity in~\eqref{eq:conjecture}.
+
+\section{Valuations and the lifting identities}\label{sec:lte}
+
+For a prime $p$ and a nonzero integer $z$, let $\nu_p(z)$ be the largest
+integer $k\ge0$ such that $p^k\mid z$. For any radix $B\ge2$, define
+\begin{equation}\label{eq:radix-valuation}
+\nu_B(z)=\max\{k\ge0:B^k\mid z\}.
+\end{equation}
+If $B=\prod_{p\mid B}p^{e_p}$, then
+\begin{equation}\label{eq:minval}
+\nu_B(z)=\min_{p\mid B}\left\lfloor\frac{\nu_p(z)}{e_p}\right\rfloor.
+\end{equation}
+This follows by comparing the prime exponents in $B^k$ and $z$.
+In particular, $\nu_{10}(z)=\min\{\nu_2(z),\nu_5(z)\}$.
+For a composite radix this is a divisibility count; it is not generally an
+additive prime valuation.
+
+Two nonnegative integers agree in their last $k$ base-$B$ positions exactly
+when their difference is divisible by $B^k$. Leading zero padding is
+understood when necessary.
+
+\begin{lemma}[Odd-prime lifting]\label{lem:odd-lte}
+Let $p$ be odd and let $p\mid u-1$. For every positive integer $m$,
+\[
+\nu_p(u^m-1)=\nu_p(u-1)+\nu_p(m).
+\]
+More generally, if $p\nmid a$ and $d=\ord_p(a)$, then
+\[
+\nu_p(a^m-1)=
+\begin{cases}
+0,&d\nmid m,\\
+\nu_p(a^d-1)+\nu_p(m),&d\mid m.
+\end{cases}
+\]
+\end{lemma}
+\begin{proof}
+Write $m=p^j w$, where $p\nmid w$. If $u\equiv1\pmod p$, then
+$(u^w-1)/(u-1)$ is congruent to $w$ modulo $p$, so raising to the power $w$
+does not change the valuation. If $u=1+t$ with $\nu_p(t)=r\ge1$, the first
+term of
+\[
+(1+t)^p-1=pt+\binom p2t^2+\cdots+t^p
+\]
+has valuation $r+1$. Every other term has valuation at least $r+2$.
+Thus each subsequent raising to the power $p$ increases the valuation by
+exactly one. This proves the first identity.
+
+For the second statement, $a^m\equiv1\pmod p$ holds exactly when $d\mid m$.
+In that case apply the first identity to $u=a^d$ and exponent $m/d$.
+Since $d\mid p-1$, we have $p\nmid d$ and $\nu_p(m/d)=\nu_p(m)$.
+\end{proof}
+
+\begin{lemma}[Binary lifting]\label{lem:two-lte}
+For odd $a$ and positive even $m$,
+\begin{equation}\label{eq:binary-lte}
+\nu_2(a^m-1)=\nu_2(a-1)+\nu_2(a+1)+\nu_2(m)-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $m=2^j w$ with $j\ge1$ and $w$ odd. Odd powers leave the valuation of
+$u-1$ unchanged, since $(u^w-1)/(u-1)$ is an odd sum of odd terms.
+The first squaring contributes
+$\nu_2(a^2-1)=\nu_2(a-1)+\nu_2(a+1)$, which is at least $3$.
+After this squaring the current value is $1$ modulo $8$, so each further
+factor $u+1$ contributes exactly one factor of $2$. There are $j-1$ such
+further squarings, giving~\eqref{eq:binary-lte}.
+\end{proof}
+
+\begin{lemma}[A prime dividing the base]\label{lem:nonunit}
+If $p\mid a$ and $0<u<v$, then
+\[
+\nu_p(a^v-a^u)=u\nu_p(a).
+\]
+\end{lemma}
+\begin{proof}
+Factor the difference as $a^u(a^{v-u}-1)$. The second factor is $-1$ modulo
+$p$ and contributes no further factors of $p$.
+\end{proof}
+
+\section{The complete decimal profile}\label{sec:profile}
+
+For an odd integer $a>1$, put
+\begin{equation}\label{eq:c2}
+C_2(a)=\nu_2(a^2-1)-1
+      =\max\{\nu_2(a-1),\nu_2(a+1)\}.
+\end{equation}
+The equality holds because exactly one of $a-1,a+1$ is divisible by $4$,
+and the other has valuation $1$. For $5\nmid a$, put
+\begin{equation}\label{eq:c5}
+C_5(a)=\nu_5(a^4-1).
+\end{equation}
+The factorization of $a^4-1$ gives the useful equivalent formula
+\begin{equation}\label{eq:c5-split}
+C_5(a)=
+\begin{cases}
+\nu_5(a-1),&a\equiv1\pmod5,\\
+\nu_5(a+1),&a\equiv4\pmod5,\\
+\nu_5(a^2+1),&a\equiv2,3\pmod5.
+\end{cases}
+\end{equation}
+Only one of the displayed factors is divisible by $5$.
+
+\begin{theorem}[Exact profile for every decimal base]\label{thm:profile}
+Let $a\ge2$ and $b\ge2$. Then
+\begin{equation}\label{eq:profile}
+S_a(b)=
+\begin{cases}
+b+\min\{C_2(a),C_5(a)\},&\gcd(a,10)=1,\\[2pt]
+\min\{\nu_2(a)10^b,\ b+C_5(a)\},&2\mid a,\ 5\nmid a,\\[2pt]
+\min\{\nu_5(a)10^b,\ b+C_2(a)\},&5\mid a,\ 2\nmid a,\\[2pt]
+10^b\min\{\nu_2(a),\nu_5(a)\},&10\mid a.
+\end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The fundamental factorization is
+\begin{equation}\label{eq:factorization}
+a^{10^{b+1}}-a^{10^b}=a^{10^b}\bigl(a^{9\cdot10^b}-1\bigr).
+\end{equation}
+If $2\mid a$, Lemma~\ref{lem:nonunit} gives valuation $\nu_2(a)10^b$.
+If $a$ is odd, Lemma~\ref{lem:two-lte} applies with
+$\nu_2(9\cdot10^b)=b$ and gives $b+C_2(a)$.
+
+If $5\mid a$, Lemma~\ref{lem:nonunit} gives valuation $\nu_5(a)10^b$.
+If $5\nmid a$, then $\ord_5(a)\mid4$, while $4\mid10^b$ because $b\ge2$.
+Apply odd-prime lifting to $a^4$ with exponent $9\cdot10^b/4$.
+The result is $b+C_5(a)$.
+Taking the smaller of the binary and quinary valuations proves all four
+cases.
+\end{proof}
+
+The hypothesis $b\ge2$ is substantive: when $b=1$, the exponent
+$9\cdot10=90$ need not be divisible by $4$. The conjectured increments
+start at $b=3$, so both $S_a(b)$ and $S_a(b-1)$ lie in the range where the
+theorem applies.
+
+\begin{corollary}[The two different assertions]\label{cor:fixed}
+For every fixed $a\ge2$ with $10\nmid a$, there is an integer $C(a)$ such
+that $S_a(b)=b+C(a)$ for all sufficiently large $b$.
+If $\gcd(a,10)=1$, this already holds for every $b\ge2$.
+\end{corollary}
+\begin{proof}
+The coprime case is explicit in~\eqref{eq:profile}. In either mixed case,
+$t10^b>b+C$ eventually, for the fixed positive integers $t$ and $C$.
+\end{proof}
+This proves pointwise eventual stabilization. It gives no base-independent
+bound on the initial exceptional interval.
+
+\section{A counterexample and the proof of its minimality}\label{sec:counterexample}
+
+\subsection{The counterexample}
+\begin{theorem}\label{thm:counterexample}
+The integer
+\begin{equation}\label{eq:astar}
+\astar=3\cdot2^{99}+1=1901475900342344102245054808065
+\end{equation}
+is a counterexample to~\eqref{eq:conjecture}. Specifically,
+\[
+S_{\astar}(2)=100,\qquad S_{\astar}(3)=102,\qquad D_{\astar}(3)=2.
+\]
+\end{theorem}
+\begin{proof}
+We have $2^{99}\equiv13\pmod{25}$, so $\astar\equiv15\pmod{25}$.
+Consequently $\nu_5(\astar)=1$. Moreover,
+\[
+\nu_2(\astar-1)=99,\qquad \nu_2(\astar+1)=1,
+\]
+and hence $C_2(\astar)=99$. The odd-multiple-of-$5$ case of
+Theorem~\ref{thm:profile} now gives
+\begin{equation}\label{eq:astar-profile}
+S_{\astar}(b)=\min\{10^b,b+99\}\qquad(b\ge2).
+\end{equation}
+At $b=2$ the minimum is $100$, whereas at $b=3$ it is $102$.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$b$ & $\nu_2(\Delta_b)$ & $\nu_5(\Delta_b)$ & $S_{\astar}(b)$ & $D_{\astar}(b)$\\
+\midrule
+2 & 101 & 100 & 100 & ---\\
+3 & 102 & 1000 & 102 & 2\\
+4 & 103 & 10000 & 103 & 1\\
+5 & 104 & 100000 & 104 & 1\\
+6 & 105 & 1000000 & 105 & 1\\
+\bottomrule
+\end{tabular}\par\smallskip
+{\small Here $\Delta_b=\astar^{10^{b+1}}-\astar^{10^b}$.}
+\end{center}
+The exceptional increment is caused by a change in which prime controls
+the minimum. No approximation of the enormous powers is involved.
+
+\subsection{An exact test for unit increments}
+\begin{lemma}\label{lem:increment}
+Let $t,C$ be positive integers, and let
+$S(b)=\min\{t10^b,b+C\}$ for $b\ge2$. For $b\ge3$,
+\begin{equation}\label{eq:criterion}
+S(b)-S(b-1)=1
+\quad\Longleftrightarrow\quad
+C\le t10^{b-1}-(b-1).
+\end{equation}
+If the inequality fails, the increment is at least $2$.
+\end{lemma}
+\begin{proof}
+Write $R=t10^{b-1}$ and $L=b-1+C$. If $L\le R$, then the previous
+minimum is $L$ and the next is $L+1$, because $L+1\le R+1\le10R$.
+If $L>R$, integrality gives $L\ge R+1$. The previous minimum is $R$ and
+the next is $\min\{10R,L+1\}\ge R+2$.
+\end{proof}
+
+Since $t10^{b-1}-(b-1)$ strictly increases with $b$, once a unit increment
+occurs, every later increment is also one. In particular, a base satisfies
+the conjecture at every stage $b\ge3$ exactly when it satisfies it at $b=3$.
+
+\subsection{Why no smaller integer works}
+\begin{theorem}[Global minimality]\label{thm:minimal}
+The integer $\astar$ of~\eqref{eq:astar} is the smallest $a\ge2$, $10\nmid a$,
+for which $D_a(b)\ne1$ at any stage $b\ge3$.
+\end{theorem}
+\begin{proof}
+It suffices to rule out $D_a(3)\ne1$ for $a<\astar$.
+Coprime bases cannot fail, by Theorem~\ref{thm:profile}.
+
+Suppose first that $a$ is even and $5\nmid a$. By Lemma~\ref{lem:increment},
+failure requires
+\[
+C_5(a)\ge100\nu_2(a)-1\ge99.
+\]
+By~\eqref{eq:c5-split}, one of $a-1,a+1,a^2+1$ is divisible by $5^{99}$.
+Thus $a^2+1\ge5^{99}$. But
+\begin{equation}\label{eq:small-bound}
+\astar^2+1<5^{99},
+\end{equation}
+so this is impossible when $a<\astar$. For an elementary check of the
+bound, $\astar<4\cdot2^{99}$, and
+$16\cdot4^{99}+1<17\cdot4^{99}<5^{99}$.
+The latter inequality follows already from $(5/4)^{16}>25>17$ and $99>16$.
+
+Now suppose that $a$ is odd and $5\mid a$. Failure requires
+\[
+C_2(a)\ge100\nu_5(a)-1\ge99.
+\]
+Hence $a\equiv1$ or $-1\pmod{2^{99}}$. Among the integers between $2$ and
+$3\cdot2^{99}+1$, the only possible smaller multiple of $5$ in these two
+residue classes is $2^{100}-1$. This can be checked by considering
+$j2^{99}\pm1$ for $j=1,2,3$ and using $2^{99}\equiv3\pmod5$.
+For that remaining candidate,
+\[
+C_2(2^{100}-1)=100,
+\qquad
+\nu_5(2^{100}-1)=\nu_5(16^{25}-1)=1+2=3.
+\]
+Its failure condition would be $100\ge299$, which is false.
+Thus every smaller admissible base satisfies the conjectured bound.
+\end{proof}
+
+The size of the first counterexample explains why a search restricted to
+small bases offers misleading evidence for the uniform statement. This is
+a conclusion from a minimality proof, not an extrapolation of an experiment.
+
+\section{The exact onset and arbitrarily long delays}\label{sec:onset}
+
+Define the onset, restricted to the range relevant to the conjecture, by
+\begin{equation}\label{eq:onset-def}
+N(a)=\min\{B\ge3:D_a(b)=1\text{ for all }b\ge B\}.
+\end{equation}
+It exists for every admissible $a$ by Corollary~\ref{cor:fixed}.
+
+\begin{theorem}[Exact onset]\label{thm:onset}
+If $\gcd(a,10)=1$, then $N(a)=3$. In either mixed case, use
+\[
+(t,C)=
+\begin{cases}
+(\nu_2(a),C_5(a)),&2\mid a,\ 5\nmid a,\\
+(\nu_5(a),C_2(a)),&5\mid a,\ 2\nmid a.
+\end{cases}
+\]
+Then
+\begin{equation}\label{eq:onset}
+N(a)=1+\min\{r\ge2:t10^r-r\ge C\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Substitute $r=b-1$ in Lemma~\ref{lem:increment}; the inequality is
+monotone in $r$.
+\end{proof}
+
+This is a sharp characterization, not merely a sufficient bound. If
+\[
+r_0=\max\left\{2,\left\lceil\log_{10}(C/t)\right\rceil\right\},
+\]
+the minimum in~\eqref{eq:onset} is either $r_0$ or $r_0+1$.
+Indeed, smaller admissible $r$ cannot make $t10^r\ge C$, and the additional
+factor of ten at the next stage more than compensates for subtracting $r$.
+The exact formula can be evaluated by integer comparisons without computing
+any logarithms.
+
+\begin{theorem}[A family realizing every later onset]\label{thm:delay}
+For $m\ge2$, set
+\begin{equation}\label{eq:delay-family}
+K_m=10^m-m+1,\qquad a_m=5^{K_m}+1.
+\end{equation}
+Then
+\[
+D_{a_m}(m+1)=2,\qquad N(a_m)=m+2.
+\]
+In particular, no absolute onset bound is valid for all admissible bases.
+\end{theorem}
+\begin{proof}
+For every positive integer $K$, the number $5^K+1$ is $2$ modulo $4$ and
+$1$ modulo $5$. Thus $\nu_2(5^K+1)=1$ and $C_5(5^K+1)=K$, so
+\[
+S_{5^K+1}(b)=\min\{10^b,b+K\}.
+\]
+At $K=K_m$, the linear term exceeds $10^m$ by one when $b=m$.
+Hence $S_{a_m}(m)=10^m$, while $S_{a_m}(m+1)=10^m+2$.
+The criterion fails at $r=m$ and holds at $r=m+1$; because it is monotone,
+the asserted onset is exact.
+\end{proof}
+
+The family $5^K+1$ gives $N(5^K+1)=\log_{10}K+O(1)$ as $K\to\infty$.
+More generally,
+\begin{equation}\label{eq:loglog}
+N(a)=O(\log\log a)
+\end{equation}
+as $a$ ranges over admissible bases. To see this, use
+$C_2(a)\le\log_2(a+1)$ and $C_5(a)\le\log_5(a^2+1)$ in the onset
+formula, together with $t\ge1$. The family above also shows that the
+worst-case order in~\eqref{eq:loglog} cannot be improved to $o(\log\log a)$.
+Unboundedness and slow growth are entirely compatible.
+
+\section{The least counterexample at every stage}\label{sec:minima}
+
+The preceding family is convenient but not usually minimal. We can solve
+the minimization problem exactly.
+
+\begin{definition}
+For $b\ge3$, let
+\[
+A_b=\min\{a\ge2:10\nmid a,\ D_a(b)\ne1\},
+\qquad K=10^{b-1}-b+2.
+\]
+\end{definition}
+The set is nonempty by Theorem~\ref{thm:delay}.
+
+\begin{theorem}[Exact stage minima]\label{thm:stage-minima}
+For $b\ge3$, the least exceptional base is the following integer:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Condition on $K$ & $A_b$ & $D_{A_b}(b)$\\
+\midrule
+$K\equiv0\pmod4$, $K\not\equiv0\pmod{20}$ & $2^K-1$ & 2\\
+$K\equiv0\pmod{20}$ & $4\cdot2^K+1$ & 4\\
+$K\equiv1\pmod4$, $K\not\equiv9\pmod{20}$ & $2\cdot2^K+1$ & 3\\
+$K\equiv9\pmod{20}$ & $3\cdot2^K-1$ & 2\\
+$K\equiv2\pmod4$, $K\not\equiv10\pmod{20}$ & $2^K+1$ & 2\\
+$K\equiv10\pmod{20}$ & $4\cdot2^K-1$ & 4\\
+$K\equiv3\pmod4$, $K\not\equiv19\pmod{20}$ & $2\cdot2^K-1$ & 3\\
+$K\equiv19\pmod{20}$ & $3\cdot2^K+1$ & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+In every case $N(A_b)=b+1$.
+\end{theorem}
+\begin{proof}
+Put $r=b-1$ and $Q=10^r$, so $K=Q-r+1\ge99$.
+For a mixed base, the failure condition is
+\begin{equation}\label{eq:stage-failure}
+C\ge tQ-r+1.
+\end{equation}
+We will find the minimum below $4\cdot2^K+1$.
+
+An even exceptional base must have $C_5(a)\ge K$, so
+$a^2+1\ge5^K$. But for $K\ge99$,
+\[
+(4\cdot2^K+1)^2+1<25\cdot4^K<5^K.
+\]
+The first inequality holds already for $K\ge1$; the second follows from
+$(5/4)^{16}>25$ and $K\ge99$. No even base in the proposed range can
+therefore be exceptional.
+
+For an odd multiple of $5$ in this range, $C_2(a)\le K+2$.
+If $\nu_5(a)\ge2$, condition~\eqref{eq:stage-failure} requires
+\[
+C_2(a)\ge2Q-r+1=2K+r-1>K+2,
+\]
+which is impossible. Thus we need precisely
+\begin{equation}\label{eq:min-conditions}
+\nu_5(a)=1,\qquad a\equiv\pm1\pmod{2^K}.
+\end{equation}
+Every candidate in the range, other than the excluded integer $1$, is
+$j2^K\pm1$ for $1\le j\le4$.
+
+The residue of $2^K$ modulo $5$ gives the first possible multiple of $5$.
+For $K$ congruent to $0,1,2,3$ modulo $4$, respectively, these first
+candidates are
+\[
+2^K-1,\qquad 2\cdot2^K+1,\qquad
+2^K+1,\qquad 2\cdot2^K-1.
+\]
+A candidate must be skipped exactly when it is also divisible by $25$.
+The order of $2$ modulo $25$ is $20$, with $2^{10}\equiv-1\pmod{25}$.
+The four exceptional residue classes are consequently
+$K\equiv0,9,10,19\pmod{20}$, respectively. The next candidates are
+$4\cdot2^K+1$, $3\cdot2^K-1$, $4\cdot2^K-1$, and $3\cdot2^K+1$.
+Direct reduction modulo $25$ shows that each has exactly one factor of $5$.
+This proves the table and its minimality.
+
+If the selected candidate is $A_b=j2^K\pm1$, then
+$C_2(A_b)=K+\nu_2(j)$. At stage $b-1$, its profile is $Q$; at stage $b$,
+it is $b+K+\nu_2(j)$. Their difference is
+$2+\nu_2(j)$, giving the last column.
+At the next stage the inequality of Lemma~\ref{lem:increment} holds, so
+$N(A_b)=b+1$.
+\end{proof}
+
+Because $10^{b-1}\equiv0\pmod{20}$, the coefficient and sign in the table
+depend only on $b$ modulo $20$: indeed $K\equiv2-b\pmod{20}$.
+The first few values are
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$b$ & $K$ & $A_b$\\
+\midrule
+3 & 99 & $3\cdot2^{99}+1$\\
+4 & 998 & $2^{998}+1$\\
+5 & 9997 & $2^{9998}+1$\\
+6 & 99996 & $2^{99996}-1$\\
+7 & 999995 & $2^{999996}-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{corollary}[An exact extremal description]
+For $X\ge2$, let $M(X)$ be the maximum of $N(a)$ over admissible integers
+$a\le X$. If $X<A_3$, then $M(X)=3$. Otherwise,
+\[
+M(X)=1+\max\{b\ge3:A_b\le X\}.
+\]
+In particular,
+\[
+\log_2 A_b=10^{b-1}-b+O(1),\qquad
+M(X)=\log_{10}\log_2 X+O(1)\quad(X\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+The statement $N(a)>b$ is equivalent to $D_a(b)\ne1$.
+The definition of $A_b$ therefore characterizes exactly when the set
+$a\le X$ contains a base with onset exceeding $b$. The asymptotic estimates
+follow from $A_b=j2^K\pm1$ with $1\le j\le4$.
+\end{proof}
+
+\section{How sparse are the counterexamples?}\label{sec:density}
+
+For a fixed $b\ge3$, write
+\[
+E_b=\{a\ge2:10\nmid a,\ D_a(b)\ne1\}.
+\]
+We compute its natural density among \emph{all} positive integers:
+\[
+\delta_b=\lim_{X\to\infty}\frac{\#(E_b\cap[1,X])}{X}.
+\]
+The conditional density among admissible bases is $10\delta_b/9$.
+
+\begin{theorem}[Exact exceptional density]\label{thm:density}
+Let $r=b-1$ and $Q=10^r$. The density exists and equals
+\begin{equation}\label{eq:density}
+\boxed{\displaystyle
+\delta_b=
+\frac{2\cdot5^{r-1}}{2\cdot5^Q-1}
++\frac{2^{r+2}}{5(5\cdot2^Q-1)}.}
+\end{equation}
+The first term counts even bases; the second counts odd multiples of $5$.
+\end{theorem}
+\begin{proof}
+Fix an even base with $\nu_2(a)=t\ge1$. Failure means
+\[
+\nu_5(a^4-1)\ge K_t,\qquad K_t=tQ-r+1.
+\]
+There are exactly four roots of $x^4=1$ modulo $5^{K_t}$.
+Indeed, modulo $5$ all four nonzero classes are roots, and the derivative
+$4x^3$ is nonzero at each root. To see the unique lifting directly, replace
+a root $x$ modulo $5^k$ by $x+j5^k$; the coefficient of $j$ in the next
+congruence is invertible modulo $5$, determining exactly one $j$.
+The density of the quinary condition is thus $4/5^{K_t}$.
+The exact binary valuation condition has density $1/2^{t+1}$.
+By the Chinese remainder theorem their intersection has density
+\[
+\frac{4}{2^{t+1}5^{tQ-r+1}}.
+\]
+Summing over $t\ge1$ gives
+\[
+2\cdot5^{r-1}\sum_{t\ge1}\left(\frac1{2\cdot5^Q}\right)^t
+=\frac{2\cdot5^{r-1}}{2\cdot5^Q-1}.
+\]
+
+For odd multiples of $5$ with $\nu_5(a)=s\ge1$, the density of the exact
+quinary condition is $4/5^{s+1}$. Failure requires
+\[
+C_2(a)\ge K_s=sQ-r+1.
+\]
+Since $K_s\ge99$, this is exactly $a\equiv1$ or $-1\pmod{2^{K_s}}$,
+a condition of density $2/2^{K_s}$. Again applying the Chinese remainder
+theorem gives density
+\[
+\frac{8}{5^{s+1}2^{sQ-r+1}}.
+\]
+Its sum over $s\ge1$ is
+\[
+\frac{2^{r+2}}5\sum_{s\ge1}\left(\frac1{5\cdot2^Q}\right)^s
+=\frac{2^{r+2}}{5(5\cdot2^Q-1)}.
+\]
+
+It remains to justify summing infinitely many densities. After truncating
+the even-base sum at $t<T$, its omitted set is contained in the multiples
+of $2^T$, whose upper density is $2^{-T}$. The corresponding omitted
+odd-base set is contained in the multiples of $5^T$, of upper density
+$5^{-T}$. These bounds tend to zero. Finite sums have densities by the
+Chinese remainder theorem, so the infinite union has the stated density.
+\end{proof}
+
+For the original conjecture,
+\begin{equation}\label{eq:density3}
+\delta_3=
+\frac{10}{2\cdot5^{100}-1}
++\frac{16}{5(5\cdot2^{100}-1)}
+\approx5.0487097934144756\times10^{-31}.
+\end{equation}
+This is a natural density, not an independence assumption about random
+samples. In particular, it should not be interpreted as a theorem about
+the distribution of exceptions in every finite interval.
+
+The second term dominates as $b\to\infty$, so
+\begin{equation}\label{eq:density-asymptotic}
+\delta_b\sim\frac{2^{b+1-10^{b-1}}}{25}.
+\end{equation}
+The extraordinary rarity of exceptions is therefore quantified by a
+closed formula, while their existence at every stage is guaranteed by the
+explicit constructions.
+
+\section{Permanent digits and the four decimal limits}\label{sec:limits}
+
+So far $S_a(b)$ was defined using neighboring terms. The same number actually
+measures agreement with \emph{every} later term.
+
+\begin{theorem}[Exact nonconsecutive agreement]\label{thm:nonconsecutive}
+For every $a\ge2$ and integers $v>u\ge2$,
+\begin{equation}\label{eq:nonconsecutive}
+\nu_{10}\!\left(a^{10^v}-a^{10^u}\right)=S_a(u).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Factor the difference as
+\[
+a^{10^u}\left(a^{10^u(10^{v-u}-1)}-1\right).
+\]
+The number $10^{v-u}-1$ is coprime to $10$. Consequently the exponent in
+the second factor has binary and quinary valuations both equal to $u$,
+and is divisible by $4$. Every step of the proof of
+Theorem~\ref{thm:profile} therefore gives the same local valuations as for
+the neighboring-term difference.
+\end{proof}
+
+The $10$-adic integers may be defined as compatible systems of residues
+modulo $10^k$. The Chinese remainder theorem gives
+\[
+\Z_{10}\cong\Z_2\times\Z_5.
+\]
+This is a product of two rings, not a field. Since $S_a(u)\to\infty$,
+Theorem~\ref{thm:nonconsecutive} shows that $a^{10^u}$ has a limit
+$L_a\in\Z_{10}$.
+
+\begin{theorem}[Limit and exact distance]\label{thm:idempotents}
+The limit depends only on which of $2$ and $5$ divide $a$:
+\begin{equation}\label{eq:limit-components}
+L_a\longleftrightarrow
+\bigl(\mathbf1_{2\nmid a},\mathbf1_{5\nmid a}\bigr)
+\quad\text{in }\Z_2\times\Z_5.
+\end{equation}
+These are the four idempotents of $\Z_{10}$. Moreover, for $u\ge2$,
+\begin{equation}\label{eq:distance}
+\nu_{10}(L_a-a^{10^u})=S_a(u).
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $p\mid a$, then $\nu_p(a^{10^u})=10^u\nu_p(a)\to\infty$, so the
+$p$-adic component tends to zero. If $a$ is odd, binary lifting gives
+$\nu_2(a^{10^u}-1)=u+C_2(a)\to\infty$.
+If $5\nmid a$ and $u\ge2$, odd-prime lifting gives
+$\nu_5(a^{10^u}-1)=u+C_5(a)\to\infty$.
+This proves~\eqref{eq:limit-components}. In each $\Z_p$, the equation
+$x(x-1)=0$ has only the solutions $0,1$, since $\Z_p$ has no zero divisors.
+Thus the product ring has exactly the four displayed idempotents.
+
+For the exact distance, $S_a(u+1)>S_a(u)$ in all cases of
+Theorem~\ref{thm:profile}. Every later difference from $a^{10^{u+1}}$
+is divisible by $10^{S_a(u)+1}$. Passing to the limit gives
+\[
+L_a-a^{10^u}\equiv a^{10^{u+1}}-a^{10^u}\pmod{10^{S_a(u)+1}}.
+\]
+The right side has valuation exactly $S_a(u)$, proving~\eqref{eq:distance}.
+\end{proof}
+
+The finite residue of $L_a$ can be computed without iteration. To find its
+last $k$ digits, solve
+\[
+z\equiv\mathbf1_{2\nmid a}\pmod{2^k},\qquad
+z\equiv\mathbf1_{5\nmid a}\pmod{5^k}
+\]
+by the Chinese remainder theorem. Thus the asymptotic limit is elementary;
+the interesting issue is the exact rate of approach and its nonuniform
+initial behavior.
+
+\section{Fast-growing changes of index}\label{sec:time}
+
+Let $g:\N\to\N$ be any strictly increasing function with $g(n)\ge2$, and
+consider the sampled sequence
+\[
+Y_n=a^{10^{g(n)}}.
+\]
+No computability or growth-rate assumption is needed for the next statement.
+
+\begin{theorem}[A time-change identity]\label{thm:time-change}
+For every $n$,
+\[
+\nu_{10}(Y_{n+1}-Y_n)=S_a(g(n)).
+\]
+For fixed $a\ge2$ with $10\nmid a$, there is a fixed integer $C(a)$ such
+that eventually
+\begin{align}
+\nu_{10}(Y_{n+1}-Y_n)&=g(n)+C(a),\label{eq:time-count}\\
+\nu_{10}(Y_{n+1}-Y_n)-\nu_{10}(Y_n-Y_{n-1})
+&=g(n)-g(n-1).\label{eq:time-speed}
+\end{align}
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:nonconsecutive} with $u=g(n)$ and $v=g(n+1)$.
+A strictly increasing integer-valued $g$ is unbounded, so eventually
+$g(n)$ lies in the affine part of the fixed-base profile.
+Subtract the two consecutive affine formulas.
+\end{proof}
+
+For example, choose $g(n)=2\uparrow\uparrow n$ for $n\ge2$, where
+$2\uparrow\uparrow n$ denotes the right-associated tower of $n$ copies of
+$2$. Then the exact eventual count of new stable digits per step is
+\[
+2\uparrow\uparrow n-2\uparrow\uparrow(n-1).
+\]
+The same identity applies to any specified increasing integer-valued
+schedule obtained from higher up-arrow expressions, a chain notation, or a
+chosen fast-growing hierarchy. The theorem concerns sampling an already
+defined sequence; it does not assert identities between those different
+large-number notations.
+
+This distinction matters conceptually. A stabilization rate is attached
+not just to the limit and base but also to the chosen indexing scheme.
+Passing from $n$ to a tetrational schedule can turn unit increments into
+tetrationally large increments without changing the limiting $10$-adic
+integer.
+
+\section{An exact local formula in every radix}\label{sec:radix}
+
+Now let $B\ge2$ be arbitrary, with
+$B=\prod_{p\mid B}p^{e_p}$. For $a\ge2$, $n\ge1$, and a positive lag $h$,
+put
+\[
+S_{a,B,h}(n)=\nu_B\!\left(a^{B^{n+h}}-a^{B^n}\right).
+\]
+When $h=1$ write $S_{a,B}(n)$.
+
+For an odd prime $p\mid B$ with $p\nmid a$, define
+\[
+d_p=\ord_p(a),\qquad c_p=\nu_p(a^{d_p}-1).
+\]
+For $2\mid B$ and odd $a$, put $c_2=\nu_2(a^2-1)-1$.
+
+\begin{theorem}[Arbitrary-radix profile]\label{thm:radix-profile}
+For every $n,h\ge1$,
+\begin{equation}\label{eq:radix-profile}
+S_{a,B,h}(n)=\min_{p\mid B}\left\lfloor\frac{w_p(n,h)}{e_p}\right\rfloor,
+\end{equation}
+where
+\begin{equation}\label{eq:wp}
+w_p(n,h)=
+\begin{cases}
+\nu_p(a)B^n,&p\mid a,\\
+n e_2+c_2,&p=2,\ 2\nmid a,\\
+0,&p>2,\ p\nmid a,\ d_p\nmid B^n(B^h-1),\\
+n e_p+c_p,&p>2,\ p\nmid a,\ d_p\mid B^n(B^h-1).
+\end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Factor the difference as
+\[
+a^{B^n}\left(a^{B^n(B^h-1)}-1\right).
+\]
+For $p\mid a$, use Lemma~\ref{lem:nonunit}. For a unit at an odd $p$,
+use Lemma~\ref{lem:odd-lte}. Since $p\mid B$, the factor $B^h-1$ is
+coprime to $p$, and the exponent has valuation $ne_p$.
+At $p=2$, the exponent is even and the same observation applies to
+Lemma~\ref{lem:two-lte}. Finally use~\eqref{eq:minval}.
+\end{proof}
+
+The multiplicative-order condition cannot be omitted. It is automatically
+satisfied for decimal bases once $n\ge2$, but not for arbitrary radices.
+The floors cannot be omitted either when $B$ contains prime powers.
+
+\subsection{Convergence and finite limit cycles}
+For an odd unit prime $p\mid B$, let $d_p^{\perp}$ be the largest divisor
+of $d_p$ coprime to $B$: remove from $d_p$ all prime factors that divide $B$.
+
+\begin{theorem}[Convergence criterion and cycle length]\label{thm:cycles}
+The sequence $a^{B^n}$ converges in $\Z_B$ if and only if
+\begin{equation}\label{eq:convergence}
+d_p^{\perp}\mid B-1
+\quad\text{for every odd }p\mid B\text{ with }p\nmid a.
+\end{equation}
+In general it has an asymptotic cycle whose exact length is
+\begin{equation}\label{eq:cycle-length}
+H=\lcm_{\substack{p\mid B,\ p>2\\p\nmid a}}
+\ord_{d_p^{\perp}}(B),
+\end{equation}
+where an order modulo $1$, and an empty least common multiple, are taken
+to be $1$. Precisely, each sequence with indices in one residue class
+modulo $H$ converges, and $H$ is the least positive integer with that property.
+If $H=1$, the limit $L$ satisfies $L^B=L$.
+\end{theorem}
+\begin{proof}
+For sufficiently large $n$, every prime-power divisor of $d_p$ supported on
+the primes dividing $B$ divides $B^n$. The remaining factor $d_p^{\perp}$
+is coprime to $B^n$. Thus, eventually,
+\[
+d_p\mid B^n(B^h-1)
+\quad\Longleftrightarrow\quad
+ d_p^{\perp}\mid B^h-1.
+\]
+For $h=1$, if one condition fails, adjacent terms remain different modulo
+that prime $p$, so the sequence cannot converge. If every condition holds,
+Theorem~\ref{thm:radix-profile} makes every local valuation tend to infinity.
+For each fixed precision all sufficiently late adjacent differences vanish;
+then any finite sum of such differences vanishes at that precision. The
+sequence is Cauchy and hence converges in the inverse-limit ring $\Z_B$.
+
+The smallest positive $h$ satisfying all the displayed divisibilities is
+exactly~\eqref{eq:cycle-length}. For that lag, the same valuation argument
+makes every residue-class subsequence Cauchy. If a smaller positive lag
+worked, its adjacent subsequence terms would eventually agree modulo every
+$p\mid B$, forcing all the same divisibilities and contradicting the
+minimality of $H$. Finally $X_{n+1}=X_n^B$ and continuity of polynomial
+maps show that the limiting points are carried cyclically to one another;
+in the convergent case this gives $L^B=L$.
+\end{proof}
+
+\begin{example}[An obstruction in radix $14$]
+Take $a=2$, $B=14$. Modulo $7$, the order of $2$ is $3$, and
+$3\nmid14-1$. Thus $S_{2,14}(n)=0$ for every $n\ge1$; adjacent terms never
+share even one trailing radix-$14$ digit. Since $14\equiv-1\pmod3$, the
+cycle length is $2$. For lag $2$ the local formulas give
+\[
+S_{2,14,2}(n)=\min\{14^n,n+1\}=n+1\qquad(n\ge1).
+\]
+The even and odd index subsequences therefore converge separately with an
+exact affine agreement count.
+\end{example}
+
+\subsection{The eventual affine profile}
+Assume~\eqref{eq:convergence}, and suppose at least one prime divisor of
+$B$ does not divide $a$. Once the order conditions have become satisfied,
+Theorem~\ref{thm:radix-profile} reduces to
+\begin{equation}\label{eq:radix-envelope}
+S_{a,B}(n)=\min\left\{n+C_B(a),\ 
+\min_{\substack{p\mid B\\p\mid a}}
+\left\lfloor\frac{\nu_p(a)B^n}{e_p}\right\rfloor\right\},
+\end{equation}
+where
+\[
+C_B(a)=\min_{\substack{p\mid B\\p\nmid a}}
+\left\lfloor\frac{c_p}{e_p}\right\rfloor.
+\]
+The inner minimum over an empty set is omitted. Thus the eventual slope is
+one whenever there is a unit component and convergence occurs.
+If every prime dividing $B$ divides $a$, all components instead have
+exponential profiles and the limit is zero.
+
+For nonsquarefree $B$, the condition $B\nmid a$ does \emph{not} guarantee
+a unit component. For instance $12\nmid6$, but both prime divisors of $12$
+divide $6$. The correct condition is $\rad(B)\nmid a$.
+
+\section{When can a radix have a uniform onset?}\label{sec:uniform-radix}
+
+To compare radices fairly, restrict to bases for which $a^{B^n}$ converges
+and at least one prime divisor of $B$ is a unit prime for $a$. These are the
+bases for which the eventual unit-slope conclusion applies.
+
+\begin{theorem}[Prime powers versus mixed radices]\label{thm:radix-dichotomy}
+If $B$ is a prime power, every base in this class has
+$S_{a,B}(n)=n+C_B(a)$ for all $n\ge1$.
+If $B$ has at least two distinct prime divisors, there is no uniform bound
+on when the increments of $S_{a,B}(n)$ become permanently equal to one.
+\end{theorem}
+\begin{proof}
+Let $B=p^e$. The unit-component restriction forces $p\nmid a$.
+For odd $p$, the order $d_p$ divides $p-1$, which divides $p^e-1=B-1$.
+Hence the order condition is satisfied from the start, and
+\[
+S_{a,B}(n)=\left\lfloor\frac{ne+c_p}{e}\right\rfloor
+=n+\left\lfloor\frac{c_p}{e}\right\rfloor.
+\]
+For $p=2$ the binary formula gives the same conclusion.
+
+Now suppose $B$ has at least two prime divisors, and distinguish one of
+them, $p_0$, with exponent $e_0$ in $B$. Choose any sufficiently large
+integer $C\ge2$. By the Chinese remainder theorem choose $a\ge2$ satisfying
+\begin{align*}
+a&\equiv p_0\pmod{p_0^2},\\
+a&\equiv1+q^{e_q C}\pmod{q^{e_q C+1}}
+\quad\text{for each other prime }q\mid B.
+\end{align*}
+These moduli are pairwise coprime. The first condition gives
+$\nu_{p_0}(a)=1$. Every other component is a unit congruent to $1$ modulo
+$q$, with $c_q=e_qC$. At $q=2$, the requirement $e_qC\ge2$ ensures that
+$\nu_2(a+1)=1$, so the same equality for $c_2$ holds.
+There is no multiplicative-order obstruction. Formula~\eqref{eq:radix-envelope}
+is therefore exact from $n=1$ and becomes
+\begin{equation}\label{eq:crt-family}
+S_{a,B}(n)=\min\left\{n+C,\left\lfloor\frac{B^n}{e_0}\right\rfloor\right\}.
+\end{equation}
+Fix any prescribed stage $n\ge2$ and take
+$C\ge\lfloor B^n/e_0\rfloor$. At both $n-1$ and $n$ the exponential
+term is the minimum. Their difference is
+\[
+\left\lfloor\frac{B^n}{e_0}\right\rfloor-
+\left\lfloor\frac{B^{n-1}}{e_0}\right\rfloor>1.
+\]
+For completeness, $B\ge6$ and $e_0\le B$, so the difference of the
+unrounded quantities is at least $B-1\ge5$ for $n\ge2$.
+Yet eventually the linear term wins. Since the prescribed stage can be
+arbitrarily late, there is no uniform onset bound.
+\end{proof}
+
+This isolates the cause of the decimal counterexample: simultaneous
+components associated with different primes, some dividing the base and
+others not. Extremely fast growth by itself is not the obstruction.
+
+\section{What changes for genuine tetration?}\label{sec:tetration}
+
+Define the integer tower sequence by
+\[
+T_0(a)=1,\qquad T_{h+1}(a)=a^{T_h(a)}.
+\]
+For $h\ge1$ this is $a\uparrow\uparrow h$. In contrast,
+$X_b(a)=a^{10^b}$ satisfies $X_{b+1}(a)=X_b(a)^{10}$.
+The two recurrences are fundamentally different.
+
+Let $\Delta_h=T_{h+1}(a)-T_h(a)$. The tower recurrence yields
+\begin{equation}\label{eq:tower-diff}
+\Delta_h=a^{T_{h-1}(a)}\left(a^{\Delta_{h-1}}-1\right)
+\qquad(h\ge2),
+\end{equation}
+and for $h=1$ the exponent in the second factor is $a-1$.
+Local valuations are propagated through \emph{previous tower differences},
+not through the predetermined exponent $9\cdot10^b$.
+
+\subsection{A short derivation for base 3}
+The following recovers a known frozen-digit formula in the tetration
+literature~\cite{graham}; it is included to show the mechanism directly.
+
+\begin{proposition}\label{prop:three}
+For $T_h=T_h(3)$ and $h\ge1$,
+\[
+\nu_2(T_{h+1}-T_h)=2h+1,\qquad
+\nu_5(T_{h+1}-T_h)=h-1.
+\]
+Consequently
+\[
+\nu_{10}(T_{h+1}-T_h)=h-1.
+\]
+\end{proposition}
+\begin{proof}
+The initial difference is $27-3=24$, with valuations $3$ and $0$.
+Every difference is divisible by $4$. Since
+$C_2(3)=2$ and $\nu_5(3^4-1)=1$, lifting applied to
+\eqref{eq:tower-diff} increases the binary valuation by $2$ and the quinary
+valuation by $1$ at each step. Induction gives both formulas.
+\end{proof}
+Because the decimal valuations strictly increase, the first difference in
+a sum of later tower differences cannot be canceled at its first nonzero
+digit. Thus $T_h(3)$ shares exactly $h-1$ trailing digits with every later
+tower. This is an example where enormous growth and a simple exact digit
+count coexist.
+
+\subsection{The counterexample base behaves differently in a true tower}
+\begin{proposition}\label{prop:odd-five-tower}
+Suppose $a$ is an odd multiple of $5$. Put
+$s=\nu_5(a)$, $c=C_2(a)$, and $A=\nu_2(a-1)$. For $h\ge1$,
+\begin{equation}\label{eq:odd-five-tower}
+\nu_{10}\!\left(T_{h+1}(a)-T_h(a)\right)
+=\min\{sT_{h-1}(a),\ hc+A\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $h=1$, factor $a^a-a=a(a^{a-1}-1)$.
+The quinary valuation is $s$, while binary lifting gives $c+A$.
+At every subsequent stage, the second factor in~\eqref{eq:tower-diff}
+is $-1$ modulo $5$, so the quinary valuation is $sT_{h-1}(a)$.
+Every tower difference is even; binary lifting adds $c$ to its binary
+valuation at each step. This gives $hc+A$ and proves the result.
+\end{proof}
+For $a=\astar$, we have $s=1$ and $A=c=99$, so the genuine tower profile is
+\[
+\min\{T_{h-1}(\astar),99(h+1)\}.
+\]
+At $h=1$ it is $1$, at $h=2$ it is $297$, and for every $h\ge2$ it equals
+$99(h+1)$. To verify the last assertion, note $T_1(\astar)>297$ and
+$T_h(\astar)$ increases at least geometrically, hence stays above the
+indicated linear bound. Its subsequent increments are $99$, not $1$.
+This does not conflict with the result about $\astar^{10^b}$; it emphasizes
+why the two problems must be kept separate.
+
+\section{Exact verification and reproducibility}\label{sec:verification}
+
+\subsection{Certificates that do not expand the huge powers}
+If a formula predicts that a difference has radix-$B$ valuation $s$, compute
+it modulo $B^{s+1}$. A nonzero residue equal to $dB^s$ with
+$1\le d<B$ proves that its valuation is exactly $s$.
+Modular exponentiation performs this check without constructing the full
+integer powers.
+
+For the primary example, the independent certificates are
+\begin{align}
+\astar^{10^3}-\astar^{10^2}&\equiv4\cdot10^{100}\pmod{10^{101}},\label{eq:cert2}\\
+\astar^{10^4}-\astar^{10^3}&\equiv5\cdot10^{102}\pmod{10^{103}}.\label{eq:cert3}
+\end{align}
+They give $S_{\astar}(2)=100$ and $S_{\astar}(3)=102$ directly.
+The proofs earlier in the note do not depend on these calculations.
+
+\subsection{Included programs and actual test results}
+The archive contains \texttt{code/stabilization.py}, implementing the
+formulas, and \texttt{code/verify.py}, which generates the result files.
+Both use only the Python standard library and are written for Python~3.9
+or later. The run packaged with this note used Python~3.13.5.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check category & Completed checks\\
+\midrule
+Primary-example modular certificates & 7\\
+Small decimal bases, $2\le a\le2000$ & 8995\\
+Delayed-family modular certificates & 64\\
+Residue-class tests of the minimum table & 100\\
+Stage-minimum modular certificates & 6\\
+General-radix modular certificates, $2\le B\le35$ & 12489\\
+Nonconsecutive decimal certificates & 432\\
+Period-two radix-$14$ certificates & 4\\
+Idempotent-limit tests & 20\\
+\bottomrule
+\end{tabular}
+\end{center}
+All completed checks passed. The general-radix sweep deliberately skipped
+1111 cases whose predicted valuation exceeded a cap of 160, to avoid
+constructing unnecessarily large verification moduli. No conclusion about
+those skipped cases is drawn from the sweep; they are covered by the
+mathematical theorem. The counts and exact certificates are preserved in
+\texttt{data/verification.json} and \texttt{data/primary\_certificates.csv}.
+
+The table test runs through $99\le K\le198$, covering every residue class
+modulo $20$ repeatedly, and independently enumerates $j2^K\pm1$ for
+$1\le j\le4$. Minimality over \emph{all} integers is established by
+Theorem~\ref{thm:stage-minima}, not by that finite test.
+
+\subsection{Reproduction commands and computational scope}
+From the archive's root directory, run
+\begin{lstlisting}
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error delayed_digit_stabilization.tex
+pdflatex -interaction=nonstopmode -halt-on-error delayed_digit_stabilization.tex
+\end{lstlisting}
+A PowerShell build script and a POSIX shell build script are also included.
+The PDF uses standard TeX Live packages; no external bibliography tool is
+required. The source contains its bibliography.
+
+The modular verifier represents $B^n$ as an ordinary integer, so it is not
+an evaluator for arbitrary unexpanded up-arrow expressions. The symbolic
+minimum specification avoids expanding $2^K$ when a stage is too large.
+Radix factorization in the utility code uses trial division and is intended
+for small radices, not for cryptographic-size arbitrary integers. These
+implementation limits do not restrict the proved formulas.
+
+No proof-assistant formalization is included. The verification layer is
+exact integer arithmetic plus independently computed residues, rather than
+floating-point evidence or a formal kernel check.
+
+\section{Conclusions and the remaining boundary}\label{sec:conclusions}
+
+The selected conjecture has a negative answer. Its smallest counterexample
+is a 31-digit integer with a compact description, $3\cdot2^{99}+1$.
+The full explanation is the exact profile
+\[
+S_a(b)=\min\{t10^b,b+C\}
+\]
+for mixed decimal bases. The affine branch always wins eventually, but
+there is no uniform bound on when it does so.
+
+The result can be sharpened in several independent directions. The onset
+is given by a single monotone integer inequality. The least exceptional
+base at stage $b$ is explicit, with a coefficient and sign periodic in
+$b$ modulo $20$. The exceptional set has an exact positive density, which
+falls doubly exponentially with the stage. Arbitrary-radix analogues reveal
+both multiplicative-order obstructions and a distinction between prime
+power and mixed-prime radices. Fast-growing changes of index transform the
+rate exactly as in~\eqref{eq:time-speed}.
+
+These statements settle a modest, precisely posed open question and provide
+a broader structure around it. They do not settle analytic interpolation
+questions for tetration, transcendence questions about towers, or comparison
+problems for arbitrary ordinal-indexed fast-growing hierarchies. Those are
+different targets. Within the selected target, however, the answer is
+complete: a counterexample, its minimality, an exact family of stage minima,
+and quantitative descriptions of both delay and rarity.
+
+\clearpage
+\appendix
+\section{A compact standalone answer to the original question}\label{app:short}
+The following proof can be read without any other section.
+
+\begin{resultbox}
+The proposed threshold is false. Let $a=3\cdot2^{99}+1$.
+Then $a\equiv15\pmod{25}$, so $\nu_5(a)=1$, while
+$\nu_2(a-1)=99$ and $\nu_2(a+1)=1$.
+For $b\ge2$,
+\[
+a^{10^{b+1}}-a^{10^b}=a^{10^b}\bigl(a^{9\cdot10^b}-1\bigr).
+\]
+Since $5\mid a$, its quinary valuation is $10^b$.
+Binary lifting gives its binary valuation as
+\[
+99+1+b-1=b+99.
+\]
+Therefore $S_a(b)=\min\{10^b,b+99\}$, and
+\[
+D_a(3)=\min\{1000,102\}-\min\{100,101\}=2.
+\]
+Furthermore, for $a=5^K+1$ one obtains
+$S_a(b)=\min\{10^b,b+K\}$. Choosing
+$K=10^m-m+1$ gives $D_a(m+1)=2$ for every $m\ge2$.
+Thus no fixed replacement threshold works for all bases.
+\end{resultbox}
+
+\section{A minimal executable certificate}\label{app:certificate}
+This independent fragment uses no formulas from the companion module:
+\begin{lstlisting}[language=Python]
+a = 3 * 2**99 + 1
+
+checks = [(2, 100, 4), (3, 102, 5)]
+for b, s, expected_digit in checks:
+    modulus = 10**(s + 1)
+    residue = (pow(a, 10**(b + 1), modulus)
+               - pow(a, 10**b, modulus)) % modulus
+    assert residue == expected_digit * 10**s
+
+assert 102 - 100 == 2
+print("Counterexample verified exactly.")
+\end{lstlisting}
+The module's formula routine and the independent modular routine test
+different descriptions of the same quantities. Agreement between them is
+useful for catching transcription and indexing errors, while the proofs
+establish the universal claims.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{question}
+Marco Rip\`a.
+\emph{Stabilization of one new trailing digit of $a^{10^b}$ as $b$ increases,
+for every $a$ not divisible by $10$}.
+Mathematics Stack Exchange, question 5103929, posted 24 October 2025.
+\url{https://math.stackexchange.com/q/5103929}.
+Public page checked for this note on 19 September 2026; the retrieved page
+displayed no answers.
+
+\bibitem{speed}
+Marco Rip\`a.
+The congruence speed formula.
+\emph{Notes on Number Theory and Discrete Mathematics}
+\textbf{27}(4) (2021), 43--61.
+DOI: \url{https://doi.org/10.7546/nntdm.2021.27.4.43-61}.
+Preprint: \url{https://arxiv.org/abs/2208.02622}.
+
+\bibitem{stable}
+Marco Rip\`a and Luca Onnis.
+Number of stable digits of any integer tetration.
+\emph{Notes on Number Theory and Discrete Mathematics}
+\textbf{28}(3) (2022), 441--457.
+DOI: \url{https://doi.org/10.7546/nntdm.2022.28.3.441-457}.
+Preprint: \url{https://arxiv.org/abs/2210.07956}.
+
+\bibitem{graham}
+Marco Rip\`a.
+Graham's number stable digits: An exact solution.
+\emph{Notes on Number Theory and Discrete Mathematics}
+\textbf{31}(3) (2025), 607--616.
+Preprint version 2, 12 September 2025:
+\url{https://arxiv.org/abs/2411.00015}.
+\end{thebibliography}
+\end{document}

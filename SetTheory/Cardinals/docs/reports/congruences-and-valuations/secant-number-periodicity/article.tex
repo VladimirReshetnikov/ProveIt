@@ -1,0 +1,1345 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{oliveink}{HTML}{4B573A}
+\definecolor{olivewash}{HTML}{F3F4ED}
+\definecolor{mutedink}{HTML}{62665D}
+\definecolor{ruleink}{HTML}{B8BDA8}
+\hypersetup{colorlinks=true,linkcolor=oliveink,citecolor=oliveink,urlcolor=oliveink,
+  pdftitle={When the Secant Numbers Become Periodic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={A correction to an OEIS conjecture, exact periods and preperiod densities}}
+\urlstyle{same}
+\titleformat{\section}{\Large\bfseries\color{oliveink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{oliveink}}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{2.5ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2ex plus .7ex minus .2ex}{.8ex plus .2ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{mutedink}When the secant numbers become periodic}
+\fancyhead[R]{\small\color{mutedink}Research report}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\vp}{v_p}
+\newcommand{\chiFour}{\chi_4}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\dens}{dens}
+\newtcolorbox{resultbox}{colback=olivewash,colframe=ruleink,boxrule=.5pt,
+  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\lstset{basicstyle=\small\ttfamily,keywordstyle=\bfseries\color{oliveink},
+  commentstyle=\color{mutedink},stringstyle=\color{oliveink},
+  showstringspaces=false,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{ruleink},framerule=.4pt,
+  xleftmargin=1mm,xrightmargin=1mm,aboveskip=1em,belowskip=1em}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\small\sffamily\color{oliveink}INTEGER SEQUENCES \enspace / \enspace MODULAR ARITHMETIC}
+\vspace{1.2em}
+
+{\LARGE\bfseries When the Secant Numbers\\[.22em] Become Periodic}
+\vspace{.8em}
+
+{\large A counterexample, a complete classification,\\[.15em]
+and a distribution law}
+\vspace{1em}
+
+{\small Prepared for Vladimir Reshetnikov \enspace\textbullet\enspace 19 September 2026}
+\end{center}
+\vspace{.4em}
+\noindent\textcolor{ruleink}{\rule{\textwidth}{.6pt}}
+
+\begin{abstract}
+A conjecture recorded in OEIS A000364 asserts that the positive secant numbers,
+starting at index one, are purely periodic modulo every positive integer $m$,
+with a period dividing $\varphi(m)$. It is false: $a_1=1$ but
+$a_{19}\equiv10\pmod{27}$, although $\varphi(27)=18$.
+We replace the assertion with an exact theorem. Pure periodicity from index
+one holds precisely when the odd part of $m$ is cube-free. For arbitrary $m$
+we determine both the least eventual period and the exact first periodic
+index. A finite alternating moment formula separates a periodic unit part
+from a nilpotent part; the latter is exactly
+$\chi_4(p)p^{2n}a_n$ modulo an odd prime power $p^e$.
+A nonvanishing Fermat-quotient coefficient proves sharp period lifting,
+and a falling-factorial argument handles powers of two.
+
+The classification also yields the natural density of every bounded-preperiod
+class, a finite-correction Euler product for those densities, and a limiting
+mean first periodic index. In particular, the original assertion holds for
+$8/(7\zeta(3))\approx95.0751\%$ of moduli. The mean is rigorously enclosed
+near $1.05402581008837$. Exact Python computations, rational numerical
+certificates, data, and a short standalone counterexample checker accompany
+the report. The underlying Euler congruences are classical; the purpose is
+to settle the specific recorded assertion, supply a complete specialized
+account, and develop its distributional consequences, not to claim that
+all constituent results are historically new.
+\end{abstract}
+
+\begin{resultbox}
+\noindent\textbf{The corrected statement.} For every $m\ge1$, the secant
+numbers are eventually periodic modulo $m$, with least eventual period
+dividing $\varphi(m)$. Periodicity already holds for every $n\ge1$ if and
+only if no odd prime cube divides $m$. The smallest exception is $m=27$.
+\end{resultbox}
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem, its status, and the first counterexample}
+\label{sec:problem}
+
+The positive secant numbers are defined by
+\begin{equation}\label{eq:egf}
+\sec x=\sum_{n\ge0}a_n\frac{x^{2n}}{(2n)!}.
+\end{equation}
+They begin
+\[
+1,\ 1,\ 5,\ 61,\ 1385,\ 50521,\ 2702765,\ 199360981,\ldots
+\]
+and form OEIS A000364. Combinatorially, $a_n$ counts alternating
+permutations of $2n$ elements with a specified initial direction
+\cite{oeis}. We use the signed Euler numbers only as an auxiliary notation:
+\begin{equation}\label{eq:signed}
+\sech t=\sum_{k\ge0}E_k\frac{t^k}{k!},\qquad
+E_{2n}=(-1)^n a_n,\quad E_{2n+1}=0.
+\end{equation}
+This distinction matters: the full up/down sequence with generating
+function $\sec x+\tan x$ is a different sequence, with a different indexing
+and different periods.
+
+\subsection{The assertion selected for investigation}
+
+The OEIS entry, as consulted on 19 September 2026, still labels the following
+assertion as a conjecture and attributes it to Peter Bala, 8 May 2023
+\cite{oeis}:
+\begin{equation}\label{eq:conjecture}
+\text{For every }m\ge1,\quad (a_n\bmod m)_{n\ge1}
+\text{ is purely periodic, with a period dividing }\varphi(m).
+\end{equation}
+Here $\varphi$ is Euler's totient function. The source's example is $m=21$,
+whose least period is indeed $6$. Our status claim is deliberately precise:
+this was a \emph{conjecture still displayed in the cited entry}. It does not
+establish that no mathematician had previously noticed a counterexample or
+that its resolution requires new congruence theory.
+
+The distinction between \emph{pure} and \emph{eventual} periodicity is the
+entire issue. The period-divisibility prediction survives; the claim that
+there is no transient after index zero does not.
+
+\subsection{A finite, independently checkable disproof}
+
+From $\sec x\cos x=1$, coefficient comparison gives
+\begin{equation}\label{eq:recurrence}
+a_0=1,\qquad
+a_n=\sum_{j=1}^{n}(-1)^{j+1}\binom{2n}{2j}a_{n-j}\quad(n\ge1).
+\end{equation}
+This integer recurrence gives
+\[
+a_{19}=23489580527043108252017828576198947741.
+\]
+Consequently
+\begin{equation}\label{eq:counterexample}
+a_1\equiv1\pmod{27},\qquad a_{19}\equiv10\pmod{27},
+\qquad \varphi(27)=18.
+\end{equation}
+A period dividing $18$ would force equality at indices $1$ and $19$.
+Thus \eqref{eq:counterexample} disproves \eqref{eq:conjecture}.
+Appendix~\ref{app:checker} checks this using only the Python standard
+library and integers of modest size.
+
+Modulo $27$, the least eventual period is $18$ and the first periodic
+index is $2$. The periodic block at indices $2$ through $19$ is
+\[
+\begin{split}
+(&5,7,8,4,11,1,14,25,17,\\
+ &22,20,19,23,16,26,13,2,10).
+\end{split}
+\]
+At index $1$, the value is $1$, whereas periodic continuation backwards
+from this block would demand $10$. This is a genuine transient, not a
+mistaken guess about the length of a repeating block.
+
+\subsection{What is classical, and what this report establishes}
+
+Finite odd-power sums for Euler numbers and their Kummer-type congruences
+are classical. The sum we use appears explicitly in Sun's paper
+\cite[Eq.~(1.1)]{sun}; Mets\"ankyl\"a states the short Kummer congruence,
+including the Euler factor responsible for the present counterexample
+\cite[p.~161]{metsankyla}. Thus a short disproof of the OEIS assertion is
+already available from established theory.
+
+The modular arithmetic of the \emph{full} up/down sequence was studied by
+Knuth and Buckholtz \cite{knuth}, then by Ramassamy \cite{ramassamy}.
+A recent preprint of G\"ule\c{c} proves sharp odd-prime-power periods for
+that full sequence and analyzes its preperiod \cite{gulec}. The present
+report uses finite-moment and finite-frequency methods specialized to the
+even subsequence. All proofs needed below are supplied explicitly.
+We do not claim to settle the additional preperiod conjectures in that
+preprint.
+
+The deliverable is a complete resolution of \eqref{eq:conjecture} as
+written, together with exact local and global invariants, distribution
+formulas, and reproducible computations. The density results are deductions
+proved here; an exhaustive priority claim for them is not made.
+
+\section{The complete classification}
+\label{sec:main}
+
+\begin{definition}
+For a fixed modulus $m\ge1$, let $d(m)$ be the least positive eventual
+period of $(a_n\bmod m)_{n\ge0}$. Let $s(m)$ be the least $s\ge0$ such that
+\[
+a_{n+d(m)}\equiv a_n\pmod m\qquad(n\ge s).
+\]
+We call $s(m)$ the \emph{first periodic index}, or \emph{preperiod length}
+when the sequence is indexed from zero. Thus the assertion concerning
+indices $n\ge1$ is equivalent to $s(m)\le1$.
+\end{definition}
+
+For an odd prime $p$, put
+\begin{equation}\label{eq:P}
+P_e(p)=p^{e-1}\lcm\left(2,\frac{p-1}{2}\right)
+=\begin{cases}
+ p^{e-1}(p-1)/2,&p\equiv1\pmod4,\\
+ p^{e-1}(p-1),&p\equiv3\pmod4.
+\end{cases}
+\end{equation}
+We write $v_p(u)$ for the exponent of $p$ in a nonzero integer $u$, and
+$\chi_4(p)=(-1)^{(p-1)/2}$.
+
+\begin{theorem}[Exact local and global invariants]\label{thm:main}
+Every modulus has an eventually periodic secant sequence. For an odd
+prime $p$ and $e\ge1$,
+\begin{align}
+ d(p^e)&=P_e(p),\label{eq:oddperiod}\\
+ s(p^e)&=1+\max\left\{0\le n<\ceil{e/2}:
+                  2n+v_p(a_n)<e\right\}.\label{eq:oddpreperiod}
+\end{align}
+The maximum is over a nonempty set. For powers of two,
+\begin{equation}\label{eq:dyadic}
+s(2^b)=0,\qquad
+d(2^b)=\begin{cases}1,&b=1,2,\\2^{b-1},&b\ge3.\end{cases}
+\end{equation}
+For $m=1$, set $s(1)=0$ and $d(1)=1$. For every other modulus,
+\begin{equation}\label{eq:CRT}
+s(m)=\max_{p^e\parallel m}s(p^e),\qquad
+d(m)=\lcm_{p^e\parallel m}d(p^e).
+\end{equation}
+In particular, $d(m)\mid\varphi(m)$ for all $m\ge1$.
+\end{theorem}
+
+The proof is divided into a finite-transient lemma, the odd-prime argument,
+the dyadic argument, and the Chinese remainder theorem. Formula
+\eqref{eq:oddpreperiod} is finite and effective: it needs only the first
+$\ceil{e/2}$ secant numbers, no matter how large $p^e$ or its period is.
+
+\begin{corollary}[Exact replacement of the conjecture]\label{cor:cubefree}
+For every $m\ge1$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $(a_n\bmod m)_{n\ge1}$ is purely periodic;
+\item $s(m)\le1$;
+\item no odd prime cube divides $m$.
+\end{enumerate}
+When these conditions hold, the least period divides $\varphi(m)$.
+The smallest modulus violating the original assertion is $27$.
+\end{corollary}
+
+\begin{proof}[Deduction from the theorem]
+If every odd prime exponent is at most two, then for $n\ge1$ one has
+$2n\ge e$, so the set in \eqref{eq:oddpreperiod} consists only of $n=0$.
+Thus every odd local preperiod is $1$; powers of two cause no transient.
+Conversely, if $e\ge3$, then $a_1=1$ gives
+$2+v_p(a_1)=2<e$, so $s(p^e)\ge2$.
+The least positive odd prime cube is $3^3=27$.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{Exact invariants; indexing starts at zero.}
+\label{tab:examples}
+\begin{tabular}{r r r @{
+\qquad} r r r}
+\toprule
+$m$ & $s(m)$ & $d(m)$ & $m$ & $s(m)$ & $d(m)$\\
+\midrule
+1&0&1&27&2&18\\
+4&0&1&32&0&16\\
+8&0&4&54&2&18\\
+9&1&6&81&2&54\\
+16&0&8&125&2&50\\
+21&1&6&243&3&162\\
+25&1&10&625&2&250\\
+&&&3125&2&1250\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Notice the two different sources of arithmetic behavior. The period is
+an explicit multiplicative-order quantity, assembled by least common
+multiples. The first periodic index depends on divisibility of individual
+Euler numbers. For example, $s(5^5)=2$, not the generic upper bound $3$,
+because $a_2=5$ supplies an extra factor of $5$.
+
+\section{A periodic sequence plus a finite transient}
+\label{sec:transient}
+
+The following elementary observation prevents an important logical
+mistake: observing that one proposed period fails at an early index is not,
+by itself, proof that \emph{every} possible period fails there.
+
+\begin{lemma}[Finite-transient separation]\label{lem:transient}
+Let $A$ be an abelian group. Suppose a sequence in $A$ has the form
+$x_n=u_n+b_n$, where $u$ is purely periodic from index zero and $b_n=0$
+for all sufficiently large $n$. Then:
+\begin{enumerate}[label=(\roman*),nosep]
+\item the eventual periods of $x$ are exactly the periods of $u$;
+\item the least eventual period of $x$ is the least period of $u$;
+\item if $b$ is nonzero somewhere, the first periodic index of $x$ is
+$1+\max\{n:b_n\ne0\}$; if $b$ is identically zero, it is $0$.
+\end{enumerate}
+Every eventual period starts working at that same first periodic index.
+\end{lemma}
+
+\begin{proof}
+Let $L$ be any pure period of $u$. If $T$ is an eventual period of $x$,
+then it is an eventual period of $u$, because $x=u$ on a sufficiently late
+tail. For any fixed $n\ge0$, choose $k$ so large that $n+kL$ lies in that
+tail. Pure $L$-periodicity gives
+\[
+u_{n+T}=u_{n+T+kL}=u_{n+kL}=u_n.
+\]
+Thus $T$ is a pure period of $u$. Conversely, every period of $u$ is
+clearly an eventual period of $x$.
+
+Suppose now that $T$ works for $x$ from index $s$. Since it works for $u$
+everywhere, subtraction shows $b_{n+T}=b_n$ for all $n\ge s$.
+Iterating this equality into the zero tail gives $b_n=0$ for every $n\ge s$.
+The converse is immediate. This proves the exact onset statement.
+\end{proof}
+
+We will also use the usual divisibility property of periods. If a purely
+periodic one-sided sequence has periods $P>Q$, then $P-Q$ is a period:
+\[
+u_{n+P-Q}=u_{n+P}=u_n.
+\]
+The middle equality uses the period $Q$ at the nonnegative index
+$n+P-Q$. The Euclidean algorithm shows that the least period divides every
+period. The same conclusion holds for eventual periods by passing to a
+tail. In particular, reducing a sequence modulo a divisor of its modulus
+forces its least eventual period to divide every eventual period at the
+larger modulus.
+
+\section{Finite moments and the exact odd-prime transient}
+\label{sec:moments}
+
+\subsection{An integer identity before reduction}
+
+\begin{lemma}[Finite alternating moment formula]\label{lem:moment}
+For every positive odd integer $q$ and every $k\ge0$,
+\begin{equation}\label{eq:momentE}
+E_k\equiv\sum_{j=0}^{q-1}(-1)^j(2j+1)^k\pmod q.
+\end{equation}
+Consequently, for $n\ge0$,
+\begin{equation}\label{eq:momentA}
+a_n\equiv\sum_{j=0}^{q-1}(-1)^j\bigl(-(2j+1)^2\bigr)^n\pmod q.
+\end{equation}
+At $n=0$, the convention $x^0=1$ includes residue classes $x=0$.
+\end{lemma}
+
+\begin{proof}
+Work first in $\Q[[t]]$, not in a ring where factorials might be
+noninvertible. A finite geometric sum yields
+\[
+\sum_{j=0}^{q-1}(-1)^j e^{(2j+1)t}
+=\frac{e^t(1+e^{2qt})}{1+e^{2t}}
+=\frac{1+e^{2qt}}{2\cosh t}.
+\]
+Comparing the coefficients of $t^k/k!$ gives the exact identity
+\[
+\sum_{j=0}^{q-1}(-1)^j(2j+1)^k
+=E_k+\frac12\sum_{\ell=1}^k\binom{k}{\ell}(2q)^\ell E_{k-\ell}.
+\]
+Every term in the sum on the right is an integer multiple of $q$.
+The signed Euler numbers are integers by the coefficient recurrence for
+$\sech t\cosh t=1$. Reduction proves \eqref{eq:momentE}; substituting
+$k=2n$ and multiplying by $(-1)^n$ proves \eqref{eq:momentA}.
+\end{proof}
+
+The congruence is known \cite[Eq.~(1.1)]{sun}; the proof above records
+explicitly why no division by a factorial modulo $q$ is involved.
+
+\subsection{Unit and nonunit contributions}
+
+Fix an odd prime power $q=p^e$. In $\Z/p^e\Z$, split the last sum into
+\begin{align*}
+ U_n&=\sum_{\substack{0\le j<p^e\\p\nmid2j+1}}
+        (-1)^j\bigl(-(2j+1)^2\bigr)^n,\\
+ B_n&=\sum_{\substack{0\le j<p^e\\p\mid2j+1}}
+        (-1)^j\bigl(-(2j+1)^2\bigr)^n.
+\end{align*}
+Then $a_n=U_n+B_n$ in this residue ring. Every ratio in $U_n$ is a unit;
+every ratio in $B_n$ is divisible by $p^2$.
+
+\begin{proposition}[Exact nonunit contribution]\label{prop:depletion}
+For every $n\ge0$,
+\begin{equation}\label{eq:depletion}
+ B_n=\chi_4(p)p^{2n}a_n,\qquad
+ U_n=(1-\chi_4(p)p^{2n})a_n\quad\text{in }\Z/p^e\Z.
+\end{equation}
+Moreover $U$ is purely $P_e(p)$-periodic and $B_n=0$ whenever $2n\ge e$.
+\end{proposition}
+
+\begin{proof}
+The odd multiples of $p$ in the required range are exactly
+\[
+2j+1=p(2r+1),\quad
+j=pr+(p-1)/2,\quad0\le r<p^{e-1}.
+\]
+Since $p$ is odd, $(-1)^j=\chi_4(p)(-1)^r$. Therefore
+\[
+ B_n=\chi_4(p)p^{2n}
+ \sum_{r=0}^{p^{e-1}-1}(-1)^r\bigl(-(2r+1)^2\bigr)^n.
+\]
+For $n\ge1$, Lemma~\ref{lem:moment} makes the inner sum congruent to $a_n$
+modulo $p^{e-1}$. Multiplication by $p^{2n}$ raises the precision to at
+least $p^e$. This also covers $e=1$, where the stated inner congruence is
+modulo $1$. For $n=0$, both the inner alternating sum and $a_0$ are
+exactly $1$, so the identity holds directly.
+
+The integer $P_e(p)$ is even and satisfies
+$\varphi(p^e)\mid2P_e(p)$. For a unit $x$ modulo $p^e$, Euler's theorem
+therefore gives
+$(-x^2)^{P_e(p)}=1$. This proves pure periodicity of $U$.
+Finally every term in $B_n$ is divisible by $p^{2n}$.
+\end{proof}
+
+Apply Lemma~\ref{lem:transient}. The nonzero indices of $B$ are precisely
+\[
+2n+v_p(a_n)<e.
+\]
+They lie below $\ceil{e/2}$ and include $n=0$. This proves
+\eqref{eq:oddpreperiod} and the upper bound $d(p^e)\mid P_e(p)$.
+Only sharpness of the period remains.
+
+The factor $1-\chi_4(p)p^{2n}$ is not an arbitrary correction introduced to
+fit the counterexample. It is exactly what remains after discarding the
+nonunit bases in the finite moment sum. Its appearance is also the
+classical Euler factor in Kummer congruences \cite{metsankyla}.
+
+\section{Why the odd-prime-power period is minimal}
+\label{sec:oddperiod}
+
+\subsection{Distinct exponential sequences are independent}
+
+\begin{lemma}[Finite-field independence]\label{lem:vandermonde}
+Let $\lambda_1,\ldots,\lambda_r$ be distinct nonzero elements of a field.
+If
+\[
+\sum_{i=1}^r c_i\lambda_i^n=0
+\]
+holds for $r$ consecutive integer indices $n=N,\ldots,N+r-1$, where
+$N\ge0$, then every $c_i=0$.
+\end{lemma}
+
+\begin{proof}
+The coefficient matrix is a Vandermonde matrix multiplied by the diagonal
+matrix with entries $\lambda_i^N$. Its determinant is
+\[
+\left(\prod_i\lambda_i^N\right)
+\prod_{i<j}(\lambda_j-\lambda_i),
+\]
+which is nonzero.
+\end{proof}
+
+\subsection{The period modulo an odd prime}
+
+In the moment sum modulo $p$, pair $j$ with $p-1-j$. The corresponding
+odd residues are negatives of one another, and the two signs $(-1)^j$
+agree. Apart from the unique zero residue, the negative squares
+$\lambda=-(2j+1)^2$ therefore occur in pairs, each with coefficient $+2$
+or $-2$. These coefficients are nonzero in $\F_p$.
+
+For positive indices the zero-residue term is absent. Hence an eventual
+period $T$ gives
+\[
+\sum_{\lambda}c_\lambda(\lambda^T-1)\lambda^n=0
+\]
+on a tail. By Lemma~\ref{lem:vandermonde}, every $\lambda^T=1$.
+Taking $\lambda=-1$ forces $T$ to be even. Then $(-x^2)^T=1$ for all
+$x\in\F_p^\times$ implies $x^{2T}=1$ for all such $x$; since the
+multiplicative group of a finite field is cyclic,
+\[
+p-1\mid2T.
+\]
+The least positive $T$ satisfying these two conditions is
+$\lcm(2,(p-1)/2)=P_1(p)$. The upper bound already proved shows
+\begin{equation}\label{eq:baseperiod}
+d(p)=P_1(p).
+\end{equation}
+This is the classical odd-prime period formula recorded in the OEIS with
+reference to Knuth and Buckholtz \cite{oeis,knuth}.
+
+\subsection{The lifting step and its nonzero coefficient}
+
+Suppose by induction that $d(p^{e-1})=P_{e-1}(p)$, where $e\ge2$.
+Reduction modulo $p^{e-1}$ and the upper bound imply
+\[
+P_{e-1}(p)\mid d(p^e)\mid P_e(p)=pP_{e-1}(p).
+\]
+There are only two possibilities. Set $T=P_{e-1}(p)$; it suffices to
+prove that $T$ is not an eventual period modulo $p^e$.
+
+Put
+\[
+\delta=\frac{2P_1(p)}{p-1}\in\{1,2\},\qquad
+q_p(x)=\frac{x^{p-1}-1}{p}\quad(p\nmid x).
+\]
+The integer $q_p(x)$ is the Fermat quotient. Elementary binomial expansion
+gives
+\begin{equation}\label{eq:lift}
+x^{2T}=(1+pq_p(x))^{\delta p^{e-2}}
+\equiv1+\delta p^{e-1}q_p(x)\pmod{p^e}.
+\end{equation}
+For completeness, the familiar step
+$(1+py)^{p^k}\equiv1+p^{k+1}y\pmod{p^{k+2}}$
+follows by induction on $k$, expanding one additional $p$th power.
+Raising to $\delta=1$ or $2$ gives \eqref{eq:lift}.
+
+For $n$ large enough that the nonunit terms vanish, the moment formula and
+$T$ even yield
+\begin{equation}\label{eq:normalizeddefect}
+\frac{a_{n+T}-a_n}{p^{e-1}}
+\equiv\delta
+\sum_{\substack{0\le j<p^e\\p\nmid2j+1}}
+(-1)^j q_p(2j+1)\bigl(-(2j+1)^2\bigr)^n\pmod p.
+\end{equation}
+The quotient on the left is an integer on a sufficiently late tail by
+the inductive period statement. Equivalently, one may first form the
+congruence modulo $p^e$ with a factor $p^{e-1}$ on both sides, then reduce
+the quotient modulo $p$.
+
+Group the right side by the distinct negative squares modulo $p$.
+We compute just one coefficient: the coefficient of $\lambda=-1$,
+coming from $x\equiv\pm1\pmod p$. Let $M=p^{e-1}$. The two groups are
+\[
+\begin{array}{c|c|c}
+ x & j & q_p(x)\pmod p\\ \hline
+ 1+2p\ell & p\ell & -2\ell\\
+ -1+2p(\ell+1) & p-1+p\ell & 2(\ell+1)
+\end{array}
+\qquad(0\le\ell<M).
+\]
+The quotient formulas follow by expanding $x^{p-1}$ modulo $p^2$.
+Both rows have sign $(-1)^j=(-1)^\ell$. Since $M$ is odd and $p\mid M$,
+\[
+\sum_{\ell=0}^{M-1}(-1)^\ell=1,\qquad
+\sum_{\ell=0}^{M-1}(-1)^\ell\ell=\frac{M-1}{2}.
+\]
+The first row therefore contributes $-(M-1)\equiv1\pmod p$, and the
+second contributes $M+1\equiv1\pmod p$. The coefficient of the
+$(-1)^n$ mode in \eqref{eq:normalizeddefect} is consequently
+\begin{equation}\label{eq:nonzero}
+2\delta\not\equiv0\pmod p.
+\end{equation}
+By Lemma~\ref{lem:vandermonde}, the normalized defect cannot vanish for all
+sufficiently large $n$. Hence $T$ is not an eventual period modulo $p^e$.
+The other possibility is forced:
+\[
+d(p^e)=pP_{e-1}(p)=P_e(p).
+\]
+This completes the proof of \eqref{eq:oddperiod}.
+
+The important feature is that the obstruction to losing a factor $p$
+is the fixed coefficient $2\delta$. It does not depend on the
+nonvanishing of a particular large Euler number, and it cannot disappear
+at an exceptional prime. The use of grouped finite frequencies is closely
+related to the method used for the full up/down sequence in \cite{gulec};
+here the even subsequence allows the argument to stay in $\F_p$.
+
+\section{Powers of two: a self-contained Stern argument}
+\label{sec:two}
+
+Odd finite moments do not directly address dyadic moduli. We give a short
+proof of the exact signed-Euler congruence traditionally associated with
+Stern, then translate it carefully to positive secant numbers. For its
+classical provenance and other proofs, see Sun \cite{sun}.
+
+\begin{lemma}[Dyadic isometry on even Euler indices]\label{lem:stern}
+If $N,M$ are distinct nonnegative even integers, then
+\begin{equation}\label{eq:stern}
+v_2(E_N-E_M)=v_2(N-M).
+\end{equation}
+Moreover, for even $N\ge0$,
+\begin{equation}\label{eq:Emod8}
+E_N\equiv1-N\pmod8.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $R=\Z_{(2)}$, the ring of rational numbers with odd denominator.
+The formal series
+\[
+u(t)=\frac{e^{2t}-1}{2}
+=\sum_{j\ge1}\frac{2^{j-1}}{j!}t^j
+\]
+has coefficients in $R$, since $v_2(j!)\le j-1$. Its constant term is
+zero, so
+\[
+\tanh t=\frac{u(t)}{1+u(t)}\in R[[t]].
+\]
+Write $\tanh t=\sum_{j\ge1,\ j\text{ odd}}b_jt^j$, where $b_j\in R$
+and $b_1=1$.
+The exact identity $\sech t=e^t(1-\tanh t)$ gives
+\begin{equation}\label{eq:falling}
+E_N=1-\sum_{\substack{1\le j\le N\\j\text{ odd}}}
+b_j(N)_{\underline j},
+\qquad (X)_{\underline j}=X(X-1)\cdots(X-j+1).
+\end{equation}
+For comparison at $N$ and $M$, use the same finite summation range up to
+$\max(N,M)$: terms beyond either nonnegative integer index vanish.
+
+For odd $j\ge3$, the product $(X)_{\underline j}$ has at least two
+factors with even offsets, namely $X$ and $X-2$. Telescope the difference
+of the products evaluated at $N$ and $M$, changing one factor at a time.
+Each resulting summand contains one factor $N-M$. After the changed
+factor is omitted, at least one even-offset factor remains; its value at
+either even argument is even. Hence
+\[
+(N)_{\underline j}-(M)_{\underline j}\in2(N-M)\Z
+\qquad(j\ge3\text{ odd}).
+\]
+The $j=1$ term in \eqref{eq:falling} is $-N$. It follows that
+\[
+E_N-E_M=-(N-M)+2(N-M)r\qquad\text{for some }r\in R.
+\]
+The factor $-1+2r$ is a unit in $R$, proving \eqref{eq:stern}.
+
+Finally, for even $N$ and odd $j\ge3$, the two factors $N$ and $N-2$
+include a multiple of $4$ and another multiple of $2$. Thus
+$(N)_{\underline j}\in8\Z$. The same conclusion is automatic for a
+zero product. In \eqref{eq:falling}, all terms except $1-N$ vanish
+modulo $8$, proving \eqref{eq:Emod8}.
+\end{proof}
+
+By $a_n=(-1)^nE_{2n}$,
+\begin{equation}\label{eq:amod8}
+a_n\equiv(-1)^n(1-2n)\pmod8.
+\end{equation}
+The repeating residue block is $(1,1,5,5)$, starting at $n=0$.
+In particular, every $a_n\equiv1\pmod4$, so the period modulo $2$ and
+$4$ is $1$.
+
+For $b\ge3$, every eventual period must be divisible by $4$, since the
+block modulo $8$ has least period $4$. For an even shift $T$, signs at
+$n$ and $n+T$ agree, and \eqref{eq:stern} gives, at every $n\ge0$,
+\[
+v_2(a_{n+T}-a_n)=v_2(2T)=1+v_2(T).
+\]
+Thus periodicity modulo $2^b$ is equivalent, among the possible shifts,
+to $2^{b-1}\mid T$. The least such shift is $2^{b-1}$, and it works
+already at zero. This proves \eqref{eq:dyadic}.
+
+\section{Global assembly and a formula for every failure}
+\label{sec:global}
+
+\subsection{Chinese remainders and the exact onset}
+
+A congruence modulo $m$ is equivalent to the congruence at every exact
+prime-power factor of $m$. An eventual period must therefore be a
+multiple of each local least period, and the least common multiple is
+itself an eventual period. This proves the period formula in
+\eqref{eq:CRT}.
+
+For the onset, each odd local sequence is a periodic sequence plus a
+finite transient, as in Lemma~\ref{lem:transient}; the dyadic local sequence
+has no transient. Every local eventual period therefore has the same
+least valid onset. A global period cannot begin earlier than any local
+one, while the least common multiple works after the latest local onset.
+This proves the other formula in \eqref{eq:CRT}.
+
+Every local period divides $\varphi(p^e)$. Since
+$\varphi(m)=\prod_{p^e\parallel m}\varphi(p^e)$, every local period
+divides $\varphi(m)$, and so does their least common multiple.
+This finishes the proof of Theorem~\ref{thm:main}.
+
+\subsection{The defect at a totient shift}
+
+\begin{proposition}[All-index defect]\label{prop:defect}
+Let $p^e$ be an odd prime-power divisor of $m$. For every $n\ge0$,
+\begin{equation}\label{eq:defect}
+a_{n+\varphi(m)}-a_n
+\equiv-\chi_4(p)p^{2n}a_n\pmod{p^e}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:firstdefect}
+a_{1+\varphi(m)}-1\equiv-\chi_4(p)p^2\pmod{p^e}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The shift $\varphi(m)$ is a multiple of $P_e(p)$, so
+$U_{n+\varphi(m)}=U_n$. Also $\varphi(m)\ge\varphi(p^e)\ge e$ for
+odd $p$, so $B_{n+\varphi(m)}=0$. Since $a=U+B$, the difference is
+$-B_n$. Substitute \eqref{eq:depletion} and then $a_1=1$.
+\end{proof}
+
+Consequently every modulus excluded by the cube-free criterion fails
+at the very first tested index for the conjectured totient shift. It is
+not necessary to search far into a period for a mismatch.
+For the infinite family $m=p^3$,
+\begin{equation}\label{eq:infinitefamily}
+a_{1+p^2(p-1)}\equiv1-\chi_4(p)p^2\pmod{p^3}.
+\end{equation}
+For $p=3,5,7$, the right sides are respectively $10,101,50$ modulo
+$27,125,343$.
+
+This also shows why replacing the actual least period by a much larger
+multiple cannot remove the transient: the unit contribution stays fixed,
+while the nonunit contribution at the early index is still present.
+
+\subsection{Two useful local examples}
+
+Modulo $3$, \eqref{eq:momentA} has two equal unit modes. For $n\ge1$,
+\begin{equation}\label{eq:mod3}
+a_n\equiv2(-1)^n\pmod3.
+\end{equation}
+Thus $3\nmid a_n$ for every $n\ge1$, and
+\[
+s(3^e)=\ceil{e/2}\qquad(e\ge1).
+\]
+The generic upper bound is attained at every power of $3$.
+
+At $p=5,e=5$, the candidate transient indices are $0,1,2$.
+Their values of $2n+v_5(a_n)$ are $0,2,5$, respectively.
+Only $0$ and $1$ are nonzero-transient indices modulo $5^5$, so
+$s(3125)=2$, whereas $d(3125)=1250$.
+Thus an exact preperiod theorem must retain divisibility information;
+$s(p^e)=\ceil{e/2}$ is not universally valid.
+
+\section{Generating functions and effective computation}
+\label{sec:algorithms}
+
+\subsection{A rational ordinary generating function modulo an odd integer}
+
+The ordinary generating series is used formally, without asserting
+analytic convergence over the complex numbers. Define
+\[
+G_q(z)=\sum_{n\ge0}(a_n\bmod q)z^n\in(\Z/q\Z)[[z]].
+\]
+For odd $q$, summing \eqref{eq:momentA} coefficientwise gives
+\begin{equation}\label{eq:modgf}
+G_q(z)=\sum_{j=0}^{q-1}\frac{(-1)^j}{1+(2j+1)^2z}.
+\end{equation}
+Every denominator has constant coefficient $1$, hence is invertible as
+a formal power series even when $q$ is composite.
+
+At a prime power, denominators with a nonunit ratio contribute only
+polynomials: if $p\mid2j+1$, then the geometric series stops after at
+most $\ceil{e/2}$ terms because its ratio is nilpotent. Unit ratios
+produce the periodic part. Thus the polynomial-plus-periodic split of
+the coefficient sequence is visible directly in the rational series.
+
+For an arbitrary modulus, put $s=s(m)$, $d=d(m)$ and write
+$\bar a_n=a_n\bmod m$. Then
+\begin{equation}\label{eq:generalGF}
+G_m(z)=\sum_{n=0}^{s-1}\bar a_nz^n
+ +\frac{z^s}{1-z^d}\sum_{j=0}^{d-1}\bar a_{s+j}z^j.
+\end{equation}
+An empty initial sum is zero. We claim this explicit representation, not
+an irreducible denominator or a field-like notion of minimal denominator
+degree over a residue ring with zero divisors.
+
+\subsection{Computing periods without enumerating a period}
+
+Given a factorization of $m$, the period is obtained by integer
+exponentiation and least common multiples. To compute the onset, let
+$H$ be the largest $\ceil{e/2}$ among odd prime powers dividing $m$.
+Generate $a_0,\ldots,a_{H-1}$ and inspect the valuations in
+\eqref{eq:oddpreperiod}. The number of coefficient operations in the
+binomial recurrence is $O(H^2)$ when binomial coefficients are available;
+this is an arithmetic-operation estimate, not a unit-cost bit complexity
+claim for arbitrarily large integers.
+
+The supplied implementation uses trial division for factorization and
+primality checks. It is intentionally transparent, not a fast
+factorization package. It is suitable for modest moduli and for
+prime-power experiments with modest primes. Factoring a huge arbitrary
+modulus can be the dominant cost and is not hidden in the period formula.
+
+For a huge index $n$ and a modest odd modulus $q$,
+\eqref{eq:momentA} computes $a_n\bmod q$ using $q$ modular
+exponentiations, or $O(q\log(n+1))$ modular multiplications with binary
+exponentiation. Extra working storage apart from the input integers is
+constant. If $s(q)$ and $d(q)$ are known and $n\ge s(q)$, the index may
+instead be reduced to
+\[
+s(q)+(n-s(q))\bmod d(q).
+\]
+These are complementary approaches: the moment formula handles huge
+indices without ever constructing huge secant numbers, while the onset
+formula uses only a short initial segment.
+
+\subsection{Independent coefficient generation}
+
+For testing, the archive also constructs the coefficients through the
+Entringer triangle, rather than reusing \eqref{eq:recurrence}. Set
+$T(0,0)=1$, and for $r\ge1$ use
+\[
+T(r,0)=0,\qquad
+T(r,k)=T(r,k-1)+T(r-1,r-k)\quad(1\le k\le r).
+\]
+Then $T(2n,2n)=a_n$. This is a standard alternating-permutation triangle;
+its row-end construction is also described in the literature on the
+full up/down numbers \cite{ramassamy}. The implementation stores only
+the current row and the required even-row endpoints. Comparison of two
+different constructions helps detect indexing, sign, and recurrence
+implementation errors; it is not a substitute for the proofs above.
+
+\section{How often is the original assertion true?}
+\label{sec:density}
+
+The counterexamples have an exact arithmetic description, so we can count
+them rather than just exhibit them. More generally, we can determine the
+natural density of moduli with any prescribed upper bound on their first
+periodic index.
+
+For a set $S$ of positive integers, its natural density, when it exists, is
+\[
+\dens(S)=\lim_{X\to\infty}\frac{\#\{m\le X:m\in S\}}{\floor X}.
+\]
+For $N\ge1$ and an odd prime $p$, define
+\begin{equation}\label{eq:cutoff}
+c_p(N)=\min_{n\ge N}\bigl(2n+v_p(a_n)\bigr).
+\end{equation}
+This looks like an infinite minimization, but is actually a finite one.
+
+\begin{lemma}[Finite cutoff computation]\label{lem:cutoff}
+Let $v=v_p(a_N)$. Then
+\begin{equation}\label{eq:finitecutoff}
+c_p(N)=\min_{N\le n\le N+\floor{v/2}}
+             \bigl(2n+v_p(a_n)\bigr).
+\end{equation}
+In particular, $c_p(N)\ge2N$, with equality whenever $p\nmid a_N$.
+\end{lemma}
+
+\begin{proof}
+The term at $n=N$ gives the upper bound $2N+v$. If
+$n>N+\floor{v/2}$, then $2n>2N+v$, so that index cannot minimize the
+expression. The final assertions follow at once.
+\end{proof}
+
+\begin{theorem}[Distribution of the first periodic index]\label{thm:density}
+For $N\ge1$, the set $\{m:s(m)\le N\}$ has natural density
+\begin{equation}\label{eq:densityproduct}
+D_N=\prod_{p\text{ odd}}\left(1-p^{-(c_p(N)+1)}\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:densityzeta}
+D_N=\frac{1}{(1-2^{-(2N+1)})\zeta(2N+1)}
+\prod_{\substack{p\mid a_N\\p\text{ odd}}}
+\frac{1-p^{-(c_p(N)+1)}}{1-p^{-(2N+1)}}.
+\end{equation}
+The correction product is finite. More precisely, for fixed $N$,
+\begin{equation}\label{eq:countasymptotic}
+\#\{m\le X:s(m)\le N\}
+=D_N X+O_N\!\left(X^{1/(2N+1)}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By the exact transient criterion, $s(m)\le N$ if and only if, at every
+odd prime $p$, all nonunit contributions vanish at every index $n\ge N$.
+Writing $e=v_p(m)$, this is equivalent to
+\[
+e\le2n+v_p(a_n)\quad\text{for every }n\ge N,
+\]
+or $v_p(m)\le c_p(N)$. There is no restriction at $2$.
+Thus the set is exactly the set of integers avoiding divisibility by
+each $p^{c_p(N)+1}$ for odd primes $p$.
+
+Here is a counting proof that also justifies the infinite Euler product.
+Set $r=2N+1$ and let $S$ be the finite set of odd prime divisors of $a_N$.
+Outside $S$, the forbidden exponent is exactly $r$. For $p\in S$, put
+$b_p=c_p(N)+1\ge r$. Inclusion--exclusion at the exceptional primes,
+and M\"obius inversion elsewhere, give the exact count
+\[
+\sum_{J\subseteq S}(-1)^{|J|}
+\sum_{\substack{d\ge1\\(d,\,2\prod_{p\in S}p)=1}}
+\mu(d)\left\lfloor\frac{X}{d^r C_J}\right\rfloor,
+\qquad C_J=\prod_{p\in J}p^{b_p}.
+\]
+Only $d\le(X/C_J)^{1/r}$ contribute. Replacing the floor by its
+argument costs $O_N(X^{1/r})$, since there are that many potentially
+nonzero terms for each of finitely many $J$. Extending the main-term
+sum over $d$ to infinity also costs $O_N(X^{1/r})$, using
+$\sum_{d>Y}d^{-r}=O_r(Y^{1-r})$.
+
+The coefficient of $X$ is
+\[
+\prod_{p\in S}(1-p^{-b_p})
+\prod_{\substack{p\text{ odd}\\p\notin S}}(1-p^{-r}).
+\]
+This proves \eqref{eq:densityproduct} and \eqref{eq:countasymptotic}.
+The Euler product for $\zeta(r)$, valid since $r>1$, gives
+\eqref{eq:densityzeta}. Absolute convergence also follows from
+$c_p(N)+1\ge r\ge3$.
+\end{proof}
+
+\begin{corollary}[Density of the moduli satisfying the conjecture]
+The natural density of moduli for which \eqref{eq:conjecture} is true is
+\begin{equation}\label{eq:cubefreedensity}
+D_1=\prod_{p\text{ odd}}(1-p^{-3})
+=\frac{8}{7\zeta(3)}
+=0.95075128294937996420\ldots.
+\end{equation}
+The counterexample moduli have density $1-D_1$, approximately $4.92487\%$.
+\end{corollary}
+
+\begin{proof}
+Since $a_1=1$, there are no exceptional primes in
+\eqref{eq:densityzeta}; all cutoffs are $c_p(1)=2$.
+\end{proof}
+
+The restriction is that the \emph{odd part} be cube-free; arbitrary powers
+of $2$ are allowed. Accordingly the density is not $1/\zeta(3)$.
+The factor $(1-2^{-3})^{-1}=8/7$ accounts exactly for the unrestricted
+power of two.
+
+\section{The whole distribution and its asymptotic tail}
+\label{sec:tail}
+
+\subsection{The first exceptional correction}
+
+At $N=2$, $a_2=5$, so $c_5(2)=5$ and all other odd-prime cutoffs are $4$.
+Therefore
+\begin{equation}\label{eq:D2}
+D_2=\frac{1-5^{-6}}{1-5^{-5}}
+\frac{1}{(1-2^{-5})\zeta(5)}.
+\end{equation}
+The corresponding moduli have odd prime exponents at most $4$, except
+that exponent $5$ is allowed at the prime $5$. This is the density-level
+reflection of $s(5^5)=2$.
+
+At $N=10$, one must not replace every exceptional cutoff by $2N+1$:
+\[
+a_{10}=5^2\cdot41737\cdot354957173.
+\]
+Here $c_5(10)=22$, while the other two cutoffs are $21$. The finite
+minimization in Lemma~\ref{lem:cutoff} captures such higher-valuation effects
+automatically.
+
+\begin{table}[htbp]
+\centering
+\caption{Densities $D_N=\dens\{m:s(m)\le N\}$, rounded to 18 decimal
+places. Full rational enclosures are supplied in the archive.}
+\label{tab:densities}
+\begin{tabular}{r l r l}
+\toprule
+$N$ & $D_N$ & $N$ & $D_N$\\
+\midrule
+1&0.950751282949379964&6&0.999999372600335288\\
+2&0.995751538184580342&7&0.999999930275301732\\
+3&0.999528673601264576&8&0.999999992256209180\\
+4&0.999949067031528573&9&0.999999999139555886\\
+5&0.999994333981021976&10&0.999999999904400848\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Only powers of two have $s(m)=0$, and their density is zero. Define $D_0=0$.
+For every $N\ge1$, the moduli with exact first periodic index $N$ have
+density $D_N-D_{N-1}$. Thus the cumulative densities determine an entire
+probability distribution in the limit of uniformly sampled moduli.
+
+\subsection{The tail is controlled by the prime three}
+
+\begin{theorem}[Asymptotic distribution tail]\label{thm:tail}
+As $N\to\infty$,
+\begin{equation}\label{eq:tail}
+1-D_N=3^{-(2N+1)}+O\!\left(5^{-(2N+1)}\right).
+\end{equation}
+In particular, the limiting distribution has finite moments of every
+positive integer order.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:mod3} shows that $c_3(N)=2N$ for every $N\ge1$.
+Thus the set of multiples of $3^{2N+1}$ is included in the excluded
+moduli and has density $3^{-(2N+1)}$. Every other prime has forbidden
+exponent at least $2N+1$. A union bound gives, with $r=2N+1$,
+\[
+3^{-r}\le1-D_N\le3^{-r}+\sum_{p\ge5}p^{-r}.
+\]
+For $r\ge3$, the last sum is at most
+\[
+\sum_{k=5}^\infty k^{-r}
+\le5^{-r}+\frac{5^{1-r}}{r-1}=O(5^{-r}),
+\]
+with an absolute constant. This proves the expansion. Exponential decay
+of the tail implies finiteness of every polynomial moment by the usual
+discrete tail-sum formula.
+\end{proof}
+
+The theorem has a concrete interpretation: among very long transients,
+the overwhelmingly dominant cause is a high power of $3$ in the modulus.
+Exceptional divisibility of secant numbers can only shorten transients;
+it cannot create a forbidden exponent below $2N+1$ at another prime.
+
+\section{The mean first periodic index}
+\label{sec:mean}
+
+\begin{theorem}[Mean and a certified enclosure]\label{thm:mean}
+The arithmetic mean of $s(m)$ over initial intervals has a limit:
+\begin{equation}\label{eq:mean}
+\mathcal M=\lim_{X\to\infty}\frac1{\floor X}\sum_{m\le X}s(m)
+=1+\sum_{N\ge1}(1-D_N).
+\end{equation}
+It satisfies the rigorous bounds
+\begin{equation}\label{eq:meaninterval}
+1.05402581008837151<\mathcal M<1.05402581008837162.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof of the limit formula]
+For every nonnegative integer-valued function,
+\[
+s(m)=\sum_{N\ge0}\mathbf1_{\{s(m)>N\}}.
+\]
+For $N=0$, the limiting proportion is $1$, since $s(m)=0$ only at powers
+of two. For fixed $N\ge1$, the limiting proportion is $1-D_N$.
+We must justify passing the limit through the infinite sum.
+
+If $s(m)>N$, then some odd prime power $p^e\parallel m$ satisfies
+$e>c_p(N)\ge2N$, so $p^{2N+1}\mid m$. Consequently, for any positive
+integer $M$,
+\[
+\frac{\#\{m\le M:s(m)>N\}}{M}
+\le\sum_{p\text{ odd}}p^{-(2N+1)}.
+\]
+The sum of these bounds over $N\ge1$ converges. Dominated convergence
+for the counting averages now proves \eqref{eq:mean}.
+The enclosure follows from the rational computations and tail estimates
+below, whose numerical method is justified in Appendix~\ref{app:certificates}.
+\end{proof}
+
+Let
+\[
+\mathcal M_K=1+\sum_{N=1}^{K}(1-D_N).
+\]
+The proof of Theorem~\ref{thm:tail} gives a particularly simple certified tail:
+\begin{equation}\label{eq:meantail}
+\frac98\,3^{-(2K+3)}
+\le\mathcal M-\mathcal M_K
+\le\frac98\left((1-2^{-(2K+3)})\zeta(2K+3)-1\right).
+\end{equation}
+For the lower bound, sum the mandatory prime-$3$ contributions. For the
+upper bound, sum the union bound over primes and use
+$(1-p^{-2})^{-1}\le9/8$ for every odd prime. Enlarging the sum from odd
+primes to all odd integers at least $3$ gives exactly the displayed
+zeta expression.
+
+Taking $K=10$ and evaluating the finitely many zeta factors with rational
+interval arithmetic yields
+\[
+\begin{split}
+1.054025810088371518561523366670
+&<\mathcal M,\\
+\mathcal M&<
+1.054025810088371612974596863433.
+\end{split}
+\]
+The slightly wider decimal bounds in \eqref{eq:meaninterval} are convenient
+to quote. They certify the rounded value
+$\mathcal M\approx1.05402581008837$ without relying on floating-point
+rounding or an unproved estimate of a zeta-series remainder.
+
+\section{Computational verification and research scope}
+\label{sec:verification}
+
+\subsection{What was actually run}
+
+The accompanying Python programs use only the standard library. The
+verification run used Python 3.13.5; the source is written for Python 3.9
+or later. The exact range checks recorded in
+\texttt{data/verification.json} are summarized in
+Table~\ref{tab:verification}. Ordinary integer and rational arithmetic is used
+throughout; the density enclosures do not use floating-point values.
+
+\begin{table}[htbp]
+\centering
+\caption{Completed checks. Formula-derived data beyond the independently
+checked range are distinguished explicitly.}
+\label{tab:verification}
+\begin{tabular}{@{}p{.73\textwidth}r@{}}
+\toprule
+Check & Count or range\\
+\midrule
+Exact secant numbers generated by the triangle & $0\le n\le2100$\\
+Agreement with the independent binomial recurrence & $0\le n\le100$\\
+Finite-moment evaluations against exact coefficients & 1900\\
+Moduli checked for period and onset consistency & $1\le m\le1000$\\
+Equalities at the proposed period shift & 130793\\
+Proper-divisor period candidates rejected by witnesses & 2432\\
+All-index Euler-factor defect checks & 651\\
+Huge-index reductions, including indices above $10^{100}$ & 18\\
+Arithmetic checks of the two lifting-mode coefficients & 15\\
+Moduli in the formula-generated CSV table & $1\le m\le10000$\\
+Densities supplied with exact rational interval certificates & $1\le N\le10$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For each modulus through $1000$, the code checks a complete proposed
+period block and its shift, verifies a mismatch at $s(m)-1$ when the
+preperiod is nonzero, and rejects each candidate $d(m)/\ell$ with $\ell$
+a prime divisor of $d(m)$. These witnesses are stored explicitly.
+Why are those candidates enough? Any proper divisor of $d(m)$ divides
+at least one such $d(m)/\ell$, and a sequence with the smaller period
+would also have the larger multiple as a period.
+
+These finite checks support the implementation and catch mistakes, but
+do not prove that a pattern observed on a finite prefix persists forever.
+The universal statements rest on the mathematical proofs in the report.
+No proof-assistant formalization was executed. The CSV entries for
+$1001\le m\le10000$ are outputs of the proved formulas, not a claim of
+independent coefficient-by-coefficient testing for that extra range.
+
+The separate density program uses 96 terms of a positive Euler-transformed
+eta series for each required zeta value. Its JSON file records exact
+rational endpoints, outward-rounded decimal endpoints, the exceptional
+prime factors, and the finite cutoff calculations. A reader can rerun
+every reported finite calculation without network access or a computer
+algebra system.
+
+\subsection{What is settled, and what remains a different problem}
+
+The OEIS assertion \eqref{eq:conjecture} is false, and its correct domain
+of validity is exactly characterized. There is no remaining conjectural
+step in the stated local periods, finite onset formula, global assembly,
+density formulas, or mean formula. The proofs are conventional arguments
+and are open to independent checking; the computations are supplementary.
+
+A different question is whether the valuation tests in
+\eqref{eq:oddpreperiod} admit a dramatically simpler closed form, or how
+large the gap $\ceil{e/2}-s(p^e)$ can become. The complete effective
+criterion does not by itself answer those structural questions.
+Likewise, the remaining conjectures about the \emph{full} up/down
+sequence in \cite{gulec} are not resolved here. Confusing that sequence
+with its even subsequence would incorrectly turn a specialized result
+into a claim about a different open problem.
+
+The useful methodological point is narrow and concrete. A modular
+sequence represented by finitely many power functions naturally divides
+into unit modes and nilpotent modes. Pure periodicity can fail precisely
+because the latter survive at a few initial indices. Identifying that
+transient exactly converts an isolated counterexample into a complete
+classification, and then into an arithmetic distribution problem.
+
+\clearpage
+\appendix
+\section{A standalone counterexample checker}
+\label{app:checker}
+
+The following complete program requires Python 3.8 or later. It checks
+only the finite disproof and does not depend on any theorem in the report.
+The full archive uses Python 3.9 or later because it also uses
+\texttt{math.lcm}.
+
+\begin{lstlisting}[language=Python]
+from math import comb
+
+# sec(x) * cos(x) = 1, with integer coefficient arithmetic.
+a = [1]
+for n in range(1, 20):
+    value = sum(
+        (1 if j % 2 else -1) * comb(2*n, 2*j) * a[n-j]
+        for j in range(1, n+1)
+    )
+    a.append(value)
+
+print("a(19) =", a[19])
+print("a(1) mod 27 =", a[1] % 27)
+print("a(19) mod 27 =", a[19] % 27)
+
+# phi(27) = 18. A period dividing 18 forces these equal.
+if a[1] % 27 == a[19] % 27:
+    raise RuntimeError("The claimed counterexample failed")
+print("Conjecture disproved: 1 != 10 modulo 27.")
+\end{lstlisting}
+
+Output:
+\begin{lstlisting}
+a(19) = 23489580527043108252017828576198947741
+a(1) mod 27 = 1
+a(19) mod 27 = 10
+Conjecture disproved: 1 != 10 modulo 27.
+\end{lstlisting}
+
+The same recurrence may be reduced modulo $27$ at every step, avoiding
+large integers entirely. We retain the exact value here so that the
+counterexample can be checked in either form.
+
+\clearpage
+\section{Rational certificates for the numerical constants}
+\label{app:certificates}
+
+For an integer $r>1$, let
+\[
+\eta(r)=\sum_{j\ge0}\frac{(-1)^j}{(j+1)^r}
+       =(1-2^{1-r})\zeta(r).
+\]
+Define positive finite differences
+\[
+\Delta_{k,r}=\sum_{j=0}^k(-1)^j\binom{k}{j}(j+1)^{-r}.
+\]
+The elementary integral identity
+\begin{equation}\label{eq:positiveintegral}
+\Delta_{k,r}
+=\frac1{(r-1)!}\int_0^1(-\log t)^{r-1}(1-t)^k\,dt
+\end{equation}
+shows $0<\Delta_{k,r}\le1$. Summing the geometric series in the integral
+also proves the Euler transform
+\begin{equation}\label{eq:eulertransform}
+\eta(r)=\sum_{k\ge0}\frac{\Delta_{k,r}}{2^{k+1}}.
+\end{equation}
+Indeed, the sum of $(1-t)^k/2^{k+1}$ is $1/(1+t)$; integrating its
+geometric expansion in $t$ gives the eta series. Positivity or dominated
+convergence justifies the exchanges.
+
+If
+\[
+H_{K,r}=\sum_{k=0}^{K-1}\frac{\Delta_{k,r}}{2^{k+1}},
+\]
+then both endpoints of
+\begin{equation}\label{eq:zetacertificate}
+\frac{H_{K,r}}{1-2^{1-r}}
+\le\zeta(r)\le
+\frac{H_{K,r}+2^{-K}}{1-2^{1-r}}
+\end{equation}
+are rational, and the enclosure follows because the omitted positive
+terms sum to at most $2^{-K}$. The program forms the finite differences
+recursively with \texttt{fractions.Fraction}, not by cancellation-prone
+floating-point subtraction.
+
+For $D_N$, the finite correction factor in \eqref{eq:densityzeta} is an
+exact rational number. The reciprocal of the upper zeta endpoint gives
+a lower density endpoint, and the reciprocal of the lower zeta endpoint
+gives an upper density endpoint. Summing those bounds with the direction
+reversed for $1-D_N$, then applying \eqref{eq:meantail}, gives the mean
+certificate. Decimal conversions are rounded outwards using the Python
+\texttt{decimal} module.
+
+The certificate file includes unusually long integers because it stores
+exact common denominators rather than a rounded approximation. On Python
+versions with a decimal-digit limit for integer serialization, the
+certificate program disables that limit only for these locally generated
+integers. It does not parse untrusted large integer strings or fetch
+external input.
+
+\clearpage
+\section{Archive contents and reproduction}
+\label{app:archive}
+
+The principal files are \texttt{article.tex}, \texttt{article.pdf},
+\texttt{secant\_periodicity.py}, \texttt{verify.py}, and
+\texttt{certify\_densities.py}. The \texttt{data/} directory contains
+all tables, witnesses, logs, and rational certificates. A separate
+\texttt{counterexample.py} reproduces Appendix~\ref{app:checker}.
+The file \texttt{oeis\_correction.txt} is a proposed correction note for
+human review; nothing has been submitted to the OEIS.
+
+From the archive directory, run
+\begin{lstlisting}[language=bash]
+python counterexample.py
+python verify.py
+python certify_densities.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first three commands need no third-party Python packages. Building
+the PDF requires a LaTeX installation with the packages listed in the
+source, including New PX text and math fonts. Font files are not included
+in the archive. A \texttt{Makefile}, a PowerShell build script, and a
+source-provenance note are included for convenience.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{oeis}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, entry A000364, Euler or secant numbers. In particular,
+Peter Bala's conjecture comment dated 8 May 2023 and the period comment
+attributed to Allen Stenger dated 3 August 2020. Consulted
+19 September 2026. \url{https://oeis.org/A000364}.
+
+\bibitem{knuth}
+D.~E. Knuth and T.~J. Buckholtz,
+Computation of tangent, Euler, and Bernoulli numbers,
+\emph{Mathematics of Computation} \textbf{21}, no.~100 (1967), 663--688.
+\url{https://doi.org/10.1090/S0025-5718-1967-0221735-9}.
+
+\bibitem{metsankyla}
+T. Mets\"ankyl\"a,
+Note on Kummer's congruences for Euler numbers,
+\emph{The Fibonacci Quarterly} \textbf{52}, no.~2 (2014), 160--162.
+\url{https://www.fq.math.ca/Papers1/52-2/Metsankyla.pdf}.
+
+\bibitem{sun}
+Z.-W. Sun,
+On Euler numbers modulo powers of two,
+\emph{Journal of Number Theory} \textbf{115}, no.~2 (2005), 371--380.
+Preprint arXiv:math/0410085v3, 7 December 2004.
+\url{https://arxiv.org/abs/math/0410085}.
+\url{https://doi.org/10.1016/j.jnt.2005.01.001}.
+
+\bibitem{ramassamy}
+S. Ramassamy,
+Modular periodicity of the Euler numbers and a sequence by Arnold,
+\emph{Arnold Mathematical Journal} \textbf{3}, no.~4 (2017), 519--524.
+\url{https://arxiv.org/abs/1712.08666}.
+
+\bibitem{gulec}
+B. G\"ule\c{c},
+Modular periodicity of the Euler up/down numbers at odd prime powers,
+arXiv:2608.27058v2, 3 September 2026.
+\url{https://arxiv.org/abs/2608.27058}.
+\end{thebibliography}
+
+\end{document}

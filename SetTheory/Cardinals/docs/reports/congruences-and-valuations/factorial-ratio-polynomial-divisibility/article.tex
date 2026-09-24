@@ -1,0 +1,1163 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage{listings,needspace}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=teal]{hyperref}
+\definecolor{ink}{HTML}{19354C}
+\definecolor{accent}{HTML}{147D92}
+\definecolor{pale}{HTML}{F0F6F8}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Polynomial divisibility of factorial ratios}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.3em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\vp}{v_p}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\A}{A}
+\newcommand{\B}{B}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\hyp}[3]{{}_{8}F_{7}\!\left(\begin{matrix}#1\\#2\end{matrix};#3\right)}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{accent},backgroundcolor=\color{pale},
+  showstringspaces=false}
+\tcbset{colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,left=3mm,right=3mm}
+\hypersetup{pdftitle={Polynomial divisibility of height-one factorial ratios},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Bala conjectures, OEIS A211417 and A295431}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.5cm}
+{\color{accent}\large RESEARCH ARTICLE\par}
+\vspace{0.6cm}
+{\color{ink}\Huge\bfseries Polynomial divisibility\par of height-one\par factorial ratios\par}
+\vspace{0.6cm}
+{\Large Proofs of Bala's uniform-multiplier conjectures,\par
+ a complete rational-root criterion,\par and certified optimal constants\par}
+\vspace{0.8cm}
+{\large A research attempt with reproducible exact certificates\par}
+{\large September 19, 2026\par}
+\vspace{0.8cm}
+\begin{tcolorbox}[title=Main outcome,fonttitle=\bfseries]
+For
+\[
+ A(n)=\frac{(30n)!\,n!}{(15n)!\,(10n)!\,(6n)!},
+\]
+we prove the all-$r$ divisibility conjectures still recorded under OEIS
+A211417. We also classify every polynomial splitting over $\Q$ that can
+uniformly divide $A(n)$ after multiplication by one fixed integer.
+The analogous conjectures for OEIS A295431 follow from the same theorem.
+\end{tcolorbox}
+\vspace{0.4cm}
+\noindent\textbf{Abstract.}
+Let $R(n)$ be a balanced integral factorial ratio and let $P\in\Z[X]$
+split over $\Q$. We characterize the existence of a nonzero integer $C$
+with $CR(n)/P(n)\in\Z$ for every nonnegative integer $n$ at which the
+quotient is defined. The criterion compares the multiplicity of each
+rational root of $P$ with one-sided values of the Landau step function.
+We prove both directions and give an explicit multiplier. At height one,
+the criterion reduces to the signs of cyclotomic exponents and excludes
+all repeated roots. Applications settle uniform-product conjectures of
+Peter Bala, including explicit all-$r$ bounds. Finite weighted digit
+graphs determine the eight particular proposed constants and prove each
+optimal. The associated integer sequences admit explicit recurrences,
+hypergeometric generating functions, and all-order asymptotic expansions.
+The archive contains exact certificates, a separate verifier, regression
+tests, and an admissible-denominator atlas for all 52 sporadic examples.
+\vfill
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The selected problem and its status}
+\subsection{Two exceptional integer sequences}
+Consider the factorial ratios
+\begin{equation}\label{eq:AB}
+ A(n)=\frac{(30n)!\,n!}{(15n)!\,(10n)!\,(6n)!},
+ \qquad
+ B(n)=\frac{(12n)!\,n!}{(6n)!\,(4n)!\,(3n)!},\qquad n\geq0.
+\end{equation}
+They are OEIS A211417 and A295431, respectively. Both belong to the
+52 sporadic height-one integral factorial ratios in the classification
+of Bober, following the work of Vasyunin and the hypergeometric approach
+of Rodriguez-Villegas and Beukers--Heckman \cite{oeisA,oeisB,bober}.
+Our arguments require no classification of hypergeometric monodromy.
+
+Bala's August 2025 comments on A211417 ask for a fixed multiplier,
+depending on $k$ and $r$ but not on $n$, that clears the denominators in
+\begin{equation}\label{eq:balaPositive}
+ \frac{A(n)}{\displaystyle\prod_{\substack{1\leq i\leq r\\(i,k)=1}}(kn+i)},
+ \qquad k\in\{2,3,5\}.
+\end{equation}
+There is also the negative-offset family
+\begin{equation}\label{eq:balaNegative}
+ \frac{A(n)}{\displaystyle\prod_{\substack{1\leq i\leq r\\(i,30)=1}}(30n-i)}.
+\end{equation}
+The current entry still labels these all-$r$ assertions conjectural
+\cite{oeisA}. Its one-factor case $A(n)/(30n-1)$ is different: the entry
+records a proof in June 2026, and Adamczewski's August 2026 report also
+lists it as proved \cite{oeisA,adamczewski}. We use it only as a previously
+known special case recovered by a broader argument.
+
+The companion A295431 entry poses similar uniform-product questions for
+$B(n)$, using positive slopes $1,2,3$ and negative factors $12n-i$ with
+$(i,12)=1$ \cite{oeisB}. The selected problem is therefore not merely to
+reprove integrality of \eqref{eq:AB}, or to reproduce the solved first
+negative-offset case. It is to explain and prove the uniform-product
+phenomenon.
+
+\subsection{Results obtained}
+Write
+\[
+ \LL_s=\lcm(1,2,\ldots,s),\qquad \LL_1=1,
+ \qquad m_k(r)=\#\{1\leq i\leq r:(i,k)=1\}.
+\]
+Our first concrete conclusions are
+\begin{align}
+ &\LL_{30r/k}^{\,m_k(r)}
+   \frac{A(n)}{\prod_{1\leq i\leq r,\,(i,k)=1}(kn+i)}\in\Z
+   &&(k=2,3,5),\label{eq:explicitC}\\
+ &\LL_r^{\,m_{30}(r)}
+   \frac{A(n)}{\prod_{1\leq i\leq r,\,(i,30)=1}(30n-i)}\in\Z.
+   \label{eq:explicitD}
+\end{align}
+These hold for every $r\geq1$ and $n\geq0$. The indices $30r/k$ are
+integers. The displayed constants are deliberately explicit rather than
+claimed to be smallest. The corresponding negative-offset formula for
+$B$ uses $\LL_r^{m_{12}(r)}$.
+
+The structural result is stronger. A polynomial splitting over $\Q$
+can divide $A(n)$ uniformly up to one fixed integer multiplier precisely
+when it has distinct, nonzero rational roots, and the reduced
+denominator of each negative root lies in $\{1,2,3,5\}$, while the reduced
+denominator of each positive root is $30$. For $B$, these sets become
+$\{1,2,3\}$ and $\{12\}$. This also proves that the positive-offset
+coprimality restrictions can be removed, at the cost of changing the
+constant.
+
+The eight particular constants in the two OEIS entries are correct and
+optimal:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Ratio & Dividing polynomial & Least positive multiplier\\
+\midrule
+$A$ & $2n+1$ & $7$\\
+$A$ & $3n+1$ & $1$\\
+$A$ & $5n+1$ & $1$\\
+$A$ & $(2n+1)(3n+1)(5n+1)$ & $42$\\
+$B$ & $n+1$ & $385$\\
+$B$ & $2n+1$ & $5$\\
+$B$ & $3n+1$ & $1$\\
+$B$ & $(n+1)(2n+1)(3n+1)$ & $770$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Existence for these eight cases follows already from the structural
+proof. Their exact constants are established by the finite certificates
+in Section~\ref{sec:sharp}.
+
+\subsection{What is and is not asserted about novelty}
+The source check was made on September 19, 2026. It distinguishes the
+still-conjectural all-$r$ statements from the explicitly solved
+$30n-1$ case. The machinery of factorial valuations and Landau step
+functions is classical. We give a complete proof of the additional
+polynomial-divisibility statements here, but do not claim that an
+exhaustive literature search has ruled out every equivalent formulation
+of the general criterion. In particular, this manuscript's mathematical
+claims are separable from a claim of publication priority.
+
+\section{Factorial valuations and the Landau function}
+\subsection{Definitions and a self-contained integrality criterion}
+Let $a_1,\ldots,a_u$ and $b_1,\ldots,b_v$ be positive integers satisfying
+\begin{equation}\label{eq:balance}
+ \sum_{i=1}^u a_i=\sum_{j=1}^v b_j.
+\end{equation}
+Set
+\begin{equation}\label{eq:RDelta}
+ R(n)=\frac{\prod_{i=1}^u(a_i n)!}{\prod_{j=1}^v(b_j n)!},\qquad
+ \Delta(x)=\sum_{i=1}^u\floor{a_i x}-\sum_{j=1}^v\floor{b_j x},
+ \qquad h=v-u.
+\end{equation}
+The integer $h$ is the height. The balance condition makes $\Delta$
+periodic with period one, since the terms linear in an integer
+translation cancel. It is a right-continuous integer-valued step
+function. Put $M=\max(a_i,b_j)$.
+
+For a prime $p$, $\vp(q)$ denotes its exponent in a nonzero rational
+number $q$; it may be negative. Counting the multiples of $p,p^2,\ldots$
+in a factorial gives
+\begin{equation}\label{eq:legendre}
+ \vp(N!)=\sum_{e\geq1}\floor{N/p^e},
+ \qquad
+ \vp(R(n))=\sum_{e\geq1}\Delta(n/p^e).
+\end{equation}
+All these sums are finite. A nonzero rational number is an integer if
+and only if all its prime valuations are nonnegative.
+
+\begin{lemma}[One-variable Landau criterion]\label{lem:landau}
+Under \eqref{eq:balance}, $R(n)\in\Z$ for every $n\geq0$ if and only if
+$\Delta(x)\geq0$ for every real $x$.
+\end{lemma}
+\begin{proof}
+Nonnegativity gives integrality immediately from \eqref{eq:legendre}.
+Conversely, suppose $\Delta$ is negative somewhere. Right continuity
+and the finite set of discontinuities in a period give a nonempty open
+interval $(\alpha,\beta)\subset(0,1)$ on which it is negative. Choose
+an arbitrarily large prime $p$ and an integer $n$ with
+$\alpha<n/p<\beta$; such an $n$ exists once $p(\beta-\alpha)>1$.
+For $p>M$ we have $0\leq n/p^e<1/M$ for $e\geq2$. On this last
+interval every floor in \eqref{eq:RDelta} is zero. Thus
+$\vp(R(n))=\Delta(n/p)<0$, contradicting integrality. Periodicity
+handles every real $x$.
+\end{proof}
+This is the relevant specialization of Landau's theorem; Bober gives
+its general setting and consequences \cite[Section 3]{bober}. Bala's
+note supplies a direct proof for $A$ and its floor-factorial extension
+\cite{bala-note}.
+
+\subsection{Reflection and jumps}
+For $k\geq1$, define
+\begin{equation}\label{eq:J}
+ J(k)=\#\{i:k\mid a_i\}-\#\{j:k\mid b_j\}.
+\end{equation}
+If $(t,k)=1$, the jump at $t/k$ is
+\begin{equation}\label{eq:jump}
+ \Delta(t/k)-\Delta((t/k)^-)=J(k).
+\end{equation}
+Indeed, $\floor{c x}$ increases at $t/k$ precisely when $k\mid c$.
+Here $\Delta(x^-)$ is the value just to the left of $x$; the value just
+to the right is $\Delta(x)$ itself.
+
+Away from the discontinuities,
+\begin{equation}\label{eq:reflection}
+ \Delta(x)+\Delta(1-x)=h.
+\end{equation}
+To see this, use $\floor{c x}+\floor{c(1-x)}=c-1$ when $cx$ is not
+an integer and sum over the parameter lists. At a reduced rational
+point the endpoint version is
+\begin{align}
+ \Delta(t/k)+\Delta(1-t/k)&=h+J(k),\label{eq:refRight}\\
+ \Delta((t/k)^-)+\Delta((1-t/k)^-)&=h-J(k).\label{eq:refLeft}
+\end{align}
+These follow either by counting the integral $cx$ separately or by
+subtracting the two jumps. The formulas remain valid at integers by
+periodicity.
+
+\begin{corollary}\label{cor:01}
+For an integral balanced ratio of height one, every value and one-sided
+value of $\Delta$ belongs to $\{0,1\}$, and $J(k)\in\{-1,0,1\}$.
+\end{corollary}
+\begin{proof}
+At a point avoiding the discontinuities, the two nonnegative integers
+in \eqref{eq:reflection} have sum one. Right continuity gives the same
+range at every point, and left limits have the same range. Equation
+\eqref{eq:jump} then bounds the jumps.
+\end{proof}
+
+\section{A complete criterion for polynomials with rational roots}
+\subsection{The one-sided capacity}
+Every nonzero polynomial in $\Z[X]$ that splits over $\Q$ can be written
+\begin{equation}\label{eq:Pfactor}
+ P(X)=c\prod_{j=1}^s(k_jX+\ell_j)^{m_j},
+\end{equation}
+where $c\in\Z\setminus\{0\}$, $k_j>0$, $(k_j,\ell_j)=1$, $m_j\geq1$,
+and the roots $-\ell_j/k_j$ are pairwise distinct. This is primitive
+factorization over $\Z$ after collecting equal roots. Write
+$d=\sum_jm_j$. A constant polynomial is allowed by taking $s=0$.
+
+For $\ell\ne0$, define the capacity
+\begin{equation}\label{eq:capacity}
+ \kappa_R(k,\ell)=
+ \begin{cases}
+ \displaystyle\min_{\substack{1\leq t\leq k\\(t,k)=1}}
+       \Delta((t/k)^-),&\ell>0,\\[2ex]
+ \displaystyle\min_{\substack{1\leq t\leq k\\(t,k)=1}}
+       \Delta(t/k),&\ell<0.
+ \end{cases}
+\end{equation}
+For $k=1$, the only representative is $t=1$; thus the left capacity is
+$h$ and the right capacity is zero. We also set the capacity of the
+primitive zero-root factor $X$ equal to zero.
+
+The sign matters. A positive offset $kn+\ell$ forces $n/p^e$ to
+approach a reduced rational point from the left. A negative offset
+forces approach from the right. The size of $|\ell|$ affects the
+exceptional small prime powers, but not the capacity.
+
+\begin{theorem}[Polynomial divisibility criterion]\label{thm:criterion}
+Assume $R$ is balanced and integral. For $P$ as in \eqref{eq:Pfactor},
+the following are equivalent:
+\begin{enumerate}[label=(\roman*),itemsep=2pt]
+\item There is a positive integer $C$ such that
+$CR(n)/P(n)\in\Z$ for every $n\geq0$ with $P(n)\ne0$.
+\item The polynomial has no zero root and
+$m_j\leq\kappa_R(k_j,\ell_j)$ for every $j$.
+\end{enumerate}
+When (ii) holds and $s>0$, one valid choice is
+\begin{equation}\label{eq:Cbound}
+ C=|c|\LL_T^{\,d},\qquad
+ T=\max\left(1,\ M\max_j|\ell_j|,
+    \max_{i<j}|k_i\ell_j-k_j\ell_i|\right),
+\end{equation}
+with the last maximum omitted if $s=1$.
+For $s=0$, $C=|c|$ works.
+\end{theorem}
+
+\subsection{Proof of sufficiency}
+We isolate the large-prime-power part of the proof.
+
+\begin{lemma}\label{lem:large}
+Suppose $\ell\ne0$, $(k,\ell)=1$, and $q=p^e>M|\ell|$. If
+$q\mid kn+\ell$ and $kn+\ell\ne0$, then
+\[
+ \Delta(n/q)\geq\kappa_R(k,\ell).
+\]
+\end{lemma}
+\begin{proof}
+If $p\mid k$, then $p\nmid\ell$, so divisibility is impossible.
+Otherwise put $kn+\ell=tq$. Since $q>|\ell|$ and $n\geq0$, a nonzero
+multiple $tq=kn+\ell$ cannot be negative; hence $t\geq1$.
+Reducing modulo $k$ gives $(t,k)=1$, since both $q$ and $\ell$ are
+coprime to $k$. We have
+\begin{equation}\label{eq:approach}
+ \frac{n}{q}=\frac{t}{k}-\frac{\ell}{kq}.
+\end{equation}
+Every discontinuity of $\Delta$ has the form $v/a_i$ or $v/b_j$.
+A discontinuity different from $t/k$ is at distance at least
+$1/(kM)$: a nonzero difference of these rational numbers has numerator
+at least one after placing it over denominator $ka_i$ or $kb_j$.
+The displacement in \eqref{eq:approach} is strictly smaller than this.
+Thus $\Delta(n/q)$ equals the left value at $t/k$ if $\ell>0$, and
+the right value if $\ell<0$. Periodicity reduces $t$ to the
+representatives in \eqref{eq:capacity}.
+\end{proof}
+
+\begin{proof}[Sufficiency in Theorem~\ref{thm:criterion}]
+Let $Q(X)=\prod_j(k_jX+\ell_j)^{m_j}$. For a prime power $q$, put
+\[
+ E_q(n)=\sum_{j=1}^s m_j\ind_{q\mid k_jn+\ell_j}.
+\]
+If $q>T$, it cannot divide two distinct primitive factors. Otherwise
+it would divide the nonzero integer
+$k_i\ell_j-k_j\ell_i$, whose absolute value is at most $T$.
+Consequently, for $q>T$, either $E_q(n)=0$ or exactly one root
+contributes, with its multiplicity $m_j$. Lemma~\ref{lem:large} and
+(ii) give
+\begin{equation}\label{eq:termwiseHigh}
+ \Delta(n/q)-E_q(n)\geq0\qquad(q>T).
+\end{equation}
+For $q\leq T$, Landau nonnegativity and $E_q(n)\leq d$ give the lower
+bound $-d$. Therefore, for every prime $p$,
+\begin{align*}
+ \vp(R(n)/Q(n))
+ &=\sum_{e\geq1}\bigl(\Delta(n/p^e)-E_{p^e}(n)\bigr)\\
+ &\geq-d\#\{e\geq1:p^e\leq T\}
+ =-d\vp(\LL_T).
+\end{align*}
+This proves $\LL_T^dR(n)/Q(n)\in\Z$. Since $P=cQ$, multiplying
+by $|c|$ only adds the harmless sign $|c|/c$. No unproved assertion
+about an infinite computational range enters the argument.
+\end{proof}
+
+\subsection{Proof of necessity}
+The converse explains why the allowed slopes are restrictive.
+
+\begin{proof}[Necessity in Theorem~\ref{thm:criterion}]
+First suppose $P$ has a zero root. Primitivity makes its factor $X$.
+For any sufficiently large prime $p$, take $n=p$. Then
+$\Delta(n/p)=\Delta(1)=0$, and $\Delta(n/p^e)=0$ for $e\geq2$.
+Hence $\vp(R(p))=0$, while $p\mid P(p)$, except for finitely many
+$p$ that could make $P(p)=0$. No fixed multiplier can supply every
+such prime.
+
+Now fix a nonzero root with primitive factor $kX+\ell$, multiplicity
+$m$, and capacity $\kappa<m$. Choose a reduced representative $t/k$
+at which the relevant one-sided value is $\kappa$. Dirichlet's theorem
+provides infinitely many primes in the progression
+\begin{equation}\label{eq:dirichletclass}
+ p\equiv \ell\,t^{-1}\pmod k;
+\end{equation}
+this is an eligible class because $(t,k)=(\ell,k)=1$. For $k=1$, it
+means all primes. We use only the infinitude assertion of Dirichlet's
+theorem \cite[Theorem 4.2]{kedlaya}.
+
+For such a sufficiently large prime set
+\begin{equation}\label{eq:witnessn}
+ n=\frac{tp-\ell}{k}.
+\end{equation}
+Then $n$ is a nonnegative integer and $kn+\ell=tp$. Taking $p>k$
+ensures $p\nmid t$, so the factor has valuation exactly one, and its
+$m$th power contributes $m$ to $\vp(P(n))$. As $p$ tends to infinity,
+$n/p=t/k-\ell/(kp)$ approaches from the required side; thus
+$\Delta(n/p)=\kappa$ eventually. For all sufficiently large $p$,
+$Mn<p^2$, so every term with $e\geq2$ vanishes. It follows that
+\[
+ \vp(R(n))=\kappa<m\leq\vp(P(n)).
+\]
+The values \eqref{eq:witnessn} tend to infinity, so finitely many zeros
+of $P$ do not obstruct the construction. Infinitely many different
+primes appear in reduced denominators of $R(n)/P(n)$, ruling out every
+fixed nonzero multiplier.
+\end{proof}
+
+\subsection{Consequences and computational meaning}
+The criterion is effective. All relevant values of $\Delta$ and all
+jumps can be computed with exact integer or rational arithmetic. It
+separates the problem into two very different tasks: deciding whether
+\emph{some} multiplier exists, and finding the \emph{least} multiplier.
+The first is answered by a finite root-by-root test. The second must
+account for compensation between valuation contributions at different
+powers of the same small prime.
+
+The multiplicity condition is also essential. The fact that a sequence
+is divisible by one linear expression, up to a fixed constant, does
+not imply the same for its square. Higher-height ratios can support
+larger multiplicities: for example $A(n)^2$ supports $(2n+1)^2$, but
+not $(2n+1)^3$. This follows either from the theorem or from doubling
+the Landau function.
+
+\section{The height-one simplification}
+\begin{theorem}[Jump-sign classification]\label{thm:heightone}
+Suppose $R$ is balanced, integral, and of height one. For a primitive
+factor $kX+\ell$ with $\ell\ne0$, its capacity is one exactly when
+\begin{equation}\label{eq:signcriterion}
+ J(k)=-1\quad\hbox{if }\ell>0,
+ \qquad
+ J(k)=+1\quad\hbox{if }\ell<0.
+\end{equation}
+Otherwise its capacity is zero. Thus the admissible polynomials are
+exactly those with distinct nonzero roots whose primitive factors
+satisfy \eqref{eq:signcriterion}.
+\end{theorem}
+\begin{proof}
+By Corollary~\ref{cor:01}, every value is zero or one. If $J(k)=-1$,
+then \eqref{eq:jump} forces the left value to be one and the right value
+to be zero at \emph{every} reduced $t/k$. Conversely, if all left
+values are one, pair $t/k$ with $1-t/k$ in \eqref{eq:refLeft}. Their
+sum is two, so $1-J(k)=2$ and $J(k)=-1$.
+The same argument with \eqref{eq:refRight} proves that all right
+values are one exactly when $J(k)=+1$. This includes the self-paired
+points and $k=1$, so no endpoint exception is needed. All capacities
+are at most one, and Theorem~\ref{thm:criterion} finishes the proof.
+\end{proof}
+
+\subsection{Cyclotomic interpretation}
+Let $\Phi_k(z)$ be the $k$th cyclotomic polynomial. Factorization of
+$z^m-1$ gives the rational-function identity
+\begin{equation}\label{eq:cyclo}
+ \frac{\prod_i(z^{a_i}-1)}{\prod_j(z^{b_j}-1)}
+ =\prod_{k\geq1}\Phi_k(z)^{J(k)}.
+\end{equation}
+Only finitely many exponents are nonzero. At height one the allowed
+positive-offset denominators are exactly the cyclotomic factors
+remaining downstairs after cancellation in \eqref{eq:cyclo}; the
+allowed negative-offset denominators are those remaining upstairs.
+This is an interpretation of the proved criterion, not an additional
+monodromy assumption.
+
+For the binomial example $R(n)=\binom{2n}{n}$, the sets are
+$\{1\}$ and $\{2\}$. Accordingly, fixed products of distinct
+$n+i$ can be divided out up to constants, as can fixed products of
+distinct $2n-i$ with $i$ odd, but a repeated such root is impossible.
+For the 52 sporadic ratios, Appendix~\ref{app:atlas} computes the two
+sets explicitly from their parameter lists.
+
+\section{Resolution of the uniform-product conjectures}
+\subsection{The two exact slope lists}
+For $A$, direct cancellation in \eqref{eq:cyclo} gives
+\begin{equation}\label{eq:cycloA}
+ \frac{(z^{30}-1)(z-1)}{(z^{15}-1)(z^{10}-1)(z^6-1)}
+ =\frac{\Phi_{30}(z)}{\Phi_1(z)\Phi_2(z)\Phi_3(z)\Phi_5(z)}.
+\end{equation}
+For $B$,
+\begin{equation}\label{eq:cycloB}
+ \frac{(z^{12}-1)(z-1)}{(z^6-1)(z^4-1)(z^3-1)}
+ =\frac{\Phi_{12}(z)}{\Phi_1(z)\Phi_2(z)\Phi_3(z)}.
+\end{equation}
+These identities prove the slope lists announced in Section 1, provided
+integrality is known. For completeness, it can be checked particularly
+simply here. On the grid interval $j/30\leq x<(j+1)/30$,
+\[
+ \Delta_A(x)=j-\floor{j/2}-\floor{j/3}-\floor{j/5},\quad 0\leq j<30.
+\]
+The three subtracted floors have sum at most
+$\floor{31j/30}=j$. This proves nonnegativity and hence integrality
+of $A$. For $B$ the corresponding formula is
+\[
+ \Delta_B(x)=j-\floor{j/2}-\floor{j/3}-\floor{j/4},\quad 0\leq j<12,
+\]
+and the sum is at most $\floor{13j/12}=j$. Height one then gives the
+upper bound one in each case.
+
+\begin{corollary}\label{cor:classificationAB}
+Let $P\in\Z[X]\setminus\{0\}$ split over $\Q$. There exists a fixed
+positive integer $C$ with $CA(n)/P(n)\in\Z$ wherever defined on
+$\Z_{\geq0}$ if and only if $P$ has distinct nonzero roots, every
+negative root in lowest terms has denominator $1,2,3$, or $5$, and
+every positive root in lowest terms has denominator $30$.
+For $B$, replace these lists by $1,2,3$ and $12$.
+\end{corollary}
+
+\subsection{Sharper explicit bounds for the prescribed products}
+The general bound \eqref{eq:Cbound} already establishes existence.
+The grid structure gives the cleaner formulas
+\eqref{eq:explicitC}--\eqref{eq:explicitD}.
+
+\begin{proposition}\label{prop:positive}
+For $k\in\{2,3,5\}$, let $I=\{1\leq i\leq r:(i,k)=1\}$ and
+$m=|I|$. Then the multiplier $\LL_{30r/k}^{m}$ works for
+$A(n)/\prod_{i\in I}(kn+i)$.
+\end{proposition}
+\begin{proof}
+If $q=p^e>30r/k$ divides $kn+i$, then $p\nmid k$ and
+$n/q=t/k-i/(kq)$ with $(t,k)=1$. The left grid interval of width
+$1/30$ at $t/k$ has $\Delta_A=1$, since $J_A(k)=-1$. The displacement
+is smaller than $1/30$, so $\Delta_A(n/q)=1$.
+Moreover, $q>r$ cannot divide two factors, since their difference is
+a nonzero integer $i-j$ of absolute value less than $r$.
+For smaller $q$ the total deficit is at worst $m$. The same valuation
+sum used in Theorem~\ref{thm:criterion} gives the proposed multiplier.
+\end{proof}
+
+\begin{proposition}\label{prop:negative}
+Let $(R,M)$ be either $(A,30)$ or $(B,12)$ and let
+$I=\{1\leq i\leq r:(i,M)=1\}$. Then
+\begin{equation}\label{eq:negativeboth}
+ \LL_r^{|I|}\frac{R(n)}{\prod_{i\in I}(Mn-i)}\in\Z
+ \qquad(n\geq0).
+\end{equation}
+\end{proposition}
+\begin{proof}
+No denominator factor is zero, since $i$ is coprime to $M>1$.
+If $q>r$ divides $Mn-i$, then $p\nmid M$ and
+$n/q=t/M+i/(Mq)$ with $(t,M)=1$. The right grid interval of width
+$1/M$ at $t/M$ has value one, because $J_R(M)=+1$. Hence the
+corresponding Landau term pays for this divisor. Two factors cannot
+both be divisible by $q>r$, because their difference has absolute
+value less than $r$. The low prime powers contribute a deficit of at
+most $|I|$ each, exactly as before.
+\end{proof}
+For $r=1$ the multiplier is one. Thus the proposition recovers the
+previously proved $A(n)/(30n-1)$ theorem without depending on its proof.
+The purpose of the proposition is its uniform extension to every $r$.
+Negative values at $n=0$ cause no problem: divisibility and valuations
+use the absolute value of a nonzero denominator.
+
+\subsection{Removing a restriction on positive offsets}
+For $R=A$ and $k\in\{1,2,3,5\}$, or for $R=B$ and
+$k\in\{1,2,3\}$, consider the unrestricted product
+\[
+ P_{k,r}(n)=\prod_{i=1}^r(kn+i).
+\]
+Put $g_i=(k,i)$ and reduce its factors to
+$(k/g_i)n+i/g_i$. Their roots are still distinct, and their reduced
+slopes divide $k$. Every such divisor is in the corresponding
+positive-offset list. Consequently a uniform multiplier exists.
+A fully explicit choice, with $M=30$ or $12$ respectively, is
+\begin{equation}\label{eq:unrestricted}
+ \left(\prod_{i=1}^r g_i\right)\LL_{Mr}^{r}.
+\end{equation}
+Indeed, the primitive offsets have absolute value at most $r$, and
+their pairwise resultants are
+$k(j-i)/(g_i g_j)$, of absolute value less than $kr\leq Mr$.
+Theorem~\ref{thm:criterion} applies, with the product of the $g_i$
+accounting for the content of the polynomial.
+
+In contrast, the negative-offset coprimality restrictions are
+structural. Reducing $30n-i$ when $(30,i)>1$ gives a proper divisor of
+$30$ as its slope, none of which is in the negative-offset list for
+$A$. A uniform multiplier for that one factor is impossible. The same
+statement holds for $12n-i$ and $B$.
+
+\subsection{An explicit infinite obstruction family}
+The slope $4$ is not allowed for positive offsets of $A$. This failure
+can be exhibited without relying on a table of numerical experiments.
+Let $p>30$ be a prime with $p\equiv3\pmod4$, and set
+\[
+ n=\frac{3p-1}{4}.
+\]
+Then $4n+1=3p$, whereas
+$n/p=3/4-1/(4p)$ lies in $[22/30,23/30)$, where $\Delta_A=0$.
+Also $30n<p^2$ for $p>30$, so all higher valuation terms vanish.
+Thus $\vp(A(n))=0$ while $p\mid4n+1$. Infinitely many distinct such
+primes exist, so no constant clears all denominators of $A(n)/(4n+1)$.
+The first example in this family is $p=31$, $n=23$.
+
+\section{Exact optimal multipliers by finite certificates}\label{sec:sharp}
+\subsection{Why checking a large interval is not enough}
+The large-prime-power proof gives a constant, but not necessarily the
+smallest one. It is not valid to maximize the deficit at each exponent
+independently and claim that the resulting sum is sharp: residues
+at $p,p^2,p^3,\ldots$ are coupled by the base-$p$ digits of $n$.
+For instance, an unfavorable contribution at $p$ can force a favorable
+contribution at $p^2$ or later. This is why some quotients above need
+no multiplier even though an individual Landau summand can fail to
+cover the denominator at a small prime power.
+
+We encode all possible digit continuations in a finite directed graph.
+Its integer edge weights add to the exact valuation, not to a floating
+point approximation. A feasible potential on the graph proves a lower
+bound for every possible $n$ simultaneously.
+
+\subsection{The state and transition rules}
+For this section let $R=A$ or $B$, let $L=30$ or $12$ respectively,
+and let
+\[
+ Q(n)=\prod_{k\in K}(kn+1),
+\]
+where $K$ is one of the eight slope sets in the result table. Write
+$\delta(j)=\Delta_R(j/L)$ for $0\leq j<L$.
+Process a base-$p$ expansion of $n$ from least significant digit to
+most significant digit. After $e$ digits, let
+$r_e=n\bmod p^e$ and set
+\[
+ j_e=\floor{Lr_e/p^e}.
+\]
+Because every factorial parameter divides $L$, the valuation summand
+$\Delta_R(n/p^e)$ equals $\delta(j_e)$.
+
+A factor $kn+1$ is called alive after $e$ digits when $p^e\mid kr_e+1$.
+For an alive factor retain the integer carry
+\[
+ t_{k,e}=(kr_e+1)/p^e.
+\]
+Its possible values are $1,\ldots,k$. Once a factor is not alive,
+it can never be alive again, since divisibility by $p^{e+1}$ implies
+divisibility by $p^e$. Mark it by $\bot$ and forget its carry.
+The initial state is
+\[
+ s_0=(0,1,\ldots,1).
+\]
+If the next digit is $d\in\{0,\ldots,p-1\}$, the next state satisfies
+\begin{equation}\label{eq:digitJ}
+ j'=\floor{(j+Ld)/p},
+\end{equation}
+and for each factor
+\begin{equation}\label{eq:digitCarry}
+ t'_k=
+ \begin{cases}
+ (t_k+kd)/p,&t_k\ne\bot\ \hbox{and }p\mid t_k+kd,\\
+ \bot,&\hbox{otherwise}.
+ \end{cases}
+\end{equation}
+To verify \eqref{eq:digitJ}, write $Lr_e/p^e=j+\varepsilon$ with
+$0\leq\varepsilon<1$; dividing $j+Ld+\varepsilon$ by the integer $p$
+does not alter the floor obtained from $j+Ld$.
+The carry formula follows by replacing $r_e$ with $r_e+d p^e$.
+
+Give this transition the weight
+\begin{equation}\label{eq:edgeweight}
+ w(s,d)=\delta(j')-\#\{k\in K:t'_k\ne\bot\}.
+\end{equation}
+Reading all the digits of $n$ and then enough zero digits reaches
+\[
+ s_*=(0,\bot,\ldots,\bot).
+\]
+Indeed $j_e=0$ when $p^e>Ln$, and no positive integer $kn+1$ is
+divisible by every power of $p$. The terminal state remains fixed under
+further zero digits and has zero edge weight. Equations
+\eqref{eq:legendre} and \eqref{eq:edgeweight} show that the sum along
+this finite path is exactly
+\begin{equation}\label{eq:pathvalue}
+ \vp(R(n)/Q(n)).
+\end{equation}
+
+\subsection{Potential certificates}
+\begin{proposition}[Finite certificate rule]\label{prop:potential}
+Let $S$ be a finite collection of states containing $s_0$ and $s_*$ and
+closed under every digit transition. Suppose an integer function
+$H:S\to\Z$ satisfies
+\begin{equation}\label{eq:potential}
+ H(s_*)=0,\qquad H(s)\leq w(s,d)+H(s')
+ \quad\hbox{for every }s\in S\hbox{ and every digit }d.
+\end{equation}
+Then $\vp(R(n)/Q(n))\geq H(s_0)$ for every $n\geq0$.
+If some explicit $n_0$ has valuation $H(s_0)$, the lower bound is sharp.
+\end{proposition}
+\begin{proof}
+Apply the edge inequality successively along the path for $n$ described
+above. The intermediate values of $H$ telescope, leaving
+$H(s_0)\leq\sum w+H(s_*)=\vp(R(n)/Q(n))$. An equality witness proves
+that no larger lower bound is possible.
+\end{proof}
+The generator enumerates reachable states and computes shortest costs
+to the terminal by integer relaxation. This search is \emph{not} trusted
+as the proof: a separate program reads the resulting state list and
+potential and checks every closure condition and inequality in
+\eqref{eq:potential}. It also checks the equality witness directly from
+Legendre's formula. All prime certificates needed for a particular
+quotient are checked for complete coverage.
+
+\subsection{Results of the exact verification}
+For $A$ the general cutoff \eqref{eq:Cbound} is $T=30$ for these
+positive unit offsets; for $B$ it is $T=12$. Thus primes larger than
+these bounds need no certificate: each of their valuation summands is
+nonnegative after subtracting the denominator indicator. Below the
+cutoff the exact minima are as follows. A zero beyond a row's cutoff
+is both a lower bound from the theorem and an attained minimum at $n=0$.
+
+\begin{center}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{lrrrrrrrrrrr}
+\toprule
+$(R;K)$ & $2$&$3$&$5$&$7$&$11$&$13$&$17$&$19$&$23$&$29$&$C_{\min}$\\
+\midrule
+$(A;2)$       &0&0&0&-1&0&0&0&0&0&0&7\\
+$(A;3)$       &0&0&0&0&0&0&0&0&0&0&1\\
+$(A;5)$       &0&0&0&0&0&0&0&0&0&0&1\\
+$(A;2,3,5)$   &-1&-1&0&-1&0&0&0&0&0&0&42\\
+$(B;1)$       &0&0&-1&-1&-1&0&0&0&0&0&385\\
+$(B;2)$       &0&0&-1&0&0&0&0&0&0&0&5\\
+$(B;3)$       &0&0&0&0&0&0&0&0&0&0&1\\
+$(B;1,2,3)$   &-1&0&-1&-1&-1&0&0&0&0&0&770\\
+\bottomrule
+\end{tabular}
+\end{center}
+The headings $2,3,\ldots$ are primes, and the entries are
+$\min_{n\geq0}\vp(R(n)/Q(n))$. The table is not inferred from testing
+an interval: it is the output of the checked finite potentials.
+
+The nonzero lower-bound requirements are all necessary, as witnessed
+by the following small indices:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+$(R;K)$ & Prime & Index with valuation $-1$\\
+\midrule
+$(A;2)$ & $7$ & $10$\\
+$(A;2,3,5)$ & $2,3,7$ & $3,16,10$, respectively\\
+$(B;1)$ & $5,7,11$ & $9,20,10$, respectively\\
+$(B;2)$ & $5$ & $2$\\
+$(B;1,2,3)$ & $2,5,7,11$ & $1,2,20,10$, respectively\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each prime, any valid multiplier must contain that prime to at
+least the indicated deficit. Multiplying these independently necessary
+prime powers gives the least multiplier; the indices need not be the
+same for different primes. This proves optimality of all eight constants.
+
+The delivered certificates comprise \textbf{60 prime graphs, 1,685
+states, and 19,277 checked transition inequalities}. Their compact JSON
+representation contains every state and every potential value, together
+with equality witnesses. The separate verifier recomputes all
+transitions instead of trusting stored edges.
+
+\section{Integer sequences, recurrences, and generating functions}
+\subsection{An integer sequence singled out by the optimal constant}
+Define
+\begin{equation}\label{eq:U}
+ U_n=\frac{42A(n)}{(2n+1)(3n+1)(5n+1)}.
+\end{equation}
+The preceding section proves $U_n\in\Z_{>0}$, with the factor $42$
+minimal for integrality at every $n\geq0$. Its first terms are
+\begin{align*}
+ U_0&=42,\\
+ U_1&=45287852610,\\
+ U_2&=5873158887743776788432,\\
+ U_3&=1645528285131615053352729526247883.
+\end{align*}
+The archive supplies exact terms through $n=50$. We make no assertion
+that this sequence lacks an existing OEIS entry; the contribution here
+is its proved uniform integrality and optimal normalization.
+
+For an arbitrary polynomial divisor $P$ covered by our theorem,
+$u_n=CR(n)/P(n)$ has the explicit first-order recurrence
+\begin{equation}\label{eq:genericrecurrence}
+ \frac{u_{n+1}}{u_n}
+ =\frac{P(n)}{P(n+1)}
+ \frac{\displaystyle\prod_{i=1}^u\prod_{t=1}^{a_i}(a_i n+t)}
+      {\displaystyle\prod_{j=1}^v\prod_{t=1}^{b_j}(b_j n+t)}.
+\end{equation}
+Cross-multiplication gives a recurrence with polynomial coefficients.
+This follows directly by canceling consecutive factorials and is
+valid wherever the quotient is defined. In our admissible cases
+$P$ has no nonnegative integer root, so there is no missing index.
+
+\subsection{A hypergeometric representation}
+Set
+\[
+ \lambda=2^{14}3^9 5^5,
+ \qquad
+ \alpha=\frac1{30}(1,7,11,13,17,19,23,29),
+\]
+and let the seven denominator parameters be
+\[
+ \beta=\left(\frac12,\frac13,\frac23,
+                    \frac15,\frac25,\frac35,\frac45\right).
+\]
+Cancellation of the linear factors in $A(n+1)/A(n)$ gives
+\begin{equation}\label{eq:Apock}
+ A(n)=\lambda^n\frac{\prod_{a\in\alpha}(a)_n}
+                         {n!\prod_{b\in\beta}(b)_n},
+\end{equation}
+where $(a)_n=a(a+1)\cdots(a+n-1)$ and $(a)_0=1$.
+One can verify the identity without invoking the gamma multiplication
+formula: both sides have value one at $n=0$ and the same ratio of
+successive terms. It is also consistent with the hypergeometric
+description in A211417 \cite{oeisA}.
+
+The elementary identity
+\[
+ \frac{1}{kn+1}=\frac{(1/k)_n}{(1+1/k)_n}
+\]
+shows that dividing by the three factors in \eqref{eq:U} shifts three
+denominator parameters. Define
+\[
+ \beta'=\left(\frac32,\frac43,\frac23,
+                      \frac65,\frac25,\frac35,\frac45\right).
+\]
+Then
+\begin{equation}\label{eq:Upock}
+ U_n=42\lambda^n\frac{\prod_{a\in\alpha}(a)_n}
+                           {n!\prod_{b\in\beta'}(b)_n},
+\end{equation}
+and hence
+\begin{equation}\label{eq:Uhypergeom}
+ G(z):=\sum_{n\geq0}U_nz^n
+ =42\hyp{\frac1{30},\frac7{30},\frac{11}{30},\frac{13}{30},
+             \frac{17}{30},\frac{19}{30},\frac{23}{30},\frac{29}{30}}
+ {\frac32,\frac43,\frac23,\frac65,\frac25,\frac35,\frac45}{\lambda z}.
+\end{equation}
+This is an equality of formal power series, and of analytic functions
+for $|\lambda z|<1$. The coefficients also satisfy the convenient
+recurrence
+\begin{equation}\label{eq:Urec}
+ (n+1)\prod_{b\in\beta'}(n+b)\,U_{n+1}
+ =\lambda\prod_{a\in\alpha}(n+a)\,U_n,\qquad U_0=42.
+\end{equation}
+No recurrence is being used to define an unproved integer sequence:
+integrality has already been established independently.
+
+\subsection{Differential and integral transforms}
+Let $\theta=z\,\mathrm d/\mathrm dz$ and
+$F(z)=\sum_{n\geq0}A(n)z^n$. Coefficient extraction gives
+\begin{equation}\label{eq:Euleroperator}
+ (2\theta+1)(3\theta+1)(5\theta+1)G(z)=42F(z).
+\end{equation}
+Equivalently, within the common disk of convergence,
+\begin{equation}\label{eq:integral}
+ G(z)=42\int_0^1\!\int_0^1\!\int_0^1
+       F(zx^2y^3t^5)\dd x\dd y\dd t.
+\end{equation}
+Termwise integration is justified by absolute convergence, and each
+monomial contributes the three reciprocal factors in \eqref{eq:U}.
+
+The first-order recurrence \eqref{eq:Urec} gives the differential equation
+\begin{equation}\label{eq:hypode}
+ \left[\theta\prod_{b\in\beta'}(\theta+b-1)
+       -\lambda z\prod_{a\in\alpha}(\theta+a)\right]G(z)=0.
+\end{equation}
+For $n\geq1$, its $z^n$ coefficient is just the recurrence with index
+$n-1$; its constant coefficient vanishes due to the initial factor
+$\theta$. Thus $G$ is D-finite. More generally, polynomial division
+of coefficients gives $P(\theta)\sum u_nz^n=C\sum R(n)z^n$.
+These identities make the new integer divisibility statements useful
+for recurrence and generating-function investigations, without needing
+to guess a closed algebraic equation.
+
+\section{All-order asymptotic expansions}
+\subsection{The general factorial-ratio expansion}
+The usual Stirling expansion for $\log\Gamma$, including remainder
+control on the positive real axis, is recorded in DLMF Section 5.11
+\cite{dlmf}. Applying it separately to the finitely many factorials
+in $R(n)$ yields the following explicit form. Let
+\[
+ \Lambda=\frac{\prod_i a_i^{a_i}}{\prod_j b_j^{b_j}},\qquad
+ K_R=(2\pi)^{-h/2}
+       \sqrt{\frac{\prod_i a_i}{\prod_j b_j}},
+\]
+and, with $\mathsf B_{2q}$ the Bernoulli numbers, set
+\begin{equation}\label{eq:sigma}
+ \sigma_{2q-1}=
+ \frac{\mathsf B_{2q}}{2q(2q-1)}
+ \left(\sum_i a_i^{1-2q}-\sum_j b_j^{1-2q}\right).
+\end{equation}
+Then, for any fixed $N\geq1$,
+\begin{equation}\label{eq:logasym}
+ \log R(n)=n\log\Lambda-\frac h2\log n+\log K_R
+ +\sum_{q=1}^{N}\frac{\sigma_{2q-1}}{n^{2q-1}}
+ +O(n^{-2N-1}).
+\end{equation}
+The terms of size $n\log n$ and $n$ cancel by balance, the $\log n$
+terms give $-h/2$, and the remaining terms are exactly those displayed.
+Thus \eqref{eq:logasym} is a Poincare expansion to any prescribed order,
+not a claim that its infinite series converges.
+
+Suppose $P$ has degree $d$, positive leading coefficient $\rho$, and
+factorization \eqref{eq:Pfactor} with all roots nonzero. For sufficiently
+large $n$, it is positive. Write
+\[
+ S_j=\sum_{i=1}^s m_i(\ell_i/k_i)^j.
+\]
+Expanding the finitely many logarithms in
+$P(n)=\rho n^d\prod_i(1+\ell_i/(k_i n))^{m_i}$ gives
+\begin{equation}\label{eq:polylog}
+ \log P(n)=\log\rho+d\log n
+ +\sum_{j=1}^N\frac{(-1)^{j+1}S_j}{j n^j}
+ +O(n^{-N-1}).
+\end{equation}
+Subtracting \eqref{eq:polylog} from \eqref{eq:logasym} proves an
+all-order expansion for every integer sequence constructed here.
+For example the first two correction terms are
+\begin{equation}\label{eq:genericfirst}
+ \frac{CR(n)}{P(n)}
+ =\frac{CK_R}{\rho}\Lambda^n n^{-d-h/2}
+ \left[1+\frac{\sigma_1-S_1}{n}
+ +\frac{(\sigma_1-S_1)^2+S_2}{2n^2}+O(n^{-3})\right].
+\end{equation}
+For a negative leading coefficient, the same assertion holds with its
+sign restored; the logarithmic derivation is applied to $|P(n)|$.
+
+\subsection{The expansion for the certified sequence}
+For $A$ one obtains
+\[
+ K_A=\frac1{\sqrt{60\pi}},\qquad \Lambda=\lambda,
+ \qquad \sigma_1=\frac7{120}.
+\]
+In \eqref{eq:U}, $d=3$, $\rho=30$,
+\[
+ S_1=\frac12+\frac13+\frac15=\frac{31}{30},\qquad
+ S_2=\frac14+\frac19+\frac1{25}=\frac{361}{900}.
+\]
+Therefore
+\begin{equation}\label{eq:Uasym}
+ \boxed{\displaystyle
+ U_n=\frac{7}{5\sqrt{60\pi}}\,
+       \frac{\lambda^n}{n^{7/2}}
+       \left(1-\frac{39}{40n}+\frac{3893}{5760n^2}
+       +O(n^{-3})\right).}
+\end{equation}
+All further coefficients are obtained by the explicit rational
+operations in \eqref{eq:sigma}--\eqref{eq:polylog}. For $B$, the analogous
+base constants are $\Lambda=2^{10}3^3$, $K_B=1/\sqrt{12\pi}$,
+and $\sigma_1=1/36$. The method therefore gives comparably explicit
+expansions for every companion sequence in the sharp-constant table.
+
+\section{Verification record, limitations, and next questions}
+\subsection{What was actually checked}
+The archive contains two different kinds of computational work.
+The finite certificates are part of the proof of the exact constants;
+the regression tests merely provide additional protection against
+implementation and transcription errors. The separate certificate
+checker completed successfully for all 60 graphs, all 1,685 states,
+and all 19,277 transition inequalities, including prime coverage and
+sharpness witnesses.
+
+The supplementary tests passed 90,298 comparisons between two forms
+of the Landau step function, 808 direct rational checks of the eight
+sharp quotients, and 480,048 small-prime valuation checks over
+$0\leq n\leq10,000$. They also passed 3,336 direct checks of the
+explicit uniform-product bounds, 4,000 valuation checks at reproducibly
+sampled 256-bit indices, and 668 classification checks. The random
+seed was 20260919. A further 203 exact checks verify the hypergeometric
+recurrences and the first asymptotic coefficients. These tests are recorded in
+\texttt{data/test\_results.json}; they are not cited as substitutes for
+Theorem~\ref{thm:criterion}.
+
+Every sporadic parameter list in the atlas was separately checked for
+balance, height one, and nonnegativity at all rational breakpoints of
+its Landau function. The atlas's parameter order follows Coserea's
+OEIS table \cite{coserea}. The derived jump-sign columns are generated
+from \eqref{eq:J}, not inferred from a finite list of sequence values.
+
+\subsection{Limits of the conclusions}
+The polynomial criterion applies to polynomials splitting over $\Q$.
+It does not classify arbitrary irreducible quadratic or higher-degree
+polynomials. Nor does the height-one sign rule extend unchanged to
+higher height: there one must use the actual capacities in
+\eqref{eq:capacity}, and multiplicities greater than one may occur.
+The bound \eqref{eq:Cbound} is uniform and constructive, but often much
+larger than the minimum; optimal constants for general products remain
+a useful computational problem.
+
+No Lean formalization was produced or run. The general proofs are
+written in conventional mathematics, and the finite-graph certificates
+are checked by ordinary exact-integer Python code. There is no reliance
+on floating-point root finding, numerical asymptotics, or a conjectured
+recurrence in the proof of integrality. A Lean development could split
+naturally into the valuation identity, rational one-sided step lemmas,
+the prime-power cutoff argument, and a generic finite-potential checker.
+
+\subsection{Research directions arising from the proof}
+A natural continuation is to classify nonsplit polynomial divisors.
+Our necessity proof realizes prescribed rational approach points by
+primes in arithmetic progressions. For higher-degree factors, roots
+modulo primes and their distribution take the place of these simple
+progressions, so the rational-root proof cannot simply be copied.
+
+A second question is the behavior, as $r$ grows, of the \emph{optimal}
+uniform multipliers for the two product families. The explicit lcm
+bounds settle existence but do not predict the exact small-prime
+exponents. The finite-state method suggests an effective route for
+fixed $r$, with a separate challenge of controlling the state space
+uniformly in $r$. Finally, the newly certified sequences invite
+combinatorial models that would explain their integrality without
+prime valuations; no such interpretation is assumed here.
+
+\appendix
+\section{Admissible denominators for all 52 sporadic ratios}\label{app:atlas}
+In the following table, $a$ and $b$ are the numerator and denominator
+parameter lists of $R(n)$. The column $K_-$ contains the $k$ with
+$J(k)=-1$ and therefore describes primitive factors $kn+i$, $i>0$,
+$(i,k)=1$. The column $K_+$ contains $J(k)=+1$ and describes $kn-i$.
+The signs refer to jumps, not to the sign of the offset. Every allowed
+root must still be simple. The parameter data are transcribed from
+Coserea's table \cite{coserea}; the two $K$ columns are calculations
+from Theorem~\ref{thm:heightone}. Row 1 is $B$ and row 31 is $A$.
+
+\small
+\begin{longtable}{rllll}
+\toprule
+Index & $a$ & $b$ & $K_-$ & $K_+$\\
+\midrule
+\endfirsthead
+\toprule
+Index & $a$ & $b$ & $K_-$ & $K_+$\\
+\midrule
+\endhead
+\midrule\multicolumn{5}{r}{\small Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+\input{data/atlas_table.tex}
+\end{longtable}
+\normalsize
+
+\Needspace{10\baselineskip}
+\section{Reproducing the certificates and data}
+The implementation requires Python 3.10 or later and uses only the
+standard library. From the archive root, run
+\Needspace{5\baselineskip}
+\begin{lstlisting}[language=bash]
+python code/verify_certificates.py
+python code/test_research.py
+\end{lstlisting}
+The first command checks the supplied finite certificates without
+calling the generator. To regenerate all finite graphs, equality
+witnesses, sequence terms, and the atlas, run
+\Needspace{5\baselineskip}
+\begin{lstlisting}[language=bash]
+python code/generate_artifacts.py
+python code/verify_certificates.py
+\end{lstlisting}
+The checker deliberately raises an error if any state set is not
+closed, any transition violates its potential inequality, a required
+prime is missing, or a sharpness witness fails its direct valuation
+calculation. The large-prime assertion is supplied by the proved
+cutoff theorem and is not implemented as a search up to an arbitrary
+prime bound.
+
+The central library also exposes \texttt{Ratio}, \texttt{Factor},
+\texttt{classify}, \texttt{one\_sided\_capacity}, and
+\texttt{effective\_bound}. For example:
+\Needspace{5\baselineskip}
+\begin{lstlisting}[language=Python]
+from factorial_divisibility import A, Factor, classify, effective_bound
+
+assert classify(A, (Factor(2, 1), Factor(3, 1), Factor(5, 1)))
+assert not classify(A, (Factor(4, 1),))
+assert not classify(A, (Factor(2, 1, multiplicity=2),))
+cutoff, valid_multiplier = effective_bound(A, (Factor(2, 1),))
+# The returned multiplier is a proved bound, not necessarily minimal.
+\end{lstlisting}
+When using the library from the archive root, add \texttt{code/} to
+\texttt{PYTHONPATH}, or run the example from within the code directory.
+Nonprimitive factors must be normalized and their common integer
+content treated separately. Equal roots must be merged by adding
+multiplicities before calling the classifier. This avoids silently
+mistaking two scalar multiples of a factor for two distinct roots.
+
+The article compiles with ordinary pdfLaTeX and standard TeX Live
+packages. Run \texttt{make pdf}, or run \texttt{pdflatex article.tex}
+twice. The two atlas files and the certificate JSON are included, so
+compilation does not require a network connection or regeneration.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{oeisA}
+The OEIS Foundation, \emph{A211417: $(30n)!n!/((15n)!(10n)!(6n)!)$}.
+Comments by Peter Bala dated August 28, 2025; proof-status note by
+Ralf Stephan dated June 30, 2026. Accessed September 19, 2026.
+\url{https://oeis.org/A211417}.
+
+\bibitem{oeisB}
+The OEIS Foundation, \emph{A295431: $(12n)!n!/((6n)!(4n)!(3n)!)$}.
+Uniform-divisibility conjectures by Peter Bala dated August 28, 2025.
+Accessed September 19, 2026. \url{https://oeis.org/A295431}.
+
+\bibitem{bala-note}
+P. Bala, \emph{Proof of the integrality of A211417 and A211418}, April
+2012; revised October 2015.
+\url{https://oeis.org/A211417/a211417_1.txt}.
+
+\bibitem{bober}
+J. W. Bober, \emph{Factorial ratios, hypergeometric series, and a family
+of step functions}, Journal of the London Mathematical Society (2)
+\textbf{79} (2009), 422--444. Preprint arXiv:0709.1977.
+\url{https://arxiv.org/abs/0709.1977}.
+DOI: \href{https://doi.org/10.1112/jlms/jdn078}{10.1112/jlms/jdn078}.
+
+\bibitem{adamczewski}
+T. Adamczewski, \emph{OEIS Open: How many conjectures can language
+models turn into theorems?}, arXiv:2608.11941, August 2026,
+Appendix A, entry A211417.
+\url{https://arxiv.org/abs/2608.11941}.
+
+\bibitem{kedlaya}
+K. S. Kedlaya, \emph{Notes on analytic number theory}, Chapter 4,
+``Primes in arithmetic progressions,'' Theorem 4.2 and its proof.
+\url{https://kskedlaya.org/ant/chap-primes-in-ap.html}.
+Accessed September 19, 2026.
+
+\bibitem{coserea}
+G. Coserea, \emph{Table with the parameters of the 52 sporadic integral
+factorial ratio sequences}, supplementary data for OEIS A295431.
+\url{https://oeis.org/A295431/a295431.txt}.
+Accessed September 19, 2026. Numerical parameter lists are reproduced
+in the accompanying data with attribution; the admissibility columns
+are computed in this work.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, \emph{Section 5.11:
+Asymptotic expansions}, especially formula 5.11.1 and the remainder
+discussion. \url{https://dlmf.nist.gov/5.11}.
+Accessed September 19, 2026.
+\end{thebibliography}
+\end{document}

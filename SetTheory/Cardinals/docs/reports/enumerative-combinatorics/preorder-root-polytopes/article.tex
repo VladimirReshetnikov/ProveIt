@@ -1,0 +1,1143 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{titlesec,fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{Ink}{HTML}{233C53}
+\definecolor{Accent}{HTML}{1F6C6A}
+\definecolor{Pale}{HTML}{F0F5F6}
+\definecolor{Muted}{HTML}{526370}
+\hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
+  pdftitle={A Reflexive Root-Polytope Model for Preorder h-Polynomials},
+  pdfauthor={Research manuscript prepared with ChatGPT},
+  pdfsubject={Proposed proof of the simplicial-polytopal realization conjecture for finite preorders}}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Preorder $h$-polynomials}}
+\fancyhead[R]{\small\textsc{Research manuscript}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb Z_{\geq0}}
+\newcommand{\J}{\mathcal J(\tau)}
+\newcommand{\Qt}{\mathcal Q_\tau}
+\newcommand{\Pt}{P_\tau}
+\newcommand{\Bt}{B_\tau}
+\newcommand{\Ct}{C_\tau}
+\newcommand{\hpoly}{h_\tau(t)}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Ehr}{\operatorname{Ehr}}
+\newcommand{\relint}{\operatorname{relint}}
+\newcommand{\Vol}{\operatorname{Vol}_{\Z}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\ee}{\mathbf e}
+\newcommand{\ff}{\mathbf f}
+\newcommand{\down}{\mathord\downarrow}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+  backgroundcolor=\color{Pale},frame=single,rulecolor=\color{Pale},
+  xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=8pt,belowskip=8pt}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{flushleft}
+{\small\sffamily\bfseries\color{Accent} ORDER THEORY \ / \ LATTICE-POINT ENUMERATION}\par
+\vspace{10pt}
+{\LARGE\bfseries\color{Ink} A Reflexive Root-Polytope Model\\[4pt]
+for Preorder $h$-Polynomials}\par
+\vspace{9pt}
+{\large Simplicial-polytopal realization, palindromicity, and unimodality}\par
+\vspace{9pt}
+{\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
+20 September 2026}
+\end{flushleft}
+\vspace{3pt}
+\hrule
+\vspace{12pt}
+\begin{abstract}
+For a finite preorder $\tau$ on $[n]$, let $h_\tau(t)$ count the integer points of
+its preorder polytope by the number of nonzero coordinates. We give a proposed
+general proof that this polynomial is the $h$-polynomial of an $n$-dimensional
+simplicial polytope, establishing Conjecture~5.1(c), and hence (a) and (b), of
+Athanasiadis and Chapoton. The principal construction is the explicit
+$n$-dimensional lattice polytope
+\[
+ C_\tau=\conv\bigl(\{\pm\ee_i:1\leq i\leq n\}
+ \cup\{\ee_i-\ee_j:j\leq_\tau i,\ i\ne j\}\bigr).
+\]
+We prove $h^*(C_\tau,t)=h_\tau(t)$ by an integer-fiber decomposition of an
+augmented bipartite root polytope. Every boundary pulling triangulation of
+$C_\tau$, coned from the origin, is unimodular; its boundary is combinatorially
+polytopal. We also prove reflexivity, an exact formula for the gauge of $C_\tau$,
+and a Gorenstein translation formula for the larger root polytope. The
+higher-dimensional root-polytope identity and preorder duality are already
+results of Dai, Hou, Liu, Thawinrak, and Wang, and are not claimed as new here.
+A separate hypertree argument reconstructs that known identity. Exact
+verification code and complete small-case data accompany the manuscript.
+\end{abstract}
+\begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
+  left=9pt,right=9pt,top=7pt,bottom=7pt]
+\small\textbf{Scope and status.} The intended new result is the general
+simplicial-polytopal realization, not the already established duality theorem.
+The proof uses explicitly identified results on support-enumerators and pulling
+triangulations. All steps specific to the construction are proved below; the external results
+are identified explicitly. The manuscript has not been independently refereed
+or checked by a proof assistant. The finite
+computations test the constructions; they do not replace the proof. Flag
+realizability, $\gamma$-positivity, and real-rootedness are not proved.
+\end{tcolorbox}
+\newpage
+\tableofcontents
+\vspace{8pt}
+\begin{tcolorbox}[colback=Pale,colframe=Pale,arc=1mm]
+\small\textbf{Reading route.} Sections~\ref{sec:problem}--\ref{sec:polytopal}
+contain the main argument. Section~\ref{sec:second} gives a second geometric
+check. Sections~\ref{sec:examples}--\ref{sec:limits} provide examples, exact
+experiments, and limitations. Appendix~\ref{app:hypertrees} gives an alternative
+proof of the known higher-dimensional identity; Appendix~\ref{app:audit}
+records the proof dependencies and the main normalization checks.
+\end{tcolorbox}
+\newpage
+
+\section{The problem and the result}\label{sec:problem}
+
+A \emph{preorder} is a reflexive, transitive binary relation; antisymmetry is not
+required. For a preorder $\tau$ on $E=[n]$, write $\J$ for its order ideals,
+including $\varnothing$ and $E$. For a vector $x$ and a subset $A\subseteq E$,
+write $x(A)=\sum_{i\in A}x_i$. The preorder polytope and its support polynomial
+are
+\begin{align}
+ \Qt&=\{x\in\R_{\geq0}^{n}:x(I)\leq |I|\text{ for every }I\in\J\},
+ \label{eq:Q}\tag{1.1}\\
+ \Pt&=\Qt\cap\Z^n,\qquad
+ h_\tau(t)=\sum_{x\in\Pt}t^{|\supp(x)|}
+          =\sum_{k=0}^{n}h_k(\tau)t^k.\label{eq:h}
+\end{align}
+Here $\supp(x)=\{i:x_i\ne0\}$. These are the objects of
+Athanasiadis and Chapoton~\cite{AC}. Their Conjecture~5.1(c) asks whether
+$(h_0(\tau),\ldots,h_n(\tau))$ is the $h$-vector of an $n$-dimensional
+simplicial polytope. Parts (a) and (b) ask, respectively, for palindromicity and
+palindromic unimodality. The stronger part (d) requires a flag simplicial
+polytope.
+
+\subsection{What was already known when this problem was selected}
+
+The arXiv version of~\cite{AC} is dated 26 May 2026. A subsequent paper by
+Dai, Hou, Liu, Thawinrak, and Wang~\cite{DHLTW}, in its 27 August 2026 revision,
+proves that the support-enumerator of a bipartite graph is the Ehrhart numerator
+of its augmented root polytope. Its Theorem~1.3 explicitly settles
+Conjecture~5.4 of~\cite{AC}, the identity $h_\tau=h_{\tau^*}$ under reversal of
+the preorder. These facts must therefore be treated as prior results, not as
+open problems. Problem~5.3 of~\cite{DHLTW} still discusses the coefficient-shape
+conjectures for preorders. Menon's August 2026 paper~\cite{Menon} gives further
+special cases of $\gamma$-positivity for arbors.
+
+The target of the present manuscript is the \emph{general} assertion in
+Conjecture~5.1(c). The advance proposed here is a dimension-reducing lattice
+fiber decomposition and the resulting explicit root-polytope realization. The
+literature check establishes these version-specific statements; it does not
+certify absolute priority against every unpublished or unindexed argument.
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Let $\tau$ be any preorder on $[n]$, where $n\geq1$, and put
+\begin{equation}
+ C_\tau=\conv\bigl(\{\pm\ee_i:i\in[n]\}
+      \cup\{\ee_i-\ee_j:j\leq_\tau i,\ i\ne j\}\bigr)
+      \subset\R^n.\label{eq:C}
+\end{equation}
+Then $C_\tau$ is reflexive and
+\begin{equation}
+ h^*(C_\tau,t)=h_\tau(t).\label{eq:main}
+\end{equation}
+Moreover, any pulling triangulation of $\partial C_\tau$ is combinatorially the
+boundary of an $n$-dimensional simplicial polytope $S_\tau$ satisfying
+\[
+ h(S_\tau,t)=h_\tau(t).
+\]
+Consequently $h_k(\tau)=h_{n-k}(\tau)$ for all $k$, and
+\[
+ 1=h_0(\tau)\leq h_1(\tau)\leq\cdots\leq h_{\lfloor n/2\rfloor}(\tau).
+\]
+In fact the full $g$-theorem conditions hold for $h(\tau)$.
+\end{theorem}
+
+A pulling triangulation is obtained by fixing an order on the vertices and
+recursively triangulating faces by cones from their first vertex. The actual
+root polytope $C_\tau$ need not be simplicial. The theorem asserts that its
+triangulated boundary has a simplicial convex realization with the desired
+$h$-vector. These two assertions should not be conflated.
+
+The empty preorder is harmless: its support polynomial is $1$, and both root
+models degenerate to a point. We treat $n\geq1$ below to avoid unnecessary
+zero-dimensional boundary conventions.
+
+\subsection{A few useful sanity checks}
+
+Since $E$ is an ideal, every $x\in\Pt$ has $x(E)\leq n$. Hence $\Pt$ is finite,
+$h_0=1$, and $h_n=1$: the only point with all coordinates positive is $\one$.
+For a point supported just at $i$, the largest allowed value of its coordinate
+is $|\down i|$, where $\down i=\{j:j\leq_\tau i\}$. Therefore
+\begin{equation}
+ h_1(\tau)=\sum_{i=1}^n|\down i|
+          =|\{(j,i):j\leq_\tau i\}|.\label{eq:h1}
+\end{equation}
+Elements in the same equivalence class of the preorder remain separate
+coordinates throughout. Replacing a preorder by its quotient poset without
+retaining class sizes would change the problem.
+
+\section{The augmented bipartite root polytope}\label{sec:bipartite}
+
+Let $G_\tau$ have left vertices $1_L,\ldots,n_L$, right vertices
+$1_R,\ldots,n_R$, and an edge $i_Lj_R$ precisely when $j\leq_\tau i$.
+Adjoin $0_L$ and $0_R$, with $0_L$ adjacent to every right vertex and $0_R$
+adjacent to every left vertex. Denote the resulting graph by $\widehat G_\tau$.
+In particular $0_L0_R$ is an edge. Its root polytope is
+\begin{equation}
+ B_\tau=\conv\{\ee_i+\ff_j:i_Lj_R\in E(\widehat G_\tau)\}
+       \subset\R^{n+1}\oplus\R^{n+1}.\label{eq:B}
+\end{equation}
+The two coordinate blocks will be denoted $(u,v)$. We use the plus-sign
+convention for bipartite roots. Negating the second block converts this into
+the difference convention and preserves the lattice.
+
+The affine span of $B_\tau$ is
+\begin{equation}
+ H_1=\{(u,v):\textstyle\sum_{i=0}^{n}u_i
+                  =\sum_{j=0}^{n}v_j=1\}.\label{eq:affine}
+\end{equation}
+Indeed, the edges $i_L0_R$ and $0_Lj_R$ form a spanning tree, whose $2n+1$
+root vertices are affinely independent. Thus $\dim B_\tau=2n$. At dilation
+$m$, the lattice is the full integer lattice in
+$H_m=\{\sum u_i=\sum v_j=m\}$, not a smaller lattice generated by selected
+coordinates.
+
+\subsection{The known support-enumerator theorem}
+
+For a bipartite graph with left neighborhoods $D_1,\ldots,D_n$ in an
+$n$-element right shore, its draconian vectors are the nonnegative integer
+vectors $x$ satisfying
+\begin{equation}
+ x(A)\leq\left|\bigcup_{i\in A}D_i\right|
+       \quad(A\subseteq[n]).\label{eq:draconian}
+\end{equation}
+Theorem~1.2 of~\cite{DHLTW} identifies their support-enumerator with the
+$h^*$-polynomial of the graph augmented by the two universal vertices just
+used in~\eqref{eq:B}.
+
+\begin{lemma}\label{lem:draconian}
+For $D_i=\down i$, the draconian vectors in~\eqref{eq:draconian} are exactly
+$\Pt$.
+\end{lemma}
+\begin{proof}
+If $x\in\Pt$ and $A\subseteq E$, transitivity makes $\down A$ an ideal.
+Nonnegativity gives
+\[
+ x(A)\leq x(\down A)\leq|\down A|
+        =\left|\bigcup_{i\in A}D_i\right|.
+\]
+Conversely, if~\eqref{eq:draconian} holds and $I$ is an ideal, reflexivity and
+downward closure give $\bigcup_{i\in I}D_i=I$. Taking $A=I$ gives
+$x(I)\leq|I|$.
+\end{proof}
+
+\begin{proposition}[Known higher-dimensional identity]\label{prop:known}
+For every preorder on $[n]$,
+\begin{equation}
+ \Ehr_{B_\tau}(t):=\sum_{m\geq0}|mB_\tau\cap\Z^{2n+2}|t^m
+       =\frac{h_\tau(t)}{(1-t)^{2n+1}}.\label{eq:known}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply the support-enumerator theorem of~\cite{DHLTW} and
+Lemma~\ref{lem:draconian}.
+\end{proof}
+
+Appendix~\ref{app:hypertrees} supplies another proof of this proposition using
+the K\'alm\'an--Postnikov theorem~\cite{KP}. Its elementary matching construction
+also explains why a support statistic, rather than a sum-of-coordinates
+statistic, occurs. Neither proof makes the already known proposition a novelty
+claim of this manuscript.
+
+\section{A complete inequality description}\label{sec:hall}
+
+The special feature of a preorder is that all relevant neighborhood sets can
+be reduced to ideals. We need the reduction over the reals, not only for
+integer degree vectors.
+
+\begin{lemma}[Weighted Hall criterion]\label{lem:flow}
+Let $G$ be a bipartite graph with shores $L,R$. Nonnegative margins $u$ and $v$
+with common total $m$ are the row and column sums of a nonnegative matrix
+supported on the edges of $G$ if and only if
+\begin{equation}
+ u(A)\leq v(N(A))\qquad(A\subseteq L).\label{eq:hall}
+\end{equation}
+If the margins are integral, the matrix can be chosen integral.
+\end{lemma}
+\begin{proof}
+Necessity follows by summing the entries in the rows of $A$. For sufficiency,
+make a network with source-to-left capacities $u_i$, right-to-sink capacities
+$v_j$, and capacity $m+1$ on each allowed left-to-right edge. A cut of capacity
+at most $m$ cannot cut an allowed left-to-right edge. If its source side
+contains the left set $A$, it must therefore contain $N(A)$ on the right; its
+capacity is at least $m-u(A)+v(N(A))\geq m$. A flow of value $m$ follows from
+the max-flow/min-cut argument. For completeness, that argument chooses a
+maximum feasible flow, which exists by compactness; if its residual graph
+contains a source-to-sink path, a positive augmentation contradicts maximality.
+Otherwise the vertices reachable from the source give a cut with capacity equal
+to the flow value. Integral capacities allow integral augmentations from the
+zero flow, so an integral maximum flow exists in the integral case.
+\end{proof}
+
+\begin{proposition}[Ideal inequalities for $B_\tau$]\label{prop:inequalities}
+For every real $m\geq0$, a pair $(u,v)\in H_m$ belongs to $mB_\tau$ exactly
+when all its coordinates are nonnegative and
+\begin{equation}
+ u(I)-v(I)\leq v_0\qquad(I\in\J).\label{eq:idealB}
+\end{equation}
+Here $u(I),v(I)$ involve only the coordinates indexed by $[n]$.
+\end{proposition}
+\begin{proof}
+A point of $mB_\tau$ is precisely the pair of margins of a nonnegative matrix
+of total $m$ supported on $\widehat G_\tau$. For a left subset containing
+$0_L$, its neighborhood is the entire right shore, so~\eqref{eq:hall} follows
+from nonnegativity and the total-sum condition. For $A\subseteq[n]$,
+\[
+ N(A)=\{0_R\}\cup(\down A)_R.
+\]
+Thus the remaining Hall conditions are
+$u(A)\leq v_0+v(\down A)$. If~\eqref{eq:idealB} holds, then
+\[
+ u(A)\leq u(\down A)\leq v_0+v(\down A),
+\]
+so all Hall conditions hold. Conversely, taking $A=I$ for an ideal gives
+$\down I=I$ and recovers~\eqref{eq:idealB}. The case $m=0$ is immediate.
+\end{proof}
+
+The empty-ideal inequality is just $v_0\geq0$, and the full-ideal inequality
+is equivalent to $u_0\geq0$. They may be redundant, but retaining them makes
+later formulas uniform. We do not assert that every inequality in this
+presentation defines a distinct facet.
+
+\section{The dimension-reducing lattice fibers}\label{sec:fibers}
+
+Define the projection
+\begin{equation}
+ \pi(u,v)=(u_i-v_i)_{i=1}^{n}.\label{eq:projection}
+\end{equation}
+On the root vertices in~\eqref{eq:B}, it has values
+$0$, $\pm\ee_i$, and $\ee_i-\ee_j$ for $j\leq_\tau i$. Therefore
+\begin{equation}
+ \pi(B_\tau)=C_\tau.\label{eq:projectC}
+\end{equation}
+Its kernel on the direction space of $H_1$ is spanned by
+$\ee_i+\ff_i-\ee_0-\ff_0$, $1\leq i\leq n$. The dimension loss is exactly
+$n$. A linear projection alone does \emph{not} usually preserve an Ehrhart
+numerator. The following explicit fibers are what make this one work.
+
+For $y\in\R^n$, put
+\begin{align}
+ y_i^+&=\max(y_i,0),&y_i^-&=\max(-y_i,0),\notag\\
+ p(y)&=\sum_i y_i^+,&q(y)&=\sum_i y_i^-,\label{eq:pq}\\
+ a_\tau(y)&=\max_{I\in\J}y(I),&
+ g_\tau(y)&=q(y)+a_\tau(y).\label{eq:gauge}
+\end{align}
+The empty and full ideals imply
+$a_\tau(y)\geq0$ and $a_\tau(y)\geq p(y)-q(y)$.
+
+\begin{theorem}[Exact fibers and an integral gauge]\label{thm:fibers}
+For $y\in\R^n$, define
+\begin{align}
+ u^{\min}(y)&=(a_\tau(y)+q(y)-p(y),\ y_1^+,\ldots,y_n^+),\notag\\
+ v^{\min}(y)&=(a_\tau(y),\ y_1^-,\ldots,y_n^-).\label{eq:base}
+\end{align}
+Every point of $mB_\tau$ projecting to $y$ has a unique expression
+\begin{equation}
+ (u,v)=\bigl(u^{\min}(y),v^{\min}(y)\bigr)
+        +\sum_{i=0}^{n}w_i(\ee_i+\ff_i),\label{eq:fiber}
+\end{equation}
+where $w_i\geq0$ and
+\begin{equation}
+ \sum_{i=0}^{n}w_i=m-g_\tau(y).\label{eq:fibertotal}
+\end{equation}
+Consequently,
+\begin{equation}
+ y\in mC_\tau\quad\Longleftrightarrow\quad g_\tau(y)\leq m.\label{eq:gaugecriterion}
+\end{equation}
+For integral $y,m$, all terms in~\eqref{eq:base} are integral, and the lattice
+points in the fiber correspond exactly to nonnegative integer vectors $w$
+satisfying~\eqref{eq:fibertotal}.
+\end{theorem}
+\begin{proof}
+The two vectors in~\eqref{eq:base} are nonnegative. Their sums are both
+$a_\tau(y)+q(y)=g_\tau(y)$, and their difference on $[n]$ is $y$. Moreover,
+\[
+ u^{\min}(I)-v^{\min}(I)=y(I)\leq a_\tau(y)=v^{\min}_0.
+\]
+Proposition~\ref{prop:inequalities} puts this pair in $g_\tau(y)B_\tau$.
+Adding a nonnegative multiple of a diagonal root leaves every difference
+$u(I)-v(I)$ unchanged. For the root indexed by $0$, the right side $v_0$ also
+increases, so all inequalities remain valid. This proves that every expression
+in~\eqref{eq:fiber} with~\eqref{eq:fibertotal} is an admissible point.
+
+Conversely, suppose $(u,v)\in mB_\tau$ projects to $y$. For $1\leq i\leq n$,
+nonnegativity and $u_i-v_i=y_i$ imply uniquely
+\[
+ u_i=y_i^++w_i,\qquad v_i=y_i^-+w_i,\qquad
+ w_i=\min(u_i,v_i)\geq0.
+\]
+The ideal inequalities give $v_0\geq\max_I y(I)=a_\tau(y)$. Set
+$w_0=v_0-a_\tau(y)\geq0$. The equality of the two total sums then forces
+\[
+ u_0=v_0+q(y)-p(y)=u^{\min}_0(y)+w_0.
+\]
+All coordinates in~\eqref{eq:fiber} are now determined. Summing either block
+yields~\eqref{eq:fibertotal}. Projection proves~\eqref{eq:gaugecriterion}.
+If $y$ is integral, the maximum defining $a_\tau(y)$ is an integer, which
+establishes the final assertion without any lattice-saturation assumption.
+\end{proof}
+
+\begin{corollary}[Equality of Ehrhart numerators]\label{cor:numerators}
+For every finite preorder,
+\begin{equation}
+ \Ehr_{B_\tau}(t)=\frac{\Ehr_{C_\tau}(t)}{(1-t)^n},
+ \qquad h^*(B_\tau,t)=h^*(C_\tau,t)=h_\tau(t).\label{eq:seriesfactor}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For integral $y$, the least admissible integral dilation is $g_\tau(y)$.
+Theorem~\ref{thm:fibers} gives
+\[
+ \Ehr_{B_\tau}(t)
+ =\frac{\displaystyle\sum_{y\in\Z^n}t^{g_\tau(y)}}{(1-t)^{n+1}},
+ \qquad
+ \Ehr_{C_\tau}(t)
+ =\frac{\displaystyle\sum_{y\in\Z^n}t^{g_\tau(y)}}{1-t}.
+\]
+These are legitimate formal power series: each coefficient receives only
+finitely many contributions because $C_\tau$ is bounded. Dividing the two
+identities proves the first equality in~\eqref{eq:seriesfactor}. The dimensions
+are $2n$ and $n$, respectively, so their Ehrhart numerators coincide. Finally
+apply Proposition~\ref{prop:known}.
+\end{proof}
+
+There is a useful coefficient-level form. The fiber over an integral $y$ at
+dilation $m$ contains
+\begin{equation}
+ \binom{m-g_\tau(y)+n}{n}\quad\text{if }g_\tau(y)\leq m,
+ \qquad 0\quad\text{otherwise}.\label{eq:fibercount}
+\end{equation}
+Thus the factor $(1-t)^{-n}$ is not a heuristic cancellation of dimensions; it
+comes from a concrete, uniquely parametrized family of integer fibers.
+
+\subsection{An order-theoretic interpretation of the gauge}
+
+The gauge can also be written
+\begin{equation}
+ g_\tau(y)=\max_{I\in\J}
+ \left(\sum_{i\in I}y_i^+ +\sum_{i\notin I}y_i^-\right).\label{eq:gauge2}
+\end{equation}
+Thus testing membership in a dilation of $C_\tau$ is a maximum-weight-ideal
+problem. One need not enumerate ideals in a practical implementation: put
+source capacity $y_i^+$ at $i$, sink capacity $y_i^-$ at $i$, and sufficiently
+large capacities on arcs $i\to j$ for $j\leq_\tau i$. A finite minimum cut has
+a downward-closed source side $I$, and its capacity is $p(y)-y(I)$. Hence
+$a_\tau(y)$, and therefore $g_\tau(y)$, can be obtained by a network-flow
+calculation. The accompanying small-case verifier deliberately uses exhaustive
+ideal enumeration instead, keeping the check independent of a flow library.
+
+\section{Reflexivity and simplicial-polytopal realization}\label{sec:polytopal}
+
+We now finish the proof of Theorem~\ref{thm:main}. The required geometry is
+particularly simple because all nonzero vertices of $C_\tau$ are type-$A$
+roots with one coordinate deleted.
+
+\subsection{The polar is integral}
+
+Since $C_\tau$ contains $\conv\{\pm\ee_i\}$, it is full-dimensional and contains
+$0$ in its interior. Its polar is
+\begin{equation}
+ C_\tau^\circ=\left\{z\in\R^n:
+ -1\leq z_i\leq1,\quad z_i-z_j\leq1\text{ whenever }j\leq_\tau i\right\}.
+ \label{eq:polar}
+\end{equation}
+
+\begin{lemma}[Root determinants]\label{lem:determinant}
+Put $\ee_0=0\in\Z^n$. Any $n$ linearly independent vectors of the form
+$\ee_i-\ee_j$, with $i,j\in\{0,\ldots,n\}$ and $i\ne j$, form a basis of
+$\Z^n$.
+\end{lemma}
+\begin{proof}
+Associate the vector $\ee_i-\ee_j$ to a directed edge from $j$ to $i$ on
+$\{0,\ldots,n\}$. A cycle in the underlying undirected graph would give a
+linear dependence, with signs determined by the edge directions. Consequently
+$n$ independent vectors give a forest with $n$ edges on $n+1$ vertices, hence a
+spanning tree. The matrix of these vectors is a directed incidence matrix with
+the row indexed by $0$ deleted. Remove a leaf different from $0$; its row has
+one nonzero entry, equal to $1$ or $-1$. Expanding the determinant along that
+row and repeating reduces the determinant to $1$ or $-1$.
+\end{proof}
+
+\begin{proposition}\label{prop:reflexive}
+The polar~\eqref{eq:polar} is a lattice polytope. In fact all its vertices have
+coordinates in $\{-1,0,1\}$. Thus $C_\tau$ is reflexive.
+\end{proposition}
+\begin{proof}
+At a vertex of the full-dimensional polar, choose $n$ linearly independent
+active constraints. With $z_0=0$, each selected equality is of the form
+$z_i-z_j=1$. Its coefficient row is a root as in
+Lemma~\ref{lem:determinant}. The resulting square matrix has determinant
+$\pm1$, so its solution is integral. The bounds $-1\leq z_i\leq1$ restrict
+these integers to $-1,0,1$. Both the original polytope and its polar are
+therefore integral, with the origin in the interior, which is precisely
+reflexivity.
+\end{proof}
+
+This proof also supplies a finite exact way to test lattice-point membership:
+one may evaluate against all ternary vectors satisfying~\eqref{eq:polar},
+since that set contains every vertex of the polar. The verifier uses this
+method as a check independent of the gauge formula.
+
+\subsection{Unimodular cones over the boundary}
+
+Recall that a lattice simplex with vertices $0,r_1,\ldots,r_n$ is unimodular
+when $r_1,\ldots,r_n$ form a lattice basis. A triangulation is unimodular if all
+its full-dimensional simplices are unimodular.
+
+\begin{proposition}\label{prop:startriangulation}
+Let $\Delta$ be any triangulation of $\partial C_\tau$ using only vertices of
+$C_\tau$. Then the star triangulation $0*\Delta$ of $C_\tau$ is unimodular.
+\end{proposition}
+\begin{proof}
+Every boundary simplex is contained in a supporting hyperplane not containing
+$0$. The $n$ vertices of a maximal boundary simplex are therefore linearly
+independent: an affine dependence is already excluded by being a simplex,
+and a linear dependence with nonzero coefficient sum would place $0$ in that
+supporting hyperplane. All its vertices are roots
+$\ee_i-\ee_j$, allowing index $0$. Lemma~\ref{lem:determinant} shows that the
+cone simplex from $0$ is unimodular. Since $0$ is interior, these cones form a
+triangulation of all of $C_\tau$.
+\end{proof}
+
+\subsection{Why the triangulated boundary is polytopal}
+
+We use the following standard pulling fact, stated as Lemma~2.1
+in Athanasiadis~\cite{AthSpecial}: a pulling (reverse lexicographic)
+triangulation of the boundary of a convex $n$-polytope is combinatorially the
+boundary of a simplicial convex $n$-polytope. The geometric mechanism is
+successive small outward perturbations of the ordered vertices; at each step
+one chooses the perturbation small enough not to change the already fixed
+incidences. The resulting convex boundary realizes the prescribed pulling
+subdivision. This is an actual polytopality assertion, not merely shellability
+or the assertion that the complex is a sphere.
+
+Here is the Ehrhart connection, with its normalization made explicit. If $K$
+is a $d$-dimensional unimodular triangulation of a lattice polytope $P$, then
+\begin{equation}
+ \Ehr_P(t)=\sum_{\sigma\in K}
+     \left(\frac{t}{1-t}\right)^{|\sigma|}
+   =\frac{h(K,t)}{(1-t)^{d+1}},\label{eq:triangEhr}
+\end{equation}
+where the empty face contributes $1$. Indeed, the relative interior of an
+$r$-dimensional unimodular simplex contributes $\binom{m-1}{r}$ lattice points
+at positive dilation $m$, with generating series
+$t^{r+1}/(1-t)^{r+1}$. Relative interiors partition the triangulation, giving
+the first equality. The second equality is the definition of its
+$h$-polynomial. For a cone, the face generating function gains a factor
+$1+t/(1-t)$, while the denominator exponent increases by one; hence
+\begin{equation}
+ h(0*\Delta,t)=h(\Delta,t).\label{eq:coneh}
+\end{equation}
+
+\begin{proof}[Completion of the proof of Theorem~\ref{thm:main}]
+Choose a pulling triangulation $\Delta$ of $\partial C_\tau$. By the pulling
+fact, $\Delta$ is the boundary of an $n$-dimensional simplicial polytope
+$S_\tau$. Proposition~\ref{prop:startriangulation} and
+\eqref{eq:triangEhr}--\eqref{eq:coneh} give
+\[
+ h(S_\tau,t)=h(\Delta,t)=h^*(C_\tau,t)=h_\tau(t),
+\]
+where the last equality is Corollary~\ref{cor:numerators}. Reflexivity was
+proved in Proposition~\ref{prop:reflexive}. The Dehn--Sommerville relations
+for simplicial polytopes give palindromicity, and the $g$-theorem gives the
+stated inequalities and its stronger numerical conditions; see also the
+polytopal conclusions summarized in~\cite[Theorem~3.5]{AthSpecial}.
+\end{proof}
+
+\section{A second geometric check in dimension \texorpdfstring{$2n$}{2n}}\label{sec:second}
+
+The larger polytope $B_\tau$ supplies two independent checks on the preceding
+argument: an interior-point translation and an explicit special simplex. They
+are useful safeguards against a sign error or a mismatch of dimensions.
+
+\subsection{An exact interior translation}
+
+Let $\mathbf c=(1,\ldots,1;1,\ldots,1)\in\Z^{2n+2}$. For every $m\geq n+1$,
+\begin{equation}
+ (\relint(mB_\tau))\cap\Z^{2n+2}
+ =\mathbf c+\bigl((m-n-1)B_\tau\cap\Z^{2n+2}\bigr).\label{eq:interior}
+\end{equation}
+To see this, note that every coordinate inequality is nonconstant on $B_\tau$,
+and each ideal inequality has strict slack at $\ee_0+\ff_0$.
+Consequently relative interior is characterized by positive coordinates and
+strict versions of~\eqref{eq:idealB}. At integer points these strict
+inequalities are
+\[
+ u(I)-v(I)\leq v_0-1.
+\]
+Subtracting $1$ from every coordinate reduces each block sum by $n+1$.
+The terms $|I|$ cancel on the left, and the right side becomes the new
+$v_0$. This is exactly the weak inequality description of
+$(m-n-1)B_\tau$. Conversely, adding $\mathbf c$ makes every defining
+inequality strict. There are no interior integer points for
+$1\leq m<n+1$, since $n+1$ positive coordinates in either block already
+require total at least $n+1$.
+
+In particular, $B_\tau$ has codegree $n+1$, with unique interior integer point
+$\mathbf c$ in its first nonempty interior dilation. It is Gorenstein of index
+$n+1$. Ehrhart reciprocity translates~\eqref{eq:interior} into
+\[
+ t^{2n+1}h^*(B_\tau,t^{-1})=t^{n+1}h^*(B_\tau,t),
+\]
+which again gives $h_\tau(t)=t^nh_\tau(t^{-1})$.
+This symmetry proof does not use the $g$-theorem or polytopality of a sphere.
+
+\subsection{The diagonal special simplex}
+
+A simplex with $r$ vertices inside a polytope is \emph{special} if each facet
+contains exactly $r-1$ of those vertices. Consider
+\begin{equation}
+ \Sigma_\tau=\conv\{d_i:0\leq i\leq n\},
+ \qquad d_i=\ee_i+\ff_i.\label{eq:diagonal}
+\end{equation}
+Reflexivity of the preorder makes these root vertices available, and they are
+affinely independent. A coordinate hyperplane $u_i=0$ or $v_i=0$ contains
+exactly the diagonal vertices other than $d_i$. On an ideal hyperplane
+$u(I)-v(I)=v_0$, every $d_i$ with $i>0$ lies on the hyperplane and $d_0$ does
+not. Every facet is furnished by at least one nonredundant inequality of
+Proposition~\ref{prop:inequalities}; thus $\Sigma_\tau$ is special.
+
+Every triangulation of a bipartite root polytope using its vertices is
+unimodular. Indeed, affine dependence of edge roots is equivalent to a cycle
+in the supporting bipartite graph; a full-dimensional simplex therefore
+corresponds to a spanning tree. Leaf elimination in its incidence matrix shows
+that its edge vectors form a basis of the integer lattice
+$\{(u,v):\sum u_i=\sum v_j\}$. Intersecting with the height-one hyperplane
+shows affine unimodularity. In particular every pulling ordering is compressed
+in the terminology of~\cite{AthSpecial}.
+
+Athanasiadis's special-simplex theorem~\cite[Theorem~3.5]{AthSpecial}, applied
+with dimension $2n$ and $n+1$ special vertices, therefore realizes
+$h^*(B_\tau,t)$ as the $h$-polynomial of a simplicial polytope of dimension
+$2n-(n+1)+1=n$. This recovers the main theorem by another route. The broader
+Gorenstein/unimodular-triangulation framework of Bruns and R\"omer~\cite{BR}
+provides a further compatible interpretation, but is not needed for our main
+proof.
+
+\section{Consequences and quantitative formulas}\label{sec:consequences}
+
+\subsection{Duality, with its prior attribution}
+
+Swapping the coordinate blocks identifies $B_\tau$ with $B_{\tau^*}$.
+This is the already established duality mechanism of~\cite{DHLTW}. In the
+smaller model it becomes the especially transparent equality
+\begin{equation}
+ C_{\tau^*}=-C_\tau.\label{eq:dualC}
+\end{equation}
+Thus $h_{\tau^*}=h_\tau$. The gauge gives a third check. Ideals of $\tau^*$
+are complements of ideals of $\tau$, so
+\[
+ a_{\tau^*}(-y)=a_\tau(y)-y(E),\qquad
+ g_{\tau^*}(-y)=g_\tau(y).
+\]
+This rederivation is included to connect the new lower-dimensional model with
+the known theorem, not to reclassify Conjecture~5.4 as open.
+
+\subsection{Ehrhart polynomials and volumes}
+
+The ordinary Ehrhart polynomial of $C_\tau$ is now explicit in terms of the
+preorder support counts:
+\begin{equation}
+ |mC_\tau\cap\Z^n|=\sum_{k=0}^{n}h_k(\tau)\binom{m+n-k}{n},
+ \qquad m\in\N.\label{eq:ehrC}
+\end{equation}
+Similarly,
+\begin{equation}
+ |mB_\tau\cap\Z^{2n+2}|=
+ \sum_{k=0}^{n}h_k(\tau)\binom{m+2n-k}{2n}.\label{eq:ehrB}
+\end{equation}
+A binomial term with nonnegative upper argument smaller than its lower
+argument is zero. These formulas also extend as polynomial identities in $m$.
+Normalized volume, meaning dimension factorial times volume in the relevant
+lattice, satisfies
+\begin{equation}
+ \Vol(C_\tau)=\Vol(B_\tau)=h_\tau(1)=|\Pt|.\label{eq:vol}
+\end{equation}
+The two volumes in this equality live in different dimensions and are both
+\emph{normalized} volumes.
+
+Remark~5.6 of~\cite{AC} considers $h_\tau(t)/(1-t)^{n+1}$. Equation~\eqref{eq:ehrC}
+identifies its coefficients as the Ehrhart polynomial of $C_\tau$. This gives
+that series a concrete geometric interpretation. It does not prove that its
+polynomial has all complex roots on a particular vertical line; no such
+root-location assertion follows just from reflexivity.
+
+\subsection{Vertices, elementary bounds, and the $g$-vector}
+
+Every vector displayed in~\eqref{eq:C} is a vertex. To expose $\ee_i$, choose
+a linear functional taking value $1$ at coordinate $i$ and a fixed
+$\varepsilon\in(0,1)$ at all other coordinates. The negative case is analogous.
+To expose $\ee_i-\ee_j$, give coordinates $i,j$ the values $1,-1$ and all
+others the value $0$; this root is the unique displayed vector with value $2$.
+Thus
+\begin{equation}
+ f_0(C_\tau)=n+|\{(j,i):j\leq_\tau i\}|=n+h_1(\tau).\label{eq:vertices}
+\end{equation}
+Pulling adds no vertices, so the same number occurs in $S_\tau$.
+
+The inclusions
+\[
+ [0,1]^n\subseteq\Qt\subseteq\{x\geq0:x(E)\leq n\}
+\]
+give the useful coefficientwise bounds
+\begin{equation}
+ \binom nk\leq h_k(\tau)\leq\binom nk^2
+ \qquad(0\leq k\leq n).\label{eq:bounds}
+\end{equation}
+For the upper bound, choose the support in $\binom nk$ ways; the positive
+integer values on it with total at most $n$ can be chosen in $\binom nk$ ways
+by stars and bars. The lower bound uses the corresponding $0$--$1$ points.
+
+For completeness, the full numerical strengthening supplied by polytopality
+can be stated as follows. Put $g_0=1$ and
+$g_i=h_i-h_{i-1}$ for $1\leq i\leq\lfloor n/2\rfloor$.
+The $g$-theorem says this sequence is an $M$-sequence. In particular
+$g_i\geq0$ and $g_{i+1}\leq g_i^{\langle i\rangle}$ whenever both sides
+are relevant. Here, if
+\[
+ a=\binom{b_i}{i}+\binom{b_{i-1}}{i-1}+\cdots+\binom{b_j}{j},
+ \qquad b_i>b_{i-1}>\cdots>b_j\geq j\geq1,
+\]
+is the Macaulay expansion, then
+$a^{\langle i\rangle}=\binom{b_i+1}{i+1}+\cdots+\binom{b_j+1}{j+1}$,
+with $0^{\langle i\rangle}=0$. These inequalities are stronger than
+unimodality and follow here from an actual simplicial-polytope realization.
+
+\section{Examples and the role of transitivity}\label{sec:examples}
+
+\subsection{Antichains and a single equivalence class}
+
+For an antichain, $\Qt=[0,1]^n$ and
+\[
+ h_\tau(t)=(1+t)^n,\qquad
+ C_\tau=\conv\{\pm\ee_1,\ldots,\pm\ee_n\}.
+\]
+The gauge is $\sum_i|y_i|$. The smaller model is already the simplicial
+cross polytope, so no boundary refinement is needed.
+
+For the indiscrete preorder, in which every two elements are equivalent,
+$\Qt=\{x\geq0:x(E)\leq n\}$. The same stars-and-bars argument used above
+shows
+\[
+ h_\tau(t)=\sum_{k=0}^n\binom nk^2t^k.
+\]
+Here $B_\tau=\Delta_n\times\Delta_n$, and the lower-dimensional polytope
+contains all roots $\pm\ee_i$ and $\ee_i-\ee_j$. Its gauge is
+$\max(p(y),q(y))$, since its only ideals are $\varnothing,E$.
+These two extreme examples check both the coefficient bounds and the change
+of Ehrhart denominator.
+
+\subsection{A non-self-dual four-element example}
+
+Let $\tau$ have one minimum below three incomparable maximal elements. Its
+polynomial, obtained directly from~\eqref{eq:Q}, is
+\[
+ h_\tau(t)=1+7t+12t^2+7t^3+t^4.
+\]
+For example, for supports of size two not containing the minimum, the three
+pairs of maximal elements each allow the values $(1,1),(1,2),(2,1)$, giving
+nine points; the three supports containing the minimum each allow only
+$(1,1)$, giving three more. The dual order is not isomorphic to the original,
+but its directed root polytope is the negative of the original one and its
+support polynomial agrees. This is a useful test that duality is not merely
+invariance under relabeling.
+
+\subsection{A preorder with a nontrivial equivalence class}
+
+Use labels $a,b,c,d,e$, with $a\sim c$, $a<e$, $c<e$, $b<e$, and $b<d$.
+No other comparisons hold beyond those forced by reflexivity and transitivity.
+The principal ideals are
+\[
+ \{a,c\},\quad\{b\},\quad\{a,c\},\quad\{b,d\},\quad\{a,b,c,e\}.
+\]
+Direct enumeration gives
+\begin{equation}
+ h_\tau(t)=1+11t+34t^2+34t^3+11t^4+t^5.\label{eq:running}
+\end{equation}
+This agrees with the running example of~\cite{AC}. There are $92$ points in
+$\Pt$, $22$ vertices of $B_\tau$, and $16$ vertices of $C_\tau$.
+The number $92$ is also the normalized volume of either root model.
+
+For $x=(0,0,1,2,2)$, the matching construction in
+Appendix~\ref{app:hypertrees} can assign the five demands to the five right
+vertices as follows: the demand at $c$ uses $c_R$, the two demands at $d$ use
+$b_R,d_R$, and the two demands at $e$ use $a_R,e_R$. Attach every left vertex
+to $0_R$, then attach each right vertex to its assigned left vertex. This
+gives the spanning-tree certificate included in the JSON data.
+
+\subsection{Selected coefficient vectors}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}l r Y r@{}}
+\toprule
+Preorder & $n$ & $(h_0,\ldots,h_n)$ & $|P_\tau|$\\
+\midrule
+Antichain & 4 & $(1,4,6,4,1)$ & 16\\
+Chain & 4 & $(1,10,20,10,1)$ & 42\\
+Single equivalence class & 4 & $(1,16,36,16,1)$ & 70\\
+One minimum, three maxima & 4 & $(1,7,12,7,1)$ & 28\\
+Diamond & 4 & $(1,9,18,9,1)$ & 38\\
+Example~\eqref{eq:running} & 5 & $(1,11,34,34,11,1)$ & 92\\
+Six-element crown & 6 & $(1,12,48,75,48,12,1)$ & 197\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The crown has minimal elements $a,b,c$ and maximal elements $A,B,C$, with
+$a,b<A$, $b,c<B$, and $c,a<C$. Every row of the table is recomputed by the
+supplied verifier; no floating-point root finder is involved.
+
+\subsection{Why arbitrary reflexive relations are not enough}
+
+Transitivity cannot simply be dropped from the fiber theorem. Consider the
+neighborhoods
+\[
+ D_1=\{1\},\qquad D_2=\{1,2\},\qquad D_3=\{2,3\}.
+\]
+They define a reflexive but nontransitive relation. Its draconian inequalities
+reduce to
+\[
+ x_i\geq0,\quad x_1\leq1,\quad x_1+x_2\leq2,\quad
+ x_3\leq2,\quad x_1+x_2+x_3\leq3.
+\]
+The support counts are $(1,5,6,1)$: one-coordinate supports contribute
+$1+2+2=5$, two-coordinate supports contribute $1+2+3=6$, and the full support
+contributes just $(1,1,1)$. This is the nonpalindromic example also recorded
+in~\cite[Remark~5.5]{AC}.
+
+The general support-enumerator/root-polytope theorem remains valid for this
+graph. What fails is the reduction of all weighted Hall inequalities to
+matching ideal differences $u(I)-v(I)$. In particular, subtracting a common
+coordinate from the two margins can damage an inequality involving different
+row and column subsets. Thus the argument does not inadvertently imply
+palindromicity for all graph support-enumerators.
+
+\section{Exact computational verification}\label{sec:computations}
+
+The program \texttt{code/verify.py} uses only Python's standard library and
+integer arithmetic. It stores a preorder by bitmasks
+\[
+ D_i=\{j:j\leq_\tau i\}.
+\]
+It enumerates every reflexive relation on $[n]$ and retains precisely those
+for which $j\in D_i$ implies $D_j\subseteq D_i$. This is a direct test of
+transitivity. All weak compositions with total at most $n$ are then checked
+against the ideal inequalities to obtain $h_\tau$.
+
+\begin{center}
+\begin{tabular}{@{}r r l@{}}
+\toprule
+Ground-set size & Labeled preorders checked & Result\\
+\midrule
+0 & 1 & Pass\\
+1 & 1 & Pass\\
+2 & 4 & Pass\\
+3 & 29 & Pass\\
+4 & 355 & Pass\\
+5 & 6,942 & Pass\\
+\midrule
+Total & 7,332 & Pass\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each of these preorders, the code checks duality, palindromicity,
+unimodality, the endpoint coefficients, the relation-count formula for $h_1$,
+and the special-simplex slack identities. These are finite consistency checks,
+not the reason the theorem holds for arbitrary $n$.
+
+Stronger, independent comparisons are performed for all $35$ preorders on
+at most three elements. The program enumerates spanning trees directly,
+deduplicates their left degree-minus-one vectors, and compares them with
+$\{(n-|x|,x):x\in P_\tau\}$. It computes internal inactivity by testing all
+allowed transfers to smaller coordinates, rather than replacing inactivity
+by support size in the code. Across these instances it enumerates $18{,}009$
+spanning trees and checks $399$ explicit matching-tree certificates.
+
+For the same cases it counts sums of edge-root vertices directly at every
+dilation $0\leq m\leq2n$. Those counts are compared both with Hall-margin
+enumeration and with~\eqref{eq:ehrB}. Finite differences recover all $2n+1$
+coefficients of the root-polytope Ehrhart numerator, including the predicted
+zero coefficients above degree $n$. Independently, integer points of $C_\tau$
+are counted using the ternary polar description, compared with the gauge
+formula, and checked through $m=n$ against~\eqref{eq:ehrC}. Full-margin
+fiber identities and the interior translation are also checked exactly.
+
+Five selected four-element preorders undergo full root Ehrhart checks through
+$m=8$, quotient checks through $m=4$, and direct edge-sum checks through
+$m=3$. Further examples include the weighted five-element preorder and the
+six-element crown. The JSON file records all individual results, and the CSV
+file contains every preorder and support vector through size five.
+
+The original conjecture paper reports tests through larger sizes for some
+coefficient properties~\cite{AC}. The present computations are not offered as
+an improved size record. Their purpose is to compare independent realizations
+of the newly proposed construction and detect normalization, orientation, or
+lattice-index errors.
+
+\section{What remains unresolved and how to audit the claim}\label{sec:limits}
+
+The proof gives an ordinary simplicial polytope, not a flag one. A flag complex
+is determined by its edges: every collection of pairwise adjacent vertices
+must form a face. Neither a pulling triangulation nor a general simplicial
+polytope automatically has that property. Therefore Conjecture~5.1(d) is not
+settled by the argument.
+
+Likewise, palindromic unimodality and the $g$-theorem do not establish
+$\gamma$-positivity or real-rootedness. The manuscript proves neither the
+nonnegativity of all coefficients in
+\[
+ h_\tau(t)=\sum_{j=0}^{\lfloor n/2\rfloor}
+       \gamma_jt^j(1+t)^{n-2j}
+\]
+nor the assertion that every zero of $h_\tau$ is real. Accordingly it does
+not claim to settle Conjectures~5.2 or~5.3 of~\cite{AC}.
+
+For independent mathematical review, the shortest audit is to verify four
+links: the identification of the draconian vectors with $P_\tau$;
+Proposition~\ref{prop:inequalities}; the unique integer fibers in
+Theorem~\ref{thm:fibers}; and the determinant argument for cones over a
+polytopal pulling boundary. Once these are accepted, the cited
+support-enumerator theorem and the pulling lemma give the asserted
+simplicial-polytopal realization. Section~\ref{sec:second} is a separate
+geometric cross-check, not a circular use of the desired symmetry.
+
+The result should be understood as a proposed research proof with reproducible
+support, not as a claim of community acceptance. The distinction between the
+known August 2026 result and the additional construction developed here is
+part of the mathematical claim, not a bibliographic afterthought.
+
+\appendix
+\section{A hypertree proof of the known root identity}\label{app:hypertrees}
+
+This appendix reconstructs Proposition~\ref{prop:known} without using the
+support-enumerator theorem of~\cite{DHLTW}. It is included for conceptual
+clarity and as an independent route to the same normalization. Its one
+substantial imported result is the K\'alm\'an--Postnikov theorem~\cite{KP}.
+
+\subsection{Hypertrees and internal inactivity}
+
+For a connected bipartite graph with left shore $L$, a left hypertree is a
+vector $a\in\N^L$ realized by a spanning tree $T$ through
+$a_i=\deg_T(i_L)-1$. Distinct trees realizing the same vector contribute only
+one hypertree. Order the left shore. A coordinate $i$ is internally inactive
+when there is a smaller coordinate $j$ such that replacing $a$ by
+$a-\ee_i+\ee_j$ gives another hypertree. The interior polynomial is the sum
+of $t^{\text{number of internally inactive coordinates}}$ over hypertrees.
+
+The K\'alm\'an--Postnikov theorem identifies this interior polynomial with the
+Ehrhart numerator of the bipartite root polytope. Their paper uses a reversed
+convention for the triangulation $h$-polynomial in its Theorem~1.1; the
+Ehrhart-basis formulation immediately following that theorem, equation (1.2),
+identifies the coefficients with the usual $h^*$-numerator used here. Thus
+there is no additional reversal of $t$ in the statement we apply.
+
+\begin{lemma}\label{lem:hypertrees}
+The left hypertrees of $\widehat G_\tau$ are exactly
+\begin{equation}
+ a=(n-x(E),x_1,\ldots,x_n),\qquad x\in P_\tau.\label{eq:hypertree}
+\end{equation}
+\end{lemma}
+\begin{proof}
+A spanning tree of $\widehat G_\tau$ has $2n+1$ edges, so the sum of its left
+degree-minus-one vector is $(2n+1)-(n+1)=n$. For a nonempty
+$A\subseteq[n]$, the tree edges incident with $A_L$ form a forest on
+$A_L\cup N(A)$. Their number is $a(A)+|A|$, and a forest on this nonempty
+vertex set has at most $|A|+|N(A)|-1$ edges. Hence
+\[
+ a(A)\leq |N(A)|-1=|\down A|.
+\]
+Lemma~\ref{lem:draconian} now shows that $x=(a_1,\ldots,a_n)$ belongs to
+$P_\tau$, and the sum condition determines $a_0$.
+
+Conversely, let $x\in P_\tau$. Replace the left element $i$ by $x_i$ distinct
+clones, each adjacent to the right set $\down i\subseteq[n]$. A set of clones
+whose labels lie in $A$ has at most $x(A)\leq|\down A|$ members. Thus Hall's
+matching condition holds, and all clones can be matched to distinct right
+vertices. This is also a constructive statement: if an augmenting-path
+matching leaves a clone unmatched, the alternating paths reachable from it
+produce a set of clones with fewer neighbors, contradicting Hall's condition.
+
+Build a tree by first taking all edges $i_L0_R$ for $0\leq i\leq n$. Each
+right vertex $j_R$, $j>0$, is then attached to the left label of its matched
+clone, or to $0_L$ if it is unmatched. The first edges form a star; every
+subsequent edge attaches a new leaf. Hence the result is a spanning tree.
+Its left degrees are $x_i+1$ for $i>0$ and $n-x(E)+1$ for $i=0$, exactly
+as required.
+\end{proof}
+
+\begin{lemma}\label{lem:activity}
+Order the left vertices with $0$ first. For the hypertree in
+\eqref{eq:hypertree}, internal inactivity is $|\supp(x)|$.
+\end{lemma}
+\begin{proof}
+The first coordinate is never internally inactive. A zero coordinate cannot
+transfer a unit, so it is also not internally inactive. If $x_i>0$, then
+$x-\ee_i\in P_\tau$ because all the defining inequalities are upper bounds
+and the coordinates remain nonnegative. By Lemma~\ref{lem:hypertrees}, the
+vector obtained by transferring one unit from coordinate $i$ to coordinate
+$0$ is another hypertree. Thus every positive nonzero-index coordinate is
+internally inactive, and there are no others.
+\end{proof}
+
+Summing over~\eqref{eq:hypertree} gives an interior polynomial equal to
+$h_\tau(t)$. The K\'alm\'an--Postnikov theorem identifies it with
+$h^*(B_\tau,t)$, proving Proposition~\ref{prop:known} by this second route.
+Notice that the argument counts hypertree \emph{vectors}, not spanning trees;
+counting all realizing trees would introduce incorrect multiplicities.
+
+\section{Proof dependencies and normalization audit}\label{app:audit}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}Y@{}}
+\toprule
+Claim or input & Where it comes from\\
+\midrule
+$h^*(B_\tau)=h_\tau$ & Known: \cite[Theorem~1.2]{DHLTW}, specialized using
+Lemma~\ref{lem:draconian}. Alternatively Appendix~\ref{app:hypertrees} plus
+\cite{KP}.\\[3pt]
+Ideal Hall presentation & Proposition~\ref{prop:inequalities}; transitivity is
+used explicitly.\\[3pt]
+Integer fiber factorization & Theorem~\ref{thm:fibers}; all coordinates and
+inverse parameters are displayed.\\[3pt]
+$h^*(C_\tau)=h_\tau$ & Corollary~\ref{cor:numerators}; a consequence of the
+fiber factorization and the known root identity.\\[3pt]
+Unimodularity & Leaf elimination in Lemma~\ref{lem:determinant}, followed by
+Proposition~\ref{prop:startriangulation}.\\[3pt]
+Polytopal pulling boundary & The established pulling lemma
+\cite[Lemma~2.1]{AthSpecial}.\\[3pt]
+Palindromicity, unimodality & Dehn--Sommerville and the $g$-theorem applied to
+the constructed simplicial polytope; an independent reciprocity proof of
+palindromicity is in Section~\ref{sec:second}.\\[3pt]
+Alternative polytopal route & The explicit special simplex and
+\cite[Theorem~3.5]{AthSpecial}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+There are several easy places to make an otherwise plausible argument wrong.
+The support polynomial of $Q_\tau$ is not asserted to be $h^*(Q_\tau)$.
+It is the numerator of the different polytopes $B_\tau$ and $C_\tau$.
+The larger denominator has exponent $2n+1$ and the smaller one exponent $n+1$.
+Both auxiliary vertices, and the edge between them, are required. The edge
+orientation convention is $j\leq_\tau i\iff i_Lj_R$ is present. The
+integer-fiber parameters consist of $n+1$ nonnegative entries; the exponent
+$n$ in~\eqref{eq:seriesfactor} results only after dividing by the additional
+slack factor in the Ehrhart series of $C_\tau$.
+
+No argument substitutes a rational equivalence for an integral one. The
+fiber base is integral because $a_\tau(y)$ is an integer for integral $y$.
+The determinant statements refer to the full relevant lattices. Finally,
+regularity or shellability alone is not used to claim that a sphere is
+polytopal: the specific pulling-boundary theorem supplies that step.
+
+\section{Reproducing the accompanying computations}\label{app:reproduce}
+
+The archive contains \texttt{article.tex}, \texttt{article.pdf}, a build script,
+\texttt{code/verify.py}, the full CSV enumeration, a JSON result report, and
+status notes. From the extracted directory, run
+\begin{lstlisting}
+python3 code/verify.py --output data
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The verifier requires Python 3.10 or later and no third-party Python packages.
+Do not use Python's \texttt{-O} option, since assertions are part of the checks.
+The LaTeX document uses standard TeX Live packages, including
+\texttt{newpxtext}, \texttt{newpxmath}, \texttt{tcolorbox}, and \texttt{hyperref}.
+
+The CSV uses zero-based bit positions: the row value $5$ represents the set
+$\{0,2\}$. Row $i$ records the principal ideal of element $i$, not its filter.
+A polynomial is stored as coefficients from degree zero upward. The JSON
+report also records explicit edge sets for matching certificates and complete
+Ehrhart counts for the independently tested instances.
+
+The calculations in the supplied report completed without failed assertions.
+Their runtime is recorded separately as an observation from this environment,
+not as a performance guarantee. No claim of formal verification is made.
+
+\begin{thebibliography}{99}
+
+\bibitem{AC}
+C.~A. Athanasiadis and F. Chapoton,
+\emph{Polytopes and posets associated to preorders},
+\arxiv{2605.26916v1}, 26 May 2026.
+Relevant locations: Section~5, Conjectures~5.1--5.4 and Remarks~5.5--5.6.
+
+\bibitem{DHLTW}
+Z. Dai, Q. Hou, Z. Liu, W. Thawinrak, and H. Wang,
+\emph{Counting Lattice Points in Minkowski Sums of Cross Polytopes},
+\arxiv{2608.16037v2}, 27 August 2026.
+Relevant locations: Theorems~1.2--1.3, Sections~4.2--4.3, and Problem~5.3.
+
+\bibitem{KP}
+T. K\'alm\'an and A. Postnikov,
+\emph{Root polytopes, Tutte polynomials, and a duality theorem for bipartite graphs},
+Proc. London Math. Soc. \textbf{114} (2017), 561--588;
+\arxiv{1602.04449}.
+Relevant locations in the arXiv text: Theorem~1.1, equation~(1.2), and
+Definitions~2.2--2.4.
+
+\bibitem{AthSpecial}
+C.~A. Athanasiadis,
+\emph{Ehrhart polynomials, simplicial polytopes, magic squares and a conjecture of Stanley},
+\arxiv{math/0312031}.
+Relevant locations: Lemmas~2.1--2.2 and~3.4, and Theorem~3.5.
+
+\bibitem{BR}
+W. Bruns and T. R\"omer,
+\emph{$h$-vectors of Gorenstein polytopes},
+J. Combin. Theory Ser. A \textbf{114} (2007), 65--76;
+\arxiv{math/0508392v2}.
+
+\bibitem{Menon}
+K. Menon,
+\emph{Gamma-positivity for octopuses: a bijective proof},
+\arxiv{2608.13247v1}, 13 August 2026.
+
+\end{thebibliography}
+\end{document}

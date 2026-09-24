@@ -1,0 +1,30 @@
+A293239 — correction and proved reductions
+Prepared 2026-09-20. This file is not an OEIS submission.
+
+1. The recurrence as printed for n>6 is false:
+   at n=8 its right side is 2*28-21+11-2*7+4=36, but a(8)=35.
+
+2. The proposed rational generating function has denominator
+   1-2z+z^2-z^4+2z^5-z^6 and numerator of degree 13.
+   Its coefficient sequence obeys the homogeneous recurrence for n>=14.
+   It fails at n=13. Do not remove the conjecture label for the actual
+   derivative count merely by correcting the recurrence's range.
+
+3. Proved exact reduction:
+   b(m,r)=[u^r] product_{h=0}^{m-1}(u+r-h).
+   Z(n)=#{(m,r):1<=r<=m<=n and b(m,r)=0}.
+   a(n)=1+n(n+1)/2-Z(n).
+
+4. Proved zeros:
+   (m,r)=(4h+1,2h), h>=1; and (m,r)=(8,5).
+   The first family is known in the Lehmer--Comtet literature.
+   Completeness of this zero list is not proved in this report.
+
+5. Unconditional growth bounds:
+   n+1+floor(n^2/4)<=a(n)<=q(n),
+   where q(0)=1 and
+   q(n)=1+n(n+1)/2-floor((n-1)/4)-[n>=8] for n>=1.
+   Hence a(n)=Theta(n^2), but the equivalent n^2/2 is not proved here.
+
+6. Exact computations included with the report establish a(n)=q(n)
+   for every 0<=n<=3000. They do not prove the formula for all n.

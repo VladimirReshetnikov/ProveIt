@@ -1,0 +1,1027 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Finite symmetry at measurable strength},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Prikry deletion, definable finite selectors, and sharp countable ultrafilter families},pdfkeywords={Prikry forcing, measurable cardinal, definable selectors, finite symmetry, ultrafilters, normal trace}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS / DEFINABILITY AND FORCING}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION V}
+\fancyfoot[L]{\small\color{Muted}Finite symmetry at measurable strength}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Finite symmetry at measurable strength}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\FFam}{\mathscr F}
+\newcommand{\Tabs}{\mathscr T}
+\newcommand{\UU}{\mathscr U}
+\newcommand{\FinSym}{\mathsf{FSNT}}
+\newcommand{\Inj}{\operatorname{Inj}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\PPU}{\mathbb P_U}
+\newcommand{\forces}{\Vdash}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newcommand{\nrm}{\operatorname{nm}}
+\newcommand{\tail}{\operatorname{tail}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\FS}{\operatorname{FS}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\width}{\operatorname{width}}
+\newcommand{\smallOD}{\OD_{V_\lambda\cup\{q\}}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION V}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Finite symmetry at\\measurable strength\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Prikry deletion, definable selectors,\\and countable ultrafilter families\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis asks whether its finite-selector obstruction and the necessity direction of its finite-label classification already hold in a Prikry extension of a measurable cardinal. We prove that they do, even for objects definable from the finite-change class of the generic sequence together with arbitrary ground-model set parameters. The proof replaces an elementary embedding by a one-point deletion after a fixed Prikry stem. Pure decision makes a finite observation constant, while deletion rotates the observation. Encoding a whole finite family of selectors by its finite restriction tables permits the cycle-amplification argument of the synthesis to be transferred to forcing.
+
+We also determine a sharp local threshold for ultrafilters. On the finite-change class of the Prikry sequence there is no nonempty finite family of ultrafilters definable from the permitted parameters, but there is a definable countably infinite family. More generally, every cofinal finite-change class at any uncountable cardinal of countable cofinality carries a countable, definable-from-a-low-rank-parameter family of ultrafilters, naturally organized as a free transitive integer orbit. Finally, the combined finite-symmetry, normal-trace and sharp local-width package is equiconsistent with one measurable cardinal. The matching lower bound comes from its explicit normal-measure inner-model clause, not from the selector obstruction alone.
+
+\begin{assessment}{The new result relative to the supplied reports}
+The finite-symmetry phenomena previously obtained from ultraexactingness also occur after ordinary Prikry forcing. They therefore do not, by their joint consistency alone, distinguish the ultraexacting/$\Izero$ level from the measurable level. The new step is the \emph{finite-observation deletion argument}, not a new proof of the Prikry property or a new finite-permutation lemma.
+
+The local ultrafilter threshold is exactly $\aleph_0$. A countable-valued assignment of ultrafilters is not a countable family of global ultrafilter-valued kernels; that latter question remains separate.
+\end{assessment}
+
+\textbf{Scope and status.} This is a proof-based continuation of \nolinkurl{Cardinals4.zip}, principally \cite[\S\S9, 12--13, 15]{synthesis}. The main forcing arguments below are self-contained, apart from the general forcing theorem and standard facts about relativized $\HOD$, whose use is explained. No new inconsistency of exacting or ultraexacting cardinals is claimed. The proposed theorems have been checked by re-deriving the arguments and by finite computational tests of the combinatorial parts; they have not been independently refereed or formalized. No claim of literature priority is made.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Main results and their significance}\label{sec:main}
+
+For an uncountable cardinal $\lambda$ of cofinality $\omega$, let
+\[
+ D_\lambda=\{a\subseteq\lambda:\ot(a)=\omega,\ \sup a=\lambda\},
+ \qquad Q_\lambda=D_\lambda/{=^*},
+\]
+where $a=^*b$ means that $a\triangle b$ is finite. The quotient is always computed in the ambient universe. Write
+\[
+ \Sel_{n,r}(Q)=\{f:[Q]^n\longrightarrow[Q]^r:
+                       f(B)\subseteq B\text{ for every }B\in[Q]^n\}
+ \quad(1\le r<n<\omega).
+\]
+A member is an $r$-out-of-$n$ selector. Choice guarantees that these sets are nonempty. Our conclusions concern \emph{definability}, not their nonemptiness.
+
+\begin{theorem}[Prikry finite symmetry]\label{thm:main}
+Let $W\models\ZFC$, let $U\in W$ be a normal measure on a measurable cardinal $\kappa$, and let $V=W[c]$ be the extension by $\PPU$, with $c$ the increasing generic sequence. Put $q_0=[\ran(c)]\in Q_\kappa^V$. Then:
+\begin{enumerate}
+\item For all $1\le r<n<\omega$, there is no nonempty finite
+\[
+ \FFam\subseteq\Sel_{n,r}(Q_\kappa)
+\]
+that is ordinal definable in $V$ from $q_0$ and finitely many set parameters belonging to $W$.
+\item Let $E$ be a finite set, coded by a natural number, with an action of $S_m$. An equivariant rule
+\[
+ L:\Inj(m,Q_\kappa)\longrightarrow E
+\]
+definable from such parameters exists if and only if every $\pi\in S_m$ fixes at least one element of $E$. In the positive direction a parameter of rank below $\omega+10$ suffices.
+\item There is no nonempty finite family of ultrafilters on $q_0$ definable from the same parameters. Nevertheless there is a countably infinite such family, definable from $q_0$ and a nonprincipal ultrafilter on $\omega$ belonging to $W$.
+\end{enumerate}
+\end{theorem}
+
+Here $\Inj(m,Q)$ is the set of injective ordered $m$-tuples. The action on tuples is
+\[
+ (\pi\cdot\vec q)_i=q_{\pi^{-1}(i)},
+ \qquad L(\pi\cdot\vec q)=\pi\cdot L(\vec q).
+\]
+Using representatives instead of classes yields the same statement provided the rule is invariant under changing finitely many points in each coordinate.
+
+\begin{corollary}[The low-rank version]\label{cor:lowrank}
+Every conclusion of Theorem~\ref{thm:main} holds with ``definable from $q_0$ and ground-model parameters'' replaced by $\OD_{V_\kappa\cup\{q_0\}}$. In particular, the nonexistence assertions apply to $\OD_{V_\kappa}$ families and rules. The finite-label equivalence also holds with low-rank parameters alone; the positive local ultrafilter construction still uses $q_0$.
+\end{corollary}
+
+\begin{proof}
+Prikry forcing adds no sets of rank below $\kappa$; a proof appears in Proposition~\ref{prop:preservation}. Hence every permitted low-rank parameter belongs to $W$.
+\end{proof}
+
+The synthesis already proves the finite algebra used for (1), and the positive direction of (2), in its ultraexacting analysis. It specifically leaves the Prikry-extension analogue open. We reuse and prove that algebra, but supply a different mechanism that realizes it. This establishes the \emph{Prikry-extension assertion} in the last question of \cite[\S15]{synthesis}, item~(ii). It does \emph{not} show that the conclusions follow from the abstract rigidity of a class alone.
+
+\begin{theorem}[Sharp countable ultrafilter families, without forcing]\label{thm:universalintro}
+Let $\lambda$ be any uncountable cardinal of cofinality $\omega$, and fix a nonprincipal ultrafilter $u$ on $\omega$. There is a function, definable from $u$ and $\lambda$, assigning to every $q\in Q_\lambda$ a countably infinite family $\UU_u(q)$ of nonprincipal ultrafilters on $q$. This family admits a canonical free transitive $\Z$-action.
+\end{theorem}
+
+This gives a useful new sharpness statement even in the original ultraexacting setting: at each class for which the synthesis excludes finite definable families of ultrafilters, the least possible size of a nonempty $\OD_{V_\lambda\cup\{q\}}$ family is exactly $\aleph_0$.
+
+\begin{theorem}[Consistency calibration]\label{thm:consintro}
+The finite-symmetry and normal-trace package $\FinSym$ defined in Section~\ref{sec:consistency} is equiconsistent over $\ZFC$ with one measurable cardinal. It includes the selector and finite-label conclusions, rigidity of a cofinal class, its sharp countable ultrafilter width, and a normal tail measure on $\lambda$ in an inner model containing all of $V_\lambda$.
+\end{theorem}
+
+This calibrates a specific package, not ultraexactingness itself. The substantially stronger consistency analysis of ultraexacting cardinals in \cite{abl,abgl} is not changed.
+
+\section{Parameters, quotient classes, and forcing conventions}\label{sec:conventions}
+
+\subsection{Definability does not require hereditary membership}
+
+For a set of permitted parameters $A$, $\OD_A$ consists of sets definable from finitely many members of $A$ and finitely many ordinal parameters. When we write $\OD_{p,q}$, the objects $p$ and $q$ are each available as a \emph{single parameter}; their elements are not automatically available. The inner model $\HOD_{p,q}$ consists of the sets all of whose transitive-closure members, as well as the sets themselves, are in $\OD_{p,q}$.
+
+In $V=W[c]$, the notation $\OD_{W\cup\{q_0\}}$ is external shorthand: each definition uses $q_0$, a fixed finite tuple of ground-model sets, and ordinal parameters. It does not mean that a truth predicate for $W$ is added to the language. A tuple of ground-model sets may be coded into one ground-model set $p$.
+
+A finite family can be definable without any particular member being definable. Consequently the proof must not select a canonical member of such a family. Restriction tables will avoid that mistake.
+
+\subsection{Normal measures and conditions}
+
+Work first in $W$. A normal measure $U$ on $\kappa$ is a nonprincipal $\kappa$-complete ultrafilter on $\kappa$ satisfying normality: every regressive function on a member of $U$ is constant on a member of $U$. Normality implies that diagonal intersections of $\kappa$ many members of $U$ are in $U$, and that every club in $\kappa$ is in $U$.
+
+A condition in $\PPU$ is $(s,A)$, where $s$ is a finite increasing sequence from $\kappa$, $A\in U$, and every member of $A$ is above the last point of $s$. The stronger-condition convention is
+\[
+ (t,B)\le(s,A)
+\]
+if $t$ extends $s$, every point of $t$ added after $s$ lies in $A$, and $B\subseteq A$. A \emph{direct} or \emph{pure} extension, written $\le^*$, leaves the stem unchanged. Intersections give lower bounds for direct descending sequences of length less than $\kappa$.
+
+For a generic filter $G$, the union of the stems is an increasing $\omega$-sequence $c_G$. Conversely the sequence determines the filter. For a condition $(s,A)$ we write $c\models(s,A)$ when $s$ is an initial segment of $c$ and all the subsequent points of $c$ lie in $A$.
+
+The following proofs use the ordinary forcing theorem: forcing is definable in the ground model, the truth lemma holds, and isomorphic cones transport generic filters. The expository language of transitive ground models is convenient; the consistency implications are the usual syntactic forcing implications and do not assume that mere consistency supplies a transitive model.
+
+\section{A proved Prikry toolkit}\label{sec:toolkit}
+
+The results of this section are classical; see \cite[\S3]{benhamou}. We include the proofs of precisely the ingredients needed later. No iterability theorem or elementary embedding is used in the new forcing argument.
+
+\subsection{Diagonalization and finite homogeneity}
+
+\begin{lemma}[Diagonal intersections]\label{lem:diagonal}
+If $\langle A_\xi:\xi<\kappa\rangle$ is a sequence of members of $U$, then
+\[
+ \Delta_{\xi<\kappa}A_\xi
+ =\{\beta<\kappa:\forall\xi<\beta\ (\beta\in A_\xi)\}
+ \in U.
+\]
+Consequently, given a member $B_t\in U$ for every finite increasing sequence $t$ from $\kappa$, there is a set $B\in U$ of limit ordinals such that
+\[
+ t\subseteq B,\quad \beta\in B,\quad \max t<\beta
+ \quad\Longrightarrow\quad \beta\in B_t.
+ \tag{\(*\)}\label{eq:diagfinite}
+\]
+The empty sequence can be included in this requirement.
+\end{lemma}
+
+\begin{proof}
+If the diagonal intersection is not in $U$, on its complement choose the least $\xi<\beta$ witnessing $\beta\notin A_\xi$. This is a regressive function. Normality makes it constantly $\xi$ on a member of $U$, contradicting $A_\xi\in U$.
+
+Every club $C\subseteq\kappa$ belongs to $U$. Otherwise, after deleting a bounded initial segment, the function $\beta\mapsto\sup(C\cap\beta)$ is regressive on $\kappa\setminus C$; closedness of $C$ gives strict inequality. Normality would make it constant on a measure-one set, whereas unboundedness of $C$ makes every constant fiber bounded. Bounded sets cannot belong to a nonprincipal $\kappa$-complete ultrafilter. This is a contradiction.
+
+For the second assertion, put
+\[
+ C_\alpha=\bigcap\{B_t:t\text{ is a finite increasing sequence from }\alpha\}.
+\]
+There are fewer than $\kappa$ sequences in this intersection, so $C_\alpha\in U$. Intersect $\Delta_\alpha C_\alpha$ with the club of nonzero limit ordinals and with $B_\varnothing$. If $\max t<\beta$ and $\beta$ is a limit ordinal, choose $\alpha$ with $\max t<\alpha<\beta$. Then $t\subseteq\alpha$ and $\beta\in C_\alpha\subseteq B_t$.
+\end{proof}
+
+\begin{lemma}[Finite-dimensional homogeneity]\label{lem:ramsey}
+If $\rho<\kappa$ and $h:[\kappa]^n\to\rho$, then some $A\in U$ is homogeneous for $h$. Given one such coloring for every $n<\omega$, one can choose a single member of $U$ homogeneous separately at every length.
+\end{lemma}
+
+\begin{proof}
+The case $n=0$ is immediate. For $n=1$, a partition into fewer than $\kappa$ cells has a unique cell in $U$. Suppose the assertion holds for $n$. For each $t\in[\kappa]^n$, choose a color $\varepsilon(t)<\rho$ and $B_t\in U$ such that
+\[
+ h(t\concat\langle\beta\rangle)=\varepsilon(t)
+ \quad\text{for }\beta\in B_t\text{ above }\max t.
+\]
+This is possible by $\kappa$-completeness and the ultrafilter property. Apply Lemma~\ref{lem:diagonal}, then the induction hypothesis to the coloring $t\mapsto\varepsilon(t)$. On the intersection of the two resulting measure-one sets, $h$ is constant on $(n+1)$-tuples. Finally intersect the countably many homogeneous sets to treat all finite lengths simultaneously.
+\end{proof}
+
+\subsection{Pure decision}
+
+\begin{theorem}[Prikry property]\label{thm:prikry}
+For every forcing sentence $\varphi$ and every $p=(s,A)$, there is a direct extension of $p$ deciding $\varphi$. If a name is forced below $p$ to belong to a fixed finite ground-model set, a direct extension decides its value.
+\end{theorem}
+
+\begin{proof}
+For each finite extension $t$ of the stem using points of $A$, ask whether some reservoir $B_t\in U$ makes $(s\concat t,B_t)$ decide $\varphi$. If so, choose one and color $t$ by the corresponding truth value $0$ or $1$. Two opposite decisions with the same stem are impossible, since their reservoirs have measure-one intersection. If no such reservoir exists, give $t$ the third color $2$ and choose an arbitrary measure-one reservoir.
+
+Diagonalize the chosen reservoirs using Lemma~\ref{lem:diagonal}, retaining a set $B\subseteq A$ in $U$. Thus whenever a finite $t\subseteq B$ has color $0$ or $1$, the condition
+\[
+ (s\concat t,B\setminus(\max t+1))
+\]
+forces that value. The empty-stem case is covered by including its reservoir in the intersection. By Lemma~\ref{lem:ramsey}, shrink to $C\in U$ so that the color is constant separately on each $[C]^n$.
+
+Below $(s,C)$ some condition decides $\varphi$, by the forcing theorem. Its finite added stem has some length $n$ and color $\varepsilon\in\{0,1\}$. Hence every $n$-point extension using $C$ has color $\varepsilon$ and forces the same value with reservoir $C$ above its stem.
+
+These $n$-point conditions are predense below $(s,C)$. Indeed, any longer stem extends one of them; any shorter stem can be lengthened to $n$ points from its reservoir. Consequently conditions forcing value $\varepsilon$ are dense below $(s,C)$, so $(s,C)$ itself decides $\varphi$.
+
+For a name valued in a fixed finite set, apply the assertion successively to its possible values, retaining the stem. The final direct extension decides every equality; at least one must hold.
+\end{proof}
+
+\begin{remark}
+We never infer that an arbitrarily chosen direct extension belongs to the originally given generic filter. In contradiction arguments we first work below a condition that forces the proposed object to exist, choose a deciding direct extension, and then use a generic through that stronger condition. This distinction is essential.
+\end{remark}
+
+\subsection{Preservation and stem surgery}
+
+\begin{proposition}[Preservation]\label{prop:preservation}
+Prikry forcing preserves all cardinals, adds no bounded subsets of $\kappa$, and satisfies
+\[
+ V_\kappa^{W[c]}=V_\kappa^W,
+ \qquad W[c]\models \cf(\kappa)=\omega
+   \text{ and }\kappa\text{ is a strong limit cardinal}.
+\]
+\end{proposition}
+
+\begin{proof}
+If a name is forced to be a subset of $\alpha<\kappa$, decide its membership statements by a direct descending recursion of length $\alpha$, using Theorem~\ref{thm:prikry}. Intersections at limit stages and at the end exist by $\kappa$-completeness. The final direct extension decides the entire subset. Thus no bounded subsets of $\kappa$ are added.
+
+Cardinals below $\kappa$ are preserved: a collapse between ordinals below $\kappa$ would be coded by a new bounded subset of $\kappa$, using a ground-model pairing function. Since $\kappa$ is a limit of ground-model cardinals, it remains a cardinal. Conditions with the same stem are compatible, and there are only $\kappa$ stems. Hence $\PPU$ is $\kappa^+$-cc and preserves all cardinals at least $\kappa^+$. For completeness, the relevant chain-condition argument bounds the possible values of each coordinate of a name by an antichain of size at most $\kappa$; a purported collapse of a larger cardinal would therefore already supply an impossibly small ground-model cover of it.
+
+There are no new subsets of any ground-model set of size below $\kappa$, by coding with an ordinal below $\kappa$. Since $\kappa$ was inaccessible, induction on $\alpha<\kappa$ now gives $V_\alpha^{W[c]}=V_\alpha^W$. The successor step uses $|V_\alpha^W|<\kappa$, and the limit step is a union. This proves rank agreement. The same preservation of small power sets proves that $\kappa$ remains strong limit.
+
+The generic sequence has order type $\omega$, since stems are finite and their lengths are unbounded. For every $\beta<\kappa$, extending the stem above $\beta$ is dense. Thus its supremum is $\kappa$.
+\end{proof}
+
+\begin{lemma}[Isomorphic cones and deletion]\label{lem:surgery}
+Let $s,t$ be finite increasing stems and let $A\in U$ lie above every point of both stems. The map
+\[
+ (s\concat u,B)\longmapsto(t\concat u,B)
+ \label{eq:cones}\tag{$\dagger$}
+\]
+is an isomorphism between the cones below $(s,A)$ and $(t,A)$. Corresponding generic sequences differ at finitely many points, give the same forcing extension, and have the same class in $Q_\kappa$.
+
+In particular, if $d\models(s,A)$ is generic and $k=|s|$, then the sequence obtained by deleting $d_k$ is also generic, satisfies $(s,A)$, and generates $W[d]$.
+\end{lemma}
+
+\begin{proof}
+The common finite suffix $u$ consists of points from $A$, above both stems. The displayed map and its inverse preserve and reflect the order. They belong to $W$, so they transport generic filters, and the filters recover each other. Their sequences have the same infinite tail. All finitely many differing ordinals belong to $W$, hence either sequence recovers the other over $W$.
+
+For the last assertion put $\beta=d_k$. Work below
+\[
+ (s\concat\langle\beta\rangle,
+             A\setminus(\beta+1)).
+\]
+The original generic passes through this condition. Replace its stem by $s$ using the cone isomorphism. The resulting generic is exactly $d$ with $\beta$ deleted. Its remaining tail is still contained in $A$, so it satisfies the original $(s,A)$.
+\end{proof}
+
+This proof is sufficient for every finite modification used below. We do not need to invoke the full Mathias criterion for arbitrary sequences.
+
+\section{The finite-observation deletion principle}\label{sec:observation}
+
+\begin{lemma}[Deletion forces a finite fixed point]\label{lem:observation}
+Suppose a condition $p$ forces the existence of an object $z$ uniquely defined in the extension from a ground-model parameter $a$, ordinal parameters, and the generic class $[\ran(\dot c)]$. Let $E\in W$ be finite, and suppose a specified construction gives
+\[
+ T(d,z)\in E
+\]
+for every generic $d$ through $p$. Let $\rho$ be a permutation of $E$. Assume that deleting the first point after a fixed stem, while retaining that stem, always changes this observation according to
+\[
+ T(d^-,z)=\rho(T(d,z)).
+ \label{eq:obs-equiv}\tag{1}
+\]
+Then $\rho$ has a fixed point in $E$.
+\end{lemma}
+
+\begin{proof}
+The construction determines a finite-valued forcing name. By pure decision choose $p^*=(s,A)\le^*p$ and $e\in E$ such that $p^*$ forces this name to equal $e$. Take a generic sequence $d$ through $p^*$ and delete its first point after $s$, obtaining $d^-$. By Lemma~\ref{lem:surgery}, both sequences are generic through $p^*$ and $W[d]=W[d^-]$. Their finite-change classes coincide, and all the remaining parameters are ground-model sets or ordinals. Therefore the unique object called $z$ is \emph{the same object} in the two evaluations. Both observations equal $e$, while \eqref{eq:obs-equiv} makes the second $\rho(e)$. Hence $e=\rho(e)$.
+\end{proof}
+
+\begin{remark}[Why definability is used]\label{rem:sameobject}
+We do not apply an automorphism to the completed universe. The universe has not changed at all: only its generic presentation has changed. Definability ensures that the name of the proposed selector, family, or rule evaluates to the same object in these two presentations. A parameter equal to the distinguished representative $d$ would invalidate this step; a parameter equal to its class $[\ran(d)]$ does not.
+\end{remark}
+
+One can use the lemma when $E$ is a finite power set or a finite space of tables. It is not necessary that the observation be a single selected point. This is the key to handling a finite definable family with no definable member.
+
+\section{Finite families of selectors}\label{sec:selectors}
+
+\subsection{The finite algebra}
+
+Let $A_N=\{0,\ldots,N-1\}$ and let $\tau(i)=i+1\pmod N$. Let
+\[
+ \Tabs_{N,n,r}=\{v:[A_N]^n\to[A_N]^r:
+                                  v(B)\subseteq B\}.
+\]
+The cyclic action is
+\[
+ (\tau\cdot v)(B)=\tau``v(\tau^{-1}``B).
+\]
+This is a finite set with a permutation action.
+
+\begin{lemma}[Cycle amplification; from the synthesis]\label{lem:amplification}
+Fix $1\le r<n$, $M\ge1$, put
+\[
+ L=\lcm(1,2,\ldots,M),\qquad N=nL.
+\]
+There is no nonempty $\tau$-invariant $\mathcal A\subseteq\Tabs_{N,n,r}$ with $|\mathcal A|\le M$.
+\end{lemma}
+
+\begin{proof}
+If such $\mathcal A$ existed, $\tau$ would permute it. Each orbit length would be at most $M$, hence divide $L$. Thus $\tau^L$ would fix every $v\in\mathcal A$.
+
+The set
+\[
+ B_0=\{0,L,2L,\ldots,(n-1)L\}
+\]
+is invariant under $\tau^L$, and $\tau^L$ acts on it as one $n$-cycle. For any $v\in\mathcal A$ we would have
+\[
+ v(B_0)=v(\tau^L``B_0)=\tau^L``v(B_0).
+\]
+A subset invariant under a transitive cycle is either empty or the entire cycle. But $|v(B_0)|=r$ and $0<r<n$, a contradiction.
+\end{proof}
+
+For $M=2,n=2,r=1$, one must use a four-cycle. A two-cycle alone does not exclude a pair of selectors that it interchanges. This is why merely averaging, or arbitrarily choosing one member of a finite family, would leave a genuine gap.
+
+\subsection{Tables obtained from a generic sequence}
+
+For a generic increasing sequence $d$, define
+\[
+ a_i(d)=\{d_{Nk+i}:k<\omega\},\qquad
+ q_i(d)=[a_i(d)]\quad(i<N).
+ \label{eq:residues}\tag{2}
+\]
+The $q_i(d)$ are distinct classes, with pairwise disjoint cofinal representatives. If $d^-$ is obtained by deleting one point, then after ignoring finitely many terms
+\[
+ q_i(d^-)=q_{i+1\bmod N}(d).
+ \label{eq:residue-shift}\tag{3}
+\]
+This remains true when the point is deleted after an arbitrarily long fixed stem: the finite prefix is irrelevant in $Q_\kappa$.
+
+Suppose $\FFam$ is a finite family of $r$-out-of-$n$ selectors. For $f\in\FFam$, define a finite table
+\[
+ v_{f,d}(B)=\{i\in B:q_i(d)\in
+                   f(\{q_j(d):j\in B\})\}
+ \quad(B\in[A_N]^n).
+\]
+Set
+\[
+ \mathcal A(d,\FFam)=\{v_{f,d}:f\in\FFam\}
+              \subseteq\Tabs_{N,n,r}.
+ \label{eq:tableobs}\tag{4}
+\]
+Different selectors may have identical restrictions, so only
+$1\le|\mathcal A(d,\FFam)|\le|\FFam|$ is asserted.
+
+\begin{theorem}[No finite definable selector family]\label{thm:selectors}
+Under the hypotheses of Theorem~\ref{thm:main}, no nonempty finite $\FFam\subseteq\Sel_{n,r}(Q_\kappa)$ belongs to $\OD_{W\cup\{q_0\}}$.
+\end{theorem}
+
+\begin{proof}
+Suppose otherwise. Fix a formula and permitted parameters defining $\FFam$ uniquely. By the truth lemma choose a condition $p$ forcing that this formula defines a nonempty finite family of the required kind; strengthen if necessary so that its size is the fixed integer $M\ge1$. Define $L$ and $N$ as in Lemma~\ref{lem:amplification}.
+
+The name for the set of tables in \eqref{eq:tableobs} takes values in the finite ground-model set $\Pow(\Tabs_{N,n,r})$. By pure decision choose $p^*=(s,A)\le^*p$ forcing
+\[
+ \mathcal A(\dot c,\dot\FFam)=\mathcal A_*.
+\]
+Here $\mathcal A_*$ is nonempty and has at most $M$ elements.
+
+Take a generic $d$ through $p^*$ and delete the first point after $s$. The family $\FFam$ is the same in $W[d]$ and $W[d^-]$, by Remark~\ref{rem:sameobject}. Equation~\eqref{eq:residue-shift} gives, for each $f$ and $B$,
+\[
+ v_{f,d^-}(B)=\tau^{-1}``v_{f,d}(\tau``B).
+\]
+Consequently
+\[
+ \mathcal A(d^-,\FFam)=\tau^{-1}\cdot\mathcal A(d,\FFam).
+\]
+Both observations equal the decided value $\mathcal A_*$. Hence $\mathcal A_*$ is $\tau$-invariant. This contradicts Lemma~\ref{lem:amplification}.
+\end{proof}
+
+\begin{corollary}[Orders and choice functions]\label{cor:ordersnew}
+There is no nonempty finite $\OD_{W\cup\{q_0\}}$ family of linear orders on $Q_\kappa$, tournaments on $Q_\kappa$, or choice functions on its nonempty finite subsets. In particular $Q_\kappa$ admits no injection into the ordinals definable from those parameters.
+\end{corollary}
+
+\begin{proof}
+A linear order gives a binary selector by taking the smaller point; a tournament gives one by taking the winner; a finite-set choice function restricts to one. Applying the appropriate definable conversion to a nonempty finite family yields a nonempty finite family of binary selectors. An injection into the ordinals gives a definable linear order. Theorem~\ref{thm:selectors} excludes all of them.
+\end{proof}
+
+The conclusion concerns the complete ambient $Q_\kappa$, not just the finitely many probe classes. The probe classes serve only to extract a finite contradiction from a purported global object.
+
+\section{The exact finite-label classification}\label{sec:labels}
+
+\subsection{Realizing an arbitrary permutation by deletion}
+
+\begin{lemma}[Permutation probes]\label{lem:permutation}
+Fix $m<\omega$ and $\pi\in S_m$. From a Prikry generic $d$ one can define an injective tuple $\vec q(d)\in\Inj(m,Q_\kappa)$ such that deleting one point of $d$ gives
+\[
+ q_i(d^-)=q_{\pi(i)}(d)\quad(i<m).
+ \label{eq:permutation-shift}\tag{5}
+\]
+\end{lemma}
+
+\begin{proof}
+After strengthening the reservoir, all sufficiently late points of $d$ are limit ordinals. Define
+\[
+ a_i(d)=\{d_n+\pi^{-n}(i):n<\omega\},
+ \qquad q_i(d)=[a_i(d)].
+\]
+For sufficiently large $n$, the finite blocks
+$\{d_n+i:i<m\}$ lie strictly below $d_{n+1}$ and are mutually disjoint. Within a block the values $\pi^{-n}(i)$ are distinct. Thus the $a_i$ are cofinal $\omega$-sets and their classes are pairwise distinct. Any exceptional initial intersections are finite and immaterial.
+
+After deleting the point in position $k$, the new sequence satisfies $d^-_n=d_{n+1}$ for $n\ge k$. For these $n$,
+\[
+ d^-_n+\pi^{-n}(i)
+   =d_{n+1}+\pi^{-(n+1)}(\pi(i)).
+\]
+The two corresponding representatives differ at only finitely many points, proving \eqref{eq:permutation-shift}.
+\end{proof}
+
+\begin{theorem}[Necessity in a Prikry extension]\label{thm:label-necessity}
+Suppose $L:\Inj(m,Q_\kappa)\to E$ is equivariant and belongs to $\OD_{W\cup\{q_0\}}$, where $E$ is a finite coded $S_m$-set. Then
+\[
+ \Fix_E(\pi)\ne\varnothing\qquad\text{for every }\pi\in S_m.
+ \label{eq:elementwisefix}\tag{6}
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $\pi$. As in Theorem~\ref{thm:selectors}, work below a condition forcing that the chosen formula defines the proposed rule. Use the tuple from Lemma~\ref{lem:permutation} and make the finite-valued observation
+\[
+ T(d)=L(\vec q(d)).
+\]
+Pure decision fixes its value below a direct extension $(s,A)$. Deletion after $s$ replaces $\vec q(d)$ by $\pi^{-1}\cdot\vec q(d)$, by \eqref{eq:permutation-shift}. The rule $L$ itself does not change. Equivariance therefore gives
+\[
+ T(d^-)=\pi^{-1}\cdot T(d).
+\]
+Lemma~\ref{lem:observation} yields a fixed point of $\pi^{-1}$, equivalently of $\pi$.
+\end{proof}
+
+\subsection{Why the condition is sufficient}
+
+The following direction is combinatorial and does not need forcing or a large cardinal. It is the cyclic-stabilizer argument of \cite[\S12.5]{synthesis}, included to make the classification complete.
+
+\begin{lemma}[Cyclic stabilizers of incidence words]\label{lem:stabilizer}
+Let $w=(w_n)_{n<\omega}$ be a word over
+$\mathcal A_m=\Pow(m)\setminus\{\varnothing\}$. Assume that its columns are pairwise eventually different: for $i\ne j$, infinitely many $n$ satisfy
+\[
+ (i\in w_n)\not\leftrightarrow(j\in w_n).
+\]
+Let $[w]_{\mathrm{tail}}$ identify words whose tails agree after possibly different finite initial segments. Then
+\[
+ H_w=\{\pi\in S_m:[\pi w]_{\mathrm{tail}}=[w]_{\mathrm{tail}}\}
+\]
+is cyclic.
+\end{lemma}
+
+\begin{proof}
+Let $P_w$ be the subgroup of $\Z$ consisting of all eventual periods:
+\[
+ P_w=\{k\in\Z:w_{n+k}=w_n\text{ for all sufficiently large }n\}.
+\]
+Negative indices cause no problem because only sufficiently large $n$ are used. Either $P_w=\{0\}$ or $P_w=d\Z$ for a positive integer $d$.
+
+For $\pi\in H_w$, there is an integer $k$ such that
+$\pi w_n=w_{n+k}$ eventually. The residue class of $k$ modulo $P_w$ is unique. Assigning this residue to $\pi$ is a homomorphism
+\[
+ H_w\longrightarrow\Z/P_w:
+\]
+composition of permutations adds the offsets, because permutations of letters commute with shifts of positions.
+
+The homomorphism is injective. If the offset is zero modulo $P_w$, then $\pi w_n=w_n$ eventually. For every $i$, membership of $i$ and of $\pi(i)$ in all sufficiently late letters is therefore identical. Distinctness of the columns implies $\pi(i)=i$ for every $i$.
+
+Thus $H_w$ embeds into $\Z$ or into a finite cyclic group. Since $H_w$ is finite, in the former case it is trivial; in the latter it is cyclic.
+\end{proof}
+
+\begin{theorem}[Sufficiency in ZFC]\label{thm:label-sufficiency}
+Let $\lambda$ be uncountable with $\cf(\lambda)=\omega$, and let $E$ be a finite coded $S_m$-set satisfying \eqref{eq:elementwisefix}. There is an equivariant rule
+\[
+ L:\Inj(m,Q_\lambda)\longrightarrow E
+\]
+definable from $\lambda$ and one parameter of rank below $\omega+10$.
+\end{theorem}
+
+\begin{proof}
+When $m=0$, the domain has one element and the condition is exactly $E\ne\varnothing$; choosing the least label proves the assertion. Assume $m\ge1$. Choose a well-order $\preceq$ of the set $\mathcal A_m^\omega$ of all incidence words. This is a low-rank set: the alphabet is finite, the words are coded by reals, and a well-order of the reals has rank below $\omega+10$. Fix also the finite natural order on the labels in $E$.
+
+Given $\vec q\in\Inj(m,Q_\lambda)$, choose representatives $a_i\in q_i$. The union of finitely many cofinal $\omega$-sets has order type $\omega$: it is cofinal, and below any of its points each of the finitely many representatives has only finitely many points. Enumerate this union increasingly as $\langle\beta_n:n<\omega\rangle$ and form the word
+\[
+ w_n=\{i<m:\beta_n\in a_i\}.
+\]
+Each column is infinite. Two columns agree eventually exactly when the associated representatives differ finitely; hence our tuple gives pairwise eventually different columns.
+
+Changing finitely many points of the representatives changes only a finite initial part of the merged ordered union and of its letters. Accordingly it leaves the tail class $[w]_{\mathrm{tail}}$ unchanged. Permuting the input tuple acts on this class by the same permutation of letters.
+
+Consider the finite $S_m$-orbit of $[w]_{\mathrm{tail}}$. Among \emph{all words} representing its tail classes, let $w_*$ be the $\preceq$-least. This choice depends only on the orbit. The stabilizer $H_{w_*}$ is cyclic by Lemma~\ref{lem:stabilizer}. If $h$ generates it, a label fixed by $h$ exists by \eqref{eq:elementwisefix}; that label is fixed by all of $H_{w_*}$. Let $e_*$ be the least such label. The trivial-stabilizer case is included, since \eqref{eq:elementwisefix} for the identity says $E\ne\varnothing$.
+
+Choose any $\sigma\in S_m$ with
+$[w]_{\mathrm{tail}}=\sigma\cdot[w_*]_{\mathrm{tail}}$ and set
+\[
+ L(\vec q)=\sigma\cdot e_*.
+\]
+This is independent of the choice of $\sigma$: if $\sigma_1$ and $\sigma_2$ give the same class, $\sigma_2^{-1}\sigma_1\in H_{w_*}$ fixes $e_*$. It is independent of the chosen representatives by tail invariance. Applying a permutation $\pi$ changes $\sigma$ to $\pi\sigma$, so the rule is equivariant.
+
+Although representatives were used to describe the construction, the proof of independence supplies a unique value. The resulting function is definable from the indicated low-rank well-order and the finite action code.
+\end{proof}
+
+\begin{corollary}[Exact classification]\label{cor:classification}
+In the Prikry extension of Theorem~\ref{thm:main}, the existence of a permitted definable equivariant finite-label rule is equivalent to \eqref{eq:elementwisefix}. The same is true with permitted parameters restricted to $V_\kappa$ and $q_0$.
+\end{corollary}
+
+The condition does not demand a label fixed by the whole group. For example, let $S_3$ act on the disjoint union of its three-point natural action and its two-point sign action. A transposition fixes a point in the first part, a three-cycle fixes both points in the second, and the identity fixes every point. Nevertheless there is no global fixed point. The five-label rule exists. In contrast, the natural $S_n$-action on $[n]^r$, $0<r<n$, fails the condition because an $n$-cycle fixes no such subset.
+
+\section{Finite families of ultrafilters}\label{sec:ufnegative}
+
+Write $\UF(q)$ for the set of ultrafilters on the \emph{full ambient power set} $\Pow(q)$. Principal ultrafilters are included unless explicitly excluded. This is different from an internal normal measure on an ordinal in a smaller inner model.
+
+For $a,b\in q$, define the finite-change index
+\[
+ \ind_a(b)=|a\setminus b|-|b\setminus a|\in\Z.
+ \label{eq:index}\tag{7}
+\]
+It satisfies the cocycle identity
+\[
+ \ind_a(c)=\ind_a(b)+\ind_b(c)
+ \qquad(a,b,c\in q).
+ \label{eq:cocycle}\tag{8}
+\]
+Indeed, choose an ordinal above all three pairwise symmetric differences. Below this ordinal the identity reduces to cancellation of finite cardinalities, and above it all three sets agree.
+
+For $h\ge1$, the phase cells
+\[
+ P_r^a(h)=\{b\in q:\ind_a(b)\equiv r\pmod h\},
+ \qquad r<h,
+ \label{eq:phase}\tag{9}
+\]
+partition $q$. Every ultrafilter on $q$ contains exactly one of these finitely many cells.
+
+\begin{theorem}[No finite definable family on the generic class]\label{thm:ufnegative}
+In $V=W[c]$ of Theorem~\ref{thm:main}, no nonempty finite
+$\FFam\subseteq\UF(q_0)$ belongs to $\OD_{W\cup\{q_0\}}$.
+\end{theorem}
+
+\begin{proof}
+Suppose a condition forces such a uniquely defined family to have size $M\ge1$, and set $h=M+1$. In a generic presentation $W[d]$, with $a=\ran(d)$ and $q_0=[a]$, observe the finite nonempty set
+\[
+ R(d)=\{r<h:P_r^a(h)\in D\text{ for some }D\in\FFam\}.
+\]
+Each ultrafilter selects exactly one phase, so $1\le|R(d)|\le M$.
+
+Pure decision fixes $R(d)$ to a ground-model value $R_*$ below some direct extension $(s,A)$. Delete the first point after $s$, obtaining $a^-=a\setminus\{\beta\}$. Equation~\eqref{eq:index} gives
+\[
+ \ind_{a^-}(b)=\ind_a(b)-1
+ \quad\text{for every }b\in q_0.
+\]
+Thus $P_r^{a^-}(h)=P_{r+1}^a(h)$, with residues modulo $h$, and
+\[
+ R(d^-)=R(d)-1\pmod h.
+\]
+The ambient universe, $q_0$, and the definable family are unchanged. Both sequences satisfy the deciding condition, so $R_*=R_*-1$. A nonempty subset invariant under this transitive cycle is all of $h$. This contradicts $|R_*|\le M<h$.
+\end{proof}
+
+\begin{corollary}[Finite global kernel families]\label{cor:kernels}
+There is no nonempty finite family, definable from the same parameters, of functions $K$ on $Q_\kappa$ such that $K(q)\in\UF(q)$ for every $q$.
+\end{corollary}
+
+\begin{proof}
+Evaluate every member of the family at the permitted parameter $q_0$. Its image is a nonempty finite definable subfamily of $\UF(q_0)$, contrary to Theorem~\ref{thm:ufnegative}.
+\end{proof}
+
+The theorem covers a family with no definable individual ultrafilter. It also covers principal ultrafilters, so there is no hidden nonprincipality assumption in the obstruction.
+
+\section{A canonical countable ultrafilter family}\label{sec:ufpositive}
+
+We now work in arbitrary $\ZFC$ with an uncountable $\lambda$ of countable cofinality. No Prikry forcing, rigidity, or elementary embedding is assumed.
+
+For $a\in D_\lambda$, let $a^{(n)}$ be the set obtained by removing its first $n$ points. Fix a nonprincipal ultrafilter $u$ on $\omega$. For $a\in q$, define
+\[
+ D_{u,a}=\left\{X\subseteq q:
+              \{n<\omega:a^{(n)}\in X\}\in u\right\}.
+ \label{eq:pushforward}\tag{10}
+\]
+This is the pushforward of $u$ under the injection $n\mapsto a^{(n)}$.
+
+\begin{lemma}[Tail synchronization]\label{lem:synchronization}
+For $a,b\in q$, put $d=\ind_a(b)$. For all sufficiently large $n$,
+\[
+ b^{(n)}=a^{(n+d)}.
+ \label{eq:tailsync}\tag{11}
+\]
+Every integer $d$ occurs as $\ind_a(b)$ for some $b\in q$.
+\end{lemma}
+
+\begin{proof}
+Choose a point beyond $a\triangle b$. Removing $k_a$ points from $a$ and $k_b$ points from $b$ gives a common tail. The difference of these two finite counts is
+\[
+ k_a-k_b=|a\setminus b|-|b\setminus a|=d.
+\]
+For $n\ge k_b$, remove a further $n-k_b$ points from that common tail. This yields \eqref{eq:tailsync}.
+
+For $d\ge0$, take $b=a^{(d)}$. For $d=-k<0$, add $k$ distinct ordinals outside $a$. There are arbitrarily large finite sets of such ordinals because $a$ is countable and $\lambda$ is uncountable. Adding finitely many points preserves cofinality and order type $\omega$ and gives index $-k$.
+\end{proof}
+
+\begin{theorem}[The countable ultrafilter orbit]\label{thm:ufpositive}
+For every $q\in Q_\lambda$, put
+\[
+ \UU_u(q)=\{D_{u,a}:a\in q\}.
+ \label{eq:orbitfamily}\tag{12}
+\]
+Then:
+\begin{enumerate}
+\item Every member is a nonprincipal ultrafilter on $q$.
+\item $\UU_u(q)$ is countably infinite and belongs to $\OD_{u,q}$.
+\item The map $T:q\to q$, $T(b)=b^{(1)}$, induces by pushforward a bijection of $\UU_u(q)$. Its integer powers act freely and transitively on that family.
+\end{enumerate}
+The function $q\mapsto\UU_u(q)$ is definable from $u$ and $\lambda$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Ultrafilter and nonprincipality.}
+The inverse-image operation under $n\mapsto a^{(n)}$ preserves complements and finite intersections. Thus \eqref{eq:pushforward} defines an ultrafilter. Since the map is injective, the preimage of a singleton has at most one point; a nonprincipal $u$ contains no finite set. Hence $D_{u,a}$ is nonprincipal.
+
+\textbf{At most countably many values.}
+Fix one representative $a\in q$ temporarily. If $b,b'\in q$ have the same index $d$ relative to $a$, then by Lemma~\ref{lem:synchronization} the two sequences
+$\langle b^{(n)}:n<\omega\rangle$ and
+$\langle b'^{(n)}:n<\omega\rangle$ agree eventually. The inverse images of any $X\subseteq q$ therefore differ finitely. A nonprincipal ultrafilter is insensitive to finite changes, so $D_{u,b}=D_{u,b'}$. There is at most one value for each integer $d$.
+
+\textbf{Different indices give different values.}
+For a positive integer $h$, let $r_u(h)<h$ be the unique residue whose class in $\omega$ belongs to $u$. The index identity gives
+\[
+ \ind_a(b^{(n)})=\ind_a(b)+n=d+n.
+\]
+Consequently the unique phase cell of the partition \eqref{eq:phase} selected by $D_{u,b}$ is
+\[
+ P_{\,d+r_u(h)\bmod h}^{a}(h).
+ \label{eq:chosenphase}\tag{13}
+\]
+If $d\ne e$, choose $h>|d-e|$. Then these selected phase cells for $d$ and $e$ are different, so the corresponding ultrafilters differ. By the last part of Lemma~\ref{lem:synchronization}, every integer is realized. Thus the family has exactly $\aleph_0$ members.
+
+\textbf{The integer action.}
+For any $X\subseteq q$,
+\[
+ X\in T_*(D_{u,b})
+ \iff\{n:T(b^{(n)})\in X\}\in u
+ \iff\{n:b^{(n+1)}\in X\}\in u.
+\]
+The last condition says $X\in D_{u,b^{(1)}}$. Hence
+$T_*(D_{u,b})=D_{u,b^{(1)}}$. Relative to the temporary base $a$, this increments the integer index by one. Since all integer indices occur uniquely at the ultrafilter level, $T_*$ is a bijection and its powers form a free transitive $\Z$-action. The definition of $T_*$ itself did not use $a$.
+
+Finally \eqref{eq:orbitfamily} quantifies over all $a\in q$; it makes no choice of a representative. Equations \eqref{eq:pushforward} and \eqref{eq:orbitfamily} therefore prove the claimed definability, both locally and as a function of $q$.
+\end{proof}
+
+\begin{corollary}[Exact local width]\label{cor:exactwidth}
+In the Prikry extension of Theorem~\ref{thm:main},
+\[
+ \min\{|\FFam|:\varnothing\ne\FFam\subseteq\UF(q_0),\
+              \FFam\in\OD_{V_\kappa\cup\{q_0\}}\}=\aleph_0.
+ \label{eq:width}\tag{14}
+\]
+The same minimum is $\aleph_0$ with $\OD_{W\cup\{q_0\}}$ in place of the displayed definability class. More generally, at any class $q$ where nonempty finite $\OD_{V_\lambda\cup\{q\}}$ families of ultrafilters are excluded, the corresponding minimum is $\aleph_0$.
+\end{corollary}
+
+\begin{proof}
+The lower bound is Theorem~\ref{thm:ufnegative}, or the stated finite-family hypothesis. For the upper bound use Theorem~\ref{thm:ufpositive}. An ultrafilter on $\omega$ has rank below $\omega+10$, hence is an allowed low-rank parameter. In a Prikry extension a ground-model nonprincipal ultrafilter on $\omega$ is still an ultrafilter, since no new subsets of $\omega$ have been added.
+\end{proof}
+
+Applied to the classes in \cite[\S13, theorem on finitely additive kernels]{synthesis}, this supplies the announced sharp countable refinement in the ultraexacting setting. Only that application imports the earlier finite-family exclusion; the universal upper bound and its Prikry lower bound were proved here.
+
+\begin{assessment}{Countable does not mean definably enumerated}
+The family $\UU_u(q_0)$ is definable and countable in the ambient universe. Its proof of countability temporarily chooses a representative. There is no enumeration of it definable from the permitted parameters in the Prikry situation: the first element of such an enumeration would itself be a definable ultrafilter, contrary to Theorem~\ref{thm:ufnegative}.
+
+Nor have we constructed a countable set $\{K_n:n<\omega\}$ of global ultrafilter-valued kernels. We have constructed one \emph{countable-valued} function $q\mapsto\UU_u(q)$. Passing from countable fibers to a single countable family of global choices requires an additional simultaneous choice of phases. This paper makes no such claim.
+\end{assessment}
+
+\section{The normal-trace inner model}\label{sec:trace}
+
+This section gives the inner-model clause used for the exact consistency calibration. It is compatible with the preceding nonexistence results because it concerns a different ultrafilter: a normal measure on $\kappa$ \emph{inside a smaller model}, rather than an ultrafilter on $q_0$ measuring every ambient subset of $q_0$.
+
+\subsection{Relative cone homogeneity}
+
+\begin{lemma}[Ground-model capture]\label{lem:capture}
+In $V=W[c]$, every set of ordinals in $\OD_{W\cup\{q_0\}}$ belongs to $W$. For each $p\in W$,
+\[
+ \HOD_{p,q_0}^{V}\subseteq W.
+ \label{eq:hodcapture}\tag{15}
+\]
+\end{lemma}
+
+\begin{proof}
+Any two conditions $(s,A)$ and $(t,B)$ have direct extensions with the same reservoir
+\[
+ C=(A\cap B)\setminus(\max(s\cup t)+1),
+\]
+with the evident interpretation when both stems are empty. Their cones are isomorphic by Lemma~\ref{lem:surgery}. Corresponding generics give the same universe, the same finite-change class, and the same ground-model parameters. Thus the isomorphism preserves truth of every formula whose parameters are ground-model sets, ordinals, and the named generic class.
+
+No two conditions can force opposite values of such a sentence: refining to these isomorphic cones would transport one decision to the other cone, contradicting the opposite decision. Since deciding conditions are dense, the top condition decides every such sentence.
+
+Let $x\subseteq\delta$ be ordinal definable from $p,q_0$ and ordinal parameters, where $p\in W$ and $\delta$ is an ordinal. The assertion that the chosen formula defines a unique subset of $\delta$ is true in the given generic extension, hence is forced by the top condition by the preceding argument. Membership of every $\xi<\delta$ is likewise decided by the top condition. The forcing relation is definable in $W$, so Separation in $W$ gives exactly $x$.
+
+To obtain \eqref{eq:hodcapture}, let $x\in\HOD_{p,q_0}$. Relativized HOD has Choice and its canonical definable well-order. Its transitive closure of $\{x\}$ can therefore be coded by a well-founded extensional relation on an ordinal, together with a distinguished index for $x$, with the code ordinal definable from $p,q_0$ and ordinals. Convert this relation to a set of ordinals by an ordinal pairing code. That code belongs to $W$ by the first part. Its Mostowski collapse, computed in $W$, is the same transitive structure as in $V$. Thus $x\in W$.
+\end{proof}
+
+We use here the ordinary relativized-HOD theorem: $\HOD_{p,q}$ is a transitive inner model of $\ZFC$. The parameters need not themselves be hereditary members. One obtains the definable well-order by taking least definition codes; closure under the ZF operations follows by relativizing formulas to this definable class, and the well-order restricted to any of its sets witnesses Choice. These facts apply to fixed \emph{set} parameters, not to an added truth predicate.
+
+\subsection{Adding a code for all low-rank parameters}
+
+\begin{theorem}[A normal tail measure with full low-rank agreement]\label{thm:trace}
+Choose in $W$ a bijection $b:\kappa\to V_\kappa^W$ and put
+\[
+ N=\HOD_{b,q_0}^{V}.
+\]
+Then $N\models\ZFC$, $N\subseteq W$, and $V_\kappa^N=V_\kappa^V$. Moreover
+\[
+ U_N=\{A\in\Pow(\kappa)\cap N:
+                      \exists a\in q_0\ (a\subseteq^* A)\}
+ \label{eq:trace}\tag{16}
+\]
+belongs to $N$ and is there a nonprincipal normal $\kappa$-complete ultrafilter. In particular $N$ regards $\kappa$ as measurable.
+\end{theorem}
+
+\begin{proof}
+Since $\kappa$ is inaccessible in $W$, $|V_\kappa^W|=\kappa$, so $b$ exists. Ground-model capture gives $N\subseteq W$. For every $x\in V_\kappa^V=V_\kappa^W$, some ordinal $\alpha<\kappa$ satisfies $x=b(\alpha)$. Thus $x$ is ordinal definable from $b,q_0$. Every member of its transitive closure has the same property, since it too lies in $V_\kappa$. Hence $V_\kappa^V\subseteq N$, giving the asserted rank agreement.
+
+For every $A\in U$, the conditions whose reservoirs are contained in $A$ form a dense set. The generic sequence is therefore almost contained in $A$. If a ground-model $A\subseteq\kappa$ is not in $U$, its complement is in $U$, so the generic sequence is almost disjoint from $A$ and cannot also be almost contained in it. It follows, for every $A\in\Pow(\kappa)\cap N\subseteq W$, that
+\[
+ \exists a\in q_0\ (a\subseteq^* A)
+       \quad\Longleftrightarrow\quad A\in U.
+\]
+Consequently $U_N=U\cap N$, with the intersection restricted to subsets of $\kappa$.
+
+The definition \eqref{eq:trace} is ordinal definable from $b,q_0$, and all its members belong to $N$. Transitivity of $N$ shows that all members of its transitive closure belong to $N$ as well. Hence $U_N\in\HOD_{b,q_0}=N$.
+
+The ultrafilter property and nonprincipality follow from $U$. If $\langle A_i:i<\mu\rangle\in N$ with $\mu<\kappa$ and every $A_i\in U_N$, the entire sequence belongs to $W$. Its intersection is in $U$ by completeness in $W$, and in $N$ by closure in $N$. Therefore it belongs to $U_N$. This proves \emph{internal} $\kappa$-completeness.
+
+For normality, let $S\in U_N$ and let $f:S\to\kappa$ be regressive and belong to $N$. Both objects belong to $W$. Normality of $U$ gives an ordinal $\alpha<\kappa$ for which
+$\{\xi\in S:f(\xi)=\alpha\}\in U$. This fiber belongs to $N$, since $f,S,\alpha\in N$, and hence lies in $U_N$. Thus normality holds in $N$.
+\end{proof}
+
+The completeness is deliberately internal. In $V$, the sequence of measure-one sets
+$\kappa\setminus(c_n+1)$ has empty intersection. There is no contradiction because this external sequence need not belong to $N$.
+
+\begin{corollary}[Rigidity and no short cofinal information]\label{cor:rigidity}
+Under Theorem~\ref{thm:trace}, there is no cofinal subset of $\kappa$ of order type less than $\kappa$ in $\OD_{b,q_0}$. More generally, every nonempty $\FFam\in\OD_{b,q_0}$ whose elements are cofinal subsets of $\kappa$ of order type below $\kappa$ has ambient cardinality at least $\kappa$. In particular the usual rigidity conclusion holds relative to $V_\kappa$ and $q_0$. Also
+\[
+ q_0\notin N,\qquad q_0\cap N=\varnothing.
+\]
+\end{corollary}
+
+\begin{proof}
+A set of ordinals in $\OD_{b,q_0}$ is hereditary in that definability class and hence belongs to $N$. Such a cofinal subset of short order type would contradict regularity of $\kappa$ in $N$.
+
+Suppose a nonempty family as stated has size $\mu<\kappa$. Let $\tau<\kappa$ be the least order type of one of its members and let $a$ be the union of the members with order type $\tau$. Then $a$ is cofinal, is ordinal definable from $b,q_0$, and has ambient size at most $\mu\cdot|\tau|<\kappa$. As a subset of the cardinal $\kappa$, it therefore has order type less than $\kappa$, contradicting the first assertion. This minimum-order-type step does not assume a common size bound on all members of the original family.
+
+A representative in $q_0\cap N$ would itself be a short cofinal subset. If $q_0\in N$, transitivity and its nonemptiness would put a representative in $N$. Both possibilities are excluded.
+\end{proof}
+
+\section{An exact consistency calibration}\label{sec:consistency}
+
+\begin{definition}[The finite-symmetry normal-trace package]
+The assertion $\FinSym$ says that there are $\lambda,b,q$ satisfying the following conditions in the ambient universe:
+\begin{enumerate}
+\item $\lambda$ is an uncountable strong limit cardinal of cofinality $\omega$, $b:\lambda\to V_\lambda$ is a bijection, and $q\in Q_\lambda$.
+\item In $N=\HOD_{b,q}$, the tail filter
+\[
+ \{A\in\Pow(\lambda)\cap N:\exists a\in q\ (a\subseteq^* A)\}
+\]
+is a nonprincipal normal $\lambda$-complete ultrafilter and belongs to $N$.
+\item Every nonempty $\OD_{b,q}$ family of short cofinal subsets of $\lambda$ has ambient size at least $\lambda$.
+\item For every $1\le r<n<\omega$, there is no nonempty finite $\OD_{b,q}$ subfamily of $\Sel_{n,r}(Q_\lambda)$.
+\item For every finite coded $S_m$-set $E$, an $\OD_{b,q}$ equivariant map $\Inj(m,Q_\lambda)\to E$ exists exactly when every element of $S_m$ fixes a label.
+\item The least ambient size of a nonempty $\OD_{b,q}$ family of ultrafilters on $q$ is $\aleph_0$.
+\end{enumerate}
+\end{definition}
+
+The finite action codes and formula codes are sets; ordinal definability and relativized HOD have their usual first-order definitions. Thus this is an ordinary assertion over $\ZFC$, not a demand for a satisfaction predicate for the universe. The code $b$ ensures that the permitted parameters encompass $V_\lambda$: every $p\in V_\lambda$ is $b(\alpha)$ for an ordinal $\alpha$.
+
+\begin{theorem}[Equiconsistency]\label{thm:equiconsistency}
+\[
+ \Con(\ZFC+\text{a measurable cardinal})
+ \quad\Longleftrightarrow\quad
+ \Con(\ZFC+\FinSym).
+\]
+\end{theorem}
+
+\begin{proof}
+\textbf{Upper bound.}
+Start with a measurable $\kappa$ and a normal measure $U$ in a ground model $W$. Force with $\PPU$. Proposition~\ref{prop:preservation} supplies clause~(1), taking $\lambda=\kappa$ and a ground-model bijection $b:\kappa\to V_\kappa^W$. Theorem~\ref{thm:trace} gives clause~(2), and Corollary~\ref{cor:rigidity} gives clause~(3).
+
+Because $b\in W$, the selector exclusion in Theorem~\ref{thm:selectors} applies in particular to $\OD_{b,q}$. This is clause~(4). Theorem~\ref{thm:label-necessity} gives the necessary direction of clause~(5). For the sufficient direction use Theorem~\ref{thm:label-sufficiency}; its well-order parameter belongs to $V_\kappa$, so it is definable from $b$ and an ordinal.
+
+For clause~(6), Theorem~\ref{thm:ufnegative} excludes finite families. Choose a ground-model nonprincipal ultrafilter $u$ on $\omega$. It remains an ultrafilter, belongs to $V_\kappa$, and is definable from $b$ and an ordinal. The family $\UU_u(q)$ from Theorem~\ref{thm:ufpositive} is therefore a countably infinite member of $\OD_{b,q}$. All six clauses hold simultaneously in the same Prikry extension.
+
+\textbf{Lower bound.}
+In any model satisfying $\FinSym$, its definable inner model $N=\HOD_{b,q}$ satisfies $\ZFC$. Clause~(2) supplies a normal measure in $N$ on the cardinal $\lambda$. Hence $N$ is a model of $\ZFC$ with a measurable cardinal. Relativizing each fixed axiom and each fixed theorem to this definable inner model gives the usual interpretation and the corresponding relative-consistency implication.
+
+These two arguments are standard forcing and inner-model interpretations, so they establish the stated consistency equivalence without any assumption of transitive models beyond the convenient language used to describe the constructions.
+\end{proof}
+
+\begin{assessment}{What the lower bound says---and what it does not}
+The normal-measure clause supplies the measurable lower bound. We have not proved that the absence of a definable binary selector, by itself, has measurable consistency strength. Nor have we proved that an abstract rigid class has the additional deletion symmetries used in Sections~\ref{sec:selectors}--\ref{sec:ufnegative}.
+
+The substantive calibration is that adding the entire finite-selector and finite-label package, as well as the sharp countable ultrafilter width, to the normal-trace configuration \emph{does not increase its consistency strength}.
+\end{assessment}
+
+\section{Consequences for the research programme}\label{sec:consequences}
+
+\subsection{A question answered, with its quantifiers separated}
+
+The supplied synthesis says that the rigidity and normal-trace results can already occur at measurable strength, while its finite-family selector theorem and finite-label necessity have no Prikry-model counterpart yet. Theorems~\ref{thm:selectors} and~\ref{thm:label-necessity} provide that counterpart. They answer positively the explicitly asked question about the Prikry extension of a measurable.
+
+The associated phrase ``do they follow from rigidity alone?'' is a stronger question, not an equivalent reformulation. A Prikry extension has pure decision and cone surgery in addition to a rigid class. Our proofs use those two extra properties. The implication from abstract rigidity alone is not established here.
+
+\subsection{The finite-to-countable local threshold is sharp}
+
+The synthesis rules out finite definable families of ultrafilters on certain orbit classes. The universal construction in Section~\ref{sec:ufpositive} shows that no such theorem can be strengthened to exclude all countable families with the same low-rank parameters. The obstruction ends exactly at finite cardinality for the local ultrafilter problem. This sharpness does not need an additional large-cardinal hypothesis.
+
+There is a concrete reason: shifting a nonprincipal ultrafilter on $\omega$ produces an infinite countable orbit, while every nontrivial finite periodic quotient detects the shift. A finite family cannot absorb all cyclic phase changes in the forcing argument, but the full integer orbit can.
+
+\subsection{What would distinguish the stronger embedding structure}
+
+The present proofs do not establish successor measurability in parameterized HOD models, simultaneous control over the orbit classes of one ultraexacting witness, or the existence of any rank-into-rank embedding. Those additional assertions in the synthesis lie outside the mechanism isolated here. In particular, the result does not lower the consistency strength of ultraexactingness, whose relation to $\Izero$ is the subject of \cite{abgl}.
+
+An effective next mathematical distinction is to separate hypotheses about a \emph{single generic tail with finite surgery} from hypotheses about \emph{many fixed orbit parameters and their successor-cardinal structure}. The finite-selector obstruction alone is not a discriminator between those two kinds of input.
+
+\subsection{Remaining questions}
+
+Three precise questions remain after this continuation. First, does rigidity of a class, without a Prikry presentation or an embedding, imply the finite-selector obstruction? Second, can a countably infinite definable family of global ultrafilter-valued kernels exist in the ultraexacting setting, or in a normal Prikry extension? The countable-valued construction here does not settle that. Third, can the deletion method be transferred to a broader Prikry-type forcing where direct finite decision holds but arbitrary stem replacements do not preserve genericity? The exact missing interface in that case is Lemma~\ref{lem:surgery}, not finite combinatorics.
+
+\appendix
+\section{Proof audit and reproducibility}\label{sec:audit}
+
+\subsection{Dependency ledger}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.27\textwidth}Y@{}}
+\toprule
+\textbf{Conclusion}&\textbf{Inputs actually used}\\\midrule
+Finite selector families&Normal-measure diagonalization, pure decision, one-point stem deletion, finite restriction tables, and cycle amplification.\\
+Finite-label necessity&Pure finite decision, stem deletion, and the explicit permutation probes.\\
+Finite-label sufficiency&Choice of a low-rank well-order of incidence words and the cyclic-stabilizer lemma; no forcing.\\
+Finite ultrafilter exclusion&Pure finite decision, deletion, the finite-change index, and finite phase partitions.\\
+Countable ultrafilter family&A nonprincipal ultrafilter on $\omega$, synchronization of finite-change tails, and the uncountability of $\lambda$.\\
+Normal-trace inner model&Cone homogeneity relative to the generic class, standard relativized HOD, and the original ground normal measure.\\
+Equiconsistency&The preceding construction for the upper bound; the explicit measurable inner model for the lower bound.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Points where an incorrect proof could look convincing}
+
+\textbf{No chosen member of a finite definable family.}
+The tables form a set. It is this finite set that is decided and shown invariant. No selector is declared definable merely because it belongs to a definable finite family.
+
+\textbf{No assumed universe automorphism.}
+Stem surgery identifies two generic presentations of the same extension. The invariance of a definable object follows from identical parameters in that extension, not from a nontrivial automorphism of the membership universe.
+
+\textbf{No assumption that a pure extension is in a fixed generic.}
+The contradiction is a forcing argument below a condition. A fresh generic through its deciding direct extension is used as needed.
+
+\textbf{No confusion between the generic sequence and its class.}
+Finite deletion changes the sequence. It leaves its finite-change class unchanged. Only the latter is an allowed new parameter in the negative results.
+
+\textbf{No external completeness claim.}
+The normal measure $U_N$ measures the subsets of $\kappa$ belonging to $N$ and is complete for sequences in $N$. The ambient generic sequence witnesses that external countable completeness would be false.
+
+\textbf{No conversion of a countable-valued map to a countable set of maps.}
+The construction $q\mapsto\UU_u(q)$ has countable fibers. An enumeration of every fiber with coherent indices has not been supplied.
+
+\textbf{No inference of literature novelty from failed searches.}
+The results are new relative to the supplied synthesis. The cited primary sources establish the classical forcing and large-cardinal background; the finite-observation application here is presented with a proof rather than an unsupported priority claim.
+
+\subsection{The finite checks}
+
+The archive contains \nolinkurl{checks/finite_checks.py} and its actual run output. The script exhaustively computes cyclic orbits of small selector tables, checks cyclicity of stabilizers of small periodic incidence words with distinct columns, verifies the five-label $S_3$ example, and tests the finite-change index identities on finite perturbation data.
+
+The recorded run checked 193,312 selector tables in 28 parameter cases (including 16 instances of the cycle-amplification bound), 20,523 cyclic stabilizers among 23,590 periodic-word candidates, all six permutations in the five-label example, 32,768 index-cocycle triples, and 2,560 deletion identities, each also checked modulo 1 through 8. All checks passed.
+
+These checks can catch sign errors, mistaken action conventions, and failures of small finite cases. They are \emph{not} a verification of forcing, genericity, HOD, normal measures, or consistency. Those claims rest on the written proofs. No Lean verification is claimed; the supplied Lean files served as a reference for the established finite combinatorial interfaces.
+
+\subsection{Source scope}
+
+The supplied archive contains two LaTeX reports and the Lean development, but not the twenty-seven individual continuation reports mentioned by the synthesis. Accordingly the comparison here is with the actual supplied synthesis, especially its sections on finite choice, finite-label classification, hidden measures, and remaining questions. The source map bundled with this paper records the exact supplied paths and theorem labels used for that comparison.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\small
+\setlength{\itemsep}{6pt}
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Third-round synthesis supplied in \nolinkurl{Cardinals4.zip}, 18 September 2026.
+Actual path: \nolinkurl{docs/Large_Cardinals_Synthesis.tex}.
+Especially \S9 (finite selector families), \S12.5 (finite-label classification),
+\S13 (rigidity, traces, and ultrafilters), and \S15 (remaining questions).
+
+\bibitem{plannew}
+\emph{Large cardinals at the inconsistency frontier: a unified assessment}.
+Supplied research plan, 18 September 2026.
+Actual path: \nolinkurl{docs/Large_Cardinals_Unified_Report.tex}.
+
+\bibitem{benhamou}
+T.~Benhamou.
+\emph{Prikry Forcing and Tree Prikry Forcing of Various Filters}.
+\arxiv{1801.04424v2}, 2018.
+Primary reference for normal-measure Prikry forcing, the Prikry property,
+cardinal preservation, and genericity criteria. The finite-decision and
+stem-surgery ingredients used here are proved in Section~\ref{sec:toolkit}.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 2025.
+Background on exacting and ultraexacting cardinals; not an input to the new forcing obstruction.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254}, 2025.
+Background on the consistency calibration of exacting and ultraexacting cardinals; not used to obtain the measurable upper bound here.
+
+\end{thebibliography}
+\end{document}

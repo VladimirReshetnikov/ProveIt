@@ -1,0 +1,760 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem,titlesec,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Cofinality cascades above strongly compact cardinals},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={A transfinite chain-condition obstruction for exacting and cover-exacting grounds},pdfkeywords={strongly compact, exacting, cover exacting, HCD, cofinality, stationary reflection, forcing, Erdos Tarski}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION IV}
+\fancyfoot[L]{\small\color{Muted}Cofinality cascades\quad\textperiodcentered\quad18 September 2026}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Cofinality cascades}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Reg}{\mathrm{Reg}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\cc}{\text{-cc}}
+\newcommand{\lambdaxi}[1]{\lambda_{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.30in}
+{\sffamily\small\bfseries\color{Olive}RESEARCH CONTINUATION\quad /\quad CARDINALS3}\par
+\vspace{0.24in}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Cofinality cascades above\par strongly compact cardinals}\par
+\vspace{0.16in}
+{\fontsize{14}{18}\selectfont\color{Muted}A transfinite chain-condition obstruction\par for exacting and cover-exacting grounds}\par
+\vspace{0.24in}
+{\color{Sage}\rule{\textwidth}{0.7pt}}\par
+\vspace{0.11in}
+Prepared for Vladimir Reshetnikov\par
+18 September 2026\par
+\vspace{0.22in}
+\begin{assessment}{Principal result}
+Suppose $V=W[G]$, $\delta$ is strongly compact in $V$, and $\lambda>\delta$ is a cardinal of $V$ which is regular in $W$ but has cofinality below $\delta$ in $V$. Then every forcing presentation over $W$ has, in $W$, an antichain of size
+\[
+\boxed{\ \Theta=(\lambda^{+\delta})^W\ }.
+\]
+More fundamentally, there are $\delta$ increasing $W$-regular cardinals above $\lambda$ whose new cofinalities are strictly increasing and cofinal in $\delta$.
+\end{assessment}
+\vspace{0.08in}
+\textbf{Abstract.}
+The supplied synthesis obtains a successor chain-condition obstruction from a single stationary set. We iterate the obstruction using simultaneous stationary reflection for fewer than $\delta$ sets. The resulting cofinality cascade rules out bounded spectra of small new cofinalities and, in particular, isolated singularization above a strongly compact cardinal. Erd\H{o}s--Tarski's singular chain-condition theorem upgrades the cofinal collection of regular-cardinal bounds to the singular endpoint $(\lambda^{+\delta})^W$ itself. We give complete English proofs of the combinatorial and forcing arguments, then apply them to exacting cardinals over HOD grounds and to the canonical ground $\HCD(\kappa)$ when
+$\delta<\lambda\le\gamma<\kappa$, both $\delta,\kappa$ are strongly compact, and $\lambda$ is $\gamma$-cover exacting. Covering further locates the canonical cascade below $\kappa$ and transfers its defects to $\HCD(\delta)$.
+\vfill
+{\small\color{Muted}The new conclusions are conditional inconsistency results, not an inconsistency proof for unqualified cover exactingness. Classical ingredients and results imported from the supplied archive are identified separately. No claim of priority in the literature is made.}
+\end{titlepage}
+
+\tableofcontents
+\vspace{0.15in}
+\begin{assessment}{How to read the main bound}
+The expression $\lambda^{+\delta}$ means the $\delta$-fold iteration of the cardinal-successor operation, with suprema at limit stages. All these successors, the antichain size, and forcing densities in the theorem are computed in $W$. It does \emph{not} mean ordinal addition $\lambda+\delta$, and $\Theta$ need not remain a cardinal in $V$.
+\end{assessment}
+\newpage
+
+\section{Main theorem and the additional obstruction}\label{sec:main}
+
+We work in $\ZFC$. The inner models in the combinatorial and forcing theorems have all the ordinals and satisfy $\ZFC$. No additional choice assertion about arbitrary relativized HOD or HCD classes is assumed. In statements involving an arbitrary inner model it is understood to be definable, or to be supplied as a predicate with the requisite separation and replacement. Grounds cause no additional issue: a ground is a definable inner model $W$ for which $V=W[G]$ by set forcing $\PP\in W$.
+
+A forcing is $\chi\cc$ when it has no antichain of cardinality $\chi$; this convention applies also when $\chi$ is singular. Define $\dens^W(\PP)$ to be the least $W$-cardinality of a dense subset of $\PP$ that belongs to $W$.
+
+\begin{theorem}[Cofinality cascade and singular endpoint]\label{thm:main}
+Suppose $V=W[G]$, where $G$ is $W$-generic for $\PP\in W$. Suppose further that
+\[
+\delta<\lambda,\qquad V\models\SC(\delta),\qquad
+\lambda\text{ is a cardinal in }V,\qquad
+\cf^W(\lambda)=\lambda,\qquad \tau_*:=\cf^V(\lambda)<\delta.
+\]
+Put $\Theta=(\lambda^{+\delta})^W$. Then:
+\begin{enumerate}
+\item For any $W$-cardinal $\nu$ bounding the $W$-size of a dense subset of $\PP$, there are sequences $\langle\mu_i:i<\delta\rangle$ and $\langle\tau_i:i<\delta\rangle$ in $V$ such that
+\begin{align*}
+&\lambda<\mu_i\le\nu,\qquad W\models ``\mu_i\text{ is a regular cardinal},"\\
+&\tau_i=\cf^V(\mu_i),\qquad \tau_*<\tau_i<\delta,\\
+&i<j<\delta\ \Longrightarrow\ \mu_i<\mu_j\text{ and }\tau_i<\tau_j,\qquad
+\sup_{i<\delta}\tau_i=\delta.
+\end{align*}
+\item $W$ contains an antichain in $\PP$ of $W$-cardinality $\Theta$. In particular,
+\[
+W\models ``\PP\text{ is not }\Theta\cc",\qquad
+\dens^W(\PP)\ge\Theta.
+\]
+\end{enumerate}
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:cof}--\ref{sec:forcing}. Its use of strong compactness is exclusively the simultaneous reflection lemma in Section~\ref{sec:reflection}. Neither exacting embeddings nor assertions imported from the archive enter the general theorem.
+
+The supplied synthesis, Section~7.1, establishes that the forcing in the countable-cofinality case is not $(\lambda^+)^W\cc$ \cite{synthesis}. Its argument uses the ground stationary set $(E^{(\lambda^+)^W}_\lambda)^W$. Our additional step is to work at a much higher, forcing-preserved regular cardinal and retain \emph{every stationary cofinality stratum generated at previous stages}. Simultaneous reflection then produces a new stratum with both a higher ground cofinality and a higher ambient cofinality. This operation continues through all stages below $\delta$.
+
+\begin{assessment}{The inconsistency obtained}
+There is no configuration satisfying the hypotheses of Theorem~\ref{thm:main} together with a $(\lambda^{+\delta})^W\cc$ presentation over $W$. Independently of forcing size, there is no such configuration in which the new cofinalities below $\delta$ of ground-regular cardinals above $\lambda$ are bounded below $\delta$.
+\end{assessment}
+
+The cascade and its endpoint are additions to the supplied report. The reflection method, forcing preservation lemmas, and singular chain-condition principle are classical. They are proved below so that the new combination can be checked without a machine formalization or access to the earlier Lean files. The results do not establish that an unqualified exacting or cover-exacting hypothesis is inconsistent.
+
+\section{Cofinalities, clubs, and ground stationary strata}\label{sec:cof}
+
+For a limit ordinal $\alpha$, a club in $\alpha$ is an unbounded subset closed at its limit points below $\alpha$. A set is stationary in $\alpha$ if it meets every club in $\alpha$. Reflection will always occur at ordinals of uncountable cofinality. For a regular cardinal $\eta<\theta$ in a model $M$, write
+\[
+(E^\theta_\eta)^M=\{\alpha<\theta:\cf^M(\alpha)=\eta\}.
+\]
+The superscript $M$ matters: the same set of ordinals can have a different cofinality description in a larger universe.
+
+\begin{lemma}[Transport of cofinality]\label{lem:transport}
+Let $W\subseteq V$ be inner and outer models with the same ordinals. For every limit ordinal $\alpha$, putting $\mu=\cf^W(\alpha)$ gives
+\[
+\cf^V(\alpha)=\cf^V(\mu).
+\]
+Consequently, for $\mu$ regular in $W$,
+\[
+(E^\theta_\mu)^W\subseteq(E^\theta_{\cf^V(\mu)})^V.
+\]
+\end{lemma}
+\begin{proof}
+In $W$, choose a strictly increasing cofinal map $f:\mu\to\alpha$. It remains increasing and cofinal in $V$. Composing $f$ with a cofinal map into $\mu$ in $V$ proves
+$\cf^V(\alpha)\le\cf^V(\mu)$.
+
+Conversely, choose a cofinal set $a\subseteq\alpha$ of $V$-size $\cf^V(\alpha)$. For each $\beta\in a$, let $g(\beta)$ be the least $\xi<\mu$ with $\beta<f(\xi)$. The set $g``a$ is unbounded in $\mu$: a bound on it would give a bound on $a$ through $f$. Therefore
+$\cf^V(\mu)\le |g``a|^V\le\cf^V(\alpha)$.
+This proves equality. Apply it separately to each member of $(E^\theta_\mu)^W$ for the final assertion.
+\end{proof}
+
+\begin{lemma}[Absoluteness of old clubs]\label{lem:clubs}
+If $C\in W$ is club in an ordinal $\alpha$ according to $W$, then it is club in $\alpha$ according to $V$. In particular, if $S\in W$ is stationary in $\alpha$ according to $V$, then it is stationary in $\alpha$ according to $W$.
+\end{lemma}
+\begin{proof}
+Unboundedness quantifies only over the ordinals below $\alpha$ and elements of the fixed set $C$. Closure says that every $\beta<\alpha$ with $\sup(C\cap\beta)=\beta$ belongs to $C$. Both conditions are absolute between the models. The stationary-set assertion follows because every ground club is an ambient club.
+\end{proof}
+
+\begin{lemma}[Cofinality strata cannot reflect too low]\label{lem:nonreflection}
+In a model of $\ZFC$, suppose $\eta$ is an infinite regular cardinal and $\alpha$ has uncountable cofinality $\rho\le\eta$. Then $E_\eta\cap\alpha$ is nonstationary in $\alpha$. Hence a stationary subset of $E_\eta$ can reflect only at an ordinal of cofinality strictly greater than $\eta$.
+\end{lemma}
+\begin{proof}
+Choose a strictly increasing continuous cofinal map $c:\rho\to\alpha$. The nonzero limit ordinals below the regular uncountable cardinal $\rho$ form a club. Their image under $c$ is a club $D$ in $\alpha$. If $\xi<\rho$ is a nonzero limit ordinal, continuity gives
+\[
+\cf(c(\xi))\le\cf(\xi)<\rho\le\eta.
+\]
+Thus no member of $D$ has cofinality $\eta$, proving the claim. When $\eta=\omega$, the conclusion about reflection at uncountable cofinality is immediate.
+\end{proof}
+
+\begin{corollary}[Two simultaneous lower bounds]\label{cor:twobounds}
+Suppose $W\subseteq V$, $\mu$ is regular in $W$, and
+$S_\mu=(E^\theta_\mu)^W$. If $S_\mu\cap\alpha$ is stationary in $\alpha$ in $V$ and $\cf^V(\alpha)>\omega$, then
+\[
+\cf^W(\alpha)>\mu,
+\qquad
+\cf^V(\alpha)>\cf^V(\mu).
+\]
+\end{corollary}
+\begin{proof}
+Let $\rho=\cf^W(\alpha)$. Since $\cf^V(\alpha)>\omega$, also $\rho>\omega$. If $\rho\le\mu$, Lemma~\ref{lem:nonreflection} in $W$ produces a ground club in $\alpha$ avoiding $S_\mu$. Lemma~\ref{lem:clubs} makes it an ambient club, a contradiction.
+
+By Lemma~\ref{lem:transport}, $S_\mu$ is a subset of
+$(E^\theta_{\cf^V(\mu)})^V$. Apply Lemma~\ref{lem:nonreflection} in $V$ to obtain the second inequality. The cardinal $\cf^V(\mu)$ is regular in $V$, as required.
+\end{proof}
+
+Notice what this corollary does \emph{not} assert: stationarity does not generally pass upwards from $W$ to $V$. The later proofs supply that upwards preservation either as an explicit hypothesis or by a chain condition.
+
+\section{Simultaneous reflection from strong compactness}\label{sec:reflection}
+
+We use the fine-ultrafilter formulation of strong compactness: if $\delta$ is strongly compact and $\theta\ge\delta$, there is a fine $\delta$-complete ultrafilter on
+$P_\delta(\theta)=\{a\subseteq\theta:|a|<\delta\}$. Fineness means that
+$\{a:\xi\in a\}$ belongs to the ultrafilter for every $\xi<\theta$.
+
+The following standard argument includes the simultaneous form needed at limit stages. Simultaneous stationary reflection is a well-studied principle; see, for example, \cite{hlh}. We supply the proof of this particular consequence of strong compactness rather than relying on an unstated stronger reflection axiom.
+
+\begin{lemma}[Fewer than $\delta$ stationary sets]\label{lem:reflection}
+Suppose $\delta$ is strongly compact, $\theta>\delta$ is regular, and $\sigma<\delta$. Let
+$\langle S_i:i<\sigma\rangle$ be stationary subsets of
+\[
+E^\theta_{<\delta}=\{\alpha<\theta:\omega\le\cf(\alpha)<\delta\}.
+\]
+There is an $\alpha<\theta$ such that
+\[
+\omega<\cf(\alpha)<\delta
+\quad\hbox{and}\quad
+S_i\cap\alpha\text{ is stationary in }\alpha\text{ for every }i<\sigma.
+\]
+\end{lemma}
+\begin{proof}
+Take a fine $\delta$-complete ultrafilter $U$ on $P_\delta(\theta)$, and let
+$j:V\to M$ be its well-founded ultrapower, with $M$ replaced by its transitive collapse. Countable completeness ensures well-foundedness. Its critical point is $\delta$: completeness fixes the ordinals below $\delta$, while fineness and the seed described next force $j(\delta)>\delta$.
+
+Let $s=[a\mapsto a]_U$. Then
+\[
+j``\theta\subseteq s\in M,
+\qquad M\models |s|<j(\delta).
+\]
+Indeed, the inclusion is exactly fineness; the size bound follows from the definition of $P_\delta(\theta)$. In particular, if $j(\delta)=\delta$, then $s$ would contain $\delta=j``\delta$ while having $M$-size below $\delta$, which is impossible.
+
+Put $\beta=\sup j``\theta$. Since $j(\theta)$ is regular in $M$ and $|s|^M<j(\delta)<j(\theta)$, we have $\beta<j(\theta)$. The set $s\cap\beta$ is cofinal in $\beta$, so
+\[
+\cf^M(\beta)<j(\delta).
+\]
+On the other hand, $\cf^V(\beta)=\theta$. The inequality $\le\theta$ follows from the cofinal increasing sequence $j``\theta$. A shorter cofinal sequence in $\beta$ would, by taking least upper indices in this sequence, give a cofinal subset of the regular cardinal $\theta$ of size below $\theta$. Therefore
+\begin{equation}\label{eq:betacof}
+\theta\le\cf^M(\beta)<j(\delta).
+\end{equation}
+Here the first inequality also uses the fact that any cofinal sequence belonging to $M$ is still cofinal in $V$.
+
+We claim that $M$ regards every $j(S_i)\cap\beta$ as stationary in $\beta$. Fix $i<\sigma$ and a club $C\subseteq\beta$ belonging to $M$. It is also a club in $V$. For each $\xi<\theta$, choose $c_\xi\in C$ and $h(\xi)<\theta$ such that
+\[
+j(\xi)<c_\xi<j(h(\xi)).
+\]
+This is possible because both $C$ and $j``\theta$ are cofinal in $\beta$. The choices form sets in $V$; no closure of $M$ under $\theta$-sequences is being assumed.
+
+There is a club $D\subseteq\theta$ consisting of limit ordinals $a$ closed under $h$, meaning $h``a\subseteq a$. Choose $a\in S_i\cap D$. Since $\cf(a)<\delta=\crit(j)$, applying $j$ to a cofinal sequence in $a$ of length below $\delta$ yields
+\[
+j(a)=\sup j``a.
+\]
+For every $\xi<a$, we have $h(\xi)<a$, so
+$j(\xi)<c_\xi<j(a)$. Thus $C\cap j(a)$ is cofinal in $j(a)$, and closure gives $j(a)\in C$. Also $j(a)\in j(S_i)$. Hence $C$ meets $j(S_i)$ below $\beta$, proving the claim.
+
+Since $\sigma<\delta$, $j(\sigma)=\sigma$ and
+$j(\langle S_i:i<\sigma\rangle)=\langle j(S_i):i<\sigma\rangle$.
+The single ordinal $\beta$ witnesses in $M$ that all these sets reflect simultaneously at an ordinal whose cofinality is uncountable and below $j(\delta)$, by \eqref{eq:betacof}. Elementarity gives the required $\alpha<\theta$ in $V$.
+\end{proof}
+
+\begin{remark}[Exactly the required amount of reflection]
+At stage $i<\delta$ of our recursion, only $|i|+1<\delta$ stationary sets are used. We never invoke simultaneous reflection for a family of size $\delta$. That distinction is essential: the newly obtained cofinalities become unbounded in $\delta$, and no ordinal of cofinality below $\delta$ could reflect all their strata at once.
+\end{remark}
+
+\section{The local cofinality cascade}\label{sec:cascade}
+
+It is useful to separate the combinatorial argument from the way forcing supplies its stationarity hypotheses.
+
+\begin{theorem}[Cascade at one stationary-correct height]\label{thm:local}
+Let $W\subseteq V$ be inner and outer models. Suppose $\delta<\lambda<\theta$, $\delta$ is strongly compact in $V$, $\lambda$ is a cardinal of $V$ regular in $W$, and $\theta$ is regular in both models. Assume
+\[
+\tau_*:=\cf^V(\lambda)<\delta,
+\]
+and assume that for every $W$-regular cardinal $\mu$ with $\lambda\le\mu<\theta$, the set
+\[
+S_\mu=(E^\theta_\mu)^W
+\]
+is stationary in $V$. Then there are sequences $\langle\mu_i,\tau_i:i<\delta\rangle$ such that
+\begin{align*}
+&\lambda<\mu_i<\theta,\qquad \cf^W(\mu_i)=\mu_i,\qquad
+\tau_i=\cf^V(\mu_i)<\delta,\\
+&\mu_j<\mu_i\text{ and }\tau_*<\tau_j<\tau_i
+\quad\text{whenever }j<i<\delta,\\
+&\tau_*<\tau_0,\qquad \sup_{i<\delta}\tau_i=\delta.
+\end{align*}
+\end{theorem}
+\begin{proof}
+The recursion takes place in $V$. Suppose $\mu_j$ and $\tau_j$ have been defined for every $j<i$, where $i<\delta$. Consider the family
+\[
+\mathcal S_i=\{S_\lambda\}\cup\{S_{\mu_j}:j<i\}.
+\]
+Its cardinality is below $\delta$. Every member is stationary in $V$ by hypothesis. By Lemma~\ref{lem:transport},
+\[
+S_\lambda\subseteq(E^\theta_{\tau_*})^V,
+\qquad
+S_{\mu_j}\subseteq(E^\theta_{\tau_j})^V.
+\]
+All of these cofinalities are below $\delta$. Lemma~\ref{lem:reflection} therefore gives a common reflection point $\alpha_i<\theta$ with
+$\omega<\cf^V(\alpha_i)<\delta$.
+
+Define
+\begin{equation}\label{eq:recursive}
+\mu_i=\cf^W(\alpha_i),\qquad
+\tau_i=\cf^V(\alpha_i)=\cf^V(\mu_i).
+\end{equation}
+The equality is Lemma~\ref{lem:transport}. By its definition, $\mu_i$ is a regular cardinal in $W$; also $\mu_i\le\alpha_i<\theta$.
+
+Apply Corollary~\ref{cor:twobounds} to $S_\lambda$ and then to each $S_{\mu_j}$. The ground inequalities give
+\[
+\lambda<\mu_i\quad\hbox{and}\quad\mu_j<\mu_i\ \ (j<i).
+\]
+The ambient inequalities give
+\[
+\tau_*<\tau_i\quad\hbox{and}\quad\tau_j<\tau_i\ \ (j<i).
+\]
+This establishes precisely the induction hypotheses for the next stage.
+
+The argument applies without change when $i$ is a limit ordinal: its entire preceding family still has cardinality below the regular cardinal $\delta$. Thus the recursion produces the sequences for all $i<\delta$.
+
+Finally, the $\tau_i$ are $\delta$ distinct ordinals below $\delta$. If they were bounded by some $\rho<\delta$, the strictly increasing map $i\mapsto\tau_i$ would inject the cardinal $\delta$ into $\rho+1$, which has cardinality below $\delta$. This is impossible. Hence their supremum is $\delta$.
+\end{proof}
+
+\subsection{Counting the necessary ground cardinals}
+
+Define, in $W$, a continuous increasing sequence of cardinals by
+\[
+\lambda_0=\lambda,\qquad
+\lambda_{\xi+1}=(\lambda_\xi^+)^W,\qquad
+\lambda_\eta=\sup_{\xi<\eta}\lambda_\xi\quad(\eta\text{ limit}).
+\]
+Then $\lambda_\xi=(\lambda^{+\xi})^W$ and $\Theta=\lambda_\delta$.
+
+\begin{lemma}[The ordinal length of the cascade]\label{lem:count}
+Under the hypotheses of Theorem~\ref{thm:local},
+\[
+\mu_i\ge\lambda_{i+1}\quad(i<\delta),
+\qquad\Theta\le\sup_{i<\delta}\mu_i,
+\qquad\theta>\Theta.
+\]
+Moreover, $W\models\cf(\Theta)=\delta$, so $\Theta$ is singular in $W$.
+\end{lemma}
+\begin{proof}
+The cardinal $\delta$ is regular in $W$: any ground witness to its failure to be a regular cardinal would remain such a witness in $V$. Also $\delta<\lambda$. For a nonzero limit $i\le\delta$, continuity shows in $W$ that
+\[
+\cf(\lambda_i)\le\cf(i)\le|i|<\lambda\le\lambda_i.
+\]
+Thus $\lambda_i$ is singular. In particular, $\lambda_\delta$ is singular. Since the sequence of length $\delta$ is strictly increasing and cofinal in $\lambda_\delta$, and $\delta$ is regular in $W$, the cofinality-transport argument inside $W$ gives $\cf^W(\Theta)=\delta$.
+
+We now prove $\mu_i\ge\lambda_{i+1}$ by induction on $i<\delta$. At $i=0$, $\mu_0>\lambda$ and $\mu_0$ is a $W$-cardinal. At a successor stage $i=j+1$, the strict inequality over $\mu_j\ge\lambda_i$ yields the claim. At a nonzero limit stage $i$, the preceding inequalities imply $\mu_i\ge\lambda_i$. Equality is impossible because $\mu_i$ is regular in $W$ and $\lambda_i$ is singular there. Therefore $\mu_i\ge\lambda_{i+1}$ again.
+
+Taking suprema proves $\Theta\le\sup_i\mu_i\le\theta$. Equality $\theta=\Theta$ is impossible because $\theta$ is regular in $W$ and $\Theta$ is singular in $W$.
+\end{proof}
+
+The induction is performed in $V$, but the comparison cardinals and their regularity or singularity are computed in $W$. It does not require the new sequence $\langle\mu_i:i<\delta\rangle$ to belong to $W$.
+
+\begin{corollary}[A local conditional inconsistency]\label{cor:local}
+The hypotheses of Theorem~\ref{thm:local} are inconsistent with
+$\theta\le(\lambda^{+\delta})^W$.
+\end{corollary}
+\begin{proof}
+They imply the strict opposite inequality by Lemma~\ref{lem:count}.
+\end{proof}
+
+This formulation does not assume that $V$ is a forcing extension. It only assumes preservation of the specified ground stationary strata at one common regular height. For forcing extensions, the next section supplies a suitable higher height automatically.
+
+\section{Forcing preservation and the singular chain-condition bound}\label{sec:forcing}
+
+\subsection{The two preservation facts}
+
+\begin{lemma}[Regular-cardinal and stationary-set preservation]\label{lem:preserve}
+Work in a ground $W$. Suppose $\chi$ is an uncountable regular cardinal and $\PP$ is $\chi\cc$.
+\begin{enumerate}
+\item Every $W$-regular cardinal $\mu\ge\chi$ remains a regular cardinal in a $\PP$-generic extension.
+\item Every stationary subset of $\chi$ in $W$ remains stationary.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For (1), let $p\in\PP$ force that $\dot f:\eta\to\mu$, where $\eta<\mu$. For each $\xi<\eta$, choose in $W$ a maximal antichain below $p$ deciding $\dot f(\xi)$. The set $B_\xi$ of possible values has cardinality below $\chi$. Since $\mu$ is regular in $W$ and $\chi\le\mu$, the union
+$B=\bigcup_{\xi<\eta}B_\xi$ has cardinality below $\mu$, and is bounded in $\mu$. Thus $p$ cannot force that $\dot f$ is cofinal. This rules out both a shorter cofinality and a collapse of $\mu$ to a smaller cardinal: a surjection from a smaller ordinal onto $\mu$ would itself have cofinal range.
+
+For (2), let $S\subseteq\chi$ be stationary in $W$, and let $p$ force that $\dot C$ is club in $\chi$. For each $\xi<\chi$, choose a maximal antichain below $p$ deciding the least member of $\dot C$ strictly above $\xi$. Its size is below $\chi$, so the possible values are bounded below $\chi$. Choose $h(\xi)<\chi$ strictly above all these values.
+
+In $W$, the set of limit closure points of $h$ is club in the regular uncountable cardinal $\chi$. Pick $\alpha\in S$ in that club. For each $\xi<\alpha$, $p$ forces the existence of a member of $\dot C$ between $\xi$ and $h(\xi)<\alpha$. Hence $p$ forces that $\dot C\cap\alpha$ is unbounded in $\alpha$, and therefore, by closure, that $\alpha\in\dot C$. Thus no condition can force a club disjoint from $S$.
+\end{proof}
+
+\begin{lemma}[The ground strata are stationary]\label{lem:strata}
+If $\mu<\theta$ are infinite regular cardinals in $W$, then $(E^\theta_\mu)^W$ is stationary in $\theta$ in $W$.
+\end{lemma}
+\begin{proof}
+Work in $W$. Given a club $C\subseteq\theta$, construct a strictly increasing sequence of elements of $C$ of length $\mu$. Its supremum $\alpha$ is below $\theta$, because $\theta$ is regular and $\mu<\theta$, and belongs to $C$ by closure. The sequence is cofinal in $\alpha$. If $\cf(\alpha)<\mu$, taking upper indices for a shorter cofinal sequence would yield a cofinal subset of the regular cardinal $\mu$ of size below $\mu$. Thus $\cf(\alpha)=\mu$, and $C$ meets $E^\theta_\mu$.
+\end{proof}
+
+\subsection{Placing the cascade below a forcing-size bound}
+
+\begin{proposition}[Bounded forcing supplies a common height]\label{prop:bounded}
+Under the hypotheses of Theorem~\ref{thm:main}, suppose $\PP$ has a dense subset in $W$ of $W$-size at most the $W$-cardinal $\nu$. Then the sequences in part~(1) of that theorem exist, and
+\[
+\nu\ge(\lambda^{+\delta})^W.
+\]
+\end{proposition}
+\begin{proof}
+Pass to the dense subset as a forcing notion, so that we may assume $|\PP|^W\le\nu$. If $\nu<\lambda$, then $\PP$ is $\lambda\cc$ in $W$, and Lemma~\ref{lem:preserve}(1) would preserve the regularity of $\lambda$, contrary to $\cf^V(\lambda)<\delta<\lambda$. Hence $\nu\ge\lambda$.
+
+Put $\theta=(\nu^+)^W$. The forcing is $\theta\cc$ in $W$. Therefore $\theta$ is regular in both models, and every ground stationary subset of $\theta$ remains stationary. By Lemma~\ref{lem:strata}, this applies to $S_\mu=(E^\theta_\mu)^W$ for every $W$-regular $\lambda\le\mu<\theta$.
+
+Theorem~\ref{thm:local} now produces the cascade. Each $\mu_i$ is a $W$-cardinal below $(\nu^+)^W$, so $\mu_i\le\nu$. Lemma~\ref{lem:count} then gives
+\[
+\nu\ge\sup_{i<\delta}\mu_i\ge(\lambda^{+\delta})^W.\qedhere
+\]
+\end{proof}
+
+\subsection{Why the singular endpoint itself is forbidden}
+
+The preceding proposition gives a density lower bound. It does not by itself give an antichain of the same singular size. We supply that missing step explicitly.
+
+\begin{lemma}[Erd\H{o}s--Tarski, forcing form]\label{lem:et}
+Let $\zeta$ be a singular infinite cardinal. If a forcing notion $\mathbb Q$ is $\zeta\cc$, then there is an infinite regular cardinal $\chi<\zeta$ for which $\mathbb Q$ is $\chi\cc$.
+\end{lemma}
+\begin{proof}
+This is the singular chain-condition principle of Erd\H{o}s--Tarski \cite{et}; we prove the forcing-poset form directly. For $q\in\mathbb Q$, let $\mathbb Q\mathord\downarrow q$ denote the conditions extending $q$. Define
+\[
+D=\{q\in\mathbb Q:\mathbb Q\mathord\downarrow q
+\text{ is }\xi\cc\text{ for some infinite cardinal }\xi<\zeta\}.
+\]
+We first show that $D$ is dense. Otherwise there is $r\in\mathbb Q$ with no extension in $D$. Put $\rho=\cf(\zeta)$ and choose infinite cardinals $\langle\zeta_i:i<\rho\rangle$ increasing and cofinal in $\zeta$. Since $r\notin D$, there is an antichain $\{r_i:i<\rho\}$ below $r$. None of the $r_i$ is in $D$, so below each $r_i$ there is an antichain $A_i$ of size $\zeta_i$. Conditions taken from different $A_i$ are incompatible because the corresponding $r_i$ are incompatible. Thus $\bigcup_{i<\rho}A_i$ is an antichain of size $\zeta$, a contradiction.
+
+Choose a maximal antichain $A\subseteq D$. It is maximal in $\mathbb Q$ as well: a condition incompatible with every member of $A$ would have an extension in $D$ with the same property. Since $\mathbb Q$ is $\zeta\cc$, $|A|<\zeta$.
+
+For each $a\in A$, let $\xi_a<\zeta$ be the least infinite cardinal for which $\mathbb Q\mathord\downarrow a$ is $\xi_a\cc$. We claim that $\sup_{a\in A}\xi_a<\zeta$. If not, recursively choose distinct $a_i\in A$ for $i<\rho$ such that $\xi_{a_i}>\zeta_i$ and $\xi_{a_i}$ exceeds all previously chosen bounds. This is possible because fewer than $\rho=\cf(\zeta)$ ordinals below $\zeta$ have bounded supremum. Minimality of $\xi_{a_i}$ gives an antichain of size $\zeta_i$ below $a_i$. Their union again contradicts $\zeta\cc$.
+
+Choose an infinite cardinal $b<\zeta$ bounding $|A|$ and all $\xi_a$. Given an antichain $B$, maximality of $A$ lets us assign to each $p\in B$ a compatible $a\in A$ and choose $q_p\le p,a$. For fixed $a$, the corresponding $q_p$ form an antichain below $a$, so the fiber has fewer than $\xi_a\le b$ elements. Hence $|B|\le|A|\cdot b\le b$, and $\mathbb Q$ is $b^+\cc$. Since $\zeta$ is singular, $b^+<\zeta$; and $b^+$ is regular, as required.
+\end{proof}
+
+\begin{proof}[Completion of the proof of Theorem~\ref{thm:main}]
+Part~(1) and the density bound are Proposition~\ref{prop:bounded}. Fix any cascade from that proposition. Let $\chi$ be a $W$-regular cardinal with
+$\lambda<\chi<\Theta$. Since $\sup_i\mu_i\ge\Theta$, some $\mu_i\ge\chi$.
+If $\PP$ were $\chi\cc$ in $W$, Lemma~\ref{lem:preserve}(1) would preserve the regularity of $\mu_i$. This contradicts
+\[
+\cf^V(\mu_i)=\tau_i<\delta<\lambda<\mu_i.
+\]
+Thus $\PP$ is not $\chi\cc$ in $W$ for any such regular $\chi$.
+
+By Lemma~\ref{lem:count}, $\Theta$ is singular in $W$. If $W$ regarded $\PP$ as $\Theta\cc$, Lemma~\ref{lem:et}, applied \emph{inside $W$}, would give a regular $\chi_0<\Theta$ at which $\PP$ is chain-condition bounded. Increasing $\chi_0$ to a regular cardinal $\chi$ with $\lambda<\chi<\Theta$ preserves that chain condition, contradicting the preceding paragraph. Therefore $W$ contains an antichain of $W$-size $\Theta$.
+
+Finally, every dense $D\subseteq\PP$ in $W$ must have $W$-size at least $\Theta$: for each condition in that antichain choose an extension in $D$. The choices are distinct and form an injection from the antichain into $D$ in $W$.
+\end{proof}
+
+\begin{remark}[Localizing to the actual generic branch]\label{rem:cones}
+For every $p\in G$, the forcing $\PP\mathord\downarrow p$ also presents $V$ over $W$. The theorem applies to this restricted forcing as well. Hence its antichain and density bounds cannot be avoided by arguing that the original presentation contains an irrelevant large component outside the generic branch.
+\end{remark}
+
+\section{Consequences that do not merely bound forcing size}\label{sec:spectrum}
+
+\subsection{A bounded cofinality spectrum is impossible}
+
+Under the hypotheses of Theorem~\ref{thm:main}, define the spectrum
+\[
+\Sigma_{W,V}(\lambda,\delta)=
+\{\cf^V(\mu):\mu>\lambda,\ \cf^W(\mu)=\mu,\ \cf^V(\mu)<\delta\}.
+\]
+This is a set of regular cardinals below $\delta$. The regular cardinals $\mu$ contributing to it are bounded: if $\nu=|\PP|^W$, every ground-regular $\mu>\nu$ remains regular by Lemma~\ref{lem:preserve}.
+
+\begin{corollary}[Unbounded spectrum]\label{cor:spectrum}
+Under the hypotheses of Theorem~\ref{thm:main},
+\[
+\sup\Sigma_{W,V}(\lambda,\delta)=\delta.
+\]
+There are at least $\delta$ distinct ground-regular cardinals above $\lambda$ with new cofinality below $\delta$, counted in $V$.
+\end{corollary}
+\begin{proof}
+Every $\tau_i$ of the cascade belongs to $\Sigma_{W,V}(\lambda,\delta)$, and their supremum is $\delta$. The corresponding $\mu_i$ are distinct.
+\end{proof}
+
+\begin{corollary}[No isolated or uniformly small singularization]\label{cor:isolated}
+There is no set-forcing extension satisfying the hypotheses of Theorem~\ref{thm:main} and either of the following additional conditions:
+\begin{enumerate}
+\item fewer than $\delta$ ground-regular cardinals above $\lambda$ acquire cofinality below $\delta$;
+\item there is a fixed $\rho<\delta$ such that every ground-regular $\mu>\lambda$ with $\cf^V(\mu)<\delta$ satisfies $\cf^V(\mu)\le\rho$.
+\end{enumerate}
+In particular, singularizing $\lambda$ to $\omega$ while preserving the regularity of all ground-regular cardinals above it is incompatible with a strongly compact $\delta<\lambda$ in the extension. So is a construction in which all new cofinalities below $\delta$, above $\lambda$, are $\omega$.
+\end{corollary}
+\begin{proof}
+The first condition contradicts the $\delta$ distinct $\mu_i$. The second bounds all $\tau_i$ by $\rho$, contradicting their supremum $\delta$. Both particular cases satisfy one of these forbidden conditions.
+\end{proof}
+
+These exclusions do not presuppose a small forcing or a chain condition. Enlarging a forcing past the old successor bound does not address them: it must also produce an unbounded spectrum of additional small cofinalities.
+
+\subsection{A refinement when all cardinals are preserved}
+
+\begin{corollary}[Many weakly inaccessible ground cardinals are required]\label{cor:weakly}
+Assume the hypotheses of Theorem~\ref{thm:main} and that $W$ and $V$ have the same cardinals. Then all the $\mu_i$ in the cascade are weakly inaccessible in $W$. Consequently, any dense presentation of $W$-size $\nu$ must have at least $\delta$ distinct weakly inaccessible $W$-cardinals in $(\lambda,\nu]$ which become singular in $V$.
+\end{corollary}
+\begin{proof}
+Each $\mu_i$ is an uncountable regular cardinal in $W$. If it were a successor cardinal there, say $\mu_i=(\xi^+)^W$, agreement on cardinals would give $\mu_i=(\xi^+)^V$. A successor cardinal is regular in $\ZFC$: a cofinal union of at most $\xi$ ordinals, each of cardinality at most $\xi$, has cardinality at most $\xi$ and therefore cannot equal $\xi^+$. This would contradict $\cf^V(\mu_i)<\delta<\mu_i$. Thus each $\mu_i$ is a regular limit cardinal in $W$, which is precisely weak inaccessibility.
+\end{proof}
+
+No strong-limit conclusion about these $\mu_i$ is asserted. Also, without the extra cardinal-preservation hypothesis, a $\mu_i$ need not be a cardinal in $V$ at all.
+
+\section{Applications to exacting and canonical HCD grounds}\label{sec:applications}
+
+\subsection{The imported large-cardinal information}
+
+Here we connect the general theorem to the supplied research. This is the only section where facts about exacting or cover-exacting embeddings are needed.
+
+\begin{definition}[Exactingness]
+A cardinal $\lambda$ is exacting if, at every sufficiently high rank $V_\zeta$, there are
+$X\prec V_\zeta$ with $V_\lambda\cup\{\lambda\}\subseteq X$ and an elementary map $j:X\to V_\zeta$ such that $j(\lambda)=\lambda$ and $j\restr\lambda$ is nonidentity. One may equivalently require this at every cardinal height $\zeta>\lambda$, as in the archive.
+\end{definition}
+
+\begin{inputthm}[Exacting regularity; Aguilera--Bagaria--L\"ucke]\label{in:ex}
+If $\lambda$ is exacting, then it is a strong-limit cardinal of cofinality $\omega$ in $V$ and is regular in $\HOD_{V_\lambda}$. In particular, it is regular in $\HOD$. The regularity assertion is Theorem~2.10 of \cite{abl}.
+\end{inputthm}
+
+For completeness, the cover-exacting hypothesis used next is the one in the archive and in the Blue--Goldberg notes \cite{cover}. A relative witness for $Y\subseteq V_\alpha$ is an elementary map
+\[
+j:(X,\in,X\cap Y)\longrightarrow(V_\alpha,\in,Y)
+\]
+with $(X,\in,X\cap Y)\prec(V_\alpha,\in,Y)$,
+$V_\lambda\cup\{\lambda\}\subseteq X$, $\crit(j)<\lambda$, and $j(\lambda)=\lambda$.
+The assertion $\CEx_\gamma(\lambda)$, for infinite cardinals $\lambda\le\gamma$, says that for every $\alpha>\lambda$ and $y\in V_\alpha$ there is such a $Y$ with $y\in Y$ and $|Y|\le\gamma$. In particular, forgetting the predicate gives exactingness of $\lambda$.
+
+Let $\CD(\eta)$ consist of sets definable from finitely many ordinal parameters and finitely many $\eta$-complete ultrafilters on ordinals. Write
+\[
+\HCD(\eta)=\{x:\operatorname{tc}(\{x\})\subseteq\CD(\eta)\}.
+\]
+The completeness convention is closure under intersections of fewer than $\eta$ members. If $\eta\le\xi$, then
+\begin{equation}\label{eq:hcdmono}
+\HCD(\xi)\subseteq\HCD(\eta).
+\end{equation}
+
+\begin{inputthm}[Completeness barrier from the supplied synthesis]\label{in:barrier}
+If $\CEx_\gamma(\lambda)$, then $\cf^V(\lambda)=\omega$ and $\lambda$ is regular in $\HCD(\eta)$ for every cardinal $\eta\ge\gamma^+$. This is the uniform successor-completeness consequence of the synthesis's Section~5; the synthesis also proves a sharper endpoint when $\gamma$ is singular \cite{synthesis}.
+\end{inputthm}
+
+The dependence in Input~\ref{in:barrier} is specific: small relatively exact elementary hulls recover $\gamma^+$-complete ultrafilters from their traces; definability transfer then excludes short cofinal subsets of $\lambda$ in the corresponding complete-definability class. The present continuation does not replace or silently strengthen that earlier argument. In particular, $\kappa>\gamma$, not merely $\kappa>\lambda$, is needed below.
+
+\begin{inputthm}[Goldberg's canonical grounds and covering]\label{in:hcd}
+If $\kappa$ is strongly compact, then $\HCD(\kappa)$ is a ground of $V$ satisfying $\ZFC$ and has the $\kappa$-cover property in $V$. Thus every set of ordinals of $V$-size below $\kappa$ is contained in a set of ordinals in $\HCD(\kappa)$ of $\HCD(\kappa)$-size below $\kappa$. These are Theorems~4.9 and~4.13 of arXiv version~2 of \cite{goldberg}; the published/author-version numbering differs.
+\end{inputthm}
+
+These three inputs are the complete large-cardinal interface used here. The core theorem is independent of them. No iterability or equiconsistency assertion from the archive is needed.
+
+\subsection{Ordinary exacting cardinals over HOD grounds}
+
+\begin{corollary}[HOD-ground obstruction]\label{cor:hod}
+Suppose $\lambda$ is exacting, $\delta<\lambda$ is strongly compact, and $\HOD$ is a ground of $V$. Put $W=\HOD$. Then every presentation $V=W[G]$ has a $W$-antichain of size $(\lambda^{+\delta})^W$ and the cofinality cascade of Theorem~\ref{thm:main}.
+More generally, the same holds for any ground $W\subseteq\HOD_{V_\lambda}$.
+\end{corollary}
+\begin{proof}
+Input~\ref{in:ex} gives $\cf^V(\lambda)=\omega$ and regularity of $\lambda$ in $\HOD_{V_\lambda}$. Any cofinal map from an ordinal below $\lambda$ in a smaller inner model would be such a map in $\HOD_{V_\lambda}$, so $\lambda$ is regular in $W$ as well. All hypotheses of Theorem~\ref{thm:main} now hold.
+\end{proof}
+
+The ground assumption is explicit. This corollary does not infer that HOD is a ground merely from exactingness or from a strongly compact cardinal below $\lambda$.
+
+\subsection{Cover exactingness between two strongly compact cardinals}
+
+\begin{theorem}[Canonical-ground chain-condition obstruction]\label{thm:hcd}
+Suppose in $V$ that
+\[
+\delta<\lambda\le\gamma<\kappa,
+\qquad\SC(\delta),\quad\SC(\kappa),\quad\CEx_\gamma(\lambda).
+\]
+Let $W=\HCD(\kappa)$ and $\Theta=(\lambda^{+\delta})^W$. Then $W$ is a proper ground, and every forcing presentation $V=W[G]$ has a $W$-antichain of $W$-size $\Theta$ and $W$-density at least $\Theta$. There are in $V$ strictly increasing sequences $\langle\mu_i,\tau_i:i<\delta\rangle$ with
+\[
+\lambda<\mu_i<\kappa,\qquad
+\cf^W(\mu_i)=\mu_i,\qquad
+\tau_i=\cf^V(\mu_i),\qquad
+\omega<\tau_i<\delta,
+\qquad\sup_{i<\delta}\tau_i=\delta.
+\]
+\end{theorem}
+\begin{proof}
+Input~\ref{in:hcd} makes $W$ a ground. Because $\kappa>\gamma$, Input~\ref{in:barrier} gives $\cf^W(\lambda)=\lambda$, while $\cf^V(\lambda)=\omega$. In particular, $W\ne V$. Theorem~\ref{thm:main} gives the antichain bound and the indicated sequences, except for the additional upper bound $\mu_i<\kappa$.
+
+To prove that bound, suppose some $\mu_i\ge\kappa$. In $V$, take a cofinal set $a\subseteq\mu_i$ of size $\tau_i<\delta<\kappa$. By the $\kappa$-cover property, there is a set of ordinals $b\in W$ with $a\subseteq b$ and $|b|^W<\kappa$. Replacing $b$ by $b\cap\mu_i$, we have a cofinal subset of $\mu_i$ in $W$ of $W$-size below $\kappa\le\mu_i$. This contradicts regularity of $\mu_i$ in $W$. Hence every $\mu_i<\kappa$.
+\end{proof}
+
+\begin{corollary}[Explicit new conditional inconsistency]\label{cor:hcdincon}
+The conjunction in Theorem~\ref{thm:hcd} is inconsistent with either
+\begin{enumerate}
+\item a $(\lambda^{+\delta})^{\HCD(\kappa)}\cc$ forcing presentation of $V$ over $\HCD(\kappa)$; or
+\item a bound $\rho<\delta$ on all $\cf^V(\mu)<\delta$ for $\HCD(\kappa)$-regular $\mu$ in $(\lambda,\kappa)$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+The first condition contradicts the antichain in Theorem~\ref{thm:hcd}. The second bounds every $\tau_i$, contradicting their supremum $\delta$.
+\end{proof}
+
+This is stronger than the single-successor obstruction in the archive: it excludes a chain condition at a singular $\delta$-fold successor and requires an entire unbounded cofinality spectrum in the interval below the upper strongly compact cardinal. It still has additional hypotheses and does not refute the unqualified configuration itself.
+
+\subsection{The defects already separate the two canonical grounds}
+
+\begin{lemma}[Covering transfers small cofinality]\label{lem:covercof}
+Suppose $U\subseteq V$ has the $\delta$-cover property and $\delta$ is a cardinal in both models. If $\alpha$ is a limit ordinal and $\cf^V(\alpha)<\delta$, then
+\[
+\cf^V(\alpha)\le\cf^U(\alpha)<\delta.
+\]
+\end{lemma}
+\begin{proof}
+Take an ambient cofinal set $a\subseteq\alpha$ of size below $\delta$, and cover it by $b\in U$ of $U$-size below $\delta$. Then $b\cap\alpha$ is cofinal in $\alpha$ and belongs to $U$, giving $\cf^U(\alpha)<\delta$. A cofinal map in $U$ remains cofinal in $V$, giving the other inequality as an inequality of ordinals.
+\end{proof}
+
+\begin{corollary}[A cofinality spectrum between canonical grounds]\label{cor:twogrounds}
+In the situation of Theorem~\ref{thm:hcd}, put
+\[
+W=\HCD(\kappa),\qquad U=\HCD(\delta).
+\]
+Then $W\subsetneq U\subseteq V$, and there are $\delta$ distinct $W$-regular cardinals $\mu_i\in(\lambda,\kappa)$ satisfying
+\[
+\tau_i\le\sigma_i:=\cf^U(\mu_i)<\delta,
+\qquad\sup_{i<\delta}\sigma_i=\delta.
+\]
+For each $i$, some cofinal $b_i\subseteq\mu_i$ belongs to $U\setminus W$ and has $U$-size below $\delta$.
+\end{corollary}
+\begin{proof}
+Inclusion $W\subseteq U$ follows from \eqref{eq:hcdmono}; both are $\ZFC$ grounds by Input~\ref{in:hcd}. Its $\delta$-cover assertion for $U$ and Lemma~\ref{lem:covercof} give $\tau_i\le\sigma_i<\delta$. Since the $\tau_i$ are cofinal in $\delta$, the $\sigma_i$ are also cofinal there.
+
+Choose in $U$ a cofinal subset $b_i\subseteq\mu_i$ of order type $\sigma_i<\delta<\mu_i$. If $b_i$ belonged to $W$, its order type, which is absolute for sets of ordinals, would give in $W$ a cofinal sequence in the regular cardinal $\mu_i$ of length below $\mu_i$. This is impossible. Thus $b_i\in U\setminus W$, also witnessing strictness of the inclusion.
+\end{proof}
+
+The sequence of the $\sigma_i$ need not itself be increasing as first produced, and it is not claimed to belong to $U$. Only its bounds and supremum are needed. If desired for a mathematical argument, one can thin the ambient sequence recursively to obtain strictly increasing $\sigma_i$: at each stage choose a later $\tau_i$ above the previous $\sigma$-bounds. Regularity of $\delta$ makes this possible for $\delta$ stages.
+
+\section{Proof audit, comparison, and remaining targets}\label{sec:audit}
+
+\subsection{What was actually added}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.14}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}YY@{}}
+\toprule
+&\textbf{Supplied synthesis, Section 7.1}&\textbf{This continuation}\\
+\midrule
+Reflection used&One stationary set of ambient cofinality $\omega$.&Fewer than $\delta$ sets simultaneously, with cofinalities below $\delta$.\\
+Ground regularity defects&The initial singularized $\lambda$ and one successor obstruction.&$\delta$ increasing ground-regular cardinals above $\lambda$; their new cofinalities are cofinal in $\delta$.\\
+Forcing lower bound&Not $(\lambda^+)^W\cc$; ground density at least $(\lambda^+)^W$.&Not $(\lambda^{+\delta})^W\cc$; a ground antichain at that singular endpoint.\\
+Canonical-ground location&One cofinality discrepancy at $\lambda$.&$\delta$ discrepancies in $(\lambda,\kappa)$, with a cofinal spectrum already between $\HCD(\kappa)$ and $\HCD(\delta)$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The comparison identifies additions to the archive, not a claim that every ingredient is new to set theory. In particular, Lemma~\ref{lem:et} is explicitly a classical theorem, not a new singular-cardinal result.
+
+\subsection{The points where an apparently shorter proof could go wrong}
+
+\textbf{Ground regularity versus ambient cofinality.}
+The recursive definition is $\mu_i=\cf^W(\alpha_i)$ and
+$\tau_i=\cf^V(\alpha_i)=\cf^V(\mu_i)$. The two inequalities needed for recursion come from different universes. Forgetting either of them loses either the successor-height bound or the unbounded cofinality spectrum.
+
+\textbf{The limit stages are genuinely simultaneous.}
+Iterating a one-set reflection lemma only finitely, or choosing one previously obtained stratum at a time, does not ensure strict increase over an entire limit-stage history. The proof reflects all previously generated strata together while their number is still below $\delta$.
+
+\textbf{Only ground clubs are absolute upwards.}
+We do not assume that a ground stationary set remains stationary merely because its underlying ordinal survives. In the forcing theorem, preservation is supplied at $\theta=(\nu^+)^W$ by $\theta\cc$. In the local theorem, it is an explicit hypothesis.
+
+\textbf{A density bound is not automatically an antichain bound.}
+The transition from cofinally many failed regular chain conditions to a failed singular chain condition uses Lemma~\ref{lem:et} inside $W$. No stationary-set argument is applied at the singular ordinal $\Theta$.
+
+\textbf{The size statements are not silently moved to $V$.}
+A ground antichain of $W$-size $\Theta$ remains an antichain, but its ambient cardinality may be smaller. Similarly, the ordinals $\mu_i$ are asserted to be regular cardinals in $W$, not to survive as cardinals in $V$. The extra hypothesis in Corollary~\ref{cor:weakly} is what licenses its stronger conclusion.
+
+\Needspace{5\baselineskip}
+\textbf{The two strongly compact cardinals have different roles.}
+The lower $\delta$ supplies simultaneous reflection. The upper $\kappa$ supplies the canonical ground and its cover property. No strong compactness of $\delta$ inside $W$ or $U$ is assumed or inferred.
+
+\clearpage
+\subsection{What is not resolved, and a concrete next target}
+
+Blue--Goldberg's Problem~5.2 asks whether there can be a $\gamma$-cover-exacting cardinal above a strongly compact cardinal \cite{cover}. The present results impose additional structural costs on such a configuration when a suitable ground is available; they do not prove its outright inconsistency. Nor do they give a forcing construction attaining the new density lower bound. No optimality assertion is made for $\Theta$.
+
+There is also no immediate numerical clash between the canonical-ground lower bound and the upper strongly compact cardinal. A strongly compact $\kappa$ in $V$ is inaccessible in $W$: regularity passes downwards, and a ground injection of $\kappa$ into any ground power set below $\kappa$ would contradict its strong-limit property in $V$. Since $\lambda,\delta<\kappa$ and $\kappa$ is regular and a limit cardinal in $W$, the $W$-successor recursion of length $\delta$ stays below $\kappa$. Hence
+\[
+(\lambda^{+\delta})^W<\kappa.
+\]
+Thus the theorem is not a disguised contradiction obtained by comparing incompatible interpretations of cardinal size.
+
+The new spectrum identifies a more specific research target than merely looking for another short cofinal set:
+
+\begin{question}[A bounded-spectrum route to a further inconsistency]
+Under $\CEx_\gamma(\lambda)$ and $\delta<\lambda\le\gamma<\kappa$ with $\delta,\kappa$ strongly compact, can complete definability or exacting witnesses impose a uniform bound below $\delta$ on
+\[
+\{\cf^V(\mu):\lambda<\mu<\kappa,\
+\cf^{\HCD(\kappa)}(\mu)=\mu,\
+\cf^V(\mu)<\delta\}?
+\]
+\end{question}
+
+A positive answer would contradict Theorem~\ref{thm:hcd} and refute that configuration. The existing completeness barrier establishes regularity at $\lambda$ in the high-completeness model; it does not by itself give this uniform bound on the new cofinalities of other regular cardinals. Likewise, the cover property locates the cascade below $\kappa$ but does not bound its cofinalities below $\delta$. These are distinct statements, so the missing implication is not being treated as proved.
+
+\begin{assessment}{Verification status}
+The general cascade, forcing bounds, singular endpoint, spectrum obstructions, and covering-transfer arguments have complete conventional proofs in this report. They have not been checked by a proof assistant. The large-cardinal applications use exactly Inputs~\ref{in:ex}--\ref{in:hcd}; the general theorem does not use the archive's Lean admissions or its iteration/consistency-strength claims. The literature references establish the imported ingredients, not priority for the combined theorem.
+\end{assessment}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{7pt}
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: synthesis of the continuation reports}. Supplied research archive, 18 September 2026. Source actually used:
+\nolinkurl{Cardinals3.zip/docs/Large_Cardinals_Synthesis.tex}.
+Section~5 (completeness barrier); Section~7.1 (successor stationary-set obstruction). This is an archive dependency, not an independently published theorem attribution.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\href{https://arxiv.org/abs/2411.11568v4}{arXiv:2411.11568v4}.
+In particular Theorem~2.10, regularity of an exacting cardinal in $\HOD_{V_\lambda}$.
+
+\bibitem{goldberg}
+G.~Goldberg. The uniqueness of elementary embeddings.
+\emph{Journal of Symbolic Logic} \textbf{89}(4) (2024), 1430--1454.
+\href{https://doi.org/10.1017/jsl.2024.60}{doi:10.1017/jsl.2024.60}.
+For the theorem numbers in this report, see
+\href{https://arxiv.org/abs/2103.13961v2}{arXiv:2103.13961v2}, Theorems~4.9 and~4.13.
+
+\bibitem{cover}
+G.~Goldberg, reporting joint work with D.~Blue.
+\emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes, Warsaw Inner Model Theory Meeting, 1 July 2026.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Definitions~3.1--3.2, Proposition~3.4, and Problem~5.2.
+
+\bibitem{et}
+P.~Erd\H{o}s and A.~Tarski. On families of mutually exclusive sets.
+\emph{Annals of Mathematics}, second series, \textbf{44}(2) (1943), 315--329.
+\href{https://www.jstor.org/stable/1968767}{JSTOR stable record 1968767}.
+Author-archive scan:
+\url{https://www.renyi.hu/~p_erdos/1943-04.pdf}.
+See Theorem~1, p.~320. The forcing form of the singular chain-condition principle is proved in Lemma~\ref{lem:et}.
+
+\bibitem{hlh}
+Y.~Hayut and C.~Lambie-Hanson.
+\emph{Simultaneous stationary reflection and square sequences}.
+\href{https://arxiv.org/abs/1603.05556v2}{arXiv:1603.05556v2}.
+Background on simultaneous reflection; Lemma~\ref{lem:reflection} gives the complete fine-ultrafilter argument used here.
+
+\end{thebibliography}
+\end{document}

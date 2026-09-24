@@ -1,0 +1,1295 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec,fancyhdr,enumitem}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\definecolor{Ink}{HTML}{16324F}
+\definecolor{Accent}{HTML}{4E5C3D}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Shellings of preorder lattice-point posets}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ee}{\mathbf e}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\B}{\mathcal B}
+\newcommand{\A}{\mathcal A}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Max}{\operatorname{Max}}
+\newcommand{\des}{\operatorname{des}}
+\newcommand{\lk}{\operatorname{lk}}
+\newcommand{\cont}{\operatorname{cont}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\lex}{\mathrm{lex}}
+\newcommand{\pow}[1]{\langle #1\rangle}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\hypersetup{pdftitle={An explicit shelling for preorder lattice-point posets},
+ pdfauthor={AI-assisted research draft},
+ pdfsubject={A proposed affirmative solution to Athanasiadis--Chapoton Question 4.6}}
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{Accent}ORDER THEORY \; / \; TOPOLOGICAL COMBINATORICS}\\[0.8em]
+{\LARGE\bfseries\color{Ink}An explicit shelling for\\[0.15em]
+preorder lattice-point posets}\\[0.8em]
+{\large A base-exchange solution to Question 4.6}\\[0.9em]
+{\normalsize AI-assisted research draft}\\[0.3em]
+{\normalsize 20 September 2026}
+\end{center}
+\vspace{0.3em}
+\begin{abstract}
+For a finite preorder $\tau$ on $[n]$, let $P_\tau$ be the nonnegative integer
+vectors $a$ satisfying $\sum_{i\in I}a_i\le |I|$ for every order ideal $I$ of
+$\tau$, ordered coordinatewise. We give an explicit shelling of
+$\Delta(P_\tau\setminus\{\zero\})$, and hence of $\Delta(P_\tau)$. This gives an
+affirmative answer to both parts of Question 4.6 of Athanasiadis and Chapoton.
+The construction groups saturated chains by their maximal vector. Maximal
+vectors are ordered decreasingly lexicographically; within each group, words
+are ordered lexicographically using a basis-dependent alphabet. The necessary
+change of alphabet is controlled by the coordinates from which a unit can be
+transferred to an earlier coordinate.
+
+The proof applies more generally to the integer-point poset of every integral
+polymatroid. We prove the required exchange property both by tight-set
+arguments and, for preorders, by a direct supply-assignment argument. We also
+identify every shelling restriction face, obtain ordinary and flag
+$h$-enumerators, prove shellability of all rank selections, and show that the
+preorder complexes with the minimum removed are contractible but need not be
+balls. Exact, definition-level tests cover all 389 labeled preorders on one
+through four elements, 126 exchange families in three coordinates, and 58
+weighted-preorder cases. The finite computations support the proof; they are
+not used to justify any all-size assertion.
+\end{abstract}
+
+\smallskip
+\noindent\fcolorbox{Ink!35}{Ink!3}{\begin{minipage}{0.95\linewidth}
+\small\textbf{Status.} This is a complete proposed mathematical argument, not
+an independently refereed or proof-assistant-verified result. The target is
+explicitly open in the retrieved primary source. Targeted literature searches
+found no resolution of that question; they do not establish priority for every
+general lemma proved here. Standard polymatroid and shelling theory is
+credited rather than presented as newly invented.
+\end{minipage}}
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The question and the contribution}
+\label{sec:introduction}
+
+Question 4.6 of Athanasiadis and Chapoton \cite[p.~13]{AC} asks:
+\begin{quote}
+``Is the poset $P_\tau$ shellable for every preorder $\tau$? Is it
+Cohen--Macaulay for every preorder $\tau$?''
+\end{quote}
+Their preceding argument establishes the case in which $\tau$ has a maximum
+vertex. The construction below does not require that hypothesis.
+
+\subsection{Why this is a different problem from the manifest entries}
+
+The supplied manifest contains two reports in the same family:
+\emph{Reciprocity and Matrix Duality for Preorder Polytopes} and
+\emph{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}. Their
+catalogued targets concern reciprocity, matrix duality, and a polyhedral model
+for a support enumerator. Neither catalogue entry claims a shelling of the
+lattice-point poset or a solution to Question 4.6. This report takes the same
+objects in a different direction: the topology of their chain complexes.
+
+The manifest is used as a selection and nonduplication record, not as a source
+of proved intermediate theorems. In particular, no assertion from either
+listed report is assumed below. The input manifest itself cautions that its
+summaries record unrefereed claims rather than audited proofs. The package's
+\texttt{manifest\_selection.md} records this boundary explicitly.
+
+\subsection{The main statement}
+
+We use $\N=\{0,1,2,\ldots\}$. For a preorder $\tau$ on $E=[n]$, define
+\begin{equation}
+ P_\tau=\left\{a\in\N^n:
+ a(I):=\sum_{i\in I}a_i\le |I|
+ \text{ for every order ideal }I\text{ of }\tau\right\}.
+ \label{eq:preorder-poset}
+\end{equation}
+The order on $P_\tau$ is coordinatewise comparison. A preorder is reflexive
+and transitive; antisymmetry is not assumed. An order ideal is a subset closed
+under taking smaller elements. Thus equivalent elements of the preorder
+always occur together in an ideal, but remain distinct coordinates in
+\eqref{eq:preorder-poset}.
+
+\begin{theorem}[Preorder shellability]
+\label{thm:main}
+For every finite preorder $\tau$, both $\Delta(P_\tau)$ and
+$\Delta(P_\tau\setminus\{\zero\})$ are pure shellable complexes. Consequently
+they are Cohen--Macaulay over $\Z$ and over every field. If $n\ge1$, the second
+complex has dimension $n-1$ and is contractible. Every subposet obtained by
+selecting any set of ranks of $P_\tau\setminus\{\zero\}$ is also shellable.
+\end{theorem}
+
+The shelling, not just its existence, is part of the theorem. Given the list
+of maximal vectors, it is specified by unit transfers, two finite sorting
+rules, and multiset words. Its restrictions are explicitly computable.
+
+\subsection{Where the actual work lies}
+
+Every principal interval $[\zero,b]$ is a product of chains and is easy to
+shell. That observation alone says nothing about whether shellings of
+different principal intervals fit together. A naive lexicographic order of
+all chain words can fail even for a rank-two matroid; Section~\ref{sec:examples}
+gives a four-word counterexample.
+
+There are two steps that make the construction work. First, exchange implies
+that the part of $[\zero,b]$ already covered by earlier maximal vectors is a
+union of codimension-one coordinate boxes $[\zero,b-\ee_j]$. Second, these
+particular coordinates are put \emph{last} in the alphabet used to sort the
+words ending at $b$. Any overlap not already accounted for by an ordinary
+word descent then becomes a terminal ridge. Both steps are necessary in the
+proof, and both are checked separately by the verifier.
+
+\section{Chains, facets, and restriction faces}
+\label{sec:preliminaries}
+
+For $a,b\in\N^s$, write $a\le b$ when $a_i\le b_i$ for every $i$, and set
+$|a|=\sum_i a_i$. A finite nonempty set $D\subseteq\N^s$ is a
+\emph{downset} if $a\in D$ and $\zero\le u\le a$ imply $u\in D$. Its maximal
+elements will be called \emph{bases}. Suppose all bases have the same total
+sum $r$. Then every maximal saturated chain has the form
+\begin{equation}
+ \zero=a^{(0)}<a^{(1)}<\cdots<a^{(r)}=b,
+ \qquad a^{(k)}-a^{(k-1)}=\ee_{w_k}.
+ \label{eq:chain-word}
+\end{equation}
+The word $w=w_1\cdots w_r$ has content $b$, meaning that the letter $i$
+occurs $b_i$ times. Conversely, every word of content $b$ gives a chain in
+$D$, since every prefix vector is at most $b$. Thus there are exactly
+\begin{equation}
+ N(D)=\sum_{b\in\B}\frac{r!}{\prod_{i=1}^s b_i!}
+ \label{eq:facet-count}
+\end{equation}
+maximal saturated chains, where $\B=\Max(D)$.
+
+\begin{definition}
+The order complex $\Delta(Q)$ of a finite poset $Q$ has the elements of $Q$
+as vertices and the finite chains as faces, including the empty face. A facet
+is an inclusion-maximal face. A complex is \emph{pure of dimension $d$} when
+every facet has $d+1$ vertices.
+\end{definition}
+
+Our primary complex is
+\[
+ K(D):=\Delta(D\setminus\{\zero\}).
+\]
+For a word $w$ as in \eqref{eq:chain-word}, its facet is
+$F(w)=\{a^{(1)},\ldots,a^{(r)}\}$. Hence $K(D)$ is pure of dimension $r-1$.
+We write $\pow{F}$ for the simplex consisting of all subsets of $F$, and
+$\pow{F_1,\ldots,F_m}$ for the complex generated by the indicated facets.
+
+\begin{definition}[Pure shelling]
+An order $F_1,\ldots,F_N$ of the facets of a pure $(r-1)$-dimensional complex
+is a shelling when, for every $k>1$,
+\begin{equation}
+ \pow{F_k}\cap\pow{F_1,\ldots,F_{k-1}}
+ \label{eq:shell-def}
+\end{equation}
+is generated by a nonempty collection of the ridges $F_k\setminus\{v\}$,
+$v\in F_k$. For $r=1$, a ridge is the empty face. The single empty-facet
+complex, of dimension $-1$, is declared shellable.
+\end{definition}
+
+If the intersection in \eqref{eq:shell-def} is the union of the ridges
+$F_k\setminus\{v\}$ for $v\in T_k$, then a face $G\subseteq F_k$ is new
+exactly when $T_k\subseteq G$. The face $T_k$ is the \emph{restriction face}.
+For the first facet its restriction face is empty. This description will let
+us prove shellability and the enumeration formula simultaneously.
+
+One useful equivalent criterion is the following: for every $i<k$, there is
+$j<k$ such that
+\begin{equation}
+ F_i\cap F_k\ \subseteq\ F_j\cap F_k
+       =F_k\setminus\{v\}
+ \quad\text{for some }v\in F_k.
+ \label{eq:pairwise-criterion}
+\end{equation}
+Indeed, every face of \eqref{eq:shell-def} belongs to one of the intersections
+$F_i\cap F_k$. Criterion~\eqref{eq:pairwise-criterion} says exactly that each
+is contained in an old ridge. We use the definition for the main proof and
+this criterion for rank selection.
+
+\section{An exchange condition and the overlap lemma}
+\label{sec:exchange}
+
+Fix a nonempty finite family $\B\subseteq\N^s$ whose members all have sum $r$,
+and let $D=\bigcup_{b\in\B}[\zero,b]$. For the moment, assume the following
+specified-insertion exchange condition:
+\begin{equation}
+ \begin{split}
+ &b,c\in\B,\quad c_i>b_i\\[-0.2em]
+ &\hspace{1.5em}\Longrightarrow\quad
+ \text{there is }j\text{ with }b_j>c_j
+ \text{ and }b+\ee_i-\ee_j\in\B.
+ \end{split}
+ \tag{E}\label{eq:exchange}
+\end{equation}
+This is not an assumption that \emph{every} surplus coordinate can be used,
+and it is not a claim of a simultaneous exchange bijection. Only the stated
+existence is needed. Sections~\ref{sec:assignments} and \ref{sec:polymatroids}
+prove it for the families to which we apply the theorem.
+
+Use the ordinary order $1<2<\cdots<s$ to compare vectors lexicographically.
+A vector $c$ is earlier than $b$ if $c>_{\lex}b$, so bases are listed in
+\emph{decreasing} lexicographic order. Define
+\begin{equation}
+ R(b)=\{j:b_j>0\text{ and }b+\ee_i-\ee_j\in\B
+                        \text{ for some }i<j\}.
+ \label{eq:active}
+\end{equation}
+We call these the active coordinates of $b$. The word ``active'' is local to
+this construction; no identification with a different matroid activity
+statistic is presumed.
+
+\begin{lemma}[Exact overlap]
+\label{lem:overlap}
+Under \eqref{eq:exchange}, for every $b\in\B$,
+\begin{equation}
+ [\zero,b]\cap\bigcup_{c>_{\lex}b}[\zero,c]
+       =\bigcup_{j\in R(b)}[\zero,b-\ee_j].
+ \label{eq:overlap}
+\end{equation}
+Moreover, $R(b)$ is empty exactly for the first base.
+\end{lemma}
+
+\begin{proof}
+If $j\in R(b)$, choose $i<j$ with $d=b+\ee_i-\ee_j\in\B$. Then
+$d>_{\lex}b$ and $b-\ee_j\le d$, proving the inclusion from right to left.
+
+Conversely, take $a\le b,c$ with $c>_{\lex}b$, and let $i$ be the first
+coordinate at which $b$ and $c$ differ. Then $c_i>b_i$, and
+\eqref{eq:exchange} gives $j$ with $b_j>c_j$ and
+$b+\ee_i-\ee_j\in\B$. Coordinates before $i$ agree, and $j\ne i$, so $j>i$.
+Thus $j\in R(b)$. Since the coordinates are integers,
+$a_j\le c_j\le b_j-1$, while $a_k\le b_k$ for all $k\ne j$.
+Consequently $a\le b-\ee_j$.
+
+The first base has no active coordinate, because any witnessing transfer
+would produce an earlier base. For every later base, applying the preceding
+argument to any earlier base supplies an active coordinate.
+\end{proof}
+
+\begin{remark}[The weaker hypothesis actually used]
+\label{rem:weaker}
+For the shelling theorem, it is enough to be given an ordering of equidegree
+bases for which each noninitial overlap has the form on the right of
+\eqref{eq:overlap}, with a nonempty set of coordinates. Neither a global
+lexicographic order nor the full exchange condition is then needed. Exchange
+provides a concrete way to obtain this overlap property and to compute its
+coordinate set. We state the proof in the explicit exchange setting to avoid
+hiding this step in a multicomplex-shellability assertion.
+\end{remark}
+
+\section{The base-block shelling}
+\label{sec:shelling}
+
+For each $b$, choose the following total order $\prec_b$ on the letters:
+\begin{equation}
+ [s]\setminus R(b)\quad\text{first, followed by}\quad R(b),
+ \label{eq:alphabet}
+\end{equation}
+with the usual order within each part. Zero-content letters may be retained
+in the alphabet; they do not occur in any word of content $b$.
+
+The complete facet order is now specified. Visit bases in decreasing ordinary
+lexicographic order. For each base $b$, visit all words of content $b$ in
+\emph{increasing} lexicographic order with respect to $\prec_b$. Replace each
+word by its prefix-vector facet $F(w)$. This gives every facet exactly once:
+the terminal vector identifies its block, and the successive differences
+identify its word.
+
+Write
+\begin{equation}
+ \operatorname{Des}_b(w)=
+ \{k\in\{1,\ldots,r-1\}:w_{k+1}\prec_b w_k\}.
+ \label{eq:descent}
+\end{equation}
+Here the comparisons inside words use $\prec_b$, not necessarily the natural
+order on the indices. Bases themselves are still ordered using the natural
+coordinate order.
+
+\subsection{What earlier words in one block cover}
+
+\begin{lemma}[Descent ridges within a box]
+\label{lem:word}
+Fix a base $b$ and any total alphabet order $\prec$. Among the words of
+content $b$, put the facets in increasing lexicographic order. For the facet
+$F(w)$, its intersection with the earlier facets in this same block is
+precisely the union of the ridges
+\begin{equation}
+ F(w)\setminus\{a^{(k)}\},\qquad
+             w_{k+1}\prec w_k.
+ \label{eq:word-ridges}
+\end{equation}
+If there are no descents, there are no earlier facets in the block.
+\end{lemma}
+
+\begin{proof}
+Consider a face $G\subseteq F(w)$. The retained prefix vectors determine the
+content of each segment between successive retained ranks. Add ranks $0$ and
+$r$ as segment boundaries, whether or not the terminal vertex belongs to $G$.
+The endpoints $\zero$ and $b$ are fixed for every chain in the block.
+
+A word of content $b$ contains $G$ exactly when each of these segments has its
+prescribed content. The lexicographically first such word is obtained by
+sorting every segment weakly increasingly. Therefore there is an earlier word
+containing $G$ exactly when at least one segment of $w$ is not weakly
+increasing. Such a segment contains an adjacent descent; its rank $k$ is not
+retained in $G$. Conversely, if $G$ omits a descent rank $k$, swapping the
+adjacent descending letters gives an earlier word, changes only the rank-$k$
+prefix vector, and keeps every vertex of $G$.
+
+Thus $G$ is old within the block exactly when it misses at least one descent
+vertex, which is precisely the union in \eqref{eq:word-ridges}. The only
+word with no descents is the sorted word, the first word of the block.
+\end{proof}
+
+\subsection{What all earlier blocks cover}
+
+\begin{lemma}[The last active letter]
+\label{lem:last-active}
+Let $b$ be a noninitial base, let $w$ have content $b$, and set
+\begin{equation}
+ t(w)=\max\{k:w_k\in R(b)\}.
+ \label{eq:last-active}
+\end{equation}
+The faces of $F(w)$ appearing in earlier base blocks are exactly the subsets
+of $\{a^{(1)},\ldots,a^{(t(w)-1)}\}$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:overlap}, a prefix vector $a^{(k)}$ is in an earlier
+principal box if and only if some active coordinate is not yet exhausted,
+that is, $a^{(k)}_j<b_j$ for some $j\in R(b)$. This is equivalent to
+$k<t(w)$.
+
+For a nonempty face $G$ of $F(w)$, let $a^{(k)}$ be its largest vertex. If
+$k<t(w)$, that vertex lies below some earlier base $c$. Every other vertex
+of $G$ lies below it, so the whole face lies in $[\zero,c]$. A chain in this
+box extends to a saturated chain ending at $c$, whose block is already
+complete. Thus $G$ is old. If $k\ge t(w)$, its largest vertex belongs to no
+earlier box, so $G$ is not old in an earlier block. The empty face is old
+because there is an earlier block. This proves the stated equality.
+\end{proof}
+
+\subsection{The intersection identity and shellability}
+
+\begin{theorem}[Explicit shelling and restriction face]
+\label{thm:abstract}
+Let $D=\bigcup_{b\in\B}[\zero,b]$, where $\B$ is a nonempty equidegree family
+satisfying \eqref{eq:exchange}. The base-block order is a shelling of $K(D)$.
+For its facet $F(w)$ ending at $b$, the restriction face is
+\begin{equation}
+ \mathcal R(w)=
+ \{a^{(k)}:k\in\operatorname{Des}_b(w)\}
+ \ \cup\
+ \begin{cases}
+   \{b\},&w_r\in R(b),\\
+   \varnothing,&w_r\notin R(b).
+ \end{cases}
+ \label{eq:restriction}
+\end{equation}
+For $r=0$ there is one empty facet, with empty restriction face.
+\end{theorem}
+
+\begin{proof}
+Assume $r\ge1$. Within the first block, Lemma~\ref{lem:word} gives exactly the
+descent ridges. There are no earlier blocks and $R(b)=\varnothing$, so
+\eqref{eq:restriction} follows there.
+
+Now consider a noninitial base $b$. Earlier facets split into those in its
+own block and those in earlier blocks. The former give exactly the descent
+ridges. The latter, by Lemma~\ref{lem:last-active}, give the simplex on the
+prefix vertices of ranks below $t=t(w)$.
+
+If $t<r$, then $w_t\in R(b)$ and $w_{t+1}\notin R(b)$. By
+\eqref{eq:alphabet}, this is a descent at rank $t$. Every face from an earlier
+block misses $a^{(t)}$ and is therefore already contained in the descent ridge
+$F(w)\setminus\{a^{(t)}\}$. There is no extra contribution from earlier blocks.
+
+If $t=r$, then the faces from earlier blocks form exactly the terminal ridge
+$F(w)\setminus\{b\}$. This case is equivalent to $w_r\in R(b)$. Combining the
+two cases, the full old intersection is
+\begin{equation}
+ \bigcup_{k\in\operatorname{Des}_b(w)}
+       \pow{F(w)\setminus\{a^{(k)}\}}
+ \quad\cup\quad
+ \begin{cases}
+  \pow{F(w)\setminus\{b\}},&w_r\in R(b),\\
+  \text{no additional faces},&w_r\notin R(b).
+ \end{cases}
+ \label{eq:full-intersection}
+\end{equation}
+This is a union of ridges, not merely a subcomplex of such a union.
+
+Except for the very first facet, the union contains at least one ridge. A
+nonfirst word in a block has a descent. For the first word of a noninitial
+block, the sorted word ends in an active letter, since $R(b)\ne\varnothing$
+and every active coordinate has positive content. Its terminal ridge is old.
+Thus \eqref{eq:full-intersection} proves shellability. A face is absent from
+that union exactly when it contains every omitted vertex indexing its ridges;
+these vertices are exactly \eqref{eq:restriction}.
+\end{proof}
+
+\begin{remark}[A directly checkable witness]
+When $w_r=j\in R(b)$, choose $i<j$ with $d=b+\ee_i-\ee_j\in\B$.
+Replacing the final letter of $w$ by $i$ produces a word ending at $d$ in an
+earlier block; its facet shares exactly the terminal ridge. For an internal
+descent, swapping the two letters gives the corresponding earlier facet in
+the same block. Thus every ridge in \eqref{eq:full-intersection} has an
+explicit earlier-facet witness.
+\end{remark}
+
+\section{Why preorder posets satisfy exchange}
+\label{sec:assignments}
+
+We give a combinatorial proof directly from the defining inequalities. It
+makes no assumption about a unique maximal equivalence class of the preorder.
+For $A\subseteq E$, write
+\[
+ \downarrow A=\{u\in E:u\le_\tau a\text{ for some }a\in A\}.
+\]
+This is an ideal, and $A\subseteq\downarrow A$.
+
+\begin{lemma}[Equivalent constraints]
+\label{lem:coverage-constraints}
+A vector $a\in\N^n$ belongs to $P_\tau$ exactly when
+\begin{equation}
+ a(A)\le |\downarrow A|\qquad(A\subseteq E).
+ \label{eq:coverage}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The ideal inequalities imply
+$a(A)\le a(\downarrow A)\le|\downarrow A|$ by nonnegativity. Conversely,
+$\downarrow I=I$ for an ideal $I$, so \eqref{eq:coverage} includes every
+defining inequality.
+\end{proof}
+
+\subsection{A supply interpretation and purity}
+
+Place one labeled supply token at every $u\in E$. A token at $u$ may be
+assigned to coordinate $i$ precisely when $u\le_\tau i$. Tokens may also be
+left unused. The occupancy vector records the number assigned to each
+coordinate.
+
+\begin{lemma}[Supply representation]
+\label{lem:supply}
+The possible occupancy vectors are exactly $P_\tau$. Its maximal vectors are
+exactly the occupancy vectors of complete assignments, and all have total
+sum $n$.
+\end{lemma}
+
+\begin{proof}
+For a proposed occupancy vector $a$, create $a_i$ demand copies at each
+coordinate $i$. Join each demand copy at $i$ to all supply tokens in
+$\downarrow\{i\}$. A matching saturating these demand copies is precisely an
+assignment realizing $a$.
+
+For completeness, the finite matching criterion is that every set of demand
+vertices have at least as many supply neighbors. Necessity is immediate.
+For sufficiency, take a maximum matching. If a demand vertex is unmatched,
+follow alternating paths from it. If an unmatched supply vertex is reached,
+the matching can be enlarged. Otherwise, all reached supply vertices are
+matched to reached demand vertices, while the initial demand vertex is
+unmatched. The reached demand set then has fewer supply neighbors than its
+cardinality, a contradiction.
+
+For any set of demand copies, let $A$ be its set of coordinate labels. Its
+cardinality is at most $a(A)$, and its supply neighborhood is $\downarrow A$.
+Thus \eqref{eq:coverage} ensures the matching criterion. Conversely, tokens
+assigned to coordinates in $A$ are distinct tokens in $\downarrow A$, so
+$a(A)\le|\downarrow A|$ is necessary.
+Lemma~\ref{lem:coverage-constraints} proves the first assertion.
+
+If fewer than $n$ tokens are used, choose an unused token at $u$ and assign
+it to coordinate $u$, which is allowed by reflexivity. This strictly increases
+the occupancy vector. Hence a maximal vector has total $n$. Every vector of
+total $n$ is maximal because the inequality for $E$ forbids a larger one.
+\end{proof}
+
+\subsection{Exchange by rerouting assignments}
+
+\begin{lemma}[Specified insertion]
+\label{lem:assignment-exchange}
+The family $\B_\tau=\Max(P_\tau)$ satisfies \eqref{eq:exchange}.
+\end{lemma}
+
+\begin{proof}
+Take complete assignments realizing bases $b,c$. For every supply token,
+draw a directed edge from its destination in the $b$-assignment to its
+destination in the $c$-assignment, retaining the token as the edge label.
+Loops and parallel edges are allowed. At coordinate $v$,
+\[
+ \operatorname{outdeg}(v)-\operatorname{indeg}(v)=b_v-c_v.
+\]
+Suppose $c_i>b_i$. Let $S$ be the set of vertices from which a directed path
+to $i$ exists. No directed edge enters $S$ from outside: its initial vertex
+would then also reach $i$. Therefore
+\[
+ \sum_{v\in S}(b_v-c_v)
+   =\#\{\text{edges leaving }S\}\ge0.
+\]
+The summand at $i$ is negative, so some $j\in S$ satisfies $b_j>c_j$.
+Choose a simple directed path from $j$ to $i$.
+
+For each edge on this path, reassign its labeled token from its
+$b$-destination to its $c$-destination. Every new destination is allowed,
+since it was used in the $c$-assignment. A simple path uses distinct edges
+and hence distinct tokens. At each internal vertex, one token leaves and
+one arrives; the occupancy decreases by one at $j$ and increases by one at
+$i$. All tokens remain assigned. The resulting base is
+$b+\ee_i-\ee_j$, as required.
+\end{proof}
+
+Lemmas~\ref{lem:supply} and \ref{lem:assignment-exchange}, followed by
+Theorem~\ref{thm:abstract}, prove the shellability assertion of
+Theorem~\ref{thm:main}. Notice that the supply representation is an integral
+statement: it identifies actual integer vectors and actual matchings, not
+only convex hulls.
+
+\section{Extension to integral polymatroids}
+\label{sec:polymatroids}
+
+The matching proof is useful for preorders, but its full generality is
+unnecessary. A separate tight-set argument shows that the shelling applies
+to every integral polymatroid. We include the proof so that no unverified
+exchange convention is being imported. The setting is classical; see
+Herzog and Hibi \cite{HH}.
+
+Let $f:2^{[s]}\to\N$ be normalized, monotone, and submodular:
+\begin{equation}
+ \begin{gathered}
+ f(\varnothing)=0,\qquad
+ A\subseteq B\Longrightarrow f(A)\le f(B),\\
+ f(A)+f(B)\ge f(A\cup B)+f(A\cap B).
+ \end{gathered}
+ \label{eq:rank-function}
+\end{equation}
+Define its integer independence poset
+\begin{equation}
+ D_f=\{a\in\N^s:a(A)\le f(A)\text{ for all }A\subseteq[s]\}.
+ \label{eq:integral-pm}
+\end{equation}
+It is a finite downset, since $a_i\le f(\{i\})$. For $a\in D_f$, call a set
+$A$ \emph{$a$-tight} if $a(A)=f(A)$.
+
+\begin{lemma}[Tight-set closure]
+\label{lem:tight}
+The union and intersection of two $a$-tight sets are $a$-tight.
+\end{lemma}
+
+\begin{proof}
+The vector sum $a(\cdot)$ is modular, so
+\[
+\begin{split}
+ f(A)+f(B)&=a(A)+a(B)\\
+ &=a(A\cup B)+a(A\cap B)\\
+ &\le f(A\cup B)+f(A\cap B)\le f(A)+f(B).
+\end{split}
+\]
+All inequalities are equalities, proving the assertion.
+\end{proof}
+
+\begin{lemma}[Purity and exchange from tight sets]
+\label{lem:pm-exchange}
+Every maximal vector of $D_f$ has total $r=f([s])$, and its base family
+satisfies \eqref{eq:exchange}.
+\end{lemma}
+
+\begin{proof}
+If a feasible vector $a$ is maximal, $a+\ee_i$ is infeasible for each $i$.
+Because all slacks are integers, there is an $a$-tight set $A_i$ containing
+$i$. Their union is $[s]$, and Lemma~\ref{lem:tight} shows that it is tight.
+Thus $|a|=f([s])$. Conversely, a feasible vector of that total cannot be
+increased, by the inequality for $[s]$.
+
+Let $b,c$ be bases with $c_i>b_i$. The collection of $b$-tight sets containing
+$i$ is nonempty, since $[s]$ is tight. Let $T$ be its intersection. The set
+$T$ is tight and contains $i$. Since $c(T)\le f(T)=b(T)$, some $j\in T$
+satisfies $b_j>c_j$.
+
+Set $d=b+\ee_i-\ee_j$. It is nonnegative because $b_j\ge1$. A constraint
+$d(A)\le f(A)$ could fail only if $i\in A$, $j\notin A$, and $A$ was
+$b$-tight: every nontight constraint has integral slack at least one. But
+by the definition of $T$, every tight set containing $i$ also contains $j$.
+No constraint fails. Finally, $|d|=r$, so $d$ is a base.
+\end{proof}
+
+\begin{corollary}[Integral-polymatroid shellability]
+\label{cor:all-pm}
+For every $f$ satisfying \eqref{eq:rank-function}, the complexes
+$\Delta(D_f\setminus\{\zero\})$ and $\Delta(D_f)$ are pure shellable and
+Cohen--Macaulay over $\Z$ and every field. The base-block order and
+restriction formula \eqref{eq:restriction} apply without change.
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:pm-exchange} and Theorem~\ref{thm:abstract}; the
+Cohen--Macaulay consequence is proved in Section~\ref{sec:topology}.
+\end{proof}
+
+For a preorder, $f(A)=|\downarrow A|$ is a coverage function. Indeed,
+$\downarrow(A\cup B)=\downarrow A\cup\downarrow B$ and
+$\downarrow(A\cap B)\subseteq\downarrow A\cap\downarrow B$, which prove
+submodularity by cardinalities. This supplies a second route from
+\eqref{eq:preorder-poset} to the shelling.
+
+\subsection{Weighted preorders and arbitrary supply neighborhoods}
+
+Given capacities $c_u\in\N$, define
+\begin{equation}
+ P_{\tau,c}=\{a\in\N^n:a(I)\le c(I)
+                         \text{ for every ideal }I\}.
+ \label{eq:weighted}
+\end{equation}
+The rank function is $f_c(A)=c(\downarrow A)$, which is again normalized,
+monotone, integral, and submodular. Its total rank is $\sum_u c_u$. Thus the
+same shelling works, including when some capacities vanish. Equivalently,
+replace the supply token at $u$ by $c_u$ distinct copies in the matching
+proof. The contractibility assertion for the unweighted case is not being
+silently extended to all zero-capacity cases.
+
+More generally, let $U$ be a finite supply set and let each token $u$ have
+a nonempty allowed destination set $N(u)\subseteq[s]$. All partial
+assignments have occupancies in the coverage polymatroid with rank
+\[
+ f(A)=|\{u:N(u)\cap A\ne\varnothing\}|.
+\]
+The matching proof identifies its integer points with those occupancies,
+and unused tokens can be assigned to any allowed destination. The directed
+rerouting proof establishes exchange verbatim. Thus neither transitivity nor
+reflexivity is essential for this larger supply model; they were what
+identified the original ideal inequalities with the preorder supply model.
+
+\section{Topology and rank selection}
+\label{sec:topology}
+
+\subsection{Why shellability gives the required Cohen--Macaulay property}
+
+We use the homological definition: a pure finite complex $K$ is
+Cohen--Macaulay over $\Z$ if, for every face $\sigma$ (including the empty
+face),
+\begin{equation}
+ \widetilde H_i(\lk_K\sigma;\Z)=0
+       \quad\text{for all }i<\dim(\lk_K\sigma).
+ \label{eq:cm}
+\end{equation}
+Here the link consists of faces disjoint from $\sigma$ whose union with
+$\sigma$ is a face. Over a field, the same vanishing condition is equivalent
+to the usual Cohen--Macaulay condition on the Stanley--Reisner ring. The
+standard shelling implications and the order-homotopy tools used below are
+reviewed by Wachs \cite{Wachs}. We spell out the relevant implications.
+
+\begin{lemma}
+\label{lem:shell-cm}
+Every pure shellable finite complex satisfies \eqref{eq:cm}, has free abelian
+homology, and is Cohen--Macaulay over every field.
+\end{lemma}
+
+\begin{proof}
+The facets containing a fixed face $\sigma$, with $\sigma$ deleted, give a
+shelling of the link in their inherited order. To see this, apply
+\eqref{eq:pairwise-criterion} to two facets containing $\sigma$. Its witness
+intersection contains $\sigma$, so the witness facet also contains $\sigma$,
+and its omitted vertex is outside $\sigma$. The same criterion therefore
+holds after deleting $\sigma$.
+
+It remains to examine an arbitrary pure shellable $d$-complex $L$. It starts
+with a simplex. Each later simplex is attached along a nonempty collection
+of boundary facets. A proper such collection is contractible: choose a
+boundary facet not in the collection; the vertex opposite it belongs to all
+facets in the collection, so their union is a cone. The full collection is
+the boundary sphere. The reduced Mayer--Vietoris sequence shows inductively
+that no homology below dimension $d$ is created. In the full-boundary case,
+the top homology acquires one free summand; in the proper-boundary case it is
+unchanged. For $d=0$, the complex is a collection of vertices and the same
+conclusion follows directly. Dimension $-1$ uses the empty-face convention.
+Applying this to every link proves \eqref{eq:cm}. Free homology and the
+universal coefficient theorem give the identical lower-dimensional
+vanishing over every field.
+\end{proof}
+
+Since $\zero$ is a least element, $\Delta(D)$ is the cone on $K(D)$.
+Appending that common vertex to each facet preserves its shelling order.
+Its Cohen--Macaulay property then follows from Lemma~\ref{lem:shell-cm}.
+This is stronger than observing that the cone is contractible: a
+contractible complex need not be Cohen--Macaulay.
+
+\subsection{Every rank selection is shellable}
+
+For $S\subseteq[r]$, let $D_S=\{a\in D:|a|\in S\}$. A facet of
+$\Delta(D_S)$ is obtained by retaining the ranks in $S$ from a full facet.
+List the distinct retained facets in order of their first appearance in the
+base-block shelling.
+
+\begin{proposition}
+\label{prop:rankselection}
+This first-appearance order is a shelling of $\Delta(D_S)$.
+\end{proposition}
+
+\begin{proof}
+All facets have $|S|$ vertices: every chain can be extended to a full
+saturated chain in $D$. Let $G$ be a newly appearing retained facet, and
+choose the earliest full facet $F$ yielding it. For an earlier retained facet
+$G'$, choose an earlier full facet $F'$ yielding it. The full shelling
+criterion provides an earlier full facet $H$ with
+\[
+ F'\cap F\subseteq H\cap F=F\setminus\{v\}.
+\]
+If the rank of $v$ were outside $S$, the restriction of $H$ to $S$ would
+already equal $G$, contradicting the choice of $F$. Thus $v$ has rank in $S$.
+The restriction of $H$ is an earlier retained facet and meets $G$ in exactly
+$G\setminus\{v\}$, containing $G'\cap G$. The criterion applies.
+\end{proof}
+
+\subsection{Removing the minimum does not destroy contractibility here}
+
+\begin{proposition}
+\label{prop:contractible}
+For $n\ge1$, $\Delta(P_\tau\setminus\{\zero\})$ is contractible.
+\end{proposition}
+
+\begin{proof}
+Every binary vector belongs to $P_\tau$, because its sum on an ideal $I$ is
+at most $|I|$. On the nonzero part define
+\[
+ q(a)_i=\begin{cases}1,&a_i>0,\\0,&a_i=0.\end{cases}
+\]
+This is an order-preserving map satisfying $q(a)\le a$ and $q^2=q$. Its image
+is the poset of nonzero binary vectors, which has maximum $\one$.
+
+The order maps $q$ and the identity induce homotopic maps on order complexes.
+One can see this directly by the order-preserving map
+$H:(P_\tau\setminus\{\zero\})\times\{0<1\}\to
+P_\tau\setminus\{\zero\}$ with $H(a,0)=q(a)$ and $H(a,1)=a$; the standard
+prism triangulation on each chain gives the homotopy. The map $q$ fixes its
+image, so the image inclusion and $q$ are homotopy inverses. The image order
+complex is a cone at $\one$, hence contractible.
+\end{proof}
+
+This proof uses no shellability. It independently checks the vanishing of the
+top reduced homology in the special preorder family. Together with the
+preceding results it completes all assertions of Theorem~\ref{thm:main}.
+For the empty preorder, $P_\tau=\{\zero\}$; its order complex is a point and
+its nonzero part has the single empty face. Contractibility of the latter is
+not asserted.
+
+\section{Ordinary and flag \texorpdfstring{$h$}{h}-enumerators}
+\label{sec:enumeration}
+
+For a pure $(r-1)$-complex $K$, define
+\begin{equation}
+ h(K;z)=\sum_{G\in K}z^{|G|}(1-z)^{r-|G|}.
+ \label{eq:hdef}
+\end{equation}
+If $f_{j-1}$ is the number of faces of cardinality $j$, this is the standard
+face-to-$h$ transformation with $f_{-1}=1$. The shelling partitions the face
+set into Boolean intervals $[\mathcal R(w),F(w)]$. Such an interval
+contributes exactly $z^{|\mathcal R(w)|}$ to \eqref{eq:hdef}, by the binomial
+theorem.
+
+\begin{corollary}[A nonnegative descent formula]
+\label{cor:hformula}
+For $D$ satisfying the hypotheses of Theorem~\ref{thm:abstract},
+\begin{equation}
+ \boxed{\quad h(K(D);z)=
+ \sum_{b\in\B}\ \sum_{\cont(w)=b}
+ z^{\des_{\prec_b}(w)+\ind_{\{w_r\in R(b)\}}}.\quad}
+ \label{eq:hformula}
+\end{equation}
+When $r=0$, the unique empty word is assigned exponent zero, so the sum is
+$1$. The same polynomial is $h(\Delta(D);z)$, because coning preserves the
+$h$-polynomial. In particular its coefficients are nonnegative integers,
+its constant coefficient is one, and its value at $z=1$ is \eqref{eq:facet-count}.
+\end{corollary}
+
+The formula counts facets, not lattice points. The extra terminal indicator
+is essential: counting only ordinary descents within the blocks would assign
+a constant term to the first word of \emph{every} block, rather than only to
+the very first facet.
+
+\subsection{The flag refinement}
+
+Color a nonzero vector $a$ by its rank $|a|\in[r]$. Every facet contains one
+vertex of each color. For $T\subseteq[r]$, let $f_T$ be the number of faces
+whose rank set is exactly $T$, and define
+\[
+ h_S=\sum_{T\subseteq S}(-1)^{|S|-|T|}f_T.
+\]
+For a word $w$ ending at $b$, put
+\begin{equation}
+ A(w)=\operatorname{Des}_b(w)\cup
+       \begin{cases}\{r\},&w_r\in R(b),\\
+                     \varnothing,&w_r\notin R(b).
+       \end{cases}
+ \label{eq:restriction-ranks}
+\end{equation}
+For the empty word ($r=0$), set $A(w)=\varnothing$.
+
+\begin{proposition}[Flag $h$ by restriction ranks]
+\label{prop:flagh}
+For every $S\subseteq[r]$,
+\begin{equation}
+ h_S=\#\{w:\cont(w)\in\B,\ A(w)=S\}.
+ \label{eq:flagh}
+\end{equation}
+Consequently, for any rank set $S$,
+\begin{equation}
+ h(\Delta(D_S);z)=\sum_{T\subseteq S}h_Tz^{|T|}.
+ \label{eq:selected-h}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The interval $[\mathcal R(w),F(w)]$ contains one face of rank set $T$ if
+$A(w)\subseteq T$, and none otherwise. Hence
+$f_T=\sum_{U\subseteq T}\#\{w:A(w)=U\}$. Boolean-lattice inversion gives
+\eqref{eq:flagh}. Rank selection leaves all $f_T$, and hence all $h_T$, with
+$T\subseteq S$ unchanged. Grouping them by cardinality gives
+\eqref{eq:selected-h}.
+\end{proof}
+
+\subsection{Which polynomial this is, and which it is not}
+
+The support enumerator
+\[
+ h_\tau^{\mathrm{supp}}(z)=\sum_{a\in P_\tau}z^{|\supp(a)|}
+\]
+is the preorder $h$-polynomial studied in the manifest's root-polytope report.
+It is generally different from \eqref{eq:hformula}. Support-enumerator
+duality is treated by Dai, Hou, Liu, Thawinrak, and Wang \cite{DHLTW}; it is
+not an input to the shelling proof.
+
+For clarity, $\mathcal Q_\tau$ denotes the real polytope obtained by
+replacing $\N^n$ in \eqref{eq:preorder-poset} by $\R_{\ge0}^n$.
+Its Ehrhart $h^*$-polynomial is the numerator determined by
+\[
+ \sum_{m\ge0}\#(m\mathcal Q_\tau\cap\Z^n)z^m
+       =\frac{h^*(\mathcal Q_\tau;z)}{(1-z)^{n+1}}.
+\]
+Here the dimension is $n$, since the polytope contains the unit cube.
+Ehrhart--Zeta duality \cite[Theorem~1.5 and the proof of Proposition~4.5]{AC}
+identifies $h(\Delta(P_\tau);z)$ with $h^*(\mathcal Q_{\tau^*};z)$, where
+$\tau^*$ is the opposite preorder. With that \emph{imported} identification,
+\eqref{eq:hformula} is also a descent formula for the latter polynomial.
+The shelling proof and the flag enumerator do not depend on this import.
+This connection is not a claim to reprove the manifest's enumerative results.
+
+In the unweighted preorder case the coefficient of $z^n$ in
+\eqref{eq:hformula} vanishes, consistently with
+Proposition~\ref{prop:contractible}. A direct check is also instructive: to
+have $n-1$ strict descents in a word of length $n$ on $n$ letters, all letters
+must occur once. To obtain the additional terminal contribution, the last
+letter must be active. But $1$ is never active by \eqref{eq:active}; a strictly
+decreasing word in $\prec_b$ ends in a nonactive letter if it contains every
+letter. Hence the exponent cannot be $n$.
+
+\section{Examples, failed shortcuts, and boundary cases}
+\label{sec:examples}
+
+\subsection{A preorder without a maximum}
+
+Let $\tau$ have $1<_\tau2$ and $1<_\tau3$, with $2$ and $3$ incomparable.
+Its ideals give
+\[
+ a_1\le1,\qquad a_1+a_2\le2,\qquad a_1+a_3\le2,
+ \qquad a_1+a_2+a_3\le3.
+\]
+Its bases, in the chosen order, are
+\[
+ b^{(1)}=(1,1,1),\qquad b^{(2)}=(0,2,1),\qquad b^{(3)}=(0,1,2).
+\]
+Their active sets are $\varnothing$, $\{2\}$, and $\{3\}$, respectively.
+For the middle base the alphabet changes to $1\prec3\prec2$. This is a small
+instance in which the basis-dependent ordering is visible.
+
+\begin{table}[htbp]
+\centering\small
+\input{results/worked_table.tex}
+\caption{The complete shelling for the three-element preorder with
+$1<2$ and $1<3$. Base strings denote coordinate vectors.}
+\label{tab:worked}
+\end{table}
+
+There are 12 lattice points including $\zero$. The order complex of its
+nonzero part has face counts
+\[
+ (f_{-1},f_0,f_1,f_2)=(1,11,22,12),
+\]
+so direct substitution in \eqref{eq:hdef} gives
+\[
+ (1-z)^3+11z(1-z)^2+22z^2(1-z)+12z^3
+       =1+8z+3z^2.
+\]
+The same answer is obtained by counting the restriction sizes in
+Table~\ref{tab:worked}. In contrast, direct support counting gives
+$h_\tau^{\mathrm{supp}}(z)=1+5z+5z^2+z^3$. These distinct answers illustrate
+why the two $h$-polynomials must not be conflated.
+
+\subsection{Why one global word order is insufficient}
+
+Consider the equidegree family
+\[
+ \B=\{(1,0,1),(0,1,1)\}.
+\]
+It satisfies \eqref{eq:exchange} and is the rank-two matroid with element 3
+in every base. Global natural lexicographic order on its words is
+\[
+ 13,\quad23,\quad31,\quad32.
+\]
+The first two facets are the disjoint edges
+\[
+ \{\ee_1,\ee_1+\ee_3\},\qquad
+ \{\ee_2,\ee_2+\ee_3\}.
+\]
+Their intersection has no vertex, so this is not a shelling of a pure
+one-dimensional complex. The base-block construction instead gives
+\[
+ 13,\quad31,\quad32,\quad23,
+\]
+which builds a path one edge at a time. This example is an illustration of
+the general theorem, not itself an unweighted preorder poset of the form
+\eqref{eq:preorder-poset}.
+
+\subsection{Why \texorpdfstring{$M$}{M}-shellability cannot be substituted for the proof}
+
+Alizadeh, Goodarzi, and Yassemi \cite{AGY} establish $M$-shellability of
+discrete polymatroids. Their notion partitions a monomial order ideal into
+intervals that are products of chains, with initial unions forming order
+ideals. It is important not to read that statement as automatically asserting
+ordinary simplicial shellability of the chain complex.
+
+For example, the pure monomial downset
+\[
+ \{1,x,x^2,y,y^2\}
+\]
+has an $M$-shelling consisting of $[1,x^2]$ followed by $[y,y^2]$. After its
+minimum is removed, however, the order complex consists of the two disjoint
+edges $x<x^2$ and $y<y^2$, so it is not pure shellable. This is not a
+counterexample to the theorem of \cite{AGY}: the downset is not a discrete
+polymatroid. It shows that the \emph{logical implication from the weaker
+notion alone} would be invalid.
+
+Ficarra's work \cite{Ficarra} studies linear quotients and shellability of
+simplicial multicomplexes, another closely related setting. Rather than assume
+that a terminology match settles the present topological question, we proved
+the precise overlap identity and its conversion into an ordinary shelling.
+The broader lemmas may have prior formulations in this literature; no
+priority claim for them is essential to the solution of the selected question.
+
+\subsection{Contractible does not mean a ball}
+
+Take the universal preorder on three elements: every element is equivalent
+to every other. Then
+\[
+ P_\tau=\{a\in\N^3:|a|\le3\}.
+\]
+The edge of its nonzero order complex corresponding to
+$\ee_1<2\ee_1$ lies in the three triangles with terminal vertices
+$3\ee_1$, $2\ee_1+\ee_2$, and $2\ee_1+\ee_3$. A triangulated two-dimensional
+ball or sphere cannot have three triangles incident with one edge. Thus the
+complex in Theorem~\ref{thm:main} need not be a ball, even though it is
+contractible and shellable. No manifold or polyhedral-boundary conclusion is
+claimed.
+
+Every order complex is flag: pairwise comparable vertices form a chain. But
+this does not yield a flag simplicial \emph{polytope} realizing the support
+polynomial. The objects, dimensions, and enumerators are different.
+
+\section{Reproducible exact verification}
+\label{sec:verification}
+
+The archive includes a Python 3.10+ verifier using only the standard library.
+Its most important tests do not assume the shelling theorem. For each facet
+in the proposed order, the verifier enumerates every subset of its actual
+prefix-vector vertex set. It maintains the set of all previously appearing
+faces, extracts the old ridges, and checks that every old face lies in one
+of those ridges. It also checks that a face is new if and only if it contains
+the predicted restriction face. Thus both the definition of shellability and
+the stronger interval-partition assertion are checked directly.
+
+\subsection{Exhaustive ranges and recorded results}
+
+Every reflexive relation on a labeled $n$-element set is generated by choosing
+the $n(n-1)$ off-diagonal bits; transitivity is then tested exactly. This
+produces the exhaustive preorder counts in Table~\ref{tab:verification}.
+For each preorder, the lattice-point set is independently generated from all
+of its ideal inequalities. Its maximal vectors are compared with the
+occupancies of all complete labeled-supply assignments.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Ground-set size & Preorders & Facets checked & Faces counted\\
+\midrule
+1 & 1 & 1 & 2\\
+2 & 4 & 12 & 32\\
+3 & 29 & 411 & 1\,516\\
+4 & 355 & 33\,216 & 172\,566\\
+\midrule
+Total & 389 & 33\,640 & 174\,116\\
+\bottomrule
+\end{tabular}
+\caption{Exact tests of all labeled preorders through size four. Faces
+include the empty face and are counted separately for each preorder.}
+\label{tab:verification}
+\end{table}
+
+The abstract test examines every nonempty subfamily of all weak compositions
+of $r$ into three coordinates, for $r=1,2,3$. It tests the full
+specified-insertion condition for every ordered pair of bases and every
+eligible coordinate; only the families passing that condition are then
+subjected to the shelling tests.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Rank & Base families examined & Exchange families & Facets checked\\
+\midrule
+1 & 7 & 7 & 12\\
+2 & 63 & 29 & 126\\
+3 & 1\,023 & 90 & 1\,104\\
+\midrule
+Total & 1\,093 & 126 & 1\,242\\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive equidegree-family tests in three coordinates.}
+\label{tab:abstract-tests}
+\end{table}
+
+For each of the 29 preorders on three labels, the two capacity vectors
+$(2,1,1)$ and $(0,2,2)$ are also tested. These are 58 weighted cases, with
+2\,020 facets checked. The empty preorder is tested separately with the
+empty-face convention. No randomness is used in any of these tests.
+
+For every tested complex, its ordinary $h$-polynomial is computed in two
+ways: by restriction sizes, and by the direct transform of all distinct
+faces. Its complete flag $h$-vector is likewise computed both by restriction
+rank sets and by Boolean inversion of the flag face counts. All comparisons
+passed. In each unweighted nonempty preorder case, the top ordinary
+$h$-coefficient was zero, independently checking the consequence of
+contractibility.
+
+\subsection{What the tests do not establish}
+
+Finite testing cannot prove the theorem for arbitrary rank or size, and no
+such inference is used. The verifier is not a proof assistant. It does not
+formalize the tight-set argument, compute all link homology groups over
+$\Z$, establish bibliographic priority, or verify unrelated assertions in the
+manifest. The all-size conclusion rests on
+Lemmas~\ref{lem:overlap}--\ref{lem:last-active} and
+Theorem~\ref{thm:abstract}, with the two independent exchange proofs.
+
+The tests do, however, target likely proof errors: an incorrect exchange
+direction, reversing one of the lexicographic orders, using the wrong active
+set, missing an old face shared through a third base, forgetting the terminal
+ridge, or confusing the ordinary and flag $h$-transforms. The independent
+supply-versus-inequality comparison also checks the orientation of the
+preorder in the matching model.
+
+\subsection{How to reproduce the package}
+
+From the extracted archive directory, run
+\begin{verbatim}
+python3 code/verify.py --output results
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The supplied \texttt{Makefile} provides the targets \texttt{verify},
+\texttt{pdf}, and \texttt{clean}. Run Python without \texttt{-O}, because
+assertions are the verifier's checks. The recorded JSON, CSV, and text output
+were generated by the included code, not transcribed from a conjectural table.
+
+The default exhaustive range is $n\le4$. A \texttt{--max-n 5} option is
+provided for a larger run, but no size-five exhaustive run is included or
+claimed. The face-complex verifier is intentionally exponential in rank: it
+checks all $2^r$ subfaces of every facet. This is a diagnostic tool, not a
+polynomial-time recognition algorithm for succinctly specified posets.
+
+\section{Algorithmic content and proof audit}
+\label{sec:audit}
+
+\subsection{Generating the shelling without constructing the whole complex}
+
+Given an explicit equidegree base list satisfying exchange, the following
+procedure emits a shelling certificate:
+\begin{enumerate}
+\item Store the bases in a membership structure and sort them decreasingly
+lexicographically.
+\item For each base $b$, test $b+\ee_i-\ee_j\in\B$ for $i<j$ and $b_j>0$
+to determine $R(b)$. Sort the alphabet as in \eqref{eq:alphabet}.
+\item Generate distinct multiset words of content $b$ in that alphabet order.
+For each word, emit its prefix chain and the ranks in \eqref{eq:restriction-ranks}.
+\end{enumerate}
+No repeated occurrence of an equal letter is distinguished; the word
+recursion decrements remaining multiplicities rather than generating and
+deduplicating permutations of labeled copies.
+
+If $m=|\B|$, $s$ is the number of coordinates, and $N=N(D)$, there are at most
+$m\binom{s}{2}$ transfer-membership tests, a sorting phase on $m$ vectors,
+and $N$ emitted chains of length $r$. In a straightforward implementation
+that handles an $s$-coordinate vector in $O(s)$ time, a conservative bound is
+$O(ms^3+ms\log m+Nrs)$, assuming expected constant-time table access once a
+key has been hashed. Integer bit costs and generation of the input base
+list are not included in this bound. The output itself can be exponentially
+large. The theorem gives a constructive order; it does not promise a small
+listing when the complex has very many facets.
+
+\subsection{Dependency audit}
+
+The logical path can be read without any enumeration result from the
+manifest:
+\[
+\begin{gathered}
+ \text{ideal constraints}
+ \Longrightarrow \text{supply assignments}
+ \Longrightarrow \text{equidegree bases and exchange}\\
+ \Longrightarrow \text{codimension-one box overlaps}
+ \Longrightarrow \text{adapted word order}\\
+ \Longrightarrow \text{exact old-ridge identity}
+ \Longrightarrow \text{ordinary shellability}.
+\end{gathered}
+\]
+The alternative input path replaces supply assignments by a coverage rank
+function and the tight-set proof. The Cohen--Macaulay conclusion uses only
+the standard homology consequence of a pure shelling, whose relevant argument
+was included. The support retraction is independent of the exchange proof.
+The optional connection to an Ehrhart $h^*$-polynomial is the only place
+where an enumerative theorem of \cite{AC} is imported.
+
+A particularly important audit point is that an old \emph{chain face} below
+some earlier base must extend to a full chain in that base's block. Merely
+showing that its individual vertices are in the union of earlier boxes would
+not suffice in an arbitrary covering. Here its largest vertex is below one
+earlier base; then the entire face is in that same box. This is why
+Lemma~\ref{lem:last-active} proves an identity of complexes, not only an
+identity of vertex sets.
+
+Another audit point is the orientation in the exchange lemma. We specify the
+coordinate to be \emph{increased}, because the first lexicographic difference
+has $c_i>b_i$. The surplus coordinate to be decreased must occur later than
+$i$. Neither a reversed exchange statement nor a generic assertion of
+connectedness of the base graph would establish \eqref{eq:overlap}.
+
+\subsection{Limits of the claim and the remaining questions}
+
+The result answers the shellability and Cohen--Macaulayness question. It does
+not supply an EL-labeling of the augmented poset: the letter order depends
+on the terminal base and need not assign one consistent label to a cover
+relation. No EL-shellability assertion is made. It also does not settle the
+source's stronger real-rootedness, full $q$-reciprocity, or flag-polytope
+questions \cite{AC}.
+
+Two natural next investigations are whether the explicit order can be
+realized by a suitable chain-labeling scheme, and whether the restriction
+statistics admit simpler formulas independent of base-dependent alphabets.
+These are follow-on questions, not missing hypotheses in the present
+shellability proof. The original target already follows from the exact
+intersection calculation.
+
+\section{Conclusion}
+
+The missing gluing step is controlled by unit exchange. It says that an
+earlier base can meet a new coordinate box only through a codimension-one
+box obtained by decrementing an active coordinate. Putting those coordinates
+last in the local alphabet makes the final active occurrence either an
+ordinary descent or the terminal step. Hence every old face lies in an
+explicit old ridge, and the entire old intersection is exactly a union of
+such ridges.
+
+This proves the claimed affirmative answer to Question 4.6 for every finite
+preorder, without the existence of a maximum vertex. It also gives a
+self-contained shelling construction for integral-polymatroid integer-point
+posets, together with their restriction faces and flag enumerators. The
+included finite verification provides reproducible checks of the construction
+and its conventions; the general proof remains the mathematical basis for
+the result.
+
+\begin{thebibliography}{9}
+
+\bibitem{AC}
+C.~A. Athanasiadis and F.~Chapoton,
+\emph{Polytopes and posets associated to preorders},
+arXiv:2605.26916v1 (2026), especially Question~4.6, p.~13.
+\url{https://arxiv.org/abs/2605.26916v1}.
+
+\bibitem{HH}
+J.~Herzog and T.~Hibi,
+\emph{Discrete polymatroids},
+Journal of Algebraic Combinatorics \textbf{16} (2002), 239--268.
+\url{https://doi.org/10.1023/A:1021852421716}.
+
+\bibitem{AGY}
+M.~Alizadeh, A.~Goodarzi, and S.~Yassemi,
+\emph{$M$-shellability of discrete polymatroids},
+arXiv:1012.1075v1 (2010).
+\url{https://arxiv.org/abs/1012.1075v1}.
+
+\bibitem{Ficarra}
+A.~Ficarra,
+\emph{Shellability of componentwise discrete polymatroids},
+arXiv:2312.13006v2 (2023).
+\url{https://arxiv.org/abs/2312.13006v2}.
+Published in the Electronic Journal of Combinatorics (2025),
+\url{https://doi.org/10.37236/12818}.
+
+\bibitem{Wachs}
+M.~L. Wachs,
+\emph{Poset topology: tools and applications},
+arXiv:math/0602226v2 (2006).
+\url{https://arxiv.org/abs/math/0602226v2}.
+
+\bibitem{DHLTW}
+Z.~Dai, Q.~Hou, Z.~Liu, W.~Thawinrak, and H.~Wang,
+\emph{Counting lattice points in Minkowski sums of cross polytopes},
+arXiv:2608.16037v2 (2026), Section~4.3.
+\url{https://arxiv.org/abs/2608.16037v2}.
+
+\end{thebibliography}
+\end{document}

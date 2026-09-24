@@ -1,0 +1,1170 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=0.93in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{18364B}
+\definecolor{Accent}{HTML}{176C79}
+\definecolor{Pale}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={The Exponential Scale of Gregory Sign Thresholds},
+ pdfauthor={GPT-6 Astra Pro -- research draft},pdfsubject={A counterexample and an all-orders asymptotic expansion}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\scshape Gregory sign thresholds}
+\fancyhead[R]{\small Research draft \;|\; 19 September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\Gr}{\operatorname{Gr}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm dt}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rf}[2]{#1^{\overline{#2}}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=0.6pt,
+ arc=1mm,left=10pt,right=10pt,top=8pt,bottom=8pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},
+ showstringspaces=false}
+\title{\color{Ink}\bfseries The Exponential Scale of\protect\\ Gregory Sign Thresholds\protect\\[5pt]
+\large A counterexample to a recent conjecture,\protect\\ with an all-orders asymptotic expansion}
+\author{Research article prepared with GPT-6 Astra Pro}
+\date{19 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For the higher-order Gregory coefficients
+\[
+ \left(\frac{x}{\log(1+x)}\right)^m=\sum_{n\ge0}G_n^{(m)}x^n,
+\]
+let $\Gr(m)$ be the least index after which
+$(-1)^{n-1}G_n^{(m)}$ is always strictly positive. A September 2026
+conjecture places this threshold between $0.47\,3^m$ and $0.477\,3^m$.
+We obtain instead
+\[
+ \log\Gr(m)=m+1-\gamma-\frac{\zeta(2)+\zeta(3)}{m}+O(m^{-2}),
+\]
+and give a complete asymptotic expansion with an explicit coefficient
+algorithm. In particular, the exponential growth factor is $e$, not $3$.
+The proof represents a coefficient as an integral over the density of a
+sum of independent uniform random variables. Near the last sign change,
+the integral reduces to a gamma expectation concentrated around a simple
+zero of $-1/\Gamma(-t)$. A cumulative-positivity lemma then converts a local
+asymptotic calculation into positivity of \emph{every} subsequent integer
+coefficient. Independent exact rational certificates establish
+$\Gr(3)=11$, $\Gr(4)=36$, $\Gr(5)=113$, and $\Gr(6)=346$.
+Thus there is also a finite counterexample to the conjecture as printed.
+The accompanying code separates exact certification, symbolic algebra,
+and non-certified numerical exploration.
+\end{abstract}
+
+\begin{resultbox}
+\textbf{Principal conclusion.}
+Writing $d=1-\gamma$,
+\[
+ \boxed{\Gr(m)\sim e^d e^m,\qquad e^d=1.52620511159586388\ldots .}
+\]
+The article supplies a proof, not merely a numerical extrapolation.
+It is a research draft: the argument has not been independently refereed
+or formalized in a proof assistant. The claimed contribution is the
+uniform large-order threshold analysis, not the rediscovery of reported
+small values or the elementary identification of a polynomial's roots.
+\end{resultbox}
+
+\section{The problem and the result}\label{sec:intro}
+
+\subsection{A precise threshold}
+All logarithms are natural logarithms, and $\N=\{1,2,\ldots\}$. For an integer
+$m\ge1$, define rational numbers $G_n^{(m)}$ by
+\begin{equation}\label{eq:gf}
+ F_m(x):=\left(\frac{x}{\log(1+x)}\right)^m
+       =\sum_{n=0}^{\infty}G_n^{(m)}x^n,
+ \qquad G_0^{(m)}=1.
+\end{equation}
+The expression at $x=0$ is interpreted by analytic continuation.
+Set
+\begin{equation}\label{eq:threshold}
+ a_m(n):=(-1)^{n-1}G_n^{(m)}\quad(n\ge1),\qquad
+ \Gr(m):=\min\{N\in\N:a_m(n)>0\text{ for every integer }n\ge N\}.
+\end{equation}
+Strict positivity is part of the definition: a zero is an obstruction.
+We will prove that this minimum exists, independently of the source
+paper's eventual-alternation theorem.
+
+The target is Conjecture 6.1 of Xu and Zhao's preprint
+\cite{XZ2026}, version 1, submitted on 10 September 2026. In the notation
+of this article it asserts
+\begin{equation}\label{eq:conjecture}
+ 0.47\,3^m<\Gr(m)<0.477\,3^m\qquad(m\ge5).
+\end{equation}
+Their discussion concerns the \emph{exact} onset of permanent alternation;
+we make that minimality explicit in \eqref{eq:threshold}. An arbitrary
+nonminimal eventual-positivity bound would not define a unique sequence.
+
+There is an immediate warning sign. The source already reports
+$\Gr(5)=113$, whereas $0.47\,3^5=114.21$. This discrepancy could be a
+starting-index or transcription error. Merely pointing it out would not
+explain the proposed growth law. Our main result shows that no change to
+a finite starting range can repair the base $3$.
+
+\subsection{Main theorem}
+Write $\gamma$ for Euler's constant, $\zeta$ for the Riemann zeta function,
+and $d=1-\gamma$.
+
+\begin{theorem}[Threshold asymptotics]\label{thm:main}
+As $m\to\infty$ through positive integers,
+\begin{equation}\label{eq:main}
+ \log\Gr(m)=m+d-\frac{\zeta(2)+\zeta(3)}{m}
+                +\frac{C_2}{m^2}+O(m^{-3}),
+\end{equation}
+where
+\begin{equation}\label{eq:C2}
+ C_2=\zeta(2)\zeta(3)+\zeta(2)-\zeta(3)
+                 -\frac52\zeta(4)-3\zeta(5).
+\end{equation}
+More generally there are explicitly computable constants $C_j$ such that,
+for each fixed $R\ge0$,
+\begin{equation}\label{eq:allorders}
+ \log\Gr(m)=m+d+\sum_{j=1}^{R}\frac{C_j}{m^j}
+                      +O_R(m^{-R-1}).
+\end{equation}
+Here $C_1=-\zeta(2)-\zeta(3)$ and
+$C_j\in\Q[\zeta(2),\ldots,\zeta(2j+1)]$.
+\end{theorem}
+
+The all-orders assertion is an asymptotic expansion: it does not assert
+convergence of the infinite series. The constants implicit in the error
+terms may depend on the truncation order, but not on $m$.
+
+\begin{corollary}\label[corollary]{cor:base}
+The threshold satisfies
+\begin{equation}\label{eq:limits}
+ \lim_{m\to\infty}\frac{\Gr(m)}{e^m}=e^{1-\gamma},\qquad
+ \lim_{m\to\infty}\frac{\Gr(m+1)}{\Gr(m)}=e,\qquad
+ \lim_{m\to\infty}\frac{\Gr(m)}{3^m}=0.
+\end{equation}
+Consequently, the lower inequality in \eqref{eq:conjecture} fails for all
+sufficiently large $m$.
+\end{corollary}
+\begin{proof}
+The first two limits follow by exponentiating \eqref{eq:main} and by
+taking its difference at consecutive orders. The last follows from
+$\Gr(m)/3^m=e^{d+o(1)}(e/3)^m$ and $e<3$.
+\end{proof}
+
+\subsection{Proof architecture and status}
+The essential difficulty is not finding a plausible zero of a coefficient
+integral. A threshold statement quantifies over an infinite tail, so a
+local calculation alone is insufficient. We first establish a positivity
+propagation criterion. We then prove exponentially small bounds for the
+parts of the integral away from its first sign-changing zero. Together,
+these tools give a genuine upper bound for \emph{all} later coefficients,
+while one negative coefficient supplies the matching lower bound.
+
+The source version and its displayed conjecture were checked on
+19 September 2026, including the PDF page containing the statement. A
+limited search did not reveal a later resolution. No exhaustive
+literature-priority claim is made. In particular, classical gamma-function
+identities and elementary properties of uniform sums are used as tools,
+not presented as new discoveries. The classical Gregory sequence is
+recorded through its numerators and denominators in OEIS entries A002206
+and A002207 \cite{OEIS206,OEIS207}.
+
+\section{From a generating function to a signed integral}\label{sec:integral}
+
+\subsection{Uniform random variables and a piecewise polynomial density}
+For $|x|<1$,
+\begin{equation}\label{eq:uniform}
+ \frac{x}{\log(1+x)}=\int_0^1(1+x)^u\,du.
+\end{equation}
+Let $U_1,\ldots,U_m$ be independent random variables uniform on $[0,1]$,
+and put $S_m=U_1+\cdots+U_m$. Multiplying \eqref{eq:uniform} gives
+\[
+ F_m(x)=\E(1+x)^{S_m}.
+\]
+The binomial expansion is locally uniform for $S_m\in[0,m]$, so coefficient
+extraction may be interchanged with the integral. Hence
+\begin{equation}\label{eq:binomial_expectation}
+ G_n^{(m)}=\E\binom{S_m}{n}.
+\end{equation}
+
+For $m\ge2$, the density of $S_m$ is
+\begin{equation}\label{eq:density}
+ f_m(t)=\frac{1}{(m-1)!}\sum_{j=0}^{m}(-1)^j\binom mj
+                    (t-j)_+^{m-1},\qquad 0\le t\le m.
+\end{equation}
+Indeed, the unrestricted simplex
+$\{u_i\ge0:\sum u_i\le t\}$ has volume $t_+^m/m!$.
+Inclusion--exclusion for the conditions $u_i\le1$, followed by translation
+of the selected coordinates, gives the distribution function
+$\sum_j(-1)^j\binom mj(t-j)_+^m/m!$. Differentiation gives
+\eqref{eq:density}.
+
+We shall repeatedly use
+\begin{equation}\label{eq:densitybounds}
+ 0\le f_m(t)\le\frac{t^{m-1}}{\Gamma(m)},\qquad
+ f_m(t)=\frac{t^{m-1}}{\Gamma(m)}\quad(0\le t\le1),
+\end{equation}
+and
+\begin{equation}\label{eq:density12}
+ f_m(t)=\frac{t^{m-1}-m(t-1)^{m-1}}{\Gamma(m)}
+                       \quad(1\le t\le2).
+\end{equation}
+The inequality in \eqref{eq:densitybounds} can be seen without estimating
+an alternating sum: the density is an integral over a slice of the cube,
+which is contained in the corresponding nonnegative simplex slice. More
+explicitly, integrate over the first $m-1$ coordinates and impose
+$0\le t-\sum_{i<m}u_i\le1$; dropping the upper bounds gives a region of
+volume $t^{m-1}/(m-1)!$. For $m=1$, use $f_1(t)=1$ on $(0,1)$.
+
+\subsection{The reciprocal-gamma factor}
+Define
+\begin{equation}\label{eq:q}
+ q(t):=-\frac{1}{\Gamma(-t)}
+      =\frac{\Gamma(t+1)\sin(\pi t)}{\pi}.
+\end{equation}
+The second equality is the gamma reflection identity
+\cite[\S5.5]{DLMF}. The first expression defines an entire function;
+the second is especially useful for real $t\ge0$. In particular,
+\begin{equation}\label{eq:qsign}
+ q(t)>0\ (0<t<1),\qquad q(t)<0\ (1<t<2),
+\end{equation}
+with alternating signs on subsequent unit intervals.
+
+\begin{proposition}[Exact signed integral]\label[proposition]{prop:integral}
+For every integer $n>m$,
+\begin{equation}\label{eq:integral}
+ a_m(n)=\int_0^m f_m(t)q(t)
+                    \frac{\Gamma(n-t)}{\Gamma(n+1)}\dd.
+\end{equation}
+For real $x>m$, let $J_m(x)$ denote the right-hand side with $n$ replaced
+by $x$. Then $J_m(n)=a_m(n)$ at the integer arguments under consideration.
+\end{proposition}
+\begin{proof}
+The reflection formula applied to $\Gamma(t-n+1)$ yields
+\[
+ (-1)^{n-1}\binom tn
+ =\frac{\Gamma(t+1)\sin(\pi t)}{\pi}
+       \frac{\Gamma(n-t)}{\Gamma(n+1)}.
+\]
+The apparent exceptional values at integral $t$ follow by continuity.
+Integrate this identity against $f_m$ and use
+\eqref{eq:binomial_expectation}. Since $n>m$, all gamma factors in the
+quotient are positive and finite on the integration interval.
+\end{proof}
+
+The distinction between $a_m$ and $J_m$ avoids assigning a real-variable
+meaning to the integer sign factor $(-1)^{n-1}$.
+
+\subsection{Existence of the threshold for every fixed order}
+\begin{proposition}\label[proposition]{prop:fixedm}
+For each fixed positive integer $m$,
+\begin{equation}\label{eq:fixedm}
+ a_m(n)=\frac{m}{n(\log n)^{m+1}}
+       \left(1+O_m\!\left(\frac{1}{\log n}\right)\right)
+                         \qquad(n\to\infty).
+\end{equation}
+In particular, $\Gr(m)$ is finite.
+\end{proposition}
+\begin{proof}
+Uniformly on $0\le t\le m$, the gamma quotient is
+$n^{-t-1}(1+O_m(n^{-1}))$. Near zero, $q(t)=t+O(t^2)$, and
+\eqref{eq:densitybounds} is an equality. Fix $0<\varepsilon<1$ and put
+$L=\log n$. The integral over $[0,\varepsilon]$ therefore has leading term
+\[
+ \frac{1}{n\Gamma(m)}\int_0^\infty t^m e^{-Lt}\dd
+ =\frac{m}{nL^{m+1}}.
+\]
+The $O(t^2)$ term gives a relative $O_m(L^{-1})$ error. Extending the
+small-interval integral to infinity costs an exponentially small quantity
+in $L$ times a polynomial in $L$. On $[\varepsilon,m]$, the bounded
+fixed-order amplitude contributes $O_m(n^{-1-\varepsilon})$.
+This proves \eqref{eq:fixedm} and eventual strict positivity.
+\end{proof}
+
+\begin{remark}
+The fixed-$m$ estimate is not uniform enough for the main question.
+At the threshold, both $m$ and $\log n$ tend to infinity at comparable
+rates. Substituting $m\approx\log n$ into a fixed-order asymptotic
+without a new error estimate would not justify the answer.
+\end{remark}
+
+\section{A finite criterion for positivity of the whole tail}\label{sec:propagation}
+
+Fix an integer $N>m$, and define
+\begin{equation}\label{eq:prefix}
+ w_{m,N}(t)=f_m(t)q(t)\frac{\Gamma(N-t)}{\Gamma(N+1)},
+ \qquad F_{m,N}(u)=\int_0^u w_{m,N}(t)\dd.
+\end{equation}
+
+\begin{lemma}[Cumulative-positivity propagation]\label[lemma]{lem:propagation}
+Suppose that
+\begin{equation}\label{eq:prefixcondition}
+ F_{m,N}(u)\ge0\quad(0\le u\le m),\qquad F_{m,N}(m)>0.
+\end{equation}
+Then $a_m(n)>0$ for every integer $n\ge N$.
+\end{lemma}
+\begin{proof}
+For $n\ge N$ set
+\begin{equation}\label{eq:K}
+ K_{N,n}(t):=\prod_{r=N}^{n-1}\frac{r-t}{r+1}.
+\end{equation}
+The empty product is $1$. Gamma recurrence gives
+$w_{m,n}(t)=K_{N,n}(t)w_{m,N}(t)$.
+Every factor in \eqref{eq:K} is positive on $[0,m]$ and decreases with $t$.
+Thus $K_{N,n}>0$ and $K'_{N,n}\le0$. Integration by parts gives
+\begin{align}\label{eq:parts}
+ a_m(n)
+ &=K_{N,n}(m)F_{m,N}(m)
+       -\int_0^m K'_{N,n}(t)F_{m,N}(t)\dd\\
+ &>0.\nonumber
+\end{align}
+The boundary term at zero vanishes. The first displayed term is strictly
+positive and the second is nonnegative, including the case $n=N$.
+\end{proof}
+
+This argument is a monotone-weight principle: a nonnegative cumulative
+signed measure remains positive when reweighted toward its initial part.
+Its usefulness here comes from the exact gamma recurrence, which supplies
+the required decreasing weights at every later integer index.
+
+\begin{corollary}[Integer-endpoint certificate]\label[corollary]{cor:endpoints}
+It is sufficient for \eqref{eq:prefixcondition} to check
+\[
+ F_{m,N}(2j)\ge0\quad(1\le2j\le m),\qquad F_{m,N}(m)>0.
+\]
+\end{corollary}
+\begin{proof}
+The derivative $F'_{m,N}$ has the sign of $q$, apart from possible zeros
+of the nonnegative density. Consequently $F_{m,N}$ increases on
+$(0,1)$, decreases on $(1,2)$, and continues with alternating directions.
+Its possible minima occur at zero, the even integer endpoints, and the
+final endpoint when needed. The asserted checks therefore give
+\eqref{eq:prefixcondition}.
+\end{proof}
+
+For asymptotics it is convenient to use a different sufficient condition.
+\begin{corollary}[Two-interval certificate]\label[corollary]{cor:twointerval}
+For $m\ge2$, suppose
+\begin{equation}\label{eq:twointerval}
+ F_{m,N}(2)>\int_2^m|w_{m,N}(t)|\dd.
+\end{equation}
+Then $a_m(n)>0$ for all integers $n\ge N$.
+\end{corollary}
+\begin{proof}
+On $[0,1]$ the cumulative integral is nonnegative. On $[1,2]$ it decreases
+to the strictly positive value $F_{m,N}(2)$. For $u\ge2$ its decrease
+relative to $F_{m,N}(2)$ is bounded in magnitude by the right-hand side of
+\eqref{eq:twointerval}. Thus it remains strictly positive. Apply
+\cref{lem:propagation}.
+\end{proof}
+
+\section{Exact arithmetic and a finite counterexample}\label{sec:exact}
+
+\subsection{A polynomial certificate}
+For integer $N>m$, the reflection identity also gives
+\begin{equation}\label{eq:polynomialw}
+ w_{m,N}(t)=\frac{f_m(t)}{N!}P_N(t),\qquad
+ P_N(t):=(-1)^{N-1}\prod_{r=0}^{N-1}(t-r)\in\mathbb Z[t].
+\end{equation}
+Thus every cumulative value at an integer endpoint is rational, without
+any gamma or trigonometric evaluation. Specifically, for $1\le T\le m$,
+\begin{equation}\label{eq:exactprefix}
+ F_{m,N}(T)=\frac{1}{N!(m-1)!}
+ \sum_{j=0}^{T-1}(-1)^j\binom mj
+              \int_j^T(t-j)^{m-1}P_N(t)\dd.
+\end{equation}
+If $b_{j,k}$ is the coefficient of $t^k$ in
+$(t-j)^{m-1}P_N(t)$ and $D=\operatorname{lcm}(1,\ldots,N+m)$, then
+\begin{equation}\label{eq:integercertificate}
+ \begin{split}
+ N!(m-1)!D\,F_{m,N}(T)
+ =\sum_{j=0}^{T-1}(-1)^j\binom mj
+   \sum_{k=0}^{N+m-1}b_{j,k}\frac{D}{k+1}
+             \bigl(T^{k+1}-j^{k+1}\bigr).
+ \end{split}
+\end{equation}
+The right-hand side is an integer. Its sign is an exact certificate.
+
+For an independent coefficient computation, write $G_n=G_n^{(1)}$.
+Inverting $\log(1+x)/x$ gives
+\begin{equation}\label{eq:inverse_recurrence}
+ G_0=1,\qquad
+ G_n=-\sum_{k=1}^n\frac{(-1)^k}{k+1}G_{n-k}.
+\end{equation}
+Differentiating \eqref{eq:gf} yields
+$x(1+x)F'_m=m(1+x)F_m-mF_{m+1}$, hence
+\begin{equation}\label{eq:order_recurrence}
+ G_n^{(m+1)}=\frac{m-n}{m}G_n^{(m)}
+                  +\frac{m-n+1}{m}G_{n-1}^{(m)}\quad(n\ge1).
+\end{equation}
+These recurrences use only rational arithmetic. They are derived and
+implemented differently from the polynomial integration formula, allowing
+direct cross-checks of its total integrals.
+
+\subsection{Certified thresholds}
+\begin{proposition}\label[proposition]{prop:small}
+The exact thresholds include
+\[
+ \Gr(1)=1,\quad\Gr(2)=4,\quad\Gr(3)=11,\quad\Gr(4)=36,
+ \quad\Gr(5)=113,\quad\Gr(6)=346.
+\]
+\end{proposition}
+\begin{proof}
+For $m=1$, positivity for $n\ge2$ follows directly from
+\eqref{eq:integral}, since $q>0$ on $(0,1)$; also $G_1=1/2$.
+For $m=2$, the recurrences give $G_3^{(2)}=0$ and
+$a_2(4)=1/240$. As $F_{2,4}(2)=a_2(4)>0$, the sign pattern on the two
+unit intervals and \cref{lem:propagation} give positivity for every
+$n\ge4$.
+
+For $m=3,4,5,6$, the exact certificate checks in \cref{tab:cert} establish
+three facts: $a_m(B-1)<0$; every coefficient $a_m(n)$ with
+$B\le n<N$ is positive; and all even-endpoint cumulative integrals at
+$N$, together with the final total, are positive. The endpoint criterion
+then gives positivity for every $n\ge N$. These facts imply
+$\Gr(m)=B$. Each rational value is supplied in the accompanying JSON
+certificate and recomputed, rather than trusted, by
+\texttt{code/verify\_exact.py} using \eqref{eq:integercertificate} and
+\eqref{eq:inverse_recurrence}--\eqref{eq:order_recurrence}.
+\end{proof}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrrll@{}}
+\toprule
+$m$ & $B=\Gr(m)$ & Tail anchor $N$ & Finite checks & $a_m(B-1)$ &
+ Smallest checked prefix at $N$\\
+\midrule
+3 & 11 & 12 & 1 & $-2.74947\cdot10^{-5}$ & $2.90178\cdot10^{-5}$\\
+4 & 36 & 40 & 4 & $-6.16861\cdot10^{-8}$ & $1.25186\cdot10^{-7}$\\
+5 & 113 & 126 & 13 & $-1.51424\cdot10^{-9}$ & $4.63999\cdot10^{-10}$\\
+6 & 346 & 378 & 32 & $-1.17700\cdot10^{-11}$ & $5.98831\cdot10^{-12}$\\
+\bottomrule
+\end{tabular}
+\caption{Exact rational certifications. The displayed decimals are only
+readable summaries of exact fractions. ``Finite checks'' counts indices
+$B\le n<N$. The checked endpoints are $2,4,\ldots$ up to $m$, together
+with $m$ itself.}\label{tab:cert}
+\end{table}
+
+The literal contradiction to \eqref{eq:conjecture} is therefore certified
+without floating point:
+\begin{equation}\label{eq:finitecounter}
+ \Gr(5)=113<\frac{47}{100}3^5=\frac{11421}{100}.
+\end{equation}
+For this case the exact computation verifies the negative value at $112$,
+the thirteen positive values at $113,\ldots,125$, and the three positive
+prefixes at $2,4,5$ for $N=126$. This is a finite proof of an infinite-tail
+claim. It is not a search that stops after a long observed run of positive
+coefficients.
+
+\section{The uniform large-order reduction}\label{sec:uniform}
+
+We now let $m$ grow and place the real index in the window
+\begin{equation}\label{eq:window}
+ x=e^L,\qquad L=m+c,\qquad |c|\le C,
+\end{equation}
+where $C$ is any fixed constant. All uniform estimates in this section
+refer to this compact range of $c$.
+
+\subsection{Gamma quotient and tail bounds}
+\begin{lemma}\label[lemma]{lem:gammaratio}
+For sufficiently large $m$, uniformly for $0\le t\le m$ and
+\eqref{eq:window},
+\begin{equation}\label{eq:gammaratio}
+ \frac{\Gamma(x-t)}{\Gamma(x+1)}
+   =x^{-t-1}\bigl(1+O_C(m^2/x)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $\psi=(\log\Gamma)'$. The standard positive-real asymptotic
+$\psi(y)=\log y+O(y^{-1})$ follows, for example, from
+\cite[\S5.11]{DLMF}. Since $x>2m$ for all sufficiently large $m$,
+\[
+ \log\Gamma(x-t)-\log\Gamma(x+1)
+       =-\int_{x-t}^{x+1}\psi(u)\,du.
+\]
+On this interval $\psi(u)=\log x+O((m+1)/x)$ uniformly.
+The error after integration is $O(m^2/x)$, and exponentiation proves the
+claim.
+\end{proof}
+
+For real $x>m$, define $w_{m,x}$ and $F_{m,x}$ by \eqref{eq:prefix} with
+$N$ replaced by $x$.
+
+\begin{lemma}[Exponential suppression beyond the second zero]\label[lemma]{lem:tail}
+For some absolute $\eta>0$, for example $\eta=1/10$,
+\begin{equation}\label{eq:tail}
+ xL^m\int_2^m|w_{m,x}(t)|\dd=O_C(e^{-\eta m}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+By log-convexity of $\Gamma$ on the positive axis
+\cite[\S5.5]{DLMF}, for $0\le t\le m$,
+\[
+ \Gamma(t+1)\le\Gamma(m+1)^{t/m}\le m^t.
+\]
+Thus $|q(t)|\le m^t/\pi$. Combine this with
+\eqref{eq:densitybounds} and \cref{lem:gammaratio}, and put
+$R=L-\log m>0$. The left-hand side of \eqref{eq:tail} is bounded by a
+constant times
+\begin{equation}\label{eq:tail_bound_gamma}
+ \frac{L^m}{\Gamma(m)}\int_2^\infty t^{m-1}e^{-Rt}\dd
+ =\left(\frac LR\right)^m\Prob(X\ge2),
+ \qquad X\sim\operatorname{Gamma}(m,\text{rate }R).
+\end{equation}
+Exponential Markov inequality with parameter $R/2$ gives
+\[
+ \Prob(X\ge2)\le e^{-R}\E e^{RX/2}=2^m e^{-R}.
+\]
+For bounded $c$ and large $m$, $(L/R)^m\le m^2$, while
+$e^{-R}=m e^{-m-c}$. Therefore \eqref{eq:tail_bound_gamma} is at most
+$O_C(m^3e^{-(1-\log2)m})$, which is $O_C(e^{-m/10})$.
+\end{proof}
+
+\subsection{A necessary cutoff in the gamma expectation}
+Choose once and for all a smooth compactly supported real function
+$\widetilde q$ which equals $q$ on $[0,2]$. Such an extension can be made
+by multiplying the entire function $q$ by a smooth cutoff equal to one
+on a neighborhood of $[0,2]$ and supported in $[-1,3]$.
+Let
+\begin{equation}\label{eq:gammaRV}
+ T_{m,L}\sim\operatorname{Gamma}(m,\text{rate }L),\qquad
+ p_{m,L}(t)=\frac{L^m}{\Gamma(m)}t^{m-1}e^{-Lt}\quad(t>0).
+\end{equation}
+
+\begin{proposition}[Uniform gamma-expectation reduction]\label[proposition]{prop:reduction}
+Uniformly in \eqref{eq:window},
+\begin{align}
+ xL^mJ_m(x)&=\E\widetilde q(T_{m,L})+O_C(e^{-\eta m}),\label{eq:reductionJ}\\
+ xL^mF_{m,x}(2)&=\E\widetilde q(T_{m,L})+O_C(e^{-\eta m}).\label{eq:reductionF}
+\end{align}
+\end{proposition}
+\begin{proof}
+First replace the gamma quotient on $[0,2]$ using
+\cref{lem:gammaratio}. After multiplication by $xL^m$, its error is
+$O_C(m^2/x)$ because $q$ is bounded on $[0,2]$ and
+$f_m\le t^{m-1}/\Gamma(m)$. Next replace $f_m(t)$ there by
+$t^{m-1}/\Gamma(m)$. There is no error on $[0,1]$. On $[1,2]$,
+\eqref{eq:density12} bounds the absolute normalized error by
+\[
+ \frac{CmL^m}{\Gamma(m)}\int_1^2(t-1)^{m-1}e^{-Lt}\dd
+ \le Cm e^{-L}.
+\]
+The substitution $u=t-1$ and extension of the $u$-integral to infinity
+justify the last inequality. We have therefore obtained
+\[
+ xL^mF_{m,x}(2)
+   =\E\bigl(q(T_{m,L})\mathbf1_{\{T_{m,L}\le2\}}\bigr)
+      +O_C(m^2e^{-m}).
+\]
+Replacing the truncated integrand by $\widetilde q$ costs at most
+$\|\widetilde q\|_\infty\Prob(T_{m,L}>2)$, which is bounded by a constant
+times $2^me^{-L}$ using the same Markov argument as above. This proves
+\eqref{eq:reductionF}. Adding the tail estimate \eqref{eq:tail} proves
+\eqref{eq:reductionJ}.
+\end{proof}
+
+\begin{remark}[Why the cutoff cannot be omitted]\label[remark]{rem:cutoff}
+The expression $\E q(T_{m,L})$ without a cutoff is not an integrable
+expectation on the whole positive half-line. The amplitude
+$\Gamma(t+1)\sin(\pi t)$ grows factorially, beyond the control of a fixed
+exponential $e^{-Lt}$. In particular the integral of its absolute value
+against the gamma density diverges. The finite original integration
+range, the explicit tail estimate, and the bounded extension above are
+essential. A formal replacement by an untruncated gamma expectation
+would conceal a genuine analytic gap.
+\end{remark}
+
+\section{Gamma moments at a simple zero}\label{sec:moments}
+
+The random variable in \eqref{eq:gammaRV} has mean $m/L$ and variance
+$m/L^2$. In the window $L=m+c$ it is concentrated around $1$, where
+$q(1)=0$ and $q'(1)=-1$. This explains why the first sign change, rather
+than the later oscillations of $q$, determines the final threshold.
+
+\subsection{Exact shifted moments and a uniform expansion}
+Put $s=1/m$, and for $j\ge0$ define
+\begin{equation}\label{eq:mu}
+ \begin{split}
+ \mu_j(s,c)
+  &:=\E(T_{m,m+c}-1)^j\\
+  &=\sum_{k=0}^j(-1)^{j-k}\binom jk
+    \frac{\prod_{i=0}^{k-1}(1+is)}{(1+cs)^k}.
+ \end{split}
+\end{equation}
+The empty product is $1$. This follows by expanding $(T-1)^j$ and using
+$\E T^k=\rf{m}{k}/(m+c)^k$. For fixed $j$, the right-hand side is analytic
+in $s$ near zero, uniformly for bounded $c$.
+
+\begin{lemma}\label[lemma]{lem:momentsize}
+For every fixed $j\ge1$,
+\begin{equation}\label{eq:momentsize}
+ \mu_j(s,c)=O_C(s^{\lceil j/2\rceil}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The moment-generating function of $T-1$ is
+\[
+ \E e^{z(T-1)}
+ =\exp\left[\left(\frac m{m+c}-1\right)z
+             +\sum_{r\ge2}\frac{m z^r}{r(m+c)^r}\right].
+\]
+The coefficient of $z$ in the exponent is $O_C(s)$, and that of $z^r$
+is $O_C(s^{r-1})$ for $r\ge2$. In each product contributing to $z^j$
+in the exponential, a factor of degree $1$ costs one power of $s$, while
+a factor of degree $r\ge2$ costs at least $r/2$ powers. Since the total
+power of $s$ is an integer, it is at least $\lceil j/2\rceil$.
+Multiplying the coefficient of $z^j$ by $j!$ proves the claim.
+\end{proof}
+
+\begin{proposition}[Uniform moment expansion]\label[proposition]{prop:momentexpansion}
+For every fixed $K\ge1$ there are explicit polynomials $P_r(c)$,
+$1\le r\le K$, such that
+\begin{equation}\label{eq:momentexpansion}
+ xL^mJ_m(x)=\sum_{r=1}^{K}s^rP_r(c)+O_{C,K}(s^{K+1}),
+ \qquad s=1/m,\ L=m+c,
+\end{equation}
+and the same expansion holds with $J_m(x)$ replaced by $F_{m,x}(2)$.
+They are given by the finite coefficient formula
+\begin{equation}\label{eq:Pr}
+ P_r(c)=\coef{s}{r}\sum_{j=1}^{2r}
+               \frac{q^{(j)}(1)}{j!}\mu_j(s,c).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Taylor-expand the smooth bounded extension $\widetilde q$ at $1$ through
+degree $2K+1$. Its remainder is bounded by a constant times
+$|T-1|^{2K+2}$, since its derivative of order $2K+2$ is globally bounded.
+The expectation of this remainder is $O_{C,K}(s^{K+1})$ by
+\cref{lem:momentsize}. The signed contribution of the term of degree
+$2K+1$ is also $O_{C,K}(s^{K+1})$. Thus
+\[
+ \E\widetilde q(T)=\sum_{j=1}^{2K}
+       \frac{q^{(j)}(1)}{j!}\mu_j(s,c)+O_{C,K}(s^{K+1}).
+\]
+There is no constant term because $q(1)=0$. Expand the finitely many
+rational functions \eqref{eq:mu} in $s$. Terms with $j>2r$ cannot
+contribute to $s^r$, by \eqref{eq:momentsize}; this gives \eqref{eq:Pr}.
+Finally use \cref{prop:reduction}. Its exponential errors are smaller
+than every fixed power of $s$.
+\end{proof}
+
+The use of the signed odd moment in this proof is deliberate. Bounding
+an odd Taylor term only by an absolute moment would generally lose a
+half power. Expansion through the next odd degree and control of the
+even remainder give the stated integer-order error.
+
+\subsection{The first two moment polynomials}
+The reciprocal-gamma Taylor series \cite[\S5.7]{DLMF} gives
+\begin{equation}\label{eq:qseries}
+ \begin{split}
+ q(1+z)&=-\frac{z(1+z)}{\Gamma(1-z)}\\
+ &=-z\exp\left(dz+
+       \sum_{k\ge2}\frac{(-1)^{k+1}-\zeta(k)}{k}z^k\right),
+                  \qquad |z|<1.
+ \end{split}
+\end{equation}
+In particular,
+\begin{align}
+ q'(1)&=-1,&q''(1)&=-2d,\label{eq:qderiv12}\\
+ q'''(1)&=3-3d^2+3\zeta(2),\label{eq:qderiv3}\\
+ q^{(4)}(1)&=-4d^3+12d(1+\zeta(2))+8\zeta(3)-8.\label{eq:qderiv4}
+\end{align}
+The shifted moments needed through order $s^2$ are
+\begin{align}
+ \mu_1&=-cs+c^2s^2+O_C(s^3),\nonumber\\
+ \mu_2&=s+(c^2-2c)s^2+O_C(s^3),\nonumber\\
+ \mu_3&=(2-3c)s^2+O_C(s^3),\nonumber\\
+ \mu_4&=3s^2+O_C(s^3).\label{eq:fourmoments}
+\end{align}
+Substitution yields
+\begin{equation}\label{eq:firstexpansion}
+ xL^mJ_m(x)=s(c-d)+s^2B(c)+O_C(s^3),
+\end{equation}
+where
+\begin{equation}\label{eq:B}
+ B(c)=-(1+d)c^2+2dc
+       +\left(\frac13-\frac c2\right)q'''(1)
+       +\frac18q^{(4)}(1).
+\end{equation}
+Thus $P_1(c)=c-d$ and $P_2(c)=B(c)$. A useful cancellation is
+\begin{equation}\label{eq:Bd}
+ B(d)=\zeta(2)+\zeta(3).
+\end{equation}
+This establishes both the constant shift $d$ and the first inverse-order
+correction. The remaining issue is to turn this calculation into a
+statement about the minimal eventual-positivity index.
+
+\section{From the local expansion to the actual threshold}\label{sec:mainproof}
+
+\subsection{The first correction, including the infinite tail}
+We first prove
+\begin{equation}\label{eq:firsttheorem}
+ \log\Gr(m)=m+d-\frac{\zeta(2)+\zeta(3)}{m}+O(m^{-2}).
+\end{equation}
+Put $A=\zeta(2)+\zeta(3)$ and, for a fixed positive constant $M$, set
+\[
+ c_\pm=d-As\pm Ms^2,\qquad
+ x_\pm=e^{m+c_\pm},\qquad
+ N_- =\lfloor x_-\rfloor,\quad N_+=\lceil x_+\rceil.
+\]
+Choose the fixed compact interval $I=[d-1,d+1]$. Write
+\[
+ Q_s(c)=s(c-d)+s^2B(c),\qquad c_0=d-As.
+\]
+By \eqref{eq:Bd}, $|Q_s(c_0)|\le D_1s^3$ for some fixed $D_1$ and
+all sufficiently small $s>0$. The uniform remainder in
+\eqref{eq:firstexpansion}, for both the total integral and the prefix at
+$2$, has absolute value at most $D_0s^3$ on $I$, for a fixed $D_0$.
+Moreover $Q'_s(c)=s+s^2B'(c)\ge s/2$ on $I$ for all sufficiently small
+$s$. Choose once and for all $M>2(D_0+D_1+1)$. When $s$ is small enough
+that $c_0\pm Ms^2\in I$, the mean-value theorem gives
+\[
+ Q_s(c_+)\ge(-D_1+M/2)s^3,\qquad
+ Q_s(c_-)\le(D_1-M/2)s^3.
+\]
+Consequently the normalized integrals at the two real indices have
+opposite signs, each with an absolute margin greater than $s^3$.
+The same statements hold for the normalized prefixes at $2$.
+
+Integer rounding does not affect those signs. Indeed,
+\[
+ \log N_\pm-m=c_\pm+O(e^{-m})
+\]
+for large $m$, and the uniform expansion at these new arguments changes
+the finite polynomial part by only $O(se^{-m})$. It follows that
+$a_m(N_-)<0$, so
+\begin{equation}\label{eq:lowerthreshold}
+ \Gr(m)>N_-.
+\end{equation}
+
+For the upper bound, apply the corresponding expansion to
+$F_{m,N_+}(2)$. It has the same positive normalized margin of order $s^3$.
+On the other hand, \cref{lem:tail} bounds the normalized integral of
+$|w_{m,N_+}|$ over $[2,m]$ by $O(e^{-\eta m})$. The positive margin
+eventually dominates that tail, so \eqref{eq:twointerval} holds at $N_+$.
+By \cref{cor:twointerval},
+\begin{equation}\label{eq:upperthreshold}
+ a_m(n)>0\quad\hbox{for every integer }n\ge N_+,
+ \qquad\Gr(m)\le N_+.
+\end{equation}
+Combining \eqref{eq:lowerthreshold} and \eqref{eq:upperthreshold}, then
+taking logarithms, proves \eqref{eq:firsttheorem}.
+
+\begin{remark}[No assumption about global uniqueness]\label[remark]{rem:uniqueness}
+This proof does not assume that $J_m(x)$ has only one zero, or that its
+sign is globally monotone as a function of $x$. It finds one negative
+integer coefficient below the proposed threshold and certifies the
+entire tail above it. Any earlier zeros, exceptional signs, or local
+oscillations are irrelevant to the resulting squeeze.
+\end{remark}
+
+\subsection{An all-orders implicit expansion}
+The all-orders proof uses the same argument with a narrower bracket.
+Define the formal series
+\begin{equation}\label{eq:formalPhi}
+ \Phi(s,c):=\sum_{r\ge1}s^{r-1}P_r(c).
+\end{equation}
+Its leading term is $P_1(c)=c-d$. Consequently there is a unique formal
+series
+\begin{equation}\label{eq:cformal}
+ c(s)=d+\sum_{j\ge1}C_js^j
+ \quad\hbox{such that}\quad\Phi(s,c(s))=0.
+\end{equation}
+There is no analytic-convergence assumption in this statement. At every
+power of $s$, the next unknown $C_j$ occurs linearly with coefficient $1$,
+so ordinary formal coefficient comparison determines it uniquely.
+One explicit recursion is
+\begin{equation}\label{eq:Crecursion}
+ C_j=-\coef{s}{j}\sum_{r=2}^{j+1}s^{r-1}
+        P_r\left(d+\sum_{i=1}^{j-1}C_is^i\right),\qquad j\ge1.
+\end{equation}
+
+Fix $R\ge0$ and put $c_R(s)=d+\sum_{j=1}^RC_js^j$.
+Use \cref{prop:momentexpansion} with $K=R+1$. By construction the
+normalized signed integral at $c=c_R(s)$ is $O_R(s^{R+2})$.
+Moving $c$ to $c_R(s)\pm M_Rs^{R+1}$ changes its finite expansion by
+\[
+ \pm M_Rs^{R+2}(1+O_R(s)),
+\]
+because the derivative of its first term with respect to $c$ is $s$.
+For a sufficiently large fixed $M_R$, the two normalized values have
+opposite signs with polynomial-sized margins. Rounding the corresponding
+indices again costs only exponentially small changes. The upper prefix
+margin dominates the exponential tail, so the propagation lemma applies
+exactly as before. We obtain
+\[
+ \log\Gr(m)=m+c_R(1/m)+O_R(m^{-R-1}),
+\]
+which proves \eqref{eq:allorders}.
+
+For the first two coefficients,
+\begin{equation}\label{eq:C12recursive}
+ C_1=-P_2(d),\qquad C_2=-P_2'(d)C_1-P_3(d).
+\end{equation}
+Inserting \eqref{eq:mu}, \eqref{eq:qseries}, and \eqref{eq:Pr} gives
+\[
+ C_2=\zeta(2)^2+\zeta(2)\zeta(3)+\zeta(2)-\zeta(3)
+                          -5\zeta(4)-3\zeta(5).
+\]
+Using $\zeta(2)^2=\tfrac52\zeta(4)$ gives \eqref{eq:C2}.
+The supplied symbolic script reproduces these operations from the exact
+finite moment formula rather than fitting coefficients to numerical data.
+
+\subsection{Why Euler's constant occurs only in the constant shift}
+Set
+\[
+ h(t)=e^{-d(t-1)}q(t).
+\]
+Near $t=1$, \eqref{eq:qseries} becomes
+\begin{equation}\label{eq:hseries}
+ h(1+z)=-z\exp\left(
+        \sum_{k\ge2}\frac{(-1)^{k+1}-\zeta(k)}{k}z^k\right).
+\end{equation}
+In the local Laplace integral the factor $e^{d(t-1)}$ is absorbed by
+replacing the rate $L$ with $L-d$ and multiplying by the positive constant
+$e^{-d}$. More precisely, with smooth cutoffs as before,
+\[
+ x e^d(L-d)^mJ_m(x)
+   =\E\widetilde h(T_{m,L-d})+O(e^{-\eta' m})
+\]
+for some $\eta'>0$ in the same compact window. This follows from the
+proof of \cref{prop:reduction}; the change of normalization is bounded
+above and below by positive constants there.
+
+Write $L=m+d+u$. The formal threshold expansion in $u$ now uses an
+amplitude \eqref{eq:hseries} containing no $\gamma$ or $d$ and begins at
+$u=0$. Its uniqueness identifies its coefficients with the $C_j$ above.
+Computing $C_j$ needs derivatives through order $2j+2$, and
+\eqref{eq:hseries} shows that these belong to
+$\Q[\zeta(2),\ldots,\zeta(2j+1)]$. Thus the same is true of $C_j$.
+This completes the proof of every assertion in \cref{thm:main}.
+
+\section{Further explicit consequences}\label{sec:consequences}
+
+\subsection{The threshold itself and its successive ratios}
+Exponentiation gives a convenient multiplicative form:
+\begin{equation}\label{eq:multiplicative}
+ \Gr(m)=e^{m+d}\left[
+   1-\frac{A}{m}+\frac{C_2+A^2/2}{m^2}+O(m^{-3})\right],
+ \qquad A=\zeta(2)+\zeta(3).
+\end{equation}
+From the all-orders result, taking one more term before differencing
+also gives
+\begin{equation}\label{eq:ratioexpansion}
+ \log\frac{\Gr(m+1)}{\Gr(m)}
+ =1+\frac{A}{m^2}+\frac{-A-2C_2}{m^3}+O(m^{-4}).
+\end{equation}
+To justify the last error, use \eqref{eq:allorders} through at least
+$R=3$; then the individual remainders are $O(m^{-4})$. No unwarranted
+extra cancellation of two uncontrolled remainders is assumed.
+In particular the successive ratios are eventually greater than $e$,
+although they converge to $e$. Since $e<3$, they are also eventually
+less than $3$.
+
+Numerically,
+\begin{align*}
+ C_1&=-2.84699097000782072187215332816\ldots,\\
+ C_2&=-3.39640983572202698851434325410\ldots,\\
+ C_3&=-5.67971449356146763541275716380\ldots.
+\end{align*}
+An exact expression for $C_3$ is recorded in \cref{sec:appendixcoeffs}.
+The multiplicative approximation can be poor at small $m$; an asymptotic
+expansion does not make a uniform numerical guarantee for those orders.
+
+\subsection{Closed-form roots of the source's auxiliary polynomial}
+A polynomial appearing in the source's analysis \cite{XZ2026} is
+\begin{equation}\label{eq:H}
+ H_m(y)=\sum_{k=1}^{\lceil m/2\rceil}(-1)^{k-1}
+                         \binom m{2k-1}y^{m-2k+1}.
+\end{equation}
+The binomial theorem identifies this immediately as
+$H_m(y)=\operatorname{Im}(y+\ii)^m$ for real $y$.
+For $0<\theta<\pi$,
+\begin{equation}\label{eq:cot}
+ H_m(\cot\theta)=\frac{\sin(m\theta)}{\sin^m\theta}.
+\end{equation}
+Thus, for $m\ge2$, its complete set of roots is
+\begin{equation}\label{eq:Hroots}
+ \left\{\cot\frac{k\pi}{m}:k=1,\ldots,m-1\right\}.
+\end{equation}
+They are distinct, and their number equals its degree $m-1$.
+Its largest root is therefore $\rho_m=\cot(\pi/m)$.
+
+Consequently the associated positive real quantity is exactly
+\begin{equation}\label{eq:rm}
+ r_m=e^{\pi\rho_m}=\exp\!\left(\pi\cot\frac\pi m\right),
+\end{equation}
+and elementary Taylor expansion gives
+\begin{equation}\label{eq:rmasym}
+ \log r_m=m-\frac{\pi^2}{3m}-\frac{\pi^4}{45m^3}+O(m^{-5}).
+\end{equation}
+In particular its growth factor is also $e$. Combining this identity
+with our threshold theorem yields
+\begin{equation}\label{eq:comparison}
+ \log\frac{\Gr(m)}{r_m}
+ =d+\frac{\zeta(2)-\zeta(3)}{m}
+             +\frac{C_2}{m^2}+O(m^{-3}),
+ \qquad \frac{\Gr(m)}{r_m}\longrightarrow e^d.
+\end{equation}
+The elementary root calculation alone does not determine $\Gr(m)$;
+the uniform integral analysis is what supplies the threshold constant
+and the all-tail conclusion.
+
+\section{Numerical experiments, with their limitations}\label{sec:numerical}
+
+The file \texttt{code/numerical\_roots.py} evaluates $J_m(e^{m+c})$ using
+high-precision Gauss--Legendre quadrature on each unit interval. Working
+precision is increased with $m$ because direct subtraction of
+$\log\Gamma(x-t)$ and $\log\Gamma(x+1)$ loses approximately $\log_{10}x$
+decimal digits. The density is evaluated using its symmetry
+$f_m(t)=f_m(m-t)$ to reduce cancellation.
+
+The program finds a real zero in the predicted window and repeats the
+calculation with 64 and 96 quadrature nodes per interval. It also checks
+opposite numerical signs at offsets $10^{-12}$ on either side of the
+computed logarithmic zero. These are consistency tests, not rigorous
+interval enclosures.
+
+Let $x_m^*$ denote the zero returned by this numerical procedure and
+$c_m^*=\log x_m^*-m$. \Cref{tab:numerical} shows selected results. For
+$m=3,4,5,6$, the exact certificate separately confirms that
+$\lceil x_m^*\rceil$ equals the threshold. For other rows the numerical
+ceiling is deliberately not labeled a certified value of $\Gr(m)$.
+The theorem, rather than the quadrature, establishes the large-order
+threshold law.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $c_m^*$ & $x_m^*$ & $x_m^*/3^m$ & $x_m^*/e^m$\\
+\midrule
+3 & $-0.653898967$ & $10.4447664$ & $0.386843$ & $0.520014$\\
+4 & $-0.439844328$ & $35.1686715$ & $0.434181$ & $0.644137$\\
+5 & $-0.275925609$ & $112.626202$ & $0.463482$ & $0.758869$\\
+6 & $-0.154169130$ & $345.789729$ & $0.474334$ & $0.857127$\\
+7 & $-0.063651865$ & $1029.00556$ & $0.470510$ & $0.938332$\\
+8 & $0.004603739$ & $2994.71318$ & $0.456442$ & $1.004614$\\
+10 & $0.098337403$ & $24302.5704$ & $0.411566$ & $1.103335$\\
+12 & $0.158444978$ & $190697.747$ & $0.358831$ & $1.171687$\\
+20 & $0.271194889$ & $6.36309023\cdot10^8$ & $0.182492$ & $1.311531$\\
+30 & $0.323892698$ & $1.47740399\cdot10^{13}$ & $0.071757$ & $1.382499$\\
+50 & $0.364439498$ & $7.46445593\cdot10^{21}$ & $0.010398$ & $1.439707$\\
+\bottomrule
+\end{tabular}
+\caption{Numerically located real zeros, not a table of certified
+thresholds. The logarithmic shift is predicted to tend to
+$d=0.4227843351\ldots$, and the last column to
+$e^d=1.5262051116\ldots$.}\label{tab:numerical}
+\end{table}
+
+For the listed orders, the difference between the two computed values
+of $c_m^*$ was less than $2\cdot10^{-54}$. That unusually close agreement
+reflects a smooth integrand and high working precision; it is not a
+certified error bound. The saved CSV retains additional digits and the
+actual discrepancies. Both quadrature runs share the same implementation,
+integral, and density formula, so their agreement is less independent than
+the exact recurrence-versus-polynomial checks in \cref{sec:exact}.
+
+The finite-order pattern explains why a base-$3$ fit can look plausible
+briefly. The numerical ratio $x_m^*/3^m$ rises from order $3$ to about
+order $6$ and then falls. An apparent plateau over two or three orders
+cannot identify the exponential scale. The rigorous limit in
+\cref{cor:base} resolves this ambiguity.
+
+\section{Reproducibility and the trust boundary}\label{sec:reproduce}
+
+The archive contains the manuscript in \LaTeX{} and PDF, three programs,
+and their outputs. All arithmetic in the exact certificate uses Python's
+standard-library integers and \texttt{fractions.Fraction}. No numerical
+package is needed to verify the finite counterexample.
+
+From the extracted archive directory, run
+\begin{lstlisting}
+python code/verify_exact.py
+python code/derive_asymptotics.py --output data/asymptotic_coefficients.txt
+python code/numerical_roots.py
+pdflatex -halt-on-error gregory_sign_threshold.tex
+pdflatex -halt-on-error gregory_sign_threshold.tex
+\end{lstlisting}
+The exact verifier recomputes the JSON data and compares every value.
+The option \texttt{--write} regenerates that JSON. The symbolic script
+requires SymPy, and the exploratory numerical script requires mpmath;
+the versions used are recorded in \texttt{requirements.txt}. The PDF
+requires a standard \TeX{} installation with the packages listed in its
+preamble.
+
+There are three distinct levels of support. The finite arithmetic checks
+are exact but rely on the Python interpreter and the mathematical
+propagation lemma. The symbolic checks verify the coefficient algebra
+but not the analytic error estimates. The quadrature gives reproducible
+numerical evidence without interval guarantees. The all-orders theorem
+is proved in ordinary mathematics in
+\cref{sec:uniform,sec:moments,sec:mainproof}; it does not rely on observed
+floating-point signs.
+
+No proof-assistant formalization or external peer review is claimed.
+The article does not provide an explicit numerical order beyond which
+the displayed asymptotic error bounds hold with specified constants.
+The bounds are sufficient for the stated asymptotic theorem and eventual
+contradiction. Making them effective would require carrying quantitative
+constants through the cutoff derivatives and finite Taylor remainders.
+
+\section{What is resolved, and what remains worth studying}\label{sec:outlook}
+
+The printed base-$3$ conjecture is contradicted in two different ways.
+The finite certificate resolves its literal statement. More importantly,
+the large-order theorem proves a replacement growth law and rules out
+any repair consisting only of changing the starting index or the two
+positive constants multiplying $3^m$.
+
+The result does not settle all questions about individual orders.
+In particular, the proof does not classify all zeros of $J_m(x)$ for
+$x>m$, nor all sign changes among the initial coefficients. A global
+zero-counting theorem could turn the numerical continuous zero into an
+exact ceiling characterization for every order, but that stronger
+statement is not needed here and is not asserted.
+
+There are several concrete continuations. One is to obtain explicit
+error constants and an effective range for \eqref{eq:main}. Another is
+to study late terms of the formal series and possible exponentially
+small corrections, which may depend on the other unit intervals of the
+uniform-sum density. A third is to extend the cumulative-measure method
+to coefficients represented by other compactly supported distributions.
+The key reusable property is a positive decreasing ratio between the
+kernels at successive indices. Where that property holds, a local
+asymptotic sign calculation can potentially certify a whole discrete
+tail rather than an isolated coefficient.
+
+\appendix
+\section{The third correction and an independent coefficient recipe}\label{sec:appendixcoeffs}
+For compactness, write $Z_k=\zeta(k)$. The next coefficient generated by
+\eqref{eq:Crecursion} is
+\begin{equation}\label{eq:C3}
+\begin{split}
+ C_3={}&-Z_2^3-Z_2^2Z_3-Z_2^2+9Z_2Z_3+15Z_2Z_4+6Z_2Z_5-Z_2\\
+       &+6Z_3^2+5Z_3Z_4+3Z_3+4Z_4-20Z_5-35Z_6-15Z_7.
+\end{split}
+\end{equation}
+No algebraic independence of zeta values is assumed. These are polynomial
+identities in their actual real values; standard identities among even
+zeta values may be used to simplify them.
+
+Here is a direct procedure to generate as many formal corrections as
+desired. Set
+\[
+ A_1=d,\qquad A_k=\frac{(-1)^{k+1}-Z_k}{k}\quad(k\ge2),
+\]
+and recursively compute
+\[
+ b_0=1,\qquad b_n=\frac1n\sum_{k=1}^n kA_kb_{n-k}.
+\]
+Then $q(1+z)=-\sum_{n\ge0}b_nz^{n+1}$, so
+$q^{(j)}(1)/j!=-b_{j-1}$. Insert these values and the exact rational
+moments \eqref{eq:mu} into \eqref{eq:Pr}, then apply
+\eqref{eq:Crecursion}. Each desired coefficient uses finitely many
+operations in a polynomial ring with rational coefficients.
+
+For example,
+\[
+ P_2(c)= -\frac12\bigl(3Z_2c-3Z_2d-2Z_2-2Z_3
+        +2c^2d+2c^2-3cd^2-4cd+3c+d^3+2d^2-3d\bigr).
+\]
+The file \texttt{data/asymptotic\_coefficients.txt} also records $P_3$ and
+$P_4$ in unsimplified polynomial form. Keeping those long expressions in
+a machine-readable artifact rather than expanding them throughout the
+proof makes the derivation easier to audit.
+
+\section{Certificate inventory}\label{sec:inventory}
+\begin{longtable}{@{}p{0.42\linewidth}p{0.53\linewidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\endhead
+\texttt{gregory\_sign\_threshold.tex} & Complete source of this article.\\
+\texttt{gregory\_sign\_threshold.pdf} & Compiled, visually inspected article.\\
+\texttt{code/verify\_exact.py} & Standard-library exact rational certificates and independent total-integral cross-checks.\\
+\texttt{data/exact\_certificates.json} & Full rational values for all finite checks and cumulative-prefix certificates.\\
+\texttt{data/exact\_verification.log} & Output of the exact verification run.\\
+\texttt{code/derive\_asymptotics.py} & Symbolic derivation from shifted gamma moments; checks the first corrections and cancellation of $d$.\\
+\texttt{data/asymptotic\_coefficients.txt} & Explicit moment polynomials, correction coefficients, and decimal evaluations.\\
+\texttt{code/numerical\_roots.py} & Exploratory high-precision integration with two quadrature orders.\\
+\texttt{data/numerical\_roots.csv} & Real-zero estimates, normalized ratios, precision, and quadrature discrepancies.\\
+\texttt{data/numerical\_run.log} & Output of the numerical run.\\
+\texttt{data/thresholds\_certified.csv} & The independently certified initial threshold values, orders $1$ through $6$.\\
+\texttt{README.md}, \texttt{build.sh} & Scope, instructions, and build commands.\\
+\texttt{SOURCE\_AUDIT.md} & The precise target source, version, location, and search limitations.\\
+\texttt{requirements.txt} & Versions used for the optional symbolic and numerical scripts.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{XZ2026}
+Ce Xu and Jianqiang Zhao,
+\emph{Rational Approximations for Reciprocals of Multiple Zeta Values and
+Trivariate Cauchy Numbers}, arXiv:2609.11072v1, 10 September 2026.
+Conjecture 6.1, printed p.~13; auxiliary polynomial in Lemma 4.1.
+\url{https://arxiv.org/abs/2609.11072v1}.
+Version checked 19 September 2026.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Chapter 5, \emph{Gamma Function}, especially
+\S5.5 (functional relations), \S5.7 (series expansions), and
+\S5.11 (asymptotic expansions).
+\url{https://dlmf.nist.gov/5.5},
+\url{https://dlmf.nist.gov/5.7},
+\url{https://dlmf.nist.gov/5.11}.
+Accessed 19 September 2026.
+
+\bibitem{OEIS206}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A002206,
+classical Gregory/Cauchy coefficient numerators.
+\url{https://oeis.org/A002206}.
+Accessed 19 September 2026.
+
+\bibitem{OEIS207}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A002207,
+classical Gregory/Cauchy coefficient denominators.
+\url{https://oeis.org/A002207}.
+Accessed 19 September 2026.
+\end{thebibliography}
+\end{document}

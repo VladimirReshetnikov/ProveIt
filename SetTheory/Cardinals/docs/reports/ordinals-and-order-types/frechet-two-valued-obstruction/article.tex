@@ -1,0 +1,1289 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage[margin=1.03in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{accent}{HTML}{214F47}
+\definecolor{soft}{HTML}{F0F5F2}
+\definecolor{muted}{HTML}{536561}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+  pdftitle={A two-valued obstruction to gluing Frechet powers},
+  pdfauthor={Research manuscript prepared with ChatGPT},
+  pdfsubject={A proposed solution of Massas's sheaf question; complete proofs}}
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}A two-valued obstruction to gluing Fr\'echet powers}
+\fancyhead[R]{\small\color{muted}Research manuscript}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\om}{\omega}
+\newcommand{\Fr}{\mathrm{Fr}}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\RA}{\mathscr R_A}
+\newcommand{\SA}{\mathscr S_A}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\Ult}{\operatorname{Ult}}
+\newcommand{\gen}[1]{\langle #1\rangle}
+\newcommand{\eqset}[2]{E(#1,#2)}
+\newcommand{\co}{\mathrm c}
+\newcommand{\const}[1]{\overline{#1}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\DC}{\mathsf{DC}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\B}{\mathbb B}
+\newcommand{\I}{\mathcal I}
+\newcommand{\res}[2]{#1\!\upharpoonright_{#2}}
+\newtcolorbox{resultbox}{colback=soft,colframe=accent,boxrule=0.6pt,arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.6in}
+{\sffamily\color{accent}\large NONSTANDARD ANALYSIS \; / \; FILTERS \; / \; SHEAF THEORY\par}
+\vspace{0.45in}
+{\Huge\bfseries A two-valued obstruction\par to gluing Fr\'echet powers\par}
+\vspace{0.3in}
+{\LARGE\color{muted}A proposed solution of Massas's sheaf question\par}
+\vspace{0.5in}
+{\large Complete proofs, local classification, and reproducible checks\par}
+\vspace{0.25in}
+{\large 20 September 2026\par}
+\vspace{0.45in}
+\begin{resultbox}
+\textbf{Main result, in $\ZF$.} On the category of all proper filters on
+$\om$ extending the cofinite filter, equipped with the dense topology,
+\[
+  F\longmapsto A^\om/{\sim_F}
+  \quad\text{is a sheaf if and only if}\quad |A|\leq 1.
+\]
+Two distinct values already suffice for failure. An explicit countably
+generated covering sieve carries compatible constant local sections with
+no global representative.
+\end{resultbox}
+\vfill
+\noindent\textbf{Research status.} This is an unrefereed manuscript prepared
+with ChatGPT. It presents a complete mathematical argument, not a claim of
+independent expert certification. The motivating question is explicitly open
+in the cited 2023 article and 2024 dissertation. A targeted literature check
+found no later resolution, but priority and novelty have not been established.
+The computational supplements check exact finite consequences; they are not a
+formalization of the infinite proof.
+\end{titlepage}
+
+\begin{abstract}
+Massas asks whether uncountability is necessary for the reduced-power
+presheaf associated with a structure to fail the sheaf condition on the
+Fr\'echet category. We give a negative answer using only two distinct elements.
+Partition $\om$ into infinitely many infinite rows. The filters concentrated
+on individual rows, together with the filter concentrated on tails of rows,
+generate a dense covering sieve. Assign one constant value on every row
+component and a different constant value on the tail component. These
+sections match because the components are incompatible. A global sequence
+would nevertheless have to take both values cofinitely on one infinite row.
+The construction and the resulting classification are proved in $\ZF$.
+We also prove separatedness, a finite-pasting theorem showing that the
+countable number of generators is sharp, and failure above every countably
+generated free filter without any choice axiom. Under dependent choice,
+sheafness above an arbitrary base filter is equivalent, for a nontrivial
+value set, to finiteness of its quotient Boolean algebra. Finally, in
+$\ZFC$, we identify the associated sheaf with a product of ultrapowers and
+explain the obstruction as a missing two-valued section. Every extension is
+proved independently of the literature, with its foundational assumptions
+stated explicitly.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The question and the result}
+\label{sec:question}
+
+\subsection{A specific published open problem}
+In his treatment of hyperreal numbers by possibility semantics, Massas
+considers a varying reduced power indexed by proper filters extending the
+cofinite filter on $\om$. In \cite[Definitions 5.4--5.7 and Fact 5.10]{Massas2023},
+he proves that this presheaf need not be a sheaf. His counterexample assumes
+an injection $2^\om\hookrightarrow A$; with choice, he explains that the
+argument works for every uncountable domain. The question immediately after
+Fact~5.10 asks whether uncountability is necessary. It appears on printed
+page~517. The same question is repeated after Fact~7.4.10, on printed
+page~249 of his 2024 dissertation \cite{Massas2024}.
+
+The issue concerns the \emph{underlying set presheaf}. We write it as
+$\RA$ to distinguish it from a single ultrapower or a single ordered field.
+Its sections at a filter $F$ are sequences in $A$, identified when they
+agree on an $F$-large set:
+\begin{equation}\label{eq:presheaf-intro}
+ \RA(F)=A^\om/{\sim_F},\qquad
+ f\sim_F g\ \Longleftrightarrow\ \{j:f(j)=g(j)\}\in F.
+\end{equation}
+A sheaf condition asks whether compatible sections given at enough stronger
+filters come from one section at the original filter.
+
+\begin{theorem}[Global classification in $\ZF$]\label{thm:main}
+For every set $A$, the presheaf $\RA$ on the Fr\'echet category with its
+dense topology is a sheaf if and only if $A$ has at most one element.
+If $a_0,a_1\in A$ are distinct, failure occurs at the cofinite filter on a
+covering sieve generated by countably many explicitly defined, countably
+generated filters. All local sections in the counterexample are represented
+by one of the two constant sequences $\const{a_0}$ and $\const{a_1}$.
+\end{theorem}
+
+The theorem answers the selected question negatively and supplies the exact
+cardinality boundary. For the usual convention that a first-order structure
+has a nonempty domain, the boundary is simply that the domain is a
+singleton. The proof is given in Section~\ref{sec:obstruction}; no assertion
+about unpublished work or priority is needed for its validity.
+
+\subsection{Why the construction works}
+The key distinction is between being compatible as filters and imposing
+requirements on overlapping subsets of $\om$. A filter on one row and a
+filter on tails of rows have no common proper extension. Consequently, a
+matching family is allowed to assign them different constant values.
+Nevertheless, any \emph{single sequence} representing both sections would
+have to be constant with two different values on almost all of a suitable
+row. This is impossible.
+
+The argument replaces the large family of different values used in the
+published cardinality obstruction by two values and a tail condition. The
+obstruction is therefore not a shortage of enough distinct values in the
+domain. It is a failure of countable patching for representatives of local
+equivalence classes.
+
+\subsection{Scope and foundations}
+Sections~\ref{sec:site}--\ref{sec:countablebase} work in classical $\ZF$,
+with no axiom of choice. ``Choice-free'' here does not mean intuitionistic:
+ordinary classical case distinctions are used. Section~\ref{sec:boolean}
+uses dependent choice only for the infinite direction of a local Boolean
+classification. Section~\ref{sec:sheafification} is explicitly in $\ZFC$
+and uses ultrafilter extensions. Neither of those later assumptions enters
+the main theorem.
+
+The article does not propose a new arithmetic of all hyperreal or surreal
+numbers, and does not address an ordinal-arithmetic conjecture. It solves a
+particular gluing question that arises in a construction of the hyperreal
+line. The mathematical claims below are proved in full; novelty remains a
+separate bibliographical issue.
+
+\section{The filter site and its reduced powers}
+\label{sec:site}
+
+\subsection{Filters and positive sets}
+Write $\om=\{0,1,2,\ldots\}$ and $S^\co=\om\setminus S$.
+A \emph{proper filter} on $\om$ is a family $F\subseteq\Pow(\om)$ that
+contains $\om$, omits $\varnothing$, is closed under finite intersections,
+and is upward closed under inclusion. The cofinite filter is
+\[
+ \Fr=\{X\subseteq\om:\om\setminus X\text{ is finite}\}.
+\]
+Throughout, a \emph{free filter} means a proper filter containing $\Fr$.
+Such a filter has no finite member: a finite member and its cofinite
+complement would have empty intersection.
+
+Given a family of subsets with the finite-intersection property,
+$\gen{\mathcal E}$ denotes the filter it generates. The same notation is
+used for an improper generated filter when discussing compatibility, but
+an improper filter is never an object of our site.
+
+\begin{definition}
+For a proper filter $F$, a set $S\subseteq\om$ is \emph{$F$-positive} if
+$S^\co\notin F$. Two free filters $F,G$ are \emph{compatible} if some
+proper free filter contains both; otherwise they are incompatible.
+\end{definition}
+
+\begin{lemma}[Adjoining a set]\label{lem:positive}
+Let $F$ be a proper filter and $S\subseteq\om$. Then
+\[
+ \gen{F\cup\{S\}}\text{ is proper}\quad\Longleftrightarrow\quad S^\co\notin F.
+\]
+When this generated filter is proper, its members are precisely the sets
+$X$ for which $C\cap S\subseteq X$ for some $C\in F$. If $F$ is free,
+$S$ is $F$-positive if and only if $C\cap S$ is infinite for every $C\in F$.
+\end{lemma}
+\begin{proof}
+Finite intersections of generators have the form $C$ or $C\cap S$ with
+$C\in F$. The latter is empty for some $C$ exactly when some member of
+$F$ is contained in $S^\co$, equivalently when $S^\co\in F$. This proves
+the first assertion and the description of the generated filter.
+
+Now suppose $F$ is free and $C\cap S$ is finite. Intersecting $C$ with
+the cofinite complement of $C\cap S$ produces an $F$-member disjoint
+from $S$, so $S^\co\in F$. Conversely, if $S^\co\in F$, its intersection
+with $S$ is empty. These implications prove the final assertion.
+\end{proof}
+
+Two filters are incompatible exactly when there exist $C\in F$ and
+$D\in G$ with $C\cap D=\varnothing$. Indeed, such an intersection
+prevents a proper common extension; if no such intersection is empty,
+$\gen{F\cup G}$ itself is a proper common extension.
+
+\subsection{Objects, arrows, and covering sieves}
+Let $\cF$ be the set of free filters on $\om$. Regard it as a category
+with a unique arrow $G\to F$ when $G\supseteq F$. Thus a stronger filter
+is the source of an arrow to a weaker one. For clarity we use actual set
+inclusion rather than a separate reversed-order symbol.
+
+A \emph{sieve at $F$} is a family $D\subseteq\cF$ such that every
+$G\in D$ extends $F$, and every extension of a member of $D$ is also
+in $D$. It is \emph{covering} when
+\begin{equation}\label{eq:density}
+ \text{for every }G\supseteq F\text{ in }\cF,
+ \text{ there is }H\supseteq G\text{ with }H\in D.
+\end{equation}
+These are exactly the covers used in the question. The sieve formulation
+is also the standard language for Grothendieck topologies
+\cite[Section 7.48]{StacksTopology}.
+
+For $H\in\cF$, write
+\[
+ \uparrow H=\{G\in\cF:H\subseteq G\}.
+\]
+Here the arrow points upward in \emph{inclusion}, not upward in the
+opposite categorical order. A sieve \emph{generated by} filters $H_i$
+is $\bigcup_i\uparrow H_i$. A countably generated sieve need not be a
+countable set of filters. Separately, a filter is \emph{countably generated}
+when it has a countable filter base. We will use both notions and keep
+them distinct.
+
+\begin{lemma}\label{lem:topology}
+The covering sieves just defined form a Grothendieck topology.
+Every covering sieve is nonempty.
+\end{lemma}
+\begin{proof}
+The maximal sieve of all extensions of $F$ is dense. If $D$ is a covering
+sieve at $F$ and $G\supseteq F$, the sieve of members of $D$ extending
+$G$ is dense above $G$: apply \eqref{eq:density} to an arbitrary
+extension of $G$.
+
+For transitivity, suppose $D$ covers $F$ and $E$ is a sieve at $F$ such
+that $E\cap\uparrow G$ covers $G$ for each $G\in D$. Given $H\supseteq F$,
+choose an extension $G\supseteq H$ in $D$, then an extension
+$K\supseteq G$ in $E$. Thus $E$ is dense. These are the maximality,
+pullback, and transitivity axioms. Applying density to $F$ itself shows
+that a covering sieve cannot be empty. All choices in this argument are
+within a fixed finite chain of existential assertions.
+\end{proof}
+
+\subsection{Sections and matching families}
+For sequences $f,g:\om\to A$, put
+\[
+ \eqset{f}{g}=\{j\in\om:f(j)=g(j)\}.
+\]
+The relation in \eqref{eq:presheaf-intro} is an equivalence relation.
+If $G\supseteq F$, equality modulo $F$ implies equality modulo $G$;
+hence there is a well-defined restriction map
+\[
+ \rho_{F,G}:\RA(F)\longrightarrow\RA(G),\qquad
+ \rho_{F,G}([f]_F)=[f]_G.
+\]
+Identity and composition hold directly, so $\RA$ is a presheaf.
+
+A \emph{matching family} on a sieve $D$ is a collection
+$s_G\in\RA(G)$, one for each $G\in D$, such that
+\[
+ \rho_{G,H}(s_G)=s_H\quad\text{whenever }G,H\in D\text{ and }H\supseteq G.
+\]
+An \emph{amalgam} at $F$ is $s\in\RA(F)$ with
+$\rho_{F,G}(s)=s_G$ for every $G\in D$. The presheaf is a \emph{sheaf}
+if every matching family on every covering sieve has exactly one amalgam.
+It is \emph{separated} if it has at most one.
+
+There is an equivalent way to prescribe data on generators. Given filters
+$H_i$, sections at them determine a matching family on the generated sieve
+provided they agree at every common proper extension. If a filter extends
+several generators, this agreement makes the definition independent of
+which generator is used. No agreement condition is imposed between
+incompatible generators.
+
+\section{The explicit two-valued obstruction}
+\label{sec:obstruction}
+
+\subsection{Rows and their tail filter}
+Fix an explicit partition
+\begin{equation}\label{eq:partition}
+ \om=\bigsqcup_{n<\om}B_n
+\end{equation}
+into infinite sets, and let
+\begin{equation}\label{eq:tail}
+ T_m=\bigcup_{n\geq m}B_n
+     =\om\setminus\bigcup_{n<m}B_n.
+\end{equation}
+An arithmetic formula for the partition is supplied in
+Section~\ref{sec:arithmetic}; therefore no choice is hidden in its existence.
+Define the row filters and the tail filter by
+\begin{align}
+ F_n&=\{X\subseteq\om:B_n\setminus X\text{ is finite}\},\label{eq:rowfilter}\\
+ F_\infty&=\{X\subseteq\om:\text{for some }m,
+                         \ T_m\setminus X\text{ is finite}\}.\label{eq:tailfilter}
+\end{align}
+Equivalently,
+\[
+ F_n=\gen{\Fr\cup\{B_n\}},\qquad
+ F_\infty=\gen{\Fr\cup\{T_m:m<\om\}}.
+\]
+
+\begin{lemma}\label{lem:incompatible}
+All these filters are proper and free. They are countably generated.
+The filters $F_n$ are pairwise incompatible, and every $F_n$ is
+incompatible with $F_\infty$.
+\end{lemma}
+\begin{proof}
+The defining families are upward closed and contain every cofinite set.
+Closure under intersections for $F_\infty$ follows by taking the larger
+of two tail indices and the union of the two finite exceptional sets.
+No row or tail is finite, so neither definition includes the empty set.
+A countable base for $F_n$ is
+$\{B_n\setminus\{0,\ldots,r-1\}:r<\om\}$; a countable base for
+$F_\infty$ uses $T_m\setminus\{0,\ldots,r-1\}$ for $(m,r)\in\om^2$.
+
+For $n\neq k$, the disjoint sets $B_n\in F_n$ and $B_k\in F_k$
+preclude a proper common extension. Also $B_n\in F_n$ and
+$T_{n+1}\in F_\infty$ are disjoint. This proves every claimed
+incompatibility.
+\end{proof}
+
+\subsection{A countably generated dense sieve}
+Consider
+\begin{equation}\label{eq:D}
+ D=\uparrow F_\infty\ \cup\ \bigcup_{n<\om}\uparrow F_n.
+\end{equation}
+It is a sieve at $\Fr$, and its displayed components are disjoint.
+
+\begin{lemma}[Density]\label{lem:dense}
+The sieve $D$ covers $\Fr$.
+\end{lemma}
+\begin{proof}
+Let $G\supseteq\Fr$ be any proper free filter. If some row $B_n$ is
+$G$-positive, Lemma~\ref{lem:positive} says that
+\[
+ H=\gen{G\cup\{B_n\}}
+\]
+is a proper free filter. It extends both $G$ and $F_n$, so $H\in D$.
+
+Otherwise $B_n^\co\in G$ for every $n$. Since $G$ is closed under
+\emph{finite} intersections, for each $m$ it contains
+\[
+ \bigcap_{n<m}B_n^\co=T_m.
+\]
+It consequently contains $F_\infty$, and $G$ itself belongs to $D$.
+Both cases provide the extension required by \eqref{eq:density}.
+\end{proof}
+
+The second case does not use countable completeness of $G$. For a fixed
+$m$, only $m$ sets are intersected. Nor does the first case require a
+simultaneous choice of positive rows for all filters: the proof establishes
+an extension for one arbitrary $G$ at a time.
+
+\subsection{A matching family with no amalgam}
+Fix distinct $a_0,a_1\in A$, and let $\const{a_i}$ be the constant
+sequence with value $a_i$. For each $G\in D$, define
+\begin{equation}\label{eq:matching}
+ s_G=
+ \begin{cases}
+  [\const{a_0}]_G,&\text{if }G\supseteq F_n\text{ for some }n,\\
+  [\const{a_1}]_G,&\text{if }G\supseteq F_\infty.
+ \end{cases}
+\end{equation}
+Lemma~\ref{lem:incompatible} makes the cases disjoint. Every extension
+of a filter in a component remains in that component, so restriction
+preserves its assigned constant section. Thus \eqref{eq:matching} is a
+matching family.
+
+\begin{proposition}[The contradiction]\label{prop:contradiction}
+The matching family \eqref{eq:matching} has no amalgam in $\RA(\Fr)$.
+\end{proposition}
+\begin{proof}
+Suppose $[f]_{\Fr}$ were an amalgam. Its restriction to the tail filter
+would satisfy
+\[
+ E_1:=\{j:f(j)=a_1\}\in F_\infty.
+\]
+By \eqref{eq:tailfilter}, there is $m$ such that $T_m\setminus E_1$ is
+finite. Its restriction to the row filter $F_m$ would satisfy
+\[
+ E_0:=\{j:f(j)=a_0\}\in F_m,
+\]
+so $B_m\setminus E_0$ is finite. Because $B_m\subseteq T_m$, the set
+$B_m\setminus E_1$ is also finite. The infinite set $B_m$ therefore
+has an element in $E_0\cap E_1$. At that element, $f$ has both values
+$a_0$ and $a_1$, contrary to their being distinct.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+If $A$ has two distinct elements, the preceding construction proves
+failure of sheafness. If $A$ is a singleton, $\RA(F)$ is a singleton
+for every object and every matching family has one amalgam. If
+$A=\varnothing$, every $\RA(F)$ is empty because $\om$ is nonempty.
+Every covering sieve is nonempty, so it has no matching family with
+values in this presheaf; the sheaf condition is then vacuously true.
+These exhaust the cases in classical $\ZF$.
+\end{proof}
+
+\subsection{Why several tempting objections do not apply}
+The family is not assigning different values on two compatible pieces.
+The row and tail filters are incompatible because the tail filter contains
+\emph{all} row tails, including the one disjoint from the chosen row. A
+putative representative at the tail filter, however, agrees with its
+constant value outside finitely many points of \emph{one} tail. Selecting
+the index of that tail identifies a row on which the global contradiction
+occurs.
+
+The proof does not exchange two universal quantifiers, assume a uniform
+exceptional set for all rows, or require that $f$ be two-valued everywhere.
+It uses the tail index supplied by $f$ and the exceptional set supplied
+for that single row. Other values of $f$, when $A$ is larger, cannot
+remove the contradiction.
+
+Finally, $D$ is the full extension-closed family in \eqref{eq:D}, not
+just the listed generators. This distinction is essential for matching
+the covering definition in the original question.
+
+\section{An arithmetic realization and an exact witness}
+\label{sec:arithmetic}
+
+\subsection{A partition determined by powers of two}
+Take
+\begin{equation}\label{eq:dyadic-rows}
+ B_n=\{2^n(2k+1)-1:k<\om\}.
+\end{equation}
+Every positive integer has a unique factorization as a power of two times
+an odd integer. Applied to $j+1$, this shows that \eqref{eq:dyadic-rows}
+is a partition of $\om$ into infinite sets. In this realization,
+\begin{equation}\label{eq:dyadic-tails}
+ T_m=\{j<\om:2^m\text{ divides }j+1\}.
+\end{equation}
+The first few sets are
+\[
+\begin{array}{ll}
+ B_0=\{0,2,4,6,\ldots\}, & B_1=\{1,5,9,13,\ldots\},\\
+ B_2=\{3,11,19,27,\ldots\}, & B_3=\{7,23,39,55,\ldots\}.
+\end{array}
+\]
+One may view the rows as the finite $2$-adic valuations of $j+1$; no
+$2$-adic analysis is needed.
+
+\subsection{Turning cofinite bounds into a contradictory index}
+Suppose the hypothetical amalgam provides integers $m,N_0,N_1$ such that
+\begin{align*}
+  j\in B_m,\ j\geq N_0&\quad\Longrightarrow\quad f(j)=a_0,\\
+  j\in T_m,\ j\geq N_1&\quad\Longrightarrow\quad f(j)=a_1.
+\end{align*}
+Let $M=\max(N_0,N_1)$, $r=2^m-1$, and $p=2^{m+1}$. Set
+\begin{equation}\label{eq:witness}
+ q=\max\left(0,\left\lceil\frac{M-r}{p}\right\rceil\right),
+ \qquad j=r+pq.
+\end{equation}
+Then $j\geq M$ and
+$j=2^m(2q+1)-1\in B_m\subseteq T_m$. Thus both displayed implications
+apply to this particular integer. In fact $j$ is the least element of
+$B_m$ above both cutoffs.
+
+For example, with $m=3$, $N_0=100$, and $N_1=150$, formula
+\eqref{eq:witness} gives $r=7$, $p=16$, $q=9$, and $j=151$.
+The included program \texttt{obstruction\_witness.py} computes these
+certificates using arbitrary-precision integers:
+\begin{verbatim}
+python3 obstruction_witness.py 3 100 150
+\end{verbatim}
+The program cannot infer cofinite bounds from an arbitrary black-box
+infinite sequence. It verifies the final explicit implication once such
+bounds are supplied. The proof of their existence under the amalgamation
+hypothesis is mathematical, not computational.
+
+\section{Separatedness and finite patching}
+\label{sec:finite}
+
+\subsection{Local equality always determines global equality}
+
+\begin{theorem}[Separatedness, $\ZF$]\label{thm:separated}
+For every set $A$, $\RA$ is separated for the dense topology. More
+explicitly, if $D$ covers $F$ and $[f]_G=[g]_G$ for every $G\in D$,
+then $[f]_F=[g]_F$.
+\end{theorem}
+\begin{proof}
+Put $E=\eqset{f}{g}$. If $E\notin F$, the set $E^\co$ is
+$F$-positive, and $H=\gen{F\cup\{E^\co\}}$ is proper. By density
+there is $K\supseteq H$ in $D$. Local equality gives $E\in K$, while
+$E^\co\in K$ follows from $H\subseteq K$. Their empty intersection
+contradicts properness. Hence $E\in F$.
+\end{proof}
+
+This is the equality instance of the local-character phenomenon also
+present in the source construction \cite[Lemma 5.8]{Massas2023}. The new
+obstruction concerns existence of a global section, not failure of this
+uniqueness property.
+
+\subsection{Every finite compatible system has a representative}
+The next theorem is slightly more general than needed: density is not
+required for existence of a simultaneous representative.
+
+\begin{theorem}[Finite pasting, $\ZF$]\label{thm:finite}
+Let $A$ be nonempty, and let $F_1,\ldots,F_r$ be proper filters on an
+index set $I$, where $1\leq r<\om$. Let $s_i\in A^I/{\sim_{F_i}}$.
+Suppose the restrictions of $s_i$ and $s_j$ agree at every proper common
+extension of $F_i$ and $F_j$. Then some $f:I\to A$ represents $s_i$
+modulo $F_i$ for all $i$.
+\end{theorem}
+\begin{proof}
+Choose representatives $f_i$ for the finitely many sections. For each
+pair $i<j$ we claim there are $C_{ij}\in F_i$ and $C_{ji}\in F_j$
+such that
+\begin{equation}\label{eq:pairwitness}
+ C_{ij}\cap C_{ji}\subseteq E(f_i,f_j).
+\end{equation}
+If $F_i,F_j$ are incompatible, choose their members with empty
+intersection. If they are compatible, their generated common filter
+$H_{ij}=\gen{F_i\cup F_j}$ is proper. Compatibility of the sections
+implies $E(f_i,f_j)\in H_{ij}$. By the description of a generated
+filter, it contains an intersection of one member of $F_i$ and one
+member of $F_j$. This gives \eqref{eq:pairwitness}. All the selections
+just made are finite and are available in $\ZF$.
+
+For each $i$, intersect the finitely many $C_{ij}$ on its side and call
+the result $C_i\in F_i$. For $r=1$, take $C_1=I$. Then
+\[
+ C_i\cap C_j\subseteq E(f_i,f_j)\qquad(i\neq j).
+\]
+Fix $a\in A$ and define $f(t)$ as follows. If $t$ belongs to at least
+one $C_i$, use $f_i(t)$ for the least such $i$; otherwise use $a$.
+Whenever $t\in C_i$, the chosen value agrees with $f_i(t)$ by the
+intersection property. Thus $C_i\subseteq E(f,f_i)$, so
+$[f]_{F_i}=s_i$ for every $i$.
+\end{proof}
+
+\begin{corollary}[Finite covers and sharpness]\label{cor:sharp}
+Every matching family for $\RA$ on a finitely generated covering sieve
+has a unique amalgam. For $|A|\geq2$, there is a failure of amalgamation
+on a countably generated covering sieve. Hence a witness cannot have
+finitely many generators, while countably many suffice.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:finite} to sections at the finite generating
+filters. Their restrictions determine the given matching family on the
+entire sieve. The resulting representative yields a section at the base
+filter, and Theorem~\ref{thm:separated} gives uniqueness. If $A$ is
+empty there is no matching family on a nonempty cover. The second
+assertion is the construction in Section~\ref{sec:obstruction}.
+\end{proof}
+
+The word ``countable'' in this corollary refers to the number of
+\emph{sieve generators}, not the number of filters in the full covering
+sieve. In particular, the obstruction does not contradict finite pasting:
+any finite part of its prescribed data can be represented, but the whole
+cover cannot.
+
+\section{The obstruction above an arbitrary base filter}
+\label{sec:antichain}
+
+The partition proof extends whenever a base filter admits infinitely many
+disjoint positive sets. This is the local form that will support the later
+classification.
+
+\begin{theorem}[Positive-row obstruction, $\ZF$]\label{thm:positive-rows}
+Let $F\in\cF$. Suppose $(B_n)_{n<\om}$ is a sequence of pairwise
+disjoint $F$-positive subsets of $\om$. They need not cover $\om$.
+For every set $A$ with two distinct elements, $\RA$ fails the sheaf
+condition at $F$ on the site of all free filters extending $F$.
+\end{theorem}
+\begin{proof}
+Define
+\[
+ T_m=\om\setminus\bigcup_{n<m}B_n,\qquad
+ H_n=\gen{F\cup\{B_n\}},\qquad
+ H_\infty=\gen{F\cup\{T_m:m<\om\}}.
+\]
+Each $H_n$ is proper by positivity. For the tail filter, any finite
+intersection of its added generators is some $T_m$. If $C\in F$,
+then $C\cap T_m$ contains $C\cap B_m$, which is infinite. Thus
+$H_\infty$ is proper as well. Notice its precise membership test:
+\begin{equation}\label{eq:general-tail-membership}
+ X\in H_\infty
+ \quad\Longleftrightarrow\quad
+ \text{some }C\in F\text{ and }m<\om\text{ satisfy }C\cap T_m\subseteq X.
+\end{equation}
+The row filters are pairwise incompatible, and $H_n$ is incompatible
+with $H_\infty$ because $B_n\cap T_{n+1}=\varnothing$.
+
+The sieve
+\[
+ D_F=\uparrow H_\infty\ \cup\ \bigcup_n\uparrow H_n
+\]
+is dense above $F$. Given $G\supseteq F$, a $G$-positive row may be
+adjoined properly. If none is positive, all row complements lie in $G$;
+therefore all $T_m$ lie in $G$, and $G\supseteq H_\infty$.
+
+Assign $[\const{a_0}]$ on the row components and $[\const{a_1}]$ on
+the tail component. This is again a matching family. If $[f]_F$ glues
+it, let $E_i=\{j:f(j)=a_i\}$. Membership $E_1\in H_\infty$ gives
+$C\in F$ and $m$ with $C\cap T_m\subseteq E_1$.
+Membership $E_0\in H_m$ gives $C'\in F$ with
+$C'\cap B_m\subseteq E_0$. Since $B_m$ is $F$-positive,
+\[
+ (C\cap C')\cap B_m
+\]
+is infinite and hence nonempty. It is contained in both $E_0$ and
+$E_1$, a contradiction.
+\end{proof}
+
+\begin{remark}
+Using $T_m=\bigcup_{n\geq m}B_n$ in this more general proof would be
+unjustified when the rows do not cover $\om$: avoiding every row would
+not force membership of that union. The complement-of-a-finite-union
+definition is the correct one and includes any leftover points.
+\end{remark}
+
+\section{Every countably generated free base already fails}
+\label{sec:countablebase}
+
+The main theorem uses a particularly simple base. In fact, no countably
+generated free base can repair the gluing problem.
+
+\begin{lemma}[Disjoint positive rows from a countable base, $\ZF$]
+\label{lem:countable-rows}
+Every countably generated proper free filter on $\om$ has a sequence
+of pairwise disjoint positive sets.
+\end{lemma}
+\begin{proof}
+Fix a countable base and replace it by successive finite intersections
+to obtain a decreasing base
+\[
+ C_0\supseteq C_1\supseteq C_2\supseteq\cdots.
+\]
+Every $C_s$ is infinite. At stage $s$, for $n=0,\ldots,s$, let
+$b_{n,s}$ be the least element of $C_s$ not used previously, including
+earlier choices within that stage. Only finitely many numbers have
+been used at this point, so the least available element exists.
+This is a recursion with a uniquely determined value at every step,
+not an invocation of dependent choice.
+
+Let $B_n=\{b_{n,s}:s\geq n\}$. No chosen integer is ever reused,
+so these sets are pairwise disjoint. If $X\in F$, some $C_m$ is
+contained in $X$. For every $s\geq\max(m,n)$,
+\[
+ b_{n,s}\in C_s\subseteq C_m\subseteq X.
+\]
+These are infinitely many distinct elements of $B_n\cap X$.
+Lemma~\ref{lem:positive} proves that $B_n$ is $F$-positive.
+\end{proof}
+
+\begin{corollary}[$\ZF$]\label{cor:countablebase}
+If $F$ is a countably generated proper free filter and $|A|\geq2$,
+then $\RA$ fails sheafness at $F$ on a countably generated covering
+sieve. Its generating filters can also all be taken countably generated.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:positive-rows} to the preceding lemma. Adding
+one set, or a countable decreasing family of sets, to a countable filter
+base leaves a countable base, provided the generated filter is proper.
+Properness was proved in Theorem~\ref{thm:positive-rows}.
+\end{proof}
+
+\subsection{Restricting the site does not remove this obstruction}
+Let $\cF_{\mathrm{cg}}$ be the category consisting only of countably
+generated proper free filters, with the same inclusion arrows and the
+relative dense topology. For an arbitrary $G$ in this smaller category,
+adjoining a positive row still gives a countably generated proper
+extension. The other branch of the density argument uses $G$ itself.
+Thus the sieve of extensions of the displayed generators \emph{within}
+$\cF_{\mathrm{cg}}$ is still covering, and the same family still fails
+to glue. This applies above every object of that category.
+
+Consequently, the main phenomenon is not caused by admitting complicated
+uncountably generated filters or by the presence of ultrafilters.
+The elementary countable-base part of the site already exhibits it.
+This observation does not assert that every free filter is countably
+generated; no such assertion is used.
+
+\section{A local Boolean-algebra classification}
+\label{sec:boolean}
+
+\subsection{The quotient attached to a base}
+Fix $F\in\cF$. Define its dual ideal and quotient Boolean algebra by
+\begin{equation}\label{eq:BF}
+ \I_F=\{S\subseteq\om:S^\co\in F\},\qquad
+ \B_F=\Pow(\om)/\I_F.
+\end{equation}
+Let $q_F:\Pow(\om)\to\B_F$ be the quotient map. The ideal is proper
+and contains every finite set. We have
+\begin{equation}\label{eq:quotient-tests}
+ q_F(S)=0\Longleftrightarrow S^\co\in F,
+ \qquad
+ q_F(S)=1\Longleftrightarrow S\in F.
+\end{equation}
+Thus $F$-positive sets represent exactly the nonzero Boolean elements.
+
+\begin{lemma}[Filters above $F$]\label{lem:filter-correspondence}
+Taking image and inverse image under $q_F$ gives a bijection between
+proper filters on $\om$ extending $F$ and proper filters of $\B_F$.
+\end{lemma}
+\begin{proof}
+If $G\supseteq F$ and $S\triangle T\in\I_F$, then
+$(S\triangle T)^\co\in F\subseteq G$. Whenever $S\in G$,
+intersecting $S$ with this complement gives a member of $G$ contained
+in $T$, so $T\in G$. Hence membership in $G$ depends only on the
+quotient class. Its image is therefore a proper Boolean filter.
+Conversely, the inverse image of a proper Boolean filter is a proper
+filter on $\om$ and contains $q_F^{-1}(1)=F$. These operations
+are inverse by the same membership test.
+\end{proof}
+
+\subsection{The finite case needs no choice}
+
+\begin{proposition}[Finite quotient implies sheafness, $\ZF$]
+\label{prop:finiteB}
+If $\B_F$ is finite, then for every set $A$, the restriction of
+$\RA$ to the category of filters extending $F$ is a sheaf.
+\end{proposition}
+\begin{proof}
+A finite Boolean algebra has only finitely many proper filters.
+Lemma~\ref{lem:filter-correspondence} shows that the category above
+$F$ has finitely many objects. Thus any covering sieve at any of its
+objects is generated by finitely many filters, namely its own members.
+Corollary~\ref{cor:sharp} proves the sheaf assertion. Empty value sets
+are covered by the same vacuity argument as in Theorem~\ref{thm:main}.
+\end{proof}
+
+There is a useful concrete description of this case. If $\B_F$ has
+atoms $b_1,\ldots,b_k$, let
+\[
+ U_i=\{X\subseteq\om:b_i\leq q_F(X)\}.
+\]
+Each $U_i$ is an ultrafilter extending $F$: an atom lies below exactly
+one of a Boolean element and its complement. These are all the
+ultrafilter extensions of $F$, and
+\begin{equation}\label{eq:finite-intersection}
+ F=\bigcap_{i=1}^kU_i.
+\end{equation}
+No ultrafilter lemma is needed to construct these finitely many filters.
+
+Every proper filter of a finite Boolean algebra is generated by its least
+nonzero member. Therefore every $G\supseteq F$ has the form
+$G=\bigcap_{i\in J}U_i$ for a nonempty subset $J\subseteq\{1,\ldots,k\}$.
+For nonempty $A$ the natural map is a bijection:
+\begin{equation}\label{eq:finiteproduct}
+ A^\om/G\ \longrightarrow\ \prod_{i\in J} A^\om/U_i,
+ \qquad [f]_G\longmapsto([f]_{U_i})_{i\in J}.
+\end{equation}
+Injectivity follows from the expression for $G$. For surjectivity, take
+representatives for the finitely many given classes and paste them on
+disjoint representatives of the Boolean atoms. Such disjoint
+representatives exist by finite disjointification; the negligible leftover
+set can be assigned to the first piece. The resulting sequence has the
+prescribed class at each relevant ultrafilter. This is another instance
+of finite pasting. For $A=\varnothing$ both sides are empty since
+$J$ is nonempty.
+
+\subsection{The infinite case under dependent choice}
+
+\begin{lemma}[$\ZF+\DC$]\label{lem:BA-antichain}
+Every infinite Boolean algebra has a countably infinite sequence of
+pairwise disjoint nonzero elements.
+\end{lemma}
+\begin{proof}
+For an element $r$, write $\B\mathbin{\upharpoonright}r$ for the
+interval of elements below $r$. Start with $r_0=1$, whose interval
+is infinite. An element $r$ with infinite interval is not an atom, so
+it can be split into two disjoint nonzero elements $c,d$ with
+$c\vee d=r$. At least one of the intervals below $c,d$ is infinite:
+otherwise the map $x\mapsto(x\wedge c,x\wedge d)$ would embed the
+interval below $r$ into a finite product of finite sets.
+
+Use dependent choice to repeat this operation, retaining an infinite
+interval as $r_{n+1}$ and calling the other nonzero piece $b_n$.
+Then $b_n\wedge r_{n+1}=0$ and all later $b_j$ lie below
+$r_{n+1}$. Hence the $b_n$ are nonzero and pairwise disjoint.
+\end{proof}
+
+\begin{lemma}[$\ZF+\DC$]\label{lem:lift-antichain}
+If $\B_F$ is infinite, there is a sequence of literally disjoint
+$F$-positive subsets of $\om$.
+\end{lemma}
+\begin{proof}
+Take the sequence $(b_n)$ supplied by Lemma~\ref{lem:BA-antichain}.
+Dependent choice implies countable choice, so select representatives
+$C_n\subseteq\om$ with $q_F(C_n)=b_n$. Define
+\[
+ B_n=C_n\setminus\bigcup_{j<n}C_j.
+\]
+These sets are literally disjoint. Because $b_n\wedge b_j=0$ for
+$j<n$, their quotient classes satisfy
+\[
+ q_F(B_n)=b_n\wedge\bigwedge_{j<n}\neg b_j=b_n\neq0.
+\]
+The last inequality is exactly $F$-positivity by
+\eqref{eq:quotient-tests}.
+\end{proof}
+
+\begin{theorem}[Local classification, $\ZF+\DC$]\label{thm:local}
+Let $F\in\cF$ and let $A$ have at least two elements. The following
+conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item $\RA$ is a sheaf on the full category of filters extending $F$,
+       equipped with its dense topology;
+ \item every matching family on every covering sieve at $F$ has an amalgam;
+ \item the Boolean algebra $\B_F$ is finite.
+\end{enumerate}
+The implication from \textup{(iii)} to \textup{(i)} is provable in $\ZF$.
+\end{theorem}
+\begin{proof}
+The first condition implies the second by definition, and
+Proposition~\ref{prop:finiteB} gives the third-to-first implication.
+If $\B_F$ is infinite, Lemma~\ref{lem:lift-antichain} and
+Theorem~\ref{thm:positive-rows} produce a matching family at $F$
+without an amalgam. This is the contrapositive of the remaining
+implication.
+\end{proof}
+
+For arbitrary $A$, the classification may be written
+\[
+ \RA\text{ is a sheaf above }F
+ \quad\Longleftrightarrow\quad
+ |A|\leq1\ \text{ or }\ \B_F\text{ is finite},
+ \qquad(\ZF+\DC).
+\]
+For $F=\Fr$, the quotient is $\Pow(\om)/\mathrm{Fin}$ and the
+explicit rows of Section~\ref{sec:arithmetic} already give an infinite
+antichain, so dependent choice is unnecessary there.
+
+The local theorem also identifies genuine positive cases. If a free
+ultrafilter $U$ is given, the category above $U$ has a single object;
+$\B_U$ is the two-element Boolean algebra, and every $\RA$ is a
+sheaf on that one-object site. This does not conflict with failure on the
+larger category of all free filters.
+
+\section{What sheafification adds in classical set theory}
+\label{sec:sheafification}
+
+\subsection{The product of all ultrafilter values}
+This section assumes $\ZFC$. We make the associated sheaf completely
+explicit, rather than relying on an abstract sheafification construction.
+For a free filter $F$, let
+\[
+ \Ult(F)=\{U:U\text{ is an ultrafilter on }\om\text{ and }F\subseteq U\}.
+\]
+Define
+\begin{equation}\label{eq:sheafification}
+ \SA(F)=\prod_{U\in\Ult(F)} A^\om/U.
+\end{equation}
+When $G\supseteq F$, its ultrafilter extensions form a subset of
+$\Ult(F)$, and restriction in $\SA$ is the corresponding projection.
+There is a natural transformation
+\begin{equation}\label{eq:eta}
+ \eta_F:\RA(F)\longrightarrow\SA(F),\qquad
+ [f]_F\longmapsto([f]_U)_{U\in\Ult(F)}.
+\end{equation}
+
+\begin{lemma}\label{lem:ultra-cover}
+The ultrafilters extending $F$ form a covering sieve at $F$.
+Every covering sieve at $F$ contains every member of $\Ult(F)$.
+Each map $\eta_F$ is injective.
+\end{lemma}
+\begin{proof}
+Every proper filter extends to an ultrafilter by the ultrafilter lemma,
+which is available in $\ZFC$. Therefore these maximal extensions are
+dense. A proper extension of an ultrafilter equals itself, so this dense
+family is extension-closed and hence a sieve.
+
+If $D$ is any covering sieve and $U\in\Ult(F)$, density applied to
+$U$ gives a member of $D$ extending $U$. It must be $U$ itself.
+
+For injectivity, suppose $[f]_F\neq[g]_F$. Then
+$E(f,g)\notin F$, so $\gen{F\cup\{E(f,g)^\co\}}$ is proper.
+Extend it to an ultrafilter $U$. Its containing $E(f,g)^\co$ prevents
+$E(f,g)\in U$, and the $U$-coordinates of the two images differ.
+\end{proof}
+
+\begin{theorem}[Explicit associated sheaf, $\ZFC$]\label{thm:sheafification}
+The presheaf $\SA$ is a sheaf, and $\eta:\RA\to\SA$ has the
+universal property of sheafification.
+\end{theorem}
+\begin{proof}
+First let $(s_G)_{G\in D}$ be a matching family for $\SA$ on a cover
+of $F$. For each $U\in\Ult(F)$, Lemma~\ref{lem:ultra-cover} gives
+$U\in D$. Since $U$ has only itself as an ultrafilter extension,
+$\SA(U)=A^\om/U$. Let the $U$-coordinate of $s\in\SA(F)$ be
+$s_U$. For $G\in D$ and $U\supseteq G$, compatibility says that
+the $U$-coordinate of $s_G$ is $s_U$. Hence $s$ restricts to $s_G$.
+The same coordinates show uniqueness. This proves sheafness.
+
+Now let $\mathscr T$ be any sheaf and
+$\varphi:\RA\to\mathscr T$ any morphism of presheaves. Given
+$s\in\SA(F)$, assign the section
+\[
+ \varphi_U(s(U))\in\mathscr T(U)
+ \quad\text{to each }U\in\Ult(F).
+\]
+Distinct ultrafilters are incompatible, so these sections form a
+matching family on the ultrafilter cover. Glue them uniquely in
+$\mathscr T(F)$ and call the result $\psi_F(s)$. These definitions
+commute with restriction: both possible restrictions at a stronger
+filter have the same values at all its ultrafilter extensions and are
+therefore equal by sheaf uniqueness. Thus $\psi$ is a morphism.
+
+For $s=\eta_F([f]_F)$, naturality of $\varphi$ shows that the
+sections being glued are the restrictions of $\varphi_F([f]_F)$.
+Hence $\psi\eta=\varphi$. Conversely, any morphism with this
+property must take $s$ to a section with these prescribed ultrafilter
+restrictions; sheaf uniqueness forces that section to be $\psi_F(s)$.
+This proves the universal property.
+\end{proof}
+
+This proof also explains why sheafification does not collapse unequal
+old sections: every $\eta_F$ is injective. It supplies additional
+sections by allowing independent values at maximal filters, not by
+identifying distinct equivalence classes already present.
+
+\subsection{The two-element case: clopen sets versus arbitrary sets}
+Let $A=2=\{0,1\}$. Every sequence $f:\om\to2$ is a characteristic
+function. At an ultrafilter $U$, exactly one of its two fibres lies in
+$U$, so $2^\om/U$ is canonically $2$. Accordingly,
+\begin{equation}\label{eq:binary-product}
+ \mathscr S_2(F)=2^{\Ult(F)}\cong\Pow(\Ult(F)),
+ \qquad \mathscr R_2(F)\cong\B_F.
+\end{equation}
+The second identification sends a characteristic function to the
+quotient class of its support; equality of functions modulo $F$ means
+that the symmetric difference of their supports belongs to $\I_F$.
+
+For $X\subseteq\om$, set
+\[
+ \widehat X=\{U\in\Ult(F):X\in U\}.
+\]
+These sets give the usual Stone topology on $\Ult(F)$: each is both
+open and closed, finite intersections and complements have the expected
+Boolean formulas, and they form a base. For completeness, compactness
+follows directly from the ultrafilter lemma. A family of these basic
+sets with no finite subcover has complements whose representatives,
+together with $F$, have the finite-intersection property; an ultrafilter
+extending that family is missed by the alleged cover. A general open
+cover can be refined by the basic sets. Thus this space is compact.
+Every clopen subset, being compact and open, is a finite union of basic
+sets and is therefore itself $\widehat X$ for some $X$.
+
+Under \eqref{eq:binary-product}, $\eta_F$ is therefore the inclusion
+\begin{equation}\label{eq:stone}
+ \B_F\cong\operatorname{Clop}(\Ult(F))
+ \ \hookrightarrow\ \Pow(\Ult(F)).
+\end{equation}
+This is a description of the sheafification map, not a claim that the
+power set on the right is the Boolean completion in the order-dense or
+MacNeille sense. Those are different requirements.
+
+For any finite nonempty $A$, the same description reads: the old
+sections induce the continuous maps from the Stone space to discrete
+$A$, while the associated sheaf permits all maps. Each fibre of the
+map induced by a sequence is a basic clopen set. Conversely, a
+continuous map gives a finite clopen partition; representing its pieces
+in $\Pow(\om)$ and removing the finitely many negligible overlaps
+produces a sequence with precisely those ultrafilter values.
+
+\subsection{The missing section in the explicit example}
+Return to $F=\Fr$ and the rows and tails of
+Section~\ref{sec:obstruction}. Define
+\begin{equation}\label{eq:K}
+ K=\{U\in\Ult(\Fr):F_\infty\subseteq U\}
+  =\bigcap_m\widehat{T_m}.
+\end{equation}
+Every free ultrafilter contains at most one row. If it contains no row,
+it contains the complement of each row and therefore all $T_m$.
+Hence every free ultrafilter either extends a unique $F_n$ or belongs
+to $K$. The two-valued matching family becomes the function
+\[
+ e(U)=
+ \begin{cases}
+  0,&U\supseteq F_n\text{ for some }n,\\
+  1,&U\in K.
+ \end{cases}
+\]
+It is the characteristic function of $K$ in $\mathscr S_2(\Fr)$.
+
+\begin{proposition}\label{prop:K}
+The set $K$ is closed but not clopen. Equivalently, the section $e$
+is not in the image of $\eta_{\Fr}$ for $A=2$.
+\end{proposition}
+\begin{proof}
+Equation~\eqref{eq:K} makes $K$ closed. Suppose $K=\widehat E$ for
+some $E\subseteq\om$. Then $E$ lies in every ultrafilter extending
+$F_\infty$, which forces $E\in F_\infty$: otherwise one could
+extend $\gen{F_\infty\cup\{E^\co\}}$ to an ultrafilter. Thus
+$T_m\setminus E$ is finite for some $m$.
+
+Take an ultrafilter $U\supseteq F_m$, which exists in $\ZFC$.
+Since $B_m\subseteq T_m$ and $B_m\setminus E$ is finite, we have
+$E\in F_m\subseteq U$. Hence $U\in\widehat E=K$. But no
+proper filter extends both $F_m$ and $F_\infty$, a contradiction.
+Thus $K$ is not clopen.
+\end{proof}
+
+Closed but nonclopen does not imply that $K$ has empty interior. Indeed,
+one can choose the explicit selector $S=\{2^n-1:n<\om\}$, which
+meets each row once and is almost contained in every $T_m$.
+The nonempty basic open set $\widehat S$ is contained in $K$.
+This observation helps avoid a misleading picture of the tail component
+as necessarily nowhere dense.
+
+\section{Consequences for the hyperreal setting}
+\label{sec:hyperreals}
+
+When $A=\mathbb R$, pointwise ring operations make the reduced powers
+and their restriction maps into rings and ring homomorphisms. At an
+ultrafilter $U$ the reduced power is the usual ultrapower; over the
+whole filter site it is a varying family, not one fixed field. The
+underlying set obstruction uses only $0,1\in\mathbb R$, so no
+ordered-field property, transfer theorem, saturation theorem, or
+cardinal estimate for $\mathbb R$ is required.
+
+In the product sheaf of Section~\ref{sec:sheafification}, the same
+coordinatewise $0$--$1$ element $e$ satisfies $e^2=e$. It does not come
+from any sequence of reals. To see this directly, if $\eta([f])=e$,
+then at every row filter the injectivity in
+Lemma~\ref{lem:ultra-cover} forces $[f]_{F_n}=[0]_{F_n}$, and at
+the tail filter it forces $[f]_{F_\infty}=[1]_{F_\infty}$.
+Proposition~\ref{prop:contradiction} rules this out.
+
+This is a \emph{new global idempotent section relative to the original
+presheaf}, not a claim that its old rings had no nontrivial idempotents.
+For example, characteristic sequences already give idempotents in
+$\mathbb R^\om/\Fr$. Nor is the new global section a nontrivial
+idempotent inside one hyperreal field: at each ultrafilter it is just
+$0$ or $1$. The product of many fields is not itself a field.
+
+Three statements should therefore be kept separate. Local equality of
+old sections detects equality at the base filter; this is separatedness.
+Compatible local sections need not have a single representative; this
+is the obstruction. Passing to the associated sheaf supplies such
+sections but changes the available global elements. None of these
+statements contradicts the possibility-semantic account in the source,
+which already distinguishes its presheaf construction from a sheaf
+model \cite[Section 5.2]{Massas2023}.
+
+The result also depends on the category and its topology. It is not an
+assertion that every sheaf-based construction of nonstandard analysis
+fails, or that every reduced-power presheaf on a different filter site
+has the same behavior. The relative countably generated site considered
+in Section~\ref{sec:countablebase} was analyzed separately; no
+unexamined change of topology is implicit in the main theorem.
+
+\section{Reproducibility and proof audit}
+\label{sec:audit}
+
+\subsection{Exact supplementary checks}
+The mathematical proof is infinite and does not rest on numerical
+experiments. The archive nevertheless supplies executable checks of the
+arithmetic identities and of a finite analogue of the pasting theorem.
+All code uses the Python standard library and exact integers.
+Running
+\begin{verbatim}
+python3 verify.py --output verification_results.json
+\end{verbatim}
+reproduces the following results:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Number checked\\
+\midrule
+Row--tail membership identities & 150,000\\
+Exact cutoff-to-witness certificates & 64,925\\
+Invalid inputs correctly rejected & 6\\
+Finite generator families & 717\\
+Finite local configurations & 86,669\\
+Compatible finite configurations & 9,209\\
+Unique gluings for finite covers & 7,421\\
+Compatible noncover pastings & 1,788\\
+\bottomrule
+\end{tabular}
+\end{center}
+All checks passed. Of the cutoff certificates, $54,925$ exhaust
+$m=0,\ldots,12$ and $N_0,N_1=0,\ldots,64$; another $10,000$ use a
+fixed pseudorandom seed, $m\leq200$, and $512$-bit nonnegative
+cutoffs. The program also checks that the returned witness is the
+least possible one.
+
+For the finite-pasting tests, a nonempty subset $K$ of a finite index
+set $I$ determines the principal filter
+$F_K=\{X\subseteq I:K\subseteq X\}$. A reduced-power class is
+exactly a function on $K$. The program exhausts families of at most
+three distinct nonempty kernels, all local functions, and all global
+functions for $|I|\leq4$, $|A|=2$, and $|I|\leq3$, $|A|=3$.
+Compatibility is checked on pairwise intersections. The least-index
+pasting construction is then compared with an independent enumeration
+of global solutions. A family covers the weakest proper filter exactly
+when the union of its kernels is $I$; in that case uniqueness is checked.
+
+A finite index set has no proper filter containing all of its cofinite
+subsets, since every subset, including the empty set, is cofinite there.
+These finite tests are therefore \emph{not} finite objects of the
+Fr\'echet site. They test the more general finite-pasting theorem of
+Section~\ref{sec:finite}, which was deliberately stated for arbitrary
+proper filters on an index set. The tests cannot establish sheaf failure
+on an infinite site, and no proof-assistant verification is claimed.
+
+\subsection{Foundational dependencies}
+\begin{center}
+\small
+\begin{tabular}{p{0.64\textwidth}p{0.23\textwidth}}
+\toprule
+Result & Assumptions used\\
+\midrule
+Explicit counterexample and global classification & $\ZF$\\
+Separatedness and finite-pasting theorem & $\ZF$\\
+Positive-row obstruction at a fixed base & $\ZF$\\
+Failure at every countably generated free base & $\ZF$\\
+Finite Boolean quotient implies local sheafness & $\ZF$\\
+Infinite Boolean quotient gives positive rows & $\ZF+\DC$\\
+Product-ultrapower associated sheaf; Stone description & $\ZFC$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The stronger assumptions in the final rows are not smuggled back into
+the first rows. In particular, the main construction does not choose any
+ultrafilter. The $\ZFC$ argument is an interpretation and extension of a
+result already established in $\ZF$.
+
+\subsection{The main argument as a checklist}
+The decisive checks are all explicit. The row and tail families are
+proper filters; their incompatibility follows from displayed disjoint
+members. The cover includes \emph{all} extensions of each generator.
+For every test filter, a positive row can be adjoined, or all finite row
+tails already belong to it. Each local section is the class of a
+specified constant sequence. Incompatibility makes the assignment
+unambiguous and persistent. Finally, membership at the tail filter
+produces one tail index, and membership at that row filter produces
+the contradiction on an infinite set.
+
+No step requires that a matching family be globally represented before
+trying to glue it. No countable intersection is asserted to belong to
+a filter. The empty-domain convention is handled explicitly. These are
+the main points at which an apparently similar argument could fail;
+they are also the points against which the proof was checked.
+
+\section{Conclusion and the remaining status questions}
+\label{sec:conclusion}
+
+The selected published question has the following answer within the
+argument of this manuscript: uncountability is not necessary. Two values
+suffice, and a value set has a sheaf reduced-power presheaf on the full
+Fr\'echet site exactly when it has at most one element. The proof uses an
+explicit row partition and a tail filter and is available in $\ZF$.
+
+The extensions identify the mechanism rather than merely producing an
+isolated counterexample. Finite systems always paste. Countably generated
+free bases always admit the obstruction. With dependent choice, the
+finite or infinite nature of the quotient Boolean algebra completely
+determines local sheafness for a nontrivial value set. In classical set
+theory, the associated sheaf replaces the requirement of a single
+sequence by a compatible product of ultrapower values, and the missing
+section is already binary.
+
+The mathematical arguments are presented as complete proofs, but this
+manuscript has not undergone independent expert review or formal
+verification. The literature check establishes a documented open
+question in 2023 and its repetition in 2024; it does not establish that
+no later or unpublished proof exists. Those limitations concern
+certification and priority, not an omitted step attributed to the
+problem's age or difficulty.
+
+A precise further foundational question suggested by the proofs is
+whether the infinite-Boolean-quotient direction of
+Theorem~\ref{thm:local} can be established in $\ZF$ without additional
+hypotheses on the base filter. This manuscript does not assert that the
+use of dependent choice there is optimal, nor that this suggested
+question is new or open in the literature. It records exactly where
+choice enters the present extension.
+
+\appendix
+\section{A compact standalone proof}
+\label{app:shortproof}
+Let $\om=\bigsqcup_nB_n$ be a partition into infinite sets and
+$T_m=\bigcup_{n\geq m}B_n$. Let $F_n$ consist of sets containing
+all but finitely many elements of $B_n$, and let $F_\infty$ consist
+of sets containing all but finitely many elements of some $T_m$.
+All are proper free filters. Distinct $F_n$ are incompatible, and
+$F_n$ is incompatible with $F_\infty$ because
+$B_n\cap T_{n+1}=\varnothing$.
+
+The sieve of all extensions of these filters covers $\Fr$. Indeed,
+if a free filter $G$ has a positive row, adjoining it gives an
+extension in the sieve. Otherwise $G$ contains every row complement,
+hence every $T_m$, so $G$ itself extends $F_\infty$.
+
+For distinct $a_0,a_1\in A$, assign the constant $a_0$ class on row
+components and the constant $a_1$ class on the tail component.
+Incompatibility makes this a matching family. A gluing sequence $f$
+would equal $a_1$ cofinitely on some $T_m$ and equal $a_0$ cofinitely
+on $B_m$. Since $B_m\subseteq T_m$ is infinite, this is impossible.
+For $|A|\leq1$, the sheaf condition is immediate. This proves the
+classification without any choice axiom.
+
+\section{Source map and archive contents}
+\label{app:sources}
+The exact source locations are as follows. In \cite{Massas2023}, the
+filter category, covers, and reduced-power presheaf are Definitions
+5.4, 5.5, and 5.7 on printed page~515. The sufficient cardinality
+condition is Fact~5.10 on pages~516--517. The motivating question is
+the paragraph immediately after its proof on page~517. The 2024
+version is \cite[Section 7.4.2, Fact 7.4.10 and following paragraph]{Massas2024},
+with the question on printed page~249. The PDF page indices are
+respectively $27$ and $259$ when counted from zero. These passages
+were checked against page images as well as extracted text.
+
+The archive contains \texttt{article.tex}, \texttt{article.pdf}, the
+bibliographic database \texttt{references.bib}, the two Python
+programs, their actual \texttt{verification\_results.json}, a
+\texttt{README.md}, a separate proof audit and literature-search record,
+and a build script. Source publications and font files are not bundled.
+The PDF bibliography is self-contained; the BibTeX database is supplied
+for reuse and is not required by the build.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{Massas2023}
+Guillaume Massas.
+\newblock A Semi-Constructive Approach to the Hyperreal Line.
+\newblock \emph{Australasian Journal of Logic} \textbf{20}(3) (2023),
+490--536, article~6.
+\newblock DOI: \href{https://doi.org/10.26686/ajl.v20i3.8254}{10.26686/ajl.v20i3.8254}.
+\newblock \url{https://ojs.victoria.ac.nz/ajl/article/view/8254}.
+\newblock Open question: p.~517, after Fact~5.10.
+
+\bibitem{Massas2024}
+Guillaume Massas.
+\newblock \emph{Duality and Infinity}.
+\newblock Ph.D. dissertation, University of California, Berkeley, 2024.
+\newblock \url{https://escholarship.org/uc/item/8pw910s3}.
+\newblock Chapter~7, Section~7.4.2; open question: p.~249, after
+Fact~7.4.10.
+
+\bibitem{StacksTopology}
+The Stacks Project Authors.
+\newblock The topology defined by a site.
+\newblock \emph{The Stacks Project}, Section~7.48, tag~00ZB.
+\newblock \url{https://stacks.math.columbia.edu/tag/00ZB}.
+\newblock Consulted 20 September 2026.
+\end{thebibliography}
+
+\end{document}

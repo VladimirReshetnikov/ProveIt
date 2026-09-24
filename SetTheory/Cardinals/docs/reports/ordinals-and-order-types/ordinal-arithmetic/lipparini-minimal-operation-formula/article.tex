@@ -1,0 +1,900 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,longtable}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{193449}
+\definecolor{accent}{HTML}{917028}
+\definecolor{pale}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={An Explicit Formula for Lipparini's Minimal Infinitary Ordinal Operation},
+ pdfauthor={ChatGPT},pdfsubject={A research solution attempt for Problem 6.2 of arXiv:2505.00424v2}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Minimal infinitary ordinal operations}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\On}{\mathrm{On}}
+\newcommand{\Nop}{\mathcal N}
+\newcommand{\Sop}{\mathcal S}
+\newcommand{\Aop}{\mathcal A}
+\newcommand{\seq}[1]{\boldsymbol{#1}}
+\newcommand{\ns}{\mathbin{\#}}
+\newcommand{\np}{\mathbin{\otimes}}
+\newcommand{\NS}{\mathop{\mathchoice{\vcenter{\hbox{\Large\#}}}{\vcenter{\hbox{\large\#}}}{\#}{\#}}}
+\newcommand{\fp}{\operatorname{fp}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{otp}}
+\newcommand{\Eps}{\varepsilon}
+\newcommand{\epsa}{\varepsilon_{\seq\alpha}}
+\newcommand{\epsb}{\varepsilon_{\seq\beta}}
+\newcommand{\diff}[2]{d_{#1}(#2)}
+\newcommand{\chip}{\chi}
+\newcommand{\fin}{\mathrm{fin}}
+\newtcolorbox{keybox}{colback=pale,colframe=ink,boxrule=0.5pt,arc=1mm,
+ left=10pt,right=10pt,top=9pt,bottom=9pt,breakable}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{ink},showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.6in}
+{\small\sffamily\color{accent}\bfseries ORDINAL ARITHMETIC \quad / \quad ORDER-THEORETIC RANKS\par}
+\vspace{0.35in}
+{\huge\bfseries\color{ink}An Explicit Formula for Lipparini's Minimal Infinitary Ordinal Operation\par}
+\vspace{0.2in}
+{\Large A solution attempt for Problem 6.2,\par with proofs and exact computational checks\par}
+\vspace{0.35in}
+{\large AI-assisted research manuscript\par}
+{\large September 19, 2026\par}
+\vspace{0.35in}
+\begin{abstract}
+Lipparini introduced a least weakly monotone operation on countable sequences of ordinals that is strictly increasing at every e-special increase, but left its explicit evaluation as a problem. We give a three-case formula using only a threshold ordinal, a finite list of exceptional entries, Cantor normal forms, natural sums, and ordinal differences. Relative to the previously evaluated operation $\Sop$, the correction is strikingly small: it is either zero, a finite integer, or one natural summand $\omega$.
+
+The new proof has two parts. A block normal form establishes monotonicity even when the threshold changes. A separate lower-bound argument, valid for every admissible operation, forces the correction by finite coordinate changes and an induction through finite successor blocks. We also give an exact equality criterion on comparable sequences, a well-founded rank interpretation, constant-sequence evaluations, cardinality preservation, and a finite multiset model of the correction. An accompanying standard-library Python implementation evaluates hereditary finite Cantor normal forms and supplies reproducible checks.
+\end{abstract}
+\vspace{0.2in}
+\begin{keybox}
+\textbf{Research status.} This is an unrefereed proposed solution, not a claim of independent verification or established priority. The proof explicitly uses Lipparini's published characterization of $\Sop$ as an input theorem; the additional argument is supplied in full. The cited April 2026 revision still poses the target question. No proof-assistant formalization is claimed.
+\end{keybox}
+\vfill
+{\small The archive includes this source, the compiled PDF, exact ordinal-arithmetic code, verification results, a proof audit, and build instructions.}
+\end{titlepage}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The selected problem and the result}
+
+The target is Problem 6.2 of Paolo Lipparini's \emph{Monotone infinitary operations on ordinals (extended version)}, arXiv:2505.00424v2, dated April 30, 2026 \cite{Lip26}. Its earlier formulation was Problem 7.2 of the May 2025 version \cite{Lip25}. The problem asks for an explicit evaluation and study of the least e-special strictly monotone operation. We denote that operation by $\Nop$, and denote the already evaluated, weaker operation by $\Sop$.
+
+The distinction is small but consequential. An infinite sequence has a threshold above which only finitely many entries remain. Weak monotonicity is imposed everywhere; strict monotonicity is required when a changed coordinate reaches this threshold. One cannot require strict increase at every coordinate change: successively lowering the coordinates of a constant positive sequence would produce an infinite descending sequence of ordinal outputs.
+
+The main conclusion is an explicit formula. For most thresholds, $\Nop=\Sop$. In the remaining cases, either
+\[
+ \Nop(\seq\alpha)=\Sop(\seq\alpha)+k
+ \qquad\text{or}\qquad
+ \Nop(\seq\alpha)=\Sop(\seq\alpha)\ns\omega,
+\]
+where $k$ counts certain exceptional entries. Here $+$ is ordinary ordinal addition and $\#$ is Hessenberg natural addition. These symbols are not interchangeable.
+
+\subsection{What is, and is not, being claimed}
+
+The explicit formula and its minimality proof are the proposed contribution. The already known construction and minimality of $\Sop$ are not new. Some small evaluations, including the constant-$\omega$ example, were already recorded by Lipparini; they serve as checks rather than novelty claims. The consequences proved below are part of the present analysis, without a claim that every individual elementary consequence is independently new.
+
+The latest arXiv version consulted still states the question, and targeted searches did not locate a separate solution. That is evidence for selecting the problem, not an exhaustive priority determination. Mathematical correctness and publication novelty should be assessed independently. The scope is all $\omega$-indexed sequences of arbitrary ordinals in ordinary set theory; neither an extension to arbitrary index sets nor an extension to surreal numbers is asserted.
+
+\subsection{Reading guide}
+
+Section~\ref{sec:formula} states the complete formula. Sections~\ref{sec:upper} and~\ref{sec:lower} prove respectively admissibility and minimality. The structural facts and examples follow. The proof depends on exactly one non-elementary external input, stated in Theorem~\ref{thm:known}: the corresponding properties of $\Sop$. All new deductions are proved here.
+
+\section{Notation and elementary ordinal facts}\label{sec:prelim}
+
+We work with ordinary ordinals. The symbols $+$ and juxtaposition denote ordinary ordinal addition and multiplication. In particular, $\omega n$ means $\omega\cdot n$, not $n\cdot\omega$. A nonzero ordinal has a finite Cantor normal form
+\[
+ a=\omega^{\xi_1}c_1+\cdots+\omega^{\xi_r}c_r,
+ \qquad \xi_1>\cdots>\xi_r,\quad 0<c_j<\omega.
+\]
+The exponents need not be countable.
+
+\subsection{Natural addition and multiplication by \texorpdfstring{$\omega$}{omega}}
+
+The natural sum $a\ns b$ adds the coefficients at each exponent after the two Cantor normal forms have been aligned. It is commutative, associative, and strictly increasing in each argument. For a finite family, $\NS_i a_i$ denotes its iterated natural sum; the empty sum is zero. The only natural product needed here is
+\begin{equation}\label{eq:natural-product}
+ a\np\omega=\omega^{\xi_1+1}c_1+\cdots+\omega^{\xi_r+1}c_r.
+\end{equation}
+Thus $a\np\omega$ has no finite part. Formula~\eqref{eq:natural-product} is valid for arbitrary ordinal exponents because $\xi\ns1=\xi+1$.
+
+Every ordinal has a unique expression
+\[
+ a=a^{\infty}+\fp(a),\qquad \fp(a)<\omega,
+\]
+where $a^{\infty}$ is zero or a limit ordinal. The number $\fp(a)$ is its finite part. For finite $k$,
+\begin{equation}\label{eq:finite-add}
+ a\ns k=a+k.
+\end{equation}
+If $H$ has zero finite part, then for $n<\omega$,
+\begin{equation}\label{eq:omega-sup}
+ \sup_{k<\omega}\bigl((H\ns\omega n)+k\bigr)
+   =H\ns\omega(n+1).
+\end{equation}
+This follows by increasing the coefficient at exponent $0$ without bound, which advances the coefficient at exponent $1$ by one. The assumption on the finite part matters when later finite terms must be retained.
+
+\subsection{Ordinal differences}
+
+For $b\le a$, define
+\begin{equation}\label{eq:diff}
+ \diff b a=\ot([b,a)),\qquad b+\diff b a=a.
+\end{equation}
+It is the unique solution to the displayed equation. For fixed $b$, this difference is strictly increasing as a function of $a\ge b$. It is not subtraction in a commutative group.
+
+The following identities will be useful. Let $\lambda$ be a nonzero limit ordinal and $n,t<\omega$. Then
+\begin{align}
+ \diff{\lambda}{\lambda+t}&=t,\label{eq:diff-near}\\
+ \diff{\lambda+n}{a}&=\diff\lambda a
+       &&(a\ge\lambda+\omega),\label{eq:diff-far}\\
+ 1+\delta&=\delta &&(\delta\ge\omega),\label{eq:one-plus-infinite}\\
+ 1+t&=t+1.\label{eq:one-plus-finite}
+\end{align}
+For~\eqref{eq:diff-far}, write $a=\lambda+\delta$ with $\delta\ge\omega$ and use $n+\delta=\delta$. The other identities follow directly from Cantor normal form.
+
+\subsection{Thresholds and exceptional coordinates}
+
+For a sequence $\seq\alpha=(\alpha_i)_{i<\omega}$ put
+\begin{equation}\label{eq:epsilon}
+ \epsa=\min\{e:\{i:\alpha_i\ge e\}\text{ is finite}\},
+ \qquad E(\seq\alpha)=\{i:\alpha_i\ge\epsa\}.
+\end{equation}
+The threshold exists, is positive, and has a finite exceptional index set. Multiplicities matter: two exceptional coordinates of the same value contribute twice.
+
+\begin{lemma}\label{lem:threshold}
+The threshold is unchanged by finitely many coordinate modifications. If $\seq\alpha\le\seq\beta$ coordinatewise, then $\epsa\le\epsb$. If $\epsa=b+1$, infinitely many coordinates equal $b$. If $\epsa=\lambda$ is limit, then $\cf(\lambda)=\omega$.
+\end{lemma}
+\begin{proof}
+Finite changes do not change whether any threshold set is finite. Under coordinatewise domination, $\{i:\alpha_i\ge e\}$ is a subset of $\{i:\beta_i\ge e\}$, giving monotonicity of the threshold. At a successor threshold $b+1$, infinitely many entries are at least $b$, but only finitely many exceed $b$; hence infinitely many equal $b$.
+
+At a limit threshold $\lambda$, the entries below $\lambda$ are cofinal in $\lambda$: otherwise a smaller bound would leave only finitely many entries above it. This is a countable cofinal set in a nonzero limit ordinal, so its cofinality is $\omega$.
+\end{proof}
+
+\begin{definition}\label{def:admissible}
+An operation $F$ on $\omega$-indexed sequences of ordinals is \emph{admissible} if it satisfies
+\begin{align}
+ \seq\alpha\le\seq\beta&\ \Longrightarrow\ F(\seq\alpha)\le F(\seq\beta),\tag{M}\label{eq:M}\\
+ \seq\alpha\le\seq\beta,\quad
+ \exists j\,[\alpha_j<\beta_j\text{ and }\epsa\le\beta_j]
+ &\ \Longrightarrow\ F(\seq\alpha)<F(\seq\beta).\tag{E}\label{eq:E}
+\end{align}
+The requested operation $\Nop$ is the pointwise least admissible operation.
+\end{definition}
+
+The threshold in~\eqref{eq:E} belongs to the smaller sequence. By weak monotonicity, it suffices to verify strictness for a single-coordinate change. Such a change leaves the threshold unchanged. Also, whenever comparable sequences have distinct thresholds, the hypotheses of~\eqref{eq:E} hold: infinitely many entries of the larger sequence reach the smaller threshold, while only finitely many entries of the smaller sequence do.
+
+\section{The published input theorem}\label{sec:known}
+
+For clarity we give the precise form of $\Sop$ used below. This is a re-expression of Lipparini's Definition 3.1 \cite{Lip26}. For a positive limit $e$, write its additive normal form as
+\begin{equation}\label{eq:hat}
+ e=\widehat e+\omega^\rho,\qquad \rho>0,
+\end{equation}
+where a \emph{single} copy of the final monomial has been removed. If the coefficient of that monomial is greater than one, the remaining copies stay in $\widehat e$.
+
+With $e=\epsa$ and $E=E(\seq\alpha)$, define
+\begin{equation}\label{eq:S-formula}
+\Sop(\seq\alpha)=
+\begin{cases}
+ (b\np\omega)\ns\displaystyle\NS_{i\in E}\diff b{\alpha_i},
+       & e=b+1,\\[4pt]
+ (e\np\omega)\ns\displaystyle\NS_{i\in E}\diff e{\alpha_i},
+       & e\text{ limit, }\rho\text{ successor},\\[4pt]
+ (\widehat e\np\omega)\ns\omega^\rho
+       \ns\displaystyle\NS_{i\in E}\diff{\widehat e}{\alpha_i},
+       & e\text{ limit, }\rho\text{ limit}.
+\end{cases}
+\end{equation}
+All sums indexed by $E$ are finite.
+
+\begin{theorem}[Lipparini's characterization of $\Sop$]\label{thm:known}
+The operation in~\eqref{eq:S-formula} is weakly monotone. It is the least weakly monotone operation that is strictly increasing at z-special increases, where
+\[
+ \zeta_{\seq\alpha}=\min\{z:\{i:\alpha_i>z\}\text{ is finite}\}
+\]
+and a z-special increase has $\seq\alpha\le\seq\beta$ and some coordinate with $\alpha_j<\beta_j$ and $\zeta_{\seq\alpha}<\beta_j$. Consequently every admissible $F$ satisfies $\Sop\le F$.
+\end{theorem}
+
+This is the external input, specifically Theorem 3.4 of \cite{Lip26}. To verify the consequence, note that $\zeta=b$ when $e=b+1$, while $\zeta=e$ when $e$ is limit. Thus a z-special increase is always an e-special increase.
+
+We will also use an immediate observation about the displayed formula, rather than an additional external result. At a fixed threshold, $\Sop$ is e-special strictly increasing in its first and third cases. In the first case the coordinate contribution starts at $1$ when a coordinate first reaches $e=b+1$. In the third case it starts at $\omega^\rho>0$ when a coordinate first reaches $e$. The only possible failure is the second case, where an entry equal to $e$ contributes zero.
+
+\section{The explicit formula}\label{sec:formula}
+
+For an ordinal $b$, write $b=\lambda+n$ with $n<\omega$ and $\lambda$ zero or limit. Define
+\begin{equation}\label{eq:chi}
+ \chip(b)=
+ \begin{cases}
+ 1,&\lambda>0\text{ and the final CNF exponent of }\lambda
+       \text{ is a successor},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Equivalently, discard the finite part of $b$ and inspect its least positive Cantor exponent. If there is none, the value is zero. The condition concerns this \emph{exponent}, not whether $b$ itself is a successor.
+
+\begin{definition}[Candidate operation]\label{def:A}
+For $e=\epsa$ and $E=E(\seq\alpha)$, put
+\begin{equation}\label{eq:A-formula}
+\Aop(\seq\alpha)=
+\begin{cases}
+ (b\np\omega)\ns(\omega\chip(b))
+       \ns\displaystyle\NS_{i\in E}\diff b{\alpha_i},
+       &e=b+1,\\[4pt]
+ (e\np\omega)\ns\displaystyle\NS_{i\in E}
+            \bigl(1+\diff e{\alpha_i}\bigr),
+       &e\text{ limit, }\rho\text{ successor},\\[4pt]
+ (\widehat e\np\omega)\ns\omega^\rho
+       \ns\displaystyle\NS_{i\in E}\diff{\widehat e}{\alpha_i},
+       &e\text{ limit, }\rho\text{ limit}.
+\end{cases}
+\end{equation}
+The notation $\rho$ and $\widehat e$ is as in~\eqref{eq:hat}.
+\end{definition}
+
+\begin{theorem}[Explicit evaluation]\label{thm:main}
+The candidate $\Aop$ is the least admissible operation. Therefore
+\[
+ \boxed{\Nop(\seq\alpha)=\Aop(\seq\alpha)}
+\]
+for every $\omega$-indexed sequence of ordinals.
+\end{theorem}
+
+The proof occupies the next three sections. First we record the more compact comparison with the known operation.
+
+\begin{proposition}[Exact correction]\label{prop:correction}
+For every sequence,
+\begin{equation}\label{eq:correction}
+\Aop(\seq\alpha)=
+\begin{cases}
+ \Sop(\seq\alpha)\ns\omega,
+   &e=b+1\text{ and }\chip(b)=1,\\
+ \Sop(\seq\alpha)+k,
+   &e\text{ limit with successor final exponent},\\
+ \Sop(\seq\alpha),&\text{otherwise},
+\end{cases}
+\end{equation}
+where in the middle case
+\begin{equation}\label{eq:k}
+ k=\bigl|\{i:e\le\alpha_i<e+\omega\}\bigr|<\omega.
+\end{equation}
+In particular, $\Sop\le\Aop\le\Sop\ns\omega$ pointwise.
+\end{proposition}
+\begin{proof}
+Only the middle case needs explanation. Write each exceptional entry as $e+\delta_i$. The difference between $1+\delta_i$ and $\delta_i$ is one natural unit if $\delta_i$ is finite, and is zero if it is infinite, by~\eqref{eq:one-plus-infinite}--\eqref{eq:one-plus-finite}. There are exactly $k$ finite differences. Equations~\eqref{eq:finite-add} and~\eqref{eq:S-formula} give the result. Any finite increment is smaller than a natural increment $\omega$.
+\end{proof}
+
+\begin{remark}
+Formula~\eqref{eq:A-formula} is an explicit, finite ordinal-arithmetic evaluation \emph{once the threshold and exceptional list are supplied}. It is not another minimization over all operations, and it is not a recursion over all predecessor sequences. It does not promise that the threshold can be inferred from a finite sample of an arbitrary computable sequence.
+\end{remark}
+
+\section{The block normal form}\label{sec:block}
+
+The proof is organized around the intervals $[\lambda,\lambda+\omega)$ in the threshold coordinate. Call a nonzero limit $\lambda$ \emph{corrected} when its final Cantor exponent is a successor. Such a $\lambda$ has countable cofinality: its final monomial has the form $\omega^{\sigma+1}=\sup_{k<\omega}\omega^\sigma k$.
+
+Fix a corrected $\lambda$ and a sequence with
+\[
+ e=\lambda+n,\qquad n<\omega.
+\]
+For $n=0$ the sequence is cofinal below $\lambda$, apart from its finitely many exceptional entries. For $n>0$ infinitely many entries equal $\lambda+n-1$.
+
+Separate the exceptional entries into a \emph{far} part, at least $\lambda+\omega$, and a \emph{near} part, equal to $\lambda+t$ for finite $t\ge n$. Set
+\begin{align}
+ B_\lambda&=\lambda\np\omega,\label{eq:B}\\
+ R_\lambda(\seq\alpha)&=\NS_{i:\alpha_i\ge\lambda+\omega}
+                       \diff\lambda{\alpha_i},\label{eq:R}\\
+ c_{\lambda,n}(\seq\alpha)&=
+  \sum_{i:\lambda+n\le\alpha_i<\lambda+\omega}
+          \bigl(\diff\lambda{\alpha_i}-n+1\bigr).\label{eq:c}
+\end{align}
+The subtraction in~\eqref{eq:c} is ordinary integer subtraction. Its argument is a finite integer at least $n$.
+
+\begin{lemma}[Uniform corrected-block formula]\label{lem:block}
+For a corrected $\lambda$ and $e=\lambda+n$,
+\begin{equation}\label{eq:block}
+ \Aop(\seq\alpha)=B_\lambda\ns R_\lambda(\seq\alpha)
+             \ns\bigl(\omega n+c_{\lambda,n}(\seq\alpha)\bigr).
+\end{equation}
+For the known operation in the same block,
+\begin{equation}\label{eq:S-block}
+\Sop(\seq\alpha)=
+\begin{cases}
+ B_\lambda\ns R_\lambda(\seq\alpha)
+       +\displaystyle\sum_{\lambda\le\alpha_i<\lambda+\omega}
+          \diff\lambda{\alpha_i}, &n=0,\\[4pt]
+ B_\lambda\ns R_\lambda(\seq\alpha)
+       \ns\bigl(\omega(n-1)+c_{\lambda,n}(\seq\alpha)\bigr), &n>0.
+\end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $n=0$, a near entry $\lambda+t$ contributes $1+t$ to $\Aop$, while a far entry has an infinite difference and contributes just $\diff\lambda{\alpha_i}$. This proves~\eqref{eq:block} in that case.
+
+For $n>0$, the predecessor of the threshold is $b=\lambda+n-1$. Its natural product is
+\[
+ b\np\omega=B_\lambda\ns\omega(n-1),
+\]
+and $\chip(b)=1$. Near entries contribute $t-n+1$. Far differences do not change when a finite ordinal is added to $\lambda$, by~\eqref{eq:diff-far}. Inserting the extra natural summand $\omega$ gives~\eqref{eq:block}. Omitting that correction, and using the unshifted near differences when $n=0$, gives~\eqref{eq:S-block}.
+\end{proof}
+
+The finite statistic $c_{\lambda,n}$ measures the remaining finite successor steps above the current threshold. The term $\omega n$ counts completed threshold levels. The far contribution is carried by natural addition, which is why its finite part cannot simply be discarded.
+
+\section{Admissibility: the upper-bound half}\label{sec:upper}
+
+We now prove that $\Aop$ satisfies both axioms. This proves $\Nop\le\Aop$ whenever $\Nop$ is introduced abstractly, and supplies a concrete existence proof in its own right.
+
+\subsection{A fixed threshold}
+
+\begin{lemma}\label{lem:fixed}
+Suppose $\seq\alpha\le\seq\beta$ and $\epsa=\epsb=e$. Then $\Aop(\seq\alpha)\le\Aop(\seq\beta)$. The inequality is strict exactly when some coordinate changes to a value at least $e$.
+\end{lemma}
+\begin{proof}
+In each case of~\eqref{eq:A-formula}, the base term is fixed. Assign contribution zero to a coordinate below $e$. On the exceptional interval $[e,\On)$, its contribution is, respectively,
+\[
+ \diff b a,\qquad 1+\diff e a,\qquad \diff{\widehat e}a.
+\]
+Each contribution is positive at $a=e$ and strictly increasing thereafter. In the middle case, strict increase follows from strict increase of addition in its right argument. Contributions at all unchanged or increased coordinates cannot decrease. Only finitely many are nonzero. Strict monotonicity of finite natural addition proves the assertion, including its equality clause.
+\end{proof}
+
+\subsection{Changing thresholds outside a corrected block}
+
+\begin{lemma}\label{lem:ordinary-source}
+Suppose $\seq\alpha\le\seq\beta$, $\epsa<\epsb$, and the smaller threshold is either finite or belongs to a block whose nonzero limit part has limit final exponent. Then $\Aop(\seq\alpha)<\Aop(\seq\beta)$.
+\end{lemma}
+\begin{proof}
+In these structural cases $\Aop(\seq\alpha)=\Sop(\seq\alpha)$, and the first or third case of~\eqref{eq:S-formula} applies. As observed after Theorem~\ref{thm:known}, $\Sop$ is e-special strictly increasing at this fixed threshold.
+
+There is an index $j$ with $\alpha_j<\beta_j$ and $\epsa\le\beta_j$. Let $\seq\gamma$ be obtained from $\seq\alpha$ by replacing just its $j$th coordinate with $\beta_j$. Finite-change invariance gives $\varepsilon_{\seq\gamma}=\epsa$. Hence
+\[
+ \Aop(\seq\alpha)=\Sop(\seq\alpha)<\Sop(\seq\gamma)
+       \le\Sop(\seq\beta)\le\Aop(\seq\beta).
+\]
+The middle weak inequality is the published monotonicity theorem for $\Sop$.
+\end{proof}
+
+This lemma concerns structural regimes, not accidental equality of the two operations. A sequence at the bottom of a corrected block may happen to have $k=0$ and hence $\Aop=\Sop$; it is still covered by the following argument, not by Lemma~\ref{lem:ordinary-source}.
+
+\subsection{Changing thresholds in a corrected block}
+
+\begin{lemma}\label{lem:corrected-source}
+Suppose $\seq\alpha\le\seq\beta$, $\epsa<\epsb$, and $\epsa=\lambda+n$ for a corrected $\lambda$. Then $\Aop(\seq\alpha)<\Aop(\seq\beta)$.
+\end{lemma}
+\begin{proof}
+First suppose $\epsb=\lambda+m$ for finite $m>n$. Every far coordinate of $\seq\alpha$ remains far in $\seq\beta$, and its difference from $\lambda$ does not decrease. Thus
+\[
+ R_\lambda(\seq\alpha)\le R_\lambda(\seq\beta).
+\]
+Moreover, for any finite $c,c'$, one has $\omega n+c<\omega m+c'$. Apply the block formula and strict monotonicity of natural addition to obtain the result.
+
+Now suppose that the larger threshold lies outside this block. Necessarily $\epsb\ge\lambda+\omega$. Put
+\[
+ u=\lambda+n+1,\qquad
+ \gamma_i=\max\{\alpha_i,\min\{\beta_i,u\}\}.
+\]
+Then $\seq\alpha\le\seq\gamma\le\seq\beta$. Infinitely many $\beta_i$ are at least $u$, since $u<\epsb$. Only finitely many $\alpha_i$ exceed $u$, since $\epsa\le u$. Consequently
+\[
+ \varepsilon_{\seq\gamma}=u+1=\lambda+n+2.
+\]
+Because $u<\lambda+\omega$, the far coordinates of $\seq\gamma$ are exactly those of $\seq\alpha$, with identical values. The successor-threshold formula for $\Sop$ therefore gives, for some finite $d$,
+\[
+ \Sop(\seq\gamma)=B_\lambda\ns R_\lambda(\seq\alpha)
+                   \ns\bigl(\omega(n+1)+d\bigr).
+\]
+On the other hand,
+\[
+ \Aop(\seq\alpha)=B_\lambda\ns R_\lambda(\seq\alpha)
+                   \ns\bigl(\omega n+c_{\lambda,n}(\seq\alpha)\bigr).
+\]
+The latter is strictly smaller. Finally use
+$\Sop(\seq\gamma)\le\Sop(\seq\beta)\le\Aop(\seq\beta)$.
+\end{proof}
+
+\begin{proposition}\label{prop:admissible}
+The operation $\Aop$ is admissible, and is strictly increasing on comparable sequences whenever their thresholds differ.
+\end{proposition}
+\begin{proof}
+Thresholds cannot decrease under coordinatewise domination. Equal thresholds are handled by Lemma~\ref{lem:fixed}; distinct thresholds are covered by Lemmas~\ref{lem:ordinary-source} and~\ref{lem:corrected-source}. If the e-special condition holds at equal thresholds, Lemma~\ref{lem:fixed} gives strictness; at different thresholds, strictness has already been proved.
+\end{proof}
+
+\section{Minimality: the lower-bound half}\label{sec:lower}
+
+Let $F$ be any admissible operation. No invariance under permutations, insertion of zeros, or rearrangement is assumed for $F$. We will prove
+\[
+ F(\seq\alpha)\ge\Aop(\seq\alpha)
+\]
+by operations on the actual coordinates of $\seq\alpha$. By Theorem~\ref{thm:known}, $F\ge\Sop$. This already settles all thresholds outside corrected blocks.
+
+Fix a corrected $\lambda$ for the rest of the section. We prove the stronger corrected-block formula as a lower bound, by induction on the finite integer $n$ in $\epsa=\lambda+n$.
+
+\subsection{Bottom of the block}
+
+\begin{lemma}\label{lem:lower-bottom}
+If $\epsa=\lambda$, then
+\[
+ F(\seq\alpha)\ge B_\lambda\ns R_\lambda(\seq\alpha)
+                         +c_{\lambda,0}(\seq\alpha).
+\]
+\end{lemma}
+\begin{proof}
+Replace every near exceptional entry $\lambda+t$ by zero, retaining every far exceptional entry and every other coordinate. Call the resulting sequence $\seq\alpha^*$; it has the same threshold. The known formula gives
+\[
+ F(\seq\alpha^*)\ge\Sop(\seq\alpha^*)
+           =B_\lambda\ns R_\lambda(\seq\alpha).
+\]
+Restore a near entry $\lambda+t$ in $t+1$ strict steps:
+\[
+ 0\longrightarrow\lambda\longrightarrow\lambda+1
+   \longrightarrow\cdots\longrightarrow\lambda+t.
+\]
+The first arrow is a single ordinal increase, not a finite-length enumeration of all smaller ordinals. Each displayed arrow is permitted by~\eqref{eq:E}, since its destination is at least the unchanged threshold $\lambda$. There are finitely many near exceptional coordinates. Restoring all of them forces at least
+$\sum(t+1)=c_{\lambda,0}(\seq\alpha)$ successive ordinal increments. This gives the bound.
+\end{proof}
+
+\subsection{Removing and restoring finite parts}
+
+Now assume $n\ge1$ and put $b=\lambda+n-1$. Construct $\seq\alpha^0\le\seq\alpha$ by the following finite modifications:
+
+\begin{enumerate}[label=(\roman*),itemsep=2pt,topsep=3pt]
+\item In each far exceptional entry, remove its finite part.
+\item Replace each near exceptional entry $\lambda+t$, $t\ge n$, by $b$.
+\end{enumerate}
+
+The far entries remain far. The threshold remains $\lambda+n$, and there are no near exceptional entries left. Write
+\[
+ R^0=R_\lambda(\seq\alpha^0),\qquad H=B_\lambda\ns R^0.
+\]
+Both $R^0$ and $H$ have finite part zero. Define the finite integer
+\begin{equation}\label{eq:q}
+ q=\sum_{i:\alpha_i\ge\lambda+\omega}\fp(\alpha_i)
+       +c_{\lambda,n}(\seq\alpha).
+\end{equation}
+Then the candidate's block formula is
+\begin{equation}\label{eq:restore-target}
+ \Aop(\seq\alpha)=(H\ns\omega n)+q.
+\end{equation}
+Indeed, the removed far finite parts account for exactly the finite part removed from their natural sum. The near contributions are exactly the second term of~\eqref{eq:q}.
+
+Moreover, restoring $\seq\alpha^0$ to $\seq\alpha$ forces $q$ strict successor increments of $F$. Each far finite tail is restored by ordinary successor steps at exceptional coordinates. A near entry is restored from $b$ in $t-n+1$ steps; the first destination is $b+1=\epsa$. Consequently it suffices to prove
+\begin{equation}\label{eq:core-lower}
+ F(\seq\alpha^0)\ge H\ns\omega n.
+\end{equation}
+This reduction is essential: taking a supremum first and forgetting the finite tails would generally prove an insufficient lower bound.
+
+\subsection{The first successor level}
+
+\begin{lemma}\label{lem:lower-first}
+For $n=1$, inequality~\eqref{eq:core-lower} holds.
+\end{lemma}
+\begin{proof}
+Here $b=\lambda$, and infinitely many entries of $\seq\alpha^0$ equal $\lambda$. For each finite $k$, retain $k$ such entries. On a disjoint infinite set of coordinates also equal to $\lambda$, replace them with a sequence cofinal below $\lambda$. Such a sequence exists because $\lambda$ is corrected and therefore has cofinality $\omega$. Retain all far exceptional entries, and replace all other entries by zero. The resulting $\seq\delta^{(k)}$ satisfies
+\[
+ \seq\delta^{(k)}\le\seq\alpha^0,\qquad
+ \varepsilon_{\seq\delta^{(k)}}=\lambda,
+\]
+with exactly $k$ near exceptional entries, each equal to $\lambda$, and with far contribution $R^0$. Lemma~\ref{lem:lower-bottom} gives
+\[
+ F(\seq\alpha^0)\ge F(\seq\delta^{(k)})\ge H+k.
+\]
+Taking the supremum over $k$ and using the zero finite part of $H$ yields
+$F(\seq\alpha^0)\ge H\ns\omega$.
+\end{proof}
+
+\subsection{All later successor levels}
+
+\begin{lemma}\label{lem:lower-induction}
+Assume $n>1$ and that the full candidate lower bound is known for threshold $\lambda+n-1$. Then inequality~\eqref{eq:core-lower} holds for threshold $\lambda+n$.
+\end{lemma}
+\begin{proof}
+Infinitely many entries of $\seq\alpha^0$ equal $b=\lambda+n-1$. For each finite $k$, choose $k$ such coordinates and leave them at $b$. Keep the far exceptional entries unchanged. At every other non-far coordinate, replace its value by the minimum of its current value and $b-1=\lambda+n-2$.
+
+The resulting $\seq\delta^{(k)}\le\seq\alpha^0$ has threshold $\lambda+n-1$: infinitely many coordinates now equal $b-1$, and the only entries at least $b$ are the retained $k$ copies of $b$ and the finitely many far entries. The induction hypothesis gives
+\[
+ F(\seq\alpha^0)\ge F(\seq\delta^{(k)})
+     \ge H\ns\bigl(\omega(n-1)+k\bigr).
+\]
+Each retained copy of $b$ contributes exactly one at this lower threshold. Taking the supremum over $k$ gives~\eqref{eq:core-lower}, by~\eqref{eq:omega-sup}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Proposition~\ref{prop:admissible} proves that $\Aop$ is admissible. For any admissible $F$, the inequality $F\ge\Aop$ holds outside corrected blocks because there $\Aop=\Sop$. Within a corrected block, Lemma~\ref{lem:lower-bottom} provides the induction base $n=0$. Lemma~\ref{lem:lower-first}, finite-part restoration, and Lemma~\ref{lem:lower-induction} establish every $n\ge1$. Thus $\Aop\le F$ for every admissible $F$, as required.
+\end{proof}
+
+\subsection{Logical and foundational scope}
+
+The formula is defined directly from a sequence and finitely many ordinal operations. Its proof does not need a minimum over a proper class of functions. The leastness assertion can be read as a theorem schema in ZFC, one assertion for each definable admissible operation, or in a class theory with the usual interpretation of class functions. The lower-bound argument remains pointwise and uses only sets of coordinates and countable suprema.
+
+\section{Consequences and exact structural information}\label{sec:consequences}
+
+\subsection{Equality for comparable inputs}
+
+\begin{corollary}\label{cor:equality}
+If $\seq\alpha\le\seq\beta$, then
+\[
+ \Nop(\seq\alpha)=\Nop(\seq\beta)
+\]
+if and only if $\epsa=\epsb=e$ and $\alpha_i=\beta_i$ at every coordinate with $\beta_i\ge e$.
+\end{corollary}
+\begin{proof}
+Different thresholds force strict inequality by Proposition~\ref{prop:admissible}. At a common threshold the result is exactly the equality clause of Lemma~\ref{lem:fixed}.
+\end{proof}
+
+Thus the operation has no additional plateaus on comparable sequences beyond those forced by its threshold rule. This assertion does not claim injectivity on arbitrary, noncomparable sequences: finite natural sums themselves admit different decompositions.
+
+\subsection{Invariance and finite support}
+
+\begin{corollary}\label{cor:invariance}
+The operation $\Nop$ is invariant under permutations and insertion of any number of zeros, provided the resulting index set remains countably infinite. Its value is determined by the threshold and the finite multiset of e-special entries. For a finitely supported sequence,
+\[
+ \Nop(\alpha_0,\ldots,\alpha_{r-1},0,0,\ldots)
+   =\alpha_0\ns\cdots\ns\alpha_{r-1}.
+\]
+\end{corollary}
+\begin{proof}
+Permutations and zero insertions preserve the threshold and the exceptional multiset, so the formula is unchanged. For finite support the threshold is $1$, its predecessor is $0$, and the first case of~\eqref{eq:A-formula} is just the finite natural sum.
+\end{proof}
+
+Arbitrarily changing subthreshold coordinates also preserves the value whenever the threshold itself remains unchanged. No claim is made that deleting an arbitrary infinite collection of subthreshold coordinates preserves the threshold.
+
+\subsection{Constant sequences}
+
+\begin{corollary}\label{cor:constant}
+For every ordinal $a$,
+\begin{equation}\label{eq:constant}
+ \Nop(a,a,a,\ldots)=(a\np\omega)\ns\omega\chip(a).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The threshold is $a+1$, with no exceptional entries.
+\end{proof}
+
+For example,
+\begin{align*}
+ \Nop(\omega+1,\omega+1,\ldots)&=\omega^2+\omega2,\\
+ \Nop(\omega^\omega+7,\omega^\omega+7,\ldots)
+       &=\omega^{\omega+1}+\omega7,\\
+ \Nop(\omega^{\omega+1},\omega^{\omega+1},\ldots)
+       &=\omega^{\omega+2}+\omega.
+\end{align*}
+The contrast between the last two cases reflects a limit versus a successor \emph{exponent}. It is not determined just by whether the repeated ordinal is infinite.
+
+\subsection{The correction has only two low-order components}
+
+\begin{corollary}\label{cor:low-order}
+The Cantor coefficients of $\Nop(\seq\alpha)$ and $\Sop(\seq\alpha)$ coincide at every exponent at least $2$. Their difference consists either of a finite increment of the coefficient at exponent $0$, or an increment by one of the coefficient at exponent $1$, or no change.
+\end{corollary}
+\begin{proof}
+Apply~\eqref{eq:correction}. Natural addition has no carries between finite coefficients, and addition of a finite ordinal only changes the finite part.
+\end{proof}
+
+The bound $\Nop\le\Sop\ns\omega$ is attained by every constant sequence in a corrected block. It cannot generally be replaced by $\Nop\le\Sop+\omega$, since the latter ordinary addition erases a pre-existing finite part; a concrete counterexample appears in Section~\ref{sec:examples}.
+
+\subsection{Cardinality preservation}
+
+\begin{corollary}\label{cor:cardinality}
+The ordinal $\Nop(\seq\alpha)$ has the same cardinality as the disjoint union of the ordinals $\alpha_i$.
+\end{corollary}
+\begin{proof}
+For finite support this follows from the finite natural-sum formula: infinite cardinalities are preserved by finite natural sums, and for finite ordinals natural addition is ordinary integer addition.
+
+Suppose the support is infinite and set
+\[
+ \kappa=\max\{\aleph_0,\sup_i|\alpha_i|\}.
+\]
+The threshold has cardinality at most $\kappa$, since it is at most $\sup_i(\alpha_i+1)$. Every finite natural sum, every displayed difference, and every natural product by $\omega$ occurring in~\eqref{eq:A-formula} has cardinality at most $\kappa$. Thus $|\Nop(\seq\alpha)|\le\kappa$.
+
+Conversely, keep only one coordinate $\alpha_i$ and put zero elsewhere. Monotonicity and finite support give $\Nop(\seq\alpha)\ge\alpha_i$ for every $i$. Also replace all nonzero entries by $1$ and retain the zeros. That smaller sequence has threshold $2$, no exceptional entries, and value $\omega$. Hence $\Nop(\seq\alpha)\ge\omega$. These lower bounds imply cardinality at least $\kappa$, completing the proof.
+\end{proof}
+
+The theorem distinguishes ordinal order type from cardinal size. The correction can be decisive for strict ordinal inequalities while leaving cardinality unchanged.
+
+\section{An order-theoretic rank interpretation}\label{sec:rank}
+
+Define a strict relation on sequences by
+\begin{equation}\label{eq:prec}
+ \seq\alpha\prec_e\seq\beta
+ \quad\Longleftrightarrow\quad
+ \seq\alpha\le\seq\beta\ \text{ and }\
+ \exists j\,[\alpha_j<\beta_j,\ \epsa\le\beta_j].
+\end{equation}
+Unlike the full strict componentwise order on infinite sequences, this relation is well-founded.
+
+\begin{lemma}\label{lem:well-founded}
+The relation $\prec_e$ is an irreflexive, transitive, set-like well-founded relation.
+\end{lemma}
+\begin{proof}
+Irreflexivity is immediate. If $\seq\alpha\prec_e\seq\beta$ and $\seq\beta\le\seq\gamma$, a coordinate witnessing the first relation also witnesses $\seq\alpha\prec_e\seq\gamma$, which proves transitivity. Every predecessor of $\seq\beta$ belongs to the set $\prod_i(\beta_i+1)$, so the relation is set-like.
+
+For an independent well-foundedness argument, suppose there were an infinite descending chain. Its thresholds form a nonincreasing sequence of ordinals and therefore are eventually constant, say equal to $e$. At the beginning of this tail let $J$ be the finite set of coordinates at least $e$. No later coordinate outside $J$ can reach $e$, since all coordinates are nonincreasing. Every strict descent must decrease a coordinate in $J$. The finite natural sum of the coordinates indexed by $J$ consequently decreases strictly at every step, an impossibility for ordinals. In ZFC this excludes failure of well-foundedness on every predecessor set.
+\end{proof}
+
+Let the rank be given by the usual set-like recursion
+\begin{equation}\label{eq:rank-rec}
+ r(\seq\beta)=\sup\{r(\seq\alpha)+1:\seq\alpha\prec_e\seq\beta\}.
+\end{equation}
+
+\begin{theorem}\label{thm:rank}
+For every sequence, $r(\seq\alpha)=\Nop(\seq\alpha)$. Thus~\eqref{eq:A-formula} explicitly evaluates this well-founded rank.
+\end{theorem}
+\begin{proof}
+If $\seq\alpha\le\seq\beta$, every predecessor of $\seq\alpha$ is a predecessor of $\seq\beta$. Equation~\eqref{eq:rank-rec} then shows that $r$ is weakly monotone. The same equation gives $r(\seq\alpha)<r(\seq\beta)$ whenever $\seq\alpha\prec_e\seq\beta$. Thus $r$ is admissible, and minimality gives $\Nop\le r$.
+
+Conversely, induction along $\prec_e$ shows $r\le\Nop$. Indeed, if this holds at every predecessor of $\seq\beta$, then e-special strictness gives
+\[
+ r(\seq\alpha)+1\le\Nop(\seq\alpha)+1\le\Nop(\seq\beta)
+\]
+for every predecessor. Take the supremum.
+\end{proof}
+
+This interpretation provides a termination measure for any process whose allowed decrease is~\eqref{eq:prec}. It does not imply termination for arbitrary strict coordinatewise decreases; those can continue indefinitely through distinct coordinates. The significance of the main formula is that the rank now has a finite normal-form evaluation, rather than only the defining recursion~\eqref{eq:rank-rec}.
+
+\section{Worked examples and useful counterchecks}\label{sec:examples}
+
+\subsection{A cofinal finite tail}
+
+Any unbounded sequence of finite ordinals has threshold $\omega$ and no exceptional entries. Its value is $\omega^2$. If finitely many entries are replaced by $\omega+t_1,\ldots,\omega+t_k$, where every $t_j$ is finite, the threshold remains $\omega$ and
+\begin{equation}\label{eq:near-example}
+ \Nop(\seq\alpha)=\omega^2+\sum_{j=1}^k(t_j+1).
+\end{equation}
+For three exceptional entries $\omega$, $\omega+3$, and $\omega+7$, this is $\omega^2+13$.
+
+By contrast, replacing a single entry by $\omega2$ contributes
+\[
+ 1+\diff\omega{\omega2}=1+\omega=\omega,
+\]
+not $\omega+1$. Thus its value is $\omega^2+\omega$. This checks the order of addition in the second case of the main formula.
+
+\subsection{Preserving the finite part of a large exception}
+
+Take one entry $\omega^2+5$ and let every other entry equal $\omega$. The threshold is $\omega+1$, its predecessor is $\omega$, and
+\[
+ \diff\omega{\omega^2+5}=\omega^2+5.
+\]
+Therefore
+\begin{align*}
+ \Sop(\seq\alpha)&=\omega^2 2+5,\\
+ \Nop(\seq\alpha)&=\omega^2 2+\omega+5.
+\end{align*}
+Ordinary addition would give $\Sop(\seq\alpha)+\omega=\omega^2 2+\omega$, which is too small. The extra five units are forced by restoring five successor steps in the exceptional coordinate after the $\omega$ lower bound has been obtained.
+
+\subsection{A limit exponent behaves differently}
+
+Let $\lambda=\omega^\omega$ and take a sequence cofinal below $\lambda$, for example $\omega,\omega^2,\omega^3,\ldots$. Then $\widehat\lambda=0$ and its final exponent is the limit $\omega$. With $k$ additional exceptional copies of $\lambda$,
+\begin{equation}\label{eq:limit-exponent}
+ \Nop(\seq\alpha)=\omega^\omega(k+1).
+\end{equation}
+Each such copy contributes a full $\omega^\omega$, not a single unit. There is no correction to $\Sop$ in this regime. For the constant sequence at $\lambda$, the answer is $\omega^{\omega+1}$, again without a low-order correction.
+
+This shows why a rule that adds one unit at every limit threshold is incorrect. The successor-versus-limit character of the final exponent is indispensable.
+
+\subsection{A compact table}
+
+In the table, ``cofinal below $\lambda$'' means a countable sequence of entries less than $\lambda$ and cofinal in $\lambda$; finitely many listed exceptional entries are added. Constant rows have no exceptions.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.51\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Input description & $\Nop$ \\
+\midrule
+Constant $2$ & $\omega2$ \\
+Unbounded finite entries & $\omega^2$ \\
+Unbounded finite entries; exceptional $\omega$ & $\omega^2+1$ \\
+Constant $\omega$ & $\omega^2+\omega$ \\
+Constant $\omega+1$ & $\omega^2+\omega2$ \\
+Cofinal below $\omega^2$; exceptional $\omega^2+4$ & $\omega^3+5$ \\
+Cofinal below $\omega^\omega$ & $\omega^\omega$ \\
+Cofinal below $\omega^\omega$; two copies of $\omega^\omega$ & $\omega^\omega3$ \\
+Constant $\omega^\omega$ & $\omega^{\omega+1}$ \\
+Constant $\omega^\omega+7$ & $\omega^{\omega+1}+\omega7$ \\
+Constant $\omega^{\omega+1}$ & $\omega^{\omega+2}+\omega$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The very small $\omega$-threshold examples overlap the previously recorded checks in \cite[Remark 6.1]{Lip26}; the general formula, not those examples alone, is the proposed resolution.
+
+\subsection{Associativity and continuity are not restored}
+
+Grouping a constant sequence of ones into pairs gives
+\[
+ \Nop(1,1,1,\ldots)=\omega,
+ \qquad
+ \Nop(1\ns1,1\ns1,\ldots)=\Nop(2,2,\ldots)=\omega2.
+\]
+Thus an unrestricted grouping law is incompatible with this operation.
+
+For a failure of continuity in a coordinate, let the coordinates after the first form an unbounded finite sequence. At every finite value of the first coordinate the output is $\omega^2$. At first-coordinate value $\omega$ it becomes $\omega^2+1$. The supremum of the former outputs does not equal the latter output. These are not defects in the proof: the defining optimization concerns monotonicity and its specified strict instances, not continuity or infinite associativity.
+
+\section{Computation, verification, and its limits}\label{sec:computation}
+
+\subsection{What the implementation receives}
+
+The function \texttt{evaluate\_n(epsilon, entries)} receives a certified threshold and a finite list containing every exceptional coordinate, with multiplicity. Subthreshold entries may also be present and are ignored. The unlisted infinite background must actually have the specified threshold. Examples include an explicitly given constant tail or a proved cofinal sequence.
+
+The code uses hereditary finite Cantor normal forms and therefore represents ordinals below $\varepsilon_0$. This is an implementation restriction, not a restriction of the theorem. It implements ordinary ordinal addition, natural addition, multiplication naturally by $\omega$, finite-part removal, and the difference $d_b(a)$. It contains three separately written evaluation paths: the direct three-case formula, the $\Sop$-plus-correction formula, and the corrected-block normal form.
+
+For example:
+\begin{lstlisting}[language=Python]
+from ordinals import ONE, OMEGA, finite, omega_power, evaluate_n
+
+# Constant omega, with one exceptional omega^2 + 5.
+epsilon = OMEGA + ONE
+exception = omega_power(finite(2)) + finite(5)
+print(evaluate_n(epsilon, [exception]))
+# w^(2)*2 + w + 5
+\end{lstlisting}
+
+No black-box symbolic-mathematics service or external Python dependency is required.
+
+\subsection{Executed checks}
+
+The included deterministic run uses seed \texttt{20260919} and records the following exact checks:
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Count \\
+\midrule
+Natural-sum commutativity & 6,084 \\
+Ordinal-difference identities & 3,081 \\
+Exhaustive two-entry formula comparisons & 648 \\
+Random comparable profile pairs & 20,000 \\
+Direct versus correction evaluations in random tests & 40,000 \\
+Independent corrected-block evaluations & 24,916 \\
+Permutation and zero-insertion tests & 40,000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Among the comparable pairs, 17,468 were strictly increasing and 2,532 were equal, in each case agreeing with Corollary~\ref{cor:equality}. The pool contains 78 ordinal values and crosses finite, $\omega$, $\omega^2$, $\omega^\omega$, and nested-exponent boundaries. The tests also verify $\Sop\le\Nop\le\Sop\ns\omega$ and the explicit worked examples.
+
+A profile comparison really does describe comparable infinite sequences: use the supplied finite prefixes, choose backgrounds realizing the two thresholds, and replace the larger background by the coordinatewise maximum of both backgrounds. Its threshold remains the larger one and it introduces no additional exceptional entries. Thus these tests are not comparisons of unrelated finite samples masquerading as infinite sequences.
+
+The finite multiset models in Appendix~\ref{app:finite} contribute 994 checked states across three parameter sets, with 122,738 strict comparisons. Their ranks are calculated from the finite order relation and only afterward compared with the closed finite rank formula. All checks passed. The complete machine-readable and text reports are in the archive.
+
+\subsection{Why these tests are not a proof}
+
+The mathematical proof quantifies over arbitrary ordinals, arbitrary finite exceptional lists, and all countable backgrounds. No finite sample verifies those quantifiers. The code is not proof-assistant-certified and shares elementary ordinal-arithmetic routines across its evaluation paths. The lower-bound proof in Section~\ref{sec:lower}, not the tests, is what establishes minimality. The tests are useful for catching arithmetic, indexing, and boundary-case errors.
+
+\subsection{Why the threshold cannot generally be inferred}
+
+There is no uniform algorithm that takes a program for an arbitrary computable sequence and always returns its exact value in a notation that distinguishes finite ordinals from $\omega$. To see this, let a program produce $1$ at time $i$ if a chosen Turing machine has not halted by time $i$, and produce $0$ otherwise. A nonhalting machine gives infinitely many ones, hence value $\omega$. A halting machine gives finite support, hence a finite value. Such an evaluator would decide the halting problem.
+
+Accordingly, the executable interface treats the threshold as certified mathematical data. It does not pretend that inspecting enough terms will determine whether an infinite tail is bounded or cofinal.
+
+\section{Conclusion and remaining scope}
+
+The main theorem gives the requested explicit operation in terms of a finite normal-form computation. Its mechanism is particularly localized. At a corrected limit threshold, reaching the threshold costs one strict step, accounting for a finite correction. Infinitely many such costs at the next successor level force one $\omega$. Finite-part restoration preserves the tails of large exceptional ordinals. At a limit final exponent the known operation already assigns a positive transfinite cost to reaching the threshold, so no additional correction is needed.
+
+The proposed solution therefore answers the explicit-evaluation part of Problem 6.2 and supplies several aspects of the requested study. It also explains exactly when strictness is lost, how the operation differs from the known one, and what order-theoretic rank it computes. Independent mathematical review remains important. A formalization could isolate the published theorem about $\Sop$ as an imported lemma and verify the new block and lower-bound arguments separately. Further questions about other index sets, mixed-sum characterizations tailored specifically to $\Nop$, and surreal extensions remain outside the claims of this manuscript.
+
+\appendix
+\section{A finite multiset model and an exact rank audit}\label{app:finite}
+
+The local term $\omega n+c$ has an elementary order-theoretic model. A state is a pair $(n,E)$, where $n<\omega$ and $E$ is a finite multiset of integers $t\ge n$. Interpret $n$ as a threshold level and an occurrence of $t$ as a near exceptional coordinate.
+
+Define $(n,E)\preceq(m,F)$ when $n\le m$ and the occurrences of $E$ that are at least $m$ can be injected into the occurrences of $F$, each into an occurrence of at least the same value. Occurrences of $E$ below $m$ are absorbed into the higher background. This is a partial order on multiset states. Put
+\[
+ c_n(E)=\sum_{t\in E}(t-n+1).
+\]
+
+\begin{proposition}\label{prop:unbounded-model}
+In the unrestricted finite-multiset poset, the rank of $(n,E)$ is
+\[
+ \omega n+c_n(E).
+\]
+\end{proposition}
+\begin{proof}
+At the same level $n$, a strict comparison increases $c_n$. At different levels, $\omega n+c<\omega m+c'$ whenever $n<m$. Hence the proposed rank increases strictly.
+
+For a lower bound, the empty state at level zero has rank zero. At any fixed level, an occurrence of value $n$ can be created and then increased one unit at a time, costing $t-n+1$ steps to reach $t$. Thus reaching $E$ above an empty state costs $c_n(E)$ steps. For $n>0$, the empty state $(n,\varnothing)$ has predecessors $(n-1,E_k)$ with $k$ occurrences of $n-1$, for every finite $k$. Their ranks are cofinal in $\omega n$. An induction on $n$, followed by the finite coordinate steps, proves the reverse bound.
+\end{proof}
+
+For an entirely finite audit, fix an upper entry bound $M$ and a capacity $K$. Restrict to $0\le n\le M+1$ and multisets of size at most $K$, with entries in $[n,M]$.
+
+\begin{proposition}\label{prop:finite-model}
+The rank in this finite induced poset is
+\[
+ r_{M,K}(n,E)=n(K+1)+c_n(E).
+\]
+\end{proposition}
+\begin{proof}
+For a strict comparison at a common level, $c_n$ increases. Consider a predecessor $(m,D)$ of $(n,E)$ with $m<n$. Each occurrence of $D$ absorbed below $n$ contributes at most $n-m$ to $c_m(D)$. Each surviving occurrence can be matched to an occurrence of $E$ and contributes at most its matched contribution to $c_n(E)$ plus $n-m$. There are at most $K$ occurrences. Thus
+\[
+ c_m(D)\le c_n(E)+K(n-m),
+\]
+and consequently
+\[
+ m(K+1)+c_m(D)\le n(K+1)+c_n(E)-(n-m).
+\]
+The proposed rank therefore increases strictly along every strict comparison.
+
+If $c_n(E)>0$, lower a positive-height occurrence by one, removing it when its value is $n$. This produces a predecessor whose proposed rank is exactly one smaller. If $E$ is empty and $n>0$, use the predecessor at level $n-1$ with $K$ occurrences of $n-1$. Its proposed rank is again exactly one smaller. Induction proves the finite rank formula.
+\end{proof}
+
+The verification program enumerates these finite states, computes ranks from all smaller comparable states, and checks the formula. It does not use the proposed rank to select its topological order; it sorts by level, then multiset size, then the sum of entries.
+
+There is an instructive limitation. Taking the pointwise supremum of the finite ranks as $K$ grows does \emph{not} recover the unrestricted rank for every level: for $n\ge2$, $\sup_K n(K+1)=\omega$, not $\omega n$. This is a concrete reason that finite experiments alone cannot replace the transfinite induction in the main proof.
+
+\section{Proof dependency and boundary-case checklist}\label{app:audit}
+
+The dependency structure is
+\[
+ \text{published properties of }\Sop
+ \ \longrightarrow\
+ \begin{cases}
+ \text{block monotonicity and threshold interpolation},\\
+ \text{lower bounds plus finite-part restoration},
+ \end{cases}
+ \ \longrightarrow\ \Aop=\Nop.
+\]
+The two halves do not assume each other. In particular, the lower-bound argument never assumes that an arbitrary admissible $F$ is invariant under permutations or zeros.
+
+The following checks are especially important when reviewing the proof.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item \textbf{Threshold versus predecessor.} A successor threshold is $b+1$, while the repeated background value is $b$. Confusing them shifts an entire $\omega$ coefficient.
+\item \textbf{Limit ordinal versus limit exponent.} The correction is determined by the least positive exponent in the limit part, not just by the fact that the threshold or an entry is infinite.
+\item \textbf{Direction of ordinal addition.} The second line of the formula contains $1+d_e(a)$, not $d_e(a)+1$. They differ for infinite differences.
+\item \textbf{Natural versus ordinary addition.} The correction at a successor threshold is $\Sop\ns\omega$. Using $\Sop+\omega$ loses finite tails of large exceptions.
+\item \textbf{Threshold-changing monotonicity.} Lemma~\ref{lem:fixed} alone is insufficient. The interpolating sequence in Lemma~\ref{lem:corrected-source} supplies the missing comparison across blocks.
+\item \textbf{Countable cofinality.} The first successor-level lower bound uses $\cf(\lambda)=\omega$. This is guaranteed by the successor final exponent, even for uncountable $\lambda$.
+\item \textbf{Finite modifications.} Every restoration step keeps the threshold unchanged and reaches an exceptional value, so the strict axiom really applies.
+\item \textbf{Multiplicity.} Exceptional lists and multiset states count occurrences, not just distinct ordinal values.
+\end{enumerate}
+
+\section{Reproducing the archive}\label{app:reproduce}
+
+The source compiles with a standard TeX Live installation using the packages declared in its preamble. From the archive directory:
+\begin{lstlisting}[language=bash]
+bash build.sh
+\end{lstlisting}
+The script performs the verification (seed 20260919; 20,000 trials) and three LaTeX passes. Individual commands are listed in \texttt{README.md}. The generated files contain no third-party font files. The bibliography links to the source literature rather than redistributing it. The source audit records the exact problem number and version used.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{Lip26}
+Paolo Lipparini,
+\emph{Monotone infinitary operations on ordinals (extended version)},
+arXiv:2505.00424v2, April 30, 2026.
+\url{https://arxiv.org/abs/2505.00424v2}.
+Extended version of \emph{A Monotone Infinitary Operation on Ordinals},
+\emph{Mathematical Logic Quarterly} \textbf{72} (2026),
+\href{https://doi.org/10.1002/malq.70019}{doi:10.1002/malq.70019}.
+Relevant locations: Definition 3.1; Theorem 3.4; Remark 6.1; Problem 6.2; Appendix II.
+
+\bibitem{Lip25}
+Paolo Lipparini,
+\emph{Another infinite natural sum},
+arXiv:2505.00424v1, May 1, 2025.
+\url{https://arxiv.org/abs/2505.00424v1}.
+Earlier version; the target question is numbered Problem 7.2.
+\end{thebibliography}
+\end{document}

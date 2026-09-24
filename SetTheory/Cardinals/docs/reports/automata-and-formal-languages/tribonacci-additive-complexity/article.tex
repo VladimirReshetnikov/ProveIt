@@ -1,0 +1,1273 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{listings}
+\definecolor{Ink}{HTML}{15354B}
+\definecolor{Soft}{HTML}{F2F5F7}
+\hypersetup{pdftitle={Natural densities of the three additive complexities of the Tribonacci word},pdfauthor={AI-assisted research draft},pdfsubject={A proposed resolution of the proportion question in Remark 19 of Popoli--Shallit--Stipulanti}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Tribonacci additive-complexity densities}}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.15em,topsep=0.4em}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{Soft},showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ttt}{\mathbf t}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Dec}{\operatorname{Dec}}
+\newcommand{\rep}{\operatorname{rep}}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\rot}{\operatorname{rot}}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\cyl}{\mathcal B}
+\newcommand{\cc}{\mathcal C}
+\newcommand{\dd}{\mathrm d}
+\DeclareMathOperator{\sgn}{sgn}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{12mm}
+{\small\scshape Combinatorics on words\par}
+\vspace{8mm}
+{\LARGE\bfseries\color{Ink} Natural densities of the three\par
+additive complexities of the\par Tribonacci word\par}
+\vspace{6mm}
+{\large A proposed resolution of the proportion question\par
+in Popoli--Shallit--Stipulanti, Remark 19\par}
+\vspace{8mm}
+{AI-assisted research draft\par}
+{20 September 2026\par}
+\vspace{10mm}
+\begin{minipage}{0.92\textwidth}
+\begin{abstract}
+The Tribonacci word is the fixed point of $0\mapsto01$, $1\mapsto02$,
+$2\mapsto0$. Its additive complexity $a(n)$ counts the distinct sums of
+length-$n$ factors. Popoli, Shallit and Stipulanti proved that the only values
+for positive $n$ are $3,4,5$, and asked for their respective proportions.
+We give an exact finite-certificate proof of the existence of the ordinary
+natural densities and evaluate them in the cubic field of the Tribonacci
+constant $\beta$, where $\beta^3=\beta^2+\beta+1$:
+\[
+ d_3=\frac{21\beta^2-38\beta+5}{22},\quad
+ d_4=\frac{-55\beta^2+72\beta+67}{22},\quad
+ d_5=\frac{17\beta^2-17\beta-25}{11}.
+\]
+For every integer cutoff $N$, not merely for Tribonacci-number cutoffs, the
+count of lengths with value $j$ is $d_jN+O(N^\theta)$, where
+$\theta=\log(7/5)/\log\beta<0.553$.
+The proof reconstructs a 76-state output automaton using abelian
+co-decomposition, verifies an exact algebraic left eigenvector and an
+integer matrix annihilator, and controls arbitrary cutoffs by a disjoint
+prefix-cylinder decomposition. The package includes the full transition and
+eigenvector tables, a standard-library-only verifier, exact counting code,
+and a separate all-factor check through length $2048$.
+\end{abstract}
+\vspace{3mm}
+\noindent\fcolorbox{black!20}{Soft}{\parbox{0.94\linewidth}{\small
+\textbf{Status.} This is a proposed solution with reproduced exact finite
+certificates. It has not been independently refereed or formalized in a proof
+assistant. The literature audit found the explicit open question and no later
+resolution in the sources checked; it is not a guarantee of global priority.
+The known range $\{3,4,5\}$ and the co-decomposition method are not claimed as new.}}
+\end{minipage}
+\vfill
+{\small Source, data, reproducibility notes and code accompany this article.\par}
+\end{titlepage}
+
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem and the result}
+\label{sec:intro}
+
+\subsection{The invariant being counted}
+Let $\varphi$ be the substitution
+\begin{equation}\label{eq:phi}
+ \varphi(0)=01,\qquad \varphi(1)=02,\qquad \varphi(2)=0,
+\end{equation}
+and let
+\[
+ \ttt=\lim_{k\to\infty}\varphi^k(0)
+      =010201001020101020100\cdots
+\]
+be its one-sided fixed point. Positions are indexed from zero. We write
+$\ttt[i:i+n]$ for the factor starting at $i$ and having length $n$.
+For a finite word $u=u_0\cdots u_{m-1}$ on $\{0,1,2\}$, set
+\[
+ \sigma(u)=\sum_{i=0}^{m-1}u_i,
+ \qquad
+ \Psi(u)=(|u|_0,|u|_1,|u|_2).
+\]
+The additive complexity is
+\begin{equation}\label{eq:additive}
+ a(n)=\#\{\sigma(\ttt[i:i+n]):i\ge0\}.
+\end{equation}
+Thus $a(n)$ counts \emph{different sums}, not factors, occurrences, or
+Parikh vectors. In particular, two different Parikh vectors can contribute
+the same additive class. We use $a(0)=1$ for the empty factor.
+
+For example, the letters all occur, so $a(1)=3$. The length-two factors are
+$00,01,02,10,20$; their sums are $0,1,2$, so $a(2)=3$. By contrast, there
+are five distinct length-two factors and three distinct length-two Parikh
+vectors. These distinctions matter when interpreting a frequency question.
+
+For $j\in\{3,4,5\}$ define
+\begin{equation}\label{eq:countdef}
+ C_j(N)=\#\{0\le n<N:a(n)=j\}.
+\end{equation}
+The variable being sampled uniformly is the \emph{length} $n$, not the
+starting position of a factor. We seek the limits $C_j(N)/N$.
+
+\subsection{The published question and the exclusion check}
+In Theorem~18 of their full preprint \cite{PSS}, Popoli, Shallit and
+Stipulanti establish the range $\{3,4,5\}$ for positive lengths and provide
+a 76-state Tribonacci automaton computing the function. Their Remark~19
+then leaves the respective proportions open. Our question is precisely
+that proportion question, with ``proportion'' made explicit as ordinary
+natural density over integer lengths.
+
+The area was selected before this question was chosen: a single call to
+Python's OS-backed \code{secrets.randbelow(120)} returned zero-based index
+$67$, selecting \emph{Combinatorics on words}, item $68$ of the recorded
+120-area list. The complete list and result are in
+\code{data/selection.json}. The uploaded catalogue
+\code{manifest(1).tex}, containing 71 research packages, was read in full.
+This target is not among its entries. Its transfinite-word order-type
+problems and its discrepancy problem for $0\mapsto1$, $1\mapsto(10)^m$
+concern different substitutions, invariants and questions.
+
+A focused current-literature search on 20 September 2026 found no later
+resolution of this particular density problem. The checked sources include
+the full 2024 preprint and the later work of Couvreur et al.
+\cite{Couvreur}, in its April 2025 version~2. The latter develops more general
+automata constructions for abelian-type complexities; it is not used as a
+proof of the densities below. The scope and exact source versions are
+recorded in \code{notes/sources.md}. Failure to find another solution is not
+itself evidence sufficient to assert absolute novelty.
+
+\subsection{Main theorem}
+Let $\beta$ be the real root greater than one of
+\begin{equation}\label{eq:beta}
+ f(x)=x^3-x^2-x-1.
+\end{equation}
+Numerically, $\beta=1.83928675521416113255\ldots$.
+
+\begin{theorem}[Natural densities and a power-saving error]\label{thm:main}
+For the additive complexity \eqref{eq:additive}, the ordinary natural
+densities of the values $3,4,5$ exist and equal
+\begin{align}
+ d_3&=\frac{21\beta^2-38\beta+5}{22},\label{eq:d3}\\
+ d_4&=\frac{-55\beta^2+72\beta+67}{22},\label{eq:d4}\\
+ d_5&=\frac{17\beta^2-17\beta-25}{11}.\label{eq:d5}
+\end{align}
+More precisely, with
+\begin{equation}\label{eq:theta}
+ \theta=\frac{\log(7/5)}{\log\beta}
+       =0.55215697321855134306\ldots,
+\end{equation}
+we have, for each $j\in\{3,4,5\}$,
+\begin{equation}\label{eq:mainerror}
+ C_j(N)=d_jN+O(N^\theta)\qquad(N\to\infty).
+\end{equation}
+All three densities are strictly positive and their sum is one.
+\end{theorem}
+
+The decimal values are
+\begin{center}
+\begin{tabular}{@{}crr@{}}
+\toprule
+Value & Natural density & Percentage\\
+\midrule
+$3$ & $0.27952701944967565180\ldots$ & $27.9527019449\ldots\%$\\
+$4$ & $0.60749905184438815304\ldots$ & $60.7499051844\ldots\%$\\
+$5$ & $0.11297392870593619515\ldots$ & $11.2973928705\ldots\%$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The main point beyond extracting a dominant eigenvector is that
+\eqref{eq:mainerror} holds at \emph{every} cutoff. Limits along a sparse
+sequence of numeration-system cutoffs do not by themselves establish natural
+density. Section~\ref{sec:allcutoffs} supplies the missing uniform step.
+
+\subsection{What is new, what is reused, and what is certified}
+The range of $a(n)$ and the existence of a 76-state automaton are already
+known \cite{PSS}. Abelian co-decomposition is a known mechanism, developed
+for this setting by Turek \cite{Turek}. We specialize and prove the needed
+recursions, then reconstruct the additive-complexity machine independently.
+We do not claim that our state numbering or serialized machine is identical
+to the authors' original file.
+
+The proposed contribution is the exact evaluation of the three densities,
+the uniform all-cutoff proof, and the explicit power-saving estimate.
+The finite parts of the argument are exposed as reproducible certificates:
+a closed family of co-decompositions, the quotient map to the displayed
+machine, an algebraic eigenvector, and a polynomial identity for the integer
+adjacency matrix. A verifier checks those finite identities using only
+Python's standard library. The passage from them to an infinite-word theorem
+and a limit theorem is proved in the text.
+
+\section{Tribonacci numeration and word prefixes}
+\label{sec:numeration}
+
+Define words and lengths
+\[
+ W_k=\varphi^k(0),\qquad T_k=|W_k|.
+\]
+The initial values and recursions are
+\begin{equation}\label{eq:Trec}
+ T_0=1,\quad T_1=2,\quad T_2=4,\qquad
+ T_k=T_{k-1}+T_{k-2}+T_{k-3}\quad(k\ge3),
+\end{equation}
+and
+\begin{equation}\label{eq:Wrec}
+ W_k=W_{k-1}W_{k-2}W_{k-3}\quad(k\ge3).
+\end{equation}
+Indeed, $\varphi^k(0)=\varphi^{k-1}(0)\varphi^{k-1}(1)$,
+$\varphi^{k-1}(1)=\varphi^{k-2}(0)\varphi^{k-2}(2)$, and
+$\varphi^{k-2}(2)=\varphi^{k-3}(0)$.
+
+\begin{lemma}[Canonical representations]\label{lem:numeration}
+For every $k\ge0$, the binary strings of length $k$ with no occurrence of
+$111$ represent the integers $0\le n<T_k$ exactly once under
+\[
+ \val(b_{k-1}\cdots b_0)=\sum_{i=0}^{k-1}b_iT_i.
+\]
+Their lexicographic order agrees with numerical order. Leading zeros do not
+change the represented number. Every positive integer therefore has a unique
+representation beginning with $1$ and avoiding $111$.
+\end{lemma}
+\begin{proof}
+The assertions are immediate for $k=0,1,2$. For $k\ge3$, the allowed strings
+split into the three disjoint prefix classes $0$, $10$, and $110$.
+Their suffixes have lengths $k-1,k-2,k-3$, respectively, and may be arbitrary
+allowed strings of those lengths. By induction their represented intervals
+are
+\[
+ [0,T_{k-1}),\quad
+ [T_{k-1},T_{k-1}+T_{k-2}),\quad
+ [T_{k-1}+T_{k-2},T_k).
+\]
+These intervals are adjacent, disjoint and ordered exactly as the three
+prefixes. This proves all assertions, including uniqueness and order.
+\end{proof}
+
+Write $P_n=\ttt[0:n]$ and use $\rep(n)$ for the canonical representation,
+with $\rep(0)$ the empty string.
+
+\begin{lemma}[The prefix associated with a representation]\label{lem:prefix}
+If $\rep(n)=b_s\cdots b_0$, then
+\begin{equation}\label{eq:prefix}
+ P_n=W_s^{b_s}W_{s-1}^{b_{s-1}}\cdots W_0^{b_0}.
+\end{equation}
+Consequently, if appending $d\in\{0,1\}$ gives another allowed
+representation, and $N=\val(\rep(n)d)$, then
+\begin{equation}\label{eq:prefixtransition}
+ P_N=\varphi(P_n)0^d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The base cases follow from $W_0=0$, $W_1=01$, $W_2=0102$.
+For a prefix shorter than $T_k$, the same three intervals in the proof of
+Lemma~\ref{lem:numeration} say that it lies in the first block of
+\eqref{eq:Wrec}, consists of that block and a prefix of the second, or
+consists of the first two and a prefix of the third. Induction within those
+blocks gives \eqref{eq:prefix}. Applying $\varphi$ replaces each $W_i$
+by $W_{i+1}$; an appended digit $d$ contributes $W_0^d=0^d$.
+This proves \eqref{eq:prefixtransition}.
+\end{proof}
+
+The generating function of the numeration weights is
+\begin{equation}\label{eq:Tgf}
+ \sum_{k\ge0}T_kz^k=\frac{1+z+z^2}{1-z-z^2-z^3}.
+\end{equation}
+For later use it is enough that $T_k\asymp\beta^k$. This also follows below
+from the exact automaton spectrum; no asymptotic estimate is being assumed
+without proof.
+
+\section{From all factors to a finite automaton}
+\label{sec:automaton}
+
+\subsection{Co-decomposition and relative sums}
+\begin{definition}
+For finite words $u,v$ with $\Psi(u)=\Psi(v)$, cut both words at every
+position $i$ at which $\Psi(u[0:i])=\Psi(v[0:i])$. The set of paired
+nonempty pieces so obtained is denoted $\Dec(u,v)$. Repeated identical
+pairs are retained only once. This is the finest, or maximal-cut,
+abelian co-decomposition.
+\end{definition}
+The use of a set is intentional: only which relative vectors occur matters,
+not how many times a particular piece appears.
+
+For a pair $(u,v)$ of equal length define its scalar prefix differences by
+\[
+ S(u,v)=\{\sigma(v[0:i])-\sigma(u[0:i]):0\le i\le|u|\},
+\]
+and for a finite set $Z$ of such pairs let
+\begin{equation}\label{eq:out}
+ S(Z)=\bigcup_{(u,v)\in Z}S(u,v),\qquad o(Z)=|S(Z)|.
+\end{equation}
+If a pair is cut at a common Parikh prefix, the relative vector, and hence
+the scalar difference, is zero at the cut. It follows that $S(u,v)$ is
+exactly the union of the scalar-difference sets of its pieces.
+
+\subsection{A finite word containing every relevant factor}
+Fix $n\ge1$, choose $K$ such that $n\le T_K$, and put
+\[
+ W=\varphi^{K+3}(0),\qquad
+ \rot_n(W)=P_n^{-1}WP_n.
+\]
+Here $P_n^{-1}W$ means deletion of the specified prefix, not a group
+inverse. The prefix is available because $P_n$ is a prefix of $W$.
+
+\begin{lemma}[Coverage and independence]\label{lem:coverage}
+The set
+\begin{equation}\label{eq:Zn}
+ Z(n)=\Dec(W,\rot_n(W))
+\end{equation}
+is independent of the choice of $K$ satisfying $n\le T_K$. Moreover,
+\begin{equation}\label{eq:Zoutput}
+ a(n)=o(Z(n)).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $B_a=\varphi^{K+1}(a)$ for $a\in\{0,1,2\}$. Each $B_a$ begins with
+$W_K$: explicitly, $B_2=W_K$, while $B_0$ and $B_1$ begin with $W_K$.
+Thus each starts with $P_n$ and has length at least $n$.
+The fixed point is a concatenation of these blocks. A length-$n$ factor
+starting inside $B_a$ is contained in $B_aP_n$, because any part extending
+beyond the block is a prefix of the next block of length at most $n$.
+
+Now $W=\varphi^{K+1}(0102)$ contains every block type $B_a$. Every
+length-$n$ factor is therefore found at a position $0\le i<|W|$ in
+$WP_n$. Also $WP_n$ really is a prefix of $\ttt$: the letter following the
+first $0$ at the substitution level is $1$, and
+$\varphi^{K+3}(1)$ begins with $W_{K+2}$, which is long enough to contain
+$P_n$.
+
+For $0\le i\le|W|$, subtraction of prefix vectors gives
+\begin{align*}
+ \Psi(\rot_n(W)[0:i])-\Psi(W[0:i])
+ &=\Psi(\ttt[n:n+i])-\Psi(\ttt[0:i])\\
+ &=\Psi(\ttt[i:i+n])-\Psi(P_n).
+\end{align*}
+As $i$ varies, these are exactly the relative Parikh vectors of length-$n$
+factors; the possible endpoint $i=|W|$ contributes the already present zero
+vector. Cutting at every zero vector does not change the union of the
+prefix-difference vectors. Applying the linear functional
+$(x_0,x_1,x_2)\mapsto x_1+2x_2$ and adding the constant $\sigma(P_n)$
+therefore proves \eqref{eq:Zoutput}.
+
+For independence, let $K_0$ be the least index with $n\le T_{K_0}$ and
+instead fix $B_a=\varphi^{K_0+1}(a)$. For every $K\ge K_0$ we have
+\[
+ \varphi^{K+3}(0)
+ =\varphi^{K_0+1}\bigl(\varphi^{K-K_0+2}(0)\bigr).
+\]
+The word inside the parentheses contains all three letters, since
+$\varphi^2(0)=0102$. Each $B_a$ starts with $P_n$. If $B_a=P_nU_a$, then
+rotating a concatenation of these blocks by $P_n$ gives the concatenation
+of the corresponding $U_aP_n$. At every block boundary the top and bottom
+have the same Parikh vector. The finest co-decomposition is consequently
+\[
+ \bigcup_{a\in\{0,1,2\}}\Dec(B_a,P_n^{-1}B_aP_n),
+\]
+which no longer depends on $K$. This proves independence.
+\end{proof}
+
+\subsection{The digit transition}
+The following specializes the co-decomposition mechanism of Turek
+\cite{Turek}; we give the argument because it is the connection between the
+infinite word and the finite certificate.
+
+For a pair $(u,v)$ define
+\begin{align}
+ D_0(u,v)&=\Dec(\varphi(u),\varphi(v)),\label{eq:D0}\\
+ D_1(u,v)&=\Dec(\varphi(u),0^{-1}\varphi(v)0).\label{eq:D1}
+\end{align}
+Every nonempty image under $\varphi$ begins with $0$, so the prefix deletion
+in \eqref{eq:D1} is always legal. Extend the operation to a set by
+$D_d(Z)=\bigcup_{(u,v)\in Z}D_d(u,v)$.
+
+\begin{proposition}[Exact finite-state update]\label{prop:transition}
+We have
+\begin{equation}\label{eq:initialZ}
+ Z(1)=\{(0,0),(01,10),(02,20)\}.
+\end{equation}
+If $\rep(N)=\rep(n)d$ is allowed and $n\ge1$, then
+\begin{equation}\label{eq:Ztransition}
+ Z(N)=D_d(Z(n)).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The initial calculation uses $W=\varphi^3(0)=0102010$ and its one-letter
+rotation $1020100$; cutting at all equal Parikh prefixes gives
+\eqref{eq:initialZ}.
+
+Choose $K$ sufficiently large that both the old and the new prefix fit in
+the block constructions of Lemma~\ref{lem:coverage}. By
+Lemma~\ref{lem:prefix}, $P_N=\varphi(P_n)0^d$. For $d=0$, applying
+$\varphi$ to the old paired words gives the new rotated pair. All former
+piece boundaries remain common Parikh boundaries, so refinement inside each
+image pair gives exactly $D_0(Z(n))$.
+
+For $d=1$, the new bottom word is the additional one-letter rotation of the
+bottom word just obtained. If its consecutive image pieces are
+$\varphi(v_1),\ldots,\varphi(v_m)$, each starts with $0$. Writing each as
+$0V_i$ shows
+\[
+ 0^{-1}\bigl((0V_1)\cdots(0V_m)\bigr)0
+   =(V_1 0)\cdots(V_m 0).
+\]
+Thus the one-letter rotation can be performed in each piece separately.
+Each rotated piece still has the same Parikh vector as its top partner.
+Refinement at all common Parikh prefixes gives $D_1(Z(n))$, as required.
+\end{proof}
+
+\subsection{Exhaustive closure and the 76-state quotient}
+Starting with \eqref{eq:initialZ}, apply both transitions to every newly
+encountered set until no new set remains. The executed construction reaches
+exactly $277$ distinct sets, using $56$ distinct word pairs; the longest
+word in a pair has length $24$. These are a finite closed family, not a
+sample of the first few lengths. The serialized family, its two outgoing
+transitions at every state, and its scalar output sets are all in
+\code{data/co\_decomposition.json}.
+
+The raw closure is larger than necessary because it also allows digit
+strings containing $111$. To restrict to the canonical language, form the
+product with the trailing-one counter $r\in\{0,1,2\}$. A zero resets $r$;
+a one increments it, and a one is forbidden when $r=2$. Beginning after the
+first digit $1$ gives $296$ reachable product states. Add a zero/empty
+initial state of output $1$ and an invalid sink of output $0$.
+
+Partition states by output and repeatedly refine using the signature
+\[
+ \bigl(\text{output}(q),\,
+       \text{class}(\delta(q,0)),\,
+       \text{class}(\delta(q,1))\bigr).
+\]
+After stabilization, the quotient has $77$ states including the invalid
+sink. Omitting the sink leaves $76$ live states. Canonical breadth-first
+numbering, visiting digit $0$ before digit $1$, gives the table in
+Appendix~\ref{app:transitions}. Its initial state is $0$, and a dash denotes
+the omitted invalid transition.
+
+\begin{proposition}[Certified machine]\label{prop:machine}
+For every $n\ge0$, reading $\rep(n)$ from state $0$ in the table of
+Appendix~\ref{app:transitions} produces the output $a(n)$. Leading zeros
+may be inserted arbitrarily. In particular $a(n)\in\{3,4,5\}$ for $n>0$.
+\end{proposition}
+\begin{proof}
+The finite closure certificate checks \eqref{eq:D0}--\eqref{eq:D1} for all
+$277$ sets. Proposition~\ref{prop:transition} and induction on the number of
+digits show that its output is $a(n)$ on every allowed positive
+representation. The language product forbids exactly $111$. At every
+refinement step, states in one stable class have equal outputs and their
+transitions go to equal classes. The included quotient map checks this
+commuting property for \emph{every} product state and both digits, not only
+for representatives. Thus quotienting preserves all outputs on all finite
+inputs. The added initial state handles the empty string and leading
+zeros. Finally, all positive-representation states have output $3,4$, or
+$5$, as the table shows.
+\end{proof}
+
+This proposition reproves the already known range theorem. It is included
+to make the spectral calculation independent of an unavailable external
+automaton file. The implementation is short enough to audit: it uses only
+word substitution, integer prefix differences, finite sets, a queue, and
+partition refinement. No search through an unbounded sequence is used to
+guess a transition.
+
+\section{An exact spectral certificate}
+\label{sec:spectrum}
+
+\subsection{The adjacency matrix and suffix counts}
+Let $Q=\{0,1,\ldots,75\}$ be the live state set, let $o(q)$ denote its
+output, and define the nonnegative integer matrix
+\begin{equation}\label{eq:A}
+ A_{qt}=\#\{d\in\{0,1\}:\delta(q,d)=t\}.
+\end{equation}
+An illegal transition contributes nothing. If both digits have the same
+target, their contributions are counted with multiplicity. Row vectors act
+on the left. For each $j\in\{1,3,4,5\}$, let $h_j$ be the column vector
+whose $q$th entry is $1$ when $o(q)=j$ and $0$ otherwise. Then
+\begin{equation}\label{eq:suffixcounts}
+ e_qA^kh_j
+\end{equation}
+counts the legal suffixes of length $k$ that, starting at $q$, finish at
+output $j$. In particular,
+\begin{equation}\label{eq:cutoffcounts}
+ C_j(T_k)=e_0A^kh_j,\qquad T_k=e_0A^k\one
+\end{equation}
+for $j=3,4,5$.
+
+The key task is to understand \eqref{eq:suffixcounts} \emph{uniformly in
+$q$}. There are only $76$ states, but their leading amplitudes are not all
+the same. Ignoring that dependence would make the all-cutoff argument
+invalid.
+
+\subsection{The closed component and a right eigenvector}
+The transition table has the closed strongly connected component
+\begin{equation}\label{eq:C}
+ \cc=\{5,9,10,11\}\cup\{14,15,\ldots,75\}.
+\end{equation}
+It contains $66$ states, and every live state can reach it. State $62$ has
+a self-loop on digit $0$. These assertions are checked by forward and
+reverse graph searches in the verifier. Within $\cc$, there are $10$ states
+of output $3$, $41$ of output $4$, and $15$ of output $5$.
+\emph{The desired proportions are not these counts divided by $66$.}
+Different states are reached with different asymptotic weights.
+
+Each live state has a well-defined trailing-one context $r(q)\in\{0,1,2\}$.
+It can be recovered directly from the table: $r(q)=2$ if its $1$-transition
+is illegal; otherwise $r(q)=1$ if the target's $1$-transition is illegal;
+and otherwise $r(q)=0$. The table verifies
+\[
+ r(\delta(q,0))=0,
+ \qquad r(\delta(q,1))=r(q)+1
+\]
+whenever the latter transition is legal. Define
+\begin{equation}\label{eq:right}
+ v_q=
+ \begin{cases}
+ 1,&r(q)=0,\\
+ \beta-1,&r(q)=1,\\
+ \beta^{-1}=\beta^2-\beta-1,&r(q)=2.
+ \end{cases}
+\end{equation}
+All entries are positive, and $v_0=1$.
+
+\begin{lemma}\label{lem:right}
+The vector \eqref{eq:right} satisfies $Av=\beta v$.
+\end{lemma}
+\begin{proof}
+At context $0$, the two target values sum to $1+(\beta-1)=\beta$.
+At context $1$, they sum to $1+\beta^{-1}=\beta^2-\beta
+=\beta(\beta-1)$. At context $2$, only the zero-transition remains,
+with value $1=\beta\beta^{-1}$. These are exactly the three eigenvector
+equations. The identity $1+\beta^{-1}=\beta^2-\beta$ follows from
+\eqref{eq:beta}.
+\end{proof}
+
+\subsection{A left eigenvector in the cubic field}
+Appendix~\ref{app:eigenvector} supplies integer triples $(u_q,w_q,z_q)$
+with
+\begin{equation}\label{eq:left}
+ \ell_q=\frac{u_q+w_q\beta+z_q\beta^2}{44}.
+\end{equation}
+The ten entries outside $\cc$ are zero. The exact finite identities are
+\begin{equation}\label{eq:leftcert}
+ \ell A=\beta\ell,\qquad \ell\one=1.
+\end{equation}
+No floating-point calculation is needed to verify them. Reduction modulo
+$f(\beta)=0$ sends multiplication by $\beta$ to the integer operation
+\begin{equation}\label{eq:triplerule}
+ (u,w,z)\longmapsto(z,u+z,w+z).
+\end{equation}
+For each column $q$ of $A$, add the triples at its incoming sources, with
+edge multiplicities, and compare with \eqref{eq:triplerule}. This is a
+collection of $228$ integer component equalities. Normalization amounts to
+\[
+ \sum_q(u_q,w_q,z_q)=(44,0,0).
+\]
+For a concrete example, the incoming sources for state $62$ are $56,62,71$.
+Its triple is $(14,-48,22)$, and the sum of the three incoming triples is
+$(22,36,-26)$, exactly its image under \eqref{eq:triplerule}.
+
+The sums over output classes are particularly simple:
+\begin{center}
+\begin{tabular}{@{}crrr@{}}
+\toprule
+Output & $\sum u_q$ & $\sum w_q$ & $\sum z_q$\\
+\midrule
+$1$ & $0$ & $0$ & $0$\\
+$3$ & $10$ & $-76$ & $42$\\
+$4$ & $134$ & $144$ & $-110$\\
+$5$ & $-100$ & $-68$ & $68$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Consequently
+\begin{equation}\label{eq:leftdensity}
+ \ell h_j=d_j\quad(j=3,4,5)
+\end{equation}
+with the expressions in Theorem~\ref{thm:main}. Direct multiplication of
+the left and right vectors, reduced using \eqref{eq:beta}, also gives
+\begin{equation}\label{eq:normalization}
+ \ell v=5\beta^2-6\beta-5,
+ \qquad
+ \frac1{\ell v}=\frac{3\beta^2+7\beta+2}{22}>0.
+\end{equation}
+The second identity can be verified by multiplying its two sides by
+$5\beta^2-6\beta-5$ and reducing modulo $f$.
+
+\subsection{An integer annihilating polynomial}
+The next certificate controls every eigenvalue, including transient states.
+Define
+\begin{align}
+ p(x)={}&x^{45}(x-1)^3(x^2+x+1)(x^8-x^4+1)
+ \notag\\[-1mm]
+ &\quad\cdot(x^3-x^2-x-1)(x^3+x^2+x-1)
+ \notag\\
+ &\quad\cdot(x^{12}-2x^9-2x^5-2x+1).
+ \label{eq:p}
+\end{align}
+It has degree $76$.
+
+\begin{lemma}[Finite annihilator certificate]\label{lem:annihilator}
+The matrix in \eqref{eq:A} satisfies
+\begin{equation}\label{eq:pA}
+ p(A)=0.
+\end{equation}
+\end{lemma}
+\begin{proof}[Exact verification]
+Expand the product \eqref{eq:p} by integer convolution, then evaluate it at
+$A$ by Horner's rule. Each left multiplication by $A$ is only the addition
+of the rows corresponding to the one or two legal targets in the transition
+table. Every one of the $76^2=5776$ final entries is zero.
+The routine \code{check\_spectral} in \code{code/verify.py} performs these
+operations verbatim, with unbounded integers. Thus \eqref{eq:pA} is a
+finite explicit integer identity, not a numerical eigenvalue estimate.
+An optional symbolic derivation also identifies $p$ as the characteristic
+polynomial, but that stronger identification is unnecessary for this proof.
+\end{proof}
+
+\begin{lemma}[Separation from the dominant root]\label{lem:gap}
+Every zero of $p$ other than $\beta$ has modulus strictly less than $7/5$.
+The zero $\beta$ has multiplicity one in $p$.
+\end{lemma}
+\begin{proof}
+The zero factors at $0$ and the roots of unity are harmless. The roots of
+$x^8-x^4+1$ lie on the unit circle because
+\[
+ (x^4+1)(x^8-x^4+1)=x^{12}+1.
+\]
+For $f(x)=x^3-x^2-x-1$, its derivative is $(3x+1)(x-1)$, and its local
+maximum, at $-1/3$, is $-22/27<0$. Hence $f$ has just one real root.
+Direct substitution places this root in $(9/5,19/10)$. The other roots
+are a conjugate pair whose product is $1/\beta$, so each has modulus
+$\beta^{-1/2}<1$. The roots of $x^3+x^2+x-1$ are the reciprocals of the
+roots of $f$. Their moduli are $\beta^{-1}$ and $\sqrt\beta$, both less
+than $7/5$, since $\beta<19/10<49/25$.
+
+It remains to treat
+\[
+ R(x)=x^{12}-2x^9-2x^5-2x+1.
+\]
+At $r=7/5$, the following strictly positive margin is exact:
+\begin{equation}\label{eq:radiusmargin}
+ r^{12}-2r^9-2r^5-2r-1
+ =\frac{199057326}{244140625}>0.
+\end{equation}
+If $R(z)=0$ and $|z|\ge r$, the triangle inequality would give
+\[
+ 1\le 2|z|^{-3}+2|z|^{-7}+2|z|^{-11}+|z|^{-12}
+ \le 2r^{-3}+2r^{-7}+2r^{-11}+r^{-12}<1,
+\]
+a contradiction. This proves the modulus bound for the last factor.
+All other factors are nonzero at $\beta$, and the real root of $f$ is
+simple, proving the multiplicity assertion.
+\end{proof}
+
+\subsection{The rank-one asymptotic and uniform cancellation}
+\begin{lemma}[Simple dominant eigenvalue]\label{lem:simple}
+The eigenspace of $A$ at $\beta$ is one-dimensional, spanned by $v$.
+Its algebraic multiplicity is also one.
+\end{lemma}
+\begin{proof}
+Given an eigenvector $x$, divide its coordinates by the positive vector
+$v$, writing $y_q=x_q/v_q$. The equation $Ax=\beta x$ becomes
+\[
+ y_q=\sum_t P_{qt}y_t,
+ \qquad
+ P_{qt}=\frac{A_{qt}v_t}{\beta v_q}.
+\]
+By Lemma~\ref{lem:right}, every row of $P$ sums to one. On the closed
+strongly connected set $\cc$, a real harmonic function is constant: at a
+maximum, every successor with positive transition probability must have
+that same value, and connectivity propagates it throughout $\cc$.
+For a complex harmonic function, apply the argument to real and imaginary
+parts. Every live state has a path into $\cc$. Applying the same maximum
+and minimum argument to all states shows that a real harmonic function
+cannot exceed or fall below the constant already forced on $\cc$.
+Thus $y$ is constant everywhere and $x$ is a multiple of $v$.
+
+Finally, \eqref{eq:pA} and the simple factor of $p$ at $\beta$ imply that
+no Jordan block at $\beta$ has size greater than one. Together with the
+one-dimensional eigenspace, this proves algebraic multiplicity one.
+\end{proof}
+
+\begin{proposition}[Uniform suffix estimate]\label{prop:spectral}
+In any fixed matrix norm,
+\begin{equation}\label{eq:spectral}
+ A^k=\beta^k\frac{v\ell}{\ell v}
+      +O\bigl((7/5)^k\bigr).
+\end{equation}
+For every $j\in\{3,4,5\}$, uniformly over all live states $q$,
+\begin{equation}\label{eq:cancellation}
+ e_qA^k(h_j-d_j\one)=O\bigl((7/5)^k\bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:simple} and \eqref{eq:leftcert} identify the spectral
+projector at $\beta$ as $v\ell/(\ell v)$; the denominator is nonzero by
+\eqref{eq:normalization}. All remaining eigenvalues lie strictly inside
+the circle of radius $7/5$, by Lemmas~\ref{lem:annihilator}
+and~\ref{lem:gap}. In Jordan form their powers are a finite sum of terms
+bounded by a polynomial in $k$ times $|\lambda|^k$. For each such
+$|\lambda|<7/5$, this is $O((7/5)^k)$. Nilpotent blocks vanish after a
+finite number of steps. This proves \eqref{eq:spectral}.
+
+Since $\ell\one=1$ and $\ell h_j=d_j$, the dominant rank-one term
+annihilates $h_j-d_j\one$. This gives \eqref{eq:cancellation}. A single
+constant works for all states because $Q$ is finite.
+\end{proof}
+
+There is no assumption here that the automaton graph itself is one
+irreducible component. The transient states have been included throughout,
+which is essential when a counting block starts near the initial state.
+
+\begin{corollary}\label{cor:Tasymptotic}
+With $c_\beta=(3\beta^2+7\beta+2)/22$, we have
+\[
+ T_k=c_\beta\beta^k+O((7/5)^k),\qquad
+ C_j(T_k)=d_jc_\beta\beta^k+O((7/5)^k).
+\]
+Also $d_j>0$ for $j=3,4,5$ and $d_3+d_4+d_5=1$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:spectral} to \eqref{eq:cutoffcounts}, using $v_0=1$ and
+\eqref{eq:normalization}. The sum of the three displayed formulas for $d_j$
+is exactly one. Positivity can be seen without relying on decimal
+approximations: the matrices $\beta^{-k}A^k$ are nonnegative and converge
+to $v\ell/(\ell v)$. Since $v$ and $\ell v$ are positive, $\ell$ is
+nonnegative. Its sum is one, and it is supported on $\cc$. The left
+eigenvector equation and strong connectivity force it to be strictly
+positive at every state of $\cc$. Each of the three output classes meets
+$\cc$, so every $\ell h_j$ is positive.
+\end{proof}
+
+\section{From numeration cutoffs to every integer cutoff}
+\label{sec:allcutoffs}
+
+The passage in this section is what turns asymptotic path counts into the
+natural-density theorem. It also explains why a numerical fit along $T_k$
+would have been insufficient.
+
+\subsection{The lexicographic decomposition}
+Take $N\ge1$ and write its canonical representation as a length-$L$ word
+\[
+ b=b_{L-1}\cdots b_0.
+\]
+Pad every representation of an integer below $N$ with leading zeros to
+length $L$. For each position at which $b_k=1$, consider the set of words
+which agree with $b$ at all more significant positions, have $0$ at
+position $k$, and then have any allowed suffix of length $k$. Call this
+set $\cyl_k$.
+
+\begin{lemma}[Disjoint prefix cylinders]\label{lem:cylinders}
+The allowed length-$L$ words representing $0\le n<N$ are the disjoint union
+of the $\cyl_k$ over positions with $b_k=1$. If $q_k$ is the automaton state
+after the retained prefix followed by that $0$, then
+\[
+ |\cyl_k|=e_{q_k}A^k\one,
+ \qquad
+ \#\{n\in\cyl_k:a(n)=j\}=e_{q_k}A^kh_j.
+\]
+\end{lemma}
+\begin{proof}
+Every smaller word has a unique most significant position where it first
+differs from $b$. At that position $b$ has $1$ and the smaller word has
+$0$. Conversely, any word formed in this way is lexicographically smaller,
+and Lemma~\ref{lem:numeration} says it is numerically smaller. The initial
+prefix is allowed because it is a prefix of $b$ with a $1$ replaced at its
+end by $0$; that replacement cannot create $111$. Legal completions are
+precisely the suffix paths counted by $A^k$. Uniqueness of the first
+position proves disjointness.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Subtract $d_j$ times the first count of Lemma~\ref{lem:cylinders} from the
+second and sum over the disjoint cylinders. Proposition~\ref{prop:spectral}
+gives
+\begin{align*}
+ |C_j(N)-d_jN|
+ &\le K\sum_{\substack{0\le k<L\\b_k=1}}(7/5)^k\\
+ &\le K\sum_{k=0}^{L-1}(7/5)^k
+ =O((7/5)^L),
+\end{align*}
+where $K$ is independent of the prefix state and of $N$.
+There is at most one block of each suffix length, so the geometric sum
+does not introduce an extra logarithmic factor.
+
+By Lemma~\ref{lem:numeration},
+$T_{L-1}\le N<T_L$. Corollary~\ref{cor:Tasymptotic} implies
+$\beta^L\asymp N$. With $\theta$ from \eqref{eq:theta},
+\[
+ (7/5)^L=(\beta^L)^\theta=O(N^\theta).
+\]
+This proves \eqref{eq:mainerror}. Since $\theta<1$, division by $N$
+proves the ordinary natural-density limits. Positivity and normalization
+were proved in Corollary~\ref{cor:Tasymptotic}.
+\end{proof}
+
+\subsection{Two uniform consequences}
+\begin{corollary}[Fixed-prefix proportions]\label{cor:prefix}
+Fix any allowed prefix $w$, with leading zeros permitted. Among all allowed
+words $ws$ with $|s|=k$, the proportion whose represented length has
+additive complexity $j$ tends to $d_j$ as $k\to\infty$.
+\end{corollary}
+\begin{proof}
+If $q$ is the state reached by $w$, the numerator is $e_qA^kh_j$ and the
+denominator is $e_qA^k\one$. Their leading terms from
+\eqref{eq:spectral} are, respectively,
+$\beta^kv_qd_j/(\ell v)$ and $\beta^kv_q/(\ell v)$.
+The latter is positive and the error is of smaller exponential order.
+\end{proof}
+
+\begin{corollary}[Intervals and the mean complexity]\label{cor:mean}
+For integers $X\ge1$ and $1\le H\le X$,
+\[
+ \#\{X\le n<X+H:a(n)=j\}=d_jH+O(X^\theta).
+\]
+In particular the corresponding proportions tend to $d_j$ whenever
+$H/X^\theta\to\infty$. Furthermore,
+\begin{equation}\label{eq:mean}
+ \frac1N\sum_{0\le n<N}a(n)
+ =\frac{13\beta^2+4\beta+33}{22}+O(N^{\theta-1}),
+\end{equation}
+whose limiting value is $3.83344690925626054335\ldots$.
+\end{corollary}
+\begin{proof}
+Subtract \eqref{eq:mainerror} at $X$ from the same formula at $X+H$;
+because $H\le X$, both error terms are $O(X^\theta)$.
+For the mean, the length-zero contribution is $1$, and every positive
+length contributes one of $3,4,5$. Thus
+\[
+ \sum_{n<N}a(n)=1+3C_3(N)+4C_4(N)+5C_5(N)
+\]
+for $N\ge1$. Substitute the three count estimates and simplify
+$3d_3+4d_4+5d_5$ in the basis $1,\beta,\beta^2$.
+\end{proof}
+
+\begin{remark}[What the exponent does not say]
+The exponent in \eqref{eq:theta} is a certified convenient bound, not an
+assertion of optimality. It comes from the rational spectral radius bound
+$7/5$, whose proof is the single exact inequality
+\eqref{eq:radiusmargin}. The theorem supplies no claimed numerical value
+for the implicit constant in the error term, and it does not assert uniform
+relative accuracy on intervals shorter than the scale covered by
+Corollary~\ref{cor:mean}.
+\end{remark}
+
+\section{Exact counting and rational generating functions}
+\label{sec:computation}
+
+\subsection{An exact algorithm for any cutoff}
+The proof gives a practical counting algorithm. Let
+\[
+ F_k(q,j)=e_qA^kh_j.
+\]
+Its initialization and recurrence are
+\begin{equation}\label{eq:DP}
+ F_0(q,j)=\mathbf 1_{o(q)=j},\qquad
+ F_{k+1}(q,j)=\sum_{\substack{d\in\{0,1\}\\\delta(q,d)\text{ legal}}}
+ F_k(\delta(q,d),j).
+\end{equation}
+Precompute these arrays for $0\le k\le L$, read the digits of $N$, and at
+each digit $1$ add the array for the alternative zero-transition and the
+remaining suffix length. This is exactly the disjoint union used in
+Lemma~\ref{lem:cylinders}. Only additions of nonnegative integers are
+required; no density approximation enters the computation.
+
+There are $76$ states and four output labels including the empty-factor
+value $1$. The precomputation uses $O(76L)$ integer additions up to a fixed
+constant, and the final digit scan uses $O(L)$ more. The integers have
+$O(L)$ bits. With ordinary addition this gives a conservative
+$O(76L^2)$ bit-operation bound, where $L=O(\log N)$; retaining all suffix
+layers uses $O(76L^2)$ bits. Computing a single $a(n)$ uses one transition
+per digit after conversion to Tribonacci numeration.
+
+Here are exact counts produced by the included code. The three displayed
+counts sum to $N-1$, because the single length $0$ has value $1$.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N$ & $C_3(N)$ & $C_4(N)$ & $C_5(N)$\\
+\midrule
+\csname @@input\endcsname tables/counts_rows.tex 
+\bottomrule
+\end{tabular}
+\end{center}
+The data files also include exact counts at $10^{18}$, $10^{30}$ and
+$10^{100}$. These are finite computations of whole intervals, not
+extrapolations from smaller samples. For example, at $N=10^{18}$ the counts
+are
+\begin{align*}
+ C_3(10^{18})&=279527022667110675,\\
+ C_4(10^{18})&=607499052340780247,\\
+ C_5(10^{18})&=112973924992109077.
+\end{align*}
+The comparatively slow visible convergence at moderate cutoffs is compatible
+with the error bound; it was not used to guess exact coefficients in the
+density formulas.
+
+\subsection{Generating functions at Tribonacci cutoffs}
+The whole sequence of cutoff counts has a compact rational description.
+Set
+\begin{equation}\label{eq:cutoffGF}
+ G_j(z)=\sum_{k\ge0}C_j(T_k)z^k\quad(j=3,4,5)
+\end{equation}
+and define
+\begin{align}
+ B(z)&=1-z-z^2-z^3,\notag\\
+ Q(z)&=1-2z^3-2z^7-2z^{11}+z^{12},\label{eq:gfparts}\\
+ D(z)&=(1-z)^2B(z)Q(z).\notag
+\end{align}
+
+\begin{proposition}[Exact rational cutoff series]\label{prop:GF}
+For $j\in\{3,4,5\}$,
+\begin{equation}\label{eq:GF}
+ G_j(z)=\frac{P_j(z)}{D(z)},
+\end{equation}
+where the integer coefficients of $P_j$ are given in
+Appendix~\ref{app:numerators}. Their degrees are $27,30,30$, respectively.
+In addition,
+\begin{equation}\label{eq:GFtotal}
+ \frac1{1-z}+G_3(z)+G_4(z)+G_5(z)
+   =\frac{1+z+z^2}{B(z)}.
+\end{equation}
+The common denominator displayed here is sufficient for the assertions;
+no minimality claim is needed.
+\end{proposition}
+\begin{proof}[Finite-certificate proof]
+For a proposed numerator $P_j$, compare its coefficients with those of
+$D(z)\sum_{k\ge0}e_0A^kh_jz^k$. The verifier checks the coefficient
+equalities through degree $106$. The degree of $D$ is $17$ and the largest
+numerator degree is $30$.
+
+For $k\ge17$, the residual coefficient is a fixed linear combination of
+$e_0A^{k-i}h_j$ for $0\le i\le17$. Thus the residual sequence, after this
+initial offset, satisfies the monic order-$76$ recurrence supplied by
+$p(A)=0$. Its $76$ consecutive values at $k=31,\ldots,106$ are all zero.
+The recurrence forces every subsequent value to be zero. The earlier
+coefficients have been checked individually, proving \eqref{eq:GF}
+identically, rather than to a finite truncation only.
+
+The output $1$ occurs exactly for the zero representation, contributing
+$1$ at every cutoff $T_k$. Summing all four output classes gives $T_k$.
+Equation~\eqref{eq:Tgf} proves \eqref{eq:GFtotal}.
+\end{proof}
+
+The dominant-pole ratios provide an additional independent check on the
+\emph{evaluation} of the three densities. Put $\rho=\beta^{-1}$ and
+write $d_j=(a_j\beta^2+b_j\beta+c_j)/22$, with
+\[
+ (a_3,b_3,c_3)=(21,-38,5),\quad
+ (a_4,b_4,c_4)=(-55,72,67),\quad
+ (a_5,b_5,c_5)=(34,-34,-50).
+\]
+The verifier checks the exact polynomial divisibilities
+\begin{equation}\label{eq:residuecert}
+ B(z)\ \bigm|\ 22z^2P_j(z)
+ -(a_j+b_jz+c_jz^2)(1-z)^2Q(z)(1+z+z^2).
+\end{equation}
+Evaluating at $\rho$ says precisely that the ratio of the dominant pole
+coefficients in $G_j$ and the total cutoff generating function is $d_j$.
+This agrees with the eigenvector aggregation. It is not used as a substitute
+for the arbitrary-cutoff argument in Section~\ref{sec:allcutoffs}.
+
+\section{Verification, reproducibility and limits of the claim}
+\label{sec:verification}
+
+\subsection{Finite proofs versus finite experiments}
+The verifier contains two logically different types of check.
+First, it verifies finite identities that support an all-index proof:
+closure under both co-decomposition transitions; the full quotient diagram;
+the right and left eigenvector equations; the integer annihilator; the
+spectral separation inequality; and the generating-function recurrences.
+Once verified, these combine with the induction and asymptotic arguments
+in the article to establish claims for all lengths and all cutoffs.
+
+Second, it performs additional finite cross-checks. These are useful for
+detecting implementation mistakes but are not, by themselves, evidence
+that replaces an all-index proof. The most substantial of these is a
+separate enumeration of \emph{all} length-$n$ factors for every
+$1\le n\le2048$.
+
+\begin{lemma}[Complete finite coverage for the cross-check]\label{lem:paircheck}
+The legal adjacent letter pairs of $\ttt$ are exactly
+\[
+ \mathcal P=\{00,01,02,10,20\}.
+\]
+If $m$ is chosen so that $\min_a|\varphi^m(a)|\ge H$, then every factor
+of $\ttt$ of length at most $H$ occurs in at least one word
+$\varphi^m(ab)$ with $ab\in\mathcal P$. Conversely, every factor of
+one of those five words occurs in $\ttt$.
+\end{lemma}
+\begin{proof}
+All five listed pairs occur in $\varphi^3(0)=0102010$. Inside a single
+substitution image, the only pairs are $01$ and $02$. Across two images,
+the next image begins with $0$ and the previous one ends in $0,1$, or $2$,
+so the only possibilities are $00,10,20$. This proves the exact pair set.
+
+Since $\ttt=\varphi^m(\ttt)$, the fixed point is a concatenation of blocks
+$\varphi^m(a)$. A factor of length at most $H$ starting inside one block
+cannot extend beyond the end of the next block: that next block already
+has length at least $H$. Therefore the factor is contained in an image of
+a legal adjacent pair. Conversely, each legal adjacent pair occurs in
+$\ttt$, so its image occurs in $\varphi^m(\ttt)=\ttt$.
+\end{proof}
+
+For $H=2048$, the verifier uses $m=14$, for which the shortest image has
+length $3136$. It forms prefix-sum arrays for the five pair images, slides
+a window of each length through each image, and collects the exact sums.
+This examines $93{,}070{,}336$ windows in total. The resulting number of
+sums agrees with the automaton at every tested length. Unlike testing a
+long guessed prefix, this enumeration has a proved coverage guarantee.
+
+\subsection{Recorded verification results}
+The standard run recorded in \code{data/verification\_results.json}
+returns \code{PASS}. Its principal checks are:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.61\textwidth}r@{}}
+\toprule
+Check & Size or outcome\\
+\midrule
+Co-decomposition pairs / closed sets & $56\,/\,277$\\
+Reachable valid-language product states & $296$\\
+Live quotient states / closed component & $76\,/\,66$\\
+Left-eigenvector integer component equalities & $228$\\
+Entries verified zero in $p(A)$ & $5776$\\
+Independent complete factor-length checks & $2048$\\
+Windows examined in the all-factor check & $93{,}070{,}336$\\
+Individually evaluated lengths for count checks & $100{,}000$\\
+Arbitrary prefix-count comparisons & $301$\\
+Tribonacci cutoff comparisons & $61$\\
+Generating-function coefficients through degree & $106$\\
+Independent density-residue polynomial identities & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The matrix and algebraic checks use exact integers or rational numbers.
+Decimal expansions are generated only for presentation and do not feed
+back into a certificate.
+
+\subsection{How to reproduce the package}
+From the extracted package directory, run:
+\begin{lstlisting}
+python3 code/verify.py
+python3 code/tribonacci.py --value 123456789
+python3 code/tribonacci.py --count 1000000000000000000
+\end{lstlisting}
+The verifier needs no external Python package, no network access, and no
+Walnut installation. It rebuilds the automaton and compares it with the
+stored certificate instead of simply trusting the serialized table.
+Its checks use explicit exceptions, not Python assertions, so they remain
+active when invoked with \code{python3 -O}.
+
+The optional script \code{code/derive\_spectrum.py} uses SymPy to reproduce
+the symbolic derivation of the annihilator, the left eigenvector and the
+rational generating functions. It is a discovery/reproduction aid, not a
+dependency of the standard-library verification. It was tested with
+SymPy~1.14.0. The script \code{code/make\_tables.py} regenerates the printed
+table fragments and the exact-count data. The article can be built with
+\begin{lstlisting}
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{lstlisting}
+A \code{Makefile} provides the same operations. The original random draw is
+preserved rather than repeated during verification; its list digest and
+selected index are checked for consistency.
+
+\subsection{Scope, trust and remaining questions}
+The claim is a complete proposed resolution of the stated natural-density
+question, supported by an infinite argument and finite exact certificates.
+It is not an independently refereed theorem, a Lean formalization, or a
+proof that no previous resolution exists. The trusted computational layer
+includes the Python interpreter and the executed verifier. The finite
+tables and source code are provided so that another implementation can
+check the same identities independently.
+
+Several broader questions are not settled here: the optimal discrepancy
+exponent; an optimal explicit error constant; the corresponding density
+spectrum for arbitrary letter weights; and general density theorems for
+all substitutive additive-complexity sequences. In particular, the general
+regularity questions discussed in \cite{PSS,Couvreur} are not being
+relabelled as consequences of this specific computation.
+
+\section{Conclusion}
+The additive-complexity proportions of the Tribonacci word are governed by
+an algebraic left eigenvector of a finite transition matrix. The exact
+weights are not uniform over recurrent states, but their output-class sums
+collapse to three small expressions in the Tribonacci constant. A spectral
+gap holds uniformly from every live state, and the lexicographic
+prefix-cylinder decomposition transfers that estimate to every integer
+cutoff. This proves the proposed densities and the power-saving estimate,
+while the archived word-level and integer-matrix certificates make the
+finite part of the argument reproducible.
+
+\appendix
+\clearpage
+\section{The complete 76-state transition table}
+\label{app:transitions}
+The initial state is $0$. Read digits most significant first. The column
+$o$ is the output, and a dash is an illegal transition to the omitted sink.
+State $0$ has output $1$ and loops on $0$, accounting for leading zeros.
+The two halves of the table together list every state exactly once.
+\begin{center}
+\small
+\setlength{\tabcolsep}{9pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{@{}rrrr@{\hspace{14mm}}rrrr@{}}
+\toprule
+$q$ & $\delta(q,0)$ & $\delta(q,1)$ & $o$ &
+$q$ & $\delta(q,0)$ & $\delta(q,1)$ & $o$\\
+\midrule
+\csname @@input\endcsname tables/transitions_rows.tex 
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\section{The exact normalized left eigenvector}
+\label{app:eigenvector}
+The table gives the nonzero entries of
+$\ell_q=(u_q+w_q\beta+z_q\beta^2)/44$. The entries at
+$0,1,2,3,4,6,7,8,12,13$ are zero. All coefficients are integers;
+\eqref{eq:triplerule} is sufficient to verify $\ell A=\beta\ell$.
+\begin{center}
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}rrrr@{\hspace{14mm}}rrrr@{}}
+\toprule
+$q$ & $u_q$ & $w_q$ & $z_q$ & $q$ & $u_q$ & $w_q$ & $z_q$\\
+\midrule
+\csname @@input\endcsname tables/eigenvector_rows.tex 
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent
+The coefficient sums are $(44,0,0)$, so $\ell\one=1$ exactly. Summing only
+rows with a specified output gives the three density formulas in
+Theorem~\ref{thm:main}. The machine-readable version is
+\code{data/eigenvector.json}.
+
+\clearpage
+\section{Numerators of the rational cutoff generating functions}
+\label{app:numerators}
+For $j=3,4,5$, write $P_j(z)=\sum_{k=0}^{30}p_{j,k}z^k$ and use the common
+denominator $D(z)$ of \eqref{eq:gfparts}. Coefficients beyond the displayed
+range are zero. This table, together with $D$, fully specifies
+Proposition~\ref{prop:GF}.
+\begin{center}
+\small
+\setlength{\tabcolsep}{14pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k$ & $p_{3,k}$ & $p_{4,k}$ & $p_{5,k}$\\
+\midrule
+\csname @@input\endcsname tables/numerator_rows.tex 
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\section{Artifact map and selection record}
+\label{app:artifacts}
+The core package has the following organization. The README gives individual
+filenames and command-line examples for every script.
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.36\textwidth}p{0.59\textwidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\code{article.tex}, \code{article.pdf} & Article source and typeset report.\\
+\code{code/tribonacci.py} & Exact reconstruction, single-value evaluation and prefix counting.\\
+\code{code/verify.py} & Standard-library verifier of the finite certificates and cross-checks.\\
+Other scripts in \code{code/} & Optional symbolic derivation, table regeneration and random-selection auditing.\\
+Automaton data in \code{data/} & All $277$ co-decomposition sets, the $76$-state machine and its quotient information.\\
+Algebraic data in \code{data/} & Exact eigenvector triples, generating functions and decimal constants.\\
+Count data in \code{data/} & Exact counts at large cutoffs, including $10^{100}$, in JSON and CSV form.\\
+Verification logs in \code{data/} & Recorded outcomes, bounds and actual verification scope.\\
+\code{data/selection.json} & Original ordered $120$-area list and the single recorded selection.\\
+\code{notes/} & Source-version and manifest-exclusion audits, plus the original area-draw script.\\
+\code{STATUS.md}, \code{README.md} & Claim boundaries and practical reproduction instructions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The original draw selected item $68$, \emph{Combinatorics on words}.
+The SHA-256 of the ordered list, encoded as UTF-8 strings separated by a
+single newline, is
+\begin{center}\small\ttfamily
+ ea66507989230ed06b68907eef7e2e8c14f\par
+ 933ba70aa97b56a70fab0ea4477b6.
+\end{center}
+The two lines above are one concatenated digest, with no intervening space.
+The digest authenticates the recorded list against accidental alteration;
+it is not an external timestamp or a cryptographic proof of the historical
+random-draw procedure. The record reports the actual executed single draw.
+
+\begin{thebibliography}{9}
+\bibitem{PSS}
+Pierre Popoli, Jeffrey Shallit and Manon Stipulanti,
+\emph{Additive Word Complexity and Walnut}.
+In \emph{44th IARCS Annual Conference on Foundations of Software Technology
+and Theoretical Computer Science (FSTTCS 2024)},
+LIPIcs \textbf{323} (2024), Article~32, 32:1--32:18.
+\href{https://doi.org/10.4230/LIPIcs.FSTTCS.2024.32}{doi:10.4230/LIPIcs.FSTTCS.2024.32}.
+Full preprint: \href{https://arxiv.org/abs/2410.02409v1}{arXiv:2410.02409v1},
+3 October 2024. The theorem and remark numbers in this article refer to
+Theorem~18 and Remark~19 of that full preprint.
+
+\bibitem{Turek}
+Ond\v{r}ej Turek,
+\emph{Abelian Complexity Function of the Tribonacci Word}.
+Journal of Integer Sequences \textbf{18} (2015), Article~15.3.4.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL18/Turek/turek3.html}.
+Also \href{https://arxiv.org/abs/1309.4810v2}{arXiv:1309.4810v2}.
+The co-decomposition approach is prior work; its specialization needed here
+is proved in Section~\ref{sec:automaton}.
+
+\bibitem{Couvreur}
+Jean-Michel Couvreur, Martin Delacourt, Nicolas Ollinger, Pierre Popoli,
+Jeffrey Shallit and Manon Stipulanti,
+\emph{Effective Computation of Generalized Abelian Complexity for Pisot Type
+Substitutive Sequences}.
+\href{https://arxiv.org/abs/2504.13584v2}{arXiv:2504.13584v2},
+22 April 2025. Consulted for the current literature audit and related
+automata constructions; not imported as a density theorem.
+\end{thebibliography}
+
+\end{document}

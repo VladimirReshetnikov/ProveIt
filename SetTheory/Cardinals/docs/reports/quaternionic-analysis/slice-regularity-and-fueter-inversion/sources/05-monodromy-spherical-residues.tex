@@ -1,0 +1,1709 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Affine Monodromy and Spherical Residues in Quaternionic Analysis},
+ pdfauthor={Research draft prepared with ChatGPT},
+ pdfsubject={Global Fueter inversion, integrable spherical singularities, and a sharp energy law}}
+\urlstyle{same}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\HC}{\mathbb H_{\C}}
+\newcommand{\SSS}{\mathbb S}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\SR}{\mathcal{SR}}
+\newcommand{\AM}{\mathcal{AM}}
+\newcommand{\D}{\mathcal D}
+\newcommand{\lap}{\Delta_4}
+\newcommand{\lift}{\mathcal I}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\ind}{\operatorname{wind}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ds}{\,\mathrm ds}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ii}{\mathbf i}
+\newcommand{\jj}{\mathbf j}
+\newcommand{\kk}{\mathbf k}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\bp}{\boldsymbol\beta}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Affine monodromy and spherical residues}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\vspace{-10mm}\textbf{Affine Monodromy and Spherical Residues\\in Quaternionic Analysis}\\[5pt]
+\large Global Fueter inversion, integrable singularities,\\and a sharp logarithmic energy law}
+\author{Research draft prepared with ChatGPT}
+\date{21 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The local inverse of the quaternionic Fueter map has an affine ambiguity.
+We turn that ambiguity into an explicit global obstruction theory. For an
+axial left-monogenic field $g(x+Iy)=P(x,y)+IQ(x,y)$, two simultaneously
+closed quaternion-valued one-forms have zero periods precisely when $g$
+has a single-valued slice-regular Fueter primitive on the same domain.
+On a planar base with $m$ independent holes, reflected logarithmic modes
+split the obstruction map and give a cokernel of real dimension $8m$.
+We then prove an isolated-sphere singularity theorem: every axial monogenic
+field locally integrable across a nonreal two-sphere is, modulo a smooth
+monogenic field, a unique combination of two quaternionic residue modes.
+The same residues are the affine monodromy coefficients, the coefficients
+of a surface-supported Fueter source, and the parameters in an exact
+logarithmic $L^2$-energy law. In particular, finite local $L^2$ mass is
+removable, whereas nonremovable examples exist in every $L^p$, $1\le p<2$.
+A Cauchy--Fueter layer formula gives canonical decaying representatives and
+classifies all decaying, locally integrable axial fields with finitely many
+spherical singularities. All the stated results are proved; symbolic and
+numerical checks are supplied separately.
+\end{abstract}
+\noindent\textbf{Keywords.} Fueter map; slice regularity; affine monodromy;
+period obstruction; spherical residue; removable singularity; surface source.
+
+\medskip
+\noindent\textbf{Research status.} The local inverse Fueter theorem is established
+literature, not a new result here. The proposed contributions are the explicit
+global obstruction--residue correspondence and its classification and energy
+consequences. These formulations were not located in the sources checked for
+this draft, but originality is provisional: the literature search was not
+exhaustive and the manuscript has not undergone independent peer review.
+No previously named open conjecture is claimed to have been settled.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The research problem and the distinction between local and global}
+\label{sec:intro}
+
+The Fueter transform sends a slice-regular function $f$ to the left-monogenic
+function $\lap f$. Its local inverse is not unique: one can add $qa+b$, with
+$a,b\in\HH$, without changing the image. This familiar kernel suggests a
+specific question that is not answered merely by constructing a primitive in
+small rectangles:
+\begin{quote}
+When do local Fueter primitives glue to one single-valued slice-regular
+function on the original domain, and what analytic information is carried
+by their failure to glue?
+\end{quote}
+The supplied expository manuscript~\cite{Uploaded} ends its inverse construction
+with two successive integrations and explicitly leaves nonzero periods on
+multiply connected planar sets untreated. We start from that construction,
+replace the second integration form by a primitive-independent one, and pursue
+the resulting obstruction all the way to a classification of integrable
+spherical singularities.
+
+There are three related, but different, issues. Existence in a small
+neighborhood is a differential question. Existence on a fixed multiply
+connected domain is a single-valuedness question. Removability across a
+missing sphere is a regularity question. The same two quaternionic numbers
+per hole will govern the second issue and, with a local integrability
+hypothesis, the third. Without that hypothesis, zero periods need not imply
+removability.
+
+\subsection{What is established background}
+The stem formulation of slice regularity is developed by Ghiloni and
+Perotti~\cite{GP}. Inverse Fueter integral representations were obtained by
+Colombo, Sabadini, and Sommen~\cite{CSS}. Colombo, Pe\~na Pe\~na, Sabadini,
+and Sommen~\cite{CPSS} gave a further constructive formula; their
+Theorem~3 is explicitly written on a rectangular planar base bounded away
+from the real axis. Those results supply the local analytic background for
+this paper, not its proposed novelty.
+
+Surjectivity is also discussed in Dong and Qian~\cite{DQ}, including a
+contour formulation in their Theorem~3.6. It is important not to interpret
+broad surjectivity language as automatically asserting a globally
+single-valued primitive on every prescribed domain with holes. Our criterion
+specifies that interpretation exactly and supplies explicit counterexamples
+to unrestricted same-domain surjectivity. A claim that a particular published
+theorem is incorrect would require a separate audit of all its branch and
+domain conventions; that claim is not made here.
+
+The August 2026 preprint of De Martino and Pinton~\cite{DMP} concerns inverses
+of factorizations of the Fueter map and generalized polyanalytic extensions.
+Its questions concerning the intermediate operators are different from our
+period problem. We do not present their results, or the questions they
+already answer, as new discoveries of this manuscript.
+
+\subsection{Main conclusions}
+For $g=P+IQ$, the two forms introduced below are
+\begin{equation}\label{eq:intro-forms}
+ \alpha_g=\frac{-P\dd x+Q\dd y}{2},\qquad
+ \beta_g=\frac{(xP+yQ)\dd x+(yP-xQ)\dd y}{2}.
+\end{equation}
+Their periods are the coefficients of the affine increment $qa+b$ acquired
+by a local primitive around a loop. Their vanishing is necessary and
+sufficient for a global primitive. Explicit logarithmic representatives
+realize every period vector on a finitely connected base
+(Theorems~\ref{thm:period} and~\ref{thm:exact}).
+
+Near the sphere $S_a=u+v\SSS$, $v>0$, an $L^1$ axial monogenic field has a
+unique pair $(h,k)\in\HH^2$ and a decomposition
+\begin{equation}\label{eq:intro-decomp}
+ g=\Psi_a h+\Phi_a k+g_0,
+\end{equation}
+where $g_0$ extends smoothly through $S_a$. The model fields $\Phi_a,\Psi_a$
+are explicit and are regular everywhere else, including the real axis
+(Theorem~\ref{thm:L1}). Their residues coincide with the periods in
+\eqref{eq:intro-forms}. In the sense of distributions,
+\begin{equation}\label{eq:intro-source}
+ \D g=\sigma_a\delta_{S_a},\qquad
+ \sigma_a(p)=\frac{2}{v}(ph+k),\quad p\in S_a.
+\end{equation}
+Here $\delta_{S_a}$ means surface measure, not a point mass.
+
+Finally, for fixed sufficiently small $R$, as $\varepsilon\downarrow0$,
+\begin{equation}\label{eq:intro-energy}
+ \int_{\varepsilon<\dist(q,S_a)<R}|g(q)|^2\dd V_q
+ =8\bigl(|uh+k|^2+v^2|h|^2\bigr)
+       \log\frac{R}{\varepsilon}+E_R+o(1).
+\end{equation}
+The finite constant $E_R$ depends on the field, not just its residues.
+The logarithmic coefficient is also
+$(2\pi)^{-1}\norm{\sigma_a}_{L^2(S_a)}^2$.
+This connects a topological obstruction, a local singularity invariant,
+and a quantitative analytic divergence.
+
+\section{Conventions and the axial differential calculus}
+\label{sec:prelim}
+
+\subsection{Domains, stems, and multiplication order}
+Write
+\[
+ q=x_0+\ii x_1+\jj x_2+\kk x_3,
+ \qquad \ii^2=\jj^2=\kk^2=\ii\jj\kk=-1.
+\]
+Quaternionic coefficients will always be on the right. The sphere of
+imaginary units is $\SSS=\{I\in\HH:I^2=-1\}$. A nonreal quaternion is
+uniquely $q=x+Iy$ with $y=|\Ima q|>0$.
+
+Let $U\subset\C_+=\{x+\iota y:y>0\}$ be a connected open set. The symbol
+$\iota$ denotes a central complex imaginary unit, not one of $\ii,\jj,\kk$.
+Set
+\[
+ \Omega_U=\{x+Iy:x+\iota y\in U,\ I\in\SSS\}.
+\]
+This is a product domain, disjoint from the real axis. A holomorphic map
+$F=A+\iota B:U\to\HC$, where $A,B:U\to\HH$, induces
+\[
+ \lift(F)(x+Iy)=A(x,y)+IB(x,y).
+\]
+Equivalently, extend the stem to $U\cup\bar U$ by
+$F(\bar z)=\kappa(F(z))$, where $\kappa(A+\iota B)=A-\iota B$.
+We denote the resulting space of left slice-regular functions by $\SR(U)$.
+Holomorphy means, componentwise,
+\begin{equation}\label{eq:CR}
+ A_x=B_y,\qquad A_y=-B_x.
+\end{equation}
+The definition on product domains is the stem definition; no uniqueness
+principle requiring a real interval is being imported into it.
+
+The left Fueter operator and its conjugate are
+\[
+ \D=\partial_{x_0}+\ii\partial_{x_1}+\jj\partial_{x_2}+\kk\partial_{x_3},
+ \qquad
+ \overline\D=\partial_{x_0}-\ii\partial_{x_1}-\jj\partial_{x_2}-\kk\partial_{x_3}.
+\]
+Their product in either order is $\lap$. We write $\AM(U)$ for the smooth
+axial fields $g=P+IQ$ on $\Omega_U$ that satisfy $\D g=0$. The functions
+$P,Q$ may be quaternion valued; left monogenicity does not assert right
+monogenicity for such general coefficients.
+
+\subsection{The differential identities}
+\begin{lemma}[Axial calculus]\label{lem:axial}
+For smooth quaternion-valued $A,B$ and $y>0$,
+\begin{align}
+ \D(A+IB)&=\left(A_x-B_y-\frac{2B}{y}\right)
+                 +I(B_x+A_y),\label{eq:axial-D}\\
+ \lap(A+IB)&=A_{xx}+A_{yy}+\frac{2A_y}{y}
+    +I\left(B_{xx}+B_{yy}+\frac{2B_y}{y}-\frac{2B}{y^2}\right).
+ \label{eq:axial-lap}
+\end{align}
+Consequently $g=P+IQ$ belongs to $\AM(U)$ precisely when
+\begin{equation}\label{eq:Vekua}
+ P_x-Q_y-\frac{2Q}{y}=0,\qquad Q_x+P_y=0.
+\end{equation}
+For $f=A+IB\in\SR(U)$,
+\begin{equation}\label{eq:Fueter}
+ \lap f=\frac{2A_y}{y}
+       +I\left(\frac{2B_y}{y}-\frac{2B}{y^2}\right),
+ \qquad \D\lap f=0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $w=\Ima q$ and $I=w/y$. With $e_1=\ii,e_2=\jj,e_3=\kk$,
+\[
+ \partial_{x_j}y=x_j/y,\qquad
+ \partial_{x_j}I=e_j/y-wx_j/y^3.
+\]
+Thus $\sum e_j\partial_{x_j}I=-2/y$, the three-dimensional Laplacian of
+$I$ is $-2I/y^2$, and
+$\sum (\partial_{x_j}I)(\partial_{x_j}y)=0$. The product rule gives
+\eqref{eq:axial-D} and \eqref{eq:axial-lap}. Evaluating at $I$ and $-I$
+shows that the two quaternionic coefficients in \eqref{eq:axial-D} vanish
+independently, which gives \eqref{eq:Vekua}.
+
+The Cauchy--Riemann equations make $A$ and $B$ planar harmonic, proving the
+first formula in \eqref{eq:Fueter}. If its two coefficients are $P,Q$, then
+\[
+ P_x=\frac{2B_{yy}}y=Q_y+\frac{2Q}{y},\qquad
+ Q_x+P_y=\frac{2(B_{xy}+A_{yy})}{y}
+          -\frac{2(B_x+A_y)}{y^2}=0.
+\]
+This proves the last assertion and is the quaternionic axial Fueter
+mapping theorem in the conventions used here.
+\end{proof}
+
+\begin{lemma}[Affine kernel]\label{lem:kernel}
+On a connected $U\subset\C_+$,
+\[
+ \ker(\lap:\SR(U)\longrightarrow\AM(U))
+       =\{q\mapsto qh+k:h,k\in\HH\}.
+\]
+\end{lemma}
+\begin{proof}
+If \eqref{eq:Fueter} is zero, then $A_y=0$ and $yB_y=B$.
+Set $C=B/y$. Then $C_y=0$ and, by \eqref{eq:CR},
+$C_x=B_x/y=-A_y/y=0$. Therefore $C=h$ is constant. Now
+$A_x=B_y=h$ and $A_y=0$, so $A=xh+k$. Connectedness makes both constants
+global. The converse follows by applying the Laplacian to $qh+k$.
+\end{proof}
+
+\subsection{An axial norm and the four-dimensional measure}
+For an axial field define
+\[
+ N_g(x,y)=\bigl(|P(x,y)|^2+|Q(x,y)|^2\bigr)^{1/2}.
+\]
+If $d\omega$ is the ordinary area measure on the unit two-sphere, then
+\begin{equation}\label{eq:sphere-average}
+ \frac1{4\pi}\int_{\SSS}|P+IQ|^2\dd\omega(I)=|P|^2+|Q|^2.
+\end{equation}
+Indeed, the cross term in the squared norm is linear in the three real
+coordinates of $I$ and has zero average; $|IQ|=|Q|$. In particular,
+\begin{equation}\label{eq:norm-equiv}
+ N_g\le\sup_I|g(x+Iy)|\le\sqrt2\,N_g.
+\end{equation}
+Polar coordinates only in the imaginary three-space give
+\begin{equation}\label{eq:measure}
+ \dd V=y^2\dd x\dd y\dd\omega(I).
+\end{equation}
+These identities retain the noncommutative field values while reducing
+certain norm questions to the planar base.
+
+\section{Two simultaneous period obstructions}
+\label{sec:periods}
+
+\begin{lemma}[The two closed forms]\label{lem:closed}
+For every $g=P+IQ\in\AM(U)$, the forms $\alpha_g,\beta_g$ in
+\eqref{eq:intro-forms} are closed. If $g=\lap f$ for $f=A+IB\in\SR(U)$,
+then
+\begin{equation}\label{eq:potentials}
+ \alpha_g=\dd C,\qquad \beta_g=\dd D_0,
+ \qquad C=\frac By,\quad D_0=A-\frac{xB}{y}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The coefficient of $\dd x\wedge\dd y$ in $\dd\alpha_g$ is
+$(Q_x+P_y)/2$. The corresponding coefficient for $\beta_g$ is
+\[
+ \frac12\{y(P_x-Q_y)-2Q-x(Q_x+P_y)\}.
+\]
+Both vanish by \eqref{eq:Vekua}.
+
+For a Fueter image, \eqref{eq:Fueter} and \eqref{eq:CR} imply
+\[
+ C_x=-P/2,\qquad C_y=Q/2.
+\]
+Differentiating $D_0=A-xC$ gives
+\[
+ (D_0)_x=(xP+yQ)/2,\qquad (D_0)_y=(yP-xQ)/2,
+\]
+which proves \eqref{eq:potentials}.
+\end{proof}
+
+\begin{theorem}[Global single-valued inversion]\label{thm:period}
+Let $U\subset\C_+$ be connected and open, and let $g\in\AM(U)$.
+The following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a single-valued $f\in\SR(U)$ with $\lap f=g$.
+\item Both forms $\alpha_g,\beta_g$ are exact on $U$.
+\item For every closed piecewise $C^1$ curve $\gamma$ in $U$,
+\[
+ \int_\gamma\alpha_g=\int_\gamma\beta_g=0.
+\]
+\end{enumerate}
+When these conditions hold, choose primitives $C,D_0$ of the two forms.
+Then the formula
+\begin{equation}\label{eq:global-inverse}
+ \boxed{\ f(x+Iy)=(x+Iy)C(x,y)+D_0(x,y)\ }
+\end{equation}
+is a Fueter primitive. Every other primitive is $f+qh+k$ for unique
+$h,k\in\HH$.
+\end{theorem}
+\begin{proof}
+The implication (i)$\Rightarrow$(ii) is Lemma~\ref{lem:closed}.
+Exact forms have zero periods. Conversely, a closed form with zero
+integrals on all closed curves has a global primitive obtained by path
+integration from a base point. Path independence follows by joining one
+path to the reverse of another. This argument applies separately to the
+four real components of each quaternion-valued form, proving
+(iii)$\Rightarrow$(ii).
+
+For (ii)$\Rightarrow$(i), let $A=xC+D_0$ and $B=yC$. The displayed
+formulas for $\dd C,\dd D_0$ yield
+\begin{align*}
+ A_x&=C+x(-P/2)+(xP+yQ)/2=C+yQ/2=B_y,\\
+ A_y&=xQ/2+(yP-xQ)/2=yP/2=-B_x.
+\end{align*}
+Thus $A+\iota B$ is holomorphic. Moreover,
+\[
+ \frac{2A_y}{y}=P,\qquad
+ \frac{2B_y}{y}-\frac{2B}{y^2}
+       =\frac{2(C+yQ/2)}y-\frac{2yC}{y^2}=Q.
+\]
+Equation~\eqref{eq:Fueter} proves $\lap f=g$. The ambiguity is exactly
+Lemma~\ref{lem:kernel}.
+\end{proof}
+
+The second form is not the second form in a successive integration scheme.
+If $C$ is first chosen with $\dd C=\alpha_g$, that scheme uses
+\[
+ \eta_C=(C+yQ/2)\dd x+(yP/2)\dd y.
+\]
+A direct identity is
+\begin{equation}\label{eq:remove-primitive}
+ \eta_C-\dd(xC)=\beta_g.
+\end{equation}
+Thus $\beta_g$ eliminates the dependence on a first primitive. Both
+obstructions can be measured directly from $g$, before solving either
+integration problem.
+
+\begin{corollary}[Affine monodromy]\label{cor:monodromy}
+A local Fueter primitive can be continued along every path in $U$.
+After continuation around a based loop $\gamma$, its increment is
+\begin{equation}\label{eq:monodromy}
+ q\,a_\gamma+b_\gamma,\qquad
+ a_\gamma=\int_\gamma\alpha_g,\quad
+ b_\gamma=\int_\gamma\beta_g.
+\end{equation}
+The map $\gamma\mapsto(a_\gamma,b_\gamma)$ is an additive homomorphism
+and factors through $H_1(U;\Z)$.
+\end{corollary}
+\begin{proof}
+Integrate both closed forms along a lifted path and use
+\eqref{eq:global-inverse}. Local changes in the two primitives are constant
+quaternions; their effect on $f$ is $qa+b$. For a closed path the constants
+are exactly the two integrals. Additivity is additivity of path integrals.
+Closed-form integrals vanish on boundaries by Stokes' theorem, so they
+factor through first homology.
+\end{proof}
+
+\begin{corollary}[A useful normalization]\label{cor:normalization}
+Fix $z_*=x_*+\iota y_*\in U$. Whenever $g$ has a global primitive,
+there is exactly one primitive that vanishes on the entire sphere
+$x_*+y_*\SSS$. It is obtained by taking $C(z_*)=D_0(z_*)=0$.
+\end{corollary}
+\begin{proof}
+The construction gives existence. An affine function $qh+k$ vanishing
+for all $q=x_*+Iy_*$ has, by subtracting the values at $I$ and $-I$,
+$2Iy_*h=0$. Thus $h=0$ and then $k=0$.
+\end{proof}
+
+\subsection{Extending the criterion through the real axis}
+The period criterion is not limited to examples disjoint from the real
+axis. The following extension will be used for punctured quaternionic
+space.
+
+\begin{proposition}[Real-axis extension]\label{prop:axis}
+Let $D\subset\C$ be open and conjugation invariant, and suppose
+$U=D\cap\C_+$ is connected. Let $g$ be a smooth axial left-monogenic
+field on the full circularization $\Omega_D$, including any real points.
+Then $g$ has a single-valued slice-regular primitive on $\Omega_D$ if and
+only if its two periods vanish on $U$. The affine kernel is unchanged.
+\end{proposition}
+\begin{proof}
+Necessity follows by restriction. For sufficiency, construct $C,D_0$ on
+$U$ by Theorem~\ref{thm:period}. Near a real point $x_0\in D$, fix
+$J\in\SSS$ and define, also for negative $y$,
+\[
+ P(x,y)=\frac{g(x+Jy)+g(x-Jy)}2,\qquad
+ Q(x,y)=-\frac J2\bigl(g(x+Jy)-g(x-Jy)\bigr).
+\]
+These agree with the original coefficients for $y>0$ and are smooth,
+with $P$ even and $Q$ odd. The forms $\alpha_g,\beta_g$ extend smoothly
+across $y=0$. They remain closed there by continuity. Their pullbacks
+under $(x,y)\mapsto(x,-y)$ equal themselves.
+
+On a small symmetric disk about $x_0$, take primitives of these extended
+forms. Each primitive is even: its difference from its reflection is
+constant, and that constant is zero at a real point. Add constant
+quaternions so that these primitives agree with $C,D_0$ on the upper
+half-disk. Then $A=xC+D_0$ is even, $B=yC$ is odd, and the same calculation
+as in Theorem~\ref{thm:period} proves the Cauchy--Riemann equations across
+the diameter. These local stems therefore give a slice-regular extension.
+On overlaps they agree with the original upper stem and consequently
+agree everywhere. Reflecting the upper stem handles the remaining lower
+part of $D$. The equality $\lap f=g$ extends by smoothness. Uniqueness
+modulo $qh+k$ follows on $U$ and then throughout $\Omega_D$.
+\end{proof}
+
+\section{Explicit logarithmic representatives of the obstruction}
+\label{sec:modes}
+
+\subsection{Why the logarithms are reflected}
+Fix $a=u+\iota v\in\C_+$ and its sphere $S_a=u+v\SSS$. Locally away
+from $a,\bar a$, put
+\begin{equation}\label{eq:Lambda}
+ \Lambda_a(z)=\frac{\log(z-a)-\log(z-\bar a)}{2\pi\iota}.
+\end{equation}
+On the upper half-plane the second logarithm can be chosen globally,
+since $z-\bar a$ has positive imaginary part. Continuation around $a$
+changes $\Lambda_a$ by $1$ and $z\Lambda_a$ by $z$.
+Define locally
+\begin{equation}\label{eq:mode-definition}
+ \Phi_a=\lap\lift(\Lambda_a),\qquad
+ \Psi_a=\lap\lift(z\Lambda_a).
+\end{equation}
+Changes of logarithmic branch are real constants in $\Lambda_a$ and
+real affine terms in $z\Lambda_a$. The affine kernel makes the two
+images single valued.
+
+The reflected logarithm is not needed for that single-valuedness on
+$\C_+$. It has two additional advantages: its images extend through the
+real axis, and they decay at infinity. It also makes the logarithm in
+the explicit formulas a dimensionless ratio.
+
+\begin{proposition}[Canonical modes and their periods]\label{prop:modes}
+The fields $\Phi_a,\Psi_a$ are single-valued smooth axial monogenic
+functions on $\HH\setminus S_a$. For every closed curve
+$\gamma\subset\C_+\setminus\{a\}$,
+\begin{align}
+ \int_\gamma\alpha_{\Phi_a}&=0,&
+ \int_\gamma\beta_{\Phi_a}&=\ind(\gamma,a),\label{eq:period-Phi}\\
+ \int_\gamma\alpha_{\Psi_a}&=\ind(\gamma,a),&
+ \int_\gamma\beta_{\Psi_a}&=0.\label{eq:period-Psi}
+\end{align}
+Here winding number uses the counterclockwise-positive convention.
+\end{proposition}
+\begin{proof}
+The preceding branch calculation and Lemma~\ref{lem:kernel} give
+single-valuedness off the real axis. Local Fueter mapping gives
+monogenicity. Near any real $x_0$, the ratio
+$(z-a)/(z-\bar a)$ is nonzero and has modulus $1$ at $x_0$. Choose its
+local logarithm purely imaginary at that point. The resulting
+$\Lambda_a$ satisfies
+$\Lambda_a(\bar z)=\overline{\Lambda_a(z)}$ on a small symmetric disk:
+both sides have the same derivative and value at $x_0$.
+It therefore induces a slice-regular function across the real axis, as
+does $z\Lambda_a$. Their Fueter images supply compatible smooth
+extensions.
+
+Continuation around $\gamma$ changes the two local slice primitives
+by $\ind(\gamma,a)$ and $q\ind(\gamma,a)$, respectively. The lower
+point $\bar a$ has zero winding for a curve in $\C_+$. Comparing with
+\eqref{eq:monodromy} proves all four identities.
+\end{proof}
+
+\subsection{Branch-free formulas}
+Set, for $y>0$,
+\begin{align}
+ s&=x-u,& d_-&=s^2+(y-v)^2,& d_+&=s^2+(y+v)^2,\label{eq:dpm}\\
+ \ell&=\frac12\log\frac{d_-}{d_+},&
+ H&=\frac1{d_-}-\frac1{d_+},&
+ T&=\frac{y-v}{d_-}-\frac{y+v}{d_+}.\label{eq:HT}
+\end{align}
+Then
+\begin{align}
+ \Phi_a(x+Iy)&=P_0+IQ_0,&
+ P_0&=\frac{sH}{\pi y},&
+ Q_0&=\frac{\ell}{\pi y^2}-\frac{T}{\pi y},\label{eq:Phi-explicit}\\
+ \Psi_a(x+Iy)&=P_1+IQ_1,&
+ P_1&=\frac{xsH+yT+\ell}{\pi y},&
+ Q_1&=\frac{ysH-xT}{\pi y}+\frac{x\ell}{\pi y^2}.
+ \label{eq:Psi-explicit}
+\end{align}
+All coefficients in these formulas are real. Values on the real axis
+are their smooth extensions; the apparent powers of $1/y$ should not
+be evaluated separately at $y=0$.
+
+\begin{proof}[Derivation of the formulas]
+For a single logarithm $L(z)=\log(z-a)/(2\pi\iota)$, write
+$\rho=|z-a|$, $t=y-v$, and choose a local argument $\theta$.
+Its stem coefficients are
+\[
+ A=\theta/(2\pi),\qquad B=-\log\rho/(2\pi).
+\]
+The derivatives $A_y=s/(2\pi\rho^2)$ and
+$B_y=-t/(2\pi\rho^2)$ give
+\[
+ P^\circ_0=\frac{s}{\pi y\rho^2},\qquad
+ Q^\circ_0=\frac{\log\rho}{\pi y^2}-\frac{t}{\pi y\rho^2}.
+\]
+The stem $zL$ has coefficients $xA-yB$ and $yA+xB$. In its Fueter
+image the undifferentiated argument cancels, leaving
+\[
+ P^\circ_1=\frac{xs+yt}{\pi y\rho^2}+\frac{\log\rho}{\pi y},\qquad
+ Q^\circ_1=\frac{ys-xt}{\pi y\rho^2}+\frac{x\log\rho}{\pi y^2}.
+\]
+Subtract the same expressions with $a$ replaced by $\bar a$.
+The differences of $\log\rho$, $1/\rho^2$, and $t/\rho^2$ are precisely
+$\ell,H,T$, proving \eqref{eq:Phi-explicit}--\eqref{eq:Psi-explicit}.
+\end{proof}
+
+\begin{proposition}[Decay]\label{prop:decay}
+Let
+\begin{equation}\label{eq:E}
+ E(q)=\frac{\bar q}{2\pi^2|q|^4},\qquad q\ne0.
+\end{equation}
+As $|q|\to\infty$,
+\begin{equation}\label{eq:mode-decay}
+ \Phi_a(q)=8\pi v E(q)+O(|q|^{-4}),\qquad
+ \Psi_a(q)=8\pi uv E(q)+O(|q|^{-4}).
+\end{equation}
+The estimates are uniform in direction.
+\end{proposition}
+\begin{proof}
+On $|z|>|a|$, choose the branch of \eqref{eq:Lambda} tending to zero
+at infinity. Its Laurent series is
+\begin{equation}\label{eq:Lambda-series}
+ \Lambda_a(z)=\sum_{n\ge1}\lambda_n z^{-n},\qquad
+ \lambda_n=-\frac{\Ima(a^n)}{\pi n}\in\R,
+ \quad \lambda_1=-\frac v\pi,\quad\lambda_2=-\frac{uv}\pi.
+\end{equation}
+Here $\Ima(a^n)$ means the real coefficient of $\iota$ in the complex
+number $a^n$. The induced quaternionic Laurent series and its derivatives
+converge uniformly outside every larger radius. Direct differentiation
+in four dimensions gives
+\[
+ \lap(q^{-1})=-\frac{4\bar q}{|q|^4}=-8\pi^2E(q).
+\]
+For completeness, $q^{-1}=\bar q|q|^{-2}$, the function $|q|^{-2}$ is
+harmonic away from zero in dimension four, and the cross term is
+$-4\bar q|q|^{-4}$. Taking the leading term in the two Laurent series
+proves \eqref{eq:mode-decay}. The constant term of $z\Lambda_a$ has
+zero Laplacian. Uniform derivative convergence gives the stated remainders.
+\end{proof}
+
+\begin{example}[A genuine failure of unrestricted global inversion]
+\label{ex:no-global}
+On $\HH\setminus\SSS$, take $a=\iota$ and $g=\Phi_{\iota}$.
+This is a globally defined smooth axial monogenic field, even across the
+real axis. On a small counterclockwise circle around $\iota$ in the
+upper base, its $\beta$-period is $1$. Therefore no single-valued
+slice-regular $f$ on $\HH\setminus\SSS$ satisfies $\lap f=g$.
+The same example on a small circular annulus about $\iota$ gives a
+product-domain counterexample. This is a topological failure, not a
+failure of the local inverse theorem.
+\end{example}
+
+\section{Finite topology, a split exact sequence, and quantitative inversion}
+\label{sec:finite}
+
+\subsection{The topological hypothesis}
+Assume that there are points $a_1,\ldots,a_m\in\C_+\setminus U$ and
+closed piecewise $C^1$ curves $\gamma_1,\ldots,\gamma_m\subset U$ such that
+\begin{equation}\label{eq:winding-basis}
+ H_1(U;\Z)\longrightarrow\Z^m,\qquad
+ [\gamma]\longmapsto(\ind(\gamma,a_1),\ldots,\ind(\gamma,a_m))
+\end{equation}
+is an isomorphism and $\ind(\gamma_j,a_k)=\delta_{jk}$.
+This explicit hypothesis includes a bounded planar domain with $m$
+smooth Jordan holes and closure in $\C_+$: put one point in each hole
+and take positively oriented hole loops. Cutting along arcs from the
+holes to the outer boundary gives the familiar winding basis. It also
+includes $\C_+\setminus\{a_1,\ldots,a_m\}$ and disks with finitely many
+punctures. Stating \eqref{eq:winding-basis} avoids imposing unnecessary
+boundary regularity on the theorem.
+
+Set
+\begin{equation}\label{eq:period-vector}
+ a_j(g)=\int_{\gamma_j}\alpha_g,\qquad
+ b_j(g)=\int_{\gamma_j}\beta_g,\qquad
+ \Per(g)=(a_1(g),b_1(g),\ldots,a_m(g),b_m(g)).
+\end{equation}
+The functions $a_j(g)$ should not be confused with the fixed missing
+points $a_j$; the argument $(g)$ distinguishes the period coefficients.
+
+\begin{theorem}[Explicit finite-dimensional cokernel]\label{thm:exact}
+Under \eqref{eq:winding-basis}, the following is an exact sequence of
+right quaternionic vector spaces:
+\begin{equation}\label{eq:exact-sequence}
+ 0\longrightarrow\HH^2
+ \xrightarrow{(h,k)\mapsto qh+k}\SR(U)
+ \xrightarrow{\lap}\AM(U)
+ \xrightarrow{\Per}\HH^{2m}\longrightarrow0.
+\end{equation}
+The period map has the explicit right inverse
+\begin{equation}\label{eq:splitting}
+ \mathcal S((h_j,k_j)_{j=1}^m)
+       =\sum_{j=1}^m(\Psi_{a_j}h_j+\Phi_{a_j}k_j).
+\end{equation}
+Consequently
+\begin{equation}\label{eq:direct-sum}
+ \AM(U)=\lap\SR(U)\ \oplus\
+   \operatorname{span}_{\HH}\{\Psi_{a_j},\Phi_{a_j}:1\le j\le m\},
+\end{equation}
+and the cokernel of $\lap$ has quaternionic dimension $2m$, or real
+dimension $8m$. In particular, $\lap$ is surjective in this class exactly
+when $m=0$.
+\end{theorem}
+\begin{proof}
+Exactness at $\SR(U)$ is Lemma~\ref{lem:kernel}. Closed-form periods
+depend only on homology, so vanishing on the chosen winding basis is
+vanishing on every closed curve. Theorem~\ref{thm:period} therefore gives
+$\ker\Per=\lap\SR(U)$.
+
+Equations~\eqref{eq:period-Phi} and \eqref{eq:period-Psi} show
+$\Per\mathcal S=\operatorname{id}_{\HH^{2m}}$. This proves surjectivity
+of the final map and linear independence of the displayed modes modulo
+the image. For an arbitrary $g$, the field
+$g-\mathcal S\Per(g)$ has zero periods and is a Fueter image. A vector
+in the intersection of the two summands has both zero periods and its
+own coefficient vector as its periods, so it is zero. All assertions follow.
+\end{proof}
+
+If the field is originally defined on a circular domain meeting the real
+axis, and its upper base satisfies \eqref{eq:winding-basis}, the same
+exact sequence holds for the full-domain spaces. Indeed, the correction
+modes already extend across the real axis, and
+Proposition~\ref{prop:axis} extends the primitive of the zero-period
+remainder. In particular, the theorem applies on
+$\HH\setminus\bigcup_{j=1}^m S_{a_j}$.
+
+\subsection{Continuous projection and path bounds}
+Define
+\begin{equation}\label{eq:projection}
+ \Pi g=\mathcal S\Per(g).
+\end{equation}
+Then $\Pi^2=\Pi$, and $\ker\Pi=\lap\SR(U)$. This is a concrete
+projection, not just an existence statement about a complement.
+
+\begin{proposition}[Stability of the obstruction and reconstruction]
+\label{prop:stability}
+Let $\gamma$ have length $L_\gamma$ and
+$R_\gamma=\max_{z\in\gamma}|z|$. Then
+\begin{equation}\label{eq:period-bound}
+ \left|\int_\gamma\alpha_g\right|
+       \le\frac{L_\gamma}{2}\sup_\gamma N_g,\qquad
+ \left|\int_\gamma\beta_g\right|
+       \le\frac{L_\gamma R_\gamma}{2}\sup_\gamma N_g.
+\end{equation}
+The image $\lap\SR(U)$ is closed in the compact-open topology of
+$\AM(U)$, and also in its usual $C^\infty$ topology.
+
+For zero-period $g$, normalize the primitive at $z_*$. Suppose every point
+of a compact $K\subset U$ can be reached from $z_*$ by a path of length
+at most $L$ contained in a compact $K'\subset U$, and put
+$R=\max_{K'}|z|$. Then
+\begin{equation}\label{eq:inverse-bound}
+ \sup_{q\in\Omega_K}|f(q)|\le LR\sup_{K'}N_g.
+\end{equation}
+Such a path family exists for every compact $K$, with suitable $K',L$.
+The normalized inverse on the zero-period subspace is continuous in
+$C^\infty$ on compact subsets.
+\end{proposition}
+\begin{proof}
+For a unit planar tangent $(\dot x,\dot y)$, the norm of
+$-P\dot x+Q\dot y$ is at most $N_g$. The real coefficient pair in
+$2\beta_g(\dot\gamma)$ is
+$(x\dot x+y\dot y,y\dot x-x\dot y)$; its Euclidean norm is $|z|$.
+Cauchy--Schwarz in $\HH^2\cong\R^8$ gives \eqref{eq:period-bound}.
+Thus each period is continuous on compact sets. The range is the
+intersection of their kernels, even without finite topology, by
+Theorem~\ref{thm:period}; it is closed.
+
+Along any one of the prescribed paths,
+\[
+ |C(z)|\le\tfrac L2\sup_{K'}N_g,\qquad
+ |D_0(z)|\le\tfrac {LR}2\sup_{K'}N_g.
+\]
+Since $|q|=|z|\le R$, formula~\eqref{eq:global-inverse} proves
+\eqref{eq:inverse-bound}. To find a uniform path family, cover $K$ by
+finitely many small disks compactly contained in $U$, connect their
+centers to $z_*$ by finitely many polygonal paths, and append short
+segments in the disks. Their compact union and slightly larger disks
+give $K'$, and their lengths have a common finite bound.
+
+All first derivatives of $C,D_0$ are the explicit coefficients in
+\eqref{eq:intro-forms}. Higher derivatives are derivatives of those
+coefficients. Together with the path estimate, these observations give
+compact-set $C^k$ estimates for $f$ in terms of finitely many $C^{k-1}$
+seminorms of $g$ (with the zeroth-order bound handled separately).
+This proves the stated $C^\infty$ continuity.
+\end{proof}
+
+\begin{corollary}[A certificate of non-approximability]\label{cor:distance}
+If a compact $K\subset U$ contains all the curves $\gamma_j$, then
+\begin{equation}\label{eq:distance}
+ \inf_{h\in\lap\SR(U)}\sup_K N_{g-h}
+ \ge \max_{1\le j\le m}
+ \left\{\frac{2|a_j(g)|}{L_j},
+        \frac{2|b_j(g)|}{L_jR_j}\right\},
+\end{equation}
+where $L_j$ and $R_j$ are the lengths and maximal radii of the curves.
+An explicit approximant from the range is $g-\Pi g$, so
+\begin{equation}\label{eq:distance-upper}
+ \inf_{h\in\lap\SR(U)}\sup_K N_{g-h}
+ \le \sum_j\left(
+  \sup_K N_{\Psi_{a_j}}\,|a_j(g)|+
+  \sup_K N_{\Phi_{a_j}}\,|b_j(g)|\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Every $h$ in the range has zero periods. Apply \eqref{eq:period-bound}
+to $g-h$ for the lower bound. For the upper bound use
+$g-\Pi g\in\lap\SR(U)$ and the triangle inequality in $\HH^2$.
+\end{proof}
+
+\section{Integrable singularities along a two-sphere}
+\label{sec:singularities}
+
+Fix $a=u+\iota v$, with $v>0$, and choose $0<R<v$. Put
+\[
+ B_a(R)=\{z:|z-a|<R\},\qquad
+ \mathcal T_a(R)=\Omega_{B_a(R)}.
+\]
+For $q=x+Iy\in\mathcal T_a(R)$, define
+\begin{equation}\label{eq:rho}
+ \rho=\sqrt{(x-u)^2+(y-v)^2}=\dist(q,S_a),\qquad
+ p(q)=u+Iv\in S_a.
+\end{equation}
+The point $p(q)$ is the nearest point of the sphere to $q$. A punctured
+planar disk therefore describes a genuine tubular puncture in four real
+dimensions.
+
+\subsection{Integrability and the leading term}
+For fixed $P,Q$, the identities
+\[
+ P=\frac1{4\pi}\int_{\SSS}(P+IQ)\dd\omega,
+ \qquad Q=-\frac1{4\pi}\int_{\SSS}I(P+IQ)\dd\omega
+\]
+imply that $g$ is $L^1$ across $S_a$ if and only if $P,Q$ are $L^1$
+across $a$ in the planar base. For one direction use these averages and
+$y\ge v-R>0$ in \eqref{eq:measure}; for the other use
+$|P+IQ|\le|P|+|Q|$ and $y\le v+R$. The analogous equivalence holds for
+any finite $p\ge1$, by Jensen's inequality.
+
+\begin{lemma}[Principal part of the residue modes]\label{lem:principal}
+Let $h,k\in\HH$, $c=uh+k$, and
+$G=\Psi_a h+\Phi_a k=P+IQ$. Uniformly in the normal angle and in
+$I\in\SSS$, as $\rho\downarrow0$,
+\begin{align}
+ P&=\frac{cs+vh\,t}{\pi v\rho^2}+O(1+|\log\rho|),\label{eq:P-principal}\\
+ Q&=\frac{vh\,s-ct}{\pi v\rho^2}+O(1+|\log\rho|),\label{eq:Q-principal}
+\end{align}
+where $s=x-u$, $t=y-v$. Equivalently,
+\begin{equation}\label{eq:geometric-principal}
+ G(q)=\frac1{\pi v}(q-p(q))^{-1}(p(q)h+k)
+                        +O(1+|\log\rho|).
+\end{equation}
+In particular, $G$ belongs to $L^p(\mathcal T_a(R))$ for every
+$1\le p<2$.
+\end{lemma}
+\begin{proof}
+In the single-log formulas used to derive
+\eqref{eq:Phi-explicit}--\eqref{eq:Psi-explicit}, replace the smooth
+coefficients $x,y,1/y$ in terms of order $\rho^{-1}$ by $u,v,1/v$.
+Each error is $O(1)$ because the coefficient changes by $O(\rho)$.
+The remaining logarithmic terms are $O(1+|\log\rho|)$.
+The reflected logarithm has no singularity at $a$ and contributes a
+smooth term. This gives the two displayed coefficients, with right
+quaternionic multiplication retained.
+
+Since $q-p(q)=s+It$, its inverse is $(s-It)/\rho^2$. Multiplication by
+$c+Ivh$ gives exactly the numerators of
+\eqref{eq:P-principal} and \eqref{eq:Q-principal}. Finally the normal
+area element is $\rho\dd\rho\dd\theta$, while $y$ is bounded above
+and below. The bound $O(\rho^{-1}+|\log\rho|)$ is $L^p$ exactly in the
+asserted subcritical range (with no need to assert nonintegrability yet).
+\end{proof}
+
+\subsection{A distributional defect with only two coefficients}
+Define the real-linear planar operator
+\begin{equation}\label{eq:L}
+ \mathscr L(P,Q)=\left(P_x-Q_y-\frac{2Q}{y},\ Q_x+P_y\right).
+\end{equation}
+It is a first-order operator with smooth coefficients on $B_a(R)$.
+We regard pairs as elements of $\HH^2$ and interpret distributions
+componentwise over $\R$.
+
+\begin{lemma}[An $L^1$ puncture creates only a point mass]
+\label{lem:defect}
+Suppose $P,Q\in L^1(B_a(R))$ and $\mathscr L(P,Q)=0$ away from $a$.
+Then there are unique $s_0,s_1\in\HH$ such that, distributionally,
+\begin{equation}\label{eq:defect}
+ \mathscr L(P,Q)=(s_0,s_1)\delta_a.
+\end{equation}
+No derivatives of $\delta_a$ can occur.
+\end{lemma}
+\begin{proof}
+The defect is supported at the single point $a$. A distribution
+supported at a point is a finite sum of derivatives of the point mass;
+a proof is included in Appendix~\ref{app:point}. If the highest nonzero
+derivative order were $r\ge1$, choose a test function $\varphi$ whose
+$r$-jet detects a nonzero top-order coefficient and put
+\[
+ \varphi_\varepsilon(z)=\varepsilon^r
+                    \varphi((z-a)/\varepsilon).
+\]
+The pairing of the defect with this test tends to a nonzero constant;
+terms of lower order tend to zero. On the other hand, the first-order
+form of $\mathscr L$ and boundedness of $1/y$ on the disk give
+\[
+ |\langle\mathscr L(P,Q),\varphi_\varepsilon\rangle|
+ \le C\bigl(\varepsilon^{r-1}+\varepsilon^r\bigr)
+       \int_{|z-a|<C'\varepsilon}(|P|+|Q|)\dd x\dd y.
+\]
+The right side tends to zero by absolute integrability, including when
+$r=1$. This is a contradiction. Only the point-mass term remains.
+\end{proof}
+
+\begin{lemma}[Defects of the canonical modes]\label{lem:mode-defect}
+For $G=\Psi_a h+\Phi_a k$ and $c=uh+k$,
+\begin{equation}\label{eq:mode-defect}
+ \mathscr L(P_G,Q_G)=\left(\frac{2c}{v},\ 2h\right)\delta_a.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Introduce the central complexification $W=P_G+\iota Q_G$. The complex
+version of $\mathscr L$ is
+\[
+ 2\bar\partial W-2Q_G/y,\qquad
+ \bar\partial=\tfrac12(\partial_x+\iota\partial_y).
+\]
+Lemma~\ref{lem:principal} gives
+\begin{equation}\label{eq:W-principal}
+ W=\frac{c+\iota vh}{\pi v(z-a)}+O(1+|\log|z-a||).
+\end{equation}
+There is only a point-mass defect by Lemma~\ref{lem:defect}. Its
+coefficient is computed by integration around a small circle. The
+boundary term for $2\bar\partial$ is
+$\int(n_x+\iota n_y)W\ds$. With
+$z-a=\varepsilon e^{\iota\theta}$, its principal part integrates to
+$2(c+\iota vh)/v$. The boundary contribution of the logarithmic
+remainder is $O(\varepsilon(1+|\log\varepsilon|))$ and vanishes.
+The integral of the lower-order term $2Q_G/y$ over a shrinking disk
+also vanishes because it is $L^1$. Equivalently, this is the elementary
+identity $\bar\partial(1/(z-a))=\pi\delta_a$, with its normalization
+verified by the same circle computation. Separating the central real
+and imaginary coefficients proves the claim.
+\end{proof}
+
+\begin{lemma}[Weak axial monogenicity is removable]\label{lem:weak}
+If $P,Q\in L^1(B_a(R))$ and $\mathscr L(P,Q)=0$ distributionally on
+the full disk, then $P+IQ$ has a smooth axial monogenic representative
+on the full tube $\mathcal T_a(R)$.
+\end{lemma}
+\begin{proof}
+The axial differential formula~\eqref{eq:axial-D} remains valid for
+$L^1$ coefficients in the sense of distributions on a tube with $y>0$.
+One way to see this is to mollify $P,Q$ in the planar variables and use
+\eqref{eq:axial-D} for the smooth approximants. Their axial lifts converge
+locally in $L^1$ by \eqref{eq:measure}. Pairing the right side with a
+four-dimensional test function amounts to pairing the planar coefficients
+with its spherical averages multiplied by $y^2$; those are smooth test
+functions. Thus the identity passes to the limit.
+
+It follows that the lifted field satisfies $\D g=0$ distributionally.
+Applying $\overline\D$ gives $\lap g=0$. The $L^1$ version of Weyl's
+lemma, proved in Appendix~\ref{app:Weyl}, makes every real component
+smooth and harmonic. Since $\D g=0$ still holds distributionally, it
+holds pointwise for that representative. The spherical averages recover
+smooth $P,Q$ and agree with the original coefficients almost everywhere.
+They preserve axiality through the missing sphere.
+\end{proof}
+
+\subsection{The classification theorem}
+\begin{theorem}[Complete $L^1$ normal form at an isolated sphere]
+\label{thm:L1}
+Let $g$ be smooth, axial, and left monogenic on
+$\mathcal T_a(R)\setminus S_a$. Assume it is locally integrable across
+$S_a$; equivalently, after possibly reducing $R$,
+\[
+ \int_{\mathcal T_a(R)}|g(q)|\dd V_q<\infty.
+\]
+Then there are unique $h,k\in\HH$ and a unique smooth axial monogenic
+field $g_0$ on the full tube such that
+\begin{equation}\label{eq:L1-normal}
+ \boxed{\ g=\Psi_a h+\Phi_a k+g_0.\ }
+\end{equation}
+For every sufficiently small counterclockwise circle $\gamma$ around
+$a$ in the planar base,
+\begin{equation}\label{eq:residue-period}
+ h=\int_\gamma\alpha_g,\qquad k=\int_\gamma\beta_g.
+\end{equation}
+Thus the space of $L^1$ axial monogenic germs at $S_a$, modulo removable
+germs, is a right quaternionic vector space of dimension $2$.
+\end{theorem}
+\begin{proof}
+By the norm equivalence preceding Lemma~\ref{lem:principal}, the planar
+coefficients are $L^1$. Lemma~\ref{lem:defect} supplies a defect
+$(s_0,s_1)\delta_a$. Set
+\begin{equation}\label{eq:source-to-residue}
+ h=\frac{s_1}{2},\qquad
+ k=\frac{vs_0-us_1}{2}.
+\end{equation}
+Then $2(uh+k)/v=s_0$. Lemma~\ref{lem:mode-defect} says that
+$g-\Psi_a h-\Phi_a k$ has zero planar defect. It is still $L^1$, so
+Lemma~\ref{lem:weak} gives the smooth monogenic extension $g_0$.
+
+The forms of a smooth monogenic field on a disk are closed and have
+zero circle periods. The four periods of the two modes are given by
+\eqref{eq:period-Phi}--\eqref{eq:period-Psi}. Applying them to the
+normal form proves \eqref{eq:residue-period}. They determine $h,k$
+uniquely, after which $g_0$ is also unique. Conversely every $(h,k)$ is
+realized by the corresponding mode combination, which is $L^1$ by
+Lemma~\ref{lem:principal}. This proves the dimension assertion.
+\end{proof}
+
+\begin{definition}[Affine spherical residue]
+The ordered pair
+\[
+ \operatorname{Res}^{\mathrm{aff}}_{S_a}(g)=(h,k)
+\]
+from Theorem~\ref{thm:L1} is the affine spherical residue in this
+manuscript. The term is explicitly defined here; it is not being
+identified with the usual point-singularity Fueter flux residue.
+\end{definition}
+
+The contour formulas make sense even without the $L^1$ assumption.
+What the theorem adds is completeness: in the $L^1$ class no further
+singular invariants survive modulo smooth fields. Section~\ref{sec:examples}
+will show why this fails beyond that class.
+
+\subsection{The exact surface source}
+For a continuous quaternion-valued density $\sigma$ on $S_a$, define
+$\sigma\delta_{S_a}$ by
+\[
+ \langle\sigma\delta_{S_a},\varphi\rangle
+     =\int_{S_a}\sigma(p)\varphi(p)\dd S_p
+\]
+for real scalar test functions; all quaternionic components are treated
+in the usual distributional sense.
+
+\begin{theorem}[Residue equals affine surface source]\label{thm:source}
+Under the assumptions of Theorem~\ref{thm:L1}, the $L^1$ field on the
+filled tube satisfies
+\begin{equation}\label{eq:surface-source}
+ \boxed{\ \D g=\sigma_a\delta_{S_a},\qquad
+       \sigma_a(p)=\frac2v(ph+k).\ }
+\end{equation}
+Hence the two period obstructions describe precisely the possible
+surface-supported source densities in this axial integrable class.
+\end{theorem}
+\begin{proof}
+The planar defect is
+$\bigl(2(uh+k)/v,2h\bigr)\delta_{(u,v)}$ by the normal form and
+Lemma~\ref{lem:mode-defect}. Lift the distributional identity as in
+Lemma~\ref{lem:weak}. In the volume element
+$y^2\dd x\dd y\dd\omega$, the two planar point masses give
+\[
+ v^2\int_{\SSS}\left(\frac{2(uh+k)}v+2Ih\right)
+                    \varphi(u+Iv)\dd\omega(I).
+\]
+Since $\dd S_p=v^2\dd\omega(I)$ on $S_a$, this is exactly
+$\langle(2/v)(ph+k)\delta_{S_a},\varphi\rangle$. The removable field
+has no source.
+\end{proof}
+
+The source density is an affine function of the point $p$ on the
+sphere, with coefficients on the right. It is not an arbitrary function
+on that sphere. This finite-dimensional restriction is where axiality
+has substantial content; general monogenic fields are not classified
+by this theorem.
+
+\section{The residue--energy law and the sharp integrability threshold}
+\label{sec:energy}
+
+For the residue pair $(h,k)$, define the positive-definite real quadratic
+form
+\begin{equation}\label{eq:quadratic}
+ \mathcal Q_a(h,k)=|uh+k|^2+v^2|h|^2.
+\end{equation}
+Because $v>0$, it vanishes exactly when $h=k=0$.
+
+\begin{theorem}[Exact logarithmic coefficient and finite renormalization]
+\label{thm:energy}
+Under the assumptions of Theorem~\ref{thm:L1}, choose a smaller fixed
+$R$ whose closed tube lies in the region of the normal form. Then a
+finite real number $E_R(g)$ exists such that
+\begin{equation}\label{eq:energy-law}
+ \boxed{\
+ \int_{\varepsilon<\dist(q,S_a)<R}|g(q)|^2\dd V_q
+ =8\mathcal Q_a(h,k)\log\frac R\varepsilon+E_R(g)+o(1).
+ \ }
+\end{equation}
+Equivalently, the logarithmic coefficient is
+\begin{equation}\label{eq:source-energy}
+ 8\mathcal Q_a(h,k)
+       =\frac1{2\pi}\int_{S_a}|\sigma_a(p)|^2\dd S_p.
+\end{equation}
+The coefficient is unchanged by adding a smooth axial monogenic field.
+The finite renormalized constant need not be unchanged.
+\end{theorem}
+\begin{proof}
+Let $c=uh+k$. By Theorem~\ref{thm:L1} and
+Lemma~\ref{lem:principal}, write $g=G_{-1}+R_0$, where
+\[
+ G_{-1}(q)=\frac{s-It}{\pi v\rho^2}(c+Ivh),\qquad
+ |R_0(q)|\le C(1+|\log\rho|).
+\]
+Multiplicativity of the quaternionic norm gives
+\[
+ |G_{-1}(q)|^2=\frac{|c+Ivh|^2}{\pi^2v^2\rho^2}.
+\]
+The average of $|c+Ivh|^2$ over $\SSS$ is
+$|c|^2+v^2|h|^2=\mathcal Q_a(h,k)$, by
+\eqref{eq:sphere-average}.
+
+Use $s=\rho\cos\theta$, $t=\rho\sin\theta$ and
+$y=v+\rho\sin\theta$. If $y^2$ in the volume element is first replaced
+by $v^2$, integration of the leading term gives
+\[
+ \frac{v^2}{\pi^2v^2}(4\pi)(2\pi)\mathcal Q_a(h,k)
+             \int_\varepsilon^R\frac{\dd\rho}{\rho}
+ =8\mathcal Q_a(h,k)\log(R/\varepsilon).
+\]
+The change $y^2-v^2=O(\rho)$ has an absolutely integrable effect at
+$\rho=0$. So do all remaining terms: the cross term is bounded in
+absolute value by
+$C\rho^{-1}(1+|\log\rho|)$, and the square of the remainder by
+$C(1+|\log\rho|)^2$. Multiplication by the normal area factor $\rho$
+makes both integrable. Therefore the difference between the full
+integral and the displayed logarithm converges to a finite limit,
+not merely a bounded remainder. This proves \eqref{eq:energy-law}.
+
+Finally $\sigma_a(u+Iv)=2(c+Ivh)/v$ and
+$\dd S=v^2\dd\omega$, so
+\[
+ \int_{S_a}|\sigma_a|^2\dd S
+ =4\int_{\SSS}|c+Ivh|^2\dd\omega
+ =16\pi\mathcal Q_a(h,k).
+\]
+This gives \eqref{eq:source-energy} and the final assertions.
+\end{proof}
+
+Here ``energy'' means the squared $L^2$ norm of the field, not its
+Dirichlet integral $\int|\nabla g|^2$. That distinction matters for the
+critical exponent and the logarithm.
+
+\begin{corollary}[Sharp $L^2$ removability]\label{cor:L2}
+An axial monogenic field with an isolated spherical singularity that is
+locally $L^2$ across the sphere extends smoothly and monogenically
+through it. More precisely, in the $L^1$ class the following are equivalent:
+\[
+ \text{removability}\quad\Longleftrightarrow\quad
+ (h,k)=(0,0)\quad\Longleftrightarrow\quad
+ \text{finite local }L^2\text{ mass}.
+\]
+For every $1\le p<2$, there are nonremovable examples locally in $L^p$.
+Every nonzero combination $\Psi_a h+\Phi_a k$ is such an example.
+\end{corollary}
+\begin{proof}
+A locally $L^2$ field is $L^1$ on a finite-volume tube by
+Cauchy--Schwarz. Theorem~\ref{thm:L1} applies. By
+Theorem~\ref{thm:energy}, a nonzero residue pair forces logarithmically
+divergent $L^2$ mass. Zero residues give the smooth extension directly.
+A smooth extension has finite $L^2$ mass on smaller compact tubes.
+The subcritical examples are $L^p$ by Lemma~\ref{lem:principal} and
+nonremovable because their residue pairs are nonzero.
+\end{proof}
+
+\begin{corollary}[A pointwise threshold]\label{cor:pointwise}
+If an axial monogenic field near $S_a$ satisfies
+\[
+ \sup_{\dist(q,S_a)=\rho}|g(q)|=o(\rho^{-1}),\qquad\rho\downarrow0,
+\]
+then the singularity is removable. Allowing all $O(\rho^{-1})$ fields
+would make this false.
+\end{corollary}
+\begin{proof}
+The hypothesis implies local $L^1$ integrability. If a residue pair
+were nonzero, the leading term in Lemma~\ref{lem:principal} would have
+nonzero sphere-averaged squared norm after multiplication by $\rho^2$,
+whereas the remainder tends to zero after multiplication by $\rho$.
+This contradicts the assumed uniform little-oh bound. The canonical
+modes furnish the $O(\rho^{-1})$ counterexamples.
+\end{proof}
+
+\subsection{Why the ordinary Fueter flux loses information}
+\begin{proposition}[Flux and its invisible residue component]
+\label{prop:flux}
+Give $\partial\mathcal T_a(r)$ the outward quaternionic unit normal $n$.
+For every sufficiently small $r>0$,
+\begin{equation}\label{eq:flux}
+ \int_{\partial\mathcal T_a(r)}n(q)g(q)\dd S_q
+       =8\pi v(uh+k).
+\end{equation}
+Thus the ordinary quaternionic flux detects $uh+k$, but not the full
+pair $(h,k)$. In particular, $h\ne0$ and $k=-uh$ give a nonremovable
+$L^1$ singularity with zero flux.
+\end{proposition}
+\begin{proof}
+The divergence theorem applied componentwise to $g$ gives
+$\int_{\partial V}ng=\int_V\D g$ for smooth fields. Applying it to
+an annular tube shows that the displayed flux is independent of $r$.
+On its inner limiting tube write
+$q=u+r\cos\theta+I(v+r\sin\theta)$. Then
+\[
+ n=\cos\theta+I\sin\theta,\qquad
+ \dd S=(v+r\sin\theta)^2r\dd\theta\dd\omega.
+\]
+Multiplying the principal part by $n$ on the left cancels its normal
+inverse and leaves $(c+Ivh)/(\pi vr)$. The logarithmic remainder has
+flux tending to zero. The limiting integral is
+\[
+ \frac v\pi\int_0^{2\pi}\int_{\SSS}(c+Ivh)
+                    \dd\omega\dd\theta=8\pi vc,
+\]
+where $c=uh+k$. Independence of $r$ proves the exact identity.
+The final claim follows from Theorem~\ref{thm:L1} or
+Corollary~\ref{cor:L2}.
+\end{proof}
+
+\subsection{Coordinate invariance of the coefficient}
+A real translation $q'=q-t$ changes the affine increment
+$qh+k$ to $q'h+(k+th)$ and the center $u$ to $u-t$.
+Hence
+\[
+ |(u-t)h+(k+th)|^2+v^2|h|^2=\mathcal Q_a(h,k).
+\]
+The energy coefficient is therefore independent of the choice of real
+origin. Formula~\eqref{eq:source-energy} gives its intrinsic geometric
+meaning without choosing period coordinates at all.
+
+\section{Cauchy layers and the global classification with finitely many spheres}
+\label{sec:layers}
+
+\subsection{A normalized fundamental solution}
+The kernel $E$ in \eqref{eq:E} is locally integrable in four dimensions
+and satisfies
+\begin{equation}\label{eq:fundamental}
+ \D E=\delta_0
+\end{equation}
+in the sense of distributions. To verify the normalization directly,
+$\D\bar q=4$ and differentiating $|q|^{-4}$ cancels that contribution
+away from zero. On $|q|=r$, with $n=q/r$,
+\[
+ nE=\frac1{2\pi^2r^3}.
+\]
+The area of that three-sphere is $2\pi^2r^3$, so its total flux is $1$.
+Integration by parts on a punctured ball and passage to the limit
+prove \eqref{eq:fundamental}; the error from replacing a test function
+by its value at zero is $O(r)$. This also fixes every constant in the
+following representation.
+
+\begin{theorem}[Canonical sphere-layer representation]\label{thm:layer}
+For $q\notin S_a$ and $h,k\in\HH$,
+\begin{equation}\label{eq:layer}
+ \boxed{\
+ \Psi_a(q)h+\Phi_a(q)k
+   =\frac2v\int_{S_a}E(q-p)(ph+k)\dd S_p.\ }
+\end{equation}
+The field on the right is the unique locally integrable field on
+$\HH$, tending to zero at infinity, whose distributional Fueter
+source is $(2/v)(ph+k)\delta_{S_a}$. Uniqueness here holds even without
+assuming axiality of a competing field.
+\end{theorem}
+\begin{proof}
+Define the right side to be $K(q)$. The integral is smooth and
+monogenic away from $S_a$ by differentiation under the integral.
+It is locally integrable in all four variables: on a compact set,
+Fubini's theorem bounds the integral of $|K|$ by a constant times
+\[
+ \int_{S_a}\int_{\text{compact set}}|q-p|^{-3}\dd V_q\dd S_p,
+\]
+which is finite, uniformly in $p$. Formula~\eqref{eq:fundamental}
+therefore gives
+$\D K=(2/v)(ph+k)\delta_{S_a}$ distributionally. The compactness of
+$S_a$ and the bound for $E$ imply $K(q)=O(|q|^{-3})$ at infinity.
+
+By Proposition~\ref{prop:modes}, the left side $G$ is smooth on
+$\HH\setminus S_a$, and it is locally $L^1$ across $S_a$ by
+Lemma~\ref{lem:principal}. Theorem~\ref{thm:source} gives the same
+source as $K$; Proposition~\ref{prop:decay} gives its decay.
+Thus $G-K$ is globally $L^1_{\mathrm{loc}}$, distributionally
+monogenic, and tends to zero at infinity. Applying $\overline\D$
+and Weyl's lemma makes it a smooth entire harmonic field. It is
+bounded and therefore constant; the constant is zero. The last step
+follows, for example, by the harmonic mean-value formula on arbitrarily
+large balls and its derivative estimate, which forces all first
+derivatives of a bounded entire harmonic function to vanish.
+
+The same argument applies to the difference of any two locally
+integrable fields with the specified source and decay, proving uniqueness
+without an axiality hypothesis.
+\end{proof}
+
+Although axiality was not required for that uniqueness step, the density
+$(2/v)(ph+k)$ is a special affine density. Arbitrary surface densities
+would give a much larger class of solutions, outside this paper's
+classification.
+
+\subsection{A finite-sphere realization theorem}
+Let $a_j=u_j+\iota v_j\in\C_+$ be distinct, and write
+$\Sigma=\bigcup_{j=1}^m S_{a_j}$. Distinct upper-base points give disjoint
+spheres. Denote by $\mathcal M_{1,0}(\Sigma)$ the right quaternionic
+vector space of smooth axial monogenic fields on $\HH\setminus\Sigma$
+which are locally integrable across every sphere and satisfy
+$|g(q)|\to0$ as $|q|\to\infty$. This is local integrability at finite
+points, not an assertion of global $L^1(\HH)$ integrability.
+
+\begin{theorem}[Global classification of decaying integrable fields]
+\label{thm:global-class}
+The residue map is an isomorphism
+\begin{equation}\label{eq:global-iso}
+ \mathcal M_{1,0}(\Sigma)\ \cong\ \HH^{2m}.
+\end{equation}
+Its inverse is the explicit formula
+\begin{equation}\label{eq:global-field}
+ g(q)=\sum_{j=1}^m\bigl(\Psi_{a_j}(q)h_j+\Phi_{a_j}(q)k_j\bigr)
+ =\sum_{j=1}^m\frac2{v_j}\int_{S_{a_j}}
+              E(q-p)(ph_j+k_j)\dd S_p.
+\end{equation}
+In particular, this space has real dimension $8m$. Every such field
+actually decays at least as $O(|q|^{-3})$, and more precisely
+\begin{equation}\label{eq:far-field}
+ g(q)=8\pi E(q)\sum_{j=1}^m v_j(u_jh_j+k_j)+O(|q|^{-4}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:L1} in disjoint small tubes to extract unique
+residues $(h_j,k_j)$. Subtract the finite sum of canonical modes.
+Near each sphere all the other modes are smooth, and the singular part
+at that sphere has been removed. The remainder therefore extends to
+an entire smooth monogenic field. It tends to zero at infinity, since
+both $g$ and the modes do. Harmonic Liouville, as used in
+Theorem~\ref{thm:layer}, makes the remainder zero. Conversely every
+finite mode sum has the required regularity, local integrability, and
+decay, and its residue vector is the specified one. This proves the
+isomorphism. The layer expression follows from Theorem~\ref{thm:layer},
+and the asymptotic formula follows from \eqref{eq:mode-decay}.
+\end{proof}
+
+\begin{corollary}[Global realization without a decay condition]
+\label{cor:entire-remainder}
+Every smooth axial monogenic field on $\HH\setminus\Sigma$ that is
+locally integrable across the spheres has a unique decomposition
+\[
+ g=g_{\mathrm{ent}}+\sum_j(\Psi_{a_j}h_j+\Phi_{a_j}k_j),
+\]
+where $g_{\mathrm{ent}}$ is entire axial monogenic. It has a global
+slice-regular Fueter primitive on $\HH\setminus\Sigma$ exactly when
+all the residue pairs vanish. In that case $g=g_{\mathrm{ent}}$ and
+it has a primitive on all of $\HH$.
+\end{corollary}
+\begin{proof}
+The same subtraction argument gives the entire remainder, and periods
+give uniqueness. A global primitive forces zero periods. Conversely,
+if all pairs vanish, the field is entire. Its upper base is the simply
+connected half-plane, so Theorem~\ref{thm:period} gives a primitive
+there and Proposition~\ref{prop:axis} extends it to all of $\HH$.
+\end{proof}
+
+\begin{corollary}[Additivity of the singular energy]
+For disjoint sufficiently small tubes about the $S_{a_j}$,
+\[
+ \sum_j\int_{\varepsilon<\dist(q,S_{a_j})<R_j}|g(q)|^2\dd V_q
+ =8\sum_j\mathcal Q_{a_j}(h_j,k_j)\log(1/\varepsilon)+C+o(1).
+\]
+\end{corollary}
+\begin{proof}
+Near each sphere the other modes, and any entire remainder, are smooth.
+Apply Theorem~\ref{thm:energy} in each tube and add. The fixed
+$\log R_j$ terms are absorbed into $C$.
+\end{proof}
+
+The exact sequence of Section~\ref{sec:finite} describes the obstruction
+to a primitive. Theorem~\ref{thm:global-class} describes actual decaying
+fields, not merely a quotient. These two finite-dimensional objects are
+linked by the same explicit representatives, but they answer different
+questions.
+
+\section{Examples, necessary hypotheses, and reproducible checks}
+\label{sec:examples}
+
+\subsection{One sphere and two independent obstructions}
+On $\HH\setminus\SSS$, the field $\Phi_{\iota}$ has residue $(0,1)$,
+nonzero flux $8\pi$, and energy coefficient $8$. Its local primitive
+acquires the constant $1$ around the puncture. The field $\Psi_{\iota}$
+has residue $(1,0)$ and the same energy coefficient $8$, but its flux
+is zero. Its local primitive acquires $q$ rather than a constant.
+Both fields are locally $L^p$ for $1\le p<2$ and both decay at infinity.
+Neither has a single-valued global Fueter primitive on the punctured
+space. This exhibits the necessity of both forms in
+\eqref{eq:intro-forms}, even in the simplest topology.
+
+\subsection{Zero periods alone do not imply removability}
+Take a small punctured disk about $a=u+\iota v\in\C_+$ and the
+single-valued holomorphic stem
+\[
+ F(z)=\frac1{z-a}.
+\]
+Let $f=\lift(F)$ and $g=\lap f$. Then $g$ is a Fueter image, so
+both its periods vanish. Nevertheless it has a nonremovable singularity
+along $S_a$. To see this without a general singularity theorem, put
+$s=x-u$, $t=y-v$, $\rho^2=s^2+t^2$. The stem coefficients are
+$A=s/\rho^2$, $B=-t/\rho^2$, so
+\[
+ P=-\frac{4st}{y\rho^4},\qquad
+ Q=\frac{2(t^2-s^2)}{y\rho^4}+\frac{2t}{y^2\rho^2}.
+\]
+Their leading squared norm is
+\[
+ \frac{16s^2t^2+4(t^2-s^2)^2}{v^2\rho^8}
+       =\frac4{v^2\rho^4}.
+\]
+Thus $N_g$ is bounded below by a positive multiple of $\rho^{-2}$
+near the puncture. Its planar integral diverges like
+$\int_0 \rho^{-1}\dd\rho$. The field is not locally $L^1$, exactly
+where Theorem~\ref{thm:L1} does not apply. The distinction between
+``no monodromy'' and ``no singularity'' is therefore essential.
+
+\subsection{Removing several independent obstructions}
+For a base with two holes and missing points $a_1,a_2$, consider
+\[
+ g=\lap f_0+\Psi_{a_1}\ii+\Phi_{a_1}\jj
+              +\Psi_{a_2}(1+\kk)-2\Phi_{a_2}.
+\]
+Its period vector is $(\ii,\jj,1+\kk,-2)$ in the corresponding winding
+basis. The projection $\Pi$ removes exactly the four displayed mode
+terms, irrespective of the unknown primitive $f_0$. This example also
+shows that the construction works with genuinely noncommuting right
+coefficients; no common complex slice for the coefficients is assumed.
+
+\subsection{Numerical energy example}
+The accompanying script takes
+\[
+ u=\frac25,\quad v=\frac{13}{10},\quad
+ h=1+2\ii-\jj+\frac12\kk,\quad
+ k=\frac14-\ii+3\jj+2\kk.
+\]
+For $g=\Psi_a h+\Phi_a k$, direct arithmetic gives
+$8\mathcal Q_a(h,k)=181$. With $R=0.3$, the computed integrals are:
+\begin{center}
+\renewcommand{\arraystretch}{1.17}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$\varepsilon$ & $E(\varepsilon,R)$ &
+$E(\varepsilon,R)-181\log(R/\varepsilon)$ & $J(\varepsilon)$\\
+\midrule
+$10^{-2}$ & $626.9031484$ & $11.28642233$ & $181.2151049$\\
+$10^{-3}$ & $1043.8028211$ & $11.41819314$ & $181.0049681$\\
+$10^{-4}$ & $1460.5735515$ & $11.42102173$ & $181.0000892$\\
+$10^{-5}$ & $1877.3415023$ & $11.42107075$ & $181.0000014$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $E(\varepsilon,R)$ is the integral in
+\eqref{eq:energy-law}, and the shell density is
+\[
+ J(\rho)=4\pi\int_0^{2\pi}
+       y^2\bigl(|P|^2+|Q|^2\bigr)\rho^2\dd\theta,
+ \quad x=u+\rho\cos\theta,\ y=v+\rho\sin\theta.
+\]
+Thus $E(\varepsilon,R)=\int_{\log\varepsilon}^{\log R}J(e^t)\dd t$.
+The convergence of $J$ to $181$ and of the subtracted integral to a
+finite limit checks the normalizations numerically. The table uses
+160-point Gauss--Legendre rules in both the angular and logarithmic
+radial variables; the displayed digits are diagnostic numerical values,
+not certified error bounds.
+
+\subsection{What the code does and does not verify}
+The file \texttt{verify.py} performs thirteen exact symbolic identities:
+the two Vekua equations and closure of both forms for the unreflected
+logarithmic modes, their derivation from the Fueter formula, and the
+principal quadratic energy identity. Linearity then gives the reflected
+modes. It also integrates all sixteen entries of the two-hole period
+matrix at 45-decimal working precision; the observed errors in this
+run were below $10^{-46}$. A quaternion multiplication check verifies
+the spherical norm average on test data. Independent quadrature of the
+four-dimensional sphere-layer integral at a real and a nonreal test point
+checks the source normalization; its observed errors were below $10^{-12}$.
+Finally the script produces the energy
+table above and writes the results to \texttt{verification\_results.json}.
+
+These computations are not a formal proof checker. In particular,
+they do not prove the distributional defect lemma, the global gluing
+theorem, or the exhaustive $L^1$ classification. Those conclusions rest
+on the written arguments. Numerical quadrature errors reported by
+comparison with the exact periods are observed errors, not interval
+certificates. The code is included to make algebraic sign and
+normalization checks repeatable, rather than to replace analysis.
+
+\section{Novelty assessment, scope, and remaining research directions}
+\label{sec:status}
+
+\subsection{A precise separation of claims}
+The differential identities, the affine kernel, local inverse Fueter
+existence, and the Cauchy--Fueter fundamental kernel are established
+background. No priority is claimed for them. Closed-form exactness,
+point-supported distribution structure, and Weyl regularity are also
+standard tools; elementary proofs of the needed versions have been
+included for completeness.
+
+The candidate-original contribution is the explicit chain of
+identifications
+\[
+ \begin{gathered}
+ \text{two primitive-independent period forms}\\
+ \Updownarrow\\
+ \text{affine monodromy of a Fueter primitive}\\
+ \Updownarrow\quad\text{under the local }L^1\text{ hypothesis}\\
+ \text{complete two-quaternion spherical residue}\\
+ \Updownarrow\\
+ \text{affine surface source and its logarithmic }L^2\text{ coefficient}.
+ \end{gathered}
+\]
+Its concrete consequences are the split exact sequence, the explicit
+$8m$-dimensional obstruction space, the complete integrable normal form,
+and the classification of decaying finite-sphere fields. The formulas
+for the source and the positive-definite coefficient specify information
+that an ordinary total flux does not capture. Some individual
+consequences, especially an $L^2$ removability threshold for a first-order
+elliptic equation, may have broader precedents and are not by themselves
+the basis of a novelty claim.
+
+The sources actually used in this audit include the primary stem paper,
+the inverse Fueter literature cited above, the full 2013 arXiv text of
+the 2014 integral-formula paper, the 2018 Dong--Qian preprint, and the
+2026 De Martino--Pinton preprint. Bibliographic leads also included
+Common--Sommen's axial construction~\cite{Common} and the 2016 inversion
+paper~\cite{DKQS}; their complete texts were not available for a full
+comparison in this session. The absence of a matching formula from a
+limited search is not a proof of absence from published literature.
+A specialist literature review remains necessary before claiming
+publication priority. This limitation concerns originality assessment,
+not an omitted step in any stated theorem.
+
+\subsection{What has and has not been resolved}
+The same-domain inverse question is resolved here for the precise
+spaces and domains stated: all closed curves must have both periods
+zero, and finitely generated winding topology has exactly the explicit
+cokernel described above. The integrable isolated-sphere question is
+also resolved in the axial class, including the exact source and
+energy coefficient. The examples refute the unrestricted assertion
+that every axial monogenic field on an arbitrary circular domain must
+have a single-valued primitive on that same domain.
+
+No analogous classification is asserted for nonaxial fields. There,
+the possible source density on a sphere need not be affine and an
+infinite-dimensional analysis is to be expected. No finite-dimensional
+cokernel assertion is made for a base with infinitely many independent
+holes, although the zero-period criterion remains valid. At a real
+point $v=0$, the geometry changes from a two-dimensional singular
+sphere to a point; the formulas containing $1/v$ and the threshold
+$p=2$ do not apply. Finally, outside the $L^1$ class additional
+principal parts can have zero affine residues, as the explicit example
+in Section~\ref{sec:examples} demonstrates.
+
+Several extensions are concrete rather than merely terminological.
+One may classify higher distributional derivatives of spherical
+sources under weaker integrability or prescribed growth and compare
+the resulting hierarchy with higher-degree monodromy for higher-order
+Fueter maps. One may also study bounded inverse operators on weighted
+Sobolev spaces after projecting out the periods. The current compact-set
+path estimates do not claim such a global Sobolev theory. These are
+questions left open by this draft, not prerequisites for its results.
+
+\appendix
+\section{The two distributional facts used in the proofs}
+\label{app:distribution}
+
+\subsection{Distributions supported at one point}
+\label{app:point}
+\begin{lemma}\label{lem:point-support}
+A distribution $T$ supported at $0\in\R^n$ is a finite linear
+combination of derivatives of $\delta_0$.
+\end{lemma}
+\begin{proof}
+Choose a compact neighborhood $K$ of zero and an order $r$ and constant
+$C$ such that
+\[
+ |\langle T,\varphi\rangle|
+ \le C\max_{|\alpha|\le r}\sup_K|\partial^\alpha\varphi|
+\]
+for tests supported in $K$. Such a finite-order estimate on a fixed
+compact set is part of the continuity definition of a distribution.
+Let $\chi$ be a smooth cutoff equal to one near zero and set
+$\chi_\varepsilon(x)=\chi(x/\varepsilon)$. Because the support of $T$
+is zero, $\langle T,\varphi\rangle=
+\langle T,\chi_\varepsilon\varphi\rangle$.
+
+Suppose all derivatives of $\varphi$ through order $r$ vanish at zero.
+Taylor's theorem for each derivative gives
+\[
+ \sup_{|x|\le C_0\varepsilon}|\partial^\beta\varphi(x)|
+       =o(\varepsilon^{r-|\beta|}),\qquad |\beta|\le r.
+\]
+The product rule and the bounds for derivatives of
+$\chi_\varepsilon$ then give
+$\max_{|\alpha|\le r}\sup|
+\partial^\alpha(\chi_\varepsilon\varphi)|=o(1)$.
+The finite-order estimate forces $\langle T,\varphi\rangle=0$.
+Therefore $T$ depends only on the finite $r$-jet of its test function
+at zero. Linear functionals on that finite-dimensional jet space are
+linear combinations of derivative evaluations, which are precisely
+pairings with derivatives of $\delta_0$, up to their usual signs.
+The vector-valued statement follows componentwise.
+\end{proof}
+
+The scaling argument in Lemma~\ref{lem:defect} uses more than this
+structure theorem: local $L^1$ integrability and the first-order
+operator eliminate all positive-order derivatives. This is the step
+that makes the residue classification exhaustive rather than a list
+of examples.
+
+\subsection{An \texorpdfstring{$L^1$}{L1} Weyl lemma}
+\label{app:Weyl}
+\begin{lemma}\label{lem:Weyl}
+If $u\in L^1_{\mathrm{loc}}(V)$ on an open $V\subset\R^n$ and
+$\Delta u=0$ distributionally, then $u$ has a smooth harmonic
+representative.
+\end{lemma}
+\begin{proof}
+Convolve with a smooth compactly supported approximate identity to
+obtain $u_\varepsilon$ on smaller subdomains. It is smooth and harmonic
+because the Laplacian commutes with convolution. Its local $L^1$ norms
+are uniformly bounded by the $L^1$ norm of $u$ on a slightly larger
+compact set.
+
+For a smooth harmonic function $h$, average its ordinary spherical
+mean-value identities against a fixed smooth radial weight of total
+integral one, supported in a ball of radius $r$. This writes $h$ in
+a smaller ball as convolution with a smooth kernel $\psi_r$.
+Differentiating the kernel gives, for every multi-index $\alpha$,
+\[
+ \sup_{B'}|\partial^\alpha h|
+ \le C_{\alpha,r}\int_B|h(x)|\dd x,
+\]
+where $B'$ is a concentric smaller ball and the kernel supports fit
+inside $B$. Apply this to $u_\varepsilon$. The uniform $L^1$ bounds
+produce uniform bounds on all derivatives on compact subsets.
+Repeated Arzel\`a--Ascoli extraction gives a subsequence converging
+smoothly on compact subsets to a harmonic function $h$.
+Since $u_\varepsilon\to u$ in $L^1_{\mathrm{loc}}$, the limit is a
+representative of $u$. Local representatives agree almost everywhere
+and hence everywhere by continuity, so they give the desired global
+representative.
+\end{proof}
+
+For quaternion-valued fields the lemma applies to each of four real
+components. The factorization $\overline\D\D=\lap$ then upgrades an
+$L^1$ distributionally monogenic field to a smooth monogenic field,
+which is the only elliptic regularity input required above.
+
+\section{Reproduction and normalization checklist}
+\label{app:reproduce}
+The article uses the positive Laplacian
+$\lap=\sum_{\mu=0}^3\partial_{x_\mu}^2$ and the left Fueter operator
+$\D$. A convention using $-\lap$ changes the signs of the model fields
+and their residues. It does not change the squared energy coefficient.
+Our fundamental kernel contains $1/(2\pi^2)$, the sphere measure on
+$\SSS$ has total area $4\pi$, and all planar loops are
+counterclockwise-positive. These four choices account for the constants
+$2/v$, $8\pi v$, and $8$ in the source, flux, and energy formulas.
+
+The archive contains the self-contained LaTeX source, its compiled PDF,
+\texttt{verify.py}, \texttt{verification\_results.json}, a captured
+verification log, \texttt{requirements.txt}, and a README. No external
+figure files or bibliography database are needed. Compile the source
+with \texttt{pdflatex} twice to resolve references. Run the verification
+script in a Python environment with SymPy, NumPy, and mpmath installed.
+The exact package versions used for the reported run are recorded in
+the JSON output and README.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{GP}
+R.~Ghiloni and A.~Perotti,
+\emph{Slice regular functions on real alternative algebras},
+Advances in Mathematics \textbf{226} (2011), 1662--1691.
+\href{https://arxiv.org/abs/1008.4318}{arXiv:1008.4318}.
+
+\bibitem{CSS}
+F.~Colombo, I.~Sabadini, and F.~Sommen,
+\emph{The inverse Fueter mapping theorem},
+Communications on Pure and Applied Analysis \textbf{10} (2011), 1165--1181.
+\href{https://doi.org/10.3934/cpaa.2011.10.1165}{doi:10.3934/cpaa.2011.10.1165}.
+
+\bibitem{CPSS}
+F.~Colombo, D.~Pe\~na Pe\~na, I.~Sabadini, and F.~Sommen,
+\emph{A new integral formula for the inverse Fueter mapping theorem},
+Journal of Mathematical Analysis and Applications \textbf{417} (2014), 112--122.
+\href{https://arxiv.org/abs/1302.0685}{arXiv:1302.0685}.
+The preprint's Theorem~3 is the rectangular-domain inverse result
+explicitly inspected for this audit.
+
+\bibitem{DQ}
+B.~Dong and T.~Qian,
+\emph{Further aspects of the Fueter mapping theorem},
+preprint (2018).
+\href{https://arxiv.org/abs/1805.02966}{arXiv:1805.02966}.
+Theorem~3.6 gives a contour formulation of surjectivity.
+
+\bibitem{DMP}
+A.~De Martino and S.~Pinton,
+\emph{A variation of the inverse Fueter theorem and the generalized
+polyanalytic Cauchy--Kovalevskaya extension of order 2},
+preprint, 7 August 2026.
+\href{https://arxiv.org/abs/2608.07711}{arXiv:2608.07711}.
+
+\bibitem{Common}
+A.~K.~Common and F.~Sommen,
+\emph{Axial monogenic functions from holomorphic functions},
+Journal of Mathematical Analysis and Applications \textbf{179} (1993), 610--629.
+\href{https://doi.org/10.1006/jmaa.1993.1372}{doi:10.1006/jmaa.1993.1372}.
+Bibliographic lead; complete text not inspected in this audit.
+
+\bibitem{DKQS}
+B.~Dong, K.~I.~Kou, T.~Qian, and I.~Sabadini,
+\emph{On the inversion of Fueter's theorem},
+Journal of Geometry and Physics \textbf{108} (2016), 102--116.
+\href{https://www.sciencedirect.com/science/article/pii/S0393044016301401}{Publisher record}.
+Bibliographic lead; complete text not inspected in this audit.
+
+\bibitem{Uploaded}
+\emph{Classical Complex Theorems over the Quaternions:
+Slice-regular and Cauchy--Fueter analogues, with proofs},
+unpublished expository manuscript supplied with the request,
+20 September 2026, file \texttt{quaternionic\_analysis.tex}.
+See the section ``Fueter's mapping theorem and a constructive local
+inverse,'' particularly the constructive axial inverse and its period caveat.
+
+\end{thebibliography}
+\end{document}

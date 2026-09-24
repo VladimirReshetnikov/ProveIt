@@ -1,0 +1,1428 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{OliveInk}{HTML}{47543E}
+\definecolor{PaleOlive}{HTML}{F1F3EC}
+\definecolor{WarmGray}{HTML}{66645D}
+\hypersetup{colorlinks=true,linkcolor=OliveInk,citecolor=OliveInk,urlcolor=OliveInk,
+ pdftitle={Sharp ordinal bounds for Hoare powerspaces},
+ pdfauthor={ChatGPT, research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Noetherian spaces, ordinal stature, Hoare powerspaces, finite-tail spectra}}
+\titleformat{\section}{\Large\bfseries\color{OliveInk}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{OliveInk}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{WarmGray}Sharp ordinal bounds for Hoare powerspaces}
+\fancyhead[R]{\small\color{WarmGray}Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollarys}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\newcommand{\Cl}{\mathcal C}
+\newcommand{\HH}{\mathsf H}
+\newcommand{\Hfin}{\mathsf H_{\mathrm{fin}}}
+\newcommand{\JJ}{\mathcal J}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\st}[1]{\lVert #1\rVert}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\Spec}{\operatorname{Spec}_{\HH}}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\boxF}[1]{\mathord{\Box}(#1)}
+\newcommand{\ds}{\mathbin{\sqcup}}
+\newcommand{\natsum}{\mathop{\bigoplus}}
+\newcommand{\natprod}{\mathop{\bigotimes}}
+\newcommand{\E}{\mathcal E}
+\numberwithin{equation}{section}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{14mm}
+{\small\sffamily\color{OliveInk}ORDER THEORY \enspace/\enspace ORDINAL RANKS \enspace/\enspace NOETHERIAN SPACES\par}
+\vspace{13mm}
+{\LARGE\bfseries Sharp ordinal bounds\\[3pt]for Hoare powerspaces\par}
+\vspace{7mm}
+{\Large Extremal statures and the complete\\[2pt]$\boldsymbol{\omega+n}$ spectrum\par}
+\vspace{13mm}
+{\large A research manuscript prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+{\normalsize ChatGPT\par}
+\vspace{3mm}
+{\normalsize 19 September 2026\par}
+\vspace{13mm}
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+The stature of a Noetherian space is the ordinal rank of the top element
+of its lattice of closed subsets.  We study the stature of its extended
+Hoare powerspace, equipped with the lower Vietoris topology and including
+the empty closed set.  Motivated by Question~1 in Section~15 of
+Goubault-Larrecq and Laboureix, we give a proof of the universal bound
+$1+\st X\leq\st{\HH X}\leq 2^{\st X}$, where exponentiation is ordinal.
+The binary upper bound is already known for the finitary powersets of
+well-quasi-orders; the argument here extends it to all Noetherian spaces.
+Explicit $T_1$ examples attain the upper bound at every ordinal stature.
+Consequently the older bound $\omega^\alpha$ is attainable at infinite
+input stature $\alpha$ exactly when $\omega\alpha=\alpha$.
+
+We also determine the entire spectrum at each stature $\omega+n$,
+$n<\omega$.  Its elements are precisely
+$\omega\,j(U)+j(Q)-j(U)$, where $Q$ ranges over $n$-element posets,
+$U$ ranges over their downsets, and $j(P)$ counts the downsets of $P$.
+The proof isolates a canonical infinite closed core, removes a possible
+generic point without changing the closed lattice, and computes a
+finite-cell rank.  Every permitted value is realized by an explicit
+countable space.  An accompanying program enumerates the finite spectra
+through $n=6$ and checks a separate finite-model identity.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small\color{WarmGray}
+\textbf{Status and scope.} This is an original research attempt with full
+English proofs, not an independently refereed or proof-assistant-verified
+paper.  The general spectrum beyond the finite tails of $\omega$ is not
+classified here.  Priority is not asserted: the distinction between the
+known wqo theorem and the proposed general extension is explicit.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The chosen question and the results}
+\label{sec:intro}
+
+The problem selected for this investigation is a concrete ordinal-spectrum
+question rather than a foundational consistency question.  It has two
+advantages for an attempted solution: the invariant is defined by a
+well-founded recursion, and the relevant hyperspace has a finite normal
+form for its closed sets.
+
+Goubault-Larrecq and Laboureix establish
+\begin{equation}\label{eq:old}
+  1+\st X\ \leq\ \st{\mathcal H_{0V}X}\ \leq\ \omega^{\st X}.
+\end{equation}
+Their Section~15, Question~1 asks which intermediate ordinals occur, and
+whether the upper endpoint can occur for \emph{every} infinite value of
+$\st X$ \cite[Section~15, Question~1]{GL23}.  We write $\HH X$ for their
+$\mathcal H_{0V}X$ throughout.  In particular, our powerspace includes the
+empty closed subset of $X$; omitting that point would change several finite
+and successor formulas.
+
+For an ordinal $\alpha$, define
+\[
+ \Spec(\alpha)=\{\st{\HH X}:X\text{ is Noetherian and }\st X=\alpha\}.
+\]
+All constructions take place in ordinary set theory with choice.  Spaces
+may have arbitrary cardinality and need not satisfy a separation axiom
+unless one is stated.
+
+\begin{tcolorbox}[colback=PaleOlive,colframe=OliveInk,boxrule=0.5pt,
+ arc=1mm,title={Main results proved in this manuscript},fonttitle=\bfseries]
+For every ordinal $\alpha$,
+\[
+ \min\Spec(\alpha)=1+\alpha,
+ \qquad \max\Spec(\alpha)=2^\alpha.
+\]
+The maximum has a $T_1$ witness.  For infinite $\alpha$,
+\[
+ \omega^\alpha\in\Spec(\alpha)
+ \quad\Longleftrightarrow\quad \omega\cdot\alpha=\alpha.
+\]
+For $n<\omega$, with $j(P)$ the number of downsets of a finite poset $P$,
+\[
+ \Spec(\omega+n)=
+ \bigl\{\omega\cdot j(U)+(j(Q)-j(U)):
+          |Q|=n,\ U\in\JJ(Q)\bigr\}.
+\]
+Here $U$ carries the induced order, and the empty downset is counted.
+\end{tcolorbox}
+
+The simplest obstruction to universal upper attainment is already decisive: $\Spec(\omega)=\{\omega\}$, so $\omega^\omega$ is not attainable at
+input stature $\omega$.  The stronger result is not just this counterexample,
+but the optimal upper bound for every input and a criterion for exactly
+when the old bound coincides with it.
+
+\subsection{What is already known, and what is being extended}
+
+Abriola, Halfon, Lopez, Schmitz, Schnoebelen, and Vialard prove
+\[
+  1+o(A)\leq o(\mathcal P_f(A))\leq 2^{o(A)}
+\]
+for well-quasi-orders, and provide sharpness witnesses for all ordinals
+\cite[Theorems~3.3 and~4.3]{AHLLSSV24}.  Thus neither binary ordinal
+exponentiation nor its sharpness in the wqo setting is a new discovery
+here.  Our finite/limit/successor proof strategy is closely parallel to
+that existing theorem.  The added step is a topological rank decomposition
+that works without an Alexandroff topology or a wqo specialization order.
+
+This distinction matters.  An infinite $T_1$ Noetherian space has equality
+as its specialization order, an infinite antichain, so it does not come
+from a wqo in this way.  The cofinite topology is the first example.  The
+$T_1$ witnesses below therefore give a realization in a genuinely different
+class of spaces, although unrestricted sharpness witnesses already follow
+from the known wqo results.
+
+The proofs of the upper bound and the $\omega+n$ spectrum are supplied
+from rank and topology definitions.  A separate known result, the product
+formula for statures, is explicitly imported only for the transfinite
+$T_1$ sharpness construction.  The source question and these relevant
+primary papers were checked in their public versions; this is not a
+certification that no later or unpublished work contains the same
+extension.
+
+\section{Ranks, finite pieces, and closed--open decompositions}
+\label{sec:rank}
+
+\subsection{Definitions and elementary monotonicity}
+
+\begin{definition}
+A space $X$ is \emph{Noetherian} when its closed subsets satisfy the
+descending chain condition.  Equivalently, the inclusion order on
+$\Cl(X)$, its set of closed subsets, is well-founded.  For $F\in\Cl(X)$,
+put
+\[
+ r_X(F)=\sup\{r_X(E)+1:E\in\Cl(X),\ E\subsetneq F\},
+ \qquad \st X=r_X(X).
+\]
+The supremum of the empty family is $0$.
+\end{definition}
+
+Thus $\st\varnothing=0$.  If $F$ is closed in $X$, its closed subsets are
+exactly the members of the interval $[\varnothing,F]$ in $\Cl(X)$.
+Consequently
+\begin{equation}\label{eq:closedrank}
+ \st F=r_X(F).
+\end{equation}
+There is no extra $1$ in this identity: stature is the rank of the top
+point, not the rank of the whole closed-set poset including that top.
+
+For well-founded posets, a strictly increasing map never decreases point
+ranks.  Indeed, this follows by induction on the source point, since its
+strict predecessors map to strict predecessors of its image.  We use
+this simple observation repeatedly.
+
+\begin{lemma}\label{lem:monotone}
+If $Y$ is a subspace of a Noetherian space $X$, then $Y$ is Noetherian and
+$\st Y\leq\st X$.  If $f:X\to Z$ is continuous and onto, then $Z$ is
+Noetherian and $\st Z\leq\st X$.
+\end{lemma}
+\begin{proof}
+For the subspace assertion, send a closed $A\subseteq Y$ to
+$\cl_X(A)$.  The equality $Y\cap\cl_X(A)=A$ shows that this is an order
+embedding of closed-set lattices.  Its image is bounded by $X$, so the
+rank assertion follows.  It also prohibits an infinite descending chain
+of closed subsets of $Y$.
+
+For the image assertion, inverse image under $f$ is an order embedding
+$\Cl(Z)\hookrightarrow\Cl(X)$, because $f$ is onto.  It sends $Z$ to $X$.
+Apply the same reasoning.
+\end{proof}
+
+The Kolmogorov, or $T_0$, quotient identifies points with identical
+closures.  Every closed subset is saturated for this equivalence, so the
+quotient has an isomorphic closed-set lattice.  Passing to this quotient
+therefore preserves stature.  Later we will see directly that it also
+preserves the homeomorphism type of the Hoare powerspace.
+
+\subsection{Natural sums and finite unions}
+
+The \emph{natural sum} $\alpha\oplus\beta$ adds the coefficients in a
+common Cantor normal form.  The \emph{natural product}
+$\alpha\otimes\beta$ multiplies the corresponding polynomials in $\omega$,
+using natural sums for exponents.  These operations are commutative and
+are different from ordinary ordinal addition and multiplication.
+
+\begin{lemma}\label{lem:productrank}
+For well-founded posets $P,Q$,
+\[
+ \rk_{P\times Q}(p,q)=\rk_P(p)\oplus\rk_Q(q).
+\]
+Consequently, for a finite topological disjoint sum,
+\[
+ \st{X_1\ds\cdots\ds X_k}=
+ \st{X_1}\oplus\cdots\oplus\st{X_k}.
+\]
+\end{lemma}
+\begin{proof}
+Natural sum satisfies the recursion
+\[
+ \alpha\oplus\beta=
+ \sup\bigl(\{(\alpha'\oplus\beta)+1:\alpha'<\alpha\}
+ \cup\{(\alpha\oplus\beta')+1:\beta'<\beta\}\bigr).
+\]
+The ranks realized strictly below a point of rank $\alpha$ include every
+ordinal below $\alpha$: a proof appears in \cref{lem:gaps} below and is
+independent of this lemma.  Applying the displayed recursion and induction
+on $(p,q)$ gives the product formula.  Predecessors that decrease both
+coordinates do not change the supremum, since they lie below a predecessor
+that decreases just one coordinate.
+
+The lattice of closed subsets of a finite disjoint sum is the product
+of the closed-set lattices of its summands.  Evaluate the formula at its
+top element and iterate.
+\end{proof}
+
+\begin{corollary}\label{cor:union}
+For finitely many Noetherian subspaces $Y_i$ whose union is $Y$,
+\[
+ \st Y\leq\natsum_i\st{Y_i}.
+\]
+The $Y_i$ need not be closed in $Y$.
+\end{corollary}
+\begin{proof}
+The map from the finite topological disjoint sum of the $Y_i$ onto their
+union is continuous.  Use \cref{lem:monotone,lem:productrank}.
+\end{proof}
+
+\begin{lemma}[No gaps in point ranks]\label{lem:gaps}
+If $p$ has rank $\alpha$ in a well-founded poset and $\beta<\alpha$, there
+is $q<p$ with rank exactly $\beta$.
+\end{lemma}
+\begin{proof}
+Choose a minimal member $q$ of
+$\{x:x\leq p,\ \rk(x)\geq\beta\}$.  Every strict predecessor of $q$ has
+rank less than $\beta$, so the rank recursion gives $\rk(q)\leq\beta$.
+The reverse inequality holds by the choice of the set.  Since
+$\beta<\rk(p)$, $q\ne p$.
+\end{proof}
+
+\begin{lemma}\label{lem:finite}
+A finite $T_0$ space on $m$ points has stature $m$.  Conversely, if a
+$T_0$ space has finite stature $m$, it has exactly $m$ points.
+\end{lemma}
+\begin{proof}
+The closed sets of a finite $T_0$ space are the downsets of its
+specialization poset.  Strict inclusion increases cardinality, giving an
+upper bound $m$ on the rank of the top.  Initial segments of a linear
+extension give a chain of $m+1$ closed sets from $\varnothing$ to $X$,
+so the rank is $m$.
+
+An infinite $T_0$ space contains finite $T_0$ subspaces of every finite
+cardinality.  By \cref{lem:monotone}, its stature is at least every finite
+ordinal.  This excludes finite stature for an infinite $T_0$ space.
+\end{proof}
+
+\subsection{The decomposition that drives the successor step}
+
+\begin{lemma}[Closed--open rank inequality]\label{lem:semiadd}
+For a closed subset $F$ of a Noetherian space $X$, put $V=X\setminus F$.
+Then
+\begin{equation}\label{eq:semiadd}
+ \st F+\st V\ \leq\ \st X\ \leq\ \st F\oplus\st V.
+\end{equation}
+The addition on the left is ordinary ordinal addition.
+\end{lemma}
+\begin{proof}
+Closed subsets $B$ of $V$ correspond, by $B\mapsto F\cup B$, to the
+interval $[F,X]$ in $\Cl(X)$.  To verify this, write $B=V\cap C$ with
+$C$ closed in $X$; then $F\cup B=F\cup C$ is closed.
+
+An induction on $B$ gives
+\[
+ r_X(F\cup B)\geq\st F+r_V(B).
+\]
+At $B=\varnothing$ this is equality.  At a nonempty $B$, use predecessors
+$F\cup B'$ with $B'\subsetneq B$ and the continuity of ordinary addition
+in its right argument.  Evaluating at $B=V$ proves the lower inequality.
+
+For the upper inequality, the identity from the finer disjoint-sum
+topology $F\ds V$ onto $X$ is continuous.  Apply the finite-union bound.
+\end{proof}
+
+\begin{corollary}[Finite tail decomposition]\label{cor:tail}
+Let $X$ be $T_0$ with $\st X=\lambda+n$, where $\lambda$ is a nonzero
+limit ordinal and $0<n<\omega$.  There exists a closed $F\subseteq X$
+with $\st F=\lambda$, and its complement has exactly $n$ points.
+\end{corollary}
+\begin{proof}
+Use \cref{lem:gaps} in the closed-set lattice to obtain $F$.  The lower
+inequality in \eqref{eq:semiadd} gives
+$\lambda+\st{X\setminus F}\leq\lambda+n$.  Ordinary addition is strictly
+increasing in the right argument, so $\st{X\setminus F}\leq n$.
+By \cref{lem:finite}, the complement has some finite cardinality $m\leq n$.
+The upper inequality gives
+\[
+ \lambda+n\leq\lambda\oplus m=\lambda+m.
+\]
+Hence $m=n$.
+\end{proof}
+
+This is stronger than merely finding a small residual space: after
+passing to $T_0$, a finite ordinal tail is an actual finite set of points.
+Nothing here assumes that the specialization order is a wqo.
+
+\section{The closed-set structure of a Hoare powerspace}
+\label{sec:hoare}
+
+\begin{definition}
+For a space $X$, the points of $\HH X$ are its closed subsets, including
+$\varnothing$.  Its \emph{lower Vietoris topology} has subbasis
+\[
+ \Diamond O=\{C\in\Cl(X):C\cap O\ne\varnothing\},\qquad O\text{ open in }X.
+\]
+For a closed $F\subseteq X$, write
+\[
+ \boxF F=\{C\in\Cl(X):C\subseteq F\}.
+\]
+\end{definition}
+
+The set $\boxF F$ is closed, being the complement of
+$\Diamond(X\setminus F)$.  Its points are themselves closed subsets of
+$X$; this two-level notation should not be confused with $F$ as a
+subspace of $X$.
+
+\begin{proposition}\label{prop:closedH}
+If $X$ is Noetherian, then $\HH X$ is Noetherian, and its closed subsets
+are exactly
+\begin{equation}\label{eq:closedH}
+ D=\bigcup_{i=1}^k\boxF{F_i},\qquad F_i\in\Cl(X),\quad k<\omega.
+\end{equation}
+The case $k=0$ denotes the empty subset of the powerspace.
+\end{proposition}
+\begin{proof}
+Finite unions in \eqref{eq:closedH} form a family $\mathcal D$ closed
+under finite intersections, because
+$\boxF F\cap\boxF G=\boxF{F\cap G}$.  They include the whole space.
+We first show that $\mathcal D$ is well-founded under strict inclusion.
+
+Each nonempty member has a unique finite antichain of maximal generators:
+remove every $F_i$ contained in another generator.  For this irredundant
+set of generators $M(D)$ define
+\[
+ w(D)=\natsum_{F\in M(D)}\omega^{r_X(F)},\qquad w(\varnothing)=0.
+\]
+Suppose $D\subsetneq D'$.  Each generator of $D$ lies below a generator
+of $D'$.  A generator of $D$ not also a generator of $D'$ must lie
+\emph{strictly} below some generator of $D'$ that is absent from $M(D)$;
+otherwise the maximality of the generators of $D$ would fail.
+There is at least one such removed generator.  Let $\gamma$ be the largest
+rank of a generator removed from $M(D')$.  Every newly added generator
+has rank below the rank of some removed generator, and hence below
+$\gamma$.  At exponents above $\gamma$ the two Cantor normal forms agree;
+at exponent $\gamma$ the coefficient decreases.  Thus $w(D)<w(D')$.
+
+An arbitrary intersection of members of $\mathcal D$ is a finite
+intersection.  Indeed, among all their finite intersections choose one
+minimal under inclusion.  Intersecting it with any additional member
+cannot make it smaller, by minimality.  It is therefore their full
+intersection.  This proves that $\mathcal D$ is closed under arbitrary
+intersections.  Since the closed subbasis consists of the sets
+$\boxF F$, it follows that $\mathcal D$ is precisely the closed-set
+family of $\HH X$.  Its well-foundedness proves Noetherianity.
+\end{proof}
+
+Several consequences are useful.  First, $\HH X$ is $T_0$, with
+specialization order inclusion: the closure of a point $F$ is exactly
+$\boxF F$.  Second, if $F$ is closed in $X$, then
+\begin{equation}\label{eq:principalH}
+ \boxF F\ \cong\ \HH F
+\end{equation}
+as spaces.  To check the topology, restrict each $\Diamond O$ to the
+closed subsets of $F$ and replace $O$ by $O\cap F$.
+Third, any isomorphism $\Cl(X)\cong\Cl(Y)$ induces a homeomorphism
+$\HH X\cong\HH Y$, since \eqref{eq:closedH} depends only on that order.
+This justifies the earlier reduction to the $T_0$ quotient.
+
+\begin{lemma}\label{lem:functor}
+If $f:X\to Y$ is continuous and onto, the map
+\[
+ f_*:\HH X\longrightarrow\HH Y,\qquad C\longmapsto\cl_Y(f[C])
+\]
+is continuous and onto.  For a finite disjoint sum,
+\begin{equation}\label{eq:Hsum}
+ \HH(X_1\ds\cdots\ds X_k)\cong\HH X_1\times\cdots\times\HH X_k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+An open set meets $\cl_Y(f[C])$ if and only if it meets $f[C]$, so
+$f_*^{-1}(\Diamond O)=\Diamond(f^{-1}(O))$.  For a closed $B\subseteq Y$,
+choose $C=f^{-1}(B)$ to obtain $f_*(C)=B$.
+
+For the disjoint-sum assertion, a closed set is a tuple of closed sets
+in the summands.  Under this bijection a hit-open set becomes a union
+of coordinate hit-open sets.  Conversely, a coordinate hit-open set is
+obtained by using an open subset contained in that summand.  These
+observations give equality of the topologies.
+\end{proof}
+
+\begin{lemma}[Finite discrete extension]\label{lem:discrete}
+Let $D_m$ be a discrete space of $m$ points.  For every Noetherian $F$,
+\[
+ \st{\HH(F\ds D_m)}\leq\st{\HH F}\otimes 2^m.
+\]
+\end{lemma}
+\begin{proof}
+There are $2^m$ points in $\HH D_m$.  By \eqref{eq:Hsum}, the powerspace
+in question is $\HH F\times\HH D_m$.  Cover it by its $2^m$ slices,
+one for each point of the second factor.  Each slice is homeomorphic
+to $\HH F$.  The finite-union bound gives the natural sum of $2^m$
+copies of $\st{\HH F}$, which is $\st{\HH F}\otimes2^m$.
+The slices need not be closed; \cref{cor:union} deliberately allows this.
+\end{proof}
+
+\subsection{Discarding non-finitary points without changing stature}
+
+Let $\Hfin X$ be the subspace of $\HH X$ consisting of closures of finite
+subsets of $X$.  A closure in this definition need not be finite as a set.
+The following lattice observation is particularly important later; it is
+the mechanism behind the equality also recorded in
+\cite[Proposition~11.4]{GL23}.
+
+\begin{proposition}\label{prop:finitary}
+For Noetherian $X$, taking traces on $\Hfin X$ gives an isomorphism
+\[
+ \Cl(\HH X)\ \cong\ \Cl(\Hfin X).
+\]
+In particular, $\st{\HH X}=\st{\Hfin X}$.
+\end{proposition}
+\begin{proof}
+Surjectivity is the definition of the subspace topology.  To prove order
+reflection, suppose $D,E$ are closed in $\HH X$ and $D\nsubseteq E$.
+Choose a point $C\in D\setminus E$ and write
+$E=\bigcup_{i=1}^k\boxF{F_i}$.  For each $i$ choose
+$x_i\in C\setminus F_i$.  The closed set
+$A=\cl_X\{x_1,\ldots,x_k\}$ is contained in $C$, so it lies in $D$, but
+it is contained in none of the $F_i$, so it lies outside $E$.
+It is a point of $\Hfin X$.
+If $k=0$, use $A=\varnothing$; every nonempty closed subset of $\HH X$
+contains this point.  Thus the traces distinguish every failure of
+inclusion.  An order isomorphism of closed lattices preserves top ranks.
+\end{proof}
+
+\section{Binary ordinal exponentiation}
+\label{sec:ordinal}
+
+All occurrences of $2^\alpha$ in this article mean ordinary
+\emph{ordinal} exponentiation, not cardinal exponentiation and not a
+natural exponentiation.  In particular $2^\omega=\omega$.
+
+\begin{lemma}\label{lem:binary}
+Write an ordinal uniquely as $\alpha=\omega\cdot q+n$, $n<\omega$.
+Then
+\begin{equation}\label{eq:binary}
+ 2^\alpha=\omega^q\cdot2^n.
+\end{equation}
+If $\lambda$ is a nonzero limit ordinal, $2^\lambda$ is a limit ordinal
+and is indecomposable under finite natural sums of smaller ordinals.
+Moreover, for all ordinals $\alpha,\beta$,
+\begin{equation}\label{eq:hom}
+ 2^{\alpha\oplus\beta}=2^\alpha\otimes2^\beta.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Ordinal exponent laws give
+\[
+ 2^{\omega q+n}=(2^\omega)^q\cdot2^n=\omega^q\cdot2^n.
+\]
+For a nonzero limit, $n=0$ and $q>0$.  Every ordinal less than
+$\omega^q$ has only Cantor normal form exponents less than $q$; a finite
+natural sum still has this property.  This proves the indecomposability
+assertion.
+
+For \eqref{eq:hom}, left multiplication by $\omega$ changes each Cantor
+normal form exponent $\xi$ to $1+\xi$.  This transformation is strictly
+increasing, and hence preserves the merging of coefficients used in
+natural sum.  Thus, writing $\alpha=\omega q+n$ and
+$\beta=\omega r+m$,
+\[
+ \alpha\oplus\beta=\omega(q\oplus r)+(n+m).
+\]
+The finite remainders cannot combine with the terms having positive
+exponent.  Formula \eqref{eq:binary} now yields
+\[
+ 2^{\alpha\oplus\beta}
+ =\omega^{q\oplus r}\,2^{n+m}
+ =(\omega^q2^n)\otimes(\omega^r2^m).
+\]
+\end{proof}
+
+The function $\alpha\mapsto2^\alpha$ is strictly increasing and continuous
+at limit ordinals.  A limit input turns its value into a single
+$\omega$-monomial.  That fact, rather than a coarse comparison with
+$\omega^\alpha$, is the key to the next induction.
+
+\section{The sharp universal upper bound}
+\label{sec:upper}
+
+\begin{theorem}\label{thm:upper}
+For every Noetherian space $X$,
+\begin{equation}\label{eq:mainbound}
+ 1+\st X\ \leq\ \st{\HH X}\ \leq\ 2^{\st X}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+We may replace $X$ by its $T_0$ quotient.  Put $\alpha=\st X$ and prove
+the upper bound by transfinite induction on $\alpha$.
+
+\textbf{Finite input.}
+If $\alpha=n<\omega$, then $X$ has exactly $n$ points.  The $T_0$ space
+$\HH X$ is finite and has $|\Cl(X)|\leq2^n$ points.  Its stature equals
+that cardinality, proving the bound.  This includes $X=\varnothing$,
+whose powerspace is a singleton of stature $1=2^0$.
+
+\textbf{Nonzero limit input.}
+Suppose $\alpha$ is a limit ordinal.  Every proper closed
+$D\subsetneq\HH X$ has the form
+$\bigcup_{i=1}^k\boxF{F_i}$ with each $F_i\subsetneq X$.
+Let $\beta_i=\st{F_i}<\alpha$.  By the finite-union bound, the principal
+powerspace homeomorphism, and the induction hypothesis,
+\[
+ \st D\leq\natsum_{i=1}^k\st{\HH F_i}
+       \leq\natsum_{i=1}^k2^{\beta_i}<2^\alpha.
+\]
+The final strict inequality is \cref{lem:binary}.  The empty $D$ satisfies
+the same inequality.  Since $2^\alpha$ is a limit ordinal,
+$\st D+1<2^\alpha$.  Taking the supremum over all proper closed $D$ gives
+$\st{\HH X}\leq2^\alpha$.
+
+\textbf{Infinite successor input.}
+Write $\alpha=\lambda+n$, where $\lambda$ is a nonzero limit and
+$0<n<\omega$.  By \cref{cor:tail}, choose a closed $F$ of stature
+$\lambda$ with an $n$-point complement.  Replace the topology on this
+complement by the discrete topology and separate it from $F$.  The
+resulting identity $F\ds D_n\to X$ is continuous and onto, so
+\cref{lem:functor,lem:discrete} give
+\[
+ \st{\HH X}\leq\st{\HH(F\ds D_n)}
+ \leq\st{\HH F}\otimes2^n
+ \leq2^\lambda\otimes2^n
+ =2^{\lambda+n}.
+\]
+Here the penultimate step uses the induction hypothesis at $\lambda$;
+the final identity follows from \cref{lem:binary}.
+
+For the lower bound, $\boxF\varnothing=\{\varnothing\}$ has stature
+$1$.  Induction on $F\in\Cl(X)$ gives
+\[
+ r_{\HH X}(\boxF F)\geq1+r_X(F).
+\]
+Indeed, each $\boxF E$ with $E\subsetneq F$ is a proper closed subset
+of $\boxF F$, and ordinary left addition by $1$ is continuous in its
+right argument.  The base $F=\varnothing$ is the singleton just noted.
+Evaluate at $F=X$, for which $\boxF X=\HH X$.
+\end{proof}
+
+The upper-bound argument does not use the general product formula for
+Noetherian spaces.  Its only product estimate is the finite-slice cover
+in \cref{lem:discrete}.  In particular, the key extension beyond wqos is
+not hidden inside an unproved product assertion.
+
+\section{Sharpness at every ordinal, with \texorpdfstring{$T_1$}{T1} upper witnesses}
+\label{sec:sharp}
+
+\subsection{The lower endpoint}
+
+\begin{proposition}\label{prop:lowerSharp}
+For every ordinal $\alpha$, there is a Noetherian space $L_\alpha$ with
+\[
+ \st{L_\alpha}=\alpha,
+ \qquad \st{\HH L_\alpha}=1+\alpha.
+\]
+\end{proposition}
+\begin{proof}
+Give the well-order $\alpha$ its Alexandroff topology of upward-closed
+sets.  Its closed sets are its initial segments, of lengths
+$\beta\leq\alpha$, so its stature is $\alpha$.
+
+The finitary closed subsets are the empty set and the principal initial
+segments $\mathord\downarrow x$, $x<\alpha$.  Under inclusion they form
+a chain of type $1+\alpha$.  On this set of points the lower Vietoris
+topology is exactly the Alexandroff topology: the upper cone of
+$\mathord\downarrow x$ is the trace of $\Diamond(\mathord\uparrow x)$,
+and the upper cone of the empty set is the whole space.  An ordinal
+chain with this topology has stature its order type.  Therefore
+$\st{\Hfin L_\alpha}=1+\alpha$; use \cref{prop:finitary}.
+\end{proof}
+
+\subsection{A finite-support bouquet}
+
+We now use one substantial external theorem:
+\begin{equation}\label{eq:productexternal}
+ \st{Y\times Z}=\st Y\otimes\st Z
+ \qquad (Y,Z\text{ Noetherian}).
+\end{equation}
+This is the product theorem of Goubault-Larrecq and Laboureix
+\cite[Theorem~10.9]{GL23}.  The following all-ordinal $T_1$ sharpness
+construction depends on it; the preceding upper bound and the later
+spectrum classification do not.
+
+\begin{definition}\label{def:bouquet}
+For an infinite family $(X_i)_{i\in I}$ of nonempty Noetherian spaces,
+let $B(X_i:i\in I)$ have underlying set $\coprod_{i\in I}X_i$.
+Its closed subsets are the entire set and all sets
+\[
+ \coprod_{i\in S}F_i,
+ \qquad S\subseteq I\text{ finite},\quad F_i\text{ closed in }X_i.
+\]
+We call this a \emph{finite-support bouquet}.  No additional generic
+point is adjoined.
+\end{definition}
+
+\begin{lemma}\label{lem:bouquet}
+The stated family is the closed-set family of a Noetherian topology.
+Every finite union of whole components is closed and has the ordinary
+finite-disjoint-sum topology.  If every $X_i$ is $T_1$, so is the bouquet.
+\end{lemma}
+\begin{proof}
+Finite unions preserve finite support.  For an arbitrary intersection,
+there is nothing to check if every member is the whole space.  Otherwise
+fix one finite-support member; the intersection is confined to those
+finitely many components and is closed in each of them.  It is therefore
+again a permitted closed set.
+
+Once a descending chain leaves the whole space, it lies in a finite
+union of components.  This finite sum is Noetherian, so the chain
+stabilizes.  The subspace-topology assertion follows directly by taking
+traces of the defining closed sets.  Finally, every singleton is closed
+when each summand is $T_1$.
+\end{proof}
+
+The finite-support idea is related to the successor construction in
+\cite[Example~11.9]{GL23}.  Omitting an added generic point keeps the
+present construction $T_1$, and the limit-stage construction below works
+with an arbitrary ordinal-indexed family.
+
+\begin{theorem}\label{thm:sharpT1}
+For every ordinal $\alpha$ there is a $T_1$ Noetherian space $T_\alpha$
+such that
+\[
+ \st{T_\alpha}=\alpha,
+ \qquad \st{\HH T_\alpha}=2^\alpha.
+\]
+When $\alpha$ is countable, the witness can be countable.
+\end{theorem}
+\begin{proof}
+First construct, by recursion on $\rho$, a space $B_\rho$ satisfying
+\begin{equation}\label{eq:Btarget}
+ \st{B_\rho}=\omega^\rho,
+ \qquad\st{\HH B_\rho}=2^{\omega^\rho}.
+\end{equation}
+Let $B_0$ be a singleton; its powerspace has two points, as required.
+
+At a successor stage, let $B_{\rho+1}$ be the bouquet of countably many
+copies of $B_\rho$.  The closed union of $k$ whole components has stature
+$\omega^\rho\cdot k$.  Every proper closed subset lies in such a finite
+union.  It follows from the rank definition that
+\[
+ \st{B_{\rho+1}}
+ =\sup_{k<\omega}(\omega^\rho\cdot k+1)=\omega^{\rho+1}.
+\]
+The powerspace of that closed $k$-component subspace embeds as a closed
+subspace of $\HH B_{\rho+1}$.  By \eqref{eq:Hsum}, the external product
+formula, and \eqref{eq:hom}, its stature is
+\[
+ \natprod_{i=1}^k2^{\omega^\rho}=2^{\omega^\rho\cdot k}.
+\]
+Taking the supremum over $k$ gives the lower bound
+$2^{\omega^{\rho+1}}$, by continuity of exponentiation.  The upper bound
+is \cref{thm:upper}, so equality holds.
+
+At a nonzero limit $\rho$, form the bouquet of one copy of $B_\xi$ for
+each $\xi<\rho$.  Every finite natural sum of the ordinals
+$\omega^\xi$, $\xi<\rho$, is below $\omega^\rho$, while the individual
+component statures are cofinal in $\omega^\rho$.  The rank definition
+therefore gives $\st{B_\rho}=\omega^\rho$.  Each component is closed,
+so the stature of its powerspace is a lower bound on
+$\st{\HH B_\rho}$.  Hence
+\[
+ \st{\HH B_\rho}\geq\sup_{\xi<\rho}2^{\omega^\xi}
+ =2^{\omega^\rho}.
+\]
+Again use the universal upper bound to get equality.  This proves
+\eqref{eq:Btarget} at every ordinal stage.
+
+For $\alpha>0$, expand the finite coefficients in its Cantor normal form
+and write
+\[
+ \alpha=\omega^{\rho_1}+\cdots+\omega^{\rho_k},
+ \qquad\rho_1\geq\cdots\geq\rho_k.
+\]
+Take $T_\alpha=B_{\rho_1}\ds\cdots\ds B_{\rho_k}$.  Its stature is the
+natural sum of the summand statures, equal to the displayed Cantor
+normal form.  Its Hoare powerspace is their product, whose stature is
+\[
+ \natprod_{i=1}^k2^{\omega^{\rho_i}}
+ =2^{\natsum_{i=1}^k\omega^{\rho_i}}=2^\alpha.
+\]
+For $\alpha=0$ take the empty space.  Every construction preserves
+$T_1$.  Recursion over countable ordinals uses only countable bouquets
+and finite sums, proving the countability assertion.
+\end{proof}
+
+Combining \cref{thm:upper,prop:lowerSharp,thm:sharpT1} determines both
+extreme points of $\Spec(\alpha)$ for every ordinal $\alpha$.
+
+\section{Exactly when the older upper bound is attainable}
+\label{sec:oldattain}
+
+\begin{theorem}\label{thm:oldattain}
+For an infinite ordinal $\alpha$, the following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a Noetherian $X$ with $\st X=\alpha$ and
+      $\st{\HH X}=\omega^\alpha$.
+\item $2^\alpha=\omega^\alpha$.
+\item $\omega\cdot\alpha=\alpha$.
+\item Every exponent in the Cantor normal form of $\alpha$ is infinite.
+\item $\alpha=\omega^\omega\cdot\delta$ for some nonzero ordinal $\delta$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The sharp upper bound proves the equivalence of (i) and (ii), since
+$2^\alpha\leq\omega^\alpha$ and a witness for $2^\alpha$ always exists.
+Write $\alpha=\omega q+n$ with $n<\omega$.  Uniqueness of Cantor normal
+form in
+\[
+ 2^\alpha=\omega^q2^n
+\]
+shows that this equals $\omega^\alpha$ exactly when $n=0$ and $q=\alpha$.
+These are precisely the conditions $\alpha=\omega\alpha$.
+
+Write $\alpha=\omega^{\rho_1}c_1+\cdots+\omega^{\rho_k}c_k$ in Cantor
+normal form.  Left multiplication by $\omega$ replaces $\rho_i$ by
+$1+\rho_i$.  The normal forms agree exactly when every
+$1+\rho_i=\rho_i$, that is, when every $\rho_i$ is infinite.
+
+Finally, multiplying a Cantor normal form on the left by $\omega^\omega$
+changes its exponents $\xi$ to $\omega+\xi$.  This is a strictly
+increasing map whose range consists of all ordinals at least $\omega$:
+for any $\rho\geq\omega$, the order type of the tail after an initial
+segment of type $\omega$ supplies $\xi$ with $\rho=\omega+\xi$.
+Thus precisely the normal forms in (iv) are obtained in (v).
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Input stature $\alpha$ & Sharp maximum $2^\alpha$ & Equals $\omega^\alpha$?\\
+\midrule
+$\omega$ & $\omega$ & No\\
+$\omega+n$, $0<n<\omega$ & $\omega\cdot2^n$ & No\\
+$\omega^2$ & $\omega^\omega$ & No\\
+$\omega^3$ & $\omega^{\omega^2}$ & No\\
+$\omega^\omega$ & $\omega^{\omega^\omega}$ & Yes\\
+$\omega^\omega+1$ & $\omega^{\omega^\omega}\cdot2$ & No\\
+$\omega^\omega+\omega$ & $\omega^{\omega^\omega+1}$ & No\\
+$\omega^{\omega+1}$ & $\omega^{\omega^{\omega+1}}$ & Yes\\
+$\varepsilon_0$ & $\varepsilon_0$ & Yes\\
+\bottomrule
+\end{tabular}
+\caption{Consequences of the binary-exponent formula.  In the last row,
+$\varepsilon_0$ is the least positive fixed point of $\alpha\mapsto\omega^\alpha$.}
+\label{tab:ordinals}
+\end{table}
+
+This settles the upper-attainment part of the chosen question, but
+extremal values alone do not classify the intervening spectrum.  The
+next sections give such a classification at the first infinite ordinal
+and all of its finite successors.
+
+\section{A canonical infinite core at stature \texorpdfstring{$\omega+n$}{omega+n}}
+\label{sec:core}
+
+For a finite poset $P$, let $\JJ(P)$ be its poset of downsets, ordered
+by inclusion, and let $j(P)=|\JJ(P)|$.  The empty downset is included,
+so $j(\varnothing)=1$.
+
+\begin{proposition}\label{prop:core}
+Let $X$ be a $T_0$ Noetherian space with $\st X=\omega+n$, $n<\omega$.
+There is a unique closed subset $F$ of stature $\omega$.  Its complement
+$V$ has exactly $n$ points.  Every closed subset of $X$ is either finite
+or contains $F$.  The infinite closed subsets are exactly
+\begin{equation}\label{eq:infiniteclosed}
+ F\cup D,\qquad D\in\JJ(Q),
+\end{equation}
+where $Q$ is the specialization poset on $V$.
+\end{proposition}
+\begin{proof}
+For $n=0$ take $F=X$.  For $n>0$ use \cref{cor:tail}.  Every proper
+closed subset of $F$ has stature less than $\omega$, and hence is finite
+by \cref{lem:finite}.  Also $F$ is infinite.
+
+If a closed $C\subseteq X$ does not contain $F$, then $C\cap F$ is a
+proper closed subset of $F$, hence finite.  Its remaining points lie
+in the finite set $V$, so $C$ is finite.  Conversely, a closed set
+containing $F$ is infinite.  The interval $[F,X]$ is isomorphic to the
+closed-set lattice of $V$.  Since $V$ is finite and $T_0$, its closed
+sets are exactly the downsets of $Q$, giving \eqref{eq:infiniteclosed}.
+
+Any other closed subset of stature $\omega$ must be infinite and hence
+contain $F$.  If it strictly contained $F$, its rank would exceed
+$r_X(F)=\omega$.  This proves uniqueness.
+\end{proof}
+
+Define the distinguished downset
+\begin{equation}\label{eq:U}
+ U=\{v\in V:\cl_X\{v\}\text{ is finite}\}.
+\end{equation}
+It is a downset of $Q$, because $v'\leq v$ implies
+$\cl_X\{v'\}\subseteq\cl_X\{v\}$.  If $v\notin U$, its closure is
+infinite and therefore contains all of $F$.  Thus $U$ distinguishes the
+finite-closure points from those whose closure absorbs the whole core.
+
+\subsection{The generic-point issue}
+
+A point $g\in F$ can have closure all of $F$, even though every proper
+closed subset of $F$ is finite.  Such a point would make $F$ itself
+finitarily generated, changing the apparent list of points of $\Hfin X$.
+It must not be silently assumed absent.
+
+\begin{lemma}[Generic-point normalization]\label{lem:generic}
+There is at most one point $g\in F$ with $\cl_X\{g\}=F$.  If it exists,
+put $X'=X\setminus\{g\}$.  The trace map
+$\Cl(X)\to\Cl(X')$ is an order isomorphism.  Removing $g$ preserves
+$\st X$, $\st{\HH X}$, $Q$, and $U$.  After this removal, every point of
+the remaining core has finite closure.
+\end{lemma}
+\begin{proof}
+Two points with closure $F$ would be indistinguishable, contrary to
+$T_0$.  Every finite closed set avoids $g$, since any closed set
+containing it contains the infinite set $F$.  Each infinite closed set
+has the unique form $F\cup D$, and its trace is
+$(F\setminus\{g\})\cup D$.
+
+Taking these traces preserves and reflects inclusion.  For two finite
+closed sets nothing changes.  For two infinite ones inclusion is
+controlled by their $D$ parts.  A trace of an infinite set cannot be
+contained in a finite set, since $F\setminus\{g\}$ is still infinite.
+For a finite set contained in the trace of an infinite one, the same
+inclusion held before removal.  The trace map is onto the closed sets
+of the subspace by definition, hence is an order isomorphism.
+
+Stature is therefore preserved, and the powerspaces are homeomorphic
+by \cref{prop:closedH}.  The specialization order restricted to $V$ is
+unchanged.  An infinite closure loses at most $g$ and stays infinite;
+a finite closure never contained $g$.  Thus $U$ is unchanged.  Every
+other point of $F$ already had a proper, therefore finite, closure.
+\end{proof}
+
+For the rest of the spectrum argument, we perform this normalization
+and again call the resulting space $X$ and its core $F$.  This is a
+closed-lattice simplification, not a claim that the original space
+lacked a generic point.
+
+\section{A finite-cell rank lemma}
+\label{sec:cells}
+
+The remaining transfinite computation can be packaged in an elementary
+lemma.  It explains why a finite downset count becomes the coefficient
+of $\omega$.
+
+\begin{lemma}[Finite-cell rank]\label{lem:cells}
+Suppose a $T_0$ space $Y$ is partitioned into infinite sets $A_p$ indexed
+by a finite poset $P$, and a finite exceptional set $E$.  Assume:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Every closed $C\subseteq Y$ consists of all the cells indexed by
+      some downset $I(C)\subseteq P$, together with finitely many other
+      points.
+\item For every downset $I\subseteq P$, the pure union
+      $A_I=\bigcup_{p\in I}A_p$ is closed.
+\item Every point belonging to a cell $A_p$ has finite closure in $Y$.
+\end{enumerate}
+Then $Y$ is Noetherian.  For every closed $C$,
+\begin{equation}\label{eq:cellrank}
+ r_Y(C)=\omega\cdot|I(C)|+|C\setminus A_{I(C)}|.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:celltop}
+ \st Y=\omega\cdot|P|+|E|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The set $I(C)$ is uniquely determined: a cell is infinite, so a finite
+remainder cannot contain an additional entire cell.  Define $w(C)$ to
+be the right side of \eqref{eq:cellrank}.
+
+If $C\subsetneq C'$, then $I(C)\subseteq I(C')$.  If the index sets
+are different, the coefficient of $\omega$ strictly increases.  If
+they agree, the finite remainder strictly increases in cardinality.
+Thus $w(C)<w(C')$ in either case.  No infinite descending chain of
+closed sets is possible, and induction gives $r_Y(C)\leq w(C)$.
+
+For the reverse inequality, induct on $k=|I(C)|$.  When $k=0$, $C$ is
+a finite $T_0$ space, so its stature is its cardinality.
+Let $k>0$ and first consider the pure union $A_I$, $|I|=k$.
+Choose a maximal $p\in I$ and put $I'=I\setminus\{p\}$, again a downset.
+For any positive integer $N$, choose $N$ distinct points in the infinite
+cell $A_p$.  The union $K_N$ of their closures is finite by (c).
+It lies inside $A_I$, since $A_I$ is closed.  The closed set
+\[
+ B_N=A_{I'}\cup K_N
+\]
+is a proper subset of $A_I$, has exactly $k-1$ full cells, and has at
+least $N$ points outside those cells.  The induction hypothesis gives
+\[
+ r_Y(B_N)\geq\omega\cdot(k-1)+N.
+\]
+Taking the supremum over $N$ in the rank recursion for $A_I$ yields
+$r_Y(A_I)\geq\omega\cdot k$.
+
+Now return to an arbitrary closed $C$ with $I(C)=I$.  The complement
+$C\setminus A_I$ has some finite cardinality $m$.  Apply the lower
+closed--open inequality inside $C$, with closed part $A_I$.  Its finite
+$T_0$ complement has stature $m$, so
+\[
+ r_Y(C)=\st C\geq\st{A_I}+m\geq\omega\cdot k+m=w(C).
+\]
+This matches the upper bound.  Taking $C=Y$ proves \eqref{eq:celltop}.
+\end{proof}
+
+It is essential that cell points have finite closure and that every
+pure downset union is closed.  Merely partitioning a space into finitely
+many infinite pieces would not determine its stature.
+
+\section{The complete spectrum at \texorpdfstring{$\omega+n$}{omega+n}}
+\label{sec:spectrum}
+
+\subsection{The formula for an arbitrary space}
+
+\begin{theorem}\label{thm:formula}
+Let $X$ be a Noetherian space of stature $\omega+n$, $n<\omega$.
+Pass to $T_0$, let $F$ be the core of \cref{prop:core}, let $Q$ be the
+$n$-point complement poset, and let $U$ be \eqref{eq:U}.  Then
+\begin{equation}\label{eq:spectrumformula}
+ \st{\HH X}=\omega\cdot j(U)+(j(Q)-j(U)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use \cref{lem:generic} to remove a generic core point if necessary.
+Every point of $F$, and every point of $U$, now has finite closure.
+A finite union of their closures is finite.  A finite generating set
+has infinite closure precisely when it contains some point of $V\setminus U$.
+
+It follows that the points of $\Hfin X$ are all finite closed sets,
+together with precisely the following infinite closed sets:
+\begin{equation}\label{eq:exceptional}
+ E=\{F\cup D:D\in\JJ(Q),\ D\nsubseteq U\}.
+\end{equation}
+For the converse implicit in this assertion, if $D$ meets
+$V\setminus U$, then the closure of the finite set $D$ is exactly
+$F\cup D$.  Indeed, its trace on $V$ is the downset $D$, and one of its
+point closures contains $F$.  Every finite closed set is trivially
+finitarily generated by all of its own points.
+
+For $J\in\JJ(U)$, define a cell
+\begin{equation}\label{eq:AJ}
+ A_J=\{C\in\Cl(X): C\text{ is finite and }C\cap V=J\}.
+\end{equation}
+A downset of $U$ is also a downset of $Q$, because $U$ itself is a
+downset.  Every finite closed set belongs to exactly one such cell.
+
+Each $A_J$ is infinite.  The finite closed set
+$B_J=\bigcup_{v\in J}\cl_X\{v\}$ has trace $J$ on $V$.  There are
+infinitely many different finite closed sets contained in $F$:
+otherwise their finite union would contain every point of the infinite
+core, because each such point has finite closure.  More directly,
+one can repeatedly choose a core point outside the current finite
+closed union and adjoin its closure.  Union with $B_J$ therefore
+produces infinitely many distinct members of $A_J$.
+
+The closure in $\Hfin X$ of a point $C\in A_J$ consists of finitarily
+closed subsets contained in the finite set $C$.  It is finite.
+Thus condition (c) of \cref{lem:cells} holds.
+
+We next verify its closed-set conditions, with index poset $P=\JJ(U)$.
+The trace of $\boxF C$ is finite when $C$ is finite.  When $C=F\cup D$
+is infinite, its trace contains exactly the entire cells $A_J$ with
+$J\subseteq D\cap U$, and some of the finitely many exceptional points
+in \eqref{eq:exceptional}.  By \cref{prop:closedH}, every closed subset
+of $\Hfin X$ is a finite union of such traces.  Its full-cell indices
+are therefore a downset of $\JJ(U)$; all other points form a finite
+remainder.  This is condition (a).
+
+Conversely, if $I$ is a downset of $\JJ(U)$, take the union of the traces
+of $\boxF{F\cup J}$ over the maximal $J\in I$.  Each $J$ is contained
+in $U$, so this trace has no exceptional point and consists exactly
+of the cells with index contained in $J$.  The union is precisely
+$\bigcup_{J\in I}A_J$.  It is closed, proving condition (b).  For
+$I=\varnothing$ use the empty union.
+
+The finite-cell lemma now gives
+\[
+ \st{\Hfin X}=\omega\cdot|\JJ(U)|+|E|.
+\]
+The downsets of $Q$ contained in $U$ are exactly the downsets of $U$,
+so $|E|=j(Q)-j(U)$.  Finally use \cref{prop:finitary}.
+\end{proof}
+
+\subsection{Every finite pair has a countable realization}
+
+\begin{theorem}\label{thm:realization}
+For every finite poset $Q$ of size $n$ and every downset $U\subseteq Q$,
+there is a countable $T_0$ Noetherian space $X(Q,U)$ with
+\[
+ \st{X(Q,U)}=\omega+n,
+ \qquad
+ \st{\HH X(Q,U)}=\omega\cdot j(U)+(j(Q)-j(U)).
+\]
+\end{theorem}
+\begin{proof}
+Let $C$ be a countably infinite set disjoint from $Q$.  On the underlying
+set $C\ds Q$, declare the closed subsets to be exactly the following:
+\begin{align}
+ & A\ds D, && A\subseteq C\text{ finite},\quad D\in\JJ(U);
+       \label{eq:modelFinite}\\
+ & C\ds D, && D\in\JJ(Q). \label{eq:modelInfinite}
+\end{align}
+The empty set and the whole space occur.  Finite unions preserve these
+forms, since unions of downsets are downsets.  For an arbitrary
+intersection, if every member has form \eqref{eq:modelInfinite}, so
+does the intersection.  Otherwise fix a finite-type member; the
+intersection has finite $C$ part and a downset contained in $U$, hence
+has form \eqref{eq:modelFinite}.  This is a topology.
+
+A descending chain of infinite-type closed sets can change only its
+finite $Q$ part, hence can have only finitely many strict steps before
+it either stops or enters a finite-type closed set.  Thereafter it lies
+inside a finite set.  Thus the topology is Noetherian.
+
+The subspace $C$ is closed and has the cofinite topology, of stature
+$\omega$: its proper closed subsets are all finite sets.  The complement
+is exactly the finite $T_0$ space $Q$, of stature $n$.  Both sides of
+the closed--open inequality equal $\omega+n$, so
+$\st{X(Q,U)}=\omega+n$.
+
+For $v\in U$, its closure is $\mathord\downarrow_Q v$, a finite set.
+For $v\notin U$, its closure is
+$C\ds\mathord\downarrow_Q v$.  Points of $C$ have singleton closures.
+These closures are pairwise distinct, so the space is $T_0$.
+They also show that the distinguished finite-closure downset is exactly
+the specified $U$.  Apply \cref{thm:formula}.
+\end{proof}
+
+\begin{corollary}[Exact finite-tail spectrum]\label{cor:spectrum}
+For every $n<\omega$,
+\[
+ \Spec(\omega+n)=
+ \{\omega\cdot j(U)+(j(Q)-j(U)):
+                    |Q|=n,\ U\in\JJ(Q)\}.
+\]
+Every value has a countable witness.
+\end{corollary}
+
+\begin{corollary}[Rigidity in the $T_1$ case]\label{cor:T1tail}
+If $X$ is $T_1$ and $\st X=\omega+n$, then
+\[
+ \st{\HH X}=\omega\cdot2^n.
+\]
+In fact $X$ is the disjoint sum of an infinite cofinite space and an
+$n$-point discrete space.
+\end{corollary}
+\begin{proof}
+The finite complement of the core is closed because $X$ is $T_1$.
+Thus the core and its complement are both clopen.  The core has all
+finite subsets closed and no other proper closed subsets, hence is
+cofinite.  Its finite complement is discrete.  Equivalently, in the
+spectrum formula $Q$ is an antichain and $U=Q$, giving $j(U)=2^n$ and
+zero finite remainder.
+\end{proof}
+
+The source space can have a complicated family of finite point closures
+inside its core.  At stature $\omega+n$, none of that complexity changes
+the answer: after the justified normalization, only the finite pair
+$(Q,U)$ survives in the formula.
+
+\section{Examples, gaps, and exhaustive finite data}
+\label{sec:examples}
+
+\subsection{The first spectra}
+
+For finite input $n$, a $T_0$ space is an $n$-point poset, and its
+powerspace has one point per downset.  Therefore the finite-input
+spectrum is simply
+\[
+ \Spec(n)=\{j(Q):|Q|=n\}.
+\]
+For infinite input with finite tail, the first three spectra are
+\begin{align*}
+ \Spec(\omega)&=\{\omega\},\\
+ \Spec(\omega+1)&=\{\omega+1,\ \omega\cdot2\},\\
+ \Spec(\omega+2)&=\{\omega+2,\ \omega+3,\ \omega\cdot2+1,\
+                   \omega\cdot2+2,\ \omega\cdot3,\ \omega\cdot4\}.
+\end{align*}
+
+For $n=1$, $Q$ has two downsets.  Choosing $U=\varnothing$ gives
+$\omega+1$; choosing $U=Q$ gives $\omega\cdot2$.  Thus, for example,
+$\omega+2$ lies between the extreme values but is not itself attainable
+at input $\omega+1$.
+
+For $n=2$, there are two poset types.  A chain has $j(Q)=3$ and possible
+$j(U)=1,2,3$, giving $\omega+2$, $\omega\cdot2+1$, and $\omega\cdot3$.
+An antichain has $j(Q)=4$ and possible $j(U)=1,2,4$, giving
+$\omega+3$, $\omega\cdot2+2$, and $\omega\cdot4$.
+
+For $n=3$, the eighteen values can be presented without writing a long
+ordinal list: for each coefficient $a$ in \cref{tab:n3}, take
+$\omega\cdot a+b$ for each finite tail $b$ in the second column.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}cl@{}}
+\toprule
+Coefficient $a$ & Permitted tails $b$ at input $\omega+3$\\
+\midrule
+$1$ & $3,4,5,7$\\
+$2$ & $2,3,4,6$\\
+$3$ & $1,2,3$\\
+$4$ & $0,1,2,4$\\
+$5$ & $0$\\
+$6$ & $0$\\
+$8$ & $0$\\
+\bottomrule
+\end{tabular}
+\caption{The complete spectrum at $\omega+3$, encoded as pairs $(a,b)$.}
+\label{tab:n3}
+\end{table}
+
+Both endpoints of every finite-tail spectrum have elementary witnesses.
+Take $Q$ to be a chain and $U=\varnothing$ to get
+$\omega+(j(Q)-1)=\omega+n$.  Take $Q$ to be an antichain and $U=Q$ to get
+$\omega\cdot2^n$.  The intervening gaps are restrictions on finite
+poset downset counts, not failures of ordinal continuity.
+
+\subsection{Enumeration and certificates}
+
+The accompanying \texttt{verify\_spectra.py} uses only the Python standard
+library.  For each $n$, it enumerates all subsets of the pairs $(i,j)$
+with $0\leq i<j<n$, retaining exactly the transitive relations.
+Every finite poset admits a linear extension, so relabeling along one
+puts it into this collection.  This covers every isomorphism type,
+usually more than once.  The counts are \emph{not} counts of unlabeled
+posets and \emph{not} counts of all labeled posets.
+
+For each retained relation it enumerates all downsets $U$, counts
+$j(Q)$ and $j(U)$, and stores the pair
+$(j(U),j(Q)-j(U))$.  A concrete relation and a distinguished downset
+are retained as a witness for each distinct pair.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & Naturally labeled transitive relations & $|\Spec(\omega+n)|$\\
+\midrule
+$0$ & $1$ & $1$\\
+$1$ & $1$ & $2$\\
+$2$ & $2$ & $6$\\
+$3$ & $7$ & $18$\\
+$4$ & $40$ & $53$\\
+$5$ & $357$ & $154$\\
+$6$ & $4824$ & $431$\\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive finite enumeration performed for this manuscript.}
+\label{tab:counts}
+\end{table}
+
+Across these runs the program examines $101{,}659$ pairs consisting of
+a retained poset and one of its downsets.  The archive contains the
+full spectra in \texttt{spectra.csv}, one witness per distinct value in
+\texttt{witnesses.json}, and the run summary in
+\texttt{verification\_results.json}.  The spectrum-size sequence
+$1,2,6,18,53,154,431$ is reported as computed data, not asserted to be
+new to integer-sequence databases.
+
+\subsection{An independent finite-model identity}
+
+There is a useful check of the realization formula that does not use
+ordinal ranks.  Replace the infinite cofinite core by an $N$-point
+antichain $C_N$.  Keep the order on $Q$, put each point of $C_N$ below
+each point of $Q\setminus U$, and add no further cross-comparabilities.
+Because $U$ is a downset, $Q\setminus U$ is an upset and this is a
+partial order.  Call it $P_{N,Q,U}$.
+
+\begin{proposition}\label{prop:finitecheck}
+For $N\geq1$,
+\[
+ j(P_{N,Q,U})=2^N j(U)+(j(Q)-j(U)).
+\]
+\end{proposition}
+\begin{proof}
+A downset whose $Q$ part is contained in $U$ has any of the $2^N$
+possible core parts, and its $Q$ part has $j(U)$ choices.  A downset
+whose $Q$ part is not contained in $U$ must contain all of $C_N$,
+and it has $j(Q)-j(U)$ choices for its $Q$ part.  These cases are
+disjoint and exhaustive.
+\end{proof}
+
+For every retained $Q$ with at most four points, every downset $U$, and
+each $N=1,2,3$, the program builds this finite poset and independently
+enumerates its downsets.  All $1{,}221$ checks matched the formula.
+This is an arithmetic and construction check, \emph{not} a computer
+proof of \cref{thm:formula}.  In particular, taking an ordinary supremum
+of the finite counts would lose the ordinal coefficient information;
+the finite-cell lemma is what justifies the transfinite rank.
+
+\section{Dependency audit and the boundary of the result}
+\label{sec:audit}
+
+The argument has two largely independent parts.  The universal bound
+uses finite unions, the closed--open rank inequality, and the fact that
+$2^\lambda$ is naturally additively indecomposable at a nonzero limit
+$\lambda$.  The finite-tail spectrum uses the unique core, the finitary
+closed-lattice isomorphism, and the finite-cell rank computation.
+Their overlap is mostly notation and elementary rank monotonicity.
+
+Several potential errors deserve explicit attention.
+
+\paragraph{Ordinal, not cardinal, arithmetic.}
+The expression $2^\omega$ here is $\omega$.  Also, the lower bound is
+$1+\alpha$, not $\alpha+1$.  At $\alpha=\omega$ the former is $\omega$,
+and replacing it by the latter would contradict the exact spectrum.
+Natural sums occur in finite disjoint sums and natural products in the
+imported product theorem; ordinary sums occur in a closed--open lower
+bound and in the final normal form $\omega a+b$.
+
+\paragraph{The empty powerspace point.}
+Even when $X$ is empty, $\HH X$ has the one point $\varnothing$.
+For a finite $n$-point $T_0$ space, the stature of $\HH X$ is its number
+of closed subsets, not that number minus one.  These conventions fix
+the base cases and the finite remainders in the spectrum formula.
+
+\paragraph{No hidden assumption that all point closures are finite.}
+At stature $\omega+n$, a core generic point may exist.  It is removed
+only after proving an isomorphism of closed lattices.  A point outside
+$U$ is never removed: its infinite closure is exactly what produces
+one of the exceptional points in the finitary powerspace.
+
+\paragraph{The product dependency is localized.}
+Equation \eqref{eq:productexternal} is a published theorem, not reproved
+in this manuscript.  It is used to certify the lower bounds for the
+$T_1$ bouquet witnesses.  The universal upper proof, the old-bound
+nonattainment implications, and the complete $\omega+n$ classification
+can be read without it.  Existing wqo sharpness witnesses give a
+separate route to unrestricted upper-bound attainment.
+
+\paragraph{What has and has not been solved.}
+The manuscript supplies a proof of a sharper general bound, witnesses
+for both extreme points at every ordinal, an exact answer to the
+upper-attainment subquestion, and the full spectrum for $\omega+n$.
+It does not classify $\Spec(\omega\cdot2)$, $\Spec(\omega^2)$, or all
+higher spectra.  There is no claim that a spectrum is an interval;
+the first nontrivial finite tails already show otherwise.
+
+\paragraph{Verification status.}
+The displayed transfinite arguments are mathematical proofs proposed
+here and have been checked against the stated definitions during
+preparation.  They have not received independent human peer review
+and have not been formalized in Lean or another proof assistant.  The
+included executable checks concern only finite posets and the finite
+realization identity.  The novelty search located the decisive earlier
+wqo theorem and the original Noetherian question, but does not establish
+priority for the general extension or the spectrum theorem.
+
+\subsection{Specific next mathematical questions}
+
+The next natural target is stature $\omega\cdot2$.  The simple core
+argument no longer makes all proper closed subsets finite: some can
+already have stature $\omega$, and their powerspace pieces have
+transfinite internal structure.  A promising replacement for the
+finite-cell lemma would attach ordinal weights, rather than finite
+cardinalities, to a finite poset of closed strata.  One would need
+precise hypotheses ensuring that finite unions of fragments cannot
+silently complete a stratum.
+
+A second question is purely finite: describe the set of pairs
+$(j(U),j(Q)-j(U))$ for $n$-point $Q$ without enumerating all posets.
+The spectrum theorem reduces the first infinite layer completely to
+that finite combinatorial problem.  Bounds on possible downset counts,
+structural recurrences for ordinal sums and disjoint sums of finite
+posets, and efficient isomorph rejection could all improve the
+computation without touching the transfinite proof.
+
+A third question concerns the $T_1$ subclass at higher statures.  At
+$\omega+n$ it is rigid and always attains the maximum.  The bouquet
+construction provides maximal $T_1$ examples everywhere, but it does
+not prove that every $T_1$ space at every ordinal stature is maximal.
+No such extrapolation is used in this article.
+
+\appendix
+\section{Reproducing the artifacts}
+
+The archive contains this article as \texttt{.tex} and \texttt{.pdf}, a
+reusable Bib\TeX{} file, the Python program, computed spectra, explicit
+finite witnesses, and proof-audit and literature notes.  Third-party
+source PDFs and font files are not included.
+
+With Python~3.9 or later, run
+\begin{quote}\ttfamily
+python verify\_spectra.py
+\end{quote}
+The defaults cover $0\leq n\leq6$ and finite-model checks through $n=4$.
+Options are \texttt{--max-n}, \texttt{--finite-check-n}, and
+\texttt{--output}; the input guard allows at most $n=7$ because the
+enumeration is exponential.  Details and file descriptions are in
+\texttt{README.md}.
+
+With a normal TeX Live installation, compile using
+\begin{quote}\ttfamily
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The bibliography is embedded in the TeX source, so a separate Bib\TeX{}
+run is unnecessary.
+
+\begin{thebibliography}{9}
+\bibitem{GL23}
+Jean Goubault-Larrecq and Bastien Laboureix.
+\newblock \emph{Statures and sobrification ranks of Noetherian spaces}.
+\newblock Houston Journal of Mathematics \textbf{49}(1) (2023), 1--76.
+\newblock Public version consulted: arXiv:2112.06828v5, submitted
+24 February 2023; 68-page preprint, with Question~1 on printed page~63.
+\newblock \href{https://arxiv.org/abs/2112.06828v5}{arXiv:2112.06828v5}.
+
+\bibitem{AHLLSSV24}
+Sergio Abriola, Simon Halfon, Aliaume Lopez, Sylvain Schmitz,
+Philippe Schnoebelen, and Isa Vialard.
+\newblock \emph{Measuring well-quasi-ordered finitary powersets}.
+\newblock arXiv:2312.14587v2, 17 July 2024.
+\newblock Version consulted for Theorems~3.3 and~4.3.
+\newblock \href{https://arxiv.org/abs/2312.14587v2}{arXiv:2312.14587v2}.
+\end{thebibliography}
+
+\end{document}

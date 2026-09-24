@@ -1,0 +1,1231 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{linkblue}{RGB}{27,65,99}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={A hexagonal-lattice proof of the triangular-array conjecture A195806},
+ pdfauthor={Research report prepared with ChatGPT},
+ pdfsubject={Exact enumeration, rational generating functions, and a two-bound refinement}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small A hexagonal-lattice proof of A195806}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb Z_{\geq 0}}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\coef}[2]{\left[#1\right]#2}
+\DeclareMathOperator{\Diag}{Diag}
+\DeclareMathOperator{\vol}{vol}
+\newcommand{\Aseq}{\textup{A195806}}
+
+\title{\textbf{A hexagonal-lattice proof of the\newline triangular-array conjecture A195806}\\[0.5em]
+\large Exact enumeration, a minimal recurrence, and a two-bound refinement}
+\author{Research report prepared with ChatGPT}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We count triangular arrays of side length five with entries in
+$\{0,\ldots,n\}$, zero corners, and equal sums on lines of equal length in the
+three lattice directions. The explicit quasipolynomial and constant-coefficient
+recurrence for this count are labeled conjectural in OEIS A195806 and originate
+in work of Kauers and Koutschan. We give an elementary proof. An integral
+parametrization reduces the twelve entries to two difference parameters and
+four independent translations. Their admissible ranges are measured by two
+hexagonal norms. A common dihedral symmetry reduces the count to a weighted
+sum over a single chamber, with weights $1$, $6$, and $12$. Summing this formula
+gives a reduced rational generating function and proves all six conjectured
+residue-class formulas. The minimal quasiperiod is six, the minimal eventual
+constant-coefficient recurrence has order fourteen, and the leading coefficient
+is $65/648$. We also derive a bivariate generating function for separate bounds
+on two classes of entries and compute its piecewise-polynomial leading volume.
+The report distinguishes the correctly indexed OEIS formulas from an indexing
+shift and a numerical typo in the printed conjecture. Reproducible exact
+polynomial certificates and independent finite enumerations accompany the
+proof.
+\end{abstract}
+
+\noindent\textbf{Research status.}
+This manuscript supplies a complete mathematical argument for the explicit
+OEIS formulas, rather than a conjecture inferred from additional terms. The
+source search described below did not establish first-in-literature priority.
+The manuscript has not been externally refereed or verified in a proof
+assistant. Its computer checks are supplementary to the proof.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The problem and the precise claim being proved}
+\label{sec:problem}
+
+\subsection{Definition and indexing}
+Label the twelve noncorner entries of a triangular array as follows:
+\begin{equation}\label{eq:array}
+\begin{array}{ccccccccc}
+&&&&0&&&&\\
+&&&a&&b&&&\\
+&&c&&d&&e&&\\
+&f&&g&&h&&i&\\
+0&&j&&k&&l&&0
+\end{array}.
+\end{equation}
+The three directions are the horizontal rows and the two families of sloping
+lines. For each fixed line length, the three line sums must agree. Lines of
+\emph{different} lengths are not required to have the same sum. In the notation
+of \eqref{eq:array}, the nontrivial equations are exactly
+\begin{align}
+a+b&=f+j=i+l,\label{eq:length2}\\
+c+d+e&=c+g+k=e+h+k,\label{eq:length3}\\
+f+g+h+i&=b+d+g+j=a+d+h+l,\label{eq:length4}\\
+a+c+f&=j+k+l=b+e+i.\label{eq:length5}
+\end{align}
+The three lines of length one are the prescribed zero corners, so their
+condition is automatic.
+
+\begin{definition}
+For an integer $n\geq0$, let $A(n)$ be the number of arrays
+\eqref{eq:array} satisfying \eqref{eq:length2}--\eqref{eq:length5}, with all
+twelve letters in $\{0,\ldots,n\}$.
+\end{definition}
+
+Thus $A(0)=1$. The OEIS entry has offset one and begins with $A(1)=16$;
+we adjoin the natural value at zero to simplify generating functions.
+The first few counts are
+\[
+A(0),A(1),\ldots,A(7)=1,16,105,496,1759,5052,12469,27412.
+\]
+This distinction between the entry bound and the position in a displayed
+sequence will matter when comparing formulas.
+
+\subsection{Why this is a documented conjecture}
+R.\ H.\ Hardin introduced the sequence in 2011. As retrieved on September 20,
+2026, its OEIS entry explicitly labels both a recurrence and a six-part
+quasipolynomial as conjectured, attributing them to Manuel Kauers and
+Christoph Koutschan \cite{oeis}. Their 2023 paper includes the corresponding
+problem in Section 5.1 and an explicit formula as Conjecture 11
+\cite[pp.~24--25]{kk}.
+
+The 2023 paper already establishes that the sequence is a quasipolynomial and
+hence is D-finite. The unresolved point identified there is the explicit
+formula, not the bare existence of some recurrence. Accordingly, the result
+of this report is a proof of the particular OEIS quasipolynomial and its
+constant-coefficient recurrence, together with structural refinements.
+Targeted searches for the sequence identifier and proof-related terms did not
+locate a later resolution; this is evidence about the sources inspected, not
+an exhaustive priority claim.
+
+There is a small but important source issue. The displayed expression in
+Conjecture 11 uses a one-step shift relative to our entry-bound indexing, and
+one of its constants has a numerical typo. Section~\ref{sec:source} gives an
+exact audit. Our principal target is the correctly indexed collection of
+formulas on the OEIS page, not the erroneous literal printed expression.
+
+\subsection{The route to a proof}
+A direct enumeration examines $(n+1)^{12}$ fillings. General lattice-point
+methods can in principle compute the answer, but the special linear system
+has a much smaller description. We first solve it over the integers, then
+count four independent intervals of translations. The remaining two-dimensional
+sum has a symmetry common to both interval lengths. Restricting to a symmetry
+chamber turns all maxima into linear functions. The generating function then
+requires only geometric series and two differentiations.
+
+This order of operations is essential. Interpolating six degree-six
+polynomials from numerical values would not, by itself, prove that they count
+the arrays. Here the all-index counting formula is established before any
+coefficient extraction.
+
+\section{Main enumeration theorem}
+\label{sec:main}
+
+\begin{theorem}\label{thm:main}
+The ordinary generating function $F(z)=\sum_{n\geq0}A(n)z^n$ is
+\begin{equation}\label{eq:mainGF}
+ F(z)=\frac{P(z)}{(1-z)^7(1+z)(1+z+z^2)^3}
+     =\frac{P(z)}{(1-z)^3(1-z^2)(1-z^3)^3},
+\end{equation}
+where
+\begin{align}\label{eq:P}
+P(z)={}&1+13z+59z^2+212z^3+471z^4+753z^5+882z^6\notag\\
+      &\quad+753z^7+471z^8+212z^9+59z^{10}+13z^{11}+z^{12}.
+\end{align}
+For $n=6k+r$, where $k\geq0$ and $0\leq r\leq5$, write
+$A(6k+r)=\sum_{d=0}^6 c_{r,d}k^d$. The coefficients are those in
+Table~\ref{tab:residues}. In particular, the conjectured OEIS quasipolynomial
+is correct for every index in its stated domain.
+\end{theorem}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{crrrrrrr}
+\toprule
+$r$&$c_{r,6}$&$c_{r,5}$&$c_{r,4}$&$c_{r,3}$&$c_{r,2}$&$c_{r,1}$&$c_{r,0}$\\
+\midrule
+0&4680&4680&2275&650&158&25&1\\
+1&4680&9360&8125&3900&1133&198&16\\
+2&4680&14040&17875&12350&4922&1087&105\\
+3&4680&18720&31525&28600&14783&4148&496\\
+4&4680&23400&49075&55250&35258&12121&1759\\
+5&4680&28080&70525&94900&72197&29474&5052\\
+\bottomrule
+\end{tabular}
+\caption{Exact coefficients of $A(6k+r)$, with powers in descending order.
+These agree with the conjectured OEIS formulas \cite{oeis}; the final row is
+written in expanded form.}
+\label{tab:residues}
+\end{table}
+
+For example, the final row can equivalently be written in the factored form
+\begin{equation}\label{eq:lastresidue}
+ A(6k+5)=(k+1)^2
+ \bigl(4680k^4+18720k^3+28405k^2+19370k+5052\bigr).
+\end{equation}
+The proof of Theorem~\ref{thm:main} occupies Sections~\ref{sec:param}
+through~\ref{sec:extract}. The period and recurrence are treated afterward,
+so that their minimality does not have to be assumed in deriving the formula.
+
+\section{An integral six-parameter description}
+\label{sec:param}
+
+\begin{lemma}\label{lem:param}
+All integer solutions of \eqref{eq:length2}--\eqref{eq:length5}, without entry
+bounds, are given uniquely by six integers
+$(x,y,\alpha,\beta,\gamma,\delta)$ through
+\begin{equation}\label{eq:paramarray}
+\setlength{\arraycolsep}{3pt}
+\begin{array}{ccccccccc}
+&&&&0&&&&\\
+&&&\beta+y&&\alpha+x-y&&&\\
+&&\delta+2x-y&&\gamma&&\delta+x+y&&\\
+&\alpha&&\gamma+x+y&&\gamma+2x-y&&\beta&\\
+0&&\beta+x&&\delta&&\alpha+x&&0
+\end{array}.
+\end{equation}
+The inverse map is
+\begin{equation}\label{eq:inverse}
+x=j-i,\qquad y=a-i,\qquad
+\alpha=f,\quad\beta=i,\quad\gamma=d,\quad\delta=k.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $\alpha=f$, $\beta=i$, $\gamma=d$, and $\delta=k$. From
+$f+j=i+l$ we obtain
+\[
+ j-i=l-f=:x,
+\]
+so $j=\beta+x$ and $l=\alpha+x$. Set $y=a-i$; then
+$a=\beta+y$. The remaining length-two equality determines
+\[
+ b=f+j-a=\alpha+x-y.
+\]
+Next, the common length-five sum is
+\[
+ j+k+l=\alpha+\beta+\delta+2x.
+\]
+Equating this with $a+c+f$ and $b+e+i$ gives, respectively,
+\[
+ c=\delta+2x-y,\qquad e=\delta+x+y.
+\]
+The length-three equations now yield
+\[
+ g=d+e-k=\gamma+x+y,\qquad
+ h=c+d-k=\gamma+2x-y.
+\]
+Every entry has therefore been forced into the form
+\eqref{eq:paramarray}. This proves necessity and uniqueness.
+
+Conversely, substitute arbitrary integers into \eqref{eq:paramarray}. The
+three sums within each length class become, respectively,
+\[
+\begin{array}{c|c}
+\text{line length}&\text{common sum}\\ \hline
+2&\alpha+\beta+x\\
+3&2\delta+\gamma+3x\\
+4&\alpha+\beta+2\gamma+3x\\
+5&\alpha+\beta+\delta+2x.
+\end{array}
+\]
+All required equalities hold, including the length-four equations not used in
+the elimination. The inverse formulas are integral, so no congruence
+conditions have been lost.
+\end{proof}
+
+\begin{remark}
+The unconstrained real solution space has dimension six, and its integer
+lattice is identified with $\Z^6$ by the same parametrization. The dimension
+statement alone would not suffice for counting: a merely rational
+parametrization could hide divisibility restrictions. The explicit integral
+inverse in \eqref{eq:inverse} is the point that rules them out.
+\end{remark}
+
+\section{Translation intervals and two hexagonal norms}
+\label{sec:norms}
+
+For a real number $t$, write $t_+=\max(t,0)$.
+
+\begin{lemma}\label{lem:range}
+For integers $u,v$ and $n\geq0$, the number of integers $t$ for which
+$t,t+u,t+v$ all belong to $\{0,\ldots,n\}$ is
+\begin{equation}\label{eq:triplecount}
+\bigl(n+1-\max(|u|,|v|,|u-v|)\bigr)_+.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The allowed interval for $t$ is
+\[
+ -\min(0,u,v)\ \leq t\ \leq n-\max(0,u,v).
+\]
+Its number of integer points is the positive part of its upper endpoint minus
+its lower endpoint plus one. The difference between the largest and smallest
+of three real numbers is the largest of their three pairwise distances.
+Applied to $0,u,v$, this gives \eqref{eq:triplecount}.
+\end{proof}
+
+Define
+\begin{align}
+ H_1(x,y)&=\max\{|x|,|y|,|x-y|\},\label{eq:H1}\\
+ H_2(x,y)&=\max\{|x+y|,|2x-y|,|x-2y|\}.\label{eq:H2}
+\end{align}
+Both are norms on $\R^2$ with centrally symmetric hexagonal unit balls.
+Only their explicit maximum formulas are needed below.
+
+For fixed $x,y$, the four translation parameters in
+\eqref{eq:paramarray} occur in four disjoint triples. Their offsets are
+\begin{equation}\label{eq:offsets}
+\begin{array}{c|c|c}
+\text{translation}&\text{offsets}&\text{range}\\ \hline
+\beta&0,y,x&H_1(x,y)\\
+\alpha&0,x-y,x&H_1(x,y)\\
+\gamma&0,x+y,2x-y&H_2(x,y)\\
+\delta&0,2x-y,x+y&H_2(x,y).
+\end{array}
+\end{equation}
+The first two ranges agree because their pairwise differences, up to sign,
+are $x,y,x-y$. The last two triples simply have their nonzero offsets
+interchanged.
+
+\begin{proposition}\label{prop:normcount}
+For every $n\geq0$,
+\begin{equation}\label{eq:normcount}
+ A(n)=\sum_{(x,y)\in\Z^2}
+ \bigl(n+1-H_1(x,y)\bigr)_+^2
+ \bigl(n+1-H_2(x,y)\bigr)_+^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The parametrization is bijective, and the four translation parameters are
+independent once $x,y$ have been fixed. Lemma~\ref{lem:range} therefore gives
+the product in each summand. A summand is nonzero only if $H_1(x,y)\leq n$,
+which in particular implies $|x|,|y|\leq n$. Thus the displayed sum has only
+finitely many nonzero terms and accounts for every bounded array exactly
+once.
+\end{proof}
+
+This already gives an $O(n^2)$-term counting formula, replacing the original
+twelve-dimensional search. The remaining maxima are eliminated by exploiting
+a symmetry shared by both norms.
+
+\section{A common dihedral chamber}
+\label{sec:chamber}
+
+\begin{lemma}\label{lem:dihedral}
+The transformations
+\begin{equation}\label{eq:TS}
+ T(x,y)=(x-y,x),\qquad S(x,y)=(x,x-y)
+\end{equation}
+generate a group of order twelve preserving $\Z^2$, $H_1$, and $H_2$.
+Each orbit meets the closed chamber
+\begin{equation}\label{eq:chamber}
+\mathcal C=\{(x,y)\in\R^2:x\geq2y\geq0\}
+\end{equation}
+in exactly one point. A nonzero chamber point has orbit size six on either
+boundary ray and twelve in the interior; the origin has orbit size one.
+\end{lemma}
+
+\begin{proof}
+A direct computation gives $T^6=S^2=1$ and $STS=T^{-1}$.
+For example, the three linear forms defining $H_2$ are transformed by $T$
+into
+\[
+ 2x-y,\quad x-2y,\quad -(x+y),
+\]
+so their absolute values are permuted. The same check works for $S$ and for
+the defining forms of $H_1$.
+
+For completeness, the fundamental-domain assertion can be seen in the
+positive-definite quadratic form
+\[
+ q_0(x,y)=x^2-xy+y^2.
+\]
+Both transformations preserve this form. In the corresponding Euclidean
+metric, $T$ is a rotation through $60$ degrees: its determinant is one and
+its trace is one. The map $S$ is the reflection fixing the line $x=2y$.
+The reflection $T^{-1}S$ fixes the line $y=0$. The positive rays on these two
+lines enclose an angle of $30$ degrees. Their images divide the plane into
+twelve sectors, whose interiors are disjoint. This proves that the group has
+order twelve and that the closed sector \eqref{eq:chamber} contains exactly
+one representative of each orbit.
+
+An interior nonzero point is fixed by no nonidentity group element. A point
+on either boundary ray is fixed by exactly one reflection, so its stabilizer
+has order two. The orbit sizes follow, while every group element fixes the
+origin.
+\end{proof}
+
+\begin{remark}
+This is a symmetry of the auxiliary parameter lattice. We are \emph{not}
+counting arrays modulo rotations or reflections. All arrays remain labeled
+by their positions, and the orbit sizes are multiplicities in a sum, not
+identifications of arrays.
+\end{remark}
+
+Use integral coordinates on the chamber by setting
+\begin{equation}\label{eq:pq}
+ p=x-2y,\qquad q=y,
+ \qquad\text{so that}\qquad x=p+2q,\quad y=q.
+\end{equation}
+This is a bijection between $\mathcal C\cap\Z^2$ and $\N^2$. On the chamber,
+\begin{equation}\label{eq:linearH}
+ H_1=p+2q,\qquad H_2=2p+3q.
+\end{equation}
+Indeed, $x$ is the largest defining absolute value for $H_1$, and $2x-y$
+is the largest for $H_2$. In particular,
+\begin{equation}\label{eq:compareH}
+ \tfrac32H_1\leq H_2\leq2H_1
+\end{equation}
+holds globally, by symmetry and \eqref{eq:linearH}.
+
+Define the multiplicity
+\begin{equation}\label{eq:mu}
+ \mu(p,q)=
+ \begin{cases}
+ 1,&p=q=0,\\
+ 6,&\text{exactly one of }p,q\text{ is zero},\\
+ 12,&p,q>0.
+ \end{cases}
+\end{equation}
+The equal-bound count can now be written with no maxima.
+
+\begin{theorem}\label{thm:sum}
+For every integer $n\geq0$,
+\begin{equation}\label{eq:positivesum}
+ \boxed{\displaystyle
+ A(n)=\sum_{\substack{p,q,r\geq0\\2p+3q+r=n}}
+ \mu(p,q)(r+1)^2(r+p+q+1)^2.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:dihedral} to \eqref{eq:normcount}. Since
+$H_2\geq H_1$, a nonzero chamber summand is characterized by
+$2p+3q\leq n$. Set $r=n-2p-3q$. Then
+\[
+ n+1-H_2=r+1,\qquad n+1-H_1=r+p+q+1.
+\]
+The orbit multiplicities give exactly \eqref{eq:positivesum}.
+\end{proof}
+
+The first values illustrate the boundary weights. For $n=1$, only $p=q=0$
+occurs, so $A(1)=2^4=16$. For $n=2$, one new point occurs on the $q=0$
+boundary:
+\[
+ A(2)=3^4+6\cdot1^2\cdot2^2=105.
+\]
+For $n=3$, the two nonzero possibilities are $(p,q,r)=(1,0,1)$ and
+$(0,1,0)$, giving
+\[
+ A(3)=4^4+6\cdot2^2\cdot3^2+6\cdot1^2\cdot2^2=496.
+\]
+These examples are checks on the formula; its proof has no finite-index
+restriction.
+
+\section{Summing the chamber formula}
+\label{sec:GF}
+
+Let
+\begin{equation}\label{eq:G}
+ G(u,v)=\sum_{p,q\geq0}\mu(p,q)u^pv^q.
+\end{equation}
+Separate the origin, the two axes, and the open quadrant to obtain
+\begin{align}\label{eq:Grational}
+ G(u,v)
+ &=1+\frac{6u}{1-u}+\frac{6v}{1-v}
+       +\frac{12uv}{(1-u)(1-v)}\notag\\
+ &=\frac{1+5u+5v+uv}{(1-u)(1-v)}.
+\end{align}
+The Euler operator
+\[
+ D=u\frac{\partial}{\partial u}+v\frac{\partial}{\partial v}
+\]
+multiplies the coefficient of $u^pv^q$ by $p+q$. Hence $DG$ and $D^2G$
+encode the first two powers of that sum. Direct differentiation gives
+\begin{align}
+ DG&=\frac{6(u+v)(1-uv)}{(1-u)^2(1-v)^2},\label{eq:DG}\\
+ D^2G&=\frac{6(u+v)(1+u+v-6uv+u^2v+uv^2+u^2v^2)}
+ {(1-u)^3(1-v)^3}.\label{eq:D2G}
+\end{align}
+
+For $j\geq0$, put $S_j(z)=\sum_{r\geq0}(r+1)^jz^r$. The needed cases are
+\begin{equation}\label{eq:S}
+\begin{split}
+ S_2(z)&=\frac{1+z}{(1-z)^3},\qquad
+ S_3(z)=\frac{1+4z+z^2}{(1-z)^4},\\
+ S_4(z)&=\frac{1+11z+11z^2+z^3}{(1-z)^5}.
+\end{split}
+\end{equation}
+These follow from the geometric series by applying $z\,d/dz+1$ repeatedly.
+The weight in \eqref{eq:positivesum} expands as
+\[
+ (r+1)^2(r+p+q+1)^2
+ =(r+1)^4+2(p+q)(r+1)^3+(p+q)^2(r+1)^2.
+\]
+Multiplying by $z^{2p+3q+r}$ and summing therefore yields the exact formal
+power-series identity
+\begin{equation}\label{eq:GFoperator}
+ F(z)=\left.
+ \bigl(S_4(z)G(u,v)+2S_3(z)DG(u,v)+S_2(z)D^2G(u,v)\bigr)
+ \right|_{u=z^2,\ v=z^3}.
+\end{equation}
+Each coefficient involves finitely many triples, so there is no analytic
+interchange-of-limits issue.
+
+\subsection{An explicit certificate for the rational simplification}
+To make the calculation from \eqref{eq:GFoperator} to \eqref{eq:mainGF}
+checkable without trusting a computer algebra simplifier, set $U=z^2$,
+$V=z^3$, and define
+\begin{align*}
+ M_0&=1+5U+5V+UV,\\
+ M_1&=6(U+V)(1-UV),\\
+ M_2&=6(U+V)(1+U+V-6UV+U^2V+UV^2+U^2V^2).
+\end{align*}
+The common numerator on the right side of \eqref{eq:GFoperator}, over the
+denominator $(1-z)^5(1-U)^3(1-V)^3$, is
+\begin{align}\label{eq:polycertificate}
+ &(1+11z+11z^2+z^3)M_0(1-U)^2(1-V)^2\notag\\
+ &\quad+2(1+4z+z^2)(1-z)M_1(1-U)(1-V)\notag\\
+ &\quad+(1+z)(1-z)^2M_2
+   =(1-z)^2(1-U)^2P(z).
+\end{align}
+Equation~\eqref{eq:polycertificate} is an identity between integer
+polynomials of degree at most eighteen. It is verified simply by expanding
+and comparing coefficients; the supplied standard-library verifier performs
+exactly that multiplication and comparison.
+
+Canceling the displayed factors gives
+\[
+ F(z)=\frac{P(z)}{(1-z)^3(1-U)(1-V)^3}.
+\]
+Substitute $U=z^2$, $V=z^3$ and factor $1-z^2$ and $1-z^3$ to obtain
+\eqref{eq:mainGF}. This establishes the generating-function part of
+Theorem~\ref{thm:main} directly from the combinatorial definition.
+
+\section{Exact coefficient extraction}
+\label{sec:extract}
+
+\subsection{Polynomial and periodic parts}
+A compact form of the answer separates a polynomial in the centered variable
+$N=n+1$ from periodic corrections. Define
+\begin{equation}\label{eq:M}
+ M(N)=\frac{65N^6}{648}+\frac{325N^4}{1296}
+      +\frac{439N^2}{324}-\frac{2521}{7776}
+\end{equation}
+and
+\begin{equation}\label{eq:B}
+\begin{split}
+ B_0(N)&=\frac{2(3N^2-24N-14)}{243},\\
+ B_1(N)&=\frac{2(3N^2+24N-14)}{243},\\
+ B_2(N)&=-\frac{4(3N^2-14)}{243}.
+\end{split}
+\end{equation}
+
+\begin{proposition}\label{prop:centered}
+For every $n\geq0$,
+\begin{equation}\label{eq:centered}
+ \boxed{\displaystyle
+ A(n)=M(n+1)-\frac{3}{32}(-1)^n+B_{n\bmod3}(n+1).}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write $C=1+z+z^2$. Partial fractions of \eqref{eq:mainGF} give
+\begin{align}\label{eq:PF}
+ F(z)={}&\frac{650}{9(1-z)^7}-\frac{1625}{9(1-z)^6}
+       +\frac{325}{2(1-z)^5}-\frac{2275}{36(1-z)^4}\notag\\
+ &+\frac{2687}{216(1-z)^3}-\frac{737}{432(1-z)^2}
+       -\frac{2521}{7776(1-z)}-\frac{3}{32(1+z)}\notag\\
+ &-\frac{14(4z-1)}{243C}
+       -\frac{2(13z+8)}{81C^2}
+       +\frac{4(z-1)}{27C^3}.
+\end{align}
+This identity can be checked by multiplying by
+$7776(1-z)^7(1+z)C^3$; the resulting integer-polynomial equality is a
+second directly checkable algebra calculation, included in the verifier.
+
+The identity
+\[
+ [z^n](1-z)^{-j}=\binom{n+j-1}{j-1}
+\]
+shows that the first seven terms in \eqref{eq:PF} have coefficient $M(n+1)$.
+The $(1+z)^{-1}$ term contributes $-3(-1)^n/32$.
+
+For the last three terms, use
+\begin{equation}\label{eq:Cexpand}
+ C^{-j}=\frac{(1-z)^j}{(1-z^3)^j},\qquad
+ (1-z^3)^{-j}=\sum_{k\geq0}\binom{k+j-1}{j-1}z^{3k}.
+\end{equation}
+Expanding the short numerator $(1-z)^j$ and separating the three residue
+classes gives the following coefficients for their sum:
+\[
+\begin{array}{c|c}
+n&\text{coefficient of the last three terms of \eqref{eq:PF}}\\ \hline
+3k&(54k^2-108k-70)/243\\
+3k+1&(54k^2+216k+92)/243\\
+3k+2&(-108k^2-216k-52)/243.
+\end{array}
+\]
+These are exactly $B_{n\bmod3}(n+1)$ in \eqref{eq:B}. All extractions hold
+also at $k=0$, either directly from \eqref{eq:Cexpand} or by substituting
+into the three displayed polynomials. This proves \eqref{eq:centered}.
+\end{proof}
+
+Substitute $n=6k+r$ into \eqref{eq:centered}. The parity and residue modulo
+three are then fixed, so ordinary polynomial expansion gives each row of
+Table~\ref{tab:residues}. This completes the proof of
+Theorem~\ref{thm:main}. Notice that the periodic corrections have degree at
+most two. Consequently, the coefficients of $n^6,n^5,n^4,n^3$ do not depend
+on the residue class.
+
+\subsection{An independent all-index certificate for the residue table}
+The table can also be verified directly against the rational function,
+without using the partial fraction decomposition. Let polynomials $T_d(t)$
+be defined by
+\begin{equation}\label{eq:EulerT}
+ T_0(t)=1,\qquad
+ T_{d+1}(t)=t\bigl((1-t)T'_d(t)+(d+1)T_d(t)\bigr).
+\end{equation}
+Differentiating a geometric series shows that
+\[
+ \sum_{k\geq0}k^dt^k=\frac{T_d(t)}{(1-t)^{d+1}}
+\]
+for $d\geq1$; for $d=0$ the left side is understood as $\sum_{k\geq0}t^k$.
+Define the integer polynomial
+\begin{equation}\label{eq:Hcertificate}
+ H(z)=\sum_{r=0}^5z^r\sum_{d=0}^6
+ c_{r,d}T_d(z^6)(1-z^6)^{6-d}.
+\end{equation}
+The generating function of the residue table is $H(z)/(1-z^6)^7$.
+Let
+\begin{equation}\label{eq:Q}
+ Q(z)=(1-z)^7(1+z)(1+z+z^2)^3.
+\end{equation}
+A third finite integer-polynomial identity is
+\begin{equation}\label{eq:residuecertificate}
+ H(z)Q(z)=P(z)(1-z^6)^7.
+\end{equation}
+The degree on both sides is at most fifty-four. The included program constructs
+$T_d$, $H$, $P$, and $Q$ as coefficient lists and checks this identity exactly.
+It certifies equality of the \emph{whole} generating functions, not merely
+agreement of a finite prefix. Since their denominators have constant term one,
+\eqref{eq:residuecertificate} proves coefficientwise equality in
+$\Z[[z]]$.
+
+\section{Minimal period, minimal recurrence, and growth}
+\label{sec:consequences}
+
+\begin{proposition}\label{prop:reduced}
+The fraction in \eqref{eq:mainGF} is reduced over $\Q[z]$.
+\end{proposition}
+
+\begin{proof}
+Direct evaluation and polynomial division give
+\begin{equation}\label{eq:noncancel}
+ P(1)=3900,\qquad P(-1)=-12,\qquad
+ P(z)\equiv12\pmod{1+z+z^2}.
+\end{equation}
+These are all irreducible factors of the denominator, and none divides $P$.
+\end{proof}
+
+\begin{corollary}\label{cor:period}
+The sequence $A(n)$ has degree six and minimal quasiperiod six.
+\end{corollary}
+
+\begin{proof}
+Table~\ref{tab:residues} supplies quasiperiod six and degree six. Suppose a
+quasipolynomial representation had quasiperiod $h$. Summing each of its
+polynomial residue classes would express its generating function with poles
+only at $h$th roots of unity: a common denominator is a power of $1-z^h$.
+But the reduced generating function has a pole at $-1$ and at both primitive
+cube roots of unity by \eqref{eq:noncancel}. Thus $2\mid h$ and $3\mid h$,
+so $6\mid h$. No smaller positive quasiperiod is possible.
+\end{proof}
+
+Let $E$ denote the forward shift on sequences, $(EA)(n)=A(n+1)$.
+
+\begin{corollary}\label{cor:recurrence}
+For every $n\geq0$,
+\begin{equation}\label{eq:operatorrec}
+ (E-1)^7(E+1)(E^2+E+1)^3A(n)=0.
+\end{equation}
+The minimal order of an eventual homogeneous linear recurrence with constant
+coefficients over $\Q$ is fourteen.
+\end{corollary}
+
+\begin{proof}
+The generating function has denominator degree fourteen and numerator degree
+twelve. Multiplication by $Q(z)$ gives $Q(z)F(z)=P(z)$, so every coefficient
+of degree at least fourteen vanishes. Reversing the denominator gives the
+forward-shift recurrence \eqref{eq:operatorrec}. In fact
+$z^{14}Q(1/z)=-Q(z)$, so the sign change is immaterial.
+
+Conversely, any eventual homogeneous constant-coefficient recurrence of order
+$d$ yields a polynomial multiplier of degree at most $d$ that makes $F(z)$ a
+polynomial: the recurrence cancels the entire sufficiently long tail. Since
+$P/Q$ is reduced, that multiplier must be divisible by $Q$. Therefore
+$d\geq\deg Q=14$.
+\end{proof}
+
+The qualifier \emph{constant coefficients} is important. This result is not
+a minimality claim among recurrences with coefficients depending polynomially
+on $n$. The 2023 source reports a smaller-order polynomial-coefficient guess;
+it is a different notion of order \cite{kk}. The constant-coefficient
+recurrence conjectured on the OEIS page is precisely the expanded form
+\begin{align}\label{eq:expandedrec}
+0={}&A(n)-3A(n+1)+2A(n+2)-A(n+3)+6A(n+4)\notag\\
+ &-5A(n+5)-3A(n+6)+3A(n+8)+5A(n+9)\notag\\
+ &-6A(n+10)+A(n+11)-2A(n+12)+3A(n+13)-A(n+14).
+\end{align}
+There is no $A(n+7)$ term.
+
+\begin{corollary}\label{cor:growth}
+As $n\to\infty$,
+\begin{equation}\label{eq:asymptotic}
+ A(n)=\frac{65}{648}n^6+\frac{65}{108}n^5
+     +\frac{2275}{1296}n^4+\frac{325}{108}n^3+O(n^2).
+\end{equation}
+In particular, $A(n)\sim65n^6/648$.
+\end{corollary}
+
+\begin{proof}
+Expand $M(n+1)$ in \eqref{eq:centered}; the remaining terms have size
+$O(n^2)$. Independently, the leading constant follows from the pole at one:
+\[
+ \lim_{z\to1}(1-z)^7F(z)=\frac{P(1)}{2\cdot3^3}
+ =\frac{650}{9},
+\]
+and the coefficient of $(1-z)^{-7}$ has leading term $n^6/6!$.
+\end{proof}
+
+The centered exact formula is more informative than an asymptotic expansion:
+it records every lower-order oscillation, including the constant alternating
+term. No exponentially small or uncomputed remainder is needed for exact
+evaluation.
+
+\section{Reciprocity and interior arrays}
+\label{sec:reciprocity}
+
+The numerator has the palindromic symmetry
+$z^{12}P(1/z)=P(z)$, while the denominator is antipalindromic. Consequently,
+\begin{equation}\label{eq:rationalreciprocity}
+ F(1/z)=-z^2F(z)
+\end{equation}
+as an identity of rational functions. This is not a termwise identification
+of the power-series expansions around zero and infinity.
+
+The residue formulas uniquely extend $A(n)$ from nonnegative to all integer
+arguments: use the polynomial assigned to the residue class of $n$. Denote
+this continuation by $\widetilde A(n)$.
+
+\begin{proposition}\label{prop:reciprocity}
+For every integer $n$,
+\begin{equation}\label{eq:quasireciprocity}
+ \widetilde A(-n)=\widetilde A(n-2).
+\end{equation}
+For $n\geq2$, the number of valid arrays with all twelve noncorner entries
+strictly between $0$ and $n$ is $A(n-2)$.
+\end{proposition}
+
+\begin{proof}
+The polynomial $M(N)$ is even, and
+\[
+ B_0(-N)=B_1(N),\qquad B_1(-N)=B_0(N),\qquad B_2(-N)=B_2(N).
+\]
+Under the replacement of the sequence argument $t$ by $-t-2$, the centered
+variable $N=t+1$ changes sign, the parity of $t$ stays fixed, and the residues
+$0,1,2$ modulo three are changed to $1,0,2$, respectively. Formula
+\eqref{eq:centered}, regarded as a quasipolynomial identity, therefore gives
+$\widetilde A(t)=\widetilde A(-t-2)$. Substitute $t=n-2$.
+
+For the counting assertion, subtract one from each noncorner entry and keep
+the three corners zero. Within a fixed line-length class, every line contains
+the same number of noncorner positions: those numbers are $2,3,4,3$ for
+lengths $2,3,4,5$. Hence each equality of line sums is preserved. The strict
+integer bounds $1\leq a,\ldots,l\leq n-1$ become the closed bounds
+$0\leq a,\ldots,l\leq n-2$. Adding one gives the inverse bijection.
+\end{proof}
+
+The geometric interpretation is also exact. In the six coordinates of
+Lemma~\ref{lem:param}, let $\mathcal P$ be the real polytope obtained by
+bounding every noncorner entry between zero and one. The point
+$x=y=0$, $\alpha=\beta=\gamma=\delta=1/2$ satisfies every bound strictly,
+so $\mathcal P$ is six-dimensional. Its relative interior consists exactly
+of points where every noncorner entry is strictly between the bounds.
+Indeed, each coordinate-bound functional is nonconstant on the solution
+space, and a point attaining such a bound lies on a supporting hyperplane;
+conversely, finitely many strict linear inequalities remain strict in a
+small neighborhood.
+
+Thus the preceding bijection describes the interior lattice-point count
+of $n\mathcal P$. At $n=1$ there are no such points and
+$\widetilde A(-1)=0$. At $n=2$ there is exactly one: all twelve noncorner
+entries are one. These statements and \eqref{eq:quasireciprocity} have been
+proved directly, without needing a general reciprocity theorem as a black box.
+
+\section{Two entry bounds and a bivariate generating function}
+\label{sec:twobound}
+
+The parametrization naturally divides the entries into two classes:
+\begin{equation}\label{eq:entryclasses}
+ \mathcal U=\{a,b,f,i,j,l\},\qquad
+ \mathcal V=\{c,d,e,g,h,k\}.
+\end{equation}
+The first class contains the six positions adjacent to corners. The second
+contains the three side midpoints and the three interior positions.
+Let $A(n,m)$ count the same arrays, with entries in $\mathcal U$ bounded
+between zero and $n$ and entries in $\mathcal V$ bounded between zero and $m$.
+The corners remain zero, and $A(n,n)=A(n)$.
+
+\begin{theorem}\label{thm:twobound}
+For integers $n,m\geq0$,
+\begin{equation}\label{eq:mixedsum}
+ A(n,m)=\sum_{p,q\geq0}\mu(p,q)
+ \bigl(n+1-p-2q\bigr)_+^2
+ \bigl(m+1-2p-3q\bigr)_+^2.
+\end{equation}
+Moreover,
+\begin{align}\label{eq:bivGF}
+ &\sum_{n,m\geq0}A(n,m)X^nY^m\notag\\
+ &\qquad=\frac{(1+X)(1+Y)}{(1-X)^3(1-Y)^3}
+ \frac{1+5XY^2+5X^2Y^3+X^3Y^5}
+ {(1-XY^2)(1-X^2Y^3)}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+In \eqref{eq:offsets}, the $\alpha$- and $\beta$-triples are exactly
+$\mathcal U$, while the $\gamma$- and $\delta$-triples are exactly
+$\mathcal V$. Their independent translation counts are therefore
+$(n+1-H_1)_+^2(m+1-H_2)_+^2$. The same chamber argument proves
+\eqref{eq:mixedsum}; no comparison between $n$ and $m$ is needed.
+
+For a fixed chamber point, write
+\[
+ n=p+2q+r,\qquad m=2p+3q+s,\qquad r,s\geq0.
+\]
+Its contribution is $\mu(p,q)(r+1)^2(s+1)^2$. Consequently the bivariate
+series factors as
+\[
+ S_2(X)S_2(Y)G(XY^2,X^2Y^3).
+\]
+Substitution of \eqref{eq:Grational} and \eqref{eq:S} gives
+\eqref{eq:bivGF}.
+\end{proof}
+
+As boundary checks,
+\[
+ A(n,0)=(n+1)^2,\qquad A(0,m)=(m+1)^2.
+\]
+In either case the narrower bound forces $x=y=0$ and leaves two independent
+translations for the other class.
+
+The equal-bound generating function is the \emph{diagonal} of the bivariate
+series: extract the coefficients of $X^nY^n$ and attach $z^n$.
+It is not obtained by substituting $X=Y=z$, which would group terms by
+$n+m$. This distinction explains why the very short bivariate rational form
+can coexist with the more elaborate univariate numerator in \eqref{eq:P}.
+
+\section{The leading volume under unequal scaling}
+\label{sec:volume}
+
+The two-bound formula also yields a continuous leading coefficient with an
+explicit change of shape. For fixed real $a,b>0$, define
+\begin{equation}\label{eq:volumeintegral}
+ V(a,b)=12\iint_{\substack{p,q\geq0\\p+2q\leq a\\2p+3q\leq b}}
+ (a-p-2q)^2(b-2p-3q)^2\,dp\,dq.
+\end{equation}
+
+\begin{theorem}\label{thm:volume}
+For fixed $a,b>0$, as $t\to\infty$,
+\begin{equation}\label{eq:anisotropicasymptotic}
+ A(\lfloor at\rfloor,\lfloor bt\rfloor)
+ =V(a,b)t^6+O_{a,b}(t^5).
+\end{equation}
+The leading coefficient has the truncated-power expression
+\begin{equation}\label{eq:volumetruncated}
+ \boxed{\displaystyle
+ V(a,b)=\frac{b^4(540a^2-252ab+37b^2)
+ -(2b-3a)_+^6+27(b-2a)_+^6}{3240}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof of the asymptotic formula]
+Rescale the chamber variables in \eqref{eq:mixedsum} by $t$. There are
+$O_{a,b}(t^2)$ contributing lattice points. At an interior chamber point,
+the multiplicity is twelve. Replacing each integer bound plus one by $at$
+or $bt$ changes the summand by $O_{a,b}(t^3)$ on a common bounded rescaled
+support, hence changes the total by $O_{a,b}(t^5)$.
+
+The two axes contain only $O_{a,b}(t)$ relevant points. Replacing their
+multiplicity six by twelve, and treating the origin similarly, changes the
+sum by $O_{a,b}(t^5)$ because each weight is $O_{a,b}(t^4)$. The remaining
+expression is $t^6$ times a two-dimensional Riemann sum for the compactly
+supported function
+\[
+ 12(a-p-2q)_+^2(b-2p-3q)_+^2
+ \quad\text{on the first quadrant}.
+\]
+On a fixed rectangle containing its support this function is Lipschitz.
+The Riemann-sum error is $O_{a,b}(1/t)$, obtained by bounding the variation
+on each square of side $1/t$. Multiplying by $t^6$ gives the stated
+$O_{a,b}(t^5)$ error and the integral \eqref{eq:volumeintegral}.
+\end{proof}
+
+\begin{proof}[Evaluation of the integral]
+The two upper bounds on $p$ are
+\[
+ p\leq a-2q,\qquad p\leq\frac{b-3q}{2}.
+\]
+Their intersection is
+\[
+ (p,q)=(2b-3a,\,2a-b).
+\]
+The integration region changes combinatorial type at $b=3a/2$ and $b=2a$.
+
+If $b\leq3a/2$, only the second sloping bound is active. Integration over
+$0\leq q\leq b/3$ and $0\leq p\leq(b-3q)/2$ yields
+\begin{equation}\label{eq:volsmall}
+ V(a,b)=\frac{b^4(540a^2-252ab+37b^2)}{3240}.
+\end{equation}
+If $b\geq2a$, only the first sloping bound is active. Integration over
+$0\leq q\leq a/2$ and $0\leq p\leq a-2q$ gives
+\begin{equation}\label{eq:vollarge}
+ V(a,b)=\frac{a^4(37a^2-84ab+60b^2)}{120}.
+\end{equation}
+In the intermediate region $3a/2\leq b\leq2a$, split at $q=2a-b$.
+For $0\leq q\leq2a-b$, use the upper bound $(b-3q)/2$ on $p$; for
+$2a-b\leq q\leq a/2$, use $a-2q$. The result is
+\begin{align}\label{eq:volmiddle}
+ V(a,b)=-\frac1{120}\bigl(&27a^6-108a^5b+180a^4b^2-160a^3b^3\notag\\
+                         &+60a^2b^4-12ab^5+b^6\bigr).
+\end{align}
+These integrations involve only a polynomial of degree four, with linear
+endpoints, so ordinary term-by-term integration suffices. The optional
+symbolic companion verifies the three definite integrals exactly.
+
+Finally, subtract \eqref{eq:volsmall} from \eqref{eq:volmiddle}; the difference
+is $-(2b-3a)^6/3240$. Subtract \eqref{eq:volmiddle} from
+\eqref{eq:vollarge}; the difference is $(b-2a)^6/120$. This gives
+\eqref{eq:volumetruncated} in all three regions, including their shared
+boundaries.
+\end{proof}
+
+For equal bounds, the first region applies and
+\[
+ V(a,a)=\frac{65}{648}a^6,
+\]
+agreeing with \eqref{eq:asymptotic}. The sixth-power corrections also show
+that the leading volume and its derivatives through order five match across
+each positive boundary ray; the change first becomes visible in sixth
+transverse derivatives.
+
+There is a direct volume interpretation. For continuous entries with bounds
+$a,b$, fixed difference parameters leave four intervals of translation of
+lengths $a-H_1,a-H_1,b-H_2,b-H_2$, when positive. Their product is the
+four-dimensional fiber volume. Integrating over $x,y$, then using the twelve
+chambers and the determinant-one change \eqref{eq:pq}, gives precisely
+\eqref{eq:volumeintegral}. Hence $65/648$ is the volume of $\mathcal P$ in
+the measure for which the integer lattice in its six parametrizing
+coordinates has covolume one. It is \emph{not} the convention that multiplies
+this volume by $6!$; under that alternative normalization the value is
+$650/9$.
+
+\section{Source audit: the shift and the printed constant}
+\label{sec:source}
+
+Let $T(n)$ denote the literal expression printed in Conjecture 11 of
+Kauers and Koutschan \cite[p.~25]{kk}. Written schematically, it is
+\begin{equation}\label{eq:printed}
+ T(n)=\frac{130n^6+1560n^5+8125n^4+23400n^3
+                 +u_rn^2+v_rn+w_r}{1296},
+ \qquad r=n\bmod6,
+\end{equation}
+with the following printed lower coefficients:
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$r$&$u_r$&$v_r$&$w_r$\\
+\midrule
+0&40788&42768&20736\\
+1&40692&42128&20045\\
+2&40788&42256&19712\\
+3&40788&42768&20493\\
+4&40692&42128&20288\\
+5&40788&42256&19496\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both the journal PDF and the arXiv version inspected for this report display
+$19496$ in the final row.
+
+There are two distinct observations. First, $T(0)=16$, while the entry-bound
+count is $A(0)=1$. The beginning of the printed expression is shifted by one
+relative to the entry bound. Second, the final row has a genuine arithmetic
+inconsistency, not just a shift. At $n=5$,
+\begin{equation}\label{eq:typo}
+ T(5)=\frac{598513}{48}=12469+\frac1{48},
+\end{equation}
+which cannot be an array count.
+
+Our exact formulas determine the comparison for every index:
+\begin{equation}\label{eq:sourcecomparison}
+ T(n)-A(n+1)=
+ \begin{cases}
+ 1/48,&n\equiv5\pmod6,\\
+ 0,&\text{otherwise},
+ \end{cases}
+ \qquad n\geq0.
+\end{equation}
+Indeed, substitute $n=6k+r$ into \eqref{eq:printed} and compare coefficients
+with Table~\ref{tab:residues}, using $A(6k+6)=A(6(k+1))$ for the final
+class. Five polynomial differences vanish; the remaining numerator difference
+is the constant $27$, giving $27/1296=1/48$.
+
+Replacing $19496$ by $19469$ removes that constant difference. Thus the
+corrected printed expression is exactly $A(n+1)$. Equivalently, substituting
+$n-1$ into the corrected expression gives the count with entries bounded by
+$n$, for $n\geq1$.
+
+This audit is not the main solution. Finding the nonintegral value in
+\eqref{eq:typo} would only refute a transcription-level statement. The
+substantive result is the derivation from the array constraints of the
+correct OEIS quasipolynomial, including every residue class and all indices.
+
+\section{Verification, reproducibility, and computational scope}
+\label{sec:verification}
+
+The archive contains two verification programs. The main program,
+\texttt{verify.py}, uses only the Python standard library and exact integers
+or rational numbers. The optional \texttt{verify\_symbolic.py} uses SymPy for
+independent differentiation, rational simplification, and polynomial
+integration. Neither program requires network access.
+
+\subsection{What was actually checked}
+The main program completed thirteen groups of checks. Three are all-index
+algebra certificates: the degree-eighteen identity
+\eqref{eq:polycertificate}, the denominator-cleared partial fractions
+\eqref{eq:PF}, and the degree-fifty-four identity
+\eqref{eq:residuecertificate}. It also checks the noncancellation values
+\eqref{eq:noncancel} and the numerator/denominator reversal identities.
+
+For an independent combinatorial test, it constructs the three directions
+from triangular-grid coordinates $(r,c)$, $0\leq c\leq r\leq4$, rather
+than copying the parametrization into the validity test. It exhaustively
+examines every filling for bounds zero, one, and two. The numbers of candidate
+fillings are $1$, $4096$, and $531441$, and the numbers accepted are $1$,
+$16$, and $105$. Each accepted filling is also sent through the inverse
+parametrization and reconstructed.
+
+The program additionally compares the full two-dimensional lattice sum with
+the chamber sum for $0\leq n\leq100$, the chamber sum with the residue
+formula for $0\leq n\leq300$, and the rational-function coefficients with
+the residue formula for $0\leq n\leq1000$. All twenty-nine initial values
+displayed on the retrieved OEIS page agree. It checks the auxiliary dihedral
+orbits on $[-20,20]^2$, the centered formula and reciprocity for
+$-200\leq n\leq200$, and three independent descriptions of $A(n,m)$ on
+the rectangle $0\leq n,m\leq20$. The source comparison
+\eqref{eq:sourcecomparison} is checked by exact polynomial composition,
+not only by numerical substitution.
+
+The optional symbolic program completed nine further exact checks: the two
+Euler derivatives, the rational generating-function simplification, three
+volume integrations, two boundary-correction identities, and the equal-bound
+leading coefficient. The run used Python 3.13.5 and SymPy 1.14.0. Machine-readable
+reports record the versions and measured run times.
+
+\subsection{What these checks do and do not prove}
+The manuscript proves the integer bijection, translation count, fundamental
+domain, and summation identity for all indices. Those steps are the
+mathematical foundation. The polynomial certificates verify finite algebra
+identities that themselves imply all-index generating-function statements.
+The finite enumerations serve a different purpose: they independently detect
+mistakes in the interpretation of the array constraints, indexing, chamber
+weights, or copied coefficients.
+
+A finite test is not promoted to a general proof merely because its range is
+large. Conversely, a finite \emph{coefficient comparison between two explicitly
+bounded-degree polynomials} proves their identity. The verifier keeps these
+two types of evidence separate. None of the files constitutes a
+proof-assistant formalization, and the numerical tests cannot by themselves
+establish literature priority.
+
+\subsection{Rebuilding and using the artifacts}
+From the extracted archive directory, run
+\begin{verbatim}
+python3 verify.py
+python3 verify_symbolic.py      # optional; requires SymPy
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The second LaTeX pass resolves the contents and cross-references.
+\texttt{data/sequence.csv} contains $A(n)$ for $0\leq n\leq1000$;
+\texttt{data/two\_bound\_counts.csv} contains the checked two-bound rectangle.
+\texttt{README.md} documents the files, conventions, and status. The supplied
+\texttt{Makefile} provides equivalent build targets.
+
+For evaluation at a single very large nonnegative index, the residue
+polynomial is the most economical formula: choose the residue and use Horner's
+rule in $k=\lfloor n/6\rfloor$. It uses a fixed number of integer arithmetic
+operations, although their bit cost grows with the size of $n$. The chamber
+sum is preferable as a transparent independent enumerator, with $O(n^2)$
+terms. The order-fourteen recurrence is convenient for generating a long
+prefix. These are arithmetic-operation statements, not claims of constant
+bit complexity.
+
+\section{Conclusion and remaining directions}
+
+The explicit A195806 quasipolynomial can be derived from an elementary
+structure that is not apparent in the twelve-entry definition. Four
+translation variables account for the fourth-degree weight, while two
+difference variables account for the sixth-degree total growth. The two
+translation ranges are hexagonal norms with a common twelvefold parameter
+symmetry. In a fundamental chamber their values become $p+2q$ and $2p+3q$,
+which explains the appearance of the denominators $1-z^2$ and $1-z^3$ and,
+after cancellation, the exact quasiperiod six.
+
+The main result is a proof of the correctly indexed formulas and recurrence
+still marked conjectural in the source inspected, together with minimality,
+reciprocity, and a two-bound extension. It does not resolve every sequence in
+the 2023 paper, establish a new general lattice-point algorithm, or prove that
+no earlier solution to this particular conjecture exists. Those are separate
+claims and are not needed here.
+
+A natural next investigation is the analogous triangular-array problem at
+other side lengths. The successful part of the present method is not simply
+linear elimination, which remains available in general, but the subsequent
+discovery of repeated translation ranges and a common manageable chamber
+structure. Determining when those features persist is a concrete structural
+question. No unverified general formula for larger triangles is asserted in
+this report.
+
+\appendix
+\section{Coefficient lists and a compact counting implementation}
+\label{app:implementation}
+
+For use in independent implementations, the denominator expands as
+\begin{align*}
+ Q(z)={}&1-3z+2z^2-z^3+6z^4-5z^5-3z^6\notag\\
+       &\quad+3z^8+5z^9-6z^{10}+z^{11}-2z^{12}+3z^{13}-z^{14}.
+\end{align*}
+The numerator and denominator coefficients, in ascending order, are
+\begin{verbatim}
+P = [1,13,59,212,471,753,882,753,471,212,59,13,1]
+Q = [1,-3,2,-1,6,-5,-3,0,3,5,-6,1,-2,3,-1]
+\end{verbatim}
+Since $Q(0)=1$, coefficients of $P/Q$ can be generated recursively as
+\[
+ A(n)=P_n-\sum_{j=1}^{\min(n,14)}Q_jA(n-j),
+\]
+where $P_n=0$ for $n>12$. This formula incorporates the initial terms and
+avoids a separate recurrence initialization convention.
+
+The core chamber enumerator is short enough to reproduce in full:
+\begin{verbatim}
+def count(n: int) -> int:
+    if isinstance(n, bool) or not isinstance(n, int) or n < 0:
+        raise ValueError("n must be a nonnegative integer")
+    total = 0
+    for p in range(n // 2 + 1):
+        for q in range((n - 2*p) // 3 + 1):
+            r = n - 2*p - 3*q
+            mu = 1 if p == q == 0 else 6 if p*q == 0 else 12
+            total += mu * (r+1)**2 * (r+p+q+1)**2
+    return total
+\end{verbatim}
+Every term is nonnegative, and no floating-point operation is involved.
+The complete verifier adds error checks, independent enumerators, exact
+polynomial arithmetic, reports, and data export.
+
+\section{A short numerical reference table}
+\label{app:values}
+
+\begin{center}
+\begin{tabular}{rr@{\qquad}rr@{\qquad}rr}
+\toprule
+$n$&$A(n)$&$n$&$A(n)$&$n$&$A(n)$\\
+\midrule
+0&1&7&27412&14&1155567\\
+1&16&8&55059&15&1699684\\
+2&105&9&102952&16&2442553\\
+3&496&10&181543&17&3438468\\
+4&1759&11&304908&18&4752283\\
+5&5052&12&491563&19&6460432\\
+6&12469&13&765184&20&8652429\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values are included for convenient indexing checks. The exact proof
+is provided by the preceding bijection, chamber reduction, and generating
+function, not by this table.
+
+\begin{thebibliography}{9}
+
+\bibitem{oeis}
+R. H. Hardin, \emph{A195806: Number of triangular size-five arrays with
+entries $0,\ldots,n$, equal sums on lines of equal length, and zero corners},
+The On-Line Encyclopedia of Integer Sequences, introduced September 23, 2011.
+Conjectured recurrence and quasipolynomial contributed by M. Kauers and
+C. Koutschan, March 1, 2023.
+\url{https://oeis.org/A195806}.
+Retrieved September 20, 2026.
+
+\bibitem{kk}
+M. Kauers and C. Koutschan, \emph{Some D-Finite and Some Possibly D-Finite
+Sequences in the OEIS}, Journal of Integer Sequences \textbf{26} (2023),
+Article 23.4.5, 42 pp. See Section 5.1, especially Conjecture 11 on p.~25.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL26/Koutschan/kout4.pdf}.
+Also arXiv:2303.02793, version 2, April 24, 2023,
+\url{https://arxiv.org/abs/2303.02793}.
+Journal and arXiv versions inspected September 20, 2026.
+
+\end{thebibliography}
+\end{document}

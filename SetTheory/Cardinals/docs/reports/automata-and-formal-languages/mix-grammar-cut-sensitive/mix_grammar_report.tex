@@ -1,0 +1,1277 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools,amssymb,amsthm}
+\usepackage{booktabs,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{inkblue}{HTML}{17374E}
+\definecolor{lightblue}{HTML}{F1F5F8}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={A Cut-Sensitive Attack on the First Open MIX Grammar Case},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Canonical MIX grammars: proofs, exact parsing, and finite evidence}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Canonical MIX grammars}}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{3pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Mix}{\mathrm{MIX}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\cat}{\operatorname{concat}}
+\newcommand{\Reg}{\operatorname{Regroup}}
+\newcommand{\norm}{\operatorname{nz}}
+\newcommand{\len}[1]{\lvert #1\rvert}
+\newcommand{\tuple}[1]{\left(#1\right)}
+\renewcommand{\aa}{\mathtt a}
+\newcommand{\bb}{\mathtt b}
+\newcommand{\cc}{\mathtt c}
+\newcommand{\word}[1]{\texttt{#1}}
+\newcommand{\rank}{\rho}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{black!20},
+ backgroundcolor=\color{black!2},showstringspaces=false,tabsize=2}
+\title{\color{inkblue}\bfseries A Cut-Sensitive Attack on the\allowbreak{} First Open MIX Grammar Case\\[5pt]
+\large Exact parsing, infinite separation families,\protect\\
+ and exhaustive evidence through length 21}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{September 20, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate a concrete open problem in formal-language theory: does the
+three-component canonical tuple grammar introduced by Yuyama generate every word
+with equally many occurrences of \(\aa,\bb,\cc\)?  The problem is the first
+unresolved case of a combinatorial reformulation of the Kanazawa--Salvati
+conjecture.  We develop a terminating, cut-sensitive membership recurrence and
+prove its equivalence to the defining grammar.  We then prove a constructive
+three-component inclusion theorem and an infinite two-component obstruction
+family.  In particular,
+\[
+ \aa^{3m}\bb^{3m}\cc^m\bb^{2m}\cc^{4m}\aa^{2m}
+ \in L_3\setminus L_2\qquad(m\geq1).
+\]
+The first member is a previously published example; the report supplies an
+analytic family argument rather than claiming that example as a discovery.
+A reproducible exhaustive computation accounts for all \(417\,019\,279\)
+balanced words of length at most \(21\), using symmetry reduction, and finds
+all of them in \(L_3\).  Thus a counterexample, if one exists, has length at
+least \(24\), subject to the correctness of the supplied software execution.
+Python and C++ implementations, a forward-only validation oracle, and
+independently checked positive derivation certificates are included.
+\end{abstract}
+\begin{center}
+\fcolorbox{inkblue!35}{lightblue}{\parbox{0.92\linewidth}{
+\textbf{Research status.} The chosen open problem is \emph{not solved} here.
+The infinite-family results and parser characterization have complete proofs
+in this report; the finite frontier is a software-assisted result, not a
+proof-assistant-certified theorem. No bibliographic priority is claimed for
+the independently derived extensions.}}
+\end{center}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question, its scope, and the outcome}
+\label{sec:question}
+
+\subsection{A small, explicit target within a larger conjecture}
+Let
+\[
+ \Mix=\{w\in\{\aa,\bb,\cc\}^{*}:
+       \len{w}_{\aa}=\len{w}_{\bb}=\len{w}_{\cc}\}.
+\]
+Here \(\len{w}_x\) counts occurrences of the letter \(x\).  Membership in
+\(\Mix\) is easy to decide by counting.  The difficult question concerns
+\emph{how a restricted grammar can construct all of its words}, not whether
+one can recognize balanced letter counts.
+
+A multiple context-free grammar allows a nonterminal to produce a tuple of
+strings rather than a single string. Its arity, also called its fan-out,
+measures the number of components. Restrictions on how the components of
+several children may interleave lead to the well-nested subclass. Kanazawa
+and Salvati proved that \(\Mix\) is not a tree-adjoining language
+\cite{KS2012}; Salvati proved that it is a two-component multiple
+context-free language without the well-nested restriction \cite{Salvati2015}.
+These statements concern different grammar classes and are not contradictory.
+
+Yuyama's September 12, 2026 preprint \cite{Yuyama2026} gives explicit tuple
+sets \(\A_r\), defined in \cref{sec:grammar}, and canonical languages
+\(L_r=\cat(\A_r)\).  Its Section 6 and Remark 3.19 explicitly identify the
+following first unresolved case.
+
+\begin{problem}[The selected problem]
+\label{prob:main}
+Determine whether \(L_3=\Mix\). Equivalently, either construct and prove a
+word in \(\Mix\setminus L_3\), or prove that every balanced word belongs to
+\(L_3\).
+\end{problem}
+
+The source's Corollary 3.18 identifies the full Kanazawa--Salvati conjecture
+with the assertion that \(L_r\subsetneq\Mix\) for \emph{every} \(r\).
+Consequently, a counterexample at \(r=3\) would establish one canonical case,
+not the full conjecture. Moreover, the cofinality theorem for arbitrary
+well-nested grammars can increase arity: proving \(L_3\ne\Mix\) would not, by
+itself, exclude \emph{every} well-nested grammar of fan-out three. Conversely,
+\(L_3=\Mix\) would refute the full conjecture because the canonical grammar
+itself is well-nested. These logical directions are important.
+
+\subsection{What this investigation establishes}
+The principal mathematical result is a family with exact canonical rank
+three. Put \(N=p+u\). For positive integers satisfying
+\[
+ p>s,\qquad u>r,\qquad r\ne s,
+\]
+we prove
+\begin{equation}\label{eq:mainfamily}
+ \aa^p\bb^{N-s}\cc^r\bb^s\cc^{N-r}\aa^u\in L_3\setminus L_2.
+\end{equation}
+The inequalities imply that every displayed block is nonempty. The proof
+rules out all two-component derivations by analyzing the only three possible
+initial useful cuts and all subsequent endpoint deletions. It is not an
+extrapolation from a finite search.
+
+A stronger positive statement explains why this family cannot produce the
+sought three-component counterexample. Whenever
+\(v\in\{\bb,\cc\}^{*}\) has \(N\) occurrences of each letter and
+\(0\leq p\leq N\), we construct the \emph{specific tuple}
+\[
+  (\aa^p,v,\aa^{N-p})\in\A_3.
+\]
+The position of both cuts is part of the theorem.
+
+The computational result is a completed exhaustive search through length
+\(21\), with no word outside \(L_3\). In particular, all
+\(111\,564\) length-\(21\) words rejected at level two are accepted at level
+three. The enumeration uses symmetry and the inclusion \(L_2\subseteq L_3\);
+it does not run an independent level-three query on each of hundreds of
+millions of words.
+
+\subsection{Provenance and limits}
+The tuple grammar and the open status of \cref{prob:main} are taken from
+\cite{Yuyama2026}, version 1. Its Example 1.4 already gives
+\(\word{aaabbbcbbccccaa}\in L_3\setminus L_2\), and its Remark 3.19 reports
+that this is a lexicographically first shortest level-two obstruction.
+That example is a regression test, not a new discovery in this report.
+The one-sided binary inclusion used below also appears in the proof of its
+Proposition E.3; it is explicitly attributed when restated.
+
+The proofs of the recurrence, the two-ended inclusion, the parameterized
+obstruction argument, and the associated consequences are given in full so
+that their correctness does not depend on trusting an experimental pattern.
+Their bibliographic novelty has not been established by an exhaustive
+literature review. The source and focused follow-up searches identify a
+published open target; they do not establish a claim that no unindexed
+solution exists anywhere.
+
+\section{The canonical tuple grammar}
+\label{sec:grammar}
+
+\subsection{Regrouping means merging, not cutting}
+Write \(\Sigma=\{\aa,\bb,\cc\}\), and let \(\eps\) be the empty word.
+For a list \((v_1,\ldots,v_m)\), define
+\begin{equation}\label{eq:regroup}
+ \Reg_r(v_1,\ldots,v_m)
+ =\left\{\left(\prod_{j=d_0+1}^{d_1}v_j,\ldots,
+                   \prod_{j=d_{r-1}+1}^{d_r}v_j\right):
+       0=d_0\leq d_1\leq\cdots\leq d_r=m\right\}.
+\end{equation}
+An empty product denotes \(\eps\). Products here are ordered concatenations,
+not commutative products. An output component may merge consecutive input
+components; a component may not be split internally. For example,
+\((\word{ab},\word{c})\) can be regrouped to
+\((\word{abc},\eps)\), but not to
+\((\word{a},\word{bc})\).
+
+\begin{definition}[Canonical grammar; Yuyama \cite{Yuyama2026}]
+\label{def:grammar}
+For an integer \(r\geq1\), \(\A_r\) is the least set of \(r\)-tuples of
+words closed under the following rules.
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2em]
+\item \textbf{Empty:} \((\eps,\ldots,\eps)\in\A_r\).
+\item \textbf{Wrap:} from \((w_1,\ldots,w_r)\in\A_r\), infer
+\((x_1w_1y_1,\ldots,x_rw_ry_r)\), where each endpoint word
+\(x_i,y_i\) is either empty or a single letter, and their concatenation
+contains exactly one \(\aa\), one \(\bb\), and one \(\cc\).
+\item \textbf{Insert and regroup:} from \(U=(u_1,\ldots,u_r)\) and
+\(V=(v_1,\ldots,v_r)\) in \(\A_r\), choose \(0\leq i\leq r\) and infer
+any tuple in
+\[
+ \Reg_r(u_1,\ldots,u_i,v_1,\ldots,v_r,u_{i+1},\ldots,u_r).
+\]
+\end{enumerate}
+Finally, \(L_r=\{w_1\cdots w_r:(w_1,\ldots,w_r)\in\A_r\}\).
+\end{definition}
+
+All components of the second child are inserted at a \emph{single gap}
+in the first child's list. They are not arbitrarily shuffled through it.
+Likewise, the wrap rule has \(2r\) distinct endpoint slots, each with capacity
+one. Treating a slot as capable of receiving a longer word changes the
+grammar.
+
+\subsection{Elementary invariants and normalization}
+For a tuple \(T\), let \(\norm(T)\) be its list of nonempty components,
+with their order unchanged. A normalized tuple may have any number \(k\)
+of components with \(0\leq k\leq r\). Write \(T\in\overline\A_r\) if
+padding it with empty components gives a tuple in \(\A_r\).
+
+\begin{lemma}[Regrouping and empty positions]\label{lem:normalize}
+The set \(\A_r\) is closed under regrouping its own component list.
+Furthermore, all placements of empty components around a fixed ordered
+nonempty list are equivalent for membership. Thus
+\(\overline\A_r\) is well defined, and
+\[
+ w\in L_r\quad\Longleftrightarrow\quad (w)\in\overline\A_r
+\]
+for nonempty \(w\); the empty word corresponds to the empty normalized tuple.
+\end{lemma}
+\begin{proof}
+Apply the third rule with the all-empty tuple as the second child.
+Inserting that child does not change the nonempty list, and the permitted
+regroupings include every merger of adjacent components and every desired
+placement of empty components. In particular, one can pass between two
+paddings of the same nonempty list without splitting anything. Merging all
+nonempty components proves the forward implication in the last equivalence;
+the reverse implication is the definition of concatenation.
+\end{proof}
+
+Normalization does \emph{not} forget the boundaries between nonempty
+components. It only forgets the positions of empty slots.
+
+\begin{proposition}[Balance, monotonicity, and symmetries]
+\label{prop:basic}
+Every tuple in \(\A_r\) has a concatenation in \(\Mix\). Also
+\(L_r\subseteq L_{r+1}\), \(L_1=\{\eps\}\), and
+\(\bigcup_{r\geq1}L_r=\Mix\). Membership is preserved by a global permutation
+of the alphabet and by full reversal
+\[
+ (w_1,\ldots,w_k)\longmapsto(w_k^{\mathrm{rev}},\ldots,w_1^{\mathrm{rev}}).
+\]
+Each \(L_r\) is closed under concatenation of words.
+\end{proposition}
+\begin{proof}
+The empty tuple is balanced. A wrap adds one of each letter, and a binary
+rule adds the two children's letter counts. This proves balance by induction.
+
+To increase arity, pad every tuple in a derivation with empty components.
+The same endpoint insertions remain legal, and the same nonempty component
+lists can be inserted and regrouped. This simulates the whole derivation
+at the larger arity. At arity one there are only two endpoint slots, so no
+wrap can insert three letters; binary combinations of empty tuples remain
+empty. Hence \(L_1=\{\eps\}\).
+
+For a balanced word of length \(3N>0\), use \(3N\) components, one for
+each position of the word. Starting from empty components, fill one
+as-yet-unfilled occurrence of each letter in each of \(N\) wrap steps.
+The final tuple lists the individual letters of the word. This proves
+membership in \(L_{3N}\), hence the union assertion.
+
+A letter permutation maps each grammar rule to another legal rule. Full
+reversal reverses the ordered component list and each component, exchanges
+left and right endpoint insertions, and maps an insertion gap to its
+reflected gap. Regrouping is also respected. Induction proves both symmetry
+claims. Finally, normalize derivations of \(x,y\in L_r\) to one nonempty
+component each, insert the second after the first, and merge the result.
+This derives \(xy\in L_r\).
+\end{proof}
+
+For a balanced word, define its \emph{canonical rank} by
+\(\rank(w)=\min\{r:w\in L_r\}\). This is a rank in this particular canonical
+family, not a minimal fan-out over all possible grammars generating a
+language. In particular, every singleton language is regular, so confusing
+these notions would make the definition meaningless.
+
+\section{An exact backward membership recurrence}
+\label{sec:parser}
+
+\subsection{The three inverse operations}
+Let \(T=(t_1,\ldots,t_k)\) be normalized, with \(k\leq r\), and put
+\(w=t_1\cdots t_k\), \(n=\len{w}\). We use half-open position intervals
+\([p,q)\), with \(0\leq p<q\leq n\).
+
+\paragraph{Peeling.}
+Choose one physical endpoint occurrence of each of \(\aa,\bb,\cc\).
+Remove the three chosen letters and discard resulting empty components.
+A component can lose at most one letter from each end. A length-one
+component has one physical occurrence, not two different occurrences.
+Choosing one occurrence of each different letter automatically prevents
+choosing the same occurrence twice.
+
+\paragraph{Extracting a balanced interval.}
+Choose a proper, nonempty balanced factor \(w[p:q]\). For each original
+component, intersect it with that interval. The ordered list of nonempty
+intersections is the inside tuple \(B_{p,q}\). The outside tuple
+\(A_{p,q}\) consists of the nonempty portions before and after that
+intersection, in their original order. Every original nonempty boundary is
+retained. If the interval lies strictly inside a single component, its
+exposed prefix and suffix become \emph{two different components} of
+\(A_{p,q}\). Reject this extraction alternative if either child has more
+than \(r\) nonempty components.
+
+For example, extracting the displayed \(\word{abc}\) from the
+one-component tuple \((x\,\word{abc}\,y)\), with nonempty words
+\(x,y\), produces the outside tuple \((x,y)\), not \((xy)\). This distinction is necessary to reinsert the inside
+child at a gap.
+
+\paragraph{Refining a cut.}
+When \(k<r\), split one component into two nonempty consecutive parts.
+This is a \emph{backward} alternative: a successful derivation of the
+finer tuple can be merged to derive the current tuple. It is not a
+forward closure property of \(\A_r\).
+
+\subsection{The characterization theorem}
+\begin{theorem}[Cut-sensitive recurrence]
+\label{thm:recurrence}
+The following recursive procedure decides membership in
+\(\overline\A_r\).
+\begin{enumerate}[label=\textnormal{\arabic*.},leftmargin=2em]
+\item Accept the empty tuple. Reject tuples of more than \(r\) nonempty
+components, and reject tuples whose total letter counts are not balanced.
+\item Accept if some peeling alternative has an accepted child.
+\item Accept if some proper balanced interval extraction has both induced
+children accepted and each has at most \(r\) components.
+\item Accept if some one-cut refinement has an accepted child.
+\item Otherwise reject.
+\end{enumerate}
+The order of alternatives affects running time but not the answer.
+\end{theorem}
+
+\begin{proof}[Termination]
+Use the lexicographic measure
+\[
+ \mu(T)=\bigl(\len{t_1\cdots t_k},\ r-k\bigr)
+ \quad\text{in }\mathbb N\times\mathbb N.
+\]
+A peeling child has three fewer letters. Both extraction children have
+strictly fewer letters because the extracted factor is nonempty and
+proper. A refinement keeps the letter count unchanged but increases the
+number of components by one. Thus every recursive call strictly decreases
+\(\mu\). There are finitely many alternatives at each call, so the entire
+search terminates, even without memoization.
+\end{proof}
+
+\begin{proof}[Soundness]
+Proceed by well-founded induction on \(\mu\). The empty tuple is legal.
+For a successful peel, pad the accepted child so that all surviving
+components occupy the positions they had before deletion. Components
+removed entirely can be restored as empty slots; there are at most \(r\)
+slots because the parent has at most \(r\) components. Inserting the
+three removed letters at their original endpoints is a valid wrap.
+A two-letter parent component whose letters were both deleted uses the
+two distinct endpoints of one empty child component, as required.
+
+For a successful extraction, pad both accepted induced tuples to arity
+\(r\). The inside components form a single consecutive block in the
+flattened parent. The outside tuple retains a boundary at the place where
+that block must be inserted, including the case of a split original
+component. Insert the inside list at that gap and regroup to the
+original tuple. Every original parent boundary is available in the
+combined list, so no internal splitting is needed.
+
+For a successful refinement, the accepted finer tuple merges directly
+to the parent by \cref{lem:normalize}. These operations prove that every
+accepted tuple belongs to \(\overline\A_r\).
+\end{proof}
+
+\begin{proof}[Completeness]
+We show that every finite grammar derivation yields a successful recursive
+alternative. Empty placements may be ignored by
+\cref{lem:normalize}; regrouping is allowed as a derived unary rule.
+
+Suppose the last effective operation is a wrap. Its three newly inserted
+letters occur at endpoints in the conclusion. Peeling precisely those
+occurrences recovers its premise, modulo empty positions. This is an
+alternative of the recurrence.
+
+Suppose the last operation is a binary insertion with two nonempty
+children \(U,V\), followed by regrouping. All letters from \(V\) form a
+contiguous factor \([p,q)\) in the concatenated conclusion. The factor
+is nonempty, proper, and balanced. Each component of \(V\) remains whole
+through the final regrouping. Consequently, the induced inside tuple
+\(B_{p,q}\) is obtained by merging some adjacent components of \(V\),
+possibly changing empty positions. Likewise, the induced outside tuple
+\(A_{p,q}\) is a regrouping of \(U\). If the conclusion has one component
+crossing both sides of the inserted factor, its outside prefix and suffix
+come from opposite sides of an actual gap in \(U\); retaining them as
+separate components therefore does not create more components than
+\(U\) had. Both induced children belong to \(\overline\A_r\) by
+regrouping closure, have at most \(r\) components, and have smaller
+length. Induction applies to them.
+
+A binary insertion with an empty child is just regrouping of its
+nonempty premise. If the normalized conclusion is unchanged, discard
+that redundant step. Otherwise its premise is a strict refinement of
+its conclusion, obtainable by inserting one missing boundary at a time.
+All intermediate tuples are coarsenings of the derivable premise, so
+all are derivable. Every inserted boundary is a legal one-cut
+refinement, and the measure decreases along this inverse sequence.
+There cannot be an infinite chain of discarded redundant rules because
+the original derivation is finite. These cases exhaust the defining
+rules, proving completeness.
+\end{proof}
+
+\subsection{A diagnostic example: cuts cannot be forgotten}
+\begin{example}\label{ex:cuttrap}
+The word \(\word{aaccbb}\) belongs to \(L_2\), but
+\[
+  (\word{a},\word{accb},\word{b})\notin\A_3.
+\]
+For the positive assertion, \(\word{ccbb}\) is a balanced binary word,
+so the one-sided inclusion of \cref{lem:onesided} applies. For the negative
+assertion, no component endpoint is \(\cc\), and there is no spare
+component for refinement. No length-three factor of \(\word{aaccbb}\)
+is balanced; the only other nonempty balanced factor length is six,
+which is the whole word. Therefore every recurrence alternative fails.
+\end{example}
+
+In particular, replacing tuple states by their concatenations gives a
+wrong parser. Even accepting every cut of an accepted word is already
+wrong at total length six. This small example is included in the tests.
+
+\subsection{Complexity and implementation choices}
+For a fixed input word of length \(n\), every component encountered by the
+uncanonicalized recurrence is an interval of the original word. Deleting
+endpoints shortens an interval, while extraction and refinement split
+intervals without reordering their surviving positions. With \(k\)
+nonempty components, the number of possible ordered disjoint interval
+lists is
+\[
+ \binom{n+k}{2k}.
+\]
+Indeed, the \(k\) interval lengths are positive and the \(k+1\) gaps
+are nonnegative; subtracting one from each interval length gives this
+stars-and-bars count. Hence the total number of positional states is
+\(O_r(n^{2r})\).
+
+Each state has \(O_r(1)\) endpoint choices, \(O(n^2)\) interval choices,
+and \(O_r(n)\) refinement choices. A straightforward implementation that
+materializes child strings in \(O_r(n)\) time therefore has the
+conservative bounds
+\[
+  O_r(n^{2r+3})\ \text{time},\qquad
+  O_r(n^{2r+1})\ \text{stored string space}
+\]
+with an unbounded memo table and ordinary constant-time dictionary
+operations apart from string processing. A dense positional chart can
+avoid relying on hashing for the state lookup bound. These bounds are
+not claims of optimal grammar parsing complexity.
+
+The supplied programs additionally identify states under global alphabet
+renaming and full reversal. These are genuine symmetries by
+\cref{prop:basic}; at most twelve positional variants are involved.
+Python uses an optional least-recently-used cache. C++ caches states of
+letter length at most \(18\), and the enumeration driver occasionally
+clears its level-two cache. Cache eviction may cause recomputation;
+it never licenses accepting or rejecting a state without evaluating it.
+The production exhaustive driver has no node budget or timeout that
+could be mistaken for a negative membership result.
+
+\section{A constructive three-component inclusion theorem}
+\label{sec:positive}
+
+\subsection{Balanced binary words and one-sided storage}
+A binary word \(v\in\{\bb,\cc\}^{*}\) is called balanced here when
+\(\len{v}_{\bb}=\len{v}_{\cc}\). Let this common number be \(N\).
+For a nonempty balanced binary word, follow the difference
+\(\#\bb-\#\cc\) along its prefixes. Its first return to zero gives
+either a proper balanced initial factor or the whole word. In the latter
+case the first and last letters differ, and deleting them leaves a
+balanced word. Thus induction can always use either a concatenation of
+two shorter balanced words or an outer pair of opposite letters.
+
+\begin{lemma}[One-sided binary inclusion]
+\label{lem:onesided}
+For every balanced binary word \(v\) with \(N\) occurrences of each
+letter,
+\[
+  (v,\aa^N)\in\A_2,\qquad (\aa^N,v)\in\A_2.
+\]
+This fact is also established in the proof of Yuyama's Proposition E.3
+\cite{Yuyama2026}; we give the elementary construction for use below.
+\end{lemma}
+\begin{proof}
+Induct on \(N\). The empty case is immediate. If the first return is the
+whole word, write \(v=xt y\), where \(\{x,y\}=\{\bb,\cc\}\) and
+\(t\) is balanced with \(N-1\) occurrences of each letter. From
+\((t,\aa^{N-1})\), insert \(x\) and \(y\) at the two ends of the first
+component and \(\aa\) at one end of the second. This is one wrap.
+
+Otherwise write \(v=v_1v_2\) with positive sizes \(N_1,N_2\),
+\(N_1+N_2=N\). Induction gives
+\((v_1,\aa^{N_1})\) and \((v_2,\aa^{N_2})\). Insert the second tuple
+between the two components of the first and regroup:
+\[
+ (v_1,v_2,\aa^{N_2},\aa^{N_1})
+   \longmapsto (v_1v_2,\aa^{N_2+N_1}).
+\]
+This proves the first assertion. Apply full reversal to the first
+assertion for \(v^{\mathrm{rev}}\) to obtain the second.
+\end{proof}
+
+\subsection{Splitting the homogeneous block between both ends}
+\begin{theorem}[Two-ended binary inclusion]
+\label{thm:binary}
+Let \(v\in\{\bb,\cc\}^{*}\) contain \(N\) copies of each letter. For
+all \(p,u\geq0\) with \(p+u=N\),
+\begin{equation}\label{eq:binary}
+  (\aa^p,v,\aa^u)\in\A_3.
+\end{equation}
+The proof yields a finite derivation using only the original three rules.
+\end{theorem}
+\begin{proof}
+Induct on \(N\), including all values of \(p\) at once. At \(N=0\), all
+components are empty. For \(N>0\), use the first-return decomposition
+of \(v\).
+
+If the first return is the whole word, write \(v=xt y\), with opposite
+binary letters \(x,y\). If \(p>0\), apply the induction hypothesis to
+\((\aa^{p-1},t,\aa^u)\), then insert \(\aa\) in the first component and
+\(x,y\) at the ends of the middle component. If \(p=0\), then \(u=N>0\);
+start from \((\eps,t,\aa^{u-1})\) and put the new \(\aa\) in the last
+component instead. The insertions use three distinct legal slots.
+
+Otherwise write \(v=v_1v_2\), with balanced positive sizes
+\(N_1,N_2\). There are two cases; choosing the allocation carefully is
+what avoids a forbidden crossing of child components.
+
+If \(p\leq N_1\), use the inductively derivable tuples
+\[
+ X=(\aa^p,v_1,\aa^{N_1-p}),\qquad
+ Y=(\eps,v_2,\aa^{N_2}).
+\]
+Insert \(Y\) after the second component of \(X\). The resulting list is
+\[
+ (\aa^p,v_1,\eps,v_2,\aa^{N_2},\aa^{N_1-p}).
+\]
+Group its first entry, its next three entries, and its last two entries.
+The result is \((\aa^p,v_1v_2,\aa^{N-p})\).
+
+If \(p>N_1\), take instead
+\[
+ X=(\aa^{p-N_1},v_2,\aa^{N-p}),\qquad
+ Y=(\aa^{N_1},v_1,\eps).
+\]
+Insert \(Y\) after the first component of \(X\). The combined list is
+\[
+ (\aa^{p-N_1},\aa^{N_1},v_1,\eps,v_2,\aa^{N-p}).
+\]
+Group its first two entries, its next three entries, and its last entry.
+This again gives the required tuple. All exponents used in the
+induction hypotheses are nonnegative, and both binary words are
+shorter. This completes the construction.
+\end{proof}
+
+\begin{corollary}\label{cor:ends}
+Every balanced word in the pattern \(\aa^{*}\{\bb,\cc\}^{*}\aa^{*}\)
+belongs to \(L_3\). The same is true after any global letter permutation.
+\end{corollary}
+
+This corollary rules out a large natural source of prospective
+three-component counterexamples: arbitrarily complicated binary interiors
+with all occurrences of the third letter confined to the two ends.
+Complexity of the binary interior alone cannot defeat level three.
+
+\subsection{Derivation certificates rather than search traces}
+The construction is implemented in \word{src/family\_certificate.py}.
+Its output records actual empty, wrap, and binary-regroup rules, including
+insertion gaps and weak cut indices. The independent checker
+\word{src/check\_certificate.py} simply verifies these local rules;
+it does not invoke the membership parser or the family theorem.
+
+There is one wrap for each pair of binary letters. The recursive
+first-return decomposition uses at most \(N-1\) binary nodes and at most
+\(N\) empty leaves when \(N>0\). Thus a tree certificate can be chosen
+with at most \(3N-1\) nodes. The number of rule nodes is linear, although
+explicitly storing the full tuple strings at every node can take
+quadratic total space. This distinction is useful when turning the
+construction into a proof-producing implementation.
+
+\section{An infinite family that cannot use two components}
+\label{sec:negative}
+
+\subsection{A balanced-factor obstruction}
+Call a nonempty word \emph{factor-balanced-primitive} if it is balanced
+and has no nonempty proper balanced factor. This terminology refers to
+letter balance, not to the usual notion of a word that is not a proper
+power.
+
+\begin{lemma}[A homogeneous exterior and a positive binary excursion]
+\label{lem:primitive}
+Suppose \(z\in\{\bb,\cc\}^{*}\) has \(M>0\) copies of each letter,
+and every nonempty proper prefix of \(z\) has more \(\bb\)'s than
+\(\cc\)'s. If \(P,U\geq0\) and \(P+U=M\), then
+\(\aa^Pz\aa^U\) is factor-balanced-primitive.
+\end{lemma}
+\begin{proof}
+A nonempty balanced factor must contain an \(\aa\), since a word
+without \(\aa\)'s cannot have three equal positive letter counts.
+If the factor meets both exterior \(\aa\)-blocks, it contains all of
+\(z\). It must therefore contain \(M\) occurrences of \(\aa\), hence
+all occurrences of every letter, and so is the whole word.
+
+If it meets only the initial \(\aa\)-block, its binary part is a
+nonempty prefix of \(z\). That prefix must have equal binary counts.
+By the strict prefix assumption it is all of \(z\), so the factor
+needs \(M\) initial \(\aa\)'s. This is possible only when \(U=0\),
+and then the factor is the whole word. The suffix case is similar:
+a proper nonempty suffix of \(z\) cannot have equal binary counts,
+because its complementary proper prefix would then have zero balance.
+These cases exhaust every factor containing \(\aa\).
+\end{proof}
+
+A useful special case is
+\begin{equation}\label{eq:excursion}
+ z=\bb^Q\cc^R\bb^S\cc^T,
+ \qquad Q+S=R+T=M,\quad Q>R,\quad T>S,
+\end{equation}
+where \(Q,T>0\) and \(R,S\geq0\). Its binary height is positive
+between its two endpoints: after the first descending block it is
+\(Q-R>0\), after the next ascending block it is \(T\), and only the
+last descending block returns it to zero. Either \(R\) or \(S\) may
+be zero; the argument still holds.
+
+\subsection{The obstruction theorem}
+\begin{theorem}[A parameterized level-two obstruction]
+\label{thm:cone}
+Let \(p,u,r,s\) be positive integers, let \(N=p+u\), and assume
+\[
+  p>s,\qquad u>r,\qquad r\ne s.
+\]
+Then the balanced word
+\begin{equation}\label{eq:W}
+ W_{p,u,r,s}
+   =\aa^p\bb^{N-s}\cc^r\bb^s\cc^{N-r}\aa^u
+\end{equation}
+satisfies \(W_{p,u,r,s}\notin L_2\).
+\end{theorem}
+\begin{proof}
+Set \(q=N-s\) and \(t=N-r\). The hypotheses imply
+\[
+  N>r+s,\qquad q>r,\qquad t>s.
+\]
+Reversing the entire word and interchanging \(\bb\) with \(\cc\)
+sends \((p,u,r,s)\) to \((u,p,s,r)\). This preserves all hypotheses
+and membership. Since \(r\ne s\), we may therefore assume
+\begin{equation}\label{eq:assume}
+ r<s.
+\end{equation}
+In particular \(p>s>r\), \(u>r\), and both exterior blocks survive
+any sequence of at most \(r\) deletions of \(\aa\).
+
+The binary interior \(\bb^q\cc^r\bb^s\cc^t\) has the form
+\eqref{eq:excursion}. By \cref{lem:primitive}, the whole word has no
+nonempty proper balanced factor. Viewed as a one-component tuple,
+its endpoints are both \(\aa\), so it cannot be peeled. The recurrence
+of \cref{thm:recurrence} must therefore begin by inserting one cut.
+
+After that cut there are two nonempty components and no spare component
+slot. To peel a triple, the cut must expose both a \(\bb\) and a
+\(\cc\), since the two outer endpoints are \(\aa\)'s. The only useful
+initial cuts are the following three seams:
+\begin{align*}
+ \mathrm{I}:&\quad
+ (\aa^p\bb^q,\ \cc^r\bb^s\cc^t\aa^u),\\
+ \mathrm{II}:&\quad
+ (\aa^p\bb^q\cc^r,\ \bb^s\cc^t\aa^u),\\
+ \mathrm{III}:&\quad
+ (\aa^p\bb^q\cc^r\bb^s,\ \cc^t\aa^u).
+\end{align*}
+Every other cut has an endpoint alphabet missing at least one letter.
+It cannot be extracted, peeled, or further refined, so it is immediately
+rejected. We now rule out every continuation of the three useful cuts.
+
+\paragraph{Case I.}
+Until \(j=r\) triples have been peeled, the \(\bb\) must be removed
+from the end of the first component, and the \(\cc\) from the start
+of the second. After \(j\) steps, the flattened binary interior is
+\[
+  \bb^{q-j}\cc^{r-j}\bb^s\cc^t.
+\]
+The two relevant strict inequalities are
+\[
+ (q-j)-(r-j)=q-r>0,\qquad t-s>0.
+\]
+It remains a positive binary excursion; the exterior \(\aa\)-counts
+sum to its binary size. Thus \cref{lem:primitive} excludes every
+extraction throughout the trajectory. Both exterior \(\aa\)-blocks
+remain positive because \(p,u>r\), and neither component becomes
+empty. At \(j=r\), the first \(\cc\)-block disappears. The two inner
+endpoints are then both \(\bb\); the outer endpoints remain
+\(\aa\). No endpoint is \(\cc\), so peeling stops without reaching
+the empty tuple.
+
+\paragraph{Case II.}
+The forced binary deletions now remove from the first \(\cc\)-block
+and the second \(\bb\)-block. After \(0\leq j\leq r\) steps the
+binary interior is
+\[
+  \bb^q\cc^{r-j}\bb^{s-j}\cc^t.
+\]
+Its strict inequalities are
+\[
+ q-(r-j)=q-r+j>0,\qquad t-(s-j)=t-s+j>0.
+\]
+Again every flattened word is factor-balanced-primitive, both exterior
+blocks stay positive, and neither component disappears. Because
+\(r<s\), the first \(\cc\)-block disappears first, at \(j=r\).
+Both inner endpoints are then \(\bb\), while both outer endpoints
+are \(\aa\). Peeling again stops with no \(\cc\)-endpoint.
+
+\paragraph{Case III.}
+For \(0\leq j\leq s\), the binary deletions remove from the second
+\(\bb\)-block and the last \(\cc\)-block. The binary interior is
+\[
+  \bb^q\cc^r\bb^{s-j}\cc^{t-j},
+\]
+with
+\[
+ q-r>0,\qquad (t-j)-(s-j)=t-s>0.
+\]
+The initial \(\aa\)-block stays nonempty because \(p>s\). The
+terminal \(\aa\)-block might vanish before these \(s\) steps have
+finished. This causes no omitted alternative: it merely exposes the
+other end of the \emph{same} last \(\cc\)-block. Removing a \(\cc\)
+from either exposed end gives the same shorter homogeneous block.
+The \(\bb\)-deletion is still forced from the second \(\bb\)-block,
+and all available \(\aa\)-deletions are already covered by allowing
+arbitrary allocations between the two exterior blocks.
+
+The positive-excursion inequalities still exclude every extraction.
+At \(j=s\), the second \(\bb\)-block disappears while
+\(t-s>0\). Both components are nonempty: the first still contains
+\(\aa\), \(\bb^q\), and \(\cc^r\), and the second still contains
+\(\cc^{t-s}\). Their exposed endpoints are \(\aa\) or \(\cc\);
+no endpoint is \(\bb\). No further peel is possible.
+
+In all three cases, every state before the terminal stall has two
+nonempty components and no proper balanced factor. There is no way to
+free a component slot or to use a binary extraction. The only possible
+peeling trajectories all stall. The complete recurrence therefore
+rejects every initial cut, and hence rejects the word itself.
+\end{proof}
+
+\begin{remark}[Why the unequal parameters matter]
+The assumption \(r\ne s\) is not cosmetic. If \(r=s\), the middle two
+blocks can disappear simultaneously in Case II, exposing different
+endpoints and invalidating the stall argument. The theorem asserts a
+sufficient obstruction region; it does not assert that its conditions
+are a complete classification of all six-block words.
+\end{remark}
+
+\section{Consequences: exact rank, counting, and rotation}
+\label{sec:consequences}
+
+\begin{corollary}[Exact canonical rank three]
+\label{cor:rank}
+Every word in \cref{thm:cone} has \(\rank(W_{p,u,r,s})=3\).
+In particular,
+\begin{equation}\label{eq:scaled}
+ w_m=\aa^{3m}\bb^{3m}\cc^m\bb^{2m}\cc^{4m}\aa^{2m}
+ \quad\text{satisfies}\quad \rank(w_m)=3\qquad(m\geq1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The binary interior of \(W_{p,u,r,s}\) has \(N\) copies of each binary
+letter. The two-ended inclusion theorem gives membership in \(L_3\),
+while \cref{thm:cone} excludes \(L_2\). Monotonicity excludes every
+lower rank. For \(w_m\), take
+\((p,u,r,s)=(3m,2m,m,2m)\).
+\end{proof}
+
+The word \(w_1\) is the published example described in
+\cref{sec:question}. The proof above treats all \(m\), and in fact a
+larger multi-parameter region, without relying on the published
+computer search for its negative half.
+
+\begin{corollary}[A cubic-size certified obstruction region]
+\label{cor:count}
+For \(N\geq2\), the parameter region in \cref{thm:cone} gives exactly
+\begin{equation}\label{eq:count}
+ C_N=\binom{N-1}{3}-\left\lfloor\frac{(N-2)^2}{4}\right\rfloor
+\end{equation}
+distinct displayed six-block words of length \(3N\), with the binomial
+coefficient interpreted as zero when its upper index is below three.
+Thus \(\len{(L_3\setminus L_2)\cap\Sigma^{3N}}\geq C_N\), and
+\(C_N\sim N^3/6\).
+\end{corollary}
+\begin{proof}
+For fixed \(p\) and \(u=N-p\), choose
+\(1\leq s\leq p-1\) and \(1\leq r\leq u-1\), excluding \(r=s\).
+The number is
+\((p-1)(u-1)-\min(p-1,u-1)\). Put \(M=N-2\) and \(x=p-1\).
+Summing over \(x=1,\ldots,M-1\) gives
+\[
+ \sum_{x=1}^{M-1}x(M-x)=\binom{M+1}{3},\qquad
+ \sum_{x=1}^{M-1}\min(x,M-x)=\left\lfloor M^2/4\right\rfloor.
+\]
+The first identity follows from the sums of the first integers and their
+squares; the second follows by pairing positions equidistant from the
+ends, with a central term when \(M\) is even. All six runs are nonempty
+and adjacent runs have different letters, so their run lengths uniquely
+recover the parameters. There is no duplication in this count. The
+asymptotic follows from \eqref{eq:count}.
+\end{proof}
+
+For \(N=5,6,7,8,9,10\), the lower bounds are
+\(2,6,14,26,44,68\). These are counts in one oriented block pattern,
+not total counts of level-two nonmembers; the exhaustive totals in
+\cref{sec:experiments} are much larger.
+
+\begin{corollary}[Failure of cyclic-rotation closure]
+\label{cor:rotation}
+The canonical language \(L_2\) is not closed under cyclic rotation.
+\end{corollary}
+\begin{proof}
+Write \(w_m=\aa^{3m}v_m\aa^{2m}\). The word
+\(\aa^{5m}v_m\) belongs to \(L_2\) by \cref{lem:onesided}, because
+\(v_m\) has \(5m\) copies of each binary letter. Moving the first
+\(2m\) occurrences of \(\aa\) from the beginning to the end produces
+\(w_m\), which is not in \(L_2\) by \cref{cor:rank}.
+\end{proof}
+
+This is a property of one canonical language. It is not a claim that the
+entire class of well-nested multiple context-free languages lacks any
+particular closure property.
+
+\begin{proposition}[What uniform scaling does and does not imply]
+\label{prop:dilation}
+Let \(h_m\) replace each letter \(x\) by \(x^m\), with \(m\geq1\).
+Componentwise application of \(h_m\) preserves \(\A_r\), and therefore
+\(h_m(L_r)\subseteq L_r\).
+\end{proposition}
+\begin{proof}
+Induct on a derivation. Empty and binary-regroup rules commute with the
+homomorphism. Replace each wrap by \(m\) copies of that same wrap,
+using the same endpoint slots. Repeatedly inserting \(x\) before a
+component and \(y\) after it yields \(x^m h_m(w)y^m\), exactly the
+image of that component's original wrap. Each repeated step is legal.
+\end{proof}
+
+This only propagates \emph{positive} membership. It does not establish
+\(h_m(w)\notin L_r\) from \(w\notin L_r\). The negative scaling
+statement for \eqref{eq:scaled} genuinely uses \cref{thm:cone}; it is
+not an automatic closure argument.
+
+\section{Exhaustive computation and validation}
+\label{sec:experiments}
+
+\subsection{Enumeration and symmetry weights}
+The number of words with \(N\) occurrences of each of three letters is
+\begin{equation}\label{eq:multinomial}
+ M_N=\frac{(3N)!}{(N!)^3}.
+\end{equation}
+For \(N>0\), the action of the six alphabet permutations is free:
+a permutation fixing a word must fix every letter appearing in it,
+and all three appear. Choose the representative in which the first
+new letter is \(\aa\), the second is \(\bb\), and the third is
+\(\cc\). The Python enumerator uses exactly these representatives,
+each with weight six.
+
+The C++ enumerator also uses full reversal. Let \(R(w)\) be the reverse
+word relabelled by first occurrence. It visits only representatives
+satisfying \(w\leq R(w)\) lexicographically. The corresponding orbit
+has size six if \(w=R(w)\), and size twelve otherwise. This is because
+reversal either stays in the original six-element letter orbit or
+creates a disjoint second letter orbit. The empty word is handled
+separately with weight one.
+
+For every length, the program checks that the sum of these weights is
+exactly \eqref{eq:multinomial}. At each representative it first queries
+\(L_2\). Only a negative level-two result triggers a level-three
+query, since \(L_2\subseteq L_3\) is proved independently of the
+program. Counts of negative results are multiplied by the full orbit
+weight.
+
+\subsection{Completed finite results}
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+Length & All balanced words & C++ symmetry orbits & Outside \(L_2\) & Outside \(L_3\)\\
+\midrule
+0  & 1               & 1              & 0          & 0\\
+3  & 6               & 1              & 0          & 0\\
+6  & 90              & 11             & 0          & 0\\
+9  & 1\,680          & 148            & 0          & 0\\
+12 & 34\,650         & 2\,955         & 0          & 0\\
+15 & 756\,756        & 63\,231        & 84         & 0\\
+18 & 17\,153\,136    & 1\,430\,912    & 3\,672     & 0\\
+21 & 399\,072\,960   & 33\,259\,920   & 111\,564   & 0\\
+\bottomrule
+\end{tabular}
+\caption{Exact finite enumeration using the proved recurrence. Counts are
+software-assisted results. The empty word is included.}
+\label{tab:results}
+\end{table}
+
+The totals sum to \(417\,019\,279\) balanced words. The final C++ run
+was completed on September 20, 2026. Its machine-readable output is
+\word{data/cpp\_final\_through21.json}; the corresponding progress and
+completion log is \word{data/cpp\_final\_exhaust.log}. A separately
+implemented Python enumerator and parser reproduce all the counts through
+length \(18\), without using reversal to reduce the enumeration.
+Its output is \word{data/python\_through18.json}.
+
+The first search at length \(21\) and the final readability-refactored
+C++ version also agree. Timings are stored in the logs rather than
+presented as portable performance guarantees. The final programs use
+ordinary exact integer counts and Boolean membership states; there
+are no floating-point decisions about membership.
+
+\begin{proposition}[Software-assisted finite frontier]
+\label{prop:frontier}
+The supplied exhaustive runs return
+\[
+ \Mix\cap\Sigma^{\leq21}\subseteq L_3.
+\]
+Subject to the correctness of the implementation and its recorded
+execution, every word in \(\Mix\setminus L_3\) has length at least
+\(24\).
+\end{proposition}
+\begin{proof}[Derivation from the recorded finite computation]
+The enumeration accounts for every balanced word at the possible
+lengths \(0,3,6,\ldots,21\), by the orbit-weight argument and the
+checked multinomial totals. No representative is rejected at level
+three, with level-two positives transferred by monotonicity.
+By \cref{thm:recurrence}, the implemented recurrence is the exact
+mathematical decision procedure. Every balanced length is a multiple
+of three, so the next possible length is \(24\). The remaining trust
+assumption is the faithful implementation and execution of that
+procedure, not a probabilistic inference from a sample.
+\end{proof}
+
+\subsection{A forward-only oracle checks the original rules}
+Two ports of the same incorrect recurrence could agree. We therefore
+also implemented a deliberately different small-instance oracle:
+forward saturation of the three rules of \cref{def:grammar}, keeping
+all exact \(r\)-tuples, including empty components. At total length
+\(n\), a wrap comes from length \(n-3\), and a binary rule with two
+nonempty children comes from smaller positive lengths. Empty-child
+binary rules are accounted for by a final regrouping closure, which
+is idempotent. This computes every forward-derivable tuple through
+length six without using inverse interval extraction.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+Arity & Length & Exact tuples tested & Forward accepted & Disagreements\\
+\midrule
+1 & 6 & 90    & 0     & 0\\
+2 & 3 & 24    & 24    & 0\\
+2 & 6 & 630   & 594   & 0\\
+3 & 3 & 60    & 60    & 0\\
+3 & 6 & 2\,520 & 2\,502 & 0\\
+\bottomrule
+\end{tabular}
+\caption{Selected forward-oracle checks. The JSON additionally records
+the empty cases and arity-one length-three case.}
+\label{tab:oracle}
+\end{table}
+
+For each balanced word of a tested length, every weak cut sequence into
+\(r\) components is compared against the backward parser. The
+\(18\) rejected exact three-tuples of length six are a useful check
+that the code has not silently erased component boundaries. The
+example in \cref{ex:cuttrap} belongs to this set.
+
+\subsection{Structural and certificate tests}
+The structural tests verify the published length-\(15\) witness, the
+cut-sensitive length-six example, invalid-input handling, and every
+member of the obstruction parameter region for \(N\leq12\). They also
+construct and locally check \(1\,965\) positive certificates: every
+balanced binary word with \(N\leq5\), for every allocation
+\(p=0,\ldots,N\). A deliberately corrupted wrap is rejected by the
+certificate checker.
+
+These checks serve different purposes. Forward saturation tests the
+recurrence against the original grammar on small cases. The Python
+and C++ agreement tests two implementations and two symmetry
+enumerators over a much larger word domain. The local certificate
+checker validates particular positive derivations without searching.
+None of these is a machine-checked proof of the universal analytic
+theorems. Nor are stored positive certificates supplied for every
+orbit in the length-\(21\) run; the finite frontier is independently
+reproducible computation, not a compact formal certificate of all
+its decisions.
+
+\section{What the attempt says about the open problem}
+\label{sec:remaining}
+
+\subsection{Why the natural obstruction strategy stops at level three}
+The proof of \cref{thm:cone} works because a two-component derivation,
+once cut, has no unused component slot. A positive binary excursion
+prevents nontrivial extraction, and endpoint deletion eventually
+exposes only two letters. The argument would fail if another useful
+cut could be inserted before that stall. At level three, that extra
+cut is available, and \cref{thm:binary} does more than suggest a
+rescue: it explicitly derives the whole two-ended binary family.
+
+Consequently, simply making the published obstruction longer, using
+unequal run lengths, or substituting a more complicated balanced
+binary interior cannot solve \cref{prob:main} while retaining the
+pattern \(\aa^*\{\bb,\cc\}^*\aa^*\). A successful obstruction must
+leave this entire positive family, up to alphabet permutation.
+
+The endpoint argument is nevertheless useful. It demonstrates how to
+prove a \emph{negative} grammar-membership statement without relying
+on the parser: identify all initial meaningful cuts, establish an
+invariant excluding binary extraction, and show that every legal
+endpoint trajectory stalls while keeping all component slots
+occupied. A level-three version would need to control two initial
+cuts and also all ways that one of three components can vanish.
+The present proof does not supply that stronger invariant.
+
+\subsection{Valid and invalid reductions in a future search}
+The concatenation closure in \cref{prop:basic} gives a sound reduction:
+a shortest word outside \(L_r\), if there is one, has no nonempty
+proper balanced prefix. Otherwise its balanced prefix and suffix are
+shorter and hence both in \(L_r\), forcing their concatenation into
+\(L_r\).
+
+The superficially stronger reduction to words having \emph{no proper
+balanced factor anywhere} has not been justified. An internal factor
+can be extracted only when its two induced tuple children are
+accepted; acceptance of the flattened outside word is insufficient.
+The cut trap in \cref{ex:cuttrap} shows exactly why. Thus searching
+only factor-balanced-primitive candidates is a heuristic restriction,
+not an exhaustive reduction of the open problem.
+
+The same warning applies to cyclic rotation: \cref{cor:rotation}
+shows that even level two does not respect it. Alphabet renaming and
+full reversal are safe symmetries; arbitrary cyclic rotation is not
+used in the exhaustive enumeration.
+
+\subsection{A precise next mathematical target}
+One route would be to find a family of three-component tuple states
+with a finite symbolic description, closed under every possible
+backward peeling and admissible extraction, whose states cannot
+reach the empty tuple. The family must also account for all
+refinements of a one-component candidate. This is stronger than
+finding a few difficult strings or observing a long running time.
+
+A complementary route toward equality would be an induction asserting
+membership of a suitably rich class of \emph{tuples}, not merely all
+balanced words. The theorem \((\aa^p,v,\aa^u)\in\A_3\) is an example
+of an induction hypothesis strong enough to survive concatenation
+of binary interiors. Extending it to arbitrary distributions of all
+three letters would require additional structure; arbitrary cut
+placements cannot be included because they are already false at
+length six.
+
+The finite frontier offers no statistical reason to prefer equality
+or inequality. Many grammar obstructions require a structured word
+far longer than every short test case. What it supplies is a checked
+starting point and a lower bound on the length of a prospective
+witness, not a resolution by numerical evidence.
+
+\section{Conclusion}
+The selected open problem has led to three kinds of concrete output.
+First, the grammar admits an exact terminating backward recurrence
+whose state records the actual component boundaries. Second, the
+report gives complete analytic proofs of a broad three-component
+positive family and a multi-parameter two-component negative family,
+with exact-rank, counting, and rotation consequences. Third, two
+implementations and several independent validation mechanisms
+support an exhaustive frontier through length \(21\).
+
+The result is a partial research contribution and a reproducible
+experimental platform. It is \emph{not} a solution of
+\(L_3\stackrel{?}{=}\Mix\), not a resolution of the full
+Kanazawa--Salvati conjecture, and not a formal verification in a
+proof assistant. The positive family identifies a substantial region
+where a counterexample cannot lie; the obstruction proof identifies
+the kind of boundary-sensitive invariant that a stronger negative
+argument would need.
+
+\appendix
+\section{Reference pseudocode}
+\label{app:pseudocode}
+The pseudocode below omits symmetry canonicalization and caching,
+which preserve the answer but are not needed for correctness.
+\begin{lstlisting}
+MEMBER(r, T):
+    T := delete empty components of T
+    if T is empty: return true
+    if number_of_components(T) > r: return false
+    if concatenation(T) is not balanced: return false
+
+    for each choice of one physical endpoint a, one b, one c:
+        U := T with these three occurrences deleted
+        if MEMBER(r, U): return true
+
+    w := concatenation(T)
+    for each nonempty proper balanced interval [p,q) of w:
+        B := nonempty intersections with the components of T
+        A := nonempty outside pieces, preserving boundaries
+             and keeping an exposed prefix and suffix separate
+        if components(A) <= r and components(B) <= r:
+            if MEMBER(r, B) and MEMBER(r, A): return true
+
+    if components(T) < r:
+        for each split of one component into nonempty x,y:
+            U := T with that component replaced by x,y
+            if MEMBER(r, U): return true
+    return false
+\end{lstlisting}
+
+For interval tests, the programs use prefix vectors
+\[
+ d_j=\bigl(\len{w[0:j]}_{\aa}-\len{w[0:j]}_{\cc},\
+           \len{w[0:j]}_{\bb}-\len{w[0:j]}_{\cc}\bigr).
+\]
+The factor \(w[p:q]\) is balanced exactly when \(d_p=d_q\).
+Restricting candidate lengths to multiples of three is therefore a
+safe preliminary filter, not an approximation.
+
+\section{An explicit positive derivation for the first family member}
+\label{app:example}
+The following derivation is produced by the family construction.
+Repeated empty leaves may be shared; the table displays them only
+once for readability. Each line is an actual tuple in \(\A_3\).
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\linewidth}{c l X}
+\toprule
+Step & Tuple & Construction\\
+\midrule
+0 & \((\eps,\eps,\eps)\) & Empty rule.\\
+1 & \((\aa,\bb\cc,\eps)\) & Wrap step 0, placing \(\aa\) in the first component.\\
+2 & \((\eps,\bb\cc,\aa)\) & Wrap step 0, placing \(\aa\) in the last component.\\
+3 & \((\eps,\bb^2\cc^2,\aa^2)\) & Wrap step 2 at the same three slots.\\
+4 & \((\aa,\bb\cc\bb^2\cc^2,\aa^2)\) & Insert step 3 after component two of step 1; regroup.\\
+5 & \((\aa^2,\bb^2\cc\bb^2\cc^3,\aa^2)\) & Wrap step 4: one \(\aa\) at the first component, \(\bb,\cc\) at the middle ends.\\
+6 & \((\aa^3,\bb^3\cc\bb^2\cc^4,\aa^2)\) & Repeat the preceding wrap.\\
+\bottomrule
+\end{tabularx}
+\caption{A direct derivation of a tuple concatenating to
+\(\word{aaabbbcbbccccaa}\). The JSON certificate uses explicit node IDs.}
+\end{table}
+At the binary step the combined six-component list is
+\[
+ (\aa,\bb\cc,\eps,\bb^2\cc^2,\aa^2,\eps).
+\]
+The zero-based regrouping boundary sequence is \((0,1,4,6)\).
+The final concatenation is the published length-\(15\) example, while
+\cref{thm:cone} supplies its negative level-two proof as a special case.
+
+\section{Reproduction guide and artifact map}
+\label{app:reproduce}
+The archive requires Python 3.10 or later, a C++17 compiler for the
+large enumeration, and a LaTeX installation to rebuild the PDF. The
+Python tools use only the standard library. Commands below are run
+from the archive's top-level directory.
+
+\paragraph{Individual membership queries.}
+\begin{lstlisting}
+python src/mix_parser.py 2 aaabbbcbbccccaa
+python src/mix_parser.py 3 aaabbbcbbccccaa
+python src/mix_parser.py 3 a accb b
+\end{lstlisting}
+The expected Boolean answers are respectively false, true, and false.
+Each command-line word after the arity is one component, so the last
+command is deliberately not a query about a single concatenated word.
+
+\paragraph{Independent checks and exhaustive runs.}
+\begin{lstlisting}
+python tests/forward_oracle.py
+python tests/test_results.py
+python src/exhaust_python.py 6
+mkdir -p build
+c++ -O3 -std=c++17 src/exhaust.cpp -o build/mix_exhaust
+build/mix_exhaust 7
+\end{lstlisting}
+The final argument is the maximum number of occurrences of each letter,
+not the maximum total word length. Thus \word{7} means length \(21\).
+The C++ driver emits JSON to standard output and progress to standard
+error. A run interrupted before its final closing JSON braces is not
+a completed result, even though its header describes the intended
+complete computation. Increasing the bound can increase time and
+memory substantially; the programs make no promise of a uniform
+resource bound in an arbitrary environment.
+
+\paragraph{Positive certificates.}
+\begin{lstlisting}
+python src/check_certificate.py certificates/separation_m1.json
+python src/family_certificate.py bbbcbbcccc 3 > new_certificate.json
+python src/check_certificate.py new_certificate.json
+\end{lstlisting}
+The archive includes certificates for \(m=1,2,5\) in
+\eqref{eq:scaled}. The checker rejects malformed rule parameters or
+claimed tuples that differ from their computed conclusions.
+
+\paragraph{PDF.}
+Run \word{make pdf}, or run \word{pdflatex mix\_grammar\_report.tex}
+twice. The bibliography is embedded in the source; a separate BibTeX
+file is provided for reuse, not required for compilation.
+
+\paragraph{Integrity and verification scope.}
+No checksum manifest is bundled, because re-running the checks or
+rebuilding the PDF changes file hashes. Hashes would identify the
+artifacts; they do not prove the code correct. There are no bundled
+font files, third-party article PDFs, machine-specific executables,
+or claims of external peer review. The mathematical arguments and
+programs were produced for this research request; independent human
+review is appropriate before using any claimed extension as a
+published result.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{Yuyama2026}
+Takao Yuyama.
+\newblock \emph{On the Kanazawa--Salvati Conjecture}.
+\newblock arXiv:2609.13871v1 [cs.FL], September 12, 2026, 39 pages.
+\newblock \url{https://arxiv.org/abs/2609.13871v1}.
+\newblock Relevant locations: Section 1.3 and Example 1.4; Proposition
+3.17, Corollary 3.18, and Remark 3.19; Section 6; Proposition E.3 and
+its proof. Accessed September 20, 2026.
+
+\bibitem{KS2012}
+Makoto Kanazawa and Sylvain Salvati.
+\newblock MIX Is Not a Tree-Adjoining Language.
+\newblock In \emph{Proceedings of the 50th Annual Meeting of the
+Association for Computational Linguistics, Volume 1: Long Papers},
+pages 666--674, 2012.
+\newblock \url{https://aclanthology.org/P12-1070/}.
+
+\bibitem{Salvati2015}
+Sylvain Salvati.
+\newblock MIX is a 2-MCFL and the word problem in \(\mathbb Z^2\) is
+captured by the IO and the OI hierarchies.
+\newblock \emph{Journal of Computer and System Sciences},
+81(7):1252--1277, 2015.
+\newblock DOI: \href{https://doi.org/10.1016/j.jcss.2015.03.004}
+{10.1016/j.jcss.2015.03.004}.
+\end{thebibliography}
+\end{document}

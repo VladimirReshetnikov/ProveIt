@@ -1,0 +1,1234 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[scaled=.94]{sourcesanspro}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,longtable,float}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{203449}
+\definecolor{Accent}{HTML}{176B76}
+\definecolor{Pale}{HTML}{EFF5F5}
+\definecolor{Muted}{HTML}{526271}
+\hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
+  pdftitle={Binary Runs in Rueppel Hankel Determinants},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Four Rueppel Hankel conjectures, a polynomial refinement, and a correction}}
+\titleformat{\section}{\Large\sffamily\bfseries\color{Ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{Accent}}{\thesubsection}{.6em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1.6ex plus .6ex}{.6ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{Muted}Rueppel Hankel determinants}
+\fancyhead[R]{\small\sffamily\color{Muted}Research manuscript}
+\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Runs}{\mathcal R}
+\newcommand{\Ones}{\rho}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pop}{\operatorname{popcount}}
+\newcommand{\Gray}{\operatorname{Gray}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\ind}[1]{\boldsymbol{[}#1\boldsymbol{]}}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=.5pt,
+  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\lstset{language=Python,basicstyle=\small\ttfamily,keywordstyle=\color{Accent}\bfseries,
+  commentstyle=\color{Muted},stringstyle=\color{Ink},breaklines=true,
+  frame=single,rulecolor=\color{Accent!50},backgroundcolor=\color{Pale},
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  aboveskip=1em,belowskip=.8em}
+\setlist{nosep,leftmargin=1.5em}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\sffamily\color{Accent}\large INTEGER SEQUENCES \enspace / \enspace EXACT DETERMINANTS\par}
+\vspace{9mm}
+{\sffamily\bfseries\color{Ink}\fontsize{28}{33}\selectfont
+Binary Runs in Rueppel\par Hankel Determinants\par}
+\vspace{6mm}
+{\sffamily\large\color{Muted}Four conjectures, a polynomial refinement,\par and a correction\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\color{Muted}19 September 2026\par}
+\vspace{12mm}
+\begin{abstract}
+Let $r(x)=\sum_{j\ge0}x^{2^j-1}$, and let $H_n(f)$ denote the Hankel
+determinant of order $n$ of the coefficients of $f$. We determine, as a
+polynomial in $t$, every determinant of
+\[
+ f_t(x)=t x+\frac{1}{r(x^2)}.
+\]
+If $\Runs(n)$ is the number of binary runs of $n$ and $\eps(n)$ is the lowest
+bit of its binary reflected Gray code, the answer is
+\[
+ H_n(f_t)=(-1)^{1+\eps(n)+\lfloor\Runs(n)/2\rfloor}
+ \bigl(\eps(n)+(\Runs(n)-\eps(n))t^2\bigr),\qquad n\ge1.
+\]
+In particular, $|H_n(f_1)|=\Runs(n)$. Together with reciprocal-minor and
+parity-block identities, this proves the statements numbered 8, 10, 13,
+and 23 in Paul Barry's 2021 note on generalized Rueppel sequences.
+We also classify all exceptional complex parameters, compute exact
+signed distributions and dyadic sums, and give a counterexample to
+Conjecture 22 as printed, with a valid signed replacement.
+The proofs are algebraic and apply to every index. An accompanying
+standard-library Python implementation independently checks 1,192
+Rueppel-related determinants and supplies reproducible data.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\small
+\textbf{Research status.} This is an unrefereed, independently developed
+manuscript, not a claim of established publication priority. The selected
+statements retain their conjecture labels in the checked 2021 source.
+A focused search did not locate a later resolution, but does not exclude
+one. Related foundational identities are already present in earlier
+work; the source comparison and the limits of the novelty claim are
+made explicit in Sections~\ref{sec:problem} and~\ref{sec:status}.
+\end{resultbox}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{The problem and the main result}\label{sec:problem}
+
+A sequence supported only at the numbers $2^j-1$ seems an unlikely source
+of complicated determinants. Nevertheless, taking a reciprocal of its
+generating function produces rapidly growing signed coefficients, while
+its Hankel determinants retain a remarkably small, digit-controlled
+structure. The main problem studied here is to identify that structure
+and to explain why it survives the reciprocal operation.
+
+Write
+\begin{equation}\label{eq:rdef}
+ r_n=\ind{n+1\text{ is a power of }2},\qquad
+ r(x)=\sum_{n\ge0}r_nx^n=1+x+x^3+x^7+x^{15}+\cdots.
+\end{equation}
+This is the Rueppel sequence, \oeis{A036987}~\cite{oeisrueppel}. The functional equation
+\begin{equation}\label{eq:rfunctional}
+ r(x)=1+xr(x^2)
+\end{equation}
+is immediate from its support. In Barry's note~\cite{barry2021},
+Conjecture 13 asks whether the Hankel transform of $x+1/r(x^2)$ is a
+signed version of the binary-run sequence \oeis{A005811}, shifted by one
+place. We make the sign explicit and evaluate a whole polynomial family.
+
+For a power series $f(x)=\sum_{j\ge0}f_jx^j$, our convention is
+\begin{equation}\label{eq:hdef}
+ H_n(f)=\det(f_{i+j})_{0\le i,j<n},\qquad H_0(f)=1.
+\end{equation}
+Thus $n$ is a matrix size. Barry's Hankel-transform index is one less:
+his term with index $j$ is our $H_{j+1}$. This convention matters in every
+comparison below.
+
+For $n>0$, let $\Runs(n)$ count the maximal runs of equal digits in the
+usual binary expansion of $n$, with no leading zeros. Set $\Runs(0)=0$.
+Let
+\begin{equation}\label{eq:epsilon}
+ g(n)=n\mathbin{\mathrm{xor}}\floor{n/2},\qquad
+ \eps(n)=g(n)\bmod2.
+\end{equation}
+Here $g(n)$ is the binary reflected Gray code of $n$. Equivalently,
+$\eps(n)=1$ for $n\equiv1,2\pmod4$, and it is zero otherwise.
+
+\begin{theorem}[Polynomial refinement of the binary-run conjecture]\label{thm:main}
+For every $n\ge1$, the following identity holds in $\Z[t]$:
+\begin{equation}\label{eq:main}
+\boxed{\quad
+ H_n\!\left(t x+\frac1{r(x^2)}\right)
+ =(-1)^{1+\eps(n)+\lfloor\Runs(n)/2\rfloor}
+ \left(\eps(n)+(\Runs(n)-\eps(n))t^2\right).
+ \quad}
+\end{equation}
+The empty determinant is $H_0=1$, separately. Consequently, the displayed
+identity remains valid after any specialization of $t$ in a commutative
+ring.
+\end{theorem}
+
+The proof is given in Section~\ref{sec:mainproof}. It uses a rank-two
+block calculation, not induction on large reciprocal coefficients.
+
+\begin{corollary}[Conjecture 13]\label{cor:c13}
+For $f_1(x)=x+1/r(x^2)$,
+\begin{equation}\label{eq:c13}
+ |H_n(f_1)|=\Runs(n)\quad(n\ge1).
+\end{equation}
+In the source's indexing, the absolute value of term $j$ is
+$\oeis{A005811}(j+1)$.
+\end{corollary}
+\begin{proof}
+At $t=1$, the parenthesis in \eqref{eq:main} is $\Runs(n)>0$.
+\end{proof}
+
+\subsection{Scope of the result}
+
+The targeted statements are from a single source, rather than a
+collection of conjectures synthesized after observing the answer.
+The source's conjecture numbers and our conclusions are as follows.
+
+\begin{center}
+\small
+\begin{tabular}{@{}c >{\raggedright\arraybackslash}p{.48\textwidth} >{\raggedright\arraybackslash}p{.30\textwidth}@{}}
+\toprule
+Number & Subject & Conclusion here\\
+\midrule
+8 & Binary-run parity in $H_{j+1}(1/(1+xr(x)))$ & Exact sign formula; proved.\\
+10 & Hankel transform of $1-x/r(x^2)$ & Period $4$; proved.\\
+13 & Hankel transform of $x+1/r(x^2)$ & Full polynomial refinement; proved.\\
+23 & Product of unshifted and shifted Rueppel determinants & Exact binary-run parity; proved.\\
+22 & Complement and first-difference determinants & False as printed; signed replacement proved.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Allouche, Han, and Shallit~\cite{ahs} had already proved conjectures from
+Barry's earlier 2020 paper~\cite{barry2020}, including results for
+$1\pm xr(x)$ and recurrences for shifted Rueppel determinants. Those
+results are part of the prior framework, not claimed as discoveries
+here. We rederive the required ingredients so that the present argument
+can be checked without importing their proofs. The four conjecture
+numbers above refer specifically to the \emph{2021} paper, not to the
+same numbers in the earlier paper.
+
+\section{Binary statistics and formal-series conventions}\label{sec:digits}
+
+All series are formal. No analytic convergence or choice of an inverse
+function is involved in the expression $1/r(x^2)$: its constant term is
+one, so its multiplicative reciprocal exists uniquely over $\Z$.
+
+It is useful to distinguish two digit statistics. We write $\Runs(n)$
+for the total number of constant-bit runs, and $\Ones(n)$ for the number
+of runs consisting of ones. Thus, for example,
+\[
+ 10=(1010)_2,\qquad \Runs(10)=4,\qquad \Ones(10)=2.
+\]
+We use the empty expansion at zero, so both statistics vanish there.
+The sequences $\Runs(n)$ and $\Ones(n)\bmod2$ are respectively
+\oeis{A005811} and \oeis{A268411}~\cite{oeisruns,oeisparity}.
+
+\begin{lemma}[Digit identities]\label{lem:digits}
+For $m\ge0$,
+\begin{align}
+ \Runs(2m)&=\Runs(m)+(m\bmod2),\label{eq:runs-even}\\
+ \Runs(2m+1)&=\Runs(m)+1-(m\bmod2),\label{eq:runs-odd}\\
+ \Ones(2m)&=\Ones(m),\label{eq:ones-even}\\
+ \Ones(2m+1)&=\Ones(m)+1-(m\bmod2).\label{eq:ones-odd}
+\end{align}
+Moreover,
+\begin{equation}\label{eq:grayruns}
+ \Runs(n)=\pop(g(n)),\qquad
+ \Ones(n)=\ceil{\Runs(n)/2}.
+\end{equation}
+If
+\begin{equation}\label{eq:ab}
+ a(n)=\pop\!\left(\floor{g(n)/2}\right),\qquad b(n)=g(n)\bmod2,
+\end{equation}
+then
+\begin{equation}\label{eq:abidentities}
+ b(n)=\eps(n),\quad a(n)=\Runs(n)-\eps(n)=\Runs(\floor{n/2}),
+ \quad \binom n2\equiv a(n)\pmod2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Appending a zero creates a new run exactly when the previous last digit
+is one. Appending a one creates a new run of ones, and a new total run,
+exactly when the previous last digit is zero; the same statement gives
+the stipulated value at $m=0$. This proves the first four identities.
+
+Write the binary digits as $n_i$, with all sufficiently large $n_i=0$.
+The $i$th Gray-code digit is $n_i\mathbin{\mathrm{xor}}n_{i+1}$.
+A one in that code records a change between adjacent binary digits,
+including the change from the leading one to the next higher zero.
+Its number of ones therefore equals the number of binary runs. Since
+the first run is a run of ones, runs of ones and zeros alternate, and
+there are $\ceil{\Runs(n)/2}$ runs of ones.
+
+Right shift commutes with the Gray-code map. Deleting the lowest
+Gray-code digit thus leaves the Gray code of $\floor{n/2}$, proving the
+first three assertions of \eqref{eq:abidentities}. Finally,
+$\binom n2\bmod2$ is the second-lowest binary digit $n_1$. The xor of all
+Gray-code digits with indices at least one telescopes to $n_1$.
+That xor is the parity of their number of ones, namely $a(n)$.
+\end{proof}
+
+For shifted Hankel determinants we use
+\begin{equation}\label{eq:shift}
+ H_n^{[s]}(f)=\det(f_{i+j+s})_{0\le i,j<n},
+ \qquad f_j=0\text{ when }j<0.
+\end{equation}
+Every determinant of size zero is one, whatever the shift. The
+zero-extension convention in \eqref{eq:shift} will be needed for $s=-1$.
+
+\section{Three determinant tools}\label{sec:tools}
+
+\subsection{One coupling between two blocks}
+
+If $A$ is a nonempty square matrix, let $A^{\circ}$ mean the matrix
+obtained by deleting its first row and first column. In particular,
+for a $1\times1$ matrix, $\det A^{\circ}=1$.
+
+\begin{lemma}[Rank-two coupling]\label{lem:coupling}
+Let $A$ and $B$ be square matrices of positive sizes, and let $e$ and $f$
+be their first coordinate vectors. For any scalar $u$,
+\begin{equation}\label{eq:coupling}
+ \det\begin{pmatrix}A&u e f^T\\u f e^T&B\end{pmatrix}
+ =\det A\det B-u^2\det A^{\circ}\det B^{\circ}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A term in the permutation expansion that uses neither off-diagonal
+block belongs to $\det A\det B$. If a term uses one off-diagonal entry,
+it must also use the other: the only available crossing entries join
+the first coordinate of each block. These two entries form a
+transposition, contributing $-u^2$; the remaining choices are exactly
+the two deleted-block determinants. There are no other nonzero terms.
+This proof requires no invertibility assumption.
+\end{proof}
+
+\subsection{Square and rectangular anti-diagonal blocks}
+
+\begin{lemma}[Parity-block determinants]\label{lem:antiblock}
+If $C$ is $m\times m$ and $A$ is any matrix of that size, then
+\begin{equation}\label{eq:squareblock}
+ \det\begin{pmatrix}A&C\\C^T&0\end{pmatrix}
+ =(-1)^m(\det C)^2.
+\end{equation}
+If $C$ is $(m+1)\times m$, $e=(1,0,\ldots,0)^T$, and $C_*$ is obtained
+by deleting the first row of $C$, then
+\begin{equation}\label{eq:rectblock}
+ \det\begin{pmatrix}u e e^T&C\\C^T&0\end{pmatrix}
+ =u(-1)^m(\det C_*)^2.
+\end{equation}
+The second formula includes $m=0$.
+\end{lemma}
+\begin{proof}
+In \eqref{eq:squareblock}, the last $m$ rows must use the first $m$
+columns. Consequently the first $m$ rows use the last $m$ columns,
+so $A$ contributes nothing. Exchanging the two column blocks gives
+the sign $(-1)^{m^2}=(-1)^m$ and the product $\det C\det C^T$.
+
+In \eqref{eq:rectblock}, there is one more upper row than lower column.
+A nonzero permutation term must therefore use one entry from the
+upper-left block. Its only possible entry is the first diagonal
+entry $u$. Removing that row and column leaves the square-block
+case with $C_*$. The corresponding cofactor has positive sign.
+\end{proof}
+
+\subsection{Complementary minors of reciprocal series}
+
+The next identity is useful beyond the Rueppel sequence. Its negative
+shift is the reason the apparently unrelated series $xr(x)$ enters the
+main calculation.
+
+\begin{lemma}[Reciprocal Hankel minors]\label{lem:reciprocal}
+Let $A(x)=\sum_{j\ge0}a_jx^j$ have $a_0=1$, and put $C(x)=1/A(x)$.
+For $n\ge0$ and $s\ge1$,
+\begin{equation}\label{eq:recipgeneral}
+ H_n^{[s]}(C)
+ =(-1)^{n+\binom{s-1}{2}}\,
+ H_{n+s-1}^{[2-s]}(A).
+\end{equation}
+Also, for $n\ge1$,
+\begin{equation}\label{eq:recipordinary}
+ H_n(C)=(-1)^{n-1}H_{n-1}^{[2]}(A).
+\end{equation}
+These are polynomial identities in the coefficients of $A$ and are
+valid over every commutative ring.
+\end{lemma}
+\begin{proof}
+For a series $A$, form the lower triangular Toeplitz matrix
+$T_L(A)=(a_{i-j})_{0\le i,j<L}$. Its diagonal entries are one, and
+formal series multiplication gives
+\[
+ T_L(C)=T_L(A)^{-1},\qquad \det T_L(A)=1.
+\]
+We first recall, with zero-based indices, the complementary-minor
+identity
+\begin{equation}\label{eq:jacobiminor}
+ \det(M^{-1})_{I,J}
+ =(-1)^{\sum I+\sum J}\frac{\det M_{J^c,I^c}}{\det M}.
+\end{equation}
+Here $I,J$ have the same size. To see it, permute the selected row and
+column sets to the front and apply the block inverse formula. The
+determinant of the relevant inverse block is the determinant of the
+complementary block divided by the full determinant. The row and
+column permutations together contribute $(-1)^{\sum I+\sum J}$.
+A derivation assuming invertible blocks proves the identity for generic
+matrices; clearing denominators gives it in full generality whenever
+$M$ is invertible.
+
+For $n\ge1$ take $L=2n+s-1$ and
+\[
+ I=\{n+s-1,\ldots,2n+s-2\},\qquad J=\{0,\ldots,n-1\}.
+\]
+Reversing the $n$ columns of $T_L(C)_{I,J}$ produces
+$H_n^{[s]}(C)$ and contributes $(-1)^{\binom n2}$. The complementary
+minor of $T_L(A)$ has rows $n,\ldots,2n+s-2$ and columns
+$0,\ldots,n+s-2$. Reversing its columns produces
+$H_{n+s-1}^{[2-s]}(A)$ and contributes
+$(-1)^{\binom{n+s-1}{2}}$. Furthermore,
+$\sum I+\sum J\equiv ns\pmod2$. Thus the total sign exponent is
+\[
+ \binom n2+ns+\binom{n+s-1}{2}
+ \equiv n+\binom{s-1}{2}\pmod2,
+\]
+which proves \eqref{eq:recipgeneral} for $n\ge1$.
+
+When $n=0$, the matrix on the right has zeros strictly before its
+anti-diagonal and ones on the anti-diagonal. Its determinant is
+$(-1)^{\binom{s-1}{2}}$, so the same formula gives one. Finally, apply
+\eqref{eq:recipgeneral} with $s=2$, order $n-1$, and the roles of $A,C$
+interchanged. This gives \eqref{eq:recipordinary}.
+\end{proof}
+
+\section{The Rueppel determinant backbone}\label{sec:backbone}
+
+Define four auxiliary determinant sequences:
+\begin{equation}\label{eq:DETB}
+ D_n=H_n(r),\qquad E_n=H_n^{[1]}(r),\qquad
+ T_n=H_n^{[2]}(r),\qquad B_n=H_n^{[-1]}(r)=H_n(xr(x)).
+\end{equation}
+All four have value one at $n=0$. The notation $B_n$ is used only for this
+auxiliary determinant, not for a power-series coefficient.
+
+\subsection{Unshifted, once-shifted, and twice-shifted determinants}
+
+\begin{theorem}\label{thm:DE}
+For $n\ge0$,
+\begin{align}
+ D_n&=(-1)^{\binom n2},\label{eq:D}\\
+ E_n&=(-1)^{\binom{n+1}{2}+\Ones(n)},\label{eq:E}\\
+ T_{2m}&=(-1)^m,\qquad T_{2m+1}=0.\label{eq:T}
+\end{align}
+In addition,
+\begin{equation}\label{eq:Erec}
+ E_n=D_{\lceil n/2\rceil}E_{\lfloor n/2\rfloor}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficient relations from \eqref{eq:rfunctional} are
+\begin{equation}\label{eq:rparity}
+ r_{2j+1}=r_j,\qquad r_{2j}=\ind{j=0}.
+\end{equation}
+Order both rows and columns by even indices first, then odd indices.
+Because the same permutation is applied to rows and columns, its two
+signs cancel.
+
+For $D_{2m}$, the upper-left block has only its first diagonal entry
+nonzero, the lower-right block is zero, and the off-diagonal block is
+$(r_{i+j})_{0\le i,j<m}$. Hence
+\[
+ D_{2m}=(-1)^mD_m^2.
+\]
+For $D_{2m+1}$, the off-diagonal block has one extra row. Deleting its
+first row leaves $(r_{i+j+1})_{0\le i,j<m}$, so
+\[
+ D_{2m+1}=(-1)^mE_m^2.
+\]
+Both conclusions use Lemma~\ref{lem:antiblock}.
+
+For $E_n$, the off-diagonal blocks are zero. The even-even block is
+an unshifted Rueppel Hankel matrix of order $\lceil n/2\rceil$, and the
+odd-odd block is a once-shifted one of order $\lfloor n/2\rfloor$.
+This proves \eqref{eq:Erec}. Starting from
+$D_0=D_1=E_0=E_1=1$, these formulas simultaneously show that all
+$D_n,E_n$ are $\pm1$. They then give
+$D_{2m}=D_{2m+1}=(-1)^m$, which is exactly \eqref{eq:D}.
+There is no circular use of nonvanishing here: at each order at least
+two, the formulas involve smaller orders.
+
+To prove \eqref{eq:E}, it is enough to check that its right side has the
+same recurrence and initial value as $E_n$. At $n=2m$, its exponent is
+congruent to $m+\Ones(m)$, and the exponent of $D_mE_m$ is
+\[
+ \binom m2+\binom{m+1}{2}+\Ones(m)
+ =m^2+\Ones(m)\equiv m+\Ones(m)\pmod2.
+\]
+At $n=2m+1$, the exponent of $D_{m+1}E_m$ is congruent to
+$\Ones(m)$. Using \eqref{eq:ones-odd}, the proposed expression has
+exponent
+\[
+ (m+1)(2m+1)+\Ones(m)+1-(m\bmod2)
+ \equiv\Ones(m)\pmod2.
+\]
+The value at zero is one, so induction proves the formula.
+
+Finally, the even-even and odd-odd blocks for $T_n$ are both zero.
+At even order $2m$, the off-diagonal block is the once-shifted matrix,
+with determinant $E_m$. Thus $T_{2m}=(-1)^mE_m^2=(-1)^m$.
+At odd order, the two block sizes differ, making the matrix singular.
+This proves \eqref{eq:T}.
+\end{proof}
+
+A frequently used consequence is
+\begin{equation}\label{eq:Tspecial}
+ T_{m-1}=D_m\,(m\bmod2)\qquad(m\ge1).
+\end{equation}
+It follows directly from \eqref{eq:D} and \eqref{eq:T}, including $m=1$.
+
+\subsection{A negative shift detects the number of runs}
+
+\begin{theorem}\label{thm:B}
+For every $n\ge1$,
+\begin{equation}\label{eq:B}
+ B_n=-E_{n-1}\Runs(n-1).
+\end{equation}
+Consequently, for arbitrary parameters $u,v$,
+\begin{equation}\label{eq:linearparam}
+ H_n(u+v x r(x))
+ =v^{n-1}E_{n-1}\bigl(u-v\Runs(n-1)\bigr),\qquad n\ge1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $s_0=0$ and $s_j=r_{j-1}$ for $j\ge1$, so $\sum s_jx^j=xr(x)$.
+Then
+\[
+ s_{2j}=s_j,\qquad s_{2j+1}=\ind{j=0}.
+\]
+Set $e=\lceil n/2\rceil$, $o=\lfloor n/2\rfloor$. For $n\ge2$, the
+parity-ordered matrix for $B_n$ has diagonal blocks given by $B_e$ and
+$D_o$, and off-diagonal blocks coupling only their first coordinates.
+The first deleted-block determinant is $E_{e-1}$ and the second is
+$T_{o-1}$. Lemma~\ref{lem:coupling} therefore gives
+\begin{equation}\label{eq:Brec}
+ B_n=B_eD_o-E_{e-1}T_{o-1}
+ =D_o\bigl(B_e-(o\bmod2)E_{e-1}\bigr).
+\end{equation}
+The base case is $B_1=0=-E_0\Runs(0)$. Assume the formula holds at
+smaller orders. Since $e<n$ for $n\ge2$, \eqref{eq:Brec} becomes
+\[
+ B_n=-D_oE_{e-1}\bigl(\Runs(e-1)+(o\bmod2)\bigr).
+\]
+Equation~\eqref{eq:Erec} applied at $n-1$ says
+$E_{n-1}=D_oE_{e-1}$. The two digit recurrences
+\eqref{eq:runs-even}--\eqref{eq:runs-odd}, separated into even and odd
+$n$, give
+\[
+ \Runs(n-1)=\Runs(e-1)+(o\bmod2).
+\]
+This completes the induction for \eqref{eq:B}.
+
+For \eqref{eq:linearparam}, changing the constant term of $v x r(x)$
+from zero to $u$ changes only the first diagonal entry of its Hankel
+matrix. Expansion in that entry gives
+\[
+ H_n(u+v x r(x))=v^nB_n+u v^{n-1}E_{n-1}.
+\]
+Insert \eqref{eq:B}. The result is a polynomial identity, so $v=0$
+causes no division problem. At $n=1$ the factor $v^0$ is one.
+\end{proof}
+
+The specializations $u=1,v=\pm1$ recover the binary-run magnitudes for
+$1\pm xr(x)$ that are already part of the earlier Rueppel literature.
+The point of the derivation is that the negative shift needed later has
+now been evaluated, including its sign and its value at every order.
+
+\section{Proof of the polynomial refinement}\label{sec:mainproof}
+
+Let
+\begin{equation}\label{eq:cdef}
+ c(x)=\frac1{r(x)}=1-x+x^2-2x^3+3x^4-4x^5+6x^6-\cdots.
+\end{equation}
+Then $f_t(x)=c(x^2)+tx$. Only the coefficient of $x$ among the
+odd-degree coefficients is nonzero. This is what makes the determinant
+quadratic in $t$, even when its matrix order is very large.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The case $n=1$ reads $1=1$, so suppose $n\ge2$ and set
+$e=\lceil n/2\rceil$, $o=\lfloor n/2\rfloor$. Reorder by parity.
+The even-even block is $(c_{i+j})_{0\le i,j<e}$; the odd-odd block is
+$(c_{i+j+1})_{0\le i,j<o}$. The only off-diagonal coupling is $t$ between
+their first coordinates. Thus
+\begin{align}
+ H_n(f_t)
+ &=H_e(c)H_o^{[1]}(c)
+   -t^2H_{e-1}^{[2]}(c)H_{o-1}^{[3]}(c).\label{eq:ftblock}
+\end{align}
+Apply Lemma~\ref{lem:reciprocal} four times. The required values are
+\begin{align}
+ H_e(c)&=(-1)^{e-1}T_{e-1},&
+ H_o^{[1]}(c)&=(-1)^oE_o,\label{eq:four1}\\
+ H_{e-1}^{[2]}(c)&=(-1)^{e-1}D_e,&
+ H_{o-1}^{[3]}(c)&=(-1)^oB_{o+1}.\label{eq:four2}
+\end{align}
+The last formula also covers $o=1$ by the size-zero part of the
+reciprocal-minor lemma. Substitution in \eqref{eq:ftblock} yields
+\begin{align}
+ H_n(f_t)
+ &=(-1)^{n-1}\bigl(T_{e-1}E_o-t^2D_eB_{o+1}\bigr)\notag\\
+ &=(-1)^{n-1}D_eE_o\bigl((e\bmod2)+t^2\Runs(o)\bigr)\notag\\
+ &=(-1)^{n-1}E_n\bigl(\eps(n)+t^2(\Runs(n)-\eps(n))\bigr).
+ \label{eq:ftE}
+\end{align}
+Here we used \eqref{eq:Tspecial}, \eqref{eq:B}, \eqref{eq:Erec}, and
+\eqref{eq:abidentities}, respectively. This already proves the full
+polynomial evaluation in a useful alternative form.
+
+It remains to express its sign using the same digit statistics as its
+magnitude. Formula~\eqref{eq:E} implies
+\[
+ (-1)^{n-1}E_n=(-1)^{\binom n2+\Ones(n)+1}.
+\]
+Write $a=a(n)$, $b=b(n)$, so $\Runs(n)=a+b$ and $b=\eps(n)$.
+By Lemma~\ref{lem:digits}, the exponent is congruent to
+\[
+ 1+a+\ceil{(a+b)/2}
+ \equiv 1+b+\floor{(a+b)/2}\pmod2.
+\]
+This is the sign in \eqref{eq:main}. Every step has taken place in the
+polynomial ring $\Z[t]$, so no exceptional value of $t$ was excluded.
+\end{proof}
+
+\begin{example}[Reading a determinant from its index]
+For $n=10$, $g(n)=(1111)_2$, hence $\Runs(n)=4$ and $\eps(n)=1$.
+The theorem gives
+\[
+ H_{10}(f_t)=1+3t^2.
+\]
+For $n=11$, $g(n)=(1110)_2$, so $\Runs(n)=3$ and $\eps(n)=0$, giving
+$H_{11}(f_t)=3t^2$. The index $n=10^{100}$ has $\Runs(n)=122$ and
+$\eps(n)=0$, and the result is simply
+\[
+ H_{10^{100}}(f_t)=122t^2.
+\]
+The last digit count was computed by the supplied code; no enormous
+moment matrix was formed.
+\end{example}
+
+\input{tables.tex}
+
+\section{Three further conjectures}\label{sec:three}
+
+\subsection{Reciprocal signs: Conjecture 8}
+
+\begin{theorem}\label{thm:recipsign}
+For $n\ge1$ and a parameter $v$,
+\begin{equation}\label{eq:qparam}
+ H_n\!\left(\frac1{1+v x r(x)}\right)=(-v)^{n-1}E_{n-1}.
+\end{equation}
+In particular, putting $q_j=H_{j+1}(1/(1+xr(x)))$, we have
+\begin{equation}\label{eq:qsign}
+ q_j=(-1)^{\binom j2+\Ones(j)}\qquad(j\ge0).
+\end{equation}
+Therefore
+\begin{equation}\label{eq:c8}
+ \left|\frac{(-1)^{\binom j2}-q_j}{2}\right|
+ =\Ones(j)\bmod2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficients of $1+v x r(x)$ beginning with degree two are
+$v r_1,v r_2,\ldots$. Formula~\eqref{eq:recipordinary} therefore gives
+\[
+ H_n\!\left(\frac1{1+v x r(x)}\right)
+ =(-1)^{n-1}v^{n-1}E_{n-1},
+\]
+proving \eqref{eq:qparam}. At $n=j+1$, \eqref{eq:E} shows that the sign
+exponent is
+\[
+ j+\binom{j+1}{2}+\Ones(j)
+ \equiv\binom j2+\Ones(j)\pmod2.
+\]
+The two signs in the numerator of \eqref{eq:c8} are equal when
+$\Ones(j)$ is even and opposite when it is odd.
+\end{proof}
+
+The coefficients of $1/(1+xr(x))$ form \oeis{A339422}~\cite{oeisreciprocal}.
+The theorem concerns their determinants, not the coefficient sequence
+itself. This distinction prevents a common indexing and interpretation
+error in numerical searches.
+
+\subsection{A product of signs: Conjecture 23}
+
+\begin{corollary}\label{cor:c23}
+For all $j\ge0$,
+\begin{equation}\label{eq:c23}
+ \frac{1+(-1)^jD_{j+1}E_{j+1}}2
+ =\Ones(j+1)\bmod2.
+\end{equation}
+\end{corollary}
+\begin{proof}
+With $m=j+1$, \eqref{eq:D} and \eqref{eq:E} give
+\[
+ D_mE_m=(-1)^{\binom m2+\binom{m+1}{2}+\Ones(m)}
+       =(-1)^{m+\Ones(m)}.
+\]
+Hence $(-1)^jD_{j+1}E_{j+1}=-(-1)^{\Ones(j+1)}$. The expression in
+\eqref{eq:c23} is one precisely when $\Ones(j+1)$ is odd.
+\end{proof}
+
+Thus Conjectures 8 and 23 are two manifestations of the same once-shifted
+Rueppel sign, rather than unrelated coincidences with an OEIS entry.
+
+\subsection{A periodic transform: Conjecture 10}
+
+\begin{theorem}[A two-parameter periodic-block identity]\label{thm:period}
+Let $P_{u,v}(x)=u+v x/r(x^2)$. For $m\ge0$,
+\begin{equation}\label{eq:Podd}
+ H_{2m+1}(P_{u,v})=(-1)^m u v^{2m},
+\end{equation}
+and, for $m\ge1$,
+\begin{equation}\label{eq:Peven}
+ H_{2m}(P_{u,v})=
+ \begin{cases}
+ (-1)^m v^{2m},&m\text{ odd},\\
+ 0,&m\text{ even}.
+ \end{cases}
+\end{equation}
+The empty determinant is one.
+\end{theorem}
+\begin{proof}
+Again let $c(x)=1/r(x)$. The only even coefficient of $P_{u,v}$ that
+may be nonzero is its constant coefficient $u$; its coefficient of
+$x^{2j+1}$ is $v c_j$. At order $2m$, parity ordering gives a square
+off-diagonal block $v(c_{i+j})$. Lemma~\ref{lem:antiblock} gives
+\[
+ H_{2m}(P_{u,v})=(-1)^m v^{2m}H_m(c)^2.
+\]
+By \eqref{eq:recipordinary}, $H_m(c)=(-1)^{m-1}T_{m-1}$, whose square
+is one for odd $m$ and zero for even $m$. This proves \eqref{eq:Peven}.
+
+At order $2m+1$, deleting the first row of the rectangular off-diagonal
+block leaves $v(c_{i+j+1})$. The rectangular-block identity gives
+\[
+ H_{2m+1}(P_{u,v})=(-1)^m u v^{2m}H_m^{[1]}(c)^2.
+\]
+By \eqref{eq:recipgeneral}, $H_m^{[1]}(c)=(-1)^mE_m$, whose square is
+one. This also handles $m=0$.
+\end{proof}
+
+\begin{corollary}[Conjecture 10]\label{cor:c10}
+The Hankel transform, with source index starting at zero, of
+$1-x/r(x^2)$ is
+\[
+ 1,-1,-1,0,\ 1,-1,-1,0,\ 1,-1,-1,0,\ldots.
+\]
+Its generating function is
+\begin{equation}\label{eq:periodgf}
+ \sum_{j\ge0}H_{j+1}\!\left(1-\frac{x}{r(x^2)}\right)z^j
+ =\frac{1-z-z^2}{1-z^4}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Specialize $u=1$, $v=-1$ in Theorem~\ref{thm:period} and separate the
+four residue classes of the matrix order. The displayed generating
+function is the sum of the resulting period-four blocks.
+\end{proof}
+
+\section{Consequences of the polynomial formula}\label{sec:consequences}
+
+\subsection{The exact singular-parameter set}
+
+One reason to retain $t$ instead of specializing immediately is that
+\eqref{eq:main} answers a global nonvanishing question at no additional
+determinant cost.
+
+\begin{theorem}[All exceptional complex parameters]\label{thm:zeros}
+For a fixed $t\in\C$, every leading Hankel determinant of $f_t$ is
+nonzero if and only if
+\begin{equation}\label{eq:exceptions}
+ t\notin\{0\}\ \cup\ 
+ \left\{\frac{i}{\sqrt{k}},-\frac{i}{\sqrt{k}}:k=1,2,3,\ldots\right\}.
+\end{equation}
+Each excluded parameter makes infinitely many positive-order
+determinants vanish. In particular, every real $t\ne0$ gives nonzero
+determinants of every order.
+\end{theorem}
+\begin{proof}
+Use $a=a(n)$ and $b=b(n)$ from \eqref{eq:ab}. Up to a sign, the
+polynomial is $b+a t^2$. For $n\ge1$, $(a,b)\ne(0,0)$.
+If $b=0$, then $a\ge1$, and the only root is $t=0$.
+If $b=1$ and $a=0$, the polynomial is one. If $b=1$ and $a=k\ge1$,
+its roots are precisely $\pm i/\sqrt{k}$.
+
+It remains to show that none of these possibilities is merely formal.
+Every nonnegative integer occurs as a Gray code: given its digits,
+recover the binary digits by cumulative xor from the highest position.
+For each $k\ge1$, infinitely many Gray codes have lowest bit one and
+exactly $k$ ones above that bit. They yield infinitely many indices
+with the factor $1+k t^2$. Similarly, infinitely many nonzero Gray
+codes have lowest bit zero, yielding roots at $t=0$. The converse
+follows directly from the exhaustive cases for $b+a t^2$.
+\end{proof}
+
+Nonvanishing here is not positivity. For example,
+$H_2(f_t)=-1-t^2<0$ for real $t$, so these moments do not define a
+positive-definite real Hankel form. The result is an exact
+nondegeneracy statement.
+
+\subsection{Polynomial and signed-value distributions}
+
+\begin{theorem}[Dyadic polynomial distribution]\label{thm:distribution}
+Fix $N\ge1$. Among indices $1\le n<2^N$, the pair $(a(n),b(n))=(k,b)$,
+where $0\le k\le N-1$ and $b\in\{0,1\}$, occurs
+\begin{equation}\label{eq:distribution}
+ \binom{N-1}{k}-\ind{k=0,\ b=0}
+\end{equation}
+times. All indices with that pair have the same determinant polynomial,
+namely
+\begin{equation}\label{eq:polyclasses}
+ H_n(f_t)=
+ \begin{cases}
+ (-1)^{1+\lfloor k/2\rfloor}k t^2,&b=0,\\
+ (-1)^{\lfloor(k+1)/2\rfloor}(1+k t^2),&b=1.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The Gray-code map permutes the $N$-bit strings. With the lowest bit
+fixed, there are $\binom{N-1}{k}$ ways to choose the $k$ higher ones.
+The all-zero string corresponds to the excluded index $n=0$.
+The two signs in \eqref{eq:polyclasses} are the main theorem's sign,
+written separately for $b=0$ and $b=1$.
+\end{proof}
+
+A compact form of this distribution is the bivariate identity
+\begin{equation}\label{eq:distributiongf}
+ \sum_{1\le n<2^N}u^{a(n)}v^{b(n)}
+ =(1+v)(1+u)^{N-1}-1.
+\end{equation}
+It describes the constant and quadratic coefficients before the
+explicit sign is attached; it is not a generating function of the
+original power-series coefficients.
+
+\begin{corollary}[Exact signed magnitudes at $t=1$]\label{cor:signeddist}
+For $1\le k\le N$, put $s_k=(-1)^{\lfloor k/2\rfloor}$. Among
+$1\le n<2^N$,
+\begin{align}
+ \#\{n:H_n(f_1)=s_k k\}&=\binom{N-1}{k-1},\label{eq:positivecount}\\
+ \#\{n:H_n(f_1)=-s_k k\}&=\binom{N-1}{k}.\label{eq:negativecount}
+\end{align}
+In particular, $|H_n(f_1)|=k$ occurs $\binom Nk$ times.
+\end{corollary}
+\begin{proof}
+For magnitude $k$, the case $b=1$ has $a=k-1$ and sign $s_k$;
+the case $b=0$ has $a=k$ and the opposite sign. Add the two counts and
+use Pascal's identity. Binomial coefficients outside their usual
+range are understood to be zero.
+\end{proof}
+
+The largest magnitude on this interval is $N$, attained once, at the
+index with all $N$ Gray-code digits equal to one. Its binary digits
+alternate, and its value is
+\begin{equation}\label{eq:maxindex}
+ n=\floor{2^{N+1}/3},\qquad
+ H_n(f_1)=(-1)^{\lfloor N/2\rfloor}N.
+\end{equation}
+Thus the determinants grow at most logarithmically in their matrix
+order, despite the much larger coefficients from which they are built.
+
+\subsection{Dyadic sums with the parameter retained}
+
+\begin{theorem}\label{thm:sums}
+For $N\ge2$ and arbitrary $t$,
+\begin{equation}\label{eq:signedsum}
+ \sum_{1\le n<2^N}H_n(f_t)
+ =\operatorname{Re}(1+i)^N
+ -2(N-1)t^2\operatorname{Re}(1+i)^{N-2}.
+\end{equation}
+At $N=1$ the sum is one. For real $t$ and all $N\ge1$,
+\begin{equation}\label{eq:abssum}
+ \sum_{1\le n<2^N}|H_n(f_t)|
+ =2^{N-1}\bigl(1+(N-1)t^2\bigr).
+\end{equation}
+The real parts in \eqref{eq:signedsum} are integers; the identity is
+an identity of polynomials in $t$.
+\end{theorem}
+\begin{proof}
+Set $M=N-1$. Let $\sigma_0(k)=(-1)^{1+\lfloor k/2\rfloor}$ and
+$\sigma_1(k)=(-1)^{\lfloor(k+1)/2\rfloor}$. Their four-periodic patterns
+show that
+\[
+ \sigma_1(k)=\operatorname{Re}((1+i)i^k),\qquad
+ \sigma_0(k)+\sigma_1(k)=-2\operatorname{Im}(i^k).
+\]
+The missing pair $(0,0)$ contributes zero, so
+Theorem~\ref{thm:distribution} gives a constant coefficient
+\[
+ \sum_{k=0}^{M}\binom Mk\sigma_1(k)
+ =\operatorname{Re}\bigl((1+i)(1+i)^M\bigr)
+ =\operatorname{Re}(1+i)^N.
+\]
+The coefficient of $t^2$ is
+\begin{align*}
+ -2\operatorname{Im}\sum_{k=0}^{M}k\binom Mk i^k
+ &=-2\operatorname{Im}\bigl(Mi(1+i)^{M-1}\bigr)\\
+ &=-2M\operatorname{Re}(1+i)^{M-1}.
+\end{align*}
+This proves \eqref{eq:signedsum} when $M\ge1$; the case $N=1$ is direct.
+
+For real $t$, the unsigned polynomial is $b+a t^2\ge0$.
+Summing over all pairs gives
+\[
+ \sum_{k=0}^{M}\binom Mk\bigl(k t^2+(1+k t^2)\bigr)
+ =2^M+M2^M t^2,
+\]
+using $\sum k\binom Mk=M2^{M-1}$ for $M\ge1$. The case $M=0$ is
+again immediate. This is \eqref{eq:abssum}.
+\end{proof}
+
+\section{A printed counterexample and a signed replacement}\label{sec:correction}
+
+The four affirmative results above are the principal conclusions.
+There is also a small but important correction in the same source.
+We treat it separately because finding an omitted sign or absolute
+value is not comparable in significance to a structural theorem.
+
+\subsection{What fails in Conjecture 22}
+
+Let
+\begin{equation}\label{eq:complementdefs}
+ C_m=\det(1-r_{i+j})_{0\le i,j<m},\qquad
+ J_m=\det(r_{i+j+1}-r_{i+j})_{0\le i,j<m}.
+\end{equation}
+The formula printed as Conjecture 22 would imply, in matrix-size
+notation,
+\begin{equation}\label{eq:printed22}
+ J_m^2=|C_{m+1}|-|C_m|\qquad(m\ge1).
+\end{equation}
+At $m=3$, however,
+\[
+ C_3=\det\begin{pmatrix}0&0&1\\0&1&0\\1&0&1\end{pmatrix}=-1,
+ \qquad
+ C_4=\det\begin{pmatrix}
+ 0&0&1&0\\0&1&0&1\\1&0&1&1\\0&1&1&1
+ \end{pmatrix}=0.
+\]
+The last row of the second matrix is the sum of its first two rows.
+On the other hand,
+\[
+ J_3=\det\begin{pmatrix}0&-1&1\\-1&1&-1\\1&-1&0\end{pmatrix}=1.
+\]
+Thus \eqref{eq:printed22} asserts $1=-1$. In the source's indexing,
+this is the counterexample $j=2$. Direct checks at $m=1,2$ satisfy
+the formula, so this is its first failure. The assertion is therefore
+false as printed; an additional absolute value or a different sign
+convention would constitute a different assertion.
+
+\subsection{A general moment identity}
+
+There is a natural exact replacement that avoids guessing which signs
+to suppress. In fact it applies to arbitrary moment sequences.
+
+\begin{theorem}[Complement--difference square identity]\label{thm:square}
+Let $(a_j)_{j\ge0}$ be any sequence, and define
+\[
+ d_m=\det(a_{i+j}),\qquad c_m=\det(1-a_{i+j}),\qquad
+ j_m=\det(a_{i+j+1}-a_{i+j}),
+\]
+where all matrices have order $m$. Then for $m\ge1$,
+\begin{equation}\label{eq:generalsquare}
+ j_m^2=(-1)^m\bigl(d_m c_{m+1}+d_{m+1}c_m\bigr).
+\end{equation}
+This polynomial identity requires no nonvanishing assumptions on the
+determinants. In the Rueppel case it becomes
+\begin{equation}\label{eq:rueppelsquare}
+\boxed{\quad J_m^2=D_mC_m+D_{m+1}C_{m+1}.\quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We first work with generic moments over a rational-function field,
+where the needed inverses exist. Put
+\[
+ A_m=(a_{i+j})_{0\le i,j<m},\quad
+ v=(a_m,\ldots,a_{2m-1})^T,\quad
+ K_m=\one^TA_m^{-1}\one.
+\]
+The matrix determinant lemma gives
+\begin{equation}\label{eq:Cnorm}
+ c_m=(-1)^m d_m(1-K_m).
+\end{equation}
+The next Hankel matrix is
+\[
+ A_{m+1}=\begin{pmatrix}A_m&v\\v^T&a_{2m}\end{pmatrix},
+\]
+whose Schur complement is
+$s=a_{2m}-v^TA_m^{-1}v=d_{m+1}/d_m$. Its block inverse gives
+\begin{equation}\label{eq:Kdiff}
+ K_{m+1}-K_m
+ =\frac{(1-v^TA_m^{-1}\one)^2}{s}.
+\end{equation}
+To identify the numerator, consider the bordered matrix
+\[
+ M=\begin{pmatrix}
+ a_0&a_1&\cdots&a_m\\
+ a_1&a_2&\cdots&a_{m+1}\\
+ \vdots&\vdots&&\vdots\\
+ a_{m-1}&a_m&\cdots&a_{2m-1}\\
+ 1&1&\cdots&1
+ \end{pmatrix}.
+\]
+Its determinant by a Schur complement is
+$d_m(1-v^TA_m^{-1}\one)$. Alternatively, for columns $m,m-1,\ldots,1$,
+subtract the preceding column. The last row becomes $(1,0,\ldots,0)$;
+expanding there leaves the first-difference Hankel determinant with
+sign $(-1)^m$. Therefore
+\[
+ d_m(1-v^TA_m^{-1}\one)=(-1)^m j_m.
+\]
+Substitution into \eqref{eq:Kdiff} yields
+\[
+ K_{m+1}-K_m=\frac{j_m^2}{d_md_{m+1}}.
+\]
+Now use \eqref{eq:Cnorm} at the two consecutive orders and rearrange:
+\[
+ j_m^2=(-1)^m(d_mc_{m+1}+d_{m+1}c_m).
+\]
+Both sides are polynomials with integer coefficients in finitely many
+moments. Equality for generic moments proves the polynomial identity,
+so specialization is valid even when some determinants vanish and over
+any commutative ring.
+
+For the Rueppel sequence, $D_{m+1}=(-1)^mD_m$. Inserting this relation
+into \eqref{eq:generalsquare} gives \eqref{eq:rueppelsquare}.
+\end{proof}
+
+At the counterexample above, the corrected formula reads
+$J_3^2=D_3C_3+D_4C_4=(-1)(-1)+(1)(0)=1$, as required.
+We do not claim that simply adding an outer absolute value to the
+printed formula has been proved here; the precise replacement established
+is the signed polynomial identity \eqref{eq:rueppelsquare}.
+
+\section{Reproducibility, status, and remaining questions}\label{sec:status}
+
+\subsection{What was checked computationally}
+
+The mathematical proofs above apply at every order. Computation serves
+as an independent audit of the indexing, signs, polynomial specializations,
+and implementation; it is not a substitute for those proofs.
+
+The archive contains a standard-library Python module, a separate test
+suite, an exact verification script, and the outputs of an actual run.
+The determinant engine is fraction-free Bareiss elimination with row
+pivoting. Every division is checked for exactness. Thus neither a small
+floating-point residual nor an approximate zero is accepted as evidence.
+The engine does not call any of the binary formulas when evaluating a
+matrix determinant.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.55\textwidth}p{.35\textwidth}@{}}
+\toprule
+Audit & Executed scope\\
+\midrule
+Rueppel-related determinants & 1,192 exact determinant evaluations.\\
+Consecutive orders & All orders $0$ through $64$ for each tested family.\\
+Selected larger orders & $65$, $127$, $128$ for the seven indicated base families.\\
+Parameter values for $f_t$ & $t=-2,0,1,2$.\\
+General square identity & 500 checks on randomly generated integer moments.\\
+Digital recurrence for $E_n$ & Every $0\le n<2^{16}$, plus 1,000 random 256-bit indices.\\
+Dyadic distributions and sums & Distribution at $N=16$; sums for $1\le N\le16$, $t=0,1,2$.\\
+Independent determinant audit & Leibniz permutation sums on 140 random matrices, sizes $0$ through $6$.\\
+Reciprocal-minor identity audit & Random integer series and shifts $1$ through $5$, including negative complementary shifts.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The seven families receiving the larger-order checks are $D,E,T,B$,
+$f_1$, $1-x/r(x^2)$, and $1/(1+xr(x))$. Complement determinants were
+also computed at order $65$ to check the square identity through order
+$64$. The complete verification run used Python 3.13.5 and took about
+7.29 seconds in the execution environment; this is a record of that run,
+not a portable timing guarantee. All checks passed.
+
+Two implementation details are particularly important. First, the
+size-zero determinant is handled explicitly and is never confused
+with the first term of a Hankel transform. Second, singular matrices
+and zero leading pivots are tested intentionally. The periodic family
+contains infinitely many zero determinants, so a routine that silently
+assumes nonzero pivots would be unsuitable.
+
+From the archive directory, the two reproduction commands are
+\begin{lstlisting}[language={}]
+python -m unittest discover -s tests -v
+python code/verify.py
+\end{lstlisting}
+The default verification output overwrites files under \texttt{data/}.
+Larger finite audits can be requested, for example,
+\begin{lstlisting}[language={}]
+python code/verify.py --max-size 96 --large-size 192 --digital-bits 18
+\end{lstlisting}
+This last command is an optional example, not a run claimed in the
+reported results. No external Python packages, internet access, Wolfram
+kernel, or proof assistant are required by the supplied code.
+
+\subsection{Source and novelty audit}
+
+The primary problem source is \arxiv{2107.00442v2}, dated 4 July 2021.
+The statements and formulas were checked against the PDF, specifically
+printed pages 6--8 and 14, as well as the HTML representation.
+The arXiv abstract page's current version history was checked on
+19 September 2026. The earlier paper by Allouche, Han, and
+Shallit was consulted through \arxiv{2006.08909v2}; its journal version
+is listed in the bibliography. The relevant OEIS entries were also
+checked on that date.
+
+The present proofs establish the stated identities mathematically,
+subject to ordinary independent scrutiny of a new manuscript. They do
+not establish bibliographic priority. In particular, the evaluation of
+$D_n$, recurrences for $E_n$, and binary-run phenomena for $1\pm xr(x)$
+are prior material. The parameter formula, the explicit deductions of
+the four targeted 2021 assertions, and their collected consequences are
+the outputs of this investigation. A focused search did not identify a
+later paper resolving those exact assertions, but unindexed proofs,
+unpublished communications, or equivalent formulations may exist.
+No claim is made that an OEIS record or the author's paper has been
+updated to reflect this manuscript.
+
+The correction to Conjecture 22 is deliberately described as a
+counterexample to the \emph{printed statement}. Its small size makes a
+typographical or sign-convention explanation plausible; nothing here
+purports to infer the author's intended corrected formula.
+
+\subsection{Boundaries of the result}
+
+The proofs do not resolve every conjecture in the 2021 paper.
+In particular, no conclusion is asserted here about its other
+parameterized families or its period-eight assertion modulo two.
+
+The method suggests two concrete extensions. One is to evaluate higher
+shifts $H_n^{[s]}(r)$ uniformly in both $n$ and $s$, which would make the
+reciprocal-minor lemma more broadly effective. Another is to replace
+the perturbation $tx$ by a polynomial with several odd-degree terms.
+Parity ordering would then produce a finite-rank coupling, but its
+minors would require more than the four determinant sequences used
+here. These are directions for further work, not results asserted by
+this manuscript.
+
+\appendix
+\section{Direct evaluation and complexity}\label{sec:algorithm}
+
+The main formula is not merely a recurrence. It is an explicit function
+of the binary digits of the matrix order. The following code returns
+the constant and quadratic coefficients of the determinant polynomial.
+It is also included, with input checks and the other family formulas,
+in \texttt{code/rueppel.py}.
+
+\begin{lstlisting}
+def parameter_coefficients(n: int) -> tuple[int, int]:
+    if not isinstance(n, int) or isinstance(n, bool) or n < 0:
+        raise ValueError("The index must be a nonnegative integer.")
+    if n == 0:
+        return 1, 0
+    gray = n ^ (n >> 1)
+    a = (gray >> 1).bit_count()
+    b = gray & 1
+    exponent = 1 + b + (a + b) // 2
+    sigma = -1 if exponent % 2 else 1
+    return sigma * b, sigma * a
+\end{lstlisting}
+
+If the input index has $L$ binary digits, xor, shifting, and population
+count need $O(L)$ bit work in a straightforward implementation.
+The output coefficients have $O(\log L)$ bits. Thus the determinant
+polynomial can be evaluated using work linear in the input bit length,
+without generating moments or building an $n\times n$ matrix.
+The displayed Python implementation stores intermediate integers of
+$O(L)$ bits; it is not a claim of constant-space computation for
+arbitrary-precision inputs.
+
+For comparison, the independent matrix audit uses a cubic number of
+integer arithmetic operations per determinant, with bit cost depending
+on the intermediate entries. Its purpose is verification from the
+definition. Replacing it by the binary formula inside the audit would
+make the main comparison circular.
+
+\section{Archive contents}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.44\textwidth}p{.48\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{rueppel\_hankel.tex}, \texttt{tables.tex} & Complete article source and generated table.\\
+\texttt{rueppel\_hankel.pdf} & Compiled article.\\
+\texttt{code/rueppel.py} & Exact formulas, formal reciprocals, and determinant engine.\\
+\texttt{code/verify.py} & Reproduction script for the recorded experiments.\\
+\texttt{code/make\_table.py} & Regenerates the first-values table.\\
+\texttt{tests/test\_rueppel.py} & Independent small-size and identity tests.\\
+\texttt{data/exact\_determinants.csv} & Direct matrix evaluations through order 64.\\
+\texttt{data/polynomial\_coefficients.csv} & Binary data and determinant polynomials through order 1024.\\
+\texttt{data/dyadic\_distribution.csv} & The coefficient distribution at $N=16$.\\
+\texttt{data/dyadic\_sums.json} & Exact sums for the tested dyadic ranges.\\
+\texttt{data/verification\_summary.json} & Machine-readable audit summary and counterexample.\\
+\texttt{data/verification\_log.txt} & Output of the executed verification run.\\
+\texttt{README.md}, \texttt{Makefile} & Reading and build instructions.\\
+\texttt{SOURCE\_AUDIT.md} & Source locations and priority caveats.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{barry2021}
+Paul Barry,
+\emph{Conjectures and results on some generalized Rueppel sequences},
+\arxiv{2107.00442v2}, 4 July 2021.
+\href{https://doi.org/10.48550/arXiv.2107.00442}{doi:10.48550/arXiv.2107.00442}.
+
+\bibitem{ahs}
+Jean-Paul Allouche, Guo-Niu Han, and Jeffrey Shallit,
+\emph{On some conjectures of P. Barry},
+Journal of Number Theory \textbf{228} (2021), 108--132.
+\href{https://doi.org/10.1016/j.jnt.2021.03.015}{doi:10.1016/j.jnt.2021.03.015}.
+Preprint: \arxiv{2006.08909v2}, 24 June 2020.
+
+\bibitem{barry2020}
+Paul Barry,
+\emph{Some observations on the Rueppel sequence and associated Hankel determinants},
+\arxiv{2005.04066}, 2020.
+
+\bibitem{oeisrueppel}
+The OEIS Foundation Inc.,
+\oeis{A036987}, the Rueppel sequence. Accessed 19 September 2026.
+
+\bibitem{oeisruns}
+The OEIS Foundation Inc.,
+\oeis{A005811}, number of runs in the binary expansion of $n$.
+Accessed 19 September 2026.
+
+\bibitem{oeisparity}
+The OEIS Foundation Inc.,
+\oeis{A268411}, parity of the number of runs of ones in the binary
+representation of $n$. Accessed 19 September 2026.
+
+\bibitem{oeisreciprocal}
+The OEIS Foundation Inc.,
+\oeis{A339422}, coefficients of $1/(1+\sum_{j\ge0}x^{2^j})$.
+Accessed 19 September 2026.
+\end{thebibliography}
+\end{document}

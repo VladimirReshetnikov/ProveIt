@@ -1,0 +1,1706 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{18374A}
+\titleformat{\section}{\large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Ap\'ery arrays and conjectural zeta accelerations}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Hh}[2]{H_{#1}^{(#2)}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\Tarr}{T}
+\newcommand{\Carr}{C}
+\newcommand{\zthree}{\zeta(3)}
+\newcommand{\ztwo}{\zeta(2)}
+\DeclareMathOperator{\sgn}{sgn}
+\hypersetup{pdftitle={Apéry Arrays and Conjectural Zeta Accelerations},pdfauthor={Research note prepared with ChatGPT},pdfsubject={Proofs of OEIS A143007 and A108625 conjectural shifted-diagonal formulas}}
+
+\begin{document}
+\begin{center}
+{\small\scshape A self-contained research note}\par\vspace{0.65em}
+{\LARGE\bfseries\color{Ink} Ap\'ery Arrays and Conjectural\par Zeta Accelerations}\par\vspace{0.7em}
+{\large Proofs for every shifted diagonal in OEIS A143007,\par and for both conjectural diagonal families in A108625}\par\vspace{0.8em}
+{September 20, 2026}
+\end{center}
+\vspace{0.5em}
+\begin{abstract}
+The OEIS array A143007 contains a conjectural one-parameter family of
+rapidly convergent series for $\zeta(3)$. Its main diagonal consists of
+the classical Ap\'ery numbers. We prove the entire family, not merely a
+finite collection of numerical instances. The proof constructs a rational
+potential on the nonnegative integer lattice: two explicitly certified
+contiguous identities make its edge increments independent of the chosen
+path, and elementary estimates identify its limit as $\zeta(3)$.
+The same method proves both conjectural diagonal families for $\zeta(2)$
+in A108625, at every upper and lower offset, which is the full range for
+which the entry states them.
+We also obtain exact finite identities, signed rational error bounds,
+all monotone-path expansions, the classical Ap\'ery recurrences, a
+three-term recurrence along \emph{every} shifted diagonal, certified
+decimal prefixes, and sharp fixed-offset asymptotics. The accompanying
+code checks 34,910 identities in exact arithmetic, in a union suite with
+a second independent implementation, and verifies the finite symbolic
+certificates. The analytic proof does not depend on those tests.
+\end{abstract}
+
+\noindent\textbf{Status of the claim.}
+The targeted formulas are still described conjecturally in the OEIS
+versions consulted on the date above. This note supplies a complete proof
+of those statements. It does not claim that their underlying Ap\'ery
+acceleration mechanism, or every consequence developed here, is new.
+In particular, David's conservative-matrix-field paper already develops
+closely related lattice constructions for these constants and contains,
+up to its duality and sign conventions, the conjugate polynomials
+occurring below \cite[Examples 16, 19, 25; \S5]{david}; see
+\cref{sec:context}.
+
+\tableofcontents
+\newpage
+
+\section{The problem and its mathematical setting}\label{sec:context}
+
+Ap\'ery's sequences are an especially appropriate setting for an OEIS
+conjecture: they connect explicit integer sums, second-order recurrences,
+rational approximation, and special values of the Riemann zeta function.
+The familiar sequence associated with $\zeta(3)$ is
+\begin{equation}\label{eq:apery3def}
+ A_n=\sum_{j=0}^{n}\binom nj^2\binom{n+j}{j}^2
+ =1,5,73,1445,33001,819005,\ldots,
+\end{equation}
+where the displayed list begins at $n=0$. This is \OEIS{A005259}.
+Its $\zeta(2)$ companion, \OEIS{A005258}, is
+\begin{equation}\label{eq:apery2def}
+ b_n=\sum_{j=0}^{n}\binom nj^2\binom{n+j}{j}
+ =1,3,19,147,1251,11253,\ldots.
+\end{equation}
+These are not incidental integer sequences: they are the denominators
+in the classical Ap\'ery approximation constructions
+\cite{apery,oeis259,oeis258,cohen,straub}.
+
+The two-variable arrays studied below have these sequences as their
+main diagonals. They also have an independent geometric interpretation.
+Let
+\[
+ \mathsf A_m=\{(x_1,\ldots,x_{m+1})\in\Z^{m+1}:\textstyle\sum_i x_i=0\},
+ \qquad \|x\|=\frac12\sum_i|x_i|.
+\]
+The array A108625 counts balls in $\mathsf A_m$; A143007 counts balls
+in $\mathsf A_m\times\mathsf A_m$ for the sum of the two norms
+\cite{oeis108625,oeis143007,bacher}. Our proof will use finite binomial
+sums rather than assume any geometric facts about these lattices.
+
+\subsection{Exactly which conjectures are proved?}
+
+The formula section of A143007 explicitly labels its shifted-diagonal
+$\zeta(3)$ formula a ``Conjectural result for other diagonals''
+\cite{oeis143007}. We prove it for every integer offset $k\geq0$ in
+\cref{thm:zeta3}. The entry attributes its construction to Peter Bala
+and dates the original sequence to July 22, 2008.
+
+The formula section of A108625 likewise carries two separate labels,
+``Conjectural result for superdiagonals'' and ``Conjectural result for
+subdiagonals'', each stated for $k=0,1,2,\ldots$ and each attributed to
+Peter Bala \cite{oeis108625}. These are exactly
+\cref{thm:zeta2upper,thm:zeta2lower}. Both families are therefore already
+\emph{stated} in the entry for every nonnegative offset; what is supplied
+here is their proof, including the necessary distinction between the
+upper and lower diagonals. The entry's earlier comments of July 18, 2008
+describe the main diagonal and its two immediate neighbors, which are the
+$k=0$ and $k=1$ cases.
+
+For reproducibility, the consulted internal revisions are A143007,
+revision 75, and A108625, revision 98; both carry a May 30, 2026 revision
+timestamp. A conjectural label in a database is evidence about the
+entry's wording, not a guarantee that no proof exists elsewhere.
+
+That caveat is not hypothetical here. David's paper on the conservative
+matrix field develops related lattice constructions for these constants
+and contains, up to its duality and sign conventions, the same conjugate
+polynomials that appear below; its Section~5 establishes convergence and
+relates a diagonal trajectory to Ap\'ery's irrationality argument
+\cite[Examples 16, 19, 25; \S5]{david}. This substantial overlap precludes
+any unsupported claim that the method, its polynomials, or all of its
+consequences originate in this note. An OEIS label can persist after an
+identity follows from a broader theorem in the literature. Two-dimensional
+and staircase versions of Ap\'ery acceleration are classical in addition;
+Cohen's account explicitly develops that viewpoint \cite[\S\S3--4]{cohen}.
+The contribution of this note is a direct, self-contained proof of the
+exact OEIS statements at the level of finite binomial sums, together with
+explicit finite certificates and error analysis.
+
+\section{The arrays, their indexing, and the main results}\label{sec:results}
+
+All indices in this note are \emph{square-array} indices. They are not
+indices in the one-dimensional antidiagonal flattening used on the
+OEIS pages. Set
+\begin{equation}\label{eq:L}
+ L(m,j)=\binom mj\binom{m+j}{j},\qquad
+ L(m,j)=0\quad\hbox{if }j>m,
+\end{equation}
+and, for $m,n\geq0$, define
+\begin{align}
+ T_{m,n}&=\sum_{j=0}^{\min(m,n)}L(m,j)L(n,j),\label{eq:T}\\
+ C_{m,n}&=\sum_{j=0}^{\min(m,n)}L(m,j)\binom nj.\label{eq:C}
+\end{align}
+The array $T$ is A143007, and $C$ is A108625, with the dimension parameter
+in the first index and the radius in the second. Both OEIS entries call
+their own array $T$; we reserve $T$ for the symmetric array and write $C$
+for A108625, so that the two can appear in one formula. The two rational
+potentials built from them below are written $\Phi$ and $\Psi$, never $U$
+or $V$, because $U$ is a natural name for the A108625 array itself.
+Indeed,
+\[
+ \binom{m+j}{2j}\binom{2j}{j}=L(m,j),
+\]
+so \eqref{eq:T} immediately agrees with the OEIS formula. The equivalence
+of \eqref{eq:C} with the entry's binomial formula and row generating
+function is proved in \cref{app:identification}.
+
+The initial portions are
+\[
+\begin{array}{c|rrrrr}
+T_{m,n}&n=0&1&2&3&4\\\hline
+m=0&1&1&1&1&1\\
+1&1&5&13&25&41\\
+2&1&13&73&253&661\\
+3&1&25&253&1445&5741
+\end{array}
+\qquad
+\begin{array}{c|rrrrr}
+C_{m,n}&n=0&1&2&3&4\\\hline
+m=0&1&1&1&1&1\\
+1&1&3&5&7&9\\
+2&1&7&19&37&61\\
+3&1&13&55&147&309
+\end{array}
+\]
+Thus $T_{m,n}=T_{n,m}$, but generally $C_{m,n}\ne C_{n,m}$.
+In particular, transposing $C$ silently would interchange the two
+$\zeta(2)$ conjectures and alter their constants and signs.
+
+Both arrays are positive integers and are nondecreasing in each index,
+as follows directly from their nonnegative summands. Useful boundary
+values are
+\begin{align}
+ T_{0,n}=T_{m,0}=C_{0,n}=C_{m,0}&=1,\label{eq:boundary}\\
+ T_{m,1}=1+2m(m+1),\quad
+ C_{m,1}&=1+m(m+1),\quad C_{1,n}=1+2n.\label{eq:firstrow}
+\end{align}
+Their diagonals are precisely $T_{n,n}=A_n$ and $C_{n,n}=b_n$.
+
+Write
+\[
+ \Hh{k}{s}=\sum_{j=1}^{k}\frac1{j^s},\qquad
+ E_k=2\sum_{j=1}^{k}\frac{(-1)^{j+1}}{j^2},
+ \qquad \Hh{0}{s}=E_0=0.
+\]
+
+\begin{theorem}[All shifted $\zeta(3)$ diagonals]\label{thm:zeta3}
+For every integer $k\geq0$,
+\begin{equation}\label{eq:main3}
+ \boxed{\displaystyle
+ \zthree=\Hh{k}{3}+
+ \sum_{n=1}^{\infty}
+ \frac{(2n+k)(3n^2+3nk+k^2)}
+ {n^3(n+k)^3\,T_{n-1,n+k-1}T_{n,n+k}}.}
+\end{equation}
+The series is positive and converges geometrically. Its partial sum
+through $n=N$ is strictly below $\zthree$.
+\end{theorem}
+
+At $k=0$, \eqref{eq:main3} is the classical Ap\'ery series
+\begin{equation}\label{eq:classical3}
+ \zthree=6\sum_{n=1}^{\infty}\frac1{n^3 A_{n-1}A_n}.
+\end{equation}
+For example, the first genuinely shifted case is
+\[
+ \zthree=1+\frac{21}{8\cdot13}
+              +\frac{95}{216\cdot13\cdot253}+\cdots.
+\]
+
+\begin{theorem}[All upper $\zeta(2)$ diagonals]\label{thm:zeta2upper}
+For every integer $k\geq0$,
+\begin{equation}\label{eq:main2upper}
+ \boxed{\displaystyle
+ \ztwo=\Hh{k}{2}+
+ \sum_{n=1}^{\infty}(-1)^{n+1}
+ \frac{(n+k)^2+(2n+k)^2}
+ {n^2(n+k)^2\,C_{n-1,n+k-1}C_{n,n+k}}.}
+\end{equation}
+The series is absolutely convergent. If $S^{(2,+)}_{N,k}$ denotes its
+partial sum including $\Hh{k}{2}$, then
+$\sgn(\ztwo-S^{(2,+)}_{N,k})=(-1)^N$.
+\end{theorem}
+
+The numerator in \eqref{eq:main2upper} expands to $5n^2+6kn+2k^2$, which
+is how the entry writes it.
+
+\begin{theorem}[All lower $\zeta(2)$ diagonals]\label{thm:zeta2lower}
+For every integer $k\geq0$,
+\begin{equation}\label{eq:main2lower}
+ \boxed{\displaystyle
+ \ztwo=E_k+
+ \sum_{n=1}^{\infty}(-1)^{n+k+1}
+ \frac{n^2+(2n+k)^2}
+ {n^2(n+k)^2\,C_{n+k-1,n-1}C_{n+k,n}}.}
+\end{equation}
+The series is absolutely convergent. If $S^{(2,-)}_{N,k}$ denotes its
+partial sum including $E_k$, then
+$\sgn(\ztwo-S^{(2,-)}_{N,k})=(-1)^{N+k}$.
+\end{theorem}
+
+Here the numerator expands to $5n^2+4kn+k^2$, and the entry writes the
+overall sign as an explicit factor $(-1)^k$ multiplying a series with
+sign $(-1)^{n+1}$; this is the same statement.
+
+At $k=0$ both theorems give
+\begin{equation}\label{eq:classical2}
+ \ztwo=5\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n^2 b_{n-1}b_n}.
+\end{equation}
+Their $k=1$ cases are the neighboring-diagonal instances singled out in
+the entry's comments:
+\begin{align}
+ \ztwo&=1+\sum_{n=1}^{\infty}(-1)^{n+1}
+ \frac{(n+1)^2+(2n+1)^2}
+ {n^2(n+1)^2 C_{n-1,n}C_{n,n+1}},\label{eq:oeis2upper}\\
+ \ztwo&=2-\sum_{n=1}^{\infty}(-1)^{n+1}
+ \frac{n^2+(2n+1)^2}
+ {n^2(n+1)^2 C_{n,n-1}C_{n+1,n}}.\label{eq:oeis2lower}
+\end{align}
+For comparison with the entry, these begin
+\[
+ 1+\frac{13}{4\cdot5}-\frac{34}{36\cdot5\cdot37}+\cdots,
+ \qquad
+ 2-\frac{10}{4\cdot7}+\frac{29}{36\cdot7\cdot55}-\cdots.
+\]
+
+\section{Finite contiguous identities: the algebraic certificates}\label{sec:contiguous}
+
+The proof is driven by identities involving the four corners of one
+unit square. There is no experimental recurrence guessing in what follows:
+each identity is certified by an explicit telescoping summand.
+
+\subsection{The \texorpdfstring{$\zeta(3)$}{zeta(3)} square}
+
+Fix integers $m,n\geq1$ and abbreviate
+\[
+ a=T_{m-1,n-1},\quad b=T_{m,n-1},\quad
+ c=T_{m-1,n},\quad d=T_{m,n},
+ \qquad s=(m+n)(m^2+mn+n^2).
+\]
+
+\begin{lemma}\label{lem:Tcell}
+The four corners satisfy
+\begin{align}
+ m^3d+n^3a&=s c,\label{eq:Tcell1}\\
+ n^3d+m^3a&=s b.\label{eq:Tcell2}
+\end{align}
+\end{lemma}
+\begin{proof}
+Let $M=\min(m,n)$ and $f_j=L(m,j)L(n,j)$ for $0\leq j\leq M$.
+The ratios needed to lower the parameters are
+\[
+ \frac{L(m-1,j)}{L(m,j)}=\frac{m-j}{m+j},\qquad
+ \frac{L(n-1,j)}{L(n,j)}=\frac{n-j}{n+j}.
+\]
+They remain valid at an endpoint where a numerator vanishes.
+Define
+\[
+ R_j=\frac{j^4}{(m+j)(n+j)}f_j\quad(0\leq j\leq M),
+ \qquad R_{M+1}=0.
+\]
+The ratio of consecutive summands gives, for $0\leq j\leq M$,
+\begin{equation}\label{eq:Ttelescoper}
+ R_{j+1}=(m-j)(n-j)f_j.
+\end{equation}
+For $j=M$ both sides vanish; for $j<M$ this follows from
+\[
+ \frac{f_{j+1}}{f_j}
+ =\frac{(m-j)(m+j+1)(n-j)(n+j+1)}{(j+1)^4}.
+\]
+The following rational identity is the certificate:
+\begin{align}
+ &m^3+n^3\frac{(m-j)(n-j)}{(m+j)(n+j)}
+       -s\frac{m-j}{m+j}\notag\\
+ &\hspace{2em}=2(m+n)\left\{
+ \frac{j^4}{(m+j)(n+j)}-(m-j)(n-j)\right\}.\label{eq:Tcertificate}
+\end{align}
+It is checked simply by multiplying by $(m+j)(n+j)$ and expanding.
+Multiplication by $f_j$ turns its right side into
+$2(m+n)(R_j-R_{j+1})$. Summing from $0$ to $M$ proves
+\eqref{eq:Tcell1}, since $R_0=R_{M+1}=0$. Interchanging $m$ and $n$
+and using the symmetry of $T$ proves \eqref{eq:Tcell2}.
+\end{proof}
+
+It is worth recording that the single certificate \eqref{eq:Tcertificate}
+can be split into two pieces, one of which needs no telescoper at all.
+Writing $\rho_m=(m-j)/(m+j)$ and $\rho_n=(n-j)/(n+j)$ for the two
+lowering ratios, the purely rational identity
+\[
+ (m+n)(\rho_n-\rho_m)=(m-n)(\rho_m\rho_n-1)
+\]
+is termwise zero, and summing it against $f_j$ gives the
+\emph{antisymmetric} relation
+\begin{equation}\label{eq:Tanti}
+ (m+n)(b-c)=(m-n)(a-d).
+\end{equation}
+The remaining, \emph{symmetric} content
+\begin{equation}\label{eq:Tsym}
+ (m^2-mn+n^2)(a+d)=(m^2+mn+n^2)(b+c)
+\end{equation}
+is certified by the same kernel: multiplying $\eqref{eq:Tcertificate}$'s
+telescoping bracket by $4$ instead of $2(m+n)$ gives exactly the
+summand identity behind \eqref{eq:Tsym}. Adding $(m+n)$ times
+\eqref{eq:Tsym} to $(m^2+mn+n^2)$ times \eqref{eq:Tanti} returns
+\eqref{eq:Tcell1}, and subtracting returns \eqref{eq:Tcell2}. This is a
+repackaging of one certificate in different coordinates, not a second
+proof; we keep \cref{lem:Tcell} as the primary form because the potential
+argument uses it directly.
+
+The conjugate polynomial
+\begin{equation}\label{eq:sbar}
+ \bar s=(m-n)(m^2-mn+n^2),\qquad s\bar s=m^6-n^6,
+\end{equation}
+turns \cref{lem:Tcell} into the equivalent pair
+\begin{equation}\label{eq:Tconjugate}
+ m^3c-n^3b=\bar s\,d,\qquad m^3b-n^3c=\bar s\,a,
+\end{equation}
+obtained by eliminating $a$ or $d$ between \eqref{eq:Tcell1} and
+\eqref{eq:Tcell2} and using $s\bar s=m^6-n^6$. We use
+\eqref{eq:Tconjugate} in \cref{sec:recurrences}.
+
+\subsection{The \texorpdfstring{$\zeta(2)$}{zeta(2)} square}
+
+Now use the same local letters for the corners of $C$:
+\[
+ a=C_{m-1,n-1},\quad b=C_{m,n-1},\quad
+ c=C_{m-1,n},\quad d=C_{m,n},\qquad q=n^2+(m+n)^2.
+\]
+
+\begin{lemma}\label{lem:Ccell}
+The four corners satisfy
+\begin{align}
+ 2n^2d-m^2a&=q b,\label{eq:Ccell1}\\
+ m^2d+2n^2a&=q c.\label{eq:Ccell2}
+\end{align}
+\end{lemma}
+\begin{proof}
+Put $g_j=L(m,j)\binom nj$, $M=\min(m,n)$, and set
+\[
+ r_m=\frac{m-j}{m+j},\qquad r_n=\frac{n-j}{n},\qquad
+ R_j=\frac{j^3}{m+j}g_j\quad(0\leq j\leq M),\quad R_{M+1}=0.
+\]
+Here $r_m$ and $r_n$ are the ratios obtained by lowering $m$ and $n$,
+respectively. As in the preceding proof,
+\[
+ R_{j+1}=(m-j)(n-j)g_j,
+\]
+because
+\[
+ \frac{g_{j+1}}{g_j}
+ =\frac{(m-j)(m+j+1)(n-j)}{(j+1)^3}
+ \quad(j<M).
+\]
+Two elementary rational identities are
+\begin{align}
+ m^2+2n^2r_mr_n-q r_m
+ &=2\left\{\frac{j^3}{m+j}-(m-j)(n-j)\right\},\label{eq:Ccert2}\\
+ 2n^2-m^2r_mr_n-q r_n
+ &=\frac{2(m+n)}{n}
+ \left\{\frac{j^3}{m+j}-(m-j)(n-j)\right\}.\label{eq:Ccert1}
+\end{align}
+Multiply each identity by $g_j$, sum, and use $R_0=R_{M+1}=0$.
+The resulting identities are \eqref{eq:Ccell2} and \eqref{eq:Ccell1}.
+All denominators used here are nonzero because $m,n\geq1$.
+\end{proof}
+
+The quadratic square has the same conjugate structure. With
+\begin{equation}\label{eq:qbar}
+ \bar q=m^2-2mn+2n^2,\qquad q\bar q=m^4+4n^4,
+\end{equation}
+eliminating $a$ or $d$ between \eqref{eq:Ccell1} and \eqref{eq:Ccell2}
+gives
+\begin{equation}\label{eq:Cconjugate}
+ 2n^2c-m^2b=\bar q\,a,\qquad m^2c+2n^2b=\bar q\,d.
+\end{equation}
+Multiplying the first by $d$, the second by $a$, and equating yields the
+square condition for the signed weights of \cref{sec:zeta2proof} in one
+line. We verify that condition directly instead, in \eqref{eq:closed2check};
+\eqref{eq:Cconjugate} is recorded because it is the shortest statement of
+what the two corner identities say jointly.
+
+These three certificates are sufficient for the whole infinite family
+of conjectures. Their role is structural: a local identity will allow
+an infinite series to be evaluated by changing its lattice path.
+
+\section{A rational potential proving the \texorpdfstring{$\zeta(3)$}{zeta(3)} conjecture}\label{sec:zeta3proof}
+
+\subsection{Path independence on the integer lattice}
+
+A horizontal edge into $(m,n)$ is the step $(m-1,n)\to(m,n)$, and a
+vertical edge into $(m,n)$ is $(m,n-1)\to(m,n)$. If their weights are
+$h(m,n)$ and $v(m,n)$, respectively, the square condition is
+\begin{equation}\label{eq:closed}
+ h(m,n-1)+v(m,n)=v(m-1,n)+h(m,n).
+\end{equation}
+It says that the two routes from $(m-1,n-1)$ to $(m,n)$ have the same
+weight.
+
+\begin{lemma}[Finite path independence]\label{lem:path}
+If \eqref{eq:closed} holds for every $m,n\geq1$, then every monotone
+lattice path from $(0,0)$ to $(m,n)$ has the same sum of edge weights.
+Consequently there is a potential $F_{m,n}$ with $F_{0,0}=0$ and
+\[
+ F_{m,n}-F_{m-1,n}=h(m,n),\qquad
+ F_{m,n}-F_{m,n-1}=v(m,n).
+\]
+\end{lemma}
+\begin{proof}
+Encode a monotone path as a word with $m$ horizontal steps and $n$
+vertical steps. Adjacent horizontal--vertical pairs can be interchanged
+without changing the sum, by \eqref{eq:closed}. Such interchanges connect
+any two words with the same numbers of each step. Define $F_{m,n}$ as
+this common sum. Appending a last edge proves the asserted increments.
+\end{proof}
+
+For $T$, assign the positive rational edge weights
+\begin{equation}\label{eq:edges3}
+ h_3(m,n)=\frac1{m^3T_{m-1,n}T_{m,n}},\qquad
+ v_3(m,n)=\frac1{n^3T_{m,n-1}T_{m,n}}.
+\end{equation}
+Each expression is used only when the corresponding edge exists.
+With the local corner notation of \cref{lem:Tcell}, condition
+\eqref{eq:closed}, after clearing positive denominators, is
+\[
+ c(n^3d+m^3a)=b(m^3d+n^3a).
+\]
+Both sides are $sbc$, by \cref{lem:Tcell}. Hence the weights are
+path independent.
+
+Let their potential be $\Phi_{m,n}$. Taking the two boundary routes yields
+the explicit finite identity
+\begin{equation}\label{eq:U}
+ \boxed{\displaystyle
+ \Phi_{m,n}=\Hh{n}{3}+\sum_{i=1}^{m}
+   \frac1{i^3T_{i-1,n}T_{i,n}}
+ =\Hh{m}{3}+\sum_{j=1}^{n}
+   \frac1{j^3T_{m,j-1}T_{m,j}}.}
+\end{equation}
+In particular $\Phi_{m,n}$ is rational, symmetric, and strictly increasing
+when either coordinate increases by one.
+
+\subsection{Identifying the limit without assuming an Ap\'ery theorem}
+
+\begin{lemma}\label{lem:Ulimit}
+For all $m,n\geq0$, $\Phi_{m,n}<\zthree$. Moreover,
+$\Phi_{m,n}\to\zthree$ whenever $\max(m,n)\to\infty$.
+\end{lemma}
+\begin{proof}
+The second expression in \eqref{eq:U} and monotonicity of $T$ imply
+\[
+ 0\leq \Phi_{m,n}-\Hh{m}{3}
+ \leq\frac{\zthree}{T_{m,1}}
+ =\frac{\zthree}{1+2m(m+1)}.
+\]
+This tends to zero as $m\to\infty$, uniformly in $n$; thus for each
+fixed $n$, the strictly increasing sequence $\Phi_{m,n}$ tends to $\zthree$.
+In particular every finite value is strictly below $\zthree$.
+The two expressions in \eqref{eq:U} give
+\[
+ \Hh{\max(m,n)}{3}\leq \Phi_{m,n}<\zthree.
+\]
+The last assertion now follows by squeezing.
+\end{proof}
+
+It follows, incidentally, that \emph{every} infinite monotone path
+starting at $(0,0)$ yields a positive series with sum $\zthree$.
+Rows and diagonals are particular paths, not separate approximation
+phenomena.
+
+\subsection{The diagonal increment}
+
+The decisive cancellation is finite. A horizontal step followed by a
+vertical step, together with \eqref{eq:Tcell2}, gives
+\begin{align}
+ \Phi_{m,n}-\Phi_{m-1,n-1}
+ &=\frac1{m^3ab}+\frac1{n^3bd}\notag\\
+ &=\frac{n^3d+m^3a}{m^3n^3abd}\notag\\
+ &=\frac{(m+n)(m^2+mn+n^2)}
+ {m^3n^3T_{m-1,n-1}T_{m,n}}.\label{eq:diag3}
+\end{align}
+The intermediate corner $b$ cancels because the contiguous identity
+makes its numerator a multiple of $b$. This explains the apparently
+special cubic polynomial in the conjectured summand.
+
+\begin{proof}[Proof of \cref{thm:zeta3}]
+Apply \eqref{eq:diag3} at the points $(n,n+k)$ and sum the
+resulting identity for $n=1,\ldots,N$.
+Since $\Phi_{0,k}=\Hh{k}{3}$, the exact result is
+\begin{equation}\label{eq:finite3}
+ \Phi_{N,N+k}=\Hh{k}{3}+
+ \sum_{n=1}^{N}
+ \frac{(2n+k)(3n^2+3nk+k^2)}
+ {n^3(n+k)^3T_{n-1,n+k-1}T_{n,n+k}}.
+\end{equation}
+Let $N\to\infty$ and apply \cref{lem:Ulimit}. All terms are positive,
+and the partial sums are below the limit. Geometric convergence follows
+from the explicit bounds in \cref{sec:errors}, independently of the
+sharper asymptotics in \cref{sec:asymptotics}.
+\end{proof}
+
+\section{A signed rational potential for the \texorpdfstring{$\zeta(2)$}{zeta(2)} conjectures}\label{sec:zeta2proof}
+
+The array $C$ is not symmetric, and the correct weights necessarily
+remember the first coordinate:
+\begin{equation}\label{eq:edges2}
+ h_2(m,n)=\frac{2(-1)^{m+1}}{m^2C_{m-1,n}C_{m,n}},\qquad
+ v_2(m,n)=\frac{(-1)^m}{n^2C_{m,n-1}C_{m,n}}.
+\end{equation}
+The square condition \eqref{eq:closed}, after clearing denominators and
+a common sign, becomes
+\begin{equation}\label{eq:closed2check}
+ c(2n^2d-m^2a)=b(m^2d+2n^2a).
+\end{equation}
+By \cref{lem:Ccell}, both sides are $qbc$. Hence these weights define
+a rational potential $\Psi_{m,n}$. The boundary values now differ on the
+two axes:
+\[
+ \Psi_{0,n}=\Hh{n}{2},\qquad \Psi_{m,0}=E_m.
+\]
+The two boundary routes give
+\begin{equation}\label{eq:V}
+ \boxed{\displaystyle
+ \Psi_{m,n}=\Hh{n}{2}+2\sum_{i=1}^{m}
+ \frac{(-1)^{i+1}}{i^2C_{i-1,n}C_{i,n}}
+ =E_m+(-1)^m\sum_{j=1}^{n}
+ \frac1{j^2C_{m,j-1}C_{m,j}}.}
+\end{equation}
+
+\begin{lemma}\label{lem:Vlimit}
+The potential $\Psi_{m,n}$ tends to $\ztwo$ whenever
+$\max(m,n)\to\infty$.
+\end{lemma}
+\begin{proof}
+First, $E_m\to\ztwo$: separating the even terms in the absolutely
+convergent series gives
+\[
+ \sum_{j\geq1}\frac{(-1)^{j+1}}{j^2}
+ =\ztwo-2\sum_{j\geq1}\frac1{(2j)^2}=\frac12\ztwo.
+\]
+The second expression in \eqref{eq:V} gives the uniform estimate
+\begin{equation}\label{eq:Vlimitm}
+ |\Psi_{m,n}-E_m|\leq\frac{\ztwo}{C_{m,1}}
+ =\frac{\ztwo}{1+m(m+1)}.
+\end{equation}
+On the other hand, the first expression gives
+\begin{equation}\label{eq:Vlimitn}
+ |\Psi_{m,n}-\Hh{n}{2}|
+ \leq\frac{2\ztwo}{C_{1,n}}=\frac{2\ztwo}{2n+1}.
+\end{equation}
+For \eqref{eq:Vlimitn}, use $C_{i,n}\geq C_{1,n}$ and
+$C_{i-1,n}\geq1$ for every $i\geq1$. Either estimate proves the
+limit when its corresponding coordinate tends to infinity, uniformly
+in the other. Together they prove the assertion for
+$\max(m,n)\to\infty$.
+\end{proof}
+
+As before, every infinite monotone path produces a convergent expansion
+for the same constant, although the edge weights now have signs.
+To combine the two edges of a square, use \eqref{eq:Ccell1}:
+\begin{align}
+ \Psi_{m,n}-\Psi_{m-1,n-1}
+ &=\frac{2(-1)^{m+1}}{m^2ab}+\frac{(-1)^m}{n^2bd}\notag\\
+ &=(-1)^{m+1}\frac{2n^2d-m^2a}{m^2n^2abd}\notag\\
+ &=(-1)^{m+1}
+ \frac{n^2+(m+n)^2}{m^2n^2 C_{m-1,n-1}C_{m,n}}.\label{eq:diag2}
+\end{align}
+
+\begin{proof}[Proof of \cref{thm:zeta2upper,thm:zeta2lower}]
+Sum \eqref{eq:diag2} along the points $(n,n+k)$, starting from $(0,k)$.
+This gives the exact finite identity
+\begin{equation}\label{eq:finite2upper}
+ \Psi_{N,N+k}=\Hh{k}{2}+\sum_{n=1}^{N}(-1)^{n+1}
+ \frac{(n+k)^2+(2n+k)^2}
+ {n^2(n+k)^2 C_{n-1,n+k-1}C_{n,n+k}}.
+\end{equation}
+Instead sum along $(n+k,n)$, starting from $(k,0)$. The result is
+\begin{equation}\label{eq:finite2lower}
+ \Psi_{N+k,N}=E_k+\sum_{n=1}^{N}(-1)^{n+k+1}
+ \frac{n^2+(2n+k)^2}
+ {n^2(n+k)^2 C_{n+k-1,n-1}C_{n+k,n}}.
+\end{equation}
+Take $N\to\infty$ and apply \cref{lem:Vlimit}. Absolute convergence
+already follows by bounding the positive arrays below by $1$:
+for fixed $k$, the absolute summands are $O(n^{-2})$.
+The exact signs of the errors follow from \eqref{eq:error2exact} below.
+\end{proof}
+
+The additive constant $E_k$ in the lower formula is not interchangeable
+with $\Hh{k}{2}$. Likewise its extra sign $(-1)^k$ is not optional.
+Both are forced by the boundary values and the orientation of the
+potential.
+
+\section{Exact remainders and certified rational intervals}\label{sec:errors}
+
+A proof of convergence is stronger when it also gives computable error
+bounds. Here the potentials make the error an explicit tail in either
+coordinate direction, so no numerical evaluation of a zeta function is
+required for certification.
+
+\subsection{The positive \texorpdfstring{$\zeta(3)$}{zeta(3)} error}
+
+For fixed $n$, extend the horizontal path from $(m,n)$ to infinity.
+By \cref{lem:Ulimit},
+\begin{equation}\label{eq:error3exact}
+ \zthree-\Phi_{m,n}
+ =\sum_{i=m+1}^{\infty}\frac1{i^3T_{i-1,n}T_{i,n}}
+ =\sum_{j=n+1}^{\infty}\frac1{j^3T_{m,j-1}T_{m,j}}.
+\end{equation}
+Both representations are positive. For $m\geq1$, monotonicity gives
+\begin{align}
+ \frac1{(m+1)^3T_{m,n}T_{m+1,n}}
+ &\leq\zthree-\Phi_{m,n}\notag\\
+ &\leq\frac{\zthree-\Hh{m}{3}}{T_{m,n}T_{m+1,n}}
+ <\frac1{2m^2T_{m,n}T_{m+1,n}}.\label{eq:error3bound}
+\end{align}
+The last inequality uses
+$\sum_{i>m}i^{-3}<\int_m^{\infty}t^{-3}\,\dd t=1/(2m^2)$.
+There is a second bound with the coordinates interchanged. A third form
+uses the tail whose lower index is the \emph{larger} coordinate and then
+replaces both array factors by $T_{m,n}$: for $M=\max(m,n)\geq1$,
+\begin{equation}\label{eq:error3square}
+ 0<\zthree-\Phi_{m,n}<\frac1{2M^2T_{m,n}^2}.
+\end{equation}
+Thus, for $m,n\geq1$, the explicitly rational number
+\begin{equation}\label{eq:B3}
+ B_3(m,n)=\min\left\{
+ \frac1{2m^2T_{m,n}T_{m+1,n}},\,
+ \frac1{2n^2T_{m,n}T_{m,n+1}},\,
+ \frac1{2\max(m,n)^2T_{m,n}^2}\right\}
+\end{equation}
+satisfies
+\[
+ \Phi_{m,n}<\zthree<\Phi_{m,n}+B_3(m,n).
+\]
+All three expressions are proved bounds, so the minimum is legitimate.
+Monotonicity of $T$ in fact makes the branch of \eqref{eq:B3} belonging
+to the larger coordinate at least as sharp as \eqref{eq:error3square}:
+along a fixed diagonal the gain is the factor
+$T_{N,N+k+1}/T_{N,N+k}\to q_3=3+2\sqrt2=5.828\ldots$, by
+\cref{thm:arrayasymp}, which is worth about $0.77$ of a decimal digit.
+For the conjectural series, substitute $(m,n)=(N,N+k)$.
+
+\subsection{The signed \texorpdfstring{$\zeta(2)$}{zeta(2)} error}
+
+Taking a vertical tail in \eqref{eq:V} gives the exact identity
+\begin{equation}\label{eq:error2exact}
+ \ztwo-\Psi_{m,n}=(-1)^m
+ \sum_{j=n+1}^{\infty}\frac1{j^2C_{m,j-1}C_{m,j}}.
+\end{equation}
+Every summand on the right after removal of $(-1)^m$ is strictly
+positive. Hence the sign is exactly $(-1)^m$, not merely eventually so.
+For $n\geq1$, the vertical estimates are
+\begin{equation}\label{eq:error2vertical}
+ \frac1{(n+1)^2C_{m,n}C_{m,n+1}}
+ \leq |\ztwo-\Psi_{m,n}|
+ <\frac1{nC_{m,n}C_{m,n+1}}.
+\end{equation}
+The upper bound follows from $\sum_{j>n}j^{-2}<1/n$.
+
+There is a complementary horizontal tail:
+\begin{equation}\label{eq:error2horizontal}
+ \ztwo-\Psi_{m,n}
+ =2\sum_{i=m+1}^{\infty}
+ \frac{(-1)^{i+1}}{i^2C_{i-1,n}C_{i,n}}.
+\end{equation}
+Its magnitudes strictly decrease to zero, since $i^2$ strictly increases
+and both array factors are nondecreasing. The alternating-series bound
+therefore gives
+\begin{equation}\label{eq:error2hbound}
+ |\ztwo-\Psi_{m,n}|
+ \leq\frac2{(m+1)^2C_{m,n}C_{m+1,n}}.
+\end{equation}
+Replacing $C_{m,n+1}$ by $C_{m,n}$ in \eqref{eq:error2vertical} gives the
+weaker but equally valid form $|\ztwo-\Psi_{m,n}|<1/(nC_{m,n}^2)$.
+For $n\geq1$, define
+\begin{equation}\label{eq:B2}
+ B_2(m,n)=\min\left\{
+ \frac2{(m+1)^2C_{m,n}C_{m+1,n}},\,
+ \frac1{nC_{m,n}C_{m,n+1}},\,
+ \frac1{nC_{m,n}^2}\right\}.
+\end{equation}
+Then $\Psi_{m,n}$ and $\Psi_{m,n}+(-1)^m B_2(m,n)$ are endpoints of a
+closed rational interval containing $\ztwo$. The parity gives the
+correct ordering of its endpoints. The same construction works when
+$n=0$ by using only the first term in \eqref{eq:B2}.
+
+\subsection{An elementary proof of geometric acceleration}
+
+The bounds above already imply geometric convergence, without any
+saddle-point analysis. Since the central binomial coefficient is the
+largest of the $2N+1$ coefficients whose sum is $4^N$,
+\[
+ \binom{2N}{N}\geq\frac{4^N}{2N+1}.
+\]
+The $j=N$ summand in $T_{N,N+k}$ gives
+\[
+ T_{N,N+k}\geq\binom{2N}{N}^2\geq\frac{16^N}{(2N+1)^2}.
+\]
+Apply \eqref{eq:error3bound} and monotonicity to obtain, for $N\geq1$,
+\begin{equation}\label{eq:rough3}
+ 0<\zthree-\Phi_{N,N+k}
+ <\frac{(2N+1)^4}{2(N+k)^2\,256^N}.
+\end{equation}
+Here the tail has been taken in the larger coordinate $N+k$; the same
+estimate applied to the horizontal branch gives the weaker
+$(2N+1)^4/(2N^2\,256^N)$, which \eqref{eq:rough3} implies.
+Likewise, both $C_{N,N+k}$ and $C_{N+k,N}$ are at least
+$\binom{2N}{N}$. Using \eqref{eq:error2hbound} for the first branch and
+the vertical bound \eqref{eq:error2vertical} for the second gives
+\begin{align}
+ |\ztwo-\Psi_{N,N+k}|
+ &\leq\min\left\{\frac{2(2N+1)^2}{(N+1)^2\,16^N},\,
+ \frac{(2N+1)^2}{(N+k)\,16^N}\right\},\label{eq:rough2upper}\\
+ |\ztwo-\Psi_{N+k,N}|
+ &\leq\min\left\{\frac{2(2N+1)^2}{(N+1)^2\,16^N},\,
+ \frac{(2N+1)^2}{N\,16^N}\right\}.\label{eq:rough2lower}
+\end{align}
+Neither branch dominates the other: the first decays like $N^{-2}$ and
+so wins for large $N$, while the second is sharper in $k$ for the upper
+diagonal at small $N$. These deliberately simple bounds are uniform over
+all offsets $k\geq0$. The sharp exponential rates for fixed $k$ are
+substantially faster.
+
+\subsection{Numerical certificates, not merely decimal agreement}
+
+\cref{tab:bounds} reports rational bounds \eqref{eq:B3} and \eqref{eq:B2}
+computed by exact integer arithmetic. The displayed scientific notation
+has been rounded \emph{upward}; the exact fractions are included in
+\texttt{data/certified\_intervals.csv}. The full CSV also records the
+rational partial sums, the error signs, and decimal displays.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Rigorous absolute-error upper bounds after $N$ diagonal terms.
+Each displayed value is rounded upward to three significant digits.}
+\label{tab:bounds}
+\input{data/error_table.tex}
+\end{table}
+
+For instance, the unshifted $\zeta(3)$ series after 40 terms has
+absolute error less than $2.44\cdot10^{-121}$. This is an absolute-error
+statement; claiming that a certain decimal string is correctly rounded
+would additionally require testing the certified interval against the
+relevant rounding boundary. The archive preserves exact fractions so
+that such tests can be made without relying on a floating-point zeta
+implementation. The next subsection carries out exactly that test.
+
+\subsection{From an interval to certified decimal digits}\label{sec:digits}
+
+Let $[L,R]$ be either of the rational enclosures above and let $d$ be a
+positive integer. The exact integer condition
+\begin{equation}\label{eq:decimalcert}
+ \lfloor10^dL\rfloor=\lfloor10^dR\rfloor
+\end{equation}
+certifies the first $d$ decimal digits after the point of \emph{every}
+number in $[L,R]$, and in particular of the constant enclosed. Both sides
+are computed by integer division, with no floating-point rounding
+anywhere. This is the step deferred above: it turns an absolute-error
+bound into a statement about a decimal string.
+
+The distinction matters, because a narrow interval need not certify many
+digits. An interval may have very small width and still straddle a
+decimal boundary, in which case \eqref{eq:decimalcert} fails at a $d$
+well below $-\log_{10}(R-L)$. The accompanying program therefore tests
+\eqref{eq:decimalcert} directly rather than reporting the width.
+
+\cref{tab:digits} gives the resulting counts for $N=60$ summands after
+the boundary harmonic sum. They are the actual common-prefix lengths of
+the generated intervals, not predictions from the leading asymptotics of
+\cref{sec:asymptotics}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Certified decimal places at $N=60$, from
+\eqref{eq:decimalcert} applied to the rational enclosures.}
+\label{tab:digits}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+Offset $k$ & $\zeta(3)$ & $\zeta(2)$, upper & $\zeta(2)$, lower\\
+\midrule
+$0$  & $181$ & $124$ & $124$\\
+$1$  & $182$ & $125$ & $125$\\
+$3$  & $186$ & $127$ & $128$\\
+$10$ & $194$ & $131$ & $136$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These counts are consistent with the absolute-error table: $40\cdot
+3.0622=122.5$ and $40\cdot2.0899=83.6$ match the exponents reported
+above, and $60\cdot3.0622=183.7$ and $60\cdot2.0899=125.4$ match the
+$N=60$ counts after the loss caused by boundary crossings. The exact
+interval endpoints are stored in \texttt{data/certified\_digits.csv}
+and \texttt{data/decimal\_certificates.json}.
+
+\section{Recovering the classical Ap\'ery recurrences}\label{sec:recurrences}
+
+The square identities also explain why these arrays contain the familiar
+Ap\'ery denominators. This provides an independent consistency check and
+connects the proof with the usual one-dimensional formulation.
+
+\subsection{Denominator recurrences}
+
+On the diagonal of \cref{lem:Tcell},
+\begin{equation}\label{eq:Tneighbor}
+ T_{n,n-1}=T_{n-1,n}=\frac{A_n+A_{n-1}}6\qquad(n\geq1).
+\end{equation}
+At the square with upper-right corner $(n+1,n)$,
+\eqref{eq:Tcell1} gives
+\[
+ (n+1)^3T_{n+1,n}+n^3T_{n,n-1}
+ =(2n+1)(3n^2+3n+1)A_n.
+\]
+Substitute \eqref{eq:Tneighbor}. After multiplication by $6$ and
+collection of terms, the result is
+\begin{equation}\label{eq:rec3}
+ (n+1)^3 A_{n+1}
+ =(34n^3+51n^2+27n+5)A_n-n^3A_{n-1},
+ \qquad n\geq1.
+\end{equation}
+The initial values are $A_0=1$ and $A_1=5$.
+
+Similarly, the two diagonal identities for $C$ give
+\begin{equation}\label{eq:Cneighbors}
+ C_{n,n-1}=\frac{2b_n-b_{n-1}}5,\qquad
+ C_{n-1,n}=\frac{b_n+2b_{n-1}}5.
+\end{equation}
+Use \eqref{eq:Ccell2} at $(m,n)=(n+1,n)$:
+\[
+ (n+1)^2C_{n+1,n}+2n^2C_{n,n-1}
+ =\bigl(n^2+(2n+1)^2\bigr)b_n.
+\]
+Substitution from \eqref{eq:Cneighbors} gives
+\begin{equation}\label{eq:rec2}
+ (n+1)^2b_{n+1}=(11n^2+11n+3)b_n+n^2b_{n-1},
+ \qquad n\geq1,
+\end{equation}
+with $b_0=1$ and $b_1=3$. These are the classical recurrences recorded
+for A005259 and A005258 \cite{oeis259,oeis258}.
+
+\subsection{The companion numerator solutions}
+
+Define rational arrays
+\begin{equation}\label{eq:numerators}
+ P_{m,n}=T_{m,n}\Phi_{m,n},\qquad R_{m,n}=C_{m,n}\Psi_{m,n}.
+\end{equation}
+They satisfy exactly the same local linear identities as $T$ and $C$,
+respectively. For example, abbreviate the four $\Phi$ values by
+$\Phi_a,\Phi_b,\Phi_c,\Phi_d$. Then
+\begin{align*}
+ m^3d\Phi_d+n^3a\Phi_a-sc\Phi_c
+ &=m^3d(\Phi_d-\Phi_c)+n^3a(\Phi_a-\Phi_c)\\
+ &=m^3d\,h_3(m,n)-n^3a\,v_3(m-1,n)\\
+ &=\frac1c-\frac1c=0.
+\end{align*}
+The other identity follows by symmetry.
+For $R$, the corresponding cancellations are
+\begin{align*}
+ 2n^2d\Psi_d-m^2a\Psi_a-qb\Psi_b
+ &=2n^2d\,v_2(m,n)+m^2a\,h_2(m,n-1)=0,\\
+ m^2d\Psi_d+2n^2a\Psi_a-qc\Psi_c
+ &=m^2d\,h_2(m,n)-2n^2a\,v_2(m-1,n)=0.
+\end{align*}
+Thus the same elimination used for the denominators applies to their
+numerator companions.
+
+Set $p_n=P_{n,n}$ and $r_n=R_{n,n}$. Then $p_n$ satisfies
+\eqref{eq:rec3}, with $p_0=0,p_1=6$, and $r_n$ satisfies
+\eqref{eq:rec2}, with $r_0=0,r_1=5$. In particular,
+\[
+ \frac{p_n}{A_n}=\Phi_{n,n}\longrightarrow\zthree,\qquad
+ \frac{r_n}{b_n}=\Psi_{n,n}\longrightarrow\ztwo.
+\]
+The adjacent determinant identities (often called Casoratians) are
+immediate from the diagonal increments:
+\begin{align}
+ p_nA_{n-1}-p_{n-1}A_n&=\frac6{n^3},\label{eq:cas3}\\
+ r_nb_{n-1}-r_{n-1}b_n&=\frac{5(-1)^{n+1}}{n^2}.\label{eq:cas2}
+\end{align}
+The normalization here allows rational numerator sequences; no claim
+that all $p_n$ or $r_n$ are integers is intended. In the standard
+irrationality arguments, additional denominator-control statements are
+important. They are not needed to prove any of the series identities
+in this note.
+
+\subsection{A three-term recurrence on every shifted diagonal}\label{sec:shiftrec}
+
+The recurrences above are statements about the main diagonal. The same
+corner identities give a recurrence along each shifted diagonal as well,
+which is what one wants for computation: it avoids generating a
+two-dimensional array. The route is a row recurrence followed by one
+elimination.
+
+\begin{proposition}[Row recurrence]\label{prop:rowrec}
+For every $m\geq1$ and every $n\geq0$,
+\begin{equation}\label{eq:rowrec}
+ (m+1)^3T_{m+1,n}
+ =(2m+1)(m^2+m+2n^2+2n+1)\,T_{m,n}-m^3T_{m-1,n}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $n\geq1$. Applying \eqref{eq:Tcell1} to the square with upper-right
+corner $(m+1,n)$ gives
+\[
+ s(m+1,n)\,T_{m,n}=(m+1)^3T_{m+1,n}+n^3T_{m,n-1},
+\]
+where $s(m,n)=(m+n)(m^2+mn+n^2)$. The first identity in
+\eqref{eq:Tconjugate}, at $(m,n)$, gives
+$n^3T_{m,n-1}=m^3T_{m-1,n}-\bar s(m,n)T_{m,n}$. Eliminating
+$T_{m,n-1}$ leaves \eqref{eq:rowrec}, because
+\[
+ s(m+1,n)+\bar s(m,n)=(2m+1)(m^2+m+2n^2+2n+1).
+\]
+For $n=0$ every entry is $1$ and \eqref{eq:rowrec} reduces to the
+numerical identity $(m+1)^3=(2m+1)(m^2+m+1)-m^3$.
+\end{proof}
+
+Fix $k\geq0$ and set, for $n\geq0$,
+\begin{gather}
+ D_n=T_{n,n+k},\qquad
+ \sigma_n=s(n,n+k)=(2n+k)(3n^2+3nk+k^2),\qquad
+ w_n=n^3(n+k)^3,\label{eq:recdefs}\\
+ G_n=(2n+1)\bigl(n^2+n+2(n+k)^2+2(n+k)+1\bigr),\notag\\
+ K_n=\sigma_{n+1}(\sigma_nG_n-n^6)-\sigma_n(n+1)^6.\label{eq:Kn}
+\end{gather}
+Only $n\geq1$ occurs in $\sigma_n$ and $w_n$ below, so both are positive
+there.
+
+\begin{theorem}[Shifted-diagonal recurrence]\label{thm:shiftrec}
+For every $k\geq0$ and every $n\geq1$,
+\begin{equation}\label{eq:shiftrec}
+ w_{n+1}\sigma_n D_{n+1}=K_nD_n-\sigma_{n+1}w_nD_{n-1},
+\end{equation}
+with initial values
+\begin{equation}\label{eq:Dinit}
+ D_0=1,\qquad D_1=2k^2+6k+5.
+\end{equation}
+The rational sequence $\widehat D_n=D_n\,S^{(3)}_{n,k}$ satisfies the
+same recurrence \eqref{eq:shiftrec}, with
+\begin{equation}\label{eq:Dhatinit}
+ \widehat D_0=\Hh{k}{3},\qquad
+ \widehat D_1=D_1\Hh{k}{3}+\frac{\sigma_1}{(k+1)^3},
+\end{equation}
+and the two solutions are linked by the discrete Wronskian
+\begin{equation}\label{eq:wronskian}
+ \widehat D_nD_{n-1}-\widehat D_{n-1}D_n=\frac{\sigma_n}{w_n}
+ \qquad(n\geq1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $m=n+k$. The identity \eqref{eq:Tcell1} at $(n,m)$ gives
+\[
+ T_{n-1,m}=\frac{n^3D_n+m^3D_{n-1}}{\sigma_n}.
+\]
+Now apply \eqref{eq:rowrec} with dimension index $n$ and radius index
+$m$, that is,
+\[
+ (n+1)^3T_{n+1,m}=G_nT_{n,m}-n^3T_{n-1,m}.
+\]
+Substituting the previous display for $T_{n-1,m}$ and multiplying by
+$\sigma_n$ yields
+\[
+ (n+1)^3\sigma_nT_{n+1,m}=(\sigma_nG_n-n^6)D_n-w_nD_{n-1}.
+\]
+Next, \eqref{eq:Tcell2} at $(n+1,m+1)$ reads
+\[
+ \sigma_{n+1}T_{n+1,m}=(m+1)^3D_{n+1}+(n+1)^3D_n.
+\]
+Eliminating $T_{n+1,m}$ between the two displays, and using
+$(n+1)^3(m+1)^3=w_{n+1}$, gives \eqref{eq:shiftrec}. The initial values
+are $T_{0,k}=1$ and, by symmetry and \eqref{eq:firstrow},
+$T_{1,k+1}=T_{k+1,1}=1+2(k+1)(k+2)=2k^2+6k+5$.
+
+For the companion, \eqref{eq:finite3} gives
+$S^{(3)}_{n,k}-S^{(3)}_{n-1,k}=\sigma_n/(w_nD_{n-1}D_n)$, and
+multiplying by $D_nD_{n-1}$ is exactly \eqref{eq:wronskian}.
+Divide \eqref{eq:shiftrec} by $w_{n+1}\sigma_n$ and write it as
+$D_{n+1}=\alpha_nD_n-\beta_nD_{n-1}$ with
+$\beta_n=\sigma_{n+1}w_n/(\sigma_nw_{n+1})$. If $W_n$ denotes the left
+side of \eqref{eq:wronskian}, then $W_{n+1}=\beta_nW_n$, and
+\[
+ D_n\bigl(\widehat D_{n+1}-\alpha_n\widehat D_n
+ +\beta_n\widehat D_{n-1}\bigr)=W_{n+1}-\beta_nW_n=0 .
+\]
+Since $D_n>0$, the companion satisfies the same recurrence. Its initial
+values follow from $S^{(3)}_{0,k}=\Hh{k}{3}$ and the first diagonal
+increment.
+\end{proof}
+
+At $k=0$ we have $\sigma_n=6n^3$, $w_n=n^6$ and
+$G_n=(2n+1)(3n^2+3n+1)$, and dividing \eqref{eq:shiftrec} by
+$6n^3(n+1)^3$ returns \eqref{eq:rec3} exactly, since
+\[
+ \frac{K_n}{6n^3(n+1)^3}
+ =6(2n+1)(3n^2+3n+1)-n^3-(n+1)^3
+ =34n^3+51n^2+27n+5 .
+\]
+The Wronskian \eqref{eq:wronskian} likewise becomes
+$\sigma_n/w_n=6/n^3$, which is \eqref{eq:cas3}, and
+$\widehat D_n=p_n$. Thus \cref{thm:shiftrec} is the general case and the
+classical cubic recurrence is its $k=0$ specialization.
+
+Two limitations should be stated plainly. First, no analogue of
+\cref{thm:shiftrec} for the quadratic array is proved here: the
+$\zeta(2)$ recurrence \eqref{eq:rec2} is established only on the main
+diagonal, and an all-offset recurrence for $C_{n,n+k}$ is not supplied.
+Second, there is an arithmetic distinction between the two solutions.
+Every $D_n$ is an integer, but $\widehat D_n$ need not be. Consequently
+the approximation estimates of \cref{sec:errors} are not, without an
+additional denominator argument, a self-contained new proof of
+irrationality; fast approximation and irrationality are not conflated
+anywhere in this note.
+
+For computation along a fixed offset, \eqref{eq:shiftrec} reaches index
+$N$ in $O(N)$ recurrence steps rather than by generating a
+two-dimensional array. This counts arithmetic operations, not bit
+operations on integers whose length grows linearly in $N$.
+
+\section{Sharp growth and error asymptotics}\label{sec:asymptotics}
+
+The previous sections already prove the conjectures and give rigorous
+rational error bounds. We now determine the exact fixed-offset
+asymptotics, both to quantify the acceleration and to distinguish the
+effect of an offset from the effect of taking more diagonal terms.
+Every statement in this section has $k$ \emph{fixed}, with $N$ or $n$
+tending to infinity. No estimate uniform in a growing offset is asserted
+anywhere.
+
+Put
+\begin{align}
+ \tau&=1+\sqrt2,& q_3&=\tau^2=3+2\sqrt2,&
+ \lambda_3&=\tau^4=17+12\sqrt2,\label{eq:constants3}\\
+ \varphi&=\frac{1+\sqrt5}{2},&&&
+ \lambda_2&=\varphi^5=\frac{11+5\sqrt5}{2},\label{eq:constants2}\\
+ c_3&=\frac{q_3}{2^{9/4}\pi^{3/2}},&&&
+ c_2&=\frac{\varphi^{5/2}}{2\pi\,5^{1/4}}.\label{eq:cconstants}
+\end{align}
+Two elementary relations between these surds will simplify the error
+constants below:
+\begin{equation}\label{eq:surd}
+ \lambda_3^2-1=24\sqrt2\,\lambda_3,\qquad
+ \lambda_2^2+1=5\sqrt5\,\lambda_2.
+\end{equation}
+
+\begin{theorem}[Fixed-offset array growth]\label{thm:arrayasymp}
+For every fixed integer $k\geq0$, as $N\to\infty$,
+\begin{align}
+ T_{N,N+k}&\sim c_3q_3^k\lambda_3^N N^{-3/2},\label{eq:Tasymp}\\
+ C_{N,N+k}&\sim c_2\varphi^{2k}\lambda_2^N N^{-1},\label{eq:Casympupper}\\
+ C_{N+k,N}&\sim c_2\varphi^{3k}\lambda_2^N N^{-1}.\label{eq:Casymplower}
+\end{align}
+\end{theorem}
+
+\subsection{A discrete Laplace estimate}
+
+We use the following elementary form of the saddle-point principle.
+Suppose $f$ has a unique interior maximum at $t_0\in(0,1)$,
+$f''(t_0)<0$, and the summands near $j/N=t_0$ have the uniform form
+\[
+ N^{-a}g(j/N)\ee^{Nf(j/N)}(1+o(1)),\qquad g(t_0)>0.
+\]
+If summands outside every fixed neighborhood of $t_0$ are bounded by a
+polynomial in $N$ times $\ee^{N(f(t_0)-\delta)}$ for some $\delta>0$,
+then their sum is asymptotic to
+\begin{equation}\label{eq:laplace}
+ g(t_0)\sqrt{\frac{2\pi}{|f''(t_0)|}}\,
+ N^{1/2-a}\ee^{Nf(t_0)}.
+\end{equation}
+To see this, expand
+$f(t)=f(t_0)+\tfrac12f''(t_0)(t-t_0)^2+O(|t-t_0|^3)$ and use
+$x=(j-Nt_0)/\sqrt N$. The local sum becomes a Riemann sum for the
+Gaussian integral with mesh $N^{-1/2}$; the complement is negligible
+by the strict maximum and a Gaussian majorant. First restrict to a
+fixed bounded $x$ interval, then let that interval expand. This also
+justifies multiplying the summands by a fixed continuous function of
+$j/N$: the leading constant is multiplied by its value at $t_0$.
+
+\subsection{The \texorpdfstring{$T$}{T} saddle}
+
+For $j/N=t$ in a compact subinterval of $(0,1)$, Stirling's formula gives
+\begin{equation}\label{eq:Lstirling}
+ L(N,j)\sim\frac1{2\pi Nt}
+ \sqrt{\frac{1+t}{1-t}}\,\ee^{N\ell(t)},
+\end{equation}
+where
+\[
+ \ell(t)=(1+t)\log(1+t)-(1-t)\log(1-t)-2t\log t.
+\]
+The exponent for $T_{N,N}$ is $f_3(t)=2\ell(t)$, and its amplitude
+is $N^{-2}g_3(t)$ with
+\[
+ g_3(t)=\frac{1+t}{4\pi^2t^2(1-t)}.
+\]
+Since
+\[
+ \ell'(t)=\log\frac{1-t^2}{t^2},
+\]
+the unique maximum is at $t_3=1/\sqrt2$. Direct substitution gives
+\[
+ \ee^{f_3(t_3)}=\lambda_3,\quad
+ f_3''(t_3)=-8\sqrt2,\quad
+ g_3(t_3)=\frac{q_3}{2\pi^2}.
+\]
+Equation \eqref{eq:laplace} now gives $c_3\lambda_3^N N^{-3/2}$.
+
+For a fixed offset, the exact ratio is
+\begin{equation}\label{eq:Loffset}
+ \frac{L(N+k,j)}{L(N,j)}
+ =\prod_{r=1}^{k}\frac{N+j+r}{N-j+r}.
+\end{equation}
+Near $t_3$, this tends uniformly to
+$((1+t)/(1-t))^k$, whose value at $t_3$ is $q_3^k$.
+This proves \eqref{eq:Tasymp}.
+
+For completeness, the endpoint estimates required by \eqref{eq:laplace}
+follow directly from factorial bounds for the binomial summands.
+Their logarithms equal $Nf_3(j/N)+O(\log N)$ uniformly when the entropy
+terms are extended continuously to $0$ and $1$. For fixed $k$, the
+ratio \eqref{eq:Loffset} is bounded by a polynomial in $N$ on the
+whole summation range. Since $f_3$ has a strict interior maximum,
+the endpoints and every region separated from $t_3$ are exponentially
+smaller than the saddle contribution.
+
+\subsection{The \texorpdfstring{$C$}{C} saddle and its asymmetry}
+
+Multiplying \eqref{eq:Lstirling} by Stirling's approximation for
+$\binom Nj$ gives exponent
+\[
+ f_2(t)=(1+t)\log(1+t)-2(1-t)\log(1-t)-3t\log t
+\]
+and amplitude $N^{-3/2}g_2(t)$, where
+\[
+ g_2(t)=\frac{\sqrt{1+t}}{(2\pi)^{3/2}t^{3/2}(1-t)}.
+\]
+The stationary equation is
+\[
+ f_2'(t)=\log\frac{(1+t)(1-t)^2}{t^3}=0,
+ \qquad 1-t-t^2=0.
+\]
+Thus the unique maximum occurs at $t_2=1/\varphi$. At that point,
+\[
+ \ee^{f_2(t_2)}=\lambda_2,\qquad
+ f_2''(t_2)=-\sqrt5\,\varphi^3,
+\]
+and \eqref{eq:laplace} gives $c_2\lambda_2^N N^{-1}$.
+
+For the upper diagonal, the offset multiplies the summand by
+\[
+ \frac{\binom{N+k}{j}}{\binom Nj}
+ =\prod_{r=1}^{k}\frac{N+r}{N-j+r}
+ \longrightarrow(1-t)^{-k},
+\]
+which equals $\varphi^{2k}$ at $t_2$. For the lower diagonal the
+multiplier is \eqref{eq:Loffset}, with limiting value
+$((1+t_2)/(1-t_2))^k=\varphi^{3k}$. The same endpoint argument as
+for $T$ applies. This proves \cref{thm:arrayasymp}, including the
+asymmetric constants in its last two formulas.
+
+\subsection{Exact leading constants for the errors}
+
+Let $S^{(3)}_{N,k}=\Phi_{N,N+k}$, and retain the notation
+$S^{(2,+)}_{N,k}=\Psi_{N,N+k}$ and $S^{(2,-)}_{N,k}=\Psi_{N+k,N}$.
+
+\begin{theorem}[Sharp fixed-offset errors]\label{thm:errorasymp}
+For each fixed $k\geq0$,
+\begin{align}
+ \zthree-S^{(3)}_{N,k}
+ &\sim4\pi^3\,\lambda_3^{-(2N+k+1)},\label{eq:errorasymp3}\\
+ \ztwo-S^{(2,+)}_{N,k}
+ &\sim(-1)^N\,4\pi^2\varphi^{-4k}\,
+       \lambda_2^{-(2N+1)},\label{eq:errorasymp2upper}\\
+ \ztwo-S^{(2,-)}_{N,k}
+ &\sim(-1)^{N+k}\,4\pi^2\varphi^{-6k}\,
+       \lambda_2^{-(2N+1)}.\label{eq:errorasymp2lower}
+\end{align}
+In the signed formulas, $\sim$ means that the ratio to the displayed
+signed expression tends to $1$.
+\end{theorem}
+\begin{proof}
+Let $a_{n,k}$ be the positive summand in \eqref{eq:main3}.
+By \cref{thm:arrayasymp},
+\[
+ a_{n,k}\sim \frac{6\lambda_3}{c_3^2q_3^{2k}}\lambda_3^{-2n}
+ =\frac{96\sqrt2\,\pi^3}{\lambda_3^k}\lambda_3^{-2n}.
+\]
+The powers $n^{-3}$ in the rational prefactor and in the product of
+array asymptotics cancel. Summing the resulting positive geometric tail
+divides by $\lambda_3^2-1$ and gives
+\[
+ \zthree-S^{(3)}_{N,k}
+ \sim\frac{96\sqrt2\,\pi^3}{\lambda_3^k(\lambda_3^2-1)}\lambda_3^{-2N}
+ =4\pi^3\lambda_3^{-(2N+k+1)},
+\]
+the last step by the first relation in \eqref{eq:surd}.
+
+For the upper $\zeta(2)$ series, the absolute value of the $n$th
+summand is asymptotic to
+\[
+ \frac{5\lambda_2}{c_2^2\varphi^{4k}}\lambda_2^{-2n}
+ =\frac{20\pi^2\sqrt5}{\varphi^{4k}}\lambda_2^{-2n}.
+\]
+For the lower series, replace $\varphi^{4k}$ by $\varphi^{6k}$ and
+include the additional sign $(-1)^k$. An alternating geometric tail
+has denominator $1+\lambda_2^{-2}$, so the constants are
+$20\pi^2\sqrt5/(\varphi^{4k}(\lambda_2^2+1))$ and
+$20\pi^2\sqrt5/(\varphi^{6k}(\lambda_2^2+1))$; the second relation in
+\eqref{eq:surd} reduces these to the forms displayed in
+\eqref{eq:errorasymp2upper} and \eqref{eq:errorasymp2lower}.
+
+To justify these tail operations directly, if $a_n/(K\rho^n)\to1$
+with $0<\rho<1$, then
+$\sup_{n>N}|a_n/(K\rho^n)-1|\to0$. The absolute error incurred by
+replacing the entire tail with the corresponding geometric tail is
+therefore $o(\rho^N)$, in both the positive and alternating cases.
+No exchange of an uncontrolled asymptotic expansion with a sum is used.
+\end{proof}
+
+The asymptotic decimal gain per extra diagonal term is
+\[
+ 2\log_{10}\lambda_3=3.0622054827\ldots
+ \quad\hbox{for }\zthree,
+ \qquad
+ 2\log_{10}\lambda_2=2.0898764025\ldots
+ \quad\hbox{for }\ztwo.
+\]
+A fixed offset changes the leading constant, not these exponential
+rates. Increasing $k$ also increases the size and cost of the array
+entries, so the prefactor improvement alone does not establish an
+optimal computational strategy.
+
+\subsection{Why a fixed row is slower than a diagonal}
+
+For comparison, fix $m$ and let $n\to\infty$. The leading binomial
+terms give
+\[
+ T_{m,n}\sim\alpha_m n^{2m},\quad
+ \alpha_m=\frac{\binom{2m}{m}}{(m!)^2};
+ \qquad
+ C_{m,n}\sim\beta_m n^m,\quad
+ \beta_m=\frac{\binom{2m}{m}}{m!}.
+\]
+Using the exact vertical tails and the elementary asymptotic
+$\sum_{j>n}j^{-s}\sim n^{1-s}/(s-1)$ for $s>1$, we obtain
+\begin{align}
+ \zthree-\Phi_{m,n}&\sim
+ \frac{n^{-(4m+2)}}{\alpha_m^2(4m+2)},\label{eq:rowasymp3}\\
+ \ztwo-\Psi_{m,n}&\sim(-1)^m
+ \frac{n^{-(2m+1)}}{\beta_m^2(2m+1)}.\label{eq:rowasymp2}
+\end{align}
+Thus a fixed row gives increasing algebraic acceleration as the row
+index grows, whereas a fixed-offset diagonal gives geometric
+acceleration. Both behaviors are consequences of the same potential.
+
+\section{Reproducible verification and computational use}\label{sec:verification}
+
+The proof is finite algebra followed by explicit convergence estimates.
+The accompanying computations are a separate audit of indexing,
+normalization, and signs. In particular, the proof of an infinite
+identity is not inferred from decimal agreement.
+
+\subsection{What was checked}
+
+The program \texttt{verify.py} uses only Python's standard library, with
+arbitrary-precision integers and rational fractions. It is the union
+regression suite of this archive: it runs, in one pass and under one
+total, every group of checks that either source package contributed.
+Its default run checks the following exact equalities:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Test group & Equalities\\
+\midrule
+Four-corner contiguity identities, $1\leq m,n\leq48$ &9,216\\
+Closed squares and diagonal increments, $1\leq m,n\leq40$ &6,400\\
+Termwise telescoper identities, $1\leq m,n\leq16$ &7,008\\
+Potentials, symmetry, and independent array formulas &8,405\\
+Finite diagonal formulas, offsets $0\leq k\leq12$ &1,599\\
+Random monotone lattice paths, $300$ per potential &600\\
+Row recurrence \eqref{eq:rowrec}, $1\leq m\leq40$, $0\leq n\leq20$ &840\\
+Shifted-diagonal recurrence, companion, and Wronskian &670\\
+Main-diagonal denominator and numerator recurrences &156\\
+Published diagonal prefixes &2\\
+Certified decimal prefixes and interval intersections &14\\
+\midrule
+Total &34,910\\
+\bottomrule
+\end{tabular}
+\end{center}
+The potential and independent array tests use $0\leq m,n\leq40$. Finite
+diagonal formulas are checked for every $0\leq N\leq40$ and
+$0\leq k\leq12$, including all three orientations/families and the
+empty-sum cases. The random-path tests draw $300$ monotone words with a
+fixed seed, $20260920$, and compare the accumulated edge weights of each
+word with the potential at its endpoint; they exercise path independence
+itself rather than only the square identities. The termwise tests check
+the telescoping certificates summand by summand, including the
+terminating endpoint $j=\min(m,n)$ at which a factor vanishes.
+
+For additional independence, $C$ is compared with the coefficient
+formula proved in \cref{app:identification}, and $T$ is compared with
+the alternative OEIS sum
+\[
+ \sum_{j=0}^{\min(m,n)}\binom mj^2\binom{m+n-j}{m}^2
+\]
+\cite{oeis143007}. These comparisons are finite implementation tests;
+the proof of the conjectures uses \eqref{eq:T} and \eqref{eq:C} directly.
+
+Finite tests cannot establish the infinitely quantified theorems. Their
+purpose is to expose transcription, indexing, sign, or implementation
+errors independently of the written derivations. The exact bounds of
+\cref{sec:errors} prove the rational enclosures; the regression tests
+themselves do not.
+
+\subsection{Two independent implementations}\label{sec:twoimpl}
+
+This archive keeps a second, deliberately independent implementation,
+\texttt{verify\_independent.py}, written in the transposed naming
+convention of the other source package: it calls the A108625 array $U$
+and writes its index pair with the dimension first as $(n,m)$. Its own
+run reports $25{,}840$ checks. Where both programs test the same
+statement they do so from separately written formulas, which is the
+point of retaining both; the headline count above is the union suite's.
+
+The two symbolic suites are kept for the same reason.
+\texttt{symbolic\_certificates.py} uses SymPy to reduce the three
+rational certificates \eqref{eq:Tcertificate}, \eqref{eq:Ccert2},
+\eqref{eq:Ccert1}, and the two recurrence-elimination coefficients, to
+zero; all five pass. \texttt{symbolic\_certificates\_independent.py}
+reduces seven further rational-function identities to zero: the
+antisymmetric relation behind \eqref{eq:Tanti}, the symmetric relation
+behind \eqref{eq:Tsym}, the conjugate products of \eqref{eq:sbar} and
+\eqref{eq:qbar}, the two residuals for \eqref{eq:Ccell1} and
+\eqref{eq:Ccell2}, and the row-recurrence coefficient of
+\cref{prop:rowrec}. The supplied records identify the tested SymPy
+version. These are symbolic identities, not evaluations at sample
+numerical points.
+
+\subsection{How to reproduce the artifacts}
+
+From the archive directory, run
+\begin{verbatim}
+python verify.py --max-index 40 --offsets 12 --output-dir data
+python make_error_table.py
+python verify_independent.py
+python symbolic_certificates.py
+python symbolic_certificates_independent.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The two symbolic commands require SymPy; they are not required for the
+first three commands or for compiling the supplied article. The optional
+\texttt{numerical\_checks.py} compares the exact partial sums with
+high-precision zeta values, and \texttt{asymptotic\_diagnostics.py}
+compares the array and error asymptotics of \cref{sec:asymptotics} with
+$420$-digit mpmath evaluations. Both require mpmath, and both are
+labeled diagnostics: their output is not used as an error certificate.
+
+The CSV interval data store numerators and denominators rather than
+only decimal approximations. For $\zeta(3)$, use the endpoints
+$S$ and $S+B$. For $\zeta(2)$, the recorded sign $\epsilon\in\{1,-1\}$
+gives endpoints $S$ and $S+\epsilon B$, ordered increasingly.
+The certified decimal prefixes of \cref{tab:digits} are regenerated into
+\texttt{data/certified\_digits.csv} by \texttt{verify.py} and, with the
+independent program's own bound, into
+\texttt{data/decimal\_certificates.json}. The latter uses only the
+largest-coordinate branch \eqref{eq:error3square} and therefore certifies
+one place fewer for $\zeta(3)$ at $k=0$ and $k=3$; both counts are
+correct for their respective bounds.
+The article, source notes, test programs, and generated data are all
+included in the archive.
+
+\subsection{A practical evaluation route}
+
+A direct array entry is a finite sum of $\min(m,n)+1$ positive integers.
+The summand ratios in \cref{sec:contiguous} allow successive summands to
+be generated without repeatedly evaluating factorials. For a fixed
+diagonal and $N$ terms, the direct implementation uses $O(N^2)$
+summand-generation steps when $k$ is fixed; this counts arithmetic
+operations, not bit complexity. The integers grow exponentially in
+value and hence linearly in bit length along a fixed-offset diagonal.
+
+For the main diagonals, \eqref{eq:rec3} and \eqref{eq:rec2} reduce
+denominator generation to $O(N)$ recurrence steps. The same recurrences
+for $p_n$ and $r_n$ produce the associated rational approximants.
+Whichever method is used, one can stop when the rational bound is below
+a prescribed absolute tolerance. The positive binomial formulas are
+particularly convenient for independent verification and avoid relying
+on cancellation in a recurrence.
+
+\section{Conclusion and scope}\label{sec:conclusion}
+
+The conjectural family in A143007 is true for every nonnegative offset.
+Both neighboring-diagonal conjectures in A108625 are also true, and
+belong to two full offset families. The proof does not assume any of the
+conjectural formulas, a known diagonal limit, or Ap\'ery's irrationality
+theorem. Instead it identifies the limit from the ordinary convergent
+series for $\zeta(3)$ and $\zeta(2)$ on the coordinate axes.
+
+The structural reason is a closed rational system of edge increments.
+A finite telescoping certificate yields each square identity; the square
+identities yield path independence; a two-edge diagonal step cancels its
+intermediate array entry; and the boundary limits identify the sum.
+This chain of implications explains the cubic and quadratic numerators
+in the OEIS formulas, as well as the differing constants and signs in
+the two $\zeta(2)$ orientations.
+
+Several further consequences come out of the same argument: exact
+horizontal and vertical remainders, convergence along every unbounded
+monotone lattice path, signed rational bounds, certified decimal
+prefixes, a three-term recurrence on each shifted cubic diagonal, and
+sharp fixed-offset leading constants. All limiting steps are supplied
+after, rather than assumed from, the local algebra.
+
+The conclusions concern the stated acceleration formulas; no new
+irrationality theorem or resolution of unrelated Ap\'ery-polynomial
+conjectures is claimed. In particular, this work does not settle the
+irreducibility conjectures in the classical Ap\'ery entries or the other
+congruence conjectures listed in the two array entries; it does not claim
+a new proof of irrationality from fast convergence alone; it is not a
+proof-assistant formalization, and the accompanying finite checks do not
+replace mathematical proof; and, because related conservative fields and
+their conjugate polynomials already occur in \cite{david}, no historical
+novelty or priority is claimed for the framework or for consequences that
+may already be implicit in that literature. The specific accomplishment
+is an explicit, self-contained derivation of the formulas that the
+consulted OEIS entries still label conjectural.
+
+\clearpage
+\appendix
+\section{A compact route through the proof}\label{app:compact}
+
+A reader interested only in the conjectural identities can omit
+\cref{sec:recurrences,sec:asymptotics} entirely. The logically sufficient
+chain is
+\[
+ \eqref{eq:Ttelescoper},\ \hbox{the ratios before }\eqref{eq:Ccert2}
+ \quad\Longrightarrow\quad
+ \hbox{\cref{lem:Tcell}},\ \hbox{\cref{lem:Ccell}}
+ \quad\Longrightarrow\quad
+ \eqref{eq:closed},
+\]
+that is, the two telescoping certificates give the four-corner
+identities, and the four-corner identities give square closure for the
+weights \eqref{eq:edges3} and \eqref{eq:edges2}. \cref{lem:path} then
+constructs the potentials $\Phi$ and $\Psi$; the elementary boundary
+estimates of \cref{lem:Ulimit,lem:Vlimit} identify their limits; and the
+diagonal increments \eqref{eq:diag3} and \eqref{eq:diag2} telescope to
+\cref{thm:zeta3,thm:zeta2upper,thm:zeta2lower}. The sum certificates
+vanish at both endpoints, all corner denominators are positive, and equal
+coordinates are permitted throughout.
+
+\section{Identification with the OEIS arrays and row generating functions}\label{app:identification}
+
+This appendix verifies the array identification algebraically and
+explains the Legendre-polynomial structure behind the crystal-ball
+interpretation. It is independent of the potential proof.
+
+\subsection{Two finite forms of the Legendre polynomial}
+
+Define the Legendre polynomial by Rodrigues' formula,
+\[
+ P_m(z)=\frac1{2^m m!}\frac{\dd^m}{\dd z^m}(z^2-1)^m.
+\]
+Expansion at $z=1$ gives
+\begin{equation}\label{eq:LegendreL}
+ P_m(1+2u)=\sum_{j=0}^{m}L(m,j)u^j.
+\end{equation}
+Indeed, after substituting $z=1+2u$, Rodrigues' formula becomes
+$m!^{-1}(\dd/\dd u)^m[u^m(1+u)^m]$, whose coefficient of $u^j$ is
+$\binom mj\binom{m+j}{j}$.
+
+Applying the Leibniz rule instead gives
+\begin{equation}\label{eq:LegendreW}
+ P_m(z)=2^{-m}\sum_{i=0}^{m}\binom mi^2
+ (z-1)^i(z+1)^{m-i}.
+\end{equation}
+With $W_m(x)=\sum_{i=0}^{m}\binom mi^2x^i$, this implies
+\begin{equation}\label{eq:Psub}
+ P_m\!\left(\frac{1+x}{1-x}\right)=\frac{W_m(x)}{(1-x)^m}.
+\end{equation}
+
+\subsection{The row generating function of \texorpdfstring{$C$}{C}}
+
+Using $\sum_{n\geq0}\binom njx^n=x^j/(1-x)^{j+1}$ in
+\eqref{eq:C}, we obtain, as a formal power series,
+\begin{align}
+ \sum_{n\geq0}C_{m,n}x^n
+ &=\frac1{1-x}\sum_{j=0}^{m}L(m,j)
+       \left(\frac{x}{1-x}\right)^j\notag\\
+ &=\frac1{1-x}P_m\!\left(\frac{1+x}{1-x}\right)
+ =\frac{W_m(x)}{(1-x)^{m+1}}.\label{eq:Cgf}
+\end{align}
+Extracting the coefficient of $x^n$ gives
+\begin{equation}\label{eq:Calternative}
+ C_{m,n}=\sum_{i=0}^{\min(m,n)}\binom mi^2\binom{m+n-i}{m}.
+\end{equation}
+This is exactly the defining finite sum and row generating function
+listed in A108625 \cite{oeis108625}. In particular, the orientation of
+the two indices has been verified, rather than inferred from a short
+sequence prefix.
+
+\subsection{A finite square identity and the row generating function of \texorpdfstring{$T$}{T}}
+
+We next prove the finite identity
+\begin{equation}\label{eq:clausen}
+ P_m(z)^2=\sum_{j=0}^{m}L(m,j)\binom{2j}{j}
+       \left(\frac{z^2-1}{4}\right)^j.
+\end{equation}
+It is a terminating Legendre square identity. A short differential
+verification is included to keep the identification self-contained.
+
+Put $M=m(m+1)$ and $Q(z)=P_m(z)^2$. The Legendre equation
+$(1-z^2)P_m''-2zP_m'+MP_m=0$, obtained by differentiating Rodrigues'
+formula, yields the following equation by the product rule:
+\begin{align}
+ &(z^2-1)^2Q'''+6z(z^2-1)Q''\notag\\
+ &\qquad+\bigl((6-4M)z^2+4M-2\bigr)Q'-4MzQ=0.\label{eq:symmetric_square}
+\end{align}
+Since $P_m(-z)=(-1)^mP_m(z)$, $Q$ is a polynomial in $z^2$.
+Set $t=(z^2-1)/4$ and write $Q(z)=y(t)$. Substitution in
+\eqref{eq:symmetric_square} and cancellation as a polynomial identity
+gives
+\begin{equation}\label{eq:yode}
+ t^2(4t+1)y'''+(18t^2+3t)y''+
+ \bigl((12-4M)t+1\bigr)y'-2My=0.
+\end{equation}
+For $y(t)=\sum_{j\geq0}q_jt^j$, coefficient comparison gives
+\[
+ (j+1)^3q_{j+1}=2(2j+1)(m-j)(m+j+1)q_j,
+ \qquad q_0=P_m(1)^2=1.
+\]
+The coefficients $q_j=L(m,j)\binom{2j}{j}$ satisfy exactly this
+recurrence and initial value, and vanish for $j>m$. This proves
+\eqref{eq:clausen}.
+
+Now
+\[
+ \sum_{n\geq0}L(n,j)x^n
+ =\binom{2j}{j}\frac{x^j}{(1-x)^{2j+1}},
+\]
+so \eqref{eq:T} and \eqref{eq:clausen} imply
+\begin{align}
+ \sum_{n\geq0}T_{m,n}x^n
+ &=\frac1{1-x}\sum_{j=0}^{m}L(m,j)\binom{2j}{j}
+        \left(\frac{x}{(1-x)^2}\right)^j\notag\\
+ &=\frac1{1-x}P_m\!\left(\frac{1+x}{1-x}\right)^2
+ =\frac{W_m(x)^2}{(1-x)^{2m+1}}.\label{eq:Tgf}
+\end{align}
+These are the row generating functions recorded in A143007.
+The passage from $W_m(x)/(1-x)^m$ to its square is exactly what the
+sum norm on a product lattice requires for sphere counts; division by
+$1-x$ then converts sphere counts to ball counts
+\cite{oeis143007,bacher}.
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{oeis143007}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A143007, square array for the crystal-ball sequences of
+$\mathsf A_n\times\mathsf A_n$, originally contributed by Peter Bala,
+July 22, 2008. Internal revision 75, May 30, 2026. Consulted September
+20, 2026. \url{https://oeis.org/A143007/internal}.
+
+\bibitem{oeis108625}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A108625, square array for the crystal-ball sequences of
+$\mathsf A_n$. The formula field carries the labels ``Conjectural result
+for superdiagonals'' and ``Conjectural result for subdiagonals'', each
+stated for $k=0,1,2,\ldots$, both by Peter Bala; the related comments are
+dated July 18, 2008.  The formula-field entries carry no date in the
+revision consulted, and none is asserted here. Internal revision 98, May 30,
+2026. Consulted September 20, 2026; the formula-field wording re-checked
+September 21, 2026. \url{https://oeis.org/A108625/internal}.
+
+\bibitem{oeis259}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A005259, Ap\'ery numbers
+$\sum_{j=0}^n\binom nj^2\binom{n+j}{j}^2$.
+Consulted September 20, 2026. \url{https://oeis.org/A005259}.
+
+\bibitem{oeis258}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer
+Sequences}, A005258, Ap\'ery numbers
+$\sum_{j=0}^n\binom nj^2\binom{n+j}{j}$.
+Consulted September 20, 2026. \url{https://oeis.org/A005258}.
+
+\bibitem{david}
+Ofir David, \emph{The conservative matrix field}, arXiv:2303.09318v3,
+2023; version~3 revised December~4, 2023. Examples 16, 19, 25 and
+Section~5 develop related conservative fields; Example~25 displays the
+same cubic factors up to a sign convention and the quadratic pair after
+duality, and Section~5 establishes convergence and relates a diagonal
+trajectory to Ap\'ery's irrationality argument.
+\url{https://arxiv.org/abs/2303.09318}. HTML version consulted:
+\url{https://arxiv.org/html/2303.09318v3}.
+
+\bibitem{apery}
+Roger Ap\'ery, \emph{Irrationalit\'e de $\zeta(2)$ et $\zeta(3)$},
+Ast\'erisque \textbf{61} (1979), 11--13. Bibliographic record linked
+from OEIS A005258 and A005259.
+
+\bibitem{cohen}
+Henri Cohen, \emph{Ap\'ery Acceleration of Continued Fractions},
+arXiv:2401.17720, 2024. In particular, Sections 3--4 discuss
+staircase/diagonal acceleration and the examples $\zeta(2)$ and
+$\zeta(3)$. \url{https://arxiv.org/abs/2401.17720}.
+
+\bibitem{straub}
+Armin Straub, \emph{Multivariate Ap\'ery numbers and supercongruences
+of rational functions}, Algebra \& Number Theory \textbf{8} (2014),
+no.~8, 1985--2008.
+\href{https://doi.org/10.2140/ant.2014.8.1985}{doi:10.2140/ant.2014.8.1985}.
+Preprint: \url{https://arxiv.org/abs/1401.0854}.
+
+\bibitem{bacher}
+Roland Bacher, Pierre de la Harpe, and Boris Venkov,
+\emph{S\'eries de croissance et polyn\^omes d'Ehrhart associ\'es aux
+r\'eseaux de racines}, Annales de l'Institut Fourier \textbf{49}
+(1999), no.~3, 727--762.
+\href{https://doi.org/10.5802/aif.1689}{doi:10.5802/aif.1689}.
+\url{https://www.numdam.org/item/AIF_1999__49_3_727_0/}.
+
+\end{thebibliography}
+\end{document}

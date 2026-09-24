@@ -1,0 +1,1612 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17364D}
+\definecolor{accent}{HTML}{1C6675}
+\definecolor{pale}{HTML}{F1F5F7}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{accent}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Stabilization of integer power towers}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\linespread{1.04}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\res}[2]{\left[#1\right]_{#2}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\DeclareMathOperator{\gcdop}{gcd}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ordop}{ord}
+\DeclareMathOperator{\Logop}{Log}
+\DeclareMathOperator{\Expop}{Exp}
+\newcommand{\panel}[1]{\noindent\colorbox{pale}{\parbox{0.95\textwidth}{\small #1}}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{accent},
+ backgroundcolor=\color{pale},xleftmargin=0.4em,xrightmargin=0.4em,
+ aboveskip=10pt,belowskip=10pt}
+\hypersetup{pdftitle={Stabilization of integer power towers: exact decimal transients, a counterexample to a congruence-speed conjecture, and a complete resolution of OEIS A324017},
+ pdfsubject={Onset laws, sharp radix congruences, higher arrows, and the local p-adic limit},
+ pdfauthor={Research report prepared with AI assistance}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.6in}
+\noindent{\color{accent}\large TETRATION \; / \; EXACT ARITHMETIC \; / \; CONJECTURE TESTING}\par
+\vspace{0.35in}
+\noindent{\color{ink}\Huge\bfseries Stabilization of\\[5pt] integer power towers}\par
+\vspace{0.25in}
+\noindent{\Large Exact decimal transients, a counterexample to a\\[4pt]
+congruence-speed conjecture, and a complete\\[4pt]
+resolution of OEIS A324017}\par
+\vspace{0.15in}
+\noindent{\large\color{accent} Onset laws, sharp radix congruences, higher arrows,\\[3pt]
+and the local $p$-adic limit}\par
+\vspace{0.3in}
+\noindent September 19, 2026 \hfill Merged edition, version 2.0\par
+\vspace{0.3in}
+\begin{abstract}
+We investigate the height at which the number of newly stabilized trailing digits of an integer power tower becomes constant. A conjecture of Rip\`a predicts that, for every prime base ending in 9, this happens by height 2. With the height convention of the source, we prove that the smallest prime counterexample is $2749$: its congruence speeds are $3,3,2,2,\ldots$. More generally, if $a\equiv9\pmod{10}$, $s=v_2(a-1)$, $t=v_2(a+1)$, $u=s+t-1$, and $e=v_5(a+1)$, then the number of stable decimal digits at height $h$ is exactly $\min(s+hu,he)$. This determines the entire transient and its exact endpoint. A Chinese-remainder construction and Dirichlet's theorem give infinitely many prime bases with each prescribed onset height $H\ge3$. Among integers ending in 9, we also obtain the exact tail density $4/[9(5\cdot10^{K-1}-1)]$ for $H>K$, $K\ge2$.
+
+A second, complementary theorem concerns the diagonal family in which the tower base is one less than the radix. For even $B\ge4$, tower base $a=B-1$, every height $h\ge0$ and every gap $r\ge1$,
+\[
+ T_{h+r}(a)-T_h(a)\equiv-2B^h\pmod{B^{h+1}},
+\]
+so exactly one further base-$B$ digit becomes permanent at each height. This resolves the three conjectural comments in OEIS A324017: two are true, while the third fails in every nondegenerate case, the smallest witness being $3\uparrow\uparrow2=27\not\equiv59\equiv3\uparrow\uparrow3\pmod{64}$. We give complete proofs, the exact prime-adic distance between any two heights, uniqueness and compatibility of the modular fixed points, an exact digit-lifting algorithm with a per-digit formula, a restricted general-radix extension, modular saturation across arbitrarily high Knuth arrow ranks, and a sign-sensitive local $p$-adic Lambert $W$ description of the limit. The accompanying dependency-free Python package runs both verification suites and passes 183,204 exact assertions.
+\end{abstract}
+\vfill
+\panel{%
+\textbf{Status and scope.} This is an unrefereed research note, not a claim of verified priority. The eventual decimal speed formula, general modular stabilization, lifting-the-exponent methods, and the $p$-adic Lambert $W$ function are all established background, not claimed discoveries here. The focus is the exact transient, the explicit refutation of the selected conjecture, the explicit resolution of the three OEIS statements, and their consequences. Both selected sources still labeled their statements as conjectures in the versions examined, but the literature searches do not certify that no earlier resolution exists anywhere. All asserted results are proved below; computational tests are supplementary, not proofs of infinite statements. Nothing has been submitted to OEIS by this work.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The selected problems and their provenance}\label{sec:problem}
+
+Integer tetration provides a useful contrast between size and information. The ordinary value of a tower rapidly becomes impossible to write down, but its residue modulo a fixed integer can settle after only a few levels. Two precise published statements are selected here rather than unverified questions of our own. The first concerns not merely whether trailing digits stabilize, but \emph{when the rate of their stabilization becomes permanent}. The second concerns a diagonal family in which the stabilization rate is exactly one digit per height, and in which three statements attached to an OEIS entry can be settled outright.
+
+Rip\`a's \emph{The congruence speed formula} \cite{Ripa2021} introduces the prime set
+\begin{equation}\label{eq:source-set}
+ \widehat{\mathbb A}=\{(k+1)10^n-1:\ n\ge1,\ k\ge0,\ (k+1)10^n-1\text{ is prime}\}.
+\end{equation}
+This is exactly the set of primes congruent to $9$ modulo $10$: the forward implication is immediate, and the reverse implication uses $n=1$ and $k=(p+1)/10-1$.
+
+The conjecture is numbered \textbf{Conjecture 2 on journal page 57}, and \textbf{Conjecture 4.1 in arXiv:2208.02622v1, page 14}. In the notation defined carefully in Section~\ref{sec:notation}, it says
+\begin{equation}\label{eq:conjecture}
+  p\in\widehat{\mathbb A},\ h\ge2
+  \quad\Longrightarrow\quad V(p,h)=V(p).
+\end{equation}
+Its point is a \emph{uniform onset bound}, not an assertion that the limiting speed exists. Confusing these statements would miss the counterexample.
+
+The second selected source is the set of three comments attached to OEIS A324017 \cite{OEIS324017}, an entry introduced by Davis Smith in 2019. The entry retrieved on 19 September 2026 still labeled all three statements as conjectures; the internal record showed revision \texttt{\#91, Feb 16 2025}. They are written out precisely, as C1, C2 and C3, in Section~\ref{sec:OEIS}. Both selections are concrete, checkable sources of a problem; neither is a claim that no proof exists anywhere else.
+
+\subsection{What was already known, and what is established here}
+
+Rip\`a and Onnis \cite{RipaOnnis2022}, especially Corollary 2.2 and Section 2.2, already give the eventual decimal speed in terms of 2-adic and 5-adic valuations and discuss bounds on transient behavior. Their displayed example $a=781249$ has a nontrivial transient; it is composite, since $781249=7\cdot233\cdot479$, so that example alone does not refute the prime conjecture. The present note does \emph{not} claim to discover the eventual-speed formula or the general phenomenon of delayed stabilization.
+
+The results proved here are an explicit minimal prime counterexample, a necessary-and-sufficient condition for every base ending in 9, a closed formula for the exact onset, prime families with unbounded onset, and a density formula for the delays. A second investigation addresses the three conjectural comments in the retrieved version of OEIS A324017 \cite{OEIS324017}.
+
+General modular stabilization of power towers, and its algorithmic consequences, likewise belong to an existing literature. Hittmeir \cite{hittmeir} studies the relationship between general modular tetration and integer factorization, exhibiting a deterministic polynomial-time reduction of squarefree-part computation to modular tetration. Proving that \emph{some} digits eventually stabilize would therefore not by itself be a new contribution. What is targeted here is the exact diagonal family $B=a+1$, the exact height threshold, and the particular statements in \cite{OEIS324017}. The optional $p$-adic analysis in Section~\ref{sec:lambert} uses the $p$-adic Lambert $W$ function of Mez\H{o} \cite{mezo} as established background; the only contribution there is the selection of the correct local branch sign for this tower family.
+
+The primary-source audit was performed on September 19, 2026. It included the journal and arXiv versions of \cite{Ripa2021}, the relevant sections of \cite{RipaOnnis2022}, and the canonical and internal views of the A324017 entry. Targeted searches for the conjecture and for the base $2749$ did not locate an explicit prior resolution. That is a search outcome, not a guarantee of current open status or worldwide novelty. Mathematical correctness of the refutation below does not depend on priority.
+
+\subsection{Provenance of this merged report}\label{sec:provenance}
+
+This report merges two independently produced research reports on the same topic, namely
+\begin{center}
+\texttt{delayed-stabilization-of-towers}\quad and \quad\texttt{one-stable-digit-per-height}.
+\end{center}
+The first selected the Rip\`a height-2 conjecture and produced the decimal transient formula, the minimal prime counterexample $2749$, the prime families, the density theorem, and the general-radix extension. The second selected the three OEIS A324017 comments and produced the gap-general local distances, the inverse-limit description, the higher-arrow saturation criterion, and the local Lambert $W$ formula.
+
+Both reports independently proved the same shared core theorem, the one-digit law
+$T_{h+r}(B-1)-T_h(B-1)\equiv-2B^h\pmod{B^{h+1}}$, by the same route: a binomial precision estimate followed by induction on the height. It is proved once here, as Theorem~\ref{thm:sharp}, in the gap-general form.
+
+At four places the two reports reached a common conclusion by genuinely different arguments, and in each case both arguments are retained and labeled as such: Theorem~\ref{thm:gap-local} (a direct induction at fixed gap) beside Theorem~\ref{thm:local} with Corollary~\ref{cor:persistence} (telescoping plus the unique-minimum rule); Remark~\ref{rem:bootstrap} (a contraction bootstrap) beside Theorem~\ref{thm:dynamics}; Theorem~\ref{thm:arrows} (a tower-height representation) beside the threshold recursion of the same theorem; and the two proofs of Theorem~\ref{thm:W}. The accompanying software likewise retains both independent evaluators, an Euler chain restricted to $\{2,5\}$-supported moduli and a general totient-chain oracle, and cross-checks them against each other.
+
+\subsection{An overview of the conclusions}
+
+For $a\equiv9\pmod{10}$, put $s=v_2(a-1)$, $t=v_2(a+1)$, $u=s+t-1$, and $e=v_5(a+1)$. The essential formulas are
+\begin{align}
+ C_a(h)&=\min\{s+hu,he\},\label{eq:overview-count}\\
+ V(a)&=\min\{u,e\},\label{eq:overview-speed}\\
+ H(a)&=\begin{cases}
+ 1,&e\le u,\\
+ 1+\ceil{s/(e-u)},&e>u.
+ \end{cases}\label{eq:overview-onset}
+\end{align}
+Here $C_a(h)$ counts stable decimal digits at height $h$, and $H(a)$ is the first height from which the speed always equals its eventual value. The proof is an elementary comparison of two exact affine valuation laws. Primality plays no role until the arithmetic-progression argument.
+
+In particular,
+\[
+ H(a)>2\quad\Longleftrightarrow\quad
+ a\equiv1\pmod4\ \text{ and }\ s<e<2s.
+\]
+The complete answer therefore distinguishes the two classes $9$ and $19$ modulo $20$. Every base in the latter class satisfies the proposed bound; some bases in the former do not.
+
+The second family behaves in exactly the opposite way. If $B\ge4$ is even and the tower base is $a=B-1$, then the transient is empty: the count of permanent base-$B$ digits is $h$ at height $h$, for every $h\ge0$, with no exception and no delay. The sharp statement, proved once as Theorem~\ref{thm:sharp}, is that for all $h\ge0$ and all $r\ge1$
+\[
+ T_{h+r}(B-1)-T_h(B-1)\equiv-2B^h\pmod{B^{h+1}},
+ \qquad\text{equivalently}\qquad
+ \frac{T_{h+r}-T_h}{B^h}\equiv B-2\pmod B .
+\]
+From it follow the exact stabilization threshold, uniqueness and compatibility of the modular fixed points, a factorization-free digit-lifting algorithm, modular saturation at arbitrarily high Knuth arrow ranks, and the resolution of the three OEIS statements.
+
+\section{Definitions and the height-indexing issue}\label{sec:notation}
+
+Throughout the main argument, $a$ is an odd integer at least $3$. Define
+\begin{equation}\label{eq:towers}
+ T_0(a)=1,\qquad T_{h+1}(a)=a^{T_h(a)}\quad(h\ge0),
+ \qquad D_h(a)=T_{h+1}(a)-T_h(a).
+\end{equation}
+Thus $T_h(a)=a\uparrow\uparrow h$ and $D_0(a)=a-1$. Every $T_h(a)$ is odd. The towers increase strictly, so every $D_h(a)$ is a positive even integer.
+
+We also need differences at an arbitrary height gap. For $r\ge1$ put
+\begin{equation}\label{eq:gapdiff}
+ D_h^{(r)}(a)=T_{h+r}(a)-T_h(a),\qquad\text{so that}\qquad D_h^{(1)}=D_h .
+\end{equation}
+The superscript is never dropped: several statements below are true for every gap $r$, and the gap-free symbol $D_h$ always means the gap-one difference.
+
+For a prime $q$ and a nonzero integer $N$, $v_q(N)$ is the largest $j\ge0$ such that $q^j\mid N$. For any modulus $M\ge1$, $[N]_M$ means the least nonnegative residue of $N$ modulo $M$.
+
+\subsection{Radix precision versus prime valuation}\label{sec:precision-order}
+
+Radix digits and prime valuations are different bookkeeping devices, and for a composite radix they must not be identified. The following definition is used throughout, and in particular in Sections~\ref{sec:general-radix} and~\ref{sec:sharp}.
+
+\begin{definition}[Base-$R$ precision order]\label{def:ord}
+For an integer $R\ge2$ and a nonzero integer $N$, put
+\begin{equation}\label{eq:ordR}
+ \ordop_R(N)=\max\{j\ge0:\ R^j\mid N\}
+ =\min_{q\mid R}\floor{\frac{v_q(N)}{v_q(R)}},
+\end{equation}
+the minimum being over the prime divisors of $R$.
+\end{definition}
+
+For composite $R$ this is \emph{not} a valuation: it is not additive on products. For example
+\[
+ \ordop_6(2)=\ordop_6(3)=0,\qquad\text{but}\qquad \ordop_6(6)=1 .
+\]
+We therefore reserve the word \emph{valuation} for the prime-adic functions $v_q$, and call $\ordop_R$ the base-$R$ \emph{precision order}. Every formula below that counts radix digits uses genuine prime valuations and an explicit minimum, never a product rule for $\ordop_R$.
+
+The link with digits is the following dictionary, used without further comment. Two nonnegative integers have the same last $j$ base-$R$ digits exactly when they are congruent modulo $R^j$. Hence, if the precision order of their difference is exactly $j$, then their last $j$ base-$R$ digits agree and the digit in position $j$ differs, counting the units digit as position $0$.
+
+One warning belongs here rather than later. In the diagonal family of Section~\ref{sec:sharp} the tower base $a=B-1$ and the radix $B$ are different numbers, and the phrase ``one digit per height'' always refers to radix $B$, never to radix $a$.
+
+\subsection{Stable counts, speed, and onset}\label{sec:counts}
+
+\begin{definition}[Stable count, speed, and onset]\label{def:counts}
+For $a\equiv9\pmod{10}$ and $h\ge0$, let
+\begin{equation}\label{eq:Cdef}
+ C_a(h)=\min\{v_2(D_h(a)),v_5(D_h(a))\}.
+\end{equation}
+Equivalently, $10^{C_a(h)}$ divides $D_h(a)$ but $10^{C_a(h)+1}$ does not. For $h\ge1$, define
+\begin{equation}\label{eq:Vdef}
+ V(a,h)=C_a(h)-C_a(h-1).
+\end{equation}
+When $V(a,h)$ is eventually constant, call that constant $V(a)$ and put
+\begin{equation}\label{eq:Hdef}
+ H(a)=\min\{H\ge1:\ V(a,h)=V(a)\text{ for every }h\ge H\}.
+\end{equation}
+\end{definition}
+
+For bases ending in 9, $C_a(0)=0$ because $5\nmid a-1$. Thus there is no initial additive offset hidden in the speed convention. In the source definition, height $h$ compares the common digits of $(T_{h-1},T_h)$ with those of $(T_h,T_{h+1})$. This is precisely \eqref{eq:Vdef}, not $C_a(h+1)-C_a(h)$. The counterexample is therefore not an indexing artifact.
+
+Initially, $C_a(h)$ is defined through \emph{two consecutive} towers. Corollary~\ref{cor:persistence} proves that these digits remain unchanged at every later height. This justifies the word ``stable'' without assuming it in advance.
+
+An onset height is also distinct from the first height at which \emph{a specified number of digits} has stabilized. For example, $H(2749)=3$ says that the gain per level is permanent from height 3; it does not say that every desired number of digits is already fixed there.
+
+\section{Elementary valuation laws}\label{sec:local}
+
+For completeness, the required lifting-the-exponent identities are proved here. This avoids making the main result depend on an unexplained computational rule.
+
+\begin{lemma}[Odd-prime lifting]\label{lem:oddLTE}
+Let $q$ be an odd prime, let $q\mid A-1$, and let $N\ge1$. Then
+\[
+ v_q(A^N-1)=v_q(A-1)+v_q(N).
+\]
+\end{lemma}
+\begin{proof}
+First suppose $q\nmid N$. Factoring $A^N-1$ gives
+\[
+ \frac{A^N-1}{A-1}=1+A+\cdots+A^{N-1}\equiv N\not\equiv0\pmod q,
+\]
+so no additional factor of $q$ occurs.
+
+Next write $A=1+q^r c$ with $r\ge1$ and $q\nmid c$. In the binomial expansion of $A^q-1$, the linear term is $q^{r+1}c$. Terms of index $2\le j\le q-1$ have valuation at least $rj+1\ge r+2$, and the last term has valuation $rq\ge r+2$. The unique term of smallest valuation is therefore the linear term, giving $v_q(A^q-1)=r+1$.
+
+Write $N=q^k m$ with $q\nmid m$. Apply the first step to $A^m$, and then the second step $k$ times. The valuation increases by exactly $k$.
+\end{proof}
+
+\begin{lemma}[Binary lifting]\label{lem:twoLTE}
+For odd $a$ and even $N\ge2$,
+\begin{equation}\label{eq:twoLTE}
+ v_2(a^N-1)=v_2(a-1)+v_2(a+1)+v_2(N)-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $N=2^k m$, where $k\ge1$ and $m$ is odd. For odd $m$, the quotients
+\[
+ \frac{a^m-1}{a-1}=1+a+\cdots+a^{m-1},\qquad
+ \frac{a^m+1}{a+1}=a^{m-1}-a^{m-2}+\cdots-a+1
+\]
+are odd. Therefore $v_2(a^m-1)=v_2(a-1)$ and $v_2(a^m+1)=v_2(a+1)$. Set $b=a^m$. Factor
+\[
+ b^{2^k}-1=(b-1)(b+1)\prod_{j=1}^{k-1}(b^{2^j}+1).
+\]
+The square of every odd integer is $1$ modulo $8$, so each factor in the product has valuation exactly $1$. Adding valuations gives \eqref{eq:twoLTE}.
+\end{proof}
+
+\begin{theorem}[Exact local affine laws]\label{thm:local}
+Let $a\ge3$ be odd and write
+\begin{equation}\label{eq:stu}
+ s=v_2(a-1),\qquad t=v_2(a+1),\qquad u=s+t-1.
+\end{equation}
+For every $h\ge0$,
+\begin{equation}\label{eq:binary-line}
+ v_2(D_h(a))=s+hu.
+\end{equation}
+If $q$ is an odd prime dividing $a-1$, and $r=v_q(a-1)$, then
+\begin{equation}\label{eq:minus-line}
+ v_q(D_h(a))=(h+1)r.
+\end{equation}
+If $q$ is an odd prime dividing $a+1$, and $r=v_q(a+1)$, then
+\begin{equation}\label{eq:plus-line}
+ v_q(D_h(a))=hr.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $h\ge1$, subtract the two successive powers:
+\begin{equation}\label{eq:Drec}
+ D_h=a^{T_h}-a^{T_{h-1}}
+     =a^{T_{h-1}}(a^{D_{h-1}}-1).
+\end{equation}
+All primes in the statement are coprime to $a$, so the first factor contributes no valuation. Since $D_{h-1}$ is even, Lemma~\ref{lem:twoLTE} gives
+\[
+ v_2(D_h)=v_2(D_{h-1})+s+t-1.
+\]
+The initial value is $v_2(D_0)=s$, proving \eqref{eq:binary-line}.
+
+If $q\mid a-1$, Lemma~\ref{lem:oddLTE} gives
+$v_q(D_h)=v_q(D_{h-1})+r$. Its initial value is $r$, proving \eqref{eq:minus-line}.
+
+If $q\mid a+1$, then $q\nmid a-1$, because a common odd divisor of $a-1$ and $a+1$ would divide $2$. Since $D_{h-1}$ is even, apply Lemma~\ref{lem:oddLTE} to
+\[
+ a^{D_{h-1}}=(a^2)^{D_{h-1}/2}.
+\]
+Here $v_q(a^2-1)=r$ and $v_q(D_{h-1}/2)=v_q(D_{h-1})$. Again the increment is $r$, but now the initial value is $0$. This proves \eqref{eq:plus-line}.
+\end{proof}
+
+\begin{corollary}[Permanent, not accidental, agreement]\label{cor:persistence}
+For any prime $q$ covered by Theorem~\ref{thm:local} and integers $k>h\ge0$,
+\begin{equation}\label{eq:persistent}
+ v_q(T_k(a)-T_h(a))=v_q(D_h(a)).
+\end{equation}
+In particular, for $a\equiv9\pmod{10}$, the first $C_a(h)$ trailing decimal digits of $T_h(a)$ agree with those of every later tower, and the next digit never agrees with any later tower.
+\end{corollary}
+\begin{proof}
+The identity
+\[
+ T_k-T_h=D_h+D_{h+1}+\cdots+D_{k-1}
+\]
+has terms with strictly increasing $q$-adic valuations. In a sum with a unique term of smallest valuation, the valuation of the sum is that smallest value: divide by its power of $q$ and reduce modulo $q$. This proves \eqref{eq:persistent}. Apply it to $q=2,5$ and take the minimum.
+\end{proof}
+
+\subsection{The diagonal specialization \texorpdfstring{$a=B-1$}{a = B-1}}\label{sec:diagonal-local}
+
+The family studied from Section~\ref{sec:sharp} onward is the diagonal one, in which the tower base is one less than an even radix. Throughout this subsection,
+\begin{equation}\label{eq:diagonal-setup}
+ B\ge4\text{ is even},\qquad a=B-1\ge3,\qquad
+ s=v_2(B-2)=v_2(a-1),\qquad t=v_2(B)=v_2(a+1),
+\end{equation}
+and $u=s+t-1$ as in \eqref{eq:stu}. Both $s$ and $t$ are positive, exactly one of them equals $1$, and $u\ge t$. The degenerate radix $B=2$ has tower base $1$ and constant towers; it is excluded here and everywhere below, because it satisfies no nonzero-difference formula.
+
+The first statement is Theorem~\ref{thm:local} read backwards, through the exponent rather than the tower.
+
+\begin{corollary}[Exponent laws on the diagonal]\label{cor:even-exponent}
+With the notation \eqref{eq:diagonal-setup}, let $d>0$ be even and let $q$ be an odd prime dividing $B$. Then
+\begin{equation}\label{eq:diag-odd}
+ v_q(a^d-1)=v_q(B)+v_q(d),
+ \qquad
+ v_2(a^d-1)=u+v_2(d).
+\end{equation}
+If instead $k>0$ is odd, then $v_2(a^k-1)=s$.
+\end{corollary}
+\begin{proof}
+Write $a^d=(a^2)^{d/2}$. For an odd $q\mid B$ we have $a^2-1=(B-2)B$ and $q\nmid B-2$, so $v_q(a^2-1)=v_q(B)$; Lemma~\ref{lem:oddLTE} applies, and halving $d$ does not change its $q$-adic valuation. At $q=2$, apply Lemma~\ref{lem:twoLTE} directly: $v_2(a^d-1)=s+t-1+v_2(d)=u+v_2(d)$. For odd $k$, the quotient $(a^k-1)/(a-1)=1+a+\cdots+a^{k-1}$ is a sum of $k$ odd terms, hence odd, so $v_2(a^k-1)=v_2(a-1)=s$.
+\end{proof}
+
+The odd-exponent clause is what makes the following direct argument possible. Corollary~\ref{cor:persistence} already yields gap-independence indirectly, by telescoping and the unique-minimum rule. On the diagonal there is also a direct induction, at a fixed gap, that never forms the telescoping sum at all.
+
+\begin{theorem}[Exact local distances at an arbitrary gap]\label{thm:gap-local}
+Assume \eqref{eq:diagonal-setup}. For every $h\ge0$, every $r\ge1$, and every odd prime $q\mid B$,
+\begin{align}
+ v_q\bigl(D_h^{(r)}(a)\bigr)&=h\,v_q(B),\label{eq:gap-odd}\\
+ v_2\bigl(D_h^{(r)}(a)\bigr)&=s+hu=s+h(s+t-1).\label{eq:gap-two}
+\end{align}
+In particular the answer does not depend on the height gap $r$.
+\end{theorem}
+\begin{proof}
+Fix $r$ and abbreviate $\Delta_h=D_h^{(r)}(a)$. Since $a\ge3$ the towers increase strictly, so every $\Delta_h$ is positive; every tower is odd, so every $\Delta_h$ is even.
+
+At height $0$, $\Delta_0=T_r-1=a^{T_{r-1}}-1$ with $T_{r-1}$ odd. For an odd prime $q\mid B$ we have $a\equiv-1\pmod q$, hence $a^{T_{r-1}}\equiv-1$ and $\Delta_0\equiv-2\not\equiv0\pmod q$; thus $v_q(\Delta_0)=0$. The odd-exponent clause of Corollary~\ref{cor:even-exponent} gives $v_2(\Delta_0)=s$.
+
+For the induction step, factor
+\begin{equation}\label{eq:gap-Drec}
+ \Delta_{h+1}=T_{h+1+r}-T_{h+1}=a^{T_{h+r}}-a^{T_h}=a^{T_h}\bigl(a^{\Delta_h}-1\bigr).
+\end{equation}
+The first factor is a unit at every prime dividing $B$, so it contributes no valuation. The exponent $\Delta_h$ is even, so Corollary~\ref{cor:even-exponent} applies to it and gives
+\[
+ v_q(\Delta_{h+1})=v_q(B)+v_q(\Delta_h),
+ \qquad
+ v_2(\Delta_{h+1})=u+v_2(\Delta_h).
+\]
+Each step therefore adds exactly $v_q(B)$ at an odd prime $q\mid B$ and exactly $u$ at the prime $2$. Starting from $v_q(\Delta_0)=0$ and $v_2(\Delta_0)=s$ and iterating $h$ times gives \eqref{eq:gap-odd} and \eqref{eq:gap-two}. The right-hand sides contain no $r$.
+\end{proof}
+
+\begin{remark}[Two routes to gap-independence]\label{rem:two-routes}
+Theorem~\ref{thm:gap-local} and the pair (Theorem~\ref{thm:local}, Corollary~\ref{cor:persistence}) give the same numbers on the diagonal. The telescoping route is more general --- it applies to every odd $a$ and every prime covered by Theorem~\ref{thm:local} --- but it obtains gap-independence only as a consequence of the unique-minimum rule for a sum. The direct induction is specific to the diagonal, yet it never forms the sum, so it stays correct verbatim if one only ever has access to two heights. Both are kept.
+\end{remark}
+
+\section{The exact onset for every base ending in 9}\label{sec:onset}
+
+\begin{theorem}[Complete decimal transient]\label{thm:onset}
+Let $a\equiv9\pmod{10}$, and let $s,t,u$ be as in \eqref{eq:stu}. Set $e=v_5(a+1)\ge1$. Then
+\begin{equation}\label{eq:exactC}
+ \boxed{\ C_a(h)=\min\{s+hu,he\}\quad(h\ge0).\ }
+\end{equation}
+If $e\le u$, then $V(a,h)=e$ for every $h\ge1$ and $H(a)=1$.
+
+If $e>u$, put $\delta=e-u$. In this case
+\begin{align}
+ C_a(h)&=uh+\min\{s,h\delta\},\label{eq:crossing}\\
+ V(a,h)&=u+\min\{s,h\delta\}-\min\{s,(h-1)\delta\},\label{eq:exactspeed}\\
+ H(a)&=1+\ceil{s/\delta}.\label{eq:exactH}
+\end{align}
+In all cases $V(a)=\min\{u,e\}$.
+\end{theorem}
+\begin{proof}
+Since $5\mid a+1$, Theorem~\ref{thm:local} gives $v_5(D_h)=he$ and $v_2(D_h)=s+hu$. This proves \eqref{eq:exactC}.
+
+If $e\le u$, then $he\le hu<s+hu$, so $C_a(h)=he$ and every speed is $e$.
+
+Suppose $e>u$. Subtract $uh$ from both arguments of the minimum in \eqref{eq:exactC}; the result is \eqref{eq:crossing}, and taking its first difference gives \eqref{eq:exactspeed}. Put $r=\ceil{s/\delta}$. For $h\ge r+1$, both minima in \eqref{eq:exactspeed} equal $s$, so the speed is $u$. At $h=r$, the second minimum is $(r-1)\delta<s$, whereas the first is $s$. Hence $V(a,r)>u$, proving that $r+1$ is the \emph{first permanent} height. This establishes \eqref{eq:exactH} and the limiting speed.
+\end{proof}
+
+The minimum of two affine lines explains the delayed decrease. The 2-adic line begins with a positive intercept $s$, while the 5-adic line begins at $0$. Even when the binary slope $u$ is smaller, the 5-adic line can control several initial levels. The eventual speed records only the smaller slope; it discards the intercept responsible for the delay.
+
+\begin{corollary}[Exact criterion for failure of the height-2 bound]\label{cor:criterion}
+For $a\equiv9\pmod{10}$,
+\begin{equation}\label{eq:failcriterion}
+ H(a)>2
+ \quad\Longleftrightarrow\quad
+ a\equiv1\pmod4\ \text{ and }\ v_2(a-1)<v_5(a+1)<2v_2(a-1).
+\end{equation}
+Every $a\equiv19\pmod{20}$ satisfies $H(a)\le2$.
+\end{corollary}
+\begin{proof}
+Consecutive even integers $a-1$ and $a+1$ have exactly one member divisible by $4$. If $a\equiv3\pmod4$, then $s=1$, $t\ge2$, and $u=t$. The nonconstant case has $H=1+\ceil{1/(e-u)}=2$. Thus failure is impossible in this class.
+
+If $a\equiv1\pmod4$, then $s\ge2$, $t=1$, and $u=s$. Theorem~\ref{thm:onset} gives $H>2$ precisely when $e>s$ and $\ceil{s/(e-s)}>1$. The latter inequality is equivalent to $s>e-s$, or $e<2s$. This is \eqref{eq:failcriterion}.
+\end{proof}
+
+\begin{corollary}[A base-dependent upper bound]\label{cor:upperH}
+For every $a\equiv9\pmod{10}$,
+\[
+ H(a)\le v_2(a-1)+1\le1+\log_2(a-1).
+\]
+The first bound is attained by infinitely many prime bases for every value $v_2(a-1)\ge2$.
+\end{corollary}
+\begin{proof}
+In the nonconstant case, $\delta\ge1$ in \eqref{eq:exactH}; the constant case is immediate. The second bound follows from $2^{v_2(a-1)}\le a-1$. Attainment follows from Theorem~\ref{thm:prime-family} below.
+\end{proof}
+
+The eventual speed in Theorem~\ref{thm:onset} agrees with the previously known formulas in \cite{RipaOnnis2022}. The additional information is the full finite-height sequence and its exact stopping point, including the equality case when the two valuation lines meet at an integer height.
+
+\section{The smallest prime counterexample}\label{sec:2749}
+
+\begin{theorem}\label{thm:2749}
+The smallest prime counterexample to \eqref{eq:conjecture} is $p=2749$. Its stable counts and speeds are
+\[
+ C_p(h):\quad 0,3,6,8,10,12,\ldots,
+ \qquad
+ V(p,h):\quad 3,3,2,2,2,\ldots.
+\]
+Thus $V(2749,2)=3\ne2=V(2749)$ and $H(2749)=3$.
+\end{theorem}
+\begin{proof}
+The factorizations
+\[
+ 2749-1=2^2\cdot3\cdot229,\qquad
+ 2749+1=2\cdot5^3\cdot11
+\]
+give $s=2$, $t=1$, $u=2$, and $e=3$. Consequently
+\begin{equation}\label{eq:2749}
+ C_{2749}(h)=\min\{2+2h,3h\}.
+\end{equation}
+The asserted counts, speeds, and onset follow immediately.
+
+It remains to certify primality and minimality. Since $\sqrt{2749}<53$, trial division by the primes below $53$ is sufficient. The remainders are shown in Table~\ref{tab:primecert}; none is zero, so $2749$ is prime. Moreover $2749=275\cdot10-1$, so it belongs to \eqref{eq:source-set} with $n=1$ and $k=274$.
+
+By Corollary~\ref{cor:criterion}, any smaller counterexample $a$ must have $s\ge2$ and $e\ge s+1\ge3$. Hence $250\mid a+1$. Write $a=250k-1$. The inequality $a<2749$ gives $1\le k\le10$, and $a\equiv1\pmod4$ forces $k$ odd. There are only five candidates, listed in Table~\ref{tab:minimality}. Only $749$ and $1749$ satisfy the failure criterion, and both are composite. No smaller prime counterexample exists.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{An elementary primality certificate for $2749$.}\label{tab:primecert}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+$q$&2&3&5&7&11&13&17&19\\
+$2749\bmod q$&1&1&4&5&10&6&12&13\\
+\midrule
+$q$&23&29&31&37&41&43&47&\\
+$2749\bmod q$&12&23&21&11&2&40&23&\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{All possible smaller bases after the necessary congruence restrictions.}\label{tab:minimality}
+\begin{tabular}{rrrrl}
+\toprule
+$a$&$s=v_2(a-1)$&$e=v_5(a+1)$&$H(a)$&Reason it is not a prime counterexample\\
+\midrule
+249&3&3&1&No delay beyond height 2\\
+749&2&3&3&$749=7\cdot107$\\
+1249&5&4&1&No delay beyond height 2\\
+1749&2&3&3&$1749=3\cdot11\cdot53$\\
+2249&3&3&1&No delay beyond height 2\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{A numerical certificate without enormous integers}
+
+The main proof needs no explicit tower evaluation. Nevertheless, Table~\ref{tab:2749trace} provides an independent, finite arithmetic check. All residues are computed modulo $10^{16}$. For the displayed differences, both relevant valuations are below $16$, so they are determined exactly by these residues.
+
+\begin{table}[htbp]
+\centering\small
+\caption{An exact modular trace for the base $2749$. Leading zeros are shown where useful.}\label{tab:2749trace}
+\begin{tabular}{rllrrr}
+\toprule
+$h$&$[T_h]_{10^{16}}$&$[D_h]_{10^{16}}$&$v_2(D_h)$&$v_5(D_h)$&$C(h)$\\
+\midrule
+1&0000000000002749&3851756492182000&4&3&3\\
+2&3851756492184749&6009668063000000&6&6&6\\
+3&9861424555184749&9239329500000000&8&9&8\\
+4&9100754055184749&8421750000000000&10&12&10\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The factor $10^6$ in $D_2$ does not imply that the gain at height 2 is $6$: one must subtract the previous stable count $C(1)=3$. This is another place where a careless reading of ``speed'' could obscure the counterexample.
+
+\subsection{A second explicit delay}
+
+For $a=16249$,
+\[
+ a-1=2^3\cdot3\cdot677,\qquad a+1=2\cdot5^4\cdot13.
+\]
+The included deterministic trial-division code certifies that $16249$ is prime. Its stable counts are $0,4,8,12,15,18,\ldots$, and its speeds are $4,4,4,3,3,\ldots$. Thus $H(16249)=4$. The next section explains why such examples cannot be controlled by any universal constant height.
+
+\section{Infinitely many primes with every delayed onset}\label{sec:families}
+
+\begin{theorem}[Unbounded prime onset]\label{thm:prime-family}
+For every integer $s\ge2$, there are infinitely many primes $p\equiv9\pmod{10}$ such that
+\begin{equation}\label{eq:prime-speed}
+ V(p,h)=\begin{cases}
+ s+1,&1\le h\le s,\\
+ s,&h\ge s+1.
+ \end{cases}
+\end{equation}
+Consequently, every integer $H\ge3$ occurs as the exact onset $H(p)$ for infinitely many prime bases ending in 9.
+\end{theorem}
+\begin{proof}
+Impose the two congruences
+\begin{equation}\label{eq:CRT}
+ \begin{split}
+ p&\equiv 1+2^s\pmod{2^{s+1}},\\
+ p&\equiv 5^{s+1}-1\pmod{5^{s+2}}.
+ \end{split}
+\end{equation}
+The moduli are coprime. By the Chinese remainder theorem, these conditions define one residue class $r_s$ modulo
+\[
+ M_s=2^{s+1}5^{s+2}.
+\]
+Every integer in the class is odd and is $-1$ modulo $5$, so $\gcd(r_s,M_s)=1$. Dirichlet's theorem on arithmetic progressions \cite{Dirichlet} therefore supplies infinitely many primes in this class.
+
+The first congruence in \eqref{eq:CRT} gives $v_2(p-1)=s$ exactly; since $s\ge2$, it also gives $v_2(p+1)=1$. The second congruence gives $v_5(p+1)=s+1$ exactly. Hence $u=s$, $e=s+1$, and $\delta=1$ in Theorem~\ref{thm:onset}. Equation~\eqref{eq:exactspeed} reduces to \eqref{eq:prime-speed}, and $H(p)=s+1$.
+\end{proof}
+
+The infinitude assertion uses Dirichlet's theorem, not merely the existence of one CRT residue. Coprimality with the modulus is checked explicitly; omitting that check would invalidate the prime-family argument.
+
+For a concrete construction of the residue, let $m_2=2^{s+1}$, $m_5=5^{s+2}$, $r_2=1+2^s$, and $r_5=5^{s+1}-1$. Then
+\begin{equation}\label{eq:explicitCRT}
+ r_s=\res{r_2+m_2\res{(r_5-r_2)m_2^{-1}}{m_5}}{m_2m_5},
+\end{equation}
+where the inverse is taken modulo $m_5$. Table~\ref{tab:CRT} gives small examples. The residue class chosen for $s=2$ does not contain $2749$; it is only one of the possible classes with the required exact valuations.
+
+\begin{table}[htbp]
+\centering
+\caption{Prime families with $H=s+1$. The example primes are certified by trial division in the code.}\label{tab:CRT}
+\begin{tabular}{rrrrr}
+\toprule
+$s$&$H$&$r_s$&$M_s$&A prime in the class\\
+\midrule
+2&3&749&5000&5749\\
+3&4&16249&50000&16249\\
+4&5&331249&500000&331249\\
+5&6&2281249&5000000&2281249\\
+6&7&20781249&50000000&1420781249\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[What unboundedness means]
+For each prescribed finite height $H$, a different arithmetic progression produces infinitely many prime examples. No single fixed base has an infinite transient. Indeed every fixed base in this class has the finite onset in \eqref{eq:exactH}. Unboundedness across bases and eventual constancy for each base are fully compatible.
+\end{remark}
+
+\section{How frequent are delayed bases?}\label{sec:density}
+
+The construction proves existence, but it does not describe frequency. Here frequency is measured among \emph{all positive integers ending in 9}, not among primes. For a subset $E$ of that progression, define its relative natural density, when the limit exists, by
+\[
+ \operatorname{dens}_9(E)=
+ \lim_{X\to\infty}
+ \frac{\#\{a\le X:\ a\equiv9\pmod{10},\ a\in E\}}
+ {\#\{a\le X:\ a\equiv9\pmod{10}\}}.
+\]
+
+\begin{theorem}[Exact tail of the onset distribution]\label{thm:density}
+For every integer $K\ge2$, the relative natural density exists and is
+\begin{equation}\label{eq:density}
+ \boxed{\ \operatorname{dens}_9\{a:H(a)>K\}
+ =\frac{4}{9(5\cdot10^{K-1}-1)}.\ }
+\end{equation}
+In particular, the relative density of bases violating $H\le2$ is $4/441$.
+\end{theorem}
+\begin{proof}
+If $H(a)>K\ge2$, Corollary~\ref{cor:criterion} forces $a\equiv1\pmod4$, so $s\ge2$, $t=1$, and $u=s$. Put $d=e-s$. From \eqref{eq:exactH},
+\[
+ H(a)>K
+ \quad\Longleftrightarrow\quad
+ d\ge1\quad\text{and}\quad s>(K-1)d.
+\]
+For fixed $s\ge2$ and $e\ge1$, exact binary valuation $v_2(a-1)=s$ describes one residue among the $2^s$ odd classes modulo $2^{s+1}$. Its relative proportion is $2^{-s}$. Conditional on $a\equiv-1\pmod5$, exact valuation $v_5(a+1)=e$ has proportion $4/5^e$. The Chinese remainder theorem makes these two conditions independent in their finite residue-class counts. Thus the joint relative density is
+\[
+ \frac{1}{2^s}\frac{4}{5^e}.
+\]
+Substitute $e=s+d$ and sum over the allowed pairs:
+\begin{align*}
+ \sum_{d\ge1}\sum_{s\ge(K-1)d+1}
+     \frac{4}{2^s5^{s+d}}
+ &=\sum_{d\ge1}\frac{4}{5^d}
+     \frac{10^{-((K-1)d+1)}}{1-10^{-1}}\\
+ &=\frac49\sum_{d\ge1}
+     \left(\frac{1}{5\cdot10^{K-1}}\right)^d\\
+ &=\frac{4}{9(5\cdot10^{K-1}-1)}.
+\end{align*}
+
+To justify that this series is a natural density, rather than a formal probability calculation, truncate to $s<S$. Since $s>(K-1)d$, only finitely many $d$ then occur, and every retained set is a finite union of residue classes. The omitted part is contained in $\{a:v_2(a-1)\ge S\}$, whose relative density is $2^{1-S}$. Its upper relative density tends to zero as $S\to\infty$. Hence the finite density sums converge to the density of the full set, proving \eqref{eq:density}.
+\end{proof}
+
+For each $h\ge3$, subtraction of successive tails gives
+\begin{equation}\label{eq:pointmass}
+ \operatorname{dens}_9\{a:H(a)=h\}
+ =\frac{4}{9(5\cdot10^{h-2}-1)}
+  -\frac{4}{9(5\cdot10^{h-1}-1)}.
+\end{equation}
+The tail decays asymptotically as $\frac8{9}\,10^{-K}$. Long delays are therefore possible but sparse in this precise arithmetic sense.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact integer counts among the 100,000 positive integers below $10^6$ ending in 9. Finite counts are not used to prove the density theorem.}\label{tab:density}
+\begin{tabular}{rrr}
+\toprule
+$K$&Number with $H(a)>K$&Limiting relative density\\
+\midrule
+2&908&$4/441$\\
+3&90&$4/4491$\\
+4&9&$4/44991$\\
+5&1&$4/449991$\\
+6&0&$4/4499991$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No prime-density statement is needed or asserted here. Although each CRT family contains infinitely many primes, Dirichlet's infinitude theorem alone is not a density theorem for the union of these families.
+
+\section{A general-radix extension with exact thresholds}\label{sec:general-radix}
+
+The local argument is not inherently decimal. It works cleanly whenever the prime divisors of the chosen radix already divide $a^2-1$. This is a useful extension, but its restriction should not be silently dropped.
+
+\begin{theorem}[Affine local laws in a supported radix]\label{thm:general-radix}
+Let $a\ge3$ be odd, let $R\ge2$, and assume that every prime divisor of $R$ divides $a^2-1$. Write $R=\prod_{q\mid R}q^{f_q}$. For each such prime, define $(\alpha_q,\beta_q)$ by
+\[
+ (\alpha_q,\beta_q)=
+ \begin{cases}
+ (s,s+t-1),&q=2,\\
+ (r,r),&q\text{ odd},\ q\mid a-1,\ r=v_q(a-1),\\
+ (0,r),&q\text{ odd},\ q\mid a+1,\ r=v_q(a+1).
+ \end{cases}
+\]
+The number of permanently stable radix-$R$ digits of $T_h(a)$ is
+\begin{equation}\label{eq:radixC}
+ C_R(h)=\min_{q\mid R}\floor{\frac{\alpha_q+h\beta_q}{f_q}}.
+\end{equation}
+For $m\ge1$, the first height, allowing height $0$, at which the residue modulo $R^m$ is permanent is exactly
+\begin{equation}\label{eq:radixthreshold}
+ J_R(m)=\max_{q\mid R}\max\left\{0,
+       \ceil{\frac{mf_q-\alpha_q}{\beta_q}}\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:local} gives $v_q(D_h)=\alpha_q+h\beta_q$, with $\beta_q>0$. Divisibility by $R^m$ is equivalent to all inequalities $\alpha_q+h\beta_q\ge mf_q$. This proves \eqref{eq:radixC} and \eqref{eq:radixthreshold}. Corollary~\ref{cor:persistence} makes the agreement permanent, and shows that any smaller height fails to have the limiting residue modulo $R^m$.
+\end{proof}
+
+In the language of Definition~\ref{def:ord}, $C_R(h)=\ordop_R(D_h(a))$, and \eqref{eq:radixC} is exactly the right-hand side of \eqref{eq:ordR} evaluated on $D_h(a)$. The precision order $\ordop_R$ is not a valuation for composite $R$, as the example after Definition~\ref{def:ord} shows, so \eqref{eq:radixC} deliberately uses genuine prime valuations and an explicit minimum, and never a product rule.
+
+\begin{proposition}[Eventually periodic speed in a general radix]\label{prop:periodic}
+Under the hypotheses of Theorem~\ref{thm:general-radix}, put
+\[
+ \rho=\min_{q\mid R}\frac{\beta_q}{f_q},\qquad
+ \eta=\min_{\substack{q\mid R\\ \beta_q/f_q=\rho}}
+             \frac{\alpha_q}{f_q}.
+\]
+For all sufficiently large $h$,
+\[
+ C_R(h)=\floor{\rho h+\eta}.
+\]
+The differences $C_R(h)-C_R(h-1)$ are eventually periodic. They are eventually constant if and only if $\rho$ is an integer.
+\end{proposition}
+\begin{proof}
+For a finite collection of real numbers, taking the minimum commutes with the floor. Among the finitely many affine functions
+$(\alpha_q+h\beta_q)/f_q$, every larger-slope line eventually lies above every minimum-slope line. Among the latter, the least intercept is $\eta$. This proves the displayed formula.
+
+Write $\rho=P/Q$ in lowest terms. Then
+$\floor{\rho(h+Q)+\eta}=\floor{\rho h+\eta}+P$, so the first differences have eventual period dividing $Q$. If $\rho$ is an integer, the difference is $\rho$. Conversely, an eventually constant integer difference would force $\lim C_R(h)/h$ to be an integer, while that limit is $\rho$.
+\end{proof}
+
+For instance, $a=3$ and $R=16$ give
+\[
+ C_{16}(h)=\floor{\frac{1+2h}{4}},
+\]
+whose speeds alternate $0,1,0,1,\ldots$. Thus constant speed is not a radix-independent phenomenon. This example does not contradict the decimal formulas, which use a different digit unit.
+
+The hypotheses of this section and of Section~\ref{sec:sharp} are deliberately different and must not be interchanged. Here $a$ is an arbitrary odd integer at least $3$ and $R$ is an arbitrary radix all of whose prime divisors divide $a^2-1$; nothing below is assumed about the relation between $a$ and $R$. From Section~\ref{sec:sharp} onward the radix is an even $B\ge4$ and the base is tied to it by $a=B-1$, which is what forces the intercepts to line up and the speed to be exactly one digit. No statement proved under the diagonal hypothesis is asserted for a general supported radix.
+
+\section{A sharp one-digit law for towers of base \texorpdfstring{$B-1$}{B-1}}\label{sec:sharp}
+
+Throughout this section and the four that follow it, the diagonal hypotheses \eqref{eq:diagonal-setup} are in force: $B\ge4$ is even, $a=B-1$, $s=v_2(B-2)$, $t=v_2(B)$, and $u=s+t-1$. The congruence below is stronger than merely saying that one more radix-$B$ digit stabilizes at each level: it also names the difference at the first unstable position.
+
+\begin{theorem}[Exact leading unstable difference]\label{thm:sharp}
+For every integer $h\ge0$ and every gap $r\ge1$,
+\begin{equation}\label{eq:sharp}
+ \boxed{\ D_h^{(r)}(B-1)=T_{h+r}(B-1)-T_h(B-1)\equiv-2B^h\pmod{B^{h+1}}.\ }
+\end{equation}
+Equivalently, in normalized form,
+\begin{equation}\label{eq:normalized}
+ \frac{T_{h+r}(B-1)-T_h(B-1)}{B^h}\equiv B-2\pmod B .
+\end{equation}
+In particular \eqref{eq:sharp} holds for $D_h=D_h^{(1)}$, so $B^h\mid D_h$ but $B^{h+1}\nmid D_h$, and for every $k>h$
+\begin{equation}\label{eq:sharp-telescope}
+ T_k(B-1)-T_h(B-1)\equiv-2B^h\pmod{B^{h+1}}.
+\end{equation}
+The first permanent height modulo $B^m$ is exactly $m$.
+\end{theorem}
+
+Two preparatory results are needed. The first records the exact radix precision of a difference, including the factor $2$ that the binomial estimate will consume; the second is the binomial estimate itself.
+
+\begin{corollary}[Exactly one radix digit per height]\label{cor:order}
+For every $h\ge0$ and every $r\ge1$,
+\begin{equation}\label{eq:exact-order}
+ \ordop_B\bigl(D_h^{(r)}(B-1)\bigr)=h,
+ \qquad\text{and moreover}\qquad
+ 2B^h\ \bigm|\ D_h^{(r)}(B-1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Abbreviate $\Delta=D_h^{(r)}(B-1)$ and use Theorem~\ref{thm:gap-local}.
+
+Divisibility by $B^h$ is immediate: $v_q(\Delta)=h\,v_q(B)$ at every odd prime $q\mid B$, and $v_2(\Delta)=s+hu\ge ht$ because $u\ge t$ and $s\ge1$. For the extra factor of $2$ we must check $v_2(\Delta)\ge1+ht$, that is $s+h(s-1)\ge1$. If $B\equiv0\pmod 4$ then $t\ge2$ and $s=1$, so the left side is $1$. If $B\equiv2\pmod4$ then $t=1$ and $s\ge2$, so the left side is at least $2$. Either way $2B^h\mid\Delta$.
+
+For exactness there are two cases. If $B$ has an odd prime factor $q$, then $v_q(\Delta)=h\,v_q(B)<(h+1)v_q(B)$, so $B^{h+1}\nmid\Delta$ and the odd prime is the bottleneck. If $B$ has no odd prime factor, write $B=2^t$ with $t\ge2$; then $s=1$ and $v_2(\Delta)=1+ht<(h+1)t$, again short of a full extra digit. In both cases $\ordop_B(\Delta)=h$.
+\end{proof}
+
+The second case of that proof is the exact reason why excess powers of $2$ never buy a whole additional radix digit: a single spare factor of $2$ is strictly less than one base-$B$ digit as soon as $B\ge4$.
+
+\begin{lemma}[A binomial precision estimate]\label{lem:binomial}
+Let $B\ge4$ be even, let $h\ge0$, and let $N>0$ be a multiple of $2B^h$. Then
+\begin{equation}\label{eq:binomial}
+ (1-B)^N\equiv1-BN\pmod{B^{h+2}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+It suffices to show that every binomial term $\binom Nj(-B)^j$ with $j\ge2$ is divisible by $B^{h+2}$. Fix a prime $q\mid B$ and put $f=v_q(B)\ge1$. The identity
+\[
+ \binom Nj=\frac Nj\binom{N-1}{j-1}
+\]
+gives
+\begin{equation}\label{eq:binterm}
+ v_q\!\left(\binom Nj B^j\right)\ \ge\ jf+v_q(N)-v_q(j).
+\end{equation}
+The two primes must be treated separately, because the available bound on $v_q(j)$ is different at $q=2$ and this is exactly where the factor $2$ in $N$ is spent.
+
+\emph{Odd $q$.} Here $v_q(N)\ge hf$, so \eqref{eq:binterm} is at least $(h+j)f-v_q(j)$, and it suffices to prove $v_q(j)\le(j-2)f$ for every $j\ge2$. Since $f\ge1$ it is enough to prove $v_q(j)\le j-2$. Put $k=v_q(j)$. If $k=0$ this is the hypothesis $j\ge2$. If $k\ge1$, then $j\ge q^k\ge3^k\ge k+2$, so $j-2\ge k$. Hence \eqref{eq:binterm} is at least $(h+2)f$.
+
+\emph{The prime $2$.} Here the hypothesis $2B^h\mid N$ gives the stronger bound $v_2(N)\ge hf+1$, so \eqref{eq:binterm} is at least $(h+j)f+1-v_2(j)$, and it suffices to prove $v_2(j)\le(j-2)f+1$. Since $2^{v_2(j)}\le j$ we have $v_2(j)\le\log_2 j\le j-1$ for every $j\ge2$, with equality at $j=2$. As $f\ge1$, $(j-2)f+1\ge j-1\ge v_2(j)$, so \eqref{eq:binterm} is again at least $(h+2)f$.
+
+Note that the odd bound $v_q(j)\le j-2$ is \emph{false} at $q=2$ and $j=2$, where $v_2(2)=1>0$; the extra factor of $2$ supplied by Corollary~\ref{cor:order} is precisely what covers that deficit. Since the estimate holds at every prime dividing $B$, each such term is divisible by $B^{h+2}$, proving \eqref{eq:binomial}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:sharp}]
+Fix $r\ge1$ and abbreviate $\Delta_h=D_h^{(r)}(B-1)$. At height $0$, $\Delta_0=T_r-1=a^{T_{r-1}}-1$ with $T_{r-1}$ odd, so $\Delta_0\equiv-1-1=-2\pmod B$, which is \eqref{eq:sharp} at $h=0$. (For $r=1$ this is just $D_0=B-2$.)
+
+Suppose the assertion holds at height $h$. By Corollary~\ref{cor:order}, $2B^h\mid\Delta_h$; in particular $\Delta_h$ is even, so
+\[
+ a^{\Delta_h}=(B-1)^{\Delta_h}=(1-B)^{\Delta_h},
+\]
+and Lemma~\ref{lem:binomial} gives
+\[
+ a^{\Delta_h}-1\equiv-B\Delta_h\pmod{B^{h+2}}.
+\]
+In the factorization \eqref{eq:gap-Drec}, the other factor satisfies $a^{T_h}\equiv-1\pmod B$, since $T_h$ is odd. The product $B\Delta_h$ already contains $B^{h+1}$, so replacing that multiplier by $-1$ is valid modulo $B^{h+2}$. Hence
+\[
+ \Delta_{h+1}\equiv B\Delta_h\equiv B\cdot(-2B^h)=-2B^{h+1}\pmod{B^{h+2}}.
+\]
+This completes the induction and proves \eqref{eq:sharp}; dividing by $B^h$ and using $-2\equiv B-2\pmod B$ gives \eqref{eq:normalized}.
+
+Because $B\ge4$, the residue $-2$ is nonzero modulo $B$. Taking $r=k-h$ gives \eqref{eq:sharp-telescope} directly, and the same congruence proves both permanence from height $m$ and failure at every earlier height.
+\end{proof}
+
+\begin{remark}[The threshold is sharp in the strong sense]\label{rem:threshold}
+Fix $m\ge1$. The residues $T_h\bmod B^m$ become constant precisely at height $m$, and no height $h<m$ has the eventual residue. Indeed, if $h\ge m$ then $\ordop_B(T_{h+r}-T_h)=h\ge m$ by Corollary~\ref{cor:order}, so all later towers agree modulo $B^m$; and if $h<m$ then $\ordop_B(T_m-T_h)=h<m$, so $T_h$ already differs from the eventual residue. This is stronger than saying that neighboring residues eventually agree: it rules out an earlier \emph{accidental} visit to the final residue followed by a departure.
+\end{remark}
+
+\begin{remark}[$B-2$ is a difference of digits, not a digit]\label{rem:difference-not-digit}
+Equation~\eqref{eq:normalized} says that $B-2$ is the \emph{difference}, modulo $B$, of the first unstable digits of $T_{h+r}$ and $T_h$. It is not a claim that either digit itself equals $B-2$. Digits farther to the left can also change between the two heights, and carries must not be ignored. The phrase ``exact leading unstable difference'' in Theorem~\ref{thm:sharp} is meant literally.
+\end{remark}
+
+A useful independent check comes from the local laws of Theorem~\ref{thm:gap-local}, which give the two-adic distance in the clean dichotomy
+\begin{equation}\label{eq:two-cases}
+ v_2\bigl(T_{h+r}-T_h\bigr)=
+ \begin{cases}
+ 1+h\,v_2(B),&B\equiv0\pmod4,\\
+ (h+1)\,v_2(B-2),&B\equiv2\pmod4,
+ \end{cases}
+\end{equation}
+since $B\equiv0\pmod4$ forces $s=1$ and $u=t$, while $B\equiv2\pmod4$ forces $t=1$ and $u=s$. In the first case the number of full base-$B$ factors contributed by the prime $2$ alone is $h$ plus a fraction; in the second it is $h+1$ at the prime $2$, but an odd prime divisor of $B$ then caps the precision order at $h$. These valuation checks recover the exact number of stable digits, while the binomial proof additionally determines the first unstable difference.
+
+\section{Resolving the three OEIS A324017 conjectures}\label{sec:OEIS}
+
+With $B=2n$ and $a=B-1$, the array in OEIS A324017 \cite{OEIS324017} is
+\begin{equation}\label{eq:array}
+ A(m,n)=\res{T_m(2n-1)}{(2n)^m}.
+\end{equation}
+The row coordinate is the tower height $m$; the column coordinate is $n$. We work with $n>1$, so $B\ge4$. The exceptional column $n=1$ has base $1$ and is identically $1$.
+
+\subsection{The three source statements, written out}\label{sec:oeis-statements}
+
+The three comments attached to the entry, transcribed into the notation of \eqref{eq:setup-oeis} below, are the following. Write $B=2n$, $a=B-1$, $T_0=1$ and $T_{h+1}=a^{T_h}$, so that
+\begin{equation}\label{eq:setup-oeis}
+ A(m,n)=\res{T_m}{B^m}.
+\end{equation}
+
+\begin{description}[leftmargin=12mm,style=nextline]
+\item[C1: fixed point.]
+For $m,n,k>1$: if $T_m\equiv k\pmod{B^m}$, then $a^k\equiv k\pmod{B^m}$.
+\item[C2: second digit.]
+For $n>1$ and $m\ge2$: $\floor{T_m/B}\equiv B-2\pmod B$.
+\item[C3: early stabilization.]
+For $m>1$: if $T_m\equiv j\pmod{B^{m+1}}$, then $A(m+1,n)=j$. Equivalently, $T_{m+1}\equiv T_m\pmod{B^{m+1}}$.
+\end{description}
+
+One convention has to be fixed before C3 can be discussed at all. The statement asserts a congruence for $j$ and then an \emph{equality} of $A(m+1,n)$ with $j$; literal equality with an arbitrary integer congruent to $T_m$ modulo $B^{m+1}$ would already be meaningless, since the congruence class is infinite while $A(m+1,n)$ is a single number. We therefore read $j$ as its least nonnegative representative, which is the strongest and most favorable natural interpretation available to the conjecture. Even under that reading C3 is false, for every $n>1$ and every $m>1$; this is Section~\ref{sec:oeis3}. We resolve the statements as displayed and do not speculate about a different statement that the author might have intended.
+
+\begin{lemma}[Exponent period and contraction]\label{lem:period}
+Let $B\ge4$ be even and $a=B-1$. For every $m\ge1$,
+\begin{equation}\label{eq:period}
+ a^{B^m}\equiv1\pmod{B^{m+1}}.
+\end{equation}
+Moreover, if $x,y$ are nonnegative \emph{odd} integers and $B^j\mid x-y$ for some $j\ge0$, then
+\begin{equation}\label{eq:contraction}
+ a^x\equiv a^y\pmod{B^{j+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For \eqref{eq:period}: the exponent $B^m$ is even, so Corollary~\ref{cor:even-exponent} gives, at an odd prime $q\mid B$,
+\[
+ v_q(a^{B^m}-1)=v_q(B)+v_q(B^m)=(m+1)v_q(B),
+\]
+and at the prime $2$,
+\[
+ v_2(a^{B^m}-1)=u+mt=s+t-1+mt.
+\]
+If $t\ge2$ then $s=1$ and this equals $(m+1)t$; if $t=1$ then $s\ge2$ and it is at least $(m+1)t$. Thus every prime-power factor of $B^{m+1}$ divides $a^{B^m}-1$.
+
+For \eqref{eq:contraction}: if $x=y$ there is nothing to prove, so interchange $x,y$ if necessary and factor $a^x-a^y=a^y(a^{x-y}-1)$. The first factor is a unit at every prime dividing $B$. The difference $x-y$ is a nonzero even number with $v_q(x-y)\ge j\,v_q(B)$ at every prime $q\mid B$, so Corollary~\ref{cor:even-exponent} gives
+\[
+ v_q(a^{x-y}-1)=v_q(B)+v_q(x-y)\ge(j+1)v_q(B)
+\]
+at odd $q\mid B$, and $v_2(a^{x-y}-1)=u+v_2(x-y)\ge t+jt=(j+1)t$ at $2$, using $u\ge t$. Hence $B^{j+1}$ divides the difference. The case $j=0$ is included: it says only that two odd exponents produce values agreeing modulo $B$, which is true because both are $\equiv-1$.
+\end{proof}
+
+The period identity says that
+\[
+ F_m:\Z/B^m\Z\longrightarrow\Z/B^m\Z,\qquad \res{x}{B^m}\longmapsto\res{a^x}{B^m}
+\]
+is well defined on residue classes and always returns an odd residue. The contraction identity says that, on odd residues, one application of $F_{m}$ gains at least one further radix digit of agreement. The case $j=0$ is what starts the bootstrap in Remark~\ref{rem:bootstrap}.
+
+\subsection{The first conjecture is true}\label{sec:oeis1}
+
+C1 asserts that whenever $m,n,k>1$ and $T_m(a)\equiv k\pmod{B^m}$, one has $a^k\equiv k\pmod{B^m}$.
+
+\begin{proposition}\label{prop:oeis1}
+For every even $B\ge4$ and $m\ge1$, every nonnegative $k\equiv T_m(B-1)\pmod{B^m}$ satisfies
+\[
+ (B-1)^k\equiv k\pmod{B^m}.
+\]
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:period} implies that exponent reduction modulo $B^m$ is valid modulo $B^m$. Consequently
+\[
+ a^k\equiv a^{T_m}=T_{m+1}\equiv T_m\equiv k\pmod{B^m},
+\]
+where Theorem~\ref{thm:sharp} gives the middle congruence.
+\end{proof}
+
+Proposition~\ref{prop:oeis1} proves more than C1 asks: it allows $m\ge1$ and every nonnegative $k$, including $k=0$ and $k=1$. The restrictions $m,k>1$ in the source statement are therefore unnecessary. The reason the representative may be changed freely is the exponent period \eqref{eq:period}, not any property of $k$ itself.
+
+\subsection{The second conjecture is true, in a stronger explicit form}\label{sec:oeis2}
+
+C2 concerns the penultimate base-$B$ digit. The following identifies the whole two-digit residue, not only that one digit.
+
+\begin{proposition}\label{prop:oeis2}
+For $B\ge4$ even and every $h\ge2$,
+\begin{equation}\label{eq:twodigit}
+ T_h(B-1)\equiv B^2-B-1\pmod{B^2}.
+\end{equation}
+In particular
+\[
+ \floor{\frac{T_h(B-1)}{B}}\equiv B-2\pmod B,
+\]
+which is C2.
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:sharp}, $T_h\equiv T_2\pmod{B^2}$ for every $h\ge2$. Since $B-1$ is odd, the binomial theorem gives
+\[
+ T_2=(B-1)^{B-1}=-(1-B)^{B-1}
+ \equiv -1+B(B-1)\equiv B^2-B-1\pmod{B^2}.
+\]
+This residue equals $(B-2)B+(B-1)$ and lies between $0$ and $B^2-1$. Dividing $T_h$ by $B$ and reducing the integer quotient modulo $B$ therefore gives $B-2$.
+\end{proof}
+
+\subsection{The third conjecture is false in every nondegenerate case}\label{sec:oeis3}
+
+C3 would identify the height-$m$ residue modulo $B^{m+1}$ with $A(m+1,n)$. Theorem~\ref{thm:sharp} gives the exact opposite conclusion:
+\begin{equation}\label{eq:oeisrepair}
+ \boxed{\ A(m+1,n)=
+ \res{\res{T_m(B-1)}{B^{m+1}}-2B^m}{B^{m+1}}.\ }
+\end{equation}
+The correction term is nonzero modulo $B^{m+1}$ for every $n>1$. Thus the third assertion fails for every such $n$ and every $m>1$, not merely for an isolated example.
+
+At the smallest allowed pair $m=n=2$, so $B=4$ and $a=3$,
+\[
+ T_2(3)=27,\qquad T_3(3)=3^{27}=7625597484987\equiv59\pmod{64}.
+\]
+The residues are distinct, with difference $59-27=32\equiv-2\cdot4^2\pmod{4^3}$.
+
+The second residue can be checked by hand, without the thirteen-digit integer. Modulo $64$,
+\[
+ 3^2=9,\quad 3^4=81\equiv17,\quad 3^8\equiv17^2=289\equiv33,\quad
+ 3^{16}\equiv33^2=1089\equiv1,
+\]
+and $27=16+8+2+1$, so
+\[
+ 3^{27}\equiv3^{16}\cdot3^8\cdot3^2\cdot3
+ \equiv1\cdot33\cdot9\cdot3=891\equiv59\pmod{64}.
+\]
+Thus C3 fails already at the first pair $m,n>1$ that its own nontrivial interpretation permits. The failure is not a rare anomaly: by Theorem~\ref{thm:sharp} it occurs for every $n>1$ and every $m>1$. The exact certificate --- both residues, the integer difference $7625597484960$, and its $2$-adic valuation $5$ --- is recorded in \texttt{data/oeis\_a324017\_counterexample.json}.
+
+For the base $11$, the correct computations are
+\[
+ T_3(11)\equiv19571\pmod{12^4},\qquad
+ T_4(11)\equiv16115\pmod{12^4}.
+\]
+Their difference is $-3456=-2\cdot12^3$. Also $A(3,6)=563$ and $A(4,6)=16115$. These values help separate the height and column coordinates when checking the illustrative comment in the source entry.
+
+\section{Fixed-point dynamics and a factorization-free algorithm}\label{sec:algorithm}
+
+\begin{theorem}[The finite dynamical system]\label{thm:dynamics}
+Let $B\ge4$ be even, $a=B-1$, and $M=B^m$ with $m\ge1$. The map
+\[
+ f:\Z/M\Z\longrightarrow\Z/M\Z,\qquad f([x])=[a^x]
+\]
+is well defined and has exactly one fixed point, namely $R_m=A(m,B/2)$. Every odd starting residue reaches $R_m$ after at most $m$ iterations, and every starting residue reaches it after at most $m+1$ iterations. These uniform bounds are sharp, attained by starts $1$ and $0$, respectively. There are no other periodic cycles.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:period} makes $a^x\pmod M$ independent of the chosen representative $x$. Proposition~\ref{prop:oeis1} supplies the fixed point $R_m$, which is odd.
+
+Compare the orbit of an odd start with the fixed orbit $R_m$. One iteration gives agreement modulo $B$, and the contraction clause \eqref{eq:contraction} of Lemma~\ref{lem:period} gains another factor of $B$ each time. Agreement modulo $B^m$ follows after $m$ iterations. Any start becomes odd after one iteration, giving $m+1$ in general. A fixed point must itself be odd, so the same argument proves uniqueness. Every periodic orbit must eventually reach $R_m$, hence no other cycle exists.
+
+The orbit from $1$ is $T_0,T_1,\ldots$ and reaches the limiting residue for the first time at height $m$ by Theorem~\ref{thm:sharp}. The orbit from $0$ begins $0,1,T_1,\ldots$, so its first arrival is one step later.
+\end{proof}
+
+\begin{remark}[An alternative, purely bootstrap proof of uniqueness]\label{rem:bootstrap}
+Uniqueness alone --- without the orbit bounds, the sharpness statement, or the absence of other cycles --- has a shorter argument that never mentions orbits. Suppose $x$ and $y$ both satisfy $a^z\equiv z\pmod{B^m}$. Both are odd, since $a$ is odd and $a^z$ is odd. They trivially agree modulo $B^0=1$. Apply \eqref{eq:contraction} with $j=0$: then $a^x\equiv a^y\pmod B$, and the fixed-point equations turn this into $x\equiv y\pmod B$. Apply \eqref{eq:contraction} with $j=1$, then $j=2$, and so on; after $m$ steps, $x\equiv y\pmod{B^m}$.
+
+What this route buys is that it is elementary and self-contained: it uses only the $j\ge0$ contraction clause, and in particular the case $j=0$ that starts the bootstrap, and it needs neither Theorem~\ref{thm:sharp} nor any statement about the dynamics of $F_m$. Theorem~\ref{thm:dynamics} remains the headline, because it is strictly stronger: it also gives the sharp iteration bounds $m$ and $m+1$, identifies the extremal starts, and excludes every other periodic cycle.
+\end{remark}
+
+\begin{corollary}[Compatibility across precisions]\label{cor:compatibility}
+For every $m\ge1$,
+\begin{equation}\label{eq:compatibility}
+ R_{m+1}\equiv R_m\pmod{B^m}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+$R_{m+1}\equiv T_{m+1}\pmod{B^{m+1}}$, hence also modulo $B^m$; and $T_{m+1}\equiv T_m\equiv R_m\pmod{B^m}$ by Theorem~\ref{thm:sharp}.
+\end{proof}
+
+Compatibility is what makes the next two things meaningful: the inverse limit of Section~\ref{sec:limit}, and the per-digit increment formula \eqref{eq:newdigit}. Without it, the numbers $R_1,R_2,\ldots$ would be unrelated residues rather than successive truncations of one object.
+
+\subsection{The limiting object: an inverse limit, not a real tower}\label{sec:limit}
+
+The compatible residues $R_m$ define an element
+\[
+ \xi_B\in\Z_B:=\varprojlim_m\Z/B^m\Z.
+\]
+For composite $B$ this is a complete ring and not a field. By the Chinese remainder theorem it is identified with $\prod_{q\mid B}\Z_q$, the product of the $q$-adic integers over the prime divisors of $B$; write $\xi_{B,q}$ for the component at $q$.
+
+\panel{\textbf{A warning that must not be dropped.} The symbol $\xi_B$ denotes an inverse limit of residues, \emph{not} a real infinite power tower. Since $a=B-1\ge3$, the ordinary real tower $T_h(a)$ diverges to $+\infty$; only its modular tails converge. No statement below asserts the existence, uniqueness or value of a real or complex infinite tetration, and nothing here bears on analytic tetration.}
+
+\begin{proposition}[Exact distance from the limit]\label{prop:limit-error}
+For every $h\ge0$,
+\begin{equation}\label{eq:limit-leading}
+ \xi_B-T_h\equiv-2B^h\pmod{B^{h+1}},
+ \qquad \ordop_B(\xi_B-T_h)=h,
+\end{equation}
+and each local component $\xi_{B,q}$ satisfies the exact valuations of Theorem~\ref{thm:gap-local} with $T_{h+r}$ replaced by $\xi_{B,q}$:
+\[
+ v_q(\xi_{B,q}-T_h)=h\,v_q(B)\quad(q\text{ odd}),
+ \qquad v_2(\xi_{B,2}-T_h)=s+hu.
+\]
+\end{proposition}
+\begin{proof}
+At any fixed precision, every sufficiently late tower represents $\xi_B$, so the congruence of Theorem~\ref{thm:sharp} passes to the limit; Corollary~\ref{cor:order} then gives the precision order. For a prime $q\mid B$, work at precision one higher than the valuation in Theorem~\ref{thm:gap-local}. All later differences $T_{h+r}-T_h$ are nonzero modulo that prime power and, by convergence, their residue is eventually constant; the valuation is therefore unchanged in the limit.
+\end{proof}
+
+\subsection{Digit lifting at increasing precision}\label{sec:lifting}
+
+There is no need to iterate at the final modulus throughout.
+
+\begin{theorem}[Canonical digit lift]\label{thm:lift}
+The fixed-point representatives are obtained by the factorization-free recurrence
+\begin{equation}\label{eq:lift}
+ R_1=B-1,\qquad R_{m+1}=\res{a^{R_m}}{B^{m+1}}\qquad(m\ge1).
+\end{equation}
+Equivalently, writing $R_{m+1}=R_m+d_mB^m$ with $0\le d_m<B$,
+\begin{equation}\label{eq:newdigit}
+ d_m\equiv\frac{a^{R_m}-R_m}{B^m}\pmod B,
+\end{equation}
+and the numerator of that quotient is divisible by $B^m$.
+\end{theorem}
+\begin{proof}
+At $m=1$ we have $R_1=\res{T_1}{B}=\res{a}{B}=B-1$. Assume $R_m=\res{T_m}{B^m}$. Then $T_m\equiv R_m\pmod{B^m}$ and both are odd, so the contraction clause \eqref{eq:contraction} with $j=m$ gives
+\[
+ T_{m+1}=a^{T_m}\equiv a^{R_m}\pmod{B^{m+1}},
+\]
+and reducing modulo $B^{m+1}$ gives $R_{m+1}=\res{a^{R_m}}{B^{m+1}}$. This is \eqref{eq:lift}.
+
+For \eqref{eq:newdigit}, Corollary~\ref{cor:compatibility} gives $R_{m+1}-R_m=d_mB^m$ for a unique $0\le d_m<B$, and $R_{m+1}\equiv a^{R_m}\pmod{B^{m+1}}$, so $a^{R_m}-R_m\equiv d_mB^m\pmod{B^{m+1}}$. The fixed-point property at precision $m$, namely $a^{R_m}\equiv R_m\pmod{B^m}$, shows that $B^m$ divides the numerator, so the quotient is an integer and is congruent to $d_m$ modulo $B$.
+\end{proof}
+
+The core implementation is only a few lines:
+\begin{lstlisting}[language=Python]
+def stable_radix_residue(B: int, digits: int) -> int:
+    if B < 4 or B % 2 or digits < 1:
+        raise ValueError("B must be even >= 4; digits must be >= 1")
+    a, x, modulus = B - 1, B - 1, B
+    for _ in range(1, digits):
+        modulus *= B
+        x = pow(a, x, modulus)
+    return x
+\end{lstlisting}
+The distributed implementation additionally checks integer types and rejects booleans. It uses no factorization and never constructs a power tower. If $L=\lceil m\log_2B\rceil$ is the output bit length and $\mathsf M(L)$ is the cost of $L$-bit multiplication, ordinary binary modular exponentiation gives the coarse upper bound
+\[
+ O\!\left(\sum_{j=1}^m (j\log B)\mathsf M(j\log B)\right)
+ \subseteq O(mL\mathsf M(L)).
+\]
+The algorithm stores $O(L)$ bits, apart from arithmetic workspace and optional output tables. This is a bound on the displayed algorithm, not an optimality claim. Specialized to schoolbook multiplication and reduction, it reads $O(mL^3)$, which is the deliberately conservative form recorded in the accompanying package.
+
+\begin{table}[htbp]
+\centering
+\caption{Computed stable representatives $R_m$. The modulus in column $B$ is $B^m$, so every entry is an ordinary decimal display of a residue in a different radix.}\label{tab:residues}
+\begin{tabular}{rrrr}
+\toprule
+$m$&$B=4$, base $3$&$B=6$, base $5$&$B=10$, base $9$\\
+\midrule
+1&3&5&9\\
+2&11&29&89\\
+3&59&29&289\\
+4&59&1109&5289\\
+5&827&3701&45289\\
+6&2875&34805&745289\\
+7&15163&128117&2745289\\
+8&31547&687989&92745289\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The repeated value $R_3=R_4=59$ at $B=4$ deserves a comment, because it is the single most inviting misreading of the table. It is \emph{not} a counterexample to exact one-digit stabilization: it says only that one digit of the limit $\xi_4$ is zero, namely $d_3=0$ in \eqref{eq:newdigit}. It certainly does not say that $T_3$ is already correct modulo $4^4$. In fact
+\[
+ T_3(3)=3^{27}\equiv187\pmod{256},\qquad\text{while}\qquad R_4=59 .
+\]
+Confusing the truncated representative $R_m$ with the full tower $T_m$ would conceal exactly the discrepancy that refutes C3.
+
+\subsection{Evaluating a finite height, and the scope of the algorithm}\label{sec:finite-height}
+
+Theorem~\ref{thm:lift} computes the stabilized residue. For a \emph{finite} height there is an equally short recipe. To obtain $T_h\bmod B^m$:
+\begin{enumerate}[leftmargin=7mm,itemsep=2pt]
+\item replace $h$ by $\min(h,m)$;
+\item at the fixed modulus $M=B^m$, iterate $x\leftarrow\res{a^x}{M}$ from $x=1$ that many times.
+\end{enumerate}
+The height cap in step 1 is justified by Remark~\ref{rem:threshold}: at and beyond height $m$ the residue is already permanent. The exponent reduction in step 2 is justified by the period \eqref{eq:period}, not by any generic rule. The distributed implementation uses digit lifting for the stabilized case and this fixed-modulus loop for the smaller heights.
+
+One scope sentence belongs beside the complexity bound. The restriction $a=B-1$ is precisely why none of this is an unrestricted fast modular-tetration algorithm. Hittmeir \cite{hittmeir} reduces the computation of squarefree parts of integers --- and thereby a form of integer factorization --- to general modular tetration in deterministic polynomial time; a general fast evaluator would therefore be a substantial result about factoring. Nothing here provides one. The algorithms above are fast only on the diagonal family, and they use no factorization of $B$ at all.
+
+\subsection{Why naive exponent reduction needs a guard}\label{sec:guard}
+
+For a generic pair $(a,M)$, iterating $x\leftarrow a^x\bmod M$ need not compute true tower residues, and there are two distinct ways for it to fail.
+
+The first is that the iteration can settle into a cycle that is not the tower. With $a=2$, $M=7$, iteration from $x_0=1$ gives $1,2,4,2,4,\ldots$, while $T_4(2)=65536\equiv2\pmod7$, not $4$.
+
+The second is that exponents simply may not be reduced modulo the output modulus at all: $2^3=8\equiv2$ but $2^{3+3}=64\equiv1\pmod3$, so $2^3\not\equiv2^{3+3}\pmod 3$ even though the two exponents are congruent modulo $3$. The two failure modes are independent, and both are excluded on the diagonal --- the first by Theorem~\ref{thm:dynamics}, the second by Lemma~\ref{lem:period}.
+
+The included function \texttt{residue\_towers} therefore checks the sufficient condition $a^M\equiv1\pmod M$ before using residue iteration. This condition holds for $a=B-1$, $M=B^m$ by Lemma~\ref{lem:period}. It also holds for every $a\equiv9\pmod{10}$ and $M=10^k$: binary lifting provides the required factors of $2$, and odd-prime lifting applied to $a^2$ provides the factors of $5$.
+
+\subsection{Two independent oracles}\label{sec:oracles}
+
+The verification suite must not validate the specialized evaluator with a test that reuses the same fixed-modulus iteration: such a test would reproduce the implementation's own mistake rather than detect it. Two genuinely independent reference evaluators are therefore kept, and cross-checked against each other and against literal integers.
+
+\paragraph{A restricted Euler chain.} The first reduces exponents modulo $\varphi(M)$, never modulo $M$, on moduli supported on $2$ and $5$. Since bases coprime to $10$ remain units at every modulus in that chain, ordinary Euler reduction is valid throughout. This is the evaluator used against the decimal results of Sections~\ref{sec:onset}--\ref{sec:density}.
+
+\paragraph{A general totient chain with capped exponents.} The second removes the unit hypothesis and the restriction on the modulus, which is what the even-$B$ family of Section~\ref{sec:sharp} needs. For a general modulus $M$, put $P=\varphi(M)$. If the true exponent $E$ satisfies $E<P$, it is computed exactly by a capped evaluation. Otherwise $E$ is replaced by
+\begin{equation}\label{eq:totient-lift}
+ (E\bmod P)+P .
+\end{equation}
+
+\begin{proposition}[The capped lift is valid for nonunit bases]\label{prop:oracle}
+Let $M\ge1$, $P=\varphi(M)$, $c\ge1$ an integer, and let $E\ge P$. Then $c^E\equiv c^{(E\bmod P)+P}\pmod M$.
+\end{proposition}
+\begin{proof}
+Both exponents are congruent modulo $P$ and both are at least $P$. By the Chinese remainder theorem it suffices to work at each prime power $p^f\parallel M$. If $p\nmid c$, then $c$ is a unit modulo $p^f$ and its multiplicative order divides $\varphi(p^f)$, which divides $P$; congruent exponents therefore give equal powers. If $p\mid c$, then $p^f$ divides $c^{f}$, and both exponents are at least $P\ge\varphi(p^f)\ge f$, so both powers are $0$ modulo $p^f$. The two cases exhaust the prime powers dividing $M$.
+\end{proof}
+
+Neither oracle is used to define the other's expected answers. Together with directly constructed, manageable integer towers they give three levels of validation --- literal integers, a general modular oracle, and the specialized algorithm --- and Section~\ref{sec:repro} reports the counts at each level.
+
+\section{A consequence for higher up-arrow operations}\label{sec:arrows}
+
+The arithmetic result also survives replacement of tower height by faster-growing operations. To avoid ambiguity about conventions, define
+\[
+ U_1(a,n)=a^n,\qquad U_r(a,0)=1,
+\]
+and, for $r\ge2$,
+\begin{equation}\label{eq:up-arrow-def}
+ U_r(a,n+1)=U_{r-1}(a,U_r(a,n)).
+\end{equation}
+Thus $U_2(a,n)=T_n(a)$; $U_r$ is the $r$-arrow operation under this convention.
+
+Two descriptions of the saturation threshold are given below, and they are complementary. The first represents every higher operation as a tower of some integer height, which converts the question into the already-solved height question and yields a sufficient condition one can check at a glance. The second is a recursion computing the \emph{exact} least threshold at each rank. Neither implies the other verbatim, so both are kept in the same theorem.
+
+\begin{lemma}[Every higher operation is an integer-height tower]\label{lem:height}
+Let $a\ge3$. There are integers $I_r(n)\ge0$, defined for $r\ge2$ and $n\ge0$, with
+\[
+ U_r(a,n)=T_{I_r(n)}(a).
+\]
+They may be specified by
+\begin{align}
+ I_2(n)&=n,\label{eq:Ibase}\\
+ I_r(0)&=0,\qquad I_r(n+1)=I_{r-1}\bigl(U_r(a,n)\bigr)\quad(r\ge3).\label{eq:Irec}
+\end{align}
+Moreover $I_r(1)=1$ and
+\begin{equation}\label{eq:Ibound}
+ I_r(n)\ge n+r-2\qquad(r\ge2,\ n\ge2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $r=2$ the representation is the definition of tetration. Assuming it at rank $r-1$,
+\[
+ U_r(a,n+1)=U_{r-1}\bigl(a,U_r(a,n)\bigr)=T_{I_{r-1}(U_r(a,n))}(a),
+\]
+which proves it at rank $r$. The values at $n=0,1$ follow at once, since $U_r(a,0)=1=T_0$ and $U_r(a,1)=a=T_1$.
+
+An induction on rank and argument gives $U_r(a,n)\ge a^n$ for every $r\ge1$ and $n\ge0$: at rank $r\ge2$ the recursion yields $U_r(a,n+1)=U_{r-1}(a,U_r(a,n))\ge a^{U_r(a,n)}\ge a^{n+1}$. Also $a^{n-1}\ge n+1$ for $n\ge2$ and $a\ge3$.
+
+Now induct on $r$ in \eqref{eq:Ibound}. The case $r=2$ is equality. At rank $r\ge3$ and $n\ge2$, the argument $U_r(a,n-1)$ is at least $a^{n-1}\ge n+1\ge3$, so the inductive hypothesis at rank $r-1$ applies and
+\[
+ I_r(n)=I_{r-1}\bigl(U_r(a,n-1)\bigr)\ge U_r(a,n-1)+r-3\ge (n+1)+r-3=n+r-2. \qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Exact reduction of higher-arrow thresholds]\label{thm:arrows}
+Let $B\ge4$ be even, $a=B-1$, and $R_m=A(m,B/2)$. Fix $m\ge1$.
+\begin{enumerate}[leftmargin=7mm,itemsep=2pt]
+\item\emph{(Height criterion.)} For every $r\ge2$ and $n\ge0$,
+\begin{equation}\label{eq:arrowiff}
+ U_r(a,n)\equiv R_m\pmod{B^m}
+ \quad\Longleftrightarrow\quad
+ I_r(n)\ge m.
+\end{equation}
+\item\emph{(Sufficient condition.)} For $n\ge2$ and $r\ge2$, the readily checkable inequality
+\begin{equation}\label{eq:arrowsufficient}
+ n+r-2\ge m
+\end{equation}
+is sufficient for that congruence.
+\item\emph{(Exact threshold.)} For every $r\ge2$ there is a least $\sigma_r(m)\ge1$ with
+\[
+ U_r(a,n)\equiv R_m\pmod{B^m}\quad\Longleftrightarrow\quad n\ge\sigma_r(m),
+\]
+and these thresholds satisfy
+\begin{align}
+ \sigma_2(m)&=m,\label{eq:sigma2}\\
+ \sigma_r(m)&=1+\min\{j\ge0:\ U_r(a,j)\ge\sigma_{r-1}(m)\}
+ \quad(r\ge3),\label{eq:sigmarec}\\
+ \sigma_r(m)&\le\max\{2,\,m-r+2\}\le m .\label{eq:sigmabound}
+\end{align}
+\end{enumerate}
+In particular, for every $r\ge2$ and $n\ge m$ the residue is the same $R_m$, independently of the arrow rank.
+\end{theorem}
+\begin{proof}
+Part 1 is Lemma~\ref{lem:height} combined with the sharp threshold of Remark~\ref{rem:threshold}: the tower $T_j$ is congruent to $R_m$ modulo $B^m$ exactly when $j\ge m$. Part 2 follows from \eqref{eq:Ibound}.
+
+For part 3, Theorem~\ref{thm:sharp} gives the exact equivalence and the threshold $\sigma_2(m)=m$ when $r=2$. The integer-valued functions in \eqref{eq:up-arrow-def} are strictly increasing in $n$ and satisfy $U_r(a,n)\ge n+1$, again by induction from $a^n\ge n+1$. Assume the assertion for rank $r-1$. For $n\ge1$,
+\[
+ U_r(a,n)=U_{r-1}(a,U_r(a,n-1))
+\]
+has the desired residue exactly when $U_r(a,n-1)\ge\sigma_{r-1}(m)$. The set of such $n$ is a terminal interval because $U_r(a,\cdot)$ is strictly increasing. At $n=0$ the value $1$ is not congruent to $R_m$, since $R_m\equiv-1\pmod B$ and $B\ge4$. This proves \eqref{eq:sigmarec}.
+
+Finally \eqref{eq:sigmabound}. At $m=1$, $U_r(a,1)=a\equiv R_1\pmod B$ while $U_r(a,0)=1\not\equiv R_1$, so $\sigma_r(1)=1$ and the bound holds. For $m\ge2$, parts 1 and 2 show that every $n\ge\max\{2,m-r+2\}$ satisfies the congruence, so $\sigma_r(m)\le\max\{2,m-r+2\}$; and $\max\{2,m-r+2\}\le m$ because $m\ge2$ and $r\ge2$.
+\end{proof}
+
+\begin{remark}[What each description buys]
+The threshold recursion \eqref{eq:sigmarec} is exact: it returns the least admissible $n$ at each fixed rank. The height criterion \eqref{eq:arrowiff} is also exact, but expressed through $I_r(n)$ rather than through $n$; its practical value is the closed sufficient bound \eqref{eq:arrowsufficient}, which is strictly stronger than $\sigma_r(m)\le m$ for every rank $r>2$. Neither route subsumes the other as stated, and \eqref{eq:sigmabound} is derived here \emph{from} the height bound rather than proved separately.
+\end{remark}
+
+For example, the accompanying implementation evaluates
+$9\uparrow^{1\,000\,000}2$ modulo $10^{60}$ as
+\[
+ \begin{split}
+ &\texttt{864868894914047889985007525482}\\[-1mm]
+ &\hspace{9mm}\texttt{726503475610748087597392745289},
+ \end{split}
+\]
+the two lines concatenating to the $60$-digit decimal residue. Here $B=10$, $a=9$, $r=10^6$ and $n=2$, so \eqref{eq:arrowsufficient} reads $2+10^6-2\ge60$; the answer is simply $R_{60}$, and the million-arrow expression is never expanded.
+
+\subsection{Queries below the saturation bound}\label{sec:capped}
+
+When \eqref{eq:arrowsufficient} does not apply, the code evaluates capped hyperoperations exactly. To compute $\min\bigl(U_r(a,n),C\bigr)$ for a cap $C\ge1$, let $t$ be the least integer with $a^t\ge C$. The inequalities
+\[
+ U_r(a,n)\ge a^n,\qquad U_r(a,n)\ge a^r\quad(r\ge2,\ n\ge2)
+\]
+allow $C$ to be returned immediately whenever $n\ge t$ or $r\ge t$, once the cases $n=0$ and $n=1$ have been handled separately. Otherwise the remaining recursion is small and never creates an integer exceeding the cap, apart from the bounded intermediate products used to find $t$. In a modular query the cap that is actually needed is only $m$, since by \eqref{eq:arrowiff} any height at least $m$ gives the same answer.
+
+\begin{remark}[The base $2$ must be excluded]\label{rem:base-two}
+Throughout this section $a=B-1\ge3$, and that hypothesis is not decorative. The rank bound \eqref{eq:arrowsufficient} must not be extended to $a=2$, because $2\uparrow^r2=4$ for every positive rank $r$: growth in the rank buys nothing there. The capped-hyperoperation helper in the accompanying code enforces $a\ge3$ for the same reason.
+\end{remark}
+
+This is a finite-modulus result for a specified family of bases. It does not construct real or complex tetration, settle uniqueness questions for fractional iteration, or analyze arbitrary long Conway chains or ordinal-indexed fast-growing hierarchies. Its significance here is narrower: a common stable modular residue persists across all finite arrow ranks, even though the ordinary integer sizes change radically.
+
+\section{A local Lambert \texorpdfstring{$W$}{W} description of the limit}\label{sec:lambert}
+
+This section is optional. It expresses the limiting residue system $\xi_B$ of Section~\ref{sec:limit} through $q$-adic analysis, and it is used nowhere in the resolution of the three OEIS statements or in any earlier theorem. The $p$-adic Lambert function and its power series are established objects; see Mez\H{o} \cite{mezo}. The only thing to be determined here is the correct local branch sign for this tower family, and that turns out to be genuinely prime-dependent.
+
+Throughout, $q$ is a prime divisor of $B$, and $\Logop_q$, $\Expop_q$ denote the $q$-adic logarithm and exponential on the relevant principal-unit neighborhoods --- never a real logarithm to base $q$.
+
+\subsection{Principal units and the sign at the prime two}
+
+Define
+\begin{equation}\label{eq:epsilon}
+ \eps_q=
+ \begin{cases}
+ +1,&q=2\text{ and }B\equiv2\pmod4,\\
+ -1,&\text{otherwise},
+ \end{cases}
+ \qquad b_q=\eps_q(B-1),\qquad \ell_q=\Logop_q(b_q).
+\end{equation}
+For odd $q$ we have $b_q=1-B\in1+q\Z_q$. For $q=2$ the definition ensures $b_q\in1+4\Z_2$: if $B\equiv0\pmod4$ then $-(B-1)=1-B\equiv1\pmod4$, and if $B\equiv2\pmod4$ then $B-1\equiv1\pmod4$. Consequently $\Logop_q$ and $\Expop_q$ are mutually inverse on those neighborhoods. More explicitly,
+\begin{equation}\label{eq:ellval}
+ v_q(\ell_q)=
+ \begin{cases}
+ v_q(B),&q\text{ odd},\\
+ v_2(B)=t,&q=2,\ B\equiv0\pmod4,\\
+ v_2(B-2)=s,&q=2,\ B\equiv2\pmod4.
+ \end{cases}
+\end{equation}
+The logarithm is nonzero, because $b_q$ is neither $1$ nor a nontrivial torsion element in these neighborhoods. For an ordinary \emph{odd} integer $x$,
+\begin{equation}\label{eq:localmap}
+ a^x=\eps_q\Expop_q(\ell_q x).
+\end{equation}
+All the tower exponents are odd, so \eqref{eq:localmap} is exactly the analytic map that must be continued to the limiting component.
+
+\begin{remark}[The sign is prescribed, not reconstructed]
+At an odd $q$ the sign $-1$ in \eqref{eq:localmap} comes from the odd branch of the tower, not from any function of $x$. There is no continuous parity function on $\Z_q$, so the sign must be carried explicitly rather than recovered from the exponent.
+\end{remark}
+
+\subsection{The closed formula, with two proofs}
+
+Define the small-argument Lambert series
+\begin{equation}\label{eq:Wseries}
+ W_q(z)=\sum_{j\ge1}\frac{(-j)^{j-1}}{j!}\,z^j.
+\end{equation}
+Formal Lagrange inversion of $w\mapsto we^w$ produces these coefficients: $[z^j]W(z)=j^{-1}[t^{j-1}]e^{-jt}=(-j)^{j-1}/j!$. The series converges when $v_q(z)>1/(q-1)$, since
+\[
+ v_q\!\left(\frac{(-j)^{j-1}}{j!}z^j\right)\ \ge\ j\,v_q(z)-\frac{j-1}{q-1}\ \longrightarrow\ +\infty .
+\]
+The inverse identity $W_q(z)\Expop_q(W_q(z))=z$ therefore holds on that neighborhood. These facts agree with the standard $q$-adic Lambert theory of \cite{mezo}.
+
+\begin{theorem}[Local limit formula]\label{thm:W}
+For every prime $q\mid B$, the component at $q$ of the stable tower limit is
+\begin{equation}\label{eq:Wanswer}
+ \boxed{\ \xi_{B,q}=-\frac{W_q(-\eps_q\ell_q)}{\ell_q}\ }.
+\end{equation}
+Every series in this expression converges in $\Q_q$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:ellval} and \eqref{eq:diagonal-setup}, $v_q(\ell_q)\ge1$ for odd $q$ and $v_2(\ell_2)\ge2$ --- in the case $B\equiv0\pmod4$ because $t\ge2$, and in the case $B\equiv2\pmod4$ because $s\ge2$. In both cases $v_q(\ell_q)>1/(q-1)$, so the series converge.
+
+By Proposition~\ref{prop:limit-error}, $T_h\to\xi_{B,q}$ in $\Z_q$. Continuity of \eqref{eq:localmap} along the odd tower values gives the fixed-point equation
+\[
+ \xi_{B,q}=\eps_q\Expop_q(\ell_q\,\xi_{B,q}).
+\]
+Put $w=-\ell_q\xi_{B,q}$, so that $\ell_q\xi_{B,q}=-w$ and the equation reads $-w/\ell_q=\eps_q\Expop_q(-w)$. Since $\Expop_q(-w)=1/\Expop_q(w)$ and $\eps_q^2=1$, this rearranges to
+\[
+ w\Expop_q(w)=-\eps_q\ell_q .
+\]
+The small inverse branch of $w\mapsto w\Expop_q(w)$ is unique on the relevant neighborhood: its linear term preserves $q$-adic distances, while every higher term is strictly distance-decreasing there, so the map is an isometry onto its image. Hence $w=W_q(-\eps_q\ell_q)$, which is \eqref{eq:Wanswer}.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{thm:W}, by direct substitution]
+This route avoids the uniqueness-of-branch argument entirely and is more robust if one prefers not to reason about the inverse map. Let $\xi$ denote the right-hand side of \eqref{eq:Wanswer} and put $w=W_q(-\eps_q\ell_q)$, so $\xi=-w/\ell_q$. The defining identity of $W_q$ gives $w\Expop_q(w)=-\eps_q\ell_q$, hence
+\[
+ \eps_q\Expop_q(\ell_q\xi)=\eps_q\Expop_q(-w)
+ =\frac{\eps_q\,w}{w\Expop_q(w)}
+ =\frac{\eps_q\,w}{-\eps_q\ell_q}
+ =-\frac{w}{\ell_q}=\xi ,
+\]
+so $\xi$ solves $x=\eps_q\Expop_q(\ell_q x)$. The map $x\mapsto\eps_q\Expop_q(\ell_q x)$ is a strict contraction on $\Z_q$, because $v_q(\Expop_q(\ell_q x)-\Expop_q(\ell_q y))\ge v_q(\ell_q)+v_q(x-y)$ and $v_q(\ell_q)\ge1$. A strict contraction on a complete space has at most one fixed point, and $\xi_{B,q}$ is one by the first proof's fixed-point equation. Hence $\xi=\xi_{B,q}$.
+\end{proof}
+
+\begin{example}[Why a uniform sign would be wrong]\label{ex:sign}
+Take $B=6$, so $a=5$. The $2$-adic component uses $\eps_2=+1$ and $\ell_2=\Logop_2(5)$; it is congruent to $1$ modulo $4$. The $3$-adic component uses $\eps_3=-1$ and $\ell_3=\Logop_3(-5)$; it is congruent to $-1$ modulo $3$. A blind use of the minus-sign formula at both primes would produce the wrong $2$-adic branch, congruent to $-1$ modulo $4$. Extending the $2$-adic logarithm by $\Logop_2(-1)=0$ does not repair the mistake: the logarithm then forgets exactly the sign that exponentiation of an odd integer retains.
+\end{example}
+
+\subsection{Reproducible rational-series verification}\label{sec:lambert-verify}
+
+The routine \texttt{local\_lambert\_residue} evaluates truncated logarithm and Lambert polynomials over $\Q$, using exact rational arithmetic. It is an independent educational check, not the production evaluator. At a requested $q$-adic precision $K$ it sets an auxiliary target of $K+4$ digits and uses $2(K+4)+4$ terms in each series. Note that $K$ is measured in $q$-adic digits here, not in radix-$B$ digits.
+
+The truncations are justified by the following estimates. Put $\kappa=v_q(b_q-1)$, which is at least $1$ for odd $q$ and at least $2$ at $q=2$; the symbol $\kappa$ is used to avoid a clash with the global $s=v_2(B-2)$ of \eqref{eq:diagonal-setup}. A logarithm term of degree $j$ has valuation $j\kappa-v_q(j)$, and $v_q(j)\le j/2$ for $j\ge2$, so the entire logarithm tail lies beyond the requested precision. For the fixed-point series obtained by dividing \eqref{eq:Wseries} by $\ell_q$, the term of index $j$ has valuation at least $(j-1)\kappa-v_q(j!)$, which is at least $(j-1)/2$ for odd $q$ and at least $j-1$ at $q=2$, where $\kappa\ge2$.
+
+Substituting the truncated logarithm cannot amplify the error: the linear coefficient of the fixed-point series is $1$, and on these principal-unit domains no higher power magnifies an input error. Termwise this follows from $x^k-y^k=(x-y)\sum_{i=0}^{k-1}x^{k-1-i}y^i$ together with the same factorial bounds. Finally, the rational denominator obtained after summation is a $q$-adic unit, so the reduction of the exact rational value modulo $q^K$ is well defined.
+
+The supplied checks compare this rational-series evaluation against the general totient-chain oracle of Section~\ref{sec:oracles} at $60$ local parameter triples, spanning both residue classes of $B$ modulo $4$; the results are tabulated in \texttt{data/local\_lambert.csv}.
+
+\section{Reproducibility, proof audit, and remaining questions}\label{sec:repro}
+
+\subsection{The accompanying artifacts}
+
+The archive includes this \LaTeX{} source and its compiled PDF, a standard-library Python module with a command-line interface, a verification and data-generation script, exact CSV tables, two JSON certificates, and a machine-readable verification report. The principal commands, run from the archive directory, are
+\begin{lstlisting}[language=bash]
+python code/verify.py
+python code/tetration.py 4 3 --height 2      # prints 27
+python code/tetration.py 4 3 --height 3      # prints 59
+python code/tetration.py 10 60 --rank 1000000 --argument 2
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first two finite-height commands print $27$ and $59$, the hand-checked residues of Section~\ref{sec:oeis3}; the fourth prints the $60$-digit residue displayed in Section~\ref{sec:arrows}. A \texttt{latexmk} alternative and a \texttt{make test} alias are provided in the \texttt{Makefile}. Python 3.10 or later is required: the module uses modern built-in generic types. No floating-point arithmetic is used anywhere in the verification program; elapsed time alone is measured in floating point.
+
+\paragraph{Two suites, reported separately.}
+The merged package runs both originally independent suites in one process, and the numbers must be read with care. The recorded merged run passes \textbf{183,204 exact assertions}, of which \textbf{118,813} belong to the decimal families and \textbf{64,391} to the diagonal families; a further \textbf{51,414} residue classes are examined inside the exhaustive fixed-point searches and are deliberately not counted as assertions. The two subtotals are counts of assertions \emph{executed}, not of distinct mathematical facts, and must not be added to obtain one: the grids overlap, both covering even radices in the range $4\le B\le100$ at heights $0$ through $10$. They also differ slightly from the two originally published totals of $118{,}271$ and $62{,}649$, because the merge added a few checks --- the hand-checkable certificate of Section~\ref{sec:oeis3}, the two-digit residue \eqref{eq:twodigit}, the capped totient lift of Proposition~\ref{prop:oracle}, and the base-$2$ exclusion of Remark~\ref{rem:base-two}. The per-family counts of both suites are written to \texttt{data/verification\_report.json}, and the machine-generated \texttt{verification.txt} records the same numbers. Only the regenerated total should ever be quoted as the merged suite's total.
+
+\paragraph{The decimal families.}
+These cover 2,000 bases ending in 9, at heights $0$ through $10$; 5,150 cross-checks against the restricted Euler-chain evaluator; the sharp radix congruence for every even $B$ from $4$ through $100$; exact digit lifting; exhaustive finite dynamics at small moduli; the general-radix local laws; primality and minimality certificates; and the exact valuations in the CRT construction. A sieve finds exactly 23 prime counterexamples below $100000$, beginning
+\[
+ 2749,\ 5749,\ 9749,\ 15749,\ 16249,\ 17749,\ 20749,\ldots.
+\]
+
+\paragraph{The diagonal families.}
+These cover every even $B$ from $4$ through $200$, heights $0$ through $10$, gaps $1,2,3$, and output precisions through $10$, together with an exhaustive fixed-point search for even $B\le24$ at precisions $1,2,3$. Table~\ref{tab:donorcounts} lists the principal per-family counts recorded by the merged run; the full list, including the smaller families, is in the JSON report.
+
+\begin{table}[htbp]
+\centering
+\caption{Principal per-family assertion counts of the diagonal suite, as recorded by the reproducible merged test report.}\label{tab:donorcounts}
+\begin{tabular}{lr}
+\toprule
+Check family&Assertions\\
+\midrule
+General oracle against literal integers&8700\\
+Universal leading-difference congruence&3267\\
+Exact prime-adic distances&7260\\
+Specialized tower residues against the oracle&10890\\
+Fixed-point representatives&2970\\
+C3 fails throughout the tested nontrivial range&891\\
+Capped hyperoperations against small exact values&21000\\
+Local Lambert-series residues&60\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Three levels of validation.}
+A test built on the same fixed-modulus iteration as the implementation would reproduce the implementation's own mistake rather than detect it. The suite therefore validates in three layers, as described in Section~\ref{sec:oracles}: literal constructed integer towers at manageable sizes; the two independent modular oracles, checked against those integers and against each other; and only then the specialized algorithms, checked against the oracles.
+
+All these finite results are useful regression checks and software validation. They are not evidence sufficient on their own for the infinitude, density, or universal statements, which follow from the proofs above.
+
+\subsection{Potential failure points and how they are addressed}
+
+\paragraph{Height conventions.}
+The comparison with the source uses $V(a,h)=C_a(h)-C_a(h-1)$ explicitly. At the counterexample, it is $V(2749,2)$ that differs from the eventual speed.
+
+\paragraph{A decimal last digit does not determine the binary class.}
+A number ending in 9 need not be $3$ modulo $4$. In fact all failures occur in the other class. Replacing $s$ by $1$ without checking $a\bmod4$ would erase precisely the examples needed to refute the conjecture.
+
+\paragraph{A pairwise congruence need not automatically be permanent.}
+Permanence is proved by strict growth of each local valuation and the unique-minimum rule in a telescoping sum. No numerical agreement is promoted to permanence without this proof.
+
+\paragraph{Modular residue zeros can hide insufficient precision.}
+The checker chooses decimal precision strictly larger than both predicted valuations. It rejects zero differences before calling its finite-valued valuation routine. The 16-digit columns in the CSV trace are for compact display only; their exact valuation columns were checked at 100-digit precision.
+
+\paragraph{Prime infinitude is not supplied by CRT alone.}
+The residue class is proved coprime to its modulus before applying Dirichlet's theorem. The proof of infinitely many primes is a mathematical dependency, not a computational test.
+
+\paragraph{Natural density requires control of an infinite union.}
+The proof includes a vanishing-density tail bound. The reported density is for integers in a progression; it is not inferred from a finite prime sample.
+
+\paragraph{The initial two-adic valuation is $s$, not zero.}
+On the diagonal, $v_2(T_{h+r}-T_h)$ starts at $s=v_2(B-2)$ and each lift adds $u=s+t-1$, not merely $t=v_2(B)$. Taking either the initial value or the increment from the radix alone would give a wrong valuation at every height. Likewise, for every odd prime $q\mid B$ one needs $q\nmid B-2$, which is what makes the initial odd-prime valuation exactly zero.
+
+\paragraph{The power-of-two radix is a separate case.}
+Corollary~\ref{cor:order} splits into two cases, and the split is essential: when $B$ has an odd prime factor that factor is the bottleneck, whereas when $B=2^t$ the bottleneck is the inequality $1+ht<(h+1)t$, which needs $t\ge2$. Merging the cases would lose the exactness of the precision order.
+
+\paragraph{The binomial estimate needs $2B^h$, not $B^h$.}
+Lemma~\ref{lem:binomial} uses $v_q(j)\le j-2$ at odd $q$ and $v_2(j)\le j-1$ at $2$. The odd bound is false at $q=2$ and $j=2$. The extra factor of $2$ supplied by Corollary~\ref{cor:order} is exactly what covers that deficit, which is why the factor is a hypothesis of the lemma and not an afterthought.
+
+\paragraph{A repeated representative is not an early stabilization.}
+$R_m=R_{m+1}$ means one digit of the limit is zero; it does \emph{not} mean $T_m\equiv T_{m+1}\pmod{B^{m+1}}$. At $B=4$, $R_3=R_4=59$ while $T_3\equiv187\pmod{256}$. Confusing the two would conceal precisely the discrepancy that refutes C3.
+
+\paragraph{Composite-radix precision is not a valuation.}
+Definition~\ref{def:ord} introduces $\ordop_R$ explicitly and proves the case split that computes it, rather than treating a composite-radix divisibility exponent as if it were a valuation; the example $\ordop_6(2)=\ordop_6(3)=0<\ordop_6(6)$ shows that the product rule fails. Every digit count in this note is written through genuine prime valuations and an explicit minimum.
+
+\paragraph{The local sign at $2$, and the exclusion of base $2$.}
+Section~\ref{sec:lambert} carries the branch sign $\eps_q$ explicitly, because there is no continuous parity function on $\Z_q$ from which it could be recovered; Example~\ref{ex:sign} shows that a uniform minus sign gives the wrong $2$-adic branch. Separately, Remark~\ref{rem:base-two} records why the higher-arrow bound must not be extended to base $2$.
+
+\paragraph{The oracle is justified for nonunit bases.}
+Proposition~\ref{prop:oracle} proves the capped totient lift \eqref{eq:totient-lift} correct even when the base shares a factor with the modulus, using $\varphi(p^f)\ge f$ at the bad prime powers and the Chinese remainder theorem. This is what allows one oracle to cover the whole even-$B$ family rather than only the $\{2,5\}$-supported decimal moduli.
+
+\paragraph{Novelty and formal verification.}
+The manuscript is not peer reviewed and is not formalized in a proof assistant. Its elementary proofs are intended to be directly checkable. Neither the source audit nor the Python suite establishes priority, exhaustiveness of the literature search, or mechanized proof correctness. Nothing has been submitted to OEIS by this work, and the retrieved wording of a web entry is reported for its access date only.
+
+\subsection{Concrete directions left open by this note}
+
+The exact formula eliminates the selected height-2 conjecture and completely classifies the ending-9 case. Further research can now ask sharper questions rather than repeat that conjecture.
+
+\begin{question}[Least prime at each prescribed onset]
+Let $P_H$ be the least prime ending in 9 with $H(P_H)=H$, for $H\ge3$. Determine useful upper and lower bounds for $P_H$, and identify which admissible pairs $(s,e)$ achieve the minimum. The theorem gives infinitude for every $H$, but the displayed progression need not contain its smallest example.
+\end{question}
+
+\begin{question}[Prime distribution of delays]
+Determine an appropriately justified analogue of \eqref{eq:density} when sampling only primes ending in 9. This requires prime-distribution input beyond the infinitude theorem used here and careful treatment of the unbounded valuation conditions.
+\end{question}
+
+\begin{question}[Prime factors outside the supported radix]
+For general coprime pairs $(a,R)$, describe exact onset laws when some prime divisor of $R$ does not divide $a^2-1$. Multiplicative orders can then introduce additional initial phases. Theorem~\ref{thm:general-radix} deliberately does not cover those primes.
+\end{question}
+
+\begin{question}[Other roots of unity]
+The diagonal family is exactly the case $a\equiv-1\pmod B$. Classify the explicit first-unstable-digit laws that arise when the base is congruent to a root of unity other than $-1$ modulo the radix.
+\end{question}
+
+\begin{question}[Sharper rank bounds]
+Find sufficient rank conditions sharper than \eqref{eq:arrowsufficient}, or determine the exact thresholds $\sigma_r(m)$ of \eqref{eq:sigmarec} in closed form. The height bound \eqref{eq:Ibound} is certainly not tight for $r\ge3$.
+\end{question}
+
+\begin{question}[Broader chained expressions]
+Build a finite-precision evaluator for wider classes of chained-arrow expressions, with a proved correctness domain. Section~\ref{sec:capped} handles Knuth arrows under the stated base--radix relationship only.
+\end{question}
+
+These are directions not resolved by this manuscript; their novelty or open status in the full literature is not asserted, and each would need its own source check and proof. The completed results are the refutation and exact replacement of the selected height-2 conjecture, with the accompanying prime-family, density, and radix theorems, and the complete resolution of the three A324017 statements with the algorithms and the local description that follow from it.
+
+\appendix
+\section{A compact certificate of the main counterexample}\label{app:certificate}
+
+For a reader interested only in checking the disproof, the following chain contains the whole mathematical certificate.
+
+The integer $2749$ is prime by trial division through $47$. Define $T_0=1$, $T_{h+1}=2749^{T_h}$, and $D_h=T_{h+1}-T_h$. Since
+\[
+ v_2(2748)=2,\qquad v_2(2750)=1,\qquad v_5(2750)=3,
+\]
+we have $v_2(D_0)=2$ and $v_5(D_0)=0$. Every $D_h$ is even, and
+\[
+ D_h=2749^{T_{h-1}}(2749^{D_{h-1}}-1)\quad(h\ge1).
+\]
+Binary and odd-prime lifting therefore give
+\[
+ v_2(D_h)=v_2(D_{h-1})+2,\qquad
+ v_5(D_h)=v_5(D_{h-1})+3.
+\]
+Thus
+\[
+ v_2(D_h)=2+2h,\qquad v_5(D_h)=3h,
+ \qquad C(h)=\min(2+2h,3h).
+\]
+The speed at height 2 is $C(2)-C(1)=6-3=3$, whereas at every height $h\ge3$ it is $2$. Hence the assertion that all prime bases ending in 9 have permanent speed from height 2 is false.
+
+The alternative Pocklington data in the JSON file give a shorter machine-checkable primality certificate: $229$ is prime, $229\mid2748$, $229>\sqrt{2749}$,
+\[
+ 2^{2748}\equiv1\pmod{2749},\qquad
+ 2^{12}\equiv1347\pmod{2749},\qquad \gcd(1346,2749)=1.
+\]
+This optional certificate is not needed for the article's proof, which already uses elementary trial division.
+
+\clearpage
+\section{Notation and dependency summary}
+
+\begin{longtable}{p{0.20\textwidth}p{0.73\textwidth}}
+\toprule
+Symbol&Meaning\\
+\midrule
+\endhead
+$T_h(a)$&Height-$h$ tower, with $T_0(a)=1$.\\
+$D_h(a)$&$T_{h+1}(a)-T_h(a)$.\\
+$D_h^{(r)}(a)$&$T_{h+r}(a)-T_h(a)$; the gap-$r$ difference, with $D_h^{(1)}=D_h$.\\
+$v_q(N)$&Prime-adic valuation of a nonzero integer; $q$ is always prime.\\
+$\ordop_R(N)$&Base-$R$ precision order $\max\{j:R^j\mid N\}$; not a valuation for composite $R$.\\
+$C_a(h)$&Exact stable decimal digit count for a base ending in 9.\\
+$V(a,h)$&Newly gained digits: $C_a(h)-C_a(h-1)$.\\
+$V(a)$&Eventual value of the speed.\\
+$H(a)$&First height from which the speed is always $V(a)$.\\
+$s,t,u,e$&$v_2(a-1),v_2(a+1),s+t-1,v_5(a+1)$, respectively.\\
+$C_R(h)$&Exact stable count in a supported radix $R$.\\
+$J_R(m)$&First permanent height modulo $R^m$; height 0 is allowed.\\
+$B$&Even radix, at least 4, with tower base $B-1$.\\
+$A(m,n)$&OEIS array $[T_m(2n-1)]_{(2n)^m}$.\\
+$R_m$&Unique fixed residue for base $B-1$ modulo $B^m$.\\
+$U_r(a,n)$&The explicitly defined $r$-arrow operation; $U_2(a,n)=T_n(a)$.\\
+$I_r(n)$&Tower height with $U_r(a,n)=T_{I_r(n)}(a)$; distinct from $J_R(m)$.\\
+$\sigma_r(m)$&Exact onset of the common residue for $U_r(a,n)$ modulo $B^m$.\\
+$d_m$&The new base-$B$ digit, $R_{m+1}=R_m+d_mB^m$.\\
+$\xi_B,\ \xi_{B,q}$&The inverse limit $\varprojlim\Z/B^m\Z$ of the residues, and its component at $q$.\\
+$\eps_q,\ b_q,\ \ell_q$&Local branch sign, principal unit $\eps_q(B-1)$, and $\Logop_q(b_q)$.\\
+$W_q(z)$&The small-argument $q$-adic Lambert series \eqref{eq:Wseries}.\\
+\bottomrule
+\end{longtable}
+
+Two pairs of symbols are deliberately kept apart, because natural notation collides. The letter $q$ always denotes a prime, never a radix; the even radix is $B$ and a general radix is $R$. And $J_R(m)$ is the first permanent height modulo $R^m$ of Theorem~\ref{thm:general-radix}, whereas $I_r(n)$ of Lemma~\ref{lem:height} is the tower height representing a rank-$r$ hyperoperation; the two are unrelated.
+
+The logical dependency is short. The two elementary lifting lemmas imply the local affine laws. Those laws imply permanence, the exact decimal transient, minimality of $2749$, and the general-radix formulas; they also specialize, on the diagonal, to the gap-general distances of Theorem~\ref{thm:gap-local} and hence to the exact radix precision order. The CRT argument plus Dirichlet supplies the infinite prime families. The density proof adds only elementary residue-class counting and a tail estimate. A binomial induction then proves the sharper base-$(B-1)$ congruence; exponent-period lifting supplies the OEIS fixed-point identity, compatibility across precisions, and the digit-lifting algorithm. Higher-arrow thresholds follow from the exact tetration threshold together with either the defining recursion or the tower-height representation. The local Lambert description depends only on the inverse limit and on established $p$-adic analysis, and nothing else depends on it.
+
+\clearpage
+\section{A compact replacement for the OEIS conjectural comments}\label{app:oeis-text}
+
+The following mathematical text is suitable as a proposed correction to the three comments on A324017. \textbf{It has not been submitted to OEIS by this work}, and no edit to the entry has been made or requested.
+
+\panel{%
+Let $B=2n\ge4$, $T_0=1$, and $T_{h+1}=(B-1)^{T_h}$. For all $h\ge0$ and $r\ge1$,
+\[
+ T_{h+r}-T_h\equiv-2B^h\pmod{B^{h+1}} .
+\]
+Thus the first two conjectures are true. In fact $A(m,n)$ is the unique solution of $(B-1)^x\equiv x\pmod{B^m}$, and $T_h\equiv B^2-B-1\pmod{B^2}$ for every $h\ge2$. The third conjecture is false for every $n>1$: the correct relation is
+\[
+ A(m+1,n)\equiv T_m-2B^m\pmod{B^{m+1}} .
+\]
+For example, $3\uparrow\uparrow2\equiv27$ but $3\uparrow\uparrow3\equiv59\pmod{64}$.}
+
+\section{Proof-audit checklist}\label{app:checklist}
+
+A reader can audit the principal claims without examining the entire software package. The important checks are these; the companion file \texttt{proof\_audit.md} records the same items and separates mathematical proof from finite verification.
+
+\begin{enumerate}[leftmargin=7mm,itemsep=3pt]
+\item Every $T_h$ is odd, including $T_0=1$, and every difference used as an exponent in a lifting step is positive and even.
+\item For every odd prime $q\mid B$, $q\nmid B-2$; the initial difference $T_r-1$ therefore has valuation zero at $q$.
+\item At the prime $2$ the initial valuation is $s=v_2(B-2)$, not zero, and each lift adds $u=s+t-1$, not merely $t=v_2(B)$.
+\item The case $B=2^t$ is treated separately when proving the exact radix-$B$ precision order; see Corollary~\ref{cor:order}.
+\item The leading-difference binomial estimate uses $2B^h\mid D_h^{(r)}$, not only $B^h\mid D_h^{(r)}$, and states the bounds on $v_q(j)$ separately at odd $q$ and at $2$.
+\item Exponent reduction is justified by the explicit period \eqref{eq:period}. Neither the proofs nor the code assumes that modular exponentiation is a function of the exponent modulo the output modulus.
+\item A repeated canonical residue $R_m=R_{m+1}$ is not confused with $T_m\equiv T_{m+1}\pmod{B^{m+1}}$.
+\item The analytic formula keeps the local sign at $2$ separate, and the higher-arrow bound excludes the base $a=2$.
+\item A decimal last digit does not determine the class modulo $4$; every counterexample to the height-2 conjecture lies in the class $a\equiv1\pmod4$.
+\item The infinitude of primes in the CRT classes is supplied by Dirichlet's theorem after coprimality is proved, not by computation; and the density theorem samples all integers ending in 9, not primes.
+\end{enumerate}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\begin{thebibliography}{9}
+\setlength{\itemsep}{3pt}
+
+\bibitem{Ripa2021}
+Marco Rip\`a,
+\emph{The congruence speed formula},
+Notes on Number Theory and Discrete Mathematics \textbf{27} (2021), no.~4, 43--61.
+DOI: \href{https://doi.org/10.7546/nntdm.2021.27.4.43-61}{10.7546/nntdm.2021.27.4.43-61}.
+Journal version: \url{https://nntdm.net/papers/nntdm-27/NNTDM-27-4-043-061.pdf}.
+Author version: \href{https://arxiv.org/abs/2208.02622v1}{arXiv:2208.02622v1} (2022).
+The selected claim is Conjecture 2, journal p.~57, and Conjecture 4.1, arXiv p.~14. Versions examined September 19, 2026.
+
+\bibitem{RipaOnnis2022}
+Marco Rip\`a and Luca Onnis,
+\emph{Number of stable digits of any integer tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{28} (2022), no.~3, 441--457.
+DOI: \href{https://doi.org/10.7546/nntdm.2022.28.3.441-457}{10.7546/nntdm.2022.28.3.441-457}.
+Author version: \href{https://arxiv.org/abs/2210.07956v1}{arXiv:2210.07956v1}.
+See especially Corollary 2.2 and Section 2.2 for prior eventual-speed formulas and transient bounds.
+Examined September 19, 2026.
+
+\bibitem{OEIS324017}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A324017,
+created by Davis Smith, March 28, 2019.
+\url{https://oeis.org/A324017}; internal record:
+\url{https://oeis.org/A324017/internal}.
+Definition, conjectural comments, and coordinate convention examined September 19, 2026;
+at retrieval the internal header showed revision \texttt{\#91, Feb 16 2025} and the three
+comments were still explicitly labeled conjectures.
+The entry's link to Crux Mathematicorum Problem 559 redirected to the journal landing page
+during an additional check; that item is not used as evidence for any statement here.
+
+\bibitem{hittmeir}
+Markus Hittmeir,
+\emph{A reduction of integer factorization to modular tetration},
+\href{https://arxiv.org/abs/1707.04919}{arXiv:1707.04919}, version 3, February 13, 2018;
+\emph{International Journal of Foundations of Computer Science} (2020),
+DOI: \href{https://doi.org/10.1142/S0129054120500197}{10.1142/S0129054120500197}.
+Cited for the distinction between the restricted family treated here and general modular
+tetration; no claim about the general computational problem is made in this note.
+
+\bibitem{mezo}
+Istv\'an Mez\H{o},
+\emph{The $p$-adic Lambert $W$ function},
+\href{https://arxiv.org/abs/1801.00657}{arXiv:1801.00657}, version 1, January 2, 2018.
+Cited for the established definition and convergence theory of $W_p$; Section~\ref{sec:lambert}
+re-derives the series coefficients and selects the branch sign appropriate to this family.
+
+\bibitem{Dirichlet}
+P.~G.~Lejeune Dirichlet,
+\emph{There are infinitely many prime numbers in all arithmetic progressions with first term and difference coprime},
+original paper published in 1837; English translation by Ralf Stephan,
+\href{https://arxiv.org/abs/0808.1408v2}{arXiv:0808.1408v2} (2014).
+Used only for infinitude of primes in a reduced arithmetic progression.
+
+\end{thebibliography}
+\endgroup
+\end{document}

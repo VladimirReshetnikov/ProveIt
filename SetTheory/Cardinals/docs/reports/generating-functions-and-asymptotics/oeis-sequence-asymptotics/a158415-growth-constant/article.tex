@@ -1,0 +1,1129 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{enumitem}
+\definecolor{inkblue}{RGB}{27,57,88}
+\definecolor{quietgray}{RGB}{85,85,85}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={The Exponential Growth Constant of OEIS A158415},
+ pdfauthor={Research article}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{The growth constant of A158415}}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sset}{\mathcal S}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\OK}{\mathcal O_K}
+\newcommand{\size}[1]{\lvert #1\rvert}
+\newcommand{\coeff}[2]{[z^{#1}]#2}
+\newcommand{\valuation}{v}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\Norm}{N}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{quietgray},xleftmargin=0.5em,xrightmargin=0.5em}
+
+\title{\textbf{The Exponential Growth Constant\\of OEIS A158415}\\[0.7em]
+\large Existence, an effective characterization,\\and certified numerical bounds}
+\author{Research article}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)$ count the distinct real values represented by expressions with exactly
+$n$ symbols, using the constant $1$, principal square root, and binary addition.
+Numerical equality, rather than equality of expression trees, is essential.
+We prove that a computable constant $\gamma>1$ exists such that
+$\log a(n)=n\log\gamma+o(n)$, and obtain the certified bounds
+$1.86204<\gamma<1.9208$.
+The main algebraic step is a uniform injectivity theorem: any finite alphabet
+of representable values can be used as digits in nested radicals after a
+suitable fixed seed is chosen. Its proof uses an odd valuation at a prime
+above $2$ and irreducible polynomials of controlled degree.
+A complementary decomposition of minimum-size expressions yields convergent
+finite-data upper bounds. Together these arguments also prove the exact
+critical identity $\sum_{n\ge1}a(n)\gamma^{-n}=\gamma^2$; in particular,
+$a(n)=o(\gamma^n)$.
+The numerical lower bound is backed by an independently replayable certificate
+for $1{,}526{,}536$ pairwise distinct values, using only integer arithmetic.
+A separate combinatorial majorant certifies the upper bound and, after local
+simplifications, proves the first 21 listed sequence terms exactly.
+The value of $\gamma$ beyond the stated interval, a ratio limit, and a possible
+$n^{-3/2}$ prefactor are not determined here.
+\end{abstract}
+
+\clearpage
+{\small\setlength{\parskip}{0pt}
+\tableofcontents}
+\clearpage
+
+\section{The sequence and the question}
+
+An expression is built by the grammar
+\[
+ E ::= 1 \;\mid\; \sqrt E \;\mid\; (E+E).
+\]
+Its size is the number of occurrences of $1$, square-root operators, and
+addition operators. Parentheses are not counted. Thus
+\[
+ |1|=1,\qquad |\sqrt E|=|E|+1,\qquad |E+F|=|E|+|F|+1.
+\]
+Every square root denotes the nonnegative real square root. All values produced
+by this grammar are at least $1$.
+The sequence in the question is OEIS A158415 \cite{oeis}, introduced by
+Vladimir Reshetnikov in 2009. We study its defining counting problem, not just
+an extrapolation of its recorded initial values.
+
+Write $\Sset$ for the set of all represented values and define
+\[
+ c(x)=\min\{|E|:E\text{ represents }x\},\qquad x\in\Sset.
+\]
+Replacing a leaf $1$ by $\sqrt1$ increases the size by one without changing
+the value. Consequently, the exact-size and cumulative interpretations agree:
+\begin{equation}\label{eq:cumulative}
+ a(n)=\#\{x\in\Sset:c(x)\le n\}.
+\end{equation}
+Set $a(0)=0$ and
+\begin{equation}\label{eq:bdef}
+ b(n)=a(n)-a(n-1)=\#\{x\in\Sset:c(x)=n\}.
+\end{equation}
+
+The first few values are easy to check. At size at most four the values are
+$1$, $2$, and $\sqrt2$, so $a(4)=3$. The main difficulty is that different
+syntactic expressions can have the same value. Besides associativity and
+commutativity, one has identities such as
+\[
+ \sqrt{1+1+1+1}=1+1,
+ \qquad
+ \sqrt{3+2\sqrt2}=1+\sqrt2.
+\]
+Here integer coefficients and integer constants are abbreviations for sums
+of copies of $1$; they are not additional symbols in the grammar.
+
+The original sequence discussion explicitly raised the issue of proving
+numerical equality and questioned the fixed tolerance used in a PARI
+calculation \cite{discussion}. That distinction remains important here:
+our numerical certificates never infer equality merely from overlapping
+approximations.
+
+\section{Main result and its scope}
+
+\begin{theorem}[Growth constant and effective characterization]\label{thm:main}
+There is a computable real number $\gamma$ such that
+\begin{equation}\label{eq:mainlimit}
+ \lim_{n\to\infty}a(n)^{1/n}=\gamma,
+ \qquad
+ a(n)=\gamma^{n+o(n)}.
+\end{equation}
+It satisfies
+\begin{equation}\label{eq:numericalbounds}
+ 1.86204<\gamma<1.9208.
+\end{equation}
+For each $m\ge1$, let $r_m\in(0,1)$ be the unique solution of
+\begin{equation}\label{eq:rm}
+ r_m\left(1+\sum_{j=1}^m b(j)r_m^{j+1}\right)=1,
+ \qquad \lambda_m=r_m^{-1}.
+\end{equation}
+Then $\lambda_m$ is nondecreasing and
+\begin{equation}\label{eq:sup}
+ \gamma=\sup_{m\ge1}\lambda_m=\lim_{m\to\infty}\lambda_m.
+\end{equation}
+There are also explicitly defined algebraic upper bounds $\mu_h\ge\gamma$,
+computed from $b(1),\ldots,b(3h-1)$, with $\mu_h\to\gamma$.
+Finally,
+\begin{equation}\label{eq:criticalsum}
+ \boxed{\displaystyle \sum_{n\ge1}a(n)\gamma^{-n}=\gamma^2,}
+ \qquad a(n)=o(\gamma^n).
+\end{equation}
+\end{theorem}
+
+The finite lower-bound equation can equivalently be written as the polynomial
+identity
+\begin{equation}\label{eq:lambda-polynomial}
+ \lambda_m^{m+2}=\lambda_m^{m+1}
+       +\sum_{j=1}^m b(j)\lambda_m^{m-j}.
+\end{equation}
+Thus the theorem gives more than a statement that the sequence lies between
+two exponential functions. It proves a single exponential rate, supplies
+convergent finite-data characterizations from both sides, and identifies an
+exact normalization of the generating function at its radius of convergence.
+
+It does \emph{not} give a closed form for $\gamma$, prove a limit for
+$a(n+1)/a(n)$, or establish an equivalent of the form
+$C\gamma^n n^{-3/2}$. These stronger assertions must not be inferred from the
+root limit. In fact, \eqref{eq:criticalsum} excludes a positive constant
+prefactor $C\gamma^n$. More generally, if
+$a(n)\sim C\gamma^n n^{-\theta}$ with $C>0$, then necessarily $\theta>1$.
+
+\section{Elementary structural facts}
+
+\subsection{Size, magnitude, and algebraic integrality}
+
+\begin{lemma}\label{lem:basic}
+Every represented value is an algebraic integer. If an expression has $L$
+leaves and $U$ square-root nodes, then its size is $2L-1+U$ and every conjugate
+of its value has absolute value at most $L$.
+\end{lemma}
+\begin{proof}
+The number of binary nodes is $L-1$, giving the size formula. Algebraic
+integers are closed under addition, and a square root of an algebraic integer
+is integral over the ring of algebraic integers and hence over $\Z$.
+For the conjugate bound, put all subexpression values in a finite number field
+and apply any embedding into $\mathbb C$. Addition obeys the triangle
+inequality. For a radical node,
+$|\sigma(\sqrt x)|=\sqrt{|\sigma(x)|}\le\sqrt L\le L$.
+The assertion follows by induction from the leaf value $1$.
+\end{proof}
+
+In particular, $c(k)=2k-1$ for each positive integer $k$: at least $k$ leaves
+are required to attain magnitude $k$, and their sum realizes this size.
+There are therefore new values at arbitrarily large sizes.
+
+A prefix encoding of an expression is a word over three symbols. This gives
+the coarse but sufficient initial estimate
+\begin{equation}\label{eq:coarse}
+ 1\le a(n)\le 3^n.
+\end{equation}
+
+\subsection{Multiplication is available at finite cost}
+
+Multiplication is not an allowed symbol. Nevertheless its values are available.
+This observation is needed for the number-field argument, not as a claim that
+multiplication is inexpensive.
+
+\begin{lemma}\label{lem:mult}
+If $x,y\in\Sset$, then $xy\in\Sset$.
+\end{lemma}
+\begin{proof}
+Induct on the sum of the sizes of chosen expressions for $x$ and $y$.
+A factor $1$ is harmless. If either expression is a sum, distribute the product
+and use the induction hypothesis. Otherwise both nontrivial factors are
+radicals, and
+\[
+ (\sqrt u)(\sqrt v)=\sqrt{uv}.
+\]
+The product $uv$ involves smaller expressions, so it too is representable.
+\end{proof}
+
+It follows that every element of a ring $\Z[d_1,\ldots,d_s]$ with
+$d_i\in\Sset$ can be written as $A-B$, where $A,B\in\Sset\cup\{0\}$.
+If desired, adding $1$ to both parts makes $A$ and $B$ genuine elements of
+$\Sset$.
+
+\section{Injective coding by nested radicals}
+
+This section is the central algebraic argument. It overcomes the fact that
+ordinary addition is not an injective pairing operation.
+
+We use standard facts about orders in number fields and discrete valuations:
+if $K$ is a number field and $\mathfrak p$ lies above $2$, then the normalized
+valuation $v=v_{\mathfrak p}$ takes integer values on $K^\times$, its residue
+field is finite of characteristic $2$, and it extends to algebraic extensions.
+An order in $K$ has finite index in $\OK$. These facts, and the corresponding
+Newton-polygon viewpoint, are treated in \cite[Chapters 2, 3, and 7]{milne}.
+The particular irreducibility argument below is proved directly.
+
+\subsection{A representable element with odd valuation}
+
+\begin{lemma}\label{lem:odd}
+Let $D\subset\Sset$ be finite and $K=\Q(D)$. There are a prime
+$\mathfrak p$ of $K$ above $2$ and an element $\pi\in\Sset\cap K$ such that
+$h=v_{\mathfrak p}(\pi)$ is a positive odd integer.
+\end{lemma}
+\begin{proof}
+Choose any prime $\mathfrak p$ above $2$, and write $e=v_{\mathfrak p}(2)$.
+If $e$ is odd, take $\pi=2$.
+
+Suppose $e$ is even. The ring $R=\Z[D]$ is an order in $K$: it is generated
+by algebraic integers and spans $K$ over $\Q$. Choose a positive integer $I$
+with $I\OK\subset R$, and choose $u\in\OK$ with $v(u)=1$.
+Then
+\[
+ t=Iu\in R,\qquad v(t)=e\,v_2(I)+1=:h,
+\]
+so $h$ is odd. By Lemma~\ref{lem:mult}, write $t=A-B$ with
+$A,B\in\Sset$. For a sufficiently large integer $M$,
+$v(2^M B)>h$. The positive, representable number
+\[
+ \pi=A+(2^M-1)B=t+2^M B
+\]
+then has valuation $h$. Integer multiples here are realized by repeated
+addition, so the construction stays inside the original language.
+\end{proof}
+
+The element $\pi$ need not be a uniformizer. Allowing an arbitrary positive
+\emph{odd} valuation is what makes the construction work without requiring
+the given order to be integrally closed at $2$.
+
+\subsection{A local irreducibility lemma}
+
+\begin{lemma}\label{lem:irreducible}
+Let $K$ be as above, let $v(\pi)=h>0$ be odd, and choose a power of two
+$N=2^t>h$. Suppose $Q(X)\in\OK[X]$ is monic of degree $d=2^r$ and
+its reduction modulo $\mathfrak p$ has the form $X^d+c$. Then
+\begin{equation}\label{eq:irreducible}
+ Q(X)^N-\pi
+\end{equation}
+is irreducible over $K$.
+\end{lemma}
+\begin{proof}
+The residue field is finite, so the map $x\mapsto x^d$ is bijective.
+Choose a residue-field root of $X^d+c$ and lift it to $a\in\OK$.
+For $q(X)=Q(X+a)$, reduction modulo $\mathfrak p$ is exactly $X^d$.
+Thus $q$ is monic and every nonleading coefficient has valuation at least one.
+
+Extend $v$ to an algebraic closure and let $\alpha$ be any root of
+$q(X)^N-\pi$. Then $v(q(\alpha))=h/N\in(0,1)$.
+If $v(\alpha)<0$, the leading term of $q(\alpha)$ has uniquely smallest
+valuation, giving a negative valuation, a contradiction.
+If $v(\alpha)\ge1/d$, every term of $q(\alpha)$ has valuation at least one,
+also a contradiction. For $0\le v(\alpha)<1/d$, the leading term again has
+uniquely smallest valuation, and therefore
+\begin{equation}\label{eq:rootvaluation}
+ v(\alpha)=\frac{h}{Nd}.
+\end{equation}
+In particular $v(\alpha)>0$.
+
+If the polynomial had a monic factor of degree $k$ over $K$, the constant
+coefficient of that factor would be, up to sign, a product of $k$ roots.
+Its valuation would be $kh/(Nd)$, which must be an integer.
+Since $h$ is odd and $Nd$ is a power of two, this implies $Nd\mid k$.
+No nonconstant proper factor is possible. Translating back proves the claim.
+\end{proof}
+
+\subsection{One seed works for the whole finite alphabet}
+
+\begin{theorem}[Uniform injectivity of radical spines]\label{thm:spines}
+For every finite set $D\subset\Sset$ there is a representable positive seed
+$s$ such that all the numbers
+\begin{equation}\label{eq:spine}
+ d_0+\sqrt{d_1+\sqrt{\cdots+\sqrt{d_r+s}}},
+ \qquad r\ge0,\quad d_i\in D\cup\{0\},
+\end{equation}
+are distinct as the complete digit string $(d_0,\ldots,d_r)$ varies.
+For $r=0$ the expression means $d_0+s$. A zero digit means that the
+corresponding addition is omitted.
+\end{theorem}
+\begin{proof}
+Take $K=\Q(D)$, choose $\pi$ by Lemma~\ref{lem:odd}, and put
+$s=\pi^{1/N}$, where $N=2^t>v(\pi)$. This is a fixed representable seed,
+obtained by $t$ successive square roots.
+
+For the string in \eqref{eq:spine}, define
+\[
+ Q_0(X)=X-d_0,\qquad Q_j(X)=Q_{j-1}(X)^2-d_j\quad(1\le j\le r).
+\]
+The resulting value $x$ satisfies $Q_r(x)=s$, so it is a root of
+\[
+ P_{\boldsymbol d}(X)=Q_r(X)^N-\pi.
+\]
+Modulo $\mathfrak p$, repeated squaring gives a polynomial of the form
+$X^{2^r}+c$. Lemma~\ref{lem:irreducible} shows that $P_{\boldsymbol d}$ is
+monic irreducible of degree $N2^r$.
+
+Equal values must have equal monic minimal polynomials over $K$.
+Their degrees first force the same $r$. Equality of the minimal polynomials
+then gives $Q_r^N=\widetilde Q_r^N$, hence $Q_r=\widetilde Q_r$, since the
+polynomials are monic.
+The decomposition $Q_j=Q_{j-1}^2-d_j$ is unique: if
+$A^2-u=B^2-v$ with $A,B$ monic of the same positive degree, then
+$(A-B)(A+B)=u-v$ is constant. Unless $A=B$, its left side has positive degree.
+Thus $A=B$ and $u=v$.
+Peeling off the successive squares recovers all digits, including $d_0$.
+\end{proof}
+
+\begin{remark}
+The seed can have a very large expression size. This is harmless for an
+asymptotic lower bound with a fixed finite alphabet, but it prevents the proof
+from being interpreted as a practical short encoding of arbitrary finite
+sets. The order of limits is important: first fix the alphabet and let the
+output size tend to infinity; only then enlarge the alphabet.
+\end{remark}
+
+\section{Existence of the exponential rate}
+
+\subsection{Finite alphabets give genuine exponential lower bounds}
+
+Assign one expression of size $\ell(d)$ to each digit in a finite alphabet
+$D$. Adding a nonzero digit costs $\ell(d)+1$ symbols, whereas the zero digit
+costs nothing. Define
+\begin{equation}\label{eq:digitgf}
+ D_\ell(z)=1+\sum_{d\in D}z^{\ell(d)+1}.
+\end{equation}
+If the seed of Theorem~\ref{thm:spines} has an expression of size $L$, then
+all its spines have the exact generating function
+\begin{equation}\label{eq:spinegf}
+ z^L\sum_{r\ge0}z^r D_\ell(z)^{r+1}
+   =\frac{z^L D_\ell(z)}{1-zD_\ell(z)}.
+\end{equation}
+This counts \emph{distinct values}, not merely formal strings, by the
+injectivity theorem. Summing over expression sizes at most $n$ introduces
+an additional factor $(1-z)^{-1}$.
+
+Let $\rho\in(0,1)$ solve $\rho D_\ell(\rho)=1$.
+The zero of $1-zD_\ell(z)$ at $\rho$ is simple, and it is the only zero
+on its circle of convergence. Indeed equality in the triangle inequality
+would require the degree-one term of $zD_\ell(z)$ to have positive real phase,
+forcing $z=\rho$. Partial fractions, or the usual simple-pole coefficient
+calculation, therefore gives
+\begin{equation}\label{eq:finitealphabetlower}
+ a(n)\ge C_D\rho^{-n}\qquad(n\text{ sufficiently large})
+\end{equation}
+for a constant $C_D>0$. The standard rational-function framework is explained
+in \cite[Chapters IV--V]{fs}; here the needed pole properties are explicit.
+
+Taking all values with $c(d)\le m$, and assigning their minimum sizes,
+gives the lower bases $\lambda_m$ in \eqref{eq:rm}.
+In particular,
+\begin{equation}\label{eq:liminflambda}
+ \liminf_{n\to\infty}a(n)^{1/n}\ge \sup_m\lambda_m.
+\end{equation}
+
+\subsection{The generating-function argument that removes oscillation}
+
+Define
+\begin{equation}\label{eq:AB}
+ A(z)=\sum_{n\ge1}a(n)z^n,\qquad
+ B(z)=\sum_{n\ge1}b(n)z^{n+1}=z(1-z)A(z).
+\end{equation}
+Put $g=\sup_m\lambda_m$. It is finite by \eqref{eq:coarse} and
+\eqref{eq:liminflambda}, and $g>1$ already follows from the alphabet $\{1\}$.
+For every $0<z\le1/g$ and every $m$,
+\[
+ z\left(1+\sum_{j=1}^m b(j)z^{j+1}\right)\le1.
+\]
+Monotone convergence in $m$ shows that $B(z)$ is finite and
+\begin{equation}\label{eq:boundaryinequality}
+ z(1+B(z))\le1 \qquad(0<z\le1/g).
+\end{equation}
+Thus $A(z)$ is finite there as well. By the elementary radius formula for a
+power series with nonnegative coefficients,
+\[
+ \limsup_{n\to\infty}a(n)^{1/n}\le g.
+\]
+Together with \eqref{eq:liminflambda}, this proves the root limit, with
+$\gamma=g$. Writing $R=1/\gamma$, we have established
+\begin{equation}\label{eq:initial-boundary}
+ B(R)<\infty,\qquad R(1+B(R))\le1,
+ \qquad A(R)\le\gamma^2.
+\end{equation}
+The inequality will become an equality in Section~\ref{sec:effective}.
+Already it implies $a(n)\gamma^{-n}\to0$.
+
+\subsection{An elementary explicit subfamily}
+
+For integer digits, a single seed works for the entire infinite alphabet:
+take $K=\Q$, $\pi=2$, $N=2$, and $s=\sqrt2$, of size four.
+The proof of Theorem~\ref{thm:spines} applies uniformly to all nonnegative
+integer digits. A digit $k$ costs $2k$ symbols when added to a spine, so
+$D(z)=(1-z^2)^{-1}$. Formula~\eqref{eq:spinegf} becomes
+\[
+ \frac{z^4}{1-z-z^2}.
+\]
+With $F_1=F_2=1$, cumulative counting gives the entirely explicit estimate
+\begin{equation}\label{eq:fibonacci}
+ a(n)\ge F_{n-1}-1\qquad(n\ge4).
+\end{equation}
+In particular, $\gamma\ge(1+\sqrt5)/2$. The numerical certificate below
+improves this substantially.
+
+\section{Finite-data upper bounds and computability}\label{sec:effective}
+
+The matching upper mechanism uses addition's associativity. It is here that
+counting numerical values, with minimum expression sizes, supplies useful
+structure rather than just an obstacle.
+
+\subsection{Additive weights and minimum subexpressions}
+
+Give an expression the weight $w(E)=|E|+1$, and a value the minimum weight
+$w(x)=c(x)+1$. Then
+\[
+ w(E+F)=w(E)+w(F),\qquad w(\sqrt E)=w(E)+1.
+\]
+Flatten every maximal addition into a multiset of atoms, where an atom is
+$1$ or a square-root expression.
+If the entire expression has minimum size, every subexpression is minimum.
+More strongly, the sum of \emph{any nonempty submultiset} of a flattened
+addition is minimum for its value. Otherwise one could regroup that
+submultiset, replace it by a smaller expression, and shorten the whole
+expression. Regrouping does not change the number of addition symbols.
+
+For an integer $h\ge2$, define the finite polynomials
+\begin{align}
+ \mathcal D_h(z)&=1+\sum_{n+1\le h}b(n)z^{n+1},\label{eq:Dh}\\
+ \mathcal T_h(z)&=\sum_{h<n+1\le3h}b(n)z^{n+1}.\label{eq:Th}
+\end{align}
+
+\begin{lemma}[Large-expression decomposition]\label{lem:decompose}
+Every minimum-size expression whose weight is greater than $3h$ can be
+decomposed, without changing its weight, in one of two ways:
+\begin{enumerate}[label=(\roman*),itemsep=2pt]
+\item as $d+\sqrt E$, where $d=0$ or $w(d)\le h$, and $w(E)>h$;
+\item as $E+F$, where both $w(E)$ and $w(F)$ exceed $h$.
+\end{enumerate}
+All the nonzero components may be represented with their minimum weights.
+\end{lemma}
+\begin{proof}
+A radical at the root gives (i) with $d=0$.
+Otherwise flatten the top addition. If its largest atom has weight greater
+than $h$, consider the total weight of the remaining atoms. If that remainder
+exceeds $h$, split it off to obtain (ii). If it is at most $h$, the large atom
+cannot be $1$ and is therefore a radical, giving (i).
+
+If every atom has weight at most $h$, collect atoms until their total weight
+first exceeds $h$. This total is at most $2h$, and the remaining atoms have
+weight greater than $h$ because the whole weight exceeds $3h$. This gives
+(ii). Minimum-weight status follows from the preceding submultiset argument.
+In case (i), the radical child has weight greater than $2h-1$, hence greater
+than $h$.
+\end{proof}
+
+Stop the decomposition when a component has weight in $(h,3h]$.
+The resulting codes are counted, with possible overcounting, by the
+nonnegative formal power series $H_h$ satisfying
+\begin{equation}\label{eq:H}
+ H_h=\mathcal T_h+z\mathcal D_hH_h+H_h^2,
+ \qquad H_h(0)=0.
+\end{equation}
+The last term uses ordered children; allowing both orders only enlarges the
+upper count. Each value of weight greater than $h$ has at least one code of
+its minimum weight, and a code determines a value. Therefore
+\begin{equation}\label{eq:Hmajorant}
+ \sum_{n+1>h}b(n)z^{n+1}\preceq H_h(z),
+\end{equation}
+where $\preceq$ denotes coefficientwise domination.
+
+\subsection{Explicit algebraic upper bounds}
+
+Let $s_h$ be the first positive solution, before
+$z\mathcal D_h(z)=1$, of
+\begin{equation}\label{eq:sh}
+ (1-z\mathcal D_h(z))^2=4\mathcal T_h(z),
+ \qquad \mu_h=s_h^{-1}.
+\end{equation}
+Such a solution is unique: before $z\mathcal D_h(z)=1$ the left side decreases
+strictly and the right side increases. Also $\mathcal T_h$ is nonzero, since
+positive integers have minimum weights $2,4,6,\ldots$.
+The smaller solution of \eqref{eq:H} is
+\begin{equation}\label{eq:Hsolution}
+ H_h(z)=\frac{1-z\mathcal D_h(z)
+ -\sqrt{(1-z\mathcal D_h(z))^2-4\mathcal T_h(z)}}2.
+\end{equation}
+It is finite at $s_h$ and has nonnegative coefficients. For example, bounded
+iteration of \eqref{eq:H} proves convergence for positive $z\le s_h$ without
+any assumptions about other complex singularities.
+Equation~\eqref{eq:Hmajorant} gives
+\begin{equation}\label{eq:mubound}
+ \gamma\le\mu_h.
+\end{equation}
+
+\begin{proposition}\label{prop:muconverges}
+The upper bounds satisfy $\mu_h\to\gamma$. Consequently
+\[
+ \gamma=\sup_m\lambda_m=\inf_{h\ge2}\mu_h.
+\]
+The running minima of $\mu_h$ form a nonincreasing sequence of upper bounds.
+\end{proposition}
+\begin{proof}
+Fix $0<z<R=1/\gamma$. By \eqref{eq:initial-boundary} and strict monotonicity,
+$z(1+B(z))<1$. As $h\to\infty$,
+\[
+ \mathcal D_h(z)\longrightarrow1+B(z),\qquad
+ \mathcal T_h(z)\longrightarrow0.
+\]
+Thus $(1-z\mathcal D_h(z))^2>4\mathcal T_h(z)$ for all sufficiently large
+$h$, and $s_h>z$. Hence $\limsup_h\mu_h\le1/z$. Letting $z\uparrow R$ and
+using \eqref{eq:mubound} proves the result.
+\end{proof}
+
+\subsection{The exact critical identity}
+
+\begin{proposition}\label{prop:critical}
+At $R=1/\gamma$,
+\begin{equation}\label{eq:criticalD}
+ R(1+B(R))=1.
+\end{equation}
+Equivalently, $A(R)=R^{-2}$.
+\end{proposition}
+\begin{proof}
+We already know the left side is at most one and $B(R)$ is finite.
+Suppose it were strictly less than one. Then, as $h\to\infty$,
+$\mathcal T_h(R)\to0$ and $1-R\mathcal D_h(R)$ stays bounded away from zero.
+For some finite $h$ we would have
+\[
+ 1-R\mathcal D_h(R)>0,\qquad
+ (1-R\mathcal D_h(R))^2>4\mathcal T_h(R).
+\]
+Both inequalities are strict polynomial inequalities. They would remain true
+at some $z>R$, implying convergence of $H_h(z)$ and hence of $B(z)$.
+This contradicts the definition of $R$ as the radius of convergence.
+Therefore \eqref{eq:criticalD} holds. Substitution of
+$B(R)=R(1-R)A(R)$ gives $A(R)=R^{-2}$.
+\end{proof}
+
+\subsection{Why this is an effective characterization}
+
+Every finite set of expression values is exactly computable using algebraic
+number arithmetic; a completely explicit separation bound is proved in
+Section~\ref{sec:separation}. Thus all $b(1),\ldots,b(M)$ are computable in
+finite time. Positive roots of the finite polynomials
+\eqref{eq:rm} and \eqref{eq:sh} can be bracketed by rational arithmetic.
+
+To approximate $\gamma$ within a prescribed positive error $\varepsilon$,
+compute increasing finite sets of exact terms and the associated lower bounds
+$\lambda_m$ and running upper bounds $\min_{2\le h\le H}\mu_h$.
+Stop when the two rational brackets differ by less than $\varepsilon$.
+Proposition~\ref{prop:muconverges} proves that this algorithm terminates.
+No unproved convergence rate or numerical extrapolation is needed.
+This is a computability statement, not a polynomial-time claim.
+
+\section{A certified numerical lower bound}
+
+\subsection{What the certificate proves}
+
+The archive contains a directed acyclic graph of $1{,}526{,}536$ expressions,
+each with an explicitly recorded symbol cost at most 28. Reusing a stored
+node is only a compression technique: the cost calculation charges a child
+again every time it is used, so this is \emph{formula size}, not circuit size.
+
+For each node the independent verifier computes an interval
+$[\ell/2^{256},u/2^{256}]$ using integer arithmetic. For addition it adds
+endpoints. For a square root it uses
+\begin{equation}\label{eq:intervalsqrt}
+ \ell'=\left\lfloor\sqrt{\ell\,2^{256}}\right\rfloor,
+ \qquad
+ u'=\left\lceil\sqrt{u\,2^{256}}\right\rceil.
+\end{equation}
+An integer square-root routine computes these bounds exactly.
+After sorting all intervals, the verifier checks that every consecutive pair
+is strictly disjoint. This proves pairwise distinctness of all stored values.
+The smallest certified gap in this sample is approximately
+$5.46212307648\times10^{-13}$; the exact rational gap is recorded in the
+verification output.
+
+The generator discards an interval whenever it overlaps one already retained.
+Such a discard is conservative: it is \emph{not} an assertion that the two
+values are equal. Therefore the output is unconditionally a lower-bound
+sample, even if a very close distinct value were discarded.
+
+Let $q_n$ be the number of sample nodes assigned cost $n$.
+They need not be assumed to have minimum cost. Theorem~\ref{thm:spines}
+can use these assigned costs directly, so the positive root of
+\begin{equation}\label{eq:samplepoly}
+ z\left(1+\sum_{n=1}^{28}q_nz^{n+1}\right)=1
+\end{equation}
+gives a valid lower bound on $\gamma$. In particular, no completeness claim
+about the enumeration is required.
+
+\subsection{The finite-root calculation}
+
+The cumulative sample counts agree with the 28 values currently listed in
+the OEIS entry \cite{oeis}. For the lower-bound proof, however, the stored
+expressions and interval verification replace reliance on those listed
+numbers.
+The reciprocal root of \eqref{eq:samplepoly} is bracketed by exact rational
+bisection and begins
+\begin{equation}\label{eq:samplelambda}
+ 1.86204402268771032792879\ldots.
+\end{equation}
+At the exact rational number $z=25000/46551=1/1.86204$, the left side of
+\eqref{eq:samplepoly}, minus one, is strictly positive; its value is
+approximately $1.09151356699874\times10^{-5}$. Since that left side is
+strictly increasing in $z$, this proves $\gamma>1.86204$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rr}
+\toprule
+Maximum assigned digit cost & Reciprocal root, displayed approximately\\
+\midrule
+4  & 1.618033988749895\\
+8  & 1.741298211719966\\
+12 & 1.792996772315302\\
+16 & 1.821892848098540\\
+20 & 1.840189044447032\\
+24 & 1.852813818187051\\
+28 & 1.862044022687710\\
+\bottomrule
+\end{tabular}
+\caption{Certified finite-alphabet lower bases. The archive records rational
+brackets, not just these decimal displays.}
+\label{tab:lower}
+\end{table}
+
+The constants in the accompanying eventual inequalities
+$a(n)\ge C_m\lambda_m^n$ are not computed: the general seed construction can
+be large. The certified conclusion concerns the limiting exponential rate.
+
+\section{A certified upper bound below 1.921}
+
+\subsection{An unordered-sum majorant}
+
+Consider a class of formal expressions in which maximal additions are
+flattened into multisets and a radical of a pure integer square is forbidden.
+Every minimum-size expression belongs to this class: replacing
+$\sqrt{q^2}$ by $q$ is always shorter. Other numerical identities are ignored,
+so the class provides an upper bound.
+
+Use weight $|E|+1$, and let $U(z)=\sum_{j\ge2}u_jz^j$ count these formal
+nonempty expressions. The atom $1$ has weight two. A radical adds one to the
+weight of its child, except that the forbidden radicals contribute
+\begin{equation}\label{eq:P}
+ P(z)=\sum_{q\ge1}z^{2q^2+1}.
+\end{equation}
+Consequently the atom series is $z^2+zU(z)-P(z)$, and the multiset construction
+gives
+\begin{equation}\label{eq:Ugf}
+ 1+U(z)=\exp\left(\sum_{k\ge1}
+   \frac{z^{2k}+z^kU(z^k)-P(z^k)}k\right).
+\end{equation}
+The formula can also be checked directly by multiplying
+$(1-z^j)^{-p_j}$ over atom weights $j$, where $p_j$ is the number of atoms
+of that weight; see \cite[Chapter I]{fs} for the general multiset construction.
+
+Minimum-size expressions inject into this formal class after one
+representative per value is selected. Therefore
+\begin{equation}\label{eq:au}
+ a(n)\le\sum_{j=2}^{n+1}u_j.
+\end{equation}
+
+\subsection{Exact coefficients by the Euler transform}
+
+Let $c_0=1$ and $c_n=u_n$ for $n\ge1$. The atom counts are
+\[
+ p_n=\boldsymbol1_{n=2}+u_{n-1}
+       -\#\{q\ge1:n=2q^2+1\}.
+\]
+Put $e_k=\sum_{d\mid k}d\,p_d$. Logarithmic differentiation of the product
+formula gives the integer recurrence
+\begin{equation}\label{eq:euler}
+ n c_n=\sum_{k=1}^n e_kc_{n-k}.
+\end{equation}
+There is no circular dependence: $p_n$ uses only $u_{n-1}$.
+The certificate computes these coefficients through $n=200$, checking
+nonnegativity and exact divisibility at every step.
+
+\subsection{A convergence criterion proved by radical height}
+
+For $r>0$ with $r^2<1/3$, define
+\begin{align}
+ \mathcal H(r)&=\sum_{k\ge2}
+   \frac{r^{2k}+r^kU(r^k)-P(r^k)}k,\label{eq:Htaildef}\\
+ \mathcal F(r)&=\log r+1+r^2-r-P(r)+\mathcal H(r).\label{eq:Fcriterion}
+\end{align}
+All evaluations $U(r^k)$ in this definition converge: the number of formal
+objects of weight $j$ is at most $3^{j-1}$, by prefix encoding of an associated
+ordered expression. Hence $U(x)$ converges for $x<1/3$.
+
+\begin{proposition}\label{prop:uppercriterion}
+If
+\begin{equation}\label{eq:uppercriterion}
+ r^2+r<1,\qquad r^2<1/3,\qquad \mathcal F(r)<0,
+\end{equation}
+then $U(r)$ is finite and $\gamma<1/r$.
+\end{proposition}
+\begin{proof}
+Let $U_j$ count objects of radical height at most $j$.
+At height zero they are positive integers, so
+$1+U_0(r)=(1-r^2)^{-1}<1/r$.
+Every pure integer square is already present at height zero; thus removing
+$P$ in each later atom construction is legitimate and leaves nonnegative
+coefficients.
+The classes increase with height, and their union is the whole formal class.
+
+Writing $C_j=1+U_j$, the $k=1$ term of the multiset recurrence gives
+\[
+ C_{j+1}(r)\le
+ \exp\bigl(rC_j(r)+r^2-r-P(r)+\mathcal H(r)\bigr).
+\]
+For $k\ge2$, the bounded-height classes were bounded by the full class at
+$r^k$, where convergence is already known. If $C_j(r)\le1/r$, the exponent
+is at most $1+r^2-r-P(r)+\mathcal H(r)<-\log r$.
+Induction gives $C_j(r)<1/r$ for every $j$, uniformly. Taking the increasing
+limit proves convergence at $r$.
+
+The estimates are strict and persist at a slightly larger positive argument:
+the small-argument series in \eqref{eq:Htaildef} are locally uniformly
+convergent while $r^2<1/3$. The same height argument thus proves convergence
+at some $r'>r$. Equation~\eqref{eq:au} yields $\gamma\le1/r'<1/r$.
+\end{proof}
+
+\subsection{Explicit bounds for every omitted tail}
+
+For $0<x<1/3$, the prefix bound gives
+\begin{equation}\label{eq:Utail}
+ U(x)\le\sum_{j=2}^{N}u_jx^j
+       +\frac{3^N x^{N+1}}{1-3x}.
+\end{equation}
+Use the finite lower bound
+$P_Q(x)=\sum_{q=1}^Qx^{2q^2+1}\le P(x)$ wherever $-P(x)$ occurs.
+For the terms with $k>K$ in \eqref{eq:Htaildef}, omit the negative terms and
+use $U(x)\le3x^2/(1-3x)$. Their total is at most
+\begin{equation}\label{eq:Htailbound}
+ \frac{r^{2(K+1)}}{(K+1)(1-r^2)}
+ +\frac{3r^{3(K+1)}}{(K+1)(1-r^3)(1-3r^{K+1})}.
+\end{equation}
+Finally, for $t=(1-r)/(1+r)\in(0,1)$,
+\[
+ \log r=-2\sum_{j\ge0}\frac{t^{2j+1}}{2j+1}.
+\]
+After $J$ terms the positive sum's omitted tail is at most
+\begin{equation}\label{eq:logtail}
+ \frac{t^{2J+1}}{(2J+1)(1-t^2)}.
+\end{equation}
+These formulas reduce the entire verification to finitely many rational
+operations and an explicitly bounded series for the logarithm.
+
+\subsection{The numerical certificate}
+
+The program \texttt{certify\_upper\_bound.py} evaluates an upper bound for
+$\mathcal F(r)$ at the exact rational argument
+\[
+ r=\frac{1250}{2401}=\frac1{1.9208}
+\]
+using $N=200$, $K=40$, $Q=8$, and $J=100$.
+All arithmetic is enclosed by outward-rounded dyadic intervals with
+1024 fractional bits. Every tail is bounded by the displayed formulas.
+The resulting upper bound is strictly negative and is approximately
+\begin{equation}\label{eq:Fvalue}
+ -8.442263650713085\times10^{-6}.
+\end{equation}
+The initial height margin $1/r-(1-r^2)^{-1}$ is positive, approximately
+$0.5489798948$.
+The exact signed integer numerator of the upper endpoint is stored in the
+archive. Thus Proposition~\ref{prop:uppercriterion}, rather than an unverified
+floating-point root finder, proves
+\[
+ \boxed{\gamma<1.9208.}
+\]
+Together with Section 7 this completes the numerical part of
+Theorem~\ref{thm:main}.
+
+\section{Sharper finite-term bounds and exact initial terms}
+
+Two further local simplifications significantly tighten the formal upper
+counts. They are useful for certifying initial terms even though the simpler
+majorant of Section 8 suffices for the stated growth bound.
+
+\subsection{Square factors in additive multiplicities}
+
+If every multiplicity in a radical's flattened radicand is divisible by
+$q^2$, $q\ge2$, then its value is $\sqrt{q^2t}=q\sqrt t$.
+If $w(t)$ denotes the syntactic weight of the divided multiset, the old and
+new weights are respectively
+\[
+ q^2w(t)+1,\qquad q(w(t)+1).
+\]
+The old weight exceeds the new one by $(q-1)(qw(t)-1)>0$.
+No minimum-size expression can contain such an atom.
+
+The allowed radicands therefore have squarefree gcd of their multiplicities.
+If $V(z)$ counts the resulting formal expressions, the radicand series with
+this restriction is
+\begin{equation}\label{eq:mobius}
+ \sum_{q\ge1}\mu(q)V(z^{q^2}),
+\end{equation}
+where $\mu$ is the ordinary Moebius function. Indeed a multiset with
+multiplicity gcd $g$ is counted with coefficient
+$\sum_{q^2\mid g}\mu(q)$, which is one precisely when $g$ is squarefree.
+The coefficients of \eqref{eq:mobius} are consequently nonnegative despite
+its alternating presentation.
+
+\subsection{A family of denesting identities}
+
+Put $\alpha_k=2^{1/2^k}$ for $k\ge1$. Its displayed expression has size $k+3$.
+For $m\ge1$, forbid the atom obtained from the expanded square
+\begin{equation}\label{eq:family}
+ \sqrt{m^2+2m\alpha_k+\alpha_k^2}=m+\alpha_k.
+\end{equation}
+The right side is strictly shorter.
+The atom on the left has weight
+\begin{equation}\label{eq:familyweight}
+ 2m^2+8m+4+(2m+1)k.
+\end{equation}
+For $k=1$, combine $\alpha_1^2=2$ with the integer part; the multiplicity gcd
+is one or two. For $k\ge2$, the distinct atom $\alpha_{k-1}$ has multiplicity
+one. Thus none of these exclusions overlaps the square-factor restriction.
+Their children are allowed dyadic-root atoms, and distinct pairs $(m,k)$
+give distinct formal radicands.
+
+Define
+\begin{equation}\label{eq:Efamily}
+ E(z)=\sum_{m\ge1}\sum_{k\ge1}
+ z^{2m^2+8m+4+(2m+1)k}.
+\end{equation}
+The improved atom series is
+\begin{equation}\label{eq:improvedatom}
+ J(z)=z^2+z\sum_{q\ge1}\mu(q)V(z^{q^2})-z^3-E(z),
+\end{equation}
+and the expression series satisfies
+\begin{equation}\label{eq:Vgf}
+ 1+V(z)=\exp\left(\sum_{j\ge1}\frac{J(z^j)}j\right).
+\end{equation}
+The term $-z^3$ removes $\sqrt1$. At every fixed degree all sums are finite.
+The same integer Euler-transform recurrence computes the coefficients.
+Every minimum-size expression avoids all these forbidden atoms, so $V$ is
+still a valid coefficientwise upper model for minimum-size value counts.
+
+\subsection{What is now proved about the listed terms}
+
+Let $L_n$ denote the cumulative number of certified sample values and let
+$U_n^*$ be the cumulative upper count from \eqref{eq:Vgf}. Then
+$L_n\le a(n)\le U_n^*$. Equality holds between these bounds for every
+$n\le21$. The remaining certified intervals are displayed below.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$n$ & Certified lower bound $L_n$ & Certified upper bound $U_n^*$ & Gap\\
+\midrule
+16 & 1,379 & 1,379 & 0\\
+17 & 2,424 & 2,424 & 0\\
+18 & 4,277 & 4,277 & 0\\
+19 & 7,588 & 7,588 & 0\\
+20 & 13,513 & 13,513 & 0\\
+21 & 24,162 & 24,162 & 0\\
+22 & 43,336 & 43,337 & 1\\
+23 & 77,978 & 77,982 & 4\\
+24 & 140,683 & 140,691 & 8\\
+25 & 254,487 & 254,504 & 17\\
+26 & 461,409 & 461,439 & 30\\
+27 & 838,433 & 838,487 & 54\\
+28 & 1,526,536 & 1,526,635 & 99\\
+\bottomrule
+\end{tabular}
+\caption{Exact finite certificates. All terms from $n=1$ through $n=21$ are
+proved exactly by matching bounds. Completeness for $22\le n\le28$ is not
+claimed. The full table is included as \texttt{data/term\_bounds.csv}.}
+\label{tab:terms}
+\end{table}
+
+The unresolved gaps in this table do not weaken the exponential lower bound:
+the digit certificate needs only distinct values with known expression costs.
+Nor does the existence proof depend on trusting any particular OEIS term.
+
+\section{Exact equality is decidable with an explicit bound}\label{sec:separation}
+
+For completeness, we give a finite, entirely explicit alternative to an exact
+algebraic-number package. It is much too pessimistic for practical large
+computations, but establishes effectivity without numerical assumptions.
+
+\begin{proposition}[Uniform separation]\label{prop:separation}
+If $x\ne y$ are represented by expressions of size at most $n$, then
+\begin{equation}\label{eq:separation}
+ |x-y|\ge
+ (n+1)^{-(2^{2n-2}-1)}=:\delta_n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Adjoin all radical subexpression values from both expressions. The resulting
+field $K$ has degree at most $2^{2n-2}$: each expression has at most $n-1$
+radical nodes, each requiring an extension of degree at most two.
+The nonzero number $x-y$ is an algebraic integer, so
+$|\Norm_{K/\Q}(x-y)|$ is a positive integer, at least one.
+By Lemma~\ref{lem:basic}, under every embedding of $K$ its absolute value is
+at most the sum of the two leaf counts, hence at most $n+1$.
+One factor in the norm is the specified real value $x-y$. Bounding all the
+other factors gives
+$1\le|x-y|(n+1)^{[K:\Q]-1}$, which implies \eqref{eq:separation}.
+\end{proof}
+
+At precision $P$, fixed-denominator interval propagation as in
+\eqref{eq:intervalsqrt} produces widths at most $2n\,2^{-P}$.
+One can see this inductively: addition adds widths, and square root on
+$[1,\infty)$ reduces a width by at least a factor of two before adding
+less than two units of outward rounding.
+Choose $P$ so that
+\begin{equation}\label{eq:safeprecision}
+ 2^P>\frac{8n}{\delta_n}.
+\end{equation}
+Every interval then has width less than $\delta_n/4$.
+If two such intervals overlap, their true values differ by less than
+$\delta_n/2$, so Proposition~\ref{prop:separation} forces equality.
+Disjoint intervals certify inequality. This gives a finite exact comparison
+algorithm for all expressions of bounded size.
+
+Alternatively, real algebraic numbers represented by defining polynomials and
+isolating intervals provide exact equality and ordering; SageMath's
+\texttt{AA} is a documented implementation \cite{sage}.
+The present archive does not require SageMath. Its executed verifiers use only
+the Python standard library, and the lower-bound verifier does not need the
+astronomical worst-case precision \eqref{eq:safeprecision} because it never
+declares overlapping intervals equal.
+
+\section{Interpretation and remaining asymptotic questions}
+
+The distinction between four levels of information is important.
+First, exponential upper and lower estimates only show that
+$\log a(n)=\Theta(n)$.
+Second, the injective-spine argument proves the stronger assertion that the
+coefficient of $n$ in $\log a(n)$ converges.
+Third, the large-expression decomposition proves computability of that
+coefficient and the exact critical identity \eqref{eq:criticalsum}.
+Fourth, a full asymptotic equivalent would require further information that
+is not supplied by these arguments.
+
+In particular, the following issues remain unresolved in this article:
+\begin{enumerate}[label=(\roman*),itemsep=3pt]
+\item A substantially tighter numerical enclosure of $\gamma$.
+The finite-data procedure is convergent, but its elementary upper codes are
+not optimized for speed, and complete exact enumeration is expensive.
+\item The existence of a ratio limit $a(n+1)/a(n)\to\gamma$.
+A root limit and monotonicity alone do not imply this.
+\item An asymptotic equivalent, including a power of $n$ and a leading
+constant. The familiar $n^{-3/2}$ behavior of many tree models motivates a
+question, not a conclusion, for the quotient by all numerical identities.
+\end{enumerate}
+
+It would be incorrect to identify the growth constant of an unordered-tree
+majorant with $\gamma$. The majorants deliberately keep numerically redundant
+expressions, and even rare local identities can change an exponential growth
+constant. Likewise, a fit to the first 28 numbers cannot certify a limiting
+base or a polynomial prefactor.
+
+The rigorous outcome is
+\[
+ \boxed{\log a(n)=n\log\gamma+o(n),\quad
+ 1.86204<\gamma<1.9208,\quad
+ \sum_{n\ge1}a(n)\gamma^{-n}=\gamma^2.}
+\]
+The constant is characterized by convergent algebraic brackets computed from
+finite exact data. The finite numerical work in the archive checks the stated
+bounds independently of approximate equality tests.
+
+\appendix
+\section{Reproducing the computations}
+
+The archive is self-contained apart from a Python 3.10 or later installation and a LaTeX
+installation for rebuilding the PDF. No computer-algebra package, internet
+connection, or floating-point equality oracle is needed for the executed
+certificates.
+
+From the archive's top-level directory, run:
+\begin{lstlisting}
+python verify_certificate.py --output data/verification_results.json
+python certify_upper_bound.py --output data/upper_bound_certificate.json
+python analyze_counts.py
+\end{lstlisting}
+The first command replays all expression nodes, checks symbol costs, and
+verifies pairwise disjoint enclosures. The second recomputes the formal upper
+coefficients, the strict convergence inequality, and the improved finite-term
+upper bounds. The third reproduces the rational lower-root brackets and the
+CSV table.
+
+To regenerate the lower-bound sample from scratch:
+\begin{lstlisting}
+python certified_enumerate.py --max-n 28 --precision 256 --output data
+\end{lstlisting}
+This generator is deliberately conservative about overlap. Its mathematical
+specification is a certified sample, not a complete exact enumeration.
+The independently replayable certificate is the primary finite witness.
+
+In the execution used for this article, the sample generator completed in
+about five seconds and the independent sample verifier in about two and a
+half seconds. These are descriptive timings for that environment, not
+portable performance guarantees. The certificate itself has 1,526,536
+records, nine bytes per record, plus a 16-byte header.
+
+\subsection*{Files in the archive}
+
+{\small
+\begin{longtable}{@{}p{0.42\textwidth}p{0.53\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\endhead
+\texttt{article.tex}, \texttt{article.pdf} & This article and its source.\\
+\texttt{README.md}, \texttt{Makefile} & Reproduction instructions and PDF build target.\\
+\texttt{certified\_enumerate.py} & Conservative interval-based construction of the sample.\\
+\texttt{verify\_certificate.py} & Independent integer-arithmetic replay and distinctness check.\\
+\texttt{certify\_upper\_bound.py} & Exact coefficient recurrences and outward-rounded upper certificate.\\
+\texttt{analyze\_counts.py} & Rational root brackets and the finite-term bounds table.\\
+\texttt{data/digit\_sample.bin} & Compressed-by-sharing expression DAG; formula costs are charged in full.\\
+\texttt{data/certificate\_metadata.json} & Generator counts and certificate interpretation.\\
+\texttt{data/verification\_results.json} & Independently verified counts, minimum gap, and lower inequality.\\
+\texttt{data/upper\_bound\_certificate.json} & Exact signed convergence witness and finite upper counts.\\
+\texttt{data/finite\_lower\_roots.json} & Rational brackets for Table~\ref{tab:lower}.\\
+\texttt{data/term\_bounds.csv} & All 28 lower and upper finite-term bounds.\\
+\bottomrule
+\end{longtable}
+}
+
+\section{Certificate format and verification boundaries}
+
+The binary file begins with the eight ASCII bytes \texttt{A158415D}, followed
+by two little-endian unsigned 32-bit integers: interval precision and maximum
+assigned symbol cost. Each subsequent record consists of one unsigned byte
+for cost and two unsigned 32-bit child indices.
+The value \texttt{0xffffffff} is a sentinel. The first record has cost one
+and two sentinels, representing $1$. A later record whose right index is the
+sentinel represents the square root of its left child; otherwise it represents
+the sum of its two children. Child indices must precede the current record.
+The verifier recomputes each cost and enclosure rather than trusting them.
+
+These checks establish concrete finite claims. The growth-limit,
+critical-identity, and computability theorems are justified by the mathematical
+proofs in the article; the archive does not contain a proof-assistant
+formalization of them. Conversely, the numerical bounds do not depend on
+assuming that the theoretical seed constructions have been explicitly
+materialized as short expressions.
+
+\begin{thebibliography}{9}
+
+\bibitem{oeis}
+V. Reshetnikov and contributors,
+\emph{A158415: distinct values of expressions formed from $1$, square root,
+and addition}, The On-Line Encyclopedia of Integer Sequences.
+Entry introduced March 18, 2009; accessed September 20, 2026.
+\url{https://oeis.org/A158415}.
+
+\bibitem{discussion}
+R. Kelly, R. Gerbicz, V. Reshetnikov, and others,
+\emph{Comments on A158415}, archived sequence discussion, March 2009.
+\url{https://oeis.org/A158415/a158415.txt}.
+
+\bibitem{milne}
+J. S. Milne,
+\emph{Algebraic Number Theory}, version 3.08, July 19, 2020.
+See especially Chapters 2, 3, and 7, including the discussion of Newton
+polygons on printed page 125.
+\url{https://www.jmilne.org/math/CourseNotes/ANT.pdf}.
+
+\bibitem{fs}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+Author-maintained booksite and full-text access:
+\url{https://ac.cs.princeton.edu/home/}.
+
+\bibitem{sage}
+The Sage Development Team,
+\emph{Algebraic Numbers and Number Fields}, reference documentation for
+\texttt{AA} and \texttt{QQbar}; accessed September 20, 2026.
+\url{https://doc.sagemath.org/html/en/reference/number_fields/sage/rings/qqbar.html}.
+
+\end{thebibliography}
+\end{document}

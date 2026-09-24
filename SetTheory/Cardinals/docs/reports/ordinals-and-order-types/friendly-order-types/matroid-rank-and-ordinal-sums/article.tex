@@ -1,0 +1,1289 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,needspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{Ink}{HTML}{19384A}
+\definecolor{Teal}{HTML}{006D77}
+\definecolor{Pale}{HTML}{F0F6F7}
+\definecolor{Muted}{HTML}{52626D}
+\hypersetup{colorlinks=true,linkcolor=Teal,citecolor=Teal,urlcolor=Teal,
+  pdftitle={Friendly Order Type Through Incomparability Components},
+  pdfauthor={ChatGPT},pdfsubject={Finite posets, ordinal invariants, and multiset orders}}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Friendly order type and incomparability}
+\fancyhead[R]{\small\color{Muted}Research note}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fot}{\operatorname{o}_{\perp}}
+\newcommand{\mot}{\operatorname{o}}
+\newcommand{\wid}{\operatorname{w}}
+\newcommand{\hei}{\operatorname{h}}
+\newcommand{\incg}{G_{\perp}}
+\newcommand{\cc}{c_{\perp}}
+\newcommand{\Bad}{\operatorname{Bad}}
+\newcommand{\Fr}{\operatorname{Bad}_{\perp}}
+\newcommand{\Mr}{\mathsf{M}^{r}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\pred}{\operatorname{pred}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\res}[2]{#1_{\not\ge #2}}
+\newcommand{\CA}{\mathsf{C}}
+\newcommand{\Ant}{\mathsf{A}}
+\newcommand{\bool}{\mathsf{B}}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Teal,boxrule=0.7pt,
+  arc=1mm,left=4mm,right=4mm,top=3mm,bottom=3mm}
+\lstset{basicstyle=\small\ttfamily,keywordstyle=\color{Teal}\bfseries,
+  commentstyle=\color{Muted},breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{Teal},
+  xleftmargin=0pt,xrightmargin=0pt,aboveskip=1em,belowskip=1em}
+
+\begin{document}
+\thispagestyle{empty}
+\noindent{\small\sffamily\bfseries\color{Teal}ORDER THEORY\quad /\quad ORDINAL INVARIANTS\quad /\quad 19 SEPTEMBER 2026}
+\vspace{1.1cm}
+
+\noindent{\Huge\bfseries\color{Ink}Friendly Order Type\\[0.12em]
+Through Incomparability\\[0.12em]Components}
+\vspace{0.5cm}
+
+\noindent{\Large A finite structural case of an open problem,\\
+with Cartesian products and transfinite extensions}
+\vspace{0.7cm}
+
+\begin{resultbox}
+For every finite poset $P$,
+\[
+\boxed{\fot(P)=|P|-\cc(P)}
+\qquad\text{and hence}\qquad
+\boxed{\wid(\Mr(P))=\omega^{\,|P|-\cc(P)}}.
+\]
+Here $\cc(P)$ counts the connected components of the incomparability graph,
+including isolated vertices. The first quantity is also the rank of that
+graph's graphic matroid.
+\end{resultbox}
+
+\subsection*{Abstract}
+Vialard introduced friendly order type to compute the ordinal width of the
+Dershowitz--Manna multiset ordering and asked for further structural and
+compositional descriptions. We study the finite structural case. We prove
+that the friendly order type of a finite poset is its number of elements
+minus its number of incomparability components. One proof bounds every
+open-ended bad sequence by a graph-forest potential; the matching lower
+bound constructs connected linear extensions of the components. This
+identifies the invariant with a familiar graph rank and gives polynomial-time
+value and witness algorithms.
+
+We derive exact formulas for finite lexicographic substitutions and Cartesian
+products. We also prove additivity over arbitrary well-ordered ordinal sums,
+which yields a transfinite evaluation theorem for all well-partial-orders
+with finite incomparability components. Explicit countable examples show
+that neither graph-isomorphism invariance nor a simple connected-component
+correction to maximal order type extends to arbitrary infinite bases.
+Independent residual-rank computations verify the finite formula on all
+101,660 naturally labelled posets of sizes at most seven; additional product
+and substitution checks are supplied as executable Python.
+
+\vspace{0.3cm}
+\noindent\textbf{Research status.}
+The proofs below are complete mathematical arguments, but have not been
+externally refereed or proof-assistant checked. The result solves a specified
+finite subproblem and an infinite extension, not the entire published
+research program. A targeted literature search did not locate the component
+formula; that search does not establish priority. The general multiset-width
+theorem is Vialard's, not a new claim of this manuscript.
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The documented problem and the scope of the answer}
+
+In the conclusion of \emph{Ordinal Measures of the Set of Finite Multisets},
+Vialard asks about the friendly order type: ``How does it relate to other
+concepts? Can it be computed compositionally for more operations?''
+\cite[p.~87:11]{vialard2023}.
+The 2024 doctoral thesis again asks for compositional computation and a
+deeper interpretation of this invariant \cite[Conclusion, pp.~109--110]{vialard2024}.
+These are open-ended research questions rather than one numbered yes/no
+conjecture.
+
+The concrete problem selected here is the following finite structural
+specialization of that program.
+
+\begin{problem}[Finite structural subproblem]\label{prob:finite}
+Find an exact structural expression for $\fot(P)$ for every finite poset $P$,
+relate it to a familiar invariant, and use that expression to compute it for
+additional poset constructions. Determine how far the expression extends
+to infinite well-partial-orders.
+\end{problem}
+
+The literature consulted does not separately designate
+Problem~\ref{prob:finite} as a named open conjecture. We therefore do not
+claim to have settled a previously named conjecture. The contribution is a
+proposed structural solution to a concrete part of the documented program.
+The finite case is not merely a question about finite ordinal widths:
+$\Mr(P)$ is usually infinite even when $P$ is finite, and its width is the
+transfinite ordinal $\omega^{\fot(P)}$.
+
+The principal statements are as follows.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Domain & Exact conclusion \\
+\midrule
+Finite $P$ & $\fot(P)=|P|-\cc(P)$; equivalently, graphic-matroid rank. \\
+Finite substitutions & Each nontrivial index component merges all its fibers into one incomparability component. \\
+Finite $A\times B$, $|A|,|B|\ge2$ & $\fot(A\times B)=|A||B|-1-b-t$, where $b,t$ indicate the existence of a least and greatest element in the product. \\
+Well-ordered sums & $\fot(\sum_{i<\delta}P_i)=\sum_{i<\delta}\fot(P_i)$, using ordinary ordinal addition. \\
+Finite-component wpos & The preceding sum becomes $\sum_{i<\delta}(|C_i|-1)$ over the ordered incomparability components. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite component theorem, its algorithmic form, the substitution formula,
+and the Cartesian formula are proved independently of the multiset-width
+theorem. The transfinite argument uses only the residual definition of
+friendly order type and well-founded tree ranks. The conversion from friendly
+order type to multiset width invokes Vialard's theorem explicitly.
+
+\section{Definitions and conventions}
+
+\subsection{Posets, residuals, and tree ranks}
+
+All orders in this article are partial orders, not merely quasi-orders.
+A \emph{well-partial-order} (wpo) is a poset with no infinite bad sequence.
+A finite sequence $x_0,\ldots,x_{k-1}$ in $P$ is \emph{bad} when
+\[
+ i<j<k\quad\Longrightarrow\quad x_i\not\le_P x_j.
+\]
+Every finite poset is a wpo. For $x\in P$, set
+\[
+ \uparrow_P x=\{y\in P:x\le_P y\},\qquad
+ \res{P}{x}=P\setminus\uparrow_P x.
+\]
+All subsets carry the induced order. After a bad sequence $s$, the residual
+is $P\setminus\bigcup_{x\in s}\uparrow_P x$. This is precisely the set of
+points that can still be appended to $s$ while preserving badness.
+
+For a well-founded rooted tree, a leaf has rank zero, and a node has rank
+\[
+ \sup\{\text{rank of a child}+1:\text{child of the node}\}.
+\]
+The rank of the tree is the rank of its root. An empty supremum is zero.
+In particular, the tree consisting only of its empty sequence has rank zero.
+The tree $\Bad(P)$ of finite bad sequences is well-founded for a wpo.
+We write $\mot(P)$ for its rank. This is the usual maximal-order-type
+invariant, but only its rank definition is needed in our transfinite proof.
+It satisfies
+\begin{equation}\label{eq:mot}
+ \mot(P)=\sup_{x\in P}\bigl(\mot(\res{P}{x})+1\bigr).
+\end{equation}
+For a finite poset, $\mot(P)=|P|$: reverse any linear extension to obtain a
+bad sequence containing all elements.
+
+\subsection{Friendly order type}
+
+We use Vialard's definition of open-ended bad sequences
+\cite[Definition~5.3.2]{vialard2024}.
+Two points are \emph{incomparable}, written $x\perp y$, when neither
+$x\le y$ nor $y\le x$ holds. Write
+$P_{\perp x}=\{y\in P:y\perp x\}$.
+
+\begin{definition}[Open-ended sequence and friendly order type]
+The empty sequence is open-ended. If $s$ is open-ended and its current
+residual is $R$, then $sx$ is open-ended when $x\in R$ has an incomparable
+point $y\in R$. Such a point $y$ is called a \emph{friend} of $x$ at that
+step. Let $\Fr(P)$ be the tree of open-ended bad sequences. Its rank is the
+\emph{friendly order type} $\fot(P)$.
+\end{definition}
+
+The friend need not be a member of the eventual selected sequence, and need
+not remain forever. It must exist in the residual \emph{at the step where
+it is used}. Incomparability guarantees that it is not deleted by selecting
+$x$, because $x\not\le y$.
+
+The defining recurrence is
+\begin{equation}\label{eq:fot}
+ \fot(P)=\sup_{\substack{x\in P\\P_{\perp x}\ne\varnothing}}
+ \bigl(\fot(\res{P}{x})+1\bigr).
+\end{equation}
+For finite $P$, this is a maximum, with value zero if no move is permitted,
+and the rank equals the maximum length of an open-ended bad sequence.
+In particular, $\fot(\varnothing)=0$ and $\fot(P)=0$ for every chain.
+
+\subsection{The graph and the multiset order}
+
+The \emph{incomparability graph} $\incg(P)$ is the simple undirected graph
+with vertex set $P$ and edges $\{x,y\}$ exactly when $x\perp y$.
+For finite $P$, let $\cc(P)$ be its number of connected components.
+Isolated vertices count as components, and $\cc(\varnothing)=0$.
+For any finite graph $G$, write
+\[
+ r(G)=|V(G)|-c(G).
+\]
+We will prove directly that this is both the maximum number of edges in a
+forest contained in $G$ and the rank of an incidence matrix.
+
+For completeness, the multiset ordering used here is not multiset embedding.
+For finite multisets $m,n$ over $P$, cancel their common multiplicities and
+write $m'=m\setminus(m\cap n)$ and $n'=n\setminus(m\cap n)$. Then
+\begin{equation}\label{eq:multiset}
+ m\le_r n\quad\Longleftrightarrow\quad
+ m=n\ \text{or}\ (\forall x\in m')\,(\exists y\in n')\ x<_P y.
+\end{equation}
+No injective matching of the remaining occurrences is required. Write
+$\Mr(P)$ for the resulting ordered set of finite multisets, including the
+empty multiset \cite[Definition~1.6]{vialard2023}.
+
+The ordinal width $\wid(Q)$ of a wpo $Q$ is the rank of its tree of finite
+sequences of pairwise incomparable points. For finite $Q$ it equals the
+ordinary maximum antichain size. For infinite $Q$ it is generally not the
+supremum of the finite antichain sizes: the rank also records the nested
+structure of the possible continuations.
+
+\begin{theorem}[Vialard]\label{thm:vialard}
+For every wpo $P$,
+\[
+ \wid(\Mr(P))=\omega^{\fot(P)}.
+\]
+\end{theorem}
+
+This is \cite[Theorem~3.4]{vialard2023}. We use it as a published theorem;
+we do not claim to reprove its general multiset argument. If $P$ is empty,
+$\Mr(P)$ has one element and the formula correctly gives $1=\omega^0$.
+
+\section{The finite component theorem}
+
+\begin{theorem}[Finite component formula]\label{thm:finite}
+For every finite poset $P$,
+\[
+ \boxed{\fot(P)=|P|-\cc(P).}
+\]
+Moreover, an open-ended bad sequence of this length can be constructed
+without evaluating the residual-rank recurrence.
+\end{theorem}
+
+The proof separates a graph-theoretic upper bound from an order-theoretic
+construction. The latter separation matters: connectivity alone does not
+make an arbitrary vertex ordering into a bad sequence.
+
+\subsection{Upper bound: every legal move consumes forest rank}
+
+\begin{lemma}[Graph-rank decrease]\label{lem:potential}
+Let $R$ be a finite poset, let $x\in R$ have a friend $y\in R$, and put
+$S=R\setminus\uparrow_R x$. Then
+\[
+ r(\incg(S))\le r(\incg(R))-1.
+\]
+\end{lemma}
+
+\begin{proof}
+A forest on a graph with $v$ vertices and $c$ connected components has at
+most $v-c$ edges: in each component, an acyclic graph on its vertices has at
+most one fewer edge than vertices. Choosing a spanning tree in each
+component attains $v-c$. Thus $r(G)$ is the maximum forest size.
+
+Choose a spanning forest $F$ of $\incg(S)$. Since $x\perp y$, the point $y$
+belongs to $S$, whereas $x$ does not. Adding the new vertex $x$ and the edge
+$\{x,y\}$ to $F$ cannot create a cycle. It produces a forest in $\incg(R)$
+with $r(\incg(S))+1$ edges. The asserted inequality follows.
+\end{proof}
+
+Every step of an open-ended sequence decreases this nonnegative integer
+potential by at least one. Therefore
+\begin{equation}\label{eq:upper}
+ \fot(P)\le r(\incg(P))=|P|-\cc(P).
+\end{equation}
+This proof allows an upset deletion to remove many points and to split old
+components into new ones. It does not assume that a move simply removes one
+vertex, or that connectivity is preserved after every possible move.
+
+\subsection{Incomparability components are ordinal-sum blocks}
+
+\begin{lemma}[Ordered components]\label{lem:components}
+Distinct connected components of $\incg(P)$ are uniformly comparable:
+for two such components $C,D$, either every point of $C$ is below every
+point of $D$, or every point of $D$ is below every point of $C$.
+These comparisons linearly order the components. This holds for arbitrary
+posets, finite or infinite.
+\end{lemma}
+
+\begin{proof}
+Points in different components must be comparable. Fix a point $z$ outside a
+component $C$. If $u\perp v$ are adjacent vertices in $C$, the directions of
+the comparisons with $z$ cannot differ: $u<z<v$ would imply $u<v$, and
+$v<z<u$ would imply $v<u$. Following a finite graph path shows that either
+all of $C$ is below $z$ or all of $C$ is above $z$.
+
+Now vary $z$ along a path in a second component $D$; the same argument shows
+that the direction is constant throughout $D$. This proves uniformity.
+Totality follows from comparability between components, and transitivity
+follows from transitivity in $P$.
+\end{proof}
+
+For finite $P$ we may consequently write
+\[
+ P=C_1+C_2+\cdots+C_k,
+\]
+where $+$ is ordinal sum: every point of an earlier block is below every
+point of a later block. Each induced graph $\incg(C_i)$ is connected.
+
+\subsection{Connected linear extensions}
+
+\begin{lemma}[A boundary point with a friend]\label{lem:boundary}
+Let $C$ be a finite poset whose incomparability graph is connected. If $D$
+is a nonempty proper order ideal of $C$, then some minimal point $v$ of
+$C\setminus D$ is incomparable to a point of $D$.
+\end{lemma}
+
+\begin{proof}
+Suppose the assertion fails. Every minimal point $v$ of $C\setminus D$ is
+then comparable to every $d\in D$. We cannot have $v\le d$, because $D$
+is an order ideal and $v\notin D$. Thus $d<v$ for every such $d,v$.
+
+Every point $z$ of the finite poset $C\setminus D$ lies above a minimal
+point $v$ of that poset. Hence $d<v\le z$ for every $d\in D$. There are
+therefore no incomparability edges between the two nonempty sets $D$ and
+$C\setminus D$, contradicting connectivity.
+\end{proof}
+
+\begin{lemma}[Connected-prefix extension]\label{lem:extension}
+If $C$ is a finite poset with connected incomparability graph and $|C|=m$,
+there is a linear extension $v_1,\ldots,v_m$ such that every $v_j$ with
+$j\ge2$ has an incomparable point among $v_1,\ldots,v_{j-1}$.
+In particular, every nonempty prefix induces a connected incomparability
+graph.
+\end{lemma}
+
+\begin{proof}
+Start with any minimal point $v_1$. Suppose an ideal
+$D=\{v_1,\ldots,v_j\}$ has been constructed. If it is proper,
+Lemma~\ref{lem:boundary} supplies a minimal remaining point $v_{j+1}$ with
+a friend in $D$. Appending a minimal remaining point preserves the
+linear-extension property and keeps the selected set an ideal. Its friend
+connects the new point to the existing prefix. Continue until all points
+have been selected. The one-point case is included.
+\end{proof}
+
+\begin{corollary}\label{cor:connected}
+If $\incg(C)$ is connected and $C$ is finite, then
+$\fot(C)=|C|-1$.
+\end{corollary}
+
+\begin{proof}
+Use Lemma~\ref{lem:extension} and read the extension backwards, omitting its
+first point:
+\[
+ v_m,v_{m-1},\ldots,v_2.
+\]
+After the later points have been removed, $v_j$ is maximal in the remaining
+prefix $\{v_1,\ldots,v_j\}$. Its upset in that prefix is therefore the
+singleton $\{v_j\}$. It also has an incomparable friend in the earlier
+prefix. Every move is legal, giving length $m-1$. The reverse inequality is
+\eqref{eq:upper}.
+\end{proof}
+
+\subsection{Completion of the proof and an explicit certificate}
+
+\begin{proof}[Proof of Theorem~\ref{thm:finite}]
+The empty case is immediate. Decompose a nonempty $P$ into its ordered
+incomparability components $C_1<\cdots<C_k$. For each $C_i$, choose the
+extension of Lemma~\ref{lem:extension}, and retain its reverse with the first
+point omitted. Process these lists in the order $C_k,C_{k-1},\ldots,C_1$.
+
+While working in $C_i$, all points of earlier components are still present:
+selecting a point in a later component never removes a smaller point. The
+unprocessed prefix inside $C_i$ is also still present. A chosen point has
+its designated friend in that prefix, and is maximal within that prefix.
+Its upset may delete leftover points of higher components, but this cannot
+affect its friend or any future move in a lower component. Thus the entire
+concatenated sequence is open-ended.
+
+Its length is
+\[
+ \sum_{i=1}^k(|C_i|-1)=|P|-k=|P|-\cc(P).
+\]
+Together with \eqref{eq:upper}, this proves the theorem.
+\end{proof}
+
+Choose, for each $v_j$ in a component extension with $j\ge2$, one earlier
+friend $p(v_j)$. The edges $\{v_j,p(v_j)\}$ form a spanning tree of the
+component: each edge points toward an earlier index, and repeated parent
+steps reach $v_1$. Over all components they form a spanning forest with
+$|P|-\cc(P)$ edges. The same data therefore certify both a maximal forest
+and an optimal open-ended sequence.
+
+Exactly one point of each component is omitted from the \emph{selected
+sequence}. This does not mean that one point of each original component
+survives in the final residual. A later move in a lower component can delete
+an omitted point of a higher component. This distinction is important for
+checking the construction.
+
+\section{Graph rank, consequences, and small examples}
+
+\subsection{A familiar invariant, not an identification of structures}
+
+\begin{corollary}[Graphic-matroid and incidence rank]\label{cor:matroid}
+For a finite poset $P$ and any field $K$,
+\[
+ \fot(P)=r(\incg(P))=\rk_K B,
+\]
+where $B$ is any oriented vertex--edge incidence matrix of $\incg(P)$.
+Equivalently, $\fot(P)$ is the rank of the graphic matroid of $\incg(P)$.
+\end{corollary}
+
+\begin{proof}
+The forest characterization of $r(G)$ was established in
+Lemma~\ref{lem:potential}. For the matrix statement, each incidence column
+has coordinate sum zero within its connected component. Hence the column
+rank is at most $|V(G)|-c(G)$. The columns belonging to a spanning forest
+are independent over every field: a leaf row singles out its incident edge,
+whose coefficient must vanish in any dependence, and leaf removal finishes
+the induction. The lower bound is therefore the same number.
+\end{proof}
+
+In characteristic two, the signs disappear, so an edge column simply has
+a $1$ at each endpoint. This provides an independent, easily implemented
+algebraic check. The corollary identifies \emph{ranks}; it does not identify
+the entire tree of friendly sequences with a graphic matroid, and does not
+assert that every forest orientation gives a legal sequence.
+
+\Needspace{11\baselineskip}
+\subsection{Monotonicity and one-point changes}
+
+\begin{corollary}\label{cor:consequences}
+For finite posets the following statements hold.
+\begin{enumerate}[label=(\roman*),itemsep=0.2em]
+\item $\fot(P)=\fot(P^{\mathrm{op}})$, and isomorphic incomparability graphs
+have equal friendly order type.
+\item $\fot(P)=0$ exactly when $P$ is a chain.
+\item For nonempty $P$, $\fot(P)\le |P|-1$, with equality exactly when its
+incomparability graph is connected.
+\item Passing to an induced subposet, or adding order comparisons while
+retaining a partial order, cannot increase friendly order type.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Duality preserves incomparability, proving (i). Graph rank is zero precisely
+for an edgeless graph, proving (ii). Statement (iii) is the component formula.
+For (iv), deleting vertices or edges cannot increase the maximum size of a
+forest. Adding comparisons deletes incomparability edges.
+\end{proof}
+
+\begin{proposition}[Insertion rule]\label{prop:insertion}
+Let $P'$ be a finite poset obtained from an induced subposet $P$ by adding
+one point $x$. Let $t$ be the number of components of $\incg(P)$ that contain
+at least one friend of $x$. Then
+\[
+ \fot(P')-\fot(P)=t.
+\]
+\end{proposition}
+
+\begin{proof}
+If $t=0$, the new point is isolated and both the vertex count and component
+count increase by one. If $t>0$, the new point merges exactly those $t$
+components into one, so $c(\incg(P'))=c(\incg(P))-t+1$. Substitute into
+Theorem~\ref{thm:finite}.
+\end{proof}
+
+\subsection{Chains, antichains, and equal ordinary invariants}
+
+Write $\CA_n$ for an $n$-element chain and $\Ant_n$ for an $n$-element
+antichain. For $n\ge1$,
+\[
+ \fot(\CA_n)=0,\qquad \fot(\Ant_n)=n-1.
+\]
+For nonempty finite $A,B$, the ordinal sum and disjoint sum satisfy
+\[
+ \fot(A+B)=\fot(A)+\fot(B),\qquad
+ \fot(A\sqcup B)=|A|+|B|-1.
+\]
+The first follows because there are no cross-block incomparability edges;
+the second because every cross-block pair is incomparable, making the
+graph connected. These two special operation rules are consistent with
+Vialard's existing binary-sum formulas; they are not claimed here as new
+binary-sum results \cite[Proposition~4.1]{vialard2023}.
+
+\begin{example}[A four-point separation]\label{ex:four}
+Let
+\[
+ P=\Ant_2+\Ant_2,\qquad Q=\CA_2\sqcup\CA_2.
+\]
+Both have four elements, height two, ordinary width two, and maximal order
+type four. The incomparability graph of $P$ consists of two disjoint edges,
+whereas the graph of $Q$ is the connected graph $K_{2,2}$. Thus
+\[
+ \fot(P)=2,\qquad \fot(Q)=3,
+\]
+and Theorem~\ref{thm:vialard} gives
+\[
+ \wid(\Mr(P))=\omega^2,\qquad \wid(\Mr(Q))=\omega^3.
+\]
+This directly demonstrates, already on finite bases, that the usual three
+ordinal invariants of a base do not determine its multiset-order width.
+\end{example}
+
+For every fixed $n\ge1$, every integer $r$ with $0\le r\le n-1$ occurs as
+$\fot(P)$ on an $n$-element poset. One realization is
+\[
+ P=\Ant_{r+1}+\CA_{n-r-1},
+\]
+where a zero-sized final chain is omitted. Consequently the possible
+multiset-order widths of $n$-element bases are exactly
+$1,\omega,\ldots,\omega^{n-1}$.
+
+\section{Finite lexicographic substitutions}
+
+\begin{definition}[Substitution]
+Let $R$ be a finite poset and let $P_i$ be a nonempty finite poset for every
+$i\in R$. The substitution $R[P_i:i\in R]$ has elements $(i,x)$ with
+$x\in P_i$. Within a fiber it uses the order of $P_i$, and between distinct
+fibers it declares every point of $P_i$ below every point of $P_j$ exactly
+when $i<_R j$.
+\end{definition}
+
+Let $\mathcal C(R)$ denote the set of incomparability components of $R$.
+A singleton component is an isolated vertex of $\incg(R)$.
+
+\begin{theorem}[Substitution formula]\label{thm:substitution}
+Under the preceding hypotheses,
+\begin{align}
+ \fot(R[P_i:i\in R])
+ &=\sum_{\substack{D\in\mathcal C(R)\\|D|>1}}
+       \left(\sum_{i\in D}|P_i|-1\right)
+   +\sum_{\substack{\{i\}\in\mathcal C(R)}}\fot(P_i).
+ \label{eq:substitution}
+\end{align}
+All sums in this formula are finite sums of integers.
+\end{theorem}
+
+\begin{proof}
+Whenever $i\perp_R j$, all vertices of the two fibers are mutually joined
+by cross-fiber incomparability edges. Suppose $D$ is a nontrivial connected
+component of $\incg(R)$. Every vertex $i$ of $D$ has a neighbor in $D$.
+Two vertices in the same fiber over $i$ can therefore be joined by a
+length-two path through any vertex of a neighboring fiber. Vertices in
+different fibers over $D$ can be joined by lifting a path in $D$. Hence the
+union of the fibers over $D$ forms one connected component.
+
+There are no edges between fibers lying over distinct index components.
+For an isolated index $i$, the fiber retains exactly its own internal
+components. Thus a nontrivial $D$ contributes
+$\sum_{i\in D}|P_i|-1$ to graph rank, and an isolated index contributes
+$|P_i|-\cc(P_i)=\fot(P_i)$. Apply Theorem~\ref{thm:finite}.
+\end{proof}
+
+\begin{corollary}[Constant fiber]\label{cor:constantfiber}
+Suppose every fiber is the same nonempty finite poset $P$. If $R$ has $s$
+isolated vertices and $q$ nontrivial incomparability components, then
+\[
+ \cc(R[P])=q+s\cc(P),\qquad
+ \fot(R[P])=|R||P|-q-s\cc(P).
+\]
+\end{corollary}
+
+This provides a genuinely structural compositional rule: an isolated index
+requires the internal friendly order type of its fiber, while a nontrivial
+index component forgets the fiber orders and retains only their sizes.
+Empty fibers are excluded because they can destroy connecting paths; they
+can be handled by first deleting their indices and applying the theorem
+to the remaining index poset. An empty index yields the empty poset.
+
+\section{Cartesian products: only the endpoints split off}
+
+The Cartesian order is coordinatewise:
+$(a,b)\le(a',b')$ exactly when $a\le a'$ and $b\le b'$.
+The next structural lemma applies even without finiteness.
+
+\begin{lemma}[No middle ordinal cut in a nontrivial product]\label{lem:cut}
+Let $A,B$ be posets, each with at least two elements. There is no partition
+$A\times B=L\mathbin{\dot\cup}U$ with $|L|,|U|\ge2$ and every point of $L$
+strictly below every point of $U$.
+\end{lemma}
+
+\begin{proof}
+Suppose there is such a partition. Let
+$L_A,U_A\subseteq A$ and $L_B,U_B\subseteq B$ be its coordinate projections.
+Every point of $L_A$ is at most every point of $U_A$, and similarly in $B$.
+It follows by antisymmetry that
+\[
+ |L_A\cap U_A|\le1,\qquad |L_B\cap U_B|\le1.
+\]
+Also, $L_A\cup U_A=A$ and $L_B\cup U_B=B$.
+
+If $a\in L_A\setminus U_A$, its entire row $\{a\}\times B$ lies in $L$.
+Therefore there can be no $b\in U_B\setminus L_B$, whose entire column
+would lie in $U$. We have proved
+\[
+ L_A\setminus U_A\ne\varnothing\ \Longrightarrow\ U_B\subseteq L_B.
+\]
+Reversing $L,U$ yields the analogous implication
+$U_A\setminus L_A\ne\varnothing\Rightarrow L_B\subseteq U_B$.
+
+Since $|L|\ge2$, one of its projections has at least two points; exchange
+coordinates if necessary so that $|L_A|\ge2$. Then
+$L_A\setminus U_A\ne\varnothing$, so $U_B\subseteq L_B$, making $U_B$ a
+singleton. Since $|U|\ge2$, we now have $|U_A|\ge2$. Hence
+$U_A\setminus L_A\ne\varnothing$, and $L_B\subseteq U_B$. Consequently
+$B=L_B\cup U_B$ is a singleton, a contradiction.
+\end{proof}
+
+\begin{theorem}[Incomparability graph of a product]\label{thm:productgraph}
+If $|A|,|B|\ge2$, the incomparability graph of $A\times B$ has exactly one
+nontrivial connected component. Its only possible additional components
+are the singleton least element and the singleton greatest element of the
+product, when they exist.
+\end{theorem}
+
+\begin{proof}
+The product is not a chain. If either factor has an incomparable pair,
+fixing the other coordinate gives one in the product. Otherwise take
+$a_0<a_1$ and $b_0<b_1$; then $(a_0,b_1)\perp(a_1,b_0)$.
+Thus there is a nontrivial component $C$.
+
+By Lemma~\ref{lem:components}, all other components are linearly ordered
+below or above $C$. Let $L$ be the union of the components below $C$.
+If $|L|\ge2$, then $L$ and its complement give a forbidden cut from
+Lemma~\ref{lem:cut}, since the complement contains $C$. Thus $|L|\le1$.
+Similarly the union of components above $C$ has at most one point.
+If the lower point exists, it is the least point of the product; if the
+upper point exists, it is the greatest. Conversely a least or greatest
+point is comparable to every point and therefore isolated in the graph.
+\end{proof}
+
+For a nonempty poset $A$, let $b(A),t(A)\in\{0,1\}$ indicate the existence
+of a least and greatest point, respectively.
+
+\begin{corollary}[Finite Cartesian formula]\label{cor:product}
+For finite $A,B$ with $|A|,|B|\ge2$,
+\begin{equation}\label{eq:product}
+ \boxed{\fot(A\times B)=|A||B|-1-b(A)b(B)-t(A)t(B).}
+\end{equation}
+Consequently
+\[
+ \wid(\Mr(A\times B))
+   =\omega^{\,|A||B|-1-b(A)b(B)-t(A)t(B)}.
+\]
+\end{corollary}
+
+\begin{proof}
+The product has a least point exactly when both factors have least points,
+and likewise for greatest points. The graph therefore has
+$1+b(A)b(B)+t(A)t(B)$ components. Apply Theorems~\ref{thm:finite}
+and~\ref{thm:vialard}.
+\end{proof}
+
+If either factor is empty, the product is empty and has friendly order type
+zero. If one factor has one point, the product is isomorphic to the other
+factor. These exceptions must be handled before using \eqref{eq:product}.
+
+\begin{corollary}[Several factors and finite grids]
+For $d\ge2$ finite factors $P_1,\ldots,P_d$, each of size at least two,
+\[
+ \fot\!\left(\prod_{i=1}^dP_i\right)
+ =\prod_{i=1}^d|P_i|-1-\prod_{i=1}^db(P_i)-\prod_{i=1}^dt(P_i).
+\]
+In particular, for $m_i\ge2$,
+\[
+ \fot(\CA_{m_1}\times\cdots\times\CA_{m_d})=\prod_{i=1}^dm_i-3.
+\]
+For the Boolean lattice $\bool_d=\CA_2^d$ with $d\ge2$,
+\[
+ \fot(\bool_d)=2^d-3,\qquad
+ \wid(\Mr(\bool_d))=\omega^{2^d-3}.
+\]
+\end{corollary}
+
+The finite product formula is notably simpler than a general computation
+of ordinary width: away from the empty and singleton exceptions, only
+cardinalities and endpoint indicators are needed. For example,
+$\fot(\CA_2\times\CA_3)=3$ and $\fot(\bool_3)=5$.
+
+\section{Well-ordered sums and a transfinite evaluation theorem}
+
+\subsection{Additivity beyond binary sums}
+
+For an ordinal $\delta$ and wpos $P_i$ ($i<\delta$), their ordinal sum
+$P=\sum_{i<\delta}P_i$ puts every point of an earlier block below every point
+of a later block. Empty blocks are permitted. This sum is a wpo: in an
+infinite bad sequence the block indices would have to be nonincreasing,
+hence eventually constant, giving an infinite bad sequence in one block.
+
+The sums of ordinals below are \emph{ordinary ordinal sums}, not natural
+sums and not commutative sums. Set
+\[
+ S_0=0,\quad S_{i+1}=S_i+\fot(P_i),\quad
+ S_\lambda=\sup_{i<\lambda}S_i\quad(\lambda\text{ a limit}).
+\]
+
+\begin{theorem}[Well-ordered-sum additivity]\label{thm:transfinite}
+For every ordinal $\delta$ and family of wpos $(P_i)_{i<\delta}$,
+\begin{equation}\label{eq:transfinite}
+ \boxed{\fot\!\left(\sum_{i<\delta}P_i\right)
+          =\sum_{i<\delta}\fot(P_i).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We prove the assertion for all such representations simultaneously, by
+transfinite induction on $\mot(P)$, where $P=\sum_{i<\delta}P_i$.
+If $P$ is empty, both sides vanish. A point $x\in P_i$ has an incomparable
+friend in $P$ exactly when it has one in $P_i$. Moreover,
+\begin{equation}\label{eq:sumresidual}
+ \res{P}{x}
+ =\left(\sum_{j<i}P_j\right)+\res{(P_i)}{x}.
+\end{equation}
+Indeed, all later blocks are deleted, all earlier blocks survive, and only
+the upset of $x$ is deleted in its own block.
+
+Equation~\eqref{eq:mot} gives
+$\mot(\res{P}{x})<\mot(P)$, so the induction hypothesis applies to the
+representation on the right of \eqref{eq:sumresidual}. It yields
+\[
+ \fot(\res{P}{x})=S_i+\fot(\res{(P_i)}{x}).
+\]
+Substitution into \eqref{eq:fot} gives
+\begin{align*}
+ \fot(P)
+ &=\sup_{\substack{i<\delta\\x\in P_i,\ (P_i)_{\perp x}\ne\varnothing}}
+     \left(S_i+\fot(\res{(P_i)}{x})+1\right)\\
+ &=\sup_{\substack{i<\delta\\\fot(P_i)>0}}
+     \left(S_i+\fot(P_i)\right).
+\end{align*}
+The second equality uses associativity and continuity of ordinal addition
+in its right argument, together with \eqref{eq:fot} within $P_i$.
+Blocks with friendly order type zero permit no move and contribute no
+increase to the partial sums. The displayed supremum is therefore exactly
+$S_\delta=\sum_{i<\delta}\fot(P_i)$, including the case where all blocks
+have value zero. This completes the induction.
+\end{proof}
+
+The binary case is already a published fact
+\cite[Theorem~5.4.8(1)]{vialard2024}. The proof above records the arbitrary
+well-ordered version and, in particular, makes the limit step explicit.
+No assumption of countability, a computable presentation, or a bound on
+component sizes is imposed.
+
+\subsection{All wpos with finite incomparability components}
+
+\begin{lemma}
+The incomparability components of a wpo, ordered as in
+Lemma~\ref{lem:components}, form a well-order.
+\end{lemma}
+
+\begin{proof}
+Take any nonempty collection of components. The union of their points is
+a nonempty subposet of a wpo, hence has a minimal point $x$. The component
+containing $x$ is least in the collection: a lower component would supply
+a point strictly below $x$. Thus every nonempty collection has a least
+component.
+\end{proof}
+
+\begin{theorem}[Finite-component transfinite formula]\label{thm:finitecomponents}
+Let $P$ be a wpo whose incomparability components are all finite. Enumerate
+them in order as $(C_i)_{i<\delta}$. Then
+\begin{equation}\label{eq:finitecomponents}
+ \boxed{\fot(P)=\sum_{i<\delta}(|C_i|-1),\qquad
+ \wid(\Mr(P))=\omega^{\,\sum_{i<\delta}(|C_i|-1)}.}
+\end{equation}
+More generally, if $P=\sum_{i<\delta}Q_i$ with arbitrary finite blocks, then
+\[
+ \fot(P)=\sum_{i<\delta}\bigl(|Q_i|-\cc(Q_i)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Each $C_i$ has connected incomparability graph, so its friendly order type
+is $|C_i|-1$. Apply Theorem~\ref{thm:transfinite}, followed by
+Theorem~\ref{thm:vialard}. For arbitrary finite blocks apply
+Theorem~\ref{thm:finite} to each block first.
+\end{proof}
+
+This is not the ambiguous expression ``$|P|$ minus the number of
+components'' for an infinite cardinal $|P|$. It is an ordinal sum of
+explicit finite ranks, in the actual order of the components. Its order
+sensitivity is essential.
+
+\subsection{Ordinal examples and realizability}
+
+If $Q$ is finite and $r=\fot(Q)$, then for every ordinal $\alpha$,
+\begin{equation}\label{eq:repeat}
+ \fot\!\left(\sum_{i<\alpha}Q\right)=r\cdot\alpha.
+\end{equation}
+The finite number $r$ is the \emph{left} factor in this ordinary ordinal
+product. For $r=2$ and $\alpha=\omega+3$, the answer is $\omega+6$, not
+$\omega\cdot2+6$.
+
+\begin{example}[A transfinite sum of Boolean lattices]
+Let $Q=\bool_3$, so $r=5$, and take
+$\alpha=\omega^2+\omega\cdot3+5$. Then
+\[
+ \fot\!\left(\sum_{i<\alpha}\bool_3\right)
+   =5\cdot\alpha=\omega^2+\omega\cdot3+25.
+\]
+Its multiset-order width is
+\[
+ \omega^{\omega^2+\omega\cdot3+25}.
+\]
+This base has infinitely many finite incomparability components, including
+the isolated endpoints inside each Boolean-lattice block. They contribute
+zero locally; the connected six-point middle contributes five.
+\end{example}
+
+\begin{corollary}[Every ordinal is a friendly order type]
+For every ordinal $\alpha$, the wpo
+$P_\alpha=\sum_{i<\alpha}\Ant_2$ satisfies
+\[
+ \fot(P_\alpha)=\alpha,\qquad
+ \wid(\Mr(P_\alpha))=\omega^\alpha.
+\]
+\end{corollary}
+
+This applies to uncountable ordinals as well as countable ones. It is an
+existence statement about set-sized orders, not an effective notation system
+for arbitrary ordinals. We regard it as an immediate corollary, not as a
+separate priority claim.
+
+\section{Why the infinite generalization needs more information}
+
+The finite graph formula might suggest two stronger extrapolations: that
+friendly order type is always determined by the abstract incomparability
+graph, or that a connected wpo has maximal order type with a fixed one-point
+correction. Both extrapolations fail. We give direct residual calculations,
+so the examples do not depend on an ordinal-subtraction convention.
+
+For ordinals $\alpha,\beta$, let
+\[
+ g(\alpha,\beta)=\fot(\alpha\sqcup\beta),
+\]
+where each ordinal is regarded as a chain. If either coordinate is zero,
+$g(\alpha,\beta)=0$. If both are positive, every point has a friend in the
+other chain and
+\begin{equation}\label{eq:g}
+ g(\alpha,\beta)=\sup\left(
+  \{g(\xi,\beta)+1:\xi<\alpha\}
+  \cup\{g(\alpha,\eta)+1:\eta<\beta\}\right).
+\end{equation}
+In particular, induction gives
+\begin{align}
+ g(m,n)&=m+n-1 &&(m,n\ge1\text{ finite}),\label{eq:gfinite}\\
+ g(\alpha,1)&=\alpha &&(\alpha>0),\label{eq:gsingle}\\
+ g(\omega,n)&=\omega+(n-1) &&(n\ge1),\label{eq:gomegan}\\
+ g(\omega,\omega)&=\omega\cdot2,\label{eq:gomega}\\
+ g(\omega+1,n)&=\omega+n &&(n\ge1),\label{eq:gomega1n}\\
+ g(\omega+1,\omega)&=\omega\cdot2+1.\label{eq:gomega1omega}
+\end{align}
+Here is the verification of the steps involving limits. For
+\eqref{eq:gomegan}, reducing the infinite coordinate gives finite values
+cofinal in $\omega$, and reducing the finite coordinate gives the successors
+$\omega+1,\ldots,\omega+(n-1)$. For \eqref{eq:gomega}, the values from
+\eqref{eq:gomegan}, followed by $+1$, have supremum $\omega\cdot2$.
+For \eqref{eq:gomega1n}, reducing $\omega+1$ to $\omega$ gives the value
+$\omega+n$, and all other branches are bounded by it. Finally, in
+\eqref{eq:gomega1omega}, reducing the first coordinate to $\omega$ gives
+$g(\omega,\omega)+1=\omega\cdot2+1$, while reducing either coordinate to a
+finite ordinal contributes values with supremum only $\omega\cdot2$.
+
+\begin{proposition}[Abstract graph invariance fails in the infinite case]\label{prop:infinitegraph}
+The countable wpos
+\[
+ X=\omega\sqcup\omega,\qquad Y=(\omega+1)\sqcup\omega
+\]
+have isomorphic incomparability graphs but different friendly order types:
+\[
+ \incg(X)\cong\incg(Y)\cong K_{\aleph_0,\aleph_0},\qquad
+ \fot(X)=\omega\cdot2\ne\omega\cdot2+1=\fot(Y).
+\]
+\end{proposition}
+
+\begin{proof}
+Each side of either disjoint sum is a countably infinite chain; all and only
+cross-chain pairs are incomparable. The graph assertion follows. The rank
+values are \eqref{eq:gomega} and \eqref{eq:gomega1omega}.
+\end{proof}
+
+\begin{proposition}[Connectivity and maximal order type do not suffice]\label{prop:infinitemot}
+Let $Z=(\omega\cdot2)\sqcup1$ and $Y=(\omega+1)\sqcup\omega$.
+Both incomparability graphs are connected, and
+\[
+ \mot(Z)=\mot(Y)=\omega\cdot2+1,
+\]
+but
+\[
+ \fot(Z)=\omega\cdot2,\qquad \fot(Y)=\omega\cdot2+1.
+\]
+\end{proposition}
+
+\begin{proof}
+Connectivity is immediate from the cross-chain edges. The friendly values
+follow from \eqref{eq:gsingle} and \eqref{eq:gomega1omega}.
+For clarity, the maximal-order-type values can also be checked from bad-tree
+ranks. Put $h(\alpha,\beta)=\mot(\alpha\sqcup\beta)$. It has the same
+recursion as \eqref{eq:g}, but boundary values
+$h(\alpha,0)=\alpha$ and $h(0,\beta)=\beta$. Induction gives
+$h(\alpha,1)=\alpha+1$,
+$h(\omega,n)=\omega+n$,
+$h(\omega,\omega)=\omega\cdot2$, and
+$h(\omega+1,n)=\omega+n+1$.
+At $(\omega+1,\omega)$, the branch through $(\omega,\omega)$ contributes
+$\omega\cdot2+1$; the remaining cofinal branches have supremum
+$\omega\cdot2$. Thus $h(\omega+1,\omega)=\omega\cdot2+1$ as claimed.
+\end{proof}
+
+These examples put a precise limit on the proposed method. Decomposition
+into ordered incomparability components still works for every wpo, and
+Theorem~\ref{thm:transfinite} reduces the problem to individual components.
+What fails is the replacement of an arbitrary infinite component by a
+finite-style graph rank or a universal predecessor operation on its maximal
+order type. Its internal well-founded order structure can matter.
+
+\section{Algorithms and reproducible verification}
+
+\subsection{Value computation and witness construction}
+
+If the incomparability graph is supplied as an adjacency list with $n$
+vertices and $m$ edges, graph traversal computes its number of components
+and hence $\fot(P)$ in $O(n+m)$ graph operations. If a full comparison
+matrix is supplied, building the incomparability graph takes $O(n^2)$
+time. If only Hasse-cover relations are supplied, transitive closure must
+be computed first; a straightforward implementation uses $O(n^3)$ time.
+The graph-only value algorithm does not require a particular orientation
+of the comparable pairs, but construction of a legal witness does.
+
+The constructive proof supplies a polynomial-time witness algorithm:
+find the ordered components, build a connected-prefix linear extension in
+each, and read all but the first point of each extension in reverse order,
+starting from the highest component. A direct comparison-matrix
+implementation takes at most $O(n^3)$ time. More careful maintenance of
+minimal candidates improves this bound, but is not needed for the claim.
+
+The reference exact-rank computation is deliberately separate:
+\begin{lstlisting}[language=Python]
+@cache
+def rank(mask):
+    answer = 0
+    for x in vertices(mask):
+        if incomparable[x] & mask:
+            next_mask = mask & ~upset[x]
+            answer = max(answer, 1 + rank(next_mask))
+    return answer
+\end{lstlisting}
+It uses neither connected components nor the proved formula. At most $2^n$
+residual masks are examined, with at most $n$ candidate moves at each mask:
+$O(n2^n)$ bit-mask operations and $O(2^n)$ stored ranks, before accounting
+for the bit length of the masks. This is an exponential audit algorithm,
+not the recommended value algorithm for large finite inputs.
+
+The supplied implementation uses arbitrary-precision integer masks. The
+complexity bounds just stated count graph/comparison operations or abstract
+bit-mask operations; they should not be confused with constant-time bounds
+on arbitrarily large Python integers.
+
+\subsection{Exhaustive finite checks}
+
+A poset on integer labels $0,\ldots,n-1$ is \emph{naturally labelled} here
+when $x<_P y$ implies $x<y$ as integers. The generator adds the largest label
+as a new maximal point, choosing any order ideal of the previous poset as
+its predecessor set. This constructs every naturally labelled relation
+exactly once: deleting the largest label uniquely recovers the earlier
+poset and the chosen ideal.
+
+Every finite poset admits a linear extension, so every isomorphism type has
+at least one naturally labelled representative. The enumeration is not an
+isomorph-free enumeration and is not a count of all arbitrary labellings.
+This distinction is relevant to interpreting the following actual run.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Naturally labelled relations & Exact-rank comparisons & Result \\
+\midrule
+0 & 1 & 1 & pass\\
+1 & 1 & 1 & pass\\
+2 & 2 & 2 & pass\\
+3 & 7 & 7 & pass\\
+4 & 40 & 40 & pass\\
+5 & 357 & 357 & pass\\
+6 & 4,824 & 4,824 & pass\\
+7 & 96,428 & 96,428 & pass\\
+\midrule
+Total & 101,660 & 101,660 & pass\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For every listed relation the audit compared the exact residual rank with
+$n-c$, computed the incidence-matrix rank over $\F_2$, constructed an
+optimal witness, and checked each selected point and friend against the
+actual residual. A further 351 seeded relabelling tests checked that the
+implementation does not accidentally depend on natural labels.
+
+For additional reproducibility, the distributions by friendly order type
+are stored in \path{data/rank_distributions.csv}. For example, at $n=7$
+the numbers with friendly ranks $0,1,\ldots,6$ are
+\[
+ 1,\ 6,\ 30,\ 160,\ 1047,\ 8906,\ 86278,
+\]
+respectively. These are outputs of the supplied enumeration, not asserted
+new integer sequences or independent proof certificates for infinite cases.
+
+\subsection{Product and substitution checks}
+
+The product audit tested all ordered pairs of naturally labelled factors
+of sizes two through five. There are $2+7+40+357=406$ such factor
+relations, giving $406^2=164{,}836$ product cases. For each case it compared
+the directly computed number of product incomparability components with
+Theorem~\ref{thm:productgraph}. The 241 cases with product size at most nine
+were also checked by the independent exact-rank recurrence. The other
+product cases were \emph{graph-structure checks}, not exponential exact-rank
+checks on up to 25 points.
+
+The substitution audit used every naturally labelled index of sizes zero
+through three and every assignment of nonempty naturally labelled fibers
+of sizes one through three. There are ten available nonempty fiber
+relations. The total is
+\[
+ 1+1\cdot10+2\cdot10^2+7\cdot10^3=7{,}211.
+\]
+All 7,211 cases, each with at most nine points, passed both the exact-rank
+comparison and the direct graph-rank comparison.
+
+The recorded run used Python 3.13.5 and completed all audits in about 31
+seconds in the execution environment used for this report. This timing is
+not a portable benchmark or an asymptotic performance claim. Exact counts,
+individual timings, and outputs are in \texttt{data/audit\_results.json}.
+
+\subsection{How to reproduce the package}
+
+The code needs only the Python standard library and is written for Python
+3.10 or later. From the package root run
+\begin{lstlisting}[language=bash]
+python3 code/audit.py --max-n 7 --output data
+\end{lstlisting}
+The check through eight elements is optional and substantially slower:
+\begin{lstlisting}[language=bash]
+python3 code/audit.py --max-n 8 --output data_n8
+\end{lstlisting}
+No eight-element exhaustive run is claimed in this article. The finite
+proof covers all sizes independently of these computations.
+
+A simple library use is
+\begin{lstlisting}[language=Python]
+from friendly_order import chain, cartesian
+
+P = cartesian(chain(2), chain(3))
+assert P.friendly_formula() == 3
+assert P.exact_friendly_rank() == 3
+certificate = P.optimal_witness()
+P.verify_witness(certificate)
+\end{lstlisting}
+Run this with \texttt{code/} on the Python module search path, for example
+from inside that directory. The data file \texttt{examples.json} contains
+explicit upset masks, component extensions, omitted roots, and friend
+certificates for the examples in this article.
+
+\Needspace{9\baselineskip}
+\section{Research status, dependencies, and remaining questions}
+
+\subsection{What has and has not been established}
+
+The finite component theorem is a universal statement with a complete
+constructive proof. The substitution and Cartesian formulas are consequences
+of proved graph-structure lemmas. The well-ordered-sum formula is proved by
+transfinite induction, not extrapolated from finite tests. The countable
+counterexamples are verified by explicit ordinal recurrences.
+
+The multiset-width conclusions have a different dependency: they apply
+Vialard's published Theorem~\ref{thm:vialard}. The present note does not
+replace its general proof. Nor does it solve the broader problem of
+computing friendly order type on arbitrary infinite incomparability-connected
+wpos. The finite-component class is a significant exact domain, but many
+infinite wpos have infinite components and lie outside it.
+
+The relation to other ordinal-invariant work is consistent with the
+perspective of the finitary-powerset paper of Abriola and collaborators,
+which emphasizes that additional invariants or restricted structural classes
+may be needed to regain compositional computation \cite{abriola2024}.
+Here, for finite bases, the additional information is an elementary graph
+component count. In infinite examples even the abstract graph can lose the
+necessary order information.
+
+\subsection{Priority and literature check}
+
+The source audit examined Vialard's published MFCS 2023 paper, the author's
+2024 thesis copy, and the finitary-powerset follow-up. Searches included
+``friendly order type'', ``friendly order type finite posets'', and
+combinations with ``components'' and ``incomparability''. The published
+conclusion and the thesis conclusion explicitly present further study of
+friendly order type as a research direction. No finite component formula
+was located in the materials inspected.
+
+This establishes the provenance of the question and describes the search,
+not a proof of novelty. The formula may occur elsewhere, be known
+informally, or be obtainable from a result not found in that search. The
+appropriate status is \emph{a proved result in this unrefereed manuscript,
+with priority unverified}. The source lookup date was 19 September 2026.
+
+\subsection{Precise directions left by the result}
+
+The reduction to incomparability components suggests a focused remaining
+problem: classify $\fot(C)$ for infinite incomparability-connected wpos $C$.
+Propositions~\ref{prop:infinitegraph} and~\ref{prop:infinitemot} show that both
+the abstract graph and maximal order type alone can be insufficient. A useful
+next invariant would have to retain some interaction between finite
+terminal structure and infinite bad-sequence ranks.
+
+Another concrete question concerns \emph{which} subsets of a finite poset
+can occur as the selected support of an open-ended bad sequence. The rank
+theorem determines the maximum support size and constructs an optimum, but
+does not characterize all feasible supports or identify their family with
+the independent sets of a matroid. Confusing equality of maximal ranks with
+an equality of combinatorial structures would be an unjustified extension.
+
+Finally, efficient incremental witness maintenance can be studied alongside
+Proposition~\ref{prop:insertion}. The numerical rank change under a valid
+one-point insertion is completely determined by the old components met by
+the new point. Updating a particular connected linear extension while
+retaining a short certificate is a more detailed algorithmic question.
+
+\section{Conclusion}
+
+For finite posets, the residual definition of friendly order type conceals a
+simple graph invariant:
+\[
+ \fot(P)=r(\incg(P))=|P|-\cc(P).
+\]
+The upper bound is a forest-rank potential, and the lower bound is a
+connected-prefix linear-extension construction. Their combination gives an
+exact value, an optimal sequence, and a spanning-forest certificate.
+
+This answers the finite structural subproblem of the published program and
+supplies further compositional formulas, notably
+\[
+ \fot(A\times B)=|A||B|-1-b(A)b(B)-t(A)t(B)
+ \quad(|A|,|B|\ge2).
+\]
+Well-ordered additivity extends the evaluation to all wpos with finite
+incomparability components, while explicit infinite examples explain why
+additional structure is needed beyond that class. The reproducible checks
+support the implementation and finite statements; the proofs, not the
+checks, establish the general conclusions.
+
+\appendix
+\section{A compact proof certificate for the finite theorem}
+
+The complete finite theorem can be checked against the following four
+claims, each proved in the body of the article.
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2em,itemsep=0.4em]
+\item A legal move deletes $x$ but not a friend $y$. A spanning forest of
+the residual can be extended by the edge $xy$, so graph rank drops by at
+least one.
+\item Incomparability components are linearly ordered ordinal-sum blocks.
+The direction of comparison with an outside vertex cannot change along an
+incomparability edge.
+\item A connected finite component has a linear extension with connected
+prefixes. Otherwise some nonempty proper ideal would be below every
+remaining point and disconnect the graph.
+\item Reverse each such extension, omit its first point, and process blocks
+from high to low. Every selected point has an earlier-prefix friend. The
+result has exactly one fewer selected point than vertices in each component.
+\end{enumerate}
+The first claim proves the bound $\fot(P)\le|P|-\cc(P)$, and the remaining
+claims produce a witness attaining it. None assumes that every legal move
+preserves connectivity, or that the omitted points must remain in the final
+residual.
+
+\section{Artifact manifest}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.41\textwidth}p{0.51\textwidth}@{}}
+\toprule
+File & Purpose \\
+\midrule
+\texttt{article.tex} & Complete source of this article; bibliography embedded.\\
+\texttt{article.pdf} & Compiled article.\\
+\texttt{README.md} & Build, reproduction, scope, and status instructions.\\
+\texttt{build.sh} & Two-pass PDF build using \texttt{pdflatex}.\\
+\texttt{code/friendly\_order.py} & Validated finite-poset representation, exact rank, graph formula, operations, and witnesses.\\
+\texttt{code/audit.py} & Exhaustive and compositional verification driver.\\
+\texttt{data/audit\_results.json} & Actual audit counts, timings, and pass status.\\
+\texttt{data/audit\_console.txt} & Captured console output of the reported run.\\
+\path{data/rank_distributions.csv} & Counts by size and friendly rank.\\
+\texttt{data/examples.json} & Explicit finite examples and certificates.\\
+\texttt{RESEARCH\_STATUS.md} & Claim/dependency boundary and source audit.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+
+\bibitem{vialard2023}
+Isa Vialard.
+\newblock Ordinal Measures of the Set of Finite Multisets.
+\newblock In \emph{48th International Symposium on Mathematical Foundations
+of Computer Science (MFCS 2023)}, LIPIcs \textbf{272}, article 87,
+87:1--87:15, 2023.
+\newblock DOI: \href{https://doi.org/10.4230/LIPIcs.MFCS.2023.87}
+{10.4230/LIPIcs.MFCS.2023.87}.
+\newblock \url{https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.MFCS.2023.87}.
+\newblock In particular, Definition 3.3, Theorem 3.4, Proposition 4.1, and
+the conclusion. Published version, rather than the early arXiv terminology.
+
+\bibitem{vialard2024}
+Isa Vialard.
+\newblock \emph{Measuring Well Quasi-Orders and Complexity of Verification}.
+\newblock Doctoral thesis, Universit\'e Paris-Saclay, 2024.
+\newblock Author-hosted copy: \url{https://isavialard.github.io/home/mwqo.pdf}.
+\newblock In particular, Sections 5.3--5.4 and the conclusion, printed
+pp.~109--110. The page references here concern this 124-page author copy.
+
+\bibitem{abriola2024}
+Sergio Abriola, Simon Halfon, Aliaume Lopez, Sylvain Schmitz,
+Philippe Schnoebelen, and Isa Vialard.
+\newblock Measuring well-quasi-ordered finitary powersets.
+\newblock arXiv:2312.14587, version 2, 17 July 2024.
+\newblock \url{https://arxiv.org/abs/2312.14587}.
+\newblock Used for research context, not as a dependency of the component
+formula proved here.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,56 @@
+SUGGESTED UPDATE FOR OEIS A381190 — NOT SUBMITTED
+Prepared 19 September 2026. Verify attribution and establish a stable public
+manuscript link before any submission. The conjecture itself is due to Joerg
+Arndt (7 January 2026), as already credited in the sequence record.
+
+FORMULA
+For n >= 3,
+  a(n) = 2*n*(2*A000931(n+1) + A000931(n)).
+Here A000931 uses its OEIS offset 0 (initial values 1,0,0,1,0,1,...).
+
+The currently conjectured generating function follows from this identity.
+The normalization b(n)=a(n)/(2*n) satisfies
+  b(3)=1, b(4)=2, b(5)=3,
+  b(n)=b(n-2)+b(n-3) for n>=6.
+
+REFINED FORMULA
+The number of connected minimal dominating sets of cardinality n-k+2 is
+  2*n*(2*binomial(k-1,n-2*k) + binomial(k-1,n-2*k-1)),
+for ceil(n/3)<=k<=floor(n/2). The two summands distinguish induced trees
+from induced unicyclic graphs with a unique 4-cycle.
+
+COMPACT PROOF
+Write the alternating ring as a_0 b_0 ... a_(n-1) b_(n-1) a_0, with pole N
+joined to every a_i and pole S joined to every b_i. Minimality is among all
+dominating sets, with induced connectivity required additionally.
+
+Both poles already dominate and are disconnected, so a counted set cannot
+contain both. With neither pole, a connected dominating ring subset is a path
+of at least 2n-2>=4 vertices (or the whole ring); an internal selected vertex
+then has no private neighbor. Thus exactly one pole is selected, say N.
+
+At least one b-vertex is needed to dominate S. A selected b needs a selected
+a-neighbor for connectivity, and its only possible private neighbor is S,
+since the a-neighbors are already dominated by N. Hence exactly one b_j is
+selected. Encode selected a_i by x_i=1 and mark edge (j,j+1) of the auxiliary
+n-cycle. Domination and connectivity exclude 00. A selected a_i needs a
+neighboring 0 across an unmarked edge to supply a private b-neighbor. This
+excludes 111 and requires that a marked 11 be the middle of 0110, or a marked
+01/10 be an edge of 010. Conversely these conditions supply private neighbors
+for all selected vertices: S for b_j, appropriate unselected b-vertices for
+the selected a_i, and a zero outside the marked edge for N.
+
+Thus zeros have cyclic gaps 2 or 3. A length-2 gap supplies two eligible
+markers; a length-3 gap supplies one, on its central 11 edge. With pole and
+b_j fixed, remove the marked gap. The remaining gaps form an ordered
+composition of n-2 (two marker orientations) or n-3 (one orientation) into
+2 and 3. If p_m counts these compositions, including p_0=1, the fixed-root
+count is 2p_(n-2)+p_(n-3). There are 2n choices of pole and marker. Since
+p_m=A000931(m+3), the displayed formula follows. The empty remainder handles
+n=3 correctly.
+
+SOURCE AND CHECKS
+The full proof and refinements are in article.tex/article.pdf in the research
+package. Independently checked by graph-based exhaustive enumeration of all
+subsets for n=3..11, including set-level equality and refined counts. Agreement
+with finite data is corroboration, not the basis of the all-n proof.

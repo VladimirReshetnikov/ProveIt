@@ -1,0 +1,1525 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Normal measures hidden in critical-sequence quotients},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Normal traces, Prikry reconstruction, and consistency calibrations},pdfkeywords={ultraexacting, HOD, normal measure, Prikry forcing, Mitchell order, equiconsistency}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION IV}
+\fancyfoot[L]{\small\color{Muted}Normal traces and Prikry reconstruction}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Normal traces and Prikry reconstruction}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\Ult}{\operatorname{Ult}}
+\newcommand{\Meas}{\operatorname{Meas}}
+\newcommand{\NT}{\mathsf{NT}}
+\newcommand{\NTP}{\mathsf{NT}^{+}}
+\newcommand{\normal}{\mathsf{NM}}
+\newcommand{\ODp}{\OD_{\{p\}}}
+\newcommand{\HODp}{\HOD_{\{p\}}}
+\newcommand{\tail}[2]{#1\mathbin{/}#2}
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\seq}[1]{\langle #1\rangle}
+\newcommand{\force}{\Vdash}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION IV}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Normal measures hidden in\\ critical-sequence quotients\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont A Prikry factorization of ultraexacting witnesses\\ and two exact consistency calibrations\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis obtains regularity in parameterized HOD models from
+rigid classes of cofinal $\omega$-sets modulo finite difference. We develop a
+stronger conclusion for a critical-sequence class. At an ultraexacting
+cardinal $\lambda$, one can choose a bijection $b:\lambda\to V_\lambda$ and
+$q=[a]$ so that the canonical eventual-containment trace
+\[
+ U_{b,q}=\{A\in\Pow(\lambda)\cap\HOD_{\{b,q\}}:
+                   a\subseteq^* A\}
+\]
+is a normal measure \emph{inside} $N=\HOD_{\{b,q\}}$, concentrating on the
+cardinals below $\lambda$ that are measurable in $N$. Every representative
+of $q$ is Prikry-generic over $N$ for this measure. Thus the ambient
+singularity of $\lambda$ admits a canonical Prikry subextension with ground
+model agreeing with the ambient universe through $V_\lambda$.
+
+The isolated existence of such a normal trace is equiconsistent with a
+measurable cardinal. Requiring the trace to concentrate on measurables is
+equiconsistent with a cardinal of Mitchell order at least two. The upper
+bounds use a quotient-relative cone-homogeneity argument for ordinary
+Prikry forcing; the lower bounds use the explicitly defined inner model.
+These calibrations concern the trace principles, not ultraexactingness
+itself. Detailed conventional proofs are given, including the required
+Prikry genericity and homogeneity arguments.
+
+\begin{assessment}{The principal advance}
+For a suitable quotient-parameter HOD model, the change is
+\[
+ \text{regularity}\ \longrightarrow\ \text{normal measure}
+ \ \longrightarrow\ \text{Prikry genericity}.
+\]
+A further, independent conclusion identifies the precise consistency
+strength of the two isolated trace principles. No inconsistency of
+$\ZFC+\Izero$ or of ultraexacting cardinals is asserted.
+\end{assessment}
+
+\textbf{Status.} Research manuscript with full English proofs; not
+refereed or formalized in Lean. The new assertions are presented as
+continuations of the supplied synthesis, not as a claim of established
+literature priority. Published inputs and the limits of the conclusions
+are separated explicitly from the arguments developed here.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Statements and their relation to the supplied research}\label{sec:results}
+
+We work in $\ZFC$ unless an inner model is explicitly named. A \emph{normal
+measure on $\kappa$} means a nonprincipal, $\kappa$-complete ultrafilter on
+$\Pow(\kappa)$ with the regressive-function normality property. The words
+``on $\Pow(\kappa)$'' and the completeness quantifier are always evaluated
+in the model under discussion.
+
+For an uncountable cardinal $\lambda$ with $\cf^V(\lambda)=\omega$, set
+\[
+ D_\lambda=\{a\subseteq\lambda:\ot(a)=\omega\text{ and }\sup a=\lambda\},
+ \qquad Q_\lambda=D_\lambda/{=^*},
+\]
+where $a=^*d$ means that $a\triangle d$ is finite. Write $[a]$ for the
+corresponding \emph{set} of representatives. In particular, a parameter
+$q\in Q_\lambda$ is one set parameter; it does not give its individual
+members as freely available parameters.
+
+For a bijection $b:\lambda\to V_\lambda$ and $q\in Q_\lambda$, define
+\begin{align}
+ N_{b,q}&=\HOD_{\{b,q\}}^V,\label{eq:N}\\
+ U_{b,q}&=\{A\in\Pow(\lambda)\cap N_{b,q}:
+                  (\exists a\in q)\ a\subseteq^* A\}.
+                  \label{eq:trace}
+\end{align}
+Here $a\subseteq^* A$ means $a\setminus A$ is finite. The existential
+quantifier in \eqref{eq:trace} can equally well be universal over $q$.
+The fixed-parameter convention and the fact that $N_{b,q}$ satisfies
+Choice are proved in Section~\ref{sec:hod}.
+
+\begin{definition}[The two trace principles]\label{def:NT}
+The assertion $\NT(\lambda,b,q)$ says that $\lambda$ is an uncountable
+cardinal of ambient cofinality $\omega$, that $b:\lambda\to V_\lambda$ is
+a bijection, that $q\in Q_\lambda$, and that
+\[
+ N_{b,q}\models\text{``$U_{b,q}$ is a normal measure on $\lambda$.''}
+\]
+The assertion $\NTP(\lambda,b,q)$ adds
+\[
+ \Meas_\lambda^{N_{b,q}}
+ =\{\alpha<\lambda:N_{b,q}\models\text{``$\alpha$ is measurable''}\}
+ \in U_{b,q}.
+\]
+Let $T_{\NT}$ and $T_{\NTP}$ denote $\ZFC$ together with the existence of
+such a triple for the respective principle.
+\end{definition}
+
+These are first-order assertions after expanding the definable HOD
+predicate and relativizing the finitely many formulas about measures.
+The definition does \emph{not} assert the existence of an ambient normal
+measure on the singular cardinal $\lambda$.
+
+\begin{theorem}[Ultraexacting normal trace]\label{thm:main}
+If $\lambda$ is ultraexacting, there are $b$ and $q$ such that
+$\NTP(\lambda,b,q)$ holds. The class $q$ can be the finite-difference
+class of the critical sequence of an ultraexacting witness at a
+sufficiently correct height. For $N=N_{b,q}$ and $U=U_{b,q}$:
+\begin{enumerate}
+\item $V_\lambda^N=V_\lambda$ and $N$ sees $\lambda$ as measurable, with
+a normal measure concentrating on measurables.
+\item Every $a\in q$, in its increasing enumeration, is
+$\PP_U^N$-generic over $N$.
+\item $N[a]$ is an inner model of $V$ satisfying
+\[
+  V_\lambda^{N[a]}=V_\lambda,
+  \qquad \cf^{N[a]}(\lambda)=\omega.
+\]
+Moreover $N[a]=N[d]$ for every $a,d\in q$.
+\end{enumerate}
+\end{theorem}
+
+The measure construction is proved in Section~\ref{sec:normal}; the
+Prikry conclusions are proved in Section~\ref{sec:prikry}. No assumption
+about iterability of an infinite iteration of the witness is used.
+
+\begin{theorem}[Exact consistency calibrations]\label{thm:calibrations}
+The following equivalences of consistency statements hold:
+\begin{align}
+ \Con(T_{\NT})
+  &\ \longleftrightarrow\
+    \Con(\ZFC+\text{there is a measurable cardinal}),
+       \label{eq:conNT}\\
+ \Con(T_{\NTP})
+  &\ \longleftrightarrow\
+    \Con(\ZFC+\exists\kappa\,o(\kappa)\ge2).
+       \label{eq:conNTplus}
+\end{align}
+In the second line, $o(\kappa)\ge2$ may equivalently be replaced by:
+there is a normal measure on $\kappa$ concentrating on measurable
+cardinals below $\kappa$.
+\end{theorem}
+
+The upper bounds are actual forcing constructions, not appeals to a
+large-cardinal implication diagram. The proofs are in
+Sections~\ref{sec:homogeneity}--\ref{sec:calibration}.
+
+\subsection{What has, and has not, been extended}
+
+The attached \emph{Synthesis} proves that certain $q$ make $\lambda$
+regular in $\HOD_{V_\lambda\cup\{q\}}$ and develops sharp-width results
+for definable sections of $Q_\lambda$ \cite{source-synthesis}. The
+present construction uses a special critical-sequence class and a fixed
+bijection $b$. Its model $\HOD_{\{b,q\}}$ contains the former
+parameter-HOD model: each individual parameter in $V_\lambda$ can be
+recovered from $b$ and an ordinal. This is a stronger conclusion for a
+specified model, but is \emph{not} a claim that every rigid class carries
+the measure in \eqref{eq:trace}.
+
+The three assertions in \eqref{eq:conNT}, \eqref{eq:conNTplus}, and
+``there is an ultraexacting cardinal'' must be kept distinct. The
+published equiconsistency of ultraexactingness with $\Izero$ remains
+unchanged \cite[Theorem~4.5]{abgl}. We isolate consequences of that much
+stronger hypothesis and determine their own exact strengths.
+
+The fixed-witness and canonical-choice methods have precedents in the
+supplied reports and in the work on exacting cardinals. The continuation
+here is the conversion of their eventual behavior into normality, the
+Prikry reconstruction, and the converse quotient-homogeneity
+construction. Classical Prikry facts are identified and re-proved rather
+than counted as new results.
+
+\section{Fixed-parameter HOD and the canonical trace}\label{sec:hod}
+
+\subsection{A necessary parameter convention}
+
+For a fixed finite tuple $p$ of sets, $\ODp$ denotes sets definable from
+$p$ and finitely many ordinal parameters. The tuple may be encoded as
+one set. Define
+\[
+ \HODp=\{x:\tc(\{x\})\subseteq\ODp\}.
+\]
+This differs from allowing \emph{arbitrary members} of a possibly
+unwellorderable set as parameters. All HOD models with braces in this
+paper use only the displayed finite tuple.
+
+\begin{lemma}[Fixed-parameter inner models]\label{lem:hod}
+For every fixed finite tuple $p$, $\HODp$ is a definable transitive inner
+model of $\ZFC$. The class $\ODp$ has a uniformly definable, set-like
+canonical well-order. A set of ordinals is in $\HODp$ if and only if it is
+in $\ODp$.
+\end{lemma}
+
+\begin{proof}
+A definition can be coded by a rank height, a formula number, and a finite
+tuple of ordinal parameters. One uses truth in a set structure
+$V_\theta$ containing $p$, rather than a truth predicate for $V$.
+Reflection identifies the resulting definability notion with ordinal
+definability from $p$. Order the codes first by a bound on their height
+and ordinal entries, and then by a fixed well-order within that bound.
+Assign each definable object its first code. This produces a uniform
+set-like well-order of $\ODp$; in particular every nonempty set of
+$\ODp$ objects has a canonical first member.
+
+The hereditary definition gives transitivity, and all ordinals belong
+to the class. The usual HOD closure argument applies with $p$ held
+fixed. For example, the internal power set of $x\in\HODp$ is
+$\Pow(x)\cap\HODp$. This is definable from $p$ and a definition of $x$;
+its members and all their descendants are in $\ODp$. It therefore
+belongs to $\HODp$. Separation and Replacement follow by relativizing
+a formula to the definable class $\HODp$ and substituting definitions
+for its finitely many parameters. Pairing, Union, Infinity, Foundation,
+and Extensionality are handled in the same way or by transitivity.
+
+Restrict the canonical order to any set in $\HODp$. The resulting
+well-order is itself hereditarily definable from $p$, since its ordered
+pairs are made from hereditarily definable elements. Thus it belongs to
+the model and proves Choice there. Finally, the descendants of a set
+of ordinals, other than the set itself, are ordinals. They are already
+ordinal definable, proving the last assertion.
+\end{proof}
+
+The lemma does not say $p\in\HODp$. For example, $q$ will be definable
+from itself but will have no representative in the inner model. Its
+failure of hereditary definability is essential.
+
+\begin{lemma}[A rank-bijection supplies the lower universe]\label{lem:b-rank}
+Suppose $b:\lambda\to V_\lambda$ is a bijection and $q$ is any set. Then
+$N=\HOD_{\{b,q\}}$ contains every member of $V_\lambda$,
+$V_\lambda^N=V_\lambda$, and $b\in N$.
+\end{lemma}
+
+\begin{proof}
+For $x\in V_\lambda$, choose the ordinal $\xi<\lambda$ with $b(\xi)=x$.
+Then $x$ is definable from $b$ and $\xi$. Every member of its transitive
+closure also lies in $V_\lambda$ and has the same kind of definition.
+Consequently $x\in N$. Ranks of sets in transitive inner models are
+absolute, so this proves the equality of rank segments. The set $b$
+itself is definable from the displayed parameters. Its graph elements
+and all their descendants are in $V_\lambda$ when $\lambda$ is a limit
+cardinal, as in all applications here. Hence $b\in N$. More generally,
+the same conclusion follows directly by hereditary definability of
+ordered pairs of ordinals and values of $b$.
+\end{proof}
+
+\begin{lemma}[The trace is an internal set]\label{lem:trace-set}
+For a triple as in Definition~\ref{def:NT}, without assuming normality,
+$U_{b,q}\in N_{b,q}$. It is a proper filter on $\Pow(\lambda)^{N_{b,q}}$
+containing every final segment of $\lambda$.
+\end{lemma}
+
+\begin{proof}
+Finite modification does not change eventual containment, so the
+condition in \eqref{eq:trace} is independent of the representative.
+The set $U_{b,q}$ is definable from $b,q$ and $\lambda$, because
+$N_{b,q}$ is a definable class. Every member $A$ is in $N_{b,q}$ and
+hence is hereditarily definable from $b,q$. This shows that the trace
+itself is hereditarily definable and belongs to $N_{b,q}$.
+
+The empty set does not eventually contain a cofinal $\omega$-set. The
+whole cardinal does. Eventual containment is upward closed and is
+preserved by intersections of two sets, giving the filter properties.
+An increasing $\omega$-sequence cofinal in $\lambda$ has only finitely
+many terms below any fixed $\beta<\lambda$: otherwise all its terms
+would occur below $\beta$, contradicting cofinality. Thus every final
+segment belongs to the trace.
+\end{proof}
+
+Normality is a substantial additional assertion. An arbitrary cofinal
+sequence can alternate between a definable set and its complement, so
+Lemma~\ref{lem:trace-set} alone does not even give an ultrafilter.
+
+\Needspace{9\baselineskip}
+\section{Correct heights, critical sequences, and fixed parameters}\label{sec:fixed}
+
+\subsection{The exact amount of reflection needed}
+
+The notions originate in \cite{abl}. We use the following form of the
+definition from \cite[Section~2]{abgl}. At an ultraexacting $\lambda$, for arbitrarily
+high prescribed sufficiently correct cardinal heights $\zeta$, there
+are
+\begin{equation}\label{eq:witness}
+ X\prec V_\zeta,\qquad V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j:X\longrightarrow V_\zeta
+\end{equation}
+with $j(\lambda)=\lambda$, $\crit(j)<\lambda$, and
+$e=j\restr V_\lambda\in X$. Here $e:V_\lambda\to V_\lambda$ is
+elementary. We choose the height \emph{before} choosing this witness.
+
+\begin{lemma}[Uniform canonical-counterexample principle]\label{lem:least}
+Fix finitely many first-order counterexample predicates, with a finite
+parameter tuple $p$ and a cardinal parameter $\lambda$. Assume their
+candidate objects have rank below $\lambda+\omega$. There is a finite
+reflection requirement on $V_\zeta$, uniform in $p$, with the following
+consequence. If \eqref{eq:witness} holds, $p\in X$, and $j(p)=p$, then
+any nonempty class of $\ODp$ candidates for one of these predicates has
+a candidate $x\in X$ with $j(x)=x$.
+\end{lemma}
+
+\begin{proof}
+For each predicate, write a single formula saying that $x$ is its
+canonical $\ODp$-least counterexample. Definability and the canonical
+order in Lemma~\ref{lem:hod} are first-order definable uniformly in
+$p$. The finitely many resulting formulas, their subformulas needed for
+reflection, and existence and uniqueness of the selected object form a
+finite list. Choose a cardinal $\zeta>\lambda+\omega$ at which they are
+correct for all parameters in $V_\zeta$. Equivalently, membership in
+$C^{(m)}$ for one sufficiently large fixed finite $m$ suffices. Such
+heights are supplied by L\'evy reflection.
+
+If counterexamples exist in $V$, their canonical first member $x$ has
+the stipulated bounded rank, so $x\in V_\zeta$. Correctness says that
+$V_\zeta$ selects exactly this same $x$. Because $p,\lambda\in X$ and
+$X\prec V_\zeta$, the unique selected object belongs to $X$.
+Elementarity of $j$, together with $j(p)=p$ and $j(\lambda)=\lambda$,
+says that $j(x)$ is the same unique object of $V_\zeta$. Thus $j(x)=x$.
+\end{proof}
+
+There is no assumption that the ordinal parameters in an arbitrary
+$\ODp$ definition are fixed by $j$. Such an assumption would be false.
+The canonical least object is fixed because it is uniquely definable
+from the \emph{fixed tuple}, not because its original defining code is
+pointwise fixed. Uniform reflection also avoids choosing a height only
+after the witness has supplied $b$ and $q$.
+
+\subsection{The critical sequence and its lower-rank measures}
+
+\begin{lemma}[Critical sequence facts]\label{lem:critical}
+For a witness \eqref{eq:witness} let
+\[
+ \kappa=\crit(j)=\crit(e),\qquad
+ \kappa_n=e^n(\kappa),\qquad a=\{\kappa_n:n<\omega\}.
+\]
+Then every $\kappa_n$ is measurable in $V$,
+$\sup_{n<\omega}\kappa_n=\lambda$, and $\lambda$ is a strong limit
+cardinal of cofinality $\omega$. The enumeration of $a$ and the set $a$
+are in $X$, and
+\[
+ j(a)=a\setminus\{\kappa\}.
+\]
+Consequently $q=[a]\in X$ and $j(q)=q$.
+\end{lemma}
+
+\begin{proof}
+First recall the derived-measure argument. Set
+\[
+ U_0=\{A\subseteq\kappa:\kappa\in e(A)\}.
+\]
+All relevant subsets, functions, and sequences below $\kappa$ have
+rank below $\lambda$, so $e$ acts on them. It follows immediately from
+complements and finite intersections that $U_0$ is an ultrafilter.
+Every singleton is null, since ordinals below $\kappa$ are fixed. If
+$\mu<\kappa$ and $\seq{A_i:i<\mu}$ consists of members of $U_0$, then
+$e$ fixes the index set and sends its intersection to the intersection
+of the images. Thus $\kappa$ belongs to that image and the intersection
+lies in $U_0$.
+
+For a regressive $f:S\to\kappa$ with $S\in U_0$, we have
+$e(f)(\kappa)=\beta<\kappa$. The ordinal $\beta$ is fixed, so
+$\kappa\in e(\{\alpha\in S:f(\alpha)=\beta\})$. This proves normality.
+The critical point is uncountable, since finite ordinals and $\omega$
+are fixed. Hence $U_0$ witnesses measurability. The statement that it is
+a normal measure is absolute between $V_\lambda$ and $V$, all its
+quantifiers ranging over sets of bounded rank here. Applying $e^n$ to
+$U_0$ therefore gives a normal measure on $\kappa_n$ in $V$.
+
+We use the classical rank form of Kunen's inconsistency: there is no
+nontrivial elementary self-embedding of $V_{\delta+2}$ in $\ZFC$
+\cite{kunen}. If $\delta=\sup_n\kappa_n<\lambda$, the critical sequence
+has bounded rank in $V_\lambda$, and $e(\delta)=\delta$. Restricting
+$e$ to $V_{\delta+2}$ would give just such a forbidden embedding. Thus
+$\delta=\lambda$. Measurable cardinals are strongly inaccessible, so
+$\lambda$ is a countable increasing limit of strong limits and is itself
+strong limit. For completeness, regularity of a measurable follows by
+ruling out a partition into fewer than $\kappa$ bounded null sets;
+strong limit follows by taking a purported injection
+$\kappa\to\Pow(\theta)$ for $\theta<\kappa$ and intersecting the
+measure-one decisions of all $\theta$ membership coordinates. The
+resulting measure-one fiber would have at most one element.
+
+The recursion defining $\seq{\kappa_n:n<\omega}$ is a set recursion in
+$V_\zeta$ from $e$. Since $e\in X$, elementarity places its unique
+value in $X$. A function with domain $\omega$ is mapped pointwise by
+$j$, and $j(\kappa_n)=e(\kappa_n)=\kappa_{n+1}$. This proves the stated
+formula for $j(a)$. Forming the finite-difference class is definable
+from $a,\lambda$, and is correctly computed at this height. Deleting
+one element does not change the class, so $q\in X$ is fixed.
+\end{proof}
+
+Only the explicitly stated classical Kunen theorem is imported in this
+argument. No assertion about an iterable direct limit of the iterates
+of $e$ is required.
+
+\begin{lemma}[A fixed bijection]\label{lem:fixed-b}
+The witness in Lemma~\ref{lem:critical} supplies a bijection
+$b:\lambda\to V_\lambda$ with $b\in X$ and $j(b)=b$.
+\end{lemma}
+
+\begin{proof}
+As $\kappa$ is inaccessible, choose a bijection
+$b_0:\kappa\to V_\kappa$. Its rank is below $\lambda$, so
+$b_0\in V_\lambda\subseteq X$. Define
+\[
+ b_n=e^n(b_0):\kappa_n\longrightarrow V_{\kappa_n}.
+\]
+Every ordinal below $\kappa$ and every member of $V_\kappa$ is fixed by
+$e$. Therefore $b_0\subseteq e(b_0)$. Applying $e$ repeatedly gives
+$b_n\subseteq b_{n+1}$. Consequently
+\[
+ b=\bigcup_{n<\omega} b_n
+\]
+is a bijection from $\lambda$ to $V_\lambda$.
+
+The sequence of the $b_n$ is uniquely obtained by recursion from $e$
+and $b_0$, both in $X$, so the sequence and its union belong to $X$.
+Each $b_n\in V_\lambda$, hence $j(b_n)=e(b_n)=b_{n+1}$. Mapping the
+countable sequence pointwise and taking unions gives
+\[
+ j(b)=\bigcup_{n<\omega} b_{n+1}=b.
+\]
+This is the bijection version of the fixed-well-order device also used
+in \cite[Proposition~3.9]{abgl} and in the supplied synthesis.
+\end{proof}
+
+\section{From eventual decisions to a normal measure}\label{sec:normal}
+
+Fix the height in Lemma~\ref{lem:least} for the two predicates used
+below, then choose the ultraexacting witness and its $a,q,b$. Write
+$p=(b,q)$, $N=\HODp$, and $U=U_{b,q}$. Every parameter in $p$ is fixed
+by $j$.
+
+\begin{lemma}[Eventual decisions]\label{lem:decisions}
+For every $A\subseteq\lambda$ in $\ODp$, either $a\subseteq^* A$ or
+$a\subseteq^*(\lambda\setminus A)$.
+\end{lemma}
+
+\begin{proof}
+Suppose otherwise. A counterexample is an $\ODp$ subset of $\lambda$
+that splits a representative of $q$ into two infinite pieces. This
+property is independent of the representative, is first-order in
+$p,\lambda$, and has candidates of bounded rank. By
+Lemma~\ref{lem:least} there is such a counterexample $A_0\in X$ with
+$j(A_0)=A_0$.
+
+For every $n<\omega$, elementarity gives
+\[
+ \kappa_n\in A_0\quad\Longleftrightarrow\quad
+ j(\kappa_n)=\kappa_{n+1}\in j(A_0)=A_0.
+\]
+Membership in $A_0$ is therefore constant along the entire critical
+sequence. Thus either $a\subseteq A_0$ or $a\cap A_0=\varnothing$,
+contradicting the choice of $A_0$.
+\end{proof}
+
+\begin{lemma}[Eventual pressing down]\label{lem:press}
+Let $f\in\ODp$ have domain $S\subseteq\lambda\setminus\{0\}$ and
+satisfy $f(\alpha)<\alpha$ for $\alpha\in S$. If $a\subseteq^*S$, then
+$f$ is eventually constant along $a$.
+\end{lemma}
+
+\begin{proof}
+Failure is again a first-order counterexample predicate in $p,\lambda$:
+the graph is a set of ordinal pairs of rank below $\lambda+\omega$;
+its domain eventually contains a representative of $q$; and there is
+no ordinal $\beta$ with that representative eventually contained in the
+fiber $f^{-1}\{\beta\}$. Select a canonical counterexample $f_0\in X$
+with $j(f_0)=f_0$ by Lemma~\ref{lem:least}.
+
+The set $S_0=\dom(f_0)$ is fixed. Membership of $\kappa_n$ in $S_0$ is
+constant in $n$ by the same calculation as in
+Lemma~\ref{lem:decisions}. Since membership holds eventually, it holds
+for every $n$, including $n=0$. Put $\beta=f_0(\kappa)$. Regressiveness
+gives $\beta<\kappa$, so $j(\beta)=\beta$. Elementarity of function
+evaluation now yields, successively,
+\[
+ f_0(\kappa_{n+1})=j\bigl(f_0(\kappa_n)\bigr)=\beta.
+\]
+The function is constant on all of $a$, a contradiction.
+\end{proof}
+
+\begin{proposition}[Internal normality and completeness]\label{prop:normal}
+The set $U$ belongs to $N$ and $N$ regards it as a normal measure on
+$\lambda$.
+\end{proposition}
+
+\begin{proof}
+Membership $U\in N$ and the proper filter properties were proved in
+Lemma~\ref{lem:trace-set}. Every $A\in\Pow(\lambda)^N$ is in $\ODp$,
+so Lemma~\ref{lem:decisions} decides it or its complement. These two
+alternatives cannot both occur, because $a$ is infinite. Thus $U$ is an
+ultrafilter on the full internal power set. It contains all final
+segments and no singleton, so it is nonprincipal.
+
+If $S\in U$ and $f\in N$ is regressive on $S\setminus\{0\}$, then
+$f\in\ODp$ and $a\subseteq^* S$. Lemma~\ref{lem:press} gives an
+ordinal $\beta$ such that $a\subseteq^* f^{-1}\{\beta\}$. The fiber is
+in $N$ and in $U$. This is the regressive-function normality property
+for \emph{all} such $f$ in $N$.
+
+We verify $\lambda$-completeness rather than presupposing it. Let
+$\seq{A_i:i<\mu}\in N$, where $\mu<\lambda$ and each $A_i\in U$.
+Its intersection belongs to $N$. Suppose the intersection were not in
+$U$. The ultrafilter property would put its complement in $U$. After
+intersecting with the final segment above $\mu$, obtain $B\in U$ and
+define in $N$
+\[
+ f(\alpha)=\min\{i<\mu:\alpha\notin A_i\}\qquad(\alpha\in B).
+\]
+This is regressive. Normality gives an $i<\mu$ whose fiber is in $U$.
+But that fiber is disjoint from $A_i\in U$, contradicting the proper
+filter property. The case $\mu=0$ is immediate. This proves
+completeness for every sequence of length less than $\lambda$ that
+belongs to $N$.
+\end{proof}
+
+\begin{proposition}[Concentration on measurables]\label{prop:concentration}
+For $M_\lambda=\Meas_\lambda^N$, we have $a\subseteq M_\lambda$ and
+$M_\lambda\in U$. In particular $\NTP(\lambda,b,q)$ holds.
+\end{proposition}
+
+\begin{proof}
+The model $N$ contains $V_\lambda$ by Lemma~\ref{lem:b-rank}. For each
+$n$, the normal measure on $\kappa_n$ obtained in
+Lemma~\ref{lem:critical} has rank below $\lambda$, and hence belongs to
+$N$. All subsets of $\kappa_n$ and all functions needed to test its
+normality and completeness also have rank below $\lambda$. Thus the
+same measure witnesses measurability in $N$.
+
+The set $M_\lambda$ is defined by Separation inside $N$ and consists of
+ordinals, so it is an eligible argument of the trace. It contains every
+term of $a$, proving $M_\lambda\in U$ directly from the definition.
+Together with Proposition~\ref{prop:normal}, this establishes the
+measure part of Theorem~\ref{thm:main}.
+\end{proof}
+
+\begin{assessment}{Where the additional strength enters}
+Eventual decisions give an ultrafilter. Eventual pressing down gives
+normality. A regressive ``least failed coordinate'' then supplies
+internal $\lambda$-completeness. Merely knowing that $\lambda$ is
+regular in a parameterized HOD model would not supply any of these
+three steps.
+\end{assessment}
+
+\section{Prikry reconstruction, with the genericity proof}\label{sec:prikry}
+
+The results in this section about normal measures and Prikry forcing are
+classical. The genericity criterion is due to Mathias \cite{mathias};
+see also the formulation in \cite{merimovich}. We include proofs because
+the fact that our inner model need not be countable makes a mere
+``meet its dense sets one by one'' argument inappropriate.
+
+\subsection{The forcing and finite-stem diagonal intersections}
+
+Temporarily work inside a transitive model $M\models\ZFC$ with a normal
+measure $W$ on $\kappa$. A condition in $\PP_W$ is a pair $(s,A)$, where
+$s$ is a finite increasing sequence of ordinals below $\kappa$,
+$A\in W$, and every element of $A$ exceeds every entry of $s$. Empty
+stems are allowed. The order is
+\[
+ (t,B)\le(s,A)
+ \quad\Longleftrightarrow\quad
+ \begin{cases}
+  s\text{ is an initial segment of }t,\\
+  \text{all new entries of }t\text{ lie in }A,\\
+  B\subseteq A.
+ \end{cases}
+\]
+A direct extension, written $\le^*$, has the same stem. For a finite
+sequence $t$, write $A/t$ for the elements of $A$ above every entry of
+$t$; thus $A/\varnothing=A$.
+
+\begin{lemma}[Diagonalization over finite stems]\label{lem:diag}
+If $\seq{A_s:s\in[\kappa]^{<\omega}}\in M$ and each $A_s\in W$, then
+\[
+ \Delta_{\fin} A_s
+ =\{\beta<\kappa:(\forall s\in[\beta]^{<\omega})\ \beta\in A_s\}
+ \in W.
+\]
+Finite subsets and their increasing enumerations are identified here.
+\end{lemma}
+
+\begin{proof}
+All choices and functions in this proof are taken in $M$. Suppose the
+complement were in $W$. Intersect it with $A_\varnothing$ and with
+$\kappa\setminus\{0\}$. For each remaining $\beta$, choose a nonempty
+finite $s_\beta\subseteq\beta$ with $\beta\notin A_{s_\beta}$. The
+function $\beta\mapsto\max(s_\beta)$ is regressive. Normality makes it
+constant, with value $\gamma$, on a set in $W$.
+
+There are fewer than $\kappa$ finite subsets of $\gamma+1$. By
+$\kappa$-completeness and the ultrafilter property, on a further set in
+$W$ the whole finite set $s_\beta$ has a constant value $s$. That set
+is disjoint from $A_s\in W$, a contradiction. The intersection with
+$A_\varnothing$ also accounts for the empty-stem case.
+\end{proof}
+
+\begin{lemma}[Finite homogeneity]\label{lem:ramsey}
+For every $n<\omega$, every $\rho<\kappa$, and every coloring
+$h:[\kappa]^n\to\rho$ in $M$, there is $H\in W$ homogeneous for $h$.
+\end{lemma}
+
+\begin{proof}
+For $n=0$ there is only one input. For $n=1$, a partition into fewer
+than $\kappa$ color classes has exactly one class in $W$. Suppose the
+result holds for $n$, and consider a coloring of $(n+1)$-element sets.
+For each $s\in[\kappa]^n$, there is a color $i_s<\rho$ such that
+\[
+ B_s=\{\beta>\max s:h(s\cup\{\beta\})=i_s\}\in W.
+\]
+For $n=0$ the maximum restriction is omitted. Existence of $i_s$ again
+uses $\kappa$-completeness. Apply the induction hypothesis to the
+coloring $s\mapsto i_s$ and obtain a homogeneous $H_0\in W$.
+Intersect $H_0$ with the finite-stem diagonal intersection of the $B_s$
+(assign $\kappa$ to unused stem lengths). On the resulting set $H$,
+every increasing $(n+1)$-tuple has its last entry in the appropriate
+$B_s$ and its first $n$ entries in $H_0$. Its color is therefore the
+single color fixed by the induction hypothesis.
+\end{proof}
+
+\begin{lemma}[Strong Prikry lemma]\label{lem:strong-prikry}
+If $D\in M$ is dense open in $\PP_W$ and $(s,A_0)$ is a condition,
+there are $A\subseteq A_0$ in $W$ and $n<\omega$ such that
+\[
+ (s\concat t,A/t)\in D\qquad\text{for every }t\in[A]^n.
+\]
+\end{lemma}
+
+\begin{proof}
+For every finite increasing $t$ from $A_0$, color $t$ good if there
+exists $B\in W$ such that $(s\concat t,B)\in D$, and bad otherwise.
+For each length separately, Lemma~\ref{lem:ramsey} makes this coloring
+constant on a set in $W$. Intersect these countably many sets with
+$A_0$. Since $\kappa$ is uncountable and $W$ is $\kappa$-complete,
+the result $H$ still belongs to $W$.
+
+By density, some $(s\concat t,B)\le(s,H)$ belongs to $D$. Thus the
+homogeneous color at length $n=|t|$ is good. For each $u\in[H]^n$
+choose a witness $B_u\in W$ with $(s\concat u,B_u)\in D$.
+Apply Lemma~\ref{lem:diag} to these reservoirs, assigning $\kappa$ to
+all unused stems, and let $A$ be the intersection of that diagonal set
+with $H$. If $u\in[A]^n$ and $\beta\in A/u$, then
+$u\subseteq\beta$, so $\beta\in B_u$. Hence $A/u\subseteq B_u$.
+The condition $(s\concat u,A/u)$ extends the chosen condition in $D$,
+and belongs to $D$ because $D$ is open. This includes $n=0$, using the
+empty-stem reservoir in the diagonal intersection.
+\end{proof}
+
+\subsection{Mathias's criterion without a countability hypothesis}
+
+Let $c=\seq{c_n:n<\omega}$ be strictly increasing and cofinal in
+$\kappa$ in an outer universe containing $M$. Every finite initial
+segment of $c$ belongs to $M$, since it is a finite sequence of
+ordinals. Put
+\begin{equation}\label{eq:Gc}
+ G_c=\{(s,A)\in\PP_W^M:s\text{ is an initial segment of }c
+          \text{ and all remaining entries of }c\text{ lie in }A\}.
+\end{equation}
+
+\begin{theorem}[Mathias genericity criterion]\label{thm:mathias}
+The filter $G_c$ is $M$-generic if and only if
+\begin{equation}\label{eq:Mathias}
+  (\forall A\in W)\ (\exists k<\omega)\ (\forall n\ge k)\ c_n\in A.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+First, $G_c$ is a filter whenever \eqref{eq:Mathias} holds. It is
+upward closed in the forcing order. For two conditions in it, their
+stems are comparable initial segments of $c$. Take the longer stem
+and intersect the two reservoirs above that stem. The intersection
+belongs to $W$, contains the remaining tail of $c$, and gives a common
+extension in $G_c$. Nonemptiness is immediate, for example from the
+empty stem with reservoir $\kappa$.
+
+Assume \eqref{eq:Mathias}, and fix a dense open $D\in M$. For every
+finite stem $s$, apply Lemma~\ref{lem:strong-prikry} below the condition
+with stem $s$ and full reservoir above it. By Choice in $M$, choose
+simultaneously reservoirs $A_s\in W$ and integers $n_s$ such that all
+$n_s$-point stem extensions from $A_s$, with their residual reservoir,
+belong to $D$. Form $A=\Delta_{\fin} A_s\in W$ in $M$.
+
+Choose $k$ so that $c_n\in A$ for all $n\ge k$, and set
+$s=c\restr k$. For $n\ge k$, every entry of $s$ is less than $c_n$;
+therefore $c_n\in A_s$ by the definition of the diagonal set. Let $t$
+be the next $n_s$ entries of $c$. The strong Prikry conclusion gives
+\[
+ (s\concat t,A_s/t)\in D.
+\]
+All the still later entries of $c$ lie in this reservoir, so the
+condition belongs to $G_c$. This proves $G_c\cap D\ne\varnothing$.
+No enumeration of the dense subsets of the forcing was used.
+
+Conversely, for any $A\in W$, conditions whose reservoirs are subsets
+of $A$ form a dense set: intersect the current reservoir with $A$.
+A generic filter meets that set. Beyond the corresponding stem, every
+entry of its Prikry sequence is in $A$. This proves
+\eqref{eq:Mathias}.
+\end{proof}
+
+\begin{corollary}[The Prikry subextension of a trace]\label{cor:factor}
+Suppose $\NT(\lambda,b,q)$ holds, and write $N=N_{b,q}$,
+$U=U_{b,q}$. Then every representative $a\in q$ is Prikry-generic over
+$N$. The model $N[a]$ satisfies $\ZFC$, lies inside $V$, has
+$V_\lambda^{N[a]}=V_\lambda$, and sees $\cf(\lambda)=\omega$.
+For $a,d\in q$, $N[a]=N[d]$.
+\end{corollary}
+
+\begin{proof}
+By definition of the trace, the increasing enumeration of $a$ is
+eventually in every member of $U$. Apply Theorem~\ref{thm:mathias}
+inside $N$, with this external sequence. Evaluation of $N$-names by the
+filter \eqref{eq:Gc} takes place in $V$, giving a forcing extension
+$N[a]\subseteq V$ satisfying $\ZFC$. It contains a cofinal increasing
+$\omega$-sequence in $\lambda$.
+
+The lower rank equality follows especially directly here:
+$V_\lambda\subseteq N\subseteq N[a]\subseteq V$. Transitivity and
+rank absoluteness give equality at height $\lambda$.
+
+If $a=^*d$, their finite symmetric difference is a finite set of
+ordinals, and so belongs to $N$. The operation of taking symmetric
+difference shows $d\in N[a]$ and $a\in N[d]$. These mutual
+containments imply equality of the two forcing extensions.
+\end{proof}
+
+This completes Theorem~\ref{thm:main}. It is useful to write $W_{b,q}$
+for the common model $N_{b,q}[a]$, $a\in q$. This notation names a
+Prikry subextension, not a claim that the full ambient universe is
+$W_{b,q}$.
+
+\subsection{Preservation facts needed for the converse construction}
+
+We record the remaining classical facts with their proofs so that the
+upper consistency bounds do not hide a preservation assumption.
+
+\begin{proposition}[Prikry property and no bounded subsets]\label{prop:prikry-property}
+Every sentence in the forcing language is decided by a direct
+extension of any given condition. Consequently $\PP_W$ adds no new
+subsets of any ordinal below $\kappa$.
+\end{proposition}
+
+\begin{proof}
+Apply the strong Prikry lemma to the dense open set of conditions
+deciding a fixed sentence $\varphi$. It gives $(s,A)$ and a length $n$
+such that every canonical $n$-point stem extension decides
+$\varphi$. Color these $n$-element stems by their two possible
+decisions. Lemma~\ref{lem:ramsey} gives $B\subseteq A$ in $W$ on which
+the decision is constant. Any condition below $(s,B)$ can be extended
+to have at least $n$ new stem entries. It then extends one of the
+canonical deciding conditions, and so makes the constant decision.
+The conditions making that decision are dense below $(s,B)$; hence
+$(s,B)$ itself decides $\varphi$. Its stem is still $s$.
+
+Now let $\dot x$ be a name forced to be a subset of $\alpha<\kappa$.
+Starting from any condition, use direct extensions to decide
+$\xi\in\dot x$ successively for all $\xi<\alpha$. At limit stages,
+intersect the previous reservoirs. There are fewer than $\kappa$
+stages, so $\kappa$-completeness gives a reservoir in $W$, while the
+stem never changes. The final direct extension decides all of
+$\dot x$ as one ground-model subset of $\alpha$. Such conditions are
+dense, so every generic extension has no new bounded subsets of
+$\kappa$.
+\end{proof}
+
+\begin{proposition}[Cardinals and the lower rank segment]\label{prop:preservation}
+If $G$ is $\PP_W$-generic over $M$, then in $M[G]$ all cardinals of
+$M$ remain cardinals,
+\[
+ \cf(\kappa)=\omega,
+ \qquad V_\kappa^{M[G]}=V_\kappa^M.
+\]
+\end{proposition}
+
+\begin{proof}
+The union of generic stems is increasing. Dense sets requiring a longer
+stem make its order type $\omega$, and dense sets requiring an entry
+above any specified $\beta<\kappa$ make it cofinal.
+
+The no-bounded-subsets result preserves cardinals below $\kappa$:
+a new collapse between two smaller ordinals could be coded by a new
+subset of an ordinal below $\kappa$, using a ground-model pairing
+bijection. The cardinal $\kappa$ itself remains a cardinal because it
+was a limit of smaller cardinals, all still cardinals. A collapse of
+$\kappa$ to an ordinal of size below it would also collapse one of
+those intervening cardinals.
+
+There are $\kappa$ possible finite stems, and two conditions with the
+same stem are compatible by intersecting their reservoirs. Thus the
+forcing is $\kappa^+$-cc. The usual antichain argument preserves all
+cardinals at least $\kappa^+$: for a name for a function with a given
+domain, each argument has at most $\kappa$ possible ordinal values.
+A domain of ground-model cardinality $\nu$ can therefore cover at
+most $\nu\cdot\kappa$ possible values, which cannot be a larger ground
+cardinal.
+
+Finally, $\kappa$ is inaccessible in $M$. Induct on $\alpha<\kappa$.
+Assume the two models have the same $V_\alpha$. A ground-model
+bijection of this set with an ordinal below $\kappa$ codes any of its
+subsets by a bounded subset of $\kappa$. There are no new such codes,
+so the models have the same $V_{\alpha+1}$. The limit step is union.
+This proves equality at $\kappa$ as well.
+\end{proof}
+
+\section{Quotient-relative homogeneity and realization of traces}\label{sec:homogeneity}
+
+We now reverse the construction. Start in a model $M\models\ZFC$ with
+a normal measure $W$ on a measurable $\kappa$. Let $G$ be generic for
+$\PP_W^M$, let $c$ be its increasing Prikry sequence, and work in
+\[
+ V^*=M[G],\qquad q=[\ran(c)].
+\]
+Choose in $M$ a bijection $b:\kappa\to V_\kappa^M$. This remains a
+bijection onto $V_\kappa^{V^*}$ by Proposition~\ref{prop:preservation}.
+The quotient $q$ in this section is computed in the extension $V^*$.
+
+\subsection{Stem replacement fixes the quotient, not the sequence}
+
+\begin{lemma}[Isomorphic cones with the same quotient]\label{lem:cones}
+For any two conditions $(s,A)$ and $(t,B)$ there are direct extensions
+$(s,C)$ and $(t,C)$ whose cones are isomorphic by
+\[
+ (s\concat u,D)\longmapsto(t\concat u,D).
+\]
+This isomorphism fixes ground-model parameters and preserves the
+canonical name for the finite-difference class of the Prikry sequence.
+\end{lemma}
+
+\begin{proof}
+Let $C=A\cap B$ restricted above every entry of $s$ and $t$. It belongs
+to $W$. An extension below $(s,C)$ consists exactly of a finite new
+stem $u$ from $C$ and a reservoir $D\subseteq C$ above the whole new
+stem; replacing the old prefix $s$ by $t$ gives precisely an extension
+below $(t,C)$. The inverse replaces $t$ by $s$, and the order is
+preserved.
+
+Paired generics for these cones give sequences $s\concat d$ and
+$t\concat d$ with the same infinite tail $d$. Their ranges differ
+by a finite set. They also generate the same extension of $M$: either
+sequence is recovered from the other by replacing a ground-model
+finite prefix. In this common extension the two finite-difference
+classes are literally the same set. Thus, under the induced
+translation of names, the names for $q$ are forced equal. Check-names
+for ground-model sets, including $b$ and all ordinal parameters, are
+fixed in the usual sense of cone isomorphisms.
+
+This argument is a forcing-name argument and does not require actual
+generics over the entire ambient universe. One can equivalently carry
+it out in the Boolean completions of the two cones.
+\end{proof}
+
+\begin{lemma}[HOD containment despite the generic parameter]\label{lem:hod-ground}
+In $V^*$,
+\[
+ K=\HOD_{\{b,q\}}^{V^*}\subseteq M.
+\]
+\end{lemma}
+
+\begin{proof}
+First consider any sentence with parameters $\check b$, the canonical
+name $\dot q$, and check-names for ordinal parameters. It cannot be
+forced true by one condition and false by another: shrink to the
+isomorphic cones from Lemma~\ref{lem:cones}; their isomorphism preserves
+the sentence and would carry a forcing of truth to a forcing of truth
+below a condition forcing falsity. Since deciding conditions are dense,
+the top condition decides every such sentence.
+
+Suppose $x\subseteq\theta$ is ordinal definable from $b,q$ in $V^*$.
+Fix a defining formula and its finite ordinal parameter tuple. For
+each $\alpha<\theta$, the assertion that $\alpha$ belongs to the uniquely
+defined set is a sentence of the preceding form. In $M$, use the
+forcing relation to collect exactly the $\alpha$ for which the top
+condition forces this assertion. Separation in $M$ produces a set
+$x_0\subseteq\theta$, and the truth lemma shows $x=x_0$. Thus every
+$\OD_{\{b,q\}}^{V^*}$ set of ordinals belongs to $M$.
+
+To pass from sets of ordinals to hereditary definability, let $x\in K$.
+In $V^*$, put the canonical $\OD_{\{b,q\}}$ order on $\tc(\{x\})$
+and enumerate it in that order by an ordinal $\eta$. Code the membership
+relation of this enumeration as a relation $E$ on $\eta$, and code $E$
+as a set of ordinals using a fixed ordinal-pair coding. The code is
+ordinal definable from $b,q$, so by the preceding paragraph $E\in M$.
+It is well-founded and extensional. The well-foundedness witnessed in
+$V^*$ implies the well-foundedness that $M$ needs to perform its
+Mostowski collapse. The collapse is absolute and unique, and its value
+at the ordinal corresponding to $x$ is $x$. Hence $x\in M$.
+\end{proof}
+
+The hereditary qualification is indispensable. The generic quotient
+$q$ is itself definable from $q$, but it does not follow that $q\in M$.
+The argument establishes containment for HOD, not for the entire class
+of ordinal-definable objects from the quotient parameter.
+
+\subsection{The old measure is recovered on the new inner power set}
+
+\begin{theorem}[Prikry realization of a normal trace]\label{thm:realization}
+In the above extension $V^*$, the triple $(\kappa,b,q)$ satisfies
+$\NT$. For $K=\HOD_{\{b,q\}}^{V^*}$ its canonical trace is
+\begin{equation}\label{eq:restriction}
+ U_{b,q}=W\cap\Pow(\kappa)^K.
+\end{equation}
+If $W$ concentrates in $M$ on measurable cardinals below $\kappa$,
+then $(\kappa,b,q)$ satisfies $\NTP$ in $V^*$.
+\end{theorem}
+
+\begin{proof}
+The ambient cardinal and cofinality conditions follow from
+Proposition~\ref{prop:preservation}. Lemma~\ref{lem:b-rank} gives
+$V_\kappa^{V^*}\subseteq K$, whereas Lemma~\ref{lem:hod-ground} gives
+$K\subseteq M$. In particular these models agree on $V_\kappa$.
+
+For any $A\in\Pow(\kappa)^K$, we have $A\in M$. If $A\in W$, the
+Prikry sequence is eventually in $A$, by genericity and the reservoir
+density argument. If $A\notin W$, its complement belongs to $W$, so
+the sequence is eventually outside $A$. Therefore
+\[
+ \ran(c)\subseteq^* A\quad\Longleftrightarrow\quad A\in W.
+\]
+This proves \eqref{eq:restriction}. Independently of that equality,
+Lemma~\ref{lem:trace-set} puts the left side, as a set, inside $K$.
+This is important: it is not being assumed that the original measure
+$W$ itself belongs to $K$.
+
+The right side of \eqref{eq:restriction} is a normal measure in $K$.
+Indeed, a sequence in $K$ of length $\mu<\kappa$ of its members is a
+sequence in $M$ of members of $W$. Its intersection belongs to $W$ by
+completeness in $M$, and belongs to $K$ by the axioms of $K$, so it
+belongs to the restricted measure. A regressive function in $K$ is
+also in $M$. Normality of $W$ produces a constant fiber in $W$; its
+ordinal value and the fiber belong to $K$, so normality holds for the
+restriction. The ultrafilter and nonprincipal properties follow at
+once from those of $W$ and equality of complements. Hence $\NT$ holds.
+
+Finally, measurability of a cardinal $\alpha<\kappa$ is absolute among
+$K,M,V^*$, because their $V_\kappa$ segments agree. Every measure
+witness on $\alpha$, every subset of $\alpha$, and every sequence or
+regressive function used to test it has rank below $\kappa$. Thus
+\[
+ \Meas_\kappa^K=\Meas_\kappa^M.
+\]
+If the latter set belongs to $W$, then it belongs to the trace by
+\eqref{eq:restriction}. This proves $\NTP$.
+\end{proof}
+
+\begin{remark}[No definability assumption on the ground measure]
+The construction works with an arbitrary normal measure in $M$.
+We did not require $M=\HOD$, $W$ ordinal definable, or a definable
+well-order of the whole universe. The ground-model bijection $b$ gives
+all lower-rank objects to $K$, and the quotient $q$ defines the
+restriction of $W$ to $K$.
+\end{remark}
+
+\section{The two equiconsistency theorems}\label{sec:calibration}
+
+\subsection{Concentration and Mitchell height two}
+
+For normal measures $W_0,W_1$ on $\kappa$, write
+\[
+ W_0\mathrel{\triangleleft}W_1
+ \quad\Longleftrightarrow\quad W_0\in\Ult(V,W_1),
+\]
+where the ultrapower is identified with its transitive collapse. The
+two-step form of ``$o(\kappa)\ge2$'' is the existence of
+$W_0\triangleleft W_1$. This explicit formulation suffices throughout
+and avoids any need for higher Mitchell-rank calculations.
+
+\begin{lemma}[The concentration criterion]\label{lem:Mitchell}
+For a normal measure $W$ on $\kappa$ in a universe of $\ZFC$, the
+following are equivalent:
+\begin{enumerate}
+\item $\{\alpha<\kappa:\alpha\text{ is measurable}\}\in W$.
+\item There is a normal measure $W_0$ on $\kappa$ with
+$W_0\in\Ult(V,W)$.
+\end{enumerate}
+Thus existence of a measure as in (1) is equivalent to existence of a
+cardinal of Mitchell order at least two.
+\end{lemma}
+
+\begin{proof}
+Let $i:V\to M_W$ be the normal ultrapower. Normality gives
+$[\id]_W=\kappa$: every ordinal predecessor represented by a regressive
+function is equal modulo $W$ to a constant below $\kappa$. By \L o\'s's
+theorem,
+\begin{equation}\label{eq:LosMeas}
+ \{\alpha<\kappa:\alpha\text{ is measurable}\}\in W
+ \quad\Longleftrightarrow\quad
+ M_W\models\text{``$\kappa$ is measurable.''}
+\end{equation}
+
+We verify that a normal measure witnessing the right side is also a
+normal measure in the original universe. For every $A\subseteq\kappa$
+in $V$,
+\[
+ A=i(A)\cap\kappa\in M_W.
+\]
+Consequently $M_W$ and $V$ have exactly the same subsets of $\kappa$.
+They also have the same relations on $\kappa$ and the same sequences of
+subsets of $\kappa$ of length at most $\kappa$: such a relation or
+sequence is coded by a subset of $\kappa\times\kappa$, and a pairing
+bijection in $M_W$ converts that code to a subset of $\kappa$.
+
+If $M_W$ has a normal measure $W_0$ on $\kappa$, it therefore measures
+all the ambient subsets, not a smaller power set. Every ambient
+regressive function and every sequence of fewer than $\kappa$
+measure-one sets used in testing normality or completeness is already
+in $M_W$. The internal verification of these properties is thus an
+ambient verification. This proves (1)$\Rightarrow$(2).
+
+Conversely, if an ambient normal measure $W_0$ belongs to $M_W$, then
+it is a normal measure there as well: the power sets agree, and the
+internal tests are among the ambient tests. Hence the right side of
+\eqref{eq:LosMeas} holds, proving (2)$\Rightarrow$(1).
+\end{proof}
+
+When this lemma is used in $N_{b,q}$, \emph{every occurrence of the
+universe and ultrapower in it is interpreted in $N_{b,q}$}. It does not
+turn the trace into a measure on the full ambient power set.
+
+\subsection{Measurable strength for the basic trace}
+
+\begin{proof}[Proof of \eqref{eq:conNT}]
+For the lower bound, a model of $T_{\NT}$ has the explicitly definable
+inner model $N_{b,q}$. By Lemma~\ref{lem:hod} this model satisfies
+$\ZFC$, and the defining property of $\NT$ supplies its measurable
+cardinal $\lambda$. Therefore consistency of $T_{\NT}$ implies
+consistency of $\ZFC$ with a measurable cardinal.
+
+For the upper bound, start with $\ZFC$ and a measurable $\kappa$,
+choose a normal measure $W$, and force with $\PP_W$. Choose a
+ground-model bijection $b:\kappa\to V_\kappa$ and let $q$ be the
+finite-difference class of the generic sequence. Theorem~\ref{thm:realization}
+proves that the extension satisfies $\NT(\kappa,b,q)$. Hence
+consistency of the measurable-cardinal theory implies consistency of
+$T_{\NT}$.
+\end{proof}
+
+\begin{corollary}[The stronger clause is not automatic for a trace]
+The construction of Theorem~\ref{thm:realization} can be performed at
+the first measurable cardinal of its ground model. At that particular
+$\kappa$, $K=\HOD_{\{b,q\}}$ regards $\kappa$ as its first measurable
+cardinal. Thus its trace is normal but does not concentrate on
+measurables below $\kappa$.
+\end{corollary}
+
+\begin{proof}
+The models $K$ and the ground agree below $\kappa$. No smaller
+cardinal has a measure in the ground, and hence none does in $K$.
+The canonical trace makes $\kappa$ measurable in $K$. The set of
+smaller measurables is therefore empty and is not in the trace.
+\end{proof}
+
+This is a statement about the constructed triple. It is not a claim
+that the entire resulting universe has no other possible $\NTP$
+triple, which would require an additional global argument.
+
+\subsection{Mitchell height two for the strengthened trace}
+
+\begin{proof}[Proof of \eqref{eq:conNTplus}]
+For the lower bound, a model of $T_{\NTP}$ has the inner model
+$N_{b,q}\models\ZFC$ with a normal measure on $\lambda$ concentrating
+on its measurable cardinals. Apply Lemma~\ref{lem:Mitchell} inside
+that model. It sees $o(\lambda)\ge2$, establishing the required
+consistency implication.
+
+For the upper bound, assume there are normal measures
+$W_0\triangleleft W_1$ on $\kappa$. By Lemma~\ref{lem:Mitchell},
+$W_1$ concentrates on measurables below $\kappa$. Force with
+$\PP_{W_1}$, choose the bijection $b$ in the ground, and form the
+generic quotient $q$ in the extension. The last clause of
+Theorem~\ref{thm:realization} gives $\NTP(\kappa,b,q)$ there.
+\end{proof}
+
+\subsection{Why these are ordinary consistency statements}
+
+The model notation in the forcing proofs is the customary way to
+present a relative consistency argument; it does not add the
+hypothesis that a countable transitive model exists. The lower bounds
+are uniform inner-model interpretations. For each axiom of $\ZFC$,
+its relativization to the fixed-parameter HOD predicate is provable in
+$\ZFC$, uniformly in the parameters. The measure assertions likewise
+relativize by explicit first-order formulas.
+
+For the upper bounds, $\ZFC$ with the stated measure hypothesis proves
+that the appropriate set forcing forces every axiom of $\ZFC$ and the
+respective first-order trace assertion. The forcing theorem, or its
+Boolean-valued presentation, converts these proofs into the ordinary
+syntactic relative consistency implication. Consequently
+\eqref{eq:conNT} and \eqref{eq:conNTplus} concern $\Con(T)$, not the
+stronger assertion $\Con(\text{there is a transitive model of }T)$.
+
+\section{The HOD boundary and conditional incompatibilities}\label{sec:boundary}
+
+\subsection{Eliminating the rank-bijection parameter}
+
+Suppose the additional boundary condition $V_\lambda\subseteq\HOD^V$
+holds. For $q\in Q_\lambda$ put
+\[
+ N_q^0=\HOD_{\{q\}}^V,\qquad
+ U_q^0=\{A\in\Pow(\lambda)\cap N_q^0:
+                      (\exists a\in q)\ a\subseteq^* A\}.
+\]
+The superscript $0$ distinguishes this model from the synthesis's
+$\HOD_{V_\lambda\cup\{q\}}$ and from $N_{b,q}$.
+
+\begin{theorem}[A quotient-only normal measure at the boundary]\label{thm:boundary}
+Assume $\lambda$ is ultraexacting and $V_\lambda\subseteq\HOD^V$.
+There is a critical-sequence class $q$ such that $N_q^0$ satisfies
+$\ZFC$, has $V_\lambda^{N_q^0}=V_\lambda$, and regards $U_q^0$ as a
+normal measure on $\lambda$ concentrating on measurables. Every
+representative of $q$ is Prikry-generic over $N_q^0$ for $U_q^0$, and
+all give the same Prikry subextension of $V$.
+\end{theorem}
+
+\begin{proof}
+Repeat the height choice and critical-sequence construction, now using
+only $p=q$ in the two counterexample predicates of
+Lemmas~\ref{lem:decisions} and~\ref{lem:press}. The quotient is still
+fixed by $j$. Those two proofs use no property of $b$ beyond its being
+a fixed parameter, so they give eventual decisions and eventual
+pressing down for all $\OD_{\{q\}}$ subsets and functions.
+
+Lemma~\ref{lem:hod} gives $\ZFC$ for $N_q^0$. The boundary condition
+supplies $V_\lambda\subseteq\HOD\subseteq N_q^0$, replacing the use
+of Lemma~\ref{lem:b-rank}. The proof of Proposition~\ref{prop:normal}
+therefore gives the normal measure, and the lower-rank measures on the
+critical points give concentration as in
+Proposition~\ref{prop:concentration}. Apply the Mathias criterion and
+the finite-modification argument in Corollary~\ref{cor:factor} to
+obtain all the remaining conclusions.
+\end{proof}
+
+\begin{corollary}[An enhanced I0-equiconsistent boundary package]\label{cor:boundary-con}
+The following theory is equiconsistent with $\ZFC+\Izero$:
+there is an ultraexacting $\lambda$ with $V_\lambda\subseteq\HOD$,
+no exacting cardinal below $\lambda$, and a quotient-only normal
+trace and Prikry subextension as in Theorem~\ref{thm:boundary}.
+\end{corollary}
+
+\begin{proof}
+The published results \cite[Theorem~4.5, Proposition~3.9 and
+Corollary~3.10]{abgl} supply, relative to $\Izero$, an ultraexacting
+cardinal in a model with the displayed HOD boundary and no smaller
+exacting cardinal. Theorem~\ref{thm:boundary} supplies the new normal
+trace and Prikry clauses in that same model. Conversely, the stated
+theory includes an ultraexacting cardinal, so its consistency implies
+consistency of $\Izero$ by the published equiconsistency theorem.
+\end{proof}
+
+Unlike Theorem~\ref{thm:calibrations}, this last equiconsistency
+\emph{inherits} its two large-cardinal bounds from the literature. Its
+new content is the stronger structural conclusion in the boundary
+model, not a new comparison between $\Izero$ and ultraexactingness.
+
+\subsection{A precise conditional inconsistency}
+
+\begin{corollary}[Low-measure HOD hypotheses are incompatible with
+ultraexactingness]\label{cor:incompatibility}
+There is no ultraexacting $\lambda$ satisfying the following additional
+hypothesis:
+\begin{quote}
+For every bijection $b:\lambda\to V_\lambda$ and every $q\in Q_\lambda$,
+$\HOD_{\{b,q\}}$ has no normal measure on $\lambda$ concentrating on
+its measurable cardinals below $\lambda$.
+\end{quote}
+Equivalently, one may require all these models to have internal
+$o(\lambda)\le1$ (with $o(\lambda)=0$ when there is no normal measure). At the HOD boundary, it suffices to quantify over
+$\HOD_{\{q\}}$, without $b$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:main} contradicts the displayed hypothesis at its
+specific pair $(b,q)$; Lemma~\ref{lem:Mitchell}, interpreted internally,
+gives the equivalent Mitchell-order formulation. Under the boundary
+condition, use Theorem~\ref{thm:boundary} instead.
+\end{proof}
+
+This is an explicit additional hypothesis about parameterized inner
+models. It is not a theorem that this hypothesis holds in $\ZFC$, nor
+an inconsistency of a standard large-cardinal axiom by itself. The
+converse forcing constructions show why normal traces cannot be
+rejected simply because their supporting sequences are countable in
+the ambient universe.
+
+\section{Internal completeness, omitted information, and proof audit}\label{sec:audit}
+
+\subsection{The external countable intersection that does fail}
+
+\begin{proposition}[Exactly where ambient completeness fails]\label{prop:external}
+In the conclusion of Theorem~\ref{thm:main}, set
+\[
+ B_n=\lambda\setminus(\kappa_n+1)\qquad(n<\omega).
+\]
+Then every $B_n\in U_{b,q}$ but $\bigcap_{n<\omega}B_n=\varnothing$ in
+$V$. The sequence $\seq{B_n:n<\omega}$ does not belong to $N_{b,q}$.
+Moreover $q\notin N_{b,q}$ and $q\cap N_{b,q}=\varnothing$.
+\end{proposition}
+
+\begin{proof}
+Every $B_n$ is a final segment, belongs to the inner model by its
+ordinal definition, and eventually contains the critical sequence.
+The intersection is empty because that sequence is cofinal in
+$\lambda$. If the sequence of these sets were in $N_{b,q}$, internal
+countable completeness would put the empty intersection in the
+measure, contradicting propriety. Thus the sequence itself is missing
+from the inner model.
+
+Inside $N_{b,q}$, the cardinal $\lambda$ is measurable and therefore
+regular. A representative $d\in q\cap N_{b,q}$ would have order type
+$\omega$ and supremum $\lambda$ there as well: its increasing
+enumeration and order type are absolute between the transitive models.
+That would contradict regularity. Hence there is no such
+representative. If $q$ itself belonged to the transitive model, so
+would all of its members, which is impossible.
+\end{proof}
+
+There are two separate restrictions on the trace. Its domain is the
+\emph{internal} power set $\Pow(\lambda)^{N_{b,q}}$, and its
+completeness applies to sequences \emph{in} that model. Neither can
+be replaced by its ambient version. In particular, the trace cannot
+be inserted as an ambient complete ultrafilter into the HCD arguments
+of the supplied completeness-barrier analysis.
+
+The parameter $q$ can define the measure without belonging to the
+hereditarily definable model. This is not a conflict with the HOD
+construction: $U$ has only hereditarily definable descendants, whereas
+$q$ has non-hereditarily-definable representatives among its members.
+
+\subsection{A ground-model restriction, not a ground-model identification}
+
+\begin{proposition}[A small chain-condition presentation is impossible]
+For $N=N_{b,q}$ as in Theorem~\ref{thm:main}, $V$ is not a forcing
+extension of $N$ by a forcing that is $\lambda$-cc in $N$.
+\end{proposition}
+
+\begin{proof}
+Suppose such a forcing supplied a countable cofinal sequence in
+$\lambda$. For each coordinate, choose in $N$ a maximal antichain
+deciding its value. Each antichain has cardinality less than $\lambda$
+in $N$. Their countable union has size less than $\lambda$ in $N$,
+since $N$ regards $\lambda$ as regular uncountable. The set of all
+possible values is therefore bounded below $\lambda$ in $N$, and the
+same ordinal bound holds in $V$, a contradiction.
+\end{proof}
+
+This is the familiar regularity obstruction, now applied to the
+normal-trace model. Our positive construction only proves
+$N\subseteq N[a]\subseteq V$. It gives no forcing presentation of
+$V$ over $N$ or over $N[a]$. Ordinary Prikry forcing is
+$\lambda^+$-cc, not $\lambda$-cc, so the positive and negative
+statements are compatible.
+
+\subsection{Dependency and failure-mode audit}
+
+\begin{longtable}{@{}p{.245\textwidth}p{.70\textwidth}@{}}
+\toprule
+\textbf{Step} & \textbf{What is used, and what is not assumed}\\
+\midrule
+\endhead
+Correct height & A finite list of first-order predicates is reflected
+uniformly in the later parameters. No full truth predicate for $V$ or
+post hoc choice of a height for a previously fixed witness is used.\\[4pt]
+Fixed objects & $e\in X$ puts the critical recursion and the union of
+iterated bijections in $X$. Arbitrary elements of $X$ are not assumed
+fixed.\\[4pt]
+Canonical choice & A least $\OD_p$ counterexample is uniquely definable
+from the fixed tuple. The ordinal parameters in its original
+definition need not be fixed.\\[4pt]
+Normality & The value of a fixed regressive function at the actual
+critical point is below that point and hence fixed. This argument does
+not apply to arbitrary orbit roots.\\[4pt]
+Completeness & The least-failed-coordinate function is formed from a
+sequence that belongs to the inner model. External sequences are
+excluded, as Proposition~\ref{prop:external} demonstrates.\\[4pt]
+Prikry genericity & The normal-measure diagonalization meets any one
+inner-model dense set. No countability of the inner model is assumed.\\[4pt]
+Homogeneity & Stem replacement preserves the entire finite-difference
+class. It does not preserve a distinguished generic representative.\\[4pt]
+Restriction of measure & The ground measure need not be in the HOD
+model. Its restriction is there because it equals the canonically
+definable trace.\\[4pt]
+Mitchell order & The two-step calculation is performed in the named
+universe. In the ultraexacting application it is an internal
+$N_{b,q}$ calculation.\\[4pt]
+Consistency & The two trace calibrations use inner-model
+interpretations and set forcing. They do not use a transitive-model
+existence hypothesis.\\[4pt]
+Formal verification & No new Lean proof or Lean compilation is claimed.
+The supplied Lean files were reference material, not a certificate for
+the new normality or forcing arguments.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Questions that genuinely remain after this continuation}
+
+The work does not settle whether ordinary exactingness rules out thin
+definable complete sections, whether more than $\lambda$ rigid classes
+must exist, or whether a cover-exacting cardinal can consistently lie
+above a strongly compact cardinal. In particular, the external failure
+of completeness prevents using the present measure as a shortcut
+through the last question.
+
+A focused new question is whether every rigid quotient class admits
+\emph{some} canonical normal or extender trace, perhaps after a
+change of the quotient presentation. The proof here does not establish
+this: eventual pressing down uses the first point of the critical
+sequence and its position below the critical point's image. Rigidity
+alone records cardinalities of definable families and does not encode
+that regressive-function calculation.
+
+Another concrete question is whether the Prikry subextension
+$W_{b,q}$ can be characterized without the chosen fixed bijection $b$
+away from the HOD boundary. The boundary theorem removes $b$ under a
+specific hypothesis, but no independence-of-$b$ theorem is proved in
+the general case. These questions retain the structural information
+exposed by the normal trace rather than trying to infer an ambient
+measure on a singular cardinal.
+
+\newpage
+\section{Concluding perspective}
+
+The critical sequence has two simultaneous interpretations. In $V$ it
+is a countable cofinal sequence through a singular strong limit. In
+its fixed-parameter HOD model, its finite-difference class determines
+which internal subsets are eventually accepted, and the embedding
+forces this acceptance rule to be a normal measure. Mathias's criterion
+then identifies the same sequence as Prikry-generic over that model.
+
+The converse construction explains the exact strength of the isolated
+phenomenon. Finite stem changes are invisible to the quotient
+parameter, so parameter-HOD stays inside a measurable ground model.
+The generic quotient nevertheless reconstructs the old measure on the
+inner power set. Adding concentration on measurables raises this
+isolated consistency strength from a measurable cardinal to Mitchell
+height two, and no further for the stated principle.
+
+Thus the new conclusion is not an ambient contradiction. It is an
+explicit normal-measure/Prikry structure beneath the ambient
+singularity, together with two exact consistency calibrations and a
+sharper conditional obstruction to uniformly low-measure
+parameterized HOD models.
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{6pt}
+
+\bibitem{source-synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Second edition, 18 September 2026. Supplied in
+\nolinkurl{Cardinals3.zip}, file
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex}.
+Especially Section~12, ``Sections of the cofinal quotient.''
+
+\bibitem{source-plan}
+\emph{Large cardinals at the inconsistency frontier: a unified
+assessment of ZFC-compatible hypotheses, their obstructions, and the
+evidence on both sides}.
+18 September 2026. Supplied in \nolinkurl{Cardinals3.zip}, file
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex}.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 2025.
+Definitions and height equivalences in Section~2;
+Proposition~3.9, Corollary~3.10, and Theorem~4.5.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 2025.
+
+\bibitem{kunen}
+K.~Kunen. Elementary embeddings and infinitary combinatorics.
+\emph{Journal of Symbolic Logic} \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{mathias}
+A.~R.~D.~Mathias. On sequences generic in the sense of Prikry.
+\emph{Journal of the Australian Mathematical Society}
+\textbf{15} (1973), 409--414.
+\doi{10.1017/S1446788700028755}.
+
+\bibitem{merimovich}
+C.~Merimovich. \emph{Mathias like criterion for the extender based
+Prikry forcing}. Author manuscript dated 12 October 2020.
+The introduction recalls the classical criterion used here.
+\url{https://www.carmimerimovich.net/publications/2021-Mathias_like_criterion_for_the_extender_based_Prikry_forcing.pdf}.
+
+\end{thebibliography}
+\end{document}

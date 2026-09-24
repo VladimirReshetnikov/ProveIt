@@ -1,0 +1,1305 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{15354B}
+\definecolor{Accent}{HTML}{246878}
+\definecolor{Pale}{HTML}{F1F6F8}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+  pdftitle={An Explicit Formula for the Minimal e-Monotone Infinitary Ordinal Sum},
+  pdfauthor={Research note prepared with ChatGPT},
+  pdfsubject={A proposed solution to Lipparini's Problem 6.2}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{The minimal $e$-monotone ordinal sum}}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.3em}
+\setcounter{tocdepth}{2}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\On}{\mathrm{On}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\ns}{\mathbin{\#}}
+\newcommand{\nprod}{\mathbin{\otimes}}
+\newcommand{\bigns}{\mathop{\#}\displaylimits}
+\newcommand{\OpN}{\mathcal N}
+\newcommand{\OpS}{\mathcal S}
+\newcommand{\FunA}{\mathsf A}
+\newcommand{\FunB}{\mathsf B}
+\newcommand{\FunC}{\mathsf C}
+\newcommand{\FunU}{\mathsf U}
+\newcommand{\dd}[2]{d(#1,#2)}
+\newcommand{\tail}{\varepsilon}
+\newcommand{\prof}{\operatorname{prof}}
+\newcommand{\cseq}[1]{\mathbf c_{#1}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\emptyheads}{\varnothing}
+\newcommand{\eord}{\mathrel{\prec_e}}
+\newtcolorbox{resultbox}[1][]{colback=Pale,colframe=Accent,boxrule=0.5pt,
+  arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt,#1}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+  frame=single,rulecolor=\color{Accent},breaklines=true,showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{10mm}
+{\color{Accent}\large\textsc{Ordinal arithmetic \& order-theoretic ranks}\par}
+\vspace{9mm}
+{\color{Ink}\LARGE\bfseries An Explicit Formula for the Minimal\\[3pt]
+\boldmath$e$-Monotone Infinitary Ordinal Sum\par}
+\vspace{6mm}
+{\large A proposed solution to Lipparini's Problem 6.2\par}
+\vspace{9mm}
+{Research note prepared with ChatGPT\par}
+{19 September 2026\par}
+\vspace{11mm}
+\begin{abstract}
+For a countable sequence of ordinals $x=(\alpha_i)_{i<\omega}$, let
+$\tail(x)$ be the least threshold at or above which only finitely many entries
+occur. Consider the least ordinal-valued operation that is weakly monotone
+coordinatewise and strictly increases whenever an increased coordinate reaches
+$\tail(x)$. We give a three-case, finite Cantor-normal-form formula for this
+operation. It depends only on the threshold and the finite multiset of
+exceptional entries at or above it.
+
+The proof separates an arithmetic upper bound from a rank-theoretic lower
+bound. The key upper-bound lemma controls changes of threshold; the lower
+bound uses a published minimality theorem for Lipparini's weaker operation,
+together with finite-product ranks. We also identify the operation as the
+rank of countable ordinal multisets under injective domination. Its difference
+from the weaker operation is classified exactly: a finite increment, a natural
+summand $\omega$, or zero. Consequences include the height of the domination
+poset on countable multisets with bounded entries and an exact finite-cap
+analogue. A dependency-free Python implementation and 734,869 counted symbolic
+and finite-poset checks accompany the article.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Research status.} This is an unrefereed proposed solution, with a complete
+conventional argument relative to one explicitly cited published theorem.
+It has not been independently refereed or formalized in a proof assistant.
+The computations test the formula and its lemmas; they do not establish the
+transfinite theorem or priority.
+\end{resultbox}
+\end{titlepage}
+
+{\small\setlength{\parskip}{0pt}
+\tableofcontents}
+\newpage
+
+\section{The problem and the principal formula}\label{sec:main}
+
+\subsection{A specific open question}
+Lipparini's 2026 article introduces a least infinitary operation with
+strengthened monotonicity, denoted there by $\#^N$, but leaves its explicit
+construction open. Problem 6.2 in the extended version dated 30 April 2026
+asks for an explicit definition and a study of that operation
+\cite[Problem 6.2; Theorem 2.6.a(A)]{Lipparini2026extended}.
+We write it as $\OpN$. The journal counterpart is \cite{Lipparini2026published}.
+
+The present note proposes such a definition. The task is not to manufacture
+one monotone upper bound: many upper bounds are possible. The essential point
+is to prove \emph{pointwise minimality}. Sections~\ref{sec:upper}
+and~\ref{sec:lower} prove the two inequalities separately. The source input for
+the lower inequality is isolated in \cref{prop:importedS}; the remainder of the
+argument is supplied here.
+
+The April 2026 version is the latest version located in the searches made for
+this note. This establishes the provenance of the question, not the absence
+of every possible later or unpublished solution. The present formula's
+priority has not been independently certified.
+
+\subsection{The threshold and the monotonicity requirement}
+All ordinals are allowed; the sequences, but not necessarily their entries,
+are countable. We work in ZFC. For $x=(\alpha_i)_{i<\omega}$ define
+\begin{equation}\label{eq:cut}
+ \tail(x)=\min\{e\in\On: \{i<\omega:\alpha_i\ge e\}\text{ is finite}\}.
+\end{equation}
+This is always a positive ordinal. Put
+\begin{equation}\label{eq:exceptions}
+ E(x)=\{i<\omega:\alpha_i\ge\tail(x)\}.
+\end{equation}
+The set of indices $E(x)$ is finite. We retain the \emph{multiplicities} of its
+values: three exceptional entries equal to $a$ contribute three summands,
+not one.
+
+Write $x\le y$ for coordinatewise comparison. An operation $F$ is
+\emph{admissible} when, for all $x=(\alpha_i)$ and $y=(\beta_i)$,
+\begin{align}
+ x\le y&\ \Longrightarrow\ F(x)\le F(y), \label{eq:weak}\\
+ x\le y,\quad \exists j\bigl(\alpha_j<\beta_j\text{ and }
+           \tail(x)\le\beta_j\bigr)
+ &\ \Longrightarrow\ F(x)<F(y).\label{eq:strict}
+\end{align}
+The threshold in \eqref{eq:strict} belongs to the \emph{lower} sequence.
+We use that formulation throughout the rank proof. The operation $\OpN$ is
+the pointwise least admissible operation. These are Lipparini's conditions
+(2.1) and (2.2e) \cite[Definition 2.4]{Lipparini2026extended}.
+
+If $\tail(x)=z+1$, infinitely many entries of $x$ equal $z$. If
+$\tail(x)=e$ is a limit, its nonexceptional entries are cofinal in $e$, and
+$\cf(e)=\omega$. In both cases, finite changes to the sequence preserve the
+threshold. These facts will also follow explicitly in \cref{sec:profiles}.
+
+\subsection{Arithmetic used in the formula}\label{subsec:notation}
+The symbol $+$ always means ordinary ordinal addition, $\ns$ means the
+Hessenberg natural sum, and $\nprod$ means the natural product. Empty finite
+natural sums are zero. For $a\le b$, define
+\begin{equation}\label{eq:remainder}
+ \dd{a}{b}=\text{the unique ordinal }d\text{ such that }a+d=b.
+\end{equation}
+This is an ordinary-addition remainder, \emph{not} natural subtraction.
+For example, $\dd{\omega}{\omega^2}=\omega^2$.
+
+Set
+\begin{equation}\label{eq:A}
+ \FunA(t)=t\nprod\omega.
+\end{equation}
+If $t=\omega^{\eta_1}c_1+\cdots+\omega^{\eta_r}c_r$ is in Cantor normal form,
+then
+\begin{equation}\label{eq:Acnf}
+ \FunA(t)=\omega^{\eta_1+1}c_1+\cdots+\omega^{\eta_r+1}c_r.
+\end{equation}
+The successors $\eta_j+1$ in this expression are ordinary ordinal successors.
+In particular, $\FunA(\omega+1)=\omega^2+\omega$, not $\omega^2$.
+
+Write $t=\lambda+n$ uniquely, where $n<\omega$ and $\lambda$ is zero or a
+nonzero limit. Define
+\begin{equation}\label{eq:chi}
+ \chi(t)=
+ \begin{cases}
+  1,&\lambda>0\text{ and the least CNF exponent of }\lambda
+       \text{ is a successor},\\
+  0,&\text{otherwise},
+ \end{cases}
+ \qquad
+ \FunC(t)=\FunA(t)\ns\bigl(\omega\cdot\chi(t)\bigr).
+\end{equation}
+Thus $\chi(\omega+n)=\chi(\omega^2+n)=1$, whereas
+$\chi(\omega^\omega+n)=0$ for finite $n$.
+
+For a nonzero limit $e$, write
+\begin{equation}\label{eq:lastmonomial}
+ e=p+\omega^\xi,\qquad \xi>0,
+\end{equation}
+by deleting \emph{one copy} of the final monomial in its additive normal form.
+For example, if $e=\omega^5+\omega^2\cdot3$, then
+$p=\omega^5+\omega^2\cdot2$. We do not delete the whole final CNF term.
+
+\subsection{The explicit result}
+\begin{theorem}[Explicit formula]\label{thm:main}
+Let $x=(\alpha_i)_{i<\omega}$, let $e=\tail(x)$, and put $E=E(x)$.
+Then the least admissible operation is given by the following finite formulas.
+
+If $e=z+1$ is a successor, then
+\begin{equation}\label{eq:main-successor}
+ \boxed{\displaystyle
+ \OpN(x)=\FunC(z)\ns\bigns_{i\in E}\dd{z}{\alpha_i}.}
+\end{equation}
+If $e=p+\omega^\xi$ is a limit and $\xi$ is a successor, then
+\begin{equation}\label{eq:main-limit-successor}
+ \boxed{\displaystyle
+ \OpN(x)=\FunA(e)\ns\bigns_{i\in E}
+             \bigl(1+\dd{e}{\alpha_i}\bigr).}
+\end{equation}
+If $e=p+\omega^\xi$ is a limit and $\xi$ is a nonzero limit, then
+\begin{equation}\label{eq:main-limit-limit}
+ \boxed{\displaystyle
+ \OpN(x)=\FunA(p)\ns\omega^\xi
+                    \ns\bigns_{i\in E}\dd{p}{\alpha_i}.}
+\end{equation}
+The $1+d$ in \eqref{eq:main-limit-successor} is \emph{ordinary left addition}.
+It is not $d+1$ or $1\ns d$.
+\end{theorem}
+
+This is a finite expression once the threshold and exceptional multiset have
+been supplied. It contains no recurrence over predecessor sequences and no
+minimization over competing operations. Computing the threshold of an
+arbitrary program-defined infinite sequence is a different, generally
+noncomputable task; see \cref{subsec:computability}.
+
+\begin{example}[Two distinct kinds of limit behavior]\label[example]{ex:overview}
+For a sequence cofinal below $\omega$ and having $m$ exceptional copies of
+$\omega$, the value is $\omega^2+m$. The constant sequence with value $\omega$
+has value $\omega^2+\omega$. In contrast, a sequence cofinal below
+$\omega^\omega$ with $m$ exceptional copies of $\omega^\omega$ has value
+$\omega^\omega\cdot(m+1)$, and the constant sequence whose entries are $\omega^\omega$ has
+value $\omega^{\omega+1}$, without an extra $\omega$.
+\end{example}
+
+\section{Elementary ordinal arithmetic and finite-product ranks}\label{sec:arithmetic}
+
+\subsection{Remainders, natural sums, and low-order terms}
+We collect the arithmetic facts needed in the proof. Their explicit
+formulation matters because ordinary and natural addition behave differently
+at limits.
+
+\begin{lemma}\label[lemma]{lem:arith}
+For ordinals in the indicated domains:
+\begin{enumerate}[label=(\roman*)]
+\item If $a\le b$, the remainder $\dd{a}{b}$ exists uniquely, and the map
+      $b\mapsto\dd{a}{b}$ is strictly increasing on $[a,\infty)$.
+\item If $a\le b\le c$, then
+      $\dd{a}{c}=\dd{a}{b}+\dd{b}{c}$.
+\item Natural sum is associative, commutative, and strictly increasing in
+      each argument. Also $a+b\le a\ns b$.
+\item A finite natural sum of ordinals smaller than $\omega^\xi$ is again
+      smaller than $\omega^\xi$, for every $\xi>0$.
+\item If $\delta<\omega^\xi$, then
+      $\FunA(\delta)<\omega^{\xi+1}$. If $\xi$ is a nonzero limit, the stronger
+      inequality $\FunA(\delta)<\omega^\xi$ holds.
+\item $\FunA(t+1)=\FunA(t)\ns\omega$. Every nonzero $\FunA(t)$, and every
+      nonzero $\FunC(t)$, is a limit ordinal.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The interval $[a,b)$ has a unique order type $d$, giving $a+d=b$;
+strict increase of ordinary addition in its right argument gives uniqueness
+and monotonicity. Splitting $[a,c)$ at $b$ proves (ii).
+
+For (iii), align the finitely many exponents in the two Cantor normal forms
+and add their coefficients. A strict comparison is preserved at the largest
+exponent where the operands differ. Ordinary addition may erase terms of its
+left argument, whereas natural addition retains them, proving the inequality.
+For (iv), all exponents in the finitely many operands are below $\xi$, and
+this remains so after collecting terms. Formula~\eqref{eq:Acnf} proves (v):
+if $\eta<\xi$, then $\eta+1\le\xi$, and if $\xi$ is a limit, then
+$\eta+1<\xi$. Finally, adding one changes just the finite coefficient of $t$;
+after the shift of exponents this changes just the coefficient of $\omega$.
+Every exponent in a nonzero $\FunA(t)$ or $\FunC(t)$ is positive.
+\end{proof}
+
+If $t$ is a nonzero limit, all exponents in $\FunA(t)$ are at least $2$.
+Consequently
+\begin{equation}\label{eq:Cfinite}
+ \FunC(t+n)=\FunC(t)+\omega\cdot n\qquad(n<\omega).
+\end{equation}
+Also, if $L$ is a limit ordinal, $r<L$, and $n<\omega$, then $r+n<L$.
+Indeed, a finite sequence of successors of an ordinal below a limit remains
+below that limit.
+
+\subsection{The recursion for natural sum}
+\begin{lemma}\label[lemma]{lem:natural-recursion}
+For any ordinals $a,b$,
+\begin{equation}\label{eq:natural-recursion}
+ a\ns b=\sup\left(
+   \{(a'\ns b)+1:a'<a\}\ \cup\
+   \{(a\ns b')+1:b'<b\}\right).
+\end{equation}
+An empty supremum is zero.
+\end{lemma}
+\begin{proof}
+Strict monotonicity gives the upper bound. For the reverse inequality, take
+$\gamma<a\ns b$ and align the CNFs of these ordinals. At the greatest
+exponent $\xi$ where they differ, the coefficient in $a\ns b$ is larger.
+At least one of $a,b$ has a positive coefficient there; suppose it is $a$.
+Reduce that coefficient of $a$ by one, leave its higher terms unchanged,
+and replace its lower terms by the part of $\gamma$ below $\omega^\xi$.
+The resulting $a'$ is smaller than $a$. If the coefficient after reduction
+still exceeds that of $\gamma$, then $a'\ns b>\gamma$; otherwise the inserted
+lower terms ensure $a'\ns b\ge\gamma$. For $\xi=0$ the lower part is empty
+and the same argument applies. Thus one of the terms on the right of
+\eqref{eq:natural-recursion} exceeds $\gamma$.
+\end{proof}
+
+\begin{lemma}[Rank of a finite product]\label[lemma]{lem:product-rank}
+Let $P_1,\ldots,P_h$ be well-founded posets, with ranks normalized by
+$\rk(p)=\sup_{q<p}(\rk(q)+1)$. In the coordinatewise product, ordered strictly
+when at least one coordinate is strictly smaller,
+\begin{equation}\label{eq:product-rank}
+ \rk(p_1,\ldots,p_h)=\rk(p_1)\ns\cdots\ns\rk(p_h).
+\end{equation}
+A map preserving strict order cannot decrease rank.
+\end{lemma}
+\begin{proof}
+The last assertion follows immediately by induction on the source rank.
+For two factors, induction and strict monotonicity of natural sum give the
+upper bound in \eqref{eq:product-rank}. If $a'<\rk(p)$, some predecessor of
+$p$ has rank at least $a'$: otherwise the defining supremum for $\rk(p)$
+would be at most $a'$. Apply this observation in each coordinate and use
+\cref{lem:natural-recursion} for the reverse inequality. Induction on the
+number of factors proves the statement. Notice that this argument uses the
+recursion for natural sum, not an incorrect assertion of separate continuity
+of natural sum at every limit.
+\end{proof}
+
+\section{Finite profiles and the exact rank interpretation}\label{sec:profiles}
+
+\subsection{Which tail thresholds can occur?}
+\begin{lemma}\label[lemma]{lem:cutfacts}
+For every countable ordinal sequence $x$:
+\begin{enumerate}[label=(\roman*)]
+\item $\tail(x)>0$, and finite modifications leave $\tail(x)$ unchanged.
+\item If $\tail(x)=z+1$, infinitely many entries equal $z$.
+\item If $\tail(x)=e$ is a limit, $\cf(e)=\omega$ and the nonexceptional
+      entries are cofinal in $e$.
+\item Conversely, every positive successor and every nonzero limit of
+      cofinality $\omega$ occurs as a threshold, with any prescribed finite
+      multiset of exceptional entries at or above it.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+There are infinitely many entries at or above zero. Whether the set of
+entries at or above a fixed ordinal is finite is unaffected by finitely many
+changes, proving (i). If $e=z+1$, infinitely many entries are at or above $z$
+and only finitely many exceed it, proving (ii).
+
+Suppose $e$ is a limit. Below each $\gamma<e$ there cannot be an eventual
+bound smaller than $e$: specifically, there are infinitely many entries at
+or above $\gamma$ and only finitely many at or above $e$. The entries below
+$e$ are therefore cofinal. A countable cofinal subset of a nonzero limit
+has cofinality $\omega$.
+
+For (iv), use a constant $z$-tail for the cut $z+1$, and a countable cofinal
+tail below $e$ for a limit cut. Append the prescribed exceptional entries.
+Finite additions to a sequence do not change its threshold.
+\end{proof}
+
+Call the ordinals in (iv) \emph{realizable cuts}. The following finite datum
+forgets the order of coordinates and all inessential details of the tail.
+
+\begin{definition}\label[definition]{def:profile}
+The profile of $x$ is
+\[
+ \prof(x)=(e;A),\qquad e=\tail(x),\quad
+ A=\{\!\{\alpha_i:i\in E(x)\}\!\},
+\]
+where $A$ is a finite multiset. For profiles $(e;A)$ and $(f;B)$ set
+\begin{equation}\label{eq:profileorder}
+ (e;A)\preceq(f;B)
+ \quad\Longleftrightarrow\quad
+ e\le f\ \text{ and }\
+ |\{a\in A:a\ge\gamma\}|\le|\{b\in B:b\ge\gamma\}|
+ \quad\text{for every }\gamma\ge f.
+\end{equation}
+Multiset cardinalities include multiplicities. The strict part of this
+partial order is denoted by $\prec$.
+\end{definition}
+
+For computation, take the entries of $A$ that are at least $f$ in decreasing
+order, and compare them with the decreasing list $B$. There must be at least
+as many entries in $B$, and each corresponding entry of $B$ must be at least
+as large. This is equivalent to \eqref{eq:profileorder}.
+
+\subsection{Countable multiset domination}
+\begin{lemma}[Matching characterization]\label[lemma]{lem:matching}
+There is an injection $h:\omega\to\omega$ such that
+$\alpha_i\le\beta_{h(i)}$ for all $i$ if and only if
+$\prof(x)\preceq\prof(y)$.
+\end{lemma}
+\begin{proof}
+An injection implies the threshold comparison: if $\tail(x)>\tail(y)=f$,
+infinitely many entries of $x$ are at least $f$, but only finitely many
+entries of $y$ are. It also implies all the finite cardinality inequalities
+in \eqref{eq:profileorder}.
+
+Conversely, first match the finitely many entries of $x$ at or above $f$
+into the exceptional multiset of $y$, using the decreasing-list criterion.
+Every remaining entry $a$ of $x$ is below $f$. By the definition of $f$,
+infinitely many entries of $y$ are at least $a$. Enumerate the remaining
+indices of $x$ and match them greedily, avoiding the finitely many indices
+already used at each step. There is always an available choice.
+\end{proof}
+
+\begin{lemma}\label[lemma]{lem:profile-strict}
+If $x\le y$, then $\prof(x)\preceq\prof(y)$. Under this assumption,
+\begin{equation}\label{eq:strict-profile}
+ \prof(x)\ne\prof(y)
+ \quad\Longleftrightarrow\quad
+ \exists j\bigl(\alpha_j<\beta_j\text{ and }\tail(x)\le\beta_j\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The weak comparison follows from the identity matching. If the threshold
+increases from $e$ to $f>e$, infinitely many entries of $y$ are at least $e$,
+but only finitely many entries of $x$ are; a witness on the right of
+\eqref{eq:strict-profile} follows.
+
+If the thresholds agree, any changed or newly created exceptional entry
+produces a witness. Conversely, in the absence of such a witness every
+coordinate of $y$ at or above the common cut is identical to the corresponding
+coordinate of $x$, so the profiles agree. A witness cannot coexist with equal
+profiles: the coordinatewise matching of the finite exceptional lists would
+then strictly increase at least one summand or introduce a positive new
+summand, strictly increasing their finite natural sum.
+\end{proof}
+
+\begin{lemma}\label[lemma]{lem:profile-wf}
+The profile order is well-founded and set-like: the predecessors of any
+profile form a set.
+\end{lemma}
+\begin{proof}
+In an infinite descending chain the cuts form a nonincreasing sequence of
+ordinals and hence eventually stabilize. After stabilization, strict descent
+of profiles strictly decreases the finite natural sum of their exceptional
+entries. This is impossible.
+
+For set-likeness, fix $(e;A)$ and choose an ordinal $M$ at least $e$ and
+all elements of $A$. In every predecessor, the cut is at most $e$; heads
+below $e$ are bounded by $M$, and heads at or above $e$ must match elements
+of $A$ and so are bounded by $M$ as well. All predecessors belong to a set
+of finite multisets over $M+1$, together with cuts at most $e$.
+\end{proof}
+
+\subsection{Minimality is exactly a rank}
+Let $\rho(e;A)$ denote the rank in the profile order, with minimal rank zero.
+
+\begin{theorem}[Rank characterization]\label{thm:rank}
+For every sequence $x$,
+\begin{equation}\label{eq:rankN}
+ \OpN(x)=\rho(\prof(x)).
+\end{equation}
+Equivalently, $\OpN$ is the rank for the strict relation
+\[
+ x\eord y\quad\Longleftrightarrow\quad
+ x\le y\text{ and the witness in \eqref{eq:strict} exists}.
+\]
+In particular, $\OpN$ is invariant under permutations and insertion of any
+number of zero entries, and is monotone under injective domination.
+\end{theorem}
+\begin{proof}
+By \cref{lem:profile-strict}, the function $x\mapsto\rho(\prof(x))$ satisfies
+both admissibility conditions. It remains to show that every admissible
+$F$ dominates it.
+
+Proceed by induction on the profile $P=\prof(x)$. For any $Q\prec P$, choose
+a sequence $z$ realizing $Q$, using \cref{lem:cutfacts}. By
+\cref{lem:matching}, embed its entries injectively into those of $x$. On the
+image of the injection put the corresponding entries of $z$; on all unused
+coordinates put zero. The resulting sequence $w$ satisfies $w\le x$ and
+$\prof(w)=Q$. Insertion of zeros preserves the cut and the exceptional
+multiset, directly from the definitions. Since the profiles differ,
+\cref{lem:profile-strict} gives $w\eord x$. Therefore
+\[
+ F(x)\ge F(w)+1\ge\rho(Q)+1.
+\]
+Taking the supremum over $Q\prec P$ gives $F(x)\ge\rho(P)$.
+
+For the equivalent sequence-rank statement, the relation $\eord$ is
+transitive, is well-founded by the same stabilization argument, and has
+set-sized predecessor cones. Its rank is weakly monotone: if $x\le y$, every
+$\eord$-predecessor of $x$ is one of $y$. Its rank is strictly monotone for
+$\eord$, and induction shows that it is dominated by every admissible
+operation. It must therefore be the same least operation.
+
+Finally, permutations and zero insertions do not change the profile, and
+injective domination is profile comparison by \cref{lem:matching}.
+\end{proof}
+
+The quotient of countable ordinal multisets by mutual injective domination
+is thus represented exactly by finite profiles. Its rank is the invariant
+that \cref{thm:main} evaluates. No comparison of infinite coordinate lists is
+needed once the profile is available.
+
+\section{The arithmetic absorption lemma}\label{sec:absorption}
+
+\subsection{Base values and exceptional weights}
+Define $\FunB(e)$ for \emph{every} positive ordinal $e$, including cuts that
+are not realizable. Define $r_e(a)$ for $a\ge e$ by
+\begin{equation}\label{eq:baseweights}
+\begin{array}{c|c|c}
+\text{type of }e&\FunB(e)&r_e(a)\\ \hline
+ e=z+1 &\FunC(z)&\dd{z}{a}\\[2pt]
+ e=p+\omega^\xi,\ \xi\text{ successor}
+       &\FunA(e)&1+\dd{e}{a}\\[2pt]
+ e=p+\omega^\xi,\ \xi\text{ nonzero limit}
+       &\FunA(p)\ns\omega^\xi&\dd{p}{a}
+\end{array}
+\end{equation}
+The proposed formula is simply
+\begin{equation}\label{eq:U}
+ \FunU(e;A)=\FunB(e)\ns\bigns_{a\in A}r_e(a).
+\end{equation}
+As throughout, repetitions in $A$ are counted.
+
+Each weight is positive and strictly increasing in $a$. Moreover
+\begin{equation}\label{eq:weight-cocycle}
+ r_e(a)=r_e(t)+\dd{t}{a}\le r_e(t)\ns\dd{t}{a}
+ \qquad(e\le t\le a),
+\end{equation}
+by associativity of ordinary addition and \cref{lem:arith}. The extra leading
+one in the middle case of \eqref{eq:baseweights} is compatible with this
+identity.
+
+The following convenient estimates follow directly from the definitions:
+\begin{equation}\label{eq:basebounds}
+ \FunB(e)\le\FunA(e),\qquad
+ \FunC(t)\le\FunA(t)\ns\omega.
+\end{equation}
+For the first bound in the successor case, use
+$\FunC(z)\le\FunA(z)\ns\omega=\FunA(z+1)$.
+In the final limit case, use
+$\FunA(e)=\FunA(p)+\omega^{\xi+1}$.
+
+\subsection{The central estimate}
+\begin{lemma}[Absorption]\label[lemma]{lem:absorption}
+For $0<e\le t$ and every finite $m$,
+\begin{equation}\label{eq:abs1}
+ \FunB(e)\ns\bigl(r_e(t)\nprod m\bigr)<\FunC(t).
+\end{equation}
+If $t$ is a nonzero limit and $e<t$, then the stronger bound holds:
+\begin{equation}\label{eq:abs2}
+ \FunB(e)\ns\bigl(r_e(t)\nprod m\bigr)<\FunA(t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We prove both assertions simultaneously by transfinite induction on $t$.
+The multiplier $m$ is finite, and multiplication by it in these expressions
+means a repeated finite natural sum.
+
+\paragraph{Finite $t$.}
+Let $t=n\ge1$. Then $e=k+1$ for $k<n$, $\FunB(e)=\omega k$, and
+$r_e(n)=n-k$. Hence
+\[
+ \FunB(e)\ns(r_e(n)\nprod m)
+   =\omega k+m(n-k)<\omega(k+1)\le\omega n=\FunC(n).
+\]
+There is no limit assertion in this case.
+
+\paragraph{A nonzero finite tail.}
+Let $t=\lambda+n$, where $\lambda$ is a nonzero limit and $0<n<\omega$.
+First suppose $e\le\lambda$. By \eqref{eq:weight-cocycle},
+$r_e(t)=r_e(\lambda)+n$, so the left side of \eqref{eq:abs1} is at most
+\[
+ \bigl(\FunB(e)\ns(r_e(\lambda)\nprod m)\bigr)\ns mn.
+\]
+The parenthesized ordinal is smaller than $\FunC(\lambda)$ by induction.
+Since $\FunC(\lambda)$ is a limit, adding a finite ordinal keeps it smaller.
+This proves the required bound, since $\FunC(\lambda)\le\FunC(t)$.
+
+If $\lambda<e\le t$, write $e=\lambda+k+1$ with $k<n$.
+Then $\FunB(e)=\FunC(\lambda)+\omega k$ and $r_e(t)=n-k$. The left side is
+strictly smaller than
+\[
+ \FunC(\lambda)+\omega(k+1)
+ \le\FunC(\lambda)+\omega n=\FunC(t).
+\]
+
+\paragraph{A limit $t$ with $e=t$.}
+Write $t=p+\omega^\xi$ as in \eqref{eq:lastmonomial}.
+If $\xi$ is a successor, then $\FunB(t)=\FunA(t)$ and $r_t(t)=1$, giving
+\[
+ \FunB(t)\ns(r_t(t)\nprod m)
+  =\FunA(t)+m<\FunA(t)+\omega=\FunC(t).
+\]
+If $\xi$ is a nonzero limit, then $\FunC(t)=\FunA(t)$ and
+\[
+ \FunB(t)\ns(r_t(t)\nprod m)
+   =\FunA(p)+\omega^\xi(m+1)
+   <\FunA(p)+\omega^{\xi+1}=\FunA(t).
+\]
+
+\paragraph{A limit $t$ with $e<t$: cuts at or below $p$.}
+Assume $e\le p$, so $p>0$, and put $c=r_e(p)$. Then
+$r_e(t)=c+\omega^\xi\le c\ns\omega^\xi$. By induction,
+\[
+ P:=\FunB(e)\ns(c\nprod m)<\FunC(p)\le\FunA(p)\ns\omega.
+\]
+Thus the expression to be bounded is at most
+\[
+ P\ns(\omega^\xi\nprod m)
+ \le\FunA(p)\ns\omega\ns(\omega^\xi\nprod m)
+ <\FunA(p)+\omega^{\xi+1}=\FunA(t).
+\]
+The last strict inequality follows because every exponent in $\FunA(p)$
+is at least $\xi+1$, and $\omega\ns(\omega^\xi\nprod m)$ is smaller than
+$\omega^{\xi+1}$ for $\xi>0$.
+
+\paragraph{A limit $t$ with $p<e<t$.}
+Write $e=p+\delta$, where $0<\delta<\omega^\xi$.
+The pivot used in the remainder defining $r_e$ is at least $p$ and smaller
+than $t$. Indeed it is $e-1$, $e$, or the ordinal obtained by deleting one
+last monomial from $e$, respectively. Each pivot plus $\omega^\xi$ equals
+$t$. Any leading one in the weight is absorbed. Therefore
+$r_e(t)=\omega^\xi$.
+
+By \eqref{eq:basebounds} and separation of the CNF exponents,
+\[
+ \FunB(e)\le\FunA(e)=\FunA(p)\ns\FunA(\delta).
+\]
+Now $\FunA(\delta)<\omega^{\xi+1}$, so
+\[
+ \FunA(\delta)\ns(\omega^\xi\nprod m)<\omega^{\xi+1}.
+\]
+The required expression is again smaller than
+$\FunA(p)+\omega^{\xi+1}=\FunA(t)$.
+This proves the stronger bound whenever $e<t$ and $t$ is a limit, and
+completes the induction.
+\end{proof}
+
+The proof did not assume realizability of intermediate cuts. This is useful:
+the auxiliary $p$ can have arbitrary cofinality even when $t$ is realizable.
+
+\section{Upper bound: the formula is admissible}\label{sec:upper}
+
+\begin{theorem}\label{thm:upper}
+The function $\FunU$ is strictly increasing on strict profile comparisons.
+Consequently $x\mapsto\FunU(\prof(x))$ is admissible and
+\begin{equation}\label{eq:NleU}
+ \OpN(x)\le\FunU(\prof(x)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Suppose $(e;A)\preceq(f;B)$. Match each head $a\in A$ with $a\ge f$ to a
+head $b\in B$ with $a\le b$. All heads of $A$ below $f$ are unmatched.
+
+\paragraph{Equal cuts.}
+If $e=f$, every head in $A$ is matched. Positivity and strict monotonicity of
+$r_e$ show $\FunU(e;A)\le\FunU(e;B)$. If the profiles differ, at least one
+matched value increases or an additional positive weight occurs, so the
+inequality is strict.
+
+It remains to assume $e<f$. Put $m=|A|$.
+
+\paragraph{The upper cut is a successor.}
+Let $f=t+1$. Then $e\le t$. Every unmatched $a$ satisfies $a\le t$, so
+$r_e(a)\le r_e(t)$. For a matched $a$, \eqref{eq:weight-cocycle} gives
+\[
+ r_e(a)\le r_e(t)\ns\dd{t}{a}
+          =r_e(t)\ns r_f(a).
+\]
+Consequently, writing $A_{\ge f}$ for the matched part of $A$,
+\begin{align*}
+ \FunU(e;A)
+ &\le\bigl(\FunB(e)\ns(r_e(t)\nprod m)\bigr)
+                       \ns\bigns_{a\in A_{\ge f}}r_f(a)\\
+ &<\FunC(t)\ns\bigns_{a\in A_{\ge f}}r_f(a)
+ \le\FunB(f)\ns\bigns_{b\in B}r_f(b)=\FunU(f;B).
+\end{align*}
+The strict step is \cref{lem:absorption}.
+
+\paragraph{The upper cut is a limit with successor last exponent.}
+Write $f=p+\omega^\xi$ with $\xi$ a successor.
+Unmatched weights are at most $r_e(f)$. For matched heads,
+\[
+ r_e(a)\le r_e(f)\ns\dd{f}{a}
+          \le r_e(f)\ns r_f(a).
+\]
+Use \eqref{eq:abs2} with $t=f$ to replace the parenthesized bulk term by an
+ordinal strictly below $\FunA(f)=\FunB(f)$. Matching the remaining weights
+into those of $B$ then proves strictness just as above.
+
+\paragraph{The upper cut is a limit with limit last exponent: $e\le p$.}
+Now $f=p+\omega^\xi$, with $\xi$ a nonzero limit, and
+$\FunB(f)=\FunA(p)+\omega^\xi$. Suppose first that $e\le p$.
+Set $c=r_e(p)$. Heads below $p$ have weight at most $c$.
+For $p\le a<f$, the weight is at most $c\ns\dd{p}{a}$, with
+$\dd{p}{a}<\omega^\xi$. For a matched $a\ge f$, the weight is at most
+$c\ns r_f(a)$. A finite natural sum of the extra remainders below $f$ is
+some $\eta<\omega^\xi$. Therefore
+\[
+ \FunU(e;A)\le
+ \bigl(\FunB(e)\ns(c\nprod m)\ns\eta\bigr)
+      \ns\bigns_{a\in A_{\ge f}}r_f(a).
+\]
+By \eqref{eq:abs1}, the bulk before adding $\eta$ is smaller than
+$\FunC(p)\le\FunA(p)\ns\omega$. Since $\xi$ is a nonzero limit,
+$\omega\ns\eta<\omega^\xi$. The full bulk is thus strictly smaller than
+$\FunA(p)+\omega^\xi=\FunB(f)$. Matching the remaining weights proves the
+claim. When $p=0$, this subcase is empty.
+
+\paragraph{The upper cut is a limit with limit last exponent: $p<e<f$.}
+Write $e=p+\delta$, with $0<\delta<\omega^\xi$. The limit-exponent clause
+of \cref{lem:arith} gives
+\[
+ \FunB(e)\le\FunA(e)=\FunA(p)\ns\FunA(\delta),
+ \qquad\FunA(\delta)<\omega^\xi.
+\]
+The pivot for every remainder defining $r_e$ lies in $[p,f)$.
+It follows that $r_e(a)<\omega^\xi$ for unmatched heads $a<f$.
+For a matched head $a\ge f$, that pivot plus $\omega^\xi$ is $f$, so
+\[
+ r_e(a)=\omega^\xi+\dd{f}{a}=\dd{p}{a}=r_f(a).
+\]
+In the case with a leading one, that one is absorbed by $\omega^\xi$.
+The base and all unmatched weights together are therefore at most
+$\FunA(p)\ns\eta$ for some $\eta<\omega^\xi$, strictly below $\FunB(f)$.
+Matching the remaining weights finishes the proof.
+
+We have proved strictness whenever the profiles differ and weak monotonicity
+otherwise. Apply \cref{lem:profile-strict} and the defining minimality of
+$\OpN$, or equivalently \cref{thm:rank}, to obtain \eqref{eq:NleU}.
+\end{proof}
+
+\section{Lower bound and completion of the proof}\label{sec:lower}
+
+\subsection{The published input, stated precisely}
+The weaker operation in Lipparini's article is denoted there by $\#^S$;
+we call it $\OpS$. Define $\zeta(x)=z$ when $\tail(x)=z+1$, and
+$\zeta(x)=\tail(x)$ when the cut is a limit. Its strictness requirement is
+\eqref{eq:strict} with $\tail(x)\le\beta_j$ replaced by
+$\zeta(x)<\beta_j$.
+
+\begin{proposition}[Input from Lipparini]\label[proposition]{prop:importedS}
+The least weakly monotone operation with that weaker strictness requirement
+is
+\begin{equation}\label{eq:Sformula}
+ \OpS(x)=
+ \begin{cases}
+ \FunA(z)\ns\displaystyle\bigns_{i\in E}\dd{z}{\alpha_i},
+      &e=z+1,\\[5pt]
+ \FunA(e)\ns\displaystyle\bigns_{i\in E}\dd{e}{\alpha_i},
+      &e=p+\omega^\xi,\ \xi\text{ successor},\\[5pt]
+ \FunA(p)\ns\omega^\xi\ns\displaystyle\bigns_{i\in E}\dd{p}{\alpha_i},
+      &e=p+\omega^\xi,\ \xi\text{ nonzero limit}.
+ \end{cases}
+\end{equation}
+In particular $\OpN(x)\ge\OpS(x)$.
+\end{proposition}
+\begin{proof}[Source and deduction]
+The formula and minimality are Definition 3.1 and Theorem 3.4 of
+\cite{Lipparini2026extended}. The last inequality follows because every
+admissible operation here satisfies the weaker strictness condition:
+if $\zeta(x)<\beta_j$, then $\tail(x)\le\beta_j$, in both the successor and
+limit cases. We use the cited minimality theorem, not merely the displayed
+formula as an experimentally plausible lower bound.
+\end{proof}
+
+This is the only external theorem about infinitary ordinal operations used
+in the lower-bound argument. The product-rank lemma and all new threshold
+estimates have been proved above.
+
+\subsection{A finite-head lower bound}
+Write $\cseq{z}=(z,z,z,\ldots)$.
+
+\begin{lemma}\label[lemma]{lem:finite-head}
+For $a_1,\ldots,a_h\ge z$, put $\delta_j=\dd{z}{a_j}$. Then
+\begin{equation}\label{eq:finite-head}
+ \OpN(a_1,\ldots,a_h,z,z,\ldots)
+ \ge\OpN(\cseq{z})\ns\delta_1\ns\cdots\ns\delta_h.
+\end{equation}
+If $\tail(x)=z+1$, the same bound holds using the exceptional entries of $x$.
+\end{lemma}
+\begin{proof}
+Let $Q$ be the set of sequences coordinatewise below $\cseq{z}$, with the
+strict relation $\eord$. Its rank at $\cseq{z}$ is $\OpN(\cseq{z})$ by
+\cref{thm:rank}: this set contains the entire predecessor cone.
+For $b\in Q$ and $0\le\rho_j\le\delta_j$, map
+\[
+ (b,\rho_1,\ldots,\rho_h)
+ \longmapsto (z+\rho_1,\ldots,z+\rho_h,b_0,b_1,\ldots).
+\]
+Adding finitely many heads does not change the tail cut. A strict tail move
+remains an $e$-strict move. A strict increase of any $\rho_j$ makes the target
+head larger than $z$, hence at least $z+1$, while the lower tail cut is at
+most $z+1$. It too is $e$-strict. The map therefore preserves strict order
+from the product of $Q$ and the ordinal chains $\delta_j+1$.
+Apply \cref{lem:product-rank} at
+$(\cseq{z},\delta_1,\ldots,\delta_h)$.
+
+For a general $x$ with cut $z+1$, keep its exceptional entries and an
+infinite subsequence of entries equal to $z$, and replace all other entries
+by zero. This gives a sequence below $x$ whose profile is the same as that
+of the displayed finite-head sequence. Apply \cref{thm:rank} and weak
+monotonicity.
+\end{proof}
+
+\subsection{The finite correction at a limit cut}
+\begin{lemma}\label[lemma]{lem:limit-lower}
+Suppose $e=\tail(x)=p+\omega^\xi$ with $\xi$ a successor. Set
+\begin{equation}\label{eq:k}
+ k(x)=|\{i\in E(x):\alpha_i<e+\omega\}|.
+\end{equation}
+Then
+\begin{equation}\label{eq:limitlower}
+ \OpN(x)\ge\OpS(x)+k(x)=\FunU(\prof(x)).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $J$ be the set counted by $k(x)$. For $i\in J$, write
+$\alpha_i=e+n_i$ with $n_i<\omega$, and put $m=\sum_{i\in J}n_i$.
+Replace all these entries by zero, obtaining $x_0$. Its cut remains $e$.
+The middle case of \eqref{eq:Sformula} gives
+\[
+ \OpS(x)=\OpS(x_0)+m.
+\]
+Here a finite natural summand is the same as ordinary addition on the right,
+so the equality remains valid even when $\OpS(x_0)$ has a finite part.
+
+Restore the $i$th modified coordinate through
+\[
+ 0\longrightarrow e\longrightarrow e+1\longrightarrow\cdots
+                         \longrightarrow e+n_i.
+\]
+There are $n_i+1$ strict steps, each satisfying \eqref{eq:strict}. The cut
+stays $e$ throughout. Restoring all modified coordinates therefore gives
+\[
+ \OpN(x)\ge\OpN(x_0)+(m+k(x))
+          \ge\OpS(x_0)+(m+k(x))=\OpS(x)+k(x).
+\]
+Finally, $1+d$ is $d+1$ for finite $d$, and equals $d$ for every infinite
+ordinal $d$. Applying this fact to the weights in \eqref{eq:baseweights}
+shows that $\FunU=\OpS+k(x)$ in precisely this case.
+\end{proof}
+
+\subsection{Constant sequences and the extra \texorpdfstring{$\omega$}{omega}}
+\begin{lemma}\label[lemma]{lem:constant-lower}
+For every ordinal $t$,
+\begin{equation}\label{eq:constantlower}
+ \OpN(\cseq{t})\ge\FunC(t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $\chi(t)=0$, the first case of \eqref{eq:Sformula} and
+\cref{prop:importedS} give
+$\OpN(\cseq{t})\ge\FunA(t)=\FunC(t)$.
+
+Suppose $\chi(t)=1$. Write $t=\lambda+n$ with $n<\omega$, where the last
+exponent of the nonzero limit $\lambda$ is a successor. Such a $\lambda$
+has cofinality $\omega$: writing its final monomial as
+$\omega^{\eta+1}=\omega^\eta\cdot\omega$ supplies a countable cofinal tail,
+also when $\eta$ is uncountable.
+
+Choose a sequence cofinal below $\lambda$. For each finite $m$, append
+$m$ copies of $\lambda$. The cut is $\lambda$; its weaker value is
+$\FunA(\lambda)$, and \cref{lem:limit-lower} gives lower bound
+$\FunA(\lambda)+m$. All entries are at most $\lambda$, so monotonicity yields
+\[
+ \OpN(\cseq{\lambda})\ge
+ \sup_{m<\omega}\bigl(\FunA(\lambda)+m\bigr)
+ =\FunA(\lambda)+\omega=\FunC(\lambda).
+\]
+
+Proceed by induction on the finite $n>0$. Append $m$ copies of
+$\lambda+n$ to the constant $\lambda+(n-1)$ tail. The remainders of these
+heads over the tail value are all one. By \cref{lem:finite-head}, its value
+is at least
+\[
+ \OpN(\cseq{\lambda+(n-1)})\ns m
+ \ge\FunC(\lambda+(n-1))\ns m.
+\]
+It is dominated by $\cseq{\lambda+n}$. Taking the supremum over $m$ and
+using \eqref{eq:Cfinite} gives
+\[
+ \OpN(\cseq{\lambda+n})\ge
+ \FunC(\lambda+(n-1))+\omega=\FunC(\lambda+n).
+\]
+\end{proof}
+
+\subsection{Completion and a dependency check}
+\begin{proof}[Proof of \cref{thm:main}]
+The upper bound is \cref{thm:upper}. For the reverse inequality, if the cut
+is a limit with successor last exponent, apply \cref{lem:limit-lower}.
+If it is a limit with nonzero limit last exponent, $\FunU=\OpS$, so
+\cref{prop:importedS} suffices.
+
+If the cut is $z+1$, combine \cref{lem:finite-head,lem:constant-lower}:
+\[
+ \OpN(x)\ge\OpN(\cseq{z})\ns\bigns_{i\in E(x)}\dd{z}{\alpha_i}
+ \ge\FunC(z)\ns\bigns_{i\in E(x)}\dd{z}{\alpha_i}
+ =\FunU(\prof(x)).
+\]
+Thus both bounds agree in every case.
+\end{proof}
+
+There is no circular use of the constant-sequence formula. The order of
+proof is: the independent lower bound $\OpN\ge\OpS$; finite-product ranks;
+the finite correction at a limit cut; the constant lower bound; and finally
+the general successor-cut lower bound. The upper-bound argument was proved
+without assuming any of these lower-bound conclusions.
+
+\section{Consequences and worked examples}\label{sec:consequences}
+
+\subsection{Exactly how the stronger sum differs}
+\begin{corollary}[Complete correction rule]\label[corollary]{cor:correction}
+With the previous notation,
+\begin{equation}\label{eq:correction}
+ \OpN(x)=
+ \begin{cases}
+ \OpS(x)\ns\bigl(\omega\cdot\chi(z)\bigr),&e=z+1,\\
+ \OpS(x)+k(x),&e\text{ limit with successor last exponent},\\
+ \OpS(x),&e\text{ limit with nonzero limit last exponent}.
+ \end{cases}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:smallgap}
+ \OpS(x)\le\OpN(x)\le\OpS(x)\ns\omega.
+\end{equation}
+The upper bound is attained exactly in the successor-cut case with
+$\chi(z)=1$. The two operations have identical CNF terms of exponent at least
+$2$.
+\end{corollary}
+\begin{proof}
+Compare \cref{thm:main} with \eqref{eq:Sformula}. The middle case was computed
+in \cref{lem:limit-lower}. A finite increment is strictly smaller than adding
+one natural summand $\omega$, and natural addition by $\omega$ is strictly
+increasing. Only the coefficients of $1$ or $\omega$ can change.
+\end{proof}
+
+Thus equality $\OpN(x)=\OpS(x)$ holds exactly when $\chi(z)=0$ in the
+successor case, when $k(x)=0$ in the middle case, or always in the final case.
+Both the arbitrary finite corrections and the full natural $\omega$
+correction occur. In particular, the stronger operation is not obtained by
+blindly adding one to every exceptional remainder.
+
+\subsection{Constant values and bounded-multiset height}
+\begin{corollary}\label[corollary]{cor:constant}
+For every ordinal $t$,
+\begin{equation}\label{eq:constant}
+ \OpN(t,t,t,\ldots)=\FunC(t)
+ = (t\nprod\omega)\ns\bigl(\omega\cdot\chi(t)\bigr).
+\end{equation}
+Let $\mathscr M_t$ be the poset of countably infinite multisets with entries
+in $t+1$, quotiented by mutual injective domination. With height defined as
+$\sup_p(\rk(p)+1)$,
+\begin{equation}\label{eq:height}
+ \operatorname{ht}(\mathscr M_t)=\FunC(t)+1.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The constant sequence has cut $t+1$ and no exceptional entries, proving
+\eqref{eq:constant}. It is the greatest element of the bounded domination
+poset: every sequence with entries at most $t$ injects into it. Its
+predecessor cone is the whole poset, so its rank is the unrestricted rank
+$\FunC(t)$. The stated height convention adds one.
+\end{proof}
+
+For instance, these heights are $\omega m+1$ for positive finite $t=m$,
+$\omega^2+\omega+1$ for $t=\omega$, and $\omega^{\omega+1}+1$ for
+$t=\omega^\omega$. The additive distinction at the least limit exponent
+therefore has a direct order-theoretic interpretation.
+
+\subsection{A table of profiles}
+A row described as a cofinal tail contains only entries below the named cut,
+apart from the explicitly listed exceptional heads. Finite changes below
+the cut do not affect the answer.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.45\textwidth}p{.23\textwidth}p{.23\textwidth}@{}}
+\toprule
+Sequence or profile & $\OpS$ & $\OpN$\\
+\midrule
+Constant $0$ & $0$ & $0$\\[3pt]
+Head $5$, otherwise $0$ & $5$ & $5$\\[3pt]
+Cofinal natural-number tail & $\omega^2$ & $\omega^2$\\[3pt]
+One head $\omega$ over that tail & $\omega^2$ & $\omega^2+1$\\[3pt]
+Two heads $\omega$ over that tail & $\omega^2$ & $\omega^2+2$\\[3pt]
+Head $\omega+5$ over that tail & $\omega^2+5$ & $\omega^2+6$\\[3pt]
+Head $\omega\cdot2+3$ over that tail
+ & $\omega^2+\omega+3$ & $\omega^2+\omega+3$\\[3pt]
+Constant $\omega$ & $\omega^2$ & $\omega^2+\omega$\\[3pt]
+Constant $\omega+1$ & $\omega^2+\omega$ & $\omega^2+\omega\cdot2$\\[3pt]
+Cofinal tail below $\omega^\omega$ & $\omega^\omega$ & $\omega^\omega$\\[3pt]
+One head $\omega^\omega$ over that tail
+ & $\omega^\omega\cdot2$ & $\omega^\omega\cdot2$\\[3pt]
+Constant $\omega^\omega$ & $\omega^{\omega+1}$ & $\omega^{\omega+1}$\\[3pt]
+Constant $\omega^{\omega+1}$ & $\omega^{\omega+2}$ & $\omega^{\omega+2}+\omega$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The basic $\omega$ examples agree with those in
+\cite[Remark 6.1(c)]{Lipparini2026extended}; the general formula explains the
+same phenomenon at arbitrary CNF exponents.
+
+\begin{example}[Why the direction of $1+d$ matters]\label[example]{ex:leftone}
+Let the cut be $\omega$, with the single exceptional head
+$a=\omega\cdot2+3$. Its remainder is $\dd{\omega}{a}=\omega+3$.
+The correct weight is
+\[
+ 1+(\omega+3)=\omega+3,
+\]
+not $(\omega+3)+1=\omega+4$. Thus the stronger and weaker operations agree
+on this input. A rule using $d+1$ would falsely predict an additional one.
+\end{example}
+
+\begin{example}[A nontrivial prefix in the limit-exponent case]
+Let $e=\omega^{\omega+1}+\omega^\omega\cdot2$, and suppose the exceptional
+heads are $a_1=e$ and $a_2=e+7$. Deleting one final monomial gives
+$p=\omega^{\omega+1}+\omega^\omega$, not $\omega^{\omega+1}$. Then
+\[
+ \dd{p}{a_1}=\omega^\omega,\qquad
+ \dd{p}{a_2}=\omega^\omega+7,
+\]
+and
+\[
+ \OpN(x)=\OpS(x)=
+ \omega^{\omega+2}+\omega^{\omega+1}+\omega^\omega\cdot3+7.
+\]
+This illustrates why multiplicity in the final CNF term must be handled
+before evaluating the formula.
+\end{example}
+
+\subsection{A structural explanation of the correction}
+At a limit cut whose last exponent is a successor, an exceptional entry
+exactly equal to the cut has zero weaker remainder. But moving a coordinate
+from below the cut to the cut is a strict move for $\OpN$. This accounts for
+the leading one in $1+d$; only finite remainders retain that one.
+
+A constant limit tail can dominate sequences with arbitrarily many such
+finite correction units. Their supremum forces one extra $\omega$. That
+extra term persists along the subsequent finite successor tail of the
+constant value. When the least exponent is itself a limit, the lower-cut
+base ranks already grow cofinally through the relevant $\omega^\xi$ block;
+the absorption estimates show that no extra low-order term is required.
+This explanation is reflected quantitatively in \cref{lem:absorption} and
+\cref{lem:constant-lower}, rather than being used as a substitute for them.
+
+\section{Finite caps: an independent rank calculation}\label{sec:finitecaps}
+
+A finite test can check the order-theoretic modeling independently of the
+transfinite arithmetic. It also demonstrates why finite testing cannot prove
+an ordinal-rank formula by taking a naive supremum.
+
+Fix integers $M,H\ge0$. Consider profiles with entries in $\{0,\ldots,M\}$
+and at most $H$ exceptional heads. Every such profile has the form
+$(z+1;A)$ with $0\le z\le M$ and $A$ a multiset of integers strictly larger
+than $z$. This is a finite induced subposet of the full profile order.
+
+\begin{theorem}[Finite-cap rank]\label{thm:finitecap}
+The rank in this finite induced subposet is
+\begin{equation}\label{eq:finitecap}
+ \rho_H(z+1;A)=z(H+1)+\sum_{a\in A}(a-z).
+\end{equation}
+In particular, the constant-$M$ profile has finite-cap rank $M(H+1)$.
+\end{theorem}
+\begin{proof}
+Let the displayed expression be $R$. For equal cuts, positivity and
+monotonicity of the head weights show that $R$ strictly increases on strict
+comparison. Suppose the lower and upper tail values are $z<t$.
+Each lower head contributes at most $t-z$ plus its upper-cut remainder
+when it remains exceptional; a swallowed head contributes at most $t-z$.
+There are at most $H$ heads. Thus for $(z+1;A)\preceq(t+1;B)$,
+\begin{align*}
+ R(z+1;A)
+ &\le z(H+1)+H(t-z)+\sum_{b\in B}(b-t)\\
+ &=R(t+1;B)-(t-z)<R(t+1;B).
+\end{align*}
+Hence the actual finite rank is at most $R$.
+
+For the reverse bound, induct on $z$. The constant-zero profile has rank
+zero. The profile with tail value $z-1$ and $H$ heads equal to $z$ lies below
+the constant-$z$ profile. By the inductive lower bound, its rank is at least
+\[
+ (z-1)(H+1)+H=z(H+1)-1.
+\]
+So the constant-$z$ profile has rank at least $z(H+1)$.
+From it, create each desired head at $z+1$ and increase it one unit at a time
+to its final value. This is a chain of length $\sum_{a\in A}(a-z)$, using at
+most $H$ heads. Therefore the rank of $(z+1;A)$ is at least $R$.
+\end{proof}
+
+\begin{remark}[Ranks do not commute with these increasing unions]
+For fixed finite $M\ge2$, the finite-cap subposets increase with $H$ and their
+union is the entire bounded profile poset. Nevertheless
+\[
+ \sup_{H<\omega}M(H+1)=\omega
+ \quad\text{whereas}\quad
+ \rho(M+1;\emptyheads)=\omega M>\omega.
+\]
+There is no contradiction. The finite-cap subposets are not closed under
+all predecessors in the full poset, and rank is not continuous under these
+arbitrary increasing unions. This is a concrete reason not to mistake
+successful finite-rank experiments for a transfinite minimality proof.
+\end{remark}
+
+\section{Implementation and verification}\label{sec:implementation}
+
+\subsection{An exact, finite-notation implementation}
+The accompanying \texttt{code/ordinals.py} represents ordinals below
+$\epsilon_0$ by finite hereditary Cantor normal forms. A normal form is a
+finite decreasing tuple of pairs consisting of a recursively represented
+exponent and a positive integer coefficient. Zero is the empty tuple.
+There is no floating-point arithmetic and no truncation of infinite series.
+
+The implemented operations are comparison, ordinary addition, natural
+addition, ordinary-addition remainder, finite natural multiplication,
+natural multiplication by $\omega$, extraction of the last monomial,
+$\chi$, profile comparison, $\FunU$, and the weaker $\OpS$ formula.
+The code distinguishes the two additions in the middle branch explicitly:
+\begin{lstlisting}[language=Python]
+return ONE + e.right_remainder(a)  # ordinary 1+d, not d+1
+\end{lstlisting}
+The input to evaluation is a validated profile, not an unevaluated infinite
+stream. Normal-form size and recursive exponent comparison determine the
+cost of the basic arithmetic. No complexity claim is made for arbitrary
+ordinal notation systems, and the implementation does not represent
+$\epsilon_0$ itself or uncountable ordinals.
+
+The mathematics of \cref{thm:main} is not restricted to this implementation's
+domain. In particular, the proof of the absorption lemma allowed arbitrary
+ordinal exponents and arbitrary intermediate cofinalities.
+
+\subsection{What was actually checked}
+The deterministic test run used seed \texttt{20260919}, a basis of 223 exact
+ordinals, 10,000 randomized cases, and an exhaustively compared family of
+1,000 small profiles. The basis includes limit and successor exponents,
+multiple CNF terms, nonunit coefficients, and finite tails. The results are
+stored in \texttt{checks/results.json} and \texttt{checks/run.txt}.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Category & Counted checks\\
+\midrule
+Arithmetic boundary, pair, and triple checks & 120,127\\
+Remainder and remainder-cocycle checks & 34,976\\
+General absorption inequality & 222,777\\
+Stronger limit absorption inequality & 63,792\\
+Correction formula on generated profiles & 10,000\\
+Generated strict or equal comparable profiles & 10,000\\
+Exhaustive comparable pairs of small profiles & 272,272\\
+Independent finite-poset rank computations & 912\\
+Explicit regression examples & 13\\
+\midrule
+Total & 734,869\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every counted test passed. Some counted cases contain several assertions;
+these figures follow the categories reported by the test script, not a claim
+that every Python assertion is counted separately. The finite-poset ranks
+were computed from predecessor sets without using \eqref{eq:finitecap} to
+compute the ranks; the formula was checked afterward. The test domains were
+$1\le M\le5$ and $0\le H\le4$.
+
+These checks are designed to expose formula errors, wrong remainders,
+incorrect additions, and broken profile comparisons. They do not prove
+well-foundedness for arbitrary ordinals, justify a proper-class operation,
+or establish minimality. Those claims rest on the preceding proofs and
+the identified published input. No formal verification in Lean, Isabelle,
+or another proof assistant was performed.
+
+\subsection{Why arbitrary cut extraction is not computable}\label{subsec:computability}
+There is an elementary obstruction even for computable sequences with
+entries only $0$ and $1$. Given a machine $T$, define $a_n=1$ if $T$ has
+halted within $n$ steps, and $a_n=0$ otherwise. The sequence is computable
+uniformly from $T$. If $T$ never halts, the cut is $1$ and the value is zero.
+If it halts, the cut is $2$ and the value is $\omega$. An algorithm that
+always obtained either the exact cut or the exact value from such a program
+would decide whether $T$ halts.
+
+Thus an \emph{explicit mathematical formula} must not be confused with a
+uniform decision procedure for arbitrary program-presented infinite inputs.
+The supplied evaluator correctly accepts finite profile data; it makes no
+promise to discover such data from an arbitrary stream.
+
+\section{Scope, audit points, and further questions}\label{sec:scope}
+
+\subsection{What is established by the argument}
+Relative to Lipparini's proved minimality theorem for $\OpS$, the article
+proves a formula for $\OpN$ on \emph{all} countable sequences of arbitrary
+ordinals, not merely on eventually constant sequences or ordinals below
+$\epsilon_0$. The formula is pointwise least among the operations satisfying
+the exact two admissibility axioms. The correction rule, constant values,
+profile-rank interpretation, bounded-multiset heights, and finite-cap ranks
+are deductions, not additional conjectures.
+
+The countable index set is essential to the stated setting. At a limit cut
+it forces cofinality $\omega$; changing the index cardinal changes both the
+possible profiles and the finite-exception criterion. No uncountable-arity
+generalization, cardinal-consistency result, or claim about large cardinals
+is asserted here.
+
+\subsection{Foundations and the location of the proof burden}
+The profile rank is defined on set-sized predecessor cones. Restricting to
+any sufficiently large ordinal bound gives an ordinary set-sized
+well-founded relation; these ranks agree when the bound is enlarged because
+predecessor cones are unchanged. Thus the notation for a class function
+causes no need to minimize over a proper class of arbitrary functions.
+The same interpretation applies to the sequence-rank proof and to the
+finite-product argument on the bounded set $Q$.
+
+A useful audit focuses on four points: the strict relation uses the lower
+sequence's cut; the remainder must solve ordinary $a+d=b$; the middle weight
+must be $1+d$ rather than $d+1$; and the final-monomial deletion must remove
+one copy, not an entire CNF term. The computational tests explicitly exercise
+these distinctions. The most substantial proof obligations are the
+cross-cut comparisons in \cref{thm:upper} and the finite-product lower bound
+in \cref{lem:finite-head}.
+
+\subsection{Natural next questions, not claimed results}
+The rank formula suggests looking for a direct shuffled-order realization of
+$\OpN$, analogous in spirit to characterizations of other natural ordinal
+operations. A separate question is which restricted forms of associativity
+survive after the correction in \eqref{eq:correction}. Neither question is
+settled by simply knowing the CNF formula. The present note does not assume
+answers to them, and it does not claim that they are new open problems.
+
+The immediate research task is independent verification of the proposed
+solution and a fuller priority check. A proof-assistant development could
+begin with the set-sized profile order, ordinary ordinal remainders, and the
+absorption lemma, leaving general stream computability outside its scope.
+
+\appendix
+\section{A compact evaluation recipe}\label{app:recipe}
+Given a valid cut $e$ and a finite exceptional multiset $A$:
+\begin{enumerate}
+\item If $e=z+1$, remove the finite tail of $z$ to compute $\chi(z)$.
+      Compute $z\nprod\omega$, add a natural $\omega$ when $\chi(z)=1$,
+      and add the finite natural sum of the remainders $\dd{z}{a}$.
+\item Otherwise delete one last monomial of $e$ to obtain $e=p+\omega^\xi$.
+      If $\xi$ is a successor, compute $e\nprod\omega$ and add the finite
+      natural sum of $1+\dd{e}{a}$.
+\item If $\xi$ is a nonzero limit, compute
+      $(p\nprod\omega)\ns\omega^\xi$ and add the finite natural sum of
+      $\dd{p}{a}$.
+\end{enumerate}
+Only finite CNF operations occur after the profile is known. Zero exceptional
+heads are impossible because $e>0$; zero entries in the original sequence
+remain harmless.
+
+\section{Reproducing the files and tests}
+From the archive root, using Python 3.10 or later:
+\begin{lstlisting}
+python3 code/demo.py
+python3 code/verify.py --output checks/results.json
+\end{lstlisting}
+No third-party Python packages are required. The default seed and sample
+count reproduce all mathematical check counts; elapsed time depends on the
+machine. To rebuild the article with a TeX installation containing
+\texttt{newpx}, \texttt{tcolorbox}, and the other standard packages used in
+the preamble, run:
+\begin{lstlisting}
+sh build.sh
+\end{lstlisting}
+The archive includes the editable LaTeX source, the compiled PDF, the exact
+ordinal implementation, the deterministic tests, a small demonstration,
+the recorded results, and a README explaining scope and research status.
+It deliberately contains no downloaded font files or copies of the source
+paper.
+
+\begin{thebibliography}{9}
+\bibitem{Lipparini2026extended}
+Paolo Lipparini.
+\newblock \emph{Monotone infinitary operations on ordinals (extended version)}.
+\newblock arXiv:2505.00424v2, 30 April 2026, 42 pp.
+\newblock \url{https://arxiv.org/abs/2505.00424v2}.
+\newblock The numbering used here is that of version 2: Definition 2.4,
+Theorem 2.6.a, Definition 3.1, Theorem 3.4, Remark 6.1, and Problem 6.2.
+
+\bibitem{Lipparini2026published}
+Paolo Lipparini.
+\newblock A monotone infinitary operation on ordinals.
+\newblock \emph{Mathematical Logic Quarterly} \textbf{72}, no.~2 (2026),
+e70019. First published 24 March 2026.
+\newblock \url{https://doi.org/10.1002/malq.70019}.
+\newblock The extended arXiv version supplies the proofs and numbering
+consulted for this note.
+\end{thebibliography}
+\end{document}

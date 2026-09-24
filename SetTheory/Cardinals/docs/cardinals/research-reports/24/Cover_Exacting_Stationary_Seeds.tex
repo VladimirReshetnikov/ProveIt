@@ -1,0 +1,1502 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Cover exactingness between strongly compact cardinals},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={A conditional inconsistency theorem using omega-club amenability and stationary seeds},pdfkeywords={large cardinals, cover exacting, HCD, strongly compact, omega-club amenability, stationary seeds, conditional inconsistency}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION IV}
+\fancyfoot[L]{\small\color{Muted}Stationary seeds and a conditional inconsistency}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Stationary seeds and a conditional inconsistency}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calI}{\mathcal I}
+\newcommand{\calS}{\mathcal S}
+\newcommand{\calU}{\mathcal U}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\Ffine}{\mathsf{F}_{\omega_1}}
+\newcommand{\pos}{\mathord{+}}
+\newcommand{\st}{\mathrm{st}}
+\newcommand{\NS}{\mathrm{NS}}
+\newcommand{\card}{\operatorname{card}}
+\newcommand{\wca}{\text{$\omega$-club amenable}}
+\newcommand{\powN}[2]{(2^{#1})^{#2}}
+\newcommand{\New}{\textsf{New deduction}}
+\newcommand{\Old}{\textsf{Inherited}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION IV}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Cover exactingness between\\ strongly compact cardinals\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont A conditional inconsistency theorem from\\ $\omega$-club amenability and stationary seeds\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+We continue the completeness-barrier analysis in the supplied
+\emph{Large Cardinals Synthesis}. The additional observation is that
+$\HCD(\eta)$ contains the trace of every ambient $\omega$-club filter.
+A stationary-seed argument then shows that an $\omega$-club-amenable
+set-forcing ground must have the $\delta$-cover property whenever
+$\delta$ is strongly compact in the extension. Such a ground cannot
+regard an ordinal above $\delta$ as regular if it has ambient cofinality
+$\omega$. Combining this with the inherited completeness barrier and
+Goldberg's ground theorem gives the following conditional inconsistency.
+
+\begin{assessment}{Main result: the two strongly compact cardinals cannot coexist with the cover}
+There are no cardinals
+\[
+\delta<\lambda\le\gamma<\kappa
+\]
+such that $\delta$ and $\kappa$ are strongly compact and $\lambda$ is
+$\gamma$-cover exacting. Equivalently,
+\[
+\ZFC\vdash
+\neg\exists\delta,\lambda,\gamma,\kappa\,
+\begin{bmatrix}
+\delta<\lambda\le\gamma<\kappa\ \wedge\ \SC(\delta)\\[-2pt]
+{}\wedge\ \CEx_\gamma(\lambda)\ \wedge\ \SC(\kappa)
+\end{bmatrix}.
+\]
+No Ground Axiom, stabilization of the $\HCD$ hierarchy, or preservation
+of a particular successor cardinal is assumed.
+\end{assessment}
+
+We also obtain a local strengthening. If $\delta<\lambda$ is strongly
+compact, $\CEx_\gamma(\lambda)$ holds, and a high-completeness model
+$N=\HCD(\eta)$ satisfies Choice, then every sufficiently high ambient
+regular cardinal is measurable in $N$. More precisely, it suffices that
+$\theta>(2^\lambda)^N$. The proof bounds the number of stationary cells
+that can survive in an $N$-partition and includes a proof of the
+classical filter-atomicity lemma used in this last step.
+
+\textbf{Status and attribution.}
+These are new deductions \emph{relative to the supplied synthesis}, not
+claims of historical priority. The stationary-seed method and the
+underlying HOD dichotomy are due to Goldberg. The cover-exacting
+characterizations are due to Blue--Goldberg. Detailed English proofs of
+the deductions are supplied; major external inputs are explicitly
+separated from them. This report is unrefereed and has not been formally
+verified in Lean. It does not refute cover exactingness by itself, nor
+does it settle the unrestricted problem of a cover-exacting cardinal
+above just one strongly compact cardinal.
+
+\newpage
+\tableofcontents
+\vspace{9pt}
+\begin{assessment}{The argument in one line}
+\[
+\begin{gathered}
+\CEx_\gamma(\lambda)
+\ \Longrightarrow\ \cf^{\HCD(\kappa)}(\lambda)=\lambda,
+\qquad \cf^V(\lambda)=\omega,\\
+\SC(\kappa),\ \kappa>\gamma
+\ \Longrightarrow\ \HCD(\kappa)\text{ is a ground},\\
+\SC(\delta),\ \delta<\lambda,
+\ \omega\text{-club amenability of that ground}
+\ \Longrightarrow\ \cf^{\HCD(\kappa)}(\lambda)<\delta.
+\end{gathered}
+\]
+The contradiction is between the first and last lines. The additional
+covering in the last line comes from stationary seeds; it is not an
+illicit increase in the completeness of a given ultrafilter.
+\end{assessment}
+
+\newpage
+\section{What is added to the previous research}\label{sec:contribution}
+
+The supplied synthesis \cite{archive}, especially its completeness
+barrier and its sections on a strongly compact cardinal above the cover
+bound, already proves
+\begin{equation}\label{eq:inherited-gap}
+\CEx_\gamma(\lambda)
+\quad\Longrightarrow\quad
+\cf^V(\lambda)=\omega
+\quad\text{and}\quad
+\cf^{\HCD(\eta)}(\lambda)=\lambda
+\quad(\eta\ge q(\gamma)),
+\end{equation}
+where
+\[
+q(\gamma)=
+\begin{cases}
+\gamma,&\gamma\text{ is singular},\\
+\gamma^+,&\gamma\text{ is regular}.
+\end{cases}
+\]
+It also observes that an upper strongly compact $\kappa>\gamma$ makes
+$\HCD(\kappa)$ a proper ground. With a lower strongly compact
+$\delta<\lambda$, its ``two strongly compacts'' corollary gives strict
+separation between two complete-definability models. Its later
+``collapse or destroy'' theorem leaves a disjunction between collapsing
+the old successor and destroying a particular stationary set.
+
+The missing additional ingredient is not a stronger completeness
+assumption. It is the fact that the high-completeness model can
+\emph{recognize the trace of ambient $\omega$-club positivity}. This
+permits one to put a small stationary seed \emph{inside the image of
+that model}. A lower strongly compact cardinal then supplies small
+covers in the high model, contradicting \eqref{eq:inherited-gap}.
+
+\begin{theorem}[No strongly compact sandwich]\label{thm:main}
+In $\ZFC$, suppose $\delta<\lambda\le\gamma$ are cardinals,
+$\delta$ is strongly compact, and $\CEx_\gamma(\lambda)$ holds.
+Then no strongly compact cardinal is greater than $\gamma$.
+\end{theorem}
+
+The proof appears in Section~\ref{sec:mainproof}, after a general
+no-ground theorem. A second, shorter verification uses Goldberg's
+published covering dichotomy in Section~\ref{sec:crosscheck}.
+
+\begin{assessment}{How the earlier alternatives change}
+Under \emph{both} strongly compact hypotheses, the forcing extension
+postulated in the earlier analysis does not exist. Thus we do not
+choose the collapse branch or the stationary-destruction branch of that
+analysis: we rule out their common premise. Without the upper strongly
+compact, the original coexistence question is not decided here.
+\end{assessment}
+
+A separate new consequence, which does not assume an upper strongly
+compact, is the quantitative stationary-width theorem of
+Section~\ref{sec:width}. Whenever a high $\HCD$ model satisfies $\ZFC$,
+its ambient $\omega$-club filters have no internally indexed disjoint
+positive family of length $\lambda$. This yields an explicit threshold
+for measurability in that inner model. The Axiom of Choice in the high
+model is an actual hypothesis in this consequence; it is not silently
+inferred from the lower strongly compact.
+
+\section{Definitions and the external inputs}\label{sec:setup}
+
+\subsection{Ambient and internal conventions}
+
+The ambient universe $V$ satisfies $\ZFC$. An inner model is transitive,
+contains all ordinals, and is a class of $V$. Unadorned cardinalities,
+ultrafilter completeness, cofinalities, and stationarity are ambient.
+A superscript $N$ specifies computation in $N$. In particular,
+$P_\delta(\mu)=\{a\subseteq\mu:|a|^V<\delta\}$.
+
+We use only set-parameter-definable inner models in arguments involving
+an ultrapower. If $N=\{x:\varphi(x,p)\}$ and $j:V\to M$ is an
+ultrapower embedding, the notation $N^j$ means
+\[
+N^j=\{x\in M:M\models\varphi(x,j(p))\}.
+\]
+It does \emph{not} mean the generally nontransitive pointwise image
+$j``N$. For $N=\HCD^V(\eta)$, it is exactly
+$N^j=\HCD^M(j(\eta))$. All uses of $j$ below arise from a set
+ultrafilter; the relevant restrictions of $j$ and images of sets are
+sets definable from that ultrafilter. No additional axiom asserting a
+class embedding is being imposed.
+
+A ground is an inner model $W\models\ZFC$ such that
+$V=W[G]$ for a set forcing $\PP\in W$ and a $W$-generic filter $G$.
+A \emph{$\delta$-cover} of $x$ in $N$ is a set $a\in N$ with
+$x\subseteq a$ and $|a|^N<\delta$.
+
+\begin{lemma}[Comparing smallness]\label{lem:smallness}
+If $N\models\ZFC$ is an inner model, $\delta$ is a cardinal of $V$,
+and $a\in N$, then $|a|^V<\delta$ if and only if $|a|^N<\delta$.
+\end{lemma}
+\begin{proof}
+The ordinal $\delta$ is also a cardinal in $N$, since a bijection in
+$N$ witnessing otherwise would remain a bijection in $V$. An
+$N$-bijection from an ordinal below $\delta$ onto $a$ proves ambient
+smallness. Conversely, if $N$ regarded $a$ as having size at least
+$\delta$, Choice in $N$ would give an injection $\delta\to a$ in $N$,
+and hence in $V$. That contradicts $|a|^V<\delta$.
+\end{proof}
+
+\subsection{Cover exactingness and complete definability}
+
+For $\alpha>\lambda$ and $Y\subseteq V_\alpha$, a relative
+$\lambda$-exacting witness is an elementary embedding
+\[
+j:(X,\in,X\cap Y)\longrightarrow(V_\alpha,\in,Y)
+\]
+where the source is an elementary substructure of the target,
+$V_\lambda\cup\{\lambda\}\subseteq X$, $j(\lambda)=\lambda$, and
+$j\restr\lambda\ne\id$. The domain need not be transitive. Write
+$\REx(\lambda,Y)$ when such witnesses exist at all sufficiently large
+heights containing the predicate $Y$. The equivalent all-heights
+version may also be used.
+
+\begin{definition}[Uniform cover bound]
+For infinite cardinals $\lambda\le\gamma$, $\CEx_\gamma(\lambda)$ means
+that for every $\alpha>\lambda$ and every $y\in V_\alpha$, some
+$Y\subseteq V_\alpha$ satisfies $y\in Y$, $|Y|\le\gamma$, and admits a
+relative $\lambda$-exacting witness at height $\alpha$.
+\end{definition}
+
+Here $\gamma$ is fixed before the height and the parameter are chosen;
+$y\in Y$ must not be replaced by $y\subseteq Y$. Ordinary exactingness
+is obtained by forgetting the extra predicate and cover requirement.
+
+For an infinite cardinal $\eta$, $\CD(\eta)$ consists of sets definable
+in $V$ from finitely many ordinal parameters and finitely many
+$\eta$-complete ultrafilters on ordinals. Completeness means closure
+under intersections of fewer than $\eta$ members. Put
+\[
+\HCD(\eta)=\{x:\tc(\{x\})\subseteq\CD(\eta)\}.
+\]
+These definitions agree with Goldberg's complete-definability classes
+\cite[\S4.1]{unique}. We have
+\begin{equation}\label{eq:monotonic}
+\eta\le\xi\quad\Longrightarrow\quad
+\CD(\xi)\subseteq\CD(\eta),\qquad
+\HCD(\xi)\subseteq\HCD(\eta).
+\end{equation}
+Every ordinal-definable set belongs to $\CD(\eta)$. For a set of
+ordinals $a$, membership in $\CD(\eta)$ is equivalent to membership in
+$\HCD(\eta)$.
+
+\subsection{Imported theorems, with their exact roles}
+
+\begin{inputthm}[Local Kunen inconsistency]\label{in:kunen}
+There is no nontrivial elementary embedding
+$V_{\rho+2}\to V_{\rho+2}$ in $\ZFC$ \cite{kunen}.
+\end{inputthm}
+
+\begin{inputthm}[Blue--Goldberg]\label{in:BG}
+The following consequences of cover exactingness are used
+\cite[Lemma~3.3 and Proposition~3.4]{cover}.
+If $\REx(\lambda,Y)$ and $z\in\OD_{\{Y\}}$, then
+$\REx(\lambda,z)$. Also, if $\CEx_\gamma(\lambda)$ holds, then for all
+sufficiently large $\alpha$ the set
+\[
+\{\sigma\in P_{\gamma^+}(V_\alpha):\REx(\lambda,\sigma)\}
+\]
+is stationary. In particular it meets the club of elementary hulls
+containing any prescribed finite set of parameters.
+\end{inputthm}
+
+These are explicitly stated lecture-note inputs, not a newly claimed
+consistency construction. The supplied synthesis also gives a
+persistent-cover proof of the exact-hull form of this input. We use the
+stationary form to keep the inherited portion short, and reprove the
+trace argument in Section~\ref{sec:barrier}.
+
+\begin{inputthm}[Goldberg's complete-definability ground theorem]\label{in:ground}
+For every infinite $\eta$, $\HCD(\eta)\models\ZF$. If $\kappa$ is
+strongly compact, then $\HCD(\kappa)\models\ZFC$ and is a set-forcing
+ground of $V$ \cite[Proposition~4.2, Theorems~4.3 and~4.9, arXiv v2]{unique}.
+\end{inputthm}
+
+The theorem numbers in the journal version are shifted: the ground
+statement is Theorem~4.10. The arXiv v2 statement and proof were checked
+directly. Strong compactness, not supercompactness, suffices. The
+stronger hypothesis in the shorter 2026 lecture-note summary should not
+be substituted for the actual hypothesis of this theorem. No bound on
+the size of the ground forcing is used in the main result.
+
+We also use the usual ultrafilter formulation of strong compactness:
+for every ordinal $\theta\ge\delta$, a strongly compact $\delta$ admits
+a $\delta$-complete fine ultrafilter on $P_\delta(\theta)$. This is the
+form needed by the stationary-seed method in
+\cite[Proposition~2.3]{dichotomy}. Fineness means that
+$\{a:\xi\in a\}$ is in the ultrafilter for every $\xi<\theta$.
+Countable completeness makes its ultrapower well founded. These
+standard large-cardinal and ultrapower facts are external background;
+we do not present them as additional new results.
+
+\section{Reconstructing the inherited completeness barrier}\label{sec:barrier}
+
+This section identifies exactly what is carried over from the supplied
+reports. The rest of the paper needs only its final conclusion.
+
+\begin{lemma}[Fixed ordinals of a rank self-embedding]\label{lem:critical}
+Let $\lambda$ be an uncountable cardinal and let
+$e:V_\lambda\to V_\lambda$ be nontrivial. If
+$\kappa_0=\crit(e)$ and $\kappa_{n+1}=e(\kappa_n)$, then
+\[
+\sup_{n<\omega}\kappa_n=\lambda,
+\qquad e(\xi)>\xi\quad(\kappa_0\le\xi<\lambda).
+\]
+Consequently $\cf^V(\lambda)=\omega$, and every fixed ordinal below
+$\lambda$ is below $\crit(e)$.
+\end{lemma}
+\begin{proof}
+Suppose $\rho=\sup_n\kappa_n<\lambda$. The critical sequence and the
+sets needed to define its supremum belong to $V_\lambda$: since
+$\lambda$ is an uncountable cardinal, adding finitely many ranks, or
+$\omega$ ranks, to an ordinal below $\lambda$ still stays below
+$\lambda$. Applying $e$ to the sequence shifts it by one place, so
+$e(\rho)=\rho$. The restriction of $e$ to $V_{\rho+2}$ is elementary
+and nontrivial, contradicting Input~\ref{in:kunen}. Thus the critical
+sequence is cofinal in $\lambda$. If
+$\kappa_n\le\xi<\kappa_{n+1}$, monotonicity on ordinals gives
+$e(\xi)\ge e(\kappa_n)=\kappa_{n+1}>\xi$. This proves both assertions.
+\end{proof}
+
+An exacting witness restricts to such an $e$. Indeed $V_\lambda$ is
+definable from the fixed parameter $\lambda$, is contained in its
+domain, and satisfaction for that rank segment is preserved. This
+argument does not assume that the full elementary submodel is
+transitive.
+
+\begin{lemma}[A short cofinal set cannot be a preserved predicate]\label{lem:cofinal}
+If $a\subseteq\lambda$ is cofinal and $\ot(a)<\lambda$, then
+$\REx(\lambda,a)$ fails.
+\end{lemma}
+\begin{proof}
+At a sufficiently large witnessing height, the set $a$ is the unique
+set represented by its unary predicate. Thus $a\in X$ and $j(a)=a$.
+Its order type $\tau$ and its increasing enumeration $h:\tau\to a$
+are definable from $a$, belong to $X$, and are fixed by $j$.
+Since $\tau<\lambda$ is fixed, Lemma~\ref{lem:critical} implies
+$\tau<\crit(j)$. Every $\xi<\tau$ is therefore fixed, and
+\[
+j(h(\xi))=j(h)(j(\xi))=h(\xi).
+\]
+The cofinal set $a$ would consist of fixed ordinals below $\lambda$,
+although all those fixed ordinals lie below $\crit(j)$. This is
+impossible.
+\end{proof}
+
+\begin{lemma}[Reconstruction from a small trace]\label{lem:trace}
+Suppose $U$ is an $\eta$-complete ultrafilter on an ordinal $\tau$,
+$U,\tau\in\sigma\prec V_\alpha$, the height is sufficiently large,
+and $|\sigma|<\eta$. Then $U\in\OD_{\{\sigma\}}$.
+\end{lemma}
+\begin{proof}
+The family $U\cap\sigma$ has size below $\eta$. Its intersection belongs
+to the proper ultrafilter $U$, so is nonempty. Let
+\[
+b=\min\bigcap(U\cap\sigma).
+\]
+For every $A\in\sigma$ with $A\subseteq\tau$, elementarity puts
+$\tau\setminus A$ in $\sigma$. The ultrafilter alternatives give
+\begin{equation}\label{eq:trace}
+A\in U\quad\Longleftrightarrow\quad b\in A.
+\end{equation}
+Now $U$ is the unique ultrafilter $W\in\sigma$ on $\tau$ with this
+trace. If two distinct candidates in $\sigma$ had the same trace,
+elementarity would supply a set $A\in\sigma$ on which they differ,
+contradicting \eqref{eq:trace}. The resulting definition uses only
+$\sigma$ and the ordinals $b,\tau$ (and, if satisfaction is used,
+$\alpha$). It therefore makes $U$ ordinal definable from $\sigma$.
+Neither $b\in\sigma$ nor principality of $U$ is required; uniqueness
+is only among the candidates inside $\sigma$.
+\end{proof}
+
+\begin{proposition}[Inherited barrier, with proof]\label{prop:barrier}
+Assume $\CEx_\gamma(\lambda)$. For every cardinal $\eta\ge q(\gamma)$,
+\[
+\cf^V(\lambda)=\omega,
+\qquad
+\cf^{\HCD(\eta)}(\lambda)=\lambda.
+\]
+Moreover no short cofinal subset of $\lambda$ belongs to $\CD(\eta)$.
+\end{proposition}
+\begin{proof}
+First let $\eta>\gamma$ and let $x\in\CD(\eta)$, witnessed by finitely
+many $\eta$-complete ultrafilters $U_0,\ldots,U_{m-1}$ on ordinals.
+Input~\ref{in:BG} supplies an elementary hull $\sigma\prec V_\alpha$
+containing these ultrafilters and their underlying ordinals, with
+$|\sigma|\le\gamma$ and $\REx(\lambda,\sigma)$. This follows by
+intersecting the stationary set there with the club of elementary
+hulls containing the listed parameters.
+
+For each $i$, Lemma~\ref{lem:trace} applies because
+$|\sigma|\le\gamma<\eta$. Substitution in the definition of $x$ now
+gives $x\in\OD_{\{\sigma\}}$. Definability transfer in
+Input~\ref{in:BG} gives $\REx(\lambda,x)$. Lemma~\ref{lem:cofinal}
+therefore excludes every cofinal $x\subseteq\lambda$ of order type
+below $\lambda$.
+
+Put $N=\HCD(\eta)$. The cardinal $\lambda$ is still a cardinal in $N$.
+If $N$ contained a cofinal map $f:\mu\to\lambda$ with $\mu<\lambda$,
+its range $a\in N\subseteq\CD(\eta)$ would have ambient size below
+$\lambda$. As a subset of the initial ordinal $\lambda$, it would
+have order type below $\lambda$, a contradiction. This reasoning needs
+only $\ZF$ in $N$. Ambient countable cofinality follows from
+Lemma~\ref{lem:critical}.
+
+Finally suppose $\gamma$ is singular. Every $\gamma$-complete filter
+is $\gamma^+$-complete: a family of size $\gamma$ can be partitioned
+into $\cf(\gamma)$ many subfamilies of size below $\gamma$; intersect
+within each subfamily and then intersect the resulting
+$\cf(\gamma)<\gamma$ members. Thus
+$\CD(\gamma)=\CD(\gamma^+)$ and
+$\HCD(\gamma)=\HCD(\gamma^+)$. This includes the endpoint
+$\eta=q(\gamma)=\gamma$; monotonicity gives all larger $\eta$.
+\end{proof}
+
+\section{The missing amenability observation}\label{sec:amenability}
+
+For an ordinal $\alpha$ of uncountable cofinality define
+\[
+E^\alpha_\omega=\{\xi<\alpha:\cf^V(\xi)=\omega\},
+\qquad
+\calF^V_{\alpha,\omega}
+=\{A\subseteq\alpha:\exists C\text{ club in }\alpha\
+(C\cap E^\alpha_\omega\subseteq A)\}.
+\]
+This is the filter generated by the ambient club filter and
+$E^\alpha_\omega$. A set $A\subseteq\alpha$ is positive for this
+filter precisely when $A\cap E^\alpha_\omega$ is stationary in
+$\alpha$. The definition makes sense for singular $\alpha$ as long as
+$\cf^V(\alpha)>\omega$.
+
+\begin{definition}[$\omega$-club amenability]\label{def:amenable}
+An inner model $N\models\ZFC$ is $\omega$-club amenable in $V$ if,
+for every ordinal $\alpha$ with $\cf^V(\alpha)>\omega$,
+\[
+\calF^V_{\alpha,\omega}\cap N\in N.
+\]
+This is Goldberg's definition \cite[\S2.2]{dichotomy}. The filter in
+this formula is the \emph{ambient} filter, not $N$'s internally
+computed club filter.
+\end{definition}
+
+The trace expression means the set of members of the filter that
+belong to $N$; its members are subsets of $\alpha$. The following
+observation applies even before Choice in $N$ is available.
+
+\begin{lemma}[Ordinal-definable subsets of a hereditary class]\label{lem:ODclosure}
+If $N=\HCD(\eta)$ and $A$ is an ordinal-definable set with
+$A\subseteq N$, then $A\in N$.
+\end{lemma}
+\begin{proof}
+The set $A$ belongs to $\CD(\eta)$ because every ordinal-definable set
+does. For each $x\in A$, the assumption $x\in N$ says that every
+member of $\tc(\{x\})$ belongs to $\CD(\eta)$. Therefore every member
+of $\tc(\{A\})$ belongs to $\CD(\eta)$, including $A$ itself.
+This is exactly the condition $A\in\HCD(\eta)$.
+\end{proof}
+
+\begin{proposition}[Amenability of the high-completeness models]\label{prop:amenable}
+For every infinite cardinal $\eta$ and every ordinal $\alpha$ of
+uncountable ambient cofinality,
+\[
+\calF^V_{\alpha,\omega}\cap\HCD(\eta)\in\HCD(\eta).
+\]
+In particular, whenever $\HCD(\eta)$ satisfies Choice, it is an
+$\omega$-club-amenable inner model of $\ZFC$.
+\end{proposition}
+\begin{proof}
+The trace is a set by Separation from $\calP(\alpha)$. It is definable
+in $V$ from the two ordinal parameters $\alpha,\eta$, and all its
+members belong to $\HCD(\eta)$. Lemma~\ref{lem:ODclosure} applies.
+\end{proof}
+
+\begin{remark}[What this does not say]
+The ambient club or stationary sets themselves need not belong to
+$N$. Nor does this identify ambient stationarity with internal
+stationarity. It says that \emph{for sets already in $N$}, the test
+of ambient $\omega$-club positivity can be encoded by a set of $N$.
+This is exactly the amount of information required by the seed
+construction below.
+\end{remark}
+
+\section{Stationary lifting and the local seed lemma}\label{sec:seed}
+
+The method is an explicit version of the stationary-seed arguments in
+Goldberg's work \cite[Proposition~2.3 and Lemma~2.7]{dichotomy}; compare
+also \cite[Theorem~4.13]{unique} and \cite[Proposition~2.2]{note}.
+In contrast to the same-parameter $\HCD$ covering argument, the lower
+compactness bound and the higher complete-definability parameter are
+separated here. The essential additional bookkeeping is
+that the seed belongs to $N^j$, not merely to the ultrapower $M$.
+We prove the local form needed here in detail.
+
+\subsection{The continuity calculation}
+
+\begin{lemma}[Lifting a stationary set of countable cofinalities]\label{lem:lift}
+Let $\theta$ be an uncountable regular cardinal of $V$ and
+$j:V\to M$ a well-founded ultrapower embedding with $j(\omega)=\omega$.
+Set $\beta=\sup j``\theta$. If $S\subseteq E^\theta_\omega$ is
+stationary in $V$, then $j(S)\cap\beta$ meets every club in $\beta$
+that belongs to $M$.
+\end{lemma}
+\begin{proof}
+Fix such a club $C$. Closedness and unboundedness of $C$ in the ordinal
+$\beta$ are absolute to $V$. Define, externally in $V$,
+\[
+f(\xi)=\sup_{\zeta<\xi}j(\zeta)\qquad(\xi<\theta).
+\]
+At limit indices this function is continuous. Let
+\[
+D=\{\xi<\theta:\xi\text{ is a nonzero limit ordinal and }f(\xi)\in C\}.
+\]
+We verify directly that $D$ is club in $\theta$.
+
+For unboundedness, start above any chosen $\xi_0<\theta$ and recursively
+choose increasing $\xi_n<\theta$ and $c_n\in C$ so that
+\[
+j(\xi_n)<c_n<j(\xi_{n+1}).
+\]
+The choices are possible because both $C$ and $j``\theta$ are
+unbounded in $\beta$. Regularity of $\theta$ gives
+$\xi=\sup_n\xi_n<\theta$. The two interleaved sequences have the same
+supremum, namely $f(\xi)=\sup_n c_n<\beta$; closedness of $C$ puts
+$f(\xi)$ in $C$. Thus $\xi\in D$ and $\xi>\xi_0$.
+For closedness, if $D\cap\xi$ is unbounded in a limit
+$\xi<\theta$, continuity gives
+$f(\xi)=\sup\{f(\zeta):\zeta\in D\cap\xi\}\in C$.
+The values here are unbounded in $f(\xi)$, so closedness applies.
+
+Choose $\xi\in S\cap D$. A countable increasing cofinal sequence in
+$\xi$ is carried by $j$ to a countable cofinal sequence in $j(\xi)$,
+because $j(\omega)=\omega$. Consequently
+$j(\xi)=\sup j``\xi=f(\xi)\in C$. Also
+$j(\xi)\in j(S)$ and $j(\xi)<\beta$. This proves the assertion.
+\end{proof}
+
+\subsection{Constructing a seed inside the inner model}
+
+\begin{theorem}[Local stationary-seed covering]\label{thm:localseed}
+Let $N\models\ZFC$ be a set-parameter-definable, $\omega$-club-amenable
+inner model. Suppose $\delta$ is strongly compact in $V$,
+$\mu$ is an ordinal, and $\theta>\max\{\delta,\mu\}$ is regular in $V$.
+Assume there is a sequence
+\[
+\vec A=\langle A_\xi:\xi<\mu\rangle\in N
+\]
+of pairwise disjoint subsets of $\theta$, each positive for
+$\calF^V_{\theta,\omega}$. Then there is a $\delta$-complete fine
+ultrafilter $U$ on $P_\delta(\mu)$ such that
+\begin{equation}\label{eq:concentrates}
+N\cap P_\delta(\mu)\in U.
+\end{equation}
+In particular every $x\subseteq\mu$ of ambient size below $\delta$
+has a $\delta$-cover in $N$.
+\end{theorem}
+\begin{proof}
+Choose a $\delta$-complete fine ultrafilter $U_0$ on
+$P_\delta(\theta)$ and form its well-founded ultrapower $j:V\to M$.
+Let $u=[\id]_{U_0}$ be the canonical seed. Then
+\begin{equation}\label{eq:bigseed}
+j``\theta\subseteq u\subseteq j(\theta),
+\qquad |u|^M<j(\delta),
+\qquad \crit(j)\ge\delta.
+\end{equation}
+Put $\beta=\sup j``\theta$. Since $j(\theta)$ is regular in $M$ and
+$u$ is $M$-small, $\beta<j(\theta)$.
+
+\textbf{Step 1: the cofinality bounds.}
+The increasing sequence $j``\theta$ shows $\cf^V(\beta)=\theta$.
+To see equality rather than just an upper bound, any cofinal subset of
+$\beta$ of size below the regular cardinal $\theta$ could be bounded
+by fewer than $\theta$ many corresponding points of $j``\theta$,
+contradicting cofinality of that sequence. Hence
+$\cf^M(\beta)\ge\theta>\omega$.
+On the other hand $u\cap\beta\in M$ is cofinal in $\beta$ and has
+$M$-size below $j(\delta)$. Thus
+\begin{equation}\label{eq:betacf}
+\omega<\cf^M(\beta)<j(\delta).
+\end{equation}
+Fix in $M$ a club $C\subseteq\beta$ of size
+$\cf^M(\beta)<j(\delta)$.
+
+\textbf{Step 2: the seed is definable in $N^j$.}
+Let $\vec B=j(\vec A)=\langle B_\xi:\xi<j(\mu)\rangle$.
+It belongs to $N^j$ and its entries are pairwise disjoint. By the
+transferred amenability statement and \eqref{eq:betacf},
+\[
+F=\calF^M_{\beta,\omega}\cap N^j\in N^j.
+\]
+For each $\xi<j(\mu)$, both $B_\xi\cap\beta$ and its complement
+in $\beta$ belong to $N^j$. Therefore Separation \emph{inside $N^j$}
+constructs the set
+\begin{equation}\label{eq:smallseed}
+s=\{\xi<j(\mu):\beta\setminus(B_\xi\cap\beta)\notin F\}\in N^j.
+\end{equation}
+Equivalently, $\xi\in s$ exactly when $B_\xi\cap\beta$ is positive
+for the ambient-to-$M$ filter $\calF^M_{\beta,\omega}$.
+This is the point where the trace belongs to the smaller model; mere
+external definability of $s$ in $M$ would not suffice.
+
+\textbf{Step 3: fineness and smallness of the seed.}
+Fix $\xi<\mu$. Since $A_\xi$ is positive,
+$S=A_\xi\cap E^\theta_\omega$ is stationary in $V$.
+Lemma~\ref{lem:lift} shows that $j(S)\cap\beta$ meets every club of
+$\beta$ in $M$. Every member of this set has $M$-cofinality $\omega$,
+since $j(S)\subseteq(E^{j(\theta)}_\omega)^M$. It is contained in
+$B_{j(\xi)}\cap\beta$. Therefore $j(\xi)\in s$, and we have
+\begin{equation}\label{eq:seedfine}
+j``\mu\subseteq s.
+\end{equation}
+Every $\xi\in s$ satisfies $B_\xi\cap C\ne\varnothing$. Choosing
+its least member defines in $M$ an injection
+\[
+\xi\longmapsto\min(B_\xi\cap C)
+\quad\text{from }s\text{ into }C,
+\]
+because the $B_\xi$ are disjoint. Hence $|s|^M<j(\delta)$.
+Together with $s\subseteq j(\mu)$, this says
+$s\in j(P_\delta(\mu))$.
+
+\textbf{Step 4: derive the ultrafilter.}
+Define in $V$
+\[
+U=\{Z\subseteq P_\delta(\mu):s\in j(Z)\}.
+\]
+Since $s\in j(P_\delta(\mu))$, elementarity proves the ultrafilter
+axioms. The critical point bound in \eqref{eq:bigseed} proves
+$\delta$-completeness: for a sequence of fewer than $\delta$ many
+members, $j$ fixes the index ordinal and the seed lies in every entry
+of its image, hence in the image of the intersection.
+Equation~\eqref{eq:seedfine} proves fineness. Finally the definition of
+$N^j$ gives
+\[
+j(N\cap P_\delta(\mu))=N^j\cap j(P_\delta(\mu)).
+\]
+Our seed belongs to the right-hand side by \eqref{eq:smallseed}, proving
+\eqref{eq:concentrates}.
+
+\textbf{Step 5: extract a cover.}
+For $x\subseteq\mu$ with $|x|<\delta$, intersect the concentrating
+set \eqref{eq:concentrates} with the fine cones for all $\xi\in x$.
+There are fewer than $\delta$ cones, so the intersection is in the
+proper ultrafilter $U$ and is nonempty. A member $a$ belongs to $N$,
+contains $x$, and has ambient size below $\delta$.
+Lemma~\ref{lem:smallness} converts this to $|a|^N<\delta$.
+\end{proof}
+
+\begin{remark}[No unnecessary closure of the ultrapower]
+The proof does not assume $M^\theta\subseteq M$ or
+$j``\theta\in M$. The small set $u\in M$ covers that image;
+$\beta$ is an ordinal and hence belongs to $M$.
+The lower bound on its cofinality is computed externally, while the
+upper bound is witnessed by $u\cap\beta\in M$. This is why strong
+compactness suffices where supercompactness might otherwise be
+mistakenly assumed.
+\end{remark}
+
+\section{Amenable grounds cannot regularize these ordinals}\label{sec:grounds}
+
+\subsection{Why a ground supplies sufficiently high stationary families}
+
+\begin{lemma}[High stationary partitions in a ground]\label{lem:groundpartition}
+Suppose $V=W[G]$ for a set forcing $\PP\in W$, and $\mu$ is any
+ordinal. There is an ordinal $\theta>\mu$ that is a successor cardinal
+in $W$ and regular in $V$, together with a sequence
+$\langle S_\xi:\xi<\mu\rangle\in W$ of pairwise disjoint subsets of
+$(E^\theta_\omega)^W$, each stationary in $V$. The ordinal $\theta$
+can be chosen above any additional prescribed bound.
+\end{lemma}
+\begin{proof}
+In $W$, choose an infinite cardinal $\nu$ greater than $\mu$ and
+$|\PP|^W$, and beyond the prescribed bound. Put $\theta=(\nu^+)^W$.
+Then $W$ regards $\PP$ as $\theta$-cc. Such forcing preserves
+regularity of $\theta$ and all $W$-stationary subsets of $\theta$;
+a direct proof is given in Appendix~\ref{app:forcing}.
+
+Inside $W$, the set $(E^\theta_\omega)^W$ is stationary. The Ulam-matrix
+argument at a successor cardinal, proved in
+Appendix~\ref{app:splitting}, splits it into $\theta$ many disjoint
+stationary subsets. Take the first $\mu$ cells of the resulting
+sequence. They remain stationary in $V$. A countable cofinal sequence
+witnessing membership in $(E^\theta_\omega)^W$ remains a countable
+cofinal sequence in $V$, so all these cells are subsets of the actual
+$E^\theta_\omega$.
+\end{proof}
+
+\begin{theorem}[Covering by an $\omega$-club-amenable ground]\label{thm:groundcover}
+Let $W\models\ZFC$ be a set-parameter-definable ground of $V$ that is
+$\omega$-club amenable in $V$. If $\delta$ is strongly compact in $V$,
+then $W$ has the $\delta$-cover property in $V$.
+\end{theorem}
+\begin{proof}
+First let $x\subseteq\mu$ have size below $\delta$. Apply
+Lemma~\ref{lem:groundpartition}, choosing the regular $\theta$ also
+above $\delta$. The resulting sequence is a family of positive sets
+for $\calF^V_{\theta,\omega}$, so
+Theorem~\ref{thm:localseed} gives a cover $a\in W\cap P_\delta(\mu)$
+of $x$. Lemma~\ref{lem:smallness} gives $|a|^W<\delta$.
+
+For the usual cover property on arbitrary sets $x\subseteq W$, choose
+an ordinal $\alpha$ with $x\subseteq V_\alpha^W$. Choice in $W$
+provides a bijection $b:\mu\to V_\alpha^W$ for some ordinal $\mu$.
+The inverse image $b^{-1}[x]$ is an ambient set of ordinals of size
+below $\delta$. Cover it by $a\in W$ of $W$-size below $\delta$ as
+just proved. Then $b[a]\in W$ covers $x$ and still has $W$-size below
+$\delta$.
+\end{proof}
+
+\begin{corollary}[No amenable-ground regularization]\label{cor:noregularization}
+Suppose $\delta$ is strongly compact in $V$, $\lambda>\delta$ is an
+ordinal with $\cf^V(\lambda)=\omega$, and $W$ is a set-parameter-definable,
+$\omega$-club-amenable inner model of $\ZFC$ in which $\lambda$ is
+regular. Then $W$ is not a set-forcing ground of $V$.
+\end{corollary}
+\begin{proof}
+If it were a ground, take a countable cofinal $c\subseteq\lambda$ in
+$V$. Theorem~\ref{thm:groundcover} would give $a\in W$ containing $c$
+with $|a|^W<\delta$. Replace $a$ by $a\cap\lambda$. This set is
+cofinal in $\lambda$ because it contains $c$. Cofinality of a fixed set
+of ordinals is absolute between transitive models with the same
+ordinals. Thus $W$ contains a cofinal subset of its regular cardinal
+$\lambda$ of $W$-size below $\delta<\lambda$, a contradiction.
+\end{proof}
+
+This argument is independent of the size, distributivity, or chain
+condition of the forcing at $\lambda$ itself. Every \emph{set} forcing
+has a high enough level at which it preserves the stationary partition
+needed by the proof. This is what makes the result stronger than a
+bound on a singularizing forcing at one specified successor.
+
+\section{The conditional inconsistency theorem}\label{sec:mainproof}
+
+\begin{theorem}[No high-completeness ground]\label{thm:noHCDground}
+Assume $\delta<\lambda\le\gamma$, $\SC(\delta)$, and
+$\CEx_\gamma(\lambda)$. Then for every cardinal $\eta\ge q(\gamma)$,
+$\HCD(\eta)$ is not a set-forcing ground of $V$.
+\end{theorem}
+\begin{proof}
+Suppose $N=\HCD(\eta)$ were a ground. In particular it would satisfy
+$\ZFC$, whether or not Choice was known beforehand.
+Proposition~\ref{prop:amenable} makes it $\omega$-club amenable, and it
+is definable from the ordinal $\eta$. By
+Proposition~\ref{prop:barrier}, $\lambda$ is regular in $N$ while
+$\cf^V(\lambda)=\omega$. Since $\delta<\lambda$ is strongly compact
+in $V$, Corollary~\ref{cor:noregularization} gives the contradiction.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose, contrary to the conclusion, that a strongly compact
+$\kappa>\gamma$ exists. Then $\kappa\ge q(\gamma)$.
+Input~\ref{in:ground} says that $\HCD(\kappa)$ is a set-forcing ground
+of $V$. Theorem~\ref{thm:noHCDground} says that it is not.
+\end{proof}
+
+\begin{corollary}[A proper class of strongly compact cardinals]\label{cor:properclass}
+Assume there is a proper class of strongly compact cardinals, and let
+$\delta_0$ be the least one. Every cover-exacting cardinal is strictly
+below $\delta_0$. Equivalently, no cardinal at or above $\delta_0$ is
+$\gamma$-cover exacting for any cardinal $\gamma$.
+\end{corollary}
+\begin{proof}
+If $\lambda>\delta_0$ were $\gamma$-cover exacting, choose a strongly
+compact $\kappa>\gamma$ and apply Theorem~\ref{thm:main} with
+$\delta=\delta_0$. Equality $\lambda=\delta_0$ is impossible because
+an exacting cardinal has cofinality $\omega$, whereas a strongly
+compact cardinal is uncountable regular.
+\end{proof}
+
+\begin{corollary}[A bound forced on every cover width]\label{cor:bound}
+If a cover-exacting $\lambda$ lies above a strongly compact cardinal,
+then the class of strongly compact cardinals is bounded. Every witness
+$\gamma$ to $\CEx_\gamma(\lambda)$ is an upper bound for that class.
+In particular, a $\lambda$-cover-exacting $\lambda$ cannot have strongly
+compact cardinals both below and above it.
+\end{corollary}
+\begin{proof}
+For each fixed cover bound $\gamma$, Theorem~\ref{thm:main} excludes
+all strongly compact cardinals greater than $\gamma$. The diagonal
+case sets $\gamma=\lambda$.
+\end{proof}
+
+\begin{remark}[The strict inequality at the upper endpoint]
+The conclusion excludes $\kappa>\gamma$. It does not, by this
+argument, exclude $\kappa=\gamma$ when $\gamma$ is regular. At a regular
+cover bound the inherited reconstruction requires completeness strictly
+greater than $\gamma$. The singular endpoint has already been included
+through $q(\gamma)$, but a strongly compact cardinal is not singular.
+\end{remark}
+
+\subsection{Cross-check against the published dichotomy}\label{sec:crosscheck}
+
+Goldberg proves the following result
+\cite[Lemma~2.7]{dichotomy}: if $N$ is $\omega$-club amenable and
+$\delta$ is $\omega_1$-strongly compact, then either all sufficiently
+large regular cardinals of $V$ are measurable in $N$, or $N$ has the
+$(\omega_1,\delta)$-cover property. The latter means that every
+countable subset of $N$ is covered by a set in $N$ of $N$-size below
+$\delta$. A strongly compact cardinal satisfies the stated weaker
+hypothesis.
+
+Here is a short second verification of the no-ground step. Suppose
+$V=N[G]$ by a set forcing. At arbitrarily large successor cardinals of
+$N$, the forcing preserves both that successor's cardinality and its
+regularity. In particular, there are arbitrarily large regular
+cardinals of $V$ that are still successor cardinals in $N$. They cannot
+be measurable in $N$, since measurable cardinals are inaccessible in
+any model of $\ZFC$. Thus the first alternative is impossible. The
+countable-cover alternative follows and contradicts regularity in
+$N$ of a $\lambda>\delta$ of ambient cofinality $\omega$, exactly as
+in Corollary~\ref{cor:noregularization}.
+
+This verification has the same classical stationary-seed background
+as our detailed proof; it is not a claim of a new HOD dichotomy. It is
+useful because it checks the main conclusion against an independently
+stated published theorem, and uses only countable covering rather than
+the full $\delta$-cover property we proved for strongly compact
+$\delta$.
+
+\section{Quantitative stationary width and inner measurability}\label{sec:width}
+
+The preceding proof has a local consequence even when no ground is
+assumed. It records how extensively high stationary partitions must
+fail in a hypothetical remaining model.
+
+\begin{theorem}[A bound on ambient stationary width]\label{thm:width}
+Let $N\models\ZFC$ be set-parameter definable and $\omega$-club
+amenable. Suppose $\delta$ is strongly compact in $V$,
+$\delta<\lambda$, $\cf^V(\lambda)=\omega$, and $\lambda$ is regular
+in $N$. For every regular cardinal $\theta>\lambda$ of $V$, the filter
+\[
+F_\theta=\calF^V_{\theta,\omega}\cap N\in N
+\]
+is $\lambda$-weakly saturated in $N$: there is no sequence in $N$ of
+$\lambda$ pairwise disjoint $F_\theta$-positive subsets of $\theta$.
+\end{theorem}
+\begin{proof}
+Such a sequence would meet all the assumptions of
+Theorem~\ref{thm:localseed} with $\mu=\lambda$. A countable cofinal
+$c\subseteq\lambda$ would have an $N$-cover of $N$-size below
+$\delta$, contradicting regularity of $\lambda$ in $N$.
+For a set $A\in N$ with $A\subseteq\theta$, positivity for the filter
+object $F_\theta$ as computed in $N$ is exactly ambient
+$\calF^V_{\theta,\omega}$-positivity: in both cases it says that
+$\theta\setminus A$ is not in the trace. Thus no absoluteness of
+stationarity has been assumed in translating the contradiction into
+the internal weak-saturation statement.
+\end{proof}
+
+\begin{corollary}[How many cells can survive?]\label{cor:survivors}
+Under the hypotheses of Theorem~\ref{thm:width}, let
+$\vec S=\langle S_\xi:\xi<\tau\rangle\in N$ be a sequence of pairwise
+disjoint subsets of $\theta$, where $\theta>\lambda$ is regular in
+$V$. Then
+\[
+I=\{\xi<\tau:S_\xi\text{ is positive for }
+\calF^V_{\theta,\omega}\}
+\]
+belongs to $N$ and has $N$-cardinality below $\lambda$.
+In particular, if $\vec S$ is an $N$-partition of
+$(E^\theta_\omega)^N$ into $\theta$ stationary cells, fewer than
+$\lambda$ of those cells remain stationary in $V$.
+\end{corollary}
+\begin{proof}
+The trace $F_\theta\in N$ and the sequence $\vec S\in N$ define
+$I$ by Separation in $N$, using the complement test for positivity.
+If $|I|^N\ge\lambda$, Choice in $N$ would select a subsequence of
+length $\lambda$, contradicting Theorem~\ref{thm:width}.
+For the last assertion, every cell is a subset of the true
+$E^\theta_\omega$, so positivity is precisely ambient stationarity.
+\end{proof}
+
+For $N=\HCD(\eta)$ and a cover-exacting $\lambda$, the cardinal
+$\lambda$ is also an ambient cardinal. In that application
+Lemma~\ref{lem:smallness} converts the bound to ambient size below
+$\lambda$ as well. Thus a partition of length $\theta>\lambda$ has
+$\theta$ many cells that cease to be stationary. This is a restriction
+at every applicable high level, not just at $(\lambda^+)^N$.
+
+\begin{lemma}[Internal completeness of the trace]\label{lem:filtercomplete}
+If $N$ is $\omega$-club amenable and $\theta$ is uncountable regular in
+$V$, then $N$ regards $F_\theta$ as a proper $\theta$-complete filter
+containing every co-bounded subset of $\theta$ that belongs to $N$.
+\end{lemma}
+\begin{proof}
+The ordinal $\theta$ remains a regular cardinal in $N$: any smaller
+cardinality or cofinality witness in $N$ would remain such a witness
+in $V$. The ambient filter is proper because every club in a regular
+uncountable $\theta$ meets $E^\theta_\omega$. It contains the
+co-bounded sets.
+
+Let $\langle A_i:i<\rho\rangle\in N$ with $\rho<\theta$ and each
+$A_i\in F_\theta$. In $V$ choose a club $C_i$ witnessing membership
+of each $A_i$ in the ambient filter. Regularity of $\theta$ makes
+$C=\bigcap_{i<\rho}C_i$ a club. Then
+$C\cap E^\theta_\omega\subseteq\bigcap_{i<\rho}A_i$.
+This intersection belongs to $N$ and to the ambient filter, hence to
+$F_\theta$. All the filter axioms and the asserted internal
+completeness follow. The witness clubs need not belong to $N$.
+\end{proof}
+
+\begin{theorem}[An explicit inner-measurability threshold]\label{thm:measurable}
+Under the hypotheses of Theorem~\ref{thm:width}, every regular cardinal
+$\theta$ of $V$ such that
+\[
+\theta>(2^\lambda)^N
+\]
+is measurable in $N$.
+\end{theorem}
+\begin{proof}
+Work inside $N$. The ordinal $\lambda$ is an infinite cardinal,
+$F_\theta$ is $\lambda$-weakly saturated by
+Theorem~\ref{thm:width}, and it is $\theta$-complete by
+Lemma~\ref{lem:filtercomplete}. Since
+$\theta>(2^\lambda)^N$, this supplies the
+$((2^\lambda)^+)^N$-completeness needed by Ulam's atomicity lemma.
+The lemma, proved in Appendix~\ref{app:atomicity}, partitions
+$\theta$ modulo the dual ideal into fewer than $\lambda$ positive
+atoms. Restricting the filter to any one of these atoms yields a
+$\theta$-complete ultrafilter in $N$ on $\theta$. It is nonprincipal:
+the filter contains the complement of every singleton. Thus $N$
+regards $\theta$ as measurable.
+\end{proof}
+
+\begin{corollary}[The high-$\HCD$ conclusion without an upper compact]\label{cor:HCDmeasurable}
+Assume $\SC(\delta)$, $\delta<\lambda\le\gamma$, and
+$\CEx_\gamma(\lambda)$. Let $\eta\ge q(\gamma)$ and assume explicitly
+that $N=\HCD(\eta)$ satisfies $\ZFC$. Then
+Theorem~\ref{thm:width} and Corollary~\ref{cor:survivors} hold for $N$,
+and every ambient regular $\theta>(2^\lambda)^N$ is measurable in $N$.
+In particular this holds for every ambient regular
+$\theta\ge(2^\lambda)^{+V}$.
+\end{corollary}
+\begin{proof}
+Propositions~\ref{prop:barrier} and~\ref{prop:amenable} supply the
+hypotheses of Theorem~\ref{thm:width}. Apply
+Theorem~\ref{thm:measurable}.
+For the final bound, put $\chi=(2^\lambda)^N$. A bijection in $N$
+from $\chi$ to $(\calP(\lambda))^N$ remains an injection in $V$ into
+$\calP^V(\lambda)$. Hence $|\chi|^V\le 2^\lambda$ and
+$\chi<(2^\lambda)^{+V}$. This is an ordinal comparison; it does not
+assert that the two models calculate $2^\lambda$ identically.
+\end{proof}
+
+\begin{remark}[A second route from the quantitative theorem to no grounds]
+A set-forcing ground has arbitrarily high successor cardinals that
+remain regular in the extension. Choose one above $(2^\lambda)^N$.
+Theorem~\ref{thm:measurable} would make it measurable in $N$, even
+though it is a successor there. This is another way to see the ground
+obstruction. The direct covering proof is shorter and does not need
+filter atomicity; the atomicity argument explains the stronger
+structure forced on any remaining high inner model.
+\end{remark}
+
+\section{A weaker lower compactness assumption}\label{sec:weaker}
+
+The contradiction only needs to cover a countable cofinal set.
+Consequently one may weaken the lower strongly compact hypothesis
+without changing the upper one.
+
+\begin{definition}[The countably complete fine-ultrafilter hypothesis]
+For an uncountable cardinal $\delta$, let $\Ffine(\delta)$ mean:
+for every sufficiently large regular $\theta$ there is a countably
+complete fine ultrafilter on $P_\delta(\theta)$.
+\end{definition}
+
+\begin{proposition}[The countable version of the seed argument]\label{prop:weakseed}
+Replace strong compactness in Theorem~\ref{thm:localseed} by the
+existence of a countably complete fine ultrafilter on
+$P_\delta(\theta)$. Its conclusion then holds with ``countably
+complete'' in place of ``$\delta$-complete,'' and every countable
+$x\subseteq\mu$ has a cover in $N$ of $N$-size below $\delta$.
+\end{proposition}
+\begin{proof}
+The well-founded ultrapower still has the seed $u$ with
+$j``\theta\subseteq u$ and $|u|^M<j(\delta)$. The cofinality bounds,
+the transferred filter trace, the set $s\in N^j$, its $M$-smallness,
+and inclusion $j``\mu\subseteq s$ are proved exactly as in
+Theorem~\ref{thm:localseed}. They do not use
+$\crit(j)\ge\delta$. Continuity at countable cofinality uses only
+$j(\omega)=\omega$, which holds for the well-founded ultrapower.
+
+The derived ultrafilter is countably complete: given a countable
+sequence of its members, $j$ fixes the index set $\omega$, so $s$
+lies in the image of their intersection. For a countable $x$, only
+countably many fine cones must be intersected with the concentrating
+set. This produces the required cover; Lemma~\ref{lem:smallness}
+again supplies the internal size bound. No claim of
+$\delta$-completeness is made in this version.
+\end{proof}
+
+\begin{theorem}[Weakened no-sandwich theorem]\label{thm:weakmain}
+There are no cardinals $\delta<\lambda\le\gamma<\kappa$ such that
+$\Ffine(\delta)$, $\CEx_\gamma(\lambda)$, and $\SC(\kappa)$ all hold.
+More generally, under $\Ffine(\delta)$ and
+$\CEx_\gamma(\lambda)$ with $\delta<\lambda$, no
+$\HCD(\eta)$ for $\eta\ge q(\gamma)$ is a set-forcing ground of $V$.
+\end{theorem}
+\begin{proof}
+If such a high model were a ground, choose $\theta$ in
+Lemma~\ref{lem:groundpartition} large enough for $\Ffine(\delta)$
+to apply. Proposition~\ref{prop:weakseed} covers a countable cofinal
+subset of $\lambda$ by an internally $<\delta$ set in that model.
+The inherited regularity barrier contradicts this. An upper strongly
+compact $\kappa$ then supplies the forbidden ground by
+Input~\ref{in:ground}.
+\end{proof}
+
+For a familiar sufficient hypothesis, let $\delta$ be regular and
+$\omega_1$-strongly compact, in the sense that every $\delta$-complete
+filter extends to a countably complete ultrafilter. On
+$P_\delta(\theta)$, the filter generated by the sets
+\[
+\{b\in P_\delta(\theta):a\subseteq b\}
+\qquad(a\in P_\delta(\theta))
+\]
+is proper and $\delta$-complete: regularity of $\delta$ ensures that
+the union of fewer than $\delta$ many such $a$'s still has size below
+$\delta$. A countably complete ultrafilter extending it is fine.
+Thus this regular $\omega_1$-strong compactness assumption implies
+$\Ffine(\delta)$ and can replace the lower strong compactness in the
+main result. We do not assert an equivalence between these
+formulations at singular $\delta$.
+
+\section{Scope, proof audit, and remaining questions}\label{sec:audit}
+
+\subsection{What has and has not been established}
+
+The main theorem is a conditional inconsistency of a specific
+\emph{joint} large-cardinal configuration. It is not merely an
+inconsistency obtained by appending the Ground Axiom or an unproved
+stabilization principle: both were removed. The upper and lower
+strongly compact cardinals supply different, indispensable inputs to
+the proof. The upper one gives a high-completeness ground; the lower
+one supplies a fine ultrafilter used to derive countable covering in
+that ground.
+
+The bare theory
+\[
+\ZFC+\exists\delta<\lambda\le\gamma\,
+\bigl(\SC(\delta)\wedge\CEx_\gamma(\lambda)\bigr)
+\]
+is not refuted by this report. Problem~5.2 in the Blue--Goldberg notes
+asks about precisely that remaining configuration \cite{cover}.
+Our conclusion is that any such model must have no strongly compact
+above its cover bound, no high-$\HCD$ ground, and---whenever a high
+$\HCD$ model satisfies Choice---the stationary-width and measurability
+behavior of Section~\ref{sec:width}.
+
+Nor does the argument apply automatically to ordinary exactingness,
+to ultraexactingness without a cover hypothesis, or to a hypothesis
+whose cover bound changes with the height. The fixed bound $\gamma$
+is used in the trace reconstruction and is the reason an upper
+$\kappa>\gamma$ can be selected uniformly.
+
+\subsection{Dependency audit}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}P{.26\textwidth}YY@{}}
+\toprule
+\textbf{Ingredient}&\textbf{Source or proof}&\textbf{Role}\nobreak\\\midrule
+Completeness barrier&Inherited from the supplied synthesis; reconstructed in Section~\ref{sec:barrier} from Inputs A--B.&Makes $\lambda$ regular in the high model.\\
+High $\HCD$ is a ground&Goldberg, Input~\ref{in:ground}; requires the upper strongly compact.&Converts the inner model into a set-forcing ground.\\
+$\omega$-club amenability&Proposition~\ref{prop:amenable}, by hereditary definability.&Places the stationary-positivity trace in the high model.\\
+Seed belongs to $N^j$&Equation~\eqref{eq:smallseed}; Separation from the trace.&Makes the derived measure concentrate on $N$.\\
+Seed is small&Equations~\eqref{eq:betacf}--\eqref{eq:seedfine}; disjointness gives an injection into a small club.&Provides $<\delta$ covers.\\
+High stationary family&Lemma~\ref{lem:groundpartition} and Appendix A.&Uses only that the forcing is a set.\\
+No-sandwich contradiction&Theorems~\ref{thm:noHCDground} and~\ref{thm:main}.&New application; no stabilization or Ground Axiom.\\
+Quantitative measurability&Theorem~\ref{thm:width}, trace completeness, and Appendix B.&A stronger local consequence, not needed for the main contradiction.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Sensitive points checked explicitly}
+
+The inequality in trace reconstruction is
+$|\sigma|\le\gamma<\eta$; it is not $|\sigma|<\gamma$.
+The ultrafilters used to define high-$\HCD$ sets have completeness
+above the cover bound, whereas the stationary-seed ultrafilter comes
+from the \emph{lower} compact cardinal and has completeness
+$\delta$. They are different ultrafilters with different jobs.
+
+The model $N^j$ is the interpretation in $M$ of the definition of $N$.
+It is not $j``N$. The club-filter trace used there is calculated in
+$M$, rather than in $N^j$. Its membership in $N^j$ follows by
+transferring the actual amenability statement. Merely saying that
+stationarity is definable would not justify the proof. The ordinal
+$\beta$ need not be regular in $M$; amenability was required at every
+ordinal of uncountable cofinality, not just at regular cardinals.
+
+No ground stationarity is assumed to be preserved at a singularized
+ordinal or its first old successor. The proof moves above the size of
+the forcing. The Ulam-matrix and chain-condition proofs in Appendix A
+show exactly why that move is legitimate.
+
+The upper compact cardinal is assumed strongly compact in $V$, not
+merely in a ground. The lower compact cardinal is likewise an ambient
+hypothesis. Choice in a high $\HCD$ model is obtained from its being a
+ground or is explicitly assumed; it is not inherited from the ambient
+Axiom of Choice alone.
+
+\subsection{Research questions left by the result}
+
+The central remaining question is whether the lower-compact,
+cover-exacting configuration can exist when the strongly compact
+cardinals are bounded. A more focused obstruction would be to derive
+that some $\HCD(\eta)$ with $\eta\ge q(\gamma)$ is a ground without
+assuming an upper strongly compact. The present work proves that any
+such derivation would finish the inconsistency argument, but does not
+supply it.
+
+Another precise target is the Choice question for the high-completeness
+models under the lower-compact hypothesis alone. The measurable-cardinal
+conclusion above is conditional on Choice there. Eliminating that
+qualification would require an argument about the inner model, not a
+change of notation in the stationary-seed proof.
+
+The supplied Lean sources were used as a reference for the hypotheses
+and the inherited barrier. No new Lean theorem is included, and no
+compilation of those sources is represented as a verification of the
+new result. The present proof obligations are conventional mathematical
+ones, isolated in the table above. The bibliographic search and source
+checks support the attribution of the inputs, not a claim that no one
+has previously noticed this consequence.
+
+\appendix
+\section{Classical stationary facts used in the ground argument}\label{app:stationary}
+
+\subsection{Splitting at a successor by an Ulam matrix}\label{app:splitting}
+
+\begin{lemma}[Successor splitting]\label{lem:ulam}
+In $\ZFC$, if $\nu$ is infinite, $\theta=\nu^+$, and
+$S\subseteq\theta$ is stationary, then $S$ has a family of $\theta$
+pairwise disjoint stationary subsets. The family can be made a
+partition of $S$.
+\end{lemma}
+\begin{proof}
+For every $\beta\in[\nu,\theta)$ choose a bijection
+$e_\beta:\nu\to\beta$. For $\xi<\theta$ and $i<\nu$, put
+\[
+A_i^\xi=\{\beta<\theta:\beta>\max\{\nu,\xi\}
+\text{ and }e_\beta(i)=\xi\}.
+\]
+For fixed $\xi$, the sets $A_i^\xi$ as $i$ varies partition a tail of
+$\theta$. At least one $S\cap A_i^\xi$ is stationary: otherwise
+intersect the fewer than $\theta$ many clubs witnessing
+nonstationarity, contradicting stationarity of $S$. Choose one such
+$i=i(\xi)$.
+
+There is a fixed $i_*<\nu$ for which
+$B=\{\xi<\theta:i(\xi)=i_*\}$ has size $\theta$. If every fiber had
+size below the regular cardinal $\theta$, their union over
+$\nu<\theta$ many indices would have size below $\theta$, although
+that union is $\theta$.
+For distinct $\xi,\zeta\in B$, the sets
+$A_{i_*}^\xi$ and $A_{i_*}^\zeta$ are disjoint, because
+$e_\beta(i_*)$ cannot have two values. Enumerating $B$ gives the
+required stationary family. Any unused part of $S$ can be added to
+one cell to obtain a partition, without affecting disjointness or
+stationarity.
+\end{proof}
+
+The proof is applied \emph{inside the ground}. At a regular
+uncountable $\theta$ there, $E^\theta_\omega$ is stationary: given a
+club, build a strictly increasing countable sequence from it and take
+its supremum, which is still below $\theta$ and belongs to the club.
+The supremum has cofinality $\omega$.
+
+\subsection{Chain-condition preservation, with names}\label{app:forcing}
+
+\begin{lemma}[$\theta$-cc preservation]\label{lem:ccpreserve}
+Suppose $W\models\ZFC$, $\theta$ is regular uncountable in $W$, and
+$\PP\in W$ is $\theta$-cc in $W$. Then forcing with $\PP$ preserves
+regularity of $\theta$ and every stationary $S\subseteq\theta$ of
+$W$. It also preserves all $W$-cardinals at or above $\theta$.
+\end{lemma}
+\begin{proof}
+All choices of antichains in this proof are made in $W$.
+For a name $\dot f:\rho\to\theta$ with $\rho<\theta$, a maximal
+antichain deciding each $\dot f(i)$ has size below $\theta$.
+Regularity of $\theta$ bounds the union of all possible values for
+all $i<\rho$ below $\theta$. Thus no new such map can be cofinal,
+and $\theta$ stays regular.
+
+Now let $p$ force that $\dot C$ is club in $\theta$. Work below $p$.
+For each $\alpha<\theta$, choose a maximal antichain $B_\alpha$
+whose members decide an ordinal $\beta_q>\alpha$ belonging to
+$\dot C$. This is possible because $\dot C$ is forced unbounded.
+The chain condition gives
+\[
+f(\alpha)=\sup\{\beta_q+1:q\in B_\alpha\}<\theta.
+\]
+Let $D\subseteq\theta$ be the ground-model club of nonzero limit
+ordinals $\xi$ closed under $f$, meaning
+$f(\alpha)<\xi$ for all $\alpha<\xi$.
+In any generic extension containing $p$, for each $\alpha<\xi\in D$
+the generic meets $B_\alpha$, so $\dot C$ has a point strictly between
+$\alpha$ and $\xi$. Closedness therefore gives $\xi\in\dot C$.
+Thus $p$ forces $D\subseteq\dot C$.
+If $S$ is stationary in $W$, choose $\xi\in S\cap D$ in $W$.
+Then $p$ forces that $S$ meets $\dot C$. Since the name and condition
+were arbitrary, $S$ remains stationary.
+
+For cardinal preservation, suppose $\chi\ge\theta$ is a $W$-cardinal
+and $\rho<\chi$. In a name for a function from $\rho$ to $\chi$,
+there are fewer than $\theta$ possible values per argument, by maximal
+antichains. If $\rho<\theta$, their union has size below $\theta$;
+if $\rho\ge\theta$, it has $W$-size at most $|\rho|^W\cdot\theta
+$ and hence below $\chi$. In neither case can the function be onto
+$\chi$. No cardinal at or above $\theta$ is collapsed.
+\end{proof}
+
+\section{The filter-atomicity lemma, with proof}\label{app:atomicity}
+
+This is the classical Ulam lemma used in
+\cite[Lemma~2.1]{dichotomy}. It is included so that the quantitative
+measurability consequence does not rest on an unexplained atomicity
+step. The lemma is applied inside $N$, where Choice is available.
+
+\begin{lemma}[Ulam atomicity]\label{lem:atomicity}
+Let $\lambda$ be an infinite cardinal and $F$ a proper filter on a set
+$X$. Suppose $F$ is $(2^\lambda)^+$-complete and there is no family of
+$\lambda$ pairwise disjoint $F$-positive sets. Then $X$ can be
+partitioned modulo the dual ideal into fewer than $\lambda$ positive
+atoms. Consequently $F$ is an intersection of fewer than $\lambda$
+ultrafilters, each inheriting every degree of completeness of $F$.
+\end{lemma}
+\begin{proof}
+Let $I=\{A\subseteq X:X\setminus A\in F\}$ be the dual ideal and
+put $\rho=(2^\lambda)^+$. A positive set $A$ is an \emph{atom} when
+for each $B\subseteq A$, either $B\in I$ or $A\setminus B\in I$.
+A positive non-atom can therefore be split into two disjoint positive
+sets.
+
+Suppose no partition modulo $I$ into fewer than $\lambda$ positive
+atoms exists. We construct refining partitions modulo $I$ through
+stages $\alpha\le\lambda$. Start with $\{X\}$. At a successor stage,
+choose a non-atom cell and split it into two positive cells, leaving
+the others alone. There must be a non-atom cell by the supposition.
+Every partition we obtain has fewer than $\lambda$ positive cells,
+by the assumed weak saturation.
+
+At a limit stage $\alpha\le\lambda$, take all intersections along
+coherent paths through the preceding partitions. There are at most
+$\lambda^\lambda=2^\lambda$ such paths. Their intersections partition
+what has not already been discarded as ideal-small. Discard every
+intersection that is in $I$. The union of all discarded sets remains
+in $I$: there are at most $2^\lambda<\rho$ candidates at each stage
+and at most $\lambda$ stages, and $I$ is $\rho$-complete. Thus the
+positive intersections still form a partition modulo $I$, again with
+fewer than $\lambda$ cells. They refine the preceding partitions by
+actual inclusion. This justifies the recursion, including its final
+stage $\lambda$.
+
+Let $\calD$ be that final partition; it has size $\tau<\lambda$.
+Every positive cell at every earlier stage contains a positive member
+of $\calD$. Indeed $\calD$ covers $X$ modulo $I$ and refines that
+stage; a positive cell with no final positive descendant would be
+contained in the discarded ideal-small set.
+For each of the $\lambda$ successor-stage splits, choose one final
+cell inside each of its two children. This associates to the split an
+unordered pair of distinct members of $\calD$.
+Pairs associated to different splits must differ: the two members of
+such a pair are in the same cell immediately before that split and
+in distinct cells afterward, so the split is the unique first stage
+at which they are separated. We have obtained an injection from
+$\lambda$ into $[\calD]^2$, impossible because
+$|[\calD]^2|\le\tau^2<\lambda$. The recursion must therefore have
+reached a partition into positive atoms before this contradiction.
+
+Let $\{A_i:i<\tau\}$, $\tau<\lambda$, be such a partition modulo
+$I$. For each $i$ define
+\[
+U_i=\{B\subseteq X:A_i\setminus B\in I\}.
+\]
+The atom property gives the ultrafilter alternatives, and $U_i$ is
+proper since $A_i\notin I$. If $I$ is closed under unions of fewer
+than a cardinal $\zeta$, then $U_i$ is $\zeta$-complete: intersecting
+fewer than $\zeta$ members has complement inside $A_i$ contained in
+the corresponding union of $I$-small complements.
+Finally $F=\bigcap_{i<\tau}U_i$. One inclusion is immediate. For the
+other, if all $A_i\setminus B$ are in $I$, then
+\[
+X\setminus B\subseteq
+\left(X\setminus\bigcup_{i<\tau}A_i\right)
+\cup\bigcup_{i<\tau}(A_i\setminus B)\in I,
+\]
+using $\tau<\lambda<\rho$. Hence $B\in F$, as required.
+\end{proof}
+
+\section{Source map and reproducibility}\label{app:sources}
+
+The starting archive contains the two reports
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex} and
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex}, together with the
+\nolinkurl{Cardinals/} Lean development. The specific inherited
+material used here is the synthesis's completeness barrier, its
+relative-predicate lemmas, and its high-$\HCD$ ground discussion.
+The new argument does not depend on the archive's more speculative
+Prikry consistency refinement or on its ultraexacting uniformization
+results.
+
+Primary sources were checked on 18 September 2026. For the ground
+theorem, the exact version cited is arXiv:2103.13961v2. For the
+$\omega$-club-amenable covering dichotomy, the checked author PDF is
+dated 10 August 2021 and has the result as Lemma~2.7. Its fuller
+singular-cardinal dichotomy is Corollary~2.9; only Lemma~2.7 is needed
+for our short cross-check. For cover exactingness, the checked notes
+are dated 1 July 2026. These version details matter because some
+statement numbers, and the strength of hypotheses used in short
+summaries, differ.
+
+The accompanying source is self-contained as a \LaTeX{} document:
+its bibliography is embedded and it needs no separate figure or
+bibliography files. Compile with \texttt{pdflatex} three times, or
+with \texttt{latexmk -pdf}. The text and mathematical fonts are the
+same \texttt{newpxtext}/\texttt{newpxmath} family as in the supplied
+synthesis, and the five named colors and page geometry are retained.
+No font files are distributed. The build checks concern rendering
+and cross-references, not the logical correctness of the mathematics.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{archive}
+\emph{Large cardinals at the inconsistency frontier: a synthesis},
+second edition, prepared for Vladimir Reshetnikov, 18 September 2026.
+User-supplied source in \nolinkurl{Cardinals3.zip},
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex}.
+See especially the completeness barrier, ``Two strongly compacts,''
+and ``Collapse or destroy.'' Together with
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex} and the
+\nolinkurl{Cardinals/} Lean reference development.
+
+\bibitem{cover}
+Gabriel Goldberg, reporting joint work with Douglas Blue.
+\emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes, 1 July 2026.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Definitions~3.1--3.2, Lemma~3.3, Proposition~3.4, and Problem~5.2.
+
+\bibitem{unique}
+Gabriel Goldberg.
+\emph{The uniqueness of elementary embeddings}.
+The Journal of Symbolic Logic \textbf{89}(4) (2024), 1430--1454.
+\doi{10.1017/jsl.2024.60}.
+Version checked: \arxiv{2103.13961v2}, revised 2 November 2021;
+Proposition~4.2 and Theorems~4.3, 4.9, 4.13.
+The corresponding ground theorem in the journal numbering is
+Theorem~4.10.
+
+\bibitem{dichotomy}
+Gabriel Goldberg.
+\emph{Strongly compact cardinals and ordinal definability}.
+Journal of Mathematical Logic \textbf{24}(1) (2024), 2250010.
+\arxiv{2107.00513}.
+Author version checked, 10 August 2021:
+\url{https://math.berkeley.edu/~goldberg/Papers/StronglyCompactCardinalsAndOrdinalDefinability.pdf}.
+See Lemma~2.1, Proposition~2.3, Lemma~2.7, and Corollary~2.9.
+
+\bibitem{note}
+Gabriel Goldberg.
+\emph{A note on Woodin's HOD dichotomy}.
+\arxiv{2102.05463v4}, 2021.
+Proposition~2.2 gives a closely related stationary-seed construction.
+
+\bibitem{abl}
+Juan P. Aguilera, Joan Bagaria, and Philipp L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 2025.
+Theorem~2.10 gives the basic inner-model regularity phenomenon at
+exacting cardinals; the cover-relative version used here is
+reconstructed in Section~\ref{sec:barrier}.
+
+\bibitem{kunen}
+Kenneth Kunen.
+\emph{Elementary embeddings and infinitary combinatorics}.
+The Journal of Symbolic Logic \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+The local rank-segment form is also stated as Theorem~1.1 in
+\cite{cover}.
+
+\end{thebibliography}
+\end{document}

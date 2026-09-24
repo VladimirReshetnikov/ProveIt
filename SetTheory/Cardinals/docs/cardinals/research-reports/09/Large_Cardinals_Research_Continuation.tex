@@ -1,0 +1,1349 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+% newpxtext selects TeX Gyre Heros (qhv), scaled to .94, for sans serif.
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: research continuation},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={A Prikry consistency refinement and local definability obstructions},pdfkeywords={large cardinals, cover exacting, Prikry forcing, rank into rank, HOD, relative consistency}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Prikry consistency and definability obstructions}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Prikry consistency and definability obstructions}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\DC}{\mathsf{DC}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HH}{\mathsf{HH}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Ione}{\mathrm{I1}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Isharp}{\mathrm{I0}^{\#}}
+\newcommand{\Status}[1]{\textbf{Status.} #1}
+\newcommand{\Priority}[1]{\textbf{Research priority.} #1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}(0)}}
+\newcommand{\Iwfone}{\mathrm{I3}_{1}}
+\newcommand{\RelEx}{\operatorname{RelEx}}
+\newcommand{\Bad}{\operatorname{Bad}}
+\newcommand{\VP}{\mathsf{VP}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\forces}{\Vdash}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\seq}[1]{\langle #1\rangle}
+\newcommand{\tail}{\operatorname{tail}}
+\newcommand{\Cof}{\operatorname{Cof}}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem*{maintheorem}{Main theorem}
+\newtheorem*{widththeorem}{Definable-family theorem}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Large cardinals at the\\ inconsistency frontier\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont A Prikry consistency refinement and\\ local definability obstructions\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Principal result developed here.} Let $j:V_\Lambda\to V_\Lambda$ be an
+$\Iwf$-embedding, let $\kappa=\crit(j)$, and let $U$ be its derived normal
+ultrafilter. Prikry forcing with $U$ makes $\kappa$ \emph{$\kappa$-cover exacting}.
+Consequently,
+\[
+ \boxed{\quad
+ \Con(\ZFC+\Iwf)\ \Longrightarrow\
+ \Con\bigl(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda)\bigr).
+ \quad}
+\]
+This replaces the supplied report's explicit $\Itwo$ upper bound by a weaker
+rank-into-rank assumption. The construction combines the well-founded-part
+localization used for ordinary exactingness with a finite-change family of
+Prikry-name evaluations. A separate tree argument puts the required local
+embedding \emph{inside} the constructed model.
+
+\begin{assessment}{Positive and negative conclusions}
+\textbf{Relative consistency.} Sections~\ref{sec:internal}--\ref{sec:forcing}
+give the construction and its internalization argument, including the
+uniform cardinal bound on the covering family.
+
+\textbf{Conditional inconsistency.} If $\lambda$ is exacting, no nonempty
+$\OD_{V_\lambda}$ family of fewer than $\lambda$ short cofinal maps into
+$\lambda$ exists. In fact, one coordinate projection of any such definable
+family has order type $\lambda$. Individual maps need not be definable.
+
+\textbf{Scope.} These results do not settle cover exactingness above a
+strongly compact cardinal, ordinary exactingness above an extendible, or the
+unrestricted cardinal-preserving embedding problem.
+\end{assessment}
+
+\textbf{Provenance and status.} This is a research draft with detailed proofs,
+not a claim of an independently refereed discovery. The iteration facts are
+from Andretta--Dimonte and Aguilera--Bagaria--Goldberg--L\"ucke. Blue--Goldberg's
+2026 notes already anticipate cover versions of related constructions.
+The precise refinement below is established here as a continuation of the
+supplied report; its priority in the literature is not certified.
+No proof-assistant verification is claimed.
+
+\clearpage
+\tableofcontents
+\vspace{8pt}
+\begin{assessment}{Reading route}
+The main forcing theorem is Theorem~\ref{thm:forcing}; the two reusable
+arguments are the internalization lemma, Lemma~\ref{lem:internal}, and the
+finite-change cloud lemma, Lemma~\ref{lem:cloud}. The local negative result
+is Theorem~\ref{thm:width}. Section~\ref{sec:audit} records the proof's
+sensitive interfaces and the questions it leaves open.
+\end{assessment}
+
+\clearpage
+\section{What this continuation adds}\label{sec:scope}
+
+The supplied unified report separates an axiom from an additional closure,
+definability, or stationarity requirement that might make it contradictory.
+It also singles out cover exactingness as a useful boundary: its existence
+has a consistency construction, while placing it above an extendible
+cardinal is ruled out in the cited lecture notes. We keep that organization,
+but pursue a positive construction and a more flexible local obstruction
+rather than repeat the candidate survey.\cite{unified,cover}
+
+The starting comparison in the supplied report was
+$\Con(\ZFC+\Itwo)\Rightarrow\Con(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda))$.
+The ordinary-exacting construction in Aguilera--Bagaria--Goldberg--L\"ucke
+uses only $\Iwf$.\cite[Theorem~5.4]{abgl}
+The mathematical task is to retain a \emph{uniformly small predicate}
+containing an arbitrary object, not just an unexpanded exacting witness.
+
+\begin{maintheorem}
+Suppose $j:V_\Lambda\to V_\Lambda$ is an $\Iwf$-embedding with critical
+point $\kappa$, and
+\[
+ U=\{A\subseteq\kappa:\kappa\in j(A)\}.
+\]
+If $G$ is generic for Prikry forcing $\PP_U$, then
+\[
+ V[G]\models\CEx_\kappa(\kappa).
+\]
+In particular, the existence of an $\Iwf$-embedding implies the existence
+of a countable transitive model of $\ZFC$ with a $\lambda$-cover-exacting
+cardinal.
+\end{maintheorem}
+
+The last assertion is stronger than an informal appeal to a generic over
+the universe. Its proof passes to a countable elementary submodel after
+establishing the forcing theorem; see Corollary~\ref{cor:transitive}.
+No converse consistency reduction is asserted.
+
+The second result strengthens the original report's single-definable-map
+obstruction. Write $\OD_{V_\lambda}$ for definability from ordinal parameters
+and finitely many parameters belonging to $V_\lambda$.
+
+\begin{widththeorem}
+Let $\lambda$ be exacting and let $0<\rho<\lambda$. Suppose
+$F\in\OD_{V_\lambda}$ is a nonempty family of cofinal maps
+$\rho\to\lambda$. Then for some $\xi<\rho$,
+\[
+ \ot\{f(\xi):f\in F\}=\lambda.
+\]
+Consequently $|F|\geq\lambda$ in the ambient universe. If every member
+of $F$ is increasing, all coordinate projections from some coordinate
+onward have order type $\lambda$.
+\end{widththeorem}
+
+The hypothesis is that the \emph{family} is definable. It is not assumed
+that a member of the family belongs to HOD, that the family has a definable
+well-order, or that a definable choice function selects one of its members.
+This distinction is what makes the obstruction stronger than simply
+asking for a cofinal map in $\HOD_{V_\lambda}$.
+
+\subsection{A precise novelty ledger}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}P{.29\textwidth}Y@{}}
+\toprule
+\textbf{Ingredient or conclusion}&\textbf{Status in this continuation}\\\midrule
+Iteration and well-founded-part facts&Imported mathematical inputs, with the exact source locators recorded below.\\
+The $\Itwo$ cover construction&Already in Blue--Goldberg's notes; not presented as a discovery here.\\
+The $\Iwf$ cover refinement&An explicit proof developed here by combining and extending those arguments. The notes' broader anticipation of cover variants prevents a justified priority claim.\\
+The definable-family obstruction&A proved consequence of the established HOD-regularity theorem, with a quantitative projection bound. It is not a new refutation of bare exactingness.\\
+The smaller-strongly-compact case&Unresolved by these arguments. No preservation of such a cardinal below the new exacting cardinal is proved.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A distinction between a new deduction in this document and a new theorem
+in the historical literature is essential. The latter requires a more
+exhaustive priority investigation and specialist scrutiny than a targeted
+source check can provide. The mathematical claims below are stated with
+their hypotheses and proofs, rather than with a claim of priority.
+
+\section{Definitions and the iteration interface}\label{sec:definitions}
+
+\subsection{Cover exactingness and its quantifiers}
+
+\begin{definition}\label{def:relative}
+For $\alpha>\lambda$ and $Y\subseteq V_\alpha$, let
+$\RelEx(\lambda,\alpha,Y)$ assert that there are $X$ and an elementary map
+\[
+ k:(X,\in,Y\cap X)\longrightarrow(V_\alpha,\in,Y)
+\]
+with
+\[
+ (X,\in,Y\cap X)\prec(V_\alpha,\in,Y),\qquad
+ V_\lambda\cup\{\lambda\}\subseteq X,\qquad
+ k(\lambda)=\lambda,\qquad k\restr\lambda\ne\id.
+\]
+A cardinal $\lambda$ is \emph{$\gamma$-cover exacting} if
+\begin{equation}\label{eq:cover}
+ \forall\alpha>\lambda\ \forall y\in V_\alpha\ \exists Y\subseteq V_\alpha
+ \quad
+ \bigl[y\in Y\ \wedge\ |Y|\leq\gamma\ \wedge\
+       \RelEx(\lambda,\alpha,Y)\bigr].
+\end{equation}
+\end{definition}
+
+This is the bounded-predicate definition used in the supplied report and
+in Blue--Goldberg's notes.\cite[Definitions~2.6 and~3.1]{cover}
+The object $y$ is a \emph{member} of $Y$. It need not belong to $X$, and
+the witness need not fix $y$. The bound $\gamma$ is independent of
+$\alpha$ and $y$. The substructure $X$ need not be transitive.
+Every occurrence of this definition in a model $W$ uses $V_\alpha^W$,
+cardinality in $W$, and witnesses belonging to $W$.
+
+Ordinary exactingness, $\Ex(\lambda)$, requires the same witness after
+omitting the predicate $Y$, for every cardinal height $\alpha>\lambda$.
+Every cover-exacting cardinal is therefore exacting.
+
+The language is finite, so satisfaction for these set structures is
+available in ordinary set theory. Thus \eqref{eq:cover} is a first-order
+set-theoretic assertion, not a proper-class embedding axiom.
+
+\subsection{The weak iterability hypothesis}
+
+Fix $j:V_\Lambda\to V_\Lambda$ with critical sequence
+\[
+ \kappa_0=\crit(j),\qquad \kappa_{n+1}=j(\kappa_n),\qquad
+ \Lambda=\sup_{n<\omega}\kappa_n.
+\]
+All uses of $\Ithree$ in the construction have this normalization. The
+canonical extension on a subset $A\subseteq V_\Lambda$ is
+\[
+ j^+(A)=\bigcup_{\beta<\Lambda}j(A\cap V_\beta).
+\]
+Let $j_{0,1}=j$, let
+$j_{n+1,n+2}=j^+(j_{n,n+1})$, and form the commuting finite iteration
+system $\seq{j_{m,n}:m\leq n<\omega}$. Its direct limit is denoted
+$M^j_\omega$, with maps $j_{n,\omega}$. The limit may be ill-founded.
+Its well-founded part, identified with its transitive collapse, is
+$W^j_\omega$.
+
+\begin{definition}\label{def:wf}
+The embedding $j$ is an $\Iwf$-embedding if
+\begin{equation}\label{eq:wf}
+ j_{0,\omega}[\kappa_0^+]\subseteq W^j_\omega.
+\end{equation}
+\end{definition}
+
+This is Definition~5.2 of Aguilera--Bagaria--Goldberg--L\"ucke with
+$n=0$.\cite{abgl} It does \emph{not} require the whole direct limit to
+be well-founded. In particular, it is not the same hypothesis as
+$\Iwfone$, which requires full well-foundedness of the first
+$\omega$-iterate.
+
+\subsection{The imported interface, rather than an assumed extension}
+
+We use the following iteration facts. The finite-iteration construction
+and amenable-predicate elementarity are treated by
+Andretta--Dimonte; the fixed-code and well-founded-part formulations below
+are recorded in Aguilera--Bagaria--Goldberg--L\"ucke.\cite[Section~3,
+ especially Lemma~3.3]{ad}\cite[Proposition~5.1 and proof of Theorem~5.4]{abgl}
+
+\begin{proposition}[Iteration interface]\label{prop:interface}
+With the preceding notation:
+\begin{enumerate}
+\item $V_\Lambda\cup\{\Lambda\}\subseteq W^j_\omega$,
+$j_{n,\omega}\restr V_{\kappa_n}=\id$, and
+$j_{n,\omega}(\kappa_n)=\Lambda$.
+\item If $A\in V_{\kappa_0+1}$, then
+$j_{0,\omega}(A)\in V_{\Lambda+1}\cap W^j_\omega$ and
+$j^+(j_{0,\omega}(A))=j_{0,\omega}(A)$.
+\item If $E\subseteq\Lambda\times\Lambda$ and $j^+(E)=E$, then
+$j\restr\Lambda:(\Lambda,E)\to(\Lambda,E)$ is elementary.
+\item Put $U_0=\{A\subseteq\kappa_0:\kappa_0\in j(A)\}$ and
+$U=j_{0,\omega}(U_0)$. For $A\in\Pow(\Lambda)\cap W^j_\omega$,
+\begin{equation}\label{eq:tailmeasure}
+ A\in U\quad\Longleftrightarrow\quad
+       \exists m\ \forall n\geq m\ (\kappa_n\in A).
+\end{equation}
+\end{enumerate}
+\end{proposition}
+
+Clause (3) concerns the \emph{expanded} structure, not an assertion that
+$j^+$ is an $\Ione$-embedding. One applies amenable-predicate elementarity
+to $(V_\Lambda,E)$ and then interprets the ordinal domain. Every bounded
+piece of $E$ belongs to $V_\Lambda$, and $\cf(\Lambda)=\omega$ supplies
+the relevant hypothesis of the cited lemma.
+
+For clause (4), a subset represented at a finite stage has its eventual
+membership along the critical sequence determined by that stage's derived
+normal measure. If it is measure one, all sufficiently late critical
+points belong to it; if it is measure zero, the complementary set is
+measure one. This also explains why \eqref{eq:tailmeasure} is an
+\emph{external} description of an internal ultrafilter. It does not
+make $\Lambda$ measurable in the ambient universe, where
+$\cf(\Lambda)=\omega$.
+
+These are the only rank-into-rank iteration inputs needed below. The new
+internalization argument does not assume an extension of $j$ to an
+arbitrary higher rank or to the universe.
+
+\section{Internalizing an external local witness}\label{sec:internal}
+
+The main obstacle is not the existence of an external map. A forcing
+construction has to produce a model that \emph{contains} the embedding
+witnesses in Definition~\ref{def:relative}. The following lemma handles
+this transfer, including high-rank predicates.
+
+\begin{lemma}[Enumerated-domain internalization]\label{lem:internal}
+Work in an ambient universe satisfying $\ZFC$. Let $W$ be a transitive
+set model of a sufficiently strong finite fragment of $\ZFC$. Suppose
+there are an external elementary map $e:W\to W$, an infinite cardinal
+$\lambda$ of $W$, and $c=\seq{\nu_n:n<\omega}\in W$ such that
+\begin{enumerate}
+\item $c$ is strictly increasing and cofinal in $\lambda$,
+$e(\lambda)=\lambda$, and $e(\nu_n)=\nu_{n+1}$;
+\item $\omega<\nu_0$, $V_\lambda^{\mathrm{ambient}}\subseteq W$, and
+$W\models |V_\lambda|=\lambda$;
+\item $\alpha>\lambda$ and $Y\subseteq V_\alpha^W$ belong to $W$,
+with $e(\alpha)=\alpha$ and $e(Y)=Y$.
+\end{enumerate}
+Then
+\[
+ W\models\RelEx(\lambda,\alpha,Y).
+\]
+It is not assumed that $e\in W$ or that $e\restr V_\lambda\in W$.
+\end{lemma}
+
+\begin{proof}
+All the structures, functions, and trees that are said to be chosen
+\emph{in $W$} below are sets of $W$. Write
+\[
+ \mathcal A=(V_\alpha^W,\in,Y).
+\]
+Inside $W$, choose an elementary substructure $X\prec\mathcal A$ of
+cardinality $\lambda$ containing $V_\lambda^W\cup\{\lambda\}$.
+The downward L\"owenheim--Skolem construction applies to the finite
+language with its unary predicate. Set $Z=e(X)$, with the induced
+expanded structure. Since $e(\mathcal A)=\mathcal A$,
+\[
+ W\models Z\prec\mathcal A.
+\]
+In $W$, take a bijection $f:\lambda\to X$ with
+$f(0)=\lambda$ and $f(1)=\nu_0$, and put $g=e(f):\lambda\to Z$.
+Then $g(0)=\lambda$ and $g(1)=\nu_1$.
+
+For $n<\omega$, define in $W$
+\[
+ X_n=f``\nu_n,\qquad Z_n=g``\nu_{n+1}.
+\]
+Let $T$ be the following tree in $W$. A node at level $n$ is a finite
+list $(p_0,\ldots,p_n)$ such that, for every $m\leq n$,
+\begin{enumerate}
+\item $p_m:X_m\to Z_m$ is a partial elementary map from the full
+structure on $X$ to the full structure on $Z$;
+\item $p_m(\lambda)=\lambda$ and $p_m(\nu_0)=\nu_1$;
+\item $p_{m+1}\restr X_m=p_m$ when $m<n$.
+\end{enumerate}
+The order is end extension of finite lists. Here ``partial elementary''
+means agreement on every first-order formula whose finitely many
+parameters lie in the map's domain. It does not mean elementarity between
+$X_m$ and $Z_m$ as separate substructures. Satisfaction for $X$ and $Z$
+is a set in $W$, so this definition gives a set tree in $W$.
+
+For each $n$, consider the external restriction
+\[
+ q_n=e\restr\nu_n.
+\]
+It maps $\nu_n$ into $\nu_{n+1}$, and its graph has rank strictly below
+$\lambda$. Hence $q_n\in V_\lambda^{\mathrm{ambient}}\subseteq W$.
+Using $f,g,q_n$ inside $W$, form
+\begin{equation}\label{eq:partialmaps}
+ p_n(f(\xi))=g(q_n(\xi))\qquad(\xi<\nu_n).
+\end{equation}
+The elementary evaluation identity gives, externally,
+\[
+ g(e(\xi))=e(f)(e(\xi))=e(f(\xi)),
+\]
+so $p_n=e\restr X_n$. Thus each $p_n$ is partial elementary and has
+the required two prescribed values. Satisfaction for the transitive
+model's set structures is absolute, so $W$ recognizes these properties.
+The finite lists $(p_0,\ldots,p_n)$ belong to $T$. They form an external
+infinite branch.
+
+If $W$ had no infinite branch through $T$, its well-founded recursion
+and dependent choice would give a rank function on the strict-extension
+relation of $T$ with values in its ordinals. Since $W$ is transitive,
+that would be an actual ordinal-valued rank function in the ambient
+universe. It would strictly decrease along the displayed external branch,
+which is impossible. Therefore a branch $B$ belongs to $W$.
+
+The union of the maps along $B$ is an elementary map $k:X\to Z$ in $W$.
+Its domain is all of $X$, because $\sup_n\nu_n=\lambda$ and $f$ is
+onto. Every finite tuple is contained in one $X_n$, which verifies full
+elementarity of the union. Moreover,
+\[
+ k(\lambda)=\lambda,\qquad k(\nu_0)=\nu_1\ne\nu_0.
+\]
+Composing with the elementary inclusion $Z\prec\mathcal A$ proves
+$\RelEx(\lambda,\alpha,Y)$ in $W$.
+\end{proof}
+
+\subsection{Why the argument is genuinely internal}
+
+Two tempting shortcuts would be wrong. The external map $e\restr X$
+is not declared to belong to $W$. Instead, each bounded restriction is
+\emph{recoded by a small ordinal map} $q_n$ that does belong to $W$.
+Nor is the external branch simply imported into $W$: well-foundedness
+absoluteness supplies some internal branch, possibly a different one.
+
+The finite-list definition of $T$ is also deliberate. A map
+$X_n\to Z_n$ need not have its restriction to $X_m$ land in $Z_m$ for
+$m<n$. Requiring a coherent finite list, with a separate range bound at
+each level, makes the tree closed under initial segments and avoids this
+otherwise easy oversight.
+
+The required fragment of set theory can be fixed uniformly before the
+application. It includes the set-satisfaction construction, the elementary
+hull construction, the indicated instances of Replacement and Separation,
+and the theorem that a well-founded set relation has an ordinal rank.
+Appendix~\ref{app:fragment} explains how this fragment is secured by
+reflection. No assumption that an arbitrary rank segment satisfies all
+of $\ZFC$ is made.
+
+\section{Finite-change clouds of Prikry names}\label{sec:clouds}
+
+Let $N$ be transitive, let $D\in N$ be a normal measure on $\lambda$
+\emph{as computed in $N$}, and let $\QQ=\PP_D^N$. For an increasing
+cofinal sequence $h:\omega\to\lambda$, define
+\[
+ G_h=\{(s,A)\in\QQ:s\text{ is an initial segment of }h
+                  \text{ and }h[\omega\setminus\dom(s)]\subseteq A\}.
+\]
+The forcing order is the usual one: extend the finite increasing stem,
+choose its new points from the measure-one set, and shrink that set.
+The parameter $\QQ$ denotes the ground partial order. It is not a newly
+computed forcing from all subsets of $\lambda$ in the extension.
+
+For increasing sequences $c,h$, write
+\begin{equation}\label{eq:finitechange}
+ h\sim c\quad\Longleftrightarrow\quad
+       |\ran(h)\mathbin{\triangle}\ran(c)|<\omega.
+\end{equation}
+This is equality modulo finite change of the \emph{ranges}, not
+coordinatewise eventual equality of sequences. In particular,
+$c^-=\seq{c(n+1):n<\omega}$ satisfies $c^-\sim c$.
+
+\Needspace{185pt}
+\begin{lemma}[Finite-change cloud]\label{lem:cloud}
+Suppose $c$ is $\PP_D^N$-generic over $N$ and $W=N[G_c]$. Let
+$\tau\in N$ be a $\QQ$-name, and suppose
+\[
+ N\models\mathbf 1_{\QQ}\forces\tau\in V_{\check\alpha}.
+\]
+Define in $W$
+\begin{equation}\label{eq:cloud}
+ Y_{\tau,c}=
+ \{\tau^{G_h}:h\in{}^\omega\lambda\text{ is strictly increasing and }h\sim c\}.
+\end{equation}
+Then $Y_{\tau,c}\in W$, $\tau^{G_c}\in Y_{\tau,c}\subseteq V_\alpha^W$,
+and $W\models |Y_{\tau,c}|\leq\lambda$.
+
+If an external elementary $e:W\to W$ fixes $\lambda,\QQ,\tau,\alpha$
+and satisfies $e(c)=c^-$, then $e(Y_{\tau,c})=Y_{\tau,c}$.
+\end{lemma}
+
+\begin{proof}
+Every $h\sim c$ is eventually in every member of $D$, because $c$ has
+that property. The Mathias criterion therefore makes $h$ generic over
+$N$. This criterion and the elementary properties of Prikry forcing are
+used in their model-relative forms.\cite[proof of Theorem~5.4]{abgl}
+
+Moreover, $N[G_h]=N[G_c]$. Indeed, $h\in W$ gives one inclusion.
+For the other, the two finite difference sets are finite sets of
+ordinals below $\lambda$, hence are elements of $N$. Using these sets,
+$c$ is recovered from $h$ by taking the increasing enumeration of its
+modified range. Thus $c\in N[G_h]$.
+It follows from the forcing theorem that every value in \eqref{eq:cloud}
+belongs to the same $V_\alpha^W$.
+
+The definition of $Y_{\tau,c}$ inside $W$ uses only $\tau,\QQ,c$ and
+$\lambda$. It does \emph{not} quantify over $N$ or require that $N$ be
+an element of $W$. A forcing-name evaluation is a well-founded recursive
+operation on the name and the set $G_h$. Replacement in $W$ therefore
+forms the displayed family.
+
+An $h\sim c$ is determined by two finite subsets of $\lambda$: points
+deleted from $\ran(c)$ and points added to it. There are at most
+$\lambda$ such pairs in $W$, since $\lambda$ is an infinite cardinal.
+Consequently there are at most $\lambda$ possible $h$ and at most
+$\lambda$ evaluations. The choice $h=c$ includes the required object.
+
+Finally, elementarity applied to the internal definition gives
+\[
+ e(Y_{\tau,c})=Y_{e(\tau),e(c)}=Y_{\tau,c^-}.
+\]
+The relation $\sim$ is an equivalence relation, and $c^-\sim c$, so the
+defining families of sequences are identical. Hence
+$Y_{\tau,c^-}=Y_{\tau,c}$.
+\end{proof}
+
+\begin{remark}
+The value $y=\tau^{G_c}$ need not be fixed. In fact,
+$e(y)=\tau^{G_{c^-}}$ may be a different member of $Y_{\tau,c}$.
+Cover exactingness is designed to tolerate precisely this motion inside
+an invariant small family. Replacing that family by the singleton
+$\{y\}$ would invalidate the argument.
+\end{remark}
+
+The finite-change device is related to the name families in
+Blue--Goldberg's construction.\cite[proof of Theorem~3.5]{cover}
+Using just the explicitly defined finite-change class has a useful
+advantage here: we do not need a converse theorem classifying
+\emph{all} Prikry generics that yield the same extension.
+
+\section{The Prikry consistency refinement}\label{sec:forcing}
+
+\subsection{A localized shift, with fixed name parameters}
+
+For the rest of this section, $j:V_\Lambda\to V_\Lambda$ is an $\Iwf$
+embedding, $\kappa=\kappa_0$, and $U_0$ is the derived normal measure on
+$\kappa$. The following localization is the bridge from the iteration
+interface to the two lemmas just proved.
+
+\Needspace{230pt}
+\begin{lemma}[Coded localization and parameter fixedness]\label{lem:localize}
+Let $N_0$ be a transitive set of cardinality $\kappa$ satisfying a fixed,
+sufficiently strong finite fragment of $\ZFC$, with
+\[
+ V_\kappa\cup\{\kappa,\bar U_0\}\subseteq N_0,
+ \qquad \bar U_0=U_0\cap N_0,
+ \qquad \Ord\cap N_0<\kappa^+.
+\]
+Suppose $N_0$ regards $\bar U_0$ as a normal measure on $\kappa$.
+Then there are a transitive set $N$, an elementary map $i:N\to N$,
+and the corresponding map $J=j_{0,\omega}$ on $N_0$-parameters such that
+\begin{enumerate}
+\item $N=J(N_0)$ is well-founded,
+$V_\Lambda\cup\{\Lambda\}\subseteq N$, and
+$i\restr\Lambda=j\restr\Lambda$;
+\item $D=J(\bar U_0)\in N$ is a normal measure on $\Lambda$ in $N$;
+\item $i(J(a))=J(a)$ for every $a\in N_0$;
+\item $c=\seq{\kappa_n:n<\omega}$ is Prikry-generic over $N$ for
+$D$, and $i$ lifts to an elementary map
+\[
+ e:W=N[G_c]\longrightarrow W
+ \quad\text{with}\quad e(c)=c^-,\qquad e\restr N=i.
+\]
+\end{enumerate}
+In particular, $W$ contains the full ambient $V_\Lambda$ and regards
+$\Lambda$ as an infinite cardinal with $|V_\Lambda|=\Lambda$.
+\end{lemma}
+
+\begin{proof}
+We spell out the parameter issue in the well-founded coding construction
+used in the proof of \cite[Theorem~5.4]{abgl}. It matters because the
+Prikry name selected later need not be ordinal definable.
+
+Choose a bijection $b_0:\kappa\to N_0$ satisfying
+\begin{equation}\label{eq:ordinalslots}
+ b_0(0)=\kappa,\qquad b_0(1)=\bar U_0,\qquad
+ b_0(\omega\cdot(\beta+1))=\beta\quad(\beta<\kappa).
+\end{equation}
+The reserved ordinal slots are disjoint from $0,1$; both their complement
+and the remaining values have cardinality $\kappa$. This permits completion
+to a bijection. The successor in $\beta+1$ avoids a collision between the
+slot for the ordinal $0$ and the slot for $\kappa$.
+Let
+\[
+ \xi\,E_0\,\eta\quad\Longleftrightarrow\quad b_0(\xi)\in b_0(\eta).
+\]
+The sets $N_0,b_0,E_0$ have rank below $\kappa^+$ and hence belong to
+$V_\Lambda$. Define, in the direct limit,
+\[
+ E=J(E_0),\quad N=J(N_0),\quad b=J(b_0),\quad D=J(\bar U_0).
+\]
+If $\delta=\Ord\cap N_0$, the hypothesis \eqref{eq:wf} puts
+$J(\delta)$ in the well-founded part. The internal rank function of the
+transitive set $N$ is bounded by this genuine ordinal. Thus $N$ and its
+membership relation are well-founded, and their collapse is legitimate.
+We identify $N$ with that collapse. The iteration interface gives
+$V_\Lambda\cup\{\Lambda\}\subseteq N$.
+
+Now $b:(\Lambda,E)\cong(N,\in)$, and $j^+(E)=E$ by
+Proposition~\ref{prop:interface}. Consequently
+\[
+ i=b\circ(j\restr\Lambda)\circ b^{-1}:N\to N
+\]
+is elementary. Applying $J$ to \eqref{eq:ordinalslots} and using the
+absoluteness of ordinal arithmetic gives
+\[
+ b(\omega\cdot(\beta+1))=\beta\qquad(\beta<\Lambda).
+\]
+Therefore $i(\beta)=j(\beta)$ for $\beta<\Lambda$.
+
+Here is the additional parameter observation. Given any $a\in N_0$,
+choose $\xi<\kappa$ with $b_0(\xi)=a$. Since $J(\xi)=j(\xi)=\xi$,
+\begin{equation}\label{eq:fixedrange}
+ J(a)=b(\xi),\qquad i(J(a))=b(j(\xi))=b(\xi)=J(a).
+\end{equation}
+Thus the shift fixes \emph{every image parameter from $N_0$}, not merely
+$\Lambda$ and $D$. This does not make $i$ the identity on $N$:
+$J``N_0$ need not be all of $N$.
+
+Elementarity gives that $D$ is a normal measure on $\Lambda$ in $N$,
+with $D=N\cap J(U_0)$. By \eqref{eq:tailmeasure}, every member of $D$
+contains a tail of $c$. The Mathias criterion makes $G_c$ generic over
+$N$. The tail $c^-$ is also generic and generates the same extension.
+Since $i(\QQ)=\QQ$ for $\QQ=\PP_D^N$ and $i``G_c\subseteq G_{c^-}$,
+the usual name interpretation defines the lift
+\begin{equation}\label{eq:lift}
+ e(\sigma^{G_c})=i(\sigma)^{G_{c^-}}.
+\end{equation}
+The forcing theorem proves that this is well-defined and elementary.
+The canonical generic-sequence name is fixed by $i$, so $e(c)=c^-$.
+
+Prikry forcing preserves $\Lambda$ as a cardinal in $N[G_c]$ and adds
+no bounded subsets of it. Also $V_\Lambda^{\mathrm{ambient}}\subseteq N
+\subseteq W\subseteq V$, so the rank $V_\Lambda$ is the same in $W$
+and the ambient universe. Each bounded rank has cardinality below
+$\Lambda$ in $W$: choose a larger $\kappa_n$ and use a bounding
+bijection of rank below $\Lambda$, which already belongs to $W$.
+Since $c\in W$ is cofinal in $\Lambda$, Choice in $W$ gives
+$|V_\Lambda|^W=\Lambda$.
+\end{proof}
+
+\subsection{Homogeneity and one named counterexample}
+
+For later use define the first-order formula
+\begin{equation}\label{eq:bad}
+\begin{split}
+ \Bad(\kappa,\alpha,y)\quad\Longleftrightarrow\quad
+ &\alpha>\kappa\ \wedge\ y\in V_\alpha\ \wedge\
+ \\[-2pt]
+ &\forall Y\subseteq V_\alpha\,
+ \bigl[(y\in Y\wedge |Y|\leq\kappa)
+               \ \Longrightarrow\ \neg\RelEx(\kappa,\alpha,Y)\bigr].
+\end{split}
+\end{equation}
+For a cardinal $\kappa$, $\neg\CEx_\kappa(\kappa)$ is equivalent to
+$\exists\alpha\exists y\,\Bad(\kappa,\alpha,y)$.
+Prikry forcing preserves $\kappa$ as a cardinal, so this formulation
+applies in the extensions under consideration.
+
+We need only the following familiar consequence of Prikry homogeneity:
+a sentence about the extension using ground-model parameters, but not a
+name for the chosen generic, is decided by the top condition.
+For completeness, below two Prikry conditions one can shrink the
+measure-one parts to a common set above both stems. Their cones are
+isomorphic by replacing the fixed stem and retaining the appended tail.
+The isomorphism preserves canonical names for ground-model parameters.
+Opposite decisions of such a sentence would therefore be impossible.
+This cone-homogeneity argument is enough; no particular global
+permutation of the entire forcing is needed.
+
+If the top condition forces failure of cover exactingness, the least
+height $\alpha$ of failure is definable in the extension from $\kappa$.
+Some condition decides its ordinal value. Applying the preceding
+homogeneity fact to that value shows that a single ground-model ordinal
+$\alpha$ is forced to be the least bad height by the top condition.
+The maximum principle then supplies a name $\tau$ with
+\begin{equation}\label{eq:badforced}
+ \mathbf 1_{\PP_{U_0}}\forces\Bad(\check\kappa,\check\alpha,\tau).
+\end{equation}
+The name $\tau$ itself need not be invariant under forcing isomorphisms.
+Its later invariance under the \emph{localized shift} follows instead
+from \eqref{eq:fixedrange}.
+
+\subsection{The complete forcing argument}
+
+\begin{theorem}\label{thm:forcing}
+If $j:V_\Lambda\to V_\Lambda$ is an $\Iwf$-embedding, $\kappa=\crit(j)$,
+and $U_0$ is the derived normal measure, then
+\begin{equation}\label{eq:forcingtheorem}
+ \mathbf 1_{\PP_{U_0}}\forces\CEx_{\check\kappa}(\check\kappa).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose otherwise. Homogeneity and the preceding discussion supply a
+height $\alpha$ and a name $\tau$ satisfying \eqref{eq:badforced}.
+Choose a reflecting rank $V_\zeta$ above $\Lambda,\alpha$ and the ranks
+of the names and forcing data. Require reflection of
+\eqref{eq:badforced}, of the fixed finite fragment needed for the
+preceding lemmas, and of the forcing facts used in them.
+Inside the ambient universe choose
+\[
+ H\prec V_\zeta,\qquad |H|=\kappa,\qquad
+ V_\kappa\cup\{\kappa,U_0,\alpha,\tau\}\subseteq H.
+\]
+Let $\pi:H\cong N_0$ be the transitive collapse. It fixes $V_\kappa$
+and $\kappa$. Put
+\[
+ \bar U_0=\pi(U_0),\qquad a_0=\pi(\alpha),\qquad t_0=\pi(\tau).
+\]
+For subsets of $\kappa$ that belong to $H$, the collapse is the identity.
+It follows that $\bar U_0=N_0\cap U_0$. The ordinal height of $N_0$
+has cardinality at most $\kappa$ and is below $\kappa^+$.
+Thus Lemma~\ref{lem:localize} applies.
+
+Let $J=j_{0,\omega}$ and use the resulting $N,i,D,c,W,e$.
+Set
+\[
+ a=J(a_0),\qquad t=J(t_0),\qquad \QQ=\PP_D^N.
+\]
+The parameter fixedness clause gives
+\begin{equation}\label{eq:fixedparameters}
+ e(a)=a,\qquad e(t)=t,\qquad e(\QQ)=\QQ,\qquad e(\Lambda)=\Lambda.
+\end{equation}
+Elementarity of the collapse and of the direct-limit map transfers
+\eqref{eq:badforced} to
+\[
+ N\models \mathbf 1_{\QQ}\forces\Bad(\check\Lambda,\check a,t).
+\]
+This is a statement about the \emph{internal} forcing relation of $N$.
+Since $G_c$ is $N$-generic, its forcing theorem gives
+\begin{equation}\label{eq:badinw}
+ W\models\Bad(\Lambda,a,t^{G_c}).
+\end{equation}
+
+Apply Lemma~\ref{lem:cloud} to $t$ and $c$. In $W$ it produces the set
+\[
+ Y=\{t^{G_h}:h\sim c\},
+ \qquad t^{G_c}\in Y\subseteq V_a^W,\qquad |Y|^W\leq\Lambda.
+\]
+Here and below the sequences in the cloud are strictly increasing.
+Equations~\eqref{eq:fixedparameters} and $e(c)=c^-$ imply $e(Y)=Y$.
+The hypotheses of Lemma~\ref{lem:internal} now hold for
+\[
+ (W,e,\lambda,c,\alpha,Y)=(W,e,\Lambda,c,a,Y).
+\]
+In particular, $e(\kappa_n)=\kappa_{n+1}$, the full ambient
+$V_\Lambda$ is in $W$, and $W$ regards its size as $\Lambda$.
+Therefore
+\[
+ W\models\RelEx(\Lambda,a,Y).
+\]
+This contradicts \eqref{eq:badinw}, because the same $Y$ belongs to $W$,
+contains $t^{G_c}$, and has size at most $\Lambda$ there.
+The contradiction proves \eqref{eq:forcingtheorem}.
+\end{proof}
+
+\begin{assessment}{Where the strengthening occurs}
+The localized iteration alone provides an external self-embedding of
+$W$. The cloud lemma turns an arbitrary name value into a small invariant
+predicate, and the enumerated-domain tree turns preservation of that
+predicate into an internal witness at the required height. Neither
+``the embedding exists externally'' nor ``the name has a fixed code''
+would suffice by itself.
+\end{assessment}
+
+\section{Consistency consequences and exact limits}\label{sec:consequences}
+
+\subsection{A set-model conclusion}
+
+\begin{corollary}\label{cor:transitive}
+The existence of an $\Iwf$-embedding implies the existence of a countable
+transitive model of
+\[
+ \ZFC+\exists\lambda\,\CEx_\lambda(\lambda).
+\]
+Consequently,
+\[
+ \Con(\ZFC+\Iwf)\ \Longrightarrow\
+ \Con\bigl(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda)\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+For a normalized rank-into-rank embedding, $V_\Lambda$ is a model of
+$\ZFC$. We use the rank-model passage from
+\cite[proof of Corollary~5.5]{abgl}, checking the additional cover
+witnesses explicitly below. The forcing $\PP_{U_0}$ and all its subsets have rank below
+$\Lambda$. A generic over $V_\Lambda$ is therefore generic over $V$,
+and
+\[
+ V_\Lambda[G]=V[G]_\Lambda.
+\]
+By Theorem~\ref{thm:forcing}, the latter rank model satisfies
+$\CEx_\kappa(\kappa)$. To check the downward passage explicitly, a
+witness at height $\alpha<\Lambda$ consists of $Y\subseteq V_\alpha$,
+$X\subseteq V_\alpha$, and the graph of a map between subsets of
+$V_\alpha$. Their ranks are at most $\alpha$ plus a fixed finite amount,
+which is below $\Lambda$. The same is true of a bijection certifying
+$|Y|\leq\kappa$. Set-structure satisfaction is absolute. Thus the
+witnesses can be retained in $V[G]_\Lambda$.
+
+It follows that $V_\Lambda$ satisfies the internal forcing assertion
+that its top condition forces $\CEx_\kappa(\kappa)$. Choose a countable
+$A\prec V_\Lambda$ containing $U_0,\kappa$ and collapse it to a
+transitive model $M$. This forcing assertion transfers to $M$.
+A generic filter for its collapsed forcing exists in the ambient universe
+by enumerating the countably many dense sets of $M$. Its extension is a
+countable transitive model of the displayed theory.
+
+This is an ordinary relative-consistency argument formalizable over the
+stated theories. It does not require an external assumption that an
+arbitrary consistent theory already has a transitive model.
+\end{proof}
+
+\subsection{The revised strength interval}
+
+Use $A\succeq_{\rm con}B$ for the indicated relative-consistency
+reduction, and use strict comparison only where it is supplied by the
+established iteration hierarchy. The result yields
+\begin{equation}\label{eq:strengthchain}
+\begin{gathered}
+ \Itwo\ \succ_{\rm con}\ \Iwf
+ \ \succeq_{\rm con}\
+       \exists\lambda\,\CEx_\lambda(\lambda),\\
+ \exists\lambda\,\CEx_\lambda(\lambda)
+ \ \succeq_{\rm con}\ \exists\lambda\,\Ex(\lambda)
+ \ \succ_{\rm con}\ \Ithree.
+\end{gathered}
+\end{equation}
+The strict comparisons and the ordinary-exacting lower bound are those
+of the existing hierarchy.\cite[Theorem~5.10 and Corollary~5.11]{abgl}
+The two middle comparisons are \emph{not} claimed to be strict, and
+no equiconsistency between exactingness and cover exactingness follows.
+
+In particular, the least-budget cover principle is placed strictly
+between $\Ithree$ and $\Itwo$ in this consistency-strength sense.
+The additional uniform cover requirement has not forced the upper bound
+back up to $\Itwo$.
+
+\subsection{The cardinal-ordering issue survives unchanged}
+
+The argument does not preserve a specified strongly compact cardinal
+below $\kappa$ through the Prikry construction. It therefore does not
+answer whether a cover-exacting cardinal can lie above a strongly compact
+cardinal. That is the explicit question in the 2026 notes.\cite[Problem~5.2]{cover}
+
+It also does not conflict with the cover-exacting obstruction above an
+extendible. If that obstruction is used, any model produced here has no
+extendible below the cover-exacting witness. The positive construction is
+about isolated existence, not the forbidden ordering of two cardinals.
+A statement that the forcing preserves ``large cardinals'' without
+specifying their position and preservation theorem would conceal exactly
+the missing step.
+
+Finally, there is no claim of a new equiconsistency for ultraexactingness.
+The proof internalizes some branch of a tree; it does not show that the
+chosen local embedding has its restriction to $V_\lambda$ in its domain.
+The ultraexacting clause cannot be read into the conclusion.
+
+\section{A definable-family inconsistency theorem}\label{sec:families}
+
+\subsection{The only large-cardinal input}
+
+For $\lambda$ exacting, the established regularity theorem says
+\begin{equation}\label{eq:hodregularity}
+ \cf^V(\lambda)=\omega,\qquad
+ \HOD_{V_\lambda}\models\text{``$\lambda$ is a regular cardinal.''}
+\end{equation}
+The second assertion is Theorem~2.10 of
+Aguilera--Bagaria--L\"ucke.\cite{abl}
+We do not reproduce its exacting-embedding proof. Everything in the
+present section after \eqref{eq:hodregularity} is an explicit deduction
+from it.
+
+Write $N=\HOD_{V_\lambda}$. A set in $\OD_{V_\lambda}$ need not belong
+to $N$: its members might not be definable from permitted parameters.
+For example, a definable set of cofinal maps may have no individually
+definable member. On the other hand, an $\OD_{V_\lambda}$ \emph{set of
+ordinals}, or an $\OD_{V_\lambda}$ graph between ordinals, does belong
+to $N$. Its transitive closure adds only hereditarily definable finite
+codes and ordinals. This observation is the bridge used below.
+
+\begin{theorem}[Projection width]\label{thm:width}
+Let $\lambda$ be exacting, $0<\rho<\lambda$, and let
+$F\in\OD_{V_\lambda}$ be a nonempty set of cofinal maps
+$f:\rho\to\lambda$. Define
+\[
+ P_\xi=\{f(\xi):f\in F\}\qquad(\xi<\rho).
+\]
+There is $\xi<\rho$ with $P_\xi$ unbounded in $\lambda$. For any such
+$\xi$,
+\begin{equation}\label{eq:fullwidth}
+ \ot(P_\xi)=\lambda,\qquad |P_\xi|^V=\lambda,
+ \qquad |F|^V\geq\lambda.
+\end{equation}
+If all members of $F$ are increasing, the first two equalities hold for
+every coordinate greater than or equal to some $\xi<\rho$.
+\end{theorem}
+
+\begin{proof}
+Fix one definition of $F$ using ordinal parameters and a finite tuple
+$\vec x$ of members of $V_\lambda$. All definitions in this proof use
+that same tuple, together with ordinals. This uniformity is important.
+Each $P_\xi$ is a set of ordinals definable from these parameters, and
+therefore belongs to $N$.
+
+Suppose every $P_\xi$ were bounded in $\lambda$. Define
+\[
+ b(\xi)=\sup\{\beta+1:\beta\in P_\xi\}\quad(\xi<\rho).
+\]
+Each value is below $\lambda$. The \emph{entire graph} of $b$ is
+definable from $\vec x$ and the fixed ordinal parameters by substituting
+the definition of $F$. It is a graph between ordinals, so $b\in N$.
+Since $\rho<\lambda$ and $\lambda$ is regular in $N$,
+\[
+ \sup_{\xi<\rho}b(\xi)<\lambda.
+\]
+Every $f\in F$ is pointwise bounded by $b$, contradicting the cofinality
+of $f$. Thus some $P_\xi$ is unbounded.
+
+The increasing enumeration of this $P_\xi$ is definable from $P_\xi$
+and belongs to $N$. If its order type were below $\lambda$, it would
+be a short cofinal map in $N$, again contradicting regularity. A subset
+of the ordinal $\lambda$ has order type at most $\lambda$, so its order
+type is exactly $\lambda$. This is an absolute order-type computation.
+Since $\lambda$ is also an ambient cardinal, $|P_\xi|^V=\lambda$.
+The evaluation map $F\to P_\xi$ is onto, so ambient Choice gives
+$|F|^V\geq\lambda$.
+
+Finally, suppose all $f\in F$ are increasing and $P_\xi$ is unbounded.
+For every $\eta\geq\xi$ and every $\beta<\lambda$, choose $f\in F$
+with $f(\xi)>\beta$. Then $f(\eta)\geq f(\xi)>\beta$. Hence
+$P_\eta$ is unbounded as well, and the same argument applies.
+\end{proof}
+
+\begin{corollary}[Small-family incompatibility]\label{cor:smallfamily}
+The following theory is inconsistent:
+\[
+\begin{split}
+ \ZFC+\exists\lambda\exists\rho\exists F\,[\,&\Ex(\lambda)
+ \wedge 0<\rho<\lambda\wedge F\in\OD_{V_\lambda}\wedge 0<|F|<\lambda\\
+ &\wedge\ \forall f\in F\ (f:\rho\to\lambda\text{ is cofinal})\,].
+\end{split}
+\]
+No definable selection of a member of $F$ is required.
+\end{corollary}
+
+\subsection{A local covering formulation}
+
+\begin{definition}
+Let $\mathsf{SmallODCover}(\lambda)$ assert that every
+$x\in V_{\lambda+1}$ belongs to a set $A\in\OD_{V_\lambda}$ of ambient
+cardinality less than $\lambda$.
+\end{definition}
+
+This is a definability covering principle, not the embedding-relative
+cover-exacting property. In particular, it must not be substituted for
+Definition~\ref{def:relative} merely because both use the word ``cover.''
+
+\begin{corollary}\label{cor:odcover}
+\[
+ \ZFC\vdash
+ \Ex(\lambda)\ \Longrightarrow\ \neg\mathsf{SmallODCover}(\lambda).
+\]
+More locally, if $c:\omega\to\lambda$ is cofinal and $\lambda$ is
+exacting, every $A\in\OD_{V_\lambda}$ with $c\in A$ has
+$|A|\geq\lambda$.
+\end{corollary}
+
+\begin{proof}
+Given such an $A$, restrict it to
+\[
+ F=\{f\in A:f:\omega\to\lambda\text{ is cofinal}\}.
+\]
+This family is nonempty, belongs to $\OD_{V_\lambda}$, and is a subset
+of $A$. Theorem~\ref{thm:width} implies $|A|\geq|F|\geq\lambda$.
+Since \eqref{eq:hodregularity} supplies a cofinal $c$ of rank $\lambda$,
+we have $c\in V_{\lambda+1}$ and the covering principle fails.
+\end{proof}
+
+\subsection{What this changes in the negative programme}
+
+The supplied report sought a single cofinal map in HOD or
+$\HOD_{V_\lambda}$.\cite[Section~5.4]{unified}
+The new deduction shows that a smaller demand suffices: construct a
+\emph{definable family of candidates} of size below $\lambda$.
+No canonical least member and no definable well-order of the family are
+necessary. Taking coordinate suprema extracts the contradiction without
+making a choice inside the definability model.
+
+This is nevertheless a conditional inconsistency theorem. We have not
+shown that strong compactness or extendibility below an ordinary exacting
+cardinal produces such a family. It would be incorrect to replace the
+missing family-construction theorem by a choice of candidates under an
+arbitrary ambient well-order.
+
+The cloud construction does not violate this result. Its family may
+have size exactly $\lambda$, and its definition uses the generic sequence
+and ground-name parameters, not necessarily parameters in $V_\lambda$.
+Both distinctions are substantive. The positive argument requires a
+small invariant predicate; the negative argument requires a still smaller
+family definable from the specified low-rank parameters.
+
+\section{A complementary approximation obstruction}\label{sec:approximation}
+
+The regularity gap also yields a useful diagnostic for proposed covering
+or approximation arguments. This is an elementary fresh-sequence
+consequence, not a separate large-cardinal lower-bound theorem.
+
+\begin{proposition}[A fresh countable cofinal set]\label{prop:fresh}
+Let $\lambda$ be exacting, let $N=\HOD_{V_\lambda}$, and choose an
+increasing cofinal set $c\subseteq\lambda$ of order type $\omega$ in $V$.
+Then $c\notin N$, but
+\begin{equation}\label{eq:fresh}
+ c\cap a\in N
+\end{equation}
+for every $a\in N$ for which $N$ contains an injection
+$a\to\rho$ for some $\rho<\lambda$. In fact, each intersection in
+\eqref{eq:fresh} is finite.
+\end{proposition}
+
+\begin{proof}
+If $c\in N$, its increasing enumeration would be a countable cofinal
+map in $N$, contrary to regularity of $\lambda$ there. Now take $a$
+as in the statement. The set $a\cap\lambda$ belongs to $N$ and is
+well-orderably smaller than $\lambda$ there, hence is bounded in
+$\lambda$. An increasing cofinal sequence of order type $\omega$ has
+only finitely many points below any fixed bound less than $\lambda$.
+Thus $c\cap a$ is a finite set of ordinals and belongs to $N$.
+\end{proof}
+
+To avoid concealing a choice assumption, call the following the
+\emph{well-orderable $\delta$-approximation test}: whenever $A\subseteq N$
+is an ambient set and $A\cap a\in N$ for every $a\in N$ admitting
+an injection in $N$ into some ordinal below $\delta$, then $A\in N$.
+Proposition~\ref{prop:fresh} refutes this test for every infinite
+$\delta\leq\lambda$, with the same witness $c$.
+When the inner model satisfies Choice, this is the usual small-set
+form of the approximation test. No blanket assertion of Choice for
+$\HOD_{V_\lambda}$ is used here.
+
+This explains a limitation on one possible attack from the original
+report. An approximation principle strong enough to recover $c$ cannot
+simply be assumed as a harmless background regularity property of the
+HOD pair: in the exacting configuration it is already a contradictory
+extra condition. A successful argument must derive that principle from
+some other stated hypothesis, not from the existence of the outer
+universe's cofinal sequence alone.
+
+\section{Proof audit and the remaining research targets}\label{sec:audit}
+
+\subsection{The interfaces checked in the construction}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.17}
+\begin{longtable}{@{}P{.27\textwidth}P{.66\textwidth}@{}}
+\toprule
+\textbf{Potential failure}&\textbf{How it is addressed}\\\midrule\endfirsthead
+\toprule\textbf{Potential failure}&\textbf{How it is addressed}\\\midrule\endhead
+An ill-founded direct limit&Only the coded transitive set $J(N_0)$ is used. Its height is $J(\delta)$ for $\delta<\kappa^+$, exactly where the $\Iwf$ hypothesis guarantees well-foundedness.\\[4pt]
+An arbitrary name is not fixed&Equation~\eqref{eq:fixedrange} fixes every $J(a)$ with $a\in N_0$. It does not require $a$ to be ordinal definable.\\[4pt]
+The generic sequence is not fixed&It moves to its tail. The family is invariant under finite changes of its range, so the family, rather than its chosen member, is fixed.\\[4pt]
+The predicate has the wrong rank&The name is forced to belong to $V_a$ over $N$. All finite-change generics generate the same $W$, so every evaluation lies in the same $V_a^W$.\\[4pt]
+The cardinal bound varies with height&The family of finite modifications has size at most $\Lambda$ in $W$, independently of the name and of $a$. This is the transported version of the single bound $\kappa$.\\[4pt]
+An external embedding is used as an internal witness&The functions $q_n$ have rank below $\Lambda$ and belong to $W$. They code high-rank partial maps; a tree in $W$ then has an internal branch by ordinal-rank absoluteness.\\[4pt]
+An image set is confused with a pointwise image&$e(Y)=Y$ follows by elementarity of the defining formula. The proof does not assert $e``Y=Y$.\\[4pt]
+A global scheme is assumed in a small rank&The collapse is taken from a rank reflecting a fixed finite collection of formulas. Appendix~\ref{app:fragment} identifies their roles.\\[4pt]
+A set of definable candidates is treated as hereditarily definable&The width proof only puts the ordinal projections and their uniformly defined bound function into $\HOD_{V_\lambda}$. It never puts all of $F$ there.\\[4pt]
+A consistency bound becomes equiconsistency&Only the displayed one-way reductions are claimed. No reverse arrow from cover exactingness to $\Iwf$ is established.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Three focused next questions}
+
+The first question concerns the middle of the revised interval:
+\begin{question}
+Can the $\Iwf$ upper bound be lowered further for
+$\exists\lambda\,\CEx_\lambda(\lambda)$, or can the cover property supply
+an iteration lower bound not already implied by ordinary exactingness?
+\end{question}
+The construction identifies a specific possible obstruction to lowering
+it: the chosen counterexample hull must remain well-founded after
+iteration. One would need either a smaller well-foundedness certificate
+for those particular hulls or a different internalization setup.
+
+\begin{question}
+Under a smaller strongly compact cardinal, can one construct an
+$\OD_{V_\lambda}$ family of fewer than $\lambda$ candidates containing
+one short cofinal map into $\lambda$?
+\end{question}
+An affirmative derivation from the exacting--strongly-compact hypotheses
+would yield an inconsistency through Corollary~\ref{cor:smallfamily}.
+The family bound must be \emph{strictly} below $\lambda$, and the allowed
+parameters must be verified. This question is a sufficient local route,
+not an assertion that the missing construction follows from compactness.
+
+\begin{question}
+Can a cover-exacting construction retain a specified strongly compact
+cardinal below the cover-exacting witness, while avoiding the
+club-definability obstruction proved for extendibles?
+\end{question}
+The present construction gives no such preservation theorem. Its
+successful isolated-existence case is a control against arguments that
+would refute cover exactingness without using the smaller cardinal.
+
+The global cardinal-preserving and Icarus tracks are not resolved by
+these results. In particular, nothing here turns internal stationarity
+in a target inner model into ambient stationarity. The original report's
+stationary-collision diagnostic still requires that separate input.
+
+\subsection{Overall conclusion}
+
+The continuation produces a positive consistency refinement and a
+negative local criterion that work in opposite directions without
+conflict. A Prikry name can be placed in a family of at most the critical
+limit's cardinality whose defining class is invariant under the shift.
+A low-rank-parameter-definable family of \emph{fewer} than that many
+cofinal maps is impossible at an exacting cardinal.
+
+\clearpage
+\appendix
+\section{Finite fragments, ranks, and the model ledger}\label{app:fragment}
+
+\subsection{Why the small models have enough set theory}
+
+A transitive collapse of a hull in $V_\zeta$ must not be called a model
+of all of $\ZFC$ merely because $\zeta$ was chosen large. The proof uses
+the following standard finite-fragment procedure instead.
+
+First fix the formulas defining the forcing relation for
+$\Bad(\kappa,\alpha,y)$ and its negation, the set-satisfaction relation,
+Prikry-name evaluation, the finite-change family, and the tree of finite
+partial maps. Include the finite collection of ZFC consequences used to
+construct these objects and to carry out their proofs. In particular,
+include the needed instances of well-founded recursion and of the
+forcing theorem, normal-measure Prikry genericity, the elementary hull
+construction, and the assertion that a well-founded set relation has
+an ordinal rank.
+
+Each of these is a uniform assertion or uses finitely many instances
+in a fixed formal proof. There is therefore a finite subtheory of
+$\ZFC$ sufficient for the argument. Enlarge the reflecting list to
+contain this theory and the displayed forced-counterexample statement.
+L\'evy reflection supplies a rank $V_\zeta$ satisfying and correctly
+reflecting this finite list, with $\zeta$ above all specified parameters.
+Its elementary hull and transitive collapse satisfy the same list.
+The direct-limit map transfers it to the well-founded $N$, and its
+included forcing theorems apply to $N[G_c]$.
+
+This is a finite-proof reflection argument, not a demand for
+$V_\zeta\prec V$ for all formulas simultaneously. The internalization
+lemma quantifies over all first-order formulas of \emph{set structures}
+using their single set-satisfaction relation; it does not require a
+truth predicate for the universe.
+
+\subsection{The universe changes that must not be conflated}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Model}&\textbf{Role}\\\midrule
+$V$&Original ambient universe, containing $j$ and the whole construction of the local auxiliary model.\\
+$V[G]$&Hypothetical Prikry extension in which failure at $\kappa$ is assumed, in order to obtain the forced counterexample.\\
+$N_0$&Small transitive collapse of a hull of a reflecting $V_\zeta$; its cardinality is $\kappa$ and its ordinal height is below $\kappa^+$.\\
+$M^j_\omega$&Possibly ill-founded direct limit. It is used as a transport structure, not as the final universe.\\
+$N=J(N_0)$&Well-founded, transitive, sufficiently correct small model containing the ambient $V_\Lambda$.\\
+$W=N[G_c]$&Auxiliary model inside the original $V$. Its external shift is internalized only through a tree argument. It is not $V[G]$.\\
+$M[H]$&Countable transitive model of the final theory obtained at the end of Corollary~\ref{cor:transitive}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The counterexample is transported by
+\[
+ V\models\mathbf1\forces\Bad(\kappa,\alpha,\tau)
+ \ \Longrightarrow\
+ N\models\mathbf1\forces\Bad(\Lambda,a,t)
+ \ \Longrightarrow\
+ W\models\Bad(\Lambda,a,t^{G_c}).
+\]
+The contradiction is entirely \emph{inside $W$}. It then rules out the
+initial forced failure and proves the result about $V[G]$.
+
+\subsection{Rank checks}
+
+The membership relation $E_0$ on $\kappa$ is a subset of
+$\kappa\times\kappa$ and belongs to $V_{\kappa+1}$, using the usual
+finite-rank coding of ordered pairs. The coding bijection and the
+transitive collapse have rank below $\kappa^+<\Lambda$.
+The image relation $E$ is a subset of $\Lambda\times\Lambda$, with
+rank at most $\Lambda$, so it belongs to $V_{\Lambda+1}$.
+
+For internalization, $q_n=e\restr\kappa_n$ is a subset of
+$\kappa_n\times\kappa_{n+1}$. Its rank is below $\Lambda$, so
+$q_n\in W$ follows from rank inclusion, not from a closure principle
+for $W$ at length $\Lambda$. The actual partial map $p_n$ may have
+much higher rank, since its domain lies in $V_a^W$. It is nevertheless
+in $W$ because it is constructed there from $q_n,f,g$.
+
+A cofinal map $c:\omega\to\lambda$ has rank $\lambda$ and belongs
+to $V_{\lambda+1}$, not $V_\lambda$. This is why its use as a parameter
+in the cloud definition is not permitted in the negative theorem's
+$\OD_{V_\lambda}$ family hypothesis.
+
+\section{Source and verification record}\label{app:verification}
+
+The supplied \texttt{Large\_Cardinals\_Unified\_Report.tex} was read as
+the starting research document. Its palette, font packages, page geometry,
+heading styles, theorem styling, and assessment-box design are retained
+here. The new text is a continuation rather than an alteration of the
+original report's claims.
+
+The primary sources checked for the main argument are the July 2026
+cover-exacting notes, version 1 of \emph{Large cardinals beyond HOD},
+version 2 of the iterability paper, and version 4 of the original
+exacting-cardinal paper. The cover notes explicitly acknowledge that
+related consistency constructions yield cover variants; this is why
+historical novelty is not inferred from the absence of the exact
+$\Iwf$ statement in the supplied report.
+
+The proof audit concentrated on the fixedness of arbitrary transported
+name parameters, the finite-change equivalence relation, the internal
+cardinality bound, the well-founded part of the iterate, and the internal
+existence of the final embedding. No finite computation is offered as
+evidence for the infinite set-theoretic assertions. The manuscript has
+not been formalized in Lean or another proof assistant, and it has not
+undergone independent specialist review.
+
+The archive includes the compilable source and rendered PDF, with a
+build script and a short dependency ledger. No external figure assets or
+font files are needed in the archive. The original Palatino-style text
+and mathematical typography are selected by the same \texttt{newpxtext}
+and \texttt{newpxmath} packages as the supplied source.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{7pt}
+\setlength{\parskip}{1pt}
+
+\bibitem{unified}
+\emph{Large cardinals at the inconsistency frontier: a unified assessment
+of ZFC-compatible hypotheses, their obstructions, and the evidence on
+both sides}. Supplied research report prepared for Vladimir,
+18 September 2026. Source file:
+\nolinkurl{Large_Cardinals_Unified_Report.tex}.
+The starting document, particularly its sections on exactingness,
+cover exactingness, and the proposed research programme.
+
+\bibitem{cover}
+G.~Goldberg. \emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes dated 1 July 2026, reporting joint work with D.~Blue.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Definitions~2.6 and~3.1; Theorem~3.5 and the subsequent remark;
+Theorem~3.6; Problem~5.2. Used as lecture notes, not described as a
+refereed publication.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 12 September 2025.
+Proposition~5.1, Definition~5.2, the proof of Theorem~5.4,
+Corollary~5.5, Theorem~5.10, and Corollary~5.11 are the principal
+locators for the iteration-localization and consistency comparisons.
+
+\bibitem{ad}
+A.~Andretta and V.~Dimonte. \emph{The iterability hierarchy above I3}.
+Archive for Mathematical Logic \textbf{58} (2019), 77--97.
+\doi{10.1007/s00153-018-0624-5}; \arxiv{1712.03877v2}.
+Section~3, especially Lemmas~3.3--3.5, supplies the iteration and
+amenable-predicate elementarity background.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 16 September 2025.
+Theorem~2.10 supplies regularity of an exacting cardinal in
+$\HOD_{V_\lambda}$; the conventions immediately preceding it specify
+$\OD_\Gamma$ and $\HOD_\Gamma$.
+
+\end{thebibliography}
+\end{document}

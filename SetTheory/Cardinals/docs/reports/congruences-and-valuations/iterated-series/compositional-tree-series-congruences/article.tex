@@ -1,0 +1,1312 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{Ink}{HTML}{17384A}
+\definecolor{Accent}{HTML}{147D86}
+\definecolor{Pale}{HTML}{EDF5F6}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Prime-power congruences for compositional tree series},
+ pdfauthor={Research report prepared with ChatGPT}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Compositional tree series}
+\fancyhead[R]{\small\sffamily Prime-power congruences}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\A}{A_\ell}
+\newcommand{\al}[1]{a_\ell(#1)}
+\newcommand{\itA}[1]{A_\ell^{\circ #1}}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\vp}{\nu_p}
+\newcommand{\ord}{\operatorname{ord}_x}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=0.6pt,
+ arc=2pt,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,
+ rulecolor=\color{Accent},columns=fullflexible,showstringspaces=false}
+\allowdisplaybreaks
+\begin{document}
+\begin{titlepage}
+\vspace*{0.55in}
+{\sffamily\color{Accent}\large DISCRETE MATHEMATICS \quad / \quad RESEARCH REPORT\par}
+\vspace{0.35in}
+{\sffamily\bfseries\color{Ink}\Huge Prime-power congruences\par
+\vspace{0.12in}for compositional\par
+\vspace{0.12in}tree series\par}
+\vspace{0.4in}
+{\Large A counterexample, exact modular corrections,\par
+and a finite-core theorem for an OEIS family\par}
+\vspace{0.45in}
+\begin{resultbox}
+For the unique formal series
+\[
+ A_\ell(x)=x\exp\!\bigl(A_\ell^{\circ\ell}(x)\bigr),\qquad
+ A_\ell(x)=\sum_{n\ge1}a_\ell(n)\frac{x^n}{n!},
+\]
+the conjecture $a_5(n)\equiv n\pmod5$ is false. Its first failure is
+$n=23$, and all failures are precisely
+\[
+ n=20j+3\quad\text{or}\quad n=20j+4,\qquad j\ge1.
+\]
+The mechanism is a general prime-power congruence for labelled trees with
+integer types. It also proves eleven other conjectural assertions in the
+four OEIS entries considered here.
+\end{resultbox}
+\vfill
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large September 19, 2026\par}
+\vspace{0.15in}
+{\small Self-contained mathematical proofs; exact-arithmetic verification;\par
+LaTeX source, Python programs, and machine-readable certificates.\par}
+\end{titlepage}
+
+\begin{abstract}
+We study the integer coefficients of the formal functional equation
+$A_\ell=x\exp(A_\ell^{\circ\ell})$, where the superscript denotes
+composition, not an ordinary power. Four recent OEIS entries attach a
+collection of congruence conjectures to the cases $\ell=3,4,5,6$.
+We disprove the proposed modulo-$5$ identity for $\ell=5$, determine its
+complete infinite set of exceptions, and prove the other eleven
+currently conjectural assertions recorded in those entries. The main
+method gives considerably more: a coefficient modulo $p^\alpha$ is a
+weighted sum over typed rooted trees on fewer than $p^\alpha$ labels.
+Consequently every sequence in the family is eventually periodic modulo
+$p^\alpha$, with period dividing $p^\alpha(p-1)$ and a uniform onset bound
+$p^\alpha$. The ordinary residue generating functions are rational.
+We also prove periodicity in the iteration parameter modulo the square
+of the modulus, and classify exactly when $a_\ell(n)\equiv n\pmod p$
+holds for every $n$: there is no restriction for $p=2$, the condition is
+$3\mid\ell$ for $p=3$, and it is $p^2\mid\ell$ for every prime $p\ge5$.
+The first counterexample is checked by two independent exact formal-series
+algorithms. A reproducible test suite performs 29,122 exact-arithmetic
+assertions. The proofs, rather than the finite tests, establish the
+infinite statements.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The selected problem and the outcome}
+\subsection{What was conjectured}
+The starting point is the following family of formal power series:
+\begin{equation}\label{eq:main}
+ A_\ell(x)=x\exp\!\bigl(A_\ell^{\circ\ell}(x)\bigr),
+ \qquad A_\ell(0)=0,\quad A_\ell'(0)=1,
+ \qquad \ell\in\Z_{\ge0}.
+\end{equation}
+Here $A^{\circ k}$ means $k$-fold composition, with $A^{\circ0}(x)=x$.
+This distinction is essential: replacing composition by $A(x)^\ell$
+would give an entirely different problem.
+
+Write
+\begin{equation}\label{eq:coeffdef}
+ A_\ell(x)=\sum_{n\ge1}a_\ell(n)\frac{x^n}{n!}.
+\end{equation}
+The cases $\ell=3,4,5,6$ are OEIS
+\oeis{A396803}, \oeis{A396804}, \oeis{A396805}, and
+\oeis{A396806}, respectively \cite{oeis3,oeis4,oeis5,oeis6}.
+The entries were introduced in June 2026. In the versions inspected for
+this report, they contain parity and small-modulus conjectures.
+The selected assertion is the especially simple claim
+\begin{equation}\label{eq:false}
+ a_5(n)\equiv n\pmod5\qquad(n\ge1).
+\end{equation}
+It is attractive because its definition is exact, its truth can be tested
+without numerical approximation, and any counterexample settles its
+universal quantifier.
+
+\begin{theorem}[Complete correction of the selected conjecture]\label{thm:headline}
+For every $n\ge1$,
+\begin{equation}\label{eq:headline}
+ a_5(n)\equiv
+ \begin{cases}
+ 2,&n=20j+3\text{ or }n=20j+4\text{ for some }j\ge1,\\
+ n,&\text{otherwise}
+ \end{cases}\pmod5.
+\end{equation}
+Thus the first counterexample to \eqref{eq:false} is $n=23$.
+The exceptional set has natural density $1/10$.
+\end{theorem}
+The proof is given in Section~\ref{sec:mod5}. It uses only typed trees with
+at most four vertices, not a long extrapolation from computed terms.
+
+For direct comparison with the OEIS table, the exact value is
+\begin{equation}\label{eq:exact23}
+ a_5(23)=516114659489378430688740267292635767160672734031357.
+\end{equation}
+It ends in $7$, so its residue modulo $5$ is $2$, whereas $23\equiv3$.
+The published b-file already contains this integer \cite{bfile5}.
+The contradiction is therefore already latent in the published data;
+we do not claim to have discovered a previously unavailable term.
+The substantive extension is the structural proof, the exact infinite
+correction, and the general prime-power theory developed below.
+
+\subsection{Scope of the resolution}
+Table~\ref{tab:status} records the assertions addressed. Repeated parity
+assertions are counted separately because they are separately stated in
+the entries. There are eleven proofs and one disproof among the twelve
+assertions listed.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{0.14\textwidth}p{0.57\textwidth}p{0.19\textwidth}@{}}
+\toprule
+Entry & Assertion in the inspected entry & Outcome here\\
+\midrule
+A396803 & Parity agrees with $n$; residue modulo $3$ agrees with $n$. & Both proved.\\
+A396804 & Parity; $a(n)\equiv n\pmod4$; residue $3$ never occurs modulo $5$; corrected six-term pattern modulo $3$. & All four proved.\\
+A396805 & Parity; eventual pattern $(0,1,0)$ modulo $3$ from $n=3$; $a(n)\equiv n\pmod5$. & First two proved; last disproved.\\
+A396806 & Parity; agreement with $n$ modulo $3$ and modulo $6$. & All three proved.\\
+\bottomrule
+\end{tabular}
+\caption{The conjectural assertions resolved in this report. Source entries:
+\cite{oeis3,oeis4,oeis5,oeis6}.}\label{tab:status}
+\end{table}
+
+A396804 also preserves an older modulo-$3$ proposal, together with a
+correction explicitly noting its failure at $n=5$. That older disproof is
+credited in the entry to Danial Asaria and is not counted as a new result
+here. We prove the corrected pattern.
+
+\subsection{Status and priority}
+The source checks were performed on September 19, 2026. The assertions in
+Table~\ref{tab:status} remained labelled as conjectures in the inspected
+entries. No prior resolution of these exact assertions was identified in
+the checks performed. That is a bounded statement about the sources
+inspected, not a proof of global publication priority. The use of
+permutation actions, labelled-tree enumeration, and integer-valued
+polynomials is standard mathematics; all specialized arguments needed
+here are supplied in full. The report has not undergone independent peer
+review or proof-assistant verification.
+
+\section{Formal existence and division-free computation}\label{sec:formal}
+\subsection{Existence, uniqueness, and useful identities}
+\begin{proposition}\label{prop:exist}
+For every nonnegative integer $\ell$, equation~\eqref{eq:main} has a unique
+solution in $x+x^2\Q[[x]]$.
+\end{proposition}
+\begin{proof}
+For series with zero constant coefficient and linear coefficient $1$,
+the coefficient of degree $d$ in any fixed compositional iterate depends
+only on coefficients through degree $d$ of the original series.
+The coefficient of degree $n$ on the right side of \eqref{eq:main}
+therefore depends only on coefficients of $A_\ell$ through degree $n-1$.
+The linear coefficient is $1$. Inductively, the equation determines every
+subsequent coefficient uniquely, and those recursively determined
+coefficients satisfy the equation.
+
+Equivalently, start with $A^{[0]}=x$ and repeatedly apply
+$B\mapsto x\exp(B^{\circ\ell})$. Agreement through degree $d$ improves to
+agreement through degree $d+1$. Consequently the coefficients stabilize
+and give the unique solution. This argument is entirely formal and
+requires no positive radius of analytic convergence.
+\end{proof}
+
+Set $F_k=A_\ell^{\circ k}$ for $k\ge0$. Substitution into
+\eqref{eq:main} gives
+\[
+ F_k=F_{k-1}\exp(F_{\ell+k-1})\qquad(k\ge1).
+\]
+Multiplying these identities yields
+\begin{equation}\label{eq:typesystem}
+ F_k=x\exp\left(\sum_{j=\ell}^{\ell+k-1}F_j\right),\qquad k\ge0,
+\end{equation}
+where the sum is empty when $k=0$, and $F_0=x$. The iteration identities
+also appear in the OEIS entries; the derivation is included to keep the
+subsequent interpretation self-contained.
+
+The endpoints of the parameter family are helpful checks:
+\begin{equation}\label{eq:endpoints}
+ A_0(x)=xe^x,\quad a_0(n)=n;
+ \qquad A_1(x)=xe^{A_1(x)}.
+\end{equation}
+For $\ell=1$ the tree interpretation below is the usual enumeration of
+rooted labelled trees. Lagrange inversion, or Cayley's formula, gives
+$a_1(n)=n^{n-1}$. That familiar special case is only a check, not an input
+to any of the congruence proofs.
+
+\subsection{An exact recurrence}
+The standard partial exponential Bell polynomials can be introduced
+without divisions. Put $B_{0,0}=1$, $B_{n,0}=0$ for $n>0$, and
+\begin{equation}\label{eq:bell}
+ B_{n,k}=\sum_{j=1}^{n-k+1}\binom{n-1}{j-1}a_\ell(j)B_{n-j,k-1}
+ \qquad(1\le k\le n).
+\end{equation}
+If $c_{k,n}=n![x^n]F_k(x)$, then
+\begin{equation}\label{eq:composition}
+ c_{0,n}=\ind_{n=1},\quad c_{1,n}=a_\ell(n),\qquad
+ c_{k,n}=\sum_{j=1}^n c_{k-1,j}B_{n,j}\quad(k\ge2).
+\end{equation}
+The identity follows by expanding a composition into partitions of the
+$n$ labels: a block of size $j$ receives one of $a_\ell(j)$ inner
+structures. Formula~\eqref{eq:bell} distinguishes the block containing
+a particular label.
+
+Let $e_n=n![x^n]\exp(F_\ell(x))$, so $e_0=1$. Differentiating the
+exponential, or selecting the block containing a distinguished label,
+gives
+\begin{equation}\label{eq:expcoeff}
+ e_n=\sum_{j=1}^n\binom{n-1}{j-1}c_{\ell,j}e_{n-j},
+ \qquad a_\ell(n+1)=(n+1)e_n.
+\end{equation}
+These formulas form an incremental algorithm. Once $a_\ell(n)$ is known,
+compute the $n$th Bell row, then $c_{k,n}$ in increasing $k$, then $e_n$,
+and finally $a_\ell(n+1)$.
+
+\begin{corollary}\label{cor:integrality}
+All $a_\ell(n)$ and all $c_{k,n}$ are nonnegative integers. Moreover,
+$n\mid a_\ell(n)$ for every $n\ge1$.
+\end{corollary}
+\begin{proof}
+All recurrences use only sums, products, and integer binomial
+coefficients. The last assertion follows immediately from
+$a_\ell(n)=n e_{n-1}$.
+\end{proof}
+
+The first coefficients are
+\begin{align}\label{eq:firstpolys}
+ a_\ell(1)&=1,& a_\ell(2)&=2,\nonumber\\
+ a_\ell(3)&=6\ell+3,& a_\ell(4)&=48\ell^2+12\ell+4,\\
+ a_\ell(5)&=660\ell^3-90\ell^2+50\ell+5.\nonumber
+\end{align}
+Although these examples are polynomials with integer coefficients, we
+will not assume that this property persists at every degree. The
+integer-valued polynomial argument in Section~\ref{sec:parameter} is
+specifically designed not to make that unjustified inference.
+
+\section{A labelled-tree interpretation}\label{sec:trees}
+\begin{definition}
+An \emph{$\ell$-admissible typed rooted tree} is a rooted tree whose
+vertices carry distinct labels and nonnegative integer types. A vertex
+of type $t$ may have any unordered set of children, but each child's
+type $s$ must satisfy
+\begin{equation}\label{eq:allowed}
+ \ell\le s\le\ell+t-1.
+\end{equation}
+A vertex of type $0$ is therefore a leaf. Write $\T_{\ell,k}(n)$ for
+these trees on a specified set of $n$ labels with root type $k$.
+For root type $1$, abbreviate $\T_\ell(n)=\T_{\ell,1}(n)$.
+\end{definition}
+
+Labels and types have different roles. Labels identify vertices and are
+permuted by group actions. Types are integer decorations preserved by
+those actions. Distinct vertices may have equal types.
+
+For fixed $\ell,k,n$, there are finitely many such trees. Along a path,
+\eqref{eq:allowed} gives $s\le t+\ell-1$. For $\ell\ge1$, every type is
+at most $k+(n-1)(\ell-1)$; for $\ell=0$, types strictly decrease along
+edges. Thus all type assignments involved are finite.
+
+\begin{theorem}\label{thm:treeinterpretation}
+The exponential generating function of $\T_{\ell,k}$ is $F_k$.
+In particular,
+\begin{equation}\label{eq:treecount}
+ |\T_\ell(n)|=a_\ell(n).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $G_k$ be the exponential generating function for trees with root type
+$k$. Remove the root. Each resulting component is a rooted typed tree
+whose root type lies in the finite set
+$\{\ell,\ldots,\ell+k-1\}$. The components form an unordered set on
+disjoint label subsets. The labelled-set construction gives
+\[
+ G_k=x\exp\left(\sum_{j=\ell}^{\ell+k-1}G_j\right).
+\]
+This infinite system has a unique coefficientwise solution: the linear
+coefficients are $1$ and, simultaneously for all $k$, a coefficient of
+degree $n$ uses only degrees at most $n-1$ on the right. Each particular
+calculation uses only finitely many indices. By \eqref{eq:typesystem},
+$F_k$ solves the same system. Hence $G_k=F_k$.
+\end{proof}
+
+\begin{definition}\label{def:weight}
+For a typed tree $T$, define its total type by
+\[
+ S(T)=\sum_{v\in V(T)} t_v.
+\]
+For $r\ge1$ and $d\ge0$, define the weighted core count
+\begin{equation}\label{eq:Wdef}
+ W_{r,d}(\ell)=\sum_{T\in\T_\ell(r)} S(T)^d.
+\end{equation}
+Throughout, $0^0=1$. This convention is necessary when the number of
+additional orbits is zero. In our root-type-$1$ family $S(T)\ge1$, but
+residue classes of $S(T)$ can be zero.
+\end{definition}
+
+The interpretation already explains $n\mid a_\ell(n)$: every possible
+root label gives the same count by relabelling. It also turns
+composition, initially a formal-series operation, into the concrete
+local rule \eqref{eq:allowed}.
+
+\section{Reduction modulo a prime: only a small core survives}\label{sec:prime}
+\begin{theorem}[Prime-core congruence]\label{thm:prime}
+Let $p$ be prime and write $n=pq+r$, where $q\ge0$ and $0\le r<p$.
+Then
+\begin{equation}\label{eq:primecore}
+ a_\ell(n)\equiv
+ \begin{cases}
+ 0,&r=0,\\
+ W_{r,q}(\ell),&1\le r<p
+ \end{cases}\pmod p.
+\end{equation}
+For $n=0$ set $a_\ell(0)=0$.
+\end{theorem}
+\begin{proof}
+Choose a permutation $\sigma$ of the $n$ labels consisting of $q$
+disjoint $p$-cycles and $r$ fixed labels. The cyclic group generated by
+$\sigma$ acts on $\T_\ell(n)$. Its orbits have sizes $1$ or $p$, so
+\[
+ a_\ell(n)\equiv |\Fix(\sigma)|\pmod p.
+\]
+A fixed tree must have a fixed root label. Thus there are no fixed trees
+if $r=0$.
+
+Assume $r>0$. The parent of a fixed vertex must itself be fixed: the
+parent is uniquely determined and the tree is preserved by $\sigma$.
+Consequently the fixed vertices induce a connected rooted tree $T$ on
+the $r$ fixed labels. They inherit an admissible type assignment, so
+$T\in\T_\ell(r)$.
+
+Each nonfixed label orbit has size $p$, and its type is constant. All
+vertices in such an orbit have parents either in a single nonfixed
+orbit or at one fixed vertex. Contract the nonfixed orbits. The result
+is a rooted forest attached to $T$. No quotient cycle is possible,
+because iterating the parent map would then prevent reaching the root.
+
+An equivariant parent map from one nonfixed $p$-orbit to a different
+nonfixed $p$-orbit has exactly $p$ choices. Once one vertex's parent is
+chosen, equivariance determines all the others. These choices are
+independent for distinct quotient edges. A quotient forest with at
+least one such edge therefore contributes a multiple of $p$.
+
+The only remaining case modulo $p$ has every nonfixed orbit directly
+attached to a fixed vertex. Its $p$ vertices are leaves. An orbit
+attached to a fixed vertex of type $t_v$ has exactly $t_v$ allowable
+common leaf types. Summing over the attachment vertex gives $S(T)$
+choices for each of the $q$ distinguishable nonfixed orbits. Thus the
+contribution of $T$ is $S(T)^q$. Summing over $T$ proves the formula.
+For $q=0$, this simply counts the core itself.
+\end{proof}
+
+The theorem replaces an arbitrarily large coefficient by a finite sum
+on at most $p-1$ labels. It is important that it counts fixed trees,
+not arbitrary partitions of the labels: the parent-map structure is
+what forces every surviving nonfixed orbit to consist of leaves.
+
+\section{The prime-power theorem}\label{sec:primepower}
+A direct repetition of the prime proof is insufficient modulo $p^2$:
+a quotient edge contributes a factor $p$, not necessarily $p^2$.
+The extra divisibility comes from the number of ways to select the
+nonfixed orbits participating in a nontrivial quotient forest.
+
+\begin{lemma}[A forest divisibility estimate]\label{lem:forest}
+Fix an admissible core $T$ on $r>0$ fixed labels and consider a
+cyclic action of order $p$ on $b>0$ additional,
+distinguishable label orbits of size $p$. The total number of invariant
+trees with this core and with at least one parent edge between two
+nonfixed orbits is divisible by
+\[
+ p^{\nu_p(b)+1}.
+\]
+Here ``cyclic action of order $p$'' means that each additional orbit has
+size $p$; the statement includes $p=2$.
+\end{lemma}
+\begin{proof}
+As in the prime proof, contract the nonfixed orbits to obtain a rooted
+forest attached to the fixed core. Remove all one-vertex components of
+this forest. The remaining forest $H$ has $D$ vertices and $e\ge1$
+internal edges. Every component of $H$ has at least two vertices. Keep
+its types and its attachment vertices in the fixed core as decorations.
+
+For a fixed isomorphism class of decorated $H$, assigning distinct names
+from the $b$ available orbits to its vertices can be done in
+\[
+ \frac{\fall bD}{|\Aut(H)|}
+\]
+ways. Each internal edge contributes $p$ equivariant parent maps. Each
+of the remaining $b-D$ orbits is a one-vertex component and has $S(T)$
+attachment-and-type choices. The contribution is therefore
+\begin{equation}\label{eq:forestterm}
+ \frac{\fall bD}{|\Aut(H)|}\,p^e S(T)^{b-D}.
+\end{equation}
+When $b<D$ this class contributes zero and may be omitted.
+
+The action of $\Aut(H)$ on its $e$ directed internal edges is faithful.
+Indeed, every vertex is an endpoint of such an edge because there are
+no one-vertex components. An automorphism fixing every directed edge
+fixes every endpoint, hence every vertex. Thus $\Aut(H)$ embeds into the
+symmetric group on $e$ objects, and
+\[
+ \nu_p(|\Aut(H)|)\le\nu_p(e!)\le e-1.
+\]
+The last inequality follows, for example, from
+$\nu_p(e!)=(e-s_p(e))/(p-1)$, where $s_p(e)\ge1$ is the base-$p$ digit
+sum; it also follows by counting multiples of $p,p^2,\ldots$ directly.
+Since $D\ge1$, the falling factorial $\fall bD$ contains the factor $b$.
+The $p$-adic valuation of \eqref{eq:forestterm} is at least
+\[
+ \nu_p(b)+e-\nu_p(|\Aut(H)|)\ge\nu_p(b)+1.
+\]
+The quotient in \eqref{eq:forestterm} is an integer: it counts labelings
+of the decorated forest. The valuation calculation is valid even
+without using this integrality separately. Summing all finitely many
+classes proves the result.
+\end{proof}
+
+
+
+\begin{theorem}[Prime-power core congruence]\label{thm:primepower}
+Let $p$ be prime, $\alpha\ge1$, and $m=p^\alpha$. Write
+$n=mq+r$ with $q\ge0$ and $0\le r<m$. Then
+\begin{equation}\label{eq:powercore}
+ a_\ell(n)\equiv
+ \begin{cases}
+ 0,&r=0,\\
+ \displaystyle\sum_{T\in\T_\ell(r)}
+ S(T)^{p^{\alpha-1}q},&1\le r<m
+ \end{cases}\pmod m.
+\end{equation}
+The same statement holds for the coefficient sequence of $F_k$,
+with cores whose root has type $k$.
+\end{theorem}
+\begin{proof}
+The case $q=0$ is just the defining count of the core, so suppose $q>0$.
+Choose a permutation $\sigma$ consisting of $q$ cycles of length
+$p^\alpha$ and $r$ fixed labels. Let
+$\tau=\sigma^{p^{\alpha-1}}$, the generator of its order-$p$ subgroup.
+An orbit of the full cyclic group on the set of trees has size $p^j$
+for some $0\le j\le\alpha$. If $j<\alpha$, every point of that orbit is
+fixed by $\tau$; if $j=\alpha$, no point is fixed by $\tau$.
+Therefore
+\begin{equation}\label{eq:subgroup}
+ |\T_\ell(n)|\equiv|\Fix(\tau)|\pmod{p^\alpha}.
+\end{equation}
+
+On the labels, $\tau$ has $r$ fixed points and
+\[
+ b=p^{\alpha-1}q
+\]
+nonfixed orbits of size $p$. If $r=0$, a fixed root is impossible.
+Otherwise a $\tau$-fixed tree has a core in $\T_\ell(r)$, exactly as
+before. By Lemma~\ref{lem:forest}, every contribution having a
+nontrivial quotient component is divisible by
+$p^{\nu_p(b)+1}$, hence by $p^\alpha$.
+The surviving singleton components contribute $S(T)^b$.
+Combining this count with \eqref{eq:subgroup} proves the formula.
+Nothing in the proof depended on the root type being $1$.
+\end{proof}
+
+\subsection{A wider class of tree specifications}
+The proof applies more generally when a type $t$ has a finite set of
+allowable child types, of cardinality $d(t)$. The root type is fixed,
+children form an unrestricted unordered set, and the rule does not
+depend on the numerical labels. In this setting replace $S(T)$ by
+$\sum_v d(t_v)$. The finite-core formula and its prime-power proof remain
+unchanged. Our family is the special case $d(t)=t$ with allowable set
+$\{\ell,\ldots,\ell+t-1\}$.
+
+This extension does not include arbitrary degree restrictions, ordered
+children, or constraints comparing different labels. Such changes can
+invalidate the independent-leaf-orbit count and require a new argument.
+
+\section{Periodicity, rational generating functions, and finite certificates}
+\label{sec:periods}
+\begin{corollary}[Uniform eventual period]\label{cor:period}
+For $m=p^\alpha$,
+\begin{equation}\label{eq:period}
+ a_\ell(n+m(p-1))\equiv a_\ell(n)\pmod m
+ \qquad(n\ge m).
+\end{equation}
+Thus an eventual period divides $m(p-1)$, uniformly in $\ell$.
+\end{corollary}
+\begin{proof}
+For $n=mq+r$ with $q\ge1$, the exponent in \eqref{eq:powercore} is
+$p^{\alpha-1}q$. If $p\nmid S$, Euler's theorem gives
+\[
+ S^{p^{\alpha-1}(q+p-1)}\equiv
+ S^{p^{\alpha-1}q}\pmod{p^\alpha}.
+\]
+If $p\mid S$, both sides vanish: the exponent is at least
+$p^{\alpha-1}\ge\alpha$. The elementary inequality
+$2^{\alpha-1}\ge\alpha$ proves the latter bound for all $p\ge2$.
+The case $r=0$ is zero on both sides.
+\end{proof}
+
+\begin{corollary}[Rational residue generating function]\label{cor:gf}
+Let
+$R_{\ell,m}(z)=\sum_{n\ge1}(a_\ell(n)\bmod m)z^n$
+be regarded as a formal series over $\Z/m\Z$. Then
+\begin{equation}\label{eq:coregf}
+ R_{\ell,m}(z)=
+ \sum_{r=1}^{m-1}z^r
+ \sum_{T\in\T_\ell(r)}
+ \frac{1}{1-S(T)^{p^{\alpha-1}}z^m}.
+\end{equation}
+Every denominator has constant coefficient $1$, so the expression is
+well defined even though $\Z/m\Z$ need not be a field.
+\end{corollary}
+\begin{proof}
+For each $r$ and $T$, sum \eqref{eq:powercore} over $q\ge0$ as a
+geometric series. Only finitely many cores occur.
+\end{proof}
+
+If $S(T)$ is divisible by $p$, then $S(T)^{p^{\alpha-1}}=0$ modulo $m$
+and its summand is simply $z^r$. Otherwise the same base has order
+dividing $p-1$. Thus a common denominator is
+$1-z^{m(p-1)}$, with a finite polynomial accounting for the initial
+coefficients. In particular, multiplying $R_{\ell,m}$ by that denominator
+produces a polynomial of degree at most $m(p-1)+m-1$.
+
+For a general modulus $M=\prod_i p_i^{\alpha_i}$, the Chinese remainder
+theorem gives the explicit eventual period bound
+\begin{equation}\label{eq:compositeperiod}
+ L(M)=\lcm_i\bigl(p_i^{\alpha_i}(p_i-1)\bigr),
+ \qquad n\ge\max_i p_i^{\alpha_i}.
+\end{equation}
+An actual least period may be smaller. The bound is an infinite theorem,
+not a pattern guessed from a finite residue table.
+
+\subsection{What constitutes a finite certificate?}
+For fixed $\ell$ and $m=p^\alpha$, it is enough to record, for each
+$1\le r<m$, the distribution of $S(T)$ modulo $m$ over
+$\T_\ell(r)$. Evaluating a coefficient then consists of a finite weighted
+power sum. A certificate can be large for a large prime power, but its
+size does not depend on the queried index $n$.
+
+Alternatively, after the theorem is established, one may compute the
+first $m(p-1)+m-1$ coefficients by the division-free recurrence and reduce
+all later indices using \eqref{eq:period}. For fixed modulus this gives
+random access to a residue using a finite table and modular reduction of
+the index. The large integer $a_\ell(n)$ never needs to be constructed.
+
+\section{Periodicity in the iteration parameter and an exact classification}
+\label{sec:parameter}
+\subsection{Weighted cores are integer-valued polynomials}
+\begin{lemma}\label{lem:polynomial}
+For $r\ge2$ and $d\ge0$, $W_{r,d}(\ell)$ is a polynomial in $\ell$ with
+rational coefficients, takes integer values at all nonnegative integers,
+and has degree at most $d+r-2$. Moreover,
+\begin{equation}\label{eq:Wzero}
+ W_{r,d}(0)=r.
+\end{equation}
+For $r=1$, $W_{1,d}(\ell)=1$.
+\end{lemma}
+\begin{proof}
+Fix an underlying rooted labelled tree on $r$ vertices. Every child of
+the root has forced type $\ell$, since the root has type $1$.
+If the root has $c\ge1$ children, there are $r-1-c\le r-2$ remaining
+variable types. The summand $S^d$ has total degree $d$ in those types and
+$\ell$.
+
+Sum variable types from the leaves toward the root. A variable of type
+$s$ ranges from $\ell$ to $\ell+t-1$, where $t$ is its parent's type.
+Summing a polynomial over such an interval produces a rational
+polynomial and raises total degree by at most one. This follows by
+expressing powers in a binomial-polynomial basis and using
+$\sum_{j=0}^{N-1}\binom jk=\binom N{k+1}$; equivalently it is polynomial
+discrete antidifferentiation. After at most $r-2$ sums the degree is at
+most $d+r-2$. Summing the finitely many underlying trees preserves this
+bound. Integrality at nonnegative $\ell$ follows from the original count.
+
+When $\ell=0$, the root's children all have type $0$ and hence are
+leaves. Only rooted stars are possible, one for each of the $r$ root
+labels. Each has total type $1$, proving \eqref{eq:Wzero}.
+\end{proof}
+
+We need integer-valued, not necessarily integer-coefficient, polynomials.
+Every polynomial $P$ of degree at most $D$ taking integer values on
+nonnegative integers has a Newton expansion
+\begin{equation}\label{eq:newton}
+ P(X)=\sum_{j=0}^D c_j\binom Xj,\qquad
+ c_j=\Delta^jP(0)\in\Z.
+\end{equation}
+The expansion follows from finite differences and agrees with $P$ at
+all nonnegative integers, hence as a polynomial.
+
+\begin{lemma}\label{lem:newtonperiod}
+Let $m=p^\alpha$. An integer-valued polynomial of degree $D<2m$ satisfies
+\[
+ P(L+m^2)\equiv P(L)\pmod m\qquad(L\ge0).
+\]
+\end{lemma}
+\begin{proof}
+For $1\le i\le D$, we have $i<2p^\alpha\le p^{\alpha+1}$, so
+$\nu_p(i)\le\alpha$. Since
+\[
+ \binom{m^2}{i}=\frac{m^2}{i}\binom{m^2-1}{i-1},
+\]
+its valuation is at least $2\alpha-\nu_p(i)\ge\alpha$.
+Vandermonde's identity now gives
+\[
+ \binom{L+m^2}{j}
+ =\sum_{i=0}^j\binom{m^2}{i}\binom L{j-i}
+ \equiv\binom Lj\pmod m
+\]
+for every $j\le D$. Apply \eqref{eq:newton}.
+\end{proof}
+
+\begin{theorem}[Parameter periodicity]\label{thm:paramperiod}
+For every integer $M\ge2$, every $\ell\ge0$, and every $n\ge1$,
+\begin{equation}\label{eq:paramperiod}
+ a_{\ell+M^2}(n)\equiv a_\ell(n)\pmod M.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:sufficient}
+ M^2\mid\ell\quad\Longrightarrow\quad
+ a_\ell(n)\equiv n\pmod M\quad\text{for all }n\ge1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+First take $M=m=p^\alpha$. Write $n=mq+r$. If $r=0$, both coefficients
+are zero modulo $m$ by divisibility by $n$. If $r=1$, the core is a single
+vertex of total type $1$, so the residue is independent of $\ell$.
+
+For $2\le r<m$, the core exponent is zero when $q=0$. When $q>0$, reduce
+$q$ to its representative $t\in\{1,\ldots,p-1\}$ modulo $p-1$.
+As in the proof of Corollary~\ref{cor:period}, units have the same power
+and nonunits vanish, so the residue is
+$W_{r,d}(\ell)$ with $d=p^{\alpha-1}t\le\varphi(m)$.
+In either case Lemma~\ref{lem:polynomial} gives degree at most
+\[
+ d+r-2\le\varphi(m)+m-3<2m.
+\]
+Lemma~\ref{lem:newtonperiod} proves the claimed parameter period $m^2$.
+For arbitrary $M$, apply the prime-power result to each factor
+$p^\alpha\Vert M$. The shift $M^2$ is a multiple of each $p^{2\alpha}$,
+so the Chinese remainder theorem proves \eqref{eq:paramperiod}.
+Finally $a_0(n)=n$, and repeated parameter shifts give
+\eqref{eq:sufficient}.
+\end{proof}
+
+\subsection{Which parameters give the identity modulo a prime?}
+\begin{theorem}[Complete prime-modulus classification]\label{thm:classification}
+Fix a prime $p$ and a nonnegative integer $\ell$. Then
+\[
+ a_\ell(n)\equiv n\pmod p\quad\text{for every }n\ge1
+\]
+holds exactly under the following conditions:
+\begin{equation}\label{eq:classification}
+ \begin{array}{c|c}
+ p&\text{necessary and sufficient condition}\\\hline
+ 2&\text{no restriction on }\ell\\
+ 3&3\mid\ell\\
+ p\ge5&p^2\mid\ell.
+ \end{array}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The cases $2$ and $3$ follow from the explicit formulas in
+Section~\ref{sec:smallmod}. For $p\ge5$, the value
+$a_\ell(3)=6\ell+3$ forces $p\mid\ell$; write $\ell=ph$.
+On three labels the core is a star or a path. Section~\ref{sec:cores}
+gives
+\[
+ W_{3,q}(\ell)=3(1+2\ell)^q+
+ 6\sum_{t=\ell}^{2\ell-1}(1+\ell+t)^q.
+\]
+Modulo $p$, the sum for $\ell=ph$ contains $h$ full sets of residues.
+For $q=p-1$, it is $-h$ because the nonzero residues have $(p-1)$st
+power $1$ and zero contributes zero. The prime-core theorem, with
+$n=p(p-1)+3$, therefore gives
+\begin{equation}\label{eq:generalwitness}
+ a_{ph}\bigl(p(p-1)+3\bigr)\equiv3-6h\pmod p.
+\end{equation}
+Since $p\ge5$, agreement with $n\equiv3$ forces $p\mid h$.
+Thus $p^2\mid\ell$ is necessary. It is sufficient by
+Theorem~\ref{thm:paramperiod}.
+\end{proof}
+
+In fact the same calculation gives an infinite family of witnesses:
+\begin{equation}\label{eq:infiniteprimewitness}
+ a_{ph}\bigl(p(p-1)j+3\bigr)\equiv3-6h\pmod p
+ \qquad(p\ge5,\ j\ge1).
+\end{equation}
+For $p\nmid h$, every one of these indices violates agreement with $n$.
+We do not claim that this progression always begins at the first failure
+for every prime; only the case $p=5$ receives a complete exception-set
+analysis below.
+
+\section{Small cores and explicit formulas}\label{sec:cores}
+The following finite sums are the computational heart of the concrete
+applications. They are exact integer identities, before any modular
+reduction. Let $I_\ell=\{\ell,\ldots,2\ell-1\}$; it is empty for
+$\ell=0$.
+\begin{align}
+ W_{1,d}(\ell)&=1,\label{eq:W1}\\
+ W_{2,d}(\ell)&=2(1+\ell)^d,\label{eq:W2}\\
+ W_{3,d}(\ell)&=3(1+2\ell)^d+
+ 6\sum_{t\in I_\ell}(1+\ell+t)^d.\label{eq:W3}
+\end{align}
+For four vertices,
+\begin{align}
+ W_{4,d}(\ell)={}&4(1+3\ell)^d
+ +24\sum_{t\in I_\ell}(1+2\ell+t)^d\nonumber\\
+ &+12\sum_{s,t\in I_\ell}(1+\ell+s+t)^d\label{eq:W4}\\
+ &+24\sum_{t\in I_\ell}\sum_{u=\ell}^{\ell+t-1}
+ (1+\ell+t+u)^d.\nonumber
+\end{align}
+
+Here is a direct derivation, including the labelled multiplicities.
+A two-vertex tree is a path with two choices for its root label; its
+child has type $\ell$. On three vertices there are three rooted stars,
+with types $(1,\ell,\ell)$, and six rooted paths, with types
+$(1,\ell,t)$ for $t\in I_\ell$.
+
+On four vertices the four rooted shapes are as follows. A star has four
+choices of root and types $(1,\ell,\ell,\ell)$. A root with two children,
+one of which has one child, has $4\cdot3\cdot2=24$ labelled realizations
+and types $(1,\ell,\ell,t)$. A root with one child that has two leaves
+has $4\cdot3=12$ realizations and types $(1,\ell,s,t)$.
+A path has $4!=24$ realizations and types $(1,\ell,t,u)$, with
+$t\in I_\ell$ and $\ell\le u\le\ell+t-1$.
+These are precisely the four terms in \eqref{eq:W4}.
+
+At $d=0$ the formulas give $1,2,6\ell+3,48\ell^2+12\ell+4$, agreeing
+with \eqref{eq:firstpolys}. Independent Pr\"ufer-code enumeration in the
+supplied program checks both the multiplicities and the complete total-type
+distributions; the displayed derivation establishes them without code.
+
+\section{Complete formulas modulo \texorpdfstring{$2,3,4$}{2,3,4}}
+\label{sec:smallmod}
+\subsection{Parity for the entire family}
+\begin{corollary}\label{cor:parity}
+For every $\ell\ge0$ and $n\ge1$,
+\[
+ a_\ell(n)\equiv n\pmod2.
+\]
+\end{corollary}
+\begin{proof}
+If $n$ is even, divisibility by $n$ suffices. If $n=2q+1$, the
+prime-core formula has a one-vertex core with total type $1$, giving
+$a_\ell(n)\equiv1^q=1$.
+\end{proof}
+
+\subsection{The full modulo-3 formula}
+\begin{corollary}\label{cor:mod3}
+For $q\ge0$,
+\begin{equation}\label{eq:mod3}
+ a_\ell(3q)\equiv0,\qquad
+ a_\ell(3q+1)\equiv1,\qquad
+ a_\ell(3q+2)\equiv2(1+\ell)^q\pmod3.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:W1}--\eqref{eq:W2} in Theorem~\ref{thm:prime} for $p=3$.
+\end{proof}
+
+When $\ell\equiv0\pmod3$, the residues agree with $n$. When
+$\ell\equiv1\pmod3$, the pattern from $n=1$ is
+\[
+ 1,2,0,1,1,0,\quad\text{repeating}.
+\]
+When $\ell\equiv2\pmod3$, the values at $n=1,2$ are $1,2$, and from
+$n=3$ onward the pattern is $0,1,0$ repeating. These three cases prove
+the relevant assertions for all four OEIS entries. They also show the
+necessity of $3\mid\ell$ for agreement with $n$ at every index: take
+$q=1$ in the third formula.
+
+\subsection{The full modulo-4 formula}
+\begin{corollary}\label{cor:mod4}
+For every $\ell\ge0$ and $q\ge0$,
+\begin{align}
+ a_\ell(4q)&\equiv0,&
+ a_\ell(4q+1)&\equiv1,\nonumber\\
+ a_\ell(4q+2)&\equiv2(1+\ell)^{2q}\pmod4.\label{eq:mod4a}
+\end{align}
+For the remaining residue class,
+\begin{equation}\label{eq:mod4b}
+ a_\ell(3)\equiv3+2\ell\pmod4,
+ \qquad
+ a_\ell(4q+3)\equiv3+2\left\lceil\frac\ell2\right\rceil\pmod4
+ \quad(q\ge1).
+\end{equation}
+In particular, $a_\ell(n)\equiv n\pmod4$ for all $n\ge1$ if and only if
+$4\mid\ell$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:primepower} with $p=2$, $\alpha=2$. The exponent
+is $2q$, so \eqref{eq:W1} and \eqref{eq:W2} give
+\eqref{eq:mod4a}. For a three-vertex core, the star term in
+\eqref{eq:W3} is $3$ because $1+2\ell$ is odd. For $q\ge1$, an even
+integer to the power $2q$ is zero modulo $4$, and an odd integer to that
+power is one. The quantity $1+\ell+t$ is odd precisely when $t$ has the
+same parity as $\ell$. Exactly $\lceil\ell/2\rceil$ integers in
+$I_\ell$ do. Since $6\equiv2\pmod4$, formula~\eqref{eq:mod4b}
+follows. Its $q=0$ case is the exact value $6\ell+3$.
+
+If agreement with $n$ holds for every $n$, the index $3$ forces $\ell$
+to be even, and the index $7$ then forces $\ell/2$ to be even. Conversely,
+$4\mid\ell$ makes every displayed formula agree with $n$.
+\end{proof}
+
+The case $\ell=4$ proves the modulo-$4$ conjecture for A396804. Combining
+parity with the modulo-$3$ result proves agreement modulo $6$ whenever
+$3\mid\ell$, including $\ell=6$ as conjectured in A396806.
+
+\section{The modulo-5 conjecture: all exceptions and a larger family}
+\label{sec:mod5}
+We prove more than Theorem~\ref{thm:headline} by allowing any parameter
+$\ell=5h$.
+
+\begin{lemma}\label{lem:powersums}
+For $q\ge0$, put
+\[
+ U_q=\sum_{s=0}^4s^q\pmod5,
+ \qquad \delta_q=\ind_{q>0\text{ and }4\mid q}.
+\]
+Then $U_q=-\delta_q$ modulo $5$.
+\end{lemma}
+\begin{proof}
+For $q=0$, the convention $0^0=1$ gives $U_0=5=0$ modulo $5$.
+For $q>0$, the zero term vanishes. The nonzero residues form a cyclic
+group of order $4$; their $q$th powers sum to zero unless $4\mid q$,
+in which case the sum is $4=-1$.
+For this small prime one can also check the four exponent residues
+$q=1,2,3,4$ directly and use $s^4=1$ for $s\ne0$.
+\end{proof}
+
+\begin{theorem}[Exact modulo-$5$ formula for parameters divisible by $5$]
+\label{thm:multiple5}
+Let $h\ge0$. For every $n\ge1$,
+\begin{equation}\label{eq:multiple5}
+ a_{5h}(n)\equiv
+ \begin{cases}
+ 3-h,&n=20j+3,\ j\ge1,\\
+ 4-2h,&n=20j+4,\ j\ge1,\\
+ n,&\text{otherwise}
+ \end{cases}\pmod5.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $n=5q+r$. The cases $r=0,1,2$ follow at once from the prime-core
+formula: the residues are respectively $0,1,2$ because $1+5h\equiv1$.
+For $r=3$, formula~\eqref{eq:W3} consists of a star contribution $3$
+and a sum over $5h$ consecutive type values. They contain $h$ copies of
+each residue modulo $5$. Therefore
+\begin{equation}\label{eq:r3five}
+ a_{5h}(5q+3)\equiv3+6hU_q\equiv3+hU_q=3-h\delta_q\pmod5.
+\end{equation}
+
+For $r=4$, use the four terms in \eqref{eq:W4}. The star contributes $4$.
+The root-with-two-children term contributes $24hU_q$. The double sum
+with multiplicity $12$ contributes $12\cdot5h^2U_q=0$ modulo $5$.
+It remains to evaluate the path term.
+
+Write $t=5h+5j+s$, where $0\le j<h$ and $0\le s<5$. The inner interval
+for $u$ has $h+j$ complete residue blocks, followed by residues
+$0,\ldots,s-1$. Because the total type is congruent to $1+s+u$, the
+inner sum equals
+\[
+ (h+j)U_q+\sum_{v=0}^{s-1}(1+s+v)^q\pmod5.
+\]
+After summing over $s$, the complete-block part is a multiple of $5$.
+Thus the entire double sum is
+\[
+ hV_q,\qquad
+ V_q=\sum_{0\le v<s\le4}(1+s+v)^q.
+\]
+The summand is symmetric in $s,v$. The sum over all ordered pairs is
+$5U_q=0$, and the diagonal sum is $U_q$ because $s\mapsto1+2s$ permutes
+the residues. Hence
+\[
+ 2V_q=-U_q,\qquad V_q=-\tfrac12U_q\pmod5.
+\]
+Combining the four shapes gives
+\begin{equation}\label{eq:r4five}
+ a_{5h}(5q+4)\equiv4+24hU_q-12hU_q
+ =4+12hU_q=4-2h\delta_q\pmod5.
+\end{equation}
+Equations~\eqref{eq:r3five}--\eqref{eq:r4five} are exactly
+\eqref{eq:multiple5}, since $\delta_q=1$ precisely for $q=4j$ with $j\ge1$.
+\end{proof}
+
+Taking $h=1$ proves Theorem~\ref{thm:headline}. The first exceptional
+indices are
+\[
+ 23,24,43,44,63,64,83,84,103,104,\ldots.
+\]
+The terms $a_5(1),\ldots,a_5(22)$ really do agree with their indices
+modulo $5$; the theorem explains why a short initial check is misleading.
+
+\subsection{A rational generating-function correction}
+Let $R_{5h,5}(z)=\sum_{n\ge1}a_{5h}(n)z^n$ over $\F_5$. Since
+$\sum_{n\ge1}nz^n=z/(1-z)^2$, the exact residue formula is equivalent to
+\begin{equation}\label{eq:correctedgf}
+ \boxed{\displaystyle
+ R_{5h,5}(z)=\frac{z}{(1-z)^2}
+ -h\frac{z^{23}+2z^{24}}{1-z^{20}}
+ \quad\text{in }\F_5[[z]].}
+\end{equation}
+This is an ordinary generating function for the residues, not the
+original exponential generating function $A_{5h}$.
+
+For $h=1$, the least eventual period is exactly $20$, and this
+$20$-periodicity starts at $n=5$. To see minimality, observe that in the
+periodic tail the zero residues occur exactly at multiples of $5$.
+Every period is therefore divisible by $5$. Since $20$ is a period, a
+least period must be one of $5,10,20$: the least period of a periodic
+word divides every period, as follows by Euclidean division of shifts.
+Periods $5$ and $10$ both fail, comparing $n=23$ with $n=28$ and $n=33$
+and translating these comparisons by arbitrarily large multiples of $20$.
+Finally, the comparisons $a_5(3)\not\equiv a_5(23)$ and
+$a_5(4)\not\equiv a_5(24)$ prevent an onset before $5$.
+
+There are exactly two exceptional residue classes in every block of
+length $20$ after the initial block. Their natural density is therefore
+$2/20=1/10$. In a full periodic block, residues $0,1,2,3,4$ occur with
+frequencies $4,4,6,3,3$, respectively.
+
+\subsection{An immediate repaired conjecture}
+Within the subfamily $\ell=5h$, agreement with $n$ modulo $5$ at every
+index holds exactly when $5\mid h$, or equivalently $25\mid\ell$.
+The general prime classification proves that no other parameters work.
+Thus replacing the proposed parameter $5$ by a multiple of $25$ repairs
+the identity; the original modulus and its strikingly simple right side
+can be retained.
+
+\section{The missing residue for A396804}\label{sec:avoidance}
+The neighboring conjecture that $a_4(n)$ is never $3$ modulo $5$ is true.
+We give an explicit certificate for every index.
+
+For $1\le r\le4$, let $N_r(s)$ be the number of cores in $\T_4(r)$ with
+$S(T)\equiv s\pmod5$. Equations~\eqref{eq:W1}--\eqref{eq:W4}, or their
+shape-by-shape derivation, give the exact counts in
+Table~\ref{tab:weights4}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$r$ & $N_r(0)$ & $N_r(1)$ & $N_r(2)$ & $N_r(3)$ & $N_r(4)$ & Total\\
+\midrule
+1&0&1&0&0&0&1\\
+2&2&0&0&0&0&2\\
+3&6&6&6&0&9&27\\
+4&180&192&132&160&156&820\\
+\bottomrule
+\end{tabular}
+\caption{Exact total-type frequencies for parameter $\ell=4$.}
+\label{tab:weights4}
+\end{table}
+For example, the row $r=3$ has three stars of total type $9$, and six
+paths for each $t=4,5,6,7$, with total type $5+t$.
+For $r=4$, the following four contribution vectors provide a compact
+manual certificate for the less immediate last row:
+\begin{equation}\label{eq:shape4vectors}
+\begin{array}{c|rrrrr}
+\text{shape}&s=0&s=1&s=2&s=3&s=4\\\hline
+\text{star}&0&0&0&4&0\\
+\text{root with two children}&24&24&0&24&24\\
+\text{fork below root}&36&48&36&36&36\\
+\text{path}&120&120&96&96&96
+\end{array}
+\end{equation}
+Each entry follows by substituting $t,s\in\{4,5,6,7\}$ in the
+corresponding term of \eqref{eq:W4}. Their column sums give
+Table~\ref{tab:weights4}.
+
+By the prime-core theorem,
+\[
+ a_4(5q+r)\equiv\sum_{s=0}^4N_r(s)s^q\pmod5.
+\]
+For $q>0$, the answer depends only on $q\bmod4$. The resulting complete
+table is
+\begin{equation}\label{eq:avoidtable}
+\begin{array}{c|c|rrrr}
+ &q=0&q\equiv1&q\equiv2&q\equiv3&q\equiv0\pmod4,\ q>0\\\hline
+r=0&0&0&0&0&0\\
+r=1&1&1&1&1&1\\
+r=2&2&0&0&0&0\\
+r=3&2&4&4&0&1\\
+r=4&0&0&1&2&0
+\end{array}
+\end{equation}
+No entry equals $3$.
+\begin{corollary}\label{cor:avoidance}
+For all $n\ge1$, $a_4(n)\not\equiv3\pmod5$.
+\end{corollary}
+This proves the residue-avoidance conjecture without assuming any of the
+other conjectures in A396804.
+
+For comparison, the exact core frequencies for $\ell=5$ are
+\begin{equation}\label{eq:weights5}
+\begin{array}{c|rrrrr}
+ r&s=0&s=1&s=2&s=3&s=4\\\hline
+1&0&1&0&0&0\\
+2&0&2&0&0&0\\
+3&6&9&6&6&6\\
+4&252&256&252&252&252.
+\end{array}
+\end{equation}
+Modulo $5$, these yield $W_{3,q}=3+U_q$ and $W_{4,q}=4+2U_q$,
+providing a second small certificate for the corrected modulo-$5$
+formula in the case $h=1$.
+
+\section{Verification, algorithms, and reproducibility}\label{sec:verification}
+\subsection{What the computation establishes}
+The supplied test suite completed \textbf{29,122 exact-arithmetic
+assertions}. Its broad modular grid covers $0\le\ell\le12$ and
+$1\le n\le260$. The checks include the following distinct mechanisms:
+
+\begin{enumerate}[leftmargin=*,itemsep=0.2em]
+\item The coefficient $a_5(23)$ and all earlier coefficients agree between
+an incremental Bell-polynomial recurrence and an independent ordinary
+power-series implementation using exact rational arithmetic.
+\item For $0\le\ell\le8$ and core sizes at most four, the explicit
+shape formulas agree with independent labelled-tree enumeration using
+Pr\"ufer codes and direct enumeration of allowable types.
+\item The parity, modulo-$3$, modulo-$4$, and modulo-$5$ formulas agree
+with direct coefficient calculations on their stated finite test grids.
+Prime-power core checks include moduli $4,8,9,25$, in addition to primes.
+\item Eventual-period checks and parameter-square-period checks are made
+against direct calculations of the original functional equation. The
+coefficient routine does not first reduce the parameter or the index by
+the theorem it is intended to test.
+\end{enumerate}
+
+The exact counterexample is not inferred from a rounded approximation or
+from its magnitude. Both independent computations produce precisely the
+integer in \eqref{eq:exact23}. The original OEIS b-file supplies an
+external third comparison for that value.
+
+The finite checks do not prove the infinite statements. For example,
+testing periodicity through $260$ cannot exclude a later failure. That
+exclusion is supplied by the cyclic-group and forest-divisibility proofs.
+Conversely, the independent implementations help detect transcription,
+indexing, or multiplicity errors in the presentation.
+
+\subsection{Algorithmic details}
+The main coefficient routine implements
+\eqref{eq:bell}--\eqref{eq:expcoeff}. For a truncation through $N$, the
+operation count is
+\[
+ O(N^3+\ell N^2),
+\]
+and the storage is $O(N^2+\ell N)$. These are arithmetic-operation
+bounds, not bit-complexity bounds: unrestricted integer coefficients grow
+rapidly. For a fixed modulus, reduction after each sum keeps all stored
+coefficients bounded by that modulus.
+
+The second routine stores ordinary coefficients as Python
+\texttt{Fraction} objects. It uses ordinary polynomial convolution,
+Horner composition, and the recurrence
+\[
+ [x^n]e^{H(x)}=\frac1n\sum_{j=1}^n j[x^j]H(x)\,[x^{n-j}]e^{H(x)}.
+\]
+It then iterates the original functional equation until the requested
+truncation has stabilized. This is slower but avoids sharing the Bell
+polynomial implementation with the main computation.
+
+The direct core enumerator decodes every Pr\"ufer word of length $r-2$,
+chooses every possible root, orients the resulting labelled tree, and
+assigns types recursively from the root. It is deliberately restricted
+to $r\le5$ in the public interface, because its purpose is independent
+verification of small certificates rather than large-scale enumeration.
+
+\subsection{Pitfalls avoided}
+An exponential generating function should not be reduced modulo a prime
+by treating $x^n/n!$ as an ordinary field coefficient when $p\mid n!$.
+Our modular algorithm instead reduces the integer sequences and uses
+only integer polynomial recurrences.
+
+Similarly, using only a prime-order action would not justify the
+prime-power statement. The passage from the full cyclic group to its
+order-$p$ subgroup, followed by the valuation estimate on decorated
+forests, is essential. Finally, the cases $q=0$ must be kept separate
+when powers of zero residues occur. Confusing $0^0$ with $0$ would erase
+the initial exceptions responsible for the first false conjecture.
+
+\subsection{Archive contents and commands}
+The archive is self-contained apart from a standard Python installation
+and a LaTeX distribution. No third-party Python packages are required.
+\begin{lstlisting}
+python3 code/verify.py
+python3 code/iterative_series.py 5 40
+python3 code/iterative_series.py 5 260 --modulus 5
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+
+The \texttt{data/} directory contains exact early coefficients, the
+modular grid, core-frequency certificates, general-prime witnesses, and
+a JSON verification summary. The README specifies the scope of each
+file. Running the verification program regenerates these artifacts.
+No checksum files, font files, or external literature PDFs are bundled.
+
+\section{Further questions and conclusion}\label{sec:conclusion}
+The selected conjecture has a complete negative answer, and all eleven
+other live assertions in Table~\ref{tab:status} have proofs. Several
+natural refinements remain worthwhile.
+
+The prime-power period bound is uniform, but it need not be the least
+period. Determining the exact eventual period and the shortest initial
+segment for each pair $(\ell,p^\alpha)$ is a finite problem after the
+core theorem, and a more conceptual classification may be possible.
+The parameter-square period is also a bound rather than a universal
+minimal period. Modulo $2$ the parameter does not matter at all; modulo
+$3$ its period is only $3$.
+
+Theorem~\ref{thm:classification} completely classifies agreement with
+$n$ modulo a prime. A comparably sharp classification modulo arbitrary
+prime powers would strengthen the sufficient condition
+$p^{2\alpha}\mid\ell$. Our proof gives a finite decision procedure for
+each fixed modulus but does not claim that this sufficient condition is
+necessary.
+
+A separate direction is the real or complex asymptotic growth of the
+integer coefficients as $n\to\infty$ for fixed $\ell\ge2$.
+No analytic convergence or asymptotic expansion is asserted in this
+report. The arithmetic results are formal and combinatorial, and their
+validity does not depend on resolving that analytic question.
+
+The central lesson is specific rather than merely methodological.
+For this iterative exponential family, congruences of arbitrarily large
+coefficients are controlled by a fixed finite collection of small typed
+trees. A numerical contradiction at $n=23$ becomes an exact infinite
+exception set, rational residue generating functions, and a uniform
+prime-power theory.
+
+\appendix
+\section{A compact proof of the main counterexample family}
+For readers wishing to verify only the selected conjecture's resolution,
+the following is a short route through the full proof.
+The typed-tree interpretation identifies $a_5(n)$ with rooted labelled
+trees having root type $1$ and child types in $\{5,\ldots,t+4\}$ when
+the parent has type $t$. Apply a permutation with $q$ disjoint $5$-cycles
+and $r$ fixed labels, where $n=5q+r$ and $0\le r<5$.
+Modulo $5$, invariant trees with an edge between two nonfixed label
+orbits vanish, because such an edge has five possible equivariant
+parent maps. Every surviving orbit consists of leaves attached directly
+to a fixed-label core. Thus its contribution is the core's total type
+to the $q$th power.
+
+The total-type distributions on one through four fixed labels are the
+four rows of \eqref{eq:weights5}. Reducing those rows modulo $5$ gives
+\[
+ \begin{array}{c|rrrrr}
+ 1&0&1&0&0&0\\
+ 2&0&2&0&0&0\\
+ 3&1&4&1&1&1\\
+ 4&2&1&2&2&2.
+ \end{array}
+\]
+Consequently the residue at $n=5q+r$ is $0,1,2,3+U_q,4+2U_q$ for
+$r=0,1,2,3,4$, respectively. Since $U_q=0$ except when $q$ is a positive
+multiple of $4$, and $U_q=-1$ in that case, the only failures are
+$n=20j+3$ and $20j+4$ with $j\ge1$. At both kinds of index the residue
+is $2$. The first index is $23$.
+
+Every count in this argument is supported by an explicit small-tree
+classification. Its infinite quantifier comes from the group action,
+not from the size of a computational search.
+
+\section{Selected exact data and modular witnesses}
+The first twelve terms for $\ell=5$ are
+\begin{center}\small
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$&$a_5(n)$&$a_5(n)\bmod5$\\\midrule
+1&1&1\\
+2&2&2\\
+3&33&3\\
+4&1264&4\\
+5&80505&0\\
+6&7365456&1\\
+7&893006317&2\\
+8&136393773888&3\\
+9&25351203412449&4\\
+10&5592284787086560&0\\
+11&1436624546038113861&1\\
+12&423481344402695225472&2\\
+\bottomrule
+\end{tabular}
+\end{center}
+These initial values agree with the source entry and its b-file
+\cite{oeis5,bfile5}; they are independently regenerated in the archive.
+The file \texttt{a396805\_first40.csv} extends the exact list through
+$n=40$.
+
+The general witness formula \eqref{eq:generalwitness} gives:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$p$&$\ell$&$n=p(p-1)+3$&$a_\ell(n)\bmod p$&$n\bmod p$\\\midrule
+5&5&23&2&3\\
+7&7&45&4&3\\
+11&11&113&8&3\\
+13&13&159&10&3\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table is finite corroboration of an already proved formula. Only
+for $p=5$ does this report assert that the displayed index is the first
+failure and list every exceptional index.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeis3}
+Paul D. Hanna and contributors,
+\emph{OEIS A396803: E.g.f. satisfies $A(x)=x\exp(A^{\circ3}(x))$},
+created June 8, 2026; inspected September 19, 2026.
+\url{https://oeis.org/A396803}.
+
+\bibitem{oeis4}
+Paul D. Hanna, Danial Asaria, Seiichi Manyama, and contributors,
+\emph{OEIS A396804: E.g.f. satisfies $A(x)=x\exp(A^{\circ4}(x))$},
+created June 9, 2026; inspected September 19, 2026.
+\url{https://oeis.org/A396804}.
+The entry records the correction to the earlier modulo-$3$ proposal.
+
+\bibitem{oeis5}
+Paul D. Hanna, Seiichi Manyama, and contributors,
+\emph{OEIS A396805: E.g.f. satisfies $A(x)=x\exp(A^{\circ5}(x))$},
+June 2026; inspected September 19, 2026.
+\url{https://oeis.org/A396805}.
+
+\bibitem{oeis6}
+Paul D. Hanna, Seiichi Manyama, and contributors,
+\emph{OEIS A396806: E.g.f. satisfies $A(x)=x\exp(A^{\circ6}(x))$},
+June 2026; inspected September 19, 2026.
+\url{https://oeis.org/A396806}.
+
+\bibitem{bfile5}
+Paul D. Hanna,
+\emph{Table of $n,a(n)$ for OEIS A396805, $1\le n\le200$},
+inspected September 19, 2026.
+\url{https://oeis.org/A396805/b396805.txt}.
+In particular, the entry at index $23$ already contradicts the printed
+modulo-$5$ conjecture.
+\end{thebibliography}
+\end{document}

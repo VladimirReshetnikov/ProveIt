@@ -1,0 +1,1472 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{OliveInk}{HTML}{4C5942}
+\definecolor{SoftPaper}{HTML}{F3F3E9}
+\definecolor{RuleGray}{HTML}{C8CCBD}
+\definecolor{MutedInk}{HTML}{52584D}
+\hypersetup{colorlinks=true,linkcolor=OliveInk,citecolor=OliveInk,urlcolor=OliveInk,
+ pdftitle={Ordinal complexity of graph minors},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Maximal order types and ordinal widths of degree-two graph-minor orders}}
+\titleformat{\section}{\Large\bfseries\color{OliveInk}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{OliveInk}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{MutedInk}Ordinal complexity of graph minors}
+\fancyhead[R]{\small\color{MutedInk}Research manuscript}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\emergencystretch=2em
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Problem}
+\aliascntresetthe{problem}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Ord}{\operatorname{Ord}}
+\newcommand{\otp}{\operatorname{otp}}
+\newcommand{\mot}{\mathsf o}
+\newcommand{\wid}{\mathsf w}
+\newcommand{\hei}{\mathsf h}
+\newcommand{\minor}{\preccurlyeq_{\!m}}
+\newcommand{\Memb}{\mathcal M_{\mathrm{emb}}}
+\newcommand{\Cl}{\mathcal C}
+\newcommand{\Add}{\mathcal A}
+\newcommand{\LF}{\mathcal L}
+\newcommand{\DG}{\mathcal D}
+\newcommand{\Q}{\mathcal Q}
+\newcommand{\bigop}{\mathop{\bigoplus}}
+\newcommand{\sqgraph}{\mathbin{\dot\cup}}
+\newcommand{\down}{\mathord\downarrow}
+\newcommand{\Inf}{\infty}
+\newcommand{\eps}{\varepsilon}
+\newtcolorbox{resultbox}[1][]{colback=SoftPaper,colframe=RuleGray,
+ boxrule=0.5pt,arc=1mm,left=2.5mm,right=2.5mm,top=2mm,bottom=2mm,#1}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{RuleGray},backgroundcolor=\color{SoftPaper},
+ showstringspaces=false,aboveskip=0.8em,belowskip=0.8em}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.65in}
+\noindent{\small\sffamily\color{OliveInk}ORDER THEORY \quad / \quad GRAPH MINORS \quad / \quad ORDINAL INVARIANTS}
+\vspace{0.45in}
+\begin{flushleft}
+{\huge\bfseries Ordinal complexity\par of graph minors\par}
+\vspace{0.2in}
+{\Large Component splitting, degree-two graphs,\par and discontinuous limits\par}
+\vspace{0.45in}
+{\large A research manuscript prepared for Vladimir Reshetnikov}\par
+\vspace{0.12in}
+20 September 2026
+\end{flushleft}
+\vspace{0.4in}
+\begin{abstract}
+The ordinal invariants of the graph-minor ordering provide a concrete entry
+point into an open program in well-partial-order theory. We study its
+restriction to finite simple graphs of maximum degree two, and to related
+classes with bounds on path size and the number of cyclic components. A
+component-splitting argument, combined with the established maximal-order-type
+theorem for finite multisets, proves that the finite disjoint-union closure of
+a connected graph class of maximal order type $\alpha<\eps_0$ has maximal order
+type $\omega^\alpha$. In particular, the degree-two graph-minor order has
+maximal order type and ordinal width both equal to
+$\omega^{\omega\cdot2}$, while its height is only $\omega$.
+We give exact formulas throughout a two-parameter family, including
+$\omega^{\omega+k}$ when at most $k$ cycles are allowed and path sizes are
+unbounded. These formulas yield explicit failures of continuity under
+increasing unions, even unions of minor-closed classes. An exact
+cycle-allocation and path-packing criterion is proved and checked against
+closure under elementary minor operations on all $1{,}500$ isomorphism classes
+with at most fourteen vertices. The work is a partial attack on the general
+graph-minor problem, not a calculation for all finite graphs; historical
+novelty of the special-case formulas is not asserted.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Central calculation.}\quad For $\DG$, the finite simple graphs of
+maximum degree at most two, ordered by minors,
+\[
+\boxed{\mot(\DG)=\wid(\DG)=\omega^{\omega\cdot2},\qquad \hei(\DG)=\omega.}
+\]
+The archive includes this manuscript, its \LaTeX{} source, an independent
+finite checker, machine-readable results, and a proof audit.
+\end{resultbox}
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The selected problem and the scope of the attack}
+
+A well-partial-order is not determined, even approximately, by its
+cardinality. The coordinatewise orders on $\N$, $\N^2$, and $\N^3$ are all
+countable, have no infinite antichain, and have only finite descending
+sequences. Nevertheless, their maximal linear-extension types are
+$\omega$, $\omega^2$, and $\omega^3$. The ordinal invariant records how much
+freedom remains when one resolves incomparabilities into a total order.
+
+Vialard's 2024 thesis identifies the ordinal measurement of finite
+undirected graphs under the minor relation as a promising unresolved
+direction \cite[p.~110]{VialardThesis}. The broad question motivating this
+manuscript is the following.
+
+\begin{problem}[Graph-minor ordinal measurement]
+Determine the maximal order type, and associated ordinal invariants, of
+finite graphs under the minor relation, preferably in a form that interacts
+with labels and structural decompositions.
+\end{problem}
+
+The present attack focuses on a class where the graph-theoretic geometry
+can be described exactly, while the resulting order types are already
+substantially transfinite. Every connected finite simple graph of maximum
+degree at most two is either a path or a cycle. Disconnected graphs in this
+class are therefore finite multisets of these components. The main obstacle
+is that \emph{minor containment is not multiset embedding}: one source
+component can split into several target components.
+
+For instance,
+\[
+ P_2\sqgraph P_2\minor P_4,
+ \qquad
+ P_2\sqgraph P_3\minor C_5,
+\]
+where $P_n$ has $n$ vertices and $C_n$ is a simple $n$-cycle. Any argument
+that requires distinct source components for distinct target paths would
+miss these minor relations. Conversely,
+\[
+ C_3\sqgraph P_1\not\minor C_4:
+\]
+retaining a cycle uses the entire cyclic source component, leaving no
+vertices for a separate path. Understanding both facts is essential.
+
+\subsection{Results obtained}
+
+For $b\in\{1,2,3,\ldots,\Inf\}$ and
+$k\in\{0,1,2,\ldots,\Inf\}$, let $\DG_{b,k}$ consist of the graphs whose
+path components have at most $b$ vertices and which have at most $k$
+cyclic components. The symbol $\Inf$ means that the corresponding bound is
+absent; it is not an ordinal parameter. Cycle lengths are unrestricted
+throughout. Write $\DG=\DG_{\Inf,\Inf}$.
+
+\begin{theorem}[Complete two-parameter calculation]\label{thm:table}
+With $b\ge1$ and the preceding conventions, the invariants are as follows.
+\begin{center}
+\normalfont\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lllcc@{}}
+\toprule
+Path-size bound & Cycle-count bound & $\mot(\DG_{b,k})$ & $\wid(\DG_{b,k})$ & $\hei$\\
+\midrule
+$b<\omega$ & $k<\omega$ & $\omega^{b+k}$ & $\omega^{b+k-1}$ & $\omega$\\
+$b=\Inf$ & $k<\omega$ & $\omega^{\omega+k}$ & $\omega^{\omega+k}$ & $\omega$\\
+$b<\omega$ & $k=\Inf$ & $\omega^\omega$ & $\omega^\omega$ & $\omega$\\
+$b=\Inf$ & $k=\Inf$ & $\omega^{\omega\cdot2}$ & $\omega^{\omega\cdot2}$ & $\omega$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+The proof occupies \cref{sec:prelim,sec:components,sec:finite,sec:geometry,sec:unbounded,sec:transfer,sec:bounded}.
+The result is not based on extrapolating finite computations.
+
+A general component theorem is also proved: if $\Cl$ is a well-partial-order
+of connected finite simple graphs with $\mot(\Cl)=\alpha<\eps_0$, then its
+finite disjoint-union closure has maximal order type $\omega^\alpha$.
+For a finite collection of $N\ge1$ connected templates, the corresponding
+maximal order type and width are $\omega^N$ and $\omega^{N-1}$,
+independently of the detailed minor relations between the templates.
+
+\subsection{What is and is not claimed}
+
+The standard facts about maximal linearizations, natural products,
+multisets, and the height--width inequality are attributed below. The
+component reduction and the degree-two calculations are given with proofs.
+They are applications and extensions of that established machinery, not a
+claim to have invented it. The literature search located the broad open
+program, but did not establish priority for these particular special cases.
+The formulas should therefore be read as explicit, auditable mathematical
+results derived in this investigation, not as a claim that a named
+longstanding conjecture has been resolved.
+
+The manuscript does not determine $\mot$ for all finite graphs, for all
+finite trees, or for edge-labeled graph-minor orders. It does identify where
+the present method is exact, gives a nontrivial parameter spectrum, and
+isolates a genuine obstruction to extending the same proof indiscriminately.
+
+\section{Ordinal conventions and the established tools}\label{sec:prelim}
+
+\subsection{Three different ranks}
+
+We use $\N=\{0,1,2,\ldots\}$. All graphs are considered up to isomorphism. For finite simple graphs, the
+minor relation on isomorphism classes is antisymmetric. A proper minor
+operation strictly decreases $|V|+|E|$, and mutual minor containment
+therefore forces isomorphism.
+
+A sequence $(x_0,\ldots,x_{r-1})$ in a partial order $P$ is \emph{bad} if
+$x_i\not\le x_j$ whenever $i<j$. Let $\operatorname{Bad}(P)$ be the tree of
+finite bad sequences, including the empty sequence. Define
+$\operatorname{Ant}(P)$ similarly using pairwise incomparable entries, and
+$\operatorname{Dec}(P)$ using strictly descending sequences. For a
+well-founded tree, the rank of a node is the supremum of the ranks of its
+immediate extensions plus one. Leaves have rank zero. A partial order is a \emph{well-partial-order}
+when its bad-sequence tree is well-founded; equivalently, it has neither
+an infinite descending chain nor an infinite antichain.
+
+\begin{definition}
+The \emph{maximal order type} $\mot(P)$, \emph{ordinal width} $\wid(P)$,
+and \emph{height} $\hei(P)$ are the ranks of the empty sequence in
+$\operatorname{Bad}(P)$, $\operatorname{Ant}(P)$, and
+$\operatorname{Dec}(P)$, respectively.
+\end{definition}
+
+In particular, a nonempty chain has width $1$, not $0$, and a finite
+$n$-element antichain has width $n$. An ordinal width such as
+$\omega^{\omega\cdot2}$ is a rank of the tree of finite antichains; it is
+\emph{not} the cardinality or order type of an actual antichain.
+
+The residual identities are
+\begin{align}
+\mot(P)&=\sup_{x\in P}\bigl(\mot(\{y:x\not\le y\})+1\bigr),\label{eq:motres}\\
+\wid(P)&=\sup_{x\in P}\bigl(\wid(\{y:y\perp x\})+1\bigr),\label{eq:widres}\\
+\hei(P)&=\sup_{x\in P}\bigl(\hei(\{y:y<x\})+1\bigr).\label{eq:heightres}
+\end{align}
+They follow directly by taking the first entry of a sequence.
+
+\subsection{Natural arithmetic}
+
+We write $\oplus$ and $\otimes$ for Hessenberg natural sum and product.
+Natural sum adds the coefficients in a common Cantor normal form. Natural
+product multiplies these normal forms as polynomials, using natural sum
+for exponents. Thus
+\[
+ (\omega^\xi)\otimes(\omega^\eta)=\omega^{\xi\oplus\eta}.
+\]
+Ordinary ordinal addition and multiplication are written $+$ and
+$\cdot$. The distinctions needed below include
+\[
+ b+\omega=\omega,\quad b\oplus\omega=\omega+b,
+ \quad\text{and}\quad
+ \omega^\omega\cdot\omega^k=\omega^{\omega+k}
+ \quad(b,k<\omega).
+\]
+A finite natural sum of monomials with exponents strictly below $\xi$
+is below $\omega^\xi$. Natural sum is strictly increasing in each
+argument. An infinite additively indecomposable ordinal is an ordinal
+$\omega^\xi$ with $\xi>0$; adding finitely many elements to an ordinal
+strictly below it still leaves an ordinal strictly below it.
+
+\subsection{Explicit external dependencies}
+
+We use four established results. They are recorded here to make the proof
+dependencies transparent.
+
+\begin{theorem}[de Jongh--Parikh]\label{thm:standardmot}
+A well-partial-order has a linear extension whose order type is exactly
+$\mot(P)$. Moreover,
+\[
+ \mot(P\times Q)=\mot(P)\otimes\mot(Q),
+ \qquad
+ \mot(P\sqcup Q)=\mot(P)\oplus\mot(Q),
+\]
+where $\sqcup$ denotes a disjoint union with no cross-comparabilities.
+\end{theorem}
+
+These are the linearization and composition results of
+\cite{deJonghParikh}. In particular, $\mot(\N^d)=\omega^d$ for a positive
+finite $d$.
+
+\begin{theorem}[Finite multiset maximal order type]\label{thm:multiset}
+Let $P$ be a well-partial-order with $\mot(P)=\alpha<\eps_0$.
+Order finite multisets by the existence of an injective matching that
+maps each entry to a greater or equal entry. Then
+\[
+ \mot(\Memb(P))=\omega^\alpha.
+\]
+\end{theorem}
+
+Here $\eps_0$ is the least nonzero ordinal satisfying
+$\omega^{\eps_0}=\eps_0$. We use only this below-$\eps_0$ specialization of the multiset theorem
+\cite{Weiermann,VanDerMeeren}; the general theorem has an exponent
+correction. A modern presentation distinguishes carefully between
+multiset embedding and multiset replacement \cite{VialardMultisets}.
+
+\begin{theorem}[K\v r\'i\v z--Thomas]\label{thm:KT}
+For every well-partial-order $P$,
+\[
+ \wid(P)\le\mot(P)\le\hei(P)\otimes\wid(P).
+\]
+\end{theorem}
+
+This is the height--width inequality of \cite{KrizThomas}. The last
+standard fact is closure of well-quasi-ordering under finite multisets;
+it follows from Higman's theorem by forgetting the order of a finite
+word \cite{Higman}.
+
+For clarity, the following elementary comparison rules are proved rather
+than left implicit. Passing to an induced suborder cannot increase any
+of the three tree ranks. Adding comparabilities on the same underlying
+set cannot increase $\mot$ or $\wid$: it only removes bad sequences and
+antichains. Finally, if $P$ is partitioned into finitely many pieces
+$P_i$, then
+\begin{equation}\label{eq:finitecover}
+ \wid(P)\le\bigop_i\wid(P_i),
+ \qquad
+ \mot(P)\le\bigop_i\mot(P_i).
+\end{equation}
+For maximal order type, remove all cross-comparabilities and apply the
+disjoint-sum formula. For width, at an antichain-tree node take the natural
+sum of the antichain ranks remaining in the individual pieces. Extending
+the antichain lowers the rank in its chosen piece and does not increase
+any other summand. This is a strict ordinal ranking with the displayed
+root value, proving the upper bound. A finite cover can be made a partition
+by assigning each point to its first containing piece; each resulting
+piece is an induced suborder of the original covering piece.
+
+\section{A component-splitting transfer theorem}\label{sec:components}
+
+Let $\Cl$ be a collection of pairwise nonisomorphic, nonempty, connected
+finite simple graphs. Give it the inherited minor relation. Define
+\[
+ \Add(\Cl)=\{C_1\sqgraph\cdots\sqgraph C_r:
+          r<\omega,\ C_i\in\Cl\},
+\]
+including the empty graph when $r=0$. Neither $\Cl$ nor $\Add(\Cl)$ is
+required to be minor-closed. The relation always means ordinary graph
+minor containment in the ambient class of all finite graphs; intermediate
+minor operations need not stay inside the displayed subclass.
+
+\begin{lemma}[Allocation to source components]\label{lem:componentallocation}
+Suppose $H\minor G$. Each connected component of $H$ can be assigned to a
+unique connected component of $G$ by a minor model. The target components
+assigned to a source component $C$ are each connected minors of $C$.
+If one of them is isomorphic to $C$, it is the only target component
+assigned to that source component.
+\end{lemma}
+
+\begin{proof}
+A minor model assigns to each target vertex a nonempty connected branch
+set in the source, with distinct branch sets disjoint. Branch sets
+representing a connected target component, together with the edges
+realizing its adjacency, all lie in one source component. This gives the
+allocation and also a connected-minor model for each target component.
+
+If a target component is isomorphic to $C$, it has $|V(C)|$ vertices.
+Its $|V(C)|$ nonempty disjoint branch sets already use every vertex of
+$C$. There is no vertex left to represent another target component.
+\end{proof}
+
+\begin{lemma}[Cantor-normal-form linearization]\label{lem:CNF}
+Let $\ell:\Cl\to\alpha$ be a bijection that realizes a well-order
+linear extension of the connected minor order. For a graph $G$ in
+$\Add(\Cl)$, put
+\begin{equation}\label{eq:generalcode}
+ \Phi_\ell(G)=\bigop_{C\text{ a component of }G}\omega^{\ell(C)}.
+\end{equation}
+Then $\Phi_\ell$ is a bijection from $\Add(\Cl)$ onto the ordinals below
+$\omega^\alpha$. Moreover,
+\[
+ H\minor G,\ H\not\cong G
+ \quad\Longrightarrow\quad
+ \Phi_\ell(H)<\Phi_\ell(G).
+\]
+Consequently, comparing these codes gives a linear extension of type
+$\omega^\alpha$.
+\end{lemma}
+
+\begin{proof}
+Unique component decomposition and uniqueness of Cantor normal form show
+that the map is injective. Conversely, every ordinal below
+$\omega^\alpha$ is a finite Cantor-normal-form polynomial with exponents
+below $\alpha$. For each exponent, take the graph component with that
+$\ell$-value and use the required finite multiplicity. This proves
+surjectivity, including the empty graph and the ordinal zero.
+
+Now allocate target components to source components as in
+\cref{lem:componentallocation}. If a source component $C$ survives
+unchanged, its contribution is $\omega^{\ell(C)}$. Otherwise, it either
+produces no target component, or produces a finite list of proper
+connected minors $D$ with $\ell(D)<\ell(C)$. Their total natural-sum
+contribution is strictly smaller than $\omega^{\ell(C)}$. In the case
+$\ell(C)=0$, only the empty list can occur in this latter alternative.
+Thus each source contribution weakly decreases, and every changed
+source contribution strictly decreases. If none changes, the whole
+output is isomorphic to the input. Therefore a proper minor changes at
+least one contribution. Strict monotonicity of finite natural sums
+proves the asserted inequality.
+\end{proof}
+
+\begin{theorem}[Component transfer below $\eps_0$]\label{thm:component}
+If $\Cl$ is a well-partial-order under minors and
+$\mot(\Cl)=\alpha<\eps_0$, then $\Add(\Cl)$ is a well-partial-order and
+\[
+ \boxed{\mot(\Add(\Cl))=\omega^\alpha.}
+\]
+\end{theorem}
+
+\begin{proof}
+Identify a graph with its finite multiset of connected components.
+An injective componentwise minor matching is sufficient for a graph
+minor model, since the corresponding models can be placed in distinct
+source components. Hence the minor order on $\Add(\Cl)$ is an
+augmentation of $\Memb(\Cl)$. This proves well-partial-ordering and,
+by \cref{thm:multiset}, gives the upper bound $\omega^\alpha$.
+
+By \cref{thm:standardmot}, the connected order has a linear extension
+of type $\alpha$. Apply \cref{lem:CNF} to obtain a linear extension of
+$\Add(\Cl)$ of type $\omega^\alpha$. This is the matching lower bound.
+\end{proof}
+
+\begin{remark}[Why splitting does not spoil the calculation]
+Componentwise matching is used only for the upper bound. The lower bound
+permits a source component to split, but charges every resulting proper
+connected minor below the source exponent. A finite number of lower
+monomials cannot catch a higher monomial. This is the precise reason why
+the extra minor comparisons do not lower the maximal order type in the
+range covered by the theorem.
+\end{remark}
+
+\begin{remark}[The boundary of the theorem]\label{rem:epsilon}
+The code construction is valid for any ordinal $\alpha$ for which a
+connected linearization is available. Its lower bound is always
+$\omega^\alpha$. The upper bound supplied by multiset embedding agrees
+with it below $\eps_0$, but not uniformly at larger ordinals. Thus the
+restriction on $\alpha$ is part of the argument, not a dispensable
+technicality. Computing $\mot(\Cl)$ itself can also be the hard part.
+\end{remark}
+
+\section{Finite connected templates and linear forests}\label{sec:finite}
+
+\subsection{Width of a finite-dimensional grid}
+
+\begin{lemma}\label{lem:grid}
+For every integer $d\ge1$,
+\[
+ \mot(\N^d)=\omega^d,\qquad
+ \hei(\N^d)=\omega,\qquad
+ \wid(\N^d)=\omega^{d-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+The maximal order type follows from the natural-product theorem.
+The sum of the coordinates is a finite strict rank, and there is an
+infinite chain, so the height is $\omega$.
+
+For the width upper bound, use induction on $d$. The case $d=1$ is a
+chain. For $d\ge2$ and $x\in\N^d$, every point incomparable with $x$
+has some coordinate $y_i<x_i$. The incomparable residual is therefore
+covered by the finitely many slices
+\[
+ S_{i,t}=\{y:y_i=t\},\qquad 1\le i\le d,\quad 0\le t<x_i.
+\]
+Each slice is isomorphic to $\N^{d-1}$. By induction and
+\cref{eq:finitecover}, its residual has width at most
+$\omega^{d-2}\cdot(x_1+\cdots+x_d)$. Taking the supremum in
+\cref{eq:widres} yields $\wid(\N^d)\le\omega^{d-1}$.
+
+For $d\ge2$, suppose the inequality were strict. An ordinal
+$\beta<\omega^{d-1}$ has only finite Cantor-normal-form exponents at
+most $d-2$. The ordinal $\omega\otimes\beta$ then has leading exponent
+at most $d-1$, and is strictly below $\omega^d$. This contradicts
+\cref{thm:KT}. The case $d=1$ already gives equality.
+\end{proof}
+
+\subsection{A formula independent of template geometry}
+
+\begin{theorem}[Finite template theorem]\label{thm:finite}
+Let $\Cl$ contain exactly $N\ge1$ isomorphism types of nonempty connected
+finite simple graphs. Then
+\[
+ \mot(\Add(\Cl))=\omega^N,\qquad
+ \wid(\Add(\Cl))=\omega^{N-1},\qquad
+ \hei(\Add(\Cl))=\omega.
+\]
+\end{theorem}
+
+\begin{proof}
+The finite connected order has maximal order type $N$, so
+\cref{thm:component} gives $\omega^N$. There is also a direct upper
+bound: record the $N$ component multiplicities. Coordinatewise increase
+of this vector is sufficient for minor containment, so the graph order
+is an augmentation of $\N^N$.
+
+Every strict minor decreases $|V|+|E|$, which supplies a finite rank to
+each graph. Repeating any fixed template gives an infinite chain. Thus
+the height is $\omega$. The same multiplicity representation and
+\cref{lem:grid} give $\wid\le\omega^{N-1}$. If $N\ge2$, a smaller width
+would imply $\omega\otimes\wid<\omega^N$, contradicting
+\cref{thm:KT}. If $N=1$, nonemptiness gives $\wid\ge1$, and the upper
+bound is already $1$.
+\end{proof}
+
+The surprising feature is not that a finite list has a finite connected
+order type, but that adding all finite disjoint unions produces precisely
+one factor of $\omega$ per connected isomorphism type. Allowing
+contractions, edge deletions, and component splitting changes the
+comparabilities but not this answer.
+
+\subsection{Paths alone}
+
+Let $\LF_b$ be the minor order on finite disjoint unions of
+$P_1,\ldots,P_b$, and let $\LF=\LF_{\Inf}$ allow all finite paths.
+
+\begin{corollary}\label{cor:linearforests}
+For finite $b\ge1$,
+\[
+ \mot(\LF_b)=\omega^b,\qquad
+ \wid(\LF_b)=\omega^{b-1},\qquad
+ \hei(\LF_b)=\omega.
+\]
+For unrestricted linear forests,
+\[
+ \mot(\LF)=\wid(\LF)=\omega^\omega,\qquad \hei(\LF)=\omega.
+\]
+\end{corollary}
+
+\begin{proof}
+The finite statements are \cref{thm:finite}. The connected path order
+$P_1<P_2<\cdots$ has type $\omega$, so
+\cref{thm:component} gives $\mot(\LF)=\omega^\omega$.
+Each $\LF_b$ is an induced suborder of $\LF$, whence
+\[
+ \wid(\LF)\ge\sup_{b\ge1}\omega^{b-1}=\omega^\omega.
+\]
+The reverse bound is $\wid\le\mot$. The vertex--edge norm bounds
+height by $\omega$, and the isolated-vertex graphs give an infinite
+chain.
+\end{proof}
+
+For a linear forest with $p_n$ copies of $P_n$, a maximal linearization
+is explicitly
+\begin{equation}\label{eq:pathcode}
+ \Phi_P(G)=\sum_{n\text{ decreasing}}\omega^{n-1}p_n.
+\end{equation}
+The sum is finite and written in decreasing exponent order.
+It enumerates all ordinals below $\omega^\omega$.
+
+\section{The exact minor geometry of paths and cycles}\label{sec:geometry}
+
+\begin{lemma}[Connected comparisons]\label{lem:connecteddegree2}
+For valid positive path sizes and cycle sizes at least three,
+\begin{align*}
+ P_a\minor P_b&\iff a\le b,\\
+ C_a\minor C_b&\iff a\le b,\\
+ P_a\minor C_b&\iff a\le b,\\
+ C_a\minor P_b&\text{ never holds}.
+\end{align*}
+A source cycle that supplies a cyclic target component cannot supply
+any other target component.
+\end{lemma}
+
+\begin{proof}
+A minor cannot have more vertices than its source. The positive cases
+are realized by shortening a path, contracting a cycle, or opening a
+cycle into a path and shortening it. A path cannot yield a cycle:
+deletions and contractions preserve acyclicity.
+
+For the final assertion, retaining a cycle in a minor of $C_b$ allows
+neither a vertex deletion nor an edge deletion from that component
+before the cycle is formed; either deletion destroys its only cycle.
+Equivalently, a cycle model in $C_b$ must cover its entire cyclic
+traversal by its branch sets. All vertices of the source component
+belong to the cyclic model, so there are none available for a separate
+target component.
+\end{proof}
+
+\begin{lemma}[One path bin]\label{lem:pathbin}
+A linear forest with component sizes $a_1,\ldots,a_r$ is a minor of
+$P_n$ if and only if $\sum_i a_i\le n$. The same condition describes
+the linear forests that are minors of $C_n$.
+\end{lemma}
+
+\begin{proof}
+The vertex count proves necessity. For a path, choose consecutive
+segments of the desired sizes, delete the edges between segments, and
+delete unused vertices. Adjacent segments require an edge deletion,
+not a spare separating vertex. For a cycle, first delete one edge to
+obtain $P_n$, then use the path construction. The empty target is
+allowed in both cases.
+\end{proof}
+
+Represent a graph by the sorted lists
+\[
+ G=(p_1,\ldots,p_r\ ;\ c_1,\ldots,c_s),
+ \qquad p_i\ge1,\ c_j\ge3.
+\]
+The $p_i$ are path sizes and the $c_j$ are cycle sizes.
+
+\begin{theorem}[Packing criterion]\label{thm:packing}
+A target graph $H$ is a minor of a source graph $G$ if and only if both
+of the following can be achieved together:
+\begin{enumerate}[label=(\roman*)]
+\item Match each target cycle to a distinct source cycle of at least
+      its length. A matched source cycle is reserved in its entirety.
+\item Assign each target path to a source path or to an unreserved
+      source cycle, with the sum of assigned path sizes in each bin
+      no greater than that source component's vertex count.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+A minor model allocates every target component to a source component.
+By \cref{lem:connecteddegree2}, cycles require distinct cyclic sources
+and consume them. The remaining target components are paths, and the
+vertex counts in each source component give the bin constraints.
+This proves necessity. Conversely, contract each reserved cycle to
+its matched target cycle, and use \cref{lem:pathbin} independently in
+every remaining source component. Their disjoint union realizes the
+entire target graph.
+\end{proof}
+
+Total vertex capacity alone does not suffice. For example,
+$P_3\sqgraph P_3$ is not a minor of $P_4\sqgraph P_2$, even though both
+have six vertices. The two length-three path components cannot be
+placed into the bins of sizes four and two.
+
+\begin{proposition}[Greedy cycle reservation is exact]\label{prop:greedy}
+Process the target cycles in decreasing length order, always reserving
+the smallest remaining source cycle that is long enough. Then apply
+\emph{exact} bin packing to the target paths using the remaining bins.
+The result accepts exactly the minor pairs. If no eligible cycle exists
+at some step, the minor test fails.
+\end{proposition}
+
+\begin{proof}
+Consider a feasible allocation and the largest as-yet unmatched target
+cycle, of length $t$. Let $f$ be the smallest available source cycle
+of length at least $t$, and let $c$ be its source in the feasible
+allocation. Then $f\le c$ in vertex count.
+
+If $f$ was unused by the cyclic targets, move the target cycle from
+$c$ to $f$ and move every path assigned to $f$ into $c$. This is valid
+because $c$ has at least as much capacity. If $f$ was assigned to a
+different target cycle of length $u$, swap the two assignments. Since
+$t$ is largest, $u\le t\le c$, so the swap is valid. Thus a feasible
+allocation can always be changed to use the greedy reservation.
+Induction proves the claim. Nothing here says that greedy \emph{path}
+packing is correct; the path stage remains an exact search.
+\end{proof}
+
+\section{The unrestricted degree-two order}\label{sec:unbounded}
+
+Let $\Cl_2$ be the connected graphs of maximum degree at most two.
+It consists of the path chain and the cycle chain, with the cross
+comparisons in \cref{lem:connecteddegree2}.
+
+\begin{lemma}\label{lem:connectedmot}
+The connected minor order satisfies $\mot(\Cl_2)=\omega\cdot2$.
+\end{lemma}
+
+\begin{proof}
+Removing every cross-comparison gives the disjoint sum of two chains
+of type $\omega$. Its maximal order type is
+$\omega\oplus\omega=\omega\cdot2$, which is an upper bound.
+The order that puts all paths first in increasing size, followed by
+all cycles in increasing size, is a linear extension. Its order type
+is $\omega+\omega$, giving equality.
+\end{proof}
+
+\begin{theorem}\label{thm:fullmot}
+For all finite simple degree-two graphs,
+\[
+ \mot(\DG)=\omega^{\omega\cdot2}.
+\]
+A maximal linearization is supplied by the explicit code
+\begin{equation}\label{eq:degreecode}
+ \Phi(G)=
+ \sum_{n\text{ decreasing},\ n\ge3}\omega^{\omega+(n-3)}c_n
+ \; +\!
+ \sum_{n\text{ decreasing},\ n\ge1}\omega^{n-1}p_n,
+\end{equation}
+where $c_n$ and $p_n$ denote component multiplicities.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:component} to \cref{lem:connectedmot}.
+The connected linearization used there labels $P_n$ by $n-1$ and
+$C_n$ by $\omega+(n-3)$. Equation~\eqref{eq:degreecode} is precisely
+\cref{eq:generalcode}. Its possible exponents are all ordinals below
+$\omega\cdot2$, and all finite coefficients are allowed. It therefore
+ranges bijectively over the ordinals below $\omega^{\omega\cdot2}$.
+\end{proof}
+
+For example,
+\[
+ G=C_5\sqgraph C_3\sqgraph C_3\sqgraph P_4\sqgraph P_1
+ \quad\Longrightarrow\quad
+ \Phi(G)=\omega^{\omega+2}+\omega^\omega\cdot2+\omega^3+1.
+\]
+Deleting the cycle edge that turns $C_5$ into $P_5$ replaces
+$\omega^{\omega+2}$ by $\omega^4$, possibly adding it to existing
+path terms. That is a strict ordinal decrease, regardless of the
+finite multiplicities of the lower terms.
+
+\begin{proposition}[Height and width]\label{prop:fullinvariants}
+The full degree-two order has
+\[
+ \hei(\DG)=\omega,\qquad \wid(\DG)=\omega^{\omega\cdot2}.
+\]
+In fact, the ordinary well-founded rank of an individual $G\in\DG$ is
+exactly $|V(G)|+|E(G)|$.
+\end{proposition}
+
+\begin{proof}
+Every elementary proper minor operation strictly lowers $|V|+|E|$.
+Conversely, delete the edges one at a time and then delete the isolated
+vertices one at a time. All intermediate graphs still have degree at
+most two. This realizes a descending chain with exactly $|V|+|E|$
+steps. Thus the point rank is the asserted integer, and the height of
+the entire order is $\omega$.
+
+Put $\lambda=\omega\cdot2$. If $\beta<\omega^\lambda$, each exponent
+$\xi$ in the Cantor normal form of $\beta$ is either finite or has
+the form $\omega+n$ for finite $n$. In either case
+$1\oplus\xi<\lambda$. Consequently
+\[
+ \omega\otimes\beta<\omega^\lambda.
+\]
+If $\wid(\DG)<\omega^\lambda$, the height--width inequality would
+therefore contradict \cref{thm:fullmot}. Hence the width equals the
+maximal order type.
+\end{proof}
+
+Notice that the very large code $\Phi(G)$ is \emph{not} the point rank
+of $G$. It describes the position of $G$ in a particular maximal
+linear extension. The intrinsic point rank is the finite integer
+$|V|+|E|$. Confusing these two rankings would erase the distinction
+between height and maximal order type.
+
+\section{A width-amplification lemma}\label{sec:transfer}
+
+We need a little more than the height--width inequality to obtain
+sharp widths when only finitely many cycles are permitted. A
+transferability argument supplies the missing factor of $\omega$.
+The argument below is a direct tree-rank proof of the standard
+transferable-order lower bound; compare \cite[Section~4.4.2]{DSS}.
+
+For a finite subset $F$ of $P$, write
+\[
+ P_F=P\setminus\bigcup_{x\in F}\down x.
+\]
+
+\begin{definition}
+A well-partial-order $P$ is \emph{transferable for width} if
+$\wid(P_F)=\wid(P)$ for every finite $F\subseteq P$.
+\end{definition}
+
+\begin{lemma}[Finite deletion]\label{lem:finitedeletion}
+Suppose every principal lower set of $P$ is finite and
+$\wid(P)=\gamma$ is infinite and additively indecomposable. Then $P$
+is transferable for width.
+\end{lemma}
+
+\begin{proof}
+Removing the lower sets of finitely many points removes only a finite
+set $E$. By \cref{eq:finitecover},
+\[
+ \gamma=\wid(P)\le\wid(P\setminus E)\oplus |E|.
+\]
+If $\wid(P\setminus E)<\gamma$, the right side is still strictly
+below $\gamma$, a contradiction. The reverse inequality follows
+from induced-suborder monotonicity.
+\end{proof}
+
+\begin{lemma}[Transferable product bound]\label{lem:transferbound}
+If $P$ is transferable for width and $\wid(P)=\gamma$, then for every
+ordinal $\beta$,
+\[
+ \wid(P\times\beta)\ge\gamma\cdot\beta.
+\]
+Consequently, for every well-partial-order $Q$,
+\[
+ \wid(P\times Q)\ge\gamma\cdot\mot(Q).
+\]
+\end{lemma}
+
+\begin{proof}
+Prove the first assertion simultaneously for $P_F$, for every finite
+$F$, by transfinite induction on $\beta$. Further finite lower-set
+removals from $P_F$ have the form $P_{F\cup F'}$, so they retain width
+$\gamma$. The assertion is immediate for $\beta=0$. At a limit,
+restrict to the suborders $P_F\times\delta$ for $\delta<\beta$ and
+use continuity of multiplication in its right argument:
+$\sup_{\delta<\beta}\gamma\cdot\delta=\gamma\cdot\beta$.
+
+For the successor step, put $R=P_F$ and consider the top slice
+$R\times\{\delta\}$ of $R\times(\delta+1)$. After any finite
+antichain $s$ in that slice, let $A$ be its set of first coordinates.
+Every point of
+\[
+ (R\setminus\down A)\times\delta
+\]
+is incomparable with all entries of $s$. Indeed, a lower-slice point
+cannot lie above a top-slice point, and removing $\down A$ prevents
+it from lying below one. By the induction hypothesis, the tree of
+these lower-slice continuations has rank at least $\gamma\cdot\delta$.
+
+Let $r_R(s)$ be the rank of $s$ in the antichain tree of the top
+slice alone. Well-founded induction over that tree shows that the
+rank of $s$ in the full product tree is at least
+\[
+ \gamma\cdot\delta+r_R(s).
+\]
+For a leaf, use the lower-slice continuation bound. At a nonleaf,
+take the supremum of the same bound at each top-slice child plus one;
+continuity of ordinal addition in its right argument gives the
+claim. At the empty node this is
+$\gamma\cdot\delta+\gamma=\gamma\cdot(\delta+1)$.
+
+Finally, give $Q$ a maximal linear extension of type $\mot(Q)$.
+The product with this linear extension is an augmentation of
+$P\times Q$, so its width is no larger. The first assertion supplies
+the desired lower bound.
+\end{proof}
+
+\begin{corollary}\label{cor:LFtransfer}
+For any well-partial-order $Q$ with $\mot(Q)=\omega^k$, where
+$k<\omega$,
+\[
+ \wid(\LF\times Q)=\mot(\LF\times Q)=\omega^{\omega+k}.
+\]
+\end{corollary}
+
+\begin{proof}
+A finite graph has only finitely many minors up to isomorphism, so
+principal lower sets in $\LF$ are finite. By
+\cref{cor:linearforests,lem:finitedeletion}, $\LF$ is transferable and
+has width $\omega^\omega$. Therefore
+\[
+ \wid(\LF\times Q)\ge\omega^\omega\cdot\omega^k
+       =\omega^{\omega+k}.
+\]
+The maximal order type of the product is
+$\omega^\omega\otimes\omega^k=\omega^{\omega\oplus k}
+=\omega^{\omega+k}$, which is the matching upper bound.
+\end{proof}
+
+\section{Cycle budgets and the complete parameter spectrum}\label{sec:bounded}
+
+\subsection{A bounded number of cycles}
+
+Let $\Q_{\le k}$ be the minor order on disjoint unions of at most
+$k$ cycles, and $\Q_{=k}$ the suborder with exactly $k$ cycles. A
+cycle cannot be split into two cycles, so these are finite-multiset
+embedding orders over the chain of cycle lengths.
+
+\begin{lemma}\label{lem:cyclebudget}
+For $k<\omega$,
+\[
+ \mot(\Q_{\le k})=\mot(\Q_{=k})=\omega^k.
+\]
+For $k=0$, both orders are singletons, so this means $1$.
+\end{lemma}
+
+\begin{proof}
+Replace a cycle length $n$ by $n-2\ge1$. Pad with zeros and sort to
+obtain a nondecreasing $k$-tuple. The multiset embeds into another
+exactly when its padded coordinates are componentwise no larger.
+One way to see necessity is to match largest entries first: the
+$j$ largest target entries need $j$ source entries at least that
+large. Sufficiency follows by matching the correspondingly sorted
+coordinates.
+
+Thus $\Q_{\le k}$ is an induced suborder of $\N^k$, and has maximal
+order type at most $\omega^k$. For exactly $k$ entries, lexicographic
+order by the smallest coordinate first, then the next, is a linear
+extension of type $\omega^k$. This is proved inductively: fixing
+the first positive coordinate leaves a translated nondecreasing
+$(k-1)$-tuple, of lexicographic type $\omega^{k-1}$, and there are
+$\omega$ possible first coordinates. Hence the type is
+$\omega^{k-1}\cdot\omega=\omega^k$. The lower bound applies to
+both orders.
+\end{proof}
+
+\begin{lemma}[The exact-cycle layer is a true product]\label{lem:fixedlayer}
+Let $\DG_{b,=k}$ denote the degree-two graphs with path-size bound
+$b$ and exactly $k$ cycles. For finite $k$,
+\[
+ \DG_{b,=k}\cong\LF_b\times\Q_{=k}.
+\]
+On the entire class $\DG_{b,k}$, the minor order is an augmentation
+of the product order $\LF_b\times\Q_{\le k}$.
+\end{lemma}
+
+\begin{proof}
+For source and target with the same number of cycles, the injection
+matching target cycles to source cycles is a bijection. Every source
+cycle is consumed by its cyclic target and is unavailable for path
+components. Thus the path part must be a minor of the source path
+part, independently of the cycle comparison. This proves both
+necessity and sufficiency for the exact-cycle layer.
+
+For at-most-$k$ graphs, independent comparison of the two parts is
+still sufficient. There can be additional minor comparisons because
+unmatched source cycles may be opened to supply paths. This is
+exactly an augmentation, rather than an isomorphism in general.
+\end{proof}
+
+\begin{theorem}[Finite cycle budgets]\label{thm:finitebudget}
+For $b\ge1$ finite and $k<\omega$,
+\[
+ \mot(\DG_{b,k})=\omega^{b+k},\qquad
+ \wid(\DG_{b,k})=\omega^{b+k-1},\qquad
+ \hei(\DG_{b,k})=\omega.
+\]
+For unrestricted path sizes and finite $k$,
+\[
+ \mot(\DG_{\Inf,k})=\wid(\DG_{\Inf,k})=\omega^{\omega+k},
+ \qquad \hei(\DG_{\Inf,k})=\omega.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\alpha_b=b$ for finite $b$ and $\alpha_{\Inf}=\omega$.
+By \cref{cor:linearforests}, $\mot(\LF_b)=\omega^{\alpha_b}$.
+The product upper bound from \cref{lem:fixedlayer} and the induced
+exact-cycle product lower bound give
+\[
+ \mot(\DG_{b,k})
+ =\omega^{\alpha_b}\otimes\omega^k
+ =\omega^{\alpha_b\oplus k}.
+\]
+These are precisely the two asserted maximal order types.
+
+For finite $b$, encode the path part by its $b$ multiplicities and
+the cycle part by its padded $k$-tuple. This realizes a weaker order
+as an induced suborder of $\N^{b+k}$. Consequently
+$\wid(\DG_{b,k})\le\omega^{b+k-1}$. Height is $\omega$: the
+vertex--edge norm gives finite point ranks, and arbitrarily many
+isolated vertices give an infinite chain. The height--width
+inequality forces the matching lower bound, just as in
+\cref{thm:finite}; if $b+k=1$, nonemptiness supplies the lower bound
+$1$ directly.
+
+For unrestricted path sizes, apply \cref{cor:LFtransfer} to the
+induced exact-cycle layer. Its width is $\omega^{\omega+k}$, already
+the maximal order type of the whole at-most-$k$ class. The height
+argument is unchanged.
+\end{proof}
+
+The finite-$b$ classes need not be minor-closed: opening a long
+cycle can produce a path exceeding the chosen path-size bound.
+The theorem concerns their inherited minor order, not a different
+relation that restricts intermediate operations. This distinction
+is why the proof used induced suborders and augmentations rather
+than assuming closure.
+
+\subsection{Removing the cycle-count bound}
+
+\begin{theorem}\label{thm:unlimitedbudget}
+For finite $b\ge1$,
+\[
+ \mot(\DG_{b,\Inf})=\wid(\DG_{b,\Inf})=\omega^\omega,
+ \qquad\hei(\DG_{b,\Inf})=\omega.
+\]
+For unrestricted $b$, the answer is
+$\mot(\DG)=\wid(\DG)=\omega^{\omega\cdot2}$ and $\hei(\DG)=\omega$.
+\end{theorem}
+
+\begin{proof}
+When $b$ is finite, the connected alphabet consists of finitely many
+paths and the chain of all cycles. Every path in the alphabet is a
+minor of every sufficiently long cycle. In any linear extension,
+all the finitely many paths therefore occur within a finite initial
+portion of the cycle chain. The total order type is $\omega$.
+The component theorem gives $\mot(\DG_{b,\Inf})=\omega^\omega$.
+On the other hand, the finite-budget suborders give
+\[
+ \wid(\DG_{b,\Inf})\ge\sup_{k<\omega}\omega^{b+k-1}
+ =\omega^\omega.
+\]
+The height remains $\omega$.
+
+For unrestricted paths, \cref{thm:fullmot,prop:fullinvariants} have
+already proved the result. There is also an independent width lower
+bound from \cref{thm:finitebudget}:
+\[
+ \wid(\DG)\ge\sup_{k<\omega}\omega^{\omega+k}
+ =\omega^{\omega\cdot2}.
+\]
+Only monotonicity is used in these lower bounds; equality with an
+increasing-union supremum is not presumed.
+\end{proof}
+
+This completes the proof of \cref{thm:table}.
+
+\section{Two failures of continuity}\label{sec:limits}
+
+The formulas reveal why a finite enumeration, however extensive,
+is a poor guide to a transfinite order type unless supported by a
+structural argument.
+
+\subsection{An increasing union of minor-closed classes}
+
+Let $\mathcal K_m$ contain the degree-two graphs all of whose
+connected components have at most $m$ vertices. Unlike
+$\DG_{b,k}$ for finite $b$ and unbounded cycle lengths, each
+$\mathcal K_m$ really is minor-closed. Contractions and deletions
+cannot enlarge a connected component.
+
+For $m=1$, its connected alphabet contains just $P_1$.
+For $m\ge2$, it contains the $m$ paths and the $m-2$ cycles of sizes
+at most $m$, for a total of $2m-2$ templates. Thus
+\begin{equation}\label{eq:componentbound}
+ \mot(\mathcal K_m)=\omega^{2m-2},\qquad
+ \wid(\mathcal K_m)=\omega^{2m-3}
+ \quad(m\ge2).
+\end{equation}
+The finite template theorem handles $m=1$ separately.
+
+\begin{corollary}[Noncontinuity even along minor-closed subclasses]\label{cor:noncontinuity}
+The classes $\mathcal K_m$ are increasing and
+$\DG=\bigcup_{m\ge1}\mathcal K_m$, but
+\[
+ \sup_m\mot(\mathcal K_m)=\omega^\omega
+ <\omega^{\omega\cdot2}=\mot\left(\bigcup_m\mathcal K_m\right).
+\]
+The same strict inequality holds with $\wid$ in place of $\mot$.
+\end{corollary}
+
+\begin{proof}
+Every finite graph has a finite maximum component size, so the union
+is $\DG$. Take the suprema in \cref{eq:componentbound} and compare
+with \cref{thm:fullmot,prop:fullinvariants}.
+\end{proof}
+
+The familiar continuity of ordinal exponentiation,
+$\sup_n\omega^n=\omega^\omega$, does not imply continuity of the
+operation $P\mapsto\mot(P)$ on increasing unions of orders. These
+are different operations. Although every finite bad sequence occurs
+in some $\mathcal K_m$, its continuation possibilities in the full
+order need not be bounded by the rank it has in that one subclass.
+
+\subsection{A discontinuity already with one cycle}
+
+Fix a finite $k\ge1$. Then
+\[
+ \DG_{\Inf,k}=\bigcup_{b\ge1}\DG_{b,k},
+ \qquad
+ \sup_b\mot(\DG_{b,k})=\omega^\omega,
+\]
+whereas
+\[
+ \mot(\DG_{\Inf,k})=\omega^{\omega+k}>\omega^\omega.
+\]
+The same conclusion holds for ordinal width. One allowed cycle
+already produces the first strict jump, to $\omega^{\omega+1}$.
+The exact-cycle layer explains its source: an unrestricted linear
+forest, of type $\omega^\omega$, varies independently alongside an
+unbounded cycle length, contributing another factor of $\omega$.
+
+\subsection{A maximal code need not remain maximal on a suborder}
+
+The explicit code \cref{eq:degreecode} is maximal on $\DG$, but
+restricting it to an induced subclass can lose maximality.
+
+\begin{proposition}\label{prop:nonmaxcode}
+For finite $k\ge1$, the order induced by the code $\Phi$ on
+$\DG_{\Inf,k}$ has type $\omega^{\omega+1}$. For $k\ge2$, this is
+strictly below $\mot(\DG_{\Inf,k})=\omega^{\omega+k}$.
+\end{proposition}
+
+\begin{proof}
+There are only finitely many multisets of at most $k$ cycles whose
+largest cycle length is bounded by any given integer. The cycle
+polynomials, ordered by their Cantor normal forms, consequently
+have order type $\omega$: the largest length is primary, and there
+are only finitely many preceding patterns for each length bound.
+The empty pattern is included and does not change that type.
+For each fixed cycle pattern, the unrestricted path part has type
+$\omega^\omega$, and every graph in one pattern precedes every graph
+in the next. The total type is therefore
+$\omega^\omega\cdot\omega=\omega^{\omega+1}$.
+\end{proof}
+
+For two cycles, sorting by the largest cycle first creates only
+finite cycle-pattern blocks, whereas a maximal linearization of the
+exact-two-cycle order sorts by the \emph{smallest} cycle first and
+has type $\omega^2$. This concrete contrast is a useful diagnostic:
+a correct strictly monotone ordinal code proves a lower bound on
+maximal order type, but does not automatically prove that the bound
+is optimal.
+
+\section{Exact computation and reproducible checks}\label{sec:computation}
+
+\subsection{What was checked}
+
+The archive contains a dependency-free Python program,
+\texttt{code/verify\_degree\_two.py}. Its principal test enumerates
+\emph{every} degree-two graph up to isomorphism with at most fourteen
+vertices. Isomorphism is exact here: a sorted multiset of path sizes
+and a sorted multiset of cycle sizes uniquely determine the graph.
+No graph-isomorphism heuristic is used.
+
+Two substantially different constructions of the minor relation are
+compared. The first takes transitive closure under elementary minor
+operations on component signatures. The second implements the
+cycle-reservation and bin-packing criterion. A third version replaces
+exhaustive cycle reservation by the proved greedy reservation rule;
+it shares the exact path-packing solver with the second version.
+
+The completed run produced the following results.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Verified count\\
+\midrule
+Graphs up to isomorphism, at most 14 vertices & $1{,}500$\\
+Ordered source--target pairs compared & $2{,}250{,}000$\\
+Minor pairs, including equality & $378{,}324$\\
+Proper minor pairs with strict code decrease & $376{,}824$\\
+Equal-cycle-count product comparisons & $732{,}568$\\
+Individual finite height-rank checks & $1{,}500$\\
+Targeted regression examples & $9$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All comparisons passed. The saved report records Python 3.13.5 and a
+runtime of approximately 10.1 seconds in the execution environment.
+Runtime is not intended as a portable benchmark. The raw counts and
+machine-readable report are in \texttt{results/counts.csv} and
+\texttt{results/verification.json}.
+
+\subsection{The elementary-operation implementation}
+
+For a path $P_n$, deleting an edge creates
+$P_i\sqgraph P_{n-i}$ for $1\le i<n$; deleting a vertex creates
+$P_i\sqgraph P_{n-1-i}$, omitting zero-size pieces; contracting an
+edge creates $P_{n-1}$. Every possible position is included.
+
+For $C_n$, deleting an edge creates $P_n$, deleting a vertex creates
+$P_{n-1}$, and contracting an edge creates $C_{n-1}$ when $n\ge4$.
+Contracting an edge of $C_3$ creates $P_2$, because parallel edges
+are suppressed in the simple-graph convention. This last case is
+explicitly tested; treating it as a two-cycle would silently change
+the mathematical category.
+
+Every elementary successor has a smaller value of $|V|+|E|$.
+Memoized closure therefore terminates. Since elementary operations
+generate the minor relation, this construction does not assume the
+packing criterion it is checking.
+
+\subsection{The packing implementation}
+
+The exact path-packing routine processes target paths in decreasing
+size. At each step it tries every distinct residual bin capacity
+large enough for the next path, subtracts the path size, sorts the
+remaining capacities, and memoizes the resulting state. Equal
+capacities are symmetric and need only one representative branch.
+It rejects immediately when total capacity or the largest capacity
+is insufficient. These are necessary tests only; remaining cases
+are solved by exhaustive branching, not by a greedy heuristic.
+
+The following pseudocode describes the greedy-cycle variant.
+\begin{lstlisting}
+minor(target, source):
+    available_cycles = source.cycles sorted increasingly
+    for need in target.cycles sorted decreasingly:
+        reserve the smallest available cycle with size >= need
+        if none exists: return false
+        remove that cycle from available_cycles
+    bins = source.paths + available_cycles
+    return exact_bin_pack(target.paths, bins)
+\end{lstlisting}
+
+The program also verifies the exact-cycle product identity directly
+on every tested pair with the same number of cycles. This is a
+separate structural assertion, not just another expression of the
+ordinal-code monotonicity test.
+
+\subsection{Exact ordinal comparisons, not numeric approximations}
+
+For the code $\Phi$, a path exponent $n-1$ is stored as $(0,n-1)$,
+and a cycle exponent $\omega+(n-3)$ as $(1,n-3)$. A graph code is
+a descending list of pairs consisting of an exponent and a positive
+coefficient. Lexicographic comparison of these finite lists is
+exactly comparison of the represented Cantor normal forms.
+
+The program checks that all graph codes are distinct and that every
+proper minor pair has a strict decrease. It does not assign a large
+floating-point number to $\omega$, and it does not attempt to
+approximate transfinite arithmetic numerically.
+
+\subsection{An independent enumeration check}
+
+Let $a_n$ be the number of isomorphism classes on exactly $n$ vertices.
+Component multiplicities give the formal power series
+\begin{equation}\label{eq:gf}
+ \sum_{n\ge0}a_nx^n
+ =\prod_{j\ge1}\frac{1}{1-x^j}
+  \prod_{j\ge3}\frac{1}{1-x^j}.
+\end{equation}
+The first product chooses paths and the second cycles. A coefficient
+calculation by repeated unbounded-knapsack updates is checked against
+the partition-based graph enumeration. The resulting sequence through
+$n=14$ is
+\[
+\begin{gathered}
+1,1,2,4,7,11,19,29,46,70,106,156,232,334,482.
+\end{gathered}
+\]
+These coefficients sum to $1{,}500$. Equation~\eqref{eq:gf} is an
+enumeration identity derived here from the component description;
+it is not used to infer any of the transfinite ranks.
+
+\subsection{What the finite checks do not prove}
+
+For a fixed vertex cutoff, the graph order is finite, and its maximal
+order type is simply the number of graph isomorphism classes below
+that cutoff. A test on fourteen vertices cannot observe
+$\omega^{\omega\cdot2}$. The program checks the graph-theoretic
+criterion, its implementation, the strict ordinal-code comparison,
+and the exact-cycle decomposition on a finite domain. The infinite
+ordinal statements depend on the written arguments and the named
+standard theorems, not on computational extrapolation.
+
+No theorem prover was used for the infinite proofs. The manuscript
+and checker are mutually supporting artifacts, not a formal
+verification certificate.
+
+\section{What the attack reveals about the general problem}\label{sec:outlook}
+
+\subsection{Disjoint unions are not always the difficult step}
+
+Suppose a connected graph class has a known maximal order type
+below $\eps_0$. The component theorem determines the maximal order
+type of all its finite disjoint unions without solving the exact
+minor-allocation problem between arbitrary disconnected graphs.
+The upper bound ignores splitting; the lower bound tolerates every
+finite split into proper connected minors. Their agreement makes
+the detailed splitting geometry irrelevant to this one invariant.
+
+This observation also explains why a difficult finite decision
+procedure can coexist with a simple transfinite formula. Determining
+whether a particular collection of paths fits into particular source
+components is a packing problem. Determining the maximal order type
+of the entire family can instead be done by a multiset upper bound
+and a Cantor-normal-form lower bound.
+
+\subsection{A concrete next step: a bounded branching template}
+
+A natural continuation is to replace cycles by a class of connected
+trees with a small, fixed branching pattern but unbounded arm lengths.
+The immediate task would be to identify the connected minor order,
+including all minor operations that merge or remove the distinguished
+branching structure, and compute its maximal order type. If that
+connected type were some $\alpha<\eps_0$, the disjoint-union answer
+would then be $\omega^\alpha$ by the proved transfer theorem.
+
+This is a conditional route, not a claimed calculation for such tree
+classes. The degree-two work identifies two features that would need
+to be replaced. First, a cycle retained as a cycle consumes the entire
+source component, creating exact product layers. A branching tree
+may retain its core while releasing other vertices for extra
+components. Second, paths and cycles have an elementary capacity
+description. For trees with branching, total vertex capacity alone
+cannot encode branch-set geometry.
+
+\subsection{Why the full graph-minor question remains outside this result}
+
+The component theorem does not calculate the connected order type
+for arbitrary graphs. At large ordinal parameters, its lower and
+upper bounds also need not agree, as noted in
+\cref{rem:epsilon}. Labeling changes the connected alphabet and may
+change which splitting operations are legal. Finally, the exact
+product argument for a fixed cycle budget relies on a property that
+general connected graphs do not possess.
+
+The outcome of the present attempt is therefore an exact calculation
+on a nontrivial part of the graph-minor order, a general transfer
+mechanism in a stated ordinal range, and explicit counterexamples
+to a tempting continuity principle. These statements are the proved
+content. The general ordinal measurement program remains a separate
+problem.
+
+\clearpage
+\appendix
+\section{Proof audit and dependency map}\label{app:audit}
+
+The following audit separates the inherited theorems from the steps
+that carry the graph-specific calculation.
+
+\begin{longtable}{@{}p{0.26\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Claim & Dependency and critical check\\
+\midrule
+\endhead
+Connected-to-disconnected transfer &
+Uses the maximal-linearization theorem and the below-$\eps_0$
+multiset formula. The graph-specific step is
+\cref{lem:componentallocation}: an unchanged connected component
+cannot reproduce itself plus additional components.\\[0.6em]
+Finite template width &
+Uses the grid width calculation and the height--width inequality.
+The multiplicity map supplies only a weaker coordinatewise order;
+no converse matching assertion is assumed.\\[0.6em]
+Full degree-two type &
+The connected type is exactly $\omega\cdot2$, not merely $\omega$.
+Paths-first, cycles-second is a valid linear extension, and the
+incomparable disjoint-chain order supplies its upper bound.\\[0.6em]
+Full degree-two width &
+The argument checks directly that
+$\omega\otimes\beta<\omega^{\omega\cdot2}$ for every smaller
+$\beta$. It does not incorrectly assume that
+$\omega^{\omega\cdot2}$ is multiplicatively indecomposable.\\[0.6em]
+Finite cycle budget &
+The source and target have the same number of cycles on the
+lower-bound layer. Hence every source cycle is reserved; no path
+can use any of its unused-looking length.\\[0.6em]
+Unbounded-path width &
+Finite principal lower sets and additively indecomposable width
+make $\LF$ transferable. The product lower bound is proved by
+antichain-tree induction, with ordinary multiplication in the
+specified order.\\[0.6em]
+Union discontinuity &
+Both the subclass invariants and the full-class invariant are
+calculated independently. No interchange of a union and a
+rank operation is used.\\[0.6em]
+Computer results &
+Exhaustive within the stated vertex cutoff. Elementary-operation
+closure and packing are independent descriptions of minors;
+the greedy and exhaustive cycle-allocation variants share the
+same path-packing subroutine.\\
+\bottomrule
+\end{longtable}
+
+\paragraph{Priority and verification status.}
+The written proofs are not formally checked or externally refereed.
+The broad source problem is documented, while historical novelty of
+the special-case answers is not established. The exact finite tests
+passed; their range and limits are reported rather than converted
+into a claim about infinite proof verification.
+
+\clearpage
+\section{Rebuilding the artifacts}
+
+The code uses the Python standard library only and is written for
+Python 3.9 or later. From the extracted archive root, run
+\begin{lstlisting}
+python code/verify_degree_two.py --max-vertices 14 --out results
+python build.py
+\end{lstlisting}
+The second command invokes \texttt{pdflatex} repeatedly and requires
+a TeX installation with the packages listed in the document
+preamble. The supplied PDF is already compiled. Alternatively,
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error graph_minor_ordinals.tex
+\end{lstlisting}
+The JSON report records the execution environment and all principal
+test counts. The CSV file records enumeration counts by vertex
+number. The source-review notes record the scope of the literature
+check and the exclusion of a lexicographic-product question that
+was found to have a later published proof.
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+
+\bibitem{deJonghParikh}
+D.~H.~J. de Jongh and R.~Parikh.
+\emph{Well-partial orderings and hierarchies}.
+Indagationes Mathematicae, 39(3):195--207, 1977.
+\href{https://doi.org/10.1016/1385-7258(77)90067-1}{doi:10.1016/1385-7258(77)90067-1}.
+
+\bibitem{Higman}
+G.~Higman.
+\emph{Ordering by divisibility in abstract algebras}.
+Proceedings of the London Mathematical Society, (3)~2:326--336, 1952.
+\href{https://doi.org/10.1112/plms/s3-2.1.326}{doi:10.1112/plms/s3-2.1.326}.
+
+\bibitem{KrizThomas}
+I.~K\v r\'i\v z and R.~Thomas.
+\emph{Ordinal types in Ramsey theory and well-partial-ordering theory}.
+In J.~Ne\v set\v ril and V.~R\"odl, editors,
+\emph{Mathematics of Ramsey Theory}, Algorithms and Combinatorics~5,
+pages 57--95. Springer, 1990.
+\href{https://doi.org/10.1007/978-3-642-72905-8_7}{doi:10.1007/978-3-642-72905-8\_7}.
+
+\bibitem{Weiermann}
+A.~Weiermann.
+\emph{A computation of the maximal order type of the term ordering on
+finite multisets}.
+In \emph{Computability in Europe 2009}, LNCS~5635, pages 488--498.
+Springer, 2009.
+\href{https://doi.org/10.1007/978-3-642-03073-4_50}{doi:10.1007/978-3-642-03073-4\_50}.
+
+\bibitem{VanDerMeeren}
+J.~Van der Meeren, M.~Rathjen, and A.~Weiermann.
+\emph{Well-partial-orderings and the big Veblen number}.
+Archive for Mathematical Logic, 54(1--2):193--230, 2015.
+\href{https://doi.org/10.1007/s00153-014-0408-5}{doi:10.1007/s00153-014-0408-5}.
+
+\bibitem{DSS}
+M.~D\v zamonja, S.~Schmitz, and Ph.~Schnoebelen.
+\emph{On ordinal invariants in well quasi orders and finite antichain orders}.
+In \emph{Well Quasi-Orders in Computation, Logic, Language and Reasoning},
+Trends in Logic~53, pages 29--54. Springer, 2020.
+\href{https://doi.org/10.1007/978-3-030-30229-0_2}{doi:10.1007/978-3-030-30229-0\_2}.
+Accessible version: \href{https://arxiv.org/abs/1711.00428}{arXiv:1711.00428}.
+Only the linearization, rank, and transferable-order results identified
+in the text are used here; no lexicographic-product formula is used.
+
+\bibitem{VialardMultisets}
+I.~Vialard.
+\emph{Ordinal measures of the set of finite multisets}.
+In \emph{MFCS 2023}, LIPIcs~272, article~87, pages 87:1--87:15, 2023.
+\href{https://doi.org/10.4230/LIPIcs.MFCS.2023.87}{doi:10.4230/LIPIcs.MFCS.2023.87}.
+Preprint: \href{https://arxiv.org/abs/2302.09881}{arXiv:2302.09881}.
+
+\bibitem{VialardThesis}
+I.~Vialard.
+\emph{Measuring well-quasi orders and complexity of verification}.
+Doctoral thesis, Universit\'e Paris-Saclay, 2024.
+The graph-minor research direction appears on printed page~110.
+\url{https://isavialard.github.io/home/mwqo.pdf}.
+
+\end{thebibliography}
+\end{document}

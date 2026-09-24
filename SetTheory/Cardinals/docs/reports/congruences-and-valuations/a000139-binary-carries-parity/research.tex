@@ -1,0 +1,1336 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{17324D}
+\definecolor{Accent}{HTML}{126D76}
+\definecolor{Pale}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Binary Carries and the Divisibility of Two-Stack-Sortable Permutation Numbers},
+ pdfauthor={Research article prepared with ChatGPT}}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Binary carries and A000139}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\bit}{\operatorname{s}_2}
+\newcommand{\val}{\nu_2}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\ph}{\varphi}
+\newcommand{\dd}{\mathop{}\!\mathrm d}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\vseq}{v}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\rhoo}{\rho}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{Ink!25},backgroundcolor=\color{Pale},
+ showstringspaces=false,keepspaces=true}
+\setlist{nosep,leftmargin=1.6em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\emergencystretch=1.5em
+\allowdisplaybreaks[2]
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{Accent}COMBINATORICS \quad INTEGER SEQUENCES \quad ASYMPTOTICS}\par\vspace{0.7cm}
+{\LARGE\bfseries\color{Ink}Binary Carries and the Divisibility of\\[0.15cm]
+Two-Stack-Sortable Permutation Numbers}\par\vspace{0.45cm}
+{\large A proof of the OEIS A000139 parity conjecture,\\
+with exact valuation distributions and limit laws}\par\vspace{0.5cm}
+{September 19, 2026}
+\end{center}
+\vspace{0.2cm}
+\begin{abstract}
+For $n\geq 0$, put
+\[
+ a_n=\frac{2(3n)!}{(n+1)!(2n+1)!},\qquad v(n)=\nu_2(a_n).
+\]
+The OEIS entry A000139 records a July 2025 conjecture of Peter Bala:
+$a_n$ is odd exactly when $n$ is an odd fibbinary number. We prove the
+assertion in two independent ways, using binary carries and formal power
+series over $\F_2$. More generally, we determine the rational bivariate
+generating function of the complete valuation distribution on every
+interval $0\leq n<2^m$. It has a cubic denominator, giving a third-order
+recurrence in the binary length. For each fixed valuation $r$, the counts
+have an explicitly determined minimal eventual recurrence and asymptotics
+of order $m^{\lfloor r/2\rfloor}\ph^m$, with explicit constants. We also
+classify maximal valuations and find the least positive index of every
+valuation. For a uniformly chosen index below $2^m$, we obtain exact mean
+and variance formulas, a central limit theorem, and a uniform local limit
+theorem. A six-state weighted digit automaton computes the full distribution
+below an arbitrary bound without enumerating its indices. The accompanying
+Python programs, exact data, and execution records reproduce the finite
+checks. The proofs do not depend on those checks.
+\end{abstract}
+
+\begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.6pt,arc=1mm]
+\textbf{Main resolution.} For every $n\geq0$,
+\[
+ \boxed{\ a_n\text{ is odd}\quad\Longleftrightarrow\quad
+ n\text{ is odd and its binary expansion contains no }11.\ }
+\]
+\textbf{Status of the claim.} The assertion was still labeled a conjecture
+in the OEIS entry inspected for this article. This is a proof of that
+recorded assertion, not a claim that an exhaustive literature search has
+established first priority. The valuation refinements are proved here as
+well; their priority has not been independently established.
+\end{tcolorbox}
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The selected problem and the scope of the result}\label{sec:setup}
+
+The integer sequence
+\begin{equation}\label{eq:a}
+ a_n=\frac{2(3n)!}{(n+1)!(2n+1)!}
+ =\frac{2}{(n+1)(2n+1)}\binom{3n}{n}
+\end{equation}
+begins
+\[
+ 2,1,2,6,22,91,408,1938,9614,49335,260130,1402440,\ldots.
+\]
+For $n\geq1$ it counts permutations sorted by two successive applications
+of the usual stack-sorting map. This is the deterministic stack-sorting
+operator, not an arbitrary two-stack machine with unrestricted choices.
+The same formula occurs in the enumeration of fighting fish; Fang gives a
+bijection between these objects and two-stack-sortable permutations
+\cite{Fang}. The formula itself and several further interpretations are
+recorded in OEIS A000139 \cite{OEIS139}. Our arithmetic arguments use only
+\eqref{eq:a}.
+
+An odd \emph{fibbinary number} is an odd nonnegative integer whose binary
+expansion contains no two consecutive $1$s. These numbers are
+\[
+ 1,5,9,17,21,33,37,41,65,69,73,81,85,\ldots,
+\]
+and form OEIS A022341 \cite{OEIS22341}. The terminology and its connection
+with Fibonacci representations are discussed by Lindroos, Sills, and Wang
+\cite{LSW}.
+
+The selected question is the assertion attributed to Peter Bala, dated
+July 24, 2025, in A000139: the indices of the odd terms are exactly these
+odd fibbinary numbers \cite{OEIS139}. The entry inspected on September 19,
+2026 still used the conjecture label. Its inspected internal version
+identified itself as revision 297, dated May 12, 2026 \cite{OEIS139internal}.
+That documents the provenance of the question. It does not exclude the
+possibility of an earlier proof elsewhere or of an unrecorded resolution.
+
+The problem is well suited to an elementary attack because a factorial
+quotient converts prime divisibility into digit sums. At the prime $2$,
+the relevant sum is $n+2n$, so the two summands differ by just a binary
+shift. The apparent global arithmetic question becomes a finite-state
+question about adjacent digits and propagated carries. We pursue this
+structure rather than stopping at a parity test.
+
+\subsection{Conventions}
+For a positive integer $b$, $\nu_2(b)$ denotes the exponent of $2$ in $b$.
+We write $\bit(n)$ for the number of $1$s in the binary expansion of $n$,
+with $\bit(0)=0$. Define
+\[
+ t(n)=\nu_2(n+1),\qquad
+ c(n)=\text{the total number of carries in the binary addition }n+2n.
+\]
+Every outgoing carry is counted, including a carry beyond the highest
+nonzero input digit. The number $t(n)$ is the length of the terminal run
+of $1$s in the usual, most-significant-digit-first binary expansion.
+
+The index $n=0$ is retained throughout: $a_0=2$ and $v(0)=1$. Thus it
+contributes one term of valuation $1$, not one odd term. A dyadic interval
+always means $0\leq n<2^m$, and an arbitrary bound is also exclusive.
+Fibonacci numbers are normalized by $F_0=0$, $F_1=1$. Finally,
+\[
+ \ph=\frac{1+\sqrt5}{2},\qquad \rho=\ph^{-1},\qquad
+ \alpha=\log_2\ph.
+\]
+
+\Needspace{8\baselineskip}
+\section{An elementary carry proof of the parity conjecture}\label{sec:parity}
+
+\subsection{Factorial valuations and digit sums}
+\begin{lemma}\label{lem:legendre}
+For every integer $k\geq0$,
+\[
+ \nu_2(k!)=k-\bit(k).
+\]
+\end{lemma}
+\begin{proof}
+Each multiple of $2^j$ contributes one additional factor of $2$ to $k!$,
+so its valuation is $\sum_{j\geq1}\lfloor k/2^j\rfloor$. Write
+$k=\sum_{i\geq0}b_i2^i$, where $b_i\in\{0,1\}$. Interchanging finite sums,
+\[
+ \sum_{j\geq1}\left\lfloor\frac{k}{2^j}\right\rfloor
+ =\sum_{i\geq1}b_i\sum_{j=1}^i2^{i-j}
+ =\sum_{i\geq0}b_i(2^i-1)=k-\bit(k).
+\]
+\end{proof}
+
+\begin{proposition}[Exact valuation]\label{prop:valuation}
+For every $n\geq0$,
+\begin{align}
+ v(n)&=\bit(n)+\bit(n+1)-\bit(3n),\label{eq:digitval}\\
+     &=1-t(n)+c(n).\label{eq:carryval}
+\end{align}
+\end{proposition}
+\begin{proof}
+Apply \cref{lem:legendre} to \eqref{eq:a}. The result is
+\[
+ 1+(3n-\bit(3n))-(n+1-\bit(n+1))
+ -(2n+1-\bit(2n+1)).
+\]
+Since $\bit(2n+1)=\bit(n)+1$, this is \eqref{eq:digitval}.
+Incrementing $n$ changes its $t(n)$ terminal $1$s into $0$s and changes
+the next $0$ into a $1$. Consequently,
+\begin{equation}\label{eq:trailing}
+ \bit(n+1)=\bit(n)+1-t(n).
+\end{equation}
+
+For completeness, the carry identity needed here follows column by
+column. Let $b_i$ be the digits of $n$, put $b_{-1}=0$, and let $q_i$ be
+the incoming carry in column $i$, with $q_0=0$. If $d_i$ is the output
+digit of $3n$, then
+\[
+ b_i+b_{i-1}+q_i=d_i+2q_{i+1}.
+\]
+Sum this identity over all columns, including zero columns until the
+carry has vanished. The sums of the incoming and outgoing carries agree,
+and therefore
+\begin{equation}\label{eq:carrydigits}
+ c(n)=\sum_{i\geq0}q_{i+1}=2\bit(n)-\bit(3n).
+\end{equation}
+Combining \eqref{eq:trailing} and \eqref{eq:carrydigits} gives
+\eqref{eq:carryval}.
+\end{proof}
+
+\subsection{Why the trailing run matters}
+It would be incorrect to infer parity solely from the absence of carries
+in $\binom{3n}{n}$. The factor $2/(n+1)$ in \eqref{eq:a} changes the
+valuation by $1-t(n)$. The following three cases account for this
+correction exactly.
+
+\begin{theorem}[The recorded parity conjecture]\label{thm:parity}
+For every $n\geq0$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $a_n$ is odd;
+\item $n$ is odd and the binary expansion of $n$ contains no adjacent $1$s;
+\item $n$ is odd and the bitwise expression $n\mathbin{\&}(2n)$ is zero.
+\end{enumerate}
+Thus the odd indices are precisely OEIS A022341.
+\end{theorem}
+\begin{proof}
+If $n$ is even, then $t(n)=0$, so \eqref{eq:carryval} gives
+$v(n)=1+c(n)\geq1$.
+
+Suppose $n$ ends in exactly one $1$, so $t(n)=1$. Then $v(n)=c(n)$.
+There is no carry in $n+2n$ exactly when the nonzero digits of the two
+summands do not overlap. Indeed, an overlap creates a carry, while in
+the absence of overlaps the incoming carry remains zero inductively.
+Because the second summand is a shift of the first, an overlap is exactly
+an adjacent pair $11$ in $n$. Hence $v(n)=0$ exactly in the desired case.
+
+It remains to exclude a terminal run of length $t\geq2$. Its
+digits satisfy $b_0=\cdots=b_{t-1}=1$ and $b_t=0$. In column $1$,
+$b_1+b_0=2$ starts a carry. That carry continues through columns
+$2,\ldots,t-1$. In column $t$ we still have
+$b_t+b_{t-1}+q_t=0+1+1=2$. There are consequently at least $t$ outgoing
+carries, in columns $1,\ldots,t$. Equation \eqref{eq:carryval} now yields
+$v(n)\geq1-t+t=1$. This excludes every remaining odd index.
+
+Finally, overlap of the bit supports of $n$ and $2n$ is exactly the
+condition $n\mathbin{\&}(2n)\ne0$, proving the equivalence with (iii).
+\end{proof}
+
+\begin{remark}[The top carry is essential]
+For $n=3$, the addition is $11_2+110_2=1001_2$. There are two carries,
+not one. The valuation is $1-2+2=1$, in agreement with $a_3=6$.
+Omitting the outgoing carry above the leading digit would give the wrong
+parity. This boundary condition is explicitly included in every automaton
+and program below.
+\end{remark}
+
+\section{An independent proof with generating functions}\label{sec:formal}
+
+The ordinary generating function of the sequence can be expressed through
+the ternary-tree series. This representation is recorded in A000139
+\cite{OEIS139internal}; we derive it to make the second proof independent
+of an unproved generating-function identity.
+
+\begin{lemma}\label{lem:ternary}
+There is a unique series $T(x)\in1+x\Z[[x]]$ such that
+\begin{equation}\label{eq:ternary}
+ T(x)=1+xT(x)^3.
+\end{equation}
+Moreover, with $A(x)=\sum_{n\geq0}a_nx^n$,
+\begin{equation}\label{eq:Aternary}
+ A(x)=T(x)(3-T(x)).
+\end{equation}
+In particular, every $a_n$ is an integer.
+\end{lemma}
+\begin{proof}
+Equation \eqref{eq:ternary} determines each nonconstant coefficient from
+earlier ones, proving existence, uniqueness, and integrality recursively.
+Lagrange inversion, in the special form proved in
+\cref{sec:lagrange}, gives, for $k\geq1$,
+\[
+ [x^n]T(x)^k=\frac{k}{3n+k}\binom{3n+k}{n}.
+\]
+For $n\geq1$, the coefficients of $T$ and $T^2$ are respectively
+\[
+ \frac{(3n)!}{n!(2n+1)!},\qquad
+ \frac{2(3n+1)!}{n!(2n+2)!}.
+\]
+Consequently
+\[
+ [x^n](3T-T^2)
+ =\frac{(3n)!}{n!(2n+1)!}
+   \left(3-\frac{3n+1}{n+1}\right)
+ =\frac{2(3n)!}{(n+1)!(2n+1)!}.
+\]
+The constant coefficient is $3-1=2$, as required.
+\end{proof}
+
+Let
+\[
+ B(x)=\sum_{\substack{n\geq0\\n\text{ has no binary }11}}x^n
+ \quad\text{in }\Z[[x]].
+\]
+An admissible even integer is $2q$ for an admissible $q$, while an
+admissible odd integer is $4q+1$ for an admissible $q$. Hence
+\begin{equation}\label{eq:mahler}
+ B(x)=B(x^2)+xB(x^4).
+\end{equation}
+Write bars for reduction of coefficients modulo $2$. Frobenius gives
+$\overline B(x^2)=\overline B(x)^2$ and
+$\overline B(x^4)=\overline B(x)^4$. Since the constant term of $B$ is
+$1$, we may divide the reduced equation by $\overline B$ and obtain
+\[
+ 1=\overline B+x\overline B^3.
+\]
+Thus $\overline B$ satisfies the same equation and initial condition as
+$\overline T$, so $\overline B=\overline T$. Reducing
+\eqref{eq:Aternary} gives
+\begin{equation}\label{eq:mod2A}
+ \overline A=\overline T+\overline T^2
+ =\overline B+\overline B^2=x\overline B(x^4).
+\end{equation}
+The last series has coefficient $1$ exactly at the indices $4q+1$ with
+$q$ having no adjacent binary $1$s. These are precisely the odd fibbinary
+numbers, proving \cref{thm:parity} a second time.
+
+\begin{corollary}[An algebraic parity series]\label{cor:paritycubic}
+The parity series $P(x)=\overline A(x)\in\F_2[[x]]$ satisfies
+\begin{equation}\label{eq:paritycubic}
+ P(x)=x+x^2P(x)^3.
+\end{equation}
+It has algebraic degree exactly $3$ over $\F_2(x)$.
+\end{corollary}
+\begin{proof}
+Equation \eqref{eq:mod2A} says $P=x\overline T(x^4)$, which immediately
+gives \eqref{eq:paritycubic}. To show that
+$x^2Y^3+Y+x$ is irreducible over $\F_2(x)$, it suffices to exclude a
+rational root. For a reduced fraction $p/q$ with $p,q\in\F_2[x]$, the
+rational-root argument forces $p\mid x$ and $q\mid x^2$. The only
+candidates are $1,x,x^{-1},x^{-2}$, none of which is a root.
+\end{proof}
+
+\section{Counting odd terms and the limits of a power-law description}\label{sec:oddcount}
+
+\begin{proposition}\label{prop:fibcount}
+For every $m\geq0$,
+\begin{equation}\label{eq:oddcount}
+ \#\{0\leq n<2^m:a_n\text{ is odd}\}=F_m.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $m=0$ the count is $0$, and for $m=1$ it is $1$. When $m\geq2$,
+an odd admissible binary word of length $m$, allowing leading zeros,
+ends in $01$. Its remaining $m-2$ digits can be any binary word without
+$11$. If $b_j$ counts such words of length $j$, splitting according to
+the initial block $0$ or $10$ gives $b_j=b_{j-1}+b_{j-2}$, with
+$b_0=1$, $b_1=2$. Thus $b_j=F_{j+2}$ and the desired count is $F_m$.
+\end{proof}
+
+Put $O(X)=\#\{0\leq n<X:a_n\text{ is odd}\}$ for real $X>0$.
+By \eqref{eq:oddcount} and monotonicity between successive powers of $2$,
+\begin{equation}\label{eq:oddgrowth}
+ O(X)=\Theta(X^\alpha),\qquad \alpha=\log_2\ph<1.
+\end{equation}
+The odd terms therefore have natural density zero. At dyadic bounds there
+is the sharper exact expression
+\[
+ O(2^m)=\frac{\ph^m-(-\rho)^m}{\sqrt5}.
+\]
+
+One should not replace \eqref{eq:oddgrowth} by an unrestricted asymptotic
+$O(X)\sim C X^\alpha$ with a single positive constant. All integers in
+$[3\cdot2^{m-1},2^{m+1})$ begin with the binary digits $11$, and so none
+is an odd index. Consequently
+\[
+ O(3\cdot2^{m-1})=O(2^{m+1})=F_{m+1}.
+\]
+The two arguments have a fixed ratio $4/3$, which would contradict the
+ratio $(4/3)^\alpha$ predicted by such an asymptotic. The digital
+oscillation is a genuine feature, not an error term that disappears at
+all scales.
+
+There is also a useful distinction between two kinds of generating
+functions. The index series
+\[
+ H(x)=\sum_{\substack{n\geq0\\a_n\text{ odd}}}x^n\in\Z[[x]]
+\]
+is not rational over $\Q$. To see this, a rational series with coefficients
+in the finite set $\{0,1\}$ satisfies an eventual fixed linear recurrence;
+the finite vector of consecutive coefficients has only finitely many
+possible values and determines the next vector, so the sequence would
+be ultimately periodic. Here there are infinitely many $1$s but also
+arbitrarily long zero intervals, which excludes ultimate periodicity.
+By contrast, the \emph{binary-length counting series} is rational:
+\[
+ \sum_{m\geq0}O(2^m)z^m=\frac{z}{1-z-z^2}.
+\]
+Confusing these two series would conceal an important change of index.
+
+\section{A finite-state model for all valuations}\label{sec:automaton}
+
+\subsection{The three-state carry core}
+Read digits of $n$ from least to most significant. A raw carry state
+consists of the previous input digit and the incoming carry. There are
+four possibilities, but $(1,0)$ and $(0,1)$ have identical transitions
+and can be merged. Let
+\[
+ A=(0,0),\qquad B=\{(1,0),(0,1)\},\qquad C=(1,1).
+\]
+Weight an outgoing carry by $y$. The transition table is
+\begin{center}
+\begin{tabular}{c cc c}
+\toprule
+State & Input $0$ & Input $1$ & Terminal weight\\
+\midrule
+$A$ & $A$ & $B$ & $1$\\
+$B$ & $A$ & $yC$ & $1$\\
+$C$ & $yB$ & $yC$ & $y$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The notation $yC$ means move to $C$ and multiply the path weight by $y$.
+The terminal weight flushes the remaining carry through zero digits.
+In particular, a terminal state $C$ creates one more carry and then
+moves to $B$, after which the carry vanishes.
+
+The transfer matrix and terminal vector are
+\begin{equation}\label{eq:M}
+ M(y)=\begin{pmatrix}1&1&0\\1&0&y\\0&y&y\end{pmatrix},
+ \qquad f(y)=\begin{pmatrix}1\\1\\y\end{pmatrix}.
+\end{equation}
+Writing $e_A=(1,0,0)$, the polynomial
+\begin{equation}\label{eq:Cm}
+ C_m(y)=e_A M(y)^m f(y)
+\end{equation}
+counts all carry totals $c(n)$ for $0\leq n<2^m$. All length-$m$ words
+are read, including those with leading zeros. Such zeros leave the final
+weight unchanged.
+
+\subsection{Removing the trailing-run correction without negative weights}
+Formula \eqref{eq:carryval} contains $-t(n)$, which could suggest negative
+powers of $y$. They are unnecessary. Introduce three prefix states:
+$S$ before any digit is read, $U$ after an initial run of exactly one $1$,
+and $W$ while an initial run of at least two $1$s is still continuing.
+The complete valuation automaton has six states:
+\begin{center}
+\begin{tabular}{c cc c}
+\toprule
+State & Input $0$ & Input $1$ & Terminal weight\\
+\midrule
+$S$ & $yA$ & $U$ & $y$\\
+$U$ & $A$ & $W$ & $1$\\
+$W$ & $yB$ & $W$ & $y$\\
+$A$ & $A$ & $B$ & $1$\\
+$B$ & $A$ & $yC$ & $1$\\
+$C$ & $yB$ & $yC$ & $y$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}\label{prop:sixstate}
+Starting at $S$, the product of the transition weights and terminal weight
+for the binary expansion of $n$ is exactly $y^{v(n)}$. This remains true
+when arbitrary leading zeros are appended to the input word.
+\end{proposition}
+\begin{proof}
+An even index begins with a $0$. Its valuation is $1+c(n)$, accounted for
+by $S\to yA$ and the carry core. An index with $t=1$ begins with the
+least-significant-first block $10$, leading from $S$ through $U$ to $A$
+with weight $1$; the remaining valuation is precisely the remaining
+carry count. The isolated one-digit word has valuation $0$, explaining
+the terminal weight at $U$.
+
+For $t\geq2$, the $t$ initial $1$s create $t-1$ carries before the first
+zero. In $1-t+c$, their contribution is $1-t+(t-1)=0$, so the loop at $W$
+has weight $1$. The terminating zero creates one additional carry and
+leaves the raw state $(0,1)$, namely $B$. This gives the transition
+$W\to yB$. If the word ends before that zero is read, the mandatory
+flush produces exactly this same factor $y$, explaining the terminal
+weight at $W$.
+
+The empty word represents $n=0$, so its terminal weight must be $y$.
+All other terminal weights are those of the carry core. The rules also
+show directly that reading a further zero and then terminating has the
+same effect as terminating immediately, in every state.
+\end{proof}
+
+This proposition gives a finite combinatorial interpretation with
+nonnegative weights for the entire valuation distribution. The extra
+prefix states are essential for the factorial denominator; the
+three-state core alone counts $c(n)$, not $v(n)$.
+
+\section{The complete dyadic distribution and its rational generating function}\label{sec:dist}
+
+Define
+\begin{equation}\label{eq:Vm}
+ V_m(y)=\sum_{0\leq n<2^m}y^{v(n)},\qquad
+ \mathcal V(z,y)=\sum_{m\geq0}V_m(y)z^m.
+\end{equation}
+The variable $z$ measures binary length, whereas $y$ measures valuation.
+
+\begin{theorem}[Bivariate distribution]\label{thm:GF}
+One has
+\begin{equation}\label{eq:mainGF}
+ \boxed{\quad
+ \mathcal V(z,y)=
+ \frac{y+(1-y^2)z-y^3z^2+y(y-1)^2z^3}
+ {1-(1+y)z-(y^2-y+1)z^2+y(y+1)z^3}.
+ \quad}
+\end{equation}
+In particular, for $m\geq4$,
+\begin{equation}\label{eq:recurrence}
+ V_m=(1+y)V_{m-1}+(y^2-y+1)V_{m-2}-y(y+1)V_{m-3},
+\end{equation}
+with
+\begin{equation}\label{eq:seeds}
+ V_0=y,\quad V_1=1+y,\quad V_2=1+3y,\quad V_3=2+5y+y^3.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put
+\begin{align}
+ D(z,y)&=\det(I-zM(y))\notag\\
+ &=1-(1+y)z-(y^2-y+1)z^2+y(y+1)z^3.\label{eq:D}
+\end{align}
+The generating functions for carry-core paths starting at $A$ and $B$
+are respectively
+\begin{align}
+ C(z,y)&=e_A(I-zM)^{-1}f
+       =\frac{(1+z)(1-yz)}{D(z,y)},\label{eq:CGF}\\
+ R(z,y)&=e_B(I-zM)^{-1}f
+       =\frac{1-yz+y^2z(1-z)}{D(z,y)}.\label{eq:RGF}
+\end{align}
+These expressions can be verified without matrix inversion: if the
+three starting-state series are $C,R,Q$, the transition table gives
+\[
+ C=1+z(C+R),\quad R=1+z(C+yQ),\quad Q=y+zy(R+Q),
+\]
+and solving these three linear equations gives \eqref{eq:CGF} and
+\eqref{eq:RGF}.
+
+Partition all words according to their trailing run. The empty word
+contributes $y$. The even words contribute $yzC$. The isolated one-bit
+word $1$ contributes $z$, and the words beginning with the
+least-significant-first block $10$ contribute $z^2C$. All-ones words of
+length at least two contribute $yz^2/(1-z)$. Finally, a run of at least
+two $1$s followed by its terminating zero contributes
+$yz^3R/(1-z)$. Therefore
+\begin{equation}\label{eq:partitionGF}
+ \mathcal V=y+yzC+z+z^2C+\frac{yz^2}{1-z}
+                         +\frac{yz^3}{1-z}R.
+\end{equation}
+Substituting \eqref{eq:CGF}--\eqref{eq:RGF} and simplifying yields
+\eqref{eq:mainGF}; the apparent factor $1-z$ cancels. Multiplication by
+the denominator and extraction of $z^m$ gives \eqref{eq:recurrence} for
+$m\geq4$, and direct extraction gives \eqref{eq:seeds}.
+\end{proof}
+
+\begin{remark}[The starting index of the recurrence]
+The numerator in \eqref{eq:mainGF} has degree three in $z$. Thus the
+homogeneous recurrence starts at $m=4$, not at $m=3$. Using only three
+initial polynomials and starting too early loses the exceptional prefix
+contribution $y(y-1)^2z^3$.
+\end{remark}
+
+For illustration, the next polynomials are
+\begin{align*}
+ V_4&=3+8y+y^2+3y^3+y^4,\\
+ V_5&=5+13y+2y^2+7y^3+3y^4+2y^5,\\
+ V_6&=8+21y+4y^2+14y^3+8y^4+6y^5+3y^6.
+\end{align*}
+These show, for example, that valuation $3$ appears before valuation $2$.
+The specializations
+\begin{equation}\label{eq:specializations}
+ \mathcal V(z,0)=\frac{z}{1-z-z^2},\qquad
+ \mathcal V(z,1)=\frac1{1-2z}
+\end{equation}
+recover the Fibonacci odd count and the total count $2^m$.
+
+\section{Every fixed valuation: exact recurrences and asymptotics}\label{sec:fixed}
+
+For a fixed integer $r\geq0$, set
+\[
+ b_r(m)=[y^r]V_m(y),\qquad H_r(z)=\sum_{m\geq0}b_r(m)z^m.
+\]
+Write
+\begin{equation}\label{eq:d}
+ d(z)=1-z-z^2.
+\end{equation}
+The denominator in \eqref{eq:mainGF} has the particularly useful form
+\begin{equation}\label{eq:Dsplit}
+ D(z,y)=(1-yz)d(z)-y^2z^2(1-z).
+\end{equation}
+This explains why the order of the fixed-level recurrence increases
+only after every second valuation.
+
+\subsection{A finite closed expression for each level}
+Let
+\[
+ N_0=z,\quad N_1=1+z^3,\quad N_2=-z-2z^3,\quad N_3=z^3-z^2,
+\]
+so that the numerator of \eqref{eq:mainGF} is $\sum_{j=0}^3N_jy^j$.
+For $s\geq0$, define
+\begin{equation}\label{eq:J}
+ J_s(z)=z^s\sum_{j=0}^{\lfloor s/2\rfloor}
+       \binom{s-j}{j}\frac{(1-z)^j}{d(z)^{j+1}},
+ \qquad J_s=0\quad(s<0).
+\end{equation}
+Then
+\begin{equation}\label{eq:Hrfinite}
+ \boxed{\ H_r(z)=\sum_{j=0}^3N_j(z)J_{r-j}(z).\ }
+\end{equation}
+Indeed, expand \eqref{eq:Dsplit} as a geometric series:
+\[
+ \frac1D=\frac1d\sum_{j\geq0}
+ \frac{y^{2j}z^{2j}(1-z)^j}{d^j(1-yz)^{j+1}}.
+\]
+The coefficient of $y^s$ is exactly \eqref{eq:J}, proving
+\eqref{eq:Hrfinite}. This is a nonrecursive finite formula for every
+fixed-level generating function.
+
+The first four simplify to
+\begin{align}
+ H_0(z)&=\frac{z}{d},\label{eq:H0}\\
+ H_1(z)&=\frac{1+z^2+z^3}{d},\label{eq:H1}\\
+ H_2(z)&=\frac{z^4(1-z^2)}{d^2},\label{eq:H2}\\
+ H_3(z)&=\frac{z^3(1-z^2)(1+z+z^2)}{d^2}.\label{eq:H3}
+\end{align}
+For $r\geq4$ they also satisfy the simple recurrence in valuation level
+\begin{equation}\label{eq:Hrec}
+ H_r=zH_{r-1}+\frac{z^2(1-z)}{d}H_{r-2}.
+\end{equation}
+All these formulas are identities of formal series; no convergence
+assumption is being made.
+
+\begin{theorem}[Minimal eventual recurrences]\label{thm:minrec}
+Let $k=\lfloor r/2\rfloor$. In lowest terms over $\Q(z)$, the denominator
+of $H_r(z)$ is exactly
+\begin{equation}\label{eq:mind}
+ (1-z-z^2)^{k+1}.
+\end{equation}
+Hence $b_r(m)$ has a minimal eventual constant-coefficient recurrence of
+order $2k+2$, with characteristic polynomial
+\[
+ (X^2-X-1)^{k+1}.
+\]
+\end{theorem}
+\begin{proof}
+Formula \eqref{eq:Hrfinite} shows that the denominator divides
+$d^{k+1}$. To prove that this power cannot be lowered, it is enough to
+show a pole of order $k+1$ at the positive root $\rho$ of $d$.
+For $r=2k$, only the term $N_0J_{2k}$ contributes to that highest order;
+its numerator at $\rho$ is
+\[
+ \rho^{2k+1}(1-\rho)^k=\rho^{4k+1}>0.
+\]
+For $r=2k+1$, the two contributing terms are $N_0J_{2k+1}$ and
+$N_1J_{2k}$. Their combined numerator at $\rho$ is
+\begin{align*}
+ &(k+1)\rho^{2k+2}(1-\rho)^k
+ +(1+\rho^3)\rho^{2k}(1-\rho)^k\\
+ &\hspace{1cm}=\rho^{4k-1}(1+k\rho^3)>0.
+\end{align*}
+Here $1-\rho=\rho^2$ and $1+\rho=\rho^{-1}$ were used. Since $d$ is
+irreducible over $\Q$, this proves \eqref{eq:mind}. A rational generating
+function in lowest terms has precisely that denominator as its minimal
+eventual recurrence polynomial, with the coefficients reversed.
+\end{proof}
+
+\subsection{Explicit leading asymptotics and full expansions}
+\begin{theorem}[Fixed-level asymptotics]\label{thm:fixedasymp}
+For every fixed $k\geq0$, as $m\to\infty$,
+\begin{align}
+ b_{2k}(m)&\sim
+ \frac{\rho^{3k}}{5^{(k+1)/2}k!}\,m^k\ph^m,\label{eq:evenasymp}\\
+ b_{2k+1}(m)&\sim
+ \frac{\rho^{3k-2}(1+k\rho^3)}{5^{(k+1)/2}k!}\,m^k\ph^m.
+ \label{eq:oddasymp}
+\end{align}
+More precisely, for each $r$ there are polynomials $P_r,Q_r$ of degree
+at most $\lfloor r/2\rfloor$ such that, for all sufficiently large $m$,
+\begin{equation}\label{eq:exactBinet}
+ b_r(m)=P_r(m)\ph^m+Q_r(m)(-\rho)^m.
+\end{equation}
+Their coefficients are obtained explicitly by partial fractions of
+\eqref{eq:Hrfinite}.
+\end{theorem}
+\begin{proof}
+Factor
+\[
+ d(z)=(1-z/\rho)(1+\rho z).
+\]
+At $z=\rho$, the second factor is $1+\rho^2=\sqrt5\,\rho$.
+The highest-pole numerators computed in \cref{thm:minrec} therefore give
+\begin{align*}
+ H_{2k}(z)&\sim
+ \frac{\rho^{3k}}{5^{(k+1)/2}}(1-z/\rho)^{-k-1},\\
+ H_{2k+1}(z)&\sim
+ \frac{\rho^{3k-2}(1+k\rho^3)}{5^{(k+1)/2}}
+ (1-z/\rho)^{-k-1}.
+\end{align*}
+The coefficient of $(1-z/\rho)^{-k-1}$ is
+$\binom{m+k}{k}\rho^{-m}\sim m^k\ph^m/k!$, proving the displayed
+asymptotics. The only other pole is at $-\ph$. Partial fractions at the
+two poles, together with a possible polynomial part of finite support,
+give \eqref{eq:exactBinet}. This also provides all lower powers of $m$
+in the asymptotic expansion.
+\end{proof}
+
+For $k\geq1$, the error after retaining just the leading term is
+$O(m^{k-1}\ph^m)$. For $k=0$ there are exact Fibonacci descriptions:
+$b_0(m)=F_m$ for all $m$, and $b_1(m)=F_{m+2}$ for $m\geq2$.
+The exceptions in the latter statement are $b_1(0)=b_1(1)=1$.
+
+\begin{corollary}[Almost all terms have any prescribed fixed power of $2$]\label{cor:density}
+For each fixed $R\geq1$, the set of indices $n$ such that $2^R\mid a_n$
+has natural density $1$. More quantitatively, with
+$k=\lfloor(R-1)/2\rfloor$,
+\[
+ \#\{0\leq n<X:2^R\nmid a_n\}
+ =\Theta\bigl((\log X)^kX^\alpha\bigr).
+\]
+\end{corollary}
+\begin{proof}
+At $X=2^m$, sum the finitely many levels $0\leq r<R$ and use
+\cref{thm:fixedasymp}. The largest polynomial degree is $k$, and every
+leading constant is positive. Monotonicity between adjacent powers of
+$2$ gives the arbitrary-bound estimate. Since $\alpha<1$, its ratio to
+$X$ tends to zero.
+\end{proof}
+
+These are fixed-$r$ results. They are not uniform estimates when $r$
+grows proportionally to $m$. The central regime requires a different
+analysis, given in \cref{sec:limit}.
+
+\section{Maximal valuations and the least index of every valuation}\label{sec:extremes}
+
+\begin{theorem}[Sharp dyadic maximum]\label{thm:max}
+For every $m\geq3$,
+\begin{equation}\label{eq:max}
+ \max_{0\leq n<2^m}v(n)=m,
+ \qquad \#\{0\leq n<2^m:v(n)=m\}=F_{m-2}.
+\end{equation}
+Equality $v(n)=m$ occurs exactly for the even indices $n=2q$ such that
+$q$ has binary length $m-1$, ends in $11$, and contains no $00$.
+The leading digit of $q$ is, as usual, $1$.
+\end{theorem}
+\begin{proof}
+If an integer $q$ has binary length $\ell$, its addition to $2q$ has no
+carry in column $0$ and has at most one outgoing carry in each column
+$1,\ldots,\ell$. Thus $c(q)\leq\ell$.
+
+For even $n=2q$, shifting does not change the number of carries, so
+$v(n)=1+c(q)\leq m$. To have equality, $q$ must have length $\ell=m-1$
+and a carry in every column $1,\ldots,\ell$. The first such carry
+requires its two lowest digits to be $11$. Once the carry is present,
+it survives a column exactly when the two adjacent input digits are not
+both $0$. The leading digit $1$ ensures the final outgoing carry.
+This proves the stated characterization for even indices.
+
+If $n$ is odd with $t(n)\geq2$, then
+$v(n)=1-t(n)+c(n)\leq m-1$. If $t(n)=1$, the two lowest digits are $01$.
+No carry can occur in columns $0,1,2$; equivalently, after deleting the
+least-significant-first block $10$, the remaining carry computation
+starts at $A$. Hence $v(n)\leq m-2$ for $m\geq2$. No odd index is an
+extremizer.
+
+It remains to count the described words $q$. Delete their last $1$.
+The resulting words have length $m-2$, start and end in $1$, and contain
+no $00$. The number of length-$j$ words with these properties is $F_j$:
+for $j=1,2$ it is $1$, and splitting after the initial $1$ gives the
+Fibonacci recurrence. Therefore there are $F_{m-2}$ extremizers, and
+there is at least one for each $m\geq3$.
+\end{proof}
+
+For $m=0,1,2$, the maximum is $1$, as the initial polynomials show.
+The transition from these exceptional cases to \eqref{eq:max} is why
+the least occurrence of valuation $2$ is later than that of valuation
+$3$.
+
+\begin{theorem}[Least positive indices]\label{thm:least}
+Let $\ell_r$ be the least positive integer $n$ such that $v(n)=r$.
+Then
+\begin{equation}\label{eq:least}
+ \ell_0=1,\qquad\ell_1=2,\qquad\ell_2=13,
+\end{equation}
+and for all $r\geq3$,
+\begin{equation}\label{eq:leastgeneral}
+ \boxed{\ \ell_r=\frac{2^{r+1}+6+4(-1)^r}{3}.\ }
+\end{equation}
+\end{theorem}
+\begin{proof}
+The valuations at $n=1,\ldots,13$ are
+\[
+ 0,1,1,1,0,3,1,1,0,1,3,3,2,
+\]
+which proves \eqref{eq:least}. For $r\geq3$, \cref{thm:max} shows that
+no index of fewer than $r$ binary digits can have valuation $r$.
+Among indices of length $r$, the extremal-word characterization applies.
+The smallest eligible binary word is obtained lexicographically by
+choosing $0$ whenever it does not create $00$ or violate the final $11$
+condition on $q$. Consequently the binary word of $\ell_r$ is
+\[
+ \begin{cases}
+ (10)^{(r-3)/2}110,&r\text{ odd},\\
+ (10)^{(r-4)/2}1110,&r\text{ even}.
+ \end{cases}
+\]
+Summing the corresponding geometric progressions gives
+$(2^{r+1}+2)/3$ in the odd case and $(2^{r+1}+10)/3$ in the even case,
+which is \eqref{eq:leastgeneral}.
+\end{proof}
+
+The beginning of this least-index sequence is
+\[
+ 1,2,13,6,14,22,46,86,174,342,686,1366,\ldots.
+\]
+Its tail is a linear combination of $2^r$, $1$, and $(-1)^r$.
+Accordingly, for $r\geq6$,
+\[
+ \ell_r=2\ell_{r-1}+\ell_{r-2}-2\ell_{r-3}.
+\]
+Here ``least'' refers to a positive index. Allowing the index $0$ would
+replace $\ell_1=2$ by $0$ and leave the other values unchanged.
+
+\section{Exact moments and Gaussian limit laws}\label{sec:limit}
+
+Let $N_m$ be uniformly distributed on $\{0,1,\ldots,2^m-1\}$ and put
+$X_m=v(N_m)$. Its probability generating function is
+\begin{equation}\label{eq:pgf}
+ \E[y^{X_m}]=2^{-m}V_m(y).
+\end{equation}
+This is a random \emph{index} model. It is not a model that first chooses
+a permutation uniformly among all objects of several different sizes.
+
+\subsection{Exact mean and variance}
+\begin{theorem}\label{thm:moments}
+For all $m\geq0$,
+\begin{equation}\label{eq:mean}
+ \E X_m=\frac m2-\frac23+\frac{9+(-1)^m}{6\,2^m}.
+\end{equation}
+For $m\geq1$,
+\begin{equation}\label{eq:variance}
+ \Var X_m=\frac{11m}{12}-\frac{23}{9}
+ +\frac{27-(-1)^m}{6\,2^m}
+ -\frac{(9+(-1)^m)^2}{36\,4^m}.
+\end{equation}
+For $m=0$, $X_0=1$ deterministically and its variance is $0$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:mainGF} with respect to $y$ and set $y=1$.
+The resulting first-moment series has the partial-fraction form
+\begin{equation}\label{eq:firstpartial}
+ \sum_{m\geq0}V_m'(1)z^m
+ =-\frac{7}{6(1-2z)}+\frac1{2(1-2z)^2}
+   +\frac1{6(1+z)}+\frac3{2(1-z)}.
+\end{equation}
+Thus
+\[
+ V_m'(1)=2^m\left(\frac m2-\frac23\right)
+              +\frac32+\frac{(-1)^m}{6},
+\]
+which proves \eqref{eq:mean}.
+
+Differentiating twice gives the factorial second moment. The full
+partial-fraction identity is recorded in \cref{sec:partials}; its
+coefficient is
+\begin{align}\label{eq:factorialmoment}
+ V_m''(1)={}&2^m\left(\frac{m^2}4-\frac m4-\frac{13}9\right)
+ +(-1)^m\left(\frac m6-\frac59\right)\notag\\
+ &+\frac{3m}{2}+1+\ind_{m=0}.
+\end{align}
+Since $\E X_m^2=2^{-m}(V_m''(1)+V_m'(1))$, subtracting the square of
+\eqref{eq:mean} and simplifying gives \eqref{eq:variance} for $m\geq1$.
+The indicator in \eqref{eq:factorialmoment} accounts for the exceptional
+constant coefficient when $m=0$.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:momentasymp}
+ \E X_m=\frac m2-\frac23+O(2^{-m}),\qquad
+ \Var X_m=\frac{11m}{12}-\frac{23}{9}+O(2^{-m}).
+\end{equation}
+The variance is substantially larger than $m/4$, the variance of a sum
+of $m$ independent fair binary digits. Carry propagation creates
+correlations; merely counting independent local patterns would miss
+this effect.
+
+\subsection{The dominant eigenvalue and its symmetry}
+The characteristic polynomial of \eqref{eq:M} is
+\begin{equation}\label{eq:char}
+ \chi(\lambda,y)=\lambda^3-(1+y)\lambda^2
+ -(y^2-y+1)\lambda+y(y+1).
+\end{equation}
+At $y=1$ it factors as $(\lambda-2)(\lambda-1)(\lambda+1)$.
+Let $\lambda(y)$ be the analytic root with $\lambda(1)=2$.
+For real $y>0$ near $1$, it is the Perron eigenvalue of the nonnegative,
+irreducible, aperiodic matrix $M(y)$.
+
+The simple pole corresponding to this root in \eqref{eq:mainGF} gives
+analytic functions $h(y)$ and an $\eta<2$, on a sufficiently small complex
+neighborhood of $1$, such that
+\begin{equation}\label{eq:quasipower}
+ V_m(y)=h(y)\lambda(y)^m+O(\eta^m),\qquad h(1)=1.
+\end{equation}
+The error is uniform in a smaller closed neighborhood. This follows
+either from the spectral projections of $M(y)$ or directly by partial
+fractions in $z$, since the three roots remain separated there. The
+polynomial part in $z$ affects only finitely many initial $m$.
+
+Let $J$ be the permutation matrix swapping states $A$ and $C$. A direct
+calculation gives
+\[
+ JM(y)J=yM(1/y).
+\]
+Perron eigenvalues for positive real $y$, followed by analytic
+continuation near $1$, therefore satisfy
+\begin{equation}\label{eq:symmetry}
+ \lambda(y)=y\lambda(1/y).
+\end{equation}
+Put
+\[
+ K(s)=\log\frac{\lambda(e^s)}2.
+\]
+Equation \eqref{eq:symmetry} says that $K(s)-s/2$ is even. In particular,
+all its odd Taylor coefficients beyond the first vanish.
+Implicit differentiation of \eqref{eq:char} gives
+\[
+ \lambda'(1)=1,\qquad\lambda''(1)=\frac43,
+\]
+and hence
+\begin{equation}\label{eq:Ktaylor}
+ K'(0)=\frac12,\qquad K''(0)=\frac{11}{12}.
+\end{equation}
+A further algebraic expansion, reproducible by the symbolic verification
+script, gives
+\begin{equation}\label{eq:Kexpansion}
+ K(s)=\frac s2+\frac{11s^2}{24}-\frac{569s^4}{1728}+O(s^6).
+\end{equation}
+For example, one can first solve \eqref{eq:char} in powers of $u=y-1$:
+\[
+ \lambda(1+u)=2+u+\frac23u^2-\frac13u^3-\frac7{27}u^4+O(u^5),
+\]
+and then substitute $u=e^s-1$. Symmetry supplies the vanishing fifth
+coefficient. The usual analytic generating-function framework for such
+limit laws is described in \cite{FS}; the needed argument is included
+next rather than invoked as a black box.
+
+\subsection{Central and local limit theorems}
+\begin{theorem}\label{thm:CLT}
+As $m\to\infty$,
+\begin{equation}\label{eq:CLT}
+ \frac{X_m-m/2}{\sqrt{11m/12}}
+ \ \xrightarrow{\ d\ }\ \mathcal N(0,1).
+\end{equation}
+The following stronger local statement holds uniformly for integers $r$:
+\begin{equation}\label{eq:LCLT}
+ \sup_{r\in\Z}\left|
+ \sqrt{\frac{11m}{12}}\,\Prob(X_m=r)
+ -\frac1{\sqrt{2\pi}}
+  \exp\!\left(-\frac{(r-m/2)^2}{2(11m/12)}\right)
+ \right|\longrightarrow0.
+\end{equation}
+One may replace $m/2$ by the exact mean in either statement.
+\end{theorem}
+\begin{proof}
+Write $\sigma^2=11/12$ and $\mu=1/2$. For fixed real $t$, substitute
+$y=\exp(it/(\sigma\sqrt m))$ into \eqref{eq:quasipower}. After multiplying
+by $\exp(-it\mu\sqrt m/\sigma)$, \eqref{eq:Ktaylor} yields the limit
+$\exp(-t^2/2)$ for the characteristic function of the normalized
+variable. The prefactor $h(y)$ tends to $1$, and the error is
+exponentially small. The continuity theorem for characteristic functions
+proves \eqref{eq:CLT}.
+
+We verify the extra spectral condition for a local theorem. For $|u|=1$,
+entrywise absolute values give $|M(u)|=M(1)$, so every eigenvalue has
+modulus at most $2$. Suppose $M(u)w=\gamma w$ with $|\gamma|=2$.
+Taking absolute values gives $2|w|\leq M(1)|w|$. Multiplication by the
+positive left Perron vector forces equality in every coordinate. By
+irreducibility, $|w|$ is a positive Perron vector, and equality also
+holds in every triangle inequality used above. The self-loop at $A$,
+whose weight is $1$, then forces $\gamma/2=1$. The self-loop at $C$,
+whose weight is $u$, forces $u=1$. Therefore
+\begin{equation}\label{eq:strictgap}
+ \operatorname{spr}(M(e^{it}))<2
+ \quad\text{for }0<|t|\leq\pi.
+\end{equation}
+On a closed arc bounded away from $0$, compactness makes this a uniform
+strict gap. The recurrence \eqref{eq:recurrence}, whose characteristic
+roots are those of $M$, consequently bounds $V_m(e^{it})/2^m$
+uniformly by $C\theta^m$ there, for some $\theta<1$. A resolvent contour
+with radius strictly between the maximum root modulus and $2$ gives
+this bound even at a repeated subdominant eigenvalue.
+
+Near $t=0$, \eqref{eq:Ktaylor} and analyticity give constants $c,\delta>0$
+such that
+\[
+ \left|\frac{\lambda(e^{it})}{2}\right|^m\leq e^{-cm t^2}
+ \qquad(|t|\leq\delta).
+\]
+Fourier inversion gives
+\[
+ \Prob(X_m=r)=\frac1{2\pi}\int_{-\pi}^{\pi}
+                 2^{-m}V_m(e^{it})e^{-irt}\dd t.
+\]
+Set $s=\sigma\sqrt m\,t$ and remove the phase corresponding to $\mu m$.
+On each bounded $s$-interval, \eqref{eq:quasipower} gives convergence of
+the integrand to $e^{-s^2/2}$. The preceding Gaussian bound dominates the
+part with $|t|\leq\delta$, and \eqref{eq:strictgap} makes the remaining
+part negligible even after multiplication by $\sqrt m$. Thus the
+rescaled characteristic functions converge in $L^1$ to the Gaussian
+characteristic function, with the finite integration interval extended
+by zero. Fourier inversion and the bound of the difference of transforms
+by the $L^1$ difference prove \eqref{eq:LCLT}, uniformly in $r$.
+
+Finally, \eqref{eq:mean} differs from $\mu m$ by a bounded amount. Dividing
+that difference by $\sigma\sqrt m$ gives zero in the limit, and the
+Gaussian density is uniformly continuous. This justifies either choice
+of center.
+\end{proof}
+
+The local theorem describes the central distribution on the scale
+$\sqrt m$. It does not provide relative errors in the extreme tails.
+In particular, the rare fixed-valuation regime is governed by
+\cref{thm:fixedasymp}, not by substituting a fixed $r$ into a Gaussian
+approximation and expecting relative accuracy.
+
+\section{Algorithms, independent checks, and reproducibility}\label{sec:algorithms}
+
+\subsection{Evaluating a single index}
+The exact valuation requires no construction of $a_n$:
+\begin{lstlisting}[language=Python]
+def valuation(n: int) -> int:
+    if not isinstance(n, int) or isinstance(n, bool) or n < 0:
+        raise ValueError("n must be a nonnegative integer")
+    return n.bit_count() + (n + 1).bit_count() - (3*n).bit_count()
+\end{lstlisting}
+The parity criterion is the still simpler predicate
+\begin{lstlisting}[language=Python]
+(n & 1) != 0 and (n & (n << 1)) == 0
+\end{lstlisting}
+These operate on the digits of $n$, whereas $a_n$ itself has a number of
+digits proportional to $n$. The six-state automaton supplies an
+alternative digit-by-digit implementation, independent of the
+population-count expression.
+
+\subsection{The complete distribution below an arbitrary bound}
+The recurrence \eqref{eq:recurrence} computes all $V_0,\ldots,V_m$ with
+$O(m^2)$ integer coefficient updates. An arbitrary interval $[0,N)$ can
+also be handled without enumeration. Process candidate digits and the
+digits of $N$ from least to most significant, maintaining the six-state
+automaton and a comparison state in $\{-1,0,1\}$.
+
+After the lowest $j$ digits have been read, the comparison state is the
+comparison of those two low-digit integers. At the next position, an
+equal pair of bits leaves the comparison unchanged; an unequal pair
+\emph{overrides} it, because that new bit is more significant than every
+previously read bit. After all positions, retain only comparison $-1$.
+This gives an 18-state digit dynamic program. Attach a polynomial in
+$y$ to each state and apply the weights from \cref{sec:automaton}.
+The terminal weights complete the valuation.
+
+For $L=\bits(N)$ this uses $O(L^2)$ integer coefficient updates and stores
+$O(L)$ integer coefficients across a constant number of states. These
+are arithmetic-operation counts, not unit-cost bit-complexity claims:
+the coefficients themselves may have $O(L)$ bits. The implementation
+checks that the final sum of histogram entries equals $N$ exactly.
+The case $N=0$ is handled separately by the zero histogram.
+
+\subsection{What was actually executed}
+The archive contains a standard-library implementation
+\texttt{code/carries.py}, a standard-library verification driver
+\texttt{code/verify.py}, and an optional symbolic verifier using SymPy.
+The full exact test run recorded the following checks:
+\begin{center}
+\begin{tabular}{p{0.57\linewidth}p{0.30\linewidth}}
+\toprule
+Check & Executed range\\
+\midrule
+Direct factorial quotient against digit valuation, carry count,
+automaton valuation, and parity & $0\leq n\leq2000$\\
+Digit valuation and parity; histograms against the recurrence
+& $0\leq n<2^{20}$\\
+Independent column-carry count and six-state automaton against digit sums
+& $0\leq n<2^{18}$\\
+Every arbitrary-bound digit-DP histogram against enumeration
+& $0\leq N\leq2048$\\
+Digit DP against dyadic recurrence; exact moments, parity counts,
+and extremal coefficients & $0\leq m\leq256$\\
+Least positive index, by exhaustive search & $0\leq r\leq18$\\
+Formula witnesses of valuation $r$, without exhaustive minimality testing
+& $3\leq r\leq1000$\\
+Non-dyadic large-bound digit DP and exact total & $N=10^{100}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All these checks passed. The executed environment used Python 3.13.5;
+the full standard-library verification run took about 3.3 seconds in
+this session. Timing is environment-specific and is not a performance
+guarantee. The exact report, including the measured duration, is in
+\texttt{data/verification.json}.
+
+These comparisons deliberately distinguish levels of independence.
+The million-index test does not compute a million factorial quotients;
+it compares the proved digit formula with the binary predicate and the
+independently implemented distribution recurrence. Direct quotient
+checks stop at $2000$. Likewise, evaluating the formula for $\ell_{1000}$
+checks that its valuation is $1000$, but does not exhaust all smaller
+integers. Minimality at every level rests on \cref{thm:least}.
+
+The symbolic verifier checks the rational identities, fixed-level
+formulas, moment decompositions, and the eigenvalue expansion. It is a
+useful algebraic cross-check, not a machine-checked proof of the
+Perron--Frobenius or Fourier arguments. No Lean formalization or external
+peer review is claimed.
+
+\Needspace{15\baselineskip}
+\subsection{Reproduction commands}
+From the extracted archive directory, run
+\begin{lstlisting}
+python code/verify.py
+python code/carries.py --n 13
+python code/carries.py --dyadic 100
+python code/carries.py --bound 1000000000000000000000000
+python code/carries.py --least 1000
+python code/verify_symbolic.py
+pdflatex -interaction=nonstopmode -halt-on-error research.tex
+pdflatex -interaction=nonstopmode -halt-on-error research.tex
+\end{lstlisting}
+The symbolic script is optional and requires SymPy. The main program and
+exact verification driver require no third-party packages and make no
+network calls. Generated CSV files contain the first $201$ sequence
+terms, every dyadic histogram through $m=256$, and least indices through
+valuation $64$. The large-bound JSON contains the complete valuation
+histogram for $0\leq n<10^{100}$.
+
+\section{Conclusion, provenance, and remaining directions}\label{sec:conclusion}
+
+The selected parity assertion is established by \cref{thm:parity}, and
+\cref{sec:formal} gives an independent proof in formal power series.
+Its mathematical explanation is especially short: factorial valuations
+are digit sums, the sum $n+2n$ is controlled by adjacent digits, and the
+factor $n+1$ forces careful treatment of the trailing run of $1$s.
+
+The same analysis gives substantially more than parity. The full dyadic
+valuation distribution has the rational generating function
+\eqref{eq:mainGF}. The cubic denominator governs a recurrence in binary
+length, fixed valuation levels have exact denominators
+$d^{\lfloor r/2\rfloor+1}$, and the dominant poles give their asymptotic
+expansions. A different dominant-eigenvalue calculation gives the exact
+moment constants and the Gaussian central regime. Extremal words give
+both the Fibonacci number of maximizers and the explicit least-index
+formula. The algorithms directly implement these finite-state proofs.
+
+The status statement should remain precise. The OEIS page provides a
+recent, explicitly conjectural target; the article proves that target.
+Targeted searches for A000139 parity and valuation, fibbinary indices,
+and parity of two-stack-sortable permutations did not locate a prior
+resolution in the material retrieved. This is not an exhaustive
+bibliographic certification. The classical enumeration formula, the
+ternary-tree generating function, and the fibbinary terminology are not
+claimed as new. Nor is the general method of using finite matrices to
+study digital statistics new. The specific identities proved here are
+presented with explicit derivations so that their correctness can be
+assessed independently of any priority claim.
+
+Several natural extensions remain outside the scope of the proofs.
+One is a parity-reversing involution directly on two-stack-sortable
+permutations whose fixed objects explain the fibbinary indices. Another
+is the joint distribution of valuations at different primes, where the
+binary shift structure no longer supplies this particular three-state
+core. A third is a uniform saddle-point analysis when $r/m$ stays away
+from both $0$ and the central value $1/2$, connecting the fixed-level
+and central regimes through explicit large-deviation asymptotics.
+Finally, the full normalized counting oscillation for non-dyadic bounds
+can be studied through the digit dynamic program rather than reduced
+to upper and lower bounds. No solution of these additional questions is
+asserted here.
+
+\appendix
+\section{The special Lagrange inversion identity used above}\label{sec:lagrange}
+
+We give the formal calculation to keep \cref{lem:ternary} self-contained.
+Let $U=x\Phi(U)$ with $\Phi(0)=1$. For $n\geq1$ and a formal power series
+$G$, the coefficient formula is
+\begin{equation}\label{eq:lagrange}
+ [x^n]G(U(x))=\frac1n[u^{n-1}]G'(u)\Phi(u)^n.
+\end{equation}
+Indeed, using formal residues and substituting $x=u/\Phi(u)$ gives
+\begin{align*}
+ [x^n]G(U(x))
+ &=\operatorname{Res}_{u=0}
+ G(u)\left(\frac{\Phi(u)}u\right)^{n+1}
+ \frac{\Phi(u)-u\Phi'(u)}{\Phi(u)^2}\dd u\\
+ &=\operatorname{Res}_{u=0}
+ G(u)\left(\frac{\Phi(u)^n}{u^{n+1}}
+ -\frac{\Phi(u)^{n-1}\Phi'(u)}{u^n}\right)\dd u.
+\end{align*}
+The expression in parentheses is
+$-\frac1n\frac{\dd}{\dd u}(\Phi(u)^n/u^n)$. Formal integration by parts,
+whose validity is the fact that a formal derivative has zero residue,
+proves \eqref{eq:lagrange}. The residue substitution is valid because
+$u/\Phi(u)=u+O(u^2)$ has a compositional inverse; checking monomials gives
+the usual change-of-variable rule.
+
+For $T=1+U$ and $\Phi(u)=(1+u)^3$, take $G(u)=(1+u)^k$. Then
+\[
+ [x^n]T^k=\frac{k}{n}\binom{3n+k-1}{n-1}
+ =\frac{k}{3n+k}\binom{3n+k}{n}.
+\]
+For $n=0$ both sides are $1$, so the same expression also holds there.
+
+\section{Second-moment algebra and a compact symbolic certificate}\label{sec:partials}
+
+The second derivative of \eqref{eq:mainGF} at $y=1$ is
+\begin{align}\label{eq:secondpartial}
+ \sum_{m\geq0}V_m''(1)z^m
+ ={}&1-\frac{17}{18(1-2z)}-\frac1{(1-2z)^2}
+       +\frac1{2(1-2z)^3}\notag\\
+ &-\frac{13}{18(1+z)}+\frac1{6(1+z)^2}
+       -\frac1{2(1-z)}+\frac3{2(1-z)^2}.
+\end{align}
+Extracting coefficients using
+\[
+ [z^m](1-az)^{-j}=\binom{m+j-1}{j-1}a^m
+\]
+gives \eqref{eq:factorialmoment}. This also makes the isolated constant
+$1$ on the right, and hence the $m=0$ correction, explicit.
+
+A compact exact certificate for the principal generating-function
+identity is the polynomial equality
+\[
+ D(z,y)\!\left(y+yzC+z+z^2C+\frac{yz^2}{1-z}
+ +\frac{yz^3R}{1-z}\right)
+ =y+(1-y^2)z-y^3z^2+y(y-1)^2z^3,
+\]
+with $C,R$ as in \eqref{eq:CGF}--\eqref{eq:RGF}. Multiplication by $1-z$
+turns it into a literal identity in $\Z[z,y]$. The included symbolic
+script checks this identity after exact cancellation, along with the
+fixed-level formulas and moment identities. Thus the displayed rational
+function is not inferred by fitting a finite initial segment.
+
+\section{A small exact table}\label{sec:smalltable}
+
+The following table records $b_r(m)$ for the first few binary lengths.
+Blank entries are zero. Each row sums to $2^m$; its first entry is $F_m$.
+\begin{center}
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{c rrrrrrrrr}
+\toprule
+$m\backslash r$&0&1&2&3&4&5&6&7&8\\
+\midrule
+0&0&1&&&&&&&\\
+1&1&1&&&&&&&\\
+2&1&3&&&&&&&\\
+3&2&5&0&1&&&&&\\
+4&3&8&1&3&1&&&&\\
+5&5&13&2&7&3&2&&&\\
+6&8&21&4&14&8&6&3&&\\
+7&13&34&8&27&16&16&9&5&\\
+8&21&55&15&51&32&34&25&15&8\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first valuations at individual indices are
+\[
+\begin{array}{c|rrrrrrrrrrrrrrrr}
+ n&0&1&2&3&4&5&6&7&8&9&10&11&12&13&14&15\\\hline
+ v(n)&1&0&1&1&1&0&3&1&1&0&1&3&3&2&4&1
+\end{array}
+\]
+These tables are for orientation, not substitutes for the all-index
+arguments. The CSV artifacts provide larger exact tables.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS139}
+The OEIS Foundation Inc.,
+\emph{A000139: $a(n)=2(3n)!/((2n+1)!(n+1)!)$}.
+Includes Peter Bala's parity conjecture dated July 24, 2025.
+Accessed September 19, 2026.
+\url{https://oeis.org/A000139}.
+
+\bibitem{OEIS139internal}
+The OEIS Foundation Inc., \emph{A000139, internal-format entry}.
+Inspected revision 297, May 12, 2026; accessed September 19, 2026.
+\url{https://oeis.org/A000139/internal}.
+
+\bibitem{OEIS22341}
+The OEIS Foundation Inc., \emph{A022341: the odd fibbinary numbers}.
+Accessed September 19, 2026.
+\url{https://oeis.org/A022341}.
+
+\bibitem{LSW}
+L. Lindroos, A. Sills, and H. Wang,
+\emph{Odd fibbinary numbers and the golden ratio},
+The Fibonacci Quarterly \textbf{52} (2014), no.~1, 61--65.
+\url{https://www.fq.math.ca/Papers1/52-1/LindroosSillsWang.pdf}.
+
+\bibitem{Fang}
+W. Fang, \emph{Fighting fish and two-stack sortable permutations},
+S\'eminaire Lotharingien de Combinatoire \textbf{80B} (2018),
+Article 7, 12 pp.
+\url{https://www.mat.univie.ac.at/~slc/wpapers/FPSAC2018/07-Fang.pdf}.
+Full-paper preprint: \url{https://arxiv.org/abs/1711.05713}.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics},
+Cambridge University Press, 2009. See the chapters on rational
+functions and limit laws. Authors' book page:
+\url{https://algo.inria.fr/flajolet/Publications/books.html}.
+\end{thebibliography}
+\end{document}

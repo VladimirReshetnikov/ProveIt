@@ -1,0 +1,644 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25.5mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,listings,xurl,titlesec}
+\definecolor{navy}{RGB}{30,57,82}
+\definecolor{ink}{RGB}{32,38,44}
+\definecolor{pale}{RGB}{239,243,247}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=navy,bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Coarse Classes Without Least Turing Degrees},pdfauthor={Research note prepared for Vladimir Reshetnikov},pdfsubject={An explicit counterexample, exact spectra, and a minimal-pair construction}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Coarse classes without least Turing degrees}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\leuc}{\leq_{\mathrm{uc}}}
+\newcommand{\lenc}{\leq_{\mathrm{nc}}}
+\newcommand{\equc}{\equiv_{\mathrm{uc}}}
+\newcommand{\eqnc}{\equiv_{\mathrm{nc}}}
+\newcommand{\leued}{\leq_{\mathrm{ued}}}
+\newcommand{\lened}{\leq_{\mathrm{ned}}}
+\newcommand{\equed}{\equiv_{\mathrm{ued}}}
+\newcommand{\eqned}{\equiv_{\mathrm{ned}}}
+\newcommand{\az}{\mathrel{=^{0}}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\ED}{\operatorname{ED}}
+\newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\R}{\mathcal R}
+\newcommand{\J}{\mathcal J}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\Comp}{\operatorname{Comp}}
+\newcommand{\stem}{\operatorname{stem}}
+\newcommand{\lh}{\operatorname{lh}}
+\newcommand{\pref}{\mathbin{\upharpoonright}}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,frame=single,showstringspaces=false,backgroundcolor=\color{pale}}
+\pdfstringdefDisableCommands{\def\R{R}\def\N{N}\def\leT{<=T}\def\zero{0}}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY\quad /\quad COUNTEREXAMPLE AND PROOF AUDIT\par}
+\vspace{15mm}
+{\Huge\bfseries\color{navy}Coarse Classes Without\par Least Turing Degrees\par}
+\vspace{8mm}
+{\Large Explicit jump-cone spectra and a density-zero\par minimal-pair construction\par}
+\vspace{14mm}
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{5mm}
+\noindent Prepared for Vladimir Reshetnikov\\[3pt]
+18 September 2026\\
+Research continuation of \texttt{turing\_degrees\_unified.tex}, target C1
+\vspace{9mm}
+\begin{abstract}
+We give a negative answer to the least-representative statement designated C1 in the supplied report. An explicit counterexample is the characteristic function
+\[
+ X(n)=\chi_{\emptyset''}\bigl(\nu_2(n+1)\bigr).
+\]
+Its uniform and nonuniform coarse-equivalence classes have exactly the Turing degrees $\mathbf b$ satisfying $\mathbf b'\geq\zero''$ as their representative spectra. More generally, the column coding $\R(A)$ has spectrum $\{\degT(B):A\leT B'\}$. A fully described product finite-extension construction produces two coarse descriptions of $\R(A)$ with no noncomputable common lower bound and with both jumps equivalent to $A\oplus\emptyset'$. This proves nonexistence of a least representative whenever $A\nleT\emptyset'$. We also classify reductions between these column codes, obtain a countable pairwise minimal-pair family, and calculate the contrasting effective-dense spectra. The proofs do not assume an unproved minimal-pair theorem. Finite Python checks accompany the argument; they are not a formal verification of its infinite assertions.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Priority qualification.} The negative answer also follows from older published cone-avoidance results. This note therefore does not claim that C1 was genuinely unresolved in the literature, or that its negative answer is a new discovery. Its contribution here is an explicit counterexample, stronger structural statements, and complete proofs, with priority of those formulations left unassessed.
+\end{titlepage}
+{\small\tableofcontents}
+\newpage
+
+\section{Selected target, result, and status}
+\label{sec:target}
+The supplied report labels the following statement C1 and proposes looking for a nonzero coarse class containing a Turing minimal pair:\cite{Unified}
+\begin{equation}
+ \forall f\in\Baire\ \exists g\eqnc f\ \forall h\eqnc f\ (g\leT h).
+ \tag{C1}\label{eq:C1}
+\end{equation}
+It is the coarse instance of Question~7 in Gerdes's preprint. The current arXiv record inspected for this note lists the version of 9 August 2025; that version explicitly asks the least-representative and spectrum questions.\cite{Gerdes} We use exactly the report's total-function oracle convention, and distinguish coarse reducibility from agreement modulo density zero.
+
+The construction below refutes~\eqref{eq:C1}. It also refutes the analogous statement for uniform coarse equivalence, and already works with binary representatives. The central assertions are these:
+\begin{align}
+ \Spec([\R(A)]_{\mathrm{uc}})
+ &=\Spec([\R(A)]_{\mathrm{nc}})
+ =\{\degT(B):A\leT B'\},\label{eq:overview-spectrum}\\
+ \R(A)\leuc\R(B)
+ &\Longleftrightarrow \R(A)\lenc\R(B)
+ \Longleftrightarrow A\leT B\oplus\emptyset'.\label{eq:overview-order}
+\end{align}
+For $A\nleT\emptyset'$, there are $D,E\az\R(A)$ satisfying
+\begin{equation}
+ D'\eqT E'\eqT A\oplus\emptyset',\qquad
+ \{H:H\leT D\text{ and }H\leT E\}=\Comp.
+ \label{eq:overview-pair}
+\end{equation}
+The quantifier over $H$ can range over all total numerical functions, not just sets. Thus a supposed least representative would be computable, whereas no computable function lies in the class.
+
+\paragraph{What is and is not being claimed.}
+The mathematical statements above are proved below. They are not merely finite-search evidence. However, external novelty is a different matter. Jockusch and Schupp already proved the unrelativized coarse-computability criterion for this column coding.\cite[Theorem~2.19]{JS} Hirschfeldt, Jockusch, Kuyper, and Schupp proved that, when the coarse computability bound is one, the sets computable from every coarse description are exactly the computable sets. Their Theorem~4.3 is attributed to Igusa.\cite{HJKS} Section~\ref{sec:prior} explains directly why those results already imply a negative answer to C1. Accordingly, the supplied report's characterization of C1 as a genuinely unresolved construction-search target needs qualification; we do not silently preserve that status assertion.
+
+\paragraph{Why retain a direct construction?}
+The report specifically favors a short proof that can eventually be formalized without importing a large minimal-pair theorem. Here the construction has computable finite-restraint conditions, one ordinary halting oracle for its searches, and an explicit density estimate. It supplies an actual pair, equal prescribed jumps, and a countable extension. These are more informative certificates than a bare appeal to cone avoidance.
+
+\section{Definitions and elementary reductions}
+\label{sec:definitions}
+Sets are identified with their characteristic functions. A total numerical function is represented by its value oracle, or equivalently by the characteristic function of its graph under a fixed computable pairing. The latter identification preserves Turing degree and jump degree. Write $B'=\{e:\Phi_e^B(e)\downarrow\}$ for the Turing jump. Standard finite-use oracle computations are used throughout: $\Phi_e^\sigma(n)\downarrow=v$ means a computation that asks only positions within the finite string $\sigma$.
+
+For $S\subseteq\N$ and $N>0$, put
+\[
+ \rho_N(S)=\frac{|S\cap[0,N)|}{N},\qquad
+ \overline\rho(S)=\limsup_{N\to\infty}\rho_N(S).
+\]
+We write $f\az g$ if $\overline\rho(\{n:f(n)\ne g(n)\})=0$. For nonnegative densities, upper density zero is equivalent to convergence of the densities to zero. Finite unions of density-zero sets have density zero.
+
+A \emph{coarse description} of $f$ is a total function $D$ with $D\az f$; the collection is $\CD(f)$. Define
+\begin{align*}
+ f\lenc g
+ &\quad\Longleftrightarrow\quad
+ \forall D\in\CD(g)\ \exists C\in\CD(f)\ (C\leT D),\\
+ f\leuc g
+ &\quad\Longleftrightarrow\quad
+ \exists\Phi\ \forall D\in\CD(g)\ (\Phi^D\in\CD(f)).
+\end{align*}
+The corresponding equivalence relations are $\eqnc$ and $\equc$. Their definitions agree with those in the source question.\cite{Gerdes} A functional only has to meet the stated output specification on valid descriptions.
+
+For a collection $\mathcal C$ of total functions, its \emph{representative spectrum} is
+\[
+ \Spec(\mathcal C)=\{\degT(f):f\in\mathcal C\}.
+\]
+This is not, by definition, the set of degrees merely capable of computing a member. We will prove exact representative-spectrum identities, using sparse coding for the realization direction.
+
+\begin{lemma}[Agreement and binary normalization]\label{lem:basic}
+If $f\az g$, then $\CD(f)=\CD(g)$ and $f\equc g$. If $X$ is binary and $D$ is a possibly numerical coarse description of $X$, then
+\[
+ D^{\mathrm{bin}}(n)=\begin{cases}1,&D(n)=1,\\0,&D(n)\ne1\end{cases}
+\]
+is a binary coarse description of $X$, uniformly computable from $D$.
+\end{lemma}
+\begin{proof}
+If $H$ disagrees with $g$, then either it disagrees with $f$ or $f$ disagrees with $g$. The union bound proves the first implication, and symmetry gives equality of description classes. The identity functional gives both uniform reductions. For the second assertion, at any point where $D(n)=X(n)$, binary normalization still equals $X(n)$; hence it introduces no new errors.
+\end{proof}
+
+\begin{lemma}[Sparse degree realization]\label{lem:sparse}
+Suppose a binary $D\leT B$ is a coarse description of a binary $X$. There exists a binary $Y\az X$ with $Y\eqT B$.
+\end{lemma}
+\begin{proof}
+Set $Y(2^j)=B(j)$ for $j\geq0$, and let $Y(n)=D(n)$ elsewhere. The powers of two are computable and have density zero: at most $1+\lfloor\log_2 N\rfloor$ occur below a positive $N$. Thus $Y\az D\az X$. Reading powers of two computes $B$ from $Y$, while $B$ computes both $D$ and the sparse replacement values. Consequently $Y\eqT B$.
+\end{proof}
+
+\begin{lemma}[Least-representative obstruction]\label{lem:obstruction}
+Let $\mathcal C$ be a collection of total functions with no computable member. If $D,E\in\mathcal C$ have only computable total functions as common Turing lower bounds, then $\Spec(\mathcal C)$ has no least element.
+\end{lemma}
+\begin{proof}
+A member $h$ whose degree were least would satisfy $h\leT D,E$. It would be computable, contradicting the assumption on $\mathcal C$.
+\end{proof}
+This proves failure of a \emph{least} degree. It does not assert that the spectrum has no \emph{minimal} degree, which is a different order-theoretic statement.
+
+\section{Column coding and its exact description criterion}
+\label{sec:columns}
+Let $\nu_2(m)$ be the exponent of two dividing the positive integer $m$. Define
+\begin{equation}
+ c(n)=\nu_2(n+1),\quad
+ p(k,t)=2^k(2t+1)-1,\quad
+ C_k=\{p(k,t):t\in\N\}.
+ \label{eq:columns}
+\end{equation}
+The sets $C_k$ form a computable partition of $\N$. This is a shifted version of the standard dyadic column partition; the shift avoids a special case at zero. For every $K,N\in\N$,
+\begin{align}
+ |C_k\cap[0,N)|
+ &=\left\lfloor\frac{N}{2^k}\right\rfloor
+   -\left\lfloor\frac{N}{2^{k+1}}\right\rfloor,\label{eq:count-column}\\
+ \left|\bigcup_{k\geq K}C_k\cap[0,N)\right|
+ &=\left\lfloor\frac{N}{2^K}\right\rfloor.\label{eq:count-tail}
+\end{align}
+Indeed, $n+1$ ranges from $1$ through $N$, and the relevant conditions are divisibility by $2^k$ but not $2^{k+1}$, or divisibility by $2^K$, respectively. In particular, $C_k$ has density $2^{-k-1}$ and the union of columns with index at least $K$ has density $2^{-K}$.
+
+For $A\subseteq\N$, let
+\begin{equation}
+ \R(A)(n)=A(c(n)),\qquad
+ \R(A)=\bigcup_{k\in A}C_k.
+ \label{eq:R}
+\end{equation}
+Clearly $\R(A)\eqT A$, since $A(k)=\R(A)(2^k-1)$. The important feature is not mere redundancy, but infinitely many independent columns with positive individual density and uniformly small tail density.
+
+\subsection{The relative limit lemma, with uniformity made explicit}
+\begin{lemma}[Relative limit lemma]\label{lem:limit}
+For sets $A,B$, the relation $A\leT B'$ holds if and only if there is a total $B$-computable binary function $a(k,s)$ such that
+\[
+ \lim_{s\to\infty}a(k,s)=A(k)\quad\text{for every }k.
+\]
+The transformations from reduction indices to approximation indices, and conversely, are uniform.
+\end{lemma}
+\begin{proof}
+Suppose first that $\Psi^{B'}=A$. Use the standard $B$-computable increasing finite approximation $B'_s$ to $B'$. On input $(k,s)$, simulate $\Psi^{B'_s}(k)$ for at most $s$ steps, returning its value if it halts with a binary answer, and returning zero otherwise. This is a total $B$-computable procedure. The true computation $\Psi^{B'}(k)$ uses finitely many oracle positions and finitely many steps. Eventually $B'_s$ is correct at all positions on that computation path, and the time bound is sufficient. From then on the output is $A(k)$.
+
+Conversely, given $a$, an oracle for $B'$ also computes $B$. For each $s$, it can decide the $B$-c.e. question
+\[
+ \exists t\geq s\ [a(k,t)\ne a(k,s)].
+\]
+Search for an $s$ for which the answer is no and output $a(k,s)$. A convergent binary sequence is eventually constant, so the search terminates and returns the limit. Both algorithms use only the specified indices and the usual uniform reductions to the jump. The convergence assumption is used to prove termination, not supplied as a computable modulus.
+\end{proof}
+
+\subsection{Recovering the coded set with one jump}
+\begin{theorem}[Exact description criterion]\label{thm:criterion}
+For arbitrary sets $A,B$,
+\begin{equation}
+ B\text{ computes a coarse description of }\R(A)
+ \quad\Longleftrightarrow\quad A\leT B'.
+ \label{eq:criterion}
+\end{equation}
+Moreover, one fixed functional computes $A$ from $D'$ whenever $D$ is a binary coarse description of $\R(A)$, uniformly in $A,D$.
+\end{theorem}
+\begin{proof}
+Suppose $D\leT B$ and $D\az\R(A)$. By Lemma~\ref{lem:basic}, take $D$ binary. For $t\geq1$, define its column majority
+\[
+ m_D(k,t)=
+ \begin{cases}
+ 1,&2\sum_{j<t}D(p(k,j))>t,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Let $Z=\{n:D(n)\ne\R(A)(n)\}$. The first $t$ positions of column $k$ are below
+$N_{k,t}=2^k(2t-1)$. Hence their error fraction is at most
+\[
+ \frac{|Z\cap[0,N_{k,t})|}{t}
+ =\rho_{N_{k,t}}(Z)\frac{N_{k,t}}t
+ \leq 2^{k+1}\rho_{N_{k,t}}(Z)\longrightarrow0.
+\]
+For fixed $k$, the majority is therefore eventually $A(k)$. The relative limit lemma gives $A\leT D'\leT B'$. The majority algorithm and the limit-to-jump algorithm are independent of $A$, proving the uniformity assertion.
+
+For the converse, choose a total $B$-computable approximation $a(k,t)\to A(k)$ by Lemma~\ref{lem:limit}, and put
+\[
+ D(p(k,t))=a(k,t).
+\]
+The computable inverse to $p$ makes $D$ a total $B$-computable set. For any fixed $K$, there are only finitely many erroneous positions in the columns $k<K$. Let their total number be $M_K$. All remaining errors occur in the tail columns. Equation~\eqref{eq:count-tail} yields, for every $N>0$,
+\begin{equation}
+ \rho_N(D\triangle\R(A))\leq\frac{M_K}{N}+2^{-K}.
+ \label{eq:limit-density}
+\end{equation}
+First let $N$ tend to infinity, then let $K$ tend to infinity. The upper density of the error set is zero.
+\end{proof}
+
+The unrelativized instance is the classical criterion of Jockusch and Schupp.\cite[Theorem~2.19]{JS} The explicit relative and uniform formulations above are included to avoid hiding a jump or a modulus of convergence in subsequent arguments.
+
+\begin{corollary}\label{cor:noncoarse}
+$\R(A)$ is coarsely computable if and only if $A\leT\emptyset'$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:criterion} with a computable oracle $B$.
+\end{proof}
+
+\begin{proposition}[Arbitrarily close computable approximations]\label{prop:gamma}
+For every $A$ and every $K$, there is a computable set $Q_K$ with
+$\overline\rho(Q_K\triangle\R(A))\leq2^{-K}$. These approximations need not be uniformly computable in $K$.
+\end{proposition}
+\begin{proof}
+Hard-code the finite word $A\pref K$, agree with its prescribed value on columns $k<K$, and use zero on all other columns. The errors lie in the tail from~\eqref{eq:count-tail}. Each resulting set is computable. Claiming a uniformly computable sequence of these particular $Q_K$ would be unjustified: such a sequence would recover all the bits of $A$.
+\end{proof}
+
+\section{The entire representative spectrum}
+\label{sec:spectrum}
+\begin{theorem}[Jump-cone spectrum]\label{thm:spectrum}
+Let $[\R(A)]_{=^0}$ denote the density-zero agreement class, and let the uniform and nonuniform coarse classes allow all total numerical representatives. Then
+\begin{equation}
+ \boxed{\quad
+ \Spec([\R(A)]_{=^0})
+ =\Spec([\R(A)]_{\mathrm{uc}})
+ =\Spec([\R(A)]_{\mathrm{nc}})
+ =\J(A),\quad}
+ \label{eq:full-spectrum}
+\end{equation}
+where $\J(A)=\{\degT(B):A\leT B'\}$. The same spectra result if representatives are restricted to binary sequences.
+\end{theorem}
+\begin{proof}
+The agreement class is contained in the uniform coarse class by Lemma~\ref{lem:basic}, and the latter is contained in the nonuniform coarse class.
+
+Suppose $f\eqnc\R(A)$. In particular, $\R(A)\lenc f$. The function $f$ is a coarse description of itself, so it computes a coarse description of $\R(A)$. Theorem~\ref{thm:criterion}, with a set oracle coding the total function $f$, gives $A\leT f'$. Thus every representative degree in the largest class belongs to $\J(A)$.
+
+Conversely, if $A\leT B'$, Theorem~\ref{thm:criterion} supplies a binary $D\leT B$ with $D\az\R(A)$. Lemma~\ref{lem:sparse} supplies a binary $Y\az\R(A)$ of degree exactly $\degT(B)$. Therefore every degree in $\J(A)$ is already realized in the smallest class by a binary representative. This proves all equalities, including the total-function assertion.
+\end{proof}
+
+\begin{remark}
+The sparse step is essential to the literal spectrum statement. Merely obtaining a description $D\leT B$ shows that $B$ computes a representative; it does not show that a representative has degree exactly $\degT(B)$.
+\end{remark}
+
+Taking $A=\emptyset''$, the spectrum is
+\begin{equation}
+ \J(\emptyset'')=\{\mathbf b:\zero''\leq\mathbf b'\}.
+ \label{eq:high}
+\end{equation}
+Here ``high'' means this unrestricted jump inequality; no assumption $\mathbf b\leq\zero'$ is being imposed. It remains to prove, rather than assume, that this spectrum has no least degree. The next construction does more: it finds a pair of representatives in the same density-zero agreement class with trivial common lower cone.
+
+\section{A density-zero minimal-pair construction with jump control}
+\label{sec:construction}
+\subsection{Conditions and their computable extension sets}
+A condition is a pair $p=(\sigma,w)$ of finite binary strings. It specifies the following nonempty closed set of possible infinite outputs:
+\begin{equation}
+ [p]=\{Z\in\Cantor:\sigma\prec Z\ \land\
+ \forall n\geq|\sigma|\,[c(n)<|w|\Rightarrow Z(n)=w(c(n))]\}.
+ \label{eq:condition}
+\end{equation}
+Thus $\sigma$ is already fixed, and $w$ prescribes the future values on the first $|w|$ columns. Let $T_p$ be the set of finite strings $\tau$ extending $\sigma$ and satisfying the same restrictions between $|\sigma|$ and $|\tau|$. Membership in $T_p$ is decidable, uniformly from the finite parameters $p$. Every $\tau\in T_p$ extends to an element of $[p]$.
+
+\begin{lemma}[Extension and freezing]\label{lem:conditions}
+If $\tau\in T_{(\sigma,w)}$ and $v$ extends $w$, then
+\[
+ [(\tau,v)]\subseteq[(\sigma,w)].
+\]
+Every condition admits stems of arbitrarily large length. For any bit $b$, replacing $(\sigma,w)$ by $(\sigma,w\concat b)$ is always permitted.
+\end{lemma}
+\begin{proof}
+A member of $[(\tau,v)]$ agrees with $\sigma$ because it extends $\tau$. Between the old and new stem lengths, compatibility of $\tau$ gives the old restraints. Beyond the new stem, $v$ extends $w$ and therefore keeps all old column restrictions. This proves inclusion.
+
+To lengthen a stem, fill any newly encountered restrained position with its prescribed bit, and use an arbitrary bit at free positions. No contradictions arise because the columns are disjoint. Finally, adding a new frozen column restricts only positions \emph{after} the current stem. Wrong values already in the stem are retained, not overwritten.
+\end{proof}
+
+For a fixed, possibly very complicated $A$, the construction will use only conditions with $w=A\pref k$ for some finite $k$. Each such condition still has an ordinary computable extension set. There is no use of an infinite $A$-oracle in the finite-extension search itself. The oracle $A$ will be used only to supply the next bit when another column is frozen.
+
+\subsection{The no-cross-splitting argument}
+\begin{lemma}[Product dichotomy]\label{lem:product}
+Given conditions $p,q$ and functional indices $e,j$, exactly one of the following alternatives holds.
+\begin{enumerate}
+\item There are $n$, $\alpha\in T_p$, and $\beta\in T_q$ such that
+\[
+ \Phi_e^\alpha(n)\downarrow\ne\Phi_j^\beta(n)\downarrow.
+ \tag{$*$}\label{eq:cross}
+\]
+Extending the two stems to $\alpha,\beta$ permanently forces disagreement.
+\item No such triple exists. For every $D\in[p]$ and $E\in[q]$, if
+$\Phi_e^D=\Phi_j^E=H$ is total, then $H$ is computable.
+\end{enumerate}
+The existence assertion in the first alternative is an ordinary c.e. predicate of the finite parameters, and hence can be decided by $\emptyset'$.
+\end{lemma}
+\begin{proof}
+The first case is preserved by extension because both computations have finite use. The searches for $n,\alpha,\beta$ and the two convergent computations can be dovetailed; compatibility with the conditions is decidable. This proves the complexity assertion.
+
+Suppose no triple exists, and let the two total computations have common value $H$. To compute $H(n)$ without any oracle, enumerate $T_p$ and finite computations until an $\alpha\in T_p$ is found with $\Phi_e^\alpha(n)\downarrow$. The search halts because a sufficiently long initial segment of the particular final $D$ witnesses convergence. Let its output be $v$.
+
+A sufficiently long initial segment $\beta$ of the final $E$ lies in $T_q$ and witnesses $\Phi_j^\beta(n)=H(n)$. If $v\ne H(n)$, these strings give a forbidden triple. Therefore $v=H(n)$. The algorithm uses only the finite condition $p$ and the index $e$, which may be hard-coded in an ordinary program. It computes $H$ on every input.
+\end{proof}
+
+\paragraph{A crucial nonuniformity.}
+The preceding proof does not claim that there is a computable procedure which, given arbitrary $D,E$ and indices, discovers a program for their common lower bound. Computability of each particular common function is an existential assertion about an ordinary program with finite constants. This is exactly what the minimal-pair requirement needs.
+
+\subsection{Stage-by-stage construction}
+\begin{theorem}[Column-compatible jump inversion and common-lower-cone elimination]\label{thm:pair}
+For every set $A$, there are binary $D,E$ such that
+\begin{align}
+ D&\az\R(A),&E&\az\R(A),\label{eq:pair-density}\\
+ D'&\eqT A\oplus\emptyset',&E'&\eqT A\oplus\emptyset',\label{eq:pair-jumps}\\
+ \forall H\in\Baire\quad
+ (H\leT D\text{ and }H\leT E)&\ \Longrightarrow\ H\text{ is computable}.
+ \label{eq:pair-lower}
+\end{align}
+The two sets are computable from $A\oplus\emptyset'$. If $A\nleT\emptyset'$, their nonzero degrees form a Turing minimal pair.
+\end{theorem}
+\begin{proof}
+Fix a computable enumeration $s\mapsto(e_s,j_s)$ of all pairs of functional indices. Start with $p_0=q_0=(\varnothing,\varnothing)$. At the beginning of stage $s$, both frozen words are $A\pref s$. Carry out the following finite operations, updating conditions as each operation is completed.
+
+\emph{First, the common-lower-bound requirement.} Use $\emptyset'$ to decide whether a cross-disagreement witness from Lemma~\ref{lem:product} exists for the current $p,q,e_s,j_s$. If it does, find the first witness in a fixed effective dovetailing and extend the two stems to its strings. If it does not, leave the conditions unchanged; the second alternative of the lemma will apply to all later outputs.
+
+\emph{Second, decide the two diagonal jump questions.} For the current condition $p$, ask whether there is $\alpha\in T_p$ with $\Phi_s^\alpha(s)\downarrow$. This is a c.e. question with finite parameters. If yes, find such an $\alpha$, extend the first stem to it, and record $d_s=1$. If no, record $d_s=0$ and keep that condition. Perform the analogous operation for $q$ and record $e_s^{\mathrm{jump}}$. These records are separate from the indices $e_s$ above.
+
+\emph{Third, grow the stems and freeze another column.} Extend both stems compatibly to lengths at least $s+1$, using zero at free positions, and append $A(s)$ to both frozen words. Call the resulting conditions $p_{s+1},q_{s+1}$.
+
+Every positive search is performed only after the halting oracle has certified that a witness exists. Lemma~\ref{lem:conditions} guarantees that all conditions remain nonempty and that their allowed infinite outputs decrease by inclusion. The stems are nested and have lengths tending to infinity. Their unions define total binary sets $D,E$.
+
+\emph{Verification of density agreement.} Fix $K\geq1$, and let $L_K$ be the larger of the two stem lengths at the end of stage $K-1$. At that point the first $K$ columns are frozen to $A\pref K$. All later extensions preserve this condition. Hence every error of either final output beyond $L_K$ must lie in a column with index at least $K$. For $Z=D$ or $Z=E$,
+\begin{equation}
+ |(Z\triangle\R(A))\cap[0,N)|
+ \leq L_K+\left\lfloor N/2^K\right\rfloor.
+ \label{eq:forcing-density}
+\end{equation}
+Dividing by $N$, taking the upper limit, and then letting $K$ tend to infinity proves~\eqref{eq:pair-density}.
+
+\emph{Verification of the common-lower-bound requirements.} Suppose $H=\Phi_e^D=\Phi_j^E$ is total. Consider the stage assigned to $(e,j)$. The cross-disagreement alternative cannot have occurred, since it would persist into $D,E$ and contradict equality. Thus the no-cross-splitting alternative occurred. Both final outputs belong to the corresponding old condition classes, so Lemma~\ref{lem:product} gives an ordinary program for $H$. This proves~\eqref{eq:pair-lower}.
+
+\emph{Upper jump bounds.} The entire finite history is computable from $A\oplus\emptyset'$. In particular, the recorded bit $d_s$ is computable from that oracle. If $d_s=1$, a finite initial segment of $D$ forces $\Phi_s^D(s)\downarrow$. If $d_s=0$, no compatible finite computation existed at the time of the query, and all subsequent conditions are stronger. Consequently $\Phi_s^D(s)$ diverges. Thus $D'(s)=d_s$, so $D'\leT A\oplus\emptyset'$. The same reasoning proves the upper bound for $E'$. Nested stems of unbounded length also give $D,E\leT A\oplus\emptyset'$ directly.
+
+\emph{Lower jump bounds.} By~\eqref{eq:pair-density} and Theorem~\ref{thm:criterion}, $A\leT D'$ and $A\leT E'$. Every jump computes $\emptyset'$, by simulating oracle-free programs. Therefore $A\oplus\emptyset'\leT D',E'$, proving~\eqref{eq:pair-jumps}.
+
+Finally, if $A\nleT\emptyset'$, neither $D$ nor $E$ can be computable by Corollary~\ref{cor:noncoarse}. Combined with~\eqref{eq:pair-lower}, this gives a nonzero minimal pair. No c.e. degree or $\emptyset'$ upper bound is asserted for these representatives.
+\end{proof}
+
+\paragraph{Why the oracle cost is not one jump higher.}
+The queries above range over finite strings compatible with a condition whose frozen word is finite. The word may have been obtained from $A$, but, once obtained, it is just a finite parameter in an ordinary c.e. search. Thus $\emptyset'$ decides that search. Asking instead whether an extension meets all future $A$-column requirements would be a different, much stronger question; the construction never does that.
+
+\section{The counterexample and a countable strengthening}
+\label{sec:counterexample}
+\begin{theorem}[Negative answer to C1]\label{thm:C1}
+For every $A\nleT\emptyset'$, neither the uniform nor the nonuniform coarse-equivalence class of $\R(A)$ has a least Turing degree. The same holds for its density-zero agreement class. In particular,
+\begin{equation}
+ \boxed{X(n)=\chi_{\emptyset''}\bigl(\nu_2(n+1)\bigr)}
+ \label{eq:explicit}
+\end{equation}
+is a counterexample to~\eqref{eq:C1}, including when the quantified representatives are arbitrary total numerical functions.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:spectrum}, a computable member of any of these classes would imply $A\leT\emptyset'$, contrary to hypothesis. The two sets from Theorem~\ref{thm:pair} belong to the density-zero agreement class and hence to both coarse classes. Their only common Turing lower bounds among total functions are computable. Apply Lemma~\ref{lem:obstruction} to each class. For~\eqref{eq:explicit}, the jump theorem gives $\emptyset''\nleT\emptyset'$.
+\end{proof}
+
+\begin{corollary}[Complete least-degree dichotomy for the column family]\label{cor:dichotomy}
+For each $A$, the three spectra in~\eqref{eq:full-spectrum} have a least degree if and only if $A\leT\emptyset'$. When they do, the least degree is $\zero$, and the spectra are all Turing degrees.
+\end{corollary}
+\begin{proof}
+If $A\leT\emptyset'$, then $A\leT B'$ for every $B$, so Theorem~\ref{thm:spectrum} gives all degrees, including $\zero$. The other direction is Theorem~\ref{thm:C1}.
+\end{proof}
+
+The example $X$ has Turing degree $\zero''$ itself, but its coarse class has the larger representative spectrum~\eqref{eq:high}. Inside that class the constructed $D,E$ satisfy
+\[
+ D'\eqT E'\eqT\emptyset'',\qquad
+ \degT(D)\wedge\degT(E)=\zero.
+\]
+The displayed meet is in the full Turing degrees. Although not all pairs of Turing degrees have meets, this pair does: its lower bounds are exactly the computable degree.
+
+\begin{theorem}[Countably many pairwise minimal-pair representatives]\label{thm:countable}
+For every $A\nleT\emptyset'$ there is a sequence $(D_i)_{i\in\N}$ of binary sets such that
+\[
+ D_i\az\R(A),\qquad D_i'\eqT A\oplus\emptyset'
+ \quad(i\in\N),
+\]
+and the degrees of $D_i,D_j$ form a nonzero minimal pair whenever $i\ne j$. The sequence is uniformly computable from $A\oplus\emptyset'$.
+\end{theorem}
+\begin{proof}
+Use one condition $p_i$ for each output and the same finite operations as in Theorem~\ref{thm:pair}. The following schedule makes all requirements explicit.
+
+At stage $s$, initialize $p_s$ with the empty stem and empty frozen word. For every quadruple $(i,j,e,f)$ with $i<j\leq s$ and $\max\{i,j,e,f\}=s$, perform the product dichotomy operation on $p_i,p_j,e,f$. There are finitely many such quadruples at each stage and every required quadruple is processed once. Next, for each $i\leq s$, decide the diagonal jump question with index $s-i$ for $p_i$, extending its stem if convergence is possible. Finally, for each $i\leq s$, pad its stem to length at least $s+1$ and freeze its next column to the appropriate bit of $A$.
+
+For a fixed $i$, one column is frozen at every stage from $i$ onwards; hence all its columns are eventually frozen and its stem lengths tend to infinity. The density estimate~\eqref{eq:forcing-density} applies to this output. Every jump question with index $e$ for $D_i$ is decided at stage $i+e$, so its recorded answer gives the same upper jump bound. The lower bound follows from column decoding.
+
+Every pair of reductions from distinct outputs is handled by a product dichotomy, and all later operations strengthen the relevant conditions. Therefore the no-cross-splitting proof makes every common total lower bound computable. Noncomputability follows from $A\nleT\emptyset'$. All stage operations and records use only $A\oplus\emptyset'$; to compute $D_i(n)$, simulate until $p_i$ has a stem longer than $n$. This is uniform in $i,n$.
+\end{proof}
+
+\section{Classification of reductions between column codes}
+\label{sec:order}
+The spectrum formula alone does not generally classify arbitrary coarse degrees. For this particular family, the jump-controlled construction does give a complete comparison.
+
+\begin{theorem}[Order classification]\label{thm:order}
+For all sets $A,B$,
+\begin{equation}
+ \R(A)\leuc\R(B)
+ \quad\Longleftrightarrow\quad
+ \R(A)\lenc\R(B)
+ \quad\Longleftrightarrow\quad
+ A\leT B\oplus\emptyset'.
+ \label{eq:order}
+\end{equation}
+Consequently,
+\begin{equation}
+ \R(A)\equc\R(B)
+ \Longleftrightarrow\R(A)\eqnc\R(B)
+ \Longleftrightarrow A\oplus\emptyset'\eqT B\oplus\emptyset'.
+ \label{eq:equiv-order}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The uniform reduction implies the nonuniform one by definition. Suppose $\R(A)\lenc\R(B)$. Apply Theorem~\ref{thm:pair} with parameter $B$ and take one resulting description $P$ of $\R(B)$ with $P'\eqT B\oplus\emptyset'$. The assumed reduction makes $P$ compute a coarse description of $\R(A)$. By Theorem~\ref{thm:criterion}, $A\leT P'\eqT B\oplus\emptyset'$.
+
+For the converse, fix a reduction of $A$ to $B\oplus\emptyset'$. Given any coarse description $P$ of $\R(B)$, first normalize it to binary if needed. The uniform clause of Theorem~\ref{thm:criterion} computes $B$ from $P'$, using the column majorities. Also $\emptyset'\leT P'$ uniformly. Composing with the fixed reduction gives a single index computing $A$ from $P'$ for every valid $P$.
+
+Apply the uniform direction of the relative limit lemma to this index. It produces a total $P$-computable binary array $a_P(k,t)$ converging to $A(k)$ for each $k$. Output the set
+\[
+ Q_P(p(k,t))=a_P(k,t).
+\]
+This is one functional of $P$. The density proof~\eqref{eq:limit-density} shows that it always gives a coarse description of $\R(A)$ on valid inputs. Notice that this functional never queries $P'$: the intermediate jump computation is compiled into a pointwise limiting approximation using only $P$. Thus the resulting coarse reduction is genuinely uniform.
+
+Finally, applying the first equivalence in both directions gives mutual reducibility precisely when each of $A,B$ is reducible to the other joined with $\emptyset'$, which is equivalent to~\eqref{eq:equiv-order}.
+\end{proof}
+
+In particular, the map
+\[
+ \mathbf a\longmapsto[\R(A)]_{\mathrm{nc}},\qquad
+ \degT(A)=\mathbf a\geq\zero',
+\]
+is an order embedding of the upper cone above $\zero'$ into the nonuniform coarse degrees; the same is true for uniform coarse degrees. Its bottom element maps to the computable coarse degree. This is a conclusion of the explicit proof, not a claim that the formulation has not appeared elsewhere.
+
+\section{Why the effective-dense version behaves differently}
+\label{sec:ed}
+An effective-dense description of $f$ is a total function with outputs in $\N\cup\{\bot\}$, never an incorrect numerical answer, and with a density-zero set of $\bot$ answers. The symbol $\bot$ is an explicit output, not a diverging computation. The uniform and nonuniform reductions are obtained by replacing coarse descriptions by these descriptions. These are the conventions in the report's C2.
+
+\begin{theorem}[Effective-dense spectra of the same column codes]\label{thm:ed}
+For every set $A$,
+\begin{equation}
+ \Spec([\R(A)]_{\mathrm{ued}})
+ =\Spec([\R(A)]_{\mathrm{ned}})
+ =\{\degT(B):A\leT B\}.
+ \label{eq:ed-spectrum}
+\end{equation}
+These classes have least Turing degree $\degT(A)$. Moreover,
+\begin{equation}
+ \R(A)\leued\R(B)
+ \Longleftrightarrow\R(A)\lened\R(B)
+ \Longleftrightarrow A\leT B.
+ \label{eq:ed-order}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $P$ be an effective-dense description of $\R(A)$. To compute $A(k)$, search the column $C_k$ until $P$ returns a value other than $\bot$. This search must terminate: omitting the entire positive-density column would contradict the density-zero omission requirement. Every numerical answer there equals $A(k)$. Thus $A\leT P$, uniformly and without a jump.
+
+If $f\eqned\R(A)$, its full exact description lets $f$ compute an effective-dense description of $\R(A)$, so $A\leT f$. This proves the necessary spectrum bound for the larger class.
+
+For realization, take $B\geq_T A$ and set $Y(2^j)=B(j)$, with $Y(n)=\R(A)(n)$ elsewhere. Then $Y\eqT B$. Let $S$ be the computable density-zero set of powers of two. Given an effective-dense description of either $Y$ or $\R(A)$, replace every answer on $S$ by $\bot$ and keep all other answers. The result is a valid effective-dense description of the other set: outside $S$ the two sets agree, and the union of the old omissions with $S$ has density zero. This proves $Y\equed\R(A)$ and establishes~\eqref{eq:ed-spectrum}.
+
+If $A\leT B$, the column search recovers $B$ uniformly from any effective-dense description of $\R(B)$; compute $A$ and output $\R(A)$ exactly. This gives the uniform reduction in~\eqref{eq:ed-order}. Conversely, even a nonuniform reduction applied to the exact description $\R(B)$ produces a description computing $A$, so $A\leT\R(B)\eqT B$.
+\end{proof}
+
+Thus the explicit $X=\R(\emptyset'')$ refutes C1, but its effective-dense classes have the least degree $\zero''$. This result does \emph{not} answer C2 in general. Arbitrary density-zero modifications cannot be transferred to effective-dense descriptions by the identity map, because any wrong answer is forbidden. The sparse realization above works because its modification support is computable, allowing all potentially wrong answers there to be replaced by $\bot$.
+
+\section{Relationship to prior results and the report's status labels}
+\label{sec:prior}
+Define the common-information collection
+\[
+ X^c=\{H\subseteq\N:\forall D\in\CD(X)\ (H\leT D)\}.
+\]
+Theorem~4.3 of Hirschfeldt--Jockusch--Kuyper--Schupp, attributed there to Igusa, states that $X^c$ contains only computable sets whenever the coarse computability bound $\gamma(X)$ is one.\cite{HJKS} Proposition~\ref{prop:gamma} verifies that hypothesis for every $\R(A)$: there are computable approximations with upper error density arbitrarily small.
+
+Here is the logical implication for the selected question. Every coarse description $D$ of $X$ satisfies $D\equc X$ by Lemma~\ref{lem:basic}. A least representative $g$ in either coarse class would therefore be computable from every such $D$. Its graph, viewed as a set, would belong to $X^c$ and thus be computable. If $X$ has no computable coarse description, that is impossible, because $X\lenc g$ would make a computable $g$ compute one. Taking $X=\R(\emptyset'')$ and using the classical column criterion gives a negative answer already from the older theorem.
+
+This observation separates three claims which should not be conflated. First, the supplied report and Gerdes's displayed Question~7 contain the literal statement attacked here. Second, the argument above shows that older results already give its negative coarse instance. Third, the direct construction in this note proves the stronger same-class pair and jump-controlled assertions without invoking that cone-avoidance theorem. None of these facts establishes priority of the particular spectrum or construction formulations in this note.
+
+The results are also not about a minimal pair \emph{of coarse degrees}. The constructed $D,E$ have the \emph{same} nonzero coarse degree. It is their ordinary Turing degrees that form a minimal pair. Confusing these two orders would reverse the significance of the example.
+
+\section{Proof audit, reproducibility, and remaining scope}
+\label{sec:audit}
+\subsection{Potential failure points checked in the argument}
+The most important density estimate is~\eqref{eq:forcing-density}; it controls every prefix length, not merely a selected subsequence. A countable union of finite error sets is not automatically density zero. The geometric tail bound is the additional ingredient that makes the argument valid.
+
+The frozen-column requirements do not require the current stem to have always agreed with newly imposed bits of $A$. Old errors remain finite on each newly frozen column. Requiring retroactive agreement could make extensions impossible; overwriting old bits could destroy already forced computations. Neither operation is used.
+
+No negative halting answer is inferred from a bounded simulation. The infinite construction explicitly queries $\emptyset'$ about ordinary c.e. searches. Its oracle complexity is part of the theorem, not an implementation convenience. Finite computations in the artifact package deliberately have a restricted, fully decidable semantics.
+
+The no-cross-splitting proof uses the totality of the \emph{final} common function to guarantee that its ordinary search halts. It does not decide totality during the construction. Nor does it assert that every pair of outputs of two functionals must agree; it shows that any common total output is computable in the no-split alternative.
+
+The spectrum equalities allow all total functions, using graph coding and binary normalization. Thus the obstruction cannot be escaped by proposing a nonbinary least representative. Sparse padding supplies degrees of actual representatives, not just degrees computing them.
+
+\subsection{Included executable checks}
+The package contains standard-library Python code for the exact column and tail counts, condition inclusion, finite versions of the density estimate, majority recovery for a convergent test array, and sparse coding. It also exhaustively checks the product dichotomy for a finite-query decision-tree model. These tests are regression checks for the finite combinatorics and quantifier structure; they do not compute $\emptyset''$ or certify an infinite minimal-pair construction.
+
+The recorded run passed \textbf{184,701 finite checks or classified cases}, including all pairs of two-query, three-output tables (the outputs are divergence, zero, and one) across the selected condition family. The JSON report separates the case counts and states its exclusions. Some checks overlap: the total is an accounting of checks, not a claim of that many independent test instances.
+
+\subsection{Formal verification status}
+No Lean proof has been produced or compiled for this package. A formalization would need a faithful total-set oracle model, finite-use continuity of oracle computations, the relative limit lemma with index uniformity, the finite-restraint condition system, and the density lemmas. The product dichotomy and the final least-degree obstruction are suitable isolated lemmas once those foundations are available. Python success should not be represented as Lean verification or independent expert review.
+
+\subsection{What remains outside the result}
+The work settles the literal C1 statement negatively and also gives the uniform counterexample. It does not solve the general effective-dense least-representative question C2, the metric questions M1 or M3, or the other catalogue problems. It does not classify all coarse representative spectra, prove that the displayed spectra lack minimal elements, or determine the least possible descriptive complexity of every possible counterexample. Within the column family, however, the spectrum, reduction order, and least-degree dichotomy are all completely specified by the theorems above.
+
+\appendix
+\section{Oracle-explicit pseudocode}
+\label{app:pseudocode}
+This is a mathematical specification using genuine oracles for $A$ and $K=\emptyset'$. It is not an ordinary executable algorithm with those oracles silently replaced by finite approximations.
+\begin{lstlisting}
+Inputs: membership oracles A and K = the ordinary halting set.
+State: conditions p = (empty, empty), q = (empty, empty).
+       A computable enumeration s -> (leftIndex, rightIndex).
+
+For stage s = 0, 1, 2, ...:
+  Query K about the c.e. search for a cross-disagreement
+  between compatible finite extensions of p and q.
+  If K says a witness exists:
+      Dovetail until a witness is found; extend both stems.
+
+  For each current condition r in (p, q):
+      Query K about existence of a compatible finite string
+      on which the oracle program with index s halts on s.
+      If yes: find a witness, extend the stem, record 1.
+      If no: keep the condition, record 0.
+
+  Pad both stems compatibly to length at least s+1.
+  Read A(s), and append this bit to each frozen word.
+
+Outputs: D and E are the unions of the respective stems.
+Jump outputs: the recorded answers for each side.
+\end{lstlisting}
+For each query, the index supplied to $K$ includes only the finite current conditions and the displayed program indices. The density verification uses the final frozen word after stage $K-1$, whereas the jump verification uses the recorded answer at stage $s$. This prevents any circular use of the output jump in the construction of that same output.
+
+\section{A dependency map for checking the main result}
+The logical dependency chain is:
+\[
+ \text{column counts}\ \Longrightarrow\
+ \text{description criterion}\ \Longrightarrow\
+ \text{exact spectra};
+\]
+\[
+ \text{condition inclusion + product dichotomy + jump records}
+ \ \Longrightarrow\ \text{Theorem~\ref{thm:pair}};
+\]
+\[
+ \text{exact spectra + Theorem~\ref{thm:pair}}
+ \ \Longrightarrow\ \text{C1 counterexample}.
+\]
+The order classification uses both directions of the relative limit lemma and the exact jump of one constructed description. The effective-dense comparison uses only positive column density and the computability of the sparse replacement support. Neither randomness nor the cone-avoidance compactness theorem is a dependency of the direct proof.
+
+\begin{thebibliography}{9}
+\bibitem{Unified}
+\emph{Turing Degrees: A Unified Research Report}.
+User-supplied LaTeX document, unified edition 18 September 2026.
+Especially the section ``Coarse and effective-dense representative spectra'',
+entry C1, and the sufficient minimal-pair criterion.
+Source filename: \texttt{turing\_degrees\_unified.tex}.
+
+\bibitem{Gerdes}
+Peter M. Gerdes.
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and $2^\omega$}.
+arXiv:2508.06925v1, 9 August 2025.
+Definitions 2.3--2.8 and Question 7.
+\url{https://arxiv.org/abs/2508.06925}.
+
+\bibitem{JS}
+Carl G. Jockusch, Jr., and Paul E. Schupp.
+\emph{Generic computability, Turing degrees, and asymptotic density}.
+Journal of the London Mathematical Society \textbf{85}(2) (2012), 472--490.
+DOI: 10.1112/jlms/jdr051.
+Preprint arXiv:1010.5212; Theorem 2.19 in the inspected preprint.
+\url{https://arxiv.org/abs/1010.5212}.
+
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp.
+\emph{Coarse reducibility and algorithmic randomness}.
+Journal of Symbolic Logic \textbf{81}(3) (2016), 1028--1046.
+DOI: 10.1017/jsl.2015.70.
+Preprint arXiv:1505.01707; Theorems 3.7 and 4.3 in the inspected preprint.
+The latter theorem is attributed to Gregory Igusa.
+\url{https://arxiv.org/abs/1505.01707}.
+\end{thebibliography}
+\end{document}

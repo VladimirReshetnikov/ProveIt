@@ -1,0 +1,1243 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{176B73}
+\definecolor{pale}{HTML}{F0F5F7}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+  pdftitle={Esthetic Numbers, Folded Paths, and Algebraic Diagonals},
+  pdfauthor={ChatGPT},pdfsubject={Proofs of OEIS-listed A377000 conjectures and fixed-offset diagonal formulas}}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{teal}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Esthetic numbers and algebraic diagonals}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\pos}[1]{(#1)_{+}}
+\newcommand{\Cat}{\operatorname{Cat}}
+\newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newtcolorbox{summarybox}{colback=pale,colframe=navy,boxrule=0.5pt,
+  arc=1.5pt,left=10pt,right=10pt,top=8pt,bottom=8pt,breakable}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.35in}
+{\color{teal}\sffamily\bfseries RESEARCH IN INTEGER SEQUENCES}\par
+\vspace{0.28in}
+{\fontsize{29}{34}\selectfont\bfseries\color{navy}
+Esthetic Numbers,\\Folded Paths, and\\Algebraic Diagonals\par}
+\vspace{0.28in}
+{\Large Proofs of the listed A377000 conjectures\\and a uniform boundary-correction theorem\par}
+\vspace{0.35in}
+{\large ChatGPT}\par
+{19 September 2026}\par
+\vspace{0.35in}
+\begin{abstract}
+Let $T(q,k)$ count the positive base-$q$ integers with $k$ digits for which
+adjacent digits differ by one.  The retrieved OEIS entry A377000 lists
+conjectures relating this array to differential compositions, linear
+recurrences, and the sequence A182555.  We give self-contained proofs of
+these statements, with the diagonal identity as the principal target.
+The key bijection identifies digit words with reflection orbits of
+$k$-step walks on a path with $q$ vertices.
+
+The same viewpoint yields a broader theorem.  On every fixed-offset
+diagonal $q=k+d$, the generating function belongs to
+$\Q(z,\sqrt{1-4z^2})$ and has algebraic degree exactly two.  All these
+generating functions have the same irrational part, so their pairwise
+differences are rational.  Below the diagonal, the correction to a
+central-binomial formula is eventually a polynomial of an explicit degree;
+we give its coefficients, the complete finite exceptional set, and a sharp
+threshold.  We also identify the exact minimal recurrence of every row
+using Chebyshev polynomials and prove the suggested A206603 identification.
+
+A standard-library Python verifier checks the results with exact
+arithmetic, including 75,381 equalities or nonsingularity checks and an
+exhaustive enumeration of 131,070 sign words.  An additional symbolic
+verifier checks the resolvent and reduced denominators.  The proofs, not
+the experiments, establish the mathematical statements.
+\end{abstract}
+\vfill
+\begin{summarybox}
+\textbf{Status and attribution.}
+This note proves the conjectures \emph{as stated in the retrieved OEIS
+entry}; it does not certify worldwide priority.  The classical spectral
+formula is due to De Koninck and Doyon, and the differential-operation
+model is due to Male\v sevi\'c.  In particular, mere existence of row
+recurrences was already an immediate consequence of known results.
+The manuscript has not undergone independent peer review or
+proof-assistant verification.
+\end{summarybox}
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem, the source, and the result}
+\label{sec:problem}
+
+\subsection{An explicit OEIS-listed target}
+For integers $q\ge2$ and $k\ge1$, define
+\begin{equation}\label{eq:definition}
+T(q,k)=\#\{(d_1,\ldots,d_k):
+ 1\le d_1\le q-1,\quad 0\le d_i\le q-1,\quad
+ |d_{i+1}-d_i|=1\}.
+\end{equation}
+These are the $q$-esthetic numbers of length $k$.  The initial digit is
+nonzero; subsequent zero digits are allowed.  Thus $T(q,1)=q-1$, and
+$T(2,k)=1$ for all positive $k$.
+
+The array is recorded in \OEIS{A377000}, introduced by Paolo Xausa, with
+three conjectures attributed to Chai Wah Wu on 21 October 2024
+\cite{oeis377000}.  In the notation of this note, they assert:
+\begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=3em]
+\item For even $q$, $T(q,k)$ counts meaningful differential compositions of
+order $k$ on $\R^{q-1}$.
+\item For every fixed $q$, the sequence $T(q,k)$ satisfies a linear
+recurrence; several particular recurrences are displayed.
+\item $T(q,q-2)=\OEIS{A182555}(q-2)$, on the domain $q\ge3$ where the
+length is positive.
+\end{enumerate}
+The same entry suggests an identification of another diagonal with
+\OEIS{A206603}.  We make its indexing precise and prove it as well.
+
+The main chosen problem is \textbf{C3}.  It is a sharply stated equality
+between a finite combinatorial count and a sequence specified by an
+algebraic generating function.  Proving only a large initial segment
+would not settle it; the goal is an identity of formal power series.
+
+\subsection{What the literature check does and does not establish}
+De Koninck and Doyon already express $T(q,k)$ as a finite sum of powers of
+path eigenvalues \cite[Eq.~(17)]{dek}.  Consequently, C2's recurrence
+\emph{existence} follows at once from prior work, even though the OEIS
+entry labels it a conjecture.  We therefore do not present that part as a
+new discovery.  Our recurrence treatment makes the minimal polynomial
+and the parity-dependent reduction explicit.
+
+Male\v sevi\'c's paper defines meaningful differential compositions by
+matching input and output spaces and gives their adjacency rule
+\cite{mal}.  We use that established definition and supply the bridge to
+esthetic digit words.  The generating functions defining the two target
+sequences are recorded in their own entries \cite{oeis182555,oeis206603}.
+
+The sources and the revision history were consulted on 19 September
+2026.  The retrieved history lists a 5 November 2025 link update as its
+newest revision \cite{oeishistory}; the retrieved entry still labels C1--C3
+as conjectures.  No separate resolution was located in the targeted
+search.  This is evidence for the status of the \emph{listed problem},
+not a proof that an equivalent result has never appeared elsewhere.
+Historical priority of the more general diagonal formulas would require
+an additional specialist literature review.
+
+\subsection{The main extension in one statement}
+Here is the structural result that goes beyond the originally selected
+diagonal.  All generating functions in this note are formal series at
+zero, and square roots have constant term one.
+
+\begin{theorem}[Fixed-offset diagonals]\label{thm:overview}
+For every integer $d$, put
+\[
+G_d(z)=\sum_{k\ge\max(1,2-d)}T(k+d,k)z^k.
+\]
+There is an explicitly computable rational function $R_d(z)\in\Q(z)$ such
+that
+\begin{equation}\label{eq:commonpart}
+G_d(z)=R_d(z)-\frac{\sqrt{1-4z^2}}{2(1-2z)^2}.
+\end{equation}
+Thus $G_d$ has algebraic degree exactly two over $\Q(z)$, and
+$G_d-G_e\in\Q(z)$ for every pair of integers $d,e$.
+
+When $d\ge0$, one has the particularly simple formula
+\begin{equation}\label{eq:positiveG}
+G_d(z)=\frac{d+1-2dz-\sqrt{1-4z^2}}{2(1-2z)^2}-\frac d2.
+\end{equation}
+For $d=-c<0$, the rational correction is given completely in
+Theorem~\ref{thm:allgf}.  Its infinite tail comes from a polynomial in $k$
+of degree $\lfloor(c-1)/2\rfloor$.
+\end{theorem}
+
+The remainder of the paper proves this theorem and the OEIS
+identifications.  The path bijection comes first, then the recurrence
+and differential-composition consequences, followed by the diagonal
+analysis.  Readers interested only in C3 may read
+Sections~\ref{sec:orbits} and~\ref{sec:range}.
+
+\section{A reflection-orbit bijection}
+\label{sec:orbits}
+
+Let $P_q$ be the path with vertices $0,1,\ldots,q-1$, and let $A_q$ be its
+adjacency matrix.  Each undirected edge represents the two possible
+oriented transitions between neighboring vertices.  The vector $\one$
+has $q$ entries, all equal to one.
+
+\begin{theorem}[The extra-step identity]\label{thm:orbit}
+For all $q\ge2$ and $k\ge1$,
+\begin{equation}\label{eq:orbit}
+T(q,k)=\frac12\one^{\mathsf T}A_q^k\one.
+\end{equation}
+More precisely, esthetic words of length $k$ are in bijection with
+reflection orbits of $k$-step walks on $P_q$.
+\end{theorem}
+
+\begin{proof}
+A $k$-step walk is a sequence $(w_0,\ldots,w_k)$ of vertices whose
+consecutive differences have absolute value one.  Reflect every vertex
+by the map $i\mapsto q-1-i$.  This reverses the sign of the first step,
+so, because $k\ge1$, no walk is fixed by reflection.  Each orbit contains
+exactly one walk whose first step is upward.
+
+Take this representative and delete $w_0$.  Since $w_1=w_0+1$, the first
+remaining vertex satisfies $w_1\ge1$.  The sequence
+$(w_1,\ldots,w_k)$ therefore satisfies \eqref{eq:definition}.
+Conversely, prepend $d_1-1$ to any word $(d_1,\ldots,d_k)$ counted by
+$T(q,k)$.  The prepended vertex lies in $\{0,\ldots,q-2\}$, and the first
+step is upward.  These constructions are inverse.
+
+Finally, $\one^{\mathsf T}A_q^k\one$ counts all $k$-step walks, with all
+starting and ending vertices allowed.  Every reflection orbit has size
+two, proving the formula.
+\end{proof}
+
+The exponent $k$ in \eqref{eq:orbit} is important.  A length-$k$ digit
+word normally describes $k-1$ steps, with a restricted starting vertex.
+The bijection replaces that asymmetry by \emph{one additional step} and
+unrestricted endpoints.  It is this change of viewpoint that makes the
+diagonal formulas simple.
+
+For generating functions only, we will use the extension
+\begin{equation}\label{eq:extension}
+\widetilde T(q,0)=q/2,\qquad
+\widetilde T(q,k)=T(q,k)\quad(k\ge1).
+\end{equation}
+This is half the number of zero-step walks.  It is \emph{not} a claimed
+count of empty digit strings, and it need not be an integer.
+
+\section{Differential compositions and the first conjecture}
+\label{sec:differential}
+
+\subsection{The precise meaning of a composition}
+The term ``meaningful'' refers to a formally composable word of
+first-order operations: the codomain of one operation must match the
+domain of the next.  It does not mean that the resulting differential
+operator is nonzero, nor does it identify two words that happen to define
+the same operator.  This is the convention in Male\v sevi\'c's
+construction \cite{mal}.
+
+Let $q=2m$ and $N=q-1=2m-1$.  For $0\le i\le N$, identify differential
+forms of degrees $i$ and $N-i$ with a common field type
+$V_{\min(i,N-i)}$.  There are $m$ types $V_0,\ldots,V_{m-1}$.
+Exterior differentiation, transported through these identifications,
+gives one operation from $V_{\min(i-1,N-i+1)}$ to
+$V_{\min(i,N-i)}$ for each $1\le i\le N$.
+
+Its type-transition graph has one directed edge in each direction
+between successive types, and one loop at the final type:
+\[
+V_0\ \rightleftarrows\ V_1\ \rightleftarrows\ \cdots\
+\rightleftarrows\ V_{m-1},
+\qquad V_{m-1}\longrightarrow V_{m-1}.
+\]
+The final loop contributes \emph{one} allowed transition.  No convention
+that counts an undirected loop twice is being used.
+
+For example, in dimension three the edges are
+$\operatorname{grad}:V_0\to V_1$,
+$\operatorname{curl}:V_1\to V_1$, and
+$\operatorname{div}:V_1\to V_0$.
+There are five meaningful second-order words, including
+$\operatorname{curl}\operatorname{grad}$ and
+$\operatorname{div}\operatorname{curl}$ even though both vanish.
+
+\begin{theorem}[The differential-composition identification]\label{thm:differential}
+For even $q\ge4$ and every $k\ge1$, the number of meaningful words of
+$k$ first-order differential operations on $\R^{q-1}$ is $T(q,k)$.
+The same equality holds for $q=2$ under the natural one-dimensional
+interpretation consisting of the single derivative.
+\end{theorem}
+
+\begin{proof}
+Write $q=2m$.  Fold the vertex set of $P_{2m}$ by reflection, mapping
+$i$ to $\min(i,2m-1-i)$.  This produces exactly the type-transition graph
+just described.  Every quotient vertex has two lifts.
+
+Choose a walk in the quotient and choose one of the two lifts of its
+starting vertex.  Its lift is then forced step by step.  At an ordinary
+edge there is a unique neighbor mapping to the specified next vertex;
+at the terminal loop there is a unique central edge crossing to the
+other lift.  Consequently, every quotient walk has exactly two lifts,
+which are reflections of one another.
+
+A word of $k$ composable operations is the same as a $k$-step quotient
+walk: the successive edges specify the operations and the vertices
+specify their types.  Such words are therefore in bijection with
+reflection orbits of $k$-step walks on $P_{2m}$.  Apply
+Theorem~\ref{thm:orbit}.
+
+For $m=1$, the quotient is a single vertex with one loop.  There is one
+word of every positive length, matching $T(2,k)=1$.
+\end{proof}
+
+This proves C1.  Notice that no calculation with derivatives is needed
+once the meaning of a composable word has been fixed.  The statement is
+about a finite type graph, not an analytic identity between operators.
+
+\section{Every row: spectrum and exact minimal recurrence}
+\label{sec:recurrences}
+
+\subsection{The surviving path eigenvalues}
+Define
+\[
+\theta_j=\frac{\pi j}{q+1},\qquad \lambda_j=2\cos\theta_j,
+\qquad 1\le j\le q.
+\]
+The vectors with components
+\[
+v_j(i)=\sqrt{\frac2{q+1}}\sin((i+1)\theta_j),\qquad 0\le i<q,
+\]
+form an orthonormal eigenbasis of $A_q$.  Indeed, the eigenvalue equation
+is the sine addition formula, the endpoint values vanish at positions
+$-1$ and $q$, and summing the finite geometric series gives orthogonality
+and the normalization.
+
+The finite sine sum is
+\begin{equation}\label{eq:sinesum}
+\sum_{i=1}^{q}\sin(i\theta_j)=
+\begin{cases}
+0,&j\text{ even},\\
+\cot(\theta_j/2),&j\text{ odd}.
+\end{cases}
+\end{equation}
+For completeness, start from
+$\sum_{i=1}^{q}\sin(i\theta)=
+\sin(q\theta/2)\sin((q+1)\theta/2)/\sin(\theta/2)$.
+At $\theta=\theta_j$, the second sine vanishes for even $j$.
+For odd $j$, the product in the numerator becomes
+$\cos(\theta_j/2)$, giving \eqref{eq:sinesum}.
+
+Applying the spectral decomposition to \eqref{eq:orbit} now yields
+\begin{equation}\label{eq:spectral}
+T(q,k)=\frac1{q+1}
+\sum_{\substack{1\le j\le q\\j\text{ odd}\\\lambda_j\ne0}}
+\cot^2(\theta_j/2)\lambda_j^k,\qquad k\ge1.
+\end{equation}
+This is the De Koninck--Doyon formula in an equivalent half-angle form
+\cite[Eq.~(17)]{dek}.  We have derived it again to make the consequences
+and the exceptional zero eigenvalue transparent.
+
+\subsection{Chebyshev formulas and minimality}
+Let $\mathsf T_m$ and $\mathsf U_m$ denote the Chebyshev polynomials
+characterized by
+\[
+\mathsf T_m(\cos\theta)=\cos(m\theta),\qquad
+\mathsf U_m(\cos\theta)=\frac{\sin((m+1)\theta)}{\sin\theta}.
+\]
+Their elementary recurrences imply that
+$2\mathsf T_m(x/2)$ for $m\ge1$ and $\mathsf U_m(x/2)$ are monic integer
+polynomials.
+
+\begin{theorem}[Exact minimal row recurrence]\label{thm:minimal}
+The monic minimal characteristic polynomial for the positive-length
+sequence $k\mapsto T(q,k)$ is
+\begin{align}
+C_{2m}(x)&=\mathsf U_m(x/2)-\mathsf U_{m-1}(x/2),\label{eq:evenC}\\
+C_{2m-1}(x)&=\frac{2\mathsf T_m(x/2)}{x^{m\bmod2}}.
+\label{eq:oddC}
+\end{align}
+Its degree $d_q$ is
+\begin{equation}\label{eq:degree}
+d_q=\begin{cases}
+q/2,&q\text{ even},\\
+(q+1)/2,&q\equiv3\pmod4,\\
+(q-1)/2,&q\equiv1\pmod4.
+\end{cases}
+\end{equation}
+Writing $C_q(x)=x^{d_q}+c_1x^{d_q-1}+\cdots+c_{d_q}$, the recurrence is
+\begin{equation}\label{eq:rowrecurrence}
+T(q,k+d_q)+c_1T(q,k+d_q-1)+\cdots+c_{d_q}T(q,k)=0
+\quad(k\ge1).
+\end{equation}
+No lower-order constant-coefficient recurrence holds, even eventually.
+\end{theorem}
+
+\begin{proof}
+Formula~\eqref{eq:spectral} is a sum of powers of distinct, nonzero
+numbers $\lambda_j$.  Each coefficient
+$w_j=(q+1)^{-1}\cot^2(\theta_j/2)$ is strictly positive.  Consequently,
+the product of $x-\lambda_j$ over the indicated odd indices is an
+annihilating polynomial.
+
+To prove minimality, suppose a polynomial $p$ gives a recurrence
+valid for all $k\ge k_0\ge1$.  Then
+\[
+\sum_j w_jp(\lambda_j)\lambda_j^k=0\qquad(k\ge k_0).
+\]
+Use as many successive values of $k$ as there are surviving eigenvalues.
+The resulting matrix is a Vandermonde matrix multiplied by a nonsingular
+diagonal matrix with entries $\lambda_j^{k_0}$.  It is invertible, so
+$w_jp(\lambda_j)=0$ for every $j$.  Thus $p$ vanishes at every surviving
+eigenvalue.  This proves minimality of the product.
+
+It remains to identify the product.  If $q=2m$, then
+\[
+\mathsf U_m(\cos\theta)-\mathsf U_{m-1}(\cos\theta)
+=\frac{\cos((2m+1)\theta/2)}{\cos(\theta/2)}.
+\]
+Its $m$ zeros in the range under consideration occur at
+$\theta=(2a-1)\pi/(2m+1)$, $1\le a\le m$.  These are exactly the odd-index
+path eigenvalues, and none is zero.  Monicity proves \eqref{eq:evenC}.
+
+If $q=2m-1$, the odd-index angles are
+$(2a-1)\pi/(2m)$, $1\le a\le m$, precisely the zeros of
+$\mathsf T_m(\cos\theta)$.  A zero eigenvalue is present exactly when $m$
+is odd.  It contributes nothing to \eqref{eq:spectral} for $k\ge1$, so its
+factor $x$ must be removed.  This gives \eqref{eq:oddC} and the three
+degree cases.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{r l}
+\toprule
+$q$ & $C_q(x)$ \\
+\midrule
+2 & $x-1$ \\
+3 & $x^2-2$ \\
+4 & $x^2-x-1$ \\
+5 & $x^2-3$ \\
+6 & $x^3-x^2-2x+1$ \\
+7 & $x^4-4x^2+2$ \\
+8 & $x^4-x^3-3x^2+2x+1$ \\
+9 & $x^4-5x^2+5$ \\
+10 & $x^5-x^4-4x^3+3x^2+3x-1$ \\
+11 & $x^6-6x^4+9x^2-2$ \\
+12 & $x^6-x^5-5x^4+4x^3+6x^2-3x-1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The displayed OEIS recurrences for $q=6,\ldots,12$ are therefore correct.
+The result proves C2 while making explicit what was already implicit
+in the classical spectral formula.
+
+\begin{corollary}[Reduced denominators and a Hankel certificate]\label{cor:hankel}
+The reduced denominator, normalized to have constant term one, of
+$\sum_{k\ge1}T(q,k)z^k$ is $z^{d_q}C_q(1/z)$.
+Moreover, for every $s\ge1$,
+\begin{equation}\label{eq:hankel}
+\det\bigl(T(q,s+i+j)\bigr)_{0\le i,j<d_q}
+=\prod_a(w_a\lambda_a^s)\prod_{a<b}(\lambda_b-\lambda_a)^2\ne0,
+\end{equation}
+where the indices run through the surviving eigenvalues.
+\end{corollary}
+\begin{proof}
+Summing $w_a\lambda_a^kz^k$ over $k\ge1$ gives
+$w_a\lambda_a z/(1-\lambda_a z)$.  Its pole cannot be canceled by the
+terms with other eigenvalues.  This proves the denominator claim.
+The Hankel matrix factors as
+$V\,\operatorname{diag}(w_a\lambda_a^s)V^{\mathsf T}$, where
+$V_{ia}=\lambda_a^i$.  Taking its determinant gives \eqref{eq:hankel}.
+\end{proof}
+
+\section{Walk ranges and the diagonal conjecture}
+\label{sec:range}
+
+\subsection{Translating an unrestricted walk into a finite path}
+Let $\varepsilon=(\varepsilon_1,\ldots,\varepsilon_k)\in\{-1,1\}^k$.
+Set $s_0=0$, $s_i=\varepsilon_1+\cdots+\varepsilon_i$, and define
+\[
+L(\varepsilon)=\min_{0\le i\le k}s_i,\qquad
+U(\varepsilon)=\max_{0\le i\le k}s_i,\qquad
+\mathcal R(\varepsilon)=U(\varepsilon)-L(\varepsilon).
+\]
+Write $x_+=\max(x,0)$.
+
+\begin{proposition}[Range formula]\label{prop:range}
+For every $q\ge2$, $k\ge1$,
+\begin{equation}\label{eq:range}
+T(q,k)=\frac12\sum_{\varepsilon\in\{-1,1\}^k}
+\bigl(q-\mathcal R(\varepsilon)\bigr)_+.
+\end{equation}
+If
+\begin{equation}\label{eq:Mdef}
+M_k=\sum_{\varepsilon\in\{-1,1\}^k}U(\varepsilon),\qquad M_0=0,
+\end{equation}
+then
+\begin{equation}\label{eq:wide}
+T(q,k)=q2^{k-1}-M_k\qquad(q\ge k,\ q\ge2).
+\end{equation}
+\end{proposition}
+\begin{proof}
+A translation by an integer $a$ fits the unrestricted walk into
+$\{0,\ldots,q-1\}$ exactly when
+$-L(\varepsilon)\le a\le q-1-U(\varepsilon)$.
+The number of such integers is $(q-\mathcal R(\varepsilon))_+$.
+Summing counts all walks on $P_q$; divide by two using
+Theorem~\ref{thm:orbit}.
+
+Since the range of a $k$-step walk is at most $k$, the positive-part
+operation can be removed for $q\ge k$.  Sign reversal interchanges $U$
+and $-L$, so $\sum_\varepsilon\mathcal R(\varepsilon)=2M_k$.
+Substitution proves \eqref{eq:wide}.
+\end{proof}
+
+This explains why a varying base is especially tractable near and above
+$q=k$.  The width constraint has no nonlinear truncation there: only a
+single unrestricted-walk statistic remains.
+
+\subsection{The total maximum of binary walks}
+Introduce the formal series
+\begin{equation}\label{eq:r}
+r=r(z)=\frac{1-\sqrt{1-4z^2}}{2z}
+=z+z^3+2z^5+5z^7+\cdots.
+\end{equation}
+It is the unique series with zero constant term satisfying
+\begin{equation}\label{eq:rparam}
+r=z(1+r^2),\qquad z=\frac r{1+r^2}.
+\end{equation}
+
+\begin{lemma}[Maximum generating function]\label{lem:maximum}
+One has
+\begin{equation}\label{eq:Mg}
+\sum_{k\ge0}M_kz^k=\frac{r}{(1-2z)(1-r)}.
+\end{equation}
+Define $h_k=M_k+2^{k-1}$, including $2^{-1}=1/2$ at $k=0$.  Then
+\begin{equation}\label{eq:h}
+h_k=\begin{cases}
+(k+\tfrac12)\binom{k}{k/2},&k\text{ even},\\[2pt]
+(k+1)\binom{k}{(k-1)/2},&k\text{ odd}.
+\end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The generating function for walks that first hit level $1$ at their
+last step is $r(z)$.  One way to see this is to remove the final upward
+step and reverse the signs: the remainder is a nonnegative excursion
+of even length.  Such excursions satisfy the first-return decomposition
+$C(t)=1+tC(t)^2$; hence $r(z)=zC(z^2)$ and
+$r=z(1+r^2)$.
+
+A walk that first reaches level $a\ge1$ decomposes uniquely into $a$
+successive first-passage segments, each climbing one new level.  Its
+generating function is $r^a$.  After that first visit, an unrestricted
+suffix has generating function $1/(1-2z)$.  Therefore the generating
+function for walks whose maximum is at least $a$ is
+$r^a/(1-2z)$.
+
+For a nonnegative integer $U$, the identity
+$U=\sum_{a\ge1}\mathbf1_{\{U\ge a\}}$ holds.  Sum over walks, then sum the
+geometric series in $a$.  All sums are locally finite as formal series,
+and the result is \eqref{eq:Mg}.
+
+Using \eqref{eq:rparam} to simplify now gives
+\begin{equation}\label{eq:hgf}
+\sum_{k\ge0}h_kz^k
+=\frac{\sqrt{1-4z^2}}{2(1-2z)^2}
+=\frac{(1+2z)^2}{2(1-4z^2)^{3/2}}.
+\end{equation}
+The elementary expansion
+\[
+(1-4t)^{-3/2}=\sum_{n\ge0}(2n+1)\binom{2n}{n}t^n
+\]
+follows by differentiating $(1-4t)^{-1/2}$, or directly from the binomial
+series.  Extracting odd powers in \eqref{eq:hgf} gives
+$h_{2n+1}=2(2n+1)\binom{2n}{n}$.
+Extracting even powers gives
+\[
+h_{2n}=\tfrac12(2n+1)\binom{2n}{n}
+       +2(2n-1)\binom{2n-2}{n-1}
+       =(2n+\tfrac12)\binom{2n}{n}
+\]
+for $n\ge1$, while $h_0=1/2$.  These are precisely \eqref{eq:h}.
+\end{proof}
+
+\subsection{A whole family above the diagonal}
+For every integer $d$ and $k\ge0$, define the algebraic baseline
+\begin{equation}\label{eq:baseline}
+B_d(k)=(k+d+1)2^{k-1}-h_k.
+\end{equation}
+In particular, $B_d(0)=d/2$.  For negative $d$ or invalid small bases,
+$B_d(k)$ is only an auxiliary expression, not a digit count.
+
+\begin{proposition}[Baseline generating function]\label{prop:baseline}
+For every integer $d$,
+\begin{equation}\label{eq:Fd}
+F_d(z):=\sum_{k\ge0}B_d(k)z^k
+=\frac{d+1-2dz-\sqrt{1-4z^2}}{2(1-2z)^2}.
+\end{equation}
+For $d\ge0$ and valid positive lengths,
+$T(k+d,k)=B_d(k)$.
+\end{proposition}
+\begin{proof}
+The coefficient formula follows from
+\eqref{eq:wide} and $M_k=h_k-2^{k-1}$.
+For the generating function, sum the linear-exponential term in
+\eqref{eq:baseline} and subtract \eqref{eq:hgf}:
+\[
+\sum_{k\ge0}(k+d+1)2^{k-1}z^k
+=\frac{z}{(1-2z)^2}+\frac{d+1}{2(1-2z)}.
+\]
+This simplifies to \eqref{eq:Fd}.
+\end{proof}
+
+\begin{theorem}[The selected diagonal conjecture]\label{thm:C3}
+For every $k\ge1$,
+\begin{equation}\label{eq:C3}
+T(k+2,k)=\OEIS{A182555}(k).
+\end{equation}
+Equivalently, C3 holds for all $q\ge3$.
+\end{theorem}
+\begin{proof}
+Set $d=2$ in Proposition~\ref{prop:baseline}.  Since $B_2(0)=1$,
+\begin{equation}\label{eq:A182GF}
+1+\sum_{k\ge1}T(k+2,k)z^k
+=\frac{3-4z-\sqrt{1-4z^2}}{2(1-2z)^2}.
+\end{equation}
+The right-hand side is the defining generating function of
+\OEIS{A182555} \cite{oeis182555}.  Equality of formal power series proves
+equality of every coefficient, not merely a finite initial segment.
+\end{proof}
+
+An explicit positive formula is also available.  Let
+$\Cat(j)=\binom{2j}{j}/(j+1)$.  Since
+$(1-\sqrt{1-4z^2})/2=\sum_{j\ge1}\Cat(j-1)z^{2j}$,
+\begin{equation}\label{eq:positivecatalan}
+T(k+2,k)=2^k+
+\sum_{j=1}^{\lfloor k/2\rfloor}
+\Cat(j-1)(k-2j+1)2^{k-2j}.
+\end{equation}
+This gives a finite-sum expression independent of the original digit
+recursion.
+
+\subsection{The suggested A206603 diagonal}
+\begin{theorem}[An addition-triangle diagonal]\label{thm:A206603}
+For $k\ge2$,
+\begin{equation}\label{eq:A206}
+T(k,k)=\OEIS{A206603}(k),\qquad
+\sum_{k\ge2}T(k,k)z^k
+=\frac{1-\sqrt{1-4z^2}}{2(1-2z)^2}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:diagdiff}
+T(k+2,k)-T(k,k)=2^k\qquad(k\ge2).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $d=0$ in \eqref{eq:Fd}.  Its constant and linear coefficients vanish,
+so it is already the generating function of the valid diagonal.
+It matches the generating function recorded for \OEIS{A206603}
+\cite{oeis206603}.  Subtract the two baseline formulas with $d=2$ and
+$d=0$ to obtain \eqref{eq:diagdiff}.
+\end{proof}
+
+There is also a direct check against the \emph{combinatorial definition}
+of A206603, without taking its generating function on trust.  In an
+addition triangle with $n+1$ entries in the base, the apex weights those
+entries by $\binom n0,\ldots,\binom nn$.  Pairwise swaps show that the
+maximum is attained by assigning the increasing base values
+$j-n/2$ to the increasing binomial weights.  The sorted weights are
+$\binom n{\lfloor j/2\rfloor}$, $0\le j\le n$.
+
+For $n=2m$, pair equal weights to obtain
+\[
+\sum_{j=0}^{m-1}(4j+1-2m)\binom{2m}{j}
++m\binom{2m}{m}
+=(2m+1)2^{2m-1}-(2m+\tfrac12)\binom{2m}{m}.
+\]
+For $n=2m+1$, the corresponding paired sum is
+\[
+\sum_{j=0}^{m}(4j-2m)\binom{2m+1}{j}
+=(2m+2)2^{2m}-2(2m+1)\binom{2m}{m}.
+\]
+These identities follow from binomial symmetry and
+$j\binom nj=n\binom{n-1}{j-1}$.  The two results are exactly $B_0(n)$
+from \eqref{eq:h}--\eqref{eq:baseline}.  Thus the maximum apex and the
+esthetic diagonal agree directly as well.
+
+\section{An exact finite-width resolvent and reflection formula}
+\label{sec:resolvent}
+
+For $q<k$, the positive-part operation in \eqref{eq:range} matters.
+We now compute its effect exactly.  This provides the generalization
+needed for negative-offset diagonals.
+
+\subsection{Solving the endpoint-value recurrence}
+For vertices indexed by $1,\ldots,q$, let
+\[
+v_i(z)=\sum_{k\ge0}(A_q^k\one)_iz^k.
+\]
+Then
+\begin{equation}\label{eq:vrec}
+v_i=1+z(v_{i-1}+v_{i+1}),\qquad v_0=v_{q+1}=0.
+\end{equation}
+The equation has a unique solution in formal power series: its constant
+terms are fixed, and each successive coefficient is determined by the
+previous coefficients.
+
+\begin{proposition}[Exact row resolvent]\label{prop:resolvent}
+With $r=r(z)$ as in \eqref{eq:r},
+\begin{equation}\label{eq:visol}
+v_i(z)=\frac{1-(r^i+r^{q+1-i})/(1+r^{q+1})}{1-2z}.
+\end{equation}
+Consequently,
+\begin{align}
+\mathcal T_q(z)
+&:=\frac q2+\sum_{k\ge1}T(q,k)z^k\notag\\
+&=\frac{q}{2(1-2z)}
+-\frac{r(1-r^q)}{(1-2z)(1-r)(1+r^{q+1})}.
+\label{eq:rowgf}
+\end{align}
+\end{proposition}
+\begin{proof}
+The right-hand side of \eqref{eq:visol} vanishes at the two boundary
+indices.  Its constant particular solution is $1/(1-2z)$.
+The remaining terms satisfy the homogeneous recurrence because
+$r^i=z(r^{i-1}+r^{i+1})$, and the same is true of $r^{q+1-i}$.
+Thus it solves \eqref{eq:vrec}, and uniqueness proves the assertion.
+Sum over $i$ and divide by two, using
+$\sum_{i=1}^q r^i=r(1-r^q)/(1-r)$ and
+Theorem~\ref{thm:orbit}.
+\end{proof}
+
+Although \eqref{eq:rowgf} is expressed using an algebraic series $r$, the
+whole expression is rational in $z$ for fixed $q$, as is already clear
+from the finite matrix resolvent.  It should not be confused with the
+genuinely nonrational \emph{diagonal} generating functions.
+
+Define
+\begin{equation}\label{eq:K}
+K(u)=\frac{(1+u)(1+u^2)}{(1-u)^3}.
+\end{equation}
+Using $1-2z=(1-r)^2/(1+r^2)$, rewrite the row resolvent as
+\begin{equation}\label{eq:rowsplit}
+\mathcal T_q(z)
+=\frac{q}{2(1-2z)}-\frac{r}{(1-2z)(1-r)}
++K(r)\frac{r^{q+1}}{1+r^{q+1}}.
+\end{equation}
+The first two terms have coefficient $q2^{k-1}-M_k$.  The third term is
+therefore precisely the finite-width correction.
+
+\subsection{A coefficient-extraction identity}
+Set
+\begin{equation}\label{eq:beta}
+\beta_0=1,\qquad \beta_t=4t\quad(t\ge1),
+\end{equation}
+and for $k\ge0$ define
+\begin{equation}\label{eq:S}
+S(k,e)=\begin{cases}
+\displaystyle\sum_{\ell=0}^{\lfloor e/2\rfloor}
+\beta_{e-2\ell}\binom{k}{\ell},&e\ge0,\\[6pt]
+0,&e<0.
+\end{cases}
+\end{equation}
+As usual, $\binom{k}{\ell}=0$ when $\ell>k\ge0$.
+
+\begin{lemma}[The correction kernel]\label{lem:kernel}
+For integers $a\ge1$ and $k\ge0$,
+\begin{equation}\label{eq:kernel}
+\coef{z}{k}K(r(z))r(z)^a
+=\coef{u}{k-a}\frac{(1+u)^2}{(1-u)^2}(1+u^2)^k
+=S(k,k-a).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The change of variables $z=u/(1+u^2)$ is valid for formal residues,
+because its linear coefficient is one.  Its differential is
+$dz=(1-u^2)(1+u^2)^{-2}\,du$.  Therefore
+\begin{align*}
+\coef{z}{k}K(r(z))r(z)^a
+&=\operatorname{Res}_{u=0}
+K(u)u^a\frac{(1+u^2)^{k+1}}{u^{k+1}}
+\frac{1-u^2}{(1+u^2)^2}\,du\\
+&=\operatorname{Res}_{u=0}
+u^{a-k-1}\frac{(1+u)^2}{(1-u)^2}(1+u^2)^k\,du.
+\end{align*}
+This proves the first equality.  Finally,
+\[
+\frac{(1+u)^2}{(1-u)^2}=1+4\sum_{t\ge1}tu^t
+=\sum_{t\ge0}\beta_tu^t.
+\]
+Multiplication by the binomial expansion of $(1+u^2)^k$ proves the second.
+\end{proof}
+
+\begin{theorem}[Universal finite reflection sum]\label{thm:reflection}
+For every $q\ge2$ and $k\ge1$,
+\begin{equation}\label{eq:universal}
+\boxed{\displaystyle
+T(q,k)=q2^{k-1}-M_k+
+\sum_{j=1}^{\lfloor k/(q+1)\rfloor}
+(-1)^{j-1}S\bigl(k,k-j(q+1)\bigr).}
+\end{equation}
+Equivalently, replace $q2^{k-1}-M_k$ by $(q+1)2^{k-1}-h_k$.
+\end{theorem}
+\begin{proof}
+Expand the last term of \eqref{eq:rowsplit} as
+\[
+K(r)\frac{r^{q+1}}{1+r^{q+1}}
+=\sum_{j\ge1}(-1)^{j-1}K(r)r^{j(q+1)}.
+\]
+This is a well-defined formal series since $r$ has order one.  For a
+coefficient of degree $k$, only $j(q+1)\le k$ can contribute.
+Apply Lemma~\ref{lem:kernel} with $a=j(q+1)$ and use
+Lemma~\ref{lem:maximum} for the remaining terms.
+\end{proof}
+
+The formula is an identity for all widths, not an asymptotic expansion.
+In particular, the apparently alternating correction is always equal
+to the nonnegative quantity
+\begin{equation}\label{eq:overflow}
+\frac12\sum_{\varepsilon\in\{-1,1\}^k}
+\bigl(\mathcal R(\varepsilon)-q\bigr)_+,
+\end{equation}
+because $(q-R)_+=q-R+(R-q)_+$.  It compensates for the negative
+contributions that the untruncated baseline would otherwise assign to
+walks of excessive range.
+
+\section{Polynomial boundary corrections and all diagonal generating functions}
+\label{sec:diagonals}
+
+\subsection{The eventual correction polynomial}
+For $c\ge1$, define a polynomial in $x$ by
+\begin{equation}\label{eq:Pc}
+P_c(x)=\sum_{\ell=0}^{\lfloor(c-1)/2\rfloor}
+\beta_{c-1-2\ell}\binom{x}{\ell},
+\qquad
+\binom{x}{\ell}=\frac{x(x-1)\cdots(x-\ell+1)}{\ell!}.
+\end{equation}
+Thus $P_c(k)=S(k,c-1)$ for nonnegative integers $k$.
+
+\begin{theorem}[Polynomial correction with a sharp threshold]\label{thm:polynomial}
+For $c\ge1$ and
+\begin{equation}\label{eq:threshold}
+k\ge K_c:=\max(c+2,2c-1),
+\end{equation}
+one has
+\begin{equation}\label{eq:polynomial}
+\boxed{\displaystyle
+T(k-c,k)=B_{-c}(k)+P_c(k)
+=(k-c+1)2^{k-1}-h_k+P_c(k).}
+\end{equation}
+The degree of $P_c$ is $\lfloor(c-1)/2\rfloor$.
+For $c\ge4$, the threshold is sharp in the following strong sense:
+\begin{equation}\label{eq:sharp}
+T(c-2,2c-2)=B_{-c}(2c-2)+P_c(2c-2)-1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $q=k-c$ in \eqref{eq:universal}.  The requirement $q\ge2$ is
+$k\ge c+2$.  The $j=1$ term has coefficient index
+$k-(q+1)=c-1$, so it is $P_c(k)$.
+All terms with $j\ge2$ vanish if
+$2(q+1)>k$, equivalently $k>2c-2$.  This proves the formula on exactly
+the range \eqref{eq:threshold}.
+
+Write $p=\lfloor(c-1)/2\rfloor$.  The coefficient of
+$\binom{x}{p}$ is $\beta_0=1$ for odd $c$, and $\beta_1=4$ for even $c$.
+It is nonzero; the degree is therefore $p$, with leading coefficient
+$1/p!$ or $4/p!$, respectively.
+
+For $c\ge4$ take $k=2c-2$, so $q=c-2\ge2$.
+Then $k=2(q+1)$.  Besides the $j=1$ term there is exactly one further
+term, namely the $j=2$ contribution $-S(k,0)=-1$.
+No higher term can occur.  This proves \eqref{eq:sharp}.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{r l r}
+\toprule
+$c$ & $P_c(k)$ & First guaranteed valid $k=K_c$ \\
+\midrule
+1 & $1$ & 3 \\
+2 & $4$ & 4 \\
+3 & $k+8$ & 5 \\
+4 & $4k+12$ & 7 \\
+5 & $\binom{k}{2}+8k+16$ & 9 \\
+6 & $4\binom{k}{2}+12k+20$ & 11 \\
+7 & $\binom{k}{3}+8\binom{k}{2}+16k+24$ & 13 \\
+8 & $4\binom{k}{3}+12\binom{k}{2}+20k+28$ & 15 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{example}[Why the finite exception cannot be ignored]
+For $c=4$, the first admissible length is $k=6$, with base $q=2$.
+Here $P_4(6)=36$, while
+$B_{-4}(6)=3\cdot32-(6+\tfrac12)\binom63=96-130=-34$.
+Thus $B_{-4}(6)+P_4(6)=2$, whereas $T(2,6)=1$.
+The missing $-1$ is exactly the second reflection term in
+\eqref{eq:sharp}.  At every $k\ge7$, the polynomial formula is exact.
+\end{example}
+
+\subsection{An explicit formula including every exceptional coefficient}
+For $c\ge1$ set
+\begin{equation}\label{eq:Pg}
+P_c^*(z)=\sum_{\ell=0}^{\lfloor(c-1)/2\rfloor}
+\beta_{c-1-2\ell}\frac{z^\ell}{(1-z)^{\ell+1}}.
+\end{equation}
+It is the generating function of $P_c(k)$, because
+$\sum_{k\ge0}\binom{k}{\ell}z^k=z^\ell/(1-z)^{\ell+1}$.
+Define the finite polynomial
+\begin{equation}\label{eq:Ec}
+E_c(z)=\sum_{k=c+2}^{2c-2}z^k
+\sum_{j=2}^{\lfloor k/(k-c+1)\rfloor}
+(-1)^{j-1}S\bigl(k,k-j(k-c+1)\bigr),
+\end{equation}
+with any empty sum equal to zero.  In particular, $E_c=0$ for $c\le3$.
+
+\begin{theorem}[Every fixed-offset generating function]\label{thm:allgf}
+With the valid-domain convention of Theorem~\ref{thm:overview},
+\begin{equation}\label{eq:Gpositive}
+G_d(z)=F_d(z)-d/2\qquad(d\ge0),
+\end{equation}
+and, for every $c\ge1$,
+\begin{equation}\label{eq:Gnegative}
+\begin{split}
+G_{-c}(z)={}&F_{-c}(z)+P_c^*(z)\\
+&-\sum_{k=0}^{c+1}\bigl(B_{-c}(k)+P_c(k)\bigr)z^k+E_c(z).
+\end{split}
+\end{equation}
+Consequently, all conclusions of Theorem~\ref{thm:overview} hold.
+\end{theorem}
+\begin{proof}
+For $d\ge0$, the baseline counts every valid positive-length term.
+Remove its constant term $d/2$.  The only further potentially invalid
+positive length is $k=1,d=0$, but $B_0(1)=0$, so it requires no additional
+subtraction.  This proves \eqref{eq:Gpositive}.
+
+For $d=-c$, the valid lengths begin at $c+2$.  Start with the series
+$F_{-c}+P_c^*$, whose coefficient of $z^k$ is
+$B_{-c}(k)+P_c(k)$.  Subtract all coefficients below the valid range;
+this is exactly the finite sum in \eqref{eq:Gnegative}.
+At valid lengths $k\ge2c-1$, Theorem~\ref{thm:polynomial} says that no
+more changes are needed.  At the finitely many remaining valid lengths,
+Theorem~\ref{thm:reflection} says that the missing terms are exactly
+those with $j\ge2$ recorded in $E_c$.  Thus every coefficient is correct.
+
+All terms of these formulas other than the square root in $F_d$ are
+rational.  The square-root term is independent of $d$, proving
+\eqref{eq:commonpart} and rationality of every difference.
+It also proves algebraicity of degree at most two.  The degree is
+\emph{exactly} two: if $G_d$ were rational, then
+\eqref{eq:commonpart} would make $\sqrt{1-4z^2}$ rational.
+But a square of a rational function has even order at every zero or
+pole, while $1-4z^2$ has simple zeros at $z=\pm1/2$.  This is impossible.
+\end{proof}
+
+These formulas give a constructive procedure for $R_d(z)$, not only an
+existence statement.  Once $R_d$ is written down, a polynomial equation
+for $G_d$ is
+\begin{equation}\label{eq:quadratic}
+\bigl(2(1-2z)^2(G_d(z)-R_d(z))\bigr)^2=1-4z^2.
+\end{equation}
+Multiplying by the squared denominator of $R_d$ makes it a polynomial
+identity with coefficients in $\Q[z]$.
+
+For the first three negative offsets, the exceptional reflection
+polynomial $E_c$ vanishes, but the low-index subtraction must still be
+performed.  Direct evaluation gives
+\begin{align*}
+G_{-1}(z)&=F_{-1}(z)+\frac1{1-z}-\frac12,\\
+G_{-2}(z)&=F_{-2}(z)+\frac4{1-z}-3-2z-z^2,\\
+G_{-3}(z)&=F_{-3}(z)+\frac{z}{(1-z)^2}+\frac8{1-z}\\
+&\quad-\frac{13}{2}-6z-5z^2-3z^3-z^4.
+\end{align*}
+These examples also show why the artificial length-zero extension must
+be separated from the combinatorial series.
+
+\section{Consequences and computational use}
+\label{sec:consequences}
+
+\subsection{Diagonal differences satisfy constant-coefficient recurrences}
+Define $Q_d(k)=0$ for $d\ge0$, and $Q_{-c}(k)=P_c(k)$ for $c\ge1$.
+The preceding results give, for every fixed pair $d,e$ and all
+sufficiently large $k$,
+\begin{equation}\label{eq:pairdifference}
+T(k+d,k)-T(k+e,k)
+=(d-e)2^{k-1}+Q_d(k)-Q_e(k).
+\end{equation}
+Thus the nonrational component disappears not just at the generating
+function level, but directly in the exact coefficient formulas.
+
+If the polynomial on the right has degree at most $r$, the sequence of
+differences is annihilated eventually by
+\[
+(\mathcal E-2)(\mathcal E-1)^{r+1},\qquad
+(\mathcal E a)(k)=a(k+1).
+\]
+When the polynomial is zero, the factor $(\mathcal E-2)$ alone suffices.
+For two distinct nonnegative offsets, \eqref{eq:pairdifference} is exact
+at every length where both bases are valid, and reduces to
+$(d-e)2^{k-1}$.
+
+\subsection{A common diagonal asymptotic scale}
+The exact central-binomial formulas show that fixed offsets share the
+same leading boundary loss.  Stirling's expansion applied separately
+to the two parities gives
+\begin{equation}\label{eq:hasymp}
+h_k=2^k\sqrt{\frac{2k}{\pi}}
+\left(1+\frac1{4k}+O(k^{-2})\right).
+\end{equation}
+For even $k$, insert
+$\binom{k}{k/2}=2^k\sqrt{2/(\pi k)}(1-1/(4k)+O(k^{-2}))$
+into \eqref{eq:h}.  For odd $k$, use
+$h_k=2k\binom{k-1}{(k-1)/2}$ and expand in $1/k$; the coefficient
+$1/(4k)$ is the same.
+
+Therefore, for every fixed integer $d$,
+\begin{equation}\label{eq:diagasy}
+T(k+d,k)=(k+d+1)2^{k-1}
+-2^k\sqrt{\frac{2k}{\pi}}+O_d(2^kk^{-1/2}).
+\end{equation}
+For negative offsets, the polynomial $Q_d(k)$ is exponentially smaller
+than the displayed error.  When exact low-order effects matter, it
+should instead be retained explicitly through \eqref{eq:polynomial}.
+The asymptotic estimate is a consequence of an exact formula, not the
+basis of the proof of a diagonal identity.
+
+\subsection{Which exact algorithm to use}
+The digit dynamic program starts with endpoint counts
+$(0,1,\ldots,1)$ and repeatedly replaces the count at each vertex by the
+sum at its neighbors.  It uses $O(qk)$ integer additions and $O(q)$
+stored integers to produce a length-$k$ count.  The folded type graph
+halves the state count for even $q$.
+
+For a fixed base and a very large isolated index, the minimal recurrence
+can be used with polynomial reduction modulo $C_q$.  Binary powering
+computes $x^k\bmod C_q(x)$ in $O(d_q^2\log k)$ arithmetic operations
+using ordinary polynomial multiplication, after which the result is a
+linear combination of initial terms.  This is an arithmetic-operation
+bound, \emph{not} a logarithmic bit-complexity claim: the output itself
+has a number of bits growing with $k$.
+
+For fixed offsets, the central-binomial formula with the explicit
+polynomial correction is usually the most direct description.  It
+requires no table over all smaller bases.  Conversely, the universal
+reflection sum can involve large canceling quantities when the base
+is small; it is valuable as an exact formula and proof device, but is
+not asserted to be the fastest numerical method in every regime.
+
+\section{Exact verification and reproducible artifacts}
+\label{sec:verification}
+
+\subsection{Independent models and test coverage}
+The file \texttt{verify.py} uses only the Python standard library.
+The primary counts come from the endpoint digit recurrence, not from
+the new closed forms.  Separate checks use unrestricted path walks,
+the folded graph, and Male\v sevi\'c's operation-index adjacency rule
+\[
+M_{ij}=1\quad\Longleftrightarrow\quad
+j=i+1\ \text{or}\ i+j=N+1,
+\qquad 1\le i,j\le N.
+\]
+This last model counts words by $\one^{\mathsf T}M^{k-1}\one$ and is
+independent of the type-vertex implementation.
+
+The complete test run performed for this package passed the following
+checks.  An ``equality'' refers to one exact comparison, not a
+floating-point tolerance test.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.48\textwidth}r p{0.27\textwidth}}
+\toprule
+Check & Number & Range or interpretation \\
+\midrule
+Reflection-orbit count & 24,750 & $2\le q\le100$, $1\le k\le250$ \\
+Minimal-polynomial recurrence & 22,225 & Same rows; every fitting window \\
+Differential-operation graph & 2,000 & Even $2\le q\le40$, $k\le100$ \\
+Folded-path graph & 2,000 & Same even bases and lengths \\
+Total maximum by enumeration & 16 & All sign words, $1\le k\le16$ \\
+Range formula & 320 & $2\le q\le21$, $1\le k\le16$ \\
+Universal reflection formula & 5,850 & $2\le q\le40$, $1\le k\le150$ \\
+Nonnegative-offset formula & 3,249 & $0\le d\le12$, valid $k\le250$ \\
+Eventual polynomial formula & 6,627 & $1\le c\le30$, valid tail $k\le250$ \\
+Complete negative-diagonal series & 7,530 & Includes every invalid or exceptional low index \\
+Sharp threshold & 27 & $4\le c\le30$ \\
+A182555 generating function & 250 & Through index 250 \\
+A206603 generating function & 249 & Indices $2$ through $250$ \\
+Addition-triangle maximum & 249 & Independently sorted binomial weights \\
+Nonzero minimal-size Hankel determinant & 39 & Bases $2$ through $40$ \\
+\midrule
+\textbf{Total} & \textbf{75,381} & Exact equalities or nonsingularity checks \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exhaustive part examines $\sum_{k=1}^{16}2^k=131{,}070$ sign words.
+The Hankel determinants use fraction-free integer elimination.
+The recorded run used Python 3.13.5; the verifier completed in about
+2.7 seconds in the working environment.  Timing depends on hardware
+and is not a complexity claim.
+
+\subsection{Symbolic checks and their limits}
+The optional file \texttt{symbolic\_verify.py}, run with SymPy 1.14.0,
+inverts $I-zA_q$ exactly for $2\le q\le14$.  It checks the row-resolvent
+formula after the rational substitution $z=u/(1+u^2)$, verifies the
+reduced denominator against the Chebyshev minimal polynomial, and checks
+three scalar rational identities used in the coefficient extraction.
+All of these checks passed.
+
+The verifier intentionally separates empirical validation from proof.
+No finite collection of tests establishes a statement for all $q,k$;
+that role belongs to the bijections, formal-series identities, and
+minimality argument above.  Likewise, neither the code nor the proofs
+can certify historical novelty.  No Lean or other proof-assistant
+formalization is included or claimed.
+
+\subsection{Contents of the archive}
+The archive contains the editable \LaTeX\ source and compiled PDF,
+the two verifier programs, a build file, a source-provenance note, and
+machine-readable results.  The generated data include:
+\begin{itemize}
+\item row values for $2\le q\le40$ and $1\le k\le100$;
+\item diagonal values for offsets $-12\le d\le12$ through length $200$;
+\item all minimal polynomials for $2\le q\le100$ and the exact Hankel
+  determinants used in the finite checks.
+\end{itemize}
+Run \texttt{python3 verify.py} from the archive directory to regenerate
+the standard-library results.  The \texttt{README.md} supplies the
+complete build and reproduction commands.  No external source papers
+or font files are redistributed.
+
+\section{Conclusion}
+The chosen OEIS-listed diagonal conjecture has a short conceptual
+resolution: append an initial upward step, pass to reflection orbits,
+and translate unrestricted binary walks into a finite path.  At width
+$q\ge k$, the translation count is linear in the walk range, and a
+first-passage generating function evaluates the required total maximum.
+This proves C3 by exact generating-function equality.
+
+The same construction proves C1 and gives explicit minimal recurrences
+for C2, with appropriate attribution to the known spectral theory.
+More importantly, it extends the diagonal identity to every fixed
+integer offset.  Negative offsets introduce an explicit polynomial
+boundary correction after a sharp threshold, and only finitely many
+additional reflection terms before it.  The resulting generating
+functions all share one quadratic irrational component.
+
+The mathematical claims in this note are supported by complete
+arguments and reproducible exact checks.  Their publication history is
+a separate question: the paper should be regarded as a proposed
+self-contained resolution and extension of the retrieved OEIS
+conjectures, not as a certificate of priority.
+
+\appendix
+\section{Compact statements suitable for an OEIS update}
+The following formulas summarize the results without depending on the
+auxiliary derivations.  They are a draft for review, not a claim that an
+OEIS edit has been submitted.
+
+For $q\ge2$ and $k\ge1$, let $A_q$ be the adjacency matrix of the path
+on $q$ vertices.  Then
+\[
+T(q,k)=\tfrac12\one^{\mathsf T}A_q^k\one.
+\]
+For even $q$, folding the path by reflection gives the type graph of
+meaningful differential compositions on $\R^{q-1}$, proving Conjecture~1.
+
+The minimal row characteristic polynomials are
+\[
+C_{2m}(x)=\mathsf U_m(x/2)-\mathsf U_{m-1}(x/2),\qquad
+C_{2m-1}(x)=2\mathsf T_m(x/2)/x^{m\bmod2}.
+\]
+They prove the listed row recurrences and specify the exact minimal
+orders.  Recurrence existence already follows from the known spectral
+formula.
+
+For $q\ge k\ge1$ and $q\ge2$,
+\[
+T(q,k)=(q+1)2^{k-1}-
+\begin{cases}
+(k+\tfrac12)\binom{k}{k/2},&k\text{ even},\\
+(k+1)\binom{k}{(k-1)/2},&k\text{ odd}.
+\end{cases}
+\]
+In particular,
+\[
+1+\sum_{k\ge1}T(k+2,k)z^k
+=\frac{3-4z-\sqrt{1-4z^2}}{2(1-2z)^2},
+\]
+proving $T(q,q-2)=\OEIS{A182555}(q-2)$ for $q\ge3$.
+Also $T(k,k)=\OEIS{A206603}(k)$ for $k\ge2$.
+All fixed-offset diagonals $q=k+d$, including negative $d$, have
+algebraic generating functions of degree two, with the explicit
+formulas in Theorem~\ref{thm:allgf}.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{oeis377000}
+The OEIS Foundation Inc.,
+\emph{A377000: Array read by ascending antidiagonals: $T(n,k)$ = number of
+$n$-esthetic numbers with $k$ digits}.
+Entry by Paolo Xausa, 12 October 2024; conjectures by Chai Wah Wu,
+21 October 2024.  Retrieved 19 September 2026.
+\url{https://oeis.org/A377000}.
+
+\bibitem{oeishistory}
+The OEIS Foundation Inc., \emph{Revision history for A377000}.
+Retrieved 19 September 2026.
+\url{https://oeis.org/history?seq=A377000}.
+
+\bibitem{dek}
+Jean-Marie De Koninck and Nicolas Doyon,
+\emph{Esthetic Numbers},
+Annales des sciences math\'ematiques du Qu\'ebec
+\textbf{33} (2009), no.~2, 155--164.
+\url{https://www.labmath.uqam.ca/~annales/volumes/33-2/PDF/155-164.pdf}.
+
+\bibitem{mal}
+Branko J. Male\v sevi\'c,
+\emph{Some combinatorial aspects of differential operation composition
+on the space $\R^n$},
+Univ. Beograd. Publ. Elektrotehn. Fak., Ser. Mat.
+\textbf{9} (1998), 29--33.
+ArXiv version posted in 2007: \url{https://arxiv.org/abs/0704.0750}.
+
+\bibitem{oeis182555}
+The OEIS Foundation Inc.,
+\emph{A182555: Expansion of g.f.
+$(3-4x-\sqrt{1-4x^2})/(2(1-2x)^2)$}.
+Entry by N. J. A. Sloane, 5 May 2012.  Retrieved 19 September 2026.
+\url{https://oeis.org/A182555}.
+
+\bibitem{oeis206603}
+The OEIS Foundation Inc.,
+\emph{A206603: Maximal apex value of an addition triangle whose base is a
+permutation of $\{k-n/2:k=0,\ldots,n\}$}.
+Entry by Alois P. Heinz, 10 February 2012.  Retrieved 19 September 2026.
+\url{https://oeis.org/A206603}.
+\end{thebibliography}
+\end{document}

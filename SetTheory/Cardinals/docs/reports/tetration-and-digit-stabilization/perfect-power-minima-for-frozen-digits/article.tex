@@ -1,0 +1,1297 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,xcolor,enumitem,listings,fancyhdr,titlesec,float}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{176B75}
+\definecolor{soft}{HTML}{F2F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Tetration, perfect powers, and frozen decimal digits},
+ pdfauthor={ChatGPT},pdfsubject={A closed formula and elementary proof for an extremal tetration problem}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Tetration and perfect-power minima}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{topsep=4pt,itemsep=2pt,parsep=0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\vp}{\nu}
+\newcommand{\V}{V}
+\newcommand{\crt}{\operatorname{CRT}}
+\newcommand{\lc}{\operatorname{lcm}}
+\newcommand{\bits}{\operatorname{bits}}
+\DeclareMathOperator{\ord}{ord}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{soft},
+ frame=single,rulecolor=\color{soft},breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,tabsize=4,keywordstyle=\color{accent}\bfseries,
+ commentstyle=\color{black!60},stringstyle=\color{ink}}
+
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{section}{Section}{Sections}
+\crefname{table}{Table}{Tables}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{9mm}
+{\color{accent}\sffamily\bfseries RESEARCH ARTICLE\par}
+\vspace{8mm}
+{\Huge\bfseries\color{ink} Tetration, perfect powers,\\[3mm] and frozen decimal digits\par}
+\vspace{8mm}
+{\Large A closed formula for the smallest $n$th perfect power\\[2mm]
+whose tetration has congruence speed $n$\par}
+\vspace{9mm}
+{\large 19 September 2026\par}
+\vspace{8mm}
+\hrule
+\vspace{7mm}
+\noindent\textbf{Abstract.}
+Let $V(a)$ be the eventual number of additional decimal digits shared by
+successive power towers with integer base $a>1$, where $10\nmid a$.
+A 2025 MathOverflow question asks for the smallest $n$th perfect power
+$\rho(n)=x^n>1$ with $V(x^n)=n$, and proposes that the minimizer always
+ends in $5$ once $n\ge3$. We give a complete elementary proof of that
+pattern and an explicit formula. Set $s=n-\nu_2(n)$. Then
+$\rho(1)=2$, $\rho(2)=49$, and, for $n\ge3$,
+\[
+\rho(n)=B_s^n,\qquad
+B_s=\begin{cases}
+2^s-1,&s\equiv0\pmod4,\\
+3\cdot2^s-1,&s\equiv1\pmod4,\\
+2^s+1,&s\equiv2\pmod4,\\
+3\cdot2^s+1,&s\equiv3\pmod4.
+\end{cases}
+\]
+The key is a deterministic size barrier: every competing root not divisible
+by $5$ must satisfy $x^2+1\ge5^{n-\nu_5(n)}$. This excludes all competitors
+for $n\ge25$; five small Hensel-lifting certificates settle the remaining
+exceptional comparisons. We also solve the stricter maximal-degree version:
+only $n=3$ changes, from $25^3$ to $55^3$. Further results include the exact
+choice between the two conjectured decimal tails, a two-parameter
+extremal theorem, density formulas, and asymptotics. The archive contains
+standard-library Python code, exact certificates, and reproducible tests.
+
+\vspace{5mm}
+\noindent\textbf{Scope and status.}
+The argument below is a complete proof for the precisely stated arithmetic
+problem, not a numerical extrapolation. The foundational congruence-speed
+formula is prior work and is rederived for completeness. The consulted
+question leaves the all-$n$ extremal pattern conjectural; an exhaustive
+claim of bibliographic priority is not made. This report has not undergone
+external peer review or proof-assistant verification.
+
+\vfill
+\noindent\small Prepared by ChatGPT in response to a mathematical research request.\\
+Source-status check: 19 September 2026.
+\end{titlepage}
+
+{\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The problem, its provenance, and the answer}
+\label{sec:problem}
+
+\subsection{Why this particular question?}
+An integer power tower can be far too large to write down while its last
+few digits are easy to study. This makes modular tetration a useful place
+to seek a tractable problem: one can replace the enormous integers by
+small local invariants, then turn a computational pattern into a proof.
+The relevant objects here are ordinary integer tetrations
+$a\uparrow\uparrow h$, not analytic interpolations in the height.
+
+The eventual decimal congruence-speed formula was established in work of
+Rip\`a \cite{ripa2020,ripa2021}; stable-digit counts were subsequently
+studied by Rip\`a and Onnis \cite{ripaonnis2022}. Those results are not the
+open problem attacked here. The later extremal question asks that the
+base itself be an $n$th perfect power and that its speed equal the same
+integer $n$.
+
+Specifically, Rip\`a's February 2025 MathOverflow question asks for a closed
+formula for this minimum. Alekseyev's answer gives 50 root values and
+observes the apparent predominance of the final-digit-$5$ case. The
+question also conjectures two fixed ten-digit tails for all $n>10$
+\cite{mo2025}. A related paper, published in 2024 and deposited on arXiv in January
+2026, constructs perfect powers with prescribed speeds. Existence is
+different from the global minimality proved here \cite{ripa2026}.
+
+The choice is deliberately narrow. No conclusion below is a proposed
+resolution of analytic tetration, arbitrary hyperoperation interpolation,
+or ordinal fast-growing-hierarchy questions. It is a concrete extremal
+problem inside the arithmetic of tetration.
+
+\subsection{Definitions and conventions}
+For $a\ge2$, put
+\begin{equation}
+T_0(a)=1,\qquad T_{h+1}(a)=a^{T_h(a)}\quad(h\ge0).
+\label{eq:tower}
+\end{equation}
+Thus $T_h(a)=a\uparrow\uparrow h$. For a nonzero integer $u$ and a prime
+$p$, $\nu_p(u)$ is the largest $j\ge0$ such that $p^j\mid u$.
+Define
+\begin{equation}
+\Delta_h(a)=T_{h+1}(a)-T_h(a),\qquad
+D_h(a)=\min\{\nu_2(\Delta_h(a)),\nu_5(\Delta_h(a))\}.
+\label{eq:delta}
+\end{equation}
+Exactly $D_h(a)$ trailing decimal positions agree between these two
+towers. For $10\nmid a$, we shall prove that
+\[
+D_h(a)-D_{h-1}(a)
+\]
+is eventually a positive constant; this constant is $V(a)$.
+For convenience only, set $V(1)=0$. Multiples of $10$ are excluded from
+the extremal problem because their speed is not eventually a finite
+constant.
+
+\begin{definition}
+For $n\ge1$, define
+\begin{align}
+r(n)&=\min\{x\in\N:x>1,\ 10\nmid x,\ V(x^n)=n\},\label{eq:rdef}\\
+\rho(n)&=r(n)^n.\label{eq:rhodef}
+\end{align}
+The minimum will be shown to exist. Since $x\mapsto x^n$ is strictly
+increasing on the positive integers, minimizing $x$ and minimizing $x^n$
+are equivalent.
+\end{definition}
+
+An $n$th perfect power need not have \emph{maximal} perfect-power degree
+$n$. For example, $25^3=5^6$ is an admissible cube under
+\eqref{eq:rhodef}. We solve the maximal-degree variant separately in
+\cref{sec:strict} rather than silently changing the question.
+
+\subsection{Main theorem}
+\begin{theorem}[Closed formula]
+\label{thm:main}
+We have $r(1)=2$ and $r(2)=7$. For every $n\ge3$, let
+\[
+s=n-\nu_2(n)\ge2.
+\]
+Then
+\begin{equation}
+r(n)=B_s,
+\qquad
+B_s=\begin{cases}
+2^s-1,&s\equiv0\pmod4,\\
+3\cdot2^s-1,&s\equiv1\pmod4,\\
+2^s+1,&s\equiv2\pmod4,\\
+3\cdot2^s+1,&s\equiv3\pmod4.
+\end{cases}
+\label{eq:main}
+\end{equation}
+Consequently $r(n)\equiv\rho(n)\equiv5\pmod{10}$ for all $n\ge3$.
+\end{theorem}
+
+The first root values are
+\[
+2,\ 7,\ 25,\ 5,\ 95,\ 95,\ 385,\ 95,\ 1535,\ 1535,\ 6145,\ 1025,\ldots.
+\]
+The proof has two genuinely different parts. Finding the smallest
+admissible multiple of $5$ is an elementary congruence calculation.
+Proving that it beats \emph{every} other residue class requires the size
+barrier in \cref{sec:barrier}. Checking many initial terms would not
+replace that second part.
+
+\section{From power towers to two local valuations}
+\label{sec:local}
+
+We give the details so that the main theorem does not rely on treating a
+large published case distinction as a black box. The resulting compact
+formula is equivalent to the known decimal congruence-speed formula
+\cite{ripa2021,ripaonnis2022}.
+
+\subsection{The elementary lifting facts}
+\begin{lemma}[Lifting near $1$]
+\label[lemma]{lem:lte}
+Let $u>1$ and $m\ge1$ be integers. If $u\equiv1\pmod5$, then
+\begin{equation}
+\nu_5(u^m-1)=\nu_5(u-1)+\nu_5(m).
+\label{eq:lte5}
+\end{equation}
+If $u\equiv1\pmod4$, then
+\begin{equation}
+\nu_2(u^m-1)=\nu_2(u-1)+\nu_2(m).
+\label{eq:lte2}
+\end{equation}
+In addition, if $u$ is odd and $m$ is even, then
+\begin{equation}
+\nu_2(u^m-1)=\nu_2(u-1)+\nu_2(u+1)+\nu_2(m)-1.
+\label{eq:lte2general}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For either prime $p$, if $p\nmid q$ and $u\equiv1\pmod p$, the factorization
+\[
+\frac{u^q-1}{u-1}=1+u+\cdots+u^{q-1}\equiv q\not\equiv0\pmod p
+\]
+shows that raising to the $q$th power leaves the valuation unchanged.
+It therefore suffices to understand raising to the $p$th power.
+
+For $p=5$, write $u=1+5^j w$ with $5\nmid w$ and $j\ge1$. In the binomial
+expansion of $u^5-1$, the first term has valuation $j+1$, whereas each
+other term has larger valuation. Thus
+$\nu_5(u^5-1)=j+1$. Repeating this step proves \eqref{eq:lte5}.
+For $p=2$ with $u\equiv1\pmod4$, the factorization
+$u^2-1=(u-1)(u+1)$ gives $\nu_2(u+1)=1$, so each squaring increases the
+valuation by exactly one. This proves \eqref{eq:lte2}.
+Finally, apply \eqref{eq:lte2} to $u^2\equiv1\pmod8$ and exponent $m/2$:
+\[
+\nu_2(u^m-1)=\nu_2(u^2-1)+\nu_2(m/2),
+\]
+which is \eqref{eq:lte2general}.
+\end{proof}
+
+For odd $a>1$ and, respectively, $5\nmid a>1$, define
+\begin{equation}
+c_2(a)=\nu_2(a^2-1)-1,
+\qquad c_5(a)=\nu_5(a^4-1).
+\label{eq:cs}
+\end{equation}
+For odd $a$, one of $a-1,a+1$ has valuation exactly one at $2$, so
+\begin{equation}
+c_2(a)=\max\{\nu_2(a-1),\nu_2(a+1)\}\ge2.
+\label{eq:c2max}
+\end{equation}
+The functions $c_2,c_5$ are only used on the domains just specified.
+In particular, no valuation of zero is needed.
+
+\subsection{The recurrence for tower differences}
+For $h\ge1$, direct factorization of \eqref{eq:tower} gives
+\begin{equation}
+\Delta_h=a^{T_{h-1}}\bigl(a^{\Delta_{h-1}}-1\bigr).
+\label{eq:deltarec}
+\end{equation}
+If a prime $p$ divides $a$, the second factor is a $p$-adic unit. Hence
+\begin{equation}
+\nu_p(\Delta_h)=\nu_p(a)T_{h-1}
+\quad\text{when }p\mid a.
+\label{eq:nonunit}
+\end{equation}
+This term eventually dominates any affine function of $h$.
+Indeed, $T_h\ge2^h$: for an integer $u\ge1$, $2^u\ge2u$, and induction
+in \eqref{eq:tower} gives $T_{h+1}\ge2T_h$.
+
+If $a$ is odd, all $T_h$ are odd, so every $\Delta_h$ is even.
+By \cref{lem:lte}, \eqref{eq:deltarec} then implies
+\begin{equation}
+\nu_2(\Delta_h)=\nu_2(\Delta_{h-1})+c_2(a)
+=\nu_2(a-1)+h c_2(a).
+\label{eq:2affine}
+\end{equation}
+This identity holds for every $h\ge0$.
+
+Suppose instead that $5\nmid a$. Once $h\ge3$, we have
+$4\mid\Delta_{h-1}$. To see this when $a$ is odd, use
+\eqref{eq:2affine} and $c_2(a)\ge2$. When $a$ is even, $T_j$ is divisible
+by $4$ for every $j\ge2$, and so are the corresponding differences.
+Now apply \eqref{eq:lte5} to $u=a^4$ and $m=\Delta_{h-1}/4$:
+\begin{equation}
+\nu_5(\Delta_h)=\nu_5(\Delta_{h-1})+c_5(a)
+\qquad(h\ge3).
+\label{eq:5affine}
+\end{equation}
+Thus the $5$-adic valuations are eventually affine with slope $c_5(a)$.
+
+\begin{theorem}[Compact congruence-speed formula]
+\label{thm:speed}
+For $a>1$ and $10\nmid a$, the constant $V(a)$ exists and satisfies
+\begin{equation}
+V(a)=\begin{cases}
+c_5(a),&2\mid a,\\
+c_2(a),&5\mid a,\\
+\min\{c_2(a),c_5(a)\},&\gcd(a,10)=1.
+\end{cases}
+\label{eq:speed}
+\end{equation}
+\end{theorem}
+\begin{proof}
+When $a$ is even, the $2$-adic term in $D_h$ has the rapidly growing form
+\eqref{eq:nonunit}, while the $5$-adic term is eventually affine with
+slope $c_5(a)$. Their minimum therefore eventually equals the latter.
+The case $5\mid a$ is symmetric, with slope $c_2(a)$.
+When $a$ is coprime to $10$, both terms are eventually affine. The minimum
+of two affine functions is eventually affine with slope the smaller of
+the two slopes; if the slopes are equal, only the intercepts matter.
+This proves \eqref{eq:speed} and existence of $V(a)$.
+\end{proof}
+
+\begin{remark}[Transient behavior is not ignored]
+The theorem concerns eventual slopes, not every height. For example,
+for $a=5$ the first values $D_0,D_1,D_2,D_3,D_4$ are
+$0,1,5,8,10$; only later is each increment $2$. For $a=807$, the
+minimum switches between local affine contributions before settling at
+slope $3$. The verification code checks tower residues directly, rather
+than assuming that a low-height observed difference must equal $V(a)$.
+\end{remark}
+
+\section{Perfect powers shift the local speeds}
+\label{sec:powers}
+
+\begin{proposition}[Power-transfer law]
+\label[proposition]{prop:power}
+For $x>1$, $10\nmid x$, and $k\ge1$,
+\begin{equation}
+V(x^k)=\begin{cases}
+c_5(x)+\nu_5(k),&2\mid x,\\
+c_2(x)+\nu_2(k),&5\mid x,\\
+\min\{c_2(x)+\nu_2(k),c_5(x)+\nu_5(k)\},&\gcd(x,10)=1.
+\end{cases}
+\label{eq:powertransfer}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For odd $x$, apply \eqref{eq:lte2} to $u=x^2$ to obtain
+\[
+c_2(x^k)=\nu_2(x^{2k}-1)-1
+=\nu_2(x^2-1)-1+\nu_2(k)=c_2(x)+\nu_2(k).
+\]
+For $5\nmid x$, apply \eqref{eq:lte5} to $u=x^4$:
+\[
+c_5(x^k)=\nu_5(x^{4k}-1)=c_5(x)+\nu_5(k).
+\]
+Substitute into \cref{thm:speed}.
+\end{proof}
+
+This identity is the main computational simplification. Evaluating
+$V(x^k)$ requires no $k$th power, much less any tower with base $x^k$.
+Only the valuations of $x\pm1$, $x^2+1$, and $k$ enter.
+
+For the diagonal problem $k=n$, write
+\begin{equation}
+s=n-\nu_2(n),\qquad t=n-\nu_5(n).
+\label{eq:st}
+\end{equation}
+If $5\mid x$ and $x$ is odd, then
+\begin{equation}
+V(x^n)=n\quad\Longleftrightarrow\quad c_2(x)=s.
+\label{eq:fivecondition}
+\end{equation}
+On the other hand, every admissible root with $5\nmid x$ necessarily
+satisfies
+\begin{equation}
+c_5(x)\ge t.
+\label{eq:necessaryfive}
+\end{equation}
+The second assertion holds whether $x$ is even or odd. For odd $x$ it is
+only a necessary condition, which is enough for a lower bound.
+
+For $n\ge3$, $s\ge2$. This follows immediately for odd $n$; for even
+$n=2^j u$ with $u$ odd, $n-j\ge2$, including the smallest case $n=4$.
+Also $t\ge1$ for all positive $n$.
+
+\section{The smallest root divisible by five}
+\label{sec:restricted}
+
+\begin{lemma}[Exact $2$-adic congruence classes]
+\label[lemma]{lem:c2class}
+For an odd $x>1$ and $s\ge2$,
+\begin{equation}
+c_2(x)=s\quad\Longleftrightarrow\quad
+x\equiv2^s-1\ \text{or}\ 2^s+1\pmod{2^{s+1}}.
+\label{eq:exactclasses}
+\end{equation}
+\end{lemma}
+\begin{proof}
+By \eqref{eq:c2max}, the larger of the valuations of $x-1,x+1$ must be
+exactly $s$. This is equivalent to one of those two integers being
+$2^s$ times an odd number. The other has valuation one. This yields
+exactly the two stated classes.
+\end{proof}
+
+\begin{proposition}[Restricted minimum]
+\label[proposition]{prop:restricted}
+For $s\ge2$, the least odd positive multiple of $5$ satisfying
+$c_2(x)=s$ is $B_s$ from \eqref{eq:main}. In particular,
+\begin{equation}
+5\mid B_s,\qquad c_2(B_s)=s,\qquad
+2^s-1\le B_s\le3\cdot2^s+1.
+\label{eq:Bbounds}
+\end{equation}
+\end{proposition}
+\begin{proof}
+By \cref{lem:c2class}, every candidate has the form
+$x=j2^s+\varepsilon$, where $j\ge1$ is odd and
+$\varepsilon\in\{-1,1\}$. The powers of $2$ modulo $5$ have period four.
+The smallest admissible choices are therefore
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$s\bmod4$&$2^s\bmod5$&smallest odd $j$&$\varepsilon$&$B_s$\\
+\midrule
+0&1&1&$-1$&$2^s-1$\\
+1&2&3&$-1$&$3\cdot2^s-1$\\
+2&4&1&$+1$&$2^s+1$\\
+3&3&3&$+1$&$3\cdot2^s+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In the second and fourth rows, neither sign works for $j=1$, and $j=2$
+is forbidden because the valuation must be exact. In all rows the
+listed $j$ works; every larger eligible odd $j$ produces a larger $x$.
+The valuation and bounds follow directly.
+\end{proof}
+
+For every $n\ge3$, this constructs an admissible $n$th power
+$B_s^n$ and proves that no smaller multiple-of-$5$ root can work.
+There remains a global question: could a root in a different decimal
+class be even smaller?
+
+\section{A deterministic barrier against all other roots}
+\label{sec:barrier}
+
+\begin{lemma}[Quadratic size barrier]
+\label[lemma]{lem:barrier}
+Let $x>1$, $5\nmid x$, and $t\ge1$. If $c_5(x)\ge t$, then
+\begin{equation}
+x^2+1\ge5^t.
+\label{eq:barrier}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Factor
+\[
+x^4-1=(x-1)(x+1)(x^2+1).
+\]
+Exactly one of the three factors is divisible by $5$. Indeed,
+$x\equiv1,-1,2,-2\pmod5$ determines which factor it is, and two of these
+factors cannot simultaneously be divisible by $5$. Thus all the factor
+$5^t$ divides one of them. Each is positive and at most $x^2+1$ when
+$x\ge2$, proving the result.
+\end{proof}
+
+The factorization is decisive. Merely using $5^t\mid x^4-1$ would give
+only a fourth-root lower bound, too weak to beat a candidate of order
+$2^n$. Isolating the factor $x^2+1$ raises the lower bound to approximately
+$5^{n/2}$, which eventually dominates $2^n$.
+
+\begin{proposition}[A sufficient global-minimality condition]
+\label[proposition]{prop:criterion}
+For $n\ge3$, let $s,t$ be as in \eqref{eq:st}. If
+\begin{equation}
+5^t>B_s^2+1,
+\label{eq:criterion}
+\end{equation}
+then $r(n)=B_s$.
+\end{proposition}
+\begin{proof}
+The root $B_s$ is admissible and is least among roots divisible by $5$.
+A competing root $x\le B_s$ not divisible by $5$ would have $c_5(x)\ge t$
+by \eqref{eq:necessaryfive}. But \cref{lem:barrier} would imply
+$5^t\le x^2+1\le B_s^2+1$, a contradiction.
+\end{proof}
+
+\begin{lemma}[Uniform cutoff]
+\label[lemma]{lem:cutoff}
+Condition \eqref{eq:criterion} holds for every $n\ge25$.
+\end{lemma}
+\begin{proof}
+Since $5^{\nu_5(n)}\le n$ and $s\le n$,
+\[
+5^t\ge\frac{5^n}{n},\qquad
+B_s^2+1\le(3\cdot2^n+1)^2+1.
+\]
+Put $H_n=(3\cdot2^n+1)^2+1$. Direct expansion gives
+\[
+H_{n+1}=36\cdot4^n+12\cdot2^n+2
+<4H_n.
+\]
+Consequently, for $n\ge5$,
+\[
+\frac{5^{n+1}/((n+1)H_{n+1})}{5^n/(nH_n)}
+>\frac{5n}{4(n+1)}>1.
+\]
+The starting inequality at $n=25$ is the exact integer calculation
+\begin{align*}
+5^{25}-25H_{25}
+&=298023223876953125-253327484072755250\\
+&=44695739804197875>0.
+\end{align*}
+Thus $5^n/n>H_n$ for every $n\ge25$, proving the claim.
+\end{proof}
+
+Notice that no assumption about random $5$-adic digits occurs here.
+The lower bound remains valid even if the residues of square roots of
+$-1$ have extremely atypical digit patterns.
+
+\section{The finite range: exact, inspectable certificates}
+\label{sec:finite}
+
+\subsection{The routine comparisons}
+The uniform cutoff leaves only $3\le n\le24$. In
+\cref{tab:small}, $Q_n=\lfloor5^t/(B_s^2+1)\rfloor$. A positive $Q_n$
+certifies \eqref{eq:criterion}: equality $5^t=B_s^2+1$ cannot occur,
+because $5\mid B_s$.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$&$s$&$t$&$B_s$&$Q_n$\\
+\midrule
+3&3&3&25&0\\
+4&2&4&5&24\\
+5&5&4&95&0\\
+6&5&6&95&1\\
+7&7&7&385&0\\
+8&5&8&95&43\\
+9&9&9&1535&0\\
+10&9&9&1535&0\\
+11&11&11&6145&1\\
+12&10&12&1025&232\\
+13&13&13&24575&2\\
+14&13&14&24575&10\\
+15&15&14&98305&0\\
+16&12&16&4095&9099\\
+17&17&17&393215&4\\
+18&17&18&393215&24\\
+19&19&19&1572865&7\\
+20&18&19&262145&277\\
+21&21&21&6291455&12\\
+22&21&22&6291455&60\\
+23&23&23&25165825&18\\
+24&21&24&6291455&1505\\
+\bottomrule
+\end{tabular}
+\caption{The finite comparison range. Only $n=3,5,7,9,10,15$ require
+more than the quadratic size barrier. All entries are exact integers.}
+\label{tab:small}
+\end{table}
+
+\subsection{A two-root lifting lemma}
+\begin{lemma}
+\label[lemma]{lem:hensel}
+For every $k\ge1$, $z^2\equiv-1\pmod{5^k}$ has exactly two roots. Starting
+with either root modulo $5$, each root has exactly one lift to a root
+modulo $5^{k+1}$. The two roots are negatives of each other.
+\end{lemma}
+\begin{proof}
+Modulo $5$, the roots are $2$ and $3$. Suppose $r^2+1=5^k q$.
+Every lift is $r+j5^k$, with $j\in\{0,1,2,3,4\}$. Modulo $5^{k+1}$,
+\[
+(r+j5^k)^2+1\equiv5^k(q+2rj).
+\]
+Since $5\nmid2r$, there is a unique $j$ modulo $5$ satisfying
+$q+2rj\equiv0\pmod5$. Every root at the next level reduces to a root
+at the previous level, so no others appear. Negation interchanges the
+two initial roots and preserves the equation at every level.
+\end{proof}
+
+For a root $x>1$ with $c_5(x)\ge t\ge k$, the factorization in
+\cref{lem:barrier} gives one of
+\begin{equation}
+x\equiv1,-1\pmod{5^k},\qquad x^2\equiv-1\pmod{5^k}.
+\label{eq:fourclasses}
+\end{equation}
+The smallest permitted $x>1$ in the first pair of classes is $5^k-1$.
+If $d_k$ is the smaller root of $-1$ modulo $5^k$, the second pair
+requires $x\ge d_k$. Thus
+\begin{equation}
+x\ge\min\{5^k-1,d_k\}.
+\label{eq:exactlower}
+\end{equation}
+
+\subsection{Five certificates settle six indices}
+The following table is enough; it does not search through a large
+interval of candidate roots.
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{crrrrr}
+\toprule
+$n$&$B_s$&$k$&$5^k$&$d_k$&$(d_k^2+1)/5^k$\\
+\midrule
+3&25&3&125&57&26\\
+5&95&4&625&182&53\\
+7&385&5&3125&1068&365\\
+9,10&1535&7&78125&32318&13369\\
+15&98305&8&390625&110443&31226\\
+\bottomrule
+\end{tabular}
+\caption{Certificates for the exceptional comparisons. In each row,
+$k\le t$, $B_s<d_k<5^k/2$, and $B_s<5^k-1$.}
+\label{tab:certs}
+\end{table}
+Each quotient in the last column is integral, so $d_k$ is a root of
+$-1$ modulo $5^k$. It is less than half the modulus, and
+\cref{lem:hensel} says the only other root is $5^k-d_k$. Therefore it
+really is the smaller root. The inequalities in the caption, combined
+with \eqref{eq:exactlower}, exclude every root $x\le B_s$ not divisible
+by $5$ in each exceptional case.
+
+\begin{proof}[Completion of \cref{thm:main}]
+For $n\ge25$, use \cref{lem:cutoff,prop:criterion}. For $3\le n\le24$,
+use \cref{tab:small} when $Q_n>0$ and \cref{tab:certs} otherwise. The
+restricted minimum is always supplied by \cref{prop:restricted}.
+For $n=1$, $V(2)=\nu_5(15)=1$, so the smallest possible root is $2$.
+For $n=2$, direct application of \eqref{eq:powertransfer} gives
+\[
+\begin{array}{c|rrrrrr}
+x&2&3&4&5&6&7\\ \hline
+V(x^2)&1&1&1&3&1&2.
+\end{array}
+\]
+Hence $r(2)=7$. Finally $B_s$ is odd and divisible by $5$, and its positive
+powers all end in $5$.
+\end{proof}
+
+\section{The stricter maximal-degree problem}
+\label{sec:strict}
+
+The original discussion also asks about powers of \emph{exact} degree
+$n$, meaning that the answer cannot also be a $d$th power with $d>n$
+\cite{mo2025}. To avoid ambiguity, define the maximal perfect-power
+degree of an integer $a>1$ to be
+\[
+\operatorname{ppdeg}(a)=\max\{d\ge1:a=y^d\text{ for an integer }y>1\}.
+\]
+If $a=\prod p^{e_p}$, this maximum is $\gcd_p e_p$. Consequently,
+\begin{equation}
+\operatorname{ppdeg}(x^n)=n
+\quad\Longleftrightarrow\quad x\text{ is not a perfect power of degree }>1.
+\label{eq:ppdeg}
+\end{equation}
+Let $\rho_{\mathrm{exact}}(n)$ be the minimum subject to
+$V(a)=n$ and $\operatorname{ppdeg}(a)=n$, with $10\nmid a$.
+
+\begin{lemma}[The restricted roots are almost never perfect powers]
+\label[lemma]{lem:primitive}
+For $s\ge2$, $B_s$ is a perfect power of degree greater than one if and
+only if $s=3$. The exceptional value is $B_3=25$.
+\end{lemma}
+\begin{proof}
+Any perfect power is either a square or a $q$th power for an odd prime
+$q$. Its root is odd because $B_s$ is odd.
+
+First consider $B_s=2^s-1$, where $s\equiv0\pmod4$. If $B_s=y^2$, then
+$y^2+1=2^s$, impossible modulo $8$ for $s\ge2$. If $B_s=y^q$ with odd
+$q\ge3$, factor $y^q+1$ as $(y+1)$ times
+\[
+y^{q-1}-y^{q-2}+\cdots-y+1.
+\]
+This second factor is odd and greater than one, so their product cannot
+be a power of $2$.
+
+Next consider $B_s=2^s+1$, where $s\equiv2\pmod4$. For an odd exponent,
+$(y^q-1)/(y-1)$ is odd and greater than one, again contradicting a power
+of $2$. For a square, $(y-1)(y+1)=2^s$ consists of two powers of $2$
+differing by $2$. They must be $2$ and $4$, giving $s=3$, outside this
+case.
+
+Suppose $B_s=3\cdot2^s-1$, where $s\equiv1\pmod4$ and $s\ge5$. A square
+would give $y^2+1=3\cdot2^s$, impossible modulo $8$. For an odd prime
+exponent, the odd factor
+\[
+y^{q-1}-y^{q-2}+\cdots-y+1
+\]
+would divide $3$. But it is at least $y^2-y+1\ge7$ for odd $y\ge3$.
+This is impossible.
+
+Finally suppose $B_s=3\cdot2^s+1$, where $s\equiv3\pmod4$. For an odd
+prime exponent, the factor $(y^q-1)/(y-1)$ is odd, divides $3$, and is
+at least $y^2+y+1\ge13$, a contradiction. For a square, put
+$u=(y-1)/2$ and $v=(y+1)/2$. Then
+\[
+v-u=1,\qquad \gcd(u,v)=1,\qquad uv=3\cdot2^{s-2}.
+\]
+The odd member of the consecutive pair is either $1$ or $3$.
+The pair $1,2$ has product not divisible by $3$. The remaining pairs are
+$2,3$ and $3,4$, giving $s=3$ and $s=4$, respectively. The congruence
+$s\equiv3\pmod4$ leaves only $s=3$, with $B_s=25$.
+\end{proof}
+
+\begin{theorem}[Exact-degree minimum]
+\label{thm:strict}
+For every $n\ge1$,
+\begin{equation}
+\rho_{\mathrm{exact}}(n)=
+\begin{cases}
+55^3=166375,&n=3,\\
+\rho(n),&n\ne3.
+\end{cases}
+\label{eq:strict}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The roots $r(1)=2,r(2)=7$ are not perfect powers. For $n\ge3$,
+\cref{lem:primitive} says that only $s=n-\nu_2(n)=3$ can cause trouble.
+Writing $j=\nu_2(n)$, this equation gives $n=j+3$. For $j\ge3$,
+$2^j>j+3$, impossible because $2^j\mid n$. The cases $j=0,1,2$ leave
+only $n=3$. Thus for $n\ne3$, the unrestricted minimizer already has
+maximal degree $n$.
+
+For $n=3$, $c_2(55)=3$, so $V(55^3)=3$. The root $55=5\cdot11$ is not
+a perfect power. Among smaller odd multiples of $5$, the only one with
+$c_2(x)=3$ is $25$, as can be checked from the list
+$5,15,25,35,45$ or from \eqref{eq:exactclasses}. It is a square.
+Every root not divisible by $5$ with $c_5(x)\ge3$ is at least $57$ by
+\eqref{eq:exactlower} at $k=3$. Therefore no root below $55$ satisfies
+both required conditions.
+\end{proof}
+
+This strengthening needs no appeal to a deep theorem about consecutive
+perfect powers. The four elementary factorizations above are sufficient.
+
+\section{The decimal-tail conjecture, with the sign determined}
+\label{sec:tails}
+
+For $d\ge1$, let $E_d$ be the unique residue in $[0,10^d)$ satisfying
+\begin{equation}
+E_d\equiv0\pmod{5^d},\qquad E_d\equiv1\pmod{2^d}.
+\label{eq:Ed}
+\end{equation}
+The Chinese remainder theorem gives existence and uniqueness, as well as
+the explicit finite formula
+\begin{equation}
+E_d=5^d\bigl((5^d)^{-1}\bmod2^d\bigr).
+\label{eq:Edformula}
+\end{equation}
+Here the inverse is represented in $\{0,\ldots,2^d-1\}$.
+Since $E_d^2\equiv E_d$ modulo both prime powers, $E_d$ is idempotent
+modulo $10^d$. The residues are compatible as $d$ grows.
+
+\begin{theorem}[All initial-length tails and their signs]
+\label{thm:tail}
+For $n\ge3$ and $1\le d\le n$,
+\begin{equation}
+\rho(n)\equiv\delta_nE_d\pmod{10^d},\qquad
+\delta_n=\begin{cases}-1,&n\equiv1\pmod4,\\+1,&n\not\equiv1\pmod4.
+\end{cases}
+\label{eq:tail}
+\end{equation}
+In particular, for every $n\ge10$ the last ten digits of $\rho(n)$ are
+\begin{equation}
+\begin{cases}
+1787109375,&n\equiv1\pmod4,\\
+8212890625,&n\not\equiv1\pmod4.
+\end{cases}
+\label{eq:ten}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Because $5\mid r(n)$, $5^n\mid\rho(n)$.
+If $n$ is even, apply \eqref{eq:lte2general} to $r(n)^n$:
+\[
+\nu_2(\rho(n)-1)=c_2(r(n))+\nu_2(n)=s+\nu_2(n)=n.
+\]
+Hence $\rho(n)\equiv1\pmod{2^n}$.
+If $n$ is odd, $s=n$ and \eqref{eq:main} becomes
+\[
+r(n)=\begin{cases}3\cdot2^n-1,&n\equiv1\pmod4,\\
+3\cdot2^n+1,&n\equiv3\pmod4.
+\end{cases}
+\]
+Raising to the odd exponent $n$ preserves the indicated sign modulo
+$2^n$. Thus in all cases $\rho(n)\equiv\delta_n\pmod{2^n}$.
+Apply the Chinese remainder theorem and reduce to any $d\le n$.
+Finally, direct calculation from \eqref{eq:Edformula} gives
+$E_{10}=8212890625$ and $10^{10}-E_{10}=1787109375$.
+\end{proof}
+
+The ten-digit assertion is stronger than simply choosing one of two
+possible suffixes: it determines which suffix occurs from $n\bmod4$.
+It also starts at $n=10$, one index earlier than the range $n>10$
+specified in the question \cite{mo2025}.
+
+There are two distinct limiting notions in this discussion. The
+compatible residues $E_d$ describe a $10$-adic integer with components
+$(1,0)$ in $\Z_2\times\Z_5$. They are not a claim that the ordinary real
+sequence $\rho(n)$ converges. They describe the minimizing \emph{bases},
+not the eventual tail of a tower formed from one fixed base.
+
+\section{A two-parameter extremal theorem}
+\label{sec:twoparameter}
+
+The proof is not confined to the diagonal where degree and speed coincide.
+For positive integers $k,m$, put
+\[
+R_k(m)=\min\{x>1:10\nmid x,\ V(x^k)=m\}
+\]
+whenever this set is nonempty. Here $k$ is the power degree and $m$ is
+the requested speed.
+
+\begin{theorem}[An explicit region of global minimality]
+\label{thm:two}
+Let
+\[
+s=m-\nu_2(k)\ge2,\qquad t=m-\nu_5(k)\ge1.
+\]
+If
+\begin{equation}
+5^t>B_s^2+1,
+\label{eq:twocriterion}
+\end{equation}
+then $R_k(m)=B_s$, and the least $k$th perfect power of speed $m$ is
+$B_s^k$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:powertransfer}, $B_s$ has exactly the requested speed after
+raising to the $k$th power. It is least among roots divisible by $5$.
+Any competing root not divisible by $5$ has $c_5(x)\ge t$, so
+\cref{lem:barrier} and \eqref{eq:twocriterion} rule it out.
+\end{proof}
+
+\begin{corollary}[Fixed-degree eventual formula]
+\label[corollary]{cor:fixdegree}
+For every fixed $k$, the equality
+\[
+R_k(m)=B_{m-\nu_2(k)}
+\]
+holds for all sufficiently large $m$. A directly checkable sufficient
+condition, in addition to $s\ge2,t\ge1$, is
+\begin{equation}
+\left(\frac54\right)^m\ge
+16\,\frac{5^{\nu_5(k)}}{4^{\nu_2(k)}}.
+\label{eq:explicitwedge}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $s\ge2$,
+\[
+B_s^2+1\le(3\cdot2^s+1)^2+1<16\cdot4^s.
+\]
+Condition \eqref{eq:explicitwedge} gives
+$5^{m-\nu_5(k)}\ge16\cdot4^{m-\nu_2(k)}>B_s^2+1$.
+For fixed $k$, the left side of \eqref{eq:explicitwedge} tends to
+infinity, while the right side is constant.
+\end{proof}
+
+This result gives an effective answer in an infinite region of the
+$(k,m)$ plane. It does not assert that the displayed inequality is
+necessary, nor does it claim a simple formula for every small pair
+outside that region.
+
+\section{Exact densities and what the heuristic was seeing}
+\label{sec:density}
+
+A density argument is not a minimality proof: a sparse set can still
+contain the smallest element. Nevertheless, the local formulas make
+precise the statistical preference for roots divisible by $5$.
+For a subset $A\subseteq\N$, its natural density, when it exists, is
+\[
+\lim_{X\to\infty}\frac{\#(A\cap[1,X])}{X}.
+\]
+All densities below exist because the conditions, apart from the single
+excluded integer $1$, are finite unions of residue classes.
+
+\begin{theorem}[Tail and exact-speed densities]
+\label{thm:density}
+Fix $k,m\ge1$ with $s=m-\nu_2(k)\ge2$ and $t=m-\nu_5(k)\ge1$.
+The density, among all positive integers $x$, of
+\[
+\{x>1:10\nmid x,\ V(x^k)\ge m\}
+\]
+is
+\begin{equation}
+\mathcal D_k(m)=\frac{2^{1-s}}5+\frac2{5^t}
++\frac{2^{3-s}}{5^t}.
+\label{eq:densitytail}
+\end{equation}
+The density of the corresponding set with $V(x^k)=m$ is
+\begin{equation}
+\mathcal E_k(m)=\frac{2^{-s}}5+\frac8{5^{t+1}}
++\frac{9\cdot2^{2-s}}{5^{t+1}}.
+\label{eq:densityexact}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For odd $x$, $c_2(x)\ge s$ is equivalent to
+$x\equiv\pm1\pmod{2^s}$, which occupies $2/2^s$ of all integers.
+For $5\nmid x$, $c_5(x)\ge t$ is equivalent to $x^4\equiv1\pmod{5^t}$.
+There are exactly four roots: $1,-1$, and the two roots of $-1$ from
+\cref{lem:hensel}.
+
+Partition the permitted integers into three disjoint types. Odd
+multiples of $5$ contribute
+$(2/2^s)(1/5)=2^{1-s}/5$. Even integers not divisible by $5$ contribute
+$(1/2)(4/5^t)=2/5^t$. Integers coprime to $10$ contribute
+$(2/2^s)(4/5^t)=2^{3-s}/5^t$. The products follow from the Chinese
+remainder theorem. Their sum proves \eqref{eq:densitytail}.
+For exact speed, subtract the density at threshold $m+1$, which replaces
+$s,t$ by $s+1,t+1$. This gives \eqref{eq:densityexact}.
+\end{proof}
+
+These are densities among \emph{roots} $x$, not among the much sparser
+set of $k$th powers as numbers on the ordinary number line. Also the
+denominator includes all positive integers; conditioning on $10\nmid x$
+would divide the displayed densities by $9/10$.
+
+For the diagonal $k=m=n$, the contribution $2^{-s}/5$ to exact-speed
+density comes from odd multiples of $5$. The ratio of the other two
+contributions to this one is exactly
+\[
+\frac{8\cdot2^s+36}{5^t}.
+\]
+Since $2^s\le2^n$ and $5^t\ge5^n/n$, this ratio tends to zero.
+Thus almost all eligible roots, in the density sense as the parameter
+$n$ grows, belong to the final-digit-$5$ class. This explains the
+heuristic but is logically separate from the proof that the
+\emph{least} root always belongs to that class for $n\ge3$.
+
+\section{Asymptotics and oscillations of the minimum}
+\label{sec:asymptotics}
+
+Write
+\[
+c_s=\begin{cases}1,&s\text{ even},\\3,&s\text{ odd},\end{cases}
+\qquad
+\varepsilon_s=\begin{cases}-1,&s\equiv0,1\pmod4,\\+1,&s\equiv2,3\pmod4.
+\end{cases}
+\]
+Then $r(n)=c_s2^s+\varepsilon_s$ for $n\ge3$.
+
+\begin{proposition}[Logarithmic asymptotics]
+\label[proposition]{prop:asymp}
+As $n\to\infty$,
+\begin{equation}
+\log\rho(n)
+=n\bigl(n-\nu_2(n)\bigr)\log2+n\log c_s
++O\bigl(n2^{-s}\bigr).
+\label{eq:logasymptotic}
+\end{equation}
+Consequently
+\begin{equation}
+\lim_{n\to\infty}\rho(n)^{1/n^2}=2,
+\qquad
+\log_2\rho(n)=n^2+O(n\log n).
+\label{eq:rootlimit}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Factor $r(n)=c_s2^s(1+\varepsilon_s/(c_s2^s))$ and use
+$\log(1+u)=O(u)$ uniformly for $|u|\le1/4$. Multiply by $n$.
+Since $\nu_2(n)\le\log_2 n$, we have
+$s\ge n-\log_2n\to\infty$. Dividing \eqref{eq:logasymptotic} by $n^2$
+then proves both conclusions.
+\end{proof}
+
+Despite the clean quadratic logarithmic growth, the root sequence is
+not monotone. Some adjacent values coincide; others decrease sharply.
+For example, if $n=4j+1\ge5$, then
+\[
+n-\nu_2(n)=n=(n+1)-\nu_2(n+1),
+\]
+so $r(4j+1)=r(4j+2)$.
+
+\begin{proposition}[Complete accumulation set of normalized roots]
+\label[proposition]{prop:accumulation}
+The set of subsequential limits of $r(n)/2^n$ is
+\begin{equation}
+\{0,3\}\ \cup\
+\{3/2^j:j\ge1\text{ odd}\}\ \cup\
+\{1/2^j:j\ge2\text{ even}\}.
+\label{eq:accumulation}
+\end{equation}
+In particular, $\liminf r(n)/2^n=0$ and $\limsup r(n)/2^n=3$.
+\end{proposition}
+\begin{proof}
+Along odd $n$, $s=n$ is odd and the normalized root tends to $3$.
+Along integers with fixed $j=\nu_2(n)\ge1$, the integer $n$ is even, so
+$s=n-j$ is odd precisely when $j$ is odd. Hence
+\[
+\frac{r(n)}{2^n}=\frac{c_s}{2^j}+O(2^{-n})
+\]
+has the indicated limit. Each fixed valuation class contains infinitely
+many integers. Along $n=2^j$ with $j\to\infty$, the ratio tends to zero.
+Conversely, along a subsequence of indices tending to infinity, either
+the $2$-adic valuations have an unbounded subsequence, forcing a further
+limit of zero, or some fixed valuation occurs infinitely often. If the
+original subsequence converges, its limit must be one of these values.
+\end{proof}
+
+The limit $\rho(n)^{1/n^2}\to2$ concerns a sequence of specially chosen
+\emph{bases}. It should not be confused with a bound on the growth of
+$t\mapsto a\uparrow\uparrow t$, which is a different variable and a
+very different sequence.
+
+\section{Algorithms, validation, and reproducibility}
+\label{sec:computing}
+
+\subsection{The constant-size formula is not a tower computation}
+Once $n$ is given, the formula requires the valuation $\nu_2(n)$, a
+residue modulo $4$, a binary shift, and one small multiplication and
+addition. The full root $r(n)$ has $\Theta(n)$ bits, while $\rho(n)$ has
+$\Theta(n^2)$ bits. Thus writing the root or the power has an unavoidable
+output cost. Describing the formula as ``constant time'' would be
+misleading when the input $n$ is encoded in binary.
+
+A direct implementation of the decisive part is:
+\begin{lstlisting}[language=Python]
+def minimum_root(n: int) -> int:
+    if n < 1:
+        raise ValueError("n must be positive")
+    if n == 1:
+        return 2
+    if n == 2:
+        return 7
+    v2 = (n & -n).bit_length() - 1
+    s = n - v2
+    coefficient = 3 if s % 2 else 1
+    sign = -1 if s % 4 in (0, 1) else 1
+    return coefficient * (1 << s) + sign
+\end{lstlisting}
+The accompanying module includes argument validation, speed evaluation,
+modular tails, the exact-degree variant, and command-line support.
+It uses Python's standard library only. To compute the full answer,
+one evaluates \texttt{pow(minimum\_root(n), n)}. Repeated squaring uses
+$O(\log n)$ integer multiplications; their sizes must be included in a
+bit-complexity estimate.
+
+For only the last $d\le n$ decimal digits with $n\ge3$, use
+\cref{thm:tail}; it does not require materializing a root of $\Theta(n)$
+bits. Formula \eqref{eq:Edformula} involves integers with $O(d)$ bits and
+one modular inverse, followed by the sign test on $n\bmod4$.
+
+\subsection{What was actually verified}
+The included run was executed with Python 3.13.5. All tests passed.
+The detailed machine-readable record is \texttt{data/verification.json}.
+The checks deliberately use more than one computational route.
+
+First, the compact speed formula was compared with a separate
+transcription of the published residue-class formula for every
+$a=2,\ldots,20000$ not divisible by $10$: 17,999 comparisons.
+Second, the power-transfer formula was checked against actual integer
+powers and that separate formula for $2\le x\le500$, $10\nmid x$,
+and $1\le k\le30$: 13,470 comparisons.
+
+Third, unrestricted minima were exhaustively searched for
+$1\le n\le20$, using actual values $x^n$ rather than merely checking
+the proposed root. Exact-degree minima were exhaustively searched for
+$1\le n\le15$. Every proposed root was independently checked to have
+speed $n$ through $n=10000$. The first 50 roots agree with the values
+reported by Alekseyev in the source discussion.
+
+Fourth, the integer comparisons in \cref{tab:small} and the Hensel
+certificates in \cref{tab:certs} were regenerated exactly. Modular tail
+identities were checked for $3\le n\le2000$ at lengths
+$1,\min(n,10),\min(n,30)$. A separate perfect-power test checked the
+assertion about $B_s$ for $2\le s\le200$.
+
+Finally, tower residues were computed by an independent modular
+exponentiation routine for 17 representative bases, through tower
+height $14$, with 160 decimal digits of modulus. The resulting
+$D_0,\ldots,D_{13}$ agree with the predicted eventual speeds. The tower
+routine itself was first checked in 88 comparisons with literal towers
+small enough to construct. Several complete residue periods were also
+enumerated to validate the density formula.
+
+The role of these computations is verification and error detection.
+The infinite quantifier in \cref{thm:main} is discharged by
+\cref{lem:cutoff}, not by checking roots through $n=10000$.
+
+\subsection{Reproduction commands}
+From the archive's top-level directory, run
+\begin{lstlisting}[language=bash]
+python code/verify.py
+python code/tetration_minima.py 15 --root-only
+python code/tetration_minima.py 3 --strict
+python code/tetration_minima.py 100 --digits 10
+python code/tetration_minima.py --table roots.csv --count 1000
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The second command prints $98305$; the third prints $166375$.
+The fourth prints \texttt{8212890625}. Running the verification script
+regenerates the CSV files and verification record, including the
+finite certificates. No network access, symbolic algebra system, or
+floating-point computation is required by the mathematical checks.
+Elapsed time in the log is descriptive of that particular run, not a
+portable performance guarantee.
+
+\section{What has been settled and what has not}
+\label{sec:status}
+
+For the definitions in \cref{sec:problem}, the global minimum is now
+given by \eqref{eq:main} for every positive $n$. The proof also determines
+the maximal-degree variant and the precise ten-digit-tail choice.
+The unrestricted minimum and its exact-degree strengthening are not
+conditional on a conjecture or an unverified random-digit assumption.
+
+The historical claim is narrower: the specific conjectural pattern in
+the consulted MathOverflow question and answer is proved here. The
+underlying speed formula, the method of using valuations, the observed
+initial values, and the idea that the final-digit-$5$ branch should
+win all have prior provenance. This report's contribution is the
+explicit global argument based on the quadratic barrier, together with
+the closed formula and the derived refinements. The sources checked
+are not an exhaustive review of all unpublished notes or discussions.
+Independent review remains appropriate before making a formal priority
+claim or submitting the result for publication.
+
+The two-parameter theorem leaves small pairs outside its sufficient
+region untreated, and no arbitrary-radix analogue is proved. A natural
+next problem is to determine which radices admit a similarly simple
+extremal branch. The crucial feature here is that a $5$-adic fourth-root
+condition factors into pieces of degree at most two, making a
+$5^{m/2}$ size barrier available. In another radix, the relevant
+cyclotomic factors and competing prime-adic slopes can change the
+comparison. Such an extension would require its own proof rather than
+a formal replacement of the number $10$.
+
+\appendix
+\section{A short proof suitable for checking independently}
+\label{app:short}
+
+For a reader willing to use the known congruence-speed formula, the
+entire main argument compresses to the following.
+For odd $x>1$, put $c_2(x)=\nu_2(x^2-1)-1$; for $5\nmid x>1$, put
+$c_5(x)=\nu_5(x^4-1)$. Lifting gives
+$c_2(x^n)=c_2(x)+\nu_2(n)$ and
+$c_5(x^n)=c_5(x)+\nu_5(n)$.
+
+Set $s=n-\nu_2(n)$ and $t=n-\nu_5(n)$. The least odd multiple of $5$
+with $c_2(x)=s\ge2$ is $B_s$, by solving
+$x=j2^s\pm1$ with $j$ odd and then reducing modulo $5$.
+It yields $V(B_s^n)=n$.
+
+Any other competing root must satisfy $c_5(x)\ge t$. Since exactly one
+of $x-1,x+1,x^2+1$ is divisible by $5$, it follows that
+$x^2+1\ge5^t$. Hence $5^t>B_s^2+1$ proves global minimality.
+For $n\ge25$, use
+\[
+5^t\ge5^n/n>(3\cdot2^n+1)^2+1\ge B_s^2+1;
+\]
+the middle inequality follows from its checked value at $25$ and the
+ratio argument in \cref{lem:cutoff}.
+
+For $3\le n\le24$, the same inequality fails only at
+$3,5,7,9,10,15$. At those indices, use respectively the smaller roots
+$57,182,1068,32318,32318,110443$ of $-1$ modulo
+$5^3,5^4,5^5,5^7,5^7,5^8$. They and the least nontrivial $\pm1$
+residues exceed $B_s$. This excludes every remaining competitor.
+Checking $n=1,2$ gives $2$ and $7$.
+
+This summary uses only finitely many small, explicit arithmetic
+certificates. The longer article proves the speed formula and the
+lifting steps as well.
+
+\section{Tables and archive inventory}
+\label{app:data}
+
+\subsection{First twenty-five minimizing roots}
+\begin{center}
+\begin{tabular}{rr@{\qquad\qquad}rr@{\qquad\qquad}rr}
+\toprule
+$n$&$r(n)$&$n$&$r(n)$&$n$&$r(n)$\\
+\midrule
+1&2&10&1535&19&1572865\\
+2&7&11&6145&20&262145\\
+3&25&12&1025&21&6291455\\
+4&5&13&24575&22&6291455\\
+5&95&14&24575&23&25165825\\
+6&95&15&98305&24&6291455\\
+7&385&16&4095&25&100663295\\
+8&95&17&393215&&\\
+9&1535&18&393215&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the exact-degree sequence, replace only the root at $n=3$ by $55$.
+The desired base is the $n$th power of the root in this table.
+
+\subsection{A lifting chain for square roots of \texorpdfstring{$-1$}{-1}}
+The following chain starts at $2\pmod5$ and follows its unique lift.
+The other root is the negative modulo $5^k$.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$k$&$5^k$&lift of $2\pmod5$&smaller root $d_k$\\
+\midrule
+1&5&2&2\\
+2&25&7&7\\
+3&125&57&57\\
+4&625&182&182\\
+5&3125&2057&1068\\
+6&15625&14557&1068\\
+7&78125&45807&32318\\
+8&390625&280182&110443\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Included files}
+\begin{description}[style=nextline,leftmargin=1em,labelwidth=0pt,labelindent=0pt]
+\item[\texttt{article.tex}, \texttt{article.pdf}]
+The complete source and rendered article.
+\item[\texttt{code/tetration\_minima.py}]
+The exact formulas, speed functions, Hensel lifts, tails, strict variant,
+and command-line interface.
+\item[\texttt{code/verify.py}]
+Independent exhaustive checks and generation of all finite certificates.
+\item[\texttt{data/minimum\_roots\_1\_1000.csv}]
+The first 1000 roots, their valuation parameters, and checked speeds.
+\item[\texttt{data/rho\_1\_50.txt}]
+The first 50 complete integers $\rho(n)$ in index--value format.
+\item[\texttt{data/finite\_certificates.csv}, \texttt{data/small\_range.csv}]
+Machine-readable versions of the finite proof calculations.
+\item[\texttt{data/verification.json}, \texttt{data/verification.log}]
+The validation results, including independent tower checks.
+\item[\texttt{README.md}, \texttt{sources.md}, \texttt{build.sh}]
+Usage notes, source provenance and status, and a simple build command.
+\end{description}
+
+\begin{thebibliography}{9}
+\bibitem{ripa2020}
+M.~Rip\`a,
+\emph{On the constant congruence speed of tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{26} (2020),
+no.~3, 245--260.
+\href{https://doi.org/10.7546/nntdm.2020.26.3.245-260}
+{doi:10.7546/nntdm.2020.26.3.245-260}.
+
+\bibitem{ripa2021}
+M.~Rip\`a,
+\emph{The congruence speed formula},
+Notes on Number Theory and Discrete Mathematics \textbf{27} (2021),
+no.~4, 43--61.
+\href{https://doi.org/10.7546/nntdm.2021.27.4.43-61}
+{doi:10.7546/nntdm.2021.27.4.43-61}.
+Also \href{https://arxiv.org/abs/2208.02622}{arXiv:2208.02622} (2022).
+
+\bibitem{ripaonnis2022}
+M.~Rip\`a and L.~Onnis,
+\emph{Number of stable digits of any integer tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{28} (2022),
+no.~3, 441--457.
+\href{https://doi.org/10.7546/nntdm.2022.28.3.441-457}
+{doi:10.7546/nntdm.2022.28.3.441-457}.
+
+\bibitem{mo2025}
+M.~Rip\`a (question) and M.~Alekseyev (answer),
+\emph{Closed form for the general term of
+$2,49,15625,625,\ldots$},
+MathOverflow, question 487698, 12--14 February 2025.
+\url{https://mathoverflow.net/questions/487698/}.
+Question, answer, and associated conjectural statements checked
+19 September 2026.
+
+\bibitem{ripa2026}
+M.~Rip\`a,
+\emph{On the relation between perfect powers and tetration frozen digits},
+Journal of AppliedMath \textbf{2} (2024), no.~5, Article 1771.
+\href{https://doi.org/10.59400/jam1771}{doi:10.59400/jam1771}.
+Also \href{https://arxiv.org/abs/2602.00252}{arXiv:2602.00252v1},
+30 January 2026.
+Cited for the existence program and context, not as a proof of the
+extremal theorem established here.
+\end{thebibliography}
+\end{document}

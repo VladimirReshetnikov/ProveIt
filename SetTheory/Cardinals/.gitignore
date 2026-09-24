@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: MIT-0
+
+# --- LaTeX build products ---------------------------------------------------
+# Rebuilt PDFs (synthesis/report.pdf, the archives' reports, the preprint) are
+# tracked on purpose; only auxiliary files are ignored.  LaTeX build logs are
+# ignored only in the directories where documents are compiled; the recorded
+# evidence logs (reports/*/results, reports/*/validation, fast/results) stay
+# tracked.
+*.aux
+*.bbl
+!docs/arXiv-2607.23350v1/*.bbl
+!docs/reports/**/*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+*-blx.bib
+*.dvi
+synthesis/*.log
+docs/arXiv-2607.23350v1/*.log
+reports/*/docs/*.log
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Archives supplied as inputs (their extracted contents are tracked) ------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# --- Editors and operating systems ------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Lean / Lake ---------------------------------------------------------------
+.lake/
+
+# --- Large regenerable report artifacts ------------------------------------
+# These are rebuilt byte-for-byte by each package's own generator, and each
+# package README gives the command.  They are ignored so that regenerating
+# them locally does not put tens of megabytes back into the history.
+docs/reports/automata-and-formal-languages/dzyga-synchronizing-retract/certificates/
+docs/reports/automata-and-formal-languages/shuffle-six-state-bound/data/certificates.jsonl
+docs/reports/automata-and-formal-languages/shuffle-six-state-bound/data/certificates_masks.jsonl
+docs/reports/automata-and-formal-languages/shuffle-six-state-bound/data/certificates.txt
+docs/reports/automata-and-formal-languages/shuffle-six-state-bound/certificates/cores.cert
+docs/reports/hankel-determinants/growth-and-runs/apery-hankel-determinant-growth/data/determinants_0_200.txt
+docs/reports/congruences-and-valuations/a000139-binary-carries-parity/data/dyadic_histograms.csv
+docs/reports/enumerative-combinatorics/lucky-parking-spots/data/triangle.csv
+docs/reports/congruences-and-valuations/supercongruences/a348410-all-prime-congruences/data/denominator12.csv
+docs/reports/congruences-and-valuations/supercongruences/a352373-signed-binomial-supercongruences/results/family_cases.csv
+docs/reports/enumerative-combinatorics/magic-positivity-parking-polytopes/data/certificates/
+docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant/data/digit_sample.bin
+docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth/data/coefficients.txt
+docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics/data/diagnostics.csv
+docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics/data/a277364_exact.txt
+docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277280-hermite-maximum/data/computed_b277280_0_1000.txt

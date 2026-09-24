@@ -1,0 +1,1204 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{accent}{HTML}{45634B}
+\definecolor{ink}{HTML}{24302A}
+\definecolor{soft}{HTML}{F2F4ED}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+  pdftitle={Product formulas for ballot-polynomial Hankel determinants},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Proofs of Cigler's Conjectures 13--15 and strict log-concavity}}
+\titleformat{\section}{\large\bfseries\color{accent}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ballot-polynomial Hankel determinants}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ct}[2]{[#1]#2}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rising}[2]{(#1)_{#2}}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\ord}{ord}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{black!15},backgroundcolor=\color{soft},
+  keepspaces=true,showstringspaces=false}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\color{accent}\small DISCRETE MATHEMATICS \quad / \quad EXACT DETERMINANT EVALUATION}\par
+\vspace{0.6em}
+{\LARGE\bfseries Product formulas for\par
+ballot-polynomial Hankel determinants}\par
+\vspace{0.6em}
+{\large Proofs of Cigler's Conjectures 13--15,\par
+with strict log-concavity and coefficient asymptotics}\par
+\vspace{1em}
+{\normalsize A research report prepared for Vladimir Reshetnikov}\par
+{\small 19 September 2026}
+\end{center}
+\vspace{0.5em}
+\begin{abstract}
+We study the shifted Hankel determinants of the ballot polynomials
+\(a_m(t)=\sum_{h\le m/2}(\binom mh-\binom m{h-1})t^h\).
+An explicit evaluation expresses every normalized determinant as a sum of
+only \(\lfloor k/2\rfloor+1\) monomials, whose coefficients are products
+of two elementary Vandermonde-type factors. This establishes the sign,
+support, and positivity asserted in Conjecture 13 of Cigler's 2021 paper.
+The same products are polynomial in the matrix size on each parity class.
+Their degree and a negative-index reflection establish the rational
+generating functions, exact numerator degrees, and reciprocity identities
+of Conjectures 14 and 15. Moreover, all the residual coefficient sequences
+are strictly log-concave, and after normalization they converge to a
+binomial distribution for fixed shift. The proof is self-contained: a
+block determinant reduces an \(n\)-by-\(n\) Hankel determinant to a
+\(k\)-by-\(k\) coefficient determinant; a two-term orthogonal-polynomial
+connection then collapses its expansion to parity-separated Vandermondes.
+Exact verification code, symbolic numerator data, and coefficient tables
+accompany the article.
+\end{abstract}
+
+\section{The selected problem and the outcome}\label{sec:problem}
+The problem is a small, sharply delimited part of Johann Cigler's paper
+\emph{Hankel determinants of middle binomial coefficients and conjectures
+for some polynomial extensions and modifications}
+\cite{Cigler2021}. Section 5, pages 19--21 of version 3, poses three
+conjectures about the same family of determinants. Their combination is
+particularly suitable for a direct attack: the moments have a very simple
+orthogonal-polynomial recurrence, and the predicted support of the
+normalized determinant is strikingly small.
+
+For integers \(m\ge0\), put
+\begin{equation}\label{eq:ballot}
+ a_m(t)=\sum_{h=0}^{\lfloor m/2\rfloor}
+ \left(\binom mh-\binom m{h-1}\right)t^h,
+ \qquad \binom m{-1}=0.
+\end{equation}
+The first polynomials are
+\[
+ 1,\quad 1,\quad 1+t,\quad 1+2t,\quad
+ 1+3t+2t^2,\quad 1+4t+5t^2.
+\]
+At \(t=1\), the sum telescopes to
+\(a_m(1)=\binom m{\lfloor m/2\rfloor}\), the middle binomial
+coefficients, OEIS A001405 \cite{OEIS1405}.
+Define
+\begin{equation}\label{eq:hankel}
+ \Delta_k(n,t)=\det\bigl(a_{k+i+j}(t)\bigr)_{0\le i,j<n},
+ \qquad
+ \delta_k(n,t)=\frac{\Delta_k(n,t)}{t^{\binom n2}}.
+\end{equation}
+The empty determinant is 1. We first interpret the quotient over
+\(\Q(t)\); the proof below shows that it is a polynomial, so its value
+at \(t=0\) is obtained by polynomial specialization, not division by zero.
+
+Write \(F_k(x,t)=\sum_{n\ge0}\delta_k(n,t)x^n\).
+Here is the exact scope of the three published conjectures, in our indexing.
+For \(k\ge1\), set
+\begin{equation}\label{eq:e-d}
+ e_k(n)=\left\lfloor\frac{k(n-1)+1}{2}\right\rfloor,
+ \qquad r=\lfloor k/2\rfloor,
+ \qquad d_k=\lfloor k^2/4\rfloor.
+\end{equation}
+Conjecture 13 predicts
+\begin{equation}\label{eq:c13}
+ \delta_k(n,t)=(-1)^{k\binom n2}t^{e_k(n)}\rho_k(n,t),
+ \qquad \deg_t\rho_k(n,t)=r,
+\end{equation}
+with positive coefficients. For \(n\ge1\), we prove positivity of
+\emph{every} coefficient of \(t^0,\ldots,t^r\).
+At the empty-matrix boundary, \(\rho_k(0,t)=t^r\); it is best to state
+that boundary separately rather than include it in a strict-positivity
+assertion.
+
+Conjecture 14 predicts
+\begin{align}
+ F_{2r}(x,t)&=
+ \frac{A_{2r}(x,t)}{(1-t^r x)(1-t^{2r}x^2)^{r^2}},
+ &\deg_x A_{2r}&=2r(r-1)+1, \quad r\ge1,\label{eq:c14even}\\
+ F_{2r+1}(x,t)&=
+ \frac{A_{2r+1}(x,t)}{(1+t^{2r+1}x^2)^{r^2+r+1}},
+ &\deg_x A_{2r+1}&=2r^2+1, \quad r\ge0.\label{eq:c14odd}
+\end{align}
+Conjecture 15 predicts the two reciprocity identities
+\begin{align}
+ x^{2r(r-1)+1}t^{2r^2(r-1)}
+ A_{2r}(x^{-1},t^{-1})&=A_{2r}(x,t),\label{eq:c15even}\\
+ (-1)^r x^{2r^2+1}t^{(2r+1)r^2}
+ A_{2r+1}(x^{-1},t^{-1})&=A_{2r+1}(x,t).\label{eq:c15odd}
+\end{align}
+We prove all these formulas. The prescribed denominators are not asserted
+to remain reduced after every specialization of \(t\).
+
+\paragraph{Status and attribution.}
+The cited source is arXiv:2111.14492v3, revised 30 December 2021, where
+these statements are explicitly labeled conjectures. A targeted literature
+search conducted for this report, through 19 September 2026, did not locate
+a subsequent proof of these particular Section 5 statements. That search
+is not a certification of priority. The mathematical claim here is that
+the detailed argument below proves the displayed statements; the report
+has not undergone external peer review or proof-assistant verification.
+Orthogonal-polynomial reductions of Hankel determinants are established
+techniques, not a claimed invention of this report; related general
+results appear in \cite{CK2020,K2021}. The useful specialization here is
+the collapse to one deleted column and the resulting explicit coefficient
+products.
+
+\paragraph{Road map.}
+Section~\ref{sec:product} gives the product evaluation. Sections
+\ref{sec:moments}--\ref{sec:proof} prove it from first principles.
+Section~\ref{sec:logconcavity} strengthens positivity to strict
+log-concavity. Sections~\ref{sec:poly}--\ref{sec:reciprocity} derive the
+polynomial dependence, asymptotics, generating functions, and reciprocity.
+The final sections discuss computation, examples, and reproducibility.
+
+\section{An explicit coefficient product}\label{sec:product}
+It is convenient to keep a second weight:
+\begin{equation}\label{eq:two-weights}
+ a_m(u,t)=\sum_{h=0}^{\lfloor m/2\rfloor}
+ \left(\binom mh-\binom m{h-1}\right)u^{m-2h}t^h.
+\end{equation}
+Define \(\Delta_k(n;u,t)\) and \(\delta_k(n;u,t)\) as in
+\eqref{eq:hankel}, with these moments. Setting \(u=1\) recovers the
+original problem.
+
+\begin{definition}\label{def:coeff}
+For \(k\ge1\) and an integer \(n\), let
+\begin{equation}\label{eq:admissible}
+ \mathcal A_{k,n}=
+ \begin{cases}
+  \{0,2,\ldots,k\},&k\text{ even},\\
+  \{a:0\le a\le k,\ a\equiv n\pmod2\},&k\text{ odd}.
+ \end{cases}
+\end{equation}
+For \(a\in\mathcal A_{k,n}\), delete one integer from a consecutive
+interval:
+\[
+ S_{k,n,a}=\{n-1,n,\ldots,n+k-1\}\setminus\{n+a-1\}.
+\]
+From its even and odd elements form the increasing lists
+\[
+ E=\bigl(d/2:d\in S_{k,n,a},\ d\text{ even}\bigr),
+ \qquad
+ O=\bigl((d-1)/2:d\in S_{k,n,a},\ d\text{ odd}\bigr).
+\]
+Their lengths are \(e=\lceil k/2\rceil\) and \(o=\lfloor k/2\rfloor\).
+Define
+\begin{align}
+ V_E(E)&=
+ \frac{\displaystyle\prod_{p<q}(E_q-E_p)(E_q+E_p+1)}
+ {\displaystyle\prod_{i=0}^{e-1}(2i)!},\label{eq:VE}\\
+ V_O(O)&=
+ \frac{\displaystyle\prod_{p=0}^{o-1}(O_p+1)
+       \prod_{p<q}(O_q-O_p)(O_q+O_p+2)}
+ {\displaystyle\prod_{i=0}^{o-1}(2i+1)!},\label{eq:VO}\\
+ C_{k,a}(n)&=V_E(E)V_O(O).\label{eq:C}
+\end{align}
+All products over empty sets are 1.
+\end{definition}
+
+\begin{theorem}[Product evaluation]\label{thm:main}
+For \(k,n\ge1\), every \(C_{k,a}(n)\) is a positive integer, and
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle
+ \delta_k(n;u,t)=(-1)^{k\binom n2}
+  \sum_{a\in\mathcal A_{k,n}}
+   C_{k,a}(n)\,u^a\,t^{(kn-a)/2}.}
+\end{equation}
+In particular, this normalized determinant contains exactly
+\(\lfloor k/2\rfloor+1\) nonzero monomials before specializing \(u\).
+\end{theorem}
+
+To read off \(\rho_k\), put
+\[
+ \eps=\begin{cases}1,&k\text{ and }n\text{ both odd},\\0,&\text{otherwise}.
+ \end{cases}
+ \qquad
+ b_j=C_{k,\eps+2j}(n)\quad(0\le j\le r).
+\]
+Then
+\begin{equation}\label{eq:rho-b}
+ \rho_k(n,t)=\sum_{j=0}^r b_j t^{r-j}.
+\end{equation}
+Indeed, the least exponent in \eqref{eq:main} is
+\((kn-\eps-2r)/2=e_k(n)\), and the largest is
+\((kn-\eps)/2=\lfloor kn/2\rfloor\).
+Consequently Theorem~\ref{thm:main} proves Conjecture 13, including both
+ends of the support; it proves more than a bound on the degree.
+
+\begin{example}\label{ex:k4n2}
+Take \(k=4\), \(n=2\). The degree interval is \(1,2,3,4,5\), and
+\(a=0,2,4\) deletes respectively \(1,3,5\). In all three cases
+\(E=(1,2)\), so \(V_E=2\). The corresponding odd lists are
+\((1,2),(0,2),(0,1)\), giving \(V_O=5,4,1\). Thus
+\[
+ (b_0,b_1,b_2)=(10,8,2),\qquad
+ \delta_4(2;u,t)=10t^4+8u^2t^3+2u^4t^2.
+\]
+Since \(e_4(2)=2\), the residual polynomial is
+\(\rho_4(2,t)=2+8t+10t^2\).
+\end{example}
+
+\section{The moments and their orthogonal polynomials}\label{sec:moments}
+\subsection{A weighted path model and the moment generating function}
+Consider nonnegative lattice paths that start and end at height 0.
+An up-step raises the height by 1 and has weight 1; a down-step lowers it
+by 1 and has weight \(t\). Horizontal steps are permitted only at height
+0 and have weight \(u\). Length is marked by \(w\). The unweighted
+interpretation is the dispersed-Dyck-path model associated with the middle
+binomial coefficients \cite{Cigler2021,OEIS1405}.
+
+Let \(C(v)\) be the Catalan generating function, uniquely determined by
+\(C(v)=1+vC(v)^2\), \(C(0)=1\). A path is a sequence of either a
+horizontal step or a positive excursion. A positive excursion contributes
+\(tw^2C(tw^2)\). Therefore its generating function is
+\begin{align}
+ M(w;u,t)&=\frac{1}{1-uw-tw^2C(tw^2)}\notag\\
+ &=\frac{C(tw^2)}{1-uwC(tw^2)}
+ =\frac{2}{1-2uw+\sqrt{1-4tw^2}}.\label{eq:M}
+\end{align}
+For completeness, the identity \(1-vC(v)=1/C(v)\) gives the second
+expression directly from the first. Expanding it in powers of \(u\)
+gives
+\[
+ M(w;u,t)=\sum_{s\ge0}u^sw^s C(tw^2)^{s+1}.
+\]
+Lagrange inversion applied to \(C-1=vC^2\) gives
+\[
+ [v^h]C(v)^{s+1}
+ =\frac{s+1}{2h+s+1}\binom{2h+s+1}{h}.
+\]
+With \(m=s+2h\), this is
+\(\binom mh-\binom m{h-1}\). Hence
+\([w^m]M(w;u,t)=a_m(u,t)\), proving that the path model has exactly
+our moments. This also explains the homogeneous weight relation
+\(u\mapsto\lambda u\), \(t\mapsto\lambda^2t\).
+
+\subsection{A tridiagonal operator}
+Work initially over the field \(\Q(u,t)\). On a vector space with basis
+\(e_0,e_1,\ldots\), define
+\[
+ J e_0=e_1+u e_0,\qquad
+ J e_h=e_{h+1}+t e_{h-1}\quad(h\ge1).
+\]
+For a polynomial \(f\), let
+\(L(f)=[e_0]f(J)e_0\). The path interpretation gives
+\(L(z^m)=a_m(u,t)\).
+
+Define monic polynomials
+\begin{equation}\label{eq:U}
+ U_{-1}(z;t)=0,\qquad U_0(z;t)=1,\qquad
+ U_m(z;t)=zU_{m-1}(z;t)-tU_{m-2}(z;t)\quad(m\ge1),
+\end{equation}
+and put
+\begin{equation}\label{eq:P}
+ P_m(z)=U_m(z;t)-uU_{m-1}(z;t)\quad(m\ge0).
+\end{equation}
+Thus \(P_0=1\), \(P_1=z-u\), and
+\(P_m=zP_{m-1}-tP_{m-2}\) for \(m\ge2\).
+These are rescaled Chebyshev polynomials with a one-term perturbation of
+the initial condition; no special-function facts are needed below.
+
+An induction gives \(P_m(J)e_0=e_m\): the cases \(m=0,1\) follow
+from the definition of \(J\), and the recurrence advances the identity.
+Consequently
+\begin{equation}\label{eq:orthogonal}
+ L(z^iP_m)=0\quad(i<m),\qquad L(z^mP_m)=t^m.
+\end{equation}
+The second equality follows because the only length-\(m\) path from
+height \(m\) to height 0 consists of \(m\) down-steps.
+Since the \(P_m\) are monic, \eqref{eq:orthogonal} also gives
+\(L(P_iP_j)=0\) for \(i\ne j\) and \(L(P_j^2)=t^j\).
+Changing from monomials to the monic \(P_j\)'s in a Gram determinant
+therefore proves
+\begin{equation}\label{eq:unshifted}
+ \Delta_0(n;u,t)=\prod_{j=0}^{n-1}t^j=t^{\binom n2}.
+\end{equation}
+
+\subsection{A self-contained small-determinant reduction}
+\begin{lemma}\label{lem:reduction}
+For \(k,n\ge0\),
+\begin{equation}\label{eq:small}
+ \delta_k(n;u,t)=(-1)^{nk}
+ \det\bigl([z^i]P_{n+j}(z)\bigr)_{0\le i,j<k}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Form an \((n+k)\)-by-\((n+k)\) matrix whose columns are indexed by
+\(P_0,\ldots,P_{n+k-1}\). Its first \(n\) rows are the functionals
+\(f\mapsto L(z^if)\), \(0\le i<n\), and its last \(k\) rows are
+\(f\mapsto[z^i]f\), \(0\le i<k\).
+By \eqref{eq:orthogonal}, its upper right block is zero and the upper
+left block is triangular with diagonal \(1,t,\ldots,t^{n-1}\).
+Thus its determinant is
+\[
+ t^{\binom n2}\det\bigl([z^i]P_{n+j}\bigr)_{0\le i,j<k}.
+\]
+Replace the monic-polynomial columns by the monomial columns
+\(1,z,\ldots,z^{n+k-1}\). The change-of-basis determinant is 1.
+The bottom \(k\) rows are now an identity block in the first \(k\)
+columns and zero elsewhere. Expanding along these rows produces the sign
+\((-1)^{nk}\). The remaining matrix is
+\((L(z^{k+i+j}))_{0\le i,j<n}\), whose determinant is
+\(\Delta_k(n;u,t)\). Equating the two expressions and using
+\eqref{eq:unshifted} proves the assertion.
+\end{proof}
+This proof isolates the familiar orthogonal-polynomial reduction rather
+than treating it as a black box. The remaining work is a special
+evaluation of its right-hand side.
+
+\section{Why only a few minors survive}\label{sec:proof}
+\subsection{The two-term connection collapses the expansion}
+Expand the determinant in \eqref{eq:small} using
+\(P_{n+j}=U_{n+j}-uU_{n+j-1}\). A priori there are \(2^k\)
+choices. Call the first choice in a column \emph{unshifted} and the
+second \emph{shifted}. If an unshifted column is followed immediately
+by a shifted column, both selected polynomials are \(U_{n+j}\), so that
+term vanishes. Every binary choice pattern other than a shifted prefix
+followed by an unshifted suffix has such an adjacent pair. Therefore
+only \(k+1\) terms can survive.
+
+If the shifted prefix has length \(a\), its scalar coefficient is
+\((-u)^a\), and its increasing list of polynomial indices is precisely
+\(S_{k,n,a}\): it is the interval \(n-1,\ldots,n+k-1\) with
+\(n+a-1\) omitted. Each \(U_d\) has the parity of \(d\). There
+are \(e=\lceil k/2\rceil\) even coefficient rows and
+\(o=\lfloor k/2\rfloor\) odd rows in \eqref{eq:small}. A term vanishes
+unless the selected column parities have exactly those multiplicities.
+Counting the two parities in the consecutive interval gives exactly
+\(a\in\mathcal A_{k,n}\), leaving \(r+1\) terms.
+
+\subsection{Vandermonde evaluation of the two blocks}
+The recurrence \eqref{eq:U} implies
+\[
+ U_d(z;t)=\sum_{h=0}^{\lfloor d/2\rfloor}
+  (-t)^h\binom{d-h}{h}z^{d-2h}\qquad(d\ge0).
+\]
+In particular,
+\begin{align}
+ [z^{2i}]U_{2m}(z;t)&=(-t)^{m-i}\binom{m+i}{2i},\label{eq:evenentry}\\
+ [z^{2i+1}]U_{2m+1}(z;t)&=(-t)^{m-i}\binom{m+i+1}{2i+1}.\label{eq:oddentry}
+\end{align}
+The binomial factors have useful polynomial forms:
+\begin{align}
+ \binom{m+i}{2i}
+ &=\frac{\displaystyle\prod_{h=0}^{i-1}
+       \bigl(m(m+1)-h(h+1)\bigr)}{(2i)!},\label{eq:quadE}\\
+ \binom{m+i+1}{2i+1}
+ &=\frac{m+1}{(2i+1)!}
+    \prod_{h=1}^{i}\bigl((m+1)^2-h^2\bigr).\label{eq:quadO}
+\end{align}
+For the even block, the row indexed by \(i\), apart from its factorial
+factor, is a monic degree-\(i\) polynomial in \(m(m+1)\).
+Its determinant is therefore the Vandermonde determinant in those
+quadratic arguments. Since
+\[
+ E_q(E_q+1)-E_p(E_p+1)
+ =(E_q-E_p)(E_q+E_p+1),
+\]
+it evaluates to \(V_E(E)\).
+For the odd block, first factor \(m+1\) from each column and apply the
+same argument to the squared arguments \((m+1)^2\). This gives
+\(V_O(O)\).
+
+This argument also proves integrality without an appeal to divisibility
+properties of the product expressions: \(V_E\) and \(V_O\) are
+respectively the determinants of the integer matrices
+\[
+ \left(\binom{E_j+i}{2i}\right)_{0\le i,j<e},\qquad
+ \left(\binom{O_j+i+1}{2i+1}\right)_{0\le i,j<o}.
+\]
+When \(n\ge1\), all nodes are nonnegative, every node difference is
+positive, and every sum factor appearing in these products is positive.
+The factors \(O_j+1\) are positive as well. Thus both determinants
+are positive integers.
+
+Factoring the powers of \((-t)\) in
+\eqref{eq:evenentry}--\eqref{eq:oddentry} contributes the exponent
+\[
+ W=\sum E_j+\sum O_j-\binom e2-\binom o2.
+\]
+The selected degrees have sum
+\(kn+k(k-1)/2-a\). Since their sum also equals
+\(2\sum E_j+2\sum O_j+o\), substitution gives
+\begin{equation}\label{eq:W}
+ W=(kn-a)/2.
+\end{equation}
+
+\subsection{The common sign}
+The positivity calculation must not hide the determinant signs. Let
+\(R\) be the number of odd-before-even pairs in the row order
+\(0,1,\ldots,k-1\), and let \(I(S)\) be the corresponding number
+in the increasing selected degree list. Permuting both lists into even
+and odd blocks has sign \((-1)^{R+I(S)}\). Including
+\eqref{eq:small}, the prefix coefficient \((-u)^a\), and
+\eqref{eq:W}, the overall sign exponent is
+\begin{equation}\label{eq:signexp}
+ nk+a+(kn-a)/2+R+I(S).
+\end{equation}
+When \(a\) is increased by 2 within the admissible set, the selected
+parity word changes by interchanging one adjacent even--odd pair.
+Thus \(I(S)\) changes parity. At the same time \((kn-a)/2\)
+decreases by 1 and \(a\) increases by 2. The total sign is unchanged.
+It suffices to check the smallest admissible \(a\).
+
+For even \(n\), that index is 0 and both parity words begin with an
+even element, so \(I(S)=R\). Formula \eqref{eq:signexp} then has
+parity \(kn/2\), which agrees with \(k\binom n2\).
+For odd \(n\), the two cases are
+\[
+\begin{array}{c|c|c|c}
+ k & a_{\min} & R & I(S)\\ \hline
+ 2r & 0 & r(r-1)/2 & r(r+1)/2\\
+ 2r+1 & 1 & r(r+1)/2 & r(r-1)/2.
+\end{array}
+\]
+For \(k=2r\), \(R+I(S)=r^2\) and \((kn-a)/2=rn\), so
+the resulting sign is positive, as required. For \(k=2r+1\),
+\eqref{eq:signexp} has parity \((n-1)/2\), which is the parity of
+\(k\binom n2\). We have therefore proved that every surviving term
+has the sign \((-1)^{k\binom n2}\).
+Together with the product evaluation and \eqref{eq:W}, this completes
+the proof of Theorem~\ref{thm:main}.
+
+\section{Strict log-concavity: a stronger conclusion}\label{sec:logconcavity}
+The product evaluation gives more than positivity. The dependence on the
+deleted node can be made almost one-dimensional.
+
+\begin{theorem}[Adjacent ratios]\label{thm:ratios}
+Let \(k,n\ge1\), \(r=\lfloor k/2\rfloor\), and
+\(b_j=C_{k,\eps+2j}(n)\). If it is not the case that \(k\) is even
+and \(n\) is odd, put \(L=n+(n\bmod2)\). Then
+\begin{equation}\label{eq:ratioRegular}
+ \frac{b_{j+1}}{b_j}
+ =\frac{(r-j)(L+j)}{(j+1)(L+r+j+1)}\quad(0\le j<r).
+\end{equation}
+In the remaining case, \(k\) even and \(n\) odd,
+\begin{equation}\label{eq:ratioExceptional}
+ \frac{b_{j+1}}{b_j}
+ =\frac{(r-j)(n+j)(n+2j+2)}
+ {(j+1)(n+r+j+1)(n+2j)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+All dependence on \(j\) occurs in the parity block from which one
+node is deleted. In the first set of cases that block is the odd block.
+Its full node list, before deletion, can be written
+\(m+1=L/2+\ell\), \(0\le\ell\le r\).
+Deleting \(\ell=j\) removes one column factor and every
+Vandermonde factor involving that column. Ignoring a positive factor
+independent of \(j\), the remaining determinant equals
+\begin{equation}\label{eq:bRegular}
+ b_j=\frac{K}{j!(r-j)!\,\rising{L+j}{r+1}},
+ \qquad K>0.
+\end{equation}
+To see the cancellation explicitly, the product of the removed node
+sums is
+\(\rising{L+j}{r+1}/(L+2j)\), whereas the removed odd column factor
+is \(L/2+j\). Their quotient supplies the constant factor 2, which
+is absorbed in \(K\). Here \((z)_s=z(z+1)\cdots(z+s-1)\).
+
+For even \(k\) and odd \(n\), the deleted block is instead the even
+block, with full nodes \(m=(n-1)/2+\ell\). There is no odd column
+factor to cancel the omitted diagonal sum. The corresponding expression is
+\begin{equation}\label{eq:bExceptional}
+ b_j=\frac{K(n+2j)}{j!(r-j)!\,\rising{n+j}{r+1}},
+ \qquad K>0.
+\end{equation}
+Taking adjacent quotients in \eqref{eq:bRegular} and
+\eqref{eq:bExceptional} gives the two stated formulas.
+\end{proof}
+
+\begin{corollary}[Strict log-concavity]\label{cor:logconcavity}
+For every \(k,n\ge1\), the positive coefficient sequence of
+\(\rho_k(n,t)\) is strictly log-concave at every interior position.
+Equivalently,
+\begin{equation}\label{eq:logconcavity}
+ b_j^2>b_{j-1}b_{j+1}\qquad(1\le j\le r-1).
+\end{equation}
+Consequently the coefficient sequence is unimodal. When \(r<2\), the
+strict inequalities have no interior indices and are vacuous.
+\end{corollary}
+\begin{proof}
+For real \(0\le y<r\), define
+\[
+ R_L(y)=\frac{(r-y)(L+y)}{(y+1)(L+r+y+1)}.
+\]
+Since \(L\ge1\),
+\[
+ \frac{d}{dy}\log R_L(y)
+ =-\frac1{r-y}+\frac1{L+y}-\frac1{y+1}
+  -\frac1{L+r+y+1}<0.
+\]
+Indeed, the middle two terms sum to a nonpositive number and the other
+two are negative. The exceptional ratio is \(R_n(y)\) multiplied by
+\((n+2y+2)/(n+2y)\), another positive strictly decreasing function.
+Thus the positive adjacent ratios \(b_{j+1}/b_j\) strictly decrease
+in both cases. This is precisely \eqref{eq:logconcavity}. Reversing the
+sequence, as in \eqref{eq:rho-b}, preserves strict log-concavity.
+A sequence with decreasing positive adjacent ratios increases up to at
+most one transition and then decreases, giving unimodality.
+\end{proof}
+
+\paragraph{A useful boundary: not real-rootedness.}
+The conclusion cannot be upgraded to real-rootedness of every residual
+polynomial. Example~\ref{ex:k4n2} gives
+\(\rho_4(2,t)=2+8t+10t^2\), whose discriminant is
+\(8^2-4\cdot2\cdot10=-16\). The coefficient inequalities are therefore
+not being deduced from real zeros; the adjacent-ratio argument is essential.
+
+\paragraph{A terminating hypergeometric form.}
+As an optional compact encoding, in the regular cases
+\[
+ \sum_{j=0}^r b_jz^j
+ =b_0\,{}_2F_1(-r,L;L+r+1;-z).
+\]
+This is simply the ratio formula written as a finite sum, so no convergence
+issue arises. In the exceptional case, take the same expression with
+\(L=n\) and apply \(1+(2/n)z\,d/dz\). The resulting coefficient
+multiplier \((n+2j)/n\) produces \eqref{eq:ratioExceptional}.
+The product formula, rather than this notation, remains our primary
+evaluation.
+
+\section{Polynomial dependence and coefficient asymptotics}\label{sec:poly}
+For the rest of the article, \(u=1\). The two-weight formula was useful
+because it made the surviving terms easy to separate; no further
+specialization is needed to extract the conjectured generating functions.
+
+\begin{theorem}[Parity polynomials]\label{thm:parity}
+Fix \(k\ge1\), a parity of \(n\), and an admissible deletion index.
+On that parity class, \(C_{k,a}(n)\) is a polynomial in \(n\) of exact
+degree \(d_k=\lfloor k^2/4\rfloor\). More precisely, with
+\(a=\eps+2j\),
+\begin{equation}\label{eq:leading}
+ C_{k,\eps+2j}(n)
+ =K_k\binom rj n^{d_k}+O_k(n^{d_k-1}),
+\end{equation}
+where the leading constant is the same on both parity classes, and
+\begin{align}
+ K_{2r}&=
+ \frac{\displaystyle\left(\prod_{\ell=1}^{r-1}\ell!\right)^2}
+ {\displaystyle 2^r\prod_{\ell=0}^{2r-1}\ell!},
+ &&r\ge1,\label{eq:Keven}\\
+ K_{2r+1}&=
+ \frac{\displaystyle r!\left(\prod_{\ell=1}^{r-1}\ell!\right)^2}
+ {\displaystyle 2^r\prod_{\ell=0}^{2r}\ell!},
+ &&r\ge0.\label{eq:Kodd}
+\end{align}
+For \(r=0\), the numerator product in \eqref{eq:Kodd} is understood
+as empty, giving \(K_1=1\).
+\end{theorem}
+\begin{proof}
+On a fixed parity class, every node is \(n/2\) plus a constant.
+The node differences in \eqref{eq:VE} and \eqref{eq:VO} are therefore
+constant, the pairwise sum factors have slope 1, and each odd column
+factor \(O_j+1\) has slope \(1/2\). Thus the degree is
+\[
+ \binom e2+\binom o2+o
+ =\begin{cases}r^2,&k=2r,\\r(r+1),&k=2r+1,\end{cases}
+\]
+with positive leading coefficient.
+
+The ordinary Vandermonde product for the integer nodes \(0,1,\ldots,r\)
+with \(j\) deleted is
+\[
+ \frac{\prod_{\ell=1}^{r}\ell!}{j!(r-j)!}
+ =\binom rj\prod_{\ell=1}^{r-1}\ell!.
+\]
+For even \(k\), the other parity block has \(r\) consecutive nodes,
+so the product of all ordinary differences is
+\(\binom rj(\prod_{\ell=1}^{r-1}\ell!)^2\).
+For odd \(k\), the other block has \(r+1\) consecutive nodes,
+contributing one extra factor \(r!\). In both cases the odd column
+factors contribute \(2^{-r}\) to the leading coefficient. The
+factorial denominators combine to
+\(\prod_{\ell=0}^{k-1}\ell!\). This gives
+\eqref{eq:Keven}--\eqref{eq:Kodd}, independently of the parity of \(n\).
+\end{proof}
+
+\begin{corollary}[Binomial coefficient profile]\label{cor:asymptotic}
+For fixed \(k\ge1\),
+\begin{equation}\label{eq:rhoasymp}
+ \rho_k(n,t)=K_k n^{d_k}(1+t)^r+O_k(n^{d_k-1})
+\end{equation}
+coefficientwise as \(n\to\infty\). In particular, if
+\(p_{k,n}(\ell)=[t^\ell]\rho_k(n,t)/\rho_k(n,1)\), then
+\[
+ p_{k,n}(\ell)\longrightarrow 2^{-r}\binom r\ell
+ \qquad(0\le\ell\le r).
+\]
+For each fixed positive real \(t\),
+\begin{equation}\label{eq:deltaasymp}
+ \delta_k(n,t)=(-1)^{k\binom n2}t^{e_k(n)}
+ \left(K_kn^{d_k}(1+t)^r+O_{k,t}(n^{d_k-1})\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Sum \eqref{eq:leading} in \eqref{eq:rho-b} and use the binomial theorem.
+The normalization at \(t=1\) has leading coefficient \(2^rK_k>0\).
+The determinant asymptotic follows from \eqref{eq:c13}.
+\end{proof}
+The first leading constants are
+\[
+ K_1=1,\qquad K_2=\frac12,\qquad K_3=\frac14,
+ \qquad K_4=\frac1{48},\qquad K_5=\frac1{576}.
+\]
+There is also an exact, rather than merely asymptotic, way to obtain
+all lower-order corrections. Expand the finite products
+\eqref{eq:VE}--\eqref{eq:VO} on each parity class. The expansion
+terminates at degree \(d_k\); there is no unproved remainder estimate
+or analytic interchange of infinite expansions. The two parity classes
+can have different subleading terms even though their leading terms agree.
+
+The boundary \(n=0\) is compatible with these same parity polynomials.
+In the minor expansion, every shifted prefix of positive length contains
+\(U_{-1}=0\), while the unshifted term has indices \(0,\ldots,k-1\)
+and determinant 1. Equivalently, at \(n=0\),
+\(C_{k,0}(0)=1\) and all other admissible coefficients are zero.
+This observation is important: the generating function below includes
+its correct constant term, without a separately added correction.
+
+\section{Rational generating functions and recurrences}\label{sec:gf}
+\begin{theorem}[The prescribed denominators]\label{thm:denominators}
+The generating functions \(F_k(x,t)\) have the rational forms
+\eqref{eq:c14even} and \eqref{eq:c14odd}, with numerators
+\(A_k(x,t)\in\Z[t,x]\). At this stage the numerator degrees are
+bounded by the denominator degrees minus 1; their exact smaller degrees
+will follow in Section~\ref{sec:reciprocity}.
+\end{theorem}
+\begin{proof}
+For \(k=2r\), put \(d=r^2\). The product formula gives
+\[
+ t^{-rn}\delta_{2r}(n,t)
+ =\sum_{j=0}^r C_{2r,2j}(n)t^{-j}.
+\]
+By Theorem~\ref{thm:parity}, the right side is a degree-\(d\)
+polynomial on each parity class of \(n\), with the same leading
+coefficient on the two classes. It can therefore be written
+\[
+ P(n)+(-1)^nR(n),\qquad \deg P\le d,\quad\deg R\le d-1,
+\]
+where the polynomial coefficients lie in \(\Q(t)\). For a polynomial
+\(p(n)\) of degree at most \(s\), the series
+\(\sum_{n\ge0}p(n)y^n\) has denominator dividing
+\((1-y)^{s+1}\). One proof is to expand \(p(n)\) in the basis
+\(\binom nj\) and use
+\(\sum_{n\ge0}\binom nj y^n=y^j/(1-y)^{j+1}\).
+Thus the denominator of \(F_{2r}\) divides
+\[
+ (1-t^r x)^{d+1}(1+t^r x)^d
+ =(1-t^r x)(1-t^{2r}x^2)^d,
+\]
+which is precisely \eqref{eq:c14even}.
+
+For \(k=2r+1\), put \(d=r(r+1)\). The sign in
+\eqref{eq:main} is \((-1)^m\) at both \(n=2m\) and \(n=2m+1\).
+More explicitly,
+\begin{align*}
+ \delta_k(2m,t)&=(-t^k)^m
+       \sum_{j=0}^r C_{k,2j}(2m)t^{-j},\\
+ \delta_k(2m+1,t)&=(-t^k)^m
+       \sum_{j=0}^r C_{k,1+2j}(2m+1)t^{r-j}.
+\end{align*}
+Each displayed sum is a polynomial in \(m\) of degree at most \(d\).
+Generating the even and odd subsequences with \(y=-t^kx^2\) gives
+a denominator dividing \((1+t^kx^2)^{d+1}\), proving
+\eqref{eq:c14odd}.
+
+The resulting rational functions are proper in \(x\), as is immediate
+from the binomial-basis expressions. Finally, the prescribed denominator
+has constant term 1 and lies in \(\Z[t,x]\). Multiplying it by the
+original series in \(\Z[t][[x]]\) gives coefficients in \(\Z[t]\).
+Rationality says that all but finitely many coefficients vanish, so
+\(A_k\in\Z[t,x]\), not merely \(\Q(t)[x]\).
+\end{proof}
+
+\begin{corollary}[Constant-coefficient recurrences]\label{cor:recurrence}
+Let \(\mathsf E f(n)=f(n+1)\). For all \(n\ge0\),
+\begin{align}
+ (\mathsf E-t^r)^{r^2+1}(\mathsf E+t^r)^{r^2}
+       \delta_{2r}(n,t)&=0,\label{eq:receven}\\
+ (\mathsf E^2+t^{2r+1})^{r^2+r+1}
+       \delta_{2r+1}(n,t)&=0.\label{eq:recodd}
+\end{align}
+\end{corollary}
+\begin{proof}
+The factor \(\mathsf E-\lambda\) lowers the polynomial degree of a
+sequence \(\lambda^np(n)\) by one. Apply this observation to the even
+case in the preceding proof. In the odd case, apply the same argument
+to each parity subsequence with \(\mathsf E^2\) in place of
+\(\mathsf E\).
+\end{proof}
+These are valid annihilating recurrences, without a claim of minimality.
+For example, \(\delta_1(n,t)+t\delta_1(n-2,t)=0\) for \(n\ge2\),
+while the even-shift order is \(2r^2+1\), independent of the matrix
+size \(n\).
+
+\section{Negative indices, exact degrees, and reciprocity}\label{sec:reciprocity}
+Rationality alone does not explain the numerator degrees in Conjecture 14,
+or the reversal symmetries in Conjecture 15. Both come from a reflection
+of the same deleted-index products. The negative indices used here are
+an algebraic continuation of the coefficient sequence, not matrices of
+negative size.
+
+\subsection{A canonical bilateral continuation}
+Extend \(U_d\) to every integer index by the recurrence
+\eqref{eq:U}, working with invertible \(t\). It immediately yields
+\begin{equation}\label{eq:Unegative}
+ U_{-d-2}(z;t)=-t^{-d-1}U_d(z;t)\quad(d\ge0),
+ \qquad U_{-1}=0.
+\end{equation}
+The coefficient identities \eqref{eq:evenentry}--\eqref{eq:oddentry}
+continue to hold for every integer \(m\), if binomial coefficients
+with negative upper argument are interpreted polynomially:
+\(\binom zs=z(z-1)\cdots(z-s+1)/s!\).
+One may check this directly from \eqref{eq:Unegative}; the two
+quadratic factorizations \eqref{eq:quadE}--\eqref{eq:quadO} are
+polynomial identities and remain valid as well.
+
+Now use the right side of \eqref{eq:small}, with
+\(P_d=U_d-U_{d-1}\), to define \(\delta_k(n,t)\) for all integer
+\(n\). The prefix expansion, parity count, Vandermonde evaluation,
+and sign calculation continue verbatim. Thus \eqref{eq:main}, with
+\(u=1\) and the product \eqref{eq:C}, remains valid at all integer
+\(n\), although its coefficients need not be positive when \(n<1\).
+On each parity class the product is exactly the polynomial already
+identified in Theorem~\ref{thm:parity}. Consequently this is the
+exponential-polynomial continuation determined by the nonnegative values;
+it is not a new choice of values made to force a symmetry.
+
+\begin{lemma}[A negative-index gap]\label{lem:gap}
+For every \(k\ge1\),
+\begin{equation}\label{eq:gap}
+ \delta_k(-1,t)=\delta_k(-2,t)=\cdots
+ =\delta_k(-(k-1),t)=0.
+\end{equation}
+For \(k=1\), the displayed list is empty.
+\end{lemma}
+\begin{proof}
+Let \(n=-h\), \(1\le h\le k-1\). Before a deletion, the degree
+interval in the prefix expansion contains \(-2,-1,0\). If a degree
+other than \(-1\) is deleted, the zero column \(U_{-1}\) remains.
+If \(-1\) is deleted, the proportional columns
+\(U_{-2}=-t^{-1}U_0\) and \(U_0\) both remain. Every term vanishes.
+\end{proof}
+
+\subsection{Reflection of the product coefficients}
+\begin{lemma}[Coefficient reflection]\label{lem:Creflection}
+For an admissible index and any integer \(m\),
+\begin{equation}\label{eq:Creflection}
+ C_{k,a}(-m)=(-1)^{d_k}C_{k,k-a}(m-k).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The map \(d\mapsto-d-2\) sends the selected degree set
+\(S_{k,-m,a}\) to \(S_{k,m-k,k-a}\), with the order reversed.
+It sends an even node \(E\) to \(-E-1\), and an odd node \(O\)
+to \(-O-2\). Each even pairwise sum factor changes sign, as does
+each odd pairwise sum factor and each odd column factor.
+Reversing the order makes the ordinary difference factors agree with
+their counterparts. The total sign is therefore
+\[
+ (-1)^{\binom e2+\binom o2+o}=(-1)^{d_k}.
+\]
+The factorial denominators are unchanged, proving the identity.
+\end{proof}
+
+\begin{theorem}[Bilateral determinant reflection]\label{thm:reflection}
+Put
+\(s_k=(-1)^{\lceil k/2\rceil}\) and \(B_k=\binom{k+1}{2}\).
+Then for every integer \(m\),
+\begin{equation}\label{eq:reflection}
+ \boxed{\displaystyle
+ \delta_k(-m,t)=s_k t^{-B_k}\delta_k(m-k,t^{-1}).}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:firstnonzero}
+ \delta_k(-k,t)=s_k t^{-B_k}\ne0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:Creflection} termwise in \eqref{eq:main} and
+replace \(a\) by \(k-a\). This bijects the two admissible index sets.
+The exponents of \(t\) match because
+\[
+ -B_k-\frac{k(m-k)-(k-a)}{2}=\frac{-km-a}{2}.
+\]
+The ratio of the two determinant signs has exponent, modulo 2,
+\[
+ d_k+\frac{k\{m(m+1)-(m-k)(m-k-1)\}}2
+ \equiv d_k-\frac{k^2(k+1)}2
+ \equiv\left\lceil\frac k2\right\rceil.
+\]
+For the last congruence, substitute \(k=2r\) or \(k=2r+1\).
+This gives \eqref{eq:reflection}. Setting \(m=k\) uses
+\(\delta_k(0,t^{-1})=1\) and gives \eqref{eq:firstnonzero}.
+\end{proof}
+
+\subsection{Reading a rational function at infinity}
+We need an elementary link between this continuation and rational
+functions. It is stated explicitly to justify the exact degree argument.
+
+\begin{lemma}[Expansion at infinity]\label{lem:infinity}
+Suppose \(f_n\) is a finite sum of terms \(p(n)\lambda^n\), with
+\(p\) a polynomial and \(\lambda\ne0\), defined for every integer
+\(n\) over a field of characteristic zero. Then the rational function
+\(F(x)=\sum_{n\ge0}f_nx^n\) has Laurent expansion
+\begin{equation}\label{eq:infinity}
+ F(x)=-\sum_{m\ge1}f_{-m}x^{-m}
+\end{equation}
+at infinity.
+\end{lemma}
+\begin{proof}
+For \(f_n=\lambda^n\), expand
+\[
+ \frac1{1-\lambda x}
+ =-\frac{(\lambda x)^{-1}}{1-(\lambda x)^{-1}}
+ =-\sum_{m\ge1}\lambda^{-m}x^{-m}.
+\]
+Apply \((x\,d/dx)^j\) to obtain the assertion for
+\(f_n=n^j\lambda^n\), and use linearity.
+\end{proof}
+For our sequences the lemma applies over an algebraic extension of
+\(\Q(t)\) if necessary. In the even case the bases are \(t^r\) and
+\(-t^r\). In the odd case one can use the two square roots of
+\(-t^{2r+1}\). All final identities lie in \(\Q(t)(x)\), so this
+intermediate field extension introduces no restriction.
+
+\begin{theorem}[Exact numerator degrees]\label{thm:degrees}
+The numerators in Theorem~\ref{thm:denominators} have exactly the
+degrees asserted in Conjecture 14:
+\[
+ \deg_xA_{2r}=2r(r-1)+1,\qquad
+ \deg_xA_{2r+1}=2r^2+1.
+\]
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:infinity}, the negative-index gap and its first
+nonzero successor give
+\begin{equation}\label{eq:Fleadinginfty}
+ F_k(x,t)=-s_k t^{-B_k}x^{-k}+O(x^{-k-1})
+ \qquad(x\to\infty),
+\end{equation}
+as a formal Laurent expansion. Thus, writing \(F_k=A_k/Q_k\) with
+the prescribed denominator, we have
+\(\deg_xA_k=\deg_xQ_k-k\). The two denominator degrees are
+\(2r^2+1\) and \(2(r^2+r+1)\), giving the required formulas.
+No assertion that \(A_k\) and \(Q_k\) are relatively prime is needed:
+the degree difference describes the rational function at infinity even
+when both polynomials contain a common factor.
+\end{proof}
+
+\subsection{The reciprocal identities}
+\begin{theorem}[Generating-function and numerator reciprocity]\label{thm:reciprocity}
+As rational functions,
+\begin{equation}\label{eq:Freciprocity}
+ F_k(x,t)=-s_k t^{-B_k}x^{-k}F_k(x^{-1},t^{-1}).
+\end{equation}
+Consequently \(A_k\) satisfies \eqref{eq:c15even} and
+\eqref{eq:c15odd}, proving Conjecture 15.
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:reflection} in \eqref{eq:infinity}:
+\[
+ F_k(x,t)=-s_k t^{-B_k}\sum_{m\ge1}
+                 \delta_k(m-k,t^{-1})x^{-m}.
+\]
+For \(1\le m<k\), every summand vanishes by the negative-index gap.
+Reindex the remaining terms by \(n=m-k\) to obtain
+\eqref{eq:Freciprocity}. Equality of the Laurent expansions implies
+equality of the rational functions.
+
+For even \(k=2r\), direct factorization of the denominator gives
+\begin{equation}\label{eq:Qreceven}
+ Q_{2r}(x^{-1},t^{-1})
+ =(-1)^{r^2+1}t^{-r-2r^3}x^{-1-2r^2}Q_{2r}(x,t).
+\end{equation}
+Combine this with \eqref{eq:Freciprocity} and
+\(B_{2r}=2r^2+r\). The signs cancel, and
+\[
+ A_{2r}(x^{-1},t^{-1})
+ =t^{-2r^2(r-1)}x^{-2r(r-1)-1}A_{2r}(x,t).
+\]
+This is \eqref{eq:c15even}.
+For odd \(k=2r+1\), put \(d=r(r+1)\). Now
+\begin{equation}\label{eq:Qrecodd}
+ Q_k(x^{-1},t^{-1})=t^{-k(d+1)}x^{-2(d+1)}Q_k(x,t).
+\end{equation}
+Since \(B_k=k(r+1)\), substitution gives
+\[
+ A_k(x^{-1},t^{-1})=(-1)^r
+          t^{-kr^2}x^{-2r^2-1}A_k(x,t),
+\]
+which is \eqref{eq:c15odd}.
+\end{proof}
+
+\begin{corollary}[Leading numerator coefficients]\label{cor:Aleads}
+All numerators have constant term \(A_k(0,t)=1\). Moreover,
+\begin{align*}
+ [x^{2r(r-1)+1}]A_{2r}(x,t)&=t^{2r^2(r-1)},\\
+ [x^{2r^2+1}]A_{2r+1}(x,t)&=(-1)^r t^{(2r+1)r^2}.
+\end{align*}
+Their degrees in \(t\) are respectively \(2r^2(r-1)\) and
+\((2r+1)r^2\).
+\end{corollary}
+\begin{proof}
+The constant term comes from \(Q_k(0,t)=F_k(0,t)=1\).
+Compare the opposite extreme coefficients in the reciprocity identity
+to obtain the leading terms. Since \(A_k\) is a polynomial in \(t\),
+reciprocity also says that no \(t\)-exponent can exceed the stated
+reciprocity exponent. The leading terms attain that bound.
+\end{proof}
+All uses of \(t^{-1}\) above take place over \(\Q(t)\).
+The resulting numerator identities are polynomial identities, so they
+extend to \(t=0\) after their displayed monomial factors are multiplied
+out. The rational description of \(F_k\), whose denominator has
+constant term 1 in \(x\), is likewise valid as a formal generating
+function under every parameter specialization.
+
+\section{Examples and computational consequences}\label{sec:examples}
+\subsection{Small numerator polynomials}
+Finite convolution of the product formula with the denominator produces
+\begin{align*}
+ A_1(x,t)&=1+x,\\
+ A_2(x,t)&=1+x,\\
+ A_3(x,t)&=1+(1+2t)x-t^2(2+t)x^2-t^3x^3,\\
+ A_4(x,t)&=1+(1+3t+t^2)x+t^2(1+t)(1+4t)x^2\\
+ &\quad+t^4(1+t)(4+t)x^3
+       +t^6(1+3t+t^2)x^4+t^8x^5.
+\end{align*}
+These agree with the small examples in the original paper
+\cite[Section 5]{Cigler2021}. The signs of the numerator coefficients
+are not uniformly positive: \(A_3\) already has negative coefficients.
+The positivity theorem concerns \(\rho_k\), not \(A_k\).
+The first few degree data are
+\[
+\begin{array}{c|rrrrrrrr}
+ k&1&2&3&4&5&6&7&8\\ \hline
+ d_k&0&1&2&4&6&9&12&16\\
+ \deg_x Q_k&2&3&6&9&14&19&26&33\\
+ \deg_x A_k&1&1&3&5&9&13&19&25.
+\end{array}
+\]
+The accompanying \texttt{data/numerators.json} contains all numerator
+polynomials through \(k=10\), with integer coefficient triples
+\((i,j,c)\) representing \(cx^it^j\). It also contains the prescribed
+denominators in the same format, making the data independent of a
+particular computer-algebra syntax.
+
+\subsection{Residual polynomials}
+For example, the product formula gives
+\begin{align*}
+ \rho_2(5,t)&=3+3t,\\
+ \rho_3(6,t)&=12+16t,\\
+ \rho_4(7,t)&=120+270t+150t^2,\\
+ \rho_5(8,t)&=1650+4400t+3025t^2,\\
+ \rho_6(9,t)&=55055+195195t+231231t^2+91091t^3.
+\end{align*}
+The coefficients can be large even when the polynomial degree is small.
+This is precisely the situation in which an explicit product is more
+useful than expansion of a large determinant.
+
+\subsection{An exact coefficient algorithm}
+The evaluation has two natural implementations. The most transparent
+one independently evaluates \eqref{eq:C} for each of the \(r+1\)
+terms. A faster one evaluates \(b_0\) once and then uses the rational
+adjacent ratios of Theorem~\ref{thm:ratios}. Every resulting update is
+an integer, so exact division is an internal consistency check.
+
+In arithmetic-operation counts, the first coefficient uses \(O(k^2)\)
+pairwise factors and the remaining coefficients use \(O(k)\) updates.
+The determinant dimension \(n\) no longer determines a matrix-elimination
+cost. This is an arithmetic count, not a unit-cost assertion for
+arbitrarily large integers: coefficient bit lengths grow with \(n\)
+and \(k\), and a numerical value of \(t^{e_k(n)}\) may itself require
+many bits. The reference implementation provides both coefficient
+algorithms and checks them against each other.
+
+For generating functions, write \(Q_k(x,t)=\sum_{j=0}^{D}q_j(t)x^j\)
+and let \(N=D-k\). Then
+\begin{equation}\label{eq:Analgorithm}
+ A_k(x,t)=\sum_{n=0}^{N}
+ \left(\sum_{j=0}^{\min(n,D)}q_j(t)\delta_k(n-j,t)\right)x^n.
+\end{equation}
+Thus \(N+1\) explicitly known determinant values suffice to construct
+the entire numerator. The proof establishes that every later coefficient
+of \(Q_kF_k\) vanishes; a finite computation is not being used to guess
+that vanishing.
+
+\paragraph{Why this particular attack succeeds.}
+The decisive structural feature is not a large computation. It is the
+short connection \(P_m=U_m-uU_{m-1}\). Selecting terms in adjacent
+columns produces duplicate columns except for a single switch point.
+The problem is reduced to choosing which one of \(k+1\) consecutive
+indices is omitted. Parity then cuts the count roughly in half, and the
+Chebyshev coefficient arrays have quadratic Vandermonde evaluations.
+Positivity, parity-polynomial growth, and reflection are three aspects
+of that same product, rather than unrelated lucky patterns.
+
+\section{Exact verification and reproducibility}\label{sec:verification}
+The proof above is the basis for the general statements. The accompanying
+computations serve a different purpose: they check indexing, signs,
+normalization, boundary values, examples, and the implementation through
+independent routes. No floating-point comparison is used in the tests.
+
+The standard-library suite completed \textbf{32,666 exact checks}.
+Its principal groups are summarized in Table~\ref{tab:checks}; the full
+machine-readable record is \texttt{data/verification.json}.
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}p{0.63\textwidth}r@{}}
+\toprule
+Check family & Number\\
+\midrule
+Independent shifted Hankel determinants: grid & 1,092\\
+Independent shifted Hankel determinants: seeded cases & 200\\
+Independent unshifted Hankel determinants & 91\\
+Positive individual coefficients & 10,080\\
+Adjacent-ratio identities & 8,640\\
+Strict log-concavity inequalities & 7,260\\
+Agreement of direct and ratio-based coefficient algorithms & 1,440\\
+Parity-polynomial degree and leading-term checks & 70\\
+Negative-index reflection identities & 2,352\\
+Negative-index gap values & 360\\
+Vanishing generating-function tail coefficients & 984\\
+Numerator reciprocity and exact degree, rational parameters & 96\\
+Non-real-rooted counterexample & 1\\
+\midrule
+Total & 32,666\\
+\bottomrule
+\end{tabular}
+\caption{Exact checks performed by \texttt{code/verify.py}. The count
+records individual assertions, not independent theorems.}\label{tab:checks}
+\end{table}
+
+The determinant grid uses \(1\le k\le12\), \(0\le n\le12\), and
+seven integer pairs \((u,t)\), including zero and negative weights.
+The seeded additional cases have \(1\le k\le20\) and
+\(0\le n\le18\). Each direct determinant is evaluated from the
+ballot-sum moments by fraction-free Bareiss elimination with pivoting;
+it does not use the small orthogonal-polynomial determinant or the
+product formula internally. At \(t=0\), the comparison is made with
+\(t^{\binom n2}\delta_k(n;u,t)\), never by dividing a numerical
+determinant by zero.
+
+The coefficient inequalities and ratios cover
+\(1\le k\le24\), \(1\le n\le60\).
+Finite differences check both parity-polynomial degrees and their exact
+leading terms through \(k=10\).
+The bilateral and generating-function checks use \(1\le k\le16\)
+and \(t\in\{1,2,-1/2\}\). Reflection is checked for
+\(0\le m\le48\); generating-function coefficients are checked through
+\(x^{\deg Q_k+12}\).
+
+A second suite adds \textbf{24 independent bivariate symbolic determinant
+identities} for \(1\le k\le6\), \(1\le n\le4\), retaining both
+\(u\) and \(t\) as indeterminates. It also checks 135 symbolic tail
+coefficients and the complete symbolic reciprocity identity for each
+\(1\le k\le10\). The symbolic determinant calculations use SymPy;
+the latter generating-function calculations use sparse integer polynomial
+arithmetic and retain symbolic \(t\). The saved report identifies the
+actual runtime and SymPy versions.
+
+\subsection{Running and rebuilding}
+From the extracted archive directory, run
+\begin{lstlisting}
+python code/verify.py
+python -m pip install -r requirements.txt
+python code/verify_symbolic.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first test needs only Python 3.9 or later. The second test requires
+SymPy; the tested version is recorded in \texttt{requirements.txt}.
+The \LaTeX{} source uses ordinary packages distributed with TeX Live or
+MiKTeX. All references are included in the source, so there is no BibTeX
+or external bibliography-generation step. Shell and PowerShell build
+scripts are included as conveniences.
+
+The principal artifacts are \texttt{article.tex}, \texttt{article.pdf},
+\texttt{code/hankel.py}, the two verification scripts, and the data files.
+\texttt{data/rho\_coefficients.csv} supplies coefficients for
+\(1\le k\le12\), \(1\le n\le20\). No downloaded paper or font file
+is needed to build or test the package.
+
+\section{Conclusion and scope}\label{sec:conclusion}
+The explicit deleted-index product resolves the three stated mathematical
+claims as follows. Positivity and the precise support prove Conjecture 13.
+Parity-polynomial dependence gives the predicted denominators, while the
+negative-index gap supplies the exact numerator degrees, completing
+Conjecture 14. Reflection of the even and odd nodes yields the rational
+functional equation and hence Conjecture 15. The adjacent-ratio formulas
+further prove strict log-concavity, and the leading products give a
+binomial coefficient profile with explicit constants.
+
+The scope is exactly these three source conjectures and the additional
+results stated here. No conclusion is claimed about the other conjectures
+in the source paper, universal real-rootedness, or a reduced denominator
+after every parameter specialization. Historical priority remains subject
+to the qualification in Section~\ref{sec:problem}; the proof and the
+verification artifacts are provided for independent examination.
+
+\begin{thebibliography}{9}
+\small
+\setlength{\itemsep}{3pt}
+\setlength{\parskip}{0pt}
+\bibitem{Cigler2021}
+Johann Cigler.
+\emph{Hankel determinants of middle binomial coefficients and conjectures
+for some polynomial extensions and modifications}.
+arXiv:2111.14492v3, revised 30 December 2021.
+In particular, Section 5, pp. 19--21, Conjectures 13--15.
+\url{https://arxiv.org/abs/2111.14492v3}.
+
+\bibitem{CK2020}
+Johann Cigler and Christian Krattenthaler.
+\emph{Hankel determinants of linear combinations of moments of orthogonal
+polynomials}.
+arXiv:2003.01676, 2020.
+\url{https://arxiv.org/abs/2003.01676}.
+
+\bibitem{K2021}
+Christian Krattenthaler.
+\emph{Hankel determinants of linear combinations of moments of orthogonal
+polynomials, II}.
+arXiv:2101.04225, 2021.
+\url{https://arxiv.org/abs/2101.04225}.
+
+\bibitem{OEIS1405}
+OEIS Foundation Inc.
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A001405:
+\(a(n)=\binom n{\lfloor n/2\rfloor}\).
+Accessed 19 September 2026.
+\url{https://oeis.org/A001405}.
+\end{thebibliography}
+\end{document}

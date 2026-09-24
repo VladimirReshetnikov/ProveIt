@@ -1,0 +1,1445 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Skew partitions, continued fractions, and connected components},
+ pdfauthor={ChatGPT},pdfsubject={A complete proof of the generating function recorded as conjectural in OEIS A225114}}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Aall}{\mathcal A}
+\newcommand{\Pconn}{P}
+\newcommand{\comp}{\operatorname{comp}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\opnorm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Skew partitions and continued fractions}
+\fancyhead[R]{\small OEIS A225114}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep}
+
+\title{\vspace{-1.2em}\textbf{Skew partitions, continued fractions,\\
+ and connected components}\\[0.65em]
+ \large A complete proof of the generating function\\
+ recorded as conjectural in OEIS A225114}
+\author{A research note prepared with ChatGPT}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+
+\begin{abstract}
+Let $a_n$ count skew partition diagrams with $n$ cells and no empty rows or
+columns, including one empty diagram. We prove that
+\[
+ \sum_{n\ge0}a_nq^n=\frac{1}{2-C(q)},\qquad
+ C(q)=\cfrac{1}{1-\cfrac{q}{1-\cfrac{q}{1-\cfrac{q^2}{1-\cfrac{q^2}{1-\ddots}}}}},
+\]
+where every power $q^j$ occurs twice. The proof gives explicit bijections from
+row-overlap data to diagrams, from connected diagrams to pairs of boundary
+paths, and from those pairs to weighted two-colored Motzkin excursions.
+It also establishes refinements by area, rows, columns, and connected
+components; a closed formula at fixed dimensions; an independent ratio of
+$q$-series; a sharp square-law truncation bound; and exponential asymptotics
+with a rationally certified dominant-singularity interval.
+
+The target was selected by one recorded random draw from a frozen shortlist.
+Although OEIS still describes its generating function as conjectural, Dima
+Pasechnik published a proof sketch in September 2024. Accordingly, this is a
+self-contained proof and elaboration, not a claim to the first solution of
+an unresolved conjecture. Exact independent checks through area $1000$ and
+all source code accompany the article.
+\end{abstract}
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Selection, provenance, and the main result}
+\label{sec:selection}
+
+\subsection{The frozen candidate list}
+The search was restricted to explicit conjectured ordinary generating
+functions for natural combinatorial or sequence-theoretic objects. Prime
+number and congruence questions were excluded. The following four candidates
+were fixed before a random index was generated. This is a screened shortlist,
+not a claim to survey every eligible OEIS conjecture.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}c l Y l@{}}
+\toprule
+Index & Entry & Subject & Conjecture attribution\\
+\midrule
+0 & A225114 & Skew partitions without empty rows or columns & Kurkov, 2024\\
+1 & A244475 & Fifth-largest distinct value in a row of Stern's triangle & Heinz, 2022\\
+2 & A381190 & Connected minimal dominating sets of trapezohedral graphs & Arndt, 2026\\
+3 & A391632 & Mutual-visibility sets of Andr\'asfai graphs & Howroyd, 2026\\
+\bottomrule
+\end{tabularx}
+\caption{The ordered list used for the draw. The entries and their explicit
+formulas were checked on OEIS \cite{oeis225114,oeis244475,oeis381190,oeis391632}.
+The three unselected formulas are reproduced in Appendix~\ref{app:candidates}.}
+\end{table}
+
+The recorded method was \texttt{random.Random(seed).randrange(4)}, with a
+128-bit seed obtained from \texttt{secrets.randbits(128)}. The seed was
+\[
+ \texttt{203225573310603175027560032786773102290}.
+\]
+The result was the zero-based index $0$, hence \textbf{A225114}. There was one
+draw and no reroll. The files \texttt{candidates.json} and
+\texttt{selection.json} preserve the list and result; the verification
+script checks the list's digest and replays the draw. This records the actual
+selection procedure, not merely a seed chosen after selecting a target.
+
+\subsection{What is being proved, and what was already known}
+The selected entry counts skew partitions whose diagrams have no empty rows
+or columns. It attributes the conjectured continued fraction to Mikhail
+Kurkov, 3 September 2024 \cite{oeis225114}. These diagrams connect a familiar
+partition-theoretic construction with lattice-path and polyomino enumeration;
+they are not an artificially defined numerical sequence.
+
+A subsequent prior-art check found Pasechnik's MathOverflow answer of
+10 September 2024 \cite{pasechnik}. That answer sketches the generating-function
+identification and the ordered-sequence construction. The connected-diagram
+continued fraction is older: it appears in the record for A006958 and in
+work on skew Ferrers diagrams \cite{oeis006958,bala}. The present article
+therefore retains the randomly selected target, proves its formula in full,
+and supplies additional derivations and consequences. It does not assert
+novelty of the connected continued fraction, the sequence construction, or
+the underlying enumerative identities.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[The selected generating function]
+\label{thm:main}
+Let $a_n$ be the number of normalized skew partition diagrams of area $n$
+with no empty rows or columns, with $a_0=1$. Define
+\begin{equation}
+ C(q)=\cfrac{1}{1-\cfrac{q}{1-\cfrac{q}{1-\cfrac{q^2}{1-\cfrac{q^2}{1-
+ \cfrac{q^3}{1-\cfrac{q^3}{1-\ddots}}}}}}}.
+ \label{eq:mainC}
+\end{equation}
+The continued fraction is well defined coefficientwise in $\Z[[q]]$, and
+\begin{equation}
+ A(q):=\sum_{n\ge0}a_nq^n=\frac{1}{2-C(q)}.
+ \label{eq:mainA}
+\end{equation}
+\end{theorem}
+
+The essential decomposition is
+\begin{equation}
+ \boxed{\quad A(q)=\frac{1}{1-P(q)},\qquad C(q)=1+P(q),\quad}
+ \label{eq:proofplan}
+\end{equation}
+where $P(q)$ counts nonempty \emph{edge-connected} diagrams. Neither equality
+will be inferred from a finite list of coefficients. Sections~\ref{sec:rows}
+and~\ref{sec:paths} prove the geometric constructions, and
+Section~\ref{sec:contraction} proves the continued-fraction identity.
+
+\section{Row lengths, overlaps, and connected components}
+\label{sec:rows}
+
+\subsection{Normalization and the exact counting convention}
+
+\begin{definition}
+A nonempty normalized skew partition diagram is specified by partitions
+$\lambda=(\lambda_1,\ldots,\lambda_h)$ and
+$\mu=(\mu_1,\ldots,\mu_h)$, where $\mu$ is padded with zeros,
+\[
+ \lambda_i>\mu_i\ge0,\qquad \mu_h=0.
+\]
+Its cells in row $i$, with rows read from top to bottom, have column indices
+$\mu_i+1,\ldots,\lambda_i$. Its area, number of rows, and number of columns
+are denoted $n,h,w$, respectively. Every column from $1$ to $w=\lambda_1$
+must contain a cell. The empty diagram is included separately.
+\end{definition}
+
+The normalization removes horizontal translation. Empty rows are absent by
+$\lambda_i>\mu_i$. Diagrams are not identified under reflection,
+transposition, or rotation. We always use $\lambda$ for the outer partition
+and $\mu$ for the inner partition.
+
+Put
+\begin{equation}
+ \ell_i=\lambda_i-\mu_i>0,\qquad
+ o_i=\lambda_{i+1}-\mu_i\quad(1\le i<h).
+ \label{eq:lengthoverlap}
+\end{equation}
+The number $o_i$, when nonnegative, is the number of columns shared by rows
+$i$ and $i+1$. In particular, $o_i>0$ means that those rows share a horizontal
+cell edge. The case $o_i=0$ is corner contact, not edge connectivity.
+
+\begin{lemma}[The no-empty-column condition]
+\label{lem:noempty}
+A diagram as above has no empty columns if and only if $o_i\ge0$ for every
+$1\le i<h$.
+\end{lemma}
+\begin{proof}
+If $\lambda_{i+1}<\mu_i$, every column with index strictly larger than
+$\lambda_{i+1}$ and at most $\mu_i$ is empty. Rows above the cut start to its
+right, since their inner-partition parts are at least $\mu_i$; rows below
+the cut end to its left, since their outer-partition parts are at most
+$\lambda_{i+1}$.
+
+Conversely, suppose $o_i\ge0$. The two consecutive row intervals overlap or
+are adjacent, because
+$\mu_i+1\le\lambda_{i+1}+1$. Their union therefore contains no missing
+integer column. Inducting upwards from the bottom row, which starts in
+column $1$, shows that the union of all row intervals is precisely
+$\{1,\ldots,\lambda_1\}$. Thus no column is empty.
+\end{proof}
+
+\begin{proposition}[Independent overlap coordinates]
+\label{prop:rowcoords}
+Fix positive row lengths $(\ell_1,\ldots,\ell_h)$. Normalized diagrams with
+those row lengths and no empty columns are in bijection with choices
+\begin{equation}
+ 0\le o_i\le\min(\ell_i,\ell_{i+1})\qquad(1\le i<h).
+ \label{eq:overlapbounds}
+\end{equation}
+Every choice in these ranges is possible, independently of the others.
+\end{proposition}
+\begin{proof}
+For an existing diagram, the two partition inequalities give
+\[
+ o_i\le\lambda_i-\mu_i=\ell_i,
+ \qquad o_i\le\lambda_{i+1}-\mu_{i+1}=\ell_{i+1},
+\]
+and Lemma~\ref{lem:noempty} gives the lower bound.
+
+Conversely, begin with $\mu_h=0$ and $\lambda_h=\ell_h$. For
+$i=h-1,h-2,\ldots,1$, define
+\begin{equation}
+ \mu_i=\lambda_{i+1}-o_i,\qquad
+ \lambda_i=\mu_i+\ell_i.
+ \label{eq:reconstruction}
+\end{equation}
+The upper bounds in \eqref{eq:overlapbounds} imply
+\[
+ \mu_i-\mu_{i+1}=\ell_{i+1}-o_i\ge0,
+ \qquad
+ \lambda_i-\lambda_{i+1}=\ell_i-o_i\ge0.
+\]
+Thus $\lambda$ and $\mu$ are partitions, all rows are nonempty, and
+Lemma~\ref{lem:noempty} applies. Equations~\eqref{eq:reconstruction} also
+prove uniqueness.
+\end{proof}
+
+\begin{corollary}[Finite general-term sums]
+\label{cor:compositions}
+For $n\ge1$,
+\begin{align}
+ a_n&=\sum_{h=1}^{n}\ \sum_{\substack{\ell_1+\cdots+\ell_h=n\\\ell_i\ge1}}
+       \prod_{i=1}^{h-1}\bigl(\min(\ell_i,\ell_{i+1})+1\bigr),
+       \label{eq:allcomposition}\\
+ p_n&=\sum_{h=1}^{n}\ \sum_{\substack{\ell_1+\cdots+\ell_h=n\\\ell_i\ge1}}
+       \prod_{i=1}^{h-1}\min(\ell_i,\ell_{i+1}),
+       \label{eq:connectedcomposition}
+\end{align}
+where $p_n$ counts edge-connected diagrams and an empty product equals $1$.
+Moreover, if $a_n(u)$ marks the number of connected components, then
+\begin{equation}
+ a_n(u)=\sum_{h=1}^{n}\ \sum_{\substack{\ell_1+\cdots+\ell_h=n\\\ell_i\ge1}}
+ u\prod_{i=1}^{h-1}\bigl(\min(\ell_i,\ell_{i+1})+u\bigr).
+ \label{eq:componentcomposition}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Each positive overlap joins its two adjacent rows. Each zero overlap
+separates two components, and every component consists of consecutive rows.
+Thus the number of components is one plus the number of zero overlaps.
+At each boundary there are $\min(\ell_i,\ell_{i+1})$ positive choices and
+one zero choice; weighting the latter by $u$, and the first component by
+$u$, gives all three formulas.
+\end{proof}
+
+The first two sums also explain the composition-based program already
+recorded in the OEIS entry \cite{oeis225114}. They are useful independent
+checks, but the desired continued fraction is not yet evident from them.
+
+\begin{example}
+For row lengths $(2,2)$ the overlaps $0,1,2$ give, respectively,
+\[
+ (\lambda,\mu)=((4,2),(2,0)),\quad
+ ((3,2),(1,0)),\quad ((2,2),(0,0)).
+\]
+The first diagram has two components. The other two are connected. Their
+widths are $4,3,2$, illustrating the general identity
+\begin{equation}
+ w=\lambda_1=n-\sum_{i=1}^{h-1}o_i.
+ \label{eq:widthoverlap}
+\end{equation}
+This follows by telescoping
+$\lambda_i=\lambda_{i+1}+\ell_i-o_i$.
+\end{example}
+
+\subsection{The ordered-sequence construction}
+Let
+\begin{align}
+ P(q;s,t)&=\sum_{\substack{D\text{ nonempty}\\D\text{ connected}}}
+               q^{n(D)}s^{h(D)}t^{w(D)},\label{eq:connectedrefined}\\
+ \Aall(q;s,t,u)&=\sum_D q^{n(D)}s^{h(D)}t^{w(D)}u^{k(D)},
+ \label{eq:allrefined}
+\end{align}
+where the empty diagram has weight $1$ and $k(D)$ is the number of
+edge-connected components. Write $P(q)=P(q;1,1)$, so $p_0=0$.
+
+\begin{proposition}[Unique concatenation into components]
+\label{prop:sequence}
+There is a weight-preserving bijection between all normalized diagrams and
+finite ordered sequences of nonempty connected normalized diagrams.
+Consequently,
+\begin{equation}
+ \Aall(q;s,t,u)=\frac{1}{1-uP(q;s,t)}.
+ \label{eq:sequence}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Cut a diagram between rows $i$ and $i+1$ whenever $o_i=0$, then translate
+each resulting block horizontally to normalize it. Positive overlaps
+remain within every block, so these blocks are exactly its components.
+Their order is the order of the row blocks, from top to bottom.
+
+Conversely, concatenate any ordered collection of connected blocks. Retain
+their internal row lengths and positive overlaps, and insert a zero overlap
+between each consecutive pair. Proposition~\ref{prop:rowcoords} reconstructs
+a unique normalized diagram. Geometrically, each upper block is placed
+northeast of the next block, with their bounding boxes touching at one
+corner. These two constructions are inverse.
+
+Areas and row counts add. Widths add as well: the inserted overlaps are
+zero, so \eqref{eq:widthoverlap} is additive over blocks. A sequence of $k$
+blocks therefore has generating function $u^kP^k$. Summing over $k\ge0$
+gives \eqref{eq:sequence}; this is legitimate since $P$ has zero constant
+term in $q$.
+\end{proof}
+
+\section{Connected diagrams as weighted Motzkin excursions}
+\label{sec:paths}
+
+\subsection{Two boundary paths}
+Place the diagram in the Cartesian plane, with the bottom row at height
+zero. A connected diagram of height $h$ and width $w$ is bounded by two
+north-east lattice paths $U$ and $L$ from $(0,0)$ to $(w,h)$. Here $U$ is
+the upper or northwest boundary, and $L$ is the lower or southeast boundary.
+The first steps are, respectively, north and east; the last steps are east
+and north. The two paths have no common point except their endpoints.
+
+For completeness, the partition inequalities make both boundary paths
+north-east monotone. A meeting at an intermediate horizontal row boundary
+would say $\lambda_{i+1}=\mu_i$, namely a zero overlap. A shared horizontal
+boundary segment would force an empty row. Thus positive overlaps and
+nonempty rows imply that the paths meet only at their endpoints.
+Conversely, the cells between such a pair of paths have contiguous rows;
+their left and right endpoints are monotone as rows are read upwards.
+They therefore form a skew partition diagram, with positive overlaps and
+no empty rows or columns. This proves the boundary-path bijection.
+
+Both paths have length $L_0=h+w$. At integer time $j$, meaning on the line
+$x+y=j$, let
+\begin{equation}
+ d_j=y_U(j)-y_L(j).
+ \label{eq:gaps}
+\end{equation}
+Then $d_0=d_{L_0}=0$, and $d_j\ge1$ for $1\le j<L_0$.
+
+\begin{lemma}[Area from synchronous separation]
+\label{lem:area}
+The area of the diagram is
+\begin{equation}
+ n=\sum_{j=1}^{L_0-1}d_j.
+ \label{eq:areasum}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Apply the linear map $(x,y)\mapsto(x+y,y)$, whose determinant is $1$.
+The area between the paths becomes the integral of their vertical gap as
+a function of the new first coordinate. On every interval $[j,j+1]$ this
+gap is linear, and its integral is $(d_j+d_{j+1})/2$. Summation gives
+\eqref{eq:areasum}, because the endpoint gaps are zero. The original area
+is the number of unit cells.
+\end{proof}
+
+\subsection{The four step pairs and their weights}
+The pairs of simultaneous boundary steps have the following effects:
+\begin{center}
+\begin{tabular}{@{}c c c c@{}}
+\toprule
+Upper step & Lower step & Change of gap & Dimension weight\\
+\midrule
+North & East & $+1$ & $s$\\
+East & North & $-1$ & $t$\\
+North & North & $0$, first color & $s$\\
+East & East & $0$, second color & $t$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Dimension weights can be assigned using the upper path alone: its number
+of north steps is $h$, and its number of east steps is $w$.
+
+Delete the forced first up-step and last down-step in the gap process,
+then lower all remaining gaps by $1$. The result is a two-colored Motzkin
+excursion: a path starting and ending at height zero, staying nonnegative,
+and using up-steps, down-steps, and two kinds of horizontal steps.
+Conversely, the table recovers both boundary words from any such excursion,
+after the two forced endpoint pairs are restored. There is no ambiguity in
+either direction.
+
+Give the two removed endpoint steps together the factor $stq$. For an
+internal step landing at height $b$ in the Motzkin path, give an additional
+factor $q^{b+1}$, together with its dimension weight from the table.
+Lemma~\ref{lem:area} proves that the full product is exactly $q^ns^ht^w$.
+In particular,
+\begin{align*}
+ \text{horizontal step at height }j &: (s+t)q^{j+1},\\
+ \text{up-step }j\longrightarrow j+1 &: sq^{j+2},\\
+ \text{down-step }j+1\longrightarrow j &: tq^{j+1}.
+\end{align*}
+The two horizontal colors are distinct choices even when $s=t=1$.
+
+\begin{example}
+Take $\lambda=(5,4,2)$ and $\mu=(2,1,0)$. The row lengths are $(3,3,2)$,
+the overlaps are $(2,1)$, and $(n,h,w)=(8,3,5)$. Its boundary words are
+\[
+ U=\mathrm{NENENEEE},\qquad L=\mathrm{EENEENEN}.
+\]
+The interior gaps are $(1,1,1,1,2,1,1)$, whose sum is $8$. After removing
+the forced endpoint steps, the Motzkin heights are
+$(0,0,0,0,1,0,0)$. The weights give $q^8s^3t^5$, as required.
+\end{example}
+
+\subsection{First-return decomposition and the Jacobi fraction}
+Let $E_j(q;s,t)$ count excursions beginning and ending at height $j$ and
+never going below $j$, with the weights just described. Their absolute
+height matters because the power of $q$ depends on height.
+
+A nonempty excursion begins either with a horizontal step followed by
+another excursion at height $j$, or with an up-step, an excursion at height
+$j+1$, a down-step, and another excursion at height $j$. Therefore
+\[
+ E_j=1+(s+t)q^{j+1}E_j+stq^{2j+3}E_{j+1}E_j.
+\]
+All nonconstant step weights have positive $q$-degree, so the equation is
+valid in $\Z[s,t][[q]]$ and yields
+\begin{equation}
+ E_j=\frac{1}{1-(s+t)q^{j+1}-stq^{2j+3}E_{j+1}}.
+ \label{eq:Erecurrence}
+\end{equation}
+
+\begin{theorem}[The connected four-variable building block]
+\label{thm:Jfraction}
+The connected-diagram generating function is
+\begin{equation}
+ P(q;s,t)=\cfrac{stq}{1-(s+t)q-
+ \cfrac{stq^3}{1-(s+t)q^2-
+ \cfrac{stq^5}{1-(s+t)q^3-
+ \cfrac{stq^7}{1-(s+t)q^4-\ddots}}}}.
+ \label{eq:Jfraction}
+\end{equation}
+Together with \eqref{eq:sequence}, this counts all normalized diagrams by
+area, rows, columns, and connected components.
+\end{theorem}
+\begin{proof}
+The bijection gives $P(q;s,t)=stqE_0$. Iterating
+\eqref{eq:Erecurrence} proves \eqref{eq:Jfraction}. For any fixed power
+$q^n$, only finitely many diagrams and path heights are possible: every
+step has positive area weight. Hence the successive finite fractions
+stabilize coefficientwise and define the stated formal series.
+\end{proof}
+
+This derivation includes the area statistic explicitly. Using an unweighted
+Motzkin enumeration here would count a different quantity, essentially
+semiperimeter, and would not establish the selected formula.
+
+\section{Contraction to the conjectured repeated-power fraction}
+\label{sec:contraction}
+
+For the area specialization $s=t=1$, define the paired tails
+\begin{equation}
+ S_j=\frac{1}{1-\dfrac{q^j}{1-q^jS_{j+1}}}\qquad(j\ge1).
+ \label{eq:Srecurrence}
+\end{equation}
+The coefficientwise interpretation is obtained by setting a sufficiently
+deep tail to $1$ and then taking the depth to infinity. Each tail is a
+unit with constant term $1$. Section~\ref{sec:truncation} will give an exact
+bound on the resulting stabilization.
+
+\begin{lemma}[Elementary contraction]
+\label{lem:contraction}
+If $R_j=S_j-1$, then
+\begin{equation}
+ R_j=\frac{q^j}{1-2q^j-q^jR_{j+1}}=q^jE_{j-1}(q;1,1).
+ \label{eq:contraction}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Combining the two fractions in \eqref{eq:Srecurrence} gives
+\[
+ S_j=\frac{1-q^jS_{j+1}}{1-q^j-q^jS_{j+1}}.
+\]
+Subtracting $1$ and substituting $S_{j+1}=1+R_{j+1}$ gives the first
+identity in \eqref{eq:contraction}. On putting
+$R_{j+1}=q^{j+1}E_j$, the denominator becomes
+$1-2q^j-q^{2j+1}E_j$, exactly the denominator of
+$E_{j-1}$ in \eqref{eq:Erecurrence}. The finite-depth identities, followed
+by coefficientwise limits, prove the second equality.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The expanded tail $S_1$ is $C(q)$ from \eqref{eq:mainC}. By
+Lemma~\ref{lem:contraction} and Theorem~\ref{thm:Jfraction},
+\[
+ C(q)-1=qE_0(q;1,1)=P(q).
+\]
+Proposition~\ref{prop:sequence}, specialized to $s=t=u=1$, now gives
+\[
+ A(q)=\frac{1}{1-P(q)}=\frac{1}{2-C(q)}.
+\]
+Every denominator used has constant term $1$. All operations are therefore
+valid as formal power-series operations, independently of numerical or
+analytic convergence.
+\end{proof}
+
+\begin{corollary}[Refined repeated-power fraction]
+\label{cor:refinedS}
+Define
+\begin{equation}
+ S_j(q;s,t)=\frac{1}{1-\dfrac{sq^j}{1-tq^jS_{j+1}(q;s,t)}}.
+ \label{eq:refinedS}
+\end{equation}
+Then
+\begin{equation}
+ P(q;s,t)=t\bigl(S_1(q;s,t)-1\bigr),\qquad
+ \Aall(q;s,t,u)=\frac{1}{1-ut\bigl(S_1(q;s,t)-1\bigr)}.
+ \label{eq:refinedSresult}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Here $R_j=S_j-1$ satisfies
+\[
+ R_j=\frac{sq^j}{1-(s+t)q^j-tq^jR_{j+1}}
+     =sq^jE_{j-1}(q;s,t).
+\]
+Thus $tR_1=stqE_0=P$. Apply \eqref{eq:sequence}.
+\end{proof}
+
+The symmetry in rows and columns is manifest in the Jacobi form
+\eqref{eq:Jfraction}, even though it is not manifest in
+\eqref{eq:refinedS}. It also follows geometrically by transposing the
+diagram.
+
+\section{A closed formula for fixed rows, columns, and components}
+\label{sec:dimensions}
+
+The area can be summed out while retaining the dimensions. For each fixed
+$h,w$, all diagrams lie in an $h$-by-$w$ rectangle, so their areas are at
+most $hw$. Thus setting $q=1$ is meaningful coefficientwise as a formal
+series in $s,t$, even though it is not a substitution into a convergent
+area generating function at $q=1$.
+
+At $q=1$ the excursion weights no longer depend on height. All $E_j$ become
+the same series $E$, with
+\[
+ E=1+(s+t)E+stE^2.
+\]
+Since $P(1;s,t)=stE$, write $P_*(s,t)=P(1;s,t)$ to obtain
+\begin{equation}
+ P_* =\frac{st}{1-s-t-P_*}
+     =\frac{1-s-t-\sqrt{(1-s-t)^2-4st}}{2},
+ \label{eq:dimensionGF}
+\end{equation}
+where the square root has constant term $1$. Consequently
+\[
+ \Aall(1;s,t,u)=\frac{1}{1-uP_*(s,t)}.
+\]
+
+\begin{theorem}[Fixed-dimension general term]
+\label{thm:dimensionformula}
+Let $d_{h,w,k}$ count normalized skew diagrams with exactly $h$ rows, $w$
+columns, and $k$ edge-connected components, without fixing their area. For
+$h,w\ge k\ge1$,
+\begin{equation}
+ \boxed{\displaystyle
+ d_{h,w,k}=\frac{k}{h+w-k}
+ \binom{h+w-k}{h}\binom{h+w-k}{w}.}
+ \label{eq:dimensionformula}
+\end{equation}
+It is zero if $k\ge1$ and either $h<k$ or $w<k$. The empty case is
+$d_{0,0,0}=1$, and no nonempty diagram has $k=0$.
+\end{theorem}
+\begin{proof}
+By unique concatenation, $d_{h,w,k}=[s^ht^w]P_*^k$. Introduce a temporary
+variable $z$ and the unique series
+\[
+ Y=\frac{z}{1-s-t-Y}.
+\]
+Lagrange coefficient extraction gives, for $m\ge k$,
+\begin{align}
+ [z^m]Y^k
+ &=\frac{k}{m}[y^{m-k}](1-s-t-y)^{-m}\notag\\
+ &=\frac{k}{m}\binom{2m-k-1}{m-k}(1-s-t)^{-(2m-k)}.
+ \label{eq:lagrange}
+\end{align}
+Substitute $z=st$, so $Y=P_*$. Extracting the remaining powers of $s$ and
+$t$ gives
+\begin{equation}
+ d_{h,w,k}=k(h+w-k-1)!
+ \sum_{m=k}^{\min(h,w)}
+ \frac{1}{m!(m-k)!(h-m)!(w-m)!}.
+ \label{eq:dimensionintermediate}
+\end{equation}
+The sum equals
+\begin{align*}
+ \frac{1}{h!(w-k)!}
+ \sum_m\binom{h}{m}\binom{w-k}{m-k}
+ &=\frac{1}{h!(w-k)!}\binom{h+w-k}{w}\\
+ &=\frac{(h+w-k)!}{h!w!(h-k)!(w-k)!},
+\end{align*}
+by Vandermonde's identity. Substitution in
+\eqref{eq:dimensionintermediate} is exactly
+\eqref{eq:dimensionformula}. The zero cases follow because each nonempty
+component uses at least one row and one column.
+\end{proof}
+
+For $k=1$, this recovers the usual fixed-dimension parallelogram-polyomino
+count. For $h=w=2$, there are three connected diagrams and one diagram
+with two components. They do not all have the same area, which is why this
+formula should not be confused with the area coefficients $a_n$.
+
+\section{An independent solution by a ratio of \texorpdfstring{$q$}{q}-series}
+\label{sec:qseries}
+
+The boundary-path proof already proves the selected identity. A second
+algebraic route is valuable both as a check and as an alternative formula
+for exact coefficient computation. Define
+\begin{equation}
+ \Phi(z;q)=\sum_{r\ge0}
+ \frac{(-1)^r z^r q^{r(r+1)/2}}{(q;q)_r^2},
+ \qquad (q;q)_r=\prod_{j=1}^r(1-q^j),\quad(q;q)_0=1.
+ \label{eq:Phi}
+\end{equation}
+This is a formal power series in $q$ with polynomial coefficients in $z$.
+It is also analytic for $|q|<1$ and fixed $z$: on compact subdisks the
+finite products in the denominator are bounded away from zero, whereas
+the numerator decays quadratically in the exponent of $r$.
+
+The connected ratio below is consistent with Bala's treatment and the
+Delest--F\'edou enumeration \cite{bala,delestfedou}. We derive it directly
+from the overlap coordinates, so no continued-fraction identity from those
+sources is required for this proof.
+
+\begin{theorem}[The row-refined ratio]
+\label{thm:qseries}
+One has
+\begin{equation}
+ 1+P(q;s,1)=\frac{\Phi(sq;q)}{\Phi(s;q)},
+ \label{eq:Pratio}
+\end{equation}
+and hence
+\begin{equation}
+ \Aall(q;s,1,u)=
+ \frac{\Phi(s;q)}{(1+u)\Phi(s;q)-u\Phi(sq;q)}.
+ \label{eq:AratioRefined}
+\end{equation}
+In particular, if $D(q)=\Phi(1;q)$ and $N(q)=\Phi(q;q)$, then
+\begin{equation}
+ \boxed{\displaystyle A(q)=\frac{D(q)}{2D(q)-N(q)}.}
+ \label{eq:Aratio}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $i\ge1$, let $X_i$ count all possible continuations below a
+previously given row of length $i$, not counting that row's own weight.
+The empty continuation is allowed. Appending a row of length $j$ has
+weight $sq^j$, and there are $\min(i,j)$ positive overlap choices.
+Therefore
+\begin{equation}
+ X_i=1+s\sum_{j\ge1}\min(i,j)q^jX_j.
+ \label{eq:transfer}
+\end{equation}
+There is a unique family of formal solutions with constant terms $1$:
+every appended row increases area, so iteration determines one more
+coefficient at a time. Choosing the initial row separately gives
+\begin{equation}
+ P(q;s,1)=s\sum_{j\ge1}q^jX_j=X_1-1.
+ \label{eq:firstrow}
+\end{equation}
+
+Set $Z_i=\Phi(sq^i;q)$ for $i\ge0$. If
+$c_r=(-1)^rq^{r(r+1)/2}/(q;q)_r^2$, then
+$c_r(1-q^r)^2=-q^rc_{r-1}$ for $r\ge1$. Comparing coefficients of $s^r$
+now gives
+\begin{equation}
+ Z_{i+1}-(2-sq^i)Z_i+Z_{i-1}=0\qquad(i\ge1).
+ \label{eq:Zrecurrence}
+\end{equation}
+Let $\Delta_i=Z_i-Z_{i-1}$. Both $Z_i\to1$ and $\Delta_i\to0$
+coefficientwise as $i\to\infty$. Equation~\eqref{eq:Zrecurrence} says
+\[
+ \Delta_i-\Delta_{i+1}=sq^iZ_i.
+\]
+Summing first over $i\ge a$, and then over $1\le a\le k$, gives
+\begin{align*}
+ \Delta_a&=s\sum_{j\ge a}q^jZ_j,\\
+ Z_k-Z_0&=s\sum_{j\ge1}\min(k,j)q^jZ_j.
+\end{align*}
+Every sum is coefficientwise finite. The series $Z_0=\Phi(s;q)$ has
+constant term $1$, so division by it is valid. The family $Z_k/Z_0$ solves
+\eqref{eq:transfer}, and uniqueness implies $X_k=Z_k/Z_0$.
+Equation~\eqref{eq:firstrow} proves \eqref{eq:Pratio}. Finally apply the
+component identity \eqref{eq:sequence} and simplify.
+\end{proof}
+
+Expanding the two series in \eqref{eq:Aratio} explicitly gives
+\[
+ D(q)=\sum_{r\ge0}\frac{(-1)^rq^{r(r+1)/2}}{(q;q)_r^2},
+ \qquad
+ N(q)=\sum_{r\ge0}\frac{(-1)^rq^{r(r+3)/2}}{(q;q)_r^2}.
+\]
+Thus the selected continued fraction and a ratio of explicit infinite sums
+have now been derived from two different encodings of the same diagrams.
+
+\subsection{A finite transfer matrix and a different continued fraction}
+This construction will also supply an exact numerical certificate. Restrict
+every row length to be at most $H$, and let $P_H(q)$ count the connected
+diagrams satisfying that restriction. Set
+\[
+ M_H=(\min(i,j))_{1\le i,j\le H},\qquad
+ D_H=\operatorname{diag}(q,q^2,\ldots,q^H),
+\]
+and let $\mathbf e$ be the all-ones column vector. The transfer equation
+becomes
+\begin{equation}
+ \mathbf X=\mathbf e+M_HD_H\mathbf X,
+ \qquad P_H=\mathbf e^{\mathsf T}D_H\mathbf X.
+ \label{eq:finiteTransfer}
+\end{equation}
+The matrix $M_H$ is $LL^{\mathsf T}$, where $L$ is lower triangular with
+all entries on and below its diagonal equal to $1$. Its inverse is
+\begin{equation}
+ B_H=M_H^{-1}=
+ \begin{pmatrix}
+ 2&-1& & &\\
+ -1&2&-1& &\\
+ &\ddots&\ddots&\ddots&\\
+ &&-1&2&-1\\
+ &&&-1&1
+ \end{pmatrix}
+ \quad(H\ge2),\qquad B_1=(1).
+ \label{eq:tridiagonal}
+\end{equation}
+Since $B_H\mathbf e$ is the first standard basis vector, and
+$X_1=1+P_H$, it follows that
+\begin{equation}
+ 1+P_H(q)=(B_H-D_H)^{-1}_{11}.
+ \label{eq:inverseentry}
+\end{equation}
+Successive Schur complements give the entirely finite fraction
+\begin{equation}
+ 1+P_H(q)=\cfrac{1}{2-q-\cfrac{1}{2-q^2-\cfrac{1}{\ddots-
+ \cfrac{1}{2-q^{H-1}-\cfrac{1}{1-q^H}}}}}
+ \qquad(H\ge2),
+ \label{eq:boundedCF}
+\end{equation}
+with $1+P_1(q)=1/(1-q)$. Notice the final denominator $1-q^H$, not
+$2-q^H$. This boundary condition matters in both exact computation and
+error bounds.
+
+\section{Sharp truncation and an exact coefficient algorithm}
+\label{sec:truncation}
+
+\subsection{The first omitted term is a square}
+Let $C^{(m)}(q)$ be the paired fraction obtained by setting
+$S_{m+1}^{(m)}=1$ and applying \eqref{eq:Srecurrence} for
+$j=m,m-1,\ldots,1$. Put
+\[
+ A^{(m)}(q)=\frac{1}{2-C^{(m)}(q)}.
+\]
+For $m=0$ this means $C^{(0)}=A^{(0)}=1$.
+
+\begin{theorem}[Exact truncation order]
+\label{thm:truncation}
+For every integer $m\ge0$,
+\begin{align}
+ C(q)-C^{(m)}(q)&=q^{(m+1)^2}+O\bigl(q^{(m+1)^2+1}\bigr),
+ \label{eq:truncC}\\
+ A(q)-A^{(m)}(q)&=q^{(m+1)^2}+O\bigl(q^{(m+1)^2+1}\bigr).
+ \label{eq:truncA}
+\end{align}
+Here $O(q^r)$ means a formal series divisible by $q^r$.
+Consequently $m=\lfloor\sqrt N\rfloor$ pairs suffice to compute every
+coefficient through $q^N$.
+\end{theorem}
+\begin{proof}
+Write the paired-tail map as
+\[
+ \phi_j(z)=\frac{1-q^jz}{1-q^j-q^jz}.
+\]
+For any two formal units $a,b$ with constant term $1$, direct subtraction
+gives
+\begin{equation}
+ \phi_j(a)-\phi_j(b)=
+ \frac{q^{2j}(a-b)}
+ {(1-q^j-q^ja)(1-q^j-q^jb)}.
+ \label{eq:phidifference}
+\end{equation}
+At the first omitted tail,
+\[
+ S_{m+1}-1=q^{m+1}+O(q^{m+2}).
+\]
+Applying \eqref{eq:phidifference} for $j=m,m-1,\ldots,1$ increases the
+valuation by
+$2\sum_{j=1}^m j=m(m+1)$ and leaves the leading coefficient equal to $1$.
+This proves \eqref{eq:truncC}, since
+$m(m+1)+(m+1)=(m+1)^2$. It also proves directly that the finite fractions
+stabilize coefficientwise.
+
+Finally,
+\[
+ \frac{1}{2-C}-\frac{1}{2-C^{(m)}}=
+ \frac{C-C^{(m)}}{(2-C)(2-C^{(m)})}.
+\]
+Both denominator factors have constant term $1$, so the same valuation and
+leading coefficient hold for $A-A^{(m)}$. Since
+$(\lfloor\sqrt N\rfloor+1)^2>N$, the stated depth is sufficient.
+\end{proof}
+
+There is a geometric explanation. Contracting a fraction of depth $m$
+allows Motzkin heights at most $m-1$, or boundary gaps at most $m$. The
+least-area omitted excursion rises to height $m$ and immediately descends,
+with no horizontal steps. Its diagram is the $(m+1)$-by-$(m+1)$ square,
+with area $(m+1)^2$. It is unique at that least area, explaining the leading
+coefficient $1$. Additional components would increase the area, so the
+same first discrepancy holds for all diagrams.
+
+For $N=1000$, only $31$ pairs, that is, $62$ individual partial numerators,
+are needed. The first missing term has degree $32^2=1024$. This statement
+is exact, not an empirical rule about rapid numerical convergence.
+
+\subsection{Continuants avoid repeated series inversion}
+Write a finite tail as $U/V$, with $U(0)=V(0)=1$. Then
+\[
+ \phi_j(U/V)=\frac{V-q^jU}{V-q^jV-q^jU}.
+\]
+Thus the finite polynomials $U,V$ for $C^{(m)}=U/V$ can be computed by
+starting with $U=V=1$ and performing the simultaneous updates
+\begin{equation}
+ \begin{split}
+ U_{\rm new}&=V-q^jU,\\
+ V_{\rm new}&=V-q^jV-q^jU,
+ \end{split}
+ \qquad j=m,m-1,\ldots,1.
+ \label{eq:continuants}
+\end{equation}
+All polynomials may be truncated after degree $N$. At the end,
+\begin{equation}
+ A^{(m)}=\frac{V}{2V-U}.
+ \label{eq:continuantA}
+\end{equation}
+Only one series division is needed to obtain $A$.
+
+If $B(q)=\sum b_jq^j=2V-U$ and $V(q)=\sum v_jq^j$, then $b_0=1$ and
+\begin{equation}
+ a_0=1,\qquad
+ a_n=v_n-\sum_{j=1}^{n}b_ja_{n-j}\quad(1\le n\le N).
+ \label{eq:divisionrecurrence}
+\end{equation}
+The shift-and-subtract updates cost $O(N\sqrt N)$ integer arithmetic
+operations. Ordinary dense division costs $O(N^2)$ such operations. The
+continuant method uses $O(N)$ integer storage. These are arithmetic-operation
+bounds, not bit-complexity bounds; the integers grow with $N$.
+
+The included implementation also evaluates the overlap sums by a different
+dynamic program. Let $f_{n,i}$ count diagrams of area $n$ whose last row has
+length $i$. Initialize $f_{i,i}=1$, and append a row of length $j$ with
+multiplier $\min(i,j)+\varepsilon$, where $\varepsilon=0$ for connected
+shapes and $\varepsilon=1$ for all shapes. The transition sum can be written
+\begin{equation}
+ \sum_i f_{n,i}(\min(i,j)+\varepsilon)
+ =\sum_{i\le j}i f_{n,i}
+  +j\sum_{i>j}f_{n,i}
+  +\varepsilon\sum_i f_{n,i}.
+ \label{eq:prefixDP}
+\end{equation}
+Prefix sums give an $O(N^2)$-operation dynamic program, using $O(N^2)$
+storage in the supplied straightforward implementation. It never evaluates
+a continued fraction.
+
+\section{Rigorous exponential asymptotics}
+\label{sec:asymptotics}
+
+\subsection{Analytic control from the row-transfer kernel}
+The formal proofs imply exact enumeration. To derive asymptotics, we now
+establish an analytic disk large enough to contain the dominant pole.
+For $s=1$, regard the transfer kernel
+\[
+ K(q)_{ij}=\min(i,j)q^j\qquad(i,j\ge1)
+\]
+as an operator on the Banach space of bounded sequences, with the supremum
+norm. For $|q|\le r<1$,
+\begin{equation}
+ \opnorm{K(q)}\le\sum_{j\ge1}jr^j=\frac{r}{(1-r)^2}=:\eta(r).
+ \label{eq:kernelbound}
+\end{equation}
+The operator-valued series defining $K$ is analytic in that disk. In
+particular, if
+\begin{equation}
+ r<r_0:=\frac{3-\sqrt5}{2}=0.381966\ldots,
+ \label{eq:rzero}
+\end{equation}
+then $\eta(r)<1$, so
+\[
+ \mathbf X=(I-K)^{-1}\mathbf e=\sum_{m\ge0}K^m\mathbf e
+\]
+converges uniformly in operator norm. The functional
+$\mathbf f(q)^{\mathsf T}\mathbf X=\sum_{j\ge1}q^jX_j$ has norm bounded
+by $r/(1-r)$. Hence $P(q)$ is analytic for $|q|<r_0$.
+
+\begin{lemma}[Existence of a positive singularity before $1/3$]
+\label{lem:rho}
+There is a unique $\rho\in(0,1/3)$ such that $P(\rho)=1$, and
+$P'(\rho)>0$.
+\end{lemma}
+\begin{proof}
+The coefficients of $P$ are nonnegative, and $p_1=1$. Thus $P$ is strictly
+increasing on $(0,r_0)$, with $P(0)=0$ and positive derivative. Its first
+seven terms are
+\[
+ q+2q^2+4q^3+9q^4+20q^5+46q^6+105q^7.
+\]
+At $q=1/3$ their sum is $245/243>1$. Analyticity at $1/3$, continuity,
+and strict monotonicity now prove the assertion.
+\end{proof}
+
+\begin{theorem}[The asymptotic formula]
+\label{thm:asymptotic}
+Let $\rho$ be as in Lemma~\ref{lem:rho}. There is an $R>\rho$ such that
+\begin{equation}
+ a_n=\kappa\rho^{-n}+O(R^{-n}),\qquad
+ \kappa=\frac{1}{\rho P'(\rho)}>0.
+ \label{eq:asymptotic}
+\end{equation}
+In particular, $\lim_{n\to\infty}a_n^{1/n}=1/\rho$, and
+$a_{n+1}/a_n\to1/\rho$.
+\end{theorem}
+\begin{proof}
+For $|q|<\rho$,
+$|P(q)|\le P(|q|)<1$, so $A=1/(1-P)$ has no pole. If $|q|=\rho$ and
+$P(q)=1$, equality holds in the triangle inequality for
+$\sum_{n\ge1}p_nq^n$. The terms of degrees $1$ and $2$ have positive
+coefficients; their phases must agree. Writing $q=\rho e^{i\theta}$ gives
+$e^{i\theta}=e^{2i\theta}$, hence $q=\rho$. Thus $\rho$ is the only zero
+of $1-P$ on its circle.
+
+At $\rho$, the derivative $P'(\rho)$ is positive, so the pole is simple.
+Because $P$ is analytic in a larger disk and analytic zeros are isolated,
+there are numbers $\rho<R<R'<r_0$ for which $1-P$ has no other zero in
+$|q|\le R'$. Its principal part at $\rho$ is
+\[
+ \frac{1}{\rho P'(\rho)}\frac{1}{1-q/\rho}.
+\]
+Subtracting this function from $A$ removes the pole. The difference is
+analytic on $|q|<R'$, so Cauchy's coefficient bound on $|q|=R$ is
+$O(R^{-n})$. This proves \eqref{eq:asymptotic}. The two stated limits
+follow because $\kappa>0$.
+\end{proof}
+
+For reference, $D(q)=\Phi(1;q)$ does not vanish in $|q|<r_0$. Indeed, for
+fixed $q$ there the bounded sequence $Z_i=\Phi(q^i;q)$ satisfies
+$\mathbf Z=D\mathbf e+K\mathbf Z$, by the proof of
+Theorem~\ref{thm:qseries}. If $D=0$, invertibility of $I-K$ forces
+$\mathbf Z=0$, contradicting $Z_i\to1$. Therefore the equation for $\rho$
+can equivalently be written
+\begin{equation}
+ 2\Phi(1;\rho)-\Phi(\rho;\rho)=0,
+ \label{eq:rootqseries}
+\end{equation}
+with a nonzero numerator in \eqref{eq:Aratio}.
+
+\subsection{A rational certificate for the dominant root}
+High-precision evaluation suggests
+\begin{align}
+ \rho&\approx0.3195967180593874655186028919827139236,\label{eq:rhonum}\\
+ \rho^{-1}&\approx3.128943269730886252277447995387754161,\label{eq:growthnum}\\
+ \kappa&\approx0.2893214639716513230848453480726559061.
+ \label{eq:kappanum}
+\end{align}
+These displayed extended decimals are numerical estimates. The following
+strict interval is separately certified using exact rational arithmetic:
+\begin{equation}
+ \boxed{\quad
+ 0.31959671805938746551<\rho<0.31959671805938746552.
+ \quad}
+ \label{eq:rootinterval}
+\end{equation}
+
+Here is the complete bound behind that certificate. For real
+$0<q<r_0$, define
+\begin{align}
+ \tau_H(q)&=\sum_{j>H}q^j=\frac{q^{H+1}}{1-q},\label{eq:tau}\\
+ \delta_H(q)&=\sum_{j>H}jq^j
+ =\frac{q^{H+1}\bigl((H+1)-Hq\bigr)}{(1-q)^2}.
+ \label{eq:delta}
+\end{align}
+
+\begin{proposition}[An explicit bounded-row error]
+\label{prop:rowerror}
+For $0<q<r_0$,
+\begin{equation}
+ 0\le P(q)-P_H(q)\le
+ \frac{\tau_H(q)}{1-\eta(q)}+
+ \frac{q}{1-q}\frac{\delta_H(q)}{(1-\eta(q))^2}
+ =:\mathcal E_H(q).
+ \label{eq:rowerror}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Extend the finite kernel to bounded infinite sequences by suppressing all
+columns with index $j>H$; denote this operator by $K_H$. Its first $H$
+coordinates satisfy the finite system \eqref{eq:finiteTransfer}. The
+operator norms obey
+\[
+ \opnorm{K_H}\le\eta(q),\qquad
+ \opnorm{K-K_H}\le\delta_H(q).
+\]
+Let $\mathbf f$ be the functional with entries $q^j$, and $\mathbf f_H$
+its truncation. Then
+\[
+ \opnorm{\mathbf f-\mathbf f_H}=\tau_H(q),\qquad
+ \opnorm{\mathbf f_H}\le\frac{q}{1-q}.
+\]
+Using the resolvent identity,
+\[
+ (I-K)^{-1}-(I-K_H)^{-1}
+ =(I-K)^{-1}(K-K_H)(I-K_H)^{-1},
+\]
+and $\opnorm{\mathbf e}=1$, we obtain the upper bound in
+\eqref{eq:rowerror}. The lower bound also follows directly because
+$P_H$ counts a subset of the diagrams counted by $P$.
+\end{proof}
+
+Let $q_-$ and $q_+$ denote the two rational endpoints in
+\eqref{eq:rootinterval}. The script \texttt{verify.py} evaluates
+\eqref{eq:boundedCF} with $H=55$ using Python's exact rational type and
+checks
+\begin{equation}
+ P_{55}(q_-)+\mathcal E_{55}(q_-)<1,
+ \qquad P_{55}(q_+)>1.
+ \label{eq:certificatechecks}
+\end{equation}
+The error allowance at the lower endpoint is about
+$7.446\times10^{-26}$. No floating-point decision is used in
+\eqref{eq:certificatechecks}. Proposition~\ref{prop:rowerror}, combined
+with monotonicity of $P$, proves \eqref{eq:rootinterval}. The interval has
+width $10^{-20}$; this statement should not be confused with certification
+of every additional decimal printed in \eqref{eq:rhonum}--\eqref{eq:kappanum}.
+
+\section{The number of connected components in a large diagram}
+\label{sec:componentsCLT}
+
+The component marker gives more than a counting refinement. Choose a
+diagram uniformly among the $a_n$ diagrams of area $n$, for $n\ge1$, and
+let $K_n$ be its number of edge-connected components. By
+\eqref{eq:sequence},
+\begin{equation}
+ \E[u^{K_n}]=\frac{[q^n](1-uP(q))^{-1}}{a_n}.
+ \label{eq:componentPGF}
+\end{equation}
+
+\begin{theorem}[Linear mean, linear variance, and a Gaussian limit]
+\label{thm:CLT}
+Define
+\begin{equation}
+ \mu=\frac{1}{\rho P'(\rho)},\qquad
+ \sigma^2=\mu^2-\mu+\frac{P''(\rho)}{\rho P'(\rho)^3}.
+ \label{eq:CLTconstants}
+\end{equation}
+Then $\sigma^2>0$,
+\begin{equation}
+ \E[K_n]=\mu n+O(1),\qquad
+ \Var(K_n)=\sigma^2n+O(1),
+ \label{eq:CLTmoments}
+\end{equation}
+and
+\begin{equation}
+ \frac{K_n-\mu n}{\sigma\sqrt n}
+ \ \xrightarrow{\ d\ }\ \mathcal N(0,1).
+ \label{eq:CLT}
+\end{equation}
+Numerically, $\mu=\kappa\approx0.2893214639716513231$ and
+$\sigma^2\approx0.2382004452790812020$.
+\end{theorem}
+\begin{proof}
+The implicit function theorem gives an analytic function $\rho(u)$ near
+$u=1$ such that
+\[
+ uP(\rho(u))=1,\qquad \rho(1)=\rho.
+\]
+Choose a circle $|q|=R>\rho$ as in Theorem~\ref{thm:asymptotic}. For
+complex $u$ in a sufficiently small neighborhood of $1$, continuity and
+the argument principle show that $1-uP(q)$ has just the one simple zero
+$\rho(u)$ inside that circle and no zero on it. Subtracting the moving
+principal part and applying Cauchy's bound uniformly gives
+\begin{equation}
+ [q^n]\frac{1}{1-uP(q)}
+ =\frac{\rho(u)^{-n}}{u\rho(u)P'(\rho(u))}+O(R^{-n}).
+ \label{eq:uniformpole}
+\end{equation}
+The leading factor is analytic and nonzero near $u=1$.
+
+Set $r(t)=\rho(e^t)$ and $L(t)=\log(\rho/r(t))$, taking local analytic
+branches. Equation~\eqref{eq:componentPGF} and the uniform estimate imply
+\begin{equation}
+ \log\E[e^{tK_n}]=nL(t)+G(t)+O(\theta^n),\qquad 0<\theta<1,
+ \label{eq:quasipowers}
+\end{equation}
+locally uniformly in complex $t$, for an analytic $G$ independent of $n$.
+Differentiate $P(r(t))=e^{-t}$ at zero to obtain
+\[
+ r'(0)=-\frac{1}{P'(\rho)},\qquad
+ r''(0)=\frac{1}{P'(\rho)}-
+        \frac{P''(\rho)}{P'(\rho)^3}.
+\]
+It follows that $L'(0)=\mu$ and $L''(0)=\sigma^2$, proving
+\eqref{eq:CLTmoments} by differentiation of the logarithmic moment
+generating function.
+
+To verify strict positivity, set $w_j=p_j\rho^j$. Since $P(\rho)=1$, these
+numbers form a probability distribution on positive integers. Its mean
+$m$ and variance $v$ satisfy
+\[
+ m=\rho P'(\rho),\qquad
+ v=\rho^2P''(\rho)+\rho P'(\rho)-\bigl(\rho P'(\rho)\bigr)^2.
+\]
+A direct simplification gives $\sigma^2=v/m^3$. Both $w_1$ and $w_2$ are
+positive, so this distribution is not concentrated at one point; hence
+$v>0$.
+
+Finally, substitute $t=iz/(\sigma\sqrt n)$ in
+\eqref{eq:quasipowers} for fixed real $z$ and subtract the centering term
+$iz\mu\sqrt n/\sigma$. Taylor expansion gives a limit of $-z^2/2$ for the
+logarithm of the characteristic function. Its exponential therefore tends
+to $e^{-z^2/2}$, proving \eqref{eq:CLT} by the continuity theorem for
+characteristic functions.
+\end{proof}
+
+The equality between the mean-component density $\mu$ and the leading
+coefficient $\kappa$ in the area asymptotic is a consequence of the same
+simple-pole calculation, not a numerical coincidence. These consequences
+are derived here without a claim that their general analytic mechanism is
+new.
+
+\section{Exact checks, numerical checks, and reproducibility}
+\label{sec:verification}
+
+\subsection{Initial values and component polynomials}
+Table~\ref{tab:initial} compares the two area sequences obtained from the
+proof. The connected sequence is A006958, with its constant term set to
+zero; the all-diagram sequence is A225114, including the empty object
+\cite{oeis006958,oeis225114}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}r r r@{}}
+\toprule
+Area $n$ & Connected diagrams $p_n$ & All diagrams $a_n$\\
+\midrule
+0 & 0 & 1\\
+1 & 1 & 1\\
+2 & 2 & 3\\
+3 & 4 & 9\\
+4 & 9 & 28\\
+5 & 20 & 87\\
+6 & 46 & 272\\
+7 & 105 & 850\\
+8 & 242 & 2659\\
+9 & 557 & 8318\\
+10 & 1285 & 26025\\
+11 & 2964 & 81427\\
+12 & 6842 & 254777\\
+\bottomrule
+\end{tabular}
+\caption{Initial exact coefficients.}\label{tab:initial}
+\end{table}
+
+For example, direct overlap enumeration gives
+\begin{align*}
+ a_1(u)&=u,\\
+ a_2(u)&=2u+u^2,\\
+ a_3(u)&=4u+4u^2+u^3,\\
+ a_4(u)&=9u+12u^2+6u^3+u^4,\\
+ a_5(u)&=20u+34u^2+24u^3+8u^4+u^5,\\
+ a_6(u)&=46u+92u^2+83u^3+40u^4+10u^5+u^6.
+\end{align*}
+Their coefficients agree with $[q^n]P(q)^k$ for each component count $k$.
+Setting $u=1$ recovers the corresponding values in the table.
+
+\subsection{The exact verification suite}
+The following checks were executed successfully by
+\texttt{python3 verify.py --limit 1000}. The summary is preserved in
+\texttt{verification\_results.json}.
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item The recorded candidate-list digest and random draw were replayed
+without creating a new draw.
+\item All $31$ initial terms displayed in A225114 and all $32$ positive-area
+terms displayed in A006958 agreed with the computed values.
+\item Independent row-overlap dynamic programs, the paired continued
+fraction, the explicit $q$-series ratio, and the ordered-component
+convolution agreed through area $1000$.
+\item The exact first omitted coefficient in
+Theorem~\ref{thm:truncation} was checked at every depth from $0$ to $12$.
+\item Full component polynomials were independently enumerated from
+compositions through area $13$.
+\item The four-variable refinement was checked through area $20$ at all
+$27$ triples $(s,t,u)\in\{0,1,2\}^3$, against direct weighted row placements.
+These are specialized tests, not a claim of symbolic verification at all
+four-variable coefficients through area $1000$.
+\item Direct enumeration of the two boundary paths agreed with the
+connected area counts through area $10$. Since
+$n\ge h+w-1$ by \eqref{eq:areasum}, enumerating boundary lengths through
+$11$ covers every diagram in that range.
+\item The dimension formula \eqref{eq:dimensionformula} agreed with
+independent boundary-path enumeration and concatenation for every
+$h,w\le5$ and $1\le k\le5$.
+\item The dominant-root inequalities \eqref{eq:certificatechecks} were
+verified with exact rational arithmetic, and the seven-term lower bound
+$P(1/3)>245/243$ was checked.
+\end{enumerate}
+
+The program reported \texttt{ALL EXACT CHECKS PASSED}. These finite checks
+are designed to expose indexing, weighting, truncation, and implementation
+errors. They are not used as a replacement for any all-orders proof in
+Sections~\ref{sec:rows}--\ref{sec:componentsCLT}.
+
+\subsection{Numerical diagnostics for the asymptotics}
+The optional script \texttt{asymptotics.py} uses \texttt{mpmath} at high
+precision to estimate $\rho$, $P'(\rho)$, and $P''(\rho)$. It compares
+continued-fraction depths $40$ and $60$ as a stability check. Agreement of
+those evaluations is a numerical diagnostic, not the rational certificate;
+only \eqref{eq:rootinterval} is certified in that way.
+
+The moments can also be recovered from integer coefficient arrays, using
+\begin{equation}
+ \E[K_n]=\frac{[q^n](A^2-A)}{a_n},\qquad
+ \E[K_n(K_n-1)]=\frac{2[q^n](A^3-2A^2+A)}{a_n}.
+ \label{eq:exactmoments}
+\end{equation}
+These follow by differentiating $(1-uP)^{-1}$ and using $P=1-1/A$.
+Table~\ref{tab:asymptotic} compares the resulting statistics with their
+limits.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}r c c c@{}}
+\toprule
+$n$ & $a_n\rho^n$ & $\E[K_n]/n$ & $\Var(K_n)/n$\\
+\midrule
+10 & 0.289343577662 & 0.371627281460 & 0.209156420607\\
+20 & 0.289321476436 & 0.330486811475 & 0.223648203436\\
+50 & 0.289321463972 & 0.305787608032 & 0.232379523182\\
+100 & 0.289321463972 & 0.297554536002 & 0.235289984230\\
+250 & 0.289321463972 & 0.292614692784 & 0.237036260860\\
+500 & 0.289321463972 & 0.290968078378 & 0.237618353069\\
+1000 & 0.289321463972 & 0.290144771175 & 0.237909399174\\
+\midrule
+Limit & 0.289321463972 & 0.289321463972 & 0.238200445279\\
+\bottomrule
+\end{tabular}
+\caption{Numerical diagnostics from exact area and component counts, with
+high-precision estimates of the asymptotic constants.}
+\label{tab:asymptotic}
+\end{table}
+
+\subsection{Contents and scope of the accompanying archive}
+The archive contains the editable \LaTeX{} source and its compiled PDF,
+the frozen candidate list and selection record, the standard-library exact
+verification program, the optional numerical program, and CSV/JSON outputs.
+The coefficient table contains $n=0,1,\ldots,1000$. The separate component
+table contains the nonzero entries for $n\le13$. The README gives build and
+execution commands and distinguishes rigorous inequalities from numerical
+estimates.
+
+No proof assistant or external referee has certified this article, and no
+edit has been submitted to OEIS as part of this work. The all-$n$ result
+rests on the explicit mathematical arguments above; the code provides
+independent reproducible checks of their consequences.
+
+\section{Conclusion}
+The generating function selected from the OEIS shortlist is correct.
+Its structure has a direct combinatorial explanation: zero row overlaps
+cut a diagram into an ordered sequence of connected pieces; each connected
+piece is encoded by two separated monotone boundaries; their separation
+is a weighted Motzkin excursion. First-return decomposition produces the
+Jacobi fraction, and elementary contraction produces exactly the repeated
+powers in the selected expression.
+
+The same framework yields the full refinement
+$\Aall(q;s,t,u)=(1-uP(q;s,t))^{-1}$, the dimension formula
+\eqref{eq:dimensionformula}, the independent $q$-series ratio
+\eqref{eq:Aratio}, the sharp truncation degree $(m+1)^2$, and the rigorous
+asymptotic \eqref{eq:asymptotic}. The prior sketch is explicitly credited;
+the deliverable is a complete proof and reproducible elaboration of a
+formula still labeled conjectural in its OEIS entry, not a priority claim.
+
+\appendix
+\section{The unselected candidate formulas and draw record}
+\label{app:candidates}
+
+The following formulas were present in the frozen list. They are recorded
+to make the selection auditable; this article makes no assertion that they
+have been proved or refuted here.
+
+For A244475, with the power-series indexing beginning at $n=3$, the
+conjectured generating function is \cite{oeis244475}
+\begin{equation}
+ -\frac{q^3 Q(q)}{q^2+q-1},
+ \qquad
+ \begin{aligned}
+ Q(q)={}&q^{14}+q^{13}+q^{12}+2q^{11}+3q^{10}+5q^9+8q^8\\
+       &+q^7+3q^6+3q^5+2q^4+4q^3+5q^2+2q+1.
+ \end{aligned}
+ \label{eq:candidateStern}
+\end{equation}
+The OEIS attribution is Alois P.\ Heinz, 20 June 2022.
+
+For A381190, with indexing beginning at $n=3$, the conjectured generating
+function is \cite{oeis381190}
+\begin{equation}
+ -\frac{2q^3(4q^5+8q^4+4q^3-9q^2-8q-3)}{(q^3+q^2-1)^2},
+ \label{eq:candidateDomination}
+\end{equation}
+attributed to Joerg Arndt, 7 January 2026.
+
+For A391632, with indexing beginning at $n=1$, the conjectured generating
+function is \cite{oeis391632}
+\begin{equation}
+ \frac{q(4-19q+33q^2-40q^3+8q^4)}{1-10q+29q^2-32q^3+8q^4},
+ \label{eq:candidateVisibility}
+\end{equation}
+attributed to Andrew Howroyd, 12 January 2026.
+
+The SHA-256 digest of the exact UTF-8 bytes of \texttt{candidates.json} is
+\begin{center}\ttfamily\small
+ ea6cca457acda9a1fbd92f88aa09cd9250053f0f467d75e0f7323aabc7c82d37
+\end{center}
+The RNG seed is given in Section~\ref{sec:selection}; the recorded output
+is $0$. The exact verification program replays this draw without altering
+the record. The original selection script deliberately refuses to run
+when \texttt{selection.json} already exists, to avoid silently replacing
+the recorded selection.
+
+\Needspace{10\baselineskip}
+\section{A minimal reproduction protocol}
+\label{app:reproduce}
+Compile the article twice with a standard \LaTeX{} installation:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+Run the exact checks with Python 3.10 or later:
+\begin{verbatim}
+python3 verify.py --limit 1000
+\end{verbatim}
+This step uses only the Python standard library. For the optional numerical
+tables, install the separately listed dependency and run:
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 asymptotics.py
+\end{verbatim}
+The numerical script computes its own coefficient arrays through area
+$1000$ using the continuant routine. Running the exact script with a
+different limit overwrites its CSV coefficient output at that limit; use
+$1000$ to reproduce the supplied exact table. Neither command performs a
+new random selection.
+
+\begin{thebibliography}{99}
+\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{oeis225114}
+The OEIS Foundation Inc.,
+\emph{A225114: Number of skew partitions of $n$ whose diagrams have no
+empty rows and columns}.
+Entry by Joerg Arndt; generating-function conjecture attributed to
+Mikhail Kurkov, 3 September 2024.
+\url{https://oeis.org/A225114}. Consulted 20 September 2026.
+
+\bibitem{oeis244475}
+The OEIS Foundation Inc.,
+\emph{A244475: Fifth-largest distinct value in a row of Stern's diatomic
+triangle}.
+\url{https://oeis.org/A244475}. Consulted 20 September 2026.
+
+\bibitem{oeis381190}
+The OEIS Foundation Inc.,
+\emph{A381190: Connected minimal dominating sets of $n$-trapezohedral graphs}.
+\url{https://oeis.org/A381190}. Consulted 20 September 2026.
+
+\bibitem{oeis391632}
+The OEIS Foundation Inc.,
+\emph{A391632: Mutual-visibility sets of $n$-Andr\'asfai graphs}.
+\url{https://oeis.org/A391632}. Consulted 20 September 2026.
+
+\bibitem{pasechnik}
+Dima Pasechnik,
+Answer to \emph{Generating function for A225114}, MathOverflow,
+10 September 2024.
+\url{https://mathoverflow.net/questions/478171/generating-function-for-a225114}.
+Consulted 20 September 2026.
+
+\bibitem{oeis006958}
+The OEIS Foundation Inc.,
+\emph{A006958: Number of parallelogram polyominoes with $n$ cells}.
+Includes continued-fraction formulas attributed to Paul D.\ Hanna and
+$q$-series formulas attributed to Peter Bala.
+\url{https://oeis.org/A006958}. Consulted 20 September 2026.
+
+\bibitem{bala}
+Peter Bala,
+\emph{Fountains of coins and skew Ferrers diagrams}, 26 July 2019, 6 pages.
+Note linked from OEIS A161492 and A006958.
+\url{https://oeis.org/A161492/a161492_1.pdf}.
+
+\bibitem{delestfedou}
+M.-P.\ Delest and J.-M.\ F\'edou,
+\emph{Enumeration of skew Ferrers diagrams},
+Discrete Mathematics \textbf{112} (1993), 65--79.
+\url{https://doi.org/10.1016/0012-365X(93)90224-H}.
+Historical background; the identities used here are independently derived
+in the article.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,971 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Monotone Blocks and Reverse Replies: An Elementary Proof of the Large-Order Permutation-Avoidance Conjecture},pdfauthor={AI-assisted research report},pdfsubject={Permutation patterns; impartial games; a proposed solution of Ulfarsson's Conjecture 2.9}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Monotone blocks and reverse replies}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\emergencystretch=2em
+\setlist{itemsep=0.2em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Av}{Av}
+\DeclareMathOperator{\Sh}{Sh}
+\DeclareMathOperator{\st}{st}
+\DeclareMathOperator{\sg}{sg}
+\DeclareMathOperator{\mex}{mex}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nk}{\mathcal N_k}
+\newcommand{\id}{\iota}
+\newcommand{\decr}{\delta}
+\newcommand{\Tm}{\mathcal T}
+\newcommand{\Um}{\mathcal U}
+\newcommand{\replybound}{R(k)}
+\newcommand{\shn}[1]{\Sh_k^{\mathrm{nm}}(#1)}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\title{\textbf{Monotone Blocks and Reverse Replies}\\[0.4em]
+\large An elementary proof of the large-order\\permutation-avoidance conjecture}
+\author{AI-assisted research report\\\small Prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+In the normal-play permutation-avoidance game, a move forbids a length-$k$
+pattern that still occurs in a surviving permutation of length $n$. Ulfarsson's
+Conjecture~2.9 asks whether, for each $k\ge3$ and all sufficiently large $n$,
+the second player wins by replying to every pattern with its reversal.
+We give a self-contained elementary proof with the explicit sufficient bound
+\[
+ n\ge \replybound:=k+(k+1)^2(k-2)^2+1.
+\]
+The main ingredient is a minimal-support lemma: in a family consisting of
+singleton entries and one inflatable monotone interval, deleting singleton
+entries can isolate exactly one member of any prescribed set of nonmonotone
+patterns of a common length. A grid pigeonhole argument and the
+Erd\H{o}s--Szekeres theorem extract such a family from every sufficiently long
+legal witness. Reversal then supplies a witness for the required reply at the
+\emph{same} length $n$. We also obtain an eventual pattern-isolation theorem,
+a complement-reply corollary, and explicit small certificates. Exact Python
+checks and two worked examples accompany the proof; no computation is a
+premise of the universal result. The bound is not asserted to be optimal.
+\end{abstract}
+
+\noindent\fcolorbox{MidnightBlue}{blue!3}{\begin{minipage}{0.94\linewidth}
+\small\textbf{Status of the result.} This is a proposed solution with a complete
+proof, not a report of an independently accepted theorem. The argument has
+been internally audited and tested on exact finite examples, but has not been
+independently refereed or checked in a proof assistant. The source problem is
+Conjecture~2.9 of arXiv:2603.16004v1, as retrieved on 20 September 2026.
+\end{minipage}}
+
+\setcounter{tocdepth}{1}
+\begingroup\small
+\setlength{\parskip}{0pt}
+\makeatletter
+\renewcommand{\l@section}[2]{\@dottedtocline{1}{0em}{1.8em}{#1}{#2}}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem and the main result}
+\label{sec:problem}
+
+\subsection{A move removes a pattern, not an entry}
+Let $S_n$ be the permutations of $\{1,\ldots,n\}$. For a sequence of distinct
+numbers $a_1,\ldots,a_j$, its \emph{standardization} $\st(a_1\cdots a_j)$ is
+the unique permutation of length $j$ with the same pairwise comparisons.
+A permutation $\pi$ contains $p\in S_k$ if
+\[
+ \st\bigl(\pi(i_1)\cdots\pi(i_k)\bigr)=p
+ \quad\text{for some }i_1<\cdots<i_k.
+\]
+Write $p\le\pi$ for this relation. Otherwise $\pi$ avoids $p$. For a set of
+patterns $F$, put
+\[
+ \Av_n(F)=\{\pi\in S_n:\ f\nleq\pi\text{ for every }f\in F\}.
+\]
+
+The game studied here is Ulfarsson's PAP game~\cite{Ulfarsson}. Its initial
+position is $S_n$. When the already forbidden patterns are $F\subseteq S_k$,
+a legal move chooses $p\in S_k$ occurring in some member of $\Av_n(F)$ and
+changes the position to $\Av_n(F\cup\{p\})$. The player making the last legal
+move wins. A selected pattern cannot be selected again, so play lasts at
+most $k!$ moves.
+
+For $p=p_1\cdots p_k$, let $p^r=p_k\cdots p_1$. The proposed strategy for
+Player~II is simply
+\[
+ \boxed{\text{After Player I chooses }p,\text{ choose }p^r.}
+\]
+Although $p\ne p^r$ for $k\ge2$, that does not by itself make the reply legal:
+all surviving occurrences of $p^r$ might have disappeared when $p$ was
+forbidden. Proving that this cannot happen at sufficiently large $n$ is the
+substantive issue.
+
+\subsection{Published target and contribution}
+Ulfarsson explicitly formulates eventual success of this strategy as
+Conjecture~2.9~\cite{Ulfarsson}. His paper establishes the $k=3$ case and the
+$k=4$ range $n\ge10$; the general statement is left open. The following
+uniform theorem is the proposed resolution.
+
+\begin{theorem}[Reverse-reply theorem]\label{thm:main}
+For every integer $k\ge3$, define
+\begin{equation}\label{eq:bound}
+ \replybound=k+(k+1)^2(k-2)^2+1
+ =k^4-2k^3-3k^2+5k+5.
+\end{equation}
+For every $n\ge\replybound$, Player~II wins PAP on $S_n$ with pattern length
+$k$ by always replying with the reversal of Player~I's move. In particular,
+$\sg(S_n,k)=0$ for every such $n$.
+\end{theorem}
+
+The proof does not classify the $k!$ patterns individually. It instead
+minimizes the number of exceptional entries needed to retain \emph{either}
+orientation of the proposed move. At a minimum, the two orientations cannot
+both occur. This removes the need for a case-by-case list of companion
+patterns.
+
+\begin{center}
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule
+$k$ &3&4&5&6&7&8&9&10\\
+\midrule
+$\replybound$ &20&105&330&791&1608&2925&4910&7755\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are sufficient thresholds from one argument, not computed least
+thresholds. In particular, the displayed $k=3,4$ bounds deliberately do not
+compete with the sharper results already in the source. The new assertion is
+uniformity in \emph{every} $k$.
+
+\section{Elementary tools and the obstruction to naive pairing}
+\label{sec:prelim}
+
+Write
+\[
+ \id_k=12\cdots k,\qquad \decr_k=k\cdots21,\qquad
+ \Nk=S_k\setminus\{\id_k,\decr_k\}.
+\]
+The elements of $\Nk$ are the nonmonotone length-$k$ patterns. Define the
+$k$-shadow and its nonmonotone part by
+\[
+ \Sh_k(\pi)=\{p\in S_k:p\le\pi\},\qquad
+ \shn{\pi}=\Sh_k(\pi)\cap\Nk.
+\]
+Classical containment is transitive, so if $\rho\le\pi$ then
+$\Sh_k(\rho)\subseteq\Sh_k(\pi)$.
+
+\begin{lemma}[Reversal compatibility]\label{lem:reversal}
+For all $p\in S_k$ and $\pi\in S_n$,
+\[
+ p\le\pi\quad\Longleftrightarrow\quad p^r\le\pi^r.
+\]
+Consequently, if $F^r:=\{f^r:f\in F\}=F$, then $\Av_n(F)$ is closed under
+reversal.
+\end{lemma}
+\begin{proof}
+Reverse the order of the selected positions of an occurrence. Their values
+are then read in reverse order, which standardizes to $p^r$. Reversal is an
+involution, giving the converse. Apply the equivalence to each $f\in F$.
+\end{proof}
+
+\begin{remark}[Why symmetry alone is insufficient]
+The lemma proves that $p$ and $p^r$ are either both legal or both illegal
+\emph{before} $p$ is played from a reversal-closed state. A legal reply needs
+more: a surviving permutation containing $p^r$ \emph{and avoiding $p$}.
+Reversing a witness that contains both orientations still contains both and
+therefore does not solve the problem.
+\end{remark}
+
+We use the following standard monotone-subsequence theorem, including its
+elementary proof to keep all dependencies visible. Its classical source is
+Erd\H{o}s and Szekeres~\cite{ES}.
+
+\begin{lemma}[Erd\H{o}s--Szekeres]\label{lem:es}
+If a permutation has more than $(a-1)(b-1)$ entries, it contains an
+increasing subsequence of length $a$ or a decreasing subsequence of length
+$b$. In particular, more than $(h-1)^2$ entries force a monotone subsequence
+of length $h$.
+\end{lemma}
+\begin{proof}
+At each position $j$, let $u_j$ and $v_j$ be the lengths of the longest
+increasing and decreasing subsequences ending there. For $i<j$, if
+$\pi(i)<\pi(j)$ then $u_j\ge u_i+1$; otherwise $v_j\ge v_i+1$. Thus all pairs
+$(u_j,v_j)$ are distinct. If the two claimed subsequences are absent, all
+pairs lie in $\{1,\ldots,a-1\}\times\{1,\ldots,b-1\}$, which has only
+$(a-1)(b-1)$ elements.
+\end{proof}
+
+A \emph{monotone interval} of a permutation is a set of entries occupying
+consecutive positions and consecutive values, with those entries increasing
+or decreasing. In the extraction below, the interval property is required
+only in a selected subpermutation. The corresponding points need not form
+an interval in the original, much larger permutation.
+
+\section{One monotone block and its stable shadow}
+\label{sec:templates}
+
+\begin{definition}[Pointed template]
+A pointed template $\Tm=(\beta,j,\varepsilon)$ consists of a permutation
+$\beta\in S_{m+1}$, an index $j$, and a sign $\varepsilon\in\{+,-\}$. For
+$t\ge1$, the permutation $\Tm_t$ is obtained by replacing the entry
+$\beta(j)$ by a monotone interval of length $t$ and sign $\varepsilon$.
+Every other entry is retained as a singleton. Thus $|\Tm_t|=m+t$.
+\end{definition}
+
+Explicitly, set $v=\beta(j)$. Replace $v$ by
+\[
+ v,v+1,\ldots,v+t-1\quad\text{or}\quad v+t-1,\ldots,v+1,v,
+\]
+and replace every other value $x>v$ by $x+t-1$, leaving values $x<v$
+unchanged. The sign specifies the choice of order. The block is consequently
+in one position gap and one value gap relative to all singleton entries.
+
+A subset $A$ of the singleton entries determines a subtemplate $\Tm^A$:
+delete the other singleton entries from the skeleton, retain the marked
+entry, and standardize. For every $t\ge1$,
+\begin{equation}\label{eq:subtemplate}
+ (\Tm^A)_t\le\Tm_t.
+\end{equation}
+
+\begin{lemma}[Stable shadows]\label{lem:stable}
+For every pointed template and every $k\ge2$,
+\begin{align}
+ \Sh_k(\Tm_t)&=\Sh_k(\Tm_k) &&(t\ge k),\label{eq:stablefull}\\
+ \shn{\Tm_t}&=\shn{\Tm_{k-1}} &&(t\ge k-1).\label{eq:stablenonmono}
+\end{align}
+\end{lemma}
+\begin{proof}
+A $k$-subsequence chooses some particular singleton entries and a number
+$b$ of block entries. After the singleton choices and $b$ are fixed, its
+pattern is fixed: all selected block entries have the same comparisons
+with every selected singleton, and their internal order is specified by
+$\varepsilon$. The choice of \emph{which} $b$ block entries is irrelevant.
+
+For the full shadow, $0\le b\le k$, and all choices of $b$ that are possible
+for $t\ge k$ are already possible for $t=k$. This proves
+\eqref{eq:stablefull}. For a nonmonotone pattern, not all $k$ entries can
+come from the monotone block. Thus at least one singleton is selected and
+$b\le k-1$. All such choices are already available at $t=k-1$, proving
+\eqref{eq:stablenonmono}.
+\end{proof}
+
+Denote this stable nonmonotone shadow by
+\[
+ H_k(\Tm):=\shn{\Tm_{k-1}}.
+\]
+It can be computed from a permutation of length $m+k-1$, no matter how large
+the eventual inflated permutation will be. By \eqref{eq:subtemplate},
+\begin{equation}\label{eq:shadowmonotonicity}
+ A\subseteq A'\quad\Longrightarrow\quad
+ H_k(\Tm^A)\subseteq H_k(\Tm^{A'}).
+\end{equation}
+
+\begin{remark}[The missing monotone pattern is harmless, but not absent]
+The full shadow need not stabilize at $k-1$: a block with $k-1$ entries
+cannot by itself supply its length-$k$ monotone pattern, whereas a block with
+$k$ entries can. We will inflate only while all forbidden patterns are
+nonmonotone. This is exactly why the smaller stabilization length $k-1$ is
+valid in the final bound.
+\end{remark}
+
+\section{The minimal-core isolation lemma}
+\label{sec:minimal}
+
+The next lemma is the decisive step. It concerns arbitrary sets of targets,
+not just two reversals.
+
+\begin{lemma}[Minimal-core isolation]\label{lem:minimal}
+Let $Q\subseteq\Nk$ be nonempty, and suppose $H_k(\Tm)\cap Q\ne\varnothing$.
+There is a subtemplate $\Um$ obtained by deleting singleton entries such that
+\begin{equation}\label{eq:isolate}
+ |H_k(\Um)\cap Q|=1.
+\end{equation}
+Moreover, $\Um$ has at most $k$ singleton entries, and at least one.
+\end{lemma}
+\begin{proof}
+Choose an inclusion-minimal subset $A$ of the singleton entries such that
+\[
+ H_k(\Tm^A)\cap Q\ne\varnothing,
+\]
+and put $\Um=\Tm^A$. Such an $A$ exists because the original finite set of
+singletons has the required property. Let $m=|A|$.
+
+Consider any occurrence of any member of $Q$ in $\Um_{k-1}$. That occurrence
+must use \emph{every} singleton of $A$. Indeed, if it omitted a singleton
+$a\in A$, the same occurrence would survive in
+$(\Tm^{A\setminus\{a\}})_{k-1}$, contradicting the minimality of $A$.
+
+It follows that every occurrence of any target uses exactly the same $m$
+singleton entries, and exactly $k-m$ entries of the monotone block. But these
+choices determine a \emph{unique} relative order: the singleton entries are
+fixed, all block entries lie in the same position and value gaps relative
+to them, and the internal order of the block is fixed. Thus all target
+occurrences standardize to one and the same permutation. Since at least one
+target occurs, \eqref{eq:isolate} follows.
+
+The existing occurrence uses all $m$ singletons, so $m\le k$. Also $m\ne0$:
+a monotone block alone cannot contain a nonmonotone target. This proves the
+last assertion.
+\end{proof}
+
+\begin{remark}[What is, and is not, being minimized]
+We minimize the singleton support needed to retain \emph{some} member of
+$Q$. Minimizing the support of one preselected target would not justify
+excluding the other targets: another target could use a proper subset of
+that support. Allowing the retained target to change during deletion is
+essential. In the game application, reversal symmetry subsequently orients
+the isolated target in the desired direction.
+\end{remark}
+
+\begin{example}[The smallest illustrative pair]\label{ex:small}
+Let $k=3$, $Q=\{132,231\}$, and inflate the first entry of $1342$ increasingly.
+The resulting family is
+\[
+ \Tm_t=1,2,\ldots,t,\ t+2,\ t+3,\ t+1.
+\]
+For $t\ge2$, its nonmonotone $3$-shadow is $\{132,231\}$. Delete the
+singleton $t+2$ and standardize. The smaller family is
+\[
+ \Um_t=1,2,\ldots,t,\ t+2,\ t+1,
+\]
+whose only nonmonotone $3$-pattern is $132$. Its reversal has only $231$.
+For instance, at block length two the successive permutations are
+\[
+ 12453\quad\longrightarrow\quad1243
+ \quad\longrightarrow\quad3421.
+\]
+The middle and last permutations respectively isolate the two orientations.
+\end{example}
+
+\subsection{A finite, terminating minimization algorithm}
+The proof gives a direct procedure. Starting with $\Tm$, delete any singleton
+whose deletion leaves at least one target in the stable shadow. Repeat until
+no deletion is possible. Every successful step reduces the number of
+singletons by one, so the process terminates. At termination, the same
+omitted-singleton argument proves that exactly one target remains.
+
+There is no uniqueness assertion for the resulting template or isolated
+target. Different deletion orders can give different certificates. This
+freedom is useful: a reply proof needs one suitable witness, not a canonical
+one.
+
+\section{Extracting an inflatable witness from a long permutation}
+\label{sec:extract}
+
+\begin{lemma}[Same-cell extraction]\label{lem:extract}
+Suppose $\pi$ contains a marked occurrence of $q\in S_k$, and let $h\ge2$.
+If
+\begin{equation}\label{eq:extractionbound}
+ |\pi|\ge k+(k+1)^2(h-1)^2+1,
+\end{equation}
+then $\pi$ has a subpermutation $\Tm_h$ formed from that occurrence as $k$
+singleton entries and a monotone block of length $h$ in a pointed template.
+In particular, $q\le\Tm_h\le\pi$.
+\end{lemma}
+\begin{proof}
+Plot the entries as points $(i,\pi(i))$. The $k$ marked positions partition
+the unmarked positions into $k+1$ gaps, including the two exterior gaps.
+Likewise, the $k$ marked values partition the unmarked values into $k+1$
+gaps. The unmarked points therefore lie in $(k+1)^2$ open cells, indexed by
+their position gap and value gap.
+
+There are at least $(k+1)^2(h-1)^2+1$ unmarked points. Some cell contains
+at least $(h-1)^2+1$ points. Read its values from left to right and apply
+\cref{lem:es}; this yields an increasing or decreasing subsequence of length
+$h$ entirely inside the cell.
+
+Retain exactly those $h$ points and the $k$ marked points, and standardize.
+The $h$ retained cell points are consecutive in position among the selected
+points, because no marked point lies inside their position gap. They are
+also consecutive in value, because no marked value lies inside their value
+gap. Thus they form a monotone interval relative to the marked singletons.
+Collapsing this interval to one marked entry gives the required template.
+\end{proof}
+
+\begin{corollary}[Stable extraction]\label{cor:extract}
+Let $k\ge3$ and $|\pi|\ge\replybound$. If $q\in\Nk$ occurs in $\pi$, there is
+a template $\Tm$ with exactly $k$ singletons such that
+\[
+ q\in H_k(\Tm)\subseteq\shn{\pi}.
+\]
+Consequently, if $\pi$ avoids $F\subseteq\Nk$, then $\Tm_t$ avoids $F$ for
+every $t\ge k-1$.
+\end{corollary}
+\begin{proof}
+Use $h=k-1$ in \cref{lem:extract}. The extracted permutation is
+$\Tm_{k-1}\le\pi$, and the original occurrence of $q$ uses only its
+singletons. The shadow inclusion follows by containment transitivity.
+Inflating beyond $k-1$ preserves the nonmonotone shadow by
+\cref{lem:stable}; all members of $F$ lie in that part of the shadow.
+\end{proof}
+
+We can now combine extraction and minimization without mentioning a game.
+
+\begin{theorem}[Eventual pattern isolation]\label{thm:isolation}
+Let $k\ge3$, let $F,Q\subseteq\Nk$, and suppose some
+$\pi\in\Av_n(F)$ with $n\ge\replybound$ contains a member of $Q$.
+There exist a template $\Um$ with $1\le m\le k$ singleton entries and a
+pattern $q_*\in Q$ such that, for every $t\ge k-1$,
+\begin{equation}\label{eq:universal-isolation}
+ \Um_t\in\Av_{m+t}(F),\qquad
+ \Sh_k(\Um_t)\cap Q=\{q_*\}.
+\end{equation}
+In particular, for every $N\ge2k-1$ there is a permutation of length $N$
+avoiding $F$ and containing exactly one member of $Q$.
+\end{theorem}
+\begin{proof}
+Choose a member of $Q$ occurring in $\pi$ and apply \cref{cor:extract}.
+Its template $\Tm$ has $H_k(\Tm)\cap Q\ne\varnothing$ and
+$H_k(\Tm)\cap F=\varnothing$. Apply \cref{lem:minimal} to obtain $\Um$.
+Deleting singletons can only shrink the stable shadow, so $\Um$ still avoids
+$F$. The target intersection is a singleton, say $\{q_*\}$, and stability
+makes these statements valid for every $t\ge k-1$.
+
+For the last assertion choose $t=N-m$. Since $m\le k$ and $N\ge2k-1$,
+we have $t\ge k-1$. The resulting permutation has exactly $N$ entries.
+\end{proof}
+
+\begin{remark}[The quantifiers matter]
+The hypothesis requires one witness at a length at least $\replybound$.
+The conclusion then supplies isolated-target witnesses at every length
+$N\ge2k-1$. It does \emph{not} say that any witness of length $2k-1$ is
+already sufficient for the extraction, nor does it assert that a prescribed
+member of $Q$ can always be isolated. The latter orientation is supplied by
+symmetry only in the next section.
+\end{remark}
+
+\section{Legal reverse replies and the winning strategy}
+\label{sec:gameproof}
+
+\begin{theorem}[Same-length reverse witness]\label{thm:reply}
+Let $k\ge3$, $n\ge\replybound$, and $F\subseteq\Nk$ satisfy $F^r=F$.
+If $p\in\Nk$ is legal from $\Av_n(F)$, then there exists
+\[
+ \rho\in\Av_n(F\cup\{p\})\quad\text{such that}\quad p^r\le\rho.
+\]
+Thus $p^r$ remains legal immediately after $p$ is played.
+\end{theorem}
+\begin{proof}
+A legal move has a witness $\pi\in\Av_n(F)$ containing $p$.
+Apply \cref{thm:isolation} with $Q=\{p,p^r\}$, and choose the resulting
+isolating permutation $\sigma$ to have length \emph{exactly} $n$.
+This choice is permitted because $n\ge\replybound\ge2k-1$.
+
+The two targets are distinct: equality $p=p^r$ would force the first and
+last entries of a permutation of length at least two to agree. If $\sigma$
+contains $p^r$, it avoids $p$ and is the desired $\rho$. Otherwise it contains
+$p$ and avoids $p^r$. Set $\rho=\sigma^r$. By \cref{lem:reversal}, $\rho$
+contains $p^r$, avoids $p$, and still avoids $F$ because $F^r=F$.
+\end{proof}
+
+For completeness, the monotone endgame and the passage from replies to a
+winning strategy are proved explicitly rather than imported.
+
+\begin{lemma}[The monotone endgame]\label{lem:endgame}
+If $F\subseteq\Nk$ and $n\ge k$, both $\id_k$ and $\decr_k$ are legal from
+$\Av_n(F)$. After one is played, the other remains legal. If moreover
+$n\ge(k-1)^2+1$, forbidding both leaves no surviving permutation.
+\end{lemma}
+\begin{proof}
+The increasing permutation $\id_n$ and decreasing permutation $\decr_n$
+avoid every nonmonotone pattern. They therefore survive $F$ and witness the
+two monotone moves. If $\id_k$ is chosen, $\decr_n$ still survives and
+contains $\decr_k$; the opposite case is identical with the orders reversed.
+The final assertion is \cref{lem:es} with $a=b=k$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+At the beginning of a round, just before Player~I moves, maintain the
+following invariant: either the game has ended on Player~II's previous
+move, or the forbidden set $F$ is reversal-closed and contains no monotone
+pattern. The invariant holds initially because $F=\varnothing$.
+
+If Player~I chooses a nonmonotone $p$, \cref{thm:reply} makes $p^r$ a legal
+reply. Adding both $p$ and $p^r$ preserves reversal-closure and introduces
+neither monotone pattern, so the invariant is restored.
+
+If Player~I chooses a monotone pattern, \cref{lem:endgame} makes its reversal
+a legal reply. After that reply no permutation survives, since
+$n\ge\replybound\ge(k-1)^2+1$. Thus Player~II wins immediately.
+
+There is no possibility of an infinite run consisting only of nonmonotone
+rounds. Each round forbids two distinct new patterns, and there are only
+$k!-2$ nonmonotone patterns. Before a monotone round, both monotone moves
+remain legal. Therefore play reaches a monotone round after finitely many
+rounds, and Player~II makes the last legal move.
+
+In a finite impartial normal-play game, a position is losing for the next
+player exactly when its Sprague--Grundy value is zero; a proof of this
+standard equivalence is included in \cref{app:sg}. Hence
+$\sg(S_n,k)=0$ as asserted.
+\end{proof}
+
+\subsection{Stronger local conclusion}
+The proof applies not only to the initial state $S_n$, but to every state
+$\Av_n(F)$ with $F\subseteq\Nk$ and $F^r=F$. From any such state, the next
+player loses against reversal replies by the other player when
+$n\ge\replybound$. No reachability assumption on $F$ is needed.
+
+It is important that the forbidden set at a round boundary contains no
+monotone pattern. Once Player~I first chooses one, we do not invoke the
+inflation argument again: the very next reverse reply finishes the game.
+
+\section{A fully explicit length-330 certificate}
+\label{sec:example330}
+
+The following example exercises the first length-$5$ bound in
+\cref{thm:main}. It is illustrative, not an additional assumption.
+Let $p=12354$, so $p^r=45321$. Take the skeleton
+\[
+ \beta=124635
+\]
+and inflate its fifth entry, of value $3$, decreasingly. There are five
+singleton entries, so block length $t=325$ gives
+\begin{equation}\label{eq:bigpi}
+ \pi=1,2,328,330,327,326,\ldots,3,329\in S_{330}.
+\end{equation}
+The singleton entries themselves, at positions $1,2,3,4,330$, form $p$.
+The stable nonmonotone $5$-shadow of this template is
+\begin{align*}
+ H=\{&12354,12435,12453,12534,12543,13524,14325,\notag\\
+     &14532,15324,15432,35214,43215,45321,53214\}.
+\end{align*}
+It contains both $p$ and $p^r$. Define the reversal-closed forbidden set
+\[
+ F=\mathcal N_5\setminus(H\cup H^r).
+\]
+Here $|F|=92$. All members of $F$ are avoided by \eqref{eq:bigpi}.
+
+Minimization with $Q=\{12354,45321\}$ deletes three singleton entries.
+The skeletons, with the marked entry underlined and its block always
+\emph{decreasing}, are
+\begin{equation}\label{eq:trace}
+ 1246\underline{3}5
+ \quad\longrightarrow\quad
+ 135\underline{2}4
+ \quad\longrightarrow\quad
+ 24\underline{1}3
+ \quad\longrightarrow\quad
+ 23\underline{1}.
+\end{equation}
+At every step at least one target remains. The final template has two
+singletons and, for every $s\ge4$, the permutation
+\[
+ \Um_s=s+1,s+2,s,s-1,\ldots,1.
+\]
+Its only nonmonotone $5$-pattern is $45321$: selecting both singletons and
+three block entries yields that pattern, while using at most one singleton
+yields a decreasing pattern. Thus the length-$330$ reply witness is
+\begin{equation}\label{eq:rho330}
+ \rho=329,330,328,327,\ldots,1.
+\end{equation}
+It contains $45321$, avoids $12354$, and avoids all $92$ patterns of $F$.
+No final reversal happens to be needed in this example.
+
+The file \code{data/worked_certificate.json} records the full input and
+output permutations, the exact forbidden set, the selected cell, the
+monotone subblock, every deletion, and the final stable shadow. All of its
+pattern assertions can be checked on representatives with a block of length
+four or six; enumerating the $\binom{330}{5}$ subsequences of the large
+permutations is unnecessary.
+
+\section{Constructive algorithm and certificate size}
+\label{sec:algorithm}
+
+\subsection{Input and output}
+For a nonmonotone move, the constructive input consists of $k$, $n$, a
+reversal-closed $F\subseteq\Nk$, and a witness $\pi\in\Av_n(F)$ together with
+one marked occurrence of $p$. Supplying the occurrence avoids a separate
+pattern-search problem. The output is an explicit $\rho\in S_n$ witnessing
+the legality of $p^r$ after $p$.
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\hrule\medskip
+\textbf{Reverse-witness construction}
+\begin{enumerate}[label=\arabic*.,leftmargin=1.6em]
+\item Split the unmarked entries of $\pi$ into the $(k+1)^2$ cells defined
+by the marked occurrence. Choose a cell with at least $(k-2)^2+1$ entries.
+\item Find an increasing or decreasing subsequence of length $k-1$ in that
+cell. Retain it together with the marked occurrence, producing $\Tm_{k-1}$.
+\item Repeatedly delete a singleton whenever the stable shadow still meets
+$Q=\{p,p^r\}$. Let $\Um$ be the resulting template with $m$ singletons.
+\item Form $\sigma=\Um_{n-m}$. If its isolated target is $p^r$, output
+$\sigma$; otherwise output $\sigma^r$.
+\end{enumerate}
+\medskip\hrule
+\end{minipage}
+\end{center}
+
+\subsection{Finite proof certificates}
+A certificate can store the original marked occurrence, the selected
+$k-1$ cell points, the template and deletion trace, the isolated orientation,
+and the final block length. The initial finite representative has $2k-1$
+entries, and every later representative has at most that many.
+
+The verifier checks that the original selected points standardize to the
+stated template; checks finite pattern shadows of the representatives;
+checks that the final shadow contains exactly one target and avoids $F$;
+and, when necessary, invokes reversal-closure of $F$. The mathematical
+stability lemma then transports these finite checks to the length-$n$
+output. Thus the certificate is independent of $n$ except for the indices
+of selected points and the final block length.
+
+More precisely, apart from the supplied $F$ and permutation, it contains
+$O(k^2)$ small skeleton entries if the whole deletion trace is retained,
+and $O(k\log n)$ bits for the selected original indices. Retaining only the
+initial and final templates reduces the structural record further, though
+the full trace is easier to inspect.
+
+\subsection{A conservative running-time bound}
+With a marked occurrence supplied, gap assignment takes $O(nk)$ elementary
+comparisons. A straightforward dynamic program finds the required monotone
+subsequence in $O(n^2)$ time, or faster methods can be substituted without
+changing the proof. Each finite shadow test enumerates at most
+$\binom{2k-1}{k}$ subsequences; a direct standardization takes $O(k^2)$
+comparisons. At most $k(k+1)$ deletion attempts suffice for a naive repeated
+scan. For fixed $k$, the overall construction is therefore polynomial in
+$n$; a conservative bound is
+\[
+ O\!\left(n^2+k^4\binom{2k-1}{k}\right)
+\]
+comparison operations, apart from representing and testing membership in
+$F$. There is no assertion of polynomial dependence on $k$.
+
+The supplied implementation instead computes stable shadows symbolically:
+it chooses the singleton subset and only the \emph{number} of selected
+block entries. An independent direct subsequence routine checks these
+symbolic computations in the test suite.
+
+\section{Extensions and the limits of the argument}
+\label{sec:extensions}
+
+\subsection{Complement replies}
+For $p\in S_k$, define $p^c$ by $(p^c)_i=k+1-p_i$. Complementation preserves
+classical containment, has no fixed permutation when $k\ge2$, and exchanges
+the two monotone patterns.
+
+\begin{corollary}[Complement strategy]\label{cor:complement}
+For every $k\ge3$ and $n\ge\replybound$, Player~II also wins PAP on $S_n$ by
+replying to $p$ with $p^c$.
+\end{corollary}
+\begin{proof}
+At a round boundary keep $F$ complement-closed and free of monotone
+patterns. Apply \cref{thm:isolation} to $Q=\{p,p^c\}$. If necessary,
+complement the isolated witness to orient it toward $p^c$. It still avoids
+$F$. The two monotone patterns are paired by complementation, so
+\cref{lem:endgame} and the same termination argument apply.
+\end{proof}
+
+This is a direct consequence of the isolation mechanism, not a separate
+claim that a new game has been solved. The mechanism requires a symmetry
+with no fixed target and a suitable endgame. For example, reversal followed
+by complementation can fix patterns, so this argument does not automatically
+give a reply strategy for that operation.
+
+\subsection{Forbidden patterns of bounded, unequal lengths}
+The targets must have a common length in \cref{lem:minimal}, but the
+forbidden patterns need not. The distinction permits the following useful
+extension.
+
+\begin{corollary}[Bounded forbidden lengths]\label{cor:mixedF}
+Let $k\ge3$, let $Q\subseteq\Nk$, and let $F$ consist of nonmonotone
+patterns of lengths at most $\ell$. Set $K=\max(k,\ell)$. If some
+$F$-avoiding permutation $\pi$ containing a member of $Q$ has length at least
+\[
+ k+(k+1)^2(K-2)^2+1,
+\]
+then for every $N\ge k+K-1$ there is an $F$-avoiding permutation of length
+$N$ containing exactly one member of $Q$.
+\end{corollary}
+\begin{proof}
+Extract a same-cell monotone block of length $K-1$ around a marked target
+occurrence. The nonmonotone shadow of every length $j\le K$ is already
+stable at that block length. Hence enlarging the block preserves avoidance
+of every member of $F$. Minimize singleton support while retaining a target
+of length $k$. The proof of \cref{lem:minimal} is unchanged, and leaves at
+most $k$ singletons. Inflating to total length $N\ge k+K-1$ leaves at least
+$K-1$ block entries, preserving all required avoidance conditions.
+\end{proof}
+
+This is a statement about permutation classes and witnesses. It does not
+settle a game allowing moves of different lengths: the pairing and endgame
+would require a separate analysis.
+
+\subsection{Why the main hypotheses are substantive}
+The proof has four boundaries. First, the stable representative must be
+long enough for every relevant nonmonotone pattern; replacing $k-1$ by a
+smaller number without a separate argument could introduce new forbidden
+patterns during inflation. Second, every member of $Q$ has the same length;
+otherwise using all the singletons need not force the same number of block
+entries. Third, avoiding monotone forbidden patterns is not preserved by
+unbounded monotone inflation. Fourth, reversal-closure of $F$ is what
+permits us to orient the isolated target without losing the previous
+avoidance conditions.
+
+None of these conditions is silently assumed away. They hold exactly where
+they are used in the PAP proof.
+
+\section{Exact computations and reproducibility}
+\label{sec:computations}
+
+The universal proof consists of \cref{lem:stable,lem:minimal,lem:extract}
+and the game argument. The following computations were carried out as
+independent finite consistency checks and as an aid to discovery.
+
+\subsection{Two shadow implementations}
+The function \code{shadow_direct} enumerates actual index subsets of a
+finite permutation and standardizes their values. The function
+\code{Template.stable_shadow} instead enumerates singleton subsets and the
+number of block entries. These use different enumeration schemes, although
+both necessarily use elementary rank standardization.
+
+For every skeleton in $S_{k+1}$, every marked slot, and both block signs,
+the two routines were compared at block lengths $k-1,k,k+1$ for $k=3,4$.
+The resulting exhaustive counts are as follows.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k$ & Templates & Reverse-pair minimizations & Other target-set tests\\
+\midrule
+3&192&404&2192\\
+4&1200&6482&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For each reverse-pair minimization, the final target intersection and its
+minimality under every singleton deletion were checked by the direct
+routine. At $k=3$, all nonempty target subsets were also tested whenever
+present in the starting template.
+
+There were additionally $120$ deterministically sampled templates for each
+of $k=5,6,7$, with comparisons at block lengths $k-1$ and $k+1$, and
+minimizations for target sets containing up to four sampled patterns and
+their reversals. These are sampled tests, not exhaustive tests in those
+three lengths.
+
+\subsection{Constructed replies and extraction tests}
+For each $k=3,4,5,6,7$, twenty full length-$\replybound$ replies were
+constructed from one-block witnesses, using the maximal reversal-closed
+forbidden set disjoint from each input shadow. This gives $100$ certified
+large-permutation outputs. Their final compressed representatives were
+checked directly for avoidance and the required target orientation.
+
+A separate set of tests applied same-cell extraction to shuffled, unstructured
+permutations with empty forbidden set. The suite also checked the sharp
+$(h-1)^2$ monotone-subsequence obstruction for $2\le h\le9$, and twenty
+shuffled sequences of length $(h-1)^2+1$ for each of those values.
+
+Every assertion in the executed suite passed. The test seed is
+$20260920$ and is explicitly separate from the operating-system randomness
+used to choose the research area. The exact output is in
+\code{data/verification.json}; the complete length-$330$ example is in
+\code{data/worked_certificate.json}.
+
+\subsection{The discovery computation}
+Before the minimal-core lemma was recognized, a finite exploration enumerated
+one-block shadows with exactly $k$ singletons. A reversal support records
+which nonmonotone reversal pairs meet a shadow, without recording their
+orientations. For each support $S$ arising in the enumeration and every
+pair in $S$, the program looked for a separating template whose support
+was contained in $S$.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$k$ & Templates & Distinct full shadows & Supports & Failed supports\\
+\midrule
+5&8640&7336&3502&0\\
+6&70560&61816&30794&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Those tests suggested a support-minimization principle, but by themselves
+would not prove the all-$k$ theorem. The later argument permits deleting
+singletons and handles every $k$ without these tables. The package retains
+a reproducible exploration script and summary output so that the discovery
+record is distinguished from the proof dependencies.
+
+\subsection{Running the package}
+The main verification requires Python 3.10 or later and no third-party
+packages. From the archive root, run
+\begin{verbatim}
+python code/verify.py
+python code/explore_supports.py --k 5
+python code/explore_supports.py --k 6
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The exploration is optional. The first command checks the examples and
+implementation; the last builds this article from its source. No network
+connection is required to run the checks or build the PDF once the ordinary
+\LaTeX{} packages are installed.
+
+\section{What remains to be determined}
+\label{sec:remaining}
+
+The existence assertion in the selected conjecture is the part addressed
+by \cref{thm:main}. The argument leaves the quantitative threshold largely
+unoptimized. The quartic expression has a transparent origin: $k$ marked
+entries create $(k+1)^2$ cells, and a cell with more than $(k-2)^2$ points
+contains the required block. This is an upper bound on the worst-case
+extraction cost, not evidence that quartic growth is necessary for the game.
+
+One concrete next question is the least eventual reverse-strategy threshold
+for $k=5$. Our result bounds it above by $330$, but neither the proof nor the
+recorded computation determines it. More generally, improving the use of the
+marked occurrence or exploiting restrictions imposed by $F$ might lower
+the uniform bound.
+
+The report does not compute the full Sprague--Grundy function, analyze
+optimal play lengths, prove a mis\`ere analogue, or handle arbitrary
+nonclassical pattern notions. The construction is tailored to classical
+subsequence containment and normal play. These limitations do not leave a
+missing case of Conjecture~2.9: they concern different or stronger questions.
+
+\appendix
+\section{A compact proof audit}
+\label{app:audit}
+
+The following checklist isolates the places where an incorrect proof of a
+pairing strategy could otherwise hide a quantifier or length error.
+
+\begin{longtable}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
+\toprule
+\textbf{Potential gap} & \textbf{Where it is closed}\\
+\midrule
+\endhead
+A reverse witness still contains the just-forbidden pattern.
+& Minimal-core isolation gives \emph{exactly one} of $p,p^r$ before any
+symmetry is applied.\\[0.4em]
+The long monotone block is not an interval in the original permutation.
+& Only the selected $2k-1$ points are retained; being in one cell makes the
+block an interval in that selected subpermutation.\\[0.4em]
+Inflating a witness creates a forbidden pattern.
+& Every forbidden pattern at this stage is nonmonotone of length $k$, so its
+occurrence is already visible at block length $k-1$.\\[0.4em]
+The minimized occurrence uses a different singleton set.
+& Minimality forces \emph{every} target occurrence to use all retained
+singletons, not merely one chosen occurrence.\\[0.4em]
+Different block choices give different target patterns.
+& The block is monotone and in one position/value gap; fixing the number
+chosen and all singletons fixes every relative comparison.\\[0.4em]
+The isolated target is the wrong orientation.
+& Reverse the witness; $F^r=F$ preserves prior avoidance.\\[0.4em]
+The witness has the wrong length.
+& With $m\le k$ singleton entries, choose block length $n-m\ge k-1$ to obtain
+exactly $n$ entries.\\[0.4em]
+A monotone move violates the inflation hypotheses.
+& Such a move is handled only by the separate monotone endgame, which ends
+the game on the very next reply.\\[0.4em]
+The reply rule does not imply eventual termination.
+& Every legal move forbids a new one of the $k!$ patterns. Before a monotone
+round, both monotone moves remain legal.\\[0.4em]
+A finite test is treated as a universal proof.
+& No assertion in the main proof depends on the computational tables or on
+an unverified classification.\\
+\bottomrule
+\end{longtable}
+
+\section{Selection, exclusion, and source-status record}
+\label{app:selection}
+
+The research area was selected by one call to Python's
+\code{secrets.randbelow(96)} after fixing a list of $96$ mathematical areas.
+The recorded zero-based result was $9$, hence entry $10$:
+\emph{Permutation patterns}. The draw was recorded at
+\code{2026-09-20T21:58:38.955311+00:00}. The complete list and output are in
+\code{area_selection.json}, and \code{select_area.py} refuses to overwrite an
+existing draw. The record is an audit trail of the executed choice, not a
+cryptographic proof of when a human first saw the list.
+
+The entire attached \code{manifest(1).tex} was read, including its final
+continuation. It contains no entry for PAP, reverse-reply strategies, or
+Ulfarsson's Conjecture~2.9. The manifest's permutation-counting and
+permutation-avoidance entries concern different problems; none is selected
+here. A hash of the supplied manifest and the exclusion rationale are
+recorded in \code{notes/selection_and_exclusions.md}.
+
+One initial candidate from the stack-sorting literature was rejected after
+finding a later paper proving it~\cite{LiEtAl}. The selected source was then
+checked directly in its versioned arXiv HTML and PDF. Conjecture~2.9 appears
+on PDF page~5, and the general-$k$ discussion appears in Section~6.1.
+Targeted searches by paper identifier, title, and conjecture wording did not
+identify a later resolution. This is a documented source check, not a
+complete bibliographic guarantee that no independent or unpublished proof
+exists.
+
+The contribution claimed here is the elementary proof of the stated general
+reverse-reply theorem through same-cell extraction and minimal-core
+isolation. Classical monotone-subsequence arguments, the PAP rules, and the
+previous small-$k$ results are not claimed as new. The precise priority of
+the abstract isolation lemma beyond this application has not been settled
+by an exhaustive literature search.
+
+\section{Why the Sprague--Grundy conclusion follows}
+\label{app:sg}
+
+For a finite impartial normal-play game, define the Sprague--Grundy value
+recursively by
+\[
+ \sg(X)=\mex\{\sg(Y):Y\text{ is a legal follower of }X\},
+\]
+where the minimal excludant is the least nonnegative integer not in the set.
+A terminal position has value zero. Induct on the maximum remaining play
+length. If $\sg(X)=0$, every follower has nonzero value and, by induction,
+is winning for the next player; therefore $X$ is losing for its next player.
+If $\sg(X)>0$, zero must occur among the follower values, so the next player
+can move to a losing position and win. This proves the equivalence used in
+\cref{thm:main}. PAP is finite because each selected pattern becomes
+permanently illegal, so the induction applies.
+
+\begin{thebibliography}{9}
+\bibitem{Ulfarsson}
+Henning Ulfarsson,
+\emph{A Permutation Avoidance Game with Reverse Replies and Monotone Traps},
+arXiv:2603.16004v1, 2026.
+Conjecture~2.9; Section~6.1.
+\url{https://arxiv.org/abs/2603.16004v1}.
+Versioned HTML and PDF consulted 20 September 2026.
+
+\bibitem{ES}
+P. Erd\H{o}s and G. Szekeres,
+\emph{A combinatorial problem in geometry},
+Compositio Mathematica \textbf{2} (1935), 463--470.
+\url{https://www.numdam.org/item/CM_1935__2__463_0/}.
+
+\bibitem{LiEtAl}
+Yang Li, Sergey Kitaev, Zhicong Lin, and Jing Liu,
+\emph{A bijection between 321- and 213-avoiding permutations preserving
+$t$-stack-sortability}, arXiv:2507.09187, 2025.
+\url{https://arxiv.org/abs/2507.09187}.
+Used only to exclude an already-resolved candidate, not as a proof dependency.
+\end{thebibliography}
+
+\end{document}

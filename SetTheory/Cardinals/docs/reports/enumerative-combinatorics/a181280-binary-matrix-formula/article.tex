@@ -1,0 +1,1079 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{bm}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{18334D}
+\definecolor{accent}{HTML}{276B67}
+\definecolor{pale}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={A Twelve-Value Proof of the A181280 Formula},
+ pdfauthor={ChatGPT},pdfsubject={Exact enumeration, binary Gram matrices, Fourier recurrences}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}A twelve-value proof of A181280}
+\fancyhead[R]{\small\color{ink}Research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{certificate}[theorem]{Finite certificate}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Astar}{\mathcal A_*}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\e}{\mathbf e}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\lex}{<_{\rm lex}}
+\newcommand{\revlex}{>_{\rm lex}}
+\newcommand{\good}{\mathsf{good}}
+\newcommand{\allstate}{\{1,\ldots,m-1\}}
+\newtcolorbox{researchbox}[1][]{colback=pale,colframe=accent,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+ keywordstyle=\color{ink}\bfseries,commentstyle=\color{accent},
+ stringstyle=\color{Brown},columns=fullflexible,keepspaces=true,
+ showstringspaces=false,breaklines=true,frame=single,rulecolor=\color{black!18},
+ xleftmargin=2mm,xrightmargin=2mm,aboveskip=8pt,belowskip=8pt}
+\allowdisplaybreaks[1]
+
+\title{\vspace{-1cm}\color{ink}\bfseries
+ A Twelve-Value Proof of the A181280 Formula\\[6pt]
+ \large Fourier spectra and universal recurrences for ordered binary Gram matrices}
+\author{ChatGPT\\\small AI-assisted mathematical research report}
+\date{19 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+OEIS A181280 counts binary matrices with four lexicographically increasing rows
+whose mod-2 Gram matrix has lexicographically decreasing rows. Kauers and
+Koutschan proposed an explicit six-term exponential-polynomial formula in 2023.
+We give a computer-assisted proof of that formula: a structural argument first
+proves a universal order-12 recurrence for the tail, after which twelve exact
+counts settle the identity for every $n\ge4$. The finite arithmetic is supplied
+in two independent implementations, with a further Fourier audit and direct
+brute-force checks.
+
+The structural argument works for any fixed number $m$ of rows and any set of
+allowed symmetric Gram matrices. It gives an explicit eventual recurrence of
+order $m+2\lfloor m^2/4\rfloor$, with characteristic roots restricted to signed
+powers of two and explicitly bounded multiplicities. For four rows this
+universal order is sharp. We also determine the rational generating function,
+the minimal eventual recurrence of order 11 for A181280, the exact transient,
+and quantitative equidistribution and asymptotic consequences.
+\end{abstract}
+
+\begin{researchbox}[title=\textbf{Status and attribution}]
+The OEIS formula was still labeled conjectural when retrieved on 19 September
+2026~\cite{oeis}. However, Kauers's December 2025 slides already prove the general
+\emph{existence} of a constant-coefficient recurrence~\cite{slides}. That prior result is
+credited here, not claimed as new. The slides display the explicit formula with
+a question mark but also mark A181280 with a check in an overview table; they do
+not supply an explicit formula certificate. Thus the exact prior-resolution
+status is not completely settled by the available sources. This report provides
+a self-contained, reproducible proof, but makes no claim of priority and has not
+received independent peer review.
+\end{researchbox}
+
+\noindent\textbf{Keywords.} OEIS A181280; finite-state enumeration; binary quadratic
+forms; Walsh sums; C-finite sequences; rational generating functions.
+
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The selected problem and the result}
+\label{sec:problem}
+
+\subsection{The counting problem}
+For a binary word, lexicographic order uses $0<1$ and reads from left to right.
+All words being compared have the same length. Let $a(n)$ be the number of
+matrices $M\in\F^{4\times n}$ such that
+\begin{equation}\label{eq:conditions}
+ M_{1,*}\lex M_{2,*}\lex M_{3,*}\lex M_{4,*},
+ \qquad
+ (MM^\top)_{1,*}\revlex (MM^\top)_{2,*}
+ \revlex (MM^\top)_{3,*}\revlex (MM^\top)_{4,*}.
+\end{equation}
+The product is taken over $\F$, not over the integers. Thus its $(i,j)$ entry
+is the parity of the ordinary dot product of rows $i$ and $j$.
+For $n\ge1$ this is the sequence A181280, introduced in the OEIS by R.\ H.\ Hardin
+\cite{oeis}. We extend it by $a(0)=0$: four empty rows are not strictly ordered.
+
+Kauers and Koutschan state the proposed formula as Conjecture 20 in
+Section 6.5 of their 2023 paper \cite{kk}. The following is that same formula,
+rewritten to group equal exponential bases.
+
+\begin{theorem}[The A181280 formula]\label{thm:main}
+For every integer $n\ge4$,
+\begin{align}
+ a(n)={}&\frac{16^n}{512}
+ +\frac{288n-3473}{147456}\,8^n
+ -\frac{113}{49152}\,(-8)^n \notag\\
+ &+\frac{6n^2-219n+820}{6144}\,4^n
+ -\frac{13n-164}{6144}\,(-4)^n
+ -\frac{3n+32}{288}\,2^n.
+ \label{eq:formula}
+\end{align}
+Also $a(0)=a(1)=a(2)=a(3)=0$.
+\end{theorem}
+
+The proof occupies Sections \ref{sec:automaton}--\ref{sec:certificate}.
+The only computer-assisted part essential to the theorem is an exact finite
+enumeration through $n=15$. The reason this is sufficient is proved before the
+counts are used. No guessed recurrence is assumed in that proof.
+
+\subsection{What was already known, and what is established here}
+Kauers's talk \emph{Guessing with little data}, listed in the Rutgers seminar
+archive for 11 December 2025 \cite{seminar}, contains a transfer-matrix and
+parity-filtering proof that these counting sequences are C-finite for arbitrary
+fixed row count and arbitrary allowed Gram set \cite{slides}. Here
+\emph{C-finite} means satisfying a linear recurrence with constant coefficients.
+Its formula slide is numbered 30, and its general C-finiteness theorem is on
+slide 39. Because the PDF contains overlay pages, these are PDF pages 104 and
+137, respectively, counting pages from one.
+
+The contribution developed in this report is more explicit than existence:
+we locate the possible characteristic roots, bound their multiplicities using
+a filtration with only $m$ levels, prove a quadratic-in-$m$ universal recurrence
+order, and use that bound to finish a finite certificate for the displayed
+formula. We then prove sharpness of the four-row universal bound and derive
+several exact consequences. The literature check located the 2023 conjecture,
+the live OEIS entry, and the 2025 slides, but not a separate complete proof of
+the explicit formula. That search is not a proof that no such proof exists.
+
+\subsection{The key reduction}
+A direct automaton would have $8\cdot1024=8192$ states: eight row-order states
+and 1024 possible symmetric $4\times4$ Gram matrices. The key fact is that its
+counting sequences have a much smaller universal annihilator. With $E$ denoting
+the forward shift, $(Ef)(n)=f(n+1)$, define
+\begin{align}
+ P_4(x)={}&(x-2)^2(x+2)(x-4)^3(x+4)^2\notag\\[-2pt]
+ &\hspace{20mm}\cdot(x-8)^2(x+8)(x-16).
+ \label{eq:P4}
+\end{align}
+We prove
+\begin{equation}\label{eq:keyrec}
+ P_4(E)a(n)=0\qquad(n\ge4).
+\end{equation}
+This monic polynomial has degree 12. The right side of \eqref{eq:formula}
+satisfies the same recurrence. Therefore equality at $n=4,5,\ldots,15$ proves
+equality at every later index by induction. Establishing \eqref{eq:keyrec}
+from the definition, rather than inferring it from initial data, is what turns
+the calculation into a proof.
+
+\section{A prefix-order automaton}
+\label{sec:automaton}
+
+\subsection{General row count and the Gram statistic}
+Fix $m\ge1$ and put
+\[
+ d=\frac{m(m+1)}2,
+ \qquad \mathcal G_m=\Sym_m(\F).
+\]
+For $\mathcal A\subseteq\mathcal G_m$, let $N_{m,\mathcal A}(n)$ count matrices
+$M\in\F^{m\times n}$ with strictly increasing rows and $MM^\top\in\mathcal A$.
+The special set for our problem is
+\[
+ \Astar=\{G\in\mathcal G_4:
+ G_{1,*}\revlex G_{2,*}\revlex G_{3,*}\revlex G_{4,*}\},
+ \qquad a(n)=N_{4,\Astar}(n).
+\]
+Allowing only symmetric targets loses nothing, since every Gram matrix here is
+symmetric. If an allowed set initially contains nonsymmetric matrices, they can
+simply be discarded.
+
+Write a matrix as a sequence of columns $v_1,\ldots,v_n\in\F^m$. Its Gram
+matrix is
+\begin{equation}\label{eq:gramsum}
+ MM^\top=\sum_{t=1}^n v_tv_t^\top.
+\end{equation}
+Thus appending a column $v$ adds $vv^\top$ to the current Gram matrix.
+
+\subsection{Remembering the first differences}
+After reading a prefix of the columns, record the subset
+\[
+ S\subseteq\{1,\ldots,m-1\}
+\]
+of adjacent row pairs whose first difference has already occurred in the
+correct direction. On every retained prefix, $i\in S$ means that row $i$ is
+already lexicographically smaller than row $i+1$; $i\notin S$ means their
+prefixes are still equal. Once resolved, a pair never needs to be compared
+again.
+
+A new column $v=(v_1,\ldots,v_m)$ is admissible from $S$ exactly when
+\begin{equation}\label{eq:admissible}
+ v_i\le v_{i+1}\quad\hbox{for every }i\notin S.
+\end{equation}
+For an admissible column, the new state is
+\begin{equation}\label{eq:transition}
+ \tau(S,v)=S\cup\{i:v_i=0,\ v_{i+1}=1\}.
+\end{equation}
+The initial state is $\varnothing$ and the accepting order state is
+$S_{\rm full}=\{1,\ldots,m-1\}$. There are $2^{m-1}$ order states.
+
+\begin{lemma}[Correctness of the order automaton]\label{lem:order}
+Length-$n$ paths from $\varnothing$ to $S_{\rm full}$, with columns as transition
+labels and with admissibility \eqref{eq:admissible}, are in bijection with binary
+$m\times n$ matrices having strictly increasing rows.
+\end{lemma}
+\begin{proof}
+At the empty prefix all adjacent pairs are equal. Suppose the description of a
+state is correct for a retained prefix. For an unresolved pair, a new pair of
+bits $(1,0)$ makes the first difference wrong and must be rejected; $(0,0)$ or
+$(1,1)$ preserves equality; $(0,1)$ resolves it correctly. For a resolved pair,
+any later bits leave its first difference unchanged. This proves the invariant
+and the transition rule by induction.
+
+At the end, every adjacent pair must be resolved to obtain strict order.
+Conversely, any strictly increasing matrix has a first difference of type
+$(0,1)$ for each adjacent pair and therefore follows exactly one accepted path.
+Adjacent strict inequalities are equivalent to the whole increasing row chain.
+\end{proof}
+
+\subsection{An exact integer dynamic program}
+Let $D_n(S,G)$ count retained prefixes of length $n$ with order state $S$ and
+Gram matrix $G$. Start with
+\begin{equation}\label{eq:dpinitial}
+ D_0(\varnothing,0)=1,
+ \qquad D_0(S,G)=0\quad\hbox{otherwise}.
+\end{equation}
+For each admissible $v$, perform the update
+\begin{equation}\label{eq:dp}
+ D_{n+1}\bigl(\tau(S,v),G+vv^\top\bigr)
+ \mathrel{+}=D_n(S,G).
+\end{equation}
+Then
+\begin{equation}\label{eq:dpend}
+ N_{m,\mathcal A}(n)=\sum_{G\in\mathcal A}D_n(S_{\rm full},G).
+\end{equation}
+These equations, together with \Cref{lem:order} and \eqref{eq:gramsum}, prove
+correctness of the finite enumeration used later. Different columns that lead
+to the same next state must be counted separately; the update does so.
+
+An important independent total is
+\begin{equation}\label{eq:unrestricted}
+ \sum_{G\in\mathcal G_m}D_n(S_{\rm full},G)=\binom{2^n}{m}.
+\end{equation}
+Indeed, a strictly increasing list of $m$ binary words of length $n$ is just an
+$m$-element subset of the $2^n$ possible words, written in its unique increasing
+order. The supplied implementation checks this equality at every computed
+length.
+
+\section{Fourier decomposition and quadratic Walsh sums}
+\label{sec:fourier}
+
+\subsection{Characters of the symmetric-matrix group}
+Identify $\mathcal G_m$ with $\F^d$ using its upper-triangular entries. For
+$Q=(Q_{ij})_{i\le j}\in\F^d$ and $G\in\mathcal G_m$, define
+\begin{equation}\label{eq:pairing}
+ \ip{Q}{G}=\sum_{i\le j}Q_{ij}G_{ij}\pmod2,
+ \qquad \chi_Q(G)=(-1)^{\ip{Q}{G}}.
+\end{equation}
+This is an upper-triangle pairing, \emph{not} the ordinary trace pairing of two
+symmetric matrices in characteristic two. Using a trace pairing would count
+off-diagonal entries twice and destroy the required character group.
+
+Let
+\[
+ \widehat{\1_{\mathcal A}}(Q)=\sum_{G\in\mathcal A}\chi_Q(G).
+\]
+The elementary orthogonality identity
+\[
+ \sum_{Q\in\F^d}(-1)^{\ip{Q}{H}}
+ =\begin{cases}2^d,&H=0,\\0,&H\ne0\end{cases}
+\]
+implies
+\begin{equation}\label{eq:inversion}
+ \1_{\mathcal A}(G)
+ =2^{-d}\sum_{Q\in\F^d}\widehat{\1_{\mathcal A}}(Q)\chi_Q(G).
+\end{equation}
+For completeness, when $H\ne0$, choose a coordinate where it is 1 and pair each
+$Q$ with the vector obtained by toggling that coordinate; the two signs cancel.
+Applying this to $H=G+G'$ proves the inversion formula.
+
+\subsection{Small weighted transition matrices}
+For $Q\in\F^d$, introduce the quadratic Boolean function
+\begin{equation}\label{eq:qQ}
+ q_Q(v)=\ip{Q}{vv^\top}
+ =\sum_iQ_{ii}v_i+\sum_{i<j}Q_{ij}v_iv_j.
+\end{equation}
+The diagonal terms are linear because $v_i^2=v_i$ on $\F$.
+Define the $2^{m-1}\times2^{m-1}$ integer matrix $T_Q$ by
+\begin{equation}\label{eq:TQ}
+ (T_Q)_{S,S'}=
+ \sum_{\substack{v\text{ admissible from }S\\\tau(S,v)=S'}}(-1)^{q_Q(v)}.
+\end{equation}
+Vectors $\e_S$ are standard coordinate columns. The weighted number of
+accepted paths is
+\[
+ b_Q(n)=\e_{\varnothing}^{\top}T_Q^n\e_{S_{\rm full}}.
+\]
+Since $\chi_Q$ turns the Gram sum into a product of column weights,
+\eqref{eq:inversion} gives
+\begin{equation}\label{eq:Fouriercount}
+ N_{m,\mathcal A}(n)=2^{-d}
+ \sum_{Q\in\F^d}\widehat{\1_{\mathcal A}}(Q)\,
+ \e_{\varnothing}^{\top}T_Q^n\e_{S_{\rm full}}.
+\end{equation}
+For four rows, this replaces one 8192-state system by 1024 integer matrices of
+size eight. More importantly, all these small matrices have tightly controlled
+spectra and the same short filtration.
+
+\subsection{A self-contained Walsh-sum lemma}
+\begin{lemma}[Possible quadratic sums]\label{lem:walsh}
+Let $q:\F^k\to\F$ be a polynomial function of degree at most two with $q(0)=0$,
+and put
+\[
+ W(q)=\sum_{v\in\F^k}(-1)^{q(v)}.
+\]
+Then
+\begin{equation}\label{eq:Walshset}
+ W(q)\in\Lambda_k:=\{0,2^k\}\cup
+ \{\,\pm2^{k-s}:1\le s\le\lfloor k/2\rfloor\,\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The polarization
+\[
+ B(u,v)=q(u+v)+q(u)+q(v)
+\]
+is an alternating bilinear form. Its rank $r$ is even. One elementary proof is
+by induction: if $B$ is nonzero, choose $u,v$ with $B(u,v)=1$; their span is a
+nondegenerate two-dimensional summand, and its orthogonal complement reduces
+the rank by two. If $B=0$, its rank is zero.
+
+Let $R=\rad B$, so $\dim R=k-r$. Squaring the sum and substituting $w=v+u$
+gives
+\begin{align*}
+ W(q)^2
+ &=\sum_{u,v\in\F^k}(-1)^{q(v)+q(v+u)}\\
+ &=\sum_{u\in\F^k}(-1)^{q(u)}
+       \sum_{v\in\F^k}(-1)^{B(v,u)}
+ =2^k\sum_{u\in R}(-1)^{q(u)}.
+\end{align*}
+On $R$ the function $q$ is linear, since its polarization vanishes there.
+The last sum is either zero or $2^{k-r}$. Hence $W(q)=0$ or
+$W(q)=\pm2^{k-r/2}$.
+
+There is one sign restriction to retain. If $r=0$, then $q$ is linear on all
+of $\F^k$. Its sum is zero when it is nonzero and $2^k$ when it is zero; it
+cannot be $-2^k$. For positive even $r=2s$, the remaining possibilities are
+exactly those permitted by \eqref{eq:Walshset}. The argument only needs this
+inclusion, not that every listed value occurs in every application.
+\end{proof}
+
+\subsection{Why the diagonal entries are Walsh sums}
+A transition can stay at the same order state $S$ only when
+\[
+ v_i=v_{i+1}\qquad(i\notin S).
+\]
+These equations say that $v$ is constant on each contiguous block separated by
+the boundaries in $S$. There are $k=|S|+1$ such blocks. Assigning a bit to each
+block parametrizes the allowed staying columns by $\F^k$. Restricting $q_Q$ to
+this subspace preserves its degree bound and its zero constant term. Therefore
+\begin{equation}\label{eq:diagonal}
+ (T_Q)_{S,S}\in\Lambda_{|S|+1}.
+\end{equation}
+Also a nonzero transition only moves from $S$ to a superset $S'$. In particular,
+it never moves to a different state on the same cardinality level. This second
+fact controls multiplicities; the diagonal values alone would not suffice.
+
+\section{An explicit universal recurrence}
+\label{sec:universal}
+
+\subsection{An annihilator from the level filtration}
+\begin{lemma}[Filtered annihilation]\label{lem:filtration}
+Suppose $T$ preserves a filtration
+$0=V_0\subseteq V_1\subseteq\cdots\subseteq V_m=V$.
+If the induced operator on $V_k/V_{k-1}$ is annihilated by a polynomial $p_k$,
+then $\prod_{k=1}^mp_k(T)=0$.
+\end{lemma}
+\begin{proof}
+The assumption is exactly $p_k(T)V_k\subseteq V_{k-1}$. Apply $p_m(T)$ first,
+then $p_{m-1}(T)$, down to $p_1(T)$. Their product maps $V_m$ into $V_0=0$.
+All factors are polynomials in the same operator, so they commute; their written
+order is immaterial.
+\end{proof}
+
+Order the coordinate basis by $|S|$. Regard $T_Q$ as acting on column vectors,
+and let $V_k$ be the span of $\e_S$ with $|S|\le k-1$. Because
+$(T_Q)_{S,S'}$ can be nonzero only when $S\subseteq S'$, these subspaces are
+invariant. On the quotient $V_k/V_{k-1}$ the matrix is diagonal. Thus
+\eqref{eq:diagonal} and \Cref{lem:filtration} apply with
+\begin{equation}\label{eq:pk}
+ p_k(x)=\prod_{\lambda\in\Lambda_k}(x-\lambda)
+       =x(x-2^k)\prod_{s=1}^{\lfloor k/2\rfloor}
+         (x-2^{k-s})(x+2^{k-s}).
+\end{equation}
+The polynomial has only one copy of each allowed diagonal value at that level.
+We do not multiply a characteristic polynomial for every state.
+
+\begin{theorem}[Universal spectral recurrence]\label{thm:universal}
+For $m\ge1$, set $r_j=\min(j,m-j)$ and define
+\begin{align}
+ P_m(x)&=\prod_{j=1}^m(x-2^j)^{r_j+1}(x+2^j)^{r_j},
+ \label{eq:Pm}\\
+ U_m(x)&=x^mP_m(x).
+ \label{eq:Um}
+\end{align}
+For every $\mathcal A\subseteq\mathcal G_m$,
+\begin{equation}\label{eq:universalE}
+ U_m(E)N_{m,\mathcal A}(n)=0\quad(n\ge0),
+ \qquad
+ P_m(E)N_{m,\mathcal A}(n)=0\quad(n\ge m).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:degrees}
+ \deg P_m=m+2\lfloor m^2/4\rfloor,
+ \qquad \deg U_m=2m+2\lfloor m^2/4\rfloor.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equations \eqref{eq:pk} and the filtration lemma show that
+$\prod_{k=1}^mp_k(T_Q)=0$ for every $Q$. We identify this product explicitly.
+Zero occurs once at each level, producing $x^m$.
+
+The positive value $2^j$ occurs at level $k=j$ through the rank-zero term,
+and at levels
+\[
+ j+1\le k\le\min(2j,m)
+\]
+through a rank $2(k-j)$ quadratic sum. Its total multiplicity in the product
+is $1+\min(j,m-j)$. The negative value $-2^j$ occurs at the same latter levels
+but not at $k=j$, so its multiplicity is $\min(j,m-j)$.
+Consequently $\prod_kp_k=U_m$ and $U_m(T_Q)=0$.
+
+For any polynomial $R$, the action of $R(E)$ on
+$\e_{\varnothing}^{\top}T_Q^n\e_{S_{\rm full}}$ is
+\[
+ \e_{\varnothing}^{\top}T_Q^nR(T_Q)\e_{S_{\rm full}}.
+\]
+Thus $U_m(E)$ annihilates every Fourier summand in \eqref{eq:Fouriercount},
+and hence the count itself. Since $U_m(E)=E^mP_m(E)$, the second assertion in
+\eqref{eq:universalE} follows with the stated index range.
+Finally,
+\[
+ \deg P_m=\sum_{j=1}^m(2\min(j,m-j)+1),
+ \qquad \sum_{j=1}^m\min(j,m-j)=\lfloor m^2/4\rfloor,
+\]
+which yields \eqref{eq:degrees}.
+\end{proof}
+
+\begin{corollary}[Form of every tail]\label{cor:tail}
+For $n\ge m$, there are polynomials $A_j,B_j\in\Q[n]$ such that
+\begin{equation}\label{eq:generalform}
+ N_{m,\mathcal A}(n)
+ =\sum_{j=1}^m\bigl(A_j(n)2^{jn}+B_j(n)(-2^j)^n\bigr),
+\end{equation}
+with
+\[
+ \deg A_j\le\min(j,m-j),\qquad
+ \deg B_j\le\min(j,m-j)-1.
+\]
+A negative degree bound means the polynomial is zero. The generating function
+is rational. A candidate of the form \eqref{eq:generalform} is certified by
+checking exactly $\deg P_m$ consecutive values beginning at $n=m$.
+\end{corollary}
+\begin{proof}
+For $\lambda\ne0$,
+\[
+ (E-\lambda)\bigl(\lambda^np(n)\bigr)
+ =\lambda^{n+1}\bigl(p(n+1)-p(n)\bigr).
+\]
+Repeated application lowers the polynomial degree. The sequences
+$n^h\lambda^n$ for distinct nonzero $\lambda$ and the prescribed degree ranges
+are linearly independent and give $\deg P_m$ solutions of the monic recurrence.
+Independence follows, for example, by applying the factors belonging to all
+roots except one and then taking finite differences at the remaining root.
+A recurrence of order $\deg P_m$ is uniquely determined by that many initial
+values, so these sequences span its solution space. The coefficients are
+rational because the corresponding linear system has rational entries and a
+unique solution. Their generating functions are rational; changing a finite
+prefix only adds a polynomial. The same uniqueness proves the certification
+claim.
+\end{proof}
+
+\subsection{The four-row specialization}
+The level spectra are particularly small:
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+Level $k$ & Number of states & Permitted staying sums $\Lambda_k$\\
+\midrule
+1 & 1 & $0,2$\\
+2 & 3 & $0,-2,2,4$\\
+3 & 3 & $0,-4,4,8$\\
+4 & 1 & $0,-8,-4,4,8,16$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Multiplying the four level polynomials gives $U_4=x^4P_4$, with $P_4$ exactly
+as in \eqref{eq:P4}. Therefore \eqref{eq:keyrec} is proved for the target count
+and, in fact, for every four-row Gram acceptance condition. The order 12 is a
+consequence of the combinatorial construction and the quadratic-sum lemma;
+it is not selected because twelve values happened to fit a formula.
+
+\section{The finite certificate and proof of the formula}
+\label{sec:certificate}
+
+\subsection{Encoding the finite calculation}
+For reproducibility, the bit-mask implementation orders the ten Gram
+coordinates as
+\begin{equation}\label{eq:coordinateorder}
+ (11),(12),(13),(14),(22),(23),(24),(33),(34),(44).
+\end{equation}
+The first coordinate is the least significant bit of the Gram mask. State bit
+$i-1$ says that adjacent rows $i,i+1$ have been resolved. A column mask uses its
+least significant bit for its top entry. These choices affect only the internal
+encoding, not the lexicographic convention for rows.
+
+The acceptance test reconstructs each symmetric Gram matrix, reads each row
+from left to right, and checks strict decrease. It gives exactly 48 acceptable
+matrices. A useful small classification is
+\begin{center}
+\begin{tabular}{ccr}
+\toprule
+First row & Binary integer & Number of acceptable completions\\
+\midrule
+$1000$ & 8  & 9\\
+$1100$ & 12 & 14\\
+$1110$ & 14 & 18\\
+$1111$ & 15 & 7\\
+\midrule
+Total &&48\\
+\bottomrule
+\end{tabular}
+\end{center}
+There are no other first rows. Indeed, decreasing rows imply a nonincreasing
+first column, symmetry identifies that column with the first row, and an
+all-zero first row cannot be greater than the second row. For each of the four
+possibilities, the six remaining upper-triangular bits give just 64 completions
+to test. The full list of accepted masks is included in the JSON certificate.
+
+\begin{certificate}[Definition-based integer counts]\label{cert:counts}
+The dynamic program \eqref{eq:dpinitial}--\eqref{eq:dpend} gives the following
+values. The auxiliary column $z(n)$ counts the same increasing-row matrices
+with $MM^\top=0$; it is used only for the sharpness result in
+\Cref{sec:sharpness}.
+\begin{center}
+\begin{tabular}{r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $a(n)$ & $z(n)$\\
+\midrule
+4  & $58$                & $3$\\
+5  & $1\,629$            & $15$\\
+6  & $28\,924$           & $1\,020$\\
+7  & $507\,052$          & $8\,820$\\
+8  & $8\,211\,776$      & $202\,608$\\
+9  & $133\,693\,904$    & $2\,656\,080$\\
+10 & $2\,140\,571\,200$ & $46\,626\,240$\\
+11 & $34\,361\,115\,072$ & $706\,770\,240$\\
+12 & $549\,587\,348\,992$ & $11\,575\,711\,488$\\
+13 & $8\,798\,356\,254\,976$ & $182\,670\,808\,320$\\
+14 & $140\,744\,002\,571\,264$ & $2\,939\,896\,028\,160$\\
+15 & $2\,252\,082\,614\,856\,704$ & $46\,875\,280\,757\,760$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At every displayed index, exact rational evaluation of the right side of
+\eqref{eq:formula} equals $a(n)$. The same enumeration gives zero at
+$n=0,1,2,3$ for both columns.
+\end{certificate}
+
+The complete small program in \Cref{app:code} calculates the $a(n)$ column
+without importing any tabulated sequence values. It uses tuple states and
+tuple Gram coordinates. The separate program \texttt{verify.py} uses bit masks,
+also calculates $z(n)$, and performs the additional audits in
+\Cref{sec:computation}. Thus the certificate is an explicit finite arithmetic
+claim, not an appeal to the authority of a pre-existing data table.
+
+\subsection{Why the twelve checks finish the proof}
+Let $F(n)$ denote the expression on the right side of \eqref{eq:formula}, and
+put
+\begin{equation}\label{eq:Q}
+ Q(x)=(x-16)(x-8)^2(x+8)(x-4)^3(x+4)^2(x-2)^2.
+\end{equation}
+The finite-difference identity in the proof of \Cref{cor:tail} shows directly
+that $Q(E)F=0$ for all nonnegative indices. As $P_4(x)=(x+2)Q(x)$, also
+$P_4(E)F=0$.
+
+\begin{proof}[Proof of \Cref{thm:main}]
+By \Cref{thm:universal}, $P_4(E)a(n)=0$ for $n\ge4$. The preceding observation
+shows that the difference $h(n)=a(n)-F(n)$ satisfies that same order-12 monic
+recurrence on this range. \Cref{cert:counts} gives
+$h(4)=h(5)=\cdots=h(15)=0$.
+
+Write $P_4(x)=x^{12}+\sum_{j=0}^{11}p_jx^j$. The recurrence at $n=4$ gives
+$h(16)=-\sum_{j=0}^{11}p_jh(4+j)=0$. Inductively, if $h$ vanishes through
+$n+11$, the recurrence at $n$ gives $h(n+12)=0$. Hence $h(n)=0$ for every
+$n\ge4$. The initial zeros come from the finite certificate, or directly from
+the same exact enumeration for these four small lengths.
+\end{proof}
+
+\begin{remark}[The transient is real]
+The lower limit $n\ge4$ must not be dropped. The extrapolated expression gives
+\[
+ F(0)=\frac{103}{4096},\qquad F(1)=-\frac{71}{1024},\qquad
+ F(2)=-\frac1{64},\qquad F(3)=-\frac1{16},
+\]
+whereas the counting sequence is zero at all four indices. The zero root in
+the universal annihilator accounts for such finite transients.
+\end{remark}
+
+\section{Generating functions, minimal recurrences, and sharpness}
+\label{sec:gf}
+
+\subsection{The exact rational generating function}
+Define
+\begin{equation}\label{eq:D}
+ D(z)=(1-16z)(1-8z)^2(1+8z)(1-4z)^3(1+4z)^2(1-2z)^2
+\end{equation}
+and
+\begin{align}
+ B(z)={}&58-227z-9052z^2+68976z^3-16960z^4 \notag\\
+ &-1025408z^5+3055104z^6-3796992z^7 \notag\\
+ &+2834432z^8-2490368z^9+2097152z^{10}.
+ \label{eq:B}
+\end{align}
+
+\begin{corollary}[Rational generating function]\label{cor:gf}
+As an identity of formal power series,
+\begin{equation}\label{eq:GF}
+ \sum_{n\ge0}a(n)z^n=z^4\frac{B(z)}{D(z)}.
+\end{equation}
+Equivalently, $\sum_{k\ge0}a(k+4)z^k=B(z)/D(z)$.
+\end{corollary}
+\begin{proof}
+By \Cref{thm:main}, the shifted sequence $b(k)=a(k+4)$ is annihilated by
+$Q(E)$ for every $k\ge0$. The reciprocal characteristic polynomial is
+$D(z)=z^{11}Q(1/z)$. If $D(z)=\sum_{j=0}^{11}d_jz^j$, the coefficients of
+$D(z)\sum_{k\ge0}b(k)z^k$ vanish from degree 11 onward. For $0\le k\le10$ they
+are the finite convolutions
+\[
+ \sum_{j=0}^kd_j a(k-j+4).
+\]
+Using \Cref{cert:counts} gives exactly \eqref{eq:B}. The four initial zero terms
+then supply the factor $z^4$.
+\end{proof}
+
+For direct implementation the characteristic polynomial is
+\begin{align}
+ Q(x)={}&x^{11}-32x^{10}+244x^9+1552x^8-27392x^7\notag\\
+ &+70144x^6+484352x^5-2781184x^4+1212416x^3\notag\\
+ &+20185088x^2-48234496x+33554432.
+ \label{eq:Qexpanded}
+\end{align}
+Thus $\sum_{j=0}^{11}q_ja(n+j)=0$ for $n\ge4$, where $q_j$ is the coefficient
+of $x^j$ in \eqref{eq:Qexpanded}. The range is important: this order-11
+recurrence fails at each of $n=0,1,2,3$.
+
+\subsection{Minimality for the selected sequence}
+\begin{proposition}\label{prop:minimal}
+The minimal monic constant-coefficient annihilator of the eventual tail of
+$a(n)$ is $Q(x)$, of degree 11. If a recurrence is required to hold at every
+$n\ge0$, its minimal monic annihilator is $x^4Q(x)$, of degree 15.
+\end{proposition}
+\begin{proof}
+In \eqref{eq:formula}, the six distinct bases and the exact polynomial degrees
+are
+\[
+\begin{array}{c|rrrrrr}
+\lambda&16&8&-8&4&-4&2\\\hline
+\deg p_\lambda&0&1&0&2&1&1.
+\end{array}
+\]
+Each leading coefficient is nonzero. The independence and finite-difference
+argument from \Cref{cor:tail} imply that a polynomial annihilates
+$p_\lambda(n)\lambda^n$ only if it contains $(x-\lambda)$ to at least
+$1+\deg p_\lambda$. Distinct roots cannot cancel one another's components.
+Therefore the minimal eventual annihilator is precisely \eqref{eq:Q}.
+
+For the global assertion, write $a=F+\delta$, where $\delta$ is supported on
+$0,1,2,3$ and $\delta(3)=1/16\ne0$. The forward shift on sequences supported in
+this range is nilpotent, and $\delta$ has nilpotency index exactly four. Any
+global annihilator must be divisible by $Q$, because its action on the
+exponential-polynomial tail must vanish. Since $Q(0)\ne0$, the operator $Q(E)$
+is invertible on this finite-support space and preserves that nilpotency
+index. Consequently a further factor $x^4$ is necessary and sufficient to
+kill the transient. This proves the second assertion.
+\end{proof}
+
+There is no conflict between an eventual recurrence order of 11 here and the
+order-10, degree-one polynomial-coefficient guess reported in the 2023 paper:
+constant-coefficient order and polynomial-coefficient order are different
+notions. The minimality assertion above concerns constant coefficients only.
+
+\subsection{The four-row universal bound is sharp}
+\label{sec:sharpness}
+It is natural to ask whether the factor $x+2$ in $P_4$ was only an artifact of
+the argument: it disappears from the answer for $\Astar$. It is not an artifact
+for arbitrary acceptance sets.
+
+\begin{proposition}[Sharp universal order for four rows]\label{prop:sharp}
+Among all polynomials that eventually annihilate $N_{4,\mathcal A}$ for
+\emph{every} $\mathcal A\subseteq\mathcal G_4$, the minimal monic one is $P_4$.
+Its degree is 12. If annihilation must hold from $n=0$, the minimal common
+monic polynomial is $x^4P_4$, of degree 16.
+\end{proposition}
+\begin{proof}
+Theorem \ref{thm:universal} supplies both upper bounds. A common eventual
+annihilator must be divisible by $Q$, by \Cref{prop:minimal}. To see the missing
+factor, use the target $\mathcal A=\{0\}$ and write
+$z(n)=N_{4,\{0\}}(n)$.
+
+The universal theorem says that on $n\ge4$, the only component of $z(n)$ not
+annihilated by $Q(E)$ is a constant multiple $c(-2)^n$, because the multiplicity
+of $-2$ in $P_4$ is one. The exact counts in \Cref{cert:counts}, substituted
+into \eqref{eq:Qexpanded}, give
+\[
+ Q(E)z(4)=136857600,
+ \qquad Q(-2)=149299200.
+\]
+It follows that
+\begin{equation}\label{eq:minus2}
+ c=\frac{136857600}{(-2)^4\cdot149299200}=\frac{11}{192}\ne0.
+\end{equation}
+Hence $x+2$ is also necessary. Its product with $Q$ is $P_4$, proving eventual
+sharpness.
+
+For a common annihilator valid from $n=0$, the selected sequence $a$ already
+forces $x^4Q$ by \Cref{prop:minimal}; the zero-Gram target forces $x+2$.
+Their least common multiple is $x^4P_4$, completing the proof.
+\end{proof}
+
+The degrees 11, 12, 15, and 16 therefore answer four different questions, not
+four inconsistent descriptions of the same recurrence.
+
+\section{Equidistribution and exact asymptotic information}
+\label{sec:asymptotics}
+
+\subsection{A general uniformity theorem}
+\begin{theorem}[Ordered Gram equidistribution]\label{thm:uniform}
+For each fixed $m\ge2$ and every $\mathcal A\subseteq\mathcal G_m$,
+\begin{equation}\label{eq:uniformcount}
+ N_{m,\mathcal A}(n)
+ =\frac{|\mathcal A|}{2^{m(m+1)/2}}\binom{2^n}{m}
+  +O_m\!\left(n\,2^{(m-1)n}\right)
+ \quad(n\to\infty).
+\end{equation}
+In particular, if an increasing-row matrix is chosen uniformly, its Gram
+matrix tends to the uniform distribution on all symmetric $m\times m$ binary
+matrices, and
+\begin{equation}\label{eq:uniformprob}
+ \Pr(MM^\top\in\mathcal A)
+ =\frac{|\mathcal A|}{2^{m(m+1)/2}}+O_m(n2^{-n}).
+\end{equation}
+The implied constants may be chosen uniformly over $\mathcal A$ for fixed $m$.
+\end{theorem}
+\begin{proof}
+The zero character in \eqref{eq:Fouriercount} contributes exactly
+$2^{-d}|\mathcal A|\binom{2^n}{m}$, by \eqref{eq:unrestricted}.
+Consider a nonzero character $Q$.
+At every level $k<m$, a diagonal sum has absolute value at most $2^k\le2^{m-1}$.
+At level $m$, the function $q_Q$ in \eqref{eq:qQ} is nonzero: its values on
+$e_i$ recover $Q_{ii}$, and its values on $e_i+e_j$, together with those
+single-coordinate values, recover $Q_{ij}$. Thus $q_Q$ cannot be identically
+zero unless $Q=0$.
+
+If the polarization of this nonzero $q_Q$ has rank zero, its Walsh sum is zero.
+Otherwise its rank is at least two, and \Cref{lem:walsh} bounds the sum by
+$2^{m-1}$ in absolute value. Hence no nonzero character has the eigenvalue
+$2^m$.
+
+There is also a sharp enough multiplicity bound. The value $+2^{m-1}$ can
+occur only at levels $m-1$ and $m$, so its polynomial prefactor has degree at
+most one. The value $-2^{m-1}$ can occur only at level $m$, so its prefactor is
+constant. Every other nonzero eigenvalue has smaller absolute value and a
+bounded polynomial prefactor, and a zero-eigenvalue component has finite
+support. Each nonzero Fourier summand is consequently
+$O_m(n2^{(m-1)n})$. There are finitely many characters, with
+$|\widehat{\1_{\mathcal A}}(Q)|\le2^d$, so summing preserves this estimate
+uniformly over the target set. Division by
+$\binom{2^n}{m}\sim2^{mn}/m!$ proves \eqref{eq:uniformprob}.
+\end{proof}
+
+The sorting of rows is relevant here: conditional Gram uniformity should not
+simply be assumed from an unconstrained random-matrix model. The proof shows
+why sorting affects only exponentially smaller terms.
+
+\subsection{Leading terms for A181280}
+Because $|\Astar|=48$ and $2^d=1024$, \Cref{thm:uniform} predicts the limiting
+conditional probability $48/1024=3/64$. The exact formula gives more:
+\begin{align}
+ a(n)={}&\frac{16^n}{512}
+ +\left(\frac{n}{512}-\frac{3473}{147456}
+              -\frac{113(-1)^n}{49152}\right)8^n
+ +O(n^2 4^n),
+ \label{eq:asympa}\\
+ \frac{a(n)}{\binom{2^n}{4}}
+ ={}&\frac3{64}
+ +\left(\frac{3n}{64}-\frac{1745}{6144}
+              -\frac{113(-1)^n}{2048}\right)2^{-n}
+ +O(n^2 4^{-n}).
+ \label{eq:asympprob}
+\end{align}
+Thus $a(n)\sim16^n/512$. Among \emph{all} binary $4\times n$ matrices, the
+probability of satisfying both ordering conditions tends to $1/512$; among
+those with already increasing rows it tends to $3/64$. These are different
+sample spaces and should not be conflated.
+
+The original count has a finite exact exponential-polynomial expansion:
+\eqref{eq:formula} terminates after absolute exponential scales $16^n,8^n,4^n$
+and $2^n$, with parity effects at the middle two scales. There is no unproved
+asymptotic remainder hidden in that identity.
+
+\subsection{All coefficients of the conditional-probability expansion}
+A compact exact rational form gives an infinite expansion for the conditional
+probability as well. Put $x=2^{-n}$ and $\varepsilon=(-1)^n$, and define
+\begin{align*}
+ \nu_0&=\frac3{64},\\
+ \nu_1(n,\varepsilon)&=\frac{288n-3473}{6144}
+                         -\frac{113\varepsilon}{2048},\\
+ \nu_2(n,\varepsilon)&=\frac{6n^2-219n+820-\varepsilon(13n-164)}{256},\\
+ \nu_3(n,\varepsilon)&=-\frac{3n+32}{12}.
+\end{align*}
+Since $\binom{2^n}{4}=2^{4n}(1-x)(1-2x)(1-3x)/24$, the exact identity is
+\begin{equation}\label{eq:probrational}
+ \frac{a(n)}{\binom{2^n}{4}}
+ =\frac{\nu_0+\nu_1x+\nu_2x^2+\nu_3x^3}{(1-x)(1-2x)(1-3x)}
+ \qquad(n\ge4).
+\end{equation}
+Let $h_t=0$ for $t<0$ and, for $t\ge0$, let
+\begin{equation}\label{eq:hcoef}
+ h_t=\frac{1-2^{t+3}+3^{t+2}}2.
+\end{equation}
+Partial fractions give
+\[
+ \frac1{(1-x)(1-2x)(1-3x)}
+ =\frac{1/2}{1-x}-\frac4{1-2x}+\frac{9/2}{1-3x}
+ =\sum_{t\ge0}h_tx^t.
+\]
+It follows that the coefficient polynomials in the full expansion are
+\begin{equation}\label{eq:allcoeffs}
+ C_k(n,\varepsilon)=\sum_{j=0}^3\nu_j(n,\varepsilon)h_{k-j},
+ \qquad
+ \frac{a(n)}{\binom{2^n}{4}}
+ =\sum_{k\ge0}C_k(n,(-1)^n)2^{-kn}.
+\end{equation}
+For each fixed $n\ge4$ the latter series converges absolutely. For a fixed
+truncation order $K$, its tail is $O_K(n^2 2^{-(K+1)n})$ as $n\to\infty$.
+Indeed $h_t=O(3^t)$, all $\nu_j$ are $O(n^2)$, and $3\cdot2^{-n}<1$ on this
+range. This supplies every coefficient without further recurrence guessing.
+
+\section{Computation, reproducibility, and audit boundaries}
+\label{sec:computation}
+
+\subsection{What was executed}
+The supplied standard-library program \texttt{verify.py} was executed using
+Python 3.13.5. Its recorded run completed in approximately 4.15 seconds on the
+working machine; timing is an observation, not a performance guarantee.
+The output is saved in \texttt{results/verification.txt}.
+
+The executed checks comprise exact dynamic programming through $n=100$;
+comparison with \eqref{eq:formula} throughout $4\le n\le100$; the unrestricted
+count \eqref{eq:unrestricted}; all 1024 weighted $8\times8$ identities
+$U_4(T_Q)=0$; Fourier inversion through $n=15$; and the displayed generating
+function and recurrence coefficients. Every nonzero-character matrix also
+passes the spectral-radius bound eight directly on its diagonal.
+
+A separate brute-force enumeration chooses all four-element subsets of binary
+row words for $0\le n\le6$ and computes every Gram row directly using parity
+of bit intersections. At $n=6$ this checks $\binom{64}{4}=635376$ row sets. It
+uses neither order-state transitions nor upper-triangular Gram masks. Both the
+A181280 count and the zero-Gram count agree with the dynamic program.
+For $m=1,2,3$, the program additionally checks the universal recurrence through
+$n=20$ for \emph{every} individual Gram target.
+
+Finally, \texttt{minimal\_certificate.py}, reproduced in \Cref{app:code}, was
+executed independently. It represents states and Gram entries by tuples rather
+than masks and reproduces all twelve decisive values. The scripts use exact
+integers and rational arithmetic only. They perform no network requests and
+read no sequence data as input.
+
+\subsection{What makes this a finite proof rather than a large test}
+The mathematical implication is
+\[
+ \text{definition}
+ \Longrightarrow U_4(E)a=0
+ \Longrightarrow P_4(E)a=0\text{ on }n\ge4,
+\]
+followed by uniqueness of solutions of a monic order-12 recurrence and a finite
+arithmetic certificate. The extra computations through $n=100$ are useful
+cross-checks, but the all-$n$ conclusion does not depend on assuming that a
+pattern observed through 100 continues.
+
+The computer-assisted dependency is transparent: the arithmetic in
+\Cref{cert:counts} and in the small acceptance enumeration must be correct.
+The transition invariant, Fourier identity, quadratic-sum argument, recurrence
+bound, and finite-to-infinite induction are conventional proofs given in full.
+The two state encodings and the independent brute force reduce implementation
+risk; they do not replace mathematical review. No Lean formalization or
+external peer review is claimed.
+
+\subsection{Complexity and practical use}
+The direct state space has $2^{d+m-1}$ entries and at most $2^m$ column choices
+per state. A straightforward implementation through length $N$ uses
+\[
+ O\!\left(N2^{d+2m-1}\right)
+\]
+integer additions and two layers of $O(2^{d+m-1})$ integer registers, apart from
+optional stored history. Counts have $O(mN)$ bits. Thus for fixed $m$ the
+arithmetic-operation count is linear in $N$, while a naive bit-operation bound
+for the additions is quadratic in $N$. The full verifier retains endpoint
+Gram distributions at all lengths for its audits, so its stored history uses
+$O(N2^d)$ integer registers in addition to the working layers.
+
+For the selected sequence, once the formula is established, either
+\eqref{eq:formula} or the order-11 recurrence is preferable for computing very
+large indices. An isolated value can be evaluated with integer exponentiation
+and a fixed amount of rational arithmetic. This does not imply polylogarithmic
+bit complexity: the answer itself has $\Theta(n)$ bits.
+
+The reusable enumerator explicitly limits its implementation to $1\le m\le5$
+to avoid accidental exponential resource consumption. This is a software guard,
+not a limitation of \Cref{thm:universal}. The present exhaustive Fourier audit
+was performed for $m=4$, not for all $m$.
+
+\section{Conclusions and remaining research directions}
+\label{sec:conclusion}
+The explicit A181280 identity has a complete proof here, with a small,
+reproducible computer-assisted arithmetic component. The decisive step is the
+universal spectral bound, not a more aggressive fit of the existing data.
+The factor $(x+2)$ vanishes for the decreasing-Gram condition but is necessary
+for other targets, and the four exceptional initial indices are explained by
+a genuine nilpotent transient. The rational generating function, minimal
+recurrences, and asymptotic probability all follow from the same calculation.
+
+For general $m$, the theorem gives a uniform quadratic-size recurrence bound
+despite an exponentially large finite-state realization. What remains to be
+determined by further work is when that universal bound is sharp for other
+row counts, which target conditions cancel particular spectral components,
+and whether explicit structural formulas can replace the remaining finite
+arithmetic for broad families of target sets. These are directions suggested
+by the present results, not additional open problems asserted to have been
+settled here.
+
+The status distinction remains important. C-finiteness was already proved in
+the retrieved 2025 slides, and the explicit formula was already conjectured in
+2023. The present package supplies its proof and the additional structural
+results developed above. Establishing priority would require a fuller
+literature and author check than the available-source audit carried out here.
+
+\appendix
+\section{The recurrence certificate in machine-readable form}
+\label{app:recurrences}
+The file \texttt{results/certificate.json} records the twelve initial values,
+the 48 accepted Gram masks in the coordinate order \eqref{eq:coordinateorder},
+all recurrence and generating-function coefficient arrays, the independent
+brute-force results, and the Fourier audit summary. Polynomial arrays are
+always listed in increasing powers.
+
+For a convenient manual comparison, the universal eventual polynomial is
+\begin{align*}
+ P_4(x)={}&x^{12}-30x^{11}+180x^{10}+2040x^9-24288x^8
+                +15360x^7\\
+          &+624640x^6-1812480x^5-4349952x^4+22609920x^3\\
+          &-7864320x^2-62914560x+67108864.
+\end{align*}
+The four nonzero early residuals of the smaller recurrence are
+\[
+ \bigl(Q(E)a(0),Q(E)a(1),Q(E)a(2),Q(E)a(3)\bigr)
+ =(-3796992,2834432,-2490368,2097152).
+\]
+They provide an especially simple check that an implementation has not silently
+shifted the recurrence's valid range.
+
+The observed level spectra in the exhaustive Fourier audit were exactly
+$\Lambda_1,\Lambda_2,\Lambda_3,\Lambda_4$ as listed in
+\Cref{sec:universal}. This observation is supplementary: the proof only needs
+containment in those sets, which follows analytically from
+\Cref{lem:walsh}.
+
+\clearpage
+\section{A complete small arithmetic verifier}
+\label{app:code}
+The following is the complete file \texttt{minimal\_certificate.py}. Its
+ordinary list comparisons implement left-to-right lexicographic order.
+It proves the finite arithmetic portion of \Cref{thm:main}; the universal
+recurrence theorem supplies the all-$n$ implication.
+\lstinputlisting[basicstyle=\ttfamily\fontsize{8}{9.1}\selectfont]{minimal_certificate.py}
+
+\section{Package contents and reproduction}
+The main article is \texttt{article.tex}, compiled to \texttt{article.pdf}.
+Both Python programs need only Python 3.10 or later. The \texttt{results/} directory contains the generated
+JSON certificate, CSV counts through $n=100$, and executed audit output.
+\texttt{STATUS.md} records the source-status distinctions; \texttt{README.md}
+contains usage instructions; \texttt{build.sh} rebuilds this PDF with pdfLaTeX.
+
+From the package root, the principal commands are
+\begin{lstlisting}[language=bash]
+python3 minimal_certificate.py
+python3 verify.py --out results
+sh build.sh
+\end{lstlisting}
+The article does not depend on a symbolic-algebra package. The TeX source uses
+standard TeX Live packages, including \texttt{newtx}, \texttt{amsmath},
+\texttt{tcolorbox}, \texttt{listings}, and \texttt{hyperref}. No font files or
+third-party source documents are included in the archive.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+R. H. Hardin,\
+\emph{A181280: Number of $4\times n$ binary matrices with increasing rows and
+mod-2 Gram matrix with decreasing rows},
+The On-Line Encyclopedia of Integer Sequences.
+Entry introduced 10 October 2010; formula attributed to M. Kauers and
+C. Koutschan on 2 March 2023.
+\url{https://oeis.org/A181280}.
+Retrieved 19 September 2026.
+
+\bibitem{kk}
+M. Kauers and C. Koutschan,
+\emph{Some D-Finite and Some Possibly D-Finite Sequences in the OEIS},
+Journal of Integer Sequences \textbf{26} (2023), Article 23.4.5.
+See Section 6.5, Conjecture 20.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL26/Koutschan/kout4.html}.
+Author version: arXiv:2303.02793v2, 24 April 2023,
+\url{https://arxiv.org/html/2303.02793v2}.
+Retrieved 19 September 2026.
+
+\bibitem{slides}
+M. Kauers,
+\emph{Guessing with little data},
+Rutgers Experimental Mathematics Seminar, 11 December 2025, lecture slides.
+Formula on slide 30 (PDF page 104); general C-finiteness theorem on slide 39
+(PDF page 137); overview check marks on slides 24 and 40.
+\url{https://sites.math.rutgers.edu/~zeilberg/expmath/kauers25.pdf}.
+Retrieved 19 September 2026.
+
+\bibitem{seminar}
+Rutgers Experimental Mathematics Seminar,
+\emph{Archive of Speakers and Talks---2025}, entry for 11 December 2025.
+\url{https://sites.math.rutgers.edu/~zeilberg/expmath/archive25.html}.
+Retrieved 19 September 2026.
+\end{thebibliography}
+\end{document}

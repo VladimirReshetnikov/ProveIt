@@ -1,0 +1,1323 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={The measurable strength of cofinal-orbit rigidity},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Equiconsistency with a measurable cardinal and canonical forcing decompositions},pdfkeywords={rigid cofinal classes, measurable cardinal, Prikry forcing, HOD, Vopenka algebra, Dodd Jensen covering}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION IV}
+\fancyfoot[L]{\small\color{Muted}Cofinal-orbit rigidity and its consistency strength}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Cofinal-orbit rigidity and its consistency strength}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\Meas}{\operatorname{Meas}}
+\newcommand{\RS}{\mathsf{RS}}
+\newcommand{\RC}{\mathsf{RC}}
+\newcommand{\MR}{\mathsf{MR}}
+\newcommand{\HR}{\mathsf{HR}}
+\newcommand{\BB}{\mathbb B}
+\newcommand{\AlgA}{\mathbb A}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\splus}{\mathbin{\smallfrown}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\symdiff}{\mathbin{\triangle}}
+\newcommand{\BoolVal}[1]{\lVert #1\rVert}
+\newcommand{\checklambda}{\check\lambda}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION IV}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}The measurable strength\\ of cofinal-orbit rigidity\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont An equiconsistency theorem and a canonical\\ weakly homogeneous forcing decomposition\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis proves that ultraexacting cardinals admit rigid classes of cofinal
+$\omega$-sequences modulo finite difference. We determine the consistency strength of
+this particular conclusion: the existence of one such class is equiconsistent with
+one measurable cardinal. The same upper bound supplies $\lambda$ distinct rigid classes
+with pairwise disjoint representatives, simultaneously witnessing the full-width
+obstruction to definable complete sections. The upper bound is an ordinary Prikry
+extension. Its essential additional feature is that the cone isomorphisms preserve
+\emph{the entire finite-change class}, although they do not preserve its representative.
+The lower bound is an application of the classical Dodd--Jensen covering theorem.
+
+We also give a forcing interpretation of each rigid class $q$. For every $a\in q$,
+$\HOD_{\{a\}}$ is a proper set-forcing extension of $\HOD_{\{q\}}$ by a canonically
+coded, atomless, weakly homogeneous Boolean algebra. Every representative gives a
+generic filter for the same algebra and the same extension. Under the additional
+hypothesis $V_\lambda\subseteq\HOD$, this extension adds no bounded subsets of
+$\lambda$ but changes its cofinality from $\lambda$ to $\omega$. The arguments distinguish
+an orbit used as one parameter from a representative used as a parameter throughout.
+
+\begin{assessment}{Main conclusion}
+Writing $\RC$ for the rigid-class assertion defined precisely in
+Section~\ref{sec:statements}, we prove
+\[
+ \boxed{\quad
+ \Con(\ZFC+\exists\kappa\,\Meas(\kappa))
+ \quad\Longleftrightarrow\quad
+ \Con(\ZFC+\RC).
+ \quad}
+\]
+This calibrates a consequence of ultraexactingness, not ultraexactingness itself.
+It shows that the rigid-class package, including its full-width consequences,
+already occurs at measurable-cardinal consistency strength. The new contribution is the
+calibration and forcing analysis of the dossier's exact definition of rigidity;
+the underlying Prikry, Vop\v enka, and Dodd--Jensen machinery is classical.
+\end{assessment}
+
+\vspace{5pt}
+{\small\color{Muted}Research status. The new deductions are proved below in English.
+The deep covering theorem is an explicitly identified input, not a claimed new proof
+of fine structure. No global priority claim or Lean verification is asserted.}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Statements and relation to the supplied research}\label{sec:statements}
+
+The reference point is the second-edition \emph{Large Cardinals Synthesis} in
+\nolinkurl{Cardinals3.zip}, especially its subsection ``Rigid classes'' and the
+questions following its analysis of the cofinal quotient \cite{Dossier}.
+We retain its definition of rigidity. We do not assume any of its proposed
+consistency constructions in proving the new upper bound.
+
+\subsection{Parameters, cofinal sets, and rigidity}
+
+All unqualified cardinalities and all occurrences of $\OD$ are computed in the
+ambient universe $V\models\ZFC$. For a collection $C$ of allowed parameters,
+$\OD_C$ permits ordinal parameters and finitely many elements of $C$.
+$\HOD_C$ is the corresponding hereditary class. In particular, in
+$\OD_{V_\lambda\cup\{q\}}$, the set $q$ is \emph{one additional parameter};
+its members are not thereby allowed as parameters. The distinction is essential.
+We abbreviate $\OD_{\{q\}}$ to $\OD_q$ when no ambiguity is possible.
+
+For an uncountable cardinal $\lambda$ of cofinality $\omega$, put
+\begin{align*}
+ D_\lambda&=\{a\subseteq\lambda:\ot(a)=\omega,\ \sup a=\lambda\},\\
+ \Clam&=\{a\subseteq\lambda:\sup a=\lambda,\ |a|<\lambda\},\\
+ a=^*b&\quad\Longleftrightarrow\quad |a\symdiff b|<\omega,\\
+ Q_\lambda&=D_\lambda/{=^*}.
+\end{align*}
+An element of $Q_\lambda$ is a set, despite the word ``class.'' For $a\in D_\lambda$,
+\[
+ [a]=\{a\symdiff d:d\in[\lambda]^{<\omega}\}.
+\]
+Every finite modification of $a$ is still a cofinal set of order type $\omega$.
+There are exactly $\lambda$ such modifications: the displayed parametrization gives
+the upper bound, and $\alpha\mapsto a\symdiff\{\alpha\}$ gives the lower bound.
+
+\begin{definition}[The dossier's rigidity property]\label{def:rig}
+For $q\in Q_\lambda$, let $\Rig(\lambda,q)$ assert that
+\[
+ \varnothing\ne A\subseteq\Clam,\qquad
+ A\in\OD_{V_\lambda\cup\{q\}}
+ \quad\Longrightarrow\quad |A|\ge\lambda.
+\]
+The quantified family $A$ need not consist of representatives of $q$.
+It can be any definable family of short cofinal subsets of $\lambda$.
+\end{definition}
+
+We will use three different hereditary classes:
+\begin{equation}\label{eq:models}
+ N_q=\HOD_{V_\lambda\cup\{q\}},\qquad
+ H_q=\HOD_{\{q\}},\qquad
+ M_a=\HOD_{\{a\}}\quad(a\in q).
+\end{equation}
+The first is an inner model of $\ZF$ and contains $V_\lambda$; it is not assumed
+to satisfy Choice. The latter two are inner models of $\ZFC$, since a single
+fixed parameter gives a canonical definable well-order of its hereditarily
+definable sets. Neither this fact nor the notation implies $q\in H_q$.
+Indeed, for a rigid class $q\notin H_q$.
+
+These uses of definability are first-order expressible by the usual rank-local
+coding of ordinal definitions: use a formula, a rank $V_\theta$ in which it is
+evaluated, and finitely many ordinal parameters. They do not require a truth
+predicate for the entire universe.
+
+\subsection{The theories being calibrated}
+
+\begin{definition}\label{def:theories}
+Let $\RS(\lambda)$ be the conjunction
+\[
+ \lambda>\omega\text{ is a cardinal},\qquad
+ \cf(\lambda)=\omega,\qquad
+ (\forall\alpha<\lambda)\ |V_\alpha|<\lambda.
+\]
+This implies that $\lambda$ is strong limit and $|V_\lambda|=\lambda$.
+Define the following first-order assertions over $\ZFC$.
+
+$\HR$: there is a $\lambda$ satisfying $\RS(\lambda)$ which is regular in
+$\HOD_{V_\lambda}$.
+
+$\RC$: there are $\lambda$ and $q\in Q_\lambda$ such that
+$\RS(\lambda)$ and $\Rig(\lambda,q)$.
+
+$\MR$: there are a $\lambda$ satisfying $\RS(\lambda)$ and a sequence
+$\langle a_i:i<\lambda\rangle$ of pairwise disjoint members of $D_\lambda$
+such that every $q_i=[a_i]$ is rigid and all the classes $N_{q_i}$ are equal.
+\end{definition}
+
+The rank bound in $\RS$ matches the setting of the supplied reports. It is
+stronger than merely saying ``strong limit of countable cofinality.'' The
+uncountability requirement is also indispensable: at $\lambda=\omega$ the
+family $\Clam$ is empty and the rigidity definition would be vacuous.
+
+\begin{theorem}[Consistency calibration]\label{thm:main}
+The following theories are equiconsistent:
+\[
+ \ZFC+\exists\kappa\,\Meas(\kappa),\qquad
+ \ZFC+\HR,\qquad \ZFC+\RC,\qquad \ZFC+\MR.
+\]
+More specifically, $\MR\Rightarrow\RC\Rightarrow\HR$ in $\ZFC$;
+$\HR$ implies the existence of an inner model with a measurable cardinal;
+and ordinary Prikry forcing over a measurable cardinal forces $\MR$.
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:regular}--\ref{sec:calibration}.
+Sections~\ref{sec:boolean}--\ref{sec:forcing} prove the complementary forcing
+structure theorem. There is no assertion that the measurable cardinal from the
+lower bound is measurable in $V$, or that it must be the ambient singular
+cardinal $\lambda$.
+
+\subsection{What is extended, and what is imported}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{.27\textwidth}Y@{}}
+\toprule
+Ingredient & Role in this continuation\\
+\midrule
+Rigidity from ultraexactingness & Prior dossier result; motivation only, not an input to the new measurable upper bound.\\
+Rigidity versus regularity & An exact characterization, proved in Section~\ref{sec:regular}.\\
+Prikry's theorem & Classical forcing machinery; the relevant proof is included. The additional parameter bookkeeping preserves the entire class $q$.\\
+Dodd--Jensen covering & Deep classical input used only for the lower bound. Its application is proved explicitly.\\
+Vop\v enka's algebra & Classical construction; specialized and proved here, including the common-extension and finite-change homogeneity conclusions.\\
+Many copies and saturation & The underlying deductions already occur in the dossier. Here they are realized from a single measurable cardinal, rather than an ultraexacting hypothesis.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A related current result should be distinguished from this calibration.
+In a preprint posted on 25 August 2026, Benhamou and coauthors
+\cite{BCGHP} obtain the optimal measurable-cardinal bound for making
+$\aleph_\omega$ the first ordinal at which the ambient and HOD power sets
+disagree. Their statement concerns a first-disagreement phenomenon, not
+the exact rigid quotient class with all $V_\lambda$ parameters used here.
+It is not an input to our proof. The present contribution is a continuation
+of the supplied dossier; neither this comparison nor the literature check
+establishes global priority for the formulation below.
+
+\section{Rigidity is exactly relative HOD regularity}\label{sec:regular}
+
+The first observation removes the quantification over families from the
+\emph{test} for rigidity, without weakening the property.
+
+\begin{lemma}[Least-order-type compression]\label{lem:compression}
+Suppose $\lambda$ is an infinite cardinal and
+$\varnothing\ne A\subseteq\Clam$ has $|A|<\lambda$.
+There is a cofinal $u\subseteq\lambda$ with $|u|<\lambda$ which is definable
+from $A$ and $\lambda$, without choosing a member of $A$.
+\end{lemma}
+\begin{proof}
+Let $\tau$ be the least ordinal occurring as the order type of a member of $A$,
+and let
+\[
+ A_\tau=\{a\in A:\ot(a)=\tau\},\qquad u=\bigcup A_\tau.
+\]
+Since the members of $A$ have cardinality below the initial ordinal $\lambda$,
+their order types are also below $\lambda$. Thus $\tau<\lambda$.
+The family $A_\tau$ is nonempty, so $u$ is cofinal. In the ambient universe,
+\[
+ |u|\le |A_\tau|\cdot|\tau|<\lambda.
+\]
+The last inequality uses a product of two \emph{fixed} cardinals below
+$\lambda$. It does not assume that $\lambda$ is regular. All the operations
+used to define $u$ are canonical from $A$.
+\end{proof}
+
+\begin{lemma}[Order type detects external smallness]\label{lem:otp}
+If $B\subseteq\lambda$ and $|B|^V<\lambda$, where $\lambda$ is a cardinal
+of $V$, then $\ot(B)<\lambda$. If $B$ belongs to a transitive inner model,
+its order type and increasing enumeration are absolute between that model and $V$.
+\end{lemma}
+\begin{proof}
+The increasing enumeration is an order-isomorphism with a unique ordinal.
+If that ordinal were at least the initial ordinal $\lambda$, it would give
+an injection of $\lambda$ into $B$, contrary to the assumed cardinality.
+The well-founded recursion computing the enumeration is absolute between
+transitive models with the same ordinals.
+\end{proof}
+
+\begin{theorem}[Intrinsic regularity characterization]\label{thm:rig-regular}
+For every uncountable cardinal $\lambda$ of cofinality $\omega$ and every
+$q\in Q_\lambda$,
+\[
+ \Rig(\lambda,q)
+ \quad\Longleftrightarrow\quad
+ N_q\models\text{``$\lambda$ is regular.''}
+\]
+Equivalently, there is no cofinal $u\subseteq\lambda$ of order type below
+$\lambda$ in $\OD_{V_\lambda\cup\{q\}}$.
+\end{theorem}
+\begin{proof}
+If $N_q$ contains a cofinal map $f:\tau\to\lambda$ with $\tau<\lambda$,
+then its range $u$ is a short cofinal set in $N_q$. In particular,
+$u\in\OD_{V_\lambda\cup\{q\}}$, and the definable singleton $\{u\}$ violates
+rigidity. Notice that an ordinal domain below $\lambda$ is small in $V$,
+even if the two models disagree about some other cardinalities.
+
+Conversely, suppose that rigidity fails, witnessed by a nonempty definable
+$A\subseteq\Clam$ of cardinality below $\lambda$. Apply
+Lemma~\ref{lem:compression} to obtain a definable short cofinal set $u$.
+A definable set of ordinals is hereditarily definable from the same allowed
+parameters, because every ordinal is ordinal definable. Thus $u\in N_q$.
+By Lemma~\ref{lem:otp}, its increasing enumeration has an ordinal domain
+$\tau<\lambda$, and the same enumeration belongs to $N_q$. This contradicts
+regularity there.
+
+Finally, a cofinal set of order type below $\lambda$ gives a singleton
+counterexample, whereas compression produces such a set from any
+counterexample family. This proves the equivalent formulation as well.
+\end{proof}
+
+\begin{corollary}\label{cor:hered}
+If $q$ is rigid, then $\lambda$ is regular in $H_q$ and in
+$\HOD_{V_\lambda}$. Moreover $q\cap N_q=\varnothing$ and $q\notin N_q$.
+\end{corollary}
+\begin{proof}
+Both smaller hereditary classes are contained in $N_q$, so a cofinal map
+in either would be one in $N_q$. A member of $q$ in $N_q$ would itself be
+a cofinal set of order type $\omega<\lambda$. Finally, transitivity would
+put every member of $q$ in $N_q$ if $q$ belonged to $N_q$.
+\end{proof}
+
+This characterization is useful but not a solution of every classification
+question in the dossier: it does not decide which classes are rigid from
+finite combinatorial data, nor does it produce distinct hereditary models
+from distinct rigid classes.
+
+\section{The measurable lower bound}\label{sec:lower}
+
+Here is the only deep inner-model input to the calibration.
+
+\begin{inputthm}[Dodd--Jensen covering below a measurable]\label{input:dj}
+If there is no inner model of $\ZFC$ with a measurable cardinal, the
+Dodd--Jensen core model $K$ has a canonical ordinal-definable well-order
+and covers every uncountable set $X$ of ordinals by a set $Y\in K$ with
+$X\subseteq Y$ and $|Y|^V=|X|^V$.
+\end{inputthm}
+
+We use the classical covering theorem, not a conjectural covering principle
+for $\HOD$. The original sources are Dodd--Jensen \cite{DJK,DJLU};
+Mitchell explicitly records the resulting singular-cardinal dichotomy in
+his introduction \cite{Mitchell}. The proof of the covering theorem itself
+requires core-model fine structure and is not reproduced here.
+
+\begin{proposition}[No inner measurable, no HOD regularization]\label{prop:lower}
+If an uncountable singular cardinal $\lambda$ of $V$ is regular in
+$\HOD$, then there is an inner model with a measurable cardinal.
+Consequently $\HR$, $\RC$, and $\MR$ each imply such an inner model.
+\end{proposition}
+\begin{proof}
+Assume that there is no inner model with a measurable cardinal, and use
+Input~\ref{input:dj}. Choose a cofinal $c\subseteq\lambda$ with
+$|c|=\cf(\lambda)<\lambda$. An uncountable singular cardinal is a limit
+cardinal, so $\omega_1<\lambda$. Therefore
+\[
+ X=c\cup\omega_1
+\]
+is an uncountable set of ordinals of cardinality below $\lambda$.
+Cover it by $Y\in K$ of the same ambient cardinality, and put
+$B=Y\cap\lambda$. Then $B\in K$, $B$ is cofinal in $\lambda$, and
+$|B|^V<\lambda$.
+
+The order type $\tau=\ot(B)$ is below $\lambda$ by
+Lemma~\ref{lem:otp}. Hence $K$ contains an increasing cofinal map
+$\tau\to\lambda$. Every set of $K$ is ordinal definable in $V$, by its
+position in the canonical well-order of $K$; the same is true of its
+transitive closure. Thus $K\subseteq\HOD$, and the cofinal map belongs to
+$\HOD$. This contradicts the stipulated regularity of $\lambda$ there.
+
+For the final assertions, regularity in $\HOD_{V_\lambda}$ implies
+regularity in its submodel $\HOD$. Corollary~\ref{cor:hered} applies to
+$\RC$, and $\MR$ includes an instance of $\RC$.
+\end{proof}
+
+\begin{corollary}[Conditional inconsistency]\label{cor:no-inner}
+The conjunction of $\ZFC$, ``there is no inner model with a measurable
+cardinal,'' and ``there is a rigid class at an uncountable singular cardinal
+of cofinality $\omega$'' is inconsistent.
+\end{corollary}
+
+This is a lower bound, not an assertion that a singular cardinal becomes
+measurable in the ambient universe. Nor does it use the large-cardinal
+embedding assumptions from which the supplied dossier originally obtained
+rigidity.
+
+\section{A quotient-preserving homogeneity principle}\label{sec:transfer}
+
+Ordinary homogeneity is insufficient as a slogan here: we must specify
+\emph{which name} survives the cone isomorphisms.
+
+\begin{definition}\label{def:qh}
+Let $W\models\ZFC$, let $\PP\in W$ be a set forcing, and let $\dot q$
+be a $\PP$-name. Say that the forcing is \emph{cone homogeneous over
+$\dot q$} if, for any $p,r\in\PP$, there are $p'\le p$, $r'\le r$ and
+an isomorphism between the cones below $p'$ and $r'$ which preserves
+$\dot q$ and the check names for ground-model parameters.
+Preservation of $\dot q$ means equality of its transported and original
+interpretations under the corresponding generic filters.
+\end{definition}
+
+\begin{lemma}[The fixed-name decision lemma]\label{lem:decision}
+Under Definition~\ref{def:qh}, every sentence
+$\varphi(\dot q,\check x_1,\ldots,\check x_m)$, with $x_i\in W$, is
+decided by the top condition. In $V=W[G]$, every set of ordinals definable
+from $q=\dot q^G$ and finitely many ground-model parameters belongs to $W$.
+\end{lemma}
+\begin{proof}
+Suppose two conditions force opposite values of the sentence. Strengthen
+them to the isomorphic cones given by the hypothesis. The forcing
+isomorphism theorem transports the sentence to itself, so the first cone
+would force both a sentence and its negation, a contradiction. Since the
+conditions deciding any sentence are dense, the top condition decides it.
+
+Now let $A\subseteq\beta$ in the extension be defined from $q$ and ground
+parameters by $\psi$. For every $\xi<\beta$, apply the first part to the
+sentence expressing membership of $\xi$ in the uniquely defined set.
+The forcing relation is a definable relation of $W$, and therefore
+\[
+ A=\{\xi<\beta: \one\Vdash\text{``$\xi$ belongs to that set''}\}
+\]
+is a set in $W$. The ordinal $\beta$ may be included among the parameters.
+This also handles definitions originally presented as unique-object
+definitions rather than as membership formulas.
+\end{proof}
+
+\begin{theorem}[Rigidity transfer]\label{thm:transfer}
+Suppose $V=W[G]$ satisfies all of the following:
+$\lambda$ is regular in $W$; it remains an uncountable cardinal and has
+cofinality $\omega$ in $V$; $V_\lambda^V=V_\lambda^W$;
+$q=\dot q^G\in Q_\lambda^V$; and $\PP$ is cone homogeneous over $\dot q$.
+Then $\Rig^V(\lambda,q)$.
+\end{theorem}
+\begin{proof}
+Assume that $A$ is a counterexample to rigidity in $V$. By
+Lemma~\ref{lem:compression}, there is a cofinal $u\subseteq\lambda$,
+of ambient cardinality below $\lambda$, definable from $q$, ordinal
+parameters, and finitely many elements of $V_\lambda^V$.
+All the latter parameters are in $W$. Lemma~\ref{lem:decision} therefore
+gives $u\in W$. But $\ot(u)<\lambda$ in $V$, and its order type is
+absolute to $W$. Its increasing enumeration contradicts regularity of
+$\lambda$ in $W$.
+\end{proof}
+
+\begin{remark}
+No claim is made that the individual representative of $q$ is fixed by the
+isomorphisms. That would be incompatible with the intended singularization.
+The protected information is precisely its finite-change class.
+\end{remark}
+
+\section{The Prikry construction}\label{sec:prikry}
+
+Let $W\models\ZFC$ contain a measurable cardinal $\kappa$, and fix a
+normal nonprincipal $\kappa$-complete ultrafilter $U$ on $\kappa$ in $W$.
+All forcing constructions in this section are performed in $W$.
+We recall enough of the ordinary Prikry argument to account for every
+hypothesis of Theorem~\ref{thm:transfer}. The classical source is Prikry
+\cite{Prikry}; a modern research treatment with detailed proofs is
+Benhamou \cite{Benhamou}.
+
+\subsection{Conditions and the Prikry property}
+
+A condition in $\PP_U$ is a pair $(s,A)$, where $s$ is a finite increasing
+sequence from $\kappa$, $A\in U$, and every member of $A$ is larger than
+$\max(s)$ when $s\ne\varnothing$. A stronger condition $(t,B)\le(s,A)$
+has $s$ as an initial segment of $t$, adds to the stem only points of $A$,
+and has $B\subseteq A$. A \emph{direct} extension has the same stem.
+We identify finite increasing sequences with their ranges when taking
+unions or symmetric differences.
+
+Normality has the following two familiar consequences. We include their
+short derivations to make the subsequent fusion argument precise.
+
+\begin{lemma}[Diagonalization and finite homogeneity]\label{lem:normal}
+For a family $\langle A_t:t\in[\kappa]^{<\omega}\rangle$ of members of $U$,
+there is $B\in U$ such that
+\[
+ t\in[B]^{<\omega},\ \beta\in B,\ \max(t)<\beta
+ \quad\Longrightarrow\quad \beta\in A_t.
+\]
+The empty-stem requirement can be imposed by intersecting with
+$A_\varnothing$. Also, if $h:[\kappa]^{<\omega}\to r$ with $r$ finite,
+there is $B\in U$ on which $h$ is constant separately on each
+$[B]^n$, $n<\omega$.
+\end{lemma}
+\begin{proof}
+For each $\alpha<\kappa$, intersect the $A_t$ for $t\subseteq\alpha$.
+There are fewer than $\kappa$ such finite sets, so the intersection is in $U$.
+Take the normal diagonal intersection of these intersections and restrict
+it to limit ordinals. Given $\max(t)<\beta$ in this diagonal set, choose
+$\alpha$ strictly between $\max(t)$ and $\beta$; the desired membership
+follows. For empty $t$, make the indicated extra intersection. Normal
+measures contain all clubs, including the set of limit ordinals.
+
+For the second assertion, first prove homogeneity on $n$-element sets by
+induction on $n$. The case $n=1$ is the ultrafilter property. For a coloring
+of $(n+1)$-element sets, and each $n$-element stem $t$, choose the unique
+color taken on a $U$-large set of possible last points. Diagonalize these
+large sets by the first assertion. Apply the inductive hypothesis to the
+resulting coloring of $n$-element stems, and intersect with the diagonal
+set. This makes the original coloring constant on $(n+1)$-element sets.
+Finally intersect the homogeneous sets obtained for all finite $n$.
+Countable completeness preserves membership in $U$.
+\end{proof}
+
+\begin{lemma}[Prikry property]\label{lem:prikry}
+For any forcing sentence $\varphi$ and any $(s,A)\in\PP_U$, a direct
+extension of $(s,A)$ decides $\varphi$.
+\end{lemma}
+\begin{proof}
+For each finite extension $t$ of the stem $s$, assign a color $h(t)$:
+use $1$ if some condition with stem $t$ forces $\varphi$, use $-1$ if
+some condition with that stem forces $\neg\varphi$, and use $0$ if no
+condition with that stem decides the sentence. The first two alternatives
+cannot both occur, because two conditions with the same stem are
+compatible by intersection of their measure-one sets. In a nonzero case,
+choose a witnessing tail set $A_t\in U$; in a zero-color case put $A_t=\kappa$.
+
+Apply Lemma~\ref{lem:normal} to the coloring of finite continuations $u$
+given by $h(s\splus u)$. Then diagonalize the chosen tail sets, retaining
+a measure-one subset $B\subseteq A$ such that the tail of $B$ after $u$
+is included in $A_{s\splus u}$. The requirements for the fixed stem $s$
+and for the empty continuation are met by an additional intersection.
+On $B$, the color of $s\splus u$ depends only on the length of $u$.
+
+Some extension of $(s,B)$ decides $\varphi$, by density. Let $n$ be its
+number of additional stem points and let $\varepsilon\in\{1,-1\}$ be
+its color. For every $v\in[B]^n$, the condition
+\[
+ (s\splus v,\ B\setminus(\max(v)+1))
+\]
+forces the same value $\varepsilon$, using the diagonal refinement.
+For $n=0$, read this as the condition with stem $s$ itself. Every condition
+below $(s,B)$ can be extended to have at least $n$ additional stem points;
+it then extends one of these deciding conditions. Thus a dense set below
+$(s,B)$ forces the same value, and $(s,B)$ decides $\varphi$.
+\end{proof}
+
+\subsection{The extension preserves the entire lower rank}
+
+\begin{proposition}\label{prop:prikry-facts}
+If $G\subseteq\PP_U$ is generic over $W$ and $V=W[G]$, then all cardinals
+are preserved, $\cf^V(\kappa)=\omega$, no bounded subsets of $\kappa$ are
+added, and
+\[
+ V_\kappa^V=V_\kappa^W,\qquad
+ (\forall\alpha<\kappa)\ |V_\alpha|^V<\kappa.
+\]
+\end{proposition}
+\begin{proof}
+The union $c$ of the stems in $G$ is an increasing sequence of length
+$\omega$. Conditions with arbitrarily long stems are dense, and for each
+$\beta<\kappa$ the conditions placing a stem point above $\beta$ are dense.
+Hence $c$ is cofinal in $\kappa$.
+
+Let $\mu<\kappa$, and let $\dot x$ be a name for a subset of $\mu$.
+Starting from any condition, decide the statements $\xi\in\dot x$,
+$\xi<\mu$, successively by direct extensions using
+Lemma~\ref{lem:prikry}. At limits, intersect the tail sets.
+$\kappa$-completeness supplies a single direct extension deciding the entire
+subset. Therefore every subset of $\mu$ in $V$ already belongs to $W$.
+In particular, every cardinal below $\kappa$ is preserved, since a
+bijection witnessing its collapse could be coded by a bounded subset of
+$\kappa$.
+
+The cardinal $\kappa$ is inaccessible in $W$. Its smaller cardinals remain
+cardinals and are unbounded in $\kappa$, so $\kappa$ cannot be collapsed:
+a purported injection into a smaller ordinal would already collapse some
+preserved cardinal below $\kappa$. Finally, there are only $\kappa$ finite
+stems, and conditions with the same stem are compatible. Thus $\PP_U$
+has the $\kappa^+$-chain condition and preserves all cardinals above
+$\kappa$ as well.
+
+For the rank assertion, argue by induction on $\alpha<\kappa$.
+In $W$, every $V_\alpha$ has cardinality below $\kappa$. Once $V_\alpha$
+has been shown unchanged, a ground-model bijection with a smaller ordinal
+codes every subset of $V_\alpha$ by a bounded subset of $\kappa$.
+Consequently its power set has not changed either. Limit stages follow
+by taking unions. The ground-model bijections witnessing
+$|V_\alpha|<\kappa$ are still available in the extension.
+\end{proof}
+
+\subsection{The tail class, unlike the sequence, is preserved}
+
+Let $\dot c$ be the canonical generic cofinal set and define the name
+\[
+ \dot q=\{\dot c\symdiff\check d:d\in[\kappa]^{<\omega}\}.
+\]
+In every generic extension, $\dot q$ is exactly $[\dot c]$.
+
+\begin{lemma}[Prikry cones preserve the finite-change class]\label{lem:prikry-q}
+$\PP_U$ is cone homogeneous over $\dot q$.
+\end{lemma}
+\begin{proof}
+Take $p=(s,A)$ and $r=(t,B)$. Choose
+\[
+ C\in U,\qquad C\subseteq A\cap B,
+ \qquad \min C>\max(s\cup t),
+\]
+with the evident interpretation for empty stems. Put $p'=(s,C)$ and
+$r'=(t,C)$. The map
+\[
+ (s\splus u,D)\longmapsto(t\splus u,D)
+\]
+is an order isomorphism between the two cones. The same finite continuation
+$u$ and tail set $D$ are permitted on either side. The stems $s$ and $t$
+need not have equal lengths.
+
+Corresponding generics have cofinal sets $s\cup h$ and $t\cup h$ for a
+common tail $h$. These differ by the finite set $s\symdiff t$, so their
+finite-change classes are equal. Moreover each cofinal set is definable
+from the other and the two finite ground-model stems; the resulting
+forcing extensions are the same. Thus the transported name for $q$ has
+exactly the required interpretation, and check names for ground-model
+parameters are unchanged.
+\end{proof}
+
+\begin{theorem}[A rigid class from one measurable]\label{thm:prikry-rig}
+In every ordinary Prikry extension $V=W[G]$ as above,
+\[
+ \RS(\kappa)\quad\text{and}\quad\Rig^V(\kappa,[c])
+\]
+hold. In particular,
+$\HOD^V_{V_\kappa\cup\{[c]\}}$ regards $\kappa$ as regular.
+\end{theorem}
+\begin{proof}
+Proposition~\ref{prop:prikry-facts} gives $\RS(\kappa)$ and all rank and
+cardinality hypotheses of Theorem~\ref{thm:transfer}.
+Lemma~\ref{lem:prikry-q} gives the remaining homogeneity hypothesis.
+Apply the transfer theorem, and then Theorem~\ref{thm:rig-regular}.
+\end{proof}
+
+\begin{remark}[Uniformity over low-rank parameters]
+This conclusion is not restricted to parameters that were ordinal definable
+in $W$. Every member of the entire ambient $V_\kappa$ is a ground-model
+parameter, and the cone isomorphisms preserve all their check names.
+This is why the construction proves the dossier's full
+$\OD_{V_\kappa\cup\{q\}}$ version of rigidity.
+\end{remark}
+
+\section{Multiplicity, saturation, and the completed calibration}\label{sec:calibration}
+
+\subsection{One class supplies many copies without additional strength}
+
+\begin{lemma}[Disjoint mutually definable copies]\label{lem:copies}
+For every $q\in Q_\lambda$ there are $\lambda$ distinct classes
+$q_i\in Q_\lambda$, $i<\lambda$, mutually ordinal definable with $q$,
+having pairwise disjoint representatives. Thus if $q$ is rigid, every
+$q_i$ is rigid and $N_{q_i}=N_q$.
+\end{lemma}
+\begin{proof}
+Use the canonical pairing $\pi:\lambda\times\lambda\to\lambda$ obtained
+by ordering pairs first by their maximum coordinate and then
+lexicographically. This well-order has order type $\lambda$: every pair
+has fewer than $\lambda$ predecessors, and there are $\lambda$ pairs.
+For each $i<\lambda$, the map $f_i(\alpha)=\pi(i,\alpha)$ is strictly
+increasing and cofinal in $\lambda$. Its range is disjoint from the ranges
+of the other $f_j$.
+
+Choose any $a\in q$ and put $a_i=f_i``a$, $q_i=[a_i]$.
+These representatives are pairwise disjoint cofinal $\omega$-sets.
+The definition of $q_i$ does not depend on the chosen $a$: replacing $a$
+by a finite modification only finitely modifies $f_i``a$. Thus $q_i$ is
+definable from $q$ and $i$.
+
+Conversely, for any $b\in q_i$, pull $b\cap\ran(f_i)$ back along $f_i$.
+The resulting set differs finitely from $a$, regardless of $b$.
+Its equivalence class is therefore $q$, giving a definition of $q$ from
+$q_i$ and $i$. Substitution of these definitions gives equality of the
+corresponding $\OD$ classes, with or without the allowed $V_\lambda$
+parameters. Their hereditary subclasses are consequently equal.
+\end{proof}
+
+The copying principle is already present in the supplied synthesis. Its
+role here is to show that the multiplicity appearing there costs no more
+consistency strength than the first rigid class. These copies do \emph{not}
+answer the question whether there are distinct models $N_q$.
+
+\subsection{The definable-section obstruction already occurs in this model}
+
+\begin{definition}
+A \emph{complete section} is a set $T\subseteq D_\lambda$ meeting every
+$q\in Q_\lambda$. It is \emph{thin} if every such intersection has
+cardinality below $\lambda$. A partial section need not meet every class;
+it is thin when all its nonempty fibres are smaller than $\lambda$.
+\end{definition}
+
+\begin{proposition}[Simultaneous full-width fibres]\label{prop:width}
+If $q$ is rigid and $q_i$ are its copies from Lemma~\ref{lem:copies}, then
+for every $T\subseteq D_\lambda$ in $\OD_{V_\lambda}$ and every $i<\lambda$,
+\[
+ |T\cap q_i|\in\{0,\lambda\}.
+\]
+The same $\lambda$ classes serve all these sets $T$ simultaneously.
+Every definable complete section therefore has $\lambda$ full-sized fibres,
+and no thin complete section is in $\OD_{V_\lambda}$.
+\end{proposition}
+\begin{proof}
+$T\cap q_i$ is definable from $q_i$ and allowed low-rank parameters.
+If nonempty, it is a family of short cofinal subsets of $\lambda$, so
+rigidity gives cardinality at least $\lambda$. It is a subset of $q_i$,
+whose cardinality is $\lambda$. No choice of $q_i$ in this argument depends
+on $T$.
+\end{proof}
+
+\begin{proposition}[Small families do not evade the obstruction]\label{prop:smallfamily}
+If $q$ is rigid and $\mathcal T\in\OD_{V_\lambda}$ has
+$|\mathcal T|<\lambda$, with each $T\in\mathcal T$ a thin partial section,
+then $(\bigcup\mathcal T)\cap q=\varnothing$.
+Consequently no nonempty such family consists of complete sections,
+and no such family of partial sections has complete union.
+\end{proposition}
+\begin{proof}
+For each $T\in\mathcal T$ meeting $q$, put
+$u_T=\bigcup(T\cap q)$. All members of $q$ are countable, so
+$|u_T|\le |T\cap q|\cdot\aleph_0<\lambda$, and $u_T$ is cofinal.
+The family of these $u_T$ is definable from $q$ and $\mathcal T$ and has
+size at most $|\mathcal T|<\lambda$. Rigidity says it must be empty.
+Notice that we do not take the union of the possibly unbounded sizes
+$|T\cap q|$ over all $T$; the family of compressed cofinal sets is the
+counterexample directly.
+\end{proof}
+
+These consequences were obtained from ultraexactingness in the dossier.
+The new point is that Theorem~\ref{thm:prikry-rig} and
+Lemma~\ref{lem:copies} realize all of them in an ordinary measurable-cardinal
+Prikry extension.
+
+\subsection{Proof of the equiconsistency theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+$\MR\Rightarrow\RC$ follows by taking $i=0$. The implication
+$\RC\Rightarrow\HR$ is Corollary~\ref{cor:hered}.
+Proposition~\ref{prop:lower} gives the measurable inner-model lower bound
+from $\HR$, and hence the corresponding consistency implication.
+
+For the other direction, begin with a model with a measurable cardinal,
+normalize a witnessing measure, and use ordinary Prikry forcing.
+Theorem~\ref{thm:prikry-rig} supplies a $\kappa$ satisfying $\RS$ and a
+rigid class at $\kappa$. Lemma~\ref{lem:copies} upgrades this to $\MR$.
+Thus the consistency of one measurable cardinal gives the consistency of
+the strongest of the three calibrated assertions. Together the two
+directions give all the stated equiconsistencies.
+
+As usual, this is the formal relative-consistency argument using the
+forcing theorem and the core-model theorem within models of set theory.
+It does not add the assumption that there exists a transitive \emph{set}
+model of either theory. Presenting the construction with transitive
+$W\subseteq W[G]$ is a convenient semantic notation, not a stronger
+hypothesis in the consistency statement.
+\end{proof}
+
+\begin{assessment}{Consequence for the inconsistency search}
+The existence of rigid classes, the $0$-or-$\lambda$ law for definable
+fibres, and the exclusion of small definable families of thin sections
+are compatible with $\ZFC$ at exactly measurable-cardinal consistency
+strength. Any contradiction obtained from this package alone would also refute the
+consistency of a measurable cardinal. To go beyond that calibration, an
+argument must use additional structure: for example the embedding dynamics, simultaneous preservation
+of predicates, or interaction with large cardinals below $\lambda$.
+\end{assessment}
+
+\section{The canonical Boolean algebra of a class}\label{sec:boolean}
+
+We now extract a second result from rigidity. This construction is a
+specialization of Vop\v enka's theorem. A modern statement with the
+single-parameter generality needed here is Goldberg's Theorem~4.8
+\cite{Goldberg}. We give the construction and the extension-equality
+argument, so no step is hidden in the word ``generic.''
+
+Throughout this section, $q=[a]\in Q_\lambda$; rigidity will be invoked
+only where explicitly stated. Define, externally in $V$,
+\[
+ \AlgA_q=\{A\subseteq q:A\in\OD_q\}.
+\]
+This is a set of subsets of $q$, with the ordinary Boolean operations.
+It need not belong to $H_q$. Choose its canonical $\OD_q$ enumeration
+\[
+ f:\gamma\longrightarrow\AlgA_q
+\]
+by the least codes for ordinal definitions from $q$.
+Transfer the Boolean operations to the ordinal $\gamma$ using $f$;
+write $\BB_q$ for the resulting coded algebra.
+
+\begin{lemma}[Internal completeness]\label{lem:complete}
+$\BB_q$ is a complete Boolean algebra in $H_q$.
+The decoding map $f$ is used externally and is not asserted to belong to $H_q$.
+\end{lemma}
+\begin{proof}
+The code for the algebra consists of relations and functions on ordinals
+which are ordinal definable from $q$. Their transitive closures consist
+of ordinal data and such definable graphs. They therefore belong to $H_q$.
+The Boolean-algebra identities are inherited from subsets of $q$.
+
+For a family $I\subseteq\gamma$ belonging to $H_q$, the set $I$ is itself
+$\OD_q$. Hence
+\[
+ \bigcup\{f(\xi):\xi\in I\}
+\]
+is an $\OD_q$ subset of $q$, and has a code in $\BB_q$. That code is the
+supremum of $I$. This verifies completeness for all families which
+\emph{belong to $H_q$}, exactly as required. We are not claiming external
+completeness for arbitrary families in $V$.
+\end{proof}
+
+\begin{definition}
+For each $b\in q$, let
+\[
+ G_b=\{\xi<\gamma:b\in f(\xi)\}.
+\]
+We view $G_b$ as an ultrafilter on $\BB_q$.
+\end{definition}
+
+\begin{lemma}[Every representative gives a generic filter]\label{lem:pointgeneric}
+$G_b$ is $H_q$-generic for $\BB_q$ for every $b\in q$.
+Furthermore $b\in H_q[G_b]$ and $G_b\in M_b$.
+\end{lemma}
+\begin{proof}
+Membership at a point respects intersections and complements, so $G_b$
+is an ultrafilter. Let $\mathcal A\in H_q$ be a maximal antichain of
+positive elements of $\BB_q$. Its decoded sets are pairwise disjoint.
+Their union is $q$: otherwise the code for the nonempty complement would
+be a nonzero element incompatible with every member of $\mathcal A$,
+contradicting maximality. Thus exactly one decoded member contains $b$,
+and $G_b$ meets $\mathcal A$. This proves genericity.
+
+For $\alpha<\lambda$, let $e_\alpha$ be the code for
+$\{x\in q:\alpha\in x\}$. The sequence
+$\langle e_\alpha:\alpha<\lambda\rangle$ is ordinal coded and $\OD_q$,
+so belongs to $H_q$. Then
+\[
+ b=\{\alpha<\lambda:e_\alpha\in G_b\},
+\]
+which reconstructs $b$ in the generic extension.
+
+Finally, $q$ is ordinal definable from $b$, as its finite-change class.
+Thus $G_b$ is ordinal definable from $b$, and is a set of ordinals.
+It follows that $G_b\in M_b$.
+\end{proof}
+
+\subsection{Why the extension is exactly the representative HOD}
+
+\begin{theorem}[Exact generic-extension identity]\label{thm:vopenka}
+For every $b\in q$,
+\[
+ H_q[G_b]=\HOD_{\{q,b\}}=M_b.
+\]
+For any $a,b\in q$, $M_a=M_b$. We may consequently denote this common
+extension by $M_q$.
+\end{theorem}
+\begin{proof}
+Because $q$ is ordinal definable from $b$, adjoining $q$ as an allowed
+parameter in addition to $b$ does not change the hereditary class:
+$\HOD_{\{q,b\}}=M_b$. Also $H_q\subseteq M_b$ and $G_b\in M_b$.
+The transitive model $M_b$ evaluates all $H_q$-names, so
+$H_q[G_b]\subseteq M_b$.
+
+For completeness, we prove the reverse inclusion by explicitly coding
+hereditarily definable sets. There is a fixed definable enumeration
+scheme $F_z(\xi)$, $\xi\in\Ord$, of the sets ordinal definable from
+$q,z$. To obtain it, well-order the rank-local definition codes and use
+$\varnothing$ for failed uniqueness codes. Every $\OD_{q,z}$ set occurs.
+The evaluation of each code is a first-order set-theoretic operation;
+no global truth predicate is involved.
+
+Fix $x\in M_b$. Choose an ordinal $\eta$ large enough that every member
+of $\tc(\{x\})$ occurs among $F_b(\xi)$ for $\xi<\eta$. Such a bound
+exists because the transitive closure is a set and every one of its
+elements is ordinal definable from $b$. Increase $\eta$ if necessary to
+include a code $\xi_x$ for $x$ itself.
+
+For each $z\in q$ define
+\[
+ D_z=\{\xi<\eta:\tc(\{F_z(\xi)\})
+                  \subseteq\ran(F_z\restr\eta)\}.
+\]
+The image $F_z``D_z$ is transitive. Indeed, if a value has its full
+transitive closure represented below $\eta$, so does each of its
+members. Keep only the least index for each repeated value, obtaining
+$D_z^*\subseteq D_z$. Put a relation on this set by
+\[
+ \xi\ E_z\ \nu\quad\Longleftrightarrow\quad F_z(\xi)\in F_z(\nu).
+\]
+This is a well-founded extensional relation isomorphic to the transitive
+set $F_z``D_z$.
+
+For each $\xi,\nu<\eta$, the subsets of $q$ expressing
+$\xi\in D_z^*$ and $\xi\ E_z\ \nu$ are $\OD_q$.
+Their Boolean codes, indexed by $\eta$ and $\eta\times\eta$, form sets
+of ordinal data in $H_q$. Evaluating them with $G_b$ therefore constructs
+$D_b^*$ and $E_b$ inside $H_q[G_b]$. This relation is well-founded in
+$V$, hence also in the inner model $H_q[G_b]$, and its Mostowski collapse
+is absolute. The collapse at the least index representing $x$ is exactly
+$x$. That index is an ordinal, so it is available in $H_q[G_b]$.
+Thus $x\in H_q[G_b]$.
+
+Finally, if $a=^*b$, the finite set $a\symdiff b$ is ordinal definable
+using its finitely many ordinal elements. Each of $a$ and $b$ is
+therefore ordinal definable from the other. Substitution of definitions,
+including those for all elements of the transitive closure, gives
+$M_a=M_b$.
+\end{proof}
+
+The identity is stronger than merely observing that the representatives
+are generic over some inner model. It identifies a \emph{single} forcing
+algebra, a \emph{single} ground, and a \emph{single} extension shared by
+all representatives of the class.
+
+\section{Homogeneity, singularization, and rank agreement}\label{sec:forcing}
+
+\subsection{Finite changes give an internal automorphism action}
+
+Let $\Gamma=([\lambda]^{<\omega},\symdiff)$. This is an ordinal-definable
+group and belongs to $H_q$. For $d\in\Gamma$ define
+\[
+ \rho_d(A)=\{x\symdiff d:x\in A\}\qquad(A\in\AlgA_q).
+\]
+Transporting $\rho_d$ through $f$ gives an automorphism of $\BB_q$.
+The entire coded action is in $H_q$.
+
+\begin{lemma}[Weak homogeneity]\label{lem:weak}
+The action of $\Gamma$ makes $\BB_q$ weakly homogeneous in $H_q$:
+for any nonzero $p,r\in\BB_q$, some $d\in\Gamma$ has
+$\rho_d(p)\wedge r\ne0$. Moreover
+\[
+ \rho_d[G_b]=G_{b\symdiff d}.
+\]
+\end{lemma}
+\begin{proof}
+Choose $x\in f(p)$ and $y\in f(r)$. Both lie in $q$, so
+$d=x\symdiff y$ is finite. The point $y$ lies in
+$\rho_d(f(p))\cap f(r)$, proving compatibility. The witness $d$ is an
+element of the internal group $\Gamma$, so this establishes precisely
+the asserted statement of $H_q$. The equality of filters follows by
+applying the equivalence
+$b\in A\Longleftrightarrow b\symdiff d\in\rho_d(A)$
+to each Boolean code.
+\end{proof}
+
+\begin{lemma}[Atomlessness under rigidity]\label{lem:atomless}
+If $q$ is rigid, $\BB_q$ is atomless in $H_q$.
+\end{lemma}
+\begin{proof}
+A nonzero code decodes to a nonempty $\OD_q$ subset $A$ of $q$.
+Since $A\subseteq\Clam$, rigidity gives $|A|\ge\lambda$.
+Choose distinct $x,y\in A$ and an ordinal $\alpha\in x\symdiff y$.
+Intersecting $A$ with $\{z\in q:\alpha\in z\}$ and with its complement
+splits its code into two nonzero elements. All splitting codes are in
+$H_q$. Thus no nonzero element is an atom.
+\end{proof}
+
+\begin{theorem}[Canonical singularization attached to rigidity]\label{thm:forcing-main}
+Suppose $\RS(\lambda)$ and $\Rig(\lambda,q)$. There is a complete Boolean
+algebra $\BB_q\in H_q$ such that:
+\begin{enumerate}
+\item $\BB_q$ is atomless and weakly homogeneous, with the finite-change
+group acting as above.
+\item Every $b\in q$ yields an $H_q$-generic $G_b$, and
+$H_q[G_b]=M_q$ independently of $b$.
+\item $H_q$ regards $\lambda$ as inaccessible; $M_q$ regards it as a
+strong limit cardinal of cofinality $\omega$. In particular $H_q\ne M_q$.
+\item $H_q$ satisfies that $\BB_q$ forces $\lambda$ to remain a cardinal
+and to have cofinality $\omega$. The algebra does not have the
+$\lambda$-chain condition in $H_q$.
+\end{enumerate}
+If additionally $V_\lambda\subseteq\HOD^V$, then $H_q=N_q$,
+\[
+ V_\lambda^{H_q}=V_\lambda^{M_q}=V_\lambda^V,
+\]
+and $\BB_q$ forces that no bounded subsets of $\lambda$ are added.
+\end{theorem}
+\begin{proof}
+The first two clauses are Lemmas~\ref{lem:complete},
+\ref{lem:pointgeneric}, \ref{lem:weak}, \ref{lem:atomless} and
+Theorem~\ref{thm:vopenka}. Corollary~\ref{cor:hered} gives regularity in
+$H_q$. The ordinal $\lambda$ is a cardinal of each inner model, since
+any inner-model collapse would be an ambient collapse.
+
+Strong-limitness is downward absolute here. If an inner model of Choice
+had an injection of $\lambda$ into its power set of some $\mu<\lambda$,
+that would be an ambient injection into $\Pow^V(\mu)$, contradicting the
+ambient strong-limit property. Thus $\lambda$ is strong limit in $H_q$
+and in $M_q$. It is inaccessible in the former. In the latter any
+$b\in q$ supplies its cofinal $\omega$-enumeration. That enumeration
+cannot belong to $H_q$, so the extension is proper.
+
+In a weakly homogeneous Boolean algebra, the Boolean value of a sentence
+with check parameters from the ground is either zero or one. Indeed,
+if nonzero conditions forced opposite answers, an automorphism could
+make their images compatible, while fixing those check parameters.
+The assertion that $\lambda$ is a cardinal of cofinality $\omega$ holds
+in the actual extension $M_q$. The truth lemma and weak homogeneity
+therefore imply that it is forced by the top condition in $H_q$.
+
+If $\BB_q$ had the $\lambda$-chain condition, take a name for a cofinal
+map $\omega\to\lambda$. For each $n$, a maximal antichain deciding its
+$n$th value has size below $\lambda$. Regularity of $\lambda$ in $H_q$
+then bounds the union of all possible values for all $n<\omega$ below
+$\lambda$, contradicting cofinality. Hence the chain condition fails.
+
+Now assume $V_\lambda\subseteq\HOD^V$. Each low-rank parameter can be
+replaced in a definition by an ordinal definition. Consequently
+$\OD_{V_\lambda\cup\{q\}}=\OD_q$, so $N_q=H_q$.
+Both $H_q$ and $M_q$ contain the full ambient $V_\lambda$ and are
+contained in $V$, proving the rank equality. In particular the actual
+extension has no new bounded subsets of $\lambda$.
+
+To obtain the forcing assertion rather than just a statement about this
+one generic extension, let $X=(V_\lambda)^{H_q}\in H_q$. The sentence
+that every subset of every $\alpha<\lambda$ belongs to $\check X$
+uses only ground check parameters. It holds in $M_q$, so the preceding
+weak-homogeneity argument makes its Boolean value one.
+\end{proof}
+
+\begin{assessment}{Three distinctions that must not be suppressed}
+First, $H_q$ is a ground of $M_q$, not necessarily a ground of the whole
+ambient universe $V$. Second, preserving $\lambda$ as a cardinal does
+not assert preservation of every cardinal above it. Third, adding no
+bounded subsets of $\lambda$ does \emph{not} mean
+$\omega$-distributivity: the extension adds a new countable cofinal
+sequence of ordinals below $\lambda$.
+\end{assessment}
+
+There is also no forcing assertion of the form
+$\dot b\in\check q$ here. For a rigid class, $q\notin H_q$,
+so that is not a legitimate use of a ground-model check name.
+The class is used externally to construct the ordinal-coded algebra;
+its actual representatives then induce the generic filters.
+
+\subsection{The representatives cannot be mutually generic}
+
+\begin{proposition}\label{prop:not-mutual}
+If $q$ is rigid and $a,b\in q$, the filters $G_a$ and $G_b$ are not
+mutually generic over $H_q$ for $\BB_q\times\BB_q$.
+There are exactly $\lambda$ distinct point filters $G_b$, $b\in q$,
+and all of them generate $M_q$.
+\end{proposition}
+\begin{proof}
+Different points give different filters by the membership codes
+$e_\alpha$, so there are $\lambda$ of them. Their extensions coincide
+by Theorem~\ref{thm:vopenka}. They are proper because
+Corollary~\ref{cor:hered} makes $\lambda$ regular in $H_q$, whereas
+each $b\in q$ gives a cofinal $\omega$-sequence in $M_q$.
+
+Recall the intersection fact for mutually generic extensions:
+if $G,H$ are mutually generic over a transitive ground $N$, then
+$N[G]\cap N[H]=N$. Here is the relevant proof.
+For a common subset $x$ of an ordinal, take names $\sigma,\tau$ from
+the two coordinates and a product condition $(p,r)$ forcing their equality.
+If two extensions of $p$ forced opposite answers to
+$\alpha\in\sigma$, first extend $r$ to decide $\alpha\in\tau$.
+One of the two resulting product conditions would contradict the forced
+equality. Thus $p$ decides every membership question, making $x$ a
+ground-model set. For an arbitrary common set outside $N$, choose one
+of least rank. Its members are all in $N$; a ground well-order of the
+appropriate ground rank converts it to a common set of ordinals outside
+$N$, contradicting the case just proved.
+
+Mutual genericity of $G_a,G_b$ would consequently make their common
+extension equal to $H_q$, contrary to properness.
+\end{proof}
+
+This does not say that the algebra has no product-generic filters in a
+further universe. It says that the representatives of this one ambient
+finite-change class cannot form such a pair.
+
+\section{What the result does and does not settle}\label{sec:scope}
+
+The consistency theorem identifies a precise boundary inside the supplied
+research program. Rigidity has exactly measurable consistency strength,
+and its definable-section consequences already occur in the same construction. The ultraexacting embedding hypothesis is not
+needed to realize them, and its additional force must be sought in
+properties not used by the Prikry construction.
+
+Theorem~\ref{thm:forcing-main} adds a second boundary. Under
+$V_\lambda\subseteq\HOD$, the ``regular inside, singular outside'' picture
+from the synthesis is realized by an actual weakly homogeneous set forcing
+\emph{between the two indicated hereditary models}. This converts a
+cofinality discrepancy into a specific forcing decomposition. It neither
+identifies that forcing with ordinary Prikry forcing nor derives a normal
+measure in $H_q$. The measurable lower bound is an inner-model conclusion,
+not a classification of $\BB_q$.
+
+\subsection{Remaining questions with sharper targets}
+
+\begin{question}
+Must there be distinct rigid $q,r$ with $N_q\ne N_r$ under an
+ultraexacting hypothesis? The measurable construction and the copying
+lemma deliberately give many classes with the \emph{same} hereditary
+model, so multiplicity of classes alone cannot answer this.
+\end{question}
+
+\begin{question}
+What extra property of $\BB_q$, arising from an ultraexacting embedding
+rather than from rigidity alone, distinguishes it from the measurable
+Prikry examples? Potential properties must involve the embedding action
+or a simultaneous family of predicates; atomlessness, weak homogeneity,
+and singularization by themselves are insufficient.
+\end{question}
+
+\begin{question}
+Does ordinary exactingness imply the existence of a rigid class, or the
+nonexistence of a definable thin complete section, in full generality?
+The consistency calibration does not prove this implication. The
+quotient-preserving cone maps used in the upper bound belong to a
+particular forcing construction, not to every exacting witness.
+\end{question}
+
+We make no preservation claim for a strongly compact cardinal below the
+Prikry point, no new consistency claim for cover-exactingness above strong
+compactness, and no determination of the successor-collapse alternative
+from the synthesis. Those are different targets and require additional
+arguments. The published consistency relationship between ultraexactingness
+and $\Izero$ likewise remains a separate result \cite{ABGL}.
+
+\section{Proof audit and dependency ledger}\label{sec:audit}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{.28\textwidth}Y@{}}
+\toprule
+Conclusion & Logical dependencies\\
+\midrule
+Rigidity $\Leftrightarrow$ regularity of $N_q$ & Definition of rigidity; least-order-type compression; absoluteness of ordinal order type. No large-cardinal input.\\
+Measurable lower bound & Classical Dodd--Jensen covering and its canonical core-model well-order; the application in Proposition~\ref{prop:lower}.\\
+Measurable upper bound & A normal measure; the Prikry property and rank preservation proved here; cone isomorphisms preserving the orbit name.\\
+$\lambda$ simultaneous rigid copies & Definable ordinal pairing and substitutions of ordinal definitions. This copying mechanism is also in the dossier.\\
+Exact forcing decomposition & Ordinal-coded Vop\v enka algebra; maximal-antichain genericity; the explicit collapse-of-definition-codes proof.\\
+Weak homogeneity and atomlessness & Finite symmetric differences; rigidity; ordinal membership tests.\\
+No bounded subsets in the canonical extension & The \emph{additional} assumption $V_\lambda\subseteq\HOD^V$, followed by weak homogeneity. It is not inferred from rigidity alone.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Checks against common proof failures}
+
+The cardinal bounds are ambient bounds until a model superscript is given.
+When transferring smallness to an inner model, the proof uses the
+\emph{absolute order type} of a subset of $\lambda$, not an unjustified
+assumption of cardinal correctness. The compression proof does not union
+an unbounded collection of sizes below a singular cardinal. The Prikry
+homogeneity argument fixes the class name and all ground check parameters,
+not the generic sequence. The Boolean algebra is complete in $H_q$, not
+necessarily in $V$. Its ordinal code belongs to $H_q$, while its decoding
+map and the class $q$ need not. Finally, the assertion about all generics
+adding no bounded subsets is deduced from weak homogeneity and ground
+check parameters, not from the behavior of one extension alone.
+
+\subsection{Verification status}
+
+All newly used deductions are written as mathematical proofs in this
+report. The supplied Lean files were reference material for the definitions
+and the scope of the earlier claims; the present equiconsistency argument
+and the canonical forcing analysis have not been formalized in Lean.
+The Dodd--Jensen theorem is an imported classical theorem. The report does
+not claim an independent formal check or a new proof of that theorem.
+Bibliographical verification establishes the cited classical inputs, not
+global novelty of the particular formulation proved here.
+
+\begin{thebibliography}{99}
+
+\bibitem{Dossier}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Second-edition research report supplied by the user in
+\nolinkurl{Cardinals3.zip},
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex}, 18 September 2026.
+In particular the subsection ``Rigid classes,'' its corollaries and
+sharpness remarks. The companion
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex} supplies the broader
+research program.
+
+\bibitem{DJK}
+A.~J. Dodd and R.~B. Jensen.
+\emph{The covering lemma for $K$}.
+Annals of Mathematical Logic \textbf{22} (1982), no.~1, 1--30.
+Classical core-model input to the lower bound.
+
+\bibitem{DJLU}
+A.~J. Dodd and R.~B. Jensen.
+\emph{The covering lemma for $L[U]$}.
+Annals of Mathematical Logic \textbf{22} (1982), no.~2, 127--135.
+
+\bibitem{Mitchell}
+William~J. Mitchell.
+\emph{Definable singularity}.
+Transactions of the American Mathematical Society \textbf{327} (1991),
+no.~1, 407--426.
+\doi{10.1090/S0002-9947-1991-1036006-0}.
+The introduction, especially p.~408, records the Dodd--Jensen
+singular-cardinal alternatives used to check the lower-bound input.
+\url{https://www.ams.org/journals/tran/1991-327-01/S0002-9947-1991-1036006-0/S0002-9947-1991-1036006-0.pdf}.
+
+\bibitem{Prikry}
+Karel Prikry.
+\emph{Changing measurable into accessible cardinals}.
+Dissertationes Mathematicae \textbf{68} (1970), 55 pp.
+The original normal-measure singularization construction.
+
+\bibitem{Benhamou}
+Tom Benhamou.
+\emph{Prikry forcing and tree Prikry forcing of various filters}.
+\arxiv{1801.04424}, version~2, 2018.
+Section~3 gives the standard Prikry facts; Corollary~3.24 records the
+finite-change criterion for equality of ordinary Prikry extensions.
+\url{https://arxiv.org/html/1801.04424v2}.
+
+\bibitem{KRS}
+Peter Koepke, Karen R\"asch, and Philipp Schlicht.
+\emph{A minimal Prikry-type forcing for singularizing a measurable cardinal}.
+Journal of Symbolic Logic \textbf{78} (2013), no.~1, 85--100.
+The introduction also discusses the Dodd--Jensen lower bound for
+singularization by forcing. Its minimal forcing is \emph{not} the
+ordinary Prikry forcing used in this report.
+\url{https://www.math.uni-bonn.de/people/schlicht/Prikry/a_minimal_prikry_forcing.pdf}.
+
+\bibitem{Goldberg}
+Gabriel Goldberg.
+\emph{The uniqueness of elementary embeddings}.
+Journal of Symbolic Logic \textbf{89} (2024), 1430--1454.
+\doi{10.1017/jsl.2024.60}.
+\arxiv{2103.13961}, version~2, Theorem~4.8 (Vop\v enka).
+The theorem numbering here refers to the arXiv version.
+\url{https://arxiv.org/html/2103.13961v2}.
+
+\bibitem{BCGHP}
+Tom Benhamou, James Cummings, Gabriel Goldberg, Yair Hayut,
+and Alejandro Poveda.
+\emph{Compactness phenomena in HOD and the optimality of Magidor's covering theorem}.
+\arxiv{2608.24190}, version~1, 25 August 2026.
+Theorem~1.1 gives the related optimal measurable upper bound for the first
+power-set disagreement at $\aleph_\omega$.
+\url{https://arxiv.org/html/2608.24190v1}.
+
+\bibitem{ABGL}
+Juan~P. Aguilera, Joan Bagaria, Gabriel Goldberg, and Philipp L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254}, version~1, 2025.
+Proposition~3.9 gives the low-rank HOD coding used in the dossier's
+ultraexacting applications; Theorem~4.5 gives the published
+$\Izero$--ultraexacting equiconsistency result.
+\url{https://arxiv.org/html/2509.10254v1}.
+
+\end{thebibliography}
+\end{document}

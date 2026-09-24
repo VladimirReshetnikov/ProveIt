@@ -1,0 +1,54 @@
+g++ -O3 -std=c++17 -Wall -Wextra -pedantic src/verify_all.cpp -o verify_all
+./verify_all data/certificates.txt
+Verified forward-image certificates: 10642
+m=1 certificates=0 all_labeled_antichains=3 hard_labeled_antichains=0 covered=0
+m=2 certificates=0 all_labeled_antichains=6 hard_labeled_antichains=0 covered=0
+m=3 certificates=1 all_labeled_antichains=20 hard_labeled_antichains=1 covered=1
+m=4 certificates=5 all_labeled_antichains=168 hard_labeled_antichains=15 covered=15
+m=5 certificates=63 all_labeled_antichains=7581 hard_labeled_antichains=1957 covered=1957
+m=6 certificates=10573 all_labeled_antichains=7828354 hard_labeled_antichains=5237599 covered=5237599
+  n=0 all=1 hard=0
+  n=1 all=64 hard=0
+  n=2 all=1351 hard=0
+  n=3 all=14000 hard=0
+  n=4 all=82115 hard=30
+  n=5 all=304752 hard=5100
+  n=6 all=759457 hard=117821
+  n=7 all=1308270 hard=564330
+  n=8 all=1613250 hard=1113390
+  n=9 all=1484230 hard=1264720
+  n=10 all=1067771 hard=998987
+  n=11 all=635044 hard=618712
+  n=12 all=326990 hard=323900
+  n=13 all=147440 hard=147020
+  n=14 all=57675 hard=57645
+  n=15 all=19238 hard=19238
+  n=16 all=5325 hard=5325
+  n=17 all=1170 hard=1170
+  n=18 all=190 hard=190
+  n=19 all=20 hard=20
+  n=20 all=1 hard=1
+PASS: 7836132 labeled antichains enumerated; 5239572 hard antichains covered.
+Elapsed seconds: 3.21314
+python3 src/test_artifacts.py ./verify_all
+PASS: JSON and text encodings agree for 10642 records.
+PASS: rejected modified-map: FAIL: line 1: forward image does not equal target
+PASS: rejected missing-three-row-certificate: FAIL: uncovered hard family: m=3 key=104
+python3 src/test_construct.py
+Python local certificate checks: 10642
+Exhaustive 1x1, all roots: 1 targets
+Exhaustive 1x5, all roots: 80 targets
+Exhaustive 2x2, all roots: 40 targets
+Exhaustive 2x3, all roots: 264 targets
+Exhaustive 2x4, all roots: 1472 targets
+Exhaustive 2x5, all roots: 7520 targets
+Exhaustive 3x3, all roots: 3600 targets
+Exhaustive 3x4, all roots: 40704 targets
+Exhaustive 4x4, root (0,0): 57856 targets
+Relabelled hard targets, varied roots: 240
+Random six-row targets (up to 64 columns): 75
+Matching and worked-example root tests: 132
+Cell-separation checks: 2120
+PASS: 111984 reaching words replayed; maximum observed length 184
+Reduction counts: {"column-copy": 130136, "empty-axis": 176748, "isolated-cell": 219159, "row-copy": 244114, "table": 4294}
+Elapsed seconds: 9.324881

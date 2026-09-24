@@ -1,0 +1,90 @@
+DRAFT MATHEMATICAL COMMENTS — NOT SUBMITTED TO OEIS
+Prepared 19 September 2026. Independent review is appropriate before posting.
+
+A348410:
+
+For every prime p and positive integers m,r,
+  a(m*p^r) == a(m*p^(r-1)) (mod p^(3*r - valuation(12,p))).
+In particular, the binary modulus is 2^(3*r-2) and the ternary modulus is
+3^(3*r-1). The loss at 2 is necessary already at r=2, since a(4)-a(2)=80;
+the loss at 3 is necessary at r=1, since a(3)-a(1)=18. At p>=5 no extra
+uniform power is available, since a(5)-a(1)=375=3*5^3.
+
+Let b(n) = (1/n^3)*Sum_{d|n} moebius(d)*a(n/d). Then 12*b(n) is a
+nonnegative integer for every n>=1, and 12 is the smallest positive integer
+clearing all its denominators. Indeed, b(3)=2/3 and b(4)=5/4; the full
+denominator 12 is already attained at the single index n=12, where
+b(12)=126385/12.
+
+The sequence 12*b(n), n>=1, starts
+  12, 6, 8, 15, 36, 94, 276, 858, 2828, 9708, 34536, 126385, ... .
+The supplied data/denominator12.csv contains the first 1000 exact values.
+
+The integer P(n)=n^2*b(n) counts primitive rotation orbits of words of
+length n in the alphabet of pairs (u,v) of nonnegative integers, each
+letter having weight u+2v, with total word weight n. It is divisible by
+n^2/gcd(n^2,12).
+
+General parameter-family comment, potentially relevant to A352373:
+
+Put A(alpha,beta;n) = [x^n](1-x)^(-alpha*n)(1+x)^(-beta*n), where alpha
+and beta are arbitrary integers.
+
+ODD PRIMES. If p is odd, N>0 and p divides N, then
+  A(alpha,beta;N) == A(alpha,beta;N/p)
+  (mod p^(3*valuation(N,p) - epsilon_p)),
+where epsilon_3 = 1 and epsilon_p = 0 for p >= 5. Equivalently, for all
+m,k >= 1 and with NO coprimality restriction on m,
+  A(alpha,beta;m*p^k) == A(alpha,beta;m*p^(k-1))
+  (mod p^(3*(k+valuation(m,p)) - epsilon_p)).
+The original sequence is A(2,1;n); specializing gives Bala's conjecture for
+p >= 5 and a(m*3^r) == a(m*3^(r-1)) (mod 3^(3*r-1)) at p=3.
+
+PROOF OUTLINE (odd primes). Write log F(x) = Sum_{j>=1} c_j*x^j/j with
+F = (1-x)^(-alpha)*(1+x)^(-beta) and c_j = alpha + beta*(-1)^j. For odd p,
+multiplication by p preserves parity, so c_{pj} = c_j. Let D_p be the part
+of log F supported on indices not divisible by p; it is p-integral, and
+  F(x)^N = F(x^p)^(N/p) * exp(N*D_p(x))
+is an EXACT identity, not a congruence. Through the modulus
+p^(3*valuation(N,p)-epsilon_p) the exponential may be truncated after its
+quadratic term, by the factorial estimate valuation(k!,p) <= (k-1)/(p-1).
+Its linear term cannot contribute to degree N: the first factor is supported
+on multiples of p and D_p on non-multiples. For p|M, the quadratic
+coefficient T_p(M) = [x^M]D_p(x)^2 has valuation at least
+valuation(M,p)-epsilon_p. To see this, reduce 1/(i*(M-i)) to -1/i^2, then
+use the parity of M to rewrite the weighted sum EXACTLY as a fixed
+combination of reciprocal-square sums over complete blocks. (Periodicity
+alone would not license permuting a weighted sum: reducing an index mod p^s
+can change its residue mod the period. The exact decomposition, not a
+permutation, is what makes the step valid.) Multiplication by 2 permutes the
+units mod p^s, giving 3*U_s == 0 and hence divisibility by p^(s-epsilon_p),
+the loss at 3 being exactly valuation(3,p). Finally, logarithmic
+differentiation gives
+  valuation([x^j]F(x)^L, p) >= max(0, valuation(L,p) - valuation(j,p)).
+Apply the two estimates to each product in
+Sum_{i=1..L} [x^(L-i)]F(x)^L * T_p(p*i), where L = N/p; the two valuations
+add to at least valuation(N,p)-epsilon_p. Multiplication by N^2/2, whose
+valuation is 2*valuation(N,p) since p is odd, completes the proof.
+
+The bounds are sharp as uniform assertions: a(5)-a(1)=375 and a(3)-a(1)=18.
+
+THE PRIME 2. For odd m and r >= 2,
+  A(alpha,beta;m*2^r) - A(alpha,beta;m*2^(r-1))
+  == 2^(3*r-3)*alpha*beta*binomial((alpha+beta+1)*m-1,m-1)
+     (mod 2^(3*r-2)).
+Binomial coefficients with negative upper arguments are generalized
+binomial coefficients. If alpha and beta are both odd and m=1, the
+valuation of the difference is exactly 3*r-3 at every r>=2.
+
+Provenance:
+The odd-prime parameter theorem already has a public elementary proof
+candidate in rbajaj5/a183068-supercongruence, in
+related-results/CoefficientFramingCubicTower.md. The present article gives a
+complete independent proof of it and credits that prior result; no priority
+is claimed for the odd-prime statement. The binary defect formula and the
+sharp denominators were not found in the checked sources. No worldwide
+priority claim is made for anything here.
+
+Not a proved comment:
+The stronger equality valuation(a(2^r)-a(2^(r-1)),2)=3*r+1 for r>=4 is
+conjectural in this archive, checked through r=15. Do not post it as a theorem.

@@ -1,0 +1,173 @@
+{
+  "status": "PASS",
+  "seed": 20260919,
+  "random_trials": 20000,
+  "ordinal_pool_size": 78,
+  "checks": {
+    "natural_commutativity": 6084,
+    "ordinal_difference": 3081,
+    "exhaustive_formula_agreement": 648,
+    "comparable_profile_pairs": 20000,
+    "strict_profile_pairs": 17468,
+    "random_formula_agreement": 40000,
+    "independent_block_formula": 24916,
+    "permutation_zero_invariance": 40000,
+    "equal_profile_pairs": 2532
+  },
+  "finite_rank_models": [
+    {
+      "max_entry": 3,
+      "capacity": 3,
+      "states": 70,
+      "strict_comparisons": 1694,
+      "max_rank": 16,
+      "formula": "n*(K+1) + sum(t-n+1 for t in E)"
+    },
+    {
+      "max_entry": 5,
+      "capacity": 4,
+      "states": 462,
+      "strict_comparisons": 60522,
+      "max_rank": 30,
+      "formula": "n*(K+1) + sum(t-n+1 for t in E)"
+    },
+    {
+      "max_entry": 4,
+      "capacity": 5,
+      "states": 462,
+      "strict_comparisons": 60522,
+      "max_rank": 30,
+      "formula": "n*(K+1) + sum(t-n+1 for t in E)"
+    }
+  ],
+  "examples": [
+    {
+      "sequence": "all zeros",
+      "epsilon": "1",
+      "prefix": [],
+      "S": "0",
+      "N": "0"
+    },
+    {
+      "sequence": "finite support: w^2, w, 3",
+      "epsilon": "1",
+      "prefix": [
+        "w^(2)",
+        "w",
+        "3"
+      ],
+      "S": "w^(2) + w + 3",
+      "N": "w^(2) + w + 3"
+    },
+    {
+      "sequence": "constant 2",
+      "epsilon": "3",
+      "prefix": [],
+      "S": "w*2",
+      "N": "w*2"
+    },
+    {
+      "sequence": "unbounded finite tail",
+      "epsilon": "w",
+      "prefix": [],
+      "S": "w^(2)",
+      "N": "w^(2)"
+    },
+    {
+      "sequence": "one w above an unbounded finite tail",
+      "epsilon": "w",
+      "prefix": [
+        "w"
+      ],
+      "S": "w^(2)",
+      "N": "w^(2) + 1"
+    },
+    {
+      "sequence": "near exceptions w, w+3, w+7",
+      "epsilon": "w",
+      "prefix": [
+        "w",
+        "w + 3",
+        "w + 7"
+      ],
+      "S": "w^(2) + 10",
+      "N": "w^(2) + 13"
+    },
+    {
+      "sequence": "constant w",
+      "epsilon": "w + 1",
+      "prefix": [],
+      "S": "w^(2)",
+      "N": "w^(2) + w"
+    },
+    {
+      "sequence": "constant w+1",
+      "epsilon": "w + 2",
+      "prefix": [],
+      "S": "w^(2) + w",
+      "N": "w^(2) + w*2"
+    },
+    {
+      "sequence": "constant w, with exceptional w^2+5",
+      "epsilon": "w + 1",
+      "prefix": [
+        "w^(2) + 5"
+      ],
+      "S": "w^(2)*2 + 5",
+      "N": "w^(2)*2 + w + 5"
+    },
+    {
+      "sequence": "cofinal below w^2, one w^2+4",
+      "epsilon": "w^(2)",
+      "prefix": [
+        "w^(2) + 4"
+      ],
+      "S": "w^(3) + 4",
+      "N": "w^(3) + 5"
+    },
+    {
+      "sequence": "cofinal below w^w",
+      "epsilon": "w^(w)",
+      "prefix": [],
+      "S": "w^(w)",
+      "N": "w^(w)"
+    },
+    {
+      "sequence": "cofinal below w^w, two copies of w^w",
+      "epsilon": "w^(w)",
+      "prefix": [
+        "w^(w)",
+        "w^(w)"
+      ],
+      "S": "w^(w)*3",
+      "N": "w^(w)*3"
+    },
+    {
+      "sequence": "constant w^w",
+      "epsilon": "w^(w) + 1",
+      "prefix": [],
+      "S": "w^(w + 1)",
+      "N": "w^(w + 1)"
+    },
+    {
+      "sequence": "constant w^w+7",
+      "epsilon": "w^(w) + 8",
+      "prefix": [],
+      "S": "w^(w + 1) + w*7",
+      "N": "w^(w + 1) + w*7"
+    },
+    {
+      "sequence": "constant w^(w+1)",
+      "epsilon": "w^(w + 1) + 1",
+      "prefix": [],
+      "S": "w^(w + 2)",
+      "N": "w^(w + 2) + w"
+    }
+  ],
+  "limits": [
+    "Finite CNF notation below epsilon_0 only.",
+    "Thresholds and finite exceptional lists are assumed certified.",
+    "No numerical tests establish the transfinite theorem.",
+    "No Lean or other proof-assistant formalization is claimed."
+  ]
+}

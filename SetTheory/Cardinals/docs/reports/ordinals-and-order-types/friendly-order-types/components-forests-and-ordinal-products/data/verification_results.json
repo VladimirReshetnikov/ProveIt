@@ -1,0 +1,94 @@
+{
+  "status": "all checks passed",
+  "python": "3.14.4",
+  "elapsed_seconds": 40.685,
+  "exhaustive_finite": {
+    "maximum_n": 7,
+    "total_naturally_labelled_posets": 101660,
+    "connected_maximal_noncut_checks": 90655,
+    "checks_per_poset": [
+      "graph formula vs residual DP",
+      "dual residual DP",
+      "optimal-sequence simulation and spanning-forest verification"
+    ],
+    "invalid_inputs_rejected": 8,
+    "report_file": "finite_verification.json"
+  },
+  "composition": {
+    "cartesian_pairs": 2601,
+    "cartesian_factor_sizes": "0 through 4; product support at most 16",
+    "unique_middle_component_checks": 2401,
+    "heterogeneous_substitutions": 10725,
+    "substitution_fibers": "singleton, 2-chain, 2-antichain, 3-chain; base size <=4",
+    "maximum_subset_candidates": 2365,
+    "protected_root_certificates": 1052,
+    "maximum_subset_support_bound": 5
+  },
+  "second_engine": {
+    "naturally_labelled_by_size": {
+      "1": 1,
+      "2": 2,
+      "3": 7,
+      "4": 40,
+      "5": 357,
+      "6": 4824
+    },
+    "nonempty_posets": 5231,
+    "empty_posets": 1,
+    "constructive_certificates_checked": 5231,
+    "cross_engine_agreement_checked": 5231,
+    "scope": "Cross-implementation check through size six; the report's exhaustive-enumeration figure is the size-seven run above",
+    "counterexample_verified": true,
+    "separation_examples_verified": 5
+  },
+  "generating_function": {
+    "status": "PASS",
+    "maximum_n": 7,
+    "connected_counts": [
+      1,
+      1,
+      4,
+      27,
+      275,
+      4070,
+      86278
+    ],
+    "method": "A=1/(1-B), followed by weighted component convolution",
+    "limitation": "Consistency check on saved counts, not an independent poset enumeration"
+  },
+  "shipped_examples": [
+    "N_poset.json",
+    "chain_plus_isolate.json",
+    "diamond.json",
+    "empty.json"
+  ],
+  "tail_strategy": {
+    "cases": 387,
+    "no_move_cases": 2,
+    "excluded_single_chain_cases": 3,
+    "cutoff": 2,
+    "ordinal_factor_counts": [
+      1,
+      2,
+      3
+    ],
+    "tail_lengths": [
+      1,
+      2,
+      3
+    ],
+    "finite_factor_sizes": [
+      1,
+      2,
+      3
+    ],
+    "scope": "Move legality, witnesses, counts, residuals only; not transfinite ranks"
+  },
+  "ordinal": {
+    "sampled_algebra_identities": 7200,
+    "sample_size": 12,
+    "worked_box_examples": 6,
+    "notation_scope": "ordinals below epsilon_0",
+    "scope": "Exact symbolic identities and formula evaluation; not a transfinite tree-rank oracle"
+  }
+}

@@ -1,0 +1,1133 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{17324D}
+\definecolor{Accent}{HTML}{176B78}
+\definecolor{Pale}{HTML}{EDF4F6}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Sharp size thresholds for failures of log-concavity in independence systems},
+ pdfauthor={ChatGPT, OpenAI},pdfsubject={Extremal refinements of the Xie--Xu augmentation conjecture}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{Ink}Sharp log-concavity thresholds}
+\fancyhead[R]{\small\sffamily Research note}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\I}{\mathcal I}
+\newcommand{\M}{\mathcal M}
+\newcommand{\LC}{\mathrm{LC}}
+\newcommand{\OLC}{\mathrm{OLC}}
+\newcommand{\ULC}{\mathrm{ULC}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\gap}{\operatorname{gap}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ind}{\operatorname{Ind}}
+\DeclareMathOperator{\lcdef}{\Delta}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{Pale},showstringspaces=false,
+ keywordstyle=\color{Ink},commentstyle=\color{Accent},language=Python}
+
+\begin{document}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\vspace*{0.65in}
+{\sffamily\color{Accent}\large COMBINATORICS \quad / \quad EXACT EXTREMAL RESULTS\par}
+\vspace{0.35in}
+{\sffamily\bfseries\color{Ink}\LARGE Sharp size thresholds for failures\\[0.12em]
+of log-concavity in\\[0.12em]
+independence systems\par}
+\vspace{0.2in}
+{\Large A seven-element obstruction, rankwise optimality,\par
+and a full-skeleton construction\par}
+\vspace{0.4in}
+{\large ChatGPT (OpenAI)\par}
+{September 19, 2026\par}
+\vspace{0.35in}
+\begin{abstract}
+A weak additive form of matroid augmentation does not force log-concavity.
+The existence of counterexamples to Xie and Xu's rank-dependent conjecture
+has already been announced by Alex Chengyu Li. We therefore address a
+sharper extremal question: for each rank, how many ground-set elements are
+necessary for failure? We prove that the unrestricted minima are attained
+already by systems with exact augmentation parameter three. For ranks
+$4,5,6$, the minimum sizes for ordinary log-concavity failure are $7,7,8$;
+for every rank $r\ge7$ the minimum is $r+1$. Ordered log-concavity has minima
+$6,7,r+1$ for $r=4$, $r=5$, and $r\ge6$, respectively. Ground-set-normalized
+ultra log-concavity has minimum $r+1$ for every $r\ge4$.
+
+The witnesses are a complete low-dimensional skeleton together with one
+simplex. We classify all three concavity properties of this family by a
+single coefficient inequality, establish global minimality using finite
+Kruskal--Katona bounds, and obtain rational generating functions,
+recurrences, and an exact vanishing log-concavity ratio. A standard-library
+Python verifier checks the displayed examples, all possible face vectors
+through seven active vertices, and more than two million uniform-family
+shadow cases. The proofs are mathematical proofs in English, not a Lean
+formalization. Historical priority for the refinements is not asserted.
+\end{abstract}
+\vfill
+\noindent\colorbox{Pale}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\textbf{Status and attribution.} This is an unrefereed research report.
+It does \emph{not} claim the first disproof of Xie--Xu Conjecture~4.8.
+The original conjecture, the recently located prior disproof, and the
+sharp extremal question investigated here are separated explicitly in
+Section~1. The archive contains the source, compiled article, exact
+verification code, and generated certificates.}}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The problem, its current status, and the main result}
+\label{sec:problem}
+
+\subsection{Independence systems and the augmentation convention}
+An \emph{independence system} is a pair $\M=(E,\I)$, where $E$ is a finite
+set and $\I\subseteq2^E$ contains $\varnothing$ and is downward closed:
+if $T\in\I$ and $S\subseteq T$, then $S\in\I$.
+Write $n=|E|$ and
+\[
+ r=\rank\M=\max\{|S|:S\in\I\},\qquad
+ a_k=|\{S\in\I:|S|=k\}|.
+\]
+Our generating polynomial is $P_\M(x)=\sum_{k=0}^n a_kx^k$.
+It has degree $r$, but we retain the zero coefficients through index $n$.
+A vertex is \emph{active} when its singleton belongs to $\I$.
+
+For a positive integer $l$, consider the following additive augmentation
+condition:
+\begin{equation}
+\label{eq:augmentation}
+ S,T\in\I,\quad |T|\ge |S|+l
+ \quad\Longrightarrow\quad
+ \text{some }x\in T\setminus S\text{ satisfies }S\cup\{x\}\in\I.
+ \tag{$A_l$}
+\end{equation}
+Define $\lambda(\M)$ to be the least positive $l$ for which
+\eqref{eq:augmentation} holds. Such an $l$ exists: $l=r+1$ makes the premise
+impossible. The ordinary matroid augmentation axiom is $A_1$.
+The phrase ``$l$-matroid'' below refers only to this additive convention,
+not to other uses of similar terminology.
+
+Xie and Xu introduce their terminology on printed page~14 of
+\cite{XieXu}. Their displayed axiom $(*)$ writes $x\in T$ without explicitly
+removing $S$. We require a genuinely new element, as in the usual
+augmentation axiom. Every counterexample below satisfies this
+\emph{stronger} interpretation; thus the omission cannot invalidate the
+counterexamples. Exact values of $\lambda$ in this report always refer to
+\eqref{eq:augmentation}.
+
+\subsection{The three shapes, and a normalization that matters}
+For a nonnegative sequence $(a_0,\ldots,a_n)$ we use the following
+inequalities, at every $1\le k\le n-1$:
+\begin{align}
+\LC:\qquad &a_k^2\ge a_{k-1}a_{k+1},\label{eq:lc}\\
+\OLC:\qquad &k a_k^2\ge (k+1)a_{k-1}a_{k+1},\label{eq:olc}\\
+\ULC_n:\qquad &k(n-k)a_k^2
+ \ge (k+1)(n-k+1)a_{k-1}a_{k+1}.\label{eq:ulc}
+\end{align}
+Ordered log-concavity means log-concavity of $(k!a_k)$.
+Ultra log-concavity in \eqref{eq:ulc} means log-concavity of
+$(a_k/\binom nk)$. These equivalences follow by substituting the factorials
+and cancelling. Consequently $\ULC_n$ implies $\OLC$, which implies $\LC$.
+The coefficient sequence of a nonempty independence system has no internal
+zeros: a face of size $k$ supplies faces of every smaller size.
+
+The subscript $n$ is essential. Normalizing by $\binom rk$, where $r$ is
+only the degree, gives a different and stronger condition when $r<n$.
+The sequence in Xie--Xu Conjecture~4.8 is explicitly indexed from $0$ to
+$n$, so \eqref{eq:ulc} is the relevant normalization.
+
+\subsection{A literature-status correction and the sharper target}
+Xie--Xu Conjecture~4.8 asserts all three properties when
+\begin{equation}
+\label{eq:XX}
+ \lambda(\M)\le \left\lfloor\frac{r}{2}\right\rfloor+1.
+\end{equation}
+The statement is on printed page~16 of the arXiv version \cite{XieXu}.
+It was the initial target of this investigation.
+
+A later status check located Li's September 2026 working-paper announcement
+\cite{Li}. Its public overview already gives a rank-four example on
+thirteen elements, with sequence $1,13,25,7,2$, and describes fixed-parameter
+families with ratios tending to zero. Thus the existence question must
+\emph{not} be presented here as still open or as first resolved by this
+report. The full SSRN/Zenodo manuscript was not retrievable in this session;
+its public overview and bibliographic record were available. Detailed
+overlap with its unretrieved contents, and historical priority for the
+refinements below, remain unverified.
+
+The resulting research target is the following exact extremal problem.
+It is a natural refinement, rather than a claim that the original conjecture
+remained unsolved at the date of this report.
+
+\begin{problem}\label{prob:sharp}
+For each $r\ge4$, determine the least ground-set size at which a rank-$r$
+independence system satisfying \eqref{eq:XX} can fail $\LC$, $\OLC$, or
+$\ULC_n$. Can the minima already be attained with $\lambda=3$?
+\end{problem}
+
+For a property $Q\in\{\LC,\OLC,\ULC\}$, write $N_Q^{\rm all}(r)$ for the
+least size of \emph{any} rank-$r$ independence system failing $Q$.
+Write $N_Q^{\rm XX}(r)$ when \eqref{eq:XX} is imposed and
+$N_Q^{(3)}(r)$ when $\lambda=3$ is imposed. In the ultra log-concave case,
+the normalization is always the current ground-set size.
+
+\begin{theorem}[Sharp rankwise thresholds]\label{thm:main}
+For each $r\ge4$ and each of the three properties,
+\[
+ N_Q^{\rm all}(r)=N_Q^{\rm XX}(r)=N_Q^{(3)}(r).
+\]
+Their common values are as follows.
+\begin{center}
+\begin{tabular}{@{}c c c c@{}}
+\toprule
+Rank $r$ & Ordinary $\LC$ & Ordered $\OLC$ & Ultra $\ULC_n$\\
+\midrule
+$4$ & $7$ & $6$ & $5$\\
+$5$ & $7$ & $7$ & $6$\\
+$6$ & $8$ & $7$ & $7$\\
+$r\ge7$ & $r+1$ & $r+1$ & $r+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry is attained by a system with all vertices active and with no
+vertex belonging to every maximal independent set.
+\end{theorem}
+
+The upper bounds come from one explicit family in Section~3. The lower
+bounds in Section~4 apply without an augmentation assumption. This is why
+the unrestricted and restricted minima coincide. Globally, without fixing
+the rank, the smallest possible ground-set sizes for failures of ordinary,
+ordered, and ultra log-concavity are therefore $7,6,5$, respectively.
+
+\section{The small obstruction, with a complete direct proof}
+\label{sec:small}
+Let $E=\{1,\ldots,7\}$ and $A=\{1,2,3,4\}$. Define
+\begin{equation}\label{eq:seven}
+ \I=2^A\ \cup\ \{S\subseteq E:|S|\le2\}.
+\end{equation}
+Thus every pair is independent, but the only independent sets of size
+three or four are the subsets of $A$.
+
+\begin{proposition}\label{prop:seven}
+The system in \eqref{eq:seven} has rank $4$, exact augmentation parameter
+$3$, and generating polynomial
+\[
+ P(x)=1+7x+21x^2+4x^3+x^4.
+\]
+It has $34$ independent sets and fails all three forms of log-concavity.
+\end{proposition}
+\begin{proof}
+Both families in the union are downward closed. The set $A$ is independent
+and no independent set has more than four elements, giving rank four.
+Counting at each size yields the stated coefficients and $34$ total faces.
+
+To verify $A_3$, take independent $S,T$ with $|T|\ge|S|+3$.
+Since $|T|\le4$, we have $|S|\le1$. Any new element of $T\setminus S$
+then produces a set of size at most two, which is independent. This proves
+$A_3$ for every possible pair $S,T$.
+
+To see that $A_2$ fails, use $S=\{1,5\}$ and $T=A$.
+Their sizes differ by two. For every $x\in T\setminus S$, the three-set
+$S\cup\{x\}$ contains $5$, so it is not independent. Hence $\lambda=3$.
+This parameter satisfies $3=\lfloor4/2\rfloor+1$.
+
+Finally, at index $3$ the ordinary inequality would require
+$4^2\ge21\cdot1$, whereas $16<21$. The stronger inequalities fail as well.
+\end{proof}
+
+The same construction on five or six vertices separates the three
+properties. It is useful to see their actual, integer-valued defects.
+For a sequence on $n$ elements define
+\begin{align*}
+ D_{\LC}(k)&=a_k^2-a_{k-1}a_{k+1},\\
+ D_{\OLC}(k)&=k a_k^2-(k+1)a_{k-1}a_{k+1},\\
+ D_{\ULC}(k)&=k(n-k)a_k^2-(k+1)(n-k+1)a_{k-1}a_{k+1}.
+\end{align*}
+A negative defect is a certificate of failure.
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}c l r r r@{}}
+\toprule
+$n$ & Nonzero coefficients & $D_{\LC}(3)$ & $D_{\OLC}(3)$ & $D_{\ULC}(3)$\\
+\midrule
+$5$ & $1,5,10,4,1$ & $6$ & $8$ & $-24$\\
+$6$ & $1,6,15,4,1$ & $1$ & $-12$ & $-96$\\
+$7$ & $1,7,21,4,1$ & $-5$ & $-36$ & $-228$\\
+\bottomrule
+\end{tabular}
+\caption{Rank-four witnesses, all with exact augmentation parameter three.
+All other tested indices satisfy the relevant inequalities.}
+\label{tab:small}
+\end{table}
+
+For example, the five-element ultra inequality is
+$3\cdot2\cdot16\ge4\cdot3\cdot10$, or $96\ge120$, which is false.
+The six-element ordered inequality is $3\cdot16\ge4\cdot15$, or
+$48\ge60$, also false.
+
+\begin{remark}[Sparse variants]
+The full pair skeleton is convenient, not required. From the five-element
+example delete the pair $\{1,5\}$; from the six-element example delete
+$\{1,5\},\{5,6\}$; from the seven-element example delete
+$\{1,5\},\{5,6\},\{5,7\},\{6,7\}$.
+The resulting sequences are
+\[
+ (1,5,9,4,1),\qquad (1,6,13,4,1),\qquad (1,7,17,4,1).
+\]
+They have $20,25,30$ faces and still have $\lambda=3$. Indeed, the only
+nontrivial $A_3$ test beyond the empty set has a singleton $S$ and $T=A$;
+every outside vertex still has a permitted pair with $A$. The same
+$A_2$ obstruction can be chosen from a retained mixed pair. The last
+sequence has the unit ordinary defect $16-17=-1$. We do not need a claim
+of minimum total face count for the rankwise ground-size theorem.
+\end{remark}
+
+\section{The full-skeleton-plus-simplex family}
+\label{sec:family}
+Fix integers $n>r\ge2$ and $1\le s\le r-1$, with $A\subset E$, $|A|=r$,
+$|E|=n$. Put
+\begin{equation}\label{eq:family}
+ \I_{n,r,s}=2^A\cup\{S\subseteq E:|S|\le s\}.
+\end{equation}
+The word ``skeleton'' will refer to the cutoff by \emph{cardinality} $s$;
+in the usual topological dimension convention it is the
+$(s-1)$-skeleton.
+
+\begin{theorem}[Counts and exact augmentation]\label{thm:family}
+The system \eqref{eq:family} has rank $r$, has no inactive vertices, and
+satisfies
+\begin{equation}\label{eq:coefficients}
+ a_k=\begin{cases}
+ \binom nk,&0\le k\le s,\\
+ \binom rk,&s+1\le k\le r,\\
+ 0,&r<k\le n.
+ \end{cases}
+ \qquad
+ \lambda(\I_{n,r,s})=r-s+1.
+\end{equation}
+Its maximal independent sets are $A$ and the $s$-sets not contained in $A$.
+No vertex belongs to all maximal independent sets.
+\end{theorem}
+\begin{proof}
+The downward-closure and rank statements follow directly from the
+construction; counting gives \eqref{eq:coefficients}.
+Let $l=r-s+1$. If $|T|\ge |S|+l$, then $|S|\le r-l=s-1$.
+Thus adjoining any element of $T\setminus S$ produces a set of size at
+most $s$. This verifies $A_l$.
+
+Choose an $s$-set $S$ meeting $E\setminus A$ and put $T=A$.
+The size difference is $r-s$. Every possible new element gives a mixed
+$(s+1)$-set, absent from \eqref{eq:family}. Hence $A_{r-s}$ fails,
+proving the exact parameter.
+
+An independent set contained in $A$ extends to $A$. A mixed independent
+set extends to a mixed $s$-set, and such an $s$-set cannot be extended.
+This proves the description of maximal sets. Any outside vertex is omitted
+by $A$. Given $v\in A$, choose a mixed $s$-set omitting $v$: there are at
+least $r$ other available elements and $s\le r-1$. This maximal set omits
+$v$, completing the proof.
+\end{proof}
+
+A vertex belongs to every maximal independent set if and only if it can be
+adjoined to every independent set. To check the nontrivial direction,
+extend an arbitrary face to a maximal face containing the vertex, and use
+downward closure. Such a vertex is often called a cone vertex or a coloop
+in this setting. Thus the theorem excludes a construction obtained merely
+by adjoining universal independent elements.
+
+When $s\ge2$, every pair is a face, so the one-skeleton is complete and the
+simplicial complex is connected. For $s=r-2$ and $r\ge4$ it is not the
+independence complex of a simple graph: all pairs are independent, but some
+larger sets are not. Graph-realizable examples will be treated separately.
+
+\subsection{Exactly one inequality can fail}
+\begin{theorem}[Complete classification within the family]\label{thm:shapes}
+For $1\le s\le r-2$, put
+\[
+ L=\binom ns,\qquad M=\binom r{s+1},\qquad H=\binom r{s+2}.
+\]
+The entire sequence \eqref{eq:coefficients} is
+\begin{align}
+ \LC &\quad\Longleftrightarrow\quad M^2\ge LH,\label{eq:testLC}\\
+ \OLC &\quad\Longleftrightarrow\quad (s+1)M^2\ge(s+2)LH,\label{eq:testOLC}\\
+ \ULC_n &\quad\Longleftrightarrow\quad
+ (s+1)(n-s-1)M^2\ge(s+2)(n-s)LH.\label{eq:testULC}
+\end{align}
+In each case the only possible failing index is $s+1$.
+For $s=r-1$, all three properties hold for every $n>r$.
+\end{theorem}
+\begin{proof}
+For a positive sequence, log-concavity is equivalent to its successive
+ratios being nonincreasing. In a binomial block, the three relevant ratio
+sequences are obtained from
+\[
+ \frac{\binom n{k+1}}{\binom nk}=\frac{n-k}{k+1},\qquad
+ \frac{(k+1)!\binom n{k+1}}{k!\binom nk}=n-k,\qquad
+ \frac{\binom nk}{\binom nk}=1.
+\]
+They show all three inequalities strictly below the transition. For the
+upper block, ordinary and ordered ratios are respectively
+$(r-k)/(k+1)$ and $r-k$, again decreasing. The ultra-normalized upper block
+has ratios
+\begin{equation}\label{eq:upper-ratio}
+ \frac{\binom r{k+1}/\binom n{k+1}}{\binom rk/\binom nk}
+ =\frac{r-k}{n-k}.
+\end{equation}
+These decrease with $k$, since the difference between consecutive values
+has numerator $n-r>0$.
+
+At index $s$, the middle and previous terms are those of the lower binomial
+block, while the next term has only decreased from $\binom n{s+1}$ to
+$\binom r{s+1}$. The desired inequalities are therefore preserved.
+Every index at least $s+2$ lies entirely in the upper block, or meets the
+terminal zeros, and has already been covered. Substitution at index $s+1$
+gives exactly \eqref{eq:testLC}--\eqref{eq:testULC}.
+
+When $s=r-1$, the sole transition is a final downward change in $a_r$;
+there is no following positive coefficient capable of making an inequality
+at $s+1$ fail. The same block argument proves all three properties.
+\end{proof}
+
+\subsection{Parameter three and the explicit thresholds}
+The decisive specialization is $s=r-2$, for $r\ge3$. It gives
+\begin{equation}\label{eq:Pnr}
+ P_{n,r}(x)=\sum_{k=0}^{r-2}\binom nk x^k+r x^{r-1}+x^r,
+ \qquad \lambda=3.
+\end{equation}
+All three global tests reduce to the last nontrivial index $r-1$:
+\begin{align}
+ \LC &\Longleftrightarrow\binom n{r-2}\le r^2,\label{eq:3LC}\\
+ \OLC &\Longleftrightarrow\binom n{r-2}\le r(r-1),\label{eq:3OLC}\\
+ \ULC_n &\Longleftrightarrow
+ \binom n{r-2}\le r(r-1)\frac{n-r+1}{n-r+2}.\label{eq:3ULC}
+\end{align}
+For every $r\ge4$, parameter three is allowed by \eqref{eq:XX}.
+These are necessary and sufficient tests for the full sequence, not just
+sufficient tests for failure.
+
+The codimension-one case, $n=r+1$, is particularly economical.
+Let $Q_r=P_{r+1,r}$. Then
+\begin{equation}\label{eq:Qr}
+ Q_r(x)=(1+x)^{r+1}-\binom r2 x^{r-1}-r x^r-x^{r+1}.
+\end{equation}
+Since $\binom{r+1}{r-2}=\binom{r+1}{3}$, cancellation in
+\eqref{eq:3LC}--\eqref{eq:3ULC} gives the exact classification
+\begin{equation}\label{eq:codimclass}
+ \begin{array}{c|c}
+ \text{Property of }Q_r\ (r\ge3)&\text{Ranks for which it holds}\\\hline
+ \LC &3\le r\le6\\
+ \OLC &3\le r\le5\\
+ \ULC_{r+1}&r=3.
+ \end{array}
+\end{equation}
+For ordinary log-concavity, for example, the test becomes
+$r^2-6r-1\le0$, whose integral solutions with $r\ge3$ are precisely
+$3,4,5,6$. For ordered log-concavity it becomes $r+1\le6$.
+For ultra log-concavity it becomes $r+1\le4$.
+
+\section{Global minimality, not just minimality within the construction}
+\label{sec:minimality}
+A counterexample does not by itself show that it is small in an absolute
+sense. We now give finite, exact lower-bound certificates for all
+independence systems needed to prove \cref{thm:main}.
+
+\subsection{The shadow inequality}
+For a family $\mathcal F$ of $q$-element sets, its \emph{lower shadow}
+$\partial\mathcal F$ consists of all $(q-1)$-sets contained in at least
+one member. If $m>0$, write its unique canonical $q$-binomial expansion
+\begin{equation}\label{eq:KK-expansion}
+ m=\binom{b_q}{q}+\binom{b_{q-1}}{q-1}+\cdots+\binom{b_j}{j},
+ \qquad b_q>b_{q-1}>\cdots>b_j\ge j\ge1.
+\end{equation}
+Define
+\begin{equation}\label{eq:shadow}
+ \sigma_q(m)=\binom{b_q}{q-1}+\binom{b_{q-1}}{q-2}
+ +\cdots+\binom{b_j}{j-1},\qquad \sigma_q(0)=0.
+\end{equation}
+The Kruskal--Katona shadow theorem gives
+$|\partial\mathcal F|\ge\sigma_q(|\mathcal F|)$.
+A primary-source account of the shadow theorem and its colex form appears
+in the introduction to Bukh's paper \cite{Bukh}; the original references
+are \cite{Kruskal,Katona}.
+
+For an independence system, every shadow face is independent. Hence
+\begin{equation}\label{eq:KK-needed}
+ \sigma_{k+1}(a_{k+1})\le a_k.
+\end{equation}
+The expansion and its shadow can be evaluated by successive greedy choices
+of the largest possible top index. For example,
+\[
+ 26=\binom63+\binom42,\qquad
+ \sigma_3(26)=\binom62+\binom41=19.
+\]
+This example is also one of the boundary values in the seven-vertex
+enumeration in the archive.
+
+\subsection{A small table that proves the lower bounds}
+For a fixed $n$ and index $k$, let
+\begin{equation}\label{eq:U}
+ U_{n,k}(b)=\max\{c:0\le c\le\binom n{k+1},\quad
+                         \sigma_{k+1}(c)\le b\}.
+\end{equation}
+If $a_k=b>0$, then
+\begin{equation}\label{eq:ratio-bound}
+ \frac{a_{k-1}a_{k+1}}{a_k^2}
+ \le \frac{\binom n{k-1}U_{n,k}(b)}{b^2}.
+\end{equation}
+Multiply the right side by $1$, $(k+1)/k$, or
+$(k+1)(n-k+1)/(k(n-k))$ for ordinary, ordered, or ultra log-concavity.
+A maximum of at most one proves the corresponding inequality for
+\emph{every} independence system under consideration.
+
+For active ground sets, at $k=1$ the value of $b$ is fixed to $n$.
+At $k\ge2$, maximize over $1\le b\le\binom nk$. Under the extra assumption
+$\rank\M\ge t$, every $k$-subset of some $t$-face is independent; therefore
+one may restrict to
+\begin{equation}\label{eq:ranklower}
+ \max\{1,\binom tk\}\le b\le\binom nk.
+\end{equation}
+\Cref{tab:bounds} records the resulting exact maxima. A dash denotes an
+index outside the sequence.
+
+\begin{table}[ht]
+\centering\small
+\setlength{\tabcolsep}{4.4pt}
+\begin{tabular}{@{}l c c c c c c@{}}
+\toprule
+Case & $k=1$ & $k=2$ & $k=3$ & $k=4$ & $k=5$ & $k=6$\\
+\midrule
+$n=6$, $\LC$ & $5/12$ & $2/3$ & $15/16$ & $4/5$ & $5/12$ & ---\\
+$n=5$, $\OLC$ & $4/5$ & $5/6$ & $5/6$ & $1/2$ & --- & ---\\
+$n=4$, $\ULC_4$ & $1$ & $1$ & $1$ & --- & --- & ---\\
+$n=7$, $r\ge6$, $\LC$ & $3/7$ & $28/45$ & $63/80$ & $14/15$ & $35/36$ & $3/7$\\
+$n=6$, $r\ge5$, $\OLC$ & $5/6$ & $9/10$ & $1$ & $1$ & $1/2$ & ---\\
+\bottomrule
+\end{tabular}
+\caption{Finite shadow bounds proving universal concavity in the indicated
+cases. Every entry is at most one. For $\ULC_2$ and $\ULC_3$, the analogous
+entries are all one. All maximizing pairs $(b,c)$ are in
+\texttt{data/minimality\_bounds.csv}.}
+\label{tab:bounds}
+\end{table}
+
+These are short finite arithmetic calculations, not probabilistic tests.
+For example, the $15/16$ entry is the maximum of
+$15U_{6,3}(b)/b^2$ over $1\le b\le20$, and is attained at $b=4$, $c=1$.
+For $n=7$, $r\ge6$, and $k=5$, one has $b\ge\binom65=6$;
+the maximum is $\binom74/6^2=35/36$ at $c=1$.
+The complete algorithm defining every entry is \eqref{eq:KK-expansion}--
+\eqref{eq:ranklower}, with no omitted search range. Appendix~A and the
+verifier provide two ways to reproduce the finite calculations.
+
+Zero middle coefficients cause no problem. Downward closure then implies
+$a_{k+1}=0$, so all the relevant inequalities at $k$ hold.
+Inactive ground elements can also be handled exactly. Removing them leaves
+ordinary and ordered inequalities unchanged. For ultra log-concavity,
+if the active size is $m\le n$, the factor
+\[
+ \frac{k+1}{k}\frac{n-k+1}{n-k}
+\]
+is no larger than the same factor with $m$ in place of $n$ whenever
+$k<m$. Thus $\ULC_m$ on the active set implies $\ULC_n$ after adding
+inactive elements. For active sizes $1,2,3,4$ the ultra bounds are vacuous
+or the all-one rows described in \cref{tab:bounds}.
+
+For ordinary and ordered lower bounds on ground sets smaller than the
+first two rows, one can simply pad with inactive elements up to six or
+five. The $k\ge2$ bounds remain valid because they use only the upper
+ambient size; the index $1$ inequality follows directly from
+$a_2\le\binom{a_1}{2}$. In the two rank-constrained rows, deleting an
+inactive element leaves a full simplex when the rank equals the remaining
+active size, which satisfies all the required inequalities.
+
+\begin{proposition}[Universal small-size obstructions]\label{prop:lower}
+Every independence system on at most six elements is ordinarily
+log-concave. Every one on at most five elements is ordered log-concave.
+Every one on at most four elements is ultra log-concave with its
+actual ground-set normalization. Moreover, every rank-six system
+on seven elements is ordinarily log-concave, and every rank-five system
+on six elements is ordered log-concave.
+\end{proposition}
+\begin{proof}
+Apply the at-most-one bounds in \cref{tab:bounds}, with the preceding
+zero and inactive-element observations.
+\end{proof}
+
+\subsection{Completion of the sharp rankwise theorem}
+\begin{proof}[Proof of \cref{thm:main}]
+Any rank-$r$ system has $n\ge r$. If $n=r$, an independent $r$-set must
+be the whole ground set, and downward closure forces the full simplex.
+Its binomial sequence has all three properties. Therefore all desired
+minima are at least $r+1$.
+
+For ordinary log-concavity, \cref{prop:lower} increases this lower bound
+to seven when $r=4$ or $5$, and to eight when $r=6$.
+For ordered log-concavity, it increases the bound to six for $r=4$ and
+to seven for $r=5$. No additional lower bound is needed for the other
+entries.
+
+For the matching upper bounds, use $\I_{n,r,r-2}$.
+When $r=4$, choose $n=7,6,5$ for the three respective failures, as in
+\cref{tab:small}. For $r=5$, the ordinary and ordered failures at $n=7$
+follow from $\binom73=35>25>20$; ultra failure occurs at $n=6$ by
+\eqref{eq:codimclass}. For $r=6$, ordinary failure at $n=8$ follows from
+$\binom84=70>36$; the other two failures at $n=7$ again follow from
+\eqref{eq:codimclass}. Every remaining entry is the codimension-one case
+of that classification.
+
+All these systems have $\lambda=3$, all vertices active, and no coloops
+by \cref{thm:family}. For $r\ge4$, exact parameter three satisfies
+\eqref{eq:XX}. The classes are nested, so their minima satisfy
+\[
+ N_Q^{\rm all}(r)\le N_Q^{\rm XX}(r)\le N_Q^{(3)}(r).
+\]
+The unrestricted lower bounds and parameter-three witnesses force equality
+throughout.
+\end{proof}
+
+\section{Sequences, generating functions, and asymptotic strength}
+\label{sec:sequences}
+
+\subsection{The extremal size sequences}
+The main theorem produces three elementary integer sequences, indexed by
+$r\ge4$:
+\[
+\begin{array}{c|rrrrrrrr}
+ r&4&5&6&7&8&9&10&11\\\hline
+ N_{\LC}(r)&7&7&8&8&9&10&11&12\\
+ N_{\OLC}(r)&6&7&7&8&9&10&11&12\\
+ N_{\ULC}(r)&5&6&7&8&9&10&11&12.
+\end{array}
+\]
+Their usefulness is their extremal interpretation; no claim of a new
+numerical sequence or an existing OEIS accession is made.
+Put $G_Q(z)=\sum_{j\ge0}N_Q(j+4)z^j$. Summing the eventual arithmetic
+progression gives
+\begin{align}
+ G_{\ULC}(z)&=\frac{5-4z}{(1-z)^2},\label{eq:minGF}\\
+ G_{\OLC}(z)&=\frac{5-4z}{(1-z)^2}+1+z,\\
+ G_{\LC}(z)&=\frac{5-4z}{(1-z)^2}+2+z+z^2.
+\end{align}
+Thus the second differences vanish beyond the finitely many exceptional
+ranks. These identities are formal power-series identities; analytically
+they hold for $|z|<1$.
+
+\subsection{Counting all faces in the codimension-one family}
+Let $N_r=Q_r(1)$, where $Q_r$ is given by \eqref{eq:Qr}. For $r\ge3$,
+\begin{equation}\label{eq:Nr}
+ N_r=2^{r+1}-1-\binom{r+1}{2}.
+\end{equation}
+Indeed, the excluded faces are $\binom r2$ sets at size $r-1$, $r$ sets
+at size $r$, and one set at size $r+1$. Their total is
+$1+\binom{r+1}{2}$.
+
+Extend the formula algebraically to $r=0,1,2$; no member of
+\eqref{eq:family} with cutoff $r-2$ is being claimed at these indices.
+The resulting sequence begins
+\[
+ 1,2,4,9,21,48,106,227,475,978,1992,\ldots.
+\]
+Since $\sum_{r\ge0}\binom{r+1}{2}z^r=z/(1-z)^3$, we obtain
+\begin{equation}\label{eq:totalGF}
+ \sum_{r\ge0}N_rz^r
+ =\frac2{1-2z}-\frac1{1-z}-\frac{z}{(1-z)^3}
+ =\frac{1-3z+3z^2}{(1-2z)(1-z)^3}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:recurrence}
+ N_{r+4}=5N_{r+3}-9N_{r+2}+7N_{r+1}-2N_r\qquad(r\ge0).
+\end{equation}
+This follows either by multiplying \eqref{eq:totalGF} by its denominator
+or by noting that $2^r$ and every polynomial of degree at most two are
+annihilated by the characteristic polynomial
+$(t-2)(t-1)^3$.
+
+\subsection{A failure ratio tending to zero}
+For the codimension-one sequence, the ratio at the failing position is
+exactly
+\begin{equation}\label{eq:ratio}
+ R_r=\frac{a_{r-1}^2}{a_{r-2}a_r}
+ =\frac{r^2}{\binom{r+1}{3}}=\frac{6r}{r^2-1}.
+\end{equation}
+Thus $R_r<1$ exactly when $r\ge7$, and $R_r\to0$.
+More explicitly, for every $J\ge0$ and $r>1$,
+\begin{equation}\label{eq:asymptotic}
+ R_r=6\sum_{j=0}^{J}r^{-(2j+1)}
+       +\frac{6r^{-(2J+3)}}{1-r^{-2}}.
+\end{equation}
+The remainder is positive and exact, so the asymptotic expansion
+$6/r+6/r^3+6/r^5+\cdots$ needs no unquantified error estimate.
+For $r\ge2$, the displayed remainder is at most
+$8r^{-(2J+3)}$.
+
+At the same time, $n=r+1$, $\lambda=3$, every singleton is independent,
+and there are no coloops. In particular,
+\[
+ \frac{r}{n}\longrightarrow1,\qquad \frac{\lambda}{r}\longrightarrow0.
+\]
+The coefficient defect is the cubic integer expression
+\begin{equation}\label{eq:defectcubic}
+ a_{r-2}a_r-a_{r-1}^2
+ =\frac{r^3-6r^2-r}{6},
+\end{equation}
+which starts $7,20,39,65,\ldots$ at $r=7,8,9,10,\ldots$.
+Its fourth finite difference vanishes.
+
+\begin{corollary}\label{cor:nouniversal}
+No positive constant $c$ can make
+$a_k^2\ge c\,a_{k-1}a_{k+1}$ hold uniformly for every independent-set
+sequence with $\lambda=3$, even after requiring all vertices active,
+no coloops, and $n=r+1$.
+Nor can an upper bound on $\lambda$ depending only on rank restore
+ordinary log-concavity if that bound permits $\lambda=3$ at arbitrarily
+large ranks.
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:ratio} at the corresponding arbitrarily large ranks.
+\end{proof}
+
+These qualitative phenomena overlap with those already advertised in
+Li's overview \cite{Li}. The contribution established here is the explicit
+codimension-one construction, the sharp shape tests, and their use in the
+exact ground-size theorem; this paragraph is not a priority claim for the
+qualitative nonexistence of a uniform bound.
+
+\section{What the augmentation parameter actually measures}
+\label{sec:gap}
+The following structural description is useful for understanding why a
+rank-dependent hypothesis is too weak. It also explains the direct-sum
+method mentioned in the prior-work overview.
+
+For $U\subseteq E$, restrict the system to $U$ and let
+$\mathcal B(U)$ be its inclusion-maximal independent sets. Define
+\[
+ w(U)=\max_{B\in\mathcal B(U)}|B|-\min_{B\in\mathcal B(U)}|B|.
+\]
+In particular $w(\varnothing)=0$.
+
+\begin{proposition}[Hereditary maximal-set width]\label{prop:width}
+For every finite independence system,
+\begin{equation}\label{eq:width}
+ \lambda(\M)=1+\max_{U\subseteq E}w(U).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $W$ be the maximum on the right. Choose $U$ and maximal independent
+sets $B,C$ of minimum and maximum size in $U$, so that $|C|-|B|=W$.
+When $W\ge1$, no element of $C\setminus B$ can extend $B$, because $B$
+is already maximal in $U$. Thus $A_W$ fails and $\lambda\ge W+1$.
+For $W=0$, the same lower bound is simply $\lambda\ge1$.
+
+Conversely, suppose independent $S,T$ admit no extension of $S$ by any
+new element of $T$. In the restriction to $U=S\cup T$, the set $S$ is
+maximal: otherwise a larger face containing it would supply a one-element
+extension by downward closure. Extend $T$ to a maximal face $C$ in $U$.
+Then
+\[
+ |T|-|S|\le |C|-|S|\le w(U)\le W.
+\]
+No unaugmentable pair can therefore have a size gap at least $W+1$.
+This is $A_{W+1}$ and gives the reverse inequality.
+\end{proof}
+
+Thus $\lambda=3$ controls the spread of maximal-set sizes in every
+restriction by two. It does not control the number of faces at adjacent
+sizes. The family \eqref{eq:family} has an enormous collection of lower
+faces and only the faces of one simplex above the cutoff; the width
+condition alone cannot prevent that imbalance.
+
+If systems on disjoint ground sets have independent families
+$\I_1,\I_2$, their direct sum has independent sets $S_1\cup S_2$ with
+$S_i\in\I_i$. Maximal faces in each restriction are formed independently
+in the two components, so their widths add. Taking maxima in
+\eqref{eq:width} yields the exact identity
+\begin{equation}\label{eq:directsum}
+ \lambda(\M_1\oplus\M_2)
+ =\lambda(\M_1)+\lambda(\M_2)-1.
+\end{equation}
+Ranks add and generating polynomials multiply. In particular, a matroid
+factor preserves the augmentation parameter of the other factor. This
+identity explains how augmentation defects can remain fixed while rank
+increases; it is not being advertised as a newly discovered method
+relative to Li's prior overview.
+
+\section{Graph independence polynomials and removal of isolated vertices}
+\label{sec:graphs}
+The principal minimal examples are not graph independence complexes.
+It is nonetheless useful to verify that failure can occur in the graph
+subclass too, without confusing independence and dependence polynomials.
+For a graph $G$, let $I(G,x)$ count vertex sets containing no edge.
+
+Let $H_m=K_m\vee\overline K_3$ be the join of a clique of size $m$ with
+three mutually nonadjacent vertices: every vertex of the clique is joined
+to each of those three vertices. A nonempty independent set is either a
+subset of the three vertices or one clique vertex. Hence
+\begin{equation}\label{eq:Hm}
+ I(H_m,x)=(1+x)^3+mx.
+\end{equation}
+For $m\ge1$, its independence system has exact parameter three. Its rank
+is three, a clique singleton cannot be extended toward the independent
+triple, and $A_3$ has only the empty-set case to check.
+
+\subsection{Arbitrarily large rank with a simple tail certificate}
+Add $c=r-3$ isolated vertices. Their independence system is a free matroid,
+so \eqref{eq:directsum} preserves parameter three. The new polynomial is
+\begin{equation}\label{eq:graph-free}
+ F_{r,m}(x)=(1+x)^r+mx(1+x)^{r-3}.
+\end{equation}
+Its top three coefficients are
+\[
+ a_{r-2}=\binom r2+m,\qquad a_{r-1}=r,\qquad a_r=1.
+\]
+The last ordinary log-concavity inequality fails precisely when
+$m>\binom{r+1}{2}$. In particular, choosing
+$m=\binom{r+1}{2}+1$ gives the tail $(r^2+1,r,1)$ and unit defect $-1$.
+The graph has $r+m=\binom{r+2}{2}$ vertices. No minimum-graph-size claim is
+made here.
+
+\subsection{No isolated vertices and no cone vertices}
+Instead of isolated vertices, take $c\ge1$ disjoint cliques of size
+$t\ge2$. Each clique contributes a rank-one matroid with polynomial
+$1+tx$. Thus
+\begin{equation}\label{eq:graph-cliques}
+ G_{c,m,t}=H_m\sqcup cK_t,
+ \qquad I(G_{c,m,t},x)=((1+x)^3+mx)(1+tx)^c
+\end{equation}
+has rank $r=c+3$, exact parameter three, and no isolated graph vertices.
+A graph vertex can be adjoined to every independent set exactly when it
+is isolated, so these complexes also have no cone vertices.
+The graph itself is generally disconnected; that is a different notion
+from connectedness of the simplicial complex discussed earlier.
+
+Reading the last three coefficients of \eqref{eq:graph-cliques} gives
+\begin{align*}
+ a_r&=t^c,\\
+ a_{r-1}&=3t^c+ct^{c-1},\\
+ a_{r-2}&=(3+m)t^c+3ct^{c-1}+\binom c2t^{c-2}.
+\end{align*}
+Since $t>0$, these expressions are valid also when $c=1$ (the last term
+has zero coefficient). Direct expansion yields
+\begin{equation}\label{eq:graph-defect}
+ a_{r-1}^2-a_{r-2}a_r
+ =t^{2c}\left(6-m+\frac{3c}{t}+\frac{c(c+1)}{2t^2}\right).
+\end{equation}
+For instance $c=1,m=8,t=2$ produces
+$1,13,25,7,2$, the same sequence advertised in Li's prior overview,
+with $7^2-25\cdot2=-1$.
+
+For a uniform arbitrary-rank choice, set $m=7$ and $t=4c$. The factor in
+parentheses is
+\[
+ -1+\frac34+\frac{c+1}{32c}\le-\frac3{16}<0.
+\]
+This gives rank-$r$ examples with no isolated vertices on
+$10+4(r-3)^2$ vertices for every $r\ge4$.
+These formulas provide independent, elementary verification of the graph
+variants; they do not assert priority over the prior direct-sum method.
+
+\section{A real-rootedness obstruction and the two normalizations}
+\label{sec:roots}
+Even a member of \eqref{eq:Pnr} that satisfies $\ULC_n$ need not be
+real-rooted. There is a short proof requiring only differentiation and
+Rolle's theorem.
+
+\begin{proposition}\label{prop:roots}
+For every $n>r\ge3$, the polynomial $P_{n,r}$ has at least one nonreal
+root.
+\end{proposition}
+\begin{proof}
+If all roots were real, repeated differentiation would preserve that
+property. The derivative of order $r-2$ is the quadratic
+\[
+ P_{n,r}^{(r-2)}(x)
+ =(r-2)!\binom n{r-2}+r(r-1)!x+\frac{r!}{2}x^2.
+\]
+Its discriminant is
+\[
+ r(r-1)(r-2)!^2
+ \left(r(r-1)-2\binom n{r-2}\right).
+\]
+A nonnegative discriminant would require
+$\binom n{r-2}\le r(r-1)/2=\binom r{r-2}$, which is impossible because
+$n>r$ and $r-2\ge1$.
+\end{proof}
+
+For example, the $r=3,n=4$ polynomial $1+4x+3x^2+x^3$ satisfies
+$\ULC_4$ by \eqref{eq:codimclass}, yet it has nonreal roots by the
+proposition. This does not conflict with any implication from
+real-rootedness to normalized coefficient inequalities. Normalization by
+the degree $r$ is stronger than normalization by the ambient $n$:
+at the last index of \eqref{eq:Pnr}, the degree-normalized ultra inequality
+would require the very bound $\binom n{r-2}\le\binom r2$ just ruled out.
+
+\section{Exact verification, reproducibility, and remaining scope}
+\label{sec:verification}
+
+\subsection{What was actually executed}
+The archive's \texttt{verify.py} uses only the Python standard library.
+Its full run completed successfully with Python 3.13.5. All comparisons
+use integers or exact rational numbers; no numerical root approximation
+or floating-point sign decision supports a theorem.
+
+The verifier produced the counts below; their JSON summary is included
+in the \texttt{data/} directory:
+\begin{center}
+\begin{tabular}{@{}l r@{}}
+\toprule
+Check & Cases\\
+\midrule
+General family shape classifications, $n\le24$ & $2{,}024$\\
+Explicit face-system and augmentation checks, $n\le8$ & $56$\\
+Direct-sum parameter checks & $6$\\
+Possible face vectors on $1$ through $7$ active vertices & $5{,}459$\\
+Finite maximal-ratio certificates & $26$\\
+Graph polynomial identities & $54$\\
+Unrestricted uniform-family shadow cases, $n\le6$ & $1{,}116{,}354$\\
+Core-constrained uniform-family cases & $1{,}116{,}352$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two rows total $2{,}232{,}706$ uniform-family cases.
+These are not claimed to be that many distinct independence systems.
+
+The core-constrained check independently examines all uniform families
+containing the faces of a fixed six-element core on seven vertices, and
+of a fixed five-element core on six vertices, at the levels needed by the
+two exceptional rank lower bounds. It avoids enumerating all labelled
+complexes on seven vertices. The largest optional uniform layer has
+$20$ members, so this independent shadow check has at most $2^{20}$ states
+in a single layer.
+
+The separate face-vector enumeration uses the Kruskal--Katona criterion.
+For each possible $a_k$, it recursively accepts exactly the values with
+$\sigma_k(a_k)\le a_{k-1}$. These inequalities are sufficient as well as
+necessary: choose the initial colex segment at each level; its shadow is
+an initial colex segment of the preceding level, and the inequalities
+ensure containment. The enumeration therefore concerns possible
+\emph{vectors}, not just hypothetical arrays, while distinct complexes
+with the same vector are counted once.
+
+\begin{center}
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+Active vertices & Possible vectors & Fail $\LC$ & Fail $\OLC$ & Fail $\ULC_n$\\
+\midrule
+1&1&0&0&0\\
+2&2&0&0&0\\
+3&5&0&0&0\\
+4&16&0&0&0\\
+5&70&0&0&5\\
+6&457&0&3&47\\
+7&4,908&23&120&809\\
+\bottomrule
+\end{tabular}
+\end{center}
+These counts are useful checks but are not substituted for the stated
+rankwise theorem. In particular, counts of shape failures do not by
+themselves assert that all failing systems obey $A_3$.
+
+\subsection{Reproduction}
+From the archive root, run
+\begin{lstlisting}[language={}]
+python verify.py --full --output regenerated-data
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command regenerates the mathematical certificates. It records
+the local Python version, so that metadata field may differ across
+machines while the mathematical data agree. The LaTeX file is
+self-contained, including its bibliography, and needs no BibTeX run.
+The accompanying \texttt{README.md} describes the files, bit-mask
+convention, and expected output.
+
+\subsection{What is and is not settled}
+The exact extremal problem \cref{prob:sharp} is resolved by
+\cref{thm:main}, with explicit witnesses and universal lower bounds.
+The three-parametric family's concavity classification and all asymptotic
+claims have proofs independent of the computations. The finite lower
+bounds use the classical shadow theorem plus the completely specified
+finite arithmetic table; the exhaustive uniform-family checks give a
+second verification for the specific sizes needed.
+
+This does not prove or disprove the parameter-two conjecture: every main
+counterexample has \emph{exact} parameter three. Xie and Xu separately
+formulate the parameter-two assertion as Conjecture~4.4 in \cite{XieXu}.
+The present construction with $s=r-1$ has parameter two and satisfies all
+three shapes, but it is only a subclass of parameter-two systems.
+Nor does an example about a graph's \emph{independent} sets refute the
+same paper's Conjecture~4.1 about its \emph{dependent} sets. These are
+separate counting problems.
+
+Finally, the original existence disproof is prior work, not a new result
+claimed here. The search was not a complete priority audit, and the
+unretrieved full Li manuscript leaves possible overlap in refinements
+unresolved. The strongest unconditional output of this report is the
+proved sharp theorem and its reproducible certificates, not a claim of
+publication priority or independent peer review.
+
+\appendix
+\section{Finite arithmetic certificates and independent shadow checks}
+\label{app:certificates}
+
+\subsection{The entire maximal-ratio calculation}
+The following pseudocode is the finite proof behind each entry of
+\cref{tab:bounds}. The function \texttt{shadow} is the explicit
+binomial expansion \eqref{eq:KK-expansion} followed by
+\eqref{eq:shadow}; it does not call an optimization oracle.
+\begin{lstlisting}
+for k in range(1, n):
+    allowed_b = [n] if k == 1 else range(max(1, binom(t, k)),
+                                        binom(n, k) + 1)
+    maximum = 0
+    for b in allowed_b:
+        c = max(c for c in range(binom(n, k + 1) + 1)
+                if shadow(c, k + 1) <= b)
+        value = factor(kind, n, k) * binom(n, k - 1) * c / b**2
+        maximum = max(maximum, value)
+    assert maximum <= 1
+\end{lstlisting}
+Here $t=0$ means no rank lower bound. The actual program uses
+\texttt{Fraction}, and its checking function remains active under
+\texttt{python -O}. The displayed divisions in the pseudocode must not
+be implemented with floating-point arithmetic when an exact certificate
+is desired.
+
+For illustration, the complete shadow minima for $q=4$ on six vertices,
+indexed by the number $m=0,1,\ldots,15$ of four-sets, are
+\[
+ 0,4,7,9,10,10,13,15,16,16,18,19,19,20,20,20.
+\]
+Thus one four-set forces four triples, five four-sets force ten triples,
+and six four-sets force thirteen triples. Such small discontinuities are
+why the exact shadow bound is substantially sharper than merely counting
+incidences between adjacent levels.
+
+\subsection{An independent enumeration of lower shadows}
+Represent every subset of $\{1,\ldots,n\}$ by an integer mask, with
+vertex $j$ represented by bit $j-1$. First enumerate all $q$-subsets and
+all $(q-1)$-subsets. A $q$-set then has its own lower-shadow bit mask in
+the $(q-1)$-set universe. For a family mask $F\ne0$, remove its lowest set
+bit $b$ and use
+\[
+ \operatorname{shadowMask}(F)
+ =\operatorname{shadowMask}(F\setminus\{b\})
+       \mathbin{\mathrm{OR}}\operatorname{shadowMask}(\{b\}).
+\]
+Group the resulting popcounts by $|F|$ and take minima. This is independent
+of the canonical binomial expansion. For all unrestricted layers on at
+most six vertices, the computed minima agree exactly with $\sigma_q(m)$.
+
+For a fixed core, initialize the shadow mask with all its required lower
+faces and enumerate only the optional upper faces. Taking the minimum
+lower count for each optional upper count yields a direct finite check of
+the two exceptional rank rows. Every rank-$r$ system on $r+1$ vertices
+contains an $r$-face; relabel it as the prescribed core. Therefore the
+core enumeration covers every system needed for those two rows, even
+though it does not impose all compatibility conditions between optional
+layers. Omitting those extra conditions only enlarges the tested class,
+which is safe for a universal lower bound.
+
+\section{Compact classification of the smallest failing face vectors}
+The following tables record all failing vectors at the three first
+possible sizes, before any augmentation restriction is imposed. Terminal
+zeros through the ambient size are suppressed.
+
+At five vertices, the ultra log-concavity failures are
+\[
+ (1,5,3,1),\quad(1,5,6,4),\quad(1,5,6,4,1),\quad
+ (1,5,9,4,1),\quad(1,5,10,4,1).
+\]
+At six vertices, the ordered failures are exactly
+\[
+ (1,6,b,4,1),\qquad b=13,14,15.
+\]
+The full list of twenty-three ordinary failures on seven vertices can be
+compressed as follows:
+\begin{center}
+\begin{tabular}{@{}l l r@{}}
+\toprule
+Vector pattern & Parameter range & Number\\
+\midrule
+$(1,7,b,4,1)$ & $17\le b\le21$ & $5$\\
+$(1,7,21,10,5)$ & --- & $1$\\
+$(1,7,21,10,5,1)$ & --- & $1$\\
+$(1,7,19,26,5,1)$ & --- & $1$\\
+$(1,7,20,c,5,1)$ & $26\le c\le30$ & $5$\\
+$(1,7,21,c,5,1)$ & $26\le c\le35$ & $10$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The list immediately provides another check that none of the seven-vertex
+ordinary failures has rank six, and none of the six-vertex ordered
+failures has rank five. These lists are consequences of the finite
+face-vector criterion, not a classification of labelled systems or their
+augmentation parameters.
+
+\begin{thebibliography}{9}
+\bibitem{XieXu}
+Yan-Ting Xie and Shou-Jun Xu,
+\emph{Ultra log-concavity and real-rootedness of dependence polynomials},
+arXiv:2408.09152v1, August 17, 2024.
+\href{https://arxiv.org/abs/2408.09152}{arXiv record}.
+The relevant locations are the sequence definitions on printed page~3,
+the additive augmentation condition on page~14, and Conjecture~4.8 on
+page~16. The record was checked on September 19, 2026.
+
+\bibitem{Li}
+Alex Chengyu Li,
+\emph{Additive Augmentation Gaps Do Not Force Log-Concavity},
+working paper, 2026.
+\href{https://doi.org/10.2139/ssrn.7434141}{DOI: 10.2139/ssrn.7434141}.
+Author's public overview:
+\href{https://crabresearch.com/research/augmentation-gap-log-concavity?lang=en}{Crab Research, augmentation-gap-log-concavity}.
+That page reports first public release September 6, 2026 and revision
+September 18, 2026. Overview accessed September 19, 2026; the full linked
+manuscript was not retrieved in this investigation.
+
+\bibitem{Bukh}
+Boris Bukh,
+\emph{Multidimensional Kruskal--Katona theorem},
+arXiv:1009.2375v2, 2011.
+\href{https://arxiv.org/abs/1009.2375}{arXiv record}.
+The introduction states the classical colex shadow theorem and the
+Lov\'asz form, and gives the original references below.
+
+\bibitem{Kruskal}
+Joseph B. Kruskal,
+\emph{The number of simplices in a complex},
+in \emph{Mathematical Optimization Techniques},
+University of California Press, Berkeley, 1963, pp.~251--278.
+
+\bibitem{Katona}
+Gyula Katona,
+\emph{A theorem of finite sets},
+in \emph{Theory of Graphs} (Proceedings of the Colloquium, Tihany, 1966),
+Academic Press, New York, 1968, pp.~187--207.
+\end{thebibliography}
+\end{document}

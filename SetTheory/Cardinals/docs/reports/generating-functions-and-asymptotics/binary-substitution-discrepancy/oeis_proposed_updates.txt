@@ -1,0 +1,44 @@
+Suggested mathematical updates; NOT submitted to OEIS.
+Prepared September 19, 2026. See article.tex/article.pdf for proofs.
+Attribution and publication details should be finalized after independent review.
+
+A284366 (positions of 1):
+With s=(sqrt(21)-1)/2 and C=(6+sqrt(21))/5, the sharp bounds are
+(sqrt(21)-9)/5 < n*s-a(n) < C for all n>=1.
+The set of subsequential limits of n*s-a(n) is the entire closed interval
+[(sqrt(21)-9)/5, C]. Both endpoints are unattained at finite indices.
+The conjectured upper bound 2 is false; its first counterexample is
+n=2977771, a(n)=5334043. Its error is
+(2977771*sqrt(21)-13645857)/2 = 2.00487217332612884794...
+The conjectured lower bound -1 is true.
+The asymptotic density is (1+sqrt(21))/10, with bounded counting error.
+
+A284365 (positions of 0):
+With r=(9+sqrt(21))/6 and C=(6+sqrt(21))/5, the sharp bounds are
+-(12+2*sqrt(21))/15 < n*r-a(n) < C for all n>=1.
+The set of subsequential limits is the entire corresponding closed interval.
+The conjectured upper bound 2 is false; its first counterexample is
+n=8933313, a(n)=20222898, with the same error as above.
+The conjectured lower bound -2 is true.
+The asymptotic density is (9-sqrt(21))/10, with bounded counting error.
+For all n>=1: A284365(3*n)=A284366(n)+5*n.
+More generally, for h in {1,2,3}:
+A284365(3*(n-1)+h)=A284366(n)+5*n-6+2*h.
+The zero-rank violations occur exactly at three times the one-rank violations.
+
+A284364 (binary fixed word):
+Let O(N)=Sum_{k=1..N} a(k). Then
+-(33+3*sqrt(21))/50 < O(N)-(1+sqrt(21))*N/10
+  < (27+7*sqrt(21))/50 for every N>=0, with both constants sharp.
+In particular the conjectured asymptotic mean is (1+sqrt(21))/10.
+The comment defining u(n),v(n) by counting terminology while multiplying
+n by the position slopes should instead distinguish counts from positions.
+
+An infinite extremal family for A284366:
+n(0)=1, n(1)=13, n(j+2)=15*n(j+1)-9*n(j)-2.
+p(0)=1, p(1)=22, p(j+2)=15*p(j+1)-9*p(j)+7.
+Then A284366(n(j))=p(j), and, with q=(sqrt(21)-3)/2,
+s*n(j)-p(j)=C*(1-q^(2*j+2)). This exceeds 2 for every j>=6.
+The generating functions are
+Sum_{j>=0} n(j)*z^j = (1-3*z)/((1-z)*(1-15*z+9*z^2)),
+Sum_{j>=0} p(j)*z^j = (1+6*z)/((1-z)*(1-15*z+9*z^2)).

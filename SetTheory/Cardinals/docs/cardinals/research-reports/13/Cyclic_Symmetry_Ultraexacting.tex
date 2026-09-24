@@ -1,0 +1,1090 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Cyclic symmetry at the ultraexacting boundary},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Finite-label classification, sharp transversal obstruction, and I0-equiconsistent enrichment},pdfkeywords={ultraexacting, finite symmetry, incidence words, transversals, ordinal definability, I0}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{8}{10}\selectfont\color{Muted}CYCLIC SYMMETRY AT THE ULTRAEXACTING BOUNDARY}
+\fancyhead[R]{\sffamily\fontsize{8}{10}\selectfont\color{Muted}CONTINUATION\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Finite symmetry and the sharp transversal boundary}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Finite symmetry and the sharp transversal boundary}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\CF}{\operatorname{CF}}
+\newcommand{\fc}{\operatorname{fc}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Full}{\operatorname{Full}}
+\newcommand{\Empty}{\operatorname{Empty}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Tail}{\mathrel{\sim_{\mathrm{tail}}}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Rr}{\mathbb R}
+\newcommand{\W}{\mathcal W}
+\newcommand{\width}{\operatorname{width}}
+\newcommand{\HF}{V_\omega}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Efin}{\mathrel{=^*}}
+\newcommand{\orb}{\operatorname{Orb}}
+\newcommand{\newresult}{\textsf{Continuation result}}
+\newcommand{\Tfive}{\mathsf{T}_5}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Cyclic symmetry at the\\ ultraexacting boundary\par}
+\vspace{11pt}
+{\fontsize{14}{18}\selectfont An exact finite-label criterion, a sharp transversal obstruction,\\ and an $\Izero$-equiconsistent positive enrichment\par}
+\vspace{15pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.} Let $\lambda$ be ultraexacting, and let $Q_\lambda$ be the quotient of cofinal $\omega$-subsets of $\lambda$ by finite symmetric difference. We determine exactly which finite permutation actions admit a finite-valued, coordinate-equivariant rule on tuples of distinct classes, definable from ordinals and a parameter in $V_\lambda$: each individual group element must fix a possible output. Necessity extends the obstruction in the supplied synthesis; sufficiency follows from a new incidence-word construction. The key fact is that every stabilizer of an admissible incidence word modulo a shift of tails is cyclic.
+
+For $S_3$, the criterion gives a five-label rule which either selects a member of an unordered triple or assigns a cyclic orientation to that triple, although neither operation alone is definable at an ultraexacting cardinal. After known HOD-coding forcing, the mixed rule is ordinal definable. Separately, every $\OD_{V_\lambda}$ complete transversal has at least $\lambda$ equivalence classes on which its fibre has the maximal possible size $\lambda$. This rules out all pointwise $<\lambda$-sized fibres, not only finite fibres. These conclusions, together with $V_\lambda\subseteq\HOD$, form an enrichment equiconsistent with $\ZFC+\Izero$.
+
+\begin{assessment}{The two advances beyond the supplied synthesis}
+\textbf{Positive finite symmetry.} The synthesis's explicit $S_3$ question has a positive answer with a low-rank parameter, and an ordinal-definable positive answer in an $\Izero$-equiconsistent setting. An elementwise fixed-point condition is sufficient; a common fixed point for the whole group is not required.
+
+\textbf{Sharp negative transversals.} A definable complete family of representatives cannot have even countable fibres, or any other fibres strictly smaller than $\lambda$. Indeed, at least $\lambda$ fibres must have size exactly $\lambda$.
+\end{assessment}
+
+\textbf{Status and scope.} The new arguments are given in full. The large-cardinal characterization, coding-forcing theorem, and base equiconsistency are explicitly imported. These are conventional, unrefereed proofs, not machine-checked proofs. The accompanying finite audit tests the combinatorial construction, not large-cardinal consistency. Novelty is asserted only relative to the supplied reports; no literature-wide priority claim is made. No standard large-cardinal axiom is shown inconsistent.
+
+\newpage
+\tableofcontents
+\vspace{8pt}
+\begin{assessment}{Reading guide}
+Sections~\ref{sec:interface}--\ref{sec:negative} establish the embedding interface and the necessary obstruction. Sections~\ref{sec:words}--\ref{sec:hybrid} give the positive classification and the five-label example. Section~\ref{sec:transversals} proves the stronger inconsistency result. Section~\ref{sec:consistency} gives the exact relative-consistency calibration. The appendices record rank checks and reproducible finite tests.
+\end{assessment}
+
+\section{Research target and contribution ledger}\label{sec:scope}
+
+The supplied \emph{Unified Report} identifies large-cardinal consistency frontiers; the supplied \emph{Synthesis} consolidates nine continuations \cite{unified,synthesis}. Rather than reproduce their cover-exacting completeness barriers, we pursue two gaps in the synthesis's section on ultraexacting cardinals.
+
+The first gap is explicitly formulated there. For an ordinal-definable equivariant labelling by a finite $S_m$-set $F$, the synthesis proves that every permutation must fix some label. It then exhibits the disjoint union of the natural three-point action of $S_3$ and its two-point sign action. Every permutation fixes a label in this union, but no label is fixed by all of $S_3$. The synthesis leaves the existence of a rule with this target open. We prove a sufficient condition matching its necessary condition. The positive construction does not use a large cardinal; ultraexactingness is what makes the criterion necessary for arbitrary low-rank-definable rules.
+
+The second gap concerns representative transversals. The synthesis rules out finite-valued definable transversals by obtaining a finite orbit under an embedding. That proof cannot simply be repeated for a countably infinite fibre: an injective self-map of a countable set need have no periodic point. We replace periodicity by the union of a fibre. This union remains inside the rank on which the embedding acts. If the fibre is small, its union is a short fixed cofinal set, which is impossible.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{.25\textwidth}YY@{}}
+\toprule
+Topic & Supplied synthesis & This continuation \\
+\midrule
+Finite-label obstruction & Necessary elementwise fixed-point test & Full $\OD_{V_\lambda}$ classification; sufficiency via cyclic stabilizers \\
+Five-label $S_3$ target & Existence left open & Mixed choice-or-orientation rule, with an OD consistency calibration \\
+Representative fibres & Nonempty finite fibres impossible & Pointwise $<\lambda$ fibres impossible; at least $\lambda$ full fibres \\
+Consistency strength & Ultraexactingness calibrated by $\Izero$ & New positive and negative conclusions coexist at the same strength \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The classification is not a proof that every plausible symmetry principle survives. Its exact content is that \emph{cyclic} isotropy is the only obstruction for the finite targets considered here. A noncyclic finite group can act without a global fixed point and still pass every cyclic test.
+
+\section{Definitions and external inputs}\label{sec:definitions}
+
+We work in $\ZFC$. Unless stated otherwise, $\lambda$ is an uncountable cardinal with $\cf(\lambda)=\omega$. An ultraexacting cardinal is understood in the sense of Aguilera--Bagaria--Goldberg--L\"ucke \cite{abgl}. One equivalent formulation says that for every sufficiently large cardinal $\zeta>\lambda$ there are
+\[
+ X\prec V_\zeta,\qquad V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j:X\longrightarrow V_\zeta
+\]
+with $j(\lambda)=\lambda$, $j\restr\lambda\ne\id$, and $j\restr V_\lambda\in X$. Our proofs use the predicate characterization below rather than the details of these hulls.
+
+\begin{definition}[Definability conventions]
+A set is in $\OD_p$ if it is definable in $V$ from the set parameter $p$ and finitely many ordinal parameters. We write
+\[
+ \OD_{V_\lambda}=\bigcup_{p\in V_\lambda}\OD_p.
+\]
+Finitely many parameters in $V_\lambda$ can be combined into one. This notation does not require that every element of the defined set be definable. All cardinalities in the paper are calculated in the ambient universe $V$, not in HOD.
+\end{definition}
+
+\begin{definition}[The cofinal quotient]
+Put
+\begin{align}
+ D_\lambda&=\{a\subseteq\lambda:\ot(a)=\omega\text{ and }\sup a=\lambda\},\\
+ a\Efin b&\quad\Longleftrightarrow\quad |a\triangle b|<\omega,\\
+ Q_\lambda&=D_\lambda/{\Efin},\\
+ D_m(\lambda)&=\{(a_0,\ldots,a_{m-1})\in D_\lambda^m:
+                      i\ne j\Rightarrow a_i\not\Efin a_j\}.
+\end{align}
+We use $[a]$ for the equivalence class of $a$, and $[Q]^m$ for the set of unordered $m$-element subsets of $Q$.
+\end{definition}
+
+Fix $m\ge1$ and a subgroup $\Gamma\le S_m$. A finite $\Gamma$-set $F$ is always presented on a nonempty finite set of natural-number labels, with its action table coded in $\HF$. Thus these labels and action tables are fixed by all embeddings used below. There is no loss of generality: an abstract finite action can be transported to such a presentation.
+
+\begin{definition}[Invariant finite-label rule]\label{def:rule}
+The left action of $\Gamma$ on tuples is
+\[
+ (g\cdot\vec a)_i=a_{g^{-1}(i)}.
+\]
+A rule $L:D_m(\lambda)\to F$ is \emph{admissible} when
+\begin{align}
+ (\forall i<m\ a_i\Efin b_i)&\Longrightarrow L(\vec a)=L(\vec b),\label{eq:fininv}\\
+ L(g\cdot\vec a)&=g\cdot L(\vec a)\qquad(g\in\Gamma).\label{eq:equiv}
+\end{align}
+Thus $L$ descends to ordered tuples of distinct elements of $Q_\lambda$.
+Define the \emph{cyclic fixed-point condition}
+\[
+ \CF(\Gamma,F)\quad\Longleftrightarrow\quad
+       (\forall g\in\Gamma)(\exists f\in F)\ g\cdot f=f.
+\]
+Equivalently, every cyclic subgroup of $\Gamma$ has a fixed point in $F$.
+\end{definition}
+
+The three large-cardinal facts on which our calibration depends are recorded separately from the new proofs.
+
+\begin{inputthm}[OD-predicate characterization]\label{in:predicate}
+For a cardinal $\lambda$, ultraexactingness is equivalent, in $\ZFC$, to the following statement: every ordinal-definable $A\subseteq V_{\lambda+1}$ admits a nontrivial elementary self-embedding of the structure $(V_{\lambda+1},\in,A)$. Such an embedding has critical point below $\lambda$.
+\end{inputthm}
+This is \cite[Theorem 3.1]{abgl}, whose stated hypothesis is the weaker theory $\ZF+\mathrm{DC}_\lambda$. The convention there is that the embeddings in question are nontrivial. We will prove the needed low-rank-parameter and arbitrarily-high-critical-point version, rather than silently include it in this input.
+
+\begin{inputthm}[HOD coding while preserving ultraexactingness]\label{in:coding}
+If $\lambda$ is ultraexacting, then for every cardinal $\chi>\lambda$ there is a $\chi$-directed-closed forcing which forces that $\lambda$ remains ultraexacting and $V_\lambda\subseteq\HOD$.
+\end{inputthm}
+This is \cite[Proposition 3.9]{abgl}.
+
+\begin{inputthm}[Base equiconsistency]\label{in:equiconsistency}
+\[
+ \Con(\ZFC+\exists\lambda\,\UEx(\lambda))
+       \quad\Longleftrightarrow\quad
+ \Con(\ZFC+\Izero).
+\]
+Here $\Izero$ has its usual formulation via a nontrivial elementary embedding of $L(V_{\lambda+1})$ into itself, with critical point below $\lambda$.
+\end{inputthm}
+This is \cite[Theorem 4.5]{abgl}. It is an equiconsistency, not the assertion that every universe with an ultraexacting cardinal itself satisfies $\Izero$.
+
+We also use the local form of the Kunen inconsistency: in $\ZFC$ there is no nontrivial elementary self-embedding of $V_{\mu+2}$ for a limit ordinal $\mu$. See \cite{kunen}, and the explicit discussion in \cite[p.~3, footnote 1]{hkp}. This standard theorem is used only to identify the supremum of the critical sequence. All other rank and combinatorial arguments needed for the new results are supplied below.
+
+\section{A rank-correct embedding interface}\label{sec:interface}
+
+\subsection{Critical sequences and fixed sets}
+
+\begin{lemma}[Critical-sequence facts]\label{lem:critical}
+Let $\lambda$ be an uncountable limit cardinal and let
+\[
+ e:V_{\lambda+1}\longrightarrow V_{\lambda+1}
+\]
+be elementary with critical point $\kappa<\lambda$. Define $\kappa_n=e^n(\kappa)$ for $n<\omega$. Then:
+\begin{enumerate}
+\item $e(\lambda)=\lambda$, and the $\kappa_n$ are strictly increasing uncountable cardinals.
+\item $\sup_{n<\omega}\kappa_n=\lambda$.
+\item $e(\xi)>\xi$ for every $\kappa\le\xi<\lambda$. Consequently every fixed ordinal below $\lambda$ is below $\kappa$.
+\item $e$ fixes $V_\kappa$ pointwise. If $a\subseteq\lambda$ is countable, then $e(a)=e``a$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The ordinal $\lambda$ is the largest ordinal in $V_{\lambda+1}$, so it is fixed. Every natural number and $\omega$ are fixed. The critical point is a cardinal: otherwise a surjection $f:\nu\to\kappa$ with $\nu<\kappa$ belongs to $V_{\lambda+1}$; then $e(f)$ has domain $\nu$, agrees pointwise with $f$, and yet is onto $e(\kappa)>\kappa$, a contradiction. It follows that $\kappa$ is uncountable. Cardinality of ordinals below $\lambda$ is absolute to $V_{\lambda+1}$, since all the relevant possible bijections have rank below $\lambda$. Elementarity therefore makes every $\kappa_n$ a cardinal; strict increase follows by applying $e$ repeatedly to $\kappa<e(\kappa)$.
+
+Let $\mu=\sup_n\kappa_n$. If $\mu<\lambda$, the sequence $c:n\mapsto\kappa_n$ and its range belong to $V_{\lambda+1}$. Since $e$ fixes $\omega$, $e(c)(n)=\kappa_{n+1}$, and therefore $e(\mu)=\mu$. The cardinal $\mu$ is a limit cardinal and $\mu+2<\lambda$. Restricting $e$ to the definable, fixed rank segment $V_{\mu+2}$ gives a nontrivial elementary self-embedding of that segment, contrary to the local Kunen theorem. Thus $\mu=\lambda$.
+
+For $\kappa\le\xi<\lambda$, choose $n$ with $\kappa_n\le\xi<\kappa_{n+1}$. Then $e(\xi)\ge\kappa_{n+1}>\xi$. The pointwise fixedness of $V_\kappa$ follows by induction on rank. If $\rank(x)=\alpha<\kappa$, then $\rank(e(x))=e(\alpha)=\alpha$. Once every element of $V_\alpha$ is fixed, membership equivalence for each such element therefore gives $e(x)=x$.
+
+Finally, for nonempty countable $a$ choose a surjection $h:\omega\to a$. Its graph is a set of pairs $\langle n,\xi\rangle$ with $\xi<\lambda$, hence is a subset of $V_\lambda$ and belongs to $V_{\lambda+1}$. Elementarity gives $e(h)(n)=e(h(n))$ for each fixed $n<\omega$ and $\ran(e(h))=e(a)$. This is exactly $e(a)=e``a$. The empty case is immediate.
+\end{proof}
+
+\begin{lemma}[A fixed cofinal set cannot be short]\label{lem:fixedcofinal}
+Under the hypotheses of Lemma~\ref{lem:critical}, if $b\subseteq\lambda$ is cofinal and $e(b)=b$, then $|b|=\lambda$.
+\end{lemma}
+
+\begin{proof}
+Suppose $|b|<\lambda$. Since $\lambda$ is a cardinal and $b\subseteq\lambda$, its order type $\tau=\ot(b)$ is an ordinal below $\lambda$. Its unique increasing enumeration $h:\tau\to b$ belongs to $V_{\lambda+1}$: each pair in its graph has rank below $\lambda$.
+
+Order type and increasing enumeration are definable in the rank segment, with the actual $h$ and $\tau$ available as witnesses. Hence $e(\tau)=\tau$ and $e(h)=h$. By Lemma~\ref{lem:critical}, $\tau<\kappa$. For every $\xi<\tau$ we now have
+\[
+ e(h(\xi))=e(h)(e(\xi))=h(\xi).
+\]
+Every value of $h$ is a fixed ordinal below $\lambda$, and so lies below $\kappa$. This contradicts cofinality of $b$. Therefore $|b|=\lambda$.
+\end{proof}
+
+\subsection{Flat coding instead of rank-raising tuples}
+
+An element of $V_{\lambda+1}$ is a subset of $V_\lambda$. Ordinary ordered tuples of such elements can have rank above $\lambda$ and need not belong to the domain of $e$. We use the following coding explicitly.
+
+\begin{definition}[Flat finite coding]\label{def:flat}
+For a fixed finite arity $r$ and $x_0,\ldots,x_{r-1}\in V_{\lambda+1}$, put
+\[
+ \fc(x_0,\ldots,x_{r-1})
+   =\bigcup_{i<r}\{\langle i,u\rangle:u\in x_i\}.
+\]
+The ordered pairs on the right can be ordinary Kuratowski pairs.
+\end{definition}
+
+Because $\lambda$ is a limit ordinal, every pair $\langle i,u\rangle$ with $u\in V_\lambda$ is itself in $V_\lambda$. Thus the flat code lies in $V_{\lambda+1}$. For the given arity, its coordinates are uniquely recoverable, including the empty coordinates. Coding and decoding are definable by first-order formulas with separate free variables for the coordinates. Consequently
+\begin{equation}\label{eq:flatnatural}
+ e(\fc(x_0,\ldots,x_{r-1}))
+      =\fc(e(x_0),\ldots,e(x_{r-1})).
+\end{equation}
+This equality follows from definability, not from an unjustified claim that $e(x)=e``x$ for arbitrary sets $x$.
+
+\begin{theorem}[Low-rank parameters and high critical points]\label{thm:interface}
+Suppose $\lambda$ is ultraexacting, $p\in V_\lambda$, and $A\subseteq V_{\lambda+1}$ is in $\OD_p$. For every $\alpha<\lambda$ there is an elementary embedding
+\[
+ e:(V_{\lambda+1},\in,A)\longrightarrow(V_{\lambda+1},\in,A)
+\]
+with $\alpha<\crit(e)<\lambda$ and $e(p)=p$.
+\end{theorem}
+
+\begin{proof}
+Choose a formula $\varphi$, with a fixed finite tuple of ordinal parameters $\bar\theta$, such that
+\[
+ x\in A\quad\Longleftrightarrow\quad
+ x\in V_{\lambda+1}\ \text{and}\ V\models\varphi(x,p,\bar\theta).
+\]
+There is no assumption that the ordinals in $\bar\theta$ lie below $\lambda$ or will be fixed by an embedding. Choose an ordinal $\beta<\lambda$ greater than $\alpha$, $\rank(p)$, and $\omega+10$. In the ambient universe define
+\[
+ R(q,x)\quad\Longleftrightarrow\quad
+ q\in V_\beta\ \text{and}\ x\in V_{\lambda+1}\ \text{and}\
+ V\models\varphi(x,q,\bar\theta).
+\]
+Form the unary predicate
+\begin{align}
+ B={}&\{\fc(\{0\},q,x):R(q,x)\}\nonumber\\
+ &\quad\cup\{\fc(\{1\},\beta,\varnothing)\}.\label{eq:universalpredicate}
+\end{align}
+Every member of $B$ lies in $V_{\lambda+1}$. The predicate $B$ is ordinal definable, since the nonordinal parameter $p$ has been replaced by a variable $q$ ranging over $V_\beta$. The formula $\varphi$ is one fixed formula; no truth predicate for $V$ is being postulated.
+
+Input~\ref{in:predicate} gives a nontrivial elementary self-embedding of $(V_{\lambda+1},\in,B)$. There is exactly one member of $B$ with first decoded coordinate $\{1\}$, namely the marker $\fc(\{1\},\beta,\varnothing)$. Since the finite tag is fixed, elementarity and uniqueness fix this marker. By decoding and \eqref{eq:flatnatural}, $e(\beta)=\beta$.
+
+Lemma~\ref{lem:critical} gives $\beta<\crit(e)$. Hence $e$ fixes every element of $V_\beta$, in particular $p$, and its critical point exceeds $\alpha$. Inside $(V_{\lambda+1},\in,B)$ with the fixed parameter $p$, the original predicate $A$ is interpreted by
+\[
+ x\in A\quad\Longleftrightarrow\quad
+        \fc(\{0\},p,x)\in B.
+\]
+Replacing each atomic use of $A$ by this formula translates any formula of the language with predicate $A$ into one with predicate $B$ and parameter $p$. Elementarity therefore holds for the entire expanded structure $(V_{\lambda+1},\in,A)$, not just for membership in $A$.
+\end{proof}
+
+\begin{remark}[What the coding avoids]
+It would be incorrect to take an arbitrary definition of $A$ from $\bar\theta$ and assume $e(\bar\theta)=\bar\theta$. Some defining ordinals may not even belong to the rank segment. The universalized predicate in \eqref{eq:universalpredicate} removes precisely that issue. Likewise, we never ask $e$ to act on $A$ as an element of its domain; $A$ is an additional predicate.
+\end{remark}
+
+\section{The necessary cyclic obstruction}\label{sec:negative}
+
+\begin{lemma}[Simultaneous realization of finite cycles]\label{lem:permutation}
+Let $e$ be as in Lemma~\ref{lem:critical}. For every $\pi\in S_m$ there are pairwise disjoint $a_0,\ldots,a_{m-1}\in D_\lambda$ such that
+\[
+ e(a_i)\Efin a_{\pi(i)}\qquad(i<m).
+\]
+\end{lemma}
+
+\begin{proof}
+Write the cycles of $\pi$ as
+\[
+ C_t=(i_{t,0},\ldots,i_{t,\ell_t-1}),\qquad t<s,
+\]
+including cycles of length one. For $0\le r<\ell_t$ define
+\begin{equation}\label{eq:criticalsplit}
+ a_{i_{t,r}}=\{\kappa_{\ell_t n+r}+t:n<\omega\}.
+\end{equation}
+These sets have order type $\omega$ and are cofinal in $\lambda$. Different critical-sequence levels lie in disjoint intervals $[\kappa_k,\kappa_{k+1})$; offsets $t$ distinguish different cycles at the same level. Thus all the displayed sets are pairwise disjoint.
+
+Since $t<\omega<\kappa$, $e(\kappa_k+t)=\kappa_{k+1}+t$. Lemma~\ref{lem:critical} lets us compute $e(a_i)$ pointwise. For $r<\ell_t-1$ the result is exactly $a_{i_{t,r+1}}$. For $r=\ell_t-1$ the result is $a_{i_{t,0}}$ with its first point removed. This is the required finite-difference relation.
+\end{proof}
+
+\begin{theorem}[Necessary fixed-point condition]\label{thm:necessary}
+If $\lambda$ is ultraexacting and an admissible rule
+\[
+ L:D_m(\lambda)\longrightarrow F
+\]
+belongs to $\OD_{V_\lambda}$, then $\CF(\Gamma,F)$ holds.
+\end{theorem}
+
+\begin{proof}
+Choose $p\in V_\lambda$ with $L\in\OD_p$. Encode the graph of $L$ by the unary predicate
+\[
+ A_L=\{\fc(a_0,\ldots,a_{m-1},\{f\}):
+            \vec a\in D_m(\lambda),\ L(\vec a)=f\}
+       \subseteq V_{\lambda+1}.
+\]
+This predicate is in $\OD_p$. Theorem~\ref{thm:interface} provides an elementary $e$ preserving $A_L$. Its fixed finite labels and naturality of flat coding imply
+\begin{equation}\label{eq:Lfixed}
+ L(e(a_0),\ldots,e(a_{m-1}))=L(a_0,\ldots,a_{m-1}).
+\end{equation}
+For $g\in\Gamma$, apply Lemma~\ref{lem:permutation} with $\pi=g$ and the same $e$. On the resulting tuple,
+\[
+ e(\vec a)\Efin (a_{g(i)})_{i<m}=g^{-1}\cdot\vec a,
+\]
+where finite equivalence of tuples means coordinatewise finite equivalence. Equations~\eqref{eq:fininv}, \eqref{eq:equiv}, and \eqref{eq:Lfixed} give
+\[
+ L(\vec a)=L(e(\vec a))=L(g^{-1}\cdot\vec a)=g^{-1}\cdot L(\vec a).
+\]
+Thus $g$ fixes $L(\vec a)$. Since $g$ was arbitrary, the cyclic fixed-point condition follows.
+\end{proof}
+
+The argument reuses the synthesis's permutation obstruction; the detailed parameter upgrade and rank-safe coding are included to make its precise scope explicit. It proves $\forall g\,\exists f$, not $\exists f\,\forall g$. The next section shows that this quantifier distinction is essential rather than a weakness of the proof.
+
+\section{Incidence words and cyclic stabilizers}\label{sec:words}
+
+\subsection{A quotient which retains just the relevant symmetry}
+
+For $m\ge1$, let
+\[
+ \mathcal A_m=\Pow(m)\setminus\{\varnothing\}.
+\]
+We code its elements by positive binary masks when treating words as reals. A word is a sequence $w:\omega\to\mathcal A_m$.
+
+\begin{definition}[Admissible words and shift-tail equivalence]\label{def:words}
+Let $\W_m\subseteq\mathcal A_m^\omega$ consist of the words satisfying both conditions:
+\begin{enumerate}
+\item For every $i<m$, infinitely many $n$ satisfy $i\in w(n)$.
+\item For every distinct $i,j<m$, infinitely many $n$ satisfy
+\[
+       (i\in w(n))\ \not\Longleftrightarrow\ (j\in w(n)).
+\]
+\end{enumerate}
+Define
+\begin{equation}\label{eq:tail}
+ w\Tail v\quad\Longleftrightarrow\quad
+ \exists r,s<\omega\ \forall n<\omega\quad w(r+n)=v(s+n).
+\end{equation}
+The group $\Gamma\le S_m$ relabels a word by $(g\cdot w)(n)=g``w(n)$.
+\end{definition}
+
+The relation in \eqref{eq:tail} is an equivalence relation. Transitivity follows by moving two matching tails far enough forward to start at the same index in their common middle word. Both admissibility conditions are unchanged by deleting or adding a finite prefix, and the $\Gamma$-action preserves the equivalence relation. We write $[w]_{\rm tail}$ for a class.
+
+\begin{remark}[A shift is indispensable]
+This relation is not merely eventual agreement at equal indices. Deleting one point from the union of a tuple changes the enumeration indices of every later point. Permitting two starting indices $r$ and $s$ is what makes the word model compatible with finite changes to cofinal sets.
+\end{remark}
+
+\begin{lemma}[The incidence-word map]\label{lem:incidence}
+For every $\vec a\in D_m(\lambda)$, its union $u=\bigcup_{i<m}a_i$ has order type $\omega$. If $\langle\delta_n:n<\omega\rangle$ is its increasing enumeration, then
+\begin{equation}\label{eq:incidence}
+ w_{\vec a}(n)=\{i<m:\delta_n\in a_i\}
+\end{equation}
+belongs to $\W_m$. Moreover:
+\[
+ w_{g\cdot\vec a}=g\cdot w_{\vec a},\qquad
+ \vec a\Efin\vec b\Longrightarrow w_{\vec a}\Tail w_{\vec b}.
+\]
+Every word in $\W_m$ is obtained from some tuple in $D_m(\lambda)$.
+\end{lemma}
+
+\begin{proof}
+For each $\beta<\lambda$, the initial segment $a_i\cap\beta$ is finite. Indeed, in an increasing cofinal $\omega$-enumeration there is a first term at least $\beta$, with only finitely many predecessors. Therefore $u\cap\beta$ is finite. The set $u$ is countably infinite and cofinal; it consequently has order type $\omega$.
+
+A label $i$ appears at infinitely many positions because $a_i$ is infinite. Two labels differ at infinitely many positions because $a_i\triangle a_j$ is infinite. Thus $w_{\vec a}$ is admissible. Relabelling the coordinates leaves $u$ and its enumeration unchanged and relabels the incidence masks exactly as asserted.
+
+If every $a_i\triangle b_i$ is finite, choose $\beta<\lambda$ above all these finite differences. The two unions and every coordinate agree above $\beta$, and each union has only finitely many points below $\beta$. Their incidence words therefore agree after possibly different finite prefixes.
+
+Conversely, fix any increasing cofinal sequence $\langle\delta_n:n<\omega\rangle$ in $\lambda$. For $w\in\W_m$ put
+\[
+ a_i=\{\delta_n:i\in w(n)\}.
+\]
+Each $a_i$ is cofinal of order type $\omega$ because its indices form an infinite subset of $\omega$. Pairwise infinite separation gives $a_i\not\Efin a_j$. Since every mask is nonempty, the union is the entire fixed sequence, so its incidence word is exactly $w$.
+\end{proof}
+
+\subsection{The central stabilizer lemma}
+
+\begin{theorem}[Cyclic stabilizers]\label{thm:cyclic}
+For every $w\in\W_m$, the stabilizer
+\[
+ H_w=\{g\in\Gamma:g\cdot w\Tail w\}
+       =\Stab_\Gamma([w]_{\rm tail})
+\]
+is a cyclic subgroup of $\Gamma$.
+\end{theorem}
+
+\begin{proof}
+Keep track of a tail shift together with its relabelling. Define
+\begin{equation}\label{eq:shiftgroup}
+ G_w=\{(d,g)\in\Z\times\Gamma:
+       \exists N\ \forall n\ge N\quad w(n+d)=g\cdot w(n)\}.
+\end{equation}
+The integer $N$ is understood large enough that all the indices $n+d$ are nonnegative.
+
+First, $G_w$ is a subgroup of the direct product. It contains $(0,1)$. If $(d,g)$ and $(e,h)$ belong to $G_w$, choose $n$ sufficiently large for both eventual identities and their shifted uses. Then
+\[
+ w(n+d+e)=g\cdot w(n+e)=gh\cdot w(n),
+\]
+so $(d+e,gh)\in G_w$. Replacing $n$ by $n-d$ in the identity for $(d,g)$ gives $( -d,g^{-1})\in G_w$.
+
+Second, projection $G_w\to\Z$ is injective. Suppose $(0,g)\in G_w$. Then $w(n)=g\cdot w(n)$ for all sufficiently large $n$. If $g$ moves a label $i$, membership of $i$ and of $g^{-1}(i)$ in these masks agrees eventually, contradicting the second admissibility condition. Thus $g=1$, and the projection has trivial kernel.
+
+Every subgroup of $\Z$ is cyclic: a nonzero subgroup is generated by its least positive element, by division with remainder, while the zero subgroup is trivial. Consequently $G_w$, being isomorphic to a subgroup of $\Z$, is cyclic.
+
+Finally its projection to $\Gamma$ is exactly $H_w$. An eventual identity in \eqref{eq:shiftgroup} gives matching tails. Conversely, if $g\cdot w\Tail w$, choose $r,s$ with $g\cdot w(r+n)=w(s+n)$ for all $n$. Then $(s-r,g)\in G_w$. Therefore $H_w$ is a homomorphic image of a cyclic group and is itself cyclic.
+\end{proof}
+
+\begin{remark}[Why noncommutativity causes no gap]
+We did not choose, for each group element, an arbitrary shift and then assume those choices commute. We first formed an actual subgroup of $\Z\times\Gamma$ and proved its projection injective. Any required commutation follows from that injectivity. The infinite pairwise separation condition on the labels is exactly what kills the kernel.
+\end{remark}
+
+
+\begin{corollary}[Coherent relabellings form a cyclic group]\label{cor:coherent}
+Fix one tuple $\vec a\in D_m(\lambda)$. Suppose a collection of strictly increasing maps $f:\lambda\to\lambda$ comes with permutations $\pi_f\in S_m$ satisfying
+\[
+ f``a_i\Efin a_{\pi_f(i)}\qquad(i<m).
+\]
+Then the subgroup of $S_m$ generated by all the $\pi_f$ is cyclic. In particular, several rank embeddings cannot realize a noncyclic relabelling group modulo finite difference on one common tuple.
+\end{corollary}
+
+\begin{proof}
+Write $w=w_{\vec a}$. Since $f$ is strictly increasing, the increasing enumeration of $f``\bigcup_i a_i$ is obtained by applying $f$ to its original enumeration, and the incidence masks are unchanged. Thus the incidence word of $(f``a_i)_{i<m}$ is exactly $w$. On the other hand, the given finite equivalences and Lemma~\ref{lem:incidence} make that word tail-equivalent to the word of $(a_{\pi_f(i)})_{i<m}$, which is $\pi_f^{-1}\cdot w$. Hence every $\pi_f$ belongs to $H_w$ (use $\Gamma=S_m$). Theorem~\ref{thm:cyclic} makes $H_w$ cyclic, and every subgroup of a cyclic group is cyclic. The $V_{\lambda+1}$-embeddings used here fit this statement because they are strictly increasing on ordinals and map countable sets to their pointwise images.
+\end{proof}
+
+This does not contradict Lemma~\ref{lem:permutation}: that lemma is free to choose a different tuple for each permutation. The corollary explains why amalgamating those realizations on one tuple cannot turn the necessary elementwise fixed-point test into an unjustified whole-group fixed-point test.
+
+\subsection{Constructing the equivariant rule}
+
+\begin{lemma}[Equivariant transport from orbit representatives]\label{lem:transport}
+Let a finite group $\Gamma$ act on a set $X$ and on a finite nonempty set $F$. There is a $\Gamma$-equivariant map $X\to F$ if every point stabilizer in $X$ has a fixed point in $F$ and one can choose a representative of every $\Gamma$-orbit in $X$.
+\end{lemma}
+
+\begin{proof}
+For each orbit choose $x_0$ and choose $f_0\in F^{\Stab(x_0)}$. Put $\ell(gx_0)=gf_0$. If $gx_0=hx_0$, then $h^{-1}g$ fixes $x_0$ and hence fixes $f_0$, so $gf_0=hf_0$. Thus $\ell$ is well defined. The identity $\ell(k(gx_0))=kgf_0=k\ell(gx_0)$ proves equivariance.
+\end{proof}
+
+For definability, it is not enough merely to invoke Choice on a potentially high-rank collection of tuples. The next proof chooses representatives using only a well-order of real codes, which has very low rank.
+
+\begin{theorem}[Low-rank positive construction]\label{thm:positive}
+There is a single set parameter $p\in V_{\omega+10}$ with the following property. For every uncountable cardinal $\lambda$ of cofinality $\omega$, every finite $\Gamma\le S_m$, and every finite $\Gamma$-set $F$ satisfying $\CF(\Gamma,F)$, there is an admissible rule
+\[
+ L_{\lambda,\Gamma,F}:D_m(\lambda)\to F
+\]
+which is uniformly definable from $p$, $\lambda$, and the finite action data. In particular it belongs to $\OD_p\subseteq\OD_{V_\lambda}$.
+\end{theorem}
+
+\begin{proof}
+Choose, using Choice, a well-order $\prec$ of $\Pow(\omega)$. Let $p$ code this relation. With ordinary pair coding, $p\in V_{\omega+10}$. Fix once and for all explicit natural-number codings of finite masks and of their infinite sequences by reals. The order $\prec$ then well-orders the codes of all words, uniformly in $m$.
+
+For a tail class $x=[w]_{\rm tail}$, consider the following nonempty collection of actual words:
+\[
+ \mathcal O_x=\{v\in\W_m:\exists g\in\Gamma\quad
+                  [v]_{\rm tail}=g\cdot x\}.
+\]
+Let $v_x$ be its $\prec$-least coded word. This choice depends only on the $\Gamma$-orbit of $x$, not on $w$ or on which element of the orbit is used. By Theorem~\ref{thm:cyclic}, $H_{v_x}$ is cyclic. If $h$ is a generator, $\CF(\Gamma,F)$ gives a label fixed by $h$, and that label is fixed by all of $H_{v_x}$. Let $f_x$ be the least natural-number label in $F^{H_{v_x}}$.
+
+Choose any $g\in\Gamma$ with $x=g\cdot[v_x]_{\rm tail}$ and define
+\begin{equation}\label{eq:constructedell}
+ \ell(x)=g\cdot f_x.
+\end{equation}
+If another $h$ has the same property, $h^{-1}g\in H_{v_x}$, so $g f_x=h f_x$. Thus the value is independent of the choice of $g$. For $k\in\Gamma$, the class $kx$ has the same orbit representative and same $f_x$, and $kx=kg[v_x]_{\rm tail}$. Hence $\ell(kx)=k\ell(x)$.
+
+Set
+\[
+ L_{\lambda,\Gamma,F}(\vec a)=\ell([w_{\vec a}]_{\rm tail}).
+\]
+Lemma~\ref{lem:incidence} proves both finite-modification invariance and coordinate equivariance. Every choice in the definition was a least element for $p$ or for a finite natural-number order. All remaining operations are explicit set-theoretic definitions, uniform in the indicated parameters. The same $p$ works for every $m$, $\Gamma$, $F$, and $\lambda$ under discussion.
+\end{proof}
+
+\Needspace{9\baselineskip}
+\begin{proposition}[Exact criterion already on the word quotient]\label{prop:wordcriterion}
+For finite $\Gamma\le S_m$ and finite nonempty $\Gamma$-set $F$, the following are equivalent in $\ZFC$:
+\begin{enumerate}
+\item $\CF(\Gamma,F)$.
+\item There is a $\Gamma$-equivariant map $\W_m/{\Tail}\to F$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Sufficiency is the construction of $\ell$ in Theorem~\ref{thm:positive}. For necessity, fix $\pi\in\Gamma$ and list its cycles $C_t$ as in Lemma~\ref{lem:permutation}. Define a singleton-mask word by
+\begin{equation}\label{eq:periodicrealization}
+ w(sn+t)=\{\pi^n(i_{t,0})\}
+       \qquad(n<\omega,\ t<s).
+\end{equation}
+Every label occurs infinitely often, and occurrences of one singleton label separate it from every other label. Thus $w\in\W_m$. It is periodic with period dividing $s\lcm(\ell_0,\ldots,\ell_{s-1})$, and
+\[
+ w(k+s)=\pi\cdot w(k)\qquad(k<\omega).
+\]
+It follows that $\pi$ fixes $[w]_{\rm tail}$. Any equivariant map sends this class to a $\pi$-fixed label. Since $\pi$ was arbitrary, $\CF(\Gamma,F)$ holds.
+\end{proof}
+
+\section{The exact finite-label classification}\label{sec:classification}
+
+\begin{theorem}[Classification at an ultraexacting cardinal]\label{thm:classification}
+Let $\lambda$ be ultraexacting, let $\Gamma\le S_m$ be finite, and let $F$ be a nonempty finite $\Gamma$-set in the fixed finite presentation. Then
+\begin{equation}\label{eq:classification}
+ \boxed{\quad
+ \exists L\in\OD_{V_\lambda}\text{ admissible }D_m(\lambda)\to F
+ \quad\Longleftrightarrow\quad
+ \CF(\Gamma,F).
+ \quad}
+\end{equation}
+If there is an ordinal-definable well-order of the reals, in particular if $V_\lambda\subseteq\HOD$, the same equivalence holds with $\OD$ in place of $\OD_{V_\lambda}$.
+\end{theorem}
+
+\begin{proof}
+Necessity is Theorem~\ref{thm:necessary}. Ultraexactingness provides an $e$ as in Input~\ref{in:predicate}; Lemma~\ref{lem:critical} implies that $\lambda$ has cofinality $\omega$. It is an uncountable limit cardinal. Thus Theorem~\ref{thm:positive} supplies the converse, with a parameter $p\in V_{\omega+10}\subseteq V_\lambda$.
+
+If a well-order of real codes is OD, the construction can use that well-order and all the resulting definitions are OD. Under $V_\lambda\subseteq\HOD$, the parameter $p$ chosen in Theorem~\ref{thm:positive} belongs to HOD and hence is itself ordinal definable. Substituting a definition of $p$ into the definition of $L$ removes the set parameter. OD necessity is a special case of the already proved necessity.
+\end{proof}
+
+\begin{remark}[Definability and unrestricted existence]
+Under Choice, the set $Q_\lambda$ can be well-ordered, and there are unrestricted equivariant rules on its distinct ordered tuples for every nonempty finite target. Indeed, the coordinate action on an ordered tuple of distinct classes is free, so one can choose an orbit representative and transport an arbitrary label. The obstruction in \eqref{eq:classification} concerns low-rank definability. Its positive construction succeeds because it only needs a well-order of \emph{real-coded incidence patterns}, not a well-order of $Q_\lambda$.
+\end{remark}
+
+\begin{corollary}[Forbidden selectors and orientations]\label{cor:forbidden}
+At an ultraexacting $\lambda$ there is no $\OD_{V_\lambda}$ selector of a nonempty proper $r$-element subset of every $m$-element subset of $Q_\lambda$, for $1\le r<m$. There is also no $\OD_{V_\lambda}$ assignment of one of the two cyclic orientations to every unordered triple from $Q_\lambda$.
+\end{corollary}
+
+\begin{proof}
+An $r$-selector on unordered $m$-sets gives an admissible rule with target $F=[m]^r$ under the natural $S_m$-action. An $m$-cycle fixes no nonempty proper subset, so $\CF(S_m,F)$ fails. A cyclic orientation of a triple is represented by the two-point sign action of $S_3$, and a transposition has no fixed label in that action. Apply Theorem~\ref{thm:classification}.
+\end{proof}
+
+\begin{proposition}[Nontrivial finite targets exist exactly for noncyclic groups]\label{prop:noncyclic}
+A finite group $\Gamma$ admits a finite $\Gamma$-set $F$ such that $\CF(\Gamma,F)$ holds but $F^\Gamma=\varnothing$ if and only if $\Gamma$ is noncyclic.
+\end{proposition}
+
+\begin{proof}
+If $\Gamma$ is cyclic with generator $g$, any $g$-fixed point is fixed by the entire group. Conversely suppose $\Gamma$ is noncyclic and put
+\[
+ F=\coprod_{C\le\Gamma\,\text{cyclic}}\Gamma/C
+\]
+with the usual left action on each coset space. Every cyclic subgroup $C$ is proper, so each orbit has more than one point and no point is globally fixed. For $g\in\Gamma$, the coset $\langle g\rangle$ in the component $\Gamma/\langle g\rangle$ is fixed by $g$. Thus the cyclic fixed-point condition holds. The group can be embedded in a finite symmetric group, for example by its regular action, to apply the classification.
+\end{proof}
+
+\section{The five-label choice-or-orientation rule}\label{sec:hybrid}
+
+\subsection{The action and its mathematical meaning}
+
+Let
+\begin{equation}\label{eq:F5}
+ F_5=\{0,1,2\}\ \dot\cup\ \{+,-\}.
+\end{equation}
+The group $S_3$ acts naturally on the first summand; on the second, even permutations fix both signs and odd permutations exchange them. The symbols $+$ and $-$ can be coded as the labels $3$ and $4$.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Permutation type & Fixed natural labels & Fixed orientation labels \\
+\midrule
+Identity & All three & Both \\
+Transposition & The unique unmoved label & None \\
+Three-cycle & None & Both \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Therefore $\CF(S_3,F_5)$ holds, while $F_5^{S_3}=\varnothing$.
+
+\begin{theorem}[Positive mixed rule, negative pure rules]\label{thm:hybrid}
+At every ultraexacting $\lambda$ there is a $\OD_{V_\lambda}$ rule which, for every unordered triple $B\in[Q_\lambda]^3$, returns exactly one of the following two types of output:
+\begin{enumerate}
+\item a distinguished member of $B$;
+\item one of the two cyclic orientations of $B$.
+\end{enumerate}
+There is no such low-rank-definable rule restricted to the first type on every triple, and none restricted to the second type on every triple. If $V_\lambda\subseteq\HOD$, the mixed rule can be chosen OD.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:classification} to $F_5$. For an ordered representative tuple $\vec a$ of the classes $B=\{q_0,q_1,q_2\}$, a natural label $i$ specifies $q_i$, and the labels $+$ and $-$ specify the cyclic order of $(q_0,q_1,q_2)$ and its reversal. To keep the output types disjoint, code them as tagged pairs: $(0,q_i)$ for a distinguished member and $(1,o)$ for an orientation $o$.
+
+Finite-modification invariance makes the output independent of the representatives of the $q_i$. If the ordering of the triple changes by the left action of $g$, the new $i$-th class is $q_{g^{-1}(i)}$. A natural output label changes from $i$ to $g(i)$, so the selected class remains $q_i$. An even reordering preserves cyclic orientation; an odd reordering reverses it and simultaneously exchanges the two sign labels. Hence the resulting tagged output on the unordered triple is independent of its ordering.
+
+Conversely, such a tagged rule on unordered triples determines an equivariant label on every ordered tuple. The nonexistence of each pure rule follows from Corollary~\ref{cor:forbidden}. The OD conclusion under $V_\lambda\subseteq\HOD$ is the final assertion of Theorem~\ref{thm:classification}.
+\end{proof}
+
+The result answers the specific five-label question in the supplied synthesis in two precise senses: positively with one low-rank set parameter in every ultraexacting universe, and positively with ordinal parameters alone after the coding of Input~\ref{in:coding}. We do not assert that bare ultraexactingness alone provides an OD well-order of the reals or an OD mixed rule.
+
+\begin{proposition}[Five labels are minimal]\label{prop:five}
+If $F$ is a finite $S_3$-set with $\CF(S_3,F)$ and no global fixed point, then $|F|\ge5$. If $|F|=5$, its action is isomorphic to the action on $F_5$.
+\end{proposition}
+
+\begin{proof}
+A three-cycle must fix some point $x$. Its stabilizer contains a subgroup of order three. Since a globally fixed point is excluded, the stabilizer is a proper subgroup of $S_3$; it must therefore have order three. The orbit of $x$ has size two and is the sign orbit.
+
+A transposition must fix some point $y$. Its stabilizer is proper and contains a subgroup of order two, so it has order two. The orbit of $y$ has size three and is the natural orbit. These are different orbits, because their sizes differ. Thus $F$ has at least $2+3=5$ points. Equality leaves exactly these two transitive components; the order-three subgroup is unique and the order-two subgroups are conjugate. The corresponding actions are unique up to isomorphism.
+\end{proof}
+
+\subsection{Both output types occur on many triples}
+
+Merely observing that no pure rule exists shows that a mixed rule must use both types at least once. High critical points give a more quantitative conclusion.
+
+\begin{theorem}[Abundance of both branches]\label{thm:bothbranches}
+Let $\lambda$ be ultraexacting and let $L:D_3(\lambda)\to F_5$ be any admissible rule in $\OD_{V_\lambda}$. On at least $\lambda$ distinct unordered triples of classes, its output has the distinguished-member type. On at least $\lambda$ distinct unordered triples, its output has the orientation type.
+\end{theorem}
+
+\begin{proof}
+Fix one of the two desired types. For the orientation type use $\pi=(0\,1\,2)$; for the distinguished-member type use $\pi=(0\,1)$. In either case, the $\pi$-fixed labels in $F_5$ belong entirely to that type.
+
+Suppose the set of unordered triples producing the desired type has cardinality $\theta<\lambda$. Choose an embedding $e$ preserving the graph predicate of $L$ as in Theorem~\ref{thm:interface}, with critical point $\kappa>\theta$. Decompose $\pi$ into its $s$ cycles, as in Lemma~\ref{lem:permutation}. For each $u<\kappa$ and cycle index $t<s$, choose the offset
+\[
+ d_{u,t}=s\cdot u+t<\kappa
+\]
+(ordinal multiplication is intended). These offsets are pairwise distinct and fixed by $e$. For this $u$, replace $t$ in \eqref{eq:criticalsplit} by $d_{u,t}$ and call the resulting tuple $\vec a^{\,u}$. All these sets are cofinal $\omega$-sets. Their supports, over every $u$ and every coordinate, are pairwise disjoint: levels of the critical sequence are separated, and within each level the offsets are distinct.
+
+The calculation in Theorem~\ref{thm:necessary} forces $L(\vec a^{\,u})$ to be $\pi$-fixed, and hence to have the chosen type. The $\kappa$ resulting unordered triples are distinct, since even their constituent equivalence classes are disjoint across the construction. This contradicts the assumed bound $\theta<\kappa$. Apply the same argument to the other type.
+\end{proof}
+
+\begin{remark}[The ordinal offsets really stay below the critical point]
+For finite positive $s$ and $u<\kappa$, the ordinal $s\cdot u+t$ has cardinality below the uncountable initial ordinal $\kappa$, and hence is below $\kappa$. For every $n$, adding such an offset to $\kappa_n$ stays below the strictly larger cardinal $\kappa_{n+1}$. Thus the proof does not assume that ordinary ordinal addition is commutative.
+\end{remark}
+
+\section{The sharp transversal obstruction}\label{sec:transversals}
+
+\subsection{Fibre size and the union construction}
+
+\begin{definition}[Representative transversals]
+A set $T\subseteq D_\lambda$ is \emph{complete} if $T\cap[a]\ne\varnothing$ for every $a\in D_\lambda$. Its fibre over $[a]$ is $T\cap[a]$. We call a fibre \emph{full-sized} if its cardinality is $\lambda$; this does not assert that it contains every member of $[a]$.
+\end{definition}
+
+\begin{lemma}[Each finite-difference class has size $\lambda$]\label{lem:classsize}
+For every $a\in D_\lambda$,
+\[
+ [a]=\{a\triangle s:s\in[\lambda]^{<\omega}\},\qquad |[a]|=\lambda.
+\]
+\end{lemma}
+
+\begin{proof}
+A finite modification of a cofinal $\omega$-subset of $\lambda$ remains cofinal and has order type $\omega$. The map $s\mapsto a\triangle s$ is injective, since taking the symmetric difference with $a$ is its inverse. Its range is exactly the displayed class by definition of $\Efin$. Finally $|[\lambda]^{<\omega}|=\lambda$ for an infinite cardinal $\lambda$ in $\ZFC$.
+\end{proof}
+
+For a predicate $T\subseteq D_\lambda$ and $a\in D_\lambda$, define
+\begin{equation}\label{eq:fibreunion}
+ U_T(a)=\bigcup\{b\in D_\lambda:b\Efin a\text{ and }b\in T\}.
+\end{equation}
+Unlike the fibre itself, $U_T(a)$ is a subset of $\lambda$ and hence is an element of $V_{\lambda+1}$.
+
+\begin{lemma}[Definability and equivariance of the fibre union]\label{lem:union}
+If
+\[
+ e:(V_{\lambda+1},\in,T)\longrightarrow(V_{\lambda+1},\in,T)
+\]
+is elementary, then
+\begin{equation}\label{eq:unionequiv}
+ e(U_T(a))=U_T(e(a))\qquad(a\in D_\lambda).
+\end{equation}
+If $a\Efin a'$ then $U_T(a)=U_T(a')$.
+\end{lemma}
+
+\begin{proof}
+Inside the expanded rank segment, $U_T(a)$ is the unique $u\subseteq\lambda$ satisfying
+\[
+ \forall\xi<\lambda\quad
+ \bigl[\xi\in u\ \longleftrightarrow\
+   \exists b\,(b\in D_\lambda\ \wedge\ T(b)\ \wedge\ b\Efin a
+                                      \ \wedge\ \xi\in b)\bigr].
+\]
+The predicates used here are absolute to the rank segment: increasing $\omega$-enumerations of subsets of $\lambda$ have graphs in $V_{\lambda+1}$; cofinality of a given subset is expressed by ordinal quantifiers below $\lambda$; finite difference is witnessed by finite sets and finite enumerations. The displayed defining set $u$ exists in the segment because it is a subset of $\lambda$.
+
+Elementarity, fixedness of $\lambda$, and uniqueness of $u$ prove \eqref{eq:unionequiv}. If $a\Efin a'$, the conditions $b\Efin a$ and $b\Efin a'$ are equivalent, so the same defining union is obtained.
+\end{proof}
+
+\begin{theorem}[Local empty-or-full fibre alternative]\label{thm:localfibre}
+Let $e$ preserve $T\subseteq D_\lambda$ as in Lemma~\ref{lem:union}, and let its critical point be $\kappa$. For each $t<\kappa$ put
+\[
+ a_t=\{\kappa_n+t:n<\omega\}.
+\]
+The classes $[a_t]$, $t<\kappa$, are pairwise distinct, and each satisfies
+\begin{equation}\label{eq:emptyfull}
+ |T\cap[a_t]|=0\quad\text{or}\quad |T\cap[a_t]|=\lambda.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Each $a_t$ is cofinal of order type $\omega$. Different offsets give disjoint sets, since $\kappa_n+t$ remains in the interval $[\kappa_n,\kappa_{n+1})$ and ordinal addition by a fixed left summand is strictly increasing in the right argument. Hence their classes are distinct. As $t<\kappa$ is fixed,
+\[
+ e(a_t)=\{\kappa_{n+1}+t:n<\omega\}=a_t\setminus\{\kappa_0+t\}.
+\]
+By Lemma~\ref{lem:union}, $e(U_T(a_t))=U_T(a_t)$.
+
+Suppose the fibre is nonempty. It contains a cofinal set, so $U_T(a_t)$ is cofinal in $\lambda$. Lemma~\ref{lem:fixedcofinal} gives $|U_T(a_t)|=\lambda$. If $\mu=|T\cap[a_t]|<\lambda$, this union of $\mu$ countable sets would instead have cardinality at most $\max(\mu,\omega)<\lambda$. This is impossible. On the other hand, the fibre is a subset of $[a_t]$, whose size is $\lambda$ by Lemma~\ref{lem:classsize}. Thus its size is exactly $\lambda$.
+\end{proof}
+
+\begin{remark}[Why the finite proof could not simply be reused]
+An embedding need not permute an infinite fibre, and an injective map of a countable fibre need not have a finite orbit. The proof above uses neither surjectivity on the fibre nor a periodic representative. It uses a canonically defined union which is an actual fixed element of the embedding's rank domain.
+\end{remark}
+
+\subsection{Many maximal fibres and the exact width}
+
+For any $T\subseteq D_\lambda$ define sets of equivalence classes
+\begin{align}
+ \Full(T)&=\{q\in Q_\lambda:|T\cap q|=\lambda\},\\
+ \Empty(T)&=\{q\in Q_\lambda:T\cap q=\varnothing\}.
+\end{align}
+These sets are used externally; they are not treated as elements of $V_{\lambda+1}$.
+
+\begin{theorem}[At least $\lambda$ extreme fibres]\label{thm:manyfull}
+Let $\lambda$ be ultraexacting and $T\subseteq D_\lambda$ belong to $\OD_{V_\lambda}$. Then
+\[
+ |\Full(T)\cup\Empty(T)|\ge\lambda.
+\]
+Consequently at least one of $|\Full(T)|$ and $|\Empty(T)|$ is at least $\lambda$. In particular, if $|\Empty(T)|<\lambda$, and hence if $T$ is complete, then
+\begin{equation}\label{eq:manyfull}
+ |\Full(T)|\ge\lambda.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose instead that $\theta=|\Full(T)\cup\Empty(T)|<\lambda$. Choose $p\in V_\lambda$ with $T\in\OD_p$. Theorem~\ref{thm:interface}, applied directly to the unary predicate $T$, gives a preserving embedding with critical point $\kappa>\theta$. Theorem~\ref{thm:localfibre} produces $\kappa$ pairwise distinct classes in $\Full(T)\cup\Empty(T)$, contradicting its cardinality $\theta$.
+
+The union of two sets each of cardinality below an infinite cardinal $\lambda$ again has cardinality below $\lambda$: the maximum of two such cardinals is below $\lambda$, whether or not $\lambda$ is regular. This proves the remaining assertions.
+\end{proof}
+
+\begin{corollary}[Pointwise-small complete transversals are inconsistent]\label{cor:thin}
+The following theory is inconsistent:
+\begin{equation}\label{eq:conditionalinconsistency}
+ \ZFC+\UEx(\lambda)+
+ \left\{\begin{array}{l}
+  T\subseteq D_\lambda,
+  \quad T\in\OD_{V_\lambda},\\[-1pt]
+  0<|T\cap[a]|<\lambda\quad\text{for every }a\in D_\lambda.
+ \end{array}\right.
+\end{equation}
+No common bound below $\lambda$ on the fibre sizes is assumed. In particular, no such complete transversal can have all fibres countable, or all fibres finite.
+\end{corollary}
+
+\begin{proof}
+Completeness makes $\Empty(T)=\varnothing$. Theorem~\ref{thm:manyfull} gives at least $\lambda$ classes with fibre size $\lambda$, contradicting the strict upper bound on every fibre.
+\end{proof}
+
+\begin{definition}[Definable transversal width]
+For a complete $T\subseteq D_\lambda$, let
+\[
+ \width(T)=\sup\{|T\cap q|:q\in Q_\lambda\},
+\]
+where the supremum is taken among cardinals. Define
+\[
+ \width_{\OD_{V_\lambda}}(Q_\lambda)
+   =\min\{\width(T):T\text{ complete and }T\in\OD_{V_\lambda}\}.
+\]
+\end{definition}
+
+\begin{corollary}[Exact threshold]\label{cor:width}
+At an ultraexacting cardinal,
+\[
+ \width_{\OD_{V_\lambda}}(Q_\lambda)=\lambda.
+\]
+In fact, every complete $T\in\OD_{V_\lambda}$ attains this width on at least $\lambda$ classes. The same assertions hold with $\OD$ in place of $\OD_{V_\lambda}$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:manyfull} supplies the lower bound and attainment. The ordinal-definable set $T=D_\lambda$ is complete and has every fibre of size $\lambda$, by Lemma~\ref{lem:classsize}. This supplies the upper bound and shows that the collection over which the minimum is taken is nonempty.
+\end{proof}
+
+\begin{remark}[Two distinct sharpness statements]
+The cardinal threshold $\lambda$ is exact: replacing $<\lambda$ in Corollary~\ref{cor:thin} by $\le\lambda$ permits the trivial complete transversal $D_\lambda$. The assertion that at least $\lambda$ fibres are full-sized is a lower bound; we do not claim it is the optimal possible bound on the \emph{number} of full-sized fibres.
+\end{remark}
+
+\subsection{Small definable families and enriched embeddings}
+
+\begin{corollary}[No small definable family of single-representative transversals]\label{cor:family}
+At an ultraexacting $\lambda$, there is no nonempty
+\[
+ \mathscr T\in\OD_{V_\lambda},\qquad |\mathscr T|<\lambda,
+\]
+such that every member $S\in\mathscr T$ meets each class of $Q_\lambda$ in exactly one representative. The individual $S$ need not themselves be definable.
+\end{corollary}
+
+\begin{proof}
+The union $T=\bigcup\mathscr T$ belongs to $\OD_{V_\lambda}$ because it is uniquely defined from $\mathscr T$. It is complete, and for every $a$,
+\[
+ 1\le |T\cap[a]|\le |\mathscr T|<\lambda.
+\]
+This contradicts Corollary~\ref{cor:thin}.
+\end{proof}
+
+More generally, if $0<|\mathscr T|=\nu<\lambda$ and every $S\in\mathscr T$ is complete with every fibre bounded by the same $\mu<\lambda$, their union has fibres bounded by $\nu\mu<\lambda$ and is equally impossible when the family is low-rank definable. The common bound matters: because $\cf(\lambda)=\omega$, a countable collection of separate bounds below $\lambda$ can have supremum $\lambda$. One must not replace that argument by the false assertion that an arbitrary countable union of $<\lambda$-sized sets has size $<\lambda$.
+
+\begin{corollary}[A local Icarus-type obstruction]\label{cor:icarus}
+Let $\lambda$ be an uncountable limit cardinal of cofinality $\omega$. Suppose $T\subseteq D_\lambda$ is complete and every fibre has size below $\lambda$. There is no elementary embedding
+\[
+ e:(V_{\lambda+1},\in,T)\longrightarrow(V_{\lambda+1},\in,T)
+ \quad\text{with }\crit(e)<\lambda.
+\]
+In particular, in an ambient universe satisfying $\ZFC$, there is no elementary embedding
+\[
+ j:L(V_{\lambda+1},T)\longrightarrow L(V_{\lambda+1},T)
+\]
+with $\crit(j)<\lambda$ and $j(T)=T$.
+\end{corollary}
+
+\begin{proof}
+The first assertion is immediate from Theorem~\ref{thm:localfibre}: completeness makes its critical-offset fibre nonempty, hence of size $\lambda$.
+
+For the second, the inner model contains the actual $V_{\lambda+1}$ as a set. It is transitive, and its rank segment through $\lambda+1$ is the ambient one. The equation $j(T)=T$, together with completeness, fixes $\lambda$: the nonempty set $T$ contains a cofinal subset of $\lambda$, so $\sup(\bigcup T)=\lambda$. This equation defines $\lambda$ from $T$ in the inner model. Thus $j(\lambda)=\lambda$. Restriction and relativization of formulas give the forbidden self-embedding of $(V_{\lambda+1},\in,T)$.
+\end{proof}
+
+\begin{remark}[Scope of the last corollary]
+The fixedness requirement $j(T)=T$ is essential to the statement. Nothing here refutes bare $\Izero$, $\Izero^\#$, or an arbitrary enriched inner model. Also, Corollary~\ref{cor:family} concerns families of \emph{representative transversals}; it does not settle the synthesis's separate question about countable families of finite-subset selectors $[Q]^n\to[Q]^r$.
+\end{remark}
+
+\section{An \texorpdfstring{$\Izero$}{I0}-equiconsistent enrichment}\label{sec:consistency}
+
+\begin{definition}[The enriched theory]\label{def:T5}
+Let $\Tfive$ be $\ZFC$ together with the existence of a cardinal $\lambda$ satisfying the following properties:
+\begin{enumerate}
+\item $\lambda$ is ultraexacting and $V_\lambda\subseteq\HOD$.
+\item There is an ordinal-definable choice-or-orientation rule on all unordered triples of $Q_\lambda$ as in Theorem~\ref{thm:hybrid}.
+\item There is no $\OD_{V_\lambda}$ rule which always selects a member of each triple, no such rule which always orients each triple, and no $\OD_{V_\lambda}$ binary choice selector on $Q_\lambda$.
+\item Every complete $T\subseteq D_\lambda$ in $\OD_{V_\lambda}$ has at least $\lambda$ full-sized fibres. In particular its exact definable transversal width is $\lambda$.
+\end{enumerate}
+\end{definition}
+
+The second clause is the positive enrichment absent from the supplied synthesis. The third and fourth clauses show that the enrichment does not accidentally restore definable choice at the quotient level. By Theorem~\ref{thm:bothbranches}, both types of the mixed output must occur on at least $\lambda$ triples.
+
+\begin{theorem}[Relative consistency calibration]\label{thm:equiconsistency}
+\begin{equation}\label{eq:equiconsistency}
+ \Con(\Tfive)
+ \quad\Longleftrightarrow\quad
+ \Con(\ZFC+\exists\lambda\,\UEx(\lambda))
+ \quad\Longleftrightarrow\quad
+ \Con(\ZFC+\Izero).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The implication from left to middle is obtained by forgetting the extra axioms. The equivalence between middle and right is Input~\ref{in:equiconsistency}.
+
+For the remaining implication, begin with the consistency of $\ZFC$ plus an ultraexacting cardinal. Input~\ref{in:coding} gives a forcing interpretation of a model in which the cardinal remains ultraexacting and $V_\lambda\subseteq\HOD$. In that extension Theorem~\ref{thm:classification}, applied to $F_5$, constructs the OD mixed rule of clause (2). Corollary~\ref{cor:forbidden}, with $m=3$ and then $m=2$, gives all assertions of clause (3). Theorem~\ref{thm:manyfull} and Corollary~\ref{cor:width} give clause (4). Thus the forcing forces every clause of $\Tfive$, proving its relative consistency.
+
+This is an argument about formal consistency and a forcing interpretation. It does not assume that mere $\Con(\ZFC+\Izero)$ provides a transitive model of that theory. When one starts with an actual suitable model and a generic extension, the same proof is read internally there; the arithmetized relative-consistency implication follows by the usual syntactic forcing argument.
+\end{proof}
+
+\begin{corollary}[Simultaneous OD classification]\label{cor:allactions}
+The theory consisting of $\ZFC$ and an ultraexacting $\lambda$ with $V_\lambda\subseteq\HOD$, together with the OD version of \eqref{eq:classification} for every finite action, is equiconsistent with $\ZFC+\Izero$.
+\end{corollary}
+
+\begin{proof}
+The construction is uniform in all the finite action data, and the proof of Theorem~\ref{thm:classification} holds in the same coded extension for every such action. There is no need for a separate forcing or a separately chosen high-rank parameter for each action. The reverse consistency implication again forgets the extra clauses.
+\end{proof}
+
+\begin{assessment}{What is new in the consistency statement}
+The base equivalence between $\Izero$ and ultraexactingness is the theorem of Aguilera--Bagaria--Goldberg--L\"ucke, not a new theorem of this report. The additional content here is the proved compatibility of an explicit, nontrivial OD mixed symmetry rule with strong failures of definable choice, and the exact finite-action classification and transversal bound supporting that compatibility. No increase or decrease in the known consistency strength is claimed.
+\end{assessment}
+
+\section{Proof audit, limitations, and remaining questions}\label{sec:limits}
+
+\subsection{Logical checks}
+
+The proofs distinguish three levels of objects. Elements $a\in D_\lambda$ and the fibre union $U_T(a)$ lie in $V_{\lambda+1}$. Graphs of labelling rules and subsets $T\subseteq D_\lambda$ are used as \emph{predicates} on that rank, after flat coding when needed. Equivalence classes, entire fibres, quotient sets, and families of rules are external sets in $V$ and are never fed directly to an embedding whose domain is only $V_{\lambda+1}$.
+
+The positive and negative arguments also use different kinds of choice. The positive rule chooses least real-coded patterns under a well-order $p$ of low rank. The negative results prohibit ordinal-and-low-rank definitions on the much higher-rank quotient, not Choice in $V$. Indeed, unrestricted one-representative transversals exist in $V$. Their existence is compatible with their failure to belong to $\OD_{V_\lambda}$.
+
+No large-cardinal iterability assumption is used in the new combinatorial or transversal proofs. Iterates $e^n(\kappa)$ are ordinary finite iterates of a given self-map on ordinals in its domain. The finite cycle proofs do not construct a well-founded direct limit of iterated ultrapowers.
+
+\subsection{Finite computational checks}
+
+The archive includes \nolinkurl{finite_symmetry_audit.py}, a standard-library Python program, and its recorded output. It checks periodic incidence words, their tail stabilizers, the transported five-label rule, and the periodic realization of finite permutations. The run recorded here examines all mask words of periods one through five for $m=3$ and every permutation in $S_m$ for $2\le m\le7$.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Audit quantity & Recorded value \\
+\midrule
+Raw finite period words & $19{,}607$ \\
+Admissible period words & $17{,}484$ \\
+Distinct admissible tail patterns & $3{,}619$ \\
+Equivariance checks & $21{,}714$ \\
+Rotation-invariance checks & $17{,}478$ \\
+Permutation-realization checks & $5{,}912$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All checks passed. The stabilizer orders in the distinct tested patterns were one ($3{,}588$ patterns), two ($27$), and three ($4$); all were cyclic. These tests can catch sign, relabelling, and tail-offset errors. They cannot establish Theorem~\ref{thm:cyclic} for arbitrary infinite words, verify the imported large-cardinal inputs, or certify a consistency proof. Those claims rest on the written mathematical arguments.
+
+\subsection{Unresolved extensions}
+
+\textbf{OD without the coding hypothesis.} Theorem~\ref{thm:positive} always uses only one very low-rank parameter. Under an OD well-order of the reals it is OD, and Input~\ref{in:coding} supplies a consistency setting where this holds. This report does not decide whether bare ultraexactingness implies an OD mixed rule without that additional hypothesis. A different construction might use less choice than a well-order of the reals.
+
+\textbf{Ordinary exactingness.} Sufficiency of the cyclic fixed-point condition is a ZFC theorem and applies whenever $\cf(\lambda)=\omega$. Necessity here uses expanded $V_{\lambda+1}$ self-embeddings supplied by ultraexactingness. Replacing that hypothesis by ordinary exactingness requires a different interface; it is not obtained by deleting the prefix ``ultra'' from these proofs.
+
+\textbf{Countable families of finite-subset selectors.} The new small-family corollary concerns representative transversals. It does not resolve whether a countably infinite low-rank-definable family of $n$-to-$r$ selectors can exist on $Q_\lambda$. The synthesis's finite-family amplification and the present fibre-union argument address different objects.
+
+\textbf{Other finite-change structures.} The cyclic stabilizer proof depends on a one-dimensional index group, $\Z$, together with eventual separation of distinct labels. For multi-parameter tails, stabilizers might instead be quotients of subgroups of $\Z^d$ or other shift groups. This suggests a route to different exact finite-symmetry criteria, but no such extension is claimed here.
+
+\textbf{The original high-strength frontier.} Neither the cover-exacting problem above a strongly compact cardinal nor the consistency of standard rank-into-rank hypotheses is decided by this report. The actual inconsistency proved is the explicit conjunction in Corollary~\ref{cor:thin}, and the actual positive consistency statement is Theorem~\ref{thm:equiconsistency}.
+
+\appendix
+\section{Rank ledger and definability details}\label{app:rank}
+
+For reference, the proof uses the following rank bounds. Bounds are deliberately stated with slack where no optimal finite offset is needed.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{.35\textwidth}Y@{}}
+\toprule
+Object & Rank-domain justification \\
+\midrule
+$a\subseteq\lambda$ & $a\in V_{\lambda+1}$; if cofinal, $\rank(a)=\lambda$ \\
+Graph of $h:\tau\to\lambda$, $\tau\le\lambda$ & Every pair has rank below the limit ordinal $\lambda$; the graph is in $V_{\lambda+1}$ \\
+$\fc(x_0,\ldots,x_{r-1})$ & A subset of $V_\lambda$, even when some $x_i$ have rank $\lambda$ \\
+$A_L$, $T$, and $B$ & Subsets of $V_{\lambda+1}$, used as unary predicates, not as domain elements \\
+$U_T(a)$ & A subset of $\lambda$, hence an actual domain element \\
+$[a]$, $T\cap[a]$, and $Q_\lambda$ & May lie above the domain; no value $e([a])$ or $e(T\cap[a])$ is used \\
+Real-code well-order $p$ & $p\in V_{\omega+10}\subseteq V_\lambda$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+To see the enumeration bound explicitly, use Kuratowski pairs. For $\xi,\eta<\lambda$, the pair $\langle\xi,\eta\rangle$ has rank at most $\max(\xi,\eta)+2<\lambda$. A graph made from such pairs is therefore a subset of $V_\lambda$ even when its ranks are unbounded in $\lambda$. This is why the graphs needed to discuss order type are present at $V_{\lambda+1}$, while a pair having a \emph{cofinal subset of $\lambda$ itself} as a coordinate need not be present.
+
+The predicate $\OD_p$ is first-order definable using reflected definitions and the satisfaction relation for set rank segments. Statements quantifying over OD rules, and the finite-action classification uniformly over finite codes, can thus be expressed in the ordinary set-theoretic language. The use of the standard $\Izero$ consistency statement follows the formalization of \cite{abgl}; it does not require a truth predicate for the entire universe.
+
+\section{Reproducing the finite audit}\label{app:audit}
+
+With Python 3.10 or later, run in the archive directory:
+\begin{quote}\ttfamily\small
+python3 finite\_symmetry\_audit.py --max-period 5\newline
+\hspace*{1em}--output audit\_results.json
+\end{quote}
+The line break above is typographical; the command can be entered on one line. The program has no third-party dependencies. The elapsed time field is machine-dependent; the check counts and finite examples are deterministic for the stated parameter.
+
+For periodic words, two infinite repetitions have shift-equivalent tails exactly when their primitive periods are rotations of one another. The program therefore replaces a finite period by its shortest repeating block and then by the lexicographically least rotation. This gives a finite canonical representation, not a claimed effective canonical representative for arbitrary infinite words.
+
+For each admissible pattern, it enumerates the six elements of $S_3$, computes the stabilizer under relabelling up to rotation, and verifies that the stabilizer is generated by a single element. It then implements the transport formula \eqref{eq:constructedell}, using a least finite orbit representative and the least fixed label, and checks its equivariance under every group element.
+
+Three useful examples, where each mask names the singleton it contains, are:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Periodic labels & Tail stabilizer & Permitted forced branch \\
+\midrule
+$(0,1,2)^\omega$ & Order three & Orientation \\
+$(0,2,1,2)^\omega$ & Order two, swapping $0$ and $1$ & Distinguished member $2$ \\
+$(0,0,1,2)^\omega$ & Trivial & Either type is possible \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first example explains why always choosing a member fails. The second explains why always choosing an orientation fails. Taking the disjoint union of the two target actions lets the rule select the appropriate kind of output, based on the stabilizer of the real-coded pattern. This is the constructive reason the synthesis's five-label example is not an inconsistency candidate.
+
+\section{Dependency map}\label{app:dependencies}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}P{.39\textwidth}Y@{}}
+\toprule
+Result & Dependencies \\
+\midrule
+Cyclic stabilizer theorem & Elementary subgroup argument; infinite pairwise label separation \\
+Positive low-rank construction & Cyclic stabilizers; one well-order of real codes; incidence map \\
+High-critical-point predicate interface & ABGL Theorem 3.1; flat coding; critical-sequence facts \\
+Necessary finite-label obstruction & Predicate interface; critical-sequence cycle splitting \\
+Exact classification & Positive construction plus necessary obstruction \\
+Sharp transversal theorem & Predicate interface; fixed cofinal-set lemma; definable fibre union \\
+$\Izero$-equiconsistent enrichment & New classification and transversal theorem; ABGL Proposition 3.9 and Theorem 4.5 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The local Kunen theorem enters the critical-sequence facts, and hence the negative and embedding-interface arguments. It is not used in the pure incidence-word sufficiency proof. The finite audit is supplementary and is not a logical dependency of any theorem.
+
+\begin{thebibliography}{9}
+
+\bibitem{unified}
+\emph{Large Cardinals at the Inconsistency Frontier: Unified Report}.
+User-supplied source \nolinkurl{Large_Cardinals_Unified_Report.tex}, contained in \nolinkurl{Cardinals2.zip}. Research baseline supplied for this continuation, September 2026.
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+User-supplied source \nolinkurl{Large_Cardinals_Synthesis.tex}, contained in \nolinkurl{Cardinals2.zip}, 18 September 2026. In particular, the section ``Ultraexacting cardinals: failure of definable finite choice.''
+
+\bibitem{abgl}
+J.~P. Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke,
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254}, version 1. Theorem 3.1 (OD-predicate characterization), Proposition 3.9 (HOD coding), and Theorem 4.5 (equiconsistency with $\Izero$). Primary source checked for this continuation on 18 September 2026.
+
+\bibitem{kunen}
+K.~Kunen,
+\emph{Elementary embeddings and infinitary combinatorics}.
+Journal of Symbolic Logic \textbf{36} (1971), no.~3, 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D. Hamkins, G.~Kirmayer, and N.~L. Perlmutter,
+\emph{Generalizations of the Kunen inconsistency}.
+Annals of Pure and Applied Logic \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951}, version 2. The local $V_{\mu+2}$ formulation is explicitly noted on page 3, footnote 1, of the arXiv version.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,3392 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{Navy}{HTML}{18334B}
+\definecolor{Teal}{HTML}{27656B}
+\definecolor{Pale}{HTML}{F1F5F7}
+\definecolor{CodeGray}{HTML}{525B63}
+\hypersetup{colorlinks=true,linkcolor=Navy,citecolor=Teal,urlcolor=Teal,
+ pdftitle={The Six-State Shuffle Bound: Three Independent Certificate Computations},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Regular languages, shuffle state complexity, computer-assisted proof}}
+\urlstyle{same}
+\titleformat{\section}{\Large\bfseries\color{Navy}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Navy}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Navy}}{\thesubsubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{CodeGray}The six-state shuffle bound}
+\fancyhead[R]{\small\color{CodeGray}Research draft}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=2pt,topsep=4pt}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\shuf}{\mathbin{\operatorname{shuf}}}
+\newcommand{\scf}{\operatorname{sc}_{\mathrm{shuf}}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\suppR}{\operatorname{rows}}
+\newcommand{\suppC}{\operatorname{cols}}
+\newcommand{\Hard}{\mathsf{Hard}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Span}{\mathsf{Span}}
+\newcommand{\Cert}{\mathsf{Cert}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\pop}{\operatorname{popcount}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Resid}{\mathsf{Residual}}
+\newcommand{\PreCert}{\mathsf{PreCert}}
+\newcommand{\dbA}{\textsf{A}}
+\newcommand{\dbB}{\textsf{B}}
+\newcommand{\dbC}{\textsf{C}}
+\newtcolorbox{scopebox}{colback=Pale,colframe=Teal,boxrule=0.6pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+% Marks material that is deliberately kept alongside a parallel account of the
+% same statement; the argument of each box says what that variant buys.
+\newtcolorbox{variantbox}[1]{colback=Pale,colframe=Navy,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+ before upper={\textbf{\color{Navy}Parallel account \##1.}\ }}
+\lstset{basicstyle=\ttfamily\footnotesize,keywordstyle=\bfseries\color{Navy},
+ commentstyle=\itshape\color{CodeGray},stringstyle=\color{Teal},
+ frame=single,rulecolor=\color{black!20},backgroundcolor=\color{Pale},
+ breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,
+ tabsize=4,aboveskip=9pt,belowskip=9pt}
+\makeatletter
+\let\inputrows\@@input
+\makeatother
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+{\color{Teal}\sffamily\bfseries FORMAL LANGUAGES \quad / \quad COMPUTER-ASSISTED MATHEMATICS\par}
+\vspace{0.7in}
+{\Huge\bfseries\color{Navy}The Six-State\par Shuffle Bound\par}
+\vspace{0.22in}
+{\Large Three independent certificate computations,\par
+one finite-to-infinite theorem,\par constructive reachability\par}
+\vspace{0.4in}
+{\large Research manuscript prepared for Vladimir Reshetnikov\par}
+\vspace{0.1in}
+{20 September 2026\par}
+\vspace{0.4in}
+\begin{abstract}
+The shuffle operation interleaves two words without changing the order of the
+letters within either word. Its exact worst-case deterministic state complexity
+is the subject of a published conjecture. This manuscript gives a
+computer-assisted proof of the following conjecture in the range
+$\min(m,n)\le6$.
+
+\begin{conjecture}[Published shuffle state-complexity conjecture]
+\label{conj:main}
+For all $m,n\ge2$, the worst-case deterministic state complexity of the shuffle
+is
+\begin{equation}\label{eq:F}
+ F(m,n)=2^{mn-1}+2^{(m-1)(n-1)}(2^{m-1}-1)(2^{n-1}-1).
+\end{equation}
+\end{conjecture}
+
+\noindent
+This article proves that the bound \eqref{eq:F} is attained whenever $m,n\ge2$
+and $\min(m,n)\le6$. The general conjecture is
+not settled here. The shared core theorem is proved once, from a single
+finite-to-infinite induction over the lexicographic rank $(m+n,|S|)$; the
+finite premise of that induction is then discharged three separate times, by
+three certificate databases that are genuinely independent of one another.
+Database~\dbA{} contains 10,642 spanning predecessor witnesses found by an SMT
+search and audited by an orbit-closure coverage enumeration. Database~\dbB{}
+contains 10,619 witnesses on a provably minimal, degree-sorted set of
+representatives; its target keys are a strict subset of \dbA{}'s, and not one
+of the 10,619 shared keys carries the same witness, so each database
+re-derives the other's finite lemma from scratch. Database~\dbC{} contains
+453 witnesses on a strictly smaller irreducible class obtained by adding a
+fifth, analytic reduction --- a balanced-triple contraction --- which shrinks
+the finite obligation from widths at most twenty to widths at most eleven and
+replaces the solver by a deterministic permutation enumeration. The
+manuscript also proves three increasingly sharp access-word bounds,
+$|S|+\min(m,n)-2$, the support form $E+\min(r,c)-2$, and the dual bound
+$\min\{2(|S|-1),|S|+\min(m,n)-2\}$, and gives four distinguishability
+arguments, one of them over a fixed three-letter alphabet. The archive
+contains all three certificate databases, four independent checkers, four
+reaching-word constructors, replayable examples, and audit reports.
+\end{abstract}
+\vfill
+\begin{scopebox}
+\textbf{Status and scope.} This is a computer-assisted research draft, not a
+peer-reviewed or proof-assistant-verified manuscript. No proof-assistant
+formalization and no independent human review is claimed for any part of it.
+The six-state result extends the range explicitly established in the primary
+sources located for this project; a targeted literature search found no prior
+resolution of this strip, but that negative search result is not a proof of
+novelty, and bibliographic priority remains provisional. No result for all
+$m,n\ge7$, or for a fixed small alphabet, is claimed.
+\end{scopebox}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{The problem and the result}
+\label{sec:introduction}
+
+\subsection{A concrete question about interleaving languages}
+Let $\kappa(L)$ denote the number of states in the minimal \emph{complete}
+deterministic finite automaton recognizing a regular language $L$. For two
+words $u$ and $v$, their shuffle is the set of all interleavings that preserve
+the internal order of each word. For instance,
+\[
+ ab\shuf c=\{abc,acb,cab\}.
+\]
+The shuffle of two languages is obtained by taking the union over all choices
+of a word from each language. We write
+\[
+ \scf(m,n)=\max\{\kappa(K\shuf L):\kappa(K)=m,\ \kappa(L)=n\},
+\]
+where the maximum ranges over pairs of languages over a common finite
+alphabet; the alphabet is allowed to depend on $m$ and $n$.
+
+The chosen open problem is the conjecture that, for every $m,n\ge2$,
+\begin{equation}\label{eq:conjectured-bound}
+ \scf(m,n)=F(m,n):=
+ 2^{mn-1}+2^{(m-1)(n-1)}(2^{m-1}-1)(2^{n-1}-1).
+\end{equation}
+Brzozowski, Jir\'askov\'a, Liu, Rajasekaran, and Szyku\l a established the
+upper bound and its attainment for $2\le m\le5$ with arbitrary $n\ge2$, as
+well as for $m=n=6$ \cite{BJLRS2016}. Their reduction to reachable subsets of
+a rectangular state space is the starting point here. Caron, Luque, and
+Patrou subsequently developed a partition-based reformulation and an
+antichain reduction, without settling the unrestricted conjecture
+\cite{CLP2020}. These are the specific primary-source results against which
+this manuscript is compared.
+
+\subsection{What is established here}
+\begin{theorem}[Six-state strip, computer-assisted]\label{thm:main}
+For all integers $m,n\ge2$ with $\min(m,n)\le6$,
+\[
+ \scf(m,n)=F(m,n).
+\]
+In particular, for every $n\ge2$,
+\begin{equation}\label{eq:six-simplified}
+ \scf(6,n)=63\cdot2^{6n-6}-31\cdot2^{5n-5}.
+\end{equation}
+\end{theorem}
+
+The part of this strip beyond the range explicitly obtained in the cited
+work is $m=6$, $n\ge7$, and its transpose. The present proof does not consist
+of checking a few additional rectangles. It reduces \emph{all} widths to a
+finite collection of irreducible matrices and verifies a stronger,
+root-independent predecessor property for every member of that collection.
+
+A quantitative reachability result accompanies the state-count theorem.
+For the universal alphabet introduced in Section~\ref{sec:automata}, every
+valid subset $S$ has a reaching word of length at most
+\begin{equation}\label{eq:word-bound-intro}
+ |S|+\min(m,n)-2.
+\end{equation}
+Thus an exponentially large reachable subset automaton can nevertheless
+have short access words. The bound is not asserted to be optimal, and
+Section~\ref{sec:induction} in fact proves two strictly sharper statements
+alongside it: a \emph{support form} $E+\min(r,c)-2$, in which $E=|S|$ and
+$r,c$ count the nonempty rows and columns rather than the grid dimensions,
+and a \emph{dual bound} $\min\{2(|S|-1),\,|S|+\min(m,n)-2\}$ whose first
+branch is independent of the dimensions altogether.
+
+The finite premise of the induction is discharged three times over, by three
+certificate databases that are not reducible to one another
+(Section~\ref{sec:computation}). Two of them classify the same irreducible
+remainder by two different symmetry-reduction correctness proofs and share no
+witness at all; the third classifies a strictly smaller remainder, obtained by
+an extra analytic reduction proved in Section~\ref{sec:triple}. Each database
+alone suffices for Theorem~\ref{thm:main}. Keeping all three is what makes the
+finite step independently re-derivable rather than a single computation to be
+taken on trust.
+
+\subsection{Why this is a suitable finite attack}
+Two aspects make this problem particularly amenable to a certificate-based
+approach. First, a putative last letter is simply a pair of functions on
+finite sets. Second, the difficult matrices have incomparable columns.
+For six rows, an antichain contains at most $\binom63=20$ columns. This is a
+bound on the width of a \emph{minimal obstruction}, not a restriction on the
+widths covered by the theorem.
+
+The central methodological choice is to search for a predecessor that meets
+\emph{every} row and every column. Such a predecessor is valid regardless of
+which row and column are distinguished as initial. This permits an unrooted
+classification, while retaining a sound rooted reachability induction.
+Without this precaution, quotienting by all row and column permutations can
+silently lose the initial-state condition.
+
+\subsection{Provenance of this manuscript}
+\label{sec:provenance}
+This document is a merge of four independently prepared research packages on
+the same conjecture. Every one of them proved the shared core theorem stated
+above; they are retained here because \emph{how} each proved it differs, and
+those differences are mathematical content, not presentation.
+
+\begin{itemize}
+\item \code{shuffle-six-state-certificates} is the spine of the present text.
+It proved the theorem from database~\dbA{}: 10,642 spanning predecessor
+certificates over orbit-closure-checked representatives, discovered by an SMT
+search, validated by a Python local checker that exports a verified-target
+list, and audited for coverage by a separate C++ enumeration consuming only
+that list. It contributed the manuscript's structure, the tagged-multigraph
+reformulation, the Spanning Predecessor Conjecture, the certificate schema
+and minimal verification core, and the review checklist.
+\item \code{shuffle-six-state-strip} proved the theorem from the \emph{same}
+database \dbA{} by the same proof: its certificate file and the one shipped
+here agree in all 10,642 keys and all 10,642 witnesses, a fact recomputed
+during this merge. It is retained for what it adds around that shared core:
+the sharper support-form word bound with its explicit potential, a second
+plain-integer serialization with a record-by-record agreement test, a
+single-binary C++ verifier reporting totals across one through six rows, an
+iterative explicit-stack constructor, a 111,984-word regression suite, a run
+under undefined-behavior sanitization, and a standalone literature audit.
+\item \code{shuffle-six-state-theorem} proved the theorem from
+database~\dbB{}: an \emph{independent} finite computation over a different
+canonicalization (degree-sorted representatives, proved to be exactly one per
+orbit), yielding 10,619 witnesses of which not one coincides with \dbA{}'s
+witness for the same target. It also proved an additional structural property
+of its certificates and an entirely different distinguishability theorem over
+a fixed three-letter alphabet.
+\item \code{shuffle-six-state-complexity} proved the theorem by a materially
+different proof: a fifth analytic reduction removes an entire class of
+obstructions before any table is consulted, shrinking the finite obligation
+to database~\dbC{} --- 453 witnesses over widths at most eleven --- and
+replacing the solver by a deterministic, solver-free permutation enumeration
+whose output was regenerated byte for byte. It also proves the dual word-length
+bound and a fourth distinguishability argument.
+\end{itemize}
+
+Throughout, material carried over from a package other than the spine is
+integrated into the spine's notation and numbering. Where two packages prove
+the same statement by genuinely different machinery, both proofs are kept and
+marked with a \emph{parallel account} box saying what the variant buys.
+
+\subsection{Research status and novelty boundary}
+The source review was conducted on 20 September 2026. The accessible 2016
+paper, the 2019 preprint of the later journal article, and the journal's
+publication record were checked. The mathematical source review used the
+arXiv preprint of \cite{CLP2020} rather than the access-restricted journal
+full text. Within \cite{BJLRS2016} the located positions are the abstract;
+Table~1 on page~6 of the preprint, which marks the $6\times7$ and larger
+six-row cases as unresolved; Lemmas~8--9 on pages~7--8; Theorem~10 on page~8;
+and Lemma~12 with Corollary~13 on pages~9--10. In \cite{CLP2020} the term
+``dense'' states refers to incomparable row and column supports, not to graph
+density. Targeted searches did not identify a later resolution of the
+six-state strip or of the full conjecture; those searches were limited by the
+query formulations used and by indexing coverage, and did not reach
+unpublished or unindexed work.
+
+This is evidence for choosing the problem, not a guarantee of an exhaustive
+literature search. Accordingly, the theorem is a mathematical claim supported
+by the proof and artifacts below, while its claim to bibliographic novelty
+remains provisional. The elementary reductions are presented with proofs
+rather than with claims of individual priority. The manuscript should receive
+independent mathematical and implementation review before being treated as an
+established research publication.
+
+\section{The universal shuffle automaton}
+\label{sec:automata}
+
+\subsection{From automata and grammars to a Boolean matrix}
+For a positive integer $m$, put $[m]=\{0,1,\ldots,m-1\}$. Let the state sets
+of two complete deterministic automata be $R=[m]$ and $C=[n]$. On a letter
+$a$, suppose their transitions are $f_a:R\to R$ and $g_a:C\to C$.
+The usual nondeterministic automaton for shuffle has state set $R\times C$
+and transitions
+\begin{equation}\label{eq:cell-transition}
+ (i,j)\xrightarrow{a}\{(f_a(i),j),(i,g_a(j))\}.
+\end{equation}
+At each step, the current letter is assigned to exactly one of the two
+component words. A run records these assignments. Consequently a run
+reaching a pair of final states is equivalent to a decomposition of the
+input into an accepted word of the first automaton and an accepted word of
+the second, interleaved in their original orders. This proves that
+\eqref{eq:cell-transition} recognizes shuffle.
+
+There is a direct grammar interpretation. A complete deterministic automaton
+is presented as a deterministic right-linear grammar: introduce one
+nonterminal $A_q$ for each state $q$, add a production
+$A_q\to aA_{\delta(q,a)}$ for each transition, and add $A_q\to\varepsilon$ at
+each accepting state; the start nonterminal corresponds to the initial state.
+Writing $X_i$ for the nonterminal of the first operand's state $i$, its
+productions are $X_i\to aX_{f_a(i)}$ and, at final states, $X_i\to\varepsilon$.
+In the shuffle grammar, nonterminals $Z_{i,j}$ have the two productions
+\[
+ Z_{i,j}\to aZ_{f_a(i),j},\qquad
+ Z_{i,j}\to aZ_{i,g_a(j)},
+\]
+and an empty production at each pair of final states. Shuffle therefore
+combines two descriptions in a different way from concatenation: at each
+input letter one must decide which component produced it, and determinization
+tracks all component-state pairs compatible with those choices. The present
+question asks how large a deterministic finite-state description of this
+interleaving language may have to be. It therefore lies squarely in
+formal-language and regular-grammar theory, even though its remaining
+obstruction is combinatorial.
+
+The measure being bounded below is \emph{deterministic} state complexity. The
+theorem is not a lower bound of the same size on nondeterministic automata or
+on regular grammars, which can be much smaller, and it says nothing about the
+time needed to recognize a particular input word.
+
+The determinized automaton has subsets $S\subseteq R\times C$ as states.
+We identify $S$ with its $m$-by-$n$ zero-one incidence matrix. A letter
+$(f,g)$ acts by
+\begin{equation}\label{eq:Delta}
+ \Delta_{f,g}(S)
+ =\{(f(i),j):(i,j)\in S\}\ \cup\
+   \{(i,g(j)):(i,j)\in S\}.
+\end{equation}
+The initial subset is a singleton $\{(r,c)\}$, where $r$ and $c$ are the
+initial states of the operands.
+
+\subsection{The full transformation-pair alphabet}
+Define
+\begin{equation}\label{eq:alphabet}
+ \Gamma_{m,n}=R^R\times C^C.
+\end{equation}
+Each pair of total functions is a distinct letter. The alphabet is finite,
+with $m^m n^n$ letters. The two component automata read the same letter
+$(f,g)$ by applying $f$ and $g$, respectively.
+
+Any pair of complete $m$- and $n$-state automata uses some selection of these
+transformation pairs, possibly with repeated pairs under different letter
+names. Thus allowing all pairs cannot remove any reachable subset.
+Conversely, the universal alphabet itself gives an admissible finite
+witness alphabet. Its use is therefore legitimate for a worst-case
+state-complexity theorem with no fixed alphabet bound. This universal model
+is also used in \cite[Section~2.1]{BJLRS2016}.
+
+In what follows, a ``word'' is a finite sequence of transformation pairs.
+Letters are not charged according to the size of their function tables;
+word length has its usual automata-theoretic meaning.
+
+\subsection{Validity and the upper bound}
+For $S\subseteq R\times C$, set
+\[
+ \suppR(S)=\{i:\exists j\ (i,j)\in S\},\qquad
+ \suppC(S)=\{j:\exists i\ (i,j)\in S\}.
+\]
+A subset is \emph{valid relative to $(r,c)$} when
+\[
+ \Valid_{r,c}(S)\quad\Longleftrightarrow\quad
+ r\in\suppR(S)\ \text{and}\ c\in\suppC(S).
+\]
+\begin{lemma}[Support persistence, in equality form]\label{lem:persistence}
+For every subset $P$ and every letter $(f,g)$,
+\begin{equation}\label{eq:support-equalities}
+ \suppR(\Delta_{f,g}(P))=\suppR(P)\cup f(\suppR(P)),\qquad
+ \suppC(\Delta_{f,g}(P))=\suppC(P)\cup g(\suppC(P)).
+\end{equation}
+In particular
+$\suppR(P)\subseteq\suppR(\Delta_{f,g}(P))$ and
+$\suppC(P)\subseteq\suppC(\Delta_{f,g}(P))$, so every subset reachable from
+$\{(r,c)\}$ is valid relative to $(r,c)$.
+\end{lemma}
+\begin{proof}
+The image cell $(i,g(j))$ contributes the first coordinate $i$, so it
+contributes exactly $\suppR(P)$; the image cell $(f(i),j)$ contributes exactly
+$f(\suppR(P))$. Their union is the first equality, and the second is the same
+calculation with the coordinates exchanged. Inclusion follows, and applying it
+successively to the letters of a reaching word, starting from the singleton,
+gives validity.
+\end{proof}
+
+\begin{corollary}[Supports of a predecessor]\label{cor:pred-support}
+If $\Delta_{f,g}(P)=S$, then $\suppR(P)\subseteq\suppR(S)$ and
+$\suppC(P)\subseteq\suppC(S)$.
+\end{corollary}
+\begin{proof}
+Immediate from \eqref{eq:support-equalities}.
+\end{proof}
+
+The equality form of the lemma is worth stating separately, because the
+sharper word-length bound of Theorem~\ref{thm:support-bound} is an induction
+on support counts and needs to know that supports never shrink along a
+reduction, not merely that they never shrink along a reaching word.
+
+Validity does not require $(r,c)\in S$, and the failure is not a corner case.
+On a $2\times2$ grid, the letter whose two components are both the
+transposition sends $\{(0,0)\}$ to $\{(1,0),(0,1)\}$, which meets row $0$ and
+column $0$ without containing $(0,0)$. Losing sight of this distinction can
+invalidate an induction that silently changes its initial point.
+
+There is a second, execution-level proof that reachable implies valid, which
+is worth recording because it exposes where completeness of the operand
+automata is used. One possible nondeterministic execution gives every input
+letter to the column operand, leaving the row coordinate equal to $r$
+throughout; another gives every letter to the row operand, leaving the column
+coordinate equal to $c$. Both executions are available only because the
+operand transition functions are total.
+
+\begin{proposition}[Counting valid subsets]\label{prop:upper}
+There are exactly $F(m,n)$ valid subsets relative to a specified root.
+Consequently $\scf(m,n)\le F(m,n)$.
+\end{proposition}
+\begin{proof}
+Rename the root as $(0,0)$. Counting by inclusion and exclusion, the subsets
+missing row~$0$ number $2^{(m-1)n}$, those missing column~$0$ number
+$2^{m(n-1)}$, and those missing both number $2^{(m-1)(n-1)}$, so the valid
+subsets number
+\begin{equation}\label{eq:inclusion-exclusion}
+ 2^{mn}-2^{(m-1)n}-2^{m(n-1)}+2^{(m-1)(n-1)}.
+\end{equation}
+Equivalently, and this is the form used later: subsets containing $(0,0)$
+contribute $2^{mn-1}$; a valid subset that omits $(0,0)$ must contain a
+nonempty subset of the other $n-1$ cells of row~$0$, and a nonempty subset of
+the other $m-1$ cells of column~$0$, while all $(m-1)(n-1)$ remaining cells
+are optional. The two disjoint cases give exactly
+\eqref{eq:conjectured-bound}, and factoring $2^{(m-1)(n-1)}$ out of
+\eqref{eq:inclusion-exclusion} gives the same expression.
+Lemma~\ref{lem:persistence} bounds the number of reachable determinized
+states, and minimizing the deterministic automaton cannot increase that
+number.
+\end{proof}
+
+This rederives the upper bound of \cite{BJLRS2016}. The actual work is to
+show that validity is sufficient for reachability in the claimed range.
+
+\section{Distinguishability requires no computation}
+\label{sec:distinguishability}
+Reachability is not by itself a state-complexity lower bound: two reachable
+subset states might accept exactly the same suffixes. This section proves
+distinguishability four times. Three of the four proofs are over the full
+transformation-pair alphabet and differ in their machinery; the fourth is a
+different theorem over a \emph{fixed three-letter} alphabet, and yields a
+strictly stronger corollary. None of the four uses any computation, and none
+depends on any later section. Throughout, assume $m,n\ge2$.
+
+For the three universal-alphabet arguments, choose one final state $a\in R$
+and one final state $b\in C$, so that a subset is accepting precisely when it
+contains $(a,b)$.
+
+\subsection{A forward two-letter construction}
+\begin{lemma}[A two-letter cell test]\label{lem:celltest}
+For every cell $(p,q)\in R\times C$, there is a word of length two accepted
+from the singleton $\{(p,q)\}$ and from no other singleton.
+\end{lemma}
+\begin{proof}
+Choose $a_0\in R\setminus\{a\}$, $b_0\in C\setminus\{b\}$, and
+$c_0\in C\setminus\{q\}$. Let the second letter be $(h,k)$, where
+\[
+ h(i)=a_0\quad\text{for every }i,\qquad
+ k(j)=\begin{cases}b,&j=q,\\ b_0,&j\ne q.\end{cases}
+\]
+Because $h$ never reaches $a$, a single source cell can produce the final
+cell $(a,b)$ under this letter only through its second branch. That branch
+reaches $(a,b)$ exactly from $(a,q)$.
+
+Let the first letter be $(f,g)$, where
+\[
+ f(i)=\begin{cases}a,&i=p,\\ a_0,&i\ne p,\end{cases}
+ \qquad g(j)=c_0\quad\text{for every }j.
+\]
+The second branch of this letter never reaches column $q$. Its first
+branch reaches $(a,q)$ exactly from $(p,q)$. Therefore the two-letter word
+$(f,g)(h,k)$ is accepted from precisely the desired source cell.
+\end{proof}
+
+\begin{corollary}[All different subsets are distinguishable]\label{cor:distinct}
+Every two distinct subsets of $R\times C$ are distinguishable in the
+universal shuffle automaton with final cell $(a,b)$.
+\end{corollary}
+\begin{proof}
+Choose a cell in the symmetric difference of the two subsets. The word
+from Lemma~\ref{lem:celltest} is accepted from a subset exactly when the
+subset contains that cell, because the transition of a union is the union
+of the transitions.
+\end{proof}
+
+\subsection{The same statement by a cellwise existential predecessor}
+\begin{variantbox}{1}
+The next proof establishes Lemma~\ref{lem:celltest} again, but it constructs
+the two letters \emph{backwards} from the accepting cell, using an explicit
+preimage computation instead of a forward case analysis. What it buys is a
+closed formula, $\Delta_A^{-1}[\{(a,b)\}]=\{(p,b)\}$, that identifies the
+whole intermediate state rather than only its relevant member; that formula
+is reused in the single-cell separation tests of
+Section~\ref{sec:algorithm}. It also isolates exactly where $m,n\ge2$ is
+needed --- one must be able to choose an image avoiding a prescribed
+coordinate.
+\end{variantbox}
+
+\begin{proof}[Second proof of Lemma~\ref{lem:celltest}]
+For a letter $A=(f_A,g_A)$ write $\Delta_A^{-1}[T]$ for the
+\emph{cellwise existential predecessor} of $T$: the set of individual cells
+having at least one $A$-successor in $T$. It is not an inverse function on
+subset states.
+
+Choose $f_A$ with $f_A^{-1}(\{a\})=\{p\}$ and choose $g_A$ whose image avoids
+$b$; both are possible because each coordinate set has at least two elements.
+Then
+\[
+ \Delta_A^{-1}[\{(a,b)\}]
+ =\bigl(f_A^{-1}(\{a\})\times\{b\}\bigr)
+  \cup\bigl(\{a\}\times g_A^{-1}(\{b\})\bigr)
+ =\{(p,b)\}.
+\]
+For a second letter $B=(f_B,g_B)$, choose $f_B$ whose image avoids $p$ and
+choose $g_B$ with $g_B^{-1}(\{b\})=\{q\}$. Then
+$\Delta_B^{-1}[\{(p,b)\}]=\{(p,q)\}$. Hence the word $BA$, read $B$ first, is
+accepted from exactly the singleton $\{(p,q)\}$; by the union identity
+\begin{equation}\label{eq:union}
+ \Delta_{f,g}(X\cup Y)=\Delta_{f,g}(X)\cup\Delta_{f,g}(Y),
+\end{equation}
+which holds for a letter and hence for a word, a
+subset accepts it exactly when it contains that cell.
+\end{proof}
+
+\begin{remark}
+The two letters depend on the tested cell. Neither proof says that one fixed
+pair of letters works for all tests, or that a two-letter alphabet attains
+the state-complexity bound.
+\end{remark}
+
+\subsection{The same statement by enumerating run allocations}
+\begin{variantbox}{2}
+The third proof of the two-letter test reasons about the \emph{shuffle
+semantics} directly instead of about subset transitions: it enumerates the
+four ways of allocating the two letters between the two operands and
+eliminates three of them. What it buys is that it never manipulates the
+determinized transition at all, so it is the argument to check if one
+suspects an error in \eqref{eq:Delta} itself; it also exhibits the separating
+letters as an explicit table.
+\end{variantbox}
+
+Fix the final states $a=m-1$ and $b=n-1$, and use state $0$ as a nonfinal
+state in each coordinate; these are distinct because $m,n\ge2$. Fix a cell
+$(p,q)$ and choose any $d\in C\setminus\{q\}$. Define two letters by
+\[
+\begin{aligned}
+ \alpha(i)&=\begin{cases}a,&i=p,\\0,&i\ne p,\end{cases}
+ &\gamma(j)&=d, &\quad A&=(\alpha,\gamma),\\
+ \zeta(i)&=0,
+ &\beta(j)&=\begin{cases}b,&j=q,\\0,&j\ne q,\end{cases}
+ &\quad B&=(\zeta,\beta).
+\end{aligned}
+\]
+
+\begin{proof}[Third proof of Lemma~\ref{lem:celltest}]
+Consider a singleton input $(i,j)$ and the four ways to allocate the letters
+$A$ then $B$ to the row or the column operand. If $B$ goes to the row operand,
+the final row coordinate is $0$, so acceptance is impossible; this eliminates
+two allocations. If both letters go to the column operand, $A$ first puts the
+column at $d\ne q$ and $B$ then puts it at $0$, again rejecting. The only
+remaining allocation gives $A$ to the row operand and $B$ to the column
+operand, and its final cell is $(\alpha(i),\beta(j))$, which equals $(a,b)$
+exactly when $i=p$ and $j=q$. The statement for arbitrary subsets follows by
+\eqref{eq:union}.
+\end{proof}
+
+\subsection{A fixed three-letter alphabet, and a stronger corollary}
+\label{sec:three-letter}
+\begin{variantbox}{3}
+The following is not another proof of Lemma~\ref{lem:celltest}: it is a
+different theorem. It uses a \emph{fixed} alphabet of three letters, whatever
+$m$ and $n$ are, and it produces closed-form distinguishing words. What it
+buys is twofold. First, it is the only distinguishability result here that
+survives if one insists on a small alphabet, and it therefore reproduces the
+construction of \cite{BJLRS2016} inside this manuscript instead of importing
+it. Second, its conclusion is strictly stronger: \emph{all} $2^{mn}$ subsets
+are pairwise distinguishable, reachable or not. Nothing in the other three
+arguments gives that.
+\end{variantbox}
+
+Make $(m-1,n-1)$ the unique accepting cell and consider these three letters of
+the universal alphabet:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Letter & Row transformation & Column transformation\\
+\midrule
+$a$ & $i\mapsto i+1\pmod m$ & $j\mapsto0$\\
+$b$ & $i\mapsto0$ & $j\mapsto j+1\pmod n$\\
+$c$ & $0\mapsto1$, all $i\ge1\mapsto0$ & $j\mapsto n-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lemma}[Singleton-distinguishing words]\label{lem:threeletter}
+For every cell $(i,j)$ there is a word $w_{i,j}$ over $\{a,b,c\}$ accepted
+from exactly that cell and from no other.
+\end{lemma}
+\begin{proof}
+For a set of target cells, a letter's preimage consists of all sources with at
+least one transition into it. Three uniqueness observations suffice. First,
+when $r\ge1$ and $j\ge1$, the unique $a$-predecessor of $(r,j)$ is $(r-1,j)$,
+because the column branch of $a$ always lands in column zero. Second, when
+$r\ge1$ and $j\ge1$, the unique $b$-predecessor of $(r,j)$ is $(r,j-1)$,
+because the row branch of $b$ always lands in row zero. Third, the unique
+$c$-predecessor of $(1,0)$ is $(0,0)$, since $n-1\ne0$ and the only row sent
+to row one is row zero.
+
+Starting from the unique final cell and working backwards with these
+observations gives
+\begin{equation}\label{eq:distwords}
+ w_{i,j}=\begin{cases}
+ a^{m-1-i}b^{n-1-j},&j\ge1,\\[2pt]
+ b\,a^{m-1-i}b^{n-2},&j=0,\ i\ge1,\\[2pt]
+ c\,b\,a^{m-2}b^{n-2},&i=j=0.
+ \end{cases}
+\end{equation}
+All exponents are nonnegative. In the first line the backward steps stay in
+positive columns and the $b$ steps take place in the last row. In the second
+line the extra initial $b$ moves the unique predecessor from column one to
+column zero in a positive row. The last line uses the unique $c$-predecessor
+of $(1,0)$.
+\end{proof}
+
+\begin{corollary}[All subsets, reachable or not]\label{cor:subsetsdistinct}
+All $2^{mn}$ subsets of $R\times C$ are pairwise distinguishable, whether or
+not they are reachable.
+\end{corollary}
+\begin{proof}
+If two subsets differ, choose a cell in their symmetric difference. The word
+$w$ of Lemma~\ref{lem:threeletter} is accepted from a subset exactly when the
+subset contains that cell.
+\end{proof}
+
+\subsection{Minimality of the operands}
+Both component automata over $\Gamma_{m,n}$ are themselves minimal.
+Every component state is reachable using a constant transformation. Two
+different states are distinguished by a transformation sending one to its
+unique final state and the other to a nonfinal state. Thus their state
+complexities really are $m$ and $n$, not merely bounded by these numbers.
+
+It follows that proving reachability of all valid subsets in the universal
+model proves equality in \eqref{eq:conjectured-bound}. The proof optimizes
+the number of states, not the number of alphabet symbols: a separating
+\emph{word} of length two does not mean that a two-symbol alphabet suffices
+for all separations and all reaching words.
+
+\section{Root-sensitive reductions}
+\label{sec:reductions}
+This section develops the reductions used by the induction. Containment
+and degree-one reductions are part of the prior approach
+\cite[Lemmas~8--9]{BJLRS2016}; complete versions are given here so that root
+positions and the exact number of seed letters are explicit.
+
+\subsection{Relabeling and restriction to a subgrid}
+Let $\pi:R\to R'$ and $\sigma:C\to C'$ be bijections, and write
+\[
+ (\pi,\sigma)S=\{(\pi(i),\sigma(j)):(i,j)\in S\}.
+\]
+Direct substitution into \eqref{eq:Delta} gives the covariance identity
+\begin{equation}\label{eq:covariance}
+ (\pi,\sigma)\Delta_{f,g}(S)
+ =\Delta_{\pi f\pi^{-1},\,\sigma g\sigma^{-1}}
+       ((\pi,\sigma)S).
+\end{equation}
+In particular, renaming coordinates also renames the root. It does
+\emph{not} generally give a word from the old root to the renamed subset.
+
+Suppose $R_0\subseteq R$ and $C_0\subseteq C$ contain the root coordinates,
+and $S\subseteq R_0\times C_0$. A word on this smaller grid can be lifted
+to the large grid by extending each of its functions to fix all excluded
+coordinates. Starting in the smaller grid, neither transition branch can
+leave it. Hence a reaching word in the smaller grid is also a reaching
+word in the full grid.
+
+This removes every empty row or column of a valid target without adding
+letters. The distinguished row and column are never empty, so their
+removal is not an issue.
+
+\subsection{The one-dimensional base cases}
+If $m=1$, a valid subset is $\{0\}\times D$ for a set $D\subseteq C$ that
+contains $c$. Starting from $\{(0,c)\}$, add each desired column
+$j\in D\setminus\{c\}$ by taking $f=\id$ and letting $g$ send $c$ to $j$
+while fixing every other column. The identity branch retains every existing
+cell, and the other branch adds only $(0,j)$.
+
+This uses exactly $|S|-1$ letters. The case $n=1$ is symmetric. These are
+reachability base cases, not an assertion that the state-complexity formula
+is tight for all one-state operands; Section~\ref{sec:limits} explains the
+distinction.
+
+\subsection{Deleting a contained copy}
+Define the row and column neighborhoods of $S$ by
+\[
+ N_i(S)=\{j:(i,j)\in S\},\qquad
+ M_j(S)=\{i:(i,j)\in S\}.
+\]
+Suppose no row or column is empty.
+
+\begin{lemma}[Comparable-row reduction]\label{lem:containment}
+If $i\ne k$ and $N_i(S)\subseteq N_k(S)$, then, after possibly reversing
+$i,k$ in the equality case, there is a valid $T$ with $|T|<|S|$ and a letter
+$(f,\id)$ such that $\Delta_{f,\id}(T)=S$. The same statement holds with
+rows and columns exchanged.
+\end{lemma}
+\begin{proof}
+Let $(r,c)$ be the root. If $N_i(S)=N_k(S)$ and $k=r$, interchange $i$ and
+$k$. After this choice, either $k\ne r$ or the containment is strict. Set
+\[
+ T=S\setminus\bigl(\{k\}\times N_i(S)\bigr),
+ \qquad
+ f(x)=\begin{cases}k,&x=i,\\ x,&x\ne i.\end{cases}
+\]
+The removed set is nonempty. The identity column branch retains $T$.
+The row branch copies the retained row $i$ to precisely the removed cells
+of row $k$, while producing no cell outside $S$. Thus the image is exactly
+$S$.
+
+If $k\ne r$, the distinguished row is unchanged. If $k=r$, strict
+containment leaves the nonempty difference $N_k(S)\setminus N_i(S)$ in
+that row. Finally, deleting a cell $(k,c)$ cannot empty the distinguished
+column: the retained cell $(i,c)$ accompanies every such deletion.
+Therefore $T$ remains valid. The column version follows by transposition.
+\end{proof}
+
+The equality case is worth retaining in the statement. Blindly deleting
+the containing copy can erase the distinguished row when the two rows
+are equal. A choice of direction repairs this without changing the
+reduction.
+
+Note that the predecessor $T$ of Lemma~\ref{lem:containment} need \emph{not}
+have full support: it is a proper subset of $S$ and may have lost a row
+entirely. Root-specific validity is enough here precisely because this
+reduction is never transported by a relabeling. The contrast with
+Definition~\ref{def:certificate}, where full support is demanded, is the
+whole reason the two are different objects.
+
+\subsection{A degree-one row or column gives an isolated edge}
+After all comparable neighborhoods have been excluded, any degree-one row
+or column belongs to an isolated cell. Indeed, if $M_q(S)=\{p\}$ and row
+$p$ also meets column $q'$, then $M_q(S)\subseteq M_{q'}(S)$, contrary to
+incomparability. The transposed argument handles a degree-one row.
+
+\begin{lemma}[Isolated-cell reduction]\label{lem:isolated}
+Assume $m,n\ge2$, all rows and columns of $S$ are nonempty, and $(p,q)$ is
+isolated in both its row and its column. A reaching word for
+$S\setminus\{(p,q)\}$ in the complementary $(m-1)$-by-$(n-1)$ grid can be
+lifted to a reaching word for $S$, with at most two additional letters.
+The smaller root can be chosen so that its target is valid.
+\end{lemma}
+\begin{proof}
+Let the original root be $(r,c)$. Choose
+\[
+ r'=\begin{cases}r,&p\ne r,\\ \text{any element of }R\setminus\{p\},&p=r,
+ \end{cases}
+ \quad
+ c'=\begin{cases}c,&q\ne c,\\ \text{any element of }C\setminus\{q\},&q=c.
+ \end{cases}
+\]
+The target $S_0=S\setminus\{(p,q)\}$ meets every remaining row and column,
+so it is valid relative to $(r',c')$.
+
+Let $a$ be the letter whose row function swaps $p,r'$ and whose column
+function swaps $q,c'$, fixing all other coordinates. On their two-by-two
+rectangle, one application exchanges the two diagonal orientations of a
+two-cell set. Starting from the original singleton gives the following
+seed words:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$p=r$ & $q=c$ & Desired seed & Word \\
+\midrule
+no & no & $\{(p,q),(r',c')\}$ & $a^2$ \\
+yes & no & $\{(p,q),(r',c')\}$ & $a$ \\
+no & yes & $\{(p,q),(r',c')\}$ & $a$ \\
+yes & yes & $\{(p,q),(r',c')\}$ & $a^2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+These four claims also follow by applying \eqref{eq:cell-transition}
+twice explicitly. In the mixed cases the root is on the opposite diagonal
+from the desired seed, so one letter, not two, is required.
+
+Take a word reaching $S_0$ from $(r',c')$ in the smaller grid. Extend each
+letter to fix $p$ and $q$. The isolated cell then remains fixed, and every
+cell of the other component remains within the complementary grid. Since
+transitions distribute over union by \eqref{eq:union}, appending this extended
+word to the
+seed word reaches exactly $S_0\cup\{(p,q)\}=S$.
+\end{proof}
+
+\section{Hard matrices and spanning predecessor certificates}
+\label{sec:hard}
+
+\subsection{The irreducible targets}
+\begin{definition}\label{def:hard}
+For $m,n\ge2$, a subset $S\subseteq[m]\times[n]$ is \emph{hard} if every
+row and column has at least two cells, distinct row neighborhoods are
+incomparable under inclusion, and distinct column neighborhoods are
+incomparable under inclusion. Write $\Hard_{m,n}(S)$ for this property.
+\end{definition}
+
+The word ``hard'' is local terminology for the remainder after the elementary
+reductions, not a computational complexity classification. In particular,
+a hard matrix is valid relative to \emph{every} possible root.
+
+A valid target that is not one-dimensional either has an empty row or
+column, has comparable neighborhoods, has an isolated degree-one cell
+after comparability has been excluded, or is hard. Thus the preceding
+lemmas exhaust the non-hard cases.
+
+For a hard target the columns are distinct nonempty proper subsets of
+$[m]$. Nonemptiness and distinctness are immediate. A full column would
+contain any other column, and $n\ge2$, so a full column is impossible.
+Hence, up to column ordering, a hard matrix is a family
+\[
+ \mathcal A=\{M_0(S),\ldots,M_{n-1}(S)\}
+ \subseteq\Pow([m])\setminus\{\varnothing,[m]\}
+\]
+that is an antichain and also satisfies the row conditions.
+
+\subsection{Why six rows need at most twenty columns}
+\begin{lemma}[Antichain width bound]\label{lem:sperner}
+An antichain $\mathcal A\subseteq\Pow([m])$ has at most
+$\binom{m}{\lfloor m/2\rfloor}$ members. In particular, a hard matrix with
+at most six rows has at most twenty columns.
+\end{lemma}
+\begin{proof}
+For a fixed $A\subseteq[m]$, the permutations of $[m]$ whose first $|A|$
+entries are exactly the elements of $A$ number $|A|!(m-|A|)!$. Prefix sets
+of one permutation form a chain, so an antichain can occur among these
+prefix sets at most once. Counting over all $m!$ permutations gives
+\[
+ \sum_{A\in\mathcal A}|A|!(m-|A|)!\le m!,
+ \qquad\text{hence}\qquad
+ \sum_{A\in\mathcal A}\binom{m}{|A|}^{-1}\le1.
+\]
+Each summand is at least $\binom{m}{\lfloor m/2\rfloor}^{-1}$. This proves
+the assertion. For $m\le6$ the largest of these middle binomial
+coefficients is $\binom63=20$.
+\end{proof}
+
+This is the usual antichain bound of Sperner \cite{Sperner1928}, with a
+self-contained counting proof included to identify precisely the finite
+search space. Applying the same argument to rows also bounds the possible
+height for a given width. No assertion about reachability is hidden in the
+antichain theorem.
+
+\begin{remark}[The same bound, probabilistically]\label{rem:sperner-prob}
+The counting proof above has a one-line probabilistic phrasing: choose a
+uniformly random permutation of $[m]$; a fixed $k$-element subset is an
+initial segment of it with probability $\binom{m}{k}^{-1}$, and at most one
+member of an antichain can be an initial segment, since initial segments are
+nested, so $\sum_{A\in\mathcal A}\binom{m}{|A|}^{-1}\le1$. This is the same
+mathematics as the proof above, not a second theorem, and is recorded here
+only because one of the source computations was documented in that language.
+\end{remark}
+
+In fact the finite search space is already bounded without Sperner's theorem
+at all. For a hard matrix, every column is a proper subset of $[m]$ of size at
+least two, and there are only $2^m-m-2$ such subsets --- fifty-six when $m=6$.
+That crude count already makes the recursion over column families finite;
+Lemma~\ref{lem:sperner} merely makes it small.
+
+\subsection{A root-independent local proof object}
+\begin{definition}[Spanning predecessor]\label{def:certificate}
+A spanning predecessor certificate for $S\subseteq[m]\times[n]$ is a triple
+$(f,g,T)$ such that
+\begin{align}
+ &f:[m]\to[m],\qquad g:[n]\to[n],\qquad T\subseteq[m]\times[n],
+   \label{eq:certificate-ranges}\\
+ &\suppR(T)=[m],\qquad\suppC(T)=[n],\label{eq:certificate-span}\\
+ &|T|<|S|,\label{eq:certificate-size}\\
+ &\Delta_{f,g}(T)=S.\label{eq:certificate-image}
+\end{align}
+There is no requirement that $T\subseteq S$.
+\end{definition}
+
+If every smaller valid subset is already reachable, such a certificate
+proves reachability of $S$ with one additional letter. Full support is
+stronger than validity, and this extra strength is what makes the finite
+classification economical.
+
+\begin{lemma}[Transport of a certificate]\label{lem:transport}
+The existence of a spanning predecessor certificate is invariant under
+arbitrary row and column bijections.
+\end{lemma}
+\begin{proof}
+Transport $T$ by $(\pi,\sigma)$ and transport $f,g$ by conjugation.
+Cardinality and full support are preserved by bijections; the image
+identity is preserved by \eqref{eq:covariance}.
+\end{proof}
+
+Notice what the lemma does \emph{not} say: a reaching word from one chosen
+root is not asserted to remain a reaching word from that same root after
+arbitrary renaming. Instead, the transported \emph{predecessor} is valid
+for the actual root, and the induction supplies its reaching word there.
+This separates the symmetry argument from the rooted reachability argument.
+
+\subsection{An exact inverse formulation}
+For fixed $f,g$ and target $S$, define the allowable source cells
+\[
+ P_{f,g}(S)=\{(i,j):(f(i),j)\in S\text{ and }(i,g(j))\in S\}.
+\]
+Every predecessor must be contained in this set. Make a multigraph with
+vertex set $S$, placing one tagged edge for each $(i,j)\in P_{f,g}(S)$
+between $(f(i),j)$ and $(i,g(j))$. An edge may be a loop, and different
+source cells may produce the same pair of endpoints; their source tags
+are retained.
+
+\begin{proposition}\label{prop:edge-cover}
+A set $T\subseteq P_{f,g}(S)$ satisfies $\Delta_{f,g}(T)=S$ exactly when
+the edges tagged by $T$ cover all vertices of this multigraph. The
+predecessor is spanning exactly when these edges include every row tag
+and every column tag at least once.
+\end{proposition}
+\begin{proof}
+The endpoints of the edge tagged by $(i,j)$ are precisely the two cells
+produced by that source. Taking the union of endpoints therefore gives
+$\Delta_{f,g}(T)$. The final statement is just the definition of support
+in terms of the tags.
+\end{proof}
+
+This interpretation explains why local search is much smaller than a
+breadth-first search through the entire subset automaton. It also warns
+against replacing the problem by an unqualified ordinary edge-cover
+problem: the support requirements concern source tags, not only covered
+vertices.
+
+The unqualified problem is nevertheless solved exactly, and the solution
+makes the warning quantitative.
+
+\begin{proposition}[Minimum unconstrained cover]\label{prop:matching}
+Suppose every vertex of the multigraph above is incident with at least one
+tagged edge, let $H_0$ be that multigraph with its loops discarded, and let
+$\nu(H_0)$ be its maximum matching size. Then the minimum number of tagged
+edges covering all vertices is $|S|-\nu(H_0)$.
+\end{proposition}
+\begin{proof}
+For the upper bound, start with a maximum matching and cover each unmatched
+vertex by one incident edge or loop. No two unmatched vertices are joined by
+a nonloop edge, since that would enlarge the matching; so the number of
+selected edges is at most $\nu(H_0)+(|S|-2\nu(H_0))=|S|-\nu(H_0)$.
+
+For the lower bound, take any cover and delete redundant edges. Every
+remaining nonloop edge then has an endpoint covered by no other selected
+edge, so the selected nonloop components are stars and a selected loop is an
+isolated one-vertex component. Choosing one edge from each of the $s$ star
+components gives a matching, so $s\le\nu(H_0)$; and the cover has exactly
+$|S|-s\ge|S|-\nu(H_0)$ edges.
+\end{proof}
+
+Proposition~\ref{prop:matching} is \emph{not} a reachability proof, and the
+gap is exactly the support constraint: a minimum edge cover may correspond to
+a predecessor missing a row or a column, which is useless for transport by
+Lemma~\ref{lem:transport}. The certificates below therefore require full
+support explicitly, and the databases of Section~\ref{sec:computation} record
+witnesses, not matching numbers.
+
+\subsection{A maximal candidate when the letter is a pair of permutations}
+\label{sec:maximal-candidate}
+If one restricts attention to letters whose two components are permutations,
+the search collapses to arithmetic on finite sets, with no matching solver
+and no external solver of any kind. Write $A_j=M_j(S)$ for the target columns.
+Then \eqref{eq:Delta} makes the allowable source set of the previous
+subsection a column-wise intersection:
+\begin{equation}\label{eq:maxpre}
+ P_j=f^{-1}(A_j)\cap A_{g(j)},
+\end{equation}
+and $P$, the subset with these columns, is the \emph{largest} possible
+predecessor for the fixed letter $(f,g)$. Its image has columns
+\begin{equation}\label{eq:column-image}
+ M_j(\Delta_{f,g}(P))=f(P_j)\cup P_{g^{-1}(j)}.
+\end{equation}
+A candidate is therefore tested with set intersections, permutation images,
+and equality of finite sets.
+
+\begin{lemma}[Equal-cardinality repair]\label{lem:repair}
+Let $S$ be hard, let $f,g$ be permutations, let $P$ be given by
+\eqref{eq:maxpre}, and suppose $\Delta_{f,g}(P)=S$ but $|P|=|S|$. Then some
+$P'\subsetneq P$ with $|P'|=|S|-1$ still satisfies $\Delta_{f,g}(P')=S$ and
+still has full support.
+\end{lemma}
+\begin{proof}
+Since $P_j\subseteq f^{-1}(A_j)$ for every $j$, the equality $|P|=|S|$ forces
+equality in every one of those inclusions; both branches of \eqref{eq:Delta}
+are then bijections from $P$ onto $S$. Pick an occupied cell of $P$ whose two
+image cells are distinct and delete it. Each of its two images is still
+produced, by the other branch applied to a different cell, so the image
+remains $S$. Because $S$ is hard, every row and column degree of $S$ is at
+least two, and $P$ inherits the same row-degree multiset and the same column
+degrees; deleting a single cell therefore cannot empty a row or a column.
+\end{proof}
+
+Thus, when the search is restricted to permutation pairs, a strict
+predecessor exists whenever the maximal candidate reproduces the target,
+including in the tight case. This is the entire discovery procedure used for
+database~\dbC{} in Section~\ref{sec:db-residual}, and it needs no solver.
+A failure of this restricted strategy on some target would not refute
+reachability: a nonpermutation letter, or a route through an intermediate
+subset of equal or larger cardinality, might still work. Compare
+Section~\ref{sec:opposed}, where a certificate in database~\dbA{} is
+exhibited that no permutation-restricted search could find.
+
+\section{A fifth reduction: balanced triples}
+\label{sec:triple}
+The four reductions so far --- empty axes, containment, isolated cell, and the
+certificate step itself --- leave the entire hard class as the finite
+obligation. One further \emph{analytic} reduction removes a large part of that
+class before any table is consulted. It is not needed for
+Theorem~\ref{thm:main}; it gives a second, materially different route to it,
+with a much smaller finite remainder.
+
+\begin{definition}[Balanced triple]\label{def:triple}
+Three distinct columns of $S$, with neighborhoods $U,V,W\subseteq[m]$, form a
+\emph{balanced triple} when
+\begin{equation}\label{eq:balanced}
+ U\cup V=V\cup W=W\cup U.
+\end{equation}
+Equivalently: among these three columns, no row occurs exactly once.
+\end{definition}
+
+\begin{lemma}[Balanced-triple contraction]\label{lem:triple}
+Let $S$ be hard and contain a balanced triple. Then there is a subset $T$ with
+full row and column support and $|T|\le|S|-3$, and a letter whose row
+component is the identity and whose column component is a three-cycle, with
+$\Delta_{\id,g}(T)=S$.
+\end{lemma}
+\begin{proof}
+Let the three columns be $a,b,c$ with neighborhoods $U,V,W$. Define $T$ by
+\[
+ M_a(T)=U\cap V,\qquad M_b(T)=V\cap W,\qquad M_c(T)=W\cap U,
+\]
+leaving every other column of $S$ unchanged, and let $g$ be the three-cycle
+$a\mapsto b\mapsto c\mapsto a$ fixing all other columns, with $f=\id$.
+
+The output in column $a$ is
+\[
+ (U\cap V)\cup(W\cap U)=U\cap(V\cup W)=U,
+\]
+the last equality because $U\subseteq V\cup W$, which is exactly what
+\eqref{eq:balanced} says. The other two columns are the same calculation
+cyclically, and all remaining columns are fixed by both branches. Hence
+$\Delta_{\id,g}(T)=S$.
+
+Each intersection is a proper subset of the corresponding original column,
+because the columns are pairwise incomparable; this gives $|T|\le|S|-3$. Each
+is also nonempty: if $U\cap V=\varnothing$, then \eqref{eq:balanced} gives
+$V\subseteq U\cup W$ and hence $V\subseteq W$, contradicting incomparability.
+So no column of $T$ disappears. Finally, a row appearing among these three
+columns appears in at least two of them, and any pair of positions in a
+three-cycle is one of its consecutive pairs, so that row survives in at least
+one of the three intersections; rows occurring only in other columns are
+untouched. Therefore $T$ has full support.
+\end{proof}
+
+For example, the three columns $\{0,1\},\{1,2\},\{0,2\}$ contract to the three
+singleton intersections $\{1\},\{2\},\{0\}$. The identity is
+dimension-independent: nothing in the proof mentions six.
+
+\begin{definition}[Residual core]\label{def:residual}
+A \emph{residual core} is a hard matrix containing no balanced triple.
+\end{definition}
+
+Lemma~\ref{lem:triple} supplies a spanning predecessor certificate, in the
+sense of Definition~\ref{def:certificate}, for every hard matrix that is not
+residual. Consequently the finite obligation may be narrowed from all hard
+matrices to residual cores alone.
+
+\begin{remark}[Hereditary pruning, and what may not be pruned]
+\label{rem:hereditary}
+Balanced-triple-freeness is \emph{hereditary} under deleting a column: once a
+partial column family contains a balanced triple, adding more columns cannot
+repair it. This is what allows a column-by-column enumeration of residual
+cores to prune a prefix as soon as it acquires a balanced triple, and it is
+what makes the resulting search small. Row degree and row incomparability are
+emphatically \emph{not} hereditary in this way --- adding a column can repair
+a failure of either --- so they are tested at each node and never used to
+prune a prefix. This distinction is essential to completeness, and it is the
+single place where a plausible-looking optimization would silently break the
+enumeration.
+\end{remark}
+
+\section{The finite-to-infinite theorem}
+\label{sec:induction}
+The proof architecture can be stated independently of six and independently
+of the method used to find the certificates.
+
+\begin{definition}
+For $h\ge1$, let $\mathcal P_h$ be the assertion that every hard matrix with
+$2\le m\le h$ rows, of any width, has a spanning predecessor certificate.
+By Lemma~\ref{lem:sperner}, this assertion concerns only finitely many
+matrices up to coordinate permutations.
+\end{definition}
+
+\begin{theorem}[Finite certificate principle]\label{thm:finite-principle}
+Assume $\mathcal P_h$. For every $1\le m\le h$, every $n\ge1$, every root
+$(r,c)$, and every valid $S\subseteq[m]\times[n]$, there is a word over
+$\Gamma_{m,n}$ reaching $S$ from $\{(r,c)\}$. Moreover, it can be chosen
+with length at most
+\begin{equation}\label{eq:potential}
+ B(m,n,S)=|S|+\min(m,n)-2.
+\end{equation}
+The same conclusion holds when $\min(m,n)\le h$, by transposition.
+\end{theorem}
+\begin{proof}
+We prove reachability and the length bound together, for all roots, by
+strong induction on the lexicographically ordered pair
+\[
+ (m+n,|S|)\in\mathbb N^2.
+\]
+The induction is well founded. Every dimension-reducing step decreases
+its first component; every other recursive step decreases its second.
+
+If $m=1$ or $n=1$, Section~\ref{sec:reductions} gives a word of length
+$|S|-1=B(m,n,S)$.
+
+Suppose $m,n\ge2$. If a row or column is empty, delete all empty rows and
+columns, keeping the actual root, and obtain a smaller grid of dimensions
+$m'\le m$, $n'\le n$, with $m'+n'<m+n$. The cardinality of the target is
+unchanged. The induction supplies a word, and its lift adds no letters.
+Since $\min(m',n')\le\min(m,n)$, its length is at most $B(m,n,S)$.
+
+We may now assume full support. If there are comparable row or column
+neighborhoods, Lemma~\ref{lem:containment} gives a valid predecessor $T$ in
+the same grid, with $|T|\le|S|-1$. Reach $T$ by induction and append the
+specified letter. The total length is at most
+\[
+ |T|+\min(m,n)-2+1\le B(m,n,S).
+\]
+
+Assume next that all neighborhoods on each side are incomparable. If some
+row or column has degree one, the corresponding cell is isolated.
+Lemma~\ref{lem:isolated} reduces the problem to a valid target $S_0$ in
+an $(m-1)$-by-$(n-1)$ grid, with $|S_0|=|S|-1$. The induction reaches
+this smaller target from the chosen smaller root. Adding at most two seed
+letters gives a word of length at most
+\begin{align*}
+ |S_0|+\min(m-1,n-1)-2+2
+ &= (|S|-1)+(\min(m,n)-1)\\
+ &=B(m,n,S).
+\end{align*}
+
+In the remaining case $S$ is hard. Assertion $\mathcal P_h$ gives a
+spanning predecessor certificate $(f,g,T)$. Full support of $T$ makes it
+valid for the actual root. Because $|T|<|S|$, the induction reaches $T$.
+Appending $(f,g)$ reaches $S$, and the same calculation as in the
+comparable-neighborhood case proves the length bound.
+
+These cases exhaust every valid target. If only the column dimension is
+at most $h$, transpose the matrix, interchange the two function components
+of every letter, and apply the result already proved. This preserves both
+validity and word length.
+\end{proof}
+
+The potential $B$ assigns one unit to every cell and one additional unit
+to each available dimension on the smaller side, apart from the base
+normalization. An isolated-cell step loses one cell and one unit of the
+smaller dimension, paying for its two possible seed letters. This explains
+the form of the bound, rather than merely obtaining it from a crude bound
+on the number of subset states.
+
+\subsection{The same induction with a weaker finite hypothesis}
+\label{sec:criterion-residual}
+The proof of Theorem~\ref{thm:finite-principle} consults $\mathcal P_h$ only
+in its last case, and only for the target actually in hand. So the hypothesis
+may be weakened by anything that discharges part of that case analytically.
+
+\begin{definition}
+For $h\ge1$, let $\mathcal R_h$ be the assertion that every \emph{residual}
+core (Definition~\ref{def:residual}) with $2\le m\le h$ rows, of any width,
+has a spanning predecessor certificate.
+\end{definition}
+
+\begin{theorem}[Finite criterion, residual form]\label{thm:finite-residual}
+$\mathcal R_h$ implies $\mathcal P_h$, and hence implies every conclusion of
+Theorem~\ref{thm:finite-principle}.
+\end{theorem}
+\begin{proof}
+Let $S$ be hard with at most $h$ rows. If $S$ contains a balanced triple,
+Lemma~\ref{lem:triple} supplies a spanning predecessor certificate directly.
+Otherwise $S$ is residual and $\mathcal R_h$ supplies one.
+\end{proof}
+
+This is a strictly weaker finite premise: Section~\ref{sec:db-residual}
+discharges $\mathcal R_6$ with 453 certificates over widths at most eleven,
+where $\mathcal P_6$ needs more than ten thousand over widths up to twenty.
+
+\subsection{A sharper bound in terms of the support}
+\label{sec:support-bound}
+\begin{variantbox}{4}
+The bound $B(m,n,S)=|S|+\min(m,n)-2$ charges the \emph{grid} dimensions. The
+next theorem charges only the dimensions actually occupied. What it buys is
+strictly more: on a target with empty axes --- exactly the targets for which
+the first reduction of the induction fires --- it is smaller, and it has the
+dimension-free corollary $|w|\le2E-2$, which the grid form does not imply. It
+is proved by exhibiting an explicit potential and accounting for it case by
+case, so it also makes the shape of the bound visible.
+\end{variantbox}
+
+\begin{theorem}[Support form of the word bound]\label{thm:support-bound}
+Assume $\mathcal P_h$ (or, by Theorem~\ref{thm:finite-residual},
+$\mathcal R_h$). Let $1\le m\le h$, let $S$ be valid relative to $(r,c)$, put
+$E=|S|$, $r_S=|\suppR(S)|$, and $c_S=|\suppC(S)|$. Then $S$ has a reaching
+word of length at most
+\begin{equation}\label{eq:support-bound}
+ \Phi(S)=E+\min(r_S,c_S)-2 .
+\end{equation}
+In particular $|w|\le2E-2$, since $r_S,c_S\le E$; and for six rows with
+$n\ge6$, $|w|\le6n+4$. The same holds with rows and columns exchanged.
+\end{theorem}
+\begin{proof}
+Run the induction of Theorem~\ref{thm:finite-principle} and account for
+$\Phi$ at each step. On a valid singleton $\Phi=0$ and the empty word
+suffices. Deleting empty axes changes neither $E$ nor the two support counts,
+and adds no letters, so $\Phi$ is unchanged. A containment predecessor is a
+proper subset of $S$, so by Corollary~\ref{cor:pred-support} its support
+counts do not increase while $E$ drops by at least one; hence
+$\Phi(T)\le\Phi(S)-1$, and one letter is appended. A certificate predecessor
+has full support, so its support counts equal those of $S$ (which is hard and
+hence has full support), and its cardinality is strictly smaller; again
+$\Phi(T)\le\Phi(S)-1$ for one appended letter. An isolated-cell step deletes
+exactly one cell, one nonempty row, and one nonempty column, so
+\[
+ \Phi(S')=(E-1)+\min(r_S-1,c_S-1)-2=\Phi(S)-2,
+\]
+which pays for its at most two seed letters, while the lift adds none. The
+one-dimensional base uses $E-1=\Phi(S)$ letters, since one of the support
+counts is $1$. Induction on the same rank $(m+n,|S|)$ gives the bound.
+\end{proof}
+
+\subsection{A dual bound carried through the induction}
+\label{sec:dual-bound}
+\begin{variantbox}{5}
+The third form carries \emph{two} estimates through the induction at once and
+takes their minimum. What the first branch, $2(|S|-1)$, buys is that it does
+not mention the dimensions at all, so it is the sharper of the two exactly
+when the grid is wide relative to the target; neither branch implies the
+other, and the minimum is smaller than either form above on some targets. The
+accompanying constructor checks both estimates on every word it emits.
+\end{variantbox}
+
+\begin{theorem}[Dual word bound]\label{thm:dual-bound}
+Under the hypothesis of Theorem~\ref{thm:finite-principle}, every valid $S$
+has a reaching word with
+\begin{equation}\label{eq:dual-bound}
+ |w|\le\min\bigl\{2(|S|-1),\ |S|+\min(m,n)-2\bigr\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $k=|S|$ and $d=\min(m,n)$, and carry both estimates simultaneously
+through the cases of Theorem~\ref{thm:finite-principle}. The singleton uses
+zero letters, and the one-dimensional construction uses $k-1$ letters, which
+satisfies both. Deleting empty axes changes no cell and adds no letter, while
+$d$ cannot increase. Each containment step, balanced-triple step, and
+certificate step decreases $k$ by at least one and appends one letter, so both
+$2(k-1)$ and $k+d-2$ survive. The isolated-cell step replaces $(k,d)$ by
+$(k-1,d-1)$ and adds at most two letters, and its two estimates are
+\[
+ 2\bigl((k-1)-1\bigr)+2=2(k-1),\qquad
+ (k-1)+(d-1)-2+2=k+d-2 .
+\]
+Both bounds therefore hold at every step, hence so does their minimum.
+\end{proof}
+
+\subsection{Why this is not an extrapolation from finite experiments}
+\label{sec:not-extrapolation}
+There is no untested assumption of the form ``the pattern probably continues
+for larger $n$.'' Every possible target is classified. A target with empty
+axes, comparable supports, or a degree-one axis is reduced analytically; a
+target containing a balanced triple is reduced analytically; and every target
+not reduced in these ways is one of the finitely many encoded shapes, modulo
+row and column relabeling. The finite coverage results then handle all of
+those, and the induction applies for any finite number of columns.
+
+Likewise, a certificate table contains predecessors, not an assertion that
+those predecessors are already reachable. Their reachability follows from the
+strictly decreasing induction. That is why a positive table of local
+equations is sufficient to prove a global statement about all reaching words.
+The width bounds --- twenty for six rows, or eleven after balanced-triple
+removal --- are bounds on the width of an irreducible \emph{obstruction}, not
+on the widths the theorem covers. Section~\ref{sec:example} exhibits a
+$6\times100$ target handled with no hundred-column certificate.
+
+\section{The finite certificate computations}
+\label{sec:computation}
+The induction of Section~\ref{sec:induction} needs one finite input:
+$\mathcal P_6$, or the weaker $\mathcal R_6$. This section supplies three
+separate discharges of that input, from three certificate databases:
+
+\begin{center}
+\begin{tabular}{llrrl}
+\toprule
+& Classified objects & Records & Widths & Discovery\\
+\midrule
+\dbA{} & hard matrices, orbit-closure coverage & 10,642 & $\le20$ & SMT\\
+\dbB{} & hard matrices, degree-sorted canonical & 10,619 & $\le20$ & SMT\\
+\dbC{} & residual cores (no balanced triple) & 453 & $\le11$ & solver-free\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\dbA{} and \dbB{} classify the same objects by two different
+symmetry-reduction correctness proofs; \dbC{} classifies a strictly smaller
+class, made available by Lemma~\ref{lem:triple}. Any one of the three
+suffices for Theorem~\ref{thm:main}. All three share the encoding of the next
+subsection.
+
+\begin{variantbox}{0}
+What each database buys. \dbA{} is the uncompressed baseline: it certifies the
+whole hard class directly, and it is the only one containing certificates
+with non-injective row maps, which no permutation-restricted search could
+find. \dbB{} is an independent re-derivation of the same finite lemma over a
+provably minimal representative set, sharing no witness with \dbA{}, and it
+additionally verifies that its row maps are permutations. \dbC{} is the
+compressed route: a fifth analytic reduction makes the finite obligation
+small enough for a deterministic, solver-free search, so that one path
+through the entire result has no external solver anywhere in it.
+Section~\ref{sec:db-compare} records precisely why none reduces to another.
+\end{variantbox}
+
+\subsection{Encoding the targets}
+A column $A\subseteq[m]$ is encoded by
+\[
+ b(A)=\sum_{i\in A}2^i.
+\]
+An unordered family of distinct columns is encoded by
+\begin{equation}\label{eq:family-mask}
+ X(\mathcal A)=\sum_{A\in\mathcal A}2^{b(A)}.
+\end{equation}
+For $m\le6$, every nonempty proper column has a code between $1$ and $62$.
+Thus the entire family fits in an unsigned 64-bit integer. There is no
+shift by $64$, and the prohibited full column at code $63$ is not needed.
+The family determines a matrix by arranging its column codes in increasing
+order. Row permutations act on the binary digits of every column code.
+
+\subsection{Database \dbA{}: orbit-closure coverage}
+\label{sec:db-shared}
+
+\subsubsection{The representative list, and why it need not be minimal}
+The \dbA{} search generator grows antichains one column at a time and
+canonicalizes under row permutations. It first sorts the multiset of row
+degrees; among row permutations realizing that degree order, it chooses the
+smallest family integer. For completeness of this \emph{search} enumeration,
+remove one column from any target antichain: an orbit representative of the
+smaller antichain occurs at the preceding level, the same relabeling
+transports the removed column to an allowable extension, and canonicalizing
+that extension recovers the target orbit. This proves level-by-level coverage
+of the generator.
+
+The final proof, however, does not rely on this reasoning or on this
+implementation at all. Coverage is audited by an independent checker that
+expands the \emph{orbit closure} of each verified representative and compares
+against a directly enumerated labeled traversal
+(Section~\ref{sec:db-shared-coverage}). Because it compares orbit closures and
+the size of the closed set, rather than a list of minimal representatives,
+that design is insensitive to redundancy in the representative list: a
+representative whose orbit is already covered costs a wasted search but cannot
+create a gap, and no minimality of the list is required, or claimed, anywhere
+in the argument. This tolerance is a real architectural difference from
+database~\dbB{}, whose correctness argument instead \emph{proves} that its
+representative list is exactly minimal and whose checker consequently rejects
+a duplicate key outright.
+
+A visible consequence of the same difference is that this classification never
+transposes. It certifies hard matrices in the orientation in which they arise,
+including those with fewer columns than rows, where database~\dbB{} orients
+every target with $m\le n$ at the outset and recovers the rest by
+transposition. That accounts exactly for the 23 records by which the two
+representative sets differ; Section~\ref{sec:db-compare} identifies them.
+
+\subsubsection{The solver query}
+For each hard representative, the search introduces integers
+$f_0,\ldots,f_{m-1}$ and $g_0,\ldots,g_{n-1}$ with the appropriate finite
+ranges, and Boolean variables $t_{ij}$ indicating whether $(i,j)\in T$.
+It imposes the following conditions:
+\begin{align}
+ t_{ij}&\Longrightarrow
+       \bigl((f_i,j)\in S\ \land\ (i,g_j)\in S\bigr),
+       \label{eq:smt-no-extra}\\
+ (r,c)\in S&\Longrightarrow
+ \left(\bigvee_{i=0}^{m-1}(t_{ic}\land f_i=r)\right)
+ \lor
+ \left(\bigvee_{j=0}^{n-1}(t_{rj}\land g_j=c)\right),
+       \label{eq:smt-cover}\\
+ &\bigvee_jt_{ij}\quad\text{for every }i,\qquad
+   \bigvee_it_{ij}\quad\text{for every }j,
+       \label{eq:smt-span}\\
+ &\sum_{i,j}[t_{ij}]<|S|.
+       \label{eq:smt-card}
+\end{align}
+Membership tests involving $f_i$ or $g_j$ are expanded into disjunctions
+of equalities to the constant coordinates of target cells. Here $[t]$ is
+$1$ when $t$ is true and $0$ otherwise.
+
+Equation~\eqref{eq:smt-no-extra} forbids extraneous image cells, while
+\eqref{eq:smt-cover} requires every target cell to be produced. The last
+two lines enforce spanning and strict size reduction. Thus a satisfying
+assignment is exactly a spanning predecessor certificate. No optimization
+of $|T|$ is required. In the largest shape there are 120 membership
+Booleans and 26 function-value integers.
+
+The implementation uses Z3 through its documented C API
+\cite{Z3API}, called from Python's standard-library \code{ctypes} module.
+The solver is used only to discover witnesses. Its search heuristics,
+internal reasoning, and status string are not accepted as the verification
+of a certificate. An unsuccessful or timed-out search would also not
+refute the shuffle conjecture.
+
+\subsubsection{What was found}
+The search returned a spanning predecessor for every one of the 10,642
+hard representatives generated for $2\le m\le6$. Of these, 10,573 have six
+rows. Table~\ref{tab:coverage} summarizes the independent coverage audit.
+A ``labeled family'' here retains row labels but forgets column ordering;
+it is not a count of all labeled rectangular matrices.
+
+\begin{table}[htbp]
+\centering
+\caption{Exhaustive coverage by row count. The antichain column excludes the
+special singleton families $\{\varnothing\}$ and $\{[m]\}$, neither of
+which can be hard. The empty family is included.}
+\label{tab:coverage}
+\begin{tabular}{rrrr}
+\toprule
+Rows & Antichains visited & Hard labeled families & Certificates \\
+\midrule
+\inputrows tables/coverage_rows.tex 
+\bottomrule
+\end{tabular}
+\end{table}
+
+All target sizes in the certificate file lie between $6$ and $60$;
+predecessor sizes lie between $5$ and $38$. Every certificate strictly
+reduces size, and the observed reductions range from $1$ to $24$ cells.
+These are properties of the concrete file, not unproved universal size
+estimates for arbitrary numbers of rows.
+
+\begin{table}[htbp]
+\centering
+\caption{The six-row hard families, classified by number of columns.
+The first numeric column counts row-permutation representatives.}
+\label{tab:six-shapes}
+\begin{tabular}{rrr}
+\toprule
+Columns & Certificates & Hard labeled families \\
+\midrule
+\inputrows tables/six_rows.tex 
+\midrule
+Total & 10,573 & 5,237,599 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The cases below six rows are included rather than treated as black-box
+computational results from the literature. This makes the inductive
+certificate argument self-contained once the local and coverage audits
+are accepted.
+
+The full distribution of six-row hard families by number of columns, for
+every $n$ from $0$ through $20$, is given in Appendix~\ref{app:counts}; that
+table also gives the total labeled antichain count at each width, which is the
+denominator the coverage traversal actually visits. The corresponding
+five-row histogram is
+\[
+ \{4\!:\!30,\ 5\!:\!495,\ 6\!:\!850,\ 7\!:\!445,\ 8\!:\!115,\ 9\!:\!20,\
+   10\!:\!2\},
+\]
+summing to the $1{,}957$ of Table~\ref{tab:coverage}; the four-row histogram
+is $\{4\!:\!8,\,5\!:\!6,\,6\!:\!1\}$. All three histograms are recorded in
+\code{audit/coverage.json}.
+
+\subsubsection{A solver-independent local checker}
+The Python checker reads each JSON record and validates both its structure
+and its mathematics. It checks the dimensions, function ranges, distinct
+column codes, antichain conditions, row and column degrees, and the family
+encoding. It rejects repeated cells in $T$. It then computes the two
+images in \eqref{eq:Delta} explicitly and checks
+\[
+ \suppR(T)=[m],\quad\suppC(T)=[n],\quad |T|<|S|,
+ \quad\Delta_{f,g}(T)=S.
+\]
+All these checks use exact integers and finite sets. Explicit exceptions,
+not disableable Python assertions, enforce the independent checker's
+conditions. The solver module is not imported by this checker.
+
+After validating a record, the checker exports its target identifier to
+\path{audit/verified_targets.tsv}. This ties the subsequent coverage run
+to targets whose actual certificates were checked. A list of target names
+without validated witnesses would not suffice.
+
+\subsubsection{An independent exhaustive coverage checker}
+\label{sec:db-shared-coverage}
+The C++ coverage checker does not use the search generator's canonicalizer,
+degree ordering, or level-by-level orbit construction. It proceeds in two
+separate stages.
+
+First, it expands every verified representative under \emph{all} $m!$ row
+permutations, sorts the resulting family integers, and removes duplicates.
+Call the resulting orbit-closed set $\mathcal O_m$.
+
+Second, it enumerates every antichain of the nonempty proper subsets of
+$[m]$ directly, with row labels fixed. Candidate column codes are kept in
+increasing order. At a recursion node, each candidate is considered as the
+next column; all candidates comparable to it are deleted before descent.
+Every current family is inspected, not just maximal antichains. The
+pseudocode is:
+\begin{lstlisting}[language=Python]
+def visit(family, candidates):
+    inspect(family)
+    while candidates:
+        s = smallest(candidates)
+        candidates.remove(s)
+        visit(family | {s},
+              {t for t in candidates if incomparable(s, t)})
+\end{lstlisting}
+
+\begin{lemma}[Coverage enumeration is exhaustive]\label{lem:enumeration}
+Starting with the empty family and all nonempty proper column codes, this
+recursion visits each antichain exactly once.
+\end{lemma}
+\begin{proof}
+Every recursively added column is larger than the preceding choices and
+incomparable with them, so every visited family is an antichain. Conversely,
+list the members of an arbitrary antichain in increasing order. At each
+step of the recursion, its next member remains a candidate: it is larger
+than the members already chosen and is incomparable with all of them.
+Following these choices visits the given family. Strictly increasing order
+makes this sequence of choices unique.
+\end{proof}
+
+\begin{remark}
+Two of the source packages phrase this completeness lemma differently --- one
+in terms of a set of ``available'' masks from which all comparable masks are
+removed on each descent, the other in terms of a candidate set intersected
+with the incomparable masks --- but the two phrasings describe the same
+recursion and the same proof. Only this one is given. The same recursion,
+with one extra pruning rule, is used for database~\dbC{} in
+Section~\ref{sec:db-residual}.
+\end{remark}
+
+For every visited hard family, the checker demands membership in
+$\mathcal O_m$. It also compares the number of hard visited families to
+$|\mathcal O_m|$. Thus a missing orbit is not concealed by the fact that
+a canonicalization algorithm never generated it. In the six-row run,
+all 5,237,599 hard labeled families were in the orbit-closed checked set.
+The output is recorded in \code{audit/coverage.json}.
+
+\begin{lemma}[Finite certificate lemma from \dbA{}]\label{lem:P6}
+Assertion $\mathcal P_6$ holds.
+\end{lemma}
+\begin{proof}[Computer-assisted proof]
+The independent local checker validated all 10,642 spanning predecessor
+certificates in \code{data/certificates.jsonl}. The independent exhaustive
+coverage checker, whose enumeration is justified by
+Lemma~\ref{lem:enumeration}, verified that every hard column family for
+each $m\in\{2,3,4,5,6\}$ is a row permutation of a checked representative.
+Column ordering is immaterial by Lemma~\ref{lem:transport}. Every hard
+matrix therefore inherits a spanning predecessor certificate. The complete
+run reports and executable source are included in the archive.
+\end{proof}
+
+\subsubsection{Why the two stages are separated, and a one-binary alternative}
+\label{sec:two-stage}
+The two-stage design is deliberate. The first stage alone is not a coverage
+proof: it validates whatever witnesses it is handed and says nothing about
+what is missing. The second stage alone is not a witness proof: it audits a
+list of target identifiers, and a list of names without validated witnesses
+establishes nothing. The coupling between the stages is the exported file
+\path{audit/verified_targets.tsv}, which contains exactly the identifiers of
+records that survived stage one, and which stage two consumes as its only
+input. Both stages must exit successfully, and the article's finite-to-infinite
+argument is a third, separate obligation.
+
+\begin{variantbox}{6}
+A second checker architecture for the same database is also shipped:
+\code{src/verify_all.cpp}, a single self-contained C++17 binary that performs
+the certificate checks, the orbit expansion, and the labeled-antichain
+coverage traversal in one process, taking the plain-integer serialization
+\code{data/certificates.txt} as its only argument. What it buys is that there
+is no intermediate file to get out of step, and no way to run one half of the
+check and report the other: the proof of the finite lemma is one command with
+one expected line of output. What the two-stage design buys in exchange is
+that each stage can be reimplemented, rerun, and audited on its own, and that
+the interface between them is an inspectable artifact. Both are kept.
+\end{variantbox}
+
+The expected final line of the single binary is
+\begin{lstlisting}
+PASS: 7836132 labeled antichains enumerated; 5239572 hard antichains covered.
+\end{lstlisting}
+These are totals across $m=1,\ldots,6$ inclusive, so they are larger than the
+$m\ge2$ totals of Table~\ref{tab:coverage}; the one-row case contributes three
+antichains and no hard family. Table~\ref{tab:counts-all} gives the breakdown.
+
+\begin{table}[htbp]
+\centering
+\caption{The single-binary run, including the one-row case. ``Stored'' counts
+positive records; no minimality of the representative list is required, or
+claimed, for this proof.}
+\label{tab:counts-all}
+\begin{tabular}{rrrrr}
+\toprule
+Rows & Stored & All labeled antichains & Hard antichains & Covered\\
+\midrule
+1 & 0 & 3 & 0 & 0\\
+2 & 0 & 6 & 0 & 0\\
+3 & 1 & 20 & 1 & 1\\
+4 & 5 & 168 & 15 & 15\\
+5 & 63 & 7,581 & 1,957 & 1,957\\
+6 & 10,573 & 7,828,354 & 5,237,599 & 5,237,599\\
+\midrule
+Total & 10,642 & 7,836,132 & 5,239,572 & 5,239,572\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The antichain totals here exceed those of Table~\ref{tab:coverage} by exactly
+two per row count, because this traversal also visits the two degenerate
+singleton families $\{\varnothing\}$ and $\{[m]\}$, neither of which can be
+hard. The two tables are two accountings of one traversal, not two
+computations.
+
+\subsubsection{Two serializations, and a test that exists only because of that}
+\label{sec:serializations}
+Database~\dbA{} is shipped in three byte-different encodings of the same
+10,642 witnesses: \path{data/certificates.jsonl}, whose predecessor field
+is an explicit list of coordinate pairs; \path{data/certificates_masks.jsonl},
+whose predecessor field is a list of column bit masks; and
+\path{data/certificates.txt}, a header-commented plain-integer file with one
+whitespace-separated record per line, which is what the single binary reads.
+Appendix~\ref{app:schema} gives all three layouts.
+
+\begin{variantbox}{7}
+Shipping more than one serialization creates a check that is otherwise
+impossible: \code{src/test_artifacts.py} compares the plain-integer file and
+the mask JSON \emph{record by record}, requiring
+$(m,n,\text{key},f,g,\text{predecessor})$ to agree on every line. What it
+buys is a cross-check of the writers, not of the mathematics: a transcription
+or column-ordering fault that both checkers would accept, because both would
+read the same corrupted file, cannot survive agreement between two files
+written by different code paths. During the preparation of this merged
+archive the same comparison was also run between the coordinate-pair file and
+the mask file, converting each record's coordinate list to column masks; all
+10,642 records agreed.
+\end{variantbox}
+
+\subsection{Database \dbB{}: a minimal canonical representative set}
+\label{sec:db-theorem}
+Database~\dbB{} discharges $\mathcal P_6$ a second time, over a different
+representative set produced by a different symmetry-reduction argument, with
+a different search run, a different file format, and different checkers.
+It is not a re-verification of \dbA{}; the two share no witness.
+
+\subsubsection{The degree-sorted canonical convention}
+Retain a labeled family only when its row-degree sequence is nondecreasing;
+among the row permutations preserving that degree sequence, select the one
+minimizing the family integer \eqref{eq:family-mask}.
+
+\begin{lemma}[Canonical representatives]\label{lem:canonical}
+Every row-permutation orbit of hard matrices contributes exactly one
+representative under this convention.
+\end{lemma}
+\begin{proof}
+Any row-degree sequence can be sorted by a row permutation, so every orbit has
+at least one retained labeling. All retained labelings in one orbit have the
+same sorted degree sequence, so a permutation between two of them sends each
+row to a position of equal degree; that is, it permutes only equal-degree
+blocks. Minimizing the family integer over exactly those permutations
+therefore yields the same integer for every retained labeling in the orbit.
+Distinct orbits cannot produce the same encoded family.
+\end{proof}
+
+\begin{variantbox}{8}
+Lemma~\ref{lem:canonical} and the orbit-closure argument of
+Section~\ref{sec:db-shared-coverage} are two different theorems about two
+different objects. Lemma~\ref{lem:canonical} says the representative list is
+\emph{exactly minimal}, one per orbit, which permits a checker that compares
+representative sets directly and rejects duplicates outright. The
+orbit-closure argument says nothing about minimality and instead compares
+\emph{closures}, which permits a redundant list. Neither implies the other,
+and each is the correctness proof of a different shipped program: a checker
+built on one assumption would be unsound applied to the other's data file.
+Both are kept.
+\end{variantbox}
+
+The enumeration itself is the recursion of Lemma~\ref{lem:enumeration}, run
+over all $2^m$ column masks, with the hard filters applied at each node:
+$n\ge m$, no column of size zero or one, every row degree at least two, and
+row incomparability checked in both directions. Column incomparability is
+already guaranteed by the recursion.
+
+\subsubsection{Enumeration results}
+Table~\ref{tab:totals} gives the totals; the file \code{data/core\_counts.csv}
+gives a four-way breakdown per $(m,n)$ --- all antichains, labeled hard
+matrices, degree-sorted survivors, and orbits --- which no other count in this
+manuscript supplies.
+
+\begin{table}[htbp]
+\centering
+\caption{Database \dbB{} enumeration, oriented so that $m\le n$. The
+``all antichains'' column includes the two degenerate singleton families,
+so it exceeds the corresponding column of Table~\ref{tab:coverage} by two.}
+\label{tab:totals}
+\begin{tabular}{rrrr}
+\toprule
+Rows $m$ & All antichains & Width bound & Core orbits\\
+\midrule
+2 & 6 & 2 & 0\\
+3 & 20 & 3 & 1\\
+4 & 168 & 6 & 5\\
+5 & 7,581 & 10 & 62\\
+6 & 7,828,354 & 20 & 10,551\\
+\midrule
+\multicolumn{3}{r}{Total certificate targets} & 10,619\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 10,551 six-row orbits are distributed by width as
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & Orbits & $n$ & Orbits & $n$ & Orbits\\
+\midrule
+6 & 296 & 11 & 1,274 & 16 & 25\\
+7 & 1,141 & 12 & 706 & 17 & 9\\
+8 & 2,133 & 13 & 349 & 18 & 3\\
+9 & 2,416 & 14 & 159 & 19 & 1\\
+10 & 1,973 & 15 & 65 & 20 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+so widths $7$ through $20$ account for 10,255 genuinely new representative
+targets; adding the 296 six-by-six targets and 68 targets from smaller
+dimensions gives 10,619.
+
+\subsubsection{A verifier that regenerates rather than trusts}
+The C++20 program \code{src/verify.cpp} both checks every triple and
+\emph{reruns the entire canonical enumeration}, then compares the full set of
+target keys --- not the number of records --- with the set of keys appearing
+in the certificate file. It rejects trailing tokens, duplicate keys, incorrect
+column counts, empty source columns, missing source rows, nondecreasing
+cardinalities, incorrect images, and a row map that is not a permutation.
+Two checkers sharing one target list would not independently establish
+coverage; that is exactly why this one regenerates the list.
+
+A second, independently written Python checker,
+\code{tests/verify\_certificates.py}, recomputes all 10,619 transition images
+using sets of ordered pairs rather than output bit masks, and checks the hard
+conditions directly. For $m\le4$ it additionally enumerates \emph{all
+families of subsets}, not the antichain recursion, and obtains the same
+canonical sets.
+
+\begin{proposition}[Finite certificate lemma from \dbB{}]\label{prop:finite}
+Assertion $\mathcal P_6$ holds. Moreover, the row transformation in every one
+of the 10,619 supplied certificates is a permutation, and the decreases
+$|S|-|T|$ range from $1$ through $22$.
+\end{proposition}
+\begin{proof}[Computer-assisted proof]
+By Lemma~\ref{lem:sperner} only finitely many widths arise. The C++
+enumerator implements the recursion of Lemma~\ref{lem:enumeration}, the hard
+filters, and the canonicalization of Lemma~\ref{lem:canonical}, producing
+10,619 representatives. The verifier checks each supplied triple by the
+explicit image computation and then compares key sets: they are equal, with no
+missing, duplicate, or extra target. Every triple has full support, strictly
+smaller cardinality, the exact required image, and a permutation row map. The
+Python checker reproduces all image computations by a different
+representation. Lemma~\ref{lem:transport} extends each representative
+certificate to all labelings.
+\end{proof}
+
+\begin{variantbox}{9}
+The additional clause of Proposition~\ref{prop:finite} --- that $f$ is always
+a permutation --- is a genuine extra verified property, and it is
+\emph{false} of database~\dbA{}, where 8,117 of the 10,642 row maps are not
+injective. It matters because a permutation-only search is far cheaper and
+needs no solver, and because it is the six-row instance of the stronger
+structural statement discussed in Section~\ref{sec:limits}. The column map is
+not always a permutation in \dbB{} either: 10,113 of its 10,619 column maps
+fail injectivity.
+\end{variantbox}
+
+The role of the two checkers must not be conflated: the Python check of
+six-row coverage consults the representative manifest, whereas the
+\emph{exhaustive} six-row coverage computation is the C++ one.
+
+\subsection{Database \dbC{}: residual cores and no solver at all}
+\label{sec:db-residual}
+Database~\dbC{} discharges the weaker premise $\mathcal R_6$ of
+Theorem~\ref{thm:finite-residual}. Because Lemma~\ref{lem:triple} has already
+removed every hard matrix containing a balanced triple, the class that
+remains is far smaller, and it is small enough that the discovery procedure of
+Section~\ref{sec:maximal-candidate} --- pure permutation enumeration --- is
+sufficient.
+
+\subsubsection{The enumeration}
+For each $m=2,\ldots,6$, start from the increasing list of masks of proper
+subsets of $[m]$ of size at least two. Maintain a chosen family and the
+remaining larger candidates. On choosing a new column, reject it if it forms
+a balanced triple with two already-chosen columns; otherwise recurse,
+retaining only later candidates incomparable with it. At every node with at
+least $m$ columns, test row incomparability and row degree, and if they hold
+record a residual core.
+
+Completeness is Remark~\ref{rem:hereditary} plus the uniqueness argument of
+Lemma~\ref{lem:enumeration}: every residual family has a unique increasing
+mask sequence, each of whose prefixes is itself incomparable and
+balanced-triple-free, so no prefix can be rejected by either pruning rule and
+the family is reached. Row degree and row incomparability are tested at nodes
+and never used to prune.
+
+Predecessor columns are stored in the representative's \emph{original} column
+order; sorting them independently would generally destroy the certificate.
+The records also carry a redundant family key, checked for consistency but
+not assumed by the proof.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact residual-core enumeration, oriented so that $m\le n$. Rows are
+labeled and the columns form an unordered family; ``representatives''
+additionally quotients by row permutations. Every case with $2\le m\le n$,
+$m\le6$, not listed here has no residual core at all.}
+\label{tab:cores}
+\begin{tabular}{rrrr}
+\toprule
+Rows $m$ & Columns $n$ & Row-labeled column families & Representatives\\
+\midrule
+4 & 4 & 7 & 2\\
+5 & 5 & 239 & 7\\
+5 & 6 & 115 & 4\\
+5 & 7 & 10 & 1\\
+6 & 6 & 54,358 & 136\\
+6 & 7 & 83,730 & 194\\
+6 & 8 & 26,565 & 84\\
+6 & 9 & 3,355 & 19\\
+6 & 10 & 284 & 5\\
+6 & 11 & 10 & 1\\
+\midrule
+\multicolumn{2}{l}{Total} & 168,673 & 453\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The recursion visits $1,\,7,\,79,\,2{,}715,\,584{,}473$ prefix nodes for
+$m=2,\ldots,6$. There are 439 six-row representatives, of which 303 have at
+least seven columns; the remaining 14 representatives have fewer than six
+rows. The generator tested $690{,}293$ permutation pairs for the six-row
+representatives before finding all their certificates.
+
+The enumeration does not stop at eleven columns by assumption: it explores
+every admissible family in the whole pool, and the \emph{absence} of residual
+cores wider than eleven is an output of the computation, not an input to it.
+
+\subsubsection{A checker that needs no compiler, and a generator that needs no solver}
+\begin{variantbox}{10}
+\code{residual/verify.py} is a single pure-Python standard-library program
+that checks the certificates, expands the row-permutation orbits, checks that
+representative orbits are pairwise \emph{disjoint}, and runs the exhaustive
+residual enumeration, together with auxiliary checks of the local formulas.
+What it buys is that the entire finite lemma can be checked with no C++
+compiler, no build step, and no third-party package --- the weakest
+prerequisite of any verification path here. Its \code{--quick} flag checks
+certificate soundness only and deliberately omits exhaustive coverage; its own
+output warns that \code{--quick} must not be represented as verification of
+the finite lemma.
+\end{variantbox}
+
+\begin{variantbox}{11}
+\code{residual/generate.cpp} is a deterministic C++17 regenerator using
+integer bit builtins and \emph{no solver of any kind}, implementing the
+maximal-candidate formula \eqref{eq:maxpre} with the repair of
+Lemma~\ref{lem:repair}. Its regenerated output was compared byte for byte
+with the shipped certificate file and found identical. What it buys is that
+this one route through the whole result --- discovery and checking --- has
+zero dependency on Z3 or on any external solver, so the archive is fully
+regenerable as well as fully checkable. The SMT route of
+Section~\ref{sec:db-shared} cannot be replaced by it: the shared database
+contains non-injective row maps, which a permutation-restricted search cannot
+produce.
+\end{variantbox}
+
+\begin{lemma}[Finite certificate lemma from \dbC{}]\label{lem:finite-residual}
+Assertion $\mathcal R_6$ holds. Moreover, for every residual core with
+$2\le m\le6$ the certificate may be taken with \emph{both} $f$ and $g$
+permutations.
+\end{lemma}
+\begin{proof}[Computer-assisted proof]
+The file \code{residual/certificates.tsv} contains 453 records, each of which
+passes the literal checks of Definition~\ref{def:certificate} together with
+bijectivity of $f$ and of $g$. The exhaustive recursion described above covers
+every residual core up to column ordering, and every such family lies in
+exactly one verified row-permutation orbit; orbit disjointness is checked, and
+the number of enumerated families equals the size of the orbit table.
+Equation~\eqref{eq:covariance} transports a certificate to any labeling, and
+full support and cardinality are invariant under relabeling.
+\end{proof}
+
+\subsection{Why none of the three databases reduces to another}
+\label{sec:db-compare}
+The following comparisons were recomputed directly from the three shipped
+files during the preparation of this merged archive.
+
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Keys.} \dbB{}'s 10,619 target keys form a strict subset of
+\dbA{}'s 10,642. The 23 extra records of \dbA{} are exactly those whose shape
+has more rows than columns: twenty-one of shape $6\times5$, one of shape
+$5\times4$, and one of shape $6\times4$. \dbA{} certifies each hard matrix in
+the orientation in which it arises, whereas \dbB{} orients every target with
+$m\le n$ and recovers the others by transposition. Per row count, \dbA{}
+stores 1, 5, 63 and 10,573 records at three, four, five and six rows against
+\dbB{}'s 1, 5, 62 and 10,551; the differences $1$ and $22$ are the $5\times4$
+record and the $6\times5$ and $6\times4$ records respectively. Within each
+database every stored record lies in a distinct row-permutation orbit of its
+shape, as recomputed for this merge. The numbers 10,642 and 10,619 must not be
+``reconciled'' into one: their difference is a real artifact of two different
+canonicalization conventions, one of which additionally proves minimality of
+its list while the other proves only that its orbit closures cover.
+\item \emph{Witnesses.} Of the 10,619 keys present in both databases,
+\emph{zero} carry the same triple $(f,g,T)$. Each database is therefore a
+genuinely independent re-derivation of the other's finite lemma, not a copy
+with a different header.
+\item \emph{Structure.} In \dbA{}, 8,117 of the 10,642 row maps are not
+injective; in \dbB{}, all 10,619 are permutations while 10,113 column maps are
+not; in \dbC{}, all 453 records have both maps bijective.
+\item \emph{Class.} \dbC{} classifies a different class of objects. Its
+453 records share only two target keys with \dbA{}, and the same two with
+\dbB{}.
+\item \emph{Remainder.} The two finite classifications of the irreducible
+remainder are different objects with different sizes: 5,237,599 six-row hard
+labeled families up to width twenty, against 168,673 row-labeled residual
+families up to width eleven. Collapsing them would lose either the
+balanced-triple compression or the uncompressed baseline that two independent
+databases certify.
+\end{enumerate}
+
+Consequently the finite input of Section~\ref{sec:induction} is available
+three times over, and each way is a complete proof by itself:
+Lemma~\ref{lem:P6}, Proposition~\ref{prop:finite}, and
+Lemma~\ref{lem:finite-residual} with Theorem~\ref{thm:finite-residual}.
+The word constructors and supplementary tests of
+Section~\ref{sec:algorithm} provide further checks and usable witnesses, but
+are not substituted for any of these coverage arguments.
+
+\section{Completion of the state-complexity proof}
+\label{sec:completion}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Lemma~\ref{lem:P6} and Theorem~\ref{thm:finite-principle} show that every
+valid subset is reachable when $\min(m,n)\le6$. Proposition~\ref{prop:finite}
+gives the same conclusion through an independent finite computation, and
+Lemma~\ref{lem:finite-residual} with Theorem~\ref{thm:finite-residual} gives
+it a third time through a smaller one; any one of the three completes this
+step. Lemma~\ref{lem:persistence} shows that no invalid subset is reachable.
+Hence the universal shuffle automaton has exactly $F(m,n)$ reachable subset
+states.
+
+For $m,n\ge2$, give the component automata one final state each.
+Section~\ref{sec:distinguishability} proves that the component automata are
+minimal with respectively $m,n$ states and that all distinct subset states
+are distinguishable --- by any of its four arguments, of which
+Corollary~\ref{cor:subsetsdistinct} needs only a fixed three-letter alphabet.
+The resulting shuffle language therefore has state complexity $F(m,n)$.
+Proposition~\ref{prop:upper} gives the matching upper bound for all operand
+pairs. This proves the equality.
+
+Finally,
+\begin{align*}
+ F(6,n)
+ &=2^{6n-1}+31\cdot2^{5n-5}(2^{n-1}-1)\\
+ &=63\cdot2^{6n-6}-31\cdot2^{5n-5},
+\end{align*}
+which proves \eqref{eq:six-simplified}.
+\end{proof}
+
+\begin{corollary}[Short reaching words]\label{cor:words}
+If $m,n\ge1$ and $\min(m,n)\le6$, every valid subset $S$ of the universal
+shuffle state space is reachable by a word of length at most
+\[
+ \min\bigl\{2(|S|-1),\ |S|+\min(m,n)-2\bigr\},
+\]
+and also by one of length at most $|S|+\min(r_S,c_S)-2$, where $r_S$ and
+$c_S$ are the numbers of nonempty rows and columns of $S$. For a six-by-$n$
+grid with $n\ge6$, all three specialize to at most $|S|+4\le6n+4$.
+\end{corollary}
+\begin{proof}
+Apply Theorems~\ref{thm:finite-principle}, \ref{thm:support-bound} and
+\ref{thm:dual-bound} with $h=6$.
+\end{proof}
+
+Equivalently, the maximum distance from the initial subset to any reachable
+subset is at most $mn+\min(m,n)-2$. This is a statement about the universal
+alphabet, whose letters already specify complete transformations; it does not
+transfer to a fixed generating alphabet, because replacing a transformation
+pair by a word in generators need not preserve the subset action.
+
+For scale, the theorem gives
+\[
+ F(6,6)=66,605,547,520,\qquad
+ F(6,7)=4,296,041,037,824,
+\]
+and already at $n=10$,
+\[
+ F(6,10)=1,133,816,390,562,611,200 .
+\]
+The proof did not enumerate any of these reachable-state sets. It
+classified the much smaller collection of irreducible targets and used
+induction to cover the rest.
+
+\section{Certificates that can be checked by hand}
+\label{sec:example}
+Four worked six-by-seven examples follow, on \emph{three} different targets,
+plus wider examples. They are not illustrations of one phenomenon: the first
+two are two incompatible certificates for the same target, drawn from the two
+independent databases, and are the cleanest single demonstration that those
+databases are independent.
+
+\subsection{A six-by-seven target, certified from database \dbA{}}
+\label{sec:ex-shared}
+Consider the hard target whose ordered column codes are
+\[
+ (12,17,18,24,33,34,36).
+\]
+Its family integer is $94,506,455,040$. With rows and columns numbered
+from zero, its incidence matrix and a predecessor are
+\begingroup\setlength{\arraycolsep}{3pt}
+\[
+ S=\begin{pmatrix}
+ 0&1&0&0&1&0&0\\
+ 0&0&1&0&0&1&0\\
+ 1&0&0&0&0&0&1\\
+ 1&0&0&1&0&0&0\\
+ 0&1&1&1&0&0&0\\
+ 0&0&0&0&1&1&1
+ \end{pmatrix},\qquad
+ T=\begin{pmatrix}
+ 0&0&0&0&1&0&0\\
+ 1&0&0&1&0&0&0\\
+ 0&1&1&0&0&0&0\\
+ 0&1&0&0&0&0&0\\
+ 1&0&0&0&0&0&1\\
+ 0&0&0&0&1&1&0
+ \end{pmatrix}.
+\]
+\endgroup
+There are $14$ cells in $S$ and $10$ in $T$. The row and column supports of
+$T$ are full. Define the image lists
+\[
+ f=(0,3,4,0,2,5),\qquad g=(2,0,6,5,4,6,3).
+\]
+Here the $i$th entry of the first list is $f(i)$, and similarly for $g$.
+The two images of each source cell are displayed in
+Table~\ref{tab:example-images}.
+
+\begin{table}[H]
+\centering
+\caption{Direct verification of the six-by-seven predecessor. The union of
+the last two columns is exactly the target $S$. Repeated outputs are harmless.}
+\label{tab:example-images}
+\begin{tabular}{ccc}
+\toprule
+Source $(i,j)$ & $(f(i),j)$ & $(i,g(j))$ \\
+\midrule
+\inputrows tables/example_images.tex 
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every output lies in $S$, and every $1$ of $S$ occurs among the outputs.
+This checks the image identity without trusting a solver or software.
+The predecessor is intentionally not constrained to lie inside its target:
+for instance, $(1,0)\in T$ but $(1,0)\notin S$.
+
+\subsection{The same target, certified from database \dbB{}}
+\label{sec:ex-theorem}
+Database~\dbB{} contains a certificate for this same target --- family integer
+$94{,}506{,}455{,}040$ --- and it is a different one. Its row map is a
+permutation:
+\[
+ f=(0,3,5,1,4,2),\qquad
+ g=(4,2,2,2,1,0,6),\qquad
+ t=(32,16,16,18,1,12,36),
+\]
+where $t$ lists the predecessor's column codes. As an incidence matrix the
+predecessor is
+\begingroup\setlength{\arraycolsep}{3pt}
+\[
+ T'=\begin{pmatrix}
+ 0&0&0&0&1&0&0\\
+ 0&0&0&1&0&0&0\\
+ 0&0&0&0&0&1&1\\
+ 0&0&0&0&0&1&0\\
+ 0&1&1&1&0&0&0\\
+ 1&0&0&0&0&0&1
+ \end{pmatrix},
+\]
+\endgroup
+again with ten cells against the target's fourteen, and again with full row
+and column support. Separating the two branches of \eqref{eq:Delta} by
+column gives
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Column $j$ & 0&1&2&3&4&5&6\\
+\midrule
+Vertical branch $(f,\id)(T')$ &4&16&16&24&1&34&36\\
+Horizontal branch $(\id,g)(T')$ &12&1&18&0&32&0&36\\
+Bitwise union &12&17&18&24&33&34&36\\
+\bottomrule
+\end{tabular}
+\end{center}
+so the image is exactly $S$. In the \code{.cert} serialization of
+Appendix~\ref{app:schema} the whole record is one line:
+\begin{lstlisting}
+6 7 94506455040 0 3 5 1 4 2 4 2 2 2 1 0 6 32 16 16 18 1 12 36
+\end{lstlisting}
+
+\begin{variantbox}{12}
+The two certificates just displayed are for the same target and are
+incompatible: $f=(0,3,4,0,2,5)$ is not injective, while $f=(0,3,5,1,4,2)$ is a
+permutation, and the two predecessors are different ten-cell sets. Neither
+can be obtained from the other by the transport of Lemma~\ref{lem:transport},
+which acts by conjugation and cannot change whether a map is injective. This
+is the concrete form of the fact recorded in Section~\ref{sec:db-compare}:
+across all 10,619 shared keys, the two databases agree on no witness at all.
+\end{variantbox}
+
+\subsection{An explicit reaching word}
+The recursive constructor produces the 11-letter word in
+Table~\ref{tab:example-word}, starting at $(0,0)$. The final letter is the
+certificate just displayed. The table also gives the number of occupied
+cells after each prefix, permitting a simple replay check. The target is
+valid even though its initial cell $(0,0)$ is absent.
+
+\begin{table}[H]
+\centering
+\small
+\caption{A reaching word for the six-by-seven example. Image lists specify
+the two functions completely. Prefix cardinalities are obtained by exact replay.}
+\label{tab:example-word}
+\begin{tabular}{rccr}
+\toprule
+Step & Row function & Column function & Cells \\
+\midrule
+\inputrows tables/example_word.tex 
+\bottomrule
+\end{tabular}
+\end{table}
+
+The general length bound for this target is $14+6-2=18$, so this word is
+comfortably within the proved bound. It is not claimed to be a shortest
+word. The same target was also constructed and replayed from every one of
+its $6\cdot7=42$ possible roots.
+
+Constructing from the \dbB{} certificate instead produces a different word
+for the same target, of ten letters rather than eleven; it is tabulated in
+Appendix~\ref{app:theorem-word} and stored in
+\path{data/theorem_example_6x7_word.json}. Two constructors reading two
+databases give two words; neither length is a claim about optimality.
+
+\subsection{A different six-by-seven target, and a certificate no permutation
+search could find}
+\label{sec:ex-strip}
+Consider now the target whose ordered column codes are
+\begin{equation}\label{eq:strip-columns}
+ (14,20,25,26,33,34,36),
+\end{equation}
+so that, for instance, $14=2^1+2^2+2^3$ puts column $0$ in rows $1,2,3$.
+It has seventeen cells, meets all six rows and all seven columns, and is
+hard; its family integer is $94{,}591{,}008{,}768$. Its certificate in
+database~\dbA{} is
+\[
+ f=(3,5,0,2,4,5),\qquad
+ g=(2,2,3,2,0,5,3),
+\]
+\[
+ \bigl(b(M_0(T)),\ldots,b(M_6(T))\bigr)=(9,24,16,17,6,34,10),
+\]
+with thirteen cells and full support. The two incidence matrices are
+\begingroup\setlength{\arraycolsep}{3pt}
+\[
+ S=\begin{pmatrix}
+ 0&0&1&0&1&0&0\\
+ 1&0&0&1&0&1&0\\
+ 1&1&0&0&0&0&1\\
+ 1&0&1&1&0&0&0\\
+ 0&1&1&1&0&0&0\\
+ 0&0&0&0&1&1&1
+ \end{pmatrix},\qquad
+ T=\begin{pmatrix}
+ 1&0&0&1&0&0&0\\
+ 0&0&0&0&1&1&1\\
+ 0&0&0&0&1&0&0\\
+ 1&1&0&0&0&0&1\\
+ 0&1&1&1&0&0&0\\
+ 0&0&0&0&0&1&0
+ \end{pmatrix}.
+\]
+\endgroup
+
+\begin{variantbox}{13}
+This example is audited in a third style, by columns rather than by source
+cells: write $F_j=f(M_j(T))$ for the contribution of the row branch and
+$G_j=\bigcup_{k:g(k)=j}M_k(T)$ for the contribution of the column branch.
+What that buys is an audit whose row count is the number of \emph{columns},
+seven, rather than the number of occupied source cells, thirteen --- a
+cheaper hand check on wide targets, and one that displays which branch is
+responsible for each column.
+\end{variantbox}
+
+\begin{table}[H]
+\centering
+\caption{Column-wise forward-image check for the target
+\eqref{eq:strip-columns}.}
+\label{tab:strip-image}
+\begin{tabular}{rrrr}
+\toprule
+$j$ & $b(F_j)$ & $b(G_j)$ & Union, $b(M_j(S))$\\
+\midrule
+0 & 12 & 6 & 14 \\
+1 & 20 & 0 & 20 \\
+2 & 16 & 25 & 25 \\
+3 & 24 & 26 & 26 \\
+4 & 33 & 0 & 33 \\
+5 & 32 & 34 & 34 \\
+6 & 36 & 0 & 36 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+From the root $(0,0)$ the constructor produces a sixteen-letter word, printed
+in full in Appendix~\ref{app:strip-word} and stored with every intermediate
+subset in \code{data/strip\_example\_6x7\_word.json}. Its successive subset
+cardinalities are
+\[
+ 1,2,2,3,4,5,5,6,6,7,8,9,10,11,12,13,17 .
+\]
+The bound here is $17+6-2=21$.
+
+The last of those steps is the certificate letter, and it adds \emph{four}
+cells at once using noninvertible transformations. A method restricted to
+permutation letters, or to predecessors contained in the target, would miss
+this particular certificate. That observation does not claim that every
+certificate for this target has the property.
+
+\subsection{A residual core, certified by a bare pair of transpositions}
+\label{sec:ex-residual}
+The third target is
+\begin{equation}\label{eq:residual-columns}
+ (3,5,9,14,17,33,50),
+\end{equation}
+whose columns are $\{0,1\},\{0,2\},\{0,3\},\{1,2,3\},\{0,4\},\{0,5\},
+\{1,4,5\}$: sixteen cells, all six rows used, every degree at least two,
+both neighborhood families incomparable, and --- checked directly --- no
+balanced triple. It is a genuine residual core.
+
+Its certificate in database~\dbC{} is
+\[
+ f=(0,1,2,3,5,4),\qquad
+ g=(0,1,2,3,5,4,6),\qquad
+ T=(3,5,9,14,32,17,50),
+\]
+that is, $f$ swaps rows $4,5$ and $g$ swaps columns $4,5$, and the
+predecessor has fifteen cells. This is a minimal one-cell decrease, and the
+whole verification is two set identities:
+\[
+ f(\{5\})\cup\{0,4\}=\{4\}\cup\{0,4\}=\{0,4\},
+ \qquad
+ f(\{0,4\})\cup\{5\}=\{0,5\}\cup\{5\}=\{0,5\},
+\]
+giving target columns $4$ and $5$; every other column is fixed pointwise or
+setwise, the last one $\{1,4,5\}$ being invariant under the row swap.
+
+\begin{variantbox}{14}
+Three worked certificates, three shapes of witness: a non-injective
+ten-cell predecessor dropping four cells at once
+(Section~\ref{sec:ex-strip}), a permutation-row-map ten-cell predecessor
+(Section~\ref{sec:ex-theorem}), and a pair of transpositions dropping one
+cell. What the last buys is that it is checkable by hand in two lines with no
+table at all, which the other two are not; what the first buys is a witness
+outside the reach of any permutation-restricted search.
+\end{variantbox}
+
+The constructor of Section~\ref{sec:algorithm} reaches this target from the
+origin $(0,0)$ in seventeen letters, tabulated in
+\code{residual/example\_6x7.json}; several of its two-letter isolated-edge
+seeds preserve cardinality on their second letter while changing positions,
+which is why the cardinality trace is not strictly increasing. The word is printed in
+Table~\ref{tab:word}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rllr}
+\toprule
+Step & Row transformation $f$ & Column transformation $g$ & Subset size\\
+\midrule
+1 & \texttt{512340} & \texttt{4123056} & 2\\
+2 & \texttt{512340} & \texttt{4123056} & 2\\
+3 & \texttt{102345} & \texttt{1023456} & 3\\
+4 & \texttt{102345} & \texttt{1023456} & 3\\
+5 & \texttt{021345} & \texttt{0321456} & 4\\
+6 & \texttt{013245} & \texttt{0213456} & 5\\
+7 & \texttt{013245} & \texttt{0213456} & 5\\
+8 & \texttt{012435} & \texttt{0153426} & 6\\
+9 & \texttt{012435} & \texttt{0153426} & 6\\
+10 & \texttt{012345} & \texttt{0126456} & 7\\
+11 & \texttt{012345} & \texttt{0133456} & 8\\
+12 & \texttt{012345} & \texttt{0323456} & 9\\
+13 & \texttt{012345} & \texttt{2123456} & 10\\
+14 & \texttt{012345} & \texttt{1123456} & 11\\
+15 & \texttt{012345} & \texttt{5123460} & 14\\
+16 & \texttt{012345} & \texttt{0123656} & 15\\
+17 & \texttt{012354} & \texttt{0123546} & 16\\
+\bottomrule
+\end{tabular}
+\caption{The seventeen-letter reaching word for the residual core, replayed
+step by step. The construction is not asserted to be shortest. Several
+two-letter isolated-edge seeds preserve cardinality on their second letter
+while changing positions.}
+\label{tab:word}
+\end{table}
+
+
+\subsection{Two opposed remarks, and their resolution}
+\label{sec:opposed}
+Two statements in this manuscript look contradictory and are both true.
+
+\begin{enumerate}[label=(\roman*)]
+\item Section~\ref{sec:ex-strip}: a method restricted to permutation letters,
+or to predecessors contained in $S$, would miss the certificate displayed
+there for the hard target \eqref{eq:strip-columns}.
+\item Lemma~\ref{lem:finite-residual}: \emph{every} residual core with at most
+six rows has a certificate whose two components are both permutations.
+\end{enumerate}
+
+The resolution is that the two statements quantify over different targets.
+Balanced-triple contraction (Lemma~\ref{lem:triple}) changes which targets
+survive to the finite table. The target \eqref{eq:strip-columns} contains a
+balanced triple --- its columns $0,1,3$, with neighborhoods
+$U=\{1,2,3\}$, $V=\{2,4\}$, $W=\{1,3,4\}$, all three of whose pairwise
+unions equal $\{1,2,3,4\}$ --- so on the
+\dbC{} route it never reaches the table at all; it is discharged
+analytically by a letter whose column component is a three-cycle. What
+statement (ii) asserts is a property of the residual remainder, not of every
+hard matrix. By contrast the target of
+Sections~\ref{sec:ex-shared}--\ref{sec:ex-theorem} has no balanced triple at
+all, so it is itself residual; its row-permutation orbit, of size $180$, is
+covered in database~\dbC{} by the representative with family key
+$282{,}574{,}489{,}649{,}704$, which therefore supplies a third and again
+different certificate for it, this one a pair of permutations.
+Conversely, database~\dbA{} contains no balanced-triple step,
+so it must certify \eqref{eq:strip-columns} directly, and the witness it
+found is non-injective. Neither statement may be dropped in favor of the
+other: (i) is what forces the SMT route to exist, and (ii) is what makes the
+solver-free route possible.
+
+\subsection{Twenty columns and a width beyond the finite classification}
+The unique six-row hard family with twenty columns consists of all
+three-element subsets of $[6]$. It has $60$ cells. The bundled constructor
+reaches the corresponding ordered matrix in $35$ letters; the constructor
+driven by database~\dbB{} reaches the same target in $39$ letters. Both are
+within the proved bound of $64$. Two constructors, two databases, two words:
+the difference measures implementation choices, not the theorem.
+
+Repeat each of these twenty column types five times, obtaining a six-by-one-
+hundred matrix with $300$ cells. Repeated columns are handled by the
+comparable-column reduction, so no hundred-column certificate is needed.
+The supplied reaching word has $115$ letters, compared with the bound
+$304$. Both the target and the complete word are included as JSON files.
+This example makes the finite-to-infinite step concrete: the finite
+classification is of obstruction types, not of every possible target width.
+
+\section{Constructive algorithm and independent tests}
+\label{sec:algorithm}
+
+\subsection{Turning the proof into a word}
+The supplied \code{construct.py} follows the induction literally. It
+accepts a target, dimensions, and a root. It checks validity before starting.
+Empty rows and columns are removed with explicit coordinate maps. A
+comparable-neighborhood step recursively reaches its smaller valid
+predecessor and appends the copying letter. An isolated-cell step prepends
+its one- or two-letter seed to a lifted smaller word.
+
+For a hard target, the program tries the at most $6!$ row permutations,
+transforms its column codes, and locates a stored representative. The
+resulting column permutation is explicit because the column codes are
+distinct. If $\pi,\sigma$ carry the current target to a representative
+with certificate $(f_0,g_0,T_0)$, the program uses
+\[
+ T=(\pi^{-1},\sigma^{-1})T_0,\qquad
+ f=\pi^{-1}f_0\pi,\qquad g=\sigma^{-1}g_0\sigma.
+\]
+It checks the transported identity before recursion. On returning, it
+replays the entire word from the requested root and checks both the target
+and the length bound.
+
+The recursion is mathematically well founded, but this reference Python
+implementation uses the interpreter's ordinary recursion stack. Extremely
+large user-supplied grids can exceed that implementation limit even though
+the theorem applies. No claim of an optimized production implementation is
+made.
+
+\subsection{Four constructors with different recursion discipline}
+\label{sec:constructors}
+Four reaching-word constructors are shipped. They implement the same
+induction and are not interchangeable in their interfaces or their checks.
+
+\begin{variantbox}{15}
+\code{src/construct\_iterative.py} replaces the recursion by an
+\emph{explicit stack} of reduction frames. What it buys is that its logical
+recursion depth does not impose the interpreter's recursion limit on the
+number of columns, so it is the engine to use on wide targets; it is the only
+such implementation here. Running time and memory still grow with the target,
+because the transformation arrays are written out explicitly.
+\end{variantbox}
+
+\begin{variantbox}{16}
+\code{python/construct\_word.py} exposes an importable \code{Constructor}
+class with a \code{construct(m,n,S,start=(0,0))} method and a \code{--start
+row,column} option, and it reads database~\dbB{}. What it buys is
+programmatic reuse: the constructor can be driven from another program
+without a JSON round trip, and the root can be varied from the command line.
+\end{variantbox}
+
+\begin{variantbox}{17}
+\code{residual/construct.py} takes \code{--rows}, \code{--columns},
+\code{--masks}, \code{--origin} and \code{--output}, accepts zero masks for
+empty columns, raises Python's recursion limit dynamically from the target
+size, and checks \emph{both} length bounds of \eqref{eq:dual-bound} on every
+word it emits. What it buys is the only implementation that exercises the
+balanced-triple step and the only one that validates the dual bound.
+\end{variantbox}
+
+\begin{variantbox}{18}
+\code{src/construct.py}, the constructor used in
+Section~\ref{sec:ex-shared}, takes a target as a JSON object with fields
+\code{m}, \code{n}, an optional \code{root}, and \code{target} as a list of
+coordinate pairs; it pre-validates the target before starting, then replays
+the constructed word and rechecks the length bound before writing output.
+What it buys is that the input and the output are both inspectable artifacts,
+which is exactly what the bundled examples of Section~\ref{sec:example} are.
+The iterative constructor uses the same JSON shape with the key \code{cells}
+in place of \code{target}.
+\end{variantbox}
+
+All four reject invalid targets, and all four replay the word they produce
+and compare the replayed result with the requested target before reporting
+success.
+
+\subsection{Exact breadth-first checks on small grids}
+A separate bitset breadth-first implementation enumerates the full
+transformation-pair alphabet for small grids. It does not call the word
+constructor's transition routine. Its reachable-state sets agree exactly
+with the independently computed valid-state sets:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+Grid & Reachable subsets & Largest shortest access length \\
+\midrule
+$2\times2$ & 10 & 2\\
+$2\times3$ & 44 & 3\\
+$3\times3$ & 400 & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+These breadth-first results check small instances directly. They are
+corroboration, not the reason that arbitrarily large widths are covered.
+
+\subsection{Replay, coverage, and negative tests}
+The test suite constructed and replayed every valid target on grids
+$1\times4$, $4\times1$, $2\times2$, $2\times3$, $3\times3$, and
+$3\times4$. The last of these contains $3,392$ valid targets. It also
+checked all $3,600$ combinations of a valid three-by-three target and a
+specified root, all $42$ roots of the displayed six-by-seven example,
+and $180$ reproducibly seeded random targets on larger grids, including
+$6\times50$ and its transpose.
+
+An additional straightforward Python antichain enumeration, using lists
+and set inclusion rather than the C++ bitset traversal, reproduced both
+total and hard-family counts for $m=2,3,4,5$.
+
+Seven deliberately malformed certificates were rejected by the local
+checker. The mutations included a truncated function, an out-of-range
+function value, an empty predecessor, a repeated source cell, an incorrect
+family integer, an unsuccessful solver status, and reversed column order.
+A separate negative coverage test removed the sole three-row certificate.
+The exhaustive checker then stopped with
+\begin{lstlisting}
+FAIL: UNCOVERED family: m=3 mask=104
+\end{lstlisting}
+A test suite that only accepts good data can miss an accidentally vacuous
+check. These rejection tests check that important failure paths are active.
+They do not replace code review or a formal soundness proof.
+
+\subsection{Three further regression suites}
+\label{sec:more-tests}
+Each of the other three routes ships its own suite. The four are not
+duplicates: they cover different families exhaustively, and their totals are
+not comparable.
+
+\paragraph{The iterative constructor's suite: 111,984 replayed words.}
+Appendix~\ref{app:tests} gives the per-family breakdown. It exhausts
+$1\times1$, $1\times5$, $2\times2$, $2\times3$, $2\times4$, $2\times5$,
+$3\times3$ and $3\times4$ over all valid targets \emph{and} all roots ---
+the exhaustive $2\times5$ and $4\times4$ families appear in no other suite ---
+adds all valid $4\times4$ targets at the root $(0,0)$, relabeled hard targets
+with varied roots, random six-row targets up to 64 columns, and the worked
+example at all of its roots. A further $2{,}120$ single-cell separation
+checks exercise Lemma~\ref{lem:celltest} directly. The same runs record a
+reduction-usage census --- $4{,}294$ table reductions, $244{,}114$ row copies,
+$130{,}136$ column copies, $219{,}159$ isolated-cell steps, and $176{,}748$
+empty-axis removals --- which are implementation diagnostics, not additional
+hypotheses.
+
+\paragraph{The \dbB{} suite: 738 access words and 700 distinguishing words.}
+The access-word checks exhaust $1\times1$, $1\times4$, $2\times3$,
+$2\times4$ and $3\times3$ from the usual root, all valid $2\times2$ targets
+from all four roots, and 61 larger cases including randomized targets,
+relabeled cores with varied roots, a transposed grid, widths beyond twenty,
+and the maximal-width core, with seed $20260920$. The 700
+singleton-distinguishing-word tests are the only test suite anywhere here for
+the fixed three-letter construction of Section~\ref{sec:three-letter}. Four
+named rejection scenarios were exercised against \code{src/verify.cpp}, with
+their exact failure strings: a missing record gives \code{exhaustive coverage
+failed at m=6}; a duplicated record gives \code{line 10622: duplicate
+target}; a negative integer gives \code{only nonnegative decimal integers are
+allowed}; and a corrupted witness gives \code{transition image is not the
+target}.
+
+\paragraph{The \dbC{} suite: 23,584 replays plus auxiliary local checks.}
+It comprises $4{,}201$ tests of all valid origins and targets through
+$3\times3$; $19{,}283$ tests of \emph{every certificate target at every
+origin}, together with transposes; and 100 deterministic pseudorandom wide
+targets at widths $7,11,20,37,64$, twenty samples each, seed $20260920$. The
+longest word observed was 133 letters, and both branches of
+\eqref{eq:dual-bound} were checked on every word. The verifier additionally
+checked $1{,}050$ balanced triples against Lemma~\ref{lem:triple}, $8{,}100$
+isolated-edge seeds covering all four origin cases in grids through
+$6\times6$, and $8{,}100$ singleton instances of the two-letter cell test.
+
+\paragraph{Encoding and coverage negatives outside the base suite.}
+The plain-integer and mask serializations of database~\dbA{} were compared
+record by record (Section~\ref{sec:serializations}). Altering one row-map
+value to another in-range value was rejected by the single binary because the
+forward image no longer matched; deleting the unique three-row certificate
+was rejected as the uncovered key $104$ --- the same negative as the base
+suite's, reached through a different checker.
+
+\section{Reproduction and the trust boundary}
+\label{sec:reproduction}
+
+\subsection{What the archive contains}
+The main document is \code{shuffle_six_state.tex} with its compiled PDF, and
+\code{tables} holds the TeX tables generated from checked data, so everything
+needed to rebuild the PDF is present. Four entries of the table below ---
+\path{data/certificates.jsonl}, \path{data/certificates_masks.jsonl},
+\path{data/certificates.txt} and \path{certificates/cores.cert}, about six
+megabytes together --- are \emph{not} distributed. They are regenerated
+deterministically by the routes described in this section. The 453 records of
+database \dbC{} and every worked example cited in the text are shipped, so the
+displayed cases remain checkable without regenerating anything.
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}>{\ttfamily}l l@{}}
+\toprule
+\textrm{Path} & Contents\\
+\midrule
+data/certificates.jsonl & database \dbA{}, coordinate-pair encoding\\
+data/certificates\_masks.jsonl & database \dbA{}, column-mask encoding\\
+data/certificates.txt & database \dbA{}, plain-integer encoding\\
+certificates/cores.cert & database \dbB{}, 10,619 records\\
+residual/certificates.tsv & database \dbC{}, 453 records\\
+data/cores.csv, core\_counts.csv & \dbB{} target keys and four-way counts\\
+src/ & \dbA{} checkers, coverage, constructors, tests, Z3 interface\\
+src/verify.cpp, core\_enumeration.hpp & \dbB{} verifier and enumeration header\\
+src/enumerate\_cores.cpp & standalone \dbB{} CSV generator\\
+python/, tests/, search/ & \dbB{} constructor, checks, optional finder\\
+residual/ & \dbC{}: checker, generator, constructor, tests, logs\\
+discovery/ & packaged parallel regeneration driver for \dbA{}\\
+examples/ & bundled targets, certificates, replayable words\\
+audit/, audit/theorem/, logs/ & recorded runs, environments, timings\\
+SOURCE\_STATUS.md & sources, attribution and novelty limitations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{samepage}
+The three certificate files have SHA-256 digests
+\begin{center}\small\ttfamily
+c44f2ebe73ac2584f1ff9d31cec7fc2e2560ab8fd166c80e86d80eb012c6b594\\
+e376820a4de82e1388ea67727ee96bb0cc1c7047d38dd4ae9cfae5617c45abd4\\
+6059c807de8aadbadfbdb363c805f83109395063fbbb6e5d87cad45c8b80a48f
+\end{center}
+\end{samepage}
+for databases \dbA{}, \dbB{} and \dbC{} respectively. Each is one
+64-character string. A digest identifies exact data; it is not a substitute
+for checking them, and this archive deliberately ships no checksum manifest
+of its own.
+
+\subsection{Verification without a solver}
+The checking workflow requires Python~3.10 or later and a GCC- or
+Clang-compatible C++17 compiler. It does not require Z3, a Python package
+installation, Internet access, or a proof assistant. From the archive root,
+run:
+\begin{lstlisting}[language=bash]
+make check
+\end{lstlisting}
+The equivalent core commands are:
+\begin{lstlisting}[language=bash]
+python3 src/check_certificates.py
+c++ -O3 -std=c++17 src/coverage.cpp -o audit/coverage
+./audit/coverage audit/verified_targets.tsv > audit/coverage.json
+python3 src/test_suite.py
+python3 src/negative_coverage_test.py
+\end{lstlisting}
+Each stage must exit successfully. In particular, a successful local
+certificate check alone does not establish coverage. Conversely, exhaustive
+coverage of identifiers without checking the associated witnesses does not
+establish the predecessor lemma.
+
+A specific example can be regenerated using
+\begin{lstlisting}[language=bash]
+python3 src/construct.py examples/six_by_seven_input.json \
+  --output audit/replayed_example.json
+\end{lstlisting}
+The supplied PDF can be rebuilt with \code{make pdf}, using a standard
+TeX installation with the packages listed in its preamble.
+
+\subsection{Three further verification paths}
+\label{sec:paths}
+Each database can be checked on its own, and the three routes have
+deliberately different prerequisites. None of them needs Z3, a network
+connection, a Python package installation, or a proof assistant.
+
+\paragraph{One C++ binary, database \dbA{}.}
+\begin{lstlisting}[language=bash]
+g++ -O3 -std=c++17 -Wall -Wextra -pedantic src/verify_all.cpp -o verify_all
+./verify_all data/certificates.txt
+python3 src/test_artifacts.py ./verify_all
+python3 src/test_construct_iterative.py
+\end{lstlisting}
+The final substantive line must be the \code{PASS} line of
+Section~\ref{sec:two-stage}. Run the regression script \emph{without}
+Python's \code{-O} flag: some of its additional test conditions use the
+ordinary assertion mechanism and would be removed. The constructor's own
+replay and certificate validation use explicit checks and are not affected
+by optimization flags.
+
+\paragraph{One C++ binary, database \dbB{}.}
+\begin{lstlisting}[language=bash]
+mkdir -p build
+g++ -std=c++20 -O2 -Wall -Wextra -pedantic src/verify.cpp -o build/verify
+./build/verify certificates/cores.cert
+python3 tests/verify_certificates.py
+python3 tests/test_construction.py
+\end{lstlisting}
+The first command both validates the supplied triples and regenerates the
+entire canonical representative set, comparing key sets. Expected output ends
+with \code{OVERALL: PASS}. The enumeration tables can be regenerated
+independently of the certificate file with
+\begin{lstlisting}[language=bash]
+g++ -std=c++20 -O2 src/enumerate_cores.cpp -o build/enumerate_cores
+./build/enumerate_cores build/cores.csv build/core_counts.csv
+\end{lstlisting}
+and the two CSV files compared with the shipped ones.
+
+\paragraph{No compiler at all, database \dbC{}.}
+\begin{lstlisting}[language=bash]
+cd residual
+python3 verify.py --json verification.json
+python3 test_construct.py
+\end{lstlisting}
+Python 3.9 or newer and its standard library suffice, and the expected final
+message is
+\begin{lstlisting}
+PASS: certificates, exhaustive coverage, and auxiliary checks.
+\end{lstlisting}
+The \code{--quick} flag checks certificate soundness only, omits
+exhaustive coverage, and must not be represented as verification of the
+finite lemma. The certificate file can also be regenerated deterministically,
+with no solver:
+\begin{lstlisting}[language=bash]
+g++ -O3 -std=c++17 generate.cpp -o generate
+./generate > regenerated.tsv 2> regenerated.log
+python3 verify.py --certificates regenerated.tsv
+\end{lstlisting}
+In the recorded run that regeneration was byte-identical to the shipped file.
+
+\paragraph{Operational notes.}
+The command-line constructors accept at most six \emph{rows}. For a grid with
+at most six columns instead, transpose the target, construct the word, and
+then exchange the two coordinate transformations in every letter; there is no
+automatic transposition option. A regeneration run must be given a fresh
+output directory, and the \dbA{} search refuses to overwrite an existing
+search-output file. Loading the \dbC{} orbit table costs roughly a hundred
+megabytes of memory in this environment. On Windows, invoke the Python
+entry points through the PowerShell launcher rather than a shell shebang.
+
+\subsection{Optional regeneration of the search}
+To regenerate target representatives and search for fresh witnesses, run
+\begin{lstlisting}[language=bash]
+make enumerate
+python3 src/search_certificates.py
+\end{lstlisting}
+The search requires an installed Z3 shared library. It is located
+using \code{ctypes.util.find_library}; an explicit location can be supplied
+through the \code{Z3_LIBRARY} environment variable. The default regenerated
+certificate output is in \code{audit}, not over the bundled proof data,
+and the command refuses to overwrite an existing search-output file.
+Different solver versions may choose different witnesses. Such witnesses
+are acceptable precisely when they pass the same independent checks.
+
+A ten-target regeneration smoke test was executed with the packaged search
+interface, and the packaged target generator exactly reproduced all
+10,642 target identifiers. The full original witness-discovery run also
+succeeded, as recorded in the audit environment report.
+
+A second, packaged parallel regeneration driver for the same database is in
+\code{discovery/}:
+\begin{lstlisting}[language=bash]
+python3 discovery/regenerate.py regenerated --jobs 4
+./verify_all regenerated/certificates.txt
+\end{lstlisting}
+Its three-row and four-row smoke test is recorded in
+\code{logs/regeneration_smoke.txt}. Different solver versions may find
+different valid predecessors; bytewise identity with the supplied database is
+neither expected nor required for that route. Contrast
+Section~\ref{sec:paths}, where the solver-free generator of database~\dbC{}
+\emph{was} byte-identical, because its enumeration is deterministic.
+
+The optional finder for database~\dbB{} is \code{search/predecessor_search.py}
+with \code{search/z3local.py}; it encodes the same constraints in SMT-LIB and
+supports targeted rediscovery by family integer, for example
+\code{--rows 6 --family 94506455040 --timeout-ms 10000}.
+
+\subsection{Recorded environment and timing}
+The computations used Python~3.13.5, GCC~14.2.0, and Z3~4.13.3.0 on an
+x86-64 Linux environment; the database~\dbC{} run used Python~3.13.5 as well.
+Recorded elapsed times, by route:
+
+\begin{center}
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Route & Step & Elapsed\\
+\midrule
+\dbA{}, two-stage & initial full witness search & 224.34 s\\
+                  & coverage run, peak RSS 67,412 KiB & 3.55 s\\
+                  & supplementary test suite & 2.08 s\\
+\dbA{}, one binary & witness search after candidate enumeration & 59.54 s\\
+                  & original exhaustive checker run & 3.28 s\\
+                  & constructor tests & 9.39 s\\
+\dbC{}            & verification, peak RSS about 128 MiB & about 7 s\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are illustrative observations from these environments, not guaranteed
+runtime bounds, portable benchmarks, or a controlled comparison with previous
+implementations. The proof depends on the finite checks completing correctly,
+not on their speed. Detailed outputs are in \code{audit/},
+\code{audit/theorem/}, \code{logs/} and \code{residual/}.
+
+The file \path{logs/verification_ubsan.txt} records a full verification rerun
+under undefined-behavior sanitization. It is the only sanitizer run in this
+archive; it checks for undefined behavior in the C++ checker's execution,
+which ordinary passing output would not reveal, and it is not a proof of the
+checker's correctness.
+
+\subsection{Exactly what is, and is not, trusted}
+The mathematical reductions are proved in the text. The finite
+certificate lemma is supported by explicit witnesses, a local checker,
+and an independently structured exhaustive enumeration. The solver is
+outside this verification trust boundary: even an incorrect solver cannot
+make a false image equality pass a correct checker.
+
+The Python and C++ checkers themselves, their runtimes, the compiler, and
+the hardware remain within the practical trust boundary. The several checkers
+serve different roles; none is a proof-assistant kernel. The additional
+Python enumeration overlaps with the C++ coverage audit only through five
+rows, not through six. No claim of independent human review, peer review,
+or fully formal verification is made.
+
+The phrase ``independent checker'' throughout this manuscript means
+independent of the search and canonicalization algorithms --- and, across the
+three databases, independent of one another's representative sets and
+witnesses. It does not mean independent human authorship or independently
+maintained third-party software: every program here was written during these
+investigations. Separately implemented search and checking reduce correlated
+implementation risk; they do not eliminate it. Three databases agreeing is
+stronger evidence than one, but they were prepared in the same environment,
+and that is a residual common cause.
+
+A fully formal version would prove the soundness and completeness of the
+finite checker and enumeration inside a proof assistant and import or
+recompute the witness table there. Until that is done, the accurate
+classification is a reproducible computer-assisted proof, not a
+kernel-checked theorem.
+
+\section{What remains open and how to extend the attack}
+\label{sec:limits}
+
+\subsection{The unrestricted conjecture}
+The argument establishes the strip $\min(m,n)\le6$ and does not establish
+$\mathcal P_h$ for any $h\ge7$. Therefore it does not settle the case in
+which both operands have at least seven states. Positive computational
+results in random larger matrices, even if numerous, would not justify
+that extrapolation.
+
+The obstruction reduction survives unchanged at seven rows, where the
+width bound becomes $\binom73=35$. However, even the subfamilies of just
+the three-element subsets already form $2^{35}$ different antichains.
+This elementary lower bound explains why extending the same labeled
+coverage traversal without further compression is a materially larger
+computation. It is not an argument that the next case is inaccessible.
+
+Two concrete routes are suggested by the present certificates. One is to
+classify certificates by structural templates, reducing whole classes of
+antichains symbolically. Another is to use a verified isomorph-free
+construction in the \emph{coverage} checker itself, while retaining a
+separate completeness proof. Either route must preserve the root-validity
+invariant that made the current unrooted classification sound. A third is
+to look for further analytic reductions in the style of
+Lemma~\ref{lem:triple}: that one lemma alone cut the six-row obligation from
+5,237,599 labeled families to 168,673, and nothing in its proof mentions six.
+
+\subsection{Three formulations of the open step}
+\label{sec:open-formulations}
+The unresolved step of this approach can be stated as a conjecture, as a
+question, or as a proved conditional. These are three different objects and
+all three are recorded.
+
+\subsubsection{As a conjecture}
+\begin{conjecture}[Spanning predecessor conjecture]\label{conj:spanning}
+Every hard finite zero-one matrix has a spanning predecessor certificate
+in the sense of Definition~\ref{def:certificate}.
+\end{conjecture}
+
+The present computation proves this assertion for at most six rows or at
+most six columns. Theorem~\ref{thm:finite-principle} shows that the general
+auxiliary conjecture would imply the full shuffle state-complexity
+conjecture, together with the same access-word bound.
+
+The converse is not established. A reachable hard target might have no
+smaller \emph{spanning} predecessor and still be reachable from a smaller
+merely valid predecessor, or by a path whose final useful step does not
+reduce cardinality. Consequently a counterexample to
+Conjecture~\ref{conj:spanning} would refute this particular one-step
+strategy, not automatically the original shuffle conjecture. A solver
+returning ``unknown'' refutes neither statement.
+
+\subsubsection{As a question, with a combinatorial reformulation}
+\begin{variantbox}{19}
+Stated as a question rather than a conjecture, the same step invites a
+reformulation that the conjecture form does not: fix the letter first. What
+that buys is an exact finite-combinatorial restatement of the
+\emph{existence} problem for a given pair of maps, which is where a
+structural proof would have to start.
+\end{variantbox}
+
+\begin{question}\label{q:spanning}
+Does every hard target, in arbitrary finite dimensions, admit a strictly
+smaller full-support predecessor?
+\end{question}
+
+Fix $f$ and $g$ first. A candidate source cell $(i,j)$ is allowed exactly
+when both $(f(i),j)$ and $(i,g(j))$ lie in $S$; regard its two images as an
+edge on the vertex set $S$, a loop when they coincide. Selecting source cells
+is then covering all vertices of $S$ by these edges, subject to the extra
+requirement that every row and every column be represented among the
+\emph{sources}. This is an exact reformulation for fixed maps, and
+Proposition~\ref{prop:matching} solves the unconstrained version of it
+exactly. The hard part is choosing the maps so that a full-support cover uses
+fewer than $|S|$ source cells. This is an observation about the certificate
+equations, not a solved structural theorem.
+
+\subsubsection{As a proved conditional}
+\begin{variantbox}{20}
+The third formulation is not a conjecture at all but a theorem: the
+implication itself, stated in two strengths. What it buys over the conjecture
+form is that it is \emph{proved}, so it can be cited; and that it isolates
+the permutation-pair case, which is what a solver-free search would actually
+test.
+\end{variantbox}
+
+\begin{proposition}\label{prop:general}
+If every residual core in arbitrary dimensions has a strictly smaller
+full-support predecessor under some letter of the full transformation
+alphabet, then every valid grid subset in arbitrary dimensions is reachable,
+and the bounds of Section~\ref{sec:induction} hold there. If the predecessor
+letter can always be chosen to be a pair of permutations, the same conclusion
+follows as a special case.
+\end{proposition}
+\begin{proof}
+Repeat the induction of Theorem~\ref{thm:finite-principle}, substituting the
+hypothesized statement for $\mathcal R_h$ and invoking
+Theorem~\ref{thm:finite-residual}; every other reduction, including
+Lemma~\ref{lem:triple}, is already dimension-independent. Then apply the
+distinguishability argument of Section~\ref{sec:distinguishability}.
+\end{proof}
+
+A failed permutation search in a larger dimension would admit three readings,
+which must be distinguished. It could refute the permutation-pair form while
+leaving a predecessor under a nonpermutation letter --- exactly the situation
+of Section~\ref{sec:opposed}. Even failure of \emph{every} one-step strict
+predecessor would not prove nonreachability, since a reaching path could
+arrive through an intermediate subset of the same or larger cardinality. A
+genuine counterexample to the shuffle conjecture requires proving the absence
+of \emph{all} reaching words.
+
+The most concrete continuations are therefore a support-constrained version
+of the edge-cover problem above, or a structural classification of
+balanced-triple-free double-antichain incidence systems. Both are sharply
+stated finite-combinatorial questions rather than searches through a
+powerset automaton, and neither is claimed to be resolved beyond six rows.
+
+\subsection{Alphabet size and the one-state exception}
+All constructive words use the full alphabet $\Gamma_{m,n}$. The result
+is not a small-alphabet witness construction. It also does not imply that
+an arbitrary pair of $m$- and $n$-state automata has maximal shuffle
+complexity: special transition structures can yield much smaller
+languages.
+
+The assumption $m,n\ge2$ in the state-complexity theorem is essential to
+the proof of distinguishability. That proof requires nonfinal states in
+both components. The one-dimensional reachability construction remains
+valid, but different reachable subsets can then be equivalent as language
+states. Reachability of every valid subset and attainment of their total
+number are separate assertions; they must not be conflated.
+
+It is also not proved here that every valid target has a strictly smaller
+one-letter predecessor. The induction deliberately keeps the empty-axis and
+isolated-cell reductions separate: an isolated-cell seed may need two letters
+and may pass through a subset of equal cardinality. The verified one-letter
+property concerns only the hard class, and there only with full-support
+predecessors.
+
+\subsection{A connection with dependent proof objects}
+The artifacts naturally separate discovery from proof checking. In a
+dependent-type presentation, a certificate for a fixed target $S$ can be
+represented schematically as
+\[
+ \Cert(S)=
+ \sum_{f:R\to R}\ \sum_{g:C\to C}\ \sum_{T:\Pow(R\times C)}
+ \left(\Span(T)\times(|T|<|S|)\times
+       (\Delta_{f,g}(T)=S)\right).
+\]
+Here $\Span(T)$ means full row and column support, and the last components
+are proofs rather than unchecked flags. The finite computation supplies
+concrete candidates for the first three components. A verified decidable
+checker would supply the remaining proof components. Well-founded
+recursion on $(m+n,|S|)$ then turns these local proof objects into reaching
+words with correctness proofs.
+
+This gives a precise formalization target rather than an unverified code
+sketch. The nontrivial formal obligations are the enumeration's
+completeness, transport of certificates, root-sensitive reductions, and
+termination of the constructor. None is delegated to the mere presence
+of a solver-generated file.
+
+Two further presentations of the same interface are worth recording. The
+first names the certificate type before any checking has occurred,
+\[
+ \PreCert(S)=
+ \sum_{f:[m]\to[m]}\ \sum_{g:[n]\to[n]}
+ \bigl\{T\subseteq[m]\times[n]:
+   \Span(T)\wedge|T|<|S|\wedge\Delta_{f,g}(T)=S\bigr\},
+\]
+so that a search \emph{proposes} the computational components $f,g,T$ and a
+checker supplies the finite proof obligations that make the proposal inhabit
+the specification. The second makes the obligations explicit as named
+components of a tuple,
+\[
+ (T,f,g;\ h_{\mathrm{size}},h_{\mathrm{row}},h_{\mathrm{col}},
+  h_{\mathrm{image}}),
+\]
+asserting respectively $|T|<|S|$, $\suppR(T)=[m]$, $\suppC(T)=[n]$, and
+$\Delta_{f,g}(T)=S$; a permutation certificate carries two further
+components proving bijectivity of $f$ and of $g$. A small kernel would then
+need two theorems and no more: that the certificate-checking Boolean function
+implies those properties, and that the recursive enumeration covers every
+irreducible target exactly once --- for database~\dbC{} the latter is the
+hereditary-pruning argument of Remark~\ref{rem:hereditary}.
+
+The logical shape of the whole result is
+\[
+ \text{verified finite coverage}
+ \ \Longrightarrow\
+ \forall n\ge1\ \forall S\subseteq[6]\times[n]:
+ \quad\Valid(S)\Longrightarrow\exists w\ \Delta_w(\{(r,c)\})=S .
+\]
+The universal quantifier over $n$ is discharged by the mathematical
+induction, not by evaluating a finite list of column sizes. Root independence
+comes from full support, so no hidden quotient by initial-state-changing
+permutations is required. Importing only the count 10,619, or 10,642, or 453
+as an axiom would not accomplish the coverage proof, which is the part that
+matters.
+
+\subsection{Four tempting shortcuts that would be invalid}
+Each of the following would look like a proof of Theorem~\ref{thm:main} and
+would not be one; each is addressed separately above.
+\begin{enumerate}[label=\arabic*.]
+\item Numerical agreement with $F(m,n)$ for finitely many pairs $(m,n)$ says
+nothing about all $n$.
+\item Counting canonical configurations without preserving the
+initial-state requirement does not establish reachability: transport moves
+the root (Section~\ref{sec:hard}).
+\item A satisfiable solver log without witnesses is a weaker artifact than a
+checkable certificate file, and is not accepted here at any point.
+\item Reachability without distinguishability is not a minimal-DFA lower
+bound (Section~\ref{sec:distinguishability}).
+\end{enumerate}
+
+\section{Conclusion}
+The selected problem was an exact state-complexity conjecture for the
+shuffle of regular languages. The outcome is a computer-assisted proof
+for the entire six-state strip, supported by finite tables of local
+witnesses and exhaustive independent coverage, rather than by a sample
+of successful automata calculations.
+
+The essential compression is mathematical: remove empty dimensions,
+contained neighborhoods, and isolated cells; optionally contract balanced
+triples; classify the remaining antichains; require predecessors to have full
+support; and induct on size. The same proof yields explicit reaching words,
+of length at most $|S|+\min(m,n)-2$, at most $|S|+\min(r_S,c_S)-2$ in the
+support form, and at most $2(|S|-1)$ by the dual estimate.
+
+What this merged archive adds to any one of its sources is redundancy of the
+right kind. The finite premise is discharged three times, over two different
+classifications of the irreducible remainder, by two different
+canonicalization correctness proofs, from two different discovery engines ---
+one of which needs no solver --- and audited by four checkers with different
+prerequisites, down to one that needs no compiler. Not one witness is shared
+between the two databases that classify the same objects. The unrestricted
+conjecture remains beyond the result proved here, while the certificate data,
+the auxiliary conjecture, its question form, and its proved conditional form
+provide concrete next objects for further study.
+
+\appendix
+\section{Certificate schemas and minimal verification cores}
+\label{app:schema}
+Three serialization families are in active use by shipped checkers. They are
+not interchangeable, and each is read by a different program.
+
+\subsection{Coordinate-pair JSON lines, and its plain-integer twin}
+Each line of \code{data/certificates.jsonl} is an independent JSON object.
+The fields \code{m}, \code{n}, and \code{family} give the dimensions and
+family integer. The list \code{columns} contains the strictly increasing
+column codes. Lists \code{f} and \code{g} are function image tables.
+The list \code{T} consists of distinct pairs of zero-based coordinates.
+The field \code{status} records that a positive witness was found; its
+text is not itself evidence of correctness.
+
+After structural validation, the mathematical core of a local check can
+be written as follows. The executable checker contains the additional
+range, antichain, degree, and schema checks described in the text.
+\begin{lstlisting}[language=Python]
+S = {(i, j)
+     for j, column in enumerate(record["columns"])
+     for i in range(m)
+     if column & (1 << i)}
+T = {tuple(cell) for cell in record["T"]}
+f, g = record["f"], record["g"]
+
+require(len(T) == len(record["T"]), "duplicate cell")
+require({i for i, j in T} == set(range(m)), "missing row")
+require({j for i, j in T} == set(range(n)), "missing column")
+require(len(T) < len(S), "not a smaller predecessor")
+image = {(f[i], j) for i, j in T} | {(i, g[j]) for i, j in T}
+require(image == S, "incorrect transition image")
+\end{lstlisting}
+
+The amount of arithmetic needed to check an individual witness is tiny:
+each source cell produces exactly two image cells. The serious global
+obligation is not checking one witness, but showing that no irreducible
+isomorphism type was omitted. This is the role of the second checker.
+
+The same records appear in \path{data/certificates_masks.jsonl} with the
+predecessor given as a list of column bit masks under the key
+\code{predecessor} and the family integer under the key \code{key}; and in
+\path{data/certificates.txt}, a header-commented file with one
+whitespace-separated record per line,
+\begin{lstlisting}
+m n family_key f[0] ... f[m-1] g[0] ... g[n-1] P[0] ... P[n-1]
+\end{lstlisting}
+where $P[j]$ is the mask of the predecessor's $j$th column. This is the
+form read by \path{src/verify_all.cpp}, which works entirely in column masks:
+for every bit $i$ of $P[j]$ it accumulates
+\[
+ \mathrm{image}[j]\mathrel{|}=2^{f(i)},\qquad
+ \mathrm{image}[g(j)]\mathrel{|}=2^{i},
+\]
+and then compares the resulting array with the target array, with no search
+or symbolic inference. Section~\ref{sec:serializations} describes the
+agreement test that exists only because both forms are shipped.
+
+\subsection{Fixed-width \texttt{.cert} records for database \dbB{}}
+Each noncomment line of \path{certificates/cores.cert} contains exactly
+$3+m+2n$ decimal nonnegative integers,
+\begin{lstlisting}
+m n family f[0] ... f[m-1] g[0] ... g[n-1] t[0] ... t[n-1]
+\end{lstlisting}
+where \code{family} is \eqref{eq:family-mask}, whose set-bit positions in
+increasing order are the target column codes, and the $t_j$ are predecessor
+column masks. Comment lines begin with \code{#}, and the file carries the
+magic header line \code{# SHUFFLE-FULL-SUPPORT-1}. For example, the unique
+three-row hard matrix has columns $3,5,6$ and family integer $104$. The C++
+checker validates input domains before shifting bits or indexing arrays; the
+additional permutation check on $f$ is specific to this database.
+
+\subsection{Bar-separated records for database \dbC{}}
+Each record of \path{residual/certificates.tsv} has five fields separated by
+a literal vertical bar,
+\begin{lstlisting}
+m n family_key | target_columns | row_permutation | column_permutation | predecessor_columns
+\end{lstlisting}
+with whitespace-separated integer vectors inside each field. Despite the
+\code{.tsv} suffix the separator is a bar, not a tab. The predecessor columns
+are listed in the representative's original column order and
+\emph{must not} be sorted independently; sorting them would in general
+destroy the certificate. Both $f$ and $g$ are permutations in every record.
+
+\section{A review checklist}
+The following questions isolate the places where a false proof of this
+kind could otherwise appear convincing.
+{\interlinepenalty=10000
+\begin{enumerate}[label=\arabic*.]
+\item Are the component functions total and in range? Does the chosen alphabet
+contain every letter used in the proof?
+\item Does each predecessor remain valid for the root? Are equal neighborhoods
+and mixed cases of the isolated-cell reduction handled correctly?
+\item Does the hard-target classification forget only symmetries under
+which the \emph{certificate property}, not merely a guessed reachability
+property, is invariant?
+\item Are both inclusions in the image equality checked, along with strict
+cardinality reduction and all support requirements?
+\item Does coverage include every antichain, not just maximal antichains
+or a list of representatives produced by an unverified canonicalizer?
+\item Does the state-complexity conclusion include distinguishability and
+minimality of the operand automata, rather than just a reachable-state count?
+\item Are the finite computation, the infinite induction, the provisional
+novelty assessment, and the absence of formal kernel verification clearly
+separated?
+\end{enumerate}}
+Each of these obligations is addressed explicitly in the proof and the
+provided audit workflow. Independent reviewers are encouraged to begin
+with these points rather than with the solver's search strategy. In this
+merged archive, item~5 should be checked separately for each of the three
+databases, since they answer it by three different arguments
+(Sections~\ref{sec:db-shared-coverage}, \ref{sec:db-theorem} and
+\ref{sec:db-residual}).
+
+\clearpage
+\section{Six-row antichains by number of columns}
+\label{app:counts}
+Table~\ref{tab:columns} is taken from the actual exhaustive checker output,
+not from an external enumeration table. Degenerate antichains, including the
+empty family and the singleton families, are counted in the middle column
+even though they are not hard. The middle column is the denominator the
+coverage traversal actually visits; the right-hand column is the set of
+families that must be certified.
+
+\begin{longtable}{rrr}
+\caption{Complete six-row distribution.}\label{tab:columns}\\
+\toprule
+Columns $n$ & All labeled antichains & Hard labeled antichains\\
+\midrule
+\endfirsthead
+\toprule
+Columns $n$ & All labeled antichains & Hard labeled antichains\\
+\midrule
+\endhead
+0 & 1 & 0 \\
+1 & 64 & 0 \\
+2 & 1,351 & 0 \\
+3 & 14,000 & 0 \\
+4 & 82,115 & 30 \\
+5 & 304,752 & 5,100 \\
+6 & 759,457 & 117,821 \\
+7 & 1,308,270 & 564,330 \\
+8 & 1,613,250 & 1,113,390 \\
+9 & 1,484,230 & 1,264,720 \\
+10 & 1,067,771 & 998,987 \\
+11 & 635,044 & 618,712 \\
+12 & 326,990 & 323,900 \\
+13 & 147,440 & 147,020 \\
+14 & 57,675 & 57,645 \\
+15 & 19,238 & 19,238 \\
+16 & 5,325 & 5,325 \\
+17 & 1,170 & 1,170 \\
+18 & 190 & 190 \\
+19 & 20 & 20 \\
+20 & 1 & 1 \\
+\midrule
+Total & 7,828,354 & 5,237,599\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\section{The ten-letter word from database \dbB{}}
+\label{app:theorem-word}
+This is the word of Section~\ref{sec:ex-theorem} for the target with column
+codes $(12,17,18,24,33,34,36)$, constructed from the database~\dbB{}
+certificate. Each tuple gives the images of the states in increasing order,
+and the letters act by \eqref{eq:Delta}. The initial subset is $\{(0,0)\}$.
+The column $|S_k|$ is a diagnostic only: matching cardinalities alone would
+not establish that the final set is correct.
+
+\input{tables/theorem_example_word}
+
+The same data in machine-readable form is
+\code{data/theorem_example_6x7_word.json}. For an independent direct check,
+start from the singleton, apply the two image operations at every step, and
+compare the final seven column codes.
+
+\clearpage
+\section{The sixteen-letter word for the second six-by-seven target}
+\label{app:strip-word}
+Each $f$-tuple lists the images of rows $0$ through $5$ and each $g$-tuple
+lists the images of columns $0$ through $6$; the letters are read from top to
+bottom. The final column gives the number of occupied cells after that
+letter, starting from the singleton $\{(0,0)\}$. The exact subsets, not only
+their sizes, are stored in \code{data/strip_example_6x7_word.json} and are
+replayed by the constructor.
+
+\begin{table}[H]
+\centering
+\small
+\caption{A sixteen-letter reaching word for the target
+\eqref{eq:strip-columns}.}
+\label{tab:strip-word}
+\begin{tabular}{rllr}
+\toprule
+Step & $f$ & $g$ & Cells\\
+\midrule
+1 & $(1,0,2,3,4,5)$ & $(1,0,2,3,4,5,6)$ & 2 \\
+2 & $(1,0,2,3,4,5)$ & $(1,0,2,3,4,5,6)$ & 2 \\
+3 & $(0,2,1,3,4,5)$ & $(0,6,2,3,4,5,1)$ & 3 \\
+4 & $(0,1,3,2,4,5)$ & $(0,4,2,3,1,5,6)$ & 4 \\
+5 & $(0,1,2,4,3,5)$ & $(0,2,1,3,4,5,6)$ & 5 \\
+6 & $(0,1,2,4,3,5)$ & $(0,2,1,3,4,5,6)$ & 5 \\
+7 & $(0,1,2,3,5,4)$ & $(0,1,5,3,4,2,6)$ & 6 \\
+8 & $(0,1,2,3,5,4)$ & $(0,1,5,3,4,2,6)$ & 6 \\
+9 & $(0,1,2,3,4,5)$ & $(0,1,3,3,4,5,6)$ & 7 \\
+10 & $(0,1,2,3,4,5)$ & $(3,1,2,3,4,5,6)$ & 8 \\
+11 & $(0,1,2,3,4,5)$ & $(0,0,2,3,4,5,6)$ & 9 \\
+12 & $(0,1,2,3,4,5)$ & $(0,1,1,3,4,5,6)$ & 10 \\
+13 & $(0,3,2,3,4,5)$ & $(0,1,2,3,4,5,6)$ & 11 \\
+14 & $(0,1,2,3,4,1)$ & $(0,1,2,3,4,5,6)$ & 12 \\
+15 & $(0,1,1,3,4,5)$ & $(0,1,2,3,4,5,6)$ & 13 \\
+16 & $(3,5,0,2,4,5)$ & $(2,2,3,2,0,5,3)$ & 17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\section{Detailed regression-test counts}
+\label{app:tests}
+The following counts describe the executed deterministic suite of
+Section~\ref{sec:more-tests}. Tests with different roots are counted
+separately, since validity and reaching words depend on the distinguished
+axes.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Test family & Replayed words\\
+\midrule
+$1\times1$, all valid targets and roots & 1\\
+$1\times5$, all valid targets and roots & 80\\
+$2\times2$, all valid targets and roots & 40\\
+$2\times3$, all valid targets and roots & 264\\
+$2\times4$, all valid targets and roots & 1,472\\
+$2\times5$, all valid targets and roots & 7,520\\
+$3\times3$, all valid targets and roots & 3,600\\
+$3\times4$, all valid targets and roots & 40,704\\
+$4\times4$, every valid target, root $(0,0)$ & 57,856\\
+Relabeled hard targets, varied roots & 240\\
+Random six-row targets, up to 64 columns & 75\\
+Matching targets and all roots of the worked example & 132\\
+\midrule
+Total & 111,984\\
+\bottomrule
+\end{tabular}
+\end{center}
+The random generator is seeded by the integer $20260920$.
+
+\section{Proof dependency summary}
+\label{app:dependency}
+The logical flow of the argument is:
+\[
+\begin{gathered}
+\text{Validity invariant}+\text{inclusion--exclusion}\\
+\Downarrow\\[-5pt]
+\text{Universal upper bound }F(m,n),\\[4pt]
+\text{Structural reductions}+\text{antichain bound}
+ +\text{complete enumeration}\\
+\Downarrow\\[-5pt]
+\text{$\mathcal P_6$ by \dbA{}, or by \dbB{};\quad
+       $\mathcal R_6$ by \dbC{} with Lemma~\ref{lem:triple}}\\
+\Downarrow\\[-5pt]
+\text{Reachability for }\min(m,n)\le6
+ \text{ and three access-word bounds},\\[4pt]
+\text{Reachability}+\text{any one of four distinguishability arguments}\\
+\Downarrow\\[-5pt]
+\text{Sharp deterministic shuffle state complexity.}
+\end{gathered}
+\]
+The prior results for at most five states and for $6\times6$ position the
+work historically; they are not used as unverified computational assumptions
+anywhere in this chain.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{BJLRS2016}
+Janusz Brzozowski, Galina Jir\'askov\'a, Bo Liu, Aayush Rajasekaran,
+and Marek Szyku\l a.
+\newblock On the state complexity of the shuffle of regular languages.
+\newblock In \emph{Descriptional Complexity of Formal Systems (DCFS 2016)},
+Lecture Notes in Computer Science 9777, pages 73--86. Springer, 2016.
+\newblock DOI: \href{https://doi.org/10.1007/978-3-319-41114-9_6}{10.1007/978-3-319-41114-9\_6}.
+\newblock Accessible version:
+\href{https://arxiv.org/abs/1512.01187v3}{arXiv:1512.01187v3}, 15 July 2016.
+
+\bibitem{CLP2020}
+Pascal Caron, Jean-Gabriel Luque, and Bruno Patrou.
+\newblock A combinatorial approach for the state complexity of the shuffle product.
+\newblock \emph{Journal of Automata, Languages and Combinatorics},
+25(4):291--320, 2020.
+\newblock DOI: \href{https://doi.org/10.25596/jalc-2020-291}{10.25596/jalc-2020-291}.
+\newblock Accessible preprint:
+\href{https://arxiv.org/abs/1905.08120}{arXiv:1905.08120}, 20 May 2019.
+\newblock The preprint, rather than the access-restricted journal full text,
+was used for the mathematical source review.
+
+\bibitem{Sperner1928}
+Emanuel Sperner.
+\newblock Ein Satz \"uber Untermengen einer endlichen Menge.
+\newblock \emph{Mathematische Zeitschrift}, 27:544--548, 1928.
+\newblock DOI: \href{https://doi.org/10.1007/BF01171114}{10.1007/BF01171114}.
+
+\bibitem{Z3API}
+The Z3 contributors.
+\newblock Z3 C API documentation.
+\newblock \url{https://z3prover.github.io/api/html/group__capi.html}.
+\newblock Consulted 20 September 2026. The computation used the locally
+installed shared library reporting version 4.13.3.0.
+\end{thebibliography}
+\end{document}

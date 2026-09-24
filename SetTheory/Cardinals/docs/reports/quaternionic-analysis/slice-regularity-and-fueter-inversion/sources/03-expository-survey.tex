@@ -1,0 +1,1981 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage[margin=28mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,etoolbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Classical Complex Theorems over the Quaternions},
+ pdfauthor={OpenAI},pdfsubject={Slice regularity, Cauchy--Fueter regularity, and proofs of classical analogues}}
+\urlstyle{same}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\SSS}{\mathbb S}
+\newcommand{\BB}{\mathbb B}
+\newcommand{\ii}{\mathbf i}
+\newcommand{\jj}{\mathbf j}
+\newcommand{\kk}{\mathbf k}
+\newcommand{\Id}{\operatorname{id}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\SR}{\mathcal{SR}}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\lap}{\Delta_4}
+\newcommand{\Norm}{\mathcal N}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\sph}{\partial_{\mathrm{sph}}}
+\newcommand{\pc}{\partial_c}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\qbar}[1]{\overline{#1}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\DeclareMathOperator{\supp}{supp}
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Classical complex theorems over the quaternions}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\title{\vspace{-12mm}\textbf{Classical Complex Theorems\\over the Quaternions}\\[5pt]
+\large Slice-regular and Cauchy--Fueter analogues, with proofs}
+\author{An expository mathematical paper}
+\date{20 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Complex differentiability combines properties that separate when the scalars are
+quaternions. We develop two complementary replacements and prove a substantial
+collection of classical analogues. For slice-regular functions, we establish
+representation and Cauchy formulas, Taylor and Laurent expansions, identity and
+maximum principles, Liouville and Schwarz theorems, a regular Schwarz--Pick
+inequality, a fundamental theorem of algebra, a multiplicity-sensitive argument
+principle and Rouch\'e theorem, minimum-modulus and open-mapping results, Montel
+and Hurwitz theorems, a Casorati--Weierstrass theorem, and an intrinsic Riemann
+mapping theorem. For Cauchy--Fueter-regular functions, we derive the
+four-dimensional Cauchy--Pompeiu formula directly from the divergence theorem,
+then prove derivative estimates, mean-value and maximum principles, Liouville,
+Morera, removable-singularity, and residue theorems. A direct proof of Fueter's
+mapping theorem explains how the Laplacian connects the theories; an explicit
+local inverse is obtained by integrating two closed one-forms. Throughout,
+multiplication order, the role of the real axis, spherical zeros, and the limits
+of the complex analogy are made explicit.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Keywords.} Quaternionic analysis; slice regularity; Cauchy--Fueter
+operator; spherical zeros; regular products; Fueter mapping theorem.
+
+\medskip
+\noindent\textbf{Scope and prerequisites.} This is a synthesis of established
+mathematics, not a claim of new priority. All quaternionic results stated as
+theorems, propositions, or lemmas are proved. We use the usual scalar theorems of
+one-variable complex analysis, including Cauchy's theorem, the maximum principle,
+Laurent's theorem, Montel, Hurwitz, and the normalized Riemann mapping theorem.
+We also use elementary real analysis, the divergence theorem, and the existence
+of smooth mollifiers. Neither quaternionic function theory nor Clifford
+analysis is assumed.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.45em}{}{}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Why there are two theories}
+\label{sec:intro}
+For complex-valued functions of one complex variable, differentiability, local
+power-series expansions, the Cauchy--Riemann equation, and several geometric
+properties fit into a single theory. Over the noncommutative division algebra
+$\HH$, the most literal translations do not fit together. Slice regularity
+preserves power series in one quaternionic variable. Cauchy--Fueter regularity
+preserves a first-order elliptic differential equation and a boundary integral
+in four real dimensions. The theories originate in different constructions;
+modern foundations are given in
+\cite{GS,GP,CGS,Sudbery}. The relation between them is a differential transform,
+not an identification of their function spaces.
+
+\subsection{Algebra and conventions}
+Write
+\[
+ q=x_0+\ii x_1+\jj x_2+\kk x_3,
+ \qquad \ii^2=\jj^2=\kk^2=\ii\jj\kk=-1.
+\]
+Quaternionic conjugation reverses products:
+$\overline{ab}=\bar b\bar a$. Set
+\[
+ \Rea q=\frac{q+\bar q}{2},\qquad
+ |q|^2=q\bar q=\bar q q,\qquad q^{-1}=\frac{\bar q}{|q|^2}\quad(q\ne0).
+\]
+In particular, $|ab|=|a||b|$. The sphere of imaginary units and its associated
+complex planes are
+\[
+ \SSS=\{I\in\HH:I^2=-1\},\qquad \C_I=\R+I\R.
+\]
+Every nonreal quaternion has a unique expression $x+Iy$ with $y>0$ and
+$I\in\SSS$. Its conjugacy class is the two-sphere
+\[
+ [q]=x+y\SSS;
+\]
+for real $q$, $[q]=\{q\}$. Conjugation by a nonzero quaternion preserves the real
+part and norm and acts on these spheres. We use $\iota$ for the imaginary unit of
+an auxiliary, \emph{commutative} complex field; $\iota$ is not a chosen element of
+$\SSS$.
+
+All slice-regular functions below are \emph{left} slice regular. Their power
+series have coefficients on the right:
+\[
+ f(q)=\sum_{n\ge0}q^n a_n.
+\]
+Constants may always be multiplied on the right. A constant on the left requires
+care. All integration of quaternion-valued functions means integration of four
+real components, with the displayed order of quaternionic factors retained.
+
+\subsection{The literal derivative is too restrictive}
+\begin{proposition}[Rigidity of a direction-independent quotient]
+\label{prop:rigidity}
+Let $U\subseteq\HH$ be connected and open, and let $f\in C^2(U,\HH)$.
+If, for every $q\in U$, the limit
+\[
+ a(q)=\lim_{h\to0}h^{-1}\bigl(f(q+h)-f(q)\bigr)
+\]
+exists independently of the direction of $h$, then $f(q)=q a+b$ for fixed
+$a,b\in\HH$.
+\end{proposition}
+\begin{proof}
+Put $e_0=1$, $e_1=\ii$, $e_2=\jj$, and $e_3=\kk$.
+Taking increments $h=t e_\mu$ gives
+$\partial_\mu f=e_\mu a$ and $a=\partial_0 f$.
+Equality of mixed derivatives with $\partial_0$ implies
+$\partial_\mu a=e_\mu\partial_0 a$. Equality of the derivatives with indices
+$1,2$ now gives
+\[
+ \ii\jj\,\partial_0a=\jj\ii\,\partial_0a.
+\]
+Since $\ii\jj-\jj\ii=2\kk$ is invertible, $\partial_0a=0$, and therefore all
+first derivatives of $a$ vanish. Connectedness makes $a$ constant, and all
+first derivatives of $f(q)-qa$ vanish as well.
+\end{proof}
+The analogous quotient with $h^{-1}$ on the right produces $f(q)=aq+b$.
+The $C^2$ assumption in the proposition is explicit; no lower-regularity
+rigidity theorem is needed here. In particular, this definition excludes most
+polynomials. We therefore choose a different structure rather than trying to
+force the complex difference quotient to do everything.
+
+\section{Slice regularity, representation, and differential structure}
+\label{sec:slices}
+\subsection{Domains and the splitting lemma}
+Let $D\subseteq\C$ be a connected open set invariant under complex conjugation
+and meeting $\R$. Its \emph{circularization} is
+\[
+ \Omega_D=\{x+Iy:x+\iota y\in D,\ I\in\SSS\}.
+\]
+It is an axially symmetric slice domain: it contains a whole conjugacy sphere
+whenever it contains one point of that sphere, and every section
+$\Omega_D\cap\C_I$ is connected. Unless another domain is explicitly specified,
+this is the setting for slice-regular theorems.
+
+\begin{definition}
+A $C^1$ function $f:\Omega_D\to\HH$ is \emph{slice regular} if, for each
+$I\in\SSS$, its restriction $f_I$ satisfies
+\begin{equation}
+ \bar\partial_I f_I
+ =\frac12(\partial_x+I\partial_y)f_I=0.
+ \label{eq:CRslice}
+\end{equation}
+Its slice, or Cullen, derivative is
+$\pc f=\frac12(\partial_x-I\partial_y)f=\partial_x f$.
+\end{definition}
+
+\begin{lemma}[Splitting]
+\label{lem:splitting}
+Fix orthogonal $I,J\in\SSS$. Every quaternion-valued function on $\C_I$ can
+be written uniquely as $F+GJ$, where $F,G$ take values in $\C_I$.
+It satisfies \eqref{eq:CRslice} if and only if $F,G$ are complex holomorphic.
+Moreover, $|F+GJ|^2=|F|^2+|G|^2$.
+\end{lemma}
+\begin{proof}
+The real basis $1,I,J,IJ$ gives the decomposition. Substituting it into
+\eqref{eq:CRslice}, the two $\C_I$ components vanish independently and give
+ordinary Cauchy--Riemann equations. The norm identity follows from the
+orthogonality of the four basis elements.
+\end{proof}
+
+\begin{theorem}[Identity principle]
+\label{thm:identity}
+If two slice-regular functions on $\Omega_D$ agree on a subset of one
+$\C_I$-section having an accumulation point in that section, they agree on
+$\Omega_D$.
+\end{theorem}
+\begin{proof}
+Apply scalar uniqueness to both components of their difference in the splitting
+lemma. The difference vanishes on the entire $I$-section and hence on a real
+interval contained in $D$. Its restriction to any other section has those same
+real zeros. Applying the splitting lemma and scalar uniqueness again proves
+the claim on every section.
+\end{proof}
+Notice the phrase ``one section.'' An arbitrary accumulation of zeros in
+$\HH$ does not suffice; a whole two-sphere may be a zero set.
+
+\subsection{Representation and stem functions}
+\begin{theorem}[Representation formula]
+\label{thm:representation}
+For every slice-regular $f$ on $\Omega_D$ and every $I,K\in\SSS$,
+\begin{equation}
+ f(x+Ky)=\frac{1-KI}{2}f(x+Iy)+\frac{1+KI}{2}f(x-Iy).
+ \label{eq:representation}
+\end{equation}
+Equivalently, there are uniquely determined quaternion-valued functions
+$A(x,y),B(x,y)$ such that
+\begin{equation}
+ f(x+Ky)=A(x,y)+KB(x,y),
+ \label{eq:AB}
+\end{equation}
+where $A$ is even and $B$ is odd in $y$, and
+\begin{equation}
+ A_x=B_y,\qquad A_y=-B_x.
+ \label{eq:stemCR}
+\end{equation}
+\end{theorem}
+\begin{proof}
+On one fixed section put $h_\pm(x,y)=f(x\pm Iy)$ and define
+\[
+ A=\frac{h_++h_-}{2},\qquad B=-\frac I2(h_+-h_-).
+\]
+The parity statements are immediate. Equation \eqref{eq:CRslice} gives
+$(h_+)_y=I(h_+)_x$ and $(h_-)_y=-I(h_-)_x$, which imply
+\eqref{eq:stemCR}. Thus $A+KB$ is holomorphic on each $K$-section.
+At $y=0$ it equals $f(x)$, so scalar uniqueness on that section makes it equal
+to $f(x+Ky)$ everywhere. Expanding $A+KB$ gives
+\eqref{eq:representation}. Evaluating at $K$ and $-K$ proves uniqueness.
+\end{proof}
+
+Introduce the complexified algebra
+\[
+ \HH_{\C}=\{a+\iota b:a,b\in\HH\},\qquad
+ (a+\iota b)(c+\iota d)=ac-bd+\iota(ad+bc).
+\]
+Here $\iota$ commutes with all quaternionic elements. Let
+$\kappa(a+\iota b)=a-\iota b$; this conjugation is different from quaternionic
+conjugation. The function
+\[
+ \mathcal F(x+\iota y)=A(x,y)+\iota B(x,y)
+\]
+is holomorphic with values in the four-dimensional complex vector space
+$\HH_{\C}$ and satisfies
+\begin{equation}
+ \mathcal F(\bar z)=\kappa(\mathcal F(z)).
+ \label{eq:stem-symmetry}
+\end{equation}
+Such a function is called a \emph{holomorphic stem}. Conversely, a holomorphic
+stem induces a slice-regular function by \eqref{eq:AB}; denote this operation by
+$f=\cI(\mathcal F)$. Away from the real axis this follows directly from
+\eqref{eq:stemCR}. Near a real point the complex Taylor coefficients of
+$\mathcal F$ belong to $\HH$, by \eqref{eq:stem-symmetry}, and its induced
+convergent power series is real analytic. This also justifies the $C^1$
+regularity at real points in the converse construction.
+
+A slice function is \emph{intrinsic}, or slice preserving, when its $A,B$ are
+real valued. Its values on each $\C_I$ lie in that same plane. In particular,
+real-coefficient power series are intrinsic. The stem formalism, developed in
+\cite{GP}, makes the distinction between an auxiliary complex scalar and a
+quaternionic imaginary unit precise.
+
+\subsection{Two derivatives at a nonreal point}
+\begin{proposition}[Real differential]
+\label{prop:differential}
+Let $q=x+Iy$, $y>0$, and decompose $v\in\HH$ orthogonally as
+$v=v_\parallel+v_\perp$ with $v_\parallel\in\C_I$ and
+$v_\perp\in\C_I^\perp$. Then
+\begin{equation}
+ df_q(v)=v_\parallel\pc f(q)+v_\perp\sph f(q),\qquad
+ \sph f(q)=\frac{B(x,y)}{y}
+ =(2Iy)^{-1}\bigl(f(q)-f(\bar q)\bigr).
+ \label{eq:differential}
+\end{equation}
+At a real point $x$, $df_x(v)=v\pc f(x)$.
+\end{proposition}
+\begin{proof}
+Within $\C_I$, the Cauchy--Riemann equation gives
+$\partial_yf=I\partial_xf$, which proves the parallel formula. In a
+perpendicular direction, the real part and the length of the imaginary part
+have zero first variation, whereas $I$ varies by $v_\perp/y$. Differentiate
+\eqref{eq:AB}. At a real point use the real-centered power series described
+above; its linear part is $v\pc f(x)$.
+\end{proof}
+For $f(q)=q^2$, these two right multipliers are $2q$ and $2x$.
+They need not have equal norms, so slice regularity does not imply
+four-dimensional conformality.
+
+\section{Cauchy formulas, Taylor series, and Morera}
+\label{sec:cauchy-slice}
+\subsection{The kernel and its multiplication order}
+For $q\notin[s]$, set
+\begin{equation}
+ \cC(q,s)=S_L^{-1}(s,q)
+ =-\bigl(q^2-2\Rea(s)q+|s|^2\bigr)^{-1}(q-\bar s).
+ \label{eq:kernel}
+\end{equation}
+The inverse on the right is the ordinary quaternionic inverse of the displayed
+quadratic value. For fixed $s$, this is a slice-regular function of $q$ away
+from $[s]$: it is induced by the holomorphic stem obtained by replacing $q$
+with the central complex variable $z$ in \eqref{eq:kernel}. When $q,s\in\C_I$,
+commutativity gives $\cC(q,s)=(s-q)^{-1}$.
+
+For $|q|<|s|$ the kernel also has the expansion
+\begin{equation}
+ \cC(q,s)=\sum_{n\ge0}q^n s^{-n-1}.
+ \label{eq:kernelseries}
+\end{equation}
+Indeed, the absolutely convergent sum $R$ satisfies $Rs-qR=1$.
+Using $s^2-2\Rea(s)s+|s|^2=0$ then gives
+\[
+ 0=R\bigl(s^2-2\Rea(s)s+|s|^2\bigr)
+   =\bigl(q^2-2\Rea(s)q+|s|^2\bigr)R+q-\bar s,
+\]
+which proves \eqref{eq:kernelseries}. This is not a license to commute $q$
+with $s$.
+
+\begin{theorem}[Slice Cauchy formula]
+\label{thm:cauchy-slice}
+Suppose $D$ is bounded with piecewise $C^1$ boundary and $f$ is slice regular
+on an axially symmetric slice domain containing $\overline{\Omega_D}$.
+Give $\partial D_I$ its positive complex orientation, including the usual
+negative orientation on holes, and set $\mathrm ds_I=-I\,\mathrm ds$.
+Then, for all $q\in\Omega_D$,
+\begin{equation}
+ f(q)=\frac1{2\pi}\int_{\partial D_I}
+          \cC(q,s)\,\mathrm ds_I\,f(s).
+ \label{eq:cauchy-slice}
+\end{equation}
+The answer is independent of $I$.
+\end{theorem}
+\begin{proof}
+On the $I$-section, use the splitting lemma and apply the ordinary Cauchy
+formula to both complex components. The normalization $\mathrm ds_I=-I\,
+\mathrm ds$ puts the complex factor $1/I$ in the correct position.
+For arbitrary $q$, both sides of \eqref{eq:cauchy-slice} are slice functions
+of $q$ and obey \eqref{eq:representation}. This is true for the integral
+because it holds for every kernel and the factors $\mathrm ds_I f(s)$ are
+on the right. Equality on the $I$-section therefore proves equality everywhere.
+The kernel has no singularities in $\Omega_D$ when $s\in\partial D_I$,
+because $D$ is conjugation invariant. Independence of $I$ follows from the
+same equality with $f(q)$.
+\end{proof}
+This kernel and formula are standard results of \cite{CGS}; the proof here
+makes explicit how the representation formula replaces commutativity.
+
+\begin{corollary}[Cauchy's theorem]
+Under the corresponding holomorphy assumptions,
+\[
+ \int_{\partial U_I}\mathrm ds_I\, f(s)=0
+\]
+for any relatively compact planar region $U_I$ in a section on which $f$
+is regular up to the boundary.
+\end{corollary}
+\begin{proof}
+Apply scalar Cauchy's theorem to the two components in the splitting lemma.
+\end{proof}
+
+\subsection{Taylor expansion and estimates}
+\begin{theorem}[Taylor theorem at real centers]
+\label{thm:taylor}
+Let $c\in\R$, and let $f$ be slice regular on $B(c,R)$. There are unique
+$a_n\in\HH$ such that
+\begin{equation}
+ f(q)=\sum_{n=0}^{\infty}(q-c)^n a_n,\qquad
+ a_n=\frac{\pc^n f(c)}{n!}.
+ \label{eq:taylor}
+\end{equation}
+The series converges absolutely and uniformly on smaller closed balls.
+For $0<r<R$,
+\begin{align}
+ a_n&=\frac1{2\pi}\int_{|s-c|=r,\ s\in\C_I}
+          (s-c)^{-n-1}\,\mathrm ds_I\,f(s),\label{eq:coefficient}\\
+ |a_n|&\le \frac{M_I(r)}{r^n},\qquad
+ M_I(r)=\max_{|s-c|=r,\ s\in\C_I}|f(s)|.\label{eq:cauchy-estimate}
+\end{align}
+\end{theorem}
+\begin{proof}
+Take the usual Taylor expansions of both components on one section. Their
+quaternionic coefficients combine into $a_n$, and real differentiation at
+$c$ identifies them independently of the section. Scalar Cauchy's formula
+gives \eqref{eq:coefficient}. Its norm estimate is
+\[
+ \frac1{2\pi}(2\pi r)r^{-n-1}M_I(r)=r^{-n}M_I(r).
+\]
+For $|q-c|\le\rho<r$, the resulting power series is bounded termwise by a
+convergent geometric series. It defines a slice-regular function, agrees with
+$f$ on the chosen section, and hence agrees everywhere by
+Theorem~\ref{thm:identity}. Uniqueness follows by real differentiation.
+\end{proof}
+Consequently every slice-regular function is real analytic: the stem description
+proves this off the real axis, and \eqref{eq:taylor} proves it at the real axis.
+Ordinary powers centered at a nonreal quaternion are not asserted to give a
+Taylor theorem on an ordinary Euclidean ball.
+
+\begin{theorem}[Morera]
+\label{thm:morera-slice}
+Let $f:\Omega_D\to\HH$ be continuous. Suppose that for every $I\in\SSS$ and
+every triangle $T$ with closure in the $I$-section,
+\[
+ \int_{\partial T}\mathrm ds_I\,f(s)=0.
+\]
+Then $f$ is slice regular.
+\end{theorem}
+\begin{proof}
+Split $f_I$ into its two continuous complex components. Scalar Morera makes
+each component holomorphic. Construct $A,B$ from one section as in the proof
+of Theorem~\ref{thm:representation}. They give a real-analytic slice-regular
+extension. On every other section that extension and $f$ are holomorphic and
+agree on a real interval, so they coincide.
+\end{proof}
+
+\section{Maximum principles, growth, and Schwarz's lemma}
+\label{sec:maximum}
+\begin{theorem}[Maximum-modulus principle]
+\label{thm:max}
+If $f\in\SR(\Omega_D)$ and $|f|$ has a local maximum at an interior point,
+then $f$ is constant.
+\end{theorem}
+\begin{proof}
+Let the maximum occur at $p\in\C_I$, and put $M=|f(p)|$. If $M=0$, the
+function vanishes on a neighborhood and the identity principle applies.
+Otherwise, write $u=f(p)/M$ and $g=f\bar u$. Then $g$ is regular, $g(p)=M$,
+and $|g|=|f|$. Split $g_I=F+GJ$. Near $p$, $|F|\le|g|\le M$ and
+$F(p)=M$. Scalar maximum modulus gives $F\equiv M$ locally. The identity
+$|g|^2=|F|^2+|G|^2\le M^2$ forces $G=0$ there. The identity principle
+makes $f$ constant on $\Omega_D$.
+\end{proof}
+In particular, for a function regular on $\Omega_D$, the maximum of its
+norm on any closed Euclidean ball contained in $\Omega_D$ is attained on
+the boundary.
+
+\begin{theorem}[Liouville and polynomial growth]
+\label{thm:liouville-slice}
+A bounded entire slice-regular function is constant. More generally, if
+\[
+ |f(q)|\le C(1+|q|)^\alpha\qquad(q\in\HH),\quad \alpha\ge0,
+\]
+then $f$ is a right-coefficient polynomial of degree at most $\lfloor\alpha\rfloor$.
+\end{theorem}
+\begin{proof}
+Expand at zero. For every $r>0$, \eqref{eq:cauchy-estimate} yields
+$|a_n|\le C(1+r)^\alpha/r^n$. Let $r\to\infty$ for each integer $n>\alpha$.
+The corresponding coefficient vanishes. Boundedness is the case $\alpha=0$.
+\end{proof}
+
+\begin{theorem}[Higher-order Schwarz lemma]
+\label{thm:schwarz}
+Let $f:\BB\to\BB$ be slice regular, where $\BB=B(0,1)$, and suppose the
+first $m$ coefficients in its Taylor series vanish, with $m\ge1$.
+Then
+\begin{equation}
+ |f(q)|\le |q|^m,\qquad \frac{|\pc^m f(0)|}{m!}\le1.
+ \label{eq:schwarz}
+\end{equation}
+Equality in the first inequality at a nonzero point, or in the second
+inequality, occurs exactly when $f(q)=q^m u$ for a fixed $|u|=1$.
+\end{theorem}
+\begin{proof}
+Write $f(q)=q^m g(q)$ using its power series; $g$ is regular on $\BB$.
+For $|q|=r<1$, $|g(q)|\le r^{-m}$. Maximum modulus on $B(0,r)$ and then
+$r\uparrow1$ give $|g(q)|\le1$ everywhere. This proves the two estimates.
+Either equality hypothesis forces $|g|$ to attain the value $1$ at an interior
+point. Theorem~\ref{thm:max} makes $g$ a constant of unit norm. The converse
+is immediate from multiplicativity of the quaternionic norm.
+\end{proof}
+These basic analogues belong to the original slice-regular theory
+\cite{GS}. Their proofs illustrate a useful principle: use scalar holomorphic
+components for linear analytic questions, but preserve the quaternionic norm
+when a sharp scalar bound is required.
+
+\section{Regular multiplication and the geometry of zeros}
+\label{sec:algebra}
+Pointwise multiplication does not preserve slice regularity. For example, the
+constant function $\ii$ and the identity function are regular, but on the
+$\jj$-section the product $\ii q=\ii x+\kk y$ satisfies
+\[
+ (\partial_x+\jj\partial_y)(\ii q)=2\ii\ne0.
+\]
+The appropriate replacement is multiplication before evaluating the stem.
+
+\subsection{The regular product}
+\begin{definition}
+If $f=\cI(\mathcal F)$ and $g=\cI(\mathcal G)$, define
+\[
+ f*g=\cI(\mathcal F\mathcal G).
+\]
+Thus, when $f(x+Iy)=A+IB$ and $g(x+Iy)=C+ID$,
+\begin{equation}
+ (f*g)(x+Iy)=AC-BD+I(AD+BC).
+ \label{eq:starAB}
+\end{equation}
+\end{definition}
+Stem symmetry is preserved because $\kappa$ is an algebra automorphism;
+holomorphy is preserved because multiplication is complex bilinear. Therefore
+$*$ is an associative product on slice-regular functions. For power series,
+\begin{equation}
+ \left(\sum_{n\ge0}q^n a_n\right)*
+ \left(\sum_{n\ge0}q^n b_n\right)
+ =\sum_{n\ge0}q^n\sum_{k=0}^n a_k b_{n-k}.
+ \label{eq:convolution}
+\end{equation}
+This follows by multiplying absolutely convergent stem series on compact
+subsets. Intrinsic functions have central stems: if $h$ is intrinsic, then
+$h*f=f*h$, and this regular product equals the \emph{pointwise product
+$h(q)f(q)$}. It need not equal $f(q)h(q)$.
+
+\begin{proposition}[Evaluation of a regular product]
+\label{prop:evaluation}
+For any $q\in\Omega_D$,
+\begin{equation}
+ (f*g)(q)=
+ \begin{cases}
+ f(q)\,g\bigl(f(q)^{-1}qf(q)\bigr),&f(q)\ne0,\\
+ 0,&f(q)=0.
+ \end{cases}
+ \label{eq:evaluation}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write $q=x+Iy$ and $u=f(q)=A+IB$. For $u\ne0$, set $I'=u^{-1}Iu$.
+The proposed right side is
+\[
+ u(C+I'D)=uC+IuD=AC-BD+I(BC+AD),
+\]
+which is \eqref{eq:starAB}. The same expression is $uC+IuD=0$ when $u=0$.
+\end{proof}
+The argument of the second factor can rotate within $[q]$. This is precisely
+why roots of successive factors need not be roots of their product.
+
+\subsection{Conjugation and symmetrization}
+Extend quaternionic conjugation complex linearly to the stem algebra:
+$(a+\iota b)^c=\bar a+\iota\bar b$. It is an antiautomorphism. Define
+\[
+ f^c=\cI(\mathcal F^c),\qquad f^s=f*f^c=f^c*f.
+\]
+The equality of the two products follows from the following direct calculation:
+\begin{align}
+ \Norm_f(z):=\mathcal F(z)\mathcal F(z)^c
+ &=|A|^2-|B|^2+2\iota\Rea(A\bar B),\label{eq:normstem}\\
+ f^s(x+Iy)&=|A|^2-|B|^2+2I\Rea(A\bar B).
+ \label{eq:symmetrization}
+\end{align}
+The stem $\Norm_f$ is complex scalar valued and holomorphic; hence $f^s$ is
+intrinsic. In a right-coefficient power series,
+\[
+ f^c(q)=\sum q^n\bar a_n,\qquad
+ f^s(q)=\sum q^n\sum_{k=0}^n a_k\bar a_{n-k},
+\]
+and each coefficient of $f^s$ is real. In particular,
+\begin{equation}
+ \Norm_f(x)=|f(x)|^2\quad(x\in D\cap\R).
+ \label{eq:normonreal}
+\end{equation}
+For general $q$, $f^s(q)$ is \emph{not} $|f(q)|^2$.
+For instance, $f(q)=q-\ii$ has $f^s(q)=q^2+1$; at $q=\jj$ these two
+quantities are $0$ and $2$, respectively.
+
+\begin{proposition}[Multiplicativity of the scalar norm stem]
+\label{prop:norm-multiplicative}
+For slice-regular $f,g$,
+\begin{equation}
+ \Norm_{f*g}=\Norm_f\Norm_g,
+ \qquad (f*g)^s=f^s g^s.
+ \label{eq:norm-multiplicative}
+\end{equation}
+If $f\not\equiv0$, then $\Norm_f\not\equiv0$.
+\end{proposition}
+\begin{proof}
+Since $\Norm_g$ is central,
+\[
+ (\mathcal F\mathcal G)(\mathcal F\mathcal G)^c
+ =\mathcal F\mathcal G\mathcal G^c\mathcal F^c
+ =\Norm_g\mathcal F\mathcal F^c=\Norm_g\Norm_f.
+\]
+If $\Norm_f$ vanished identically, \eqref{eq:normonreal} would make $f$ vanish
+on a real interval, and the identity principle would give $f\equiv0$.
+\end{proof}
+
+\subsection{Isolated zeros and spherical zeros}
+\begin{theorem}[Zero geometry and detection by symmetrization]
+\label{thm:zeros}
+On a nonreal sphere $S=x+y\SSS$, a slice function has either no zero,
+exactly one zero, or is zero everywhere. Moreover,
+\begin{equation}
+ f^s\big|_S=0
+ \quad\Longleftrightarrow\quad
+ f\text{ has a zero on }S.
+ \label{eq:zero-detection}
+\end{equation}
+For real $x$, $f^s(x)=0$ if and only if $f(x)=0$.
+If $f$ is regular and not identically zero, its zero-bearing conjugacy classes
+are locally finite in $\Omega_D$. Thus its zeros consist of isolated real or
+nonreal points and isolated two-spheres.
+\end{theorem}
+\begin{proof}
+On $S$ write $f(x+Iy)=A+IB$. If $B=0$, the assertion is immediate. If
+$B\ne0$, the only possible zero is at
+\[
+ I=-AB^{-1}.
+\]
+This quaternion is an imaginary unit exactly when
+$|A|=|B|$ and $\Rea(A\bar B)=0$: its norm is $|A|/|B|$ and its real part
+is $-\Rea(A\bar B)/|B|^2$. These are exactly the two real conditions for
+\eqref{eq:symmetrization} to vanish. The real case is
+\eqref{eq:normonreal}.
+
+For a nonzero regular function, $\Norm_f$ is a nonzero scalar holomorphic
+function. Its zeros are discrete in $D$. Each conjugate pair corresponds to
+one nonreal conjugacy sphere, and each real zero corresponds to one real
+point. A compact subset of $\Omega_D$ projects to a compact subset of $D$
+under $q\mapsto\Rea q\pm\iota|\Ima q|$, so only finitely many such classes
+can meet it.
+\end{proof}
+This description is one of the structural differences from complex analysis;
+see \cite{GStZeros,GP}. For example, $q^2+1$ vanishes on all of $\SSS$.
+
+\begin{proposition}[Division by a spherical factor]
+\label{prop:spherical-division}
+Let $p=x+Iy$ be nonreal and set
+\[
+ \Delta_p(q)=q^2-2xq+x^2+y^2.
+\]
+A regular function $f$ vanishes identically on $[p]$ if and only if
+$f=\Delta_p*g=\Delta_p\,g$ for a regular $g$ on $\Omega_D$.
+\end{proposition}
+\begin{proof}
+Vanishing on the sphere means $A(x,y)=B(x,y)=0$, so the stem $\mathcal F$
+vanishes at $z_0=x+\iota y$ and $\bar z_0$. Divide each of its four complex
+components by $(z-z_0)(z-\bar z_0)$. Both apparent singularities are removable,
+and the quotient has the required stem symmetry because this denominator has
+real coefficients. The converse follows because $\Delta_p$ vanishes on $[p]$.
+\end{proof}
+
+\section{Factorization, the argument principle, and Rouch\'e}
+\label{sec:counting}
+\subsection{Division at one point and the fundamental theorem of algebra}
+\begin{lemma}[Regular division on a ball]
+\label{lem:division}
+Let $f(q)=\sum_{n\ge0}q^n a_n$ converge on $B(0,R)$ and let $p\in B(0,R)$.
+There is a unique regular $g$ on that ball such that
+\begin{equation}
+ f=(q-p)*g+f(p).
+ \label{eq:division}
+\end{equation}
+Its coefficients are
+\begin{equation}
+ g(q)=\sum_{n\ge0}q^n b_n,
+ \qquad b_n=\sum_{k=n+1}^{\infty}p^{k-n-1}a_k.
+ \label{eq:divisioncoeff}
+\end{equation}
+For a polynomial of degree $n\ge1$, $g$ has degree $n-1$.
+\end{lemma}
+\begin{proof}
+Choose $|p|<r<R$. Cauchy's estimate gives $|a_k|\le M(r)r^{-k}$, so
+\[
+ |b_n|\le\frac{M(r)r^{-n-1}}{1-|p|/r}.
+\]
+Thus the series for $g$ converges on $|q|<r$, and, since $r$ can approach $R$,
+on the whole ball. Directly from \eqref{eq:divisioncoeff},
+$b_{n-1}-p b_n=a_n$ for $n\ge1$, while
+$-p b_0=a_0-f(p)$. These are exactly the coefficients in
+\eqref{eq:division}. If two quotients existed, their difference $h$ would
+satisfy $(q-p)*h=0$. At every real $x\ne p$, evaluation gives $(x-p)h(x)=0$,
+so the identity principle gives $h=0$. Polynomial division is the finite
+version of the same computation.
+\end{proof}
+
+\begin{theorem}[Quaternionic fundamental theorem of algebra]
+\label{thm:FTA}
+Every nonconstant right-coefficient quaternionic polynomial has a zero in
+$\HH$. If
+$P(q)=q^n a_n+\cdots+a_0$, $a_n\ne0$, then
+\begin{equation}
+ P=(q-p_1)*\cdots*(q-p_n)\,a_n
+ \label{eq:factorization}
+\end{equation}
+for suitable $p_1,\ldots,p_n\in\HH$.
+\end{theorem}
+\begin{proof}
+The real-coefficient polynomial $P^s$ has degree $2n$ and leading coefficient
+$|a_n|^2$. By the complex fundamental theorem of algebra its scalar stem has
+a root $z$. A real root gives $P(z)=0$; a nonreal root gives a zero of $P$ on
+the corresponding sphere by Theorem~\ref{thm:zeros}. Divide out one linear
+regular factor by Lemma~\ref{lem:division}, and repeat on the quotient until
+a constant remains. Leading coefficients identify that constant as $a_n$.
+\end{proof}
+The result concerns the central-variable, right-coefficient polynomial algebra.
+It is not a claim about arbitrary expressions with $q$ interspersed among
+quaternionic coefficients.
+
+\begin{example}[Factors do not simply list roots]
+\label{ex:camshaft}
+The polynomial
+\[
+ P=(q-\ii)*(q-\jj)=q^2-q(\ii+\jj)+\kk
+\]
+satisfies $P(\ii)=0$ but $P(\jj)=2\kk\ne0$. Its symmetrization is
+$(q^2+1)^2$, and it has just one pointwise zero, $\ii$: on $\SSS$ its
+coefficient $B=-(\ii+\jj)$ is nonzero, so Theorem~\ref{thm:zeros} allows
+only one zero; no other sphere can contain a zero. In contrast,
+$(q-\ii)*(q+\ii)=q^2+1$ vanishes on an entire sphere, although it has the
+same symmetrization $(q^2+1)^2$.
+\end{example}
+
+\subsection{A precise total multiplicity}
+For a nonzero regular $f$, define the \emph{total multiplicity of a
+zero-bearing class} by
+\begin{equation}
+ m_f([p])=
+ \begin{cases}
+ \ord_{x+\iota y}\Norm_f,&p=x+Iy,\ y>0,\\[2pt]
+ \tfrac12\ord_x\Norm_f,&p=x\in\R.
+ \end{cases}
+ \label{eq:multiplicity}
+\end{equation}
+The two nonreal conjugate zeros have the same order. The real order is even:
+if $f(q)=(q-x)^m u(q)$ with $u(x)\ne0$, as supplied by the Taylor theorem,
+then
+\[
+ \Norm_f(z)=(z-x)^{2m}\Norm_u(z),\qquad \Norm_u(x)=|u(x)|^2>0.
+\]
+Thus \eqref{eq:multiplicity} is a positive integer. A simple isolated linear
+factor has total multiplicity one; the full spherical factor $\Delta_p$ has
+total multiplicity two. This convention counts algebraic mass in a conjugacy
+class, not the cardinality of the pointwise zero set.
+
+\begin{corollary}[Degree equals total multiplicity]
+\label{cor:degreecount}
+For a degree-$n$ polynomial,
+\[
+ \sum_{[p]:\ P\text{ has a zero on }[p]}m_P([p])=n.
+\]
+\end{corollary}
+\begin{proof}
+By \eqref{eq:norm-multiplicative} and \eqref{eq:factorization},
+\[
+ P^s(q)=|a_n|^2\prod_{j=1}^n\Delta_{p_j}(q).
+\]
+Each nonreal factor contributes one to the multiplicity of its conjugacy
+class; each real factor is $(q-p_j)^2$ and contributes one under the
+real convention in \eqref{eq:multiplicity}. Equivalently, take half the total
+complex zero count of the degree-$2n$ polynomial $\Norm_P$.
+\end{proof}
+
+\subsection{Counting on circular regions}
+Let $U\Subset D$ be a bounded conjugation-invariant region with finitely many
+piecewise $C^1$ boundary curves. It need not be connected. Write
+\[
+ \Gamma_U=\{x+Iy:x+\iota y\in\partial U,\ I\in\SSS\}.
+\]
+Suppose $f$ has no zero on $\Gamma_U$, and let $\nu_f(U)$ be the sum of
+\eqref{eq:multiplicity} over the zero-bearing classes in $\Omega_U$.
+
+\begin{theorem}[Argument principle]
+\label{thm:argument}
+With the preceding assumptions,
+\begin{equation}
+ \nu_f(U)=\frac1{4\pi\iota}
+    \int_{\partial U}\frac{\Norm_f'(z)}{\Norm_f(z)}\dd z.
+ \label{eq:argument}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:zeros} makes $\Norm_f$ nonzero on $\partial U$.
+Near a zero of order $m$, write $\Norm_f(z)=(z-z_0)^m v(z)$ with
+$v(z_0)\ne0$. Its logarithmic derivative is
+$m/(z-z_0)+v'(z)/v(z)$, so the ordinary argument principle counts its zeros
+with their complex multiplicities. These occur in conjugate pairs, except
+for the real zeros, whose orders are even. Dividing the complex count by two
+gives exactly \eqref{eq:multiplicity} and proves the formula.
+\end{proof}
+The integrand is scalar complex valued. A pointwise quaternionic expression
+such as $f'(q)f(q)^{-1}$ cannot simply replace it in this proof.
+
+\begin{theorem}[Rouch\'e on circular boundaries]
+\label{thm:rouche}
+Let $f,g$ be regular on $\Omega_D$. If
+\begin{equation}
+ |g(q)-f(q)|<|f(q)|\qquad(q\in\Gamma_U),
+ \label{eq:rouche}
+\end{equation}
+then $\nu_g(U)=\nu_f(U)$.
+\end{theorem}
+\begin{proof}
+For $0\le t\le1$, set $h_t=f+t(g-f)$. The strict inequality gives
+$|h_t(q)|\ge|f(q)|-t|g(q)-f(q)|>0$ on $\Gamma_U$.
+Consequently $\Norm_{h_t}$ has no zero on $\partial U$. The integral in
+\eqref{eq:argument} depends continuously on $t$, since its integrand does and
+its denominator remains uniformly separated from zero on the compact set
+$[0,1]\times\partial U$. The integral is integer valued by
+Theorem~\ref{thm:argument}, hence constant. Its endpoint values are the desired
+counts.
+\end{proof}
+The hypothesis is imposed on \emph{all} quaternionic points of each boundary
+sphere, not only on a single complex contour. This is the condition that
+makes the zero-detection argument valid.
+
+\begin{corollary}[A polynomial localization criterion]
+If
+\[
+ P(q)=q^n+\sum_{k<n}q^k a_k,
+ \qquad \sum_{k<n}R^k|a_k|<R^n,
+\]
+then all zeros of $P$ lie in $|q|<R$, with total multiplicity $n$.
+In particular every zero satisfies
+$|q|\le1+\max_{k<n}|a_k|$.
+\end{corollary}
+\begin{proof}
+Apply Rouch\'e to $q^n$ and $P$ on the sphere $|q|=R$, and use
+Corollary~\ref{cor:degreecount}. If $M=\max_{k<n}|a_k|$ and $R>1+M$, then
+\[
+ \sum_{k<n}R^k|a_k|\le M\frac{R^n-1}{R-1}<R^n.
+\]
+Let $R$ decrease to $1+M$. A nonmonic polynomial is first normalized by
+right multiplication by its leading coefficient's inverse.
+\end{proof}
+
+\section{Reciprocals, minimum modulus, and open mappings}
+\label{sec:reciprocal}
+\subsection{The regular reciprocal}
+Let $Z(f^s)$ be the union of all zero-bearing conjugacy classes of a nonzero
+regular $f$. On $\Omega_D\setminus Z(f^s)$ define
+\begin{equation}
+ f^{-*}=(f^s)^{-1}f^c.
+ \label{eq:reciprocal}
+\end{equation}
+The first factor is intrinsic and regular. Stem multiplication shows
+$f*f^{-*}=f^{-*}*f=1$ on this domain. For a real-centered polynomial, for
+example,
+\[
+ (q-p)^{-*}=\Delta_p(q)^{-1}(q-\bar p).
+\]
+The excluded set is the whole sphere $[p]$, even if $q-p$ has only the one
+pointwise zero $p$.
+
+\begin{proposition}[The conjugation change of variable]
+\label{prop:T}
+On $\Omega_D\setminus Z(f^s)$ put
+\begin{equation}
+ T_f(q)=f^c(q)^{-1}qf^c(q).
+ \label{eq:T}
+\end{equation}
+This is a real-analytic diffeomorphism of that domain onto itself, preserving
+each conjugacy class, and its inverse is $T_{f^c}$. Moreover,
+\begin{align}
+ f^{-*}(q)&=f(T_f(q))^{-1},\label{eq:inverse-eval}\\
+ (f^{-*}*g)(q)&=f(T_f(q))^{-1}g(T_f(q)).
+ \label{eq:quotient-eval}
+\end{align}
+\end{proposition}
+\begin{proof}
+Nonvanishing of $f^s(q)$ implies nonvanishing of $f^c(q)$ by the zero theorem.
+Let $c=f^c(q)$, $r=T_f(q)$, and $n=f^s(q)$. Product evaluation applied to
+$f^c*f$ gives
+\[
+ n=c f(r).
+\]
+Since $n$ is intrinsic, it commutes with $q$. Therefore
+\[
+ T_{f^c}(r)=f(r)^{-1}r f(r)
+ =n^{-1}c(c^{-1}qc)c^{-1}n=n^{-1}qn=q.
+\]
+The same calculation in the opposite order proves the other inverse identity.
+All maps are real analytic, and all preserve the same zero-free spheres.
+Furthermore,
+$n^{-1}c=(c f(r))^{-1}c=f(r)^{-1}$, proving
+\eqref{eq:inverse-eval}.
+Finally, product evaluation for $f^{-*}*g$ uses the conjugating value
+$u=f^{-*}(q)=n^{-1}c$. Since $n$ commutes with $q$,
+$u^{-1}qu=c^{-1}qc=T_f(q)$. This proves \eqref{eq:quotient-eval}.
+\end{proof}
+The reciprocal is therefore a pointwise inverse only \emph{after} a
+sphere-preserving change of variable. This mechanism underlies the minimum
+principle and geometric results developed in \cite{GStOpen,BS}.
+
+\subsection{A minimum principle with no missing spheres}
+\begin{theorem}[Minimum-modulus principle]
+\label{thm:min}
+Let $f\in\SR(\Omega_D)$. If $|f|$ has a local minimum at $p$, then either
+$f(p)=0$ or $f$ is constant.
+\end{theorem}
+\begin{proof}
+Assume $f(p)\ne0$. We first show that $[p]$ contains no zero of $f$.
+This is immediate for real $p$. On a nonreal sphere write $f=A+IB$.
+The squared norm
+\[
+ |A+IB|^2=|A|^2+|B|^2-2\Rea(A\bar B I)
+\]
+is an affine real function of the unit vector $I\in\SSS$.
+A local minimum of an affine function on a sphere is a global minimum
+(including the constant case). Thus the minimum at $p$ is no greater than
+the value anywhere on $[p]$, which rules out a zero on that sphere.
+
+The set $D'=D\setminus Z(\Norm_f)$ is connected: a polygonal path in a planar
+domain can be perturbed around the finitely many points of a locally finite
+set that meet a compact neighborhood of that path. It is conjugation
+invariant and still contains a real interval, since real zeros are discrete.
+Thus $f^{-*}$ is regular on the slice domain $\Omega_{D'}$.
+By Proposition~\ref{prop:T}, $|f^{-*}|=1/|f\circ T_f|$ has a local maximum at
+$T_f^{-1}(p)$. The maximum principle makes $f^{-*}$ constant, say equal to
+$c\ne0$, on that domain. The identity $f*f^{-*}=1$ then gives
+$f(q)c=1$ there. The identity principle extends this constant value of $f$
+to all of $\Omega_D$.
+\end{proof}
+The initial sphere argument is essential: $f(p)\ne0$ alone does not guarantee
+that the regular reciprocal is defined near $p$.
+
+\subsection{The appropriate open-mapping statements}
+Define the \emph{degenerate set}
+\[
+ D_f=\bigcup\{x+y\SSS:y>0,\ f\text{ is constant on }x+y\SSS\}.
+\]
+It is the union of spheres for which the coefficient $B(x,y)$ in
+\eqref{eq:AB} vanishes.
+
+\begin{theorem}[Open mapping with spherical qualifications]
+\label{thm:open}
+Let $f\in\SR(\Omega_D)$ be nonconstant.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item At every $p\notin D_f$, the image of every sufficiently small Euclidean
+ball centered at $p$ contains a neighborhood of $f(p)$.
+Consequently $f$ restricted to $\Omega_D\setminus\overline{D_f}$ is an open
+map.
+\item If $V\subseteq\Omega_D$ is open and axially symmetric, then $f(V)$ is
+open. In particular $f(\Omega_D)$ is open.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i), $h=f-f(p)$ has an isolated zero at $p$. Indeed, a real zero is
+isolated; a nonreal zero is the unique zero on its sphere when that sphere is
+not degenerate, and the zero-bearing classes are locally finite.
+Choose a small closed ball $\overline{B(p,r)}$ in the domain whose boundary
+contains no zero of $h$, and put
+$m=\min_{\partial B(p,r)}|h|>0$.
+If $|w-f(p)|<m/2$, then $|f-w|>m/2$ on the boundary but
+$|f(p)-w|<m/2$. Hence $|f-w|$ attains its minimum in the interior. By
+Theorem~\ref{thm:min}, that minimum is zero, since $f-w$ is nonconstant.
+Thus $B(f(p),m/2)\subseteq f(B(p,r))$. Balls can also be chosen in
+$\Omega_D\setminus\overline{D_f}$ when proving the restricted open-map claim.
+
+For (ii), take $p\in V$. Choose a relatively compact axially symmetric
+neighborhood $W$ of the entire class $[p]$ contained in $V$, with boundary
+avoiding the zeros of $f-f(p)$. Such a neighborhood exists by the local
+finiteness of zero-bearing classes: use a small disk around a real base point,
+or two small conjugate disks around a nonreal pair, and circularize.
+Now minimize $|f-w|$ on $\overline W$ and repeat the preceding argument.
+It gives a neighborhood of $f(p)$ in $f(W)\subseteq f(V)$.
+\end{proof}
+
+\begin{example}[Why the unqualified open mapping theorem fails]
+The entire regular function $f(q)=q^2$ is not open at $p=\ii$.
+If $q^2=-1+t\jj$ with $t\ne0$ and $q=x+v$, then
+$\Ima(q^2)=2xv=t\jj$. Thus $x\ne0$ and $v$ is parallel to $\jj$;
+in particular $|q-\ii|\ge1$.
+Consequently $f(B(\ii,1/2))$ contains $-1$ but none of the points
+$-1+t\jj$, $t\ne0$, so it is not a neighborhood of $-1$.
+The missing behavior occurs on a sphere that $f$ collapses to a point.
+\end{example}
+One must also retain the closure in the restricted open-map formulation.
+For $q^2$, the degenerate spheres form the nonzero imaginary hyperplane;
+their closure contains $0$. Removing only those nonreal spheres leaves $0$
+but removes all preimages of negative real values, so the resulting
+restricted image is not open at $0$.
+
+\section{Schwarz--Pick and an intrinsic Riemann mapping theorem}
+\label{sec:geometry}
+\subsection{Regular fractional transformations}
+For $a\in\BB$ define
+\begin{equation}
+ \mathcal M_a(q)=(1-q\bar a)^{-*}*(q-a).
+ \label{eq:Mobius}
+\end{equation}
+The denominator has no pointwise zero in $\BB$, because $|q\bar a|<1$;
+the zero theorem therefore makes its regular reciprocal well defined on the
+whole ball. The two factors $1-q\bar a$ and $q-a$ commute under $*$ because
+their coefficients belong to the same commutative plane containing $a$.
+
+\begin{lemma}[Ball and boundary estimates]
+\label{lem:Mobius}
+The function $\mathcal M_a$ maps $\BB$ into $\BB$ and has exactly one zero,
+at $a$. For $|a|<r<1$,
+\begin{equation}
+ \min_{|q|=r}|\mathcal M_a(q)|
+ =\frac{r-|a|}{1-r|a|}.
+ \label{eq:Mobius-min}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $h(q)=1-q\bar a$. By \eqref{eq:quotient-eval},
+\[
+ \mathcal M_a(q)=(1-p\bar a)^{-1}(p-a),\qquad p=T_h(q).
+\]
+The elementary norm identity
+\begin{equation}
+ |1-p\bar a|^2-|p-a|^2=(1-|p|^2)(1-|a|^2)
+ \label{eq:ballidentity}
+\end{equation}
+proves that its norm is less than one. Since $T_h$ is a bijection and
+$h^c(a)=1-a^2$ commutes with $a$, $T_h(a)=a$, and the unique zero is $a$.
+For $|p|=r$, write $t=\Rea(p\bar a)\in[-r|a|,r|a|]$. Then
+\[
+ \frac{|p-a|^2}{|1-p\bar a|^2}
+ =\frac{r^2+|a|^2-2t}{1+r^2|a|^2-2t}.
+\]
+This ratio is decreasing in $t$, since its numerator minus denominator is
+$-(1-r^2)(1-|a|^2)$. Its minimum is attained at $t=r|a|$, giving the square
+of \eqref{eq:Mobius-min}. Such a $p$ exists, and $T_h$ permutes each sphere
+and therefore the whole radius-$r$ three-sphere. The case $a=0$ gives the
+same formula directly.
+\end{proof}
+
+\begin{theorem}[Schwarz lemma with an arbitrary zero]
+\label{thm:schwarz-zero}
+If $F:\BB\to\BB$ is regular and $F(a)=0$, then
+\begin{equation}
+ |F(q)|\le|\mathcal M_a(q)|\qquad(q\in\BB).
+ \label{eq:schwarz-zero}
+\end{equation}
+Equality at any $q\ne a$ holds exactly when $F=\mathcal M_a u$ for a
+constant $u$ of unit norm.
+\end{theorem}
+\begin{proof}
+By regular division, $F=(q-a)*G$. Define
+\[
+ H=(1-q\bar a)*G.
+\]
+It is regular throughout $\BB$ and $F=\mathcal M_a*H$.
+Off the zero-bearing sphere of $\mathcal M_a$,
+$H=\mathcal M_a^{-*}*F$. For $r>|a|$, quotient evaluation and
+\eqref{eq:Mobius-min} therefore give, on $|q|=r$,
+\[
+ |H(q)|\le\frac{1-r|a|}{r-|a|}.
+\]
+Apply maximum modulus on $B(0,r)$ and let $r\uparrow1$ to obtain $|H|\le1$
+on $\BB$. Evaluating $F=\mathcal M_a*H$ with
+Proposition~\ref{prop:evaluation} yields \eqref{eq:schwarz-zero}.
+If equality holds where $\mathcal M_a(q)\ne0$, then $|H|=1$ at the
+corresponding conjugate point. Maximum modulus makes $H$ a constant $u$
+with $|u|=1$. The converse follows by direct evaluation.
+\end{proof}
+
+\begin{theorem}[Regular Schwarz--Pick inequality]
+\label{thm:pick}
+Let $f:\BB\to\BB$ be regular, $a\in\BB$, and $b=f(a)$. Define
+\begin{equation}
+ \Phi_{f,b}=(1-f\bar b)^{-*}*(f-b).
+ \label{eq:normalized-f}
+\end{equation}
+Then
+\begin{equation}
+ |\Phi_{f,b}(q)|\le|\mathcal M_a(q)|\qquad(q\in\BB).
+ \label{eq:pick}
+\end{equation}
+Equality at some $q\ne a$ holds exactly when
+$\Phi_{f,b}=\mathcal M_a u$ for a constant $|u|=1$.
+In particular, if $a$ is real,
+\begin{equation}
+ \frac{|\pc f(a)|}{1-|f(a)|^2}\le\frac1{1-a^2}.
+ \label{eq:real-pick-derivative}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The function $h=1-f\bar b$ is regular and zero free on $\BB$, since
+$|f(q)||b|<1$. Its reciprocal is therefore regular everywhere in the ball.
+Quotient evaluation and \eqref{eq:ballidentity}, now with
+$p=f(T_h(q))$ and $a=b$, show $|\Phi_{f,b}(q)|<1$.
+The identity $h*\Phi_{f,b}=f-b$ evaluated at $a$ gives
+\[
+ (1-|b|^2)\Phi_{f,b}(a)=0,
+\]
+because $h(a)=1-|b|^2$ is a real nonzero scalar and hence does not rotate
+the argument. Theorem~\ref{thm:schwarz-zero} applies to $\Phi_{f,b}$ and
+proves the norm inequality and its equality condition.
+
+If $a$ is real, restrict the identity $h*\Phi_{f,b}=f-b$ to the real axis
+and differentiate at $a$. Since $\Phi_{f,b}(a)=0$,
+\[
+ \pc\Phi_{f,b}(a)=\frac{\pc f(a)}{1-|b|^2}.
+\]
+Also $\mathcal M_a(x)=(x-a)/(1-ax)$ on the real axis and
+$\mathcal M_a'(a)=1/(1-a^2)$. Divide \eqref{eq:pick} at $q=x$ by $|x-a|$
+and let real $x\to a$.
+\end{proof}
+This is the regular-quotient version of the quaternionic Schwarz--Pick
+phenomenon in \cite{BS}. It is not obtained by merely replacing the complex
+variables in the ordinary pointwise fraction. At nonreal base points, the
+real differential has the two pieces in \eqref{eq:differential}; the simple
+real-base differential inequality above is deliberately not asserted there.
+
+For comparison with a common alternative notation, the algebraic identity
+\[
+ (1-f\bar b)*(f-b)=(f-b)*(1-\bar b*f)
+\]
+shows that
+\[
+ (1-f\bar b)^{-*}*(f-b)=(f-b)*(1-\bar b*f)^{-*}.
+\]
+Here $\bar b*f$ means the regular product, not ordinary left multiplication of
+function values. For an equality case, one can recover $f$ from
+$F=\mathcal M_a u$ by the explicit regular fraction
+\[
+ f=(1+F\bar b)^{-*}*(F+b).
+\]
+Indeed, expanding either side after multiplication by its denominator reduces
+to the preceding algebraic identity with a plus sign. The denominator is zero
+free because $|F||b|<1$, and \eqref{eq:ballidentity} with $-b$ shows that this
+recovery map again takes values in the ball.
+
+\subsection{A genuine Riemann mapping theorem in the intrinsic category}
+Ordinary composition of regular functions need not be regular. For example,
+$q\mapsto q\ii$ and $q\mapsto q^2$ are regular, but their composite
+$q\mapsto q\ii q\ii$ equals $-|q|^2$ on $\C_{\jj}$, which is not
+holomorphic. Composition does work when the inner function is intrinsic:
+if $\varphi$ has a scalar holomorphic stem $\phi$, then the stem of
+$f\circ\varphi$ is $\mathcal F\circ\phi$, provided the image lies in the
+appropriate domain.
+
+\begin{theorem}[Intrinsic Riemann mapping theorem]
+\label{thm:riemann}
+Let $D\subsetneq\C$ be simply connected, open, conjugation invariant, and
+let $c\in D\cap\R$. There is a unique intrinsic slice-regular bijection
+\[
+ \varphi:\Omega_D\longrightarrow\BB
+\]
+with $\varphi(c)=0$ and $\pc\varphi(c)>0$ real. Its inverse is also intrinsic
+and slice regular.
+\end{theorem}
+\begin{proof}
+The classical normalized Riemann mapping theorem provides a unique
+biholomorphism $\phi:D\to\{z:|z|<1\}$ with $\phi(c)=0$ and
+$\phi'(c)>0$. The function $z\mapsto\overline{\phi(\bar z)}$ has the same
+normalization. Uniqueness therefore gives
+$\phi(\bar z)=\overline{\phi(z)}$.
+Its inverse $\psi$ has the same symmetry. Both functions consequently have
+intrinsic slice extensions $\varphi$ and $\chi$.
+
+On every $\C_I$, the extensions are precisely the scalar maps $\phi$ and
+$\psi$ under the identification $x+\iota y\leftrightarrow x+Iy$. Hence
+$\chi\circ\varphi=\Id$ and $\varphi\circ\chi=\Id$ section by section,
+proving both bijectivity and regularity of the inverse.
+For uniqueness, any intrinsic bijection satisfying the normalization restricts
+to a biholomorphism on each section: a nonreal point cannot map to a real
+value, since its entire sphere would then have the same image and injectivity
+would fail. Surjectivity and preservation of sections thus give bijectivity of
+each section restriction. Apply normalized scalar uniqueness on one section
+and the representation formula.
+\end{proof}
+The theorem asserts a slice-analytic equivalence, not arbitrary conformal
+uniformization in $\R^4$. For an intrinsic function induced by
+$\phi=u+\iota v$, the two local stretch factors in
+\eqref{eq:differential} are $|\phi'(z)|$ and $|v(x,y)/y|$. They can differ:
+for $q^2$ at $1+\ii$ they are $2\sqrt2$ and $2$.
+
+\section{Laurent expansions, residues, and essential singularities}
+\label{sec:laurent}
+The statements in this section concern isolated singularities at \emph{real}
+points. This restriction makes ordinary radial annuli and ordinary integer
+powers the right objects. Nonreal singularities require keeping track of an
+entire conjugacy sphere and lead to a more elaborate theory; see
+\cite{GPStSing}.
+
+\subsection{Laurent's theorem}
+\begin{theorem}[Laurent expansion on a spherical annulus]
+\label{thm:laurent}
+Let $f$ be slice regular on $A_{r,R}=\{q:r<|q|<R\}$, where
+$0\le r<R\le\infty$. Then
+\begin{equation}
+ f(q)=\sum_{n\in\mathbb Z}q^n a_n
+ \label{eq:laurent}
+\end{equation}
+with unique quaternionic coefficients, converging absolutely and uniformly
+on compact subannuli. For $r<\rho<R$,
+\begin{equation}
+ a_n=\frac1{2\pi}\int_{|s|=\rho,\ s\in\C_I}
+        s^{-n-1}\,\mathrm ds_I\,f(s),
+ \qquad |a_n|\le M_I(\rho)\rho^{-n}.
+ \label{eq:laurentcoef}
+\end{equation}
+The coefficient is independent of $\rho$ and $I$.
+\end{theorem}
+\begin{proof}
+The stem $\mathcal F$ is holomorphic on the complex annulus. Apply the scalar
+Laurent theorem to its four complex coordinates. Its symmetry
+$\mathcal F(\bar z)=\kappa(\mathcal F(z))$, together with uniqueness of the
+Laurent coefficients, implies that each coefficient is fixed by $\kappa$,
+hence belongs to $\HH$. Evaluating the resulting stem series gives
+\eqref{eq:laurent}. The complex integral formulas, or the splitting lemma,
+give \eqref{eq:laurentcoef}. Coefficient estimates on a radius smaller than
+the compact subannulus control the negative tail, and estimates on a larger
+radius control the positive tail, both by geometric series. This proves the
+stated absolute and uniform convergence.
+\end{proof}
+Translation by a real center $c$ replaces $q^n$ by $(q-c)^n$ without changing
+the argument.
+
+\begin{corollary}[Classification and Riemann removability at a real point]
+\label{cor:removable-slice}
+Let $f$ be regular on $0<|q|<R$. Its singularity at $0$ is removable if
+all negative Laurent coefficients vanish, a pole if finitely many but at
+least one are nonzero, and essential if infinitely many are nonzero.
+If $f$ is bounded near zero, the singularity is removable. If the pole has
+order $m$, then
+\begin{equation}
+ |f(q)|=|q|^{-m}\bigl(|a_{-m}|+o(1)\bigr)\quad(q\to0).
+ \label{eq:polegrowth}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The Laurent theorem gives the trichotomy. Under a local bound $M$,
+\eqref{eq:laurentcoef} gives $|a_{-m}|\le M\rho^m$ for every small $\rho$,
+so each negative coefficient vanishes as $\rho\to0$.
+For a pole, $q^m f(q)$ extends regularly with nonzero value $a_{-m}$ at
+zero; continuity and multiplicativity of the norm prove \eqref{eq:polegrowth}.
+\end{proof}
+
+\begin{theorem}[Residue theorem for isolated real singularities]
+\label{thm:residue-slice}
+Suppose $f$ is regular on a neighborhood of
+$\overline{\Omega_U}\setminus\{c_1,\ldots,c_N\}$, where the $c_j$ are
+real interior points and $U$ has piecewise smooth positively oriented
+boundary. Define $\Res_{c_j}f$ as the coefficient of $(q-c_j)^{-1}$ in its
+Laurent expansion. Then
+\begin{equation}
+ \frac1{2\pi}\int_{\partial U_I}\mathrm ds_I\,f(s)
+     =\sum_{j=1}^N\Res_{c_j}f.
+ \label{eq:residue-slice}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Remove disjoint small disks around the $c_j$ in the $I$-section and apply
+Cauchy's theorem to both splitting components. On each small circle,
+uniform convergence of the Laurent expansion permits integration term by
+term. All powers integrate to zero except $(s-c_j)^{-1}$, whose normalized
+integral is $1$. The right coefficients remain on the right. The Laurent
+coefficient's independence of $I$ gives the stated quaternionic formula.
+\end{proof}
+
+\subsection{Casorati--Weierstrass}
+\begin{theorem}[Density near a real essential singularity]
+\label{thm:casorati}
+If $f$ has an essential singularity at the real point $0$, then for every
+$0<r<R$ the set $f(\{0<|q|<r\})$ is dense in $\HH$.
+\end{theorem}
+\begin{proof}
+Suppose an open ball $B(a,\varepsilon)$ is omitted by the image of a punctured
+ball. Then $g=f-a$ has no zero there and $|g|\ge\varepsilon$.
+Its regular reciprocal satisfies
+\[
+ |g^{-*}(q)|=|g(T_g(q))|^{-1}\le\varepsilon^{-1},
+\]
+because $T_g$ preserves each radius. By removability, $h=g^{-*}$ extends
+regularly across zero. It is not identically zero, since its regular product
+with $g$ is $1$ off zero.
+If $h(0)\ne0$, then $h^{-*}$ is regular near zero and agrees with $g$
+there off zero, so $f$ has a removable singularity.
+If $h(0)=0$, write $h=q^m u$ with $m\ge1$ and $u(0)\ne0$ using its Taylor
+series. Near zero, $u^{-*}$ is regular and
+\[
+ g=h^{-*}=q^{-m}u^{-*}.
+\]
+Its leading coefficient is nonzero, so $g$, and hence $f$, has a pole.
+Both conclusions contradict essentiality.
+\end{proof}
+The proof is the familiar reciprocal argument from complex analysis, but
+only after the regular reciprocal and its conjugation change of variable
+have been established.
+
+\section{Normal families and Hurwitz}
+\label{sec:normal}
+\begin{theorem}[Weierstrass convergence and Montel]
+\label{thm:montel}
+A locally uniform limit of slice-regular functions on $\Omega_D$ is slice
+regular. Every family of slice-regular functions that is bounded uniformly
+on each compact subset of $\Omega_D$ is normal: every sequence has a
+subsequence converging locally uniformly to a slice-regular function.
+\end{theorem}
+\begin{proof}
+Fix orthogonal $I,J$ and split each restriction to $\C_I$ into two complex
+components. For the first assertion, scalar Weierstrass convergence gives
+holomorphic limit components. Their slice extension is regular, and the
+representation formula shows that it equals the given limit.
+
+For the second assertion, scalar Montel applied to both components, with a
+successive subsequence extraction, gives a subsequence converging uniformly
+on compact subsets of the chosen section. To propagate convergence to a
+compact $K\subset\Omega_D$, use its compact two-point section projection
+\[
+ K_I=\{\Rea q\pm I|\Ima q|:q\in K\}.
+\]
+The coefficients in \eqref{eq:representation} each have norm at most one.
+Thus the uniform difference of two members on $K$ is at most twice their
+uniform difference on $K_I$. The subsequence therefore converges on every
+compact subset of $\Omega_D$, and the first assertion proves regularity of
+the limit.
+\end{proof}
+
+\begin{theorem}[Hurwitz for quaternionic zero-free functions]
+\label{thm:hurwitz}
+Suppose $f_n\in\SR(\Omega_D)$ have no zeros in $\Omega_D$ and converge
+locally uniformly to $f$. Then either $f\equiv0$ or $f$ is zero free.
+\end{theorem}
+\begin{proof}
+The representation formula recovers the stem components $A_n,B_n$ by taking
+linear combinations of values on a fixed section. Hence their convergence
+is locally uniform, and \eqref{eq:normstem} gives
+$\Norm_{f_n}\to\Norm_f$ locally uniformly on $D$.
+Theorem~\ref{thm:zeros} says that every $\Norm_{f_n}$ is zero free.
+Scalar Hurwitz implies that $\Norm_f$ is zero free or identically zero.
+The first case makes $f$ zero free; in the second, \eqref{eq:normonreal} and
+the identity principle imply $f\equiv0$.
+\end{proof}
+Merely viewing $f_I$ as a holomorphic map into $\C^2$ would not justify this
+last theorem: the maps $z\mapsto(z,1/n)$ are nonvanishing but converge to
+$(z,0)$, which has a zero. Quaternionic zero-freeness on \emph{all} spheres,
+encoded by the scalar norm stem, is the additional information that makes
+Hurwitz possible.
+
+\section{The Cauchy--Fueter operator and the four-dimensional Cauchy formula}
+\label{sec:fueter-cauchy}
+We now change the notion of regularity. Let $\Omega\subset\HH\cong\R^4$ be
+an arbitrary connected open set; no axial symmetry is assumed. Put
+\begin{align}
+ \cD&=\partial_{x_0}+\ii\partial_{x_1}
+             +\jj\partial_{x_2}+\kk\partial_{x_3},\\
+ \overline{\cD}&=\partial_{x_0}-\ii\partial_{x_1}
+             -\jj\partial_{x_2}-\kk\partial_{x_3}.
+\end{align}
+A $C^1$ function $f:\Omega\to\HH$ is \emph{left Cauchy--Fueter regular},
+or left monogenic, when $\cD f=0$. For a function on the other side of a
+product, use the right-acting operator
+\[
+ g\cD=\partial_{x_0}g+(\partial_{x_1}g)\ii
+                  +(\partial_{x_2}g)\jj+(\partial_{x_3}g)\kk.
+\]
+Anticommutation of the imaginary units gives
+\begin{equation}\label{eq:factor-laplacian}
+ \overline{\cD}\cD=\cD\overline{\cD}=\lap,
+ \qquad \lap=\sum_{\mu=0}^{3}\partial_{x_\mu}^2.
+\end{equation}
+These are identities of constant-coefficient differential operators. Notice
+at once that $\cD q=1-1-1-1=-2$: the identity function, a basic example in
+slice analysis, is not Fueter regular. The integral theory developed next is
+classical; Sudbery~\cite{Sudbery} is a particularly useful reference.
+
+\begin{lemma}[Quaternionic Green identity]\label{lem:green}
+Let $\Omega$ be bounded with $C^1$ boundary, let $n=n_0+\ii n_1+\jj n_2+\kk n_3$
+be its outward unit normal, and let $f,g$ be $C^1$ near $\overline\Omega$.
+Then
+\begin{equation}\label{eq:green}
+ \int_{\partial\Omega}g(y)n(y)f(y)\dd S_y
+ =\int_\Omega\bigl((g\cD)(y)f(y)+g(y)(\cD f)(y)\bigr)\dd V_y.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $e_0=1,e_1=\ii,e_2=\jj,e_3=\kk$. Apply the ordinary divergence theorem,
+component by component, to the four-vector with quaternionic components
+$g e_\mu f$. Its divergence is
+\[
+ \sum_\mu\partial_{x_\mu}(g e_\mu f)
+ =\sum_\mu(\partial_{x_\mu}g)e_\mu f
+       +\sum_\mu g e_\mu\partial_{x_\mu}f
+ =(g\cD)f+g(\cD f).
+\]
+The order of the three factors in the boundary integral is thereby fixed.
+\end{proof}
+In particular, a Fueter-regular function satisfies the Cauchy theorem
+\begin{equation}\label{eq:fueter-cauchy-theorem}
+ \int_{\partial\Omega}n(y)f(y)\dd S_y=0.
+\end{equation}
+The integration cycle is now three-dimensional, not a planar curve.
+
+Define the fundamental kernel by
+\begin{equation}\label{eq:fueter-kernel}
+ E(q)=\frac{\bar q}{2\pi^2|q|^4},\qquad q\ne0.
+\end{equation}
+It is both left and right Fueter regular away from zero. For example,
+$\cD\bar q=4$ and
+\[
+ \sum_{\mu=0}^3 e_\mu\bar q\,\partial_{x_\mu}|q|^{-4}
+ =-4q\bar q\,|q|^{-6}=-4|q|^{-4},
+\]
+which cancels the derivative of $\bar q$; the right calculation is identical
+with the order reversed. On $|q|=r$, the outward normal is $q/r$, so
+\begin{equation}\label{eq:kernel-flux}
+ E(q)n(q)=n(q)E(q)=\frac{1}{2\pi^2r^3},
+ \qquad \int_{|q|=r}E(q)n(q)\dd S_q=1,
+\end{equation}
+since the unit three-sphere has area $2\pi^2$.
+
+\begin{theorem}[Cauchy--Pompeiu and Cauchy--Fueter formulas]
+\label{thm:fueter-cauchy}
+Under the boundary hypotheses of Lemma~\ref{lem:green}, for $f\in C^1$
+near $\overline\Omega$ and $x\in\Omega$,
+\begin{equation}\label{eq:pompeiu}
+ f(x)=\int_{\partial\Omega}E(y-x)n(y)f(y)\dd S_y
+       -\int_\Omega E(y-x)(\cD f)(y)\dd V_y.
+\end{equation}
+Consequently, if $\cD f=0$, then
+\begin{equation}\label{eq:fueter-cauchy}
+ \boxed{\displaystyle
+ f(x)=\int_{\partial\Omega}E(y-x)n(y)f(y)\dd S_y.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:green} with $g(y)=E(y-x)$ to
+$\Omega\setminus\overline{B(x,\varepsilon)}$. The right derivative
+$g\cD$ vanishes there. The normal of the punctured domain on its inner
+boundary is the negative of the outward normal of the small ball. Moving
+that boundary term to the other side gives
+\[
+ \int_{|y-x|=\varepsilon}E(y-x)n_{\rm ball}(y)f(y)\dd S_y
+ =\int_{\partial\Omega}E(y-x)n(y)f(y)\dd S_y
+   -\int_{\Omega\setminus\overline{B(x,\varepsilon)}}
+          E(y-x)(\cD f)(y)\dd V_y.
+\]
+The left side tends to $f(x)$ by \eqref{eq:kernel-flux} and continuity. The
+volume integral converges because $|E(y-x)|=O(|y-x|^{-3})$, which is locally
+integrable in four dimensions. This proves both formulas.
+\end{proof}
+Equation~\eqref{eq:fueter-cauchy} represents functions already known to be
+regular; it is not a claim that arbitrary boundary values admit a regular
+extension.
+
+\section{Fueter analogues of the basic analytic theorems}
+\label{sec:fueter-consequences}
+\subsection{Analyticity, Cauchy estimates, and Liouville's theorem}
+\begin{proposition}\label{prop:fueter-analytic}
+Every $C^1$ Fueter-regular function is real analytic, and each of its four
+real components is harmonic.
+\end{proposition}
+\begin{proof}
+Fix a closed ball strictly inside the domain and use
+\eqref{eq:fueter-cauchy} on that ball. For interior $x$, the kernel is smooth
+in $x$ uniformly for $y$ on the boundary, so all derivatives pass under the
+integral. To obtain real analyticity near the center $a$, expand
+\[
+ |y-x|^{-4}
+ =|y-a|^{-4}\left(1+
+ \frac{-2\langle y-a,x-a\rangle+|x-a|^2}{|y-a|^2}\right)^{-2}.
+\]
+For $|x-a|$ sufficiently small compared with the ball radius, the binomial
+series converges absolutely and uniformly on the integration sphere. After
+multiplication by $\overline{y-x}$ it is a convergent power series in the
+four real coordinates of $x-a$, and it can be integrated term by term.
+Finally \eqref{eq:factor-laplacian} gives
+$\lap f=\overline{\cD}(\cD f)=0$.
+\end{proof}
+
+\begin{theorem}[Cauchy derivative estimates]\label{thm:fueter-estimates}
+Suppose $f$ is Fueter regular near $\overline{B(a,R)}$, and let
+$M_R=\max_{|q-a|=R}|f(q)|$. For every multi-index $\alpha$,
+\begin{equation}\label{eq:fueter-estimate}
+ |\partial^\alpha f(a)|\le
+ C_\alpha\frac{M_R}{R^{|\alpha|}},
+ \qquad
+ C_\alpha=2\pi^2\max_{|\omega|=1}|\partial^\alpha E(\omega)|.
+\end{equation}
+In particular $C_0=1$, and each first partial derivative satisfies the
+estimate with $C_\alpha=5$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:fueter-cauchy}. Since $E$ is homogeneous of degree
+$-3$, its derivative $\partial^\alpha E$ is homogeneous of degree
+$-3-|\alpha|$. Taking norms and using the area $2\pi^2R^3$ proves
+\eqref{eq:fueter-estimate}. Direct differentiation gives
+\[
+ \partial_{x_\mu}E(q)=\frac{1}{2\pi^2}
+ \left(\bar e_\mu|q|^{-4}-4x_\mu\bar q|q|^{-6}\right),
+\]
+whose norm is at most $5/(2\pi^2|q|^4)$. This constant is sufficient; no
+sharpness is asserted for it.
+\end{proof}
+
+\begin{corollary}[Liouville and polynomial growth]\label{cor:fueter-liouville}
+A bounded entire Fueter-regular function is constant. More generally, if
+\[
+ |f(q)|\le C(1+|q|)^\beta\qquad(q\in\HH),\quad\beta\ge0,
+\]
+then $f$ is a polynomial in the four real coordinates, of total degree at
+most $\lfloor\beta\rfloor$, satisfying $\cD f=0$.
+\end{corollary}
+\begin{proof}
+For bounded $f$, let $R\to\infty$ in the first-derivative estimates at an
+arbitrary center. All first partials vanish. Under the growth hypothesis,
+$M_R\le C(1+|a|+R)^\beta$, so every derivative of order strictly greater than
+$\beta$ vanishes at every center. The real Taylor expansion therefore
+terminates with the asserted degree.
+\end{proof}
+The polynomial conclusion differs from the slice conclusion: here a
+polynomial is a polynomial in $x_0,x_1,x_2,x_3$, not necessarily a polynomial
+in the single quaternionic variable $q$ with right coefficients.
+
+\subsection{Mean values and maximum modulus}
+\begin{theorem}[Mean value and maximum modulus]\label{thm:fueter-max}
+If $f$ is Fueter regular near $\overline{B(a,R)}$, then
+\begin{equation}\label{eq:fueter-mean}
+ f(a)=\frac{1}{2\pi^2R^3}\int_{|y-a|=R}f(y)\dd S_y.
+\end{equation}
+If $|f|$ has a local maximum in a connected domain, then $f$ is constant.
+\end{theorem}
+\begin{proof}
+Formula \eqref{eq:fueter-mean} follows immediately from
+\eqref{eq:fueter-cauchy} and \eqref{eq:kernel-flux}. Suppose $|f|\le M=|f(a)|$
+near $a$. The case $M=0$ gives local constancy immediately. Otherwise the
+real-linear functional
+\[
+ \ell(w)=\frac{\Rea(w\overline{f(a)})}{M}
+\]
+satisfies $\ell(w)\le |w|$. On every sufficiently small sphere centered at
+$a$, the average of $\ell(f)$ is $M$, while $\ell(f)\le |f|\le M$.
+Continuity forces equality at every point of the sphere. Equality in the
+real Euclidean Cauchy--Schwarz inequality, together with $|f|\le M$, then
+forces $f=f(a)$ there. Varying the radius proves constancy on a ball.
+Real analyticity propagates that constancy through the connected domain.
+\end{proof}
+
+\subsection{A flux version of Morera's theorem}
+\begin{theorem}[Fueter--Morera]\label{thm:fueter-morera}
+A continuous function $f:\Omega\to\HH$ is Fueter regular if and only if
+\begin{equation}\label{eq:fueter-morera}
+ \int_{\partial B}n(y)f(y)\dd S_y=0
+\end{equation}
+for every ball whose closure lies in $\Omega$.
+\end{theorem}
+\begin{proof}
+Necessity is \eqref{eq:fueter-cauchy-theorem}. For sufficiency, work in a
+relatively compact subdomain and convolve $f$ with a real smooth mollifier,
+obtaining $f_\varepsilon$. By Fubini's theorem, the flux of
+$f_\varepsilon$ through a ball is the average of the fluxes of $f$ through
+translated balls, hence is zero when the translations stay in $\Omega$.
+The divergence theorem gives
+\[
+ \int_B\cD f_\varepsilon\dd V=0
+\]
+for every such ball. Shrinking balls to their centers proves
+$\cD f_\varepsilon=0$ pointwise. On a fixed smaller ball, apply the Cauchy
+formula to $f_\varepsilon$ and pass to the limit, using uniform convergence
+on the boundary. The limiting integral is smooth and left regular inside
+because $\cD_x E(y-x)=0$ there. It equals $f$, so $f$ is regular locally and
+therefore throughout $\Omega$.
+\end{proof}
+
+\subsection{Removable singularities and residues}
+\begin{theorem}[A sharp growth threshold for removability]
+\label{thm:fueter-removable}
+Suppose $f$ is Fueter regular on $B(a,R)\setminus\{a\}$ and
+\begin{equation}\label{eq:fueter-removable-growth}
+ \sup_{|q-a|=r}|f(q)|=o(r^{-3})\qquad(r\downarrow0).
+\end{equation}
+Then $f$ extends uniquely to a Fueter-regular function on $B(a,R)$.
+In particular a bounded isolated singularity is removable. The exponent
+$3$ cannot be replaced by a statement allowing all $O(r^{-3})$ growth.
+\end{theorem}
+\begin{proof}
+Choose $R_0<R$. Apply the Cauchy formula on the punctured ball with outer
+radius $R_0$ and inner radius $\varepsilon$, at a fixed point $x\ne a$.
+For sufficiently small $\varepsilon$, the kernel $E(y-x)$ is bounded on the
+inner sphere. The norm of the inner boundary contribution is therefore at
+most a constant depending on $x$ times
+\[
+ \varepsilon^3\sup_{|y-a|=\varepsilon}|f(y)|,
+\]
+which tends to zero. Thus $f(x)$ equals the outer boundary integral alone.
+That integral is regular throughout $B(a,R_0)$, including at $a$. The
+extensions agree on overlaps by continuity. Finally $E(q-a)c$, with
+$c\ne0$, is a nonremovable example of exact order $|q-a|^{-3}$.
+\end{proof}
+
+\begin{definition}
+For a Fueter-regular function with an isolated singularity at $a$, define
+its \emph{Fueter residue} by
+\begin{equation}\label{eq:fueter-residue}
+ \Res^{F}_{a}f=\int_{|q-a|=r}n(q)f(q)\dd S_q,
+\end{equation}
+where $r$ is any sufficiently small positive radius and the normal points
+away from $a$. This normalization includes the $2\pi^2$ in the kernel,
+not in the definition of the residue.
+\end{definition}
+The value is independent of $r$, by applying the Green identity to an
+annulus. This elementary flux residue need not encode the whole principal
+part of a singularity.
+
+\begin{theorem}[Fueter residue theorem]\label{thm:fueter-residue}
+Let $\Omega$ be a bounded $C^1$ domain. Suppose $f$ is Fueter regular near
+$\overline\Omega$ except at finitely many
+interior points $a_1,\ldots,a_m$, where it is regular in punctured
+neighborhoods. Then
+\begin{equation}\label{eq:fueter-residue-theorem}
+ \int_{\partial\Omega}n(q)f(q)\dd S_q
+       =\sum_{j=1}^m\Res^F_{a_j}f.
+\end{equation}
+In particular $\Res^F_a(E(q-a)c)=c$.
+\end{theorem}
+\begin{proof}
+Remove pairwise disjoint small balls about the singularities and apply
+\eqref{eq:fueter-cauchy-theorem} to the remaining domain. Its inner normals
+are negatives of the normals in \eqref{eq:fueter-residue}; moving those
+terms to the other side proves the formula. The final assertion follows
+from $nE=1/(2\pi^2r^3)$ on the sphere.
+\end{proof}
+A zero residue does not imply removability. The function $\partial_{x_0}E$
+is regular away from zero, is nonzero and homogeneous of degree $-4$, and
+is singular at zero. Since $E$ is odd, $\partial_{x_0}E$ is even, whereas
+$n$ is odd on a centered sphere. Its flux, and hence its residue, is zero.
+
+\subsection{Two complex theorems that fail without modification}
+\begin{example}\label{ex:fueter-plane}
+The function
+\begin{equation}\label{eq:fueter-plane}
+ L(q)=x_1-\ii x_0
+\end{equation}
+is Fueter regular because $\cD L=-\ii+\ii=0$. It vanishes on the entire
+plane $\{x_0=x_1=0\}$ but is not identically zero. Its image is contained in
+$\C_\ii$ and thus has empty interior in $\HH$. Therefore neither the
+complex accumulation-point identity theorem nor the nonconstant open
+mapping theorem holds for arbitrary Fueter-regular functions. The
+appropriate elementary uniqueness statement here is vanishing on a
+nonempty open set, which does imply global vanishing by real analyticity.
+\end{example}
+
+\section{Fueter's mapping theorem and a constructive local inverse}
+\label{sec:fueter-map}
+The two theories are not unrelated alternatives: a second-order
+differential operator connects them. We give the quaternionic version of
+Fueter's mapping theorem directly, followed by an elementary axial inverse.
+The broader inverse theory is developed in~\cite{CSSInverse,CPSSInverse}.
+
+\subsection{Axial differential identities}
+Away from the real axis write $q=x+Ir$, where $r=|\Ima q|>0$, and consider
+an axial function
+\[
+ f(q)=A(x,r)+I B(x,r),
+\]
+with quaternion-valued $A,B$. Direct differentiation gives
+\begin{align}
+ \cD f
+   &=\left(A_x-B_r-\frac{2B}{r}\right)+I(B_x+A_r),
+      \label{eq:axial-D}\\
+ \lap f
+   &=A_{xx}+A_{rr}+\frac{2A_r}{r}
+      +I\left(B_{xx}+B_{rr}+\frac{2B_r}{r}-\frac{2B}{r^2}\right).
+      \label{eq:axial-lap}
+\end{align}
+For completeness, put $v=\Ima q=\ii x_1+\jj x_2+\kk x_3$, so $I=v/r$.
+For $\ell=1,2,3$,
+\[
+ \partial_{x_\ell}r=\frac{x_\ell}{r},\qquad
+ \partial_{x_\ell}I=\frac{e_\ell}{r}-\frac{v x_\ell}{r^3}.
+\]
+Consequently $\sum_{\ell=1}^3e_\ell\partial_{x_\ell}I=-2/r$,
+$\Delta_{\R^3}I=-2I/r^2$, and
+$\sum_\ell(\partial_{x_\ell}I)(\partial_{x_\ell}r)=0$.
+The product rule and the ordinary radial Laplacian in three dimensions now
+give \eqref{eq:axial-D}--\eqref{eq:axial-lap}, with all coefficients on the
+indicated sides.
+
+For a slice-regular function the stem Cauchy--Riemann equations imply
+$A_x=B_r$, $A_r=-B_x$, and $A_{xx}+A_{rr}=B_{xx}+B_{rr}=0$. Hence
+\begin{equation}\label{eq:slice-D-lap}
+ \cD f=-\frac{2B}{r},\qquad
+ \lap f=\frac{2A_r}{r}
+       +I\left(\frac{2B_r}{r}-\frac{2B}{r^2}\right).
+\end{equation}
+
+\begin{theorem}[Fueter mapping, biharmonicity, and kernel]
+\label{thm:fueter-map}
+If $f\in\SR(\Omega_D)$, then
+\begin{equation}\label{eq:fueter-map}
+ \boxed{\cD(\lap f)=0,\qquad \lap^2 f=0.}
+\end{equation}
+On this connected slice domain the kernel of $f\mapsto\lap f$ consists
+exactly of the affine functions $q\mapsto qa+b$, with $a,b\in\HH$.
+Moreover, a function that is both slice regular and left Fueter regular
+is constant.
+\end{theorem}
+\begin{proof}
+Away from the real axis put
+\[
+ C=\frac{2A_r}{r},\qquad H=\frac{2B_r}{r}-\frac{2B}{r^2}.
+\]
+The Cauchy--Riemann equations give
+\begin{align*}
+ C_x&=\frac{2B_{rr}}r=H_r+\frac{2H}r,\\
+ H_x+C_r
+ &=\frac{2(B_{rx}+A_{rr})}{r}
+     -\frac{2(B_x+A_r)}{r^2}=0.
+\end{align*}
+Equation~\eqref{eq:axial-D} therefore says that
+$\cD(C+IH)=\cD(\lap f)=0$. Applying $\overline{\cD}$ proves
+$\lap^2 f=0$. Slice-regular functions are smooth across the real axis, as
+established by the real-centered Taylor theorem, so continuity extends
+both differential identities across it.
+
+If $\lap f=0$, comparison of the values at $I$ and $-I$ gives $C=H=0$.
+Thus $A_r=0$ and $rB_r=B$. Locally in the upper half-plane,
+$B=r b(x)$, and the Cauchy--Riemann equations then give $b'(x)=0$ and
+$A_x=b$. Hence $f(q)=qa+b_0$ on a nonempty open set, for fixed
+quaternions $a,b_0$. The identity theorem extends this formula through
+$\Omega_D$. Conversely affine functions have zero Laplacian.
+Finally $\cD f=0$ in \eqref{eq:slice-D-lap} forces $B=0$; the
+Cauchy--Riemann equations force $A$ to be locally constant, and the identity
+theorem makes it globally constant.
+\end{proof}
+
+\begin{example}[The two Cauchy kernels are linked]\label{ex:kernel-link}
+Writing $v=\Ima q$ and $x=x_0$, direct calculation gives
+\begin{align}
+ \lap 1&=\lap q=0,&
+ \lap q^2&=-4,\\
+ \lap q^3&=-4(3x+v),&
+ \lap(q^{-1})&=-\frac{4\bar q}{|q|^4}=-8\pi^2E(q),\quad q\ne0.
+ \label{eq:kernel-link}
+\end{align}
+For the last identity, write $q^{-1}=\bar q\,|q|^{-2}$. In four dimensions
+$\lap|q|^{-2}=0$ away from zero, and the cross term in the product rule is
+$2\sum_\mu\bar e_\mu\partial_{x_\mu}|q|^{-2}
+=-4\bar q|q|^{-4}$. Thus the slice kernel of homogeneity $-1$ becomes,
+under the Laplacian, the Fueter kernel of homogeneity $-3$.
+\end{example}
+
+\subsection{An inverse obtained by two integrations}
+A local inverse should only be expected within the axial class. In the
+following theorem the planar set lies strictly above the real axis. Its
+circularization is therefore a \emph{product domain}, rather than a slice
+domain meeting the real line. We use the stem definition there; the global
+identity and maximum principles proved earlier are not being asserted for
+arbitrary product domains.
+
+\begin{theorem}[Constructive axial inverse]\label{thm:fueter-inverse}
+Let $U\subset\{(x,r)\in\R^2:r>0\}$ be nonempty, simply connected and open.
+Suppose
+\[
+ g(x+Ir)=P(x,r)+I Q(x,r)
+\]
+is a smooth Fueter-regular axial function on the circularization of $U$.
+There exists a slice-regular axial function $f$ on the same set such that
+$\lap f=g$. It is unique up to addition of $qa+b$, $a,b\in\HH$.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:axial-D}, evaluated for all $I$, gives the Vekua system
+\begin{equation}\label{eq:vekua}
+ P_x-Q_r-\frac{2Q}{r}=0,\qquad Q_x+P_r=0.
+\end{equation}
+The quaternion-valued one-form
+\begin{equation}\label{eq:inverse-first}
+ \omega=-\frac P2\dd x+\frac Q2\dd r
+\end{equation}
+is closed by the second equation. Integrating its four real components on
+the simply connected set $U$ gives a function $C$ with
+$C_x=-P/2$ and $C_r=Q/2$. Set $B=rC$.
+
+Next consider
+\begin{equation}\label{eq:inverse-second}
+ \eta=\left(C+\frac{rQ}{2}\right)\dd x+\frac{rP}{2}\dd r.
+\end{equation}
+It is closed because
+\[
+ \partial_r\left(C+\frac{rQ}{2}\right)
+ =Q+\frac{rQ_r}{2}
+ =\frac{rP_x}{2}
+ =\partial_x\left(\frac{rP}{2}\right).
+\]
+Choose a primitive $A$. Then
+\[
+ A_x=C+\frac{rQ}{2}=B_r,\qquad
+ A_r=\frac{rP}{2}=-B_x.
+\]
+Thus $A+\iota B$ is a holomorphic stem on $U$; defining it on the reflected
+lower set by complex conjugation gives the required stem on the symmetric
+union. Its induced function $f=A+IB$ is slice regular. Formula
+\eqref{eq:slice-D-lap} now gives
+\[
+ \lap f=\frac{2A_r}{r}
+       +I\left(\frac{2B_r}{r}-\frac{2B}{r^2}\right)=P+IQ.
+\]
+Changing the first primitive $C$ by a constant quaternion $a$ changes $B$
+by $ra$ and changes the second primitive $A$ by $xa+b$. These are precisely
+the additions $qa+b$. Conversely, the kernel calculation in the proof of
+Theorem~\ref{thm:fueter-map}, carried out locally on $U$, shows that the
+difference of any two primitives has this form; connectedness makes the
+constants global on $U$.
+\end{proof}
+This construction explains both the affine ambiguity and the topological
+hypothesis. On a non-simply-connected planar set, closed one-forms can have
+nonzero periods. The theorem does not claim a global primitive without
+period conditions, nor a primitive for a general nonaxial Fueter-regular
+function.
+
+\section{What survives, what changes, and why}
+\label{sec:comparison}
+The preceding proofs identify two different mechanisms behind quaternionic
+analogues. Slice analysis retains one-complex-variable holomorphy in each
+section, but coordinates the sections through a stem and a representation
+formula. Fueter analysis retains a first-order elliptic differential
+operator and its fundamental solution, but no longer admits all ordinary
+powers of $q$.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}p{.19\textwidth}XX@{}}
+\toprule
+Classical feature & Slice-regular counterpart & Fueter-regular counterpart\\
+\midrule
+Cauchy formula & Planar contour, regular resolvent kernel
+(\S\ref{sec:cauchy-slice}) & Three-dimensional boundary, Dirac kernel
+(\S\ref{sec:fueter-cauchy})\\
+Taylor theory & Powers $(q-c)^n a_n$ at real centers
+(\S\ref{sec:cauchy-slice}) & Real-coordinate analyticity and derivative
+estimates (\S\ref{sec:fueter-consequences})\\
+Harmonicity & Biharmonic: $\lap^2f=0$
+(\S\ref{sec:fueter-map}) & Harmonic: $\lap f=0$
+(\S\ref{sec:fueter-consequences})\\
+Zeros & Isolated points or isolated whole spheres; scalar norm controls
+multiplicity (\S\ref{sec:algebra}--\ref{sec:counting}) & A nonzero function
+can vanish on a plane (Example~\ref{ex:fueter-plane})\\
+Maximum and Liouville & Both hold
+(\S\ref{sec:maximum}) & Both hold
+(\S\ref{sec:fueter-consequences})\\
+Open mapping & Holds off the closure of degenerate spheres and for
+symmetric open sets (\S\ref{sec:reciprocal}) & Fails in general
+(Example~\ref{ex:fueter-plane})\\
+Singularities & Laurent series and residues at real isolated singularities
+(\S\ref{sec:laurent}) & Flux residues and a sharp $o(r^{-3})$ removability
+criterion (\S\ref{sec:fueter-consequences})\\
+Conformal mapping & Intrinsic slice-wise Riemann mapping, not arbitrary
+four-dimensional conformality (\S\ref{sec:geometry}) & No corresponding
+claim follows from the Fueter equation alone\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Three cautions recur. First, a right coefficient cannot be moved to the
+left without changing the problem. Second, the geometric unit for many
+slice theorems is the whole conjugacy sphere, not an individual point.
+Third, a quaternionic theorem must specify which regularity it uses.
+With those distinctions in place, substantial parts of the classical
+analytic toolkit do survive, and the Laplacian provides a concrete bridge
+between the two surviving structures.
+
+\section*{Bibliographical note}
+\addcontentsline{toc}{section}{Bibliographical note}
+This paper is an expository synthesis, not a claim of new priority for the
+theorems. The slice-regular framework and its classical-function-theory
+analogues originate in the sources cited throughout. The stem formulation,
+regular algebra, and scalar norm method follow the structural viewpoint
+of~\cite{GP}. The zero and open-mapping theories are treated
+in~\cite{GStZeros,GStOpen}; the noncommutative Schwarz--Pick theory is
+in~\cite{BS}. The real-centered singularity theory presented here is a
+restricted part of the broader theory in~\cite{GPStSing}. The
+Cauchy--Fueter part is derived from the divergence theorem in the spirit
+of~\cite{Sudbery}, and the final elementary two-integration construction
+is a quaternionic axial instance of inverse Fueter theory
+\cite{CSSInverse,CPSSInverse}. The supplied proofs make these statements
+independent of an appeal to unproved quaternionic machinery; the standard
+scalar complex theorems listed in the opening scope statement remain
+prerequisites.
+
+\begin{thebibliography}{10}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{GS}
+G.~Gentili and D.~C.~Struppa,
+\emph{A new theory of regular functions of a quaternionic variable},
+Advances in Mathematics \textbf{216} (2007), 279--301.
+\href{https://doi.org/10.1016/j.aim.2007.05.010}{doi:10.1016/j.aim.2007.05.010}.
+
+\bibitem{GP}
+R.~Ghiloni and A.~Perotti,
+\emph{Slice regular functions on real alternative algebras},
+Advances in Mathematics \textbf{226} (2011), 1662--1691.
+\href{https://arxiv.org/abs/1008.4318}{arXiv:1008.4318}.
+
+\bibitem{CGS}
+F.~Colombo, G.~Gentili, and I.~Sabadini,
+\emph{A Cauchy kernel for slice regular functions},
+Annals of Global Analysis and Geometry \textbf{37} (2010), 361--378.
+\href{https://doi.org/10.1007/s10455-009-9191-7}{doi:10.1007/s10455-009-9191-7};
+\href{https://arxiv.org/abs/0902.4771}{arXiv:0902.4771}.
+
+\bibitem{GStZeros}
+G.~Gentili and C.~Stoppato,
+\emph{Zeros of regular functions and polynomials of a quaternionic variable},
+Michigan Mathematical Journal \textbf{56} (2008), 655--667.
+\href{https://doi.org/10.1307/mmj/1231770366}{doi:10.1307/mmj/1231770366}.
+
+\bibitem{GStOpen}
+G.~Gentili and C.~Stoppato,
+\emph{The open mapping theorem for regular quaternionic functions},
+Annali della Scuola Normale Superiore di Pisa, Classe di Scienze (5)
+\textbf{8} (2009), 805--815.
+\href{https://doi.org/10.2422/2036-2145.2009.4.07}{doi:10.2422/2036-2145.2009.4.07};
+\href{https://arxiv.org/abs/0802.3861}{arXiv:0802.3861}.
+
+\bibitem{BS}
+C.~Bisi and C.~Stoppato,
+\emph{The Schwarz--Pick lemma for slice regular functions},
+Indiana University Mathematics Journal \textbf{61} (2012), 297--317.
+\href{https://doi.org/10.1512/iumj.2012.61.5076}{doi:10.1512/iumj.2012.61.5076};
+\href{https://arxiv.org/abs/1209.2060}{arXiv:1209.2060}.
+
+\bibitem{GPStSing}
+R.~Ghiloni, A.~Perotti, and C.~Stoppato,
+\emph{Singularities of slice regular functions over real alternative
+$*$-algebras},
+Advances in Mathematics \textbf{305} (2017), 1085--1130.
+\href{https://arxiv.org/abs/1606.03609}{arXiv:1606.03609}.
+
+\bibitem{Sudbery}
+A.~Sudbery,
+\emph{Quaternionic analysis},
+Mathematical Proceedings of the Cambridge Philosophical Society
+\textbf{85} (1979), 199--225.
+\href{https://dougsweetser.github.io/Q/Stuff/pdfs/Quaternionic-analysis.pdf}{Author's paper, electronic reprint}.
+
+\bibitem{CSSInverse}
+F.~Colombo, I.~Sabadini, and F.~Sommen,
+\emph{The inverse Fueter mapping theorem},
+Communications on Pure and Applied Analysis \textbf{10} (2011), 1165--1181.
+\href{https://doi.org/10.3934/cpaa.2011.10.1165}{doi:10.3934/cpaa.2011.10.1165}.
+
+\bibitem{CPSSInverse}
+F.~Colombo, D.~Pe\~na Pe\~na, I.~Sabadini, and F.~Sommen,
+\emph{A new integral formula for the inverse Fueter mapping theorem},
+Journal of Mathematical Analysis and Applications \textbf{417} (2014),
+112--122.
+\href{https://arxiv.org/abs/1302.0685}{arXiv:1302.0685}.
+
+\end{thebibliography}
+\end{document}

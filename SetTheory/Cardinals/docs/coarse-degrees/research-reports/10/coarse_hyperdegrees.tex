@@ -1,0 +1,408 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Navy}{RGB}{30,57,82}
+\definecolor{Ink}{RGB}{32,38,44}
+\definecolor{Steel}{RGB}{62,96,130}
+\definecolor{Muted}{RGB}{96,104,112}
+\definecolor{Rule}{RGB}{190,202,214}
+\definecolor{Pale}{RGB}{239,243,247}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Steel,citecolor=Steel,urlcolor=Steel,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Coarse classes, hyperdegrees, and the cone filter},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Least hyperdegrees of coarse equivalence classes; failure of the cone theorem for coarse degrees},pdfkeywords={Turing degrees, coarse reducibility, asymptotic density, minimal pairs, 1-generic sets, representative spectra}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Navy}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Navy}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}COARSE CLASSES, HYPERDEGREES, AND THE CONE FILTER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}REPORT 10\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Research report 10}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Research report 10}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Rule,colbacktitle=Rule,coltitle=Navy,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+\newtheorem{question}[definition]{Question}
+\numberwithin{equation}{section}
+% ---- notation -------------------------------------------------------------
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\strings}{2^{<\N}}
+\newcommand{\leT}{\le_{\mathrm T}}
+\newcommand{\geT}{\ge_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\ltT}{<_{\mathrm T}}
+\newcommand{\lenc}{\le_{\mathrm{nc}}}
+\newcommand{\leuc}{\le_{\mathrm{uc}}}
+\newcommand{\eqnc}{\equiv_{\mathrm{nc}}}
+\newcommand{\equc}{\equiv_{\mathrm{uc}}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\ned}{\mathrm{ned}}
+\newcommand{\ued}{\mathrm{ued}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\ED}{\operatorname{ED}}
+\newcommand{\DX}[1]{\mathcal D_{#1}}
+\newcommand{\Low}{\mathcal L}
+\newcommand{\Core}{\operatorname{Core}}
+\newcommand{\Comp}{\mathrm{Comp}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Up}{\operatorname{Up}}
+\newcommand{\degT}{\deg_{\mathrm T}}
+\newcommand{\J}{J}
+\newcommand{\Rc}{\mathcal R}
+\newcommand{\sd}{\mathbin{\triangle}}
+\newcommand{\rest}{\mathbin{\upharpoonright}}
+\newcommand{\cat}{\mathbin{{}^\frown}}
+\newcommand{\patch}{\mathbin{\triangleright}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Ham}{\operatorname{Ham}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\bud}{\mathfrak B}
+\newcommand{\dn}{{\downarrow}}
+\newcommand{\up}{{\uparrow}}
+\newcommand{\src}[1]{\leavevmode{\sffamily\footnotesize\color{Steel}[#1]}}
+\newcommand{\rep}[1]{\leavevmode{\sffamily\small\color{Steel}R#1}}
+\newenvironment{proofA}[1]{\begin{proof}[#1]}{\end{proof}}
+\newcommand{\leh}{\le_{h}}
+\newcommand{\eqh}{\equiv_{h}}
+\newcommand{\nleh}{\nleq_{h}}
+\newcommand{\geh}{\ge_{h}}
+\newcommand{\Dh}{\Delta^1_1}
+\newcommand{\Coreh}{\operatorname{Core}_h}
+\newcommand{\Spech}{\operatorname{Spec}^h}
+\newcommand{\degh}{\deg_h}
+\newcommand{\omck}{\omega_1^{\mathrm{CK}}}
+\newcommand{\KO}{\mathcal O}
+\newcommand{\forces}{\Vdash}
+\newcommand{\PP}{\mathbb P}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\sffamily\small\bfseries\color{Steel}COMPUTABILITY THEORY\quad/\quad RESEARCH REPORT 10}\\[10pt]
+{\fontsize{21}{26}\selectfont\bfseries\color{Navy}Coarse Classes, Hyperdegrees, and the Cone Filter}\\[7pt]
+{\large\color{Ink}Two results at the junction of the coarse degrees with the\\ hyperarithmetic hierarchy and with Martin's cone theorem}\\[9pt]
+{\color{Muted}Prepared for Vladimir Reshetnikov\quad$\cdot$\quad 18 September 2026}
+\end{center}
+\vspace{2pt}
+\begin{assessment}{Summary}
+Section~12 of the research plan relates the Turing degrees to large countable ordinals, through the hyperarithmetic hierarchy, and to large cardinals, through Martin's cone theorem, and it lists directions (O1)--(O5) for the coarse track. This report settles two of them.
+
+\textbf{(O1), negatively.} There are coarse-equivalence classes with no representative of least \emph{hyperdegree} (Theorem~\ref{thm:A}, Corollary~\ref{cor:noleast}). More precisely, for every oracle $Z$ and every disagreement budget there are sets $A,B$, each Cohen generic over $L_{\omega_1^Z}[Z]$, with $A\sd B$ obeying the budget, such that $\Dh(Z\oplus A)\cap\Dh(Z\oplus B)=\Dh(Z)$. Hence every hyperdegree is the unattained infimum of the hyperdegree spectrum of a coarse class (Corollary~\ref{cor:infimum}). This is not a relabelling of the Turing result: the dyadic codes, which refute C1 for Turing degrees, \emph{do} have least hyperdegrees, and the cone-avoiding compactness theorem, on which the literature route to C1 rests, is \emph{false} for $\leh$ (Theorem~\ref{thm:C}). The proof replaces finite use by the forcing relation in the one-bit bridge lemma of the synthesis.
+
+\textbf{(O4), negatively.} Martin's cone theorem has no analogue for the coarse degrees. The set of functions whose coarse class has a least Turing degree is $\Pi^1_1$, invariant under both coarse equivalences, and it meets every coarse cone, as does its complement (Theorem~\ref{thm:D}). This is a theorem of $\mathsf{ZF}$; no determinacy hypothesis can repair it.
+
+All proofs are conventional and have not been refereed. Theorem~\ref{thm:A} for $Z=\emptyset$, Corollary~\ref{cor:noleast} and Theorem~\ref{thm:D} are formalized in the Lean library \path{CoarseDegrees} at the repository root, the combinatorial core with nothing admitted; see Section~\ref{sec:status}. Minimal pairs of hyperdegrees are themselves classical, and the paragraph after Theorem~\ref{thm:D} explains what is and is not new here: the content of Theorem~\ref{thm:A} lies entirely in the disagreement budget. The facts about Cohen forcing over $\omck$ used in the proof are isolated as (H2)--(H5) in Section~\ref{sec:facts}; (H4) has since been checked against a secondary source, (H3) has not.
+\end{assessment}
+{\small\tableofcontents}
+
+\section{Results}\label{sec:results}
+Notation follows the synthesis \cite{Synthesis}: $f\approx g$ means that $f,g$ agree off a set of density zero, $\CD(f)$ is the class of coarse descriptions of $f$, $\lenc$ and $\leuc$ are nonuniform and uniform coarse reducibility, $\J(g)$ is the block code, and $\Rc(A)(n)=A(\nu_2(n+1))$ is the dyadic code. $X\leh Y$ means that $X$ is hyperarithmetic in $Y$, that is $X\in\Dh(Y)$; $\degh$ denotes hyperdegree; $\omega_1^Y$ is the least ordinal with no $Y$-computable copy, and $\KO^Y$ is the hyperjump of $Y$. For a total $f$ put
+\[
+ \Spech_r(f)=\{\degh(g):g\equiv_r f\}\quad(r\in\{\uc,\nc\}),\qquad
+ \Coreh(f)=\{A\subseteq\N:(\forall D\in\CD(f))\ A\leh D\}.
+\]
+A \emph{budget} is a family $\bud$ of finite sets as in \cite[Definition~8.1]{Synthesis}; the definition is recalled in Section~\ref{sec:A}. The reader may keep in mind the counting budget $|E\cap[0,k)|\le\lfloor\log_2(k+1)\rfloor$.
+
+\begin{theorem}[Hyperdegree minimal pairs in one coarse class]\label{thm:A}
+Let $Z\subseteq\N$ and let $\bud$ be a budget. There are sets $A,B$ such that
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $A$ and $B$ are each Cohen generic over $L_{\omega_1^Z}[Z]$ in the sense of Section~\ref{sec:facts}; in particular $\omega_1^{Z\oplus A}=\omega_1^{Z\oplus B}=\omega_1^Z$, and neither $A$ nor $B$ has a coarse description in $\Dh(Z)$;
+\item $A\sd B$ obeys $\bud$; in particular $A\approx B$ when $\bud$ forces density zero;
+\item $\Dh(Z\oplus A)\cap\Dh(Z\oplus B)=\Dh(Z)$.
+\end{enumerate}
+Consequently $\degh(Z\oplus A)$ and $\degh(Z\oplus B)$ are incomparable, lie strictly above $\degh(Z)$, and have greatest lower bound $\degh(Z)$.
+\end{theorem}
+
+\begin{corollary}[No least hyperdegree]\label{cor:noleast}
+With $Z=\emptyset$ and a budget forcing density zero, the uniform and the nonuniform coarse class of $A$ contain no representative of least hyperdegree, although the two witnesses satisfy $\omega_1^A=\omega_1^B=\omck$. A fortiori they contain no representative of least Turing degree.
+\end{corollary}
+
+\begin{corollary}[Every hyperdegree is an unattained infimum]\label{cor:infimum}
+For every $Z$ there is a binary $F$ such that for $r\in\{\uc,\nc\}$ the infimum of $\Spech_r(F)$ in the hyperdegrees exists and equals $\degh(Z)$, but $\degh(Z)\notin\Spech_r(F)$; moreover $\Coreh(F)=\Dh(Z)$.
+\end{corollary}
+
+\begin{theorem}[Dyadic codes; failure of hyperarithmetic compactness]\label{thm:C}
+For every set $A$:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Coreh(\Rc(A))=\Dh(A)$, and $\Spech_{\uc}(\Rc(A))=\Spech_{\nc}(\Rc(A))=\{\mathbf c:\mathbf c\ge\degh(A)\}$. So the coarse classes of $\Rc(A)$ have least hyperdegree $\degh(A)$, whereas they have a least Turing degree only when $A\leT\emptyset'$.
+\item If $A$ is not hyperarithmetic, then $A\in\Coreh(\Rc(A))$ although for every $\varepsilon>0$ there is a computable $Y$ with $\delta(\Rc(A),Y)<\varepsilon$, and of course $A\nleh Y$. Thus the robust-radius characterization of the core \cite[Theorem~4.8]{Synthesis}, equivalently the cone-avoiding compactness theorem \cite[Theorem~3.7]{HJKS}, fails when $\leT$ is replaced by $\leh$; so does its corollary that $\gamma(X)=1$ implies a trivial core \cite[Theorem~4.3]{HJKS}.
+\item The ordinal $o(f)=\min\{\omega_1^g:g\eqnc f\}$ satisfies $o(\Rc(A))=\omega_1^A$. In particular every representative $g$ of the class of $\Rc(\KO)$ has $\omega_1^g>\omck$, although by \cite[Theorem~6.3]{Synthesis} a representative need not compute $\KO$: it suffices that its jump does. Every countable admissible ordinal greater than $\omega$ is $o(f)$ for some $f$.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[No cone theorem for coarse degrees]\label{thm:D}
+Let $\mathcal A=\{f\in\Baire:\Spec_{\nc}(f)\text{ has a least element}\}$. Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\mathcal A$ is a $\Pi^1_1$ set of reals, closed under $\eqnc$ and under $\equc$;
+\item for every $h\in\Baire$ there are $f_0\in\mathcal A$ and $f_1\notin\mathcal A$ with $h\leuc f_0$ and $h\leuc f_1$, hence also $h\lenc f_0,f_1$.
+\end{enumerate}
+Consequently, in $\mathsf{ZF}$, neither $\mathcal A$ nor its complement contains a cone of uniform or of nonuniform coarse degrees: the cone filter on either structure is not an ultrafilter, not even on $\Pi^1_1$ sets. Under $\mathsf{AD}$ the push-forward of the Martin measure along $x\mapsto[\J(x)]_{\nc}$ is a countably complete ultrafilter on the nonuniform coarse degrees that properly extends the cone filter and concentrates on $\mathcal A$.
+\end{theorem}
+
+\begin{theorem}[The pair can be put in any ball]\label{thm:E}
+Budgets are closed under intersection. Consequently the witnesses of Theorem~\ref{thm:A} can be required to satisfy both constraints at once: for every rational $r>0$ there are $A,B$ with
+\[
+ A\approx B,\qquad d(A,B)=\sup_{n\ge1}\rho_n(A\sd B)\le r,\qquad
+ \Dh(A)\cap\Dh(B)=\Dh,
+\]
+and with neither $A$ nor $B$ having a hyperarithmetic coarse description. A hyperdegree minimal pair therefore lies inside \emph{every} ball of the prefix-density metric, however small its radius.
+\end{theorem}
+
+The point is not the strengthening itself, which is immediate, but what it says about the two methods. A set obeys the density budget $|E\cap[0,n)|\le rn$ exactly when it is within $d$-distance $r$ of $\emptyset$, so \emph{a condition of the forcing of Section~\ref{sec:A} is a ball of the metric in which the synthesis runs its Baire-category arguments} \cite[Section~4]{Synthesis}. The forcing and the category method act on the same space; Section~\ref{sec:questions} takes up what stops the category method from transferring to $\leh$.
+
+\paragraph{How the results bear on the plan.} Theorem~\ref{thm:A} answers (O1) and shows that the phenomenon behind C1 persists at the level where $\omck$ is the natural bound: the witnesses do not raise $\omega_1$. Theorem~\ref{thm:C} is the calibration recorded as (O2), and it explains why (O1) is not a consequence of the Turing case: compactness is a finite-use phenomenon. Theorem~\ref{thm:D} answers (O4) and identifies exactly where Martin's strategy-stealing argument breaks (Remark~\ref{rem:stealing}). Section~\ref{sec:questions} records what remains, including an ordinal-indexed question about which jump-cones are coarse spectra.
+
+\paragraph{Related work.} Igusa \cite{IgusaHyp} characterizes the hyperarithmetic reals through the generic degrees of density-one sets and shows that generic reducibility is $\Pi^1_1$-complete; that paper concerns generic rather than coarse reducibility and does not consider hyperdegrees of equivalence classes.
+
+\paragraph{What is classical, and what is not.}\label{par:classical}
+Minimal pairs of hyperdegrees are classical, and Theorem~\ref{thm:A} must not be advertised as producing them. Feferman \cite{Feferman} introduced the ramified language and Cohen forcing used here and embedded every countable partial order into the hyperdegrees below $\degh(\KO)$; Gandy and Sacks \cite{GandySacks} constructed a minimal hyperdegree by perfect forcing, and two distinct minimal hyperdegrees automatically form a minimal pair. Thomason \cite{Thomason} extended the Cohen-forcing side. Indeed, for the \emph{unrestricted} product forcing --- all pairs $(\sigma,\tau)$ of equal-length strings --- the minimal-pair property of a mutually generic pair has a one-line proof, and Lemma~\ref{lem:bridge} degenerates to it: if no extension of $p$ is a cross-disagreement and $\alpha,\alpha'\supseteq\sigma$ both decide $\varphi^0_n$, pair each of them with one $\beta\supseteq\tau$ deciding $\varphi^1_n$; both pairs are conditions, so both values equal the value at $\beta$.
+
+The entire content of Theorem~\ref{thm:A} is therefore the \emph{budget}. Under a budget $(\alpha,\beta)$ need not be a condition, because $\alpha$ and $\beta$ may by then disagree too often; the one-bit reserve and the hybrid path of Lemma~\ref{lem:bridge} are what restore the comparison. This is not a technicality: by step \textup{(i)} of the proof in Section~\ref{sec:A} a Cohen generic set is at upper density $1$ from every hyperarithmetic set, and the same argument applies to a pair of mutually generic reals, so \emph{no classical construction produces a hyperdegree minimal pair inside a single coarse class}. What is being claimed as possibly new is exactly that combination: a hyperdegree minimal pair whose members are coarsely equal, which is what makes Corollary~\ref{cor:noleast} a statement about coarse classes rather than about the hyperdegrees. Whether that combination has appeared before we have not determined; the targeted searches described in Section~\ref{sec:status} did not find it.
+
+\section{Background}\label{sec:background}
+\subsection{Coarse notions}
+We use from \cite{Synthesis}: density-zero changes preserve the class of coarse descriptions and are uniform equivalences (Lemma~2.1); a representative $g\eqnc f$ computes a member of $\CD(f)$ (Lemma~2.3, self-application); every $D\in\CD(\J(g))$ computes $g$, and $g\leT h$ iff $\J(g)\lenc\J(h)$ (Lemma~3.4, Proposition~3.5); the class of $f$ has a least Turing degree iff some set $A$ computes a member of $\CD(f)$ and is computable from every member of $\CD(f)$ (Theorem~3.6(iv)); $B$ computes a coarse description of $\Rc(A)$ iff $A\leT B'$ (Theorem~6.3); and for every $Z$ there is a binary $F=\J(Z)\oplus W$ whose coarse classes have no least Turing degree (Theorem~9.2).
+
+\subsection{Hyperarithmetic facts}\label{sec:facts}
+The following are standard; see \cite{SacksHRT}, Chapters II--IV, and \cite{Feferman}. They were written from memory; the verification status of each is recorded after (H5). All of them relativize to an arbitrary real $Z$, with $\omck$, $\KO$, $L_{\omck}$ replaced by $\omega_1^Z$, $\KO^Z$, $L_{\omega_1^Z}[Z]$ and ``hyperarithmetic'' by ``hyperarithmetic in $Z$''.
+\begin{enumerate}[label=\textup{(H\arabic*)},leftmargin=3em]
+\item $X\leT Y'$ implies $X\leh Y$; $\leT$ implies $\leh$; $\omega_1^X$ depends only on $\degh(X)$ and is monotone in it. \emph{Spector's criterion:} $\omega_1^X>\omck$ iff $\KO\leh X$. \emph{Sacks:} every countable admissible ordinal greater than $\omega$ is $\omega_1^X$ for some $X$.
+\end{enumerate}
+\emph{Cohen forcing over $L_{\omck}$.} Conditions are finite binary strings. The ramified language $\mathcal L(\omck,\mathcal G)$ has a set constant $\mathcal G$, number variables, ranked set variables $x^\beta$ for $\beta<\omck$ and unranked set variables; a formula is \emph{ranked} if all its set variables are ranked. For a real $G$ the structure $\mathcal M(G)$ interprets $x^\beta$ as ranging over the sets first-order definable over the structure built below $\beta$, as in $L_{\omck}[G]$. The (strong) forcing relation $p\forces\varphi$ is defined as usual, with $p\forces\neg\varphi$ iff no $q\supseteq p$ forces $\varphi$. A real $G$ is \emph{generic} (over $L_{\omck}$) if every sentence of the language is decided by some initial segment of $G$.
+\begin{enumerate}[label=\textup{(H\arabic*)},leftmargin=3em,resume]
+\item \emph{Basic forcing facts.} No condition forces both $\varphi$ and $\neg\varphi$; forcing is preserved under extension; for every $\varphi$ the conditions deciding $\varphi$ are dense. If $G$ is generic then $\mathcal M(G)\models\varphi$ iff some $p\subset G$ forces $\varphi$. For countably many dense sets of conditions there is a generic $G$ meeting them all, extending any prescribed condition.
+\item \emph{Definability.} For each ranked formula $\psi(x)$ with one free number variable, the relation $\{(p,n):p\forces\psi(\bar n)\}$ is $\Dh$.
+\item \emph{Preservation and naming.} If $G$ is generic then $\omega_1^G=\omck$, and a set $X$ is hyperarithmetic in $G$ iff $X=\{n:\mathcal M(G)\models\psi(\bar n)\}$ for some ranked formula $\psi(x)$.
+\item \emph{Hyperarithmetic dense sets are met.} If $G$ is generic and $W$ is a dense hyperarithmetic set of strings, then some initial segment of $G$ lies in $W$.
+\end{enumerate}
+
+\paragraph{Verification status of (H2)--(H5).} Checked on 19 September 2026 against Shore's survey of initial segments of the hyperdegrees \cite{ShoreLattice}, which states these facts for the same Feferman forcing and cites \cite{Feferman} and \cite[III.4, IV.4]{SacksHRT} for them. That source confirms (H4): ``the crucial fact needed is the preservation of $\omck$, i.e.\ if $G$ is Cohen generic in this setting then $\omega_1^G=\omck$'', and ``if $\omega_1^G$ $\ldots$ is $\omck$ (as will be the case for generic $G$) then the sets in $\mathcal M(\omck,G)$ are precisely those hyperarithmetic in $G$'', the latter being the sets named by ranked formulas. (H2) is the standard forcing apparatus of the same source.
+
+(H3) has \emph{not} been checked against a primary source, and it must be read with care, because the neighbouring uniform statement is false: the same survey records that forcing for $\Sigma^1_1$ sentences, and forcing of ranked sentences for the perfect-tree conditions used there, is a $\Pi^1_1$ relation, not a $\Dh$ one. What (H3) asserts, and all that is used, is that for \emph{one fixed} ranked formula $\psi(x)$ --- hence of one fixed rank $\beta<\omck$ --- the relation $\{(p,n):p\forces\psi(\bar n)\}$ is $\Dh$, with the level of the hyperarithmetic hierarchy growing with $\beta$; the $\Pi^1_1$ figure is what the union over all ranks costs. \cite[III.4]{SacksHRT} contains the analysis of the complexity of the satisfaction and forcing relations for ranked formulas that would settle this, and it should be read before the result is relied on. Lemma~\ref{lem:bridge} and step (iii) of Section~\ref{sec:A} apply (H3) only in this fixed-formula form.
+
+\section{Hyperdegree spectra of coarse classes}\label{sec:spectra}
+\begin{lemma}[Spectrum identity for hyperdegrees]\label{lem:hspec}
+For every total $f$,
+\[
+ \Spech_{\uc}(f)=\Spech_{\nc}(f)=\{\mathbf c:(\exists D\in\CD(f))\ \degh(D)\le\mathbf c\},
+\]
+and every member is the hyperdegree of a member of $\CD(f)$. Hence $\Spech_r(f)$ has a least element iff some $D_0\in\CD(f)$ satisfies $D_0\leh D$ for every $D\in\CD(f)$.
+\end{lemma}
+\begin{proof}
+If $g\eqnc f$ then $g$ computes some $D\in\CD(f)$, so $\degh(D)\le\degh(g)$. Conversely let $D\in\CD(f)$ and $D\leh C$. Replace $C$ by a set of the hyperdegree of $C$ that computes $D$ in the Turing sense, for instance $C\oplus\operatorname{graph}(D)$, and code it into $D$ on the powers of two: $Y(2^n)=C(n)$ and $Y(k)=D(k)$ otherwise. Then $Y\approx D$, so $Y\in\CD(f)$ and $Y\equc f$, and $Y\eqT C$. For the last statement, a least element is the hyperdegree of some description $D_0$ by what was just proved, and every description is a representative.
+\end{proof}
+
+\begin{lemma}[Two-witness obstruction for hyperdegrees]\label{lem:hobstruction}
+Let $Z$ be a set. Suppose $f$ has no coarse description in $\Dh(Z)$, every member of $\CD(f)$ computes $Z$, and $D,E\in\CD(f)$ satisfy $\Dh(D)\cap\Dh(E)=\Dh(Z)$. Then for $r\in\{\uc,\nc\}$ the hyperdegree $\degh(Z)$ is the greatest lower bound of $\Spech_r(f)$ and does not belong to it; in particular there is no least element. Moreover $\Coreh(f)=\Dh(Z)$.
+\end{lemma}
+\begin{proof}
+Every representative computes a description and hence $Z$, so $\degh(Z)$ is a lower bound. A representative $g\leh Z$ would compute a description $D'\leT g$, which would lie in $\Dh(Z)$. A lower bound $\mathbf c$ of the spectrum is below $\degh(D)$ and $\degh(E)$, so a set of degree $\mathbf c$ lies in $\Dh(D)\cap\Dh(E)=\Dh(Z)$. Finally $\Dh(Z)\subseteq\Coreh(f)\subseteq\Dh(D)\cap\Dh(E)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:C}]
+(a) Let $B$ be a coarse description of $\Rc(A)$, binary after normalization. By \cite[Theorem~6.3]{Synthesis}, $A\leT B'$, so $A\leh B$ by (H1). Thus $\Dh(A)\subseteq\Coreh(\Rc(A))$. The reverse inclusion holds because $\Rc(A)$ is a description of itself and $\Rc(A)\eqT A$. For the spectrum, every representative computes a description, hence is $\geh A$, and $\Rc(A)$ has hyperdegree $\degh(A)$; upward closure is Lemma~\ref{lem:hspec}. The statement about Turing degrees is \cite[Theorem~7.4]{Synthesis}.
+
+(b) The computable sets $Q_K$ that agree with $\Rc(A)$ on the columns below $K$ and vanish elsewhere satisfy $\delta(\Rc(A),Q_K)\le2^{-K}$ \cite[Proposition~6.5]{Synthesis}. If the robust-radius characterization held for $\leh$, then $A\in\Coreh(\Rc(A))$ would give $\eta>0$ such that $A\leh Y$ whenever $\delta(\Rc(A),Y)<\eta$, and $Y=Q_K$ with $2^{-K}<\eta$ would make $A$ hyperarithmetic. The same example refutes ``$\gamma(X)=1$ implies $\Coreh(X)$ is the class of hyperarithmetic sets''.
+
+(c) Every representative $g$ satisfies $A\leh g$ by (a), so $\omega_1^g\ge\omega_1^A$ by (H1), and $\Rc(A)\eqT A$ attains the bound. For $A=\KO$ use Spector's criterion. Given a countable admissible $\alpha>\omega$, take $X$ with $\omega_1^X=\alpha$ by (H1); then $o(\Rc(X))=\alpha$.
+\end{proof}
+\noindent Here $\mathbf c\geh A$ abbreviates $A\leh C$ for $C\in\mathbf c$.
+
+\begin{remark}[Why compactness fails]\label{rem:finiteuse}
+The proof of the robust-radius theorem decodes $A$ from a nearby oracle $Y$ by searching for a finite string $\tau$ close to $Y$ on which a Turing functional converges; correctness comes from patching $\tau$ onto a genuine description, which preserves the computation because it has finite use \cite[Lemma~4.3]{Synthesis}. A hyperarithmetic reduction has no finite use: majority decoding of a column of $\Rc(A)$ is a limit, and a limit is destroyed by changing the oracle on a set of small positive density but survives changes on a set of density zero. Theorem~\ref{thm:C}(b) says that this is not an artefact of the proof.
+\end{remark}
+
+\section{Proof of Theorem \ref{thm:A}}\label{sec:A}
+We give the proof for $Z=\emptyset$; the general case is the same argument with every notion relativized to $Z$, as provided for in Section~\ref{sec:facts}.
+
+\subsection{The forcing}
+A \emph{budget} is a decidable family $\bud$ of finite subsets of $\N$, containing $\emptyset$ and closed under subsets, with a computable function $m$ such that for $E\in\bud$ and $L\in\N$: $m(E,L)\ge L$, $m(E,L)>\max E$, and $E\cup\{k\}\in\bud$ for all $k\ge m(E,L)$. A set $V$ \emph{obeys} $\bud$ if $V\cap[0,n)\in\bud$ for all $n$. For equal-length strings $\sigma,\tau$ let $\Delta(\sigma,\tau)=\{i:\sigma(i)\ne\tau(i)\}$.
+
+Let $\PP$ be the set of pairs $p=(\sigma,\tau)$ of binary strings of equal length with $\Delta(\sigma,\tau)\in\bud$, ordered by coordinatewise extension. Call $p=(\sigma,\tau)$ \emph{padded} if $\Delta(\sigma,\tau)\cup\{k\}\in\bud$ for every $k\ge|\sigma|$. Write $\pi_0(\sigma,\tau)=\sigma$ and $\pi_1(\sigma,\tau)=\tau$.
+
+\begin{lemma}\label{lem:forcingbasic}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textup{(Projection.)} If $(\sigma,\tau)\in\PP$ and $\alpha\supseteq\sigma$, then $(\alpha,\tau\cat u)\in\PP$ extends $(\sigma,\tau)$, where $\alpha=\sigma\cat u$; symmetrically for the second coordinate. Hence if $W$ is a dense set of strings then $\pi_i^{-1}[W]$ is dense in $\PP$.
+\item \textup{(Padding.)} Every condition has a padded extension, obtained by appending zeros to both coordinates.
+\item \textup{(One-bit reserve.)} If $(\sigma,\tau)$ is padded and $u,v$ are strings of equal length that differ in at most one position, then $(\sigma\cat u,\tau\cat v)\in\PP$, and it is padded if $u=v$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The disagreement set is unchanged. (b) Append zeros up to length $m(\Delta(\sigma,\tau),|\sigma|)$. (c) The disagreement set is $\Delta(\sigma,\tau)$ or $\Delta(\sigma,\tau)\cup\{k\}$ with $k\ge|\sigma|$.
+\end{proof}
+
+\subsection{The bridge lemma in forcing form}
+Fix ranked formulas $\psi^0(x),\psi^1(x)$ and write $\varphi^i_n$ for the sentence $\psi^i(\bar n)$. All forcing below is Cohen forcing on single strings. A condition $(\alpha,\beta)\in\PP$ is a \emph{cross-disagreement} (for $\psi^0,\psi^1$) if for some $n$ either $\alpha\forces\varphi^0_n$ and $\beta\forces\neg\varphi^1_n$, or $\alpha\forces\neg\varphi^0_n$ and $\beta\forces\varphi^1_n$.
+
+\begin{lemma}[Bridge lemma]\label{lem:bridge}
+Let $p^*=(\sigma^*,\tau^*)\in\PP$ be padded and suppose that no extension of $p^*$ in $\PP$ is a cross-disagreement. Then for every $n$, all strings $\alpha\supseteq\sigma^*$ that decide $\varphi^0_n$ decide it the same way. Consequently the set
+\[
+ F=\{n:(\exists\alpha\supseteq\sigma^*)\ \alpha\forces\varphi^0_n\}
+ =\{n:\neg(\exists\alpha\supseteq\sigma^*)\ \alpha\forces\neg\varphi^0_n\}
+\]
+is hyperarithmetic.
+\end{lemma}
+\begin{proof}
+Fix $n$ and let $\alpha_0=\sigma^*\cat u_0$ and $\alpha_1=\sigma^*\cat u_1$ decide $\varphi^0_n$. Extending the shorter one, which preserves what it forces by (H2), we may assume $|u_0|=|u_1|$. Choose a path $u_0=w_0,w_1,\dots,w_t=u_1$ of strings of that length in which consecutive strings differ in exactly one position.
+
+\emph{One suffix serves the whole path.} We find a string $\rho$ such that every $\sigma^*\cat w_i\cat\rho$ decides $\varphi^0_n$ and every $\tau^*\cat w_i\cat\rho$ decides $\varphi^1_n$. Treat these $2(t+1)$ requirements one at a time: if the current common suffix is $\rho_0$, the deciding conditions are dense (H2), so some $\nu$ makes the next string, extended by $\rho_0\cat\nu$, decide its sentence; replace $\rho_0$ by $\rho_0\cat\nu$ everywhere. Decisions already obtained persist under extension.
+
+Let $a_i\in\{0,1\}$ record whether $\sigma^*\cat w_i\cat\rho$ forces $\varphi^0_n$ or its negation, and $b_i$ likewise for $\tau^*\cat w_i\cat\rho$ and $\varphi^1_n$. By Lemma~\ref{lem:forcingbasic}(c) the pairs
+\[
+ (\sigma^*\cat w_i\cat\rho,\ \tau^*\cat w_i\cat\rho)\quad\text{and}\quad(\sigma^*\cat w_i\cat\rho,\ \tau^*\cat w_{i+1}\cat\rho)
+\]
+are conditions extending $p^*$, since $w_i\cat\rho$ and $w_{i+1}\cat\rho$ differ in one position. Neither is a cross-disagreement, so $a_i=b_i$ and $a_i=b_{i+1}$. Hence $a_0=a_1=\dots=a_t$. Since $\alpha_0\subseteq\sigma^*\cat w_0\cat\rho$ and $\alpha_1\subseteq\sigma^*\cat w_t\cat\rho$, and forcing persists while no condition forces a sentence and its negation, $\alpha_0$ and $\alpha_1$ decide $\varphi^0_n$ the same way.
+
+The two descriptions of $F$ agree because some $\alpha\supseteq\sigma^*$ decides $\varphi^0_n$. By (H3) the relation $\alpha\forces\psi^0(\bar n)$ is $\Dh$, and so is $\alpha\forces\neg\psi^0(\bar n)$, as $\neg\psi^0$ is ranked. The first description is then $\Sigma^1_1$ and the second $\Pi^1_1$, because a number quantifier in front of a $\Dh$ relation stays within $\Dh$; so $F$ is $\Dh$.
+\end{proof}
+This is the one-bit bridge lemma of \cite[Lemma~8.3]{Synthesis} with ``the computation converges with value $v$'' replaced by ``the condition decides the sentence''. The partiality case of that lemma disappears, because deciding conditions are always dense; what was a $\Sigma^0_2$ oracle question in the Turing construction is here absorbed by genericity.
+
+\subsection{The construction}
+For each sentence $\varphi$ of $\mathcal L(\omck,\mathcal G)$ let $W_\varphi$ be the dense set of strings that decide $\varphi$. For each pair $\psi^0,\psi^1$ of ranked formulas let $E_{\psi^0,\psi^1}\subseteq\PP$ consist of the cross-disagreements for $\psi^0,\psi^1$ together with the padded conditions no extension of which is a cross-disagreement. This set is dense: a condition with no cross-disagreement extension has a padded extension by Lemma~\ref{lem:forcingbasic}(b), and that extension inherits the property.
+
+There are countably many sets $\pi_0^{-1}[W_\varphi]$, $\pi_1^{-1}[W_\varphi]$ and $E_{\psi^0,\psi^1}$, and all are dense by Lemma~\ref{lem:forcingbasic}(a). Choose an increasing sequence $p_0\le p_1\le\cdots$ in $\PP$ (that is, each extends the previous one) meeting all of them, with lengths tending to infinity, and let $A$ and $B$ be the unions of the first and second coordinates.
+
+\emph{\textup{(i)}.} Every sentence is decided by an initial segment of $A$, because some $p_s$ lies in $\pi_0^{-1}[W_\varphi]$; so $A$ is generic, and likewise $B$. By (H4), $\omega_1^A=\omega_1^B=\omck$. Let $f$ be a hyperarithmetic function, $q<1$ rational and $k\in\N$. The set of strings of length at least $\max(k,1)$ that disagree with $f$ on more than the fraction $q$ of their length is hyperarithmetic and dense, so it contains an initial segment of $A$ by (H5). Hence $\limsup_n\rho_n(\{i:A(i)\ne f(i)\})=1$, and $A$ has no hyperarithmetic coarse description. The same holds for $B$.
+
+\emph{\textup{(ii)}.} Every initial segment of $A\sd B$ is a subset of some $\Delta(p_s)\in\bud$, and $\bud$ is closed under subsets.
+
+\emph{\textup{(iii)}.} Let $X\leh A$ and $X\leh B$. By (H4) there are ranked formulas with $X=\{n:\mathcal M(A)\models\psi^0(\bar n)\}=\{n:\mathcal M(B)\models\psi^1(\bar n)\}$. Some $p_s=(\alpha,\beta)$ lies in $E_{\psi^0,\psi^1}$. It is not a cross-disagreement: if, say, $\alpha\forces\varphi^0_n$ and $\beta\forces\neg\varphi^1_n$, then $n\in X$ and $n\notin X$ by (H2), since $\alpha\subset A$ and $\beta\subset B$ and both are generic. So $p_s=(\sigma^*,\tau^*)$ is padded and has no cross-disagreement extension. Let $F$ be the hyperarithmetic set of Lemma~\ref{lem:bridge}. For each $n$ some initial segment $\alpha'\supseteq\sigma^*$ of $A$ decides $\varphi^0_n$, and then $n\in X$ iff $\alpha'\forces\varphi^0_n$ iff $n\in F$. Thus $X=F$ is hyperarithmetic. The reverse inclusion in (iii) is trivial.
+
+Finally $A,B$ are not hyperarithmetic, being generic, so by (iii) their hyperdegrees are incomparable and have meet $\zero_h$. This completes the proof of Theorem~\ref{thm:A}. \qed
+
+\begin{remark}[Bounds and variants]\label{rem:variants}
+(1) The dense sets are definable over $L_{\omck}$, so the sequence $(p_s)$ can be chosen arithmetically in $\KO$, and then $A,B\leh\KO$; relative to $Z$ one gets $A,B\leh\KO^Z$. By Theorem~\ref{thm:A}(i) and Spector's criterion, $\KO\nleh A$ and $\KO\nleh B$, so the witnesses lie strictly below the hyperjump. We have not checked the definability claim in detail. (2) The global-variation fusion of \cite[Theorem~8.7]{Synthesis} should give a perfect family of pairwise such sets; the forcing is then over finite frontiers, and Lemma~\ref{lem:bridge} is unchanged. We have not written this out. (3) A two-step version should show that \emph{every} sufficiently Cohen-generic $A$ has such a partner $B$, by forcing with $\{\tau:(A\rest|\tau|,\tau)\in\PP\}$ over $A$. This is not proved here either.
+\end{remark}
+
+\subsection{The corollaries}
+\begin{proof}[Proof of Corollary~\ref{cor:noleast}]
+Apply Lemma~\ref{lem:hobstruction} with $Z=\emptyset$, $f=A$, $D=A$ and $E=B$; $B\in\CD(A)$ because the budget forces density zero. The statement about $\omega_1$ is Theorem~\ref{thm:A}(i). A representative of least Turing degree would have least hyperdegree.
+\end{proof}
+\begin{proof}[Proof of Corollary~\ref{cor:infimum}]
+Let $A,B$ be given by Theorem~\ref{thm:A} for $Z$ and the logarithmic budget, and put $F=\J(Z)\oplus A$, $G=\J(Z)\oplus B$. Then $F\approx G$, $F\eqT Z\oplus A$ and $G\eqT Z\oplus B$. By \cite[Lemma~9.1]{Synthesis}, every $D\in\CD(F)$ computes $Z$ and its odd half is a coarse description of $A$; so $F$ has no coarse description in $\Dh(Z)$ by Theorem~\ref{thm:A}(i). Since $\Dh(F)\cap\Dh(G)=\Dh(Z)$, Lemma~\ref{lem:hobstruction} applies.
+\end{proof}
+
+\section{The cone filter on the coarse degrees}\label{sec:D}
+For $h\in\Baire$ the \emph{coarse cones} above $h$ are $\{f:h\lenc f\}$ and $\{f:h\leuc f\}$; the second is contained in the first.
+
+\begin{proof}[Proof of Theorem~\ref{thm:D}]
+(a) By \cite[Theorem~3.6(iv)]{Synthesis} and the fact that $f\in\CD(f)$, $f\in\mathcal A$ iff there are indices $e,i$ such that $\Phi_e^f$ is a total $0$--$1$ valued function, $\Phi_i^{\Phi_e^f}$ is total and belongs to $\CD(f)$, and for every $D\in\CD(f)$ there is $j$ with $\Phi_j^D=\Phi_e^f$. Membership in $\CD(f)$ is arithmetical, so this is a $\Pi^1_1$ condition. Invariance under $\eqnc$ is immediate from the definition. If $f\equc g$ then $f\eqnc g$, so $\mathcal A$ is also closed under $\equc$; and by the spectrum identity \cite[Theorem~3.1]{Synthesis} membership in $\mathcal A$ is equivalent to $\Spec_{\uc}(f)$ having a least element.
+
+(b) Block-code the function $h$ itself: $\J(h)(k)=h(n)$ for $2^n\le k<2^{n+1}$. First, $h\leuc\J(h)$. From any coarse description $D$ of $\J(h)$ let $y(n)$ be the value that $D$ takes on more than half of the $n$-th block if there is one, and $0$ otherwise. This is a single total functional, and $y(n)=h(n)$ for all but finitely many $n$ \cite[Lemma~3.4]{Synthesis}; a function that differs from $h$ at finitely many places is a coarse description of $h$. (Coding the \emph{graph} of $h$ by a set would not do here: an unbounded search in a finitely corrupted graph need not terminate, and a uniform reduction must be total on every description.)
+
+Put $f_0=\J(h)$. Every coarse description of $f_0$ computes $h$, and $f_0\eqT h$ is itself a representative, so every representative computes $h$ and $\degT(h)$ is the least element of $\Spec_{\nc}(f_0)$; thus $f_0\in\mathcal A$.
+
+Let $Z$ be a set with $Z\eqT h$, let $A,B$ be the sets of \cite[Theorem~8.7]{Synthesis} for the oracle $Z$ and the logarithmic budget, so that $A\approx B$, $A$ is $1$-generic relative to $Z$, and every set computable from both $Z\oplus A$ and $Z\oplus B$ is computable from $Z$. Put $f_1=\J(h)\oplus A$ and $g_1=\J(h)\oplus B$, with the block code on the even positions. Then $f_1\approx g_1$. As in \cite[Lemma~9.1]{Synthesis}, the even half of a coarse description of $f_1$ is a coarse description of $\J(h)$ and its odd half is one of $A$. Suppose $g\eqnc f_1$ had least Turing degree. Then $g\leT f_1\eqT Z\oplus A$ and $g\leT g_1\eqT Z\oplus B$, so $g\leT Z$; but $g$ computes a coarse description of $f_1$, whose odd half would be a $Z$-computable coarse description of $A$, contradicting \cite[Lemma~5.1]{Synthesis}. So $f_1\notin\mathcal A$. The even-half map followed by the block decoder is a uniform reduction of $h$ to $f_1$.
+
+The consequences are immediate: each coarse cone above $h$ contains $f_0\in\mathcal A$ and $f_1\notin\mathcal A$. The constructions of \cite{Synthesis} invoked here are explicit oracle constructions and use no choice. For the last statement, under $\mathsf{AD}$ let $\mu_\J(\mathcal S)=1$ iff $\{x:[\J(x)]_{\nc}\in\mathcal S\}$ contains a Turing cone, for sets $\mathcal S$ of nonuniform coarse degrees. This is well defined because $x\eqT y$ implies $\J(x)\eqnc\J(y)$ \cite[Proposition~3.5]{Synthesis}, and it is a countably complete ultrafilter because the Martin measure is one. It contains every nonuniform coarse cone, since $h\lenc\J(h)\lenc\J(x)$ whenever $x\geT h$. It contains $\mathcal A$, which is not in the cone filter. We do not claim the analogous statement for the uniform coarse degrees: it is not clear that $x\eqT y$ implies $\J(x)\equc\J(y)$, because a Turing reduction applied to a finitely corrupted oracle need not be total.
+\end{proof}
+
+\begin{remark}[Where strategy stealing fails]\label{rem:stealing}
+In Martin's proof the opponent of a winning strategy $\sigma$ plays a real $x\geT\sigma$, and the outcome $\sigma*x$ is Turing equivalent to $x$. For coarse degrees the opponent would play a function $g$ whose coarse degree is above that of a code for $\sigma$, and one would need $\sigma*g\eqnc g$. But $\sigma$'s reply at stage $n$ depends on the \emph{exact} initial segment of $g$, so a coarse description of $g$, which may err on a density-zero set, yields a sequence of replies that can differ from the true one at almost every stage; $\sigma*g$ is not coarsely computable from descriptions of $g$. Theorem~\ref{thm:D} shows that this is a genuine obstruction: by C1, a coarse degree need not have a canonical representative that can be played, and the set $\mathcal A$ of degrees that do have one splits every cone.
+\end{remark}
+
+\begin{remark}
+The same proof shows that the set of $f$ whose class has a least \emph{hyperdegree} meets every coarse cone, as does its complement: use $\J(h)$ and $\J(h)\oplus A$, with $A,B$ now given by Theorem~\ref{thm:A} for $Z\eqT h$, and Lemma~\ref{lem:hobstruction}. By Theorem~\ref{thm:C}(a) this set is strictly larger than $\mathcal A$: it contains $\Rc(\emptyset'')$.
+\end{remark}
+
+\section{Questions}\label{sec:questions}
+\begin{enumerate}[label=\textup{(Q\arabic*)},leftmargin=3em]
+\item \emph{A cone dichotomy for $\leh$.} For arbitrary $X$ and $A\notin\Coreh(X)$, is $\{D\in\DX X:A\leh D\}$ meager in the prefix-density metric? A positive answer would give exact partners and perfect families for $\leh$ inside \emph{every} description class, as \cite[Theorems~4.6 and~4.12]{Synthesis} do for $\leT$, and would subsume Theorem~\ref{thm:A}. We have not settled it. What follows is an analysis of where it stands; two natural routes are ruled out.
+
+First, the reduction is sound. The set is $\Sigma^1_1$ and so has the Baire property, hence is meager or comeager in some ball; finite modifications preserve hyperdegree and, by the finite-patch lemma \cite[Lemma~4.1(d)]{Synthesis}, every $D\in\DX X$ has one in any prescribed ball. So the question reduces to
+\[
+ \textbf{(\dag)}\quad\text{the cone is comeager in }B(Z,r)\cap\DX X\ \Longrightarrow\text{ it contains all of }B(Z,r)\cap\DX X.
+\]
+Moreover the space is the right one: $\DX X$ is isometric to the space of density-zero sets by $E\mapsto Z\sd E$, since $d$ is invariant under symmetric difference with a fixed set, and by Theorem~\ref{thm:E} the balls of $d$ are exactly the conditions of a density budget. The forcing of Section~\ref{sec:A} is therefore available inside any ball.
+
+Second, the Turing proof of (\dag)$\,$cannot be repaired. It runs through the local decoder \cite[Lemma~4.3]{Synthesis}, whose conclusion is the robust-radius characterization of the core; Theorem~\ref{thm:C}(b) shows that this conclusion is false for $\leh$. Any proof of (\dag) must avoid it.
+
+Third --- and this is the obstruction we did not anticipate --- the obvious forcing proof of (\dag) is circular. One would fix $D'\in B(Z,r)\cap\DX X$, build a pair $G_0,G_1$ inside the ball by the budget forcing of Section~\ref{sec:A} with the density budget, arrange that both avoid the meager complement of the cone, so that $A\leh G_0$ and $A\leh G_1$, and then apply Lemma~\ref{lem:bridge} to conclude that $A$ lies in the ground model. The construction goes through: the complement is covered by closed nowhere dense sets, and for each of them the conditions whose ball misses it are dense, so both coordinates dodge it. But the ground model must contain the parameters defining those dense sets, and the cone is defined \emph{from $A$}. The bridge lemma therefore concludes that $A$ is hyperarithmetic in a ground model that already contains $A$, which is vacuous. The same circularity is what makes the classical theorem --- a set hyperarithmetic in comeager many reals is hyperarithmetic (Feferman; Hinman; Thomason; Kechris) --- a theorem about $\Sigma^1_1$ sets rather than a genericity argument: its proof must exploit the definability of the cone, not merely dodge it.
+
+Fourth, the classical theorem does not transfer along the obvious parametrization. One would like to pull (\dag) back to Cantor space by a map $\Phi:\Cantor\to B(Z,r)\cap\DX X$, say $\Phi(Y)=Z\sd\{n_k:Y(k)=1\}$ for a sufficiently sparse computable $(n_k)$, which is a continuous injection with $\Phi(Y)\eqT Y\oplus Z$. But $\Phi$ has compact image, and $\DX X$ is a perfect Polish space that is nowhere locally compact, so the image is nowhere dense and the preimage of a comeager set may be empty. Any transfer must therefore use a parametrization by Baire space rather than Cantor space, and must respect hyperdegrees, which an abstract homeomorphism will not.
+
+What remains is to run the $\Sigma^1_1$ category machinery of effective descriptive set theory directly in $\DX X$ with a presentation for which ``comeager'' is itself $\Sigma^1_1$-definable, as in Kechris's uniformity theorems. We have not attempted this.
+\item \emph{Which classes have a least hyperdegree?} By Lemma~\ref{lem:hspec} this asks for a description hyperarithmetic in all descriptions. The block codes and the dyadic codes qualify; the generic classes of Theorem~\ref{thm:A} do not. Is there a characterization by a single robust coding, as in \cite[Theorem~3.6]{Synthesis}?
+\item \emph{Jump-cones as spectra.} The dyadic code realizes $\{\mathbf b:\mathbf a\le\mathbf b'\}$ as a coarse Turing spectrum. For which computable ordinals $\alpha$ is $\{\mathbf b:\mathbf a\le\mathbf b^{(\alpha)}\}$ a coarse spectrum? The obvious double-limit coding fails, because a column whose inner limit is wrong contributes errors of positive density; we do not know whether $\alpha=2$ is possible. A negative answer would say that coarse information is exactly ``one jump robust'', and would make $\Coreh$ rather than $\Core$ the invariant that distinguishes $\Rc(A)$ from its iterates.
+\item \emph{The hyperjump.} Is there a class with no least hyperdegree all of whose representatives $g$ satisfy $\omega_1^g>\omck$, other than the relativizations $\J(\KO)\oplus A$ given by Corollary~\ref{cor:infimum}?
+\item \emph{Invariant functions.} Theorem~\ref{thm:D} concerns invariant sets. Is there an analogue of Martin's conjecture for functions on the coarse degrees that are invariant under $\eqnc$, at least on the $\mu_\J$-large set of block-code classes, where it reduces to the Turing case?
+\end{enumerate}
+
+\section{Status}\label{sec:status}
+The proofs above are complete relative to the facts (H1)--(H5) and to the results of \cite{Synthesis} that are cited, which are themselves unrefereed. (H4) has been checked against a secondary source and (H3) has not; see the verification note in Section~\ref{sec:facts}, which also explains why the fixed-formula reading of (H3) is the one that matters. Remark~\ref{rem:variants} and question (Q1) contain unproved claims and are marked as such.
+
+\emph{Formalization.} Theorem~\ref{thm:A} for $Z=\emptyset$, Corollary~\ref{cor:noleast}, and Theorem~\ref{thm:D} for the nonuniform coarse degrees are formalized in the Lean~4 library \path{CoarseDegrees} at the repository root. The budget forcing, Lemma~\ref{lem:bridge} and the construction of Section~\ref{sec:A} are proved there with nothing admitted, for an abstract decision relation on strings that covers both Cohen forcing for ranked sentences and convergence of Turing functionals; the classical inputs, including (H2)--(H5) as a single package, are admitted with their references. Theorem~\ref{thm:E} is formalized as well, including the closure of budgets under intersection and the density budget, with nothing admitted beyond what Theorem~\ref{thm:A} already uses.
+
+Theorem~\ref{thm:C}(a),(b) are formalized. The jump operator that the criterion appears to need is avoided by stating the criterion in \emph{limit} form: \path{description_iff_limit} says that $B$ computes a coarse description of $\Rc(A)$ if and only if $A$ is the limit of a $B$-computable approximation, which is $A\leT B'$ by Shoenfield's limit lemma but needs no jump to state. The hard direction is majority decoding, and the estimate that drives it --- the errors have relative density zero \emph{in each column}, because a column has density $2^{-k-1}>0$ while the error set has density $0$ --- is proved from scratch, as is the primitive recursion relative to an oracle that makes the vote $B$-computable. In Theorem~\ref{thm:C}(a) the inclusion $\Coreh(\Rc(A))\subseteq\Dh(A)$ is proved outright, by testing the core against $\Rc(A)$ itself; only the reverse inclusion uses the admitted transitivity of $\leh$. Theorem~\ref{thm:C}(b), \path{hyperarithmetic_compactness_fails}, depends on \emph{no} admitted statement: the computable approximant at radius $2^{-K}$ is the first $K$ bits of $A$ replicated along the columns below $K$, and the axiom audit confirms the dependency.
+
+A by-product: the block-decoding lemma \cite[Lemma 3.4]{Synthesis}, which Theorem~\ref{thm:D} needs and which the library previously admitted from \cite[Section 2]{HJKS}, is now proved there by the same majority argument --- a block $[2^n,2^{n+1})$ is half of the initial segment ending at its right endpoint. The formalization makes the nonuniformity explicit: the finitely many blocks on which the vote may fail are corrected from a finite table spliced in along a computable set, and neither the threshold nor the table is computed from the description.
+
+The spectrum clause of Theorem~\ref{thm:C}(a), Theorem~\ref{thm:C}(c) --- which genuinely needs $\omega_1^A$ --- Corollary~\ref{cor:infimum} and the relativization to $Z$ are not formalized. See \path{CoarseDegrees/README.md}.
+
+\emph{Novelty.} No claim of novelty is made for minimal pairs of hyperdegrees, which are classical; see the paragraph after Theorem~\ref{thm:D}. The possible novelty is confined to the coarse-equality of the pair, and has not been established.
+
+\begingroup\raggedright\small
+\begin{thebibliography}{9}
+\bibitem{Synthesis}
+\emph{Coarse Classes Without Least Turing Degrees: Deduplicated results of the nine research reports on target C1}. 18 September 2026. \path{docs/coarse-degrees/research-synthesis/Turing_Degrees_Synthesis.tex}.
+\bibitem{HJKS}
+D. R. Hirschfeldt, C. G. Jockusch, Jr., R. Kuyper, and P. E. Schupp. Coarse reducibility and algorithmic randomness. \emph{Journal of Symbolic Logic} \textbf{81} (2016), 1028--1046.
+\bibitem{SacksHRT}
+G. E. Sacks. \emph{Higher Recursion Theory}. Springer, 1990. Chapter IV, Section 3 for Cohen forcing over $L_{\omck}$.
+\bibitem{Feferman}
+S. Feferman. Some applications of the notions of forcing and generic sets. \emph{Fundamenta Mathematicae} \textbf{56} (1965), 325--345.
+\bibitem{ShoreLattice}
+R. A. Shore. Lattice initial segments of the hyperdegrees. \emph{Journal of Symbolic Logic} \textbf{81} (2016); arXiv:1408.3147. Sections 1--2 for the ramified language, Feferman forcing and the preservation of $\omck$; consulted 19 September 2026.
+\bibitem{GandySacks}
+R. O. Gandy and G. E. Sacks. A minimal hyperdegree. \emph{Fundamenta Mathematicae} \textbf{61} (1967), 215--223.
+\bibitem{Thomason}
+S. K. Thomason. The forcing method and the upper semilattice of hyperdegrees. \emph{Transactions of the American Mathematical Society} \textbf{129} (1967), 38--57.
+\bibitem{IgusaHyp}
+G. Igusa. The generic degrees of density-1 sets, and a characterization of the hyperarithmetic reals. \emph{Journal of Symbolic Logic} \textbf{80} (2015), 1290--1314; arXiv:1402.3747.
+\bibitem{Plan}
+\emph{Turing Degrees: A Unified Research Report}, second edition, 18 September 2026, Section 12. \path{docs/coarse-degrees/research-plan/turing_degrees_unified.tex}.
+\end{thebibliography}
+\endgroup
+\end{document}

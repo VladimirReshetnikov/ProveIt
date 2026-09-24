@@ -1,0 +1,888 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\definecolor{Ink}{HTML}{17324D}
+\definecolor{Pale}{HTML}{F1F5F8}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.75em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Tetration: a decimal-length counterexample}
+\fancyhead[R]{\small 19 September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{1.3em}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\vp}{v_p}
+\newcommand{\vten}{\nu_{10}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\res}[2]{\left[#1\right]_{#2}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,
+ frame=single,rulecolor=\color{Ink!35},backgroundcolor=\color{Pale},
+ showstringspaces=false,tabsize=4,language=Python}
+\hypersetup{pdftitle={A Counterexample to a Decimal-Length Bound for Tetration Stabilization},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Integer tetration, exact valuations, congruence speed, counterexample}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{9mm}
+{\sffamily\large\color{Ink}INTEGER TETRATION \quad / \quad EXACT ARITHMETIC\par}
+\vspace{14mm}
+{\Huge\bfseries\color{Ink}A Counterexample to a\par Decimal-Length Bound for\par Tetration Stabilization\par}
+\vspace{8mm}
+{\Large Exact valuations, delayed crossover,\par and reproducible certification\par}
+\vspace{13mm}
+{\large Research report prepared for Vladimir Reshetnikov\par}
+{\large 19 September 2026\par}
+\vspace{10mm}
+\begin{tcolorbox}[colback=Pale,colframe=Ink,boxrule=0.5pt,arc=1mm]
+\textbf{Main result.} An explicitly specified integer $A$ has $2544$ decimal digits and ends in $1$, but
+\[
+ V(A,\len(A)+2)=V(A,2546)=2548\ne2547=V(A).
+\]
+The permanent speed is first reached at height $2547$, one height later than the proposed bound. The certificate involves an $8451$-bit integer, not an explicitly evaluated power tower.
+\end{tcolorbox}
+\vspace{6mm}
+\begin{abstract}
+A published conjecture of Rip\`a asserts that, for integer tetration bases whose last digit is neither $0$, $3$, nor $7$, the decimal congruence speed has reached its permanent value by height $\len(a)+2$. We give an explicit counterexample. The base is obtained by the Chinese remainder theorem from
+$a\equiv1\pmod{5^{2547}}$ and $a\equiv-1\pmod{2^{2548}}$.
+Exact arithmetic certifies that it has $2544$ digits and that its relevant valuations are $1$, $2548$, and $2547$. A self-contained lifting argument then gives the exact number of stable decimal places at every height as the minimum of two affine functions.
+
+The report also derives a sharp stabilization criterion for all bases ending in $1$, exact precision thresholds, a consequence for pentation, and a periodicity formula for radices $2^u5^v$. The research-status audit is important: a later paper claims to confirm the conjecture. The present counterexample therefore corrects a published claim as well as refuting the conjectured statement. Historical priority is not established by this report.
+\end{abstract}
+\vfill
+{\small\color{Ink}Includes complete elementary proofs, the full decimal integer, two independent certificate checkers, a targeted search, and regression tests. Not a proof-assistant formalization.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question selected and the result obtained}
+\label{sec:question}
+
+\subsection{A precise question about a fast-growing operation}
+For a positive integer base $a>1$, define
+\begin{equation}\label{eq:tower}
+ T_0(a)=1,\qquad T_{n+1}(a)=a^{T_n(a)}\quad(n\ge0).
+\end{equation}
+Thus $T_1(a)=a$, $T_2(a)=a^a$, and $T_3(a)=a^{a^a}$, with exponentiation associated to the right. In Knuth notation, $T_n(a)=a\uparrow\uparrow n$. The enormous ordinary size of these integers does not prevent exact questions about their residues from being tractable.
+
+Our target is not a real or complex interpolation of tetration. It is an integer-arithmetic question: how many additional trailing decimal places become permanently fixed each time the tower height increases? More specifically, how large must the height be before this digit gain stops changing?
+
+Write $D=\len(a)$ for the unique positive integer satisfying
+\[
+ 10^{D-1}\le a<10^D.
+\]
+The statement selected for investigation is the following assertion, reformulated using this notation:
+\begin{equation}\label{eq:conjecture}
+ \boxed{\quad a\bmod10\notin\{0,3,7\},\quad b\ge D+2
+ \quad\Longrightarrow\quad V(a,b)=V(a).\quad}
+\end{equation}
+It appears as Conjecture~1 on page~46 of the published version of \emph{The congruence speed formula}, and as Conjecture~2.1 on page~3 of its arXiv version~\cite{Ripa2021}. The symbol $V(a,b)$ denotes the gain at height $b$; $V(a)$ is its eventual constant value.
+
+\subsection{The explicit counterexample}
+For an integer $x$ and a positive modulus $m$, let $[x]_m$ denote the unique residue in $\{0,1,\ldots,m-1\}$. Define
+\begin{equation}\label{eq:Adefinition}
+ \begin{gathered}
+ c=2547,\qquad q=5^c,\qquad m=2^{c+1},\\
+ u=\res{-2q^{-1}}{m},\qquad A=1+qu.
+ \end{gathered}
+\end{equation}
+Here $q^{-1}$ means a multiplicative inverse modulo $m$, not the rational number $1/q$. Such an inverse exists because $q$ is odd. This is a finite and unambiguous definition of $A$.
+
+\begin{theorem}[Counterexample]\label{thm:main}
+The integer $A$ in \eqref{eq:Adefinition} satisfies
+\begin{equation}\label{eq:Adata}
+ \len(A)=2544,\qquad
+ v_2(A-1)=1,\qquad v_2(A+1)=2548,\qquad v_5(A-1)=2547.
+\end{equation}
+In particular, $A\equiv1\pmod{10}$. For every $n\ge0$,
+\begin{equation}\label{eq:Asn}
+ \nu_{10}\bigl(T_{n+1}(A)-T_n(A)\bigr)
+ =\min\{1+2548n,\,2547(n+1)\}.
+\end{equation}
+For the published speed convention at every height $b\ge3$,
+\begin{equation}\label{eq:Aspeed}
+ V(A,b)=
+ \begin{cases}
+ 2548,&3\le b\le2546,\\
+ 2547,&b\ge2547.
+ \end{cases}
+\end{equation}
+Consequently, \eqref{eq:conjecture} is false. The first height after which the published speed remains constant forever is exactly $2547=\len(A)+3$.
+\end{theorem}
+
+The proof separates into two parts. The identities in \eqref{eq:Adata} are certified by finite integer arithmetic; the formula for every tower height follows from elementary factorization and induction. No tower of height $2546$, or even height~$3$ with base~$A$, is constructed.
+
+\subsection{What the literature audit changes}
+The phrase ``open conjecture'' requires care here. After selecting the statement, we found that Rip\`a and Onnis later asserted its confirmation after deriving a bound involving a prime-adic valuation~\cite[arXiv version, p.~10]{RipaOnnis2022}. Accordingly, the result is best described as \emph{an explicit counterexample to a published conjecture and to its later claimed confirmation}, rather than as the resolution of a problem uniformly regarded as open in all later sources.
+
+The later valuation-based bound and the decimal-length bound are different assertions. Our example is compatible with the former and contradicts the latter. Section~\ref{sec:audit} gives the precise comparison. Searches of the sources examined for this report did not locate an earlier counterexample, but that does not establish historical priority. The mathematical claim is narrower and checkable: the explicitly printed statement \eqref{eq:conjecture} fails for the integer certified here.
+
+\section{Definitions, height indexing, and stable digits}
+\label{sec:definitions}
+
+\subsection{Prime valuations and decimal agreement}
+For a prime $p$ and a nonzero integer $x$, define
+\[
+ v_p(x)=\max\{e\ge0:p^e\mid x\}.
+\]
+For nonzero $x$, also set
+\begin{equation}\label{eq:nu10}
+ \nu_{10}(x)=\max\{e\ge0:10^e\mid x\}
+ =\min\{v_2(x),v_5(x)\}.
+\end{equation}
+Unlike $v_2$ and $v_5$, $\nu_{10}$ is not an additive prime valuation. For example, $\nu_{10}(2)=\nu_{10}(5)=0$ but $\nu_{10}(10)=1$. We never use a false multiplicative-additivity rule for $\nu_{10}$.
+
+Two integers agree modulo $10^e$ precisely when their final $e$ decimal positions agree, allowing leading zero padding when a modulus has more positions than one of the integers. The exact agreement exponent is therefore $\nu_{10}$ of their difference.
+
+Define
+\begin{equation}\label{eq:delta}
+ \Delta_n(a)=T_{n+1}(a)-T_n(a),\qquad
+ s_n(a)=\nu_{10}(\Delta_n(a))\quad(n\ge0),
+\end{equation}
+and the raw congruence gain
+\begin{equation}\label{eq:gain}
+ g_b(a)=s_b(a)-s_{b-1}(a)\quad(b\ge1).
+\end{equation}
+The word ``raw'' only distinguishes this uniform modular definition from conventions about the initial displayed digits. In particular, $s_0(a)$ is the genuine value $\nu_{10}(a-1)$; it is not artificially reset to zero.
+
+\subsection{Why the high-height comparison is unambiguous}
+The defining congruences for the published $V(a,b)$ compare $T_{b-1}$ with $T_b$, and then $T_b$ with $T_{b+1}$~\cite[Definition~1]{Ripa2021}. Thus, wherever both exact agreement counts are used, the relevant quantity is
+\[
+ V(a,b)=s_b(a)-s_{b-1}(a),
+\]
+not $s_{b+1}-s_b$. This shift matters at a transition.
+
+Some early-height examples in the literature count only the positions actually displayed in the original base. We do not need to settle every convention at $b=1$ or $2$. For the whole class $a>1$, $a\equiv1\pmod{10}$ considered below, the modular agreement exponent is smaller than the decimal length of $T_n(a)$ for all $n\ge2$; this is proved in Lemma~\ref{lem:displayed}. Hence at every $b\ge3$ the ordinary displayed-digit and exact-congruence interpretations coincide. The counterexample uses $b=2546$.
+
+The older preliminary definition also mentions a sufficient range $b>a$. The conjecture itself proposes a replacement sufficient bound, and the surrounding discussion explicitly considers heights smaller than $a$~\cite[pp.~43--44]{Ripa2021}. Keeping $b>a$ as an additional hidden restriction would make the proposed improvement contentless. Our reading is the one stated in \eqref{eq:conjecture}: all heights satisfying the new bound are claimed to work.
+
+\subsection{Adjacent agreement versus permanent agreement}
+An agreement of two adjacent terms need not, for an arbitrary sequence, persist at all later indices. Here persistence will follow from strictly increasing prime valuations of $\Delta_n$.
+
+\begin{lemma}[Unique least valuation]\label{lem:unique}
+If $x_0,\ldots,x_r$ are nonzero integers and
+\[
+ v_p(x_0)<v_p(x_j)\quad(1\le j\le r),
+\]
+then $v_p(x_0+\cdots+x_r)=v_p(x_0)$.
+\end{lemma}
+\begin{proof}
+Factor out $p^{v_p(x_0)}$. The remaining first summand is nonzero modulo $p$, while all the others are zero modulo $p$. Their sum is therefore nonzero modulo $p$.
+\end{proof}
+
+Once the valuation formulas below are proved, this lemma will show that $s_n$ counts exactly the positions shared by $T_n$ and \emph{every} later tower, not merely by $T_n$ and $T_{n+1}$.
+
+\section{The elementary lifting lemmas}
+\label{sec:lte}
+The following familiar lifting identities are included with proofs so that the main argument has no external theorem dependency beyond elementary integer arithmetic.
+
+\begin{lemma}[Odd-prime lifting]\label{lem:oddLTE}
+Let $p$ be an odd prime, let $x>1$ satisfy $x\equiv1\pmod p$, and let $N\ge1$. Then
+\[
+ v_p(x^N-1)=v_p(x-1)+v_p(N).
+\]
+\end{lemma}
+\begin{proof}
+First suppose $p\nmid r$. The factorization
+\[
+ x^r-1=(x-1)(1+x+\cdots+x^{r-1})
+\]
+has a second factor congruent to $r\not\equiv0\pmod p$. Thus raising to an exponent prime to $p$ does not change $v_p(x-1)$.
+
+Next write $y=1+p^t z$ with $t\ge1$ and $p\nmid z$. By the binomial theorem,
+\[
+ y^p-1=p^{t+1}z+
+ \sum_{j=2}^{p-1}\binom pj p^{tj}z^j+p^{tp}z^p.
+\]
+The first term has valuation $t+1$. Every term in the sum has valuation at least $1+2t\ge t+2$, and the last has valuation $tp\ge t+2$. The first term is therefore the unique one of least valuation, so $v_p(y^p-1)=t+1$.
+
+Finally write $N=p^e r$ with $p\nmid r$. Apply the prime-to-$p$ observation once and the $p$-power step $e$ times.
+\end{proof}
+
+\begin{lemma}[Even-exponent lifting at $2$]\label{lem:twoLTE}
+If $x>1$ is odd and $N$ is positive and even, then
+\[
+ v_2(x^N-1)=v_2(x-1)+v_2(x+1)+v_2(N)-1.
+\]
+\end{lemma}
+\begin{proof}
+Write $N=2^e r$, with $r$ odd and $e\ge1$, and put $y=x^r$. The quotients
+\[
+ \frac{x^r-1}{x-1}=1+x+\cdots+x^{r-1},\qquad
+ \frac{x^r+1}{x+1}=x^{r-1}-x^{r-2}+\cdots-x+1
+\]
+are both odd, because each has an odd number of odd summands. Consequently,
+$v_2(y-1)=v_2(x-1)$ and $v_2(y+1)=v_2(x+1)$.
+
+Factor
+\[
+ y^{2^e}-1=(y-1)(y+1)\prod_{j=1}^{e-1}(y^{2^j}+1).
+\]
+For $j\ge1$, the odd square congruence gives $y^{2^j}\equiv1\pmod8$, so each factor in the product has valuation exactly~$1$. Adding the valuations proves the identity, including the empty-product case $e=1$.
+\end{proof}
+
+The distinction between these two lemmas is essential. Replacing the $2$-adic formula by the odd-prime formula when $a\equiv-1\pmod4$ would remove precisely the offset and slope discrepancy responsible for the counterexample.
+
+\section{An exact formula for every base ending in one}
+\label{sec:affine}
+
+Fix $a>1$ with $a\equiv1\pmod{10}$, and abbreviate
+\begin{equation}\label{eq:parameters}
+ \alpha=v_2(a-1),\qquad \beta=v_2(a+1),\qquad
+ c=v_5(a-1),\qquad \sigma=\alpha+\beta-1.
+\end{equation}
+Then $c\ge1$, one of $\alpha,\beta$ is $1$, and the other is at least~$2$.
+
+\begin{theorem}[Affine valuation law]\label{thm:affine}
+For every $n\ge0$,
+\begin{align}
+ v_2(\Delta_n(a))&=\alpha+n\sigma,\label{eq:e2}\\
+ v_5(\Delta_n(a))&=(n+1)c,\label{eq:e5}\\
+ s_n(a)&=\min\{\alpha+n\sigma,(n+1)c\}.\label{eq:generalS}
+\end{align}
+\end{theorem}
+\begin{proof}
+At $n=0$ we have $\Delta_0=a-1$, so the two prime identities are true by definition. For $n\ge1$, the tower recursion gives
+\begin{equation}\label{eq:deltaRecurrence}
+ \begin{split}
+ \Delta_n
+ &=a^{T_n}-a^{T_{n-1}}\\
+ &=a^{T_{n-1}}\bigl(a^{T_n-T_{n-1}}-1\bigr)\\
+ &=a^{T_{n-1}}\bigl(a^{\Delta_{n-1}}-1\bigr).
+ \end{split}
+\end{equation}
+All $T_n$ are odd, including $T_0=1$. Since $T_0<T_1$ and the map $x\mapsto a^x$ is strictly increasing, induction makes the tower sequence strictly increasing. Thus every $\Delta_n$ is a positive even integer. The first factor in \eqref{eq:deltaRecurrence} is a unit at both $2$ and $5$.
+
+Apply Lemma~\ref{lem:twoLTE} with exponent $\Delta_{n-1}$:
+\[
+ v_2(\Delta_n)=\alpha+\beta-1+v_2(\Delta_{n-1})
+ =\sigma+v_2(\Delta_{n-1}).
+\]
+Apply Lemma~\ref{lem:oddLTE} with $p=5$, using $a\equiv1\pmod5$:
+\[
+ v_5(\Delta_n)=c+v_5(\Delta_{n-1}).
+\]
+Induction proves \eqref{eq:e2} and \eqref{eq:e5}; taking their minimum proves \eqref{eq:generalS}.
+\end{proof}
+
+\begin{corollary}[Exact agreement with all later towers]\label{cor:alllater}
+For every $m>n\ge0$,
+\[
+ v_2(T_m-T_n)=\alpha+n\sigma,\qquad
+ v_5(T_m-T_n)=(n+1)c,
+\]
+and hence $\nu_{10}(T_m-T_n)=s_n(a)$.
+\end{corollary}
+\begin{proof}
+Use $T_m-T_n=\sum_{j=n}^{m-1}\Delta_j$. In each prime valuation the first summand has uniquely least valuation, because $\sigma\ge2$ and $c\ge1$. Apply Lemma~\ref{lem:unique} twice.
+\end{proof}
+
+This also constructs a compatible limit in the ring of $10$-adic integers: for each fixed $k$, the residue modulo $10^k$ is eventually constant. There is no assertion of real convergence; the ordinary positive integers $T_n$ diverge to infinity.
+
+\begin{lemma}[No displayed-length truncation after height two]\label{lem:displayed}
+For $a>1$ with $a\equiv1\pmod{10}$ and $n\ge2$,
+\[
+ s_n(a)<\len(T_n(a)).
+\]
+\end{lemma}
+\begin{proof}
+Here $a\ge11$. Since $5^c\le a-1<a$, we have
+$10^c<25^c<a^2$, so $c<2\log_{10}a$.
+The elementary bound $T_j(a)\ge a^j$ holds for $j\ge1$ by induction: the step follows from $a^j\ge j+1$.
+For $n\ge2$, $a^{n-1}\ge2(n+1)$; this is true at $n=2$ and is preserved on multiplying by $a\ge11$.
+Therefore
+\[
+ s_n\le(n+1)c<2(n+1)\log_{10}a
+ \le T_{n-1}\log_{10}a=\log_{10}T_n<\len(T_n).
+\]
+\end{proof}
+
+\section{Certification and proof of the counterexample}
+\label{sec:counterproof}
+
+\subsection{A compact finite arithmetic certificate}
+The following three exact assertions suffice:
+\begin{align}
+ 7\cdot10^{2543}&<A<8\cdot10^{2543},\label{eq:sizeCert}\\
+ A\bmod2^{2549}&=2^{2548}-1,\label{eq:twoCert}\\
+ A\bmod5^{2548}&=5^{2547}+1.\label{eq:fiveCert}
+\end{align}
+The complete decimal expansion of $A$ is printed in Appendix~\ref{app:decimal}. Both checkers in the archive verify \eqref{eq:sizeCert}--\eqref{eq:fiveCert}; the second checker processes the decimal digits successively and does not construct a modular inverse or even convert the complete decimal string to a single integer.
+
+The size interval proves $\len(A)=2544$. Equation~\eqref{eq:twoCert} gives $v_2(A+1)=2548$ exactly; it also gives $A\equiv3\pmod4$, so $v_2(A-1)=1$. Equation~\eqref{eq:fiveCert} gives $v_5(A-1)=2547$ exactly. Since $A$ is odd and is $1$ modulo $5$, it is $1$ modulo $10$.
+
+These are \emph{exact} valuations, not lower bounds. Checking only the defining CRT congruences would not suffice: they allow additional factors, which can substantially shorten the transient. Section~\ref{sec:search} includes an actual rejected candidate illustrating this issue.
+
+\subsection{The all-height argument}
+Substitute the certified parameters into Theorem~\ref{thm:affine}. Then
+\[
+ s_n(A)=\min\{1+2548n,2547(n+1)\}.
+\]
+The difference of the two affine expressions is simply
+\begin{equation}\label{eq:difference}
+ (1+2548n)-2547(n+1)=n-2546.
+\end{equation}
+The first expression is smaller before $n=2546$, they are equal at $n=2546$, and the second is smaller afterwards. Thus
+\begin{equation}\label{eq:piecewiseS}
+ s_n(A)=
+ \begin{cases}
+ 1+2548n,&0\le n\le2546,\\
+ 2547(n+1),&n\ge2546.
+ \end{cases}
+\end{equation}
+The overlap at the endpoint is intentional and consistent.
+
+Taking successive differences yields $g_b(A)=2548$ for $1\le b\le2546$, and $g_b(A)=2547$ for $b\ge2547$. By Lemma~\ref{lem:displayed}, $V(A,b)=g_b(A)$ for $b\ge3$. This proves \eqref{eq:Aspeed}, and hence Theorem~\ref{thm:main}.
+
+\subsection{The transition, with all indices exposed}
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & $v_2(\Delta_n)$ & $v_5(\Delta_n)$ & $s_n$ & $s_n-s_{n-1}$\\
+\midrule
+2543 & 6479565 & 6479568 & 6479565 & 2548\\
+2544 & 6482113 & 6482115 & 6482113 & 2548\\
+2545 & 6484661 & 6484662 & 6484661 & 2548\\
+2546 & 6487209 & 6487209 & 6487209 & 2548\\
+2547 & 6489757 & 6489756 & 6489756 & 2547\\
+2548 & 6492305 & 6492303 & 6492303 & 2547\\
+\bottomrule
+\end{tabular}
+\caption{Exact valuation counts at the crossover. None of these entries requires evaluating $\Delta_n$ as an integer.}
+\label{tab:transition}
+\end{table}
+
+The equality of the two valuations at $n=2546$ does \emph{not} mean that the new, smaller speed already applies at $b=2546$. The speed there is the difference between the rows $2546$ and $2545$, which is still $2548$. Only the next difference is $2547$. This is the precise one-height failure of the conjectured bound.
+
+\section{The sharp general stabilization criterion}
+\label{sec:onset}
+
+The counterexample is not an isolated numerical accident in the proof. A complete formula explains exactly how such delayed crossovers occur for every base ending in~$1$.
+
+\begin{definition}
+For the raw gains \eqref{eq:gain}, define the sustained onset
+\[
+ B(a)=\min\{B\ge1:g_b(a)=V_\infty(a)\text{ for every }b\ge B\},
+\]
+where $V_\infty(a)$ is their eventual value. The smallest universally applicable height at least $3$ is $\max\{3,B(a)\}$, regardless of initial display conventions.
+\end{definition}
+
+\begin{theorem}[Exact speed and onset]\label{thm:onset}
+Let $a>1$, $a\equiv1\pmod{10}$, with parameters \eqref{eq:parameters}. Then
+\[
+ V_\infty(a)=\min\{\sigma,c\}.
+\]
+If $\alpha\ge2$, or if $\alpha=1$ and $\beta\le c$, the raw gain is constant from $b=1$ and $B(a)=1$.
+In the remaining case $\alpha=1$, $\beta>c$, put $d=\beta-c>0$. Then
+\begin{equation}\label{eq:onset}
+ \boxed{\quad B(a)=1+\ceil{\frac{c-1}{\beta-c}}.\quad}
+\end{equation}
+More explicitly, write $c-1=kd+r$ with $0\le r<d$. Then
+\begin{equation}\label{eq:profile}
+ g_b(a)=
+ \begin{cases}
+ \beta,&1\le b\le k,\\
+ c+r,&b=k+1,\\
+ c,&b\ge k+2.
+ \end{cases}
+\end{equation}
+An empty first range is allowed. If $r=0$, the middle value already equals the permanent value.
+\end{theorem}
+\begin{proof}
+If $\alpha\ge2$, then $\beta=1$ and $\sigma=\alpha$. Formula~\eqref{eq:generalS} becomes
+\[
+ s_n=(n+1)\min\{\alpha,c\},
+\]
+so the claim is immediate.
+
+Suppose $\alpha=1$, so $\sigma=\beta$. If $\beta\le c$, then
+$1+n\beta\le(n+1)c$ for all $n\ge0$. Hence $s_n=1+n\beta$, giving constant gain $\beta$.
+
+If $\beta>c$, the difference of the two competing expressions is
+\[
+ (1+n\beta)-(n+1)c=nd-(c-1)=nd-kd-r.
+\]
+For $0\le n\le k$, the first expression is the minimum, with possible equality at $n=k$ when $r=0$. For $n\ge k+1$, the second is the minimum. At the connecting step,
+\[
+ s_{k+1}-s_k
+ =(k+2)c-(1+k\beta)
+ =c+(c-1-kd)=c+r.
+\]
+All earlier differences are $\beta$; all later differences are $c$. Thus the sustained onset is $k+1$ when $r=0$ and $k+2$ otherwise, exactly \eqref{eq:onset}.
+\end{proof}
+
+\begin{corollary}[An exact failure test for the decimal-length bound]\label{cor:failure}
+For $a>1$, $a\equiv1\pmod{10}$, put $D=\len(a)$. Then
+\[
+ V(a,D+2)\ne V(a)
+\]
+if and only if
+\begin{equation}\label{eq:failurecriterion}
+ \alpha=1,\qquad\beta>c,\qquad
+ c-1>(D+1)(\beta-c).
+\end{equation}
+In particular, when $\beta=c+1$, failure occurs precisely when $c\ge D+3$.
+\end{corollary}
+\begin{proof}
+The height $D+2$ is at least $4$, so it is free of initial convention issues. Theorem~\ref{thm:onset} shows that only the delayed-crossover case can fail, and all of its pre-onset gains are strictly greater than $c$.
+Hence failure is equivalent to $B(a)>D+2$. For $d=\beta-c>0$,
+\[
+ 1+\ceil{(c-1)/d}>D+2
+ \quad\Longleftrightarrow\quad (c-1)/d>D+1.
+\]
+This gives \eqref{eq:failurecriterion}; taking $d=1$ gives the last assertion.
+\end{proof}
+
+\begin{corollary}[Valid replacements in the class $a\equiv1\pmod{10}$]\label{cor:replacement}
+For every such base, $B(a)\le c=v_5(a-1)$. Consequently, each of the following is a sufficient condition for the published speed to have become permanent:
+\begin{align}
+ b&\ge\max\{3,v_5(a-1)\},\label{eq:valbound}\\
+ b&\ge\max\{3,\floor{\log_5(a-1)}\},\label{eq:logbound}\\
+ b&\ge2\len(a)-1.\label{eq:coarsebound}
+\end{align}
+These are statements only about bases ending in $1$, not replacements asserted for every residue class in the original conjecture.
+\end{corollary}
+\begin{proof}
+In the immediate cases $B=1\le c$. Otherwise,
+\[
+ B=1+\ceil{(c-1)/(\beta-c)}\le1+(c-1)=c.
+\]
+The first two bounds follow from Lemma~\ref{lem:displayed} and $5^c\le a-1$.
+For $D=\len(a)\ge2$, $5^c<10^D<25^D=5^{2D}$, so $c\le2D-1$ and $2D-1\ge3$.
+\end{proof}
+
+The sharper length-only estimate follows from $c<D\log_5 10$:
+\[
+ b\ge\max\{3,\ceil{D\log_5 10}-1\}
+\]
+is sufficient in this class. Its coefficient is about $1.431$, rather than the conjectured coefficient~$1$ with additive constant~$2$. We make no claim that this coefficient is optimal.
+
+\section{How the counterexample was found}
+\label{sec:search}
+
+\subsection{Designing the difficult valuation profile}
+Formula~\eqref{eq:onset} shows that a long transient needs two features. The slow prime valuation must start substantially ahead, and the difference between the slopes must be small. The most direct choice is
+\[
+ \alpha=1,\qquad\beta=c+1.
+\]
+Then the fast $2$-adic slope exceeds the $5$-adic slope by only~$1$, and $B=c$. To violate the digit-length bound, we must also arrange that the integer has at most $c-3$ decimal digits.
+
+These requirements suggest the CRT family
+\begin{equation}\label{eq:CRTfamily}
+ A_c=1+5^c\res{-2(5^c)^{-1}}{2^{c+1}}\quad(c\ge1).
+\end{equation}
+
+\begin{proposition}[CRT construction]\label{prop:CRT}
+The integer $A_c$ is the least positive solution of
+\[
+ x\equiv1\pmod{5^c},\qquad x\equiv-1\pmod{2^{c+1}}.
+\]
+It lies in $1<A_c<2\cdot10^c$, has $v_2(A_c-1)=1$, and satisfies
+$v_2(A_c+1)\ge c+1$ and $v_5(A_c-1)\ge c$.
+\end{proposition}
+\begin{proof}
+Every solution to the first congruence is $1+5^c u$. Substitution into the second gives $5^c u\equiv-2\pmod{2^{c+1}}$, with the unique specified residue for $u$. It is nonzero and even, so $1<A_c<2^{c+1}5^c=2\cdot10^c$. Since $c+1\ge2$, the second congruence gives $A_c\equiv3\pmod4$. All assertions follow, and CRT uniqueness is modulo $2^{c+1}5^c$.
+\end{proof}
+
+The modular constraints guarantee lower bounds but not equality in the two large valuations. Therefore the search computes the actual profile before applying Corollary~\ref{cor:failure}.
+
+\subsection{A short targeted search, not brute-force tower evaluation}
+The archive searches $4\le c\le2547$. It first keeps candidates satisfying
+\begin{equation}\label{eq:searchfilter}
+ A_c<10^{c-3},
+\end{equation}
+and then computes their exact valuations and speed at height $\len(A_c)+2$. This filter targets the intended near-balanced profile. It is not claimed to cover every conceivable counterexample with extra divisibility.
+
+Exactly two parameters in that search interval pass \eqref{eq:searchfilter}:
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+CRT parameter & Decimal length & $v_2(A_c+1)$ & $v_5(A_c-1)$ & $B(A_c)$ & Failure?\\
+\midrule
+847 & 844 & 851 & 847 & 213 & No\\
+2547 & 2544 & 2548 & 2547 & 2547 & Yes\\
+\bottomrule
+\end{tabular}
+\caption{Output of the fully reproducible search over $2544$ CRT parameters.}
+\label{tab:search}
+\end{table}
+
+The first row is instructive. Its large valuation excess is $851-847=4$, not~$1$. Thus
+\[
+ B(A_{847})=1+\ceil{846/4}=213,
+\]
+well before the conjectured threshold $846$. The short decimal length alone does not make a counterexample.
+
+At $c=2547$ the exact excess is~$1$, so $B(A_{2547})=2547$, whereas the conjectured sufficient height is $2546$. The full search is included to make the discovery reproducible, but the validity of the counterexample is independent of the search procedure: the two certificate checkers verify the final integer directly.
+
+\subsection{Compatible residues and a nontrivial square root of one}
+The moduli $M_c=2\cdot10^c$ satisfy $M_c\mid M_{c+1}$, and the congruences for $A_{c+1}$ imply those for $A_c$. Consequently,
+\begin{equation}\label{eq:compatibility}
+ A_{c+1}=A_c+\varepsilon_c M_c,
+ \qquad\varepsilon_c\in\{0,1,\ldots,9\}.
+\end{equation}
+The compatible system determines a $10$-adic integer $w$ whose $2$-adic component is $-1$ and whose $5$-adic component is $1$. Hence $w^2=1$, but $w$ is neither of the ordinary integers $1$ and $-1$. This is possible because the ring of $10$-adic integers is not an integral domain.
+
+For the reported candidate, exact computation gives
+\[
+ A_{2544}=A_{2545}=A_{2546}=A_{2547}=A.
+\]
+There is a run of three zero increments in \eqref{eq:compatibility}; at the next step $\varepsilon_{2547}=9$. This explains why a residue constructed at parameter $2547$ can have only $2544$ digits.
+
+This interpretation does \emph{not} prove infinitely many counterexamples. Compatibility does not by itself imply arbitrarily long zero runs, and no statistical independence or normality of these digits has been established here.
+
+\section{Exact precision thresholds and higher arrows}
+\label{sec:precision}
+
+\subsection{How high a tower is needed for a prescribed precision?}
+The same affine formula can be inverted exactly.
+
+\begin{theorem}[Minimal stabilization height for $k$ decimal places]\label{thm:precision}
+For $a>1$ with $a\equiv1\pmod{10}$ and $k\ge0$, the smallest $n\ge0$ such that $T_n(a)$ agrees modulo $10^k$ with every later tower is
+\begin{equation}\label{eq:precision}
+ H_a(k)=\max\left\{0,
+ \ceil{\frac{k-\alpha}{\sigma}},
+ \ceil{\frac{k}{c}}-1\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Corollary~\ref{cor:alllater}, the condition is exactly $s_n(a)\ge k$. The minimum in \eqref{eq:generalS} is at least $k$ if and only if both
+\[
+ \alpha+n\sigma\ge k,\qquad (n+1)c\ge k
+\]
+hold. Solve these inequalities over nonnegative integer $n$.
+\end{proof}
+
+For the counterexample,
+\[
+ H_A(k)=\max\left\{0,\ceil{\frac{k-1}{2548}},
+ \ceil{\frac{k}{2547}}-1\right\}.
+\]
+For instance, $H_A(6487209)=2546$ and $H_A(6487210)=2547$. These statements give exact error exponents; they do not print the millions of stabilized decimal digits themselves. Computing a residue and computing its guaranteed precision are distinct tasks.
+
+\subsection{A consequence for pentation}
+To connect directly with the next up-arrow operation, define
+\[
+ P_1(a)=a,\qquad P_{j+1}(a)=T_{P_j(a)}(a)\quad(j\ge1).
+\]
+This is the usual positive-integer pentation sequence $P_j(a)=a\uparrow\uparrow\uparrow j$. Its terms can be viewed as ordinary tetrations whose heights are themselves immense.
+
+\begin{corollary}[Exact consecutive pentation agreement for the counterexample]\label{cor:pentation}
+For every $j\ge2$,
+\begin{equation}\label{eq:pentation}
+ \nu_{10}\bigl(P_{j+1}(A)-P_j(A)\bigr)
+ =2547\bigl(P_{j-1}(A)+1\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Since $A>1$, the sequence $P_j(A)$ is strictly increasing. For $j\ge2$,
+\[
+ P_{j+1}(A)-P_j(A)
+ =T_{P_j(A)}(A)-T_{P_{j-1}(A)}(A).
+\]
+Corollary~\ref{cor:alllater} makes the exact agreement exponent $s_{P_{j-1}(A)}(A)$. Since $P_{j-1}(A)\ge A>2546$, the second branch of \eqref{eq:piecewiseS} applies.
+\end{proof}
+
+The formula is symbolic but exact. It illustrates a useful distinction in fast-growing mathematics: the represented integer may be inaccessible to explicit expansion, while a structural statistic of that integer has a short rigorous description. This observation does not claim a general algorithm for all Conway chains or for transfinite fast-growing hierarchies.
+
+\section{An extension to non-squarefree radices}
+\label{sec:radices}
+The original investigation also considered whether a non-squarefree numeral radix could produce periodic rather than constant digit gains. That qualitative possibility is already explicitly noted in recent work~\cite{Ripa2026}; it is not claimed as a discovery here. The affine valuation law nevertheless gives a particularly transparent complete answer for radices supported on $2$ and $5$.
+
+Fix positive integers $u,v$, let $R=2^u5^v$, and keep $a>1$, $a\equiv1\pmod{10}$. Define
+\[
+ s_n^{[R]}(a)=\max\{e\ge0:R^e\mid\Delta_n(a)\}.
+\]
+Then directly from prime divisibility,
+\begin{equation}\label{eq:radix}
+ s_n^{[R]}(a)=
+ \min\left\{\floor{\frac{\alpha+n\sigma}{u}},
+              \floor{\frac{(n+1)c}{v}}\right\}.
+\end{equation}
+Since $\min(\floor{x},\floor{y})=\floor{\min(x,y)}$, this is the floor of a minimum of two rational affine functions.
+
+\begin{theorem}[Eventual period for $2^u5^v$]\label{thm:period}
+Put
+\[
+ \rho=\min\left\{\frac\sigma u,\frac cv\right\}=\frac PQ
+\]
+in lowest terms, with $P,Q$ positive. There exists a rational $\eta$ and an index $N$ such that
+\[
+ s_n^{[R]}(a)=\floor{n\rho+\eta}\quad(n\ge N).
+\]
+The gains $s_n^{[R]}-s_{n-1}^{[R]}$ are eventually periodic, with least eventual period exactly $Q$. They are eventually constant if and only if $\rho$ is an integer.
+\end{theorem}
+\begin{proof}
+If the slopes in \eqref{eq:radix} differ, the affine function with smaller slope is the smaller one for all sufficiently large $n$. If the slopes agree, take the smaller intercept. This proves the claimed eventual form.
+
+Because $Q\rho=P$ is an integer,
+\[
+ \floor{(n+Q)\rho+\eta}=\floor{n\rho+\eta}+P.
+\]
+Taking differences shows that $Q$ is an eventual period. Conversely, if $\ell$ is any eventual period, the sum of the gains over one period is an integer $S$. The average gain is both $S/\ell$ and $\rho=P/Q$, since $\floor{n\rho+\eta}/n\to\rho$. Thus $Q\mid\ell$ by coprimality. The least eventual period is therefore $Q$.
+\end{proof}
+
+\begin{example}
+For $a=11$, the parameters are $(\alpha,\beta,c)=(1,2,1)$. With $R=100$,
+\[
+ s_n^{[100]}(11)=\floor{\frac{n+1}{2}},
+\]
+so the gains are $1,0,1,0,\ldots$. With $R=20$, however,
+\[
+ s_n^{[20]}(11)=n,
+\]
+and the gain is constantly~$1$. Non-squarefreeness alone does not force nonconstant behavior; the reduced denominator of the active slope determines it in this setting.
+\end{example}
+
+The case $R=10$ has $u=v=1$, so both slopes are integers and the eventual period is necessarily~$1$. The decimal counterexample concerns \emph{how late} that constant regime begins, not a failure of eventual constancy.
+
+\section{Research-status audit and the precise logical gap}
+\label{sec:audit}
+
+\subsection{Version and numbering audit}
+The primary statement has two different labels. The journal PDF of Rip\`a's paper prints \emph{Conjecture~1} on page~46; the arXiv version prints \emph{Conjecture~2.1} on its page~3~\cite{Ripa2021}. The mathematical content is the same decimal-length assertion. Both PDF pages were visually checked for this report, rather than relying only on converted HTML.
+
+The later paper \emph{Number of stable digits of any integer tetration} gives a valuation-based upper bound
+\begin{equation}\label{eq:laterbound}
+ \bar b(a)\le\widetilde v(a)+2
+\end{equation}
+and says that it confirms Conjecture~1 of its reference~12, which is the earlier paper~\cite[arXiv version, p.~10]{RipaOnnis2022}. Thus there is a published claimed resolution to account for; calling the original assertion simply ``still open'' without qualification would be misleading.
+
+\subsection{Why the claimed implication does not hold}
+For our base the valuation appearing in that bound is
+\[
+ \widetilde v(A)=v_5(A-1)=2547,
+\]
+whereas
+\[
+ \len(A)=2544.
+\]
+The valuation bound permits onset as late as $2549$, and the exact onset is $2547$. There is no contradiction with \eqref{eq:laterbound}. The stronger digit-length bound would require onset no later than $2546$, and is false.
+
+In particular, a proof of $\bar b(a)\le\widetilde v(a)+2$ cannot be converted to $\bar b(a)\le\len(a)+2$ merely by treating $\widetilde v(a)$ as no larger than the decimal length. For the certified base it is larger by~$3$. More generally, a positive integer can have a high $5$-adic valuation without needing that many decimal digits, since the relevant size comparison is with powers of $5$, not powers of $10$.
+
+This report does not assert that every theorem or formula in either paper is false. In particular, the eventual speed formula gives the same value $2547$ as the elementary proof above. The error identified here is the asserted decimal-length sufficient condition and the later claim that a different bound confirms it.
+
+\subsection{An indexing cross-check against a published example}
+The later paper uses $a=163574218751$ and reports eventual speed $13$ beginning at height~$7$~\cite[arXiv version, p.~10]{RipaOnnis2022}. Our independent exact profile is
+\[
+ (\alpha,\beta,c)=(1,15,13),\qquad
+ s_n=\min\{1+15n,13(n+1)\}.
+\]
+Thus
+\[
+ (s_1,s_2,s_3,s_4,s_5,s_6,s_7)
+ =(16,31,46,61,76,91,104),
+\]
+and the sustained raw onset is $1+\ceil{12/2}=7$, agreeing at the relevant heights. Its published initial gains $12$ and $19$ instead of the uniform modular gains are an early-display convention issue: the base has only $12$ displayed digits, while $s_1=16$. Their cumulative count at height~$2$ is $31$, and all subsequent differences agree. This cross-check is why the main theorem states its published-convention profile only for $b\ge3$.
+
+\subsection{What is and is not established}
+The explicit integer contradicts the stated universal assertion; that conclusion depends on the proved valuation identities and the small arithmetic certificate. It does not depend on a probabilistic model, on a search cutoff, or on trusting an external formula for the speed.
+
+The search does not prove that $A$ is the globally smallest counterexample. It does not prove infinitely many failures, failure of every additive-constant variant, or a new optimal bound covering all final digits. No formal verification in Lean or another proof assistant is supplied. Historical novelty remains subject to an independent literature and priority check. These limitations are distinct from the validity of the displayed counterexample.
+
+\section{Reproducibility and verification design}
+\label{sec:reproduce}
+
+\subsection{Files and commands}
+The archive contains the complete decimal integer, source code, stored verification results, this \LaTeX{} source, and the compiled PDF. Python~3.9 or later is sufficient; the numerical code has no third-party dependencies. From the extracted directory, run
+\begin{lstlisting}[language=bash]
+python verify.py
+python verify_stream.py
+python -m unittest -v test_tetration
+python search.py --max-c 2547 --output search_results.json
+\end{lstlisting}
+The first checker reconstructs $A$ by both the built-in modular inverse and a separately implemented extended Euclidean algorithm, checks the decimal file, verifies exact residues, and evaluates the complete transient gain sequence. The second checker shares no arithmetic helper code with the first and reads the decimal representation one digit at a time.
+
+The latter deliberately avoids the construction algorithm. This matters because two programs that both use the same mistaken inverse, indexing, or profile routine would offer weaker corroboration than independent construction and residue verification.
+
+\subsection{Regression tests}
+The included test suite passed all seven test methods. Its finite checks include direct evaluation of $a^a-a$ for all $99$ bases $11,21,\ldots,991$; $891$ independent modular-tower checks at heights $2$ through $10$ for those bases; and $480$ modular checks for $80$ constructed CRT bases at six selected heights. It also verifies the onset formula on $12640$ admissible abstract profiles with $1\le c\le80$ and larger $2$-adic valuation between $2$ and~$80$.
+
+The modular routine uses repeated Euler reduction for moduli having no prime factors except $2$ and $5$. It does not use the affine valuation theorem. The suite also covers the single intermediate gain at a nonintegral crossover, the published example above, and invalid-input handling. Stored outputs are included, but the scripts are the reproducible source of the finite checks.
+
+No finite collection of regression tests proves the all-height formulas. Their proof is Theorem~\ref{thm:affine} and its consequences. The tests check the implementations, the certificate, and likely indexing mistakes.
+
+\subsection{Why the computation is modest}
+The integer $A$ has $2544$ decimal digits and $8451$ binary digits. The certificate requires modular arithmetic with integers of comparable size, and powers such as $5^{2548}$ and $2^{2549}$. In a binary representation, the storage needed is linear in the CRT parameter $c$.
+
+A direct construction by modular inversion and multiplication has polynomial bit complexity in $c$ with ordinary integer algorithms. The search evaluates a few thousand such constructions. This is fundamentally different from expanding $T_{2546}(A)$: the proof has removed the tower from the computational task altogether.
+
+\section{Further questions suggested by the counterexample}
+\label{sec:future}
+A natural next problem is to determine the least counterexample to \eqref{eq:conjecture}, either globally or within a specified final-digit class. The exact criterion \eqref{eq:failurecriterion} gives a much more effective starting point than enumerating towers. A global minimality claim would require a coverage proof for the search space, not merely a longer numerical scan.
+
+Another question is whether the excess $B(a)-\len(a)$ is unbounded for bases ending in $1$. Our result proves that the excess can be~$3$, but says nothing about arbitrarily large excess. Within the balanced CRT family, increasingly long zero runs in compatible residues would be relevant; proving the needed digit behavior is a separate arithmetic problem.
+
+A third direction is a sharp replacement for the proposed bound across all the allowed residue classes. The present exact theorem is deliberately limited to $a\equiv1\pmod{10}$. The other classes require different initial $5$-adic behavior or nonunit prefactors; those cases should be analyzed rather than silently inferred from the present proof.
+
+Finally, the short valuation proof and streaming certificate are suitable for proof-assistant formalization. Such a development would have a clean division: formalize the lifting identities and tower induction once, then check the concrete residues using certified integer arithmetic. That would strengthen the verification status without changing the mathematics.
+
+\section{Conclusion}
+The enormous growth of tetration is not the obstacle in this problem. The decisive object is a minimum of two affine prime-valuation sequences. Their slopes differ by one, their offsets force a long transient, and an unusually short CRT representative breaks the proposed relation between transient length and decimal length.
+
+For the explicitly certified base $A$,
+\[
+ \len(A)=2544,\qquad
+ V(A,2546)=2548,\qquad
+ V(A,b)=2547\quad(b\ge2547).
+\]
+This is an exact counterexample, together with a complete explanation of the mechanism and a corrected valuation-based criterion in its residue class. It also exposes why the later claimed confirmation of the decimal-length conjecture does not follow from the weaker bound actually stated there.
+
+\appendix
+\clearpage
+\section{The full decimal integer}
+\label{app:decimal}
+The following lines, concatenated without spaces or line breaks, are $A$. All lines except the last contain $80$ digits; the last contains $64$. There are $32$ lines, hence $31\cdot80+64=2544$ digits. The machine-readable file \texttt{counterexample.txt} contains the same digits on one line.
+\begingroup
+\fvset{fontsize=\fontsize{7.7}{9.4}\selectfont}
+\begin{Verbatim}
+76767355575395858247190525136701257762289410141024247606932608721270428294463135
+87375345968897674155448497190705590174324746231215320313042413988753720980826505
+19787046591577643044981705992326031407704489458009941460631781313594241632520830
+40263256951689714070553056438282283475344540484662798210051249318062322412180755
+45422346212519557752574959754537587876504968504969252360218515186694958667777023
+44724642105644452079969528192106211803718739228304904185361699496479482108422681
+01606714090018291845304342910026271826686520146084383567543285479394609086102415
+12396690230238978702744787583456716817349527804189981232291891473505602121363955
+80352799674909644637941681206990986684381933894455603229427316240708977150502927
+38552908590191098174957153144808901631205203108257494261036034614594148947033019
+35869462974555940773626001044469290374169602847191540636338164531094445535985247
+92348233654541440872685161971109528091361793872855007642023593648424477875724583
+83806437725013617646687393701958843129498085423866307175786149439544987740297676
+75872319864420411951019522497774826209309009702235986426645953179943209014340594
+27105452749564929113604176289863685470282390294652256630391995622941053955553310
+91755734307031169281241267373279108211934255304319610528487927730757598264925330
+61733713225652982395747994284940292267121379553468930904463099400859488766837132
+59526995850510286370424254195815174834189397501750662263296824645000216462642568
+54373011824144621094040580445538919328676234360259557873888406552038677761960451
+07151579497265025977657374437491997326198279302218312719522484681263560407476361
+64332959014591601350249524348265703442189310205119714775365928600903161001110778
+78370758549192688000345682328792990134440891851607630143809581249394629521812487
+43217028567752652960587815515152024459848500884254568804651730820049246089682745
+62224116967384860662367295689902203456591242983943131831174711746356302971684540
+16793100596421532840663001710522086799613490834464399876334029114753434548488777
+85336786059682700315554174890285402413257042673536551889684877952949120100013087
+83832397618516939879887888510362580614429800448163899849167142944583675977299506
+38788367344765664646947812494388631157102761207900033105438655618665916551981153
+10676043751466184249281107666029838707277256672319019415613162361808366809510442
+76307718174243403123136593503653142226854524673706961790023941104078370652478992
+08560621257065639724876188907400637047147219209398536178366039412298021987566698
+0838272377998885153153538207781991786760045215487480163574218751
+\end{Verbatim}
+\endgroup
+The SHA-256 digest of the decimal digits alone (without a terminating newline) is
+\begin{center}
+\texttt{87adeb0fb9f008e56671cd09bf0a40c3a}\par
+\texttt{ebc7b51d389f9c9f942c9eeac3b8271}.
+\end{center}
+The digest helps detect accidental transcription changes. It is not a substitute for the modular certificate or the proof.
+
+\clearpage
+\section{A minimal stand-alone certificate checker}
+\label{app:minimal}
+The essential checks fit in a few lines. This version uses full integers; the separately supplied streaming checker verifies the decimal data by a different route.
+\begin{lstlisting}
+c = 2547
+q = 5**c
+m = 2**(c + 1)
+A = 1 + q*((-2*pow(q, -1, m)) % m)
+
+assert 7*10**2543 < A < 8*10**2543
+assert A % 2**2549 == 2**2548 - 1
+assert A % 5**2548 == 5**2547 + 1
+assert A % 10 == 1
+
+s = lambda n: min(1 + 2548*n, 2547*(n + 1))
+assert s(2546) - s(2545) == 2548
+assert s(2547) - s(2546) == 2547
+print("Exact arithmetic certificate passes.")
+\end{lstlisting}
+The last two assertions merely evaluate the formula whose validity at every height is proved in the article. The scripts do not disguise a finite calculation as a proof for infinitely many heights.
+
+\section{Checklist for an independent review}
+\label{app:checklist}
+An independent reviewer can isolate the argument into four checks.
+
+\paragraph{Source check.} Confirm the universal quantifiers, the excluded last digits, and the meaning of the height in Conjecture~1 of the journal paper (Conjecture~2.1 of the arXiv version). Check the later claim of confirmation separately from the inequality preceding it.
+
+\paragraph{Arithmetic check.} Verify the CRT-defined integer or the full decimal string against \eqref{eq:sizeCert}--\eqref{eq:fiveCert}. The exact, rather than merely lower-bound, valuations are essential.
+
+\paragraph{Proof check.} Verify the factorization \eqref{eq:deltaRecurrence}, its unit prefactor, and the applicability of the two lifting lemmas. Then verify the initial values and the two affine recurrences.
+
+\paragraph{Index check.} At height $b$, take $s_b-s_{b-1}$. The equality of the two affine functions occurs at $n=2546$, but the first smaller gain occurs at $b=2547$.
+
+These checks are sufficient. The search, the $10$-adic interpretation, the pentation consequence, and the non-squarefree-radix discussion are not needed to validate the main counterexample.
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{Ripa2021}
+Marco Rip\`a,
+\emph{The congruence speed formula},
+Notes on Number Theory and Discrete Mathematics \textbf{27}(4) (2021), 43--61.
+DOI: \href{https://doi.org/10.7546/nntdm.2021.27.4.43-61}{10.7546/nntdm.2021.27.4.43-61}.
+Journal PDF: \url{https://nntdm.net/papers/nntdm-27/NNTDM-27-4-043-061.pdf}.
+ArXiv version: \href{https://arxiv.org/abs/2208.02622}{arXiv:2208.02622v1}.
+The target is Conjecture~1, journal p.~46; equivalently Conjecture~2.1, arXiv p.~3.
+
+\bibitem{RipaOnnis2022}
+Marco Rip\`a and Luca Onnis,
+\emph{Number of stable digits of any integer tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{28}(3) (2022), 441--457.
+DOI: \href{https://doi.org/10.7546/nntdm.2022.28.3.441-457}{10.7546/nntdm.2022.28.3.441-457}.
+ArXiv version: \href{https://arxiv.org/abs/2210.07956}{arXiv:2210.07956v1}.
+The valuation bound and the claim concerning Conjecture~1 occur on arXiv p.~10; the journal landing page confirms the bibliographic details.
+
+\bibitem{Ripa2026}
+Marco Rip\`a,
+\emph{Radix-$r$ Congruence Speed Verification Tool (Python Script)},
+Zenodo, version~V3, 25 January 2026.
+DOI: \href{https://doi.org/10.5281/zenodo.18366408}{10.5281/zenodo.18366408}.
+The record explicitly notes possible periodic gains for non-squarefree radices. It is cited for that existing observation, not used as a premise of the present proof.
+\end{thebibliography}
+
+\end{document}

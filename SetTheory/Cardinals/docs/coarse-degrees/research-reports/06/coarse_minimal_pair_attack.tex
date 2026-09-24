@@ -1,0 +1,1142 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25.5mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,listings,xurl,titlesec}
+\definecolor{navy}{RGB}{30,57,82}
+\definecolor{ink}{RGB}{32,38,44}
+\definecolor{pale}{RGB}{239,243,247}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=navy,bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Sparse Perfect Families in a Single Coarse Class},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={A counterexample to C1, quantitative minimal pairs, and representative spectra}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Sparse perfect families and coarse classes}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\strings}{2^{<\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}
+\newcommand{\Up}{\operatorname{Up}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Ham}{\operatorname{Ham}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\emptystr}{\varepsilon}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{navy},showstringspaces=false,
+  backgroundcolor=\color{pale},xleftmargin=3pt,xrightmargin=3pt}
+\pdfstringdefDisableCommands{\def\N{N}\def\leT{<=T}\def\zero{0}\def\nc{nc}\def\uc{uc}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY \quad / \quad CONSTRUCTION AND SOURCE AUDIT\par}
+\vspace{15mm}
+{\Huge\bfseries\color{navy}Sparse Perfect Families\par}
+\vspace{4mm}
+{\LARGE in a Single Coarse Class\par}
+\vspace{10mm}
+{\large A counterexample to C1, quantitative Turing minimal pairs,\par
+and a description of representative spectra\par}
+\vspace{13mm}
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{5mm}
+\noindent Prepared for Vladimir Reshetnikov\\[3pt]
+18 September 2026
+\vspace{9mm}
+\begin{abstract}
+We attack C1 in the supplied report: must a nonuniform coarse-equivalence class
+contain a representative of least Turing degree? The answer is negative. An
+important source audit shows that this conclusion already follows from a 2016
+theorem of Hirschfeldt, Jockusch, Kuyper, and Schupp, although the coarse clause
+is posed again in the displayed Question~7 of Gerdes's 2025 preprint.
+We therefore do not claim a new resolution of that question.
+
+The main work here is an independent finite-extension construction with a much
+more specific conclusion. For every computable, nondecreasing, unbounded
+sublinear function $h$, we construct a perfect family of individually
+$1$-generic sets, any two distinct members of which form a Turing minimal pair.
+All members agree outside one set $V$ satisfying
+$|V\cap[0,n)|\le h(n)$ for every $n$. Two witnesses and the tree labeling are
+computable in $0''$. The proof combines a one-bit connectivity lemma with a
+global variation budget and perfect-tree fusion. We also identify the Turing
+spectra of density-equivalence, uniform coarse-equivalence, and nonuniform
+coarse-equivalence classes, and characterize when such spectra have a least
+degree. All mathematical proofs are included; finite verification code is
+provided separately. Priority for the quantitative refinement is not established.
+\end{abstract}
+\vfill
+\noindent\small The infinite construction is a conventional mathematical proof, not a
+claimed Lean certificate. The executable checks verify finite combinatorial
+invariants and do not implement a halting-problem oracle.
+\end{titlepage}
+
+{\small\tableofcontents}
+\newpage
+
+\section{The selected target and the principal result}
+\label{sec:result}
+
+\subsection{What C1 asks}
+For a total function $f:\N\to\N$, a \emph{coarse description} is a total
+function that differs from $f$ on a set of asymptotic density zero. Write
+$f\leq_{\nc}g$ when every coarse description of $g$ computes a coarse
+description of $f$. The reduction is nonuniform: different descriptions may
+require different oracle programs. The selected question is exactly
+\begin{equation}\label{eq:C1}
+ \forall f\in\Baire\;\exists g\equiv_{\nc}f\;
+ \forall k\equiv_{\nc}f\quad g\leT k.
+\end{equation}
+The supplied report calls this C1 and recommends a noncomputable coarse class
+containing a Turing minimal pair as a sufficient counterexample certificate
+\cite[Section~5, C1 and its diagnostic propositions]{Input}.
+
+A \emph{Turing minimal pair} here means two noncomputable sets $A,B$ such that
+every total numerical function computable from both is computable. This is a
+statement about their Turing degrees, not their coarse degrees. In our
+construction their coarse degrees will be \emph{equal}, rather than forming a
+minimal pair in the coarse degrees.
+
+\subsection{The quantitative theorem}
+\begin{definition}[Sublinear order]
+A function $h:\N\to\N$ is a sublinear order if it is computable,
+nondecreasing, unbounded, and $h(n)/n\to0$ as $n\to\infty$ through positive
+integers. The value $h(0)$ may be zero.
+\end{definition}
+
+\begin{theorem}[Sparse perfect family]\label{thm:main}
+For every sublinear order $h$, there are a nonempty perfect set
+$P\subseteq\Cantor$ and a set $V\subseteq\N$ with the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every $X\in P$ is $1$-generic.
+\item If $X,Y\in P$ are distinct, then every total function $f$ with
+$f\leT X$ and $f\leT Y$ is computable.
+\item All members of $P$ agree outside $V$, and
+\begin{equation}\label{eq:budget-main}
+                 |V\cap[0,n)|\le h(n)\qquad(n\in\N).
+\end{equation}
+\item A compatible labeling of a full binary tree whose paths are $P$ is
+computable in $0''$. In particular, $P$ contains two distinct members
+$A,B\leT0''$.
+\end{enumerate}
+Consequently every two distinct members form a Turing minimal pair, and all
+members belong to one nonzero uniform coarse class and one nonzero nonuniform
+coarse class. Neither class has a least Turing degree.
+\end{theorem}
+
+The argument is developed in Sections~\ref{sec:extension}--\ref{sec:perfect}.
+The construction uses no minimal-pair theorem or cone-avoidance theorem as a
+black box. Its noncomputability requirement is obtained by meeting the
+ordinary $1$-genericity requirements.
+
+An explicit permissible bound is
+\begin{equation}\label{eq:log-bound}
+                     h(n)=\lfloor\log_2(n+1)\rfloor.
+\end{equation}
+Thus the same coarse class contains continuum many pairwise Turing-minimal-pair
+representatives, even though, among their first million bits, all variation
+across the \emph{entire family} is confined to at most $19$ coordinates.
+The theorem does not say that those coordinates can be located computably.
+For example, the bound in \eqref{eq:log-bound} also permits the disagreement
+positions to be much farther apart than exponential spacing.
+
+\subsection{What is established, and what is not a novelty claim}
+The two main conclusions have different provenance. The negative answer to
+\eqref{eq:C1} is an implication of previously published work; the exact bridge
+is supplied in Section~\ref{sec:audit}. The independently developed work in
+this report is the quantitative sparse-family construction and its supporting
+lemmas. A targeted literature search did not identify this exact combination
+of a perfect family, pairwise Turing minimality, one common variation set, and
+an arbitrary prescribed computable sublinear bound. That search is not a
+proof of priority. The quantitative theorem should therefore be regarded as
+a detailed research result offered for mathematical review, not advertised as
+a certified first occurrence in the literature.
+
+The distinction matters for the user's original objective. We obtain a full
+counterexample to the selected formula, not merely a conditional obstruction.
+But the source audit prevents us from describing it as a newly solved
+literature-open problem.
+
+\section{Definitions and the source-status correction}
+\label{sec:audit}
+
+\subsection{Density, descriptions, and the two reductions}
+For $S\subseteq\N$ and $n>0$, put
+\[
+ \rho_n(S)=\frac{|S\cap[0,n)|}{n}.
+\]
+For total $f,g$, write $f=_{\rho}g$ if
+$\rho_n(\{i:f(i)\ne g(i)\})\to0$, and put
+\[
+                     \CD(f)=\{D:D=_{\rho}f\}.
+\]
+A finite union of density-zero sets has density zero: at each prefix, the
+cardinality of a union is at most the sum of the cardinalities. It follows
+that $=_{\rho}$ is an equivalence relation and
+\begin{equation}\label{eq:identical-CD}
+                f=_{\rho}g\quad\Longrightarrow\quad\CD(f)=\CD(g).
+\end{equation}
+
+The definitions used here, as in C1, are
+\begin{align*}
+ f\leq_{\nc}g
+ &\quad\Longleftrightarrow\quad
+   \forall D\in\CD(g)\;\exists E\in\CD(f)\quad E\leT D,\\
+ f\leq_{\uc}g
+ &\quad\Longleftrightarrow\quad
+   \exists\Phi\;\forall D\in\CD(g)\quad\Phi^D\in\CD(f).
+\end{align*}
+The second definition includes totality of $\Phi^D$ on each indicated input
+oracle. Identity is a uniform reduction in both directions in
+\eqref{eq:identical-CD}. Hence
+\begin{equation}\label{eq:equiv-inclusions}
+          f=_{\rho}g\quad\Longrightarrow\quad
+          f\equiv_{\uc}g\quad\Longrightarrow\quad f\equiv_{\nc}g.
+\end{equation}
+These conventions agree with the explicit nonuniform formula in Gerdes's
+Question~7 and with the coarse-reducibility definitions in the earlier
+literature \cite{Gerdes,HJKS}.
+
+For binary $f$, allowing natural-valued descriptions causes no issue here.
+The computable clipping map $c(0)=0$ and $c(m)=1$ for $m>0$ fixes both binary
+values, so
+\[
+ \{i:c(D(i))\ne f(i)\}\subseteq\{i:D(i)\ne f(i)\}.
+\]
+A natural-valued computable coarse description would therefore yield a binary
+computable coarse description.
+
+\begin{lemma}[Generic sets are not coarsely computable]\label{lem:generic}
+Every $1$-generic binary set has no computable coarse description, even among
+natural-valued functions.
+\end{lemma}
+\begin{proof}
+Recall that $X$ is $1$-generic if, for each c.e. set $W\subseteq\strings$,
+either some prefix of $X$ belongs to $W$, or some prefix of $X$ has no
+extension in $W$.
+Fix a total computable $C:\N\to\N$, a rational $q<1$ with $q\ge0$, and an
+integer $N$. The following set of finite binary strings is computable:
+\[
+ W_{C,q,N}=\left\{\sigma:\ |\sigma|>N,
+ \quad\frac{|\{i<|\sigma|:\sigma(i)\ne C(i)\}|}{|\sigma|}>q\right\}.
+\]
+It is dense. Given any prefix, extend it by sufficiently many bits opposite
+to $C$; at position $i$ use $1$ if $C(i)=0$ and $0$ otherwise. All appended
+bits are disagreements, so the disagreement fraction eventually exceeds $q$.
+A $1$-generic cannot avoid a dense set of strings, and therefore has a prefix
+in $W_{C,q,N}$. Varying $N$ shows that the upper density of its disagreements
+with $C$ is at least $q$. Varying rational $q<1$ makes this upper density equal
+to $1$, which rules out a coarse description.
+\end{proof}
+
+\begin{lemma}[Minimal-pair certificate]\label{lem:certificate}
+Suppose $A=_{\rho}B$, $A$ has no computable coarse description, and every total
+function below both $A$ and $B$ is computable. Then neither $[A]_{\nc}$ nor
+$[A]_{\uc}$ has a representative of least Turing degree.
+\end{lemma}
+\begin{proof}
+First, $[A]_{\nc}$ contains no computable member. If a computable $g$ belonged
+to it, the relation $A\leq_{\nc}g$, applied to the coarse description $g$ of
+itself, would produce a computable coarse description of $A$.
+Both classes contain $A,B$, by \eqref{eq:equiv-inclusions}. A least-degree
+representative $k$ of either class would satisfy $k\leT A,B$ and so would be
+computable, contrary to the preceding observation. This argument allows $k$
+to be natural-valued and proves absence of a \emph{least} degree, not absence
+of all minimal elements.
+\end{proof}
+
+\subsection{Why the negative answer already follows from the literature}
+Gerdes's arXiv version dated 9 August 2025 explicitly asks
+\eqref{eq:C1} in Question~7, on printed page~64 \cite{Gerdes}.
+In contrast, Hirschfeldt--Jockusch--Kuyper--Schupp define the information common
+to all coarse descriptions by
+\[
+ X^{\mathfrak c}=
+ \{C\subseteq\N:\ \forall D\in\CD(X)\ (D\text{ binary}\Rightarrow C\leT D)\}.
+\]
+Their Theorem~4.2 states that if $X$ is $1$-generic, then $X^{\mathfrak c}$
+consists only of computable sets \cite[Theorem~4.2]{HJKS}.
+The paper was published in the \emph{Journal of Symbolic Logic} in 2016;
+the inspected preprint is dated May 2015 \cite{HJKS}.
+
+\begin{proposition}[The older theorem refutes C1]\label{prop:old}
+For every $1$-generic $X$, neither $[X]_{\nc}$ nor $[X]_{\uc}$ has a least
+Turing degree.
+\end{proposition}
+\begin{proof}
+Assume $g$ is a least-degree representative of one of these classes.
+Every binary coarse description $D$ of $X$ satisfies $D=_{\rho}X$, so is a
+member of both classes. Thus $g\leT D$ for every such $D$.
+The graph of the total function $g$, coded as a set of natural numbers, is
+therefore in $X^{\mathfrak c}$. By the cited theorem it is computable, hence
+$g$ itself is computable: on input $n$, search the computable graph for the
+unique pair $(n,m)$. But $X\leq_{\nc}g$ now yields a computable coarse
+description of $X$, contradicting Lemma~\ref{lem:generic}.
+\end{proof}
+
+This is an exact quantifier match, not an analogy between distinct degree
+structures. The logical step is that \emph{every coarse description is itself
+a representative of the same coarse degree}. No minimal-pair construction is
+needed for Proposition~\ref{prop:old}. The rest of this report goes beyond this
+literature bridge by constructing exceptionally close minimal-pair witnesses
+directly.
+
+\section{The Turing spectrum of a coarse class}
+\label{sec:spectra}
+
+For a class $\mathcal C$ of total functions, write
+\[
+ \Spec(\mathcal C)=\{\degT(g):g\in\mathcal C\},\qquad
+ \Up(\mathcal C)=\{\mathbf b:\exists g\in\mathcal C\ (\degT(g)\le\mathbf b)\}.
+\]
+The following elementary observation strengthens the upward-closure diagnostic
+in the supplied report \cite[Section~5]{Input}.
+
+\begin{theorem}[Equality of representative spectra]\label{thm:spectra}
+For every total $f:\N\to\N$,
+\begin{equation}\label{eq:spectra}
+ \Spec([f]_{\rho})
+   =\Spec([f]_{\uc})
+   =\Spec([f]_{\nc})
+   =\Up(\CD(f)).
+\end{equation}
+If $f$ is binary, the same equalities hold when all representative classes and
+descriptions in the display are restricted to binary functions. Their degree
+spectra also coincide with the unrestricted spectra in \eqref{eq:spectra}.
+\end{theorem}
+\begin{proof}
+The first two inclusions follow from \eqref{eq:equiv-inclusions}.
+If $g\equiv_{\nc}f$, then applying $f\leq_{\nc}g$ to the description $g$
+itself produces $D\in\CD(f)$ with $D\leT g$. Consequently
+$\Spec([f]_{\nc})\subseteq\Up(\CD(f))$.
+
+For the reverse inclusion, take a degree $\mathbf b$ computing
+$D\in\CD(f)$, and a binary set $B$ of degree $\mathbf b$. Define
+\[
+ Y(k)=\begin{cases}
+        B(n),&k=2^n\text{ for some }n,\\
+        D(k),&\text{otherwise}.
+       \end{cases}
+\]
+The powers of two have density zero, so $Y=_{\rho}D=_{\rho}f$.
+Moreover $Y\leT B$ because $D\leT B$, and $B\leT Y$ by reading the
+coordinates $2^n$. Hence $\degT(Y)=\mathbf b$, proving the reverse inclusion.
+For binary $f$, first clip any natural-valued $D$ to a binary description
+without increasing its degree, then perform the same coding. This gives a
+binary representative of every degree in the unrestricted spectrum.
+\end{proof}
+
+These spectra are always upward closed. Uniform and nonuniform equivalence
+need not be identical relations, but their classes \emph{at a fixed $f$} have
+identical sets of Turing degrees. In particular, least-degree existence is
+the same for $[f]_{\rho}$, $[f]_{\uc}$, and $[f]_{\nc}$.
+
+\subsection{A least-degree criterion by robust block coding}
+For a binary $B$, define $J(B)$ by
+\begin{equation}\label{eq:J}
+ J(B)(0)=0,\qquad J(B)(m)=B(n)\quad(2^n\le m<2^{n+1}).
+\end{equation}
+Clearly $J(B)\eqT B$. This block code is used below only with nonuniform
+reductions; the finite correction in its decoder must not be silently
+promoted to a uniform operation.
+
+\begin{lemma}[Block recovery]\label{lem:block}
+Every coarse description $D$ of $J(B)$ computes $B$.
+\end{lemma}
+\begin{proof}
+Clip $D$ to a binary function first. On the block
+$I_n=[2^n,2^{n+1})$, let $B^*(n)$ be the majority value of $D$, breaking ties
+in favor of zero. If $E$ is its error set relative to $J(B)$, then
+\[
+ \frac{|E\cap I_n|}{2^n}
+ \le 2\rho_{2^{n+1}}(E)\longrightarrow0.
+\]
+For all sufficiently large $n$, fewer than half the block positions are
+errors, so $B^*(n)=B(n)$. Thus $B^*\leT D$ and $B=^*B^*$, which gives
+$B\leT D$ by hard-coding the finitely many exceptional bits. Neither their
+number nor their locations are asserted to be computable uniformly from $D$.
+\end{proof}
+
+\begin{theorem}[When a least degree exists]\label{thm:least-characterization}
+For every total $f$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $[f]_{\nc}$ contains a least Turing degree.
+\item There is a binary $B$ with $f\equiv_{\nc}J(B)$.
+\end{enumerate}
+In this case the least degree is $\degT(B)$. By Theorem~\ref{thm:spectra}, it is
+also the least degree of $[f]_{\uc}$ and of $[f]_{\rho}$.
+\end{theorem}
+\begin{proof}
+Suppose $g\equiv_{\nc}f$ has least degree, and choose $B\eqT g$ binary.
+Every $D\in\CD(f)$ is a representative of $[f]_{\nc}$, so computes $g$ and
+therefore computes $J(B)$. This proves $J(B)\leq_{\nc}f$.
+Also $g$, and hence $B$, computes a coarse description of $f$. By
+Lemma~\ref{lem:block}, every coarse description of $J(B)$ computes $B$, hence
+computes a coarse description of $f$. Thus $f\leq_{\nc}J(B)$.
+
+Conversely, suppose $f\equiv_{\nc}J(B)$. The latter is a representative of
+degree $\degT(B)$. If $g\equiv_{\nc}f$, applying $J(B)\leq_{\nc}g$ to $g$
+itself yields a coarse description of $J(B)$ computable from $g$.
+Lemma~\ref{lem:block} gives $B\leT g$. So $\degT(B)$ is least.
+\end{proof}
+
+The criterion can also be phrased without a code: a least degree exists
+precisely when some degree computed by \emph{every} coarse description also
+computes \emph{one} coarse description. Merely possessing common information
+is not enough. The code $J$ packages both requirements into a coarse degree.
+
+\section{A finite-extension lemma with a one-bit reserve}
+\label{sec:extension}
+
+\subsection{Finite oracle computations}
+Let $(\Phi_e)_{e\in\N}$ enumerate the partial oracle functionals with numerical
+outputs. The assertion $\Phi_e^\sigma(n)\downarrow=a$ means that a finite
+computation halts with value $a$ using only oracle coordinates below
+$|\sigma|$. Its value persists under every extension of $\sigma$.
+A missing finite convergence witness is not a proof of divergence on all
+infinite extensions.
+
+We write $\sigma u$ for concatenation, and require paired suffixes $u,v$ to
+have equal length. Their Hamming distance is
+\[
+          \Ham(u,v)=|\{i<|u|:u(i)\ne v(i)\}|.
+\]
+The next lemma isolates the main combinatorial mechanism independently of
+density or of a particular budget.
+
+\begin{lemma}[One-bit connectivity trilemma]\label{lem:trilemma}
+Fix finite binary strings $\sigma,\tau$, and a collection $\mathcal A$ of pairs
+of equal-length binary suffixes. Assume
+\begin{equation}\label{eq:one-bit}
+             \Ham(u,v)\le1\quad\Longrightarrow\quad(u,v)\in\mathcal A.
+\end{equation}
+For any two functionals $\Phi,\Psi$, at least one of the following holds:
+\begin{description}[style=nextline]
+\item[D: admissible disagreement.]
+There are $n$ and $(u,v)\in\mathcal A$ such that both
+$\Phi^{\sigma u}(n)$ and $\Psi^{\tau v}(n)$ converge, to different values.
+\item[P: a partiality cylinder.]
+For some $n,u$, either
+\begin{equation}\label{eq:partial-cylinder}
+        \forall w\in\strings\quad\Phi^{\sigma u w}(n)\uparrow,
+\end{equation}
+or the corresponding assertion holds for $\Psi$ above $\tau u$.
+\item[C: a computable common output.]
+There is a total computable $b:\N\to\N$ such that, for every $n,u$,
+\begin{align*}
+ \Phi^{\sigma u}(n)\downarrow&\quad\Longrightarrow\quad
+      \Phi^{\sigma u}(n)=b(n),\\
+ \Psi^{\tau u}(n)\downarrow&\quad\Longrightarrow\quad
+      \Psi^{\tau u}(n)=b(n).
+\end{align*}
+\end{description}
+In C, the conclusion is valid for \emph{all} finite suffixes, not merely
+admissibly paired ones. Hence it remains true after arbitrary subsequent
+extensions on either side.
+\end{lemma}
+
+\begin{proof}
+Assume D and P both fail. Fix an input $n$.
+Failure of P says that each functional can be made convergent above
+\emph{every} finite suffix on its side. More explicitly, for each $u$ there
+is $w$ with $\Phi^{\sigma u w}(n)\downarrow$, and similarly for $\Psi$.
+These convergence conditions are dense open conditions on appended suffixes.
+
+Take any two finite convergence witnesses, on either of the two sides, with
+suffixes $u,v$. Pad the shorter suffix with arbitrary bits until both have
+the same length $d$. Padding preserves the witnessed computations.
+In the $d$-dimensional binary cube, join $u$ to $v$ by a path
+\[
+             u=u_0,u_1,\ldots,u_m=v
+\]
+that flips one differing coordinate at a time. Consecutive vertices have
+Hamming distance one.
+
+There is a \emph{single} common suffix $w$ such that all the finitely many
+computations
+\begin{equation}\label{eq:simultaneous}
+  \Phi^{\sigma u_iw}(n),\quad\Psi^{\tau u_iw}(n)\qquad(0\le i\le m)
+\end{equation}
+converge. To see this without invoking a compactness theorem, process these
+$2(m+1)$ requirements one at a time. If a current common suffix is $w_0$,
+density supplies an additional suffix for the next required computation.
+Append it to $w_0$ on every occurrence. All previously obtained finite
+convergences remain true. After finitely many steps we have $w$.
+
+The pairs $(u_iw,u_iw)$ are admissible, so failure of D gives
+\begin{equation}\label{eq:diagonal-equality}
+      \Phi^{\sigma u_iw}(n)=\Psi^{\tau u_iw}(n).
+\end{equation}
+Also $(u_iw,u_{i+1}w)$ is admissible: appending the same word leaves its
+Hamming distance equal to one. Again by failure of D,
+\begin{equation}\label{eq:edge-equality}
+      \Phi^{\sigma u_iw}(n)=\Psi^{\tau u_{i+1}w}(n).
+\end{equation}
+Equations \eqref{eq:diagonal-equality} and \eqref{eq:edge-equality} propagate
+one value along the whole path, on both sides. In particular, the two
+arbitrary convergence witnesses chosen initially had the same value.
+Thus every convergent finite computation on input $n$, on either side, has
+one common value.
+
+Finally, to compute $b(n)$, dovetail all finite computations
+$\Phi^{\sigma u}(n)$ until one converges and output its value. The search
+terminates because P fails already at $u=\emptystr$. The preceding paragraph
+proves uniqueness and correctness of the output. The finite string $\sigma$
+and the index of $\Phi$ are constants in this ordinary program. Even if
+$\sigma$ was chosen using an oracle, hard-coding a \emph{finite} string does
+not make the resulting program an oracle computation. This proves C.
+\end{proof}
+
+\subsection{Why the partiality case cannot be omitted}
+A failed disagreement search is not itself sufficient to invoke C. The proof
+uses the absence of a \emph{whole cylinder} of divergence to obtain density
+of every convergence condition. A bounded simulation cannot certify this
+absence. Conversely, after finding a genuine cylinder as in
+\eqref{eq:partial-cylinder}, every infinite extension through that cylinder
+has a partial output; no subsequent injury or restraint argument is needed.
+
+The one-bit condition is also essential to this lemma. If only diagonal
+pairs $(u,u)$ were allowed, the two identity functionals above identical
+prefixes would never disagree on an admissible pair, although they could
+compute a noncomputable common infinite tail. Diagonal agreement alone does
+not force a computable output. Connectivity through one-bit edges removes
+exactly this obstruction.
+
+\section{The global variation budget}
+\label{sec:budget}
+
+\subsection{Finite frontiers and buffering}
+A \emph{frontier} is a finite nonempty indexed family
+$F=(\sigma_i)_{i<k}$ of binary strings of a common length $L$. Put
+\[
+ \Var(F)=\{n<L:\exists i,j<k\ (\sigma_i(n)\ne\sigma_j(n))\}.
+\]
+This is a global variation set, rather than the disagreement set of one
+selected pair. Call $F$ \emph{legal} if
+\begin{equation}\label{eq:frontier-legal}
+          |\Var(F)\cap[0,n)|\le h(n)\qquad(0\le n\le L).
+\end{equation}
+Let $r=|\Var(F)|$. Appending the same word to every member creates no new
+variation. Legality is preserved because $h$ is nondecreasing.
+
+\begin{lemma}[Buffering]\label{lem:buffer}
+Every legal frontier can be extended by a common string of zeros to a legal
+frontier of length $L^*$ satisfying $h(L^*)\ge r+1$. The search for such
+$L^*$ is computable.
+\end{lemma}
+\begin{proof}
+Since $h$ is unbounded and nondecreasing, the search through lengths
+$L,L+1,\ldots$ for the indicated inequality terminates. Common zeros add no
+variation, and at new prefix lengths the old count $r$ is bounded by $h$.
+\end{proof}
+
+After buffering, fix two different frontier members $\sigma_i,\sigma_j$.
+A pair of suffixes $(u,v)$ of common length $d$ is \emph{admissible} if
+\begin{equation}\label{eq:admissible}
+ r+\Ham(u\restr t,v\restr t)\le h(L+t)
+                         \qquad(0\le t\le d).
+\end{equation}
+This is a decidable finite condition. The inequality $h(L)\ge r+1$ and
+monotonicity show that \emph{every} diagonal or one-bit pair of suffixes, of
+any length, is admissible. Thus Lemma~\ref{lem:trilemma} applies.
+
+\subsection{Lifting a pair extension to every leaf}
+\begin{lemma}[Global lifting]\label{lem:lift}
+For admissible $(u,v)$, extend $\sigma_j$ by $v$ and every other frontier
+member, including $\sigma_i$, by $u$. The resulting frontier $F^*$ is legal.
+Its variation set is exactly
+\begin{equation}\label{eq:lift-variation}
+ \Var(F^*)=\Var(F)\ \cup\ \{L+t:t<d,\ u(t)\ne v(t)\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Old coordinates are unchanged. At a new coordinate, at least one leaf has
+the $u$-value and the selected $j$-leaf has the $v$-value; all leaves have
+one of these values. The coordinate varies exactly when those two values
+differ. This proves \eqref{eq:lift-variation}. For prefixes up to $L$ use old
+legality; for later prefixes use \eqref{eq:admissible}.
+\end{proof}
+
+There is a useful asymmetry here: a pairwise disagreement task can affect
+many leaves, but it costs only the differing coordinates of two suffixes,
+not the number of leaves. In the partiality case P, append the same witness
+$u$ to every frontier member. This costs no new variation and places the
+selected side permanently inside the chosen partiality cylinder. In case C,
+no special extension is necessary.
+
+\begin{proposition}[One permanent pair requirement]\label{prop:one-requirement}
+Given a legal frontier, two distinct leaves $i,j$, and indices $e,d$, a finite
+legal extension can ensure that, for all infinite extensions $X$ of the new
+$i$-leaf and $Y$ of the new $j$-leaf,
+\begin{equation}\label{eq:R}
+  \Phi_e^X=\Phi_d^Y\text{ is total}
+                 \quad\Longrightarrow\quad\Phi_e^X\text{ is computable}.
+\end{equation}
+The finite extension can be selected using $0''$.
+\end{proposition}
+\begin{proof}
+Buffer and apply Lemma~\ref{lem:trilemma} to the admissible pairs in
+\eqref{eq:admissible}. In D use Lemma~\ref{lem:lift} to make the disagreement
+permanent. In P append the common witness so one output is permanently
+partial. In C all total outputs are already the computable function supplied
+by that lemma. Each outcome is preserved by \emph{arbitrary} further
+extensions of all leaves.
+
+For effectiveness, D is a $\Sigma^0_1$ question: its witness consists of
+finite suffixes, an input, and two finite halting computations, together with
+finitely many computable budget checks. Decide it using $0'$ and search for
+a witness when it holds. If D fails, existence of P is $\Sigma^0_2$; its
+precise form for the first side is
+\[
+ \exists n,u\;\forall w,t\quad
+            \neg\bigl[\Phi_{e,t}^{\sigma_i u w}(n)\downarrow\bigr].
+\]
+It can be decided by $0''$. If true, find a witness $(n,u)$ using the
+$0'$-decidable inner $\Pi^0_1$ property. If both D and P fail, C follows from
+the proved lemma. There is no additional oracle decision in case C.
+\end{proof}
+
+\section{A two-real construction first}
+\label{sec:pair}
+
+Before handling a perfect family, it is helpful to isolate the complete
+counterexample with only two paths.
+
+\begin{theorem}[Sparse $0''$-computable minimal pair]\label{thm:pair}
+For every sublinear order $h$, there are $1$-generic $A,B\leT0''$ with
+\[
+ |(A\mathbin\triangle B)\cap[0,n)|\le h(n)\quad(n\in\N)
+\]
+such that every total function computable from both is computable.
+\end{theorem}
+\begin{proof}
+Maintain two finite strings $\sigma,\tau$ of equal length forming a legal
+frontier. Begin with both strings empty. Schedule all requirements
+\[
+ R_{e,d}:\quad\Phi_e^A=\Phi_d^B\text{ total}
+                       \ \Longrightarrow\ \Phi_e^A\text{ computable},
+\]
+and all ordinary genericity requirements $G_e^A,G_e^B$, using an effective
+enumeration of c.e. sets of strings $(W_e)$.
+
+Handle $R_{e,d}$ by Proposition~\ref{prop:one-requirement}, treating the two
+strings as distinct indexed leaves even if their current values happen to
+coincide. The proposition and its proof do not require incompatible strings;
+only two distinct indices are needed for the lifting argument.
+
+For $G_e^A$, ask whether $\sigma$ has an extension $\sigma u\in W_e$.
+If so, find one and append the same $u$ to both current strings. Then $A$
+meets $W_e$. If not, the current $\sigma$ already witnesses avoidance, and
+no extension is required. Handle $G_e^B$ in the same way using $\tau$.
+These are $0'$-decidable existence questions. Common extensions preserve
+legality. Append a common zero after each scheduled task to make the lengths
+tend to infinity.
+
+Let $A,B$ be the unions of their respective strings. Every genericity
+requirement is satisfied permanently, so both paths are $1$-generic. Any
+total common function has indices $e,d$ and is computable by the permanent
+satisfaction of $R_{e,d}$. By Lemma~\ref{lem:generic}, both paths are
+noncomputable. They cannot be equal, or even Turing equivalent: their own
+noncomputable characteristic function would then be a common total function.
+
+For each $n$, choose a stage at which the current length is at least $n$.
+No later stage changes those coordinates, and the legal-frontier invariant
+proves the displayed bound. Since $h(n)/n\to0$, we have $A=_{\rho}B$.
+All stage choices are computable in $0''$ by the preceding analysis, so
+$A,B\leT0''$.
+\end{proof}
+
+\begin{corollary}[A direct negative answer to C1]\label{cor:C1}
+The formula \eqref{eq:C1} is false, including when its counterexample $f$ is
+required to be binary and computable in $0''$. The analogous uniform
+coarse-equivalence formula is also false.
+\end{corollary}
+\begin{proof}
+Use $f=A$ from Theorem~\ref{thm:pair} and apply
+Lemmas~\ref{lem:generic} and~\ref{lem:certificate}.
+\end{proof}
+
+This is a complete construction of a mathematical counterexample. It is not
+an ordinary executable generator of its bits: a program that makes the
+specified stage decisions needs the indicated oracle. The proof says exactly
+which oracle questions suffice.
+
+\section{Perfect-family fusion}
+\label{sec:perfect}
+
+We now prove the full Theorem~\ref{thm:main}. Besides strengthening the result,
+the perfect-family version exposes why the budget must track variation across
+\emph{all} leaves rather than just one pair.
+
+\subsection{The finite-stage construction}
+At level $s$, keep a family of strings
+\[
+             F_s=(T_s(\alpha))_{\alpha\in2^s}
+\]
+of a common length $L_s$. They are pairwise incompatible, legal, and extend
+their previously frozen ancestor labels. Set
+$T_0(\emptystr)=\emptystr$.
+Construct the next level by the following finite operations.
+
+\paragraph{Split every leaf.}
+Buffer all current leaves as in Lemma~\ref{lem:buffer}. If the buffered
+strings are $\widehat T_s(\alpha)$, replace each by the two strings
+\[
+       \widehat T_s(\alpha)0,\qquad\widehat T_s(\alpha)1.
+\]
+All splits occur at the same coordinate. They add exactly \emph{one} global
+variation coordinate, irrespective of the number of leaves. The reserve
+$h(L)\ge r+1$ and monotonicity imply legality after the split.
+Label the new leaves by $\alpha0,\alpha1$.
+
+\paragraph{Make every leaf generic to the current level.}
+For each current leaf $\beta\in2^{s+1}$ and each $e\le s$, ask whether that
+leaf's current string has an extension in $W_e$. When it does, choose a
+witness suffix and append that suffix to \emph{all} leaves. When it does not,
+record avoidance; no extension is needed. This is a finite sequence of
+operations. It adds no variation and permanently settles the indicated
+genericity requirements for every future descendant of the selected leaf.
+
+\paragraph{Treat every pair to the current level.}
+For each ordered pair of distinct current leaves $\beta,\gamma$ and each
+$e,d\le s$, perform Proposition~\ref{prop:one-requirement} for their current
+strings. Buffer again before each application, because preceding operations
+may have consumed the earlier reserve. Lift the chosen extension to the
+whole frontier as prescribed there. All previous requirements remain
+satisfied, since their certificates persist under arbitrary extensions.
+
+\paragraph{Freeze the next level.}
+The resulting strings define $T_{s+1}(\beta)$ and their common length
+$L_{s+1}$. They extend the appropriate old labels. Children of one parent
+remain incompatible at their splitting coordinate, and descendants of
+different old leaves remain incompatible as well. At least one coordinate
+has been appended, so $L_{s+1}>L_s$.
+
+This completes the recursive definition. Each level contains only finitely
+many tasks, although no practical bound on their witness-search lengths is
+asserted. Each successful existential search terminates by its prior oracle
+answer; an unsuccessful existential question is answered by the oracle, not
+by waiting indefinitely.
+
+\subsection{The set of paths is perfect}
+For an address $Z\in\Cantor$, define
+\begin{equation}\label{eq:path-map}
+                   F(Z)=\bigcup_s T_s(Z\restr s),
+              \qquad P=\{F(Z):Z\in\Cantor\}.
+\end{equation}
+The union is a total binary sequence because labels are nested and lengths
+tend to infinity. Agreement of two addresses through level $s$ implies
+agreement of their images through $L_s$, so $F$ is continuous. Distinct
+addresses eventually choose different children, whose labels are
+incompatible; hence $F$ is injective. By compactness of Cantor space, its
+image $P$ is closed.
+
+To verify directly that no point of $P$ is isolated, fix $F(Z)$ and a finite
+prefix length $n$. Choose $s$ with $L_s\ge n$, keep the address $Z\restr s$,
+and change a later address bit. The new image is distinct but agrees with
+$F(Z)$ through its first $n$ coordinates. Thus $P$ is a nonempty perfect set,
+and its cardinality is $2^{\aleph_0}$.
+
+\subsection{Genericity and minimal pairs}
+Fix $X=F(Z)\in P$ and $e$. At every sufficiently late stage, the current leaf
+on $Z$ is treated for $W_e$. Its treatment either leaves a prefix in $W_e$ or
+leaves a prefix with no extension in $W_e$. All later descendants preserve
+that fact. Therefore $X$ is $1$-generic.
+
+Now fix distinct $X=F(Z)$ and $Y=F(W)$ and suppose a total function $b$ is
+computed by $\Phi_e^X$ and $\Phi_d^Y$. Choose a level after the addresses
+have separated and after the indices $e,d$ enter the finite schedule. At
+that level their distinct leaves are treated for precisely these two
+functionals. Outcome D would contradict the equality of the outputs, and
+outcome P would contradict totality. Thus their common output is computable,
+as ensured by outcome C. Every member is noncomputable by
+Lemma~\ref{lem:generic}; hence every distinct pair is a Turing minimal pair.
+
+The paths are only asserted to be \emph{individually} $1$-generic. Relative
+or mutual genericity is not part of the construction or the proof.
+
+\subsection{The common sparse variation set}
+Every old leaf has descendants forever, so every old variation coordinate
+remains a variation coordinate at later frontiers. Define
+\[
+                         V=\bigcup_s\Var(F_s).
+\]
+No coordinate can begin to vary after its bits have already been frozen
+on all current leaves. Consequently, for $L_s\ge n$,
+\[
+               V\cap[0,n)=\Var(F_s)\cap[0,n).
+\]
+Legality gives $|V\cap[0,n)|\le h(n)$ for every $n$.
+At any coordinate outside $V$, all labels long enough to cover that
+coordinate have the same bit; thus all paths agree there. In particular,
+for any $X,Y\in P$,
+\[
+       (X\mathbin\triangle Y)\subseteq V,
+       \qquad\rho_n(X\mathbin\triangle Y)\le\frac{h(n)}n\longrightarrow0.
+\]
+They are all density-equivalent and hence uniformly coarse-equivalent.
+Lemmas~\ref{lem:generic} and~\ref{lem:certificate} give the advertised absence
+of least Turing degrees.
+
+\subsection{Effective presentation and two arithmetical witnesses}
+The finite list $F_s$ is computable uniformly in $s$ from $0''$: splitting and
+budgeting are computable, genericity decisions use $0'$, and pair decisions
+use at most $0''$. To compute $F(Z)(n)$ from $Z\oplus0''$, construct levels
+until $L_s>n$, then read the appropriate label using $Z\restr s$.
+In particular, two fixed computable addresses, for example $0^\N$ and
+$10^\N$, yield distinct paths $A,B\leT0''$. Also $V\leT0''$, by constructing
+one level beyond the queried coordinate and checking its finite variation set.
+
+This proves all parts of Theorem~\ref{thm:main}. It does \emph{not} assert that
+every member of the uncountable family is computable in $0''$. The tree
+labeling is $0''$-computable; unrestricted addresses need not be.
+
+\section{Consequences and sharp boundary checks}
+\label{sec:boundaries}
+
+\subsection{Unboundedness is the exact threshold for monotone budgets}
+\begin{corollary}[Budget dichotomy]\label{cor:dichotomy}
+Let $h:\N\to\N$ be computable and nondecreasing. There are noncomputable
+$A,B$ forming a Turing minimal pair with
+\[
+             |(A\mathbin\triangle B)\cap[0,n)|\le h(n)
+                         \quad\text{for every }n
+\]
+if and only if $h$ is unbounded. In the unbounded case, one can additionally
+require $A=_{\rho}B$, both paths to be $1$-generic and below $0''$, and the
+perfect-family conclusion with the same upper bound $h$.
+\end{corollary}
+\begin{proof}
+If $h$ is bounded by $M$, then $A\triangle B$ has at most $M$ elements.
+Finite changes preserve Turing degree, so $A\eqT B$. A noncomputable common
+degree contradicts minimal-pairhood.
+
+If $h$ is unbounded, let
+$g(n)=\min\{h(n),\lfloor\sqrt n\rfloor\}$.
+Both terms are nondecreasing and unbounded, so their minimum is unbounded;
+$g$ is computable and sublinear. Apply Theorem~\ref{thm:main} to $g$, and
+use $g(n)\le h(n)$.
+\end{proof}
+
+The quantifier over $h$ allows bounds much slower than logarithmic growth.
+However, it is essential that an unbounded monotone budget eventually grants
+one more variation coordinate. A fixed finite number of changes can never
+produce these minimal pairs.
+
+\subsection{A perfect family with classical Hausdorff dimension zero}
+Equip $\Cantor$ with its usual ultrametric, where a cylinder determined by
+$n$ initial bits has diameter at most $2^{-n}$.
+
+\begin{corollary}\label{cor:dimension}
+The perfect set $P$ constructed for a sublinear order has classical Hausdorff
+dimension zero.
+\end{corollary}
+\begin{proof}
+All its length-$n$ prefixes agree off the fixed set $V\cap[0,n)$.
+Thus at most $2^{|V\cap[0,n)|}\le2^{h(n)}$ length-$n$ cylinders meet $P$.
+For every real $t>0$, these cylinders provide a cover with total $t$-cost at
+most
+\[
+                         2^{h(n)}(2^{-n})^t=2^{h(n)-tn}\longrightarrow0.
+\]
+The diameters also tend to zero, so the $t$-dimensional Hausdorff measure is
+zero for every $t>0$. The dimension is therefore zero. This is a statement
+about the \emph{classical dimension of the family}, not the effective
+dimension of each individual path.
+\end{proof}
+
+\subsection{No computable mask may reveal infinitely much common data}
+The theorem gives a computable \emph{counting bound}, not a computable
+superset of the variation set with an infinite computable complement. The
+following explains why.
+
+\begin{proposition}[A computable common mask is an obstruction]\label{prop:mask}
+If $X$ is $1$-generic, $C\subseteq\N$ is infinite computable, and $Y$ agrees
+with $X$ on $C$, then $X,Y$ do not form a Turing minimal pair.
+\end{proposition}
+\begin{proof}
+Let $c_0<c_1<\cdots$ be the computable increasing enumeration of $C$ and put
+$Z(n)=X(c_n)=Y(c_n)$. Then $Z\leT X,Y$.
+To see that $Z$ is noncomputable, suppose that a computable binary $z$
+equals $Z$. The set of strings $\sigma$ for which
+$\sigma(c_n)\ne z(n)$ for some $c_n<|\sigma|$ is c.e. and dense: any prefix
+can be extended at a later coordinate of $C$ to disagree with $z$.
+Genericity forces $X$ to have a prefix in that set, a contradiction.
+Thus a noncomputable function is computable from both $X$ and $Y$.
+\end{proof}
+
+In particular, the complement of the common variation set in the constructed
+family contains no infinite computable subset. Indeed, such a subset would
+be a common mask for every pair of distinct members. More generally, no
+infinite computable subset can lie in the agreement set of a selected pair.
+This does not conflict with that agreement set having density one: high
+density does not provide a computable enumeration of usable common positions.
+
+This is the obstruction to the most tempting naive construction: start with
+one generic set, alter it on a predetermined computable sparse set, and hope
+for a minimal pair. The unchanged computable complement retains noncomputable
+information accessible from both oracles. Our construction instead chooses
+its sparse positions through the noncomputable stage decisions.
+
+\subsection{What the counterexample does not establish}
+The result concerns \emph{least} Turing degrees of representative spectra.
+It does not prove that the spectrum has no minimal elements, nor that every
+coarse class contains a Turing minimal pair. The theorem is existential in
+the coarse class; it does not keep an arbitrary prescribed $1$-generic set
+as one of the paths.
+
+Nor does it settle C2 about effective-dense equivalence. An effective-dense
+description may omit an answer but may never supply a wrong numerical value.
+A density-zero change therefore need not preserve effective-dense descriptions,
+and the identity reduction in \eqref{eq:identical-CD} is specific to coarse
+descriptions. The report itself records this distinction
+\cite[Section~5, C2]{Input}. No effective-dense equivalence is inferred here.
+
+\section{Verification, effectivity, and reproducibility}
+\label{sec:verification}
+
+\subsection{The oracle boundary is explicit}
+The construction is a $0''$-computable sequence of finite choices. Its
+noncomputable decisions have the following precise complexity.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xll@{}}
+\toprule
+Decision & Form & Sufficient oracle\\
+\midrule
+Does a prefix have an extension in a c.e. set $W_e$?
+  & $\Sigma^0_1$ & $0'$\\
+Does an admissible finite disagreement exist?
+  & $\Sigma^0_1$ & $0'$\\
+Does a whole partiality cylinder exist?
+  & $\Sigma^0_2$ & $0''$\\
+Does a proposed cylinder have no finite halting extension?
+  & $\Pi^0_1$ & $0'$\\
+Is a finite paired suffix admissible?
+  & Decidable & None\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The common-output program in case C is an ordinary computable search once
+the finite prefix and functional index are fixed. There is no claim that
+one can uniformly recognize case C without the preceding oracle decisions.
+
+The proof is finite-extension, not a finite-time algorithm for the complete
+reals. No halting oracle was accessed during the experiments. In particular,
+no finite simulation is offered as evidence that an arbitrary partiality
+cylinder really has no future convergence.
+
+\subsection{Executed finite checks}
+The accompanying standard-library Python script
+\code{checks/verify\_finite\_core.py} was executed successfully. It produces
+\code{checks/results.json} and a readable transcript. Its checks are:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Finite property checked & Number of cases\\
+\midrule
+Ordered hypercube endpoint pairs, dimensions $0$ through $8$ & 87,381\\
+Consecutive cube edges, including common-suffix preservation & 334,962\\
+Pairs of total Boolean lookup tables, dimensions $0$ through $3$ & 65,812\\
+Pairs of partial lookup tables, dimensions $0$ through $2$ & 6,651\\
+Global paired-suffix lifts with every prefix budget checked & 16,380\\
+Sparse-coding error-set inclusions and decoding checks & 512\\
+Strict-majority block checks & 556\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Of the 16,380 suffix lifts, 3,852 were admissible and 12,528 were correctly
+rejected. The lookup-table model found only the two constant no-split total
+Boolean pairs at each tested dimension. In the partial model, an undefined
+table entry \emph{means}, by the definition of that finite model, divergence
+on a whole cylinder; it is not a timeout standing in for an unknown answer.
+
+A separate finite structural run carried out six synchronized splitting
+levels, ending with $64$ leaves of length $4,098$ and only $12$ global
+variation coordinates, while obeying the logarithmic budget at every prefix.
+It used fixed seed $20260918$ to choose finite common and one-bit extensions.
+It is a test of the budget and lifting mechanics, not a simulation of the
+infinite minimal-pair or genericity requirements.
+
+The script also includes a deliberately invalid local-budget shortcut.
+On a four-leaf frontier with three global variation positions, one selected
+pair differs at only one old position. Charging that pair's count instead of
+the global count incorrectly admits a three-bit extension. The regression
+check verifies that the correct global test rejects it. This is a concrete
+failure mode that a merely pairwise implementation would miss.
+
+\subsection{What remains outside the executable checks}
+The infinite theorem rests on the mathematical proof: the density argument
+inside Lemma~\ref{lem:trilemma}, the jump-decidable finite-stage choices,
+permanent preservation of requirements, and the limit construction.
+There is no Lean file claimed to certify these steps, no external referee
+report, and no assertion that the Python checks are a substitute for either.
+The finite checks make bookkeeping defects easier to detect; they do not
+turn the construction into a computable one.
+
+A formalization can isolate four modules with explicit interfaces: finite
+strings and finite-use computations; the trilemma; legal-frontier lifting;
+and the fair two-path or perfect-family schedule. The nonuniformity of the
+case-C program and the distinction between finite divergence and a
+partiality cylinder are the two places most deserving a close independent
+proof audit.
+
+\section{Conclusion and a precise next refinement}
+
+C1, in the exact formulation printed in the supplied report, has a negative
+answer. The known-theorem route establishes this for every $1$-generic set.
+The direct route developed here produces two $0''$-computable witnesses and
+then a perfect family, with all pairwise Turing information intersections
+trivial and all variation confined to an arbitrarily slowly growing
+computable counting budget. The main finite mechanism is simple to state:
+once one future bit of disagreement is affordable, hypercube connectivity
+forces a no-split, no-partiality configuration to have a computable output.
+
+The global budget, not a fixed computable sparse mask, lets this mechanism
+coexist with coarse equivalence and individual genericity. The spectrum
+calculation further shows that the phenomenon does not depend on choosing
+uniform rather than nonuniform coarse classes: those representative spectra
+are equal at every fixed base function.
+
+One sharply delimited continuation is to ask whether the \emph{same prescribed
+budget theorem} admits two witnesses below $0'$ rather than $0''$.
+The present proof does not provide that improvement, because existence of a
+partiality cylinder is a $\Sigma^0_2$ decision. This is a refinement of the
+construction, not a claim that the question is new or literature-open.
+Resolving it would require replacing or approximating that decision while
+preserving the global budget and the permanent pair requirements. No
+hypothesis about such an improvement is used anywhere in the results above.
+
+\appendix
+\section{Oracle-level construction pseudocode}
+\label{app:pseudocode}
+
+The following pseudocode is a mathematical specification. The routines whose
+names begin with \code{ASK} are oracle queries, not ordinary implemented
+subroutines. A witness search is run only after a positive oracle answer.
+All frontier extensions preserve its current labels as prefixes.
+
+\begin{lstlisting}
+BUFFER(F):
+    r := number of global variation coordinates of F
+    L := current common length
+    find the least Lstar >= L with h(Lstar) >= r + 1
+    append 0^(Lstar-L) to every leaf
+
+PAIR_REQUIREMENT(F, i, j, e, d):
+    BUFFER(F)
+    sigma, tau := current labels of leaves i, j
+    r, L := global variation count, common length
+    admissible(u,v) := equal lengths and
+        r + Hamming(u[:t],v[:t]) <= h(L+t) for every t
+
+    if ASK_0prime(exists admissible finite disagreement):
+        find n,u,v and halting traces witnessing disagreement
+        append v to leaf j and u to every other leaf
+        return
+
+    if ASK_0doubleprime(exists partiality cylinder on either side):
+        find a side,n,u using 0prime tests of no halting extension
+        append u to every leaf
+        return
+
+    # The proved connectivity lemma gives a computable common output.
+    # No oracle computation is hidden in that output program.
+    return
+
+PERFECT_LEVEL(F_s, s):
+    BUFFER(F_s)
+    replace each leaf sigma by children sigma0, sigma1
+    for each new leaf beta and each e <= s:
+        if ASK_0prime(leaf beta has an extension in W_e):
+            find such an extension suffix u
+            append u to every leaf
+        else:
+            retain the current prefix as an avoidance witness
+    for each ordered pair beta != gamma:
+        for each e,d <= s:
+            PAIR_REQUIREMENT(F, beta, gamma, e, d)
+    freeze the resulting frontier as F_(s+1)
+\end{lstlisting}
+
+The iteration order in every finite loop may be fixed lexicographically.
+Witnesses may be chosen by the first successful step of a fixed dovetailing.
+These conventions make the relative construction completely specified once
+standard enumerations of functionals and c.e. sets are fixed. They do not
+change any theorem.
+
+\section{Package contents and source provenance}
+
+The package contains the article's \code{.tex} and \code{.pdf}, the
+standard-library verification script and its outputs, a build script and
+Makefile, a source audit, and an unchanged copy of the supplied
+\code{turing\_degrees\_unified.tex}. A SHA-256 manifest records the delivered
+files. No third-party font files or copies of the externally cited papers
+are bundled.
+
+The source audit distinguishes three roles: the uploaded report specifies
+the selected question; Gerdes supplies the exact published-preprint question;
+and Hirschfeldt--Jockusch--Kuyper--Schupp supply the older theorem that already
+implies its negative answer. The independent construction is not attributed
+to any of these sources. The preservation of the input file is for
+traceability, not an endorsement of the open-status labels left in that file.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{Input}
+\emph{Turing Degrees: A Unified Research Report}.
+User-supplied LaTeX source \code{turing\_degrees\_unified.tex}, unified edition
+18 September 2026. Section~5: ``Coarse and effective-dense representative
+spectra,'' especially C1 and the sparse-coding and minimal-pair diagnostics.
+An unchanged copy is included in \code{input/}.
+
+\bibitem{Gerdes}
+Peter M. Gerdes.
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and $2^\omega$}.
+arXiv:2508.06925v1, 9 August 2025.
+Question~7, printed p.~64.
+\url{https://arxiv.org/abs/2508.06925}.
+Accessed 18 September 2026.
+
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp.
+\emph{Coarse reducibility and algorithmic randomness}.
+Journal of Symbolic Logic \textbf{81} (2016), 1028--1046.
+DOI: \href{https://doi.org/10.1017/jsl.2015.70}{10.1017/jsl.2015.70}.
+Preprint arXiv:1505.01707 (2015), especially Definition~3.1 and Theorem~4.2
+(printed p.~16 of the inspected preprint).
+\url{https://arxiv.org/abs/1505.01707}.
+Publication metadata checked against the author's publication page:
+\url{https://www.math.uchicago.edu/~drh/Papers/coarsereducibility.html}.
+Accessed 18 September 2026.
+
+\end{thebibliography}
+\end{document}

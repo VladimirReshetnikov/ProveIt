@@ -1,0 +1,957 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{19394C}
+\definecolor{accent}{HTML}{176C75}
+\definecolor{pale}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Diagonal Hardinian Arrays: A Fixed-Parameter Asymptotic Formula},
+ pdfauthor={Research manuscript prepared with ChatGPT},pdfsubject={Combinatorial asymptotics and OEIS conjectures}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Diagonal Hardinian arrays}}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\newcommand{\HH}{H_r(n,n)}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\Id}{\mathrm{I}}
+\newcommand{\Pf}{\operatorname{Pf}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\subsets}[2]{\binom{#1}{#2}}
+\newcommand{\vander}{\Delta}
+\newtcolorbox{resultbox}{colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,left=9pt,right=9pt,top=8pt,bottom=8pt,breakable}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{accent},backgroundcolor=\color{pale},showstringspaces=false}
+
+\title{\vspace{-1.5em}{\color{ink}\bfseries Diagonal Hardinian Arrays}\\[0.4em]
+\large A fixed-parameter asymptotic formula,\\
+a correction to the constant conjecture, and exact enumeration}
+\author{Research manuscript prepared with ChatGPT}
+\date{19 September 2026}
+
+\makeatletter
+\newcommand{\tableinput}[1]{\@@input #1 }
+\makeatother
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Dougherty-Bliss and Kauers conjectured that the number $H_r(n,n)$ of diagonal Hardinian arrays, for fixed $r$, is asymptotic to $c_r 4^{rn}n^{-\binom r2}$, and suggested that the constants involve only powers of $2$, $3$, and $\pi$. We give a proof of the fixed-$r$ asymptotic with an explicit product formula for every constant. It confirms their tabulated constants through $r=5$, but the arithmetic extrapolation fails at $r=7$: the constant is $2^{18}5^2/(3^{45}\pi^3)$. The argument transforms a known complementary-minor formula into a positive sum of squares, analyzes nearly coincident binomial distributions uniformly on a logarithmic window, and evaluates a Gaussian Vandermonde integral and a discrete geometric Vandermonde sum. Both evaluations are proved here. We also derive a single finite determinant generating all parameters at a fixed size, a polynomial-arithmetic enumeration algorithm, and a limiting negative-binomial law for the total row deficit in the positive representation. Exact Python implementations, independent checks, and numerical data accompany the manuscript.
+\end{abstract}
+
+\begin{resultbox}
+\textbf{Status and scope.} This is an unrefereed research manuscript, not a claim of an independently certified discovery. The mathematical statements below are supported by complete arguments, and the numerical tests are separated from those arguments. The conjecture is explicit in the published 2024 paper; OEIS A253217 still labels its leading asymptotic a conjecture in the entry consulted on 19 September 2026. No prior proof of the all-$r$ formula was located in the sources consulted. That search is not a guarantee of priority. Throughout, $r$ is fixed as $n\to\infty$.
+\end{resultbox}
+
+\newpage
+{\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem and the main result}\label{sec:main}
+
+\subsection{Which open question is being addressed?}
+Hardinian arrays originate in enumeration problems contributed to the OEIS by R. H. Hardin. Dougherty-Bliss and Kauers gave determinant representations, proved a guessed recurrence for $r=2$, and proved that the diagonal sequence is D-finite for each fixed $r$ \cite{DK}. On page 12 of their published paper they proposed a general leading asymptotic. The entry A253217, which is the $r=2$ diagonal, independently records the corresponding asymptotic conjecture \cite{OEIS2}. The $r=3$ diagonal is A252998 \cite{OEIS3}.
+
+There are two distinct assertions in the 2024 proposal. The first concerns the exponential rate and the exponent of $n$; the second concerns the arithmetic shape of the leading constant. They should not be conflated. Our result proves the first assertion, determines its previously unspecified constants, and disproves the suggested arithmetic restriction.
+
+The later work of Dougherty-Bliss and Spahn addresses eventual polynomiality in one array dimension when the other dimension and $r$ are fixed \cite{DS}. That is a different limit from the square-array limit studied here. The source-status notes in the archive distinguish the full 2024 paper, the OEIS entries, and the abstract of that later work.
+
+\subsection{Main theorem}
+Set
+\begin{equation}\label{eq:RFr}
+ R=\binom r2,\qquad F_r=\prod_{j=0}^{r-1}j!,\qquad F_0=1.
+\end{equation}
+Empty products are always $1$.
+
+\begin{theorem}[Diagonal asymptotics]\label{thm:main}
+For every fixed integer $r\geq 0$,
+\begin{equation}\label{eq:main}
+ H_r(n,n)\sim C_r\,4^{rn}n^{-\binom r2}\qquad(n\to\infty),
+\end{equation}
+where
+\begin{equation}\label{eq:Cr-gamma}
+ \boxed{\displaystyle
+ C_r=\frac{2^{r(r-3)}}{3^{r^2}}
+ \left(\frac{\prod_{j=1}^{r}\Gamma(1+j/2)}
+ {r!\,\Gamma(3/2)^r}\right)^2.}
+\end{equation}
+In particular, all the constants are positive. The case $r=0$ is exact: $H_0(n,n)=1$.
+\end{theorem}
+
+An equivalent form avoids half-integer gamma values:
+\begin{align}
+ C_{2m}&=\frac{2^{2m(m-2)}}{3^{4m^2}\pi^m}
+        \prod_{j=0}^{m-1}\bigl((2j)!\bigr)^2,\label{eq:evenC}\\
+ C_{2m+1}&=\frac{2^{2m^2-2m-2}}{3^{(2m+1)^2}\pi^m}
+        \prod_{j=0}^{m-1}\bigl((2j+1)!\bigr)^2.\label{eq:oddC}
+\end{align}
+The particularly simple recurrence
+\begin{equation}\label{eq:Crec}
+ C_0=1,\quad C_1=\frac1{12},\qquad
+ C_{r+2}=\frac{2^{2r-2}(r!)^2}{3^{4r+4}\pi}\,C_r
+ \quad(r\geq0)
+\end{equation}
+permits exact generation of the entire family.
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}rrll@{}}
+\toprule
+$r$ & $\binom r2$ & $C_r$ & Relation to the 2024 table\\
+\midrule
+0 &0& $1$ & Exact trivial case\\
+1 &0& $1/(2^2 3)$ & Agrees\\
+2 &1& $1/(2^2 3^4\pi)$ & Agrees\\
+3 &3& $1/(2^2 3^9\pi)$ & Agrees\\
+4 &6& $2^2/(3^{16}\pi^2)$ & Agrees\\
+5 &10& $2^4/(3^{23}\pi^2)$ & Agrees\\
+6 &15& $2^{14}/(3^{34}\pi^3)$ & Beyond the table\\
+7 &21& $2^{18}5^2/(3^{45}\pi^3)$ & First additional prime\\
+\bottomrule
+\end{tabular}
+\caption{Leading constants from \cref{thm:main}. The published conjectural table ends at $r=5$ \cite[p.~12]{DK}.}
+\label{tab:constants}
+\end{table}
+
+\subsection{Why the approach works}
+The existing determinant formula is a sum over deleted rows and columns. Its size and cancellations conceal the asymptotic scale. A complementary-minor identity instead produces a sum of squared minors of a Pascal matrix. The large row indices dominate exponentially. Measured backwards from the last row, the relevant deficits remain bounded in distribution, while the binomial column indices fluctuate on a square-root scale.
+
+The binomial distributions associated with adjacent large rows become nearly identical. Consequently, their $r\times r$ determinant vanishes at the first several orders. Its first surviving term is a product of two Vandermonde determinants, at order $n^{-R/2}$. Squaring explains $n^{-R}$. The two normalization problems are then explicit: one Gaussian integral and one discrete sum with geometric weights.
+
+The delicate point is not guessing this first term. It is controlling the sum over all deficits. Sections \ref{sec:confluence}--\ref{sec:localization} supply a uniform estimate and an exponentially small tail, so that no unproved interchange of a limit and a growing sum is needed.
+
+\section{Arrays and a known determinant representation}\label{sec:arrays}
+
+\begin{definition}
+For integers $n\geq1$ and $r\geq0$, a diagonal Hardinian array is an $n\times n$ array $(a_{ij})_{0\leq i,j<n}$ of nonnegative integers satisfying
+\begin{align*}
+ a_{00}&=0, &a_{n-1,n-1}&=n-1-r,\\
+ a_{i+1,j}-a_{ij}&\in\{0,1\},&
+ a_{i,j+1}-a_{ij}&\in\{0,1\},\\
+ a_{i+1,j+1}-a_{ij}&\in\{0,1\},&
+ |a_{ij}-\max(i,j)|&\leq r,
+\end{align*}
+where only indices inside the array are used. Let $H_r(n,n)$ be their number.
+\end{definition}
+
+The move conditions imply $a_{ij}\leq\max(i,j)$. Thus the last condition can equivalently be written $\max(i,j)-r\leq a_{ij}$. If $r\geq n$, there are no arrays because the final entry would be negative. If $r=n-1$, the unique array is the zero array. For $r=0$, the unique array has $a_{ij}=\max(i,j)$.
+
+Put
+\begin{equation}\label{eq:N-L}
+ N=n-1,\qquad L=N-1=n-2,
+\end{equation}
+and let $\mathcal I_N=\{0,\ldots,N-1\}$. In a submatrix $T_{U,V}$, the elements of each index set are taken in increasing order. Complements are relative to $\mathcal I_N$.
+
+Define two $N\times N$ matrices
+\begin{equation}\label{eq:MB}
+ M_{ij}=\binom{i+j}{i},\qquad B_{ij}=\binom{i}{j},
+ \quad 0\leq i,j<N,
+\end{equation}
+with $\binom{i}{j}=0$ for $j>i$.
+
+\begin{lemma}[Known path-minor formula]\label{lem:known}
+For $0\leq r\leq N$,
+\begin{equation}\label{eq:known}
+ H_r(n,n)=\sum_{\substack{I,J\subseteq\mathcal I_N\\ |I|=|J|=r}}
+              \det M_{I^c,J^c}.
+\end{equation}
+\end{lemma}
+
+This is the determinant representation used in the proof of Theorem 6 of \cite{DK}. To recall its combinatorial content, the constant-value regions of an array are separated by nonintersecting north-east lattice paths. The $N-r$ paths select $N-r$ entry positions on each boundary. A single path between the boundary positions indexed by $i,j$ has $\binom{i+j}{i}$ possibilities. The nonintersecting-path determinant counts the families with specified boundary sets. Summing over those sets gives \eqref{eq:known}. The determinant of the empty matrix is $1$, as required for $r=N$.
+
+We use \cref{lem:known} as a published starting point. The positive representation, asymptotic analysis, and normalization calculations that follow are derived explicitly here.
+
+\section{A positive sum of squares}\label{sec:positive}
+
+\begin{proposition}\label{prop:squares}
+For $U\subseteq\mathcal I_N$ with $|U|=r$, set
+\begin{equation}\label{eq:S}
+ S(U)=\sum_{\substack{V\subseteq\mathcal I_N\\|V|=r}}\det B_{U,V}.
+\end{equation}
+Then
+\begin{equation}\label{eq:squares}
+ \boxed{\displaystyle H_r(n,n)=\sum_{\substack{U\subseteq\mathcal I_N\\|U|=r}}S(U)^2.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Vandermonde's binomial identity gives $M=BB^{\mathsf T}$, so $\det M=1$. Let
+$D=\diag((-1)^0,\ldots,(-1)^{N-1})$. Binomial inversion says $B^{-1}=DBD$, whence
+\begin{equation}\label{eq:inverse}
+ D M^{-1}D=B^{\mathsf T}B=:K.
+\end{equation}
+Jacobi's complementary-minor identity gives
+\[
+ \det M_{I^c,J^c}=(-1)^{\sum I+\sum J}\det (M^{-1})_{J,I}
+                 =\det K_{I,J}.
+\]
+Here symmetry removes the transposition, and the two diagonal sign factors cancel the complementary-minor sign. Cauchy--Binet now gives
+\[
+ \det K_{I,J}=\sum_{|U|=r}\det B_{U,I}\det B_{U,J}.
+\]
+Sum this equality over $I,J$ in \eqref{eq:known}. All sums are finite, so regrouping gives \eqref{eq:squares} without any convergence issue.
+\end{proof}
+
+Every minor of $B$ is nonnegative. For completeness, a finite factorization proves this without a sign convention for paths. Write
+\[
+ T_k=\Id+\sum_{i=k}^{N-1}E_{i,i-1},\qquad
+ B=T_{N-1}T_{N-2}\cdots T_1,
+\]
+where $E_{ij}$ is a matrix unit. The factorization follows by Pascal addition, or by induction on $N$. Each $T_k$ is a nonnegative lower-bidiagonal matrix and has nonnegative minors. Cauchy--Binet preserves that property under products. Thus $S(U)\geq0$.
+
+If $U=\{k_1<\cdots<k_r\}$, define
+\begin{equation}\label{eq:Pdef}
+ P(U)=2^{-\sum_a k_a}S(U).
+\end{equation}
+It is the sum of determinants of binomial probability masses, not the probability of a single elementary event. Nevertheless, it satisfies the useful bound
+\begin{equation}\label{eq:Pbound}
+ 0\leq P(U)\leq1.
+\end{equation}
+Indeed, the determinant of a nonnegative matrix is bounded in absolute value by its permanent. Summing these permanents over increasing column sets gives the probability that independent random variables, with the respective row distributions, are all distinct. That probability is at most $1$.
+
+To isolate the large rows, write the row set in reverse order as
+\[
+ \{L-d_r,\ldots,L-d_1\},\qquad 0\leq d_1<\cdots<d_r\leq L,
+\]
+and denote its normalized sum by $P_L(d)$. With $q=1/4$, \eqref{eq:squares} becomes
+\begin{equation}\label{eq:localized-exact}
+ H_r(n,n)=4^{rL}
+ \sum_{0\leq d_1<\cdots<d_r\leq L}q^{d_1+\cdots+d_r}P_L(d)^2.
+\end{equation}
+The geometric factor is the source of localization near the last rows.
+
+\section{Confluence of the binomial rows}\label{sec:confluence}
+
+\subsection{An exact change of measure}
+Let
+\[
+ p_k(j)=2^{-k}\binom{k}{j},\qquad
+ Y_L=\frac{L-2J}{\sqrt L},\quad J\sim\operatorname{Bin}(L,1/2).
+\]
+We assume $L\geq1$ in the asymptotic argument. For $0\leq d\leq L$, introduce the polynomial
+\begin{equation}\label{eq:fpoly}
+ f_{d,L}(y)=\prod_{h=0}^{d-1}\frac{1+y/\sqrt L-2h/L}{1-h/L}.
+\end{equation}
+For every $j\in\{0,\ldots,L\}$, the exact identity
+\begin{equation}\label{eq:likelihood}
+ p_{L-d}(j)=p_L(j)f_{d,L}\!\left(\frac{L-2j}{\sqrt L}\right)
+\end{equation}
+follows from
+\[
+ \frac{p_{L-d}(j)}{p_L(j)}
+ =\frac{2^d\fall{(L-j)}{d}}{\fall Ld}.
+\]
+When $j>L-d$, one factor in the numerator vanishes. Thus this identity includes the zero-probability tail and is not merely a central approximation.
+
+Let $Y_{L,1},\ldots,Y_{L,r}$ be independent copies of $Y_L$. Total nonnegativity of the Pascal minors, followed by row reversal, implies
+\begin{equation}\label{eq:P-expectation}
+ P_L(d)=\frac1{r!}\EE\left|
+       \det\bigl[f_{d_a,L}(Y_{L,b})\bigr]_{a,b=1}^r\right|.
+\end{equation}
+To see the factor $r!$, sum first over all ordered $r$-tuples of column indices. A repeated index contributes zero. Each strictly increasing column set has $r!$ permutations, with identical absolute determinant. The row reversal changes only an overall sign. This checks both potential factorial and sign ambiguities in \eqref{eq:P-expectation}.
+
+For $x=(x_1,\ldots,x_r)$ write
+\[
+ \vander(x)=\prod_{1\leq a<b\leq r}(x_b-x_a).
+\]
+Also define
+\begin{equation}\label{eq:I-L}
+ I_{r,L}=\frac1{r!}\EE|\vander(Y_{L,1},\ldots,Y_{L,r})|,
+ \qquad I_r=\frac1{r!}\EE|\vander(Z_1,\ldots,Z_r)|,
+\end{equation}
+where $Z_1,\ldots,Z_r$ are independent standard normal variables. For $r=0$, set $I_0=1$.
+
+\subsection{The probabilistic limit and moment control}
+The characteristic function of $Y_L$ is $\cos(t/\sqrt L)^L$, which tends to $e^{-t^2/2}$. Hence independent copies converge jointly to independent standard normals. Moreover,
+\begin{equation}\label{eq:subgaussian}
+ \EE e^{sY_L}=\cosh(s/\sqrt L)^L\leq e^{s^2/2}\quad(s\in\RR),
+\end{equation}
+since $\log\cosh u\leq u^2/2$. Chernoff's bound yields
+\[
+ \PP(|Y_L|>t)\leq2e^{-t^2/2}\quad(t\geq0).
+\]
+For $M_L=\max_{b\leq r}|Y_{L,b}|$, a union bound gives the same estimate with $2r$ in place of $2$. In particular, for every fixed $a\geq0$ and integer $k\geq0$,
+\begin{equation}\label{eq:uniformmoments}
+ \sup_{L\geq1}\EE[M_L^k e^{aM_L}]<\infty.
+\end{equation}
+Integrating the displayed Gaussian tail proves this bound directly. Since $|\vander(Y)|$ has polynomial growth, the bound implies uniform integrability. Therefore
+\begin{equation}\label{eq:I-convergence}
+ I_{r,L}\longrightarrow I_r.
+\end{equation}
+This is the point at which a distributional central limit theorem alone would be insufficient: the relevant function is unbounded.
+
+\subsection{The uniform determinant estimate}
+
+\begin{lemma}[Confluent binomial determinant]\label{lem:uniform}
+Fix $r\geq1$ and $R=\binom r2$. There is a constant $A_r$ such that, whenever $D\geq\max(1,r-1)$, $4D^2\leq L$, and $0\leq d_1<\cdots<d_r\leq D$,
+\begin{equation}\label{eq:uniform}
+ \left|L^{R/2}P_L(d)-\frac{\vander(d)}{F_r}I_{r,L}\right|
+ \leq A_r\frac{(1+D)^{R+2}}{\sqrt L}.
+\end{equation}
+Consequently, for every fixed increasing deficit tuple $d$,
+\begin{equation}\label{eq:pointwise}
+ L^{R/2}P_L(d)\longrightarrow\frac{\vander(d)}{F_r}I_r.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand \eqref{eq:fpoly} as
+\begin{equation}\label{eq:c-expansion}
+ f_{d,L}(y)=\sum_{\ell=0}^{d}c_{d,\ell}(L)L^{-\ell/2}y^\ell.
+\end{equation}
+The coefficients have the exact description
+\[
+ c_{d,\ell}(L)=
+ \frac{e_{d-\ell}(1,1-2/L,\ldots,1-2(d-1)/L)}
+      {\prod_{h=0}^{d-1}(1-h/L)},
+\]
+where $e_j$ is an elementary symmetric polynomial; put $c_{d,\ell}=0$ for $\ell>d$. Each numerator term is a product of numbers close to $1$. For $d\leq D$ and $4D^2\leq L$, product estimates and $-\log(1-u)\leq2u$ for $0\leq u\leq1/2$ give
+\begin{align}
+ 0\leq c_{d,\ell}(L)&\leq e^{2D^2/L}\binom d\ell,\label{eq:c-bound}\\
+ \left|c_{d,\ell}(L)-\binom d\ell\right|
+ &\leq A\frac{D^2}{L}\binom d\ell,\label{eq:c-error}
+\end{align}
+with an absolute constant $A$. For example, each numerator product is between $1-D^2/L$ and $1$, while the reciprocal denominator is between $1$ and $e^{D^2/L}$; these bounds already imply the asserted estimates after increasing $A$.
+
+Apply Cauchy--Binet to the factorization in \eqref{eq:c-expansion}. With $y=(y_1,\ldots,y_r)$,
+\begin{equation}\label{eq:degree-expansion}
+ \det[f_{d_a,L}(y_b)]
+ =\sum_{0\leq\ell_1<\cdots<\ell_r\leq D}
+ L^{-(\ell_1+\cdots+\ell_r)/2}
+ \det[c_{d_a,\ell_b}(L)]\det[y_b^{\ell_a}].
+\end{equation}
+Distinct nonnegative degrees have total at least $R$. Equality occurs only for
+$(\ell_1,\ldots,\ell_r)=(0,1,\ldots,r-1)$. The polynomial basis $\binom{x}{j}$ has leading coefficient $1/j!$, so
+\begin{equation}\label{eq:binom-vander}
+ \det\left[\binom{d_a}{b-1}\right]_{a,b=1}^r
+ =\frac{\vander(d)}{F_r}.
+\end{equation}
+Using \eqref{eq:c-error} in the determinant expansion, with the $b$th column bounded by a constant times $(1+D)^{b-1}/(b-1)!$, yields
+\begin{equation}\label{eq:leading-error}
+ \det[c_{d_a,b-1}(L)]
+ =\frac{\vander(d)}{F_r}
+   +O_r\!\left(\frac{(1+D)^{R+2}}{L}\right).
+\end{equation}
+
+It remains to bound all higher-degree terms, whose number also grows with $D$. Put $M=\max_b|y_b|$, $t=D/\sqrt L$, and $s=\sum_a\ell_a$. By \eqref{eq:c-bound}, the absolute value of a coefficient determinant is at most
+\[
+ r!e^{2rD^2/L}\frac{D^s}{\ell_1!\cdots\ell_r!},
+\]
+and the monomial determinant is at most $r!M^s$. Enlarging the sum from distinct degree tuples to all degree tuples, and using
+$\sum_{\ell_1+\cdots+\ell_r=s}1/(\ell_1!\cdots\ell_r!)=r^s/s!$, bounds the higher-degree remainder by
+\begin{equation}\label{eq:tail-polynomial}
+ A_r\sum_{s\geq R+1}\frac{(rtM)^s}{s!}
+ \leq A'_r\,t^{R+1}M^{R+1}e^{rtM}.
+\end{equation}
+For $y_b=Y_{L,b}$, its expectation is $O_r(t^{R+1})$ by \eqref{eq:uniformmoments}, because $t\leq1/2$.
+
+Multiply \eqref{eq:degree-expansion} by $L^{R/2}$. Equations \eqref{eq:leading-error} and \eqref{eq:tail-polynomial} show that the expected absolute error from replacing it by $\vander(d)\vander(Y)/F_r$ is at most
+\[
+ O_r\!\left(\frac{(1+D)^{R+2}}{L}\right)
+ +O_r\!\left(\frac{D^{R+1}}{\sqrt L}\right).
+\]
+The inequality $\bigl||u|-|v|\bigr|\leq|u-v|$, together with \eqref{eq:P-expectation}, gives \eqref{eq:uniform}. Finally, hold $d$ fixed, choose a fixed $D$ containing it, and use \eqref{eq:I-convergence} to obtain \eqref{eq:pointwise}.
+\end{proof}
+
+\begin{remark}
+The use of $I_{r,L}$ rather than $I_r$ in the uniform estimate is intentional. It avoids silently requiring a quantitative central limit theorem strong enough to offset a growing Vandermonde factor. Its convergence is used only after the weighted finite sum has been controlled.
+\end{remark}
+
+\section{Localization and passage to the infinite sum}\label{sec:localization}
+
+Define, for $0<q<1$,
+\begin{equation}\label{eq:Zdef}
+ Z_r(q)=\sum_{0\leq d_1<\cdots<d_r<\infty}
+ q^{d_1+\cdots+d_r}\vander(d)^2.
+\end{equation}
+It is finite because the summand is a polynomial times a geometric weight.
+
+\begin{proposition}\label{prop:limit-sum}
+For each fixed $r\geq1$ and $0<q<1$,
+\begin{equation}\label{eq:limit-sum}
+ L^R\sum_{0\leq d_1<\cdots<d_r\leq L}q^{\sum_a d_a}P_L(d)^2
+ \longrightarrow\frac{I_r^2}{F_r^2}Z_r(q).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Choose
+\[
+ D_L=\left\lfloor\frac{(R+2)\log L}{\log(1/q)}\right\rfloor.
+\]
+For sufficiently large $L$, this exceeds $\max(1,r-1)$ and satisfies $4D_L^2\leq L$. The contribution of tuples with $d_r>D_L$ is, by \eqref{eq:Pbound}, at most
+\begin{equation}\label{eq:large-tail}
+ L^R\sum_{d_r>D_L}q^{\sum_a d_a}
+ \leq\frac{rL^Rq^{D_L+1}}{(1-q)^r}=O_r(L^{-2}).
+\end{equation}
+The middle inequality enlarges to arbitrary nonnegative $r$-tuples and takes a union bound over the coordinate exceeding $D_L$. Constants may also depend on the fixed $q$.
+
+On the remaining tuples, write
+\[
+ L^{R/2}P_L(d)=\frac{\vander(d)}{F_r}I_{r,L}+\varepsilon_L(d),
+ \qquad \sup_d|\varepsilon_L(d)|
+ =O_r\!\left(\frac{(1+D_L)^{R+2}}{\sqrt L}\right)=:E_L.
+\]
+The $I_{r,L}$ are bounded, $|\vander(d)|\leq(1+D_L)^R$, and the total geometric weight is at most $(1-q)^{-r}$. After squaring, the error in the truncated weighted sum is bounded by a constant times
+\[
+ E_L(1+D_L)^R+E_L^2,
+\]
+which tends to zero because $D_L=O(\log L)$. The remaining main term is
+\[
+ \frac{I_{r,L}^2}{F_r^2}
+ \sum_{0\leq d_1<\cdots<d_r\leq D_L}q^{\sum_a d_a}\vander(d)^2.
+\]
+It tends to $I_r^2Z_r(q)/F_r^2$ by \eqref{eq:I-convergence} and convergence of the nonnegative series. Combining it with \eqref{eq:large-tail} proves the result.
+\end{proof}
+
+Applied with $q=1/4$ in \eqref{eq:localized-exact}, this gives
+\begin{equation}\label{eq:before-evaluation}
+ H_r(n,n)\sim4^{rL}L^{-R}\frac{I_r^2}{F_r^2}Z_r(1/4).
+\end{equation}
+The asymptotic problem has now been reduced to two evaluations with no remaining dependence on $n$.
+
+\section{The two normalization factors}\label{sec:normalizations}
+
+\subsection{An ordered-determinant identity}
+We will use a classical Pfaffian integration identity of de Bruijn \cite{deBruijn}. A proof is included to fix the normalization for both discrete and continuous measures.
+
+For an even-dimensional skew-symmetric matrix $W$ of order $2m$, define
+\begin{equation}\label{eq:pfdef}
+ \Pf W=\frac1{2^m m!}\sum_{\sigma\in S_{2m}}\sgn(\sigma)
+       \prod_{a=1}^{m}W_{\sigma(2a-1),\sigma(2a)}.
+\end{equation}
+The standard identity $(\Pf W)^2=\det W$ follows, for example, by alternating multilinearity and reduction to $2\times2$ skew blocks. It also holds for singular matrices by polynomial continuity.
+
+\begin{lemma}[Ordered determinant/Pfaffian identity]\label{lem:debruijn}
+Let $\mu$ be a measure on a linearly ordered space, and assume the following integrals are absolutely convergent. For $r$ functions $f_1,\ldots,f_r$, define
+\[
+ W_{ij}=\iint\sgn(y-x)f_i(x)f_j(y)\,\dd\mu(x)\dd\mu(y),
+ \qquad u_i=\int f_i(x)\,\dd\mu(x).
+\]
+Then
+\begin{equation}\label{eq:db-even}
+ \int_{x_1<\cdots<x_r}\det[f_i(x_j)]\prod_j\dd\mu(x_j)
+ =\Pf W\qquad(r\text{ even}),
+\end{equation}
+and for odd $r$ the right side is
+\begin{equation}\label{eq:db-odd}
+ \Pf\begin{pmatrix}W&u\\-u^{\mathsf T}&0\end{pmatrix}.
+\end{equation}
+The formulas hold for counting measure as well as continuous measures.
+\end{lemma}
+
+\begin{proof}
+For even $r=2m$, expand \eqref{eq:pfdef} and apply Fubini. The result is
+\[
+ \frac1{2^m m!}\int\det[f_i(x_j)]
+ \prod_{a=1}^m\sgn(x_{2a}-x_{2a-1})\prod_j\dd\mu(x_j).
+\]
+Tuples with repeated coordinates have zero determinant. On the distinct-coordinate tuples, partition the domain into all orderings of the coordinates and put each ordering into increasing order. The signed sum of the sign products equals $2^m m!\Pf J_{2m}$, where $J_{ij}=1$ for $i<j$ and $J_{ij}=-1$ for $i>j$. Expanding the first row shows inductively that $\Pf J_{2m}=1$: the alternating sum of its $2m-1$ cofactors is $1$. This proves \eqref{eq:db-even}.
+
+For odd $r$, add a new greatest point $\infty$ with unit mass. Extend the original functions by $f_i(\infty)=0$, and add one function supported at $\infty$ with value $1$ there. Apply the even formula to these $r+1$ functions. Only tuples whose last coordinate is $\infty$ survive. Their determinant is the original $r\times r$ determinant; the enlarged skew matrix is exactly the bordered matrix in \eqref{eq:db-odd}.
+\end{proof}
+
+\subsection{The Gaussian Vandermonde integral}
+Since $\vander(x)>0$ on the increasing chamber, the constant in \eqref{eq:I-L} is
+\begin{equation}\label{eq:I-integral}
+ I_r=\int_{x_1<\cdots<x_r}\vander(x)
+          \prod_{j=1}^r\phi(x_j)\,\dd x_j,
+ \qquad \phi(x)=(2\pi)^{-1/2}e^{-x^2/2}.
+\end{equation}
+This is the Gaussian absolute-Vandermonde normalization often called the Mehta integral at exponent one; see \cite{Nicolaescu} for another derivation. The following proof needs only Gaussian integration and \cref{lem:debruijn}.
+
+\begin{proposition}\label{prop:gaussian}
+For $m\geq0$,
+\begin{align}
+ I_{2m}&=\frac{\prod_{j=0}^{m-1}(2j)!}{2^{m(m-1)}\pi^{m/2}},\label{eq:I-even}\\
+ I_{2m+1}&=\frac{\prod_{j=0}^{m-1}(2j+1)!}{2^{m^2}\pi^{m/2}}.\label{eq:I-odd}
+\end{align}
+Equivalently,
+\begin{equation}\label{eq:I-gamma}
+ I_r=\frac{\prod_{j=1}^r\Gamma(1+j/2)}{r!\,\Gamma(3/2)^r},
+ \qquad I_{r+2}=\frac{r!}{2^r\sqrt\pi}\,I_r,
+ \quad I_0=I_1=1.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $h_k$ be the monic Hermite polynomials characterized by
+\begin{equation}\label{eq:hermitegen}
+ e^{tx-t^2/4}=\sum_{k=0}^{\infty}h_k(x)\frac{t^k}{k!}.
+\end{equation}
+Multiplying two such generating functions and integrating against $e^{-x^2}\dd x$ gives $\sqrt\pi e^{st/2}$. Comparing coefficients yields
+\begin{equation}\label{eq:hermiteortho}
+ \int_{\RR}h_k(x)h_\ell(x)e^{-x^2}\,\dd x
+ =\delta_{k\ell}\frac{\sqrt\pi\,k!}{2^k}.
+\end{equation}
+Define a monic polynomial family, in degree order, by
+\[
+ p_{2j}=h_{2j},\qquad p_{2j+1}=x h_{2j}-h'_{2j}.
+\]
+Changing the monomial rows in the Vandermonde determinant to these monic polynomials does not change the determinant.
+
+For the skew pairing
+\[
+ [f,g]=\iint\sgn(y-x)f(x)g(y)\phi(x)\phi(y)\,\dd x\dd y,
+\]
+note that $(x h-h')\phi=-(h\phi)'$. Integrating by parts in $y$, with vanishing Gaussian boundary terms, gives
+\begin{equation}\label{eq:skewip}
+ [f,xh-h']=2\int f(x)h(x)\phi(x)^2\,\dd x
+           =\frac1\pi\int f(x)h(x)e^{-x^2}\,\dd x.
+\end{equation}
+Thus
+\[
+ [p_{2i},p_{2j+1}]=\delta_{ij}\rho_j,
+ \qquad \rho_j=\frac{(2j)!}{2^{2j}\sqrt\pi}.
+\]
+The even--even and odd--odd pairings vanish by replacing $(x,y)$ by $(-x,-y)$. For even $r=2m$, the Pfaffian in \cref{lem:debruijn} is therefore the product of the $m$ successive $2\times2$ block entries $\rho_j$. This gives \eqref{eq:I-even}.
+
+For odd $r=2m+1$, the final even polynomial $p_{2m}=h_{2m}$ is skew-orthogonal to all preceding polynomials. In the bordered Pfaffian it can therefore pair only with the last, moment, column. Its moment follows from \eqref{eq:hermitegen}:
+\[
+ \int e^{tx-t^2/4}\phi(x)\,\dd x=e^{t^2/4},\qquad
+ \int h_{2m}(x)\phi(x)\,\dd x=\frac{(2m)!}{4^m m!}.
+\]
+Consequently
+\[
+ I_{2m+1}=\frac{(2m)!}{4^m m!}\prod_{j=0}^{m-1}\rho_j.
+\]
+Using $(2m)!/(2^m m!)=(2m-1)!!$ gives \eqref{eq:I-odd}. The two parity products immediately give the two-step recurrence in \eqref{eq:I-gamma}. The gamma product is equivalent by the gamma recurrence and the duplication formula, or by checking the same recurrence and initial values.
+\end{proof}
+
+\subsection{The discrete geometric Vandermonde sum}
+
+\begin{proposition}\label{prop:geometric}
+For $0<q<1$ and $r\geq0$,
+\begin{equation}\label{eq:Z-evaluation}
+ \boxed{\displaystyle
+ Z_r(q)=\frac{q^{\binom r2}F_r^2}{(1-q)^{r^2}}.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $\mu_k(q)=\sum_{d\geq0}d^kq^d$. Finite Cauchy--Binet followed by an absolutely convergent limit gives
+\begin{equation}\label{eq:hankel}
+ Z_r(q)=\det[\mu_{i+j}(q)]_{0\leq i,j<r}.
+\end{equation}
+The change of polynomial basis from $d^i$ to $\binom di$ has diagonal factors $i!$. Therefore
+\[
+ Z_r(q)=F_r^2\det G_r,\qquad
+ (G_r)_{ij}=\sum_{d\geq0}q^d\binom di\binom dj.
+\]
+The full bivariate generating kernel of the entries is
+\begin{equation}\label{eq:Gkernel}
+ \sum_{i,j\geq0}G_{ij}s^it^j=\frac1{1-q(1+s)(1+t)}.
+\end{equation}
+Put $a=q/(1-q)$ and $b=q/(1-q)^2=a+a^2$. A direct factorization gives
+\begin{equation}\label{eq:kernelLDL}
+ \frac1{1-q(1+s)(1+t)}
+ =\frac1{1-q}\sum_{k\geq0}
+ \frac{b^ks^kt^k}{(1-as)^{k+1}(1-at)^{k+1}}.
+\end{equation}
+Since $[s^i]s^k(1-as)^{-k-1}=\binom ik a^{i-k}$, the leading $r\times r$ block has a factorization
+\[
+ G_r=\frac1{1-q}\,T_r\diag(1,b,\ldots,b^{r-1})T_r^{\mathsf T},
+ \qquad (T_r)_{ik}=\binom ik a^{i-k}.
+\]
+The matrix $T_r$ is unit lower triangular, so
+\[
+ \det G_r=(1-q)^{-r}b^R
+          =q^R(1-q)^{-r-2R}
+          =\frac{q^R}{(1-q)^{r^2}}.
+\]
+Multiplication by $F_r^2$ proves \eqref{eq:Z-evaluation}. No orthogonal-polynomial summation theorem is needed.
+\end{proof}
+
+\section{Completion of the asymptotic proof and the arithmetic correction}\label{sec:completion}
+
+\subsection{Assembling the factors}
+Substituting \cref{prop:geometric} into \eqref{eq:before-evaluation}, with $q=1/4$, cancels the factor $F_r^2$ and gives
+\begin{align*}
+ H_r(n,n)
+ &\sim4^{rL}L^{-R}I_r^2
+          \frac{4^{-R}}{(3/4)^{r^2}}\\
+ &=4^{rn}L^{-R}\frac{4^{-2r-R+r^2}}{3^{r^2}}I_r^2.
+\end{align*}
+Since $L=n-2$, we have $L^{-R}\sim n^{-R}$, and
+\[
+ 2(-2r-R+r^2)=r(r-3).
+\]
+Thus
+\begin{equation}\label{eq:CrI}
+ C_r=\frac{2^{r(r-3)}}{3^{r^2}}I_r^2.
+\end{equation}
+Together with \cref{prop:gaussian}, this proves \cref{thm:main} for $r\geq1$. The exact $r=0$ count handles the remaining case. Equations \eqref{eq:evenC}--\eqref{eq:Crec} follow by substitution. Notice that changing $L$ to $n$ in the exponential factor prematurely would introduce the incorrect multiplier $4^{2r}$; the two-unit index shift matters for the constant.
+
+\subsection{The first failure of the arithmetic extrapolation}
+
+\begin{corollary}\label{cor:five}
+The suggestion that all leading constants are power products of $2$, $3$, and $\pi$, with integer or rational exponents, is false. The first value of $r$ for which the rational prefactor contains a prime other than $2$ or $3$ is $r=7$, where
+\begin{equation}\label{eq:C7}
+ C_7=\frac{2^{18}5^2}{3^{45}\pi^3}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The values through $r=6$ follow from \eqref{eq:Crec} and contain no such prime. At the next step,
+\[
+ C_7=C_5\frac{2^8(5!)^2}{3^{24}\pi}
+ =\frac{2^4}{3^{23}\pi^2}
+   \frac{2^{14}3^25^2}{3^{24}\pi},
+\]
+which gives \eqref{eq:C7}. For integer exponents, unique factorization already shows that $5^2$ cannot be absorbed into powers of $2$ and $3$. For rational exponents, suppose $C_7=2^a3^b\pi^c$ with $a,b,c\in\mathbb Q$. The transcendence of $\pi$ forces $c=-3$: otherwise a nonzero rational power of $\pi$ would be algebraic, which would make $\pi$ algebraic. Raising the remaining equality to a common denominator of $a,b$ contradicts the exponent of the prime $5$ in unique factorization.
+\end{proof}
+
+Arbitrary real exponents would make the phrase ``power product'' impose no restriction, because any positive constant is $2^x$ for some real $x$. The integer/rational-exponent interpretation is the meaningful arithmetic statement addressed here.
+
+The correction is not confined to one exceptional prime. Write
+\[
+ Q_r=C_r\pi^{\lfloor r/2\rfloor}\in\mathbb Q_{>0}.
+\]
+For a prime $p\geq5$, \eqref{eq:evenC}--\eqref{eq:oddC} imply
+\begin{align}
+ v_p(Q_{2m})&=2\sum_{j=0}^{m-1}v_p((2j)!),\label{eq:pval-even}\\
+ v_p(Q_{2m+1})&=2\sum_{j=0}^{m-1}v_p((2j+1)!).\label{eq:pval-odd}
+\end{align}
+There can be no cancellation against the powers of $2$ and $3$ outside the products. Every prime $p\geq5$ first appears at the odd parameter $r=p+2$ and occurs for all larger parameters. Thus the set of primes in the rational leading prefactors is unbounded. Legendre's identity $v_p(k!)=\sum_{a\geq1}\lfloor k/p^a\rfloor$ turns \eqref{eq:pval-even}--\eqref{eq:pval-odd} into explicit finite floor sums.
+
+\section{The limiting distribution of the row deficits}\label{sec:deficit-law}
+
+The positive representation defines a useful auxiliary probability model. Select a row set $U$ with probability proportional to $S(U)^2$ in \eqref{eq:squares}, and form its increasing deficit tuple $d$. This is a probability distribution on terms of the representation; no assertion is needed that $U$ is already a specified statistic of the original array.
+
+\begin{theorem}\label{thm:deficits}
+For fixed $r\geq1$, the deficit distribution converges in total variation to
+\begin{equation}\label{eq:deficit-law}
+ \PP_\infty(d)=\frac{q^{\sum_a d_a}\vander(d)^2}{Z_r(q)},
+ \qquad 0\leq d_1<\cdots<d_r,\qquad q=\frac14.
+\end{equation}
+If $T=\sum_a d_a$ under this limiting law, then
+\begin{equation}\label{eq:deficitpgf}
+ \EE_\infty s^T=s^R\left(\frac{1-q}{1-qs}\right)^{r^2}
+ \quad(0\leq s<1/q).
+\end{equation}
+In particular, $T-R$ has a negative-binomial distribution with shape $r^2$ and mass parameter $q=1/4$:
+\begin{equation}\label{eq:negativebinomial}
+ \PP_\infty(T=R+k)=\binom{r^2+k-1}{k}
+                     \left(\frac34\right)^{r^2}4^{-k},\quad k\geq0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For each fixed $d$, divide the squared pointwise limit \eqref{eq:pointwise} by the normalization limit \eqref{eq:limit-sum}. The resulting point mass is exactly \eqref{eq:deficit-law}. Its sum is $1$ by the definition of $Z_r$. Pointwise convergence of probability masses on a countable set to a probability mass function of total mass $1$ implies total-variation convergence: choose a finite set carrying all but an arbitrarily small amount of the limiting mass, use pointwise convergence there, and bound both complementary masses.
+
+Finally, weighting \eqref{eq:deficit-law} by $s^{\sum d_a}$ replaces $q$ by $qs$, so the probability generating function is $Z_r(qs)/Z_r(q)$. Equation \eqref{eq:Z-evaluation} gives \eqref{eq:deficitpgf}, and the binomial-series expansion gives \eqref{eq:negativebinomial}.
+\end{proof}
+
+The limiting law has
+\begin{equation}\label{eq:deficitmoments}
+ \EE_\infty T=R+\frac{r^2}{3},\qquad
+ \operatorname{Var}_\infty T=\frac{4r^2}{9}.
+\end{equation}
+These statements concern the limiting distribution. In fact the corresponding finite-$L$ moments converge as well. To justify this additional assertion, choose any fixed $q'$ with $q<q'<1$ and use \cref{prop:limit-sum} at both $q$ and $q'$. Their ratio bounds the exponential moment $\EE[(q'/q)^{\sum d_a}]$ uniformly for large $L$. That bound gives uniform integrability of every fixed power of $\sum d_a$, and total-variation convergence then gives convergence of those moments. This supplies an explicit probabilistic interpretation of the bounded-deficit localization.
+
+\section{One determinant for every parameter, and exact computation}\label{sec:algorithm}
+
+\subsection{A finite parameter-generating polynomial}
+Define the $N\times N$ skew matrix $J_N$ by
+\[
+ (J_N)_{ij}=\begin{cases}1&i<j,\\0&i=j,\\-1&i>j,\end{cases}
+ \qquad A=BJ_NB^{\mathsf T},\qquad
+ v=B\one=(1,2,4,\ldots,2^{N-1})^{\mathsf T}.
+\]
+The parameter $t$ in the next identity marks $r$, not the array size $n$.
+
+\begin{theorem}[Finite determinant enumerator]\label{thm:detpoly}
+For every $n\geq1$, with $N=n-1$,
+\begin{equation}\label{eq:detpoly}
+ \boxed{\displaystyle
+ \sum_{r=0}^{N}H_r(n,n)t^r
+ =\det\bigl(\Id_N+t(A+vv^{\mathsf T})\bigr).}
+\end{equation}
+The determinant of order zero is $1$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:debruijn} with counting measure on $\mathcal I_N$ and functions $j\mapsto B_{u,j}$ for a fixed row set $U$. The skew pairings form $A_{U,U}$ and the moments form $v_U$. Hence $S(U)$ is the Pfaffian of $A_{U,U}$ for even $|U|$, and the bordered Pfaffian for odd $|U|$.
+
+Write $E(t)=\det(\Id_N+tA)$ and
+\[
+ \widetilde A=\begin{pmatrix}A&v\\-v^{\mathsf T}&0\end{pmatrix}.
+\]
+Principal-minor expansion and $(\Pf W)^2=\det W$ show that
+\begin{align}
+ H_{2m}(n,n)&=\coeff{t}{2m}E(t),\label{eq:evenH}\\
+ H_{2m+1}(n,n)&=\coeff{t}{2m+2}
+      \{\det(\Id_{N+1}+t\widetilde A)-E(t)\}.\label{eq:oddH}
+\end{align}
+All odd-dimensional principal minors of a skew matrix vanish. A Schur complement, interpreted over formal power series, gives
+\[
+ \det(\Id_{N+1}+t\widetilde A)
+ =E(t)\{1+t^2v^{\mathsf T}(\Id_N+tA)^{-1}v\}.
+\]
+The scalar $v^{\mathsf T}(\Id_N+tA)^{-1}v$ is even in $t$, because its odd-power coefficients $v^{\mathsf T}A^{2j+1}v$ vanish. Equations \eqref{eq:evenH}--\eqref{eq:oddH} therefore combine into
+\[
+ \sum_rH_r(n,n)t^r
+ =E(t)\{1+t v^{\mathsf T}(\Id_N+tA)^{-1}v\}.
+\]
+The rank-one determinant lemma gives \eqref{eq:detpoly}. The formal inverses are legitimate since all constant terms are identity matrices; the final identity is polynomial.
+\end{proof}
+
+One useful consistency check is
+\[
+ A+vv^{\mathsf T}=B(J_N+\one\one^{\mathsf T})B^{\mathsf T}.
+\]
+The middle matrix is upper triangular with diagonal entries $1$ and all strictly upper entries $2$. Thus its determinant is $1$, and \eqref{eq:detpoly} recovers $H_{n-1}(n,n)=1$ from the leading coefficient.
+
+\subsection{The skew kernel takes only quadratic work to build}
+Directly multiplying the matrices is unnecessary. The infinite kernel satisfies
+\begin{equation}\label{eq:Agf}
+ \sum_{k,l\geq0}A_{kl}x^ky^l
+ =\frac{y-x}{(1-x-y)(1-2x)(1-2y)}.
+\end{equation}
+For a derivation, put
+\[
+ s(k,l)=\sum_{i<j}\binom ki\binom lj.
+\]
+Summing $\sum_{k\geq i}\binom ki x^k=x^i/(1-x)^{i+1}$ over $i<j$ gives
+\[
+ \sum_{k,l\geq0}s(k,l)x^ky^l
+ =\frac{y}{(1-x-y)(1-2y)}.
+\]
+Subtract its transpose to obtain \eqref{eq:Agf}. In particular,
+\begin{equation}\label{eq:Arec}
+ A_{0l}=2^l-1,\quad A_{k0}=-(2^k-1),\quad A_{kk}=0,
+ \qquad A_{kl}=A_{k-1,l}+A_{k,l-1}\quad(k,l\geq1).
+\end{equation}
+Only the upper triangle need be computed, since $A_{lk}=-A_{kl}$. Thus the complete kernel requires $O(N^2)$ integer additions.
+
+\subsection{Low-order coefficient extraction}
+Let
+\[
+ E(t)=\sum_{m\geq0}e_m t^{2m},\qquad
+ \tau_j=\tr(A^{2j}),\qquad b_j=v^{\mathsf T}A^{2j}v.
+\]
+Taking the formal logarithmic derivative of $E$ gives
+\begin{equation}\label{eq:enewton}
+ e_0=1,\qquad e_m=-\frac1{2m}\sum_{j=1}^m\tau_j e_{m-j}.
+\end{equation}
+Then
+\begin{equation}\label{eq:algorithmH}
+ H_{2m}(n,n)=e_m,\qquad
+ H_{2m+1}(n,n)=\sum_{j=0}^m e_{m-j}b_j.
+\end{equation}
+Skew symmetry also gives
+\begin{equation}\label{eq:b-norm}
+ b_j=(-1)^j\|A^jv\|_2^2.
+\end{equation}
+So only matrix--vector multiplication is needed for the $b_j$.
+
+For $r\leq7$, it suffices to compute $\tau_1,\tau_2,\tau_3$ and $b_0,\ldots,b_3$. Put $Q=A^2=-AA^{\mathsf T}$. Then
+\[
+ \tau_1=-\sum_{i,j}A_{ij}^2,\qquad
+ \tau_2=\sum_{i,j}Q_{ij}^2,
+\]
+and the symmetry of $Q$ gives a cubic-time expression without forming $Q^2$:
+\begin{align}\label{eq:tracecube}
+ \tau_3={}&\sum_i Q_{ii}^3
+ +3\sum_{i<j}(Q_{ii}+Q_{jj})Q_{ij}^2\notag\\
+ &+6\sum_{i<j<k}Q_{ij}Q_{jk}Q_{ik}.
+\end{align}
+The supplied standard-library implementation uses these formulas. Every division in \eqref{eq:enewton} is checked for exact divisibility. Counts are never rounded floating-point quantities, even when large terms cancel in \eqref{eq:algorithmH}.
+
+For general truncation order $s$, Newton identities applied to $A+vv^{\mathsf T}$ give all coefficients through $t^s$ in $O(sN^3+s^2)$ scalar arithmetic operations using ordinary matrix multiplication. The optimized fixed-$r\leq7$ routine takes $O(N^3)$ arithmetic operations and $O(N^2)$ storage. These are \emph{arithmetic}, not unit-cost bit, bounds. The kernel entries have $O(N)$ bits, and fixed-order powers and intermediate integers have $O_r(N+\log N)$ bits. An implementation must account for the corresponding large-integer multiplication cost. No asymptotic speedup over every possible specialized recurrence is asserted.
+
+\section{Computational checks and reproducibility}\label{sec:experiments}
+
+\subsection{Independent verification paths}
+The archive includes \texttt{code/hardinian.py}, \texttt{code/verify.py}, and \texttt{code/generate\_data.py}. The first two use only the Python standard library. The last uses \texttt{mpmath} solely to format numerical asymptotic ratios.
+
+The verification run recorded in \texttt{data/verification\_report.json} passed 2,350 exact checks. These include direct row-by-row enumeration from the array definition, the original complementary-minor sum, the positive squared-minor sum, explicit Pfaffian sums, and two matrix-coefficient algorithms. All parameter values at sizes $1\leq n\leq7$ agree across the first methods. The skew-kernel construction is checked against $BJ_NB^{\mathsf T}$, independently of its recurrence. Additional tests verify the binomial likelihood-ratio product, rational Hankel determinant evaluations of $Z_r(q)$, and the parity products for $C_r$.
+
+There are also 71 comparisons against separately recorded OEIS reference values: every listed value for $1\leq n\leq37$ in the A253217 b-file, and 34 selected values of A252998, namely $n=1,\ldots,30,40,70,100,101$ \cite{OEIS2,OEIS3}. The reference JSON is explicitly marked as a transcription from the retrieved b-files; it is not generated by the tested routine.
+
+For example, all parameter counts at $n=7$ are
+\begin{equation}\label{eq:n7poly}
+ \sum_{r=0}^{6}H_r(7,7)t^r
+ =1+1365t+47698t^2+122833t^3+35176t^4+923t^5+t^6.
+\end{equation}
+The $r=2,3$ values agree with the corresponding OEIS entries. This small polynomial is also a useful regression test for signs, coefficient parity, and the $N=n-1$ shift.
+
+\subsection{Approach to the leading asymptotic}
+Define the dimensionless ratio
+\[
+ \mathcal R_r(n)=\frac{H_r(n,n)}{C_r4^{rn}n^{-\binom r2}}.
+\]
+The theorem predicts $\mathcal R_r(n)\to1$. Counts in the following table were computed as exact integers; only the final division involving $\pi$ used high-precision arithmetic.
+
+\begin{table}[ht]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$n$&$r=2$&$r=3$&$r=4$&$r=5$&$r=6$&$r=7$\\
+\midrule
+\tableinput{data/ratio_table.tex}
+\bottomrule
+\end{tabular}
+\caption{Exact-count ratios $\mathcal R_r(n)$, rounded to six decimals. The gradual approach for larger $r$ is not used to prove the constants.}
+\label{tab:ratios}
+\end{table}
+
+The $r=7$ ratio is still about $1.201$ at $n=400$. This illustrates why a modest finite table would be a poor basis for a proof or for a high-precision estimate of the leading constant. The factor $5^2$ in \eqref{eq:C7} is a consequence of the exact product formula, not a numerical fit. We do not infer a convergence rate or monotonicity theorem from \cref{tab:ratios}.
+
+On the recorded container run, the optimized routine computed all counts through $r=7$ at $n=200$ in about $1.16$ seconds and at $n=400$ in about $23.59$ seconds. These are single-run observations on the environment described in \texttt{data/computation\_run.json}, not portable benchmark guarantees. The $n=400$ result contains integers with thousands of bits, all computed exactly.
+
+\subsection{Running the supplied artifacts}
+From the archive root:
+\begin{lstlisting}
+python code/verify.py
+python code/hardinian.py 40 --max-r 7
+python code/hardinian.py 12 --max-r 11 --method generic
+python code/generate_data.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The data generator rebuilds the count table for $n=1,\ldots,40,80,120,200,400$, with $0\leq r\leq7$, and the asymptotic ratio table. It also records $Q_r=C_r\pi^{\lfloor r/2\rfloor}$ exactly for $0\leq r\leq20$. Integer values are serialized as decimal strings in JSON to avoid precision loss in software that interprets all numbers as binary floating point. A faster exploratory run can use \texttt{--max-n 200}; that deliberately omits the final row of \cref{tab:ratios} when the table is regenerated.
+
+The verification is valuable for catching implementation and normalization errors, but it cannot establish an all-$n$ asymptotic statement. Conversely, the analytic proof does not rely on any computationally guessed recurrence, integer-relation search, or unrecorded numerical constant.
+
+\section{Consequences for size-generating functions}\label{sec:generating}
+
+Let
+\begin{equation}\label{eq:sizeGF}
+ \mathcal H_r(z)=\sum_{n\geq1}H_r(n,n)z^n.
+\end{equation}
+This is distinct from the finite parameter-generating polynomial in \cref{thm:detpoly}.
+
+\begin{corollary}\label{cor:radius}
+For fixed $r\geq0$, the radius of convergence of $\mathcal H_r$ is $\rho_r=4^{-r}$. For $r\geq2$, put $R=\binom r2$ and $\theta=z\,\dd/\dd z$. Along the positive real axis,
+\begin{equation}\label{eq:logsing}
+ \theta^{R-1}\mathcal H_r(z)
+ \sim-C_r\log(1-4^rz)\qquad(z\uparrow\rho_r).
+\end{equation}
+If $R\geq2$, each $\theta^k\mathcal H_r$ with $0\leq k\leq R-2$ has a finite value at $z=\rho_r$.
+\end{corollary}
+
+\begin{proof}
+The coefficient asymptotic gives $H_r(n,n)^{1/n}\to4^r$, proving the radius assertion by Cauchy--Hadamard. For $r\geq2$,
+\[
+ n^{R-1}H_r(n,n)\rho_r^n\sim\frac{C_r}{n}.
+\]
+Write $x=z/\rho_r$. Given $\varepsilon>0$, the tail coefficients lie between $(C_r-\varepsilon)/n$ and $(C_r+\varepsilon)/n$. Multiply by $x^n$ and sum. The finite omitted prefix remains bounded, whereas $\sum_{n\geq1}x^n/n=-\log(1-x)$ diverges. Divide by that logarithm and then let $\varepsilon\downarrow0$ to get \eqref{eq:logsing}. For $k\leq R-2$, the boundary coefficients are $O(n^{k-R})$, with exponent at most $-2$, so their series converges absolutely.
+\end{proof}
+
+The exceptional cases have elementary generating functions:
+\[
+ \mathcal H_0(z)=\frac{z}{1-z},\qquad
+ \mathcal H_1(z)=\frac{z^2}{(1-z)(1-4z)},
+\]
+using the known exact identity $H_1(n,n)=(4^{n-1}-1)/3$ \cite[Theorem~1]{DK}. The singular statement in \cref{cor:radius} is radial and Abelian. It does not assert a full complex singular expansion or analytic continuation across other points of the convergence circle.
+
+\section{What has been settled, and what remains}\label{sec:scope}
+
+The fixed-parameter leading asymptotic is established with its exact normalization for every $r$. This supplies more than the constants previously guessed for small parameters: it identifies their complete factorial structure and shows why the proposed restriction on their prime factors could not persist. The proof also gives a limiting distribution for the exponentially localized row deficits and an exact finite determinant useful for further experimentation.
+
+Several nearby problems are not answered by this result. The theorem is not uniform for $r=r(n)$ tending to infinity. Constants in the confluence estimates depend on $r$, and the determinant dimension itself changes in that regime. The argument as written also does not give a full inverse-power expansion in $n$, nor does it prove a specific minimal-order recurrence for $r\geq3$. The previously established D-finiteness of each fixed-$r$ diagonal is not being claimed as new \cite{DK}. The rectangular two-variable questions have their own geometry and are not automatically solved by the diagonal formula.
+
+There is, however, a concrete route toward higher asymptotic terms. The exact polynomial expansion \eqref{eq:c-expansion} can be carried to higher orders, and the discrete deficit weights retain geometric tails. The additional difficulty lies in obtaining sufficiently uniform expansions for expectations involving absolute Vandermonde factors under a lattice distribution. A formal Edgeworth substitution would need its own treatment of lattice effects and determinant zeros; it should not be reported as a proved full expansion merely because it gives plausible coefficients. The present theorem avoids that issue by requiring only a joint Gaussian limit with uniform moments.
+
+\subsection*{Proof-dependency audit}
+The external combinatorial input is the published path-minor representation \cref{lem:known}. The remaining ingredients are standard finite-dimensional identities---binomial inversion, Jacobi, Cauchy--Binet, Pfaffians, and the rank-one determinant lemma---together with elementary Gaussian convergence and tail bounds. The specialized ordered-integral identity is proved in \cref{lem:debruijn}; the Gaussian and discrete normalization factors are both evaluated in \cref{sec:normalizations}. Most importantly, \cref{prop:limit-sum} proves the interchange needed for the asymptotic rather than assuming it. The software checks these identities in finite examples but is not a logical premise of the theorem.
+
+\subsection*{Priority and dissemination}
+The original paper, the relevant OEIS entries and b-files, the abstract of the later rectangular-array work, and primary references for the Gaussian/Pfaffian techniques were consulted on 19 September 2026. The exact scope of that search is recorded in the archive. No OEIS update, journal submission, author contact, formal proof-assistant verification, or external peer review has been performed. Those distinctions matter: the manuscript presents a mathematical proof, while the historical novelty and final correctness of a new research result still merit independent scrutiny.
+
+\begin{thebibliography}{9}
+
+\bibitem{DK}
+R. Dougherty-Bliss and M. Kauers,
+\emph{Hardinian Arrays},
+Electronic Journal of Combinatorics \textbf{31}(2) (2024), Paper P2.9, 13 pp.
+\href{https://doi.org/10.37236/12358}{doi:10.37236/12358}.
+Preprint: \href{https://arxiv.org/abs/2309.00487}{arXiv:2309.00487}.
+The published version, especially the proof of Theorem 6 and the conjectures on p.~12, is used here.
+
+\bibitem{OEIS2}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+entry \href{https://oeis.org/A253217}{A253217},
+with reference table \href{https://oeis.org/A253217/b253217.txt}{b253217.txt}.
+Accessed 19 September 2026. The entry records the $r=2$ asymptotic conjecture attributed to V. Kotesovec, 2 March 2023.
+
+\bibitem{OEIS3}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+entry \href{https://oeis.org/A252998}{A252998},
+with reference table \href{https://oeis.org/A252998/b252998.txt}{b252998.txt}.
+Accessed 19 September 2026.
+
+\bibitem{DS}
+R. Dougherty-Bliss and G. Spahn,
+\emph{Rectangular Hardinian Arrays},
+ACM Communications in Computer Algebra \textbf{58}(3), 81--84.
+Published online 11 February 2025;
+\href{https://doi.org/10.1145/3717582.3717589}{doi:10.1145/3717582.3717589}.
+The publisher's abstract was consulted for the scope of the fixed-width result; no claim here depends on an unread proof in that article.
+
+\bibitem{deBruijn}
+N. G. de Bruijn,
+\emph{On some multiple integrals involving determinants},
+Journal of the Indian Mathematical Society (N.S.) \textbf{19} (1955), 133--151.
+\href{https://research.tue.nl/en/publications/on-some-multiple-integrals-involving-determinants/}{Eindhoven University of Technology publication record}.
+
+\bibitem{Nicolaescu}
+L. I. Nicolaescu,
+\emph{A probabilistic computation of a Mehta integral},
+\href{https://arxiv.org/abs/2408.06203}{arXiv:2408.06203} (2024).
+Cited for context; the Gaussian integral required in this manuscript is proved directly.
+
+\end{thebibliography}
+\end{document}

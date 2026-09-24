@@ -1,0 +1,1044 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+% newpxtext selects TeX Gyre Heros (qhv), scaled to .94, for sans serif.
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: unified report},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={A unified research assessment of large-cardinal consistency boundaries},pdfkeywords={large cardinals, Kunen inconsistency, exacting, ultraexacting, Icarus, HOD, Berkeley}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Unified research-priority assessment}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Unified research-priority assessment}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\DC}{\mathsf{DC}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HH}{\mathsf{HH}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Ione}{\mathrm{I1}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Isharp}{\mathrm{I0}^{\#}}
+\newcommand{\Status}[1]{\textbf{Status.} #1}
+\newcommand{\Priority}[1]{\textbf{Research priority.} #1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH ASSESSMENT}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Large cardinals at the\\ inconsistency frontier\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont A unified assessment of ZFC-compatible hypotheses,\\ their obstructions, and the evidence on both sides\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Central judgment.} The strongest reasons to investigate a possible inconsistency are not an axiom's intimidating name or its proximity in notation to $j:V\to V$. They are a \emph{specific missing ingredient in a known obstruction}, a sharp incompatibility with a substantial structural conjecture, or a nearby theorem whose hypotheses might be weakened. This report integrates the three supplied assessments around those mechanisms.
+
+The resulting shortlist has three complementary first-line targets: \textbf{global cardinal-preserving embeddings}; \textbf{cover-exacting cardinals above a strongly compact cardinal}; and \textbf{ordinary exacting cardinals above an extendible cardinal}, with the strongly compact variant retained. Canonical \textbf{Icarus enrichments}, especially $\Isharp$, and \textbf{HOD-Berkeley cardinals} form a second line. Ultraexacting interactions belong in the same investigation, rather than being counted as independent evidence of inconsistency.
+
+\begin{assessment}{Three distinctions that change the answer}
+\textbf{Already refuted versus still open.} Reinhardt and ordinary Berkeley hypotheses are not unresolved ZFC candidates. Cover-exacting cardinals above an extendible cardinal are also excluded by a reported 2026 theorem; the strongly compact case is the adjacent open problem.
+
+\textbf{An isolated axiom versus its interaction with another cardinal.} Bare ultraexacting existence is equiconsistent with $\Izero$. The important uncertainty concerns additional hypotheses and their relative placement.
+
+\textbf{A research priority versus a probability.} The literature does not supply a defensible numerical probability of inconsistency for these open theories. Priority here means a precise target with useful possible outcomes, not a prediction that the axiom is false.
+\end{assessment}
+
+\textbf{Scope and outcome.} The report combines definitions, consistency comparisons, a fully proved stationary-partition diagnostic, candidate-by-candidate assessments, and a concrete research programme. Established results, conditional implications, published conjectures, and proposed attacks are kept separate. No new inconsistency proof is asserted.
+
+\textbf{Editorial basis.} All three supplied reports contribute substantive material. Overlapping discussions are consolidated; differences in ranking are resolved by distinguishing kinds of research leverage. The bibliography records the versions and publication status used, including the July 2026 cover-exacting notes and a withdrawn 2026 claim.
+
+\clearpage
+\tableofcontents
+\vspace{10pt}
+\begin{assessment}{How to read the report}
+For the shortlist, read Section~\ref{sec:shortlist}. For the reusable mathematical test, read Section~\ref{sec:obstruction}. Sections~\ref{sec:exacting}--\ref{sec:hodberkeley} develop the individual targets. Section~\ref{sec:programme} turns them into research tasks. Appendices~\ref{app:integration}--\ref{app:audit} document the synthesis and the checks needed to evaluate a purported contradiction.
+\end{assessment}
+
+\clearpage
+\section{Comparative assessment: mechanisms before names}\label{sec:shortlist}
+
+The three source reports differ more in emphasis than in their assessment of the mathematics. One makes exacting--extendible coexistence its first choice; another prioritizes global cardinal correctness and the newly isolated cover-exacting boundary; the third adds HOD-Berkeley cardinals. A single numerical ranking would conceal those differences. The following tiers instead distinguish \emph{global rigidity}, \emph{local theorem transfer}, and \emph{a foundational definability conflict}.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}P{.14\textwidth}P{.29\textwidth}P{.50\textwidth}@{}}
+\toprule
+\textbf{Track} & \textbf{Exact target} & \textbf{Why it deserves investigation}\\
+\midrule\endfirsthead
+\toprule\textbf{Track}&\textbf{Exact target}&\textbf{Why it deserves investigation}\\\midrule\endhead
+A: global & Nontrivial $j:V\to M$, with $M$ an inner model and $\Card^M=\Card^V$. & An explicit negative conjecture, strong correctness consequences, and a theorem excluding the reverse direction. The key gap is external stationary-set correctness, not merely cardinal arithmetic. \cite{goldbergcp,goldbergthei}\\[5pt]
+A: local & A $\gamma$-cover-exacting $\lambda$ above a strongly compact $\delta$. & A 2026 theorem rules out the corresponding configuration with $\delta$ extendible. The weaker hypothesis is explicitly posed as an open problem. \cite{cover}\\[5pt]
+A: HOD & An exacting $\lambda$ above an extendible $\delta$; also the strongly compact variant. & Exactingness makes $\lambda$ singular in $V$ but regular in HOD. A smaller compactness cardinal turns this into a conflict with the HOD Hypothesis, not an unconditional contradiction. \cite{abl,abgl,goldberghod}\\[5pt]
+Related interaction & Ultraexacting $\lambda$ with an extendible below it, or $\lambda$ a limit of extendibles. & Extra internal access to the embedding sharpens interaction questions. But bare ultraexacting existence is equiconsistent with $\Izero$; the sharp-enriched case matches $\Isharp$. \cite{abl,abgl}\\[5pt]
+B: coding & $\Isharp$, finite canonical sharp enrichments, and individually specified $E^0$ stages. & The domain gains information while retaining an elementary self-embedding. Ask whether that information supplies the exact coding or stationarity missing from Kunen's proof. \cite{dimonte,ld,abgl}\\[5pt]
+B: HOD & A HOD-Berkeley cardinal. & It implies a strong failure of the HOD Hypothesis. The obstruction must bridge external witnesses and internal HOD structure; that distinction cannot be omitted. \cite{bkw,cutolo}\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{What the priority labels do and do not say}
+
+The global track is attractive when one wants a clean elementary-embedding statement and a precise rigidity question. The cover-exacting track is attractive when one wants the closest available \emph{extension of a known negative theorem}. Exacting--extendible coexistence is attractive when one wants a result with a particularly consequential connection to HOD. None is known to be easier merely because its statement is shorter.
+
+The distinction between ordinary and cover exactingness is essential. The cover property strengthens ordinary exactingness. A contradiction for the stronger property above an extendible does not settle the weaker property's coexistence problem. Conversely, a positive consistency result for ordinary exactingness does not automatically preserve the additional cover requirement.
+
+Likewise, an inconsistency argument for an ultraexacting interaction would not automatically refute ordinary exactingness. A proof using a sharp, iterability, a definable selector, or an extra closure property must record that premise in its conclusion. Theories sharing a suggestive informal name need not share their consistency strength.
+
+\subsection{The comparison field}
+
+The controls are $\Ithree$, $\Itwo$, $\Ione$, $\Izero$, finite levels of hugeness, and isolated exacting or ultraexacting existence. They are not certified absolutely consistent. They are controls because the literature supplies much more structure and because several shortlisted statements reduce to them in consistency strength. A proposed quick contradiction that also refutes the relevant control is a reason to inspect the argument especially closely, not to announce that all of the hierarchy has collapsed. \cite{dimonte,iterability,abgl}
+
+\begin{assessment}{Working recommendation}
+Choose \emph{one obstruction and one fully specified theory}. For an initial local project, reconstruct the cover-exacting obstruction and isolate the use of extendibility. For a broader foundational project, study the local HOD-cofinality obstruction to exacting--extendible coexistence. Keep global cardinal preservation as a parallel, sharply formulated rigidity problem. Treat $\Isharp$ and HOD-Berkeley as distinct second-line investigations with different missing ingredients.
+\end{assessment}
+
+\section{Formal setting and standards of evidence}\label{sec:formal}
+
+\subsection{Consistency is not existence, and compatibility is not a theorem}
+
+For a large-cardinal assertion $A$, the central question is whether $\ZFC+A$ has a contradiction. It is different from asking whether $\ZFC\vdash A$, whether $A$ holds in a preferred universe, or whether $\ZFC$ proves $\Con(\ZFC+A)$. In the usual effective formalizations, sufficiently strong consistent theories cannot establish their own consistency by the standard internal argument. This general limitation is not a special warning sign attached to the cardinals considered here. \cite{godel}
+
+Four forms of conclusion must remain distinct:
+\begin{align*}
+\ZFC&\vdash\neg A &&\text{an unconditional ZFC refutation},\\
+\ZFC&\vdash A\longrightarrow\neg C &&\text{an incompatibility},\\
+\Con(\ZFC+B)&\longrightarrow\Con(\ZFC+A)
+ &&\text{a relative-consistency upper bound},\\
+\Con(\ZFC+A)&\longleftrightarrow\Con(\ZFC+B)
+ &&\text{an equiconsistency comparison}.
+\end{align*}
+The last line does not say that $A$ and $B$ hold at the same ordinal, in the same model, or imply one another as existence statements. Nor do separate consistency results for $A$ and $B$ prove consistency of $A\wedge B$, especially with an additional order requirement on their witnesses.
+
+\subsection{Three independent axes}
+
+First, there is the \emph{ambient theory}: $\ZFC$, $\ZF$, $\ZF+\DC$, or a specified class-theoretic expansion. Second, there is the \emph{embedding domain}: $V$, an inner model, a rank segment, or an elementary substructure. Third, there is the \emph{location of information}: an object may exist in $V$ without belonging to the domain or being definable there in the required way.
+
+These axes account for most misleading comparisons at the frontier. Ambient Choice does not make every inner model closed under the choices made in $V$. The fact that HOD satisfies Choice does not put an external embedding into HOD. A class-sized domain can omit precisely the rank-$\lambda+2$ information needed for a local contradiction. Failure of $V=\HOD$ is not failure of Choice.
+
+Statements involving a proper-class embedding require a formalization that allows the particular set restrictions, critical sequences, and instances of Separation or Replacement used in the proof. This report uses the standard elementary-embedding shorthand with those requirements understood; it does not silently strengthen an axiom to full elementarity for formulas mentioning $j$. Set-sized embeddings, by contrast, can be expressed using satisfaction for set structures in ordinary set theory. Definability of $j$ is not assumed. \cite{hkp,wholeness}
+
+\subsection{Evidence for concern and evidence against overconfidence}
+
+A genuine research lead identifies a theorem-shaped obstruction: a stationary partition that might become available internally; a short cofinal sequence that might become ordinal definable; a closure requirement that would force an inconsistent limiting embedding; or a rigidity result that might survive a weakening of its hypotheses.
+
+The strongest counterweight is a positive relative-consistency construction from an established benchmark. Other counterweights include a developed iteration theory, well-understood forcing preservation, and algebraic structure that explains why a naive paradox fails. None is an absolute consistency proof. Together they sharply reduce the force of an argument based only on an axiom's unfamiliar appearance. \cite{dimonte,iterability,abgl,dimwu}
+
+Throughout, \emph{open} means that the reviewed sources do not provide a verified resolution of the specified theory. The assessment is a dated synthesis, not a claim that every possible formulation or every unpublished development has been classified.
+
+\section{The rank-into-rank boundary}\label{sec:rank}
+
+\subsection{The critical sequence}
+
+For a nontrivial elementary embedding $j$ in the usual transitive setting, write
+\[
+ \kappa=\crit(j),\qquad \kappa_0=\kappa,\qquad
+ \kappa_{n+1}=j(\kappa_n),\qquad
+ \lambda=\sup_{n<\omega}\kappa_n.
+\]
+Whenever the domain and formalization support this construction, $\lambda$ has ambient cofinality $\omega$, and $j(\lambda)=\lambda$ when $\lambda$ is in the domain. The critical sequence is the natural scale at which closure becomes dangerous. A fixed point by itself is not contradictory; it becomes useful only when accompanied by sufficiently much surrounding combinatorics.
+
+Using the standard critical-sequence normalization, the familiar principles are as follows. \cite{dimonte}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Principle}&\textbf{Embedding requirement}\\\midrule
+$\Ithree$ & A nontrivial $j:V_\lambda\to V_\lambda$.\\
+$\Itwo$ & A nontrivial $j:V\to M$, $M$ transitive, with $V_\lambda\subseteq M$, where $\lambda$ is the supremum of the critical sequence.\\
+$\Ione$ & A nontrivial $j:V_{\lambda+1}\to V_{\lambda+1}$.\\
+$\Izero$ & An elementary $j:L(V_{\lambda+1})\to L(V_{\lambda+1})$ with $\crit(j)<\lambda$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The standard implication chain is
+\[
+ \Izero\ \Longrightarrow\ \Ione\ \Longrightarrow\ \Itwo\ \Longrightarrow\ \Ithree.
+\]
+These are open consistency benchmarks for ZFC, not statements proved consistent without assumptions. In contrast, Kunen's theorem excludes a nontrivial self-embedding of $V_{\lambda+2}$ in ZFC, and excludes a Reinhardt embedding $j:V\to V$ in the appropriate class formulation. \cite{kunen,hkp,dimonte}
+
+\subsection{Why one more rank is not merely a cosmetic change}
+
+The informal pattern
+\[
+ V_\lambda\longrightarrow V_{\lambda+1}\longrightarrow V_{\lambda+2}
+\]
+is not an argument that all three self-embedding assertions have the same prospects. The added rank changes what sets of lower-rank objects are present and hence what coding can be performed. A forbidden partition or well-order may first become available at the step where the contradiction appears.
+
+$\Izero$ does not simply evade this boundary by moving to a much taller domain. Although $L(V_{\lambda+1})$ has all ordinal heights, it need not contain all subsets of $V_{\lambda+1}$. Under $\Izero$, that inner model does not satisfy Choice, even when the surrounding universe satisfies ZFC. An ambient well-order cannot be imported into the embedding domain without proof. This is one of the main reasons that Icarus enrichments are interesting: they deliberately add selected information without automatically adding all of the forbidden information. \cite{dimonte}
+
+A related rank warning concerns the familiar global proof at $\lambda^+$. The ordinal $\lambda^+$ is not literally an element of $V_{\lambda+2}$. A local rank-$\lambda+2$ version of the argument uses coding; it is not obtained by pretending that the global stationary partition already lies in that rank segment.
+
+\subsection{Finite hugeness versus closure at the limit}
+
+A standard $n$-huge requirement, for a fixed positive finite $n$, asks for an elementary $j:V\to M$ with critical point $\kappa$ and closure of $M$ under sequences of length $j^n(\kappa)$ from the ambient universe. The limiting-looking demand
+\[
+ {}^\lambda M\subseteq M,
+ \qquad \lambda=\sup_{n<\omega}j^n(\kappa),
+\]
+for a \emph{single} embedding reaches a Kunen obstruction. This is not the assertion that suitable witnesses exist separately for every finite $n$. Nor is it justified to fuse a collection of finite witnesses into one coherent limit witness. The phrase ``$\omega$-huge'' is therefore too ambiguous to use without an explicit formula. \cite{dimonte,goldberge}
+
+\subsection{Canonical extension is not automatic full elementarity}
+
+If $j:V_\lambda\to V_\lambda$ and $A\subseteq V_\lambda$, the canonical extension is expressed by
+\[
+ j^+(A)=\bigcup_{n<\omega}j(A\cap V_{\kappa_n}).
+\]
+The formula supplies a candidate action on the next rank. It does not, simply by being written down, establish all the elementarity or iteration properties needed for a stronger rank-into-rank axiom. The theory between $\Ithree$ and $\Itwo$ is sensitive to precisely such properties. Any argument using an iteration limit must separately establish coherence, well-foundedness, and the required collapse. \cite{dimonte,iterability}
+
+\section{A reusable stationary-partition obstruction}\label{sec:obstruction}
+
+This section consolidates the diagnostics in the three reports. The lemmas are a repackaging of the standard Kunen mechanism, not a new inconsistency result. Their value is that they show exactly where a proposed application needs additional mathematics. The two-model formulation is useful for cardinal-preserving embeddings; the self-embedding formulation is useful for enriched inner models. \cite{kunen,hkp}
+
+\subsection{The two-model form}
+
+\begin{lemma}[Stationary collision]\label{lem:collision}
+Work in an ambient universe satisfying ZFC. Let $j:M\to N$ be an elementary embedding between transitive structures with enough set theory for the objects below, and let $\kappa=\crit(j)$. Suppose $\theta\in M$ is an uncountable regular cardinal of the ambient universe, $\kappa<\theta$, and $j(\theta)=\theta$. Assume:
+\begin{enumerate}
+\item $\vec S=\langle S_\xi:\xi<\kappa\rangle\in M$ is, externally, a partition of a set $S\subseteq\theta$.
+\item Writing $j(\vec S)=\langle T_\eta:\eta<j(\kappa)\rangle$, the cells $T_\eta$ are externally pairwise disjoint, and $T_\kappa\subseteq S$ is stationary in the ambient universe.
+\item There is an ambient club $C\subseteq\theta$ such that $j(\beta)=\beta$ for every $\beta\in C\cap T_\kappa$.
+\end{enumerate}
+Then these assumptions are contradictory.
+\end{lemma}
+
+\begin{proof}
+Choose $\beta\in C\cap T_\kappa$ by stationarity. Since $\beta\in S$, there is $\xi<\kappa$ with $\beta\in S_\xi$. Elementarity and $j(\xi)=\xi$ give
+\[
+ \beta=j(\beta)\in j(S_\xi)=j(\vec S)(\xi)=T_\xi.
+\]
+Thus $\beta$ belongs to the disjoint cells $T_\kappa$ and $T_\xi$, although $\xi<\kappa$.
+\end{proof}
+
+The force of the lemma lies in the words \emph{externally} and \emph{ambient}. Stationarity computed in $N$ need not be stationarity in $V$. The source and image supports need not be identical; it suffices that the particular image cell $T_\kappa$ lies inside the original support. No inverse of $j$ is used.
+
+\subsection{Producing fixed points from cofinal sequences}
+
+The standard club is
+\[
+ C_j=\{\beta<\theta:j``\beta\subseteq\beta\}.
+\]
+Here the set restriction $j\restr\theta$ must be available in the ambient universe. The fixed-point calculation below applies equally to $j:M\to N$ when the relevant cofinal sequences lie in the \emph{source} $M$.
+
+\begin{lemma}[Closure points and countable cofinality]\label{lem:closure}
+Under the transitivity and ordinal hypotheses of Lemma~\ref{lem:collision}, $C_j$ is club in $\theta$. If $\beta\in C_j$ has an $\omega$-sequence $s\in M$ cofinal in $\beta$, then $j(\beta)=\beta$.
+\end{lemma}
+
+\begin{proof}
+To obtain a closure point above $\alpha<\theta$, choose a strictly increasing sequence $\langle\alpha_n:n<\omega\rangle$ below $\theta$, beginning above $\alpha$, with $\alpha_{n+1}>j(\alpha_n)$. This is possible because $j(\theta)=\theta$. Regularity and uncountability give $\beta=\sup_n\alpha_n<\theta$. Monotonicity of $j$ on ordinals then gives $j``\beta\subseteq\beta$. Closure of $C_j$ follows by taking suprema of increasing sequences of its elements with supremum below $\theta$.
+
+Now let $s\in M$ be an $\omega$-sequence cofinal in $\beta$. Since $j$ fixes $\omega$, elementarity and transitivity yield
+\[
+ j(\beta)=\sup_{n<\omega}j(s(n))\leq\beta.
+\]
+The inequality uses $s(n)<\beta$ and $\beta\in C_j$. An elementary embedding of transitive structures is nondecreasing relative to the identity on ordinals, so $j(\beta)\geq\beta$. Hence equality holds.
+\end{proof}
+
+\begin{corollary}[Self-embedding diagnostic]\label{cor:self}
+Let $j:N\to N$ be as above, and suppose $S\in N$, $S\subseteq\theta$, and $j(S)=S$. If $N$ contains a partition of $S$ into $\kappa$ cells, its image cell $T_\kappa$ is stationary in $V$, and every $\beta\in T_\kappa$ has an $\omega$-sequence cofinal in $\beta$ belonging to $N$, then no such $j$ exists.
+\end{corollary}
+
+\subsection{Recovering the global Kunen argument}
+
+For $j:V\to V$, let $\lambda$ be the critical-sequence supremum and let $\theta=\lambda^+$. Elementarity gives $j(\theta)=\theta$. Choice and the stationary-splitting theorem supply a partition of
+\[
+ E^\theta_\omega=\{\beta<\theta:\cf(\beta)=\omega\}
+\]
+into $\kappa$ stationary cells. Its image has $j(\kappa)$ stationary cells, and the cell indexed by $\kappa$ satisfies all the hypotheses above. Every required cofinal sequence belongs to $V$. The collision follows. \cite{kunen,hkp}
+
+For a proper inner model, the same sentences can fail at several different places: the partition may not belong to the model; stationarity may only be internal; the relevant cofinal sequences may be missing; or the required set restriction of a class embedding may not be permitted by the formal theory. A proof of inconsistency must close the relevant gaps rather than repeat the global argument with the model names erased.
+
+\begin{assessment}{The useful output of an unsuccessful application}
+A failed application is informative when it isolates one missing theorem. Examples are: ``this image stationary cell must remain stationary in $V$''; ``this sharp supplies a particular partition inside $L(V_{\lambda+1},E)$''; or ``this compactness assumption puts a short cofinal map into HOD.'' These are precise research targets. ``The embedding is too self-referential'' is not.
+\end{assessment}
+
+\section{Exacting cardinals above extendible cardinals}\label{sec:exacting}
+
+\subsection{The axiom and the coexistence requirement}
+
+We use the cardinal-height formulation of exactingness in Aguilera--Bagaria--Goldberg--L\"ucke. Their equivalent characterizations and those of Aguilera--Bagaria--L\"ucke allow the additional height, parameter, and critical-point control used below. The cover-exacting definition in the next section is stated separately with the ordinal-height quantifiers of its source. \cite{abl,abgl}
+
+\begin{definition}
+A cardinal $\lambda$ is \emph{exacting}, written $\Ex(\lambda)$, if for every cardinal $\zeta>\lambda$ there are
+\[
+ X\prec V_\zeta,\qquad V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j:X\to V_\zeta
+\]
+such that $j$ is elementary, $j(\lambda)=\lambda$, and $j\restr\lambda\neq\id$. It is \emph{ultraexacting}, written $\UEx(\lambda)$, if the witnesses can additionally be chosen with $j\restr V_\lambda\in X$.
+\end{definition}
+
+The set $X$ need not be transitive. The requirement $V_\lambda\subseteq X$ places every lower-rank object in $X$; it should not be confused with the single membership assertion $V_\lambda\in X$. The ultraexacting clause places a \emph{restriction} of $j$ in its domain; it does not assert $j\in X$.
+
+For comparison, $\delta$ is extendible if for every ordinal $\eta>\delta$ there are $\theta$ and an elementary $i:V_\eta\to V_\theta$ with $\crit(i)=\delta$ and $i(\delta)>\eta$. We write $\SC(\delta)$ for strong compactness, which in ZFC can be expressed by the extension of every proper $\delta$-complete filter to a $\delta$-complete ultrafilter.
+
+The two ordinary-exacting targets are
+\begin{align}
+ T_E^{\mathrm{Ext}}&=\ZFC+\exists\delta<\lambda\,
+       (\Ext(\delta)\wedge\Ex(\lambda)),\label{eq:tee}\\
+ T_E^{\mathrm{SC}}&=\ZFC+\exists\delta<\lambda\,
+       (\SC(\delta)\wedge\Ex(\lambda)).\label{eq:tesc}
+\end{align}
+The position $\delta<\lambda$ is part of the assertion, not an incidental arrangement of notation.
+
+\subsection{The singular-in-$V$, regular-in-HOD phenomenon}
+
+An exacting cardinal $\lambda$ has $\cf^V(\lambda)=\omega$. Its stronger definability property is
+\begin{equation}
+ \lambda\text{ is regular in }\HOD_{V_\lambda}.
+ \label{eq:hodregular}
+\end{equation}
+Here $\OD_{V_\lambda}$ allows ordinal parameters and parameters that are members of $V_\lambda$; $\HOD_{V_\lambda}$ consists of the sets hereditarily definable in that sense. In particular, $\lambda$ is regular in HOD. This is an established theorem, not a proposed consequence of adding extendibility. \cite[Theorem~2.10]{abl}
+
+The proof is worth understanding because it locates the obstruction. Suppose a short cofinal map into $\lambda$ belongs to $\HOD_{V_\lambda}$. One can choose a parameter $x\in V_\lambda$ so that $\lambda$ is singular in $\HOD_{\{x\}}$. Take a sufficiently correct rank segment and use the strengthened exacting characterization to obtain a witness whose critical point is above both the rank needed for $x$ and the length of the shortest such cofinal map. In that segment, let $c$ be the least cofinal map in the canonical definable well-order of $\HOD_{\{x\}}$.
+
+Its defining parameters are fixed, so $c\in X$ and $j(c)=c$. Each index of $c$ is fixed as well, so every ordinal in its cofinal range is fixed. But $j\restr V_\lambda$ has critical sequence cofinal in $\lambda$, and therefore moves every ordinal in a tail of $\lambda$. This contradiction proves~\eqref{eq:hodregular}. The argument uses the established parameter-control characterization of exactingness, not an unsupported assumption that an arbitrary chosen witness has arbitrarily high critical point. \cite{abl}
+
+This also explains why the external critical sequence does not itself refute exactingness. It exists in $V$, but its code is not thereby an allowed member of HOD, or a parameter of rank below $\lambda$. The theorem identifies exactly the kind of internalized cofinal sequence that would be fatal.
+
+\subsection{The HOD Hypothesis and the HOD Conjecture}
+
+For an uncountable regular cardinal $\gamma$, say that $\gamma$ is \emph{$\omega$-strongly measurable in HOD} if there is $\eta<\gamma$ such that
+\[
+ (2^\eta)^{\HOD}<\gamma
+\]
+and no partition of the ambient set $E^\gamma_\omega$ into $\eta$ sets stationary in $V$ belongs to HOD. The \emph{HOD Hypothesis}, denoted $\HH$, asserts that there is a proper class of regular cardinals that are not $\omega$-strongly measurable in HOD. The ambient interpretation of stationarity is important. \cite{bkw,abl}
+
+A consequence of the HOD dichotomy, with the strongly compact version due to Goldberg, is that if $\delta$ is strongly compact and $\HH$ holds, then every singular cardinal $\gamma>\delta$ is singular in HOD and HOD computes its successor correctly. Applying this to an exacting $\lambda>\delta$ contradicts~\eqref{eq:hodregular}. Thus
+\begin{equation}
+ \ZFC\vdash
+ \bigl[\SC(\delta)\wedge\delta<\lambda\wedge\Ex(\lambda)\bigr]
+ \longrightarrow\neg\HH.
+ \label{eq:exhh}
+\end{equation}
+This is the established conditional conflict. It is not an inconsistency proof for either~\eqref{eq:tee} or~\eqref{eq:tesc}. \cite{goldberghod,abl,abgl}
+
+The \emph{HOD Conjecture} is a metamathematical prediction that an indicated large-cardinal background proves $\HH$. Different sources formulate it with different backgrounds or discuss a weak variant. To avoid conflation, write
+\[
+ \mathsf{HC}_{\mathrm{Ext}}:
+ \quad \ZFC+\text{``there is an extendible cardinal''}\ \vdash\ \HH
+\]
+for the extendible-background formulation discussed by Aguilera--Bagaria--L\"ucke. Their weak formulation adds a huge cardinal above an extendible. Goldberg's 2026 notes also discuss a supercompact-background formulation in terms of definable well-ordering. These predictions must not be identified merely by sharing a name. \cite{abl,cover}
+
+If $\mathsf{HC}_{\mathrm{Ext}}$ is true, $T_E^{\mathrm{Ext}}$ is inconsistent. If $T_E^{\mathrm{Ext}}$ is consistent, $\mathsf{HC}_{\mathrm{Ext}}$ is false. That is a genuine fork. It does not by itself settle $T_E^{\mathrm{SC}}$, whose background does not assert an extendible cardinal. More generally, consistency of a theory refutes a proposed derivability claim only after its background and consequence have been matched exactly.
+
+\subsection{The most concrete negative target}
+
+A local refutation would follow from a theorem of the following form:
+\begin{assessment}{Proposed missing lemma: internal short cofinality}
+From the exact hypotheses of $T_E^{\mathrm{Ext}}$, or of its strongly compact variant, derive a cofinal map $c:\rho\to\lambda$ with $\rho<\lambda$ and $c\in\HOD$. A map in $\HOD_{V_\lambda}$ would also suffice.
+\end{assessment}
+
+This is narrower than proving the full HOD Conjecture, but it is not already supplied by extendibility or strong compactness in the situation under investigation. Simply assuming the ``close to HOD'' side of the dichotomy would assume away the central difficulty. A valid proof must show that the alternative side cannot coexist with these exacting witnesses, or obtain the particular cofinal map by another route.
+
+Potential strategies include a definable selection procedure for carefully restricted witnesses, a covering theorem yielding the required cofinal information, or a local coding argument that makes the relevant sequence definable from sufficiently low-rank parameters. Each must explain why its parameters are admissible. Choosing ``the least embedding'' under an arbitrary ambient well-order is not a solution: the selected embedding need not be ordinal definable.
+
+\subsection{Positive evidence and the order-reversal control}
+
+Bare exacting existence has consistency strength strictly between $\Ithree$ and $\Itwo$. More importantly, $\Itwo$ implies the consistency of an exacting cardinal together with Vop\v enka's Principle and the HOD Hypothesis. In particular, exactingness can coexist with extendibles \emph{above} the exacting cardinal while $\HH$ holds. This is a theorem, not an informal expectation. \cite[Theorem~E; Corollaries~5.6 and~5.11]{abgl}
+
+There is also positive evidence for the difficult ordering. In $\mathrm{NBG}-\AC$, a $C^{(3)}$-Reinhardt cardinal together with a supercompact cardinal \emph{above the supremum of its critical sequence} yields a set-sized model of ZFC with an ultraexacting cardinal that is a limit of extendible cardinals. The upper supercompact hypothesis and the choiceless source theory are essential parts of the quoted result. The resulting ZFC model is not asserted to contain a Reinhardt cardinal. \cite[Theorem~6.5]{abl}
+
+The 2026 PNAS account additionally conjectures that $\Izero$ proves the consistency of ordinary exacting--extendible coexistence in the difficult ordering. This remains a conjecture in the cited account. It is an affirmative prediction from specialists and should be presented alongside, not suppressed by, the negative research programme. \cite[Conjecture~1(1)]{pnas}
+
+\Priority{High for a precise HOD-cofinality obstruction or a model-construction improvement. The strength lies in the identifiable fork and the importance of either outcome, not in evidence of an imminent contradiction.}
+
+\section{Cover-exacting above strongly compact: the adjacent open boundary}\label{sec:cover}
+
+\subsection{The bounded-predicate requirement}
+
+Goldberg's lecture notes of 1 July 2026, reporting joint work with Doug Blue, introduce a relativization of exactingness that yields an unusually sharp comparison. The source is identified as lecture notes throughout; the results are not represented here as independently formalized proofs or as an already refereed journal article. \cite{cover}
+
+Given $Y\subseteq V_\alpha$, a \emph{$\lambda$-exacting embedding relative to $(V_\alpha,Y)$} is an elementary map
+\[
+ j:(X,X\cap Y)\longrightarrow(V_\alpha,Y)
+\]
+with $(X,X\cap Y)\prec(V_\alpha,Y)$, $V_\lambda\cup\{\lambda\}\subseteq X$, $\crit(j)<\lambda$, and $j(\lambda)=\lambda$.
+
+A cardinal $\lambda$ is \emph{$\gamma$-cover exacting}, denoted $\CEx_\gamma(\lambda)$, if
+\begin{equation}
+ \begin{split}
+ \forall\alpha>\lambda\ \forall y\in V_\alpha\ \exists Y\subseteq V_\alpha\quad
+ &y\in Y\ \wedge\ |Y|\leq\gamma,\\[-2pt]
+ &\text{with a relative $\lambda$-exacting embedding as above.}
+ \end{split}
+ \label{eq:coverdef}
+\end{equation}
+The bound $\gamma$ is fixed outside the height and parameter quantifiers. The cover $Y$ and embedding may depend on both $\alpha$ and $y$. The condition is $y\in Y$, not $y\subseteq Y$. It does not require the embedding to fix the individual object $y$.
+
+This is a controlled alternative to asking for preservation of \emph{every} predicate. The latter demand is immediately too strong: a predicate coding a short cofinal sequence in $\lambda$ produces the familiar collision with the critical sequence. Replacing an arbitrary point by a bounded set containing it is intended to avoid exactly that problem. The notes also observe that $\gamma<\lambda$ is impossible. \cite[Definitions~2.6 and~3.1]{cover}
+
+\subsection{The proved boundary and the remaining question}
+
+The key results and question are:
+\begin{align*}
+ \Con(\ZFC+\Itwo)&\ \Longrightarrow\
+ \Con\bigl(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda)\bigr),\\
+ \Ext(\delta)\wedge\delta<\lambda&\ \Longrightarrow\
+ \neg\CEx_\gamma(\lambda)\quad\text{for every }\gamma\geq\lambda.
+\end{align*}
+These are Theorems 3.5 and 3.6 of the notes. Problem 5.2 asks whether a $\gamma$-cover-exacting cardinal can lie above a strongly compact cardinal. That is the open target retained here:
+\[
+ T_C^{\mathrm{SC}}=
+ \ZFC+\exists\delta<\lambda\ \exists\gamma\geq\lambda\,
+       \bigl(\SC(\delta)\wedge\CEx_\gamma(\lambda)\bigr).
+\]
+Neither bare cover exactingness nor cover exactingness above an extendible should be substituted for this statement. The first has a relative-consistency construction from $\Itwo$; the second is already ruled out in the cited notes. \cite{cover}
+
+\subsection{Where the extendible obstruction gets its force}
+
+The proof uses more than the vague idea that extendible cardinals make HOD close to $V$. It obtains a short cofinal set $a\subseteq\lambda$ that is \emph{club-definable}: roughly, for an appropriate rank segment, $a$ is ordinal definable in $(V_\alpha,\sigma)$ for every $\sigma$ in a club of small subsets of $V_\alpha$. The relevant formal notion and bounds are given in the notes. Their Corollary 3.9 supplies such an $a$ above an extendible cardinal. \cite{cover}
+
+A stationary-set characterization of cover exactingness then provides a $\sigma$ in that club relative to which $\lambda$ is exacting. Relative exactingness transfers to the cofinal set definable from $\sigma$. This makes a short cofinal predicate compatible with an embedding for which it cannot be compatible, yielding the contradiction. The source's Proposition 3.4, Lemma 3.3, and Corollary 3.9 display the dependencies. \cite{cover}
+
+This gives a precise next question: how much of the club-definability conclusion can be recovered above a strongly compact cardinal? One should not replace that conclusion by ordinary covering without proving that the replacement still supplies the needed definability. Likewise, weakening the compactness hypothesis while silently increasing the predicate power would change the target rather than solve it.
+
+\subsection{A direct connection to ordinary exactingness}
+
+Since cover exactingness implies ordinary exactingness, the established incompatibility has a useful conditional consequence: in any model of $T_E^{\mathrm{Ext}}$, the exacting $\lambda$ in that configuration cannot be $\gamma$-cover exacting for any $\gamma$. For $\gamma<\lambda$ the general impossibility applies; for $\gamma\geq\lambda$ the extendible obstruction applies.
+
+Thus a positive construction of ordinary exactingness above an extendible would have to avoid this uniform cover property. Understanding \emph{how} it avoids it could be as informative as trying to derive the cover property and obtain a contradiction. This is a direct comparison of the two source reports' leading themes, not an assertion that either direction is already available.
+
+\begin{assessment}{Assessment: the most focused theorem-transfer project}
+Reconstruct the precise extendible proof first. Mark every use of extendibility, definability, stationarity, and cardinal bounds. Then attempt a replacement under strong compactness, perhaps first with an explicit additional covering hypothesis. A negative theorem for a stated intermediate theory, or a positive model explaining why the transfer fails, would locate a real boundary.
+\end{assessment}
+
+\section{Global cardinal-preserving embeddings}\label{sec:cp}
+
+\subsection{The direction of the embedding is the problem}
+
+Consider the assertion that there are a proper-class inner model $M\subseteq V$ and a nontrivial elementary embedding
+\begin{equation}
+ j:V\longrightarrow M,
+ \qquad \Card^M=\Card^V.
+ \label{eq:cp}
+\end{equation}
+Cardinal preservation here means that $M$ and $V$ agree on which ordinals are cardinals. It does \emph{not} mean that $j(\rho)=\rho$ for every cardinal $\rho$. This is a global embedding hypothesis rather than one more unambiguously named cardinal on a linear ladder.
+
+Goldberg explicitly proposed a tentative inconsistency conjecture for this forward-direction assertion. Goldberg--Thei prove the reverse-direction rigidity theorem: a cardinal-correct inner model cannot nontrivially elementarily embed \emph{into the universe}. Their introduction explicitly distinguishes that theorem from the forward problem~\eqref{eq:cp}. Under a proper class of almost strongly compact cardinals, a forward cardinal-preserving embedding is also excluded. The unrestricted forward assertion is the target, not either already-settled variant. \cite{goldbergcp,goldbergthei}
+
+The distinction cannot be removed by taking an inverse. The inverse of an embedding is only defined on its range. Neither its range nor the inclusion $M\subseteq V$ is automatically the elementary map required by the reverse-direction theorem.
+
+\subsection{What cardinal correctness already gives}
+
+The study of~\eqref{eq:cp} yields strong consequences for cofinality, continuum behavior, and large-cardinal strength. A useful invariant is the tightness function
+\[
+ t_j(\theta)=\min\bigl\{|A|^M:A\in M\text{ and }j``\theta\subseteq A\bigr\}.
+\]
+It measures how economically the image of an ordinal can be covered internally. Goldberg obtains substantial correctness conclusions below the critical-sequence limit. Under the Singular Cardinal Hypothesis, the theorem gives global agreement of cofinalities and of the continuum function. The existence of a cardinal-preserving embedding also implies the consistency of a strongly compact cardinal. \cite[Theorems~2.3 and~2.7--2.11]{goldbergcp}
+
+These are strong restrictions, but they do not imply $M=V$. In particular, agreement about cardinals, cofinalities, and continuum values does not by itself say that an internally stationary set meets every club of $V$. The latter is exactly the kind of additional correctness needed by Section~\ref{sec:obstruction}.
+
+\subsection{A sharply localized obstruction at the critical successor}
+
+There is a particularly useful way to organize the stationary argument. Let $\lambda$ be the critical-sequence supremum of $j$, and put $\theta=(\lambda^+)^V$. Then
+\[
+ j(\lambda)=\lambda,\qquad
+ j(\theta)=(\lambda^+)^M=(\lambda^+)^V=\theta.
+\]
+The second equality uses cardinal correctness. In $V$, split $E^\theta_\omega$ into $\kappa$ stationary cells $\vec S$. In $M$, the image sequence $j(\vec S)$ partitions $(E^\theta_\omega)^M$ into $j(\kappa)$ internally stationary cells. Let $T_\kappa$ be the cell with index $\kappa$.
+
+Every ordinal of countable cofinality in $M$ has countable cofinality in $V$, so
+\[
+ T_\kappa\subseteq(E^\theta_\omega)^M\subseteq(E^\theta_\omega)^V.
+\]
+The source of $j$ is $V$, hence the cofinal sequences required in Lemma~\ref{lem:closure} are available. All hypotheses of the collision argument would therefore hold \emph{if $T_\kappa$ were stationary in $V$}. Consequently, any embedding~\eqref{eq:cp} must make this internally stationary cell externally nonstationary; the ambient club $C_j$ witnesses the failure.
+
+This is a conditional diagnostic derived from the standard Kunen argument. It neither assumes nor proves that cardinal correctness forces stationary correctness. Rather, it pinpoints a necessary defect in any putative example. A promising refutation would show that this particular defect is incompatible with cardinal preservation or with an explicitly declared additional hypothesis.
+
+\subsection{Research directions and controls}
+
+One route is to strengthen the tightness analysis until it controls the stationarity of the transported partition. Another is to use covering or approximation information to force enough ambient clubs to be seen internally. A third is to classify where correctness must first fail and ask whether that failure creates an impossible cardinal-arithmetic pattern.
+
+The SCH case should be maintained as a separate branch: global cofinality and continuum agreement may be useful extra information, but it must not be smuggled into the unrestricted argument. The already proved reverse-direction theorem is a comparison tool, not an immediate application. A result that identifies the weakest extra correctness sufficient for a contradiction would be meaningful even without settling~\eqref{eq:cp}.
+
+\Priority{High for a global rigidity project. It has unusually explicit negative motivation and nearby theorems, but its main missing implication is substantial and is not supplied by agreement of cardinals alone.}
+
+\section{Ultraexacting interactions and controlled self-reference}\label{sec:ultra}
+
+\subsection{Why isolated ultraexactingness is not a separate unexplored leap}
+
+The established comparison is
+\begin{equation}
+ \Con(\ZFC+\exists\lambda\,\UEx(\lambda))
+ \quad\longleftrightarrow\quad
+ \Con(\ZFC+\Izero).
+ \label{eq:ueqi0}
+\end{equation}
+A stronger, directly relevant comparison is
+\begin{equation}
+ \begin{split}
+ \Con\bigl(\ZFC+\exists\lambda\,[\UEx(\lambda)
+            \wedge V_{\lambda+1}^{\#}\text{ exists}]\bigr)\\
+ \longleftrightarrow\quad \Con(\ZFC+\Isharp).
+ \end{split}
+ \label{eq:ueqsharp}
+\end{equation}
+These are Theorem A and Corollary 4.9 of Aguilera--Bagaria--Goldberg--L\"ucke. They unify the ultraexacting and sharp-Icarus discussions: the sharp-enriched versions are not two independent pieces of evidence that something is wrong. They are two presentations of the same consistency strength. \cite{abgl}
+
+The interaction with other cardinals is nevertheless striking. Ultraexactingness together with the relevant sharp implies the consistency of a proper class of $\Izero$ embeddings; a measurable cardinal above the ultraexacting cardinal supplies the needed sharp in the setting discussed by Aguilera--Bagaria--L\"ucke. The later premouse-relative results explain such increases through enriched $\Izero$ domains rather than by an unanalysed explosion of strength. \cite[Theorem~D]{abl}\cite[Theorem~C]{abgl}
+
+\subsection{A predicate characterization and its quantifiers}
+
+An equivalent characterization says that $\lambda$ is ultraexacting exactly when every ordinal-definable predicate $A\subseteq V_{\lambda+1}$ admits a nontrivial elementary self-embedding of the expanded structure:
+\begin{equation}
+ \forall A\subseteq V_{\lambda+1}\,
+ \bigl[A\in\OD\ \Longrightarrow\
+   \exists j_A:(V_{\lambda+1},A)\to(V_{\lambda+1},A)
+   \text{ elementary and nontrivial}\bigr].
+ \label{eq:odpred}
+\end{equation}
+This is Theorem B of the later paper. It gives a concrete local interpretation of ultraexactingness and explains the connection with HOD. \cite{abgl}
+
+Two tempting substitutions are invalid. The theorem has $\forall A\exists j_A$, not $\exists j\forall A$. And the predicate must be ordinal definable; it is not an arbitrary subset supplied by ambient Choice. In particular, an ambient well-order of the underlying set is not automatically an admissible predicate. A successful negative argument must exhibit an \emph{allowed} predicate whose preservation is impossible.
+
+\subsection{Why having the embedding restriction in the domain is not a paradox}
+
+Let $j:X\to V_\zeta$ be an ultraexacting witness and put $e=j\restr V_\lambda\in X$. In the usual coding, and with the relevant elementary facts reflected into the structures, $\crit(e)=\kappa=\crit(j)$. Applying $j$ to that description gives
+\[
+ \crit(j(e))=j(\kappa)>\kappa=\crit(e),
+ \qquad\text{so }j(e)\neq e.
+\]
+The membership $e\in X$ does not say that $e$ is fixed. Evaluation obeys the elementary identity
+\begin{equation}
+ j(e)(j(x))=j(e(x))\qquad(x\in V_\lambda).
+ \label{eq:selfcode}
+\end{equation}
+It describes $j(e)$ on $j``V_\lambda$, not automatically on every point of $V_\lambda$.
+
+Nor is $j(e)$ simply $e\circ e$. The composition $e\circ e$ has critical point $\kappa$, whereas $j(e)$ has critical point $j(\kappa)$. Confusing application of an embedding to a code with composition of two functions manufactures a false contradiction. The calculation is a useful elementary audit of self-reference arguments, not a refutation of ultraexactingness. \cite{abl,abgl,dimonte}
+
+\subsection{Which interactions remain on the shortlist?}
+
+An ultraexacting $\lambda$ above an extendible $\delta$ strengthens $T_E^{\mathrm{Ext}}$ and inherits the established failure of $\HH$. The configuration where $\lambda$ is a limit of extendibles is stronger still and has the choiceless relative-consistency upper bound described in Section~\ref{sec:exacting}. A conjecture in Aguilera--Bagaria--L\"ucke predicts that an ultraexacting cardinal above an extendible yields a set model of ZF with a rank-Berkeley cardinal; this is not presented as a proved lower bound. \cite[Conjecture~6.9]{abl}
+
+Reversing the ordering again matters. An ultraexacting cardinal \emph{below} an extendible is a separate question. The 2025 paper explicitly asks about its relation to the HOD Hypothesis, while the 2026 PNAS account conjectures compatibility with that hypothesis. Neither statement is the theorem about ordinary exactingness below extendibles, nor the established incompatibility when the extendible is below the ultraexacting cardinal. \cite[Question~7.1]{abgl}\cite[Conjecture~1(3)]{pnas}
+
+\begin{assessment}{Assessment: study interactions, not the adjective}
+A negative argument has to identify what the extra cardinal or sharp contributes beyond bare ultraexactingness. A positive argument can instead transport the interaction into an enriched $\Izero$ model. In either direction, preserve the order of the cardinals and the quantifier order of the predicate characterization.
+\end{assessment}
+
+\section{Icarus enrichments: how much information can the domain absorb?}\label{sec:icarus}
+
+\subsection{The parameter must actually enlarge the problem}
+
+Put $A=V_{\lambda+1}$. An Icarus-type assertion asks for a set $E\subseteq A$ and an elementary embedding
+\begin{equation}
+ j:L(A,E)\longrightarrow L(A,E),\qquad \crit(j)<\lambda.
+ \label{eq:icarus}
+\end{equation}
+A \emph{strong} Icarus formulation additionally requires $j(E)=E$. These are distinct requirements; the fixed-parameter clause is not automatic for an arbitrary $E$. The standard Icarus framework and its relation to $\Izero$ are surveyed by Dimonte. \cite[Section~10]{dimonte}
+
+Since $E\subseteq V_{\lambda+1}$, its ambient rank is at most $\lambda+1$, so $E\in V_{\lambda+2}$. The intended enrichment is \emph{not} an element of $V_{\lambda+1}\setminus L(V_{\lambda+1})$: that difference is empty because the base model already contains $V_{\lambda+1}$ and its members.
+
+Moreover, $E=\varnothing$ does not strengthen $\Izero$, and if $E\in L(A)$ then adding it as a parameter does not enlarge the underlying constructible model. Conversely, $E\notin L(A)$ alone is not a proof that the resulting embedding assertion has strictly larger consistency strength. For research purposes, the enrichment must be specified canonically and its actual contribution proved.
+
+\subsection{The first sharp enrichment}
+
+The cleanest second-line target is
+\begin{equation}
+ \Isharp:\qquad A^{\#}\text{ exists and there is an elementary }
+ j:L(A,A^{\#})\to L(A,A^{\#})
+ \text{ with }\crit(j)<\lambda.
+ \label{eq:i0sharp}
+\end{equation}
+Here the usual sharp coding is intended. A sharp is not an arbitrarily assigned full truth predicate for the universe, and an argument using its information must respect the precise coding and model in which that information is available. Finite iterated-sharp enrichments are part of the standard Icarus landscape; they are not definitions invented merely to sit above $\Izero$. \cite{dimonte}
+
+Equation~\eqref{eq:ueqsharp} supplies a major calibration: the theory in~\eqref{eq:i0sharp} is equiconsistent with an ultraexacting cardinal together with $V_{\lambda+1}^{\#}$. This makes it a well-defined target, but also places it within a developed consistency comparison. Refuting either formulation would refute the other consistency assertion; the two formulations should not be counted twice as independent anomalies. \cite[Corollary~4.9]{abgl}
+
+\subsection{Why enrichment can matter to inconsistency}
+
+The attraction of Icarus hypotheses is concrete. The model is closed under its own constructible definitions and carries a self-embedding, while selected extra information has been placed inside it. If that information supplies a forbidden well-order, stationary partition, or cofinal-sequence correctness, the gap in a Kunen argument may close.
+
+A useful negative endpoint is a code for a well-order of all of $A$. Such coding is incompatible with the relevant Icarus embedding situation by the Kunen-type restrictions in the theory. One should use that theorem, not the slogan ``well-orders are rigid'': an elementary embedding need not be a surjective automorphism, and the actual set-theoretic coding is what matters. The research problem is whether a \emph{specific permitted enrichment} can be shown to supply a comparable obstruction. \cite{dimonte}
+
+Three routes deserve separation. A \emph{coding route} tries to define the forbidden combinatorial object inside $L(A,E)$. A \emph{correctness route} tries to show that an internally stationary image cell remains stationary in $V$ and that the relevant cofinal sequences are present. An \emph{extension route} tries to extend the embedding to a precisely specified domain already ruled out by Kunen. None is completed merely by observing that $L(A,E)$ has all ordinal heights or that $E$ contains some truth-related information.
+
+For the stationary route, the required package is the one in Section~\ref{sec:obstruction}: a suitable fixed ambient regular cardinal, an internal partition, externally stationary image information, and source-model cofinal sequences. A sharp might supply one component without supplying the others. For the extension route, the proof must verify elementarity of the extension, not just define a function on a larger collection.
+
+\subsection{Higher stages of Woodin's $E^0$ hierarchy}
+
+The higher $E^0$ hierarchy refines this question by constructing selected domains $L(N)$ with
+\[
+ V_{\lambda+1}\subseteq N\subseteq V_{\lambda+2}.
+\]
+The starting and limit clauses have the schematic forms
+\begin{align*}
+ E^0_0(A)&=L(A)\cap V_{\lambda+2},\\
+ E^0_\alpha(A)&=L\!\left(\bigcup_{\beta<\alpha}E^0_\beta(A)\right)
+                       \cap V_{\lambda+2}\qquad(\alpha\text{ limit}).
+\end{align*}
+The successor clauses are the substantive part: they involve carefully selected sharps, sequences, or embedding information, with definability and internal-cofinality conditions. This is \emph{not} unrestricted repeated power-set formation. A project using a particular stage should take its full definition, including continuation conditions, from the literature rather than treat these two displayed clauses as a complete recursive definition. \cite[Definition~2.6]{ld}
+
+The research unit should therefore be one specified stage, one successor or limit transition, and one exact embedding condition. Statements such as ``the largest possible $E^0$ model'' or ``all sharps at once'' suppress precisely the choices that may determine whether a construction works. A stage index by itself also does not supply a coherent embedding across every earlier stage.
+
+\subsection{Properness, iterability, and limit failures}
+
+In this setting, \emph{weak properness} is tied to an appropriate ultrapower representation. \emph{Properness} adds internal availability of orbit sequences, of the form
+\[
+ \langle X,j(X),j^2(X),\ldots\rangle\in L(N)
+ \qquad(X\in N),
+\]
+with the exact definitions taken in the relevant domain. This is a real distinction: nonproper and totally nonproper phenomena occur in the higher theory. But nonproperness is not itself a contradiction, and general results about higher $L(N)$ domains must not be silently strengthened to statements about a particular single-parameter sharp model. \cite{nonproper,ld,dimonte}
+
+Similarly, an ill-founded proposed iteration refutes only an axiom that actually guarantees the well-foundedness of that iteration. A self-embedding assertion does not automatically include every desirable iterability property. Before taking a direct limit, check that the maps commute, that they agree on the designated base, that the system has the required well-foundedness, and that the collapse preserves the structures named in the axiom. The existence of each finite stage is not a substitute for those checks. \cite{iterability,ld}
+
+The developed left-distributive algebra of embeddings is further evidence that this is not an untouched collection of arbitrary definitions. It offers concrete identities and computations. At the same time, algebraic laws concern correctly defined embedding operations; they cannot be transferred to ordinary composition without proof. \cite{ld,dimonte}
+
+\Needspace{205pt}
+\subsection{The rank-and-membership ledger}
+
+For every object proposed as the decisive extra information, record the following facts separately:
+\begin{center}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{.23\textwidth}Y@{}}
+\toprule
+\textbf{Question}&\textbf{What must be proved}\\\midrule
+Ambient rank & The object's code has the stated rank; standard encodings do not shift it outside the permitted level.\\
+Domain membership & The object belongs to $L(A,E)$ or the chosen $L(N)$, not merely to $V$.\\
+Definition & Every parameter used by the defining formula is admitted by the intended notion of definability.\\
+Embedding action & Its image or fixedness follows from elementarity and fixed parameters, not from a suggestive notation.\\
+External correctness & Internal stationarity, cofinality, or well-foundedness has the ambient meaning needed by the obstruction.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\Priority{Second-line, with $\Isharp$ the cleanest initial target. The prospective leverage is the information added to the domain. The main counterweight is the established structure theory and the ultraexacting equiconsistency comparison.}
+
+\section{HOD-Berkeley cardinals: external embeddings of internal structures}\label{sec:hodberkeley}
+
+\subsection{The quantifiers are the central issue}
+
+A cardinal $\delta$ is \emph{HOD-Berkeley} if for every transitive set $M\in\HOD$ with $\delta\in M$, and every $\eta<\delta$, there is an elementary embedding
+\begin{equation}
+ j:M\longrightarrow M,
+ \qquad \eta<\crit(j)<\delta.
+ \label{eq:hodberkeley}
+\end{equation}
+The witness $j$ is an ambient set in $V$. It is \emph{not} required to belong to HOD. The assertion is therefore not the statement that HOD internally contains a Berkeley cardinal. This is the HOD-relative version discussed by Bagaria--Koellner--Woodin. \cite[Section~8.2]{bkw}
+
+The distinction prevents a superficial application of Kunen's theorem. HOD satisfies Choice, but the embedding in~\eqref{eq:hodberkeley}, its critical sequence, or the ambient club used in a stationary argument may not be available internally in HOD. An external embedding can interact with an inner model in ways that no embedding belonging to that model could.
+
+\subsection{A strong consequence for HOD}
+
+Bagaria--Koellner--Woodin prove that if $\delta$ is HOD-Berkeley, every regular cardinal above $\delta$ is $\omega$-strongly measurable in HOD. Hence
+\[
+ \text{HOD-Berkeley}\quad\Longrightarrow\quad\neg\HH.
+\]
+This does not need a smaller extendible cardinal. It is a substantial definability consequence, making HOD-Berkeley a legitimate candidate for investigation rather than merely another large name. It is still an implication to failure of a structural hypothesis, not an inconsistency theorem. \cite[Theorem~8.6]{bkw}
+
+A conditional HOD-rigidity theorem also provides a comparison: in the presence of a strongly compact cardinal and the HOD Hypothesis, there is no nontrivial elementary self-embedding of HOD of the indicated external kind. That result is conditional on $\HH$, and local witnesses~\eqref{eq:hodberkeley} do not automatically assemble into one global $j:\HOD\to\HOD$. \cite{goldberghod}
+
+This suggests a related class-theoretic target: determine how much of $\HH$ is needed for that global prohibition. It is not a separately ranked cardinal here. The definable case has a distinct obstruction: Hamkins--Kirmayer--Perlmutter rule out a nontrivial $j:\HOD\to\HOD$ definable in $V$ from parameters. Thus the unrestricted external case cannot be reduced to the definable case without a new argument. \cite{hkp}
+
+\subsection{The right controls: $L$, arbitrary inner models, and closure}
+
+The analogous $L$-relative notion supplies an important warning against intuition based solely on internal Choice: existence of an $L$-Berkeley cardinal is equivalent to the existence of $0^{\#}$ in the comparison discussed by Bagaria--Koellner--Woodin. Thus allowing external witnesses changes the consistency landscape dramatically. \cite{bkw}
+
+Cutolo supplies a stronger and more targeted control. From a supercompact cardinal one obtains a suitable inner model $N$ of ZFC with an $N$-Berkeley cardinal, even in a strong sense; the model is a weak extender model for the relevant supercompactness. The strong version is inconsistent when $N$ is closed under ambient $\omega$-sequences. The theorem concerns that \emph{strong version} and a suitable inner model $N$, not automatically HOD and not every weaker relativized Berkeley assertion. \cite{cutolo}
+
+Together these results indicate the correct fault line. The question is not whether a model of Choice can be the domain of some external elementary embedding. It is whether the exact HOD definition, together with additional closure or correctness, forces enough of the external embedding information to become internally usable.
+
+\subsection{Concrete negative and positive programmes}
+
+For a negative route, choose transitive HOD structures large enough to contain the partition data of a Kunen-type argument, and examine whether the available witnesses force a critical-sequence or stationarity correctness property that the structure cannot support. The ambient and internal versions of $E^\theta_\omega$ must be kept distinct. If one adds closure under $\omega$-sequences, explain why that addition is justified by the original axiom or state it as a separate strengthened theory.
+
+A second route tries to arrange coherent witnesses for an increasing family of HOD structures. This would require more than the original $\forall M\exists j$ statement. Restriction compatibility, parameter preservation, and well-founded direct limits are separate mathematical obligations. A family of individually existing maps does not provide a single self-embedding of HOD.
+
+For a positive route, investigate which parts of Cutolo's construction can coexist with HOD-specific definability, and identify the exact obstruction to replacing an arbitrary inner model by HOD. Even a theorem showing why a natural attempt fails would clarify whether the distinctive difficulty comes from closure, definability, or coherence.
+
+\begin{assessment}{Assessment: a distinct second-line target}
+HOD-Berkeley belongs in the unified shortlist because it provides a different way to reach the far side of the HOD dichotomy. It should not be merged with ordinary Berkeley cardinals, which are incompatible with ZFC, or with an internally witnessed Berkeley property of HOD. The strongest research leads concern the external-to-internal transfer of information.
+\end{assessment}
+
+\section{Why the familiar large cardinals remain controls}\label{sec:controls}
+
+\subsection{The point of a control is logical, not sociological}
+
+The mature theory of $\Ithree$, $\Itwo$, $\Ione$, and $\Izero$ does not eliminate the possibility of a refutation. It does supply a demanding test for arguments offered as new. If a proof purportedly uses an exotic enrichment but in fact never uses the enriching clause, then its conclusion is a refutation of the weaker benchmark. That requires a correspondingly stronger audit of the proof.
+
+For isolated exactingness, the strict consistency bounds between $\Ithree$ and $\Itwo$ rule out treating it as an uncalibrated leap above all known rank-into-rank axioms. For isolated ultraexactingness, the equiconsistency with $\Izero$ gives an even more exact calibration. A discussion of new interactions should not erase these results. \cite{abgl}
+
+\subsection{Forcing and iteration reveal structure, not immunity}
+
+The iterability hierarchy above $\Ithree$ distinguishes several levels of well-foundedness and provides precise comparisons. It shows why a failure at one iteration stage need not contradict a lower axiom. Forcing results related to $\Ione$ also demonstrate flexibility in combinatorial features that one might otherwise incorrectly regard as fixed by the embedding. A contradiction in one optional continuum pattern is not automatically a contradiction in $\Ione$. \cite{iterability,dimwu}
+
+Finite hugeness provides another control. It has strong closure, but closure for one embedding at its entire critical-sequence limit is a different requirement. Any attempted ``limit of huge cardinals'' argument must identify the embedding that survives to the limit and prove that it acquires the closure used in the contradiction. \cite{dimonte,goldberge}
+
+The proper conclusion is not that these axioms should be excluded from mathematical investigation. It is that a focused inconsistency search should exploit an actual new clause, and should test that clause against the strongest available relative constructions before claiming that the corresponding theory is defective.
+
+\section{The choiceless frontier and already settled exclusions}\label{sec:choice}
+
+\subsection{Reinhardt, Berkeley, and rank-Berkeley are not open ZFC cases}
+
+A Reinhardt cardinal is the critical point of a nontrivial elementary embedding $j:V\to V$ in an appropriate class-theoretic setting. Strengthenings such as super-Reinhardt demand still more global embedding behavior. Ordinary Berkeley cardinals require elementary self-embeddings, with appropriately varying critical points, of all suitable transitive sets; rank-Berkeley cardinals use rank segments. Their standard forms belong to the choiceless frontier, because Choice yields the relevant Kunen obstructions. \cite{hkp,bkw,goldberge}
+
+There remain important questions over ZF and suitable choiceless class theories. They are different questions from compatibility with ZFC. In particular, restricting Berkeley witnesses to transitive sets \emph{belonging to HOD}, while keeping the witnesses external, changes the assertion in precisely the way explained in Section~\ref{sec:hodberkeley}.
+
+\subsection{The local rank-$\lambda+2$ consistency result}
+
+Schlutzenberg's result supplies a strong corrective to the idea that proximity to Kunen alone is evidence of inconsistency. From $\Izero$ one obtains the relative consistency of a \emph{choiceless} theory with a nontrivial elementary self-embedding of $V_{\lambda+2}$. In particular,
+\begin{equation}
+ \Con(\ZFC+\Izero)\quad\Longrightarrow\quad
+ \Con\bigl(\ZF+\exists\lambda\,\exists j\neq\id\,
+              [j:V_{\lambda+2}\to V_{\lambda+2}\text{ elementary}]\bigr).
+ \label{eq:schlutzenberg}
+\end{equation}
+The cited accepted version removes an earlier unnecessary sharp assumption. The conclusion displayed here is the ZF consequence needed for this report; stronger dependent-choice formulations and converse comparisons require the exact hypotheses in their sources. The right-hand side is emphatically \emph{not} ZFC. \cite{schlutzenberg}
+
+Goldberg's work on even ordinals distinguishes the strength of neighboring local embeddings. With the relevant dependent-choice assumptions, the rank-$\lambda+3$ level yields a consistency consequence at the $\Izero$ level. These results show why rank, parity, and choice fragments must be specified; the slogan ``Kunen has been bypassed'' does not identify a theorem. \cite{goldberge}
+
+\subsection{The withdrawn 2026 claim}
+
+McCallum's preprint \emph{Inconsistency of Reinhardt cardinals with ZF}, initially posted in January 2026, was withdrawn in version 3 on 23 August 2026. The withdrawal notice identifies an error concerning continuity of Skolem functions in the final part of the argument. The original proposed argument concerned a stronger local embedding claim at rank $\lambda+3$; it is not a verified refutation to be used in the shortlist. \cite{mccallum}
+
+The withdrawal establishes neither consistency nor inconsistency of Reinhardt cardinals in ZF. It removes that argument from the collection of available proofs. The standard inconsistency with ZFC is unaffected. The useful methodological lesson is that coding objects by sequences does not automatically provide the continuity or definable selection needed in a proof.
+
+\subsection{Wholeness and unstable terminology}
+
+The Wholeness Axiom uses a different treatment of schemes in a language expanded by $j$. Restricting Replacement for formulas involving the embedding can block the formation of the critical sequence used in a standard global argument. Its surface notation $j:V\to V$ therefore does not make it the usual Reinhardt assertion in the same formal background. Hamkins' work supplies a relative-consistency comparison from rank-into-rank assumptions and analyzes its relationship with $V=\HOD$. \cite{wholeness}
+
+Names such as ``enormous'', ``hyper-enormous'', or an unqualified ``$\omega$-huge'' should not enter a ranked shortlist until their exact formulas and sources have been fixed. Nor should an arbitrary strengthening that visibly codes an inconsistent demand be presented as evidence against a weaker standard axiom. The report's exclusions are about logical formulations, not the rhetorical size of their names.
+
+\section{A research programme with useful intermediate outcomes}\label{sec:programme}
+
+The common goal is to make progress even when the final consistency question remains unresolved. A useful first research cycle produces a fully typed target, a reproduced boundary theorem, and one isolated missing lemma. The five tracks below share that discipline but should not be fused into a single argument before their model-theoretic interfaces have been proved.
+
+\subsection{Shared first deliverable: a typed axiom specification}
+
+Record the background theory and schemes; whether each embedding is a set, class, or predicate; its source and target; the critical point and rank limit; the exact order of cardinal witnesses; the closure and iteration requirements; and the permitted parameters for definability. State the desired conclusion in the same language.
+
+For exactingness, distinguish $V_\lambda\subseteq X$, $V_\lambda\in X$, $j\restr V_\lambda\in X$, and $j\in X$. For cover exactingness, keep the single bound $\gamma$, the membership $y\in Y$, and the dependence of $Y$ on the quantified data. For HOD-Berkeley, place $M$ in HOD and $j$ in the ambient universe unless the stronger claim is explicitly intended. For Icarus, specify the enrichment, its coding, and the fixedness or properness requirements.
+
+This specification is already a mathematical deliverable: it prevents a proof from drifting into a stronger, easier-to-refute theory. A dependency diagram should label each edge as an implication, relative-consistency implication, equivalence, or conjecture. Unlabelled arrows are especially dangerous when model constructions are involved.
+
+\subsection{Track 1: transfer the cover-exacting obstruction}
+
+Reproduce the source's argument in the order in which its ingredients are used: relative exactingness and definability transfer; the stationary-cover characterization; club-definability of a short cofinal set above an extendible; and the final contradictory preservation of that set. Keep all bounds on $\gamma$, the small subsets, and the ambient rank segment visible.
+
+Then replace extendibility by strong compactness \emph{one lemma at a time}. The most valuable intermediate claim would identify a local condition on a strongly compact $\delta<\lambda$ sufficient to produce the requisite club-definable cofinal set. That condition might be an extra covering hypothesis or a restricted correctness principle. A negative result for the resulting stated theory is valuable without being advertised as the full answer to Problem 5.2.
+
+On the positive side, try to preserve cover exactingness and the smaller strongly compact cardinal in one model construction. A model in which ordinary exactingness survives but cover exactingness fails is not a positive solution, but an analysis of the failure would distinguish the uniform-cover clause from the ordinary embedding property.
+
+\subsection{Track 2: cardinal correctness versus external stationarity}
+
+Use the transported partition at $\theta=\lambda^+$ from Section~\ref{sec:cp}. The concrete target is not an unspecified ``closeness'' of $M$ and $V$; it is an externally stationary image cell, or another package sufficient for Lemma~\ref{lem:collision}. Investigate whether tightness, covering, or approximation constrains the club witnessing that cell's external nonstationarity.
+
+Maintain a separate SCH branch, where the global arithmetic and cofinality agreement is available, and an unrestricted branch. Record the first point at which an argument uses information beyond cardinal agreement. A useful partial theorem could classify the necessary failure of stationarity correctness, or rule out embeddings satisfying a stated additional covering property. Any attempt to use reverse-direction rigidity must explicitly construct the needed reverse map.
+
+\subsection{Track 3: exacting--extendible coexistence and local HOD coding}
+
+Take the regularity theorem for $\HOD_{V_\lambda}$ as the obstruction and search for a short cofinal map in that model. Candidate routes should specify a definition of the map, the parameters used, the reflection level needed, and why the exacting witness fixes those parameters.
+
+The order-reversal model is a mandatory test. An argument that also rules out an exacting cardinal below extendibles while $\HH$ holds has contradicted an established relative-consistency construction; inspect whether it has lost the inequality $\delta<\lambda$. The cover-exacting comparison is another test: deriving a cover property from ordinary exactingness is a substantive new lemma, not a reformulation.
+
+Work on the affirmative route in parallel. Improvements to the choiceless upper bound, or a construction from $\Izero$ as conjectured in the PNAS account, would sharply change the interpretation of the negative programme. Ultraexactingness should be added only when its internal-restriction clause is actually used.
+
+\subsection{Track 4: one canonical Icarus enrichment}
+
+Fix $\Isharp$ first. Choose either a partition/correctness obstruction or an extension-to-a-forbidden-domain obstruction, and maintain the ledger in Section~\ref{sec:icarus}. Determine the least information that the proposed proof needs and whether the sharp supplies it in the domain, not merely in the metatheory.
+
+Only then move to a higher $E^0$ stage. At a successor step, identify the newly added information and its embedding action. At a limit step, write the connecting maps and prove their coherence and the well-foundedness actually needed. A failure of properness or a failed direct limit is useful information only when it is tied to the particular axiom being tested.
+
+The positive counterpart is equally concrete: establish a consistency reduction for the proposed enrichment or show that the obstruction data are systematically absent. Such a result explains why the enriched domain still lies on the viable side of the known coding boundary.
+
+\subsection{Track 5: closure and coherence for HOD-Berkeley}
+
+Start with one transitive HOD structure containing the relevant set-sized combinatorics. Determine whether the external witness leaves behind a cofinal sequence or code that lies in HOD for a reason supplied by the axiom. Compare with both controls: the $L$-relative sharp example and Cutolo's strong $N$-Berkeley construction with its closure obstruction.
+
+If coherence is the proposed bridge, formulate it as an explicit additional property and test whether HOD-Berkeleyness implies it. Merely choosing one witness for each domain does not establish compatibility of restrictions. An intermediate classification of which closure hypotheses prohibit which strong relative-Berkeley variants is a meaningful outcome even without a theorem about the unstrengthened HOD-Berkeley assertion.
+
+\subsection{Computation and formal proof: target the interfaces}
+
+The useful formalization targets are finite descriptions of infinitary arguments: satisfaction for set structures, evaluation under elementary embeddings, critical-point facts, the closure-point club, the collision lemma, rank bounds on encodings, and the Mostowski collapse used to pass from a nontransitive exacting domain to a transitive structure. A proof assistant can ensure that every hypothesis supplied to the diagnostic is genuinely available.
+
+Finite algebraic computations can test identities in embedding-derived left-distributive structures and locate mistakes in a proposed operation. They do not construct finite models of ZFC, whose Infinity axiom precludes such models. They become relevant to a large-cardinal problem only through a proved bridge between the finite calculation and the infinite assertion. Similarly, a bounded search over formulas is not a search over all possible elementary embeddings.
+
+No Lean development or machine-checked inconsistency proof is included in this synthesis. Formalization is proposed as a research instrument, especially for the places where quantifier order, model membership, and iteration coherence are easy to lose in prose.
+
+\subsection{Stopping points and error detectors}
+
+A successful first cycle can end with a conditional contradiction whose extra hypothesis is stated, a preservation theorem that blocks the proposed attack, a smaller consistency upper bound, or a clean explanation of why one natural transfer fails. None needs to be inflated into a resolution of the main question.
+
+A particularly useful error detector is to remove the alleged new clause and see whether the proof still goes through. If it does, the proof is really about a lower control. Other warning signs are internal stationarity used externally, a chosen parameter promoted to an ordinal-definable one, a family of embeddings promoted to one uniform embedding, and an iteration property invoked without being part of the axiom. These checks should be applied before large amounts of effort are spent formalizing a false conclusion.
+
+\section{Final assessment}\label{sec:conclusion}
+
+The integrated shortlist is not a list of axioms known to be defective. It is a list of places where a precise new theorem could expose, or explain the absence of, an inconsistency mechanism.
+
+\textbf{For the closest transfer of a known negative theorem,} study cover-exacting cardinals above a strongly compact cardinal. The extendible case is already excluded in the cited 2026 notes, so the next task is unambiguous.
+
+\textbf{For the sharpest global rigidity problem,} study cardinal-preserving embeddings $j:V\to M$. The reverse-direction theorem and the strong correctness consequences make this a serious target; the external stationarity of a transported partition identifies the missing step.
+
+\textbf{For the most consequential HOD interaction,} study ordinary exactingness above an extendible, together with the strongly compact variant and the genuinely stronger ultraexacting interactions. The negative obstruction and the affirmative relative-consistency programme must be assessed together.
+
+\textbf{For a second line of investigation,} choose one canonical Icarus enrichment, preferably $\Isharp$, or the HOD-Berkeley assertion with its external witnesses. In the first case the question is how much information can enter an invariant domain; in the second it is whether external embedding information becomes internally available.
+
+The common mathematical question is: \emph{Does the stated axiom supply the exact combinatorial, definability, or closure information that makes the known obstruction go through?} A positive answer yields a contradiction for the precisely stated theory. A negative answer can explain a consistency boundary and guide a model construction. Both are substantive progress.
+
+\clearpage
+\appendix
+\section{Source integration and reconciliation}\label{app:integration}
+
+The supplied archive contained three complete PDF reports. Their text was read in full. The unified document is a new thematic synthesis rather than a concatenation of their pages. Their contributions are identified below by filename to make the editorial provenance explicit; mathematical claims are cited to the primary literature in the main text.
+
+\subsection*{\nolinkurl{Large_Cardinals_Inconsistency_Report.pdf}}
+The 16-page reference report supplies the visual design and the principal exacting--extendible and canonical-Icarus assessments. Its distinction between ambient and internal Choice, the stationary-partition diagnostic, the self-reference calculation, the $E^0$ and properness discussion, and its research-audit perspective are retained and integrated into Sections~\ref{sec:formal}--\ref{sec:icarus} and~\ref{sec:programme}.
+
+\subsection*{\nolinkurl{Large_Cardinals_Consistency_Frontier.pdf}}
+This 17-page report contributes the global cardinal-preserving target and the 2026 cover-exacting frontier, together with the corresponding tightness and theorem-transfer research programmes. It also sharpens the ultraexacting/$\Isharp$ comparison and the distinction between the already refuted extendible-cover case and the open strongly compact case. These contributions appear principally in Sections~\ref{sec:cover}--\ref{sec:ultra}.
+
+\subsection*{\nolinkurl{large_cardinal_report.pdf}}
+This 17-page report contributes the HOD-Berkeley dossier, the comparison with $L$-relative and arbitrary-inner-model versions, closure controls, and a two-model formulation of the stationary collision. Its treatment of finite versus limiting strength, formal specifications, and current-status safeguards is incorporated into Sections~\ref{sec:rank}, \ref{sec:obstruction}, and~\ref{sec:hodberkeley}--\ref{sec:programme}.
+
+\subsection{Substantive reconciliations}
+
+The source rankings are replaced by mechanism-based tiers, so no distinctive candidate disappears merely because another report ranked it lower. The self-model and two-model stationary diagnostics are combined; the source-model location of cofinal sequences is made explicit. The formal definition of ordinary exactingness follows the cardinal-height presentation in the later joint paper, while cover exactingness retains its source's ordinal-height quantifiers.
+
+The reports' discussions of ultraexactingness and $\Isharp$ are joined through their established equiconsistency rather than treated as independent risks. HOD Hypothesis failure is separated from refutation of a specified HOD Conjecture. The relative order of an exacting or ultraexacting cardinal and an extendible is retained in every comparison.
+
+Current-status-sensitive references were checked against the primary versions available for this synthesis. The ABL reference is normalized to arXiv version 4; the ABGL comparisons cite version 1. The cover-exacting results remain explicitly attributed to July 2026 lecture notes. The rank-$\lambda+2$ relative-consistency conclusion is stated over ZF, and the August 2026 withdrawal is not counted as a proof. The PNAS conjectures are included as affirmative conjectures, not upgraded to theorems.
+
+\clearpage
+\section{A compact audit for any proposed inconsistency proof}\label{app:audit}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}P{.24\textwidth}P{.69\textwidth}@{}}
+\toprule
+\textbf{Audit item}&\textbf{Question that must have a precise answer}\\\midrule\endfirsthead
+\toprule\textbf{Audit item}&\textbf{Question that must have a precise answer}\\\midrule\endhead
+Background theory & Is the theorem over ZFC, ZF, a dependent-choice fragment, or a specified class theory? Are all instances of Replacement or Separation mentioning $j$ licensed?\\[4pt]
+Embedding direction & Is the map $V\to M$, $M\to V$, or a self-map? If a proof changes direction, where is the new elementary map constructed?\\[4pt]
+Domain and collapse & Is the source transitive? If not, which Mostowski collapse is used, and what happens to the base rank, predicates, and named parameters?\\[4pt]
+Cardinal ordering & Does the smaller compactness or extendibility witness remain below the exacting cardinal? Would the proof incorrectly refute the known reverse-order model?\\[4pt]
+Ranks and coding & Is the added object a member of the stated rank? Does an encoding shift its rank? Is the critical point being confused with the supremum of the critical sequence?\\[4pt]
+Membership & Does the partition, sequence, sharp, or embedding restriction belong to the required model, rather than merely to the ambient universe?\\[4pt]
+Definability & Is the object OD, definable from a permitted low-rank parameter, or merely chosen using an arbitrary well-order? Are all defining parameters fixed?\\[4pt]
+Quantifier order & Does $\forall A\exists j_A$ remain that statement? Is a fixed bound $\gamma$ allowed to vary inadvertently? Is $y\in Y$ replaced by a stronger requirement?\\[4pt]
+Stationarity & In which universe is the image cell stationary? Is the club used to meet it in that same universe? Is its support included in the original partition support?\\[4pt]
+Cofinality & Does the source model contain an $\omega$-sequence cofinal in the selected point? Has internal cofinality been replaced by ambient cofinality without proof?\\[4pt]
+Self-reference & Is applying $j$ to an embedding code confused with composition? Does membership in the source become an unjustified assertion of fixedness?\\[4pt]
+Iteration & Are all connecting maps compatible? Which well-foundedness and properness properties are actually assumed or proved? Why does the limit collapse preserve the target structure?\\[4pt]
+Strength of conclusion & Is the result an unconditional contradiction, a conflict with an extra principle, a relative-consistency bound, or a conjecture? Are the theories on both sides exactly specified?\\[4pt]
+Lower controls & Is the new strengthening really used? Does the proof accidentally refute an established relative-consistency control or a known order-reversal construction?\\[4pt]
+Source status & Is the cited claim in the stated version? Is it a theorem, an announced result, lecture notes, a conjecture, or a withdrawn argument?\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{assessment}{Minimum certificate for a claimed refutation}
+Provide the formal target, a complete dependency list, and a proof that the target supplies every hypothesis of the final obstruction. A derivation with one unproved transfer of stationarity, definability, or coherence is a conditional result, not an inconsistency proof. The strongest useful intermediate paper states that remaining condition explicitly.
+\end{assessment}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{6pt}
+\setlength{\parskip}{1pt}
+
+\bibitem{kunen}
+K.~Kunen. \emph{Elementary embeddings and infinitary combinatorics}.
+Journal of Symbolic Logic \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+\emph{Generalizations of the Kunen inconsistency}.
+Annals of Pure and Applied Logic \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951v2}. Used for the ambient/class-theoretic scope and extensions of the classical obstruction.
+
+\bibitem{godel}
+K.~G\"odel. \emph{\"Uber formal unentscheidbare S\"atze der Principia Mathematica und verwandter Systeme I}.
+Monatshefte f\"ur Mathematik und Physik \textbf{38} (1931), 173--198.
+\doi{10.1007/BF01700692}.
+
+\bibitem{dimonte}
+V.~Dimonte. \emph{I0 and rank-into-rank axioms}.
+Bollettino dell'Unione Matematica Italiana \textbf{11} (2018), 315--361.
+\doi{10.1007/s40574-017-0136-y}; \arxiv{1707.02613}.
+Specialist survey used for the rank-into-rank hierarchy, Icarus sets, and the distinction between embedding operations. Section locators refer to the arXiv manuscript, especially Section~10.
+
+\bibitem{iterability}
+A.~Andretta and V.~Dimonte. \emph{The iterability hierarchy above I3}.
+Archive for Mathematical Logic \textbf{58} (2019), 77--97.
+\doi{10.1007/s00153-018-0624-5}; \arxiv{1712.03877v2}.
+
+\bibitem{goldbergcp}
+G.~Goldberg. \emph{A note on cardinal preserving embeddings}.
+\arxiv{2103.00072} (2021). Author manuscript dated 12 May 2021:
+\url{https://math.berkeley.edu/~goldberg/Papers/OnCardinalPreservingEmbeddings.pdf}.
+Theorems~2.3 and~2.7--2.11; tentative inconsistency conjecture preceding Theorem~2.7. The global cofinality and continuum conclusion in Theorem~2.11 assumes SCH.
+
+\bibitem{goldbergthei}
+G.~Goldberg and S.~Thei.
+\emph{No cardinal correct inner model elementarily embeds into the universe}.
+\arxiv{2411.01046v1} (2024).
+The introduction distinguishes the proved $M\to V$ rigidity theorem from the forward $V\to M$ problem and discusses additional large-cardinal obstructions.
+
+\bibitem{cover}
+G.~Goldberg. \emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes dated 1 July 2026, 13 pages, reporting joint work with D.~Blue.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Definitions~2.6 and~3.1; Lemma~3.3; Proposition~3.4; Theorems~3.5--3.8; Corollary~3.9; Problem~5.2. Cited as lecture notes, not as an independently checked journal publication.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 16 September 2025.
+In particular, the exacting and ultraexacting characterizations, Theorems~2.10 and~6.5, Conclusion~6.8, and Conjecture~6.9. Version~4 is used to normalize the versions cited in the supplied reports.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 12 September 2025.
+Theorems~A--E; Corollaries~4.9, 5.6, and~5.11; Question~7.1. The arithmetical equiconsistency claims are distinguished from same-model existence implications.
+
+\bibitem{pnas}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large infinities and definable sets}.
+Proceedings of the National Academy of Sciences \textbf{123}(15) (2026), e2528175123; published online 9 April 2026.
+\doi{10.1073/pnas.2528175123}.
+Conjecture~1(1) and~1(3) provide the affirmative predictions discussed in the text. For the precise ZF target in the rank-$\lambda+2$ comparison, see~\cite{schlutzenberg}.
+
+\bibitem{goldberghod}
+G.~Goldberg. \emph{Strongly compact cardinals and ordinal definability}.
+Journal of Mathematical Logic \textbf{24}(1) (2024), 2250010.
+\doi{10.1142/S0219061322500106}; \arxiv{2107.00513}.
+Used for the strongly compact HOD dichotomy and conditional rigidity of HOD.
+
+\bibitem{ld}
+V.~Dimonte. \emph{LD-algebras beyond I0}.
+Notre Dame Journal of Formal Logic \textbf{60}(3) (2019), 395--405.
+\doi{10.1215/00294527-2019-0009}; \arxiv{1701.01343v2}.
+Definition~2.6 gives the full $E^0$ construction; the main results analyze embedding-derived left-distributive structures beyond $\Izero$.
+
+\bibitem{nonproper}
+V.~Dimonte. \emph{Totally non-proper ordinals beyond $L(V_{\lambda+1})$}.
+Archive for Mathematical Logic \textbf{50} (2011), 565--584.
+\doi{10.1007/s00153-011-0232-0}.
+Used for properness distinctions in the general higher-domain setting, not for a blanket assertion about every single-parameter sharp enrichment.
+
+\bibitem{bkw}
+J.~Bagaria, P.~Koellner, and W.~H.~Woodin.
+\emph{Large Cardinals Beyond Choice}.
+Bulletin of Symbolic Logic \textbf{25}(3) (2019), 283--318.
+\doi{10.1017/bsl.2019.28}.
+Section~8.2 and Theorem~8.6: relativized Berkeley notions and the HOD consequence.
+
+\bibitem{cutolo}
+R.~Cutolo. \emph{$N$-Berkeley cardinals and weak extender models}.
+Journal of Symbolic Logic \textbf{85}(2) (2020), 809--816.
+\doi{10.1017/jsl.2020.21}.
+Positive relative-inner-model construction from a supercompact and the $\omega$-sequence-closure obstruction for the strong version.
+
+\bibitem{schlutzenberg}
+F.~Schlutzenberg.
+\emph{On the consistency of ZF with an elementary embedding from $V_{\lambda+2}$ into $V_{\lambda+2}$}.
+Journal of Mathematical Logic \textbf{25}(2) (2025), 2450013.
+\doi{10.1142/S0219061324500132}; \arxiv{2006.01077v4}, 18 March 2024.
+Primary source controlling the role of Choice and the removal of the earlier extra sharp assumption.
+
+\bibitem{goldberge}
+G.~Goldberg. \emph{Even ordinals and the Kunen inconsistency}.
+\arxiv{2006.01084v3}, 18 February 2021.
+For the related presentation of the closure boundary, see the author's slides:
+\url{https://math.berkeley.edu/~goldberg/Slides/EvenOrdinalsAndTheKunenInconsistency.pdf}.
+
+\bibitem{dimwu}
+V.~Dimonte and L.~Wu.
+\emph{A general tool for consistency results related to I1}.
+European Journal of Mathematics \textbf{2} (2016), 474--492.
+\arxiv{1510.03287}.
+
+\bibitem{wholeness}
+J.~D.~Hamkins. \emph{The Wholeness Axioms and $V=\HOD$}.
+Archive for Mathematical Logic \textbf{40} (2001), 1--8.
+\arxiv{math/9902079}.
+Used to distinguish restricted embedding-language schemes from the standard Reinhardt setting.
+
+\bibitem{mccallum}
+R.~McCallum. \emph{Inconsistency of Reinhardt cardinals with ZF}.
+\arxiv{2601.10231v3}. \textbf{Withdrawn}, 23 August 2026; initially submitted 15 January 2026.
+Cited solely for the withdrawal notice and its stated error concerning continuity of Skolem functions, not as an established mathematical result.
+
+\bibitem{dimontehistorical}
+V.~Dimonte. \emph{Very Large Cardinals and Elementary Embeddings Properties}.
+Logic Colloquium 2011 slides.
+\url{https://users.dimi.uniud.it/~vincenzo.dimonte/LogicColloquium2011.pdf}.
+Historical background retained from the source reports; current mathematical assessments use the later papers cited above.
+
+\end{thebibliography}
+\end{document}
