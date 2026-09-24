@@ -4319,6 +4319,31 @@ and its 225-page PDF are unchanged by this merge. These updates preserve
 all pending proof-review, imported-foundation and source-reconciliation
 obligations recorded above.
 
+## Positive-exponent correction from the power-rigidity formalization
+
+The next merge, `365bea6`, adds three modules proving equal-power rigidity,
+reduction through a common exponent divisor and the positive-power
+univariate step. It also formally proves the counterexample
+`ω^0 − 0² = 1`, where `gcd(0,2) = 2` but one coordinate is infinite.
+The maintained `odg:rem:powers` (alias `odg:cor:powers`) now states positive
+ordinary exponents and a nonzero ordinary integer level, explicitly uses
+positive quotient exponents, and includes the counterexample. Its formerly
+overgeneral sentence about all exponent pairs now restricts the separated
+result to `m,n ≥ 2`; at exponent one, `y = x^m − c` is a nonordinary family.
+The question-status summary, root README and implementation ledger agree
+with this correction. The corrected gcd statement is proved in Lean;
+coprime separated equations remain pending there.
+
+The combined two-thread build passes 4,493 jobs and audits 15,618 declarations
+with only the three permitted axioms. The corrected article builds in three
+passes to 225 pages without warnings, unresolved references or bad boxes;
+PDF page 33 is visually checked. All 244 standard statements, 553 labels and
+1,106 label numbers remain unchanged; the correction is to a remark and its
+summary. The independent inventory passes for 4,473 results in 63 reports;
+all 5,029 cited source references and 1,693 local Markdown destinations in
+225 files resolve. The new manuscript expansions and other outstanding
+proof-review obligations retain their previous status.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

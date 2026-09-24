@@ -1403,3 +1403,17 @@ label numbers are preserved. The changed explanations were visually checked.
 The collection's independent index, 4,950 source references and 1,680 local
 Markdown destinations pass. No Lean source or finite verification program
 changes in this pass.
+
+
+## Positive-exponent correction after the power-rigidity merge
+
+The incoming formalization `365bea6` exposes a missing hypothesis in
+`odg:rem:powers` (alias `odg:cor:powers`). The remark now states positive
+ordinary `m,n` and a nonzero ordinary integer level. Its gcd reduction uses
+positive quotient exponents, and it records the checked counterexample
+`ω^0 − 0² = 1` with `gcd(0,2) = 2`. The closing sentence now limits the
+separated-power theorem to `m,n ≥ 2`; exponent one admits the family
+`y = x^m − c`. The question-status summary is aligned. The corrected gcd
+statement and zero-exponent counterexample are proved in Lean; the coprime
+separated theorem remains pending there. The remark changes, but all 244
+standard theorem/lemma/proposition/corollary statements are unchanged.

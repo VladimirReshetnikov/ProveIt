@@ -1660,3 +1660,17 @@ velocity-certificate, 510 velocity-symmetry, 6 velocity-trace, 2 quadratic-certi
 checks), the same group counts as the shipped record. The report differs from the record
 only in the recorded Python version (3.13.5 there). These checks cover finite identities
 and examples only, not the arbitrary-support theorems.
+
+
+## Positive-exponent correction after the power-rigidity merge
+
+The incoming formalization `365bea6` exposes a missing hypothesis in
+`odg:rem:powers` (alias `odg:cor:powers`). The remark now states positive
+ordinary `m,n` and a nonzero ordinary integer level. Its gcd reduction uses
+positive quotient exponents, and it records the checked counterexample
+`ω^0 − 0² = 1` with `gcd(0,2) = 2`. The closing sentence now limits the
+separated-power theorem to `m,n ≥ 2`; exponent one admits the family
+`y = x^m − c`. The question-status summary is aligned. The corrected gcd
+statement and zero-exponent counterexample are proved in Lean; the coprime
+separated theorem remains pending there. The remark changes, but all 244
+standard theorem/lemma/proposition/corollary statements are unchanged.

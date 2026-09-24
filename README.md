@@ -318,7 +318,8 @@ nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
 Power differences `x^m − y^n = c ≠ 0` are also proved to have exactly their
 ordinary integer solutions when both exponents are positive and their gcd
 is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
-the positive-exponent condition must be added to the source remark.
+the positive-exponent condition is necessary; the source remark now includes
+it and restricts its pointer to the separated theorem to exponents at least two.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
