@@ -207,13 +207,24 @@ their different framed relations. In the two-universe reading, the universal
 module claim concerns lower-universe-small modules; the regular module in
 the larger universe is an explicit counterexample to dropping that bound.
 
-The subsequent polyhedral-core results and reconciliation of the parallel
-sources remain pending review. Exact scope
+The first five polyhedral-core results are now reviewed: omnific embeddings,
+the common fraction field, face subtraction, principal exhaustion and the
+intersection/product/tensor formulas. The proofs construct the positive
+functional, explain the lexicographic embedding, give a single shift for
+each finite support and preserve nonzero exponents so arbitrary coefficients
+remain in the tail. The telescope and dual-basis arguments give projective
+dimension exactly one. The ideal assignment reverses face inclusion;
+the zero-face convention `I_{0} = A_𝒞` is separate from the tail formula.
+These results allow every unital subring `D ⊆ K` and require no Noetherian
+or principal-ideal assumption. Their Lean proofs remain pending.
+
+The subsequent radical classification, face resolutions and dimension
+formulas, and reconciliation of the parallel sources, remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 302 pages
+article.pdf   the compiled report, 303 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

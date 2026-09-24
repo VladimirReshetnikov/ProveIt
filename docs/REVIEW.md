@@ -6890,3 +6890,45 @@ propext, Classical.choice and Quot.sound. The final audits pass for all
 4,626 anchors in 63 reports, 5,219 source-label references and 1,844 local
 Markdown destinations in 226 files, plus whitespace. No additional TeX
 changed, so the 302-page article and 34-page catalogue remain current.
+
+## Polyhedral cores: embeddings and flat face ideals
+
+Reviewed the first five results of Section 13.11 in the omnific-quotient
+report: `osq:pc:prop:embedding`, `osq:pc:prop:fractions`,
+`osq:pc:lem:subtract`, `osq:pc:thm:exhaustion` and
+`osq:pc:thm:products`. Their statements are unchanged. The embedding proof
+constructs a strictly positive rational functional from the facets and
+checks the dual-basis lexicographic map, including dimension one and the
+Gaussian coefficient case. Corrected the surrounding prose to restrict
+the asserted embedding into Oz to (D, K) = (Z, R), as the proposition
+requires; arbitrary coefficient fields, including positive characteristic,
+cannot all embed there. The fraction-field proof identifies the fields
+inside the given group-algebra fraction field and supplies the rational
+interior shift that recovers every group monomial and every coefficient.
+
+Face subtraction now has an explicit positive bound from the finite facet
+ratios, with the same least face and a nonzero difference. The ideal
+definition explains closure under multiplication and separates the zero-face
+convention from the tail-only formula. Principal exhaustion uses one shift
+for the whole finite support, preserving nonzero residual exponents so
+arbitrary K-coefficients remain allowed. Expanded the obstruction to finite
+generation, both exactness checks in the free telescope, and the dual-basis
+argument ruling out projectivity. Products retain their arbitrary coefficient
+in a nonconstant factor; flatness supplies the tensor injection, and testing
+an interior monomial proves the reverse face-inclusion implication.
+
+Updated the root README, report guide, catalogue, notation and source
+anchors. These are manuscript proofs over any unital subring D of a field K;
+no field, Noetherian or PID hypothesis on D is added. Their Lean proofs
+remain Pending. The subsequent radical classification, face resolutions,
+dimension formulas and full source reconciliation remain pending review.
+
+Validation: three clean final TeX passes for the 303-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected all
+revised proof pages and the catalogue entry. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 numbered examples are unchanged. All 4,626 source
+anchors in 63 reports, 5,219 source-label references and 1,844 local
+Markdown destinations in 226 files pass, as does whitespace checking.
+No Lean source changed; the two-thread 4,631-job build and
+17,116-declaration axiom audit remain the baseline before synchronization.
