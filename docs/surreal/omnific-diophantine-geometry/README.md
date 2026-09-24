@@ -1499,7 +1499,7 @@ same holds for the batch-33 and batch-34 notes (after Theorems 2.7, 3.1 and 4.6,
 before Theorem 5.1 and after Question 21.10): the text before them built to 225
 pages, and all 553 labels keep their `.aux` numbers. The later batch-34
 notes on the sibling report's henselian branching (after Proposition 15.40
-and after the paragraph following Example 19.5) keep the build at 226 pages
+and after the paragraph following Example 19.5) did not change the page count (226 pages when added; 227 after a later proof-review edit)
 and change no label number (all 553 compared against a build of the
 committed text). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
