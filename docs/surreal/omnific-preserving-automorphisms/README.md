@@ -1,18 +1,20 @@
 # Omnific-Preserving Automorphisms
 
-**Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity**
-Merged research report from eleven manuscripts written independently and dated
+**Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity;
+formal orbit fields, left-orderable symmetry groups, and integration of all derivations**
+Merged research report from fourteen manuscripts written independently and dated
 23 September 2026: items 02, 04, 08 and 09 of batch 26, placed in `f4c9504`
 (they keep those numbers here); item 05 of batch 28, placed in `c6359e4`
 as an addition and numbered 10 here; items 03, 04 and 05 of batch 30,
 placed in `21375f8` as an addition and numbered 11, 12 and 13 here; item
-07 of batch 31, placed in `9d28e28` as an addition and numbered 14 here; and
+07 of batch 31, placed in `9d28e28` as an addition and numbered 14 here;
 items 03 and 08 of batch 32, placed in `7d04483` as additions and numbered 15
-and 16 here. Prepared for Vladimir Reshetnikov.
+and 16 here; and manuscripts 03, 05 and 08 of batch 33, placed in `aa9c891` as
+additions and numbered 17, 18 and 19 here. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 139 pages
+article.pdf                                 the compiled report, 196 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
@@ -23,6 +25,13 @@ README.md                                   this guide
 14-automatic-summability-SOURCES.md         source 14's repository snapshot, literature and novelty statement, as delivered
 15-topological-collapse-SOURCE_AUDIT.md     source 15's source, proof and novelty audit, as delivered
 16-coefficient-recovery-SOURCE_AUDIT.md     source 16's source, dependency and novelty audit, as delivered
+17-formal-orbit-fields-PROOF_AUDIT.md       source 17's author-side proof audit, as delivered
+17-formal-orbit-fields-SOURCE_AUDIT.md      source 17's source and novelty audit, as delivered
+18-exact-symmetries-PROOF_AUDIT.md          source 18's author-side proof audit, as delivered
+18-exact-symmetries-SOURCE_AUDIT.md         source 18's source and novelty audit, as delivered
+19-formal-symmetry-SOURCE_AUDIT.md          source 19's source, proof and novelty audit, as delivered
+20-universal-symmetries-SOURCE_AND_PROOF_AUDIT.md   a later manuscript's audit, staged by the placement
+                                            a7a435f; that manuscript is not yet written into the report
 code/
   09-omnific-preserving-verify_finite_identities.py   source 09 checks (standard library; prints only)
   09-omnific-preserving-Makefile                      source 09's build/check targets (delivered
@@ -63,6 +72,22 @@ code/
                                                       verification.json beside itself by default)
   16-coefficient-recovery-build.py                    source 16's build script (delivered layout; it
                                                       does not build this report, see below)
+  17-formal-orbit-fields-verify.py                    source 17 checks (SymPy; writes --output, by
+                                                      default verification.json in the working directory)
+  17-formal-orbit-fields-Makefile                     source 17's all/pdf/check/clean targets (delivered
+                                                      file names; do not run it here, see below)
+  18-exact-symmetries-verify.py                       source 18 checks (standard library; writes
+                                                      verification.json beside itself by default)
+  18-exact-symmetries-build.sh                        source 18's build script (delivered layout; it
+                                                      does not build this report)
+  18-exact-symmetries-Makefile                        source 18's all/verify/clean targets (delivered
+                                                      file names; they do not build this report)
+  19-formal-symmetry-verify.py                        source 19 checks (standard library; writes
+                                                      ../data/verification.json by default)
+  19-formal-symmetry-build.sh                         source 19's build script (delivered layout; it
+                                                      fails here, see below)
+  20-universal-symmetries-verify.py                   a later manuscript's checks (placement a7a435f;
+  20-universal-symmetries-Makefile                    not yet written into the report)
 data/
   09-omnific-preserving-verification_output.txt       source 09's recorded run
   04-preserving-automorphisms-verification_report.json  source 04's recorded run (7,062 assertions)
@@ -88,16 +113,27 @@ data/
   16-coefficient-recovery-verification.json           source 16's recorded run (1,314 checks)
   16-coefficient-recovery-build_report.json           source 16's build record, with SHA-256 hashes
                                                       of seven delivered files
+  17-formal-orbit-fields-verification.json            source 17's recorded run (30,900 assertions)
+  17-formal-orbit-fields-requirements.txt             pins sympy==1.14.0
+  17-formal-orbit-fields-BUILD_REPORT.json            source 17's build record, with SHA-256 hashes
+                                                      of four delivered files
+  18-exact-symmetries-verification.json               source 18's recorded run (11,330 assertions)
+  18-exact-symmetries-BUILD_REPORT.json               source 18's build record for its own PDF (no hashes)
+  19-formal-symmetry-verification.json                source 19's recorded run (1,576 checks)
+  19-formal-symmetry-BUILD_REPORT.json                source 19's build record for its own PDF (no hashes)
+  20-universal-symmetries-verification.json           a later manuscript's recorded run and build record
+  20-universal-symmetries-BUILD_REPORT.json           (placement a7a435f; not yet written into the report)
 ```
 
-Every label in `article.tex` carries the prefix `opa:` (426 labels). Source
+Every label in `article.tex` carries the prefix `opa:` (643 labels). Source
 02's part carries the sub-prefix `opa:par:` (43 labels), the material added
 from source 10 carries `opa:sc:` (30 labels), Part III, from sources 11,
 12 and 13, carries `opa:as:` (110 labels, besides `opa:part:as`), Part IV,
 from source 14, carries `opa:cm:` (29 labels, the part label `opa:cm:part`
 included), Part V, from source 15, carries `opa:tc:` (44 labels, with
-`opa:tc:part`), and Part VI, from source 16, carries `opa:cr:` (66 labels, with
-`opa:cr:part`). These
+`opa:tc:part`), Part VI, from source 16, carries `opa:cr:` (66 labels, with
+`opa:cr:part`), and Parts VII, VIII and IX, from sources 17, 18 and 19, carry `opa:of:`
+(82 labels), `opa:es:` (66) and `opa:hs:` (69), each with its part label. These
 prefixed labels identify the assembled report; the earlier placed base used
 source-local labels. The batch-28 addition renamed and removed no label and
 changed no existing theorem, section or equation number: its material is
@@ -111,10 +147,14 @@ before the appendices, and the same comparison shows all 287 earlier labels with
 unchanged numbers. The batch-32 addition likewise renamed and removed no label (316
 kept, 110 added: 44 `opa:tc:`, 66 `opa:cr:`); its Parts V (Sections 38–42) and VI
 (Sections 43–52) sit after Part IV and before the appendices, and the auxiliary-file
-comparison shows all 316 earlier labels with unchanged numbers. The
+comparison shows all 316 earlier labels with unchanged numbers. The batch-33 addition
+likewise renamed and removed no label (426 kept, 217 added: 82 `opa:of:`, 66 `opa:es:`, 69
+`opa:hs:`); its Parts VII (Sections 53–59), VIII (Sections 60–66) and IX (Sections 67–75) sit
+after Part VI and before the appendices, and the auxiliary-file comparison shows all 426
+earlier labels with unchanged numbers. The
 [formalization ledger](../../FORMALIZATION.md)
 lists this report's statements in its inventory, all **Pending**; its line
-anchors predate the batch-28, batch-30, batch-31 and batch-32 additions. No implementation mapping
+anchors predate the batch-28, batch-30, batch-31, batch-32 and batch-33 additions. No implementation mapping
 cites an `opa:` label. The repository now has Lean code constructing the
 omnific rings themselves (`Surreal/Foundations/OmnificIntegers.lean`, for ring
 clauses of the Diophantine report), but none for any statement of this report;
@@ -122,10 +162,10 @@ the earlier sentence here that there was no Lean code about omnific integers
 is out of date. The Lean congruence and `p`-adic topologies on `Oz`
 (`Surreal/Foundations/OmnificCongruenceTopology.lean`,
 `OmnificSeparationTopology.lean`, recorded under `odg:eq:profinite` in the ledger)
-are instances of Part V's pullback classification (Remark 39.6); nothing of Part V
-or VI is formalized.
+are instances of Part V's pullback classification (Remark 39.6); nothing of Parts V–IX
+is formalized.
 
-## Eleven sources, one report
+## Fourteen sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -140,6 +180,9 @@ or VI is formalized.
 | **14** | *Automatic Summability from Omnific Arithmetic: constant-term duality, the full omnific stabilizer, and a sharp set–class distinction* (batch 31, item 07; 24 pages) | `3d40856` | A third derivation of 12's and 13's main theorems, in less generality, printed once with them (14 added to their sources in Part III). Its own material is Part IV (Sections 33–37): the induced-matching route to detection (Lemma 34.1, third route in Theorem 21.4, Corollary 34.2), the cancellation example (Example 34.3), detection in subfields with the countable detector property (Definition 35.1, Proposition 35.2), formal power-series evaluation (Theorem 36.1), the general adjoint matrix (Proposition 36.2), the case `Γ = R` (Remark 36.3), and Question 37.1. Files prefixed `14-automatic-summability-`. |
 | **15** | *Algebraic Rigidity and Topological Collapse of Surreal Arithmetic: Hahn summation, omnific integer topologies, and the discrete-exponent boundary* (batch 32, item 03; archive `Surreal_Arithmetic_Topological_Collapse`; 29 pages) | none; blobs `059939b` (this report's source at `b3fa9e2`) and `60f3b17` (at `20c4c9f`) | All of Part V (Sections 38–42): Hahn-compatible ring topologies on `𝔬 ⊕ Π` for dense `Γ` are the pullbacks along `ct` of ring topologies on `𝔬` (Theorem 39.4); the omnific and field cases (Theorem 39.7, Proposition 39.8, Corollaries 39.9, 39.10); the cyclic boundary for full Hahn fields (Theorem 39.12); a disjoint-row detector with interpolation (Lemma 40.1, Corollary 40.2), the naive-detector example (Example 40.3), the Gaussian ring corollary (Corollary 40.4), the class description of the strong dual of `No` (Proposition 40.5); the pairing topology (Theorems 41.1, 41.3, Corollary 41.2); Questions 42.1–42.6. A fourth derivation of Part III's automatic strongness, printed once there. Files prefixed `15-topological-collapse-`. |
 | **16** | *Recovering Surreal Coefficients from Monomial Extensions: quartic definitions, arbitrary-rank rigidity, and sharp cancellation* (batch 32, item 08; archive `surreal_coefficient_rigidity`; 24 pages) | `1ab41af` | All of Part VI (Sections 43–52): the quartic coefficient definitions (Theorems 45.3, 45.4, 45.7), the sparse power bound (Theorem 46.2), the all-order root locus (Proposition 46.5), arbitrary-monoid coefficient rigidity (Theorem 47.1, Proposition 47.2), group- and monoid-algebra automorphisms (Theorems 48.1, 48.3), the `Hom(G, Z) = 0` criterion (Theorem 49.2, using Lin–Wang), pair reconstruction (Theorem 49.5), finite-rank cancellation and its exact infinite-rank failure (Theorems 50.1, 50.3, 50.4), the boundary examples (Section 51), Questions 52.1–52.10. It generalizes Part II's Theorems 15.1, 15.3, 15.4 and 15.5. Files prefixed `16-coefficient-recovery-`. |
+| **17** | *Full Formal Orbit Fields of Surreal Arithmetic: proper-class independence, exact algebraic trajectories, and the effect of changing the formal parameter* (batch 33, manuscript 03; archive `Surreal_Formal_Orbit_Fields`; 25 pages) | `efc5446` | All of Part VII (Sections 53–59): for the Euler derivation `D_0` and its constant field `𝖢_0 = ker D_0`, exact full-image descent (Theorems 53.1, 55.2, Corollary 55.3), exclusion of the additive parameter (Theorem 55.4), the ordinal family of omnific witnesses `Ξ_α` (Theorems 53.2, 56.5, Corollary 56.6), the multiplicative clock and its exact algebraic core (Theorems 53.3, 57.2, 57.3, Corollaries 57.4, 57.5), the monomial test (Proposition 58.1), the surcomplex case (Theorem 58.4), the abstract theorem (Theorem 58.6), Questions 59.1–59.10 (two merged). It answers, for `D_0`, the lower bound left after Corollary 17.9. Files prefixed `17-formal-orbit-fields-`. |
+| **18** | *Relative Universality and Exact Fixed Fields of Strong Omnific Symmetries: group realization, two-level Hahn supports, and conjugation on the surcomplex field* (batch 33, manuscript 05; archive `Surreal_Exact_Symmetries_Research`; 24 pages) | `efc5446` | All of Part VIII (Sections 60–66): every nontrivial left-orderable set group acts faithfully by strongly additive, real-fixing, `Oz`-preserving double Hahn lifts with one prescribed fixed field `𝖪_S` (Theorem 60.1, Corollaries 60.2, 60.3); the orbit-support and two-level hull results (Theorem 61.5, Proposition 61.6); free equivariant cut filling (Lemma 62.3, Theorems 62.4, 62.6); the converse and the field–ring equivalence (Lemma 63.1, Corollary 63.2); the fraction gap and products (Corollaries 63.3, 63.4); examples, including the Klein bottle group (Section 64); the conjugation-compatible classification (Theorem 60.4, Section 65); Questions 66.1–66.8. Files prefixed `18-exact-symmetries-`. |
+| **19** | *All Derivations Integrate: Formal Symmetry and Coefficient Definability of Omnific Arithmetic* (batch 33, manuscript 08; archive `omnific_formal_symmetry`; 25 pages) | `889b87c` | All of Part IX (Sections 67–75): every derivation of `Oz`, `Oz[i]` maps into `Π` and integrates uniquely (Theorem 67.1, Lemma 68.4, Corollary 68.5), answering Question 19.2; divisible-ideal integration and commuting families (Propositions 68.6, 68.7); the integral exponential–logarithm correspondence (Theorem 69.3, Corollary 69.5); the jet tower, lifting but nonsplit, of class exactly `N` (Theorems 70.1, 70.4); residue sections and their common core (Theorems 71.1, 71.4); the quartic formula before and after completion (Corollary 72.2, printed once with Part VI; Propositions 72.4, 72.5, Theorem 72.7, Proposition 72.8); parameterwise nondefinability of the coefficient copy (Theorem 73.2, Corollaries 73.3, 73.4); the pointed finite-type theorem for the class rings (Theorem 74.2, Corollary 74.3); Questions 75.1–75.7. Files prefixed `19-formal-symmetry-`. |
 
 `fb5c4b5` is 12 commits before the placement `f4c9504` and `befe739` is 10
 commits before it. Both pins contain the batch-24 placement `be06fc8`. Neither
@@ -262,6 +305,50 @@ Disclosures, files kept byte-identical:
 - Its unshipped README gives `python verify.py --output verification.json`, the
   delivered layout.
 
+Sources 17 and 18 pin `efc5446` (tree `aba6982`, as 18 states), the eight-source text:
+it contains Parts I–III (`20c4c9f`) and the placement `9d28e28` of source 14, but not
+its write `d4d72d7` nor Parts V–VI. Source 19 pins `889b87c`, the nine-source text
+with Part IV, but not the batch-31 notes `ab18444` nor Parts V–VI (`7d04483`,
+`c315ac9`), so its quartic formula is an independent re-derivation of Part VI's. All
+three read guides and searched this report through a connector, with some truncated
+responses; their accounts of this report are accurate at their pins. Their checks,
+recorded runs, build records, build files and audits are shipped under the prefixes
+`17-formal-orbit-fields-`, `18-exact-symmetries-` and `19-formal-symmetry-`; their
+`article.tex`, PDFs and READMEs are not, nor 17's and 18's `SHA256SUMS.txt` (verified at
+placement and dropped). Disclosures, files kept byte-identical:
+
+- `data/17-formal-orbit-fields-BUILD_REPORT.json` gives SHA-256 hashes of 17's
+  `article.tex`, `article.pdf`, `verify.py` and `verification.json`; all four match the
+  delivered files, and the last two are shipped under prefixed names. The build records
+  of 18 and 19 give PDF sizes only.
+- `code/17-formal-orbit-fields-verify.py` (delivered `verify.py`) writes `--output`, by
+  default `verification.json` in the **working directory**.
+  `code/17-formal-orbit-fields-Makefile` runs `latexmk … article.tex` and `python verify.py
+  --output verification.json` in the working directory: run from this report's root it
+  would rebuild this report in place (auxiliary files) and then fail on the absent
+  `verify.py`. Do not run it here.
+- `code/18-exact-symmetries-verify.py` writes `verification.json` beside itself unless
+  `--output` is given. `code/18-exact-symmetries-build.sh` changes to its own directory
+  and runs `python3 verify.py`, absent under that name, so it stops before `pdflatex`;
+  `code/18-exact-symmetries-Makefile` calls `build.sh` and `verify.py` by their delivered
+  names, and its `clean` target removes `article.aux`, `article.log` and similar files in
+  the working directory.
+- `code/19-formal-symmetry-verify.py` (delivered `code/verify.py`) writes
+  `data/verification.json` under the parent of its own directory unless `--output` is
+  given; run in place it would create an unprefixed `data/verification.json` here (not
+  touching `data/19-formal-symmetry-verification.json`). `code/19-formal-symmetry-build.sh`
+  changes to its own directory, creates `code/build/` and `code/data/`, and then fails on
+  the absent `code/code/verify.py`. Its unshipped README gives `python code/verify.py
+  --output data/verification.json`, the delivered layout.
+- 19's audit notes that its package was compiled after midnight UTC on 24 September,
+  although the manuscript is dated 23 September.
+
+The placement `a7a435f` (after this write's baseline) staged a further manuscript for this
+report under the prefix `20-universal-symmetries-` (an audit, checks, a Makefile, a
+recorded run and a build record, listed above). Its placement dossier says that it
+re-derives source 18's realization theorem and adds further results; it is **not yet
+written** into the article, and nothing here describes its content.
+
 **Why one report.** 04, 08 and 09 prove one classification at three
 generalities, with the same consequences:
 
@@ -309,6 +396,13 @@ contradicts neither this report nor any other.
 
 15 and 16, added in batch 32, form **Parts V and VI**, one part each, since their
 subjects differ (topology of summation; coefficient recovery at arbitrary rank).
+
+17, 18 and 19, added in batch 33, form **Parts VII, VIII and IX**, one part each: the
+full formal orbit field of one Euler flow of Part II; the set groups of
+`Oz`-preserving automorphisms and their fixed fields; and formal integration of all
+derivations. 17 answers, for `D_0`, the lower bound left after Corollary 17.9; 18
+answers no named question; 19 answers Question 19.2. None contradicts this report or
+another.
 
 **Printed once.**
 
@@ -382,6 +476,23 @@ subjects differ (topology of summation; coefficient recovery at arbitrary rank).
   of Section 18 (16 added); its Proposition 4.1 as `odg:thm:fractions` and the
   unit lemmas; its Question 12.8 as Question 19.3. Its generalizations of
   Theorems 15.1, 15.3, 15.4 and 15.5 are printed as new results in Part VI.
+- **Source 17, printed once** (batch 33; its numbering; Section 53.2): its Lemma 2.1 as
+  `odg:thm:fractions`; its derivation (Proposition 2.2) as `D_0` of Theorem 17.6, with the
+  constant field and `ct(D_0 x) = 0` printed in Proposition 54.1; the ring and flow statements of
+  its Proposition 4.1 as Theorem 17.2; its monomial comparison (Section 4.4) as Lemma 17.4,
+  Theorem 17.5 and Corollary 17.9.
+- **Source 18, printed once** (batch 33; Section 60.2): its Lemma 2.1 as `odg:thm:fractions`;
+  its Lemma 2.2 as Corollary 5.2 (its direct floor argument recorded after Proposition
+  61.2); its lifts `T_φ`, `F_φ` as Part III's inner lift `ι_φ` and monomial map
+  `M_{1,ι_φ}` (Lemma 27.1); its Lemma 8.2 as `saut:thm:axis` (its ring clause printed as
+  Lemma 65.2); the infinite order in its Corollary 6.2 as in `saut:thm:torsion`; its twist
+  (Proposition 9.1) as the phase twist of `saut:thm:phase`.
+- **Source 19, printed once** (batch 33; Section 67.2): its Lemma 3.1 as Lemma 2.3; its
+  Lemma 3.2 as `odg:thm:fractions`; the derivations `D_η` of its Lemma 6.2 as Theorem 17.6;
+  its Lemma 8.1 as Theorem 45.3 for `G = Z^n`; its Theorem 8.2 and Corollary 8.3 (the formula
+  `∃a ∃b (b ≠ 0 ∧ a² = (x⁴ + 1) b²)`, which is Part VI's ring formula with `a, b = u, v`) as
+  Theorems 45.4 and 45.7, printed once in the joint generality of Corollary 72.2; its conic
+  and characteristic-2 warnings as Remark 45.6 and Example 51.2; its Lemma 11.1 as Lemma 14.1.
 - **Reproved and cited, not reprinted**: the reconstruction of `R`, `Π`, the
   multiplier ring and `Frac Oz = No` (all three; `odg:`), the convex-support
   criterion (12 by the least forbidden shift, which is 10's route; 13 by the
@@ -434,6 +545,9 @@ extras are printed:
   descending sequence, which yields an induced matching, and normalizes the pairings
   to `1`; the same selection gives prescribed pairings (Corollary 40.2). Its
   detector has countable support but not `{0, 1}` coefficients.
+- 19's genus-one proof of quartic rigidity (Lemma 72.1: Riemann–Hurwitz for
+  `Y² = X⁴ + 1`, then induction on the variables), beside 16's Mason–Stothers and
+  specialization proof (Lemma 45.2, Theorem 45.3).
 
 **Added by the merge**, each tagged `[merge]` with a complete proof:
 
@@ -461,7 +575,17 @@ extras are printed:
   the first clause of Question 32.11, the notes after Questions 42.2, 42.6 and
   52.9, the record that 16 does not answer `odg:def:q:coeffpe` (Section 52.2), the
   status notes after Questions 11.4, 19.3, 32.1, 32.11, 32.12, 32.18 and 37.1, and
-  pointers after Theorem 15.5 and in Remark 34.4.
+  pointers after Theorem 15.5 and in Remark 34.4;
+- with 17, 18 and 19 (batch 33): Corollary 58.7 (the descent of Theorem 58.6 holds for
+  every Euler flow `D_χ` of Part II, from 17's remark after its first question);
+  Corollary 72.2 in the joint generality of 16 and 19 (intermediate rings
+  `A ⊆ B ⊆ K(U^G)` with `B ∩ K = A`, any rank); Remark 63.5 (18's realizations against
+  Theorems 7.2, 7.4 and 7.6); the identification of 18's lifts with `ι_φ` and `M_{1,ι_φ}`
+  and of its twist with the phase twist; the relations of 19's results to Theorem 4.8,
+  Corollary 17.7, Lemma 7.1, Example 51.1 and Question 52.1; the merged Questions 59.6
+  (internal evaluation, 17 and 19) and 59.10 (formalization, 17, 18, 19); and status notes
+  after Corollary 17.9, Theorem 7.6, Questions 11.3, 19.2, 19.3, 32.15, 52.2 and 75.2, in
+  Section 19, in Section 52.2 and in Appendix B.
 
 **Notation.**
 
@@ -547,9 +671,37 @@ extras are printed:
     automorphism `σ` is `α`.
   - 16's `v, d, w` (auxiliary support minimum, maximum, width) are `min supp`,
     `max supp`, `wd`, and its `ℓ` is `λ` (not Part II's leading exponent `ℓ(x)`).
+- Parts VII–IX (17, 18, 19) use Part II's large-monomial convention `ω^g = X^g = t^{−g}`;
+  Sections 53.3, 60.3 and 67.3 have their tables. Traps:
+  - 17's `C = ker D` is the huge real closed field `𝖢_0` (it contains `ω^ω` and
+    `ω^{−ω}`), **not** `C` (the complex numbers), `C_δ`, `C(a)` or `C_1`; its `D` is `D_0`
+    (Part II's `D_b`, `b = 0`) and its `h = ct` is `q_0`, the constant coefficient of the
+    **exponent**; `ker q_0` is not convex and is not `H_g` or the hull `ℋ(A)`.
+  - 17's Taylor map `𝒯_s` is Part II's formal flow `ℰ_{0,s}`, not the Taylor automorphism
+    `𝒯_{d,δ}` of Part III or a topology; its multiplicative clock `𝒰_v` is written `Υ_v`
+    (not the stabilizer `𝒰`), and its `u = 1 + v` is neither Part III's factor `u` nor the
+    witness `u` of Part VI; in Part VII `v` is a formal variable, not a valuation.
+  - 17's full orbit field `L_add` is `L̂_0`; Part II's `L_χ` is only its monomial subfield.
+    17's `A_α, B_α, a_α, E_α, X_α` are `𝔞_α, 𝔟_α, ζ_α, exp(ζ_α z), Ξ_α` (not the shears
+    `A_s, B_u`, the group `ℰ_A` or Part II's monomials `X^g`).
+  - 18's `ℋ(B)` (normal forms supported in `B`) is written `NF(B)`, and its `𝒦_B = ℋ(ℋ(B))`
+    is `𝖪_B`: **not** Part I's relative Hahn hull `ℋ(A) = R((t^{V_A}))`, which takes a
+    rational span. 18's double lift `T_φ`, `F_φ` is Part III's inner lift `ι_φ` followed
+    by the monomial map `M_{1,ι_φ}`; `ι_φ` is additive, not multiplicative, and
+    `ι_φ(1) = ω^{φ(0)}`.
+  - 18's cut `D`, stabilizer `H` and components `C_D` are `𝖼`, `G_𝖼`, `I_𝖼`; the factor `H`
+    of `H × C_2` is `G_0`; its twist `U` with character `χ` is `Φ_ph`, the phase twist
+    `P_{−2π}` of `saut:thm:phase`.
+  - 19's formal variable `T` is Part II's `s`; its `𝔍_R` is `Π_R` and its `J` is `Π^♯_R`; its
+    Hasse–Schmidt components `H_n` are `𝖧_n`; its `ℓ_η` is `q_η`; its `E_m` is `ω^m D_0`;
+    its `C_R` (common constants of **all** derivations) is `𝖢_R`, not `𝖢_0`; its `Θ` (a
+    formula) is `𝖰`, not source 10's profile `Θ`.
+  - **19's "coefficient section"** `R → R[[T]]` is a section of the residue map, written
+    `ς` and called a *residue section*; it is **not** Part III's coefficient section
+    `ρ: R → R((t^{𝖦_τ}))`. The same phrase names two different notions.
 
-Section 1.5, Section 20.3, Sections 33.3, 38.3 and 43.3 and Appendix A.4 list every
-renaming.
+Section 1.5, Section 20.3, Sections 33.3, 38.3, 43.3, 53.3, 60.3 and 67.3 and Appendix
+A.4 list every renaming.
 
 ### Source 15 (batch 32): topological collapse
 
@@ -579,6 +731,48 @@ renaming.
 | Renamed symbols | **16's `X^g` is an external indeterminate, written `U^g` here**; Part II's `X^g = t^{−g} = ω^g` is a Hahn monomial. `K_k(G) → k(U^G)` (not the Hahn field `K_Γ`); `Δ_k(G) → Def_k(G)`; `𝒰_∞ → Rt_∞`; `D(G) → G_div`; `𝒟, 𝒞 → 𝔇, 𝔆`; monoids `M, N → 𝖬, 𝖭`; its coefficient automorphism `σ → α`; `H → G'`; `v, d, w → min supp, max supp, wd`; `ℓ → λ`; `T d/dT → ϑ`; `𝔖_d → Sym(d)` (Section 43.3) |
 | Merge additions `[merge]` | the relation of Question 52.9 to `odg:def:q:realform` and Question 32.1; the record that 16 does not answer `odg:def:q:coeffpe` (Section 52.2); status notes and the pointer after Theorem 15.5 |
 | Verification | suite rerun on a copy: 1,314 checks in 12 categories, `PASS`; the record differs from the shipped one only in `python` (3.14.4 vs 3.13.5) and `elapsed_seconds` |
+
+### Source 17 (batch 33): full formal orbit fields
+
+| | |
+|---|---|
+| Manuscript | *Full Formal Orbit Fields of Surreal Arithmetic: proper-class independence, exact algebraic trajectories, and the effect of changing the formal parameter*, 23 September 2026, 25 pages; batch 33 manuscript 03, archive `Surreal_Formal_Orbit_Fields` (delivered in `73043eb`, placed in `aa9c891`) |
+| Pin | `efc5446` (Parts I–III; it saw neither Part IV's write nor Parts V–VI) |
+| Contributes | Part VII (Sections 53–59), sub-prefix `opa:of:` (82 labels): `D_0` and its constant field `𝖢_0` (Proposition 54.1, Corollaries 54.3, 54.5); the differential-field lemmas (Lemmas 54.4, 54.6–54.11, Example 54.8); exact additive descent, the trajectory criterion and parameter exclusion (Theorem 55.2, Corollary 55.3, Theorem 55.4); the witnesses `Ξ_α` and their independence (Lemmas 56.1–56.4, Theorem 56.5, Corollary 56.6); the multiplicative clock (Proposition 57.1, Theorems 57.2, 57.3, Corollaries 57.4, 57.5); the monomial test, examples, `lcm` degrees, the surcomplex case, omnific generators and the abstract theorem (Section 58); ten questions (Section 59.3) |
+| Placement | a new Part after Part VI, before the appendices; no existing number changes |
+| Answers | for `D_0`, the lower bound left after Corollary 17.9 and in 02's sixth non-claim; status notes there |
+| Printed once | its fraction lemma as `odg:thm:fractions`; its derivation as Theorem 17.6 with `b = 0`; the ring and flow parts of its Taylor embedding as Theorem 17.2; its monomial comparison as Lemma 17.4, Theorem 17.5, Corollary 17.9 (Section 53.2) |
+| Renamed symbols | `D, h → D_0, q_0`; `H, C → ker q_0, 𝖢_0`; `𝒯_s, 𝒰_v → ℰ_{0,s}, Υ_v`; `L_add, L_mult → L̂_0, L̂^×_0`; `𝔓 → Π`; `Const(K,D), C_K → K^∂`; `δ, δ_m, ∂ = −ωD → ∇_s, ∇^×, D̃_0`; `A_α, B_α, a_α, M_α, E_α, X_α → 𝔞_α, 𝔟_α, ζ_α, ω^{𝔟_α}, exp(ζ_α z), Ξ_α`; `F, M, A, A'` written out (Section 53.3) |
+| Merge additions `[merge]` | Corollary 58.7 (descent for every Euler flow `D_χ`); the merged Questions 59.6 (with 19) and 59.10 (with 18 and 19); status notes |
+| Verification | suite rerun on a copy (SymPy 1.14.0, about 22 s): 30,900 assertions in 24 groups, `passed`; the written record differs from the shipped one only in `python_version` (3.14.4 vs 3.13.5), up to line endings |
+
+### Source 18 (batch 33): left-orderable symmetry groups
+
+| | |
+|---|---|
+| Manuscript | *Relative Universality and Exact Fixed Fields of Strong Omnific Symmetries: group realization, two-level Hahn supports, and conjugation on the surcomplex field*, 23 September 2026, 24 pages; batch 33 manuscript 05, archive `Surreal_Exact_Symmetries_Research` (delivered in `73043eb`, placed in `aa9c891`) |
+| Pin | `efc5446`, tree `aba6982` (Parts I–III) |
+| Contributes | Part VIII (Sections 60–66), sub-prefix `opa:es:` (66 labels): Theorems 60.1 and 60.4 with Corollaries 60.2, 60.3; the lifts (Definition 61.1, Proposition 61.2, Remark 61.3); orbit supports and two-level hulls (Lemma 61.4, Theorem 61.5, Proposition 61.6, Lemma 61.7); the set-cut property, back-and-forth and free equivariant cut filling (Section 62); the converse, the field–ring equivalence, the fraction gap and products (Section 63); translation, dilation, two-point and Klein-bottle examples and the countable route (Section 64); complex fixed fields, the nonreal-parameter obstruction, the parity tower and the phase-twist fixed fields (Section 65); ten questions (Section 66.3) |
+| Placement | a new Part after Part VII, before the appendices; no existing number changes |
+| Answers | no named question; it generalizes Theorem 7.6 from `R^κ` to every left-orderable set group (in the monomial factor, not in `U_Oz`) and sharpens Theorem 7.2 to single automorphisms; Question 11.3 is not addressed (note there) |
+| Printed once | its fraction and floor lemmas as `odg:thm:fractions` and Corollary 5.2; its lifts as `ι_φ` and `M_{1,ι_φ}` (Lemma 27.1); its Lemma 8.2 as `saut:thm:axis`; its infinite-order clause as `saut:thm:torsion`; its twist as `saut:thm:phase` (Section 60.2) |
+| Renamed symbols | **`ℋ(B)` → `NF(B)`** (not the hull `ℋ(A)`); `𝒦_B → 𝖪_B`; `σ_2 → Σ_2`; `T_φ, F_φ → ι_φ, M_{1,ι_φ}`; `No_C, Oz_C, c → No(i), Oz[i], cj`; cut `D`, `H`, `C_D` → `𝖼, G_𝖼, I_𝖼`; `H` in `H × C_2` → `G_0`; `X, X_α → 𝒳, 𝒳_α`; `U, χ, E_n → Φ_ph, χ_ph, 𝖤_n`; `h → ψ`, `h_KB` (Section 60.3) |
+| Merge additions `[merge]` | the identification with Part III's lifts; Remark 63.5; the remarks on `saut:thm:torsion` and `saut:thm:phase`; 18's Question 11.5 merged into Question 32.15 and 11.10 into 59.10; status notes |
+| Verification | suite rerun on a copy (about 1 s): 11,330 assertions in 19 categories, seed 20260923, `PASS`; the written record is identical to the shipped one up to line endings |
+
+### Source 19 (batch 33): all derivations integrate
+
+| | |
+|---|---|
+| Manuscript | *All Derivations Integrate: Formal Symmetry and Coefficient Definability of Omnific Arithmetic*, 23 September 2026, 25 pages; batch 33 manuscript 08, archive `omnific_formal_symmetry` (delivered in `73043eb`, placed in `aa9c891`) |
+| Pin | `889b87c` (Parts I–IV; not Parts V–VI) |
+| Contributes | Part IX (Sections 67–75), sub-prefix `opa:hs:` (69 labels): automatic integration (Theorem 67.1, Lemma 68.4, Corollary 68.5), formal fraction fields (Proposition 68.1), divisible-ideal integration for every exponent group and commuting families (Propositions 68.6, 68.7); the exponential–logarithm correspondence, higher-derivation formulas, unique roots (Lemmas 69.1, 69.2, Theorem 69.3, Corollary 69.5); jets (Theorems 70.1, 70.4, Lemmas 70.2, 70.3, Remark 70.5); residue sections, directions beyond the Euler family and the common core (Section 71); the definable evaluation, the curve criterion, formal square roots, universality of the quartic in the completion and the parity exception (Section 72); fresh-direction nondefinability (Section 73); the class-size pointed theorem and escape from finite type (Section 74); eleven questions (Section 75.3) |
+| Placement | a new Part after Part VIII, before the appendices; no existing number changes |
+| Answers | **Question 19.2** (formal directions), all clauses: every derivation of `Oz`, `Oz[i]` maps into `Π`, preserves it and has the unique iterative integral extension `δⁿ/n!`; the class is strictly larger than the Euler family (it contains `ω d_*`). Status notes after the question, in Section 19 and in Section 52.2 |
+| Printed once | its Lemmas 3.1, 3.2 and 11.1 as Lemma 2.3, `odg:thm:fractions` and Lemma 14.1; its `D_η` as Theorem 17.6; its quartic formula (Theorem 8.2, Corollary 8.3) as Part VI's Theorems 45.4, 45.7, printed once as Corollary 72.2; its Lemma 8.1 as Theorem 45.3, kept as a second route (Lemma 72.1); its warnings as Remark 45.6 and Example 51.2 (Section 67.2) |
+| Renamed symbols | `T → s`; `𝔍_R, J → Π_R, Π^♯_R`; `H_n → 𝖧_n`; `L → 𝖫`; `G(R) → 𝒢(R)`; `ℓ_η → q_η`; `E_m → ω^m D_0`; `C_R → 𝖢_R`; **`Θ → 𝖰`**; **coefficient section `s` → residue section `ς`** (not Part III's `ρ`); `D_d → d_*`; curve `C → 𝖷` (Section 67.3) |
+| Merge additions `[merge]` | Corollary 72.2 in the joint generality; the relations to Theorem 4.8, Corollary 17.7, Lemma 7.1, Example 51.1 and Question 52.1; questions merged into 59.6, 52.2, 19.3 and 59.10; the status after Question 75.2 (answered for `D_0` by Part VII) |
+| Verification | suite rerun on a copy (about 2 s): 1,576 checks in 17 groups, seed 20260923, `passed`; the written record is identical to the shipped one up to line endings |
 
 ## What the report claims
 
@@ -883,11 +1077,87 @@ field; `F` is real closed or algebraically closed of characteristic zero.
   (Example 51.1), `T ↦ T + 1` survives for `G = Z`, and characteristic `p` breaks
   both the sparse bound and the criterion (Example 51.2).
 
+Part VII (source 17; Sections 53–59). `D_0(Σ r_g ω^g) = Σ q_0(g) r_g ω^g`, where `q_0(g)`
+is the constant coefficient of the exponent `g`; `𝖢_0 = ker D_0` is real closed and
+contains `ω^ω`; `ℰ_{0,s}(x) = Σ D_0ⁿ(x) sⁿ/n!` and `L̂_0 = No(ℰ_{0,s}(No))` in `No((s))`.
+
+- **Theorems 53.1 and 55.2, Corollary 55.3.** `No(s)` and `ℰ_{0,s}(No)` are linearly
+  disjoint over `𝖢_0`, since `No(s)` and the whole Laurent field have constant fields
+  `𝖢_0` and `ℰ_{0,s}(No)` for `D_0 − d/ds` (no additive slice: `ct(D_0 y) = 0`). All
+  polynomial relations of a transformed tuple descend from `𝖢_0`, and a trajectory is
+  algebraic, or rational, over `No(s)` exactly when `x ∈ 𝖢_0`.
+- **Theorem 55.4.** `s` is transcendental over `L̂_0`, although `e^s = ℰ_{0,s}(ω)/ω ∈ L̂_0`.
+- **Theorems 53.2 and 56.5, Corollary 56.6.** For every ordinal `α`,
+  `Ξ_α = Σ_n ω^{ω^{α+2} − n(ω^{α+1}+1)}/n!` is a countably supported purely infinite
+  omnific integer; the `Ξ_α` are algebraically independent over `𝖢_0(ω)` (they satisfy
+  `D̃_0 Ξ_α = ζ_α Ξ_α` with `Q`-independent constants `ζ_α = ω^{−ω^{α+1}}`), so `L̂_0` has
+  independent families of every set cardinality and no set-sized transcendence basis.
+- **Theorems 53.3, 57.2, 57.3, Corollaries 57.4, 57.5.** For `Υ_v = (1+v)^{D_0}` and
+  `u = 1 + v`, the image and `No(u)` are linearly disjoint over `𝖢_0(ωu)`; `Υ_v(x)` is
+  rational over `No(u)` iff `x ∈ 𝖢_0(ω)` and algebraic iff `x` is algebraic over `𝖢_0(ω)`,
+  with equal degrees; `u = Υ_v(ω)/ω` lies in the orbit field.
+- **Proposition 58.1, Examples 58.2, 58.3, (58.1).** `Υ_v(ω^g)` is rational iff
+  `q_0(g) ∈ Z` and algebraic iff `q_0(g) ∈ Q`, of degree the reduced denominator;
+  `ℰ_{0,s}(ω^g)` is algebraic iff `q_0(g) = 0`; lcm degrees.
+- **Theorem 58.4, Proposition 58.5, Theorem 58.6, Corollary 58.7.** The surcomplex
+  case; the orbit fields are generated by omnific inputs; the abstract theorem for any
+  characteristic-zero differential field; and (merge) descent for every Euler flow of
+  Part II.
+
+Part VIII (source 18; Sections 60–66). `NF(B)` is the class of normal forms supported in
+`B`, `𝖪_S = NF(NF(S))`, and `Σ_2(A)` the inner supports of the outer exponents of `A`.
+
+- **Theorem 60.1.** For every set `S` and nontrivial left-orderable set group `G`, a
+  faithful action by strongly additive, real-fixing, monomial-permuting automorphisms
+  preserving `Oz`, `ct` and the floor, with `Fix(σ_g) = 𝖪_S` and `Fix_Oz(σ_g) = Oz ∩ 𝖪_S`
+  for every `g ≠ 1`, faithful on `Oz`; conversely set groups acting faithfully on `No`,
+  or on `Oz` by ring automorphisms, are left-orderable. **Corollaries 60.2, 60.3**:
+  `Fix = 𝖪_{Σ_2(A)} ⊇ A` for any set of parameters; fixed field `R` and fixed ring `Z`,
+  free actions outside them.
+- **Proposition 61.2, Theorem 61.5, Proposition 61.6.** The lifts `ι_φ` and `M_{1,ι_φ}`;
+  exact two-level fixed supports; `S ↦ 𝖪_S` is injective and `𝖪_{Σ_2(A)}` is the least
+  field of this form containing `A`.
+- **Lemma 62.3, Theorems 62.4, 62.6.** Free insertion of ordered fibers at all cut orbits,
+  a free action on an order with the set-cut property, hence on `No`, and exact fixed
+  index sets `S`.
+- **Corollaries 63.2–63.4.** Left-orderable ⇔ faithful on `No` ⇔ faithful on `Oz`;
+  every nonidentity automorphism of `Oz` has infinite order;
+  `Frac(Fix_Oz σ_g) = Q ⊊ Fix σ_g = R`; unrestricted set products.
+- **Section 64.** Index translation (fixed field `R`), dilation (`R((ω^R))`), a two-point
+  index set, the countable dynamical route, and the Klein bottle group (left-orderable, not
+  bi-orderable).
+- **Theorem 60.4, Section 65.** Conjugation-compatible faithful actions on `No(i)` or `Oz[i]`:
+  exactly `G_0` and `G_0 × C_2` with `G_0` left-orderable; a fixed nonreal parameter excludes
+  `C_2`; complex fixed fields `𝖪_S(i)`; a parity tower; the phase twist `Φ_ph` has fixed
+  fields `C((ω^{𝖤_n}))`, not algebraically closed.
+
+Part IX (source 19; Sections 67–75). `R` is one of `Oz`, `Oz[i]`, `No`, `No(i)`; `s` is a
+formal variable.
+
+- **Theorem 67.1, Corollary 68.5.** Every derivation of `Oz`, `Oz[i]` maps into `Π_R` and
+  preserves it (since `Π_R = ⋂ nR`), and `δⁿ/n!` is its unique iterative integral
+  Hasse–Schmidt extension: **Question 19.2 is answered**. **Proposition 68.6**: the same for
+  `Z ⊕ Π(Γ)` over every set-sized ordered group.
+- **Theorem 69.3, Corollary 69.5.** `exp` and `log` identify `s Der(R)[[s]]` with the
+  `s`-fixing automorphisms of `R[[s]]` tangent to the identity; unique roots; stabilizers.
+- **Theorems 70.1 and 70.4.** Every jet lifts; the `N`th jet group has class exactly `N`,
+  and its central extensions do not split for `N ≥ 2` (`[D_0, ωD_0] = ωD_0`).
+- **Theorems 71.1 and 71.4.** Residue sections correspond to the formal automorphisms;
+  their common core is `Z`, `Z[i]`, the real algebraic numbers or `Q̄`.
+- **Corollary 72.2, Theorem 72.7, Proposition 72.8.** The quartic formula defines `A` in every
+  intermediate ring of `K(U^G)` (with 16), but holds of every element of `Oz[[s]]`,
+  `Oz[i][[s]]`, `No[[s]]`, and in `No(i)[[s]]` up to an order parity.
+- **Theorem 73.2, Corollaries 73.3, 73.4.** No set of parameters defines the canonical
+  coefficient copy in `R[[s]]`, or any residue section, although `R[[s]]/(s)` is
+  interpretable.
+- **Theorem 74.2, Corollary 74.3.** Pointed finite-type parameter families are trivial for
+  the class rings, so no nonstandard formal section factors through finite type.
+
 ## What the report does not claim
 
 Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from
 08, 11 from 02, 18 from 10, 13 from 11, 14 from 12, 12 from 13, 16 from 14, 17
-from 15 and 14 from 16.
+from 15, 14 from 16, 15 from 17, 15 from 18 and 14 from 19.
 In brief:
 
 - Sources 04, 09 and 10 state that nonstrong automorphisms are not classified
@@ -1019,6 +1289,50 @@ In brief:
   - its classical inputs (Mason–Stothers, sparse multiplicity, units, rank,
     defect freeness) and 02's framework are not claimed; finite checks are not
     proofs.
+- Source 17 (Part VII):
+  - Taylor morphisms, Euler derivations, independence of exponential solutions, the
+    constants and linear-disjointness lemmas, the logarithmic-derivative obstruction,
+    Vandermonde, Eisenstein and scalar extension are not new; no identification with a
+    Galois hull (Ng, Heiderich, Kolchin are background);
+  - only `D_0` is treated: no transfer to a derivation with a slice (Example 54.8) or to a
+    changed Hahn presentation;
+  - `s` and `v` are formal: no surreal is substituted, and no independence-preserving
+    evaluation into `No` is claimed (independence over `No` cannot survive it);
+  - no single proper-class transcendence degree; no algorithm for `𝖢_0(ω)` or its relative
+    closure; the formal flows are not internal automorphisms of `No`;
+  - nothing on other real forms or arbitrary surcomplex automorphisms; `D_0` is not the
+    Berarducci–Mantova derivation;
+  - no named conjecture; finite checks are not proofs; no Lean, no peer review, no
+    priority; targeted comparison with truncated connector reads.
+- Source 18 (Part VIII):
+  - the double lift and the existence of nontrivial or nonabelian omnific automorphisms
+    are not new (Kaplan–Krapp–Serra Construction 3.10, Kuhlmann–Serra, this report);
+  - no classification of `Aut(Oz)` and no claim that arbitrary automorphisms are strong
+    (for `Oz` Part III now proves they are); no classification of all fixed subfields or
+    conjugacy classes; minimality of `𝖪_{Σ_2(A)}` holds only within the family `𝖪_S`;
+  - the maps preserve the monomial class, not the omega-map, the Gonshor exponential,
+    derivations, simplicity or birthdays; no birthday-cutoff transfer;
+  - not claimed that every automorphism of `No` fixes `R`; no classification of complex
+    actions without a named conjugation; Rivas' dynamical realization is used only for
+    the optional explicit route;
+  - no Lean, no peer review, no priority; finite checks do not cover cut filling or class
+    recursion; guide-level source inspection.
+- Source 19 (Part IX):
+  - no classification of derivations by support; they are not claimed `R`-linear or strong;
+  - the integration result is not the Hahn-evaluation question; no surreal evaluation of `s`;
+  - formal Lie theory (Hazewinkel, Narváez-Macarro–Tirado Hernández, Bagayoko),
+    Riemann–Hurwitz and strong invariance (Hirano), and Part II's results are not new;
+  - only marked residue sections are classified; `𝖰` is existential, not
+    positive-existential, with no optimality; the surcomplex-field completion has a parity
+    exception, and the finite-jet universality is a nilpotent phenomenon;
+  - nondefinability of the canonical copy does not forbid interpreting the residue ring;
+    nothing on the whole of `Aut(Oz)`, no canonical real form of `No(i)`;
+  - no Lean, no peer review, no priority; checks use `Z + XQ[X]` only; the audit notes
+    truncated reads and packaging after midnight UTC.
+- **Status (batch 33).** 02's non-claim that only a lower bound holds for the full formal
+  image is kept as its record; for `D_0` Part VII now describes the full image. 02's
+  non-claim that it classifies no derivations stays true: Part IX shows all derivations
+  integrate, not what they are.
 - No named conjecture is solved. The report is not refereed, has no Lean
   formalization and makes no priority claim. The finite checks test identities
   only.
@@ -1055,7 +1369,9 @@ depend on it.
     it again. Automatic strongness settles recognition of existing automorphisms,
     not their construction.
   - 11.3: full relative fixed fields (04). 10's definable-closure question is
-    recorded with it.
+    recorded with it. Batch 33: 18's realizations lie in the monomial factor, not in
+    `U_Oz`, so they do not bear on it (a single one can fix exactly `𝖪_{Σ_2(A)} ⊇ R((t^{V_A}))`);
+    open.
   - 11.4: generation and exhaustion (04 Q4 with 08 Q1 and 10's generation
     question). 15 asks it again (batch 32); a topology realizing all Hahn sums
     offers no shortcut, since on `No` every one is indiscrete. Open.
@@ -1121,7 +1437,9 @@ depend on it.
   - 32.14: isomorphisms of small integer parts (13, 14). 14 asks the automorphism
     case with uniqueness; **uniqueness is answered** by Proposition 36.5 (merge),
     existence stays open.
-  - 32.15: exponential, omega-map and differential structure (11, 12, 13).
+  - 32.15: exponential, omega-map and differential structure (11, 12, 13, 18). 18 asks it
+    for its group realizations (batch 33): which left-orderable groups survive when the
+    Gonshor exponential, the omega-map or a derivation must be preserved; open.
   - 32.16–32.18: restricted workspaces and compositions (11); formalization
     (11, 12, 13, 14, 15; 15 proposes formalizing the collapse over abstract
     ordered monomial systems first). For 32.17, image inclusion and intersection inside one
@@ -1151,16 +1469,53 @@ depend on it.
   root-covered domains (52.7); definability of the monomial subgroup (52.8);
   real-form recovery in larger surcomplex extensions, related to
   `odg:def:q:realform` and 32.1 (52.9); staged formalization (52.10). 16's Question
-  12.8 is 19.3.
+  12.8 is 19.3. Batch 33: 19 found 16's ring formula independently and asks 52.2 again
+  (tagged 16, 19; open); its Theorem 72.7 shows the formula holds of every element of the
+  omnific formal completions, which bears on 52.1 without answering it.
 - **08's Question 2** asked whether `C` is first-order reconstructible from
   the pure ring `Oz[i]`. It is **answered** by `odg:def:cor:internal`, and
   independently by 09's Pell-divisibility route, so it is dropped.
-- **02's questions** are 19.1–19.3. Question 19.2, on formal directions, is
+- **02's questions** are 19.1–19.3. Question 19.2, on formal directions, was
   **partly answered** by Part I: positive-shift derivations preserving `Oz`
   are classified, and those with a common shift set integrate to automorphisms
-  inside `No`. The shift-zero and other cases stay open. Question 19.3 (reduced
-  parameter rings) is asked again by 16 (batch 32), whose domain proofs do not
-  reach it; open. Question 19.1 (groups with an order unit) is not addressed by 16.
+  inside `No`. **Answered** in batch 33 by source 19 (Theorem 67.1, Corollary 68.5):
+  every derivation of `Oz` or `Oz[i]` maps the ring into `Π` and preserves it, and `δⁿ/n!`
+  is its unique iterative integral Hasse–Schmidt extension, with no strongness,
+  `R`-linearity or common-shift hypothesis; the class is all of `Der(Oz)`, strictly larger
+  than the Euler family (it contains the non-`R`-linear `ω d_*`, Example 71.2). What remains
+  is a structural description of all derivations (Question 75.1) and evaluation inside `No`
+  (Question 59.6). Question 19.3 (reduced parameter rings) is asked again by 16 (batch 32),
+  whose domain proofs do not reach it, and refined by 19 (batch 33); open. Question 19.1
+  (groups with an order unit) is addressed by neither.
+- **The lower bound after Corollary 17.9** ("only a lower bound is asserted for the field
+  generated by the formal images of all Hahn series") is **answered for `D_0`** by
+  source 17 (Theorems 53.1, 53.2): the full image is linearly disjoint from `No(s)` over
+  `ker D_0`, with no set-sized transcendence basis. For every Euler flow the image descends
+  to `F/F^{D_χ}` (Corollary 58.7); the size for other characters is open (Questions 59.1,
+  59.2). The monomial statements of Theorem 17.5 and Corollary 17.9 stand.
+- **Questions 59.1–59.10** (Part VII, 17): other exponent characters (59.1); set-sized
+  Hahn fields (59.2); the algebraic core by supports (59.3); several commuting Euler
+  directions (59.4); formal clocks with algebraic trajectories (59.5); **internal
+  evaluation of formal flows** (59.6, merged from 17's and 19's questions); a proper-class
+  differential Galois object (59.7); arithmetic restrictions on witnesses (59.8); finite
+  certificates for relation descent (59.9); **formalization of Parts VII–IX** (59.10,
+  merged from 17's, 18's and 19's questions). All open.
+- **Questions 66.1–66.8** (Part VIII, 18), new: which real closed fields are exact fixed
+  fields (66.1); beyond the two-level family (66.2); conjugacy of free-complement actions
+  (66.3); centralizers and normalizers (66.4); birthday-controlled realization (66.5,
+  related to 32.16); arithmetic invariant-fraction fields (66.6); surcomplex actions without
+  a named conjugation (66.7, related to 32.1); fixed fields with orbit types (66.8). 18's
+  question on additional transcendental structure is merged into 32.15, its formalization
+  question into 59.10. Question 11.3 (full relative fixed fields in `U_Oz`) is **not
+  addressed**: 18's automorphisms lie in the monomial factor (note after it).
+- **Questions 75.1–75.7** (Part IX, 19), new: a structural description of all
+  derivations (75.1, what remains of 19.2); orbit-field transcendence (75.2, **answered for
+  `D_0`** by Part VII, open otherwise); structure admitting a definable residue section
+  (75.3); several formal parameters and the jet Lie algebra (75.4); centralizers and formal
+  conjugacy (75.5); fixed exponent groups and bounded parameters (75.6); coefficient
+  intersections in other completions (75.7). 19's other four are merged into 59.6 (Hahn
+  evaluation), 52.2 (definitional complexity, now tagged 16, 19), 19.3 (reduced parameter
+  spaces) and 59.10 (formalization).
 
 Questions of other reports (Section 11.1). These are recorded here; the
 other reports were not edited by these merges (the quotient report received a
@@ -1259,7 +1614,7 @@ Appendix A.3 records these.
   multiplier and fraction field, and this report's automorphism rigidity. Their
   claims that no report proves automatic strongness, scalar detection or
   coefficient-moving embeddings are still true. The two wrong statements in their
-  delivered audits are listed above ("Eleven sources, one report").
+  delivered audits are listed above ("Fourteen sources, one report").
 - **Checked true:**
   - "the catalogue lists 51 reports", at the pins;
   - the antecedents in `saut` and `odg` that the sources name;
@@ -1286,6 +1641,19 @@ Appendix A.3 records these.
   the large-cardinal report's first-failure theorems (after Remark 23.3 and
   Questions 32.2 and 32.3). Question 32.3 is marked negative under a measurable
   cardinal; the others stay open. No label or number changed.
+- **Status notes (batch 33).** Question 19.2 is answered by 19: the status after the
+  question, the item in Section 19 ("… are not covered") and the sentence in Section 52.2
+  ("… stay as they were") carry batch-33 notes. The lower bound after Corollary 17.9 and
+  02's sixth non-claim carry notes that 17 answers it for `D_0`. Questions 11.3, 19.3,
+  32.15 and 52.2 and Theorem 7.6 carry notes or pointers from 17–19. No label, number or
+  earlier sentence was removed; the non-claims of 02 and 18 are kept as source records with
+  a status note (Appendix B).
+- **17's, 18's and 19's statements (batch 33).** Their pins and their accounts of this report
+  are accurate at their pins (17 and 18: eight-source text; 19: nine-source text); the
+  catalogue listed 61 reports at both pins; "left-orderable" occurs in no other report of the
+  collection; 17's build-record hashes match. 19's quartic formula was new at its pin and is
+  16's at the merge (printed once, Corollary 72.2). No mathematical error was found in 17, 18
+  or 19.
 
 ## Relation to the neighbouring reports
 
@@ -1294,13 +1662,19 @@ Appendix A.3 records these.
     this report cites about what `Oz` remembers.
   - This report adds the automorphisms and the nondefinability, and records
     negative information for `odg:def:q:realform`.
+  - Its global monomial clearing `odg:thm:fractions` and `⋂ nOz = Π`
+    (`odg:eq:divkernel`) are the inputs that sources 17, 18 and 19 reprove; they are cited
+    in Parts VII–IX. The ideal identity is what makes every derivation of `Oz` integrate
+    (Theorem 67.1).
 - [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/)
   (`osq:`).
   - Its `osq:q:invisible` is partly answered: the second clause by Corollary 24.4
     (from 12 and 13, and again from 14's factorization and automatic
     strongness), the first clause not. Since batch 31 the quotient report
     records this in its status of the question.
-  - Its `osq:prop:classder` derivations are Part II's `D_b`.
+  - Its `osq:prop:classder` derivations are Part II's `D_b`; they are also 17's `D_0` and
+    19's `D_η` (Parts VII and IX), whose fresh-direction choice (Lemma 73.1) shows that no
+    set of parameters defines the coefficients in `Oz[[s]]`.
   - Its `osq:thm:derivations` (derivations into set-sized modules vanish) is
     consistent with them.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
@@ -1317,6 +1691,11 @@ Appendix A.3 records these.
     `2^𝔠` pairwise nonconjugate ones (`saut:fs:thm:large-family`); notes after
     Corollary 30.5 and Questions 32.1 and 32.13. Questions 32.1 and 32.13 stay
     open.
+  - Part VIII (18) uses its centralizer decomposition `saut:thm:axis` (Lemma 65.2, with a
+    ring clause for `Oz[i]`), its torsion theorem `saut:thm:torsion` (every nonidentity
+    automorphism of `Oz` has infinite order, Corollary 63.2) and its phase twists
+    `saut:thm:phase` (18's twist is `P_{−2π}`, Proposition 65.5); 18's conjugation-compatible
+    group classification (Theorem 60.4) is new relative to it.
 - [`exponential-automorphism-rigidity`](../exponential-automorphism-rigidity/).
   Every exponential 1-automorphism of `No` is the identity, so the shears are
   not exponential.
@@ -1338,7 +1717,9 @@ Appendix A.3 records these.
   adjoints of Section 25 are `k`-linear scalar maps for the pairing `ct(xy)`, a
   different convention. No exhaustive non-overlap is claimed.
 - [`independent-surreal-copies`](../independent-surreal-copies/) (`isc:`;
-  batch 31). Its monomial lifts are the maps `J_{h,id}` of Theorem 26.3.
+  batch 31). Its copies lie inside `No`, whereas Part VII's Taylor embeddings land in an
+  external formal Laurent field; neither construction substitutes for the other (17).
+  Its monomial lifts are the maps `J_{h,id}` of Theorem 26.3.
   `isc:cor:parameters` extends the fixing clause of Theorem 29.6 to an
   `On`-indexed family whose pairwise intersection is exactly the full Hahn
   field `R((t^H))` on the rational span `H` of the supports of `A`, jointly
@@ -1375,10 +1756,11 @@ Appendix A.3 records these.
 
 ## What was run
 
-For the merges all eleven suites were rerun on copies, with Python 3.14.4 and
+For the merges all fourteen suites were rerun on copies, with Python 3.14.4 and
 SymPy 1.14.0 (10's for the batch-28 addition, 11's, 12's and 13's for the
 batch-30 addition, 14's for the batch-31 addition, 15's and 16's for the batch-32
-additions). Each reproduced its recorded result:
+additions, 17's, 18's and 19's for the batch-33 additions). Each reproduced its recorded
+result:
 
 | Suite | Result |
 |---|---|
@@ -1393,6 +1775,9 @@ additions). Each reproduced its recorded result:
 | 14 | four groups, all `passed`: binomial identities to degree 20 for 31 rational parameters (961 multiplication and 31 inverse cases), an induced matching of size 64 on a 256-row banded prefix, 100 adjoint trials with 13 source and 9 target exponents (seed 20260923), cancellation prefixes for 1, 2, 5, 16 and 64 pairs; the written file and the printed report are identical to the shipped record up to line endings |
 | 15 | 27,139 assertions in 14 categories (pairing 700, coefficient extraction 1,431, disjoint rows 3,800, sparse detector interpolation 4,000, cancellation boundary 198, monomial transport 1,050, rank-two Vandermonde 3,000 and inverse 3,000, order reflection 3,003, negative interval 3,081, fixed product 3,081, bounded increasing support 248, valuation non-escape 248, cyclic remainder 299), seed 20260923, `passed`; the written record is identical to the shipped one |
 | 16 | 1,314 checks in 12 categories, seed 20260923, `PASS`; the written record differs from the shipped one only in `python` (3.14.4 against 3.13.5) and `elapsed_seconds` |
+| 17 | 30,900 assertions in 24 groups (SymPy 1.14.0, about 22 s), `passed`; the record written with `--output` differs from the shipped one only in `python_version` (3.14.4 against 3.13.5), up to line endings |
+| 18 | 11,330 assertions in 19 categories, seed 20260923, `PASS` (about 1 s); the record written with `--output` is identical to the shipped one up to line endings |
+| 19 | 1,576 checks in 17 groups, seed 20260923, `passed` (about 2 s); the record written with `--output` is identical to the shipped one up to line endings |
 
 The placement dossiers ran further independent checks, which are not shipped:
 
@@ -1414,8 +1799,9 @@ The build uses standard packages only and gives no errors, warnings,
 overfull or underfull boxes, or undefined references. Build in a scratch
 directory; the auxiliary files are not kept here.
 
-Ten of the shipped scripts can write files (nine check scripts and 16's build
-script), so rerun the checks on a copy, outside
+Thirteen of the shipped scripts can write files (twelve check scripts and 16's build
+script; 19's `build.sh` creates two empty directories before failing, and 17's Makefile
+would rebuild this report in place), so rerun the checks on a copy, outside
 this directory, and pass `--output` where it is shown:
 
 ```
@@ -1430,6 +1816,9 @@ python 12-automatic-strongness-verify.py --output rerun-12.json
 python 13-omnific-isomorphisms-verify.py --output rerun-13.json    # --output is required, see below
 python 15-topological-collapse-verify.py --output rerun-15.json    # standard library
 python 16-coefficient-recovery-verify.py --output rerun-16.json    # standard library
+python 17-formal-orbit-fields-verify.py --output rerun-17.json     # needs sympy==1.14.0; about 22 s
+python 18-exact-symmetries-verify.py --output rerun-18.json        # standard library
+python 19-formal-symmetry-verify.py --output rerun-19.json         # --output is required, see below
 ```
 
 Do not run `16-coefficient-recovery-build.py`: it is 16's delivered build script and
@@ -1473,14 +1862,30 @@ The scripts write as follows:
   create an unprefixed `data/verification.json` here (not overwriting
   `data/14-automatic-summability-verification.json`). On Windows the written file
   has CRLF line endings; it matches the shipped record up to line endings.
+- 17's script writes `--output`, by default `verification.json` in the **current working
+  directory**, and prints its report.
+- 18's script writes `verification.json` next to itself unless `--output` is given; run in
+  place it would create `code/verification.json`.
+- 19's script writes `../data/verification.json`, relative to its own directory, unless
+  `--output` is given; run in place it would create an unprefixed `data/verification.json`
+  here (not overwriting `data/19-formal-symmetry-verification.json`), and run from the flat
+  copy above without `--output` it would write into the parent of `$D`. Always pass
+  `--output`.
+- The shipped records of 17, 18 and 19 have LF line endings; the files these scripts write
+  on Windows have CRLF line endings.
 
-The six Makefiles and the build scripts `04-preserving-automorphisms-build.sh`,
-`13-omnific-isomorphisms-build.sh` and `16-coefficient-recovery-build.py` are
-shipped as delivered. They name the manuscripts' own files
-(`omnific_automorphisms.tex`, `surreal_embeddings.tex`,
-`Surreal_Arithmetic_Topological_Collapse.tex`, `article.tex`, `verify.py`,
+The eight Makefiles of 09, 02, 10, 11, 12, 15, 17 and 18 and the build scripts
+`04-preserving-automorphisms-build.sh`, `13-omnific-isomorphisms-build.sh`,
+`16-coefficient-recovery-build.py`, `18-exact-symmetries-build.sh` and
+`19-formal-symmetry-build.sh` are shipped as delivered. They name the manuscripts' own
+files (`omnific_automorphisms.tex`, `surreal_embeddings.tex`,
+`Surreal_Arithmetic_Topological_Collapse.tex`, `article.tex`, `verify.py`, `build.sh`,
 `verify_finite_identities.py`, `verify_finite_models.py`, `code/verify.py`), which
-are not present here under those names, so they do not run as-is. The `clean` targets of
+are not present here under those names, so they do not run as-is. Do not run them here:
+17's Makefile would run `latexmk` on this report's `article.tex` in place; 18's `build.sh`
+stops at its first step, and the `clean` target of its Makefile deletes `article.*`
+auxiliary files in the working directory; 19's `build.sh` creates `code/build/` and
+`code/data/` and then fails on the absent `code/code/verify.py`. The `clean` targets of
 `10-support-cut-Makefile` and `12-automatic-strongness-Makefile` delete
 auxiliary files named `article.*` in the working directory; do not use them
 here. 13's `build.sh` expects its delivered layout (`code/verify.py` and
