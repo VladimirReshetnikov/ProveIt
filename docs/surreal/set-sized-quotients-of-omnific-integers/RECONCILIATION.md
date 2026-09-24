@@ -460,3 +460,25 @@ checks, as does whitespace. No Lean or verifier source changed. Finite
 verification programs were not rerun as evidence for the cardinal arguments;
 the previous 4,556-job build and 16,010-declaration axiom audit remain the
 Lean baseline for this documentation-only change.
+
+### Synchronization after the countable-support model review
+
+Merged `b22c26d`, including `b528168`, which adds the ordinary Pell growth
+and parity lemmas and the six-witness real quartic definition. Compared
+`odg:lem:pellsequence`, `odg:eq:pellmod8`, `odg:thm:standarddef`,
+`odg:eq:standardsystem`, `odg:eq:standardquartic` and the subsequent vector
+extension with the incoming declarations. The proof applies to the actual
+omnific carrier, bounds each input and square witness by an ordinary Pell
+coordinate, and proves all witnesses ordinary. The scalar polynomial has
+exact total degree four; the vector formula keeps six witnesses for every
+finite length, including zero. The distinct five-witness three-square guard
+and source 07's alternative squared-coordinate quartic remain pending, as
+the updated ledger states.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes with 4,560 jobs and an
+axiom audit of 16,059 declarations, using only `propext`, `Classical.choice`
+and `Quot.sound`. All 4,626 indexed statements in 63 reports, 5,202 source
+references, 1,770 local Markdown destinations across 226 files and whitespace
+checks pass. The merged changes do not touch the article or catalogue
+sources/PDFs, preserving their clean three-pass builds. This synchronization
+adds no Lean proof of the countable-support cardinal model reviewed above.

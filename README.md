@@ -370,6 +370,12 @@ under constant extraction. The checked examples include a witness for
 `1+i` and the absence of any witness for `ω+i`. In the full surreal and
 surcomplex fields the predicate holds everywhere, so the ring restriction
 is essential.
+The real omnific ring now has a proved quartic definition of ordinary integers
+with six witnesses: a Pell pair and four squares. The same six witnesses
+define ordinary integer vectors of any finite length, and every coordinate
+of every solution is proved ordinary. The polynomial has total degree exactly
+four; Pell growth and Mathlib's four-square theorem construct its witnesses.
+The five-witness version using the three-square theorem remains pending.
 The real omnific ring also has the proved single quintic definition with
 seven witnesses, with total degree exactly five. Its Gaussian failure is
 checked on the actual nonconstant element `ω`. Any definition of the
