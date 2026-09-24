@@ -499,6 +499,10 @@ The natural value group is now constructed as the native quotient of
 nonzero actual surreals by finite units. Its ordered group structure and
 the test `v(x) ≥ v(y)` exactly when `x/y` is finite are proved, with an
 external identification by negative leading exponents.
+Every automorphism of the actual omnific ring now extends uniquely to the
+surreal field by its fraction formula. The extension preserves order, fixes
+each ordinary real number, preserves finite elements and infinitesimals,
+and commutes with standard part on finite inputs.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
