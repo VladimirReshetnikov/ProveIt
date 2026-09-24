@@ -11424,6 +11424,13 @@ contributions at each exponent, gives
 this is membership in the principal ideal, not only in its radical. If $0\le b\le Na$, then $\omega^{Na-b}\in A$ and
 $q_a(\omega^b)\,(-1)^Nq_a(\omega^{Na-b})=(-1)^Nq_a(\omega^a)^N=1$. A unit of a nonzero ring is not zero, and every proper quotient of $\Qa^k_a$ keeps
 both the zeros of (i) and the inverse equations of (ii), which gives \eqref{osq:cr:eq:exactmembership}.
+The two cases include $b=0$ and the endpoint $b=Na$:
+the complementary monomial then has exponent $Na$ or $0$, respectively,
+and lies in $A$ in either case. The inverse does not depend on the
+chosen bound. If $N'\ge N$, the factorization
+$q_a(\omega^{N'a-b})=q_a(\omega^{Na-b})(-1)^{N'-N}$
+gives $(-1)^{N'}q_a(\omega^{N'a-b})
+=(-1)^Nq_a(\omega^{Na-b})$.
 \end{proof}
 
 \begin{remark}[A second route through the localization \merge]\label{osq:cr:rem:cutofflocal}
@@ -11458,7 +11465,34 @@ and every exponent that can occur is $g-(n+1)a$ with $a\ll g$, which is positive
 multiplicative on nonnegative supports, with the stated kernel and image. It fixes $1+\omega^a$ and induces the map \eqref{osq:cr:eq:truncatequotient},
 which is surjective, and injective because $\Pi_k^{\gg a}$ is already in the binomial ideal: if $x=(1+\omega^a)y$ is supported in
 $\operatorname{cvx}(\Z a)$, then $x=\operatorname{tr}_a(x)=(1+\omega^a)\operatorname{tr}_a(y)$.
+The division argument applies to the whole series at once, not by
+assuming that an arbitrary ideal is closed under strong sums of its
+elements. To check its Hahn product, the support of $s$ and the
+countable support of the geometric inverse lie in one set-generated
+ordered exponent group. The usual Hahn product there has reverse
+well-ordered support and finitely many pairs contributing to each
+coefficient. Returning to the ambient field does not change it.
+For the induced map's kernel, if
+$\operatorname{tr}_a(x)=(1+\omega^a)y$ with $y$ in the truncated ring,
+then $x-(1+\omega^a)y\in\Pi_k^{\gg a}\subseteq(1+\omega^a)A$.
+This proves injectivity in the direction of the displayed quotient map.
 \end{proof}
+
+\paragraph{Division preserves the discarded tail \merge.}
+In fact $\Pi_k^{\gg a}=(1+\omega^a)\Pi_k^{\gg a}$.
+Every exponent $g-(n+1)a$ in the division above still exceeds
+$ma$ for every ordinary $m$: use $g>(m+n+1)a$.
+Multiplication by $1+\omega^a$ also preserves the tail, since
+both $g$ and $g+a$ stay above all ordinary multiples of $a$.
+Thus, writing $B_a=\A_{D,k}(\operatorname{cvx}(\Z a))$ temporarily,
+the additive decompositions are
+\[
+ A=B_a\oplus\Pi_k^{\gg a},\qquad
+ (1+\omega^a)A=(1+\omega^a)B_a\oplus\Pi_k^{\gg a}.
+\]
+These are direct sums of additive groups; $A$ is not being identified
+with a direct product of rings. The tail is an ideal and $B_a$ is a
+subring, with the truncation as a ring retraction.
 
 \begin{remark}[\src{24}]\label{osq:cr:rem:tails}
 The reduction does not replace the exponent group by a set: $\operatorname{cvx}(\Z a)$, and the much smaller $H_a$, are proper classes. Nor does it
@@ -11497,6 +11531,21 @@ of $\No$ (of $\SC$ for $k=\C$) preserves $A$ and induces $\Qa^k_a\cong\Qa^k_b$.
 Multiplication by the positive surreal $b/a$ is an order-preserving automorphism of the additive exponent group, with inverse multiplication by $a/b$;
 it preserves reverse well-ordering and the finite-decomposition property of Hahn products, positive exponents and the constant coefficient, and it sends
 $1+\omega^a$ to $1+\omega^b$.
+For every set-indexed strongly summable family, the exponent bijection
+preserves both reverse well-ordering of the union of supports and the
+number of contributing terms at each exponent. It therefore preserves
+and reflects strong summability and commutes with the strong sum.
+The quotient maps satisfy the commuting identity
+\[
+ \overline{\operatorname{sc}}_{b/a}\,q_a
+   =q_b\operatorname{sc}_{b/a}.
+\]
+Moreover $(b/a)H_a=H_b$ and
+$(b/a)\operatorname{cvx}(\Z a)=\operatorname{cvx}(\Z b)$,
+so the same map transports the coefficient fields and the discarded
+tails, and sends every $x_n$ at scale $a$ to $x_n$ at scale $b$.
+With the corresponding coefficient-field identification, dyadic
+coordinate labels and point evaluation at a fixed $z\in\Z_2$ agree.
 \end{proof}
 
 This is the standard Hahn rescaling, not a novelty claim; it shows that the monomial cutoff is an invariant of the embedded fibre at a chosen scale,
@@ -11519,6 +11568,10 @@ of $\SC$. No maximal ideal containing $1+\omega^a$ has a set-sized residue field
 $A/M$ is a proper quotient of $\Qa^k_a$. For $k=\R$ it receives the field $\EE_a\subseteq\Qa_a$ of \cref{osq:if:cor:Ea}; for $k=\C$ it receives
 $\FF_a(i)$ by the coefficient embedding of \cref{osq:if:sub:gaussian}. A unital map from a field to a nonzero ring is injective, and $\SC$ embeds in
 $\FF_a(i)$ by \cref{osq:if:thm:compression}. The characteristic is $0$ by \cref{osq:cr:thm:binomialmax}.
+The size conclusion does not require a cardinality assigned to a
+proper class. If the residue field had a set carrier, the inverse
+of the injection on its image would be a class function on a set;
+class replacement would make its domain field a set, a contradiction.
 \end{proof}
 
 24 states the corollary with ``an algebraically closed proper-class Hahn subfield''; the copy of $\SC$ is the merge's addition from 07's compression.
@@ -11549,6 +11602,10 @@ these form a decreasing chain of nonzero idempotents, $e_{r+1,z\bmod2^r}e_{r,z\b
 binary strings, with $e_\varnothing=1$, $e_s=e_{s0}+e_{s1}$, $e_{s0}e_{s1}=0$ and $e_s\ne0$, rooted at the first complex factor in the real case and at the
 scalar field in the Gaussian case. For $\GOz$ the stages are those of \cref{osq:if:thm:complexkernel}, $n=2^r$ with $r\ge0$, and the idempotent of $z$
 at stage $r$ is the indicator of the residue class $z\bmod2^r$; the statements below hold verbatim with this indexing.
+To read the next theorem with a single displayed convention, write
+$e_{r,j}$ for the indicator at binary depth $r-1$ in either case:
+this is real stage $r$ and Gaussian stage $r-1$. Both start with
+$e_{1,0}=1$. This reindexing changes no algebra or branch equation.
 
 \begin{theorem}[Continuum many maximal extensions at a fixed scale \src{24}]\label{osq:cr:thm:cantor}
 In $\mathsf{GBC}$, for each $a>0$ there is a family $(\mathfrak M_{a,z})_{z\in\Z_2}$ of pairwise distinct maximal class ideals of $A$ containing
@@ -11570,9 +11627,74 @@ For $f$ in the Cantor subalgebra \eqref{osq:if:eq:cantor}, factoring through $\Z
 $\mathfrak M_{a,z}$ the idempotent $e_{N+1,z\bmod2^N}$ becomes $1$ and the others, orthogonal to it, become $0$, so $f\equiv c_{z\bmod2^N}=f(z)$. Hence
 the quotient map $\Qa_a\to A/\mathfrak M_{a,z}$ restricts on the Cantor subalgebra to evaluation at $z$ (\cref{osq:if:rem:evaluation}) followed by the
 embedding of $\EE_a$ in the residue field (\cref{osq:cr:cor:properfield}). So with global choice every point evaluation of \cref{osq:if:rem:evaluation}
-extends to a homomorphism of all of $\Qa_a$ onto a field containing $\EE_a$; the extension is not unique or canonical, and its target is not $\EE_a$.
+extends to a homomorphism of all of $\Qa_a$ onto a field containing $\EE_a$.
+The construction does not determine whether that residue field equals
+the embedded core or is abstractly isomorphic to it
+(\cref{osq:cr:q:relative,osq:cr:q:closed}). Nonuniqueness of maximal
+extensions is proved by the additional branch construction below.
 The same holds for $\Qa_a^\C$ with $\FF_a(i)$.
 \end{remark}
+
+\paragraph{Continuum many extensions of each dyadic branch \merge.}
+The three-root construction after \cref{osq:if:cor:boolean} extends
+to a ternary tower, independently of the dyadic tower. To cover the
+real and Gaussian quotients together, use the following local notation:
+\[
+ (\mathbb E,\theta,v_n)=
+ \begin{cases}
+  (\EE_a,\pi/2,x_{2n}),&k=\R,\\
+  (\FF_a(i),\pi,q_a(\omega^{a/n})),&k=\C.
+ \end{cases}
+\]
+In the real case $i=x_2$ as before; in the Gaussian case it is the
+coefficient imaginary unit. For every ordinary $n\ge1$, the exact
+kernel gives
+\[
+ \mathbb E[v_n]\cong\mathbb E^{\Z/n\Z},\qquad
+ \rho_{n,j}=\exp\bigl(i(\theta+2\pi j)/n\bigr)
+ \quad(j\bmod n),
+\]
+by evaluation at these ordinary complex roots. The real assertion is
+the general stage calculation following \cref{osq:if:cor:boolean};
+the Gaussian assertion is \cref{osq:if:thm:complexkernel}.
+The inclusions are compatible since $v_n=v_{hn}^{\,h}$ and
+$\rho_{hn,j}^{\,h}=\rho_{n,j\bmod n}$.
+
+Let $\Z_3$ be the ordinary $3$-adic integers. At ternary depth $m\ge0$
+let $t_{m,j}\in\mathbb E[v_{3^m}]$ be the coordinate indicator,
+explicitly
+\[
+ t_{m,j}=\frac1{3^m}\sum_{\ell=0}^{3^m-1}
+       (v_{3^m}/\rho_{3^m,j})^\ell .
+\]
+These indicators split into three at the next depth. Fix
+$(z,w)\in\Z_2\times\Z_3$. In the common stage
+$\mathbb E[v_{2^N3^m}]$, the product
+\[
+ e_{N+1,z\bmod2^N}\,t_{m,w\bmod3^m}
+\]
+is a nonzero coordinate indicator: its coordinate index is the unique
+solution modulo $2^N3^m$ of the two congruences modulo $2^N$ and
+$3^m$, by the ordinary Chinese remainder theorem. Here the binary
+indicators use the common depth convention just specified, including
+the Gaussian reindexing.
+
+The ideal of $\Qa_a^k$ generated by all
+$1-e_{N+1,z\bmod2^N}$ and $1-t_{m,w\bmod3^m}$ is therefore proper.
+Indeed, a finite expression for $1$ would involve finitely many
+depths; multiplying by the displayed nonzero product at the largest
+two depths annihilates its right side. Extend this ideal maximally
+by \cref{osq:cr:thm:krull} and pull it back to $A$.
+For fixed $z$, distinct $w$ give distinct maximal ideals, because at
+some ternary depth their required indicators are orthogonal and
+cannot both become $1$. The construction is uniform in $a,z,w$
+with a fixed global well-order, exactly as in
+\cref{osq:cr:thm:cantor}. Since $|\Z_3|=2^{\aleph_0}$, every
+dyadic point evaluation has at least continuum many maximal kernels
+extending it. This proves nonuniqueness even after all binary branch
+equations are fixed. It does not raise the total same-scale cardinal
+lower bound, since $|\Z_2\times\Z_3|=2^{\aleph_0}$, and it imposes
+no new condition on the residue field over $\mathbb E$.
 
 \begin{theorem}[Ordinal scales and binary branches together \src{24}]\label{osq:cr:thm:twoaxes}
 In $\mathsf{GBC}$ there is a class relation encoding pairwise distinct maximal class ideals $\mathfrak M_{\alpha,z}$ of $A$, $(\alpha,z)\in\On\times\Z_2$,
@@ -11590,6 +11712,15 @@ with $\mathsf f_\alpha\in\mathfrak M_{\alpha,z}$, and with the quotient maps $\v
 Apply \cref{osq:cr:thm:cantor} with $a=\omega^\alpha$. Different branches at one scale give different ideals; at different scales the base ideals are
 comaximal (\cref{osq:cr:cor:comaximal}), so no proper ideal contains both. The pattern \eqref{osq:cr:eq:triangular} is \cref{osq:cr:thm:cutoff} with the
 relation $\omega^{\omega^\beta}=-1$.
+For clarity, the scale in this quotient is $\omega^\beta$ and the
+exponent of the tested monomial is $\omega^\alpha$. If $\alpha<\beta$,
+the bound in \cref{osq:cr:thm:cutoff} may be taken to be $N=1$,
+so an explicit inverse for the lower-scale image is
+\[
+ -\varpi_{\beta,z}\bigl(\omega^{\omega^\beta-\omega^\alpha}\bigr).
+\]
+The exponent is positive; at equal scales the image is $-1$, and at
+higher scales it is zero by $\omega^\beta\ll\omega^\alpha$.
 \end{proof}
 
 \begin{remark}[Lower bounds, not a spectrum \src{24}]\label{osq:cr:rem:lower}
@@ -11631,13 +11762,35 @@ In $\mathsf{GBC}$, every set or class field $\mathbb K$ of characteristic $0$ ha
 set-sized subfield $\mathbb K_0\subseteq\mathbb K$ extends to one of $\mathbb K$.
 \end{theorem}
 \begin{proof}
-Fix a set-like enumeration $(x_\alpha)$ of $\mathbb K$ and build compatible embeddings $e_\alpha:\mathbb K_\alpha\to\SC$ of set-sized subfields, starting
-from the prescribed one (or from the canonical embedding of $\Q$). At a successor stage do nothing if $x_\alpha\in\mathbb K_\alpha$. If $x_\alpha$ is
-algebraic over $\mathbb K_\alpha$, transport its minimal polynomial by $e_\alpha$ and send $x_\alpha$ to the least root in $\SC$ in the global
-well-order; $\SC$ is algebraically closed. If $x_\alpha$ is transcendental, send it to an element of $\SC$ transcendental over $e_\alpha(\mathbb K_\alpha)$:
-the polynomials over a set field form a set, each nonzero one has finitely many roots, and the proper class $\SC$ is not exhausted by this set of
-algebraic elements. At limits take unions; a set ordinal indexes a set of sets, and each $\mathbb K_\alpha(x_\alpha)$ is a set, described by finite
-rational expressions. These are set-valued recursions as above, and the union is the required class embedding.
+Fix a set-like global well-order and the induced enumeration $(x_\alpha)$
+of $\mathbb K$, of set ordinal length if $\mathbb K$ is a set and of
+length $\On$ otherwise. Start with the prescribed embedding of
+$\mathbb K_0$, or the canonical embedding of $\Q$ if none was prescribed.
+Maintain compatible embeddings
+$e_\alpha:\mathbb K_\alpha\to\SC$ of set-sized subfields. At a successor
+stage skip $x_\alpha$ if it is already in $\mathbb K_\alpha$.
+
+If $x_\alpha$ is algebraic over $\mathbb K_\alpha$, transport its monic
+minimal polynomial $p$ through $e_\alpha$. The transported polynomial
+is irreducible over $e_\alpha(\mathbb K_\alpha)$ and has a root in
+$\SC$. Choose its least root in the fixed well-order. Evaluation gives
+an embedding of $\mathbb K_\alpha[T]/(p)$, hence of
+$\mathbb K_\alpha(x_\alpha)$, extending $e_\alpha$.
+If $x_\alpha$ is transcendental, choose the least element of $\SC$
+transcendental over the current image. Such an element exists: the
+nonzero polynomials over that set field form a set, and the root class
+of each is finite, hence a set. Class replacement and union collect all
+these roots into one set, which cannot exhaust $\SC$. Substitution at
+the chosen transcendental extends $e_\alpha$ to the rational-function
+field; nonzero denominators remain nonzero and the map is injective.
+
+At a limit set ordinal take unions. Each successor field is a set,
+since its elements are values of finite rational expressions, and each
+partial embedding is a set. Thus ordinary set-valued recursion with
+class parameters gives a unique construction of every set ordinal
+length. The compatible initial constructions define a class recursion;
+its union exhausts $\mathbb K$ and is the required embedding. No
+proper-class subfield is used as a stage value or as the prescribed base.
 \end{proof}
 
 This is the standard universality argument for an algebraically closed field with more than set-many transcendence resources; 24 includes it so as not to
@@ -11647,9 +11800,19 @@ assume a classification of the residue fields or that they are algebraically clo
 In $\mathsf{GBC}$, every proper-class algebraically closed field of characteristic $0$ is isomorphic, as an abstract class field, to $\SC$.
 \end{corollary}
 \begin{proof}
-Run the construction of \cref{osq:cr:thm:universalfield} back and forth along ordinal enumerations of both fields, alternately putting the next source
-element in the domain and the next target element in the range; both fields are algebraically closed and have elements transcendental over each
-set-sized subfield, every stage is a set partial isomorphism, and the union is bijective.
+Start with the canonical isomorphism of the prime subfields and fix
+ordinal enumerations of both fields. At each successor stage perform
+two extensions: first put the next source element in the domain, using
+the one-element construction of \cref{osq:cr:thm:universalfield}; then
+apply the same construction to the inverse partial isomorphism to put
+the next target element in its range. Skip elements already included.
+Both ambient fields are algebraically closed and, by the root-set
+argument above, have elements transcendental over every set-sized
+subfield. Choose least admissible witnesses throughout. At limit set
+ordinals take unions, so every partial isomorphism remains a set.
+The final class union is injective, exhausts the source by the forth
+steps and exhausts the target by the back steps. It is therefore a
+field isomorphism.
 \end{proof}
 
 This is the class back-and-forth of the surcomplex-automorphism report (\nolinkurl{saut:thm:acfhomogeneity} \cite{RepoSaut}, which extends every isomorphism
@@ -11676,6 +11839,13 @@ $u^2=-1$; prescribe its embedding into $\C\subseteq\SC$ by $u\mapsto i$ and the 
 \cref{osq:cr:thm:universalfield}. Since the class of $r\omega^a$ is the embedded scalar $-r$, all the identities follow.
 \end{proof}
 
+Here the prescribed copy of $\C$ is only a set-sized subfield of the
+residue field. The extension theorem does not prescribe an embedding
+on the entire proper-class field core. Nor does
+\eqref{osq:cr:eq:scalarspecial} evaluate $\operatorname{sp}_a$ at an
+arbitrary real constant in $\Oz$: its argument is the valid omnific
+element $r\omega^a$.
+
 \begin{remark}[What ``residually surcomplex'' means \src{24}]\label{osq:cr:rem:residually}
 The phrase means the separating family of \cref{osq:cr:thm:residually}. It is not residual finiteness, not a representation in a set-indexed product,
 and not a single injective homomorphism with maximal kernel; a product indexed by a proper class of class fields would need further foundations and is
@@ -11687,10 +11857,21 @@ Let $\varphi:A\to\SC$ be a unital ring homomorphism with $\varphi(1+\omega^a)=0$
 family in $A$ to a strongly summable family in $\SC$.
 \end{theorem}
 \begin{proof}
-The family $(\omega^{a/2^n})_{n\ge1}$ is strongly summable: its supports are distinct points of a strictly decreasing sequence. But
-$\varphi(\omega^{a/2^n})^{2^n}=-1$, and $T^{2^n}+1$ splits over the ordinary complex numbers, so every $\varphi(\omega^{a/2^n})$ is a nonzero ordinary
-complex number, with
-support $\{0\}$. The exponent $0$ then occurs in infinitely many members of the image family.
+The family $(\omega^{a/2^n})_{n\ge1}$ is strongly summable. Its union of
+supports is a set and is reverse well-ordered: every nonempty subset
+has a largest exponent, corresponding to the least index in that
+subset of positive integers. Each exponent occurs in just one member.
+All exponents are positive, so its strong sum also belongs to $A$.
+
+Put $z_n=\varphi(\omega^{a/2^n})$. Multiplicativity and unitality give
+$z_n^{2^n}=-1$. The polynomial $T^{2^n}+1$ splits into linear factors
+over the ordinary $\C\subseteq\SC$. Since the target is a field,
+one factor vanishes at $z_n$, so $z_n$ is an ordinary complex root,
+necessarily nonzero. This uses no assumption that $\varphi$ fixes
+complex coefficients in its domain: the polynomial has integer
+coefficients, and its factorization is taken in the target.
+Every $z_n$ consequently has support $\{0\}$, violating the finite
+contribution condition at exponent $0$ for the image family.
 \end{proof}
 
 No sum in the source is missing, since $\sum_{n\ge1}\omega^{a/2^n}$ is a valid omnific integer; its image is simply not the strong sum of the images. So the specializations
@@ -11723,20 +11904,66 @@ None of the characteristic-zero primes in this list is maximal.
 \end{theorem}
 \begin{proof}
 If $P$ meets $D$ nontrivially, $\Pi_k\subseteq P$ (\cref{osq:prop:common}), $P\cap D$ is a nonzero prime of $D$ and $P=\ct^{-1}(P\cap D)=(P\cap D)A$;
-such ideals have both closure properties, their only condition being divisibility of the constant term. Suppose $P\cap D=0$. Term-closedness gives
+such ideals have both closure properties, their only condition being divisibility of the constant term. Indeed, every positive term lies in
+$\Pi_k$, and the constant coefficient of a strongly summable family
+receives only finitely many nonzero contributions, each in $P\cap D$.
+Suppose $P\cap D=0$. Term-closedness gives
 $P\subseteq\Pi_k$. For $g>0$ and $r\in k^\times$ the identities $(r\omega^g)^2=\omega^g(r^2\omega^g)$ and $(\omega^g)^2=(r\omega^g)(r^{-1}\omega^g)$, all of
 whose factors lie in $A$, and primality give
 \begin{equation}\label{osq:cr:eq:coeffindependence}
  r\omega^g\in P\iff\omega^g\in P .
 \end{equation}
+For example, $r\omega^g\in P$ puts $(\omega^g)^2$ in $P$ by the
+second identity, and primality puts $\omega^g$ in $P$; the first identity
+gives the reverse implication in the same way. We do not multiply by
+the constant $r^{-1}$ inside $A$, where that constant need not lie.
 Let $F=\{g\ge0:\omega^g\notin P\}$. It contains $0$, is closed under addition by primality, and is downward closed: if $0\le h\le g\in F$ and
 $\omega^h\in P$, then $\omega^g=\omega^h\omega^{g-h}\in P$. So $H=F-F$ is a convex subgroup with $H\cap\No_{\ge0}=F$ (a nonnegative difference $f_1-f_2$ is
 at most $f_1\in F$). Term-closedness and \eqref{osq:cr:eq:coeffindependence} make every support in $P$ avoid $H$; conversely, if $s\in\Pi_k$ has support
 avoiding $H$, its terms lie in $P$ by \eqref{osq:cr:eq:coeffindependence}, they form a strongly summable set-indexed family, and $s\in P$. So
 $P=\Pi_k^{>H}$. Conversely, deleting the exponents outside $H$ is, as in \cref{osq:cr:prop:tails}, a ring retraction $A\to D\oplus\Pi_k(H)$ onto a domain
-with kernel $\Pi_k^{>H}$, so $\Pi_k^{>H}$ is prime, and both closure properties are clear from the support description. $H$ is recovered from the
+with kernel $\Pi_k^{>H}$, so $\Pi_k^{>H}$ is prime. To check the
+retraction on products, use nonnegativity of the supports: if $g,h\ge0$
+and $g+h\in H$, convexity puts both $g$ and $h$ in $H$. Thus no
+discarded term can contribute to a retained coefficient. Deleting
+exponents also preserves strong summability and commutes with its sums;
+the kernel is strongly sum-closed and is term-closed by its support
+description. $H$ is recovered from the
 nonnegative monomials outside the ideal. Finally $\Pi_k^{>H}\subseteq\Pi_k$, which is proper and not maximal since $A/\Pi_k\cong D$.
 \end{proof}
+
+\paragraph{A cofinality condition makes strong sum-closure redundant \merge.}
+Let $P$ be a term-closed prime with $P\cap D=0$. The part of the proof
+above preceding the use of strong sum-closure already constructs the
+unique convex subgroup
+\[
+ F=\{g\ge0:\omega^g\notin P\},\qquad H=F-F,
+ \qquad P\subseteq\Pi_k^{>H}.
+\]
+Suppose $H_{\ge0}$ has a set-sized cofinal subset $C$, and include $0$
+in $C$. Then $P=\Pi_k^{>H}$ without assuming strong sum-closure.
+Indeed, for $0\ne s\in\Pi_k^{>H}$ put $S=\supp s$. Both $C$ and $S$
+are sets and every member of $C$ is below every member of $S$.
+The surreal cut $h=\{C\mid S\}$ therefore satisfies $C<h<S$.
+Cofinality gives $h>H$, so $h>0$ and $\omega^h\in P$.
+Every exponent of $s/\omega^h$ is positive, whence
+$s/\omega^h\in\Pi_k\subseteq A$ and
+\[
+ s=\omega^h\,(s/\omega^h)\in P.
+\]
+This uses a single ideal multiplication, not closure under infinite
+sums. The support description now implies both closure properties.
+
+The condition holds for $H=\{0\}$ and for
+$H=\operatorname{cvx}(\Z a)$, $a>0$, using respectively $C=\{0\}$
+and $C=\{na:n\ge0\}$. The endpoint $H=\No$ separately forces $P=0$.
+The hypothesis is a restriction: the smaller-scale subgroup $H_a$
+has no set-sized cofinal subset. For any set $C\subseteq(H_a)_{\ge0}$,
+the cut $\{C\cup\{0\}\mid\{a/n:n\ge1\}\}$ lies in $H_a$ and is
+strictly above $C$. Thus $H_a$ must not be confused with
+$\operatorname{cvx}(\Z a)$. This answers the redundancy question under
+a cofinality hypothesis, leaving the unrestricted classification in
+\cref{osq:cr:q:support} open.
 
 \begin{corollary}[A maximal binomial kernel is not a support ideal \src{24}]\label{osq:cr:cor:notsupport}
 A maximal ideal containing $1+\omega^a$ is not term-closed: it contains the two-term series $1+\omega^a$ and neither of its terms. Its monomials are
@@ -18075,6 +18302,12 @@ built in $\Qa_a$, and which compatible finite-algebra specializations extend wit
 \end{question}
 \emph{Status.} Open. The known lower bound at a fixed scale is $2^{\aleph_0}$ (\cref{osq:cr:thm:cantor}). 24's comments: the ordinal family changes the
 embedded scale and rescaling identifies the abstract fibres, so it cannot be counted again; new independent equations inside one fibre are needed.
+The ternary construction after \cref{osq:cr:rem:evaluation} now gives
+continuum many distinct maximal extensions of every fixed dyadic
+branch, for both coefficient pairs. This supplies additional compatible
+finite-algebra specializations, but still only a continuum lower bound
+in total and no prescribed residue-field structure. The larger-cardinal
+and residue-field clauses of the question remain open.
 For comparison, 20's fresh-scale splitting (\cref{osq:bb:thm:uniform,osq:bb:thm:free}) builds free Boolean families of every set size in the
 normalization fibre $\NN/\Pi\NN$, a different ring \merge.
 
@@ -18085,6 +18318,14 @@ one closure property force the other under a natural additional algebraic or def
 \emph{Status.} Open. 24's comments: the proof of \cref{osq:cr:thm:termprimes} uses the two properties at different points, one to extract a monomial
 support restriction and the other to rebuild a series from its terms; a counterexample or a redundancy theorem would locate the reach of coefficientwise
 methods, and neither implication should be assumed.
+The consequence following \cref{osq:cr:thm:termprimes} now proves one
+conditional redundancy: for a term-closed prime meeting $D$ only in $0$,
+if the recovered convex subgroup has a set-sized cofinal subset, then
+the prime is $\Pi_k^{>H}$ and is automatically strongly sum-closed.
+This includes $H=\{0\}$ and the principal convex subgroups
+$\operatorname{cvx}(\Z a)$. The arithmetic case already has both
+closures. Neither the general term-closed classification nor the
+reverse implication from strong sum-closure is settled \merge.
 
 \begin{question}[Formal verification at the right foundational level; 24]\label{osq:cr:q:formal}
 Can the finite-algebra and support-identity package be formalized over the repository's constructed surreal field, with the class-choice theorem

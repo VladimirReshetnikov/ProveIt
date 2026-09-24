@@ -2974,3 +2974,211 @@ dab0f4259b7cc0501408b9705b5d4c72c7642aed after committing the review;
 there were no incoming commits and the merge was already up to date.
 No Lean rebuild was required for this documentation-only change. The
 4,955-job build and 18,066-declaration audit above remain the baseline.
+
+### Monomial scales and independent ternary branching (2026-09-24)
+
+Reviewed the seven standard results from `osq:cr:thm:cutoff` through
+`osq:cr:thm:twoaxes`, plus the localization route, the omega fibre example,
+tail and degree remarks, field-core comparison, point evaluation and the
+lower-bound scope. This completes the first sixteen standard class-residue
+results. Separation, field realization, support-prime classification and
+full source reconciliation remain pending review.
+
+Made the monomial inverse's endpoints and independence of the chosen
+ordinary bound explicit. Expanded the whole-tail division proof through
+one set-generated exponent group; it does not assume that arbitrary ideals
+are closed under strong sums. Supplied the induced quotient kernel argument
+in its displayed direction. The divisor actually preserves the discarded
+tail: every g-(n+1)a still exceeds every ordinary multiple of a. Hence
+T=(1+omega^a)T for T=Pi_k^(>>a), and both the ring and its binomial ideal
+split additively into the truncated part and T. These are additive direct
+sums, not direct products of rings.
+
+Rescaling preserves and reflects strong summability, commutes with quotient
+maps and transports the small coefficient fields, convex scale groups,
+discarded tails and dyadic coordinate labels. Added the class-replacement
+argument for proper-class residue size. Gave a common binary-depth convention:
+depth N means real stage N+1 and Gaussian stage N. The ordinal triangular
+pattern now includes an explicit inverse at every lower scale.
+
+Corrected `osq:cr:rem:evaluation`: its former assertion that the target is
+not E_a was stronger than the proof and conflicts with the open core-equality
+question. The conclusion is a residue field containing the core; equality
+with that embedded core and abstract isomorphism to it are not established.
+The other 59 numbered remarks, all 66 questions and all 28 examples are
+unchanged. Nonuniqueness is now proved by a separate unnumbered consequence.
+
+That consequence gives continuum many maximal extensions of every fixed
+dyadic branch. Use v_n=x_(2n) over E_a for the real quotient, and
+v_n=q_a(omega^(a/n)) over F_a(i) for the Gaussian quotient. Their n-coordinate
+algebras have compatible root labels with angles pi/2 and pi, respectively.
+At binary depth N and ternary depth m, the common stage has 2^N*3^m
+coordinates. The selected binary and ternary indicators intersect in exactly
+one coordinate by coprimality. A finite expression for one from the branch
+relations is killed by this nonzero joint indicator at the largest depths,
+so all relations generate a proper ideal. Global choice extends it maximally,
+uniformly in a,z,w. Distinct 3-adic w give distinct kernels for each fixed
+2-adic z. This proves nonuniqueness with every binary equation fixed, but
+does not increase the total continuum lower bound or impose a residue-field
+structure over the core. Updated `osq:cr:q:branching`'s status accordingly;
+the larger-cardinal and prescribed-residue questions remain open.
+
+Added a reproducible standard-library checker and its recorded JSON for the
+new finite branch formulas. It passes 86,106 exact assertions over F_3457,
+using primitive generator 7, binary depths 0--4 and ternary depths 0--3,
+for both root conventions. It checks root compatibility, Fourier indicators,
+unique joint coordinates and ternary refinement. These finite checks do not
+verify the infinite branch argument, class ideals or global choice. The
+source-24 verifier and its historical record remain unchanged.
+
+Validation: three clean final TeX passes for the 321-page article and 35-page
+catalogue, with no warnings or box diagnostics; inspected all revised
+scale/branch pages, the question status and catalogue. All 418 standard/
+principal statements, 828 labels and 1,656 auxiliary label/number pairs are
+unchanged; only the identified evaluation remark was corrected. All 4,626
+source anchors in 63 reports, 5,222 source-label references and 1,902 local
+Markdown destinations across 226 files pass, together with whitespace checks.
+Updated root README, report guide, shared notation, catalogue and coverage
+scope/anchors. All reviewed class-residue statements and new consequences
+remain Pending in Lean. No Lean source changed; the current baseline is the
+two-thread 4,955-job build and 18,066-declaration axiom audit.
+
+### Number-field detector and graph synchronization (2026-09-24)
+
+Merged origin/main at 44f16b8621f3d49afdc0065a1e7502278457d6ac,
+including 9e7c68d, after the monomial-scale and ternary-branch review.
+Read all six new Lean modules, the dependency-docstring update and coverage
+rows against `odg:def:thm:numberfield` and `odg:def:rem:sigma2`.
+
+The tailored detector obtains ordinary modular values from positive integer
+multiples in every nonzero principal ideal of a number-field subring. With
+any root of the sextic in the larger coefficient field, the existing
+augmentation theorem supplies the exact two-witness nonzero-constant test
+on the full coefficient pullback. This is not extended to arbitrary
+intermediate subrings. The generic augmentation algebra may have zero
+divisors; no unjustified domain assumption is introduced there.
+
+Every ideal contains a tailored value exactly when it escapes the purely
+infinite ideal. Quotient root lifting uses native quotient surjectivity,
+including the zero ring, and makes the purely infinite ideal the greatest
+one with a root-free quotient. Negating the detector supplies the universal
+ideal test and equality of constant terms. Combining it with the verified
+five-witness guard gives the embedded retraction graph and unique output.
+Both quantifier orders are proved algebraically and as literal native ring
+formulas: five existential variables then two universal variables, and the
+reverse. In the reverse direction, the universal pair (0,0) provides guard
+witnesses, so no unjustified interchange of dependent quantifiers is used.
+Native parameter-free definability follows for the ideal, its complement
+and the binary graph.
+
+Together with the prior guard, this completes the mapped number-field
+coefficient theorem under its stated hypotheses. The stronger one-witness
+existential ideal and six-witness existential graph claims of
+`odg:def:rem:numberfieldideal` remain separate. No integrality, finite
+generation, exponent divisibility or rank assumption has been added.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed 4,961 jobs. The axiom
+audit passed 18,156 declarations using only propext, Classical.choice and
+Quot.sound. All 4,626 source anchors in 63 reports, 5,222 source-label
+references and 1,908 local Markdown destinations in 226 files pass, together
+with whitespace checks. Incoming work changes no TeX or PDF, so the final
+three-pass document builds and rendered-page inspections remain applicable.
+The locally reviewed class-residue material remains Pending in Lean.
+
+### Existential number-field definitions: synchronization retry (2026-09-24)
+
+The first push was rejected because origin/main advanced. Fetched and merged
+2796ff22f190afa60ac17fe526ac912255278be4, then read all six new modules
+against `odg:def:rem:numberfieldideal` and checked its revised coverage row.
+This resolves the stronger existential-definition dependency recorded above.
+
+A nonsquare radicand in a containing field excludes nonzero ordinary
+quadratic solutions. With a square root in the larger coefficient field,
+the existing quadratic kernel theorem gives a one-witness definition of the
+purely infinite ideal in the full coefficient pullback. Combining this with
+the tailored coefficient guard yields a six-witness existential graph with
+unique outputs. The literal native formulas use a natural numeral, not a
+parameter naming its square root, and have exact realization and definability
+theorems. A root of the tailored sextic selects p, q or pq, all nonsquare in
+the number field; thus the earlier detector hypothesis supplies existential
+definitions of the ideal, its complement and the graph. Independently, a
+prime nonsquare exists in every number field. No uniform algorithm over
+field presentations is asserted.
+
+The converse boundary clears denominators in the coefficient fraction field:
+when a nonzero radicand is a square there, a nonzero ordinary solution
+produces a false positive in the Hahn ring. This does not require the square
+root to lie in the coefficient ring itself. The existing Z[sqrt(2)] example
+is retained. The statements remain about full coefficient pullbacks, with
+no unsupported identification of a generic Hahn workspace with all surreals.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passed 4,967 jobs;
+the axiom audit passed 18,201 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,222 source-label
+references and 1,914 local Markdown destinations in 226 files pass, with
+whitespace checks. No incoming TeX or PDF changed; the final three-pass
+compilation and page inspections remain valid. The local manuscript
+scale/branch improvements remain Pending in Lean.
+
+### Class-field realizations and support-prime closure (2026-09-24)
+
+Reviewed the final seven standard class-residue results, from
+`osq:cr:thm:separation` through `osq:cr:cor:notsupport`, completing all
+23 standard results of that subsection. The separation witness 1−ωx
+has unit constant term and forces the residue of ω to invert that of x;
+the Jacobson-radical argument itself uses only the unit criterion.
+Arithmetic maximal ideals still intersect in the purely infinite ideal.
+No collection of all proper-class ideals is formed.
+
+Expanded the class-field embedding proof: a transported irreducible
+polynomial gives an injective algebraic extension, while substitution at
+a transcendental preserves nonzero denominators. Root classes of nonzero
+polynomials are finite sets; class replacement over the set of polynomials
+collects the algebraic elements into a set. A proper-class target cannot
+be exhausted by it. Least admissible witnesses in a fixed set-like global
+well-order make every set-valued recursion deterministic. The prescribed
+base and every partial field remain sets. The back-and-forth proof performs
+both extensions at each successor stage, using the inverse map for the
+back step. Cross-checked the credited proofs `saut:thm:acfhomogeneity`
+and `fkc:sb:lem:backforth` in their current sources.
+
+Clarified that residual surcomplexity prescribes only the ordinary
+set-sized complex subfield, not the full proper-class field core, and
+that sp_a(rω^a) evaluates at a valid omnific element. The failure of Hahn
+summability now verifies reverse well-ordering and finite contributions
+in the source. Image monomials are nonzero ordinary complex roots because
+their integer polynomials split in the target field. No assumption that
+the homomorphism fixes complex coefficients is used. Infinitely many
+images contribute at exponent zero, so even summability fails.
+
+The support-prime proof now explains both directions of coefficient
+independence without multiplying by constants absent from the ring.
+Arithmetic closure uses finitely many contributions to the constant term.
+Convex truncation is multiplicative because nonnegative exponents summing
+into the subgroup must both lie there, and it commutes with strong sums.
+
+Added an unnumbered partial answer to `osq:cr:q:support`. For a term-closed
+prime P meeting D only at zero, recover F={g≥0:ω^g∉P} and H=F−F before
+using strong sum-closure. If H_≥0 has a set-sized cofinal subset C, every
+nonzero series s supported above H admits the surreal cut h={C|supp(s)}
+(after including zero in C). Then h>H, ω^h lies in P, and s/ω^h has strictly
+positive support. A single ideal multiplication gives s∈P. Consequently
+P=Π_k^(>H), automatically strongly sum-closed. This covers H=0 and every
+principal convex subgroup cvx(ℤa); H=No separately forces P=0. The condition
+is substantive: for any set C⊆(H_a)_≥0, the cut {C∪{0}|{a/n:n≥1}} belongs
+to H_a above C, so the smaller-scale H_a has no set-sized cofinal subset.
+The unrestricted classification and the reverse closure implication remain
+open. Neither this consequence nor the source class-residue results is
+claimed formalized in Lean.
+
+Updated the root and report READMEs, shared notation, catalogue, coverage
+narrative and all shifted source anchors. Validation: three final TeX passes
+for the article (322 pages) and catalogue (35 pages), with no final log
+diagnostics. Inspected article PDF pages 180–183 and 306 and catalogue page
+12. All 418 result environments, 828 labels, 1,656 AUX numbering fields,
+66 questions, 60 remarks and 28 examples are unchanged. All 4,626 source
+anchors in 63 reports, 5,223 source-label references and 1,914 local Markdown
+destinations in 226 files pass, with whitespace checks. Historical source
+verification records and scripts are unchanged; finite computations do not
+certify these class and support arguments. No Lean implementation changed
+in this documentation pass. Full source reconciliation remains pending.

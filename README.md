@@ -356,9 +356,18 @@ existence: global choice gives characteristic-zero maximal class quotients
 above each binomial. Conversely, maximal-ideal existence for all class
 rings implies global choice, already for class domains of characteristic
 two. The proof uses finite witnesses and set-valued recursion, with no
-class of all class ideals. These are manuscript proofs, pending in Lean;
-the later monomial and residue classifications and full source
-reconciliation remain pending review.
+class of all class ideals. The monomial cutoff, tail truncation and
+scale/branch families are reviewed too. An independent ternary tower gives
+continuum many maximal extensions of every fixed dyadic branch, even
+after all its binary choices are fixed. This still gives only a continuum
+total lower bound at one scale. The remaining class-residue proofs are
+now reviewed: characteristic-zero maximal quotients separate points and
+embed in `No[i]`, while binomial specializations fail even to preserve
+Hahn summability. In characteristic zero, term-closed, strongly sum-closed
+primes have an exact convex-subgroup classification. A new consequence removes the second
+closure hypothesis when the associated subgroup has a set-sized cofinal
+subset, including every principal convex subgroup. These are manuscript
+proofs, pending in Lean; full source reconciliation remains pending review.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
