@@ -865,3 +865,6 @@ import Surreal.Algebra.CoefficientPullbackIntegrality
 import Surreal.Algebra.GaussianIntegrality
 import Surreal.Foundations.OmnificIntegralSlices
 import Surreal.Surcomplex.GaussianIntegralSlices
+import Surreal.Surcomplex.GaussianNormalizationEmbedding
+import Surreal.Surcomplex.GaussianNormalizationDensity
+import Surreal.Surcomplex.GaussianNormalization
