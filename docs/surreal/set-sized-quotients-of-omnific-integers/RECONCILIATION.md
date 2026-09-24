@@ -987,3 +987,26 @@ and 1,799 local Markdown destinations across 226 files pass. Whitespace
 validation passes. No Lean or verifier source changed; the previous
 two-thread 4,587-job build and 16,337-declaration axiom audit remain the
 Lean baseline for this documentation-only pass.
+
+## Synchronization of the detector witness support and degree proofs
+
+Merged 6d969c5, including a1efe7f, and checked its three new modules
+against `odg:def:prop:support` and the preceding explicit formulas.
+Native coefficient-field polynomials produce t of degree one and s of
+degree five, with the factored expression and detector equation proved.
+Root exclusion makes the affine slope nonzero. Augmentation supplies the
+ordinary constant coefficients needed for membership in the full pullback.
+The Hahn support bound uses finite unions of repeated pointwise sumsets,
+including the zeroth sumset {0}; the existing polynomial-degree theorem
+gives exact omega-degrees for nonconstant input. Both real and Gaussian
+Hahn instances include equation, membership, supports and degrees together.
+The ledger correctly leaves actual-carrier transport Pending and adds no
+rank, divisibility or support-cardinality assumption.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,590 jobs, and the
+axiom audit passes for 16,382 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,213 source-label references and 1,802 local Markdown
+destinations across 226 files pass. Whitespace checks pass. The merge
+changes no TeX source; this review's clean 280-page article and 34-page
+catalogue builds remain current.
