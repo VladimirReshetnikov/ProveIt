@@ -577,6 +577,9 @@ import Surreal.Surcomplex.NonnegativeSupportRing
 import Surreal.Foundations.OmnificDegree
 import Surreal.Foundations.OmnificUnits
 import Surreal.Foundations.OmnificFloor
+import Surreal.Foundations.OmnificDivision
+import Surreal.Foundations.OmnificRealScaling
+import Surreal.Foundations.OmnificEuclideanSequence
 import Surreal.Foundations.OmnificPolynomialRoots
 import Surreal.Foundations.OmnificResidues
 import Surreal.Foundations.OmnificIntegerDivisors
@@ -586,6 +589,7 @@ import Surreal.Foundations.OmnificConstantRigidity
 import Surreal.Algebra.HomogeneousScaling
 import Surreal.Foundations.OmnificProjectiveClearing
 import Surreal.Foundations.OmnificSupportBounds
+import Surreal.Foundations.OmnificNoGCD
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
 import Surreal.Algebra.IdempotentAdicCompletion
