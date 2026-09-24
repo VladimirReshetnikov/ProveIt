@@ -528,7 +528,17 @@ theorem: their traces on ordinary integer tuples are computably enumerable,
 both in the actual omnific ring and in every characteristic-zero Hahn
 integer-coefficient pullback. Integer polynomial evaluation is primitive
 recursive, and searching integer witnesses suffices by constant-term
-transfer. The reverse MRDP classification remains pending.
+transfer. Conversely, every integer Diophantine presentation now lifts to
+exactly its standard-supported image by guarding each free coordinate. This
+gives an equivalence of Diophantine definability over the integers and in
+those ambient rings; ordered rings also admit a single sum-of-squares
+equation. The remaining classification step is the reverse integer MRDP
+theorem. A verified bridge now reuses Mathlib's existing natural Diophantine
+results: it converts polynomial functions to native multivariate polynomials,
+removes unused witness variables, and uses four-square certificates to obtain
+integer systems. In particular, Mathlib's Matiyasevic theorem now supplies a
+finite Diophantine definition of the **ordinary natural power graph** on
+standard omnific tuples and in every characteristic-zero Hahn pullback.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

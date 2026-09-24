@@ -3365,3 +3365,42 @@ reports, 5,223 source-label references and 1,922 Markdown destinations in
 226 files pass, with whitespace checks. No historical verification files
 or Lean implementation changed. The new manuscript consequences remain
 Pending in Lean.
+
+### Guarded Diophantine lifting and arithmetic-bridge sync (2026-09-24)
+
+Merged `origin/main` through `2e03d1a` after committing the normalization
+review. Read the nine incoming Lean modules, the proof of
+`odg:def:thm:ce` and its characteristic-zero generalization, and the merged
+README and coverage rows. No incoming manuscript or PDF changes occur.
+
+The finite-system construction adds one disjoint copy of the integer guard
+per free coordinate: exactly 5n witnesses and 3n equations. Original
+auxiliary witnesses remain unrestricted; the retraction transfers their
+solutions once the free tuple is standard. This proves equivalence of
+integer Diophantine definability and definability of its standard-supported
+image in the actual omnific ring and in every characteristic-zero full
+integer Hahn pullback. The sum-of-squares construction combines finite
+systems into one equation over linearly ordered commutative rings,
+including empty equation families, without adding witnesses. It is not
+asserted for unordered coefficient fields.
+
+The arithmetic bridge represents Mathlib polynomial functions by native
+integer multivariate polynomials and restricts arbitrary witness types to
+the finite set of variables used. The exact solution-set equivalence gives
+finite natural systems. Four-square certificates for both free and witness
+coordinates then impose nonnegativity in an integer system. Existing
+Mathlib Diophantine results therefore lift to standard natural tuples;
+in particular, the ordinary natural power graph is Diophantine in the
+omnific and Hahn rings. This concerns ordinary natural exponentiation,
+not surreal exponentiation. The reverse theorem representing every
+computably enumerable set remains pending; the ledger correctly retains
+Prerequisites proved for the full classification.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed all 4,988 jobs, with
+18,399 declarations passing the axiom audit using only propext,
+Classical.choice and Quot.sound. Rechecked 4,626 statement anchors in
+63 reports, 5,223 source-label references and 1,931 Markdown destinations
+in 226 files, with no problems. The normalization article's three-pass
+TeX build, numbering comparison and page inspections remain valid because
+the merge changes no TeX/PDF. Its added finite-support and exact Gaussian
+normalization consequences remain Pending in Lean.
