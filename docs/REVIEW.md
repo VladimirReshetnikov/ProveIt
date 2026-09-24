@@ -6864,3 +6864,29 @@ and Quot.sound. All 4,626 anchors in 63 reports, 5,219 source-label
 references and 1,841 local Markdown destinations in 226 files pass,
 as does whitespace checking. No incoming TeX changed; the reviewed
 302-page article and 34-page catalogue remain current.
+
+## Resynchronization: native arithmetic guards and quantifier translation
+
+The first push was rejected because main advanced. Fetched and merged
+77e2ff4, then reviewed its three modules against `odg:def:cor:arithmetic`
+and the referenced integer and natural guards. Explicit native ring terms
+and formulas encode the three Xi equations with five witnesses and the
+additional four-square condition. Their semantics identify exactly the
+ordinary integer and natural images, without nonlogical parameters.
+
+The generic transformation recursively guards every universal quantifier
+and relabels its variable without capture. Formula induction proves truth
+preservation along a first-order embedding whose image has that guard;
+the embedding need not be elementary. Applied to the actual integer
+inclusion, this gives one syntactic translation valid at every carrier
+universe and for every standard free and bound assignment, including
+integer ring sentences. The README and ledger retain the precise partial
+scope: the dedicated natural-arithmetic translation, encoded computability,
+many-one reduction, undecidability and non-axiomatizability remain Pending.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passes all
+4,631 jobs, and the axiom audit checks 17,116 declarations using only
+propext, Classical.choice and Quot.sound. The final audits pass for all
+4,626 anchors in 63 reports, 5,219 source-label references and 1,844 local
+Markdown destinations in 226 files, plus whitespace. No additional TeX
+changed, so the 302-page article and 34-page catalogue remain current.
