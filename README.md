@@ -623,8 +623,15 @@ cardinality is exactly `|d|²`. Even an arbitrary large quotient has precisely
 the same maps to small rings as its ordinary constant quotient. Inverting
 any purely infinite element rules out every nonzero small unital ring image and every nonzero
 small unital module. This is proved for both actual fields and for native
-localizations, which need not be fields. Conversely, if an ideal does not
-contain the purely infinite ideal, explicit ordinal-indexed monomials provide
+localizations, which need not be fields. The native localizations obtained
+by inverting one positive real monomial now have an exact description in
+both ambient fields: their support is bounded below by minus a natural
+multiple of that monomial's exponent. They contain all ordinary real or
+complex coefficients but miss monomials at infinitely lower exponents.
+Thus they are nonzero domains and proper subrings of the ambient fields,
+but are not fields and are not small in the birthday universe.
+Conversely, if an ideal does not contain the purely infinite ideal, explicit
+ordinal-indexed monomials provide
 arbitrarily large small families of distinct residues.
 The real principal quotient `Oz/(f)` is small exactly when f is a nonzero
 ordinary integer. For a nonconstant generator, all positive monomials below
