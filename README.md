@@ -288,7 +288,39 @@ The Gaussian omnific ring is now constructed from Mathlib's Gaussian integers:
 its two coordinates are precisely real omnific integers. The corresponding
 fiber theorem is proved over this ring too, with ordinary Gaussian points,
 unique purely infinite complex kernel parameters, and disjoint fibers over
-distinct ordinary points.
+distinct ordinary points. The distinction between the two kernels is explicit:
+`X + iY` has zero real kernel and only ordinary real omnific solutions,
+but the Gaussian omnific point `(1 + ω, iω)` solves its level-one equation.
+The converse is proved in both rings: once an ordinary point exists at a
+nonzero level, nonordinary points exist exactly when the relevant real or
+complex kernel is nonzero. Multiplying a nonzero kernel direction by the
+actual monomial ω supplies the nonordinary solution.
+Each nonzero kernel direction also embeds the entire purely infinite ideal
+into the fiber over an ordinary point. These fibers are proved not small in
+the lower universe, the formalization's version of proper-class size. The
+ordinary-point hypothesis is necessary: `X − Y = √2` has a nonzero kernel
+but no solution in either omnific ring.
+
+Binary polynomials with two distinct projective linear factors now have
+proved rigidity at every nonzero constant level; the proof even allows
+nonhomogeneous polynomials with those two divisors. In particular,
+`x² − D y² = c` has exactly its ordinary integer solutions for every
+nonzero integer `D` and `c`, including negative or square `D`. This rules
+out infinite omnific Pell solutions without asserting finiteness of the
+ordinary solution set. The classical case `D = 2, c = 1` now has its
+complete classification: independently signed coordinates of
+`(3 + 2√2)^k` for ordinary natural `k`, using Mathlib’s Pell theory.
+The zero level has a different, now proved classification: for positive
+nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
+with `t` purely infinite. Taking `t = ω` gives an infinite solution.
+The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
+parametrization: `(a + u, b, d − u)` over ordinary solutions
+`(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
+nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
+Power differences `x^m − y^n = c ≠ 0` are also proved to have exactly their
+ordinary integer solutions when both exponents are positive and their gcd
+is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
+the positive-exponent condition must be added to the source remark.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
@@ -352,7 +384,20 @@ by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian varie
 The logarithmic review extends the differential argument to complements of
 simple normal-crossings boundaries, spells out arithmetic descent, and
 corrects the distinction between ring retractions and common-field inclusions.
+The scope review makes the workspace restrictions and two kinds of smooth
+curve fibers explicit, and updates the formalization route to the proved
+arithmetic and linear-algebra prerequisites.
 These geometric and coefficient-algebra results remain pending in Lean.
+A new manuscript in the same report treats monic polynomials with nonzero
+constant discriminant as translates of their constant-term polynomials,
+and studies units of finite étale algebras. That addition awaits independent
+proof review and Lean formalization.
+The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
+now assembles fourteen manuscripts. Its latest parts propose formal orbit
+fields, actions of set-sized left-orderable groups with prescribed fixed
+fields, and formal integration of all omnific derivations. These additions
+await independent proof review and Lean formalization; the surcomplex
+group classification requires compatibility with conjugation.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

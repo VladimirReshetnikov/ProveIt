@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 224 pages
+article.pdf                        the compiled report, 225 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -168,7 +168,7 @@ only on `ℚ`: their common kernel contains nonzero infinitesimals. It
 expands the scale-defect and Tor proofs, distinguishes finite real
 dimension from infinite module length, and checks fixed workspaces and
 Gaussian normalization.
-The rest of the batch-27 material remains unreviewed: the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
+That pass left the batch-27 additions to Section 20, Section 21.3 and Questions 21.12–21.16 unreviewed; the later scope pass below checks their maintained summaries. No review
 covers the full batch-28 material. A further elementary pass reviews
 Sections 16.2–16.3 (Lemmas 16.1–16.3 and Corollary 16.4): rings, Euler
 derivations and their joint constants. It corrects the trivial-group
@@ -216,17 +216,22 @@ algebras, the dual-number defect and the characteristic/discrete-order
 counterexamples. The logarithmic pass now reviews Sections 18.5–18.6,
 including all six standard results, the abstract interface and arithmetic
 descent. It corrects the ring-map explanation and supplies the local
-normal-crossings construction. The pointers added in Sections 6, 7
-and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
-Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
+normal-crossings construction. The scope pass checks Section 20 and
+Sections 21.1–21.6 against the maintained statements and Lean ledger. It
+corrects the smooth-fiber and product-with-affine-line summaries, gives a
+fixed-workspace counterexample to idempotence, and distinguishes vanishing
+contractions from vanishing forms. Pointers in Sections 1, 6, 7 and 14 and
+the neighbouring-report comparisons in Section 21.7 remain to review.
 The elementary pass also covers the corresponding claims credited to
 source C15. Beyond the targeted logarithmic review, remaining batch-29
 source reconciliation includes the parallel proofs, credits and remarks
-added for source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
-appendices. Section 18.6 was appended at the end of Section 18, so no section,
-statement or equation number changed. The later batch-31 material of source C16 remains
-unreviewed: the remaining credits and status notes in Sections 1, 16, 17, 20
-and 21, Questions 21.23–21.30 and the appendix additions. Section 17.6 was appended at the
+added for source C15 in Sections 16–18, and its additions to Section 1 and the appendices; Sections 20–21.6 now
+have the maintained-text scope check described above. Section 18.6 was appended at the end of Section 18, so no section,
+statement or equation number changed. Full comparison with the later batch-31 source C16 still needs its
+remaining credits in Sections 1, 16 and 17 and the appendix additions.
+The maintained Section 20 and Section 21.1–21.6 status notes, including
+Questions 21.23–21.30, are covered by the scope pass; their full parallel-source
+reconciliation is not claimed. Section 17.6 was appended at the
 end of Section 17, after Section 17.5, so again no section, statement or equation number
 changed. The batch-33 material of source C17 is unreviewed: Section 19.4, its pointers and
 credits in Sections 1, 2, 5, 6, 9, 16 and 20, the status notes in Sections 18.5 and 21,
@@ -1431,7 +1436,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 224 pages with no errors, warnings, undefined
+The current build gives 225 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
