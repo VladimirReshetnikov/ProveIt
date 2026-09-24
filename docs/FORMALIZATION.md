@@ -1381,7 +1381,9 @@ change in five existing standard statements. At that merge the inventory contain
 4,309 standard results in 63 reports; the holonomic coefficient-observable
 addition contributed 11 of the 38 results since the preceding scope review.
 The later automorphism integration `19d0b0e` adds 89 more, bringing the
-current total to 4,398. Its new material is also outside the earlier review scopes.
+total at that stage to 4,398. The first four batch-34 companions subsequently bring
+the current total to 4,473; all this new material remains outside the earlier
+review scopes.
 
 ### Synchronization of the September 23 expansions
 

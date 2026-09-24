@@ -112,8 +112,11 @@ assembly alone does not extend any Lean mapping.
 A further universal-symmetries and difference-equations archive arrived in
 `bbe23a3`, and eight more archives arrived in `a4611ad`. All nine are now
 placed in `a7a435f` as additions to six reports, with audits and verification
-code supplied. Main-text integration, indexing and independent review remain
-pending; placement alone does not establish or formalize their claims.
+code supplied. Four companions are now integrated through `5ca4355`: rotation-equivariant
+dynamics, Gaussian omnific real forms, beyond-composita obstructions and
+infinite simultaneous unitary straightening. Their 75 new standard results
+bring the index to 4,473 across 63 reports. The other five companions await
+main-text integration; independent review of all these new claims remains pending.
 A further Hahn-joins archive arrived in `267b910` and awaits placement.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
@@ -204,9 +207,9 @@ not extend their earlier proof-review scope.
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; Part V: compact groups over `No`, whose universal set-sized quotient exists exactly in the semisimple case |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
 | [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Diophantine equations over the omnific integers `Oz`: constant-term transfer, Pell and norm-form rigidity, quartic definitions of `ℤ`, a Diophantine constant term, fractions, and rigidity of smooth curves, abelian varieties and logarithmic complements; fifteen integrated manuscripts; Section 19.4 on constant discriminants and étale units awaits review; earlier proof review through Section 18.6, with the exact scope in its reconciliation |
-| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Every ring map from `Oz` to a set-sized ring factors through the constant term; exact cardinal thresholds, homological dimensions, integer-valued polynomials, and the proper-class Boolean branching of the integral closure; eighteen manuscripts |
+| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Every ring map from `Oz` to a set-sized ring factors through the constant term; exact cardinal thresholds, homological dimensions, integer-valued polynomials, and the proper-class Boolean branching of the integral closure; twenty manuscripts |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Which strong automorphisms of a Hahn field preserve its omnific integers: the convex-support criterion, stabilizers, nondefinable monomials, and polynomial coefficient rigidity; fourteen integrated manuscripts; later parts claim automatic strongness, coefficient recovery, formal orbit fields, left-orderable symmetry groups and integration of derivations, pending independent review |
-| [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; four manuscripts |
+| [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; five manuscripts |
 | [Omnific continued fractions](surreal/omnific-continued-fractions/) | Exact digit fibers as translates of a valuation ideal, full Hahn realizations and periodic algebraic fibers; ordinary finite indices only; proof review pending |
 | [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; two manuscripts |
 | [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings and transcendence gaps; class assumptions and proof review pending |

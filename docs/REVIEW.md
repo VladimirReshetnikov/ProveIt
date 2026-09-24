@@ -4284,6 +4284,41 @@ jobs with an axiom audit of 15,573 declarations. Imported proofs, remaining
 C17 material, appendix foundations and full parallel-source reconciliation
 remain separate work.
 
+## Comparison-review synchronization
+
+The merge through `6bd00c0` adds the exact zero Pell fiber (`0d256fa`),
+the rank-deficient Pell example (`5795c25`) and the real/Gaussian contrast
+for `X + iY` (`91158f6`). Their three Lean modules were read against
+`odg:prop:zeropell`, `odg:dec:ex:rankdeficient` and `odg:dec:rem:kernels`.
+The zero-level theorem retains positive nonsquare `D`; the rank-deficient
+parametrization handles any nonzero ordinary `D` and level. The Cartesian
+form is rigid on real omnific pairs even at level zero, while the Gaussian
+purely infinite line supplies the explicit nonordinary point. The combined
+two-thread build passes 4,488 jobs, and the axiom audit passes 15,602
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+
+Four batch-34 companions add 75 standard results: eighteen in dynamics,
+fourteen in surcomplex real forms, twenty-eight in independent copies and
+fifteen in Hahn–Hilbert geometry. Their earlier mathematical statements
+and labels are retained. Twenty independent-copies statements acquire
+explicit label types, with no mathematical change. This also preserves the
+field-automorphism statements used in the completed comparison above.
+All four additions await independent proof review and Lean formalization;
+their delivered PDFs and finite verification records are retained without
+claiming independent validation of the new mathematics. Five further
+companions from `a7a435f` remain staged.
+
+The ledger's independent inventory passes for 4,473 standard results across
+63 reports, with all 5,027 cited source references and 1,689 local Markdown
+destinations in 225 files resolving. The catalogue is refreshed for the four
+expansions, along with the twenty/fourteen/five manuscript counts of the
+quotient, preserving-automorphism and group reports. Its three-pass build
+has 33 pages without warnings, unresolved references or bad boxes; the
+changed entries are visually inspected. The reviewed Diophantine source
+and its 225-page PDF are unchanged by this merge. These updates preserve
+all pending proof-review, imported-foundation and source-reconciliation
+obligations recorded above.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

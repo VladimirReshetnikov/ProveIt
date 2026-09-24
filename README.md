@@ -319,7 +319,11 @@ nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
-Its class constructions and proofs remain pending in Lean.
+Its class constructions and proofs remain pending in Lean. Its second
+manuscript adds rank tests and differential-transcendence obstructions to
+ordinary composita; these new proofs await independent review. The latest
+dynamics, surcomplex real-form and Hahn–Hilbert additions likewise remain
+outside the earlier review scopes recorded in the ledger.
 
 The expanded [critical-point-defects report](docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
 compares two actions of a large-cardinal embedding on surreal normal forms.
