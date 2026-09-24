@@ -1,28 +1,50 @@
 # Automorphisms of the Surcomplex Numbers
 
-**Real forms, Hahn symmetries, valuation, and rigidity**
-Single-source research report, 22 September 2026. It is built from one
-manuscript, manuscript 07 of batch 20 (archive `surcomplex_automorphisms`),
-pinned to repository commit `dcf8666`, and placed in commit `5fe7f8d`.
-Author line: research article prepared with ChatGPT.
+**Real forms, Hahn symmetries, valuation, rigidity, and finite symmetry descent**
+Two-source research report. Author lines: research article prepared with
+ChatGPT (source 01); research article prepared with ChatGPT for Vladimir
+Reshetnikov (source 02).
 
-This directory holds one manuscript. It is not a merge: there was no second
-source, and nothing was selected out of a larger body of work. Every result,
-proof, example, question and limitation of the manuscript is printed. The
-delivery had no code and no data.
+- **Source 01** (Sections 1–15, Appendices A–C.2): manuscript 07 of batch 20
+  (archive `surcomplex_automorphisms`), 22 September 2026, pinned to
+  repository commit `dcf8666`, placed in commit `5fe7f8d` as a new report.
+- **Source 02** (Sections 16–30, Appendix C.3): manuscript 02 of batch 32
+  (archive `surreal_finite_symmetry_descent`), *Finite Symmetry Descent and
+  Real Forms of Gaussian Omnific Integers*, 23 September 2026, 27 pages,
+  pinned to `343dc2c`, placed in commit `7d04483` as this report's first
+  addition (local number 02; source 01 counts as 01).
+
+Every result, proof, example, question and limitation of both manuscripts is
+printed. A result the collection already proves is printed once, with credit;
+text added when source 02 was merged is marked `[merge]` in the article.
 
 ```
-article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 37 pages (title, two contents pages, 34 numbered pages)
-README.md     this guide
+article.tex                                        the report, standalone LaTeX with an internal bibliography
+article.pdf                                        the compiled report, 68 pages (title, contents i–iii, pages 1–64)
+README.md                                          this guide
+02-finite-symmetry-descent-SOURCE_AND_PROOF_AUDIT.md   source 02: source and proof audit, as delivered
+code/
+  02-finite-symmetry-descent-build.sh              source 02: delivered build helper (do not run in place; see below)
+  02-finite-symmetry-descent-verify_finite.py      source 02: exact finite checks (Python 3.10+, standard library)
+data/
+  02-finite-symmetry-descent-build_validation.json     source 02: the delivery's build and PDF-inspection record
+  02-finite-symmetry-descent-verification.json         source 02: recorded run at order 12, 3,751 assertions
+  02-finite-symmetry-descent-verification_console.txt  source 02: console copy of that run (same bytes)
 ```
 
-Every label in `article.tex` carries the prefix `saut:`. The source's 79 labels
-are kept, unchanged after the prefix, and seven were added
-(`saut:sec:conventions`, `saut:sec:position`, `saut:eq:Lchain`,
+Every label in `article.tex` carries the prefix `saut:`; source 02's material
+uses the sub-prefix `saut:fs:`. Source 01's 86 labels (its 79 plus the 7 added
+at placement: `saut:sec:conventions`, `saut:sec:position`, `saut:eq:Lchain`,
 `saut:sec:nonclaims`, `saut:app:conjugacy`, `saut:app:provenance`,
-`saut:app:pinned`). The delivered PDF is not shipped; `article.pdf` is a build
-of this text.
+`saut:app:pinned`) are all kept, and every one of their numbers is unchanged
+(checked against a build of the previous text). The merge of source 02 added
+83 labels, 169 in all: 82 `saut:fs:` labels (62 of the source's 66, unchanged
+after the prefix, and 20 new) and `saut:app:source02`. Not carried:
+`eq:surreal-hahn` (it is `saut:eq:hahn`, printed once) and the closing labels
+`sec:conclusion`, `app:audit`, `app:formalization` (now inside
+`saut:fs:sec:closing`). The source manuscripts, their PDFs and delivery
+READMEs are not shipped; `article.pdf` is a build of this text. The `02-`
+files are byte-identical to the delivery.
 
 ## Which automorphisms
 
@@ -41,7 +63,10 @@ valuation (`t^g = ω^{-g}`, `v = min supp`). The report never says
 - **exponential automorphism** — an automorphism of `No` commuting with the
   surreal `exp` (`Aut_exp(No)`); there is no surcomplex exponential here;
 - **L-automorphism** — an automorphism of `K` commuting with the logarithmic
-  modulus `L(z) = log|z|` (`Aut_L(K)`, the rigidity report's notation).
+  modulus `L(z) = log|z|` (`Aut_L(K)`, the rigidity report's notation);
+- **(source 02)** `𝒢 = {α ∈ G_v : α(Oz[i]) = Oz[i]}`, the valued automorphisms
+  preserving the Gaussian omnific integers. Source 02 required them to be
+  strong as well; that is automatic (below).
 
 `U ⊆ value-fixing ⊆ G_v ⊆ Aut(K)` and
 `{id, c} = Aut(K/No) ⊆ Aut_L(K) ⊆ G_No ⊆ G_v`, where `G_No` is the setwise
@@ -50,6 +75,8 @@ stabilizer of `No`.
 ## What the report claims
 
 Section and theorem numbers are those of the build.
+
+### Source 01 (Sections 1–15, Appendices A–C.2)
 
 - **Real axis (Theorem 2.2).** For real closed `F`, `Aut(F(i)/F) = {id, c}`,
   and the setwise stabilizer of `F` is the centralizer of `c` and is
@@ -108,21 +135,174 @@ Section and theorem numbers are those of the build.
 - **Questions (Section 14):** the image of exponential automorphisms in the
   value group (the rigidity report's Question 13.1); omega-map compatibility
   (KKS Questions 5.6, 5.7); effective descriptions inside `U`; real-form and
-  continuity classifications. Unresolved in this report.
+  continuity classifications. The real-form classification is now **partly
+  answered** by source 02 (status note in Section 14): the valued,
+  `Oz[i]`-preserving case is classified. The rest is open.
+
+### Source 02 (Sections 16–30)
+
+Notation: `K = k((t^Γ))` a full Hahn field over a set-sized field `k` of
+characteristic 0, `Γ` a set-sized divisible ordered group or `No` (set
+supports), `𝓘` the strictly negative-support part, `ct` the constant
+coefficient, `M_ρ` the coefficientwise lift of `ρ ∈ Aut(k)`.
+
+- **Finite symmetry descent (Theorem 16.1, proved in Section 20).** If a
+  finite group `G` of order `n` acts on `K` by valued automorphisms
+  stabilizing `k` and `𝓘`, then `𝓗(Σ a_γ t^γ) = Σ a_γ m_γ`, with the norm
+  section `m_γ = ∏_{g∈G} g(t^{γ/n})`, is a strong `k`-linear value-fixing
+  automorphism with `𝓗(𝓘) = 𝓘`, `ct ∘ 𝓗 = ct` and `𝓗⁻¹ g 𝓗 = M_{g|_k}`;
+  restriction to `k` is faithful. Proof ingredients: invariant section
+  (Lemma 20.1), diagonal summability (20.2), value-preserving embedding (20.3),
+  surjectivity by spherical completeness (Lemmas 19.1, 19.2) and, for
+  `Γ = No`, by an invariant set-sized exponent closure (Lemma 19.3, no class
+  maximality principle), then `𝓗(𝓘) = 𝓘` and inverse strongness by the
+  pairing test. Fixed fields and support rings (Corollary 20.4).
+- **Pairing test (Lemma 18.1, Theorem 18.2, Corollary 18.3).** A family is
+  Hahn summable iff every `y` has `ct(x_i y) ≠ 0` for finitely many `i`
+  (Baire-category proof); a `k`-linear `ct`-preserving automorphism is strong
+  both ways. These are `opa:as:thm:detect` and `opa:as:thm:ctiso` of the
+  omnific-preserving report, which prove more; printed once, credited.
+- **[merge] Automatic strongness (Proposition 18.5, Remark 22.3).** A valued
+  automorphism stabilizing `k` and `𝓘` satisfies `ct ∘ g = g|_k ∘ ct` and is
+  strong both ways (via `M_ρ` and Corollary 18.3; this is `opa:as:thm:ctiso`).
+  So source 02's strongness hypotheses are redundant, and `𝒢` equals the
+  source's class (`opa:as:thm:gaussian`).
+- **Lifts and torsion (Corollaries 21.1, 21.2).** All finite valued lifts of a
+  coefficient action are conjugate by the kernel `𝓝` (strong `k`-linear
+  value-fixing automorphisms preserving `𝓘`); finite-order elements fixing
+  `k` are trivial; the nonabelian `H¹(Θ, 𝓝)` of a finite group is trivial. No
+  statement about infinite groups.
+- **Reconstruction (Proposition 22.1, Corollary 22.4).** For `𝔬 = Z` or
+  `Z[i]`: `Frac(𝔬 + 𝓘) = K`, `𝓘 = ∩ n(𝔬 + 𝓘)`, `(𝓘 : 𝓘) = k + 𝓘`,
+  `k = (k + 𝓘)^× ∪ {0}`; `R_F ≅ R_{F'}` iff `F ≅ F'`. Prior material
+  (`opa:lem:divisible`, `odg:def:thm:multiplier`, `odg:thm:fractions`),
+  reproved.
+- **Involutions of `No[i]` (Theorem 16.2; Propositions 23.1, 23.2).** Every
+  nonidentity involution `j ∈ 𝒢` restricts to a nonidentity involution `ρ` of
+  `C` and equals `𝓗_j M_ρ 𝓗_j⁻¹` with `𝓗_j(t^γ) = t^{γ/2} j(t^{γ/2})`.
+  Conjugacy in `𝒢` ⇔ conjugacy of `ρ` in `Aut(C)` ⇔ `C^{ρ₁} ≅ C^{ρ₂}` ⇔
+  isomorphic fixed rings. With `F = C^ρ` the fixed pair is
+  `(No_F, R_F) = (F((t^No)), Z + F((t^{No<0})))`; the possible `F` are exactly
+  the real closed fields of transcendence degree `𝔠`. Nontrivial finite
+  subgroups of `𝒢` have order 2 (Corollary 23.3, contained in Theorem 10.1).
+- **Integer parts and the standard form (Theorem 16.3; Lemma 24.2,
+  Theorems 24.3, 24.4, Corollary 24.5, Proposition 24.6).** `R_F` is
+  discretely ordered with least positive element 1; it is an integer part of
+  `No_F` iff `F` is Archimedean, with an explicit floor formula (24.1);
+  `No_F ≅ No` (as plain fields) iff `F ≅ R`, by explicit omitted set cuts; so
+  `j ∈ 𝒢` is conjugate to `c` under some plain field automorphism iff
+  `F ≅ R`, and then already within `𝒢`.
+- **Exactly `2^𝔠` types (Theorem 16.4; Lemma 25.1, Theorem 25.2).** Subfields
+  `F_Y` of `R` algebraic over `Q(B₀ ∪ Y)` give `2^𝔠` coefficientwise
+  involutions with pairwise nonisomorphic fixed fields and integer-part fixed
+  rings, pairwise nonconjugate under all plain field automorphisms;
+  `|Aut(C)| ≤ 2^𝔠` gives the upper bound; `2^𝔠` types are nonstandard.
+- **Examples and boundaries (Sections 26, 27).** Phase characters
+  (`𝓗_j(t^γ) = χ(γ/2) t^γ`; [merge] for `j_θ = P_{2θ}c` the norm conjugator
+  is exactly `P_θ`); a nonlinear two-scale involution on
+  `C((u^Q))((z^Q))` whose norm conjugator differs from the conjugator used to
+  build it; `t ↦ −t` on `k((t))` (divisibility needed); `t ↦ t + t²` on
+  `k(t)` (fullness needed); discreteness does not give floors; wild
+  coefficient actions.
+- **Questions (Section 29).** Question 29.1 (strongness of finite Gaussian
+  symmetries) is **answered** yes by `opa:as:thm:gaussian` (status note). The
+  source's second question (does every automorphism of `Oz[i]` preserve the
+  valuation?) is `opa:as:q:gaussian` of the omnific-preserving report and is
+  printed as a paragraph, not as a new question; open. Questions 29.2–29.9
+  (non-full and bounded-support fields, partial divisibility, infinite
+  groups, added exponential/derivation/simplicity structure, non-Archimedean
+  plain fixed fields, definability of the standard real form, effective
+  inversion, formal verification) are open.
+
+## Source 02: the merge record
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 32, no. 02, `surreal_finite_symmetry_descent`, 27 pp. | `343dc2c` | Sections 16–30, Appendix C.3; the finite verifier and its record |
+
+**Placement.** The source's Sections 1–14 are Sections 16–29; its Section 15
+and Appendices A–B are Section 30. They follow Section 15 (source 01's audit
+and conclusions) and precede the appendices, so no number of source 01
+changes. An unnumbered heading "Addition: finite symmetry descent
+(source 02)" opens them. Numbering map: Theorems 1.1–1.4 → 16.1–16.4;
+Definition 2.1 → 17.1; Lemma 3.1, Theorem 3.2, Corollary 3.3, Remark 3.4 →
+18.1–18.4; Lemmas 4.1–4.3 → 19.1–19.3; Lemmas 5.1–5.3, Corollary 5.4 →
+20.1–20.4; Corollaries 6.1, 6.2 → 21.1, 21.2; Proposition 7.1, Remark 7.2,
+Corollary 7.3 → 22.1, 22.2, 22.4; Propositions 8.1, 8.2, Corollary 8.3 →
+23.1–23.3; Definition 9.1, Lemma 9.2, Theorems 9.3, 9.4, Corollary 9.5,
+Proposition 9.6 → 24.1–24.6; Lemma 10.1, Theorem 10.2, Remark 10.3 →
+25.1–25.3; Example 12.1 → 27.1; Question 14.1 → 29.1; Question 14.2 → the
+paragraph after it; Questions 14.3–14.10 → 29.2–29.9. Proposition 18.5 and
+Remark 22.3 are merge additions.
+
+**Renamed symbols** (table in Section 16.1; no normalization changed). `τ`,
+`τ_g = g|_k` → `ρ`, `ρ_g`; `τ̂` → `M_ρ`; the induced map `u` on `Γ` → `τ`;
+the involution `σ` → `j`; `H`, `H_σ`, `H_a` → `𝓗`, `𝓗_j`, `𝓗_α`; `𝒢` now
+defined without "strong"; `A = Oz[i]` written out; `B = k + 𝓘` → `A_k`; the
+subring `D`, `A_D` → `𝔬`, `A_𝔬`; the closed ball `B(a,r)` → `𝔹(a,r)`;
+`L_F` → `No_F`; cut sets `L, U` → `𝓛, 𝓡`; `E` → `F'`; `E/F` and `E_N` →
+`K₁/K₀`, `Z_N`; `T, T₀, T₁` → `B, B₀, B₁`; `U, F_U, ψ_U, c_U, τ_U, σ_U` →
+`Y, F_Y, ψ_Y, c_Y, ρ_Y, j_Y`; the conjugator `U` written out; the finite group
+`P` and its actions `a, b` → `Θ`, `α, α'`; the cocycle `u_p` → `ξ_p`; the
+conjugator `ρ` in `Aut(C)` → `κ`; the linear forms `ℓ_j` → `f_j`; the set `P`
+of positive elements above `N` → `F_∞`; the character `a_γ` → `χ(γ)`; the
+example automorphism `P` and field `K₂` → `Ψ`, `K_lex`; the element `c` in
+the immediacy proof → `w`. Reasons: `τ` is always a value-group automorphism
+here, `σ` an automorphism of `No`, `L` the logarithmic modulus, `D` the
+displacement, `E` an exponential, `U` the leading-term kernel, `P_θ` and `𝒫`
+the phase twists and Puiseux field, `ℓ` the exponent coefficient, `c` the
+conjugation, and `B(a,r)` the open fine ball. Tempting false readings are
+printed beside the true ones in Section 16.1 (`No_F` is not `No` unless
+`F ≅ R`; `R_F` is discretely ordered but an integer part only for
+Archimedean `F`; `F((t^{No<0}))` is not a Hahn field; `F = C^ρ` need not be
+`R`; `F_j` of Section 10 is the class fixed field, `F` the set coefficient
+field; `ct` is not multiplicative on `K`; value-fixing is not
+leading-term-fixing).
+
+**Printed once, with credit.** The pairing criterion and its corollary
+(`opa:as:thm:detect`, `opa:as:thm:ctiso`; the source's Baire proof kept as a
+fourth route, for the weaker all-`y` form); the reconstruction
+(`opa:lem:divisible`, `odg:def:thm:multiplier`, `odg:thm:fractions`, as the
+source says); Corollary 23.3 (contained in Theorem 10.1, `saut:thm:torsion`;
+the source's route kept); the identification `No[i] = C((t^No))`
+(`saut:eq:hahn`); the definition of strong maps (Section 3, restated for
+general `k`, `Γ`).
+
+**Stale in the source, corrected in place.** The source's pin predates the
+omnific-preserving report's automatic-strongness part (added in parallel, in
+`20c4c9f`, not an ancestor of the pin). Its strongness hypotheses (Theorem
+16.1, Corollaries 21.1–21.2, the class `𝒢`) are redundant; its first question
+is answered; its second is `opa:as:q:gaussian`; the second half of Remark 22.2
+("nor strongness") is stale. Each correction is marked `[merge]`, with the
+source's statement kept beside it.
+
+**Merge additions** (all marked `[merge]`): Proposition 18.5, Remark 22.3, the
+consequences after Proposition 23.1 (`j_θ ∈ 𝒢`; the countable-cofinality real
+form of Theorem 10.2 is not conjugate to any member of `𝒢`; the
+forcing-sensitive involutions of surreal-fields-across-universes that agree
+with `c` on `C` are not both valued and `Oz[i]`-preserving, nor are those of
+first-kappa-coefficients), the consistency of Corollary 24.5 with Proposition
+B.1, `𝓗_{j_θ} = P_θ`, the assertion count of Section 26.3, Section 28.4, the
+status notes, and non-claims 23–27 of Section 30.4. In source 01's text:
+pointers or status notes in the front matter, Sections 1.5, 10.1, 14, 15.3
+and Appendix C.1; no mathematical statement of source 01 changed.
+
+**Verification.** The source's proofs were read against its statements for this
+merge (no gap found; this is not a refereeing). The suite was rerun (below).
 
 ## What the report does not claim
 
-Section 15.3 keeps the source's non-claims in place and collects them in a
+Section 15.3 keeps source 01's non-claims in place and collects them in a
 ledger of 33 items: 28 from the source and 5 added when the report joined the
-collection. In brief:
+collection. Section 30.4 collects source 02's 27: 22 from the source and 5
+added in the merge. In brief:
 
-- Not refereed; no new Lean code or dedicated `saut:` mappings accompany it.
-  Existing generic proofs cover ordered displacement, exponential rigidity,
-  logarithmic-modulus classification and the valuation kernel, as detailed
-  below. The delivery did not
-  independently build the repository. No complete
-  classification of `Aut(K)`; priority not certified; no exhaustive
-  nonduplication claim.
+- Not refereed; no new Lean code and no `saut:` or `saut:fs:` implementation
+  mappings. Existing generic proofs cover ordered displacement, exponential
+  rigidity, logarithmic-modulus classification and the valuation kernel, as
+  detailed below. Neither source built the repository. No complete
+  classification of `Aut(K)`; priority not certified for either source; no
+  exhaustive nonduplication claim; searches focused, not exhaustive.
 - The exponential results of Section 11 and the answer to KKS Question 5.4
   are prior work of the rigidity report, not results of this one.
   Faithfulness is not triviality.
@@ -135,15 +315,39 @@ collection. In brief:
   differentiation and the fine derivative are three notions.
 - Back-and-forth results and `Φ_d` are not algorithms; the transcendence-basis
   slogan is not a classification; real forms and the conjugacy criterion are
-  not classified or decided effectively.
-- The finite symbolic checks mentioned in the delivered README were not
+  not classified or decided effectively (source 02 classifies only the
+  valued, `Oz[i]`-preserving ones).
+- The finite symbolic checks mentioned in source 01's delivered README were not
   delivered; nothing here rests on them, and they would prove no infinite
   statement.
-- Added: the Q5.4 reading rests on the rigidity report's check of the pinned
-  KKS v3; the source's readings of KKS Examples 4.3–4.4 and Questions 5.6–5.7
-  were not rechecked; nontriviality of `Aut_exp(No)` and exponentiality of
-  `S_a|No` for non-rational `a` are not decided; relations in Section 1.5
-  transfer no theorem between topologies or derivative notions.
+- Added for source 01: the Q5.4 reading rests on the rigidity report's check
+  of the pinned KKS v3; the source's readings of KKS Examples 4.3–4.4 and
+  Questions 5.6–5.7 were not rechecked; nontriviality of `Aut_exp(No)` and
+  exponentiality of `S_a|No` for non-rational `a` are not decided; relations
+  in Section 1.5 transfer no theorem between topologies or derivative notions.
+- Source 02: no proof that an arbitrary automorphism of `Oz[i]` preserves the
+  valuation (open, `opa:as:q:gaussian`) — the summation half is settled for
+  valued ones by the collection, not by source 02; no classification of all
+  real forms of plain `No[i]`, and the `2^𝔠` upper bound is for `𝒢` only;
+  nothing on exponentials, derivations or simplicity; no infinite or
+  profinite groups and no `H¹` for infinite groups; the outer valuation equals
+  the natural one only for Archimedean `F`; Artin–Schreier is used only in
+  `C`; the reconstruction and the pairing criterion carry no novelty claim;
+  divisibility is sufficient, not shown necessary per action; the norm
+  conjugator is not unique; the repository comparison was selective (a
+  connector, some truncated responses, no local clone); the questions are
+  proposed, not published problems.
+- Source 02's verifier checks exact identities in `Q(i)[u]/(u^12)` for the
+  worked example only; it does not verify Hahn summability, the Baire lemma,
+  maximality, class arguments or cardinalities. Of its 3,751 assertions,
+  3,047 are order comparisons of exponent pairs (family
+  `negative_support_finite_window`); the identity checks number 704.
+- Added in the merge: the automatic-strongness results and the answer to
+  Question 29.1 are the collection's, not source 02's; the consequences for
+  `odg:def:q:realform`, `univ:q:compatible`, `opa:as:q:otherrings` and
+  first-kappa-coefficients are negative or partial information, answering
+  none of them; source 02's citations of Kuhlmann–Serra Definition 4.0.5,
+  Poonen and Conrad were not rechecked.
 
 ## Relation to the neighbouring reports
 
@@ -161,6 +365,27 @@ answer to KKS Question 5.4, arXiv v3); Proposition 11.3 = its `thm:dilation`
 counterpart of its classification. `S_q|No` is its canonical lift `T̂_q`
 (`prop:hahn-lift`), and `ℓ(g) = [g]_0` its layer coefficient. The report's
 image question is its Question 13.1.
+
+**[omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)**
+(source 02). Its summation detection and automatic strongness
+(`opa:as:thm:detect`, `opa:as:thm:ctiso`, `opa:as:thm:gaussian`) postdate
+source 02's pin: they are the pairing criterion printed in Section 18, make
+source 02's strongness hypotheses redundant, and answer its first question.
+Source 02's second question is its `opa:as:q:gaussian`. The reconstruction
+uses its `opa:lem:divisible`. For `k` of characteristic 0 and `𝔬 = Z, Z[i]`,
+Remark 22.3 is partial information on its `opa:as:q:otherrings` (valued maps
+only). Its statement that no nonconjugacy is claimed for `Oz[i]`-preserving
+maps that do not preserve conjugation concerns its copies of `No`
+(`opa:as:cor:complexcopies`); for involutions, Theorem 25.2 gives `2^𝔠`
+members of `𝒢` pairwise nonconjugate under all field automorphisms. That
+report is not edited here.
+
+**[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
+— the reconstruction uses `odg:def:thm:multiplier` and `odg:thm:fractions`;
+its phase twist `odg:def:lem:twist` is a case of Section 26.1. Source 02 gives
+negative information, not an answer, for `odg:def:q:realform`: requiring an
+involution to preserve the valuation, summation and `Oz[i]` leaves `2^𝔠`
+pairwise nonisomorphic fixed rings.
 
 **[foundations](../../foundations-and-computation/foundations/)** —
 `found:prop:complex` (the pair field, algebraic closedness); Proposition 7.2 is
@@ -202,7 +427,8 @@ classification module, and represents the coarsened action relationally.
 These existing mappings use the rigidity report's labels; this review adds
 no dedicated `saut:` mapping. The actual surreal exponential instantiation,
 rational non-lifting and the actual surcomplex logarithmic-modulus
-classification remain pending.
+classification remain pending. Source 02's formalization interface
+(Section 30.3) is a plan; nothing of it is implemented.
 
 "Rigidity" here (Theorems 2.3, 11.2; Section 11.1) is not `f:thm-rigidity` of
 analysis nor the scalar rigidity of gamma-functions; "phase" is a coefficient
@@ -221,6 +447,9 @@ global choice it transports an inner model's conjugation to real forms of
 `No[i]` that have no set-sized cofinal subset and are not conjugate to `c`
 (by the easy direction of `saut:prop:conjugacycriterion`), separates several
 such forms by an external gap invariant, and lets them agree with `c` on `C`.
+By Proposition 23.1, those that agree with `c` on `C` are not both valued and
+`Oz[i]`-preserving; its `univ:q:compatible` is related to source 02 and not
+answered.
 [birthday-cutoffs-and-hereditary-sets](../../foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 enriches bounded surcomplex fields by conjugation and a coordinate birthday;
 its bounded `Aut = {id, c}` statements are credited to `saut:thm:axis` and the
@@ -228,6 +457,13 @@ simplicity rigidity of `saut:sec:exponential`, and only its two-lift
 classification of elementary embeddings and, under GBC, its elementary
 self-embeddings of the full structure are new there. Neither addresses
 `Aut_L`.
+
+[first-kappa-coefficients](../first-kappa-coefficients/) receives in batch 32
+a proper-class family of pure-field involutions agreeing with `c` on `C`, none
+conjugate to `c`; by Proposition 23.1 none lies in `𝒢`. The two are
+complementary. The large-cardinal report
+([large-cardinal-embeddings-and-normal-forms](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/))
+is a different direction: source 02's class argument uses no large cardinal.
 
 [single-dilation-hahn-support](../single-dilation-hahn-support/) computes the
 centralizer of a rational dilation `S_q` (`q ≠ 1`) among all field automorphisms
@@ -259,6 +495,15 @@ Puiseux field `P → 𝒫`, the automorphism `τ → ψ` in Section 7.2, and cut
 class here, departing from `NOTATION.md`'s set-sized `Γ`. No mathematical
 statement was changed at placement.
 
+Batch 32 (source 02): the "single-source" statements of the title page and
+Appendix C.1 were updated; Section 14's real-form paragraph and non-claim 20
+received status notes (partly answered, valued `Oz[i]`-preserving case);
+Section 10.1 received a pointer. Source 02's own stale statements (its
+strongness hypotheses and first question) are corrected in place, as above.
+Its comparison with the collection at `343dc2c` (its Section 13.2, printed as
+Section 28.2) is accurate for that tree; Section 28.4 adds the relations
+checked against the current one.
+
 The subsequent main-text review covers Sections 1–15 and the conjugacy
 criterion. It makes class-map conventions and set-stage choices explicit,
 reduces finite-group assertions to ordinary invariant algebraically closed
@@ -272,7 +517,7 @@ proof uses the actual valuation image, and current Lean status is separated
 from the pinned inspection. See the
 [collection review record](../../REVIEW.md#field-automorphism-main-text-review).
 Remaining imported-result, source reconciliation and priority checks are
-separate from this main-text review.
+separate from this main-text review. That review predates source 02.
 
 ## Build
 
@@ -282,8 +527,45 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 Standard packages (`newtx`, `amsmath`, `mathtools`, `geometry`, `microtype`,
 `booktabs`, `longtable`, `enumitem`, `ragged2e`, `tocloft`, `fancyhdr`,
-`hyperref`, `cleveref`); no shell escape, no external `.bib`. The recorded
-build has no errors, no undefined or multiply-defined references, no duplicate
-PDF destinations, no LaTeX warnings and no overfull or underfull boxes. A
-clean compile proves nothing about the proofs. There is nothing to rerun: the
-delivery contained no code or data.
+`hyperref`, `cleveref`); no shell escape, no external `.bib`. The build with
+the merge (MiKTeX 26.2, pdfTeX 1.40.29) has 68 pages and no errors, no
+undefined or multiply-defined references, no duplicate PDF destinations, no
+LaTeX warnings and no overfull or underfull boxes. The previous text gives 38
+pages with this MiKTeX (the previously committed PDF, 37 pages, was built with
+pdfTeX 1.40.22). A clean compile proves nothing about the proofs. Source 01
+delivered no code or data.
+
+## Rerun source 02's checks
+
+`code/02-finite-symmetry-descent-verify_finite.py` needs Python 3.10 or later
+and nothing else. It prints its JSON record to standard output and writes a
+file only when given `--output`. The delivered helper
+`code/02-finite-symmetry-descent-build.sh` is **not usable as shipped** and
+should not be run in place: it changes into its own directory, expects the
+delivery layout (`code/verify_finite.py`, `finite_symmetry_descent.tex`, which
+is not shipped) and overwrites `data/verification.json`,
+`data/verification_console.txt` and the PDF. The audit and the build record
+also name the delivery paths (`code/verify_finite.py`,
+`data/verification.json`); `data/…-build_validation.json` describes the
+delivery's own 27-page PDF (495,744 bytes), which is not shipped. Run the
+verifier on a copy, from this directory:
+
+```sh
+T=$(mktemp -d)
+mkdir -p "$T/code" "$T/data"
+cp code/02-finite-symmetry-descent-verify_finite.py "$T/code/verify_finite.py"
+(cd "$T" && python3 code/verify_finite.py --order 12 --output data/verification.json \
+    > data/verification_console.txt)
+diff "$T/data/verification.json" data/02-finite-symmetry-descent-verification.json
+diff "$T/data/verification_console.txt" data/02-finite-symmetry-descent-verification_console.txt
+```
+
+Rerun for this merge with Python 3.14.4 on Windows: exit code 0, status
+`passed`, 3,751 assertions, and both written files identical to the shipped
+records after converting line endings (Python's text mode writes CRLF on
+Windows; the records are LF). The families are 23 each of the per-exponent
+identities (involution, norm-section invariance and square, conjugacy
+factors, inverse, constant coefficient), 529 multiplicativity checks, 1 + 1
+phase-unit checks, 3 + 9 sparse involution and multiplicativity checks, and
+3,047 lexicographic order comparisons. They check finite instances in
+`Q(i)[u]/(u^12)` only.

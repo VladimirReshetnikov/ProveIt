@@ -18,7 +18,7 @@
 \hypersetup{colorlinks=true,linkcolor=link,citecolor=link,urlcolor=link,
  pdftitle={Automorphisms of the Surcomplex Numbers},
  pdfauthor={Research article prepared with ChatGPT},
- pdfsubject={Real forms, Hahn symmetries, valuation, topology, and exponential rigidity}}
+ pdfsubject={Real forms, Hahn symmetries, valuation, topology, exponential rigidity, and finite symmetry descent}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small\scshape Automorphisms of the surcomplex numbers}
 \fancyhead[R]{\small Real forms and rigidity}
@@ -67,25 +67,33 @@
 \newcommand{\repoSHA}{\texttt{dcf86662\allowbreak b574988e\allowbreak 75d08d51\allowbreak 5d3a2a5b\allowbreak a7bbc0d7}}
 \newcommand{\repo}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
 \newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
+% Added with source 02 (Sections 16--30).
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\cc}{\mathfrak c}
+\newcommand{\Ineg}{\mathcal I}
+\newcommand{\mergetag}{\textup{[merge]}}
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
 \numberwithin{equation}{section}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{0.1cm}
-{\large\scshape Single-source research report\par}
-\vspace{0.8cm}
+{\large\scshape Two-source research report\par}
+\vspace{0.5cm}
 {\Huge\bfseries\color{ink} Automorphisms of the\\[0.2em] Surcomplex Numbers\par}
-\vspace{0.65cm}
-{\Large Real forms, Hahn symmetries,\\ valuation, and rigidity\par}
-\vspace{0.7cm}
-{\large Research article prepared with ChatGPT\par}
-\vspace{0.3cm}
-{22 September 2026\par}
+\vspace{0.45cm}
+{\Large Real forms, Hahn symmetries,\\ valuation, rigidity, and finite symmetry descent\par}
+\vspace{0.45cm}
+{\large Research articles prepared with ChatGPT, 22 and 23 September 2026\par}
 \vspace{0.1cm}
-{\small Built from one manuscript of batch~20 of the collection,
-pinned to repository commit \texttt{dcf8666}\par}
-\vspace{0.6cm}
+{\small Manuscript~07 of batch~20 (pin \texttt{dcf8666}) and manuscript~02 of
+batch~32 (pin \texttt{343dc2c})\par}
+\vspace{0.4cm}
 \begin{minipage}{0.93\textwidth}
 \begin{abstract}
 The phrase ``automorphism of the surcomplex numbers'' has several inequivalent
@@ -112,6 +120,13 @@ automorphisms, of which those form a proper subgroup of the real-axis
 stabilizer.
 The final sections identify precise formalization targets and distinguish
 proved statements, imported theorems, and unresolved classification problems.
+
+A second source (Sections~16--30) conjugates finite groups of valued Hahn-field
+automorphisms to their coefficient action by a norm section, and classifies the
+involutions of $\No(i)$ preserving the valuation and $\Oz[i]$: exactly
+$2^{\mathfrak c}$ conjugacy types, indexed by real closed fields $F$ of
+transcendence degree $\mathfrak c$, with fixed field $F((t^{\No}))$, a copy of $\No$
+exactly when $F\cong\R$.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -520,6 +535,18 @@ their mappings use the rigidity report's labels. No dedicated
 surreal exponential, rational non-lifting and the classification for the
 actual surcomplex logarithmic modulus remain pending; no class automorphism-group object follows
 merely from a theorem about individual type-based maps.
+
+\paragraph{Finite symmetry descent (Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing}).}
+\mergetag\ A second source, added in batch~32, classifies the involutions in
+$G_v$ that preserve $\Oz[i]$: they are conjugate, by an explicit strong norm
+section, to coefficientwise lifts of involutions of $\C$, and their conjugacy types
+correspond to the real closed fields of transcendence degree $\cc$. This answers the
+valued case of the real-form classification of Section~\ref{saut:sec:questions}. Its
+relations to \repo{surreal/omnific-preserving-automorphisms} (whose automatic
+strongness makes the source's strongness hypothesis redundant),
+\repo{surreal/omnific-diophantine-geometry} and
+\repo{foundations-and-computation/surreal-fields-across-universes} are in
+Section~\ref{saut:fs:sec:relations}.
 
 \section{Conjugation and the real-axis stabilizer}\label{saut:sec:axis}
 
@@ -1715,7 +1742,11 @@ This separates two phenomena. The phase family gives distinct embedded
 copies of the \emph{same} real form. Theorem~\ref{saut:thm:inequivalentrealform}
 gives a different isomorphism type of real form. Neither result supplies a
 classification of all real closed class fields whose complexification is
-$\K$.
+$\K$. \mergetag\ Section~\ref{saut:fs:sec:involutions} classifies the real forms
+whose involution preserves the valuation ring and $\Oz[i]$
+(Theorem~\ref{saut:fs:thm:main-involutions}); the real form of
+Theorem~\ref{saut:thm:inequivalentrealform} is not of that kind, even up to
+conjugacy.
 
 \section{Simplicity, the omega-map, and exponential structure}\label{saut:sec:exponential}
 
@@ -2141,6 +2172,14 @@ problem. Similarly, this article proves that $G_v$ acts continuously but
 does not identify every fine-continuous pure-field automorphism. These are
 boundaries of the present account; they are not asserted to be newly
 formulated or historically unresolved in every related setting.
+\emph{Status (batch~32; \mergetag).} The real-form classification is
+\emph{partly answered}. For involutions that preserve the valuation ring and
+$\Oz[i]$ (summation is then automatic), Theorems~\ref{saut:fs:thm:main-involutions}
+and~\ref{saut:fs:thm:main-count} give the complete classification: conjugacy types
+correspond to real closed fields of transcendence degree $\cc$, exactly $2^{\cc}$ of
+them. Real forms whose involution is not both valued and $\Oz[i]$-preserving (for
+instance one that is only valued, or only strong), the unrestricted real forms, and
+simplicity conditions remain unclassified, as does the continuity question.
 
 \section{Source audit, proof status, and conclusions}\label{saut:sec:audit}
 
@@ -2199,7 +2238,8 @@ are not automatically claimed to be first discoveries.\\
 The source states its limitations where they arise, and each is kept in
 place. The list collects them, with the place where each stands.
 Items~1--28 are the source's; items~29--33 were added when the report
-joined the collection.
+joined the collection. \mergetag\ The non-claims of the second source are listed
+separately in Section~\ref{saut:fs:sec:nonclaims}.
 \begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
 \item No complete classification of the automorphisms of $\K$, and in
 particular none of the unrestricted ones, is claimed (title page, abstract,
@@ -2278,7 +2318,9 @@ Theorem~\ref{saut:thm:inequivalentrealform} classifies the real closed
 class fields whose complexification is $\K$; the conjugacy criterion of
 Appendix~\ref{saut:app:conjugacy} is structural, not an effective decision
 procedure (Section~\ref{saut:sec:realforms},
-Appendix~\ref{saut:app:conjugacy}).
+Appendix~\ref{saut:app:conjugacy}). \mergetag\ Still true; the valued,
+$\Oz[i]$-preserving real forms are now classified
+(Section~\ref{saut:fs:sec:involutions}).
 \item Simplicity rigidity is rigidity of an enriched structure, not of the
 real closed field reduct (Section~\ref{saut:sec:exponential}).
 \item Exact value rigidity for the omega-map needs pointwise value
@@ -2364,6 +2406,1882 @@ framework have been made explicit. With those choices in place, the theory
 has both exact structural reductions and a rich supply of concrete examples.
 
 \clearpage
+\phantomsection
+\addcontentsline{toc}{part}{Addition: finite symmetry descent (source 02)}
+\begin{center}
+{\large\scshape Addition from a second source\par}
+\vspace{0.3em}
+{\Large\bfseries\color{ink} Finite symmetry descent and valued real forms\par}
+\vspace{0.3em}
+{\small Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing}:
+manuscript~02 of batch~32, pinned to repository commit \texttt{343dc2c}
+(Appendix~\ref{saut:app:source02})\par}
+\end{center}
+
+\section{Finite symmetry descent: statements and conventions}\label{saut:fs:sec:introduction}
+
+Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing} print the
+second source of this report, \emph{Finite Symmetry Descent and Real Forms of
+Gaussian Omnific Integers} (Appendix~\ref{saut:app:source02}). Its text is kept
+with the renamings of Section~\ref{saut:fs:sec:conventions}; sentences added when
+it was merged are marked \mergetag.
+
+The field $\K=\No(i)$ is algebraically closed, whereas $\No$ is its standard real
+closed subfield. Standard conjugation $c$ fixes $\No$ and restricts on $\Oz[i]$ to
+an involution with fixed ring $\Oz$. This suggests a natural uniqueness problem:
+how much additional structure must an involution preserve before its fixed pair
+is necessarily a copy of $(\No,\Oz)$?
+
+There are several different questions here. An automorphism may preserve only
+the field operations, or additionally the natural Hahn valuation, the
+coefficient field, the integer-support ring, or all infinite normal-form sums.
+These conditions must not be conflated (Section~\ref{saut:sec:conventions}).
+The literature develops detailed valuation and summation decompositions of Hahn
+automorphism groups \cite{KS,KKS}. The collection already contains strong
+monomial and phase symmetries and general surcomplex real forms
+(Sections~\ref{saut:sec:explicit} and~\ref{saut:sec:realforms} and
+Appendix~\ref{saut:app:conjugacy} of this report), and omnific-preserving
+stabilizers (\repo{surreal/omnific-preserving-automorphisms}). In particular,
+the existence of a nonstandard real form, without the additional conditions
+imposed here, is not new (Theorem~\ref{saut:thm:inequivalentrealform}).
+
+The contribution of the source is a simultaneous finite-symmetry normalization
+and the resulting precise classification in an explicitly restricted category.
+It also gives a strong negative answer to the uniqueness problem just posed:
+even a genuine integer-part fixed ring does not force the standard real form.
+
+\subsection{Conventions for the added sections}\label{saut:fs:sec:conventions}
+
+The conventions of Section~\ref{saut:sec:conventions} stay in force: $v=\min\supp$,
+$t^\gamma=\omega^{-\gamma}$, ``strong'' means that a map and its inverse preserve
+set-indexed Hahn sums, a \emph{valued} automorphism maps the valuation ring onto
+itself and may move values, and a \emph{value-fixing} one fixes every value.
+Several letters of the source already have a meaning in this report, and some
+of the source's letters carry two meanings. The source's symbols were therefore
+renamed as follows; nothing else changed, and no normalization changed.
+\begin{center}
+\small
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.2\textwidth}>{\RaggedRight\arraybackslash}p{0.2\textwidth}>{\RaggedRight\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+Source & Here & Reason\\
+\midrule
+\endfirsthead
+\toprule
+Source & Here & Reason\\
+\midrule
+\endhead
+$\tau$, $\tau_g=g|_k$ & $\rho$, $\rho_g$ & $\tau$ is always an ordered automorphism of a value
+group (Section~\ref{saut:sec:conventions}); $\rho$ is this report's coefficient
+automorphism, and $g|_k$ is the residue action $\rho_g$ of
+Section~\ref{saut:sec:decomposition}\\
+$\widehat\tau$ (coefficientwise lift) & $M_\rho$ & the case $M_{\rho,\id,1}$ of
+\eqref{saut:eq:monomial}; $\widehat\sigma$ of Theorem~\ref{saut:thm:axis} is a
+different lift, from $F$ to $F(i)$\\
+$u$ (induced map on $\Gamma$) & $\tau$ & it is an ordered automorphism of the value
+group\\
+$\sigma$ (involution of $\No[i]$) & $j$ & $\sigma$ is an automorphism of $\No$ in
+Sections~\ref{saut:sec:axis} and~\ref{saut:sec:exponential}; $j$ is the involution
+of Section~\ref{saut:sec:realforms}\\
+$\mathcal H$, $H$, $H_\sigma$, $H_a$ & $\mathcal H$, $\mathcal H_j$, $\mathcal H_\alpha$ &
+one symbol for the norm conjugator; the italic $H$ stays local as in
+Section~\ref{saut:sec:conventions}\\
+$\mathcal G$ & $\mathcal G$ & now \emph{valued} automorphisms preserving $\Oz[i]$; the
+source added ``strong'', which is automatic (Proposition~\ref{saut:fs:prop:autostrong})\\
+$A=\Oz[i]$ & $\Oz[i]$ & $A$ is a parameter set in
+Proposition~\ref{saut:prop:nondefinability}\\
+$B=k+\Ineg$ & $A_k$ & $B(a,r)$ is a fine ball in Section~\ref{saut:sec:topology};
+$A_k$ is the source's own $A_D$ at $D=k$\\
+$D$ (subring of $k$), $A_D$ & $\mathfrak o$, $A_{\mathfrak o}$ & unsubscripted $D$
+is the displacement of Lemma~\ref{saut:lem:displacement}\\
+$B(a,r)$ (closed valuation ball) & $\mathbb B(a,r)$ & $B(a,r)$ is the open fine
+ball of Section~\ref{saut:sec:topology}\\
+$L_F$ & $\No_F$ & $L$ is the logarithmic modulus \eqref{saut:eq:L}\\
+cut sets $L,U$ & $\mathcal L,\mathcal R$ & as in Section~\ref{saut:sec:bare}\\
+$E$ (a second real closed field) & $F'$ & $E$ is reserved for an exponential\\
+$E/F$ (an immediate extension), $E_N$ (Baire sets) & $K_1/K_0$, $Z_N$ & as for $E$;
+$F$ is the coefficient field; $K_1,K_2$ are generic fields as in
+Theorem~\ref{saut:thm:acfhomogeneity}\\
+$T$, $T_0$, $T_1$ (transcendence basis) & $B$, $B_0$, $B_1$ & $T$ is the
+transcendental of Theorem~\ref{saut:thm:inequivalentrealform} and $T_s$ the flows;
+$B$ is the transcendence basis of Theorem~\ref{saut:thm:coeffflow}\\
+$U\subseteq T_1$, $F_U$, $\psi_U$, $c_U$, $\tau_U$, $\sigma_U$ & $Y\subseteq B_1$,
+$F_Y$, $\psi_Y$, $c_Y$, $\rho_Y$, $j_Y$ & $\U$ is the leading-term kernel\\
+$U$ (a conjugator) & written out & as above\\
+$P$ (finite group), $a,b$ (its actions) & $\Theta$, $\alpha,\alpha'$ & $P_\theta$ and
+$\mathcal P$ are the phase twists and the Puiseux field\\
+$u_p$ (cocycle) & $\xi_p$ & $u$ is an element of $\U$ in \eqref{saut:eq:factor}\\
+$\rho$ (conjugator in $\Aut(\C)$) & $\kappa$ & $\rho$ is now the coefficient involution\\
+$\ell_j$ (linear forms) & $f_j$ & $\ell$ is the exponent coefficient \eqref{saut:eq:ell}\\
+$P$ (positive elements above $\N$) & $F_\infty$ & as for $P$ above\\
+$a_\gamma$ (a character) & $\chi(\gamma)$ & characters are $\chi$ in
+\eqref{saut:eq:monomial}\\
+$P$ (automorphism of an example), $K_2$ & $\Psi$, $K_{\mathrm{lex}}$ & $K_2$ is a
+class field in Theorem~\ref{saut:thm:acfhomogeneity}\\
+\bottomrule
+\end{longtable}
+\end{center}
+The symbols kept from the source are local to
+Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing}:
+$k$ is a set-sized coefficient field of characteristic zero, $\Gamma$ is a
+set-sized divisible ordered abelian group or $\No$ (the set-based reading of
+Section~\ref{saut:sec:introduction}), $K=k((t^\Gamma))$ is a full Hahn field (the
+blackboard $\K$ remains $\No(i)$), $G$ is a finite group of automorphisms with
+elements $g,h$ and $n=|G|$ (exponents are $\gamma,\delta$, never $g$), $m_\gamma$ is
+the norm section, $\Ineg$ is the strictly negative-support part, $\OO=k+\mm$ is the
+valuation ring of $K$, $\ct$ is the constant coefficient, $\mathcal N$ is a kernel
+group, $F$ is a set-sized real closed \emph{coefficient} field, $\cc=2^{\aleph_0}$
+(not the conjugation $c$), and $\psi$ is a local isomorphism of fields. In
+Section~\ref{saut:fs:sec:examples} the letters $z,u$ are the two monomials of
+$K_{\mathrm{lex}}$, not a generic element.
+
+The following readings are tempting and false.
+\begin{itemize}
+\item $\No_F=F((t^{\No}))$ is a field whose \emph{coefficient} field is $F$; the
+subscript is not an inequality as in $\No_{<0}$. It is isomorphic to $\No$ only when
+$F\cong\R$ (Theorem~\ref{saut:fs:thm:No-criterion}).
+\item $R_F=\Z+F((t^{\No_{<0}}))$ is discretely ordered with least positive element
+$1$ for every $F$, but it is an integer part of $\No_F$ only when $F$ is Archimedean
+(Theorem~\ref{saut:fs:thm:ip}). It is not ``the omnific integers of $\No_F$'' in
+general.
+\item $F((t^{\No_{<0}}))$ is a support-restricted additive part, not a Hahn field:
+$\No_{<0}$ is not a group.
+\item The coefficient field $F=\C^{\rho}$ of an involution is a real closed field of
+transcendence degree $\cc$ in its intrinsic order; it need not be $\R$ and need not
+lie on the usual real axis, although the ambient coefficient field is named $\C$
+(Section~\ref{saut:fs:sec:boundaries}).
+\item $F_j=\Fix(j)$ of Section~\ref{saut:sec:realforms} is a class real form; for
+$j\in\mathcal G$ it is isomorphic to $\No_F$ with $F=\C^{j|_\C}$, a set-sized
+field. The two letters $F$ are never interchanged.
+\item $\ct$ extends the residue map $\st$ of Section~\ref{saut:sec:hahn} to all of $K$
+but is not a ring homomorphism on $K$.
+\item A value-fixing automorphism need not fix leading terms: the conjugator
+$\mathcal H$ is value-fixing, and generally not a $1$-automorphism.
+\end{itemize}
+
+\subsection{An explicit finite-symmetry normal form}
+
+Small monomials are used throughout: $t^\gamma=\omega^{-\gamma}$ when $\Gamma=\No$.
+A Hahn support is therefore well ordered, the valuation is its least exponent, and
+purely infinite terms have \emph{negative} exponents. Let
+\[
+ K=k((t^\Gamma)),\qquad
+ \Ineg=\{x\in K:\supp(x)\subseteq\Gamma_{<0}\}.
+\]
+The phrase \emph{strong automorphism} means preservation of set-indexed
+Hahn-summable families and their sums in both directions.
+
+\begin{theorem}[Finite symmetry descent; main statement]\label{saut:fs:thm:main-descent}
+Let $k$ be a set-sized field of characteristic zero. Let $\Gamma$ be a set-sized
+divisible ordered abelian group, or let $\Gamma=\No$ with set-supported series.
+Suppose a finite group $G$ acts on $K=k((t^\Gamma))$ by valued automorphisms and
+stabilizes $k$ and $\Ineg$. Write $n=|G|$ and $\rho_g=g|_k$. There is a strong
+$k$-linear, value-fixing field automorphism $\mathcal H$ such that
+\[
+ \mathcal H(\Ineg)=\Ineg,\qquad \ct\circ\mathcal H=\ct,\qquad
+ \mathcal H^{-1}g\mathcal H=M_{\rho_g}\quad(g\in G),
+\]
+where $M_{\rho_g}$ acts coefficientwise. One such automorphism is
+\begin{equation}\label{saut:fs:eq:main-norm}
+ \mathcal H\left(\sum_\gamma a_\gamma t^\gamma\right)
+ =\sum_\gamma a_\gamma\prod_{g\in G}g(t^{\gamma/n}).
+\end{equation}
+In particular, restriction to $k$ is faithful on $G$.
+\end{theorem}
+
+\mergetag\ The source assumes in addition that $G$ acts by \emph{strong} valued
+automorphisms. That hypothesis follows from the others
+(Proposition~\ref{saut:fs:prop:autostrong}, which is \lbl{opa:as:thm:ctiso} of
+\repo{surreal/omnific-preserving-automorphisms}, placed after the source's pin), so
+the theorem is printed without it; the proof in
+Section~\ref{saut:fs:sec:norm} uses strongness of the $g$ only through that
+proposition.
+
+The formula is a multiplicative norm, but not a norm of an arbitrary element
+followed by an arbitrary root extraction. Dividing the exponent by $n$
+\emph{before} taking the product supplies a coherent multiplicative section.
+This is what makes the construction a field homomorphism rather than merely a
+collection of invariant elements.
+
+\subsection{The Gaussian omnific classification}
+
+Put $\K=\No[i]=\C((t^{\No}))$ and let
+\[
+ \mathcal G=\{\alpha\in G_v:\alpha(\Oz[i])=\Oz[i]\}
+\]
+be the valued automorphisms of $\K$ that preserve $\Oz[i]$ setwise. A valued
+automorphism is allowed to induce a nontrivial ordered automorphism of the exponent
+group; it need not initially fix every value. \mergetag\ The source defines $\mathcal G$
+as the \emph{strong} valued automorphisms preserving $\Oz[i]$. By
+\lbl{opa:as:thm:gaussian} of \repo{surreal/omnific-preserving-automorphisms}
+(Proposition~\ref{saut:fs:prop:autostrong} and Remark~\ref{saut:fs:rem:gaussianstrong}
+here), every valued automorphism preserving $\Oz[i]$ is strong, so the two
+collections coincide.
+
+\begin{theorem}[Classification of admissible involutions]\label{saut:fs:thm:main-involutions}
+For every nonidentity involution $j\in\mathcal G$, its restriction $\rho=j|_\C$ is a
+nonidentity involution of $\C$. There is a $\C$-linear, strong, value-fixing
+automorphism $\mathcal H_j$ preserving $\Oz[i]$ with
+\[
+ j=\mathcal H_jM_\rho\mathcal H_j^{-1},\qquad
+ \mathcal H_j(t^\gamma)=t^{\gamma/2}j(t^{\gamma/2}).
+\]
+Two such involutions are conjugate in $\mathcal G$ if and only if their coefficient
+involutions are conjugate in $\Aut(\C)$. Equivalently, their coefficient fixed
+fields are isomorphic.
+
+If $F=\C^\rho$, the fixed pair $(\Fix(j),\Fix(j)\cap\Oz[i])$ is isomorphic to
+\begin{equation}\label{saut:fs:eq:main-fixed-pair}
+ (\No_F,R_F):=\left(F((t^{\No})),\;\Z+F((t^{\No_{<0}}))\right).
+\end{equation}
+The possible coefficient fields are exactly the real closed fields of
+transcendence degree $\cc$ over $\Q$, up to isomorphism.
+\end{theorem}
+
+The notation $F((t^{\No_{<0}}))$ denotes a support-restricted additive part, not a
+Hahn field: $\No_{<0}$ is not a group. This convention will always be explicit when
+it occurs.
+
+\begin{theorem}[Integer parts and the standard real form]\label{saut:fs:thm:main-ip}
+For any set-sized real closed field $F$, $R_F$ is discretely ordered with least
+positive element $1$. Moreover,
+\[
+ R_F\text{ is an integer part of }\No_F
+ \quad\Longleftrightarrow\quad F\text{ is Archimedean},
+\]
+and
+\[
+ \No_F\cong\No
+ \quad\Longleftrightarrow\quad F\cong\R.
+\]
+The field isomorphism in the second equivalence may be a plain field
+isomorphism: real closed fields carry an intrinsically determined order.
+\end{theorem}
+
+\begin{theorem}[Maximal set-sized multiplicity]\label{saut:fs:thm:main-count}
+There are exactly $2^{\cc}$ conjugacy types of nonidentity involutions in
+$\mathcal G$. There is a set-indexed family of $2^{\cc}$ representatives whose fixed
+fields are pairwise nonisomorphic and whose fixed rings are genuine integer parts.
+The representatives can all be chosen coefficientwise, hence strong and
+value-fixing. Excluding the standard type still leaves $2^{\cc}$ types. These
+representatives are pairwise nonconjugate even under arbitrary plain field
+automorphisms of $\No[i]$.
+\end{theorem}
+
+\subsection{What is, and is not, being resolved}\label{saut:fs:sec:resolved}
+
+Theorems~\ref{saut:fs:thm:main-descent}--\ref{saut:fs:thm:main-count} solve the
+finite-action normalization and involution-classification problems \emph{under
+their stated support and valuation hypotheses}. They are not asserted to settle a
+named unrestricted question in the published literature. In particular, the source
+does not prove that an arbitrary automorphism of $\Oz[i]$ preserves the valuation
+or all Hahn sums. It does not classify all real forms of the plain class field
+$\No[i]$, and it makes no claim about exponential compatibility.
+\mergetag\ Status against the current collection: a \emph{valued} automorphism
+preserving $\Oz[i]$ preserves all Hahn sums (\lbl{opa:as:thm:gaussian}); whether
+every automorphism of $\Oz[i]$ is valued is \lbl{opa:as:q:gaussian}, still open.
+For this report, Theorems~\ref{saut:fs:thm:main-involutions}
+and~\ref{saut:fs:thm:main-count} answer the valued case of the real-form
+classification left open in Section~\ref{saut:sec:questions}; the unrestricted
+case stays open.
+
+The proof is organized so that no proposed theorem from an unreviewed draft is an
+indispensable premise. The needed reconstruction observations are reproved.
+Classical maximality and algebraic-closure results are identified explicitly. The
+proper-class argument is local and requires no large-cardinal assumption.
+
+\section{Hahn fields, support rings, and size conventions}\label{saut:fs:sec:prelim}
+
+\subsection{Normal forms and strong summation}
+
+Let $\Gamma$ be an ordered abelian group and $k$ a field. A Hahn series is a formal
+expression $x=\sum_{\gamma\in S}x_\gamma t^\gamma$, where $S\subseteq\Gamma$ is well
+ordered and $x_\gamma\in k$. Its support is the subset on which $x_\gamma\ne0$.
+Addition is coefficientwise and multiplication is convolution. If $S,S'$ are well
+ordered, then $S+S'$ is well ordered and every fixed exponent has only finitely
+many presentations as $s+s'$ with $s\in S$, $s'\in S'$
+(Lemma~\ref{saut:lem:support}; \cite[Lemma~1]{Poonen}).
+
+A set-indexed family $(x_j)_{j\in J}$ is \emph{Hahn summable} when the union of its
+supports is well ordered and every exponent occurs in the support of only finitely
+many members. Its sum is obtained coefficientwise. The definition is stronger than
+a claim about convergence of a sequence in a particular topology. Uncountable index
+sets are allowed, but never a proper-class-indexed sum.
+
+\begin{definition}\label{saut:fs:def:strong}
+An additive map is strong if it takes every Hahn-summable family to a Hahn-summable
+family and commutes with its sum. A strong automorphism is a field automorphism for
+which both it and its inverse are strong.
+\end{definition}
+
+(\mergetag\ This is the definition of Section~\ref{saut:sec:hahn}, for an arbitrary
+coefficient field and exponent group.) The two-direction requirement is intentional. It agrees
+with the care taken in the definition of strongly additive valued automorphisms in
+\cite[Definition~4.0.5]{KS}. Below, strongness of the inverse will be proved, not
+inferred merely from bijectivity.
+
+For $x\ne0$, put $v(x)=\min\supp(x)$ and $v(0)=\infty$. A valued automorphism
+preserves the valuation ring and hence induces an ordered automorphism of $\Gamma$.
+A value-fixing automorphism $\alpha$ satisfies $v(\alpha x)=v(x)$ for all $x$.
+
+\subsection{Three support regions}
+
+Write
+\begin{align*}
+ \Ineg&=\{x:\supp(x)\subseteq\Gamma_{<0}\},&
+ \mm&=\{x:\supp(x)\subseteq\Gamma_{>0}\},\\
+ A_k&=k+\Ineg,& \OO&=k+\mm.
+\end{align*}
+Then $A_k$ and $\OO$ are rings, $\Ineg$ is an ideal of $A_k$, $\mm$ is the maximal
+ideal of $\OO$, and
+\begin{equation}\label{saut:fs:eq:three-parts}
+ K=\Ineg\oplus k\oplus\mm
+\end{equation}
+as additive groups and as $k$-vector spaces. The zero coefficient is denoted
+$\ct(x)$. It is a ring homomorphism on each of $A_k$ and $\OO$, but \emph{not} on all
+of $K$: for example, $\ct(t^\gamma)=\ct(t^{-\gamma})=0$ while
+$\ct(t^\gamma t^{-\gamma})=1$ when $\gamma\ne0$.
+
+For a unital subring $\mathfrak o\subseteq k$, define
+\[
+ A_{\mathfrak o}=\mathfrak o+\Ineg.
+\]
+The distinction between $A_k$ and $\OO$ is essential: one has only nonpositive
+support, and the other only nonnegative support.
+
+\subsection{The surreal identification}
+
+Conway normal forms give the identifications \eqref{saut:eq:hahn}, $\No=\R((t^{\No}))$
+and $\No[i]=\C((t^{\No}))$ with set-sized supports. In this identification,
+\begin{equation}\label{saut:fs:eq:omnific-hahn}
+ \Oz=\Z+\Ineg_{\R},\qquad
+ \Oz[i]=\Z[i]+\Ineg_{\C}.
+\end{equation}
+Here an omnific integer has no negative powers of $\omega$, and its constant
+coefficient is an ordinary integer. The standard foundations are Conway's and
+Gonshor's accounts \cite{Conway,Gonshor}; the overview \cite{Wiki} supplied with the
+source is useful for orientation, not as a substitute for those foundations.
+
+For a real closed $F$, the field $F((t^\Gamma))$ with divisible $\Gamma$ is real
+closed. One way to see the precise input is to use \cite[Corollary~4]{Poonen}:
+$F(i)((t^\Gamma))$ is algebraically closed, and it equals $F((t^\Gamma))(i)$. The
+order is determined by the sign of the leading coefficient. For $\Gamma=\No$, each
+polynomial involves a set of exponents and lies in a set-sized divisible-group Hahn
+subfield, so the same conclusion follows locally.
+
+\subsection{Class conventions}
+
+Set-sized statements are in ZFC. The proper-class statements may be read in GBC
+with global choice (the framework of Section~\ref{saut:sec:introduction}), with all
+displayed automorphisms understood as class maps and all supports and families
+understood to be sets. Only replacement for images of sets, elementary class
+comprehension, and set-sized field arguments are used in the construction. There
+is no appeal to a class-sized transcendence basis or to Zorn's lemma on a proper
+class.
+
+The notation $\mathcal G$ for a collection of class automorphisms is convenient
+second-order shorthand, like $\Aut(\K)$ in Section~\ref{saut:sec:introduction}. The
+counting theorem means that there is a uniform family indexed by a set of size
+$2^{\cc}$ meeting every admissible conjugacy type exactly once. It does not assert
+that class automorphisms are sets or elements of an ordinary set-theoretic quotient
+group.
+
+Every set of surreal exponents has an upper and a lower bound in $\No$. This
+elementary set-cut property will be used for denominator clearing. It must not be
+confused with an analogous assertion for a fixed set-sized ordered exponent group,
+where it can fail.
+
+\section{A coefficient-pairing test for summability}\label{saut:fs:sec:pairing}
+
+A technical point in the main proof is that a constructed bijective strong map need
+not automatically have a strong inverse. The following elementary criterion
+supplies the missing implication. The source includes a complete proof as a
+supporting tool and attaches no priority claim to the criterion.
+\mergetag\ Theorem~\ref{saut:fs:thm:pairing} is \lbl{opa:as:thm:detect} and
+Corollary~\ref{saut:fs:cor:ct-strong} is the case $\alpha=\id$ of
+\lbl{opa:as:thm:ctiso}, both in \repo{surreal/omnific-preserving-automorphisms}
+and both placed after the source's pin. That report proves more: it suffices to
+test countably supported $y$ with coefficients in $\{0,1\}$, it gives three routes
+(a triangular detector, a binary finite-row lemma, and an induced matching), and
+it treats isomorphisms between different Hahn fields that are semilinear over a
+coefficient isomorphism. The Baire-category route below is a fourth route. It
+quantifies over all $y$, so it proves the weaker form of the criterion.
+
+\begin{lemma}[Row-finite uniformity]\label{saut:fs:lem:row-finite}
+Let $k$ be a field and let $(f_j)_{j\in\N}$ be linear functionals on $k^{\N}$, each
+depending on only finitely many coordinates. If for every $b\in k^{\N}$ only
+finitely many $f_j(b)$ are nonzero, then only finitely many $f_j$ are nonzero
+functionals.
+\end{lemma}
+\begin{proof}
+Give $k$ the discrete topology and $k^{\N}$ the complete product metric in which two
+different sequences have distance $2^{-r}$ when $r$ is their first differing
+coordinate. For each $N$, the set
+\[
+ Z_N=\bigcap_{j\ge N}\ker f_j
+\]
+is closed. The hypothesis says $\bigcup_NZ_N=k^{\N}$. By the Baire category theorem,
+some $Z_N$ contains a nonempty basic cylinder, which fixes only coordinates
+$0,\ldots,r-1$.
+
+For $j\ge N$, varying any coordinate beyond this prefix inside the cylinder shows
+that $f_j$ has zero coefficient at that coordinate. Thus all those $f_j$ depend only
+on the same finite prefix. Apply the hypothesis separately to each of its coordinate
+vectors $e_0,\ldots,e_{r-1}$. Beyond a common finite index, every $f_j(e_s)$
+vanishes. Such an $f_j$ is the zero functional.
+\end{proof}
+
+\begin{theorem}[Constant-term pairing criterion]\label{saut:fs:thm:pairing}
+Let $K=k((t^\Gamma))$ be a full Hahn field, with either a set-sized exponent group or
+set-supported class exponents. A set-indexed family $(x_i)_{i\in J}$ is Hahn summable
+if and only if
+\begin{equation}\label{saut:fs:eq:pairing-test}
+ \text{for every }y\in K,\quad
+ \{i\in J:\ct(x_i y)\ne0\}\text{ is finite}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $(x_i)$ is summable, multiplying it by the single series $y$ gives a summable
+family. At exponent zero only finitely many members contribute, which proves
+\eqref{saut:fs:eq:pairing-test}.
+
+Conversely, if a fixed exponent $\gamma$ occurs in infinitely many $x_i$, use
+$y=t^{-\gamma}$ to contradict the test. We may therefore assume point-finiteness of
+the support family. If the union $S$ of the supports were not well ordered, it
+would contain a strictly decreasing sequence $\gamma_0>\gamma_1>\cdots$. Each
+individual support meets this sequence only finitely often, since it is well
+ordered. Passing to a subsequence, choose distinct indices $i_j$ with
+$(x_{i_j})_{\gamma_j}\ne0$.
+
+For arbitrary $b=(b_j)\in k^{\N}$, the expression
+\[
+ y_b=\sum_{j\ge0}b_jt^{-\gamma_j}
+\]
+is a Hahn series, because $-\gamma_j$ is strictly increasing. For every selected row,
+the expression
+\[
+ f_r(b)=\ct(x_{i_r}y_b)=\sum_{j\ge0}(x_{i_r})_{\gamma_j}b_j
+\]
+is a finite linear form. There are infinitely many nonzero forms, since $f_r$ has a
+nonzero coefficient at $b_r$. The pairing test says that every $b$ makes only
+finitely many of them nonzero, contradicting Lemma~\ref{saut:fs:lem:row-finite}.
+Thus $S$ is well ordered, and the family is summable.
+\end{proof}
+
+\begin{corollary}[Constant-term preserving isomorphisms are strong]\label{saut:fs:cor:ct-strong}
+Suppose $T:K\to K$ is a $k$-linear field automorphism and $\ct(Tx)=\ct(x)$ for every
+$x\in K$. Then both $T$ and $T^{-1}$ are strong.
+\end{corollary}
+\begin{proof}
+For all $x,y$,
+\[
+ \ct((Tx)y)=\ct\bigl(T(xT^{-1}y)\bigr)=\ct(xT^{-1}y).
+\]
+The pairing criterion and the surjectivity of $T$ show that $(x_i)$ is summable
+exactly when $(Tx_i)$ is summable. Put $x=\sum_i x_i$ and $z=\sum_iTx_i$. For every
+$y$,
+\[
+ \ct((Tx)y)=\ct(xT^{-1}y)=\sum_i\ct(x_iT^{-1}y)=\sum_i\ct((Tx_i)y)=\ct(zy).
+\]
+The sums of coefficients here are finite. The pairing is nondegenerate: if $w\ne0$,
+choose any nonzero coefficient $w_\gamma$ and use $y=t^{-\gamma}$. Hence $Tx=z$. The
+same argument applies to $T^{-1}$.
+\end{proof}
+
+\begin{remark}\label{saut:fs:rem:monomialtests}
+The test quantifies over \emph{all} series $y$, not only monomials. Monomial tests
+detect point-finiteness but do not detect a descending sequence in the union of
+supports. That second obstruction is exactly what the row-finite argument handles.
+(\mergetag\ \lbl{opa:as:ex:monomialtests} is an explicit instance.)
+\end{remark}
+
+The corollary is stated for $k$-linear maps. \mergetag\ Composed with a
+coefficientwise lift it gives a semilinear form, and with it the strongness
+hypothesis of Theorem~\ref{saut:fs:thm:main-descent} becomes redundant.
+
+\begin{proposition}[Automatic strongness; \mergetag]\label{saut:fs:prop:autostrong}
+Let $K=k((t^\Gamma))$ be a full Hahn field, $\Gamma$ a set or $\No$ with set supports,
+and let $g$ be a valued field automorphism of $K$ with $g(k)=k$ and $g(\Ineg)=\Ineg$.
+Put $\rho=g|_k$. Then $\ct(gx)=\rho(\ct x)$ for every $x$, $g$ is $\rho$-semilinear,
+and $g$ and $g^{-1}$ are strong. No divisibility of $\Gamma$ and no hypothesis on the
+characteristic is needed.
+\end{proposition}
+\begin{proof}
+Since $g(\OO)=\OO$, also $g(\mm)=\mm$. Writing $x=p+a+\varepsilon$ according to
+\eqref{saut:fs:eq:three-parts}, $gx=gp+ga+g\varepsilon$ with $gp\in\Ineg$,
+$ga=\rho(a)\in k$ and $g\varepsilon\in\mm$, so $\ct(gx)=\rho(\ct x)$; semilinearity
+is $g(ax)=\rho(a)g(x)$. The coefficientwise lift $M_{\rho}$ is a strong
+automorphism with $\ct\circ M_\rho^{-1}=\rho^{-1}\circ\ct$. Hence $T=M_\rho^{-1}g$
+is a $k$-linear field automorphism with $\ct\circ T=\ct$, and
+Corollary~\ref{saut:fs:cor:ct-strong} makes $T$ and $T^{-1}$ strong. So are
+$g=M_\rho T$ and $g^{-1}=T^{-1}M_\rho^{-1}$.
+\end{proof}
+
+This is \lbl{opa:as:thm:ctiso} with $F=g$ and $\alpha=\rho$, together with the
+three-region argument of the proof of \lbl{opa:as:thm:gaussian}; it is printed here
+because the source's hypotheses and Question~\ref{saut:fs:q:strong} depend on it.
+It is an observation of the merge, not a result of the source.
+
+\section{Maximality and the local treatment of class exponents}\label{saut:fs:sec:maximal}
+
+\subsection{The set-sized maximality input}
+
+A valued-field extension is immediate if it has the same value group and residue
+field. A maximally complete valued field has no proper immediate extension. Full
+Hahn fields are maximally complete \cite[Theorem~1]{Poonen}. For clarity, the
+source gives the standard support proof in the form needed here.
+
+\begin{lemma}[Spherical completeness of full Hahn fields]\label{saut:fs:lem:spherical}
+For set-sized $k$ and $\Gamma$, every nest of nonempty closed valuation balls in
+$k((t^\Gamma))$ has nonempty intersection.
+\end{lemma}
+\begin{proof}
+A ball $\mathbb B(a,r)=\{x:v(x-a)\ge r\}$ prescribes the coefficients at all
+exponents $\gamma<r$ to equal those of $a$. In a nest, these prescriptions are
+compatible. Define $x_\gamma$ by a prescription whenever some ball prescribes that
+exponent, and set it to zero otherwise.
+
+Its nonzero support $S$ is well ordered. Indeed, given a nonempty subset
+$S'\subseteq S$, choose $\gamma_0\in S'$. Some ball prescribes the coefficient at
+$\gamma_0$, so its radius is greater than $\gamma_0$. Every nonzero prescribed
+coefficient at an exponent at most $\gamma_0$ then agrees with the center of that
+ball. The nonempty set $S'\cap(-\infty,\gamma_0]$ is a subset of its well-ordered
+support, and its least element is also the least element of $S'$. Thus $x$ is a
+Hahn series. By construction it belongs to every ball in the nest.
+\end{proof}
+
+\begin{lemma}\label{saut:fs:lem:immediate}
+A spherically complete valued field has no proper immediate extension.
+Consequently, a value-fixing self-embedding of a full set-sized Hahn field which
+induces the identity on its residue field is surjective.
+\end{lemma}
+\begin{proof}
+Suppose $K_1/K_0$ were proper and immediate, and choose $a\in K_1\setminus K_0$. For
+every $w\in K_0$, immediacy provides $d\in K_0$ with $v(a-d)>v(a-w)$: first match
+the value of $a-w$ by an element of $K_0$, then match its leading residue. Thus the
+set $\{v(a-w):w\in K_0\}$ has no maximum.
+
+The balls $\mathbb B(w,v(a-w))$ in $K_0$ form a nest. If $b$ lay in their
+intersection, the ultrametric inequality would give $v(a-b)\ge v(a-w)$ for all $w$,
+contradicting the absence of a maximum. This proves maximality. For the final
+assertion, the image of the self-embedding is isometric to the full Hahn field and
+hence maximal; the ambient field is an immediate extension of that image and cannot
+be larger.
+\end{proof}
+
+\subsection{Why a separate class argument is necessary}
+
+A proper-class Hahn field must not be declared maximal by repeating a set-sized
+proof with an unexamined class of balls. The following lemma avoids that issue
+entirely.
+
+\begin{lemma}[Invariant set-sized exponent closure]\label{saut:fs:lem:local}
+Let a finite group $G$ act strongly and valuedly on $k((t^{\No}))$, stabilizing $k$.
+For any set $S\subseteq\No$, there is a set-sized divisible subgroup
+$\Delta\subseteq\No$ containing $S$ such that every $g\in G$ restricts to an
+automorphism of $k((t^\Delta))$.
+\end{lemma}
+\begin{proof}
+The induced action of $G$ on the ordered group $\No$ is trivial: a finite-order
+increasing permutation of a linear order fixes every point. Indeed,
+$\tau(\gamma)>\gamma$ or $\tau(\gamma)<\gamma$ would yield a strict chain under
+iteration which could not return to $\gamma$.
+
+Let $\Delta_0$ be the divisible subgroup generated by $S$. Given the set-sized
+divisible subgroup $\Delta_r$, let $\Delta_{r+1}$ be the divisible subgroup
+generated by
+\[
+ \Delta_r\ \cup\!\bigcup_{g\in G,\ \gamma\in\Delta_r}\supp\bigl(g(t^\gamma)\bigr).
+\]
+Replacement and union show that it is still a set. The union
+$\Delta=\bigcup_{r<\omega}\Delta_r$ is set-sized and divisible. Every $g(t^\gamma)$
+with $\gamma\in\Delta$ has support in $\Delta$. Strongness and $k$-stability
+therefore give $g(k((t^\Delta)))\subseteq k((t^\Delta))$. Since $g^{-1}$ is also in
+$G$, equality holds.
+\end{proof}
+
+The closure is adapted to the specified finite action and to the element under
+consideration. It does not assert the existence of a single set-sized subfield
+containing the whole class field or all its automorphisms. \mergetag\ When $G$ also
+stabilizes $\Ineg$, strongness is automatic
+(Proposition~\ref{saut:fs:prop:autostrong}).
+
+\section{Proof of finite symmetry descent}\label{saut:fs:sec:norm}
+
+We now prove Theorem~\ref{saut:fs:thm:main-descent}. By
+Proposition~\ref{saut:fs:prop:autostrong} every $g\in G$ is strong. Let $G$ have
+order $n$ and write
+\[
+ \rho_g=g|_k,\qquad m_\gamma=\prod_{g\in G}g(t^{\gamma/n}).
+\]
+The trivial-group case is included: then $n=1$ and $m_\gamma=t^\gamma$.
+
+\subsection{The invariant section}
+
+\begin{lemma}\label{saut:fs:lem:section}
+For all $\gamma,\delta\in\Gamma$ and $h\in G$,
+\[
+ m_0=1,\quad m_{\gamma+\delta}=m_\gamma m_\delta,
+ \quad v(m_\gamma)=\gamma,\quad h(m_\gamma)=m_\gamma.
+\]
+\end{lemma}
+\begin{proof}
+Every element of the induced finite group of ordered automorphisms of $\Gamma$ is
+the identity, by the argument in Lemma~\ref{saut:fs:lem:local}. Thus every $g$ fixes
+values. Divisibility and torsion-freeness give the unique exponent $\gamma/n$.
+Multiplicativity follows by applying each $g$ to
+$t^{(\gamma+\delta)/n}=t^{\gamma/n}t^{\delta/n}$ and multiplying. The valuation of
+the product is the sum of its $n$ values, hence $\gamma$. Finally, left
+multiplication by $h$ permutes $G$, so it permutes the factors of $m_\gamma$.
+\end{proof}
+
+\subsection{Diagonal summability}
+
+\begin{lemma}\label{saut:fs:lem:diagonal}
+For every well-ordered set $S\subseteq\Gamma$, the family $(m_\gamma)_{\gamma\in S}$
+is Hahn summable.
+\end{lemma}
+\begin{proof}
+For a fixed $g$, the family $(t^{\gamma/n})_{\gamma\in S}$ is summable, and
+strongness of $g$ makes $(g(t^{\gamma/n}))_{\gamma\in S}$ summable. Taking the
+product of these finitely many summable families gives a summable family indexed by
+$S^G$. This uses the ordinary finite-product Hahn support lemma.
+
+The family $(m_\gamma)_{\gamma\in S}$ is its diagonal subfamily, corresponding to
+tuples all of whose coordinates are $\gamma$. Every subfamily of a summable family is
+summable.
+\end{proof}
+
+Define
+\begin{equation}\label{saut:fs:eq:H-definition}
+ \mathcal H(x)=\mathcal H\left(\sum_\gamma x_\gamma t^\gamma\right)
+ :=\sum_\gamma x_\gamma m_\gamma.
+\end{equation}
+The preceding lemma makes the definition meaningful for every $x$. It also proves
+forward strongness. More explicitly, for a summable family $(x_j)$, put
+$S=\bigcup_j\supp(x_j)$. The family $(m_\gamma)_{\gamma\in S}$ is summable, and for
+each $\gamma$ only finitely many coefficients $(x_j)_\gamma$ are nonzero.
+Consequently, the doubly indexed family $((x_j)_\gamma m_\gamma)_{j,\gamma}$ is
+summable. Regrouping it proves both summability of $(\mathcal H(x_j))$ and the
+equality $\mathcal H(\sum_jx_j)=\sum_j\mathcal H(x_j)$.
+
+\subsection{Field embedding and value preservation}
+
+\begin{lemma}\label{saut:fs:lem:embedding}
+The map $\mathcal H$ is a strong $k$-linear field embedding, fixes $k$ pointwise, and
+satisfies $v(\mathcal Hx)=v(x)$ for every $x$.
+\end{lemma}
+\begin{proof}
+Linearity and $\mathcal H(1)=1$ are immediate. For products, the ordinary Hahn
+convolution and Lemmas~\ref{saut:fs:lem:section} and~\ref{saut:fs:lem:diagonal}
+justify
+\[
+ \mathcal H(x)\mathcal H(y)
+ =\sum_{\gamma,\delta}x_\gamma y_\delta m_\gamma m_\delta
+ =\sum_{\gamma,\delta}x_\gamma y_\delta m_{\gamma+\delta}
+ =\mathcal H(xy).
+\]
+If $\gamma_0=v(x)$, the term $x_{\gamma_0}m_{\gamma_0}$ has value $\gamma_0$, whereas
+every other term has strictly larger value. Its nonzero leading coefficient cannot
+cancel. Thus $v(\mathcal Hx)=\gamma_0$, which also proves injectivity. Since $m_0=1$,
+$\mathcal H$ fixes $k$.
+\end{proof}
+
+The leading coefficient of $m_\gamma$ need not be $1$. Thus $\mathcal H$ is
+value-fixing, but it need not be a leading-term-fixing automorphism. This minor
+distinction is necessary even for ordinary phase characters
+(Section~\ref{saut:fs:sec:examples}).
+
+\subsection{Surjectivity: sets first, then classes}
+
+For a set-sized $\Gamma$, the image $\mathcal H(K)$ is a maximally complete valued
+field by Lemma~\ref{saut:fs:lem:immediate}. It has value group $\Gamma$ and contains
+$k$, with residue field $k$. The extension $K/\mathcal H(K)$ is immediate; hence
+$\mathcal H(K)=K$.
+
+For $\Gamma=\No$, fix a target $y\in K$ and apply Lemma~\ref{saut:fs:lem:local} to
+$S=\supp(y)$. On $k((t^\Delta))$, all the automorphisms $g$ restrict, and the very
+same formula \eqref{saut:fs:eq:H-definition} defines a value-fixing self-embedding of
+that full set-sized Hahn field. By the preceding paragraph it is surjective. In
+particular, $y$ has a preimage in $k((t^\Delta))$. Since $y$ was arbitrary, the class
+map $\mathcal H$ is surjective.
+
+This step is the reason for using a full Hahn field. The construction of a summable
+invariant section by itself proves an embedding, not yet an isomorphism on an
+arbitrary smaller series field.
+
+\subsection{The negative-support part and the inverse}
+
+If $\gamma<0$, then $t^{\gamma/n}\in\Ineg$ and each $g(t^{\gamma/n})\in\Ineg$. The
+product $m_\gamma$ is again in $\Ineg$. By strong summation,
+\begin{equation}\label{saut:fs:eq:H-I-inclusion}
+ \mathcal H(\Ineg)\subseteq\Ineg.
+\end{equation}
+Value preservation and surjectivity give $\mathcal H(\mm)=\mm$. To prove equality in
+\eqref{saut:fs:eq:H-I-inclusion}, write the preimage of $p\in\Ineg$ as
+$x=q+a+\varepsilon$ according to \eqref{saut:fs:eq:three-parts}. Then
+\[
+ p=\mathcal H(q)+a+\mathcal H(\varepsilon),\qquad
+ \mathcal H(q)\in\Ineg,\quad \mathcal H(\varepsilon)\in\mm.
+\]
+The direct-sum decomposition forces $a=0$ and $\mathcal H(\varepsilon)=0$. Thus
+$x\in\Ineg$, proving $\mathcal H(\Ineg)=\Ineg$.
+
+The same decomposition now shows $\ct(\mathcal Hx)=\ct(x)$ for every $x$. By
+Corollary~\ref{saut:fs:cor:ct-strong}, the inverse $\mathcal H^{-1}$ is strong. This
+proves all the structural properties asserted for $\mathcal H$.
+
+\subsection{Intertwining and fixed points}
+
+For $h\in G$, strongness and invariance of $m_\gamma$ give
+\[
+ h\mathcal H\left(\sum_\gamma a_\gamma t^\gamma\right)
+ =\sum_\gamma\rho_h(a_\gamma)m_\gamma
+ =\mathcal HM_{\rho_h}\left(\sum_\gamma a_\gamma t^\gamma\right).
+\]
+Therefore $\mathcal H^{-1}h\mathcal H=M_{\rho_h}$. If $\rho_h=\id$, this identity and
+surjectivity imply $h=\id$. This completes the proof of
+Theorem~\ref{saut:fs:thm:main-descent}.
+
+\begin{corollary}[Fixed fields and support rings]\label{saut:fs:cor:fixed-general}
+Under the hypotheses of Theorem~\ref{saut:fs:thm:main-descent}, suppose also that
+$G$ stabilizes a unital subring $\mathfrak o\subseteq k$. Then
+\[
+ K^G=\mathcal H\bigl(k^G((t^\Gamma))\bigr),\qquad
+ A_{\mathfrak o}^G=\mathcal H\bigl(\mathfrak o^G+\Ineg_{k^G}\bigr).
+\]
+The conjugating map fixes $\mathfrak o$ pointwise and preserves $A_{\mathfrak o}$
+setwise.
+\end{corollary}
+\begin{proof}
+A series is fixed by every coefficientwise $M_{\rho_g}$ exactly when each of its
+coefficients belongs to $k^G$. Intersecting with $\mathfrak o+\Ineg$ restricts the
+constant coefficient to $\mathfrak o^G$. The properties of $\mathcal H$ proved above
+transport these identities to the original action.
+\end{proof}
+
+\section{Finite lifts, conjugacy, and torsion}\label{saut:fs:sec:group}
+
+\subsection{All finite lifts of a given coefficient action}
+
+Let $\mathcal N$ be the strong $k$-linear, value-fixing automorphisms of $K$
+preserving $\Ineg$. (\mergetag\ By Corollary~\ref{saut:fs:cor:ct-strong}, ``strong''
+is automatic here: such a map preserves $\Ineg$, $k$ and $\mm$, hence $\ct$.) A
+coefficient automorphism $\rho\in\Aut(k)$ has a canonical strong lift $M_\rho$,
+which normalizes $\mathcal N$.
+
+\begin{corollary}[Conjugacy of finite lifts]\label{saut:fs:cor:lifts}
+Let $\Theta$ be a finite group and let $\rho:\Theta\to\Aut(k)$ be an action.
+Suppose $\alpha,\alpha':\Theta\to\Aut(K)$ are valued actions stabilizing $k$ and
+$\Ineg$, each inducing $\rho$ on $k$. Then $\mathcal H_{\alpha'}\mathcal
+H_\alpha^{-1}\in\mathcal N$ and
+\[
+ \alpha'_p=(\mathcal H_{\alpha'}\mathcal H_\alpha^{-1})\,\alpha_p\,
+ (\mathcal H_{\alpha'}\mathcal H_\alpha^{-1})^{-1}\qquad(p\in\Theta).
+\]
+If $\rho$ is faithful, these are embeddings of $\Theta$ and all lifts of the
+specified coefficient action are conjugate by $\mathcal N$.
+\end{corollary}
+\begin{proof}
+The norm proof applies to a finite acting group even when the action is not
+faithful: the product is taken over its $|\Theta|$ elements, with repetitions of the
+same automorphism allowed. It gives $\mathcal H_\alpha,\mathcal H_{\alpha'}\in\mathcal
+N$ such that $\alpha_p=\mathcal H_\alpha M_{\rho_p}\mathcal H_\alpha^{-1}$ and
+$\alpha'_p=\mathcal H_{\alpha'}M_{\rho_p}\mathcal H_{\alpha'}^{-1}$; compose.
+\end{proof}
+
+\begin{corollary}[Torsion-free coefficient kernel]\label{saut:fs:cor:torsion}
+Every finite-order valued automorphism of $K$ stabilizing $k$ and $\Ineg$ and fixing
+$k$ pointwise is the identity. In particular, $\mathcal N$ is torsion-free.
+\end{corollary}
+
+(As in Theorem~\ref{saut:fs:thm:main-descent}, the source's word ``strong'' in the
+two corollaries is dropped by Proposition~\ref{saut:fs:prop:autostrong}; \mergetag.)
+For $K=\K$ and $k=\C$, Corollary~\ref{saut:fs:cor:torsion} is contained in
+Theorem~\ref{saut:thm:torsion}, which proves $\Aut(\K/\C)$ torsion-free with no
+valuation hypothesis (\mergetag); for other coefficient fields the statement is the
+source's.
+
+There is also a precise cohomological formulation, without introducing an extra
+existence assumption. Let $\Theta$ act on $\mathcal N$ by conjugation with
+$M_{\rho_p}$. A cocycle $\xi_p\in\mathcal N$ satisfies
+\[
+ \xi_{pq}=\xi_p\bigl(M_{\rho_p}\xi_qM_{\rho_p}^{-1}\bigr).
+\]
+Then $\alpha_p=\xi_pM_{\rho_p}$ is a finite action of the required kind. The theorem
+gives $\mathcal H\in\mathcal N$ with
+\[
+ \xi_p=\mathcal HM_{\rho_p}\mathcal H^{-1}M_{\rho_p}^{-1}.
+\]
+Thus the associated nonabelian $\mathrm H^1(\Theta,\mathcal N)$ is trivial. For class
+fields, this is a shorthand assertion about each set-indexed finite cocycle, not an
+unexamined construction of a set of all class cocycles.
+
+\subsection{What the theorem does not say about infinite groups}
+
+A finite orbit permits an invariant product with exactly $n$ factors and a coherent
+exponent division by $n$. Neither operation has an automatic analogue for an
+infinite group. The theorem therefore gives no classification of infinite subgroup
+actions, no assertion that the entire automorphism group is conjugate to a
+coefficient group, and no vanishing theorem for cohomology of arbitrary infinite
+groups.
+
+\section{Recovering coefficients from the Gaussian omnific ring}\label{saut:fs:sec:recovery}
+
+To apply the descent theorem to $\Oz[i]$, coefficient stability and
+$\Ineg$-stability should not be imposed silently. They follow from $\Oz[i]$ itself.
+The reconstruction package is already present in the collection's omnific reports:
+$\Ineg=\bigcap_nnA_{\mathfrak o}$ is \lbl{opa:lem:divisible} of
+\repo{surreal/omnific-preserving-automorphisms}, the multiplier identity and its units
+are \lbl{odg:def:thm:multiplier}, and $\Frac\Oz=\No$ is \lbl{odg:thm:fractions}, both
+of \repo{surreal/omnific-diophantine-geometry}. The short arguments below are included
+to make the application independent of their proof status; the source claims no
+novelty for them.
+
+\begin{proposition}[Intrinsic support ideal and coefficient field]\label{saut:fs:prop:reconstruction}
+Let $k$ be a set-sized characteristic-zero field and let $\mathfrak o\subseteq k$ be
+either $\Z$, or $\Z[i]$ with $k$ containing $i$. For $K=k((t^{\No}))$,
+$\Ineg=\Ineg_k$, and $A_{\mathfrak o}=\mathfrak o+\Ineg$, one has
+\begin{align}
+ \Frac(A_{\mathfrak o})&=K,\label{saut:fs:eq:frac}\\
+ \Ineg&=\bigcap_{n\ge1}nA_{\mathfrak o},\label{saut:fs:eq:intersection}\\
+ A_k=k+\Ineg&=(\Ineg:\Ineg):=\{x\in K:x\Ineg\subseteq\Ineg\},\label{saut:fs:eq:multiplier}\\
+ k&=A_k^\times\cup\{0\}.\label{saut:fs:eq:units-recover}
+\end{align}
+Every unital automorphism of $A_{\mathfrak o}$ extends uniquely to $K$ and preserves
+$\Ineg$, $A_k$, and $k$ setwise.
+\end{proposition}
+\begin{proof}
+Given $x\in K$, its support is a set of surreal exponents. Choose $\delta>0$ larger
+than every exponent in that support. Then $t^{-\delta}\in\Ineg$ and
+$t^{-\delta}x\in\Ineg$, so $x=(t^{-\delta}x)/t^{-\delta}$ lies in
+$\Frac(A_{\mathfrak o})$.
+
+The ideal $\Ineg$ is divisible by every nonzero ordinary integer. Conversely, if
+$a+p\in\bigcap_{n\ge1}nA_{\mathfrak o}$, with $a\in\mathfrak o$, then $a\in n\mathfrak o$
+for every $n$. The only such integer or Gaussian integer is zero. This proves
+\eqref{saut:fs:eq:intersection}.
+
+An element supported at nonpositive exponents multiplies strictly negative support
+into strictly negative support. If $x$ has a nonzero coefficient at an exponent
+$\epsilon>0$, choose $0<\delta<\epsilon$. The element $t^{-\delta}\in\Ineg$ makes
+$xt^{-\delta}$ have a nonzero coefficient at $\epsilon-\delta>0$, so
+$x\notin(\Ineg:\Ineg)$. This proves \eqref{saut:fs:eq:multiplier}.
+
+For nonzero $x,y\in A_k$ with $xy=1$, both $v(x)$ and $v(y)$ are nonpositive, and
+their sum is zero. Hence both valuations are zero. A series supported at nonpositive
+exponents with minimum exponent zero is a constant. Thus $A_k^\times=k^\times$,
+proving \eqref{saut:fs:eq:units-recover}. All four constructions are preserved by a
+ring automorphism, after its unique extension to the fraction field.
+\end{proof}
+
+\begin{remark}[The valuation is not recovered by this proposition]\label{saut:fs:rem:valuation}
+The proposition recovers the coefficient field and the strictly negative-support
+ideal. It does \emph{not} assert that every abstract ring automorphism preserves
+the Hahn valuation ring $\OO$. The source adds: nor does it assert strongness, and
+both remain explicit hypotheses in the definition of $\mathcal G$. \mergetag\ The
+second half is now stale: once the valuation ring is preserved, strongness follows
+(Remark~\ref{saut:fs:rem:gaussianstrong}). Preservation of $\OO$ remains a hypothesis
+(\lbl{opa:as:q:gaussian}).
+\end{remark}
+
+\begin{remark}[Valued Gaussian automorphisms are strong; \mergetag]\label{saut:fs:rem:gaussianstrong}
+Let $\alpha$ be a valued automorphism of $K=k((t^{\No}))$ preserving $A_{\mathfrak o}$,
+with $\mathfrak o$ as in Proposition~\ref{saut:fs:prop:reconstruction}. By that
+proposition $\alpha(k)=k$ and $\alpha(\Ineg)=\Ineg$, and
+Proposition~\ref{saut:fs:prop:autostrong} makes $\alpha$ strong and
+$\alpha|_k$-semilinear. For $k=\C$ and $\mathfrak o=\Z[i]$ this is
+\lbl{opa:as:thm:gaussian}, whose proof is the same. Hence $\mathcal G$ is the class
+the source calls $\mathcal G$. For arbitrary characteristic-zero $k$ and
+$\mathfrak o\in\{\Z,\Z[i]\}$ it is a small piece of information on
+\lbl{opa:as:q:otherrings}, which asks when preserving such a ring forces strongness;
+there the valuation is not assumed, and the question is not answered.
+\end{remark}
+
+\begin{corollary}\label{saut:fs:cor:recover-pairs}
+For set-sized real closed fields $F,F'$, any unital ring isomorphism $R_F\cong R_{F'}$
+induces an isomorphism $F\cong F'$. Conversely, an isomorphism $F\cong F'$ extends
+coefficientwise to an isomorphism of the pairs $(\No_F,R_F)\cong(\No_{F'},R_{F'})$.
+Thus
+\[
+ R_F\cong R_{F'}\quad\Longleftrightarrow\quad F\cong F'.
+\]
+\end{corollary}
+\begin{proof}
+Apply Proposition~\ref{saut:fs:prop:reconstruction} with $\mathfrak o=\Z$ on each side.
+The converse uses the coefficientwise extension and the identity on exponents.
+\end{proof}
+
+This corollary is useful even when the coefficient fields are non-Archimedean: the
+abstract fixed ring remembers the whole coefficient field, not merely its natural
+residue field.
+
+\section{Classification of Gaussian-preserving involutions}\label{saut:fs:sec:involutions}
+
+Let $\K=\No[i]=\C((t^{\No}))$ and let $c$ be standard conjugation. Recall that
+$\mathcal G$ consists of the valued automorphisms preserving $\Oz[i]$. It is closed
+under composition and inverse.
+
+\subsection{Reduction to coefficient conjugation}
+
+Let $j\in\mathcal G$ have order two. By
+Proposition~\ref{saut:fs:prop:reconstruction}, $j$ stabilizes $\C$ and $\Ineg$. The
+finite descent theorem applies to $\{1,j\}$. It yields
+\begin{equation}\label{saut:fs:eq:involution-H}
+ \mathcal H_j(t^\gamma)=t^{\gamma/2}j(t^{\gamma/2}),\qquad
+ j=\mathcal H_jM_\rho\mathcal H_j^{-1},
+ \quad \rho=j|_\C.
+\end{equation}
+If $\rho$ were the identity, so would be $j$. Thus $\rho$ is a nontrivial involution
+of $\C$.
+
+The classical Artin--Schreier theorem, applied in the ordinary set field $\C$, says
+that $F=\C^\rho$ is real closed and $\C=F(i)$, with $\rho(i)=-i$ \cite{Conrad}.
+Consequently $\Z[i]^\rho=\Z$, and Corollary~\ref{saut:fs:cor:fixed-general}
+identifies the fixed pair with $(\No_F,R_F)$ in \eqref{saut:fs:eq:main-fixed-pair}.
+
+No extension of the Artin--Schreier theorem to a proper-class Galois theory is
+needed in this step. Once the coefficient theorem is known, the class fixed field is
+obtained directly, coefficient by coefficient. In particular, every $z\in\K$ can also
+be written uniquely as $x+iy$ with $x,y\in\Fix(j)$ after transporting the
+coefficientwise decomposition through $\mathcal H_j$. (\mergetag\ That $\Fix(j)$ is a
+real form also follows from Theorem~\ref{saut:thm:torsion}, for every involution.)
+
+\subsection{Conjugacy is exactly coefficient conjugacy}
+
+\begin{proposition}\label{saut:fs:prop:conjugacy}
+For nonidentity involutions $j_1,j_2\in\mathcal G$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $j_1$ and $j_2$ are conjugate in $\mathcal G$;
+\item $\rho_1=j_1|_\C$ and $\rho_2=j_2|_\C$ are conjugate in $\Aut(\C)$;
+\item $\C^{\rho_1}\cong\C^{\rho_2}$;
+\item $\Oz[i]^{j_1}\cong\Oz[i]^{j_2}$ as unital rings.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+A conjugating element of $\mathcal G$ preserves $\C$ by reconstruction, so (i) implies
+(ii). If $\rho_2=\kappa\rho_1\kappa^{-1}$, then
+\[
+ \mathcal H_{j_2}M_\kappa\mathcal H_{j_1}^{-1}\in\mathcal G
+\]
+conjugates $j_1$ to $j_2$. Indeed, every automorphism of $\C$ fixes $\Z$ and sends
+$i$ to $i$ or $-i$, so its coefficientwise lift preserves $\Z[i]+\Ineg$. This proves
+(ii) implies (i).
+
+A coefficient conjugacy restricts to an isomorphism of fixed fields. Conversely, an
+isomorphism $F_1\to F_2$ of the fixed fields extends to $F_1(i)\to F_2(i)$ by sending
+$i$ to $i$; these are both $\C$. That extension conjugates the two involutions. This
+proves (ii) iff (iii). Finally, the fixed-pair description and
+Corollary~\ref{saut:fs:cor:recover-pairs} prove (iii) iff (iv).
+\end{proof}
+
+In particular, involutions with the \emph{same} coefficient restriction are conjugate
+by a $\C$-linear value-fixing automorphism preserving $\Oz[i]$. If the coefficient
+restriction is ordinary complex conjugation, this conjugates the involution to the
+standard one.
+
+\mergetag\ The criterion is the valued, $\Oz[i]$-preserving refinement of the plain
+criterion of Section~\ref{saut:sec:realforms}, by which two involutions are conjugate
+in $\Aut(\K)$ exactly when their fixed real fields are isomorphic. Three consequences
+for material already in the collection:
+\begin{itemize}
+\item The twisted conjugations $j_\theta=P_\theta cP_\theta^{-1}$ of
+\eqref{saut:eq:twistedconj} lie in $\mathcal G$ ($P_\theta$ is strong,
+value-fixing, and fixes $\Z[i]$ and every support) and restrict to $c$ on $\C$, so the
+proposition predicts their conjugacy to $c$ inside $\mathcal G$; their norm conjugator
+is $P_\theta$ itself (Section~\ref{saut:fs:sec:examples}).
+\item The real form of Theorem~\ref{saut:thm:inequivalentrealform} has a countable
+cofinal subset, whereas every set of elements of $\No_F$ is bounded above by some
+$t^{-\delta}$. So its involution is not conjugate, even by a plain field automorphism,
+to any member of $\mathcal G$.
+\item An involution of $\K$ that agrees with $c$ on $\C$ and lies in $\mathcal G$ is
+conjugate to $c$. The forcing-sensitive involutions of
+\repo{foundations-and-computation/surreal-fields-across-universes} that agree with
+$c$ on $\C$ (\lbl{univ:cor:agreement}) are not conjugate to $c$; hence none of them is
+both valued and $\Oz[i]$-preserving. The same holds for the proper-class family of
+pure-field involutions that the report \repo{surcomplex/first-kappa-coefficients}
+receives in batch~32: they agree with $c$ on $\C$ and none is conjugate to $c$.
+\end{itemize}
+
+\subsection{Which coefficient fields occur?}
+
+\begin{proposition}\label{saut:fs:prop:which-F}
+A set-sized field occurs, up to isomorphism, as $\C^\rho$ for a nonidentity
+involution $\rho$ of $\C$ if and only if it is real closed and has transcendence
+degree $\cc$ over $\Q$.
+\end{proposition}
+\begin{proof}
+Necessity of real closedness is Artin--Schreier. Since $\C/F$ is algebraic,
+$\trdeg_\Q F=\trdeg_\Q\C=\cc$. The last equality follows from the standard
+classification of algebraically closed fields, or directly from cardinality: the
+algebraic closure of a field generated over the countable field $\Q$ by an infinite
+set $X$ has cardinal $\max(\aleph_0,|X|)$.
+
+Conversely, a real closed $F$ of transcendence degree $\cc$ has algebraically closed
+$F(i)$ of characteristic zero and transcendence degree $\cc$. Choosing a
+transcendence-basis bijection and extending across algebraic closures gives an
+isomorphism $\psi:F(i)\to\C$. Transport conjugation on $F(i)$ through $\psi$. Its
+fixed field is $\psi(F)\cong F$.
+\end{proof}
+
+The standard algebraically closed field classification used here is purely
+set-sized; see, for example, \cite{Lang}. The choices of coefficient isomorphisms do
+not enter the explicit norm construction once an action is given.
+
+\begin{corollary}\label{saut:fs:cor:finite-Gaussian}
+Every nontrivial finite subgroup of $\mathcal G$ has order two. The kernel of
+restriction $\mathcal G\to\Aut(\C)$ has no nontrivial torsion.
+\end{corollary}
+\begin{proof}
+\mergetag\ Both assertions are contained in Theorem~\ref{saut:thm:torsion}, which
+proves them for all of $\Aut(\K)$ and for $\Aut(\K/\C)$. The source's route: restriction is
+faithful on any finite subgroup by descent. A nontrivial finite group of
+automorphisms of the algebraically closed set field $\C$ has order two by
+Artin--Schreier and Artin's fixed-field theorem \cite[Section~4]{Conrad}. The second
+assertion follows from Corollary~\ref{saut:fs:cor:torsion}.
+\end{proof}
+
+The order-two restriction is a classical algebraic phenomenon, not a new claim
+specific to surcomplex numbers. The new work is the simultaneous support-preserving
+conjugation and the resulting fixed-ring classification.
+
+\section{Integer parts, missing cuts, and the standard surreal field}\label{saut:fs:sec:integerparts}
+
+Let $F$ be a set-sized real closed field. Give $\No_F=F((t^{\No}))$ its
+leading-coefficient order and put $R_F=\Z+\Ineg_F$.
+
+\subsection{Discreteness is weaker than the integer-part property}
+
+\begin{definition}\label{saut:fs:def:integerpart}
+A subring $R$ of an ordered field $L$ is an integer part if it is discretely ordered
+with least positive element $1$ and for every $x\in L$ there is an $r\in R$
+satisfying $r\le x<r+1$.
+\end{definition}
+
+\begin{lemma}\label{saut:fs:lem:discrete}
+The ring $R_F$ is discretely ordered with least positive element $1$. Every nonzero
+$p\in\Ineg_F$ has absolute value greater than every positive element of $F$.
+\end{lemma}
+\begin{proof}
+The leading exponent of a nonzero $p\in\Ineg_F$ is negative. Therefore its absolute
+value dominates every constant, independently of whether the coefficient field
+itself is Archimedean. A positive element $n+p$ of $R_F$ is consequently either an
+ordinary positive integer or is larger than all ordinary integers. No element lies
+strictly between $0$ and $1$.
+\end{proof}
+
+\begin{theorem}[Exact integer-part criterion]\label{saut:fs:thm:ip}
+The ring $R_F$ is an integer part of $\No_F$ if and only if $F$ is Archimedean. In
+that case write $x=p+a+\varepsilon$ according to \eqref{saut:fs:eq:three-parts}, and
+let $n\in\Z$ satisfy $n\le a<n+1$ in $F$. Its unique $R_F$-floor is
+\begin{equation}\label{saut:fs:eq:floor}
+ \lfloor x\rfloor_{R_F}=
+ \begin{cases}
+ p+n-1,&a=n\text{ and }\varepsilon<0,\\
+ p+n,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $F$ is Archimedean, every element of $F$ lies between consecutive ordinary
+integers. A nonzero constant of $F$ dominates every infinitesimal in $\mm_F$. Thus
+adding $\varepsilon$ cannot cross an integer boundary unless $a$ is already that
+integer, and in that case it crosses downward exactly when $\varepsilon<0$. Formula
+\eqref{saut:fs:eq:floor} follows. Discreteness gives uniqueness.
+
+If $F$ is non-Archimedean, choose $a\in F$ with $a>n$ for every ordinary integer $n$.
+No ordinary integer is within one below $a$. An $r=n+p$ with $p\ne0$ is either larger
+than every constant in $F$, or its successor is smaller than every constant in $F$, by
+Lemma~\ref{saut:fs:lem:discrete}. Such an $r$ cannot satisfy $r\le a<r+1$ either.
+Hence $R_F$ is not an integer part.
+\end{proof}
+
+The negative-infinitesimal correction in \eqref{saut:fs:eq:floor} is not optional. In
+particular, the floor of $-t^\delta$, for $\delta>0$, is $-1$. The formula
+specializes to the usual omnific floor when $F=\R$; that specialization is already
+part of the collection's omnific foundations.
+
+\subsection{When does the fixed field itself equal a surreal field?}
+
+The order on a real closed field is definable from its field operations: a nonzero
+element is positive exactly when it is a square. Every field isomorphism between real
+closed fields therefore preserves order (Lemma~\ref{saut:lem:order}).
+
+Recall the set-cut interpolation property (Appendix~\ref{saut:app:conjugacy}): for
+sets $\mathcal L,\mathcal R$ in an ordered class field with every element of $\mathcal
+L$ below every element of $\mathcal R$, there is an element strictly between all of
+$\mathcal L$ and all of $\mathcal R$. The surreal field has this property by its cut
+construction \cite{Conway}. Explicit omitted cuts are used below rather than a broad
+universality characterization.
+
+\begin{theorem}[Standard-form criterion]\label{saut:fs:thm:No-criterion}
+For set-sized real closed $F$,
+\[
+ F((t^{\No}))\cong\No\quad\Longleftrightarrow\quad F\cong\R.
+\]
+\end{theorem}
+\begin{proof}
+An isomorphism $F\cong\R$ extends coefficientwise and proves the reverse
+implication. For the forward implication, first suppose that $F$ is
+non-Archimedean. Let $F_\infty\subseteq F$ be the set of positive elements larger
+than every ordinary integer. Consider the set cut
+\[
+ \N<F_\infty.
+\]
+No $x\in\No_F$ realizes it. A realizing $x$ would be positive. If $v(x)<0$, then $x$
+is larger than every positive coefficient constant, contrary to $x<F_\infty$. If
+$v(x)>0$, then $x<1$. If $v(x)=0$, write $x=a+\varepsilon$ with $a\in F_{>0}$ and
+$\varepsilon\in\mm_F$. When $a$ is bounded by an ordinary integer, so is $x$.
+Otherwise $a\in F_\infty$, and $a/2\in F_\infty$ while $x>a/2$, again a
+contradiction. Thus $\No_F$ omits a set cut which $\No$ realizes.
+
+Now suppose $F$ is Archimedean. Its rational-cut embedding identifies it with an
+ordered subfield of $\R$. If it is proper, choose $r\in\R\setminus F$ and take the cut
+\[
+ \{q\in\Q:q<r\}\ <\ \{q\in\Q:q>r\}.
+\]
+Any realizing series must be bounded by ordinary integers, hence has no negative
+support. Its constant coefficient $a\in F$ has the same rational cut as $r$: any
+strict nonzero constant difference dominates its infinitesimal part. Thus $a=r$,
+impossible. This is again an omitted set cut. Therefore $F$ cannot be a proper
+Archimedean coefficient subfield, and $F\cong\R$ is necessary.
+\end{proof}
+
+\begin{corollary}[Standard conjugacy in the full plain field group]\label{saut:fs:cor:standard-conj}
+An involution $j\in\mathcal G$ is conjugate to standard conjugation under an arbitrary
+plain field automorphism of $\K$ if and only if $F=\C^{j|_\C}\cong\R$. In that case it
+is already conjugate to standard conjugation within $\mathcal G$.
+\end{corollary}
+\begin{proof}
+A plain conjugacy induces an isomorphism $\Fix(j)\cong\No$, which forces $F\cong\R$
+by Theorem~\ref{saut:fs:thm:No-criterion}. Conversely, an isomorphism $F\cong\R$
+extends to a coefficient conjugacy on $\C$; Proposition~\ref{saut:fs:prop:conjugacy}
+then gives a conjugacy in $\mathcal G$.
+\end{proof}
+
+\mergetag\ Together with the conjugacy criterion
+Proposition~\ref{saut:prop:conjugacycriterion}, the corollary says that for
+$j\in\mathcal G$ the fixed field $\Fix(j)\cong\No_F$ has the set-cut interpolation
+property exactly when $F\cong\R$; the proof of
+Theorem~\ref{saut:fs:thm:No-criterion} exhibits the omitted set cut when
+$F\not\cong\R$. The two criteria are consistent.
+
+\subsection{The intrinsic residue field in the Archimedean case}
+
+\begin{proposition}\label{saut:fs:prop:residue}
+If $F$ is Archimedean, the natural valuation ring of $\No_F$, defined as the elements
+bounded in absolute value by an ordinary integer, is exactly $\OO_F=F+\mm_F$. Its
+residue field is $F$. Consequently, if $F,F'$ are Archimedean real closed fields and
+$\No_F\cong\No_{F'}$ as plain fields, then $F\cong F'$.
+\end{proposition}
+\begin{proof}
+A series of negative valuation dominates all ordinary integers. A series of positive
+valuation is infinitesimal. A series of valuation zero has the form $a+\varepsilon$
+with $a\in F$ bounded by an ordinary integer, and $\varepsilon$ infinitesimal. This
+proves the ring assertion. Its infinitesimal ideal is $\mm_F$, and the constant-term
+residue is $F$. A field isomorphism preserves the intrinsic order and ordinary
+integers, therefore preserves the natural valuation ring and induces an isomorphism
+of residue fields.
+\end{proof}
+
+For non-Archimedean $F$, the outer Hahn valuation need not be the natural valuation
+of the ordered field. The proposition is deliberately not stated in that generality.
+The omitted-cut proof above handles that case without this identification.
+
+\section{Exactly \texorpdfstring{$2^{\mathfrak c}$}{2 to the continuum} types}\label{saut:fs:sec:count}
+
+\subsection{A large family of Archimedean coefficient fields}
+
+\begin{lemma}\label{saut:fs:lem:coefficient-family}
+There are $2^{\cc}$ pairwise nonisomorphic Archimedean real closed fields of
+transcendence degree $\cc$ over $\Q$. They may be chosen as subfields of $\R$.
+\end{lemma}
+\begin{proof}
+Choose a real transcendence basis $B$ of $\R/\Q$. It has cardinal $\cc$, and it may be
+partitioned as $B=B_0\sqcup B_1$ with both pieces of cardinal $\cc$. For each
+$Y\subseteq B_1$, let
+\begin{equation}\label{saut:fs:eq:FU}
+ F_Y=\{x\in\R:x\text{ is algebraic over }\Q(B_0\cup Y)\}.
+\end{equation}
+This is the real closure inside $\R$ of the indicated ordered field: its positive
+square roots and roots of odd-degree polynomials in $\R$ remain algebraic over the
+base. Thus it is real closed and Archimedean, and it has transcendence degree $\cc$
+because it contains $B_0$.
+
+Algebraic independence gives $F_Y\cap B=B_0\cup Y$. Distinct $Y$ therefore give
+distinct subfields. A field isomorphism between two real closed subfields of $\R$ is
+order preserving and fixes $\Q$. Rational cuts uniquely determine real numbers, so
+such an isomorphism is pointwise the identity. Thus two different $F_Y$ cannot be
+isomorphic.
+\end{proof}
+
+\subsection{Transport to Gaussian-preserving symmetries}
+
+Choose an isomorphism $\psi_Y:F_Y(i)\to\C$. Let $c_Y$ be conjugation on $F_Y(i)$, and
+define
+\[
+ \rho_Y=\psi_Yc_Y\psi_Y^{-1},\qquad
+ j_Y=M_{\rho_Y}\quad\text{on }\C((t^{\No})).
+\]
+Every $j_Y$ is strong and value-fixing. Since every automorphism of $\C$ sends $i$ to
+$\pm i$, it preserves $\Z[i]+\Ineg$. Hence $j_Y\in\mathcal G$. Its fixed pair is
+isomorphic to $(\No_{F_Y},R_{F_Y})$.
+
+\begin{theorem}[Large nonconjugate family]\label{saut:fs:thm:large-family}
+The family just constructed consists of $2^{\cc}$ involutions whose fixed fields are
+pairwise nonisomorphic, whose fixed rings are pairwise nonisomorphic integer parts,
+and which are pairwise nonconjugate even in the full plain field automorphism
+collection of $\No[i]$.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{saut:fs:prop:residue}, an isomorphism between two fixed fields
+would induce $F_Y\cong F_{Y'}$, contrary to Lemma~\ref{saut:fs:lem:coefficient-family}
+when $Y\ne Y'$. The integer-part assertion is Theorem~\ref{saut:fs:thm:ip}. The
+fixed-ring nonisomorphism also follows directly from
+Corollary~\ref{saut:fs:cor:recover-pairs}. Finally, any conjugacy of involutions
+induces an isomorphism of their fixed fields, so no plain field conjugacy exists
+between different members.
+\end{proof}
+
+\subsection{The upper bound and the standard exception}
+
+The set of all maps $\C\to\C$ has cardinal
+\[
+ \cc^{\cc}=(2^{\aleph_0})^{\cc}=2^{\cc}.
+\]
+Thus $\Aut(\C)$ has at most $2^{\cc}$ elements and at most that many involution
+conjugacy classes. By Proposition~\ref{saut:fs:prop:conjugacy}, these classes classify
+all involutions in $\mathcal G$. Combined with Theorem~\ref{saut:fs:thm:large-family},
+this proves the exact count in Theorem~\ref{saut:fs:thm:main-count}. (\mergetag\ The
+coefficientwise lifts $M_\rho$, one for each conjugacy class of nonidentity
+involutions $\rho$ of $\C$, form a family meeting every type exactly once.)
+
+For $Y=B_1$, the field $F_Y$ is $\R$, so this parameter gives the standard type. For
+every proper $Y$, at least one element of the transcendence basis is omitted, so
+$F_Y\ne\R$. Such a field is not even abstractly isomorphic to $\R$, by the
+rational-cut argument. Removing $Y=B_1$ leaves $2^{\cc}$ parameters and proves the
+asserted multiplicity of nonstandard types.
+
+\begin{remark}[What is counted]\label{saut:fs:rem:counted}
+The upper bound concerns the specified class $\mathcal G$ of valued
+$\Oz[i]$-preserving automorphisms. It is not an upper bound for all involutions of the
+plain proper-class field. The lower-bound family remains nonconjugate in that larger
+collection, which is a stronger separation statement but a different assertion from
+an unrestricted upper bound.
+\end{remark}
+
+\section{Explicit examples and the content of the norm formula}\label{saut:fs:sec:examples}
+
+\subsection{A phase-character calculation}
+
+Suppose $\rho$ is standard conjugation on $\C$ and $\chi:\Gamma\to\C^\times$ is a
+character with $\chi(\gamma)\overline{\chi(\gamma)}=1$. Define
+\[
+ j\left(\sum_\gamma z_\gamma t^\gamma\right)
+ =\sum_\gamma\overline{z_\gamma}\,\chi(\gamma)t^\gamma,
+\]
+that is (\mergetag), $j=D_\chi c$ in the notation of Theorem~\ref{saut:thm:decomp}. This is a
+strong value-fixing involution preserving the set of negative-support series and
+$\Z[i]+\Ineg$. The norm construction gives
+\[
+ \mathcal H_j(t^\gamma)=\chi(\gamma/2)t^\gamma .
+\]
+Since $\chi(\gamma/2)^2=\chi(\gamma)$, the section uses a coherent square root
+supplied by the divisible exponent group, without selecting unrelated square roots of
+individual complex numbers. The conjugacy identity follows from
+$\overline{\chi(\gamma/2)}=\chi(\gamma/2)^{-1}$.
+
+Phase twists themselves already occur in the collection:
+Theorem~\ref{saut:thm:phase} here, and \lbl{odg:def:lem:twist} of
+\repo{surreal/omnific-diophantine-geometry}. This calculation illustrates how the
+general theorem normalizes them rather than claiming them as new examples.
+\mergetag\ For $\chi(\gamma)=e^{2i\theta\ell(\gamma)}$ the involution is the twisted
+conjugation $j_\theta=P_{2\theta}c$ of \eqref{saut:eq:twistedconj}, and
+$\mathcal H_{j_\theta}(t^\gamma)=e^{i\theta\ell(\gamma)}t^\gamma$: the norm conjugator is
+exactly $P_\theta$, and the descent identity $j_\theta=\mathcal H_{j_\theta}c\,\mathcal
+H_{j_\theta}^{-1}$ is the definition of $j_\theta$.
+
+\subsection{A nonlinear two-scale involution}
+
+Take the set-sized exponent group $\Gamma=\Q\oplus_{\rm lex}\Q$, write $z=t^{(1,0)}$ and
+$u=t^{(0,1)}$, and work in
+\[
+ K_{\mathrm{lex}}=\C((u^{\Q}))((z^{\Q}))=\C((t^{\Q\oplus_{\rm lex}\Q})).
+\]
+Here $u$ is small, but every positive power of $z$ is smaller than every power of $u$.
+For rational $a$, binomial powers of a principal unit are understood as their unique
+formal power series with constant term $1$.
+
+Define a $\C$-linear map $\Psi$ on monomials by
+\begin{equation}\label{saut:fs:eq:P-example}
+ \Psi(z^a u^b)=z^a u^b(1+iu)^a.
+\end{equation}
+It is a strong valued automorphism. One direct verification groups a series by its
+outer exponent $a$: it multiplies the $a$-coefficient by the invertible series
+$(1+iu)^a$, while leaving the outer support unchanged. Within each fiber,
+multiplication preserves Hahn summability. The inverse uses $(1+iu)^{-a}$, so it is
+strong as well.
+
+The map preserves the negative-support part. At a negative outer exponent, all
+corrections still have negative lexicographic exponent. At outer exponent zero, the
+factor is $1$, so the sign of the inner exponent is unchanged. Thus $\Psi$ and
+$\Psi^{-1}$ both preserve $\Ineg$.
+
+Let $c$ conjugate coefficients and fix $z,u$. Then $j=\Psi c\Psi^{-1}$ is an
+involution. Set
+\[
+ W(u)=\frac{1+iu}{1-iu}.
+\]
+A calculation gives
+\begin{equation}\label{saut:fs:eq:sigma-example}
+ j(z^a u^b)=z^a u^bW(u)^a,\qquad j|_\C=c|_\C,
+\end{equation}
+where $\overline{W}=W^{-1}$. In particular,
+\[
+ j(z)=z+2izu-2zu^2-2izu^3+2zu^4+\cdots.
+\]
+The norm conjugator is not simply $\Psi$:
+\begin{equation}\label{saut:fs:eq:H-example}
+ \mathcal H_j(z^a u^b)=z^a u^bW(u)^{a/2}.
+\end{equation}
+Nevertheless,
+\[
+ \mathcal H_j^{-1}j\mathcal H_j=c.
+\]
+The difference between $\Psi$ and $\mathcal H_j$ is an automorphism commuting with
+$c$. A conjugating map need not be unique even when the norm formula selects one from
+the given monomial section.
+
+\subsection{What the finite verifier checks}\label{saut:fs:sec:verifier}
+
+The accompanying program (\texttt{code/02-finite-symmetry-descent-verify\_finite.py})
+works with exact rational complex coefficients in the finite quotient
+$\Q(i)[u]/(u^N)$. It checks binomial multiplicativity, inverses,
+$\overline W=W^{-1}$, the involution identity, invariance of the norm section, and the
+displayed conjugacy formulas for a specified finite range of rational exponents. Its
+checks are exact modulo $u^N$, not floating-point approximations.
+
+It does not verify arbitrary Hahn summability, the maximality argument, proper-class
+replacement, the Baire lemma, or the cardinality theorem. Those are proof obligations
+met by the written arguments, not by finite testing. \mergetag\ The recorded run at
+$N=12$ passes $3{,}751$ assertions over the $23$ exponents $a/b$ with $|a|\le4$,
+$1\le b\le4$. Of these, $3{,}047$ are lexicographic comparisons of exponent pairs
+(the family \texttt{negative\_support\_finite\_window}), which hold by the order
+itself; the $704$ others are the identity checks listed above ($529$ of them
+multiplicativity of $a\mapsto W^a$). Rerunning the program for this report
+reproduced the record (README).
+
+\section{Sharp hypotheses and invalid shortcuts}\label{saut:fs:sec:boundaries}
+
+\subsection{Without exponent divisibility, the coefficient kernel has torsion}
+
+\begin{example}\label{saut:fs:ex:nondivisible}
+On $k((t))$ in characteristic zero, the substitution $t\mapsto-t$ fixes $k$
+pointwise, preserves the valuation and negative-support part, and is a strong
+automorphism of order two. It cannot be conjugate to a nontrivial coefficient action
+while fixing the coefficient restriction, because that restriction is the identity.
+Here $\Gamma=\Z$ is not two-divisible, so $t^{\gamma/2}$ is unavailable.
+\end{example}
+
+For an action of order $n$, the proof only requires division by $n$ in the exponent
+group, together with the corresponding invariant subgroup closure in the class
+argument. Divisibility is the clean uniform hypothesis for all finite groups. No
+necessity theorem for every individual action is claimed.
+
+\subsection{Fullness is needed for the surjectivity step}
+
+On the proper subfield $k(t)\subset k((t))$, the embedding $t\mapsto t+t^2$ fixes the
+coefficient field, the value group, and residue field, but is not onto: $t$
+satisfies $X^2+X-(t+t^2)=0$ over the image and is not a rational function of $t+t^2$.
+For instance, the nonidentity involution $t\mapsto-1-t$ fixes $t+t^2$, so $t$ cannot
+lie in that rational subfield.
+
+This example is not asserted to arise from a finite norm action, and it need not
+preserve the negative-support ring. Its purpose is narrower: a value-fixing immediate
+self-embedding of a smaller field need not be surjective. The full Hahn maximality
+hypothesis in the proof cannot be replaced by that implication without additional
+work.
+
+\subsection{Discreteness alone does not provide floors}
+
+For non-Archimedean $F$, the ring $R_F$ still has least positive element $1$, but the
+coefficient $a>\N$ in the proof of Theorem~\ref{saut:fs:thm:ip} has no $R_F$-floor.
+Calling every discretely ordered fixed ring an ``integer part'' would erase the
+central distinction of the source.
+
+\subsection{A bijective forward-strong map is not enough as a proof}
+
+Even when a particular definition in the literature packages strongness in terms of
+normal-form expansions, inverse summability must be checked under that definition.
+The proof obtains constant-term preservation only \emph{after} establishing
+surjectivity and equality $\mathcal H(\Ineg)=\Ineg$. It then invokes the pairing
+criterion to prove inverse strongness. Reversing that logical order would be
+circular.
+
+\subsection{The coefficient action can be wild}
+
+The involutions $\rho_Y$ constructed in Section~\ref{saut:fs:sec:count} are not assumed
+continuous for the usual complex topology. Their fixed fields are ordinary
+Archimedean real closed fields only in their \emph{intrinsic} order; their images
+inside $\C$ need not lie on the usual real axis. It would be incorrect to replace
+$F=\C^\rho$ by $\R$ merely because the ambient coefficient field is named $\C$.
+
+\section{Position relative to existing work}\label{saut:fs:sec:position}
+
+\subsection{Classical inputs}
+
+Conway normal forms and the identification of omnific integers supply the ambient
+objects \cite{Conway,Gonshor}. Hahn support multiplication, maximality, and algebraic
+closure are classical; the exact support and maximality inputs are available in
+\cite{Poonen}. The Artin--Schreier theorem accounts for real closed fixed coefficient
+fields and the order-two restriction \cite{Conrad}. The classification of
+algebraically closed set fields by characteristic and transcendence degree is
+standard \cite{Lang}.
+
+Kuhlmann and Serra describe valued and strongly additive automorphisms of Hahn fields
+and their structural decompositions \cite{KS}. Kaplan, Krapp, and Serra treat the
+surreal automorphism setting \cite{KKS}; the version checked for the source is arXiv
+v3, dated 23 April 2026. These provide context for the distinction between
+coefficient, value, leading-term, and summation conditions. The source does not
+attribute its finite-norm formula to those papers, nor infer its novelty merely
+because a search did not locate it.
+
+\subsection{The collection at the source's pin}
+
+The source inspected the collection at \texttt{343dc2c}: this report, the
+omnific-preserving and set-sized-quotient reports, the large-cardinal report, and,
+through those guides, the omnific Diophantine report. It records that the collection
+contains substantial prior work on surcomplex field automorphisms, real forms,
+Gaussian phase twists, omnific-preserving support stabilizers, and coefficient
+reconstruction. This report already states that some involutions are not conjugate to
+standard conjugation (Theorem~\ref{saut:thm:inequivalentrealform}) and relates
+standard conjugacy to the set-cut interpolation property
+(Proposition~\ref{saut:prop:conjugacycriterion}). Those facts are not presented as
+new.
+
+The refinement requires the involution to preserve the valuation, all Hahn sums in
+both directions, and $\Oz[i]$. Within this category the source supplies an explicit
+simultaneous conjugator, classifies all involutions by coefficient real closed
+fields, identifies their fixed rings, and exhibits $2^{\cc}$ pairwise nonisomorphic
+fixed fields with genuine integer parts. The fixed-ring reconstruction in
+Section~\ref{saut:fs:sec:recovery} is supporting material, not a separate novelty
+claim.
+
+The collection also has work on embeddings across universes and critical-point
+defects, in the report
+\repo{foundations-and-computation/large-cardinal-embeddings-and-normal-forms}, which
+the source cites under the title \emph{Critical-Point Defects in Surreal
+Arithmetic}. The proper-class extension here uses only local closure under a finite
+family of class maps; it assumes no measurable cardinal, elementary embedding of the
+universe, or nontrivial critical point. These are different research directions.
+
+\subsection{Novelty and verification boundary}
+
+The proposed contribution is the \emph{package}: the norm-section theorem with a
+complete support, surjectivity and inverse audit, its class-local version, and the
+resulting Gaussian fixed-pair classification and exact multiplicity. The argument uses
+familiar algebraic devices, including norms, finite-group conjugacy, and residue
+invariants. It may have antecedents or formulations in a broader valuation-theoretic
+language not located by the focused search. Publication priority remains unverified.
+
+The source comparison used selected repository guides and report descriptions rather
+than every proof in every report. Some material was described there as pending review
+or assembly. The source does not claim a complete nonduplication audit of that
+evolving collection.
+
+No Lean code proving these theorems is delivered, and the repository was not built.
+The exact finite tests are regression checks for the worked example, not a machine
+proof of the main results. Independent scrutiny should focus first on diagonal
+summability, the use of set-sized maximality, the coefficient-pairing criterion, and
+the class-local closure.
+
+\subsection{Relations checked against the current collection}\label{saut:fs:sec:relations}
+
+\mergetag\ The source's pin \texttt{343dc2c} predates the parts of
+\repo{surreal/omnific-preserving-automorphisms} on automatic strongness and summation
+detection. Checked at the merge:
+\begin{itemize}
+\item \emph{Printed once, credited.} Theorem~\ref{saut:fs:thm:pairing} and
+Corollary~\ref{saut:fs:cor:ct-strong} are \lbl{opa:as:thm:detect} and
+\lbl{opa:as:thm:ctiso} (the source's Baire route is a fourth route, for the weaker
+all-$y$ form); Proposition~\ref{saut:fs:prop:reconstruction} is \lbl{opa:lem:divisible},
+\lbl{odg:def:thm:multiplier} and \lbl{odg:thm:fractions}, as the source says;
+Corollary~\ref{saut:fs:cor:finite-Gaussian} is contained in
+Theorem~\ref{saut:thm:torsion}; the phase twists of
+Section~\ref{saut:fs:sec:examples} are Theorem~\ref{saut:thm:phase} and
+\lbl{odg:def:lem:twist}.
+\item \emph{Stale in the source.} Its strongness hypotheses are redundant
+(Proposition~\ref{saut:fs:prop:autostrong}, Remark~\ref{saut:fs:rem:gaussianstrong},
+from \lbl{opa:as:thm:ctiso} and \lbl{opa:as:thm:gaussian}); its first question is
+answered (Question~\ref{saut:fs:q:strong}); its second question is
+\lbl{opa:as:q:gaussian} (Section~\ref{saut:fs:sec:questions}).
+\item \emph{New relative to the collection.} The norm-section conjugator, conjugacy
+within $\mathcal G$ (Proposition~\ref{saut:fs:prop:conjugacy}), the integer-part
+criterion for $R_F$ (Theorem~\ref{saut:fs:thm:ip}), the criterion
+$\No_F\cong\No\iff F\cong\R$ (Theorem~\ref{saut:fs:thm:No-criterion}) and the exact
+count $2^{\cc}$ (Theorem~\ref{saut:fs:thm:main-count}). A search of the collection at
+the merge found no other report proving them; priority beyond the collection is not
+certified.
+\item \emph{This report.} The plain conjugacy criterion of
+Section~\ref{saut:sec:realforms} and Proposition~\ref{saut:prop:conjugacycriterion}
+are refined, not replaced: within $\mathcal G$, conjugacy is coefficient conjugacy, and
+set-cut interpolation of $\Fix(j)$ holds exactly when $F\cong\R$
+(Corollary~\ref{saut:fs:cor:standard-conj}). The real-form paragraph of
+Section~\ref{saut:sec:questions} is answered in the valued, $\Oz[i]$-preserving case
+only.
+\item \emph{The omnific-preserving report.} Its statement that no nonconjugacy is
+claimed for automorphisms preserving $\Oz[i]$ but not conjugation concerns its copies
+of $\No$ (\lbl{opa:as:cor:complexcopies}). For involutions,
+Theorem~\ref{saut:fs:thm:large-family} gives $2^{\cc}$ members of $\mathcal G$ that are
+pairwise nonconjugate under every field automorphism, in particular under every
+$\Oz[i]$-preserving one; its copies are not addressed.
+\item \emph{Negative information, no answer.} \lbl{odg:def:q:realform} of the omnific
+Diophantine report asks which natural structure on $\Oz[i]$ determines the real
+omnific subring without naming conjugation or $\Oz$. Requiring an involution to
+preserve the valuation, Hahn summation and $\Oz[i]$ leaves $2^{\cc}$ pairwise
+nonisomorphic fixed rings $R_F$, $2^{\cc}$ of them integer parts; so the real omnific
+subring is not recovered, even up to isomorphism, as the fixed ring of an involution
+singled out by those structures alone. \lbl{univ:q:compatible} of
+\repo{foundations-and-computation/surreal-fields-across-universes} (which transported
+real forms can preserve a prescribed valuation structure) is related and not
+answered; the one consequence drawn is in Section~\ref{saut:fs:sec:involutions}.
+\item \emph{Complementary.} The report \repo{surcomplex/first-kappa-coefficients}
+receives, in the same batch, a proper-class family of pure-field involutions that agree
+with $c$ on $\C$ and are not conjugate to $c$; by
+Proposition~\ref{saut:fs:prop:conjugacy} none of them lies in $\mathcal G$. The two
+results are complementary: that family shows how far the pure field is from rigid,
+this one what the valuation and $\Oz[i]$ force.
+\end{itemize}
+
+\section{Further research questions of source 02}\label{saut:fs:sec:questions}
+
+The following are proposed questions motivated by the source. Unless an external
+source is explicitly named, they are not represented as longstanding published open
+problems.
+
+\begin{question}[Remove strongness for finite Gaussian symmetries]\label{saut:fs:q:strong}
+Must every finite-order valued automorphism of $\No[i]$ preserving $\Oz[i]$ be strong?
+More modestly, does the invariant product section remain summable under weaker
+hypotheses than strongness of the original action?
+\end{question}
+The norm formula still makes sense on individual monomials without strongness. The
+precise missing step is Lemma~\ref{saut:fs:lem:diagonal}. A proof must control the
+union of supports, not just the valuations of the terms. Conversely, a counterexample
+must preserve the Gaussian ring; a plain non-strong field automorphism is not
+sufficient. \emph{Status (batch~32; \mergetag).} \emph{Answered}, yes, for every valued
+automorphism preserving $\Oz[i]$, of finite order or not: \lbl{opa:as:thm:gaussian}
+(Remark~\ref{saut:fs:rem:gaussianstrong}). The second sentence is answered in the same
+sense for the general theorem: a valued action stabilizing $k$ and $\Ineg$ is strong
+(Proposition~\ref{saut:fs:prop:autostrong}), so the product section is summable under
+the other hypotheses alone. Actions that are not assumed valued are not addressed, and
+without valuedness $v(m_\gamma)=\gamma$ is no longer available.
+
+\paragraph{Source 02's second question: recover the outer valuation from the Gaussian ring.}
+``Does an arbitrary unital automorphism of $\Oz[i]$, extended to its fraction field,
+preserve the standard Hahn valuation ring? Does the answer change for involutions or
+finite group actions?'' This is \lbl{opa:as:q:gaussian} of
+\repo{surreal/omnific-preserving-automorphisms} (asked there by three earlier sources),
+with the additional clause on involutions and finite groups; it is recorded here
+rather than as a new question. The source's comment:
+Proposition~\ref{saut:fs:prop:reconstruction} recovers $\C$ and $\Ineg$, but not by
+itself $\OO$. A useful first target is an intrinsic characterization of the
+positive-support part in terms of the recovered ring and coefficient field. Any
+proposed characterization should be tested against the coefficientwise involutions of
+Section~\ref{saut:fs:sec:count}. \emph{Status:} open. By
+Remark~\ref{saut:fs:rem:gaussianstrong}, a positive answer would make every
+automorphism of $\Oz[i]$ strong, and every involution of $\Oz[i]$ subject to the
+classification of Section~\ref{saut:fs:sec:involutions}.
+
+\begin{question}[Nonfull and bounded-support Hahn fields]\label{saut:fs:q:nonfull}
+For which strongly summation-closed subfields, Rayner fields, or cardinality-bounded
+support fields does the norm conjugator remain surjective and preserve the chosen
+field?
+\end{question}
+The finite product does not enlarge the number of original group factors, but the
+inverse need not inherit the same support bound from maximality. An exact
+inverse-closure criterion would extend the theorem beyond full Hahn fields and clarify
+its relation to the structural setting of \cite{KS}. \emph{Related} (\mergetag):
+\lbl{opa:as:prop:kappa} proves inverse strongness for constant-term-covariant
+isomorphisms of support-bounded fields with a regular uncountable bound; surjectivity
+of the norm conjugator there is not addressed.
+
+\begin{question}[Partial divisibility and ramification]\label{saut:fs:q:divisibility}
+For an ordered group which is not $n$-divisible, classify the obstruction to a finite
+action of order $n$ admitting an invariant multiplicative section with the original
+value group.
+\end{question}
+The map $t\mapsto-t$ on $k((t))$ shows that torsion characters can survive. A
+plausible program separates the obstruction on $\Gamma/n\Gamma$ from the
+principal-unit part and determines when passing to the divisible hull removes it
+without destroying the support ring.
+
+\begin{question}[Infinite and profinite descent]\label{saut:fs:q:infinite}
+For an infinite group action, which compatible finite-level norm sections can be
+assembled into a single strong conjugating map?
+\end{question}
+This requires a genuine summability or inverse-limit theorem. Finite-level conjugacy
+alone does not provide compatible choices, and no formal infinite product over a group
+should be used without an explicit support condition.
+
+\begin{question}[Additional surreal structure]\label{saut:fs:q:structure}
+Which involutions in $\mathcal G$ preserve a named real exponential structure, a
+specified surreal derivation, a simplicity relation, or a distinguished monomial
+section? How far do these requirements reduce the $2^{\cc}$ coefficient types?
+\end{question}
+The present counterexamples exploit wild coefficient real forms. Naming the standard
+real coefficient field pointwise, or imposing the usual coefficient conjugation,
+already reduces all admissible involutions to the standard conjugacy type. Exponential
+and simplicity conditions are stronger and must be investigated in their own
+languages, not silently added to this field language. \emph{Related}: the simplicity
+rigidity of Section~\ref{saut:sec:exponential} and \lbl{univ:q:compatible}; neither
+answers the question.
+
+\begin{question}[Classify plain fixed fields for non-Archimedean coefficients]\label{saut:fs:q:nonarch}
+For non-Archimedean real closed $F,F'$ of transcendence degree $\cc$, when are
+$F((t^{\No}))$ and $F'((t^{\No}))$ isomorphic as plain fields?
+\end{question}
+Their support-ring pairs are isomorphic exactly when $F\cong F'$, but a plain field
+isomorphism need not preserve the outer valuation. The natural valuation can combine
+coefficient and exponent scales. The Archimedean residue argument therefore does not
+settle this question.
+
+\begin{question}[Definability of the standard real form]\label{saut:fs:q:definability}
+Which additional set-sized predicates or parameters select the standard conjugacy type
+inside $(\No[i],\Oz[i])$? Can the set-cut obstruction be expressed in a natural expanded
+language without naming the whole standard real axis?
+\end{question}
+The multiplicity theorem rules out uniqueness from the existing algebraic, valuation,
+and strong-summation conditions alone. A successful definition must distinguish $\R$
+from its proper Archimedean real closed subfields, not merely detect discreteness or
+the existence of floors. \emph{Related}: \lbl{odg:def:q:realform}
+(Section~\ref{saut:fs:sec:relations}).
+
+\begin{question}[Effective inversion of the norm conjugator]\label{saut:fs:q:effective}
+Can $\mathcal H^{-1}$ be described by a support-controlled transfinite algorithm with
+explicit complexity bounds on natural finitely presented inputs?
+\end{question}
+Maximality proves existence of a preimage but is not an algorithm. The rank-two
+example suggests coefficientwise inversion when the action is triangular in a
+specified scale decomposition. An effective theorem should specify a representation of
+supports and of the original automorphisms.
+
+\begin{question}[Formal verification]\label{saut:fs:q:formal}
+Can the full set-sized norm theorem be formalized using a Hahn-series library,
+followed by a separate universe-indexed or class-local transfer?
+\end{question}
+The best first targets are the finite-product diagonal summability lemma, the
+invariant section identities, the constant-term pairing criterion, and the
+immediate-extension surjectivity lemma. These are clean interfaces. Cardinality and
+set-cut results can be formalized after the core conjugacy theorem rather than being
+mixed into its implementation.
+
+\section{Conclusion, claim audit, and non-claims of source 02}\label{saut:fs:sec:closing}
+
+\subsection{Conclusion}
+
+Finite symmetries of a full Hahn field preserving its coefficient field and
+negative-support part admit a concrete normalization: their action on monomials can be
+absorbed into a single strong change of monomial section. The invariant product
+$\prod_g g(t^{\gamma/|G|})$ is the key construction; fullness and a separate
+inverse-summability argument turn it into a genuine automorphism.
+
+For Gaussian omnific integers, this gives a complete classification in the strong
+valued category (\mergetag: strongness is automatic there, so this is the valued
+category). The invariant is not an additional
+surreal scale, but the real closed coefficient field fixed by the coefficient
+involution. Archimedeanity of that field is exactly the condition for the fixed ring to
+be an integer part. Being the full real field is exactly the condition for the fixed
+class field to be a copy of $\No$.
+
+These distinctions produce the central negative conclusion: even all the stated
+normal-form and integer-part requirements leave $2^{\cc}$ mutually nonisomorphic real
+forms. The unresolved next step is not to repeat the finite norm calculation, but to
+understand which hypotheses on arbitrary Gaussian-ring automorphisms force the
+summation and valuation structure needed for it. \mergetag\ Summation is now known to
+follow from the valuation (\lbl{opa:as:thm:gaussian}); the valuation is the open part
+(\lbl{opa:as:q:gaussian}).
+
+\subsection{Proof dependency and claim audit}
+
+\begin{center}
+\small
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.24\textwidth}>{\RaggedRight\arraybackslash}p{0.43\textwidth}>{\RaggedRight\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Claim & Main dependencies & Status in the source\\
+\midrule
+\endfirsthead
+\toprule
+Claim & Main dependencies & Status in the source\\
+\midrule
+\endhead
+Hahn support arithmetic & Well-ordered support sum and finite convolution & Classical input, cited\\
+Pairing criterion & Row-finite Baire lemma; monomial tests; descending-support witness & Complete supporting proof\\
+Set Hahn maximality & Compatible coefficients in a nest; improvement in an immediate extension & Classical fact, reproved\\
+Class-local closure & Set replacement; countable iteration; strongness & Complete written proof\\
+Finite norm descent & Divisible exponents; diagonal product; maximality; support decomposition; pairing criterion & Proposed main contribution\\
+Coefficient faithfulness & Intertwining and surjectivity & Consequence of descent\\
+Gaussian reconstruction & Set-bounded denominator shift; integer divisibility; multiplier units & Prior support material, reproved\\
+Involution classification & Norm descent; reconstruction; set-field Artin--Schreier & Proposed main application\\
+Integer-part criterion & Leading-coefficient order; Archimedean coefficients & Complete written proof\\
+Standard-form criterion & Explicit omitted set cuts; Conway interpolation & Complete written proof\\
+$2^{\cc}$ multiplicity & Transcendence-basis subfields; rational cuts; natural residues & Complete written proof\\
+Finite example tests & Exact arithmetic in $\Q(i)[u]/(u^N)$ & Executed regression checks only\\
+Automatic strongness (\mergetag) & Three support regions; Corollary~\ref{saut:fs:cor:ct-strong}; \lbl{opa:as:thm:ctiso} & Observation of the merge\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{High-priority review points.}
+The finite-product family is indexed by $S^G$ before its diagonal is taken; this is
+why no unjustified union of arbitrary supports enters the construction. The least
+exponent of each $m_\gamma$ is exactly $\gamma$, so the leading coefficient of the
+least input term cannot cancel with later terms. Surjectivity is proved locally in
+full set-sized Hahn fields, not by manipulating a proper-class chain of balls.
+
+The inclusion $\mathcal H(\Ineg)\subseteq\Ineg$ is insufficient by itself to preserve
+the support ring in both directions. Equality uses surjectivity and the three-region
+direct sum. Constant-term preservation then follows, and only then does the pairing
+criterion give inverse strongness.
+
+For the large-family theorem, the coefficient fields are Archimedean, so the outer
+Hahn valuation really is the natural valuation. No such identification is used for
+non-Archimedean coefficients. The exact upper bound is stated only in the strong
+valued Gaussian-preserving category, that is, for $\mathcal G$.
+
+\subsection{A formalization-oriented interface}
+
+A set-sized formalization can be organized around six interfaces, none of which
+requires a global surreal implementation at the outset.
+
+\paragraph{Summation interface.} A Hahn family carries proofs of well-ordered union
+support and point-finiteness. Required operations are subfamilies, coefficient
+rescaling, finite products, and regrouping. The diagonal lemma should consume this
+interface directly, rather than a topological convergence API.
+
+\paragraph{Section interface.} A multiplicative map $m:\Gamma\to K^\times$ has value
+$\gamma$ at $\gamma$, and maps every well-ordered monomial family to a summable family.
+Its strong $k$-linear extension is a field embedding. This lemma is reusable
+independently of group actions.
+
+\paragraph{Maximality interface.} A full Hahn field has no proper immediate extension.
+A self-embedding preserving values and coefficient residues therefore has a surjective
+underlying function. It is preferable to prove this once rather than repeat
+transfinite inversion arguments in every application.
+
+\paragraph{Support interface.} The strictly negative, zero, and strictly positive
+support parts form a direct sum. A bijection fixing constants and preserving values
+which maps the negative part into itself maps it onto itself and preserves the zero
+coefficient.
+
+\paragraph{Inverse-summation interface.} A $k$-linear field automorphism preserving
+the zero coefficient preserves Hahn summability in both directions. The pairing
+criterion supplies this interface; its only analytic-looking ingredient is the
+elementary Baire argument on a countable product of discrete fields.
+
+\paragraph{Finite-action interface.} A finite group acts by strong valued maps,
+stabilizing constants and negative support. Ordered finite actions on the value group
+are trivial; the product section is invariant; the preceding interfaces give the
+conjugacy theorem. The class-field transfer should be a separate theorem using
+invariant set-sized exponent subgroups, rather than a hidden universe coercion in this
+interface.
+
+This is an implementation plan, not a claim that any of these interfaces has been
+compiled in Lean for the delivery. \mergetag\ The collection's generic Hahn-series
+library is \nolinkurl{Surreal/HahnSeries/}; no \texttt{saut:fs:} label has an
+implementation mapping.
+
+\subsection{What source 02 does not claim}\label{saut:fs:sec:nonclaims}
+
+The source states its limitations where they arise, and each is kept in place. The
+list collects them, with the place where each stands in
+Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing} (or in the
+delivered README and audit). Items~1--22 are the source's; items~23--27 were added in
+the merge.
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item Not refereed: complete written proofs are supplied relative to classical inputs;
+they were reviewed during preparation but not checked by an independent referee or a
+proof assistant (source title page and audit).
+\item No Lean formalization is delivered; the interface of the previous subsection is
+a plan (Section~\ref{saut:fs:sec:position}, Question~\ref{saut:fs:q:formal}).
+\item Publication priority and correctness are not independently certified; the
+literature and repository searches were focused, not exhaustive; the norm argument has
+familiar algebraic antecedents and may have formulations in a broader
+valuation-theoretic language; the word ``theorem'' implies no certification
+(Section~\ref{saut:fs:sec:position}).
+\item No named unrestricted published conjecture or automorphism question is claimed
+settled (Section~\ref{saut:fs:sec:resolved}).
+\item It is not proved that an arbitrary automorphism of $\Oz[i]$ preserves the
+valuation or all Hahn sums (Section~\ref{saut:fs:sec:resolved},
+Remark~\ref{saut:fs:rem:valuation}). The summation half is now settled for valued
+automorphisms by the collection (item~23); the valuation half is open.
+\item No classification of all real forms of the plain class field $\No[i]$; the
+$2^{\cc}$ upper bound concerns $\mathcal G$ only, not all involutions of the plain field
+(Section~\ref{saut:fs:sec:resolved}, Remark~\ref{saut:fs:rem:counted}).
+\item Nothing is claimed about exponential compatibility, a derivation, simplicity or
+a distinguished monomial section (Section~\ref{saut:fs:sec:resolved},
+Question~\ref{saut:fs:q:structure}).
+\item No classification of infinite or profinite group actions, no conjugacy of the
+entire automorphism group to a coefficient group, and no vanishing of cohomology for
+infinite groups (Section~\ref{saut:fs:sec:group}).
+\item The outer Hahn valuation is identified with the natural valuation of the ordered
+field only for Archimedean coefficients; Proposition~\ref{saut:fs:prop:residue} is not
+stated in general (Section~\ref{saut:fs:sec:integerparts}).
+\item Artin--Schreier and Artin's fixed-field theorem are applied only in the set field
+$\C$; no class Galois theory is assumed (Section~\ref{saut:fs:sec:involutions}).
+\item The reconstruction of Proposition~\ref{saut:fs:prop:reconstruction} is prior
+supporting material, reproved, not a novelty claim; the omnific Diophantine report's
+material was identified through guides and not independently audited by the source
+(Sections~\ref{saut:fs:sec:recovery} and~\ref{saut:fs:sec:position}).
+\item No priority is attached to the pairing criterion
+(Section~\ref{saut:fs:sec:pairing}); the order-two restriction is classical
+(Section~\ref{saut:fs:sec:involutions}).
+\item The finite verifier checks exact identities in $\Q(i)[u]/(u^{12})$ and a finite
+window of the lexicographic support example only; it does not verify infinite Hahn
+sums, the Baire lemma, maximality, class theory or cardinalities, and its success is
+not a machine verification of the main theorems (Section~\ref{saut:fs:sec:verifier}).
+\item The repository comparison was selective: selected guides and report
+descriptions at the pin, read through a connector (a local clone failed), with some
+responses truncated; a failed keyword search does not establish absence; the
+repository was neither modified nor built (Section~\ref{saut:fs:sec:position}, audit).
+\item Divisibility of the exponent group is sufficient, not shown necessary for each
+individual action (Section~\ref{saut:fs:sec:boundaries}).
+\item The fullness example $k(t)$ is not claimed to arise from a finite norm action or
+to preserve the negative-support ring (Section~\ref{saut:fs:sec:boundaries}).
+\item $\mathcal G$ is second-order shorthand; the count asserts a set-indexed uniform
+family, not that class automorphisms form sets or a quotient group; no class-sized
+transcendence basis, class Zorn lemma or large cardinal is used
+(Sections~\ref{saut:fs:sec:prelim} and~\ref{saut:fs:sec:position}).
+\item The norm conjugator is not claimed unique; the formula selects one
+(Section~\ref{saut:fs:sec:examples}).
+\item The research questions are proposed, not longstanding published problems
+(Section~\ref{saut:fs:sec:questions}).
+\item Kaplan--Krapp--Serra (arXiv v3) was checked as context only; no theorem is
+presented as solving its exponential-automorphism questions. The overview
+\cite{Wiki} is orientation, not a proof reference (Section~\ref{saut:fs:sec:position},
+audit).
+\item The delivered build helper overwrites the generated PDF and verification files
+of its own package; PDF metadata and compression may differ between TeX installations;
+no third-party papers or font files are included (delivered README).
+\item The fixed-ring reconstruction and the phase twists are not claimed as new
+examples; nonstandard plain real forms are prior (Sections~\ref{saut:fs:sec:examples}
+and~\ref{saut:fs:sec:position}).
+\item \emph{(Merge.)} The redundancy of strongness
+(Proposition~\ref{saut:fs:prop:autostrong}, Remark~\ref{saut:fs:rem:gaussianstrong})
+and the answer to Question~\ref{saut:fs:q:strong} rest on \lbl{opa:as:thm:ctiso} and
+\lbl{opa:as:thm:gaussian}; they are not results of the source.
+\item \emph{(Merge.)} No \texttt{saut:fs:} label has a Lean implementation mapping.
+\item \emph{(Merge.)} The consequences drawn for \lbl{odg:def:q:realform},
+\lbl{univ:q:compatible}, \lbl{opa:as:q:otherrings} and the report
+\repo{surcomplex/first-kappa-coefficients} are negative or partial information; none of
+those questions is answered.
+\item \emph{(Merge.)} The source's citations of Kuhlmann--Serra (Definition~4.0.5),
+Poonen (Lemma~1, Theorem~1, Corollary~4) and Conrad (Theorem~3.1, Section~4) were not
+rechecked for the merge.
+\item \emph{(Merge.)} Of the verifier's $3{,}751$ assertions, $3{,}047$ are order
+comparisons of exponent pairs; the identity checks number $704$
+(Section~\ref{saut:fs:sec:verifier}).
+\end{enumerate}
+
+\clearpage
 \appendix
 \section{A quick reference of explicit examples}\label{saut:sec:examplesummary}
 
@@ -2437,17 +4355,19 @@ of the usual surreal real form among all real forms of the pure field.
 
 \subsection{Provenance of this report}
 
-This report is built from \emph{one} manuscript: the archive
+This report was built from \emph{one} manuscript (source~01): the archive
 \texttt{surcomplex\_automorphisms}, manuscript~07 of batch~20 of the
 collection, dated 22 September 2026 and pinned to repository commit
 \repoSHA. It was placed in
 commit \texttt{5fe7f8d} as a new report rather than merged into
 \repo{surreal/exponential-automorphism-rigidity}: it continues that report's
 section on $\No(i)$, but with plain field automorphisms instead of
-exponential ones, and answers no question that report names. There was no
-second source; nothing was merged and nothing was selected away. Every
-result, proof, example, question and limitation of the manuscript is
-printed here.
+exponential ones, and answers no question that report names. At placement
+there was no second source: nothing was merged, and nothing was selected away.
+Every result, proof, example, question and limitation of the manuscript is
+printed here. \mergetag\ A second source was added in batch~32
+(Appendix~\ref{saut:app:source02}); this subsection and
+Appendix~\ref{saut:app:pinned} concern source~01 only.
 
 The delivery consisted of the article source, its PDF and a README; it
 contained no code and no data. The source was renamed \texttt{article.tex}
@@ -2532,6 +4452,76 @@ report also proves. That was accurate before this report was placed; this report
 reprints several of its results (Section~\ref{saut:sec:position}).
 \end{itemize}
 
+\subsection{Source 02: finite symmetry descent}\label{saut:app:source02}
+
+Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing} are built from a
+second manuscript: the archive \texttt{surreal\_finite\_symmetry\_descent},
+manuscript~02 of batch~32 (delivered in commit \texttt{aa268a4}), \emph{Finite
+Symmetry Descent and Real Forms of Gaussian Omnific Integers}, research article
+prepared with ChatGPT for Vladimir Reshetnikov, dated 23 September 2026, 27 pages,
+pinned to repository commit
+\texttt{343dc2c471212bb9b53ff4623bace2e1943f255b}. It was placed in commit
+\texttt{7d04483} as an addition with local number~02 (source~01 counting as~01),
+because it answers the valued case of this report's open real-form
+classification (Section~\ref{saut:sec:questions}). The pin is an ancestor of the
+placement commit, and this report's text did not change between them; the parts of
+\repo{surreal/omnific-preserving-automorphisms} on summation detection and automatic
+strongness were written in parallel and were not in the pinned tree.
+
+\paragraph{Files.} The manuscript source, its PDF and its delivery README are not
+shipped; its text is Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:closing}.
+Shipped byte-identical, with the prefix \texttt{02-finite-symmetry-descent-}: the
+source and proof audit (report root), the build helper and the finite verifier
+(\texttt{code/}), and the verification record, its console copy and the build
+validation record (\texttt{data/}). Those files still use the delivery names
+(\texttt{code/verify\_finite.py}, \texttt{data/verification.json},
+\texttt{finite\_symmetry\_descent.tex}); the README of this directory maps them.
+
+\paragraph{What it contributes, and where the merge chose.}
+\begin{enumerate}[label=(\arabic*)]
+\item Placement: the source's Sections~1--14 are
+Sections~\ref{saut:fs:sec:introduction}--\ref{saut:fs:sec:questions}; its
+Section~15 and Appendices~A--B are Section~\ref{saut:fs:sec:closing}. They follow
+Section~\ref{saut:sec:audit} and precede the appendices, so that no number of
+source~01 changes.
+\item Labels: the source's labels are kept after the prefix \texttt{saut:fs:}, except
+\texttt{eq:surreal-hahn} (the identification \eqref{saut:eq:hahn}, printed once) and
+the section and appendix labels of its closing matter; unlabelled questions, remarks,
+the integer-part definition and several sections received \texttt{saut:fs:} labels.
+\item Printed once, with credit: the pairing criterion and its corollary
+(\lbl{opa:as:thm:detect}, \lbl{opa:as:thm:ctiso}; the Baire proof kept as a further
+route), the reconstruction (\lbl{opa:lem:divisible}, \lbl{odg:def:thm:multiplier},
+\lbl{odg:thm:fractions}), Corollary~\ref{saut:fs:cor:finite-Gaussian}
+(Theorem~\ref{saut:thm:torsion}; the source's route kept), and the definition of strong
+maps (Section~\ref{saut:sec:hahn}, restated for general $k$ and $\Gamma$).
+\item Stale against the current tree, corrected in place and marked \mergetag: the
+source's strongness hypotheses (Proposition~\ref{saut:fs:prop:autostrong} and
+Remark~\ref{saut:fs:rem:gaussianstrong}); its first question, now answered; its
+second question, which is \lbl{opa:as:q:gaussian} and is not repeated as a new
+question; and the second half of Remark~\ref{saut:fs:rem:valuation}. The source's
+statements are kept beside the corrections.
+\item Notation: the renamings of Section~\ref{saut:fs:sec:conventions}.
+\item Bibliography: the entries \cite{Conway,Gonshor,KS,KKS} and the Artin--Schreier
+notes \cite{Conrad} are shared by both sources, and \cite{Poonen,Lang,Wiki} were
+added. The source's four repository entries (this report and the omnific-preserving,
+omnific Diophantine and large-cardinal reports) are cited as collection paths.
+\item Added in the merge: Proposition~\ref{saut:fs:prop:autostrong},
+Remark~\ref{saut:fs:rem:gaussianstrong}, the consequences listed after
+Proposition~\ref{saut:fs:prop:conjugacy} and Corollary~\ref{saut:fs:cor:standard-conj},
+the identification $\mathcal H_{j_\theta}=P_\theta$, the assertion count of
+Section~\ref{saut:fs:sec:verifier}, Section~\ref{saut:fs:sec:relations}, the status
+notes, and items~23--27 of Section~\ref{saut:fs:sec:nonclaims}. Within
+source~01, the title page, the abstract, Sections~\ref{saut:sec:position},
+\ref{saut:sec:realforms}, \ref{saut:sec:questions} and~\ref{saut:sec:nonclaims} and
+Appendix~\ref{saut:app:provenance} received pointers or status notes (marked
+\mergetag\ outside the front matter); no mathematical statement of source~01 was
+changed.
+\end{enumerate}
+The source's own comparison with the collection (its Section~13.2) was read against
+the pinned tree. This report's nonconjugate real form and conjugacy criterion, the
+phase twists and the omnific reconstruction are present there, as it says. The
+automatic-strongness results were not in its tree.
+
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \begin{thebibliography}{99}
@@ -2615,6 +4605,26 @@ opening assessment and implementation notes inspected.
 \bibitem{RepoFine}
 \nolinkurl{Surreal/Algebra/FineDerivative.lean}, snapshot in \cite{Repo}.
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/Surreal/Algebra/FineDerivative.lean}{Pinned source file}.
+\bibitem{Poonen}
+B.~Poonen,
+\emph{Maximally complete fields},
+L'Enseignement Math\'ematique (2) \textbf{39} (1993), 87--106.
+Author's text: \url{https://math.mit.edu/~poonen/papers/amsval.pdf}.
+Lemma~1, Theorem~1 and Corollary~4 are the support, maximality and
+algebraic-closure inputs of source~02.
+
+\bibitem{Lang}
+S.~Lang,
+\emph{Algebra}, 3rd revised ed., Graduate Texts in Mathematics 211,
+Springer, 2002. Transcendence bases, algebraic closures and real closed fields
+(source~02).
+
+\bibitem{Wiki}
+\emph{Surreal number}, Wikipedia,
+\url{https://en.wikipedia.org/wiki/Surreal_number}.
+Supplied with source~02 for orientation, accessed 23 September 2026; not a
+primary proof reference.
+
 \bibitem{ParanVo}
 E.~Paran and T.~N.~Vo,
 \emph{A skew Newton--Puiseux Theorem}, introduction (classical

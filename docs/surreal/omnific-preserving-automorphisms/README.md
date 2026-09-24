@@ -1,17 +1,18 @@
 # Omnific-Preserving Automorphisms
 
 **Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity**
-Merged research report from nine manuscripts written independently and dated
+Merged research report from eleven manuscripts written independently and dated
 23 September 2026: items 02, 04, 08 and 09 of batch 26, placed in `f4c9504`
 (they keep those numbers here); item 05 of batch 28, placed in `c6359e4`
 as an addition and numbered 10 here; items 03, 04 and 05 of batch 30,
-placed in `21375f8` as an addition and numbered 11, 12 and 13 here; and item
-07 of batch 31, placed in `9d28e28` as an addition and numbered 14 here.
-Prepared for Vladimir Reshetnikov.
+placed in `21375f8` as an addition and numbered 11, 12 and 13 here; item
+07 of batch 31, placed in `9d28e28` as an addition and numbered 14 here; and
+items 03 and 08 of batch 32, placed in `7d04483` as additions and numbered 15
+and 16 here. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 104 pages
+article.pdf                                 the compiled report, 139 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
@@ -20,6 +21,8 @@ README.md                                   this guide
 12-automatic-strongness-SOURCE_AUDIT.md     source 12's source, proof and novelty audit, as delivered
 13-omnific-isomorphisms-SOURCE_AUDIT.md     source 13's source, novelty and verification audit, as delivered
 14-automatic-summability-SOURCES.md         source 14's repository snapshot, literature and novelty statement, as delivered
+15-topological-collapse-SOURCE_AUDIT.md     source 15's source, proof and novelty audit, as delivered
+16-coefficient-recovery-SOURCE_AUDIT.md     source 16's source, dependency and novelty audit, as delivered
 code/
   09-omnific-preserving-verify_finite_identities.py   source 09 checks (standard library; prints only)
   09-omnific-preserving-Makefile                      source 09's build/check targets (delivered
@@ -52,6 +55,14 @@ code/
   14-automatic-summability-verify.py                  source 14 checks (standard library; always
                                                       writes ../data/verification.json relative
                                                       to its own directory; no output option)
+  15-topological-collapse-verify.py                   source 15 checks (standard library; writes
+                                                      verification.json beside itself by default)
+  15-topological-collapse-Makefile                    source 15's all/check/clean targets (delivered
+                                                      file names; they do not build this report)
+  16-coefficient-recovery-verify.py                   source 16 checks (standard library; writes
+                                                      verification.json beside itself by default)
+  16-coefficient-recovery-build.py                    source 16's build script (delivered layout; it
+                                                      does not build this report, see below)
 data/
   09-omnific-preserving-verification_output.txt       source 09's recorded run
   04-preserving-automorphisms-verification_report.json  source 04's recorded run (7,062 assertions)
@@ -72,14 +83,21 @@ data/
   13-omnific-isomorphisms-verification.json           source 13's recorded run (13,885 assertions)
   13-omnific-isomorphisms-BUILD_REPORT.json           source 13's build record for its own PDF (no hashes)
   14-automatic-summability-verification.json          source 14's recorded run (four check groups, all passed)
+  15-topological-collapse-verification.json           source 15's recorded run (27,139 assertions)
+  15-topological-collapse-BUILD_AUDIT.json            source 15's build record for its own PDF (no hashes)
+  16-coefficient-recovery-verification.json           source 16's recorded run (1,314 checks)
+  16-coefficient-recovery-build_report.json           source 16's build record, with SHA-256 hashes
+                                                      of seven delivered files
 ```
 
-Every label in `article.tex` carries the prefix `opa:` (316 labels). Source
+Every label in `article.tex` carries the prefix `opa:` (426 labels). Source
 02's part carries the sub-prefix `opa:par:` (43 labels), the material added
 from source 10 carries `opa:sc:` (30 labels), Part III, from sources 11,
-12 and 13, carries `opa:as:` (110 labels, besides `opa:part:as`), and Part IV,
+12 and 13, carries `opa:as:` (110 labels, besides `opa:part:as`), Part IV,
 from source 14, carries `opa:cm:` (29 labels, the part label `opa:cm:part`
-included). These
+included), Part V, from source 15, carries `opa:tc:` (44 labels, with
+`opa:tc:part`), and Part VI, from source 16, carries `opa:cr:` (66 labels, with
+`opa:cr:part`). These
 prefixed labels identify the assembled report; the earlier placed base used
 source-local labels. The batch-28 addition renamed and removed no label and
 changed no existing theorem, section or equation number: its material is
@@ -90,16 +108,24 @@ auxiliary files of the builds before and after it shows all 176 earlier labels
 with unchanged numbers. The batch-31 addition likewise renamed and removed no
 label (287 kept, 29 added); its Part IV (Sections 33–37) sits after Part III and
 before the appendices, and the same comparison shows all 287 earlier labels with
-unchanged numbers. The [formalization ledger](../../FORMALIZATION.md)
+unchanged numbers. The batch-32 addition likewise renamed and removed no label (316
+kept, 110 added: 44 `opa:tc:`, 66 `opa:cr:`); its Parts V (Sections 38–42) and VI
+(Sections 43–52) sit after Part IV and before the appendices, and the auxiliary-file
+comparison shows all 316 earlier labels with unchanged numbers. The
+[formalization ledger](../../FORMALIZATION.md)
 lists this report's statements in its inventory, all **Pending**; its line
-anchors predate the batch-28, batch-30 and batch-31 additions. No implementation mapping
+anchors predate the batch-28, batch-30, batch-31 and batch-32 additions. No implementation mapping
 cites an `opa:` label. The repository now has Lean code constructing the
 omnific rings themselves (`Surreal/Foundations/OmnificIntegers.lean`, for ring
 clauses of the Diophantine report), but none for any statement of this report;
 the earlier sentence here that there was no Lean code about omnific integers
-is out of date.
+is out of date. The Lean congruence and `p`-adic topologies on `Oz`
+(`Surreal/Foundations/OmnificCongruenceTopology.lean`,
+`OmnificSeparationTopology.lean`, recorded under `odg:eq:profinite` in the ledger)
+are instances of Part V's pullback classification (Remark 39.6); nothing of Part V
+or VI is formalized.
 
-## Nine sources, one report
+## Eleven sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -112,6 +138,8 @@ is out of date.
 | **12** | *Automatic Strongness and Proper Embeddings of the Omnific Integers: constant-term duality, full stabilizers, and the surreal–surcomplex boundary* (batch 30, item 04) | `a6c68ac` | Base of the automatic-strongness sections of Part III: scalar detection (Theorem 21.4), the constant-term isomorphism theorem with the weaker hypothesis (Theorem 22.1), automatic strongness of `Aut(Oz)` (Theorem 23.2), the factorization at set size and the Archimedean corollary (Theorem 24.1, Corollary 24.3), adjoints and the general retraction (Theorems 25.2, 25.3, Corollary 25.4), the proper-class functional (Theorem 25.6), the image corollary (Corollary 27.4), regular cardinals (Proposition 31.1). Files prefixed `12-automatic-strongness-`. |
 | **13** | *Automatic Hahn Linearity of Omnific Isomorphisms: residue duality, full stabilizers, and coefficient-drifting self-embeddings* (batch 30, item 05) | `0865f04` | The same main theorems as 12, printed once. Its own additions: the countable binary witness and finite-row lemma (Lemma 21.3, second route in Theorem 21.4, Corollary 21.5), isomorphisms between different, possibly non-divisible groups (Proposition 23.1, Corollary 23.4), the coefficient-matrix formula (Proposition 22.3), constant-term preservation without `Oz`-preservation (Example 23.6), the small-integer-part example (Example 31.2), the failure of pair homogeneity (Corollary 27.5). Files prefixed `13-omnific-isomorphisms-`. |
 | **14** | *Automatic Summability from Omnific Arithmetic: constant-term duality, the full omnific stabilizer, and a sharp set–class distinction* (batch 31, item 07; 24 pages) | `3d40856` | A third derivation of 12's and 13's main theorems, in less generality, printed once with them (14 added to their sources in Part III). Its own material is Part IV (Sections 33–37): the induced-matching route to detection (Lemma 34.1, third route in Theorem 21.4, Corollary 34.2), the cancellation example (Example 34.3), detection in subfields with the countable detector property (Definition 35.1, Proposition 35.2), formal power-series evaluation (Theorem 36.1), the general adjoint matrix (Proposition 36.2), the case `Γ = R` (Remark 36.3), and Question 37.1. Files prefixed `14-automatic-summability-`. |
+| **15** | *Algebraic Rigidity and Topological Collapse of Surreal Arithmetic: Hahn summation, omnific integer topologies, and the discrete-exponent boundary* (batch 32, item 03; archive `Surreal_Arithmetic_Topological_Collapse`; 29 pages) | none; blobs `059939b` (this report's source at `b3fa9e2`) and `60f3b17` (at `20c4c9f`) | All of Part V (Sections 38–42): Hahn-compatible ring topologies on `𝔬 ⊕ Π` for dense `Γ` are the pullbacks along `ct` of ring topologies on `𝔬` (Theorem 39.4); the omnific and field cases (Theorem 39.7, Proposition 39.8, Corollaries 39.9, 39.10); the cyclic boundary for full Hahn fields (Theorem 39.12); a disjoint-row detector with interpolation (Lemma 40.1, Corollary 40.2), the naive-detector example (Example 40.3), the Gaussian ring corollary (Corollary 40.4), the class description of the strong dual of `No` (Proposition 40.5); the pairing topology (Theorems 41.1, 41.3, Corollary 41.2); Questions 42.1–42.6. A fourth derivation of Part III's automatic strongness, printed once there. Files prefixed `15-topological-collapse-`. |
+| **16** | *Recovering Surreal Coefficients from Monomial Extensions: quartic definitions, arbitrary-rank rigidity, and sharp cancellation* (batch 32, item 08; archive `surreal_coefficient_rigidity`; 24 pages) | `1ab41af` | All of Part VI (Sections 43–52): the quartic coefficient definitions (Theorems 45.3, 45.4, 45.7), the sparse power bound (Theorem 46.2), the all-order root locus (Proposition 46.5), arbitrary-monoid coefficient rigidity (Theorem 47.1, Proposition 47.2), group- and monoid-algebra automorphisms (Theorems 48.1, 48.3), the `Hom(G, Z) = 0` criterion (Theorem 49.2, using Lin–Wang), pair reconstruction (Theorem 49.5), finite-rank cancellation and its exact infinite-rank failure (Theorems 50.1, 50.3, 50.4), the boundary examples (Section 51), Questions 52.1–52.10. It generalizes Part II's Theorems 15.1, 15.3, 15.4 and 15.5. Files prefixed `16-coefficient-recovery-`. |
 
 `fb5c4b5` is 12 commits before the placement `f4c9504` and `befe739` is 10
 commits before it. Both pins contain the batch-24 placement `be06fc8`. Neither
@@ -190,6 +218,50 @@ about its delivered files, which are kept byte-identical:
   (accurate at the pin) and states a novelty claim that is stale at the merge
   (see "Stale statements corrected").
 
+Source 15 names no commit. Its "pins" are two **blob** identifiers of this report's
+`article.tex`, read through a connector: `059939b5…` is the file written in `b3fa9e2`
+(batch 28; Question 11.1 still open) and `60f3b172…` the file written in `20c4c9f`
+(batch 30, with Part III); its three audit blobs `050b52f`, `0e4e3a1`, `c4d3939` are
+those placed in `21375f8`. All five were checked against the history. So it saw
+Part III but not Part IV. Its checks, recorded run, build record, Makefile and
+source audit are shipped under the prefix `15-topological-collapse-`; its `.tex`,
+PDF and README are not. Disclosures about its delivered files, kept byte-identical:
+
+- `code/15-topological-collapse-verify.py` was delivered as `verify.py`. It writes
+  `verification.json` beside itself unless `--output` is given (run in place it would
+  create `code/verification.json`, not touching the prefixed record).
+- `code/15-topological-collapse-Makefile` builds `Surreal_Arithmetic_Topological_Collapse.tex`
+  and runs `python3 verify.py`, delivered names not present here; it does not run as-is.
+- `data/15-topological-collapse-BUILD_AUDIT.json` records 15's own 29-page US-Letter
+  PDF and 27,139 assertions; it carries no hashes.
+- `15-topological-collapse-SOURCE_AUDIT.md` describes an incomplete reading of this
+  report (it says the updated article was not read in full), which the merge records
+  in Section 38.1; its statements checked true are listed below.
+
+Source 16 pins `1ab41af` (tree `fba47f2`, which it distinguishes correctly), which
+contains Parts I–III (`20c4c9f`) but not the placement `9d28e28` or write `d4d72d7` of
+source 14. It read 11's and 12's audits and some guides, not this article. Its
+"prior manuscript" is source 02 itself (pin `fb5c4b5`), retrieved separately. Its
+checks, recorded run, build script, build record and source audit are shipped under
+the prefix `16-coefficient-recovery-`; its `article.tex`, PDF, README and
+`SHA256SUMS.txt` are not (the checksum list was verified at placement and dropped).
+Disclosures, files kept byte-identical:
+
+- `code/16-coefficient-recovery-verify.py` (delivered `verify.py`) writes
+  `verification.json` beside itself unless `--output` is given.
+- `code/16-coefficient-recovery-build.py` (delivered `build.py`) creates `build_logs/`
+  beside itself, then runs `verify.py --output verification.json` and `pdflatex
+  article.tex` three times in its own directory, rewriting `article.pdf` and
+  `verification.json` there. Here `verify.py` and `article.tex` are absent under those
+  names, so run in place it creates `code/build_logs/` and stops with "Build failed".
+  Do not run it here.
+- `data/16-coefficient-recovery-build_report.json` records SHA-256 hashes of seven
+  delivered files; all seven were verified. Four are shipped here under prefixed names
+  (`SOURCE_AUDIT.md`, `verify.py`, `verification.json`, `build.py`); `article.tex`,
+  `article.pdf` and `README.md` are not.
+- Its unshipped README gives `python verify.py --output verification.json`, the
+  delivered layout.
+
 **Why one report.** 04, 08 and 09 prove one classification at three
 generalities, with the same consequences:
 
@@ -234,6 +306,9 @@ printed after Theorem 23.2. So its shared results are printed once in Part III
 with 14 added to their sources, and only its genuinely new material forms **Part
 IV** (Sections 33–37; Section 33.2 has the full correspondence table). 14
 contradicts neither this report nor any other.
+
+15 and 16, added in batch 32, form **Parts V and VI**, one part each, since their
+subjects differ (topology of summation; coefficient recovery at arbitrary rank).
 
 **Printed once.**
 
@@ -290,6 +365,23 @@ contradicts neither this report nor any other.
   24.3; Proposition 9.1 as the inverse of Example 4.19 (letters swapped);
   Proposition 10.1 and Theorems 10.2–10.3 as Theorems 30.2 and 30.1; Example 10.4
   as the phase twists of `odg:def:lem:twist`.
+- **Source 15, printed once** (batch 32; its numbering; Section 38.2): Lemma 2.2 as
+  Lemmas 2.1 and 21.1; Theorem 4.2 as Theorem 21.4 (its (iii) allows all countable
+  tests, not only `{0, 1}`-valued ones); Proposition 4.5 as Example 21.6; Theorem
+  5.1 as Theorem 22.1; Proposition 5.3 as a direction of Theorem 25.2; Lemmas
+  6.1–6.2 and Theorem 6.4 as the cited reconstruction, Proposition 23.1 and
+  Corollary 23.4; Lemma 7.1 as `odg:thm:fractions`; Theorem 1.2 and Corollaries
+  7.2, 7.4 as Theorem 23.2; Corollary 7.3 as Corollary 23.5; Theorem 8.1 as
+  Theorem 24.1; Proposition 8.2 as Theorem 3.3 (04's route); Remark 8.3 as Remark
+  24.2; Corollary 8.4 as Corollary 24.3 and Remark 36.3; Example 8.5 as Remark
+  36.4; Theorems 9.2–9.3 as Theorems 30.2 and 30.1; Theorem 10.2, Corollary 10.3
+  and Proposition 10.4 as Proposition 25.1 and Theorems 25.2, 25.6. 15 is added to
+  their sources; it credits 12 and 13 itself.
+- **Source 16, printed once** (batch 32): its Definition 6.1, Proposition 6.2 and
+  Example 6.3 as Definition 12.1, Theorem 13.1, Corollary 13.3 and the workspace
+  of Section 18 (16 added); its Proposition 4.1 as `odg:thm:fractions` and the
+  unit lemmas; its Question 12.8 as Question 19.3. Its generalizations of
+  Theorems 15.1, 15.3, 15.4 and 15.5 are printed as new results in Part VI.
 - **Reproved and cited, not reprinted**: the reconstruction of `R`, `Π`, the
   multiplier ring and `Frac Oz = No` (all three; `odg:`), the convex-support
   criterion (12 by the least forbidden shift, which is 10's route; 13 by the
@@ -337,6 +429,11 @@ extras are printed:
 - 14's induced-matching proof (Lemma 34.1 and the **third route** in Section 34),
   beside those two. It passes to a diagonal submatrix, so the witness has all
   coefficients `1` and nothing is chosen.
+- 15's disjoint-row proof (Lemma 40.1 and the variant of the third route in
+  Section 40): it selects family members with pairwise disjoint supports along the
+  descending sequence, which yields an induced matching, and normalizes the pairings
+  to `1`; the same selection gives prescribed pairings (Corollary 40.2). Its
+  detector has countable support but not `{0, 1}` coefficients.
 
 **Added by the merge**, each tagged `[merge]` with a complete proof:
 
@@ -356,7 +453,15 @@ extras are printed:
   Remark 35.4 (support-bounded fields for every uncountable `κ`, and partial
   information on Question 32.12), Proposition 36.5 (an extension of a ring
   automorphism of `ℛ_Γ` to `K_Γ` is unique), the weakened coefficient hypothesis
-  after Proposition 35.2, and the status notes after Questions 32.12 and 32.14.
+  after Proposition 35.2, and the status notes after Questions 32.12 and 32.14;
+- with 15 and 16 (batch 32): Remark 39.6 (the congruence and `p`-adic topologies
+  of the Diophantine and quotient reports, formalized in Lean, are instances of the
+  pullback classification), the comparison with the foundations report's
+  `found:sub:tsum` in Remark 39.13, the reading of Proposition 40.5 as an answer to
+  the first clause of Question 32.11, the notes after Questions 42.2, 42.6 and
+  52.9, the record that 16 does not answer `odg:def:q:coeffpe` (Section 52.2), the
+  status notes after Questions 11.4, 19.3, 32.1, 32.11, 32.12, 32.18 and 37.1, and
+  pointers after Theorem 15.5 and in Remark 34.4.
 
 **Notation.**
 
@@ -419,7 +524,61 @@ extras are printed:
     monomial `u` is `t`.
   - 14's `≪` is the same relation as `≪` here.
 
-Section 1.5, Section 20.3, Section 33.3 and Appendix A.4 list every renaming.
+- Part V (15) uses the same `t`-convention; Section 38.3 has its table. Traps:
+  - 15's topologies `𝒯, 𝒯_0, 𝒯_β` are `𝔗, 𝔗_0, 𝔗_β`; Part III's `𝒯_{d,δ}` is
+    the Taylor automorphism, and `T`, `T_{<γ}`, `T^1` are maps, not topologies.
+  - 15's `N` is the closure of zero, not the natural numbers; its exponent sets
+    `D, E` are `𝖠, 𝖡` (not derivations, not the flow `ℰ`, not the rings `𝒜`).
+  - 15's corollary "automorphisms invisible to every compatible omnific topology"
+    is Corollary 39.10; it is **not** Corollary 24.4, the algebraic description of
+    what an automorphism does inside `Π`.
+  - 15's `No[i]` is `No(i)` here, the same field; its `ρ = σ|_k` is `α`; its
+    `R_{𝔬,Γ}` is `ℛ_𝔬` with `Γ` only densely ordered.
+- Part VI (16); Section 43.3 has its table. Traps:
+  - **16's `X^g` is an external indeterminate**, written `U^g`; in Part II
+    `X^g = t^{−g} = ω^g` is a Hahn monomial. In `No(U^G)` with `g ≠ 0`, `U^g` is
+    transcendental over `No`, while `ω^g` is a coefficient.
+  - 16's `K_k(G) = Frac k[G]` is `k(U^G)`, not the Hahn field `K_Γ`; its defect
+    group `Δ_k(G)` is `Def_k(G)`, not Part III's target group `Δ`.
+  - 16's `𝒰_∞(B)`, `D(G)`, `𝒟(B)`, `𝒞(B)` are `Rt_∞(B)`, `G_div`, `𝔇(B)`, `𝔆(B)`:
+    not the stabilizer `𝒰`, not a derivation, not `C_δ`, `C(a)` or `c_δ`.
+  - 16's monoids `M, N` are `𝖬, 𝖭`, not monomial maps `M_{χ,τ}`; its `τ ∈ Aut(G)`
+    involves no order and its `χ` need not be positive; its coefficient
+    automorphism `σ` is `α`.
+  - 16's `v, d, w` (auxiliary support minimum, maximum, width) are `min supp`,
+    `max supp`, `wd`, and its `ℓ` is `λ` (not Part II's leading exponent `ℓ(x)`).
+
+Section 1.5, Section 20.3, Sections 33.3, 38.3 and 43.3 and Appendix A.4 list every
+renaming.
+
+### Source 15 (batch 32): topological collapse
+
+| | |
+|---|---|
+| Manuscript | *Algebraic Rigidity and Topological Collapse of Surreal Arithmetic: Hahn summation, omnific integer topologies, and the discrete-exponent boundary*, 23 September 2026, 29 pages; batch 32 item 03, archive `Surreal_Arithmetic_Topological_Collapse` (delivered in `aa268a4`, placed in `7d04483`) |
+| Pin | none; blobs of this report's source at `b3fa9e2` and at `20c4c9f` (it saw Part III, not Part IV) |
+| Contributes | Part V (Sections 38–42), sub-prefix `opa:tc:` (44 labels): Hahn-compatible ring topologies (Definition 39.1) on `𝔬 ⊕ Π`, `Γ` densely ordered, are exactly the pullbacks along `ct` of ring topologies on `𝔬` (Lemmas 39.2–39.3, Theorem 39.4, Corollary 39.5); on `Oz`, `Oz[i]` they see only `Z`, `Z[i]`, never Hausdorff (Theorem 39.7), and countable monomial sums suffice (Proposition 39.8); on `No`, `No(i)` only the indiscrete topology (Corollary 39.9); automorphisms are invisible to them (Corollary 39.10); a set-sized full Hahn field has a Hausdorff one iff `Γ = 0` or `Γ ≅ Z` (Lemma 39.11, Theorem 39.12); the pairing topology realizes exactly the Hahn sums, continuous linear maps are the strong ones, and multiplication is not jointly continuous (Section 41) |
+| Placement | a new Part after Part IV, before the appendices; no existing number changes |
+| Printed once | its algebraic half (Sections 4–10 of 15): detection (Theorem 21.4), transport (Theorem 22.1), reconstruction and set pairs (Proposition 23.1, Corollary 23.4), automatic strongness (Theorem 23.2), monomial determination (Corollary 23.5), factorization (Theorem 24.1), the criterion (Theorem 3.3), rank one (Corollary 24.3, Remark 36.3), the shear (Remark 36.4), Gaussian theorems (Theorems 30.1, 30.2), duality and the class functional (Proposition 25.1, Theorems 25.2, 25.6); 15 added to their sources (Section 38.2 has the table) |
+| Kept as a route | its disjoint-row proof of detection, a variant of 14's induced matching (Lemma 40.1) |
+| New besides topology | interpolation (Corollary 40.2), the naive-detector example (Example 40.3, beside Example 34.3), the Gaussian ring corollary (Corollary 40.4), the class description of the strong dual of `No` (Proposition 40.5), which answers the first clause of Question 32.11 |
+| Renamed symbols | topologies `𝒯 → 𝔗`; closure of zero `N →` the closure of `{0}`; exponent sets `D, E → 𝖠, 𝖡`; `R_{𝔬,Γ} → ℛ_𝔬`; `ρ → α`; `No[i] → No(i)`; its invisibility corollary is Corollary 39.10, **not** Corollary 24.4 (Section 38.3) |
+| Merge additions `[merge]` | Remark 39.6 (the congruence and `p`-adic topologies of the quotient and Diophantine reports, and their Lean formalization, are instances), the comparison with `found:sub:tsum` in Remark 39.13, the note after Question 42.2, the relation after Question 42.6, status notes |
+| Verification | suite rerun on a copy: 27,139 assertions in 14 categories, `passed`; the written record is identical to the shipped one |
+
+### Source 16 (batch 32): coefficient recovery at arbitrary rank
+
+| | |
+|---|---|
+| Manuscript | *Recovering Surreal Coefficients from Monomial Extensions: quartic definitions, arbitrary-rank rigidity, and sharp cancellation*, 23 September 2026, 24 pages; batch 32 item 08, archive `surreal_coefficient_rigidity` (delivered in `aa268a4`, placed in `7d04483`) |
+| Pin | `1ab41af` (contains Parts I–III); its prior manuscript is source 02 (pin `fb5c4b5`) |
+| Contributes | Part VI (Sections 43–52), sub-prefix `opa:cr:` (66 labels): Mason–Stothers and the quartic (Lemmas 45.1–45.2, Theorem 45.3); `∃y (y² = 1 + x⁴)` defines `F` in `F(U^G)` and a denominator-cleared form defines `R` in `R[U^M]` (Theorem 45.4, Corollaries 45.5, 45.8, Theorem 45.7); the sharp bound `n ≤ max(wt P, wt Q) − 1` (Lemma 46.1, Theorem 46.2) and the all-order root locus (Proposition 46.5); coefficient rigidity into every `S[U^M]` (Theorem 47.1) and the intrinsic set `𝔆` (Proposition 47.2); automorphisms of group and divisible-monoid algebras (Theorems 48.1, 48.3, Example 48.4); the `Hom(G, Z) = 0` criterion (Theorem 49.2, via Lin–Wang, Cited theorem 49.1; independent for unbounded-root generators, Proposition 49.3) and pair reconstruction (Theorem 49.5); finite-rank cancellation and its exact failure for `Q^(κ)` (Theorems 50.1, 50.3, 50.4); Hahn, translation and characteristic-`p` boundaries (Section 51) |
+| Placement | a new Part after Part V, before the appendices; no existing number changes |
+| Generalizes | Part II's Theorems 15.1 and 15.3 (to every cancellative torsion-free monoid), 15.4 (to finite rational rank; exact failure at infinite rank, parallel to `R[X_1, X_2] = B[X_2]`), 15.5 (torus part, `GL_q(Z)` to `Aut(G)`) |
+| Printed once | its Proposition 6.2, Definition 6.1, Example 6.3 as Theorem 13.1, Corollary 13.3, Definition 12.1 and the workspace of Section 18 (16 added); its Proposition 4.1 as `odg:thm:fractions` and the unit lemmas; its Question 12.8 as Question 19.3 |
+| Renamed symbols | **16's `X^g` is an external indeterminate, written `U^g` here**; Part II's `X^g = t^{−g} = ω^g` is a Hahn monomial. `K_k(G) → k(U^G)` (not the Hahn field `K_Γ`); `Δ_k(G) → Def_k(G)`; `𝒰_∞ → Rt_∞`; `D(G) → G_div`; `𝒟, 𝒞 → 𝔇, 𝔆`; monoids `M, N → 𝖬, 𝖭`; its coefficient automorphism `σ → α`; `H → G'`; `v, d, w → min supp, max supp, wd`; `ℓ → λ`; `T d/dT → ϑ`; `𝔖_d → Sym(d)` (Section 43.3) |
+| Merge additions `[merge]` | the relation of Question 52.9 to `odg:def:q:realform` and Question 32.1; the record that 16 does not answer `odg:def:q:coeffpe` (Section 52.2); status notes and the pointer after Theorem 15.5 |
+| Verification | suite rerun on a copy: 1,314 checks in 12 categories, `PASS`; the record differs from the shipped one only in `python` (3.14.4 vs 3.13.5) and `elapsed_seconds` |
 
 ## What the report claims
 
@@ -659,10 +818,76 @@ credited there; Part IV adds:
   commuting with conjugation; its phase example is a phase twist already in the
   collection.
 
+Part V (source 15; Sections 38–42). A *Hahn-compatible ring topology* makes
+addition and multiplication (jointly) continuous and every Hahn sum the limit of
+its net of finite partial sums (Definition 39.1); Hausdorffness is not assumed.
+
+- **Theorem 39.4.** For `Γ` densely ordered, any field `k` and unital `𝔬 ⊆ k`, the
+  Hahn-compatible ring topologies on `𝔬 ⊕ Π` are exactly `ct^{−1}(𝔗_0)` for ring
+  topologies `𝔗_0` on `𝔬`; `Π` lies in the closure of zero, none is Hausdorff. The
+  engine is Lemma 39.3: joint continuity and null monomial sequences put every
+  negative monomial in the closure of zero, because a dense interval is not the
+  union of a set without increasing sequences and one without decreasing ones
+  (Lemma 39.2). **Corollary 39.5**: a sum-respecting map into a Hausdorff
+  topological ring factors through `ct`.
+- **Theorem 39.7 and Proposition 39.8.** On `Oz` and `Oz[i]` every such topology is
+  pulled back from `Z` or `Z[i]`; countable monomial sums already force this.
+  **Corollary 39.9**: on `No` and `No(i)` only the indiscrete topology qualifies.
+  **Corollary 39.10**: automorphisms of `Oz` are invisible to every such topology.
+  **Remark 39.6** (merge): the congruence and `p`-adic topologies of the
+  Diophantine and quotient reports (formalized in Lean) are such pullbacks.
+- **Theorem 39.12.** A set-sized full Hahn field `k((t^Γ))` has a Hausdorff
+  Hahn-compatible ring topology iff `Γ = 0` or `Γ ≅ Z` (lexicographic `Z²` is
+  excluded); otherwise every ring topology with null increasing monomial sequences
+  is indiscrete.
+- **Section 40.** A disjoint-row variant of the detection proof (Lemma 40.1),
+  interpolation of prescribed pairings (Corollary 40.2), the failure of the naive
+  all-ones detector (Example 40.3), the Gaussian ring with conjugation (Corollary
+  40.4), and **Proposition 40.5**: the strong `R`-linear functionals on `No` are
+  exactly `Σ c_g t^g ↦ Σ c_g a(g)` for class functions `a` whose support has no
+  strictly increasing sequence; representable by a surreal iff the support is a set.
+- **Section 41.** For set-sized `Γ` and discrete `k`, the weak topology of the
+  pairing realizes exactly the Hahn sums (Theorem 41.1), its continuous linear maps
+  are the strong ones (Corollary 41.2), and its multiplication is separately but not
+  jointly continuous (Theorem 41.3).
+
+Part VI (source 16; Sections 43–52). `F[U^G]` is the finite-support group algebra
+of a torsion-free abelian `G` with external monomials `U^g`, `F(U^G)` its fraction
+field; `F` is real closed or algebraically closed of characteristic zero.
+
+- **Theorems 45.3, 45.4, 45.7.** `b² = 1 + a⁴` has only constant solutions in
+  `k(U^G)` (by Mason–Stothers, Lemma 45.1, and specialization, Lemma 44.3); so
+  `∃y (y² = 1 + x⁴)` defines `F` in `F(U^G)`, and
+  `∃u ∃v (v ≠ 0 ∧ u² = (1 + x⁴)v²)` defines `R` in `R[U^M]` when `Frac R` is closed,
+  for example `Oz`, `Oz[i]`. Embeddings of `No`, `No(i)`, `Oz`, `Oz[i]` land in the
+  coefficients (Corollaries 45.5, 45.8).
+- **Theorem 46.2.** A nonmonomial `P/Q` that is an `n`th power in any monomial
+  extension `L(U^{G'})` has `n ≤ max(wt P, wt Q) − 1`, sharply. **Proposition
+  46.5**: the elements with roots of all orders are `cU^g` with `c` such and `g`
+  in the divisible part of `G`.
+- **Theorem 47.1 and Proposition 47.2.** A root-covered domain embeds into
+  `S[U^M]` only inside `S`, for every cancellative torsion-free monoid; this extends
+  Theorems 15.1 and 15.3 to arbitrary rank.
+- **Theorems 48.1 and 48.3, Example 48.4.** Automorphisms of `R[U^G]` are
+  `Σ a_g U^g ↦ Σ α(a_g) χ(g) U^{τ(g)}` (extending Theorem 15.5); for `Oz`, `Oz[i]`
+  and divisible `G`, `Aut(R[U^G]) ≅ Aut(R) × Aut(G)`; divisible monoids likewise.
+- **Theorem 49.2.** Every field automorphism of `F(U^G)` has that form iff
+  `Hom(G, Z) = 0`, using Lin–Wang's defect theorem (Cited theorem 49.1, an
+  unrefereed preprint); **Proposition 49.3** proves it without that input when `G`
+  is generated by elements of unbounded divisibility. **Theorem 49.5**:
+  `F(U^G) ≅ E(U^{G'})` iff `F ≅ E` and `G ≅ G'` (also via Lin–Wang).
+- **Theorems 50.1, 50.3, 50.4.** At equal finite rational rank every isomorphism
+  `R[U^M] ≅ S[U^N]` maps `R` onto `S` (extending Theorem 15.4); for `Q^(κ)` this
+  holds exactly when `κ` is finite, with explicit absorption counterexamples.
+- **Section 51.** The quartic detector fails in the Hahn field `k((t^Q))`
+  (Example 51.1), `T ↦ T + 1` survives for `G = Z`, and characteristic `p` breaks
+  both the sparse bound and the criterion (Example 51.2).
+
 ## What the report does not claim
 
 Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from
-08, 11 from 02, 18 from 10, 13 from 11, 14 from 12, 12 from 13 and 16 from 14.
+08, 11 from 02, 18 from 10, 13 from 11, 14 from 12, 12 from 13, 16 from 14, 17
+from 15 and 14 from 16.
 In brief:
 
 - Sources 04, 09 and 10 state that nonstrong automorphisms are not classified
@@ -751,6 +976,45 @@ In brief:
     work; no priority is claimed, and global priority is not certified;
   - its finite checks are not proofs; no Lean; its proposed Lean modules are
     plans only; Conway's irreducibility conjectures are not addressed.
+- Source 15 (Part V):
+  - only compatibility with **every** Hahn sum is excluded: ring topologies
+    without the summation requirement are not excluded, and the discrete topology
+    always exists;
+  - **joint** continuity is essential: the pairing topology (Section 41) is
+    Hausdorff, realizes all sums and is only separately continuous;
+  - dense `Γ` is assumed for the ring classification; truncated rings for
+    non-dense groups such as lexicographic `Z²` are open (Question 42.1);
+  - the cyclic case is existence only, not a classification;
+  - the countable-only strengthening needs the positive buffer of the class `No`
+    and fails as a proof for `Γ = Q`;
+  - automatic strongness and its machinery are credited to 12 and 13; the
+    disjoint-row detector is an alternative proof, not a priority claim;
+  - unrestricted Gaussian automatic strongness is not proved; admissibility of
+    monomial prescriptions is not solved; invariance is not definability;
+  - self-duality needs set-sized groups; the detector needs a full Hahn field or
+    enough detectors; the isomorphism argument uses surjectivity;
+  - the pairing topology uses discrete coefficients and is not Flynn–Shamseddine's;
+  - finite checks do not test the infinite covering lemmas or arbitrary
+    topologies; unrefereed, no Lean, priority not certified, its reading of this
+    report incomplete, no repository build.
+- Source 16 (Part VI):
+  - not refereed, no Lean, priority not certified; targeted repository comparison;
+  - no Conway factorization conjecture and no unrestricted automorphism problem is
+    solved; `Aut(No)` and `Aut(No(i))` stay coefficient data;
+  - the general Theorem 49.2 and Theorem 49.5 depend on Lin–Wang's Theorem 4.5, an
+    unrefereed preprint, which is not reproved;
+  - the field formula does not define `Oz` (or `R`) in the pure field `No`; the ring
+    formula lives in `R[U^M]` and needs an inequation;
+  - the set `𝔆` is infinitary; all-order root membership is not first order;
+  - nothing on Gaussian stabilizers, Hahn summation or conjugation: these are
+    finite-support extensions, not Hahn completions;
+  - characteristic zero, domains and cancellative torsion-free monoids only;
+    injectivity is needed; noninjective maps and reduced parameter rings are not
+    treated;
+  - the infinite-rank failure is proved only for `Q^(κ)`;
+  - its classical inputs (Mason–Stothers, sparse multiplicity, units, rank,
+    defect freeness) and 02's framework are not claimed; finite checks are not
+    proofs.
 - No named conjecture is solved. The report is not refereed, has no Lean
   formalization and makes no priority claim. The finite checks test identities
   only.
@@ -789,7 +1053,8 @@ depend on it.
   - 11.3: full relative fixed fields (04). 10's definable-closure question is
     recorded with it.
   - 11.4: generation and exhaustion (04 Q4 with 08 Q1 and 10's generation
-    question).
+    question). 15 asks it again (batch 32); a topology realizing all Hahn sums
+    offers no shortcut, since on `No` every one is indiscrete. Open.
   - 11.5: normal-form data weaker than the omega-map (08). 10 adds that the
     reals, projections and floor do not help, and that simplicity and the
     exponential are not definable either.
@@ -800,8 +1065,10 @@ depend on it.
 - **Questions 32.1–32.18** (Part III): the thirty questions of 11, 12 and 13
   (ten each), merged where they coincide, with 12's and 13's admissibility
   question recorded under 11.2.
-  - 32.1: the unrestricted Gaussian stabilizer (12, 13, 14). Still open; 14
+  - 32.1: the unrestricted Gaussian stabilizer (12, 13, 14, 15). Still open; 14
     proposes `C((t^Q))`, then a rank-two lexicographic group, as first targets.
+    15 notes that compatible topologies cannot help (they are indiscrete on
+    `No(i)`); 16 recovers `No(i)` as a coefficient field but not its conjugation.
   - 32.2: must an embedding `f` of `No` with `f^{−1}(Oz) = Oz` be strong, also
     when `ct ∘ f = ct`, and what survives without strongness (12, 13, 14; 11)?
     **Negative answer under a measurable cardinal**: the large-cardinal report
@@ -823,10 +1090,14 @@ depend on it.
     fixed Hahn core (batch 31 note).
   - 32.9: homogeneity of the pair (12, 13).
   - 32.10: surcomplex embeddings without a real form (11).
-  - 32.11: the proper-class strong dual (12, 14).
-  - 32.12: singular support bounds (12, 13). **Partial information** (batch 31,
+  - 32.11: the proper-class strong dual (12, 14, 15). **First clause answered**
+    (batch 32) by 15's Proposition 40.5: the strong `R`-linear functionals on `No`
+    are exactly the class coefficient functionals whose support meets every
+    well-ordered set finitely. The second clause (which operators have
+    set-supported transposes) is 15's Question 9 and stays open.
+  - 32.12: singular support bounds (12, 13, 15). **Partial information** (batch 31,
     Remark 35.4): the image family is Hahn summable with the right sum; only the
-    size of the union of its supports remains open.
+    size of the union of its supports remains open. 15 asks it again (batch 32).
   - 32.13: other rings and coefficient fields (12, 14, with the merge's clause on
     general `(k, 𝔬)`).
   - 32.14: isomorphisms of small integer parts (13, 14). 14 asks the automorphism
@@ -834,7 +1105,8 @@ depend on it.
     existence stays open.
   - 32.15: exponential, omega-map and differential structure (11, 12, 13).
   - 32.16–32.18: restricted workspaces and compositions (11); formalization
-    (11, 12, 13, 14). For 32.17, image inclusion and intersection inside one
+    (11, 12, 13, 14, 15; 15 proposes formalizing the collapse over abstract
+    ordered monomial systems first). For 32.17, image inclusion and intersection inside one
     independent family with `ρ = id` are settled by `isc:thm:boolean` (batch 31
     status note); composition and the general case stay open.
 - **Question 37.1** (Part IV, 14), new: can the countable detector property be
@@ -842,14 +1114,35 @@ depend on it.
   detection, and which computable or transseries subfields satisfy it? Example
   35.3 shows that some closure is needed. 14's other seven questions are merged
   into 32.1, 32.2–32.3, 32.11, 32.13 (with 11.7), 11.2 (with 11.4), 32.14 and
-  32.18 (Section 37.1).
+  32.18 (Section 37.1). 15 asks it again (batch 32); **partly addressed** by the
+  sufficient condition of Definition 35.1 and Proposition 35.2, open.
+- **Questions 42.1–42.6** (Part V, 15), new: Hausdorff compatible topologies on
+  truncated rings for non-dense groups, first lexicographic `Z²` (42.1); minimal
+  families of countable monomial sums forcing the collapse, answered for the full
+  omnific rings by Proposition 39.8 but open for `Γ = Q` (42.2); maximal summation
+  laws realizable in a valuation topology (42.3); a summation-sensitive tensor
+  framework (42.4); which parts of the summation law must be dropped to separate a
+  chosen set of scales (42.5); definability of summation beyond automorphism
+  invariance (42.6). 15's other six questions are merged into 32.1, 37.1, 32.12,
+  32.11, 11.4 and 32.18 (Section 42.1).
+- **Questions 52.1–52.10** (Part VI, 16), new: intermediate fields between
+  `k(U^G)` and the Hahn field that keep quartic rigidity (52.1); removing the
+  inequation from the ring formula (52.2); refined root certificates (52.3);
+  positive characteristic (52.4); cancellation for nonabsorbing infinite-rank groups
+  (52.5); monoids without divisibility (52.6); coefficient definability for other
+  root-covered domains (52.7); definability of the monomial subgroup (52.8);
+  real-form recovery in larger surcomplex extensions, related to
+  `odg:def:q:realform` and 32.1 (52.9); staged formalization (52.10). 16's Question
+  12.8 is 19.3.
 - **08's Question 2** asked whether `C` is first-order reconstructible from
   the pure ring `Oz[i]`. It is **answered** by `odg:def:cor:internal`, and
   independently by 09's Pell-divisibility route, so it is dropped.
 - **02's questions** are 19.1–19.3. Question 19.2, on formal directions, is
   **partly answered** by Part I: positive-shift derivations preserving `Oz`
   are classified, and those with a common shift set integrate to automorphisms
-  inside `No`. The shift-zero and other cases stay open.
+  inside `No`. The shift-zero and other cases stay open. Question 19.3 (reduced
+  parameter rings) is asked again by 16 (batch 32), whose domain proofs do not
+  reach it; open. Question 19.1 (groups with an order unit) is not addressed by 16.
 
 Questions of other reports (Section 11.1). These are recorded here; the
 other reports were not edited by these merges (the quotient report received a
@@ -876,6 +1169,16 @@ reciprocal status note in batch 31).
   Theorem 27.3 gives proper ring embeddings `Oz → Oz` whose fraction-field
   extensions move a real (Theorem 29.1 explains why the universal multiplier
   definition of `R` is not preserved).
+- **`odg:def:q:coeffpe`** (lower-complexity recovery of `R` or `C` from the
+  integer-part ring): **not answered** by 16 (batch 32). Its quartic formulas
+  recover `R` inside `R[U^M]` and `F` inside `F(U^G)`; with trivial parameters the
+  ring formula is vacuous, and neither defines `Oz` or `R` inside `No`.
+- **The congruence topologies** of `odg:eq:profinite` and of the paragraph after
+  `osq:thm:completions`, and their Lean formalization: **explained**, not changed
+  (batch 32). They are pullbacks along `ct`, hence Hahn-compatible, and by
+  Theorem 39.7 every Hahn-compatible ring topology on `Oz` is such a pullback, so
+  their failure to be Hausdorff is forced (Remark 39.6). The other reports are not
+  edited by this merge.
 
 ## Stale statements corrected
 
@@ -938,11 +1241,26 @@ Appendix A.3 records these.
   multiplier and fraction field, and this report's automorphism rigidity. Their
   claims that no report proves automatic strongness, scalar detection or
   coefficient-moving embeddings are still true. The two wrong statements in their
-  delivered audits are listed above ("Eight sources, one report").
+  delivered audits are listed above ("Eleven sources, one report").
 - **Checked true:**
   - "the catalogue lists 51 reports", at the pins;
   - the antecedents in `saut` and `odg` that the sources name;
   - no report contained an `Oz`-automorphism classification.
+- **15's statements (batch 32).** 15 first answered Question 11.1 itself, then
+  found 12 and 13 and credited them, claiming only the topology; that claim holds
+  at the merge (no report classifies Hahn-compatible ring topologies; the collection
+  had particular topologies only). Its two article blobs and three audit blobs are
+  as it says. Its reading of this report was incomplete (no Part IV, no congruence
+  topologies); that is recorded, not corrected, since it asserts nothing false. No
+  mathematical error was found in 15.
+- **16's statements (batch 32).** Its pin, tree, description of source 02, build
+  hashes and statement that 02's reducible-parameter question is open are
+  accurate. No mathematical error was found in 16; its general criterion rests on
+  Lin–Wang's unrefereed preprint, which was not rechecked.
+- **Status notes (batch 32).** Questions 11.4, 19.3, 32.1, 32.11, 32.12, 32.18 and
+  37.1 carry batch-32 notes; Question 32.11's first clause is marked answered.
+  Pointers were added after Theorem 15.5 and in Remark 34.4. No label, number or
+  earlier sentence was removed.
 
 ## Relation to the neighbouring reports
 
@@ -1005,13 +1323,23 @@ Appendix A.3 records these.
   an automorphism, so Theorem 23.2 stands. Under the same hypothesis it shows that
   14's embedding question (merged into 32.2–32.3) needs hypotheses beyond
   constant-term compatibility and preservation and reflection of `Oz`.
+- [`foundations`](../../foundations-and-computation/foundations/) (`found:`).
+  Its `found:sub:tsum` (with `found:ex:geometric`, `found:ex:archimedean` and the
+  rank-one `found:ex:boundedrankone`) shows that strong summation is not
+  topological summation for particular valuation topologies; Theorem 39.12 is the
+  general form for full Hahn fields: outside `Γ ∈ {0, Z}` no Hausdorff ring topology
+  realizes all Hahn sums (Remark 39.13).
+- The Diophantine and quotient reports' congruence and `p`-adic topologies on `Oz`
+  (`odg:eq:profinite`; the paragraph after `osq:thm:completions`), formalized in
+  `Surreal/Foundations/OmnificCongruenceTopology.lean` and
+  `OmnificSeparationTopology.lean`, are instances of Theorem 39.4 (Remark 39.6).
 
 ## What was run
 
-For the merges all nine suites were rerun on copies, with Python 3.14.4 and
+For the merges all eleven suites were rerun on copies, with Python 3.14.4 and
 SymPy 1.14.0 (10's for the batch-28 addition, 11's, 12's and 13's for the
-batch-30 addition, 14's for the batch-31 addition). Each reproduced its
-recorded result:
+batch-30 addition, 14's for the batch-31 addition, 15's and 16's for the batch-32
+additions). Each reproduced its recorded result:
 
 | Suite | Result |
 |---|---|
@@ -1024,6 +1352,8 @@ recorded result:
 | 12 | 17,774 assertions (10,800 detector, 4,502 adjoint, 2,472 Taylor-block), `PASS`; identical up to line endings |
 | 13 | 13,885 assertions in 16 categories, all passed; identical up to line endings |
 | 14 | four groups, all `passed`: binomial identities to degree 20 for 31 rational parameters (961 multiplication and 31 inverse cases), an induced matching of size 64 on a 256-row banded prefix, 100 adjoint trials with 13 source and 9 target exponents (seed 20260923), cancellation prefixes for 1, 2, 5, 16 and 64 pairs; the written file and the printed report are identical to the shipped record up to line endings |
+| 15 | 27,139 assertions in 14 categories (pairing 700, coefficient extraction 1,431, disjoint rows 3,800, sparse detector interpolation 4,000, cancellation boundary 198, monomial transport 1,050, rank-two Vandermonde 3,000 and inverse 3,000, order reflection 3,003, negative interval 3,081, fixed product 3,081, bounded increasing support 248, valuation non-escape 248, cyclic remainder 299), seed 20260923, `passed`; the written record is identical to the shipped one |
+| 16 | 1,314 checks in 12 categories, seed 20260923, `PASS`; the written record differs from the shipped one only in `python` (3.14.4 against 3.13.5) and `elapsed_seconds` |
 
 The placement dossiers ran further independent checks, which are not shipped:
 
@@ -1045,7 +1375,8 @@ The build uses standard packages only and gives no errors, warnings,
 overfull or underfull boxes, or undefined references. Build in a scratch
 directory; the auxiliary files are not kept here.
 
-Seven of the shipped scripts can write files, so rerun the checks on a copy, outside
+Ten of the shipped scripts can write files (nine check scripts and 16's build
+script), so rerun the checks on a copy, outside
 this directory, and pass `--output` where it is shown:
 
 ```
@@ -1058,7 +1389,12 @@ python 10-support-cut-verify.py --output rerun-10.json              # standard l
 python 11-coefficient-gaps-verify_finite_models.py --output rerun-11.json
 python 12-automatic-strongness-verify.py --output rerun-12.json
 python 13-omnific-isomorphisms-verify.py --output rerun-13.json    # --output is required, see below
+python 15-topological-collapse-verify.py --output rerun-15.json    # standard library
+python 16-coefficient-recovery-verify.py --output rerun-16.json    # standard library
 ```
+
+Do not run `16-coefficient-recovery-build.py`: it is 16's delivered build script and
+expects `verify.py` and `article.tex` beside it.
 
 Source 14's script has no output option and writes `../data/verification.json`
 relative to its own directory, so give it a subdirectory of its own inside a
@@ -1079,6 +1415,13 @@ The scripts write as follows:
   10's script would create `code/verification.json`; it does not touch
   `data/10-support-cut-verification.json`.
 - 11's script prints its report and writes a file only with `--output`.
+- 15's and 16's scripts print their reports and write `verification.json` next to
+  themselves unless `--output` is given; run in place they would create
+  `code/verification.json`, not touching the prefixed records.
+- 16's `build.py` creates `build_logs/` next to itself and then runs `verify.py`
+  and `pdflatex article.tex` three times in its own directory, rewriting
+  `article.pdf` and `verification.json` there; in this report those delivered names
+  are absent, so run in place it would create `code/build_logs/` and stop.
 - 12's script writes `verification.json` next to itself unless `--output` is
   given; run in place it would create `code/verification.json`.
 - 13's script writes `../data/verification.json`, relative to its own
@@ -1092,12 +1435,13 @@ The scripts write as follows:
   `data/14-automatic-summability-verification.json`). On Windows the written file
   has CRLF line endings; it matches the shipped record up to line endings.
 
-The five Makefiles and the build scripts `04-preserving-automorphisms-build.sh`
-and `13-omnific-isomorphisms-build.sh` are shipped as delivered. They name the
-manuscripts' own files (`omnific_automorphisms.tex`, `surreal_embeddings.tex`,
-`article.tex`, `verify.py`, `verify_finite_identities.py`,
-`verify_finite_models.py`, `code/verify.py`), which are not present here under
-those names, so they do not run as-is. The `clean` targets of
+The six Makefiles and the build scripts `04-preserving-automorphisms-build.sh`,
+`13-omnific-isomorphisms-build.sh` and `16-coefficient-recovery-build.py` are
+shipped as delivered. They name the manuscripts' own files
+(`omnific_automorphisms.tex`, `surreal_embeddings.tex`,
+`Surreal_Arithmetic_Topological_Collapse.tex`, `article.tex`, `verify.py`,
+`verify_finite_identities.py`, `verify_finite_models.py`, `code/verify.py`), which
+are not present here under those names, so they do not run as-is. The `clean` targets of
 `10-support-cut-Makefile` and `12-automatic-strongness-Makefile` delete
 auxiliary files named `article.*` in the working directory; do not use them
 here. 13's `build.sh` expects its delivered layout (`code/verify.py` and

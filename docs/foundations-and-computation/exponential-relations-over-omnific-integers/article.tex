@@ -1,0 +1,1707 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,aliascnt}
+\usepackage{enumitem,fancyhdr,xcolor,xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,
+ urlcolor=blue!40!black,pdftitle={Exponential Relations over Omnific Integers},
+ pdfauthor={AI-assisted research manuscript},
+ pdfsubject={Exact toric kernels, decidable fragments, and elementary substructures}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{remark}{remark}{remarks}
+\crefname{question}{research question}{research questions}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\A}{\mathbb A}
+\newcommand{\Qb}{\overline{\mathbb Q}}
+\newcommand{\J}{\mathbb J}
+\newcommand{\M}{\mathfrak M}
+\newcommand{\Ealg}{\mathcal E_{\mathrm{alg}}}
+\newcommand{\Lrat}{\mathcal L_{\mathrm{rat}}}
+\newcommand{\Lalg}{\mathcal L_{\mathrm{alg}}}
+\newcommand{\LPr}{\mathcal L_{\mathrm{Pr}}}
+\newcommand{\Lvec}{\mathcal L_{\A\mathrm{-vec}}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\pp}{\operatorname{pp}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\spanQ}{\operatorname{span}_{\Q}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Th}{\operatorname{Th}}
+\newcommand{\bal}{\operatorname{Bal}}
+\newcommand{\Pure}{\mathsf{Pure}}
+\newcommand{\Int}{\mathsf{Int}}
+\newcommand{\ctgraph}{\mathsf{CT}}
+\newcommand{\repoSHA}{\nolinkurl{958b5c4865819bd55ea1f5ffc050282aea7ef570}}
+\setlist[enumerate]{leftmargin=2em,itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exponential relations over omnific integers}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{2}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.35in}
+{\large\scshape Surreal algebra and model theory\par}
+\vspace{0.3in}
+{\LARGE\bfseries Exponential Relations\par over Omnific Integers\par}
+\vspace{0.24in}
+{\large Exact toric kernels, decidable fragments,\par and one-scale elementary cores\par}
+\vspace{0.32in}
+{23 September 2026\par}
+\vspace{0.35in}
+\begin{minipage}{0.92\textwidth}
+\begin{abstract}
+Let $\J$ be the purely infinite surreals, so that Conway's omnific integers are
+$\Oz=\Z\oplus\J$. On the additive domain $\Ealg=\Qb+\J\subseteq\SC$, define
+$\Exp(a+p)=e^a\exp(p)$. Combining Gonshor's monomial theorem with classical
+Lindemann--Weierstrass gives an injective exponential group-algebra map. We derive
+an exact description of all Laurent-polynomial relations among finitely many
+exponentials, their transcendence degree, and the ordinary complex constants in
+the field they generate.
+
+The principal model-theoretic application concerns omnific-integer variables and
+finite exponential sums with algebraic coefficients, algebraic shifts, and real
+algebraic linear slopes. Their zero relations admit an effective balanced-partition
+elimination. With addition, order, and congruences, the resulting first-order
+language is decidable. Its rational-slope reduct is a definitional expansion of
+Presburger arithmetic. The algebraic-slope structure has a definable decomposition
+into ordinary Presburger integers and a nonzero ordered vector space over the real
+algebraic numbers. We classify all its elementary substructures: they are exactly
+$\Z+W$ for nonzero algebraic-vector subspaces $W\subseteq\J$. In particular,
+$\Z+\A u$ is a countable elementary core for every positive $u\in\J$.
+
+We also prove a rectangular normal form for definable sets, finite-image results
+for maps between the two components, and an undecidability boundary obtained by
+adjoining the single nonlinear relation $\exp(xy)=\exp(z)$. Additional results
+classify certain exponential equations with arbitrary positive real bases by
+ordinary integer fibers and purely infinite linear families. With just one
+irrational scalar-graph predicate, we prove that the theory has exactly the Turing
+degree of the rational cut of its slope.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.92\textwidth}\small
+\textbf{Status and scope.} An AI-assisted, unrefereed research manuscript. Complete
+arguments are supplied relative to explicitly stated classical inputs. The main
+classification, computability, and decidability results are proposed contributions; priority is
+not certified. No named classical conjecture, full surreal exponential theory,
+or unrestricted surcomplex exponential problem is claimed solved. Finite
+verification code is included, but no Lean verification is claimed.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\clearpage
+\section{Introduction and principal results}\label{sec:intro}
+\subsection{A restricted language with an exact answer}
+An omnific integer may contain an arbitrarily complicated set-sized normal form,
+yet some finite exponential questions about omnific integers see only a surprisingly
+small part of that complexity. The point of this article is to identify a language
+in which this observation becomes an exact structural theorem, rather than a
+heuristic about dominant terms.
+
+Write $\A=\Qb\cap\R$ for the ordered field of real algebraic numbers. Every
+$x\in\Oz$ has a unique expression
+\begin{equation}\label{eq:introsplit}
+ x=n+p,\qquad n\in\Z,\quad p\in\J.
+\end{equation}
+Here ``purely infinite'' means that every exponent in the Conway normal form is
+strictly positive, not that the surreal itself is positive. The element $p$ may
+have either sign, and $p=0$ is included. In particular, $\J$ is an ordered
+$\R$-vector space.
+
+Our exponential predicates have the form
+\begin{equation}\label{eq:introF}
+ R_F(x_1,\ldots,x_d)\quad\Longleftrightarrow\quad
+ \sum_{j=1}^{N}c_j\Exp\!\left(b_j+\sum_{k=1}^{d}\alpha_{jk}x_k\right)=0,
+\end{equation}
+where $c_j,b_j\in\Qb$ and $\alpha_{jk}\in\A$. Only the variables $x_k$ are
+quantified, and they range over $\Oz$. The exponential values are not another
+quantified sort. Products of quantified variables, nested exponentials, and order
+comparisons between sums of exponentials are not part of the language.
+
+The notation $\Exp$ in \eqref{eq:introF} requires no global surcomplex
+exponential. Its domain is $\Qb+\J$, and the ordinary complex component is
+algebraic. The precise construction appears in \cref{sec:foundations}.
+
+\subsection{The main conclusions}
+\paragraph{Exact algebraic dependence.}
+For any $z_1,\ldots,z_d\in\Qb+\J$, all algebraic relations over $\Qb$ among
+$\Exp(z_1),\ldots,\Exp(z_d)$ are generated by the integer additive relations
+among the $z_k$. In particular,
+\begin{equation}\label{eq:introtrdeg}
+ \trdeg_{\Qb}\Qb\bigl(\Exp(z_1),\ldots,\Exp(z_d)\bigr)
+ =\dim_{\Q}\spanQ\{z_1,\ldots,z_d\}.
+\end{equation}
+A stronger statement computes the intersection of this field with $\C$ and
+establishes linear disjointness over that intersection
+(\cref{thm:toric,thm:constants}).
+
+\paragraph{Decidability with algebraic slopes.}
+Let $\Lalg$ be ordered additive arithmetic on $\Oz$, with congruence predicates,
+expanded by every predicate \eqref{eq:introF}. Its theory is decidable, uniformly
+for effectively specified algebraic coefficients. After a definable coordinate
+split, every formula becomes a finite union of products of a Presburger-definable
+integer set and an algebraically semilinear set in $\J$
+(\cref{thm:algdecision,thm:rectangles}).
+
+\paragraph{All elementary substructures.}
+A substructure $G\subseteq\Oz$ is elementary for $\Lalg$ if and only if
+\begin{equation}\label{eq:introelementary}
+ G=\Z+W\quad\text{for a nonzero $\A$-vector subspace }W\subseteq\J.
+\end{equation}
+Consequently, every positive purely infinite $u$ gives a countable elementary
+substructure $\Z+\A u$. These are additive, relational structures, not exponential
+subfields or omnific subrings (\cref{thm:elementary,cor:onescale}).
+
+\paragraph{A sharp nonlinear obstruction.}
+The same language becomes undecidable after adjoining the single ternary predicate
+$\exp(xy)=\exp(z)$. This does not depend on an unresolved transcendence conjecture:
+the new predicate recovers multiplication and the old language already defines
+the ordinary integers (\cref{thm:undecidable}).
+
+\paragraph{Exact computational content of one slope.}
+For a language with just the additive structure and the relation
+$\exp(y)=\exp(\alpha x)$, where $\alpha$ is a fixed ordinary real irrational,
+its first-order theory has exactly the Turing degree of the rational cut of
+$\alpha$. It is decidable exactly for computable slopes
+(\cref{thm:degree}).
+
+\subsection{Relation to existing work and the repository}\label{subsec:provenance}
+The Conway normal form, Gonshor exponential, and classical
+Lindemann--Weierstrass theorem are established inputs, not new claims of this
+article \cite{gonshor,mantova,popescu}. Presburger quantifier elimination is also
+classical \cite{cluckers}. The argument is a combination and application of these
+inputs. In particular, the linear-independence lemma itself is a short transport
+argument; the more substantial proposed contribution is the precise language
+analysis, its definable splitting, and the classification of elementary cores.
+
+The repository \texttt{VladimirReshetnikov/Surreal} was inspected at commit
+\repoSHA. Its catalogue describes extensive work on omnific Diophantine geometry,
+set-sized quotients, automorphisms, and initial subgroups \cite{repo-catalogue}.
+The quotient report explicitly uses $\Oz=\Z\oplus\J$, under its notation for the
+purely infinite ideal, and studies much stronger ring-theoretic structures
+\cite{repo-quotients}. The exponential-automorphism report concerns field
+endomorphisms compatible with exponentiation, not the additive relational reduct
+studied here \cite{repo-exp}.
+
+No advanced theorem from those unrefereed reports is needed in the proofs below.
+This avoids making our results conditional on their pending review. The overlap
+is foundational notation and the motivation to distinguish the ordinary constant
+term from the purely infinite component. A targeted repository search for
+``Presburger'' returned no items but explicitly marked its results incomplete;
+that is \emph{not} evidence of absence. Targeted public searches also did not
+identify the precise classification proved here. These bounded searches do not
+establish priority, and the manuscript makes no exhaustive novelty claim.
+
+\section{Normal forms, size conventions, and the exponential domain}\label{sec:foundations}
+\subsection{Class-sized objects and finite assertions}
+We use the standard class of surreal numbers, with each individual surreal a
+set-sized object and each normal form having set-sized support. Statements about
+$\Oz$ as a first-order structure are understood formula by formula. Thus
+$G\preccurlyeq\Oz$ means that every fixed finite first-order formula, with a finite
+tuple of parameters in $G$, has the same truth value in the two structures.
+No set containing all surreals, no class-indexed sum, and no unrestricted
+class-saturation principle is used.
+
+All group algebras and field extensions in the algebraic arguments are formed from
+set-sized subgroups, usually finitely generated ones. Transcendence degree is used
+only for the resulting set-sized fields. The proofs involving the entire $\J$
+are finite algebraic or first-order elimination arguments and therefore also give
+schemes of ordinary set-theoretic assertions.
+
+\subsection{The purely infinite component}
+The normal form of a surreal is
+\begin{equation}\label{eq:normal}
+ x=\sum_{\gamma\in S}r_\gamma\omega^\gamma,
+\end{equation}
+where $S\subseteq\No$ is a set, reverse well ordered, and the nonzero coefficients
+$r_\gamma$ are real. Uniqueness, termwise addition, convolution multiplication, and
+comparison by the leading nonzero term are the facts needed below
+\cite[Chapter~5]{gonshor}; see also \cite[Theorem~2.10]{mantova}.
+Define
+\begin{equation}
+ \J=\{p\in\No:\supp(p)\subseteq\No_{>0}\},\qquad \Oz=\Z\oplus\J.
+\end{equation}
+The empty support represents zero. Finite unions of the relevant supports and the
+usual normal-form multiplication show that $\J$ is an $\R$-vector space and is
+closed under multiplication. Consequently, $\Oz$ is a subring of $\No$.
+The coefficient of $\omega^0$ gives a ring homomorphism $\ct:\Oz\to\Z$.
+Put $\pp(x)=x-\ct(x)$.
+
+\begin{lemma}\label{lem:basic}
+Every nonzero $p\in\J$ satisfies $|p|>r$ for every positive real $r$. In particular,
+$\J\cap\C=\{0\}$ inside $\SC$, and the order on $\Oz$ is lexicographic:
+\begin{equation}\label{eq:lex}
+ n+p<m+q\quad\Longleftrightarrow\quad
+ p<q\ \lor\ (p=q\ \land\ n<m).
+\end{equation}
+The least positive omnific integer is $1$.
+\end{lemma}
+\begin{proof}
+The leading exponent of a nonzero purely infinite normal form is positive. Its
+leading monomial dominates every positive real, and its sign is that of the
+leading coefficient. Apply this to $p-q$ to obtain \eqref{eq:lex}. If a positive
+omnific integer has nonzero purely infinite part, it is larger than every positive
+integer; otherwise it is an ordinary positive integer. The assertion about $\C$
+follows since a real surreal that is an ordinary complex number is real.
+\end{proof}
+
+\begin{proposition}[Division with remainder]\label{prop:division}
+For every ordinary integer $m\geq1$ and $x\in\Oz$, there are unique $y\in\Oz$ and
+$r\in\{0,1,\ldots,m-1\}$ such that $x=my+r$. Moreover,
+\begin{equation}\label{eq:congruence}
+ x\equiv y\pmod m\quad\Longleftrightarrow\quad
+ \ct(x)\equiv\ct(y)\pmod m.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $x=n+p$, write $n=mq+r$ in $\Z$ and take $y=q+p/m$. The space $\J$ is divisible,
+so this is an omnific integer. Applying $\ct$ to two candidate decompositions gives
+ordinary uniqueness of $r$ and of the integer quotient; then the purely infinite
+parts agree as well. The same calculation gives \eqref{eq:congruence}.
+\end{proof}
+
+Together with the ordered abelian group axioms, discreteness and division with
+remainder are the standard axioms of a Presburger group. Thus $(\Oz,+,-,<,0,1,
+(\equiv_m)_{m\geq2})$ is a model of the complete theory of the corresponding
+structure on $\Z$ \cite{cluckers}. Congruence means divisibility in the additive
+group. The map $\ct$ is not order preserving: $\omega-100$ is positive even though
+its constant term is negative.
+
+\subsection{The two transcendence inputs}
+Let $\exp:\No\to\No_{>0}$ denote Gonshor's increasing exponential group
+isomorphism, extending the real exponential. Write
+$\M=\{\omega^\gamma:\gamma\in\No\}$ for the Conway monomial group.
+We use the established identity
+\begin{equation}\label{eq:Gonshor} \exp(\J)=\M. \end{equation}
+This is Gonshor's theorem, not the assertion that $\exp(p)=\omega^p$.
+See \cite[Theorems~10.8--10.13]{gonshor}, as restated in
+\cite[Theorem~2.16]{mantova}. Different purely infinite arguments have different
+monomial exponentials.
+
+The classical Lindemann--Weierstrass theorem, in the form we use, says
+\begin{equation}\label{eq:LW}
+ \begin{gathered}
+ a_1,\ldots,a_s\in\Qb\text{ distinct}\quad\Longrightarrow\\
+ e^{a_1},\ldots,e^{a_s}\text{ are linearly independent over }\Qb.
+ \end{gathered}
+\end{equation}
+The $a_j$ are ordinary complex algebraic numbers. A modern proof of this classical
+result is given in \cite{popescu}. Neither \eqref{eq:Gonshor} nor \eqref{eq:LW} is
+reproved here. All uses of them will be explicit.
+
+\begin{lemma}[Complex coefficients on real monomials]\label{lem:monomial}
+Distinct Conway monomials are linearly independent over $\C$ inside $\SC$.
+\end{lemma}
+\begin{proof}
+Separate the real and imaginary parts of a finite purported dependence. Uniqueness
+of the real Conway normal form makes both coefficients at every monomial zero.
+\end{proof}
+
+\subsection{A canonical restricted surcomplex exponential}
+\begin{definition}\label{def:domain}
+Set $\Ealg=\Qb+\J\subseteq\SC$. For its unique decomposition $z=a+p$, define
+\begin{equation}\label{eq:Expdef} \Exp(z)=e^a\exp(p). \end{equation}
+\end{definition}
+Uniqueness follows from \cref{lem:basic}. This domain is an additive $\Q$-vector
+space. It is not asserted to be a complex algebra or a ring: for example,
+$i\cdot p$ need not belong to it for nonzero $p\in\J$. Its real part
+$\A+\J$ is a subring, and on that real domain \eqref{eq:Expdef} is precisely the
+restriction of Gonshor's exponential.
+
+The map $\Exp$ is a homomorphism from the additive group to $\SC^\times$.
+Only the ordinary complex exponential is used for imaginary parts, and those
+imaginary parts are algebraic and finite. No sine or cosine at an infinite
+imaginary argument is chosen. This limited surcomplex extension is sufficient for
+all coefficients and shifts in \eqref{eq:introF}.
+
+\section{Faithful exponential group algebras}\label{sec:faithful}
+\begin{theorem}[Finite exponential independence]\label{thm:independence}
+If $z_1,\ldots,z_s$ are distinct elements of $\Ealg$, then
+$\Exp(z_1),\ldots,\Exp(z_s)$ are linearly independent over $\Qb$.
+\end{theorem}
+\begin{proof}
+Write $z_j=a_j+p_j$ and suppose
+$\sum_{j=1}^s c_j\Exp(z_j)=0$, where $c_j\in\Qb$. Group the finite sum according to
+the distinct values of $p_j$. This gives
+\begin{equation}\label{eq:grouped}
+ \sum_{p}\left(\sum_{j:p_j=p}c_j e^{a_j}\right)\exp(p)=0.
+\end{equation}
+By \eqref{eq:Gonshor}, the outer factors $\exp(p)$ are distinct Conway monomials.
+Their coefficients are ordinary complex numbers. Hence \cref{lem:monomial} gives
+$\sum_{j:p_j=p}c_j e^{a_j}=0$ for every group. Within a fixed group the $a_j$ are
+distinct, since the original $z_j$ were distinct. Apply \eqref{eq:LW} separately
+to each group to obtain $c_j=0$ for every $j$.
+\end{proof}
+
+\begin{remark}
+The outer sum in \eqref{eq:grouped} is finite. The $p_j$ may individually have
+arbitrary set-sized reverse-well-ordered supports. No exchange of exponentiation
+with an infinite sum is made in the proof; all such analytic-normal-form content
+is confined to the imported theorem \eqref{eq:Gonshor}.
+\end{remark}
+
+\begin{corollary}\label{cor:injective}
+The map $\Exp:\Ealg\to\SC^\times$ is injective. If $z\in\Ealg$ and
+$\Exp(z)\in\Qb$, then $z=0$ and $\Exp(z)=1$.
+\end{corollary}
+\begin{proof}
+Equality of two distinct exponential values, or a relation
+$\Exp(z)-c\Exp(0)=0$ with $z\ne0$, contradicts \cref{thm:independence}.
+\end{proof}
+
+For a set-sized additive subgroup $H\subseteq\Ealg$, the group algebra $\Qb[H]$
+consists of finite sums $\sum c_h[h]$, with $[h][k]=[h+k]$.
+\begin{corollary}[Faithful group algebra]\label{cor:groupalgebra}
+The map
+\begin{equation}
+ \Phi_H:\Qb[H]\longrightarrow\SC,\qquad
+ \sum_h c_h[h]\longmapsto\sum_h c_h\Exp(h)
+\end{equation}
+is an injective $\Qb$-algebra homomorphism.
+\end{corollary}
+\begin{proof}
+Multiplicativity follows from the additive exponential law. Injectivity is
+\cref{thm:independence} after collecting equal group elements.
+\end{proof}
+
+\begin{example}
+The pair $\omega,\sqrt2\,\omega$ is $\Q$-linearly independent even though its
+members lie on one real-linear ray. Consequently their exponentials are
+algebraically independent, even over $\C$, by the next section. The identity
+$\exp(\sqrt2\,\omega)=\exp(\omega)^{\sqrt2}$ does not contradict this: a fixed
+irrational real power is not a polynomial operation.
+\end{example}
+
+\section{Exact toric kernels and ordinary constants}\label{sec:toric}
+\subsection{All finite algebraic relations}
+Fix $z_1,\ldots,z_d\in\Ealg$ and put
+\begin{equation}
+ H=\sum_{k=1}^d\Z z_k,\qquad
+ L=\{\ell\in\Z^d:\ell_1z_1+\cdots+\ell_dz_d=0\}.
+\end{equation}
+The group $H$ is finitely generated and torsion free. The relation lattice $L$ is
+saturated: $m\ell\in L$ for a nonzero integer $m$ implies $\ell\in L$.
+
+\begin{theorem}[Exact toric kernel]\label{thm:toric}
+For the Laurent evaluation map
+\begin{equation}
+ \operatorname{ev}_z:\Qb[X_1^{\pm1},\ldots,X_d^{\pm1}]\to\SC,
+ \qquad X_k\longmapsto\Exp(z_k),
+\end{equation}
+one has
+\begin{equation}\label{eq:torickernel}
+ \ker(\operatorname{ev}_z)=(X^\ell-1:\ell\in L).
+\end{equation}
+Its image is isomorphic to $\Qb[H]$. If
+$r=\dim_\Q\spanQ\{z_1,\ldots,z_d\}$, then the image is a Laurent polynomial algebra
+in $r$ variables, and
+\begin{equation}\label{eq:trdeg}
+ \trdeg_{\Qb}\Qb\bigl(\Exp(z_1),\ldots,\Exp(z_d)\bigr)=r.
+\end{equation}
+For ordinary polynomial evaluation, the kernel is generated by all
+$X^u-X^v$ with $u,v\in\N^d$ and $u-v\in L$.
+\end{theorem}
+\begin{proof}
+Send $X^u$ to $[\sum u_kz_k]$. This gives a surjection from the Laurent algebra to
+$\Qb[H]$. Composing it with the injective map in \cref{cor:groupalgebra} is exactly
+$\operatorname{ev}_z$. A Laurent polynomial $\sum c_uX^u$ lies in its kernel if and
+only if the sum of its coefficients in every coset of $L$ is zero. In each finite
+coset group, choose one exponent $u_0$. The corresponding polynomial is then a
+linear combination of $X^u-X^{u_0}$, each of which is the Laurent unit $X^{u_0}$
+times $X^{u-u_0}-1$. This proves \eqref{eq:torickernel}.
+
+Choose a $\Z$-basis of the free group $H$. Its cardinality is $r$, and its group
+algebra is $\Qb[T_1^{\pm1},\ldots,T_r^{\pm1}]$. Taking fraction fields gives
+\eqref{eq:trdeg}. The same coefficient-grouping argument for a polynomial, using
+only its nonnegative exponent vectors, proves the final assertion directly.
+\end{proof}
+
+\begin{corollary}[Independence criterion]\label{cor:algind}
+A finite family in $\Ealg$ is $\Q$-linearly independent if and only if its
+exponentials are algebraically independent over $\Qb$. In particular, this holds
+for every finite family of omnific integers.
+\end{corollary}
+
+A $\Z$-basis of $L$ suffices to generate the Laurent ideal in
+\eqref{eq:torickernel}: use $X^{u+v}-1=X^u(X^v-1)+(X^u-1)$ and the analogous
+identity for $-u$. This makes the theorem constructive \emph{when a relation
+lattice is supplied}. It is not an algorithm for discovering all rational
+relations among arbitrary, uncoded surreal inputs.
+
+\subsection{Exactly which standard complex numbers occur}
+Let
+\begin{equation}
+ \begin{gathered}
+ H_0=H\cap\C=H\cap\Qb,\\
+ K=\Qb\bigl(\Exp(h):h\in H_0\bigr),\qquad
+ F=\Qb\bigl(\Exp(h):h\in H\bigr).
+ \end{gathered}
+\end{equation}
+The second description of $H_0$ follows from $\J\cap\C=0$.
+
+\begin{theorem}[Constant field and linear disjointness]\label{thm:constants}
+The fields $F$ and $\C$ are linearly disjoint over $K$, and
+\begin{equation}\label{eq:constantfield} F\cap\C=K. \end{equation}
+If $s$ is the $\Q$-rank of the purely infinite parts of $z_1,\ldots,z_d$, then
+\begin{equation}
+ \trdeg_{\C}\C\bigl(\Exp(z_1),\ldots,\Exp(z_d)\bigr)=s.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The subgroup $H_0$ is saturated in $H$: if a nonzero integer multiple of $h$ has
+zero purely infinite part, then $h$ has zero purely infinite part. Thus $H/H_0$ is
+finitely generated torsion free, hence free, and the exact sequence splits.
+Choose a basis of $H_0$ and elements $h_1,\ldots,h_s$ representing a basis of a
+complement. The purely infinite parts $p_1,\ldots,p_s$ of these $h_j$ are
+$\Q$-linearly independent. Put $t_j=\Exp(h_j)$.
+
+For distinct integer exponent vectors $u$, the purely infinite elements
+$\sum u_jp_j$ are distinct. A finite Laurent-polynomial relation in the $t_j$ with
+complex coefficients therefore becomes a relation among distinct Conway
+monomials, with each coefficient multiplied by a nonzero ordinary exponential.
+By \cref{lem:monomial} all coefficients vanish. Hence $t_1,\ldots,t_s$ are
+algebraically independent over $\C$, not merely over $K$.
+
+We have $F=K(t_1,\ldots,t_s)$. The map
+$\C\otimes_K K[t_1,\ldots,t_s]\to\C[t_1,\ldots,t_s]$ is an isomorphism, and
+localizing at the nonzero polynomials over $K$ stays injective in
+$\C(t_1,\ldots,t_s)$. This is linear disjointness. If $c\in F\cap\C$ but
+$c\notin K$, the $K$-independent pair $1,c$ would be linearly dependent over $\C$,
+a contradiction. The transcendence-degree statement follows from the same
+algebraic independence and the chosen complement.
+\end{proof}
+
+\begin{corollary}[The omnific constant-field formula]\label{cor:ozconstants}
+For $x_1,\ldots,x_d\in\Oz$, let $H=\sum\Z x_k$ and write
+$H\cap\Z=g\Z$ with $g\geq0$. Then
+\begin{equation}
+ \Qb(\exp x_1,\ldots,\exp x_d)\cap\C
+ =\begin{cases} \Qb,&g=0,\\ \Qb(e^g),&g>0. \end{cases}
+\end{equation}
+\end{corollary}
+
+\begin{example}[A hidden ordinary exponential]
+For $x_1=\omega$ and $x_2=2\omega+1$, the arguments are $\Q$-linearly independent,
+so their exponentials are algebraically independent over $\Qb$. Nevertheless,
+\begin{equation}
+ \frac{\exp(2\omega+1)}{(\exp\omega)^2}=e.
+\end{equation}
+Their generated field is $\Qb(e,\exp\omega)$ and its intersection with $\C$ is
+exactly $\Qb(e)$.
+\end{example}
+
+\begin{example}[An algebraic extension need not be present]
+For $x_1=\omega$, $x_2=\omega+2$, the corresponding intersection is
+$\Qb(e^2)$, not $\Qb(e)$. Indeed, $e$ is transcendental and
+$T\notin\Qb(T^2)$: the automorphism $T\mapsto-T$ fixes the latter field but not
+$T$. The existence of a square root in the ambient surcomplex field does not force
+that root to belong to a specified subfield.
+\end{example}
+
+\begin{example}[Finite coefficients do not automatically become constants]
+For $x_1=\omega+1$ and $x_2=\sqrt2\,\omega$, their purely infinite parts are
+$\Q$-linearly independent. The ordinary complex constants in the generated field
+are exactly $\Qb$, even though $\exp(x_1)=e\exp(\omega)$ visibly contains an ordinary
+transcendental coefficient in its normal form.
+\end{example}
+
+\section{Balanced partitions eliminate finite exponential equations}\label{sec:partitions}
+\begin{definition}
+For coefficients $c=(c_1,\ldots,c_N)\in\Qb^N$, a partition $\mathcal P$ of
+$\{1,\ldots,N\}$ is \emph{balanced} if $\sum_{j\in B}c_j=0$ for every block
+$B\in\mathcal P$. Denote the finite set of balanced partitions by $\bal(c)$.
+\end{definition}
+
+\begin{theorem}[Balanced-partition elimination]\label{thm:partition}
+For any $z_1,\ldots,z_N\in\Ealg$ and $c_1,\ldots,c_N\in\Qb$,
+\begin{equation}\label{eq:partition}
+ \sum_{j=1}^{N}c_j\Exp(z_j)=0
+ \quad\Longleftrightarrow\quad
+ \bigvee_{\mathcal P\in\bal(c)}
+ \ \bigwedge_{B\in\mathcal P}\ \bigwedge_{j\in B}(z_j=z_{b(B)}),
+\end{equation}
+where $b(B)$ is a fixed representative of $B$. No inequalities between different
+blocks are required.
+\end{theorem}
+\begin{proof}
+Partition the indices according to their actual equal exponent values. By
+\cref{thm:independence}, the exponential sum vanishes if and only if the
+coefficient sum in every actual equality class is zero. This actual partition
+then occurs on the right of \eqref{eq:partition}.
+
+Conversely, if a right-hand conjunction holds, each block contributes zero:
+\[\Exp(z_{b(B)})\sum_{j\in B}c_j=0.\]
+Adding these finitely many zeros gives the
+left side. Distinct chosen blocks may have equal exponent values; their zero
+contributions simply coalesce. This explains why no cross-block disequality is
+needed.
+\end{proof}
+
+For $N=0$ the sum is zero, and the right side is the true empty conjunction
+associated with the empty partition. A nonempty list with no balanced partition
+gives false. Zero coefficients may be deleted or allowed as singleton blocks.
+
+\begin{corollary}[Affine exponential zero loci]\label{cor:affine}
+The zero set in $\Oz^d$ of \eqref{eq:introF} is a finite union of sets defined by
+finite systems of algebraic-affine linear equations. The union and those systems
+are effectively obtainable from the algebraic coefficients, shifts, and slopes.
+\end{corollary}
+\begin{proof}
+Every affine exponent lies in $\Ealg$. Apply \cref{thm:partition}, and replace each
+within-block equality by
+\begin{equation}\label{eq:lineareq}
+ \sum_k(\alpha_{jk}-\alpha_{b(B)k})x_k+(b_j-b_{b(B)})=0.
+\end{equation}
+Algebraic addition and equality decide balance exactly. No exponential constant
+has to be approximated numerically.
+\end{proof}
+
+\begin{remark}[An effective transcendence application]
+Classical Lindemann--Weierstrass justifies a symbolic identity test. The algorithm
+does not search for a numerical lower bound separating nearly equal exponential
+sums. Even with ordinary complex exponentials, zero testing reduces to algebraic
+coefficient sums and affine exponent equality.
+\end{remark}
+
+\subsection{Worked equations}
+\begin{proposition}\label{prop:examples}
+For omnific-integer variables the following equivalences hold:
+\begin{align}
+ \exp x+\exp y=2&\quad\Longleftrightarrow\quad x=y=0;\label{eq:sum2}\\
+ \exp x+\exp y=\exp u+\exp v
+ &\quad\Longleftrightarrow\quad
+ (x=u\land y=v)\lor(x=v\land y=u);\label{eq:pairs}\\
+ \exp(x+y)-\exp x-\exp y+1=0
+ &\quad\Longleftrightarrow\quad x=0\lor y=0.\label{eq:factor}
+\end{align}
+More generally, equality of two finite sums of unit-coefficient exponentials is
+equivalent to equality of the multisets of their exponents, including
+multiplicities.
+\end{proposition}
+\begin{proof}
+For \eqref{eq:sum2}, the coefficient list $(1,1,-2)$ has no proper nonempty
+zero-sum subset; all three exponents $x,y,0$ must agree. For the multiset assertion,
+group equal exponents and apply \cref{thm:independence}; the net integer
+multiplicity in each group is zero. This gives \eqref{eq:pairs}. Finally, the left
+side of \eqref{eq:factor} is $(\exp x-1)(\exp y-1)$ in a field. The factors vanish
+exactly at zero by injectivity. Alternatively \cref{thm:partition} yields the
+same alternatives.
+\end{proof}
+
+The conclusion in \eqref{eq:sum2} is special to the prescribed exponent domain;
+it is false over all real arguments. A positive real $t\ne1$ with $t<2$ gives
+real exponents $\log t,\log(2-t)$. Such logarithmic constants need not belong to
+$\A+\J$.
+
+\section{The languages and the rational-slope theorem}\label{sec:rational}
+\subsection{Formal syntax and effective input}
+The base language is
+\begin{equation}
+ \LPr=\{+,-,<,0,1,(\equiv_m)_{m\geq2}\}.
+\end{equation}
+All its function symbols act on the sole domain $\Oz$. The language $\Lalg$
+adds one relation symbol $R_F$ for each finite specification
+\eqref{eq:introF}; its coefficients and shifts are ordinary complex algebraic
+numbers and its slopes are real algebraic numbers. The sublanguage $\Lrat$ uses
+only rational slopes, while retaining algebraic coefficients and algebraic shifts.
+
+An effective algebraic-number code consists, for example, of a defining rational
+polynomial and a root-isolating interval or complex rectangle. Standard algebraic
+number arithmetic decides validity, equality, field operations, realness, and the
+sign of real algebraic numbers. A finite family can be embedded effectively in one
+number field and expressed in a rational basis. These are the algebraic
+computations used by the decision procedure. They can equivalently be included as
+an exact algebraic-number subroutine specification; standard algorithms are treated in \cite{cohen}.
+
+Ordinary integer parameters are terms in $1$. Arbitrary surreal constants are not
+part of the effective input alphabet. Semantic results with arbitrary finite
+parameter tuples will be stated separately; they do not imply an algorithm for
+reading arbitrary surreal normal forms.
+
+\subsection{Reduction to Presburger arithmetic}
+\begin{lemma}\label{lem:rationalaffine}
+For rational $q_1,\ldots,q_d$ and algebraic $b\in\Qb$, the relation
+\begin{equation}
+ q_1x_1+\cdots+q_dx_d+b=0,\qquad x_k\in\Oz,
+\end{equation}
+is either empty or is definable by one integer-affine equation in $\LPr$.
+This distinction and the equation are effective.
+\end{lemma}
+\begin{proof}
+The rational combination of the $x_k$ belongs to $\Q+\J$. If it equals the
+ordinary algebraic number $-b$, its purely infinite part vanishes and $b$ is
+rational. Thus for nonrational $b$ there are no solutions. If $b$ is rational,
+clear all denominators. The resulting equation uses only integer multiples,
+addition, and an ordinary integer constant, which are terms of $\LPr$.
+\end{proof}
+
+\begin{theorem}[Rational slopes add no Presburger expressive power]\label{thm:rational}
+Every $\Lrat$-formula translates effectively to an equivalent $\LPr$-formula on
+$\Oz$. Consequently its theory is decidable and
+\begin{equation}\label{eq:Zelementary}
+ (\Z,\Lrat)\preccurlyeq(\Oz,\Lrat),
+\end{equation}
+where the predicates on $\Z$ are obtained by the same exponential interpretation.
+\end{theorem}
+\begin{proof}
+Use \cref{thm:partition} to eliminate every exponential predicate and
+\cref{lem:rationalaffine} on each resulting affine equality. Leave the Boolean
+connectives and quantifiers unchanged. This is a formula-by-formula translation,
+so it applies to arbitrary alternations of quantifiers, not just existential
+sentences.
+
+The base structures on $\Z$ and $\Oz$ satisfy the complete Presburger theory.
+The inclusion of $\Z$ preserves its quantifier-free language, including congruences
+by \eqref{eq:congruence}. Presburger quantifier elimination therefore makes this
+inclusion elementary. Applying the translation proves \eqref{eq:Zelementary}.
+The same elimination decides sentences effectively \cite{cluckers}.
+\end{proof}
+
+\begin{remark}
+The theory contains order \emph{on the omnific variables}, not order comparisons
+between exponential sums. Nor does the use of a rational slope declare division
+to be a total function on $\Oz$. Rational multiplication is used only in the
+ambient affine exponent, and the final relations are expressed after clearing
+denominators.
+\end{remark}
+
+\section{Algebraic slopes and effective two-sort elimination}\label{sec:algebraic}
+\subsection{Splitting every linear equation}
+\begin{lemma}[Algebraic coordinate splitting]\label{lem:split}
+Let $\alpha_k\in\A$ and $b\in\Qb$. Write $x_k=n_k+p_k$ as in
+\eqref{eq:introsplit}. Then
+\begin{equation}\label{eq:splitlinear}
+ \sum_k\alpha_kx_k+b=0
+ \quad\Longleftrightarrow\quad
+ \left(\sum_k\alpha_kp_k=0\right)
+ \land\left(\sum_k\alpha_kn_k+b=0\right).
+\end{equation}
+The second conjunct is effectively equivalent to a finite system of integer-affine
+equations in the $n_k$.
+\end{lemma}
+\begin{proof}
+The first sum on the right is in $\J$; the second is an ordinary complex number.
+Their intersection is zero, so the split is exact. Let $B$ be a number field
+containing the finitely many $\alpha_k$ and $b$, and choose a rational basis
+$\beta_1,\ldots,\beta_t$ of $B$. Write
+$\alpha_k=\sum_h a_{hk}\beta_h$ and $b=\sum_h b_h\beta_h$ with rational
+coordinates. The ordinary equation is equivalent to
+$\sum_k a_{hk}n_k+b_h=0$ for every $h$. Clear denominators in each equation.
+\end{proof}
+
+Coefficients in a number-field basis are \emph{fixed rational numbers}; they are
+not new quantified variables. This step introduces no multiplication of integer
+variables.
+
+\subsection{Quantifier elimination for the vector component}
+Let $\Lvec$ be the language of ordered abelian groups with a unary scalar map
+$\lambda_\alpha$ for every $\alpha\in\A$. The intended structures are nonzero
+ordered $\A$-vector spaces. No scalar-field sort is quantified.
+
+\begin{lemma}[Ordered vector-space elimination]\label{lem:vectorQE}
+The theory of nonzero ordered $\A$-vector spaces has quantifier elimination and
+is complete and decidable. Every order-preserving $\A$-linear embedding between
+such spaces is elementary.
+\end{lemma}
+\begin{proof}
+All terms are affine linear expressions in vector variables with fixed algebraic
+scalar coefficients and, when parameters are allowed, fixed vector parameters.
+To eliminate one existential variable, put the quantifier-free formula into a
+finite disjunction of conjunctions. Replace a disequality by its two strict-order
+alternatives, and a weak inequality by its equality and strict-order alternatives.
+It is enough to eliminate $y$ from a conjunction of linear equalities and strict
+inequalities.
+
+If an equality has a nonzero coefficient of $y$, solve it uniquely for $y$ and
+substitute in the other conditions. If no equality has such a coefficient,
+retain the equalities independent of $y$. After dividing by nonzero coefficients
+and reversing inequalities when their coefficients are negative, every remaining
+condition involving $y$ is $a_i<y$ or $y<b_j$. Existence is equivalent to all
+$a_i<b_j$ when both kinds of bound occur. For finitely many such bounds, take the
+maximum lower bound and minimum upper bound; their midpoint is a witness. With
+only lower bounds or only upper bounds, unboundedness gives a witness. With no
+bounds, nonemptiness suffices. Ordered nonzero vector spaces are dense and have
+no endpoints, since halving a positive difference and adding a positive vector
+are available.
+
+This proves effective elimination of one variable. Induction eliminates all
+quantifiers. Scalar arithmetic, equality, and signs in $\A$ are decidable. A
+parameter-free quantifier-free sentence has only the vector constant zero, so its
+truth is independent of the particular nonzero ordered vector space. This gives
+completeness and decidability. Finally, a linear order embedding preserves every
+quantifier-free formula, hence every formula by elimination.
+\end{proof}
+
+This elementary proof is the linear case of the general ordered-vector-space
+setting studied in the literature on linear o-minimal structures
+\cite{loveys-peterzil}. It also explains why different vector-space dimensions or
+Archimedean ranks need not be distinguished by first-order sentences in this
+language: scalars are named operations, not quantified elements of a field sort.
+
+\subsection{The translation theorem}
+\begin{theorem}[Effective two-sort reduction]\label{thm:algdecision}
+Every $\Lalg$-formula on $\Oz$ translates effectively, under $x_k=n_k+p_k$, into
+a formula in the disjoint two-sorted structure
+\begin{equation}\label{eq:twosort}
+ (\Z,\LPr)\ \sqcup\ (\J,\Lvec).
+\end{equation}
+The theory of $(\Oz,\Lalg)$ is decidable. The translated formulas admit effective
+quantifier elimination in the two-sorted language.
+\end{theorem}
+\begin{proof}
+First replace each exponential atom by \cref{thm:partition}. Apply
+\cref{lem:split} to the resulting algebraic-affine equalities. This yields
+conjunctions of Presburger equations in $n$ and vector equations in $p$.
+
+For base-language atoms, addition and negation split coordinatewise, constants
+$0,1$ become $(0,0),(1,0)$, congruence is given by \eqref{eq:congruence}, and order
+is given by \eqref{eq:lex}. For example,
+\begin{equation}
+ x_1+2x_2<3\quad\Longleftrightarrow\quad
+ p_1+2p_2<0\ \lor\
+ (p_1+2p_2=0\land n_1+2n_2<3).
+\end{equation}
+Equality splits into equality of both coordinates. Replace an existential
+quantifier over $x$ by $\exists n\in\Z\,\exists p\in\J$, and a universal quantifier
+by the corresponding pair of universal quantifiers. The bijection
+\eqref{eq:introsplit} proves the translation correct by induction on formulas.
+
+Every atomic formula of the result belongs to exactly one of the two sorts.
+Finite Boolean combinations can be put into a finite disjunction of formulas
+$A(n)\land B(p)$. To eliminate an integer variable, distribute its existential
+quantifier over this disjunction and use Presburger elimination in $A$; $B$ does
+not involve that variable. Eliminate a vector variable in the same way using
+\cref{lem:vectorQE}. Universal quantifiers are handled by negation. This terminates
+for any fixed finite input formula. For a sentence, the final truth value is
+effectively determined. No bound on computational efficiency is asserted.
+\end{proof}
+
+\begin{example}[An irrational equation separates the coordinates]
+The relation
+\begin{equation}\label{eq:sqrt2example}
+ \Exp(y)=\Exp(\sqrt2\,x),\qquad x,y\in\Oz,
+\end{equation}
+is equivalent to $y=\sqrt2\,x$. Its coordinate conditions are
+$p_y=\sqrt2\,p_x$ and $n_y-\sqrt2\,n_x=0$. Expanding in the rational basis
+$1,\sqrt2$ forces $n_y=n_x=0$. Thus \eqref{eq:sqrt2example} describes a scalar
+map on purely infinite elements and cannot have a nonzero ordinary integer input.
+This observation is the key to the next section.
+\end{example}
+
+\section{Definable coordinates and a normal form for all definable sets}\label{sec:definable}
+\subsection{Recovering the integer and purely infinite sorts internally}
+\begin{theorem}[Definable splitting]\label{thm:defsplit}
+In $(\Oz,\Lalg)$ the subsets $\J$ and $\Z$, and the graph of $\ct$, are
+parameter-free definable. Explicit definitions are
+\begin{align}
+ \Pure(x)&\quad:\Longleftrightarrow\quad
+ \exists y\,\bigl(\Exp(y)=\Exp(\sqrt2\,x)\bigr),\label{eq:Pure}\\
+ \Int(x)&\quad:\Longleftrightarrow\quad
+ \forall p\,\bigl(\Pure(p)\land p>0\ \Longrightarrow\ -p<x<p\bigr),\label{eq:Int}\\
+ \ctgraph(x,n)&\quad:\Longleftrightarrow\quad
+ \Int(n)\land\Pure(x-n).\label{eq:CT}
+\end{align}
+For every $\alpha\in\A$, the scalar action on $\J$ is definable by
+\begin{equation}\label{eq:scalardef}
+ \Pure(p)\land\Pure(q)\land\bigl(\Exp(q)=\Exp(\alpha p)\bigr).
+\end{equation}
+Consequently the structure is definably equivalent to the two-sorted structure
+\eqref{eq:twosort}, with reconstruction map $(n,p)\mapsto n+p$.
+\end{theorem}
+\begin{proof}
+By injectivity, the witness in \eqref{eq:Pure} must be $y=\sqrt2\,x$. For
+$x=n+p$, this is an omnific integer exactly when $\sqrt2\,n\in\Z$, which happens
+exactly for $n=0$. Thus \eqref{eq:Pure} defines $\J$.
+
+An ordinary integer is strictly between $-p$ and $p$ for every positive
+$p\in\J$, by \cref{lem:basic}. Conversely, if $x=n+p_0$ and $p_0\ne0$, take
+$p=|p_0|/2\in\J_{>0}$. The leading purely infinite comparison gives
+$|x|>p$, so \eqref{eq:Int} fails. Hence it defines exactly $\Z$.
+The unique decomposition \eqref{eq:introsplit} now proves \eqref{eq:CT}.
+Equation \eqref{eq:scalardef} is the graph $q=\alpha p$, again by injectivity.
+
+The induced ordered additive structure on the integer sort is Presburger
+arithmetic, and on the pure sort we have all ordered $\A$-vector operations.
+\Cref{thm:algdecision} defines every original relation from these two sorts.
+Conversely \eqref{eq:Pure}--\eqref{eq:scalardef} and the inherited group operations
+define the two sorts and their coordinate projections in the original structure.
+The forward and reverse constructions compose via the definable bijection
+$(n,p)\mapsto n+p$. This proves the stated equivalence, including the definable
+identification of each composition with the original structure.
+\end{proof}
+
+\begin{remark}
+Definability of ordinary $\Z$ does not by itself imply undecidability. Here its
+induced structure contains addition and order but not multiplication. The explicit
+reduction proves that no hidden integer multiplication is supplied by the
+exponential-equality predicates.
+\end{remark}
+
+\subsection{Rectangular normal form and orthogonality}
+Call a subset of $\J^d$ \emph{$\A$-semilinear} if it is a finite Boolean combination
+of affine linear equalities and inequalities with scalar coefficients in $\A$
+and fixed vector parameters in $\J$. Equivalently, it is a finite union of sets
+specified by finite systems of such conditions.
+
+\begin{theorem}[Rectangular normal form]\label{thm:rectangles}
+Every $\Lalg$-definable set $X\subseteq\Oz^d$, allowing a finite tuple of parameters,
+has a description
+\begin{equation}\label{eq:rectangles}
+ X=\bigcup_{j=1}^{r}
+ \{n+p:n\in A_j\subseteq\Z^d,\ p\in B_j\subseteq\J^d\},
+\end{equation}
+where $A_j$ is Presburger definable and $B_j$ is $\A$-semilinear. The parameters
+needed in the $A_j$ are ordinary integer coordinates of the original parameters;
+the vector parameters needed in the $B_j$ are their purely infinite coordinates.
+Conversely every set of the form \eqref{eq:rectangles} is $\Lalg$-definable.
+\end{theorem}
+\begin{proof}
+Treat the original parameters as additional free variables during the translation
+in \cref{thm:algdecision}. Quantifier elimination in the two sorts gives a finite
+Boolean combination of sort-separated atoms. Put it into disjunctive normal form;
+each conjunction is the intersection of one integer condition and one vector
+condition. Presburger elimination and \cref{lem:vectorQE} give the indicated
+forms. This proves \eqref{eq:rectangles} and the parameter statement. The converse
+uses the definable coordinate maps and scalar graphs from \cref{thm:defsplit}.
+\end{proof}
+
+\begin{corollary}[No extra induced structure]\label{cor:stable}
+The integer and purely infinite subsets are stably embedded: a definable subset
+of either of their finite Cartesian powers can be defined using parameters from
+that same subset. Their induced structures are exactly Presburger arithmetic and
+ordered $\A$-vector-space geometry, respectively.
+\end{corollary}
+\begin{proof}
+In \eqref{eq:rectangles}, a subset of $\Z^d$ is obtained by setting $p=0$. Each
+$B_j$ either contains zero or does not, leaving a finite union of the corresponding
+$A_j$. Similarly set $n=0$ for a subset of $\J^d$. The converse inclusions of the
+induced languages were proved in \cref{thm:defsplit}.
+\end{proof}
+
+\begin{corollary}[Finite-image cross-component maps]\label{cor:finiteimage}
+Every definable map from a definable subset of $\Z^m$ to $\J^n$ has finite image.
+The same holds for a definable map from a subset of $\J^m$ to $\Z^n$, even with
+parameters from $\Oz$.
+\end{corollary}
+\begin{proof}
+The graph is a finite union of rectangles in the two sorts. A nonempty rectangle
+$A\times B$ contained in a function graph can have at most one element in its
+output factor $B$. Thus each nonempty rectangle contributes at most one output.
+The proof in the reverse direction is identical.
+\end{proof}
+
+This is an exact separation statement, not merely a dimension comparison.
+For example, there is no definable injection of the infinite set $\Z$ into $\J$
+in this language, despite the existence of many set-theoretic injections and the
+ambient operation $n\mapsto n\omega$. That operation would require multiplication
+of a variable by the nonalgebraic parameter $\omega$, which is not one of the
+allowed scalar maps on omnific variables.
+
+\section{Elementary substructures, embeddings, and one-scale cores}\label{sec:cores}
+\begin{theorem}[Classification of elementary substructures]\label{thm:elementary}
+For a substructure $G\subseteq(\Oz,\Lalg)$ the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $G\preccurlyeq(\Oz,\Lalg)$;
+\item $G=\Z+W$ for a nonzero $\A$-vector subspace $W\subseteq\J$, equipped with its
+inherited order and all inherited exponential-equality predicates.
+\end{enumerate}
+The assertion applies to set-sized $G$, and formula by formula to class-sized
+substructures as well.
+\end{theorem}
+\begin{proof}
+Suppose first that $G$ is elementary. It is an additive subgroup containing $1$,
+so it contains every ordinary integer. If $x\in G$, its actual integer constant
+term $n=\ct(x)$ is therefore in $G$, and $x-n\in G\cap\J$. Thus
+$G=\Z+(G\cap\J)$. Set $W=G\cap\J$.
+
+The sentence $\exists p\,(\Pure(p)\land p>0)$ holds in $\Oz$, so by elementarity
+it holds in $G$. Since $\Pure$ is definable and elementarity preserves its truth
+on parameters in $G$, this gives a nonzero member of $W$.
+For $p\in W$ and fixed $\alpha\in\A$, the sentence with parameter $p$ asserting
+existence of a pure $q$ satisfying \eqref{eq:scalardef} is true in $\Oz$. It is
+therefore true in $G$. Its witness must equal the actual $\alpha p$ by injectivity
+of $\Exp$. Hence $W$ is closed under every algebraic scalar, and is a nonzero
+$\A$-vector subspace.
+
+Conversely, let $G=\Z+W$ with $W\ne0$ an $\A$-vector subspace. It is a
+substructure for the group operations and constants, with the relations inherited
+from $\Oz$. The coordinate translation of \cref{thm:algdecision} works in $G$
+with the two sorts $\Z$ and $W$: real algebraic combinations of the pure
+coordinates remain in $W$, and lexicographic order and congruence have the same
+formulas. By \cref{lem:vectorQE}, $W\preccurlyeq\J$ in the vector language. The
+identity on the integer sort is elementary. Therefore every translated formula
+with parameters from $\Z\sqcup W$ has the same truth value in
+$\Z\sqcup W$ and $\Z\sqcup\J$. Translating back gives $G\preccurlyeq\Oz$.
+\end{proof}
+
+\begin{corollary}[One-scale elementary cores]\label{cor:onescale}
+For every $u\in\J_{>0}$,
+\begin{equation}\label{eq:onescale}
+ G_u=\{n+a u:n\in\Z,\ a\in\A\}
+ \preccurlyeq(\Oz,\Lalg).
+\end{equation}
+The set $G_u$ is countable. For positive $u,v\in\J$, the map
+$n+a u\mapsto n+a v$ is an isomorphism of these structures.
+\end{corollary}
+\begin{proof}
+The map $a\mapsto a u$ identifies the nonzero ordered $\A$-vector space $\A$ with
+$\A u$. Apply \cref{thm:elementary}. Countability follows from that of $\Z$ and
+$\A$. The displayed map is the identity on the integer coordinates and an ordered
+$\A$-linear isomorphism on the pure coordinates, so the coordinate translation
+preserves every relation and formula.
+\end{proof}
+
+For $u=\omega$, the set $G_\omega$ is not closed under multiplication:
+$\omega^2\notin\Z+\A\omega$ by normal-form uniqueness. It is also not asserted to
+contain its exponential values. Those values are used externally to interpret
+relations, just as a relation on integers may be defined using a larger field.
+This is why \eqref{eq:onescale} is compatible with the immense field-theoretic
+complexity of the full surreal numbers.
+
+\begin{corollary}[Classification of elementary embeddings]\label{cor:embeddings}
+Let $G_W=\Z+W$ and $G_V=\Z+V$ be elementary substructures as above. Their elementary
+embeddings are exactly the maps
+\begin{equation}\label{eq:embeddingform}
+ n+p\longmapsto n+T(p),
+\end{equation}
+where $T:W\to V$ is an order-preserving $\A$-linear embedding. In particular,
+\begin{equation}
+ \Aut(G_W,\Lalg)\cong\Aut_{\A,<}(W).
+\end{equation}
+\end{corollary}
+\begin{proof}
+An elementary embedding fixes ordinary integers, preserves the definable pure
+subset and the graph of $\ct$, and preserves every scalar graph
+\eqref{eq:scalardef}. Its restriction to $W$ is therefore an order-preserving
+$\A$-linear embedding, and additivity gives \eqref{eq:embeddingform}. Conversely,
+\cref{lem:vectorQE} makes every such $T$ elementary on vector coordinates.
+Together with the identity on $\Z$, the two-sort translation proves elementarity
+of \eqref{eq:embeddingform}. The automorphism statement is the bijective case.
+\end{proof}
+
+\begin{proposition}[The two slope languages genuinely differ]\label{prop:difference}
+The inclusion $\Z\subseteq\Oz$ is elementary for $\Lrat$ but not for $\Lalg$.
+\end{proposition}
+\begin{proof}
+The first assertion is \cref{thm:rational}. In $\Lalg$, the sentence
+$\exists x\,(x>0\land\Pure(x))$ is true in $\Oz$. In the induced structure on
+$\Z$, the defining equation $y=\sqrt2\,x$ has only the solution $x=y=0$, so the
+sentence is false.
+\end{proof}
+
+\begin{remark}[Why one scale can be elementary]
+A formula has only finitely many fixed algebraic scalar coefficients. It can
+specify finitely many linear bounds and equations, but it cannot quantify over
+all scalars to say that one positive vector is larger than every scalar multiple
+of another. The vector-space elimination proof shows exactly why a nonempty
+interval left by finitely many constraints already contains a witness in an
+ordered algebraic-linear subspace. The ``one scale'' assertion is a
+first-order-language phenomenon, not a claim that all surreal growth rates
+collapse arithmetically.
+\end{remark}
+
+
+\section{One irrational slope and an exact computability classification}\label{sec:single}
+The preceding arguments also identify the precise computational content of a
+much smaller language. Here the slope may be an arbitrary ordinary real
+irrational, not necessarily algebraic. This extension admits only its scalar
+graph, not all exponential sums with that slope.
+
+\begin{definition}
+For a fixed $\alpha\in\R\setminus\Q$, let $\mathcal S_\alpha$ be the structure
+on $\Oz$ in the finite signature $\{+,-,<,0,1,S\}$, where
+\begin{equation}\label{eq:Salpha}
+ S(x,y)\quad\Longleftrightarrow\quad
+ \exp(y)=\exp(\alpha x).
+\end{equation}
+Put $K_\alpha=\Q(\alpha)$, as an ordered subfield of $\R$.
+Congruence predicates can be added definitionally by
+$x\equiv_m y\Longleftrightarrow\exists z\,(x-y=mz)$.
+\end{definition}
+
+The real argument $\alpha x$ is a legitimate surreal argument of Gonshor's
+exponential even when its ordinary constant part is transcendental. Real
+exponential injectivity gives $S(x,y)\Longleftrightarrow y=\alpha x$.
+No use of Lindemann--Weierstrass is needed in this section.
+
+\begin{theorem}[Single-slope decomposition]\label{thm:single}
+The structure $\mathcal S_\alpha$ is definably equivalent to the disjoint union
+of Presburger $\Z$ and the nonzero ordered $K_\alpha$-vector space $\J$.
+Its elementary substructures are exactly
+\begin{equation}\label{eq:singlecores}
+ \Z+W,\qquad 0\ne W\subseteq\J\text{ a }K_\alpha\text{-vector subspace}.
+\end{equation}
+In particular, $\Z+K_\alpha u$ is a countable elementary core for every
+$u\in\J_{>0}$.
+\end{theorem}
+\begin{proof}
+Write $x=n+p$, $y=m+q$. Since $\alpha$ is irrational,
+\begin{equation}\label{eq:Ssplit}
+ S(x,y)\quad\Longleftrightarrow\quad n=m=0\ \land\ q=\alpha p.
+\end{equation}
+Indeed, the ordinary component equation $m=\alpha n$ forces $m=n=0$.
+Thus $\exists y\,S(x,y)$ defines $\J$, and the formula \eqref{eq:Int}, with this
+new pure-part definition, defines $\Z$. The decomposition and constant-term graph
+are then definable as before.
+
+On $\J$ the relation $S$ is the graph of scalar multiplication by $\alpha$.
+Composition and addition give every polynomial in this operator with rational
+coefficients. Rational scalar maps are definable by divisibility in the vector
+group. For a nonzero polynomial value $g(\alpha)$, the graph of multiplication by
+$f(\alpha)/g(\alpha)$ is defined by the equation
+$g(\alpha)q=f(\alpha)p$ using these polynomial operator graphs. It has exactly one
+solution $q$ for every $p$. Hence every scalar map of $K_\alpha$ is definable.
+
+Conversely, the two coordinate sorts define $S$ by \eqref{eq:Ssplit} and the base
+group language by lexicographic order and coordinatewise addition. The
+ordered-vector-space elimination proof of \cref{lem:vectorQE} works verbatim over
+any fixed ordered scalar field; effectiveness is not needed for this semantic
+claim. The same arguments as in \cref{thm:elementary} therefore yield
+\eqref{eq:singlecores}. The field $\Q(\alpha)$ is countable, which proves the last
+assertion.
+\end{proof}
+
+For the computational statement, encode rational numbers and integer polynomials
+by natural numbers. Let
+\begin{equation}
+ D_\alpha=\{q\in\Q:q<\alpha\},\qquad
+ P_\alpha=\{f\in\Z[T]:f(\alpha)>0\}.
+\end{equation}
+For sets of finite codes, $A\leq_T B$ means that an algorithm with a membership
+oracle for $B$ decides membership in $A$; $\equiv_T$ means reductions both ways.
+
+\begin{theorem}[The theory has the degree of the slope]\label{thm:degree}
+For every fixed ordinary real irrational $\alpha$,
+\begin{equation}\label{eq:degree}
+ \Th(\mathcal S_\alpha)\ \equiv_T\ P_\alpha\ \equiv_T\ D_\alpha.
+\end{equation}
+In particular, $\Th(\mathcal S_\alpha)$ is decidable if and only if $\alpha$ is a
+computable real number. The reductions are statements about each fixed $\alpha$;
+the final equivalence does not assert uniform zero testing from arbitrary names
+of computable reals.
+\end{theorem}
+\begin{proof}
+First, an oracle for $P_\alpha$ decides the signs and zero values of polynomials
+at $\alpha$: zero is equivalent to neither $f$ nor $-f$ belonging to $P_\alpha$.
+It therefore performs exact ordered-field arithmetic with rational-function
+representatives in $K_\alpha$. Translate a sentence using \eqref{eq:Ssplit} and
+eliminate its integer and vector quantifiers as before, consulting this oracle
+for scalar equality, division, and sign. This proves
+$\Th(\mathcal S_\alpha)\leq_T P_\alpha$.
+
+In the reverse direction, write $f(T)=\sum_{j=0}^{d}a_jT^j$. Construct a sentence
+asserting that there are $p_0,\ldots,p_d\in\J$ with $p_0>0$,
+$S(p_j,p_{j+1})$ for $j<d$, and $\sum_j a_jp_j>0$. Here $\J$ is replaced by its
+defining formula, and integer multiples are additive terms. The recurrence
+forces $p_j=\alpha^jp_0$, so the sentence holds exactly when $f(\alpha)>0$.
+This is an effective reduction $P_\alpha\leq_T\Th(\mathcal S_\alpha)$.
+
+The reduction $D_\alpha\leq_T P_\alpha$ uses the linear polynomials $nT-m$ for
+$q=m/n$ and $n>0$. To prove the converse for a fixed $\alpha$, distinguish two
+cases. If $\alpha$ is algebraic, polynomial signs at it are decidable by exact
+algebraic arithmetic, with an algebraic representation of this fixed number
+built into the algorithm. If $\alpha$ is transcendental, every nonzero integer
+polynomial has a nonzero value at $\alpha$. The cut oracle provides nested
+rational intervals containing $\alpha$ with arbitrarily small widths. Evaluate
+$f$ by rational interval arithmetic until its value interval excludes zero. This
+terminates for every nonzero $f$; the zero polynomial is handled separately.
+Thus $P_\alpha\leq_T D_\alpha$ in both cases.
+
+Finally, for an irrational real $\alpha$, its rational cut is decidable precisely
+when it is computable. A decidable cut gives rational approximations by bisection.
+Conversely, computable approximations decide comparison with any fixed rational
+by refinement, since equality with a rational is impossible. This completes the
+proof.
+\end{proof}
+
+The countable elementary core in \cref{thm:single} also shows directly that the
+first-order truth set in \eqref{eq:degree} is the theory of a set-sized structure.
+There is no appeal to a global satisfaction class for a proper-class universe.
+
+\begin{proposition}[Nonuniformity of arbitrary real-number names]\label{prop:nonuniform}
+There is no single algorithm that, given a program computing rational
+approximations with prescribed error bounds to an algebraic irrational $\alpha$,
+and a sentence of the signature of $\mathcal S_\alpha$, always decides that
+sentence. This remains false even when every supplied name is valid and every
+slope is promised to be algebraic irrational.
+\end{proposition}
+\begin{proof}
+For a machine index $e$, define
+\begin{equation}
+ \alpha_e=\begin{cases}
+ \sqrt2+2^{-t},&\text{if machine }e\text{ first halts at step }t,\\
+ \sqrt2,&\text{if it never halts}.
+ \end{cases}
+\end{equation}
+There is a uniformly computable approximation name for $\alpha_e$: simulate the
+machine sufficiently many steps for the requested precision; if it has not
+halted, the effect of any later halting is at most the corresponding power of
+$2^{-1}$. Combine this bound with a rational approximation to $\sqrt2$.
+Every $\alpha_e$ is algebraic irrational, irrespective of whether the machine
+halts.
+
+A fixed sentence of the scalar-graph language expresses
+$\alpha_e^2>2$: choose pure $p>0$, apply $S$ twice to obtain $q=\alpha_e^2p$, and
+require $q>2p$. The sentence is true exactly when the machine halts. A uniform
+decision procedure from those approximation names would therefore decide the
+halting problem, which is impossible. The argument does not supply a minimal
+polynomial or an isolating-root representation of $\alpha_e$ uniformly; those
+are the stronger algebraic codes required by our earlier positive algorithm.
+\end{proof}
+
+This gives a second boundary, independent of nonlinear exponentiation. Even a
+single partial scalar graph can carry noncomputable information when its real
+slope is not effectively known. For algebraic slopes with the explicit algebraic
+codes specified in \cref{sec:rational}, this obstruction is absent.
+
+\section{Boundaries: tails, constants, and a single undecidable extension}\label{sec:boundaries}
+\subsection{Allowing arbitrary finite constants}
+The algebraicity assumption on finite exponent constants is essential to
+\cref{thm:independence}. Allowing $\log2$ immediately gives
+\begin{equation} \exp(\log2)-2\exp(0)=0. \end{equation}
+The arguments are distinct. This does not contradict Lindemann--Weierstrass:
+$\log2$ is not algebraic, since a nonzero algebraic argument cannot have the
+algebraic exponential $2$. The failure is located at an explicitly excluded
+finite constant.
+
+\subsection{Allowing infinitesimal tails}
+\begin{proposition}[A tail obstruction]\label{prop:tails}
+Finite exponential independence over $\Qb$ fails on the full surreal field even
+when the coefficients are integers.
+\end{proposition}
+\begin{proof}
+Take $\varepsilon=\omega^{-1}$, $a=\log(1+\varepsilon)$, and
+$b=\log\varepsilon$. Then $a>0$, $b<0$, and both differ from zero. The
+exponential inverse law in $\No$ gives
+\begin{equation}\label{eq:tailcounterexample}
+ \exp(a)-\exp(b)-\exp(0)=(1+\varepsilon)-\varepsilon-1=0.
+\end{equation}
+The element $a$ is a nonzero infinitesimal, so it does not lie in $\A+\J$.
+Indeed, for every positive real $r$, one has $1+\varepsilon<e^r$, so
+$0<a<r$ by monotonicity. By \eqref{eq:Gonshor}, $b$, as the logarithm of a
+monomial, is purely infinite. Thus one infinitesimal-tail argument already
+produces a nontrivial three-term relation.
+\end{proof}
+
+The proposition does not claim that $\Ealg$ is maximal among all additive domains
+with finite exponential independence. Maximality is a separate extension problem;
+see \cref{q:extension}.
+
+\subsection{Nonlinear exponents recover multiplication}
+\begin{theorem}[A single nonlinear relation destroys decidability]\label{thm:undecidable}
+Expand $(\Oz,\Lalg)$ by the ternary predicate
+\begin{equation}\label{eq:Mul}
+ \mathsf M(x,y,z)\quad\Longleftrightarrow\quad\exp(xy)=\exp(z).
+\end{equation}
+The first-order theory of the expansion is undecidable.
+\end{theorem}
+\begin{proof}
+The product $xy$ is an omnific integer because $\Oz$ is a ring. Injectivity of the
+real exponential makes \eqref{eq:Mul} equivalent to $xy=z$. Thus the new relation
+is the graph of multiplication on $\Oz$.
+
+The old formula \eqref{eq:Int} defines exactly the ordinary integers. Relativize
+all quantifiers in an ordinary arithmetic sentence to $\Int$, replace each
+multiplication term by its graph using $\mathsf M$, and retain ordinary addition,
+order, $0$, and $1$. This is an effective interpretation of the true first-order
+arithmetic of $\Z$, equivalently of $\N$ after restricting to nonnegative
+integers. That theory is undecidable by the classical incompleteness and
+undecidability results for arithmetic \cite{salehi,kurahashi}. A decision procedure
+for the expansion would decide it, a contradiction.
+\end{proof}
+
+This is a statement about the \emph{full first-order theory}. The relativization
+uses a quantified definition of $\Z$; no claim about an existential-only reduction
+is being silently made. Likewise, this argument is not a claim that every
+nonlinear exponential predicate leads to undecidability.
+
+\subsection{What the decision theorem does not cover}
+The language analyzed here does not contain multiplication of two variable
+omnific integers, the graph of $x\mapsto\exp x$ as an internal function, arbitrary
+surreal scalar multiplication, arbitrary real or complex coefficient constants,
+or exponential inequalities. It also has no complex-variable quantifiers and no
+exponential at an infinitely large imaginary argument.
+
+In particular, allowing an inequality $\alpha x<y$ with an irrational algebraic
+$\alpha$ on the \emph{finite integer coordinates} is a different extension: it
+creates integer cuts involving irrational slopes rather than the rational linear
+equalities produced in \cref{lem:split}. The current proof does not establish a
+decision procedure for that extension. It would be incorrect to infer one merely
+because algebraic slopes are allowed inside \emph{equality} predicates.
+
+\section{Beyond algebraic coefficients: exact fibers for real-base equations}\label{sec:fibers}
+There is a useful extension of the grouping argument that does not require
+Lindemann--Weierstrass. It gives geometry over the purely infinite coordinates but
+leaves a genuinely ordinary exponential equation on the integer coordinates.
+
+\begin{theorem}[Ordinary-fiber criterion]\label{thm:fibers}
+Let $c_j\in\C$, $\lambda_{jk}\in\R$, and consider
+\begin{equation}\label{eq:realF}
+ F(x)=\sum_{j=1}^{N}c_j\exp\!\left(\sum_k\lambda_{jk}x_k\right),
+ \qquad x\in\Oz^d.
+\end{equation}
+For a fixed $n\in\Z^d$, put
+\begin{equation}
+ d_j(n)=c_j e^{\sum_k\lambda_{jk}n_k},\qquad
+ P_j(p)=\sum_k\lambda_{jk}p_k.
+\end{equation}
+Then $F(n+p)=0$ if and only if there exists a partition $\mathcal P$ of
+$\{1,\ldots,N\}$ such that for every block $B$,
+\begin{equation}\label{eq:fiberblock}
+ \sum_{j\in B}d_j(n)=0,
+ \qquad P_j(p)=P_{b(B)}(p)\quad(j\in B).
+\end{equation}
+Thus every fixed integer fiber is a finite union of real-linear subspaces of
+$\J^d$. No uniform decision procedure for which partitions satisfy the ordinary
+coefficient equations is asserted.
+\end{theorem}
+\begin{proof}
+Rewrite \eqref{eq:realF} as $\sum_jd_j(n)\exp(P_j(p))$. Since each $P_j(p)\in\J$,
+distinct values produce distinct Conway monomials by \eqref{eq:Gonshor}.
+Their complex coefficients vanish separately by \cref{lem:monomial}. The
+balanced-partition argument now applies to these fixed complex numbers $d_j(n)$
+without any use of their algebraicity. Within-block equality is real-linear and
+homogeneous in $p$, which gives the fiber description.
+\end{proof}
+
+\begin{corollary}[Positive real-base ternary equations]\label{cor:ternary}
+Fix ordinary real numbers $a,b,c>1$. All solutions in $\Oz^3$ to
+\begin{equation}\label{eq:abc}
+ a^x+b^y=c^z,\qquad a^x:=\exp((\log a)x),
+\end{equation}
+are exactly
+\begin{equation}\label{eq:abcparam}
+ x=n+\frac{\lambda}{\log a},\qquad
+ y=m+\frac{\lambda}{\log b},\qquad
+ z=k+\frac{\lambda}{\log c},
+\end{equation}
+where $n,m,k\in\Z$ satisfy $a^n+b^m=c^k$ and $\lambda\in\J$ is arbitrary.
+\end{corollary}
+\begin{proof}
+In a fixed integer fiber the three nonzero coefficients have signs $+,+,-$.
+A partition into at least two blocks would have a block consisting only of positive
+coefficients or the lone negative coefficient, so it cannot be balanced. Hence all
+three purely infinite exponents agree:
+$(\log a)\pp(x)=(\log b)\pp(y)=(\log c)\pp(z)=\lambda$.
+Their common coefficient equation is the ordinary equation
+$a^n+b^m-c^k=0$. This proves necessity and gives \eqref{eq:abcparam}. Substitution
+proves sufficiency. Division by the fixed nonzero real logarithms preserves $\J$.
+\end{proof}
+
+\begin{example}
+Since $2^1+3^1=5^1$, every $\lambda\in\J$ gives the solution
+\begin{equation}
+ 2^{\,1+\lambda/\log2}+3^{\,1+\lambda/\log3}
+ =5^{\,1+\lambda/\log5}.
+\end{equation}
+Each exponent is an omnific integer. For $\lambda>0$ they are all positive
+infinite. Their ordinary constant terms are nevertheless exactly $1$.
+\end{example}
+
+\begin{corollary}[An inhomogeneous anchor removes all infinite solutions]
+For fixed ordinary $a,b>1$, every omnific-integer solution of
+\begin{equation}\label{eq:anchor} a^x-b^y=1 \end{equation}
+has $x,y\in\Z$. Thus \eqref{eq:anchor} has exactly its ordinary integer solutions.
+\end{corollary}
+\begin{proof}
+The three coefficients in each integer fiber have signs $+,-,-$, so again only
+the one-block partition can be balanced. The third purely infinite exponent is
+zero because it represents the constant $1$. Therefore
+$(\log a)\pp(x)=(\log b)\pp(y)=0$, whence both purely infinite parts vanish.
+\end{proof}
+
+These are transfer and parameterization theorems. They do not solve the ordinary
+integer equations left on the base. In the homogeneous equation
+\eqref{eq:abc}, positivity of an infinite omnific variable does not force its
+ordinary constant term to be positive, so restrictions on $n,m,k$ must not be
+inferred from order conditions on $x,y,z$ without using \eqref{eq:lex}.
+
+\section{Effective procedures and finite verification}\label{sec:verification}
+\subsection{A complete mathematical decision pipeline}
+The proofs provide the following terminating algorithm for a finite $\Lalg$
+sentence. This is a mathematical specification of the full procedure, not a claim
+that the accompanying small program implements all its stages.
+\begin{enumerate}
+\item Normalize every relation atom to a finite exponential sum. Products of
+exponential factors with allowed affine exponents can be flattened using
+$\Exp(u)\Exp(v)=\Exp(u+v)$; Laurent powers also cause no difficulty. Remove zero
+coefficients when convenient.
+\item Enumerate the set partitions of the finite list of terms. Keep those with
+zero algebraic coefficient sum in every block. For each retained partition,
+output within-block affine exponent equalities.
+\item Introduce integer and purely infinite coordinates for every omnific
+variable. Use \cref{lem:split} and rational-basis arithmetic in the finite number
+fields occurring in the input. Translate order and congruence by
+\eqref{eq:lex} and \eqref{eq:congruence}.
+\item Eliminate quantifiers in the two disjoint sorts, using Presburger
+elimination and the ordered-vector-space procedure in \cref{lem:vectorQE}.
+Evaluate the resulting closed Boolean expression.
+\end{enumerate}
+This deliberately simple partition algorithm may produce $B_N$ branches, where
+$B_N$ is the $N$th Bell number, before accounting for later Boolean and Presburger
+expansion. No polynomial-time or elementary-time complexity bound is claimed.
+
+The toric-kernel calculation is a different interface: it starts with a finite
+argument family together with an exact description of its additive relation
+lattice. Given that lattice, basis reduction supplies finitely many Laurent
+binomial generators. Arbitrary surreal input equality is not solved by treating a
+finite coefficient specification as if it were a full normal-form oracle.
+
+\subsection{What the supplied program checks}
+The file \texttt{code/checks.py} uses exact rational arithmetic and exact arithmetic
+in $\Q(\sqrt2)$. It contains a reusable finite balanced-partition generator and
+checks the following layers independently of numerical exponential evaluation:
+\begin{enumerate}
+\item balanced partitions versus direct coefficient grouping for exhaustive small
+coefficient and exponent-label lists, including empty and zero-coefficient cases;
+\item the finite-support forms of \eqref{eq:sum2}, \eqref{eq:pairs}, and
+\eqref{eq:factor};
+\item the $\sqrt2$ pure-part detector and the coefficientwise splitting of
+algebraic linear equations, using exact quadratic-field coordinates;
+\item the inhomogeneous and homogeneous fiber criterion with positive and negative
+ordinary coefficients at representative formal scales.
+\end{enumerate}
+The recorded run passed 22,074 finite cases, including 7,381 exhaustive
+partition cases, 6,561 two-term multiset cases, and 2,000 quadratic-coordinate
+splitting cases. The run is deterministic, uses no network access, and writes
+its actual counts and outcomes to \texttt{check\_results.json}.
+Exponential values in these checks are
+represented in a finite formal group algebra. Therefore the tests check the
+combinatorial and coordinate implementations, not Gonshor's theorem or
+Lindemann--Weierstrass. They do not formally verify all quantifiers or all
+proper-class assertions of the article.
+
+\subsection{A formalization path}
+A useful formalization starts with an abstract additive group $E$, a field $K$,
+and an injective group-algebra evaluation into a field extension. The toric and
+partition theorems then have no surreal prerequisites. A second layer formalizes
+an ordered algebraic-vector space $V$ and the lexicographic group $\Z\oplus V$,
+with finite algebraic-linear relation predicates. The splitting, rectangular
+normal form, and elementary-substructure arguments belong to this layer.
+Only the final bridge needs the concrete surreal normal form and Gonshor
+exponential. This separation mirrors the distinction in the repository between
+generic checked algebra and its concrete surreal applications
+\cite{repo-catalogue,repo-exp}.
+
+\section{Further research questions}\label{sec:questions}
+The questions below are proposed continuations of this manuscript. They are not
+presented as a catalogue of previously named open problems, and no priority claim
+is attached to their formulation.
+
+\begin{question}[Exponential inequalities]\label{q:inequality}
+Which expansions by signs or order comparisons of finite exponential sums remain
+decidable? A first target is rational slopes with real algebraic coefficients.
+One must account for the leading monomial and the sign of its ordinary
+exponential coefficient, not merely its vanishing. With algebraic irrational
+slopes, clarify exactly which induced integer cuts appear.
+\end{question}
+
+\begin{question}[Countably many scalar operators]
+\Cref{sec:single} classifies the structure with one irrational scalar graph.
+For an effectively indexed countable family of named real slopes containing an
+irrational slope, determine the oracle degree of the resulting theory in terms
+of the ordered field they generate. Distinguish uniform approximation of the
+slopes from uniform knowledge of all finite polynomial relations among them.
+For finite families, also specify which extra presentation data make the
+reductions uniform. The nonuniformity in \cref{prop:nonuniform} shows why a list
+of approximation programs is not automatically enough.
+\end{question}
+
+\begin{question}[Extensions of the independent exponential domain]\label{q:extension}
+Classify additive domains $E\supseteq\Qb+\J$ on which an extension of the
+exponential group-algebra map over $\Qb$ remains injective. The counterexample
+\eqref{eq:tailcounterexample} shows that arbitrary infinitesimal tails cannot all
+be admitted. It does not exclude carefully chosen transcendental constants or
+special tail subspaces. A useful objective is a criterion in terms of the
+monomial and unit components of their exponentials; the extension of the
+exponential itself must also be specified.
+\end{question}
+
+\begin{question}[More general ordinary coefficient fields]
+For an effectively presented field of ordinary constants larger than $\Qb$,
+identify sufficient independence and zero-testing hypotheses for the same
+partition reduction. Distinguish unconditional transfers from those requiring
+new ordinary transcendence information. Arbitrary real-base equations in
+\cref{sec:fibers} provide a test case where only the purely infinite geometry is
+automatic.
+\end{question}
+
+\begin{question}[The nonlinear boundary below multiplication]
+The single ternary predicate in \cref{thm:undecidable} recovers multiplication.
+Determine which smaller nonlinear families avoid this. Unary nonlinear predicates,
+restricted compositions, or predicates whose nonlinearity is confined to a known
+pure subspace are concrete candidates. Every proposal must be tested against
+definable recovery of integer multiplication.
+\end{question}
+
+\begin{question}[Parameter-uniform effective theories]
+Develop a computable presentation of selected parameter families in $\J$,
+including an algorithm for the finite algebraic-linear order relations that the
+vector-space elimination procedure asks. Determine when the elementary diagram of
+such a parameter expansion is decidable. The arbitrary-parameter semantic theorem
+in \cref{thm:rectangles} alone is not such an algorithm.
+\end{question}
+
+\begin{question}[Complexity and compact certificates]
+Replace exhaustive balanced-partition enumeration by zero-sum circuit methods,
+matroid data, or shared Boolean representations. Give upper and lower complexity
+bounds for fixed arity, fixed coefficient field, and bounded numbers of
+exponential terms. A certificate should record both the coefficient balance and
+the affine equalities, so that it is independently checkable.
+\end{question}
+
+\begin{question}[Toric and arithmetic families]
+Study uniform families of the constant-field theorem as the additive relation
+lattice changes. Which ordinary constant fields can occur over prescribed pure
+parts? How do finite-index changes such as $\Qb(e^2)$ versus $\Qb(e)$ interact with
+specialization and normalization? The exact intersection formula is a starting
+point, not a classification of all larger exponential subfields.
+\end{question}
+
+\begin{question}[Model-theoretic refinements]
+Use the definable product description to study types, definable groups, canonical
+parameters, and elementary embeddings in countable models of the resulting
+complete theory. Relate the classification in \cref{thm:elementary} to the
+repository's much stronger ring- and field-embedding questions without confusing
+their languages. In particular, characterize additional predicates that first
+make a one-scale core non-elementary.
+\end{question}
+
+\begin{question}[A larger canonical surcomplex domain]
+Find useful, explicitly specified domains permitting more imaginary components
+while retaining a canonical exponential and a controlled kernel. The present
+domain avoids all infinite imaginary phases. A broader construction must state
+its phase convention and track period relations before an exponential
+independence or decidability theorem can be formulated correctly.
+\end{question}
+
+\begin{question}[Machine-checked bridge]
+Formalize the abstract group-algebra and coordinate-splitting theorems first, then
+supply the concrete bridge from Conway normal forms to
+$\exp(\J)=\M$. Record exactly which parts are proved about an abstract model and
+which are instantiated for the actual surreal field. This is a realistic route to
+checking the entire dependency chain rather than only finite examples.
+\end{question}
+
+\section{Conclusion}
+The exponential relations studied here have an exact algebraic explanation:
+monomial separation handles the purely infinite component, and
+Lindemann--Weierstrass handles the algebraic ordinary component. Every finite
+relation then reduces to balanced additive coincidences of its exponents.
+
+The resulting first-order theory is stronger than Presburger arithmetic when
+algebraic irrational slopes are named, but it still has a precise decidable
+structure: ordinary additive integers and a nonzero ordered algebraic-vector
+space, with no additional interaction after definable splitting. This yields the
+rectangular description of definable sets and the full classification of
+its elementary substructures. The countable one-scale cores are consequences of
+that classification, not approximations to the full surreal field. In the
+single-irrational-slope language, the same splitting identifies the exact Turing
+degree of the theory with the degree of the slope, while distinguishing
+fixed-slope decidability from uniform decision using arbitrary approximation
+names.
+
+The nonlinear extension and the explicit tail counterexample locate real limits
+of the results. The appropriate conclusion is therefore not a resolution of
+unrestricted surreal exponentiation, but a proof-bearing structural and
+algorithmic theory of a substantial, precisely bounded exponential-equality
+fragment. Independent mathematical review and a broader priority search remain
+necessary before treating the proposed contributions as established new results.
+
+\appendix
+\section{Proof dependencies and audit checklist}\label{app:audit}
+\subsection{Dependencies}
+The dependency chain is deliberately short. Normal-form uniqueness and
+$\exp(\J)=\M$, together with ordinary Lindemann--Weierstrass, imply
+\cref{thm:independence}. That theorem implies the exact toric kernel and the
+balanced-partition criterion. The constant-field theorem needs only monomial
+independence over $\C$ once the pure-part complement is chosen. Balanced partitions
+and algebraic coordinate splitting reduce the logical language to Presburger
+arithmetic and ordered-vector-space linear geometry. The latter reduction yields
+decidability, definability of the two components, rectangular normal form, and the
+elementary-core classification. The single-slope decomposition uses only
+exponential injectivity and the same coordinate geometry, not
+Lindemann--Weierstrass. Its degree calculation is proved by explicit oracle
+reductions. Classical undecidability of integer arithmetic and of halting is
+used only for the two negative boundary results.
+
+No conjectural assertion in the source repository is an input. Nor are
+Berarducci--Mantova differentiation, saturation, strong summability, set-sized
+quotient rigidity, or a global complex exponential needed.
+
+\subsection{Checks against likely overstatements}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.63\textwidth}}
+\toprule
+Potential misreading & Actual assertion and safeguard\\
+\midrule
+\endhead
+$\exp(p)=\omega^p$ & Not used. Only the set equality $\exp(\J)=\M$ and injectivity
+are imported from Gonshor.\\[4pt]
+A new classical transcendence theorem & Not claimed. Classical
+Lindemann--Weierstrass is an explicit input; the finite independence argument is
+its monomial transport.\\[4pt]
+A global surcomplex exponential & Not defined. $\Exp$ acts only on $\Qb+\J$,
+with ordinary finite algebraic imaginary part.\\[4pt]
+A decision procedure for arbitrary surreal input & Not claimed. The effective
+input is a finite formula with algebraic coefficient codes. Arbitrary surreal
+parameters require additional effective data.\\[4pt]
+Full exponential-field decidability & Not claimed. Only externally interpreted
+finite-sum zero predicates with affine exponents are admitted.\\[4pt]
+All algebraic-slope inequalities & Not admitted. Base order compares additive
+omnific terms; the algebraic slopes occur inside exponential equalities.\\[4pt]
+Quantifier elimination in the original one-sort signature & Not asserted. The
+proved elimination is after a definable two-sort coordinate expansion.\\[4pt]
+Uniform decisions from arbitrary real approximation names & Not claimed.
+The fixed-slope Turing reductions need not be uniform in such names;
+\cref{prop:nonuniform} proves the obstruction.\\[4pt]
+A one-scale surreal subfield & Not claimed. $\Z+\A u$ is an additive relational
+substructure; it is generally not a subring.\\[4pt]
+Existential undecidability of the nonlinear extension & Not claimed. The proof
+interprets full first-order arithmetic using a quantified integer definition.\\[4pt]
+Verified novelty or formal proof & Neither is claimed. The literature search is
+bounded, the repository search was incomplete, and finite tests are not a Lean
+formalization.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproducibility and source record}\label{app:sources}
+The accompanying archive contains this source, its compiled PDF,
+\texttt{code/checks.py}, its recorded JSON output, a source-and-claim audit, and
+build instructions. Build with \texttt{latexmk -pdf article.tex}; the bibliography
+is contained in this file, so no external \texttt{.bib} file is needed. The checks
+use Python's standard library only.
+
+The public source inspection was performed on 23 September 2026. In the
+Mantova--Matusinski PDF, the normal-form statement and the exponential monomial
+statement were visually checked on PDF pages 7 and 11, respectively; the latter is
+Theorem~2.16. In Cluckers' preprint, the Presburger language and the recalled
+quantifier-elimination and decidability statements were visually checked on PDF
+page 2. Popescu's version~2 abstract states exactly the complex
+Lindemann--Weierstrass input used here. These checks establish what the references
+say, not the novelty of the deductions made from them.
+
+The repository catalogue, the exponential-automorphism report overview, and
+relevant introductory portions of the quotient report were inspected through
+the GitHub connector at the pinned commit. Its full collection is large; this was a focused
+comparison of relevant topics, not a claim-by-claim audit of every repository
+manuscript. The bibliography points to immutable commit URLs for the inspected
+repository sources.
+
+\begin{thebibliography}{99}
+\bibitem{gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 123, Cambridge University Press,
+1986. Chapters 5, 8, and 10. DOI:
+\href{https://doi.org/10.1017/CBO9780511629143}{10.1017/CBO9780511629143}.
+
+\bibitem{mantova}
+V. Mantova and M. Matusinski, Surreal numbers with derivation, Hardy fields and
+transseries: a survey, \emph{Contemporary Mathematics} \textbf{697} (2017),
+265--290. DOI: \href{https://doi.org/10.1090/conm/697/14057}{10.1090/conm/697/14057}.
+Preprint \href{https://arxiv.org/abs/1608.03413}{arXiv:1608.03413};
+Theorems 2.10 and 2.16 in the inspected PDF.
+
+\bibitem{popescu}
+S. A. Popescu, \emph{A simple and self-contained proof for the
+Lindemann--Weierstrass theorem}, 2023, version 2, 17 September 2023.
+\href{https://arxiv.org/abs/2306.14352v2}{arXiv:2306.14352v2}.
+Used for an exposition of the classical theorem, not as a new attribution of it.
+
+\bibitem{cluckers}
+R. Cluckers, Presburger sets and $p$-minimal fields,
+\emph{Journal of Symbolic Logic} \textbf{68}(1) (2003), 153--162.
+DOI: \href{https://doi.org/10.2178/jsl/1045861509}{10.2178/jsl/1045861509}.
+Preprint \href{https://arxiv.org/abs/math/0206197}{arXiv:math/0206197}, Section 1.1.
+
+\bibitem{loveys-peterzil}
+J. Loveys and Y. Peterzil, Linear o-minimal structures,
+\emph{Israel Journal of Mathematics} \textbf{81}(1--2) (1993), 1--30.
+DOI: \href{https://doi.org/10.1007/BF02761295}{10.1007/BF02761295}.
+The particular ordered-vector-space elimination used here is proved in
+\cref{lem:vectorQE}.
+
+\bibitem{cohen}
+H. Cohen, \emph{A Course in Computational Algebraic Number Theory},
+Graduate Texts in Mathematics 138, Springer, 1993.
+DOI: \href{https://doi.org/10.1007/978-3-662-02945-9}{10.1007/978-3-662-02945-9}.
+
+\bibitem{salehi}
+S. Salehi, \emph{Computation in Logic and Logic in Computation}, 2016.
+\href{https://arxiv.org/abs/1612.06526}{arXiv:1612.06526}.
+Includes the standard distinction between decidable additive theories and
+undecidable integer arithmetic with addition and multiplication.
+
+\bibitem{kurahashi}
+T. Kurahashi, \emph{Incompleteness and undecidability of theories consistent with
+$\mathsf R$}, 2022.
+\href{https://arxiv.org/abs/2211.15455}{arXiv:2211.15455}.
+A modern source in the classical arithmetic-undecidability framework.
+
+\bibitem{repo-catalogue}
+V. Reshetnikov, \texttt{Surreal} repository, \emph{The surreal and surcomplex
+reports}, \texttt{docs/README.md}, inspected 23 September 2026 at commit
+\repoSHA.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/958b5c4865819bd55ea1f5ffc050282aea7ef570/docs/README.md}.
+
+\bibitem{repo-quotients}
+\texttt{Surreal} repository, \emph{Set-Sized Quotients of the Omnific Integers},
+AI-assisted research report, \texttt{article.tex}, same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/958b5c4865819bd55ea1f5ffc050282aea7ef570/docs/surreal/set-sized-quotients-of-omnific-integers/article.tex}.
+Cited for related scope and notation, not as a dependency of the new proofs.
+
+\bibitem{repo-exp}
+\texttt{Surreal} repository, \emph{Cofinal displacement and the rigidity of
+exponential automorphisms}, report README, same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/958b5c4865819bd55ea1f5ffc050282aea7ef570/docs/surreal/exponential-automorphism-rigidity/README.md}.
+Cited for related scope and the distinction between generic algebra and concrete
+surreal instantiation.
+\end{thebibliography}
+\end{document}

@@ -5,22 +5,23 @@ and the exact boundary of nonlinear differential rigidity: first-order for
 every value group, all orders when the value group has no order unit, an
 explicit series of minimal differential order three when it has one, no
 equation of order two, nor of order three and jet degree at most three, for
-any value group, and mixed differential–dilation equations decided by the
-relative scale of their dilations**
-Merged research report, 22–23 September 2026, from nine manuscripts: 08 and 09,
-written independently on the same day; 10, which adds the nonlinear part; 11
-and 12, written independently and delivered together later, which add the
+any value group, unbounded minimal orders over `C((t^R))`, lacunary series
+with no equation at one order-unit scale, and mixed differential–dilation
+equations decided by the relative scale of their dilations**
+Merged research report, 22–23 September 2026, from eleven manuscripts: 08 and
+09, written independently on the same day; 10, which adds the nonlinear part;
+11 and 12, written independently and delivered together later, which add the
 coefficient-field part; 13, delivered later still, which adds the
-theta-descent part; 14, which adds the order-three-threshold part; and 18 and
-19, delivered together in batch 31, which add the unit-dilation and
-Newton-rigidity parts. Three further manuscripts of batch 31 (local numbers
-15, 16 and 17) have been placed in this directory, with their audit, code and
-data files, but are not yet merged into the text; their files are listed
-below and marked *pending*.
+theta-descent part; 14, which adds the order-three-threshold part; and four
+manuscripts of batch 31: 18 and 19, which add the unit-dilation and
+Newton-rigidity parts, and 16 and 17, which add the theta-hierarchy and
+single-scale parts. One further manuscript of batch 31 (local number 15) has
+been placed in this directory, with its audit, code and data files, but is not
+yet merged into the text; its files are listed below and marked *pending*.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 175 pages
+article.pdf   the compiled report, 207 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -34,10 +35,10 @@ README.md     this guide
 13-theta-descent-SOURCES_AND_SCOPE.md         source 13: repository pin, literature, priority boundary
 14-order-three-threshold-SOURCE_AUDIT.md      source 14: repository pin, prior manuscript, novelty, checkpoints
 15-polynomial-composition-SOURCE_AUDIT.md     source 15 (pending): source audit
-16-theta-hierarchy-PROOF_AUDIT.md             source 16 (pending): proof audit
-16-theta-hierarchy-SOURCES_AND_SCOPE.md       source 16 (pending): sources and scope
-17-single-scale-PROOF_AUDIT.md                source 17 (pending): proof audit
-17-single-scale-SOURCES_AND_SCOPE.md          source 17 (pending): sources and scope
+16-theta-hierarchy-PROOF_AUDIT.md             source 16: hypotheses, dependency separation, proof checks
+16-theta-hierarchy-SOURCES_AND_SCOPE.md       source 16: repository snapshot, public sources, priority limits
+17-single-scale-PROOF_AUDIT.md                source 17: core mechanism, relation ideals, base fields, boundary
+17-single-scale-SOURCES_AND_SCOPE.md          source 17: repository pin, literature, not-claimed-new list
 18-unit-dilation-SOURCES_AND_SCOPE.md         source 18: repository pin and blob, literature, review priorities, non-claims
 19-newton-rigidity-PROOF_AUDIT.md             source 19: assumptions, dependency chain, critical inequality, limits
 19-newton-rigidity-SOURCES_AND_SCOPE.md       source 19: repository pin, files read, literature, priority limits
@@ -55,10 +56,10 @@ code/
   14-order-three-threshold-verify.py              source 14 checks (600; needs SymPy; run on a copy)
   15-polynomial-composition-Makefile              source 15 (pending)
   15-polynomial-composition-verify.py             source 15 (pending)
-  16-theta-hierarchy-Makefile                     source 16 (pending)
-  16-theta-hierarchy-verify.py                    source 16 (pending)
-  17-single-scale-build.py                        source 17 (pending)
-  17-single-scale-verify.py                       source 17 (pending)
+  16-theta-hierarchy-Makefile                     source 16's Makefile (see "Build and reproduce")
+  16-theta-hierarchy-verify.py                    source 16 checks (standard library; pass --output)
+  17-single-scale-build.py                        source 17's build script (see "Build and reproduce")
+  17-single-scale-verify.py                       source 17 checks (8,608; needs SymPy; pass --output)
   18-unit-dilation-verify_finite.py               source 18 checks (16,579; standard library; pass --output)
   19-newton-rigidity-verify.py                    source 19 checks (259; needs SymPy; run on a copy)
   19-newton-rigidity-build.py                     source 19's build script (see "Build and reproduce")
@@ -81,9 +82,12 @@ data/
   14-order-three-threshold-build_report.json   build and validation record of the 26-page A4 source 14 manuscript
   15-polynomial-composition-BUILD_REPORT.json, 15-polynomial-composition-requirements.txt,
   15-polynomial-composition-verification.json            source 15 (pending)
-  16-theta-hierarchy-build_audit.json, 16-theta-hierarchy-verification.json   source 16 (pending)
-  17-single-scale-build_audit.json, 17-single-scale-requirements.txt,
-  17-single-scale-verification_results.json, 17-single-scale-visual_audit.json   source 17 (pending)
+  16-theta-hierarchy-verification.json         recorded run of the source 16 checks (precision p^128)
+  16-theta-hierarchy-build_audit.json          build audit of the 25-page source 16 manuscript
+  17-single-scale-verification_results.json    recorded run of the source 17 checks (8,608 in 21 groups)
+  17-single-scale-requirements.txt             sympy==1.14.0
+  17-single-scale-build_audit.json             build audit of the 24-page source 17 manuscript
+  17-single-scale-visual_audit.json            layout audit of that manuscript
   18-unit-dilation-finite_verification.json    recorded run of the source 18 checks (16,579 in 11 categories)
   19-newton-rigidity-verification.json         recorded run of the source 19 checks (259 in 17 groups)
   19-newton-rigidity-requirements.txt          sympy==1.14.0
@@ -93,7 +97,8 @@ data/
 Every label in `article.tex` carries the prefix `hol:`; the nonlinear part
 uses the sub-prefix `hol:nl:`, the coefficient-field part `hol:cf:`, the
 theta-descent part `hol:td:`, the order-three-threshold part `hol:ot:`, the
-unit-dilation part `hol:ud:` and the Newton-rigidity part `hol:nr:`.
+unit-dilation part `hol:ud:`, the Newton-rigidity part `hol:nr:`, the
+theta-hierarchy part `hol:th:` and the single-scale part `hol:fh:`.
 The merge of sources 11 and 12 renamed or removed no label: the report had 199 labels before it and had 274 after it,
 all 199 original labels still present. The later coefficient-field review
 adds `hol:cf:cor:meromorphicmixed`, giving 275 labels while preserving every
@@ -104,8 +109,11 @@ the merge). The merge of source 14 adds 52 labels, all with the prefix
 `hol:ot:`, giving 412; all 360 earlier labels are present and keep their
 numbers, checked the same way. The merge of sources 18 and 19 adds 116 labels,
 67 with the prefix `hol:ud:` and 49 with `hol:nr:`, giving 528; all 412 earlier
-labels are present and keep their numbers, checked the same way. The audit
-files and programs keep the source numbers `08` to `19`
+labels are present and keep their numbers, checked the same way. The merge of
+sources 16 and 17 adds 116 labels, 50 with `hol:th:` and 66 with `hol:fh:`,
+giving 644; all 528 earlier labels are present and keep their numbers,
+checked the same way. The audit files and programs keep the source numbers
+`08` to `19`
 of the batches they arrived in (`15` to `19` are this report's local numbers
 for batch 31's manuscripts 01, 02, 03, 05 and 08), and the audit files keep their sources' own
 notation and theorem numbering. No source manuscript is shipped.
@@ -133,10 +141,11 @@ divisibility. The review below replaces root extraction by inward stability
 of strong evaluation.
 
 The divisibility-free predecessors are weaker in the constant only, not in the
-conclusion. The nonlinear, coefficient-field, theta-descent and unit-dilation
-parts use no divisibility; the order-three-threshold and Newton-rigidity parts
-pass to the divisible hull `Γ ⊗ Q`, in which `Γ` is cofinal, and transfer their
-conclusions back.
+conclusion. The nonlinear, coefficient-field, theta-descent, unit-dilation
+and single-scale parts use no divisibility; the order-three-threshold and
+Newton-rigidity parts pass to the divisible hull `Γ ⊗ Q`, in which `Γ` is
+cofinal, and transfer their conclusions back; the theta-hierarchy part works
+in `Γ = R` only.
 
 ## Source 10: the nonlinear part
 
@@ -497,6 +506,116 @@ Question 12.1 are answered negatively by Theorem H.
   and endpoint–gap polynomials above were rechecked with an independent SymPy
   script, which is not shipped.
 
+## Source 16: the theta-hierarchy part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **16** | *Independent Theta Families and Unbounded Differential Order in Hahn–Surcomplex Analysis: Valuation growth, bounded polynomial jet compression, and a continuum-sized differential-algebraic function field* (25 pages, A4, 23 September 2026; batch 31, manuscript 02, archive `Surreal_Theta_Hierarchy`) | `0fffc26` (a snapshot recorded while the repository was changing) | Polynomial growth, the exact quadratic Gauss profile of `𝒯_(t^μ)`, superlinear growth separation, a noncancellation threshold and its example (Lemma 32.2, Theorems 32.3–32.4, Proposition 32.5, Example 32.6); the Kähler criterion, grid lemma and bounded polynomial jet compression (Lemmas 32.7–32.8, Theorem 32.9, Remark 32.10, Example 32.11, Corollary 32.12); minimal differential order, finite composita, no finite bound, the exact order at the compositum dimension (Definition 32.13, Lemma 32.14, Corollaries 32.15–32.16, Remark 32.17, Theorem 32.19); the continuum family and field (Lemma 33.1, Corollary 33.2, Lemma 33.3); integer sampling (Theorem 33.5, Corollaries 33.6–33.7); a third route to order three (Theorem 33.8, Corollary 33.9); Theorem L; Questions 19.36–19.44. Files `16-theta-hierarchy-*`. |
+
+Over `𝕂 = k((t^R))`, `k = R` or `C` (**`Γ = R` only**): the theta descents
+`𝒯_(t^μ)` of Theorem H at scales `μ` with `Q`-independent reciprocals are
+algebraically independent (a family of size `2^ℵ0`), since their Gauss values
+are `−δ²/(4μ) + O(1)`; polynomially weighted sums
+`Σ_i (Σ_(j<N) c_ij z^j) 𝒯_(t^(μ_i))` with `c_ij ∈ {0,…,N}`, `μ_i = 1/√p_i`,
+include one of minimal order in `[N, 3N]`; so minimal orders are unbounded,
+and the differentially algebraic strongly entire series generate a field of
+transcendence degree `2^ℵ0` and differential transcendence degree 0 (Theorem
+L). At its snapshot the article was the five-source text and source 13's
+audit files were placed; source 16 credits the seed, its equation and its
+minimal order three to source 13. Its Question 11.2 (order two) and the
+statement that order two is unresolved are stale: Theorem I answers them.
+
+- **Placement.** Sections 32–33, after Section 31, so that Sections 1–31,
+  Questions 19.1–19.35 and Theorems A–K keep their numbers; the conclusion is
+  now Section 36. Principal theorem: Theorem L; questions 19.36–19.44.
+- **Renamed symbols** (Section 32.1): `X → z`, `∂ → D_z`; `h → μ`, `q = t^h →
+  p = t^μ`, `Q = q² → p²`, `s_k → 𝒬_k(p²)`; `F_h → 𝒯_(t^μ)`; the Laurent
+  variable `z → u`, `Θ → Ψ_p`, `D → ϑ_u`, `G → ψ_1`, `H → 𝗑 = −ψ_2 − 2𝒬_1(p²)`,
+  `Y → ž`; `Δ = X² − 4 → z² − 4`; its `A, B → ℬ[f] − f²/12, ℋ[f]`; radius
+  `r → δ`, `w_r → γ_δ`; `ord_∂ → dord`; `𝔠 = 2^ℵ0 → 2^ℵ0` (`𝔠` is a theta
+  constant); in compression `F ⊆ L, s, a_i, p_i, c_ij, W, U_ir, λ_i → 𝔎_0 ⊆
+  𝔎_1, 𝗌, y_i, 𝖯_i, 𝖼_ij, 𝖶, 𝖴_ir, ε_i`; primes `p_i → p_i` (roman);
+  threshold data `m, A_m, B_m, … , R_0, R → e, κ_e, κ'_e, …, δ^(0), δ^cert`;
+  Hamel set `B → 𝔙`; `𝒜, 𝒟 → 𝒜_DA, 𝒟_DA`; sampling `G, w_0(G), Ḡ → g, γ_0(g),
+  φ_0`; `ℒ, w, σ → 𝒰_μ, γ^𝒰, 𝖲`. The shipped audit files keep the source's
+  notation.
+- **Printed once:** escape lemma (Lemma 2.3(a)), entireness (Definition 1.2,
+  Proposition 20.2), closure (Proposition 2.7), Gauss multiplicativity
+  (Corollary 14.3), seed coefficients (Proposition 23.3), product (23.12),
+  seed equation (24.7), failure at `ω^ω` (Section 25.3), Laurent ring and
+  shift (Lemma 24.4, (23.10)), integer-evaluation lemma (Lemma 4.1), the
+  embedding. Source 16's Tate-normalized equation, with `𝖠 = ℬ[f] − f²/12`,
+  `g_2 = 1/12 − 4a_4`, `g_3 = −1/216 + a_4/3 − 4a_6`, **is** the cleared
+  equation (24.7) as a polynomial identity (checked with SymPy).
+- **Merge additions** (marked "merge"): the identity of the two seed
+  equations; Remark 32.18 (with Theorems I and K the order spectrum lies in
+  `{3, 4, …}`, contains 3, is unbounded; `d_N ≥ max(N, 3)`); Remark 33.4
+  (with source 17's family, `dtrdeg FE = 2^ℵ0` also over `k((t^R))`, while its
+  differentially algebraic part has `trdeg 2^ℵ0`, `dtrdeg 0`); Remark 33.10
+  (three routes to minimal order three: source 13's three field-theoretic
+  obstructions, source 16's quadratic valuation growth of shift iterates,
+  proved for `Γ = R`, `k = C` only, and source 14's universal second-order
+  rigidity).
+- **Stale text corrected in this report:** the remark after Corollary 25.7
+  ("classifies neither … nor the possible minimal orders"), the status of
+  Question 19.1, Section 19's ledger, Section 18, Appendix B and this README.
+- **Verified for this merge.** The source 16 suite was rerun on a copy
+  (Python 3.14.4) and reproduced its record apart from the elapsed time (the
+  record names no interpreter).
+
+## Source 17: the single-scale part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **17** | *Differential Freedom at a Single Surreal Scale: Factorial-height entire functions, exact relation ideals, and omnific codes* (24 pages, A4, 23 September 2026; batch 31, manuscript 03, archive `single_scale_surreal_research`) | `bcac55a` | Rapid heights, height separation, bands, polarization, density (Definition 34.2, Lemma 34.3, Corollary 34.4, Lemma 34.5, Example 34.6, Lemma 34.7); joint numerical and mixed independence (Definition 34.8, Theorems 34.9–34.10, Corollary 34.11, Remark 34.12); the exact relation ideal, jet degrees, examples, finite alphabets (Theorem 34.13, Corollary 34.14, Examples 34.15–34.16, Corollary 34.17); all scalars in the equation (Theorem 34.18, Remark 34.19); entire freedom at one order-unit scale, continuum field, Hermite data (Theorem 35.1, Corollary 35.3, Theorem 35.4); Berarducci–Mantova jets and bounded-support descent (Lemma 35.5, Theorem 35.6, Lemma 35.7, Corollary 35.8, Remark 35.9); the exact domain in `No[i]` (Theorem 35.10, Propositions 35.11, 35.13, Remark 35.14); omnific codes and floors (Lemma 35.15, Theorem 35.16, Remark 35.17, Theorem 35.18); the polynomial-height obstruction (Proposition 35.19); Theorem M; Questions 19.45–19.54. Files `17-single-scale-*`. |
+
+For heights `𝖻_n` with `𝖻_n/𝖻_(n−1) → ∞` (e.g. `n!`) and
+`𝒢_A(p, z) = Σ_(n∈A) p^(𝖻_n) z^n`: after explicit finite polynomial
+corrections, the whole differential relation ideal of any finite family over
+`k(p, z)` (derivations `z d/dz`, `p d/dp`) is generated by the linear
+relations among the membership patterns that recur infinitely often; with an
+order unit `μ` and `p = t^μ`, every infinite subseries is a nonpolynomial
+strongly entire series **satisfying no algebraic differential equation over
+`𝕂(z)`**, although its coefficients lie in `Q(p)` and its coefficient values
+span `Qμ` (Theorem M). This fills the gap recorded after Theorem 21.20
+(coefficient-value rank one, `C((t^Q))`); `Θ_p` and `Σ t^(n²) z^n` (quadratic
+heights) are not decided. Single-series gap differential transcendence is
+classical (Grönwall, via Ostrowski 1920) and not claimed. At its pin the
+report was the five-source text; its "the general order-unit question remains
+open" and Question 12.1 are stale (answered by Theorems H and I).
+
+- **Placement.** Sections 34–35; principal theorem Theorem M; questions
+  19.45–19.54.
+- **Renamed symbols** (Section 34.1): formal `q → p`, `q = t^η → p = t^μ`,
+  `η → μ`; `δ = q d/dq → ϑ_p`, `Θ → ϑ`, `D → D_z`; `S_A → 𝖭_A`,
+  `F_A → 𝒢_A` (`𝓕_α` is source 11's branch family), heights `b_n → 𝖻_n`;
+  `E(K) → E_Γ(k)`; patterns `v_n, T_v, E_0, p(q,z), s(q), V, d, λ_j, L → 𝐯_n,
+  A_𝐯, A_fin, 𝖼, 𝖼_0, 𝖵, d_pat, ℓ_j, 𝖫`; Lemma 3.1's `D, H, T, U, k → d̄, h̄,
+  𝐓, 𝐔, n_*`; polarization `L, Q, J, U, X, W_Q → 𝔎, 𝔓, 𝒥, ε, 𝐱, 𝖶_𝔓`;
+  domain `𝒟 → 𝒪_⟨1⟩`; `ℬ_Γ(k), ℱ_Γ(k) → ℬ^bd_Γ(k), ℱ^bd_Γ(k)`; `ξ_A → 𝔵_A`
+  (the tail-span report's `ξ_A` differ); `Λ, M, Z_A, I_A → Ω, M_Ω, 𝔷_A, 𝖨_A`;
+  Hermite `a_i, m_i, c_ij, M, H_α, P, G_α → x_i, e_i, 𝗒_ij, ē, 𝖱_α, 𝖱_0,
+  𝒢*_α`; `h(n) → 𝗁(n)`; `𝔠 → 2^ℵ0`. The shipped audit files keep the
+  source's notation.
+- **Printed once:** the entire class (Proposition 20.2), the entire ring
+  (Proposition 2.7), the Euler–Stirling change (26.2), support facts (Lemma
+  2.1), constant extension (the argument of Proposition 22.7 over `Q(p)`; the
+  source's coefficient-minor proof is recorded), the embedding, the
+  binary-prefix device (Section 22.2); bounded-support descent is
+  `bst:thm:descent` of [transcendence-over-bounded-support] and the floor
+  profile a case of `odg:thm:floor`, both reproved briefly.
+- **Merge additions** (marked "merge"): Remark 35.2 (placement beside
+  Theorems F, G, H and L: a finitely generated coefficient field is necessary
+  for differential algebraicity but, with an order unit, not sufficient);
+  Remark 35.12 (the domain has the shape of the domain of `𝒯_p`); Remark
+  35.20 (the universal question is answered).
+- **Stale text corrected in this report:** the remark after Theorem 21.20,
+  the status of Question 19.1, Section 19's ledger, Section 18, Appendix B and
+  this README.
+- **Verified for this merge.** The source 17 suite was rerun on a copy
+  (Python 3.14.4, SymPy 1.14.0) and reproduced its record apart from the
+  recorded interpreter version.
+
 ## What the report claims
 
 Let `K = C((t^Γ))` for a nonzero set-sized ordered abelian group `Γ`, **not
@@ -737,6 +856,38 @@ for any field `k` of characteristic zero and any `Γ`.
   (Theorems 31.1, 31.2); `Σ t^(4^j) z^(2^j)` satisfies both exterior equations
   at every scale but neither equation (Example 31.3).
 
+The theta-hierarchy part (source 16, Sections 32–33) works over `k((t^R))`,
+`k = R` or `C`.
+
+- **Theorem L.** (a) `𝒯_(t^(μ_1)), …, 𝒯_(t^(μ_N))` are algebraically
+  independent over `𝕂(z)` when the `1/μ_i` are `Q`-independent; a family of
+  size `2^ℵ0` exists. (b) For every `N` a polynomially weighted sum with
+  weights of degree below `N`, coefficients in `{0,…,N}` and scales
+  `1/√p_i` is strongly entire, differentially algebraic and of minimal order
+  in `[N, 3N]`. (c) The field `𝒟_DA` generated by all differentially algebraic
+  strongly entire series has `trdeg 2^ℵ0` and `dtrdeg 0`.
+- Bounded polynomial jet compression (Theorem 32.9) in any differential field
+  of characteristic zero; the exact Gauss profile and a finite noncancellation
+  threshold (Theorem 32.3, Proposition 32.5); exact order `d_N` at the
+  compositum dimension (Theorem 32.19); a fixed polynomial relation fails at
+  all but finitely many integers (Theorem 33.5, Corollaries 33.6–33.7); a
+  valuation proof of the minimal order three of `𝒯_p` (Corollary 33.9).
+
+The single-scale part (source 17, Sections 34–35) works in characteristic zero,
+at one order-unit scale.
+
+- **Theorem M.** Exact differential relation ideals of rapid-height lacunary
+  families; every infinite subseries is strongly entire and differentially
+  transcendental over `𝕂(z)` at an order-unit scale;
+  `dtrdeg FE = 2^ℵ0` over `R((t^Q))` and `C((t^Q))` with a family whose
+  coefficients lie in `Q(t)`.
+- All scalars of a Hahn field may enter the equation (Theorem 34.18); finite
+  Hermite data (Theorem 35.4); `∂_BM`-jets of `Σ_(n∈A) ω^(−𝖻_n)` independent
+  over `R(ω)` and over the bounded-support field (Theorem 35.6, Corollary
+  35.8); common strong domain `{x : v(x) ≥ −m}` in `No[i]`, a valuation ring
+  (Theorem 35.10, Proposition 35.11); independent omnific codes
+  `ω^Ω Σ ω^(−𝖻_n)` and floors `⌊𝒢_A(ω^(−1), ω^a)⌋_Oz` (Theorems 35.16, 35.18).
+
 ## What the report does not claim
 
 - The arbitrary-rank classification is offered as a **proposed original
@@ -748,8 +899,8 @@ for any field `k` of characteristic zero and any `Γ`.
   covariance. In particular, the partial-theta construction proves one
   direction of the dilation classification and of the order-unit detection
   equivalence. The full classifications and the nonlinear, coefficient-field,
-  theta-descent, order-three-threshold, unit-dilation and Newton-rigidity
-  theorem packages remain pending. The detailed coverage is in Section 13.3.
+  theta-descent, order-three-threshold, unit-dilation, Newton-rigidity,
+  theta-hierarchy and single-scale theorem packages remain pending. The detailed coverage is in Section 13.3.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -764,7 +915,9 @@ for any field `k` of characteristic zero and any `Γ`.
   nonpolynomial strongly entire series with an algebraic differential
   equation of order three for every such group. Theorem F still gives
   all-order independence for individual series with infinite
-  coefficient-value rank, including the rank-one example of Theorem 21.20.
+  coefficient-value rank, including the rank-one example of Theorem 21.20,
+  and Theorem M (source 17) for explicit lacunary series of coefficient-value
+  rank one.
   Source 10 answers the first-order case of the nonlinear question, plus the
   higher-order equations with `χ_P ≠ 0` and positive-weight Euler relations,
   for every `Γ`; sources 11 and 12 answer all orders, including a vanishing
@@ -896,13 +1049,40 @@ for any field `k` of characteristic zero and any `Γ`.
   nothing infinite; no Lean proof, referee report or priority, and the
   repository was not built; targeted comparisons at `3d40856`; positive and
   mixed characteristic excluded.
+- The theta-hierarchy part keeps every limitation of source 16, listed as
+  Th1–Th16 in Section 33.5: not every candidate works and no recognition
+  algorithm; `3N` not shown sharp, `d_N` not computed, the spectrum not
+  determined; order two not decided by `N = 2` (it is decided by Theorem I);
+  joint independence of all `3N` jets not proved; finite checks decide no
+  dependence; nothing entire on `No[i]`; no point-value independence; seed,
+  equation and order three credited to source 13, theta product and Tate
+  identity imported; priority provisional (a primitive-element antecedent may
+  exist); no referee report or Lean; snapshot taken while the repository was
+  changing; choice (Hamel basis), not CH; real-valued asymptotics, so
+  `Γ = R` only; no named conjecture; external `D_z` only.
+- The single-scale part keeps every limitation of source 17, listed as F1–F19
+  in Section 35.7: single-series gap transcendence is classical (Grönwall via
+  Ostrowski, original not inspected); normal forms, `∂_BM`, `Oz`,
+  lacunarity, polarization, almost-disjoint families, cofinite spans and
+  bounded-support descent not new, nor the existence of differentially
+  transcendental surreals; the universal order-unit question not solved by
+  source 17; the codes are algebraic, with no primality, irreducibility or
+  divisibility; the mixed theorem has base `k(p, z)` only; the pure-`z`
+  theorem freezes the scalars and the witnesses are not transcendental over
+  `k((p))` or `No`; finite alphabets only; the continuum family is not a basis
+  and not uniformly computable; finite Hermite data; strong summation, not
+  the fine topology, and `∂_BM` is not `D_z`; descent needs a cofinal
+  scale; rapid ratios sufficient, not necessary; the finite witness is not a
+  decision procedure; no large cardinals, CH or GCH; no referee report or
+  Lean, and 8,608 checks are not a theorem count; PDF bytes not reproducible;
+  comparison covered three reports; floors only for real `a ≥ 0`.
 - The finite checks validate coefficient conversions, identities, cancellation
   examples and finite ordered-group examples. They do not establish the
   infinite support arguments, the cofinality claims, the generic-line theorem,
   the nonexistence of annihilating operators, the coefficient-field theorem,
   the descent, any independence statement, the minimal order of `𝒯_p`,
   second-order rigidity, the periodic-affine valuation theorem or the
-  Skolem–Mahler–Lech theorem, or Theorem K.
+  Skolem–Mahler–Lech theorem, Theorem K, Theorem L or Theorem M.
 
 ## Relation to the neighbouring reports
 
@@ -920,7 +1100,8 @@ Theorem E; with it, least order three by Theorem I), mixed-jet
 independence (Theorem G), and, through the top Archimedean scale, which finite
 sets of multipliers carry a mixed linear equation with a nonpolynomial
 solution (Theorem J). Neither implies the
-other. The polynomial half of the coarsening descent (Theorem 21.11) is a
+other. Source 17's continuum family over `C((t^Q))` (Corollary 35.3) is the
+order-unit counterpart of this report's Theorem 22.6. The polynomial half of the coarsening descent (Theorem 21.11) is a
 coefficient-field form of that report's intersection `E_Δ ∩ K_Γ[[Z]] = K_Γ[Z]`
 for noncofinal extensions.
 
@@ -944,7 +1125,20 @@ Hahn field, and the coefficient-field part all-order independence for every
 such function when the value group has no order unit, together with a
 continuum family of strongly entire series independent over the whole Hahn
 field (Theorem 22.6). Neither result weakens or rediscovers the other, and
-neither is transferred to the other's derivation.
+neither is transferred to the other's derivation. That report already has an
+exact cofinite-span relation theory and `∂_BM`-jets of numerical witnesses
+(`tail:thm:surreal`, `tail:eq:BMtriangular`, `tail:rem:indexfamily`); the
+single-scale part here (source 17) has a parallel exact relation theory whose
+mechanism is support, not coefficients, over a different numerical base, and
+its witnesses `𝔵_A` are different numbers from that report's `ξ_A`.
+
+**[transcendence-over-bounded-support](../../surreal/transcendence-over-bounded-support/)**
+proves algebraic independence of factorial-support witnesses `η_A` over the
+bounded-support field and the descent theorem `bst:thm:descent`, and states
+that it proves no differential independence. Source 17 continues it
+differentially: its Lemma 35.7 is the integer-lattice case of that descent,
+credited and reproved, and Corollary 35.8 gives `∂_BM`-jet independence over
+the same kind of base.
 
 **[hahn-tate-uniformization](../hahn-tate-uniformization/)** studies the
 bilateral theta series `Σ (−1)^n q^(n(n−1)/2) u^n`, its strong domain and its
@@ -955,7 +1149,8 @@ descent to the entire power series `𝒯_p` and its differential algebra.
 **[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
 supplies the definition `Oz = Z ⊕ Π` (`odg:def:rings`) used for the omnific
 rounding of the zeros of `𝒯_{ω⁻¹}` (Corollary 25.3); that corollary concerns
-an infinite-series equation, not a Diophantine one.
+an infinite-series equation, not a Diophantine one. Source 17's floor profile
+(Theorem 35.18) is a case of its `odg:thm:floor`.
 
 **[single-dilation-hahn-support](../single-dilation-hahn-support/)** also speaks
 of dilations, but there a dilation is an automorphism `t^g ↦ t^(qg)` of the
@@ -979,12 +1174,16 @@ python code/14-order-three-threshold-verify.py
 python code/18-unit-dilation-verify_finite.py --output rerun-18.json
 pip install -r data/19-newton-rigidity-requirements.txt
 python code/19-newton-rigidity-verify.py
+python code/16-theta-hierarchy-verify.py --precision 128 --output rerun-16.json
+pip install -r data/17-single-scale-requirements.txt
+python code/17-single-scale-verify.py --output rerun-17.json
 ```
 
-The current build gives 175 pages with zero errors, zero warnings, zero
+The current build gives 207 pages with zero errors, zero warnings, zero
 overfull or underfull boxes, zero undefined references, zero multiply defined
 labels and zero duplicate PDF destinations; the build of the text before the
-merge of sources 18 and 19 gave 137 pages, that before the merge of source 14
+merge of sources 16 and 17 gave 175 pages, that before the merge of sources 18
+and 19 137 pages, that before the merge of source 14
 118 pages, and that before the merge of source 13 91 pages, equally clean. The programs of sources 08,
 09, 10 and 12 use only the Python standard library with exact integer and
 rational arithmetic; those of sources 11, 13 and 14 use exact SymPy and
@@ -1009,7 +1208,12 @@ on a copy too. It needs SymPy (`data/19-newton-rigidity-requirements.txt` pins
 `sympy==1.14.0`); the source states Python 3.9+. `18-unit-dilation-verify_finite.py`
 uses only the standard library (Python 3.10 or later, per the source), prints
 its record, and writes a file only when `--output` is given, overwriting that
-path; pass a new one.
+path; pass a new one. `16-theta-hierarchy-verify.py` (standard library,
+Python 3) writes `verification.json` in the current directory unless
+`--output` is given, overwriting it; its default precision `p^128` is the
+record's. `17-single-scale-verify.py` needs SymPy (`sympy==1.14.0`, Python
+3.10+) and without `--output` writes `verification_results.json` **beside
+itself** in `code/`, overwriting it; always pass a new path.
 The recorded runs passed 3,705 checks (08), 2,043
 checks (09), 2,113 checks (10, seed 20260922, six groups: 450 + 240 + 480 +
 500 + 360 + 83), 8,673 cases in eight groups (11; 8,136 of them binary-prefix
@@ -1020,8 +1224,14 @@ residual in every coefficient below `q^128`) and 600 checks in nine groups
 cleared equation through `q^47`), 16,579 checks in eleven categories (18,
 seed 20260923: 975 + 200 + 1,440 + 12 + 12 + 3,187 + 200 + 3,187 + 205 + 600 +
 6,561 in the record's alphabetical order; 6,561 + 1,440 of them are elementary
-integer identities, the first zero by construction) and 259 checks in
-seventeen groups (19), with no failures. For this merge the
+integer identities, the first zero by construction), 259 checks in
+seventeen groups (19), for 16 the listed comparisons (30 Chebyshev, 12 leading
+terms, 128 + 128 `p`-coefficients of the product and the order-three identity
+below `p^128`, 852 Gauss-profile cases, 65 `Q(√2)` dominance cases, the
+squarefree wedge assignment for `N = 1, …, 8`, and 81 grid candidates with 50
+nonzero jet determinants; the record gives no total) and 8,608 checks in 21
+groups (17; 7,198 of them the band lemma in finite windows), with no
+failures. For this merge the
 source 11 and 12 suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced their records exactly apart from the recorded interpreter version
 (recorded runs: Python 3.13.5, SymPy 1.14.0); an earlier rerun of the source 10
@@ -1034,7 +1244,10 @@ for its merge (Python 3.14.4, SymPy 1.14.0; recorded run Python 3.13.5, SymPy
 (Python 3.14.4, SymPy 1.14.0): source 18's reproduced its record exactly, and
 source 19's apart from the recorded interpreter version (recorded run: Python
 3.13.5, SymPy 1.14.0). Their JSON files were compared after normalizing line
-endings, which a Windows run writes as CRLF.
+endings, which a Windows run writes as CRLF. For the merge of sources 16 and
+17 both suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0): source 16's
+reproduced its record apart from the elapsed time, and source 17's apart from
+the recorded interpreter version (recorded run: Python 3.13.5).
 
 The build helpers were written for their sources' own manuscripts and are
 kept byte-identical; do not use them here, use `latexmk` on a copy.
@@ -1069,9 +1282,19 @@ LaTeX log in `code/`); its `--verify` option would call `code/code/verify.py`,
 which does not exist. `data/19-newton-rigidity-build_audit.json` describes the
 24-page source 19 manuscript (TeX Live 2025/dev on Debian, one remaining
 underfull-box warning), whose source and PDF, hashed there, are not in this
-directory. The pending sources' build files (`15-…-Makefile`,
-`16-…-Makefile`, `17-single-scale-build.py`) are described when those sources
-are merged; do not run them here.
+directory. `code/16-theta-hierarchy-Makefile` names the delivery paths
+`article.tex` and `verify.py`: its default target would run `latexmk` on any
+`article.tex` in the current directory, and its `verify` target calls a
+`verify.py` that is not present under that name;
+`data/16-theta-hierarchy-build_audit.json` describes the 25-page source 16
+manuscript, which is not shipped. `code/17-single-scale-build.py` looks for an
+`article.tex` in `code/` and stops with an error before writing anything; in
+its delivery layout it wrote `.build/`, `article.pdf` and `build_audit.json`
+in place. `data/17-single-scale-build_audit.json` and
+`data/17-single-scale-visual_audit.json` describe the 24-page source 17
+manuscript, which is not shipped. The pending source's build file
+(`15-…-Makefile`) is described when that source is merged; do not run it
+here.
 
 
 ## Subsequent proof review
@@ -1279,3 +1502,19 @@ its questions 11.2–11.12 are 19.19–19.29. Source 19's Question 12.1 is
 answered by Theorem H, its Questions 12.4, 12.6 and 12.8 are 19.15–19.17, and
 its Questions 12.2, 12.3, 12.5, 12.7, 12.9 and 12.10 are 19.30–19.35. Neither
 part has been independently refereed or formalized.
+
+## Merge of sources 16 and 17
+
+The code, data and audit files of sources 16 and 17 are byte-identical to the
+delivered packages (placement `9d28e28`). Not shipped: their article sources,
+PDFs and delivery READMEs. Every result of both sources is printed in
+Sections 32–35 or the introduction, with its proof, except the facts listed
+above as printed once; Sections 32.1 and 34.1 map each numbered result to its
+place here. Their references to this report were accurate at their pins, at
+which the report was the five-source text. Source 16's Question 11.2 is
+answered by Theorem I (Remark 32.18) and its other nine questions are
+19.36–19.44; source 17's Question 12.1 is answered by Theorems H and I (Remark
+35.20) and its other ten are 19.45–19.54. The remarks after Theorem 21.20 and
+Corollary 25.7, the status of Question 19.1, Section 19's ledger, Section 18
+and the appendices were updated. Neither part has been independently refereed
+or formalized.
