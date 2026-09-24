@@ -1123,3 +1123,27 @@ formulas retain the previous 2,189-assertion run as finite supporting
 evidence; it was not rerun as a test of class universal properties.
 No Lean or verifier source changed, so the previous two-thread 4,590-job
 build and 16,382-declaration audit remain the Lean baseline for this pass.
+
+## Synchronization of witness bounds on the actual omnific carriers
+
+Merged 66b7995, including c75088f and fc761f4, and checked the two new
+modules against `odg:def:prop:support`. The witnesses are evaluated
+inside the actual real and complex support rings. Canonical normal-form
+maps are proved injective and compatible with constants and constant
+extraction. Support reindexing commutes with finite sumsets, and the
+Hahn order in the dual exponent order gives the actual leading exponent.
+The transport proves the equation, both support bounds and exact degree
+identities together. Nonconstant inputs and both witnesses are proved
+nonzero; the surcomplex version also identifies the native degree with
+minus infinity at zero. The actual omnific and Gaussian omnific witnesses
+have their ordinary constant coefficients proved. No surjectivity onto
+an entire Hahn carrier is used or claimed. The updated README and ledger
+correctly record completion of the actual-carrier support/degree clause.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,592 jobs; the
+axiom audit checks 16,445 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,213 source-label references and 1,804 local Markdown
+destinations across 226 files pass, as does whitespace validation.
+No TeX source changed in the merge, so this review's clean 286-page
+article and 34-page catalogue remain current.

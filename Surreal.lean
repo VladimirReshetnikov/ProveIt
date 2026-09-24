@@ -720,6 +720,8 @@ import Surreal.HahnSeries.DetectorCounterexamples
 import Surreal.Algebra.IntersectiveWitnessPolynomials
 import Surreal.HahnSeries.PolynomialSupport
 import Surreal.HahnSeries.DetectorWitnessSupport
+import Surreal.Surcomplex.SupportRingHahnEmbedding
+import Surreal.Surcomplex.DetectorWitnessSupport
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
