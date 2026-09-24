@@ -452,6 +452,13 @@ has a common kernel containing a nonzero idempotent below every nonzero
 idempotent. That kernel meets every nonzero ideal and has zero annihilator.
 Prescribed set-sized data still leave arbitrarily large families of branch
 maps. These strengthened manuscript conclusions remain pending in Lean.
+The cyclic-workspace review now explains the opposite local behavior:
+its extended ideal has nilpotents of every finite order, with exact
+thresholds under root refinement. An added example realizes every real
+or complex Laurent constant coefficient on an integral element; their
+residues give an additive copy of the coefficient field with all products
+zero. These local residues disappear in the full-class fibre. The results
+remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
@@ -555,8 +562,9 @@ the map does not preserve one.
 Every such map defined just on the purely infinite ideal is zero. That
 ideal also annihilates every small unital module, whose action reduces to
 the action of ordinary integer or Gaussian integer constants. Here “small”
-means small relative to the birthday universe of the surreal carrier. The proof constructs a countable
-geometric telescope inside the ideal and uses collisions among subordinate
+means small relative to the birthday universe of the surreal carrier.
+The proof constructs a countable geometric telescope inside the ideal
+and uses collisions among subordinate
 monomials; it requires no continuity of the target map. The version for an
 arbitrary coefficient field remains pending. Real nonunital maps are
 classified by idempotents in the target. Gaussian unital maps are classified
