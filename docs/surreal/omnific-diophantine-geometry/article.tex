@@ -199,7 +199,9 @@ normalization is the affine line.
 This report merges fourteen independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
-and nothing in it has been formalized in Lean.
+and independent review remains incomplete. Some elementary ring and arithmetic
+results have checked Lean proofs; the exact scope is recorded in the
+repository's \fn{docs/FORMALIZATION.md}, not inferred from this manuscript.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -6625,8 +6627,10 @@ forms and inheritance. It also covers the curve classification in
 descent and the logarithmic proof, and the arithmetic fibers, polynomial witnesses
 and separated-model descent in \cref{odg:cr:sub:arith}. It also covers projective
 coordinates and their ideal obstruction in \cref{odg:cr:sub:projective}.
-Singular curves and subsequent geometric applications remain outside it; imported foundations are
-identified separately.
+The review also covers \cref{odg:cr:sub:singular} and the singular-curve
+criterion through \cref{odg:sg:cor:fibre}. The repeated-root and later
+geometric applications remain outside it; imported foundations are identified
+separately.
 A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
 argument to logarithmic forms in every dimension; its new results form
@@ -8184,7 +8188,7 @@ omnific tuple with a proper coordinate ideal, not an affine omnific point
 
 \subsection{Singular curves and normalization}\label{odg:cr:sub:singular}
 
-The classification is for smooth curves. The short Weierstrass cubics are settled
+The classification of \cref{odg:cr:thm:affine} is for smooth curves. The short Weierstrass cubics are settled
 completely (\cref{odg:cr:cor:weierstrass,odg:cr:prop:singular}) \src{C12}. The node
 and the cusp have normalizations isomorphic to $\Aff^1$ but are not affine lines
 themselves, so smoothness cannot be replaced by integrality in
@@ -8192,12 +8196,23 @@ themselves, so smoothness cannot be replaced by integrality in
 locally closed subscheme of an abelian variety (\cref{odg:cr:thm:abelian}) or has a
 quasi-finite map to a rigid target (\cref{odg:cr:thm:quasifinite}) is rigid; the
 embedding or map is a substantial extra hypothesis, and not every singular curve
-has one \src{C13, C14}. Reducible affine curves are not classified: a point over the
-domain $\crA$ has its generic image in one component, which may be singular
-\src{C12}.
+has one \src{C13, C14}. Sources C10--C15 leave reducible affine curves
+unclassified. A map from their coordinate ring to the domain $\crA$ kills the
+nilradical and has prime kernel, hence factors through an irreducible component;
+that component may be singular \src{C12}. Source C16 treats this case over
+algebraically closed fields in \cref{odg:sg:thm:allcurves}.
 
-Points need not lift to the normalization, because $\crA$ need not be integrally
-closed. For the full class this is \cref{odg:prop:notnormal}, with the witness
+A normalization lift over $\crA$ cannot be assumed merely from integrality.
+For a nonconstant point of an integral constant curve the coordinate map is
+injective, as proved before \cref{odg:sg:lem:place}, and identifies its function
+field with a subfield of $\Frac\crA$. The lift exists exactly when the image
+of the normalized coordinate ring lies in $\crA$. Thus normality of $\crA$
+in its own fraction field would suffice, by the universal property of
+normalization \cite[Lemma 29.55.5(4)]{StacksNormal}. Failure of normality
+removes that sufficient hypothesis; it does not by itself produce a constant
+curve point without a lift.
+
+For the full class non-normality is \cref{odg:prop:notnormal}, with the witness
 $\sqrt{\omega^2+1}$ of sources 01, 02 and 05. Sources C10 and C13 give the same
 witness in a fixed workspace, and source C16 gives it again: for
 $\Gamma=\Q+\Q\omega\subseteq\No$ (C13 allows any $\Q+\Q H$ with $H$ above every ordinary
@@ -8205,11 +8220,14 @@ integer, and C16 any $0<e<H$ in $\Gamma$ with $ne<H$ for every ordinary $n$, wit
 $\omega^e$ in place of $\omega$),
 $q=\sqrt{\omega^2+1}=\omega+\tfrac12\omega^{-1}-\tfrac18\omega^{-3}+\cdots$ is integral
 over $\mathcal A_\R(\Gamma)$ and not in it, while $\omega^\omega q\in\mathcal A_\R(\Gamma)$
-because all its exponents $\omega+1-2n$ are positive; so
+because all its exponents $\omega+1-2n$ are positive for ordinary $n\ge0$;
+their decreasing sequence is a valid reverse-well-ordered support, so
 $q\in\Frac\mathcal A_\R(\Gamma)\setminus\mathcal A_\R(\Gamma)$. Source C12 gives the
 same phenomenon for $\Gamma=\Z^2$ ordered lexicographically, with $g=(0,1)$,
 $h=(1,0)$, $z=\omega^g(1+\omega^{-2g})^{1/2}$ and $\omega^hz\in\crA$. Only these
-fixed-workspace forms are new. The dominating scale matters: an integral element of
+fixed-workspace forms are new.
+
+The dominating scale matters: an integral element of
 the larger field $\crH$ need not lie in $\Frac\crA$ \src{C13}. For $\Gamma=\Z$,
 $\crA=\Bbbk[\omega]$ is integrally closed, and
 $z=\omega(1+\omega^{-2})^{1/2}$ is integral over it but not in it; source C14 uses
@@ -8219,11 +8237,18 @@ $t^{-1}(1+t^2)^{1/2}$ in the $t$-convention, and concludes that normality is una
 even for $\Gamma=\Z$. That conclusion is not correct: for $\Gamma=\Z$ the ring
 $\crA=\Bbbk[\omega]$ is a polynomial ring, hence normal, and the element, whose square
 $\omega^2+1$ is not a square in $\Bbbk(\omega)$, lies outside $\Frac\crA$; it shows only
-that $\crA$ is not integrally closed in $\crH$, which is the property that matters for
-lifting a point through a normalization (\cref{odg:app:provenance}). Source C15's
+that $\crA$ is not integrally closed in the larger field $\crH$. It is
+not an obstruction to the normalization lift of a nonconstant curve point:
+for $\Gamma=\Z$, that lift does exist because $\Bbbk[\omega]$ is normal
+in its own fraction field. Indeed $\omega^2+1$ has simple roots over
+$\bar\Bbbk$, whereas the order of a zero or pole of a rational square is
+even; thus its square root is not in $\Bbbk(\omega)$
+(\cref{odg:app:provenance}). Source C15's
 statement that $\crA$ is not assumed normal and that such a lift is not available as an
 unstated step is correct. Nor is a non-normality example
-by itself a point of a constant curve that fails to lift \src{C13}. For an arbitrary
+by itself a point of a constant curve that fails to lift \src{C13}.
+
+For an arbitrary
 morphism $f:X\to G$ to a rigid target, \cref{odg:cr:prop:inherit} gives only
 $f(x)=f(\ct x)$; applied to an Albanese map this confines nonconstant directions to
 its fibers, and positive-dimensional fibers need not be rigid \src{C10}. The
@@ -8246,13 +8271,20 @@ smooth classification, and saw none of the other curve manuscripts. It answers t
 two clauses of \cref{odg:cr:q:singular}: over every field of characteristic zero and for
 every $\Gamma\ne0$, a geometrically integral affine curve, singular or not, has a
 nonconstant $\crA$-point exactly when its normalization is the affine line
-(\cref{odg:sg:thm:main}). Points need not lift to the normalization, since $\crA$ need not
-be integrally closed (\cref{odg:cr:sub:singular}); the proof does not lift them. A single
+(\cref{odg:sg:thm:main}). The proof does not assume a normalization lift
+over $\crA$: its existence cannot be inferred from integrality alone
+(\cref{odg:cr:sub:singular}). A single
 conductor element of the curve clears every power of a contracted regular differential
 after a fixed finite multiplication (Seidenberg's identity), and the discrete valuation at
 the one boundary point that a nonconstant point selects turns this into a contradiction
 after finitely many derivatives. Labels of this subsection carry the sub-prefix
-\fn{odg:sg:}. It is outside the proof reviews recorded in \fn{RECONCILIATION.md}.
+\fn{odg:sg:}. The proof review in \fn{RECONCILIATION.md} now covers
+the criterion, its conductor and boundary-place arguments, and the structural
+consequences through \cref{odg:sg:cor:fibre}; the later applications remain
+outside that review. Throughout this subsection $\Gamma\ne0$ unless a
+statement explicitly treats the trivial case. If $\Gamma=0$, then
+$\crA=\Bbbk$ and every point is constant; an existence criterion for
+nonconstant points must exclude this case.
 
 Some statements of source C16 are already printed above and are not reprinted; source C16
 is added to their credits. Its ring lemma (units, the retraction, transcendence of
@@ -8359,12 +8391,17 @@ integral over $\crA$ and not in it, and becomes an element of $\crA$ after multi
 by $\omega^H$ \src{C10, C13, C16}.
 
 \begin{remark}[Why discreteness is needed \src{C16}]\label{odg:sg:rem:discrete}
-The same example shows the danger of a careless almost-integrality argument: a fixed
-denominator $\omega^H$ clears every power of an element, but a positive infinitesimal
-scale $e$ need not outrun the much larger scale $H$ after any finite number of
-multiplications. In the proof below, the denominator and the differential both lie in a
-one-variable function field whose restricted value group is $\gamma\Z$
-(\cref{odg:sg:lem:place}), so their valuations are commensurable. This is not an
+The same scales show why almost integrality alone does not force a
+positive-valued element to vanish. Put $a=\omega^{-e}$. Then $v(a)=e>0$,
+but $\omega^H a^n=\omega^{H-ne}\in\crA$ for every ordinary $n\ge0$.
+No finite multiple of $e$ exceeds $H$. In the proof below the conductor
+lies in a one-variable function field whose restricted value group is
+$\gamma\Z$ (\cref{odg:sg:lem:place}). The contracted differential may
+lie outside that function field: the Euler derivation need not preserve it.
+Instead, the choice of derivation gives $v(\partial u)=v(u)=\gamma$,
+and $\alpha(\partial)=h\,\partial u$ with $h\in F$ then gives
+$v(\alpha(\partial))\in\gamma\Z$. These two valuations, rather than
+two field memberships, justify the finite comparison. This is not an
 assumption that $\Gamma$ has rank one. The hypothesis $ne<H$ for all $n$ is essential to
 the example, in accordance with \cref{odg:cr:sub:singular}: for $\Gamma=\Z$ the ring is
 $\Bbbk[\omega]$ and normal.
@@ -8380,8 +8417,10 @@ and $\Oz=\Z\oplus\Pi$, $\Og=\Z[i]\oplus\Pi_{\C}$ \cite{Conway,Gonshor,LM}.
 
 Let $C$ be an integral affine curve over a field. Its normalization
 $\Bbbk[\widetilde C]$ in $F=\Frac\Bbbk[C]$ is a finite $\Bbbk[C]$-module
-\cite{StacksNormal,StacksCurves}; a common denominator of finitely many module generators
-gives a \emph{conductor element}
+\cite{StacksFiniteNormal}; write finitely many module generators as fractions
+$c_i/d_i$ with $c_i,d_i\in\Bbbk[C]$ and $d_i\ne0$. Their product
+$\kappa=\prod_i d_i$ is nonzero and clears every module generator, hence
+every element of the normalization. It is a \emph{conductor element}
 \begin{equation}\label{odg:sg:eq:conductor}
  0\ne\kappa\in\Bbbk[C],\qquad \kappa\,\Bbbk[\widetilde C]\subseteq\Bbbk[C],
  \qquad\text{hence}\qquad \kappa b^j\in\Bbbk[C]\quad(b\in\Bbbk[\widetilde C],\ j\ge0).
@@ -8399,14 +8438,18 @@ $\partial(R)\subseteq R$. If $\kappa,b\in L$ and $\kappa b^j\in R$ for $0\le j\l
 \begin{proof}
 Let $w$ be an independent formal variable and $\mathcal T:L\to L[[w]]$,
 $\mathcal T(f)=\sum_{i\ge0}\partial^i(f)w^i/i!$; the Leibniz rule makes $\mathcal T$ a ring
-homomorphism. By the binomial theorem and multiplicativity,
+homomorphism: the coefficient of $w^i$ in $\mathcal T(fg)$ agrees with
+that in $\mathcal T(f)\mathcal T(g)$ by
+$\partial^i(fg)=\sum_{j=0}^i\binom ij\partial^j(f)\partial^{i-j}(g)$.
+By the binomial theorem and multiplicativity,
 \[
  \kappa\,\mathcal T(\kappa)\bigl(\mathcal T(b)-b\bigr)^n
  =\sum_{j=0}^n(-1)^{n-j}\binom nj(\kappa b^{n-j})\,\mathcal T(\kappa b^j).
 \]
 Since $\mathcal T(b)-b=(\partial b)w+O(w^2)$ and $\mathcal T(\kappa)=\kappa+O(w)$, the
 coefficient of $w^n$ on the left is $\kappa^2(\partial b)^n$, and on the right it is the
-sum in \eqref{odg:sg:eq:seidenberg}. Each $\kappa b^{n-j}$ and each
+sum in \eqref{odg:sg:eq:seidenberg}. This includes $n=0$, when both
+sides equal $\kappa^2$. Each $\kappa b^{n-j}$ and each
 $\partial^n(\kappa b^j)$ lies in $R$, and $1/n!\in\Q\subseteq R$.
 \end{proof}
 
@@ -8443,7 +8486,11 @@ $e_j\ge0$ and $\sum_je_j=n$. The first factor lies in $\Bbbk[\widetilde C]$, so 
 times it lies in $\Bbbk[C]\subseteq R$. For each $j$, all $\kappa b_j^i$ lie in $\Bbbk[C]$,
 so \cref{odg:sg:lem:seidenberg} with $n=e_j$ puts $\kappa^2(\partial b_j)^{e_j}$ in $R$.
 Multiplying these $\ell+1$ memberships puts $\kappa^{2\ell+1}$ times the term in $R$, and
-summing proves \eqref{odg:sg:eq:contract}. Only the derivatives $\partial^{e_j}$,
+summing proves \eqref{odg:sg:eq:contract}. The exponent $2\ell+1$
+depends on the chosen presentation of $\alpha$, but is independent of $n$;
+this uniformity is the point of multiplying the memberships before summing.
+Terms with $e_j=0$ cause no exception, since the identity at order zero gives
+$\kappa^2\in R$. Only the derivatives $\partial^{e_j}$,
 $e_j\le n$, of the elements $\kappa b_j^i$ occur.
 \end{proof}
 
@@ -8527,7 +8574,10 @@ is regular on $\widetilde C$, vanishes at $Q$ and has its only possible pole at 
 $f\in\Bbbk[\widetilde C]$ and $v(f)>0$. For a conductor element $\kappa$ every $\kappa f^n$
 lies in $\Bbbk[C]\subseteq\crA$, while by \eqref{odg:sg:eq:place} both $v(\kappa)\le0$ and
 $v(f)>0$ are integer multiples of $\gamma$; for large ordinary $n$, $v(\kappa f^n)>0$,
-contradicting $\crA\cap\crm=\{0\}$. Hence $\Sigma=\{Q\}$.
+contradicting $\crA\cap\crm=\{0\}$. More explicitly, put
+$\delta=-\operatorname{ord}_Q(\kappa)\ge0$ and
+$r=\operatorname{ord}_Q(f)\ge1$. Any integer $n>\delta/r$ gives the
+contradiction, even if $\Gamma$ has higher rank. Hence $\Sigma=\{Q\}$.
 \end{proof}
 
 The argument uses no derivation and no normality of the target ring; it is the part of
@@ -8558,7 +8608,8 @@ Since $v(u)=\gamma$, the leading exponent of $u$ is $-\gamma\ne0$; choose $\lamb
 $\lambda(-\gamma)=1$ (\cref{odg:cr:lem:separation}) and put $\partial=\partial_\lambda$. The
 leading term of $u$ survives, so $\partial u\ne0$ and $v(\partial u)=\gamma$. At $Q$ the
 differential $\dif u$ freely generates the module of differentials, since $\overline C$ is
-smooth and the residue field is separable \cite[Lemma 53.12.3]{StacksRH}; write
+smooth and $\kappa(Q)=\Bbbk$ is separable over $\Bbbk$
+\cite[Lemma 53.12.3]{StacksRH}; write
 $\alpha=h\,\dif u$ with $0\ne h\in\mathcal O_{\overline C,Q}$ and $r=\operatorname{ord}_Q(h)\ge0$.
 The universal property of K\"ahler differentials, applied to the $\Bbbk$-derivation
 $F\to\crH$ obtained by restricting $\partial$, gives
@@ -8602,8 +8653,12 @@ $\crA\subseteq\mathcal A_{\bar\Bbbk}(\Gamma)$ preserves nonconstancy, and $C_{\b
 integral because $C$ is geometrically integral; so a nonconstant point over $\Bbbk$ gives
 one over $\bar\Bbbk$, and the normalization of $C_{\bar\Bbbk}$ is $\Aff^1_{\bar\Bbbk}$. Over
 the perfect field $\Bbbk$ the normalization $\widetilde C$ is smooth and geometrically
-integral, and its base change is the normalization of $C_{\bar\Bbbk}$: base change keeps
-the finite birational map, and the source stays normal. So $\widetilde C$ is a form of the
+integral. To see the latter assertion, use the dense open where normalization
+is an isomorphism: after coefficient extension it is an integral dense open
+from $C_{\bar\Bbbk}$, while smoothness makes the whole base change normal
+and reduced. The base change of $\widetilde C$ is consequently the
+normalization of $C_{\bar\Bbbk}$: the morphism stays finite and birational
+and its source is normal. So $\widetilde C$ is a form of the
 affine line, and $\widetilde C\cong\Aff^1_\Bbbk$ by \cref{odg:cr:lem:formA1}: its completion
 has genus zero and one geometric boundary point, which is rational because in
 characteristic zero a closed point of higher degree splits into several geometric points
@@ -8651,21 +8706,29 @@ retained: arbitrary birational equivalence is not enough, since $\Aff^1$ is flex
 $\Gm$ rigid with the same function field \src{C16}.
 
 \begin{theorem}[Affine schemes of dimension at most one \src{C16}]\label{odg:sg:thm:allcurves}
-Let $\Bbbk$ be algebraically closed of characteristic zero and $X$ an affine $\Bbbk$-scheme
-of finite type and dimension at most one, possibly reducible or nonreduced. Then
+Let $\Bbbk$ be algebraically closed of characteristic zero, let $\Gamma\ne0$,
+and let $X$ be an affine $\Bbbk$-scheme of finite type and dimension at most one,
+possibly reducible or nonreduced. Then
 $X(\crA)=X(\Bbbk)$ if and only if no one-dimensional irreducible component of
 $X_{\mathrm{red}}$ has affine normalization $\Aff^1_\Bbbk$.
 \end{theorem}
 \begin{proof}
 A map $\Bbbk[X]\to\crA$ kills nilpotents, since $\crA$ is a domain, and its kernel $P$ is
-prime. If $\dim\Bbbk[X]/P=0$, the image is a domain algebraic over $\Bbbk$, hence $\Bbbk$
-(\cref{odg:cr:lem:rings}(d)), and the point is constant. Otherwise $P$ is a minimal prime,
+prime. If $X$ is empty, both point sets are empty and the criterion is
+vacuous. For a point of nonempty $X$, if $\dim\Bbbk[X]/P=0$, the image is a domain algebraic over $\Bbbk$, hence $\Bbbk$
+(\cref{odg:cr:lem:rings}(d)), and the point is constant. Otherwise $P$ is a minimal prime: a strict inclusion of a minimal prime
+in $P$, followed by a strict prime inclusion above $P$, would give a chain
+of length two in a ring of dimension at most one. Thus
 $V(P)$ is a one-dimensional irreducible component of $X_{\mathrm{red}}$, integral and,
 over the algebraically closed $\Bbbk$, geometrically integral, and the point is a
 nonconstant point of it; \cref{odg:sg:thm:main} applies. Conversely the normalization of
 an exceptional component gives a nonconstant polynomial map into $X$, which
 $T=\omega^\gamma$ turns into a nonconstant point.
 \end{proof}
+
+The nonzero-group hypothesis is necessary: for $\Gamma=0$ and
+$X=\Aff^1_\Bbbk$, the left side is true because $\crA=\Bbbk$, whereas
+the stated condition on the normalization is false.
 
 This classifies the reducible affine curves over an algebraically closed field of
 characteristic zero, which \cref{odg:cr:sub:singular} records as not classified by sources
@@ -8680,7 +8743,11 @@ finite-support $\mathbf x\in C(\crA)$ with $\ct(\mathbf x)=\mathbf x_0$.
 \begin{proof}
 The finite normalization map is surjective; choose $c\in\Bbbk$ over $\mathbf x_0$ and write
 the map as $(p_i(T))_i$. The coordinates $p_i(c+\omega^\gamma)$ lie in $\crA$, have constant
-terms $p_i(c)$, and are not all constant.
+terms $p_i(c)$. At least one $p_i$ is nonconstant, and translation by $c$
+preserves its degree. Evaluation at the transcendental monomial
+$\omega^\gamma$ is injective on $\Bbbk[T]$, so that coordinate is not
+in $\Bbbk$. The resulting supports are finite subsets of
+$\{0,\gamma,\ldots,n\gamma\}$, where $n=\max_i\deg p_i$.
 \end{proof}
 
 Over a field that is not algebraically closed the same construction works at every
@@ -8695,14 +8762,22 @@ Let $\Bbbk$ be algebraically closed of characteristic zero, $m\ge2$, and
 \begin{equation}\label{odg:sg:eq:superpoly}
  P(X)=c\prod_{i=1}^{k}(X-a_i)^{e_i},\qquad c\ne0,\quad e_i\ge1,
 \end{equation}
-with distinct $a_i$ and $d=\deg P=\sum_ie_i$. The polynomial $Y^m-P(X)$ is irreducible if
-and only if $\gcd(m,e_1,\ldots,e_k)=1$: the field $\Bbbk(X)$ contains the $m$th roots of
-unity, so the Kummer extension $\Bbbk(X)(P^{1/m})$ has degree $m$ exactly when $P$ is not a
-$p$th power for any prime $p\mid m$, and over an algebraically closed field that happens
-exactly when $p$ divides every $e_i$ \src{C16}.
+with distinct $a_i$ and $d=\deg P=\sum_ie_i$. Assume throughout this theorem that
+$Y^m-P(X)$ is irreducible, equivalently $\gcd(m,e_1,\ldots,e_k)=1$.
+Indeed, $P$ is a $p$th power in $\Bbbk(X)$ exactly when $p$ divides every $e_i$:
+necessity follows from the orders at the $a_i$, and sufficiency from taking a
+$p$th root of $c$. For completeness, put $K=\Bbbk(X)$ and $b^m=P$.
+Since $K$ contains all $m$th roots of unity, $K(b)/K$ is cyclic Galois of degree
+$r\mid m$, and $b^r\in K$ \cite{StacksKummer}. If $r<m$, then
+$P=(b^r)^{m/r}$ is a $p$th power for some prime $p\mid m/r$.
+Conversely, such a power makes $Y^m-P$ reducible by a difference-of-powers
+factorization. Gauss's lemma transfers irreducibility between $K[Y]$ and
+$\Bbbk[X,Y]$. Thus irreducibility means that for every prime $p\mid m$,
+\emph{some} $e_i$ is not divisible by $p$ \src{C16}.
 
 \begin{theorem}[Superelliptic flexibility criterion \src{C16}]\label{odg:sg:thm:super}
-Under these hypotheses $Y^m=P(X)$ has a nonconstant $\crA$-point if and only if exactly one
+Assume $Y^m-P(X)$ is irreducible, in addition to the hypotheses above.
+Then $Y^m=P(X)$ has a nonconstant $\crA$-point if and only if exactly one
 index $i$ has $m\nmid e_i$, and for that index $\gcd(m,e_i)=1$. Equivalently, after
 extracting polynomial $m$th powers,
 \begin{equation}\label{odg:sg:eq:exceptional}
@@ -8715,16 +8790,30 @@ and then a normalization parameter is
 In every other irreducible case all solutions in $\crA^2$ are constant.
 \end{theorem}
 \begin{proof}
-In the smooth projective model of the cover of the $X$-line, a finite root $a_i$ has
-$\gcd(m,e_i)$ points above it, each with ramification index $m/\gcd(m,e_i)$, and infinity
-has $n_\infty=\gcd(m,d)$ points, each with index $m/\gcd(m,d)$: extract a unit $m$th root
-in the completed local field and factor $Y^m=s^{e_i}$ (with $s=1/X$ at infinity); the
-coprime residual exponents give a uniformizer. Riemann--Hurwitz \cite{StacksRH} gives
+Let $\overline C$ be the smooth projective model of this degree-$m$ cover of
+the $X$-line. At $a_i$ put $s=X-a_i$, and at infinity put $s=1/X$.
+Locally $P=s^a U(s)$ with $U\in\Bbbk[[s]]^\times$, where $a=e_i$ at a finite
+root and $a=-d$ at infinity. The unit $U$ has an $m$th root: take a root of
+its constant coefficient and expand the remaining unit by the binomial series.
+After dividing $Y$ by this root, the local equation is $w^m=s^a$.
+Put $h=\gcd(m,|a|)$. It has $h$ branches, each with
+$s=u^{m/h}$ and $w=\zeta u^{a/h}$ for an appropriate constant $\zeta$.
+The relatively prime integers $m/h$ and $a/h$ generate $u$ in the branch
+field, so its completed normalization is $\Bbbk[[u]]$ and its ramification
+index is $m/h$. At finite nonroots $a=0$, giving $m$ unramified branches.
+Thus a root contributes $m-\gcd(m,e_i)$ to the ramification sum, and
+infinity has $n_\infty=\gcd(m,d)$ points and contributes $m-n_\infty$.
+Characteristic zero makes this ramification tame, so Riemann--Hurwitz
+\cite{StacksRH} gives
 \begin{equation}\label{odg:sg:eq:RH}
  2g-2=-2m+\sum_{i=1}^k\bigl(m-\gcd(m,e_i)\bigr)+m-\gcd(m,d).
 \end{equation}
-The normalization of the ring of the equation, which is monic in $Y$, is finite over the
-$X$-line, so the affine normalization omits exactly the $n_\infty$ points over infinity. By
+The coordinate ring is integral over $\Bbbk[X]$ because the equation is
+monic in $Y$. Its normalization is the integral closure of $\Bbbk[X]$ in
+the same function field: integrality in either direction follows from
+transitivity and from inclusion of the base ring. It is finite over
+$\Bbbk[X]$ and identifies with the inverse image of the affine $X$-line
+in $\overline C$. Hence it omits exactly the $n_\infty$ points over infinity. By
 \cref{odg:sg:thm:main} (with \cref{odg:sg:thm:genus,odg:sg:prop:oneplace}), flexibility is
 equivalent to $g=0$ and $n_\infty=1$, which by \eqref{odg:sg:eq:RH} give
 \begin{equation}\label{odg:sg:eq:deficit}
@@ -8735,9 +8824,16 @@ there is exactly one nonzero summand, and its gcd is one. Conversely that patter
 $d\equiv e\pmod m$, so $\gcd(m,d)=1$, and \eqref{odg:sg:eq:deficit}, hence $g=0$ and one
 point at infinity. Finally \eqref{odg:sg:eq:superparam} satisfies the equation; $T$ is
 integral over the coordinate ring since $T^m=X-a$; and $T^m$ and $T^e=Y/(\eta P_1(X))$
-generate $T$ in the function field because $\gcd(m,e)=1$. So $\Bbbk[T]$ is a finite
+generate $T$ in the function field: choose integers $a_0,b_0$ with
+$a_0m+b_0e=1$ and use $T=(T^m)^{a_0}(T^e)^{b_0}$ there. Negative powers
+are allowed in the function field, not asserted to lie in the coordinate ring.
+So $\Bbbk[T]$ is a finite
 birational normal extension of the coordinate ring, that is, its normalization.
 \end{proof}
+
+The irreducibility assumption is essential. Without it, $Y^2=X^2$ has the
+nonconstant polynomial families $(T,\pm T)$ although no multiplicity is odd.
+The quadratic corollary below includes such reducible cases separately.
 
 Repeated factors, and so arbitrarily singular affine models, are governed by the same test;
 the Riemann--Hurwitz computation itself is classical. Many repeated roots do not make a
@@ -8769,7 +8865,9 @@ Over $\C$, a nonconstant $P_{\mathrm{odd}}$ makes the curve irreducible and
 $Y=\pm\sqrt c\,P_1(X)$ are polynomial graphs. Over $\R$, $\deg P_{\mathrm{odd}}\ge2$ is rigid
 after complexification. If $P_{\mathrm{odd}}=X-a$, then $X=a+cT^2$, $Y=cP_1(a+cT^2)\,T$ is a
 real polynomial family for either sign of $c$. If $P_{\mathrm{odd}}=1$ and $c>0$ the graphs
-are real. If $P_{\mathrm{odd}}=1$ and $c<0$, the ordering of the real Hahn field forces
+are real. Evaluating any of these nonconstant polynomial families at
+$T=\omega^\gamma$, $\gamma>0$, gives a nonconstant finite-support Hahn point.
+If $P_{\mathrm{odd}}=1$ and $c<0$, the ordering of the real Hahn field forces
 $Y=0$ and $P_1(X)=0$, and the roots of a real polynomial in an ordered extension of $\R$
 are real, so the points are constant.
 \end{proof}
@@ -8788,9 +8886,13 @@ Consider
 singular at the origin. Put $f(X)=X^3-X+1$, of discriminant $-23$, so the affine elliptic
 curve $E:\ Y^2=f(X)$ is smooth; it is the curve with $\Delta_0=23$ of
 \cref{odg:cr:cor:weierstrass,odg:cr:ex:denominator}. The map $(X,Y)\mapsto(X,Z=XY)$ is the
-normalization of \eqref{odg:sg:eq:pinched} and identifies $(0,1)$ with $(0,-1)$. In ring
+normalization of \eqref{odg:sg:eq:pinched} and identifies $(0,1)$ with $(0,-1)$.
+Indeed, $y$ is integral by $y^2=f(x)$ and is the fraction $z/x$, while the
+smooth ring $\Bbbk[x,y]/(y^2-f(x))$ is normal. In ring
 terms $\Bbbk[C]=\Bbbk[x,xy]\subseteq\Bbbk[\widetilde C]=\Bbbk[x,y]$ with $y^2=f(x)$, and
-$x\,\Bbbk[\widetilde C]\subseteq\Bbbk[C]$, so $\kappa=x$ is a conductor element \src{C16}.
+$x\,\Bbbk[\widetilde C]\subseteq\Bbbk[C]$: every element of the larger ring
+is $A(x)+B(x)y$, whose product with $x$ is $xA(x)+B(x)z$. Thus
+$\kappa=x$ is a conductor element \src{C16}.
 
 \begin{theorem}[A pinched elliptic curve \src{C16}]\label{odg:sg:thm:example}
 Over every field of characteristic zero every solution of \eqref{odg:sg:eq:pinched} in
@@ -8805,7 +8907,10 @@ order at most seven.
 Rigidity follows from \cref{odg:sg:thm:main}, since the normalization $E$ has genus one.
 Here is the explicit certificate. Suppose $(x,z)\in\crA^2$ is nonconstant. If $x\in\Bbbk$,
 then $z$ is algebraic over $\Bbbk$ and constant; so $x\notin\Bbbk$, $x\ne0$, and
-$y=z/x\in\crH$ satisfies $y^2=f(x)$. Then $2v(y)=3v(x)$, and $\gamma=v(x/y)\in\Gamma$
+$y=z/x\in\crH$ satisfies $y^2=f(x)$. Since a nonconstant element of $\crA$
+has negative valuation, $v(x)<0$. The term $x^3$ has strictly smaller
+valuation than both $-x$ and $1$, so it cannot cancel. Thus
+$2v(y)=3v(x)$, and $\gamma=v(x/y)\in\Gamma$
 satisfies $\gamma>0$, $v(x)=-2\gamma$ and $v(y)=-3\gamma$: these are the pole orders two and
 three at the point at infinity of $E$. Choose $\lambda$ with $\lambda(-\gamma)=1$, so
 $\lambda(\ddeg x)=-2\ne0$, and put $\partial=\partial_\lambda$ and
@@ -8819,16 +8924,27 @@ $2y\,\partial y=f'(x)\,\partial x$ they give
 \begin{equation}\label{odg:sg:eq:sdecomp}
  \alpha(\partial)=\frac{U(x)\,y}{2}\,\partial x+W(x)\,\partial y .
 \end{equation}
-For every $j\ge0$, $xy^j\in\Bbbk[C]$: reduce even powers by $y^2=f(x)$ and use $xy=z$ for
-the odd ones. By \cref{odg:sg:lem:seidenberg}, $x^2(\partial y)^j\in\crA$ for all $j$.
-Expanding the $n$th power of \eqref{odg:sg:eq:sdecomp}, a term with $y^i(\partial y)^j$
-lies in $\crA$ after multiplying $y^i$ by $x$ and $(\partial y)^j$ by $x^2$, the factors
-$U(x)$, $W(x)$, $\partial x$ being in $\crA$ already. Hence
+For every $j\ge0$, $xy^j\in\Bbbk[C]$: explicitly,
+$xy^{2a}=xf(x)^a$ and $xy^{2a+1}=zf(x)^a$. Applying
+\cref{odg:sg:lem:seidenberg} with conductor $x$ and element $y$ gives
+$x^2(\partial y)^j\in\crA$ for all $j$, including $j=0$.
+In the binomial expansion of the $n$th power of \eqref{odg:sg:eq:sdecomp},
+the summand indexed by $i+j=n$, after multiplication by $x^3$, is
+\[
+ \binom ni \frac{U(x)^iW(x)^j}{2^i}
+ (\partial x)^i\,(xy^i)\,\bigl(x^2(\partial y)^j\bigr).
+\]
+Every displayed factor lies in $\crA$; in particular, division by $2^i$
+is division by a nonzero constant. Hence
 \begin{equation}\label{odg:sg:eq:ellipticcert}
  x^3\alpha(\partial)^n\in\crA\qquad(n\ge0).
 \end{equation}
 At $n=7$ this nonzero element has valuation $3(-2\gamma)+7\gamma=\gamma>0$, a contradiction.
-Only derivatives of order at most seven of the elements $xy^j$, $0\le j\le7$, occur. The
+For the term indexed by $j\le7$, Seidenberg's identity uses at most $j$
+derivatives of $xy^a$ and powers of $x$, with $0\le a\le j$.
+The latter derivatives are polynomial expressions in derivatives of $x=xy^0$.
+Thus only derivatives of order at most seven of the elements $xy^a$,
+$0\le a\le7$, occur. No assertion that $y$ itself belongs to $\crA$ is used. The
 omnific statements follow in a common workspace, as in \cref{odg:cr:cor:weierstrass}.
 \end{proof}
 
@@ -8882,14 +8998,25 @@ finite support and constant term $\mathbf x_0$, and they form a proper class of 
 points.
 \end{proposition}
 \begin{proof}
-Membership and constant terms follow from \eqref{odg:sg:eq:arithfamily}. A coordinate
-polynomial of degree $e\ge1$ has leading exponent $e\beta$ at $c+\omega^\beta$, which
-cannot cancel against lower powers of $\omega^\beta$; so distinct $\beta$ give distinct
-tuples, and every tuple has finitely many exponents.
+Write $p_i(c+S)=p_i(c)+\sum_{j=1}^{d_i}b_{ij}S^j$.
+At $S=\omega^\beta$ the exponents $j\beta$ are positive and distinct.
+The constant coefficient is $p_i(c)\in\mathfrak o$; the other coefficients
+need only belong to $\Bbbk$, as allowed in the omnific ring. Every defining
+equation vanishes identically after substitution of the polynomial tuple
+$\nu(T)$, so it still vanishes at $c+\omega^\beta$.
+At least one coordinate polynomial has degree $e\ge1$, because the
+normalization map is not constant. Its leading exponent is $e\beta$ with
+nonzero coefficient, so the tuple is nonconstant. Multiplication by the
+positive integer $e$ is injective on the ordered exponent group; distinct
+$\beta$ therefore give distinct tuples. Each tuple has finite support.
+Finally the positive surreal exponents form a proper class, proving the
+claimed size of this family in the standing class convention.
 \end{proof}
 
 Over $\C$ every ordinary point has a complex preimage under the finite surjective
-normalization, so the existence dichotomy is complete for Gaussian points.
+normalization: its fiber is a nonempty finite $\C$-scheme, and any closed
+point of that fiber has residue field a finite extension of $\C$, hence $\C$.
+Thus the existence dichotomy is complete for Gaussian points.
 
 \begin{corollary}[The Gaussian existence dichotomy \src{C16}]\label{odg:sg:cor:gaussian}
 Let $\mathcal C$ be an affine $\Z[i]$-model with geometrically integral complex fiber $C_\C$.
@@ -8898,18 +9025,27 @@ $\mathcal C(\Z[i])\ne\varnothing$. Then every ordinary Gaussian point is the con
 a proper class of finite-support nonordinary points.
 \end{corollary}
 \begin{proof}
-A nonordinary point forces the normalization condition by \cref{odg:sg:thm:main}, and its
-constant term is an ordinary Gaussian point. The converse is
+A nonordinary tuple lies in a complex Hahn workspace and is nonconstant
+there, because $\Og\cap\C=\Z[i]$. It forces the normalization condition by
+\cref{odg:sg:thm:main}. Constant extraction is a ring homomorphism fixing
+$\Z[i]$, so applying it to the defining equations gives an ordinary
+Gaussian point. The converse is
 \cref{odg:sg:prop:arithfamily}.
 \end{proof}
 
 For real omnific points the converse holds at every nonsingular ordinary point and at every
 singular ordinary point with a real preimage under the normalization. A real point of a
 singular curve can have only nonreal preimages, so the complex argument does not transfer,
-and the real singular fibers are not classified (\cref{odg:sg:q:real}) \src{C16}. For
+and the real singular fibers are not classified (\cref{odg:sg:q:real}) \src{C16}.
+For example, $Y^2=X^2(X-1)$ has affine-line normalization
+$(X,Y)=(T^2+1,T(T^2+1))$, but the ordinary point $(0,0)$ has only the
+preimages $T=\pm i$. Thus the real polynomial-family construction does not
+apply at that point; this observation alone does not rule out all possible
+Hahn points in its constant-term fiber. For
 smooth curves the fibers are known exactly (\cref{odg:cr:cor:omnific}); for singular
 exceptional curves \cref{odg:sg:prop:arithfamily} gives families in the fibers, not the
-fibers, since a point need not lift to the normalization (\cref{odg:sg:q:lifting}).
+entire fibers: no lifting theorem for every point is proved
+(\cref{odg:sg:q:lifting}).
 
 The criterion decides whether a curve supports nonconstant points once its affine
 normalization is known, and for superelliptic equations \cref{odg:sg:thm:super} makes this a
@@ -10490,8 +10626,8 @@ normalization maps admit nonconstant points downstairs without a lift over the s
 ring?
 \end{question}
 The node and the cusp show that ``only the affine line'' is no longer the right
-statement, and a point need not lift to the normalization because $\crA$ need not be
-integrally closed (\cref{odg:cr:sub:singular}) \src{C10, C11, C13, C14}. Finite or
+statement. A normalization lift cannot simply be assumed from integrality,
+and $\crA$ need not be normal in its own fraction field (\cref{odg:cr:sub:singular}) \src{C10, C11, C13, C14}. Finite or
 quasi-finite maps to rigid targets are covered (\cref{odg:cr:thm:quasifinite}), but
 not every singular curve has one \src{C14}. Source C12 proposes a route through
 logarithmic differentials on the normalization whose pullbacks are regular on the
@@ -10736,8 +10872,8 @@ logarithmic poles along the boundary still contracts into the valuation ring, so
 image condition $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
 logarithmic forms separate tangent directions are rigid in every dimension.
 
-Source C16 removes smoothness from the curve case. A point need not lift to the
-normalization, but one conductor element of the curve clears every power of a contracted
+Source C16 removes smoothness from the curve case without assuming that points
+lift to the normalization. One conductor element of the curve clears every power of a contracted
 regular differential after a fixed multiplication, and at the one boundary place selected
 by a nonconstant point the valuation is discrete; so a regular differential forces a
 contradiction after finitely many derivatives. The only escape is normalization by the
@@ -11602,8 +11738,9 @@ which is recorded after \cref{odg:cr:prop:charp}.
 \item Source C15 says that its example $t^{-1}(1+t^2)^{1/2}$ for $\Gamma=\Z$, integral over
 its ring but not in it, shows that ``normality really is unavailable, even in this simple
 workspace''. For $\Gamma=\Z$ the ring $\crA=\Bbbk[\omega]$ is a polynomial ring and
-normal; the element shows only that $\crA$ is not integrally closed in $\crH$, which is
-what matters for lifting through a normalization. The remark is printed in that form
+normal; the element shows only failure of integral closedness in the larger
+field $\crH$. It is outside $\Frac\crA$ and cannot obstruct the lift of
+a nonconstant curve point over this normal ring. The corrected distinction is printed
 (\cref{odg:cr:sub:singular}); it is the example of source C14, which disclaims
 non-normality. Source C15's proof audit words the point correctly.
 \item Source C15's abstract says that ``consequently'' every semiabelian variety is rigid,
@@ -13192,9 +13329,18 @@ The Stacks Project Authors.
 \emph{Normalization}, Section 29.55, Tag 035E.
 \url{https://stacks.math.columbia.edu/tag/035E}. Cited by source C16.
 
+\bibitem{StacksFiniteNormal}
+The Stacks Project Authors.
+\emph{Normalization of algebraic schemes}, Lemma 33.27.1, Tag 0BXR.
+\url{https://stacks.math.columbia.edu/tag/0BXR}.
+
 \bibitem{StacksRH}
 The Stacks Project Authors.
 \emph{Riemann--Hurwitz}, Section 53.12, Tag 0C1B, including Lemma 53.12.3.
 \url{https://stacks.math.columbia.edu/tag/0C1B}. Cited by source C16.
+\bibitem{StacksKummer}
+The Stacks Project Authors.
+\emph{Kummer extensions}, Section 9.24, Tag 09I6, opening discussion.
+\url{https://stacks.math.columbia.edu/tag/09I6}.
 \end{thebibliography}
 \end{document}
