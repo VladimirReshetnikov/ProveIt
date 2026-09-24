@@ -906,3 +906,31 @@ summaries are preserved. All 4,626 statement anchors across 63 reports,
 source changed. The previous two-thread 4,583-job build and
 16,239-declaration axiom audit remain the Lean baseline for this
 documentation-only pass.
+
+## Synchronization of detector counterexamples and their Hahn realizations
+
+Merged f48869d, including 1714764 and 2113ae6, and checked the four new
+modules against `odg:def:rem:rootneeded`. Polynomial Pell rigidity uses
+an algebraic closure, constant polynomial units and descent of degree.
+For Z+X Q[X], evaluation at minus one is surjective with kernel (1+X),
+so the quotient is Q and the detector rejects an element with constant
+term one. The ordinary-integer predicate Xi still defines the integers.
+For Z[X], evaluation at minus one rules out a detector certificate even
+when the ambient real coefficient field contains a root of Lambda.
+The polynomial X/2 witnesses strict containment in the full pullback.
+
+Negative Hahn order proves faithful polynomial evaluation. The new
+bridge realizes both examples at single(-1,1) in the integer-exponent
+Hahn workspace, verifies the quotient and constant intersection, and
+transfers the detector obstruction and integer definition. The README
+and ledger keep these set-sized workspace realizations distinct from the
+class of all surreals; the hypotheses on full pullbacks and coefficient
+roots remain explicit.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,587 jobs. The
+axiom audit checks 16,337 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,213 source-label references and 1,799 local Markdown
+destinations across 226 files pass, as does whitespace validation.
+No TeX source changed in this merge, so the reviewed 278-page article
+and 34-page catalogue remain current.
