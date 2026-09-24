@@ -893,3 +893,5 @@ import Surreal.Algebra.QuotientReflection
 import Surreal.Foundations.OmnificSmallQuotients
 import Surreal.Surcomplex.GaussianSmallQuotients
 import Surreal.Surcomplex.OmnificUnitObstruction
+import Surreal.Algebra.GaussianQuotientCardinality
+import Surreal.Foundations.OmnificQuotientSize

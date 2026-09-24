@@ -4235,3 +4235,35 @@ article remains 343 pages and unchanged by the merge, with the previously
 checked statements, labels and numbering preserved. Audits pass 4,626
 anchors in 63 reports, 5,240 source-label references and 1,986 local Markdown
 destinations in 226 files.
+
+
+### Gaussian residue sizes and explicit large quotient families sync (2026-09-24)
+
+The first push was rejected because `origin/main` advanced. Merged
+`10598f3` and read both new modules and the Gaussian-quotient additions
+against `osq:thm:quotients` and `osq:thm:idealsize`. The ordinary Gaussian
+ring now has an explicit integer basis (1,i), its multiplication matrix
+and determinant norm. The ideal-norm theorem gives the quotient's Nat.card;
+nonzero norm proves finiteness separately, avoiding any inference of
+finiteness from a zero Nat.card. The actual quotient equivalence transfers
+both finiteness and the exact squared-modulus cardinality, completing the
+actual Gaussian classification, including unit moduli and their zero rings.
+
+The real quotient-size alternative explicitly constructs the ordinal
+monomials c/omega^(alpha+1). If the ideal misses a purely infinite element,
+common division supplies a missed positive monomial. Equality of two
+subordinate residues would put that monomial in the ideal through the
+finite telescope certificate. The full ordinal residue map is injective;
+restricting it gives every small ordinal family, and well-ordering an
+arbitrary small type gives actual representatives for that index type.
+This proves the displayed source family, not only the negation of quotient
+smallness. The arbitrary-coefficient quotient theorem remains pending.
+
+Updated current summaries to record the now-proved Gaussian size formula;
+the preceding sync log retains the historical state before this merge.
+`LEAN_NUM_THREADS=2 lake build` passed 5,036 jobs, with all 18,912 declarations
+accepted by the axiom audit using only propext, Classical.choice and
+Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
+36 pages; inspected pages 12–13. The 343-page article remains unchanged.
+Audits pass 4,626 anchors in 63 reports, 5,240 source-label references and
+1,989 local Markdown destinations in 226 files.

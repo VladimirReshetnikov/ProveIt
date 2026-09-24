@@ -62,13 +62,19 @@ as ℤ or ℤ/nℤ for an ordinary positive n, with n=1 giving the zero ring.
 The characteristic-zero kernel is Π; it is not the zero principal ideal.
 For the Gaussian ring, the corresponding ordinary Gaussian ideal is unique,
 and nonzero constant generators give the usual Gaussian quotient, with
-associates defining the same kernel. The explicit Gaussian finiteness and
-norm-cardinality formula remain pending. Even a large quotient has exactly
+associates defining the same kernel. For every nonzero Gaussian modulus d,
+Lean now proves finiteness and the exact quotient size |d|². Even a large
+quotient has exactly
 the same unital maps to small rings as its ordinary constant quotient.
 Any extension making a purely infinite element invertible has no nonzero
 small unital ring image or small unital module. This includes the actual
 surreal and surcomplex fields and native localizations that need not be
 fields. All these smallness statements use the birthday universe.
+When a real omnific ideal misses a purely infinite element, explicit
+monomials indexed by ordinals give pairwise distinct residues. Their
+restrictions provide actual representatives for every small index type,
+proving the source's quotient-size alternative. The proof uses finite
+telescope certificates and a well-ordering of the index type.
 
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
