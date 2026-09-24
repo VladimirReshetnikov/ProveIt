@@ -750,6 +750,9 @@ import Surreal.Surcomplex.GaussianOmnificAutomorphisms
 import Surreal.Surcomplex.SmallHahnRealization
 import Surreal.Surcomplex.CoefficientAutomorphisms
 import Surreal.Surcomplex.GaussianCoefficientSection
+import Surreal.HahnSeries.CharacterTwist
+import Surreal.Surcomplex.CharacterAutomorphisms
+import Surreal.Surcomplex.PhaseTwist
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial

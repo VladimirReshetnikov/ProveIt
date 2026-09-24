@@ -531,6 +531,11 @@ coefficients respects composition and is now proved surjective: every complex
 field automorphism lifts coefficientwise and preserves Gaussian omnific
 integers. These lifts preserve supports and strong sums and form a
 composition-preserving section, with no continuity assumption.
+An explicit phase twist now fixes every ordinary complex number and preserves
+Gaussian omnific integers, yet sends `ω` to `iω`. Lean verifies that its image
+lies outside the actual real axis and that the twist fails to commute with
+conjugation. These supply the automorphism witnesses for the next logical
+nondefinability theorem; its first-order formulation remains pending.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
