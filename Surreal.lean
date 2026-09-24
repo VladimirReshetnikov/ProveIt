@@ -647,3 +647,6 @@ import Surreal.Surcomplex.PellTwoClassification
 import Surreal.Algebra.SplitNormParametrization
 import Surreal.Foundations.TwoTermTruncation
 import Surreal.Foundations.SurrealPellContrast
+import Surreal.Algebra.BinaryQuadraticFactors
+import Surreal.Algebra.CentralConicRigidity
+import Surreal.Surcomplex.CentralConicRigidity

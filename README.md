@@ -322,6 +322,9 @@ The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
 parametrization: `(a + u, b, d − u)` over ordinary solutions
 `(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
 nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
+Nonsingular central conics with nonzero value at their center now have
+proved rigidity too: their real support-ring solutions are constants, and
+their integer-coefficient omnific solutions have ordinary integer coordinates.
 Power differences `x^m − y^n = c ≠ 0` are also proved to have exactly their
 ordinary integer solutions when both exponents are positive and their gcd
 is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
