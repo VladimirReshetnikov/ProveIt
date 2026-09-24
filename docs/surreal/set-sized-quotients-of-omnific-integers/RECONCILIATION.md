@@ -76,3 +76,23 @@ The changed proof and catalogue pages were inspected visually. The refreshed
 4,626-result index across 63 reports, 5,194 source references, 1,743 local
 Markdown destinations and whitespace checks pass. The existing full Lean
 build remains the baseline for this documentation-only revision.
+
+## Synchronization with Pell and principal-ideal formalizations
+
+Merged `c0dd3be`, including `55338a0`. The new statements were compared with
+`odg:def:cor:pell`, `odg:def:lem:pelldiv` and `odg:def:lem:intmultiple`.
+Intermediate-ring Pell rigidity uses its prescribed constant intersection
+without assuming a constant-term retraction on that intermediate ring or
+a square root in its coefficient field. The finite permutation proof gives
+a positive Pell index at most m² for every positive modulus, including one.
+The number-field ideal argument does not assume algebraic integrality,
+and the Gaussian norm supplies an explicit positive integer multiple.
+These incoming mappings concern the sibling report; they do not establish
+the full-class universal quotient reviewed here.
+
+The full two-thread Lean build passes 4,530 jobs, and the audit checks
+15,849 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. No article or catalogue source changed during the merge,
+so the validated 262-page and 33-page PDFs remain current. The index,
+5,195 source references, 1,747 Markdown destinations and whitespace
+checks pass.
