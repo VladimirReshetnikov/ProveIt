@@ -390,6 +390,9 @@ witnesses: require the output to satisfy the ordinary-constant definition,
 then apply the quadratic kernel test to its difference from the input.
 Every input has exactly one output, in both actual omnific rings and the
 corresponding full Hahn pullbacks.
+The constant inclusion and kernel now form a proved definable split exact
+sequence. Both printed orders of existential and universal quantifiers for
+the constant-term graph are also proved equivalent to its existential formula.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

@@ -706,6 +706,10 @@ import Surreal.Surcomplex.IntersectiveIdealTest
 import Surreal.Algebra.ConstantTermGraph
 import Surreal.HahnSeries.ConstantTermGraph
 import Surreal.Surcomplex.ConstantTermGraph
+import Surreal.Algebra.DefinableSplitting
+import Surreal.Algebra.ConstantTermPrenex
+import Surreal.HahnSeries.DefinableSplitting
+import Surreal.Surcomplex.DefinableSplitting
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants

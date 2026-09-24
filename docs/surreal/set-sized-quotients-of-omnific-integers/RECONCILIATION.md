@@ -748,3 +748,33 @@ whitespace validation. No Lean or finite verifier source changed; finite
 checks were not rerun as evidence for cardinal arithmetic or maximal-ideal
 existence. The prior two-thread 4,576-job build and 16,185-declaration
 axiom audit remain the Lean baseline for this documentation-only pass.
+
+## Synchronization of definable splittings and quantified graphs
+
+Merged 5a013b3, including 47e4d2b, after the source-09 review. Checked all
+four new Lean modules against `odg:def:cor:splitting`, its multiplication
+formula, and `odg:def:rem:sigma2`. The splitting package proves the
+section/retraction identity, injective kernel inclusion, native exactness,
+surjectivity, and literal existential formulas for kernel, retraction and
+section. Its additive equivalence retains the actual kernel subtype;
+the multiplication identity retains both cross terms and the kernel
+product. No direct-product ring assertion is introduced.
+
+Both printed quantifier orders expand the five-witness Xi system and the
+universal Lambda inequality. Specializing the universal variables to zero
+extracts the fixed ordinary-constant witness in the universal/existential
+form. The detector and quadratic kernel formula identify these with the
+six-witness existential graph. Full real and Gaussian Hahn pullbacks and
+actual omnific carriers are instantiated separately. The general splitting
+also covers the characteristic-zero coefficient fields containing a square
+root of two from the preceding graph theorem. No quantifier optimality or
+witness uniqueness is claimed. README and ledger scopes match the proofs;
+the separate degree-ten and quartic graph variants remain pending.
+
+Validation: the two-thread full Lean build passes all 4,580 jobs, and the
+axiom audit checks 16,230 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across 63
+reports, 5,212 source-label references, and 1,792 local Markdown
+destinations across 226 files pass. Whitespace checks pass. The merge
+changes no TeX sources or PDFs, so the clean article and catalogue builds
+from the source-09 review remain current.
