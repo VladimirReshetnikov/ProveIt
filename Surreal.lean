@@ -900,3 +900,6 @@ import Surreal.Foundations.OmnificPrincipalImages
 import Surreal.Algebra.IdealCongruenceClosure
 import Surreal.Foundations.OmnificIdealClosure
 import Surreal.Foundations.OmnificDenseIdeals
+import Surreal.Foundations.OmnificSmallPrimes
+import Surreal.Algebra.GaussianPrimeQuotients
+import Surreal.Surcomplex.GaussianSmallPrimes
