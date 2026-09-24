@@ -374,6 +374,11 @@ these are exactly the ideals contained in the constant-term kernel. Thus the
 purely infinite ideal is the greatest such ideal, for both actual omnific
 rings and the full real and Gaussian Hahn pullbacks. Negating the detector
 also gives universal ring formulas for the kernel and equality of constant terms.
+The constant-term map itself now has a proved existential graph with six
+witnesses: require the output to satisfy the ordinary-constant definition,
+then apply the quadratic kernel test to its difference from the input.
+Every input has exactly one output, in both actual omnific rings and the
+corresponding full Hahn pullbacks.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
