@@ -740,6 +740,8 @@ import Surreal.Algebra.IdealReconstruction
 import Surreal.Surcomplex.MultiplierFormulas
 import Surreal.Foundations.RealStructureReconstruction
 import Surreal.Foundations.NaturalValueGroup
+import Surreal.Algebra.ReconstructionAutomorphisms
+import Surreal.Foundations.OmnificAutomorphisms
 import Surreal.Surcomplex.ConstantTermQuartic
 import Surreal.HahnSeries.ConstantTermPolynomial
 import Surreal.Surcomplex.ConstantTermPolynomial

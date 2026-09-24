@@ -6486,3 +6486,25 @@ not verify the cardinal or class arguments. All 4,626 anchors across
 destinations across 226 files pass, as does whitespace checking. No Lean
 source changed; the previous two-thread 4,612-job build and
 16,769-declaration axiom audit remain the Lean baseline for this pass.
+
+## Synchronization: actual omnific automorphism rigidity
+
+Merged origin/main through c2caaca and reviewed both incoming modules
+against `odg:def:thm:autreal`. Formula transport uses the inverse ring map
+for the universal multiplier quantifier, retaining the source's distinction
+between automorphisms and nonsurjective endomorphisms. The actual fraction
+field gives the extension and its fraction formula, with uniqueness even
+among field homomorphisms agreeing on the omnific ring. The reconstructed
+coefficient field is preserved; real ring-homomorphism rigidity then fixes
+each ordinary real. Actual square roots give order preservation, and the
+existing finite-element, infinitesimal and standard-part predicates are
+preserved as claimed. The README and ledger agree with these declarations;
+the separate dilation example and Gaussian coefficient assertions remain
+outside this mapping.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,614 jobs, and the
+axiom audit checks 16,791 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors across 63 reports, 5,217 source-label
+references and 1,826 local Markdown destinations across 226 files pass,
+as does whitespace checking. No incoming TeX changed; the 294-page
+article and 34-page catalogue remain current.
