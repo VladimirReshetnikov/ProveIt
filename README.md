@@ -221,6 +221,13 @@ constant extraction as the canonical map. No finite product of irreducibles
 belongs to `Π`. Any homomorphism sending `Π` into a nilpotent ideal of any
 target ring kills `Π` entirely.
 
+Constant omnific irreducibles are exactly the ordinary signed primes.
+Every nonconstant irreducible has constant coefficient `1` or `-1`, but
+`(ω+1)^2` and `ω^2-1` are proved nonconstant and reducible with those respective
+coefficients. A positive monomial has no finite irreducible factorization,
+even up to a unit. Thus the omnific ring is neither atomic nor a unique
+factorization domain.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
