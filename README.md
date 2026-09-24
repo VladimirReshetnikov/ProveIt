@@ -495,6 +495,10 @@ checked formulas for the actual order, finite elements, infinitesimals,
 and standard part. The standard-part graph has exactly the finite inputs
 and a unique real output. The examples distinguish `ct(ω + 7) = 7` from
 `st(7 + ω⁻¹) = 7`: the first input is not finite.
+The natural value group is now constructed as the native quotient of
+nonzero actual surreals by finite units. Its ordered group structure and
+the test `v(x) ≥ v(y)` exactly when `x/y` is finite are proved, with an
+external identification by negative leading exponents.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

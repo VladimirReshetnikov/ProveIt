@@ -1503,3 +1503,22 @@ across 63 reports, 5,217 source-label references and 1,823 local Markdown
 destinations across 226 files pass, as does whitespace checking. No Lean
 source changed, so the previous two-thread 4,611-job build and
 16,740-declaration axiom audit remain the Lean baseline for this pass.
+
+## Synchronization: the actual natural value-group quotient
+
+Merged origin/main through 78a0502, including d0f6d88, and reviewed
+NaturalValueGroup.lean against `odg:def:cor:valuegroup`. The subgroup is
+proved to be exactly the image of the units of the finite-element ring.
+The native quotient is externally identified with negative leading
+exponents and carries a compatible linear order. Its order and equality
+relations agree both with the existing valuation and with the reconstructed
+finite-element formulas. The README and ledger correctly distinguish
+this quotient construction from a definable monomial cross-section and
+from a separate first-order syntax/satisfaction formalization.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,612 jobs; the
+axiom audit checks 16,769 declarations, using only propext,
+Classical.choice and Quot.sound. All 4,626 anchors across 63 reports,
+5,217 source-label references and 1,824 local Markdown destinations across
+226 files pass, as does whitespace checking. No incoming TeX changed,
+so the reviewed 293-page article and 34-page catalogue remain current.
