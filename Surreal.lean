@@ -717,6 +717,9 @@ import Surreal.Algebra.PolynomialConstantRigidity
 import Surreal.Algebra.DetectorCounterexamples
 import Surreal.HahnSeries.PolynomialEvaluation
 import Surreal.HahnSeries.DetectorCounterexamples
+import Surreal.Algebra.IntersectiveWitnessPolynomials
+import Surreal.HahnSeries.PolynomialSupport
+import Surreal.HahnSeries.DetectorWitnessSupport
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
