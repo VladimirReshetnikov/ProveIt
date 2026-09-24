@@ -674,3 +674,6 @@ import Surreal.Algebra.QuadraticNormRigidity
 import Surreal.HahnSeries.PellRigidity
 import Surreal.Algebra.PellTwoDivisibility
 import Surreal.Algebra.IntegerPrincipalMultiples
+import Surreal.Algebra.IntersectivePolynomial
+import Surreal.HahnSeries.IntersectivePolynomial
+import Surreal.Surcomplex.IntersectivePolynomial
