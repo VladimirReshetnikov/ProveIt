@@ -41,7 +41,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 
 | Topic | Contents |
 | --- | --- |
-| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; and Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
+| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; and [`SurrealNumbers/`](Algebra/SurrealNumbers/), the merged Surreal project: research reports on surreal and surcomplex numbers and omnific integers, with a Lean library for the actual surreal field. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
@@ -297,6 +297,7 @@ These projects also have project-local Lake files for focused builds:
 
 ```powershell
 lake --dir Algebra/JacobianConjecture/Lean build
+lake --dir Algebra/SurrealNumbers build
 lake --dir Logic/Propositional/NaturalDeduction/Lean build
 lake --dir Logic/Propositional/FiniteMatrixNoncharacterizability/Lean build
 lake --dir Logic/Propositional/MonotonicityOfEntailment/Lean build
@@ -319,6 +320,12 @@ lake --dir Computability/TuringDegrees/Lean build
 
 The Busy Beaver facade excludes the expensive BB2/BB3 classifications and the
 mathlib compiler bridge; request those modules explicitly.
+
+`Algebra/SurrealNumbers/` is the merged Surreal repository: a Lake package
+named `Surreal` with the same Lean and mathlib pins as the root workspace plus
+a vendored path dependency. Its default target also runs an axiom audit
+(`SurrealAudit`); follow its own README and agent guide, and keep the
+one-build-at-a-time rule above.
 
 ## Rocq/Coq workspace
 
@@ -396,7 +403,7 @@ carries no content of its own and will be removed in due course.
 
 ## Vendored components
 
-Only [`lib/`](lib/) contains vendored code. `lib/Coq-BB5/BB2`, `BB3`, and
+Apart from one exception below, only [`lib/`](lib/) contains vendored code. `lib/Coq-BB5/BB2`, `BB3`, and
 `BB4` come from `ccz181078/Coq-BB5` commit `9142e219...`; their nested READMEs
 record provenance and repository-local kernel hardening, and their nested MIT
 licenses are retained. The focused
@@ -417,6 +424,12 @@ Abel--Galois and Abel--Ruffini development, pinned at commit `bce31b97...`;
 its CeCILL-B license is retained.  The polynomial-formulas project wraps its
 explicit radical-term semantics and quintic obstruction, while the root Rocq
 build compiles the pinned sources under the `Abel` logical path.
+The exception is
+[`Algebra/SurrealNumbers/vendor/combinatorial-games`](Algebra/SurrealNumbers/vendor/combinatorial-games/),
+a 28-module subset of `vihdzp/combinatorial-games` (Apache-2.0, license
+retained) that the merged Surreal project uses as a Lake path dependency; it
+stays inside that project so the subtree merge keeps Surreal's history and
+build unchanged.
 
 ## License
 
