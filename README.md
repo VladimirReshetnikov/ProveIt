@@ -462,6 +462,11 @@ proved to respect constant terms: integer constants are fixed, while Gaussian
 constants are uniformly fixed or conjugated according to the image of `i`.
 This holds between different exponent groups and coefficient fields containing
 `√2`, and between the actual omnific carriers at different universes.
+The Hahn rings also recover their full support ring as the multipliers of
+the purely infinite ideal inside the native fraction field. Coefficient
+constants are exactly zero together with the invertible multipliers. The
+printed fraction-pair formulas and their invariance under changing
+representatives are proved, as is the reconstructed coefficient-map graph.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

@@ -1320,3 +1320,32 @@ that distinction and makes no Gaussian single-polynomial claim.
 Validation: LEAN_NUM_THREADS=2 lake build passes all 4,602 jobs; the
 axiom audit checks 16,567 declarations using only propext,
 Classical.choice and Quot.sound. No TeX source changed in this merge.
+
+## Synchronization of Hahn ideal multipliers and reconstruction formulas
+
+Merged 57d4c3e and checked its two modules against
+`odg:def:lem:ainfrac`, `odg:def:thm:multiplier`,
+`odg:def:eq:multiplier` and `odg:def:cor:internal`.
+The support ring is exactly the ambient Hahn multipliers of the purely
+infinite ideal: shifting a forbidden exponent to zero supplies a direct
+counter-witness. Zero together with invertible multipliers recovers the
+coefficient constants. The full coefficient pullback has a native
+fraction-field embedding, and a fixed monomial places every support-ring
+element in that embedded fraction field when the exponent group is
+nontrivial. The fraction field is not identified with the entire Hahn field.
+
+The literal fraction-pair formulas have their witnesses in the original
+ring, are invariant under cross-multiplication equivalence, and recover
+both multiplier membership and coefficient membership. Subtracting a
+coefficient gives the constant-term graph. Expanding the quadratic ideal
+test supplies the real and Gaussian ring-language formulas. The ledger
+keeps actual surreal/surcomplex specializations pending and does not
+claim a separate first-order syntax/satisfaction formalization.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,604 jobs;
+the axiom audit checks 16,623 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 statement anchors across
+63 reports, 5,216 source-label references and 1,816 local Markdown
+destinations across 226 files pass, as does whitespace checking.
+No TeX source changed in the merge, so the reviewed 290-page article
+and 34-page catalogue remain current.
