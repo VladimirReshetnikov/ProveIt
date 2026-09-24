@@ -331,6 +331,11 @@ is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
 the positive-exponent condition is necessary; the source remark now includes
 it and restricts its pointer to the separated theorem to exponents at least two.
 
+Number-field norm equations now have a complete rigidity proof for every
+rational basis: a nonzero rational norm level forces all omnific coordinates
+to be ordinary integers. A basis of algebraic integers also gives an integer
+norm polynomial, whose omnific and ordinary integer solution sets agree.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
@@ -421,7 +426,8 @@ fields, and formal integration of all omnific derivations. These additions
 await independent proof review and Lean formalization; the surcomplex
 group classification requires compatibility with conjugation. A further
 chapter treats universal symmetries and exact difference equations. The
-quotient report adds class residue fields and semialgebraic preservers;
+quotient report adds class residue fields, semialgebraic preservers,
+polyhedral-cone cores and henselian branching;
 these new claims also await independent proof review.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

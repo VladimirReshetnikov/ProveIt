@@ -4617,3 +4617,30 @@ has 4,550 standard results in 63 reports; refreshed indexes, 5,107 source
 references and 1,718 local Markdown destinations pass. This merge changes
 only documentation, so the successful 4,503-job Lean build and 15,678-
 declaration audit remain applicable.
+
+
+## Synchronization with norm forms and the final batch-34 companions
+
+Merged `5003bcc`, including the number-field norm formalization and the
+last two batch-34 companions. The norm implementation was compared with
+`odg:thm:norm`: arbitrary rational bases, nonzero rational levels and
+integer coefficients for bases of algebraic integers are all retained.
+The full two-thread Lean build passes 4,511 jobs and audits 15,697
+declarations with only the permitted axioms.
+
+The quotient report now assembles 24 manuscripts, with 415 standard
+statements and three principal summaries. Its polyhedral-cone and
+henselian-branching companions add 52 standard results. Only the principal
+summaries `osq:hd:main:cores` and `osq:main:closure` acquire new clauses;
+all earlier standard statements are unchanged. The new mathematics and
+the expanded summary clauses remain pending independent review and Lean
+formalization. All nine batch-34 companions are now integrated, contributing
+204 standard results; the separate Hahn-joins companion remains staged.
+
+The collection index and summaries now report 4,602 standard results across
+63 reports. The index conflict was confined to line anchors and resolved
+against the merged source. All 5,159 source references and 1,723 local
+Markdown destinations resolve. The catalogue was rebuilt in three passes
+to 33 pages with no warnings, unresolved references or bad boxes. The
+227-page Diophantine article and its reviewed proofs are unchanged by this
+merge; no incoming finite verifier was rerun.

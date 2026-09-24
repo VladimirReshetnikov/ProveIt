@@ -22,7 +22,8 @@
  relation modules, ordinary-output loci, normalization fibres, Boolean branching,
  exact projective dimensions, Tor algebras of lattice ideals,
  finite tests at new scales, ramification in cyclic workspaces,
- class maximal ideals and residue fields, semialgebraic preservers}}
+ class maximal ideals and residue fields, semialgebraic preservers,
+ polyhedral cone cores, henselian branching}}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -150,9 +151,9 @@
 {\large The universal constant-term quotient, exact cardinal thresholds,\par
 support thresholds, and what survives in large quotients\par}
 \vspace{0.2in}
-{Merged research report built from twenty-two manuscripts (03, 04, 06--11 of one batch,\par
+{Merged research report built from twenty-four manuscripts (03, 04, 06--11 of one batch,\par
 12--16 of the next, 17--19 of a third, 20 of a fourth, 21 of a fifth, 22 of a sixth, 23 of a seventh,\par
-24 and 25 of an eighth)\par}
+24--27 of an eighth)\par}
 \vspace{0.08in}
 {22--23 September 2026; merged 23 September 2026\par}
 \vspace{0.2in}
@@ -192,13 +193,15 @@ transfers ordinary constant test sets exactly. A seventh shows that over one cyc
 the integral closure is not radical, while the Boolean algebra of the reduced fibre is still atomless. Two manuscripts of an eighth batch
 show, with global choice, that $1+\omega^a$ lies in characteristic-zero maximal class ideals of $\Oz$, modulo which exactly the monomials
 $\omega^b$ with $b>na$ for every $n$ vanish and whose residue fields embed in $\SC$; and that a globally smooth semialgebraic map preserving
-$\Oz^r$ is an integer-valued polynomial, while finitely smooth ones need not be even piecewise polynomial. It is an AI-assisted
+$\Oz^r$ is an integer-valued polynomial, while finitely smooth ones need not be even piecewise polynomial. Two more compute the flat
+dimensions of radical monomial quotients of cone cores by the topology of their faces, and build set-sized omnific integer parts whose
+henselization at the constant-term ideal has the maximal number of minimal primes although its completion is $\Q$. It is an AI-assisted
 merge of unrefereed manuscripts; nothing in it is verified in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.9\textwidth}\small
-\textbf{Status.} Proof-bearing research report assembled from twenty-two AI-assisted
+\textbf{Status.} Proof-bearing research report assembled from twenty-four AI-assisted
 manuscripts written on 22 and 23 September 2026. The sources call their main results candidate
 original; priority is not certified, no named conjecture is claimed solved, the proofs have
 not been refereed, and no statement is formalized. Results added in the merge are marked
@@ -254,6 +257,11 @@ in a maximal class ideal, so $1+\omega^a$ lies in characteristic-zero maximal id
 in $\SC$, and the monomials vanishing there are exactly the $\omega^b$ with $b>na$ for every ordinary $n$ (24; \cref{osq:cr:sub:residues}).
 Globally smooth semialgebraic maps preserving $\Oz^r$ are the integer-valued polynomials, while for every finite order of smoothness an
 explicit bump, built at the same scale threshold, agrees with no finite family of polynomials on $\Oz$ (25; \cref{osq:sa:sub:semialgebraic}).
+Two further manuscripts of that batch extend the cores and the fibre. Over an arbitrary rational polyhedral cone, the flat dimension of the quotient
+keeping a face is the largest dimension of a face disjoint from it, so that the cone is simplicial exactly when every facet quotient has flat dimension one
+(26; \cref{osq:pc:sub:polyhedral}). And a set-sized omnific integer part $\mathbb E\cap\Oz$ of any infinite cardinality $\kappa$ can have an idempotent
+constant-term ideal whose local ring has completion $\Q$ but a henselization with $2^\kappa$ minimal primes, all with complex fraction field
+(27; \cref{osq:hb:sub:henselian}).
 This report prints the common spine once and keeps every result of every source.
 
 \subsection{Main theorems}\label{osq:sub:main}
@@ -328,8 +336,10 @@ proper class, one idempotent splits every nonzero element of any set-sized subri
 of maps to set-sized rings is jointly faithful on it; an element of $\NN$ supported in a set-sized group $G$ is integral over
 the omnific integers supported in $G$ (20). In a cyclic workspace $\Z+\omega^a\R[\omega^a]$ the extended ideal of the
 integral closure is not radical, its fibre having nilpotents of every index, while the Boolean algebra of the reduced fibre is atomless of
-cardinality and order density $2^{\aleph_0}$, and the bounded-denominator Puiseux limit is reduced (23).
-(\Cref{osq:rm:thm:explicit,osq:rm:cor:atomless,osq:rm:thm:cardinality,osq:rm:thm:pui,osq:nm:thm:complete,osq:nm:thm:normalization,osq:nm:thm:valuation,osq:nm:thm:invisible,osq:nf:thm:radical,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:thm:domainimages,osq:bb:thm:descent,osq:bb:thm:uniform,osq:bb:thm:atoms,osq:bb:thm:noseparating}.)
+cardinality and order density $2^{\aleph_0}$, and the bounded-denominator Puiseux limit is reduced (23). For every infinite cardinal $\kappa$ a
+real closed $\mathbb E\subseteq\No$ of cardinality $\kappa$ has an omnific integer part $\mathbb E\cap\Oz$ whose local ring at the constant-term ideal has
+completion $\Q$, while its henselization has exactly $2^\kappa$ minimal primes, all with fraction field $\mathbb E[i]$ (27).
+(\Cref{osq:hb:thm:main,osq:rm:thm:explicit,osq:rm:cor:atomless,osq:rm:thm:cardinality,osq:rm:thm:pui,osq:nm:thm:complete,osq:nm:thm:normalization,osq:nm:thm:valuation,osq:nm:thm:invisible,osq:nf:thm:radical,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:thm:domainimages,osq:bb:thm:descent,osq:bb:thm:uniform,osq:bb:thm:atoms,osq:bb:thm:noseparating}.)
 \end{maintheorem}
 
 \begin{maintheorem}[Polynomial maps]\label{osq:main:polynomial}
@@ -385,13 +395,15 @@ $\alpha\notin\Frac(D)$, form $2^{\aleph_0}$ isomorphism classes, the orbits of $
 fractional linear maps (17). Over $A_d$ the projective dimensions of $L(M)$ and $A_d/J_g(M)$ are $d+1$ and $d+2$; over $T_\Q$ and
 over the class ring read in two universes, the second $\Tor$ of the quotients by $J_g(\mathfrak o_1)$ and $J_h(\mathfrak o_2)$ for two orders
 vanishes exactly when their fields are linearly disjoint, the self-$\Tor$ product is the antisymmetrized boundary tensor, and the
-framed second $\Tor$ of an order recovers its multiplication (21).
-(\Cref{osq:hd:thm:boolean,osq:hd:cor:fd,osq:hd:thm:collapse,osq:hd:thm:fdlattice,osq:tn:thm:syzygy,osq:tn:thm:tensor,osq:tn:thm:rees,osq:tn:thm:hom,osq:tn:thm:pic,osq:tn:thm:duals,osq:rel:thm:presentation,osq:rel:thm:kappa,osq:rel:thm:tor,osq:rel:thm:mobius,osq:da:cor:exactpd,osq:da:thm:lattice,osq:da:thm:disjoint,osq:da:thm:product,osq:da:thm:reconstruction}.)
+framed second $\Tor$ of an order recovers its multiplication (21). Over the core of any pointed rational polyhedral cone the quotient
+keeping a face $F$ has flat dimension the largest dimension of a face disjoint from $F$; hence the cone is simplicial exactly when every facet quotient has
+flat dimension one (26).
+(\Cref{osq:pc:thm:facebetti,osq:pc:thm:simplicial,osq:hd:thm:boolean,osq:hd:cor:fd,osq:hd:thm:collapse,osq:hd:thm:fdlattice,osq:tn:thm:syzygy,osq:tn:thm:tensor,osq:tn:thm:rees,osq:tn:thm:hom,osq:tn:thm:pic,osq:tn:thm:duals,osq:rel:thm:presentation,osq:rel:thm:kappa,osq:rel:thm:tor,osq:rel:thm:mobius,osq:da:cor:exactpd,osq:da:thm:lattice,osq:da:thm:disjoint,osq:da:thm:product,osq:da:thm:reconstruction}.)
 \end{maintheorem}
 
 \subsection{Sources, provenance and where the merge chose}\label{osq:sub:sources}
 
-The report is built from twenty-two manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
+The report is built from twenty-four manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
 and placed in commit \texttt{be06fc8}, were merged first; their numbers are arrival numbers in
 their batch. Five (12--16), dated 23 September 2026 and placed in commit \texttt{cf350b1}, are items
 02--06 of the following batch; they are numbered here by the file prefixes under which their
@@ -404,10 +416,9 @@ in other reports. One (21), also dated 23 September 2026 and placed in commit \t
 numbered in the same way; the other eight items of that batch were placed in other reports. One (22), also dated 23 September 2026 and
 placed in commit \texttt{9d28e28}, is item 09 of a sixth batch, numbered in the same way; the other eight items of that batch were placed
 in other reports. One (23), also dated 23 September 2026 and placed in commit \texttt{7d04483}, is item 01 of a seventh batch,
-numbered in the same way; the other eight items of that batch were placed in other reports. Two (24, 25), also dated 23 September 2026 and
-placed in commit \texttt{a7a435f}, are items 02 and 04 of an eighth batch, numbered by their file prefixes, which continue this directory's local
-sequence; items 06 and 07 of that batch are also placed in this directory (file prefixes 26 and 27) and are not yet written into this text, and
-the other five items were placed in other reports. None has a reviewer, and none is shipped with this report.
+numbered in the same way; the other eight items of that batch were placed in other reports. Four (24--27), also dated 23 September 2026 and
+placed in commit \texttt{a7a435f}, are items 02, 04, 06 and 07 of an eighth batch, numbered by their file prefixes, which continue this directory's
+local sequence; the other five items were placed in other reports. None has a reviewer, and none is shipped with this report.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
@@ -499,6 +510,8 @@ the other five items were placed in other reports. None has a reviewer, and none
 \midrule
 24 & \emph{Beyond the Constant Term: Class Residue Fields of the Omnific Integers} (26) & \texttt{51c1cc7} & in $\mathsf{GBC}$: maximal class extensions of proper class ideals, equivalent to global choice for all class rings; characteristic-zero maximal ideals above $1+\omega^a$; the exact zero-or-unit monomial cutoff, truncation to $\operatorname{cvx}(\Z a)$, B\'ezout identities between separated scales; $2^{\aleph_0}$ maximal ideals per scale and an $\On\times\Z_2$ family; separation by characteristic-zero maximal ideals and embeddings of their residue fields in $\SC$, the binomial specializations not strongly summable; term-closed and strongly sum-closed primes (\cref{osq:cr:sub:residues}); its field core re-derives 07's (credited)\\
 25 & \emph{Smooth Rigidity and Bounded-Scale Flexibility of Omnific-Preserving Maps} (23) & \texttt{738a390} & over a real closed field with a cofinal discrete subring: polynomial tails of semialgebraic preservers, the two-end quotient, globally $C^\infty$ semialgebraic preservers are integer-valued polynomials in every dimension, $C^{\mathsf D^2}$ at graph degree $\mathsf D$; support-field absorption, the exact square-root threshold, $C^{\mathsf k}$ bumps and shears, real-semialgebraic surcomplex forms, a smooth quadratic defeating every set of tests, removal of set-sized exceptions, set-sized models (\cref{osq:sa:sub:semialgebraic}); its numerical-polynomial description is 10's (credited)\\
+26 & \emph{Face Topology and Arithmetic Homology in Omnific Integer Rings} (30) & \texttt{7b256e0} & cores $A_{\mathscr C}$ over rational polyhedral cones: flat face ideals, radical monomial ideals as face antichains, flat dimension of their quotients by join homology with cap-module witnesses, the disjoint-face formula, simpliciality by facet quotients, cube cones, homological epimorphisms, arithmetic modules over a principal ideal domain, nonflatness of the passage to $\Oz$ (\cref{osq:pc:sub:polyhedral}); its orthant cases re-derive 12's and 21's (credited)\\
+27 & \emph{Maximal Henselian Branching at Omnific Augmentations} (24) & \texttt{fc27d87} & a seeded real closed $\mathbb E$ of cardinality $\kappa$ with $\mathbb E\cap\Oz$ an integer part and idempotent constant-term ideal; henselization with $2^\kappa$ minimal primes, generic fibre $\LC(\mathsf X,\mathbb E[i])$, forced complexification, completion $\Q$, strict and Gaussian factors, projectives, finite \'etale algebras, $2^\kappa$ centred valuation components (\cref{osq:hb:sub:henselian}); its splitter re-derives 20's (credited)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -623,6 +636,16 @@ and 24's $C_a$ and 25's $H_a$, one and the same group, are written $\operatornam
 merged into \cref{osq:q:binomial}, 25's Questions~12.7 and 12.9 into \cref{osq:ft:q:maps}(a), (b); their other questions form
 \cref{osq:cr:q:choice,osq:cr:q:definable,osq:cr:q:closed,osq:cr:q:relative,osq:cr:q:branching,osq:cr:q:support,osq:cr:q:formal} and
 \cref{osq:sa:q:optimal,osq:sa:q:multireg,osq:sa:q:bounded,osq:sa:q:individual,osq:sa:q:rank,osq:sa:q:ominimal,osq:sa:q:groups,osq:sa:q:complex,osq:sa:q:invisibility,osq:sa:q:formal}.
+26 answers, for flat dimensions of radical monomial quotients, the non-simplicial-cone clause of \cref{osq:hd:q:cores} and joins \cref{osq:hd:sec:cores} in
+one new subsection (\cref{osq:pc:sub:polyhedral}), placed after 21's at the end of the section. Its orthant cases re-derive 12's face ideals,
+resolution and arithmetic $\Tor$ vanishing and 21's face quotients (a rational simplicial core is isomorphic to $A_d$, a merge observation); they are
+credited, and its nonflatness certificate is kept as a second route to 12's. Its questions on projective and global dimensions are merged into
+\cref{osq:hd:q:cores}, and its other ten form
+\cref{osq:pc:q:flatext,osq:pc:q:recognition,osq:pc:q:infinite,osq:pc:q:density,osq:pc:q:nonpolyhedral,osq:pc:q:arithmetic,osq:pc:q:algorithms,osq:pc:q:characteristic,osq:pc:q:derived,osq:pc:q:formal}.
+27 answers no numbered question; it joins \cref{osq:sec:closure} in one new subsection (\cref{osq:hb:sub:henselian}), after 23's at the end of the
+section. About a third of it reconstructs 20's splitting machinery, printed once under 20's labels (\cref{osq:bb:lem:projection,osq:bb:lem:laurent,osq:bb:lem:certificate,osq:bb:thm:split,osq:bb:thm:ordinal}),
+with 27's quadratic proof of the splitter kept as a second route (\cref{osq:hb:rem:oneradical}); its twelve questions form
+\cref{osq:hb:q:boolean,osq:hb:q:hull,osq:hb:q:enlargement,osq:hb:q:normalization,osq:hb:q:spectrum,osq:hb:q:valuation,osq:hb:q:mixed,osq:hb:q:unlocalized,osq:hb:q:birthday,osq:hb:q:class,osq:hb:q:higher,osq:hb:q:formal}.
 \end{itemize}
 
 \paragraph{Results added in the merge.} Each carries the tag \merge\ and a complete proof:
@@ -675,8 +698,12 @@ point evaluations on the Cantor subalgebra to homomorphisms of all of $\Qa_a$ on
 observation that the embedded $\FF_a$ alone does not distinguish the maximal ideals above one binomial (status of \cref{osq:q:primes}); the
 containment of \cref{osq:lem:Ha}(ii), \cref{osq:if:lem:gf} and 16's freshness in 25's absorption theorem (after \cref{osq:sa:thm:absorption}); the
 equivalence of 24's and 25's thresholds with absorption of $K_{\operatorname{cvx}(\Z a)}$ and with $\omega^b/(1+\omega^a)\in\Oz$
-(\cref{osq:sa:rem:threshold}); and $C^{\mathsf k}$ examples showing that 25's removal of exceptions needs global smoothness
-(\cref{osq:sa:rem:exceptionsnecessary}).
+(\cref{osq:sa:rem:threshold}); $C^{\mathsf k}$ examples showing that 25's removal of exceptions needs global smoothness
+(\cref{osq:sa:rem:exceptionsnecessary}); the isomorphism of a rational simplicial cone core with $A_d$, through which 26's simplicial face dimensions are
+21's and the projective dimension of every simplicial face quotient is the upper endpoint of 26's interval (\cref{osq:pc:sub:polyhedral}); the flat
+dimensions $d$ and $d+1$ of lattice modules and their quotients over every cone core, hence weak global dimension at least $d+1$
+(\cref{osq:pc:rem:lattice}); the identification of 27's $\sqrt{\Pi\NN}$ with $\Pi\NN$ (\cref{osq:hb:sub:henselian}); and the comparison of the branch
+counts of 20, 23 and 27 (\cref{osq:hb:rem:counts}).
 Each follows from lemmas of the sources; none is a new method.
 
 \subsection{Relation to the repository}\label{osq:sub:repository}
@@ -758,7 +785,13 @@ pin, which already embedded $\No$ in $\FF_a$ and $\SC$ in $\EE_a$ (\cref{osq:if:
 surcomplex-automorphism and first-$\kappa$ reports, which it does not cite; and its recursion is the mechanism of 19's and 20's class ultrafilters. 25
 (pin \texttt{738a390}) states accurately that 22's non-claim leaves algebraic and semialgebraic maps unclassified; its tail theorem generalizes 18's
 collapse (\cref{osq:or:thm:rational}), which it credits only as context, and its no-set-test and exception theorems refine 16's and 22's, which it credits
-in general terms (\cref{osq:sa:sub:semialgebraic}). The shipped audit
+in general terms (\cref{osq:sa:sub:semialgebraic}). 26 (pin \texttt{7b256e0}) read this report's opening and 12's orthant results and credits them;
+it presents its arbitrary-cone package as its contribution and credits 21's exact projective dimension without using it. Its orthant cases re-derive
+12's and 21's results, and it does not notice that a rational simplicial core is isomorphic to $A_d$, so that its simplicial face dimensions are 21's
+(\cref{osq:pc:sub:polyhedral}). 27 (pin \texttt{fc27d87}) reconstructs 20's splitter from 20's shipped proof audit and credits it; it does not cite 08's
+$A^{08}_\kappa=F^{08}_\kappa\cap\Oz$ or the Diophantine report's local ring $\Oz_\Pi$ and its example $T^2-T-\omega$, and its source file reports that a
+repository search for ``hensel'' found nothing, whereas the word occurs in sixteen reports at its pin, including this one and the Diophantine report
+(\cref{osq:hb:sub:henselian}). The shipped audit
 files keep these statements verbatim; the README records the corrections.
 
 \paragraph{Corrections to the sources.} 03's source lost a relation symbol and prints
@@ -788,7 +821,9 @@ credit (it could not see them); they are credited (\cref{osq:da:sub:derived}); i
 found in this merge. 23 does not cite 20's continuum family or 19's finite-axiom theorem (see above; credited in
 \cref{osq:rm:sub:cyclic}); its proofs contain no error found in this merge. 24 and 25 repeat 07's field core and 10's numerical polynomials
 with credit, and 18's collapse, 16's and 22's sampling and exception theorems without precise citation (credited in
-\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic}); no error was found in their proofs. No source contains a false theorem.
+\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic}); no error was found in their proofs. 26 and 27 repeat 12's, 21's and 20's results with
+general credit (\cref{osq:pc:sub:polyhedral,osq:hb:sub:henselian}); 27's statement that a repository search for ``hensel'' returned no match is
+inaccurate at its pin, and no error was found in their proofs. No source contains a false theorem.
 
 \section{Conventions, notation, and the constant-term retraction}
 \label{osq:sec:conv}
@@ -816,7 +851,9 @@ its splitting results need only choice for sets (\cref{osq:bb:rem:choice}), and 
 G\"odel--Bernays class theory with global choice and uses it essentially: its maximal class ideals (\cref{osq:cr:thm:krull}) come from a recursion with
 set-valued stages along a global well-order, and for all class rings the principle is equivalent to global choice (\cref{osq:cr:thm:equivalence});
 the results of \cref{osq:cr:sub:residues} that need it say so, while its monomial cutoff, truncation and support-prime classification do not. 25 reads
-proper-class support fields pointwise, through set-sized divisible hulls, and uses no global choice. The collision step of the
+proper-class support fields pointwise, through set-sized divisible hulls, and uses no global choice. 26 uses only set-sized rings and modules, the full
+class ring appearing only as the target of an embedding and of a finite relation; 27 uses set-sized fields, rings and spectra, set-length recursion and
+choice for sets, with no class Zorn lemma. The collision step of the
 universal theorem (\cref{osq:thm:universal}) is choice-free in the formulation of
 08, which we adopt: for a set $S$, its Hartogs ordinal is an ordinal that does not
 inject into $S$; it exists in ZF. The same device is used in the rotation-group
@@ -954,7 +991,7 @@ the different set-sized constructions, are listed below; \cref{osq:hd:sec:cores}
 \cref{osq:fs:sub:gaps} list the further renamings of 12, 14 and 16,
 \cref{osq:rel:sub:relations,osq:or:sub:outputs,osq:nf:sub:fibre} those of 17, 18 and 19, \cref{osq:bb:sub:branching}
 those of 20, \cref{osq:da:sub:derived} those of 21, \cref{osq:ft:sub:tests} those of 22, \cref{osq:rm:sub:cyclic} those of 23, and
-\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic} those of 24 and 25.
+\cref{osq:cr:sub:residues,osq:sa:sub:semialgebraic,osq:pc:sub:polyhedral,osq:hb:sub:henselian} those of 24 to 27.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
@@ -3298,8 +3335,9 @@ re-derives, independently, 14's matrix, syzygy, $\Hom$, tensor-torsion and power
 these are printed once, with 17 added to their sources, and 17's new material (presentations and relation counts, the
 $\Tor$ identification, moduli, orders, the lexicographic models inside $\Oz$) is \cref{osq:rel:sub:relations}. Manuscript~21 of a
 fifth batch determines the projective dimensions that 12 bounds and computes the $\Tor$ algebra of lattice quotients
-(\cref{osq:da:sub:derived}). Labels carry the sub-prefixes \texttt{osq:hd:} (12), \texttt{osq:tn:} (14), \texttt{osq:rel:} (17) and
-\texttt{osq:da:} (21).
+(\cref{osq:da:sub:derived}). Manuscript~26 of an eighth batch replaces the coordinate cone by an arbitrary rational polyhedral cone
+(\cref{osq:pc:sub:polyhedral}). Labels carry the sub-prefixes \texttt{osq:hd:} (12), \texttt{osq:tn:} (14), \texttt{osq:rel:} (17),
+\texttt{osq:da:} (21) and \texttt{osq:pc:} (26).
 
 \paragraph{Scope.} The rings of \cref{osq:hd:sub:cores,osq:hd:sub:resolution,osq:hd:sub:tor,osq:hd:sub:dimensions}
 and 14's model $A_0$ have \emph{finite} supports. They are therefore outside the universal theorem, like
@@ -3783,7 +3821,8 @@ $\Tor_{>0}(D,D)=0$ and that $D$ is not flat, so $\fd D=1$; 14's $A_0$; and 12's 
 \item For the coordinatewise cone $\Q_{\ge0}^d$ the flat dimension is $d$ (\cref{osq:hd:cor:fd}): under the embedding, with
 $\gamma_1<\gamma_2$, the quotient $\omega^{\epsilon(\gamma_2-\gamma_1)}$ of $X_2^\epsilon$ by $X_1^\epsilon$ lies in $\Oz$ but not in
 $A_d$, so the tail of $A_d$ is not a directed union of principal ideals; it is a sum of $d$ flat ideals that is not flat for
-$d\ge2$.
+$d\ge2$. (Status (batch 34): 26 proves $\fd D=d$ for the core of every pointed full-dimensional rational polyhedral cone of dimension $d$, and that
+its passage to a total-order core, or to $\Oz$, is not flat for $d\ge2$; \cref{osq:pc:thm:facebetti,osq:pc:thm:nonflat}.)
 \end{itemize}
 So ``flat dimension one'' must never be asserted for an arbitrary subring of $\Oz$: $A_d\subseteq T_\Gamma\subseteq\Oz$, with all exponents
 in one Archimedean class, have flat dimensions $d$ and $1$, and $A_d\to T_\Gamma$ is not flat. Being a subring of a ring with small
@@ -4771,6 +4810,616 @@ reduction keeps the additive lattice and erases its multiplication (21). Over th
 (\cref{osq:thm:universal}(iv)); 21 does not need that theorem. On the finite-support core $T_\Q$ it would be false that every set-sized
 target factors through $\ct$, since the augmentation sending every monomial to $1$ is a map to $k$ (\cref{osq:hd:prop:finite}(ii)); the theorem
 concerns the specified constant-term modules only (21).
+
+\subsection{Polyhedral cores: face topology and flat dimension}\label{osq:pc:sub:polyhedral}
+
+This subsection is manuscript~26's (\cref{osq:sub:sources}). It replaces the coordinatewise cone $\Q_{\ge0}^d$ of 12's cores $A_d$ by an arbitrary
+pointed full-dimensional rational polyhedral cone $\mathscr C\subseteq\R^d$, and the Boolean face lattice of \cref{osq:hd:thm:resolution} by the face
+lattice of $\mathscr C$. Every face $F$ gives a flat, idempotent, non-finitely-generated ideal $I_F$ of projective dimension one, a countable union of
+principal ideals, with $I_F\otimes I_G\cong I_{F\vee G}$ (\cref{osq:pc:thm:exhaustion,osq:pc:thm:products}); the radical coefficient-full monomial
+ideals are exactly the sums $\mathfrak r_{\mathcal F}$ over face antichains (\cref{osq:pc:thm:radical}); and the flat dimension of
+$A_{\mathscr C}/\mathfrak r_{\mathcal F}$ is the top degree of the reduced homology of finite join complexes, witnessed by explicit cap modules
+(\cref{osq:pc:thm:exactfd}). For the quotient keeping one face $F$ this is
+\[
+ \fd_{A_{\mathscr C}}A_{\mathscr C}(F)=\mu_{\mathscr C}(F)=\max\{\dim G:G\text{ a face of }\mathscr C,\ G\cap F=\{0\}\}
+\]
+(\cref{osq:pc:thm:facebetti}; 26's Theorem~A). Consequently $\fd D=d$ for every such cone; $\mathscr C$ is simplicial if and only if every facet quotient has
+flat dimension one (\cref{osq:pc:thm:simplicial}); cones over cubes have facet quotients of every flat dimension up to $d-1$ (\cref{osq:pc:thm:cubes}); every
+radical quotient is a homological epimorphism (\cref{osq:pc:thm:homological}); over a principal ideal domain $D$, modules acting through $\ct$ have flat
+dimension $1$ or $d$ (\cref{osq:pc:thm:arithmetic}); and the inclusion of a core of dimension at least two in a total-order core, or in $\Oz$, fails the
+equational flatness criterion (\cref{osq:pc:thm:nonflat}). This answers, for the flat dimensions of radical coefficient-full monomial quotients, the
+non-simplicial-cone clause of \cref{osq:hd:q:cores}; projective dimensions, arbitrary ideals, localizations and weak global dimensions stay open
+there. 26's Theorems~A--D summarize \cref{osq:pc:thm:facebetti,osq:pc:thm:exactfd,osq:pc:thm:homological,osq:pc:thm:flatclass,osq:pc:thm:simplicial,osq:pc:thm:cubes,osq:pc:prop:embedding,osq:pc:thm:nonflat}.
+
+26 pins \texttt{7b256e0} (23 September 2026), whose text of this report is the one after the sixth merge (Git blob \texttt{ef7aef1}, the same as 24's
+and 25's pins); it read lines 1--210 and 3300--3520 of that text (12's resolution, $\Tor$ formula and flat dimensions, which it credits: its directly
+compared labels are \cref{osq:hd:thm:resolution,osq:hd:thm:boolean,osq:hd:cor:fd,osq:hd:cor:arithmeticTor,osq:hd:prop:etale}), and it credits 21's exact
+projective dimension from the report's abstract without using it. 26 does not notice one reduction, which the merge adds: a rational simplicial cone
+core \emph{is} a coordinate core. If $\mathscr C$ is simplicial with rational ray vectors $v_1,\dots,v_d$, the coordinates in this basis are a
+rational linear isomorphism $\Q^d\to\Q^d$ carrying $\mathscr C\cap\Q^d$ onto $\Q_{\ge0}^d$, hence a coefficient-preserving ring isomorphism
+$A_{\mathscr C}\cong A_d$ sending the face spanned by the rays $\{v_i:i\notin U\}$ to the coordinate face that 21's quotient $\mathsf F_U$ keeps
+\merge. Under it: 26's \cref{osq:pc:cor:simplicialface} re-derives 21's \cref{osq:da:prop:faces}, and 21's \cref{osq:da:cor:exactpd} gives the
+projective dimension $d-\dim F+1$, the upper endpoint of \cref{osq:pc:cor:pdbounds}; 26's \cref{osq:pc:thm:exhaustion} for coordinate faces is
+\cref{osq:hd:lem:faces}(i), (iii) with \cref{osq:hd:prop:pd}(i), (ii); its \cref{osq:pc:prop:cellular} for an orthant is
+\cref{osq:hd:thm:resolution}; its \cref{osq:pc:thm:homological} for $\mathfrak r_{\mathcal F}=\Pi_{\mathscr C}$ is \cref{osq:hd:cor:arithmeticTor}; its
+\cref{osq:pc:prop:scalar} is \cref{osq:hd:prop:finite}(i); and its \cref{osq:pc:thm:nonflat} for an orthant is the nonflatness of
+\cref{osq:hd:thm:collapse}, proved there by an intersection certificate over $T_\Gamma$ and here by the equational criterion with a lexicographic
+embedding, 26 adding the failure of that criterion in $\Oz$ itself; it is kept as a second route. These are credited; the rest of 26 is new. 26
+credits as antecedents the cellular resolutions of Bayer--Sturmfels \cite{BayerSturmfels}, the lcm-lattice homology of Gasharov--Peeva--Welker
+\cite{GPW}, the real-exponent global dimensions of Geist--Miller \cite{GeistMiller} and Miller's real polyhedral theory \cite{MillerEssential}, none of
+which it claims or reproves. The numbering of 26 cited here is that of its own manuscript.
+
+\paragraph{Notation and renamings.} In this subsection $d\ge1$, $\mathscr C\subseteq\R^d$ is a pointed ($\mathscr C\cap(-\mathscr C)=\{0\}$),
+full-dimensional, rational polyhedral cone, $K$ is a field and $D\subseteq K$ a unital subring, as in \cref{osq:hd:sub:cores}. \emph{Faces} of
+$\mathscr C$ include $\{0\}$ and $\mathscr C$; the letters $F,G,H$ denote faces (not subsets of $\Lambda$, a field or a group), $F\vee G$ is the least face
+containing both, $<$ is strict inclusion, and a face is identified with its rational points where exponents are meant. Put
+\begin{equation}\label{osq:pc:eq:core}
+ P_{\mathscr C}=\mathscr C\cap\Q^d,\qquad \Pi_{\mathscr C}=\bigoplus_{0\ne m\in P_{\mathscr C}}KX^m,\qquad A_{\mathscr C}=D\oplus\Pi_{\mathscr C},
+\end{equation}
+finite sums, $X^mX^n=X^{m+n}$, graded by $\Q^d$. For $\mathscr C=\R_{\ge0}^d$ these are $P_{[d]}$, $\Pi_d$ and $A_d$. 26's symbols are renamed as follows.
+\begin{itemize}
+\item Its cone $C$, field $k$, ring $A_D(C)$ (26's $\A$; here $\A$ is $D+\Pi_k$), monoid $M=C\cap\Q^d$ and tail $I_+$ are $\mathscr C$, $K$, $A_{\mathscr C}$,
+$P_{\mathscr C}$ and $\Pi_{\mathscr C}$ ($C_p$ are 12's complexes and $M$ a coefficient lattice); its face quotient $A_D(F)$ is $A_{\mathscr C}(F)$.
+\item Its face ideal $J_F$ is $I_F$: for a coordinate face on $S$ it is 12's $I_S$ of \eqref{osq:hd:eq:IS}, whereas $J_F=(X_i:i\in F)A$ is 12's ideal
+of \cref{osq:hd:sub:tor}. Its radical ideal $I_{\mathcal F}=\sum_iJ_{F_i}$ is $\mathfrak r_{\mathcal F}$, its face primes $P_H$ are $\mathfrak p_H$
+($P_\Lambda$ is 12's monoid), and its smallest face $H(m)$ containing $m$ is $\operatorname{fc}(m)$ ($H$ is a group, $H_a$ the scale subgroup).
+\item Its $V_G=\{i:F_i\subseteq G\}$ is $\operatorname{At}(G)$ ($V_F$ are 12's test modules), its join complexes $\Delta_{<G}$ are $\mathsf K_{<G}$ ($\Delta$
+is 21's telescope map and the difference operator), its $h(\mathcal F;k)$ is $\operatorname{len}(\mathcal F)$, and its complexes $\mathcal C_*$,
+$\mathcal R_*$, $E_*$ are $C^{\mathcal F}_*$, $R^{\mathcal F}_*$ and $C^{\mathrm{cell}}_*$ (compare 21's $C^U_*$).
+\item Its detecting module $N_{G,b}$, with ring $S_G=k[G\cap\Q^d]$, cap ideal $L_{G,b}$ and facet functionals $\eta_j$, is $\mathcal W_{G,b}$, with
+$K[P_G]$, $\mathfrak z_{G,b}$ and $\ell^G_j$ ($N$ is a module, $\mathfrak c$ the continuum, $\eta$ 18's translation); it plays the role of 12's test
+modules $V_F$. Its rays $\mathcal R_F$ outside a face are written out ($\mathcal R$ is 14's Rees algebra).
+\item Its embedding functional $\lambda$ is $\lambda_\omega$ ($\lambda$ is a cardinal), and its total-order ring $T_D(\lambda)$ is
+$T_{\lambda_\omega}$, the finite-support ring over the ordered group $\lambda_\omega(\Q^d)$ (as $T_\Gamma$ of \eqref{osq:hd:eq:T}, but with exponents in
+$\No$).
+\item Its squarefree ring $R=k[x_1,\dots,x_d]$ and ideal $Q$ are $K[\mathbf x]$ and $\mathfrak q$; its module $E$ acting through $\ct$, with torsion $T$
+and quotient $V$, is $N$ with $N_{\mathrm{tor}}$ and $N/N_{\mathrm{tor}}$; its cube cones $C_n$ are $\mathscr C_n$; its $\operatorname{wdim},\operatorname{gldim}$ are
+$\operatorname{w.gl.dim},\operatorname{gl.dim}$.
+\end{itemize}
+The letters $\beta_{p,G}$, $\mu_{\mathscr C}$, $u_F$ and $\ell$ are kept. Four tempting readings are false. (1) $I_F$ is not $J_F$: $I_{\mathscr C}$ for the
+orthant is the relative-interior ideal, not $\Pi_d$ unless $d=1$, and $J_{[d]}=(X_1,\dots,X_d)$ is neither. (2) ``Core'' does not mean integer part:
+$A_{\mathscr C}$ is a subring of $\Oz$, and a partial exponent cone must not be replaced by the positive cone of the ambient order
+(\cref{osq:pc:thm:nonflat}). (3) The numbers $\beta_{p,G}$ count summands of a reduced \emph{flat} resolution, not minimal free ranks, and the reduced
+resolution is not unique. (4) ``All radical monomial quotients'' means the coefficient-full geometric ones: arithmetic ideals such as $pA_{\mathscr C}$ and
+ideals restricting the coefficient at an admitted exponent are excluded.
+
+\paragraph{The rings.} Pointedness means two nonzero exponents never add to zero, so $\Pi_{\mathscr C}$ is an ideal and $\ct$ is a split surjection
+$A_{\mathscr C}\to D$ with kernel $\Pi_{\mathscr C}$; $A_{\mathscr C}\subseteq K[P_{\mathscr C}]$ is a domain (compare least exponents in a total order
+of $\Q^d$ compatible with addition). Every sum is finite; this is used in the common-shift argument, in degreewise exactness and in the arguments
+against finite generation, and is not shorthand for a Hahn completion (26). For $m\in\mathscr C$, $\operatorname{fc}(m)$ is the smallest face containing
+$m$, so $m\in\operatorname{relint}\operatorname{fc}(m)$, $\operatorname{fc}(0)=\{0\}$, and a supporting functional gives
+\begin{equation}\label{osq:pc:eq:sumface}
+ \operatorname{fc}(m+n)=\operatorname{fc}(m)\vee\operatorname{fc}(n)\qquad(m,n\in\mathscr C),
+\end{equation}
+since a face contains $m+n$ exactly when it contains $m$ and $n$.
+
+\begin{proposition}[Omnific embeddings \src{26}]\label{osq:pc:prop:embedding}
+Choose a rational functional $\ell_1$ strictly positive on $\mathscr C\setminus\{0\}$, extend it to a basis $\ell_1,\dots,\ell_d$ of the rational dual of
+$\Q^d$, and put $\lambda_\omega(m)=\ell_1(m)\omega^{d-1}+\ell_2(m)\omega^{d-2}+\dots+\ell_d(m)$, an injective additive map $\Q^d\to\No$, positive on
+$\mathscr C\setminus\{0\}$. For $(D,K)=(\Z,\R)$ the rule $c+\sum_ma_mX^m\mapsto c+\sum_ma_m\omega^{\lambda_\omega(m)}$ is an injective ring homomorphism
+$A_{\mathscr C}\to\Oz$ preserving $\ct$; for $(D,K)=(\Z[i],\C)$ it is one into $\GOz$.
+\end{proposition}
+\begin{proof}
+The monomial law gives a homomorphism, distinct $m$ give distinct exponents, so uniqueness of finite normal forms gives injectivity; nonconstant exponents
+are positive and the constant term is in $D$. For $\C$ split coefficients into real and imaginary parts.
+\end{proof}
+
+This is \cref{osq:hd:lem:cores}(ii) with a lexicographic, rather than a real, functional (26).
+
+\begin{proposition}[A common fraction field \src{26}]\label{osq:pc:prop:fractions}
+$\Frac A_{\mathscr C}=\Frac K[\Q^d]$, independently of $\mathscr C$ and of $D\subseteq K$.
+\end{proposition}
+\begin{proof}
+For $0\ne u\in P_{\mathscr C}$ and $a\in K$, $(aX^u)/X^u=a$. Every $g\in\Q^d$ is $m-n$ with $m,n\in P_{\mathscr C}$: take a rational interior point $v$ and a large
+integer $N$ with $Nv,Nv+g\in\mathscr C$; then $X^g=X^m/X^n$. The reverse inclusion is $A_{\mathscr C}\subseteq K[\Q^d]$.
+\end{proof}
+
+The fraction field forgets the cone, while the face-quotient flat dimensions detect whether it is simplicial (26). All rings and modules used to compute
+$\Tor$ and flat or projective dimension are set-sized, flat dimension is taken among all modules, and a nonzero homogeneous $\Tor$ component is a nonzero
+component of the ungraded $\Tor$; filtered colimits of flat modules are flat \cite[Lemma~10.39.3]{StacksFlat}, flat resolutions compute $\Tor$, and every
+projective-dimension bound below is proved by a telescope or by dimension shifting (26).
+
+\paragraph{Flat ideals indexed by faces.} For a nonzero face $F$ fix a rational $u_F\in\operatorname{relint}F$, for instance the sum of one rational
+vector on each ray of $F$.
+
+\begin{lemma}[Face subtraction \src{26}]\label{osq:pc:lem:subtract}
+For $m\in\mathscr C$ the following are equivalent: (i) $F\subseteq\operatorname{fc}(m)$; (ii) $m-\epsilon u_F\in\mathscr C$ for all sufficiently small
+positive rational $\epsilon$; (iii) $m-\epsilon u_F\in\mathscr C$ for some positive rational $\epsilon$. Then $\operatorname{fc}(m-\epsilon u_F)=
+\operatorname{fc}(m)$ for all small $\epsilon>0$.
+\end{lemma}
+\begin{proof}
+Write $\mathscr C=\{x:\ell_j(x)\ge0,\ j\le s\}$ with facet functionals. If $F\subseteq\operatorname{fc}(m)$ and $\ell_j(m)=0$, then $\ell_j(u_F)=0$; the
+other $\ell_j(m)$ are positive, so for small $\epsilon$ all inequalities hold with the same zero set, which gives (ii) and the last assertion. (ii)$\Rightarrow$(iii)
+is clear. If (iii) holds, $m=(m-\epsilon u_F)+\epsilon u_F$, and a face containing $m$ contains both summands, hence $u_F$ and $F$.
+\end{proof}
+
+For a nonzero face $F$ put
+\begin{equation}\label{osq:pc:eq:IF}
+ I_F=\bigoplus_{0\ne m\in P_{\mathscr C},\ F\subseteq\operatorname{fc}(m)}KX^m\subseteq A_{\mathscr C},\qquad I_{\{0\}}=A_{\mathscr C}\ \text{(a convention only)}.
+\end{equation}
+In the orthant, the face spanned by the coordinate rays in $S$ gives 12's $I_S$: the monomials positive at every index of $S$, possibly zero elsewhere (26).
+
+\begin{theorem}[Principal exhaustion and dimension one \src{26}]\label{osq:pc:thm:exhaustion}
+For every nonzero face $F$,
+\begin{equation}\label{osq:pc:eq:exhaustion}
+ I_F=\bigcup_{n\ge1}X^{2^{-n}u_F}A_{\mathscr C},
+\end{equation}
+an increasing union. So $I_F$ is flat, is not finitely generated, and $\pd_{A_{\mathscr C}}I_F=1$.
+\end{theorem}
+\begin{proof}
+If $m=2^{-n}u_F+v$ with $v\in\mathscr C$, \eqref{osq:pc:eq:sumface} gives $F\subseteq\operatorname{fc}(m)$, and
+$X^{2^{-n}u_F}=(X^{2^{-n-1}u_F})^2$ makes the union increasing. Conversely, for a finite sum in $I_F$, \cref{osq:pc:lem:subtract} lets one large $n$
+subtract $2^{-n}u_F$ from every exponent with every difference nonzero; factoring out $X^{2^{-n}u_F}$ leaves a finite sum in $A_{\mathscr C}$, although its
+coefficients lie in $K$, not in $D$ (this is why every difference must be nonzero). Each principal ideal is free of rank one, $A_{\mathscr C}$ being a domain,
+so the union is flat. If finitely many elements generated $I_F$, the least value $c>0$ of a functional $\ell$ strictly positive on
+$\mathscr C\setminus\{0\}$ on their nonzero exponents would bound below the $\ell$-values of all exponents of $I_F$, but $\ell(2^{-n}u_F)\to0$. With
+$P_n=X^{2^{-n}u_F}A_{\mathscr C}$ and the inclusions $\iota_n$, the sequence
+\begin{equation}\label{osq:pc:eq:telescope}
+ 0\to\bigoplus_{n\ge1}P_n\xrightarrow{\ \tau\ }\bigoplus_{n\ge1}P_n\to I_F\to0,\qquad \tau(e_nx)=e_nx-e_{n+1}\iota_n(x),
+\end{equation}
+is exact (injectivity at the least nonzero coordinate; the cokernel is the colimit), so $\pd I_F\le1$. A projective ideal of a domain is finitely
+generated: with a dual basis $(x_i,f_i)$ and $0\ne a$ in the ideal, $af_i(x)=xf_i(a)$ shows that only the finitely many $f_i$ with $f_i(a)\ne0$ are
+nonzero. So $\pd I_F=1$.
+\end{proof}
+
+This is \cref{osq:hd:lem:faces}(i), (iii) and \cref{osq:hd:prop:pd}(i), (ii) for arbitrary faces; the dual-basis step is \cref{osq:lem:projideal}.
+
+\begin{theorem}[Intersections, products and tensors \src{26}]\label{osq:pc:thm:products}
+For nonzero faces $F,G$,
+\begin{equation}\label{osq:pc:eq:products}
+ I_F\cap I_G=I_{F\vee G}=I_FI_G,\qquad I_F\otimes_{A_{\mathscr C}}I_G\xrightarrow{\ \sim\ }I_{F\vee G}\ \text{(multiplication)}.
+\end{equation}
+In particular $I_F^2=I_F$, and $I_G\subseteq I_F$ if and only if $F\subseteq G$.
+\end{theorem}
+\begin{proof}
+The intersection is read off the supports, and a product lies in both ideals. For $aX^m\in I_{F\vee G}$ choose a small rational $q>0$ with
+$m-qu_F\in\operatorname{relint}\operatorname{fc}(m)$; then $X^{qu_F}\in I_F$ and $aX^{m-qu_F}\in I_G$. Tensoring $I_F\hookrightarrow A_{\mathscr C}$ with
+the flat $I_G$ gives an injection $I_F\otimes I_G\to I_G$, the multiplication map, with image $I_FI_G$. For the last assertion test on $X^{u_G}$.
+\end{proof}
+
+None of this needs $D$ to be a field, Noetherian or a principal ideal domain; the constant ring is never replaced by $K$ (26).
+
+\paragraph{Radical monomial ideals.} An ideal $I\subseteq\Pi_{\mathscr C}$ is \emph{geometric monomial} (26: coefficient-full) if it is a direct sum of
+some of the spaces $KX^m$, $m\ne0$, so that membership depends on exponents only and admits every coefficient of $K$ at an admitted exponent.
+
+\begin{theorem}[Radical classification \src{26}]\label{osq:pc:thm:radical}
+The nonzero radical geometric monomial ideals correspond bijectively to the nonempty upper sets of nonzero faces, equivalently to the nonempty antichains
+$\mathcal F$ of nonzero faces, by
+\begin{equation}\label{osq:pc:eq:radicalsum}
+ \mathfrak r_{\mathcal F}=\sum_{F\in\mathcal F}I_F .
+\end{equation}
+Every $\mathfrak r_{\mathcal F}$ is idempotent and not finitely generated.
+\end{theorem}
+\begin{proof}
+Let $X^m\in I$ and $F=\operatorname{fc}(m)$. For a rational $n\in\operatorname{relint}H$ with $F\subseteq H$, the facet inequalities give $Nn-m\in\mathscr C$ for
+large $N$, so $(X^n)^N\in I$ and $X^n\in I$ by radicality, and all of $KX^n$ by coefficient-fullness. So membership is constant on relative interiors and
+upward closed, and the minimal admitted faces are the antichain. Conversely an upper set gives an ideal by \eqref{osq:pc:eq:sumface}. For a face $H$ put
+$\mathfrak p_H=\bigoplus_{m\in P_{\mathscr C}\setminus H}KX^m$; deleting the exponents outside $H$ is multiplicative (a sum lies in a face only if both summands
+do), so $A_{\mathscr C}/\mathfrak p_H\cong A_{\mathscr C}(H)$, a domain, and $\mathfrak p_H$ is prime. The ideal of an upper set $\mathcal U$ is
+$\bigcap\mathfrak p_H$ over the maximal $H$ of the complementary lower set, hence radical. Idempotence follows from $I_F^2=I_F$, and non-finite generation from
+the positive functional as in \cref{osq:pc:thm:exhaustion}.
+\end{proof}
+
+\begin{proposition}[Generators of a face prime \src{26}]\label{osq:pc:prop:faceprime}
+For a proper face $F<\mathscr C$, $\mathfrak p_F=\sum_\rho I_\rho$ over the rays $\rho$ of $\mathscr C$ not in $F$, which are the minimal faces of its upper set,
+and $A_{\mathscr C}/\mathfrak p_F\cong A_{\mathscr C}(F)$.
+\end{proposition}
+\begin{proof}
+$m\notin F$ exactly when $\operatorname{fc}(m)\not\subseteq F$, and a face not contained in $F$ has a ray not in $F$, faces being generated by their rays.
+\end{proof}
+
+For $F=\{0\}$ the generators are all rays and $\mathfrak p_{\{0\}}=\Pi_{\mathscr C}$. An orthant facet excludes one ray; a nonsimplicial facet can exclude
+several, and their joins raise the flat dimension (26).
+
+\paragraph{Finite flat resolutions and label reduction.} Fix a nonempty antichain $\mathcal F=\{F_1,\dots,F_r\}$ of nonzero faces, and for
+$S\subseteq[r]$ put $G_S=\bigvee_{i\in S}F_i$, $G_\varnothing=\{0\}$.
+
+\begin{theorem}[Face-labelled simplex resolution \src{26}]\label{osq:pc:thm:cech}
+The complex with $C^{\mathcal F}_0=A_{\mathscr C}$ and
+\begin{equation}\label{osq:pc:eq:cech}
+ C^{\mathcal F}_p=\bigoplus_{S\subseteq[r],\ |S|=p}I_{G_S}\quad(1\le p\le r),
+\end{equation}
+whose differential sends the summand of $S=\{i_1<\dots<i_p\}$ to the summands of $S\setminus\{i_j\}$ by $(-1)^{j-1}$ times the inclusion, is a flat
+resolution of $A_{\mathscr C}/\mathfrak r_{\mathcal F}$.
+\end{theorem}
+\begin{proof}
+The inclusions exist by \cref{osq:pc:thm:products}, and the two ways of deleting two indices cancel. In degree $m\ne0$ put
+$T(m)=\{i:F_i\subseteq\operatorname{fc}(m)\}$; the summand of $S$ contributes $K$ exactly when $S\subseteq T(m)$, so for $T(m)\ne\varnothing$ the degree-$m$
+part is the augmented simplex chain complex on $T(m)$, contracted by inserting a fixed vertex, and for $T(m)=\varnothing$ it is the identity of
+$(A_{\mathscr C})_m$; in degree $0$ it is $D\to D$. Flatness is \cref{osq:pc:thm:exhaustion}.
+\end{proof}
+
+This is a Taylor-type incidence construction, classical in spirit \cite{BayerSturmfels,GPW}, with non-finitely-generated flat summands instead of free
+ones; its length $r$ is only a first bound, and $r$ can exceed $d$ (26). For $\mathscr C$ an orthant and $\mathcal F$ its rays it is 12's
+\cref{osq:hd:thm:resolution}.
+
+Let $\mathcal L=\{G_S\}$, ordered by inclusion, whose atoms are the $F_i$. For $G\in\mathcal L\setminus\{\{0\}\}$ put
+\begin{equation}\label{osq:pc:eq:deltadef}
+ \operatorname{At}(G)=\{i:F_i\subseteq G\},\qquad \mathsf K_{<G}=\{S\subseteq\operatorname{At}(G):G_S<G\},
+\end{equation}
+a simplicial complex containing the empty face, proper in the full simplex on $\operatorname{At}(G)$; augmented chains place the empty face in degree $-1$.
+The part of the differential of \eqref{osq:pc:eq:cech} keeping a label $G$ is a finite complex of $K$-matrices with basis the $p$-subsets $S$ with $G_S=G$.
+
+\begin{lemma}[One diagonal block \src{26}]\label{osq:pc:lem:diagonal}
+Its homology in degree $p\ge1$ has dimension
+\begin{equation}\label{osq:pc:eq:beta}
+ \beta_{p,G}=\dim_K\widetilde H_{p-2}(\mathsf K_{<G};K);\qquad \beta_{1,F_i}=1 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+The block is the relative augmented chain complex of the full simplex on $\operatorname{At}(G)$ modulo $\mathsf K_{<G}$, with a $p$-subset in degree $p$; the
+simplex is contractible, so the relative homology is the reduced homology of $\mathsf K_{<G}$ shifted by two. For $G=F_i$, $\mathsf K_{<G}=\{\varnothing\}$ and
+$\widetilde H_{-1}=K$.
+\end{proof}
+
+\begin{lemma}[Triangular cancellation \src{26}]\label{osq:pc:lem:cancellation}
+Splitting off finitely many contractible two-term complexes reduces \eqref{osq:pc:eq:cech} to a flat resolution $R^{\mathcal F}_*$ of
+$A_{\mathscr C}/\mathfrak r_{\mathcal F}$ with
+\begin{equation}\label{osq:pc:eq:reduced}
+ R^{\mathcal F}_0=A_{\mathscr C},\qquad R^{\mathcal F}_p=\bigoplus_{G\in\mathcal L\setminus\{\{0\}\}}I_G^{\,\beta_{p,G}}\quad(p\ge1),
+\end{equation}
+whose positive differential has every nonzero component a scalar multiple of an inclusion strictly decreasing the face label.
+\end{lemma}
+\begin{proof}
+Initially a nonzero component $I_G\to I_H$ needs $H\subseteq G$ and is a scalar times inclusion, a property closed under sums and composites. A nonzero
+scalar of $K$ is an automorphism of the $K$-space $I_G$ over $A_{\mathscr C}$, even when it is not in $D$. A nonzero entry $a$ between two copies of the same
+label $G$, in row $j$ and column $i$, is isolated by changing coordinates, the other entries becoming
+\begin{equation}\label{osq:pc:eq:schur}
+ d'_{uv}=d_{uv}-d_{ui}a^{-1}d_{jv};
+\end{equation}
+deleting the isolated pair is a chain-homotopy equivalence, and $d^2=0$ keeps the rest a complex. Corrections pass through $G$, so they still decrease labels,
+and they can change the diagonal block of $H$ only if $H\supseteq G\supseteq H$. Gaussian elimination inside each block leaves its homology with zero diagonal
+differential, and each step removes two summands. $A_{\mathscr C}$ has label $\{0\}$ and is never cancelled.
+\end{proof}
+
+``Reduced'' means only that no equal-label contractible pair remains; the remaining maps are not unique, and no finite minimal-generator argument for the
+$I_G$ is imported (26).
+
+\begin{lemma}[Crosscut comparison \src{26}]\label{osq:pc:lem:crosscut}
+$\mathsf K_{<G}$ is homotopy equivalent to the order complex of the open interval $(\{0\},G)$ of $\mathcal L$ (empty complexes included), so
+$\beta_{p,G}=0$ for $p>\dim G$.
+\end{lemma}
+\begin{proof}
+With $\mathcal S$ the poset of nonempty faces of $\mathsf K_{<G}$, the order maps $f(S)=G_S$ and $g(H)=\{i:F_i\subseteq H\}$ satisfy $fg=\mathrm{id}$ (every
+element of $\mathcal L$ is the join of its atoms) and $gf\ge\mathrm{id}$; comparable order maps are homotopic (the prism over the two-element chain), so $f,g$
+are homotopy inverses. A chain of nonzero proper faces of $G$ has at most $\dim G-1$ members, so the order complex has dimension at most $\dim G-2$.
+\end{proof}
+
+So the reduced resolution has length at most $d$ (26).
+
+\paragraph{Face-isolating modules and the exact formula.} Fix a nonzero face $G$ and a rational $b\in\operatorname{relint}G$, choose facet functionals
+$\ell^G_1,\dots,\ell^G_t$ of $G$ in its linear span, so $G=\{x:\ell^G_j(x)\ge0\}$ and $\ell^G_j(b)>0$, let $K[P_G]$ ($P_G=G\cap\Q^d$) be an
+$A_{\mathscr C}$-algebra by discarding the monomials outside $G$ and including $D$ in $K$, and put
+\begin{equation}\label{osq:pc:eq:detector}
+ \mathfrak z_{G,b}=\bigoplus_{m\in P_G,\ \ell^G_j(m)\ge\ell^G_j(b)\text{ for some }j}KX^m,\qquad \mathcal W_{G,b}=K[P_G]/\mathfrak z_{G,b};
+\end{equation}
+$\mathfrak z_{G,b}$ is an ideal because the $\ell^G_j$ are nonnegative on $G$. The surviving monomials lie below \emph{every} cap: $(\mathcal W_{G,b})_b=0$,
+while small inward translates of $b$ survive. $\mathcal W_{G,b}$ is usually not finitely generated, which detection of flat dimension does not need.
+
+\begin{theorem}[Isolation of one face label \src{26}]\label{osq:pc:thm:isolation}
+For every nonzero face $H$, $(I_H\otimes_{A_{\mathscr C}}\mathcal W_{G,b})_b$ is $K$ if $H=G$ and $0$ otherwise.
+\end{theorem}
+\begin{proof}
+By \eqref{osq:pc:eq:exhaustion} the degree-$b$ component is the colimit of $(\mathcal W_{G,b})_{b-q_nu_H}$, $q_n=2^{-n}$, with transition maps multiplication by
+$X^{(q_n-q_{n+1})u_H}$ (the degree shifts must be kept). If $H\not\subseteq G$, a supporting functional of $G$ vanishing on $G$ and positive at $u_H$ is negative at
+$b-q_nu_H$, so all terms are zero. If $H\subsetneq G$, some facet of $G$ contains $H$, and its functional has $\ell^G_j(b-q_nu_H)=\ell^G_j(b)$, so the cap kills
+every term in $G$. If $H=G$, every $\ell^G_j(u_G)>0$, and for large $n$ the exponent $b-q_nu_G$ lies in $G$ strictly below every cap; late transitions send $a$
+to the same coefficient $a$, so the colimit is $K$.
+\end{proof}
+
+Faces not in $G$ are excluded by support, proper subfaces of $G$ by equality at a cap; only a move into the relative interior of $G$ leaves all its facets
+(26).
+
+\begin{theorem}[Join homology computes flat dimension \src{26}]\label{osq:pc:thm:exactfd}
+For $\mathfrak r_{\mathcal F}\ne0$ put $\operatorname{len}(\mathcal F)=\max\{p:\beta_{p,G}\ne0\text{ for some }G\in\mathcal L\setminus\{\{0\}\}\}$. Then
+\begin{equation}\label{osq:pc:eq:fdexact}
+ \fd_{A_{\mathscr C}}(A_{\mathscr C}/\mathfrak r_{\mathcal F})=\operatorname{len}(\mathcal F),\qquad \fd_{A_{\mathscr C}}\mathfrak r_{\mathcal F}=
+ \operatorname{len}(\mathcal F)-1,\qquad 1\le\operatorname{len}(\mathcal F)\le d,
+\end{equation}
+and for every nonzero $G\in\mathcal L$ and $p\ge1$,
+\begin{equation}\label{osq:pc:eq:torbeta}
+ \Tor_p^{A_{\mathscr C}}(A_{\mathscr C}/\mathfrak r_{\mathcal F},\mathcal W_{G,b})_b\cong K^{\beta_{p,G}} .
+\end{equation}
+\end{theorem}
+\begin{proof}
+\Cref{osq:pc:lem:cancellation,osq:pc:lem:crosscut} give $\fd\le\operatorname{len}\le d$. Tensor $R^{\mathcal F}_*$ with $\mathcal W_{G,b}$ in degree $b$:
+the degree-zero term vanishes, only the summands labelled $G$ survive (\cref{osq:pc:thm:isolation}), $\beta_{p,G}$ of them in degree $p$, and the
+differentials between them vanish because the reduced differential strictly decreases labels. This is \eqref{osq:pc:eq:torbeta} and the lower bound.
+$\beta_{1,F_i}=1$ makes $\operatorname{len}\ge1$. For the ideal shift $\Tor$ in $0\to\mathfrak r_{\mathcal F}\to A_{\mathscr C}\to A_{\mathscr C}/
+\mathfrak r_{\mathcal F}\to0$ if $\operatorname{len}\ge2$; if $\operatorname{len}=1$, truncation shows that $\mathfrak r_{\mathcal F}$ is flat.
+\end{proof}
+
+A finite incidence calculation alone would give only an upper bound; the detecting module turns diagonal homology into an obstruction to every shorter
+flat resolution (26). This is 26's Theorem~B.
+
+\begin{corollary}[A one-step projective interval \src{26}]\label{osq:pc:cor:pdbounds}
+With $\ell_0=\operatorname{len}(\mathcal F)$, $\max\{2,\ell_0\}\le\pd_{A_{\mathscr C}}(A_{\mathscr C}/\mathfrak r_{\mathcal F})\le\ell_0+1$; a one-face
+quotient $A_{\mathscr C}/I_F$ has flat dimension one and projective dimension two.
+\end{corollary}
+\begin{proof}
+Each $I_G$ has a free resolution of length one \eqref{osq:pc:eq:telescope}, so dimension shifting along the reduced resolution gives $\le\ell_0+1$, and
+$\pd\ge\fd$. If $\pd\le1$, the kernel $\mathfrak r_{\mathcal F}$ of $A_{\mathscr C}\to A_{\mathscr C}/\mathfrak r_{\mathcal F}$ would be projective, hence
+finitely generated, against \cref{osq:pc:thm:radical}.
+\end{proof}
+
+For $\ell_0\ge2$ the argument does not decide the endpoint, and 21's exact value for coordinate cores (\cref{osq:da:cor:exactpd}) cannot be transferred to
+nonsimplicial quotients without an additional $\Ext$ argument (26). By the isomorphism $A_{\mathscr C}\cong A_d$ for simplicial cones, the upper endpoint
+holds for every face quotient of a simplicial cone \merge.
+
+\begin{theorem}[Homological epimorphisms \src{26}]\label{osq:pc:thm:homological}
+For every $B=A_{\mathscr C}/\mathfrak r_{\mathcal F}$ and every $B$-module $N$, $B\otimes_{A_{\mathscr C}}N\cong N$ and $\Tor_j^{A_{\mathscr C}}(B,N)=0$ for $j>0$;
+so $A_{\mathscr C}\to B$ is a homological ring epimorphism. Yet $B$ is not flat when $\mathfrak r_{\mathcal F}\ne0$.
+\end{theorem}
+\begin{proof}
+For a positive summand $I_{G_S}$ of \eqref{osq:pc:eq:cech} and $i\in S$, $I_{F_i}I_{G_S}=I_{G_S}$ (\cref{osq:pc:thm:products}), so
+$\mathfrak r_{\mathcal F}I_{G_S}=I_{G_S}$ and $I_{G_S}\otimes N\cong(I_{G_S}/\mathfrak r_{\mathcal F}I_{G_S})\otimes_BN=0$. For nonflatness, multiplication by a
+nonzero monomial of $\mathfrak r_{\mathcal F}$ is injective on $A_{\mathscr C}$ and zero on $B$.
+\end{proof}
+
+Vanishing self-$\Tor$ and positive flat dimension do not conflict: the former tests only modules killed by $\mathfrak r_{\mathcal F}$, and the cap modules are
+not such (26). For $\mathfrak r_{\mathcal F}=\Pi_{\mathscr C}$ this is 12's \cref{osq:hd:cor:arithmeticTor}.
+
+\paragraph{Face quotients.}
+
+\begin{lemma}[Deleting a face from a polytopal boundary \src{26}]\label{osq:pc:lem:complement}
+Let $Q_0$ be a positive-dimensional compact convex polytope and $Q_1$ a nonempty proper face. Then $\partial Q_0\setminus Q_1$ is contractible, and it is
+homotopy equivalent to the order complex of $\{H:\varnothing\ne H<Q_0,\ H\not\subseteq Q_1\}$.
+\end{lemma}
+\begin{proof}
+Work in the affine span, with $c\in\operatorname{relint}Q_0$ and $q\in\operatorname{relint}Q_1$. Let $\mathsf k=\{t(z-c):t\ge0,z\in Q_1\}$, a pointed convex cone,
+and let $r(v)$ be the point where the ray $c+\R_{>0}v$ meets $\partial Q_0$, so $r(v)\in Q_1$ exactly when $v\in\mathsf k\setminus\{0\}$. For
+$x\in\partial Q_0\setminus Q_1$ put
+\begin{equation}\label{osq:pc:eq:contraction}
+ \mathsf h_t(x)=r\bigl((1-t)(x-c)+t(c-q)\bigr),\qquad0\le t\le1 .
+\end{equation}
+The vector inside $r$ is never in $\mathsf k$: for $t<1$ membership would put $(1-t)(x-c)$ in $\mathsf k$, against $x\notin Q_1$, and for $t=1$ it is $-(q-c)$
+with $0\ne q-c\in\mathsf k$ pointed; in particular it never vanishes. So $\mathsf h$ contracts $\partial Q_0\setminus Q_1$ to $r(c-q)$. In the barycentric
+subdivision of $\partial Q_0$, whose vertices are the nonempty proper faces, a point outside $Q_1$ has positive total weight on vertices not contained in $Q_1$;
+decreasing the other weights to zero and renormalizing retracts onto the full subcomplex on those vertices, the stated order complex.
+\end{proof}
+
+\begin{lemma}[The outside-vertex complex \src{26}]\label{osq:pc:lem:outside}
+Let $Q_0$ be a convex polytope, $Q_1$ a proper face (possibly empty), $V$ the vertices of $Q_0$ not in $Q_1$, and $\mathsf K$ the subsets of $V$ lying in a proper
+face of $Q_0$. If $Q_1=\varnothing$ then $\mathsf K\simeq\partial Q_0$; if $Q_1\ne\varnothing$ then $\mathsf K$ is contractible. (For a point $Q_0$ and empty
+$Q_1$ both are $\{\varnothing\}$.)
+\end{lemma}
+\begin{proof}
+Send a simplex to the smallest face containing it, and a face $H$ with $\varnothing\ne H<Q_0$, $H\not\subseteq Q_1$, to its vertices outside $Q_1$ (nonempty,
+faces being spanned by vertices); the composites are below, respectively above, the identities, so the order-map homotopy of \cref{osq:pc:lem:crosscut} applies.
+For $Q_1=\varnothing$ the face poset gives the barycentric subdivision of $\partial Q_0$; otherwise use \cref{osq:pc:lem:complement}.
+\end{proof}
+
+\begin{theorem}[Face-quotient multiplicities \src{26}]\label{osq:pc:thm:facebetti}
+For a face $F<\mathscr C$, use the antichain of rays outside $F$ (\cref{osq:pc:prop:faceprime}) and extend $\beta_{p,G}$ by zero. Then for every nonzero face
+$G$ and $p\ge1$,
+\begin{equation}\label{osq:pc:eq:facebetti}
+ \beta_{p,G}=1\ \text{if }G\cap F=\{0\}\text{ and }p=\dim G,\qquad \beta_{p,G}=0\ \text{otherwise}.
+\end{equation}
+So $A_{\mathscr C}(F)$ has a reduced flat resolution with $\bigoplus_{G\cap F=\{0\},\ \dim G=p}I_G$ in degree $p\ge1$,
+\begin{equation}\label{osq:pc:eq:mainface}
+ \fd_{A_{\mathscr C}}A_{\mathscr C}(F)=\mu_{\mathscr C}(F)=\max\{\dim G:G\text{ a face},\ G\cap F=\{0\}\},
+\end{equation}
+the maximum including $G=\{0\}$, and $\Tor^{A_{\mathscr C}}_{\dim G}(A_{\mathscr C}(F),\mathcal W_{G,b})_b\cong K$ for every nonzero face $G$ with $G\cap F=\{0\}$.
+In particular $\fd D=d$ and $\fd A_{\mathscr C}=0$.
+\end{theorem}
+\begin{proof}
+With $\ell$ strictly positive on $\mathscr C$, $Q_0=G\cap\{\ell=1\}$ is a polytope of dimension $\dim G-1$ whose vertices are the rays of $G$, and the active rays are
+the vertices outside $Q_1=(G\cap F)\cap\{\ell=1\}$. If $G\subseteq F$ there are no active rays and $G$ is not a label. Otherwise $\mathsf K_{<G}$ is the
+outside-vertex complex of \cref{osq:pc:lem:outside}: for $G\cap F=\{0\}$, $Q_1=\varnothing$, $G$ is a join label and $\mathsf K_{<G}$ has the homology of the
+sphere $\partial Q_0$ of dimension $\dim G-2$ (degree $-1$ for a ray); for $\{0\}<G\cap F<G$ it is contractible; and if $G$ is not a join label the active rays
+join below $G$ and their complex is a full simplex. Substitute into \eqref{osq:pc:eq:beta} and apply \cref{osq:pc:lem:cancellation,osq:pc:thm:exactfd}. For
+$F=\mathscr C$ the only disjoint face is $\{0\}$.
+\end{proof}
+
+The equality involves the dimension of the disjoint face, not the number of its rays: a nonsimplicial face with many rays contributes one top class, which is
+what equal-label cancellation measures (26). This is 26's Theorem~A.
+
+\begin{proposition}[The face complex resolves $D$ \src{26}]\label{osq:pc:prop:cellular}
+Orient the faces of $Q_0=\mathscr C\cap\{\ell=1\}$. There is a flat resolution of $D$ with $C^{\mathrm{cell}}_0=A_{\mathscr C}$,
+$C^{\mathrm{cell}}_p=\bigoplus_{\dim G=p}I_G$ ($1\le p\le d$), cellular incidence numbers times inclusions as differentials and $\ct$ as augmentation; hence
+$\fd_{A_{\mathscr C}}D=d$ independently of the cancellation.
+\end{proposition}
+\begin{proof}
+In degree $m\ne0$ the summands present are the nonzero faces $G\subseteq\operatorname{fc}(m)$, and the complex is the augmented cellular chain complex of the
+convex, contractible $Q_0\cap\operatorname{fc}(m)$; in degree $0$ it is $D\to D$. Tensoring with $\mathcal W_{\mathscr C,b}$ in degree $b$ leaves only $I_{\mathscr
+C}$ in degree $d$, so $\Tor_d(D,\mathcal W_{\mathscr C,b})_b=K$.
+\end{proof}
+
+For a simplicial cone the numbers of summands are $\binom d0,\dots,\binom dd$, the Boolean pattern of \cref{osq:hd:thm:resolution}; for the cone over a square
+$1,4,4,1$, over a cube $1,8,12,6,1$. The method is cellular in the sense of \cite{BayerSturmfels}, but flatness comes from rational root exhaustion, not from
+free cellular summands (26).
+
+\paragraph{Flatness detects simpliciality.}
+
+\begin{theorem}[Only single-face ideals are flat \src{26}]\label{osq:pc:thm:flatclass}
+For an irredundant antichain $\mathcal F=\{F_1,\dots,F_r\}$ the following are equivalent: $\mathfrak r_{\mathcal F}$ is flat; $\fd(A_{\mathscr C}/
+\mathfrak r_{\mathcal F})=1$; $r=1$.
+\end{theorem}
+\begin{proof}
+The first two are equivalent because the nonzero quotient is not flat (\cref{osq:pc:thm:homological}), and $r=1$ gives flatness
+(\cref{osq:pc:thm:exhaustion}). If $r\ge2$, take $G$ minimal among the joins $F_i\vee F_j$, $i\ne j$; the $t\ge2$ generators inside $G$ join pairwise to $G$ and
+none equals $G$, so $\mathsf K_{<G}$ is $t$ isolated vertices, $\beta_{2,G}=t-1>0$, and the flat dimension is at least two.
+\end{proof}
+
+\begin{corollary}[A marked face lattice \src{26}]\label{osq:pc:cor:reconstruct}
+Among the nonzero radical geometric monomial ideals the flat ones are exactly the $I_F$; with $A_{\mathscr C}=I_{\{0\}}$, their inclusion order is
+anti-isomorphic to the face lattice and tensor product corresponds to join.
+\end{corollary}
+\begin{proof}
+\Cref{osq:pc:thm:flatclass,osq:pc:thm:products}.
+\end{proof}
+
+This reconstructs the face lattice from the ring \emph{with its geometric monomial structure marked}; it does not show that an abstract ring isomorphism of
+cores preserves the monomials or the face lattice (26).
+
+\begin{theorem}[A homological characterization of simplicial cones \src{26}]\label{osq:pc:thm:simplicial}
+The following are equivalent: (i) $\mathscr C$ is simplicial; (ii) every facet omits exactly one ray; (iii) $\mathfrak p_F$ is flat for every facet $F$;
+(iv) $\fd A_{\mathscr C}(F)=1$ for every facet $F$.
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii) is clear, and (ii), (iii), (iv) are equivalent by \cref{osq:pc:prop:faceprime,osq:pc:thm:flatclass}. Assume (ii). Every ray $\rho$ is
+omitted by some facet, since the facets meet in $\{0\}$; that facet's functional is positive on $\rho$ and zero on the other rays, so in a linear relation among
+ray vectors the coefficient of $\rho$ vanishes. The rays are linearly independent and span $\R^d$, so there are $d$ of them.
+\end{proof}
+
+The criterion concerns all facets: a nonsimplicial cone can have one facet omitting a single ray (26).
+
+\begin{corollary}[Simplicial face dimensions \src{26}]\label{osq:pc:cor:simplicialface}
+If $\mathscr C$ is simplicial, $\fd A_{\mathscr C}(F)=d-\dim F$ for every face $F$.
+\end{corollary}
+\begin{proof}
+The largest face disjoint from $F$ is spanned by the complementary rays; apply \cref{osq:pc:thm:facebetti}.
+\end{proof}
+
+Through $A_{\mathscr C}\cong A_d$ this is 21's $\fd\mathsf F_U=|U|$ (\cref{osq:da:prop:faces}) with $|U|=d-\dim F$, and 21's
+\cref{osq:da:cor:exactpd} adds $\pd A_{\mathscr C}(F)=d-\dim F+1$ \merge.
+
+\paragraph{Examples, sharpness and coefficients.} Let $\mathscr C=\{(x,y,z):z\ge|x|,\ z\ge|y|\}$, the cone over a square, with rays through
+$v_1=(1,1,1)$, $v_2=(1,-1,1)$, $v_3=(-1,-1,1)$, $v_4=(-1,1,1)$ and adjacent two-faces $F_{ij}=\rho_i\vee\rho_j$. The augmentation has the flat resolution
+\[
+ 0\to I_{\mathscr C}\to I_{F_{12}}\oplus I_{F_{23}}\oplus I_{F_{34}}\oplus I_{F_{41}}\to\textstyle\bigoplus_{i=1}^4I_{\rho_i}\to A_{\mathscr C}\to D\to0
+\]
+of length three, where the unreduced simplex complex on four rays has length four. For the facet $F_{12}$, $\mathfrak p_{F_{12}}=I_{\rho_3}+I_{\rho_4}$, whose join
+is the opposite facet $F_{34}$, disjoint from $F_{12}$, so
+\[
+ 0\to I_{F_{34}}\xrightarrow{u\mapsto(u,-u)}I_{\rho_3}\oplus I_{\rho_4}\to A_{\mathscr C}\to A_{\mathscr C}(F_{12})\to0,
+\]
+and a cap module in the interior of $F_{34}$ gives $\Tor_2\ne0$: a facet quotient of flat dimension two although its codimension is one. For the ray
+$F=\rho_1$ the disjoint nonzero faces are $\rho_2,\rho_3,\rho_4,F_{23},F_{34}$, the multiplicities are $(1,3,2)$ and the flat dimension is two; the top cone meets
+$F$ (26, with a figure of the square section).
+
+\begin{theorem}[Cube cones \src{26}]\label{osq:pc:thm:cubes}
+For $n\ge1$ let $\mathscr C_n=\{(x_1,\dots,x_n,z):z\ge|x_i|\ (1\le i\le n)\}$ and $F_\pm=\mathscr C_n\cap\{x_1=\pm z\}$. Then $\dim\mathscr C_n=n+1$, the $F_\pm$
+are facets, and $\fd_{A_{\mathscr C_n}}A_{\mathscr C_n}(F_+)=n$, in the omnific and in the Gaussian omnific cores.
+\end{theorem}
+\begin{proof}
+The section $z=1$ is the $n$-cube and $F_\pm$ are cones over opposite facets; $x_1=z=-x_1$ forces $z=0$ and then all $x_i=0$, so $F_+\cap F_-=\{0\}$ and
+\cref{osq:pc:thm:facebetti} gives $\ge n$; the only face of dimension $n+1$ is $\mathscr C_n$, which meets $F_+$. The embeddings are
+\cref{osq:pc:prop:embedding}.
+\end{proof}
+
+By \cref{osq:pc:thm:facebetti} a nonzero proper face quotient has flat dimension at most $d-1$, and the cube cones attain it on a facet (26). The multiplicities
+of the reduced face-labelled flat resolutions, starting with the single $A_{\mathscr C}$ in degree $0$, are: $d$-orthant and $D$: $\binom d0,\dots,\binom dd$
+($\fd=d$); square cone and $D$: $(1,4,4,1)$ ($3$); square cone and a facet: $(1,2,1)$ ($2$); square cone and a ray: $(1,3,2)$ ($2$); any cone and
+$A_{\mathscr C}/I_{\mathscr C}$: $(1,1)$ ($1$); cone over a $3$-cube and $D$: $(1,8,12,6,1)$ ($4$); cone over a $3$-cube and a facet: $(1,4,4,1)$ ($3$); cone
+over an octahedron and $D$: $(1,6,12,8,1)$ ($4$). The quotient $A_{\mathscr C}/I_{\mathscr C}$ keeps the boundary faces, usually has zero divisors, and is
+radical but not a face-prime quotient (26).
+
+\begin{corollary}[Squarefree homology survives rational roots \src{26}]\label{osq:pc:cor:squarefree}
+Let $\mathfrak q\subsetneq K[\mathbf x]=K[x_1,\dots,x_d]$ be a nonzero squarefree monomial ideal with irredundant supports $S_1,\dots,S_r$, and in $A_d$ let
+$\mathfrak r=\sum_iI_{S_i}$. Then $\fd_{A_d}(A_d/\mathfrak r)=\pd_{K[\mathbf x]}(K[\mathbf x]/\mathfrak q)$, and the face-labelled multiplicities equal the
+multigraded Betti numbers of $K[\mathbf x]/\mathfrak q$.
+\end{corollary}
+\begin{proof}
+Both join semilattices are the unions of the $S_i$, and the lcm-lattice formula \cite{GPW} gives the Betti numbers by the same interval (crosscut) homology as
+\eqref{osq:pc:eq:beta}; take the top degree (\cref{osq:pc:thm:exactfd}).
+\end{proof}
+
+Projective dimension is not preserved: for one generator the ordinary quotient has projective dimension one, the root-face quotient two
+(\cref{osq:pc:cor:pdbounds}); only the flat dimension and its face topology survive (26).
+
+\begin{corollary}[Coefficient independence \src{26}]\label{osq:pc:cor:coefficients}
+For fixed $\mathscr C$ and $\mathcal F$, the $\beta_{p,G}$ and $\fd(A_{\mathscr C}/\mathfrak r_{\mathcal F})$ do not depend on $D\subseteq K$, and depend on $K$
+only through its characteristic; the real omnific and Gaussian omnific realizations agree.
+\end{corollary}
+\begin{proof}
+The boundary matrices have entries $0,\pm1$, so their ranks depend only on the prime field, and \cref{osq:pc:thm:exactfd} holds for every unital $D\subseteq K$.
+\end{proof}
+
+\paragraph{Arithmetic modules.}
+
+\begin{proposition}[A nonzero scalar removes the tail \src{26}]\label{osq:pc:prop:scalar}
+For $0\ne a\in D$, $aA_{\mathscr C}=aD\oplus\Pi_{\mathscr C}$ and $A_{\mathscr C}/aA_{\mathscr C}\cong D/aD$; if $a\notin D^\times$,
+$\fd(D/aD)=\pd(D/aD)=1$.
+\end{proposition}
+\begin{proof}
+$a\Pi_{\mathscr C}=\Pi_{\mathscr C}$ since $\Pi_{\mathscr C}$ is a $K$-space. $0\to A_{\mathscr C}\xrightarrow{a}A_{\mathscr C}\to D/aD\to0$ is a free resolution,
+and $D/aD$ is not flat, multiplication by $a$ becoming zero.
+\end{proof}
+
+This is 12's \cref{osq:hd:prop:finite}(i) for cones, and an elementary consequence of divisible tail coefficients, not a new finite-quotient theorem for $\Oz$
+(26; compare \cref{osq:thm:quotients}).
+
+\begin{theorem}[Arithmetic modules over a principal-ideal core \src{26}]\label{osq:pc:thm:arithmetic}
+Let $D$ be a principal ideal domain, not a field, and $N\ne0$ a $D$-module regarded as an $A_{\mathscr C}$-module through $\ct$. Then $\fd_{A_{\mathscr C}}N=1$
+if $N$ is torsion over $D$ and $\fd_{A_{\mathscr C}}N=d$ otherwise. This applies to $D=\Z$ and $D=\Z[i]$.
+\end{theorem}
+\begin{proof}
+Finitely generated torsion $D$-modules are finite sums of $D/aD$, so the filtered union $N_{\mathrm{tor}}$ has $\fd\le1$, and $\fd N_{\mathrm{tor}}=1$ if
+$N_{\mathrm{tor}}\ne0$ because some $a\ne0$ kills a nonzero element. If $V=N/N_{\mathrm{tor}}\ne0$, $V$ is flat over the principal ideal domain $D$, so
+tensoring \cref{osq:pc:prop:cellular} over $D$ with $V$ stays exact, $A_{\mathscr C}\otimes_DV$ is flat and $I_G\otimes_DV\cong I_G\otimes_K(K\otimes_DV)$ is a
+sum of copies of $I_G$: a flat resolution of $V$ of length $d$. With $\mathcal W=\mathcal W_{\mathscr C,b}$, degree $b$ leaves
+\begin{equation}\label{osq:pc:eq:arithmeticdetector}
+ \Tor_d^{A_{\mathscr C}}(V,\mathcal W)_b\cong K\otimes_DV\ne0,
+\end{equation}
+nonzero because localizing the torsion-free $V$ at $D\setminus\{0\}$ and extending scalars to $K$ is faithful. Since $a$ acts invertibly on the $K$-space
+$\mathcal W$, $\Tor_j(D/aD,\mathcal W)=0$ for all $j\ge0$, hence for $N_{\mathrm{tor}}$, and the long exact sequence of $0\to N_{\mathrm{tor}}\to N\to V\to0$
+gives $\Tor_d(N,\mathcal W)\cong\Tor_d(V,\mathcal W)$ and the upper bound $d$.
+\end{proof}
+
+All these modules have $\Tor_{>0}(D,N)=0$ (\cref{osq:pc:thm:homological}); the theorem classifies modules acting through $\ct$ only, not all modules over a core or
+the class ring (26). For the orthant the non-torsion value $d$ contains 12's $\fd D=d$ (\cref{osq:hd:cor:fd}).
+
+\begin{remark}[Lattice modules over every cone \merge]\label{osq:pc:rem:lattice}
+The proof of \cref{osq:tn:thm:syzygy}(ii) uses only that $A=D\oplus\Pi$ with $\Pi$ a $K$-space ideal of $K\oplus\Pi$ inside a field and $K\cap\Pi=0$; so it applies
+to $A_{\mathscr C}$ with $\Pi=\Pi_{\mathscr C}$, not finitely generated by \cref{osq:pc:thm:radical}. For a coefficient lattice $M$ of rank $r\ge2$ and
+$J=X^gL(M)$, $0\ne g\in P_{\mathscr C}$, the argument of \cref{osq:hd:thm:fdlattice}, with $\fd\Pi_{\mathscr C}=d-1$ (\cref{osq:pc:thm:facebetti,osq:pc:thm:exactfd}
+for the rays) and the cap module $\mathcal W_{\mathscr C,b}$ in place of $V_{[d]}$, gives for $d\ge2$
+\[
+ \fd_{A_{\mathscr C}}L(M)=d,\qquad \fd_{A_{\mathscr C}}(A_{\mathscr C}/J)=d+1,
+\]
+so $\operatorname{w.gl.dim}A_{\mathscr C}\ge d+1$ whenever $K\ne\Frac D$ (take $M=D+Dc$, $c\in K\setminus\Frac D$). This improves the lower bound $d$ of 26's
+Question~13.2, as 12 and 21 do for $A_d$ (\cref{osq:hd:sub:dimensions,osq:da:thm:lattice}). For $d=1$, $A_{\mathscr C}\cong A_1=T_\Q$.
+\end{remark}
+
+\paragraph{Passage to the omnific ring is not flat.} The injection $\lambda_\omega$ pulls back the order of $\No$ to a total order on $\Q^d$ whose positive
+cone contains $P_{\mathscr C}\setminus\{0\}$. Put
+\begin{equation}\label{osq:pc:eq:totalcore}
+ T_{\lambda_\omega}=D\oplus\bigoplus_{g\in\Q^d,\ \lambda_\omega(g)>0}KX^g\supseteq A_{\mathscr C},
+\end{equation}
+a set-sized ring with the same fraction field (\cref{osq:pc:prop:fractions}) and a compatible $\ct$.
+
+\begin{lemma}[Two-ray syzygies have zero constants \src{26}]\label{osq:pc:lem:syzygy}
+If $u,v$ are nonzero rational vectors on distinct rays and $rX^u+sX^v=0$ in $A_{\mathscr C}$, then $\ct(r)=\ct(s)=0$.
+\end{lemma}
+\begin{proof}
+Neither $u-v$ nor $v-u$ is in $\mathscr C$ (else the face of $u$ would contain $v$). The coefficient of degree $u$ in $rX^u+sX^v$ is $\ct(r)$, the degree $u-v$
+being absent from $A_{\mathscr C}$; similarly for $v$.
+\end{proof}
+
+\begin{theorem}[A two-monomial nonflatness certificate \src{26}]\label{osq:pc:thm:nonflat}
+If $d\ge2$, $A_{\mathscr C}\hookrightarrow T_{\lambda_\omega}$ is not flat, and in the real and Gaussian realizations the inclusion into $\Oz$ or $\GOz$ fails
+the same finite equational criterion.
+\end{theorem}
+\begin{proof}
+Take $u,v$ on distinct rays with $\lambda_\omega(u)>\lambda_\omega(v)$; then $z=X^{u-v}\in T_{\lambda_\omega}$ and $X^u-zX^v=0$. If the inclusion were flat,
+the relation vector $(1,-z)$ would be a finite combination, with coefficients in $T_{\lambda_\omega}$, of relation vectors of $(X^u,X^v)$ over $A_{\mathscr C}$
+\cite[Tag~00HK]{StacksFlat}; by \cref{osq:pc:lem:syzygy} all their coordinates have constant term zero, and the zero-constant elements form an ideal of
+$T_{\lambda_\omega}$, so the first coordinate cannot be $1$. In $\Oz$, $z$ is the monomial $\omega^{\lambda_\omega(u)-\lambda_\omega(v)}$ and $\Pi$ is an ideal
+(for $\GOz$, $\Pi_\C$), so the same contradiction applies to finite combinations in the full target; this is a finite relation, with no proper-class tensor
+category.
+\end{proof}
+
+\begin{example}[An explicit pair in $\Oz$ \src{26}]\label{osq:pc:ex:pair}
+For the orthant $\R_{\ge0}^2$ with $\lambda_\omega(x,y)=(x+y)\omega+y$, the coordinate monomials become $b=\omega^\omega$ and $a=\omega^{\omega+1}$, and
+$a-\omega b=0$ in $\Oz$; every syzygy of the pair in the core has zero constant terms, so this relation with first coefficient $1$ does not descend.
+\end{example}
+
+For the orthant the conclusion is the nonflatness in 12's \cref{osq:hd:thm:collapse}, proved there by an intersection certificate in $T_\Gamma$ with a real
+embedding; 26's equational certificate, with a lexicographic embedding and the explicit failure in $\Oz$, is a second route. Partial exponent order creates
+independent directions of divisibility, which the total order of $\No$ compares; so the flat dimensions of cores do not transfer to $\Oz$ by flat base change.
+The obstruction does not deny the embeddings, the fraction field or the retraction $\ct$, and it says nothing about embeddings of one-dimensional cores; it
+is exactly the failure of the displayed finite test for $d\ge2$ (26).
+
+\paragraph{Dependencies and pitfalls (26).} Flat face ideals rest on facet subtraction, finite supports, principal exhaustion and filtered colimits; the
+reduced resolution on degreewise simplex exactness and same-label scalar cancellation; the exact dimension on the cap module and its degree-shifted colimit;
+the face formula on the outside-vertex complex and the explicit contraction of a polytopal boundary minus a face; simpliciality on a minimal pair join and
+facet normals; the arithmetic dichotomy on scalar resolutions, torsion theory over a principal ideal domain and the full-face cap; nonflatness on the
+absence of a positive difference between two rays. 26 records these obligations: a principal ideal $X^qA_{\mathscr C}$ has coefficient space $D$, not $K$,
+at $q$, so the exhaustion always uses a strictly smaller shift; the $I_G$ are flat but not projective, and a scalar cancellation does not make them free;
+the cap module is defined before use and its late transition maps are identities on $K$; only nonzero joins are labels, and a face inside the retained face
+gets no spurious degree-one class, while a ray disjoint from it correctly contributes $\widetilde H_{-1}(\{\varnothing\};K)=K$; and all rings, resolutions and test
+modules are sets, the statement about $\Oz$ being a finite relation. The main theorems use no unrefereed repository theorem as a premise.
 
 \section{Large internal fields and the binomial quotient}
 \label{osq:sec:internal}
@@ -6253,7 +6902,8 @@ explicit element of $\NN\setminus\Oz$. The section ends with 19's description of
 modulo the ideals generated by $\Pi$, which classifies their set-sized domain images
 (\cref{osq:nf:sub:fibre}), and with 20's proof that the Boolean algebra of that description is atomless and a proper
 class (\cref{osq:bb:sub:branching}), and with 23's fixed cyclic workspace, whose extended ideal is not radical although the Boolean algebra
-of its reduced fibre is still atomless (\cref{osq:rm:sub:cyclic}).
+of its reduced fibre is still atomless (\cref{osq:rm:sub:cyclic}), and with 27's henselization at the constant-term ideal of a set-sized omnific integer
+part, which has the maximal number of generic branches (\cref{osq:hb:sub:henselian}).
 
 \paragraph{Standing notation.}
 As in \cref{osq:sec:model03}, $\kappa$ is an infinite cardinal with
@@ -8497,6 +9147,421 @@ in these proofs are sets; the surreal $a$ only names the exponent group; composi
 fields, with ordinary choice (the maximal-ideal theorem) and no class Zorn lemma, class module category or measurable cardinal. Neither the continuum
 hypothesis nor regularity of $\mathfrak c$ is used. The Newton--Puiseux theorem is used only to identify the limit field as real closed or algebraically
 closed; the reducedness of its fibre does not need it (23).
+
+\subsection{Henselian branching at an omnific augmentation}\label{osq:hb:sub:henselian}
+
+This subsection is manuscript~27's (\cref{osq:sub:sources}). It moves 20's splitters from the normalization fibre into \'etale neighbourhoods. For every
+infinite cardinal $\kappa$ and every set $S_0\subseteq\No$ of at most $\kappa$ surreals, 27 builds a real closed field $\mathbb E\supseteq S_0$ of cardinality
+$\kappa$ whose \emph{actual} omnific integer part $B_{\mathbb E}=\mathbb E\cap\Oz$ has an idempotent constant-term ideal, so that its local ring
+$\mathfrak L$ at that ideal has residue field $\Q$, $\mathfrak n^2=\mathfrak n$ and completion $\Q$; yet the henselization $\mathfrak L^{\mathrm h}$ has
+exactly $2^\kappa$ minimal primes, the most a ring of cardinality $\kappa$ can have, each with fraction field $\mathbb E[i]$, and its generic fibre is the
+algebra $\LC(\mathsf X,\mathbb E[i])$ of locally constant functions on a Stone space with $|\mathsf X|=2^\kappa$ (\cref{osq:hb:thm:main}). The branches are
+forced to be complex, the completion forgets all of them, strict henselization adds a factor $\operatorname{Gal}(\overline\Q/\Q)$ and the Gaussian ring
+doubles the generic fibre (\cref{osq:hb:thm:factors}); finite projectives, finite \'etale algebras and the centred Riemann--Zariski space are determined
+(\cref{osq:hb:thm:projectives,osq:hb:prop:etale,osq:hb:cor:rz}). All rings, spectra and henselizations are sets. No numbered question of this report is
+answered.
+
+27 pins \texttt{fc27d87} (23 September 2026), whose text of this report is again blob \texttt{ef7aef1} (the sixth merge, without 23's \cref{osq:rm:sub:cyclic}
+and without 24's to 26's subsections), and re-fetched there the file \texttt{20-boolean-branching-PROOF\_AUDIT.md} (blob \texttt{feea0ee}), from which it
+reconstructs 20's splitter; it credits the constant-term retraction, monomial clearing, idempotence of the tail and the Boolean branching mechanism to the
+repository. Printed once, under the existing labels, are: its two monomial operations (its Lemma~2.1: \cref{osq:lem:gap,osq:prop:common}), its omnific
+floor (its Lemma~2.2: \cref{osq:nm:lem:intpart}), its support projection and dominant scale (its Lemmas~2.3, 2.5: \cref{osq:bb:lem:projection,osq:bb:lem:laurent}),
+its monic certificate (its Lemma~3.1: \cref{osq:bb:lem:certificate}), its nontriviality and integer-torsion lemma (its Lemma~3.2: \cref{osq:nf:lem:contraction}
+with \cref{osq:nf:thm:radical}), its quadratic splitter (its Lemma~3.3: \cref{osq:bb:thm:split}, the same element $\mathsf w_t$ of \eqref{osq:bb:eq:splitter})
+and its independent splitters (its Proposition~3.5: \cref{osq:bb:thm:ordinal} for $\alpha<\kappa$, the same $t_\alpha=\omega^{\omega^\alpha}$); 27 is credited as an
+independent re-derivation, and its proof of the splitter through the quadratic subalgebra alone, which it calls ``why one radical suffices'', is kept as a
+second route (\cref{osq:hb:rem:oneradical}). 27 works with $\sqrt{\Pi\NN}$ and says it does not need $\Pi\NN$ to be radical; this report proves that it is
+(\cref{osq:nf:thm:radical}), so 27's $\sqrt{\Pi\NN}$ is $\Pi\NN$ \merge. Its hull (\cref{osq:hb:prop:hull}) has a near-antecedent in 08's
+$A^{08}_\kappa=F^{08}_\kappa\cap\Oz$ (\cref{osq:thm:model08}), which 27 does not cite; 27 adds a prescribed seed, the equality $\Frac B_{\mathbb E}=\mathbb E$ and the
+factor pairs giving an idempotent ideal. Its local ring (\cref{osq:hb:cor:local}) is the set-sized analogue of $\Oz_\Pi$ of the Diophantine report
+(\nolinkurl{odg:frac:prop:localization} \cite{RepoOdg}), also local with residue field $\Q$, and its forced complexification (\cref{osq:hb:prop:complex}) is
+the henselian counterpart of that report's \nolinkurl{odg:ex:hensel}: $T^2-T-\omega$ has simple residue roots and no root in $\Oz$; henselization supplies roots,
+and the branches over the generic point are forced complex. 27's \texttt{SOURCES\_AND\_SCOPE} says that a repository search for ``hensel'' returned no match and
+that this is not an exhaustive absence proof. \emph{Correction:} at its pin the word occurs in sixteen \texttt{article.tex} files, among them the Diophantine
+report (\nolinkurl{odg:ex:hensel}, ``Hensel-style intuition fails for $\Oz\to\Z$'') and this report (the bibliography entry \cite{Kuhlmann}); the construction
+here is not among them. 23's cyclic workspace (\cref{osq:rm:sub:cyclic}) is a different ring; the branch counts are compared in \cref{osq:hb:rem:counts}. 27
+credits as standard the henselization and permanence results of the Stacks Project \cite{StacksHensel,StacksPermanence,StacksEtale,StacksLocal}, whose
+statements it checked to need no Noetherian hypothesis, and imports de Felipe--Teissier's theorem \cite{DFT} for the valuation components. The numbering of 27
+cited here is that of its own manuscript.
+
+\paragraph{Notation and renamings.} Throughout, $\kappa$ is an infinite cardinal and $S_0\subseteq\No$ a set with $|S_0|\le\kappa$. Exponents follow
+\cref{osq:sub:orientation} (27's growth convention). The rings are
+\begin{equation}\label{osq:hb:eq:rings}
+ B_{\mathbb E}=\mathbb E\cap\Oz,\qquad \Pi_{\mathbb E}=\ker(\ct|_{B_{\mathbb E}})=B_{\mathbb E}\cap\Pi,\qquad \mathfrak L=(B_{\mathbb E})_{\Pi_{\mathbb E}},\qquad
+ \mathfrak n=\Pi_{\mathbb E}\mathfrak L,\qquad \mathscr G=\mathbb E\otimes_{\mathfrak L}\mathfrak L^{\mathrm h},
+\end{equation}
+with $\mathfrak L^{\mathrm h}$ and $\mathfrak L^{\mathrm{sh}}$ the henselization and strict henselization. 27's symbols are renamed as follows.
+\begin{itemize}
+\item Its field $E$, seed $\mathcal S$, integer part $B$, ideal $J$, local ring $A$ with maximal ideal $\mathfrak m$, henselization $H$, field $C=E[i]$ and generic
+fibre $G=E\otimes_AH$ are $\mathbb E$, $S_0$, $B_{\mathbb E}$ (a cofinal discretely ordered subring, as in \cref{osq:sa:sub:semialgebraic}), $\Pi_{\mathbb E}$,
+$\mathfrak L$ with $\mathfrak n$, $\mathfrak L^{\mathrm h}$, $\mathbb E[i]$ and $\mathscr G$ ($E$ is the ambient field and $\EE_a$ 07's field; $\mm$ is the
+negative-support ideal; $H$ is a group or $H_a$; $G$ is a set-sized subgroup; $\mathsf C(G)$ a reduced fibre; $A$ a ring such as $\A_{D,k}$ or
+$A^{08}_\kappa$; $J$ and $\mathsf J$ are other ideals). Its Stone space $X$ is $\mathsf X$ ($X^g$ are monomials), and its $\mathcal G_\Q$ is $\operatorname{Gal}(\overline
+\Q/\Q)$.
+\item Its $F_\Gamma,O_\Gamma,\Pi_\Gamma,\pi_\Gamma$ are $K_G$, $\A(G)$, $\Pi(G)$ and $\operatorname{pr}_G$ of \cref{osq:bb:sub:branching}; its $\mathcal N$ is this report's $\NN$ (the same letter),
+and its $\mathcal K=\sqrt{\Pi\NN}$ is $\Pi\NN$ (\cref{osq:nf:thm:radical}); its integral closures $N_B,N_A$ of $B,A$ in $E$ are $\IC_{\mathbb E}(B_{\mathbb E})$
+and $\IC_{\mathbb E}(\mathfrak L)$.
+\item Its polynomial $D(T)=(T^2-1)(T^2-4)$ is $\mathsf q(T)$ ($D$ is the constant ring), its $a(T)=(T^4-5T^2)/16$ and $w(T)$ are $\mathsf a(T)$ and $\mathsf w(T)$,
+so $\mathsf w(t)=\mathsf w_t$ of \eqref{osq:bb:eq:splitter}; its $T_\alpha=\omega^{b_\alpha}$, $b_\alpha=\omega^\alpha$, are 20's $t_\alpha$ (here $T=\omega^a$
+elsewhere), its $a_\alpha=\mathsf a(T_\alpha)$ are $\mathsf a_\alpha$ ($a_\alpha$ are the small scales of \eqref{osq:eq:scales}), and its $w_\alpha$ are
+$\mathsf w_{t_\alpha}$.
+\item Its roots $u_\alpha\in\mathfrak mH$, generic idempotents $e_\alpha$ and imaginary unit $j$ are $\tilde u_\alpha$, $\hat e_\alpha$ and $\jmath$ ($u_n$ and $e_\alpha$
+are 21's and 20's elements, $e_\alpha=\mathsf e_{t_\alpha}$ being a residue in $\mathsf B_\R$); its pointed neighbourhoods $D_0$, $D=(D_0)_{\mathfrak n}$ are
+$\mathfrak U_{F,0}$ and $\mathfrak U_F$ with residue-point ideal $\mathfrak u$; its minimal primes $P$ are $\mathfrak Q$; its $h$ with $h>1/4$ is written $h$.
+\item In the hull, its clearing pairs $d_r,d_rr$ and factor pairs $e_x,x/e_x$ are $m_r,m_rr$ and $f_x,x/f_x$, and its $R_n$ are $\mathbb E_n$.
+\end{itemize}
+Four tempting readings are false. (1) $\mathfrak n$ is not the ideal of order-infinitesimals: it contains the positive infinite $\omega$, so the local topology
+is not the valuation topology of $\mathbb E$, and henselian lifting need not respect the order. (2) $\mathfrak L^{\mathrm h}$ is local and has no nontrivial
+idempotents; the $2^\kappa$ branches live in $\mathscr G$, and $\mathfrak L^{\mathrm h}$ is not a product of branches. (3) $\jmath^2=-1$ holds in $\mathscr G$;
+$\mathfrak L^{\mathrm h}$ contains no square root of $-1$, since its residue field is $\Q$. (4) The specializations $T\mapsto0$ act on finite algebras, not on
+Laurent series, and projection is linear, not a ring map (\cref{osq:bb:rem:specialization,osq:bb:rem:notretraction}).
+
+\begin{theorem}[Maximal branching at an omnific augmentation \src{27}]\label{osq:hb:thm:main}
+There is a real closed field $\mathbb E\subseteq\No$ with the following properties.
+\begin{enumerate}
+\item $S_0\subseteq\mathbb E$; $|B_{\mathbb E}|=|\mathbb E|=|\mathfrak L|=|\mathfrak L^{\mathrm h}|=\kappa$; $B_{\mathbb E}$ is an integer part of $\mathbb E$ with
+$\Frac B_{\mathbb E}=\mathbb E$; $\Pi_{\mathbb E}$ and $\mathfrak n$ are nonzero and idempotent; $\mathfrak L$ is a local domain with residue field $\Q$.
+\item $\mathfrak L^{\mathrm h}$ is reduced, local and faithfully flat over $\mathfrak L$, with maximal ideal $\mathfrak n\mathfrak L^{\mathrm h}$ and residue field
+$\Q$; $\widehat{\mathfrak L}_{\mathfrak n}=\Q=\widehat{\mathfrak L^{\mathrm h}}$ and $\mathfrak n/\mathfrak n^2=0$.
+\item $\mathscr G$ contains an $\mathbb E$-algebra copy of $\mathbb E[i]$, and for the copy of \cref{osq:hb:prop:complex} there is an $\mathbb E[i]$-algebra
+isomorphism $\mathscr G\cong\LC(\mathsf X,\mathbb E[i])$ with $\mathsf X$ a Stone space, $|\mathsf X|=2^\kappa$, $\dim_{\mathbb E[i]}\mathscr G=\kappa$, where
+$\LC$ means locally constant functions to the \emph{discrete} field (so of finite image); $\Idem(\mathscr G)$ contains a free Boolean algebra on $\kappa$
+generators.
+\item $|\operatorname{Min}\mathfrak L^{\mathrm h}|=2^\kappa$, $\Frac(\mathfrak L^{\mathrm h}/\mathfrak Q)\cong_{\mathbb E}\mathbb E[i]$ for every minimal prime
+$\mathfrak Q$, and there is no $\mathfrak L$-algebra map from $\mathfrak L^{\mathrm h}$ to $\mathbb E$ or to any ordered extension field of $\mathbb E$.
+\end{enumerate}
+No regularity of $\kappa$, cardinal-arithmetic hypothesis or large cardinal is used.
+\end{theorem}
+
+``Maximal'' is exact: a ring of cardinality $\kappa$ has at most $2^\kappa$ ideals; it does not mean that $\mathsf X$ is classified (27). The proof occupies the
+rest of the subsection (\cref{osq:hb:prop:hull,osq:hb:cor:local,osq:hb:prop:complex,osq:hb:prop:exactsize,osq:hb:prop:minimal,osq:hb:prop:completion}).
+
+\begin{theorem}[Arithmetic and Gaussian factors \src{27}]\label{osq:hb:thm:factors}
+Choose $\overline\Q\hookrightarrow\mathbb E[i]$. Then $\mathfrak L^{\mathrm{sh}}\cong\mathfrak L^{\mathrm h}\otimes_\Q\overline\Q$ and $\mathbb E\otimes_{\mathfrak L}
+\mathfrak L^{\mathrm{sh}}\cong\LC(\mathsf X\times\operatorname{Gal}(\overline\Q/\Q),\mathbb E[i])$, the Galois group acting on the second factor with fixed ring
+$\mathscr G$. Also $\mathfrak L[i]$ is local with residue field $\Q(i)$, $(\mathfrak L[i])^{\mathrm h}\cong\mathfrak L^{\mathrm h}[i]$, and $\mathbb E[i]
+\otimes_{\mathfrak L[i]}(\mathfrak L[i])^{\mathrm h}\cong\mathscr G\times\mathscr G$ as rings and $\mathbb E$-algebras, the two factors carrying conjugate
+$\mathbb E[i]$-structures; the Gaussian generic spectrum is $\mathsf X\sqcup\mathsf X$.
+\end{theorem}
+
+This is \cref{osq:hb:prop:strict,osq:hb:thm:strict,osq:hb:prop:gaussloc,osq:hb:thm:gaussian} (27).
+
+\paragraph{The splitter, a second route.}
+
+\begin{remark}[One radical suffices \src{27}]\label{osq:hb:rem:oneradical}
+Put $\mathsf q(T)=(T^2-1)(T^2-4)$, $\mathsf a(T)=(T^4-5T^2)/16$ and $\mathsf w(T)=\frac12-\frac14\sqrt{\mathsf q(T)}$ (positive root). Since $\mathsf q(t)=
+4(t^2-1)(t^2/4-1)$, $\mathsf w(t)=\mathsf w_t$ of \eqref{osq:bb:eq:splitter}, and $\mathsf w(T)^2-\mathsf w(T)=\mathsf a(T)$. 27 proves \cref{osq:bb:thm:split}
+with the quadratic subalgebra instead of 20's biquadratic one: $\mathsf q$ has the four simple zeros $\pm1,\pm2$, so it is not a square in $k(T)$ ($k=K_G$) and
+$k[T,W]/(W^2-W-\mathsf a(T))\to k(\!(T^{-1})\!)$, $W\mapsto\mathsf w(T)$, is injective; the two $k$-algebra specializations $T\mapsto0$, $W\mapsto0$ and
+$T\mapsto0$, $W\mapsto1$ exist because $\mathsf a(0)=0$. A monic certificate for $x\mathsf w\in\Pi\NN$, projected by \cref{osq:bb:lem:projection} and read in
+this finite algebra through \cref{osq:bb:lem:laurent}, specializes under $W\mapsto1$ to a certificate for $x$; for $x(1-\mathsf w)$ use $W\mapsto0$. The
+Laurent expansion is
+\[
+ \mathsf w(T)=-\tfrac{T^2}4+\tfrac98+\tfrac9{32}T^{-2}+\tfrac{45}{64}T^{-4}+\tfrac{981}{512}T^{-6}+\tfrac{5715}{1024}T^{-8}+O(T^{-10}),
+\]
+an expansion in $T^{-1}$, not a series for small $T$; its coefficient $\frac98$ shows that integral elements need not be omnific, and the specializations are
+not evaluations of it (27). In the independent family of \cref{osq:bb:thm:ordinal}, for $\alpha<\kappa$ the support of $\mathsf w_{t_\beta}$ lies in
+$\Z\omega^\beta$, $\omega^\alpha$ dominates the group generated by the earlier $\omega^\beta$, and applying the splitter in increasing order keeps every finite
+atom $\prod_{\alpha\in F}\mathsf w_{t_\alpha}^{\epsilon_\alpha}(1-\mathsf w_{t_\alpha})^{1-\epsilon_\alpha}$ outside $\Pi\NN$; the family is defined by a formula,
+with no class ultrafilter (27, as 20).
+\end{remark}
+
+\paragraph{The omnific hull.}
+
+\begin{proposition}[A cardinal-preserving omnific hull \src{27}]\label{osq:hb:prop:hull}
+There are a real closed field $\mathbb E\subseteq\No$ and $B_{\mathbb E}=\mathbb E\cap\Oz$ with: $S_0\subseteq\mathbb E$; $|B_{\mathbb E}|=|\mathbb E|=\kappa$ and
+$B_{\mathbb E}$ an integer part of $\mathbb E$ with $\Frac B_{\mathbb E}=\mathbb E$; every $t_\alpha$ and $\mathsf a_\alpha$ ($\alpha<\kappa$) in $B_{\mathbb E}$;
+and every nonzero element of $\Pi_{\mathbb E}$ a product of two elements of $\Pi_{\mathbb E}$, so that $\Pi_{\mathbb E}^2=\Pi_{\mathbb E}\ne0$.
+\end{proposition}
+\begin{proof}
+For $0\ne s\in S_0$ choose a monomial $m_s\in\Pi$ with $m_ss\in\Pi$ (\cref{osq:lem:gap}). Let $B_0$ be the subring of $\Oz$ generated by $\Z$, all $t_\alpha,
+\mathsf a_\alpha$ and all $m_s,m_ss$ ($\mathsf a_\alpha$ is purely infinite, so omnific despite the coefficient $\frac1{16}$); $|B_0|=\kappa$. Given $B_n$, let
+$\mathbb E_n$ be the relative real algebraic closure of $\Frac B_n$ in $\No$, of cardinality $\kappa$, and adjoin to $B_n$: $\lfloor r\rfloor$ for every
+$r\in\mathbb E_n$ (\cref{osq:nm:lem:intpart}); a clearing pair $m_r,m_rr\in\Pi$ for every $0\ne r\in\mathbb E_n$; and a factor pair $f_x,x/f_x\in\Pi$ for every
+$0\ne x\in B_n\cap\Pi$ (\cref{osq:prop:common}). Put $B_{\mathbb E}=\bigcup_nB_n$ and $\mathbb E=\Frac B_{\mathbb E}=\bigcup_n\Frac B_n$. The clearing pairs give
+$\mathbb E_n\subseteq\Frac B_{n+1}$, so $\mathbb E$ is real closed, and $S_0\subseteq\mathbb E$. Every $r\in\mathbb E$ has $\lfloor r\rfloor\in B_{\mathbb E}$, so
+$B_{\mathbb E}$ is an integer part, and $r\in\Oz$ equals its floor, so $\mathbb E\cap\Oz\subseteq B_{\mathbb E}$. The factor pairs give
+$\Pi_{\mathbb E}\subseteq\Pi_{\mathbb E}^2$, and $\omega=t_0\in\Pi_{\mathbb E}$. Countable unions keep the cardinal $\kappa$, even for singular $\kappa$.
+\end{proof}
+
+A convenient subring of $\Oz$ need not be the integer part of its fraction field; closure under the floor makes $B_{\mathbb E}=\mathbb E\cap\Oz$ an equality, and the
+monomial operations are performed in $\No$, before the small hull is formed, because a fixed Hahn group need not admit fresh bounds (27). 08's integer part
+$A^{08}_\kappa=F^{08}_\kappa\cap\Oz$ (\cref{osq:thm:model08}) is built in the same spirit, for truncation and support control, without a seed \merge.
+
+\begin{corollary}[The local augmentation ring \src{27}]\label{osq:hb:cor:local}
+$\Pi_{\mathbb E}$ is prime, $\mathfrak L\subseteq\mathbb E$, $\Frac\mathfrak L=\mathbb E$, $\mathfrak L/\mathfrak n=\Q$, $|\mathfrak L|=\kappa$ and
+$\mathfrak n^2=\mathfrak n\ne0$.
+\end{corollary}
+\begin{proof}
+$\ct:B_{\mathbb E}\to\Z$ is onto with kernel $\Pi_{\mathbb E}$; localizing inverts the nonzero integers, giving $\Q$; localize $\Pi_{\mathbb E}^2=\Pi_{\mathbb E}$.
+\end{proof}
+
+\paragraph{From normalization to henselian branches.} Put $\Sigma_0=B_{\mathbb E}\setminus\Pi_{\mathbb E}$. Then $\IC_{\mathbb E}(\mathfrak L)=
+\Sigma_0^{-1}\IC_{\mathbb E}(B_{\mathbb E})$: an element integral over $\Sigma_0^{-1}B_{\mathbb E}$ times one common denominator of its monic equation is integral
+over $B_{\mathbb E}$. Every $\mathsf w_{t_\alpha}$ lies in $\mathbb E$ (real closed and containing $t_\alpha$) and in $\IC_{\mathbb E}(B_{\mathbb E})$.
+
+\begin{lemma}[Finite atoms survive local normalization \src{27}]\label{osq:hb:lem:atoms}
+For finite $F\subseteq\kappa$ and $\epsilon\in\{0,1\}^F$, $p_\epsilon=\prod_{\alpha\in F}\mathsf w_{t_\alpha}^{\epsilon_\alpha}(1-\mathsf w_{t_\alpha})^{1-\epsilon_\alpha}$
+is a nonzero idempotent in $\IC_{\mathbb E}(\mathfrak L)/\sqrt{\mathfrak n\IC_{\mathbb E}(\mathfrak L)}$.
+\end{lemma}
+\begin{proof}
+The quadratic equations make the $\mathsf w_{t_\alpha}$ idempotent modulo $\mathfrak n\IC_{\mathbb E}(\mathfrak L)$. If $p_\epsilon$ were in the radical, clearing
+denominators gives $sp_\epsilon^q\in\Pi_{\mathbb E}\IC_{\mathbb E}(B_{\mathbb E})\subseteq\Pi\NN$ with $s\in\Sigma_0$; with $s=n+z$, $n=\ct(s)\ne0$, $z\in\Pi$, also
+$zp_\epsilon^q\in\Pi\NN$, so $np_\epsilon^q\in\Pi\NN$ and $p_\epsilon\in\Pi\NN$ (\cref{osq:nf:lem:contraction,osq:nf:thm:radical}), against
+\cref{osq:hb:rem:oneradical}.
+\end{proof}
+
+$\mathfrak L^{\mathrm h}$ is henselian, local, faithfully flat and ind-\'etale over $\mathfrak L$ with the same residue field, without Noetherian hypotheses
+\cite{StacksHensel,StacksPermanence}. For each $\alpha$ there is a unique $\tilde u_\alpha\in\mathfrak n\mathfrak L^{\mathrm h}$ with
+$\tilde u_\alpha^2-\tilde u_\alpha-\mathsf a_\alpha=0$ (simple root $0$ modulo $\mathfrak n$, derivative $-1$). For finite $F=\{\alpha_1,\dots,\alpha_n\}$ put
+$\mathfrak U_{F,0}=\mathfrak L[U_1,\dots,U_n]/(U_j^2-U_j-\mathsf a_{\alpha_j})$, $\mathfrak u=(\mathfrak n,U_1,\dots,U_n)$ and $\mathfrak U_F=(\mathfrak U_{F,0})_{\mathfrak
+u}$: essentially \'etale over $\mathfrak L$ (the Jacobian entries $2U_j-1$ are units at $\mathfrak u$), residue field $\Q$, and $\mathfrak U_F\to\mathfrak L^{\mathrm
+h}$, $U_j\mapsto\tilde u_{\alpha_j}$, identifies $\mathfrak L^{\mathrm h}$ with $\mathfrak U_F^{\mathrm h}$, so it is faithfully flat \cite{StacksHensel,StacksPermanence}.
+
+\begin{lemma}[Every finite generic branch survives localization \src{27}]\label{osq:hb:lem:allbranches}
+$\mathbb E\otimes_{\mathfrak L}\mathfrak U_F\cong\mathbb E^{\{0,1\}^F}$, and the map from this product into $\mathscr G$ is injective.
+\end{lemma}
+\begin{proof}
+Before localizing, the Chinese remainder theorem gives $\mathbb E\otimes\mathfrak U_{F,0}\cong\prod_{\{0,1\}^F}\mathbb E$, each $U_j$ evaluated at
+$\mathsf w_{t_{\alpha_j}}$ or $1-\mathsf w_{t_{\alpha_j}}$, distinct because $1-2\mathsf w=\sqrt{\mathsf q}/2\ne0$. Fix $v_j\in\{\mathsf w_{t_{\alpha_j}},
+1-\mathsf w_{t_{\alpha_j}}\}$. By \cref{osq:hb:lem:atoms} the product $\prod_j(1-v_j)$ is nonzero in the set-sized ring
+$R=\IC_{\mathbb E}(\mathfrak L)/\sqrt{\mathfrak n\IC_{\mathbb E}(\mathfrak L)}$, so some prime of $R$ omits it; in its residue domain the idempotents $1-v_j$ are $1$
+and the $v_j$ are $0$. Lifting gives a prime $\mathfrak p\supseteq\mathfrak n\IC_{\mathbb E}(\mathfrak L)$ containing every $v_j$, contracting to $\mathfrak n$. A
+representative of $g\in\mathfrak U_{F,0}\setminus\mathfrak u$ has nonzero residue $g(0,\dots,0)\in\Q$, and its value at $(v_j)$ reduces modulo $\mathfrak p$ to
+the same residue, so it is nonzero in $\mathbb E$: every inverted element is nonzero on every factor, and localization keeps the product. Faithful flatness
+survives base change, so the map to $\mathscr G$ is injective.
+\end{proof}
+
+A split generic polynomial need not keep every branch after localization at one residue point: a denominator outside the residue prime may vanish on a whole
+generic component. The prime chosen above excludes this for every denominator and every finite branch pattern; this is 27's central new step, and the reason
+the support certificates are needed (27).
+
+\begin{proposition}[A free Boolean family in the generic fibre \src{27}]\label{osq:hb:prop:boolean}
+The elements
+\begin{equation}\label{osq:hb:eq:idempotent}
+ \hat e_\alpha=\frac{\tilde u_\alpha-\mathsf w_{t_\alpha}}{1-2\mathsf w_{t_\alpha}}\in\mathscr G\qquad(\alpha<\kappa)
+\end{equation}
+are idempotents freely generating a Boolean subalgebra of $\Idem(\mathscr G)$.
+\end{proposition}
+\begin{proof}
+Over $\mathbb E$, $U^2-U-\mathsf a_\alpha=(U-\mathsf w_{t_\alpha})(U-1+\mathsf w_{t_\alpha})$, and the affine change \eqref{osq:hb:eq:idempotent} sends the roots to
+$0,1$. By \cref{osq:hb:lem:allbranches} every finite root assignment is a factor of a product injecting into $\mathscr G$, and each Boolean atom is $1$ on one
+factor.
+\end{proof}
+
+The $\mathsf w_{t_\alpha}$ are available only after passing to the generic fibre, and the $\hat e_\alpha$ are not idempotents of the local ring
+$\mathfrak L^{\mathrm h}$ (27). For $\alpha=0,1$, $t_0=\omega$, $t_1=\omega^\omega$, the four atoms $\mathsf w_\omega\mathsf w_{\omega^\omega},\dots,
+(1-\mathsf w_\omega)(1-\mathsf w_{\omega^\omega})$ survive modulo $\Pi\NN$ (the support of $\mathsf w_\omega$ is in $\Z$ and $\omega$ dominates the integers), and the
+four orthogonal idempotents $\hat e_0\hat e_1,\dots,(1-\hat e_0)(1-\hat e_1)$ of $\mathscr G$ sum to $1$ although the neighbourhood and the henselization are local; the
+roots $\tilde u_0,\tilde u_1$ reducing to $0$ are not the real roots $\mathsf w_{t_0},\mathsf w_{t_1}$ (27).
+
+\paragraph{Forced complexification and the Boolean power.}
+
+\begin{proposition}[Forced complexification \src{27}]\label{osq:hb:prop:complex}
+Let $A$ be a local domain with real closed fraction field $\mathbb F$ and maximal ideal $\mathfrak m_A$, and $h\in\mathfrak m_A$ with $h>\frac14$ in $\mathbb F$. Then
+$\mathbb F\otimes_AA^{\mathrm h}$ contains an $\mathbb F$-algebra copy of $\mathbb F[i]$, and no $A$-algebra map takes $A^{\mathrm h}$ to an ordered extension field of
+$\mathbb F$.
+\end{proposition}
+\begin{proof}
+$U^2-U+h$ reduces to $U(U-1)$, so henselization gives a root $u\in\mathfrak m_AA^{\mathrm h}$. With $c=\sqrt{4h-1}>0$ in $\mathbb F$ put $\jmath=(2u-1)/c$; then
+$\jmath^2=(4u^2-4u+1)/(4h-1)=-1$. The generic fibre is nonzero by faithful flatness, so $\mathbb F[i]\to\mathbb F\otimes A^{\mathrm h}$, $i\mapsto\jmath$, is injective.
+An $A$-algebra map to an ordered field extending $\mathbb F$ would send $u$ to a root of a quadratic with negative discriminant.
+\end{proof}
+
+Take $h=\omega$: algebraically small for $\mathfrak n$, order-theoretically large in $\mathbb E$. The root lands in the new algebra, not in $\mathbb E$, so this is no
+failure of real closedness; and $\jmath$ lives in $\mathscr G$, where division by $c\in\mathbb E^\times$ is allowed, not in $\mathfrak L^{\mathrm h}$ (27). In
+$\Oz$ itself $T^2-T-\omega$ has simple residue roots $0,1$ and no root (\nolinkurl{odg:ex:hensel}); here the henselization supplies them.
+
+\begin{lemma}[Boolean powers from finite products \src{27}]\label{osq:hb:lem:booleanpower}
+Let $\mathbb F$ be real closed, $\mathscr A$ a nonzero ind-\'etale $\mathbb F$-algebra with a chosen embedding $\mathbb F[i]\hookrightarrow\mathscr A$. Then $\mathscr A$ is
+the directed union of finite $\mathbb F[i]$-subalgebras isomorphic to finite products of $\mathbb F[i]$; it is reduced and von Neumann regular, every prime is
+maximal and minimal with residue field $\mathbb F[i]$; $\operatorname{Spec}\mathscr A$ is a Stone space $\mathsf X$; and residue evaluation is an isomorphism
+$\mathscr A\cong\LC(\mathsf X,\mathbb F[i])$.
+\end{lemma}
+\begin{proof}
+An \'etale algebra over a field is a finite product of finite separable extensions \cite{StacksEtale}, over a real closed field $\mathbb F$ or $\mathbb F[i]$; finitely
+many elements with the chosen $i$ lie in the image of one such algebra, a quotient of a finite product of fields, hence a finite product of fields, none equal to
+$\mathbb F$ since it contains a root of $X^2+1$. In a finite product each $g$ has $y$ with $g=g^2y$ (reciprocal on nonzero coordinates), a relation that persists:
+principal ideals are generated by idempotents, prime quotients are fields, nilpotents already vanish in a finite stage, and each residue field is the union of
+images of $\mathbb F[i]$. Basic opens $D(e)$ of idempotents are clopen and separate primes, so with quasi-compactness $\mathsf X$ is compact, Hausdorff and
+zero-dimensional. Each $g$ is constant on the parts of a finite clopen partition, so evaluation is locally constant, injective by reducedness, and onto because a
+locally constant function has finite image with clopen fibres, each a finite union of basic clopens, hence given by an idempotent.
+\end{proof}
+
+\begin{lemma}[Size of the henselization \src{27}]\label{osq:hb:lem:size}
+An infinite local ring of cardinality $\kappa$ with residue field $\Q$ has a henselization of cardinality $\kappa$.
+\end{lemma}
+\begin{proof}
+There are at most $\kappa$ finite presentations of \'etale algebras, each of size at most $\kappa$, and each has finitely many points over the closed point with
+residue field $\Q$; the pointed-neighbourhood colimit has at most $\kappa$ objects of size at most $\kappa$, and $A\to A^{\mathrm h}$ is injective.
+\end{proof}
+
+\begin{proposition}[Exact generic size \src{27}]\label{osq:hb:prop:exactsize}
+With $\mathsf X=\operatorname{Spec}\mathscr G$, $|\mathsf X|=2^\kappa$, $|\mathscr G|=\kappa$ and $\dim_{\mathbb E[i]}\mathscr G=\kappa$.
+\end{proposition}
+\begin{proof}
+$\mathscr G$ is a localization of $\mathfrak L^{\mathrm h}$ containing $\mathbb E$, so $|\mathscr G|=\kappa$ (\cref{osq:hb:lem:size}) and $|\mathsf X|\le2^\kappa$. The map
+$\mathsf X\to\{0,1\}^\kappa$, $\mathfrak p\mapsto(\hat e_\alpha\bmod\mathfrak p)$, is continuous and onto: finite parts of an assignment are realized because the atoms
+are nonzero, and compactness realizes the whole. A relation $\sum_jc_j\hat e_{\alpha_j}=0$ with $c_j\in\mathbb E[i]$, multiplied by the atom with $\hat e_{\alpha_j}=1$
+and the others $0$, gives $c_j=0$; so the $\hat e_\alpha$ are independent, and $|\mathscr G|$ bounds the dimension.
+\end{proof}
+
+\begin{proposition}[Henselian minimal primes \src{27}]\label{osq:hb:prop:minimal}
+Localization is a bijection $\operatorname{Min}\mathfrak L^{\mathrm h}\to\operatorname{Spec}\mathscr G$, and for $\mathfrak Q\in\operatorname{Min}\mathfrak L^{\mathrm h}$ the
+fraction field of $\mathfrak L^{\mathrm h}/\mathfrak Q$ is the corresponding residue field of $\mathscr G$, which is $\mathbb E[i]$ over $\mathbb E$.
+\end{proposition}
+\begin{proof}
+$\mathfrak L^{\mathrm h}$ is reduced (reducedness passes to henselizations \cite{StacksPermanence}). Flat going down sends a minimal prime to a minimal prime of the domain
+$\mathfrak L$, that is to $0$, so it survives in $\mathscr G$. A prime contracting to $0$ contains, and localizes to, a minimal one, and all primes of $\mathscr G$ are
+minimal (\cref{osq:hb:lem:booleanpower}), so the two coincide. $(\mathfrak L^{\mathrm h}/\mathfrak Q)\otimes\mathbb E$ is the corresponding prime quotient $\mathbb E[i]$
+of $\mathscr G$, a localization of the domain $\mathfrak L^{\mathrm h}/\mathfrak Q$ that is already a field.
+\end{proof}
+
+\paragraph{Completion sees only the residue.}
+
+\begin{proposition}[Adic invisibility \src{27}]\label{osq:hb:prop:completion}
+$\mathfrak L/\mathfrak n^n=\Q=\mathfrak L^{\mathrm h}/(\mathfrak n\mathfrak L^{\mathrm h})^n$ for every $n\ge1$; both completions are the discrete field $\Q$, with kernels
+$\mathfrak n$ and $\mathfrak n\mathfrak L^{\mathrm h}$; neither completion map is flat; neither maximal ideal is finitely generated, and $\mathfrak L$, $\mathfrak L^{\mathrm
+h}$ are not Noetherian.
+\end{proposition}
+\begin{proof}
+$\mathfrak n^2=\mathfrak n$ makes both inverse systems constant. $h=\omega$ is a nonzerodivisor on $\mathfrak L$, and on the flat $\mathfrak L^{\mathrm h}$, but acts by zero on
+$\Q$. A finitely generated idempotent maximal ideal is zero by Nakayama's lemma, and both contain $h\ne0$.
+\end{proof}
+
+\begin{corollary}[No nilpotent local deformation \src{27}]\label{osq:hb:cor:nilpotent}
+For a local $\Q$-algebra $(R_0,\mathfrak r)$ with nilpotent maximal ideal and residue field $\Q$, every local $\Q$-algebra map from $\mathfrak L$ or $\mathfrak L^{\mathrm h}$ to
+$R_0$ factors through the residue field; in particular the residue-preserving maps to $\Q[\varepsilon]/(\varepsilon^n)$ are unique.
+\end{corollary}
+\begin{proof}
+If $\mathfrak r^n=0$, the image of $\mathfrak n=\mathfrak n^n$ lies in $\mathfrak r^n=0$.
+\end{proof}
+
+This is the idempotent-ideal mechanism of \cref{osq:hd:prop:etale} (27 credits it to the repository). Both tangent spaces vanish, yet $\mathscr G$ has $2^\kappa$
+points; $\mathbb E\otimes_{\mathfrak L}\widehat{\mathfrak L^{\mathrm h}}=0$ since $h$ is inverted on the left and kills $\Q$, while $\mathbb E\otimes_{\mathfrak L}
+\mathfrak L^{\mathrm h}=\LC(\mathsf X,\mathbb E[i])\ne0$: completion destroys every generic branch at once. $\operatorname{Spec}\mathfrak L^{\mathrm h}$ is connected, all
+minimal primes lying in one maximal ideal, and the clopen structure appears only after inverting $\mathfrak L\setminus\{0\}$; $\mathfrak L^{\mathrm h}$ must not be
+replaced by a product of branches (27). No infinitesimal lifting criterion for smoothness applies, the rings being neither Noetherian nor of finite type (27).
+
+\paragraph{Strict henselization and the Galois factor.}
+
+\begin{proposition}[Strict henselization by constants \src{27}]\label{osq:hb:prop:strict}
+With $\overline\Q$ an algebraic closure of the residue field, $\mathfrak L^{\mathrm{sh}}\cong\mathfrak L^{\mathrm h}\otimes_\Q\overline\Q$ as local $\mathfrak L$-algebras;
+its maximal ideal is generated by $\mathfrak n$, its residue field is $\overline\Q$ and its completion the discrete field $\overline\Q$.
+\end{proposition}
+\begin{proof}
+For finite $L/\Q$ inside $\overline\Q$, $\mathfrak L^{\mathrm h}\otimes_\Q L$ is finite \'etale over $\mathfrak L^{\mathrm h}$, local with residue field $L$ (finite over a local
+ring with a field as residue algebra), hence henselian \cite{StacksLocal}. The union is henselian, local, ind-\'etale over $\mathfrak L$ with residue field
+$\overline\Q$, which identifies it with $\mathfrak L^{\mathrm{sh}}$ \cite{StacksHensel}; the maximal ideal stays idempotent.
+\end{proof}
+
+\begin{lemma}[Splitting the arithmetic tensor product \src{27}]\label{osq:hb:lem:galois}
+For an algebraically closed field $\mathbb F'$ of characteristic zero containing $\overline\Q$, $\mathbb F'\otimes_\Q\overline\Q\cong\LC(\operatorname{Gal}(\overline\Q/\Q),
+\mathbb F')$ by $c\otimes a\mapsto(\sigma\mapsto c\sigma(a))$, the Galois group profinite and $\mathbb F'$ discrete.
+\end{lemma}
+\begin{proof}
+For finite Galois $L/\Q$, $\mathbb F'\otimes_\Q L\cong\prod_{\operatorname{Gal}(L/\Q)}\mathbb F'$, compatibly with inflation; a locally constant function on the profinite
+group has finite image and factors through a finite quotient.
+\end{proof}
+
+\begin{theorem}[The strict generic fibre \src{27}]\label{osq:hb:thm:strict}
+With $\overline\Q\hookrightarrow\mathbb E[i]$ chosen, $\mathbb E\otimes_{\mathfrak L}\mathfrak L^{\mathrm{sh}}\cong\LC(\mathsf X,\mathbb E[i])\otimes_\Q\overline\Q\cong
+\LC(\mathsf X\times\operatorname{Gal}(\overline\Q/\Q),\mathbb E[i])$; $1\otimes\tau$ acts by $f(x,\sigma)\mapsto f(x,\sigma\tau)$ with fixed ring $\mathscr G$; and
+$\mathfrak L^{\mathrm{sh}}$ has cardinality $\kappa$ and exactly $2^\kappa$ minimal primes.
+\end{theorem}
+\begin{proof}
+The first isomorphism is base change of \cref{osq:hb:prop:strict}; the second holds on each finite stage by \cref{osq:hb:lem:galois}, and a locally constant function
+on the compact zero-dimensional product is given by finitely many clopen rectangles. Right translation is transitive, so invariants ignore the second coordinate.
+$\overline\Q$ is countable; the generic spectrum $\mathsf X\times\operatorname{Gal}(\overline\Q/\Q)$ has cardinality $2^\kappa$, as $|\operatorname{Gal}(\overline\Q/\Q)|\le
+2^{\aleph_0}\le2^\kappa$; and the minimal primes correspond to generic points as in \cref{osq:hb:prop:minimal}.
+\end{proof}
+
+The product depends on the chosen algebraic closure and embedding; it separates two sources of branching, $\mathsf X$ recording normalization and henselian
+choices and the Galois group recording arithmetic embeddings of the residue closure (27).
+
+\paragraph{Gaussian omnific integers.} Put $B_{\mathbb E}[i]\subseteq\mathbb E[i]$, with constant term in $\Z[i]$ and kernel $\Pi_{\mathbb E}+i\Pi_{\mathbb E}$.
+
+\begin{proposition}[Gaussian localization \src{27}]\label{osq:hb:prop:gaussloc}
+The localization of $B_{\mathbb E}[i]$ at $\Pi_{\mathbb E}+i\Pi_{\mathbb E}$ is $\mathfrak L[i]$, a local domain with residue field $\Q(i)$ and fraction field $\mathbb E[i]$.
+\end{proposition}
+\begin{proof}
+If $b+ci$ has nonzero Gaussian constant term, $(b+ci)^{-1}=(b-ci)/(b^2+c^2)$ with $\ct(b)^2+\ct(c)^2\ne0$, already inverted in $\mathfrak L$.
+\end{proof}
+
+\begin{theorem}[Henselization and doubling \src{27}]\label{osq:hb:thm:gaussian}
+$(\mathfrak L[i])^{\mathrm h}\cong\mathfrak L^{\mathrm h}[i]$, and $\mathbb E[i]\otimes_{\mathfrak L[i]}\mathfrak L^{\mathrm h}[i]\cong\mathbb E[i]\otimes_{\mathbb E}\mathscr G\cong
+\mathscr G\times\mathscr G$ as rings and $\mathbb E$-algebras; its spectrum is $\mathsf X\sqcup\mathsf X$, it has $2^\kappa$ generic points, and the completion of
+$\mathfrak L^{\mathrm h}[i]$ is $\Q(i)$.
+\end{theorem}
+\begin{proof}
+$\mathfrak L^{\mathrm h}[i]$ is finite \'etale over $\mathfrak L^{\mathrm h}$, local with residue field $\Q(i)$, henselian and ind-\'etale over $\mathfrak L[i]$ with the
+same residue field, which gives the first identification. In the generic fibre $Z^2+1=(Z-\jmath)(Z+\jmath)$ with $2\jmath$ a unit, so $a+bZ\mapsto(a+b\jmath,a-b\jmath)$
+is an isomorphism $\mathscr G[Z]/(Z^2+1)\to\mathscr G\times\mathscr G$ with inverse $(r,s)\mapsto\frac{r+s}2+\frac{r-s}{2\jmath}Z$; the external $i$ acts as
+$(\jmath,-\jmath)$, so the factors carry conjugate scalar structures.
+\end{proof}
+
+The doubling decomposes the generic fibre; $\mathfrak L^{\mathrm h}[i]$ itself is local, and $\mathsf X\not\cong\mathsf X\sqcup\mathsf X$ is not asserted (27).
+
+\paragraph{Projective modules, \'etale algebras and valuations.}
+
+\begin{theorem}[Finite projectives on the generic fibre \src{27}]\label{osq:hb:thm:projectives}
+Isomorphism classes of finitely generated projective $\mathscr G$-modules correspond to locally constant $r:\mathsf X\to\N$ (pointwise rank); $\operatorname{Pic}\mathscr G=0$,
+$K_0(\mathscr G)\cong\LC(\mathsf X,\Z)$ as rings, and constant rank $d$ means free of rank $d$.
+\end{theorem}
+\begin{proof}
+An idempotent matrix over $\mathscr G$ is constant on the parts of a finite clopen partition, where it is an idempotent matrix over $\mathbb E[i]$ with image of some rank;
+the local free identifications assemble along the central idempotents, and every locally constant rank function is realized by free summands on clopen pieces.
+Direct sum and tensor product are addition and multiplication of ranks.
+\end{proof}
+
+This is a general consequence of the Boolean-power description, not special to surreal coefficients (27).
+
+\begin{proposition}[Finite \'etale algebras \src{27}]\label{osq:hb:prop:etale}
+Reduction gives an equivalence $\operatorname{Fin\acute Et}(\mathfrak L^{\mathrm h})\simeq\operatorname{Fin\acute Et}(\Q)$, the lift of a number field $L$ being
+$\mathfrak L^{\mathrm h}\otimes_\Q L$, with generic fibre $\mathscr G\otimes_\Q L\cong\mathscr G^{[L:\Q]}$; finite \'etale $\mathscr G$-algebras are classified up to
+isomorphism by locally constant ranks $\mathsf X\to\N$, and constant rank $d$ means $\mathscr G^d$.
+\end{proposition}
+\begin{proof}
+The first is the henselian finite \'etale equivalence \cite{StacksLocal} with \cref{osq:hb:prop:strict}. A finite \'etale $\mathscr G$-algebra descends to a finite stage
+$\mathbb E[i]^r$ \cite{StacksEtale}, where it is a product of copies of the algebraically closed field on each factor; ranks at residue points determine it.
+$\mathbb E[i]\otimes_\Q L$ is $[L:\Q]$ copies of $\mathbb E[i]$.
+\end{proof}
+
+The rank classification is of isomorphism classes, not of morphisms, and the equivalence for $\mathfrak L^{\mathrm h}$ says nothing about $B_{\mathbb E}$ or $\Oz$ (27). Let
+$\operatorname{RZ}(\mathfrak L)$ be the valuation rings of $\mathbb E$ dominating $\mathfrak L$, with the Zariski topology of finite-subset containment.
+
+\begin{corollary}[Centred valuation components \src{27}]\label{osq:hb:cor:rz}
+$\operatorname{RZ}(\mathfrak L)$ has exactly $2^\kappa$ connected components.
+\end{corollary}
+\begin{proof}
+De Felipe and Teissier prove, for local domains without Noetherian hypotheses, that these components correspond to the minimal primes of the henselization
+\cite[Corollary~4.2]{DFT}; apply \cref{osq:hb:prop:minimal,osq:hb:prop:exactsize}.
+\end{proof}
+
+The external theorem is imported; the count is the application, and nothing is said about the components themselves (singletons, openness, a fixed valuation
+space) or about the quotient topology compared with $\mathsf X$ (27).
+
+\begin{remark}[Branch counts compared \merge]\label{osq:hb:rem:counts}
+Three maximal branch counts now appear in the report, for different rings. 20's full-class fibre $\mathsf B_\R$ has a proper class of idempotents
+(\cref{osq:bb:thm:atoms}). 23's cyclic coefficient fibre has exactly $2^{\mathfrak c}$ maximal ideals over $T=0$ for the ring $\mathscr B$ of cardinality
+$\mathfrak c=|K_{\Z a}|$ (\cref{osq:rm:cor:manyplaces}), and its Boolean algebras have cardinality $\mathfrak c$. 27's $\mathfrak L^{\mathrm h}$ has $2^\kappa$
+minimal primes for a ring of cardinality $\kappa$, every $\kappa$ allowed; for $\kappa=\aleph_0$ a countable ring has continuum many minimal primes, which is no
+paradox, $\mathscr G$ containing only finite-image locally constant functions (27). In all three the new idempotents come from quadratic branches at a scale
+unseen by the given data; 23 needs no fresh scale (ramification at unused finite places), while 20 and 27 use 20's splitter at dominant scales. 27's local ring
+$\mathfrak L$ is not a cyclic workspace: its exponent group contains the $\omega^\alpha$, $\alpha<\kappa$, and its fraction field is real closed.
+\end{remark}
+
+\paragraph{Seeds and dependencies (27).} The seed may consist of infinite scales, infinitesimals or earlier surreal values, all placed in $\mathbb E$ with their
+floors in $B_{\mathbb E}$ without exceeding $\kappa$; for surcomplex values seed the real and imaginary parts, and the Gaussian statements apply. This is seed
+containment, not preservation of the algebraic or analytic operations of a prior workspace without further closure. The dependencies are: normal forms and
+monomial bounds; monic certificates and support projection; the dominant-scale splitter and finite Boolean atoms; the actual hull and survival in the local
+normalization; survival of every finite generic branch under localization; free generic idempotents and forced complexification; the Boolean power, exact
+cardinality and minimal primes. Completion is a separate consequence of the idempotent ideal; the strict and Gaussian results depend on the generic fibre, and
+the valuation corollary also on de Felipe--Teissier. 27 lists ten failure points it addresses: a convenient subring need not be the integer part (the floor
+closure proves $B_{\mathbb E}=\mathbb E\cap\Oz$); a fixed Hahn group need not admit fresh bounds (the splitters are built in $\No$ first); projection is not a ring map;
+a Laurent series cannot be evaluated at zero; the displayed identity does not prove nontriviality (arbitrary radical witnesses are excluded by certificates and
+projection); localization may delete generic factors (\cref{osq:hb:lem:allbranches}); a local ring has no nontrivial idempotents; the generic imaginary unit is
+not a residue-field extension; Noetherian finiteness theorems for branches do not apply; and finite tests are not transfinite verification.
 
 \section{Arithmetic of polynomial maps on the omnific lattices}\label{osq:sec:polynomial}
 
@@ -11145,7 +12210,10 @@ defined relative to a global well-order, not canonically, their membership may b
 their residue fields are classified: the branching count $2^{\aleph_0}$ is a lower bound, and the residue fields embed in $\SC$ without being
 identified with it (\cref{osq:cr:sub:residues}). 25 classifies the globally smooth semialgebraic preservers only; finitely smooth and nonsmooth ones
 are controlled on their tails, not on bounded intervals, and its sampling theorem excludes coefficient-independent tests, not coefficient-adapted
-certificates (\cref{osq:sa:sub:semialgebraic}).
+certificates (\cref{osq:sa:sub:semialgebraic}). 26 computes flat dimensions of the geometric radical quotients of set-sized cone cores, not their
+projective dimensions in general, not arbitrary ideals and not any dimension of $\Oz$, and its flat dimensions do not transfer to $\Oz$, the passage
+being nonflat (\cref{osq:pc:sub:polyhedral}). 27's henselization and spectra are those of set-sized local rings $\mathfrak L$ of its hulls, not of $\Oz$;
+it counts the minimal primes and the generic branches but does not classify the Stone space or the Boolean algebra (\cref{osq:hb:sub:henselian}).
 
 As an internal ring, $\Oz$ has all surreal scales available through its fraction field, a nonzero
 proper-class ideal $\Pi$, nonzero class-valued derivations and nonarithmetic prime quotients; as a
@@ -11298,7 +12366,8 @@ outside the conclusions.
 rings are set-sized and all embeddings use finite normal forms. (2) The weak global dimension of $A_d$ is not computed;
 only the lower bound $d+1$ is proved. (3) Projective dimensions are given only as bounds (the exact values in rank one
 are merge results; 21 has since determined them for every $d$, \cref{osq:da:cor:exactpd,osq:da:thm:lattice}). (4) Arbitrary non-simplicial cones, arbitrary ideals and all homological localizations of the cores
-are not classified. (5) The cores are not integer parts of $\No$, not initial in the simplicity order, not preserved by
+are not classified (26 has since computed the flat dimensions of radical monomial quotients over every rational polyhedral cone,
+\cref{osq:pc:sub:polyhedral}; batch 34). (5) The cores are not integer parts of $\No$, not initial in the simplicity order, not preserved by
 all surreal automorphisms and not Hahn rings; the countable-rank ring still consists of finite sums. (6) $\widehat A$ is
 the profinite completion, not a Hahn completion or a completion in a surreal-valued topology. (7) The $D+M$ framework
 (with the pullback literature, for instance \cite{WKX}), filtered-colimit flatness, coherence criteria and the
@@ -11585,6 +12654,48 @@ quantifiers, general semialgebraic calculus, the complete theorems or novelty; t
 executed. (18) Some ingredients are elementary consequences of classical real algebraic geometry; independent review may find stronger antecedents, a
 shorter formulation or errors. (19) The integer-part formula of $\Oz$ needs the correction for a negative infinitesimal remainder, and no argument drops it.
 
+\paragraph{26.} (1) AI-assisted and proof-bearing, not refereed and not checked in Lean or by a machine; the arbitrary-cone formula and the detector
+construction are proposed as original, but the searches did not establish priority, and no named general conjecture about $\No$ is claimed solved. (2)
+$\pd(A_{\mathscr C}/\mathfrak r_{\mathcal F})=h+1$ is not claimed for $h\ge2$; only the interval $\max\{2,h\}\le\pd\le h+1$ is proved, and 21's exact orthant value is
+credited, not used (for simplicial cones see the merge's isomorphism with $A_d$). (3) No all-module weak or global dimension of $A_{\mathscr C}$, $\Oz$ or $\GOz$
+is asserted. (4) No extension to unrestricted infinite Hahn supports is asserted; every element has finite support. (5) The face-lattice reconstruction
+needs the marked monomial grading; an unmarked recognition theorem is not claimed. (6) ``Core'' does not mean integer part of the fraction field, and a
+partial exponent cone must not be replaced by the positive cone of the ambient order. (7) The numbers $\beta_{p,G}$ count summands of a reduced flat
+resolution, not minimal free ranks, and the reduced resolution is not unique. (8) The geometric monomial class excludes arithmetic ideals such as
+$pA_{\mathscr C}$ and restrictions on admitted coefficients. (9) Miller's real-polyhedral theory \cite{MillerEssential} is not identified with these
+resolutions, and Geist--Miller's all-module theorems \cite{GeistMiller} are neither reproved nor claimed; cellular and lcm-lattice methods
+\cite{BayerSturmfels,GPW} are classical. (10) \Cref{osq:pc:thm:arithmetic} concerns modules acting through $\ct$ only, not all modules over a core or the
+class ring; the scalar-quotient calculation and the common fraction field are elementary comparisons, not new theorems. (11) The nonflatness concerns the
+displayed two-ray relation for $d\ge2$; it does not deny the embeddings, the fraction field or the retraction, and asserts nothing about embeddings of
+one-dimensional cores. (12) The homological-epimorphism theorem makes no recollement or compact-generation claim. (13) The finite checks
+($52{,}080$ exact assertions, among them $188$ face quotients, $1{,}329$ further antichains, $56$ cancelled pairs and $2{,}457$ cap checks, with a fixed seed and
+no exhaustive search) do not verify filtered colimits, exactness in every rational degree, the dual-basis argument, the topological contraction for every
+polytope or normal forms, and are not an independent proof or referee report. (14) The repository was compared selectively (this report's lines 1--210 and
+3300--3520 at the pin, its README, the root and catalogue READMEs and an automorphism-report README), not all reports or companion manuscripts, and an empty
+connector search was not taken as absence. (15) All homological statements concern set-sized rings and modules; the full omnific ring appears only as the
+target of an embedding and of a finite relation.
+
+\paragraph{27.} (1) An author-side, internally reviewed, unrefereed draft with no Lean verification; historical priority is provisional, and no Riemann
+hypothesis, omnific factorization conjecture or published automorphism problem is claimed solved. (2) No henselization or spectrum of the proper-class ring
+$\Oz$ is asserted; all rings, spectra and henselizations are set-sized. (3) $\Idem(\mathscr G)$ and $\mathsf X$ are not classified: atomlessness, isolated
+points and, for $\kappa=\aleph_0$, the Cantor space are open, and ``maximal'' is a cardinal statement only. (4) $\mathfrak L^{\mathrm h}$ and
+$\mathfrak L^{\mathrm h}[i]$ are local, not products of branches; nontrivial idempotents exist only in the generic fibre. (5) The imaginary unit lives only in
+$\mathscr G$; $\mathfrak L^{\mathrm h}$ has no square root of $-1$ and residue field $\Q$. (6) The support projection is not a ring map, and the specializations
+are maps of finite algebras, not evaluations of Laurent series at zero. (7) The rings are not Noetherian and no Krull dimension is determined; no
+infinitesimal smoothness criterion applies. (8) The Gaussian decomposition does not assert $\mathsf X\not\cong\mathsf X\sqcup\mathsf X$. (9) The valuation
+count imports de Felipe--Teissier \cite{DFT}; nothing is claimed about the components themselves or their topology compared with $\mathsf X$. (10) The finite
+\'etale equivalence concerns $\mathfrak L^{\mathrm h}$, not $B_{\mathbb E}$ or $\Oz$, and the rank classification over $\mathscr G$ is of isomorphism classes,
+not morphisms. (11) Only $K_0(\mathscr G)$ and finite projectives are computed; no higher $K$-theory or derived formula is asserted. (12) No birthday bound
+is asserted; seeds are contained in $\mathbb E$, but the operations of a prior workspace are not preserved without further closure. (13) The finite checks
+($5{,}760$ exact SymPy assertions, $5{,}586$ of them Boolean atoms; the count is not a measure of proof strength) prove no support, localization-denominator,
+prime-existence, transfinite, cardinality or priority statement. (14) Henselian algebra, Boolean powers and the Stacks Project results are standard, de
+Felipe--Teissier's theorem is imported, and the splitter mechanism is the repository's (20), re-derived. (15) Independent checking of the whole proof, in
+particular of the bridge from supports to localization, is warranted; the exact Stone space, atomlessness, enlargement of the hull, mixed-characteristic
+analogues and class-level geometry are not settled. (16) The repository changed during 27's inspection, so its guide reads are not a complete same-commit
+audit; its search for ``hensel'' was not exhaustive (and missed existing occurrences, \cref{osq:hb:sub:henselian}); its targeted literature searches found no
+primary source for the construction, which does not certify novelty. (17) No regularity of $\kappa$, continuum hypothesis, GCH or large cardinal is used.
+(18) Its twelve questions are proposed directions and may already be answered in literature 27 did not locate.
+
 \paragraph{The merge.} (1) The results marked \merge\ are consequences of the sources' lemmas; they
 are no more refereed than the sources and are not formalized. (2) No general law is asserted for the
 generator counts. (3) For full-support Hahn rings over a prescribed set group, exact thresholds are computed only in
@@ -11615,6 +12726,10 @@ ultrafilters in $\mathsf{GBC}$ only; and the copy of $\SC$ in \cref{osq:cr:cor:p
 isomorphic to $\SC$. (18) \Cref{osq:sa:rem:threshold} concerns monomial multipliers and the real pair; \cref{osq:sa:rem:exceptionsnecessary} shows only
 that global smoothness cannot be weakened to $C^{\mathsf k}$ in \cref{osq:sa:cor:exceptions}, not what the exceptional sets of finitely smooth maps are;
 and the batch-34 status of \cref{osq:ft:q:maps} re-scopes 22's comment, it does not supply a piecewise classification.
+(19) The isomorphism of a rational simplicial cone core with $A_d$ transfers 21's exact projective dimensions to simplicial face quotients only; for
+nonsimplicial quotients with $h\ge2$ the endpoint stays open, and \cref{osq:pc:rem:lattice} gives a lower bound for the weak global dimension, not its
+value. (20) The identification of 27's $\sqrt{\Pi\NN}$ with $\Pi\NN$ uses 19's \cref{osq:nf:thm:radical}, which 27 neither uses nor needs, and the branch
+counts compared in \cref{osq:hb:rem:counts} concern three different rings; nothing is inferred about $\Oz$ itself.
 
 \subsection{Open questions and their status}\label{osq:sub:questions}
 The sources pose the following questions, each as a question suggested by the proofs rather than as
@@ -11769,6 +12884,22 @@ one this is the merge value $2$ of \cref{osq:hd:prop:pd}, and over every ordered
 with lower bounds $d+1$ and $2$ (\cref{osq:hd:sub:dimensions}); 21 adds $\operatorname{gl.dim}A_d\ge d+2$ when $K\ne\Frac D$
 (\cref{osq:da:thm:lattice}) and asks whether the bounds $\operatorname{gl.dim}A_d\ge d+2$ and $\operatorname{w.gl.dim}A_d\ge d+1$ are sharp,
 which is merged here. Cores over non-simplicial cones, arbitrary ideals and homological localizations stay open.
+
+\emph{Status (batch 34).} The non-simplicial clause is answered by 26 for flat dimension, for the quotients by radical coefficient-full monomial ideals:
+over the core $A_{\mathscr C}$ of any pointed full-dimensional rational polyhedral cone, $\fd(A_{\mathscr C}/\mathfrak r_{\mathcal F})$ is the top degree of the
+reduced homology of finite join complexes, with explicit cap-module witnesses (\cref{osq:pc:thm:exactfd}); the quotient keeping a face $F$ has flat
+dimension the largest dimension of a face disjoint from $F$ (\cref{osq:pc:thm:facebetti}), so $\fd D=d$ for every cone, the cone is simplicial exactly when
+all facet quotients have flat dimension one (\cref{osq:pc:thm:simplicial}), and cube cones have facet quotients of flat dimension $d-1$
+(\cref{osq:pc:thm:cubes}). Projective dimensions are bracketed, $\max\{2,h\}\le\pd\le h+1$ (\cref{osq:pc:cor:pdbounds}), and for simplicial cones the upper
+endpoint holds, a simplicial core being $A_d$ (21's \cref{osq:da:cor:exactpd}; merge). 26 asks the same two questions (its Questions~13.1, 13.2),
+merged here: for a radical geometric quotient with $h=\fd\ge2$, when is $\pd=h+1$ and can it equal $h$; is the upper endpoint universal for rational
+cones and arbitrary $D\subseteq K$; and what are $\operatorname{w.gl.dim}A_{\mathscr C}$ and $\operatorname{gl.dim}A_{\mathscr C}$ for nonsimplicial
+cones, with explicit hypotheses on $D$ and $K$? 26's comments: a plausible step is to combine the cap detector with the non-splitting of a countable
+telescope to build a nonzero $\Ext^{h+1}$ class, controlling compatibility across the face differential, which flat detection alone does not do; its
+theorem gives $\operatorname{w.gl.dim}A_{\mathscr C}\ge d$, not an all-module upper bound; Geist--Miller's orthant theorems \cite{GeistMiller} address a
+stronger all-module problem in their setting; and extending a total Koszul or diagonal resolution to a nonsimplicial arithmetic core differs from resolving
+only the face quotients. The lower bound is already $d+1$ when $K\ne\Frac D$, by lattice modules (\cref{osq:pc:rem:lattice}, a merge remark). Arbitrary ideals,
+homological localizations and the exact weak global and global dimensions stay open.
 
 \begin{question}[Beyond one coefficient lattice; 14, 21]\label{osq:tn:q:lattices}
 Replace the single coefficient lattice by a finite filtration of lattices indexed by support levels and determine which
@@ -12140,6 +13271,166 @@ repository's actual omnific ring. Which part of real closed semialgebraic calcul
 monotonicity over arbitrary real closed fields, the class-to-set support reduction, and the exact support of a rational-power Hahn expansion
 (\cref{osq:sub:formalization}).
 
+\begin{question}[Flat extensions of cones; 26]\label{osq:pc:q:flatext}
+For pointed cones $\mathscr C\subseteq\mathscr C'$ in the same rational space, characterize flatness of $A_{\mathscr C}\to A_{\mathscr C'}$. Which new exponent
+comparisons force the two-ray obstruction of \cref{osq:pc:thm:nonflat}?
+\end{question}
+\emph{Status.} Open. 26's comments: a necessary condition is that no newly admitted quotient of distinct old ray monomials creates the forbidden unit-constant
+relation; whether a finite set of such comparisons suffices, or higher syzygies add obstructions when all two-ray tests pass, is to be decided.
+
+\begin{question}[Recognition without named monomials; 26]\label{osq:pc:q:recognition}
+Does the abstract ring $A_{\mathscr C}$, with $D$ named but no grading, determine the face lattice of $\mathscr C$? When must an isomorphism preserve the
+geometric radical ideals?
+\end{question}
+\emph{Status.} Open. 26's comments: \cref{osq:pc:cor:reconstruct} solves only the marked version; an unmarked theorem needs an intrinsic characterization of the
+coefficient-full geometric ideals, which connects these invariants to the repository's embedding and automorphism program.
+
+\begin{question}[Infinite-support extensions; 26]\label{osq:pc:q:infinite}
+Which Hahn-type completions of $A_{\mathscr C}$ keep the principal exhaustion of each $I_F$, the detector formula and the finite flat resolutions?
+\end{question}
+\emph{Status.} Open. 26's comments: the issue is whether one positive shift can be subtracted from all exponents of a series; finite supports allow a minimum over
+finitely many inequalities, while an infinite support can approach a boundary face with no uniform inward margin, so a theorem must impose a support
+condition excluding this or replace principal exhaustion.
+
+\begin{question}[Exponent-density hypotheses; 26]\label{osq:pc:q:density}
+Replace $\Q^d$ by a subgroup $\Gamma\subseteq\R^d$. Which conditions on $\Gamma\cap F$ for each face are sufficient, or necessary, for flat face ideals and for
+\eqref{osq:pc:eq:mainface}?
+\end{question}
+\emph{Status.} Open. 26's comments: the proof uses countable sequences in relative interiors tending to zero and enough subtraction stability, not every rational
+exponent; comparison with the dense-subgroup orthant case of Geist--Miller \cite[Section~4]{GeistMiller} should separate the existence of a flat resolution
+from the telescope bound on projective dimension.
+
+\begin{question}[Beyond polyhedral cones; 26]\label{osq:pc:q:nonpolyhedral}
+Can an infinite face poset give a usable analogue of the join-homology formula? How do the number of faces, the cofinality of inward shifts and homological
+dimension interact for nonpolyhedral cones?
+\end{question}
+\emph{Status.} Open. 26's comments: finite-label cancellation is no longer automatic, and finite supports do not force finitely many labels globally; locally
+polyhedral cones and increasing unions of rational cones are controlled first cases.
+
+\begin{question}[Arithmetic rings beyond principal ideal domains; 26]\label{osq:pc:q:arithmetic}
+For a general domain $D\subseteq K$, determine the flat dimensions over $A_{\mathscr C}$ of the modules acting through $D$.
+\end{question}
+\emph{Status.} Open. 26's comments: \cref{osq:pc:thm:arithmetic} uses the torsion theory and flatness of torsion-free modules over a principal ideal domain;
+over a non-Pr\"ufer domain further homology of $D$ survives, and a theorem should separate the cone contribution from the $D$-module contribution without
+simply adding dimensions where torsion removes the tail.
+
+\begin{question}[Efficient reduced resolutions; 26]\label{osq:pc:q:algorithms}
+Can the top join homology and a detector certificate be computed without all $2^r$ subsets of generators? Can the reduced differentials be chosen canonically
+or functorially?
+\end{question}
+\emph{Status.} Open. 26's comments: its program favours auditability over efficiency; for face-prime quotients the disjoint-face formula already replaces subset
+enumeration by a maximum over the face poset, and general antichains may admit discrete-Morse or interval reductions compatible with
+\cref{osq:pc:lem:cancellation}, the lcm-lattice techniques being classical \cite{GPW}.
+
+\begin{question}[Characteristic-sensitive examples; 26]\label{osq:pc:q:characteristic}
+Which finite face antichains have join complexes whose homology depends on the characteristic of $K$, and how small can such a cone and antichain be?
+\end{question}
+\emph{Status.} Open. 26's comments: \cref{osq:pc:cor:squarefree} gives a route through torsion in squarefree monomial topology; the omnific applications are in
+characteristic zero, and a minimal example would show which parts of the arbitrary-field theorem carry arithmetic information.
+
+\begin{question}[Derived structure beyond self-$\Tor$; 26]\label{osq:pc:q:derived}
+Describe the derived restriction along $A_{\mathscr C}\to A_{\mathscr C}/\mathfrak r_{\mathcal F}$, including the subcategory invisible to tensoring with the
+quotient and any compact-generation properties.
+\end{question}
+\emph{Status.} Open. 26's comments: the homological epimorphism is proved (\cref{osq:pc:thm:homological}); a recollement or compactness statement needs more
+hypotheses and proofs, and the contrast between vanishing self-$\Tor$ and nonzero detector $\Tor$ is a starting point, not a substitute for that analysis.
+
+\begin{question}[A staged formalization; 26]\label{osq:pc:q:formal}
+Formalize the disjoint-face formula, separating finite combinatorics, filtered monomial ideals and the embedding into the surreal field.
+\end{question}
+\emph{Status.} Open. 26's plan: encode finite rational cones and joins; prove principal exhaustion; prove the simplex and cap calculations; formalize finite scalar
+cancellation; then import the normal-form embedding. The equational nonflatness theorem is a small independent target, the finite relation criterion being in
+Mathlib (\texttt{Mathlib.RingTheory.Flat.EquationalCriterion}); 26 supplies no Lean code (\cref{osq:sub:formalization}).
+
+\begin{question}[The exact Boolean algebra; 27]\label{osq:hb:q:boolean}
+For the hull of \cref{osq:hb:prop:hull}, determine $\Idem(\mathscr G)$ up to isomorphism. Is it atomless? Can $\mathsf X$ have isolated points? For
+$\kappa=\aleph_0$, can the construction be refined so that $\mathsf X$ is the Cantor space?
+\end{question}
+\emph{Status.} Open. 27's comments: a free subalgebra of rank $\kappa$ and $|\mathsf X|=2^\kappa$ decide none of these; a first step is to classify which further
+pointed \'etale neighbourhoods produce idempotents outside the algebra generated by the $\hat e_\alpha$. Compare \cref{osq:bb:q:structure,osq:rm:q:boolean} for
+the Boolean algebras of 20's and 23's fibres.
+
+\begin{question}[Dependence on the hull; 27]\label{osq:hb:q:hull}
+How far do the isomorphism type of $\mathscr G$, or the homeomorphism type of $\mathsf X$, depend on the choices of clearing and division in the hull? Is
+there a natural equivalence class of such spaces attached to a seed field?
+\end{question}
+\emph{Status.} Open. 27's comments: the theorem is existential; it keeps the cardinal and the seed but proves no canonical minimal hull or uniqueness of its
+local algebra.
+
+\begin{question}[Enlarging an integer part; 27]\label{osq:hb:q:enlargement}
+For induced omnific integer parts $B\subseteq B'$ with compatible localizations $\mathfrak L\to\mathfrak L'$, when is the map of generic henselian fibres
+injective, and when do branches merge or appear?
+\end{question}
+\emph{Status.} Open. 27's comments: the splitter atoms survive every global normalization witness, which protects the certified family but not idempotents
+created by unrelated \'etale neighbourhoods.
+
+\begin{question}[Normalization versus henselization; 27]\label{osq:hb:q:normalization}
+Relate the reduced normalization fibre $\IC_{\mathbb E}(\mathfrak L)/\sqrt{\mathfrak n\IC_{\mathbb E}(\mathfrak L)}$ to the Stone space $\mathsf X$. Can the
+finite-pattern argument give an explicit correspondence between normalization choices and henselian minimal primes?
+\end{question}
+\emph{Status.} Open. 27's comments: a solution should separate residue-field extensions from geometric splitting and account for the forced passage from
+$\mathbb E$ to $\mathbb E[i]$; a map on the whole normalization fibre is stronger than the finite atom survival proved. The full-class fibre
+$\NN/\Pi\NN\cong\overline\Z[\Idem]$ (\cref{osq:nf:thm:boolean}) is the class analogue of that normalization fibre \merge.
+
+\begin{question}[Specialization in the local spectrum; 27]\label{osq:hb:q:spectrum}
+Determine the prime chains between the $2^\kappa$ minimal primes and the maximal ideal of $\mathfrak L^{\mathrm h}$. Which Krull dimensions occur among
+hulls of cardinality $\kappa$, and which specialization patterns can be prescribed?
+\end{question}
+\emph{Status.} Open. 27's comments: the generic fibre is zero-dimensional, which says nothing about the dimension of the local ring; branching and dimension
+should be studied separately.
+
+\begin{question}[The valuation components; 27]\label{osq:hb:q:valuation}
+What are the value groups, residue fields and internal topologies of the connected components of $\operatorname{RZ}(\mathfrak L)$? Can valuations realizing
+all explicit Boolean assignments be built directly from the scale data?
+\end{question}
+\emph{Status.} Open. 27's comments: \cref{osq:hb:cor:rz} counts components through an external theorem; a direct valuative realization would explain how
+order-infinite elements acquire positive value at these non-order-convex centres.
+
+\begin{question}[Mixed-characteristic constant-term primes; 27]\label{osq:hb:q:mixed}
+Replace $\Pi_{\mathbb E}$ by $\ct^{-1}(p\Z)\cap B_{\mathbb E}$ for an ordinary prime $p$. What remains of maximal branching, forced complexification and the
+strict Galois product, and what changes at $p=2$?
+\end{question}
+\emph{Status.} Open. 27's comments: the quadratic formulas use $2$ and $16$ as units after rationalization, and at a mixed-characteristic centre the residue
+extension and the completion differ, so the proofs do not transfer. By \cref{osq:thm:quotients} the corresponding ideal of $\Oz$ is $p\Oz=p\Z+\Pi$, which
+already contains $\Pi$ \merge.
+
+\begin{question}[Finite \'etale algebras before localization; 27]\label{osq:hb:q:unlocalized}
+Classify finite \'etale algebras over $B_{\mathbb E}$ and compare their restrictions to the rational constant-term localization and the ordinary prime
+localizations. Is there a useful arithmetic gluing description?
+\end{question}
+\emph{Status.} Open. 27's comments: $\operatorname{Fin\acute Et}(\mathfrak L^{\mathrm h})\simeq\operatorname{Fin\acute Et}(\Q)$ is henselian local algebra, not a
+classification over $B_{\mathbb E}$ (\cref{osq:hb:prop:etale}).
+
+\begin{question}[Birthday-bounded realizations; 27]\label{osq:hb:q:birthday}
+For which ordinals $\lambda$ can the hull be built inside the surreals born before $\lambda$? How do closure requirements, regularity or large-cardinal
+hypotheses improve bounds on $\lambda$?
+\end{question}
+\emph{Status.} Open. 27's comments: one seed can have a very long sign expansion, and a fresh support bound may leave a chosen cutoff; controlled birthday
+realizations would connect the local algebra to the foundational reports without confusing cardinality with birthday.
+
+\begin{question}[Compatible class-level geometry; 27]\label{osq:hb:q:class}
+Can the directed system of set-sized omnific augmentation rings and their henselizations be organized into a class-sized geometric object without treating
+the class of all primes as a set? Which invariants are stable?
+\end{question}
+\emph{Status.} Open. 27's comments: an answer must state its foundations and transition maps; 27 avoids class spectra and class ultrafilters. 24's maximal
+class ideals (\cref{osq:cr:thm:krull}) show one foundation, global choice, in which class ideals of $\Oz$ can be built \merge.
+
+\begin{question}[Higher invariants and descent; 27]\label{osq:hb:q:higher}
+How far do finite-partition methods extend to higher $K$-theory, derived categories and cohomological invariants of $\mathscr G$ and
+$\mathfrak L^{\mathrm h}$? Which invariants of $\mathfrak L^{\mathrm h}$ become locally constant after passage to $\mathscr G$?
+\end{question}
+\emph{Status.} Open. 27's comments: filtered colimits and product formulas are natural starting points; only $K_0(\mathscr G)$ and the finite projectives are
+proved.
+
+\begin{question}[Formal verification of the branch bridge; 27]\label{osq:hb:q:formal}
+Can the monic certificates, the support projection and the survival of finite branches be formalized in Lean and connected to a library construction of
+henselization and Boolean spectra?
+\end{question}
+\emph{Status.} Open. 27's plan: first \cref{osq:hb:lem:allbranches}, with its quantification over every denominator (a proof of the quadratic identity alone
+would miss the difficulty); then, in order, the finite quadratic identities, monic certificates, support projection, survival under localization, the hull,
+and henselization, spectra and cardinality, which need general commutative-algebra and topology infrastructure beyond the surreal normal-form interface
+(\cref{osq:sub:formalization}).
+
 \section{Verification record and formalization routes}\label{osq:sec:provenance}
 
 \subsection{Finite checks}\label{osq:sub:checks}
@@ -12178,6 +13469,8 @@ Source & What is checked & Checks & Needs\\
 23 & binomial power identities of $\mathsf z_n$ for $n\le20$ to order 18 and the displayed coefficients of $\mathsf z_2$, refinement thresholds for $n\le100$, $m\le50$ and the table for $\mathsf z_{12}$, monic refinement certificates, the idempotent identity of $\mathsf y_c$ for $c=1,4,\dots,1600$, finite Boolean word and partition models in $r\le8$ variables, truncated-polynomial annihilators and alternating compositions for $n\le40$, clipped refinement composition (12 categories) & 18{,}040 & stdlib\\
 24 & greedy maximal-ideal selection in $\Z/n\Z$ with rejection witnesses and in finite products of $\F_2$, finite geometric remainders, roots and primitive idempotents of $T^{2^n}+1$ over $\F_{257}$ with the binary refinement, finite branch filters, finite-rank lexicographic examples of the zero-or-unit cutoff (6 groups, seed 20260923) & 133{,}770 & stdlib\\
 25 & extrapolation with arbitrary rational steps, high differences, Newton reconstruction on finite grids, binomial square jets, nonzero binomial coefficients, endpoint exponents and odd root multiplicities, the quadratic witness's exponents and coefficient, rank-two and rank-one exponent comparisons (18 groups, seed 20260923) & 1{,}578 & stdlib\\
+26 & face lattices of orthants, cones over polygons, a cube and an octahedron; diagonal scalar homology of the simplex resolution against reduced homology of the join complexes; actual equal-label cancellations; full multiplicity functions of 188 face quotients and 1{,}329 further antichains; 2{,}457 rational cap checks & 52{,}080 & stdlib\\
+27 & the splitter equation and squarefree discriminant, both specializations, initial Laurent coefficients, the generic idempotent, forced complexification, 5{,}586 Boolean atoms in 1--6 variables, finite support projection, Gaussian product maps, a finite Galois splitting matrix (8 groups) & 5{,}760 & SymPy\\
 \end{longtable}
 \endgroup
 
@@ -12218,7 +13511,15 @@ computation (SymPy), not shipped, rechecked in $300$ checks the identification o
 \eqref{osq:cr:eq:telescope}, the Boolean-ring criterion of \cref{osq:cr:rem:ultrafilters} for pairs in the algebra of subsets of a four-element set, the
 coefficients $\frac12$ and $-\frac18$ of \eqref{osq:sa:eq:testfailure} for $b=1,\dots,4$, the constant of the $\mathsf k$th derivative in the proof of
 \cref{osq:sa:thm:bumps} for $\mathsf k\le6$ with the degree count of \cref{osq:sa:cor:regularity}, and the vanishing orders behind
-\cref{osq:sa:rem:exceptionsnecessary}; it verifies no class recursion, infinite support or semialgebraic calculus.
+\cref{osq:sa:rem:exceptionsnecessary}; it verifies no class recursion, infinite support or semialgebraic calculus. 26's and 27's programs were also rerun on
+copies (Python~3.14.4, SymPy~1.14.0): 26 passed all $52{,}080$ assertions with the same counts ($188$, $1{,}329$, $56$, $2{,}457$) and rewrote a record, beside
+itself, identical to \texttt{data/26-face-topology-verification\_results.json} except for the elapsed time; 27 passed all $5{,}760$ assertions in the same eight
+groups, and its record, written only with \texttt{--output}, equals \texttt{data/27-henselian-branching-verification.json} up to line endings on Windows.
+Neither verifies a filtered colimit, a localization denominator, a prime or a cardinality. An independent exact computation (SymPy), not shipped,
+rechecked in $2{,}726$ checks the multiplicities \eqref{osq:pc:eq:facebetti} and the flat dimension $\mu_{\mathscr C}(F)$ for every proper nonzero face of the
+cones over a square and a cube, by computing the reduced homology of every join complex $\mathsf K_{<G}$ directly, the square-cone multiplicities of the
+examples, the splitter identity and the one-radical factorization of \cref{osq:hb:rem:oneradical} with its six Laurent coefficients, the identity
+$\jmath^2=-1$ of \cref{osq:hb:prop:complex} and the inverse of the Gaussian decomposition; it verifies no colimit, detector module or henselization.
 
 \subsection{Formalization routes}\label{osq:sub:formalization}
 No statement of this report is formalized, and the repository has no omnific module. The sources
@@ -12268,7 +13569,9 @@ geometric multiplier, the monomial inverse certificates, the dyadic idempotents 
 formalize the class recursion and the choice equivalence separately, in an explicit model of $\mathsf{GB}$, without hiding global choice in a change of
 universe (\cref{osq:cr:q:formal}). 25 would start from the cofinal tail extrapolation, semialgebraic finite-difference rigidity and convex-support
 absorption, with semialgebraic Rolle and monotonicity over arbitrary real closed fields, the class-to-set support reduction and the exact support of a
-rational-power Hahn expansion as the delicate obligations (\cref{osq:sa:q:formal}). None was executed.
+rational-power Hahn expansion as the delicate obligations (\cref{osq:sa:q:formal}). 26 would encode finite rational cones and joins, principal
+exhaustion, the simplex and cap calculations and scalar cancellation before the surreal embedding, with the equational nonflatness theorem as a small
+separate target (\cref{osq:pc:q:formal}); 27 would start with the survival of every finite branch under localization (\cref{osq:hb:q:formal}). None was executed.
 
 \begingroup
 \raggedright
@@ -12568,6 +13871,42 @@ bibliographic antecedent.
 \bibitem{BCR}
 J.~Bochnak, M.~Coste and M.-F.~Roy, \emph{Real Algebraic Geometry}, Ergebnisse der Mathematik und ihrer Grenzgebiete (3) \textbf{36}, Springer,
 1998, \href{https://doi.org/10.1007/978-3-662-03718-8}{doi:10.1007/978-3-662-03718-8}. Cited by 25 as standard background; not reread in full.
+
+\bibitem{BayerSturmfels}
+D.~Bayer and B.~Sturmfels, Cellular resolutions of monomial modules, \emph{Journal f\"ur die reine und angewandte Mathematik} \textbf{502}
+(1998), 123--140; arXiv:alg-geom/9711023. Cited by 26 as the classical cellular method.
+
+\bibitem{GPW}
+V.~Gasharov, I.~Peeva and V.~Welker, The lcm-lattice in monomial resolutions, \emph{Mathematical Research Letters} \textbf{6} (1999), 521--532,
+\href{https://doi.org/10.4310/MRL.1999.v6.n5.a5}{doi:10.4310/MRL.1999.v6.n5.a5}. Cited by 26.
+
+\bibitem{GeistMiller}
+N.~Geist and E.~Miller, Global dimension of real-exponent polynomial rings, \emph{Algebra \& Number Theory} \textbf{17} (2023), 1779--1788,
+\href{https://doi.org/10.2140/ant.2023.17.1779}{doi:10.2140/ant.2023.17.1779}; arXiv:2109.04924. Cited by 26; its all-module theorems are not reproved.
+
+\bibitem{MillerEssential}
+E.~Miller, Essential graded algebra over polynomial rings with real exponents, \emph{Advances in Mathematics} \textbf{485} (2026), article 110682,
+\href{https://doi.org/10.1016/j.aim.2025.110682}{doi:10.1016/j.aim.2025.110682}; arXiv:2008.03819v2. Cited by 26 as broader related work, inspected
+selectively.
+
+\bibitem{StacksHensel}
+The Stacks Project Authors, \emph{The Stacks Project}, Section 10.155, Tag 0BSK (henselization and strict henselization),
+\url{https://stacks.math.columbia.edu/tag/0BSK}. Cited by 27.
+
+\bibitem{StacksPermanence}
+The Stacks Project Authors, \emph{The Stacks Project}, Section 15.46, Tag 07QL (permanence under henselization),
+\url{https://stacks.math.columbia.edu/tag/07QL}. Cited by 27.
+
+\bibitem{StacksEtale}
+The Stacks Project Authors, \emph{The Stacks Project}, Section 10.143, Tag 00U0 (\'etale ring maps), \url{https://stacks.math.columbia.edu/tag/00U0}.
+Cited by 27.
+
+\bibitem{StacksLocal}
+The Stacks Project Authors, \emph{The Stacks Project}, Section 10.153, Tag 04GE (henselian local rings), \url{https://stacks.math.columbia.edu/tag/04GE}.
+Cited by 27.
+
+\bibitem{DFT}
+A.~B.~de Felipe and B.~Teissier, Valuations and henselization, arXiv:1903.10793v1, 2019 (Corollary~4.2). Imported by 27 for the valuation components.
 
 \end{thebibliography}
 \endgroup
