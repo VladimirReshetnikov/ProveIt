@@ -76,8 +76,11 @@ and both are proved:
 ## Policy on admitted statements
 
 Only results from the literature are admitted, each closed by the tactic `admit` with its source
-in the docstring; nothing else uses `sorry`.  For C1, three admitted statements remain, all in
-`Published.lean` (report 10 has five more, listed in its own section below):
+in the docstring; nothing else uses `sorry`.  Eight admitted statements remain: three for C1,
+all in `Published.lean` (this table); one for the dyadic route, in `DyadicRoute.lean` (the next
+table); and four for report 10, in `Hyper.lean` and `Cone.lean` (listed in its own section
+below).  A fifth report-10 statement, `blockCode_decode`, was admitted until 19 September 2026
+and is now proved.
 
 | Admitted statement | Reference | Used by |
 |---|---|---|
@@ -98,9 +101,15 @@ A third route, in `DyadicRoute.lean`, uses neither paper; see "The dyadic route"
 | `exists_minimal_pair_limit` | consequence of Cooper, *Minimal degrees and the jump operator*, JSL 38 (1973), 249–271 (every degree above `0′` is the jump of a minimal degree); the derivation is in the docstring | Route D: `not_C1_dyadic`, `not_C1Uniform_dyadic` |
 
 The three routes share no admitted statement, so `¬ C1` is obtained three times, once from a
-single admitted theorem (HJKS 4.2), once from two others, and once from Cooper 1973.  `Audit.lean` confirms that everything
-outside `Published.lean` and `C1.lean` depends only on `propext`, `Classical.choice` and
-`Quot.sound`, and that the theorems of `C1.lean` add only `sorryAx`.
+single admitted theorem (HJKS 4.2), once from two others, and once from Cooper 1973.  Of the
+79 axiom reports that `Audit.lean` prints, 62 show only `propext`, `Classical.choice` and
+`Quot.sound`; the 17 that add `sorryAx` are the theorems resting on admitted statements: the
+C1 refutations and their uniform versions (`not_C1`, `not_C1'`, `not_C1Uniform`,
+`not_C1Uniform'`, `not_C1_dyadic`, `not_C1Uniform_dyadic`), `OneGeneric.no_least`,
+`exists_re_no_least`, `exists_binary_counterexample`, `exists_not_ncEquiv_blockCode`, and from
+report 10 `exists_hyp_minimal_pair`, `exists_hyp_minimal_pair_close`,
+`exists_no_least_hyperdegree`, `exists_no_least_hyperdegree_close`, `hcore_Rc`,
+`no_cone_theorem` and `leastClass_no_cone`.
 
 ## Report 10
 

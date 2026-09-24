@@ -25,7 +25,9 @@ earlier versions are now **proved** from the definition of a witness (they keep 
 in `Published.lean` so that nothing downstream changed): `cof_omega_of_witness`,
 `aleph0_lt_of_witness`, `strongLimit_of_witness`, `not_REx_shortCofinal` (Blue–Goldberg
 Observation 1(2)) and `le_of_CEx`.  Their only admitted ingredient is `critSeq_cofinal`
-(the Kunen inconsistency).  16 admitted statements remain:
+(the Kunen inconsistency).  19 admitted statements remain, in the 16 rows below (one row names
+the four `HCD_*` statements of Goldberg's paper); each is a separate declaration closed by
+`admit`:
 
 | File | Admitted statement | Reference |
 |---|---|---|
