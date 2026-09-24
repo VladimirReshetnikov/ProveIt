@@ -477,7 +477,11 @@ idempotent augmentation ideal.
 Every finite quadratic branch survives localization, producing a free
 Boolean family in the generic fibre. A separate quadratic forces a copy
 of the complexified field there, although the henselization remains local
-with rational residue field. These manuscript results remain pending in Lean.
+with rational residue field. The completed main-theorem review proves that
+the henselization has exactly 2^κ minimal primes, each with complexified
+fraction field. Its completion is only ℚ: every generic branch disappears.
+Even maps to separated local ℚ-algebras, such as ℚ[[ε]], see only the
+rational residue. These manuscript results remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

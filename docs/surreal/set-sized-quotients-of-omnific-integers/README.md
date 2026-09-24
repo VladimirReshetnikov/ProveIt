@@ -105,7 +105,11 @@ all other small prime quotients are finite fields at ordinary integer or
 Gaussian prime moduli. Maps into small characteristic-zero rings have
 exactly the purely infinite kernel and image isomorphic to ℤ or ℤ[i].
 Those image rings are not fields; the corresponding fraction fields are
-identified separately. In positive characteristic, a small field target
+identified separately. Lean also classifies nonunital Gaussian maps into
+any small nonunital ring by pairs (e,j) with e²=e, ej=je=j and j²=−e;
+neither parameter need be central. Both actual purely infinite ideals
+are exactly the intersections of all small unital observation kernels,
+and equal constant terms are precisely the pairs these observations identify. In positive characteristic, a small field target
 has a finite prime or Gaussian residue field as image. Ideals with large
 quotients are outside this classification.
 
@@ -784,15 +788,34 @@ used. The quadratic-only splitter proof expands the finite-algebra
 specializations and keeps them separate from Laurent evaluation.
 The generic Boolean generators and imaginary unit use division in the
 fraction-field base change. The local henselization has no nontrivial
-idempotents and no square root of −1. These six results remain pending in Lean. The next
-review starts with the Boolean-power description and exact branch counts;
-the opening summary theorems are not yet fully reviewed.
+idempotents and no square root of −1.
+
+Six further proofs now establish the Boolean-power description, henselization
+size, exact generic cardinality and dimension, minimal-prime correspondence,
+and completion and nilpotent-target behavior. Finite image subalgebras
+fix the chosen complex scalar structure throughout the residue evaluation.
+Compactness turns finite branch patterns into all Boolean assignments;
+flat going down identifies precisely the minimal primes that survive.
+The completion proof explicitly exhibits the constant inverse systems,
+the failure of flatness and the non-finitely-generated maximal ideals.
+The main theorem is now assembled from these dependencies: thirteen
+standard henselian results are reviewed and remain pending in Lean.
+
+The original blanket exclusion of infinitesimal smoothness criteria is
+corrected: formal smoothness still has its square-zero lifting definition;
+the missing finite-presentation hypothesis prevents the usual smoothness
+equivalence from applying here. No formal-smoothness conclusion is claimed.
+A new unnumbered consequence extends residue factorization to all separated
+local ℚ-algebra targets, including ℚ[[ε]], with no rational-residue-field
+requirement on the target. It too awaits Lean formalization.
+The next review begins with strict henselization, followed by the arithmetic,
+Gaussian and valuation consequences and their factor summary theorem.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 348 pages
+article.pdf   the compiled report, 349 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

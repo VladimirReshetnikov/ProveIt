@@ -628,7 +628,15 @@ integral closures in 𝔼 before and after this localization. The lifted roots
 imaginary unit ȷ use coefficients and division in its generic fibre
 𝔼⊗_𝔏𝔏ʰ. A Boolean atom in a normalization residue ring is not the same
 element as the corresponding generic idempotent. The denominator argument
-connects the two constructions.
+connects the two constructions. The identification of the generic fibre
+with LC(𝖷,𝔼[i]) uses the chosen embedded copy of 𝔼[i]; the structural
+maps from that field to each prime residue field are isomorphisms. The coefficient field carries
+the discrete topology, so locally constant functions on the compact
+Stone space have finite image. Adic completion uses powers of the
+augmentation maximal ideal, not the order or valuation topology.
+A separated local target means ∩ₙ≥₁𝔯ⁿ=0; the residue-factorization
+consequence requires the map to be local. Vanishing tangent spaces
+at the rational point do not assert formal smoothness over ℚ.
 
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its

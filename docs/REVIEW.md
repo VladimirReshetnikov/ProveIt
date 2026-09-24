@@ -9374,3 +9374,67 @@ inspected pages 12–14. The article is unchanged by this merge, still
 348 pages, with the previously checked statements, labels and numbering
 preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
 references and 2,001 local Markdown destinations in 226 files.
+
+
+### Henselian generic geometry and completion (2026-09-24)
+
+Expanded the six proofs from `osq:hb:lem:booleanpower` through
+`osq:hb:cor:nilpotent`. Finite image subalgebras, with the kernel factors
+removed, give genuine products of the chosen complex scalar field.
+The proof identifies each prime residue field over that scalar field,
+constructs clopen characteristic idempotents, and proves the locally
+constant function isomorphism in both directions. The henselization
+cardinality argument counts pointed finite presentations and their
+localizations, including singular infinite cardinals.
+
+The exact generic size proof now separates three arguments: the size of
+the localized ring, compactness realizing every full Boolean assignment,
+and scalar-unit cancellation proving linear independence. The minimal-prime
+proof spells out flat going down, survival under localization, contraction
+back to the original prime and the fraction-field identification. Neither
+argument assumes Noetherianity.
+
+Completion is explicitly the constant inverse system of rational residue
+fields. Multiplication by omega is injective on both source rings but
+zero on the residue, proving nonflatness directly. Nakayama excludes
+finite generation of both maximal ideals. The nilpotent-target proof
+checks existence and uniqueness as well as factorization. A new
+unnumbered consequence extends this to all separated local rational
+algebras, with no restriction on their residue fields; Q[[epsilon]]
+is an example. These maps cannot be injective since they kill omega.
+An assembly paragraph now checks every clause of `osq:hb:thm:main`.
+Thirteen standard henselian results are reviewed; strict henselization,
+the arithmetic and Gaussian factors and valuation consequences are next.
+All these manuscript conclusions remain pending in Lean.
+
+Corrected the original unnumbered claim that infinitesimal lifting criteria
+cannot apply without Noetherian or finite-type hypotheses. Formal smoothness
+still has its square-zero lifting definition for any ring map; finite
+presentation is required in its equivalence with smoothness. Checked the
+primary Stacks Section 10.138 (00TH). The corrected passage makes no
+formal-smoothness claim for the two source rings. The ledger records the
+original claim as Needs correction and the extension as Pending.
+
+Fetched and fast-forwarded to origin/main at `083925a`, including `9b84c96`.
+Read all three new Lean modules against `osq:cor:gaussian`, its nonunital
+consequence and `osq:cor:observations`. Nonunital Gaussian maps are exactly
+the compatible idempotent/imaginary pairs, without centrality or a target
+identity; the equivalence is instantiated at the actual Gaussian omnific
+ring. The real and Gaussian small-observation theorems identify equal
+constant pairs and the literal intersections of all small unital kernels,
+using lifted ordinary targets to handle an arbitrary target universe.
+No arbitrary-coefficient instance is claimed. Updated the report guide
+and catalogue to match that merged scope.
+
+LEAN_NUM_THREADS=2 lake build passes 5,051 jobs; the default audit accepts
+19,078 declarations using only propext, Classical.choice and Quot.sound.
+Three final TeX passes for each PDF are diagnostic-free: article 349 pages,
+catalogue 37 pages. Inspected article pages 254–257 and catalogue pages
+13–14. All 418 numbered result statements, 828 labels and 1,656 AUX
+label-number pairs are unchanged, as are all 66 questions, 60 remarks and
+28 examples. No verifier code or finite symbolic identity changed; the
+new arguments concern spectra, cardinality and local maps and are not
+certified by the existing finite verifier. Audits pass all 4,626 anchors
+in 63 reports, 5,240 source-label references and 2,004 local Markdown
+destinations in 226 files. Refreshed root/report guides, notation, the
+ledger and catalogue. git diff --check passes.
