@@ -210,8 +210,9 @@ condition. The review now also covers representations, small quotients,
 completions, localizations, positive existential conservativity, modules and
 the finite-side standard-part theorem, support thresholds and fixed-group
 lower bounds, followed by the countable-support and regular-cardinal
-two-armed models. A large
-quotient can still have a nonzero small image: `Oz/(ω)` surjects onto `ℤ`,
+two-armed models and the controlled-field construction at every infinite
+cardinal. A large quotient can still have a nonzero small image:
+`Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
 set-sized image. More generally, the universal set-sized image of `Oz/(f)`
 is `ℤ/(ct(f))`. These are manuscript consequences of the universal theorem;
@@ -229,7 +230,11 @@ while the purely infinite ideal requires `κ` generators. At `κ = ℵ₁`,
 the threshold is `2^{ℵ₀}` whether or not CH holds; an explicit reindexing
 identifies this model with the countable-support construction. Field closure
 also holds at singular support bounds, but the needed common monomial
-divisors can fail there. These cardinal results remain pending in Lean.
+divisors can fail there. The controlled-field construction reaches every
+infinite `κ` by keeping each element within finitely many exponent
+coordinates. Its omnific integer part has a characteristic-zero field
+quotient of size `κ` in which the actual `ω` maps to `−1`; that map cannot
+extend to all omnific integers. These cardinal results remain pending in Lean.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway
