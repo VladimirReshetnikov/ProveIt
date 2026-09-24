@@ -4132,6 +4132,115 @@ The 4,271-result inventory passes. No TeX source or PDF changes in this last
 merge; the preceding render checks still apply. The Gaussian fiber and
 converse existence statements remain pending in Lean.
 
+## Workspace and closing-scope review
+
+The Diophantine scope pass checks Section 20 and Sections 21.1–21.6 against
+the maintained proofs and implementation ledger. It corrects the unconditional
+claim about products with the affine line, distinguishes singleton rigid-curve
+fibers from affine-line fibers, and distinguishes vanishing Euler contractions
+from vanishing differential forms. The integer-exponent workspace supplies an
+explicit counterexample to universal idempotence: `Π = ω ℝ[ω]` and
+`Π² = ω² ℝ[ω]`. The arithmetic curve summary now states its real-fiber and
+ordinary-point hypotheses. Rational-hull characters preserve original supports;
+the scalar-representation theorem retains unimodularity. The fraction synthesis
+states uniqueness up to sign, and the catalogue uses constant-term specialization
+rather than standard part for that classification.
+
+The formalization route is rewritten in dependency order at `38425db`, with
+chosen Smith reductions, the real/complex kernel distinction and the remaining
+logical and geometric obligations explicit. The proposed module table now
+breaks over pages with repeated headers and preserves later table numbering.
+The root README, notation guide and coverage records reflect this scope.
+This is a check of maintained statements and their summaries, not completion
+of parallel-source reconciliation or of imported classical foundations.
+
+All 217 standard result environments, 30 question environments, 471 source
+labels and 942 auxiliary numbering fields are preserved. Three-pass builds
+give a 203-page article and 32-page catalogue without warnings, unresolved
+references or bad boxes. Targeted visual inspection covers the changed scope
+paragraphs, both roadmap pages, the closing fiber/synthesis text and catalogue
+pages 9–10. The independent inventory passes for 4,271 results in 63 reports;
+all 4,821 source references and 1,665 local Markdown destinations resolve.
+No Lean source or finite verification program changes in this pass; the last
+combined build was 4,471 jobs and its axiom audit covered 15,460 declarations.
+Incoming synchronization is checked separately. Remaining pointers in Sections
+1, 6, 7 and 14, Section 21.7, the appendix foundations and complete source
+reconciliation remain pending.
+
+## Scope-review synchronization and new manuscript boundaries
+
+The merge through `31e3489` adds the Gaussian omnific ring and exact
+Gaussian decomposable fibers (`4037368`) and both real and Gaussian kernel
+converses (`ae0210c`). Their five modules were checked against
+`odg:dec:thm:gaussianfibers` and `odg:dec:cor:converse`: constants lie in
+Mathlib's Gaussian integers, kernel coefficients are actual Conway
+coefficients, ordinary fibers are disjoint, and the converse retains an
+ordinary point at a nonzero level. The generic nonzero-kernel argument uses
+a supplied nonzero vector; its actual instantiation supplies the monomial
+`ω`. The combined two-thread Lean build passes 4,478 jobs and its axiom audit
+passes 15,506 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`.
+
+The holonomic coefficient-observable addition (`76dd876`) adds eleven
+standard results and principal Theorem O. Source C17 (`fdedce0`) adds 27
+standard results to Section 19.4 of the Diophantine report and ten questions,
+plus summary and provenance material. Existing holonomic standard statements
+are unchanged; five existing Diophantine statements change only by adding
+C17 to their credits. All thirty earlier question statements are unchanged.
+None of this new manuscript material is included in the completed independent
+review scopes, including its new paragraphs in Sections 20–21.6. The reader
+map, catalogue and ledger now distinguish these integrations from the three
+remaining batch-33 omnific-automorphism companions. Nine further companions
+are placed in `a7a435f` with main texts still pending. The six-member Hahn-joins
+archive delivered in `267b910` passes ZIP integrity checks but awaits placement.
+
+The merged article builds in three passes to 225 pages and the catalogue to
+33, with no warnings, unresolved references or bad boxes. Every earlier
+auxiliary label retains its number. Visual checks cover the merged workspace
+and roadmap pages, corrected product and contraction explanations, and the
+updated catalogue entries and ending. The formalization route records the
+new Gaussian/converse proofs; its geometric and discriminant obligations
+remain pending. The independent inventory passes for 4,309 results in 63
+reports; all 4,860 cited source references and 1,673 local Markdown
+destinations resolve. Incoming finite suites were not rerun in this scope
+review, and their delivered records are not treated as independent proofs.
+
+## Fiber-size and automorphism synchronization
+
+The next merge through `a80f112` brings the four kernel-line/size modules
+from `827be60` and three binary-form/Pell modules from `782376e`.
+Their statements were read against `odg:dec:cor:converse`, its following
+examples, `odg:thm:binary` and `odg:cor:pell`. The fiber embeddings retain
+an ordinary point, a nonzero level and a nonzero direction in the correct
+real or complex kernel. Their size conclusion is explicitly relative to
+Lean universes. The empty-fiber example proves why the ordinary-point
+hypothesis is needed. The binary-polynomial theorem needs two independent
+homogeneous linear divisors but no homogeneity hypothesis on the polynomial;
+the Pell application covers all nonzero integer parameters and levels.
+The combined two-thread build passes 4,485 jobs and the axiom audit passes
+15,573 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+
+The three remaining batch-33 companions are now integrated in the
+omnific-automorphism report by `19d0b0e`. They add 89 standard results on
+formal orbit fields, left-orderable symmetry groups and formal integration
+of derivations, bringing that report to 274 and the collection to 4,398
+across 63 reports. A comparison of statement environments finds all 185
+previous statements unchanged and all previous labels retained. The new
+claims, their imported class constructions and their complete source
+reconciliation remain pending independent review and Lean formalization.
+The later universal-symmetries companion remains staged. Reader summaries,
+the root README and catalogue now reflect fourteen integrated manuscripts
+and retain the conjugation condition on the complex group classification.
+
+The independent inventory passes for all 4,398 results; all 4,950 cited
+source references and 1,680 local Markdown destinations in 225 files resolve.
+The revised catalogue builds in three passes to 33 pages without warnings,
+unresolved references or bad boxes; its changed entry is visually checked
+on pages 10–11. The 225-page Diophantine PDF and source are unchanged since
+the preceding successful build. The delivered automorphism PDF is retained;
+its new proofs and finite verification suites have not been independently
+reviewed or rerun in this synchronization.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

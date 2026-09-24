@@ -11300,8 +11300,11 @@ polynomial identities apply to $\Oz_\Gamma$ \src{01, 02}. Their proofs use finit
 leading exponents and real coefficients, not the availability of a new
 exponent outside $\Gamma$. The derivation arguments of
 \cref{odg:sec:derivations} take place in the workspace of the rational span of
-the relevant supports, so they apply to $\Oz_\Gamma$ after passing to the
-divisible hull of $\Gamma$ \src{05}. If $\Gamma\ne0$, its positive cone
+the relevant supports. A functional on that rational span restricts to
+$\Gamma$, and its Euler derivation changes coefficients without changing
+exponents. Thus it preserves the original workspace; passing to the
+divisible hull to choose the functional does not require the point or its
+derivatives to acquire new exponents \src{05}. If $\Gamma\ne0$, its positive cone
 provides nonconstant parameters for the infinite-family statements; the case
 $\Gamma=0$ is $\Oz_\Gamma=\Z$. The Lorentz family uses only $t$, $t^2$ and
 real scalars, so one positive monomial already produces examples. If the
@@ -11327,12 +11330,23 @@ for $\Oz_\Gamma$; in particular one must not infer $\Pi_\Gamma^2=\Pi_\Gamma$ by
 copying the proof for $\No$ \src{01, 02, 05}. Proofs that stay inside a
 workspace must be distinguished from proofs that enlarge it. The conclusion of
 \cref{odg:thm:nogcd}, though not the proof printed with it, does hold in every
-$\Oz_\Gamma$, by the halving route of sources 08 and 09
-(\cref{odg:frac:rem:halving}).
+$\Oz_\Gamma$ for each $0\ne t\in\Pi_\Gamma$ and irrational real $r$,
+by the halving route of sources 08 and 09
+(\cref{odg:frac:rem:halving}). Nontriviality of $\Gamma$ is needed for
+such a pair to exist; when $\Gamma=0$ the ring is $\Z$, a GCD domain.
+For a concrete failure of another full-class conclusion, take $\Gamma=\Z$.
+A reverse-well-ordered subset of the positive integers is finite, so
+$\Pi_\Gamma=\omega\R[\omega]$ and
+$\Pi_\Gamma^2=\omega^2\R[\omega]\ne\Pi_\Gamma$. In particular,
+$\omega$ is not a sum of products of two purely infinite elements in
+that workspace.
 
 \paragraph{Fractions.} In \cref{odg:frac:sec:fractions} the multiplier theorem
-is ring-theoretic and holds for any retraction
-(\cref{odg:frac:thm:pullback}); the polynomial models, the scale defect and the
+is ring-theoretic: it uses a domain containing $\R$, a retraction to
+$\R$, its integer pullback, and a unimodular tuple in that domain
+(\cref{odg:frac:thm:pullback}). These hypotheses, especially unimodularity,
+are retained; an arbitrary ring map alone does not give the conclusion.
+The polynomial models, the scale defect and the
 $\Tor_1$ computation concern set-sized rings; and the classification of
 representations, primitivity and least denominators uses only B\'ezout
 identities and constant coefficients \src{08}. The non-generation of the
@@ -11341,17 +11355,35 @@ surreals, the orbit density and the focusing theorem use the full class
 \src{08, 09}. Sources 08 and 09 show in one workspace that the fraction field
 of its omnific ring is smaller than the Hahn field (\cref{odg:frac:ex:workspace}).
 
-\paragraph{Curve and differential rigidity.} Every theorem of
-\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups} is proved in a
-set-sized Hahn ring $\crA$ over an arbitrary ordered exponent group, divisible or
-not, and the statements about $\BR$, $\BC$, $\Oz$ and $\Og$ are read one point at a
-time in a workspace containing its coordinates and finitely many witnesses
-\src{C10, C11, C12, C13, C14, C15}. They therefore hold for $\Oz_\Gamma$ as stated. The
-full class enters only through the monomial clearing of
-\cref{odg:cor:projectiveclear}, quoted in \cref{odg:cr:sub:projective}, and the
-statement that nonempty affine-line fibers are proper classes
-(\cref{odg:cr:cor:omnific}); in a workspace those fibers are copies of
-$\Pi_\R(\Gamma)$.
+\paragraph{Curve and differential rigidity.} The characteristic-zero
+rigidity criteria in
+\cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}
+are first proved for set-sized Hahn rings. No divisibility or rank
+restriction on the ordered exponent group is imposed. Their own hypotheses
+on the coefficient field, geometry and coefficient ring are still needed:
+a theorem about $\crA$-points is not automatically a theorem about
+$\Oz_\Gamma$-points. The arithmetic conclusions use the descent statements
+\cref{odg:cr:thm:arith,odg:cr:thm:descent,odg:log:thm:descent}.
+The positive-characteristic counterexamples and reduced- or dual-number
+coefficient extensions have their separately stated domains.
+
+For the actual rings $\BR$, $\BC$, $\Oz$ and $\Og$, each point and its
+finite presentation witnesses lie in one set-sized workspace
+\src{C10, C11, C12, C13, C14, C15, C16}. This proves the asserted
+class-level equalities one point at a time. Conversely, nonconstant points
+on an affine line require $\Gamma\ne0$; at $\Gamma=0$ every point is
+constant, regardless of the target. In the affine-line case the arithmetic
+constant-term fibers are copies of $\Pi_\R(\Gamma)$, whereas the rigid
+curve cases have singleton fibers over their ordinary points. For singular
+curves, the arithmetic converse needs the normalization-preimage condition
+of \cref{odg:sg:prop:arithfamily}; it must not be replaced by the smooth
+fiber formula.
+
+The full-class projective clearing in
+\cref{odg:cor:projectiveclear}, quoted in
+\cref{odg:cr:sub:projective}, is a separate step. So is the statement that
+nonempty affine-line fibers are proper classes
+(\cref{odg:cr:cor:omnific}): fibers inside a fixed workspace are sets.
 
 \paragraph{Constant discriminants.} Every result of \cref{odg:disc:sub:disc} is proved over
 $\crA$ or $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ for an arbitrary set-sized ordered group
@@ -11362,45 +11394,73 @@ that subsection uses the full class.
 
 \subsection{A formalization route}
 
-At the source placement commits there was no Lean declaration about omnific
-integers. Commit \texttt{f879c1e} now proves \cref{odg:prop:ring}: the actual
-real and complex nonnegative-support rings, the omnific ring, their
-constant-term retractions, the purely infinite ideals and the integer quotient.
-The real purely infinite ideal is also a real vector subspace. The construction
-uses the proved normal-form equivalence of the actual surreal field; it is
-not restricted to one fixed exponent workspace. See
-\fn{Surreal/Foundations/OmnificIntegers.lean},
-\fn{Surreal/Surcomplex/NonnegativeSupportRing.lean} and the exact mappings
-in \fn{docs/FORMALIZATION.md}. Commits \texttt{150b4a0} and
-\texttt{de84022} further prove \cref{odg:lem:degree,odg:prop:units,odg:thm:floor}:
-the degree laws, real and complex support-ring units, ordinary finite
-omnific integers, discrete ordering and the exact omnific integer part.
-The floor proof includes the subtraction of one at an integer constant
-coefficient with a negative infinitesimal tail. These developments are in
-\fn{Surreal/Foundations/OmnificDegree.lean},
-\fn{OmnificUnits.lean}, \fn{OmnificFloor.lean} and their surcomplex degree/unit
-counterparts. Commit \texttt{e69defb} proves the ordinary polynomial-root
-rigidity of \cref{odg:prop:univariate} and transcendence over $\R$ of
-every infinite omnific integer, in
-\fn{Surreal/Foundations/OmnificPolynomialRoots.lean} and
-\fn{Surreal/Surcomplex/ConstantPolynomialRoots.lean}.
-Commit \texttt{efe4957} proves \cref{odg:thm:finitequotients,odg:prop:finitedivisors}
-in \fn{Surreal/Foundations/OmnificResidues.lean} and
-\fn{OmnificIntegerDivisors.lean}. The ordinary-modulus package identifies
-divisibility with constant-term divisibility, constructs the quotient
-isomorphism, and proves the intersections and exact prime-power bounds.
-The divisor result says that every omnific divisor of a nonzero ordinary
-integer is an ordinary integer divisor.
-Other Diophantine results remain pending unless mapped in the ledger.
+The implementation ledger \fn{docs/FORMALIZATION.md} distinguishes proved
+Lean declarations from manuscript proofs and proposed modules. At commit
+\texttt{38425db}, the implemented prerequisites concern the actual surreal
+and surcomplex carriers, using their proved normal-form equivalence. They
+are not merely assertions about one fixed Hahn field. The dependency order
+is as follows.
+
+First come the real and complex nonnegative-support rings, constant-term
+retractions, purely infinite ideals and omnific integer ring
+(\cref{odg:prop:ring}); then degree, units, discreteness and the exact floor
+(\cref{odg:lem:degree,odg:prop:units,odg:thm:floor}). The floor includes the
+subtraction of one at an integer constant coefficient with a negative
+infinitesimal tail. The files are \fn{OmnificIntegers.lean},
+\fn{OmnificDegree.lean}, \fn{OmnificUnits.lean} and \fn{OmnificFloor.lean}
+under \fn{Surreal/Foundations/}, with the complex support-ring and unit
+counterparts under \fn{Surreal/Surcomplex/}.
+
+Next, ordinary polynomial-root rigidity, residue arithmetic, integer
+divisors, positive-characteristic ideals and the canonical retraction are
+proved. The separate support-bound arguments prove common monomial
+clearing, $\Frac(\Oz)=\No$, idempotence of $\Pi$, and the stated failure of
+GCD, Noetherian and integral-closure properties. These full-class arguments
+use the normal-form bridge's explicit smallness hypotheses; they are not
+consequences of the elementary fixed-workspace ring package alone.
+
+The equation-retraction theorem and positive-existential transfer are
+proved in Lean, while the separate undecidability claims remain pending.
+For linear systems, \cref{odg:thm:smith} is implemented relative to a chosen
+integer Smith reduction; \cref{odg:thm:linear} has its full ordinary-plus-
+purely-infinite decomposition and unique rational-kernel parameters in
+\fn{Surreal/Foundations/OmnificLinearSystems.lean}. A zero transformed row
+requires its whole right-hand entry to vanish, not just its constant term.
+
+Finally, \cref{odg:lem:constantproduct,odg:thm:decomposable} are implemented
+in the \fn{DecomposableFibers.lean} modules and the omnific specializations
+under \fn{Surreal/Surcomplex/}. The real kernel of complex forms on real
+omnific variables is kept distinct from full complex column rank for
+complex support-ring variables. The coefficientwise statement uses actual
+Conway coefficients; no finite-support restriction is introduced. The
+Gaussian fiber theorem and its coefficientwise complex-kernel description
+are also proved in commit \texttt{4037368}; commit \texttt{ae0210c} proves
+the converse existence criterion, using a nonzero purely infinite monomial.
+The files \fn{GaussianOmnificIntegers.lean},
+\fn{GaussianDecomposableFibers.lean} and
+\fn{DecomposableKernelCriterion.lean} under \fn{Surreal/Surcomplex/}
+retain the ordinary-point and nonzero-level hypotheses. Differential and
+geometric rigidity and the remaining unmapped Diophantine results are
+pending. Exact theorem names and any newer coverage belong in the ledger.
+
 The sources proposed overlapping routes; the following merges them. The
 module names in the table are proposals, not the names of the implemented files.
 
-\begin{center}
+% This uncaptioned roadmap must not renumber the later labelled table.
+\addtocounter{table}{-1}
+\begingroup
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.6\textwidth}}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.6\textwidth}}
 \toprule
 Proposed layer & Main obligations\\
 \midrule
+\endfirsthead
+\toprule
+Proposed layer & Main obligations\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
 \fn{Omnific.Basic} \src{01, 02, 05} & In a real Hahn field over a
 set-sized ordered divisible group: the nonnegative-support subring, the
 integer-constant subring, the retraction $\ct$ from the zero-exponent
@@ -11419,7 +11479,8 @@ $U_t$ over any field of characteristic zero, the isotropic-vector choices,
 and the level classification.\\
 \fn{Omnific.IntegralityGuard} \src{01, 05} & Pell rigidity with
 \fn{Nat.sum_four_squares} (source 05's six-auxiliary form); source 01's
-five-auxiliary form needs a three-square theorem, which Mathlib lacks.\\
+five-auxiliary form needs the three-square input separately. The
+manuscript's imported number theory is not supplied by the ring package.\\
 \fn{Omnific.Definability} \src{06, 07} & Units of $\mathcal A_\Bbbk(\Gamma)$
 on the large-monomial side (a small-monomial Hahn implementation must reverse
 the exponent sign), Pell rigidity by coefficient extension, the finite
@@ -11438,16 +11499,6 @@ denominator ideals in a discretely ordered domain with integer-part division
 (principal ideals and least members, covariance); then the normal-form
 instantiation; last, the matrices $\mathsf F_{x,b}$ and focusing, with an
 explicit smallness hypothesis on the input family.\\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.6\textwidth}}
-\toprule
-Proposed layer & Main obligations\\
-\midrule
 \fn{Omnific.CurveRigidity} \src{C12, C13; also C10, C15} & First the elementary chain in a
 set-sized Hahn field: the one-sided rings, the image condition
 $\partial(\crA)\subseteq\crP$, the certificate \eqref{odg:cr:eq:universal} and the
@@ -11457,9 +11508,8 @@ support algebra with $\crP\cap\crO=0$; a one-variable function-field statement w
 logarithmic differential and a valuation centre; and the compactification and
 Riemann--Roch input producing that differential. No proper-class scheme; the surreal
 instances last.\\
-\bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
+\endgroup
 
 Source 05 points to the normal-form bridge (\fn{docs/NORMAL_FORM_BRIDGE.md})
 and the modules \fn{SmallNormalFormFieldEquiv.lean},
@@ -11594,10 +11644,12 @@ articles, not as certified open problems.
 
 \paragraph{Rigid affine varieties and curves (sources 01, 02, 05).} All five
 sources answer the second part of \cref{odg:q:affine} for smooth geometrically
-integral curves: over any field of characteristic zero and any exponent group, a
-smooth affine curve has nonconstant points over the one-sided Hahn ring exactly when
-it is the affine line (\cref{odg:cr:thm:affine}); for an affine integral model with
-smooth generic fiber, $\mathcal C(\Oz)=\mathcal C(\Z)$ unless the generic fiber is an
+integral curves: over any field of characteristic zero and any nontrivial
+ordered exponent group, a smooth affine curve has nonconstant points over
+the one-sided Hahn ring exactly when
+it is the affine line (\cref{odg:cr:thm:affine}). The trivial exponent
+group gives only the coefficient field and is rigid for every target.
+For an affine integral model with smooth geometrically integral real fiber, $\mathcal C(\Oz)=\mathcal C(\Z)$ unless that real fiber is an
 affine line, in which case every fiber of $\ct$ over an integer point is a copy of
 $\Pi$ (\cref{odg:cr:cor:omnific}). The named test $Y^2=X^3+aX+b$ is settled
 completely: only ordinary solutions when $4a^3+27b^2\ne0$
@@ -11609,7 +11661,7 @@ over the rings $\mathcal A_\C(\Gamma)$, and the part supplies rigid affine varie
 in every dimension: locally closed subschemes and quasi-finite covers of abelian and
 semiabelian varieties (\cref{odg:cr:thm:abelian,odg:cr:thm:quasifinite}). Source C15
 adds descent over every coefficient ring (\cref{odg:log:thm:descent}) and the
-complements of normal-crossings divisors whose logarithmic symmetric differentials
+complements of simple normal-crossings divisors whose logarithmic symmetric differentials
 separate tangent directions (\cref{odg:log:cor:criterion,odg:log:cor:omnific}). The
 question stays open for singular curves and for general affine varieties of higher
 dimension; its refined forms are \cref{odg:cr:q:singular,odg:cr:q:higher}. Status
@@ -11756,10 +11808,13 @@ polynomial curves \src{02}. The report
 \fn{docs/surreal/omnific-groups-and-lattices} answers the question for closed
 subgroup schemes of $\GL_N$ over $\Z$ (and over $\Z[i]$ for $\Og$). Sources
 C10--C14 answer the second part for smooth geometrically integral curves and
-settle the test equation (\cref{odg:cr:sub:settled}): the only smooth affine curve
-with nonordinary omnific points is the affine line, the nonsingular Weierstrass
-equations have only ordinary solutions and the singular ones have polynomial
-families. For smooth curves the criterion is exactly the separation into polynomial
+settle the test equation (\cref{odg:cr:sub:settled}). An affine model
+with smooth geometrically integral real fiber can have nonordinary omnific
+points only when that real fiber is the affine line; in that case such
+points exist precisely when the model has an ordinary integer point.
+This is a condition on the real fiber, not an assertion that the model is
+$\Aff^1_\Z$. Nonsingular Weierstrass equations have only ordinary
+solutions, while the singular cases have the displayed polynomial families. For smooth curves the criterion is exactly the separation into polynomial
 parametrization, torus rigidity and genuinely algebraic branches asked for above,
 and source 02's caution is resolved: every nontrivial fiber of a smooth affine curve
 comes from a real polynomial curve (\cref{odg:cr:cor:omnific,odg:cr:cor:polywitness}).
@@ -12020,8 +12075,12 @@ uniruledness, rational connectedness or the existence of polynomial curves is
 asserted \src{C10, C12}. Source C15's local computation handles the centre of an
 arbitrary valuation ring (\cref{odg:log:lem:valuation}); it asserts no equivalence
 between rigidity and the absence of nonconstant maps from $\Aff^1$, and such an
-equivalence may not be inferred from the classification of curves \src{C15}. A product
-with $\Aff^1$ is never rigid \src{C12}.
+equivalence may not be inferred from the classification of curves \src{C15}. If $\Gamma\ne0$ and $X(\Bbbk)\ne\varnothing$, then
+$X\times\Aff^1$ is not rigid: for $x_0\in X(\Bbbk)$ and $\gamma>0$,
+$(x_0,\omega^\gamma)$ is a nonconstant point \src{C12}.
+The point hypothesis matters: constant extraction gives
+$X(\crA)\to X(\Bbbk)$, so if the latter is empty, both the source
+and the product's point set are empty and the equality holds vacuously.
 
 \begin{question}[Primitive versus unimodular \src{C12, C13, C14; also C10, C11}]\label{odg:cr:q:primitive}
 For positive-genus projective curves over $\Z$, can the unit-ideal hypothesis of
@@ -12149,8 +12208,10 @@ order types in each fiber, and their behaviour under embeddings of ordered group
 of this is encoded by the conductor?
 \end{question}
 \Cref{odg:sg:cor:scale} concerns existence only; fibers may keep rank and support
-information that the dichotomy forgets \src{C16}. For smooth curves the fibers are copies of
-$\crP$ (\cref{odg:cr:thm:arith}).
+information that the dichotomy forgets \src{C16}. For smooth curves,
+\cref{odg:cr:thm:arith} gives singleton fibers in the rigid case and
+copies of $\crP$ in the affine-line case, over each ordinary point.
+It does not give the affine-line fiber formula for singular curves.
 
 \begin{question}[Formalization across the normal-form bridge \src{C16}]\label{odg:sg:q:lean}
 Can the finite power identity, the conductor certificate and the one-variable valuation
@@ -12293,7 +12354,7 @@ of ordinary quantified arithmetic than their discreteness suggests
 principle, or Conway's refinement property.
 
 Sources 06 and 07 show that the decomposition itself is visible from inside
-the ring. The ideal $\Pi$ is the solution set of $x^2=2y^2$, its complement is
+the ring. The ideal $\Pi$ is defined by $\exists y\,(x^2=2y^2)$, its complement is
 the set of divisors of values of $\Lambda$, and $\Z$ is cut out by a Pell
 equation, a divisibility and an intersective certificate; so the retraction
 $\ct$, although not a symbol of the language, has a Diophantine graph. The
@@ -12306,15 +12367,18 @@ Sources 08 and 09 say how much the third fact leaves of ordinary fractions.
 Wherever a point has a unimodular presentation over $\BR$, and in particular
 for all rational functions of one purely infinite parameter, the retraction
 decides lowest terms: a rational constant vector gives a principal denominator
-ideal and a unique primitive presentation, and an irrational one gives a
+ideal and a primitive presentation unique up to an overall sign, and an
+irrational one gives a
 scalar copy of $\Pi$ and no gcd. This arithmetic is invisible to the order:
 both kinds of point occur in every interval, and the specialization is
 continuous nowhere.
 
 Sources C10--C14 turn the differential side of the second divide into geometry.
 Euler derivations preserve the one-sided ring and push the opposite valuation ring
-into its maximal ideal; properness lets one point be seen from both rings, so every
-global differential vanishes at it, and enough differentials force constancy. For
+into its maximal ideal. Properness lets the same field point be seen from
+both rings, so each positive-degree global symmetric differential has zero
+contraction against the induced Euler tangent. The differential itself need
+not vanish at that point. Tangent separation then forces constancy. For
 smooth curves the three mechanisms are then exhaustive: positive genus gives
 differential rigidity, two or more punctures of a rational curve give unit rigidity,
 and the single remaining case, the affine line, gives polynomial flexibility with
@@ -12322,7 +12386,8 @@ every fiber a copy of $\Pi$. The elliptic test equation of \cref{odg:q:affine} i
 first case with a one-line certificate, and its singular members are the polynomial
 case. Source C15 carries the differential side to logarithmic forms: a form with
 logarithmic poles along the boundary still contracts into the valuation ring, so with the
-image condition $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
+image condition $\partial(\crA)\subseteq\crP$ its Euler contraction
+vanishes as well, and complements whose
 logarithmic forms separate tangent directions are rigid in every dimension.
 
 Source C16 removes smoothness from the curve case without assuming that points

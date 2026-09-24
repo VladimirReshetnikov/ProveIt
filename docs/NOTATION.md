@@ -181,6 +181,14 @@ respect their inclusions in that field when the exponent group is nonzero.
 For source C15's `t^γ = ω^(−γ)`, extend its additive functional `ℓ`
 uniquely to the rational hull: `D_ℓ` corresponds to `∂_(−ℓ)`.
 
+Workspace qualifications also govern the geometric summaries. At `Γ = 0`
+the point ring is the coefficient field. For a smooth geometrically integral
+curve, constant-term fibers over ordinary points are singletons in the rigid
+case and copies of `Π_k(Γ)` in the affine-line case. The latter formula is not
+a claim about arbitrary singular curves. A vanishing contraction of a
+differential against an Euler tangent does not mean that the differential
+itself vanishes at that point.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree
