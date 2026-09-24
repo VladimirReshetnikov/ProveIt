@@ -4742,3 +4742,51 @@ statements, 828 labels, 1,656 numbering pairs and question/remark/example
 texts preserved. Audits pass 4,626 anchors in 63 reports, 5,243 source-label
 references and 2,016 local Markdown destinations in 226 files. Both working
 and staged diff checks pass.
+
+
+### Finite-test foundations and certificates (2026-09-24)
+
+Reviewed the first seven of the twelve standard results in Source 22's
+finite-test section, from rectangular grids through the Gaussian rational
+certificate. The expanded induction includes the empty grid and zero
+degree bounds. The specialization proof explains Gauss descent of a
+common factor, the nonzero resultant, its coordinate-degree bound and
+the separate use of the two leading coefficients. Constant numerators
+are included. Both rational certificates handle zero functions and show
+that transcendence at the fresh monomial keeps the specialized denominator
+nonzero; the real proof includes the empty specialization tuple at m=1.
+
+The common-test proof assembles a set-sized union of full supports before
+choosing one scale and gives the countability argument. Exception removal
+separates denominator detection from propagation of a bad polynomial
+value. In the latter step every translated nonconstant term has positive
+support, and the new coordinate cannot belong to the exceptional set.
+This works for bad values of arbitrary support and for constant failures.
+The Gaussian arithmetic proof displays the Newton expansion in real and
+imaginary coordinates; it never assumes binomial closure for Gaussian
+inputs. Exact certificates remain relative to coefficient supports and
+exact membership, not algorithms for arbitrary surreal descriptions.
+
+Corrected osq:ft:ex:resultant: for (X+Y)/(XY+1), the resultant 1-Y^2
+detects cancellation at Y=+/-1, but is nonzero at Y=0. Degree loss at zero
+is excluded by the separate leading-coefficient factor Y. The full
+bad-specialization polynomial, not its resultant factor alone, excludes
+all three parameters. No numbered theorem statement was changed.
+Updated root/report guides, shared notation, ledger and catalogue. The
+remaining five standard results (tensor base change, constant-test
+lifting, image ideals, birational rigidity and fixed-workspace transfer)
+and full source reconciliation remain pending review. No Lean coverage
+is added by this manuscript pass.
+
+A byte-identical scratch copy of Source 22's verifier passes all 1,776
+exact assertions with SymPy 1.14.0. Its JSON matches the archived report
+except for Python 3.13.14 versus 3.13.5. These checks cover finite algebra
+and sampled lexicographic inequalities, not arbitrary supports or class
+quantifiers. Three final TeX passes per PDF are diagnostic-free: article
+357 pages, catalogue 37 pages. Inspected article PDF pages 290–295 and
+297–298 and catalogue page 10. All 418 numbered results, 828 labels and
+1,656 AUX numbering pairs remain unchanged; all 66 questions and 60
+remarks are unchanged, and only the identified one of 28 examples changed.
+Audits pass 4,626 anchors in 63 reports, 5,244 source-label references and
+2,016 local Markdown destinations in 226 files. No Lean source changed.
+Working and staged diff checks pass.

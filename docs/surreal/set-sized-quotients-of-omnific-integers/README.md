@@ -152,6 +152,18 @@ Every Gaussian endomorphism acts on constant terms by identity or
 conjugation and preserves and reflects the purely infinite ideal;
 automorphisms carry that ideal onto itself.
 
+The first seven standard results of Source 22's finite-test section are
+now reviewed, from rectangular interpolation and resultant specialization
+through the real and Gaussian single-scale certificates. The proofs track
+degree preservation, coprimality and the nonvanishing fresh denominator.
+One common scale tests a set of rational functions; polynomial failures
+propagate outside any prescribed set by adding purely infinite terms.
+The Gaussian arithmetic grid uses ordinary real binomials in twice as
+many variables. The worked resultant example now separates cancellation
+at Y=±1 from degree loss at Y=0. Tensor base change, constant-test lifting,
+image ideals, birational rigidity and fixed-workspace transfer remain the
+next proof-review tasks. These manuscript reviews add no Lean coverage.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator
@@ -899,7 +911,7 @@ Exact scope and validation are in
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 356 pages
+article.pdf   the compiled report, 357 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

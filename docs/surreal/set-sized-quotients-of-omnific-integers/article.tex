@@ -19394,9 +19394,16 @@ Let $K$ be a field of characteristic $0$ and $0\ne h\in K[Y_1,\dots,Y_r]$ with $
 $\prod_{i=1}^r\{0,1,\dots,e_i\}$.
 \end{lemma}
 \begin{proof}
-For $r=0$ a nonzero constant is nonzero, and for $r=1$ a nonzero polynomial of degree at most $e_1$ has at most $e_1$ roots. For $r\ge2$ expand in $Y_r$,
-choose a nonzero coefficient, find by induction a point of the first $r-1$ grids at which it does not vanish, and apply the case $r=1$ to the specialized
-polynomial in $Y_r$.
+The grid nodes are distinct because $K$ has characteristic zero.
+Induct on $r$. For $r=0$, the empty product is the single empty tuple
+and evaluation returns the nonzero constant $h$. For the induction step
+write $h=\sum_{\ell=0}^{e_r}h_\ell(Y_1,\dots,Y_{r-1})Y_r^\ell$
+and choose a nonzero coefficient $h_\ell$. Each of its coordinate
+degrees is bounded by the corresponding $e_i$, so induction gives a
+point $\mathbf a$ in the first $r-1$ grids with $h_\ell(\mathbf a)\ne0$.
+Thus $h(\mathbf a,Y_r)$ is a nonzero univariate polynomial of degree
+at most $e_r$. It cannot vanish at all $e_r+1$ remaining nodes.
+This also covers zero degree bounds: their grids consist only of $0$.
 \end{proof}
 
 Let $P,Q\in K[X_1,\dots,X_m]$ be nonzero and coprime, $p_i=\deg_{X_i}P$, $q_i=\deg_{X_i}Q$, and choose $j$ with $q_j>0$. By Gauss's lemma $P$ and $Q$ stay
@@ -19415,10 +19422,33 @@ If $\mathbf a$ assigns values in $K$ to the variables other than $X_j$ and $\mat
 $P_{\mathbf a},Q_{\mathbf a}\in K[X_j]$ have degrees $p_j$, $q_j$ and are coprime, so $P_{\mathbf a}/Q_{\mathbf a}$ is not a polynomial.
 \end{lemma}
 \begin{proof}
-The Sylvester determinant is homogeneous of degree $q_j$ in the coefficients of $P$ and of degree $p_j$ in those of $Q$, which have degree at most $p_i$,
-respectively $q_i$, in $X_i$; so $\deg_{X_i}\operatorname{Res}_{X_j}(P,Q)\le q_jp_i+p_jq_i$, and the two leading coefficients add at most $p_i+q_i$. This
-covers $p_j=0$, where the resultant is $P^{q_j}$. Where $\mathsf h_j\ne0$ both leading coefficients survive, so the specialized Sylvester matrix is that of
-$P_{\mathbf a},Q_{\mathbf a}$, and its nonzero determinant is their resultant; they are coprime, and the denominator has degree $q_j>0$.
+First the resultant in \eqref{osq:ft:eq:badpoly} is nonzero.
+The coefficient ring $A=K[X_i:i\ne j]$ is a unique factorization
+domain. If $P,Q$ had a common factor of positive $X_j$-degree over
+$\Frac(A)$, Gauss's lemma would give a common primitive factor in
+$A[X_j]$, contrary to their coprimality. Contents may become units
+on passing to $\Frac(A)$, but cannot create a common factor.
+Hence the univariate resultant is nonzero over $\Frac(A)$ and,
+being a determinant with entries in $A$, is a nonzero element of $A$.
+The two leading coefficients are nonzero too, so $\mathsf h_j\ne0$.
+
+Each nonzero term in the Sylvester determinant uses $q_j$ coefficients
+of $P$ and $p_j$ coefficients of $Q$. Their $X_i$-degrees are bounded
+by $p_i$ and $q_i$, respectively. Consequently
+\[
+ \deg_{X_i}\operatorname{Res}_{X_j}(P,Q)\le q_jp_i+p_jq_i.
+\]
+The two leading coefficients add at most $p_i+q_i$, giving the
+asserted bound. If $p_j=0$, the resultant is $P^{q_j}$ and the same
+argument applies; no positive numerator degree is assumed.
+
+At $\mathbf a$ where $\mathsf h_j$ is nonzero, each of its three
+factors is nonzero. The leading coefficients preserve the two
+degrees, so specializing the Sylvester matrix gives exactly the
+Sylvester matrix of $P_{\mathbf a},Q_{\mathbf a}$. Its determinant
+is nonzero, proving coprimality. If their quotient were a polynomial,
+$Q_{\mathbf a}$ would divide $P_{\mathbf a}$ in $K[X_j]$; coprimality
+would then make $Q_{\mathbf a}$ a unit, contradicting $q_j>0$.
 \end{proof}
 
 For $m,d\ge1$ put $\mathsf N_d=2d^2+2d$ and, for a fresh monomial $t=\omega^b$,
@@ -19439,15 +19469,38 @@ is defined and $\Oz$-valued at every point of $\mathsf{Test}_{m,d}(t)$, a set of
 points. The same $t$ and the same test set serve every rational function over $K_G$ with these degree bounds.
 \end{theorem}
 \begin{proof}
-Necessity is clear; assume that the tests pass and that $P\ne0$. The coefficients lie in $K_G$, and $P,Q$ are coprime over $K_G$, since a common factor
-there would be one over $\No$. Suppose $Q$ is not constant and choose $j$ with $q_j>0$. By \eqref{osq:ft:eq:sharpD},
-$\deg_{X_i}\mathsf h_j\le(d+1)d+(d+1)d=\mathsf N_d$ for $i\ne j$, so \cref{osq:ft:lem:grid} gives ordinary integers
-$\mathbf a\in\{0,\dots,\mathsf N_d\}^{m-1}$ with $\mathsf h_j(\mathbf a)\ne0$, and $F_{\mathbf a}=P_{\mathbf a}/Q_{\mathbf a}\in K_G(X_j)$ is not a
-polynomial (\cref{osq:ft:lem:resultant}). Its denominator does not vanish at $t$, and $F_{\mathbf a}(t)\notin\A_{\R,\R}\supseteq\Oz$
-(\cref{osq:fs:thm:onepoint}). This is the value of $F$ at the point of $\mathsf R_{m,d}(t)$ whose $j$th coordinate is $t$ and whose other coordinates
-are $\mathbf a$, a failed test. So $Q$ is constant, $F$ is a polynomial with $\deg_{X_i}F\le d$, and the tests on $\square_{m,d}$ give
-$F(\Oz^m)\subseteq\Oz$ by \cref{osq:pm:thm:grid}. The box has $(d+1)^m$ points and each of the $m$ remote grids has $(\mathsf N_d+1)^{m-1}$. Only $K_G$,
-the degree bounds and $b>G$ were used.
+Every test point belongs to $\Oz^m$, so preservation implies that
+all tests pass. Conversely assume that they pass. The zero rational
+function already preserves $\Oz$; hence assume $P\ne0$. All coefficients
+belong to $K_G$, and $P,Q$ are coprime there: a common nonconstant
+factor over $K_G$ would remain a common factor over $\No$.
+
+If $Q$ is nonconstant, choose $j$ with $q_j>0$. The nonzero polynomial
+$\mathsf h_j$ has degree at most
+$(q_j+1)p_i+(p_j+1)q_i\le2d^2+2d=\mathsf N_d$ in every other
+coordinate. By \cref{osq:ft:lem:grid,osq:ft:lem:resultant} there is
+$\mathbf a\in\{0,\dots,\mathsf N_d\}^{m-1}$ such that
+$P_{\mathbf a}/Q_{\mathbf a}\in K_G(X_j)$ is reduced with
+nonconstant denominator. Specialization at ordinary integers keeps
+all coefficients in $K_G$. The fresh-scale embedding
+\cref{osq:fs:thm:embedding} makes $t$ transcendental over $K_G$,
+so $Q_{\mathbf a}(t)\ne0$. The one-point detector
+\cref{osq:fs:thm:onepoint} then gives
+\[
+ F_{\mathbf a}(t)\notin\A_{\R,\R}\supseteq\Oz.
+\]
+This is the value of the original reduced fraction at the remote
+point with $j$th coordinate $t$ and other coordinates $\mathbf a$.
+It contradicts a passed test. For $m=1$ the specialization tuple is
+empty, so the same argument uses just the point $t$.
+
+Thus $Q$ is constant and $F$ is a polynomial of coordinate degrees
+at most $d$. The ordinary box tests imply preservation by
+\cref{osq:pm:thm:grid}. That box has $(d+1)^m$ points, and each of
+the $m$ remote grids has $(\mathsf N_d+1)^{m-1}$ points, yielding
+the displayed bound. The test set depends only on $G$, $b$ and $d$;
+the argument applies to every reduced fraction over $K_G$ with these
+bounds, independently of its particular coefficients.
 \end{proof}
 
 The certificate is relative to exact field operations and exact membership in $\Oz$; it is not an algorithm for arbitrary descriptions of surreal
@@ -19473,9 +19526,22 @@ Every set-sized family of rational functions in $m$ variables over $\No$ has one
 members, and one finite set of the form $\mathsf{Test}_{m,d}(t)$ if the coordinate degrees of the reduced presentations are bounded by $d$.
 \end{corollary}
 \begin{proof}
-Put all coefficient supports of the family into one set-sized $G$ (\cref{osq:fs:lem:fresh}) and take $t=\omega^b$ with $b>G$. In the bounded case
-apply \cref{osq:ft:thm:certificate}; in general the countable set
-$\Z^m\cup\bigcup_{j=1}^m\Z^{j-1}\times\{t\}\times\Z^{m-j}$ contains every grid needed for every member.
+Choose a reduced presentation for each member of the set-sized family.
+Each has finitely many coefficients, each coefficient has set-sized
+support, and a set-indexed union of these supports is a set. The
+additive group $G$ they generate is still set-sized. Choose $b>G$
+and put $t=\omega^b$ once for the whole family.
+For a common coordinate-degree bound take $d\ge1$ (replace a bound
+of zero by one) and apply \cref{osq:ft:thm:certificate}.
+Without a common bound, use
+\[
+ \Z^m\ \cup\ \bigcup_{j=1}^m
+    \Z^{j-1}\times\{t\}\times\Z^{m-j}.
+\]
+This is countable because $m$ is a fixed positive integer. It contains
+the required finite certificate for each individual member. Passing
+on this common set therefore implies preservation for each member,
+and preservation implies passing because all its points lie in $\Oz^m$.
 \end{proof}
 
 So \cref{osq:fs:thm:nosmall} is sharp with respect to the quantification over coefficients: every set of functions has common tests, and the class of
@@ -19511,14 +19577,37 @@ Let $F\in E(X_1,\dots,X_m)$ be defined and $\Lambda$-valued at every point of $\
 $\Lambda$. Equivalently, the class of points of $\Lambda^m$ at which $F$ is undefined or not $\Lambda$-valued is empty or a proper class.
 \end{theorem}
 \begin{proof}
-Let $F=P/Q\ne0$ in lowest terms. If $Q$ is not constant, choose $j$ and ordinary integers $\mathbf a$ with $\mathsf h_j(\mathbf a)\ne0$
-(\cref{osq:ft:lem:grid,osq:ft:lem:resultant}; only characteristic $0$ is used, so this works over $\SC$). Put the supports of the coefficients and of all
-coordinates of all points of $S$ into one set-sized $G$ and take $b>G$, $t=\omega^b$. The point with $j$th coordinate $t$ and other coordinates
-$\mathbf a$ is not in $S$, because the exponent $b$ lies outside $G$, and there $F$ is defined with a value outside $\A_{k,k}\supseteq\Lambda$
-(\cref{osq:fs:thm:onepoint}), a contradiction. So $F$ is a polynomial. If $F(\mathbf a)\notin\Lambda$ for some $\mathbf a\in\Lambda^m$, write
-$F(a_1+X,a_2,\dots,a_m)=F(\mathbf a)+\sum_{n=1}^ec_nX^n$ and enlarge $G$ by the supports of the coefficients of $F$, of $\mathbf a$ and of the points
-of $S$. For fresh $t$ the value at $X=t$ differs from $F(\mathbf a)$ by an element of $\Pi_k$ (\cref{osq:fs:cor:blocktest}), which cannot move a
-nonmember of the additive group $\Lambda$ into it, and $(a_1+t,a_2,\dots,a_m)\notin S$, since its first coordinate has the new leading exponent $b$.
+The zero function needs no argument. Write a nonzero $F=P/Q$ in
+lowest terms. Collect the supports of its coefficients and of every
+coordinate of every point of $S$ into one set-sized subgroup $G$.
+In the Gaussian case include the real and imaginary coefficient
+supports. If $Q$ is nonconstant, the grid and resultant lemmas give
+a direction $j$ and ordinary integers $\mathbf a$ for the other
+coordinates such that $P_{\mathbf a}/Q_{\mathbf a}$ is nonpolynomial.
+Those lemmas require only characteristic zero and apply in both cases.
+Choose $b>G$ and $t=\omega^b$. The point with coordinate $t$ in
+direction $j$ and coordinates $\mathbf a$ elsewhere is outside $S$:
+its $j$th coordinate has nonzero coefficient at $b\notin G$.
+At that point the fresh-scale detector gives a defined value outside
+$\A_{k,k}\supseteq\Lambda$, a contradiction. Thus $F$ is a polynomial.
+
+Suppose now that $F(\mathbf a)\notin\Lambda$ at some
+$\mathbf a\in\Lambda^m$, and form the finite expansion
+\[
+ F(a_1+X,a_2,\dots,a_m)=F(\mathbf a)+\sum_{n=1}^e c_nX^n.
+\]
+Enlarge $G$ to include the full supports of $\mathbf a$ and of
+these finitely many $c_n$, as well as all coordinates of $S$.
+For $b>G$ and $t=\omega^b$, every exponent of $c_nt^n$, $n\ge1$,
+has the form $g+nb$ with $g\in G$, and is strictly positive.
+The finite sum of these terms therefore lies in $\Pi_k\subseteq\Lambda$.
+Since $\Lambda$ is an additive subgroup, adding that sum cannot
+turn $F(\mathbf a)\notin\Lambda$ into an element of $\Lambda$.
+Moreover $a_1+t$ has coefficient one at $b$, with no cancellation
+from $a_1$, so $(a_1+t,a_2,\dots,a_m)\notin S$. This is again
+a failure outside $S$, including when the expansion is constant.
+Thus there is no bad point. Taking $S$ to be the entire failure
+class whenever that class is a set proves the final alternative.
 \end{proof}
 
 \Cref{osq:ft:thm:exceptions} and \cref{osq:fs:thm:nosmall} are compatible for the reason given after \cref{osq:fs:thm:cosmall}: one prescribes good
@@ -19545,9 +19634,27 @@ Let $F\in\SC[Z_1,\dots,Z_m]$ with $\deg_{Z_j}F\le d_j$, and $C_{d_j+1}=\{a+bi:a,
 $F\bigl(\prod_jC_{d_j+1}\bigr)\subseteq\GOz$; for a uniform bound $d$ these are $(d+1)^{2m}$ tests.
 \end{theorem}
 \begin{proof}
-$H(\mathbf U,\mathbf V)=F(\mathbf U+i\mathbf V)$ has degree at most $d_j$ in each of $U_j$ and $V_j$, and the tests are its values on the box
-$\prod_j\{0,\dots,d_j\}^2$. By \eqref{osq:pm:eq:newtoncoef} its Newton coefficients lie in $\GOz$, and binomials of elements of $\Oz$ lie in $\Oz$
-(\cref{osq:pm:lem:binomial}), so $H(\Oz^{2m})\subseteq\GOz$; every element of $\GOz$ is $x+iy$ with $x,y\in\Oz$. The converse is restriction.
+Set $H(\mathbf U,\mathbf V)=F(\mathbf U+i\mathbf V)$.
+Expanding each monomial shows that $H$ has degree at most $d_j$
+separately in $U_j$ and in $V_j$. Its values on the rectangular
+integer box are precisely the prescribed Gaussian grid values.
+The multivariate finite-difference formula
+\eqref{osq:pm:eq:newtoncoef} expresses every Newton coefficient
+as an integer linear combination of these values, hence as an
+element of $\GOz$. Therefore $H$ has an expansion
+\[
+ H(\mathbf U,\mathbf V)=
+ \sum_{\boldsymbol\alpha,\boldsymbol\beta\le\mathbf d}
+ c_{\boldsymbol\alpha,\boldsymbol\beta}
+ \prod_j\binom{U_j}{\alpha_j}\binom{V_j}{\beta_j},
+ \qquad c_{\boldsymbol\alpha,\boldsymbol\beta}\in\GOz.
+\]
+For $\mathbf U,\mathbf V\in\Oz^m$, all binomial factors lie in
+$\Oz$ by \cref{osq:pm:lem:binomial}. The finite sum thus lies in
+$\GOz$. Every point of $\GOz^m$ has such real and imaginary
+coordinates, proving sufficiency. Necessity is restriction to the
+grid, whose cardinality is $\prod_j(d_j+1)^2$, including zero
+degree bounds. No binomial-closure claim for Gaussian inputs is used.
 \end{proof}
 
 This is the coordinate-degree twin of 18's simplex test (\cref{osq:or:prop:gausstest}), which uses the total degree and the $\binom{2m+d}{2m}$ points
@@ -19561,9 +19668,25 @@ $C_{d+1}^{\,m}\cup\mathsf R_{m,d}(t)$, a set of at most $(d+1)^{2m}+m(2d^2+2d+1)
 polynomial.
 \end{theorem}
 \begin{proof}
-Run the proof of \cref{osq:ft:thm:certificate} over $K_G$ with $k=\C$: a nonconstant denominator gives a nonpolynomial one-variable restriction at
-ordinary integer values of the other coordinates, whose value at $t$ has a negative block. So the remote tests force a constant denominator, and
-\cref{osq:ft:thm:gausspoly} applies. The last assertion is also \cref{osq:fs:thm:probes}.
+Preservation implies all tests. For the converse the zero function
+is immediate; otherwise put the coefficients in the complex Hahn
+field $K_G$. If $Q$ is nonconstant, choose a direction of positive
+denominator degree. The same bad-specialization polynomial
+$\mathsf h_j$ is nonzero and has the same coordinate-degree bounds
+as in the real proof. Ordinary integer nodes suffice to avoid its
+zero set, even though its coefficients are complex. The resulting
+one-variable fraction is reduced and nonpolynomial over $K_G$.
+The fresh-scale embedding makes its denominator nonzero at $t$,
+and the detector gives a value with a nonzero negative-support block.
+Such a value is outside $\A_{\C,\C}$ and hence outside $\GOz$,
+contradicting a remote test.
+
+Thus $F$ is polynomial of coordinate degrees at most $d$.
+The remaining grid tests give preservation by
+\cref{osq:ft:thm:gausspoly}; counting that grid and the remote
+grids gives the bound. Finally every preserving rational function
+has finite degree bounds and a set of coefficient supports, so a
+fresh $b$ can be chosen and this argument forces it to be polynomial.
 \end{proof}
 
 The remote points need no Gaussian coordinates: ordinary integers already avoid a nonzero polynomial in characteristic $0$, and only the arithmetic
@@ -19680,7 +19803,10 @@ certificate, and whether another finite certificate exists is open (\cref{osq:fs
 \begin{example}[One new coordinate exposes a denominator \src{22}]\label{osq:ft:ex:resultant}
 For $F(X,Y)=(X+Y)/(XY+1)$ over $\Q$, the leading coefficients in $X$ are $1$ and $Y$ and $\operatorname{Res}_X(X+Y,XY+1)=1-Y^2$, so
 $\mathsf h_X=Y(1-Y^2)$. At $Y=2$, $F(X,2)=(X+2)/(2X+1)=\frac12+\frac3{2(2X+1)}$, whose second term has a nonzero negative block at every fresh $t$. The
-resultant excludes exactly the values of $Y$ at which the denominator loses degree or a cancellation occurs.
+bad-specialization polynomial $\mathsf h_X$ excludes exactly
+$Y=0,1,-1$: the leading-coefficient factor $Y$ excludes degree loss at
+$0$, while the resultant $1-Y^2$ excludes cancellation at $1$ and $-1$.
+The resultant itself is nonzero at $0$ and does not detect that degree loss.
 \end{example}
 
 For every $u\in\Pi$, even of infinite support, $\binom X3-4\binom Y2+uX^2Y$ preserves $\Oz$ with specialization $\binom X3-4\binom Y2$, while

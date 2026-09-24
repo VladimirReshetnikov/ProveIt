@@ -657,6 +657,15 @@ the rational centre 𝔏 completes to ℚ. For perfect complexes, use
 cohomological degree n and Hⁿ[-n]; the splitting into homology is not
 canonical, and the invariant is a finite family of rank functions.
 
+For the finite-test certificates, h_j denotes the product of both
+leading coefficients and the resultant in direction j. Nonvanishing
+preserves degrees as well as coprimality; the resultant alone need not
+detect degree loss. The coefficient group G contains full supports,
+and b>G means b exceeds every element of that group. A Gaussian
+coordinate-degree grid C_{d+1} has (d+1)² nodes a+bi; it is not a
+claim that Gaussian inputs satisfy ordinary binomial closure. The
+interpolation is performed on real and imaginary omnific coordinates.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
