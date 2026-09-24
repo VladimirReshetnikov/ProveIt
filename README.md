@@ -380,6 +380,11 @@ omnific rings and their full Hahn coefficient pullbacks. The underlying
 augmentation theorem works even in algebras with zero divisors; only a
 nonzero coefficient-field scalar is inverted. The checked example in `ℝ × ℝ`
 gives the zero divisor `(1,0)` an explicit certificate.
+Polynomial counterexamples now verify both restrictions on this detector.
+In `ℤ + Xℚ[X]`, the quotient by `(1 + X)` is `ℚ`, so the detector rejects
+`1 + X` despite its constant term being one; the ordinary-integer definition
+still works. In `ℤ[X]`, the detector fails even though the ambient real field
+contains a root of `Λ`: this subring is smaller than the full coefficient pullback.
 The same polynomial now classifies every ideal whose quotient has no root:
 these are exactly the ideals contained in the constant-term kernel. Thus the
 purely infinite ideal is the greatest such ideal, for both actual omnific

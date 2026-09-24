@@ -713,6 +713,8 @@ import Surreal.Surcomplex.DefinableSplitting
 import Surreal.Algebra.ConstantTermHomomorphisms
 import Surreal.HahnSeries.ConstantTermHomomorphisms
 import Surreal.Surcomplex.ConstantTermHomomorphisms
+import Surreal.Algebra.PolynomialConstantRigidity
+import Surreal.Algebra.DetectorCounterexamples
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
