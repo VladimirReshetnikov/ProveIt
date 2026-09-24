@@ -7,12 +7,12 @@ dependent results, reusing mathlib constructions.
 
 ## What the repository contains
 
-- **Research reports.** [`docs/`](docs/README.md) holds 61 reports in five
-  families: the surreal field `No` (22, including five on Conway's omnific
+- **Research reports.** [`docs/`](docs/README.md) holds 63 reports in five
+  families: the surreal field `No` (23, including six on Conway's omnific
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
-  physics (2), and foundations and computation (8). Each has a LaTeX source,
+  physics (2), and foundations and computation (9). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code. All 61 reports now have typeset PDFs.
+  verification code. All 63 reports now have typeset PDFs.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)
@@ -133,7 +133,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 61 maintained main texts
+The [source inventory](docs/FORMALIZATION.md) covers 63 maintained main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -259,7 +259,22 @@ entire omnific solution set onto the ordinary one; the proof even allows
 arbitrary families of equations and variable indices. Positive existential
 formulas in Mathlib's ring language also have the same truth at integer
 parameters. The separate undecidability and computable-completeness claims
-remain pending in Lean.
+remain pending in Lean. Positive existential definable sets are also proved
+closed under constant extraction. This rules out such definitions of
+nonvanishing, positivity and nonnegativity with integer parameters. The
+explicit equation `(X+1)^2 = 2(Y+1)^2` has a positive omnific solution even
+though it has no solution in ordinary natural numbers.
+
+Given an integer Smith normal form, linear systems over the omnific ring
+now have a proved complete solution criterion. Nonzero diagonal entries
+impose divisibility conditions on constant coefficients; zero rows require
+the full transformed entry to vanish. The proof also describes every
+solution: pivot coordinates are fixed quotients and the remaining omnific
+coordinates are arbitrary. For ordinary integer right-hand sides, every
+solution splits into an ordinary solution and a purely infinite kernel
+vector. Any rational basis of the matrix kernel uniquely parametrizes that
+purely infinite part. In particular, full column rank forces every solution
+to be ordinary.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
@@ -268,10 +283,19 @@ Its class constructions and proofs remain pending in Lean.
 
 The expanded [critical-point-defects report](docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
 compares two actions of a large-cardinal embedding on surreal normal forms.
-Its three manuscripts describe an exact support threshold for their agreement,
+Its four manuscripts describe an exact support threshold for their agreement,
 measure recovery from a defect coefficient, and criteria for the transformed
 series to belong to the target model. These are conditional research claims;
 independent proof review and Lean formalization remain pending.
+
+Two newly placed reports connect omnific arithmetic with other classical
+questions. [Continued fractions](docs/surreal/omnific-continued-fractions/)
+describes exactly which errors preserve every ordinary finite digit, with
+realization and uniqueness criteria in full Hahn fields. [Exponential relations](docs/foundations-and-computation/exponential-relations-over-omnific-integers/)
+proposes a decidable language of finite exponential equalities with algebraic
+coefficients and slopes, and locates its boundary when multiplication is
+admitted. These reports have written proofs and finite checks; independent
+proof review and Lean coverage remain pending.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -302,8 +326,11 @@ assuming that every point lifts to the normalization. The review corrects
 the ambient-field normality comparison and the zero-group boundary case. The
 application review restores the irreducibility assumption in the repeated-root
 superelliptic test and expands the singular elliptic certificate and Gaussian
-arithmetic existence proof.
-These curve and fiber results remain pending in Lean.
+arithmetic existence proof. The group and coefficient-algebra review makes
+semiabelian rigidity and the exact unipotent kernel explicit. Rigidity extends
+to reduced coefficient algebras. For dual-number coefficients, the quotient
+by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian variety `A`.
+These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
