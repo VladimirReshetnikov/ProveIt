@@ -7,24 +7,24 @@ explicit series of minimal differential order three when it has one, no
 equation of order two, nor of order three and jet degree at most three, for
 any value group, unbounded minimal orders over `C((t^R))`, lacunary series
 with no equation at one order-unit scale, mixed differential–dilation
-equations decided by the relative scale of their dilations, and
+equations decided by the relative scale of their dilations,
 polynomial-composition equations with a dominant argument of degree at least
-two rigid for every value group**
-Merged research report, 22–23 September 2026, from twelve manuscripts: 08 and
-09, written independently on the same day; 10, which adds the nonlinear part;
-11 and 12, written independently and delivered together later, which add the
-coefficient-field part; 13, delivered later still, which adds the
-theta-descent part; 14, which adds the order-three-threshold part; and five
+two rigid for every value group, and Hahn-valued recurrences whose unit-root
+coefficient sequences lie in one finitely generated algebra, while one Conway
+coefficient of a first-order omnific recurrence can be any real sequence**
+Merged research report, 22–23 September 2026, from thirteen manuscripts: 08
+and 09, written independently on the same day; 10, which adds the nonlinear
+part; 11 and 12, written independently and delivered together later, which
+add the coefficient-field part; 13, delivered later still, which adds the
+theta-descent part; 14, which adds the order-three-threshold part; five
 manuscripts of batch 31: 18 and 19, which add the unit-dilation and
 Newton-rigidity parts, 16 and 17, which add the theta-hierarchy and
-single-scale parts, and 15, which adds the polynomial-composition part. One
-further manuscript (local number 20) has been placed in this directory, with
-its audit, code and data files, but is not yet merged into the text; its files
-are listed below and marked *pending*.
+single-scale parts, and 15, which adds the polynomial-composition part; and
+20 (batch 33, manuscript 01), which adds the recurrence part.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 225 pages
+article.pdf   the compiled report, 245 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -45,7 +45,7 @@ README.md     this guide
 18-unit-dilation-SOURCES_AND_SCOPE.md         source 18: repository pin and blob, literature, review priorities, non-claims
 19-newton-rigidity-PROOF_AUDIT.md             source 19: assumptions, dependency chain, critical inequality, limits
 19-newton-rigidity-SOURCES_AND_SCOPE.md       source 19: repository pin, files read, literature, priority limits
-20-recurrences-SOURCE_AUDIT.md                source 20 (pending): source audit
+20-recurrences-SOURCE_AUDIT.md                source 20: repository pin and blob, the gap it addressed, literature, candidate-original list, checks
 code/
   08-finite-recurrences-verify.py             source 08 checks (3,705)
   09-entire-hahn-holonomic-verification.py    source 09 checks (2,043)
@@ -67,8 +67,8 @@ code/
   18-unit-dilation-verify_finite.py               source 18 checks (16,579; standard library; pass --output)
   19-newton-rigidity-verify.py                    source 19 checks (259; needs SymPy; run on a copy)
   19-newton-rigidity-build.py                     source 19's build script (see "Build and reproduce")
-  20-recurrences-build.sh                         source 20 (pending)
-  20-recurrences-verify.py                        source 20 (pending)
+  20-recurrences-build.sh                         source 20's build script (see "Build and reproduce")
+  20-recurrences-verify.py                        source 20 checks (4,605; standard library; prints only)
 data/
   08-finite-recurrences-verification.txt, 08-finite-recurrences-build_report.txt
   09-entire-hahn-holonomic-verification_results.txt, 09-entire-hahn-holonomic-build_report.txt
@@ -99,15 +99,15 @@ data/
   19-newton-rigidity-verification.json         recorded run of the source 19 checks (259 in 17 groups)
   19-newton-rigidity-requirements.txt          sympy==1.14.0
   19-newton-rigidity-build_audit.json          build and layout audit of the 24-page source 19 manuscript
-  20-recurrences-verification.txt              source 20 (pending)
+  20-recurrences-verification.txt              recorded run of the source 20 checks (4,605 in 12 families)
 ```
 
 Every label in `article.tex` carries the prefix `hol:`; the nonlinear part
 uses the sub-prefix `hol:nl:`, the coefficient-field part `hol:cf:`, the
 theta-descent part `hol:td:`, the order-three-threshold part `hol:ot:`, the
 unit-dilation part `hol:ud:`, the Newton-rigidity part `hol:nr:`, the
-theta-hierarchy part `hol:th:`, the single-scale part `hol:fh:` and the
-polynomial-composition part `hol:pc:`.
+theta-hierarchy part `hol:th:`, the single-scale part `hol:fh:`, the
+polynomial-composition part `hol:pc:` and the recurrence part `hol:rc:`.
 The merge of sources 11 and 12 renamed or removed no label: the report had 199 labels before it and had 274 after it,
 all 199 original labels still present. The later coefficient-field review
 adds `hol:cf:cor:meromorphicmixed`, giving 275 labels while preserving every
@@ -123,9 +123,12 @@ sources 16 and 17 adds 116 labels, 50 with `hol:th:` and 66 with `hol:fh:`,
 giving 644; all 528 earlier labels are present and keep their numbers,
 checked the same way. The merge of source 15 adds 56 labels, all with
 `hol:pc:`, giving 700; all 644 earlier labels are present and keep their
+numbers, checked the same way. The merge of source 20 adds 51 labels, all with
+`hol:rc:`, giving 751; all 700 earlier labels are present and keep their
 numbers, checked the same way. The audit files and programs keep the source
 numbers `08` to `20` of the batches they arrived in (`15` to `19` are this
-report's local numbers for batch 31's manuscripts 01, 02, 03, 05 and 08), and
+report's local numbers for batch 31's manuscripts 01, 02, 03, 05 and 08, and
+`20` for batch 33's manuscript 01), and
 the audit files keep their sources' own
 notation and theorem numbering. No source manuscript is shipped.
 
@@ -152,8 +155,8 @@ divisibility. The review below replaces root extraction by inward stability
 of strong evaluation.
 
 The divisibility-free predecessors are weaker in the constant only, not in the
-conclusion. The nonlinear, coefficient-field, theta-descent, unit-dilation
-and single-scale parts use no divisibility; the order-three-threshold and
+conclusion. The nonlinear, coefficient-field, theta-descent, unit-dilation,
+single-scale, polynomial-composition and recurrence parts use no divisibility; the order-three-threshold and
 Newton-rigidity parts pass to the divisible hull `Γ ⊗ Q`, in which `Γ` is
 cofinal, and transfer their conclusions back; the theta-hierarchy part works
 in `Γ = R` only.
@@ -690,6 +693,115 @@ Coons and Rowland, Lemma 6) is credited, not claimed.
   recorded interpreter version; the worked equations were rechecked
   separately with SymPy.
 
+## Source 20: the recurrence part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **20** | *Valuation Rigidity and Coefficient Universality in Surreal Recurrences: A mixed differential–dilation theorem and the limits of coefficientwise predictability* (22 pages, US letter, 23 September 2026; batch 33, manuscript 01, archive `surreal_recurrences_research`) | `efc5446` | One finitely generated algebra of coefficient observables (Theorem 38.2, Remark 38.3); one torsion period for all monomials in the residues (Lemma 38.4); recurrences with split characteristic polynomial (Corollary 38.6); coefficient-algebraic conditions, Noetherian compression with one residual period, support and tail recurrence, no common transient (Definition 38.7, Theorem 38.8, Corollary 38.9, Example 38.10, Remark 38.11); surreal and surcomplex recurrence profiles over `No[i]`, `Oz`, `Oz[i]` (Theorem 39.1); a decreasing omnific recurrence (Example 39.2); the coding theorem and the failure of a coefficientwise Skolem–Mahler–Lech theorem (Theorem 39.3, Corollary 39.4, Remark 39.5); determinantal valuation profiles (Corollary 39.7); its convex-scale and finite-group criteria as special cases of Theorem J (Corollaries 39.8–39.9, Remark 39.11); boundary examples (Section 39.5, Example 39.12); Theorem O; Questions 19.63–19.70. Files `20-recurrences-*`. |
+
+For a finite vector of exponential polynomials `Σ_j R_j(n) λ_j^n` over
+`𝕂 = k((t^Γ))` whose bases are units (valuation zero) with residues `ζ_j`,
+**every coefficient sequence `n ↦ [t^γ]` lies in the one finitely generated
+algebra `k[n, ζ_1^n, …, ζ_m^n]`**; so every set-sized family of polynomial
+conditions on finitely many coefficients at a time reduces along the orbit to
+a finite subfamily (Hilbert's basis theorem), and its hitting set is a finite
+union of full classes modulo `𝖬_tor`, the exponent of the torsion subgroup of
+`⟨ζ_1, …, ζ_m⟩`, and a finite set, with one `𝖬_tor` for every family
+(Theorem O). Without units this fails completely: for every real sequence
+`(𝐛_m)` the purely infinite omnific integer `𝔴 = Σ 𝐛_m ω^(ω−m)` has
+`[ω^ω](ω^n 𝔴) = 𝐛_n`, so `y_(n+1) = ω y_n` realizes every subset of `N` as the
+nonzero set of one fixed Conway coefficient, while the leading exponent of
+every recurrence over `No[i]`, `Oz` or `Oz[i]` stays eventually affine on
+finitely many progressions (two suffice for real roots, one for positive
+roots). The element `𝔴` is the stream `onot:eq:guardbasic` of
+[omnific-notations](../../foundations-and-computation/omnific-notations/),
+which source 20 does not cite; only its reading as a recurrence observable is
+new.
+
+At its pin `efc5446` this report was the seven-source text (sources 08–14, 137
+pages); sources 15–19 were already placed in this directory (`9d28e28` is an
+ancestor of the pin) but not merged, and source 18 was merged later the same
+day (`2c4debb`). Source 20's statement that the text after `hol:thm:mixed`
+leaves the mixed unit-valuation case open was **accurate at its pin and is
+stale now**: source 18 answers Question 19.4 for every `Γ` and proves Theorem
+J. Source 20's valuation theorem and mixed unit rigidity are an independent
+second derivation of source 18's and are printed once; its Theorems 10.3 and
+10.4 are special cases of Theorem J (strictly: Example 29.15's common cofinal
+scale lies outside its Theorem 10.3), and its Theorem 10.4 needs finite
+generation only for the convex-hull form of the criterion.
+
+- **Placement.** Sections 38–39, after Section 37, so that Sections 1–37,
+  Questions 19.1–19.62 and Theorems A–N keep their numbers; the conclusion is
+  now Section 40. Principal theorem: Theorem O in the introduction; questions
+  19.63–19.70.
+- **Coefficient field.** Any `k` of characteristic zero (Convention 38.1);
+  no divisibility.
+- **Renamed symbols** (Section 38.1): `K, 𝓔(K) → 𝕂, E_Γ(k)`; unit roots
+  `q_i = c_i(1+ε_i)`, `u_n = Σ P_i(n) q_i^n` → `λ_j = ζ_j(1+τ_j)`,
+  `𝒴(n) = Σ R_j(n) λ_j^n` (the unit-dilation notation); envelope `W = A+M(S)`,
+  `R_(i,γ)` → `Σ = C+M(S)`, `r_(j,γ)`; `C = ⟨c_i⟩`, `M = exp Tor(C)`, class `r`
+  → `⟨ζ⟩`, `𝖬_tor`, `b` (source 18's smaller period is `𝖬`); algebra `𝒜`,
+  ring `R_0 = k[T, X_1, …, X_s]` → `𝔄`, `k[U, X_1, …, X_m]`; shift `E → Sh`;
+  recurrence terms `u_n → y_n`; `x ∈ K^d`, `X`, `T ⊆ Γ`, `F ∈ k[X_1, …]` →
+  `𝐱 ∈ 𝕂^d̄`, `𝒳`, `𝖳`, `F ∈ k[Z_1, …]`; purely infinite ideal `𝒥 → Π`
+  (`Oz = Z ⊕ Π`); coding sequence `b`, `A_b`, `S ⊆ N` → `𝐛`, `𝔴_𝐛`, `A`;
+  Catalan root `λ`, `C(s)`, `C_k` → `λ_−`, `Cat(X)`, `Cat_k` (`C_n` are
+  Chebyshev polynomials here); matrix `A`, `δ_j(n)` → `𝐀`, `mv_j(n)`;
+  dilation group `G`, convex hull `H` → `𝔊`, `Δ_𝔊`; operator
+  `c_(λ,j,k) z^k D^j σ_λ`, `A_s(n)`, `B_j(n)` → `ϰ_(ℓ,r,i) z^i D_z^r σ_(λ_ℓ)`,
+  `c_j(n)`; witness `η` → `γ`, and `η` in examples → `ε`; `Θ_Q → Θ_p`;
+  characteristic `p → 𝔭`. The shipped audit file keeps the source's notation.
+- **Words with two meanings** (Section 38.1): a *unit* is a valuation-zero
+  element, neither an order unit nor a unit of `Oz` (only `±1`);
+  *compression* is Noetherian compression of coefficient conditions, **not**
+  the bounded polynomial jet compression of Theorem 32.9; *period*: source
+  18's `𝖬` suffices for valuations but **not** for hitting sets, which need
+  `𝖬_tor` (`(−1)^n`: `𝖬 = 1`, `𝖬_tor = 2`, and `[t^0]x = 1` holds exactly
+  for even `n`; Remark 38.5); `deg_ω` is the greatest Conway exponent, not a
+  birthday.
+- **Printed once:** its definitions (Definition 1.2, order unit, valuation
+  unit, the embedding (2.4)); its Lemma 3.1 (Lemma 2.1); Lemma 3.2 and
+  Corollary 3.4 (Lemma 21.1); Theorem 3.3 (Skolem–Mahler–Lech, imported);
+  Theorem 4.1(a)–(b) (Lemma 28.4) with its Remark 4.2; Example 4.3 (the case
+  `d = 2` of Example 29.14); Theorem 5.1 (Theorem 28.5 with the admissible
+  period `𝖬_tor`) and Corollary 5.2; Example 5.3 (Example 4.6); Lemma 5.4
+  (Lemma 28.9); Theorem 5.5 (Theorem 28.10); Remark 5.6 (Remark 4.3); Lemma
+  9.1 (Lemma 29.1, Corollary 29.2); Lemma 9.2 (Lemma 3.1 with Corollary 3.4,
+  closed region); Theorem 10.1 and Corollary 10.2 (Theorem 29.4 at relative
+  scale 0, Corollary 29.6); the theta witness (Theorem 8.1, (8.2), (8.3));
+  the torsion and rank-two examples (Section 29.5, Proposition 9.1, Examples
+  8.4 and 29.16).
+- **Merge additions** (marked "merge"): Remark 38.5 (the two periods);
+  Section 39.4's identification of Theorems 10.3 and 10.4 as special cases of
+  Theorem J, with the strictness example; Remark 39.10 (finite generation
+  cannot be dropped from the convex-hull form: the monomials `t^(ω^j)` in
+  `Γ_∞` have cofinal valuations but no order unit); Remark 39.6 (credit to
+  omnific-notations); Example 39.12 keeps the exact formula
+  `v((1+t)^n − 1) = 𝔭^(v_𝔭(n))` in `F_𝔭((t))`, of which Section 29.5 records
+  the subsequence `n = 𝔭^a`; status notes and the re-scoped Question 19.66.
+- **Stale text in the source.** Its "gap explicitly left open" (article
+  lines 84, 123; its Corollary 10.2 and Remark 10.5; its audit's "The
+  specific gap") was accurate at `efc5446` and is stale against the current
+  text (Remark 39.11). Its Question 12.7 (smallest nonlinear classes at unit
+  dilation) is partly answered in the current text — `𝒯_p` has an order-three
+  relation of degree six without dilation, order two is excluded (Theorem I),
+  and order three needs jet degree at least four (Theorem K) — and is printed
+  re-scoped as Question 19.66 (does a unit dilation lower the order or
+  degree?). Its Questions 12.1, 12.2, 12.5 and 12.11 are Questions 19.24,
+  19.21, 19.25 and 19.29 (status notes added); 12.3, 12.4, 12.6, 12.8–12.10
+  and 12.12 are 19.63–19.65 and 19.67–19.70.
+- **Stale text corrected in this report:** the statuses of Questions 19.4,
+  19.21, 19.22, 19.24, 19.25, 19.28 and 19.29, Section 19's ledger and
+  proposed-contribution paragraphs, Section 18, Section 13.3's list of
+  unformalized parts (which also lacked the polynomial-composition part), the
+  abstract and title-page status (now "ten later parts"), the appendices and
+  this README.
+- **Verified for this merge.** The source 20 suite was rerun on a copy
+  (Python 3.14.4) and reproduced its record exactly, after normalizing the
+  CRLF line endings of the redirected Windows output. The proofs were re-read
+  against the statements they are attached to; the Catalan identity, the
+  coding shift and the positive-characteristic formula were rechecked by hand.
+
 ## What the report claims
 
 Let `K = C((t^Γ))` for a nonzero set-sized ordered abelian group `Γ`, **not
@@ -979,6 +1091,30 @@ The polynomial-composition part (source 15, Sections 36–37) works over
   37.3), so omnific solvability is undecidable in the class, even with degree
   bound ten (Corollaries 37.5–37.6).
 
+The recurrence part (source 20, Sections 38–39) works over `k((t^Γ))` in
+characteristic zero, for ordinary recurrences indexed by `n ∈ N`.
+
+- **Theorem O.** (a) For a finite vector of exponential polynomials with unit
+  bases (residues `ζ_1, …, ζ_m`), every coefficient sequence lies in the one
+  finitely generated algebra `k[n, ζ_1^n, …, ζ_m^n]` (Theorem 38.2). (b) Every
+  set-sized family of polynomial conditions on finitely many coefficients at a
+  time is equivalent along the orbit to a finite subfamily, and its hitting set
+  is a finite union of full classes modulo `𝖬_tor` and a finite set, one
+  `𝖬_tor` for all families (Theorem 38.8); supports inside a prescribed set are
+  a special case (Corollary 38.9); no common transient bound exists (Example
+  38.10). (c) Every real sequence is `n ↦ [ω^ω](ω^n 𝔴)` for a purely infinite
+  omnific `𝔴` (Theorem 39.3), so no coefficientwise Skolem–Mahler–Lech theorem
+  holds for omnific recurrences (Corollary 39.4); this is no conflict with the
+  universal quotient of `Oz`, since `[ω^ω]` is not multiplicative (Remark
+  39.5).
+- Recurrences over `No[i]`, `Oz`, `Oz[i]` have eventually affine leading
+  Conway exponents on finitely many progressions (Theorem 39.1); the omnific
+  recurrence `y_(n+2) = ω y_(n+1) − y_n`, `y_n = ω^ω λ_−^n`, has degree
+  `ω − n`, decreasing forever without reaching zero (Example 39.2); the least
+  valuations of `j × j` minors of `𝐀^n` are eventually affine (Corollary
+  39.7); the convex-scale and finite-group criteria are special cases of
+  Theorem J (Corollaries 39.8–39.9).
+
 ## What the report does not claim
 
 - The arbitrary-rank classification is offered as a **proposed original
@@ -991,8 +1127,8 @@ The polynomial-composition part (source 15, Sections 36–37) works over
   direction of the dilation classification and of the order-unit detection
   equivalence. The full classifications and the nonlinear, coefficient-field,
   theta-descent, order-three-threshold, unit-dilation, Newton-rigidity,
-  theta-hierarchy, single-scale and polynomial-composition theorem packages
-  remain pending. The detailed coverage is in Section 13.3.
+  theta-hierarchy, single-scale, polynomial-composition and recurrence theorem
+  packages remain pending. The detailed coverage is in Section 13.3.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -1183,13 +1319,33 @@ The polynomial-composition part (source 15, Sections 36–37) works over
   certify nothing infinite; the comparison read seven files and its "no
   Mahler material" statement was incorrect at the pin; the quotient and
   lattice results are not reproduced.
+- The recurrence part keeps every limitation of source 20, listed as V1–V17
+  in Section 39.7: no referee report, Lean formalization or certified
+  priority (an unrefereed AI-assisted draft, "not an independently certified
+  breakthrough"); Skolem–Mahler–Lech, the support lemma and Hilbert's basis
+  theorem imported, no effective exceptional-zero bound or algorithm, and the
+  classical Skolem problem not solved; Noetherian compression is existential
+  only; unbounded coefficient-polynomial degrees and no common transient; no
+  nonlinear mixed rigidity; no classification of full omnific membership (the
+  integer constant term is not handled); the coding theorem stores a sequence
+  in an infinite initial value, is not effective, and proves no definability
+  of coefficient extraction in the pure ring of `Oz`; entireness relative to
+  one set-sized field, statements over `No[i]` localized to a set-sized Hahn
+  field; `D_z` is not `∂_BM`; torsion dilations and positive characteristic
+  excluded; nothing on Lyapunov limits or periodicity of matrix coefficients;
+  `deg_ω` is neither a birthday nor a sign; Fuchs–Heintze's constants not
+  improved and the Krapp–Kuhlmann–Serra setup distinct; Neumann and the
+  quotient report not audited; 4,605 checks certify nothing infinite (1,189 of
+  them hold by construction); targeted repository comparison, stale in its
+  "gap" statement.
 - The finite checks validate coefficient conversions, identities, cancellation
   examples and finite ordered-group examples. They do not establish the
   infinite support arguments, the cofinality claims, the generic-line theorem,
   the nonexistence of annihilating operators, the coefficient-field theorem,
   the descent, any independence statement, the minimal order of `𝒯_p`,
   second-order rigidity, the periodic-affine valuation theorem or the
-  Skolem–Mahler–Lech theorem, Theorem K, Theorem L, Theorem M or Theorem N.
+  Skolem–Mahler–Lech theorem, Theorem K, Theorem L, Theorem M, Theorem N or
+  Theorem O.
 
 ## Relation to the neighbouring reports
 
@@ -1278,6 +1434,19 @@ Source 15's omnific module theorem applies `odg:thm:smith` and
 `Z[i]`), and its undecidability corollary refines `odg:cor:H10` by an encoding
 into a rigid functional equation.
 
+**[omnific-notations](../../foundations-and-computation/omnific-notations/)**
+already contains, as `onot:eq:guardbasic`, the stream
+`Σ a_n ω^(ω−n) = ω^ω Σ a_n (ω^(−1))^n` for an arbitrary real sequence, with
+the remark that an algorithm for each `a_n` need not decide whether all
+vanish. It is the element of Theorem 39.3; source 20 did not cite it, and only
+its reading as the orbit of a first-order recurrence observed at one exponent
+is new here (Remark 39.6). **[set-sized-quotients-of-omnific-integers](../../surreal/set-sized-quotients-of-omnific-integers/)**
+proves that every additive and multiplicative map from `Oz` to a set-sized
+ring factors through the constant term (`osq:thm:universal`); Remark 39.5
+uses it only to explain why the additive coefficient map `[ω^ω]` gives no
+contradiction. Source 17's omnific codes (Theorem 35.16) encode subsets of `N`
+through algebraic independence, not through a coefficient observation.
+
 ## Build and reproduce
 
 ```sh
@@ -1300,15 +1469,17 @@ pip install -r data/17-single-scale-requirements.txt
 python code/17-single-scale-verify.py --output rerun-17.json
 pip install -r data/15-polynomial-composition-requirements.txt
 python code/15-polynomial-composition-verify.py --output rerun-15.json
+python code/20-recurrences-verify.py > rerun-20.txt
 ```
 
-The current build gives 225 pages with zero errors, zero warnings, zero
+The current build gives 245 pages with zero errors, zero warnings, zero
 overfull or underfull boxes, zero undefined references, zero multiply defined
 labels and zero duplicate PDF destinations; the build of the text before the
-merge of source 15 gave 207 pages, that before the merge of sources 16 and 17
-175 pages, that before the merge of sources 18
-and 19 137 pages, that before the merge of source 14
-118 pages, and that before the merge of source 13 91 pages, equally clean. The programs of sources 08,
+merge of source 20 gave 225 pages, that before the merge of source 15 207
+pages, that before the merge of sources 16 and 17 175 pages, that before the
+merge of sources 18 and 19 137 pages, that before the merge of source 14 118
+pages, and that before the merge of source 13 91 pages, equally clean. The
+programs of sources 08,
 09, 10 and 12 use only the Python standard library with exact integer and
 rational arithmetic; those of sources 11, 13 and 14 use exact SymPy and
 rational arithmetic (SymPy `>=1.12,<2`, and `>=1.13,<2` for 14). Run them on a
@@ -1341,6 +1512,9 @@ itself** in `code/`, overwriting it; always pass a new path.
 `15-polynomial-composition-verify.py` needs SymPy (`sympy==1.14.0`, Python
 3.10+; fixed seed 20260923) and without `--output` writes `verification.json`
 in the current directory, overwriting it; pass a new path.
+`20-recurrences-verify.py` uses only the standard library (Python 3.10+, fixed
+seed 20260923), takes no arguments, writes no file and prints its record to
+standard output; redirect it to a new file.
 The recorded runs passed 3,705 checks (08), 2,043
 checks (09), 2,113 checks (10, seed 20260922, six groups: 450 + 240 + 480 +
 500 + 360 + 83), 8,673 cases in eight groups (11; 8,136 of them binary-prefix
@@ -1362,7 +1536,13 @@ in twelve groups (15: 648 universal encoding, 445 indicial leading terms, 360
 integer convexity, 228 Euler projectors, 208 exact resonance, 150 Smith
 certificates, 90 + 70 + 35 rank-two operator, pullback and Gauss profiles, 75
 boundary coefficients, 48 sharp degree family, 12 worked equations; worked
-degree bounds 1, 3, 1, 2), with no failures. For this merge the
+degree bounds 1, 3, 1, 2) and 4,605 checks in twelve families (20: 1,596
+unit coefficient formula, 80 residual parity, 45 principal-unit
+cancellation, 810 coordinate transients, 201 higher-rank comparisons, 281
+omnific coding, 40 + 88 + 88 Catalan identity, powers and support, 101
+partial-theta operator, 875 mixed-operator indexing, 400 positive
+characteristic; 810 + 201 + 88 + 90 = 1,189 of them compare integer or
+lexicographic facts that hold by construction), with no failures. For this merge the
 source 11 and 12 suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced their records exactly apart from the recorded interpreter version
 (recorded runs: Python 3.13.5, SymPy 1.14.0); an earlier rerun of the source 10
@@ -1381,7 +1561,10 @@ reproduced its record apart from the elapsed time, and source 17's apart from
 the recorded interpreter version (recorded run: Python 3.13.5). For the merge
 of source 15 its suite was rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced its record apart from the recorded interpreter version (recorded
-run: Python 3.13.5, SymPy 1.14.0).
+run: Python 3.13.5, SymPy 1.14.0). For the merge of source 20 its suite was
+rerun on a copy (Python 3.14.4) and reproduced its record exactly after
+normalizing the CRLF line endings of the redirected output (the record names
+no interpreter).
 
 The build helpers were written for their sources' own manuscripts and are
 kept byte-identical; do not use them here, use `latexmk` on a copy.
@@ -1432,9 +1615,15 @@ rebuilding `article.pdf` in place; its `verify` target calls a `verify.py`
 that is not present under that name, and its `clean` target deletes auxiliary
 files with `rm -f`. `data/15-polynomial-composition-BUILD_REPORT.json`
 describes the 24-page source 15 manuscript (TeX Live 2025/dev on Debian, no
-warnings), which is not shipped. The pending source's build file
-(`20-recurrences-build.sh`) is described when that source is merged; do not
-run it here.
+warnings), which is not shipped. `code/20-recurrences-build.sh` was written
+for source 20's delivery layout: it changes to its own directory, runs
+`pdflatex` three times on an `article.tex` there, then runs
+`python3 verify.py > verification.txt`, **overwriting that record by
+redirection**, and prints it. Here its directory is `code/`, which has neither
+file: run in this layout it stops at the first `pdflatex` call with an error
+and leaves `texput.log` in `code/` (checked on a copy). Do not run it here;
+source 20 shipped no build record, and its 22-page manuscript is not
+shipped.
 
 
 ## Subsequent proof review
@@ -1673,3 +1862,23 @@ The status of Question 19.6, Section 19's ledger, Section 18 and the
 appendices were updated, and the title-page count of pending theorem packages
 now names all nine later parts. The part has not been independently refereed
 or formalized.
+
+## Merge of source 20
+
+The code, data and audit files of source 20 are byte-identical to the
+delivered package (placement `aa9c891`, rechecked against a fresh extraction
+of the archive in `73043eb`). Not shipped: its article source, PDF and
+delivery README, and its checksum list (verified at placement and dropped).
+Every result of the source is printed in Sections 38–39 or the introduction,
+with its proof, except the facts listed above as printed once; Section 38.1
+maps each numbered result to its place here. Its description of this report
+was accurate at its pin `efc5446` (the seven-source text) and is stale
+against the current one, which already contains source 18; its gap claim is
+recorded, not repeated (Remark 39.11). Its Questions 12.3, 12.4, 12.6–12.10
+and 12.12 are 19.63–19.70 (12.7 re-scoped), and 12.1, 12.2, 12.5 and 12.11
+are recorded in the statuses of Questions 19.24, 19.21, 19.25 and 19.29. The
+statuses of Questions 19.4, 19.22 and 19.28, Section 19's ledger, Section 18,
+Section 13.3, the abstract, the title-page status (now "ten later parts") and
+the appendices were updated. The abstract's divisibility sentence was
+shortened, without change of content, so that the status note stays on the
+title page. The part has not been independently refereed or formalized.

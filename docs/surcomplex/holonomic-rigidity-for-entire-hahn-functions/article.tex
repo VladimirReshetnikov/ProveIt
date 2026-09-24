@@ -144,10 +144,11 @@ parameters whose quotients are not roots of unity; with one, a
 Chebyshev-descended theta series has minimal differential order three; for
 every $\Gamma$ no such series satisfies an equation of order $\le2$, or of
 order three and jet degree $\le3$; linear mixed rigidity holds at unit
-dilations; and a dominant argument $f(P(z))$, $\deg P\ge2$, forces
-polynomiality for every $\Gamma$. $\Gamma$ is \emph{not} assumed divisible; divisibility enters only
-in the three threshold constructions of Section~\ref{hol:sub:divisibility},
-each of which states it.
+dilations; a dominant argument $f(P(z))$, $\deg P\ge2$, forces
+polynomiality for every $\Gamma$; and unit-root recurrences have finitely
+generated coefficient algebras. Divisibility of $\Gamma$ is
+\emph{not} assumed, except in three threshold constructions that state it
+(Section~\ref{hol:sub:divisibility}).
 \end{abstract}
 \end{minipage}
 \vfill
@@ -157,7 +158,7 @@ each of which states it.
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
-The full classifications and the theorem packages of the nine later parts
+The full classifications and the theorem packages of the ten later parts
 remain pending. The
 variable derivative is not the
 Berarducci--Mantova derivation on surreal coefficients.
@@ -207,6 +208,11 @@ equation at all, with their whole relation ideals.
 Sections~\ref{hol:pc:sec:setting}--\ref{hol:pc:sec:arithmetic} replace the
 dilation by a polynomial argument of degree at least two, and there rigidity
 holds for every value group, with explicit degree bounds.
+Sections~\ref{hol:rc:sec:setting}--\ref{hol:rc:sec:surreal} turn from
+functions to the ordinary linear recurrences with Hahn or surreal values that
+underlie all these proofs, and read their individual coefficients: tame, in
+one finitely generated algebra, when the characteristic roots are units, and
+arbitrary for a first-order omnific recurrence.
 
 The answer depends decisively on which operator is used, and for dilation
 equations it depends further on whether the valuation of the particular
@@ -765,6 +771,54 @@ shows that every affine hypersurface over $\Q$ is the entire-solution locus of
 one equation of this class, so omnific solvability is undecidable inside it
 (Theorem~\ref{hol:pc:thm:universal}, Corollary~\ref{hol:pc:cor:undecidable}).
 
+The fifteenth principal theorem comes from source~20 and is proved in
+Sections~\ref{hol:rc:sec:setting}--\ref{hol:rc:sec:surreal}
+(Convention~\ref{hol:rc:conv:field}). A \emph{coefficient-algebraic condition}
+on a vector of Hahn series is a polynomial equation over $k$ in finitely many
+of their coefficients (Definition~\ref{hol:rc:def:conditions}).
+
+\begin{maintheorem}[Coefficient observables of recurrences; source~20]
+\label{hol:rc:main:observables}
+Let $k$ be a field of characteristic zero and $\KK=k((t^\Gamma))$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Let $\mathbf y_n$ be a finite vector of exponential polynomials
+$\sum_jR_j(n)\lambda_j^n$, $R_j\in\KK[U]$, whose bases $\lambda_j$ have
+valuation zero and residues $\zeta_1,\ldots,\zeta_m$. Every coefficient
+sequence $n\mapsto[t^\gamma]$ of every coordinate lies in the one finitely
+generated $k$-algebra $k[n,\zeta_1^n,\ldots,\zeta_m^n]$ of sequences.
+\item For every set-sized family of coefficient-algebraic conditions, a finite
+subfamily is equivalent to the whole family at every point of the orbit
+$(\mathbf y_n)_{n\ge0}$, and the set of $n$ at which $\mathbf y_n$ satisfies the
+family is a finite union of full residue classes modulo
+$\mathsf M_{\mathrm{tor}}$, the exponent of the torsion subgroup of
+$\langle\zeta_1,\ldots,\zeta_m\rangle$, and a finite set; one
+$\mathsf M_{\mathrm{tor}}$ serves for every family.
+\item Without units this fails completely: for every real sequence
+$(\mathbf b_m)_{m\ge0}$ there is a purely infinite omnific integer
+$\mathfrak w$ with $[\omega^\omega](\omega^n\mathfrak w)=\mathbf b_n$ for every
+ordinary $n$, so the first-order omnific recurrence $y_{n+1}=\omega y_n$
+realizes every subset of $\N$ as the nonzero set of one fixed Conway
+coefficient.
+\end{enumerate}
+\end{maintheorem}
+
+Part~(a) rests on the support envelope of Lemma~\ref{hol:ud:lem:envelope};
+part~(b) adds Hilbert's basis theorem and a Skolem--Mahler--Lech period valid
+for all monomials in the residues (Lemma~\ref{hol:rc:lem:torperiod}), for which
+the period of source~18's valuation theorem is too small
+(Remark~\ref{hol:rc:rem:periods}). The element in part~(c) is a stream already
+in the omnific-notations report (Remark~\ref{hol:rc:rem:stream}); new is its
+reading as a recurrence observable, which excludes a coefficientwise
+Skolem--Mahler--Lech theorem for omnific recurrences
+(Corollary~\ref{hol:rc:cor:nosml}), while the leading exponent of every
+recurrence over $\No[i]$, $\Oz$ or $\Oz[i]$ stays eventually affine on finitely
+many progressions (Theorem~\ref{hol:rc:thm:surreal}). Source~20 also
+re-derives, independently of source~18, the valuation theorem for Hahn
+exponential polynomials and the unit-dilation case of
+Theorem~\ref{hol:ud:main:mixed}, printed once; its exact finite-group
+criterion is a special case of that theorem
+(Section~\ref{hol:rc:sub:mixed}).
+
 For the linear theorems, the hypotheses separate two obstructions.
 Differential equations have bounded valuation costs after passing to their
 coefficient recurrence. Dilation
@@ -845,7 +899,9 @@ The theta-hierarchy part works in $\Gamma=\R$, which is divisible, and states
 it; the single-scale part uses no divisibility, and neither does the
 polynomial-composition part, whose degree bounds are floors of ratios of
 ordinary integers and whose convexity inequality multiplies by positive
-integers.
+integers. The recurrence part uses no divisibility either: its periods are
+exponents of finite groups of residues, and its cost bounds are those of the
+unit-dilation part.
 
 No theorem in this report states a conclusion under
 Convention~\ref{hol:conv:group} while resting on a proof step that divides by
@@ -857,7 +913,7 @@ weaker in the constant only, not in the conclusion.
 \label{hol:sub:position}
 
 \paragraph{Provenance.}
-This report is built from twelve manuscripts, numbered as they arrived in
+This report is built from thirteen manuscripts, numbered as they arrived in
 the collection. Sources~08 and~09 were written independently on 22 September 2026
 and both prove the differential rigidity theorem and the order-unit dilation
 criterion (Theorems~\ref{hol:main:ode} and~\ref{hol:main:q}); source~08 is
@@ -995,6 +1051,21 @@ Sections~1--35, of Questions~19.1--19.54 and of Theorems~A--M is unchanged;
 the conclusion moves to the end. Its new questions are
 Questions~\ref{hol:pc:q:critical}--\ref{hol:pc:q:formal}.
 
+Source~20 (batch~33, manuscript~01), \emph{Valuation Rigidity and
+Coefficient Universality in Surreal Recurrences}, forms the recurrence part,
+Sections~\ref{hol:rc:sec:setting}--\ref{hol:rc:sec:surreal}, with
+Theorem~\ref{hol:rc:main:observables}. It consulted the snapshot
+\begin{center}\small\texttt{efc5446229dbf61a97bdd5edae91dba20af9d131},\end{center}
+at which this report was the seven-source text (sources~08--14) and
+sources~15--19 were placed but not yet merged; its statement that the mixed
+unit-valuation case was left open was accurate there and is stale now, and its
+re-derivations of source~18's results are printed once
+(Section~\ref{hol:rc:sub:conventions}). The part follows
+Section~\ref{hol:pc:sec:arithmetic}, so that the numbering of
+Sections~1--37, of Questions~19.1--19.62 and of Theorems~A--N is unchanged;
+the conclusion moves to the end. Its new questions are
+Questions~\ref{hol:rc:q:nonunit}--\ref{hol:rc:q:substitutions}.
+
 \paragraph{The companion entire-function report.}
 The collection already contains a merged report on cofinality, factorization
 and scalar extension for entire Hahn functions at arbitrary
@@ -1080,13 +1151,14 @@ Section~\ref{hol:td:sub:predecessors}, that of source~14 in
 Section~\ref{hol:ot:sub:predecessors}, those of sources~18 and~19 in
 Sections~\ref{hol:ud:sub:predecessors} and~\ref{hol:nr:sub:predecessors}, and
 those of sources~16 and~17 in Sections~\ref{hol:th:sub:predecessors}
-and~\ref{hol:fh:sub:predecessors}, and that of source~15 in
-Section~\ref{hol:pc:sub:predecessors}. Section~\ref{hol:sec:status} and
+and~\ref{hol:fh:sub:predecessors}, that of source~15 in
+Section~\ref{hol:pc:sub:predecessors}, and that of source~20 in
+Section~\ref{hol:rc:sub:predecessors}. Section~\ref{hol:sec:status} and
 Sections~\ref{hol:cf:sub:nonclaims}, \ref{hol:td:sub:nonclaims},
 \ref{hol:ot:sub:nonclaims}, \ref{hol:ud:sub:nonclaims},
 \ref{hol:nr:sub:nonclaims}, \ref{hol:th:sub:nonclaims},
-\ref{hol:fh:sub:nonclaims} and~\ref{hol:pc:sub:nonclaims} record exactly what
-is and is not claimed.
+\ref{hol:fh:sub:nonclaims}, \ref{hol:pc:sub:nonclaims}
+and~\ref{hol:rc:sub:nonclaims} record exactly what is and is not claimed.
 
 \section{Hahn support and what evaluation means}\label{hol:sec:support}
 
@@ -2920,11 +2992,14 @@ theta-descent part in
 Sections~\ref{hol:td:sec:setting}--\ref{hol:td:sec:boundary}, the
 order-three-threshold part in
 Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}, and the
-unit-dilation, Newton-rigidity, theta-hierarchy and single-scale parts in
-Sections~\ref{hol:ud:sec:setting}--\ref{hol:fh:sec:realizations}, whose
+unit-dilation, Newton-rigidity, theta-hierarchy, single-scale,
+polynomial-composition and recurrence parts in
+Sections~\ref{hol:ud:sec:setting}--\ref{hol:rc:sec:surreal}, whose
 suggested formalization orders are recorded in
-Sections~\ref{hol:ud:sub:certificates} and~\ref{hol:th:sub:third} and
-Questions~\ref{hol:nr:q:formal} and~\ref{hol:fh:q:formal},
+Sections~\ref{hol:ud:sub:certificates}, \ref{hol:th:sub:third}
+and~\ref{hol:pc:sub:boundaries} and
+Questions~\ref{hol:nr:q:formal}, \ref{hol:fh:q:formal}
+and~\ref{hol:ud:q:formal} (with its batch-33 status),
 remain unformalized; the shared support and inward-stability prerequisites
 above do not prove them. For the coefficient-field package source~12 suggests
 the order:
@@ -4172,7 +4247,7 @@ the main nonlinear rigidity theorems remain unmapped in the current
 implementation ledger. No independent human referee report accompanies the
 delivered source package.
 
-\section{The twelve finite check suites}\label{hol:sec:verification}
+\section{The thirteen finite check suites}\label{hol:sec:verification}
 
 Each source manuscript shipped an independent exact-arithmetic suite. The
 suites of sources~08 and~09 were run on copies and passed, and neither
@@ -4197,8 +4272,10 @@ copies for this merge, source~16's reproduced its record apart from the
 elapsed time and source~17's apart from the recorded interpreter version. The
 suite of source~15 checks finite facts of the polynomial-composition part; it
 was run on a copy for this merge and reproduced its record apart from the
-recorded interpreter version. The
-suites of sources~08, 09, 10, 12, 16 and~18 use only the Python standard
+recorded interpreter version. The suite of source~20 checks finite facts of
+the recurrence part; it was run on a copy for this merge and reproduced its
+record exactly, up to line endings. The
+suites of sources~08, 09, 10, 12, 16, 18 and~20 use only the Python standard
 library, integers, and \texttt{fractions.Fraction}; the suites of sources~11,
 13, 14, 15, 17 and~19 use exact symbolic and rational arithmetic in SymPy, the
 only third-party package any suite needs. None uses floating-point
@@ -4686,6 +4763,62 @@ in place, its \texttt{verify} target calls a \texttt{verify.py} there, and its
 here. \path{data/15-polynomial-composition-BUILD_REPORT.json} describes the
 24-page source manuscript, which is not shipped.
 
+\Needspace{24\baselineskip}
+\paragraph{\texttt{code/20-recurrences-verify.py} --- 4{,}605 checks in 12
+families, 0 failures.}
+It checks finite facts of the recurrence part with the standard library only
+(exact integers and \texttt{fractions.Fraction}, finite Laurent polynomials
+in $t$, lexicographic pairs for exponents $a\omega+b$; fixed seed $20260923$;
+Python~3.10 or later, as the source states).
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Family in \path{data/20-recurrences-verification.txt} & Checks\\
+\midrule
+unit coefficient formula: \eqref{hol:rc:eq:coefficient} against direct
+expansion, three cases, $n\le18$, exponents $-3$ to $24$ & 1{,}596\\
+residual parity valuation: Example~\ref{hol:ex:unitperiod}, $1\le n\le80$ &
+80\\
+principal-unit cancellation: the case $d=2$ of
+Example~\ref{hol:ud:ex:cancellation}, $n\le44$ & 45\\
+unbounded coordinate transients: $\binom nd=0$ exactly for $n<d$
+(Example~\ref{hol:rc:ex:transient}), $d\le18$, $n\le44$ & 810\\
+higher-rank affine comparison: $\min\bigl((1,0),(0,n)\bigr)=(0,n)$,
+$n\le200$ & 201\\
+omnific coefficient coding: Theorem~\ref{hol:rc:thm:coding} for a rational
+sequence and for the squares, finite windows & 281\\
+Catalan algebraic identity; Catalan power coefficients; declining omnific
+support: Example~\ref{hol:rc:ex:catalan} & 40; 88; 88\\
+partial-theta operator: the coefficients of \eqref{hol:eq:thetahom} as
+Laurent polynomials in the parameter, $n\le100$ & 101\\
+mixed-operator coefficient indexing: \eqref{hol:ud:eq:termcoefficient} against
+direct application, 35 random operators with multipliers $1,2,3$ & 875\\
+positive-characteristic boundary: Example~\ref{hol:rc:ex:charp} for
+$\mathfrak p\le7$, $n\le100$ & 400\\
+\midrule
+Total & 4{,}605\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Integer multipliers check coefficient indexing, not entireness, and a finite
+truncation of $\lambda_-$ or of $\mathfrak w_{\mathbf b}$ checks only the
+coefficients that the omitted tail cannot reach. Four families check facts
+that hold by construction: the $810$ binomial-vanishing checks, the $201$ and
+$88$ lexicographic comparisons, and the $90$ positivity checks inside the
+coding family; together they are $1{,}189$ of the $4{,}605$, so the count is no
+measure of proof coverage, as the source says. The script takes no arguments
+and prints its record to standard output only; the delivered record is that
+output (the merge's rerun, under Python~3.14.4, matched it exactly after
+normalizing the Windows line endings of the redirected output). The source's
+\path{code/20-recurrences-build.sh} was written for its delivery layout: it
+changes to its own directory, runs \texttt{pdflatex} three times on an
+\texttt{article.tex} there and then \texttt{python3 verify.py >
+verification.txt}, overwriting that record by redirection. Here its directory
+is \texttt{code/}, which has neither file: run in this layout it stops at the
+first \texttt{pdflatex} call and leaves \texttt{texput.log} in \texttt{code/};
+do not run it here. Source~20 shipped no build record, and its 22-page
+manuscript is not shipped.
+
 \paragraph{What the checks do not do.}
 No suite proves any infinite theorem. No finite prefix can prove strong
 summability of an infinite family, cofinality of $(e_n)$, noncofinality of
@@ -4723,7 +4856,10 @@ tests finite windows of the band lemma and finite examples; it quantifies over
 no supports, equations or continuum families. Source~15's suite does not
 establish summability of arbitrary infinite supports, the weighted theorem, the
 universal encoding for all polynomials, or novelty; its Hahn profiles are
-computed for polynomials over $\Z^2$ only. What the suites
+computed for polynomials over $\Z^2$ only. Source~20's suite does not prove
+the Hahn support lemma, the Skolem--Mahler--Lech theorem, the infinite-support
+minimum argument, Noetherian compression or the proper-class localization; its
+coding checks are finite windows. What the suites
 can detect is sign,
 indexing, conversion and finite valuation-comparison mistakes. Everything else
 rests on the written arguments.
@@ -4832,6 +4968,18 @@ integer resonance set; comparison of polynomial degrees.\\
 Omnific modules, universality, undecidability & Smith normal form and the
 constant-term retraction; Euler projectors; the MRDP theorem and Sun's theorem
 (imported).\\
+Observable algebra (Theorem~\ref{hol:rc:thm:algebra}) & Common support
+envelope; finite binomial expansion with $\binom Ui\in k[U]$ in characteristic
+zero.\\
+Noetherian compression (Theorem~\ref{hol:rc:thm:compression}) & Observable
+algebra; Hilbert's basis theorem; one torsion period for all monomials in the
+residues; the imported Skolem--Mahler--Lech theorem through
+Lemma~\ref{hol:cf:lem:exppoly}.\\
+Surreal recurrence profiles, matrix powers & Algebraic closedness of $\No[i]$;
+localization to a set-sized workspace; Jordan form of a finite companion
+matrix; periodic-affine valuations; exterior powers.\\
+Omnific coding (Theorem~\ref{hol:rc:thm:coding}) & The normal-form support
+definition and monomial multiplication only; no Skolem--Mahler--Lech.\\
 \bottomrule
 \end{longtable}
 
@@ -4840,11 +4988,12 @@ ordinary nonnegative integers. The coefficient valuation is trivial in
 characteristic zero; the coefficient field is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and any
 characteristic-zero field in the nonlinear, coefficient-field, theta-descent,
-order-three-threshold, unit-dilation, Newton-rigidity and
-polynomial-composition parts. The
-coefficient-field and unit-dilation parts import one external recurrence
-theorem without proof, the Skolem--Mahler--Lech theorem, used only for
-relations involving at least two distinct dilations or multipliers. The
+order-three-threshold, unit-dilation, Newton-rigidity,
+polynomial-composition and recurrence parts. The
+coefficient-field, unit-dilation and recurrence parts import one external
+recurrence theorem without proof, the Skolem--Mahler--Lech theorem, used only
+for relations involving at least two distinct dilations or multipliers, or
+exponential polynomials with at least two bases. The
 polynomial-composition part imports the MRDP theorem and Sun's theorem, used
 only for Corollaries~\ref{hol:pc:cor:undecidable} and~\ref{hol:pc:cor:ten}.
 The equations use the
@@ -4957,6 +5106,17 @@ contributions are the exact differential relation ideals of rapid-height
 families, their differential transcendence over the full Hahn field at one
 order-unit scale, and the surreal, domain and omnific realizations; its
 priority is equally provisional.
+
+The recurrence part (source~20) inherits the support lemma, the
+Skolem--Mahler--Lech theorem, Hilbert's basis theorem, the escape mechanism and
+the partial theta series, and re-derives source~18's valuation theorem
+(Section~\ref{hol:rc:sub:predecessors}). Its proposed contributions are the
+finitely generated algebra of coefficient observables, Noetherian compression
+of coefficient conditions with one universal residual period, the recurrence
+profiles over $\No[i]$, $\Oz$ and $\Oz[i]$, the reading of a known omnific
+stream as a universal coefficient observable
+(Theorem~\ref{hol:rc:main:observables}), and determinantal profiles of matrix
+powers; its priority is equally provisional.
 
 \subsection{A result-by-result attribution ledger}
 
@@ -5128,14 +5288,34 @@ Removal of the order-unit dichotomy by a dominant argument of degree at least
 two, identification of source~15's indicial polynomials, added Mahler
 references & Added by the merge (Remark~\ref{hol:pc:rem:dichotomy},
 Sections~\ref{hol:pc:sub:conventions} and~\ref{hol:pc:sub:predecessors}).\\[4pt]
+Support envelope, unit-root and periodic-affine valuations, mixed unit
+rigidity, re-derived; exact finite-group criterion & Source~20 found these
+independently of source~18; printed once as source~18's
+(Section~\ref{hol:rc:sub:conventions}); its finite-group criterion and its
+convex-scale theorem are special cases of Theorem~\ref{hol:ud:main:mixed},
+printed as Corollaries~\ref{hol:rc:cor:finitegroup}
+and~\ref{hol:rc:cor:convex}.\\[4pt]
+The omnific stream $\sum_m\mathbf b_m\omega^{\omega-m}$ & The omnific-notations
+report's (\texttt{onot:eq:guardbasic}); credited by the merge, not claimed.\\[4pt]
+One finitely generated observable algebra, Noetherian compression with one
+residual period, recurrence profiles over $\No[i]$, $\Oz$ and $\Oz[i]$, the
+decreasing omnific recurrence, the coding reading and the failure of a
+coefficientwise Skolem--Mahler--Lech theorem, determinantal profiles &
+Proposed by source~20 (Theorem~\ref{hol:rc:main:observables}); priority
+provisional.\\[4pt]
+Two periods, finite generation in the convex-hull criterion, the stream credit,
+the exact positive-characteristic formula beside the unit-dilation part &
+Added by the merge (Remarks~\ref{hol:rc:rem:periods},
+\ref{hol:rc:rem:finitegeneration}, \ref{hol:rc:rem:stream},
+Example~\ref{hol:rc:ex:charp}).\\[4pt]
 Priority, peer review, formal verification & Priority and independent
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
 The full classifications and the theorem packages of the nonlinear,
 coefficient-field, theta-descent, order-three-threshold, unit-dilation,
-Newton-rigidity, theta-hierarchy, single-scale and polynomial-composition
-parts remain pending.\\
+Newton-rigidity, theta-hierarchy, single-scale, polynomial-composition and
+recurrence parts remain pending.\\
 \bottomrule
 \end{longtable}
 
@@ -5154,12 +5334,13 @@ needed; machine-checked scope is the partial coverage recorded in
 Section~\ref{hol:sec:certificates} and the formalization ledger. The
 corresponding records for the nonlinear, coefficient-field,
 theta-descent, order-three-threshold, unit-dilation, Newton-rigidity,
-theta-hierarchy, single-scale and polynomial-composition parts, with their own
-search limits, are Sections~\ref{hol:nl:sub:predecessors},
+theta-hierarchy, single-scale, polynomial-composition and recurrence parts,
+with their own search limits, are Sections~\ref{hol:nl:sub:predecessors},
 \ref{hol:cf:sub:predecessors}, \ref{hol:td:sub:predecessors},
 \ref{hol:ot:sub:predecessors}, \ref{hol:ud:sub:predecessors},
 \ref{hol:nr:sub:predecessors}, \ref{hol:th:sub:predecessors},
-\ref{hol:fh:sub:predecessors} and~\ref{hol:pc:sub:predecessors}.
+\ref{hol:fh:sub:predecessors}, \ref{hol:pc:sub:predecessors}
+and~\ref{hol:rc:sub:predecessors}.
 
 \subsection{What the nonlinear part does not claim}
 \label{hol:nl:sub:nonclaims}
@@ -5480,6 +5661,12 @@ valuation is eventually periodic, with period dividing the order of
 $\res(q)$ when that is a root of unity. The question is answered in the form
 posed; the nonlinear analogue is settled negatively by
 Corollary~\ref{hol:td:cor:sharp}, as recorded before.
+
+\emph{Status (batch~33).} Source~20 re-derives the answer independently, for
+multipliers in a torsion-free group, through the same valuation theorem for
+Hahn exponential polynomials (Section~\ref{hol:rc:sub:mixed}); it was written
+against the text before source~18 was merged, when the question was still
+open there.
 
 \begin{question}[Optimal exterior regions and exact solution domains]
 \label{hol:q:optimal}
@@ -5819,6 +6006,13 @@ surviving infinite path needs an escape inequality; checking classes in
 isolation is not enough. Question~\ref{hol:cf:q:torsion} asks the analogous
 question for the coefficient-field conclusion.
 
+\emph{Status (batch~33).} Source~20 poses the same question (its
+Question~12.2) for a finitely generated dilation group with torsion: decompose
+formal series by degree modulo the torsion order, account for the sector
+shifts caused by derivatives and polynomial coefficients, and distinguish a
+genuinely constrained sector from the free even series of
+Section~\ref{hol:rc:sub:boundaries}. It stays open.
+
 \begin{question}[Several variables without an ellipticity shortcut;
 source~18]\label{hol:ud:q:several}
 For jointly strongly entire series in several variables, which finite systems
@@ -5833,6 +6027,10 @@ finitely many positive-weight directions or a rank condition; restriction to
 a generic line, as for Theorem~\ref{hol:main:multi}, would need the operator
 system and joint strong summability to be preserved. Compare
 Question~\ref{hol:ot:q:pde}.
+
+\emph{Status (batch~33).} Source~20's Question~12.12, on finite linear
+substitutions in several variables and matrix dilations, is the neighbouring
+Question~\ref{hol:rc:q:substitutions}.
 
 \begin{question}[Optimal exterior cuts for mixed operators; source~18]
 \label{hol:ud:q:optimal}
@@ -5860,6 +6058,16 @@ support bound is proved; arbitrary residue bases need a separate exact
 zero-set analysis. No universal algorithm follows from the qualitative
 theorem.
 
+\emph{Status (batch~33).} Source~20 poses the same question (its
+Question~12.1) for Hahn inputs with algebraic coefficients and finitely
+generated, explicitly represented supports, and asks to separate the search
+for the first coefficient sequence that is not an identity from the location
+of the zeros of that exponential polynomial, which the existence proof does not
+eliminate. It adds a target of the same kind:
+Theorem~\ref{hol:rc:thm:compression} gives a finite equivalent subfamily of a
+set-sized family of coefficient conditions only existentially
+(Section~\ref{hol:rc:sub:boundaries}). Both stay open.
+
 \begin{question}[Valuation profiles beyond Hahn fields; source~18]
 \label{hol:ud:q:beyond}
 Which equicharacteristic-zero valued fields have the periodic-affine property
@@ -5873,6 +6081,11 @@ problem; an intrinsic proof needs substitutes for the well-ordered set of
 candidate coefficients and for the least coefficient sequence that is not an
 identity. No embedding theorem beyond the explicit surreal workspaces is
 asserted.
+
+\emph{Status (batch~33).} Source~20's Question~12.5 is the same question: which
+embedding or completion hypotheses preserve the conclusion without unjustified
+summability assumptions, so that the genuinely Hahn-theoretic part of the
+theorem is isolated. It stays open.
 
 \begin{question}[A positive-characteristic replacement for the unit theorem;
 source~18]\label{hol:ud:q:charp}
@@ -5912,6 +6125,18 @@ Theorem~\ref{hol:ud:thm:affine} occur; any improvement must account for
 $\sigma_2-2^a$ (Example~\ref{hol:ud:ex:degree}), which already has ordinary
 integer coefficients.
 
+\emph{Status (batch~33).} Source~20 continues the question on the side of
+sequences rather than operators. The leading exponent of a recurrence over
+$\Oz$ or $\Oz[i]$ is eventually affine on finitely many progressions, two
+sufficing when the characteristic roots are real
+(Theorem~\ref{hol:rc:thm:surreal}); for a real-surreal unit-root recurrence,
+support conditions are decided by finitely many coefficients along the orbit,
+with hitting sets periodic modulo $\mathsf M_{\mathrm{tor}}$ up to a finite set
+(Corollary~\ref{hol:rc:cor:tails}); but one fixed Conway coefficient of the
+purely infinite orbit $y_{n+1}=\omega y_n$ can be any real sequence
+(Theorem~\ref{hol:rc:thm:coding}). Full omnific membership is
+Question~\ref{hol:rc:q:membership}. The question about operators stays open.
+
 \begin{question}[A proof-assistant implementation with an explicit trust
 boundary; source~18]\label{hol:ud:q:formal}
 Can the finite-order-residue case and the two-multiplier witness be
@@ -5922,6 +6147,15 @@ is available in verified form or as an explicit hypothesis?
 This separates a support and order component, a finite algebraic component
 and a number-theoretic zero-set component, and keeps finite testing, imported
 theorems and kernel-checked proof apart.
+
+\emph{Status (batch~33).} Source~20's Question~12.11 proposes the same
+separation for its chain: formalize Theorem~\ref{hol:rc:thm:algebra} with
+Lemma~\ref{hol:ud:lem:envelope}, the argument by the least coefficient sequence
+that is not an identity, and the escape lemma, keeping the
+Skolem--Mahler--Lech theorem as a declared imported theorem until it is
+available; the repository's support and recurrence-escape infrastructure would
+need a theorem-label audit before being reused as checked coverage. No Lean
+work is added.
 
 The next six questions come from source~19 (its Questions~12.2, 12.3, 12.5,
 12.7, 12.9 and~12.10; its Question~12.1 is answered by
@@ -6329,6 +6563,111 @@ geometric infrastructure. The universal encoder supplies adversarial tests
 for symbolic solvers: a program claiming to decide all nonlinear omnific
 equations of this class must be incorrect, however well it computes degree
 bounds on examples.
+
+The next eight questions come from source~20 (its Questions~12.3, 12.4,
+12.6--12.10 and~12.12, the fourth re-scoped by the merge), in the notation of
+Section~\ref{hol:rc:sec:setting}; its Questions~12.1, 12.2, 12.5 and~12.11 are
+recorded in the statuses of Questions~\ref{hol:ud:q:effective},
+\ref{hol:ud:q:torsionblocks}, \ref{hol:ud:q:beyond} and~\ref{hol:ud:q:formal}.
+
+\begin{question}[Nonunit coefficient tests without arbitrary coding;
+source~20]\label{hol:rc:q:nonunit}
+Which restrictions on the initial support or on the observed coefficient cut
+restore eventual periodicity of coefficient tests for recurrences whose roots
+are not units?
+\end{question}
+
+Finite support, supports in a fixed Archimedean subgroup and one-sided
+valuation hypotheses are natural starting points.
+Theorem~\ref{hol:rc:thm:coding} shows that arbitrary reverse well-ordered
+omnific support cannot be allowed without further restrictions.
+
+\begin{question}[Full omnific-membership sets; source~20]
+\label{hol:rc:q:membership}
+For real-surreal $y_n$ whose characteristic roots are units,
+Section~\ref{hol:rc:sub:compression} controls the absence of negative Conway
+exponents. Which further hypotheses make the integer constant-term condition,
+and so the set $\{n:y_n\in\Oz\}$, effectively classifiable?
+\end{question}
+
+This is the intersection of a support-theoretic problem with an arithmetic
+integrality problem for an exponential polynomial, not another application of
+coefficientwise algebraicity.
+
+\begin{question}[Multivariate time; source~20]\label{hol:rc:q:multivariate}
+For $\mathbf n\in\N^{\bar r}$, what are the coefficients and valuations of
+$\sum_jR_j(\mathbf n)\prod_i\lambda_{ij}^{n_i}$?
+\end{question}
+
+The coefficient-algebra reduction still suggests finitely generated
+observable algebras, but one-variable arithmetic progressions must be replaced
+by a finer description of lattice subsets; polynomial conditions in several
+integer variables warn against a naive semilinearity assertion.
+
+\begin{question}[Nonlinear mixed equations at unit dilation; source~20,
+re-scoped]\label{hol:rc:q:nonlinear}
+Suppose $\Gamma$ has an order unit and $q\in\KK^\times$ is a nontorsion unit.
+What are the least differential order and the least degree of a nonzero
+algebraic relation over $\KK(z)$ among finitely many $(D_z^rf)(q^\ell z)$,
+involving at least two powers of $q$, that has a nonpolynomial strongly entire
+solution?
+\end{question}
+
+As posed by source~20 the question asked for the smallest nonlinear
+differential--dilation classes admitting such solutions with an order unit,
+measured by differential order and nonlinear degree, noting that its linear
+theorem does not extrapolate to nonlinear equations. In the current text
+unrestricted nonlinear rigidity is already refuted
+(Remark~\ref{hol:ud:rem:nonlinearq}): $\mathcal T_p$ satisfies a relation of
+order three, of degree six, with no dilation, and for relations without
+dilations the least order is three (Theorem~\ref{hol:ot:main:second}) and the
+least degree at order three is at least four (Theorem~\ref{hol:nr:main:third});
+which series attain order three is Question~\ref{hol:q:nonlinear}. The merge
+re-scopes source~20's question to what these do not decide: whether a unit
+dilation lowers the order or the degree needed.
+
+\begin{question}[Derivations of the coefficient field; source~20]
+\label{hol:rc:q:derivations}
+Replace $D_z$, which fixes $\KK$, by an operator that also uses a specified
+series derivation of $\KK$, such as a compatible restriction of the
+Berarducci--Mantova derivation. Which valuation-cost estimates survive?
+\end{question}
+
+Derivatives of coefficients introduce new support dynamics that the present
+normal-form computation does not cover.
+
+\begin{question}[Definability of the coding observation; source~20]
+\label{hol:rc:q:definability}
+In which expansions of $(\No,\Oz)$ can the coefficient map $[\omega^\omega]$
+and the orbit $n\mapsto\omega^n\mathfrak w$ be defined uniformly?
+\end{question}
+
+The coding theorem becomes a model-theoretic interpretation only after these
+definability questions are answered; the normal-form identity alone
+interprets no second-order arithmetic in the pure ring.
+
+\begin{question}[Uniform complexity bounds for finite observations;
+source~20]\label{hol:rc:q:complexity}
+For a prescribed finite set of coefficient coordinates and bounded polynomial
+degrees, can one bound the dimension, the recurrence order, or the number of
+possible exceptional zeros of the resulting observation sequences?
+\end{question}
+
+Such bounds can be useful even when the last exceptional index is not
+effectively known; by Example~\ref{hol:rc:ex:transient} any bound must depend
+on the complexity of the observation.
+
+\begin{question}[Beyond scalar commuting dilations; source~20]
+\label{hol:rc:q:substitutions}
+What replaces the valuation theory for finite linear substitutions in several
+variables and for finite-dimensional matrix dilations?
+\end{question}
+
+The one-variable proof relies on scalar exponential-polynomial coefficients;
+noncommuting substitutions may need an orbit theorem for matrix products
+rather than a direct reuse of the Skolem--Mahler--Lech theorem, and
+simultaneously triangularizable cases are a tractable first step. Compare
+Questions~\ref{hol:ud:q:several} and~\ref{hol:pc:q:variables}.
 
 These questions are directions suggested by the proved statements, not claims
 that they were already posed in the published literature, and their
@@ -11718,6 +12057,14 @@ theorem is not certified, and no rank-one special case is claimed to be new;
 the answered question is a question of this report, not a named historical
 conjecture.
 
+\emph{Batch~33 (merge).} Source~20 found the support envelope, the unit and
+periodic-affine valuation theorems, the operator reduction and the mixed
+unit-valuation corollary independently, on the same day, against the text
+before this part was merged. They are printed once, here, and its narrower
+criteria are Corollaries~\ref{hol:rc:cor:convex}
+and~\ref{hol:rc:cor:finitegroup} (Section~\ref{hol:rc:sub:mixed}); no priority
+between the two sources is asserted.
+
 \subsection{What the unit-dilation part does not claim}
 \label{hol:ud:sub:nonclaims}
 
@@ -15453,6 +15800,1036 @@ Mahler references are the merge's; no historical priority is claimed for
 them.
 \end{enumerate}
 
+%======================================================================
+% Recurrence part: source 20. Labels use hol:rc:.
+%======================================================================
+\section{Hahn-valued recurrences: observables and Noetherian compression}\label{hol:rc:sec:setting}
+
+This section and the next contain the material of source~20, delivered in
+batch~33 after the fourteen principal theorems above had been merged. Its
+subject is the \emph{ordinary} constant-coefficient recurrence
+$y_{n+d}=a_{d-1}y_{n+d-1}+\cdots+a_0y_n$ whose coefficients and values lie in a
+Hahn field, or in $\No[i]$; its index $n$ is always an ordinary natural number.
+A single surreal term can carry infinitely many real coefficients, and
+source~20 separates two kinds of information in such a sequence: the leading
+scale, which is eventually affine on finitely many progressions, and a
+prescribed lower Hahn or Conway coefficient, which is tame when the
+characteristic roots are units and can be arbitrary otherwise.
+
+Much of source~20's valuation theory was found independently of source~18 and
+is printed once, in Sections~\ref{hol:ud:sec:setting}--\ref{hol:ud:sec:mixed}.
+What is new here is the \emph{coefficient} side. All coefficient sequences of
+a unit-root exponential polynomial lie in one finitely generated algebra of
+sequences (Theorem~\ref{hol:rc:thm:algebra}); hence every set-sized family of
+polynomial conditions on finitely many coefficients at a time reduces, along
+the orbit, to a finite subfamily, and its hitting set consists of full
+progressions modulo one period and a finite set
+(Theorem~\ref{hol:rc:thm:compression}). In the opposite direction one fixed
+Conway coefficient of a first-order omnific recurrence can reproduce any real
+sequence (Theorem~\ref{hol:rc:thm:coding}). The recurrence statements over
+$\No[i]$, $\Oz$ and $\Oz[i]$, an omnific recurrence whose degree decreases
+forever, and determinantal profiles of matrix powers complete the part.
+Source~20's Sections~9--10 on mixed operators re-derive special cases of
+Theorem~\ref{hol:ud:main:mixed} and are recorded in
+Section~\ref{hol:rc:sub:mixed}.
+
+\subsection{Source, conventions and the merge's choices}
+\label{hol:rc:sub:conventions}
+
+\begin{convention}[Setting of the recurrence part]
+\label{hol:rc:conv:field}
+In Sections~\ref{hol:rc:sec:setting}--\ref{hol:rc:sec:surreal}, $k$ is an
+arbitrary field of characteristic zero with the trivial valuation, $\Gamma$ is
+as in Convention~\ref{hol:conv:group}, $\KK=k((t^\Gamma))$, and $v$, $\lc$,
+$\res$, strong summability, $\EK$, $D_z$ and $\sigma_\lambda$ are as in
+Convention~\ref{hol:ud:conv:field}: $D_z$ kills $\KK$ and is not the
+Berarducci--Mantova derivation, and entireness is relative to this one
+set-sized field. Sequences are indexed by ordinary $n\in\N$. A unit (an
+element of valuation zero) is written $\lambda=\zeta(1+\tau)$ as in
+\eqref{hol:ud:eq:unitdecomp}. An \emph{exponential polynomial} is
+$\mathcal Y(n)=\sum_{j=1}^mR_j(n)\lambda_j^n$ with $R_j\in\KK[U]$ and
+$\lambda_j\in\KK^\times$, as in Section~\ref{hol:ud:sub:sml}; it is
+\emph{unit-root} if every $\lambda_j$ is a unit. For units
+$\lambda_1,\ldots,\lambda_m$ with residues $\zeta_1,\ldots,\zeta_m$ put
+$\langle\zeta\rangle=\langle\zeta_1,\ldots,\zeta_m\rangle\le k^\times$, a
+finitely generated abelian group, whose torsion subgroup is therefore finite,
+and let $\mathsf M_{\mathrm{tor}}$ be the exponent of that torsion subgroup
+($\mathsf M_{\mathrm{tor}}=1$ when it is trivial).
+\end{convention}
+
+For $k=\C$ one has $\KK=\K$ and $\EK=\E$. The statements of
+Section~\ref{hol:rc:sec:setting} hold verbatim for $\Gamma=0$, where $\KK=k$;
+Convention~\ref{hol:conv:group} matters only where scales or entireness enter.
+
+\paragraph{The source.}
+Source~20 is \emph{Valuation Rigidity and Coefficient Universality in Surreal
+Recurrences: A mixed differential--dilation theorem and the limits of
+coefficientwise predictability} (22 pages, US letter, 23 September 2026),
+delivered as the archive \texttt{surreal\_recurrences\_research} (batch~33,
+manuscript~01; local number~20 in this directory). It consulted the repository
+at
+\begin{center}\small\texttt{efc5446229dbf61a97bdd5edae91dba20af9d131},\end{center}
+where this report's \texttt{article.tex} is the blob
+\texttt{9fd5bd460a19448b9078a4ef7f012e647f545e59}; its shipped file
+\path{20-recurrences-SOURCE_AUDIT.md} lists the line ranges it read. At that
+pin this report was the seven-source text (sources~08--14, 137 pages).
+Sources~15--19 had been placed in this directory, with their audit and code
+files, in \texttt{9d28e28}, an ancestor of the pin, but none of them had yet
+been merged into the text; source~18 was merged later the same day, in
+\texttt{2c4debb}. Source~20's description of this report was accurate at the
+pin: the paragraph after Theorem~\ref{hol:thm:mixed} did leave the mixed
+unit-valuation case unclassified when $\Gamma$ has an order unit, and pointed to
+Question~\ref{hol:q:mixedunit}. That statement is \emph{stale} now:
+source~18 answers Question~\ref{hol:q:mixedunit} positively for every
+$\Gamma$ (Corollary~\ref{hol:ud:cor:unitrigidity}) and proves the
+relative-scale criterion of Theorem~\ref{hol:ud:main:mixed}, which contains
+source~20's Theorems~10.1, 10.3 and~10.4 (Section~\ref{hol:rc:sub:mixed}).
+So source~20's description of its Section~10 as closing ``the repository gap'',
+its Corollary~10.2 (``the case explicitly left open''), and its Remark~10.5 are
+printed here as an independent second derivation, not as current
+contributions of this report. Source~20 claims neither the pure differential
+or dilation theorems, the escape mechanism, the order-unit definition, nor the
+partial theta series; it credits them to this report.
+
+\paragraph{Renamed symbols.}
+The following symbols of source~20 would collide with symbols of the earlier
+parts. They are renamed here, in the new material only.
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.2\textwidth}
+>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+Source~20 & Here & Reason\\
+\midrule
+\endhead
+$K=k((t^\Gamma))$, $\mathcal E(K)$ & $\KK$, $\EK$ & $\K$ is $\C((t^\Gamma))$
+and $\E$ its entire series in this report.\\
+unit roots $q_i=c_i(1+\varepsilon_i)$; $u_n=\sum_iP_i(n)q_i^n$ &
+$\lambda_j=\zeta_j(1+\tau_j)$; $\mathcal Y(n)=\sum_jR_j(n)\lambda_j^n$ & $q$ is
+a dilation parameter; the unit-dilation notation of
+Convention~\ref{hol:ud:conv:field} is kept.\\
+envelope $W=A+M(S)$; $R_{i,\gamma}$ & $\Sigma=C+M(S)$; $r_{j,\gamma}$ & As in
+Lemma~\ref{hol:ud:lem:envelope}; $R_j$ are the polynomial factors.\\
+$C=\langle c_i\rangle$; period $M=\exp\operatorname{Tor}(C)$; class $r$ &
+$\langle\zeta\rangle$; $\mathsf M_{\mathrm{tor}}$; $b$ & $\C$ is the complex
+field; $\mathsf M$ is source~18's smaller period
+(Lemma~\ref{hol:ud:lem:period}, Remark~\ref{hol:rc:rem:periods}); $M(S)$ is
+the positive monoid; $r$ is a derivative order.\\
+$\mathcal A=k[n,c_i^n]$; $R_0=k[T,X_1,\ldots,X_s]$ & $\mathfrak A$;
+$k[U,X_1,\ldots,X_m]$ & $\mathcal A[f]$ is a differential expression of the
+theta-descent part; $U$ is the polynomial variable of $k[U]$.\\
+forward shift $E$ & $\mathrm{Sh}$ & As in Section~\ref{hol:ud:sub:sml}.\\
+recurrence terms $u_n$ & $y_n$ & $u$ is the Laurent variable of
+Section~\ref{hol:td:sub:laurent}; $y_n$ is otherwise local to the proof of
+Theorem~\ref{hol:thm:unitorbit}.\\
+vector $x\in K^d$, set $X$, $T\subseteq\Gamma$, $F\in k[X_1,\ldots,X_h]$ &
+$\mathbf x\in\KK^{\bar d}$, $\mathcal X$, $\mathsf T$, $F\in
+k[Z_1,\ldots,Z_h]$ & $x$ is an evaluation point, $d$ a degree, $T$ an
+indeterminate.\\
+purely infinite ideal $\mathcal J$ & $\Pi$ & $\Oz=\Z\oplus\Pi$ as in
+Corollary~\ref{hol:td:cor:omnific}; $\jet\lambda j$ is a jet.\\
+sequence $b$; $A_b=\sum b_m\omega^{\omega-m}$; set $S\subseteq\N$ &
+$\mathbf b=(\mathbf b_m)$; $\mathfrak w_{\mathbf b}$; $A$ & $b$ is a residue
+class; $S$ is a support alphabet.\\
+Catalan root $\lambda$; $C(s)$, $C_k$ & $\lambda_-$; $\mathrm{Cat}(X)$,
+$\mathrm{Cat}_k$ & $C_n$ are the Chebyshev polynomials of
+\eqref{hol:td:eq:cheb}.\\
+matrix $A$; $\delta_j(n)$ & $\mathbf A$; $\operatorname{mv}_j(n)$ & $\delta$
+is a scale.\\
+dilation group $G$; convex hull $H$ of $v(G)$ & $\mathfrak G$;
+$\Delta_{\mathfrak G}$ & $G$ is the series of
+Corollary~\ref{hol:nl:cor:theta}; convex subgroups are $\Delta$ here.\\
+operator $\sum c_{\lambda,j,k}z^kD_z^j\sigma_\lambda$; $A_s(n)$, $B_j(n)$ &
+$\sum\varkappa_{\ell,r,i}z^iD_z^r\sigma_{\lambda_\ell}$; $c_j(n)$ & As in
+\eqref{hol:ud:eq:L} and \eqref{hol:ud:eq:cj}.\\
+witness $\eta\notin H$; $\eta$ in examples & $\gamma$; $\epsilon$ &
+$\eta=v(\tau)$ in Theorem~\ref{hol:thm:unitorbit}.\\
+$\Theta_Q$; characteristic $p$ & $\Theta_p$; $\mathfrak p$ &
+\eqref{hol:eq:theta}.\\
+Theorems~4.1, 5.1, 5.5, 6.2, 7.1, 7.3, 10.1, 10.3, 10.4 & see below &
+Theorems~A--O of this report are different theorems.\\
+\bottomrule
+\end{longtable}}
+The shipped audit file \path{20-recurrences-SOURCE_AUDIT.md} keeps the
+source's notation.
+
+\paragraph{Words with two meanings.}
+A \emph{unit} is a valuation-zero element (a ``valuation unit'' in source~20);
+it is neither an \emph{order unit} (Definition~\ref{hol:def:orderunit}) nor a
+unit of the ring $\Oz$, whose only units are $\pm1$. \emph{Coefficient} means a
+Hahn coefficient $[t^\gamma]x$, a Conway coefficient $[\omega^\alpha]x$ (the
+same number as $[t^{-\alpha}]x$ under \eqref{hol:eq:embedding}), a Taylor
+coefficient $a_n$, or a recurrence coefficient $c_j(n)$; a
+\emph{coefficient observable} is a sequence $n\mapsto[t^\gamma]y_n$ for one
+fixed $\gamma$. \emph{Compression} here means \emph{Noetherian compression}, a
+finite subfamily of coefficient conditions equivalent to the whole family
+along an orbit (Theorem~\ref{hol:rc:thm:compression}); it is unrelated to the
+bounded polynomial \emph{jet} compression of
+Theorem~\ref{hol:th:thm:compression}, a statement of differential algebra.
+Two \emph{periods} occur: source~18's $\mathsf M$ suffices for valuations,
+while the hitting sets of Theorem~\ref{hol:rc:thm:compression} need
+$\mathsf M_{\mathrm{tor}}$, which $\mathsf M$ divides
+(Remark~\ref{hol:rc:rem:periods}); the tempting reading ``the valuation period
+is also the period of every coefficient test'' is false. Finally
+$\deg_\omega$ is the greatest exponent of a Conway normal form, neither the
+degree of a polynomial nor a birthday.
+
+\paragraph{Results printed once.}
+Source~20 reproves several facts the report already contains. They are
+printed once and cited. Its definitions of strong summability, of
+$\mathcal E(K)$, of valuation units and of order units are
+Definitions~\ref{hol:def:entire} and~\ref{hol:def:orderunit} and
+Convention~\ref{hol:ud:conv:field}; its surreal translation
+$t^\gamma\mapsto\omega^{-\gamma}$ is \eqref{hol:eq:embedding}, and its
+localization of finitely many surreal data to a set-sized Hahn field is the
+paragraph on omnific coefficients in Section~\ref{hol:ud:sub:surreal}. Its
+Lemma~3.1 (support lemma) is Lemma~\ref{hol:lem:support}; its Lemma~3.2 and
+Corollary~3.4 are Lemma~\ref{hol:cf:lem:exppoly} and its proof; its
+Theorem~3.3, the classical Skolem--Mahler--Lech theorem, is imported there as
+here. Its Theorem~4.1\,(a)--(b) is Lemma~\ref{hol:ud:lem:envelope}, proved by
+the same finite binomial expansion and support count; its Remark~4.2 is the
+remark after that lemma, and its Example~4.3,
+$v\bigl((1+t^\epsilon)^n-1-nt^\epsilon\bigr)=2\epsilon$ for $n\ge2$ with
+$y_0=y_1=0$, is the case $d=2$ of Example~\ref{hol:ud:ex:cancellation}. Its
+Theorem~5.1 is Theorem~\ref{hol:ud:thm:unitvalues} with the admissible period
+$\mathsf M_{\mathrm{tor}}$ in place of $\mathsf M$
+(Remark~\ref{hol:rc:rem:periods}), and its Corollary~5.2 is the last clause of
+that theorem together with its finitely many exceptional indices; its
+Example~5.3 is Example~\ref{hol:ex:unitperiod}; its Lemma~5.4 is
+Lemma~\ref{hol:ud:lem:lines}; its Theorem~5.5 is
+Theorem~\ref{hol:ud:thm:affine}, which states the zero alternative for every
+index of the class where source~20 states it beyond a threshold; its
+Remark~5.6 is the third example of Remark~\ref{hol:rem:shortcut}. Its
+Lemma~9.1 is Lemma~\ref{hol:ud:lem:operator} with
+Corollary~\ref{hol:ud:cor:faithful}, and its Lemma~9.2 is
+Lemma~\ref{hol:lem:escape} with Corollary~\ref{hol:cor:boundedcost}, with the
+same closed exterior region $v(x)\le-B$; its Theorem~10.1 is
+Theorem~\ref{hol:ud:thm:rigidity} for relative scale~$0$, and its
+Corollary~10.2 is Corollary~\ref{hol:ud:cor:unitrigidity}. The entireness of
+its theta witness is Theorem~\ref{hol:thm:thetadomain}, by the route of
+Remark~\ref{hol:rem:thetasecond}, and its identities are
+\eqref{hol:eq:thetafirst} and \eqref{hol:eq:thetahom}. Its torsion example
+(Section~11.1) is the case $h=2$ of the paragraph on root-of-unity quotients in
+Section~\ref{hol:ud:sub:examples} with Proposition~\ref{hol:prop:torsion}, and
+its rank-two example (Section~11.2) is Example~\ref{hol:ud:ex:crossing} with
+Example~\ref{hol:ex:ranktwo}.
+
+\paragraph{Where each numbered result went.}
+Theorem~4.1\,(c) is Theorem~\ref{hol:rc:thm:algebra}; the period paragraph
+\eqref{hol:rc:eq:torperiod} of its Section~3 is Lemma~\ref{hol:rc:lem:torperiod};
+Corollary~5.7 is Corollary~\ref{hol:rc:cor:split}; Definition~6.1,
+Theorem~6.2, Corollary~6.3, Example~6.4 and Remark~6.5 are
+Definition~\ref{hol:rc:def:conditions}, Theorem~\ref{hol:rc:thm:compression},
+Corollary~\ref{hol:rc:cor:tails}, Example~\ref{hol:rc:ex:transient} and
+Remark~\ref{hol:rc:rem:safeguards}; Theorem~7.1, Example~7.2, Theorem~7.3,
+Corollary~7.4 and Remark~7.5 are Theorem~\ref{hol:rc:thm:surreal},
+Example~\ref{hol:rc:ex:catalan}, Theorem~\ref{hol:rc:thm:coding},
+Corollary~\ref{hol:rc:cor:nosml} and Remark~\ref{hol:rc:rem:quotients};
+Corollary~8.1 is Corollary~\ref{hol:rc:cor:matrix}; Theorems~10.3 and~10.4
+are Corollaries~\ref{hol:rc:cor:convex} and~\ref{hol:rc:cor:finitegroup};
+Remark~10.5 is Remark~\ref{hol:rc:rem:stale}; Section~11 is
+Section~\ref{hol:rc:sub:boundaries}, with its positive-characteristic formula
+as Example~\ref{hol:rc:ex:charp}; Questions~12.1, 12.2, 12.5 and~12.11 are
+recorded in the statuses of Questions~\ref{hol:ud:q:effective},
+\ref{hol:ud:q:torsionblocks}, \ref{hol:ud:q:beyond}
+and~\ref{hol:ud:q:formal}, and Questions~12.3, 12.4, 12.6--12.10 and~12.12 are
+Questions~\ref{hol:rc:q:nonunit}--\ref{hol:rc:q:substitutions}, Question~12.7
+re-scoped; the appendix and the audit file are merged into
+Sections~\ref{hol:rc:sub:predecessors}, \ref{hol:rc:sub:nonclaims}
+and~\ref{hol:sec:verification}. Theorem~\ref{hol:rc:main:observables} in the
+introduction collects Theorems~\ref{hol:rc:thm:algebra},
+\ref{hol:rc:thm:compression} and~\ref{hol:rc:thm:coding}.
+
+\paragraph{The merge's choices.}
+The review of source~20 for this merge found its proofs correct; its worked
+examples were rechecked by hand and by its own suite. The merge adds five
+points, each marked. First, Remark~\ref{hol:rc:rem:periods} compares the two
+periods and shows that source~18's cannot replace source~20's for hitting
+sets. Second, Section~\ref{hol:rc:sub:mixed} identifies source~20's
+Theorems~10.3 and~10.4 as special cases of
+Theorems~\ref{hol:ud:thm:rigidity} and~\ref{hol:ud:thm:dichotomy}, notes
+through Example~\ref{hol:ud:ex:commonscale} that the inclusion is strict, and
+shows in Remark~\ref{hol:rc:rem:finitegeneration} that finite generation cannot
+be dropped from the convex-hull form of the criterion. Third,
+Remark~\ref{hol:rc:rem:stream} credits the omnific-notations report, which
+already contains the element of the coding theorem. Fourth,
+Example~\ref{hol:rc:ex:charp} keeps source~20's exact positive-characteristic
+valuation formula, of which Section~\ref{hol:ud:sub:examples} records a
+subsequence. Fifth, the statuses of the related questions of source~18 are
+updated and source~20's Question~12.7 is re-scoped
+(Question~\ref{hol:rc:q:nonlinear}). Source~20's theorems, proofs, examples
+and non-claims are otherwise printed as delivered, in the renamed notation.
+
+\subsection{One finitely generated algebra of coefficient observables}
+\label{hol:rc:sub:algebra}
+
+The support envelope and the coefficient polynomials of
+Lemma~\ref{hol:ud:lem:envelope} give more than a valuation theorem: they say
+where every coefficient sequence lives.
+
+\begin{theorem}[One finitely generated observable algebra; source~20]
+\label{hol:rc:thm:algebra}
+Let $\mathcal Y^{(1)},\ldots,\mathcal Y^{(\bar d)}$ be unit-root exponential
+polynomials over $\KK$, let $\lambda_1,\ldots,\lambda_m$ list all their bases
+and $\zeta_1,\ldots,\zeta_m$ the residues. There is one well-ordered
+$\Sigma\subseteq\Gamma$ containing $\supp\mathcal Y^{(i)}(n)$ for every $i$
+and every $n\ge0$. For every $i$ and every $\gamma\in\Gamma$ there are
+$r^{(i)}_{j,\gamma}\in k[U]$ with
+\begin{equation}\label{hol:rc:eq:coefficient}
+ [t^\gamma]\,\mathcal Y^{(i)}(n)=\sum_{j=1}^m\zeta_j^n\,r^{(i)}_{j,\gamma}(n)
+ \qquad(n\ge0),
+\end{equation}
+and so every coefficient observable $n\mapsto[t^\gamma]\mathcal Y^{(i)}(n)$
+lies in the one finitely generated $k$-algebra
+\begin{equation}\label{hol:rc:eq:algebra}
+ \mathfrak A=k[\,n,\zeta_1^n,\ldots,\zeta_m^n\,]\subseteq k^{\N},
+\end{equation}
+the image of the evaluation homomorphism
+$\operatorname{ev}:k[U,X_1,\ldots,X_m]\to k^{\N}$, $U\mapsto(n)_n$,
+$X_j\mapsto(\zeta_j^n)_n$, sequences being multiplied pointwise.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{hol:ud:lem:envelope}, applied to each $\mathcal Y^{(i)}$ with its
+own bases (the others entering with zero polynomial factor), gives a
+well-ordered envelope $\Sigma^{(i)}$ and the identity
+\eqref{hol:rc:eq:coefficient} for $\gamma\in\Sigma^{(i)}$; for
+$\gamma\notin\Sigma^{(i)}$ take $r^{(i)}_{j,\gamma}=0$. The finite union
+$\Sigma=\bigcup_i\Sigma^{(i)}$ is well ordered. The identity holds for
+\emph{every} $n\ge0$, small $n$ included: the polynomials $\binom Ui$ vanish at
+the integers $n<i$, and characteristic zero makes them polynomials over $k$.
+Each summand $\zeta_j^nr^{(i)}_{j,\gamma}(n)$ is
+$\operatorname{ev}(X_jr^{(i)}_{j,\gamma}(U))$. No sum over $n$ is asserted to
+be strongly summable.
+\end{proof}
+
+\begin{remark}[Finitely generated, not finite-dimensional; source~20]
+\label{hol:rc:rem:degrees}
+The algebra $\mathfrak A$ has $m+1$ generators, but the observables do not lie
+in a finite-dimensional subspace: already $[t^d](1+t)^n=\binom nd$ has degree
+$d$ in $n$, so the degrees of the $r_{j,\gamma}$ are unbounded in $\gamma$, as
+recorded after Lemma~\ref{hol:ud:lem:envelope}. The theorem gives finitely
+many algebra generators for all coefficient sequences at once, not a finite
+basis; and it is the finite generation, not a degree bound, that the next
+subsection uses.
+\end{remark}
+
+For $q=1+t^\epsilon$ with $\epsilon>0$ the sequence
+$y_n=q^n-1-nt^\epsilon=\sum_{i=2}^n\binom nit^{i\epsilon}$ vanishes for
+$n\le1$ and has valuation $2\epsilon$ for $n\ge2$; replacing $q$ by its residue
+$1$ would lose the whole sequence. This is source~20's Example~4.3, the case
+$d=2$ of Example~\ref{hol:ud:ex:cancellation}: the observables keep every
+principal-unit correction while each fixed coefficient is an ordinary
+exponential polynomial over $k$.
+
+\subsection{One period for all coefficient tests, and split recurrences}
+\label{hol:rc:sub:period}
+
+Source~20's Section~3 fixes the period
+\begin{equation}\label{hol:rc:eq:torperiod}
+ \mathsf M_{\mathrm{tor}}=\exp\operatorname{Tor}\langle\zeta\rangle,
+\end{equation}
+the exponent of the finite torsion subgroup of $\langle\zeta\rangle$, and
+observes that it serves for all polynomial degrees and all finite products of
+the residues at once.
+
+\begin{lemma}[One period for all monomials in the residues; source~20]
+\label{hol:rc:lem:torperiod}
+Let $\zeta^{\alpha_1},\ldots,\zeta^{\alpha_s}$ be monomials
+$\zeta^\alpha=\prod_j\zeta_j^{\alpha_j}$, $\alpha_i\in\Z^m$, let
+$\varrho_1,\ldots,\varrho_s\in k[U]$ and $b\in\N$. The sequence
+\[
+ l\longmapsto\sum_{i=1}^s\varrho_i(\mathsf M_{\mathrm{tor}}l+b)\,
+ \bigl(\zeta^{\alpha_i}\bigr)^{\mathsf M_{\mathrm{tor}}l+b}
+\]
+is either identically zero or has only finitely many zeros. The same
+$\mathsf M_{\mathrm{tor}}$ serves for every such list, every choice of degrees
+and every $b$; the finite zero sets need not have a common bound.
+\end{lemma}
+
+\begin{proof}
+The bases in $l$ are the elements $(\zeta^{\alpha_i})^{\mathsf M_{\mathrm{tor}}}$;
+combine equal ones. If
+$(\zeta^{\alpha_i}/\zeta^{\alpha_{i'}})^{\mathsf M_{\mathrm{tor}}}$ is a root of
+unity, then $\zeta^{\alpha_i}/\zeta^{\alpha_{i'}}\in\langle\zeta\rangle$ is a
+torsion element, its order divides $\mathsf M_{\mathrm{tor}}$, and the two bases
+are equal. So after combination the distinct bases have no root-of-unity
+quotient, and Lemma~\ref{hol:cf:lem:exppoly} gives the alternative.
+\end{proof}
+
+\begin{remark}[Two periods; merge]\label{hol:rc:rem:periods}
+Source~18's period $\mathsf M$ of Lemma~\ref{hol:ud:lem:period}, the least
+common multiple of the orders of those quotients $\zeta_i/\zeta_j$ that are
+roots of unity, divides $\mathsf M_{\mathrm{tor}}$, since each such quotient
+lies in the torsion subgroup of $\langle\zeta\rangle$. Both are admissible in
+Theorem~\ref{hol:ud:thm:unitvalues}, which with $\mathsf M_{\mathrm{tor}}$ is
+source~20's Theorem~5.1. For hitting sets the smaller period does not suffice.
+For $m=1$ and $\mathcal Y(n)=(-1)^n$ there is no quotient, so $\mathsf M=1$,
+and indeed $v(\mathcal Y(n))=0$ for every $n$; but $\mathsf M_{\mathrm{tor}}=2$,
+and the single condition $[t^0]x-1=0$ holds exactly for even $n$. Valuations
+see only quotients of residues, because the least coefficient that is not an
+identity is a combination with those residues as bases; coefficient tests see
+arbitrary monomials in them, which is why
+Theorem~\ref{hol:rc:thm:compression} is stated with
+$\mathsf M_{\mathrm{tor}}$.
+\end{remark}
+
+\begin{corollary}[Recurrences with split characteristic polynomial;
+source~20]\label{hol:rc:cor:split}
+Let $(y_n)$ satisfy a constant-coefficient recurrence
+$y_{n+d}=a_{d-1}y_{n+d-1}+\cdots+a_0y_n$ over $\KK$ whose characteristic
+polynomial splits in $\KK$. There are $\mathsf M\ge1$ and $N\ge0$ such that on
+each class $b$ modulo $\mathsf M$ either $y_n=0$ for all $n\ge N$ in the class,
+or
+\[
+ v(y_n)=\beta_b+n\varpi_b\qquad(n\ge N,\ n\equiv b\pmod{\mathsf M}),
+\]
+with $\beta_b\in\Gamma$ and $\varpi_b$ the valuation of a nonzero
+characteristic root. The leading coefficient on each nonzero class is
+eventually an exponential polynomial over $k$ in $(n-b)/\mathsf M$, and
+$\mathsf M$ may be chosen from the residues of the normalized nonzero roots
+$t^{-v(\lambda)}\lambda$ alone. A zero characteristic root affects only a
+finite initial segment.
+\end{corollary}
+
+\begin{proof}
+The Jordan decomposition of the companion matrix over $\KK$ gives, for all $n$
+at least the multiplicity of the root $0$, a representation
+$y_n=\sum_jR_j(n)\lambda_j^n$ over the distinct nonzero roots, with
+$\deg R_j$ below the multiplicity of $\lambda_j$; nilpotent blocks vanish
+after finitely many steps. Apply Theorem~\ref{hol:ud:thm:affine} to the
+exponential polynomial defined by this representation for all $n$, which
+agrees with $y_n$ on that tail, and take the larger threshold. The statement on
+leading coefficients is the one in Theorem~\ref{hol:ud:thm:unitvalues}, applied
+to the winning group of roots.
+\end{proof}
+
+\subsection{Noetherian compression of infinitely many coefficient tests}
+\label{hol:rc:sub:compression}
+
+\begin{definition}[Coefficient-algebraic conditions; source~20]
+\label{hol:rc:def:conditions}
+A \emph{coefficient-algebraic condition} on
+$\mathbf x=(x^{(1)},\ldots,x^{(\bar d)})\in\KK^{\bar d}$ is an equation
+\[
+ F\bigl([t^{\gamma_1}]x^{(i_1)},\ldots,[t^{\gamma_h}]x^{(i_h)}\bigr)=0,
+ \qquad F\in k[Z_1,\ldots,Z_h],
+\]
+in finitely many coefficient coordinates. A \emph{coefficient-algebraic set}
+$\mathcal X\subseteq\KK^{\bar d}$ is the common zero set of an arbitrary
+set-sized family $(F_a)_{a\in I}$ of such conditions.
+\end{definition}
+
+The family may be infinite, but each member is an ordinary polynomial in
+finitely many ordinary coefficients. For a prescribed $\mathsf T\subseteq\Gamma$
+the support condition $\supp(x)\subseteq\mathsf T$ is the family
+$[t^\gamma]x=0$, $\gamma\notin\mathsf T$. The condition that an arbitrary real
+coefficient be an \emph{integer} is not of this form.
+
+\begin{theorem}[Noetherian compression and one residual period; source~20]
+\label{hol:rc:thm:compression}
+Let $\mathbf y_n=(\mathcal Y^{(1)}(n),\ldots,\mathcal Y^{(\bar d)}(n))$ be a
+finite vector of unit-root exponential polynomials, let
+$\zeta_1,\ldots,\zeta_m$ be the residues of all their bases, and let
+$\mathsf M_{\mathrm{tor}}$ be as in \eqref{hol:rc:eq:torperiod}. For every
+coefficient-algebraic set $\mathcal X\subseteq\KK^{\bar d}$, defined by
+$(F_a)_{a\in I}$:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item there is a finite $I_0\subseteq I$ such that, for \emph{every} $n\ge0$,
+$\mathbf y_n\in\mathcal X$ if and only if $F_a$ vanishes at $\mathbf y_n$ for
+all $a\in I_0$;
+\item for each class $b$ modulo $\mathsf M_{\mathrm{tor}}$, either
+$\mathbf y_{\mathsf M_{\mathrm{tor}}l+b}\in\mathcal X$ for every $l\ge0$, or
+this holds for only finitely many $l$;
+\item consequently $\{n\ge0:\mathbf y_n\in\mathcal X\}$ is a finite union of
+full residue classes modulo $\mathsf M_{\mathrm{tor}}$ and a finite set.
+\end{enumerate}
+The same $\mathsf M_{\mathrm{tor}}$ serves for every $\mathcal X$; the finite
+subfamily $I_0$ and the exceptional set depend on $\mathcal X$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{hol:rc:thm:algebra} every coordinate observable is
+$\operatorname{ev}$ of a polynomial in $k[U,X_1,\ldots,X_m]$. For each $a\in I$
+substitute such representatives for the finitely many coordinates in $F_a$;
+this gives $\widehat F_a\in k[U,X_1,\ldots,X_m]$ whose value at
+$(n,\zeta_1^n,\ldots,\zeta_m^n)$ is exactly $F_a$ evaluated at $\mathbf y_n$.
+The ring $k[U,X_1,\ldots,X_m]$ is Noetherian (Hilbert's basis theorem), so the
+ideal generated by all $\widehat F_a$ is generated by finitely many elements,
+each a finite combination of finitely many $\widehat F_a$; collect those
+indices into $I_0$. A point $(n,\zeta^n)$ at which the $\widehat F_a$,
+$a\in I_0$, vanish kills the whole ideal, hence every $\widehat F_a$. This is
+(a), for every $n$ and not only eventually.
+
+Each $\widehat F_a(n,\zeta_1^n,\ldots,\zeta_m^n)$ is a finite sum of terms
+$\varrho(n)(\zeta^\alpha)^n$ with $\alpha\in\N^m$. On a class modulo
+$\mathsf M_{\mathrm{tor}}$ it is identically zero or has finitely many zeros by
+Lemma~\ref{hol:rc:lem:torperiod}. If every condition vanishes identically on
+the class, every orbit point of the class lies in $\mathcal X$; otherwise a
+single condition that is not an identity there already leaves only finitely
+many hits. This is (b),
+and (c) follows by taking the finite union over classes.
+\end{proof}
+
+\begin{corollary}[Support and tail recurrence; source~20]
+\label{hol:rc:cor:tails}
+For a unit-root exponential polynomial $\mathcal Y$ and any
+$\mathsf T\subseteq\Gamma$, the set $\{n:\supp\mathcal Y(n)\subseteq\mathsf
+T\}$ is a finite union of full classes modulo $\mathsf M_{\mathrm{tor}}$ and a
+finite set; if it meets a class infinitely often, it contains the whole
+class. Along the orbit, the vanishing of all coefficients outside
+$\mathsf T$ is equivalent to the vanishing of finitely many of them.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{hol:rc:thm:compression} to the family $[t^\gamma]x=0$,
+$\gamma\notin\mathsf T$; part~(a) chooses a finite subset of exactly these
+equations.
+\end{proof}
+
+Under \eqref{hol:eq:embedding}, for a real-surreal unit-root sequence, the
+absence of an infinitesimal tail ($\supp\subseteq\Gamma_{\le0}$), membership
+in the purely infinite support space ($\supp\subseteq\Gamma_{<0}$) and the
+vanishing of a prescribed truncation are instances of
+Corollary~\ref{hol:rc:cor:tails}. Full membership in $\Oz$ also requires the
+constant coefficient to be an ordinary integer, an arithmetic condition on an
+exponential polynomial that is not a Zariski-closed coefficient condition and
+is not disposed of here (Question~\ref{hol:rc:q:membership}).
+
+\begin{example}[No common transient bound; source~20]
+\label{hol:rc:ex:transient}
+For $\mathcal Y(n)=(1+t)^n$ the single condition $[t^d]x=0$ holds exactly for
+$n=0,\ldots,d-1$. The period is $\mathsf M_{\mathrm{tor}}=1$ for every $d$, but
+the last exceptional index tends to infinity with $d$. A universal residual
+period does not give a uniform transient length for all coefficient tests on
+one orbit.
+\end{example}
+
+\begin{remark}[Why infinitely many conditions leave no hidden gap;
+source~20]\label{hol:rc:rem:safeguards}
+It would be invalid to take the union of infinitely many finite exceptional
+sets and call it finite, and the proof does not do so. On each class either
+every condition is an identity, or one condition that is not an identity
+already leaves finitely many possible hits; separately, Noetherianity supplies
+the finite subfamily. These are two independent safeguards against that
+inference, as in Remark~\ref{hol:ud:rem:uniform} for valuations.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Surreal recurrences: leading scales, omnific coding, matrix powers
+and mixed operators}\label{hol:rc:sec:surreal}
+
+\subsection{Leading Conway exponents}\label{hol:rc:sub:leading}
+
+For a nonzero $x$ in a workspace $K_\Gamma\subseteq\No[i]$ of
+\eqref{hol:eq:embedding}, put $\deg_\omega(x)=-v(x)$: the greatest exponent of
+its Conway normal form, the real and imaginary normal forms being combined
+into one complex-coefficient normal form. For finitely many surreal or
+surcomplex numbers such a workspace exists: the group generated by the union
+of their supports is a set (Section~\ref{hol:ud:sub:surreal}). So every
+statement below about a fixed finite recurrence takes place in one set-sized
+Hahn field, and no proper-class product, sum or determinant is formed.
+
+\begin{theorem}[Surreal and surcomplex recurrence profiles; source~20]
+\label{hol:rc:thm:surreal}
+Let $(y_n)$ satisfy a constant-coefficient recurrence of finite order over
+$\No[i]$, with initial values in $\No[i]$. There are $\mathsf M\ge1$ and
+$N\ge0$ such that for each class $b$ modulo $\mathsf M$ either $y_n=0$ for all
+$n\ge N$ in the class, or
+\begin{equation}\label{hol:rc:eq:degree}
+ \deg_\omega(y_n)=n\,\mathsf d_b+\mathsf e_b\qquad(n\ge N,\
+ n\equiv b\pmod{\mathsf M}),
+\end{equation}
+with $\mathsf d_b,\mathsf e_b\in\No$, $\mathsf d_b$ the degree of a nonzero
+characteristic root. This applies in particular to every recurrence over $\Oz$
+or $\Oz[i]$ with initial values in the same ring. If every nonzero
+characteristic root lies in $\No$, $\mathsf M=2$ suffices; if every one is
+positive, $\mathsf M=1$ suffices.
+\end{theorem}
+
+\begin{proof}
+$\No[i]$ is algebraically closed, so the characteristic polynomial splits.
+Its finitely many roots, the coefficients of a representation
+$y_n=\sum_jR_j(n)\lambda_j^n$ on the tail after the nilpotent segment, and the
+recurrence data lie in one set-sized Hahn field $\C((t^\Gamma))$ with
+$\Gamma\le\No$, as above. Corollary~\ref{hol:rc:cor:split} applies there, and
+negating the valuation gives \eqref{hol:rc:eq:degree}. For roots in $\No$ the
+normalized leading coefficients lie in $\R^\times$, whose only nontrivial
+torsion element is $-1$; so $\mathsf M_{\mathrm{tor}}$ of their residues
+divides two, and it is an admissible period
+(Remark~\ref{hol:rc:rem:periods}). Positive roots have positive leading
+coefficients, which generate a torsion-free subgroup of $\R_{>0}$. Closure of
+$\Oz$ and $\Oz[i]$ under ring operations keeps the terms in those rings.
+\end{proof}
+
+\begin{example}[An intercept larger than every ordinary time; source~20]
+\label{hol:rc:ex:catalan}
+Let $\lambda_-=\frac12\bigl(\omega-\sqrt{\omega^2-4}\bigr)$, the infinitesimal
+root of $X^2-\omega X+1$. With $t=\omega^{-1}$,
+\[
+ \lambda_-=t\,\mathrm{Cat}(t^2),\qquad
+ \mathrm{Cat}(X)=\sum_{k\ge0}\mathrm{Cat}_kX^k,\qquad
+ \mathrm{Cat}_k=\frac1{k+1}\binom{2k}k,
+\]
+because $\mathrm{Cat}(X)=1+X\,\mathrm{Cat}(X)^2$. Put
+$y_n=\omega^\omega\lambda_-^n$. Then
+\begin{equation}\label{hol:rc:eq:catalan}
+ y_{n+2}=\omega y_{n+1}-y_n,\qquad y_n\in\Pi,\qquad
+ \deg_\omega(y_n)=\omega-n .
+\end{equation}
+For $n\ge1$, $\lambda_-^n$ has positive integer coefficients, supported at the
+Conway exponents $-(n+2k)$, $k\ge0$, with $[t^{n+2k}]\lambda_-^n=
+\frac n{n+2k}\binom{n+2k}k$; multiplication by $\omega^\omega$ moves them to
+$\omega-n-2k>0$, a reverse well-ordered support. Also $y_0=\omega^\omega\in\Pi$,
+so all initial values and all later terms are omnific, and the recurrence
+follows from $\lambda_-^2=\omega\lambda_--1$. For every ordinary $n$, $y_n$ is
+positive and infinite, and $y_{n+1}<y_n$ since $0<\lambda_-<1$. Its degree
+decreases with slope $-1$ but never reaches zero at an ordinary time. This
+agrees with Theorem~\ref{hol:rc:thm:surreal} ($\mathsf d=-1$,
+$\mathsf e=\omega$) and contradicts any argument that silently treats
+$\omega-n$ as though $n$ were cofinal in the surreal exponents.
+\end{example}
+
+\subsection{One fixed coefficient can encode any sequence}
+\label{hol:rc:sub:coding}
+
+For $x\in\No[i]$ and $\alpha\in\No$ let $[\omega^\alpha]x$ be the coefficient
+of $\omega^\alpha$ in the normal form of $x$.
+
+\begin{theorem}[A first-order omnific recurrence encodes any sequence;
+source~20]\label{hol:rc:thm:coding}
+For every real sequence $\mathbf b=(\mathbf b_m)_{m\ge0}$ there is
+$\mathfrak w_{\mathbf b}\in\Pi$ such that
+\[
+ y_0=\mathfrak w_{\mathbf b},\qquad y_{n+1}=\omega y_n,\qquad y_n\in\Pi,
+ \qquad[\omega^\omega]\,y_n=\mathbf b_n
+\]
+for every ordinary $n\ge0$. The same holds for complex sequences, with
+$\mathfrak w_{\mathbf b},y_n\in\Pi+i\Pi\subseteq\Oz[i]$. For every
+$A\subseteq\N$ one can therefore arrange
+$\{n:[\omega^\omega]y_n\ne0\}=A$; when $A$ is nonempty and $\mathbf b$ takes
+the values $0$ and $1$, every $y_n$ is positive.
+\end{theorem}
+
+\begin{proof}
+Put
+\begin{equation}\label{hol:rc:eq:code}
+ \mathfrak w_{\mathbf b}=\sum_{m\ge0}\mathbf b_m\,\omega^{\omega-m},
+\end{equation}
+zero terms omitted. The exponents $\omega-m$ strictly decrease and are all
+positive; every nonempty subset of them has a greatest element, the one of
+least index. So the support is a reverse well-ordered set, of order type at
+most $\omega$ in its decreasing enumeration, and \eqref{hol:rc:eq:code} is a
+purely infinite omnific integer. Multiplication by the monomial $\omega^n$
+translates exponents with no convolution:
+$y_n=\omega^n\mathfrak w_{\mathbf b}=\sum_m\mathbf b_m\omega^{\omega+n-m}$. All
+exponents stay positive, $n$ and $m$ being ordinary, and exactly the term
+$m=n$ has exponent $\omega$. The complex case is the same coefficientwise, or
+follows by separating real and imaginary parts. For the last assertion take
+$\mathbf b$ the indicator of $A$; the leading coefficient is then $1$.
+\end{proof}
+
+\begin{corollary}[No coefficientwise Skolem--Mahler--Lech theorem for
+omnific recurrences; source~20]\label{hol:rc:cor:nosml}
+It is false that all fixed-Conway-coefficient zero sets, or nonzero sets, of
+finite omnific recurrences are eventually periodic. Already the fixed
+multiplier $\omega$, the fixed observed exponent $\omega$ and a varying purely
+infinite initial value realize every subset of $\N$.
+\end{corollary}
+
+\begin{remark}[No conflict with the universal quotient; source~20]
+\label{hol:rc:rem:quotients}
+The map $x\mapsto[\omega^\omega]x$ is additive on $\Oz$ but not
+multiplicative: it kills $\omega^{\omega/2}$ and sends its square to $1$. So
+Theorem~\ref{hol:rc:thm:coding} does not contradict the theorem of the
+set-sized-quotient report that every additive and multiplicative map from
+$\Oz$ to a set-sized ring factors through the constant term
+(\texttt{osq:thm:universal}~\cite{repoosq}); every $y_n$ above has constant
+term zero.
+\end{remark}
+
+\begin{remark}[The element is a known stream; merge]\label{hol:rc:rem:stream}
+The number $\mathfrak w_{\mathbf b}$ is, with $a_n=\mathbf b_n$, the series
+\texttt{onot:eq:guardbasic} of the omnific-notations report~\cite{repoonot},
+which already observes that $\sum_na_n\omega^{\omega-n}=
+\omega^\omega\sum_na_n(\omega^{-1})^n$ has positive exponents and a valid
+support for every real sequence, and that an algorithm for each $a_n$ need
+not decide whether all $a_n$ vanish. Source~20 does not cite it. The element
+is therefore not new; what source~20 adds is its reading as a recurrence
+observable, the orbit under multiplication by $\omega$ read at one fixed
+exponent, and Corollary~\ref{hol:rc:cor:nosml}. The independent omnific codes
+of Theorem~\ref{hol:fh:thm:codes} encode subsets of $\N$ differently, through
+algebraic independence, not a coefficient observation.
+\end{remark}
+
+\paragraph{The exact distinction between the two sides (source~20).}
+In Theorem~\ref{hol:rc:thm:compression} the roots are units, so the supports of
+all iterates lie in one well-ordered envelope, and a fixed coefficient receives
+only finitely many binomial contributions. In
+Theorem~\ref{hol:rc:thm:coding} multiplication by $\omega$ has nonzero
+valuation and translates the support, and the fixed observation reads a new
+stored coefficient at each step. This movement of support, not nonlinear
+arithmetic, permits universality. The leading exponent stays tame: if
+$\mathbf b\ne0$ and $m_0$ is its first nonzero index, then
+$\deg_\omega(y_n)=\omega+n-m_0$, as Theorem~\ref{hol:rc:thm:surreal}
+requires. The exact leading-scale theorem and unrestricted lower coefficients
+coexist in the simplest recurrence.
+
+\subsection{Determinantal valuation profiles}\label{hol:rc:sub:matrix}
+
+\begin{corollary}[Determinantal valuation profiles; source~20]
+\label{hol:rc:cor:matrix}
+Let $\mathbf A\in\operatorname{GL}_{\bar d}(\No[i])$, and for
+$1\le j\le\bar d$ put
+\[
+ \operatorname{mv}_j(n)=\min\{v(\det\mathbf B):\mathbf B\text{ a }j\times j
+ \text{ minor of }\mathbf A^n,\ \det\mathbf B\ne0\},\qquad
+ \operatorname{mv}_0(n)=0,
+\]
+in a workspace containing the entries of $\mathbf A$. There is one finite
+period such that every $\operatorname{mv}_j(n)$ and every difference
+$\operatorname{mv}_j(n)-\operatorname{mv}_{j-1}(n)$ is eventually affine on each
+residue class.
+\end{corollary}
+
+\begin{proof}
+The $j\times j$ minors of $\mathbf A^n$ are the entries of
+$(\bigwedge^j\mathbf A)^n$, and each entry satisfies the constant-coefficient
+recurrence given by the characteristic polynomial of the finite matrix
+$\bigwedge^j\mathbf A$. By Theorem~\ref{hol:rc:thm:surreal}, in its valuation
+form, each is eventually zero or of eventually affine valuation on every class
+of a finite period; refine the finitely many periods to one and take a common
+threshold. Invertibility of $\mathbf A^n$ gives a nonzero minor of each size at
+every $n$, so on each class some minor is active. The minimum of finitely many
+eventually affine functions is eventually one of them
+(Lemma~\ref{hol:ud:lem:lines}), and differences of eventually affine functions
+are eventually affine.
+\end{proof}
+
+Over a valuation ring these minima are the sums of the first $j$ invariant-factor
+valuations of a finite matrix, after a common monomial rescaling if
+necessary; such a finite diagonal reduction is obtained directly by choosing
+an entry of least valuation, clearing its row and column by divisibility in
+the valuation ring, and repeating. The corollary gives exact eventual scale
+profiles of these finite-dimensional invariants. It asserts neither a
+real-valued Lyapunov limit nor eventual periodicity of all matrix
+coefficients (source~20).
+
+\subsection{Mixed operators: an independent derivation of part of
+Theorem~\ref{hol:ud:main:mixed}}\label{hol:rc:sub:mixed}
+
+Source~20's Sections~9--10 treat finite operators \eqref{hol:ud:eq:L} whose
+multipliers lie in a torsion-free subgroup $\mathfrak G\le\KK^\times$. Distinct
+elements of such a group have no root-of-unity quotient, so the hypothesis of
+Theorems~\ref{hol:ud:thm:rigidity} and~\ref{hol:ud:thm:dichotomy} holds, and
+source~18 needs less: faithfulness of the normal form needs only distinct
+multipliers (Corollary~\ref{hol:ud:cor:faithful}), and rigidity only a
+noncofinal relative scale. Source~20's reduction to a recurrence, its escape
+lemma with the closed region, and its unit-valuation theorem are printed once
+(Section~\ref{hol:rc:sub:conventions}); it found them independently of
+source~18, whose text it had not seen. Its remaining two theorems are special
+cases, printed here with its route.
+
+\begin{corollary}[Mixed rigidity below a proper convex scale; source~20]
+\label{hol:rc:cor:convex}
+Let $\mathfrak G\le\KK^\times$ be torsion-free and $L$ a nonzero normal form
+\eqref{hol:ud:eq:L} with distinct multipliers in $\mathfrak G$. If their
+valuations lie in a proper convex subgroup $\Delta<\Gamma$, then $L$ has a
+uniform exterior obstruction and degree bound as in
+Theorem~\ref{hol:ud:thm:rigidity}; in particular every strongly entire
+solution of $Lf=0$ is a polynomial.
+\end{corollary}
+
+\begin{proof}
+The differences $v(\lambda_i)-v(\lambda_j)$ lie in $\Delta$, and a nonzero
+element of a proper convex subgroup is not an order unit, since a convex
+subgroup containing an order unit is $\Gamma$. So the relative scale is
+noncofinal and Theorem~\ref{hol:ud:thm:rigidity} applies. Source~20's route
+avoids the relative scale: by Theorem~\ref{hol:ud:thm:affine} the recurrence
+coefficients have valuations $\beta_{j,b}+n\varpi_{j,b}$ with slopes in
+$\Delta$; for any $\gamma>0$ outside $\Delta$, convexity gives
+$n(\varpi_{0,b}-\varpi_{j,b})<\gamma$ for every $n\ge0$, whatever the sign of
+the difference, so the costs are bounded by $C+\gamma$ with $C$ the largest
+intercept difference, and Corollary~\ref{hol:cor:boundedcost} concludes. The
+contradiction occurs in $\Gamma$ itself; no coarsened summability is used.
+\end{proof}
+
+The converse inclusion fails (merge): the multipliers of
+Example~\ref{hol:ud:ex:commonscale} have the cofinal common valuation $\mu$,
+which lies in no proper convex subgroup, yet
+Theorem~\ref{hol:ud:thm:rigidity} excludes every nonpolynomial entire solution,
+because only relative valuations matter. Source~18's theorem is strictly
+stronger than source~20's Theorem~10.3.
+
+\begin{corollary}[Exact finite-group criterion; source~20]
+\label{hol:rc:cor:finitegroup}
+Let $\mathfrak G\le\KK^\times$ be finitely generated and torsion-free, and let
+$\Delta_{\mathfrak G}$ be the convex subgroup of $\Gamma$ generated by
+$v(\mathfrak G)$. The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Some nonpolynomial $f\in\EK$ is annihilated by a nonzero finite operator
+$\sum_{\lambda,r}p_{\lambda,r}(z)D_z^r\sigma_\lambda$ with multipliers
+$\lambda\in\mathfrak G$ and $p_{\lambda,r}\in\KK[z]$.
+\item $\Delta_{\mathfrak G}=\Gamma$.
+\item Some $p\in\mathfrak G$ has positive order-unit valuation.
+\end{enumerate}
+When \textup{(iii)} holds, $\Theta_p$ of \eqref{hol:eq:theta} is a witness for
+\textup{(i)}: it satisfies \eqref{hol:eq:thetahom}, with the multipliers
+$1,p,p^2\in\mathfrak G$ and no derivative.
+\end{corollary}
+
+\begin{proof}
+(i)$\Leftrightarrow$(iii): a finite list of distinct elements of $\mathfrak G$
+has no root-of-unity quotient, so by Theorem~\ref{hol:ud:thm:dichotomy},
+(i) holds if and only if $\abs{v(\lambda_i/\lambda_j)}$ is an order unit for
+some $\lambda_i,\lambda_j\in\mathfrak G$; as $\lambda_i/\lambda_j\in\mathfrak G$
+and $1\in\mathfrak G$, this is (iii), after inverting if the valuation is
+negative. For the witness, $\Theta_p$ is a nonpolynomial element of $\EK$
+(Lemma~\ref{hol:ud:lem:theta}), and the operator
+$\sigma_1-(1+z)\sigma_p+pz\sigma_{p^2}$ of \eqref{hol:eq:thetahom} is a nonzero
+normal form (Corollary~\ref{hol:ud:cor:faithful}).
+(ii)$\Leftrightarrow$(iii), source~20's argument: for generators
+$q_1,\ldots,q_s$ of $\mathfrak G$ the convex subgroup generated by
+$v(\mathfrak G)$ is $\{\gamma:\abs\gamma\le n\eta\text{ for some }n\ge1\}$ with
+$\eta=\max_i\abs{v(q_i)}$ (zero if every $v(q_i)=0$). If it is the nonzero
+group $\Gamma$, then $\eta>0$ is an order unit, and a generator or its inverse
+has valuation $\eta$; conversely an order-unit valuation forces
+$\Delta_{\mathfrak G}=\Gamma$. Source~20 proves (i)$\Rightarrow$(ii) by
+Corollary~\ref{hol:rc:cor:convex} and (iii)$\Rightarrow$(i) by the direct
+estimate $h_{n+1}-h_n=n\beta+\delta>0$ for $n>A$, where $h_n=\binom n2\beta+n\delta$,
+$\beta=v(p)$, $\delta=v(x)$ and $\abs\delta\le A\beta$, followed by the
+support count of Remark~\ref{hol:rem:thetasecond}.
+\end{proof}
+
+When $\Gamma$ has an order unit, (ii) says that $v(\mathfrak G)$ is not
+contained in the maximal proper convex subgroup $\Delta^{\mathrm{top}}$ of
+Proposition~\ref{hol:ud:prop:top}; that proposition is the reformulation of
+the negative case for an arbitrary finite list.
+
+\begin{remark}[Finite generation cannot be dropped from (ii); merge]
+\label{hol:rc:rem:finitegeneration}
+The equivalence of (i) and (iii) uses no finite generation. The equivalence
+with (ii) does. In $\Gamma_\infty$ of \eqref{hol:eq:gammainfty}, which has no
+order unit, the torsion-free group $\mathfrak G$ generated by the monomials
+$t^{\omega^j}$, $j\ge0$, has cofinal valuations, so $\Delta_{\mathfrak
+G}=\Gamma_\infty$; but no element of $\Gamma_\infty$ is an order unit, and by
+Theorem~\ref{hol:ud:thm:dichotomy}, or already by
+Theorem~\ref{hol:cf:main:entire}\,(b), no nonpolynomial entire series satisfies
+a nonzero mixed equation with multipliers in $\mathfrak G$.
+\end{remark}
+
+\begin{remark}[Which part source~20 counted as new; source~20]
+\label{hol:rc:rem:stale}
+Source~20 recorded that the partial-theta witness and the one-parameter
+order-unit boundary were already in this report, and counted as its own
+contribution the general exponential-polynomial valuation theorem and its use
+for the mixed unit case and the finite multibase criterion; it also stressed
+that it does not infer a mixed assertion by combining two pure ones. The
+first sentence is accurate. The second was accurate against the text at its
+pin and is stale against the current one: source~18, placed before that pin
+and merged after it, proves the valuation theorem
+(Theorems~\ref{hol:ud:thm:unitvalues} and~\ref{hol:ud:thm:affine}) and the
+relative-scale criterion, of which source~20's Theorems~10.1, 10.3 and~10.4
+are special cases. The two sources are independent derivations of the same
+day; no priority between them is asserted.
+\end{remark}
+
+\subsection{Boundary examples}\label{hol:rc:sub:boundaries}
+
+\paragraph{Torsion is a genuine obstruction (source~20).}
+Over $\KK=k((t^\Q))$ let $p=t$, so that $\Theta_p$ is strongly entire, and put
+$f(z)=\Theta_p(z^2)$. Then $f$ is nonpolynomial and strongly entire, and
+$f(-z)-f(z)=0$; the operator $\sigma_{-1}-1$ is not zero on all formal series,
+it merely kills every even series. So excluding only the formally zero
+identity $\sigma_{-1}^2-1$ would not repair the theorems; a theory with torsion
+must track residue-degree sectors and the operator's action on them. This is
+the case $h=2$ of the paragraph on root-of-unity quotients in
+Section~\ref{hol:ud:sub:examples} and of Proposition~\ref{hol:prop:torsion}.
+Residual torsion, by contrast, is allowed throughout: $-(1+t)$ has infinite
+order and is covered by Corollary~\ref{hol:ud:cor:unitrigidity}.
+
+\paragraph{Two scales inside one rank-two workspace (source~20).}
+Let $\Gamma=\Q e_0\oplus\Q e_1$ with $0<e_0\ll e_1$. Dilation by $t^{e_0}$,
+together with any finite family of unit dilations generating a torsion-free
+group, stays in the proper convex subgroup $\Q e_0$, and by
+Corollary~\ref{hol:rc:cor:convex} supports no nonpolynomial entire solution of
+a nonzero mixed equation; dilation by $t^{e_1}$ admits the partial theta
+witness, $e_1$ being an order unit of the same group. So valuation rank alone
+is not the classification parameter, as in Examples~\ref{hol:ex:ranktwo}
+and~\ref{hol:ud:ex:crossing}.
+
+\begin{example}[Characteristic zero cannot be omitted; source~20]
+\label{hol:rc:ex:charp}
+In $\mathbb F_{\mathfrak p}((t))$, for every $n\ge1$,
+\[
+ v\bigl((1+t)^n-1\bigr)=\mathfrak p^{v_{\mathfrak p}(n)} .
+\]
+Indeed, writing $n=\mathfrak p^am'$ with $\mathfrak p\nmid m'$,
+$(1+t)^n=(1+t^{\mathfrak p^a})^{m'}$, whose first nonconstant term is
+$m't^{\mathfrak p^a}\ne0$. These valuations have no eventually periodic finite
+range although $1+t$ is a unit; the binomial-polynomial argument over $k$ and
+the characteristic-zero zero-set theorem are both essential. The paragraph on
+positive characteristic in Section~\ref{hol:ud:sub:examples} records the
+subsequence $n=\mathfrak p^a$; the formula gives every $n$ (merge's
+comparison). Positive-characteristic zero sets need a different
+theory~\cite{derksen}.
+\end{example}
+
+\paragraph{Leading exponents are not birthdays or signs (source~20).}
+$\deg_\omega$ records a leading normal-form exponent, not the birthday of the
+surreal, and nothing here bears on Gonshor's product-birthday problem. An
+eventually affine valuation does not give an eventually periodic sign:
+ordinary real recurrence sequences have valuation zero whenever nonzero, while
+their signs can oscillate with complex phases. No sign classification is used
+or claimed.
+
+\paragraph{Effectivity and the classical Skolem problem (source~20).}
+The proofs give the finite exceptional sets existentially, and an arbitrary
+coefficient exponential polynomial invokes the Skolem--Mahler--Lech theorem.
+No algorithm locating all exceptional zeros is claimed; a general one would
+solve the ordinary Skolem problem, by applying it to constant Hahn series.
+Noetherian compression likewise gives the existence of a finite subfamily, not
+an algorithm finding it from an arbitrary infinitely presented family. The
+coding theorem is deliberately non-effective when $\mathbf b$ is
+noncomputable: its initial value already contains the sequence. It gives no
+finite effective representation of every subset of $\N$, and it does not show
+that coefficient extraction is definable in the pure ring language of $\Oz$.
+
+\subsection{Predecessors, repository comparison and priority}
+\label{hol:rc:sub:predecessors}
+
+\paragraph{Literature.}
+Source~20 imports Conway normal forms and the Hahn-field viewpoint as
+established foundations~\cite{bm}; the Hahn--Neumann support lemma, credited
+historically to Neumann~\cite{neumann} (not audited as a historical paper) and
+consulted in Bagayoko, Krapp, Kuhlmann, Panazzolo and Serra~\cite{bagayoko}
+(version~2), for positive-support summability; and the classical
+Skolem--Mahler--Lech theorem~\cite{lech,belldoc}, whose Bell account it read
+and inspected visually. Fuchs and Heintze~\cite{fuchsheintze} obtain effective
+valuation-growth bounds for recurrences over one-variable function fields
+under nondegeneracy assumptions; source~20's exact eventual-affine statement
+allows arbitrary Hahn supports and ordered value groups but sacrifices a
+general effective exceptional-index bound, and does not improve their
+constants. Krapp, Kuhlmann and Serra~\cite{kkslinrec} study generalized
+recurrence relations indexed by exponent groups and their relation to
+fraction fields: there the recurrence index is an exponent, here it is an
+ordinary natural number and only the values lie in a Hahn field; the setups
+are distinct and no theorem of theirs is imported. Derksen~\cite{derksen} is
+context for positive characteristic. Formal summability is used in the
+support-sensitive sense of the Hahn literature, not as numerical
+convergence. The Wikipedia article on surreal numbers was read for
+orientation only. For this merge the bibliographic data were checked; their
+content was not rechecked, and no proof here rests on Fuchs--Heintze,
+Krapp--Kuhlmann--Serra or Derksen.
+
+\paragraph{Repository comparison at the pin.}
+Source~20 read, at \texttt{efc5446}, the repository README and catalogue, this
+report's \texttt{article.tex} in the line ranges listed in its audit
+(1330--1500, the unit-orbit examples and differential recurrences; 2020--2150,
+the sharp dilation criterion, partial theta and torsion; 2150--2228,
+Lemma~\ref{hol:lem:bivariate}, Theorem~\ref{hol:thm:mixed} and the limitation
+after it), and the README of the set-sized-quotient report~\cite{repoosq},
+whose universal quotient theorem it uses only to explain the absence of a
+contradiction (Remark~\ref{hol:rc:rem:quotients}), without auditing that
+report. It did not read the placed audit file of source~18, nor the
+omnific-notations report (Remark~\ref{hol:rc:rem:stream}). The comparison was
+targeted, not a proof-by-proof audit of all reports, and the absence of a
+matching theorem in it is not a proof of novelty. Its statements about this
+report were accurate at the pin, as recorded in
+Section~\ref{hol:rc:sub:conventions}.
+
+\paragraph{Priority.}
+Source~20 separates four groups. \emph{Imported foundations:} Hahn
+multiplication and positive-support summability, Conway normal forms, real
+closedness of $\No$, the Skolem--Mahler--Lech theorem and Hilbert's basis
+theorem. \emph{Reproved repository mechanisms:} finite-step recurrence escape,
+the noncofinal-scale obstruction and the partial-theta sharpness construction.
+\emph{Candidate-original package:} the uniform coefficient algebra,
+coefficient-constraint compression, arbitrary-rank exact valuation profiles,
+their mixed unit and multibase application, and the juxtaposed omnific
+coefficient-universality theorem. \emph{Not claimed:} independent priority
+certification, formal verification, effective Skolem decision procedures,
+arbitrary nonlinear mixed rigidity, and a classification of full omnific
+membership sets for unrestricted recurrences. Against the current text, the
+valuation profiles and the mixed application are source~18's, found
+independently (Remark~\ref{hol:rc:rem:stale}), and the coding element is the
+omnific-notations report's (Remark~\ref{hol:rc:rem:stream}); what remains
+proposed by source~20 is the coefficient algebra, Noetherian compression with
+its universal period, the recurrence statements over $\No[i]$, $\Oz$ and
+$\Oz[i]$ with the decreasing omnific example, the coding reading with
+Corollary~\ref{hol:rc:cor:nosml}, and the determinantal profiles.
+``Candidate-original'' means developed and proved at manuscript level with no
+matching result found in a targeted comparison; it does not establish
+priority.
+
+\subsection{What the recurrence part does not claim}
+\label{hol:rc:sub:nonclaims}
+
+Every limitation stated by source~20, in its manuscript, README, audit file or
+verification record, is kept.
+\begin{enumerate}[label=\textup{(V\arabic*)}]
+\item Source~20 is an AI-assisted, unrefereed research draft with manuscript
+arguments, not an independently certified breakthrough. No independent
+referee report and no Lean formalization accompany it; no Lean build was run,
+no declaration was added, and the repository's axiom audit does not cover
+this part. Independent correctness and worldwide priority are not certified.
+\item The Skolem--Mahler--Lech theorem, the Hahn--Neumann support lemma and
+Hilbert's basis theorem are imported. No effective bound for exceptional
+zeros and no algorithm locating them is given; such an algorithm would solve
+the ordinary Skolem problem, which is not claimed solved.
+\item Noetherian compression gives the existence of a finite subfamily only,
+not an algorithm finding it from an infinitely presented family.
+\item The degrees of the coefficient polynomials $r_{j,\gamma}$ are unbounded,
+and a universal residual period gives no common transient bound for all
+coefficient tests on one orbit (Example~\ref{hol:rc:ex:transient}).
+\item No nonlinear mixed rigidity is asserted; source~20's nonlinear question
+is re-scoped here (Question~\ref{hol:rc:q:nonlinear}).
+\item No classification of full omnific membership sets: the integer
+constant-term condition is not a coefficient-algebraic condition and is not
+handled (Question~\ref{hol:rc:q:membership}).
+\item The coding theorem is storage of a sequence in an infinite initial
+value, not an algorithm that generates information; it is non-effective for
+noncomputable sequences, gives no finite effective representation of subsets
+of $\N$, and shows neither that coefficient extraction is definable in the pure
+ring language of $\Oz$ nor any interpretation of second-order arithmetic.
+\item Entireness is relative to one set-sized Hahn field; a series entire in
+one workspace need not be entire after enlargement, and nothing concerns
+simultaneous entireness on all of $\No[i]$. Statements over $\No[i]$ concern
+each finite recurrence localized to a set-sized Hahn field.
+\item $D_z$ fixes the coefficients and is not the Berarducci--Mantova
+derivation; derivations of the coefficient field are not treated
+(Question~\ref{hol:rc:q:derivations}).
+\item Actual torsion among the dilation parameters and positive characteristic
+are excluded, with counterexamples (Section~\ref{hol:rc:sub:boundaries}).
+\item Nothing is claimed about real-valued Lyapunov limits or eventual
+periodicity of the coefficients of matrix powers.
+\item $\deg_\omega$ is neither a birthday nor a sign; Gonshor's
+product-birthday problem is not addressed, and no sign classification is
+claimed.
+\item The effective constants of Fuchs and Heintze are not improved, and
+their setting differs; the setup of Krapp, Kuhlmann and Serra is distinct.
+\item Neumann's paper is credited historically, not audited; the
+set-sized-quotient report was not audited, and its theorem is used only to
+explain the absence of a contradiction.
+\item The 4{,}605 finite checks concern finite identities and examples. They
+prove neither the support lemma, the Skolem--Mahler--Lech theorem, the
+infinite-support minimum argument nor the proper-class localization, and a
+PDF build concerns document integrity, not truth. Their number measures no
+proof coverage: $1{,}189$ of them compare elementary integer or lexicographic
+facts that hold by construction (Section~\ref{hol:sec:verification}).
+\item The repository comparison at \texttt{efc5446} was targeted, not
+exhaustive; its description of this report is stale in the respects recorded
+in Section~\ref{hol:rc:sub:conventions}, and its search was not a literature
+priority audit.
+\item \emph{[merge]} Remarks~\ref{hol:rc:rem:periods},
+\ref{hol:rc:rem:stream} and~\ref{hol:rc:rem:finitegeneration}, the
+identification of source~20's Theorems~10.3 and~10.4 as special cases of
+Theorem~\ref{hol:ud:main:mixed}, the comparison in
+Example~\ref{hol:rc:ex:charp}, and the re-scoping of
+Question~\ref{hol:rc:q:nonlinear} are the merge's; no historical priority is
+claimed for them.
+\end{enumerate}
+
 \section{Conclusion}
 
 Strong entireness over a surreal Hahn workspace imposes a global scale
@@ -15556,6 +16933,16 @@ one; then every strongly entire solution is a polynomial, for every value
 group, with a degree bound that keeps the exact indicial resonances. The
 finite coefficient locus that remains can be as complicated as any affine
 hypersurface over $\Q$, and its omnific points are undecidable in general.
+
+The recurrence part reads the ordinary recurrences behind all these proofs one
+coefficient at a time. When the characteristic roots are units, every iterate
+lies in one well-ordered support envelope and each fixed coefficient is an
+ordinary exponential polynomial over the residue field; all of them lie in one
+finitely generated algebra, so any set-sized family of coefficient conditions
+reduces along the orbit to finitely many, with hitting sets periodic modulo
+one period up to a finite set. When a root moves the support, as $\omega$ does,
+one fixed coefficient can store any real sequence, although the leading
+exponent stays eventually affine.
 
 \appendix
 
@@ -15797,6 +17184,39 @@ projectors, annihilator and weighted degree of the encoder.\\
 \end{tabularx}
 \end{center}
 
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Recurrence part,
+Sections~\ref{hol:rc:sec:setting}--\ref{hol:rc:sec:surreal}}}\\
+$y_n$ & A recurrence sequence with values in $\KK$ or $\No[i]$.\\
+$\langle\zeta\rangle$, $\mathsf M_{\mathrm{tor}}$ & The group generated by the
+residues of unit bases; the exponent of its torsion subgroup
+\eqref{hol:rc:eq:torperiod} (divisible by $\mathsf M$).\\
+$\mathfrak A$, $\operatorname{ev}$ & The observable algebra $k[n,\zeta_1^n,\ldots,\zeta_m^n]$ of
+\eqref{hol:rc:eq:algebra}; the evaluation map onto it from
+$k[U,X_1,\ldots,X_m]$.\\
+$\mathcal X$, $F_a$, $\mathsf T$ & A coefficient-algebraic set, its defining
+conditions, a prescribed support set
+(Definition~\ref{hol:rc:def:conditions}).\\
+$\deg_\omega$; $\mathsf d_b$, $\mathsf e_b$ & $-v$, the greatest Conway
+exponent; slope and intercept in \eqref{hol:rc:eq:degree}.\\
+$\Pi$; $[\omega^\alpha]x$ & The purely infinite ideal, $\Oz=\Z\oplus\Pi$; a
+Conway coefficient.\\
+$\mathbf b$, $\mathfrak w_{\mathbf b}$ & A real sequence and its omnific code
+\eqref{hol:rc:eq:code}.\\
+$\lambda_-$, $\mathrm{Cat}_k$ & The infinitesimal root of $X^2-\omega X+1$;
+Catalan numbers.\\
+$\mathbf A$, $\operatorname{mv}_j(n)$ & An invertible matrix; the least
+valuation of a nonzero $j\times j$ minor of $\mathbf A^n$.\\
+$\mathfrak G$, $\Delta_{\mathfrak G}$ & A torsion-free group of dilation
+parameters; the convex subgroup generated by $v(\mathfrak G)$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
 \section{Proof-dependency and hypothesis audit}\label{hol:app:audit}
 
 The logical dependencies are short. Differential rigidity uses the
@@ -15854,7 +17274,13 @@ polynomial-composition part uses the entire-support criterion, Gauss
 multiplicativity and large active degrees, then the exact pullback and
 operator profiles, integer convexity and superlinear escape; its degree bounds
 use exact leading terms, its module theorem the Smith normal form and the
-constant-term retraction, and its encoding Euler projectors.
+constant-term retraction, and its encoding Euler projectors. The recurrence
+part uses the support envelope of the unit-dilation part and finite binomial
+expansions for its observable algebra, Hilbert's basis theorem and a torsion
+period with the imported Skolem--Mahler--Lech theorem for compression, the
+algebraic closedness of $\No[i]$, a Jordan form and the periodic-affine
+valuations for its surreal and matrix profiles, and only normal-form support
+arithmetic for the coding theorem.
 
 No unproved ring-theoretic conclusion from another report in this collection
 is used. The real-valued coarsening of~\cite[Lemma~9.1]{repoentire} is cited
@@ -15882,6 +17308,10 @@ using it. The polynomial-composition part imports the
 Davis--Putnam--Robinson--Matiyasevich theorem~\cite{matiyasevich} and Sun's
 eleven-unknown theorem~\cite{sun} for its two undecidability corollaries, and
 cites the complex entire-Mahler lemma~\cite[Lemma~6]{bcr} without using it.
+The recurrence part imports the Skolem--Mahler--Lech theorem~\cite{lech,belldoc},
+Hilbert's basis theorem, the Hahn--Neumann support lemma~\cite{neumann,bagayoko}
+and the algebraic closedness of $\No[i]$; it cites the set-sized-quotient
+theorem~\cite{repoosq} only to explain the absence of a contradiction.
 
 The potentially dangerous hypotheses, collected for review:
 \begin{itemize}
@@ -15908,8 +17338,9 @@ $k_0((z))$; that generality is used in the joint-independence criterion.
 Algebraic closedness is not used. It is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and an arbitrary
 characteristic-zero field in the nonlinear, coefficient-field, theta-descent,
-order-three-threshold, unit-dilation, Newton-rigidity, single-scale and
-polynomial-composition parts (with $\R$ or $\C$ for its omnific rings), and
+order-three-threshold, unit-dilation, Newton-rigidity, single-scale,
+polynomial-composition and recurrence parts (with $\R$ or $\C$ for their
+omnific rings), and
 $\R$ or $\C$ in the
 theta-hierarchy part, which also fixes $\Gamma=\R$; the latter
 generality is not transferred to the statements of the linear theorems
@@ -15941,7 +17372,9 @@ Linear mixed equations in
 derivatives and finitely many dilations are treated for every $\Gamma$ (the
 unit-dilation part), and so are equations in which one polynomial argument of
 degree at least two strictly dominates the composition weights (the
-polynomial-composition part).
+polynomial-composition part). The recurrence part concerns ordinary
+constant-coefficient recurrences indexed by $\N$, not equations for
+functions, apart from its re-derived mixed statements.
 Nonlinear differential transcendence in all orders, and algebraic
 independence of derivatives at dilations with pairwise quotients that are not
 roots of unity, are proved only when $\Gamma$ has no order unit, or for a
@@ -15988,13 +17421,17 @@ theta-hierarchy part those of Section~\ref{hol:th:sub:nonclaims}, the
 single-scale part those of Section~\ref{hol:fh:sub:nonclaims}, and the
 polynomial-composition part those of Section~\ref{hol:pc:sub:nonclaims}
 (critical weights, several top products and matrix differential pullbacks are
-not treated); no
+not treated), and the recurrence part those of
+Section~\ref{hol:rc:sub:nonclaims} (no effective exceptional zeros, no
+classification of omnific membership, and a coding theorem that stores rather
+than computes); no
 complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
 prove no infinite theorem. The full classifications and the nonlinear,
 coefficient-field, theta-descent, order-three-threshold, unit-dilation,
-Newton-rigidity, theta-hierarchy, single-scale and polynomial-composition
-theorem packages remain without Lean verification or independent refereeing.
+Newton-rigidity, theta-hierarchy, single-scale, polynomial-composition and
+recurrence theorem packages remain without Lean verification or independent
+refereeing.
 The formalization ledger records the proved support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance,
@@ -16005,16 +17442,13 @@ including the partial-theta directions of the dilation classification.
 
 The directory contains this standalone \LaTeX{} source, its compiled PDF, a
 README, twenty source audit documents at the top level, twenty-two files under
-\texttt{code/} and thirty-two under \texttt{data/}. Of these, nineteen audit
-documents, twenty files under \texttt{code/} (the twelve verification programs
-of the sources merged here, the build scripts of sources~10, 11, 13, 17
-and~19, and the \texttt{Makefile}s of sources~12, 15 and~16) and thirty-one
-under \texttt{data/} (the twelve recorded outputs, the source build, layout and
+\texttt{code/} (the thirteen verification programs of the sources merged here,
+the build scripts of sources~10, 11, 13, 17, 19 and~20, and the
+\texttt{Makefile}s of sources~12, 15 and~16) and thirty-two under
+\texttt{data/} (the thirteen recorded outputs, the source build, layout and
 visual reports, and the requirements files of sources~11, 13, 14, 15, 17
-and~19) belong to the twelve sources merged into this text. The files
-prefixed \texttt{20-} belong to one further manuscript that has been placed in
-this directory but whose merge into the text is pending; the README describes
-them. No source document from the
+and~19), all belonging to the thirteen sources merged into this text. No source
+document from the
 inspected repository is redistributed, and no source manuscript is shipped. The bibliography is embedded: no BibTeX run, external
 graphics, shell escape, or repository checkout is required, and a conventional
 TeX Live or MiKTeX installation with the named packages suffices.
@@ -16039,6 +17473,7 @@ pip install -r data/17-single-scale-requirements.txt
 python code/17-single-scale-verify.py --output rerun-17.json
 pip install -r data/15-polynomial-composition-requirements.txt
 python code/15-polynomial-composition-verify.py --output rerun-15.json
+python code/20-recurrences-verify.py > rerun-20.txt
 \end{verbatim}
 
 The \verb|--output| argument is required by the scripts of sources~08, 10,
@@ -16058,7 +17493,9 @@ Source~16's writes \path{verification.json} in the current directory unless
 \path{verification_results.json} beside itself in \texttt{code/}; both
 overwrite, so pass new paths. Source~15's, like source~16's, writes
 \path{verification.json} in the current directory unless \verb|--output| is
-given, overwriting it. All use exact integer and rational arithmetic,
+given, overwriting it. Source~20's takes no arguments and only prints its
+record, so redirect it to a new file. All use exact integer and rational
+arithmetic,
 those of sources~11, 13, 14, 15, 17 and~19 through SymPy, and exit with a nonzero
 status if a check fails. The build script
 \path{code/10-nonlinear-rigidity-build.py} was written for source~10's own
@@ -16100,7 +17537,11 @@ not shipped. The same holds for source~15's
 \texttt{article.pdf} in the current directory and whose \texttt{clean} target
 deletes auxiliary files there, and for
 \path{data/15-polynomial-composition-BUILD_REPORT.json}, which describes its
-24-page manuscript.
+24-page manuscript. Source~20's \path{code/20-recurrences-build.sh} runs
+\texttt{pdflatex} on an \texttt{article.tex} in its own directory and then
+overwrites \texttt{verification.txt} there by redirection; here it stops at the
+first \texttt{pdflatex} call and leaves \texttt{texput.log} in \texttt{code/}
+(Section~\ref{hol:sec:verification}), so do not run it.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -16334,7 +17775,7 @@ Arkiv f\"or Matematik \textbf{2} (1953), 417--421.
 \url{https://doi.org/10.1007/BF02590997}.
 Publisher metadata checked by source~12; the proof was not reconstructed.
 Cited by source~18 as the primary source of the characteristic-zero theorem,
-with its metadata verified.
+with its metadata verified, and by source~20 for the same theorem.
 
 \bibitem{belldoc}
 J. P. Bell,
@@ -16343,7 +17784,8 @@ Documenta Mathematica, Extra Volume Mahler Selecta (2019), 173--178.
 \url{https://ems.press/content/book-chapter-files/27398}.
 Read by source~18, including the first two pages, for the precise
 characteristic-zero statement and its exponential-polynomial formulation; a
-different text from~\cite{bell}.
+different text from~\cite{bell}. Source~20 read and visually inspected the same
+PDF.
 
 \bibitem{neumann}
 B. H. Neumann,
@@ -16351,7 +17793,9 @@ B. H. Neumann,
 Transactions of the American Mathematical Society \textbf{66} (1949),
 202--252.
 \url{https://doi.org/10.1090/S0002-9947-1949-0032593-5}.
-Credited by source~18 for the support calculus, whose needed lemma it proves.
+Credited by source~18 for the support calculus, whose needed lemma it proves,
+and by source~20 as the historical source of the support lemma, not audited
+as a historical paper.
 
 \bibitem{fuchsheintze}
 C. Fuchs and S. Heintze,
@@ -16360,6 +17804,8 @@ Bulletin of the Australian Mathematical Society \textbf{104} (2021), 11--20.
 \url{https://doi.org/10.1017/S0004972720001094}.
 Author version: \url{https://arxiv.org/abs/2006.11074}. Related work consulted
 by source~18 through the author version and publisher metadata; not an input.
+Cited by source~20 as related work whose effective constants it does not
+improve.
 
 \bibitem{gonshor}
 H. Gonshor,
@@ -16376,8 +17822,8 @@ H. Derksen,
 automata},
 Inventiones Mathematicae \textbf{168} (2007), 175--224.
 Author version: \url{https://arxiv.org/abs/math/0510583}.
-Background for source~18's positive-characteristic direction; not an input to
-any proof.
+Background for source~18's positive-characteristic direction, and for
+source~20's; not an input to any proof.
 
 \bibitem{pogudin2014}
 G. Pogudin,
@@ -16493,7 +17939,9 @@ criterion through Nishioka--Nishioka.
 \emph{Omnific Groups and Lattices},
 \texttt{docs/surreal/omnific-groups-and-lattices/}.
 Their READMEs were read by source~15 at \texttt{bcac55a}; nothing from them is
-used.
+used. Source~20 read the first README at \texttt{efc5446} and cites its
+universal quotient theorem, \texttt{osq:thm:universal}, only in
+Remark~\ref{hol:rc:rem:quotients}, without auditing that report.
 
 \bibitem{dlmftheta}
 NIST Digital Library of Mathematical Functions, Chapter~20, \S20.5,
@@ -16539,6 +17987,28 @@ Publisher abstract and bibliography consulted by source~13, and the
 publisher abstract by source~14; full text not inspected by either. For the
 merge of source~14 the bibliographic data were checked against the Crossref
 record (volume~84, issue~2); the content was not verified.
+
+\bibitem{bagayoko}
+V. Bagayoko, L. S. Krapp, S. Kuhlmann, D. Panazzolo and M. Serra,
+\emph{Automorphisms and derivations on algebras endowed with formal infinite
+sums}, arXiv:2403.05827, version~2.
+\url{https://arxiv.org/abs/2403.05827}.
+Consulted by source~20 for positive-support summability.
+
+\bibitem{kkslinrec}
+L. S. Krapp, S. Kuhlmann and M. Serra,
+\emph{Generalised power series determined by linear recurrence relations},
+arXiv:2206.04126; published in Journal of Algebra (2025).
+\url{https://arxiv.org/abs/2206.04126}.
+Cited by source~20 to distinguish exponent-indexed recurrences from the
+ordinary-indexed recurrences of the recurrence part; nothing is imported. A
+different paper, and a different author list, from~\cite{kks}.
+
+\bibitem{repoonot}
+\repo\ project, \emph{Notations for Omnific Integers},
+\texttt{docs/foundations-and-computation/omnific-notations/}. Its display
+\texttt{onot:eq:guardbasic} is the element of Theorem~\ref{hol:rc:thm:coding};
+cited by this merge, not by source~20.
 
 \end{thebibliography}
 \end{document}
