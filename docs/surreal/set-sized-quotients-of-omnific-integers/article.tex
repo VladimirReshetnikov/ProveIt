@@ -6966,6 +6966,12 @@ $1/2=a+b/\sqrt2$ with integers $a,b$ forces $b=0$ by
 irrationality of $\sqrt2$, then the impossible equality $a=1/2$.
 \end{proof}
 
+For the following moduli and endomorphism-order results, return to
+$(D,k)=(\Z,\R)$ or $(\Z[i],\C)$, as fixed at the start of this
+subsection. In particular, $D$ is a countable principal ideal domain.
+The arbitrary-coefficient generality of the preceding $\Tor$ theorem
+does not extend these order statements to arbitrary $D$.
+
 \begin{theorem}[Rank-two moduli \src{17}]\label{osq:rel:thm:mobius}
 For $\alpha\in k\setminus\Frac(D)$ put $M_\alpha=D+D\alpha$. For $\alpha,\beta\in k\setminus\Frac(D)$ and $\gamma,\eta>0$, the ideals
 $J_\gamma(M_\alpha)=(\omega^\gamma,\alpha\omega^\gamma)$ and $J_\eta(M_\beta)$ of $\A_{D,k}$ are isomorphic if and only if
@@ -6974,11 +6980,47 @@ exactly $2^{\aleph_0}$ isomorphism classes of these two-generated ideals; all ha
 module isomorphic to $\Pi_k$.
 \end{theorem}
 \begin{proof}
-By \cref{osq:tn:thm:hom} the ideals are isomorphic exactly when $M_\beta=sM_\alpha$ for some $s\in k^\times$, that is when
-$(1,\beta)$ and $(s,s\alpha)$ are bases of one free $D$-module; this means $1=s(c\alpha+d)$ and $\beta=s(a\alpha+b)$ for a matrix with
-$ad-bc\in D^\times$, and $c\alpha+d\ne0$ because $\alpha\notin\Frac(D)$. Conversely such a matrix and $s=(c\alpha+d)^{-1}$ give the
-equality of lattices. The group $\mathrm{GL}_2(D)$ is countable and $k\setminus\Frac(D)$ has $2^{\aleph_0}$ elements, so the orbits
-are countable and there are $2^{\aleph_0}$ of them. The last assertions are \cref{osq:tn:thm:syzygy}.
+Multiplication by $\omega^\gamma$ identifies $L(M_\alpha)$ with
+$J_\gamma(M_\alpha)$, so the monomial scales do not affect the
+isomorphism type. By \cref{osq:tn:thm:hom}, an isomorphism exists
+exactly when $M_\beta=sM_\alpha$ for some $s\in k^\times$.
+Both $(1,\beta)$ and $(s,s\alpha)$ are then $D$-bases of this
+rank-two lattice. Write their change of basis as
+\[
+ \begin{pmatrix}1\\\beta\end{pmatrix}
+ =\begin{pmatrix}d&c\\b&a\end{pmatrix}
+   \begin{pmatrix}s\\s\alpha\end{pmatrix}.
+\]
+Its determinant is $ad-bc\in D^\times$. The first row gives
+$1=s(c\alpha+d)$, and division in the second gives
+$\beta=(a\alpha+b)/(c\alpha+d)$.
+
+Conversely, suppose the displayed fractional-linear equation holds
+with a matrix in $\mathrm{GL}_2(D)$. Its denominator is nonzero:
+if $c\ne0$, vanishing would put $\alpha=-d/c\in\Frac(D)$;
+if $c=0$, invertibility forces $d\ne0$. Set
+$s=(c\alpha+d)^{-1}$. The same invertible change of basis gives
+$M_\beta=sM_\alpha$, hence an isomorphism of the ideals, explicitly
+multiplication by $\omega^{\eta-\gamma}s$.
+
+These transformations preserve $k\setminus\Frac(D)$. Indeed, if
+$\beta\in\Frac(D)$, then
+$(a-\beta c)\alpha+(b-\beta d)=0$ forces both coefficients to
+vanish, contradicting $ad-bc\ne0$. Their orbits therefore classify
+the ideals. There are at most countably many transforms of each
+$\alpha$, because $D$ and $\mathrm{GL}_2(D)$ are countable.
+Put $\lambda$ for the number of orbits. The parameter set has size
+$2^{\aleph_0}$, so
+\[
+ 2^{\aleph_0}\le\lambda\cdot\aleph_0
+ =\max(\lambda,\aleph_0),\qquad \lambda\le2^{\aleph_0}.
+\]
+Since the continuum is uncountable, these inequalities give
+$\lambda=2^{\aleph_0}$, without a continuum-hypothesis assumption.
+Finally, \cref{osq:tn:thm:syzygy} applied to the basis $(1,\alpha)$
+gives the relation module $\Pi_k$ and fraction-field rank one.
+The coefficient rank is two; in particular the two displayed ideal
+generators cannot be replaced by one.
 \end{proof}
 
 The count $2^{\aleph_0}$ and the $\mathrm{GL}_2(D)$ form are not in 14, whose \cref{osq:tn:thm:hom} they refine.
@@ -6990,13 +7032,54 @@ $\Frac\mathfrak o(M)=K_V$ and $\rk_D\mathfrak o(M)=[K_V:\Frac D]$. In the class 
 so $\End_A(J_\gamma(M))/\Pi_k\cong\mathfrak o(M)$ is its universal set-sized quotient.
 \end{theorem}
 \begin{proof}
-$K_V$ contains $\Frac D$ and is closed under the ring operations; for $0\ne c\in K_V$, multiplication by $c$ is injective on the
-finite-dimensional $V$, hence surjective, so $c^{-1}\in K_V$. For $0\ne v\in V$, $c\mapsto cv$ embeds $K_V$ in $V$, and $V$ is a
-$K_V$-vector space, so the degree divides $r$. $\mathfrak o(M)$ embeds in $\End_D(M)\cong D^{r\times r}$, so it is finite free, and
-Cayley--Hamilton gives integrality (\cref{osq:tn:thm:hom}). For $c\in K_V$ the matrix of $c$ in a basis of $M$ has entries in $\Frac D$;
-a common denominator $0\ne a\in D$ gives $ac\in\mathfrak o(M)$, so $K_V\subseteq\Frac\mathfrak o(M)\subseteq K_V$. The endomorphism
-ring is \cref{osq:tn:thm:hom}, and its universal set-sized quotient is given by \cref{osq:thm:universal} with the coefficient ring
-$\mathfrak o(M)$, which need not be a principal ideal domain.
+Put $F=\Frac(D)$. The set $K_V$ contains $F$ and is closed under
+addition, negation and multiplication. If $0\ne c\in K_V$,
+multiplication by $c$ is an injective $F$-linear endomorphism of
+$V$, since $V\subseteq k$. Finite dimension makes it surjective:
+for every $v\in V$ one has $v=cw$ with $w\in V$. Thus
+$c^{-1}V\subseteq V$, proving that $K_V$ is a field.
+Fix $0\ne v_0\in V$. The map $c\mapsto cv_0$ embeds $K_V$
+$F$-linearly in $V$, so $[K_V:F]$ is finite. Also $V$ is a
+$K_V$-vector space, spanned over $K_V$ by any $F$-basis. The
+vector-space dimension formula gives
+\[
+ r=\dim_FV=[K_V:F]\,\dim_{K_V}V,
+\]
+which proves the divisibility assertion.
+
+By definition,
+$\mathfrak o(M)=\{c\in k:cM\subseteq M\}\subseteq K_V$.
+Its action on a $D$-basis of $M$ embeds it as a $D$-submodule
+of $\operatorname{End}_D(M)\cong D^{r\times r}$. Since $D$ is
+a principal ideal domain, this submodule is finite free. For
+$c\in\mathfrak o(M)$, Cayley--Hamilton annihilates the matrix
+of multiplication by $c$ by its monic characteristic polynomial.
+Applying this endomorphism identity to any nonzero member of $M$
+shows that the same polynomial vanishes at $c$ in $k$. Hence
+$c$ is integral over $D$.
+
+Conversely, let $c\in K_V$. In a $D$-basis of $M$, which is
+also an $F$-basis of $V$, the matrix of multiplication by $c$
+has finitely many entries in $F$. Clear their denominators with
+one $0\ne a\in D$. Then $acM\subseteq M$, so
+$ac\in\mathfrak o(M)$ and $c=(ac)/a\in F\mathfrak o(M)$.
+Therefore
+\[
+ F\mathfrak o(M)=K_V=\Frac\mathfrak o(M),\qquad
+ \rk_D\mathfrak o(M)=\dim_FK_V.
+\]
+This proves that $\mathfrak o(M)$ is an order in precisely this
+field, rather than merely in an unspecified finite extension.
+
+Scaling by $\omega^\gamma$ leaves endomorphism scalars unchanged.
+Thus \cref{osq:tn:thm:hom} identifies the endomorphism ring with
+$\mathfrak o(M)+\Pi_k$. The constant-term map onto
+$\mathfrak o(M)$ has kernel $\Pi_k$. Apply
+\cref{osq:thm:universal} with coefficient ring $\mathfrak o(M)$:
+every unital map from this class ring into any set-sized ring
+factors uniquely through that constant-term map. This application
+requires a unital coefficient subring, not that $\mathfrak o(M)$
+itself be a principal ideal domain.
 \end{proof}
 
 \begin{corollary}[Every order occurs \src{17}]\label{osq:rel:cor:realize}
@@ -7004,19 +7087,54 @@ If $\mathfrak o\subset k$ is an order over $D$ in a finite extension of $\Frac D
 $\operatorname{Aut}_A(J_\gamma(\mathfrak o))=\mathfrak o^\times$.
 \end{corollary}
 \begin{proof}
-$c\mathfrak o\subseteq\mathfrak o$ gives $c=c\cdot1\in\mathfrak o$, and conversely; apply \cref{osq:tn:thm:hom}.
+An order $\mathfrak o$ here contains $1$ and is finite free over
+$D$, so it is an allowed coefficient lattice. If
+$c\mathfrak o\subseteq\mathfrak o$, then
+$c=c\cdot1\in\mathfrak o$. Conversely every $c\in\mathfrak o$
+preserves $\mathfrak o$ by multiplication. Hence
+$\mathfrak o(\mathfrak o)=\mathfrak o$, and
+\cref{osq:tn:thm:hom} gives the endomorphism ring.
+An automorphism scalar and its inverse both lie in
+$k+\Pi_k$, whose only units are $k^\times$
+(\cref{osq:lem:units}). Thus an automorphism has no tail part;
+it is a constant $c$ with $c\mathfrak o=\mathfrak o$,
+equivalently $c\in\mathfrak o^\times$. This proves the
+asserted automorphism group, even though the endomorphism ring
+itself contains the whole tail.
 \end{proof}
 
 14's \cref{osq:tn:thm:pic} realizes the ideal classes of such an order as well; the corollary realizes the order itself as the
 constant quotient of an endomorphism ring.
 
 \begin{example}[A unit that is not an omnific integer \src{17}]\label{osq:rel:ex:pell}
-For $J=(\omega,\sqrt2\,\omega)\subseteq\Oz$, $\End_{\Oz}(J)=\Z[\sqrt2]+\Pi$, and multiplication by $1+\sqrt2$ is an automorphism of $J$,
-with inverse $\sqrt2-1$ and matrix $\bigl(\begin{smallmatrix}1&2\\1&1\end{smallmatrix}\bigr)$ (determinant $-1$) on the generators
-$\omega,\sqrt2\,\omega$; its powers give infinitely many automorphisms, although $1+\sqrt2\notin\Oz$. Over $\GOz$ the same ideal has
-endomorphism order $\Z[i,\sqrt2]$. If $[\Frac(D)(\alpha):\Frac D]\ge3$ or $\alpha$ is transcendental, then
-$\mathfrak o(D+D\alpha)=D$: an element $a+b\alpha$ of it must send $\alpha$ into $D+D\alpha$, which forces $b=0$; so
-$(\omega,\alpha\omega)$ has only the automorphisms $\pm1$ (four in the Gaussian case).
+For $J=(\omega,\sqrt2\,\omega)\subseteq\Oz$, the coefficient
+lattice is the order $\Z[\sqrt2]$, so
+$\End_{\Oz}(J)=\Z[\sqrt2]+\Pi$. Multiplication by $1+\sqrt2$
+sends the two generators to
+\[
+ \omega+\sqrt2\,\omega,\qquad 2\omega+\sqrt2\,\omega,
+\]
+respectively. Its matrix on this generating pair, with images in
+columns, is $\bigl(\begin{smallmatrix}1&2\\1&1\end{smallmatrix}\bigr)$,
+of determinant $-1$. The inverse scalar is $\sqrt2-1$, since
+$(1+\sqrt2)(\sqrt2-1)=1$. These are automorphisms of the ideal;
+$1+\sqrt2\notin\Oz$ because it is a noninteger real constant.
+Its positive integer powers are distinct, as $1+\sqrt2>1$.
+The generating pair is a $\Z$-basis of the scaled coefficient
+lattice, not an $\Oz$-basis of $J$; its relations over $\Oz$
+are the tail relations already described. Over $\GOz$, the same
+generating pair has endomorphism order $\Z[i,\sqrt2]$.
+
+In contrast, let $\alpha$ be algebraic of degree at least three
+over $F=\Frac(D)$, or transcendental over $F$. A multiplier of
+$D+D\alpha$ belongs to that lattice because $1$ does, so it has
+the form $a+b\alpha$ with $a,b\in D$. If its product with
+$\alpha$ lies in $D+D\alpha$, there are $u,v\in D$ with
+$b\alpha^2+(a-v)\alpha-u=0$. Independence of
+$1,\alpha,\alpha^2$ over $F$ forces $b=0$ (and $u=0$, $a=v$).
+Thus $\mathfrak o(D+D\alpha)=D$. The ideal
+$(\omega,\alpha\omega)$ has only the automorphisms $\pm1$
+in the real case, and $\pm1,\pm i$ in the Gaussian case.
 \end{example}
 
 \begin{theorem}[Modules killed by the tail \src{17; 21}]\label{osq:rel:thm:augmentation}
@@ -7026,16 +7144,64 @@ unital module $P$ is of this kind (\cref{osq:thm:universal}(iv)), and $M\otimes_
 balanced map on $J_g(M)\times P$ factors through $M\times P$.
 \end{theorem}
 \begin{proof}
-Since $\Pi P=0$, $J\otimes_AP\cong(J/\Pi J)\otimes_DP$ with $J/\Pi J\cong M$ (\cref{osq:tn:thm:syzygy}(i)). The kernel
-$K_M\cong\Pi^{r-1}$ of the natural presentation satisfies $\Pi K_M=K_M$ (as $\Pi^2=\Pi$), so $K_M\otimes_AP=0$, which gives
-$\Tor_1(J,P)=0$; for $j\ge2$, $\Tor_j(J,P)\cong\Tor_{j-1}(K_M,P)=0$ because $K_M$ is flat. Over the class ring a balanced map kills
-$\Pi J\times P$ for the same reason.
+Write $J=J_g(M)$. By \cref{osq:tn:thm:syzygy}(i),
+$\Pi J=X^g\Pi$, and the map
+$X^g(m+u)\mapsto m$ induces $J/\Pi J\cong M$.
+Since $\Pi P=0$, the formula
+\[
+ X^g(m+u)\otimes p\longmapsto m\otimes_Dp
+\]
+defines a map $J\otimes_AP\to M\otimes_DP$: multiplying the
+first input by $a\in A$ multiplies its coefficient by $\ct(a)$,
+which acts on $P$ as $a$ does. Its inverse is induced by the
+$D$-balanced map $(m,p)\mapsto X^gm\otimes p$.
+Indeed, the difference $X^gu$ lies in $\Pi J$, and every finite
+sum $\sum_i a_i j_i$ with $a_i\in\Pi$, $j_i\in J$ tensors
+to $\sum_i j_i\otimes a_i p=0$. The two maps are therefore
+inverse. After a basis of $M$ is fixed,
+$M\otimes_DP\cong P^r$. No torsion-freeness or flatness of $P$
+over $D$ is needed.
+
+For the set-sized ring $R^{11}_\kappa$, use its natural presentation
+$0\to K_M\to A^r\to J\to0$, with
+$K_M\cong\Pi^{r-1}$. The tail is idempotent and flat by
+\cref{osq:rel:thm:kappa}(i), so $\Pi K_M=K_M$ and $K_M$ is
+flat, including the zero kernel when $r=1$.
+Every $u\in K_M$ is a finite sum $\sum_i a_i u_i$ with
+$a_i\in\Pi$; balancing gives
+$u\otimes p=\sum_i u_i\otimes a_i p=0$.
+Hence $K_M\otimes_AP=0$. The long exact sequence gives an
+injection $\Tor_1^A(J,P)\hookrightarrow K_M\otimes_AP$, and
+for $j\ge2$ gives
+$\Tor_j^A(J,P)\cong\Tor_{j-1}^A(K_M,P)=0$ by flatness.
+
+For the class ring, the universal quotient theorem makes every
+set-sized unital module $P$ satisfy $\Pi_kP=0$. Fix any target
+module and a specified balanced biadditive map on $J\times P$.
+The same finite-sum calculation shows it kills $\Pi_kJ\times P$,
+so its value on $(X^g(m+u),p)$ depends only on $(m,p)$.
+The resulting map on $M\times P$ is $D$-balanced and therefore
+factors uniquely through the set-sized tensor module $M\otimes_DP$.
+Conversely its canonical map is balanced for the action of the
+class ring through $\ct$. This proves the stated universal property
+using one fixed map and target at a time; it constructs no collection
+of all class maps and invokes no class-ring $\Tor$ functor.
 \end{proof}
 
-This extends \cref{osq:thm:homological}(ii) and \cref{osq:hd:cor:arithmeticTor} from $D$ to the lattice ideals. For $r\ge2$ it does
-not make $J_g(M)$ flat: the test module $A/J_g(M)$, which is not killed by the tail, detects the obstruction
-(\cref{osq:rel:cor:selftor}). On every set-sized test the ideal looks free of rank $r$, although its rank over the fraction field is one;
-no full-class $\Tor$ functor is inferred (17). Manuscript~21 obtains the same $\Tor$ groups, in the equivalent form
+This extends \cref{osq:thm:homological}(ii) and
+\cref{osq:hd:cor:arithmeticTor} from $D$ to the lattice ideals.
+For $r\ge2$ it does not make $J_g(M)$ flat. In the set-sized model,
+$A/J_g(M)$ detects nonzero second $\Tor$ by
+\cref{osq:rel:cor:selftor}; this test module is not killed by the
+tail. For example, $X^{g/2}\in\Pi$ has nonzero image modulo
+$J_g(M)$, since $X^{-g}X^{g/2}=X^{-g/2}\notin M+\Pi$.
+Over the class ring, every \emph{set-sized} test module is killed
+by the tail, so the tensor functor on these tests agrees, after
+choosing a lattice basis, with that of a free module of rank $r$.
+The ideal's fraction-field rank is still one, and its equational
+nonflatness is proved in \cref{osq:rel:thm:presentation}; the
+set-sized tests do not detect it. No full-class $\Tor$ functor is
+inferred (17). Manuscript~21 obtains the same $\Tor$ groups, in the equivalent form
 $\Tor_1(A/J_g(M),P)\cong M\otimes_DP$ and $\Tor_{\ge2}(A/J_g(M),P)=0$, independently over $T_\Q$ and over the class ring in a
 two-universe reading, together with a square-zero model (\cref{osq:da:thm:shadow}).
 

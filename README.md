@@ -260,6 +260,14 @@ detects a field after extending scalars, even when the coefficient lattice
 itself is not a ring. A quadratic example also corrects an unnecessary
 restriction: `c² ∈ D` suffices for the displayed free kernel, but is not
 necessary.
+The rank-two ideals now have a reviewed classification by fractional-linear
+changes over ℤ or ℤ[i], giving continuum many isomorphism classes.
+Their endomorphism rings recover ordinary orders as constant quotients;
+the multiplier-field degree divides the coefficient-lattice rank.
+Over the full class ring, tensoring with any set-sized module makes these
+ideals look free of that coefficient rank, despite their equational
+nonflatness. The review separates this restricted test from flatness
+over the set-sized models.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

@@ -202,6 +202,19 @@ For a common-scale matrix, q is the dimension of its kernel W over k,
 while ℓ is the D-rank of `W ∩ Dⁿ`. “Defined over Frac(D)” means that W
 has a k-basis with all coordinates in Frac(D).
 
+For rank-two moduli and endomorphism orders, the coefficient pairs are
+`(D,k) = (ℤ,ℝ)` or `(ℤ[i],ℂ)`. The larger scope of the preceding
+coefficient-Tor theorem does not make D arbitrary here. Write
+`V = Frac(D)M` and `K_V = {c ∈ k : cV ⊆ V}`; K_V is the multiplier
+field, and the order `𝔬(M)` spans exactly K_V over Frac(D).
+A displayed matrix on ideal generators is not a matrix on an A-basis
+unless those generators are A-independent. For the Pell ideal the pair
+is a D-basis only of the scaled coefficient lattice.
+For a module P killed by Π, the tensor identification uses
+`X^g(m+u) ⊗ p ↦ m ⊗ p`. The final identification with Pʳ chooses
+a D-basis of M. All set-sized modules over the class ring satisfy this
+hypothesis; arbitrary modules over a set-sized model need not.
+
 For class modules, a set-presentation uses finite-support free modules
 A^(S) and A^(T) with S,T sets; their coefficient vectors may form proper
 classes. A finite generating map Aʳ → M need not be a finite presentation:
