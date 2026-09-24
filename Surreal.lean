@@ -722,6 +722,9 @@ import Surreal.HahnSeries.PolynomialSupport
 import Surreal.HahnSeries.DetectorWitnessSupport
 import Surreal.Surcomplex.SupportRingHahnEmbedding
 import Surreal.Surcomplex.DetectorWitnessSupport
+import Surreal.Algebra.DetectorCertificates
+import Surreal.Foundations.OmnificReciprocalSeries
+import Surreal.Surcomplex.DetectorCertificates
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants

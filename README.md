@@ -407,6 +407,10 @@ degree and five times that degree. The construction uses finite polynomial
 operations and works over exponent groups of any rank.
 For the actual carriers, these bounds use their canonical Conway supports
 and leading exponents; injective normal-form maps justify the transfer.
+The printed certificates for `1 + ω` and `2 + ω` are checked with their exact
+constant coefficients. The detector accepts the nonunit `1 + ω` and rejects
+both `ω` and the actual infinite normal form `∑_{n≥1} ω^(1/n)`, whose positive
+reciprocal exponents and zero constant term are proved explicitly.
 Polynomial counterexamples now verify both restrictions on this detector.
 In `ℤ + Xℚ[X]`, the quotient by `(1 + X)` is `ℚ`, so the detector rejects
 `1 + X` despite its constant term being one; the ordinary-integer definition
