@@ -1283,6 +1283,14 @@ explanation is corrected. Ramification, the seventh-order conductor
 certificate and arithmetic fibers have expanded proofs. These corrected
 results remain **Pending** in Lean. The final scope notes in Section 17.6.9
 onward, later geometry and full source reconciliation remain unreviewed.
+The subsequent pass checks the closing singular-curve notes and reviews the
+thirteen results in Sections 18.1–18.4: group varieties, quasi-finite transfer,
+reduced coefficients, square-zero lifts and the characteristic/discrete-order
+counterexamples. Their mathematical statements are unchanged; dual-number
+notation is made explicit. Proofs now spell out descent and the point-group
+splitting, and distinguish a nonsurjective tensor map from a flatness claim.
+These results remain **Pending** in Lean. Sections 18.5–18.6, later scope
+notes and full source reconciliation remain outside the completed review.
 
 ### Synchronization of the September 23 expansions
 
@@ -4985,28 +4993,28 @@ The separately styled cited theorem
 | Theorem | `odg:sg:thm:omnific` (line 8966) | Omnific rigidity for singular curves \src{C16} |
 | Proposition | `odg:sg:prop:arithfamily` (line 8992) | Arithmetic families above liftable points \src{C16} |
 | Corollary | `odg:sg:cor:gaussian` (line 9021) | The Gaussian existence dichotomy \src{C16} |
-| Lemma | `odg:cr:lem:invariant` (line 9131) | Invariant differentials \src{C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:abelian` (line 9145) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
-| Lemma | `odg:cr:lem:torus` (line 9164) | Tori \src{C14; also C10, C11, C12, C13, C15} |
-| Theorem | `odg:cr:thm:semiabelian` (line 9183) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:quasifinite` (line 9200) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
-| Theorem | `odg:cr:thm:groupkernel` (line 9221) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
-| Lemma | `odg:cr:lem:reducedinjective` (line 9294) | Coefficientwise separation \src{C11} |
-| Theorem | `odg:cr:thm:reduced` (line 9305) | Reduced coefficient algebras \src{C11} |
-| Lemma | `odg:cr:lem:tangent` (line 9336) | Square-zero lifts \src{C11} |
-| Theorem | `odg:cr:thm:dualdefect` (line 9348) | The dual-number defect \src{C11} |
-| Proposition | `odg:cr:prop:char2` (line 9379) | An elliptic point in characteristic two \src{C11, C14, C15} |
-| Proposition | `odg:cr:prop:charp` (line 9410) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
-| Theorem | `odg:cr:thm:dor` (line 9441) | A discretely ordered ring with no omnific copy \src{C11} |
-| Lemma | `odg:log:lem:valuation` (line 9569) | The valuation-ring side \src{C15} |
-| Theorem | `odg:log:thm:annihilation` (line 9602) | Logarithmic annihilation \src{C15} |
-| Corollary | `odg:log:cor:criterion` (line 9650) | The logarithmic tangent criterion \src{C15} |
-| Theorem | `odg:log:thm:descent` (line 9718) | Descent over any coefficient ring \src{C15} |
-| Corollary | `odg:log:cor:omnific` (line 9742) | Omnific points on logarithmic complements \src{C15} |
-| Proposition | `odg:log:prop:products` (line 9770) | Finite products \src{C15} |
-| Theorem | `odg:thm:quadraticformula` (line 9807) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 9868) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 9910) | A two-term root obstruction \src{05} |
+| Lemma | `odg:cr:lem:invariant` (line 9138) | Invariant differentials \src{C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:abelian` (line 9156) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
+| Lemma | `odg:cr:lem:torus` (line 9175) | Tori \src{C14; also C10, C11, C12, C13, C15} |
+| Theorem | `odg:cr:thm:semiabelian` (line 9205) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:quasifinite` (line 9222) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
+| Theorem | `odg:cr:thm:groupkernel` (line 9250) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
+| Lemma | `odg:cr:lem:reducedinjective` (line 9338) | Coefficientwise separation \src{C11} |
+| Theorem | `odg:cr:thm:reduced` (line 9352) | Reduced coefficient algebras \src{C11} |
+| Lemma | `odg:cr:lem:tangent` (line 9398) | Square-zero lifts \src{C11} |
+| Theorem | `odg:cr:thm:dualdefect` (line 9420) | The dual-number defect \src{C11} |
+| Proposition | `odg:cr:prop:char2` (line 9467) | An elliptic point in characteristic two \src{C11, C14, C15} |
+| Proposition | `odg:cr:prop:charp` (line 9506) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
+| Theorem | `odg:cr:thm:dor` (line 9537) | A discretely ordered ring with no omnific copy \src{C11} |
+| Lemma | `odg:log:lem:valuation` (line 9673) | The valuation-ring side \src{C15} |
+| Theorem | `odg:log:thm:annihilation` (line 9706) | Logarithmic annihilation \src{C15} |
+| Corollary | `odg:log:cor:criterion` (line 9754) | The logarithmic tangent criterion \src{C15} |
+| Theorem | `odg:log:thm:descent` (line 9822) | Descent over any coefficient ring \src{C15} |
+| Corollary | `odg:log:cor:omnific` (line 9846) | Omnific points on logarithmic complements \src{C15} |
+| Proposition | `odg:log:prop:products` (line 9874) | Finite products \src{C15} |
+| Theorem | `odg:thm:quadraticformula` (line 9911) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 9972) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 10014) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 

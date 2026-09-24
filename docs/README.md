@@ -94,7 +94,9 @@ part of the 61-report inventory.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
-manuscript review. The final scope notes and later geometry remain unreviewed. The independent-copies report and its
+manuscript review. The review also covers the closing singular-curve scope
+notes and Sections 18.1–18.4 on groups, coefficient algebras and boundary
+examples; logarithmic applications and later scope notes remain unreviewed. The independent-copies report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds

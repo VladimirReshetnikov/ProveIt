@@ -294,8 +294,11 @@ assuming that every point lifts to the normalization. The review corrects
 the ambient-field normality comparison and the zero-group boundary case. The
 application review restores the irreducibility assumption in the repeated-root
 superelliptic test and expands the singular elliptic certificate and Gaussian
-arithmetic existence proof.
-These curve and fiber results remain pending in Lean.
+arithmetic existence proof. The group and coefficient-algebra review makes
+semiabelian rigidity and the exact unipotent kernel explicit. Rigidity extends
+to reduced coefficient algebras. For dual-number coefficients, the quotient
+by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian variety `A`.
+These geometric and coefficient-algebra results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

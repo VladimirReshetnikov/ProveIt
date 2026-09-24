@@ -3953,6 +3953,47 @@ placement, integration and review. No maintained report source, PDF or Lean
 file changes, so the existing inventory and build validation remain
 applicable. Archive integrity is not a mathematical review.
 
+## Group varieties and coefficient algebras review
+
+The Diophantine review checks the closing singular-curve scope notes and
+all thirteen standard results in Sections 18.1–18.4. The proofs now show
+how torus descent reflects equality, why finite coefficient bases give the
+scalar-extension isomorphism, and how quasi-finite fibers reduce to finite
+coordinate algebras. The commutative-group proof applies the product
+structure theorem to its affine subgroup and writes the inverse maps for
+the splitting of point groups. The Milne statement numbers and their
+characteristic-zero and affine hypotheses were checked in the 2017 edition.
+
+For reduced coefficient algebras, the closed equalizer ideal makes the
+joint-injectivity argument explicit. A series over `k[s]` shows why the
+natural tensor map need not be surjective; this does not imply failure of
+flatness. Dual-number lifts are derived on charts and glued, and the
+ordinary dual-number subgroup is tracked before taking the tangent-space
+quotient. The characteristic-two example uses finite coefficient incidence,
+not convergence of truncations. The discretely ordered-ring proof verifies
+injectivity by parity of leading exponents and identifies the nonzero
+element killed by any proposed unital embedding into the omnific integers.
+The notation guide, reader maps, catalogue and root README reflect this scope.
+
+All 217 standard results and 471 label numbers are preserved. The only
+statement-text change defines dual numbers unambiguously as `S[T]/(T²)`.
+Three-pass builds give a 201-page article and 32-page catalogue, without
+warnings, unresolved references or bad boxes. Article pages 131–138 and 201
+and catalogue page 9 were visually checked. The copied C11 finite suite
+passes 13,049 assertions and its entire JSON output matches the delivered
+record; it does not certify the geometric or infinite claims. The independent
+inventory checks 3,871 results in 61 reports, and all 4,419 source references
+and 1,596 local Markdown destinations resolve.
+
+Synchronization through `9ee2dac` includes the two modules proving the
+strict ascending ideal chain and failure of integral closure. Their mapped
+statement and proofs were checked. The combined `LEAN_NUM_THREADS=2 lake
+build` passes 4,440 jobs; the axiom audit passes 15,269 declarations with
+only `propext`, `Classical.choice` and `Quot.sound`. No Lean source is changed
+by this review. Its thirteen geometric and coefficient-algebra results
+remain **Pending** in Lean. Sections 18.5–18.6, later scope notes and full
+source reconciliation remain outside the completed manuscript review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
