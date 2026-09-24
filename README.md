@@ -339,6 +339,21 @@ The explicit cubic `x³ + 2y³ + 4z³ − 6xyz` now has a checked norm identity
 and factorization. At every nonzero ordinary level, its omnific solutions
 are ordinary integer triples; its Gaussian omnific solutions are ordinary
 Gaussian integer triples. Both statements identify the exact solution sets.
+The norm rigidity theorem also extends to finite products of number fields
+in arbitrary bases, even when the factors have different degrees. The
+Gaussian theorem covers finite products of extensions of ℚ or ℚ(i), and
+identifies their Gaussian omnific fibers with the ordinary Gaussian fibers.
+The general Hahn-ring theorem is proved for arbitrary characteristic-zero
+coefficient fields and ordered abelian exponent groups: at a nonzero
+constant norm level,
+every solution in an intermediate ring lies in its prescribed ring of
+constants. Closure under constant extraction is unnecessary. The proof
+extends coefficients to an algebraic closure and descends constancy; it
+requires neither divisible exponents nor a least positive exponent.
+Over any coefficient field, including positive characteristic, every
+nonconstant element of the support ring is now proved transcendental over
+that field. Polynomial evaluation multiplies its degree by the polynomial
+degree, and roots in an intermediate ring are exactly its constant roots.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,

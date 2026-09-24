@@ -15,7 +15,7 @@ additions and numbered 17, 18 and 19 here; and manuscript 01 of batch 34, placed
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 220 pages
+article.pdf                                 the compiled report, 221 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
@@ -1919,6 +1919,12 @@ Appendix A.3 records these.
   inside one independent family with `ρ = id` (status note after Question
   32.17); its second research question is the pair version of Question 32.8
   (note after that question). Both questions stay open in general.
+  Its batch-35 Hahn-join part counts `2^{2^κ}` non-strong automorphisms of a
+  complex full Hahn join fixing the compositum of its two factor fields
+  (`isc:hj:thm:automorphisms`), and `isc:hj:rem:omnificaut` combines
+  Corollary 23.4 with its strong rigidity: none but the identity both
+  commutes with conjugation and stabilizes the Gaussian omnific ring of the
+  join (note after Remark 23.3, following the batch-32 one).
 - [`large-cardinal-embeddings-and-normal-forms`](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
   (batch 30, written concurrently; cited by directory only until batch 32, then
   by its `lce:mf:` labels). Under a measurable
@@ -1988,7 +1994,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The build uses standard packages only and gives no errors, warnings,
 overfull or underfull boxes, or undefined references. Build in a scratch
-directory; the auxiliary files are not kept here.
+directory; the auxiliary files are not kept here. The batch-35 note after
+Remark 23.3 took the build from 220 to 221 pages and changed no number (all
+729 labels and 27 citation numbers compared in the `.aux` files against a
+build of the committed text).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's

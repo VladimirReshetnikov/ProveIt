@@ -1491,6 +1491,14 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
 - [`euclidean-three-space`](../euclidean-three-space/):
   `e3:cut:thm:smallquotient` is the analogous size phenomenon for `SO(3, No)`;
   by Corollary 9.4, `SO(3, Oz)` is finite.
+- [`independent-surreal-copies`](../independent-surreal-copies/) (`isc:hj:`;
+  batch 35): `isc:hj:lem:pullback` and `isc:hj:prop:fullprime` write out the
+  constant-term pullback of the one-row primality theorem cited after
+  Proposition 4.5, and `isc:hj:main:prime`, `isc:hj:cor:nonassociate` give
+  continuum many pairwise nonassociate primes `1 + Σ_{n∈𝔅_η} ω^{ρ_n}` (real
+  `ρ_n` decreasing to 0) of `Oz` and `Oz[i]`, algebraically independent over
+  the compositum of two full Hahn fields; each has constant coefficient 1, as
+  Proposition 4.5 requires (note after that proposition).
 
 ## Build and reproduce
 
@@ -1514,7 +1522,9 @@ pages, and all 553 labels keep their `.aux` numbers. The later batch-34
 notes on the sibling report's henselian branching (after Proposition 15.40
 and after the paragraph following Example 19.5) did not change the page count (226 pages when added; 227 after a later proof-review edit)
 and change no label number (all 553 compared against a build of the
-committed text). The text before
+committed text). The batch-35 note on the independent-copies report (after
+Proposition 4.5) likewise leaves 227 pages and all 553 label numbers
+unchanged. The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16

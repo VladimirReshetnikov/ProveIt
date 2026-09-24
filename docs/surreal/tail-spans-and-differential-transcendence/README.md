@@ -1,6 +1,6 @@
 # Tail-spans and differential transcendence in surreal and surcomplex Hahn fields
 
-`article.pdf` (26 pages) — source `article.tex`, checks in `code/`, recorded
+`article.pdf` (27 pages) — source `article.tex`, checks in `code/`, recorded
 output in `data/`, scope limits in `AUDIT.md`.
 
 An unrefereed AI-assisted draft, prepared 22 September 2026. The
@@ -134,6 +134,15 @@ series `Σ_{n∈A_α} x^{n!} t^n` differentially independent over `k((t))(x)` fo
 `isc:cp:thm:generic`, `isc:cp:cor:tree` use independent coefficients at
 private indices and a Vandermonde step. The bases and derivations differ from
 `B_0` and `D_BM`; neither result is deduced from Theorem 7.3 or implies it.
+Its Hahn-join part (`isc:hj:`, batch 35; a "Related (batch 35)" paragraph
+after the batch-34 one here) uses the same family shifted down by one, with code
+`N(s) − 1` on 0-based indices (`isc:hj:eq:branchsets`,
+`isc:hj:lem:branches`), to index continuum many sums `1 + Σ_n ω^{ρ_n}`,
+`ρ_n = p_{2n}^{−3/2} + p_{2n+1}^{−3/2}`, algebraically independent over the
+compositum of two Archimedean full Hahn fields (`isc:hj:main:prime`). Square
+roots of primes enter there in the exponents, not the coefficients, and the
+mechanism is a mixed-support derivation argument (`isc:hj:main:mixed`), not
+a tail span.
 
 The holonomic-rigidity report now proves all-order differential transcendence
 of every nonpolynomial strongly entire series when the value group has no
@@ -235,7 +244,8 @@ pdflatex -interaction=nonstopmode -halt-on-error article.tex   # three times
 
 from the report directory. The delivered `code/build.py` does the same, but it
 looks for `article.tex` beside itself, as in the delivered package; to use it,
-copy the directory and move `build.py` next to `article.tex` in the copy. Last verified build: exit 0, **26 pages**, no
+copy the directory and move `build.py` next to `article.tex` in the copy. Last verified build (after the batch-35 paragraph, which adds no label
+and changes no label or citation number): exit 0, **27 pages** (26 before it), no
 LaTeX warnings, no undefined references, zero overfull or underfull boxes.
 
 `code/build.py` is kept byte-identical to the delivery. An earlier edit that

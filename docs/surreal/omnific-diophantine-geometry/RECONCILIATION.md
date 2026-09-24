@@ -1636,3 +1636,35 @@ catalogue have no warnings, unresolved references or bad boxes; changed
 pages were inspected visually. The 4,626-result index across 63 reports,
 5,188 source references and 1,726 local Markdown destinations pass before
 this record is appended. No Lean file or finite verifier was modified.
+
+## Synchronization with finite étale norm and Hahn polynomial rigidity
+
+Merged `1529c2d`, including the finite-product norm forms, rigidity for
+actual omnific and Gaussian omnific coordinates, and the general Hahn
+intermediate-ring theorem. The theorem statements were compared with
+`odg:dec:thm:etale`: arbitrary bases and possibly different factor degrees
+are allowed, constant levels are nonzero, and the intermediate ring needs
+its stated intersection with constants, not a constant-term retraction.
+The new polynomial-degree module covers arbitrary coefficient fields,
+including positive characteristic, with no divisible-group assumption.
+These incoming proofs cover earlier source labels; they do not formalize
+the C17 descent or matrix package reviewed above.
+
+The batch-35 reciprocal notes in five reports are retained. Their source
+statements and the one-step conclusions were compared: primality with
+constant coefficient one, distinct principal prime ideals and class
+quotients, maximal transcendence over the specified Hahn composita,
+strong/omnific automorphism restrictions, and the binary branch-code
+shift. This does not review the underlying new Hahn-join proofs. All
+standard and separately styled principal statements in the five changed
+reports, and all their source labels, are unchanged by this merge.
+
+The full build with `LEAN_NUM_THREADS=2` passes 4,520 jobs; its audit checks
+15,778 declarations and uses only `propext`, `Classical.choice` and
+`Quot.sound`. The combined Diophantine article builds cleanly in three
+passes to 228 pages, preserving all 1,106 auxiliary label numbers; the
+incoming note was checked visually. The catalogue source is unchanged by
+the merge. The 4,626-result index across 63 reports, 5,189 source references,
+1,735 local Markdown destinations and whitespace checks pass before this
+record is appended. The unchanged finite suite was not repeated for this
+synchronization.
