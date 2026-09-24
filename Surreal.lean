@@ -889,3 +889,7 @@ import Surreal.Surcomplex.GaussianPurelyInfiniteIdeal
 import Surreal.Surcomplex.GaussianSmallTargets
 import Surreal.Algebra.OrdinaryRingMaps
 import Surreal.Surcomplex.OmnificMapClassification
+import Surreal.Algebra.QuotientReflection
+import Surreal.Foundations.OmnificSmallQuotients
+import Surreal.Surcomplex.GaussianSmallQuotients
+import Surreal.Surcomplex.OmnificUnitObstruction

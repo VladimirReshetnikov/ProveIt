@@ -562,6 +562,17 @@ arbitrary coefficient field remains pending. Real nonunital maps are
 classified by idempotents in the target. Gaussian unital maps are classified
 by square roots of `−1`, which need not be central in the target ring.
 
+Every small quotient of the real omnific ring is now classified: it is
+`ℤ` or `ℤ/nℤ` for an ordinary positive integer n, including the zero ring
+at n=1. The kernel of the `ℤ` quotient is the purely infinite ideal, not
+the zero ideal. Gaussian small quotients similarly reduce to ordinary
+Gaussian integer quotients; their numerical cardinality formula remains
+pending. Even an arbitrary large quotient has precisely the same maps to
+small rings as its ordinary constant quotient. Inverting any purely infinite
+element rules out every nonzero small unital ring image and every nonzero
+small unital module. This is proved for both actual fields and for native
+localizations, which need not be fields.
+
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the
 entire omnific solution set onto the ordinary one; the proof even allows
