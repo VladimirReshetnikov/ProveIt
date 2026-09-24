@@ -377,6 +377,12 @@ A new manuscript in the same report treats monic polynomials with nonzero
 constant discriminant as translates of their constant-term polynomials,
 and studies units of finite étale algebras. That addition awaits independent
 proof review and Lean formalization.
+The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
+now assembles fourteen manuscripts. Its latest parts propose formal orbit
+fields, actions of set-sized left-orderable groups with prescribed fixed
+fields, and formal integration of all omnific derivations. These additions
+await independent proof review and Lean formalization; the surcomplex
+group classification requires compatibility with conjugation.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

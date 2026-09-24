@@ -4205,6 +4205,42 @@ reports; all 4,860 cited source references and 1,673 local Markdown
 destinations resolve. Incoming finite suites were not rerun in this scope
 review, and their delivered records are not treated as independent proofs.
 
+## Fiber-size and automorphism synchronization
+
+The next merge through `a80f112` brings the four kernel-line/size modules
+from `827be60` and three binary-form/Pell modules from `782376e`.
+Their statements were read against `odg:dec:cor:converse`, its following
+examples, `odg:thm:binary` and `odg:cor:pell`. The fiber embeddings retain
+an ordinary point, a nonzero level and a nonzero direction in the correct
+real or complex kernel. Their size conclusion is explicitly relative to
+Lean universes. The empty-fiber example proves why the ordinary-point
+hypothesis is needed. The binary-polynomial theorem needs two independent
+homogeneous linear divisors but no homogeneity hypothesis on the polynomial;
+the Pell application covers all nonzero integer parameters and levels.
+The combined two-thread build passes 4,485 jobs and the axiom audit passes
+15,573 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+
+The three remaining batch-33 companions are now integrated in the
+omnific-automorphism report by `19d0b0e`. They add 89 standard results on
+formal orbit fields, left-orderable symmetry groups and formal integration
+of derivations, bringing that report to 274 and the collection to 4,398
+across 63 reports. A comparison of statement environments finds all 185
+previous statements unchanged and all previous labels retained. The new
+claims, their imported class constructions and their complete source
+reconciliation remain pending independent review and Lean formalization.
+The later universal-symmetries companion remains staged. Reader summaries,
+the root README and catalogue now reflect fourteen integrated manuscripts
+and retain the conjugation condition on the complex group classification.
+
+The independent inventory passes for all 4,398 results; all 4,950 cited
+source references and 1,680 local Markdown destinations in 225 files resolve.
+The revised catalogue builds in three passes to 33 pages without warnings,
+unresolved references or bad boxes; its changed entry is visually checked
+on pages 10–11. The 225-page Diophantine PDF and source are unchanged since
+the preceding successful build. The delivered automorphism PDF is retained;
+its new proofs and finite verification suites have not been independently
+reviewed or rerun in this synchronization.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
