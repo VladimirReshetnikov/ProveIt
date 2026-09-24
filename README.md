@@ -380,7 +380,7 @@ integrality, giving an exact test on finite supports. The Gaussian
 normalization has an explicit basis `1, (√3+i)/2` over the real
 normalization `𝒩`; its additive quotient by `𝒩[i]` is exactly `𝒩/2𝒩`.
 These conclusions also remain pending in Lean.
-The arithmetic-fibre review now reaches the Boolean-power theorem:
+The arithmetic-fibre review now reaches integral doubling and trace/norm:
 modulo the extended purely infinite ideal, the normalization becomes a
 ring of finite idempotent partitions with algebraic-integer values.
 Its rationalization is exactly its total quotient ring, with inverses
@@ -388,6 +388,12 @@ computed on the nonzero components. The real fibre contains a square
 root of −1 and splits every monic polynomial; it also has zero divisors.
 These are manuscript results;
 the fibre's Lean formalization remains pending.
+Modulo any ordinary prime, its nilradical is nonzero and idempotent,
+and cannot be finitely generated. The Gaussian fibre is a product of two
+real fibres even modulo 2. The ordinary quadratic subring maps only to
+pairs congruent modulo 2; after reduction, this inclusion acquires an
+explicit square-zero kernel. The larger normalization basis explains
+why the two Gaussian factors nevertheless remain separate.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

@@ -531,6 +531,16 @@ subsection allows zero divisors. A real lift and its arithmetic residue
 have different order properties: the residue of the real infinitesimal
 υ_T satisfies v²=−1 (sans-serif v in the article).
 
+In the fibre comparison, B denotes B_ℝ and B[i] means the quadratic
+algebra B[X]/(X²+1). Its generator is distinct from the chosen root v
+already in B. Under integral doubling B_ℂ≅B×B, this generator maps
+to (v,−v), and B[i] has image {(r,s): r−s∈2B}. Reducing the inclusion
+modulo 2 is not injective: with R=B/2B and ε=i−v, the source is
+R[ε]/(ε²), the image is diagonal in R×R and the kernel is Rε.
+The residues w_± are the coordinate idempotents; their lifts in 𝒩_ℂ
+are not idempotent. The mod-p nilradical is an **idempotent ideal**,
+meaning n_p²=n_p; its elements are nilpotent, and only zero is also an idempotent.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though

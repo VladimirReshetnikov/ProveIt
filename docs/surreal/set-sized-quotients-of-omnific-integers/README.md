@@ -497,14 +497,35 @@ with the total quotient ring of the integral fibre and gives the explicit
 componentwise quasi-inverse, support idempotent and annihilator. Thus the
 integral fibre is integrally closed in its total quotient ring, and the
 rationalized fibre is von Neumann regular. These consequences are pending
-in Lean. The remaining arithmetic-fibre, branching and later normalization
-proofs still await review.
+in Lean.
+
+The next six fibre results, from finitely generated ideals through trace
+and norm, are also reviewed. The class-number argument now explains why
+the divided ideal is an ideal and why its unit power forces equality;
+the fibre proof supplies both coefficient identities for its generator
+and refines partitions when computing the annihilator. Exact nilpotence
+indices modulo p include the nonzero-quotient check. An added consequence
+shows that the mod-p nilradical is nonzero, idempotent, non-nilpotent and
+not finitely generated. The real/imaginary decomposition of the extended
+Gaussian ideal holds before rationalization, which makes contraction
+explicit. Trace and norm descend by explicit error formulas.
+
+The earlier basis η=(√3+i)/2 gives an integral Chinese remainder proof
+of doubling: its two roots differ by the unit v, and its discriminant
+is −1. By comparison, the image of B[i] in B×B consists exactly of pairs
+congruent modulo 2, with additive cokernel B/2B and conductor 2B×2B.
+Writing R=B/2B, its reduction is the map R[ε]/(ε²) → R×R sending
+a+bε to (a,a), with nonzero square-zero kernel Rε. Here B is the real
+arithmetic fibre, and i in B[i] is the formal quadratic generator.
+These are manuscript consequences, pending in Lean. Set-sized images,
+class ultrafilters, the abstract fibre theorem, branching and later
+normalization proofs remain to be reviewed.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 326 pages
+article.pdf   the compiled report, 329 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

@@ -3499,3 +3499,79 @@ Quot.sound. The merged tree passes all 4,626 anchors in 63 reports,
 files. The merge changes no TeX or PDF, so the fibre pass's three-pass
 builds, numbering checks and visual inspections remain valid. No local
 manuscript claim was promoted to formalized by this merge.
+
+### Fibre ideals, integral doubling and the mod-two subring (2026-09-24)
+
+Reviewed the next six standard fibre results, `osq:nf:thm:bezout` through
+`osq:nf:cor:tracenorm`, bringing the arithmetic-fibre pass to sixteen
+results. Set-sized images, class ultrafilters, detection, field targets and
+the abstract fibre theorem remain for later review. All numbered
+statements, questions, remarks and examples are preserved.
+
+Expanded the classical Bezout argument over the algebraic integers:
+a power of the ideal in a number field is principal, adjoining a root
+of its generator makes the divided ideal an actual integral ideal,
+and its unit power forces it to be the whole ring. Supplied both
+coefficient identities proving the fibre ideal is principal, refined
+partitions for an arbitrary annihilated element, and exhibited the
+direct summand giving projectivity, including the zero ideal.
+Checked [Milne's notes](https://www.jmilne.org/math/CourseNotes/ANT.pdf),
+version 3.08, Theorem 4.4 and its proof on printed pages 70–71: this is
+the cited finiteness of the class number. The
+[Cambridge publisher record](https://www.cambridge.org/core/journals/mathematical-proceedings-of-the-cambridge-philosophical-society/article/abs/bezout-rings-and-their-subrings/CF78C17904042F373916D015D04F0A44)
+confirms Cohn's metadata and introductory extract, but does not verify
+the claimed page-251 algebraic-integer example. Updated the bibliography
+to distinguish these checks; the proof uses the verified Milne dependency.
+
+The exact nilpotence-index proof now includes k=0, proving the quotient
+is nonzero, and gives the elementary denominator argument excluding
+nonintegral rational numbers. Added a consequence for
+R_p=B_●/pB_●: its nilradical is nonzero and idempotent. The monic-splitting
+property passes to the quotient, so each nilpotent x has a square root
+y that is again nilpotent, giving x=y². Thus every positive power of
+the nilradical is itself. A finitely generated nil ideal would be
+nilpotent by the explicit bound 1+Σ(m_j−1), a contradiction. Exact indices
+from the preceding proposition show unbounded elementwise nilpotence.
+This distinguishes a nil ideal from a nilpotent ideal, and ideal
+idempotence from idempotence of its elements.
+
+Strengthened the rational-comparison proof with the exact additive
+identity ΠN_C=ΠN ⊕ iΠN before localization: divide the original purely
+infinite coefficients by two and multiply by the integral doubled real
+and imaginary parts. Contraction follows immediately. The quadratic
+variable represents the original i, not the existing residue root v.
+Expanded integral doubling by the monic-annihilator criterion for pairs,
+and recorded the induced diagonal base action, conjugation and ordinary
+mod-m quotients. The w_± proof identifies the monic polynomial and its
+nonzero error term; the lifts are not idempotent, while their residues
+are. Explicit error formulas show that trace and norm descend, with
+trace additive/linear and norm multiplicative.
+
+Added an integral Chinese remainder presentation from the previously
+proved η-basis. Over B=B_R, with a the residue of sqrt(3), one has
+B_C=B[Y]/(Y²−aY+1). The roots rho_±=(a±v)/2 lie in B by rational
+saturation and differ by the unit v; hence the integral CRT applies.
+The discriminant is −1. Thus the two factors stay separated modulo 2
+even though the images of the original i coincide.
+
+A further consequence identifies the image of B[i] in B×B with exactly
+the pairs congruent modulo 2. The additive cokernel is B/2B and the
+conductor is 2B×2B. After reduction, R=B/2B gives the explicit map
+R[epsilon]/(epsilon²) → R×R, a+b epsilon ↦ (a,a), whose kernel is the
+nonzero square-zero ideal R epsilon. The source is free on 1,epsilon
+over R, so this statement also holds for the already nonreduced base R.
+No claim of a quotient-ring structure on the additive cokernel is made.
+
+Updated root/report guides, shared notation, catalogue and coverage;
+these manuscript consequences remain Pending in Lean. Validation:
+three final diagnostic-free TeX passes yield a 329-page article and
+35-page catalogue. Visually inspected article PDF pages 203–207 and
+325–326, plus catalogue page 12. All 418 result statements, 828 labels,
+1,656 AUX number entries, 66 questions, 60 remarks and 28 examples are
+unchanged. Source 19's unchanged checker passes 253 finite exact tests;
+mathematical output matches the recorded run, with only the Python
+version header differing (3.13.14 versus 3.13.5; SymPy 1.14.0). Audits
+pass all 4,626 statement anchors in 63 reports, 5,223 source references
+and 1,933 local Markdown destinations in 226 files. These finite checks
+do not certify the class or integrality arguments. No Lean code or
+historical verification records were changed.
