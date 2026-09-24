@@ -171,6 +171,15 @@ For class rings, each universal-property argument fixes a target class
 module and constructs a factorization by finite formulas. The ordinary
 constant tensor, exterior and symmetric modules are set-sized carriers.
 
+In the Rees algebra, T is a formal grading variable, independent of the
+monomial Xᵉ used to scale L(M) into an ideal. Presentation variables Xᵢ
+(and X,Y in rank two) are likewise distinct from monomials in A.
+The nonlinear kernel is finitely generated as an ideal of Sym_A L(M),
+not as an A-module: a nonzero kernel has unbounded homogeneous degrees.
+“First nonlinear degree” refers to the kernel after imposing the linear
+relations. For f of degree d, Xᵈf(Y/X) means its homogeneous polynomial
+expansion; it does not require inverting X or assuming that f is monic.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

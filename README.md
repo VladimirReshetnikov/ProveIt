@@ -232,6 +232,11 @@ explicit universal-property proofs for the class carriers. Their torsion
 is a free module over the ordinary constants, killed by the purely
 infinite ideal. Exterior powers of degree at least two retain only
 constants, while symmetric powers retain a tail with a coupled scalar action.
+The Rees presentation now explains how ordinary polynomial relations give
+all nonlinear equations. Algebraic degree d is exactly the first nonlinear
+degree, yielding two-generated ideals with arbitrarily late first relations.
+Finite generation here is as an ideal of the symmetric algebra; a nonzero
+relation ideal is not finitely generated as a module over the omnific ring.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero

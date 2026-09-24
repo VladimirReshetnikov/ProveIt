@@ -100,13 +100,21 @@ A-torsion and is compatible with freeness over D. The exterior-power
 examples form a family of ideals with arbitrarily large nonvanishing
 degree, rather than one finitely generated ideal with all powers nonzero.
 
-The later Rees equations, homomorphism and derived classifications, and
+The Rees equations and every-degree family are now reviewed too. A finite
+reduction gives the presentation and its explicit class carrier. Nonlinear
+relations form a finitely generated ideal of the symmetric algebra, but
+when nonzero they are not finitely generated as an A-module. The proof
+of the first nonlinear degree treats nonmonic minimal polynomials and
+explains why the relation survives the linear quotient. The power counts
+use equality of integer lattices, with all degree-one boundary cases.
+
+The later homomorphism and derived classifications, and
 reconciliation of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 286 pages
+article.pdf   the compiled report, 287 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
