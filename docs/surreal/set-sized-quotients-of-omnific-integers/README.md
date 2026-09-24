@@ -249,13 +249,31 @@ labels fail that condition, but caps on other faces can satisfy it; the
 two coordinate rays give a simple example. These are manuscript proofs,
 with Lean formalization still pending.
 
-The subsequent topology and multiplicities of face quotients, later
-classification results and full source reconciliation remain pending review. Exact scope
+The face-quotient topology, multiplicity formula and cellular resolution
+are now reviewed. The boundary-complement proof gives a continuous radial
+map and a barycentric deformation retraction. The outside-vertex comparison
+checks both order maps, and the multiplicity proof separates missing labels,
+disjoint faces and nonempty intersections, including the augmented degree
+minus one for a ray. The cellular proof specifies orientations and incidence
+maps and proves both bounds for `fd D = d` without cancellation.
+
+Corrected the projective-dimension commentary: `d − dim F + 1` applies to
+proper faces of a simplicial cone. The whole-cone quotient is the ring
+itself, with flat and projective dimension zero. The source-21 comparison
+does not establish the upper endpoint for arbitrary radical quotients.
+The zero-face quotient is D, with flat dimension d. The four source results
+reviewed here remain pending in Lean. The later boundary-quotient commentary
+also now separates dimension one, where the quotient is the domain D, from
+dimensions at least two, where an explicit pair of boundary monomials
+gives zero divisors.
+
+The subsequent flat-ideal classification, simpliciality criterion, examples
+and full source reconciliation remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 307 pages
+article.pdf   the compiled report, 308 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -905,7 +923,8 @@ placed in other reports.
   isomorphic to `A_d` (coordinates in the ray basis), which the merge adds;
   through it, 26's Corollary 13.80 is 21's Proposition 13.43, and 21's
   Corollary 13.47 gives the projective dimension `d − dim F + 1`, the upper
-  endpoint, for every simplicial face quotient. 26's Theorem 13.61 on
+  endpoint, for every proper-face quotient of a simplicial cone. The
+  whole-cone quotient is the ring itself and has projective dimension zero. 26's Theorem 13.61 on
   coordinate faces is 12's Lemma 13.3(i), (iii) with Proposition 13.12(i), (ii);
   its Proposition 13.76 for an orthant is Theorem 13.4; Theorem 13.72 for the
   whole tail is Corollary 13.5; Proposition 13.84 is Proposition 13.2(i);
@@ -1096,7 +1115,7 @@ sources' lemmas.
   removal of exceptions needs global smoothness (Remark 16.120). With sources
   26 and 27: a rational simplicial cone core is isomorphic to `A_d`, so 26's
   simplicial face dimensions are 21's and 21's Corollary 13.47 gives the upper
-  endpoint of 26's projective interval for simplicial face quotients (Section
+  endpoint of 26's projective interval for proper-face quotients of simplicial cones (Section
   13.11); lattice modules over every cone core give weak global dimension at
   least `d + 1` when `K ≠ Frac D` (Remark 13.86); 27's `√(ΠN)` is `ΠN` by
   Theorem 15.29; and the branch counts of 20, 23 and 27 are compared

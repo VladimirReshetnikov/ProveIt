@@ -2217,3 +2217,64 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,857 local Markdown destinations in
 226 files pass, as does whitespace checking. No incoming TeX changed;
 the 307-page article and 34-page catalogue remain current.
+
+## Polyhedral face topology and the cellular resolution
+
+Reviewed and expanded `osq:pc:lem:complement`, `osq:pc:lem:outside`,
+`osq:pc:thm:facebetti` and `osq:pc:prop:cellular`. The boundary-complement
+proof now supplies the continuous radial map from normalized facet
+inequalities, proves that its contraction avoids the deleted face and
+zero vector, and gives the barycentric weights for a strong deformation
+retraction onto the required order complex. The outside-vertex proof
+checks the domains, nonemptiness and inequalities for both order maps.
+The point section is treated separately as the augmented empty-face
+complex, with reduced homology K in degree minus one.
+
+The multiplicity proof first separates faces with no active rays and
+faces whose active rays join strictly below them. Neither is a join
+label, so neither acquires an unintended degree-minus-one class.
+For actual labels, a positive section identifies the proper-join complex
+with the outside-vertex complex. Disjoint faces contribute their boundary
+sphere class; nonempty proper intersections give contractible complexes.
+The proof then applies cancellation and exact flat dimension, including
+D at the zero face and the free identity quotient at the whole cone.
+
+The cellular proof specifies orientations, incidence maps and both
+augmentations. Every nonzero exponent gives the augmented cellular
+complex of a nonempty convex section, with cellular degree p-1 in
+homological degree p. Finite supports give ungraded exactness. Tensoring
+with the top-face cap leaves K in degree d, a nonzero part of ordinary
+Tor, and independently proves the lower bound fd D >= d.
+
+Corrected four ancillary projective-dimension passages and the source
+comparisons: pd A_C(F) = d - dim F + 1 requires F to be proper in a
+simplicial cone. At F = C the quotient is A_C itself and pd = fd = 0.
+The nonempty-coordinate-set hypothesis in source 21 does not prove an
+endpoint for arbitrary radical geometric quotients. Shared notation now
+separates the quotient A_C/I_F by a single flat face ideal from the
+quotient A_C(F) retaining a face.
+
+Also corrected the later boundary-quotient commentary: A_C/I_C is
+reduced, but in dimension one it is the domain D and is a face-prime
+quotient. In dimension at least two, choose a facet, a ray outside it
+and a point in its relative interior. The two boundary monomials survive
+while their sum exponent is interior, giving explicit zero divisors.
+This local correction does not claim review of the later classifications
+or all the examples.
+
+Updated root README, report guide, shared notation and catalogue, and
+refreshed the ledger's source anchors. These are manuscript proofs:
+the four source results remain Pending in Lean. The flat-ideal
+classification, simpliciality criterion and full source reconciliation
+remain pending review. No finite computation is offered as a proof of
+these general topological or arbitrary-module assertions.
+
+Validation: three clean final TeX passes for the 308-page article and
+34-page catalogue, without warnings or box diagnostics; inspected the
+revised proof pages, boundary exceptions and catalogue entry. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary label/number
+pairs, 66 questions, 60 remarks and 28 numbered examples are unchanged.
+All 4,626 source anchors in 63 reports, 5,219 source-label references
+and 1,857 local Markdown destinations in 226 files pass, as does whitespace
+checking. No Lean source changed locally; the 4,664-job two-thread build
+and 17,316-declaration audit remain the baseline before synchronization.

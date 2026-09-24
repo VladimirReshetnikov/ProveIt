@@ -305,8 +305,11 @@ face-join complexes. Face-isolating modules now prove that the last
 nonzero degree is the exact ordinary flat dimension, bounded by the cone
 dimension. These quotients are nonflat homological ring epimorphisms:
 positive Tor vanishes against every quotient module, while the detecting
-modules lie outside that class. A one-face quotient has flat dimension
-one and projective dimension two.
+modules lie outside that class. For a nonzero face F, `A_𝒞/I_F` has
+flat dimension one and projective dimension two. A quotient that keeps
+the monomials on F has a different description: its flat dimension is
+the largest dimension of a face meeting F only at zero. An explicit
+cellular resolution independently proves `fd D = d` for every cone.
 A large quotient can still have a nonzero small image:
 `Oz/(ω)` surjects onto `ℤ`,
 whereas `Oz/(1+ω)` has only the zero
