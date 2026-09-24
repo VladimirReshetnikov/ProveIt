@@ -306,6 +306,9 @@ nonhomogeneous polynomials with those two divisors. In particular,
 nonzero integer `D` and `c`, including negative or square `D`. This rules
 out infinite omnific Pell solutions without asserting finiteness of the
 ordinary solution set.
+The zero level has a different, now proved classification: for positive
+nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
+with `t` purely infinite. Taking `t = ω` gives an infinite solution.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
