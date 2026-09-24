@@ -108,13 +108,25 @@ of the first nonlinear degree treats nonmonic minimal polynomials and
 explains why the relation survives the linear quotient. The power counts
 use equality of integer lattices, with all degree-one boundary cases.
 
-The later homomorphism and derived classifications, and
-reconciliation of the parallel sources remain pending review. Exact scope
+The scalar Hom, ideal-class, dual and common-scale matrix results are now
+reviewed. Denominator clearing gives a scalar code for every map, also
+for class modules. The ideal-class group has its own identity when the
+number-field degree is at least two; the real quadratic example includes
+its inverse ideal and determinant obstruction to principality. The dual
+proof first establishes the permitted support, and distinguishes the
+ordinary coefficient quotient from a ring quotient. The matrix proof
+constructs the kernel decomposition and uses Schanuel's lemma to exclude
+all finite presentations in the irrational-kernel case. The Gaussian
+scope now specifies the required support properties and the appropriate
+base field for ideal classes.
+
+The later relation/moduli and derived classifications, and reconciliation
+of the parallel sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 287 pages
+article.pdf   the compiled report, 290 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
