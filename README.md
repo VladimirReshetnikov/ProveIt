@@ -529,7 +529,12 @@ exactly its standard-supported image by guarding each free coordinate. This
 gives an equivalence of Diophantine definability over the integers and in
 those ambient rings; ordered rings also admit a single sum-of-squares
 equation. The remaining classification step is the reverse integer MRDP
-theorem.
+theorem. A verified bridge now reuses Mathlib's existing natural Diophantine
+results: it converts polynomial functions to native multivariate polynomials,
+removes unused witness variables, and uses four-square certificates to obtain
+integer systems. In particular, Mathlib's Matiyasevic theorem now supplies a
+finite Diophantine definition of the **ordinary natural power graph** on
+standard omnific tuples and in every characteristic-zero Hahn pullback.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

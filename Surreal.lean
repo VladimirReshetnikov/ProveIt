@@ -844,3 +844,8 @@ import Surreal.Algebra.IntegerDiophantineGuards
 import Surreal.Algebra.IntegerDiophantineSingleEquation
 import Surreal.HahnSeries.DiophantineStandardImages
 import Surreal.Foundations.OmnificDiophantineStandardImages
+import Surreal.Algebra.MathlibDiophantinePolynomials
+import Surreal.Algebra.NaturalDiophantineBridge
+import Surreal.Algebra.NaturalDiophantineIntegers
+import Surreal.HahnSeries.NaturalDiophantine
+import Surreal.Foundations.OmnificNaturalDiophantine
