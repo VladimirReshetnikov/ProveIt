@@ -527,8 +527,10 @@ one monomial simultaneously clears both coordinates of any small surcomplex
 family into the purely infinite Gaussian omnific ideal. Every Gaussian
 omnific automorphism therefore extends uniquely to the surcomplex field
 and preserves the ordinary complex coefficient field. Restricting to those
-coefficients respects composition; constructing a lift of every complex
-automorphism remains pending.
+coefficients respects composition and is now proved surjective: every complex
+field automorphism lifts coefficientwise and preserves Gaussian omnific
+integers. These lifts preserve supports and strong sums and form a
+composition-preserving section, with no continuity assumption.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with

@@ -5,7 +5,7 @@ import Surreal.Algebra.ReconstructionAutomorphisms
 # Extending Gaussian omnific automorphisms and recovering their coefficient action
 
 The extension and coefficient-preservation clauses of `odg:def:prop:coeffaut`.
-The coefficientwise lifting section is a separate construction.
+The coefficientwise lifting section is constructed in `GaussianCoefficientSection`.
 -/
 
 universe u
