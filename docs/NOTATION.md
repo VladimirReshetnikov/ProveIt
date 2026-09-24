@@ -59,6 +59,15 @@ exponents: `na < c` for every ordinary positive integer `n`. These integer
 multiples are taken in the ordered exponent group, independently of the
 characteristic of the coefficient field. They do not say that `X^a` is small.
 
+For support bounds, `A^{<λ}` and `B^{<λ}` mean that **each element** has
+support cardinality strictly below λ; the exponent class remains all of No.
+`R_{≤μ} = A^{<μ⁺}` permits at most μ terms per support. Thus finite supports
+use λ=ℵ₀, while countable supports use λ=ℵ₁. An extension to at most μ
+terms with μ infinite always includes countable supports. A separating
+family may contain more than λ elements, because it is not the support of
+one normal form. These support bounds differ from a bound on the whole
+ring's cardinality or a restriction to one set-sized exponent group.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

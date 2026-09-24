@@ -24,25 +24,23 @@ theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
 here.
 
-The first independent proof pass reviews the maintained elementary arguments
-from the ring definitions through the universal quotient theorem, plus its
-unit-forcing localization consequence. It corrects integer divisibility in
-positive characteristic and the noncommutative module route in the separation
-proof. The next pass extends through representations, residual targets, small
-quotients, principal ideals and finite-congruence closure. It distinguishes a
-quotient being set-sized from having a further set-sized image: `Oz/(ω)` is
-large but surjects onto `ℤ`. The following pass covers the prime-quotient example,
-arithmetic completions, localizations, presentations and positive existential
-conservativity. It makes unital map conventions explicit and proves the completion
-and density statements coordinatewise. The cited primality input remains imported;
-the subsequent module and finite-side pass covers exactness, projectivity,
-Gaussian 2-torsion derivations, coefficient-weighted class derivations and the
-standard-part universal property. Later support/cardinal results and full
-reconciliation of the parallel sources remain pending. Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
+The maintained proofs have been reviewed from the ring definitions through
+representations, quotients, completions, localizations, positive existential
+conservativity, modules and derivations. The review also covers the finite-side
+standard-part theorem, the support threshold, and the fixed-group lower bounds
+through the cyclic-module lemma. Corrections include the characteristic
+restriction on integer divisibility, the distinction between a large quotient
+and its small images, and the infinite support allowance in the finite-side
+extension criterion. The imported primality and derivation inputs remain
+identified as imports.
+
+The later organizing theorem and its model classifications, and full
+reconciliation of the parallel sources, remain pending review. Exact scope
+and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 266 pages
+article.pdf   the compiled report, 267 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
