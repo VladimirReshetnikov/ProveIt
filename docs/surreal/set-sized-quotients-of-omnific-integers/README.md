@@ -40,6 +40,13 @@ and its small images, and the infinite support allowance in the finite-side
 extension criterion. The imported primality and derivation inputs remain
 identified as imports.
 
+Lean now proves the actual surreal scale-gap lemma, including the explicit
+ordinal family h/ω^(α+1), with smallness measured in the birthday universe.
+It also proves the scaled-field collision identity and direct cardinal
+bounds for nonunital ring maps and unital module actions. The scaled
+large Hahn-subfield instance and the universal quotient theorem remain
+pending; the generic collision lemma alone does not establish them.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator

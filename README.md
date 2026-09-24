@@ -545,6 +545,11 @@ the positive root. Its nonzero coefficient at `γ/m − γ < 0` excludes
 every root from both omnific rings, although the roots are integral over
 them. The claimed invisibility in every small ring image still awaits
 the universal quotient theorem.
+Its support-gap and collision ingredients are now proved: every small
+positive surreal family admits arbitrarily smaller scales, and every
+positive surreal interval is too large for a small target. A finite
+scaled-field identity gives sharp cardinal bounds directly for both ring
+maps and module actions, including nonunital maps.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the

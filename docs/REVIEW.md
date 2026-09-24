@@ -8911,3 +8911,33 @@ Hahn supports, integrality, class recursion or essentiality. Audits pass
 Markdown destinations in 226 files. No Lean, verifier or historical data
 file was changed in this review pass. The next review begins with the
 cyclic-workspace ramification subsection.
+
+### Scale gaps and scaled-field collision sync (2026-09-24)
+
+Merged `origin/main` through `66eefa2` and read both new modules against
+`osq:lem:gap`, `osq:eq:scales`, `osq:lem:collision` and `osq:eq:collision`.
+The actual surreal results give strict two-sided bounds for small families,
+a positive scale below every member of a small positive family by every
+ordinary factor, and a positive interval that is not small in the birthday
+universe. The literal ordinal family h/omega^(alpha+1) is positive,
+strictly decreasing and subordinate, with the field exponent identified
+with the embedded ordinal successor. Empty families are included.
+
+The generic collision proof stays inside a possibly nonunital subring
+of any field. The finite identity (mx−my)(m/(x−y))=m² forces injectivity
+of scaled-field images whenever the square image is nonzero. No target
+commutativity, reducedness or preservation of one is required. For unital
+modules, the same identity acts on the vector directly and bounds the
+module's cardinality, rather than its endomorphism ring. Cross-universe
+cardinal bounds and small-universe vanishing corollaries are provided.
+The large scaled Hahn-subfield instance and the universal quotient theorem
+remain pending; the generic identity is not treated as that instance.
+
+Updated the report guide and catalogue to match the merged root README
+and ledger. `LEAN_NUM_THREADS=2 lake build` passed 5,023 jobs; the axiom
+audit accepted all 18,678 declarations using only propext, Classical.choice
+and Quot.sound. Three final catalogue TeX passes were diagnostic-free,
+still 36 pages; inspected refreshed pages 12–13. The article stays at
+338 pages, with all statements, labels and numbering unchanged. Audits
+pass 4,626 anchors in 63 reports, 5,236 source-label references and 1,972
+local Markdown destinations in 226 files.

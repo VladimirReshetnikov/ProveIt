@@ -880,3 +880,5 @@ import Surreal.HahnSeries.MonomialPowerSeries
 import Surreal.Foundations.MonomialPowerSeries
 import Surreal.Foundations.OmnificBinomialRoots
 import Surreal.Surcomplex.GaussianBinomialRoots
+import Surreal.Algebra.ScaledFieldCollision
+import Surreal.Foundations.OmnificScaleGaps
