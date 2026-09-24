@@ -7950,3 +7950,45 @@ Updated root README, report guide, shared notation, catalogue and coverage
 scope/anchors. All reviewed class-residue statements and new consequences
 remain Pending in Lean. No Lean source changed; the current baseline is the
 two-thread 4,955-job build and 18,066-declaration axiom audit.
+
+### Number-field detector and graph synchronization (2026-09-24)
+
+Merged origin/main at 44f16b8621f3d49afdc0065a1e7502278457d6ac,
+including 9e7c68d, after the monomial-scale and ternary-branch review.
+Read all six new Lean modules, the dependency-docstring update and coverage
+rows against `odg:def:thm:numberfield` and `odg:def:rem:sigma2`.
+
+The tailored detector obtains ordinary modular values from positive integer
+multiples in every nonzero principal ideal of a number-field subring. With
+any root of the sextic in the larger coefficient field, the existing
+augmentation theorem supplies the exact two-witness nonzero-constant test
+on the full coefficient pullback. This is not extended to arbitrary
+intermediate subrings. The generic augmentation algebra may have zero
+divisors; no unjustified domain assumption is introduced there.
+
+Every ideal contains a tailored value exactly when it escapes the purely
+infinite ideal. Quotient root lifting uses native quotient surjectivity,
+including the zero ring, and makes the purely infinite ideal the greatest
+one with a root-free quotient. Negating the detector supplies the universal
+ideal test and equality of constant terms. Combining it with the verified
+five-witness guard gives the embedded retraction graph and unique output.
+Both quantifier orders are proved algebraically and as literal native ring
+formulas: five existential variables then two universal variables, and the
+reverse. In the reverse direction, the universal pair (0,0) provides guard
+witnesses, so no unjustified interchange of dependent quantifiers is used.
+Native parameter-free definability follows for the ideal, its complement
+and the binary graph.
+
+Together with the prior guard, this completes the mapped number-field
+coefficient theorem under its stated hypotheses. The stronger one-witness
+existential ideal and six-witness existential graph claims of
+`odg:def:rem:numberfieldideal` remain separate. No integrality, finite
+generation, exponent divisibility or rank assumption has been added.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed 4,961 jobs. The axiom
+audit passed 18,156 declarations using only propext, Classical.choice and
+Quot.sound. All 4,626 source anchors in 63 reports, 5,222 source-label
+references and 1,908 local Markdown destinations in 226 files pass, together
+with whitespace checks. Incoming work changes no TeX or PDF, so the final
+three-pass document builds and rendered-page inspections remain applicable.
+The locally reviewed class-residue material remains Pending in Lean.

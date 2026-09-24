@@ -820,3 +820,9 @@ import Surreal.Algebra.QuadraticAdjoinCoordinates
 import Surreal.Algebra.NumberFieldSquarefreeRadicands
 import Surreal.Algebra.NumberFieldTailoredGuard
 import Surreal.HahnSeries.NumberFieldArithmeticConstants
+import Surreal.Algebra.TailoredIntersectiveDetector
+import Surreal.Algebra.TailoredIdealTest
+import Surreal.Algebra.TailoredConstantTermGraph
+import Surreal.Algebra.TailoredDetectorFormulas
+import Surreal.HahnSeries.NumberFieldDetector
+import Surreal.HahnSeries.NumberFieldDetectorFormulas
