@@ -7682,3 +7682,203 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 226 files pass, along with whitespace checks. The merge changes no TeX
 source or PDF, so the final three-pass document validation above remains
 applicable. No local manuscript review has been promoted to Lean coverage.
+
+### Binomial kernels and the proper Cantor subalgebra (2026-09-24)
+
+Reviewed the seven standard results from `osq:if:lem:localization` through
+`osq:if:thm:complexkernel`, together with finite CRT factorizations,
+locally constant functions, point evaluation, Fourier idempotents and their
+refinement, Boolean consequences and the boundary paragraphs. This completes
+a manuscript review of all fifteen standard internal-field results before
+the class-residue subsection; it does not complete source reconciliation.
+
+Corrected the exact-kernel proof's support wording and boundary calculation.
+The obstruction is absence of a lower bound -Na for any ordinary integer N,
+not absence of a surreal lower bound. Every displayed division block lies
+above -omega*a. Choosing k=N+1 gives the strict inequality below -Na from
+the offset, while (1-k)a itself equals -Na. The localization converse uses
+an extra shift to avoid any restriction on the endpoint coefficient.
+
+Added the finite Lagrange-interpolation inverse to the Cantor isomorphism,
+including the empty-product initial stage and independence under refinement.
+Identified interpolation with the Fourier idempotents and explained how
+compactness gives a single finite quotient. Real stages start at r=1 with
+2^(r-1) coordinates over E_a; Gaussian stages start at r=0 with 2^r
+coordinates over F_a(i). The Gaussian involution acts by
+f(z) -> conjugate(f(-1-z)), as verified from the indexed roots. All root
+exponentials are ordinary complex values embedded into the coefficient field.
+
+Added an explicit partial answer to `osq:q:binomial`. The exact kernel gives
+E_a[x_(2m)] = E_a[T]/(T^m-i), with m coordinates, for every ordinary m.
+For alpha=exp(i*pi/6), epsilon=(1+x_6/alpha+(x_6/alpha)^2)/3 has coordinates
+(1,0,0). In a common 3*d stage, d=2^(r-1), epsilon depends on k modulo 3,
+whereas every dyadic stage-r element depends on k modulo d. Coprimality
+makes epsilon nonconstant on every fibre, so it lies outside every dyadic
+stage. The Cantor algebra is therefore proper even among finite rational-
+exponent blocks. Classification of all ambient idempotents, the nilradical
+and prime ideals remains open. The new argument is marked as a merged
+consequence, without a literature-priority claim.
+
+Updated the question status, root README, report guide, catalogue, shared
+notation and formalization scope/anchors. These manuscript statements and
+new unnumbered consequences remain Pending in Lean.
+
+Validation: three clean final TeX passes for the 317-page article and
+35-page catalogue, with no warnings or box diagnostics. Inspected the
+kernel, stages, interpolation, idempotents, outside indicator, Gaussian
+formula, question status and catalogue pages. All 418 standard/principal
+statements, 828 labels, 1,656 auxiliary label/number pairs, 66 questions,
+60 remarks and 28 numbered examples are unchanged. Source 07's unchanged
+verifier passed its 621 finite checks with exactly the recorded check list;
+only the Python patch version differs. That verifier does not certify the
+general support arguments or the new consequences. All 4,626 source anchors
+in 63 reports, 5,221 source-label references and 1,887 local Markdown
+destinations across 226 files pass, as do whitespace checks. No Lean source
+changed in this local revision; synchronization with incoming Lean follows.
+
+### Tailored number-field guard synchronization (2026-09-24)
+
+Merged origin/main at 8ea55a95819d3c72f7feb8a75f7a51081afd3b24,
+including 0d289d8, after the binomial/Cantor review. Read all seven incoming
+Lean modules against `odg:def:lem:tailored`, `odg:def:thm:numberfield` and
+`odg:def:thm:saturation`, and checked the README and coverage mappings.
+
+The exact sextic (T^2-p)(T^2-q)(T^2-pq) has a root modulo every positive
+integer when p and q satisfy the prime progression hypotheses. The proof
+uses quadratic reciprocity at q, nonsingular odd-prime lifting, the general
+one-modulo-eight square-root lemma at two, and CRT. Root representatives
+are bounded by the modulus. Three nonsquare radicands exclude field roots.
+Dirichlet supplies admissible pairs beyond any bound and outside any finite
+forbidden set. Finiteness of squarefree radicands becoming squares in each
+number field remains pending, so unconditional prime selection is not claimed.
+
+For a supplied admissible nonsquare pair, the native five-witness guard is
+constructed and proved to define the exact coefficient image in every
+intermediate Hahn ring with the stated constant intersection. Ordinary
+witnesses use positive integer multiples, bounded Pell coordinates and
+modular sextic roots. Soundness uses Pell rigidity, polynomial root exclusion
+and constant-divisor rigidity. No integrality, finite generation, retraction
+or nontrivial exponent group is required. The computable finitely satisfiable
+omitted type then proves failure of recursive saturation without an assumed
+guard-correctness theorem. The later tailored detector, ideal and constant-
+term graph clauses remain pending, as does uniform number-field prime choice.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` completed 4,950 jobs. The axiom
+audit passed for 18,015 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,221 source-label
+references and 1,894 local Markdown destinations in 226 files pass, together
+with whitespace checks. Incoming work changes no TeX source or PDF, so the
+three-pass compilation and rendered-page review above remain applicable.
+The local manuscript improvements remain Pending in Lean.
+
+### Unconditional number-field prime choice: synchronization retry (2026-09-24)
+
+The first fast-forward push was rejected because origin/main advanced.
+Fetched and merged ebb516e3e6fd8e961c26931452f9b6192c6648be, then read all
+five new modules, dependency-docstring edits and the updated coverage rows.
+This incoming work resolves the prime-existence dependency recorded above.
+
+Squarefree natural radicands in the same rational square class are equal.
+Adjoin induction supplies rational affine coordinates a+b*x for an irrational
+square root x, including inverse closure with a nonzero norm denominator.
+Consequently distinct nontrivial squarefree radicands give distinct quadratic
+intermediate fields. Mathlib's primitive-element theorem and its finite-
+intermediate-field consequence give the required finite obstruction set;
+adding one covers rational square roots too. Combining this with Dirichlet
+avoidance and the already proved modular arithmetic completes
+`odg:def:lem:tailored` for every number field.
+
+The verified prime pair is chosen once for each field, and the guard still
+uses integer numerals with no field parameters. Primitive-recursive type
+membership is for each fixed guard; no algorithm uniform in presentations
+of number fields is claimed. The intermediate-Hahn constant definition and
+omitted type now have no supplied-prime or guard-correctness hypothesis.
+Together with the earlier integer/Gaussian and actual universe-indexed cases,
+this completes the mapped `odg:def:thm:saturation` scope. The constant clause
+of `odg:def:thm:numberfield` is complete; its tailored detector, ideal and
+constant-term graph clauses remain pending. No integrality, finite generation,
+retraction or nontrivial exponent-group assumption has been added.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passed 4,955 jobs;
+the axiom audit passed 18,066 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,221 source-label
+references and 1,900 local Markdown destinations in 226 files pass, along
+with whitespace checks. No incoming TeX or PDF changed; the three-pass
+article/catalogue validation and page inspection remain applicable.
+
+### Class maximal ideals, choice and coefficient comparison (2026-09-24)
+
+Reviewed the first nine standard class-residue results, from
+`osq:cr:thm:krull` through `osq:cr:lem:coefficients`, together with their
+foundational setup, CMIT definition, constructive/Boolean/restriction remarks
+and the arithmetic/nonarithmetic distinction. Later monomial and residue
+results and full source reconciliation remain pending review.
+
+Expanded the Scott quotient coding over GB: each code is the nonempty set
+of congruent elements of least rank, the rank minimum is bounded using one
+existing representative, operations are representative independent, and no
+member is selected from every code. Distinguished a proper ideal from an
+ideal of proper-class size. Expanded the greedy proof's finite rejection
+witness, which gives a residue inverse, and its set-ring terminal stage
+versus the finite-sum class union. Uniform families are relations on set-valued
+parameters and ring elements, not collections with classes as elements.
+Prime avoidance uses the explicit product of two rejection witnesses;
+prescribed equations require joint finite ideal consistency, not merely
+that each individual generator be a nonunit.
+
+Expanded the choice-free localization step in finite-polynomial compatibility.
+Monomials are finite codes with zero exponents omitted, so their codes are
+sets even with a proper class of variables. Variable-generated ideals are
+prime by finite-variable polynomial calculations. Their union need not be
+an ideal, while its complement is multiplicative. Clearing denominators
+proves that a maximal localized ideal contracts to one maximal among ideals
+of small polynomials. This reverse proof does not invoke the forward
+prime-avoidance theorem requiring global choice. Added the zero-polynomial
+degree convention, the variable-ideal membership test, the empty finite
+subset case and the elementary graph formula extracting global choice.
+
+The same proof gives an unnumbered consequence: class maximal-ideal existence
+restricted to commutative domains of characteristic two already implies
+global choice. In fact it uses one specified localization of the F2 polynomial
+class ring indexed by finite partial choice functions. The separate choice
+strength of omnific maximal ideals remains open. No priority claim is added.
+
+For the arithmetic application, gave the principal-ideal division proving
+ct^(-1)(p)=pA and the Gaussian norm showing positive residue characteristic.
+Rewrote the unit-constant contradiction to state that a maximal ideal
+containing f also contains f-ct(f), hence would contain the unit ct(f).
+The coefficient comparison now displays its exact contraction identity
+and separates that choice-free isomorphism from subsequent maximal extensions.
+All theorem statements and hypotheses are unchanged; the new material is in
+proofs or unnumbered commentary and remains Pending in Lean.
+
+Primary-source checks: read the global-choice equivalences in
+[Hamkins's exposition](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/)
+and the polynomial compatibility/localization proof in
+[Entin's corrected v3](https://arxiv.org/html/2404.18351v3), adding its direct
+link to the bibliography. These support the cited ingredients, not an
+independent literature-priority claim for the class adaptation. The
+[Gitman–Hamkins–Holy–Schlicht–Williams abstract](https://arxiv.org/abs/1707.03700)
+was checked for the stronger class-valued recursion distinction; no new
+full-paper review is claimed.
+
+Validation: three clean final TeX passes for the 319-page article and 35-page
+catalogue, without warnings or box diagnostics; inspected the quotient codes,
+greedy proof, compatibility and converse, arithmetic application, coefficient
+comparison and catalogue pages. All 418 standard/principal statements,
+828 labels, 1,656 auxiliary label/number pairs, 66 questions, 60 remarks and
+28 numbered examples remain unchanged. Source 24's unchanged verifier passes
+all 133,770 finite assertions with identical groups and counts; only Python
+3.13.5 versus 3.13.14 differs. It does not verify class recursion, global
+choice or the general class results. All 4,626 source anchors in 63 reports,
+5,221 source-label references and 1,900 local Markdown destinations across
+226 files pass, together with whitespace checks. No Lean source changed;
+the two-thread 4,955-job build and 18,066-declaration axiom audit are the
+current synchronization baseline. Updated the root README, report guide,
+notation, catalogue and formalization scope/anchors.
+
+Synchronization: fetched origin/main again at
+dab0f4259b7cc0501408b9705b5d4c72c7642aed after committing the review;
+there were no incoming commits and the merge was already up to date.
+No Lean rebuild was required for this documentation-only change. The
+4,955-job build and 18,066-declaration audit above remain the baseline.

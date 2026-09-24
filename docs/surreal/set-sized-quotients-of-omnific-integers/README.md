@@ -348,13 +348,60 @@ prime quotients are distinguished from the more general residue fraction
 fields. The bounded-field and transfer remarks, explicit compression and
 nilpotent examples, and composed-embedding comparison were checked too.
 These manuscript results and added consequences remain pending in Lean.
-The exact binomial kernel, subsequent internal algebras and full source
-reconciliation remain pending review. Exact scope and validation are in
+The next seven standard results are now reviewed as well: binomial
+localization, the exact kernel, the internal algebraically closed field,
+the fixed-field dyadic stage, the Cantor algebra, its Boolean consequences
+and the Gaussian kernel/tower. Thus all fifteen standard results before
+the class-residue subsection have a manuscript review pass.
+
+The kernel proof now distinguishes a missing lower bound by an ordinary
+multiple of a from absence of any surreal lower bound. Its separated
+blocks are bounded below by −ωa, but escape every −Na for ordinary N;
+the boundary calculation at N+1 is written explicitly. Finite interpolation
+gives the inverse Cantor map, with stage independence checked by the
+idempotent refinement. The real tower starts at r=1 with 2^(r−1)
+coordinates over E_a; the Gaussian tower starts at r=0 with 2^r
+coordinates over F_a(i). Gaussian conjugation is conjugation of values
+combined with z ↦ −1−z, not just conjugation at a fixed coordinate.
+
+The exact kernel gives a new partial answer to Question 18.5: an explicit
+three-root indicator in E_a[x_6] belongs to no dyadic stage. In a common
+stage of 3·2^(r−1) coordinates it depends on the index modulo 3, while a
+dyadic element depends only on the index modulo 2^(r−1). Thus the Cantor
+algebra is proper even before considering general infinite supports.
+The classification of all ambient idempotents, the nilradical and the
+prime ideals remains open. The new consequences remain pending in Lean.
+Source 07's unchanged verifier passes all 621 finite checks, with identical
+check names and only the Python patch version changed from the recorded run.
+It does not verify the general support proof or these new consequences.
+The first nine standard class-residue results are now reviewed, through
+the coefficient-ring comparison: maximal class extensions, prime avoidance,
+prescribed equations, the equivalence with global choice, finite-polynomial
+compatibility, arithmetic maximal ideals, binomial maximal extensions,
+unit-constant fibres and the comparison of the D- and k-coefficient quotients.
+The proofs now spell out Scott quotient codes over GB, the set-valued
+recursion and finite rejection witnesses over GBC, and denominator clearing
+in the reverse implication. “Small polynomials” need not form an ideal.
+The extraction of a global choice function uses a class of compatible
+finite partial functions, with no prior simultaneous choice.
+
+The same argument shows that maximal-ideal existence restricted to class
+domains of characteristic two already implies global choice. This does not
+settle the separate choice strength of maximal-ideal existence for omnific
+rings. The arithmetic/nonarithmetic distinction and coefficient comparison
+also retain their exact scope: the scalar embedding is a quotient feature,
+and its construction needs no maximal-ideal principle.
+Source 24's unchanged verifier passes all 133,770 finite checks; only the
+Python patch version differs from the recorded run. It does not certify
+class recursion or the equivalence with global choice. These manuscript
+results remain pending in Lean. The exact monomial dichotomy and subsequent
+class-residue results, and full source reconciliation, remain pending review.
+Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 316 pages
+article.pdf   the compiled report, 319 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

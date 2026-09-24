@@ -393,6 +393,50 @@ overlapping fields. This image commutes with q(Oz), but is not asserted
 to lie in the centre of a noncommutative target; no target support or
 strong-sum structure is assumed.
 
+For the binomial quotient `𝒬_a = Oz/(1+ω^a)`, the localized coefficient
+map is `ι_a(f) = −q_a(ω^a f)`. A nonintegral real coefficient r is
+represented by the omnific integer −rω^a; the quotient coefficient map
+is not constant-term extraction. Localization support must be bounded
+below by −Na for some ordinary integer N. The binomial-division blocks
+escape every such bound but are still bounded below in No, for example
+by −ωa. “Unbounded below” without this qualification is incorrect.
+
+Inside the real quotient, `x_n = q_a(ω^(a/n))`, `i = x_2` denotes the
+chosen imaginary unit of `E_a = F_a[x_2]`, and `ξ_r = x_(2^r)` starts at
+r=1. Its stage has `m=2^(r−1)` coordinates over E_a, with modulus
+`T^m − i`; the next stage repeats each coordinate on its two lifts.
+The Gaussian quotient already has its coefficient imaginary unit and
+uses `T^(2^r)+1` over F_a(i), starting at r=0 with 2^r coordinates.
+Its conjugation sends a Cantor function f to `z ↦ conjugate(f(−1−z))`.
+In both cases all complex exponentials used to label roots are evaluated
+in the ordinary complex field before embedding.
+
+The dyadic Cantor algebra is a proper subalgebra of 𝒬_a. The three-root
+indicator ε in E_a[x_6] depends on k modulo 3 in the common stage
+E_a[x_(6d)], where `d=2^(r−1)`; dyadic stage-r elements depend on k
+modulo d. These are finite coordinate descriptions, with no infinite
+sum of idempotents or classification of all ambient idempotents assumed.
+
+In the class-residue subsection, GB includes no choice principle and
+GBC means GB plus global choice. A **proper class ideal** is a class
+ideal I ≠ R; “proper” here specifies the ideal condition, not its size.
+Quotients use Scott codes (all representatives of least rank) over GB,
+or least representatives in a fixed set-like global well-order over GBC.
+Scott codes are sets and do not require choosing a member of each code.
+The greedy construction stores sets of accepted generators at ordinal
+stages. The generated ideals are defined by finite sums; they are not
+stage values. A uniform family of class ideals is a relation on parameters
+and ring elements, not a class whose elements are proper classes.
+
+In the reverse implication from class maximal-ideal existence to global
+choice, “small” means membership in one variable-generated ideal I_p.
+The small polynomials need not form an ideal. Their complement Σ is
+multiplicative; a maximal ideal of Σ⁻¹F₂[v_p] contracts to an ideal
+maximal among those consisting of small polynomials. That reverse proof
+works over GB and does not invoke the forward construction using global
+choice. The restriction to omnific rings has a separate, unresolved
+choice-strength question.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized

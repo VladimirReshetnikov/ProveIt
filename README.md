@@ -344,9 +344,21 @@ the additive exponent group, then substitutes monomials. Its field image
 has an exact support description and is a proper subfield of the
 compressed Hahn field.
 The transfer maps agree on overlapping fields even when different
-denominators are inverted. These are manuscript proofs, pending in Lean;
-exact binomial kernels, later classifications and full source reconciliation
-remain pending review.
+denominators are inverted. The binomial-kernel and dyadic-tower proofs
+are now reviewed too: `Oz/(1+ω^a)` contains an algebraically closed field
+with a copy of `No[i]`, finite products over that field, and a Cantor
+algebra with explicit refining idempotents. That Cantor algebra is a
+proper subalgebra: a three-root indicator lies outside every dyadic stage.
+In the Gaussian version, conjugation also permutes the root coordinates,
+acting on Cantor functions by `f(z) ↦ conjugate(f(−1−z))`.
+The class-residue foundations are now reviewed through maximal-ideal
+existence: global choice gives characteristic-zero maximal class quotients
+above each binomial. Conversely, maximal-ideal existence for all class
+rings implies global choice, already for class domains of characteristic
+two. The proof uses finite witnesses and set-valued recursion, with no
+class of all class ideals. These are manuscript proofs, pending in Lean;
+the later monomial and residue classifications and full source
+reconciliation remain pending review.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
