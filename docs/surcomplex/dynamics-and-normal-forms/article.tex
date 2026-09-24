@@ -138,6 +138,8 @@
 \newcommand{\diver}{\operatorname{div}}
 \newcommand{\rank}{\operatorname{rank}}
 \newcommand{\rang}{r_{\mathrm{ang}}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\mergetag}{\textup{\textsf{\small[merge]}}}% text added when source 11 was merged (batch 34)
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \numberwithin{equation}{section}
 
@@ -154,11 +156,11 @@
 \vspace{0.08in}
 {\LARGE\bfseries and Normal Forms\par}
 \vspace{0.35in}
-{\large 21 September 2026; extended 22 September 2026\par}
+{\large 21 September 2026; extended 22 and 23 September 2026\par}
 \vspace{0.40in}
 \begin{minipage}{0.92\textwidth}
 \begin{abstract}
-Ten independently written manuscripts developed local and global dynamics
+Eleven independently written manuscripts developed local and global dynamics
 over complex Hahn fields $K_\Gamma=\C((t^\Gamma))$ realized inside
 $\No[i]$, with $\Gamma$ a set-sized ordered abelian group of arbitrary rank.
 This report is their \emph{union}. Every result any one of them reached
@@ -166,7 +168,7 @@ survives; results all of them reached are printed once; results proved by
 genuinely different routes keep each route, marked; and every honest
 limitation is preserved.
 
-Nine of the ten are germ and fixed-point dynamics: multipliers, return
+Ten of the eleven are germ and fixed-point dynamics: multipliers, return
 iterates, periods, Hamiltonians at the origin of a phase halo. Source 07
 is the \emph{quasi-periodic} half of the same subject --- a cohomological
 equation on a real torus whose frequency vector has surreal components,
@@ -202,7 +204,12 @@ category, which answers the same question negatively there, already over the
 cyclic value group $\Z$ with a single Hahn monomial; an exact maximal
 centered valuation ball read
 off a \emph{finite return iterate}, with its shell cycles, its
-cancellation phase diagram and its common-domain lifting; an algebraicity
+cancellation phase diagram and its common-domain lifting; for
+rotation-equivariant polynomials, the same ball read off the map's own
+coefficients, the exclusion of every other period from the closed ball, an
+exact algebraicity criterion for the reduced linearizer with a one-way
+transcendence certificate, and reciprocal rational maps whose infinitely
+large periodic points are prescribed Gaussian omnific monomials; an algebraicity
 dichotomy and an exact coefficientwise monodromy exponent for parabolic
 Euler maps, whose infinitesimal part no finite branched cover removes; a
 complete period classification, explicit moduli and beyond-all-orders
@@ -222,12 +229,12 @@ density.
 \end{minipage}
 \vfill
 \begin{minipage}{0.92\textwidth}\small
-\textbf{Status.} This is a merged report assembled from ten AI-assisted,
+\textbf{Status.} This is a merged report assembled from eleven AI-assisted,
 unrefereed research drafts. The full report is not proof-assistant verified.
 The repository's Lean development checks the finite-word support lemma and
 the input-relative ancestry bounds; its coverage ledger is
 \texttt{docs/FORMALIZATION.md}. Priority is not certified, and no named published
-conjecture is claimed solved. The ten sources' own verification programs
+conjecture is claimed solved. The eleven sources' own verification programs
 supply finite exact symbolic checks only; \cref{dyn:sec:verification}
 records exactly what each one does and does not establish, and
 \cref{dyn:sec:nonclaims} carries every limitation stated by every source.
@@ -242,7 +249,7 @@ records exactly what each one does and does not establish, and
 \section{What this report is, and how to read it}
 \label{dyn:sec:read}
 
-\subsection{Ten manuscripts, one body of machinery}
+\subsection{Eleven manuscripts, one body of machinery}
 The first seven source manuscripts were all
 written independently on 21 September 2026 against a pinned repository
 snapshot: sources 01--06 against commit
@@ -256,15 +263,19 @@ independently on 22 September 2026 against commit
 22 September 2026 against commit
 \texttt{048b72cf\allowbreak 7cbfc8ab\allowbreak 246e4f73\allowbreak
 788c1046\allowbreak 0cb3f6e0}, which already contained sources 08 and 09
-as merged here. All ten share a single body
+as merged here. Source 11 was written in September 2026 against commit
+\texttt{9ee2dac0\allowbreak d234c904\allowbreak 15f6b729\allowbreak
+0cbe5b4d\allowbreak cf4a4d3e}, at which this report already contained
+sources 01--10 as merged here, but it did not read this report. All eleven
+share a single body
 of machinery --- the set-sized Hahn workspace inside $\No[i]$, strong
 summability by well-ordered support and local finiteness, the
 positive-support lemma of Neumann in finite-word form, halo evaluation by
 coefficientwise double Taylor sums, Taylor substitution and its
-near-identity inverse --- and each of the ten states that machinery from
-scratch. The positive-support lemma is stated in all ten. Between $45$
+near-identity inverse --- and each of the eleven states that machinery
+from scratch. The positive-support lemma is stated in all eleven. Between $45$
 and $55$ per cent of the combined text of sources 01--06 is the same
-theory, and sources 07--10 restate the same foundation again.
+theory, and sources 07--11 restate the same foundation again.
 
 Sources 01--06 are germ and fixed-point dynamics and were merged first;
 source 07 is the quasi-periodic half of the subject and was integrated
@@ -313,6 +324,24 @@ proof is a genuinely different route; in the scalar case it is kept as a
 third route to the rate of \cref{dyn:esm:cor:chain}(ii)
 (\cref{dyn:nsc:rem:scalar}).
 
+Source 11 (batch 34, manuscript 08) also belongs to the germ half and was
+integrated last, as \cref{dyn:rd:subsec} and the six subsections after it,
+at the end of \cref{dyn:sec:return}. It treats polynomials that commute with
+a rotation of order $q$ and have multiplier $\zeta+e$, with $\zeta$ a
+primitive $q$-th root of unity and $e$ infinitesimal: a $\resq$ family. For
+them it reads the exact ball of \cref{dyn:thm:exact} off the coefficients of
+the map instead of its $q$-th return, which is an independent re-derivation
+of that theorem and of \cref{dyn:thm:shell} in this case
+(\cref{dyn:rd:prop:return}). Beyond that it excludes every other period
+from the closed ball, decides algebraicity of the reduced linearizer by a
+finite residue criterion that certifies transcendence of the full one,
+classifies the infinitesimal periodic points of integral equivariant maps,
+and builds reciprocal rational maps with prescribed Gaussian omnific
+periodic points. It contradicts no earlier source. In one subcase its
+one-way transcendence certificate is superseded by \cref{dyn:thm:dichotomy}
+(\cref{dyn:rd:rem:superseded}). Its eleven questions are added to
+\cref{dyn:sec:questions}.
+
 They also disagree, in the specific and dangerous way that independent
 runs at one \emph{foundation} disagree: not by contradicting each other's
 theorems, but by attaching the same words to different hypotheses. That is
@@ -346,7 +375,7 @@ numbers is closed and discrete in the fine order topology, so
 $\sum_{n}t^{n}=(1-t)^{-1}$ is a Hahn identity about a summable family and
 never a limit of partial sums --- is the foundation fixed by
 \emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$}
-(\texttt{docs/surcomplex/analysis/}). All ten sources restate it; we cite
+(\texttt{docs/surcomplex/analysis/}). All eleven sources restate it; we cite
 it and state it once, in \cref{dyn:def:summable}.
 \item the coefficient-ring taxonomy is the four-ring table of
 \emph{Infinitesimal Analytic Geometry over the Surcomplex Numbers}
@@ -357,8 +386,9 @@ not new rings: see \cref{dyn:subsec:rings}.
 be a constant for the scalar Berarducci--Mantova derivation is the
 cross-category warning of \emph{Differential Algebra and Differential
 Equations over the Surreal and Surcomplex Numbers}
-(\texttt{docs/surcomplex/differential-equations/}). All ten sources
-derive it independently --- source 07 in the form that its torus
+(\texttt{docs/surcomplex/differential-equations/}). Sources 01--10 all
+derive it independently (source 11 uses only formal coordinate derivatives
+and does not discuss the scalar derivation) --- source 07 in the form that its torus
 derivatives are external derivations annihilating $K_\Gamma$ --- and we
 adopt that report's wording once, in \cref{dyn:warn:derivative}.
 \end{itemize}
@@ -404,7 +434,11 @@ and, from source 10, the rate-count lemma \cref{dyn:nsc:lem:height}, the
 rational-rank product bound \cref{dyn:nsc:thm:products}, and their
 consequence, the nonscalar common domain \cref{dyn:nsc:thm:main} with its
 rank-one sharpness \cref{dyn:nsc:thm:criterion} and the two-mode example
-\cref{dyn:nsc:prop:twomode}.
+\cref{dyn:nsc:prop:twomode}; and, from source 11, the closed-ball period
+exclusion \cref{dyn:rd:prop:periodfinite}, the algebraicity criterion and
+transcendence certificate \cref{dyn:rd:thm:algebraicity} for Hahn-valued
+data, the classification \cref{dyn:rd:thm:allperiods}, and the realization
+theorems \cref{dyn:rd:thm:allshells,dyn:rd:thm:omnific}.
 Each source's own bounded novelty assessment is reproduced in
 \cref{dyn:sec:nonclaims}. Source 07 adds to the classical list the ordinary
 Fourier division mechanism with its subexponential criterion, the Liouville
@@ -426,7 +460,12 @@ universally zero, and the resulting homogeneity-degree constraints
 tree formulas for inversion and linearization over non-Archimedean
 formal-series structures \cite{CarlettiLagrange}, which it saw at abstract
 level only. It claims only the rank count and its common-domain consequence,
-and disclaims priority (\ref{dyn:nsc:nc:priority}).
+and disclaims priority (\ref{dyn:nsc:nc:priority}). Source 11 credits
+Lindahl's rank-one linearization and small-divisor dichotomy
+\cite{Lindahl}, Poonen's algebraic closedness \cite{Poonen} and Neumann's
+lemma in Marker's notes \cite{Marker}, and disclaims priority
+(\ref{dyn:rd:nc:priority}); its own novelty assessment did not include this
+report.
 
 \section{The notion table: five resonances, six small divisors, two radii}
 \label{dyn:sec:notions}
@@ -826,6 +865,16 @@ Statement & Resonance & Divisor & Coefficient category & Domain notion\\
 & $\nres$ & $\sdz$ hypothesis, Brjuno used externally & fails radius-free germ & ordinary\\
 \cref{dyn:thm:stability} return perturbation certificate
 & $\resq$ & $\sdz$ & return coefficients only & $B_{r}$\\
+\cref{dyn:rd:thm:linearization,dyn:rd:prop:return} equivariant ball
+& $\resq$, $f(\zeta z)=\zeta f(z)$ & $\sdz$ & formal, $\BB_{\mathsf M}$ & $B_{r}$ (valuation)\\
+\cref{dyn:rd:prop:periodfinite,dyn:rd:thm:shell} closed-ball periods, shell
+& $\resq$, equivariant & $\sdz$ & ordinary polynomial $R\in\C[U]$ & $\bar B_{r}$, $S_{r}$\\
+\cref{dyn:rd:thm:reduction,dyn:rd:thm:algebraicity} boundary reduction
+& $\resq$, equivariant & $\sdz$ & $\C[[X]]$; transcendence over $K_\Gamma(z)$ & none\\
+\cref{dyn:rd:thm:allperiods} infinitesimal periods
+& residue of order $q$; $\lambda=\zeta$ allowed & none used & integral polynomial & $\m_\Gamma$\\
+\cref{dyn:rd:thm:allshells,dyn:rd:thm:omnific} prescribed shells
+& $\resq$, equivariant & $\sdz$ & polynomial; rational over $\Oz[i]$ & $\m_\Gamma$; infinitely large points\\
 \cref{dyn:thm:main} five-row classification
 & $\nres$, exact $\Lambda$ & $\sdex$ & all five rows & $\mathbb D_R^{d}$, germ, entire, poly, formal\\
 \cref{dyn:lem:radius-loss} single-step loss
@@ -1054,7 +1103,7 @@ valuation zero.
 \section{Workspaces, supports, coefficient categories, and evaluation}
 \label{dyn:sec:framework}
 
-All ten sources set up this material independently. It is stated once
+All eleven sources set up this material independently. It is stated once
 here.
 
 \subsection{The set-sized workspace inside \texorpdfstring{$\No[i]$}{No[i]}}
@@ -1135,7 +1184,7 @@ over the Surreal and Surcomplex Numbers}
 coordinate derivative need not be a constant for the scalar
 Berarducci--Mantova derivation, so $\eps=\omega^{-1}$ is permitted as a
 Hahn coefficient of a coordinate problem and prohibited as an infinitesimal
-phase residue of the scalar derivation. All ten sources derive this
+phase residue of the scalar derivation. Sources 01--10 all derive this
 distinction independently; it is not restated again below.
 \end{warning}
 
@@ -1243,7 +1292,8 @@ $A+S^{*}\subset a_0+T^{*}$.
 \end{proof}
 
 This is classical Hahn--Neumann mathematics \cite{Neumann,Poonen} and is not
-claimed as a contribution. All ten sources state it; sources 02, 05 and 09
+claimed as a contribution. All eleven sources state it; source 11 cites
+it from Marker's notes \cite[Lemma~2.36]{Marker}; sources 02, 05 and 09
 each reproduce a minimal-bad-sequence proof of the underlying word order,
 which is the same argument as \cref{dyn:app:higman} and is therefore not
 printed again. Source 10 derives it from Higman's lemma, cited as a
@@ -5364,6 +5414,1218 @@ computed first face is already correct; at a tie or a possible cancellation
 more precision may be necessary, and treating a truncated zero as an exact
 zero would invalidate the maximum.
 \end{warning}
+
+\subsection{Rotation-equivariant maps: the threshold read off the map itself}
+\label{dyn:rd:subsec}
+
+This subsection and the six after it are contributed by source 11,
+\emph{Sharp Linearization at Surreal Scales: Hahn summability, resonant
+periodic cycles, transcendental conjugacies, and omnific rational maps}
+(23 pages, September 2026), delivered in batch 34 as manuscript 08, the
+archive \texttt{Surreal\_Resonant\_Dynamics}, whose shipped files carry the
+local prefix \texttt{11-resonant-dynamics-}. It was written against
+repository commit
+\texttt{9ee2dac0\allowbreak d234c904\allowbreak 15f6b729\allowbreak
+0cbe5b4d\allowbreak cf4a4d3e}. At that commit this report's source file was
+byte-identical to its state immediately before source 11 was added. Source
+11 did not read it: its repository inspection covered the catalogue
+READMEs, the notation guide, the analysis guide and the omnific-quotient
+guide only (\ref{dyn:rd:nc:repo}). It therefore re-derives, independently
+and for a special class of maps, the exact finite-return threshold
+\cref{dyn:thm:exact} and the shell count of \cref{dyn:thm:shell}. Its
+statement that the combined formulation was not identified in the sources
+it checked is accurate for those sources and stale against this report
+(\ref{dyn:rd:nc:priority}).
+
+Source 11 studies
+\begin{equation}\label{dyn:rd:eq:family}
+ f(z)=\lambda z+\sum_{j=1}^{J}a_{1+jq}z^{1+jq},\qquad
+ \lambda=\zeta+e,\qquad \delta=v(e)>0,
+\end{equation}
+over $K_\Gamma$ with $\Gamma$ nonzero, set-sized and divisible, where $q\ge1$
+is an ordinary integer, $\zeta\in\C$ is a primitive $q$-th root of unity,
+$0\ne e\in\m_\Gamma$, and at least one $a_{1+jq}$ is nonzero. Such an $f$
+commutes with the rotation: $f(\zeta z)=\zeta f(z)$, and this symmetry is
+essential to every theorem below except \cref{dyn:rd:thm:omnific}, which
+inherits it. The residue multiplier is $\alpha=\bar\lambda=\zeta$, of exact
+order $q$, and $\lambda$ is not a root of unity
+(\cref{dyn:rd:lem:divisors}), so $f$ satisfies $\resq$ with the rotation
+order as its $q$. What source 11 adds to this section is:
+\begin{enumerate}[label=(\alph*)]
+\item the exact threshold computed from the coefficients of $f$ itself, with
+no return iterate (\cref{dyn:rd:thm:linearization,dyn:rd:prop:return});
+\item the exclusion of \emph{every} other period from the closed normalized
+ball (\cref{dyn:rd:prop:periodfinite}), whereas \cref{dyn:thm:shell}(i)
+counts the solutions of $f^{\circ q}(z)=z$ on the shell;
+\item an exact algebraicity criterion for the reduced linearizer and a
+one-way transcendence certificate for the full one, for Hahn-valued $e$ and
+normalized coefficients (\cref{dyn:rd:thm:reduction,dyn:rd:thm:algebraicity});
+\item the periodic points of integral equivariant maps
+(\cref{dyn:rd:thm:allperiods}), prescribed finite families of periodic
+shells (\cref{dyn:rd:thm:allshells}), and reciprocal rational maps whose
+infinitely large periodic points are prescribed Gaussian omnific monomials
+(\cref{dyn:rd:thm:omnific}).
+\end{enumerate}
+Printed once, and credited to source 11 as an independent re-derivation:
+the positive-support lemma (\cref{dyn:lem:neumann}); evaluation, inversion
+and isometry for one uniform monoid (\cref{dyn:lem:evaluation}); the root
+count (\cref{dyn:lem:root-count}); the non-cofinality example
+(\cref{dyn:warn:contraction}); the maximal ball and the shell count, which
+are the equivariant case of \cref{dyn:thm:exact,dyn:thm:shell}
+(\cref{dyn:rd:prop:return}); and the leading differential equation, which
+is the equivariant case of \eqref{dyn:eq:ode0}
+(\cref{dyn:rd:rem:coherent}). Where source 11's proof takes a different
+route, the route is kept and marked. Text added in the merge, and not
+present in source 11, is marked \mergetag.
+
+\emph{Tags.} Resonance $\resq$, with $q$ the rotation order; the one
+exception is \cref{dyn:rd:thm:allperiods}, which also admits $\lambda=\zeta$
+exactly, the finite-order case $\Lambda^{q}=I$ of \cref{dyn:thm:finite-order},
+which is neither $\resq$ nor $\mres$ (\cref{dyn:warn:resonance}). Divisor
+notion $\sdz$: no arithmetic condition of any kind. Coefficient categories:
+the formal row $\mathcal F_1$ with the uniform-monoid algebra
+$\BB_{\mathsf M}$ of \cref{dyn:def:BM} for the linearizer, an ordinary
+polynomial $R\in\C[U]$ for the shell, and $\C[[X]]$ for the reduced
+linearizer. Domains: the valuation ball $B_r$, the closed ball
+$\bar B_r=\{v\ge r\}$ and the shell $S_r$ of \cref{dyn:subsec:radius}.
+
+\begin{convention}[Setting and local notation of source 11]
+\label{dyn:rd:conv}
+Source 11's symbols collide with this section's at almost every letter. The
+following renamings are used in \cref{dyn:rd:subsec} and the subsections
+after it, in \cref{dyn:rd:q:symmetry} to \cref{dyn:rd:q:effective}, and in
+\cref{dyn:rd:subsec:nonclaims}. No normalization changes; each item gives
+source 11's symbol first.
+\begin{enumerate}[label=(\roman*)]
+\item The rotation order $m$ is written $q$: it is the exact order of the
+residue multiplier, the $q$ of $\resq$. It is \emph{not} the series index
+$m$ of \cref{dyn:sec:drift}, nor source 10's tree complexity $m$.
+\item The displacement $d$, with $\lambda=\zeta+d$, is written $e$, as in
+the proof of \cref{dyn:lem:nonresonant}. In this report $d$ is a polynomial
+degree \eqref{dyn:eq:f-main} or a dimension. Source 11's
+$\delta=v(d)$ is $\delta=v(e)$ here. It equals $v(c)$ for
+$c=\lambda^{q}-1$ of \eqref{dyn:eq:g-main} (\cref{dyn:rd:lem:divisors}), so
+$\delta$ has one meaning in this section.
+\item The coefficient $a_j$ of $z^{1+jm}$ is written $a_{1+jq}$, so that
+$a_n$ is the coefficient of $z^{n}$, as in \eqref{dyn:eq:f-main}; the
+number $r$ of nonlinear terms is written $J$.
+\item The threshold exponent $\rho\in\Gamma$ is written $r_{\mathrm{eq}}$
+\eqref{dyn:rd:eq:req}, and the monomial $s=t^{\rho}$ is written
+$\rho=t^{r_{\mathrm{eq}}}$, as in \eqref{dyn:eq:H-scaled}. \textbf{Tempting
+false reading:} source 11's $\rho$ is an exponent; this section's $\rho$ is
+a monomial of $K_\Gamma$. \Cref{dyn:rd:prop:return} proves
+$r_{\mathrm{eq}}=r(f)$ of \eqref{dyn:eq:exact-r}; before that proposition
+the two are not identified.
+\item The normalized coefficients $u_j$ are written $\hat a_j$; the
+unreduced polynomial $P(U)=1+\sum_ju_jU^{j}$ is written $\widehat R(U)$; the
+reduced polynomial $R(U)$ keeps its name, with coefficients
+$\varkappa_j=\res(\hat a_j)$. \textbf{Tempting false reading:} this
+report's $P$ is the \emph{reduced} shell polynomial in $X$ of
+\eqref{dyn:eq:P}; source 11's $P$ is \emph{unreduced} and in the variable
+$U=X^{q}$. \Cref{dyn:rd:prop:return} proves $P(X)=R(X^{q})$. Source 11's
+$R$ is not the function $R(w)$ of \cref{dyn:q:moving}, not a radius, and
+not a coefficient ring.
+\item The normalized variable $y$ is written $X$. The normalized linearizer
+$h(y)=s^{-1}H(sy)$ is $H_r$ of \eqref{dyn:eq:H-scaled}; the coefficients
+$B_n$ of $H$ are written $h_n$, and the coefficients $b_n$ of $h$ are
+$h_n\rho^{n-1}$. This section's $b_n$ are the coefficients of the return
+$g=f^{\circ q}$ \eqref{dyn:eq:g-main}. The reduction $h_0\in\C[[y]]$ is
+written $\bar H_r\in\C[[X]]$: a coefficientwise reduction, not an
+evaluation. It is the Taylor expansion at zero of the exponent-zero
+coefficient $H_0$ of \cref{dyn:thm:coherent} (\cref{dyn:rd:rem:coherent}).
+The series $B(U)$ with $h_0=yB(y^{m})$ is written $\mathfrak h(U)$, with
+coefficients $\mathfrak h_k$ (source 11's $\beta_k$); $B_r$ remains a ball
+and $\BB$ the algebraicity base \eqref{dyn:eq:base}.
+\item A root $r$ of $R$ is written $\beta$, and source 11's residue
+$\alpha_r=1/(mrR'(r))$ is written
+$\mathfrak r_\beta=1/(q\beta R'(\beta))$. In this report $\alpha$ is the
+residue of $\lambda$, which here is $\zeta$, and $r$ is a threshold.
+\item The polynomial $q_k(D)$ is written $\varphi_k(E)$; the iterate
+quotient $T_n$ is written $\mathcal Q_n$, its divided difference $D_\psi$ is
+written $\mathcal D_\psi$, its coefficient ring $A$ is written $\mathsf A$,
+and $\mu=\psi'(0)$ is written $\mu_\psi$. The polynomial $T(X)$ of
+\cref{dyn:lem:displacement} and $\mu=1+c$ in the proof of
+\cref{dyn:thm:exact} are different objects.
+\item The support ring $A_S$ is written $\OO_{\mathsf M}$ with
+$\mathsf M=S^{*}$, so that $\BB_{\mathsf M}=\OO_{\mathsf M}[[X]]$
+(\cref{dyn:def:BM}); source 11's monoid $M(S)$ is $S^{*}$. In this section
+$M$ is the degree \eqref{dyn:eq:P}.
+\item In \cref{dyn:rd:thm:allshells,dyn:rd:thm:omnific}: the scales
+$\rho_\ell$ are written $r_\ell$, the constants $c_\ell$ are written
+$\varsigma_\ell$, the elements $b_\ell$ are written $\mathfrak b_\ell$, the
+polynomial $P(U)=\prod_\ell(U-b_\ell)$ is written $\mathcal S(U)$ with
+coefficients $s_j$, the number $r$ of shells is written $N$, the maximum
+$\sigma=\max_\ell\rho_\ell$ is written $r_{\max}$, a solution $\alpha$ of
+$\alpha^{m}=c_\ell$ is written $\vartheta$, the reciprocal map $G$ is written
+$f^{\vee}$, the clearing exponent $L$ is written $L_{\mathrm{cl}}$, and the
+class $\Pi$ of purely infinite forms is written $\mathbb J$. In this report
+$c=\lambda^{q}-1$, $G$ is the rescaled return \eqref{dyn:eq:G}, $\sigma$ is
+the drifted rate, and $\Pi$ is the action projection of
+\cref{dyn:sec:hamiltonian}.
+\item In the collision example, source 11's exponents $\epsilon,\gamma$ are
+written $\eta,\theta$, as in \cref{dyn:warn:contraction}; the temporary
+$t=t^{\epsilon}$ of its explicit quintic is written $t^{\eta}$. Its balls
+$B_\rho$, $\overline B_\rho$ and shell $S_\rho$ are $B_r$, $\bar B_r$ and
+$S_r$ at $r=r_{\mathrm{eq}}$.
+\item Source 11's word ``resonant'' means $\resq$ throughout, never $\mres$
+or $\fres$, and its ``boundary'' of a ball is the valuation shell, not a
+topological boundary.
+\end{enumerate}
+\end{convention}
+
+\begin{warning}[Rotation order one meets the parabolic tag]
+\label{dyn:rd:warn:qone}
+For $q=1$, so $\zeta=1$, a map \eqref{dyn:rd:eq:family} has multiplier
+$1+e$ and residue multiplier $1$ of exact order one: it satisfies $\resq$
+with $q=1$, because $1+e$ is not a root of unity. Its normalized map
+$F(X)=X+eX\widehat R(X)$ of \eqref{dyn:rd:eq:F} reduces to the identity,
+which is the shape of $\pares$; when $e=t^{\delta}$ and every $\hat a_j$ is
+an ordinary constant it is exactly an Euler map \eqref{dyn:eq:Euler}.
+\Cref{dyn:warn:resonance} says that \cref{dyn:thm:exact} needs $\resq$ and
+must not be applied under $\pares$; that is a statement about hypotheses. It
+forbids quoting the exact ball for a map known only to be parabolic. It does
+not forbid it here, where $\resq$ holds. Each theorem below is quoted under
+the tag its source proves it under. The two readings meet in
+\cref{dyn:thm:sharp} (\cref{dyn:rd:rem:scope}) and in
+\cref{dyn:rd:rem:superseded}.
+\end{warning}
+
+\subsection{Support rings, and a failure of local finiteness}
+\label{dyn:rd:subsec:support}
+
+Source 11 states the positive-support lemma in the finite-word form of
+\cref{dyn:lem:neumann}, including finiteness across variable word length,
+and cites Marker's lecture notes for it \cite[Lemma~2.36]{Marker}. Its
+remark that $n\eta$ need not be cofinal, with $\eta=(0,1)$ and
+$\theta=(1,0)$ in lexicographic $\Q^{2}$, where the geometric family
+$(t^{n\eta})_{n\ge0}$ is strongly summable but its partial sums are not
+Cauchy in the valuation topology, is the example of
+\cref{dyn:warn:contraction}. Source 11 draws from it the conclusion that a
+rank-one proof cannot be transferred by renaming the absolute value, and it
+never writes a real number $|t|^{\gamma}$ for a general exponent. Its
+workspace convention $t^{\gamma}=\omega^{-\gamma}$ is
+\eqref{dyn:eq:embedding}.
+
+\begin{definition}[A common local coefficient ring]
+\label{dyn:rd:def:ring}
+For a well-ordered $S\subset\Gamma_{>0}$ and $\mathsf M=S^{*}$, put
+$\OO_{\mathsf M}=\{x\in K_\Gamma:\supp x\subseteq\mathsf M\}$. It contains
+$0$ and every ordinary constant, lies in $\OO_\Gamma$, and
+$\BB_{\mathsf M}=\OO_{\mathsf M}[[X]]$.
+\end{definition}
+
+\begin{lemma}[The ring $\OO_{\mathsf M}$; source 11]\label{dyn:rd:lem:ring}
+$\OO_{\mathsf M}$ is a subring of $\OO_\Gamma$. An element of
+$\OO_{\mathsf M}$ with nonzero residue is invertible in $\OO_{\mathsf M}$.
+Every finite collection of elements of $\OO_\Gamma$ lies in some
+$\OO_{\mathsf M}$.
+\end{lemma}
+\begin{proof}
+The support of a sum lies in the union of the supports, and that of a
+product in their sum, so both operations preserve $\OO_{\mathsf M}$. Write a
+residue unit as $b=c_0(1-u)$ with $c_0\in\C^{\times}$ and
+$\supp u\subseteq\mathsf M\setminus\{0\}$, a positive well-ordered set.
+\Cref{dyn:lem:neumann} makes $\sum_{n\ge0}u^{n}$ strongly summable with
+support in $\mathsf M$, and the geometric identity gives the inverse.
+Finally, the finite union of the positive supports of finitely many elements
+of $\OO_\Gamma$ is positive and well ordered; take it as $S$.
+\end{proof}
+
+\begin{lemma}[Uniform support evaluation; source 11]
+\label{dyn:rd:lem:evaluation}
+Let $h_n\in\OO_{\mathsf M}$ for all $n\ge0$ and $u\in\m_\Gamma$. Then
+$\sum_{n\ge0}h_nu^{n}$ is strongly summable. The same holds for a formal
+power series in finitely many variables with coefficients in
+$\OO_{\mathsf M}$, evaluated at a tuple of infinitesimals. Products, and
+formal substitution into series with zero constant coefficient, commute with
+these evaluations whenever the substituted series also have coefficients in
+$\OO_{\mathsf M}$. The formal derivative series of every fixed finite order
+are strongly evaluable on the same infinitesimal domain.
+\end{lemma}
+\begin{proof}
+The one-variable clause and the substitution clause are
+\cref{dyn:lem:evaluation}; source 11's proof is the same finite-word count.
+For finitely many variables, take the finite union of their positive
+supports with $S$. A monomial of total degree $n$ again contributes at least
+$n$ positive letters, and there are only finitely many multi-indices of
+bounded total degree, so the same proof applies. For a product or a
+substitution, expand into the underlying monomials of the infinitesimal
+arguments: at a fixed Hahn exponent their total degree is bounded by the
+word argument, and at a fixed total degree there are only finitely many
+formal composition partitions, because the substituted series have zero
+constant coefficient. Formal differentiation multiplies coefficients by
+ordinary integers and lowers the degree by a fixed amount, so the same
+finiteness proof applies to each fixed derivative.
+\end{proof}
+
+\begin{remark}[Inverse and isometry; printed once]\label{dyn:rd:rem:inverse}
+Source 11's ``strong inverse and isometry'' proposition is the second and
+third clauses of \cref{dyn:lem:evaluation}, proved the same way: the
+inverse coefficients are integer polynomials in finitely many $h_n$, and the
+divided difference is $1$ plus a strongly summable family of positive
+valuation. It adds one clause: for $H=X+\sum_{n\ge2}h_nX^{n}$ with all
+$h_n\in\OO_{\mathsf M}$ and $0\ne u\in\m_\Gamma$, either $H(u)=u$ or
+$v(H(u)-u)>v(u)$, because $H(u)-u=u^{2}\sum_{n\ge2}h_nu^{n-2}$.
+\end{remark}
+
+\begin{example}[Integral coefficients are not enough: local finiteness fails]
+\label{dyn:rd:ex:collision}
+Let $\eta,\theta\in\Gamma$ be positive with $n\eta<\theta$ for every
+integer $n\ge1$; for instance $\eta=(0,1)$ and $\theta=(1,0)$ in
+lexicographic $\Q^{2}$. For $n\ge2$ put
+\[
+ g_n=t^{\theta-n\eta}\in\m_\Gamma,\qquad u=t^{\eta}\in\m_\Gamma .
+\]
+Every coefficient is infinitesimal, but $g_nu^{n}=t^{\theta}$ for every
+$n\ge2$. The family $(g_nu^{n})$ is not strongly summable: the union of its
+supports is the well-ordered set $\{\theta\}$, but that one exponent occurs
+infinitely often. So the assertion ``$\sum g_nX^{n}\in\OO_\Gamma[[X]]$,
+hence it evaluates at every infinitesimal'' is false in arbitrary rank. The
+$g_n$ lie in no single $\OO_{\mathsf M}$, since their supports form a
+strictly decreasing sequence.
+
+\mergetag\ This is a different failure from \cref{dyn:ex:bad-support}.
+There the Taylor exponents $1/n+n\eps_0$ strictly decrease, so
+well-ordering fails; here every term sits at one exponent, so local
+finiteness fails. The two examples violate the two clauses of
+\cref{dyn:def:summable} separately. \Cref{dyn:thm:sharp} exhibits both
+failures for a single Taylor family, at and below its threshold.
+\end{example}
+
+\subsection{The explicit threshold, and a linearization without the return}
+\label{dyn:rd:subsec:threshold}
+
+\begin{lemma}[Equal-characteristic root-of-unity dichotomy]
+\label{dyn:rd:lem:divisors}
+Let $\lambda=\zeta+e$ with $v(e)=\delta>0$ and $\zeta$ a primitive ordinary
+$q$-th root of unity. For every ordinary integer $n\ge1$,
+\[
+ v(\lambda^{n}-1)=
+ \begin{cases}
+ 0, & q\nmid n,\\
+ \delta, & q\mid n .
+ \end{cases}
+\]
+In particular $\lambda$ is not a root of unity. For $k\ge1$,
+\begin{equation}\label{dyn:rd:eq:divisorunit}
+ \lambda(1-\lambda^{kq})=e\,\varphi_k(e),\qquad
+ \varphi_k(E)\in\C[E],\qquad \varphi_k(0)=-kq\ne0 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $q\nmid n$, the residue of $\lambda^{n}-1$ is $\zeta^{n}-1\ne0$. If
+$q\mid n$, write $\lambda=\zeta(1+e/\zeta)$ and expand the ordinary finite
+binomial: its first nonzero term is $ne/\zeta$, of valuation $\delta$, and
+every other term has valuation at least $2\delta$. This proves the dichotomy
+and non-torsion. The polynomial $(\zeta+E)(1-(\zeta+E)^{kq})$ vanishes at
+$E=0$ with derivative $-kq$ there, which gives
+\eqref{dyn:rd:eq:divisorunit}.
+\end{proof}
+
+This agrees with the rank-one small-divisor calculation of
+\cite[Lemma~3.3]{Lindahl}, and no real-valued norm is needed. The same
+first-term computation is used in the proofs of \cref{dyn:thm:exact} and
+\cref{dyn:lem:displacement}. In particular $c=\lambda^{q}-1$ has valuation
+$\delta$, so source 11's $\delta$ is the $\delta$ of \eqref{dyn:eq:g-main}.
+
+The normalized formal linearizer $H(z)=z+\sum_{n\ge2}h_nz^{n}$ of any
+polynomial with multiplier $\lambda\ne0$ not a root of unity is unique, by
+the recurrence \eqref{dyn:eq:recurrence}; source 11 writes the same
+recurrence with $T=f$. If $f(\zeta z)=\zeta f(z)$, then
+$\zeta^{-1}H(\zeta z)$ satisfies the same equation and normalization, so
+\begin{equation}\label{dyn:rd:eq:hsymmetry}
+ H(\zeta z)=\zeta H(z),\qquad h_n=0\ \text{unless}\ n\equiv1\pmod q .
+\end{equation}
+For $q=1$ this is vacuous.
+
+\emph{Cancellation after scaling.} For \eqref{dyn:rd:eq:family} put
+\begin{equation}\label{dyn:rd:eq:req}
+ r_{\mathrm{eq}}=\max_{a_n\ne0}\frac{\delta-v(a_n)}{n-1}
+ =\max_{a_{1+jq}\ne0}\frac{\delta-v(a_{1+jq})}{jq},
+ \qquad \rho=t^{r_{\mathrm{eq}}},
+\end{equation}
+a finite maximum over a nonempty set, lying in $\Gamma$ by divisibility.
+Unlike \eqref{dyn:eq:exact-r}, it is read off the coefficients of $f$, not
+of its $q$-th return. Put
+\begin{equation}\label{dyn:rd:eq:R}
+ \hat a_j=\frac{a_{1+jq}\rho^{jq}}{e}\in\OO_\Gamma,\qquad
+ \widehat R(U)=1+\sum_{j=1}^{J}\hat a_jU^{j},\qquad
+ R(U)=1+\sum_{j=1}^{J}\varkappa_jU^{j},\quad \varkappa_j=\res(\hat a_j).
+\end{equation}
+Each $\hat a_j$ is integral and at least one is a unit, because
+$v(\hat a_j)=v(a_{1+jq})+jq\,r_{\mathrm{eq}}-\delta\ge0$ with equality at a
+maximizing $j$; so $R\in\C[U]$ is nonconstant with $R(0)=1$. The rescaled
+map is
+\begin{equation}\label{dyn:rd:eq:F}
+ F(X)=\rho^{-1}f(\rho X)=\zeta X+eX\widehat R(X^{q}),
+\end{equation}
+with multiplier $\lambda$; it is the $F$ of the proof of
+\cref{dyn:thm:exact} at $r=r_{\mathrm{eq}}$.
+
+\begin{theorem}[Strong linearization on the exact candidate ball; source 11]
+\label{dyn:rd:thm:linearization}
+For $f$ as in \eqref{dyn:rd:eq:family}, the normalized formal linearizer
+$H$ and its formal inverse evaluate strongly on $B_{r_{\mathrm{eq}}}$, their
+values are mutually inverse bijective isometries of $B_{r_{\mathrm{eq}}}$,
+and $H(f(z))=\lambda H(z)$ for $z\in B_{r_{\mathrm{eq}}}$. More precisely,
+every coefficient of $H_r(X)=\rho^{-1}H(\rho X)$ and of its inverse lies in
+one ring $\OO_{\mathsf M}$, where $S$ may be chosen as the union of the
+positive supports of the finite list $e,\hat a_1,\dots,\hat a_J$.
+Consequently $f$ is a bijective isometry of $B_{r_{\mathrm{eq}}}$ with no
+nonzero periodic point there.
+\end{theorem}
+\begin{proof}[Proof \textup{(source 11: cancellation in the recurrence of
+$f$ itself, with no return iterate)}]
+Choose $S$ as stated, omitting zero coefficients; by
+\cref{dyn:rd:lem:ring}, $e$ and every $\hat a_j$ lie in $\OO_{\mathsf M}$.
+The normalized formal series $H_r(X)=X+\sum_{n\ge2}h_n\rho^{n-1}X^{n}$ is
+the unique normalized linearizer of $F$, by
+\cref{dyn:rd:lem:divisors} and \eqref{dyn:eq:recurrence}, and by
+\eqref{dyn:rd:eq:hsymmetry} only degrees $n=1+kq$ occur. Assume every
+earlier coefficient lies in $\OO_{\mathsf M}$. The nonlinear coefficients of
+$F$ are $e\hat a_j$. In the numerator of \eqref{dyn:eq:recurrence} every
+term is divisible by $e$ in $\OO_{\mathsf M}$: this is evident for a
+coefficient of $F$ itself, and a term of degree $n$ in $F^{k}$ with $k<n$
+uses at least one nonlinear coefficient. After division by $e$ the numerator
+is still in $\OO_{\mathsf M}$. The denominator is $e\varphi_k(e)$ by
+\eqref{dyn:rd:eq:divisorunit}, and $\varphi_k(e)$ is a unit of
+$\OO_{\mathsf M}$ because its residue is $-kq\ne0$. Cancelling $e$ gives
+$h_n\rho^{n-1}\in\OO_{\mathsf M}$, which proves the common-support
+assertion by induction.
+
+\Cref{dyn:lem:evaluation} and \cref{dyn:rd:rem:inverse} make $H_r$ and its
+inverse mutually inverse isometries of $\m_\Gamma$. The polynomial $F$
+preserves $\m_\Gamma$, and \cref{dyn:rd:lem:evaluation} justifies evaluating
+the formal conjugacy there. Multiplication by $\rho$ transfers everything to
+$B_{r_{\mathrm{eq}}}=\rho\,\m_\Gamma$. Multiplication by $\lambda$ is an
+isometry preserving $\m_\Gamma$, so $f$ is a bijective isometry. If
+$f^{\circ n}(z)=z$ then $(\lambda^{n}-1)H(z)=0$; non-torsion gives
+$H(z)=0$ and injectivity gives $z=0$.
+\end{proof}
+
+\begin{remark}[Why the recurrence is stronger than a norm estimate; two
+routes]\label{dyn:rd:rem:cancel}
+At every surviving degree the denominator has valuation $\delta$, but the
+numerator has an actual factor $e$ inside one fixed support ring. That
+algebraic cancellation, followed by inversion of a residue unit, keeps every
+normalized coefficient in one $\OO_{\mathsf M}$; a sequence of unrelated
+valuation bounds would not. The proof yields the estimate
+\begin{equation}\label{dyn:rd:eq:coeffbound}
+ v(h_n)+(n-1)r_{\mathrm{eq}}\ge0\qquad(n\ge2),
+\end{equation}
+which alone is not the analytic theorem. \mergetag\ The cancellation is the
+one of \cref{dyn:lem:displacement}, which this report performs on the
+return $G$ and then transfers to $F$ by commutation. Source 11 performs it
+on the recurrence of $F$ itself. That is possible because equivariance
+removes every degree $n\not\equiv1\pmod q$, whose divisors
+$\lambda-\lambda^{n}$ are units, and leaves only the degrees whose divisors
+carry the factor $e$. The two proofs are kept as two routes to the same
+support certificate; source 11's composes no iterate.
+\end{remark}
+
+\subsection{All periods in the closed normalized ball, and the radius shell}
+\label{dyn:rd:subsec:shell}
+
+\begin{lemma}[Universal iterate quotient; source 11]\label{dyn:rd:lem:iterate}
+Let $\mathsf A$ be a commutative ring and $\psi(X)\in\mathsf A[X]$. For
+every $n\ge1$ there is $\mathcal Q_n(X)\in\mathsf A[X]$ with
+\begin{equation}\label{dyn:rd:eq:iteratediv}
+ \psi^{\circ n}(X)-X=\bigl(\psi(X)-X\bigr)\mathcal Q_n(X).
+\end{equation}
+If $\psi(0)=0$ and $\mu_\psi=\psi'(0)$, then
+$\mathcal Q_n(0)=1+\mu_\psi+\cdots+\mu_\psi^{n-1}$. If $\mathsf A=\OO_\Gamma$
+and $\psi(X)\equiv X\pmod{\m_\Gamma[X]}$, then
+$\mathcal Q_n(X)\equiv n\pmod{\m_\Gamma[X]}$.
+\end{lemma}
+\begin{proof}
+Let
+$\mathcal D_\psi(X,Y)=(\psi(X)-\psi(Y))/(X-Y)\in\mathsf A[X,Y]$. Put
+$\mathcal Q_1=1$ and
+$\mathcal Q_{n+1}(X)=\mathcal Q_n(X)\,\mathcal D_\psi(\psi^{\circ n}(X),X)+1$;
+substitution proves \eqref{dyn:rd:eq:iteratediv} by induction. If
+$\psi(0)=0$ then $\mathcal D_\psi(0,0)=\mu_\psi$, giving the constant term.
+If $\psi$ reduces to the identity, its divided difference reduces to $1$,
+and reducing the recursion gives $\mathcal Q_n\equiv n$.
+\end{proof}
+
+The construction divides by no leading coefficient, so no nonunit is ever
+inverted.
+
+\begin{proposition}[No hidden periods in the closed normalized ball;
+source 11]\label{dyn:rd:prop:periodfinite}
+For $F$ of \eqref{dyn:rd:eq:F}, every nonzero periodic point in $\OO_\Gamma$
+satisfies $F(X)=\zeta X$ and has exact period $q$. These points are exactly
+the roots in $\OO_\Gamma^{\times}$ of $\widehat R(X^{q})=0$. Equivalently,
+every nonzero periodic point of $f$ in the closed ball
+$\bar B_{r_{\mathrm{eq}}}$ lies on $S_{r_{\mathrm{eq}}}$, satisfies
+$f(z)=\zeta z$ and has exact period $q$.
+\end{proposition}
+\begin{proof}
+Let $\psi=\zeta^{-1}F$. It commutes with multiplication by $\zeta$, and its
+reduction is the identity. If $q\nmid n$, the polynomial
+$(F^{\circ n}(X)-X)/X$ has reduction the constant $\zeta^{n}-1\ne0$, so it
+is a unit at every $X\in\OO_\Gamma$, and no nonzero point of $\OO_\Gamma$
+has period dividing $n$. If $q\mid n$, equivariance gives
+$F^{\circ n}=\psi^{\circ n}$, and by \cref{dyn:rd:lem:iterate}
+$\mathcal Q_n(X)$ has residue $n\ne0$ at every $X\in\OO_\Gamma$. So
+$F^{\circ n}(X)=X$ is equivalent to $\psi(X)=X$, which for $X\ne0$ and
+$e\ne0$ is $\widehat R(X^{q})=0$. Conversely such a point satisfies
+$F(X)=\zeta X$; equivariance gives its whole rotation orbit, of exact
+length $q$ because $\zeta$ has exact order $q$ and $X\ne0$. A root with
+$v(X)>0$ is impossible, since $\widehat R(X^{q})$ has residue $1$ there.
+Scaling by $\rho$ gives the statement for $f$.
+\end{proof}
+
+\mergetag\ \Cref{dyn:thm:shell}(i) counts the solutions of
+$f^{\circ q}(z)=z$ on $S_r$ and excludes periodic points from the open ball
+$B_r$. It does not exclude, on $S_r$, periodic points whose period is not a
+divisor of $q$. For equivariant maps \cref{dyn:rd:prop:periodfinite}
+excludes all of them. That exclusion is new to this report.
+
+\begin{proposition}[The two thresholds and the two shell polynomials
+coincide]\label{dyn:rd:prop:return}
+\mergetag\ For $f$ as in \eqref{dyn:rd:eq:family}, the threshold
+\eqref{dyn:eq:exact-r} of \cref{dyn:thm:exact}, which is computed from the
+$q$-th return, equals $r_{\mathrm{eq}}$, and the shell polynomial
+\eqref{dyn:eq:P} is
+\begin{equation}\label{dyn:rd:eq:PR}
+ P(X)=R(X^{q}),\qquad M=\deg P=q\deg R .
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $\psi=\zeta^{-1}F$, so $\psi(X)-X=\zeta^{-1}eX\widehat R(X^{q})$ and
+$\psi$ reduces to the identity. Since $\zeta^{q}=1$ and $\psi$ commutes with
+multiplication by $\zeta$, $F^{\circ q}=\psi^{\circ q}$; and rescaling
+commutes with iteration, so the rescaled return of \eqref{dyn:eq:G} at
+scale $\rho=t^{r_{\mathrm{eq}}}$ is $G=F^{\circ q}$. By
+\cref{dyn:rd:lem:iterate},
+$G(X)-X=\zeta^{-1}eX\widehat R(X^{q})\mathcal Q_q(X)$ with
+$\mathcal Q_q\equiv q\pmod{\m_\Gamma[X]}$. By \cref{dyn:rd:lem:divisors}
+write $c=\lambda^{q}-1=q\zeta^{-1}e\,w$, where $w\in\OO_\Gamma$ has residue
+$1$. Then
+\[
+ Q(X)=\frac{G(X)-X}{cX}=\frac{\widehat R(X^{q})\,\mathcal Q_q(X)}{q\,w}
+\]
+is an integral polynomial with reduction $R(X^{q})$, which is nonconstant.
+Its constant term is $1$, as it must be, since
+$\mathcal Q_q(0)=\sum_{i<q}(\lambda/\zeta)^{i}=c\zeta/e=qw$. Integrality of
+$Q$ with a nonconstant reduction says that
+$v(b_n)+(n-1)r_{\mathrm{eq}}-\delta\ge0$ for every nonzero return
+coefficient $b_n$, with equality for some $n$. The function
+$r'\mapsto\min_n\bigl(v(b_n)+(n-1)r'-\delta\bigr)$ is strictly increasing,
+because every $n-1\ge1$, and it vanishes at $r'=r(f)$ by
+\eqref{dyn:eq:exact-r}. So $r(f)=r_{\mathrm{eq}}$, the $Q$ above is
+\eqref{dyn:eq:Q-shell}, and $P=\bar Q=R(X^{q})$.
+\end{proof}
+
+So for equivariant polynomials the threshold of \cref{dyn:thm:exact} is the
+explicit expression \eqref{dyn:rd:eq:req} in the coefficients of $f$, and
+\cref{dyn:thm:shell}(ii), $P\in\C[X^{q}]$, is visible directly. The
+expression is special to equivariant maps. For the non-equivariant tuned
+cubic \eqref{dyn:eq:tuned-cubic} it would give
+$\max\{\delta/1,\delta/2\}=\delta$, whereas $r(f_e)=\delta/4$
+\eqref{dyn:eq:tuned-r}: the cancellation in the return
+(\cref{dyn:sec:phase}) is invisible in the coefficients of $f$.
+
+Source 11's finite-root degree lemma is \cref{dyn:lem:root-count}, stated for
+a polynomial $\widehat R\in\OO_\Gamma[U]$ with unit constant coefficient,
+not constant coefficient $1$. Its proof is the same finite factorization,
+organized by Gauss valuation. Factor over the algebraically closed
+$K_\Gamma$, using $U-\beta$ for a root with $v(\beta)\ge0$ and $1-U/\beta$
+for a root with $v(\beta)<0$. Every factor has Gauss valuation zero, and a
+product of such factors has Gauss valuation zero because the reductions are
+nonzero polynomials over a field. Reduction then sends each
+negative-valuation factor to $1$. It is printed once, as
+\cref{dyn:lem:root-count}.
+
+\begin{theorem}[The radius-shell divisor and sharp maximality; source 11]
+\label{dyn:rd:thm:shell}
+The polynomial $f$ of \eqref{dyn:rd:eq:family} has exactly $q\deg R$
+nonzero periodic points in $\bar B_{r_{\mathrm{eq}}}$, counted with
+algebraic multiplicity in $f^{\circ q}(z)-z$. All of them lie on
+$S_{r_{\mathrm{eq}}}$ and have exact period $q$. Equivalently there are
+$\deg R$ cycles, each counted with the common multiplicity of its points.
+If $R$ is squarefree, these are $\deg R$ distinct simple cycles, one for
+each root of $R$ in the coordinate $(z/\rho)^{q}$. The ball
+$B_{r_{\mathrm{eq}}}$ is the maximal centered valuation ball on which an
+injective conjugacy fixing $0$ can carry $f$ to multiplication by
+$\lambda$, even if the conjugacy is not assumed to be a power series.
+\end{theorem}
+\begin{proof}[Proof \textup{(source 11)}]
+$\widehat R$ reduces to $R$, so \cref{dyn:lem:root-count} gives exactly
+$\deg R$ unit roots $U$, with multiplicity. Every such $U$ has $q$ distinct
+$q$-th roots in $K_\Gamma$, and $U=X^{q}$ has derivative $qX^{q-1}\ne0$
+there, so each multiplicity is preserved. By
+\cref{dyn:rd:prop:periodfinite} these $q\deg R$ points are exactly the
+nonzero periodic points of $F$ in $\OO_\Gamma$, hence of $f$ in the closed
+ball, and they are units in the normalized coordinate, so they lie on the
+shell. The quotient $\mathcal Q_q$ of \eqref{dyn:rd:eq:iteratediv} is a unit
+at each point of $\OO_\Gamma$, so the multiplicity in $F^{\circ q}-X$
+equals that in $\psi-X=\zeta^{-1}eX\widehat R(X^{q})$. Rotation preserves
+it and partitions the nonzero roots into orbits of size $q$, which gives
+every count, including the squarefree case. Since $\deg R\ge1$ the shell
+carries a nonzero $q$-cycle, and every centered ball strictly containing
+$B_{r_{\mathrm{eq}}}$ contains the whole shell. An injective $J$ with
+$J(0)=0$ would send a point $p$ of that cycle to a solution of
+$\lambda^{q}J(p)=J(p)$; non-torsion forces $J(p)=0$, contradicting
+injectivity. Existence on $B_{r_{\mathrm{eq}}}$ is
+\cref{dyn:rd:thm:linearization}.
+\end{proof}
+
+By \cref{dyn:rd:prop:return}, the count and the maximality are
+\cref{dyn:thm:exact} and \cref{dyn:thm:shell}(i),(iii) for $P=R(X^{q})$;
+they are printed once there and credited to source 11 here. Its proof is a
+second route. It uses the iterate quotient on the whole closed ball instead
+of the return polynomial $Q$, and it yields the closed-ball exclusion of
+\cref{dyn:rd:prop:periodfinite} as well. For a simple root the leading
+return-multiplier ratio of \eqref{dyn:eq:multiplier} is
+$aP'(a)=qa^{q}R'(a^{q})=q\beta R'(\beta)=1/\mathfrak r_\beta$ at
+$\beta=a^{q}$, the reciprocal of the residue in \eqref{dyn:rd:eq:alpha}
+below.
+
+\begin{remark}[What maximality does not say]\label{dyn:rd:rem:scope}
+Source 11 states independently what \cref{dyn:rem:exact-scope} states. The
+theorem does not say that the series $H$ fails to be summable at every
+individual shell point. It says only that no injective linearizing chart
+extends to a whole larger centered ball; extension to specially chosen sets
+omitting the obstructing cycles is a different question
+(\cref{dyn:rd:q:continuation}). \mergetag\ In one model the stronger
+statement is known. For $q=1$, $e=t^{\delta}$ and the single term $z^{1+k}$,
+source 11's map is $(1+t^{\delta})z+z^{1+k}$, the model of
+\cref{dyn:thm:sharp} with its $q$ equal to $k$. There the Taylor family of
+$H$ fails to be strongly summable at \emph{every} point of
+$S_{\delta/k}$, which is consistent with source 11's disclaimer and
+strictly stronger than it.
+\end{remark}
+
+\subsection{The boundary vector field and algebraicity of the reduced
+linearizer}\label{dyn:rd:subsec:reduction}
+
+By \cref{dyn:rd:thm:linearization} every coefficient of $H_r$ is integral,
+so its coefficientwise reduction $\bar H_r\in\C[[X]]$ is defined. This is a
+formal operation, not the evaluation of $H_r$ at an ordinary point of the
+shell.
+
+\begin{theorem}[First-order boundary reduction; source 11]
+\label{dyn:rd:thm:reduction}
+$\bar H_r$ is the unique formal series $X+O(X^{2})$ with
+\begin{equation}\label{dyn:rd:eq:vectorfield}
+ XR(X^{q})\,\bar H_r'(X)=\bar H_r(X).
+\end{equation}
+Writing $\bar H_r(X)=X\mathfrak h(X^{q})$ with $\mathfrak h(0)=1$,
+\begin{align}
+ \frac{\mathfrak h'(U)}{\mathfrak h(U)}&=\frac{R(U)^{-1}-1}{qU},
+ \label{dyn:rd:eq:hlog}\\
+ \bar H_r(X)&=X\exp\left(\int_0^{X^{q}}\frac{R(U)^{-1}-1}{qU}\dd U\right),
+ \label{dyn:rd:eq:h0integral}
+\end{align}
+where the integral and the exponential are ordinary formal power-series
+operations over $\C$.
+\end{theorem}
+\begin{proof}[Proof \textup{(source 11: a formal Taylor identity, with no
+common disk)}]
+In the independent variable $X$,
+\[
+ H_r\bigl(\zeta X+eV(X)\bigr)=H_r(\zeta X)+eV(X)H_r'(\zeta X)
+ +\sum_{\ell\ge2}\frac{e^{\ell}V(X)^{\ell}}{\ell!}H_r^{(\ell)}(\zeta X),
+ \qquad V(X)=X\widehat R(X^{q}).
+\]
+At each degree in $X$ the sum is finite, because $V$ has no constant term
+and a fixed monomial has only finitely many nonzero derivatives, and all
+coefficients other than the displayed powers of $e$ are integral.
+Equivariance gives $H_r(\zeta X)=\zeta H_r(X)$ and $H_r'(\zeta X)=H_r'(X)$.
+Subtract these terms from $H_r(F(X))=(\zeta+e)H_r(X)$, divide by $e$ and
+reduce coefficientwise: every term with $\ell\ge2$ dies, and
+$XR(X^{q})\bar H_r'=\bar H_r$ remains. Equivariance already puts
+$\bar H_r$ in the form $X\mathfrak h(X^{q})$, and substitution gives
+$R(U)\bigl(\mathfrak h+qU\mathfrak h'\bigr)=\mathfrak h$, hence
+\eqref{dyn:rd:eq:hlog}. Since $R^{-1}-1$ has no constant term the quotient
+by $U$ is a formal power series; termwise integration with zero constant
+term and formal exponentiation give the unique solution with
+$\mathfrak h(0)=1$.
+\end{proof}
+
+\begin{remark}[The same equation as the coherent leading coefficient; two
+routes]\label{dyn:rd:rem:coherent}
+\mergetag\ \Cref{dyn:thm:coherent} gives, for every $\resq$ polynomial, the
+exponent-zero coefficient $H_0$ of $H_r$ as a holomorphic function on an
+ordinary disk, with $V_0H_0'=H_0$ and $V_0=XP(X)$ \eqref{dyn:eq:ode0}. By
+\cref{dyn:rd:prop:return}, $V_0=XR(X^{q})$ here, so
+\eqref{dyn:rd:eq:vectorfield} is the Taylor expansion at zero of
+\eqref{dyn:eq:ode0}, and \eqref{dyn:eq:H0} becomes
+\eqref{dyn:rd:eq:h0integral} under the substitution $U=s^{q}$ in its
+integral. The equation is printed once, as \eqref{dyn:eq:ode0}. Source 11's
+proof is a different route and is kept: a formal Taylor identity in
+$\C[[X]]$ after division by $e$, with no ordinary disk and no transfinite
+recursion. \Cref{dyn:thm:coherent} gives more, the holomorphy of every
+$H_\gamma$ on one disk; source 11 gives the equation from the formal
+coefficients alone.
+\end{remark}
+
+\begin{corollary}[A finite recurrence for the boundary series; source 11]
+\label{dyn:rd:cor:boundaryrec}
+If $\mathfrak h(U)=\sum_{k\ge0}\mathfrak h_kU^{k}$, then $\mathfrak h_0=1$ and
+\begin{equation}\label{dyn:rd:eq:betarec}
+ qk\,\mathfrak h_k=-\sum_{j=1}^{\min(k,\deg R)}
+ \varkappa_j\bigl(1+q(k-j)\bigr)\mathfrak h_{k-j}\qquad(k\ge1).
+\end{equation}
+So every finite jet of the boundary series is computed by a finite recursion
+from $q$ and the coefficients of $R$.
+\end{corollary}
+\begin{proof}
+Compare coefficients of $U^{k}$ in
+$R(\mathfrak h+qU\mathfrak h')=\mathfrak h$; the term $j=0$ contributes
+$(1+qk)\mathfrak h_k$.
+\end{proof}
+
+The following argument gives the exact algebraicity test. The observation
+about logarithmic derivatives is standard algebra; source 11 claims only its
+application to the boundary series.
+
+\begin{lemma}[Norm obstruction; source 11]\label{dyn:rd:lem:norm}
+Suppose $0\ne g$ is algebraic over $\C(X)$ and $g'/g=\varpi(X)\in\C(X)$.
+Then $\varpi$ has only simple finite poles, and its residue at each finite
+pole is rational.
+\end{lemma}
+\begin{proof}
+Let $L_g=\C(X,g)$ and $D=[L_g:\C(X)]$. In characteristic zero the
+derivation $d/dX$ extends uniquely to algebraic extensions, so every field
+embedding of $L_g$ into an algebraic closure commutes with it. Taking the
+norm gives $(N g)'/(N g)=D\varpi$, where $N g=N_{L_g/\C(X)}g$ is a nonzero
+rational function, a constant times a finite product $\prod_a(X-a)^{n_a}$
+with integers $n_a$. Its logarithmic derivative is $\sum_an_a/(X-a)$;
+divide by $D$.
+\end{proof}
+
+\begin{theorem}[Exact algebraicity criterion for the reduction; source 11]
+\label{dyn:rd:thm:algebraicity}
+Let $R\in\C[U]$ be nonconstant with $R(0)=1$, and let $\bar H_r$ be
+\eqref{dyn:rd:eq:h0integral}. Then $\bar H_r$ is algebraic over $\C(X)$ if
+and only if $R$ is squarefree and
+\begin{equation}\label{dyn:rd:eq:alpha}
+ \mathfrak r_\beta=\frac1{q\beta R'(\beta)}\in\Q
+ \qquad\text{for every root }\beta\text{ of }R.
+\end{equation}
+In that case
+\begin{equation}\label{dyn:rd:eq:h0product}
+ \bar H_r(X)=X\prod_{R(\beta)=0}\bigl(1-X^{q}/\beta\bigr)^{\mathfrak r_\beta},
+\end{equation}
+each power being the formal binomial branch with constant coefficient $1$.
+For $f$ as in \eqref{dyn:rd:eq:family}, failure of either condition proves
+that the normalized linearizer $H(z)$ is transcendental over $K_\Gamma(z)$.
+\end{theorem}
+\begin{proof}
+By \eqref{dyn:rd:eq:vectorfield}, $\bar H_r'/\bar H_r=1/(XR(X^{q}))$. A
+repeated root $\beta$ of $R$ is nonzero because $R(0)=1$, and at each
+$q$-th root of $\beta$ the right side has a pole of order at least two,
+contradicting \cref{dyn:rd:lem:norm} if $\bar H_r$ is algebraic. If $R$ is
+squarefree, the residue at any $a$ with $a^{q}=\beta$ is
+$1/(a\,R'(\beta)\,qa^{q-1})=\mathfrak r_\beta$, and \cref{dyn:rd:lem:norm}
+proves necessity of \eqref{dyn:rd:eq:alpha}.
+
+For sufficiency, the rational function in \eqref{dyn:rd:eq:hlog} is regular
+at $0$, tends to $0$ at infinity, and has simple poles at the roots of $R$
+with residues $\mathfrak r_\beta$. Partial fractions give
+$(R(U)^{-1}-1)/(qU)=\sum_{R(\beta)=0}\mathfrak r_\beta/(U-\beta)$, and
+integration with $\mathfrak h(0)=1$ gives \eqref{dyn:rd:eq:h0product}. If
+all $\mathfrak r_\beta$ are rational, a common positive denominator $N_0$
+makes $\bar H_r^{N_0}$ rational in $X$, so $\bar H_r$ is algebraic.
+
+Finally suppose $H$ is algebraic over $K_\Gamma(z)$ while $\bar H_r$ is
+transcendental. Then $H_r(X)=\rho^{-1}H(\rho X)$ is algebraic over
+$K_\Gamma(X)$, so some nonzero $\mathcal P(X,T)\in K_\Gamma[X,T]$ satisfies
+$\mathcal P(X,H_r(X))=0$. Multiply $\mathcal P$ by one nonzero scalar so
+that its finitely many coefficients all have nonnegative valuation and one
+has valuation zero. Since $H_r\in\OO_\Gamma[[X]]$, coefficientwise reduction
+gives $\bar{\mathcal P}(X,\bar H_r(X))=0$ with
+$0\ne\bar{\mathcal P}\in\C[X,T]$, contradicting transcendence of
+$\bar H_r$.
+\end{proof}
+
+The last step normalizes a \emph{finite} relation before reducing it, so its
+reduction is not the zero polynomial. This is the argument of
+\cref{dyn:lem:reduction}, over $K_\Gamma(z)$ instead of $\BB$.
+
+\begin{remark}[The condition is exact at the residue level only]
+\label{dyn:rd:rem:residuelevel}
+The theorem decides algebraicity of $\bar H_r$ completely from the finite
+polynomial $R$. Passing the test does not prove $H$ algebraic, because the
+higher Hahn coefficients were discarded by reduction. Failing it is a
+conclusive obstruction for $H$, not merely an obstruction to one proposed
+formula.
+\end{remark}
+
+\begin{remark}[The same criterion under $\pares$; two routes]
+\label{dyn:rd:rem:parabolic}
+\mergetag\ Put $V(X)=XR(X^{q})$ and $\mu=1$. Its zeros are $0$ and the $a$
+with $a^{q}=\beta$ for a root $\beta$ of $R$; they are simple exactly when
+$R$ is squarefree; and $V'(a)=q\beta R'(\beta)$, so
+$\mu/V'(a)=\mathfrak r_\beta$. The first clause of
+\cref{dyn:prop:leadingalgebraic}, and its product formula
+\eqref{dyn:eq:h0product}, involve only the polynomial $V$: the coefficient
+of $\eps^{0}$ in $\Omega_\eps$ is $\mu/V$. Applied to this $V$ they are
+\eqref{dyn:rd:eq:alpha} and \eqref{dyn:rd:eq:h0product}. Equivalently, with
+$U=X^{q}$ one has $\bar H_r(X)^{q}=k(U)$, where $k(U)=U\mathfrak h(U)^{q}$
+satisfies $k'/k=1/(UR(U))$. This is the leading equation
+$h_0'/h_0=\mu/V$ with $V=UR(U)$, whose criterion
+$1/(\beta R'(\beta))\in\Q$ is equivalent to \eqref{dyn:rd:eq:alpha}
+because $q$ is a nonzero integer. The proofs differ, and both are kept.
+Source 11 proves necessity through the norm of an algebraic logarithmic
+derivative (\cref{dyn:rd:lem:norm}); source 04 proves it through finite
+monodromy orbits and the growth bound \cref{dyn:lem:essential}.
+
+\emph{Every $\resq$ polynomial} \mergetag. This remark is a merge
+observation and is claimed by no source. The first two paragraphs of the
+proof of \cref{dyn:rd:thm:algebraicity} use only the equation
+$XR(X^{q})\bar H_r'=\bar H_r$ with $R(0)=1$ and $R$ nonconstant. By
+\eqref{dyn:eq:ode0}, the Taylor expansion of $H_0$ satisfies
+$XP(X)H_0'=H_0$ for every polynomial $f$ under $\resq$, with $P$ the shell
+polynomial of \eqref{dyn:eq:P}, which is nonconstant with $P(0)=1$. The
+same argument, with $XR(X^{q})$ replaced by $XP(X)$, shows that $H_0$ is
+algebraic over $\C(X)$ if and only if $P$ is squarefree and
+$1/(aP'(a))\in\Q$ for every root $a$ of $P$, and then
+$H_0=X\prod_a(1-X/a)^{1/(aP'(a))}$. The ratio $aP'(a)$ is the
+return-multiplier ratio of \eqref{dyn:eq:multiplier}. The third paragraph
+applies unchanged: $H_r$ is integral by \cref{dyn:thm:exact}, and its
+reduction is the Taylor expansion of $H_0$. So failure makes $H$
+transcendental over $K_\Gamma(z)$. For example, the tuned cubic
+\eqref{dyn:eq:tuned-cubic} has $P=1-2X^{4}$ and $aP'(a)=-4$, and its
+$H_0=X(1-2X^{4})^{-1/4}$ is algebraic, in agreement with
+\eqref{dyn:eq:phase-H0}.
+\end{remark}
+
+\begin{remark}[Where source 11's certificate is superseded]
+\label{dyn:rd:rem:superseded}
+\mergetag\ Suppose $e=c_0t^{\delta}$ is a single monomial, with
+$c_0\in\C^{\times}$, and every $\hat a_j$ is an ordinary constant, so that
+$\widehat R=R$. Then $\psi=\zeta^{-1}F$ is the Euler map
+\[
+ \psi(X)=X+t^{\delta}\widetilde V(X),\qquad
+ \widetilde V(X)=c_0\zeta^{-1}XR(X^{q})\in\C[X],\qquad
+ \widetilde V'(0)=\mu=c_0\zeta^{-1},
+\]
+of \eqref{dyn:eq:Euler}. Equivariance gives
+$H_r\circ\psi=\zeta^{-1}H_r\circ F=(1+\mu t^{\delta})H_r$, so by formal
+uniqueness $H_r$ is the Taylor expansion at zero of the solution $H_\eps$
+of \eqref{dyn:eq:schroederintro} for $\widetilde V$. Taylor expansion at
+zero is an injective ring homomorphism from $\OO(U)((t^{\Gamma}))$, with
+$U$ connected, to power series over $K_\Gamma$, and it carries $K_\Gamma[X]$
+identically. So a nonzero relation $\mathcal P(X,H_r)=0$ over
+$K_\Gamma[X]$ would give $\mathcal P(w,H_\eps)=0$ on $U$, hence on the
+universal cover by continuation, and $H_\eps$ would be algebraic over
+$K_\Gamma(w)\subset\BB$. Since $\deg\widetilde V=1+q\deg R\ge2$,
+\cref{dyn:thm:dichotomy} excludes this. So in this subcase $H$ is
+\textbf{always} transcendental over $K_\Gamma(z)$, whether or not $R$ passes
+\eqref{dyn:rd:eq:alpha}. When $\bar H_r$ is algebraic,
+\cref{dyn:prop:leadingalgebraic} shows that the first correction, the
+coefficient of $t^{\delta}$ in $H_\eps$, is already transcendental over
+$\C(w)$. There source 11's one-way certificate is superseded, and its
+question on higher boundary obstructions is answered at the first layer
+(\cref{dyn:rd:q:higher}). For $q=1$ the map $F$ itself is the Euler map.
+Outside this subcase, when $e$ is not a constant times a monomial or some
+$\hat a_j$ has a nonzero positive-support part, $\psi$ is not an Euler map
+and \cref{dyn:rd:thm:algebraicity} is what is available. It is new to this
+report there, for every $q\ge1$. For $q\ge2$ the map $F$ itself has
+multiplier near $\zeta\ne1$ and is in no parabolic family of
+\cref{dyn:sec:parabolic-monodromy}; the Euler form appears only after
+dividing by $\zeta$. The Hahn-valued case is close to the moving and
+perturbed Euler maps of \cref{dyn:q:moving} and does not answer that
+question.
+\end{remark}
+
+\subsection{Examples, an explicit real quintic, and stability}
+\label{dyn:rd:subsec:examples}
+
+\begin{example}[A binomial boundary]\label{dyn:rd:ex:binomial}
+If $R(U)=1+\varkappa U^{k}$ with $\varkappa\ne0$ and $k\ge1$ (source 11
+writes $c$ and $q$), then $\beta R'(\beta)=-k$ at every root and
+\[
+ \bar H_r(X)=X\bigl(1+\varkappa X^{qk}\bigr)^{-1/(qk)} .
+\]
+The reduced linearizer is algebraic, and the shell carries $k$ distinct
+simple $q$-cycles. This illustrates the algebraic side of the criterion; it
+does not assert that $H$ is algebraic. \mergetag\ For $q=1$ this is the
+tangent binomial of \cref{dyn:sec:phase}, with $H_0=X(1+AX^{m-1})^{-1/(m-1)}$
+there, and the universal profile $w(1+w^{k})^{-1/k}$ of
+\cref{dyn:cor:universal} after normalizing $\varkappa=1$; for $q=k=1$ it is
+$w/(1+w)$ of \cref{dyn:ex:rational}. Source 11 extends the profile to
+rotation order $q$ for polynomial equivariant input.
+\end{example}
+
+\begin{example}[Simple roots forcing transcendence]
+\label{dyn:rd:ex:quadraticR}
+Let $R(U)=1+U+U^{2}$. For $\beta_\pm=(-1\pm i\sqrt3)/2$,
+\[
+ \mathfrak r_{\beta_\pm}=\frac1q\Bigl(-\frac12\pm\frac{i}{2\sqrt3}\Bigr),
+\]
+with the sign matched to the root. Neither is rational, so $H$ is
+transcendental whenever this $R$ is the boundary polynomial, although the
+shell carries exactly two simple $q$-cycles. Transcendence does not require
+a singular or multiple periodic point.
+\end{example}
+
+\begin{example}[A repeated root and an exponential factor]
+\label{dyn:rd:ex:repeated}
+For $R(U)=(1-U)^{2}$ direct integration gives
+\[
+ \bar H_r(X)=X(1-X^{q})^{-1/q}\exp\left(\frac{X^{q}}{q(1-X^{q})}\right).
+\]
+The repeated root makes $\bar H_r$, hence $H$, transcendental. If the
+unreduced $\widehat R$ is exactly $(1-U)^{2}$, its one geometric cycle has
+multiplicity two. If it only reduces to $(1-U)^{2}$, it may split into two
+cycles at a finer scale, and the multiplicity count of
+\cref{dyn:rd:thm:shell} remains valid (\cref{dyn:rem:multiplicity}).
+\mergetag\ For $q=1$ this is $-h_0(-X)$ for the $h_0$ of
+\cref{dyn:ex:multiplezero}.
+\end{example}
+
+\begin{example}[Two simple roots with rational residues]
+\label{dyn:rd:ex:tworoots}
+For $R(U)=(1-U)(1-2U)$ the roots are $1$ and $1/2$, with
+$\mathfrak r_1=1/q$ and $\mathfrak r_{1/2}=-2/q$, so
+\[
+ \bar H_r(X)=X(1-X^{q})^{1/q}(1-2X^{q})^{-2/q} .
+\]
+This non-binomial algebraic example separates squarefreeness from the
+rational-residue condition. \mergetag\ For $q=1$ it is the leading
+coordinate $w(1-w)/(1-2w)^{2}$ of \cref{dyn:ex:trivialroot}. When
+$e=t^{\delta}$ and $\hat a_1=-3$, $\hat a_2=2$ are exact, that example
+shows the first correction $h_1=\tfrac32h_0\log(1-2w)$ to be transcendental
+(\cref{dyn:rd:rem:superseded}).
+\end{example}
+
+\begin{example}[A fully explicit real quintic]\label{dyn:rd:ex:quintic}
+Fix a positive $\eta\in\Gamma$. The polynomial
+\begin{equation}\label{dyn:rd:eq:quintic}
+ f(z)=(-1+t^{4\eta})z-2t^{2\eta}z^{3}+z^{5}
+\end{equation}
+has $q=2$, $\zeta=-1$, $e=t^{4\eta}$ and
+$r_{\mathrm{eq}}=\max\{(4\eta-2\eta)/2,\,(4\eta-0)/4\}=\eta$. With
+$\rho=t^{\eta}$ its normalized coefficients are $\hat a_1=-2$ and
+$\hat a_2=1$, so $R(U)=(1-U)^{2}$. Hence the strong linearization ball is
+$v(z)>\eta$, $H$ is transcendental over $K_\Gamma(z)$, and
+$\{t^{\eta},-t^{\eta}\}$ is an exact real two-cycle on the shell: the
+equation $f(z)=-z$ is $z(z^{2}-t^{2\eta})^{2}=0$, which exhibits the cycle
+and its multiplicity directly. Replacing $-2t^{2\eta}z^{3}$ by
+$+t^{2\eta}z^{3}$ gives $R=1+U+U^{2}$. The conjugacy is still
+transcendental, but the two shell cycles are nonreal, so sharpness of the
+complex centered ball does not by itself establish sharpness of a real
+interval (\cref{dyn:rd:q:real}); \eqref{dyn:rd:eq:quintic} avoids that
+issue. \mergetag\ Both polynomials lie in the monomial subcase of
+\cref{dyn:rd:rem:superseded}.
+\end{example}
+
+\begin{example}[Higher-rank scale separation]\label{dyn:rd:ex:rank2}
+Let $\Gamma=\Q^{2}$ with the lexicographic order, $e=t^{(1,0)}$, and
+$f(z)=(\zeta+e)z+t^{(0,1)}z^{1+q}$. The exact threshold is
+$r_{\mathrm{eq}}=(1/q,-1/q)$, a positive element of $\Gamma$. The proof uses
+this group element literally; it selects no real number to measure it and
+stays valid at arguments whose extra infinitesimal scale is smaller than
+every rational multiple of another positive value. Compare
+\cref{dyn:ex:rank2}.
+\end{example}
+
+\begin{proposition}[Stability of the first boundary data; source 11]
+\label{dyn:rd:prop:stability}
+Fix $q$, $\zeta$, $e$ and $\rho$ in \eqref{dyn:rd:eq:F}. Replace finitely
+many $\hat a_j$ by $\hat a_j+\epsilon_j$ with $\epsilon_j\in\m_\Gamma$, and
+allow finitely many additional terms $\hat a_jU^{j}$, $j>J$, in
+$\widehat R$ with $\hat a_j\in\m_\Gamma$. Then $r_{\mathrm{eq}}$, $R$,
+$\bar H_r$ and the multiplicity count on the shell are unchanged. A simple
+root of $R$ determines a unique lifted cycle for each perturbed polynomial,
+and every transcendence certificate of \cref{dyn:rd:thm:algebraicity}
+remains valid.
+\end{proposition}
+\begin{proof}
+Every normalized coefficient stays integral, and a unit coefficient stays a
+unit with the same residue, so the candidate threshold is still attained at
+$r_{\mathrm{eq}}$ and reduction gives the same $R$. The previous theorems
+apply to the new finite list of inputs, possibly with a larger common
+support set. The simple-cycle statement is \cref{dyn:lem:root-count}. No
+assertion is intended that the lifted points themselves stay fixed.
+\end{proof}
+
+\mergetag\ \Cref{dyn:thm:stability} is the general-$\resq$ counterpart. It
+perturbs the \emph{return} coefficients, and \cref{dyn:warn:stability}
+forbids replacing its hypothesis by the same inequalities on the
+coefficients of $f$. For equivariant maps \cref{dyn:rd:prop:return} makes
+the threshold a function of the coefficients of $f$. Source 11's hypothesis
+on the normalized coefficients of $f$ is therefore legitimate here, but only
+for perturbations that stay in the family \eqref{dyn:rd:eq:family}. The
+point-distance estimate \eqref{dyn:eq:stable-distance} is proved only for
+the return version; source 11 claims no distance estimate.
+
+\subsection{Periodic points of integral equivariant maps, and prescribed
+shells}\label{dyn:rd:subsec:periods}
+
+The closed-ball argument of \cref{dyn:rd:prop:periodfinite} has a second
+form. It applies on all of $\m_\Gamma$ even when the nonlinear coefficients
+are not divisible by $e$, and even when $\lambda=\zeta$.
+
+\begin{theorem}[Infinitesimal periodic points are rotation points; source
+11]\label{dyn:rd:thm:allperiods}
+Let $f(z)=\lambda z+\sum_{j=1}^{J}a_{1+jq}z^{1+jq}\in\OO_\Gamma[z]$ with
+$\res(\lambda)=\zeta$, a primitive ordinary $q$-th root of unity. Every
+nonzero infinitesimal periodic point of $f$ satisfies $f(z)=\zeta z$ and
+has exact period $q$, and conversely every nonzero infinitesimal solution of
+$f(z)=\zeta z$ is periodic of exact period $q$. The hypothesis
+$\lambda\ne\zeta$ is not needed.
+\end{theorem}
+\begin{proof}
+$f$ preserves $\m_\Gamma$. Put $\psi=\zeta^{-1}f$; it commutes with the
+rotation, and $\mu_\psi=\psi'(0)$ has residue $1$. If $q\nmid n$, the
+constant term of $(f^{\circ n}(X)-X)/X$ is $\lambda^{n}-1$, a unit, and all
+other coefficients are integral, so at a nonzero infinitesimal the constant
+term dominates and $f^{\circ n}(z)\ne z$. If $q\mid n$ then
+$f^{\circ n}=\psi^{\circ n}$, and $\mathcal Q_n$ of
+\cref{dyn:rd:lem:iterate} is integral with constant term of residue $n$. Its
+value at an infinitesimal is therefore a unit, even though the reduction of
+$\mathcal Q_n$ as a polynomial need not be constant. So
+$\psi^{\circ n}(z)=z$ is equivalent to $\psi(z)=z$, which is
+$f(z)=\zeta z$. The converse and the exact period follow from equivariance
+and the exact order of $\zeta$.
+\end{proof}
+
+\begin{remark}[A stronger classification on a narrower domain]
+\label{dyn:rd:rem:narrower}
+\Cref{dyn:rd:thm:allperiods} classifies all infinitesimal periodic points of
+any integral equivariant polynomial, and makes no claim about periodic points
+of valuation zero, where the constant term of $\mathcal Q_n$ need not
+dominate. \Cref{dyn:rd:prop:periodfinite} works on the whole closed
+normalized ball because there the entire reduction of $\psi$ is the
+identity. When $\lambda=\zeta$ exactly, the multiplier has finite order,
+which is neither $\resq$ nor $\mres$, and \cref{dyn:thm:finite-order} is
+the relevant normal-form theorem; \cref{dyn:rd:thm:allperiods} concerns
+periodic points only and linearizes nothing.
+\end{remark}
+
+\begin{theorem}[Exact finite shell realization; source 11]
+\label{dyn:rd:thm:allshells}
+Choose ordinary $q,N\ge1$, a primitive $q$-th root $\zeta\in\C$, positive
+$r_1,\dots,r_N\in\Gamma$, and $\varsigma_1,\dots,\varsigma_N\in\C^{\times}$
+such that the elements $\mathfrak b_\ell=\varsigma_\ell t^{qr_\ell}$ are
+pairwise distinct. Put
+\begin{equation}\label{dyn:rd:eq:shellf}
+ \mathcal S(U)=\prod_{\ell=1}^{N}(U-\mathfrak b_\ell),\qquad
+ f(z)=z\bigl(\zeta+\mathcal S(z^{q})\bigr).
+\end{equation}
+The nonzero infinitesimal periodic points of $f$ are exactly
+\begin{equation}\label{dyn:rd:eq:shellpoints}
+ z=t^{r_\ell}\vartheta,\qquad \vartheta^{q}=\varsigma_\ell,\qquad
+ 1\le\ell\le N .
+\end{equation}
+They form $N$ distinct simple exact $q$-cycles, and there is no other
+nonzero infinitesimal periodic point. The maximal centered strong
+linearization ball at $0$ is $v(z)>r_{\max}$, with
+$r_{\max}=\max_\ell r_\ell$.
+\end{theorem}
+\begin{proof}
+Every coefficient of $\mathcal S$ is integral, and its constant coefficient
+$e=\mathcal S(0)=(-1)^{N}\prod_\ell\mathfrak b_\ell$ is nonzero and
+infinitesimal. So the multiplier of $f$ is $\zeta+e$ and $f$ satisfies the
+hypotheses of \cref{dyn:rd:thm:linearization,dyn:rd:thm:allperiods}. For
+$z\ne0$ the equation $f(z)=\zeta z$ is $\mathcal S(z^{q})=0$, whose roots
+are \eqref{dyn:rd:eq:shellpoints}: all infinitesimal, and all simple because
+the $\mathfrak b_\ell$ are distinct and nonzero.
+\Cref{dyn:rd:thm:allperiods} excludes every other infinitesimal period.
+
+For the threshold, allowing for cancellation among the coefficients of
+$\mathcal S$, write $\mathcal S(U)=e+\sum_{j=1}^{N}s_jU^{j}$. Since
+$\mathcal S(U)/e=\prod_\ell(1-U/\mathfrak b_\ell)$, each $s_j/e$ is a sum of
+products of $j$ reciprocals $\mathfrak b_\ell^{-1}$, so
+$v(s_j/e)\ge-jq\,r_{\max}$ and $r_{\mathrm{eq}}\le r_{\max}$. If it were
+strictly smaller, every root of valuation $r_{\max}$ would lie in the
+linearization ball of \cref{dyn:rd:thm:linearization}, contradicting its
+periodicity. So $r_{\mathrm{eq}}=r_{\max}$, and
+\cref{dyn:rd:thm:shell} gives maximality.
+\end{proof}
+
+Repeated scales are permitted, with different $\varsigma_\ell$ when the
+$r_\ell$ agree. The theorem prescribes every \emph{infinitesimal} periodic
+point, not every periodic point of the polynomial on $K_\Gamma$: other finite
+or infinitely large cycles of $f$ are not excluded.
+
+\subsection{Reciprocal rational maps with Gaussian omnific periodic points}
+\label{dyn:rd:subsec:omnific}
+
+An omnific integer has a Conway normal form supported on nonnegative growth
+exponents with an ordinary integer constant coefficient, so
+$\Oz=\Z\oplus\mathbb J$ with $\mathbb J$ the class of purely infinite forms,
+including $0$; its nonzero members may have either sign. The Gaussian
+omnific ring is $\Oz[i]=\Z[i]\oplus(\mathbb J+i\mathbb J)$. In particular
+$\varsigma\omega^{r}\in\Oz[i]$ for every ordinary $\varsigma\in\C$ and every
+positive surreal $r$. These are the normal-form conventions of the
+collection's notation guide, which writes $\Pi$ for $\mathbb J$. The
+coefficient-extraction retraction on this ring is not the standard-part map
+on $\OO_\Gamma$: their support restrictions point in opposite directions
+(\cref{dyn:warn:orientation}).
+
+\begin{theorem}[Exact omnific periodic sets for rational maps; source 11]
+\label{dyn:rd:thm:omnific}
+Use the data of \cref{dyn:rd:thm:allshells}, now with positive surreal
+$r_\ell$, and read $t^{\gamma}=\omega^{-\gamma}$. The reciprocal rational map
+\begin{equation}\label{dyn:rd:eq:omnificG}
+ f^{\vee}(w)=\frac1{f(1/w)}
+ =\frac{w^{1+qN}}{\zeta w^{qN}+\prod_{\ell=1}^{N}(1-\mathfrak b_\ell w^{q})}
+\end{equation}
+has as its infinitely large finite periodic points exactly
+\begin{equation}\label{dyn:rd:eq:ompoints}
+ w=\omega^{r_\ell}\vartheta^{-1},\qquad \vartheta^{q}=\varsigma_\ell,\qquad
+ 1\le\ell\le N .
+\end{equation}
+Every such point lies in $\Oz[i]$, each cycle has exact period $q$, and
+$f^{\vee}$ acts on them by $w\mapsto\zeta^{-1}w$. There is a
+numerator--denominator presentation of $f^{\vee}$ in which every coefficient
+is purely infinite Gaussian omnific; one explicit common clearing factor is
+$\omega^{L_{\mathrm{cl}}}$ with
+\begin{equation}\label{dyn:rd:eq:clearL}
+ L_{\mathrm{cl}}=1+q\sum_{\ell=1}^{N}r_\ell .
+\end{equation}
+The projective point $\infty$ is an additional fixed point and is not a
+``finite periodic point''.
+\end{theorem}
+\begin{proof}
+The coordinate change $w=1/z$ conjugates $f$ on $\mathbb P^{1}(\SC)$ to
+$f^{\vee}$, and finite infinitely large nonzero $w$ correspond exactly to
+nonzero infinitesimal $z$. A periodic orbit starting at such a $z$ cannot
+pass through $0$ and return, since $0$ is fixed. So the classification of
+\cref{dyn:rd:thm:allshells} transfers with no missing polar case and gives
+\eqref{dyn:rd:eq:ompoints}; reciprocals of $f(z)=\zeta z$ give the action.
+Each point is one positive-growth monomial with an ordinary complex
+coefficient, hence Gaussian omnific. Every denominator coefficient in
+\eqref{dyn:rd:eq:omnificG} is a finite sum of an ordinary constant and terms
+$\varsigma\,\omega^{-q\sum_{\ell\in I}r_\ell}$ for subsets
+$I\subseteq\{1,\dots,N\}$. After multiplication by
+$\omega^{L_{\mathrm{cl}}}$ each has growth exponent
+$L_{\mathrm{cl}}-q\sum_{\ell\in I}r_\ell\ge1$, and the numerator coefficient
+becomes $\omega^{L_{\mathrm{cl}}}$. So numerator and denominator have purely
+infinite Gaussian omnific coefficients and define the same rational map.
+Finally $f(0)=0$ gives $f^{\vee}(\infty)=\infty$.
+\end{proof}
+
+\begin{remark}[A presentation is not a ring endomorphism]
+\label{dyn:rd:rem:presentation}
+The theorem concerns a rational map over the fraction field of the omnific
+ring, with an explicit presentation over that ring. It does not say that
+$f^{\vee}(a)\in\Oz[i]$ for every $a\in\Oz[i]$ at which $f^{\vee}$ is
+defined, nor that its denominator is a unit. Omnific integrality is proved
+for the whole classified periodic set, not for every orbit
+(\cref{dyn:rd:q:omnific}).
+\end{remark}
+
+\begin{example}[Two widely separated scales]\label{dyn:rd:ex:twoscale}
+Take $q=2$, $\zeta=-1$, $N=2$, $\varsigma_1=\varsigma_2=1$, $r_1=1$ and
+$r_2=\omega$, so $\mathfrak b_1=\omega^{-2}$ and
+$\mathfrak b_2=\omega^{-2\omega}$. The real polynomial
+$f(z)=z\bigl[-1+(z^{2}-\mathfrak b_1)(z^{2}-\mathfrak b_2)\bigr]$ has
+exactly the two nonzero infinitesimal two-cycles
+$\{\omega^{-1},-\omega^{-1}\}$ and $\{\omega^{-\omega},-\omega^{-\omega}\}$,
+and its maximal centered surcomplex linearization ball is $v(z)>\omega$.
+The reciprocal map
+\begin{equation}\label{dyn:rd:eq:twoscaleG}
+ f^{\vee}(w)=\frac{w^{5}}{-w^{4}+(1-\mathfrak b_1w^{2})(1-\mathfrak b_2w^{2})}
+\end{equation}
+has exactly the infinitely large finite periodic points $\omega$, $-\omega$,
+$\omega^{\omega}$ and $-\omega^{\omega}$, paired into those two two-cycles.
+Multiplying numerator and denominator of \eqref{dyn:rd:eq:twoscaleG} by
+$\omega^{2\omega+3}=\omega^{L_{\mathrm{cl}}}$ puts every coefficient in the
+purely infinite real omnific ideal. No limiting process is used to produce
+the four points or to exclude further infinite periods.
+\end{example}
+
+\begin{proposition}[Class-level interpretation without class sums; source
+11]\label{dyn:rd:prop:transfer}
+\Cref{dyn:rd:thm:linearization,dyn:rd:thm:shell,dyn:rd:thm:reduction,%
+dyn:rd:thm:algebraicity,dyn:rd:thm:allperiods,dyn:rd:thm:allshells,%
+dyn:rd:thm:omnific} hold for actual surcomplex coefficients, with the ball
+and periodic-point assertions read pointwise over $\SC$. Every evaluation and
+coefficient construction involved stays set-sized, and no large-cardinal
+axiom is used.
+\end{proposition}
+\begin{proof}
+Take the union of the normal-form supports of the finitely many
+coefficients and of any finite collection of arguments under discussion,
+adjoin the finitely many scale exponents needed for normalization, and take
+the divisible subgroup $\Gamma$ they generate: a set-sized subgroup of
+$\No$ whose Hahn field contains the inputs, is algebraically closed, and is
+closed under the finite coefficient recursions and the strong sums of
+\cref{dyn:rd:subsec:support}. The conjugacy coefficients are uniquely
+determined by \eqref{dyn:eq:recurrence}, so enlarging the workspace cannot
+change them, and a strongly summable family has the same normal-form sum in
+every larger workspace. The root count factors a finite polynomial in one
+algebraically closed workspace, and those are all its roots in any larger
+field. For an arbitrary further point, enlarge the workspace once more. No
+proper class is treated as a set-sized field and no proper-class family is
+summed. The set constructions use ordinary choice and set-based Hahn-field
+theory; in a class language one may use the definable classes of a
+conservative class theory over ZFC. No inaccessible cardinal or stronger
+hypothesis enters.
+\end{proof}
+
+This is the equivariant case of \cref{dyn:thm:workspace} and
+\cref{dyn:cor:surcomplex}, which source 11 re-derives independently and
+extends to its periodic-point and omnific statements. The notation guide
+and the report on set-sized quotients of omnific integers
+(\texttt{docs/\allowbreak surreal/\allowbreak set-sized-quotients-of-\allowbreak omnific-integers/})
+were
+consulted by source 11 only to fix conventions and to avoid duplicating the
+omnific algebraic programme; no theorem of either is used here.
+
+\subsection{Finite certificates, and what source 11 does not settle}
+\label{dyn:rd:subsec:limits}
+
+For explicitly represented finite Hahn inputs the theorems give a short
+calculation pipeline. It is an algebraic procedure \emph{conditional on
+extracting leading valuations and leading coefficients}, not a decision
+procedure for arbitrary unnamed surreal numbers. Compute
+$\delta=v(\lambda-\zeta)$ and every nonzero $v(a_{1+jq})$, and take the
+finite maximum \eqref{dyn:rd:eq:req} in the ordered group. Normalize
+$\hat a_j$ and keep exactly their residues. The polynomial $R$ then gives
+three separate outputs: the shell divisor, the recurrence
+\eqref{dyn:rd:eq:betarec}, and the algebraicity test
+\eqref{dyn:rd:eq:alpha}. The support certificate is the finite union of the
+positive supports of $e,\hat a_1,\dots,\hat a_J$, closed under the monoid
+construction. If the coefficients of $R$ are algebraic numbers,
+squarefreeness and rationality of the finitely many algebraic numbers
+$1/(q\beta R'(\beta))$ are exact algebraic questions. For complex
+coefficients given by an oracle or by non-effective descriptions no uniform
+decidability follows, and checking that an infinite support is well ordered
+is a separate matter from manipulating a finite support expression.
+
+\begin{proposition}[Finite leading-data certificate; source 11]
+\label{dyn:rd:prop:certificate}
+Given valid leading data for \eqref{dyn:rd:eq:family}, the scale
+$r_{\mathrm{eq}}$, the residue polynomial $R$, and either a repeated root of
+$R$ or a root $\beta$ with $1/(q\beta R'(\beta))\notin\Q$ certify that $H$
+is transcendental over $K_\Gamma(z)$. No higher Hahn coefficient of $H$ is
+needed.
+\end{proposition}
+\begin{proof}
+The leading data determine $r_{\mathrm{eq}}$ and $R$ exactly, and
+\cref{dyn:rd:thm:algebraicity} contradicts any algebraic relation for $H$.
+Higher coefficients play no role.
+\end{proof}
+
+This is the transcendence counterpart of the maximality certificate
+\cref{dyn:cor:finite-certificate} and of the procedure of
+\cref{dyn:app:certificate}. For equivariant input the return iterate is not
+needed, because \cref{dyn:rd:prop:return} reads $P=R(X^{q})$ off $f$.
+
+Source 11 sketches a formalization sequence and supplies no Lean file. It
+would start in an abstract algebraically closed valued field, with
+\cref{dyn:rd:lem:iterate}, \cref{dyn:rd:thm:allperiods} and the root count,
+and handle the formal coefficients and \eqref{dyn:eq:recurrence} separately
+over a field with a non-torsion multiplier. The Hahn-specific step is
+$\OO_{\mathsf M}$ with \cref{dyn:rd:lem:evaluation}, including the
+finite-word bound needed for reassociation; normal-form embeddings would
+then transport the fixed-workspace theorem to the surreal carrier. This is a
+plan, not an implementation. The repository's
+\texttt{Surreal/HahnSeries/Neumann.lean} proves the finite-word support
+lemma, but existing formal verification of the coefficient field does not
+verify any statement of these subsections. The limitations are
+\ref{dyn:rd:nc:status}--\ref{dyn:rd:nc:last} of
+\cref{dyn:rd:subsec:nonclaims}, and the eleven questions source 11 raises
+are \cref{dyn:rd:q:symmetry} to \cref{dyn:rd:q:effective}.
 
 \section{Common-domain lifting: one leading coefficient, two instantiations}
 \label{dyn:sec:coherent}
@@ -9884,8 +11146,8 @@ not an exhaustive audit of every manuscript or every synonym.
 \emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$}
 (\texttt{docs/surcomplex/analysis/}) is the foundation that fixes the
 no-topological-convergence discipline and states the Neumann support
-material. All ten sources restate that discipline and all ten state
-the support lemma. Sources 02, 03, 05 and 09 each reproduce a
+material. All eleven sources restate that discipline and all eleven
+state the support lemma. Sources 02, 03, 05 and 09 each reproduce a
 minimal-bad-sequence Higman proof, and source 08 reduces the lemma to
 Poonen's positive-support theorem.
 
@@ -9953,7 +11215,7 @@ result of that one is transferred in either direction.
 \section{Computational record and reproducibility}
 \label{dyn:sec:verification}
 
-The ten verification programs are preserved unmodified in \texttt{code/}
+The eleven verification programs are preserved unmodified in \texttt{code/}
 and their recorded outputs in \texttt{data/}. They supply \emph{finite
 exact symbolic} checks. None of them proves an infinite statement in
 this report. Separately, the repository's Lean modules
@@ -10180,7 +11442,30 @@ only. Does not establish \cref{dyn:nsc:lem:height}, the limsup of
 \cref{dyn:nsc:thm:products}, analytic convergence, arbitrary-support
 summability or originality. The random configurations are samples, not an
 enumeration; nonresonance of the test multipliers is checked only in the
-finite range used. No Lean code.\\
+finite range used. No Lean code.\\[4pt]
+11 & 1{,}863 &
+Six groups, exact SymPy~1.14 arithmetic. Formal conjugacy ($173$): the
+Schr\"oder recurrence and both inverse identities for five equivariant
+polynomials with non-unimodular test multipliers $2,3,-2,-3/2,2i$ and
+$q=1,2,4$, including the vanishing \eqref{dyn:rd:eq:hsymmetry}. Parameter
+reduction ($107$): with a symbolic displacement $E$, regularity of every
+normalized coefficient at $E=0$, its limit against the boundary series
+\eqref{dyn:rd:eq:betarec}, and $\varphi_k(0)=-kq$. Boundary differential
+($325$): the recurrence against $R(\mathfrak h+qU\mathfrak h')=\mathfrak h$
+for $q\le5$, and the logarithmic derivatives of
+\cref{dyn:rd:ex:binomial,dyn:rd:ex:quadraticR,dyn:rd:ex:repeated,dyn:rd:ex:tworoots}.
+Iterate quotient ($38$): \eqref{dyn:rd:eq:iteratediv} and its constant
+term. Shell and reciprocal ($24$): equivariance, rotation roots and
+\eqref{dyn:rd:eq:omnificG} for $N=2$, rational two-cycle samples, and the
+factorization of \cref{dyn:rd:ex:quintic}. Lexicographic scales ($1{,}196$):
+$80$ seeded random trials in $\Q^{2}$ of the threshold identity
+$r_{\mathrm{eq}}=r_{\max}$ and positivity of the clearing exponents, plus
+$40$ samples of \cref{dyn:rd:ex:collision}.
+& Finite regression checks only. Does not verify arbitrary-rank strong
+summability, proper-class compatibility, all-period exclusion as a universal
+theorem, or novelty. The rational specialization of the shell test is not a
+model of infinitesimal valuations. The scale test models the clearing
+exponent by adding $(0,1)$, not $1$. No Lean.\\
 \bottomrule
 \end{longtable}
 
@@ -10191,16 +11476,17 @@ The following were checked directly against the delivered files and by
 running the code, and override any contrary statement in a source README.
 
 \begin{enumerate}[label=(\arabic*)]
-\item \textbf{All ten suites pass.} Run on Python 3.14.4 with SymPy 1.14.0
+\item \textbf{All eleven suites pass.} Run on Python 3.14.4 with SymPy 1.14.0
 where SymPy is used, every one exits $0$; sources 08 and 09 were run, on a
-copy, when they were integrated. Reported totals where a script
+copy, when they were integrated, and so was source 11 (item~(10)). Reported totals where a script
 prints one: $54$ (01), $1{,}109$ (02), $21$ (03), $2{,}764$ (04), $245$
 (05), $119$ (06); source 07 prints no total. Source 04's count reproduced
 the recorded $2{,}764$ exactly; source 05 reproduced its recorded
 transcript line for line; source 03 reproduced its four recorded example
 expansions byte for byte; and the regenerated JSON of sources 06 and 07
 matched the shipped ones up to line endings only.
-\item \textbf{Four of the ten scripts rewrite their own evidence.} Source
+\item \textbf{Five of the eleven scripts rewrite their own evidence}
+(source 11's is described in item~(10)). Source
 03's \texttt{verify.py} writes \texttt{data/verification.json} by default;
 source 04's writes \texttt{data/verification.json} \emph{and}
 \texttt{data/coefficients.csv}; source 06's writes
@@ -10281,6 +11567,30 @@ checked against the delivered files, all six entries matching, and none of
 those four files is shipped here. Its provenance note is shipped as
 \texttt{10-nonscalar-\allowbreak common-domain-\allowbreak SOURCES.md}; it describes this report as
 it stood at source 10's pin, before the nonscalar subsections were added.
+\item \textbf{Source 11 reproduces, and rewrites its own record by default.}
+Its script \texttt{code/\allowbreak 11-resonant-dynamics-verify.py} writes
+\texttt{verification.json} and \texttt{verification.txt} into
+\texttt{-{}-output-dir}, whose default is the directory containing the
+script. In the delivered layout that overwrote its record. In this tree an
+argument-free run writes the two files into \texttt{code/}, beside the
+script, and leaves the shipped \texttt{data/} records untouched. Run on a
+copy with \texttt{-{}-output-dir} and Python 3.14.4, SymPy 1.14.0, it exits
+$0$ with status \texttt{PASS} and the recorded group counts
+$173/107/325/38/24/1{,}196$, total $1{,}863$. The regenerated JSON agrees
+with \texttt{data/\allowbreak 11-resonant-dynamics-verification.json} in
+every field except the Python version (the shipped run used 3.13.5), the
+run time and the elapsed seconds; the text record differs only in the
+elapsed seconds. The shipped \texttt{code/\allowbreak
+11-resonant-dynamics-build.sh} and \texttt{-build.ps1} rerun the suite and
+then rebuild the source manuscript. They call \texttt{verify.py} and
+\texttt{article.tex} by their delivered names, and the source manuscript is
+not shipped here, so they do not run in this tree as shipped. Its build
+report records a 23-page PDF with no warnings and states that the
+PowerShell script was not executed. The package's manuscript, PDF and
+README are not shipped; its source and proof audits are shipped as
+\texttt{11-resonant-dynamics-SOURCE\_AUDIT.md} and
+\texttt{11-resonant-dynamics-PROOF\_AUDIT.md}, and describe the source as
+delivered, with delivery file names.
 \end{enumerate}
 
 \subsection{Building this report}
@@ -10289,8 +11599,8 @@ external \texttt{.bib} file, graphics, shell escape or network access:
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode article.tex
 \end{verbatim}
-Reproducing the ten suites, each \emph{on a copy}, requires Python 3.10 or
-later and, for five of them, SymPy; the pinned versions recorded by the
+Reproducing the eleven suites, each \emph{on a copy}, requires Python 3.10
+or later and, for six of them, SymPy; the pinned versions recorded by the
 sources are \texttt{sympy==1.14.0}. Source 10's script needs only the
 standard library of Python 3.9 or later.
 
@@ -10307,6 +11617,10 @@ Source 10 settles most of what sources 08 and 09 left of
 \cref{dyn:q:commongerm-restate}; the question is kept once more, re-scoped
 to what remains. Source 10 adds no new question either; its remaining
 directions are folded into \cref{dyn:q:commongerm-restate,dyn:q:realization}.
+Source 11 answers none of these questions and adds eleven of its own,
+printed after them as \cref{dyn:rd:q:symmetry} to
+\cref{dyn:rd:q:effective}; this report bears on three of them, as their
+status notes record.
 
 \begin{question}[Common-domain germs at a finite positive rate: the optimal
 radius for a nonscalar multiplier of angular rank at least two]\label{dyn:q:commongerm-restate}
@@ -10509,16 +11823,178 @@ the same distinction as \textbf{N64} and \cref{dyn:app:certificate} draw
 for the finite-return certificate.
 \end{question}
 
+\subsection*{Questions raised by source 11}
+\addcontentsline{toc}{subsection}{Questions raised by source 11}
+
+Source 11 (\cref{dyn:rd:subsec}) raises the eleven questions below and
+presents them as a research programme arising from its results, not as
+historically established open problems. They are printed in source 11's
+order and in the notation of \cref{dyn:rd:conv}. Each carries a
+\emph{Status (batch 34)} note, added in the merge, where this report already
+bears on it. Source 11 answers none of the questions above.
+
+\begin{question}[Removing exact rotational symmetry]\label{dyn:rd:q:symmetry}
+For a general polynomial with $\res(\lambda)$ of order $q$, can a finite
+sequence of nonresonant coordinate changes reduce the sharp linearization
+problem to a computable resonant boundary invariant? Which support
+conditions survive that normalization uniformly on the candidate maximal
+ball? Formal solvability alone is not the missing step: nonresonant changes
+can alter the scale of the first surviving resonance, and the resulting
+infinite normal form may lose the finite support certificate, so an exact
+threshold formula must keep both effects.
+
+\emph{Status (batch 34).} \mergetag\ Settled in substance at source 11's
+own pin, by a different route. For every polynomial under $\resq$,
+\cref{dyn:thm:exact} gives the exact threshold from the finite $q$-th
+return, with a uniform support certificate (\cref{dyn:lem:displacement}).
+\Cref{dyn:thm:shell} supplies the computable boundary invariant $P$, and
+\cref{dyn:thm:coherent} the boundary vector field $XP(X)\partial_X$, whose
+leading coordinate is decided by the criterion of
+\cref{dyn:rd:rem:parabolic}. Still open: the route the question proposes,
+through nonresonant coordinate changes instead of the return; the
+closed-ball exclusion of all other periods (\cref{dyn:rd:prop:periodfinite})
+for non-equivariant maps; and infinite power series, which
+\textbf{N18} excludes.
+\end{question}
+
+\begin{question}[A sharp criterion for infinite coefficient families]
+\label{dyn:rd:q:infinite}
+Characterize the sequences $(h_n)$ in $\OO_\Gamma$ for which
+$\sum_nh_nu^{n}$ is strongly summable at every $u\in\m_\Gamma$. How far can
+the sufficient common-$\OO_{\mathsf M}$ criterion be weakened?
+\Cref{dyn:rd:ex:collision} rules out any answer based only on the
+inequalities $v(h_n)\ge0$, and \cref{dyn:ex:bad-support} rules out an
+answer based only on positive valuations. An answer in terms of supports
+rather than a chosen presentation would extend the polynomial theorems to
+much larger classes of germs.
+\end{question}
+
+\begin{question}[Higher boundary obstructions to algebraicity]
+\label{dyn:rd:q:higher}
+When $R$ passes the exact test \eqref{dyn:rd:eq:alpha} for algebraicity of
+$\bar H_r$, can the next nonzero Hahn layer produce a second effective
+obstruction to algebraicity of $H$? Is there a useful finite hierarchy for
+algebraic input polynomials? The reduction test is deliberately one-sided
+upstairs, and a hierarchy would separate higher-order obstructions from
+those already visible in the rational logarithmic derivative of the first
+boundary field.
+
+\emph{Status (batch 34).} \mergetag\ Answered positively at the first
+layer when $e$ is a constant times a monomial and every normalized
+coefficient is an ordinary constant, for every $q\ge1$
+(\cref{dyn:rd:rem:superseded}). There $H$ is always transcendental, by
+\cref{dyn:thm:dichotomy}, and when $\bar H_r$ is algebraic the coefficient
+of $t^{\delta}$ is already transcendental, by
+\cref{dyn:prop:leadingalgebraic}. Open for Hahn-valued displacement or
+normalized coefficients, and the finite hierarchy is open everywhere.
+\end{question}
+
+\begin{question}[Splitting multiple boundary cycles]
+\label{dyn:rd:q:splitting}
+When $R$ has repeated roots, can the successive scale structure of
+$\widehat R(U)$ near those roots be organized into a canonical finite rooted
+tree of periodic clusters, compatible with the linearizer's higher
+reductions? Root splitting at finer valuations is accessible to algebraic
+methods. The additional problem is to relate it to the singular exponential
+factor of \cref{dyn:rd:ex:repeated}. \mergetag\ The same degeneracy for a
+non-equivariant return is \cref{dyn:rem:multiplicity} and
+\cref{dyn:ex:kappa}, where the finer splitting is likewise left to higher
+Hahn terms.
+\end{question}
+
+\begin{question}[Real domains versus surcomplex balls]\label{dyn:rd:q:real}
+For a real equivariant polynomial whose complex shell cycles are all
+nonreal, determine the maximal real centered domain of an injective strong
+linearizer. Which real algebraic feature replaces the complex periodic
+obstruction? \Cref{dyn:rd:ex:quadraticR} and the variant in
+\cref{dyn:rd:ex:quintic} show why the complex sharpness proof does not
+settle this: even in a real closed field a complex obstruction need not be a
+real periodic point.
+\end{question}
+
+\begin{question}[Rational and algebraic germs]\label{dyn:rd:q:rational}
+Extend the exact threshold and the boundary reduction to rational or
+algebraic germs whose denominators remain units on the closed normalized
+ball. Can a finite algebraic presentation replace the finite polynomial
+coefficient list in the support argument? Unit denominators are promising
+because their geometric inverses stay in the same support monoid, but a
+proof must still handle the infinite coefficient family and the periodic
+equation at the shell. \mergetag\ This is the infinite-series exclusion
+\textbf{N18} of source 01, asked for a specific class.
+\end{question}
+
+\begin{question}[Several variables and simultaneous resonances]
+\label{dyn:rd:q:several}
+For maps on $K_\Gamma^{n}$ with a finite-order residue linear part, identify
+a several-variable counterpart of the field $XR(X^{q})\partial_X$ and a
+domain on which strong conjugacy holds. What geometric objects replace the
+scalar periodic divisor? In several variables resonant monomials need not
+be ordered by one degree, and cancelling a single factor $e$ may no longer
+control every small divisor. \mergetag\ Compare the several-variable part
+of \cref{dyn:q:moving}.
+\end{question}
+
+\begin{question}[Beyond finite periodic-shell prescriptions]
+\label{dyn:rd:q:shells}
+Which infinite sets of positive surreal scales can be realized as exactly
+the infinitesimal periodic shells of a strongly analytic map with a fixed
+multiplier residue? What degree or support restrictions force finiteness?
+\Cref{dyn:rd:thm:allshells} is finite by construction; an infinite version
+needs a legitimate infinite product and a proof excluding extra periods, not
+a formal interpolation of the desired points.
+\end{question}
+
+\begin{question}[Actual omnific self-maps]\label{dyn:rd:q:omnific}
+Which polynomial or rational maps preserve $\Oz$ or $\Oz[i]$ on a natural
+invariant domain while realizing specified infinite cycles? Can denominator
+clearing be replaced by a global integrality theorem?
+\Cref{dyn:rd:thm:omnific} gives an omnific coefficient presentation and an
+integral periodic set, and deliberately not a self-map of the whole ring;
+the distinction poses an arithmetic problem, not a notational one.
+\end{question}
+
+\begin{question}[Continuation away from the obstructing cycles]
+\label{dyn:rd:q:continuation}
+Can the normalized linearizer be continued strongly through parts of the
+shell once the periodic divisor is removed? How does the continuation
+depend on the rational residues $\mathfrak r_\beta$? The product formula
+\eqref{dyn:rd:eq:h0product} suggests ramification data and repeated roots
+suggest exponential singularities; this analogy is a source of conjectures,
+not a proof of global continuation over the surcomplex class.
+
+\emph{Status (batch 34).} \mergetag\ Partly addressed in two special cases,
+in other senses of ``continued''. \Cref{dyn:thm:coherent} continues the
+exponent-zero coefficient $H_0$, and every $H_\gamma$, over one ordinary
+disk on which $P$ has no zero. In the parabolic model
+(\cref{dyn:rd:rem:scope}), \cref{dyn:subsec:boundary} evaluates the
+coefficientwise continuation at the rescaled shell, where the Taylor family
+fails, and \cref{dyn:thm:monodromy,dyn:thm:modelfactor} show that the
+positive part of the exponent survives every finite ramification. Strong
+continuation of the evaluated conjugacy through shell points, in the sense
+asked, is open.
+\end{question}
+
+\begin{question}[Effective and formal verification]\label{dyn:rd:q:effective}
+Develop a certified implementation that accepts finite Hahn data, produces
+the threshold and the boundary polynomial, and verifies the transcendence
+certificate. Can the common-support argument be expressed as a reusable
+formal-library interface for strong power-series substitution? That would be
+more reusable than checking isolated examples, since the support interface
+is the obstruction met in many higher-rank analytic constructions.
+\mergetag\ Compare \cref{dyn:app:certificate} and \textbf{N64}; the
+repository's Lean support lemma is described in \cref{dyn:sec:verification}.
+\end{question}
+
 \section{Limitations and non-claims}
 \label{dyn:sec:nonclaims}
 
 This section is the consolidated record required by
-\cref{dyn:conv:merge}(iv). It carries \textbf{one hundred and twenty-three}
-distinct limitations stated by the ten sources --- eleven from source 01,
+\cref{dyn:conv:merge}(iv). It carries \textbf{one hundred and forty-seven}
+distinct limitations stated by the eleven sources --- eleven from source 01,
 nine from source 02, ten from source 03, fourteen from source 04, twelve
 from source 05, twelve from source 06, ten from source 07, sixteen from
-source 08, twelve from source 09 and seventeen from source 10 --- with the
-originating source named in each case. None has been merged away, softened, or absorbed
+source 08, twelve from source 09, seventeen from source 10 and twenty-four
+from source 11 --- with the originating source named in each case. None has been merged away, softened, or absorbed
 into a stronger statement. Where two sources state overlapping limitations,
 both wordings are preserved because their scopes differ.
 
@@ -11257,6 +12733,141 @@ positions are complementary, not opposed, and stating them without their
 coefficient categories is what would make them look contradictory.
 \end{warning}
 
+\subsection{Source 11: rotation-equivariant maps}
+\label{dyn:rd:subsec:nonclaims}
+Source 11 states the limitations below, collected from its title page,
+abstract, introduction, remarks, program section, appendices, README, source
+audit, proof audit, build report and recorded verification. Where one
+overlaps an earlier limitation (status, priority, equal characteristic zero,
+centered balls, finite checks), both wordings are kept, because source 11
+states its own for the equivariant family. Items that the merge re-scopes
+are annotated, not dropped.
+\begin{enumerate}[label=\textbf{N\arabic*.},ref=\textbf{N\arabic*},leftmargin=3.2em,start=126]
+\item\label{dyn:rd:nc:status} (11) Status: proposed research
+contributions with written proofs, unrefereed and not machine-checked. The
+PDF metadata and title page name the author as ``Research manuscript
+prepared with ChatGPT''. Novelty is provisional, no resolution of a named
+longstanding conjecture is asserted, and no independently certified
+``breakthrough'' is claimed.
+\item\label{dyn:rd:nc:priority} (11) Priority is not certified. ``Proposed
+contribution'' means that an argument is supplied and that the exact
+combined formulation was not identified in the sources checked. Targeted
+searches for arbitrary-rank equivariant linearization and the combined
+boundary-transcendence formulation found no directly matching primary
+theorem, but some results were poorly targeted, so the search justifies no
+universal absence claim. Independent comparison with the literature on
+non-Archimedean dynamics, formal confluence and algebraic Schr\"oder
+solutions is called appropriate before publication; the results stand or
+fall on their hypotheses and proofs, not on the word ``new''. \emph{Stale
+against this report:} the exact threshold and the shell count, for every
+$\resq$ polynomial, were already \cref{dyn:thm:exact,dyn:thm:shell} at
+source 11's pin (\cref{dyn:rd:prop:return}).
+\item\label{dyn:rd:nc:repo} (11) The repository inspection was a targeted
+guide and notation audit, not an exhaustive reading: the root and catalogue
+READMEs, the notation guide \texttt{docs/NOTATION.md} and the analysis
+guide \texttt{docs/\allowbreak surcomplex/\allowbreak analysis/} at the
+pin, and the omnific-quotient README. A complete clone was not
+available, and no source-code, Lean-build or full-manuscript review is
+claimed. The main proofs use no unreviewed repository theorem.
+\item (11) Credited, not claimed: Lindahl's rank-one linearization with its
+lower and upper disk bounds, the formal Schr\"oder recursion and the
+root-of-unity small-divisor dichotomy \cite[Thm.~1.1, Lemma~3.3]{Lindahl};
+Hahn algebraic closedness \cite[Cor.~4]{Poonen}; Neumann's lemma
+\cite[Lemma~2.36]{Marker}; polynomial iterate divisibility as an algebraic
+mechanism; and the norm argument for algebraic logarithmic derivatives.
+Source 11 is ``not the first proof of linearization near an indifferent
+non-torsion fixed point in equal characteristic zero''.
+\item (11) Theorem-level results for a specified family, not a solution of
+general non-Archimedean linearization. Arbitrary \emph{non-equivariant}
+polynomials are not covered, and exact rotational symmetry is essential to
+the sharp theorem as proved. \emph{Re-scoped:} the threshold and shell for
+non-equivariant polynomials are \cref{dyn:thm:exact,dyn:thm:shell}; the
+closed-ball exclusion of all other periods is not extended to them
+(\cref{dyn:rd:q:symmetry}).
+\item (11) Residue characteristic $p$ is not covered; compare \textbf{N19}.
+\item (11) Multipliers that are themselves roots of unity are not covered,
+except by \cref{dyn:rd:thm:allperiods}, which allows $\lambda=\zeta$ and
+classifies periodic points only.
+\item (11) Unrestricted infinite coefficient families are not covered; the
+finite polynomial input is essential to the support argument.
+\item\label{dyn:rd:nc:oneway} (11) Algebraicity of the reduction is
+\emph{not} claimed to imply algebraicity of the full conjugacy. The criterion
+is an equivalence for $\bar H_r$ only; failure certifies transcendence of
+$H$, and success does not prove it algebraic. \emph{Re-scoped:} in the
+monomial subcase of \cref{dyn:rd:rem:superseded} $H$ is always
+transcendental.
+\item (11) Maximality is for \emph{centered} valuation balls only. It does not
+say that $H$ fails to be summable at every individual shell point, and
+extensions to sets omitting the obstructing cycles are a different question
+(\cref{dyn:rd:rem:scope}). The shell is radial terminology, not a
+topological boundary; valuation balls can be both open and closed.
+\item (11) \Cref{dyn:rd:thm:allshells} prescribes every
+\emph{infinitesimal} periodic point, not every periodic point of the
+polynomial on $K_\Gamma$; other finite or infinitely large cycles of $f$
+are not excluded.
+\item (11) \Cref{dyn:rd:thm:allperiods} makes no claim about periodic points
+of valuation zero, where the constant term of $\mathcal Q_n$ need not
+dominate.
+\item (11) The rational map $f^{\vee}$ is a presentation over the omnific
+ring, not an $\Oz[i]$ self-map. It is not claimed that $f^{\vee}(a)\in\Oz[i]$
+for every $a\in\Oz[i]$ at which it is defined, nor that its denominator is a
+unit; integrality is proved for the classified periodic set, not for every
+orbit. The coefficient-extraction retraction on $\Oz[i]$ is not the standard
+part on $\OO_\Gamma$.
+\item (11) Sharpness of the complex centered ball does not establish
+sharpness of a real-only interval when the shell cycles are nonreal
+(\cref{dyn:rd:ex:quintic}, \cref{dyn:rd:q:real}).
+\item (11) The calculation pipeline is conditional on extracting leading
+valuations and leading coefficients; it is not a decision procedure for
+arbitrary unnamed surreal numbers. The algebraicity test is an exact
+algebraic question only when the coefficients of $R$ are algebraic
+numbers; for coefficients given by oracles or non-effective descriptions no
+uniform decidability follows; and checking that an infinite support is well
+ordered is separate from manipulating a finite support expression.
+\item (11) The reduction $\bar H_r$ is a formal coefficientwise operation,
+not the evaluation of $H_r$ at an ordinary point of the shell, and the
+reduced equation \eqref{dyn:rd:eq:vectorfield} is not an evaluation on the
+shell.
+\item (11) Repeated residue roots are counted with algebraic multiplicity,
+and unique lifting is claimed only for simple roots; a polynomial reducing
+to $(1-U)^{2}$ may split into two cycles at a finer scale. In
+\cref{dyn:rd:prop:stability} the lifted points themselves are not claimed to
+stay fixed.
+\item (11) Strong Hahn summation is never identified with sequential
+convergence. No real number $|t|^{\gamma}$ is written for a general
+exponent, no radius-of-convergence argument is used, and a rank-one proof is
+not transferred by renaming the absolute value.
+\item (11) Class level: no proper-class Hahn sum and no fixed workspace
+containing every surcomplex point. The set constructions use ordinary choice
+and set-based Hahn-field theory, or the definable classes of a conservative
+class theory over ZFC, and no inaccessible cardinal or stronger hypothesis.
+\item (11) The eleven questions are a research programme proposed by the
+source, not historically established named open problems.
+\item (11) The finite checks are regression checks of finite consequences,
+$1{,}863$ exact assertions in six groups. They do not prove the
+positive-support lemma, arbitrary-rank strong summability, proper-class
+compatibility, all-period exclusion as a universal theorem, or novelty or
+priority. No floating-point evidence substitutes for proof, and the ordinary
+rational specialization in the shell test is not a model of infinitesimal
+valuations or of the absence of other cycles.
+\item (11) No Lean files are supplied as proofs of the new theorems, and
+existing formal verification of the coefficient field does not amount to
+verification of the article. The formalization sequence of
+\cref{dyn:rd:subsec:limits} is a plan.
+\item (11) The PowerShell build script was included but not executed in the
+source's own build environment. Its build report records document quality
+control and finite checks only, not proof review or formal verification.
+\item\label{dyn:rd:nc:last} (11) The Wikipedia page supplied with the
+request was used for orientation only; no theorem relies on it.
+\end{enumerate}
+
+\noindent Source 11 contributes $24$ distinct limitations, numbered
+\textbf{N126}--\textbf{N149}. With the $123$ distinct limitations of sources
+01--10 (\textbf{N1}--\textbf{N125}), this section records $147$ distinct
+source-level limitations in $149$ numbered items. Three of source 11's items
+are annotated as re-scoped by this report
+(\textbf{N127}, \textbf{N130}, \textbf{N134}); none is dropped.
+
 \appendix
 
 \section{A short proof of the word-order input}
@@ -11507,7 +13118,14 @@ $p$-adic bounding spheres without periodic points
 \cite{Lindahl,LindahlPadic}
 & The rank-one antecedent of \cref{dyn:sec:return} and the
 source of the cross-note \cref{dyn:subsec:berkovich} and the
-characteristic warning \cref{dyn:warn:charzero}.\\[3pt]
+characteristic warning \cref{dyn:warn:charzero}. Source 11 credits
+\cite[Thm.~1.1 and Lemma~3.3]{Lindahl} for the Schr\"oder recursion and the
+root-of-unity divisor dichotomy \cref{dyn:rd:lem:divisors}, inspected in its
+HTML text and page images.\\[3pt]
+Neumann's lemma as stated in Marker's lecture notes
+\cite[Lemma~2.36]{Marker}; the norm of an algebraic logarithmic derivative
+& Source 11's citation for \cref{dyn:lem:neumann}, and the classical
+algebra behind \cref{dyn:rd:lem:norm}; neither is claimed.\\[3pt]
 Modified differential equations in backward error analysis
 \cite{Hairer}
 & The origin of the coefficients \eqref{dyn:eq:euler-known}, which are
@@ -11544,11 +13162,14 @@ coefficient-category distinction only. Sources 08 and 09 cite it at
 reuse. Source 10 cites it at
 \texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0} for
 \cref{dyn:q:commongerm}, \cref{dyn:thm:radius-depth} and the scalar results
-of \cref{dyn:esm:sec}, which it cites rather than reproves. None uses an
+of \cref{dyn:esm:sec}, which it cites rather than reproves. Source 11 cites
+it at \texttt{9ee2dac0d234c90415f6b7290cbe5b4dcf4a4d3e} for the notation
+and analysis guides only, and did not read this report. None uses an
 unrefereed repository theorem as a premise. The
 inspections were targeted, not exhaustive (\textbf{N9}, \textbf{N13},
 \textbf{N71}, \ref{dyn:esm:nc:priority08},
-\ref{dyn:esm:nc:priority09}, \ref{dyn:nsc:nc:priority}).\\
+\ref{dyn:esm:nc:priority09}, \ref{dyn:nsc:nc:priority},
+\ref{dyn:rd:nc:repo}).\\
 \bottomrule
 \end{longtable}
 
@@ -11660,6 +13281,25 @@ the constant frequency correction, and the invariant density
 $r$, $q$, $c$, $\delta$, $P$, $M$ & Finite-return threshold
 \eqref{dyn:eq:exact-r}, residue order, $\lambda^{q}-1$, $v(c)$, shell
 polynomial \eqref{dyn:eq:P}, its degree.\\[3pt]
+$\zeta$, $e$, $r_{\mathrm{eq}}$, $\hat a_j$, $\widehat R$, $R$, $\varkappa_j$
+& Source 11 (\cref{dyn:rd:conv}): the rotation root with $\lambda=\zeta+e$,
+the threshold \eqref{dyn:rd:eq:req} read off $f$ (equal to $r$ by
+\cref{dyn:rd:prop:return}), normalized coefficients, the unreduced and
+reduced boundary polynomials in $U=X^{q}$ \eqref{dyn:rd:eq:R}, and the
+coefficients of $R$. Source 11 writes $m,d,\rho,u_j,P$ for $q,e,r_{\mathrm{eq}},\hat a_j,\widehat R$,
+and its $s$ is this section's $\rho=t^{r_{\mathrm{eq}}}$.\\[3pt]
+$\bar H_r$, $\mathfrak h$, $\beta$, $\mathfrak r_\beta$ & The coefficientwise
+reduction of $H_r$ (source 11's $h_0$; the Taylor series of $H_0$), with
+$\bar H_r=X\mathfrak h(X^{q})$; a root of $R$; the residue
+$1/(q\beta R'(\beta))$ of \eqref{dyn:rd:eq:alpha}.\\[3pt]
+$\OO_{\mathsf M}$, $\mathcal Q_n$, $\varphi_k$ & Source 11's support ring
+$A_S$, iterate quotient $T_n$ and divisor polynomial $q_k$
+(\cref{dyn:rd:def:ring,dyn:rd:lem:iterate,dyn:rd:lem:divisors}).\\[3pt]
+$\mathcal S$, $\mathfrak b_\ell$, $\varsigma_\ell$, $r_\ell$, $f^{\vee}$,
+$L_{\mathrm{cl}}$, $\Oz$, $\mathbb J$ & The shell-realizing polynomial, its
+roots, constants and scales, the reciprocal map $1/f(1/w)$, its clearing
+exponent, the omnific integers and their purely infinite part (the
+collection's $\Pi$) (\cref{dyn:rd:thm:allshells,dyn:rd:thm:omnific}).\\[3pt]
 $\eps=t^{\delta}$, $s=t^{\delta/q}$ & A single Hahn monomial of positive
 valuation; \emph{not} a small complex number. All $O(\eps^{k})$ mean
 divisibility in a formal series ring.\\[3pt]
@@ -11799,6 +13439,23 @@ norm bound on $(H_\gamma)$; resonant-only, and not an iff
 Same multiplier $\lambda$; inequalities on the \emph{return} coefficients;
 squarefree $P$ for the matching. Sufficient, not necessary
 (\cref{dyn:warn:stability}).\\[3pt]
+\cref{dyn:rd:thm:linearization,dyn:rd:thm:shell,dyn:rd:prop:periodfinite} &
+Exact rotational symmetry $f(\zeta z)=\zeta f(z)$; $v(e)>0$ with $e\ne0$;
+finite polynomial input; one common positive support monoid; divisible
+$\Gamma$ and algebraic closure for the root count; equal characteristic
+zero. Maximality for centered balls only.\\[3pt]
+\cref{dyn:rd:thm:reduction,dyn:rd:thm:algebraicity} &
+Integral normalized coefficients before reduction. The criterion decides
+$\bar H_r$ only; failure certifies transcendence of $H$, success does not
+prove algebraicity (\ref{dyn:rd:nc:oneway}); superseded in the monomial
+subcase (\cref{dyn:rd:rem:superseded}).\\[3pt]
+\cref{dyn:rd:thm:allperiods} &
+Integral coefficients and equivariance; nonzero \emph{infinitesimal} points
+only, nothing at valuation zero; $\lambda=\zeta$ allowed.\\[3pt]
+\cref{dyn:rd:thm:allshells,dyn:rd:thm:omnific} &
+Finitely many prescribed shells with distinct $\mathfrak b_\ell$; only
+infinitesimal (respectively infinitely large finite) periodic points are
+prescribed; a rational-map presentation, not an $\Oz[i]$ self-map.\\[3pt]
 \cref{dyn:thm:common,dyn:thm:dichotomy} &
 $\pares$; simply connected $U$ containing $0$; $V$ nonvanishing on
 $U\setminus\{0\}$ with a \emph{simple} zero at $0$; polynomial Euler form
@@ -11920,7 +13577,10 @@ GitHub repository. Documentation catalogue \texttt{docs/README.md},
 \texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}, inspected 22 September
 2026 (source 10); in particular
 \texttt{docs/surcomplex/dynamics-and-normal-forms/article.tex} and its
-README. The reports are AI-assisted, unrefereed research drafts,
+README; and commit \texttt{9ee2dac0d234c90415f6b7290cbe5b4dcf4a4d3e}
+(source 11), of which it consulted the catalogue READMEs,
+\texttt{docs/NOTATION.md}, \texttt{docs/surcomplex/analysis/README.md} and
+the README of \texttt{docs/surreal/set-sized-quotients-of-omnific-integers/}. The reports are AI-assisted, unrefereed research drafts,
 not independent peer-reviewed validation.
 \url{https://github.com/VladimirReshetnikov/Surreal}.
 
@@ -12118,6 +13778,12 @@ and its applications,
 \emph{Analysis \& PDE} \textbf{7} (2014), no.~3, 745--770.
 \href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745};
 \href{https://arxiv.org/abs/1205.0236}{arXiv:1205.0236}.
+
+\bibitem{Marker}
+D.~Marker,
+\emph{Model Theory of Valued Fields}, lecture notes, Math~512, University of
+Illinois at Chicago, 2018, Chapters~1--2; Lemma~2.36 is Neumann's lemma.
+\url{https://homepages.math.uic.edu/~marker/math512-f18/valued_fields_1-2.pdf}.
 
 \end{thebibliography}
 \end{document}
