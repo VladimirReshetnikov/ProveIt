@@ -1334,3 +1334,16 @@ across pages with a repeated header instead of forcing a large blank area. No ne
 is claimed for the scope examples or geometric results. Remaining pointers,
 Section 21.7, the appendices' imported foundations and complete source
 reconciliation still require review.
+
+
+### Subsequent discriminant addition
+
+The merge of `fdedce0` adds source C17 as Section 19.4 (27 standard results)
+and Questions 21.31–21.40, with pointers and summary additions elsewhere.
+These additions remain outside the completed proof and scope reviews above,
+including their new text inside Sections 20–21.6. The five changes to existing
+standard statements only add C17 to their source credits. The earlier 217
+mathematical statements are preserved. The full manuscript now has 244
+standard results; this count does not extend the independent review scope.
+The route also records the separately checked Gaussian fiber and converse
+formalizations in `4037368` and `ae0210c`.

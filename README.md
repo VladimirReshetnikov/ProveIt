@@ -284,6 +284,15 @@ purely infinite parameters, and each Conway coefficient vector lies in that
 same kernel. A zero real kernel forces ordinary solutions. For tuples in
 the larger complex support ring, full complex column rank forces all
 coordinates to be ordinary complex constants.
+The Gaussian omnific ring is now constructed from Mathlib's Gaussian integers:
+its two coordinates are precisely real omnific integers. The corresponding
+fiber theorem is proved over this ring too, with ordinary Gaussian points,
+unique purely infinite complex kernel parameters, and disjoint fibers over
+distinct ordinary points.
+The converse is proved in both rings: once an ordinary point exists at a
+nonzero level, nonordinary points exist exactly when the relevant real or
+complex kernel is nonzero. Multiplying a nonzero kernel direction by the
+actual monomial ω supplies the nonordinary solution.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
@@ -351,6 +360,10 @@ The scope review makes the workspace restrictions and two kinds of smooth
 curve fibers explicit, and updates the formalization route to the proved
 arithmetic and linear-algebra prerequisites.
 These geometric and coefficient-algebra results remain pending in Lean.
+A new manuscript in the same report treats monic polynomials with nonzero
+constant discriminant as translates of their constant-term polynomials,
+and studies units of finite étale algebras. That addition awaits independent
+proof review and Lean formalization.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

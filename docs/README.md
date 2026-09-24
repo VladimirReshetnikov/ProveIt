@@ -99,14 +99,18 @@ Placement `aa9c891` retires the next nine archives and adds two main texts:
 Their 60 standard results are indexed and PDFs supplied; their collection
 editions are written in `68db1b5` and `fa54502`. The two dilation companions
 are integrated in `1ef6bba`, adding 33 standard results on support rank and
-algebraic independence of dilation orbits. The five companions to holonomic
-rigidity, omnific automorphisms and Diophantine geometry still await main-text
-integration. Independent proof review of these additions remains pending;
+algebraic independence of dilation orbits. The coefficient-observables and
+Noetherian-compression companion is now integrated in `76dd876`, adding 11
+standard results to the 222-result holonomic report. The discriminant and étale-unit companion is integrated in `fdedce0`,
+adding 27 standard results in Section 19.4 of the Diophantine report.
+Three companions to omnific automorphisms still await main-text integration. Independent proof review of these additions remains pending;
 assembly alone does not extend any Lean mapping.
 A further universal-symmetries and difference-equations archive arrived in
-`bbe23a3`; its ZIP integrity is checked, but placement, integration and
-review remain pending. Eight more archives arrived in `a4611ad`; they also
-pass ZIP integrity checks and await placement and review.
+`bbe23a3`, and eight more archives arrived in `a4611ad`. All nine are now
+placed in `a7a435f` as additions to six reports, with audits and verification
+code supplied. Main-text integration, indexing and independent review remain
+pending; placement alone does not establish or formalize their claims.
+A further Hahn-joins archive arrived in `267b910` and awaits placement.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
@@ -193,7 +197,7 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; Part V: compact groups over `No`, whose universal set-sized quotient exists exactly in the semisimple case |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Diophantine equations over the omnific integers `Oz`: constant-term transfer, Pell and norm-form rigidity, quartic definitions of `ℤ`, a Diophantine constant term, fractions, and rigidity of smooth curves, abelian varieties and logarithmic complements; fourteen integrated manuscripts; proof review through Section 18.6, with the exact scope in its reconciliation |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Diophantine equations over the omnific integers `Oz`: constant-term transfer, Pell and norm-form rigidity, quartic definitions of `ℤ`, a Diophantine constant term, fractions, and rigidity of smooth curves, abelian varieties and logarithmic complements; fifteen integrated manuscripts; Section 19.4 on constant discriminants and étale units awaits review; earlier proof review through Section 18.6, with the exact scope in its reconciliation |
 | [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Every ring map from `Oz` to a set-sized ring factors through the constant term; exact cardinal thresholds, homological dimensions, integer-valued polynomials, and the proper-class Boolean branching of the integral closure; eighteen manuscripts |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Which strong automorphisms of a Hahn field preserve its omnific integers: the convex-support criterion, stabilizers, nondefinable monomials, and polynomial coefficient rigidity; eleven integrated manuscripts; later parts claim automatic strongness, topological collapse and arbitrary-rank coefficient recovery, pending independent review |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; four manuscripts |

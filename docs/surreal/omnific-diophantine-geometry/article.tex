@@ -126,6 +126,12 @@
 \newcommand{\Lie}{\operatorname{Lie}}
 \newcommand{\trdeg}{\operatorname{trdeg}}
 \newcommand{\dif}{\mathrm d}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Hbar}{\mathbb H_{\bar\Bbbk}(\Gamma_\Q)}
+\newcommand{\Obar}{\mathcal O_{\bar\Bbbk}(\Gamma_\Q)}
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -138,7 +144,7 @@
 \vspace{3mm}
 {\Large Retractions, rigidity, definability,\\ and infinite families\par}
 \vspace{3mm}
-{\large Built from fourteen manuscripts dated September 22 and 23, 2026\par}
+{\large Built from fifteen manuscripts dated September 22 and 23, 2026\par}
 \vspace{2mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
@@ -195,8 +201,11 @@ compactification vanish in the same way, so a complement whose logarithmic forms
 separate tangent directions has only constant such points. A geometrically integral
 affine curve, singular or not, has nonconstant such points exactly when its
 normalization is the affine line.
+A monic polynomial over the one-sided ring whose discriminant is a nonzero constant is a
+purely infinite translate of its constant-term polynomial, and every unit of a finite
+\'etale algebra over that ring is algebraic over the coefficient field.
 
-This report merges fourteen independently written manuscripts; it states which
+This report merges fifteen independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
 and independent review remains incomplete. Some elementary ring and arithmetic
@@ -208,7 +217,7 @@ repository's \fn{docs/FORMALIZATION.md}, not inferred from this manuscript.
 \begin{minipage}{\textwidth}
 \footnotesize
 Sources: manuscripts 01 (the base text), 02, 05, 06, 07, 08, 09 and
-C10--C16; their titles and pinned repository commits are in
+C10--C17; their titles and pinned repository commits are in
 \cref{odg:sub:provenance}.
 Fiber results of one manuscript of the sibling report, and the direction
 criterion of another, appear here once. The provenance of every
@@ -376,6 +385,17 @@ integral affine curve, singular or not, has nonconstant $\crA$-points exactly wh
 normalization is $\Aff^1$; a conductor of the curve and Seidenberg's identity give finite
 derivative-order certificates, and the rigid singular curves have only ordinary omnific
 points (\cref{odg:sg:thm:main,odg:sg:thm:conductor,odg:sg:thm:omnific}) \src{C16}.
+\item \textbf{Constant discriminants and \'etale units} \src{C17}. Over any field $\Bbbk$
+of characteristic zero and any ordered exponent group, a monic polynomial over $\crA$, or
+over $\mathfrak o+\crP$ for a subring $\mathfrak o\subseteq\Bbbk$, whose discriminant is a
+nonzero constant is $\overline P(X-h)$ for its constant-term polynomial $\overline P$ and
+a unique purely infinite $h$ (\cref{odg:disc:thm:translation}); so a monic
+$P\in\Oz[X]$ with $\Disc(P)\in\Z\setminus\{0\}$ has an omnific root exactly when
+$\overline P$ has an integer root (\cref{odg:disc:cor:roots}). Every unit of a finite
+\'etale $\crA$-algebra is algebraic over $\Bbbk$, and monogenic ones are constant
+(\cref{odg:disc:thm:units,odg:disc:thm:monogenic}); a normal matrix over
+$\mathcal A_\C(\Gamma)$ with nonzero constant characteristic discriminant is
+$\ct M+hI$ (\cref{odg:disc:thm:matrix}).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a
@@ -393,7 +413,7 @@ special cases proved by source 01.
 
 \subsection{Provenance of this report}\label{odg:sub:provenance}
 
-This report is built from fourteen manuscripts written independently. Sources
+This report is built from fifteen manuscripts written independently. Sources
 01, 02 and 05, dated September 22, 2026, are items of the batch placed in
 commit \texttt{be06fc8} and pin repository commit \pin{} (107 commits before
 that placement). Sources 06 and 07, dated September 23, 2026, are items 01
@@ -434,6 +454,12 @@ arrived in \texttt{39fe674}); its shipped files carry the prefix \fn{16-}, and i
 like C10--C15. It pins \texttt{bcac55a}, 87 commits before \texttt{9d28e28}; at that pin
 sources C10--C14 were placed but not yet written into this report, source C15 was not yet
 placed, and source C16 saw none of C10--C15 except the audits of C13 and C14.
+Source C17, dated September 23, 2026, is manuscript 07 of batch 33, placed in commit
+\texttt{aa9c891} (its archive arrived in \texttt{73043eb}); its shipped files carry the
+prefix \fn{17-discriminant-rigidity-}, and it is tagged like C10--C16. It pins
+\texttt{efc5446}, 70 commits before \texttt{aa9c891}; at that pin sources C10--C15 were
+written into this report and source C16 was placed but not yet written, and source C17 read
+this report's guide, not its article.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -534,6 +560,23 @@ repeated-root superelliptic equations; a pinched elliptic curve; the Gaussian di
 \end{tabular}
 \end{center}
 
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}}
+\toprule
+Source & Manuscript & Principal contribution to this report\\
+\midrule
+C17 & \emph{Constant Discriminants and \'Etale Unit Rigidity over Omnific Hahn Rings:
+Translation classification, arithmetic descent, and normal spectral rigidity} &
+Translation classification at a nonzero constant discriminant over $\crA$ and
+$\mathfrak o+\crP$, with a universal root-velocity certificate
+(\cref{odg:disc:sub:disc}); factors, Galois groups and resultants; units of finite
+\'etale algebras; monogenic and arithmetic descent; critical configurations; normal
+matrices; five boundary examples.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 Where the sources overlap, the statement with the weakest hypotheses is
 printed and the others are recorded as special cases. Results added by the
 merge carry the tag \mergetag{} and have complete proofs.
@@ -599,6 +642,11 @@ eight new questions; it is outside the reviews, and again no section or statemen
 changed. Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
+Source C17, placed in \texttt{aa9c891}, was integrated after that as \cref{odg:disc:sub:disc},
+at the end of \cref{odg:sec:coefficients}, with credits added to the results it reproves,
+pointers in \cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:obstructions,odg:sec:formal},
+status notes in \cref{odg:sec:coefficients,odg:cr:sec:groups,odg:sec:questions} and ten new
+questions; it is outside the reviews, and no section or statement number changed.
 
 \subsection{Class size and foundations}\label{odg:sub:foundations}
 
@@ -703,6 +751,10 @@ not $D$, because $D$ is the Pell parameter; the coefficient field is written
 $\Bbbk$, because $k$ is an ordinary index; and the exponent group is $\Gamma$,
 because $G$ is the Lorentz Gram matrix. The sources' names are listed in
 \cref{odg:tab:renames}.
+The constant-term polynomial $\overline P$, the discriminant $\Disc$, the Hahn splitting
+field $\Hbar$ with its valuation ring $\Obar$, and a finite \'etale $\crA$-algebra
+$\mathsf B$ with its algebraic constants $\mathsf C_{\mathsf B}$ are fixed in
+\cref{odg:disc:sub:disc}.
 
 \paragraph{Sign convention.}
 Exponents are those of Conway normal forms: supports are reverse well
@@ -780,6 +832,10 @@ and source C15 adds differentials with logarithmic poles along a normal-crossing
 this report had only sources 01, 02 and 05, source C15 at one where it had sources 01, 02,
 05, 06 and 07, and source C16 at one where it had the same sources and the placed files
 of C10--C14; their references to its numbering are translated in \cref{odg:app:provenance}.
+Source C17 imports \'etale ring maps, formal \'etaleness and the discriminant criterion
+\cite{StacksEtale,StacksFormal,StacksDisc} and the algebraic closedness of Hahn fields
+\cite[Fact 2.1.1]{LM}; it read this report's guide at a commit where sources C10--C15 were
+written into it.
 Relations to neighbouring reports are listed in \cref{odg:sub:neighbours}.
 
 \section{The normal-form rings and the integer part}\label{odg:sec:basic}
@@ -1002,7 +1058,7 @@ agrees with the trigonometry report's construction of the integer part, which
 takes ``the appropriate side when $f$ is infinitesimally adjacent to an
 integer'' (text following \replabel{trigonometry:eq:split}).}
 
-\begin{proposition}[One-variable rigidity \src{02, 05}]\label{odg:prop:univariate}
+\begin{proposition}[One-variable rigidity \src{02, 05; also C17}]\label{odg:prop:univariate}
 If $P\in\C[T]$ is nonzero, every root of $P$ in $\BC$ belongs to $\C$.
 In particular, roots in $\BR$ of a nonzero real polynomial are real, and
 the roots in $\Oz$ of a nonzero $P\in\Z[T]$ are exactly its ordinary
@@ -1551,6 +1607,14 @@ This corollary concerns \emph{ordinary integer coefficients}. A decision
 problem allowing arbitrary omnific coefficients requires an explicit
 finite representation scheme and is a different question
 (\cref{odg:sec:coefficients}).
+The holonomic-rigidity report encodes the same undecidability into a rigid class of
+functional equations with integer data and a prescribed degree bound: no algorithm decides
+whether such an equation has a polynomial solution with coefficients in $\Oz$
+(\replabel{hol:pc:cor:undecidable} of
+\fn{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions}; batch 31). Its proof
+passes through $\ct$ and MRDP, as here. For monic univariate equations with omnific
+coefficients and a discriminant in $\Z\setminus\{0\}$, in contrast, root existence
+reduces to the integer roots of one ordinary polynomial (\cref{odg:disc:cor:roots}).
 
 \subsection{Why signs and nonvanishing do not transfer}
 
@@ -2139,6 +2203,10 @@ $\left(\begin{smallmatrix}X&0\\Y&X\end{smallmatrix}\right)$ and norm
 $X^2$. Thus the nonzero level $N=1$ contains $(1,t)$ for every
 $t\in\Pi$. A nonzero determinant makes this algebra element a unit;
 it does not force its nilpotent coordinate to be constant.
+Source C17 recovers \cref{odg:dec:thm:etale} in characteristic zero as the constant case of
+its unit theorem for finite \'etale algebras over $\crA$, and its finite free reduced
+algebra is a second way the \'etale hypothesis can fail
+(\cref{odg:disc:rem:etalenorm,odg:disc:ex:nonetale}).
 
 Characteristic zero, in contrast, is unnecessary for the abstract
 \'etale norm argument \mergetag. For any field $\Bbbk$, form the same
@@ -2905,6 +2973,10 @@ zero and characteristic polynomial $T^2$, but has an infinite omnific entry.
 The trace bound works for symmetric matrices because it is a positive sum
 of entry squares, not because every matrix with fixed characteristic
 polynomial has bounded entries.
+Source C17 proves a normal-matrix analogue that allows a purely infinite trace: a normal
+matrix over $\mathcal A_\C(\Gamma)$, in particular a symmetric one over $\Oz$, whose
+characteristic polynomial has nonzero constant discriminant is $\ct M+hI$
+(\cref{odg:disc:thm:matrix,odg:disc:rem:symmetric}).
 
 \subsection{No real point at infinity}
 
@@ -6725,7 +6797,7 @@ $\Aff$, $\ddeg$ and $\dif$ instead. The complete list of renamed symbols is in
 
 \subsection{Two opposite rings in one Hahn field}\label{odg:cr:sub:rings}
 
-\begin{lemma}[Intersections, units and degree \src{C14; also C10--C13, C15, C16}]\label{odg:cr:lem:rings}
+\begin{lemma}[Intersections, units and degree \src{C14; also C10--C13, C15--C17}]\label{odg:cr:lem:rings}
 \begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
 \item $\crA$ is a $\Bbbk$-subalgebra of $\crH$, $\crP$ is an ideal of it,
 $\crA=\Bbbk\oplus\crP$, and $\ct$ is a ring retraction of $\crA$ onto $\Bbbk$ with
@@ -6795,7 +6867,7 @@ local, freely chosen derivations; they are not a canonical surreal derivation,
 not the Berarducci--Mantova derivation, and not derivatives in the surreal
 order topology \src{C10, C11, C12, C13, C14}.
 
-\begin{lemma}[Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15, C16}]\label{odg:cr:lem:euler}
+\begin{lemma}[Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15, C16, C17}]\label{odg:cr:lem:euler}
 Each $\partial=\partial_\lambda$ is a $\Bbbk$-derivation of $\crH$ with
 $\supp\partial f\subseteq\supp f$, hence $v(\partial f)\ge v(f)$, and
 \begin{equation}\label{odg:cr:eq:tworings}
@@ -6845,7 +6917,7 @@ denominator is a unit of $\crO$. This explains both logarithmic-derivative
 clauses: an arbitrary monomial can give a nonzero constant, whereas a
 unit of $\crO$ has $\alpha=0$ \mergetag.
 
-\begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15, C16}]\label{odg:cr:lem:separation}
+\begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15, C16, C17}]\label{odg:cr:lem:separation}
 The common kernel of all Euler derivations of $\crH$ is $\Bbbk$. If
 $x\in\crA\setminus\Bbbk$ has $\ddeg x=\alpha$, there is $\lambda$ with
 $\lambda(\alpha)=1$, and then $\partial_\lambda x\ne0$ and
@@ -6866,7 +6938,7 @@ nonconstant series ($\lambda(a+b\sqrt2)=a$ kills $\omega^{\sqrt2}$ on
 $\Q+\Q\sqrt2$); every constancy argument below uses the whole family
 \src{C10, C11, C12, C13, C14, C15}.
 
-\begin{corollary}[Relatively algebraically closed constants \src{C10, C14, C15}]\label{odg:cr:cor:algclosed}
+\begin{corollary}[Relatively algebraically closed constants \src{C10, C14, C15, C17}]\label{odg:cr:cor:algclosed}
 Every element of $\crH$ algebraic over $\Bbbk$ lies in $\Bbbk$.
 \end{corollary}
 \begin{proof}
@@ -9596,6 +9668,10 @@ coefficients \src{C14}: $y^2=x^3+(1-\omega^3)$ has the omnific point $(\omega,1)
 $4+27u^4\ne0$ \src{C12}, and $y^2=x^3+x-\omega^2$ has $(\omega^2,\omega^3)$ \src{C13}.
 No rigidity is claimed for equations whose coefficients vary at a surreal scale
 (\cref{odg:cr:q:coefficients}).
+Status (batch 33): in dimension zero source C17 proves such a theorem: a monic polynomial
+over $\crA$ whose discriminant is a nonzero constant is a purely infinite translate of its
+constant-term polynomial (\cref{odg:disc:thm:translation}); the examples above are curves,
+where nothing of the kind is claimed.
 
 The valuation ring is not rigid. For $\gamma>0$ and $\varepsilon=\omega^{-\gamma}\in\crm$,
 the nonsingular cubic $y^2=x^3-x+1$ has the nonconstant $\crO$-point $x=\varepsilon$,
@@ -10178,6 +10254,1027 @@ For general coefficients, a viable approach must inspect actual normal-form
 supports. Matching constant terms is necessary, and occasionally useful, but
 is not a sufficient solvability criterion (\cref{odg:q:roots}).
 
+\subsection{Constant discriminants and \texorpdfstring{\'etale}{etale} units}\label{odg:disc:sub:disc}
+
+This subsection is built from a fifteenth manuscript, \emph{Constant Discriminants and
+\'Etale Unit Rigidity over Omnific Hahn Rings: Translation classification, arithmetic
+descent, and normal spectral rigidity}, tagged \src{C17} after its file prefix
+\fn{17-discriminant-rigidity-} (\cref{odg:sub:provenance}); the letter C is kept as for
+sources C10--C16, because the sibling report has a manuscript 17 of its own. Source C17
+works with equations whose coefficients are \emph{not} constant: monic polynomials in one
+variable over the nonnegative-support ring. Its main theorem says that a nonzero
+\emph{constant} discriminant forces such a polynomial to be a purely infinite translate of
+its constant-term polynomial (\cref{odg:disc:thm:translation}). So a constant
+nondegeneracy invariant recovers a rigidity theorem for coefficients that vary at a
+surreal scale, in dimension zero. This is the first clause of
+\cref{odg:cr:q:coefficients} for univariate equations, and for monic polynomials over $\Oz$
+with discriminant in $\Z\setminus\{0\}$ it answers \cref{odg:q:roots}
+(\cref{odg:disc:cor:roots}). The same mechanism shows that every unit of a finite
+\'etale algebra over the ring is algebraic over the coefficient field
+(\cref{odg:disc:thm:units}), which contains \cref{odg:dec:thm:etale} in characteristic
+zero (\cref{odg:disc:rem:etalenorm}). Labels of this subsection carry the sub-prefix
+\fn{odg:disc:}. It was appended at the end of \cref{odg:sec:coefficients}, so no existing
+section, statement or equation number changed; its ten questions follow the last question
+of \cref{odg:sec:questions}. It is outside every proof review recorded in
+\fn{RECONCILIATION.md}.
+
+\paragraph{Conventions and renamed symbols.} As in the curve part
+(\cref{odg:cr:sub:conventions}), $\Bbbk$ is a field of characteristic zero, $\bar\Bbbk$
+an algebraic closure, $\Gamma$ a set-sized ordered abelian group, not assumed divisible,
+and $\Gamma_\Q$ its divisible hull. We use the $\omega$-convention: $\crA$ is the ring of
+series with support in $\Gamma^{\ge0}$, $\crP$ its ideal of series with support in
+$\Gamma^{>0}$, $\crO$ the valuation ring of series with support in $\Gamma^{\le0}$, and
+$v=-\ddeg$. Source C17 uses the $t$-convention $t^\gamma=\omega^{-\gamma}$: its
+$\mathcal A=k((t^{\Gamma_{\le0}}))$, $\mathcal I$, $\mathcal O_K$ and $K=k((t^\Gamma))$ are
+$\crA$, $\crP$, $\crO$ and $\crH$ with exponents negated, and its algebraically closed
+workspace $\widehat K=\bar k((t^{\Gamma_\Q}))$ with valuation ring $\widehat{\mathcal O}$
+is here the Hahn field $\Hbar$ with coefficients in $\bar\Bbbk$ and exponents in
+$\Gamma_\Q$, with valuation ring $\Obar$. Its coefficient subring $D\subseteq k$ is $\mathfrak o\subseteq\Bbbk$ (here $D$ is the
+Pell parameter), and its pullback $\mathcal A_D=D\oplus\mathcal I$ is
+$\mathcal R_{\mathfrak o}=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o+\crP$. For
+$P\in\crA[X]$, $\overline P=\ct P$ applies $\ct$ to every coefficient, as at the start
+of \cref{odg:sec:coefficients} (the source writes $P_0$); the bar over a polynomial or a
+matrix is this constant-term map, while $\bar\Bbbk$ is an algebraic closure. Its Euler
+derivations $D_\chi$, $t^\gamma\mapsto\chi(\gamma)t^\gamma$ for
+$\chi\in\Hom_\Q(\Gamma_\Q,\Q)$, are the $\partial_{-\chi}$ of \eqref{odg:cr:eq:euler}, the
+same family; we write $\partial_\lambda$ with $\lambda\in\Hom_\Q(\Gamma_\Q,\Q)$, acting
+coefficientwise on $\Hbar$ and on the coefficients of polynomials. They are not $d/dX$.
+The source's finite \'etale algebra $B$, its constant subalgebra $C_B$ and its splitting
+algebra $S$ are $\mathsf B$, $\mathsf C_{\mathsf B}$ and $\mathsf B_P$ (here $B$ is a
+bilinear form, $\BR,\BC$ are rings and $S$ a target ring); the rank $N$ of $\mathsf B$ is
+$r$ (here $N$ is a norm form, and $r$ is the dimension of the \'etale algebra $E$ of
+\cref{odg:dec:thm:etale}, which is the rank in the constant case). The velocity
+polynomial $Q$ is $\dot P$, the divided difference $S(X,Y)$ is $\mathsf W(X,Y)$, the root
+velocities $u_i$ are $\dot r_i$, the certificate polynomials $F_{n,s}$ are
+$\mathcal F_{n,s}$, the characteristic polynomial $H_y$ is $\operatorname{ch}_y$, the
+spectral idempotents $E_j$ are $\mathsf P_j$ (here $E$ is an \'etale algebra), the target
+translation $c$ of the critical-point theorem is $\beta$ (the letter of the sibling report,
+\cref{odg:disc:rem:osq}), the number $r$ of polynomials in the resultant theorem is
+$\ell$ and its graph $G$ is $\mathcal G$ ($G$ is the Gram matrix), the source's real
+and complex workspaces $H$, $H[i]$ are $\mathbb H_\R(\Gamma_\Q)$ and
+$\mathbb H_\C(\Gamma_\Q)$, and its $\mathcal A_{\C}$, $\mathcal I_{\C}$ are
+$\mathcal A_\C(\Gamma)$, $\Pi_\C(\Gamma)$. The letters $h$ (the translation), $\Delta$
+(a discriminant), $m=\binom n2$, $w_{ij}$, $e_s$, $F=\Frac\crA$ and $L_0$ are the
+source's. \Cref{odg:tab:renames} lists these renamings and a few local ones (for
+example the quadratic velocity coefficients $\alpha,\beta$ become $b_1,b_2$, and the
+infinitesimal root $r$ of \cref{odg:disc:ex:twosided} becomes $\rho$).
+
+Four readings must be kept apart. A \emph{constant} discriminant is one in $\Bbbk$, that
+is, supported at the exponent $0$; it is not ``independent of $X$'', which every
+discriminant is. The \emph{constant coefficient in $X$} of $P$ is $a_n$, whereas the
+constant term of a series is its coefficient at $\omega^0$. A \emph{nonzero} constant
+discriminant in $\mathfrak o$ need not be a \emph{unit} of $\mathfrak o$: the translation
+theorem needs only the former, \'etaleness the latter. And $\crA$ is not the set of
+series of nonpositive valuation (\cref{odg:sub:notation}): the theorems below are false
+when the support condition is weakened to a condition on the leading exponent
+(\cref{odg:disc:ex:twosided}).
+
+\subsubsection{The splitting field and the Euler family}\label{odg:disc:sub:rings}
+
+Source C17 reproves the ring facts it uses: $\crA=\Bbbk\oplus\crP$ with the retraction
+$\ct$, $\crA\cap\crO=\Bbbk$, $\crP\cap\crO=0$, $\crA^\times=\Bbbk^\times$, and for the
+pullback $\mathcal R_{\mathfrak o}\cap\Bbbk=\mathfrak o$ and
+$\mathcal R_{\mathfrak o}^\times=\mathfrak o^\times$ (its Lemma 2.1, here
+\cref{odg:cr:lem:rings}); the Euler derivations with $\partial(\crA)\subseteq\crP$,
+$\partial(\crP)\subseteq\crP$, $v(\partial x)\ge v(x)$, $\partial x/x\in\crO$ and joint
+constants $\Bbbk$ (its Lemma 3.1, here \cref{odg:cr:lem:euler,odg:cr:lem:separation});
+and that an element of $\crH$ algebraic over $\Bbbk$ lies in $\Bbbk$, so that every nonzero
+element of $\crP$ is transcendental over $\Bbbk$ (its Lemma 6.3, here
+\cref{odg:cr:cor:algclosed} and \cref{odg:cr:lem:rings}(d); over $\Oz$ this is
+\cref{odg:prop:univariate}). These are printed once, with C17 named in their credits. Its
+example $\sum_{m\ge1}\omega^{1/m}\in\crP$, whose support has no least element, is the one
+after \cref{odg:cr:lem:rings}; no proof below assumes that $\crP$ is generated by
+monomials. Both proofs of the source use these facts in the larger workspace $\Hbar$, and
+the next lemma records what is used there.
+
+\begin{lemma}[The Hahn splitting field \src{C17}]\label{odg:disc:lem:hahn}
+The field $\Hbar$ is algebraically closed, and it contains $\crH$ and $F=\Frac\crA$.
+The coefficientwise Euler derivations $\partial_\lambda$,
+$\lambda\in\Hom_\Q(\Gamma_\Q,\Q)$, are $\bar\Bbbk$-linear derivations of $\Hbar$ extending
+those of $\crH$, with
+\begin{equation}\label{odg:disc:eq:hahn}
+ \crA\cap\Obar=\Bbbk,\qquad \crP\cap\Obar=0,\qquad
+ \frac{\partial_\lambda x}{x}\in\Obar\ (x\ne0),\qquad
+ \bigcap_\lambda\ker\partial_\lambda=\bar\Bbbk .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Algebraic closedness of a Hahn field with algebraically closed coefficient field of
+characteristic zero and divisible exponent group is the standard criterion
+\cite[Fact 2.1.1]{LM}. Extending coefficients along $\Bbbk\subseteq\bar\Bbbk$ and exponents
+along $\Gamma\subseteq\Gamma_\Q$ preserves supports and coefficient convolutions, so
+$\crH\subseteq\Hbar$, hence $F\subseteq\Hbar$; the field $F$ need not be $\crH$ (for
+$\Gamma=\Z$, $\crA=\Bbbk[\omega]$ and $F=\Bbbk(\omega)$). The intersections compare supports,
+as in \cref{odg:cr:lem:rings}(b). The remaining assertions are
+\cref{odg:cr:lem:euler,odg:cr:lem:separation} for the coefficient field $\bar\Bbbk$ and the
+group $\Gamma_\Q$, with rational-valued $\lambda$, which already detect every nonzero
+exponent.
+\end{proof}
+
+These intersections do the work that a convergence or compactness argument might
+otherwise be asked to do \src{C17}.
+
+\begin{lemma}[Compatibility with algebraic embeddings \src{C17}]\label{odg:disc:lem:extension}
+Let $L/F$ be a finite separable extension and $\sigma:L\hookrightarrow\Hbar$ an
+$F$-embedding. Each $\partial_\lambda$ on $F$ has a unique extension to a derivation of $L$,
+and $\sigma$ intertwines it with the coefficientwise $\partial_\lambda$ on $\Hbar$.
+\end{lemma}
+\begin{proof}
+The derivation $\partial_\lambda$ preserves $F$, since it preserves $\crA$. For $z$
+algebraic over $F$ with separable minimal polynomial $R$, any extension satisfies
+$\partial z=-R^{\partial}(z)/R'(z)$, where $R^\partial$ applies $\partial$ to the
+coefficients of $R$. This proves uniqueness, and adjoining a primitive element with this
+formula gives existence; alternatively, the formal \'etaleness of a separable field
+extension gives both. Since the coefficientwise derivation already exists on $\Hbar$,
+uniqueness gives the compatibility.
+\end{proof}
+
+\begin{lemma}[Constant coefficients remain independent \src{C17}]\label{odg:disc:lem:independence}
+Let $L/\Bbbk$ be a field extension. If $c_1,\ldots,c_k\in L$ are $\Bbbk$-linearly
+independent, they are linearly independent over $\crH$, hence over every subfield of $\crH$,
+in the Hahn field $\mathbb H_L(\Gamma_\Q)$ (for $L\subseteq\bar\Bbbk$, in $\Hbar$). The same holds
+for vectors with entries in $L$.
+\end{lemma}
+\begin{proof}
+Expand a relation $\sum_jf_jc_j=0$ with $f_j\in\crH$ coefficientwise. At each exponent
+$\gamma$ it gives the $\Bbbk$-linear relation $\sum_j(f_j)_\gamma c_j=0$, so every
+coefficient of every $f_j$ vanishes. A finite union of supports is reverse well ordered,
+so the comparison is legitimate. The vector case is the same.
+\end{proof}
+
+\subsubsection{The finite certificate for root velocities}\label{odg:disc:sub:certificate}
+
+If $r_1,\ldots,r_n$ are distinct roots of a monic polynomial and $\partial$ is a
+derivation, put $w_{ij}=(\partial r_i-\partial r_j)/(r_i-r_j)$ for $i<j$. Differentiating
+the discriminant gives only
+\begin{equation}\label{odg:disc:eq:sumvelocity}
+ \frac{\partial\Disc(P)}{\Disc(P)}=2\sum_{i<j}w_{ij},
+\end{equation}
+and a vanishing sum does not force the individual $w_{ij}$ to vanish. The missing
+information is supplied by \emph{every} elementary symmetric function of the $w_{ij}$
+\src{C17}. We use $\Disc(P)=\prod_{i<j}(r_i-r_j)^2=(-1)^{n(n-1)/2}\Res(P,P')$ for monic
+$P$, and $\Disc(P)=1$ when $n=1$; the sign disappears under logarithmic differentiation,
+so \eqref{odg:disc:eq:sumvelocity} has no extra sign.
+
+\begin{lemma}[Universal denominator certificate \src{C17}]\label{odg:disc:lem:certificate}
+Let $P=X^n+a_1X^{n-1}+\cdots+a_n$ be monic and separable over a field, with roots
+$r_1,\ldots,r_n$, let $\dot P=b_1X^{n-1}+\cdots+b_n$, and put
+\[
+ \dot r_i=-\dot P(r_i)/P'(r_i),\qquad w_{ij}=(\dot r_i-\dot r_j)/(r_i-r_j),\qquad
+ m=\tbinom n2,\qquad \Delta=\Disc(P).
+\]
+For $1\le s\le m$ there is a universal polynomial
+$\mathcal F_{n,s}\in\Z[a_1,\ldots,a_n,b_1,\ldots,b_n]$, homogeneous of degree $s$ in
+$b_1,\ldots,b_n$, with
+\begin{equation}\label{odg:disc:eq:certificate}
+ \Delta^{2s}\,e_s\bigl((w_{ij})_{i<j}\bigr)=\mathcal F_{n,s}(a_1,\ldots,a_n,b_1,\ldots,b_n),
+\end{equation}
+where $e_s$ is the $s$th elementary symmetric polynomial in the $m$ edge variables. No
+optimality of the exponent $2s$ is asserted.
+\end{lemma}
+\begin{proof}
+The numerator of
+\begin{equation}\label{odg:disc:eq:W}
+ \mathsf W(X,Y)=\frac{\dot P(Y)P'(X)-\dot P(X)P'(Y)}{X-Y}
+\end{equation}
+vanishes at $X=Y$, so $\mathsf W$ is a polynomial over $\Z[a,b]$, symmetric in $X,Y$ and
+linear in $b$. A direct calculation gives
+\begin{equation}\label{odg:disc:eq:wformula}
+ w_{ij}=\frac{\mathsf W(r_i,r_j)}{P'(r_i)P'(r_j)}.
+\end{equation}
+By the root product identity $\prod_{i=1}^nP'(r_i)=(-1)^m\Delta$ we have
+$\Delta/P'(r_i)=(-1)^m\prod_{u\ne i}P'(r_u)$, so $\Delta^2w_{ij}$ is a polynomial in the
+roots and $b$, linear in $b$, and $\Delta^{2s}e_s(w)$ is a polynomial in the roots and
+$b$, homogeneous of degree $s$ in $b$. Permuting the roots permutes the unordered edges,
+and both $w_{ij}$ and the polynomial just built respect this action, so the latter is
+symmetric in the roots. Treat the roots as indeterminates, with $a_j=(-1)^je_j(r)$ and $b$
+independent. The fundamental theorem on symmetric polynomials over $\Z[b]$ expresses the
+polynomial in the $e_j(r)$; substituting $e_j(r)=(-1)^ja_j$ gives $\mathcal F_{n,s}$ over
+$\Z$. The elimination can be done in each $b$-homogeneous component separately, so the
+homogeneity is kept.
+\end{proof}
+
+The lemma is an identity in universal polynomial rings; it does not assert that integral
+elements of $\Frac\crA$ lie in $\crA$, and no integral closedness of $\crA$ is used
+\src{C17}; $\crA$ is not integrally closed in general (\cref{odg:cr:sub:singular}).
+
+\begin{remark}[The quadratic certificate \src{C17}]\label{odg:disc:rem:quadratic}
+For $P=X^2+aX+b$ and $\dot P=b_1X+b_2$ there is one relative velocity, and
+\eqref{odg:disc:eq:sumvelocity} gives $w=(ab_1-2b_2)/\Delta$ with $\Delta=a^2-4b$.
+So the general certificate is $\mathcal F_{2,1}=\Delta(ab_1-2b_2)$, although the
+exponent $1$ already suffices. In the application $b_1,b_2\in\crP$ and
+$\Delta\in\Bbbk^\times$, so $w\in\crP$, while $w\in\Obar$; hence $w=0$. This is completing
+the square, and the lemma explains why the same method works in every degree.
+\end{remark}
+
+\begin{proposition}[All relative Euler velocities vanish \src{C17}]\label{odg:disc:prop:velocities}
+Let $P\in\crA[X]$ be monic with $\Delta=\Disc(P)\in\Bbbk^\times$. For every Euler
+derivation $\partial=\partial_\lambda$ of $\Hbar$ and any two roots $r_i,r_j\in\Hbar$ of
+$P$, $\partial(r_i-r_j)=0$.
+\end{proposition}
+\begin{proof}
+For $n=1$ there is nothing to prove. Otherwise differentiating $P(r_i)=0$ gives
+$\partial r_i=-\dot P(r_i)/P'(r_i)$, where $\dot P=P^{\partial}$ has the coefficients
+$b_j=\partial a_j\in\crP$ (\cref{odg:cr:lem:euler}). By \eqref{odg:disc:eq:hahn} each
+$w_{ij}=\partial(r_i-r_j)/(r_i-r_j)$ lies in $\Obar$, so every $e_s(w)$ lies in $\Obar$.
+On the other hand $\mathcal F_{n,s}$ has positive degree in $b$ and coefficients in
+$\Z[a]\subseteq\crA$, so $\mathcal F_{n,s}(a,b)\in\crP$, and with $\Delta\in\Bbbk^\times$,
+\eqref{odg:disc:eq:certificate} gives $e_s(w)\in\crP$. By \eqref{odg:disc:eq:hahn},
+$e_s(w)=0$ for every $s\ge1$. Thus $\prod_{i<j}(T-w_{ij})=T^m$, and every $w_{ij}$ is zero
+in the field $\Hbar$.
+\end{proof}
+
+\subsubsection{Translation classification}\label{odg:disc:sub:translation}
+
+\begin{theorem}[Translation classification \src{C17}]\label{odg:disc:thm:translation}
+Let $\mathfrak o\subseteq\Bbbk$ be a unital subring and
+$P=X^n+a_1X^{n-1}+\cdots+a_n\in\mathcal R_{\mathfrak o}[X]$, $n\ge1$. The following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item $\Disc(P)$ is a nonzero constant, that is, $\Disc(P)\in\mathfrak o\setminus\{0\}$;
+\item $\overline P$ is squarefree and there is $h\in\crP$ with
+\begin{equation}\label{odg:disc:eq:translation}
+ P(X)=\overline P(X-h).
+\end{equation}
+\end{enumerate}
+The translation is unique and equals
+\begin{equation}\label{odg:disc:eq:h}
+ h=-\frac{a_1-\ct a_1}{n}.
+\end{equation}
+The discriminant need not be a unit of $\mathfrak o$, and $1/n$ need not lie in
+$\mathfrak o$.
+\end{theorem}
+\begin{proof}
+First let $\mathfrak o=\Bbbk$. A nonzero discriminant gives distinct roots
+$r_1,\ldots,r_n$ in $\Hbar$. \Cref{odg:disc:prop:velocities} for every $\lambda$ and
+\eqref{odg:disc:eq:hahn} give $r_i-r_j\in\bar\Bbbk$ for all $i,j$. Let $\mu=-a_1/n$ be the
+mean of the roots. Every $r_i-\mu=n^{-1}\sum_j(r_i-r_j)$ lies in $\bar\Bbbk$, so
+$R(X)=P(X+\mu)$ has its coefficients in $\bar\Bbbk$. They also lie in $\crA$, because
+$\mu\in\crA$, hence in $\crA\cap\bar\Bbbk=\Bbbk$. Write $\mu=\mu_0+h$ with $\mu_0=\ct\mu$
+and $h\in\crP$. Then $P(X)=R(X-\mu_0-h)$, and applying the ring homomorphism $\ct$ to the
+coefficients gives $\overline P(X)=R(X-\mu_0)$. So $P(X)=\overline P(X-h)$ and
+$h=-(a_1-\ct a_1)/n$.
+
+For general $\mathfrak o$, regard $P$ as a polynomial over $\crA$. A nonzero constant
+discriminant lies in $\mathcal R_{\mathfrak o}\cap\Bbbk=\mathfrak o$ and is a unit of
+$\Bbbk$, so the first case applies. Since $a_1-\ct a_1\in\crP$ and $\crP$ is a
+$\Bbbk$-vector space, $h\in\crP\subseteq\mathcal R_{\mathfrak o}$ even when
+$1/n\notin\mathfrak o$, and $\overline P\in\mathfrak o[X]$. Conversely a translation does
+not change root differences, so $\overline P(X-h)$ has the discriminant of the squarefree
+$\overline P$. Uniqueness follows from the coefficient of $X^{n-1}$; for $n=1$ the formula
+is immediate.
+\end{proof}
+
+\begin{corollary}[Complete parameterization \src{C17}]\label{odg:disc:cor:param}
+For $n\ge1$ the map $(\overline P,h)\mapsto\overline P(X-h)$ is a bijection from pairs of
+a squarefree monic $\overline P\in\mathfrak o[X]$ of degree $n$ and $h\in\crP$ onto the
+monic polynomials of degree $n$ in $\mathcal R_{\mathfrak o}[X]$ with nonzero constant
+discriminant. Every fiber of $P\mapsto\overline P$ on the latter set is a free transitive
+orbit of the additive group $\crP$.
+\end{corollary}
+\begin{proof}
+\Cref{odg:disc:thm:translation} gives existence and uniqueness. Translation by an element
+of $\crP$ preserves $\overline P$, and a nonzero translation changes the coefficient of
+$X^{n-1}$ in characteristic zero.
+\end{proof}
+
+An equivalent finite coefficient test avoids computing a large discriminant \src{C17}:
+given monic $P$, compute $h$ by \eqref{odg:disc:eq:h} and expand $P(X+h)$; then $P$ has a
+nonzero constant discriminant if and only if
+\begin{equation}\label{odg:disc:eq:test}
+ P(X+h)=\overline P(X)\qquad\text{and}\qquad \Disc(\overline P)\ne0 .
+\end{equation}
+This is an algebraic criterion, not an algorithm for arbitrary presentations of infinite
+Hahn series; it becomes effective only in a representation with exact arithmetic,
+constant extraction and equality \src{C17}.
+
+\begin{example}[An infinite-support family \src{C17}]\label{odg:disc:ex:infinite}
+Let $h=\sum_{m\ge1}\omega^{1/m}\in\Pi$, whose exponents decrease to $0$. The cubic
+\[
+ P(X)=(X-h)^3-2(X-h)+1=X^3-3hX^2+(3h^2-2)X-h^3+2h+1
+\]
+lies in $\Oz[X]$ and has discriminant $-4(-2)^3-27=5$. Its roots are $h+c_i$, where
+$c_1=1$ and $c_{2,3}=(-1\pm\sqrt5)/2$ are the roots of $X^3-2X+1$. The translation has
+infinite support accumulating at the exponent $0$; the theorem is not confined to
+finitely many monomials.
+\end{example}
+
+\begin{corollary}[Omnific and Gaussian omnific form \src{C17}]\label{odg:disc:cor:omnific}
+Let $P\in\Oz[X]$ be monic. Then $\Disc(P)\in\Z\setminus\{0\}$ if and only if
+$P=\overline P(X-h)$ with $\overline P\in\Z[X]$ squarefree and $h\in\Pi$, and $h$ is
+unique. Its roots in $\No[i]$ are $h+c_i$ with $c_i$ the complex roots of $\overline P$.
+The same holds over $\Og$, with $\overline P\in\Z[i][X]$ and $h\in\Pi_\C$.
+\end{corollary}
+\begin{proof}
+The finitely many coefficients lie in a workspace $\mathcal R_\Z(\R,\Gamma)$ or
+$\mathcal R_{\Z[i]}(\C,\Gamma)$ over a set-sized divisible group $\Gamma\subseteq\No$
+(\cref{odg:lem:workspace}). Apply \cref{odg:disc:thm:translation} with
+$(\mathfrak o,\Bbbk)=(\Z,\R)$ or $(\Z[i],\C)$, and read the identity in the full class.
+The roots of $\overline P$ are algebraic over $\Q$ or $\Q(i)$.
+\end{proof}
+
+\begin{corollary}[Omnific roots at a constant discriminant \mergetag]\label{odg:disc:cor:roots}
+Let $P\in\Oz[X]$ be monic with $\Disc(P)\in\Z\setminus\{0\}$, and let $h$ be given by
+\eqref{odg:disc:eq:h}. The roots of $P$ in $\Oz$ are exactly the elements $h+c$ with $c$
+an integer root of $\overline P$; in particular $P$ has a root in $\Oz$ if and only if
+$\overline P$ has one in $\Z$, and then every integer root of $\overline P$ lifts to
+exactly one omnific root. The same holds over $\Og$ with $\Z[i]$.
+\end{corollary}
+\begin{proof}
+By \cref{odg:disc:cor:omnific} every root in $\No[i]$ is $h+c$ with $c$ a root of
+$\overline P$. If $h+c\in\Oz$, then $c=(h+c)-h\in\Oz\cap\C=\Z$
+(\cref{odg:prop:units}). Conversely $h+c\in\Oz$ for $c\in\Z$. The Gaussian case is the
+same with $\Og\cap\C=\Z[i]$.
+\end{proof}
+
+\begin{remark}[Comparison with the quadratic and lifting results \mergetag]\label{odg:disc:rem:comparison}
+For a monic quadratic $x^2+bx+c$ over $\Oz$ with $\Delta=b^2-4c\in\Z\setminus\{0\}$,
+\cref{odg:thm:quadraticformula} asks whether $\Delta$ is a square in $\Oz$, and by
+\cref{odg:prop:univariate} a nonzero integer is an omnific square only if it is an integer
+square; the roots $(-b\pm y)/2$ with $y\in\Z$ are then $h+c$ for the integer roots $c$ of
+$\overline P$, as \cref{odg:disc:cor:roots} says. For such polynomials the residue roots do
+lift: every root of $\overline P$ is simple, and each integer one lifts to exactly one
+omnific root. The polynomial $T^2-T-\omega$ of \cref{odg:ex:hensel}, whose simple residue
+roots $0$ and $1$ do not lift, has the nonconstant discriminant $1+4\omega$; its
+translation $h$ from \eqref{odg:disc:eq:h} is $0$, and $\overline P(X-h)=X^2-X\ne P$. So
+the constant discriminant is exactly the hypothesis that separates the two behaviours in
+these examples; the example $6x^2+x-1$ after \cref{odg:thm:quadraticformula} shows that
+monicity cannot simply be dropped either.
+\end{remark}
+
+\paragraph{The polynomial-parameter case \src{C17}.} For $\Gamma=\Z$ a reverse-well-ordered
+subset of $\Z^{\ge0}$ is finite and $\crA=\Bbbk[\omega]$. Writing $Y=\omega$, the theorem
+says that a monic $P(X,Y)\in\Bbbk[Y][X]$ with nonzero constant discriminant satisfies
+\[
+ P(X,Y)=P\bigl(X-h(Y),0\bigr),\qquad h(Y)=-\frac{a_1(Y)-a_1(0)}n .
+\]
+This is a uniform answer in all degrees and characteristic zero to a question posed on
+Mathematics Stack Exchange by the user Oblomov \cite{Oblomov}, and it shows why the
+familiar quadratic and cubic computations are not isolated. For several parameters,
+embed $\Bbbk[Y_1,\ldots,Y_k]$ in a Hahn ring with $Y_i=\omega^{\varepsilon_i}$ for the
+standard basis $\varepsilon_i$ of lexicographically ordered $\Z^k$: every nonconstant
+monomial has positive exponent, the embedding is injective, and $\ct$ is evaluation at the
+origin, so a monic polynomial over $\Bbbk[Y_1,\ldots,Y_k]$ with nonzero constant
+discriminant is a translate of its value at the origin. Source C17 does not present these
+finite-support cases as new or as a deep theorem about the affine line; its proposed
+contribution is the arbitrary-rank, arbitrary-support theorem and its consequences.
+
+\subsubsection{Factors, Galois groups, marks and resultants}\label{odg:disc:sub:consequences}
+
+\begin{proposition}[Monic factors are translated constant factors \src{C17}]\label{odg:disc:prop:factors}
+Let $P=\overline P(X-h)$ be as in \cref{odg:disc:thm:translation}. Translation by $h$ is a
+bijection between the monic divisors of $\overline P$ in $\mathfrak o[X]$ and the monic
+divisors of $P$ in $\mathcal R_{\mathfrak o}[X]$; in particular their monic factorization
+patterns agree.
+\end{proposition}
+\begin{proof}
+One direction is substitution. If $Q$ is a monic divisor of $P$, then $Q(X+h)$ is a monic
+divisor of $\overline P$ over $\mathcal R_{\mathfrak o}$. In $\Hbar[X]$ its roots are
+roots of $\overline P$, which lie in $\bar\Bbbk$, so its coefficients lie in $\bar\Bbbk$,
+and also in $\mathcal R_{\mathfrak o}$; hence in $\mathcal R_{\mathfrak o}\cap\bar\Bbbk=
+\mathfrak o$. Translating back gives the bijection.
+\end{proof}
+
+The word ``monic'' matters over a ring $\mathfrak o$ that is not a field: an assertion
+about arbitrary factorizations must also account for units and leading coefficients
+\src{C17}.
+
+\begin{theorem}[Galois groups are unchanged \src{C17}]\label{odg:disc:thm:galois}
+Let $P\in\crA[X]$ be monic with $\Disc(P)\in\Bbbk^\times$, let $F=\Frac\crA$, and let
+$L_0\subseteq\bar\Bbbk$ be the splitting field of $\overline P$ over $\Bbbk$. The splitting
+field of $P$ over $F$ in $\Hbar$ is the compositum $FL_0$, and restriction is an
+isomorphism $\Gal(FL_0/F)\cong\Gal(L_0/\Bbbk)$. An irreducible factor of $\overline P$ over
+$\Bbbk$ stays irreducible over $F$, and its translate has the same degree.
+\end{theorem}
+\begin{proof}
+The roots of $P$ are $h+c_i$ with $c_i$ the roots of $\overline P$, so adjoining them to
+$F$ adjoins the $c_i$. By \cref{odg:disc:lem:independence} a $\Bbbk$-basis of $L_0$ is
+$F$-linearly independent, so $F$ and $L_0$ are linearly disjoint over $\Bbbk$, and
+$F\otimes_\Bbbk L_0$ is the compositum, of dimension $[L_0:\Bbbk]$ over $F$. Every
+$\Bbbk$-automorphism of $L_0$ extends by the identity on $F$, and all
+$F$-automorphisms arise so. The same independence argument with $\Bbbk(c_i)$ gives the
+assertion on factors.
+\end{proof}
+
+For omnific polynomials the coefficient theorem descends to $\Z$, but the field of this
+Galois statement must be specified: with $\Bbbk=\R$ the finer rational Galois group of
+$\overline P$ is lost. To keep it one uses a Hahn workspace with coefficient field $\Q$
+when the coefficients admit such a presentation, or applies ordinary splitting theory over
+$\Q$ to $\overline P$ separately. There is no claim that the rational Galois group
+survives after extending constants to $\R$ \src{C17}.
+
+\begin{corollary}[Marked-value rigidity \src{C17}]\label{odg:disc:cor:marks}
+Let $P=\overline P(X-h)$ have positive degree and nonzero constant discriminant. If
+$a\in\crA$ and $P(a)\in\Bbbk$, then $a-h\in\Bbbk$, that is, $a=h+\ct a$. Consequently an
+ordinary coefficient of $X^{n-1}$, or an ordinary value $P(c)$ at one $c\in\Bbbk$, forces
+$h=0$ and $P=\overline P$.
+\end{corollary}
+\begin{proof}
+$\overline P(a-h)=P(a)\in\Bbbk$ makes $a-h\in\crA$ a root of a nonzero polynomial over
+$\Bbbk$, so $a-h\in\Bbbk$ by \cref{odg:cr:lem:rings}(d), and $\ct$ identifies the constant.
+For $a=c\in\Bbbk$ this gives $h\in\Bbbk\cap\crP=0$; the coefficient case is
+\eqref{odg:disc:eq:h}.
+\end{proof}
+
+The marked value may be zero: a monic polynomial with nonzero constant discriminant whose
+coefficient $a_n$ (its constant coefficient in $X$) is constant is entirely constant. The
+constant coefficient in $X$ must not be confused with the constant term of a series
+\src{C17}.
+
+\begin{theorem}[Coherent translations \src{C17}]\label{odg:disc:thm:resultants}
+Let $P_1,\ldots,P_\ell\in\mathcal R_{\mathfrak o}[X]$ be monic of positive degree, each with
+nonzero constant discriminant, and let $\mathcal G$ be a connected graph on
+$\{1,\ldots,\ell\}$ such that $\Res(P_i,P_j)$ is a nonzero constant for every edge $ij$.
+Then there is a unique $h\in\crP$ with $P_i(X)=\overline P_i(X-h)$ for all $i$.
+\end{theorem}
+\begin{proof}
+Write $P_i=\overline P_i(X-h_i)$. For an edge $ij$ let $c_1,\ldots,c_a$ and
+$d_1,\ldots,d_b$ be the roots of $\overline P_i$ and $\overline P_j$. Then
+\[
+ \Res(P_i,P_j)=\prod_{u=1}^a\prod_{v=1}^b(h_i-h_j+c_u-d_v),
+\]
+the value at $h_i-h_j$ of a monic polynomial of degree $ab$ in $\Bbbk[T]$, since it is
+separately symmetric in the two lists of roots. If $h_i\ne h_j$, then $h_i-h_j$ is a
+nonzero element of $\crP$, transcendental over $\Bbbk$ (\cref{odg:cr:lem:rings}(d)), which
+contradicts a constant resultant. So $h_i=h_j$ along every edge, and connectedness gives a
+common $h$, unique by any one $P_i$.
+\end{proof}
+
+Only the edges of a spanning tree are needed. The nonzero condition says that the marked
+configurations do not meet along the chosen edges; the proof of equal translations would
+also work with a zero constant resultant. For the complete graph with nonzero resultants,
+$\Disc(\prod_iP_i)=\prod_i\Disc(P_i)\prod_{i<j}\Res(P_i,P_j)^2$ gives a second proof by
+applying \cref{odg:disc:thm:translation} to the product; the connected-graph version
+records the weaker hypothesis \src{C17}.
+
+\subsubsection{Finite \texorpdfstring{\'etale}{etale} algebras and their units}\label{odg:disc:sub:etale}
+
+Throughout, $\mathsf B$ is a nonzero finite \'etale $\crA$-algebra, with the usual
+commutative-algebra definition of \'etaleness \cite{StacksEtale}. It is a finite
+projective $\crA$-module, of constant rank $r$ because $\crA$ is a domain and so
+$\Spec\crA$ is connected. The standard inputs are preservation under base change,
+formal \'etaleness \cite{StacksFormal}, and the description of a finite \'etale algebra over
+a field as a finite product of finite separable field extensions
+\cite{StacksEtaleField}. The generic algebra $\mathsf B_F=F\otimes_{\crA}\mathsf B$ is such
+a product. A projective module over a domain is a direct summand of a free module, hence
+torsion free, so $\mathsf B\hookrightarrow\mathsf B_F$ and $\mathsf B$ is reduced. For
+$y\in\mathsf B$, multiplication by $y$ has a characteristic polynomial
+\begin{equation}\label{odg:disc:eq:charB}
+ \operatorname{ch}_y(T)=T^r+c_1(y)T^{r-1}+\cdots+c_r(y)\in\crA[T],
+\end{equation}
+defined in local bases of the projective module; the local coefficients glue by invariance
+under change of basis, commute with base change and satisfy Cayley--Hamilton, both being
+local matrix identities. In a splitting field of $\mathsf B_F$ it is the product of
+$T-\sigma(y)$ over the $r$ generic embeddings $\sigma$ of all the field factors. No global
+basis of $\mathsf B$ is assumed \src{C17}.
+
+\begin{lemma}[Characteristic polynomials after reduction \src{C17}]\label{odg:disc:lem:reduction}
+Let $M$ be a finite projective module of constant rank $r$ over a commutative ring $R$,
+let $J\subseteq R$ be an ideal, and let $\tau\in\End_R(M)$ have image in $JM$. Then the
+nonleading coefficients of the characteristic polynomial of $\tau$ lie in $J$, and
+Cayley--Hamilton holds for $\tau$.
+\end{lemma}
+\begin{proof}
+On a localization where $M$ is free, the reduction of the matrix of $\tau$ modulo $J$ is
+zero, so the characteristic polynomial reduces to $X^r$. The images of the coefficients
+in $R/J$ therefore vanish after localization at every prime, hence vanish. Substituting
+$\tau$ into its characteristic polynomial gives an endomorphism that is zero on every free
+localization, hence zero.
+\end{proof}
+
+\begin{lemma}[The extended derivation vanishes in the augmentation fiber \src{C17}]\label{odg:disc:lem:etaleD}
+Each $\partial=\partial_\lambda$ extends uniquely to a derivation $\widetilde\partial$ of
+$\mathsf B$, and
+\begin{equation}\label{odg:disc:eq:DBideal}
+ \widetilde\partial(\mathsf B)\subseteq\crP\mathsf B .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Give $\mathsf B[\epsilon]/(\epsilon^2)$ the $\crA$-algebra structure
+$a\mapsto a+\partial(a)\epsilon$. The identity of its quotient $\mathsf B$ lifts uniquely
+along the square-zero ideal $(\epsilon)$ by formal \'etaleness \cite{StacksFormal}; the lift
+has the form $b\mapsto b+\widetilde\partial(b)\epsilon$, and its multiplicativity is the
+Leibniz rule. Since $\partial(\crP)\subseteq\crP$, $\widetilde\partial$ preserves
+$\crP\mathsf B$, and its reduction is a derivation of $\mathsf B_0=\mathsf B/\crP\mathsf B$
+that vanishes on $\crA/\crP=\Bbbk$. But $\mathsf B_0$ is finite \'etale over $\Bbbk$, a
+product of finite separable extensions, and every $\Bbbk$-derivation of it is zero (by
+differentiating separable minimal polynomials, and idempotents). This is
+\eqref{odg:disc:eq:DBideal}.
+\end{proof}
+
+\begin{proposition}[No nonconstant logarithmic derivative of a unit \src{C17}]\label{odg:disc:prop:unitD}
+For $u\in\mathsf B^\times$ and every $\lambda$, $\widetilde\partial_\lambda u=0$.
+\end{proposition}
+\begin{proof}
+Put $y=u^{-1}\widetilde\partial u$, which lies in $\crP\mathsf B$ by
+\cref{odg:disc:lem:etaleD}. Multiplication by $y$ has image in $\crP\mathsf B$, so
+$c_j(y)\in\crP$ for $j\ge1$ (\cref{odg:disc:lem:reduction}). Realize every generic
+embedding $\sigma$ of every field factor of $\mathsf B_F$ in $\Hbar$. By
+\cref{odg:disc:lem:extension}, $\sigma(y)=\partial_\lambda\sigma(u)/\sigma(u)$, with nonzero
+denominator because $u$ is a unit, so $\sigma(y)\in\Obar$ by \eqref{odg:disc:eq:hahn}. The
+$c_j(y)$ are up to sign elementary symmetric functions of these $r$ values, so
+$c_j(y)\in\crP\cap\Obar=0$. Cayley--Hamilton gives $y^r=0$; as $\mathsf B$ is reduced,
+$y=0$, and so $\widetilde\partial u=uy=0$.
+\end{proof}
+
+This is the finite-projective analogue of the root-velocity argument: the ideal
+information comes from the reduction of a multiplication operator instead of a universal
+discriminant denominator, and disconnected algebras are allowed \src{C17}.
+
+\begin{proposition}[Constants, their dimension and their fiber \src{C17}]\label{odg:disc:prop:constants}
+The set $\mathsf C_{\mathsf B}$ of elements of $\mathsf B$ algebraic over $\Bbbk$ is a
+finite \'etale $\Bbbk$-subalgebra, and
+\begin{equation}\label{odg:disc:eq:constantkernel}
+ \mathsf C_{\mathsf B}=\bigcap_\lambda\ker\widetilde\partial_\lambda .
+\end{equation}
+The map $\mathsf C_{\mathsf B}\to\mathsf B/\crP\mathsf B$ is injective, so
+$\dim_\Bbbk\mathsf C_{\mathsf B}\le r$, and the natural map
+$\crA\otimes_\Bbbk\mathsf C_{\mathsf B}\to\mathsf B$ is injective.
+\end{proposition}
+\begin{proof}
+Elements algebraic over a field form a subalgebra, since finitely many of them generate a
+finite-dimensional algebra. As $\mathsf B$ is reduced and $\Bbbk$ has characteristic
+zero, an annihilating polynomial of such an element $b$ may be replaced by its squarefree
+part $g$; then $g'(b)$ is invertible in $\Bbbk[b]$, and $0=\widetilde\partial g(b)=
+g'(b)\widetilde\partial b$ gives $\widetilde\partial b=0$. Conversely, if every
+$\widetilde\partial_\lambda$ kills $b$, then each of its finitely many generic images is
+killed by every $\partial_\lambda$ and lies in $\bar\Bbbk$ by \eqref{odg:disc:eq:hahn};
+the product of their minimal polynomials over $\Bbbk$ annihilates $b$ in $\mathsf B_F$,
+hence in $\mathsf B$.
+
+For $b\in\mathsf C_{\mathsf B}$ all generic images lie in $\bar\Bbbk$, so the coefficients
+of $\operatorname{ch}_b$ lie in $\crA\cap\bar\Bbbk=\Bbbk$. If moreover $b\in\crP\mathsf B$,
+these constant nonleading coefficients lie in $\crP$ (\cref{odg:disc:lem:reduction}), so
+$\operatorname{ch}_b=T^r$, and Cayley--Hamilton and reducedness give $b=0$. Hence
+$\mathsf C_{\mathsf B}$ embeds in the $r$-dimensional fiber $\mathsf B/\crP\mathsf B$. A
+finite-dimensional reduced algebra over a field of characteristic zero is a product of
+finite separable extensions, hence finite \'etale. Finally embed $\mathsf B$ in the product
+of the generic splitting fields, and then in $\Hbar^{\,r}$. The images of a $\Bbbk$-basis of
+$\mathsf C_{\mathsf B}$ are $\Bbbk$-linearly independent vectors with entries in
+$\bar\Bbbk$, so they are $F$-linearly independent by the vector form of
+\cref{odg:disc:lem:independence}, hence $\crA$-linearly independent.
+\end{proof}
+
+\begin{theorem}[Units of finite \'etale algebras \src{C17}]\label{odg:disc:thm:units}
+Let $\mathsf B$ be a nonzero finite \'etale $\crA$-algebra of rank $r$. Then
+$\mathsf C_{\mathsf B}$ is finite \'etale over $\Bbbk$ with
+$\dim_\Bbbk\mathsf C_{\mathsf B}\le r$, and
+\begin{equation}\label{odg:disc:eq:units}
+ \mathsf B^\times=\mathsf C_{\mathsf B}^\times .
+\end{equation}
+The map $\crA\otimes_\Bbbk\mathsf C_{\mathsf B}\to\mathsf B$ is injective, and it is an
+isomorphism if and only if $\mathsf B$ is generated as an $\crA$-algebra by its units.
+\end{theorem}
+\begin{proof}
+\Cref{odg:disc:prop:unitD} and \eqref{odg:disc:eq:constantkernel} give
+$\mathsf B^\times\subseteq\mathsf C_{\mathsf B}$, and the inverse of a unit is killed by the
+same derivations; so $\mathsf B^\times=\mathsf C_{\mathsf B}^\times$. The other structural
+assertions are \cref{odg:disc:prop:constants}. If $\mathsf B$ is generated by its units, it
+is generated by elements of $\mathsf C_{\mathsf B}$, so the injective map is onto.
+Conversely a finite \'etale $\Bbbk$-algebra $C=\prod_jL_j$ is spanned by its units: for
+$c\in C$ choose $0\ne\lambda_0\in\Bbbk$ different from every component $c_j$ that lies in
+$\Bbbk$, which is possible because $\Bbbk$ is infinite; then $\lambda_0$ and $c-\lambda_0$
+are units with sum $c$. So $\crA\otimes_\Bbbk\mathsf C_{\mathsf B}$, when it equals
+$\mathsf B$, is generated by units.
+\end{proof}
+
+\begin{corollary}[Geometrically constant coefficients \src{C17}]\label{odg:disc:cor:algclosed}
+If $\Bbbk$ is algebraically closed, then $\mathsf C_{\mathsf B}\cong\Bbbk^j$ for some
+$1\le j\le r$ and $\mathsf B^\times\cong(\Bbbk^\times)^j$; if moreover $\mathsf B$ is
+connected, $\mathsf C_{\mathsf B}=\Bbbk$ and $\mathsf B^\times=\Bbbk^\times$.
+\end{corollary}
+\begin{proof}
+A finite \'etale algebra over an algebraically closed field is a product of copies of the
+field, and two or more factors give nontrivial idempotents of $\mathsf B$.
+\end{proof}
+
+\paragraph{Why this is not yet a covering classification \src{C17}.} A finite \'etale
+algebra might contain elements that are not combinations of its units, and
+\cref{odg:disc:thm:units} does not exclude them. The generic primitive element theorem does
+not give a global monogenic presentation over $\crA$: a generic generator may need
+localization, and its discriminant need not be a unit before localization. The injection
+$\mathsf C_{\mathsf B}\to\mathsf B/\crP\mathsf B$ isolates the issue: every algebraic
+constant is visible in the augmentation fiber, but it is not shown that every element of
+the fiber lifts to one. Such a surjectivity, with a global descent argument, would be a
+substantive further step, and it is not used below (\cref{odg:disc:q:etale}).
+
+\begin{remark}[The \'etale norm theorem as a constant case \mergetag]\label{odg:disc:rem:etalenorm}
+\Cref{odg:disc:thm:units} contains \cref{odg:dec:thm:etale} when $\Bbbk$ has
+characteristic zero. With $K\subseteq\Bbbk$, $E$ and $e_1,\ldots,e_r$ as there, the algebra
+$\mathsf B=\crA\otimes_KE$ is finite \'etale over $\crA$ of rank $r$ by base change, and
+$z=\sum_je_jx_j$ with $x_j\in A\subseteq\crA$ has norm $N(\mathbf x)=a\in K^\times$,
+so $z$ is a unit of $\mathsf B$ and lies in $\mathsf C_{\mathsf B}$. Each of the $r$
+maps $\sigma_\ell:E\to\bar\Bbbk$ extends to $\mathsf B\to\mathcal A_{\bar\Bbbk}(\Gamma)$,
+and $\sigma_\ell(z)=\sum_j\sigma_\ell(e_j)x_j$ is algebraic over $\Bbbk$, hence
+constant (\cref{odg:cr:cor:algclosed} over $\bar\Bbbk$). For every $\gamma\ne0$ the
+coefficient vector $\mathbf x_\gamma$ therefore satisfies $M\mathbf x_\gamma=0$ with the
+invertible matrix $M=(\sigma_\ell(e_j))$, so $x_j\in\Bbbk\cap A=\mathfrak o$. The last step
+is the one of the printed proof; the unit theorem replaces its factorization of the norm.
+It does not replace the printed proof, which works in every characteristic (paragraph
+\emph{Boundary examples and characteristic} after \cref{odg:dec:thm:etale}), whereas
+source C17 uses characteristic zero throughout. \Cref{odg:disc:thm:units} goes further:
+$\mathsf B$ need not be a base change, and all its units are algebraic. The dual-number
+example after \cref{odg:dec:thm:etale}, a unit with a nonconstant nilpotent coordinate,
+and the finite free reduced algebra of \cref{odg:disc:ex:nonetale}, a nonconstant unit
+without nilpotents, are the two ways the \'etale hypothesis can fail.
+\end{remark}
+
+\subsubsection{Monogenic and arithmetic descent}\label{odg:disc:sub:monogenic}
+
+\begin{theorem}[Monogenic finite \'etale algebras are constant \src{C17}]\label{odg:disc:thm:monogenic}
+If a finite \'etale $\crA$-algebra $\mathsf B$ is generated by one element $b$, then
+$\mathsf B\cong\crA\otimes_\Bbbk C$ for a finite \'etale $\Bbbk$-algebra $C$. More
+precisely, if $\mathsf B$ has rank $r$ and $P=\operatorname{ch}_b$, then
+\[
+ \mathsf B\cong\crA[X]/(P)\cong\crA[X]/(\overline P),
+\]
+the second isomorphism being induced by a translation by an element of $\crP$.
+\end{theorem}
+\begin{proof}
+Cayley--Hamilton gives a surjection $\crA[X]/(P)\to\mathsf B$ from a free module of rank
+$r$ onto a projective module of rank $r$; locally it is a surjection between free modules
+of the same finite rank, hence an isomorphism, and so it is one globally. In this monic
+presentation \'etaleness makes $\Disc(P)$ a unit of $\crA$ by the discriminant criterion
+\cite{StacksDisc}, hence an element of $\Bbbk^\times$ (\cref{odg:cr:lem:rings}(c)).
+\Cref{odg:disc:thm:translation} gives $P=\overline P(X-h)$ with $h\in\crP$, and $Y=X-h$
+gives the second isomorphism; $\Bbbk[Y]/(\overline P)$ is finite \'etale because
+$\overline P$ is squarefree.
+\end{proof}
+
+\begin{corollary}[The split complex case \src{C17}]\label{odg:disc:cor:split}
+Every monogenic finite \'etale $\mathcal A_\C(\Gamma)$-algebra is a finite product of copies
+of $\mathcal A_\C(\Gamma)$.
+\end{corollary}
+\begin{proof}
+Over $\C$ the squarefree $\overline P$ splits into distinct linear factors whose pairwise
+differences are units of $\mathcal A_\C(\Gamma)$, so the Chinese remainder theorem applies
+over $\mathcal A_\C(\Gamma)$.
+\end{proof}
+
+\begin{theorem}[Arithmetic monic descent \src{C17}]\label{odg:disc:thm:arithmetic}
+Let $\mathfrak o\subseteq\Bbbk$ be a unital subring and $P\in\mathcal R_{\mathfrak o}[X]$
+monic with $\Disc(P)\in\mathfrak o\setminus\{0\}$. Then there is an
+$\mathcal R_{\mathfrak o}$-algebra isomorphism
+\begin{equation}\label{odg:disc:eq:arithmetic}
+ \mathcal R_{\mathfrak o}[X]/(P)\cong\mathcal R_{\mathfrak o}\otimes_{\mathfrak o}
+ \mathfrak o[X]/(\overline P).
+\end{equation}
+If $\Disc(P)\in\mathfrak o^\times$, both sides are finite \'etale over
+$\mathcal R_{\mathfrak o}$ and $\mathfrak o[X]/(\overline P)$ is finite \'etale over
+$\mathfrak o$. Every monogenic finite \'etale $\mathcal R_{\mathfrak o}$-algebra descends in
+this way.
+\end{theorem}
+\begin{proof}
+Translation by $h\in\crP\subseteq\mathcal R_{\mathfrak o}$ is an automorphism of the
+polynomial ring, so \cref{odg:disc:thm:translation} gives \eqref{odg:disc:eq:arithmetic}.
+For a unit discriminant the finite free trace pairing is nondegenerate, and the
+discriminant criterion gives \'etaleness over each coefficient ring. For a monogenic
+finite \'etale algebra the characteristic-polynomial argument of
+\cref{odg:disc:thm:monogenic} works over the domain $\mathcal R_{\mathfrak o}$, and its
+discriminant is a unit of $\mathcal R_{\mathfrak o}$, hence of $\mathfrak o$
+(\cref{odg:cr:lem:rings}(c)).
+\end{proof}
+
+For example $P=(X-h)^2-2\in\Oz[X]$, $h\in\Pi$, has discriminant $8$ and is a translate of
+an ordinary polynomial, although its algebra is not \'etale at the prime $2$. The theorem
+classifies the polynomial when the stronger \'etale hypothesis fails; confusing ``nonzero
+integer'' with ``unit integer'' would erase the distinction \src{C17}.
+
+\begin{remark}[The arithmetic scope \src{C17}]\label{odg:disc:rem:scope}
+The descent for $\Oz$ and $\Og$ concerns finite monic presentations, read in set-sized
+workspaces as before. \Cref{odg:disc:thm:units} is proved for $\crA=\Bbbk\oplus\crP$, not
+for $\mathfrak o+\crP$ by replacing $\Bbbk$ with $\mathfrak o$: finite \'etale algebras
+over $\mathfrak o$ may have a richer arithmetic unit group, and reduction modulo $\crP$
+need not be a product of fields. No extension of the unit theorem to that case is made
+(\cref{odg:disc:q:arithmetic}).
+\end{remark}
+
+\subsubsection{Critical-point configurations}\label{odg:disc:sub:critical}
+
+A translation theorem for the derivative gives a consequence about polynomials as
+algebraic maps, not about iteration or analytic continuation \src{C17}.
+
+\begin{theorem}[Two-translation classification \src{C17}]\label{odg:disc:thm:critical}
+Let $f=X^d+a_1X^{d-1}+\cdots+a_d\in\mathcal R_{\mathfrak o}[X]$ with $d\ge2$, and suppose
+that the monic critical polynomial $f'/d\in\crA[X]$ has nonzero constant discriminant.
+Then there are unique $h,\beta\in\crP$ with
+\begin{equation}\label{odg:disc:eq:critical}
+ f(X)=\overline f(X-h)+\beta,\qquad
+ h=-\frac{a_1-\ct a_1}{d},\qquad \beta=f(h)-\overline f(0).
+\end{equation}
+Conversely, a polynomial of the form \eqref{odg:disc:eq:critical} has nonzero constant
+critical discriminant exactly when $\overline f'/d$ is squarefree.
+\end{theorem}
+\begin{proof}
+The coefficient of $X^{d-2}$ in $f'/d$ is $(d-1)a_1/d$, so
+\cref{odg:disc:thm:translation} over $\crA$ gives $f'(X)=\overline f'(X-h)$ with $h$ as
+stated. Then $f(X)-\overline f(X-h)$ has zero derivative, so it is a constant $\beta$ in
+characteristic zero; it lies in $\mathcal R_{\mathfrak o}$, and $\ct\beta=0$, so
+$\beta\in\crP$. Evaluation at $X=h$ gives the formula. Uniqueness of $h$ follows from the
+coefficient of $X^{d-1}$, and that of $\beta$ is then immediate. The converse follows by
+differentiating, since translation does not change the discriminant.
+\end{proof}
+
+If $\xi_1,\ldots,\xi_{d-1}$ are the critical points of $\overline f$, those of $f$ are
+$h+\xi_j$, with critical values $\beta+\overline f(\xi_j)$; all gaps between critical
+points and between critical values are ordinary constants, and distinct critical values of
+$\overline f$ remain distinct. This is a classification up to independent source and
+target translations. It is not in general a conjugacy $f=T_h\circ\overline f\circ T_{-h}$,
+which would need $\beta=h$ \src{C17}.
+
+\begin{example}[A repeated critical value \src{C17}]\label{odg:disc:ex:critical}
+For $s,t\in\crP$, $f(X)=(X-s)^4-2(X-s)^2+t$ has critical polynomial $(X-s)^3-(X-s)$, of
+discriminant $4$, critical points $s-1,s,s+1$ and critical values $t-1,t,t-1$, and
+$\overline f=X^4-2X^2$. The theorem allows the repeated critical value; no Morse or
+distinct-critical-value hypothesis is imposed.
+\end{example}
+
+\begin{remark}[The same normal forms in the sibling report \mergetag]\label{odg:disc:rem:osq}
+The sibling report \fn{docs/surreal/set-sized-quotients-of-omnific-integers} reaches the
+same normal forms from a different hypothesis. For an integer-valued polynomial $f$ over
+$\Oz$ or $\Og$ with more than $d=\deg f$ inputs of ordinary output, its canonical
+translation (\replabel{osq:or:thm:canonical}, \replabel{osq:or:thm:eta}) gives
+$f=\ct_*(f)(X-\eta)$ with $\eta=-\mathring a_{d-1}/(da_d)$, where $\ct_*(f)=\overline f$ and
+$\mathring a=a-\ct a$; for monic $f$ this is \eqref{odg:disc:eq:h}. Its rich-target theorem
+(\replabel{osq:or:thm:targets}) gives $f=\overline f(X-\eta)+\beta$ with
+$\beta=f(\eta)-\ct f(\eta)$, the form \eqref{odg:disc:eq:critical}. For monic $P\in\Oz[X]$
+with $\Disc(P)\in\Z\setminus\{0\}$, \cref{odg:disc:cor:omnific} gives
+$P(h+c)=\overline P(c)\in\Z$ for every $c\in\Z$, so the sibling hypothesis holds and the two
+translations coincide; likewise \cref{odg:disc:thm:critical} makes $\beta+\Z$ a rich target.
+The converse fails: $(X-h)^2$ with $0\ne h\in\Pi$ has ordinary outputs on all of $h+\Z$ and
+discriminant zero. The sibling hypothesis needs the discrete order of $\Oz$, whereas
+\cref{odg:disc:thm:translation} holds over every $\crA$ and $\mathcal R_{\mathfrak o}$.
+Source C17 does not cite the sibling report, of which it read only the guide.
+\end{remark}
+
+\subsubsection{Normal and Hermitian matrices}\label{odg:disc:sub:matrix}
+
+Work in $\mathbb H_\R(\Gamma_\Q)$, ordered by the sign of the coefficient of the dominant
+monomial (the one of largest exponent), and in $\mathbb H_\C(\Gamma_\Q)$, with conjugation on
+coefficients. For a vector $v$ the form $\langle v,v\rangle=\sum_jv_j\overline{v_j}$ is
+positive for $v\ne0$; the arguments are finite algebra over this ordered field, not
+Hilbert-space arguments \src{C17}. For a matrix, $M^*$ is the conjugate transpose and
+$\ct M$ applies $\ct$ entrywise.
+
+\begin{lemma}[A normal idempotent is an orthogonal projection \src{C17}]\label{odg:disc:lem:projection}
+Let $\mathsf P\in M_n(\mathbb H_\C(\Gamma_\Q))$ satisfy $\mathsf P^2=\mathsf P$ and
+$\mathsf P\mathsf P^*=\mathsf P^*\mathsf P$. Then $\mathsf P=\mathsf P^*$,
+$0\le\mathsf P_{jj}\le1$ and $|\mathsf P_{jk}|^2\le1$. If its entries lie in
+$\mathcal A_\C(\Gamma)$, they lie in $\C$.
+\end{lemma}
+\begin{proof}
+Normality gives $\langle\mathsf Pv,\mathsf Pv\rangle=\langle\mathsf P^*v,\mathsf P^*v\rangle$,
+so $\ker\mathsf P=\ker\mathsf P^*$. With $(\operatorname{im}\mathsf P)^\perp=\ker\mathsf P^*$,
+the decomposition $\operatorname{im}\mathsf P\oplus\ker\mathsf P$ is orthogonal, and
+$\mathsf P$ acts on its summands by $1$ and $0$; so $\mathsf P=\mathsf P^*$. This uses only
+positive definiteness and the dimension formula for orthogonal complements. The $jj$ entry of
+$\mathsf P=\mathsf P\mathsf P^*$ is $\mathsf P_{jj}=\sum_k\mathsf P_{jk}\overline{\mathsf
+P_{jk}}$, so $\mathsf P_{jj}\ge0$ and $\mathsf P_{jj}\ge\mathsf P_{jj}^2$, whence
+$\mathsf P_{jj}\le1$, and every summand is at most $1$. An element of positive degree has
+squared modulus of positive degree with positive dominant coefficient, so it is infinite and
+exceeds $1$. Hence every entry lies in $\mathcal O_\C(\Gamma_\Q)$, and an entry in
+$\mathcal A_\C(\Gamma)$ lies in $\C$ by \eqref{odg:disc:eq:hahn}.
+\end{proof}
+
+\begin{theorem}[Normal matrices \src{C17}]\label{odg:disc:thm:matrix}
+Let $M\in M_n(\mathcal A_\C(\Gamma))$ satisfy $MM^*=M^*M$, and suppose that its
+characteristic polynomial has nonzero constant discriminant. Then
+\begin{equation}\label{odg:disc:eq:matrix}
+ M=\ct M+hI_n,\qquad h=\frac{\tr M-\ct(\tr M)}{n}\in\Pi_\C(\Gamma).
+\end{equation}
+For Hermitian $M$, $h$ has real coefficients. In particular this applies to normal
+matrices over $\Og$ and real symmetric matrices over $\Oz$, read in a workspace.
+\end{theorem}
+\begin{proof}
+By \cref{odg:disc:thm:translation} applied to the characteristic polynomial, whose constant
+term is the characteristic polynomial of $\ct M$, the eigenvalues of $M$ are the distinct
+elements $h+c_j$, where $c_1,\ldots,c_n\in\C$ are the eigenvalues of $\ct M$ and $h$ is as
+stated. The Lagrange spectral idempotents
+\begin{equation}\label{odg:disc:eq:projectors}
+ \mathsf P_j=\prod_{u\ne j}\frac{M-(h+c_u)I_n}{c_j-c_u}
+\end{equation}
+have entries in $\mathcal A_\C(\Gamma)$, since the denominators are nonzero complex
+numbers. Interpolation modulo the squarefree characteristic polynomial and Cayley--Hamilton
+give $\mathsf P_j^2=\mathsf P_j$, $\mathsf P_j\mathsf P_u=0$ for $j\ne u$,
+$\sum_j\mathsf P_j=I_n$ and $M=\sum_j(h+c_j)\mathsf P_j$. A polynomial in the normal
+matrix $M$ commutes with the adjoint of any polynomial in $M$, so every $\mathsf P_j$ is
+normal, and \cref{odg:disc:lem:projection} gives $\mathsf P_j\in M_n(\C)$. Thus
+$M=hI_n+\sum_jc_j\mathsf P_j$, and taking constant terms identifies the sum as $\ct M$.
+For Hermitian $M$ the trace is real, hence so is $h$.
+\end{proof}
+
+\begin{corollary}[Traceless rigidity and fixed eigenspaces \src{C17}]\label{odg:disc:cor:traceless}
+Under the hypotheses of \cref{odg:disc:thm:matrix},
+$M-\frac{\tr M}nI_n=\ct M-\frac{\tr(\ct M)}nI_n$. An ordinary trace forces $M$ to be an
+ordinary matrix, all spectral projections are ordinary, and an ordinary unitary change of
+basis diagonalizes $\ct M$ and $M$ simultaneously.
+\end{corollary}
+\begin{proof}
+Subtract the traces in \eqref{odg:disc:eq:matrix}. The proof of the theorem makes every
+spectral projection ordinary; alternatively, diagonalize the ordinary normal matrix
+$\ct M$, whose eigenspaces are not changed by adding $hI_n$.
+\end{proof}
+
+\begin{remark}[What positivity contributes \src{C17}]\label{odg:disc:rem:positivity}
+The characteristic-polynomial theorem controls eigenvalues but not entries or eigenspaces.
+Positivity turns normal idempotents into bounded projections, and one-sided support turns
+bounded entries into constants; without this step the matrix conclusion is false
+(\cref{odg:disc:ex:nonnormal}). No physical prediction about infinitesimal observables
+follows from the algebraic statement.
+\end{remark}
+
+\begin{remark}[Symmetric omnific matrices \mergetag]\label{odg:disc:rem:symmetric}
+For real symmetric matrices over $\Oz$ there is a second route through
+\cref{odg:cor:symmetric}. If the characteristic polynomial of $M$ has discriminant in
+$\Z\setminus\{0\}$, \cref{odg:disc:cor:omnific} writes it as $\overline P(X-h)$ with
+$h=(\tr M-\ct\tr M)/n\in\Pi$. Then $M-hI_n$ is a symmetric matrix over $\Oz$ with the integer
+characteristic polynomial $\overline P$, so all its entries are ordinary integers by
+\cref{odg:cor:symmetric}, and $M-hI_n=\ct M$. That corollary needs no discriminant
+hypothesis when the characteristic polynomial is already constant, while
+\cref{odg:disc:thm:matrix} allows a purely infinite trace and complex normal matrices. The
+nilpotent example after \cref{odg:cor:symmetric} and \cref{odg:disc:ex:nonnormal} show the
+same failure without symmetry or normality.
+\end{remark}
+
+\subsubsection{Counterexamples and the boundary}\label{odg:disc:sub:boundaries}
+
+\begin{example}[Two-sided coefficients \src{C17}]\label{odg:disc:ex:twosided}
+In a real closed Hahn field, or in $\No$, let $x=\omega$ and
+\begin{equation}\label{odg:disc:eq:twosided}
+ \rho=\frac{x-\sqrt{x^2-4/x}}2 .
+\end{equation}
+The square root exists since $x^2-4/x>0$; $\rho$ and $x-\rho$ are the roots of
+$Y^2-xY+1/x$, so $\rho(x-\rho)=x^{-1}$, $0<\rho<x$, and $\rho$ is positive
+infinitesimal with dominant term $x^{-2}$. The monic cubic $P=X(X-x)(X-\rho)$ has
+distinct roots and $\Disc(P)=x^2\rho^2(x-\rho)^2=1$, but its root gap $x$ is infinite, so
+it is not a translate of a constant polynomial. Its coefficient $x\rho$ is a nonzero
+infinitesimal, so $P$ does not have coefficients in $\BR$. The real diagonal matrix
+$\operatorname{diag}(0,x,\rho)$ is normal with the same discriminant and violates
+\cref{odg:disc:thm:matrix} once the support hypothesis is dropped. So ``over surreal
+numbers'' cannot replace ``with coefficients in the one-sided ring''. (Here $\rho$ replaces
+the source's $r$.)
+\end{example}
+
+\begin{example}[Characteristic $p$ \src{C17}]\label{odg:disc:ex:charp}
+Let $\Bbbk$ have characteristic $p>0$, $\gamma>0$ and $u=\omega^\gamma$ in the
+nonnegative-support ring over $\Bbbk$. The polynomial
+\begin{equation}\label{odg:disc:eq:charp}
+ P(X)=X^{p^2}+uX^p+X
+\end{equation}
+has derivative $1$, so it is separable with the constant discriminant
+$(-1)^{p^2(p^2-1)/2}$, and $\overline P=X^{p^2}+X$. But
+$\overline P(X-h)=X^{p^2}+X-h^{p^2}-h$ has no term in $X^p$ for any $h$, so
+$P\ne\overline P(X-h)$. This works in every positive characteristic and avoids an
+Artin--Schreier example whose right side could be absorbed by an infinite translation.
+It is consistent with the failure of squarefree rigidity in characteristic $p$
+(\cref{odg:cr:sub:charp}).
+\end{example}
+
+\begin{example}[Zero discriminant \src{C17}]\label{odg:disc:ex:zero}
+For $0\ne s\in\crP$, $X^2(X-s)$ has discriminant zero and $\overline P=X^3$, but it is
+not $(X-h)^3$, which has one distinct root. Repeated roots allow relative motion that the
+logarithmic-gap argument cannot constrain, because its denominators vanish.
+\end{example}
+
+\begin{example}[Nonnormal matrices \src{C17}]\label{odg:disc:ex:nonnormal}
+For distinct $c_1,c_2\in\C$ and $0\ne s\in\Pi_\C(\Gamma)$, the matrix
+$M=\bigl(\begin{smallmatrix}c_1&s\\0&c_2\end{smallmatrix}\bigr)$ has constant
+characteristic polynomial $(X-c_1)(X-c_2)$ with nonzero constant discriminant, but it is
+not $\ct M+hI_2$; its corner entry moves an eigenspace without moving an eigenvalue. For
+$c_1=0$, $c_2=1$ and real $s$, $MM^*-M^*M$ has the diagonal entry $s^2\ne0$.
+\end{example}
+
+\begin{example}[Finite free and reduced is not enough \src{C17}]\label{odg:disc:ex:nonetale}
+Take $\Gamma=\Z$, so $\crA=\Bbbk[\omega]$, and
+$\mathsf B=\crA[Y]/(Y^2-\omega^2-1)$. It is finite free of rank two and reduced, since its
+generic polynomial is separable and it injects into its generic fiber. It has the unit
+$u=\omega+Y$ with inverse $Y-\omega$, and $u$ is not algebraic over $\Bbbk$: otherwise
+$u^{-1}$ would be algebraic too, and so would $2\omega=u-u^{-1}$. Its discriminant
+$4(\omega^2+1)$ is not a unit of $\crA$, so $\mathsf B$ is not \'etale, and replacing
+``finite \'etale'' by ``finite free and reduced'' makes \cref{odg:disc:thm:units} false.
+In $\crH$ the generic image of $Y$ is $\pm\sqrt{\omega^2+1}$, the element of
+\cref{odg:ex:nonsquare} and \cref{odg:prop:notnormal}; the unit $u$ becomes
+$\omega+\sqrt{\omega^2+1}$, infinite, with inverse
+$\sqrt{\omega^2+1}-\omega=\tfrac12\omega^{-1}-\cdots$ \mergetag.
+\end{example}
+
+Source C17's theorems do not classify the prime elements of $\Oz$, prove a unique
+factorization or refinement conjecture, determine birthdays of products, or construct a
+preferred derivation of the surreal field. No set-theoretic strength beyond set-sized Hahn
+and vector-space constructions is used; a request for a broad research direction was
+answered by a focused algebraic theorem package, not by a claim about large cardinals
+\src{C17}.
+
+\subsubsection{A second proof and the common mechanism}\label{odg:disc:sub:second}
+
+The unit theorem gives a second route to \cref{odg:disc:thm:translation} that does not use
+the universal certificate \src{C17}.
+
+\begin{lemma}[Finite \'etale splitting algebra \src{C17}]\label{odg:disc:lem:splitting}
+If $R$ is a commutative ring and $P\in R[X]$ is monic of degree $n$ with unit discriminant,
+there is a finite free \'etale $R$-algebra $\mathsf B_P$ of rank $n!$ in which
+$P=\prod_{j=1}^n(X-r_j)$ and every difference $r_i-r_j$, $i\ne j$, is a unit.
+\end{lemma}
+\begin{proof}
+Adjoin a root $r_1$ by $R_1=R[X]/(P)$, finite free of rank $n$ and \'etale by the
+discriminant criterion. Divide $P$ by $X-r_1$ to get a monic $Q_1\in R_1[X]$ of degree
+$n-1$. The identity $\Disc(P)=\Disc(Q_1)Q_1(r_1)^2$ shows that $\Disc(Q_1)$ is a unit,
+since factors of a unit are units. Repeat with $Q_1$. The ranks multiply to $n!$, and
+compositions of finite \'etale maps are finite \'etale. In the result the product of the
+squared differences is $\Disc(P)$, so each difference is a unit. This also covers $n=1$.
+\end{proof}
+
+\begin{proof}[Second proof of \cref{odg:disc:thm:translation} \src{C17}]
+Over $\crA$, apply \cref{odg:disc:lem:splitting} and \cref{odg:disc:thm:units}: the root
+differences in $\mathsf B_P$ are units, hence algebraic over $\Bbbk$. Map a field factor of
+the generic algebra of $\mathsf B_P$ to $\Hbar$. The images of the roots split $P$, and
+every gap is algebraic over $\Bbbk$, so it lies in $\bar\Bbbk$ (by \cref{odg:cr:cor:algclosed}
+for the coefficient field $\bar\Bbbk$).
+Subtracting the mean and taking constant terms proves $P=\overline P(X-h)$ as in the first
+proof, and the arithmetic pullback follows as there.
+\end{proof}
+
+There is no circularity: the proof of \cref{odg:disc:thm:units} uses the Euler derivations,
+formal \'etale lifting, characteristic polynomials and opposite supports, not
+\cref{odg:disc:thm:translation}. The first proof remains useful because its certificate is
+finite and uniform in the degree and avoids the splitting algebra of rank $n!$ \src{C17}.
+
+Both proofs follow one pattern. A derivation sends ordinary coefficients into a strict
+ideal; logarithmic differentiation produces quantities in the opposite valuation ring; a
+symmetric or characteristic polynomial puts all their invariants into the strict ideal as
+well; the intersection is zero, so the polynomial is a pure power and reducedness kills the
+quantities; a separating family of derivations then identifies the residual constants. The
+point is not merely that ``infinite and finite cannot agree'': individual roots or elements
+of a finite algebra need not lie in the ring, and the invariant polynomial carries the
+information back to the ring, where the intersection argument is legitimate. So the trace
+of a logarithmic derivative alone, or the product of the root gaps alone, does not suffice
+\src{C17}. This is the two-ring mechanism of \cref{odg:cr:sub:tworing}, with the pair
+$(\crA,\crP)$ and the valuation ring, applied to roots and to finite algebras instead of
+points of varieties \mergetag.
+
+\subsubsection{Source C17's verification and formalization notes}\label{odg:disc:sub:audit}
+
+Source C17's script (\fn{code/17-discriminant-rigidity-verify.py}) performs exact finite
+computations over rational polynomial rings and finite fields: translation formulas,
+discriminants, resultants, the quadratic certificate, root-velocity identities, critical
+configurations, projection examples and the counterexamples. Its recorded run
+(\fn{data/17-discriminant-rigidity-verification.json}) passed 1,126 assertions in 13 groups
+(\cref{odg:app:verification}). Such checks can catch sign errors, wrong normalizations,
+false examples and failures of a finite identity; they cannot certify the theorem for
+arbitrary supports, the formal \'etale argument, or the existence of the certificate in
+every degree. No Lean implementation accompanies the source, and the Lean coverage of the
+repository does not by itself cover these statements \src{C17}.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}}
+\toprule
+Claim & Decisive dependencies and exclusions \src{C17}\\
+\midrule
+\Cref{odg:disc:thm:translation} & Hahn splitting field; separating Euler family; universal
+symmetric certificate; $\crP\cap\Obar=0$. No rank-one norm and no normality of $\crA$.\\
+\Cref{odg:disc:thm:units} & Formal \'etale extension; reduction modulo $\crP$;
+characteristic polynomials on a finite projective module; reduced generic fiber. No
+global primitive element.\\
+\Cref{odg:disc:thm:arithmetic} & The translation lies in $\crP$, so division by the degree
+does not need the degree to be a unit of $\mathfrak o$.\\
+\Cref{odg:disc:thm:matrix} & Polynomial projectors; normal idempotents; positive Hermitian
+form; bounded one-sided entries are constants.\\
+Full surreal cases & Finite input supports lie in a set-sized divisible exponent group; no
+proper-class summation, no large-cardinal axiom.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A formalization should keep these divisions: in particular it should not replace the strict
+ideal $\crP$ by an ideal of support bounded away from $0$, nor the separating set of Euler
+functionals by one alleged faithful real-valued functional. Source C17 proposes an order:
+first a generic interface (a ring $A$ and an ideal $I$ inside a valued field, derivations
+carrying $A$ into $I$, and $I\cap\mathcal O=0$); then the certificate, organized through the
+permutation action on unordered pairs, and the vanishing lemma for characteristic
+polynomials, first for free algebras and then descended from local bases; then the
+instantiation with Hahn series, whose joint-constants lemma needs coefficient
+extensionality and separation of exponents by linear functionals; the surreal
+specialization through the repository's normal-form and omnific-ring identifications,
+with an exact theorem mapping rather than a claim that an abstract theorem has been proved
+for the constructed surreals; and, largely independently, the projectors and the
+normal-idempotent lemma. This is a proposal; no stage is claimed done
+(\cref{odg:disc:q:lean}). The interface is the abstract one of \cref{odg:log:rem:interface}
+with the roles of the ring and the valuation ring as in \cref{odg:cr:sub:tworing}.
+
+\subsubsection{What source C17 does not claim}\label{odg:disc:sub:nonclaims}
+
+The limitations stated by source C17 are listed in \cref{odg:app:nonclaims}. In short: it
+does not show that every finite \'etale $\crA$-algebra is constant; it does not extend the
+unit theorem to $\mathfrak o+\crP$; it proves no factorization, prime or birthday result and
+uses no large cardinal; it constructs no preferred surreal derivation; it does not claim the
+exponent $2s$ optimal; its Galois statement depends on the chosen coefficient field; its
+critical-point theorem is not a conjugacy; its main theorems fail without one-sided support,
+characteristic zero or a nonzero discriminant, and the matrix theorem without normality; the
+polynomial-parameter case is not claimed new; its finite checks do not prove the
+arbitrary-support theorems; it has no Lean formalization and certifies no novelty.
+
 \section{Fixed Hahn workspaces and a formalization route}\label{odg:sec:formal}
 
 \subsection{Which results are local in the exponent group?}
@@ -10288,6 +11385,13 @@ The full-class projective clearing in
 nonempty affine-line fibers are proper classes
 (\cref{odg:cr:cor:omnific}): fibers inside a fixed workspace are sets.
 
+\paragraph{Constant discriminants.} Every result of \cref{odg:disc:sub:disc} is proved over
+$\crA$ or $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ for an arbitrary set-sized ordered group
+$\Gamma$, with the splitting field $\Hbar$ over its divisible hull, and the statements about
+$\Oz$, $\Og$ and omnific matrices are read in a workspace containing the finitely many
+coefficients \src{C17}. They therefore hold for $\Oz_\Gamma$ as stated, and no statement of
+that subsection uses the full class.
+
 \subsection{A formalization route}
 
 The implementation ledger \fn{docs/FORMALIZATION.md} distinguishes proved
@@ -10329,8 +11433,14 @@ under \fn{Surreal/Surcomplex/}. The real kernel of complex forms on real
 omnific variables is kept distinct from full complex column rank for
 complex support-ring variables. The coefficientwise statement uses actual
 Conway coefficients; no finite-support restriction is introduced. The
-subsequent Gaussian fiber and converse statements, differential and
-geometric rigidity, and the remaining unmapped Diophantine results are
+Gaussian fiber theorem and its coefficientwise complex-kernel description
+are also proved in commit \texttt{4037368}; commit \texttt{ae0210c} proves
+the converse existence criterion, using a nonzero purely infinite monomial.
+The files \fn{GaussianOmnificIntegers.lean},
+\fn{GaussianDecomposableFibers.lean} and
+\fn{DecomposableKernelCriterion.lean} under \fn{Surreal/Surcomplex/}
+retain the ordinary-point and nonzero-level hypotheses. Differential and
+geometric rigidity and the remaining unmapped Diophantine results are
 pending. Exact theorem names and any newer coverage belong in the ledger.
 
 The sources proposed overlapping routes; the following merges them. The
@@ -10428,7 +11538,10 @@ forms in the geometric one, and notes that a conditional Lean theorem would not 
 itself verify the instantiations. Source C16 proposes, for its own results, finite differential algebra first,
 then the abstract valuation contradiction, then normalization of curves and
 Riemann--Roch, and the proper-class application last (\cref{odg:sg:q:lean}); this too is a
-proposal.
+proposal. Source C17 proposes a generic interface of a ring, a strict ideal and derivations
+with $I\cap\mathcal O=0$, then its certificate and the characteristic-polynomial lemma as
+finite algebra, then the Hahn instantiation and the surreal specialization
+(\cref{odg:disc:sub:audit,odg:disc:q:lean}); this is a proposal as well.
 
 \section{Questions and synthesis}\label{odg:sec:questions}
 
@@ -10447,6 +11560,9 @@ Source C16 answers the first two clauses of \cref{odg:cr:q:singular} and the cur
 \cref{odg:q:affine}, answers the existence part of \cref{odg:q:search} for singular curves
 over $\Og$ and in part over $\Oz$, and adds eight questions; the questions stay open,
 re-scoped.
+Source C17 answers \cref{odg:q:roots} for monic polynomials over $\Oz$ and $\Og$ with a
+nonzero constant discriminant, answers the first clause of \cref{odg:cr:q:coefficients} in
+dimension zero, and adds ten questions; both questions stay open, re-scoped.
 
 \subsection{Questions settled by source 05}\label{odg:sub:settled}
 
@@ -10644,6 +11760,33 @@ refining \cref{odg:cr:q:charp}), normalization invariance in higher dimension
 formalization (\cref{odg:sg:q:lean}). Source C16 does not present them as known open
 problems of the literature.
 
+\paragraph{Roots and coefficients (source C17).} For a monic $P\in\Oz[T]$ with
+$\Disc(P)\in\Z\setminus\{0\}$, source C17 answers \cref{odg:q:roots}: $P=\overline P(T-h)$
+with $h=-(a_1-\ct a_1)/n\in\Pi$, so the omnific roots of $P$ are $h+c$ for the integer roots
+$c$ of $\overline P$, and the finite coefficient test \eqref{odg:disc:eq:test} decides
+whether the hypothesis holds, relative to exact coefficient arithmetic
+(\cref{odg:disc:thm:translation,odg:disc:cor:roots}); the same holds over $\Og$. This
+complements \cref{odg:thm:quadraticformula} and explains \cref{odg:ex:hensel}, whose
+discriminant $1+4\omega$ is not constant (\cref{odg:disc:rem:comparison}). Nonconstant
+discriminants, zero discriminants and nonmonic polynomials stay open, and so does the
+decidability clause for general support classes. For the first clause of
+\cref{odg:cr:q:coefficients}, a nonzero constant discriminant is a nondegeneracy condition
+that recovers rigidity for coefficients varying at a surreal scale in dimension zero, over
+every $\crA$ and $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; units of finite \'etale algebras
+and normal matrices follow the same pattern
+(\cref{odg:disc:thm:units,odg:disc:thm:matrix}). Curves and higher-dimensional varieties
+with nonconstant coefficients stay open (\cref{odg:cr:sub:boundaries}).
+
+\paragraph{New questions (source C17).} Its ten questions are printed as stated: full and
+arithmetic \'etale descent (\cref{odg:disc:q:etale,odg:disc:q:arithmetic}), projective modules
+and nonnormal spectral data (\cref{odg:disc:q:picard}), sharp certificates
+(\cref{odg:disc:q:certificate}), nonconstant discriminants (\cref{odg:disc:q:defect},
+refining \cref{odg:q:roots}), positive characteristic (\cref{odg:disc:q:charp}), restricted
+support rings (\cref{odg:disc:q:restricted}), several configurations
+(\cref{odg:disc:q:several}), polynomial dynamics (\cref{odg:disc:q:dynamics}) and
+formalization (\cref{odg:disc:q:lean}). Source C17 does not present them as known open
+problems of the literature.
+
 \subsection{Open questions}
 
 \begin{question}[Rigid affine varieties and curves \src{01, 02, 05}; smooth curves answered by \src{C10--C14}]\label{odg:q:affine}
@@ -10759,7 +11902,12 @@ membership, \cref{odg:prop:binomial} settles two-term binomials, and
 cancellation needs separate analysis. Any effective claim must specify the
 coefficients, the exponent representation, and whether workspace enlargement
 is permitted. An unrestricted algorithm for ordinary-coefficient affine
-existence would contradict \cref{odg:cor:H10}.
+existence would contradict \cref{odg:cor:H10}. Status (batch 33): for monic
+polynomials with a discriminant in $\Z\setminus\{0\}$ (in $\Z[i]\setminus\{0\}$ over $\Og$)
+source C17 gives a complete answer: the omnific roots are $h+c$ for the integer roots $c$
+of $\overline P$, with $h$ read off the second coefficient
+(\cref{odg:disc:cor:roots,odg:disc:eq:test}). The question stays open for other
+polynomials (\cref{odg:cr:sub:settled}).
 
 \begin{question}[The exact size boundary \src{05}]\label{odg:q:size}
 Which set-sized exponent groups or universe-relative constructions admit
@@ -10980,6 +12128,12 @@ several equations, so that a checker need not reconstruct the geometry \src{C15}
 (batch 31): source C16 gives finite certificates for every rigid curve, smooth or singular,
 with an explicit derivative-order bound (\cref{odg:sg:thm:conductor,odg:sg:cor:jetbound,odg:sg:thm:example});
 optimal bounds and a certificate-producing procedure are \cref{odg:sg:q:order,odg:sg:q:engine}.
+Status (batch 33): for the first clause source C17 gives a rigidity theorem in dimension zero:
+a monic univariate polynomial over $\crA$ or $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ whose
+discriminant is a nonzero constant is a purely infinite translate of its constant-term
+polynomial (\cref{odg:disc:thm:translation}), with a universal finite certificate
+(\cref{odg:disc:lem:certificate}); the batch-31 note above concerns only the certificate
+clause. Curves and varieties with nonconstant coefficients stay open.
 
 The next eight questions are those of source C16, printed as it states them; it presents
 them as continuations of its article, not as recognized open problems of the literature.
@@ -11067,6 +12221,109 @@ interface?
 Source C16 proposes the order: finite differential algebra, then the abstract valuation
 contradiction, then normalization of curves and Riemann--Roch, and the proper-class
 application last; none of these stages is claimed done \src{C16}.
+
+The next ten questions are those of source C17 (\cref{odg:disc:sub:disc}), printed as it
+states them, in the notation of \cref{odg:disc:sub:disc}. Source C17 calls them questions
+left open by its article, not a catalogue certified by a literature search, and names the
+first two as the most substantial.
+
+\begin{question}[Full finite \'etale descent \src{C17}]\label{odg:disc:q:etale}
+Is base change an equivalence from finite \'etale $\Bbbk$-algebras to finite \'etale
+$\crA$-algebras, for every field $\Bbbk$ of characteristic zero and every ordered abelian
+group $\Gamma$?
+\end{question}
+The monogenic and unit-generated cases are settled
+(\cref{odg:disc:thm:monogenic,odg:disc:thm:units}). A first objective is to prove or
+disprove that the injection $\mathsf C_{\mathsf B}\to\mathsf B/\crP\mathsf B$ is always
+surjective. A proof must bridge a global issue, which generic primitive elements and local
+monogenic charts do not settle; a counterexample would have to hide its nonconstant
+structure outside its unit group \src{C17}.
+
+\begin{question}[Arithmetic \'etale descent \src{C17}]\label{odg:disc:q:arithmetic}
+For a number ring $\mathfrak o\subseteq\Bbbk$, does every finite \'etale
+$\mathcal R_{\mathfrak o}$-algebra descend from $\mathfrak o$? Which additional hypotheses
+on $\Bbbk$ are necessary?
+\end{question}
+\Cref{odg:disc:thm:arithmetic} handles monogenic presentations. A next step compares base
+change to $\crA$ with reduction to $\mathfrak o$, keeping track of flatness and arithmetic
+fibers; the field-coefficient unit theorem must not be applied over $\mathfrak o$
+(\cref{odg:disc:rem:scope}). The cases $\mathfrak o=\Z,\Z[i]$ concern $\Oz$ and $\Og$
+\src{C17}.
+
+\begin{question}[Projective modules and nonnormal spectral data \src{C17}]\label{odg:disc:q:picard}
+What is $\operatorname{Pic}(\crA)$, and which projective modules occur as eigenmodules of a
+matrix with nonzero constant characteristic discriminant?
+\end{question}
+The translation theorem fixes eigenvalues; the rest of the matrix is a system of projective
+summands attached to the spectral idempotents. Normality makes them constant by positivity,
+while \cref{odg:disc:ex:nonnormal} shows freedom without it. A classification up to
+similarity should separate changes of basis from nontrivial projective summands \src{C17}.
+
+\begin{question}[Sharp denominator certificates \src{C17}]\label{odg:disc:q:certificate}
+What is the least exponent $d(n,s)$ for which $\Delta^{d(n,s)}e_s(w)$ is a universal
+polynomial in the coefficients and their derivatives? Can the certificates be generated
+with practical size?
+\end{question}
+\Cref{odg:disc:lem:certificate} gives $d(n,s)\le2s$, and for $n=2$, $s=1$ one power of
+$\Delta$ suffices (\cref{odg:disc:rem:quadratic}). The problem is finite algebra,
+independent of surreal foundations \src{C17}.
+
+\begin{question}[Nonconstant discriminants and quantitative defects \src{C17}]\label{odg:disc:q:defect}
+Can the support or valuation of $\Disc(P)$ bound the possible nonconstant motion of the root
+gaps when the discriminant is not constant?
+\end{question}
+The identities \eqref{odg:disc:eq:certificate} remain valid, and their valuations give
+inequalities between derivative coefficients and powers of $\Delta$, but the
+zero-intersection argument no longer closes. A Newton-polygon theory of the velocity
+polynomial could measure how far a polynomial is from a constant configuration plus a
+translation \src{C17}. The example $T^2-T-\omega$ of \cref{odg:ex:hensel}, with
+discriminant $1+4\omega$, is a test case.
+
+\begin{question}[Positive characteristic \src{C17}]\label{odg:disc:q:charp}
+Which restrictions on degree, ramification or additive-polynomial structure restore a
+useful translation theorem in characteristic $p$?
+\end{question}
+\Cref{odg:disc:ex:charp} shows that separability and a unit discriminant do not suffice. A
+substitute must account for Frobenius and for derivations that do not see $p$-divisible
+exponents; degrees below $p$, then tame splitting extensions, are natural first cases,
+neither asserted sufficient \src{C17}. Compare \cref{odg:cr:q:charp,odg:sg:q:charp}.
+
+\begin{question}[Restricted support rings \src{C17}]\label{odg:disc:q:restricted}
+For which proper subrings of a Hahn ring does the discriminant theorem hold, with the
+translation in the subring?
+\end{question}
+A candidate should be closed under the Euler derivations, contain the purely nonconstant part
+divided by the degree, and keep the opposite-support intersection; effective left-finite,
+bounded-denominator and definability-restricted representations are natural tests
+\src{C17}.
+
+\begin{question}[Several polynomial configurations \src{C17}]\label{odg:disc:q:several}
+What are the minimal invariant conditions forcing a family of finite root configurations to
+share one translation, or one affine transformation?
+\end{question}
+Constant discriminants and a spanning tree of constant resultants suffice for a translation
+(\cref{odg:disc:thm:resultants}). A controlled common scaling would need a normalization of
+the weights of discriminants and resultants, distinguishing labelled configurations from
+their symmetric quotients and handling arithmetic descent \src{C17}.
+
+\begin{question}[Polynomial dynamics \src{C17}]\label{odg:disc:q:dynamics}
+Under which extra conditions does $f=\overline f(X-h)+\beta$ become conjugate, rather than
+left-right equivalent, to an ordinary polynomial?
+\end{question}
+\Cref{odg:disc:thm:critical} reduces this to a relation between $h$, $\beta$ and the chosen
+dynamical normalization; fixed points, critical orbits or an ordinary marked value are
+possible extra data, and iterates must be kept separate from the fixed-degree theorem
+\src{C17}.
+
+\begin{question}[Formal verification and constructive extraction \src{C17}]\label{odg:disc:q:lean}
+Can the universal certificate and the finite \'etale unit theorem be formalized for the
+repository's actual Hahn and surreal constructions, with an executable translation
+extractor for supported notation systems?
+\end{question}
+The extractor is \eqref{odg:disc:eq:h}; the difficulty is certified equality of the
+resulting infinite coefficients and a proof that the input denotes a legal Hahn series. A
+verified finite-support implementation, then the generic support interface, is proposed as a
+first milestone (\cref{odg:disc:sub:audit}) \src{C17}.
 
 \subsection{Synthesis}
 
@@ -11184,7 +12441,10 @@ derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the support inclu
 $\partial(\crA)\subseteq\crP$ used in \cref{odg:cr:sec:principle}; its theorem that
 derivations of the class ring into set-sized modules vanish
 (\replabel{osq:thm:derivations}) is no conflict, since the Euler derivations here act
-on set-sized workspaces and take values in them.
+on set-sized workspaces and take values in them. Its manuscript 18's canonical translation
+and rich-target theorems (\replabel{osq:or:thm:canonical}, \replabel{osq:or:thm:targets})
+give the normal forms of \cref{odg:disc:thm:translation,odg:disc:thm:critical} from the
+discreteness of values instead of a constant discriminant (\cref{odg:disc:rem:osq}).
 \item \fn{docs/surreal/omnific-preserving-automorphisms}: its support-preserving
 Euler derivations map $\mathcal R_{\mathfrak o}(k,\Gamma)$ into $\Pi_k(\Gamma)$
 (\replabel{opa:par:prop:Euler}), the support inclusion of \cref{odg:cr:lem:euler} on
@@ -11236,7 +12496,7 @@ $\SO(3,\Oz)$ is finite.
 
 \subsection{Sources}
 
-The report is built from fourteen manuscripts. Sources 01, 02 and 05 are three of
+The report is built from fifteen manuscripts. Sources 01, 02 and 05 are three of
 a batch of eleven placed in commit \texttt{be06fc8}, and their numbers are the
 batch item numbers; they are dated September 22, 2026, and the repository
 commit they pin is \pin. Sources 06 and 07 are items 01 and 07 of a batch of
@@ -11315,6 +12575,27 @@ that prefix (\fn{16-singular-curves-SOURCE_AUDIT.md}, the verification script, i
 script, the recorded run, the requirements file and the build report of its own article).
 Its text, PDF and delivered README are not shipped, nor is its checksum manifest, which
 lists the delivered file names.
+
+Source C17 is manuscript 07 of the batch of nine placed in commit \texttt{aa9c891} (batch 33),
+whose archives arrived in \texttt{73043eb}; it is the archive
+\fn{omnific_discriminant_rigidity}, local number 17 of this report, tagged by its shipped
+file prefix \fn{17-discriminant-rigidity-} with the letter C as for sources C10--C16 (the
+sibling report's manuscript 17, files \fn{17-relations-arithmetic-}, is not a source of this
+report). Its title is \emph{Constant Discriminants and \'Etale Unit Rigidity over Omnific
+Hahn Rings: Translation classification, arithmetic descent, and normal spectral rigidity};
+it is dated September 23, 2026, has 27 pages, and pins
+\nolinkurl{efc5446229dbf61a97bdd5edae91dba20af9d131} (``Prove the arithmetic
+homeomorphisms of omnific separation quotients''; tree
+\nolinkurl{aba698290ee2cd54f97db3a8b4038c010fcb47d8}), 70 commits before \texttt{aa9c891}
+and 31 before \texttt{73043eb}. At that pin sources C10--C15 were written into this article
+(\texttt{ac54217} is an ancestor), source C16 was placed (\texttt{9d28e28}) but not yet
+written (\texttt{1ad4ad8} is not an ancestor), and the questions cited below were
+\cref{odg:q:roots,odg:cr:q:coefficients} under the same labels. Its source and proof audits,
+code and data are shipped under that prefix
+(\fn{17-discriminant-rigidity-SOURCE_AUDIT.md}, \fn{17-discriminant-rigidity-PROOF_AUDIT.md},
+the verification script, its build script, the recorded run, the requirements file and the
+build report of its own article). Its text, PDF and delivered README are not shipped; it
+delivered no checksum manifest.
 
 \subsection{Section map}
 
@@ -11414,7 +12695,13 @@ Sections \ref{odg:cr:sec:principle}--\ref{odg:cr:sec:groups}\\
 initial forms (also 01); 05 binomials and failed lifting\\
 \ref{odg:sec:coefficients} (continued) & pointer to the image-gap theorem of
 the sibling report\\
-\ref{odg:sec:formal}, \ref{odg:sec:questions} & All fourteen; settled
+\ref{odg:sec:coefficients} (continued) & C17 translation classification, certificate,
+factors, Galois groups, resultants, \'etale units, monogenic and arithmetic descent,
+critical configurations, normal matrices, boundary examples and second proof
+(\ref{odg:disc:sub:disc}); merge corollary \ref{odg:disc:cor:roots} and remarks
+\ref{odg:disc:rem:comparison}, \ref{odg:disc:rem:etalenorm}, \ref{odg:disc:rem:osq},
+\ref{odg:disc:rem:symmetric}\\
+\ref{odg:sec:formal}, \ref{odg:sec:questions} & All fifteen; settled
 questions recorded in
 \cref{odg:sub:settled,odg:def:sub:settled,odg:frac:sub:settled,odg:cr:sub:settled}\\
 \bottomrule
@@ -11632,6 +12919,35 @@ field of characteristic zero (after \cref{odg:sg:thm:super}).
 the first is the third clause of \cref{odg:cr:q:singular}, and the third, fourth and fifth
 refine \cref{odg:cr:q:coefficients,odg:cr:q:charp}. They are not merged into those questions,
 so that each is printed as its source states it.
+\item \emph{Discriminant addition.} Source C17 arrived after source C16. It answers
+\cref{odg:q:roots} for monic polynomials with a nonzero constant discriminant and the first
+clause of \cref{odg:cr:q:coefficients} in dimension zero, and it shares the Euler and
+two-ring mechanism of the curve part, but its subject is equations with omnific
+coefficients. So it is appended as \cref{odg:disc:sub:disc}, at the end of
+\cref{odg:sec:coefficients}, after the questions' own pointer to it; appending at the end of
+a section moves no existing number, whereas a new section before \cref{odg:sec:formal}
+would renumber Sections 20 and 21. Its ring, Euler and algebraic-constant lemmas are not
+reprinted, and C17 is added to the credits of
+\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation,odg:cr:cor:algclosed,odg:prop:univariate}.
+\item \emph{Routes of source C17.} Both of its proofs of the translation theorem are printed,
+the root-velocity certificate and the route through the unit theorem
+(\cref{odg:disc:sub:second}). Its appendix on characteristic polynomials after reduction is
+printed as \cref{odg:disc:lem:reduction}, its quadratic normalization as
+\cref{odg:disc:rem:quadratic}, and its sign check in the text before
+\cref{odg:disc:lem:certificate}.
+\item \emph{Stated generality of source C17.} Its results are printed at the generality it
+states, for every field of characteristic zero and every set-sized ordered group. Five items
+carry the tag \mergetag{} and have complete proofs: the omnific roots at a constant
+discriminant (\cref{odg:disc:cor:roots}); the comparison with the quadratic criterion and the
+lifting example (\cref{odg:disc:rem:comparison}); the \'etale norm theorem as a constant case
+(\cref{odg:disc:rem:etalenorm}); the comparison with the sibling report's canonical
+translation (\cref{odg:disc:rem:osq}); and the second route for symmetric omnific matrices
+(\cref{odg:disc:rem:symmetric}), with two sentences identifying the generic image in
+\cref{odg:disc:ex:nonetale} and the two-ring pattern in \cref{odg:disc:sub:second}.
+\item \emph{Questions of source C17.} Its ten questions are printed as stated
+(\cref{odg:disc:q:etale,odg:disc:q:arithmetic,odg:disc:q:picard,odg:disc:q:certificate,odg:disc:q:defect,odg:disc:q:charp,odg:disc:q:restricted,odg:disc:q:several,odg:disc:q:dynamics,odg:disc:q:lean});
+the fifth refines \cref{odg:q:roots} and the sixth sits beside
+\cref{odg:cr:q:charp,odg:sg:q:charp}. They are not merged into those questions.
 \end{enumerate}
 
 \paragraph{Printed once.} The floor formula, retraction, congruences, finite
@@ -11689,6 +13005,12 @@ descent of forms of the affine line and, as its smooth case, the smooth classifi
 these are printed once, with C16 named in their credits
 (\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation,odg:cr:lem:formA1,odg:cr:thm:affine},
 \cref{odg:cr:sub:singular}).
+Source C17 reproves the rings, the retraction, the units and the pullback
+$\mathfrak o+\crP$ (its Lemma 2.1), the Euler derivations, logarithmic boundedness and
+joint constants (its Lemma 3.1), the algebraic constants of the Hahn field (its Lemma 6.3)
+and the example $\sum_m\omega^{1/m}$; these are printed once, with C17 named in their
+credits
+(\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation,odg:cr:cor:algclosed,odg:prop:univariate}).
 
 \subsection{Renamed symbols}
 
@@ -11880,6 +13202,26 @@ C16 & $V$ (B\'ezout); $P$, $P_0$ (points); $h$, $a$ (arithmetic families) & $W$;
 $\mathbf x$, $\mathbf x_0$; $s$, $\beta$\\
 C16 & $m$ (superelliptic exponent), $d=\sum e_i$, $r$ (vanishing order), $\delta$, $\gamma$,
 $\lambda$, $E$ (elliptic curve), $F$, $U$, $\nu$ & unchanged\\
+C17 & $k$; $\mathcal A=k((t^{\Gamma_{\le0}}))$, $\mathcal I$, $\mathcal O_K$,
+$K=k((t^\Gamma))$ ($t$-convention) & $\Bbbk$; $\crA$, $\crP$, $\crO$, $\crH$ (exponents
+negated)\\
+C17 & $\widehat K=\bar k((t^{\Gamma_\Q}))$, $\widehat{\mathcal O}$; $D\subseteq k$,
+$\mathcal A_D=D\oplus\mathcal I$ & $\Hbar$, $\Obar$; $\mathfrak o$,
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$\\
+C17 & $D_\chi$, $\chi\in\Hom(\Gamma_\Q,\Q)$; $D$ (a derivation); $P_0=\ct P$ &
+$\partial_{-\chi}$ (the same family), written $\partial_\lambda$; $\partial$; $\overline P$\\
+C17 & $B$, $C_B$, $N$ (rank), $H_y$; $S$ (splitting algebra) & $\mathsf B$,
+$\mathsf C_{\mathsf B}$, $r$, $\operatorname{ch}_y$; $\mathsf B_P$\\
+C17 & $Q$, $b_j$, $u_i$; $S(X,Y)$; $F_{n,s}$; $\alpha,\beta$ (quadratic velocity) &
+$\dot P$, $b_j$, $\dot r_i$; $\mathsf W(X,Y)$; $\mathcal F_{n,s}$; $b_1,b_2$\\
+C17 & $E_j$ (spectral idempotents), $H$, $H[i]$, $\mathcal A_\C$, $\mathcal I_\C$ &
+$\mathsf P_j$, $\mathbb H_\R(\Gamma_\Q)$, $\mathbb H_\C(\Gamma_\Q)$, $\mathcal A_\C(\Gamma)$,
+$\Pi_\C(\Gamma)$\\
+C17 & $c$ (target shift); $r$, $G$ (resultant theorem); $r$ (two-sided root); $\lambda$
+(unit proof); $c_1,\ldots,c_r$, $k^r$ (independence, split constants) & $\beta$; $\ell$,
+$\mathcal G$; $\rho$; $\lambda_0$; $c_1,\ldots,c_k$, $\Bbbk^j$\\
+C17 & $h$, $\Delta$, $m$, $w_{ij}$, $e_s$, $F$, $L_0$, $\Pi$, $\Pi_\C$, $\Oz[i]$ &
+unchanged\\
 \end{longtable}
 
 \subsection{Corrections to the sources}
@@ -12027,7 +13369,7 @@ logical route stated in its abstract are corrected above, and it contradicts no 
 source. In source C16 no gap was found in the proofs; its one remark with an
 unnecessary hypothesis is noted above, its one-place proposition is consistent with the
 positive-characteristic examples of \cref{odg:cr:sub:charp}, and it contradicts no other
-source. The later proof review of
+source. In source C17 no gap was found in the proofs, and it contradicts no other source. The later proof review of
 \cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:derivations} (recorded in
 \fn{RECONCILIATION.md}) corrects the coefficient-derivation hypothesis in the
 merge's own \cref{odg:rem:separatedidentity}: the derivation must kill $a$
@@ -12146,6 +13488,17 @@ neither the written curve part nor source C15, so it does not cite
 \cref{odg:cr:thm:logroute,odg:cr:prop:singular} or \cref{odg:log:sub:log}; the comparisons
 are made in \cref{odg:sg:sub:singular}. Its statement that its results are not
 Lean-verified remains accurate.
+\item Source C17 inspected the repository at \texttt{efc5446}, through the GitHub interface
+and in part through excerpts and a truncated catalogue response, without a checkout or
+build; it read this report's guide, not its article. Its statement that the repository
+already develops the constant/purely infinite decomposition, coefficient reconstruction and
+the Euler and two-ring methods, and credits its curve and logarithmic results to integrated
+manuscripts, is accurate at the pin and now. It saw neither source C16's integration nor
+the questions of this report that it answers, and it does not cite
+\cref{odg:q:roots,odg:cr:q:coefficients}, \cref{odg:dec:thm:etale},
+\cref{odg:thm:quadraticformula}, \cref{odg:cor:symmetric} or the sibling report's canonical
+translation; these comparisons are made in \cref{odg:disc:sub:disc}. Its statement that the
+repository's Lean coverage does not cover its theorems remains accurate.
 \end{enumerate}
 
 \section{Non-claims by source}\label{odg:app:nonclaims}
@@ -12154,7 +13507,9 @@ Every limitation, disclaimer and priority caveat stated by a source is kept.
 Most also appear at their point of use in the text; this appendix is the
 per-source record. The non-claims of sources C10--C15 about singular curves record
 what those sources claim; the singular-curve criterion is now supplied by source C16
-(\cref{odg:sg:sub:singular}), within its own non-claims below.
+(\cref{odg:sg:sub:singular}), within its own non-claims below. Likewise their statements
+that no rigidity is asserted for coefficients varying at a surreal scale record what they
+claim; source C17 supplies such a theorem in dimension zero, within its own non-claims.
 
 \paragraph{Common to sources 01, 02 and 05.} No independent peer review; no Lean
 or other proof-assistant verification; the finite scripts check finite
@@ -12827,6 +14182,59 @@ by line.
 literature.
 \end{enumerate}
 
+\paragraph{Source C17 (22 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item It does not show that every finite \'etale $\crA$-algebra is constant: the injection
+$\mathsf C_{\mathsf B}\to\mathsf B/\crP\mathsf B$ is not shown surjective, and full descent is
+left open.
+\item It does not assume or produce a global primitive element; a generic primitive element
+does not give a monogenic presentation over $\crA$.
+\item The unit theorem is not extended to $\mathfrak o+\crP$; arithmetic finite \'etale
+algebras may have richer unit groups, and reduction modulo $\crP$ need not be a product of
+fields.
+\item A nonzero constant discriminant is distinguished from a unit discriminant throughout;
+the translation theorem does not assert \'etaleness when the discriminant is not a unit.
+\item No factorization, prime-element, unique factorization or refinement result, and no
+birthday result, is claimed; L'Innocente--Mantova's factorization theorems are neither
+reproved nor claimed.
+\item No large cardinal or other set-theoretic strength is used or claimed, and no
+proper-class finite-projective formalism is introduced.
+\item No preferred derivation of the surreal field is constructed; the Euler derivations act
+on coefficients, are not $d/dX$ and are not the Berarducci--Mantova derivation.
+\item The exponent $2s$ in the certificate is not claimed optimal.
+\item The Galois statement depends on the chosen coefficient field; the rational Galois group
+is not claimed to survive extension of constants to $\R$.
+\item The critical-point theorem is a classification up to independent source and target
+translations, not a conjugacy, and says nothing about iteration.
+\item The main polynomial and matrix theorems are false without one-sided support,
+characteristic zero or a nonzero discriminant, and the matrix theorem without normality;
+finite free and reduced does not suffice for the unit theorem.
+\item The characteristic-polynomial theorem alone controls eigenvalues, not entries or
+eigenspaces.
+\item The polynomial-parameter case $\Bbbk[Y]$ and its multivariable form are not claimed new
+and not presented as a deep theorem about the affine line; they answer the cited Stack
+Exchange question as special cases only.
+\item The coefficient test is an algebraic criterion, not an algorithm for arbitrary
+presentations of infinite Hahn series.
+\item No physical prediction about infinitesimal observables follows from the matrix
+theorem.
+\item The 1,126 finite assertions check identities, normalizations and examples; they do not
+verify arbitrary supports, all degrees, the existence of the certificate in every degree,
+the formal \'etale argument, or priority.
+\item A clean build and the build report are production checks, not mathematical review.
+\item Not refereed and not formalized in Lean; the repository's Lean coverage does not cover
+these statements, and the formalization order is a proposal.
+\item No novelty or priority is certified: the comparison was focused, not exhaustive, and a
+prior equivalent result may exist under other names.
+\item The repository comparison read some material through excerpts or a truncated catalogue
+response; a search without useful matches is not evidence of absence.
+\item The Hahn and omnific background, the Stacks foundations and the repository's
+support, Euler and two-ring antecedents are credited, not claimed; the elementary support
+facts are reproved independently.
+\item Its questions are questions left open by its article, not a certified catalogue of
+previously unknown open problems.
+\end{enumerate}
+
 \section{Dependencies and verification}\label{odg:app:verification}\label{odg:app:dependencies}
 
 \subsection{Imported inputs}
@@ -12880,6 +14288,13 @@ The material of source C16 imports in addition the finiteness of normalization f
 \cref{odg:sg:lem:seidenberg}), the free generation of local differentials by a
 uniformizer and the Riemann--Hurwitz formula \cite{StacksRH}, and Kummer theory over a
 field containing the roots of unity (\cref{odg:sg:sub:super}).
+The material of source C17 imports in addition the algebraic closedness of Hahn fields with
+divisible exponent group and algebraically closed coefficients \cite[Fact 2.1.1]{LM}, the
+fundamental theorem on symmetric polynomials, the definition and base change of \'etale
+ring maps and the structure of finite \'etale algebras over a field
+\cite{StacksEtale,StacksEtaleField}, formal \'etale lifting \cite{StacksFormal}, the
+discriminant criterion for finite locally free algebras \cite{StacksDisc}, and local
+characteristic polynomials of finite projective modules (\cref{odg:disc:lem:reduction}).
 All other deductions are proved here from these and finite algebra.
 
 The principal dependency chains are:
@@ -12923,7 +14338,9 @@ The principal dependency chains are:
  &\text{image condition}+\text{properness}+\text{logarithmic poles}
  \ \Longrightarrow\ \text{logarithmic tangent criterion};\\
  &\text{conductor}+\text{Seidenberg's identity}+\text{discrete boundary place}
- \ \Longrightarrow\ \text{singular affine curves}.
+ \ \Longrightarrow\ \text{singular affine curves};\\
+ &\text{Euler family}+\text{velocity certificate}
+ \ \Longrightarrow\ \text{discriminant translation}.
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
 account, the separated-power theorem (divisibility in a quotient ring without
@@ -12938,10 +14355,14 @@ asks first for review of the functorial contraction and of the passage from loga
 annihilation to constancy, then of the set-sized formulation of the class applications. Source C16's audit lists fifteen critical checks; it singles out the commensurability of
 the conductor and the contracted differential at the boundary place as the step that would
 fail without discreteness (\cref{odg:sg:rem:discrete}).
+Source C17's proof audit singles out the ideal intersection that kills the coefficients of
+the velocity polynomial, the characteristic polynomial of a logarithmic derivative on a
+finite projective module, and the passage from fixed eigenvalues to fixed eigenspaces by
+positivity (\cref{odg:disc:prop:velocities,odg:disc:prop:unitD,odg:disc:lem:projection}).
 
 \subsection{Finite checks}
 
-Fourteen scripts are shipped in \fn{code/}, each with its recorded output in
+Fifteen scripts are shipped in \fn{code/}, each with its recorded output in
 \fn{data/}. The first three need Python~3.9 or later and SymPy (tested with
 SymPy 1.14.0); source 06's needs Python~3.10 or later and SymPy, and source
 07's Python~3.10 or later and the standard library only; source 08's needs
@@ -12949,7 +14370,8 @@ Python~3.10 or later and source 09's Python~3.9 or later, both with SymPy. Of
 the scripts of sources C10--C14, source C11's needs Python~3.10 or later and the
 standard library only, source C12's Python~3.9 or later with SymPy, and the others
 Python~3.10 or later with SymPy; source C15's needs Python~3.9 or later and SymPy, and
-source C16's Python~3.10 or later and SymPy. They
+source C16's Python~3.10 or later and SymPy, and source C17's Python~3.10 or later and
+SymPy 1.14.0. They
 check finite identities and examples only.
 
 \begin{itemize}[leftmargin=*]
@@ -13073,6 +14495,20 @@ derivative-order bound for $1\le\ell\le8$, $0\le\delta\le20$, $0\le r\le10$. It 
 report and writes a file only to the path given with \texttt{--output}; the shipped record
 is \fn{16-singular-curves-verification.json}, and \fn{16-singular-curves-build_report.json}
 records source C16's build of its own article.
+\item \fn{17-discriminant-rigidity-verify.py}: 1,126 exact assertions in 13 groups, with the
+fixed seed 20260923: 96 translation checks (extracted shift, constant extraction, inverse
+substitution, marked value) for random integer roots in degrees 1 to 6, 20 discriminants
+and 20 translated factorizations; 420 checks of \eqref{odg:disc:eq:wformula} and of the
+clearing by $\Delta^2$, 510 of homogeneity, edge-permutation invariance and the velocity
+characteristic polynomial, and 6 of \eqref{odg:disc:eq:sumvelocity}, in degrees 2 to 6; 2
+quadratic-certificate checks; 8 resultant and 18 critical-configuration checks; 9 matrix
+checks; 8 characteristic-$p$ checks for $p=2,3,5$; 7 counterexample checks; and the
+discriminants $5$ and $4$ of \cref{odg:disc:ex:infinite,odg:disc:ex:critical}. It writes
+its report to the path given with \texttt{--output}, by default \fn{verification.json} in
+the current directory, and prints it; the shipped record is
+\fn{17-discriminant-rigidity-verification.json}, and
+\fn{17-discriminant-rigidity-BUILD_REPORT.json} records source C17's build of its own
+article.
 \end{itemize}
 When this report was assembled the first three passed with Python 3.14.4 and
 SymPy 1.14.0, and source 05's script also passed with
@@ -13119,7 +14555,11 @@ wrote with \texttt{--output} differs from that record only in the recorded Pytho
 (3.13.5 there) and the run time; without \texttt{--output} it only prints. The
 parametrizations and identities printed in
 \cref{odg:sg:sub:super,odg:sg:sub:example,odg:sg:cor:hyper} were checked separately with
-SymPy; the shipped script is unchanged.
+SymPy; the shipped script is unchanged. Source C17's script passed with Python 3.14.4 and
+SymPy 1.14.0 when \cref{odg:disc:sub:disc} was written, run on a copy in a scratch
+directory with \texttt{--output} pointing there: 1,126 assertions in 13 groups, with the
+same group counts as the shipped record, from which the report differs only in the recorded
+Python version (3.13.5 there).
 
 \section{Repository and literature audit}\label{odg:app:repo}\label{odg:app:audit}
 
@@ -13160,7 +14600,11 @@ sibling report's article, through the connector and without a build. Source C16 
 \texttt{bcac55a} and read, through the connector, the repository metadata and recursive tree,
 the root and documentation READMEs, the directory and README of this report, and the audits
 of sources C13 and C14 in full; it did not read the assembled article in full and did not
-build the repository. The checks of
+build the repository. Source C17 pins \texttt{efc5446} (tree \texttt{aba6982}) and read
+the root README, the documentation catalogue, the guides of this report, of the sibling
+report, of the omnific automorphism report and of the independent-copies report, and the
+opening of the holonomic-rigidity article, some through excerpts or a truncated catalogue
+response; it did not read this report's article and did not build the repository. The checks of
 all these repository statements against the placement commits are in
 \cref{odg:app:provenance}.
 
@@ -13245,6 +14689,14 @@ field. Its other Stacks tags (0BXX, 0BY3, 0BX5, 0BS6, 0C6L) are cited above. Sei
 Section 3 and Ciuperc\u{a}'s Section 2.5 were not re-read; the identity is reproved in
 \cref{odg:sg:lem:seidenberg}. Source C16 cites van den Dries from its record and abstract, as
 sources C11, C14 and C15 do.
+\item For source C17 the following were checked when \cref{odg:disc:sub:disc} was written.
+Stacks Tag 00U0 is Section 10.143, \emph{\'Etale ring maps}; Tag 00UP is Section 10.150,
+\emph{Formally \'etale maps}, containing Definition 10.150.1 and Lemma 10.150.3; Tag 0BJF is
+Lemma 49.3.1, in Section 49.3, \emph{Discriminant of a finite locally free morphism}. The
+Mathematics Stack Exchange question 1626152 of the user Oblomov (25 January 2016) could not
+be retrieved from this environment and is cited as source C17 gives it
+\cite{Oblomov}; nothing here depends on it. Its citation of L'Innocente--Mantova, Fact 2.1.1,
+for the algebraic closedness of Hahn fields was not rechecked.
 \end{itemize}
 
 \subsection{A dated factorization announcement}
@@ -13620,5 +15072,22 @@ The Stacks Project Authors.
 The Stacks Project Authors.
 \emph{Normal crossings divisors}, Definition 41.21.1, Tag 0BI9.
 \url{https://stacks.math.columbia.edu/tag/0BI9}.
+\bibitem{StacksEtale}
+The Stacks Project Authors.
+\emph{\'Etale ring maps}, Section 10.143, Tag 00U0.
+\url{https://stacks.math.columbia.edu/tag/00U0}. Cited by source C17.
+\bibitem{StacksFormal}
+The Stacks Project Authors.
+\emph{Formally \'etale maps}, Section 10.150, Tag 00UP, Definition 10.150.1 and
+Lemma 10.150.3. \url{https://stacks.math.columbia.edu/tag/00UP}. Cited by source C17.
+\bibitem{StacksDisc}
+The Stacks Project Authors.
+\emph{Discriminant of a finite locally free morphism}, Section 49.3, Lemma 49.3.1, Tag 0BJF.
+\url{https://stacks.math.columbia.edu/tag/0BJF}. Cited by source C17.
+\bibitem{Oblomov}
+Oblomov (Mathematics Stack Exchange user).
+\emph{Are there separable polynomials in $K[Y][X]$ with constant discriminant?}
+Question 1626152, 25 January 2016. \url{https://math.stackexchange.com/questions/1626152}.
+Cited by source C17 for the polynomial-parameter question; not rechecked.
 \end{thebibliography}
 \end{document}

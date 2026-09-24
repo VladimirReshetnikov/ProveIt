@@ -4167,6 +4167,44 @@ Incoming synchronization is checked separately. Remaining pointers in Sections
 1, 6, 7 and 14, Section 21.7, the appendix foundations and complete source
 reconciliation remain pending.
 
+## Scope-review synchronization and new manuscript boundaries
+
+The merge through `31e3489` adds the Gaussian omnific ring and exact
+Gaussian decomposable fibers (`4037368`) and both real and Gaussian kernel
+converses (`ae0210c`). Their five modules were checked against
+`odg:dec:thm:gaussianfibers` and `odg:dec:cor:converse`: constants lie in
+Mathlib's Gaussian integers, kernel coefficients are actual Conway
+coefficients, ordinary fibers are disjoint, and the converse retains an
+ordinary point at a nonzero level. The generic nonzero-kernel argument uses
+a supplied nonzero vector; its actual instantiation supplies the monomial
+`ω`. The combined two-thread Lean build passes 4,478 jobs and its axiom audit
+passes 15,506 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`.
+
+The holonomic coefficient-observable addition (`76dd876`) adds eleven
+standard results and principal Theorem O. Source C17 (`fdedce0`) adds 27
+standard results to Section 19.4 of the Diophantine report and ten questions,
+plus summary and provenance material. Existing holonomic standard statements
+are unchanged; five existing Diophantine statements change only by adding
+C17 to their credits. All thirty earlier question statements are unchanged.
+None of this new manuscript material is included in the completed independent
+review scopes, including its new paragraphs in Sections 20–21.6. The reader
+map, catalogue and ledger now distinguish these integrations from the three
+remaining batch-33 omnific-automorphism companions. Nine further companions
+are placed in `a7a435f` with main texts still pending. The six-member Hahn-joins
+archive delivered in `267b910` passes ZIP integrity checks but awaits placement.
+
+The merged article builds in three passes to 225 pages and the catalogue to
+33, with no warnings, unresolved references or bad boxes. Every earlier
+auxiliary label retains its number. Visual checks cover the merged workspace
+and roadmap pages, corrected product and contraction explanations, and the
+updated catalogue entries and ending. The formalization route records the
+new Gaussian/converse proofs; its geometric and discriminant obligations
+remain pending. The independent inventory passes for 4,309 results in 63
+reports; all 4,860 cited source references and 1,673 local Markdown
+destinations resolve. Incoming finite suites were not rerun in this scope
+review, and their delivered records are not treated as independent proofs.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
