@@ -832,3 +832,11 @@ import Surreal.Algebra.TailoredExistentialGraphFormulas
 import Surreal.HahnSeries.NumberFieldQuadraticBoundary
 import Surreal.HahnSeries.NumberFieldQuadraticIdeal
 import Surreal.HahnSeries.NumberFieldExistentialGraph
+import Surreal.Algebra.PredicateIdealReconstruction
+import Surreal.Algebra.IdealReconstructionFormulas
+import Surreal.HahnSeries.PredicateReconstruction
+import Surreal.HahnSeries.NumberFieldReconstruction
+import Surreal.Algebra.IntegerDiophantineSystems
+import Surreal.Algebra.IntegerDiophantineEnumeration
+import Surreal.HahnSeries.DiophantineEnumeration
+import Surreal.Foundations.OmnificDiophantineEnumeration

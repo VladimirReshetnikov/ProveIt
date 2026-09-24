@@ -8158,3 +8158,48 @@ All 4,626 source anchors in 63 reports, 5,223 source-label references and
 records and scripts are unchanged. No Lean implementation changed; these
 reviewed statements and added consequences remain Pending in Lean. The
 later constant-slice, Gaussian, normalization and fibre proofs await review.
+
+### Reconstruction and Diophantine enumeration synchronization (2026-09-24)
+
+Merged origin/main at d19e0a51b94301e67b0be3b15938d90dc9e45904,
+including 44b0290 and d19e0a5, after the uniform-denominator review.
+Read all eight new Lean modules, the refactored numeral-two reconstruction
+API, root imports and revised coverage against `odg:def:cor:internal`,
+its number-field extension, `odg:def:thm:ce` and its characteristic-zero
+finite-system generalization. No source TeX or PDF changed in the merge.
+
+The reconstruction proofs now accept any correct ideal predicate. Native
+ring formulas substitute its unary definition with verified bound-variable
+lifting and satisfaction semantics. Multiplier, coefficient, ideal-fraction
+and graph predicates include nonzero-denominator conditions and descend
+under cross-multiplication equivalence, including both graph coordinates.
+The Hahn specialization recovers the actual embedded coefficient at zero,
+not an abstract field copy. Correctness on existing fraction pairs includes
+the trivial exponent group; coverage of every coefficient and totality on
+the support ring explicitly require a nontrivial exponent group. Outputs
+are unique as fractions, not as pairs. A nonsquare natural radicand with
+an ambient root supplies number-field reconstruction, and the tailored
+sextic root selects the fixed numeral. No square-root parameter or new
+bundled quotient-interpretation object is asserted.
+
+The enumeration layer represents finite integer-polynomial systems with
+separate free and witness tuples, including empty tuples and equation
+families. Any ring retraction to Z transfers their truth at ordinary free
+tuples in both directions without guarding auxiliary witnesses. Fixed
+polynomial evaluation and the complete finite conjunction are primitive
+recursive under the integer/finite-function encodings; a surjective
+decode-with-default enumeration and unbounded search give REPred for the
+existential projection. Thus integer traces are computably enumerable,
+both in the actual omnific carrier and in characteristic-zero integer
+Hahn pullbacks. This does not classify arbitrary ring subsets or surreal
+parameters, and does not supply the reverse MRDP implication, its standard
+free-variable guards, or a single-equation construction. The source
+biconditional remains Prerequisites proved, not Proved.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passed all 4,975 jobs; the
+axiom audit passed 18,344 declarations with only propext, Classical.choice
+and Quot.sound. Rechecked all 4,626 anchors in 63 reports, 5,223 source-label
+references and 1,922 Markdown destinations in 226 files, with whitespace
+checks. Incoming work changes no TeX/PDF, so the local three-pass builds
+and page inspections remain valid. The manuscript denominator, generation
+and topology consequences added in this pass remain Pending in Lean.
