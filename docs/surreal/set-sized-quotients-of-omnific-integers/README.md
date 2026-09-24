@@ -1734,6 +1734,15 @@ strictly positive set support and coefficients in `K`.
   (batch 28) concerns discretely ordered initial subgroups of `No` in the
   sense of Ehrlich–Kaplan; its "normalization" is not the integral closure
   `𝒩` of Section 15, and its subject is unrelated to Sections 15.8 to 15.10.
+- [`independent-surreal-copies`](../independent-surreal-copies/)
+  (`isc:hj:`; batch 35) gives continuum many pairwise nonassociate primes
+  `P_η = 1 + Σ_{n∈𝔅_η} ω^{ρ_n}` of `Oz` (real `ρ_n` decreasing to 0;
+  `isc:hj:main:prime`, `isc:hj:cor:nonassociate`), with primality imported
+  from the one-row theorem of Pitteloud and Biljaković–Kochetov–Kuhlmann. The
+  proof of Corollary 6.8 uses only primality and `ct(q) = 1`, so each
+  `Oz/(P_η)` is a nonzero proper-class domain with no nonzero set-sized image
+  (batch-35 note after that corollary; the report itself records this as an
+  observation of its merge).
 
 ## Build and reproduce
 
@@ -1782,6 +1791,9 @@ the batch-34 status of Question 18.20, on the dynamics report, with its
 bibliography entry appended last) keep the build at 262 pages and change no
 number: all 828 labels keep their `.aux` numbers against a build of the
 committed text, and the earlier citation numbers are unchanged.
+The batch-35 note after Corollary 6.8 (on the independent-copies report's
+primes, with its bibliography entry appended last as [79]) likewise keeps
+262 pages and all 828 label and 78 earlier citation numbers.
 The finite-check
 table of Section 19.1 became a `longtable` in the sixth merge, because the row
 for 22 made it taller than a page; this changes only its layout.
