@@ -2,7 +2,7 @@
 
 **The universal constant-term quotient, exact cardinal thresholds, support
 thresholds, and what survives in large quotients**
-Merged research report, 23 September 2026, from nineteen manuscripts: eight of
+Merged research report, 23 September 2026, from twenty manuscripts: eight of
 22 September 2026 (batch 24, placed in `be06fc8`): 06 (the base), 03, 04, 07,
 08, 09, 10 and 11; five of 23 September 2026 (batch 25, placed in `cf350b1`),
 numbered here 12 to 16 by their file prefixes; three of 23 September 2026
@@ -11,8 +11,10 @@ by their file prefixes; one of 23 September 2026 (item 01 of batch 28,
 placed in `c6359e4`), numbered here 20 by its file prefix
 `20-boolean-branching-`; one of 23 September 2026 (item 01 of batch 29,
 placed in `66d7e55`), numbered here 21 by its file prefix
-`21-derived-arithmetic-`; and one of 23 September 2026 (item 09 of batch 31,
-placed in `9d28e28`), numbered here 22 by its file prefix `22-finite-tests-`.
+`21-derived-arithmetic-`; one of 23 September 2026 (item 09 of batch 31,
+placed in `9d28e28`), numbered here 22 by its file prefix `22-finite-tests-`;
+and one of 23 September 2026 (item 01 of batch 32, placed in `7d04483`),
+numbered here 23 by its file prefix `23-omnific-ramification-`.
 Manuscript 05 of batch 24 proves the unital universal
 theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
@@ -20,7 +22,7 @@ here.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 177 pages
+article.pdf   the compiled report, 194 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -34,6 +36,7 @@ README.md     this guide
 20-boolean-branching-PROOF_AUDIT.md            source 20: proof obligations, independent checks, limitations
 20-boolean-branching-SOURCE_AUDIT.md           source 20: repository pin, antecedents, novelty boundary
 22-finite-tests-SOURCE_AUDIT.md                source 22: repository inspection, literature, novelty, verification boundary
+23-omnific-ramification-RESEARCH_AUDIT.md      source 23: repository pin, primary literature, proof checkpoints, verification boundary
 code/
   03-cardinality-normalization-verify_identities.py   source 03 checks (2,362; stdout)
   04-universal-residue-verify_identities.py           source 04 checks (writes verification.json, see below)
@@ -68,6 +71,9 @@ code/
   22-finite-tests-verify.py                           source 22 checks (1,776; needs SymPy; always writes, see below)
   22-finite-tests-build.sh                            source 22's build script (original file names)
   22-finite-tests-build.ps1                           source 22's PowerShell build script (original file names)
+  23-omnific-ramification-verify.py                   source 23 checks (18,040; stdlib; writes by default, see below)
+  23-omnific-ramification-build.sh                    source 23's build script (original file names)
+  23-omnific-ramification-build.ps1                   source 23's PowerShell build script (original file names)
 data/
   03-cardinality-normalization-verification_results.txt   recorded run of the source 03 checks
   04-universal-residue-verification.json                  recorded run of the source 04 checks
@@ -105,6 +111,8 @@ data/
   22-finite-tests-verification_report.json                recorded run of the source 22 checks
   22-finite-tests-verification_report.txt                 the same run as text
   22-finite-tests-requirements.txt                        sympy==1.14.0
+  23-omnific-ramification-verification.json               recorded run of the source 23 checks
+  23-omnific-ramification-BUILD_REPORT.json               source 23's build and document-check record with file hashes
 ```
 
 Every label in `article.tex` carries the prefix `osq:`. The large-quotient part
@@ -119,10 +127,13 @@ The batch-28 manuscript uses `osq:bb:` (20) in Section 15.9 and for Question 18.
 The batch-29 manuscript uses `osq:da:` (21) in Section 13.10.
 The batch-31 manuscript uses `osq:ft:` (22) in Section 16.10 and for
 Questions 18.19 and 18.20 (30 labels).
-The report has 551 labels (521 before the sixth merge, 505 before the fifth,
-469 before the fourth, 409 before the third and 334 before the second; none was
-renamed or removed, and no earlier statement was renumbered). The audit files and
-programs keep the source numbers `03` to `22`, and the audit files keep their
+The batch-32 manuscript uses `osq:rm:` (23) in Section 15.10 and for
+Questions 18.21 to 18.27 (57 labels).
+The report has 608 labels (551 before the seventh merge, 521 before the sixth,
+505 before the fifth, 469 before the fourth, 409 before the third and 334 before
+the second; none was renamed or removed, and no earlier statement was
+renumbered). The audit files and
+programs keep the source numbers `03` to `23`, and the audit files keep their
 sources' own notation and theorem numbering. No source manuscript is shipped.
 
 The text placed in `be06fc8` was source 06 with bare labels, which
@@ -150,7 +161,7 @@ statement points to that statement):
 | `prop:unitconstant` | `osq:prop:unitconstant` | `thm:extthreshold` | `osq:thm:extthreshold` |
 | `prop:primereservoir` | `osq:if:prop:reservoir` | `prop:matrices` | `osq:prop:matrices` |
 
-## Nineteen sources, one report
+## Twenty sources, one report
 
 The eight manuscripts of batch 24 answer the same question, *what can a
 set-sized ring or module see of an omnific integer?*, with the same answer:
@@ -173,7 +184,11 @@ items were placed in other reports. The batch-31 manuscript (22) certifies
 rational functions of several variables by finitely many values at one fresh
 scale and joins the polynomial-map section (Section 16.10); about half of it
 re-derives 16's and 10's results, which it did not see; the other eight
-batch-31 items were placed in other reports.
+batch-31 items were placed in other reports. The batch-32 manuscript (23)
+decides, for cyclic exponent groups, the fixed-workspace radicality and
+atomlessness questions that 20 left open (Question 18.17(b)), with opposite
+answers, and joins the integral-closure section after 20 (Section 15.10); the
+other eight batch-32 items were placed in other reports.
 
 | | Manuscript (pages) | Pin | Contributes |
 |---|---|---|---|
@@ -196,6 +211,7 @@ batch-31 items were placed in other reports.
 | **20** | *Proper-Class Boolean Branching in the Normalization of the Omnific Integers* (24) | `4cdeaec` | Independent proofs of 19's contraction, radicality and saturation (Lemma 15.28, Theorems 15.29, 15.30), coefficient copy, spectral idempotents and Boolean power (Lemmas 15.35, 15.36, Definition 15.37, Theorem 15.38), rational comparison and doubling (Lemma 15.41, Theorem 15.42), factorization of set-sized images, class ultrafilters and detection (Corollary 15.45, Lemma 15.48, Theorem 15.49), of most of Propositions 15.34, 15.43 and Theorem 15.46, and of the universal theorem for `Oz` (credited at Theorem 5.1). New (Section 15.9): monic radical certificates (Lemma 15.53, Corollary 15.54); support projection and exact descent (Lemma 15.55, Theorem 15.57, Corollary 15.58); one-scale rational functions (Theorem 15.60); independent quadratic branches (Lemma 15.63); uniform splitting (Theorems 15.65, 15.66); rank extension of set-sized Hahn fibres (Theorem 15.70); relative Boolean freeness, an explicit ordinal family, atomless proper-class `Idem` (Theorems 15.71–15.73); split idempotent matrices (Corollary 15.74); reduced fibres of fixed Hahn fields (Proposition 15.76); the surcomplex fibre (Corollary 15.77); no jointly faithful set of small targets (Theorem 15.79); `2^κ` branches through prescribed data (Theorem 15.80, Corollary 15.81). Files `20-boolean-branching-*`. |
 | **21** | *Exact Homological Dimensions and Arithmetic Intersections in Omnific Integer Rings* (25) | `9693b28` | Independent proofs of 17's second-`Tor` identification with its rank, the self-`Tor` rank and the `Tor` groups against modules killed by the tail (credited at Theorem 13.34, Corollary 13.36, Theorem 13.42); its flat face resolution, `fd D = d` and lattice syzygy are 12's and 14's (Theorems 13.4, 13.9, 13.11, Corollary 13.8). New (Section 13.10): flat resolutions and flat dimensions of the face quotients (Proposition 13.43); a countably generated free Koszul telescope (Theorem 13.44); the top `Ext` as a `lim¹` cokernel (Theorem 13.45) containing `D^N/D^(N)` (Theorem 13.46); `pd_{A_d} D = d + 1` and `pd` of every face quotient (Corollary 13.47); `pd L(M) = d + 1`, `pd A_d/J = d + 2` (Theorem 13.48); a flat DGA resolution (Theorem 13.50); the first-`Tor` window (Theorem 13.51); the linear-disjointness test (Lemma 13.52, Theorem 13.53); the self-`Tor` product and its alternating and symmetric parts (Theorem 13.54, Corollary 13.55); framed reconstruction of orders (Theorem 13.56); the square-zero constant-term shadow (Theorem 13.57). Files `21-derived-arithmetic-*`. |
 | **22** | *Finite Tests at New Surreal Scales* (24) | `bcac55a` | Independent proofs of 16's fresh exponent, Laurent blocks and detector, of 10's binomial closure, grid test and decomposition, of 16's optimal tests, multivariate collapse, one-variable certificate (`d + 2` values), no-set-test theorem and one-variable removal of exceptions (credited at Lemma 16.5, Theorems 16.6, 16.7, 16.9, Lemma 16.30, Theorem 16.31, Corollary 16.32, Theorem 16.33, Proposition 16.45, Theorems 16.46, 16.49, Corollary 16.50, Theorems 16.51, 16.52); all were in this report at its pin. New (Section 16.10): rectangular grids and good specializations with the resultant degree bound (Lemmas 16.68, 16.69); the single-scale certificate with at most `(d+1)^m + m(2d²+2d+1)^{m−1}` values (Theorem 16.70); common tests for a set of functions (Corollary 16.72); a second pole-free witness for Theorem 16.51, in every number of variables (Remark 16.73, Example 16.74); removal of set-sized exceptions in `m` variables (Theorem 16.75); composition of the specialization (Remark 16.76); the leading-exponent example (Example 16.77); the coordinate-degree Gaussian grid and Gaussian certificate (Theorems 16.78, 16.79); tensor base change `Λ ⊗_D Int(D^m) ≅ Num_m(Λ)` (Theorem 16.80); exact lifting of constant test sets (Definition 16.81, Theorem 16.82); finite image-ideal generators (Theorem 16.83); birational rigidity (Corollary 16.84, Example 16.85); fresh scales in a fixed Hahn workspace (Proposition 16.86); a resultant example (Example 16.87). Files `22-finite-tests-*`. |
+| **23** | *Ramification in Omnific Normalizations* (25) | `343dc2c` | An independent proof of 20's multiquadratic lemma (Lemma 15.69) and, for the real pair, of the first equality of 20's rational slice (Theorem 15.60), both credited; its independent family of size `2^ℵ0` in the reduced cyclic fibre had been noted by 20 (after Theorem 15.70). New (Section 15.10), for the cyclic workspace `Z + ω^a R[ω^a]` and its Gaussian counterpart: the cyclic integer part (Proposition 15.82); finite detection and the branch locus (Lemmas 15.83, 15.84, Remark 15.85); exact nilpotency index `n` of `z_n = T(1+T^{1−n})^{1/n}` modulo the extended ideal, which is therefore not radical (Theorem 15.86, Example 15.87, Corollary 15.88); exact refinement thresholds `⌈n/m⌉` (Theorem 15.89); scaling, the residue criterion, `k𝒩(Za) = 𝓑` and `𝖨 = T𝓑` (Lemma 15.90, Theorems 15.91, 15.93, Remark 15.92); rational functions with the Gaussian form (Corollary 15.94); the ramification filtration and the general refinement law (Definitions 15.95, 15.97, Lemma 15.96, Corollary 15.98, Theorem 15.99); the reduced bounded-denominator Puiseux limit (Theorem 15.100, Remark 15.101); Prüfer local structure with value group `Q` and residue field `C` (Theorem 15.103, Remark 15.104); an idempotent, non-nilpotent, non-finitely-generated nilradical (Theorem 15.105); the associated graded ring and the completion (Theorem 15.106, Corollary 15.107); splitting by fresh ramification, atomlessness, independence, cardinality and order density `2^ℵ0`, `2^(2^ℵ0)` branches (Lemma 15.108, Theorem 15.109, Corollary 15.110, Theorem 15.111, Corollary 15.112, Remark 15.113); exact annihilators and a periodic resolution over the coefficient fibre, which fails over the arithmetic fibre (Theorems 15.115, 15.116, Proposition 15.117); the Cantor fragment (Theorem 15.118); seven questions (18.21–18.27). Files `23-omnific-ramification-*`. |
 
 - **Base and routes.** 06's coefficient-ring theorem over any set field `K`
   (also proved by 07 and 10) is the most general statement; its scaled-field
@@ -258,12 +274,13 @@ batch-31 items were placed in other reports.
   witness `2ω^{ωb}/(2X + 2t + 1)` for Theorem 16.51 is kept as a second witness
   (Remark 16.73), and its multivariate certificate is kept beside 16's smaller
   probe certificate (Remark 16.71). 22's Gaussian grid is the coordinate-degree
-  twin of 18's simplex test (Theorem 16.78, Proposition 16.64).
+  twin of 18's simplex test (Theorem 16.78, Proposition 16.64). From the
+  seventh merge: see *Source 23* below.
 - **Printed in the sibling report, not here:** 13's exact fibers of products of
   linear forms and its étale norm and Pell theorems; 14's criterion for unimodular
   projective directions, which is the Gaussian and principal-ideal extension of
   that report's rationality theorem for primitive constant directions.
-- **Renamed symbols** (Sections 2.4, 13, 13.9, 15.8, 15.9, 16.6, 16.8, 16.10): the purely infinite ideal is the
+- **Renamed symbols** (Sections 2.4, 13, 13.9, 15.8, 15.9, 15.10, 16.6, 16.8, 16.10): the purely infinite ideal is the
   repository's `Π` (was `I`, `𝒥_k`, `𝔍`, `𝔓`, `J_k`, `𝓘_K`, `𝒫_k`); the constant
   term is `ct` (was `c_0`, `π`, `ε_D`, `ε`); 10's shadow map `Π` is `ct_*`; 06's
   `L_a` and 07's `𝓕_a` are `𝓕_a`; 07's localization `L_a` is `Oz[ω^{-a}]`, its
@@ -325,7 +342,8 @@ batch-31 items were placed in other reports.
   `C_{d!}`); its exceptional set `E` is `S`; its deceiver's `τ, η, A, λ, F_S`
   are `t, ωb, ω^{ωb}, a, R̃_S` (`η` is 18's translation, `R_S` 16's witness);
   and in its Section 9 its value group `Λ`, subgroup `Γ`, ring `B_Λ` and
-  convex subgroup `C(Γ)` are `Γ`, `G`, `𝒜_{D,k}(Γ)` and `cvx_Γ(G)`.
+  convex subgroup `C(Γ)` are `Γ`, `G`, `𝒜_{D,k}(Γ)` and `cvx_Γ(G)`. For
+  Section 15.10 see *Source 23* below.
 - **Sign convention** (Section 2.2): large monomials, `ω^γ` infinite for
   `γ > 0`. The foundations report defines `Oz = Π ⊕ Z` (`found:eq:omnific`);
   the trigonometry report (`trigonometry:eq:split`) describes the same `Π` by
@@ -342,7 +360,79 @@ batch-31 items were placed in other reports.
   class ring in two Grothendieck universes, as 13 does; its core theorems are
   ordinary set-sized mathematics. 22 reads its class statements in a class
   theory carrying `No` or with a lower and an upper universe, and chooses a
-  fresh exponent only after a set of supports has been assembled.
+  fresh exponent only after a set of supports has been assembled. 23 uses only
+  set-sized rings and choice for sets (the maximal-ideal theorem), with no
+  continuum hypothesis and no regularity of `2^ℵ0`.
+
+### Source 23: ramification in a cyclic workspace
+
+| Manuscript | Pin | Contributes |
+|---|---|---|
+| batch 32, manuscript 01, local number 23; archive `omnific_ramification_research`; *Ramification in Omnific Normalizations* (25 pp., 23 September 2026) | `343dc2c` (after the fifth merge `a8f35b5`, before the sixth) | Section 15.10 (`osq:rm:`, 50 labels) and Questions 18.21–18.27 (7 labels); see the table above |
+
+- **What it settles.** Fix `a > 0`, `T = ω^a` and `(k, D) = (R, Z)` or
+  `(C, Z[i])`. In the cyclic workspace `𝒜(Za) = D + T k[T]` inside
+  `K_Za = k((T^{-1}))` (20's notation, extended to the Gaussian pair), the
+  extended ideal `𝖨 = Π(Za)𝒩(Za)` is **not radical**: `z_n` has nilpotency
+  index exactly `n` (Theorem 15.86), while `Idem(𝖢(Za))` is **atomless**, of
+  cardinality and order density `2^ℵ0` (Corollary 15.110, Theorem 15.111).
+  This decides the fixed-group clause of Question 18.17(b) for every nonzero
+  cyclic group, which 20 left open, and answers the fixed-subgroup clause of
+  Question 18.11 for cyclic groups by a residue criterion (Theorems 15.91,
+  15.93), which is not an algorithm. The mechanism is the separation of two
+  places: elements are Laurent series at `T = ∞`, integrality and nilpotence
+  are decided at the algebraic places over `T = 0`.
+- **Placement.** One new subsection, Section 15.10, after 20's Section 15.9 at
+  the end of Section 15, so no earlier statement is renumbered; its questions
+  are Questions 18.21–18.27 at the end of Section 18.3.
+- **Printed once.** 20's multiquadratic lemma (Lemma 15.69, now tagged
+  `[20, 23]`). 23's Corollary 4.5 (Corollary 15.94) contains, for the real pair,
+  the first equality of 20's Theorem 15.60, which 23 credits; its Gaussian form
+  and the statement for the fixed ideal are new. 20's remark after
+  Theorem 15.70 already gave an independent family of size `2^ℵ0` in
+  `Idem(𝖢(Za))` (Theorem 15.70 with `G = {0}`); 23 does not cite it, so the
+  lower-bound half of its cardinality statement for the reduced fibre is 20's.
+  23's Puiseux radicality also follows from 19's finite-axiom theorem
+  (Theorem 15.51), which 23 does not cite; 23's refinement proof is kept as the
+  first route (Remark 15.102).
+- **Renamed symbols** (Section 15.10, with the tempting false readings printed
+  there). 23's `F, A, P, N, B, I, E` are `K_Za`, `𝒜(Za)`, `Π(Za)`, `𝒩(Za)`,
+  `𝓑` (script B: the integral closure of `k[T]` in `K_Za`, not `ℬ = D + 𝔪_k`),
+  `𝖨`, `K^alg`; its arithmetic fibre `ℛ = N/I` (not 14's Rees algebra), its
+  reduction, its coefficient fibre `𝒞 = B/TB` and that reduction are `𝖡(Za)`,
+  `𝖢(Za)` (20's reduced fibre), `𝖡^co(Za)` and `𝖢^co(Za)`; its `J` and
+  nilradical `𝔫` are `𝖩 = √(T𝓑)` and `𝖩/T𝓑`; its `B_L`, `κ(𝔮)` are `𝓑_L`,
+  `ℓ_𝔮`; its `μ_T`, `h_T`, `ℱ^r` are `ν_T`, `ν̂_T`, `Fil^r`; its `V = B_𝔮` with
+  maximal ideal `𝔪` is `𝓑_𝔮` with maximal ideal `𝔮𝓑_𝔮`; its branches `z_n`,
+  `h_c`, `e_c`, `w` are `𝗓_n`, `ς_c`, `𝗒_c` and 20's `ϱ_0`; its refined and
+  Puiseux rings are written with `Za/m` and the subscript `Pui`; its `F_Q`,
+  `A_Q`, `P_Q` are `K_Qa`, `𝒜(Qa)`, `Π(Qa)`; its `D_k^int` is `Z̄_R` or `Z̄`,
+  its fragments `k_r`, `k_c` are 19's `k_0 = Q̄ ∩ R` and `Q̄`; its module
+  `M = 𝒞/(x)` is `𝓜_n` and its graded variable `X` is `W`; `𝔠 = 2^ℵ0` and `c`
+  is a positive real parameter. Its finite extensions `L` and primes `𝔮` keep
+  their letters.
+- **Merge additions** (`[merge]`): `Π𝒩 ∩ K_Za = 𝖩`, so `𝖡(Za) → 𝖡_R` kills
+  exactly the nilradical and the radical in Theorem 15.57 cannot be removed for
+  `G = Za` (Remark 15.119), with `√(ω^{2a}+ω^a) = ω^{a/2}√(1+ω^a) ∈ Π𝒩`
+  (Example 15.87); 19's finite-axiom theorem applies to the Puiseux ring, giving
+  a second route to its radicality, the Boolean-power form, doubling and
+  absolute integral closedness of its fibre, whose Boolean algebra is atomless
+  of size `2^ℵ0` (Remark 15.102); `𝖢(Za) ≅ Z̄[𝔈]` with `𝔈` atomless of size and
+  density `2^ℵ0`, and for the real algebraic fragment the ring of locally
+  constant `Z̄`-valued functions on Cantor space (Remark 15.114); 19's `υ_T` as a
+  witness inside the cyclic workspace (Remark 15.104).
+- **Stale and corrected.** Notes re-scope the open fixed-workspace
+  statements, marked "Status (batch 32)" after Theorems 15.51 and 15.57, after
+  Proposition 15.76, in Section 18.1 and in Questions 18.11 and 18.17, and as
+  plain added sentences after Theorem 15.70 and in 19's non-claim (9) and 20's
+  non-claim (2). Nothing is deleted.
+  The finite-axiom paragraph's "failure of the argument, not a counterexample"
+  (19) concerns real-exponent Hahn integer parts and stays true; the cyclic
+  workspace, whose Laurent field is not real closed and fails axiom (ii), is a
+  genuine counterexample to the conclusion of Theorem 15.29 in a fixed
+  workspace.
+- **Verification.** 23's `verify.py` (stdlib) was rerun on a copy: all 18,040
+  assertions in 12 categories pass; see *Build and reproduce*.
 
 ## Results added in the merge
 
@@ -419,6 +509,18 @@ sources' lemmas.
   22's criterion gives no fresh exponent, 18's discrete-gap collapse still
   holds, so what is lost there is only the finite rational certificate
   (after Proposition 16.86).
+- **From the seventh merge.** `Π𝒩 ∩ K_Za` is the radical `𝖩` of 23's extended
+  ideal, so `𝖡(Za) → 𝖡_R` kills exactly its nilradical and the radical in
+  Theorem 15.57 cannot be removed for `G = Za` (Remark 15.119), with the
+  explicit `√(ω^{2a}+ω^a) = ω^{a/2}√(1+ω^a) ∈ Π𝒩` (Example 15.87); 19's
+  finite-axiom theorem applies to the bounded-denominator Puiseux ring, a
+  second route to 23's radicality there, with the Boolean-power form, doubling
+  and absolute integral closedness of its fibre and an atomless Boolean algebra
+  of size `2^ℵ0` (Remark 15.102); the reduced cyclic fibre is `Z̄[𝔈]` with `𝔈`
+  atomless of size and order density `2^ℵ0`, and for the real algebraic
+  fragment it is the ring of locally constant `Z̄`-valued functions on Cantor
+  space (Remark 15.114); and 19's `υ_T` is a second witness, inside the cyclic
+  workspace, for a residue squaring to `−1` (Remark 15.104).
 
 ## What the report claims
 
@@ -461,7 +563,7 @@ strictly positive set support and coefficients in `K`.
   contains an algebraically closed field containing `No[i]`, exact cyclotomic
   algebras (Theorem 14.15) and the Cantor algebra `LC(Z_2, E_a)`
   (Theorem 14.19), so it is not a domain, not local and not Noetherian.
-- **Theorem F (Section 15, from 03, 08, 19 and 20).** `Oz* = No`; the integral closure
+- **Theorem F (Section 15, from 03, 08, 19, 20 and 23).** `Oz* = No`; the integral closure
   `𝒩` is proper, fine-dense, of zero conductor and not set-generated
   (Theorems 15.5, 15.12); constant slices, the complexification defect killed by
   `2` (Proposition 15.18), no finite quotients (Theorem 15.20), no nontrivial
@@ -494,7 +596,28 @@ strictly positive set support and coefficients in `K`.
   set-indexed family of maps to set-sized rings is jointly faithful on
   `𝒩/Π𝒩` (Theorem 15.79), and, with global choice, every branch map extends
   in at least `2^κ` ways from any set of data (Theorem 15.80). With the merge:
-  `𝒩 ∩ F^03_κ = 𝒩_κ` (Corollary 15.59).
+  `𝒩 ∩ F^03_κ = 𝒩_κ` (Corollary 15.59). From 23 (Section 15.10), for the cyclic
+  workspace `𝒜(Za) = D + ω^a k[ω^a]`, `(k, D) = (R, Z)` or `(C, Z[i])`: the
+  extended ideal `𝖨` is not radical, since `z_n = T(1+T^{1−n})^{1/n}`,
+  `T = ω^a`, has nilpotency index exactly `n` modulo it, and `⌈n/m⌉` after
+  `T = U^m` (Theorems 15.86, 15.89); an element of a finite subextension that is
+  integral over `k[T]` lies in `𝒩(Za)` iff its residues at the places over
+  `T = 0` are integral over `D`, `k𝒩(Za)` is the integral closure `𝓑` of
+  `k[T]` and `𝖨 = T𝓑` (Theorems 15.91, 15.93); the index of every nilpotent
+  and every refinement threshold is read off the minimum branch order
+  (Corollary 15.98, Theorem 15.99), and the bounded-denominator Puiseux limit
+  is reduced although no finite stage is (Theorem 15.100); `𝓑` is Prüfer with
+  local value group `Q` and residue field `C` (Theorem 15.103), the nilradical
+  `𝖩/T𝓑` is idempotent, not nilpotent and not finitely generated
+  (Theorem 15.105), and `gr_𝖨 𝒩(Za) ≅ 𝖡(Za) ⊕ W 𝖡^co(Za)[W]` (Theorem 15.106);
+  fresh ramification at unused finite places splits every subring of size
+  below `2^ℵ0`, so all four fibres have atomless Boolean algebras of
+  cardinality and order density `2^ℵ0`, with `2^(2^ℵ0)` branches over zero
+  (Theorems 15.109, 15.111, Corollaries 15.110, 15.112); the coefficient fibre
+  has a periodic free resolution and infinite global and weak global dimension,
+  which does not transfer to the arithmetic fibre (Theorem 15.116,
+  Proposition 15.117); and with algebraic coefficients the Boolean algebras are
+  the Cantor algebra (Theorem 15.118).
 - **Theorem G (Section 16, from 10, 16, 18 and 22).** `Num_r(Oz) = Π[X] ⊕ Int(Z^r)` with
   universal set-sized image `Int(Z^r)` (Theorem 16.7); the Newton
   least-common-multiple criterion for congruences modulo every omnific integer
@@ -600,7 +723,7 @@ strictly positive set support and coefficients in `K`.
 
 ## What the report does not claim
 
-- All nineteen sources are AI-assisted, unrefereed drafts that call their main
+- All twenty sources are AI-assisted, unrefereed drafts that call their main
   results candidate original or proposed contributions; priority is not
   certified, no named conjecture (Conway's refinement problem, factorization,
   GCD) is claimed solved, and nothing is formalized: the repository has no
@@ -666,7 +789,8 @@ strictly positive set support and coefficients in `K`.
   need not be free, complete or saturated; no infinite joins; no
   `𝖡_R ≅ 𝖡_R × 𝖡_R`). Its fixed-workspace results concern reduced fibres:
   radicality of `Π(G)𝒩(G)` and atomlessness of `Idem(𝖢(G))` in a fixed
-  workspace are not asserted. Its descent is not a decision procedure, and
+  workspace are not asserted (for cyclic groups 23 has since decided both:
+  not radical, atomless). Its descent is not a decision procedure, and
   its matrix corollary computes no projective or global dimension. Its
   specializations are maps of finite branch algebras, not evaluations of
   Laurent series; its support projection is not a ring map. The merge's
@@ -685,14 +809,35 @@ strictly positive set support and coefficients in `K`.
   read through finite sums or in a containing universe. The D-ring collapse
   and the binomial basis are credited, not claimed, and its novelty list is
   incomplete (see below).
+- 23's answers concern the cyclic groups `Za` only (real and Gaussian pairs):
+  no classification of exponent groups or support restrictions, not even of
+  groups with a discrete convex component; the Hahn field over `Qa` is open
+  (Question 18.21), and its Puiseux result concerns bounded denominators only
+  and does not identify the limit fibre with a finite-stage one. The
+  uncountable Boolean isomorphism types are not determined (no freeness,
+  completeness, infinite joins, product representation or free presentation
+  follows from the `2^(2^ℵ0)` count). The weak global and global dimensions of
+  the arithmetic fibre are open; the periodic resolution is exact over the
+  coefficient fibre only, and nothing is transferred to `Oz`. The residue
+  criterion is not a decision procedure for arbitrary coefficients or normal
+  forms. The finite checks (18,040 assertions) count assertions, not theorems,
+  and prove no integral closure, place, summability, cardinality, normal-form
+  embedding or infinite resolution. No Lean, no repository build, no referee;
+  priority not certified (targeted literature and repository comparison); no
+  named factorization conjecture or general theory of surreal supports is
+  claimed. Integral dependence, normalization of curves, valuations, square
+  classes, periodic resolutions (matrix factorizations), Newton–Puiseux, the
+  lifting of idempotents and the countable atomless Boolean algebra are
+  classical. No continuum hypothesis, no regularity of `2^ℵ0`, no class Zorn
+  lemma or measurable cardinal is used.
 - Section 18.2 keeps every limitation stated by a source, numbered per source:
   03 (19 items), 04 (14), 06 (14), 07 (13), 08 (13), 09 (12), 10 (12), 11 (12),
   12 (12), 13 (10), 14 (12), 15 (11), 16 (8), 17 (12), 18 (10), 19 (12),
-  20 (14), 21 (17), 22 (18), and 15 for the merge (260 in all). 12's item (3) carries a
+  20 (14), 21 (17), 22 (18), 23 (13), and 16 for the merge (274 in all). 12's item (3) carries a
   note that 21 determines the projective dimensions. 03's item (10) carries a note that
   19 classifies the domain images, 03's item (8) a note that the descent now
-  holds (Corollary 15.59), and 19's items (1), (2), (7) and (9) notes on what
-  20 adds. Section 18.3 lists twenty questions, merging
+  holds (Corollary 15.59), 19's items (1), (2), (7) and (9) notes on what
+  20 adds, and 19's item (9) and 20's item (2) notes on what 23 adds. Section 18.3 lists twenty-seven questions, merging
   duplicates across sources, with their status: one answered (Question 18.2),
   one answered only for specific examples and constructions (Question 18.1,
   which also absorbs 13's and 15's cardinal-bound questions), seven partly
@@ -701,22 +846,33 @@ strictly positive set support and coefficients in `K`.
   report (`opa:as:cor:invisible`; status note of batch 31); Question 18.11, whose clause on set-sized images of
   `𝒩` is answered for domain images by 19, whose descent clause is answered by
   Corollary 15.59 and whose fixed-subgroup clause is answered for witnesses at
-  larger scales by 20; Question 18.12, whose first clause, `pd_{A_d} D`, is
+  larger scales by 20 and, by a residue criterion, for cyclic groups by 23
+  (status note of batch 32); Question 18.12, whose first clause, `pd_{A_d} D`, is
   answered by 21; Question 18.14, whose part (a) is partly addressed by 18's
   tests and 22's lifting theorem and whose part (c) 22 answers for its
   single-scale rational certificates, Proposition 16.86; Question 18.15,
   answered for `κ = ℵ0`, with part (c) partly
   addressed by 21's framed reconstruction; Question 18.17, whose part (a) 20
-  answers and whose part (b) it answers for reduced fibres), one settled for
-  cardinal support bounds only (Question 18.8), and ten open (Question 18.18
+  answers and whose part (b) it answers for reduced fibres, and whose
+  fixed-workspace clause of (b) 23 decides for cyclic groups, radicality
+  negatively and atomlessness positively, with the bounded-denominator Puiseux
+  class radical, and whose part (c) 23 addresses for cyclic groups by a
+  criterion that is not an algorithm; status note of batch 32), one settled for
+  cardinal support bounds only (Question 18.8), and seventeen open (Question 18.18
   is 20's question on the isomorphism type of the Boolean algebra; Questions
   18.19 and 18.20 are 22's, the second with its part (d) partly addressed by
   16's general-`D` results and Remark 16.88; Question 18.16(c) is not
-  addressed by 22, whose lifting theorem concerns ordinary test points only).
+  addressed by 22, whose lifting theorem concerns ordinary test points only;
+  Questions 18.21 to 18.27 are 23's: the Hahn field over `Qa`, the uncountable
+  Boolean types, residue gluing, the homological dimensions of the arithmetic
+  fibre, the completed coefficient ring, non-monomial refinements and a formal
+  development).
   22's question on sharp Gaussian constant tests is merged into Question
   18.14(a). 19's membership
   question is merged into Question 18.11, 20's questions on fixed-workspace
-  radicality and effective certificates into Question 18.17(b), (c), and 21's
+  radicality and effective certificates into Question 18.17(b), (c), 23's
+  questions on several ordered scales and on algorithms for algebraic Laurent
+  input (its Questions 10.2 and 10.7) into Question 18.17(b), (c), and 21's
   three questions (exact global and weak global dimensions of the cores,
   several support levels, how much framing is needed) into Questions 18.12,
   18.13 and 18.15(c).
@@ -809,6 +965,23 @@ strictly positive set support and coefficients in `K`.
   and proofs contain no error found in this merge; it repeats 10's and 16's
   results without credit because it did not read this report, and they are
   credited (Section 16.10).
+- **Seventh batch.** 23 (pin `343dc2c`, which contains the fifth merge
+  `a8f35b5` but not the sixth) read this report's normalization, fibre and
+  branching sections; its statements that Question 18.17(b) leaves
+  fixed-workspace radicality and atomlessness open and that Theorem 15.57 keeps
+  the radical are accurate, and it credits Theorem 15.60. It presents its
+  independent family of continuum size and the cardinality of the fibre as new.
+  *Correction:* at its pin this report already stated, after Theorem 15.70,
+  that one Laurent scale carries continuum many independent idempotents over
+  `Z̄_R`, which with `G = {0}` is an independent family of size `2^ℵ0` in
+  `Idem(𝖢(Za))`; so the lower-bound half of 23's cardinality statement for the
+  reduced fibre is 20's. Its Puiseux radicality also follows from 19's
+  finite-axiom theorem (Theorem 15.51), in the report at its pin (Remark 15.102).
+  Its multiquadratic lemma is 20's Lemma 15.69. What is new in 23 is listed in
+  *Source 23* above. No error was found in its proofs; its
+  `23-omnific-ramification-RESEARCH_AUDIT.md` keeps its own notation (`N`, `B`,
+  `I = TB`, `z_n`, and `R`, `C` for the two fibres) and describes itself as a
+  targeted, not exhaustive, comparison.
 - **Prior manuscripts.** 03's `SOURCE_NOTES` calls its companion draft
   (`omnific_integers(1).tex`) not redistributed, and 04's audit calls its prior
   manuscript (`omnific_integers_diophantine.tex`) absent from the pinned tree.
@@ -873,7 +1046,17 @@ strictly positive set support and coefficients in `K`.
   `code/22-finite-tests-verify.py` and
   `data/22-finite-tests-verification_report.{json,txt}`; the PDF is not
   shipped); 22's delivered `MANIFEST.sha256` was verified at placement and
-  dropped).
+  dropped; for the seventh batch: `23-omnific-ramification-build.sh` and
+  `23-omnific-ramification-build.ps1` run `verify.py` and then pdfLaTeX three
+  times on `article.tex` in their own directory, neither of which is there
+  under that name; `23-omnific-ramification-BUILD_REPORT.json` describes 23's
+  own 25-page PDF (not shipped) and records SHA-256 hashes of `article.tex`,
+  `article.pdf`, `verify.py` and `verification.json`: the last two match
+  `code/23-omnific-ramification-verify.py` and
+  `data/23-omnific-ramification-verification.json`, and the first two match
+  the delivered manuscript and PDF, which are not shipped; the audit names
+  `verify.py` under its delivery name; 23's delivery README is not shipped, and
+  its package had no checksum manifest).
 
 ## Relation to the neighbouring reports
 
@@ -921,7 +1104,7 @@ strictly positive set support and coefficients in `K`.
 - [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
   (batch 28) concerns discretely ordered initial subgroups of `No` in the
   sense of Ehrlich–Kaplan; its "normalization" is not the integral closure
-  `𝒩` of Section 15, and its subject is unrelated to Sections 15.8 and 15.9.
+  `𝒩` of Section 15, and its subject is unrelated to Sections 15.8 to 15.10.
 
 ## Build and reproduce
 
@@ -929,14 +1112,18 @@ strictly positive set support and coefficients in `K`.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 177 pages with no errors, warnings, undefined references,
+The build gives 194 pages with no errors, warnings, undefined references,
 multiply defined labels, duplicate destinations or overfull or underfull boxes
-(the committed text before the sixth merge gave 164 pages, before the fifth
-153, before the fourth 140, and before the third 117, also clean). Every
-statement, section and equation number of the text before the sixth merge is
-unchanged (all 521 earlier labels compared in the `.aux` files); the sixth
-merge's statements are Lemma 16.68 to Remark 16.88 and equations (16.25) to
-(16.30) in Section 16.10, and Questions 18.19 and 18.20. The finite-check
+(the committed text before the seventh merge gave 177 pages, before the sixth
+164, before the fifth 153, before the fourth 140, and before the third 117,
+also clean). Every statement, section and equation number of the text before
+the seventh merge is unchanged (all 551 earlier labels compared in the `.aux`
+files); the seventh merge's statements are Proposition 15.82 to Remark 15.119
+and equations (15.25) to (15.35) in Section 15.10, and Questions 18.21 to
+18.27. The sixth merge's statements are Lemma 16.68 to Remark 16.88 and
+equations (16.25) to (16.30) in Section 16.10, and Questions 18.19 and 18.20.
+As before the seventh merge, the title page's status box falls on the page
+after the abstract. The finite-check
 table of Section 19.1 became a `longtable` in the sixth merge, because the row
 for 22 made it taller than a page; this changes only its layout.
 Build in a copy of the directory and do not commit the auxiliary files.
@@ -947,7 +1134,13 @@ endings, the recorded Python version and (18) the recorded time stamp. For
 22 the rerun passed all 1,776 assertions in the same 22 categories, and its two
 rewritten reports differ from `data/22-finite-tests-verification_report.*` only
 in the Python version (3.14.4 for 3.13.5) and in CRLF line endings on Windows;
-its printed output equals the text report.
+its printed output equals the text report. For the seventh merge only 23's
+program was run, on a copy (Python 3.14.4): it passed all 18,040 assertions in
+the same 12 categories, and its record differs from
+`data/23-omnific-ramification-verification.json` only in `python_version`
+(3.14.4 for 3.13.5), in `article_tex_sha256` (`null`, because the program hashes
+an `article.tex` beside itself, which is not shipped) and in CRLF line endings
+on Windows; its printed output equals the record.
 **Several write files by default**:
 04 always writes `verification.json` next to the script; 06, 09 and 14 do so
 unless given `--output` (14 writes `verification.json`); 07 writes
@@ -965,8 +1158,11 @@ output only, but its `build.sh` would overwrite `checks.txt`; 20 always writes
 that would be a new, unshipped `code/verification_results.json`); 22 always
 writes `verification_report.json` and `verification_report.txt` next to the
 script and prints the text (here that would be two new, unshipped files in
-`code/`; it takes no output option). Run them with
-an explicit output in a scratch directory, and run 04, 12, 18, 20, 21 and 22 on a
+`code/`; it takes no output option); 23 writes `verification.json` next to the
+script unless given `--output` (here that would be a new, unshipped
+`code/verification.json`, not the recorded
+`data/23-omnific-ramification-verification.json`), and prints the record. Run them with
+an explicit output in a scratch directory, and run 04, 12, 18, 20, 21, 22 and 23 on a
 copy:
 
 ```sh
@@ -992,20 +1188,23 @@ python code/19-normalization-fibres-checks.py > "$T/19.txt"                   # 
 cp code/20-boolean-branching-verify.py "$T/" && python "$T/20-boolean-branching-verify.py" > "$T/20.out"   # 6,674 assertions; writes $T/verification_results.json
 cp code/21-derived-arithmetic-verify.py "$T/" && python "$T/21-derived-arithmetic-verify.py" --output "$T/21.json"   # 1,008 + 600 checks; stdlib; = data/21-... as JSON
 cp code/22-finite-tests-verify.py "$T/" && python "$T/22-finite-tests-verify.py" > "$T/22.out"   # 1,776 assertions, seed 23092026; writes $T/verification_report.{json,txt}
+cp code/23-omnific-ramification-verify.py "$T/" && python "$T/23-omnific-ramification-verify.py" --output "$T/23.json" > "$T/23.out"   # 18,040 assertions; stdlib
 ```
 
 12 and 19 require SymPy but ship no requirements file (19's README names
 SymPy 1.14.0); 14, 16, 17, 18, 20 and 22 ship `sympy==1.14.0` (20's and 22's records were made
 with Python 3.13.5; the reruns under 3.14.4 differ only in that field and in line endings); 21 needs
 only the standard library, and its rerun equals the recorded JSON in content
-(on Windows the rewritten file has CRLF line endings). Run 12 and 21 without
+(on Windows the rewritten file has CRLF line endings); 23 needs only the
+standard library (Python 3.9 or later). Run 12 and 21 without
 Python's `-O` option (their checks are assertions). The shipped `04-…-Makefile`, `06-…-Makefile`, `10-…-Makefile`,
 `09-set-shadows-build.sh`, `11-set-sized-algebra-build.sh`,
 `12-homological-dimension-build.sh`, `14-arithmetic-tensors-build.py`,
 `18-polynomial-rigidity-build.sh`, `19-normalization-fibres-build.sh`,
 `20-boolean-branching-Makefile`, `21-derived-arithmetic-build.sh`,
-`21-derived-arithmetic-build.ps1`, `22-finite-tests-build.sh` and
-`22-finite-tests-build.ps1` use the
+`21-derived-arithmetic-build.ps1`, `22-finite-tests-build.sh`,
+`22-finite-tests-build.ps1`, `23-omnific-ramification-build.sh` and
+`23-omnific-ramification-build.ps1` use the
 original package file names (`verify.py`, `article.tex`,
 `omnific_set_shadows.tex`, `omnific_homological_dimension.tex`,
 `code/check_finite_identities.py`, …) and do not run as shipped; they are kept
@@ -1034,6 +1233,14 @@ Remark 16.71 for `m ≤ 4`, `d ≤ 5`, the bound (16.26) in twelve random
 trivariate cases, the inverse shears of Example 16.85, the two Gaussian
 denominators and the coefficients of Example 16.74; neither it nor 22's
 program verifies an infinite support, a cut above an arbitrary set or a
-proper-class statement. `19-normalization-fibres-build.sh`
+proper-class statement. For the seventh merge, an independent exact
+computation (SymPy), not shipped, rechecked in 2,642 checks, most of them the
+exponent inequality behind axiom (ii) for the Puiseux ring (Remark 15.102),
+the relations (15.28) for `n ≤ 7` and (15.33), the refinement certificates of
+Theorem 15.89, the Laurent coefficients and the full-class factorization of
+Example 15.87, the residues of the Boolean words of Theorem 15.111 modulo `T`
+for three parameters with the squarefreeness of their radicands, and the
+cancellation identity behind Theorem 15.115; like 23's program it verifies no
+integral closure, place or cardinality. `19-normalization-fibres-build.sh`
 runs `python3 checks.py | tee checks.txt`, which would overwrite the recorded
 result; do not run it in this directory.

@@ -21,7 +21,7 @@
  homological and tensor algebra of omnific cores, polynomial maps,
  relation modules, ordinary-output loci, normalization fibres, Boolean branching,
  exact projective dimensions, Tor algebras of lattice ideals,
- finite tests at new scales}}
+ finite tests at new scales, ramification in cyclic workspaces}}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -149,8 +149,8 @@
 {\large The universal constant-term quotient, exact cardinal thresholds,\par
 support thresholds, and what survives in large quotients\par}
 \vspace{0.2in}
-{Merged research report built from nineteen manuscripts (03, 04, 06--11 of one batch,\par
-12--16 of the next, 17--19 of a third, 20 of a fourth, 21 of a fifth, 22 of a sixth)\par}
+{Merged research report built from twenty manuscripts (03, 04, 06--11 of one batch,\par
+12--16 of the next, 17--19 of a third, 20 of a fourth, 21 of a fifth, 22 of a sixth, 23 of a seventh)\par}
 \vspace{0.08in}
 {22--23 September 2026; merged 23 September 2026\par}
 \vspace{0.2in}
@@ -186,13 +186,14 @@ adds that the Boolean algebra of that power is atomless and a proper class, spli
 with integrality local to the exponent group of an element. A fifth shows that for the coordinatewise cone of
 rank $d$ the projective dimension of the arithmetic quotient is $d+1$. A sixth certifies rational functions of several
 variables by finitely many values at one fresh scale, removes set-sized exceptional sets in every number of variables, and
-transfers ordinary constant test sets exactly. It is an AI-assisted
+transfers ordinary constant test sets exactly. A seventh shows that over one cyclic exponent group the extended ideal of
+the integral closure is not radical, while the Boolean algebra of the reduced fibre is still atomless. It is an AI-assisted
 merge of unrefereed manuscripts; nothing in it is verified in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.9\textwidth}\small
-\textbf{Status.} Proof-bearing research report assembled from nineteen AI-assisted
+\textbf{Status.} Proof-bearing research report assembled from twenty AI-assisted
 manuscripts written on 22 and 23 September 2026. The sources call their main results candidate
 original; priority is not certified, no named conjecture is claimed solved, the proofs have
 not been refereed, and no statement is formalized. Results added in the merge are marked
@@ -240,6 +241,9 @@ computes the $\Tor$ algebra of lattice quotients, with arithmetic applications (
 A manuscript of a sixth batch certifies rational functions of several variables by finitely many values at a single fresh scale,
 removes set-sized exceptional sets in every number of variables and lifts ordinary constant test sets exactly; much of its
 one-variable content re-derives 16's (22; \cref{osq:ft:sub:tests}).
+A manuscript of a seventh batch decides the fixed-workspace questions on that fibre for cyclic exponent groups, with opposite
+answers: the extended ideal is not radical, while the Boolean algebra of the reduced fibre is atomless, both by ramification over
+the place $\omega^a=0$ of the rational functions in $\omega^a$ (23; \cref{osq:rm:sub:cyclic}).
 This report prints the common spine once and keeps every result of every source.
 
 \subsection{Main theorems}\label{osq:sub:main}
@@ -307,8 +311,10 @@ complex algebraic integers, complexification doubles it integrally, and every se
 $\NN$ or $\NN_\C$ is $\overline\Z$ or $\Fpbar$ (19). Its Boolean algebra $\Idem(\NN/\Pi\NN)$ is atomless and a
 proper class, one idempotent splits every nonzero element of any set-sized subring of $\NN/\Pi\NN$, and no set-indexed family
 of maps to set-sized rings is jointly faithful on it; an element of $\NN$ supported in a set-sized group $G$ is integral over
-the omnific integers supported in $G$ (20).
-(\Cref{osq:nm:thm:complete,osq:nm:thm:normalization,osq:nm:thm:valuation,osq:nm:thm:invisible,osq:nf:thm:radical,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:thm:domainimages,osq:bb:thm:descent,osq:bb:thm:uniform,osq:bb:thm:atoms,osq:bb:thm:noseparating}.)
+the omnific integers supported in $G$ (20). In a cyclic workspace $\Z+\omega^a\R[\omega^a]$ the extended ideal of the
+integral closure is not radical, its fibre having nilpotents of every index, while the Boolean algebra of the reduced fibre is atomless of
+cardinality and order density $2^{\aleph_0}$, and the bounded-denominator Puiseux limit is reduced (23).
+(\Cref{osq:rm:thm:explicit,osq:rm:cor:atomless,osq:rm:thm:cardinality,osq:rm:thm:pui,osq:nm:thm:complete,osq:nm:thm:normalization,osq:nm:thm:valuation,osq:nm:thm:invisible,osq:nf:thm:radical,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:thm:domainimages,osq:bb:thm:descent,osq:bb:thm:uniform,osq:bb:thm:atoms,osq:bb:thm:noseparating}.)
 \end{maintheorem}
 
 \begin{maintheorem}[Polynomial maps]\label{osq:main:polynomial}
@@ -366,7 +372,7 @@ framed second $\Tor$ of an order recovers its multiplication (21).
 
 \subsection{Sources, provenance and where the merge chose}\label{osq:sub:sources}
 
-The report is built from nineteen manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
+The report is built from twenty manuscripts. Eight (03, 04, 06--11), dated 22 September 2026
 and placed in commit \texttt{be06fc8}, were merged first; their numbers are arrival numbers in
 their batch. Five (12--16), dated 23 September 2026 and placed in commit \texttt{cf350b1}, are items
 02--06 of the following batch; they are numbered here by the file prefixes under which their
@@ -378,7 +384,9 @@ groups and lattices \cite{RepoOpa,RepoOgl}. One (20), also dated 23 September 20
 in other reports. One (21), also dated 23 September 2026 and placed in commit \texttt{66d7e55}, is item 01 of a fifth batch,
 numbered in the same way; the other eight items of that batch were placed in other reports. One (22), also dated 23 September 2026 and
 placed in commit \texttt{9d28e28}, is item 09 of a sixth batch, numbered in the same way; the other eight items of that batch were placed
-in other reports. None has a reviewer, and none is shipped with this report.
+in other reports. One (23), also dated 23 September 2026 and placed in commit \texttt{7d04483}, is item 01 of a seventh batch,
+numbered in the same way; the other eight items of that batch were placed in other reports. None has a reviewer, and none is shipped
+with this report.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
@@ -453,6 +461,16 @@ in other reports. None has a reviewer, and none is shipped with this report.
 \end{tabular}
 \end{center}
 
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.03\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
+\toprule
+& Seventh-batch manuscript (pages) & Pin & Contribution and placement\\
+\midrule
+23 & \emph{Ramification in Omnific Normalizations} (25) & \texttt{343dc2c} & in the cyclic workspace $\A(\Z a)$: a nonradical extended ideal with nilpotents of every index and exact refinement thresholds, a residue criterion for $\NN(\Z a)$ with $k\NN(\Z a)=\mathscr B$, the ramification filtration, a reduced bounded-denominator Puiseux limit, Pr\"ufer local structure with value group $\Q$, an idempotent nilradical, the associated graded ring and completion, splitting by fresh ramification with atomless $\Idem$ of size and density $2^{\aleph_0}$ and $2^{2^{\aleph_0}}$ branches, a periodic resolution over the coefficient fibre, a Cantor fragment (\cref{osq:rm:sub:cyclic}); independent proofs of the first equality of 20's rational slice and of 20's multiquadratic lemma (credited)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 The pins are the repository commits the manuscripts inspected (\texttt{cd80e5e0adc2},
 \texttt{a5c2a97df4b5}, \texttt{37eefca1a309}, all of 22 September 2026, Pacific time; and
 \texttt{71e9606d297c}, 23 September 2026, for 13--16). The commit \texttt{71e9606} precedes the placement
@@ -472,6 +490,8 @@ draft (``the preceding normalization manuscript'') and does not assert that 19 w
 fourth and fifth: at that commit this report held 16's and 18's subsections, including \cref{osq:fs:thm:nosmall,osq:fs:thm:cosmall,osq:fs:cor:certificates}
 and \cref{osq:fs:q:fresh}, but not 20's or 21's material. 22 read the repository and catalogue READMEs, the openings of the Diophantine and
 holonomic-rigidity reports and the fractions audit of the Diophantine report, not this report.
+23 pins \texttt{343dc2c47121} (23 September 2026), which contains the writing of the fifth merge (\texttt{a8f35b5}) but not that of the sixth:
+at that commit this report held 20's and 21's material but not 22's; 23 read its normalization, fibre and branching sections.
 Manuscript~05 of the same batch, \emph{Omnific Integers and Diophantine Rigidity}, is merged
 into the sibling report \cite{RepoOdg}. It also proves the unital universal theorem for $\Oz$
 (its ``set-target rigidity''), the clearing of set supports and common monomial divisors, and it
@@ -543,6 +563,14 @@ and its one-variable certificate, detector, multivariate collapse and one-variab
 witness (\cref{osq:ft:rem:deceiver}), and its multivariate certificate is kept beside 16's smaller probe certificate and compared with it
 (\cref{osq:ft:rem:probes}). Its question on Gaussian constant tests is merged into \cref{osq:fs:q:fresh}, and its other questions form
 \cref{osq:ft:q:certificates,osq:ft:q:maps}.
+\item \emph{Seventh batch.} 23 decides for cyclic exponent groups the fixed-workspace clause of \cref{osq:nf:q:fibre}(b), which 20 left open,
+and joins \cref{osq:sec:closure} in one new subsection (\cref{osq:rm:sub:cyclic}), placed after 20's at the end of the section so that no
+earlier statement is renumbered. 20's multiquadratic lemma, which 23 reproves, is printed once under 20's label with 23 added as a proving
+source (\cref{osq:bb:lem:multiquadratic}); the first equality of 20's rational slice (\cref{osq:bb:thm:rational}) is contained in 23's
+Gaussian and fixed-ideal corollary (\cref{osq:rm:cor:rational}), and 23 credits it. The independent family of size $2^{\aleph_0}$ in the reduced
+cyclic fibre is 20's (\cref{osq:bb:thm:rank} with $G=\{0\}$), which 23 did not cite; 23's own family is kept. Its Puiseux radicality is kept with
+19's finite-axiom theorem as a second route (\cref{osq:rm:rem:puiabstract}). Two of its questions are merged into \cref{osq:nf:q:fibre}(b), (c),
+and its other seven form \cref{osq:rm:q:fullQ,osq:rm:q:boolean,osq:rm:q:gluing,osq:rm:q:arhomology,osq:rm:q:completion,osq:rm:q:nonmonomial,osq:rm:q:formal}.
 \end{itemize}
 
 \paragraph{Results added in the merge.} Each carries the tag \merge\ and a complete proof:
@@ -580,6 +608,13 @@ $A_d$ satisfy every hypothesis of \cref{osq:hd:prop:pd}(v) except (H2) and have 
 (\cref{osq:da:rem:htwo}). From the sixth batch: the comparison of 22's single-scale certificate with 16's probe certificate
 (\cref{osq:ft:rem:probes}); the conclusion of 16's no-set-test theorem for $\A_{D,k}$ with every unital $D\ne k$ (\cref{osq:ft:rem:otherD}); and the
 observation that where 22's criterion gives no fresh exponent, 18's discrete-gap collapse still holds (after \cref{osq:ft:prop:relative}).
+From the seventh batch: the comparison with the full class, that $\Pi\NN\cap K_{\Z a}$ is the radical of 23's extended ideal, so that the map of
+the cyclic arithmetic fibre to $\NN/\Pi\NN$ kills exactly its nilradical and the radical in \cref{osq:bb:thm:descent} cannot be removed
+(\cref{osq:rm:rem:fullclass}), with the explicit $\sqrt{\omega^{2a}+\omega^a}=\omega^{a/2}\sqrt{1+\omega^a}\in\Pi\NN$ (\cref{osq:rm:ex:sqrt}); the second
+route to 23's Puiseux radicality through 19's finite-axiom theorem, with the Boolean-power form, doubling and absolute integral closedness of the
+Puiseux fibre and the atomlessness of its Boolean algebra (\cref{osq:rm:rem:puiabstract}); the Boolean-power form of the cyclic reduced fibre, with
+an atomless parameter of size and density $2^{\aleph_0}$, and for the real algebraic fragment the ring of locally constant $\overline\Z$-valued
+functions on Cantor space (\cref{osq:rm:rem:booleanform}); and 19's $\upsilon_T$ as a witness inside the cyclic workspace (\cref{osq:rm:rem:nonreal}).
 Each follows from lemmas of the sources; none is a new method.
 
 \subsection{Relation to the repository}\label{osq:sub:repository}
@@ -646,7 +681,13 @@ certificates with $d+2$ values in one variable and fresh probes in several (\cre
 and denominator degree $1$ with no pole on $\Oz$ and $\GOz$ that deceives any set (\cref{osq:fs:thm:nosmall}; 16's $\omega^\beta/(X-\frac12)$ is
 $2\omega^\beta/(2X-1)$, with coefficients in $\Oz$), the empty-or-proper-class alternative in one variable (\cref{osq:fs:thm:cosmall}) and Gaussian tests
 with a one-variable lifting of ordinary test sets (\cref{osq:fs:prop:gausstest,osq:or:prop:gausstest}); so its novelty list is incomplete, and what is new
-in it is listed in \cref{osq:ft:sub:tests}. The shipped audit
+in it is listed in \cref{osq:ft:sub:tests}. 23 (pin \texttt{343dc2c}) read this report's normalization, fibre and branching sections and states
+accurately that \cref{osq:nf:q:fibre}(b) leaves fixed-workspace radicality and atomlessness open and that \cref{osq:bb:thm:descent} keeps the
+radical; it credits \cref{osq:bb:thm:rational}. It presents its independent family of continuum size and the cardinality of the fibre as new. At its
+pin this report already stated, after \cref{osq:bb:thm:rank}, that one Laurent scale carries continuum many independent idempotents over
+$\overline\Z_\R$, which with $G=\{0\}$ is an independent family of size $2^{\aleph_0}$ in $\Idem(\mathsf C(\Z a))$; so the lower-bound half of 23's
+cardinality statement for the reduced fibre is 20's. Its Puiseux radicality also follows from 19's \cref{osq:nf:thm:abstract}, which was in the report at its
+pin. What is new in 23 is listed in \cref{osq:rm:sub:cyclic}. The shipped audit
 files keep these statements verbatim; the README records the corrections.
 
 \paragraph{Corrections to the sources.} 03's source lost a relation symbol and prints
@@ -673,7 +714,8 @@ optimality theorem; the Gaussian question itself stays open (\cref{osq:or:q:outp
 Laurent blocks without credit (it could not see them); they are credited (\cref{osq:bb:lem:laurent}). 21 repeats 17's $\Tor$ results without
 credit (it could not see them); they are credited (\cref{osq:da:sub:derived}); its proofs contain no error found in this merge. 22 repeats
 10's and 16's results without credit (it did not read this report); they are credited (\cref{osq:ft:sub:tests}), and its proofs contain no error
-found in this merge. No source contains a false theorem.
+found in this merge. 23 does not cite 20's continuum family or 19's finite-axiom theorem (see above; credited in
+\cref{osq:rm:sub:cyclic}); its proofs contain no error found in this merge. No source contains a false theorem.
 
 \section{Conventions, notation, and the constant-term retraction}
 \label{osq:sec:conv}
@@ -697,7 +739,7 @@ splitting) are avoided below, and 19's one essential use, a class ultrafilter on
 that may be a proper class, is stated with its hypothesis (\cref{osq:nf:lem:classultra}); only the
 results built on it (\cref{osq:nf:thm:kernel,osq:nf:cor:fieldtargets}) need global choice. 20 states the same foundation;
 its splitting results need only choice for sets (\cref{osq:bb:rem:choice}), and its extension of branch maps
-(\cref{osq:bb:thm:manymaps}) uses class ultrafilters as 19's detection does. The collision step of the
+(\cref{osq:bb:thm:manymaps}) uses class ultrafilters as 19's detection does. 23 uses only set-sized rings and choice for sets. The collision step of the
 universal theorem (\cref{osq:thm:universal}) is choice-free in the formulation of
 08, which we adopt: for a set $S$, its Hartogs ordinal is an ordinal that does not
 inject into $S$; it exists in ZF. The same device is used in the rotation-group
@@ -834,7 +876,7 @@ collision by renaming in the new material. The renamings, and the tags distingui
 the different set-sized constructions, are listed below; \cref{osq:hd:sec:cores} and
 \cref{osq:fs:sub:gaps} list the further renamings of 12, 14 and 16,
 \cref{osq:rel:sub:relations,osq:or:sub:outputs,osq:nf:sub:fibre} those of 17, 18 and 19, \cref{osq:bb:sub:branching}
-those of 20, \cref{osq:da:sub:derived} those of 21, and \cref{osq:ft:sub:tests} those of 22.
+those of 20, \cref{osq:da:sub:derived} those of 21, \cref{osq:ft:sub:tests} those of 22, and \cref{osq:rm:sub:cyclic} those of 23.
 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
@@ -5439,7 +5481,8 @@ $\GOz$ although its image in every set-sized ring has the root $1$; its positive
 explicit element of $\NN\setminus\Oz$. The section ends with 19's description of $\NN$ and $\NN_\C$
 modulo the ideals generated by $\Pi$, which classifies their set-sized domain images
 (\cref{osq:nf:sub:fibre}), and with 20's proof that the Boolean algebra of that description is atomless and a proper
-class (\cref{osq:bb:sub:branching}).
+class (\cref{osq:bb:sub:branching}), and with 23's fixed cyclic workspace, whose extended ideal is not radical although the Boolean algebra
+of its reduced fibre is still atomless (\cref{osq:rm:sub:cyclic}).
 
 \paragraph{Standing notation.}
 As in \cref{osq:sec:model03}, $\kappa$ is an infinite cardinal with
@@ -6528,7 +6571,11 @@ the spectral idempotents, the Boolean description and the doubling apply unchang
 The theorem does not give that $\upsilon_T$ is infinitesimal, nor that $JN_\bullet$ has no set of generators (that needs the set-family divisibility of
 the full class), nor \cref{osq:nf:cor:small}, which needs arbitrarily large sets of exponent scales below a fixed exponent, a cardinal condition absent
 from (i)--(iii). In a fixed real-exponent Hahn integer part the support $\{1/n:n\ge1\}$ blocks the monomial proof of (ii); this is a failure of the
-argument, not a counterexample to any conclusion (19). For the reduced fibre $\mathsf C(G)$ of the full Hahn field over a nonzero set group
+argument, not a counterexample to any conclusion (19). (Status (batch 32): the cyclic workspace $\Z+\omega^a\R[\omega^a]$ lies outside the
+theorem, since its Laurent field is not real closed and (ii) fails there, and in it the conclusion of \cref{osq:nf:thm:radical} does fail:
+the extended ideal is not radical, \cref{osq:rm:thm:explicit,osq:rm:rem:fullclass}; for real closed fixed workspaces such as the Hahn field
+over $\Q a$ the question stays open, \cref{osq:rm:q:fullQ}, while the bounded-denominator Puiseux ring satisfies (i)--(iii),
+\cref{osq:rm:rem:puiabstract}.) For the reduced fibre $\mathsf C(G)$ of the full Hahn field over a nonzero set group
 (defined in \eqref{osq:bb:eq:local} below), 20 obtains the Boolean-power form without (ii) and without deciding radicality (\cref{osq:bb:prop:fixedboolean}).
 
 \begin{remark}[Candidates for idempotents \merge]\label{osq:nf:rem:candidates}
@@ -6662,7 +6709,8 @@ These are the contracted-ideal equalities of \cref{osq:bb:thm:descent}.
 So an integrality witness using arbitrary surreal scales can be replaced by one using only the exponent group of the element: in
 19's membership question, which allows witnesses at larger scales, larger scales never help. \Cref{osq:bb:thm:descent} is a
 descent statement, not a decision procedure for $\NN(G)$ (20). The second equality in \eqref{osq:bb:eq:descent} deliberately keeps
-the radical: it is not asserted that $\Pi(G)\NN(G)$ is radical in a fixed workspace (20). The same projection decides the descent
+the radical: it is not asserted that $\Pi(G)\NN(G)$ is radical in a fixed workspace (20). (Status (batch 32): for $G=\Z a$ it is
+not radical, so there the radical cannot be removed, \cref{osq:rm:thm:explicit,osq:rm:rem:fullclass}.) The same projection decides the descent
 asked in \cref{osq:q:normalization}.
 
 \begin{corollary}[Descent for 03's fields \merge]\label{osq:bb:cor:descent03}
@@ -6833,7 +6881,7 @@ test. For $H\in\Pi$ whose support is not contained in one cyclic group the metho
 over a group containing the rest of its support, and general $H$ is not decided here. 20's two-radical splitter
 \eqref{osq:bb:eq:splitter} is not minimal in this sense, which is not an error.
 
-\begin{lemma}[Multiquadratic extensions \src{20}]\label{osq:bb:lem:multiquadratic}
+\begin{lemma}[Multiquadratic extensions \src{20, 23}]\label{osq:bb:lem:multiquadratic}
 Over a field $L$ of characteristic different from $2$, classes $d_1,\dots,d_n$ independent in $L^\times/L^{\times2}$ give an extension
 $L(\sqrt{d_1},\dots,\sqrt{d_n})$ of degree $2^n$, with the square-root monomials as a basis and all $2^n$ independent sign
 automorphisms.
@@ -6879,7 +6927,8 @@ injective. The positive part of an infinite ordered field minus one point has th
 
 Neither $K_G$ nor $K_{\widetilde G}$ need be real closed, and $\Pi(G)\NN(G)$ is not assumed radical; the theorem concerns reduced
 fibres. For $G=\{0\}$, $K_G=\R$ and $\mathsf C(G)=\overline\Z_\R$, so one Laurent scale already carries continuum many independent
-idempotents over $\overline\Z_\R$ (20).
+idempotents over $\overline\Z_\R$ (20). 23 shows that $\Idem(\mathsf C(\Z a))$ is atomless, of cardinality and order density exactly $2^{\aleph_0}$,
+with another explicit independent family (\cref{osq:rm:cor:atomless,osq:rm:thm:cardinality}).
 
 \begin{theorem}[Relative Boolean freeness \src{20}]\label{osq:bb:thm:free}
 For every set-sized unital subring $R\subseteq\mathsf B_\R$ and every set $I$ there is an injective $R$-algebra homomorphism
@@ -6967,7 +7016,9 @@ and $\Pi(G)=0$.
 This complements \cref{osq:nf:thm:abstract}, which describes the unreduced $N_\bullet/JN_\bullet$ under the divisibility axiom (ii) that a
 fixed Hahn field may fail. No atomlessness of $\Idem(\mathsf C(G))$ for a fixed $G$ follows: the proof for $\No$ gains a fresh scale beyond
 a prescribed set of supports, which a fixed workspace need not supply, and reduction by $\sqrt{\Pi(G)\NN(G)}$ cannot silently be replaced
-by reduction by $\Pi(G)\NN(G)$ (20).
+by reduction by $\Pi(G)\NN(G)$ (20). (Status (batch 32): for cyclic $G$ both points are decided by 23 without a
+fresh scale: $\Idem(\mathsf C(\Z a))$ is atomless, by ramification at unused finite places, and the replacement is impossible because
+$\Pi(\Z a)\NN(\Z a)$ is not radical, \cref{osq:rm:cor:atomless,osq:rm:thm:explicit}; see also \cref{osq:rm:rem:booleanform}.)
 
 \begin{corollary}[The surcomplex fibre \src{20}]\label{osq:bb:cor:complex}
 Every set-sized subring of $\mathsf B_\C$ has a uniform splitter, and \cref{osq:bb:thm:free,osq:bb:thm:atoms,osq:bb:cor:matrix} hold for
@@ -7046,6 +7097,635 @@ $\NN\subseteq\No$ has no idempotents other than $0,1$, while $\mathsf B_\R$ has 
 $\mathsf v^2=-1$; this is possible because $\Pi\NN$ is not convex (\cref{osq:nf:prop:unit}). The quotient is not standard part, and an
 idempotent residue does not say that its chosen representative is idempotent (20). What 20 leaves open is recorded in
 \cref{osq:nf:q:fibre,osq:bb:q:structure} and its limitations in \cref{osq:sub:nonclaims}.
+
+\subsection{Ramification in a cyclic workspace}\label{osq:rm:sub:cyclic}
+
+This subsection is manuscript~23's (\cref{osq:sub:sources}). It settles the fixed-group clause of \cref{osq:nf:q:fibre}(b) for every nonzero
+cyclic exponent group $G=\Z a$, with opposite answers for its two parts: the extended ideal $\Pi(\Z a)\NN(\Z a)$ is \emph{not} radical, since
+the branch $\mathsf z_n=T(1+T^{1-n})^{1/n}$ has nilpotency index exactly $n$ modulo it (\cref{osq:rm:thm:explicit}), whereas $\Idem(\mathsf C(\Z a))$
+\emph{is} atomless, of cardinality and order density $\mathfrak c=2^{\aleph_0}$ (\cref{osq:rm:cor:atomless,osq:rm:thm:cardinality}). It describes
+$\NN(\Z a)$ completely by a residue test at the finitely many branches over $T=0$ of each finite subextension
+(\cref{osq:rm:thm:residues,osq:rm:thm:span}); this answers the fixed-group clause of \cref{osq:q:normalization} for cyclic groups, as a criterion and
+not as an algorithm. The mechanism is a distinction between two places. The elements are Laurent series at $T=\infty$, where $T=\omega^a$ is
+infinitely large, while integrality and nilpotence modulo the extended ideal are governed by the algebraic places over $T=0$; a series at
+infinity is never evaluated term by term at zero (23). Atomlessness needs no fresh dominant scale, which 20's argument uses and a fixed
+workspace lacks (the paragraph after \cref{osq:bb:prop:fixedboolean}): the new idempotents come from ramification at unused finite places of
+$k(T)$. 23 adds exact thresholds for the refinement $T=U^m$, a reduced bounded-denominator Puiseux limit with no reduced finite stage, the local
+structure of the coefficient normalization, the associated graded ring and the completion, a periodic free resolution over the coefficient
+fibre that fails over the arithmetic fibre, and a countable fragment whose Boolean algebra is the Cantor algebra. Every result holds for the
+real pair and for its Gaussian counterpart.
+
+23 pins \texttt{343dc2c} (23 September 2026), which contains the writing of 20's subsection but not that of 22's; it read this report's
+normalization, fibre and branching material (its audit names \cref{osq:nf:q:fibre,osq:q:normalization,osq:bb:thm:descent,osq:bb:thm:rational}).
+Printed once, under the existing label and with 23 added as a proving source, is 20's multiquadratic lemma (\cref{osq:bb:lem:multiquadratic};
+23's Lemma~7.4, with the same proof). 23's Corollary~4.5 (\cref{osq:rm:cor:rational}) contains, for the real pair, the first equality of 20's
+\cref{osq:bb:thm:rational}, which 23 credits and recovers as a check; its Gaussian form and its statement for the fixed ideal are new. At its pin this report also contained, after \cref{osq:bb:thm:rank},
+the remark that one Laurent scale carries continuum many independent idempotents over $\overline\Z_\R$: with $G=\{0\}$, \cref{osq:bb:thm:rank}
+gives an independent family of size $\mathfrak c$ in $\Idem(\mathsf C(\Z a))$ (20). 23 does not cite it. The lower-bound half of 23's cardinality
+statement for the reduced fibre is therefore 20's; 23's family, its independence in the unreduced and coefficient fibres, the exact value
+$\mathfrak c$, atomlessness, order density, uniform splitting and the count $2^{\mathfrak c}$ are new. The radicality of the Puiseux limit also
+follows from 19's finite-axiom theorem \cref{osq:nf:thm:abstract}, which was in the report at 23's pin and which 23 does not cite
+(\cref{osq:rm:rem:puiabstract}, a merge observation); 23's refinement proof is kept as the first route, and the stage-by-stage statements of
+\cref{osq:rm:thm:pui} are new. The numbering of 23 cited here is that of its own manuscript.
+
+\paragraph{Notation and renamings.} Throughout, $(k,D)$ is $(\R,\Z)$ or $(\C,\Z[i])$, $a>0$ is a fixed surreal exponent, and $T=\omega^a$ is the
+actual monomial, as in \cref{osq:bb:thm:rational}. $K_{\Z a}=\hahn k{\Z a}$ is 16's Hahn field with coefficients $k$ and supports in $\Z a$ (for
+$k=\R$ it is 20's $K_{\Z a}$); by \cref{osq:bb:lem:laurent} with $G=\{0\}$ and $b=a$ it is the Laurent field $k(\!(T^{-1})\!)$, the Laurent variable being identified with $\omega^a$, so its elements
+are actual surreal, respectively surcomplex, numbers, and $\mathfrak c=|K_{\Z a}|$. For the real pair \eqref{osq:bb:eq:local} gives
+$\A(\Z a)=\Z+T\R[T]$, $\Pi(\Z a)=T\R[T]$, $\NN(\Z a)=\IC_{K_{\Z a}}(\A(\Z a))$ and $\mathsf C(\Z a)$. For the Gaussian pair the same symbols
+denote $\A(\Z a)=\GOz\cap K_{\Z a}$, $\Pi(\Z a)=\Pi_\C\cap K_{\Z a}$, the integral closure $\NN(\Z a)$ of $\A(\Z a)$ in $K_{\Z a}$, and
+$\mathsf C(\Z a)$ defined by \eqref{osq:bb:eq:local} verbatim; the pair is fixed and not shown in the notation. Put
+\begin{equation}\label{osq:rm:eq:rings}
+ \begin{gathered}
+ \mathscr B=\IC_{K_{\Z a}}(k[T]),\qquad \mathsf I=\Pi(\Z a)\NN(\Z a),\qquad \mathsf J=\sqrt{T\mathscr B}\subseteq\mathscr B,\\
+ \mathsf B(\Z a)=\NN(\Z a)/\mathsf I,\qquad \mathsf B^{\mathrm{co}}(\Z a)=\mathscr B/T\mathscr B,\qquad \mathsf C^{\mathrm{co}}(\Z a)=\mathscr B/\mathsf J,
+ \end{gathered}
+\end{equation}
+the radical $\mathsf J$ being taken in $\mathscr B$. \Cref{osq:rm:thm:residues,osq:rm:thm:span} show $\mathsf J\subseteq\NN(\Z a)$, $\mathsf I=T\mathscr B$ and
+$\mathsf C(\Z a)=\NN(\Z a)/\mathsf J$. $\mathsf B(\Z a)$ is the \emph{arithmetic fibre}, the fixed-workspace analogue of 19's $\mathsf B_\bullet$,
+and $\mathsf C(\Z a)$ is its reduction; $\mathsf B^{\mathrm{co}}(\Z a)$ is the \emph{coefficient fibre}, with reduction $\mathsf C^{\mathrm{co}}(\Z a)$.
+The coefficient fibre is the arithmetic fibre of the pair $(k,k)$, since $k[T]=\A_{k,k}(\Z a)$ and $T\mathscr B=\Pi_k(\Z a)\mathscr B$.
+$K^{\mathrm{alg}}$ is the subfield of $K_{\Z a}$ of elements algebraic over $k(T)$. For a finite extension $k(T)\subseteq L\subseteq K^{\mathrm{alg}}$
+put $\mathscr B_L=\IC_L(k[T])$; for a maximal ideal $\mathfrak q$ of $\mathscr B_L$ write $\mathfrak q\mid T$ if $\mathfrak q\cap k[T]=(T)$,
+$\ell_{\mathfrak q}=\mathscr B_L/\mathfrak q$ for its residue field, $f\bmod\mathfrak q$ for the residue of $f$, and
+\begin{equation}\label{osq:rm:eq:valuation}
+ v_{\mathfrak q}(f)=\frac{\operatorname{ord}_{\mathfrak q}(f)}{\operatorname{ord}_{\mathfrak q}(T)},\qquad v_{\mathfrak q}(T)=1 .
+\end{equation}
+For an integer $m\ge1$, $U=\omega^{a/m}$, so $T=U^m$, and $\Z a/m$ is the group generated by $a/m$; the objects defined with $U$ in place of $T$ are
+$K_{\Z a/m}$, $\A(\Z a/m)$, $\Pi(\Z a/m)$, $\NN(\Z a/m)$, $\mathsf I(\Z a/m)$ and $\mathsf B(\Z a/m)$, so that $\mathsf I=\mathsf I(\Z a)$. 23's symbols
+are renamed as follows.
+\begin{itemize}
+\item Its $F$, $A$, $P$, $N$, $B$, $I$, $E$ are $K_{\Z a}$, $\A(\Z a)$, $\Pi(\Z a)$, $\NN(\Z a)$, $\mathscr B$, $\mathsf I$, $K^{\mathrm{alg}}$ ($\B$ is the ring
+$D+\mm_k$ and $\mathsf B_\bullet$ the full-class fibre; $I$ and $J$ are local ideals in \cref{osq:bb:prop:fixedboolean,osq:nf:thm:abstract}; $\EE$ is
+07's field and $E$ an ambient field). Its arithmetic fibre $\mathcal R=N/I$, its reduction $\mathcal R_{\mathrm{red}}$, its coefficient fibre
+$\mathcal C=B/TB$ and $\mathcal C_{\mathrm{red}}$ are $\mathsf B(\Z a)$, $\mathsf C(\Z a)$, $\mathsf B^{\mathrm{co}}(\Z a)$ and $\mathsf C^{\mathrm{co}}(\Z a)$
+($\mathcal R$ is 14's Rees algebra). Its $J$ and its nilradical $\mathfrak n=J/TB$ are $\mathsf J$ and $\mathsf J/T\mathscr B$.
+\item Its $B_L$ and residue field $\kappa(\mathfrak q)$ are $\mathscr B_L$ and $\ell_{\mathfrak q}$ ($\kappa$ is a cardinal); its minimum order $\mu_T$ and
+truncated order $h_T$ are $\nu_T$ and $\hat\nu_T$ ($\mu$ is a cardinal letter, $h$ an exponent); its filtration $\mathcal F^r\mathcal R$ is
+$\operatorname{Fil}^r$ ($\mathcal F$ is a family in \cref{osq:prop:common}); its $V=B_{\mathfrak q}$ with maximal ideal $\mathfrak m$ is $\mathscr B_{\mathfrak q}$
+with maximal ideal $\mathfrak q\mathscr B_{\mathfrak q}$ ($\mm$ is the negative-support ideal).
+\item Its branches $z_n$, $h_c$, $e_c$ and $w$ are $\mathsf z_n$, $\varsigma_c$, $\mathsf y_c$ and 20's $\varrho_0$ of \cref{osq:bb:lem:quadratic} (a
+sequence $z_n$ occurs in the proof of \cref{osq:da:thm:ext}; $e_r$, $\mathsf e_t$, $e_\alpha$, $e_H$, $w_\pm$ and $\mathsf w_t$ are 19's and 20's
+idempotents and splitters); the residue of $\mathsf y_c$ is $\bar{\mathsf y}_c$.
+\item Its refined rings $F_m,A_m,P_m,N_m,I_m,\mathcal R_m$ are the objects over $\Z a/m$ above; its Puiseux rings
+$F_{\mathrm{Pui}},A_{\mathrm{Pui}},P_{\mathrm{Pui}},N_{\mathrm{Pui}},I_{\mathrm{Pui}}$ are $K_{\mathrm{Pui}},\A_{\mathrm{Pui}},\Pi_{\mathrm{Pui}},\NN_{\mathrm{Pui}},\mathsf I_{\mathrm{Pui}}$;
+its $F_\Q,A_\Q,P_\Q$ are $K_{\Q a}$, $\A(\Q a)$, $\Pi(\Q a)$.
+\item Its $D_k^{\mathrm{int}}$ is $\overline\Z_\R$ or $\overline\Z$; its coefficient fragments $k_{\mathrm r}$, $k_{\mathrm c}$ are 19's $k_0=\overline\Q\cap\R$ and
+$\overline\Q$; its module $M=\mathcal C/(x)$ is $\mathscr M_n$ ($M$ is a lattice); its graded variable $X$ is $W$ ($X^g$ are formal monomials).
+\end{itemize}
+23's finite extensions $L$ keep their letter (as the set-sized field of \cref{osq:nf:cor:fieldtargets}; not 14's module $L(M)$, 16's lower set or
+03's $L_c(F)$), and so do its primes $\mathfrak q$ (not 14's kernels $\mathfrak q_M$). The letter $c$ is a positive real parameter, $\mathfrak c$ the
+continuum. Four tempting readings are false. (1) The Laurent constant coefficient is not a residue at a place over zero: $\mathsf z_2=T+\frac12-\cdots$
+lies in $\NN(\Z a)$ although $\frac12$ is not an algebraic integer (\cref{osq:rm:ex:sqrt}). (2) The valuations $v_{\mathfrak q}$ have $v_{\mathfrak q}(T)=1$;
+the Laurent valuation at infinity has value $-1$ at $T$, and neither extends the other (\cref{osq:rm:rem:twoplaces}). (3) $k\NN(\Z a)=\mathscr B$ is a finite
+$k$-linear span: it does not say $k\subseteq\NN(\Z a)$, and $\mathsf I=T\mathscr B$ is larger than $T\NN(\Z a)$. (4) The injection
+$\mathsf C(\Z a)\hookrightarrow\mathsf B_\R$ of \cref{osq:bb:cor:localinjection} concerns the reduced fibre; on $\mathsf B(\Z a)$ the map to $\mathsf B_\R$
+kills exactly the nilradical (\cref{osq:rm:rem:fullclass}).
+
+\paragraph{The workspace and its finite normalizations.}
+
+\begin{proposition}[The cyclic integer part \src{23}]\label{osq:rm:prop:cyclic}
+$\Oz\cap K_{\Z a}=\Z+T\R[T]$ for the real pair and $\GOz\cap K_{\Z a}=\Z[i]+T\C[T]$ for the Gaussian pair. In both cases $\Pi(\Z a)=Tk[T]$ and
+$\Frac(\A(\Z a))=k(T)$.
+\end{proposition}
+\begin{proof}
+An omnific normal form has no negative exponents and an integer constant coefficient, and a reverse well-ordered subset of $\{na:n\ge1\}$ is finite;
+so the positive part is a polynomial in $T$ without constant term (as in the proof of \cref{osq:bb:thm:rational}). The Gaussian case applies this to
+both coordinates. Finally $T$ and $cT$ lie in $\A(\Z a)$ for $c\in k$, so $c=(cT)/T\in\Frac(\A(\Z a))$ and $k(T)\subseteq\Frac(\A(\Z a))$; the reverse
+inclusion is clear.
+\end{proof}
+
+For the real pair $\A(\Z a)$ is an integer part of $K_{\Z a}$, although $K_{\Z a}$ is not real closed: keep the positive powers of $f$, round its real
+constant down, and subtract one more if the constant was an integer and the negative-power tail is negative; this is the unique $u\in\A(\Z a)$ with
+$u\le f<u+1$. It does not extend $\ct$ from $\A(\Z a)$ to $\NN(\Z a)$ (23).
+
+For every finite extension $k(T)\subseteq L\subseteq K^{\mathrm{alg}}$ (separable, in characteristic $0$), $\mathscr B_L$ is a finite $k[T]$-module and a
+Dedekind domain whose nonzero prime localizations are discrete valuation rings, its residue fields are finite over those of $k[T]$, and every prime of
+$k[T]$ has a prime above it \cite{StacksIntClosure,StacksDedekind,Sutherland}. There are finitely many $\mathfrak q\mid T$, and $\ell_{\mathfrak q}$ is
+$\C$ if $k=\C$ and is $\R$ or $\C$ if $k=\R$.
+
+\begin{lemma}[Finite detection and descent \src{23}]\label{osq:rm:lem:finite}
+The rings $\mathscr B_L$ form a directed system with $\mathscr B=\bigcup_L\mathscr B_L$, $\mathscr B\cap L=\mathscr B_L$ and $\Frac(\mathscr B)=K^{\mathrm{alg}}$.
+For $f\in\mathscr B_L$ and an integer $r\ge1$,
+\begin{equation}\label{osq:rm:eq:finitetest}
+ f\in T^r\mathscr B\iff f\in T^r\mathscr B_L\iff v_{\mathfrak q}(f)\ge r\ \text{for every }\mathfrak q\mid T .
+\end{equation}
+\end{lemma}
+\begin{proof}
+An integral element is algebraic and lies in a finite extension, and integrality over $k[T]$ is a property of the element, so $\mathscr B\cap L=\mathscr B_L$.
+Clearing the denominators of a monic equation, a nonzero polynomial multiple of any element of $K^{\mathrm{alg}}$ is integral over $k[T]$. Next,
+$f\in T^r\mathscr B$ means $f/T^r\in\mathscr B\cap L=\mathscr B_L$. A Dedekind domain is the intersection of its localizations at nonzero primes; at primes
+not above $T$ the element $T$ is a unit, and at the primes above $T$ regularity of $f/T^r$ is the stated inequality.
+\end{proof}
+
+\begin{lemma}[Finite branch locus \src{23}]\label{osq:rm:lem:branchlocus}
+A finite extension $L/k(T)$ is unramified at all but finitely many nonzero primes of $k[T]$.
+\end{lemma}
+\begin{proof}
+Multiply a primitive element by a nonzero polynomial to make it integral over $k[T]$. Its minimal polynomial is monic and separable, with nonzero
+discriminant $\Delta$. After inverting $\Delta$ the finite free algebra it generates is \'etale over $k[T][\Delta^{-1}]$, hence normal, hence the
+normalization there; only the finitely many prime divisors of $\Delta$ can ramify \cite{StacksRamification}.
+\end{proof}
+
+\begin{remark}[Two unrelated valuations \src{23}]\label{osq:rm:rem:twoplaces}
+The Laurent valuation at infinity has value $-1$ at $T$, the valuations \eqref{osq:rm:eq:valuation} have value $1$. The latter are valuations of finite
+algebraic function fields, not continuous extensions of the Laurent topology to an evaluation at $T=0$. An expansion with infinitely many negative
+powers can be regular at a place over zero, and an element finite in the surreal order, such as $\mathsf z_2/T$ below, can have a pole there.
+Confusing the two would invalidate every argument below (23).
+\end{remark}
+
+\paragraph{Explicit nilpotents of every finite order.} For an ordinary integer $n\ge2$ put
+\begin{equation}\label{osq:rm:eq:zn}
+ \mathsf z_n=T\sum_{j\ge0}\binom{1/n}jT^{j(1-n)},\qquad \mathsf z_n^n=T^n+T=T(1+T^{n-1}).
+\end{equation}
+The exponents are integers decreasing to $-\infty$, the formal binomial identity holds in characteristic $0$, and the coefficients are rational;
+in $K_{\Z a}$ for $k=\R$ this is the positive root with leading term $T$, and the same branch is used for $k=\C$.
+
+\begin{theorem}[Exact cyclic nilpotency \src{23}]\label{osq:rm:thm:explicit}
+$\mathsf z_n\in\NN(\Z a)$, $\mathsf z_n^n\in\mathsf I$, and $\mathsf z_n^j\notin\mathsf I$ for $1\le j<n$. Hence $\mathsf I=\Pi(\Z a)\NN(\Z a)$ is not radical,
+and the residue of $\mathsf z_n$ in $\mathsf B(\Z a)$ has nilpotency index exactly $n$.
+\end{theorem}
+\begin{proof}
+\eqref{osq:rm:eq:zn} is a monic equation over $\A(\Z a)$ with right side in $\Pi(\Z a)$, so $\mathsf z_n\in\NN(\Z a)$ and $\mathsf z_n^n\in\mathsf I$. Suppose
+$\mathsf z_n^j=\sum_{\ell\le r}p_\ell b_\ell$ with $1\le j<n$, $p_\ell\in Tk[T]$ and $b_\ell\in\NN(\Z a)$. Choose a finite $L$ containing $\mathsf z_n$ and all
+$b_\ell$; each $b_\ell$ is integral over $k[T]$, hence in $\mathscr B_L$. At any $\mathfrak q\mid T$ every summand has value at least $1$, while
+$1+T^{n-1}$ is a unit and \eqref{osq:rm:eq:zn} gives $v_{\mathfrak q}(\mathsf z_n^j)=j/n<1$, a contradiction.
+\end{proof}
+
+This proof uses only a finite ideal expression, the normalization of one finite function field and one valuation; it does not use the identity
+$\mathsf I=T\mathscr B$ of \cref{osq:rm:thm:span}, and it is a self-contained negative answer to fixed-cyclic radicality (23).
+
+\begin{example}[The first obstruction \src{23}]\label{osq:rm:ex:sqrt}
+For $n=2$,
+\[
+ \mathsf z_2=\sqrt{T^2+T}=T+\frac12-\frac1{8T}+\frac1{16T^2}-\frac5{128T^3}+\cdots,
+\]
+and its residue in $\mathsf B(\Z a)$ is nonzero with square zero. Although $\mathsf z_2$ is integral over $\A(\Z a)$, its Laurent constant coefficient
+$\frac12$ is not an algebraic integer, so integrality over $\A(\Z a)$ cannot be tested on the constant coefficient at infinity. And $\mathsf z_2/T$ is
+infinitesimally close to $1$ but not integral over $\A(\Z a)$: it has value $-\frac12$ at every place over zero. In the full class
+$\mathsf z_2=\omega^{a/2}\sqrt{1+\omega^a}$ with $\sqrt{1+\omega^a}\in\NN$, so $\mathsf z_2\in\Pi\NN$, in accordance with \cref{osq:nf:thm:radical}
+\merge.
+\end{example}
+
+\begin{corollary}[Unbounded nilpotence \src{23}]\label{osq:rm:cor:unbounded}
+The nilradical of $\mathsf B(\Z a)$ is not nilpotent and not finitely generated; $\mathsf B(\Z a)$ and $\NN(\Z a)$ are not Noetherian.
+\end{corollary}
+\begin{proof}
+The nilpotency indices of \cref{osq:rm:thm:explicit} are unbounded. A nil ideal generated by $x_1,\dots,x_s$ with $x_i^{d_i}=0$ has vanishing
+$(1+\sum_i(d_i-1))$th power, since every monomial of that degree contains some $x_i^{d_i}$. A quotient of a Noetherian ring is Noetherian.
+\end{proof}
+
+\begin{theorem}[Exact order after refinement \src{23}]\label{osq:rm:thm:explicitrefinement}
+For $n\ge2$, $m\ge1$ and $j\ge1$, $\mathsf z_n^j\in\mathsf I(\Z a/m)$ if and only if $mj\ge n$. So under $\mathsf B(\Z a)\to\mathsf B(\Z a/m)$, induced by
+$\A(\Z a)\subseteq\A(\Z a/m)$, the residue of $\mathsf z_n$ has index $\lceil n/m\rceil$.
+\end{theorem}
+\begin{proof}
+At a place above $U=0$, normalized by $v(U)=1$, the relation $\mathsf z_n^n=U^m(1+U^{m(n-1)})$ gives $v(\mathsf z_n^j)=mj/n$, while every element of
+$\mathsf I(\Z a/m)$ has value at least $1$, as in \cref{osq:rm:thm:explicit}. Conversely, if $mj\ge n$, then $y=\mathsf z_n^j/U$ satisfies
+$y^n=U^{mj-n}(1+U^{m(n-1)})^j$, a polynomial with constant coefficient $0$ (if $mj>n$) or $1$ (if $mj=n$), which lies in $\A(\Z a/m)$; so $y$ is integral
+over $\A(\Z a/m)$ and $\mathsf z_n^j=Uy\in\mathsf I(\Z a/m)$.
+\end{proof}
+
+For $\mathsf z_{12}$ and $m=1,2,3,4,6,12$ the indices are $12,6,4,3,2,1$; index $1$ means that the residue has become $0$. Every refined workspace still
+has nilpotents of unbounded index ($\mathsf z_n$ with $n$ large), so no single refinement removes all nilpotents; that each one is removed by some
+refinement (\cref{osq:rm:thm:generalrefinement}) has the other order of quantifiers (23).
+
+\paragraph{The residue criterion.} $\mathsf I$ is in general larger than $T\NN(\Z a)$: $\Pi(\Z a)$ contains arbitrary coefficients in $k$, which need not
+lie in $\NN(\Z a)$. The following lemma accounts for them.
+
+\begin{lemma}[Scaling \src{23}]\label{osq:rm:lem:scaling}
+$T\mathscr B\subseteq\NN(\Z a)$.
+\end{lemma}
+\begin{proof}
+If $b^d+p_{d-1}(T)b^{d-1}+\dots+p_0(T)=0$ with $p_j\in k[T]$, multiplying by $T^d$ gives
+$(Tb)^d+Tp_{d-1}(T)(Tb)^{d-1}+\dots+T^dp_0(T)=0$, a monic equation with nonleading coefficients in $Tk[T]\subseteq\A(\Z a)$.
+\end{proof}
+
+\begin{theorem}[Residue criterion \src{23}]\label{osq:rm:thm:residues}
+Let $k(T)\subseteq L\subseteq K^{\mathrm{alg}}$ be finite and $f\in\mathscr B_L$. Then $f\in\NN(\Z a)$ if and only if $f\bmod\mathfrak q\in\ell_{\mathfrak q}$ is
+integral over $D$ for every $\mathfrak q\mid T$. In particular $\sqrt{T\mathscr B_L}\subseteq\NN(\Z a)$ and $\mathsf J\subseteq\NN(\Z a)$.
+\end{theorem}
+\begin{proof}
+If $f$ satisfies a monic equation over $\A(\Z a)$, reduce it modulo $\mathfrak q\mid T$: a coefficient $d+Tp(T)$ becomes $d\in D$. Conversely, for each of
+the finitely many $\mathfrak q\mid T$ choose a monic $Q_{\mathfrak q}\in D[Y]$ killing $f\bmod\mathfrak q$, and let $Q$ be their product; then $Q(f)\in\mathfrak q$
+for all $\mathfrak q\mid T$. With $T\mathscr B_L=\prod_{\mathfrak q\mid T}\mathfrak q^{e_{\mathfrak q}}$ and $r\ge\max e_{\mathfrak q}$, $Q(f)^r=Tb$ with
+$b\in\mathscr B_L$. By \cref{osq:rm:lem:scaling} $Tb$ is integral over $\A(\Z a)$, $Y^r-Tb$ shows that $Q(f)$ is integral over $\A(\Z a)[Tb]$, and
+$Q(Y)-Q(f)$ is monic over $\A(\Z a)[Q(f)]$ and kills $f$; transitivity gives $f\in\NN(\Z a)$. Elements of $\sqrt{T\mathscr B_L}$ have zero residues. An
+element of $\mathsf J$ lies in some $\mathscr B_L$ with a power in $T\mathscr B$, hence in $T\mathscr B_L$ by \cref{osq:rm:lem:finite}.
+\end{proof}
+
+The proof holds for every coefficient field of characteristic $0$ and every unital $D$ in it; the real and complex hypotheses enter only in
+\cref{osq:rm:thm:span}, through the small dimensions of the residue fields (23).
+
+\begin{remark}[A finite certificate, not an oracle \src{23}]\label{osq:rm:rem:effective}
+The sufficiency proof yields an explicit monic certificate once the normalization and the residues are known: if $b=Q(f)^r/T$ satisfies a monic
+equation of degree $d$ over $k[T]$, \cref{osq:rm:lem:scaling} gives a monic $H$ of degree $d$ over $\A(\Z a)$ killing $Q(f)^r$, and $H(Q(Y)^r)$ kills $f$
+and has degree $dr\deg Q$. This is a finite algebraic criterion for a represented algebraic Laurent element, not a decision procedure for arbitrary
+real coefficients or arbitrary normal forms: an implementation must represent $L$, identify the chosen branch at infinity, normalize at the finite
+places and decide integrality of the residue constants, and substituting $T=0$ in a possibly singular defining equation need not separate the
+branches of its normalization (23).
+\end{remark}
+
+\begin{theorem}[Coefficient span and the extended ideal \src{23}]\label{osq:rm:thm:span}
+$k\NN(\Z a)=\mathscr B$ (finite $k$-linear span) and $\mathsf I=T\mathscr B$. Hence $\mathsf B(\Z a)=\NN(\Z a)/T\mathscr B\hookrightarrow\mathsf B^{\mathrm{co}}(\Z a)$,
+the two fibres have the same nilradical $\mathsf J/T\mathscr B$, and $\mathsf C(\Z a)=\NN(\Z a)/\mathsf J\hookrightarrow\mathsf C^{\mathrm{co}}(\Z a)$.
+\end{theorem}
+\begin{proof}
+Clearly $k\NN(\Z a)\subseteq\mathscr B$. Let $b\in\mathscr B_L$. By the Chinese remainder theorem $\mathscr B_L/\sqrt{T\mathscr B_L}\cong\prod_{\mathfrak q\mid T}\ell_{\mathfrak q}$,
+a finite product of copies of $\C$ (if $k=\C$) or of $\R$ and $\C$ (if $k=\R$). The coordinate vectors, together for $k=\R$ with the vector equal to
+$i$ in one complex factor and $0$ elsewhere, form a $k$-basis whose entries are integral over $D$. Lift them to $b_1,\dots,b_s\in\mathscr B_L$; they lie in
+$\NN(\Z a)$ by \cref{osq:rm:thm:residues}. Choose $c_j\in k$ with $b-\sum_jc_jb_j\in\sqrt{T\mathscr B_L}\subseteq\NN(\Z a)$; so $b\in k\NN(\Z a)$. As $T\in\NN(\Z a)$,
+$k[T]\NN(\Z a)=k\NN(\Z a)=\mathscr B$ and $\mathsf I=Tk[T]\NN(\Z a)=T\mathscr B$. The injection is immediate, $\mathsf J\subseteq\NN(\Z a)$ by
+\cref{osq:rm:thm:residues}, and nilpotence modulo $T\mathscr B$ means the same in both rings; the radical of $\mathsf I$ in $\NN(\Z a)$ is $\mathsf J\cap\NN(\Z a)=\mathsf J$.
+\end{proof}
+
+\begin{corollary}[Rational functions \src{23}]\label{osq:rm:cor:rational}
+$\NN(\Z a)\cap k(T)=\overline\Z_k+Tk[T]$ and $\mathsf I\cap k(T)=Tk[T]$, where $\overline\Z_k$ is $\overline\Z_\R$ for the real pair and $\overline\Z$ for the
+Gaussian pair.
+\end{corollary}
+\begin{proof}
+$k[T]$ is integrally closed in $k(T)$, and its only place over $T$ is $T=0$, so \cref{osq:rm:thm:residues} asks exactly that $f(0)$ be integral over $D$.
+For the ideal use $\mathsf I=T\mathscr B$ and $\mathscr B\cap k(T)=k[T]$.
+\end{proof}
+
+For the real pair the first equality is 20's \cref{osq:bb:thm:rational}, credited by 23 and recovered as a check on the residue criterion. 20's second
+equality concerns the full-class ideal, $\Pi\NN\cap\R(T)=T\R[T]$; by \cref{osq:bb:thm:descent} this is $\mathsf J\cap\R(T)$, and 23's $\mathsf I\cap\R(T)=T\R[T]$ is
+the same set because $T\R[T]\subseteq\mathsf I\subseteq\mathsf J$. The Gaussian pair is new.
+
+\paragraph{The ramification filtration and exact refinement.}
+
+\begin{definition}[Minimum finite-place order \src{23}]\label{osq:rm:def:nu}
+For $0\ne f\in\mathscr B$ choose a finite $L\ni f$ and put $\nu_T(f)=\min_{\mathfrak q\mid T}v_{\mathfrak q}(f)\in\Q_{\ge0}$; put $\nu_T(0)=+\infty$.
+\end{definition}
+
+\begin{lemma}[Invariance and inequalities \src{23}]\label{osq:rm:lem:nu}
+$\nu_T(f)$ does not depend on $L$. For $f,g\in\mathscr B$ and $r\ge1$, $\nu_T(f+g)\ge\min\{\nu_T(f),\nu_T(g)\}$, $\nu_T(fg)\ge\nu_T(f)+\nu_T(g)$ and
+$\nu_T(f^r)=r\nu_T(f)$; and
+\begin{equation}\label{osq:rm:eq:nuideal}
+ f\in T^r\mathscr B\iff\nu_T(f)\ge r,\qquad f\in\mathsf J\iff\nu_T(f)>0 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $L\subseteq L'$, every $\mathfrak q\mid T$ of $\mathscr B_L$ has a prime of $\mathscr B_{L'}$ above it, and with both valuations normalized at $T$ the larger
+restricts to the smaller; so the set of values gains repetitions but no new values. Compare two choices in a compositum. The inequalities hold at each
+prime of one finite field containing both elements. The ideal criterion is \eqref{osq:rm:eq:finitetest}; a positive minimum becomes at least $1$ after
+multiplication by a large integer, a zero minimum never does.
+\end{proof}
+
+\begin{definition}[The truncated order and its filtration \src{23}]\label{osq:rm:def:truncated}
+For $\bar f\in\mathsf B(\Z a)$ put $\hat\nu_T(\bar f)=\min\{1,\nu_T(f)\}\in[0,1]\cap\Q$, and for rational $0\le r\le1$ put
+$\operatorname{Fil}^r=\{x\in\mathsf B(\Z a):\hat\nu_T(x)\ge r\}$.
+\end{definition}
+
+Representatives differing by an element of $T\mathscr B$ have the same values below $1$, so $\hat\nu_T$ is well defined, and $\hat\nu_T(\bar f)=1$ exactly
+when $\bar f=0$. Moreover $\hat\nu_T(x+y)\ge\min\{\hat\nu_T(x),\hat\nu_T(y)\}$ and $\hat\nu_T(xy)\ge\min\{1,\hat\nu_T(x)+\hat\nu_T(y)\}$; the $\operatorname{Fil}^r$ are
+ideals with $\operatorname{Fil}^0=\mathsf B(\Z a)$, $\operatorname{Fil}^1=0$, $\operatorname{Fil}^r\operatorname{Fil}^s\subseteq\operatorname{Fil}^{\min(1,r+s)}$ and
+$\operatorname{Nil}(\mathsf B(\Z a))=\bigcup_{0<r\le1}\operatorname{Fil}^r$. This is a rationally indexed filtration, not a valuation: the product inequality can
+be strict because different branches realize the two minima, and nontrivial complementary idempotents (constructed below) have order $0$ while their
+product has order $1$ (23).
+
+\begin{corollary}[The index of any nilpotent \src{23}]\label{osq:rm:cor:generalindex}
+For $0\ne f\in\NN(\Z a)$ with $\nu_T(f)>0$ the residue of $f$ has nilpotency index $\lceil1/\nu_T(f)\rceil$; if $\nu_T(f)=0$ it is not nilpotent.
+\end{corollary}
+\begin{proof}
+Its $r$th power vanishes exactly when $r\nu_T(f)\ge1$, by \cref{osq:rm:thm:span} and \eqref{osq:rm:eq:nuideal}.
+\end{proof}
+
+\begin{theorem}[General refinement law \src{23}]\label{osq:rm:thm:generalrefinement}
+For $m\ge1$ and $f\in\NN(\Z a)$, with $\nu_U$ normalized by $v(U)=1$,
+\begin{equation}\label{osq:rm:eq:generalrefine}
+ \nu_U(f)=m\,\nu_T(f),\qquad f\in\mathsf I(\Z a/m)\iff\nu_T(f)\ge\frac1m ;
+\end{equation}
+equivalently $\hat\nu_U(\bar f)=\min\{1,m\hat\nu_T(\bar f)\}$ under $\mathsf B(\Z a)\to\mathsf B(\Z a/m)$. Every nilpotent residue is killed by some refinement, and
+a non-nilpotent residue by none.
+\end{theorem}
+\begin{proof}
+Let $L\ni f$ be finite and $L'=L\,k(U)\subseteq K_{\Z a/m}$. The integral closures of $k[T]$ and of $k[U]$ in $L'$ coincide ($k[U]$ is integral over $k[T]$),
+every prime of $\mathscr B_L$ above $T$ extends, and the extensions are exactly the primes above $U=0$. A valuation normalized by $v(U)=1$ sends $T$ to $m$,
+so it is $m$ times the old normalization on $L$; every old prime occurs, so the minima scale by $m$. The second formula is \cref{osq:rm:thm:span} over
+$\Z a/m$ with \eqref{osq:rm:eq:nuideal}. If $\nu_T(f)>0$ take $m\ge1/\nu_T(f)$.
+\end{proof}
+
+This is an exact finite certificate for the disappearance of a represented nilpotent: compute its positive minimum order at the finitely many branches
+over zero and take a root refinement at least its reciprocal. The bound is a threshold for ideal membership, not a ramification index or a common
+multiple of ramification indices; for $\mathsf z_n$ every branch has order $1/n$ (23).
+
+\paragraph{The bounded-denominator Puiseux limit.} For $m\mid m'$ the inclusions $K_{\Z a/m}\subseteq K_{\Z a/m'}$ form a directed system. Put
+\begin{equation}\label{osq:rm:eq:pui}
+ \begin{gathered}
+ K_{\mathrm{Pui}}=\bigcup_mK_{\Z a/m},\qquad \A_{\mathrm{Pui}}=\bigcup_m\A(\Z a/m),\qquad \Pi_{\mathrm{Pui}}=\bigcup_m\Pi(\Z a/m),\\
+ \NN_{\mathrm{Pui}}=\IC_{K_{\mathrm{Pui}}}(\A_{\mathrm{Pui}}),\qquad \mathsf I_{\mathrm{Pui}}=\Pi_{\mathrm{Pui}}\NN_{\mathrm{Pui}}.
+ \end{gathered}
+\end{equation}
+Each element of $K_{\mathrm{Pui}}$ has exponents with a bounded common denominator, so $K_{\mathrm{Pui}}$ is strictly smaller than the Hahn field $K_{\Q a}$:
+$\sum_{n\ge1}T^{1/n}$ has reverse well-ordered support in $\Q a$ and no common denominator.
+
+\begin{theorem}[Reduction by rational scales \src{23}]\label{osq:rm:thm:pui}
+$\NN_{\mathrm{Pui}}=\bigcup_m\NN(\Z a/m)$, $\mathsf I_{\mathrm{Pui}}=\bigcup_m\mathsf I(\Z a/m)$ and $\NN_{\mathrm{Pui}}/\mathsf I_{\mathrm{Pui}}\cong\operatorname{colim}_m\mathsf B(\Z a/m)$.
+The ideal $\mathsf I_{\mathrm{Pui}}$ is radical, and for each $m$ the kernel of $\mathsf B(\Z a/m)\to\NN_{\mathrm{Pui}}/\mathsf I_{\mathrm{Pui}}$ is exactly
+$\operatorname{Nil}(\mathsf B(\Z a/m))$. Finitely many nilpotent residues are killed at one common later stage, and no finite stage is reduced.
+\end{theorem}
+\begin{proof}
+An element of $K_{\mathrm{Pui}}$ and the finitely many coefficients of an integrality equation over $\A_{\mathrm{Pui}}$ lie in a common stage; so do the finitely
+many factors of an extended-ideal expression. This gives the two unions and the colimit. If $f^r\in\mathsf I_{\mathrm{Pui}}$, move $f$ and the expression to a
+common stage $m$; the residue of $f$ in $\mathsf B(\Z a/m)$ is nilpotent, so \cref{osq:rm:thm:generalrefinement} (over $\Z a/m$) kills it at a later stage and
+$f\in\mathsf I_{\mathrm{Pui}}$. A residue that dies in the colimit dies at a finite later stage, so its minimum order was positive by \eqref{osq:rm:eq:generalrefine}
+and it was nilpotent. For finitely many residues take a common refinement above all thresholds. Each finite stage is a cyclic workspace and contains
+the family of \cref{osq:rm:thm:explicit}.
+\end{proof}
+
+\begin{remark}[A set-sized positive case \src{23}]\label{osq:rm:rem:positivecase}
+For $k=\R$, $K_{\mathrm{Pui}}$ is real closed and $K_{\mathrm{Pui}}[i]$ is the complex Puiseux field, algebraically closed by the Newton--Puiseux theorem
+\cite{Nowak}; the real case also follows from the characterization of real closed fields by algebraic closedness after adjoining $i$. $\A_{\mathrm{Pui}}$ is
+its truncation integer part. So radicality is restored in a set-sized real closed surreal subfield, without a proper class of scales. This concerns the
+bounded-denominator support class only: it decides nothing for the Hahn field $K_{\Q a}$ (\cref{osq:rm:q:fullQ}), and it does not say that the colimit
+fibre is isomorphic to a reduced finite-stage fibre; the kernel on each stage is known, but the image may grow (23).
+\end{remark}
+
+\begin{remark}[A second route through the finite-axiom theorem \merge]\label{osq:rm:rem:puiabstract}
+For the real pair, the field $K_{\mathrm{Pui}}$, the ring $\A_{\mathrm{Pui}}=\Z+\Pi_{\mathrm{Pui}}$, the retraction $\ct$ and its kernel $\Pi_{\mathrm{Pui}}$ (the
+$F$, $A$, $c$ and $J$ of \cref{osq:nf:thm:abstract}) satisfy its hypotheses: $K_{\mathrm{Pui}}$ is real closed and contains the real algebraic numbers;
+(i) $\Pi_{\mathrm{Pui}}$ is divisible by nonzero integers; (ii) if
+$x_1,\dots,x_r\in\Pi(\Z a/n)$ and $m\ge1$, then $d=T^{1/(2mn)}\in\Pi_{\mathrm{Pui}}$ and every $x_j/d^m$ has $T$-exponents at least $\frac1n-\frac1{2n}>0$ with
+denominator dividing $2n$, so lies in $\A_{\mathrm{Pui}}$; (iii) the powers $T^j$ are cofinal. So 19's theorem gives the radicality of
+$\mathsf I_{\mathrm{Pui}}$ for the real pair again, and more: $\NN_{\mathrm{Pui}}/\mathsf I_{\mathrm{Pui}}$ is integrally closed in its rationalization and is the
+Boolean power $\overline\Z[\Idem(\NN_{\mathrm{Pui}}/\mathsf I_{\mathrm{Pui}})]$, and the fibre of the integral closure $\NN'$ of $\A_{\mathrm{Pui}}$ in $K_{\mathrm{Pui}}[i]$
+is absolutely integrally closed and splits as the square of the real one (\cref{osq:nf:thm:saturation,osq:nf:thm:boolean,osq:nf:thm:doubling,osq:nf:cor:aic}).
+The Gaussian pair is covered too: $\Z[i]+\Pi_{\mathrm{Pui}}[i]=\A_{\mathrm{Pui}}[i]$ is integral over $\A_{\mathrm{Pui}}$, so its integral closure in $K_{\mathrm{Pui}}[i]$ is
+$\NN'$, and its extended ideal $\Pi_{\mathrm{Pui}}[i]\NN'=\Pi_{\mathrm{Pui}}\NN'$ is the ideal of \cref{osq:nf:thm:abstract}. Its Boolean algebra is atomless of
+cardinality $\mathfrak c$: an idempotent of the colimit is the residue of an idempotent of some $\mathsf B(\Z a/m)$, which \cref{osq:rm:thm:uniformsplit} (over
+$\Z a/m$) splits into two nonzero idempotents; these are not nilpotent and so survive by \cref{osq:rm:thm:pui}, and likewise the independent family of
+\cref{osq:rm:thm:cardinality} survives, while $|K_{\mathrm{Pui}}|=\mathfrak c$. This is an instance of the second clause of \cref{osq:nf:q:fibre}(b):
+real-rooted lifting gives a Boolean-power fibre here, with the monomial divisibility (ii), although set-family divisibility fails ($T^{1/n}\in\Pi_{\mathrm{Pui}}$
+for all $n$ and no $T^\delta$ divides all of them in $\Pi_{\mathrm{Pui}}$). The cyclic workspace itself
+is outside \cref{osq:nf:thm:abstract}: $K_{\Z a}$ is not real closed and (ii) fails there.
+\end{remark}
+
+\paragraph{Local structure and the nilradical.} The valuation facts used are standard \cite{StacksVal}.
+
+\begin{theorem}[Local structure of the coefficient normalization \src{23}]\label{osq:rm:thm:localtype}
+$\mathscr B$ is a Pr\"ufer domain. For every maximal ideal $\mathfrak q\ni T$ of $\mathscr B$, the valuation domain $\mathscr B_{\mathfrak q}$ has value group $\Q$,
+normalized by $v(T)=1$, and residue field isomorphic to $\C$, for both pairs; it has rank one and is not a discrete valuation ring.
+\end{theorem}
+\begin{proof}
+A maximal ideal $\mathfrak q$ of $\mathscr B$ contracts to a maximal ideal of $k[T]$, as $\mathscr B$ is integral over $k[T]$, and with $\mathfrak q_L=\mathfrak q\cap\mathscr B_L$
+one has $\mathscr B_{\mathfrak q}=\bigcup_L(\mathscr B_L)_{\mathfrak q_L}$, a directed union of discrete valuation rings with common fraction field $K^{\mathrm{alg}}$: for
+a nonzero element put numerator and denominator in one stage, where it or its inverse is regular. So $\mathscr B_{\mathfrak q}$ is a valuation domain. If
+$T\in\mathfrak q$, its normalized value group is a union of groups $\frac1{e_L}\Z$, so lies in $\Q$, and $v(\mathsf z_n)=1/n$ for all $n\ge2$ by
+\eqref{osq:rm:eq:zn}; so it is $\Q$, Archimedean and not discrete. The residue field is algebraic over $k$, the union of the finite residue fields; for
+$k=\R$, 20's $\varrho_0=T(1-T^{-2})^{1/2}\in\mathscr B$ has $\varrho_0^2=T^2-1$, so its residue squares to $-1$ and the residue field is $\C$.
+\end{proof}
+
+\begin{remark}[A real domain with a nonreal arithmetic fibre \src{23}]\label{osq:rm:rem:nonreal}
+$\varrho_0$ is even integral over $\A(\Z a)$, since the constant coefficient of $T^2-1$ is $-1\in D$, and its residue in $\mathsf B(\Z a)$ squares to $-1$.
+So the real arithmetic fibre is not formally real although $\NN(\Z a)$ lies in an ordered field; $\mathsf I$ is not order-convex, and the quotient is not a
+standard-part construction. 23 notes that the full-class normalization shows the same phenomenon; its witness there is 19's $\upsilon_T$
+(\cref{osq:nf:prop:unit}), which for $T=\omega^a$ also lies in $K_{\Z a}$ \merge, while $\varrho_0$ is a second witness inside the cyclic workspace.
+\end{remark}
+
+\begin{theorem}[The nilradical is idempotent \src{23}]\label{osq:rm:thm:nilideal}
+$\mathsf J^2=\mathsf J$, as an ideal of $\mathscr B$ and as an ideal of $\NN(\Z a)$. So the common nilradical $\mathsf J/T\mathscr B$ of $\mathsf B(\Z a)$ and
+$\mathsf B^{\mathrm{co}}(\Z a)$ is nonzero and equal to its square, and it is neither nilpotent nor finitely generated.
+\end{theorem}
+\begin{proof}
+At a maximal ideal not containing $T$ both $\mathsf J$ and $\mathsf J^2$ localize to the unit ideal. At $\mathfrak q\ni T$ the value group is $\Q$, so
+$\sqrt{T\mathscr B_{\mathfrak q}}=\mathfrak q\mathscr B_{\mathfrak q}$; for $0\ne b$ in it choose rational $0<\delta<v(b)$ and $u$ with $v(u)=\delta$, so that $b=u\cdot(b/u)$
+is a product of two elements of the maximal ideal, which is therefore idempotent. Equality of ideals is local, so $\mathsf J^2=\mathsf J$ in $\mathscr B$.
+As $\mathsf J\subseteq\NN(\Z a)$, a coefficient from $\mathscr B$ in a finite sum of products can be absorbed into one factor, which stays in $\mathsf J$; so the
+same holds over $\NN(\Z a)$. The rest is \cref{osq:rm:thm:explicit,osq:rm:cor:unbounded}.
+\end{proof}
+
+This does not conflict with Nakayama's lemma, since the ideal is not finitely generated, and an idempotent ideal need not consist of idempotents:
+here all its elements are nilpotent (23).
+
+\begin{theorem}[The associated graded ring \src{23}]\label{osq:rm:thm:graded}
+For every $r\ge1$, $\mathsf I^r=T^r\mathscr B$ and $\mathsf I^r/\mathsf I^{r+1}\cong\mathsf B^{\mathrm{co}}(\Z a)$ as $\mathsf B(\Z a)$-modules, the action being through the
+injection of \cref{osq:rm:thm:span}. Multiplication gives a graded isomorphism
+\begin{equation}\label{osq:rm:eq:graded}
+ \operatorname{gr}_{\mathsf I}(\NN(\Z a))\cong\mathsf B(\Z a)\oplus W\,\mathsf B^{\mathrm{co}}(\Z a)[W]=\{g\in\mathsf B^{\mathrm{co}}(\Z a)[W]:g(0)\in\mathsf B(\Z a)\},
+\end{equation}
+and in particular $\mathsf I/\mathsf I^2\cong\mathsf B^{\mathrm{co}}(\Z a)\ne0$ and $\Tor_1^{\NN(\Z a)}(\mathsf B(\Z a),\mathsf B(\Z a))\cong\mathsf B^{\mathrm{co}}(\Z a)$.
+\end{theorem}
+\begin{proof}
+$\mathsf I=T\mathscr B$ gives $\mathsf I^r\subseteq T^r\mathscr B$, and $T^rb=(Tb)T\cdots T$ is a product of $r$ elements of $\mathsf I$. Multiplication by $T^r$
+identifies $\mathscr B/T\mathscr B$ with $T^r\mathscr B/T^{r+1}\mathscr B$ ($\mathscr B$ is a domain), $\NN(\Z a)$ acts through its image in $\mathscr B/T\mathscr B$, and products of
+these identifications multiply classes in $\mathsf B^{\mathrm{co}}(\Z a)$. Tensoring $0\to\mathsf I\to\NN(\Z a)\to\mathsf B(\Z a)\to0$ with $\mathsf B(\Z a)$, the map
+$\mathsf I\otimes\mathsf B(\Z a)\cong\mathsf I/\mathsf I^2\to\mathsf B(\Z a)$ is zero, which gives the $\Tor_1$.
+\end{proof}
+
+The conormal module is a further reason not to transfer identities from the full-class ideal, which satisfies $\Pi\NN=(\Pi\NN)^2$
+(\cref{osq:nf:prop:ideal}), to a cyclic workspace: $\mathsf I$ has a genuine descending sequence of powers, although the nilradical of its quotient is
+idempotent (23).
+
+\begin{corollary}[Adic completion as a pullback \src{23}]\label{osq:rm:cor:completion}
+With $\widehat{\mathscr B}=\varprojlim_r\mathscr B/T^r\mathscr B$ and $\widehat{\NN}=\varprojlim_r\NN(\Z a)/\mathsf I^r$,
+$\widehat{\NN}\cong\widehat{\mathscr B}\times_{\mathsf B^{\mathrm{co}}(\Z a)}\mathsf B(\Z a)$, and $\mathscr B\to\widehat{\mathscr B}$ and $\NN(\Z a)\to\widehat{\NN}$ are injective.
+\end{corollary}
+\begin{proof}
+Since $T\mathscr B\subseteq\NN(\Z a)$, the image of $\NN(\Z a)/\mathsf I^r$ in $\mathscr B/T^r\mathscr B$ is the inverse image of $\mathsf B(\Z a)\subseteq\mathsf B^{\mathrm{co}}(\Z a)$;
+pass to the limit. A nonzero element of $\mathscr B$ has finite $\nu_T$, so lies in only finitely many $T^r\mathscr B$.
+\end{proof}
+
+\paragraph{Boolean splitting without a new scale.} For a real $c>0$ put
+\begin{equation}\label{osq:rm:eq:splitter}
+ \varsigma_c=T(1+cT^{-2})^{1/2},\qquad \mathsf y_c=\frac{1+\varsigma_c/\sqrt c}2,\qquad \varsigma_c^2=T^2+c,\qquad \mathsf y_c^2-\mathsf y_c=\frac{T^2}{4c}.
+\end{equation}
+The last equation is monic over $\A(\Z a)$, so $\mathsf y_c\in\NN(\Z a)$ and $\bar{\mathsf y}_c$ is an idempotent of $\mathsf B(\Z a)$, for both pairs. Its
+nontriviality and independence from given data are proved by choosing $c$ outside the finite branch locus of the data.
+
+\begin{lemma}[A quadratic branch splitting every zero-place branch \src{23}]\label{osq:rm:lem:freshquad}
+Let $k(T)\subseteq L\subseteq K^{\mathrm{alg}}$ be finite. For all but finitely many real $c>0$: (i) $T^2+c$ is not a square in $L$, and $[L(\varsigma_c):L]=2$;
+(ii) every $\mathfrak q\mid T$ of $\mathscr B_L$ has extensions to $\mathscr B$ at which the residue of $\varsigma_c$ is $\sqrt c$, and extensions at which it is
+$-\sqrt c$; (iii) at these, with $v(T)=1$, $(v(\mathsf y_c),v(1-\mathsf y_c))$ is $(0,2)$, respectively $(2,0)$.
+\end{lemma}
+\begin{proof}
+Only finitely many primes of $k[T]$ ramify in $L$ (\cref{osq:rm:lem:branchlocus}); choose $c$ so that the prime factors of $T^2+c$ avoid them, which
+excludes finitely many $c$ (for $k=\R$ the $T^2+c$ are distinct irreducible quadratics, for $k=\C$ their pairs of roots are disjoint). Then $T^2+c$ has
+order $1$ at every prime of $\mathscr B_L$ above one of its factors, so it is not a square in $L$. Hence $\mathscr B_L[\varsigma_c]$ is free over $\mathscr B_L$ on $1,\varsigma_c$,
+and modulo $\mathfrak q\mid T$ it is $\ell_{\mathfrak q}[Y]/(Y^2-c)\cong\ell_{\mathfrak q}\times\ell_{\mathfrak q}$, since $\sqrt c\in k$ and $2\sqrt c\ne0$. Both primes of this
+algebra extend to $\mathscr B$ by lying over, in set-sized integral extensions. There $\mathsf y_c$ has residue $1$, respectively $0$, and
+$\mathsf y_c(1-\mathsf y_c)=-T^2/(4c)$ fixes the other value as $2$.
+\end{proof}
+
+Irreducibility is forced at a previously unused finite place, while the two branches occur over zero, and the Laurent expansion at infinity is kept
+throughout: a new Boolean coordinate with the exponent group still exactly $\Z a$ (23).
+
+\begin{theorem}[Uniform relative splitting \src{23}]\label{osq:rm:thm:uniformsplit}
+Let $S$ be a unital subring of $\mathsf B(\Z a)$ with $|S|<\mathfrak c$. There is a real $c>0$ such that, for $e=\bar{\mathsf y}_c$, the ring homomorphism
+\begin{equation}\label{osq:rm:eq:uniformsplit}
+ S\times S\to\mathsf B(\Z a),\qquad (s_0,s_1)\mapsto s_0(1-e)+s_1e,
+\end{equation}
+is injective. The same holds with $\mathsf B(\Z a)$ replaced by $\mathsf C(\Z a)$, $\mathsf B^{\mathrm{co}}(\Z a)$ or $\mathsf C^{\mathrm{co}}(\Z a)$.
+\end{theorem}
+\begin{proof}
+Choose a representative $f_s\in\NN(\Z a)$ of each $s\in S$. The finite subsets of representatives generate at most $\max(|S|,\aleph_0)<\mathfrak c$ finite
+extensions of $k(T)$, each excluding finitely many $c$ in \cref{osq:rm:lem:freshquad}; choose $c>0$ outside their union. (No regularity of $\mathfrak c$ is
+used.) The map is a ring homomorphism because $e$ is idempotent. Let $(s_0,s_1)\ne(0,0)$, say $s_j\ne0$, and put both representatives in one of the chosen
+fields $L$. As $f_{s_j}\notin T\mathscr B$, some $\mathfrak q\mid T$ has $v_{\mathfrak q}(f_{s_j})<1$. At an extension of \cref{osq:rm:lem:freshquad} where the idempotent
+multiplying $s_j$ has value $0$ and the other value $2$, the summand of $s_j$ has value below $1$ and the other at least $2$, so the sum is not in $T\mathscr B$.
+For $\mathsf C(\Z a)$ a nonzero class has a branch of value exactly $0$, and the sum has value $0$, so it is not in $\mathsf J$. For the coefficient fibres take
+representatives in $\mathscr B$, whose values are still nonnegative.
+\end{proof}
+
+If all representatives of a subring lie in one finite $L$, one finite exceptional set suffices, whatever the size of the subring; this is used for
+countable coefficient fields in \cref{osq:rm:thm:countable} (23).
+
+\begin{corollary}[Atomlessness \src{23}]\label{osq:rm:cor:atomless}
+The Boolean algebras $\Idem(\mathsf B(\Z a))$, $\Idem(\mathsf C(\Z a))$, $\Idem(\mathsf B^{\mathrm{co}}(\Z a))$ and $\Idem(\mathsf C^{\mathrm{co}}(\Z a))$
+are atomless.
+\end{corollary}
+\begin{proof}
+A nonzero idempotent $b$ generates a countable unital ring; \cref{osq:rm:thm:uniformsplit} gives $e$ with $be$ and $b(1-e)$ nonzero, disjoint and with sum $b$.
+\end{proof}
+
+\begin{theorem}[Independent idempotents and cardinal invariants \src{23}]\label{osq:rm:thm:cardinality}
+The family $(\bar{\mathsf y}_c)_{c\in\R_{>0}}$ is Boolean independent in each of the four fibres of \cref{osq:rm:cor:atomless}. Their Boolean algebras have
+cardinality $\mathfrak c$ and order density $\mathfrak c$: no set of fewer than $\mathfrak c$ nonzero idempotents has a member below every nonzero idempotent.
+\end{theorem}
+\begin{proof}
+For distinct $c_1,\dots,c_r>0$ the square classes of the $T^2+c_j$ in $k(T)$ are independent, since a nonempty product has odd order at a prime factor of
+only one of them; by \cref{osq:bb:lem:multiquadratic} adjoining the $\varsigma_{c_j}$ gives degree $2^r$. So $k[T,\varsigma_{c_1},\dots,\varsigma_{c_r}]$ is free over
+$k[T]$ on the square-root monomials (the monic relations span, the degree gives independence), and modulo $T$ it is the product of $2^r$ copies of $k$,
+one for each assignment $\varsigma_{c_j}\mapsto\pm\sqrt{c_j}$. Every such prime extends to $\mathscr B$, and the corresponding Boolean word in the
+$\mathsf y_{c_j}$ and $1-\mathsf y_{c_j}$ has residue $1$ there, so it is not in $\mathsf J$ and is nonzero in all four fibres. As $K^{\mathrm{alg}}$ is algebraic over
+$k(T)$, $|K^{\mathrm{alg}}|\le|k(T)|\aleph_0=\mathfrak c$, which bounds the fibres. If $\mathcal D$ were order dense of size $<\mathfrak c$, the ring $S$ it generates
+has $|S|<\mathfrak c$, and a splitter $e$ of $S$ is nonzero while $d(1-e)\ne0$ for every $0\ne d\in\mathcal D$, so no $d\le e$.
+\end{proof}
+
+\begin{corollary}[The number of zero-place branches \src{23}]\label{osq:rm:cor:manyplaces}
+$\mathscr B$ has exactly $2^{\mathfrak c}$ maximal ideals containing $T$, hence at least $2^{\mathfrak c}$ distinct valuation domains as in
+\cref{osq:rm:thm:localtype}.
+\end{corollary}
+\begin{proof}
+For $\eta:\R_{>0}\to\{0,1\}$, the ideal generated by $T$ and the elements $\mathsf y_c-\eta(c)$ is proper, since every finite subset of these relations holds
+at a prime of the proof of \cref{osq:rm:thm:cardinality}; a maximal ideal containing it determines $\eta$. There are at most $2^{|\mathscr B|}=2^{\mathfrak c}$ subsets
+of $\mathscr B$, and distinct maximal ideals give distinct localizations.
+\end{proof}
+
+\begin{remark}[What these invariants do not determine \src{23}]\label{osq:rm:rem:boolboundary}
+An independent family of size $\mathfrak c$ does not make the algebra free on it; uniform splitting adds one independent coordinate over a prescribed
+small subring and does not realize arbitrary infinite Boolean types; neither completeness nor infinite joins follow, and the isomorphism type for
+$k=\R$ or $\C$ is open (\cref{osq:rm:q:boolean}). The nilradical does not obstruct comparison with the reduced fibre: in a commutative ring idempotents
+lift uniquely across a nil ideal (if $b^2-b=t$ is nilpotent, $2b-1$ is a unit since $(2b-1)^2=1+4t$, and $b-t/(2b-1)$ squares the error up to a unit;
+two idempotents differing by a nilpotent have nilpotent idempotent cross terms $e(1-f)$, $f(1-e)$, hence zero ones). This standard fact is not claimed
+(23).
+\end{remark}
+
+\begin{remark}[The Boolean-power form of the cyclic reduced fibre \merge]\label{osq:rm:rem:booleanform}
+For the real pair \cref{osq:bb:prop:fixedboolean} gives $\mathsf C(\Z a)\cong\overline\Z[\Idem(\mathsf C(\Z a))]$, and by
+\cref{osq:rm:cor:atomless,osq:rm:thm:cardinality} the Boolean parameter is atomless of cardinality and order density $\mathfrak c$, with $2^{\mathfrak c}$
+branches over zero. The same proof of \cref{osq:bb:prop:fixedboolean} applies verbatim over the coefficient field $k_0=\overline\Q\cap\R$ of
+\cref{osq:rm:thm:countable}: it uses normality, divisibility of the ideal by nonzero integers, $\upsilon_T$ (whose Laurent coefficients are rational) and the
+real algebraic integers, all present there. So the reduced fibre of the $k_0$-fragment is $\overline\Z[\mathfrak B]$ with $\mathfrak B$ the Cantor algebra, the
+ring of locally constant functions from Cantor space $\{0,1\}^{\N}$ to the discrete ring $\overline\Z$. By \cref{osq:rm:rem:boolboundary} the idempotents of the
+unreduced fibres are the same.
+\end{remark}
+
+\paragraph{Exact zero divisors and periodic homology.}
+
+\begin{theorem}[Exact annihilators in the coefficient fibre \src{23}]\label{osq:rm:thm:annC}
+Fix $n\ge2$ and let $\bar{\mathsf z}_n$ be the residue of $\mathsf z_n$ in $\mathsf B^{\mathrm{co}}(\Z a)$. For $1\le j<n$,
+$\Ann_{\mathsf B^{\mathrm{co}}(\Z a)}(\bar{\mathsf z}_n^j)=\bar{\mathsf z}_n^{n-j}\mathsf B^{\mathrm{co}}(\Z a)$.
+\end{theorem}
+\begin{proof}
+The right side annihilates since $\bar{\mathsf z}_n^n=0$. If $y\in\mathscr B$ represents an annihilator, $y\mathsf z_n^j=Tb$ with $b\in\mathscr B$; multiplying by
+$\mathsf z_n^{n-j}$ and cancelling $T$ in the domain $\mathscr B$ gives $y(1+T^{n-1})=b\mathsf z_n^{n-j}$, and $1+T^{n-1}\equiv1$ modulo $T\mathscr B$.
+\end{proof}
+
+Locally, in $\mathscr B_{\mathfrak q}/T\mathscr B_{\mathfrak q}$, annihilation by $\bar{\mathsf z}_n^j$ means value at least $(n-j)/n$, which is the principal ideal of
+$\bar{\mathsf z}_n^{n-j}$; the cancellation proof needs no local-to-global theorem (23).
+
+\begin{theorem}[A periodic resolution \src{23}]\label{osq:rm:thm:periodic}
+With $\mathsf B^{\mathrm{co}}=\mathsf B^{\mathrm{co}}(\Z a)$ and $\mathscr M_n=\mathsf B^{\mathrm{co}}/(\bar{\mathsf z}_n)$, the complex
+\begin{equation}\label{osq:rm:eq:periodic}
+ \cdots\xrightarrow{\ \bar{\mathsf z}_n\ }\mathsf B^{\mathrm{co}}\xrightarrow{\ \bar{\mathsf z}_n^{n-1}\ }\mathsf B^{\mathrm{co}}\xrightarrow{\ \bar{\mathsf z}_n\ }\mathsf B^{\mathrm{co}}
+ \longrightarrow\mathscr M_n\longrightarrow0,
+\end{equation}
+with the two maps alternating, is a free resolution, $\Tor_q^{\mathsf B^{\mathrm{co}}}(\mathscr M_n,\mathscr M_n)\cong\mathscr M_n\ne0$ for all $q\ge0$,
+$\pd\mathscr M_n=\fd\mathscr M_n=\infty$, and $\mathsf B^{\mathrm{co}}(\Z a)$ has infinite global and weak global dimension.
+\end{theorem}
+\begin{proof}
+Consecutive maps compose to multiplication by $\bar{\mathsf z}_n^n=0$, and \cref{osq:rm:thm:annC} (for $j=1$ and $j=n-1$) identifies every kernel with the preceding
+image. Tensoring with $\mathscr M_n$ makes every differential zero, so the homology is $\mathscr M_n$ in every degree, and $\mathscr M_n\ne0$ because the
+nilpotent $\bar{\mathsf z}_n$ is not a unit of the nonzero ring $\mathsf B^{\mathrm{co}}$. Nonvanishing $\Tor$ in all degrees excludes every finite flat, hence every
+finite projective, resolution.
+\end{proof}
+
+Periodicity from a pair of exact zero divisors is classical and related to matrix factorizations \cite{Eisenbud}; the content here is the explicit
+pair in these non-Noetherian fibres, proved without a theorem that needs a regular Noetherian local ring (23).
+
+\begin{proposition}[Arithmetic annihilators \src{23}]\label{osq:rm:prop:annR}
+Under $\mathsf B(\Z a)\hookrightarrow\mathsf B^{\mathrm{co}}(\Z a)$, for $1\le j<n$,
+\[
+ \Ann_{\mathsf B(\Z a)}(\bar{\mathsf z}_n^j)=\bar{\mathsf z}_n^{n-j}\mathsf B^{\mathrm{co}}(\Z a)\subseteq\mathsf B(\Z a),\qquad
+ \bar{\mathsf z}_n^{n-j}\mathsf B(\Z a)\subsetneq\bar{\mathsf z}_n^{n-j}\mathsf B^{\mathrm{co}}(\Z a).
+\]
+So \eqref{osq:rm:eq:periodic} with $\mathsf B(\Z a)$ in place of $\mathsf B^{\mathrm{co}}(\Z a)$ is not exact.
+\end{proposition}
+\begin{proof}
+For $b\in\mathscr B$ and $1\le r<n$ every value of $\mathsf z_n^rb$ over zero is at least $r/n>0$, so $\mathsf z_n^rb\in\mathsf J\subseteq\NN(\Z a)$ and
+$\bar{\mathsf z}_n^r\mathsf B^{\mathrm{co}}(\Z a)\subseteq\mathsf B(\Z a)$; intersect \cref{osq:rm:thm:annC} with $\mathsf B(\Z a)$. If $\bar{\mathsf z}_n^{n-j}/2=\bar{\mathsf z}_n^{n-j}u$ with
+$u\in\mathsf B(\Z a)$, then $u-\frac12$ kills $\bar{\mathsf z}_n^{n-j}$ in $\mathsf B^{\mathrm{co}}(\Z a)$, so lies in $\bar{\mathsf z}_n^j\mathsf B^{\mathrm{co}}(\Z a)$, and a representative of
+$u$ has residue $\frac12$ at every place over zero; but $\frac12$ is integral over neither $\Z$ nor $\Z[i]$, contrary to \cref{osq:rm:thm:residues}.
+\end{proof}
+
+For $n=2$: the residue of $\mathsf z_2/2$ is killed by that of $\mathsf z_2$ but is not in the principal arithmetic ideal it generates; the missing
+coefficient $\frac12$ is the obstruction. 23 computes the weak global dimension of $\mathsf B^{\mathrm{co}}(\Z a)$ and deliberately leaves that of
+$\mathsf B(\Z a)$ open (\cref{osq:rm:q:arhomology}).
+
+\paragraph{A countable fragment with a determined Boolean algebra.} Let $k_0=\overline\Q\cap\R$ (as in \cref{osq:nf:lem:coefficients}), a real closed
+field, and $\overline\Q$. Repeat the definitions of $K_{\Z a}$, $\A(\Z a)$, $\NN(\Z a)$, $\mathscr B$, $\mathsf I$ and the four fibres with $k$ replaced by $k_0$
+(and $D=\Z$), respectively by $\overline\Q$ (and $D=\Z[i]$). These are smaller coefficient fragments, not the workspaces above; their Laurent fields are
+still uncountable, but the relative algebraic subfields are countable.
+
+\begin{theorem}[Algebraic-coefficient fragments \src{23}]\label{osq:rm:thm:countable}
+In either fragment: (i) $\NN(\Z a)$ and $\mathscr B$ are countable, $\mathsf I=T\mathscr B$, and \cref{osq:rm:thm:explicit,osq:rm:thm:generalrefinement} hold;
+(ii) every localization of $\mathscr B$ at a maximal ideal containing $T$ has value group $\Q$ and residue field $\overline\Q$; (iii) the Boolean algebras of
+idempotents of the four fibres are each isomorphic to the algebra of clopen subsets of Cantor space $\{0,1\}^{\N}$, the countable atomless Boolean algebra.
+\end{theorem}
+\begin{proof}
+There are countably many polynomials over the countable field of rational functions, each with finitely many roots, so the relative algebraic closure
+is countable, and it contains $\NN(\Z a)$ and $\mathscr B$. The normalization and residue arguments use characteristic $0$ and, for the coefficient span, that
+finite residue extensions are the field itself or its extension by $i$ (real case) and the field itself (algebraically closed case); the basis vectors
+with entries $0,1,i$ are integral over $D$. So $\mathsf I=T\mathscr B$ and the criterion hold. $\mathsf z_n$ and all refinement certificates have rational
+coefficients; $\mathsf z_n$ supplies the values $1/n$ and $\varrho_0$ a square root of $-1$, giving the residue field $k_0(i)=\overline\Q$, respectively
+$\overline\Q$. To split a nonzero idempotent put a representative in a finite $L$ and restrict the parameters of \cref{osq:rm:lem:freshquad} to positive rational
+squares, of which only finitely many are excluded. So all four algebras are countable and atomless. Two countable atomless Boolean algebras are
+isomorphic: an isomorphism of finite subalgebras extends to one more prescribed element, since atomlessness allows exactly the needed splits of atoms
+on the other side, and alternating in both directions along enumerations gives an isomorphism. The finite unions of cylinder sets of $\{0,1\}^{\N}$ form
+a countable atomless algebra, and by compactness they are all the clopen sets.
+\end{proof}
+
+The uniqueness of the countable atomless Boolean algebra is classical; the application is to these fibres, and the uncountable algebras of the
+full-coefficient workspaces are not classified (\cref{osq:rm:q:boolean}). The fragment is a concrete countable model in which nilpotence, refinement
+and Boolean splitting coexist and can be approached computationally (23).
+
+\paragraph{Comparison with the full class.}
+
+\begin{remark}[What larger scales kill \merge]\label{osq:rm:rem:fullclass}
+By \cref{osq:bb:thm:descent} and \cref{osq:rm:thm:span}, $\Pi\NN\cap K_{\Z a}=\sqrt{\mathsf I}=\mathsf J$ for the real pair. So the natural map
+$\mathsf B(\Z a)\to\mathsf B_\R$ has kernel exactly the nilradical $\mathsf J/T\mathscr B$, nonzero by \cref{osq:rm:thm:explicit}, and the radical in the second
+equality of \eqref{osq:bb:eq:descent} cannot be removed for $G=\Z a$; the reduced fibre $\mathsf C(\Z a)$ embeds (\cref{osq:bb:cor:localinjection}). The
+comparison of ideals is: $\Pi\NN$ is radical with $\Pi\NN=(\Pi\NN)^2$ (\cref{osq:nf:thm:radical,osq:nf:prop:ideal}); $\mathsf I$ is not radical and
+$\mathsf I/\mathsf I^2\ne0$ (\cref{osq:rm:thm:explicit,osq:rm:thm:graded}), while its radical $\mathsf J$ satisfies $\mathsf J^2=\mathsf J$ (\cref{osq:rm:thm:nilideal});
+and $\mathsf I_{\mathrm{Pui}}$ is radical (\cref{osq:rm:thm:pui}). So the conclusion that \cref{osq:nf:thm:radical} proves for the full class fails in a fixed
+workspace; it does not contradict \cref{osq:nf:thm:abstract}, whose hypotheses the cyclic workspace fails (\cref{osq:rm:rem:puiabstract}), and it says
+nothing about real closed fixed workspaces such as $K_{\Q a}$ (\cref{osq:rm:q:fullQ}).
+\end{remark}
+
+23 records the resolution as follows: for every $G=\Z a$ the extended ideal is not radical and its fibre has nilpotents of every order, which is not
+a classification for arbitrary ordered groups or support classes; the cyclic fibre is atomless with exact cardinality and order density $\mathfrak c$,
+without its isomorphism type; the residue criterion is a finite-place test for algebraic Laurent elements, not an oracle for arbitrary coefficients or
+Hahn input; in every cyclic workspace $\mathsf I\subsetneq\sqrt{\mathsf I}$, so removing the radical from \cref{osq:bb:thm:descent} would give a stronger,
+false statement there, and that theorem is compared with, not used by, the cyclic proofs; the bounded-denominator Puiseux normalization has radical
+extended ideal, and the full rational-exponent Hahn field is left open. Its dependencies are: finite normalization gives $\mathsf z_n$ and the exact
+refinement; scaling and the residue criterion give $k\NN(\Z a)=\mathscr B$, hence $\mathsf I=T\mathscr B$, hence the filtration and the general refinement law;
+the finite ramification locus gives the fresh quadratic splitting and the Boolean results; and $\mathsf I=T\mathscr B$ gives the exact annihilators and the
+periodic homology over $\mathsf B^{\mathrm{co}}(\Z a)$, with deliberately no arrow to $\mathsf B(\Z a)$, which \cref{osq:rm:prop:annR} disproves. All rings and modules
+in these proofs are sets; the surreal $a$ only names the exponent group; composita, primes, localizations and branches are taken in set-sized rings and
+fields, with ordinary choice (the maximal-ideal theorem) and no class Zorn lemma, class module category or measurable cardinal. Neither the continuum
+hypothesis nor regularity of $\mathfrak c$ is used. The Newton--Puiseux theorem is used only to identify the limit field as real closed or algebraically
+closed; the reducedness of its fibre does not need it (23).
 
 \section{Arithmetic of polynomial maps on the omnific lattices}\label{osq:sec:polynomial}
 
@@ -9067,13 +9747,18 @@ matrices at one common scale, not arbitrary finitely generated ideals; the ordin
 statement; and the fibre theorem of \cref{osq:nf:sub:fibre} gives no membership test for $\NN$. The fourth-batch addition
 determines of $\Idem(\NN/\Pi\NN)$ that it is nontrivial, atomless and a proper class with independent families of every set size,
 not its isomorphism type, and its descent theorem is not a decision procedure; its fixed-workspace statements concern reduced
-fibres and assert neither radicality of $\Pi(G)\NN(G)$ nor atomlessness of $\Idem(\mathsf C(G))$ (\cref{osq:bb:sub:branching}).
+fibres and assert neither radicality of $\Pi(G)\NN(G)$ nor atomlessness of $\Idem(\mathsf C(G))$ (\cref{osq:bb:sub:branching}; status of batch 32:
+for cyclic $G$ the seventh-batch addition decides both, the first negatively and the second positively, \cref{osq:rm:sub:cyclic}).
 Nor does the fifth-batch addition: its exact projective dimensions are those of the set-sized cores $A_d$ and of specified modules over
 them, not global or weak global dimensions and not those of $\Oz$; its $\Tor$ statements over the class ring are read in two universes;
 and its reconstruction of an order needs the framed boundary data (\cref{osq:da:sub:derived}).
 Nor does the sixth-batch addition: its certificates are relative to exact arithmetic, its rational bound and its Gaussian grid are not claimed
 optimal, its birational corollary assumes a rational inverse, and its fixed-workspace criterion says when its method applies, not that finite
 tests fail otherwise (\cref{osq:ft:sub:tests}).
+Nor does the seventh-batch addition: it concerns one cyclic exponent group, its root refinements and their bounded-denominator union, not
+arbitrary groups or support classes or the Hahn field over $\Q a$; its residue criterion is a criterion, not an algorithm; of the uncountable
+Boolean algebras it determines atomlessness, cardinality and order density, not the isomorphism type; and its periodic resolution and infinite
+dimensions concern the coefficient fibre, not the arithmetic fibre or $\Oz$ (\cref{osq:rm:sub:cyclic}).
 
 As an internal ring, $\Oz$ has all surreal scales available through its fraction field, a nonzero
 proper-class ideal $\Pi$, nonzero class-valued derivations and nonarithmetic prime quotients; as a
@@ -9330,7 +10015,8 @@ class), and no universal object in a category of set-sized rings is claimed. (8)
 Zorn lemma, no measurable cardinals), and its intersections are pointwise kernel characterizations, not sets of class maps. (9) In the
 finite-axiom form, $\upsilon_T$ need not be infinitesimal, non-set-generation needs the full class, the small-image theorem needs a cardinal
 condition absent from the axioms, and nothing transfers to a fixed Hahn field, where the support $\{1/n\}$ blocks the monomial proof
-without being a counterexample (20's reduced-fibre result, \cref{osq:bb:prop:fixedboolean}, avoids the axioms and decides no radicality). (10) Integrality, absolute integral closure, Boolean powers and the B\'ezout property of $\overline\Z$ are
+without being a counterexample (20's reduced-fibre result, \cref{osq:bb:prop:fixedboolean}, avoids the axioms and decides no radicality;
+23 has since shown that radicality fails in the cyclic workspace, which is outside the axioms, \cref{osq:rm:rem:fullclass}). (10) Integrality, absolute integral closure, Boolean powers and the B\'ezout property of $\overline\Z$ are
 standard, and the small-image theorem is credited; priority is not established. (11) $\NN$ itself is not absolutely integrally closed,
 lifted roots need not stay distinct modulo $\Pi\NN$, and norm-one units of the fibre are not asserted to lift. (12) No named factorization
 conjecture is resolved; no referee; no Lean; the checks are finite identities and rational inequalities.
@@ -9340,7 +10026,8 @@ do not make the class algebra free, complete or saturated for arbitrary Boolean 
 $\mathsf B_\R\cong\mathsf B_\R\times\mathsf B_\R$ is claimed (the proved doubling is $\mathsf B_\C\cong\mathsf B_\R\times\mathsf B_\R$). (2) The
 fixed-workspace statements use $\sqrt{\Pi(G)\NN(G)}$; $\Pi(G)\NN(G)$ is not asserted radical in any fixed workspace, no atomlessness of
 $\Idem(\mathsf C(G))$ for a fixed $G$ is asserted, and the rank extension needs a new dominant coordinate, which a fixed workspace need not
-supply. (3) Support descent is not a decision algorithm; effective membership for general infinite supports is open, and the exact
+supply (23 has since decided both for every cyclic $G$, without a new coordinate: $\Pi(G)\NN(G)$ is not radical and $\Idem(\mathsf C(G))$ is
+atomless, \cref{osq:rm:thm:explicit,osq:rm:cor:atomless}). (3) Support descent is not a decision algorithm; effective membership for general infinite supports is open, and the exact
 rational criterion concerns one monomial scale. (4) The matrix corollary computes no projective or global dimension and forms no category of
 class-sized modules; the higher projective dimensions of this report (\cref{osq:q:pd}) are not addressed. (5) $\sigma_\pm$ are specializations
 of a finite branch algebra, not evaluations of Laurent series at $T=0$ or maps on the Laurent field; $\operatorname{pr}_G$ is linear, not a ring
@@ -9409,6 +10096,31 @@ lexicographic model illustrates the quantification over all exponents and does n
 responses were truncated, the repository was neither checked out nor built, and an empty search was not taken as evidence of absence.
 (18) Independent scrutiny may find simplifications, broader antecedents or errors.
 
+\paragraph{23.} (1) The answers concern the cyclic exponent groups $\Z a$ only, for the real pair and its Gaussian counterpart; they classify neither
+arbitrary ordered exponent groups nor support restrictions, and the proof does not classify the groups with a discrete convex component. (2) The Hahn
+field over $\Q a$ is open; the Puiseux result concerns bounded denominators only, is not an identification with that Hahn field, and does not say
+that the limit fibre is isomorphic to a reduced finite-stage fibre, whose image in it may grow. (3) The Boolean isomorphism types for $k=\R$ and $\C$
+are not determined: the independent family does not make the algebra free, and neither completeness, nor infinite joins, nor a product
+representation of the ring, nor a free presentation follows from the count of $2^{2^{\aleph_0}}$ branches. (4) The weak global and global dimensions
+of the arithmetic fibre are open; the periodic resolution is exact only over the coefficient fibre, and no change-of-rings statement is made for the
+arithmetic fibre or for $\Oz$. (5) The residue criterion is a finite algebraic criterion for represented algebraic Laurent elements, not a decision
+procedure for arbitrary real coefficients or arbitrary surreal normal forms; substituting $T=0$ in a singular equation need not separate branches.
+(6) The integer part of the Laurent field does not extend $\ct$ to the normalization; no single refinement removes all nilpotents; the ramification
+filtration is not a valuation. (7) The finite checks ($18{,}040$ assertions in 12 categories, most of them clipped-order compositions and threshold
+checks) count assertions, not theorems; they establish neither integral closure, nor the existence of finite places or prime extensions, nor
+arbitrary-support summability, nor the normal-form embedding, nor cardinalities, nor exactness of an infinite resolution. (8) AI-assisted and
+unrefereed; no Lean or other proof-assistant check, no repository build and no independent review; a compiled PDF is a document check. (9) Priority is
+not certified: the literature comparison was targeted, and the repository comparison covered selected sections of this report, not all reports or
+the history; nothing claims to settle a named factorization conjecture, uniqueness of surreal factorization, a global surcomplex analytic calculus
+or the general theory of surreal supports. (10) Integral dependence, normalization of curves, valuation domains, quadratic square classes and periodic
+resolutions are classical; the residue criterion is a proved pullback-style tool, not a claim to have invented pullback normalization; the
+period-two mechanism has antecedents in matrix factorizations; the Newton--Puiseux theorem, the lifting of idempotents across nil ideals and the
+uniqueness of the countable atomless Boolean algebra are classical and not claimed. (11) No continuum hypothesis and no regularity of $2^{\aleph_0}$
+are used; all objects are sets, with ordinary choice and no class Zorn lemma, class module category or measurable cardinal; the repository's
+descent theorem is compared, not used, and no unrefereed repository theorem is an input. (12) The questions concern precisely specified rings and do
+not assert that the cyclic calculation settles an unrestricted Hahn problem; divisibility of the exponent group alone is not a proof of radicality.
+(13) The formalization plan claims no implemented declaration and no repository build.
+
 \paragraph{The merge.} (1) The results marked \merge\ are consequences of the sources' lemmas; they
 are no more refereed than the sources and are not formalized. (2) No general law is asserted for the
 generator counts. (3) For full-support Hahn rings over a prescribed set group, exact thresholds are computed only in
@@ -9429,7 +10141,10 @@ choice. (13) The extension of 21's lattice theorem to every unital $D$ (\cref{os
 dimension for the five constructions or for $R^{11}_\kappa$ with uncountable $\kappa$; the remark shows only that (H2) cannot be dropped from
 \cref{osq:hd:prop:pd}(v). (14) The comparison of 22's and 16's rational certificates (\cref{osq:ft:rem:probes}) concerns the sizes of two explicit
 certificates, not the least size of a test. (15) \Cref{osq:ft:rem:otherD} says nothing for $D=k$, and the remark after \cref{osq:ft:prop:relative}
-decides nothing about finite certificates in a workspace without fresh exponents.
+decides nothing about finite certificates in a workspace without fresh exponents. (16) The comparisons of \cref{osq:rm:rem:fullclass,osq:rm:ex:sqrt}
+concern the real pair; \cref{osq:rm:rem:puiabstract} concerns the bounded-denominator Puiseux ring only and determines neither the isomorphism type
+nor the order density of its Boolean algebra; \cref{osq:rm:rem:booleanform} rests on applying the proof of \cref{osq:bb:prop:fixedboolean}
+verbatim to the coefficient field $\overline\Q\cap\R$, and nothing is claimed for noncyclic groups or for the Hahn field over $\Q a$.
 
 \subsection{Open questions and their status}\label{osq:sub:questions}
 The sources pose the following questions, each as a question suggested by the proofs rather than as
@@ -9545,7 +10260,11 @@ $\Idem(\NN/\Pi\NN)$ is atomless and a proper class and that no set-indexed famil
 affirmatively: $\NN\cap F^{03}_\kappa=\NN_\kappa$ (\cref{osq:bb:cor:descent03}, a merge result from 20's support projection). The clause on a
 fixed exponent subgroup is partly answered: for every set-sized subgroup $G$, $\NN\cap K_G$ is the integral closure $\NN(G)$ of the omnific
 integers supported in $G$, so integrality witnesses at larger scales never help, and for $G=\Z a$ the rational one-scale slice is determined
-exactly (\cref{osq:bb:thm:descent,osq:bb:thm:rational}); a description of $\NN(G)$ in general is open. The membership test, the generation
+exactly (\cref{osq:bb:thm:descent,osq:bb:thm:rational}); a description of $\NN(G)$ in general is open. \emph{Status (batch 32).} For $G=\Z a$ the
+clause is answered by 23: $\NN(\Z a)$ is the set of elements of $K_{\Z a}$ integral over $\R[\omega^a]$ whose residues at the finitely many places over
+$\omega^a=0$ of each finite subextension are algebraic integers, and its $\R$-linear span is the integral closure of $\R[\omega^a]$
+(\cref{osq:rm:thm:residues,osq:rm:thm:span}; the same holds for the Gaussian pair with $\C$ in place of $\R$). This is a criterion, not an algorithm (\cref{osq:nf:q:fibre}(c)), and for
+noncyclic finitely generated $G$ a description stays open. The membership test, the generation
 number and the valuative criterion stay open; 19 asks the same membership question, for supports in one finitely generated
 exponent subgroup first, allowing integrality witnesses at larger scales, and 20 asks for effective support-local certificates
 (\cref{osq:nf:q:fibre}(c)). 04's question on Diophantine fibers belongs to the sibling report
@@ -9631,9 +10350,29 @@ $\mathsf B_\C$ (\cref{osq:bb:cor:complex}). The earlier reduction of (a) to inst
 (\cref{osq:bb:prop:candidates}, a merge result). What remains of (a) is the isomorphism type (\cref{osq:bb:q:structure}). (b) is partly
 answered: for every nonzero set-sized ordered group the reduced fibre $\mathsf C(G)$ is a Boolean power of $\overline\Z$, and one dominant
 coordinate adds free Boolean families (\cref{osq:bb:prop:fixedboolean,osq:bb:thm:rank}); whether $\Pi(G)\NN(G)$ is radical, and whether
-$\Idem(\mathsf C(G))$ is atomless, in a fixed workspace stays open, and 20 asks the same. (c) is open; 20 asks it for algebraic Laurent
+$\Idem(\mathsf C(G))$ is atomless, in a fixed workspace was left open by 20, which asks the same; for cyclic groups it is now decided (batch 32,
+below). (c) is open; 20 asks it for algebraic Laurent
 elements given by equations and branch data, with complexity bounds, and settles the one-scale rational case
-(\cref{osq:bb:thm:rational}). \Cref{osq:nf:thm:doubling} holds throughout. 19's membership question is merged into \cref{osq:q:normalization}.
+(\cref{osq:bb:thm:rational}); 23 gives a criterion for cyclic groups (below). \Cref{osq:nf:thm:doubling} holds throughout. 19's membership question is
+merged into \cref{osq:q:normalization}.
+
+\emph{Status (batch 32).} (b) is decided for every nonzero cyclic group $G=\Z a$ by 23, in opposite directions: $\Pi(\Z a)\NN(\Z a)$ is not radical,
+its fibre having nilpotents of every index (\cref{osq:rm:thm:explicit}), and $\Idem(\mathsf C(\Z a))$ is atomless of cardinality and order density
+$2^{\aleph_0}$ (\cref{osq:rm:cor:atomless,osq:rm:thm:cardinality}), also for the Gaussian pair. For the bounded-denominator Puiseux support class over
+$\Q a$ the extended ideal is radical (\cref{osq:rm:thm:pui}), and there real-rooted lifting gives a Boolean-power fibre although set-family divisibility
+fails (\cref{osq:rm:rem:puiabstract}, a merge observation). For other groups and support classes (b) stays open, and the Hahn field over $\Q a$ is
+\cref{osq:rm:q:fullQ}. 23 asks the same question (its Question~10.2): for a prescribed set-sized $G$, which properties of $G$ and of the admitted
+supports determine radicality of $\Pi(G)\NN(G)$, and can the one-variable ramification filtration be replaced by a finite-rank or cut-valued
+filtration when $G$ has several Archimedean layers? 23's comments: the cyclic negative and the Puiseux positive results are two test cases that any
+criterion must distinguish; a next model is a lexicographic sum of two cyclic groups, where the coefficient block is a field with its own integer
+part and the residue-basis step of \cref{osq:rm:thm:span} needs a replacement; the proof does not classify groups with a discrete convex component.
+(c) is addressed for cyclic groups by 23's residue criterion (\cref{osq:rm:thm:residues,osq:rm:rem:effective}), which is a criterion and not an algorithm.
+23 asks (its Question~10.7), for coefficients in a number field or a computable presentation of $\overline\Q$, for an algorithm that takes a finite
+algebraic function field and a chosen Laurent branch at infinity, decides membership in $\NN(\Z a)$, computes $\nu_T(f)$, and produces a monic
+certificate and the least refinement killing a nilpotent residue. 23's comments: the outputs are determined (normalize at the finite places, test
+the residues, compute the finitely many orders), and what remains is a representation and complexity problem; singular plane equations can hide
+branches, so normalization cannot in general be replaced by factoring one specialized polynomial; one would bound the certificate degree
+$dr\deg Q$ of \cref{osq:rm:rem:effective} in the input degree and height and decide when smaller certificates exist.
 
 \begin{question}[The class Boolean algebra of the fibre; 20]\label{osq:bb:q:structure}
 Which further Boolean invariants determine $\Idem(\mathsf B_\R)$? Can its automorphisms, or its possible infinite joins, be characterized
@@ -9689,13 +10428,81 @@ removal of exceptions for every unital $D\subseteq k$ (\cref{osq:fs:thm:collapse
 absence of set-sized tests holds for every $D\ne k$ (\cref{osq:ft:rem:otherD}, a merge result); finite constant test sets for $\Int(D^m)$ and the
 lifting theorem for general $D$ remain open.
 
+\begin{question}[The full rational Hahn workspace; 23]\label{osq:rm:q:fullQ}
+Let $K_{\Q a}=\hahn k{\Q a}$, with arbitrary reverse well-ordered supports, let $\A(\Q a)$ be its omnific or Gaussian omnific integer part and
+$\Pi(\Q a)$ its positive-support ideal. Is $\Pi(\Q a)\IC_{K_{\Q a}}(\A(\Q a))$ radical?
+\end{question}
+\emph{Status.} Open. 23's comments: \cref{osq:rm:thm:pui} answers the bounded-denominator subcase affirmatively, and the obstruction to repeating its
+proof is exact: an element of $K_{\Q a}$, and the coefficients of its integrality equation, need not lie in a finite cyclic refinement. A first
+intermediate case would allow supports generated by finitely many rationally independent real exponents, with a restriction preventing positive
+supports from accumulating at zero. Divisibility of the exponent group alone is not a proof of radicality; the supports of the coefficients must be
+controlled as well. For the real pair $K_{\Q a}$ is real closed, so \cref{osq:nf:thm:abstract} would apply if its axiom (ii) held there; the support
+$\{a/n:n\ge1\}$ blocks the monomial proof of (ii) (the paragraph after that theorem), and whether (ii) holds is not decided \merge.
+
+\begin{question}[The uncountable Boolean isomorphism type; 23]\label{osq:rm:q:boolean}
+Determine the isomorphism types of $\Idem(\mathsf B(\Z a))$ and $\Idem(\mathsf B^{\mathrm{co}}(\Z a))$ for $k=\R$ and $k=\C$. Are there invariants,
+beyond atomlessness, cardinality, order density and relative splitting, that distinguish them from familiar Boolean algebras?
+\end{question}
+\emph{Status.} Open. 23's comments: the countable answer of \cref{osq:rm:thm:countable} is a baseline, and one would like to describe the Stone space
+directly from compatible places of finite function fields over $T=0$. The explicit family gives $2^{2^{\aleph_0}}$ points on the coefficient side
+(\cref{osq:rm:cor:manyplaces}), but neither a product representation of the ring nor a free presentation of the algebra follows from this count;
+countable joins, saturation and automorphisms should be asked separately, and relative splitting is weaker than all of them together. This is the
+fixed-cyclic counterpart of \cref{osq:bb:q:structure}, which concerns the proper-class algebra $\Idem(\mathsf B_\R)$; by
+\cref{osq:rm:rem:boolboundary} the idempotents of $\mathsf B(\Z a)$ and $\mathsf C(\Z a)$ are the same.
+
+\begin{question}[Arithmetic residue gluing; 23]\label{osq:rm:q:gluing}
+Describe concretely the embedding $\mathsf B(\Z a)\hookrightarrow\mathsf B^{\mathrm{co}}(\Z a)$ and the extension
+$0\to\mathsf J/T\mathscr B\to\mathsf B(\Z a)\to\mathsf C(\Z a)\to0$. How much of $D$ can be recovered intrinsically from this extension and its
+multiplication, without naming the inclusion $D\subseteq k$?
+\end{question}
+\emph{Status.} Open. 23's comments: the residue criterion says which elements of $\mathscr B$ lie in $\NN(\Z a)$, and the task is to organize these
+conditions uniformly over all finite fields and all compatible branches. The strict inclusion of \cref{osq:rm:prop:annR} is an intrinsic arithmetic
+signal: multiplication by a nilpotent admits coefficients that cannot occur in the arithmetic fibre. A Boolean-power or locally constant description
+must keep this nonreduced information, not only the reduced data, for which see \cref{osq:bb:prop:fixedboolean,osq:rm:rem:booleanform}.
+
+\begin{question}[Homological dimensions of the arithmetic fibre; 23]\label{osq:rm:q:arhomology}
+What are the weak global and global dimensions of $\mathsf B(\Z a)$? Can the kernels $\bar{\mathsf z}_n^{n-j}\mathsf B^{\mathrm{co}}(\Z a)$ be resolved
+over $\mathsf B(\Z a)$ so as to compute a nonzero sequence of higher $\Tor$ groups?
+\end{question}
+\emph{Status.} Open. 23's comments: the infinite dimensions of $\mathsf B^{\mathrm{co}}(\Z a)$ (\cref{osq:rm:thm:periodic}) cannot be pulled back through the
+inclusion, since the alternating maps cease to be a resolution over $\mathsf B(\Z a)$ (\cref{osq:rm:prop:annR}); a direct approach would start from
+the $\mathsf B(\Z a)$-module structure of $\mathsf B^{\mathrm{co}}(\Z a)$, the modules $\bar{\mathsf z}_n^r\mathsf B^{\mathrm{co}}(\Z a)$ and their relation
+modules. This is not the question on projective dimensions of the constant module over the finite-support cores (\cref{osq:hd:q:cores}); those
+rings, modules and maps are different.
+
+\begin{question}[The completed coefficient ring; 23]\label{osq:rm:q:completion}
+Describe $\widehat{\mathscr B}=\varprojlim_r\mathscr B/T^r\mathscr B$ intrinsically. Is there a useful representation by compatible completed local
+valuation rings, and which restricted-product or branch-compatibility conditions are needed?
+\end{question}
+\emph{Status.} Open. 23's comments: by \cref{osq:rm:cor:completion} the arithmetic completion reduces to this problem together with the known first
+fibre. With $2^{2^{\aleph_0}}$ branches over zero, a naive identification with an unrestricted product of local completions needs proof and should
+not be assumed, and completion in the integer powers of $T$ should be distinguished from completion for the filtration indexed by all positive
+rationals.
+
+\begin{question}[Refinement beyond monomial root maps; 23]\label{osq:rm:q:nonmonomial}
+For finite algebraic covers replacing $T=U^m$, which branchwise ramification data determine the kernel on arithmetic fibres? Is there an exact
+analogue of \eqref{osq:rm:eq:generalrefine} when different branches have different ramification indices?
+\end{question}
+\emph{Status.} Open. 23's comments: the uniform multiplier $m$ is what makes the threshold a single scalar, and a nonuniform cover needs the full tuple
+of branch orders, not only their minimum. Finite normalization and lying over give a concrete formulation, but compatibility with the arithmetic
+integer parts must be checked: a map of function fields alone need not induce the desired map of fibres.
+
+\begin{question}[A formal development; 23]\label{osq:rm:q:formal}
+Formalize the cyclic nonradicality theorem, the residue criterion and the refinement law in Lean, with an abstract algebraic-function-field layer
+separate from the embedding into the constructed surreal field.
+\end{question}
+\emph{Status.} Open. 23's plan: first the short argument for $\mathsf z_n$, with finite normalization and one valuation normalized by $v(T)=1$; then
+the coefficient-span lemma and the exact ideal test; the Boolean splitting needs further finite-extension and ramification infrastructure, and the
+periodic resolution follows once the annihilator identity is available. No declaration has been implemented, and no repository build was run for 23
+(\cref{osq:sub:formalization}).
+
 \section{Verification record and formalization routes}\label{osq:sec:provenance}
 
 \subsection{Finite checks}\label{osq:sub:checks}
 Each manuscript ships a program that checks finite identities with exact arithmetic. They are
 kept byte-identical in \texttt{code/} with their recorded outputs in \texttt{data/}; all were rerun
-for the six merges on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
-endings, the recorded Python version and, for 18, the recorded time stamp.
+for the seven merges on copies (Python~3.14.4, SymPy~1.14.0) and reproduce the recorded outputs, up to line
+endings, the recorded Python version, for 18 the recorded time stamp and for 23 its hash of the unshipped manuscript.
 
 \begingroup\small
 \begin{longtable}{@{}l>{\raggedright\arraybackslash}p{0.56\textwidth}rl@{}}
@@ -9724,6 +10531,7 @@ Source & What is checked & Checks & Needs\\
 20 & quadratic identities and branch specializations, simple-zero witnesses for 31 radicand products and all 16 four-branch assignments, initial Laurent coefficients to degree 15, Boolean atoms in 1--6 variables and the symmetric difference, 875 support-projection examples and one failure of multiplicativity & 6{,}674 & SymPy\\
 21 & Koszul squares and transition identities in dimensions 1--6, finite telescope identities and support barriers; integral multiplication-kernel bases, ranks and discriminants of $\Z[\sqrt2]$, $\Z[\sqrt3]$, $\Z[\sqrt[3]2]$, $\Z[\varphi]$, and the product rank for $\Q(\sqrt2),\Q(\sqrt3)$ & 1{,}608 & stdlib\\
 22 & Newton reconstruction in 1--3 variables, integral binomial values, grid determinants and integral inverses, resultant coordinate-degree bounds, good specializations (degrees, coprimality, nonzero bad-locus polynomial), first negative Laurent terms, the geometric remainder, Gaussian examples, fixed-divisor ideals, triangular inverses, sampled lexicographic block signs (22 categories, seed 23092026) & 1{,}776 & SymPy\\
+23 & binomial power identities of $\mathsf z_n$ for $n\le20$ to order 18 and the displayed coefficients of $\mathsf z_2$, refinement thresholds for $n\le100$, $m\le50$ and the table for $\mathsf z_{12}$, monic refinement certificates, the idempotent identity of $\mathsf y_c$ for $c=1,4,\dots,1600$, finite Boolean word and partition models in $r\le8$ variables, truncated-polynomial annihilators and alternating compositions for $n\le40$, clipped refinement composition (12 categories) & 18{,}040 & stdlib\\
 \end{longtable}
 \endgroup
 
@@ -9746,7 +10554,15 @@ discriminants of the four orders, and the product rank for $\Q(\sqrt2),\Q(\sqrt3
 nonvanishing. For the sixth merge an independent exact computation, not shipped, rechecked in 101 checks the resultant and the partial fractions of
 \cref{osq:ft:ex:resultant}, the counts after \cref{osq:ft:thm:certificate} and the comparison of \cref{osq:ft:rem:probes} for $m\le4$, $d\le5$, the
 bound \eqref{osq:ft:eq:sharpD} in twelve random trivariate cases, the inverse shears of \cref{osq:ft:ex:shear}, the two Gaussian denominators and the
-coefficients of \cref{osq:ft:ex:integers}; it proves no statement about infinite supports.
+coefficients of \cref{osq:ft:ex:integers}; it proves no statement about infinite supports. For the seventh merge 23's program was rerun on a
+copy: all $18{,}040$ assertions pass in the same 12 categories, and the rewritten record differs from the shipped one only in the Python
+version and in its hash of the manuscript, which is \texttt{null} because the manuscript is not shipped beside the program (and, on Windows, in
+line endings). An independent exact
+computation, not shipped, rechecked in $2{,}642$ checks (most of them the exponent inequality of axiom (ii) used in \cref{osq:rm:rem:puiabstract})
+the relations \eqref{osq:rm:eq:zn} for $n\le7$ and \eqref{osq:rm:eq:splitter}, the refinement certificates of \cref{osq:rm:thm:explicitrefinement}, the
+Laurent coefficients and the full-class factorization of \cref{osq:rm:ex:sqrt}, the residues of the Boolean words of \cref{osq:rm:thm:cardinality} modulo
+$T$ for three parameters with the squarefreeness of their radicands, and the cancellation identity behind \cref{osq:rm:thm:annC}; like 23's program it
+verifies no integral closure, place or cardinality.
 
 \subsection{Formalization routes}\label{osq:sub:formalization}
 No statement of this report is formalized, and the repository has no omnific module. The sources
@@ -9788,7 +10604,10 @@ monomial factor and a flat tail, whose instantiation at the class rings is a sep
 extension of the repository's Hahn layer: the order embedding $(n,g)\mapsto nb+g$ on lexicographically ordered blocks, reverse well-ordering and local
 finiteness of the Laurent image, preservation of multiplication, the nonnegative-support detector, the resultant degree bound with the grid lemma, and
 the explicit deceptive function, with the proper-class conclusions proved through an explicit small-set bounding interface; a finite-rank toy model
-would not establish the full claims (\cref{osq:ft:q:certificates}(f)). None was executed.
+would not establish the full claims (\cref{osq:ft:q:certificates}(f)). The seventh batch adds one. 23 would first prove its $\mathsf z_n$ argument from
+finite normalization and one valuation, then the coefficient-span lemma and the exact ideal test, with an abstract algebraic-function-field layer
+separate from the embedding into the surreal field; the Boolean splitting needs further ramification infrastructure, and the periodic resolution
+follows from the annihilator identity (\cref{osq:rm:q:formal}). None was executed.
 
 \begingroup
 \raggedright
@@ -9853,6 +10672,10 @@ module $M^{n-1}$ and flat dimension one; the page-level statement was not verifi
 D.~E.~Dobbs and I.~J.~Papick, When is $D+M$ coherent?, \emph{Proceedings of the American Mathematical
 Society} \textbf{56} (1976), 51--54. Cited by 14 for context; no criterion is imported.
 
+\bibitem{Eisenbud}
+D.~Eisenbud, Homological algebra on a complete intersection, with an application to group representations, \emph{Transactions of the
+American Mathematical Society} \textbf{260} (1980), no.~1, 35--64. Cited by 23 for context on periodic resolutions.
+
 \bibitem{ElliottBinomial}
 J.~Elliott, Binomial rings, integer-valued polynomials, and $\lambda$-rings, \emph{Journal of Pure
 and Applied Algebra} \textbf{207} (2006), 165--185,
@@ -9901,6 +10724,10 @@ B.~Liu, Ring structure of integer-valued rational functions, arXiv:2208.09935v3,
 J.~S.~Milne, \emph{Algebraic Number Theory}, course notes, version 3.08, 2020, Theorem~4.4 (finiteness of the class number),
 \url{https://www.jmilne.org/math/CourseNotes/ANT.pdf}. Cited by 19.
 
+\bibitem{Nowak}
+K.~J.~Nowak, Some elementary proofs of Puiseux's theorems, \emph{Universitatis Iagellonicae Acta Mathematica} \textbf{38} (2000), 279--282,
+\url{https://emis.de/ft/47917}. Cited by 23.
+
 \bibitem{Poonen}
 B.~Poonen, Maximally complete fields, \emph{L'Enseignement Math\'ematique} \textbf{39} (1993),
 87--106 (Corollary~4).
@@ -9937,6 +10764,22 @@ The Stacks Project Authors, \emph{The Stacks Project}, Tag 052P (blow-up algebra
 \bibitem{StacksVal}
 The Stacks Project Authors, \emph{The Stacks Project}, Section 10.50, Tag 00I8, Lemmas 10.50.3 and
 10.50.11, \url{https://stacks.math.columbia.edu/tag/00I8}.
+
+\bibitem{StacksIntClosure}
+The Stacks Project Authors, \emph{The Stacks Project}, Lemma 10.161.8, Tag 032L (finiteness of integral closure in a finite separable extension),
+\url{https://stacks.math.columbia.edu/tag/032L}. Cited by 23.
+
+\bibitem{StacksDedekind}
+The Stacks Project Authors, \emph{The Stacks Project}, Lemma 10.120.18, Tag 09IG (Dedekind normalization in dimension one),
+\url{https://stacks.math.columbia.edu/tag/09IG}. Cited by 23.
+
+\bibitem{StacksRamification}
+The Stacks Project Authors, \emph{The Stacks Project}, Sections 15.113 and 15.116, Tags 0EXR and 0EXT (ramification of discrete valuation rings,
+Abhyankar's lemma), \url{https://stacks.math.columbia.edu/tag/0EXR}. Cited by 23.
+
+\bibitem{Sutherland}
+A.~V.~Sutherland, \emph{18.785 Number Theory I, Lecture~5: Dedekind extensions}, MIT, 2017, Proposition 5.21 and Theorem 5.24,
+\url{https://math.mit.edu/classes/18.785/2017fa/LectureNotes5.pdf}. Cited by 23.
 
 \bibitem{VP}
 V.~V.~Volkov and F.~V.~Petrov, On the interpolation of integer-valued polynomials, arXiv:1108.3212, 2011 (Theorems~1 and~2, as
