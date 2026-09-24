@@ -2278,3 +2278,38 @@ All 4,626 source anchors in 63 reports, 5,219 source-label references
 and 1,857 local Markdown destinations in 226 files pass, as does whitespace
 checking. No Lean source changed locally; the 4,664-job two-thread build
 and 17,316-declaration audit remain the baseline before synchronization.
+
+## Synchronization: the explicit finitely satisfiable omitted type
+
+Merged origin/main through da91587, including 10494f3, and reviewed all
+six new modules against `odg:def:thm:saturation`. The native unary type
+contains the explicit Xi guard and all nonzero integer-polynomial
+inequalities. Signed numerals, powers and finite-sum terms have proved
+realization semantics. A finite family of integer polynomials has a
+common nonroot among zero through the sum of its degrees; its image
+works in any characteristic-zero commutative ring. The native finite-
+subset theorem handles finite collections of formulas, not merely an
+externally supplied list of polynomials.
+
+Algebraicity excludes realization of the full type. Quadratic integers
+have an explicit degree-two integer annihilator. The number-field result
+clears denominators via Mathlib's fraction-field algebraicity theorem
+and handles any injectively embedded coefficient ring; its conclusion
+is conditional on a native formula defining the coefficient image.
+Integer and Gaussian intermediate Hahn rings use their established Xi
+definitions without a constant-retraction or nontrivial-exponent-group
+hypothesis. Independent theorems apply to both actual universe-indexed
+omnific carriers.
+
+The ledger correctly records Prerequisites proved for the full source
+theorem: effective coding, computability of membership in the type,
+recursive saturation and the tailored number-field guard remain pending.
+The noncomputable polynomial representation is not used to claim an
+effective syntactic construction. The root README maintains that scope.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,670 jobs;
+the axiom audit checks 17,404 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,863 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 308-page article and 34-page catalogue remain current.
