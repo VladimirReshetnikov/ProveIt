@@ -4433,3 +4433,36 @@ inspected the affected catalogue pages 12–14. The article remains unchanged
 by the merge at 348 pages, with its statements, labels and numbering
 preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
 references and 1,998 local Markdown destinations in 226 files.
+
+
+### Gaussian principal quotients and ideal generators sync (2026-09-24)
+
+The first push was rejected because origin/main advanced. Merged `44621ba`
+and read its three modules against `osq:prop:common` and
+`osq:prop:principal`. Gaussian leading growth cannot decrease under
+nonzero divisibility. Positive real monomials below a nonconstant
+Gaussian generator therefore have distinct residues; ordinal scales
+and well-ordering supply representatives for every small index type.
+Such quotients are nonzero and large. The full principal-size criterion
+now holds in the actual Gaussian ring too: exactly nonzero ordinary
+Gaussian generators give small quotients. The arbitrary-coefficient
+instance remains pending.
+
+The common real divisor supplies single-product factorization, ideal
+idempotence and a directed union of real monomial principal ideals.
+A hypothetical small generating family has a common divisor that cannot
+divide the monomial of half its exponent, excluding small generation.
+Nonzero Gaussian constants divide the ideal without leaving it, so their
+principal ideal times the purely infinite ideal is unchanged. The final
+module gives ordinary-constant unit classification, the constant-ideal
+decomposition and the small-generation criterion among small-quotient
+ideals. Updated current report/catalogue summaries to remove the now-stale
+Gaussian pending scope; earlier log entries retain their historical scope.
+
+`LEAN_NUM_THREADS=2 lake build` passes 5,048 jobs, with 19,043 declarations
+accepted by the audit using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, now 37 pages;
+inspected pages 12–14. The article is unchanged by this merge, still
+348 pages, with the previously checked statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 source-label
+references and 2,001 local Markdown destinations in 226 files.

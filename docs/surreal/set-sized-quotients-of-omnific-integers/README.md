@@ -82,7 +82,13 @@ monomials below its leading exponent have distinct residues. The
 quotients by ω, 2+ω and 1+ω are nonzero and large; their universal
 small images are respectively ℤ, ℤ/2ℤ and the zero ring. Among ideals
 with small quotient, only Π lacks a small generating set. The Gaussian
-and arbitrary-coefficient principal-size statements remain pending.
+principal-size statement is now proved too: exactly the nonzero ordinary
+Gaussian generators give small quotients, and nonconstant generators have
+arbitrarily large small families of distinct positive-monomial residues.
+The Gaussian purely infinite ideal is a directed union of real monomial
+principal ideals and is idempotent, yet has no small generating set.
+Multiplication by any nonzero ordinary Gaussian constant preserves it.
+The arbitrary-coefficient principal-size statement remains pending.
 
 For every real omnific ideal J, Lean now identifies its finite-congruence
 closure with J+Π, equivalently the inverse image of its integer constant
