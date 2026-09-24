@@ -650,3 +650,8 @@ import Surreal.Foundations.SurrealPellContrast
 import Surreal.Algebra.BinaryQuadraticFactors
 import Surreal.Algebra.CentralConicRigidity
 import Surreal.Surcomplex.CentralConicRigidity
+import Surreal.Algebra.NormFormPolynomial
+import Surreal.Algebra.SeparableNormFactors
+import Surreal.Algebra.SeparableNormRigidity
+import Surreal.Surcomplex.NumberFieldNormRigidity
+import Surreal.Algebra.IntegralNormCoefficients
