@@ -511,6 +511,13 @@ criterion also applies independently whenever such a radicand is available;
 if it is already a square in the fraction field of the ordinary coefficient
 ring, clearing denominators instead produces a verified false positive.
 
+Finite systems of integer polynomial equations now have a checked enumeration
+theorem: their traces on ordinary integer tuples are computably enumerable,
+both in the actual omnific ring and in every characteristic-zero Hahn
+integer-coefficient pullback. Integer polynomial evaluation is primitive
+recursive, and searching integer witnesses suffices by constant-term
+transfer. The reverse MRDP classification remains pending.
+
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
 translation turns every integer ring formula and every natural arithmetic
