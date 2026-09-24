@@ -926,3 +926,6 @@ import Surreal.Surcomplex.OmnificPolynomialPresentations
 import Surreal.Foundations.OmnificPresentationExamples
 import Surreal.Foundations.OmnificConservativity
 import Surreal.Surcomplex.GaussianEquationalTransfer
+import Surreal.Algebra.ModuleReflection
+import Surreal.Surcomplex.SmallModuleCorrespondence
+import Surreal.Foundations.OmnificModuleSplitting
