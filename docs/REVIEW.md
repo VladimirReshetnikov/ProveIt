@@ -6257,3 +6257,67 @@ Classical.choice and Quot.sound. All 4,626 statement anchors across
 destinations across 226 files pass, as does whitespace checking.
 No TeX source changed in the merge, so the reviewed 290-page article
 and 34-page catalogue remain current.
+
+## Set-presentations and exact relation counts in lexicographic models
+
+Reviewed `osq:rel:thm:presentation`, `osq:rel:lem:embedding`,
+`osq:rel:thm:kappa` and `osq:rel:prop:fd`, together with the
+countable-case remark `osq:rel:rem:alephzero`. The four standard
+statements are unchanged; the countable remark is corrected and expanded.
+
+The class-ring obstruction now constructs both sections of the pullback
+used in Schanuel's lemma. The formula choosing a preimage of each ideal
+element is only a section as a class map; applying it to the free basis
+and extending finite combinations gives the needed A-linear section.
+The other section uses finitely many lifts. Projecting the resulting
+set-generated module onto the tail contradicts its lack of set generators.
+The equational nonflatness witness is checked directly, with every proposed
+relation column in the tail and every resulting coordinate in X^g Pi.
+
+The exponent embedding is given on finite rational sums and checked by
+its leading sign. The proof distinguishes the surreal exponent omega^-alpha
+from the image omega^(omega^-alpha) of the ring monomial X^(e_alpha).
+Regularity bounds the coordinate indices of a small family and proves
+exact coinitiality, including the empty-family case. Reindexing reverse
+well-ordered support verifies the ring embedding and its exact image.
+The countable case extends the finite-support ring construction, without
+calling the ambient finite-support collection a field.
+
+The tail proof gives the strict-support factorization, idempotence,
+directed union of principal ideals, flatness and both generator bounds.
+Regularity is used explicitly for a union of fewer than kappa small
+supports. The matrix decomposition transfers to the model with its actual
+PID and coefficient-space hypotheses. Schanuel gives both bounds for the
+kernel of every surjection from a finite free module, independently of
+its generating family. These generator counts are kept separate from
+the quotient-cardinality thresholds, which are asserted only for the
+uncountable models.
+
+Corrected the countable remark's phrase “every finite presentation”:
+these modules are not finitely presented. The intended claim concerns
+every surjection from a finite free module and its countably generated
+kernel. A concrete telescope with x_n = X^(e_n) proves projective
+dimension one for the tail, two for D and the lattice module, and three
+for the cyclic quotient. The flat-dimension proof now exhibits a nonzero
+antisymmetric tensor and performs both dimension shifts directly, so it
+no longer relies on the later general coefficient-Tor formula.
+
+Updated the root README, report guide, catalogue, notation and ledger.
+The four standard results remain Pending in Lean. The later general
+coefficient-Tor formula, moduli and derived classifications, and full
+source reconciliation remain pending review. Standard directed-union
+flatness and the equational criterion were checked against Stacks
+Section 10.39, Tag 00H9; no finite computation is treated as verification
+of the cardinal or class arguments.
+
+Validation: three clean TeX passes for the article (291 pages) and
+catalogue (34 pages), with no warnings or box diagnostics and visual
+checks of the class pullback, embeddings, relation counts, countable
+remark, flat-dimension proof and catalogue. All 418 standard/principal
+statements, 828 source labels and 1,656 auxiliary label/number pairs
+are unchanged; among remark environments only the intended countable
+remark changes. All 4,626 anchors across 63 reports, 5,217 source-label
+references and 1,816 local Markdown destinations across 226 files pass,
+as does whitespace checking. No Lean source changed, so the previous
+two-thread 4,604-job build and 16,623-declaration axiom audit remain
+the Lean baseline for this documentation pass.
