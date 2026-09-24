@@ -9617,3 +9617,36 @@ AUX numbering pairs remain unchanged, as do 66 questions, 60 remarks and
 28 examples. No finite-verifier source or Lean source changed in this
 review; the finite checks were not rerun. Cross-report reconciliation
 remains pending.
+
+
+### Monomial and quotient-localization sync (2026-09-24)
+
+Merged origin/main through 788a975. Read all five incoming Lean modules
+against osq:prop:locsupport, osq:thm:localization and osq:ex:localizations.
+Both actual monomial localizations embed in their ambient fields and have
+exact full-support lower-bound criteria. Clearing by one extra power
+removes endpoint coefficient restrictions. An infinitely lower monomial
+is missing while its inverse is present, proving properness and failure
+to be a field. These nonzero domains have no nonzero small ring image or
+small unital module and are not small in the birthday universe.
+
+The generic localization reflection theorem uses the commutative range
+of a given map to treat noncommutative small targets. Its actual real and
+Gaussian instances allow arbitrary ideals and denominator submonoids,
+strengthening the manuscript's restricted noncommutative clause. The
+canonical map is onto and the inverse Hom equivalence is precomposition.
+Concrete examples identify the ordinary reflection of localization at
+n+omega or n, including zero denominators. Principal quotients with unit
+integer constant have only trivial small modules even when the quotient
+itself is nonzero. The coefficient-general source instances remain
+pending. Updated the report guide and catalogue to match this scope;
+the merged root README and exact ledger mappings agree.
+
+LEAN_NUM_THREADS=2 lake build passes 5,063 jobs. The axiom audit accepts
+19,225 declarations with only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 37 pages;
+inspected pages 14–15. The article remains 356 pages, with all 418 numbered
+statements, 828 labels, 1,656 numbering pairs and question/remark/example
+texts preserved. Audits pass 4,626 anchors in 63 reports, 5,243 source-label
+references and 2,016 local Markdown destinations in 226 files. Both working
+and staged diff checks pass.

@@ -70,6 +70,24 @@ Any extension making a purely infinite element invertible has no nonzero
 small unital ring image or small unital module. This includes the actual
 surreal and surcomplex fields and native localizations that need not be
 fields. All these smallness statements use the birthday universe.
+For a positive real monomial, Lean identifies both actual localization
+images exactly by support bounded below by a negative natural multiple
+of its exponent. An extra power clears the endpoint coefficient into
+strictly positive support. Thus all ordinary coefficients belong, but
+monomials at infinitely lower exponents do not; these rings are proper
+subrings, are not fields, and are not small in the birthday universe.
+
+For either actual omnific ring, every map from an arbitrary localized
+quotient to a small ring factors uniquely through the corresponding
+localization of its ordinary constant quotient. The target can be
+noncommutative, the ideal arbitrary and the denominator submonoid large.
+The generic proof uses the commutative range of the given map.
+In particular, inverting n+ω or an ordinary integer n has the small-target
+maps of ℤ[1/n]. A denominator with zero image in the constant quotient
+rules out a nonzero small unital target. The nonzero quotient by ω+1
+also has only trivial small unital modules; this module result holds for
+every principal generator with unit integer constant. The arbitrary
+coefficient-field versions remain pending.
 When a real omnific ideal misses a purely infinite element, explicit
 monomials indexed by ordinals give pairwise distinct residues. Their
 restrictions provide actual representatives for every small index type,

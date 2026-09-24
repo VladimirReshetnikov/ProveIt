@@ -916,3 +916,8 @@ import Surreal.Surcomplex.CommonKernels
 import Surreal.Foundations.OmnificSmallRigidity
 import Surreal.Algebra.GaussianEndomorphisms
 import Surreal.Surcomplex.GaussianConstantRigidity
+import Surreal.Foundations.OmnificMonomialLocalization
+import Surreal.Surcomplex.GaussianMonomialLocalization
+import Surreal.Algebra.LocalizationReflection
+import Surreal.Surcomplex.OmnificLocalizationCalculus
+import Surreal.Foundations.OmnificLocalizationExamples
