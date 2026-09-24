@@ -152,6 +152,16 @@ by one operator J with J²=−id. The real matrix formula includes dimension
 zero; the Gaussian finite-dimensional conjugacy classifications remain
 pending in Lean.
 
+Lean now gives restriction/inflation equivalences for native small module
+structures over both actual rings, with unchanged underlying linear maps,
+composition and exactness. Small real omnific actions are unique; small
+Gaussian actions correspond to small ordinary ℤ[i]-modules. The real
+constant sequence has its ring and additive section but no omnific-linear
+section. Every linear map from a small module to the regular Oz-module is
+zero, and every nonzero free Oz-module is large. The integers nevertheless
+lift through all surjections between small modules; this is projectivity
+within that category, not an unrestricted projectivity assertion.
+
 For both actual rings, Lean also constructs one nonzero positive real
 monomial in every kernel of a small family of maps with specified nonzero
 kernel witnesses; the targets themselves may be large. The family is

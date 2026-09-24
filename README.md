@@ -627,6 +627,15 @@ Neither omnific ring has a faithful small unital module. On any small
 vector space, the real ring acts by its integer constants, while Gaussian
 representations are exactly choices of an operator whose square is minus
 the identity. No finite-dimensionality assumption is needed for these formulas.
+More generally, small real omnific modules are exactly small abelian groups,
+with one possible scalar action; small Gaussian omnific modules are exactly
+small ordinary `ℤ[i]`-modules. Restriction and inflation are inverse on module
+structures and keep maps, composition and exact sequences unchanged.
+The integers are projective within the small-module category: maps from
+`ℤ` lift through every surjection between small modules. Yet the constant
+map `Oz → ℤ` has no omnific-linear section, despite its ring and additive
+section. Its domain is outside the small category. Every linear map from
+a small module into `Oz` is zero, and no nonzero free omnific module is small.
 Even when the targets are large, a small family of ring maps with specified
 nonzero kernel witnesses has one nonzero positive monomial in every kernel;
 such a family cannot jointly distinguish all omnific integers. This holds

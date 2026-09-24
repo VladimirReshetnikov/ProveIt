@@ -9799,3 +9799,32 @@ page 10. All 418 numbered results, 828 labels, 1,656 AUX numbering pairs,
 Markdown destinations in 226 files. No Lean or finite-verifier source
 changed; the prior 1,776-check Source 22 run is retained, not rerun in
 this pass. Working and staged diff checks pass.
+
+
+### Small-module correspondence and splitting sync (2026-09-24)
+
+Merged origin/main through 3b52b49. Read all three new Lean modules against
+osq:thm:modules, osq:prop:nonsplit, osq:rep:prop:projectivity and the
+following free-module assertion. Restriction/inflation identify native
+small module structures for both actual rings, with unchanged morphism
+functions, identity, composition and exactness. The real action is unique;
+the Gaussian action corresponds to an ordinary Gaussian module structure.
+This is the individual-object/morphism correspondence, not a bundled
+category of arbitrary class actions. The coefficient-general instance
+and the general abelian Gaussian endomorphism description remain pending.
+
+The real constant sequence has injective inclusion, surjective linear
+constant extraction and exactness, and its ordinary ring/additive section
+is not omnific-linear. Every linear map from a small module to the regular
+omnific module is zero. The explicit lift through surjections between
+small modules proves the integers projective within that category, without
+an unrestricted Module.Projective instance. Nontrivial free omnific modules
+are not birthday-universe small. Updated the report guide and catalogue
+and clarified smallness of the ordinary modules in the root summary.
+
+LEAN_NUM_THREADS=2 lake build passes 5,071 jobs; the axiom audit accepts
+19,359 declarations with only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free (37 pages), and pages
+14–15 were inspected. Article validation remains unchanged at 358 pages.
+Audits pass 4,626 anchors in 63 reports, 5,244 source labels and 2,025 local
+Markdown destinations in 226 files. Working and staged diff checks pass.
