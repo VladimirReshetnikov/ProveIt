@@ -595,6 +595,7 @@ import Surreal.Foundations.OmnificIntegralClosure
 import Surreal.Algebra.PolynomialSolutionRetraction
 import Surreal.Algebra.PositiveExistentialRetraction
 import Surreal.Foundations.OmnificEquationalTransfer
+import Surreal.Foundations.OmnificDefinabilityObstructions
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
 import Surreal.Algebra.IdempotentAdicCompletion
