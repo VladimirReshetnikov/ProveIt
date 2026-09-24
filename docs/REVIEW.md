@@ -4241,6 +4241,173 @@ the preceding successful build. The delivered automorphism PDF is retained;
 its new proofs and finite verification suites have not been independently
 reviewed or rerun in this synchronization.
 
+## Geometric pointers and neighboring-report comparison
+
+At `39a46b7`, the Diophantine report's geometric summaries in Sections 1,
+6, 7 and 14 and the cited statement scopes in Section 21.7 were checked
+against the maintained theorems and neighboring reports. The opening now
+retains nonzero levels, characteristic zero and nondegeneracy where the
+cited statements require them. It explains that an `Oz` automorphism fixes
+real numbers through its fraction-field extension. The curve summaries
+retain nonzero exponent groups and geometric integrality. An affine-line
+real fiber is distinguished from an affine-line model over the integers,
+and the integer-point condition remains explicit. The commutative-group
+kernel description no longer suggests an algebraic splitting.
+
+The polynomial-arc pointer now gives the entire constant-term fiber in real
+polynomial coordinates, distinguishing monomial finite-support witnesses
+from arbitrary purely infinite parameters. The comparison of unit arguments
+explains why a curve needs only one nonconstant unit: specialization forces
+a nonzero prime kernel in its dimension-one coordinate ring. The general
+affine argument instead requires generation by units.
+
+The groups report's current remark already cites the curve classification;
+its real singular arithmetic existence question remains open even though
+the geometric normalization criterion is proved in the manuscript. The
+comparison now states this boundary. It also distinguishes the rank-one
+bounded-support GCD hypothesis from `Oz`, local Euler derivations from
+full-class maps into set-sized modules, and the named-dilation language from
+the pure-ring reconstruction. C17's translation comparison retains the
+integer-valued and more-inputs-than-degree hypotheses; discreteness alone
+is insufficient. Only this statement comparison and positive degree in
+C17's opening summary were checked, not its proofs or remaining questions.
+The guide, notation record, reader map and root README reflect these scopes.
+
+All 244 standard statements and 553 labels are unchanged. The three-pass
+article build has 225 pages, no warnings, unresolved references or bad boxes,
+and preserves all 1,106 prior auxiliary label numbers. Visual checks cover
+PDF pages 8–9, 70, 108 and 179–180. The independent inventory passes for
+4,398 standard results in 63 reports; all 4,950 source references and 1,680
+local Markdown destinations in 225 files resolve. No Lean source or finite
+verification suite changed; the applicable combined build remains 4,485
+jobs with an axiom audit of 15,573 declarations. Imported proofs, remaining
+C17 material, appendix foundations and full parallel-source reconciliation
+remain separate work.
+
+## Comparison-review synchronization
+
+The merge through `6bd00c0` adds the exact zero Pell fiber (`0d256fa`),
+the rank-deficient Pell example (`5795c25`) and the real/Gaussian contrast
+for `X + iY` (`91158f6`). Their three Lean modules were read against
+`odg:prop:zeropell`, `odg:dec:ex:rankdeficient` and `odg:dec:rem:kernels`.
+The zero-level theorem retains positive nonsquare `D`; the rank-deficient
+parametrization handles any nonzero ordinary `D` and level. The Cartesian
+form is rigid on real omnific pairs even at level zero, while the Gaussian
+purely infinite line supplies the explicit nonordinary point. The combined
+two-thread build passes 4,488 jobs, and the axiom audit passes 15,602
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+
+Four batch-34 companions add 75 standard results: eighteen in dynamics,
+fourteen in surcomplex real forms, twenty-eight in independent copies and
+fifteen in Hahn–Hilbert geometry. Their earlier mathematical statements
+and labels are retained. Twenty independent-copies statements acquire
+explicit label types, with no mathematical change. This also preserves the
+field-automorphism statements used in the completed comparison above.
+All four additions await independent proof review and Lean formalization;
+their delivered PDFs and finite verification records are retained without
+claiming independent validation of the new mathematics. Five further
+companions from `a7a435f` remain staged.
+
+The ledger's independent inventory passes for 4,473 standard results across
+63 reports, with all 5,027 cited source references and 1,689 local Markdown
+destinations in 225 files resolving. The catalogue is refreshed for the four
+expansions, along with the twenty/fourteen/five manuscript counts of the
+quotient, preserving-automorphism and group reports. Its three-pass build
+has 33 pages without warnings, unresolved references or bad boxes; the
+changed entries are visually inspected. The reviewed Diophantine source
+and its 225-page PDF are unchanged by this merge. These updates preserve
+all pending proof-review, imported-foundation and source-reconciliation
+obligations recorded above.
+
+## Positive-exponent correction from the power-rigidity formalization
+
+The next merge, `365bea6`, adds three modules proving equal-power rigidity,
+reduction through a common exponent divisor and the positive-power
+univariate step. It also formally proves the counterexample
+`ω^0 − 0² = 1`, where `gcd(0,2) = 2` but one coordinate is infinite.
+The maintained `odg:rem:powers` (alias `odg:cor:powers`) now states positive
+ordinary exponents and a nonzero ordinary integer level, explicitly uses
+positive quotient exponents, and includes the counterexample. Its formerly
+overgeneral sentence about all exponent pairs now restricts the separated
+result to `m,n ≥ 2`; at exponent one, `y = x^m − c` is a nonordinary family.
+The question-status summary, root README and implementation ledger agree
+with this correction. The corrected gcd statement is proved in Lean;
+coprime separated equations remain pending there.
+
+The combined two-thread build passes 4,493 jobs and audits 15,618 declarations
+with only the three permitted axioms. The corrected article builds in three
+passes to 225 pages without warnings, unresolved references or bad boxes;
+PDF page 33 is visually checked. All 244 standard statements, 553 labels and
+1,106 label numbers remain unchanged; the correction is to a remark and its
+summary. The independent inventory passes for 4,473 results in 63 reports;
+all 5,029 cited source references and 1,693 local Markdown destinations in
+225 files resolve. The new manuscript expansions and other outstanding
+proof-review obligations retain their previous status.
+
+## Pell-two and class-residue synchronization
+
+The merge through `f45cddd` retains the corrected power remark and adds
+`c091c6e`'s ordinary and omnific Pell-two classification. The two modules
+verify the fundamental pair `(3,2)`, identify natural powers with
+`(3 + 2√2)^k`, and apply Mathlib's proved fundamental-solution theorem with
+independent coordinate signs. This matches `odg:ex:pell2` and keeps the
+index an ordinary natural number. The combined two-thread build passes
+4,497 jobs; the axiom audit passes 15,636 declarations with only the three
+permitted axioms.
+
+The universal-symmetries/difference-equations companion (`50dde76`) adds
+24 standard statements to the preserving-automorphism report; all 274
+earlier statements and labels remain unchanged. The two quotient
+companions (`97ff204`) add 53 standard statements, expand the principal
+summaries `osq:main:internal` and `osq:main:polynomial`, and add one source
+credit to `osq:if:prop:closed`. The remaining prior statements and labels
+are unchanged. These expansions, including their class-choice and
+semialgebraic claims, remain pending independent proof review and Lean
+formalization. The quotient and preserving-automorphism reports now have
+twenty-two and fifteen integrated manuscripts respectively. Seven of the
+nine companions placed in `a7a435f` are integrated; two remain staged.
+
+The refreshed independent inventory passes for 4,550 standard results in
+63 reports. All 5,106 source references and 1,698 local Markdown destinations
+in 225 files resolve. The revised 33-page catalogue builds in three passes
+without diagnostics and its changed entries on pages 10–11 are visually
+checked. This merge does not change the corrected Diophantine source or
+its validated 225-page PDF. No incoming finite suite was rerun in this
+synchronization, and the new manuscript proofs remain outside earlier
+review scopes.
+
+## Full-surreal Pell contrast synchronization
+
+The merge through `b401f5d` adds `e6b654a`'s split-norm field algebra,
+actual two-term normal-form calculation and canonical truncation theorem.
+These three modules match the contrast following `odg:ex:pell2`: positive
+real `D` and any nonzero surreal parameter give the rational Pell
+parametrization; at a positive monomial parameter and nonzero ordinary real
+level both coordinates have forbidden negative terms. Their canonical
+positive-growth parts have norm zero, so truncation does not preserve the
+original nonzero equation. The corrected power remark and the count of
+seven integrated companions are retained when resolving the ledger overlap.
+No manuscript source changes in this merge.
+
+The combined two-thread build passes 4,500 jobs and audits 15,654 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. The independent
+inventory passes for 4,550 standard results across 63 reports; all 5,106
+source references and 1,701 local Markdown destinations in 225 files resolve.
+The preceding clean 225-page article and 33-page catalogue builds remain
+applicable. Pending mathematical review and source-reconciliation scopes
+are unchanged.
+
+## Hahn-joins companion placement
+
+The subsequent merge through `6ab9666` places the Hahn-joins companion in
+`dec8d56`: three build/verification artifacts under independent surreal
+copies replace the delivered ZIP. Its main text remains unintegrated and
+unreviewed. No Lean, manuscript or catalogue source changed, so the
+4,500-job build, 15,654-declaration audit and both validated PDFs remain
+applicable. All 5,106 source references and 1,701 local Markdown destinations
+still resolve. The ledger and reader map now record placement separately
+from integration and proof review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

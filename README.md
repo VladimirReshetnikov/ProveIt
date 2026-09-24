@@ -310,6 +310,11 @@ out infinite omnific Pell solutions without asserting finiteness of the
 ordinary solution set. The classical case `D = 2, c = 1` now has its
 complete classification: independently signed coordinates of
 `(3 + 2√2)^k` for ordinary natural `k`, using Mathlib’s Pell theory.
+The full-surreal contrast is also checked: the usual rational parametrization
+with parameter `ω` and `D > 0` solves the nonzero Pell equation, but both coordinates
+have negative-exponent terms and are not omnific. Their actual canonical
+positive-growth truncations have norm zero, so truncation loses the solution.
+
 The zero level has a different, now proved classification: for positive
 nonsquare integer `D`, its omnific solutions are exactly `(±√D t, t)`
 with `t` purely infinite. Taking `t = ω` gives an infinite solution.
@@ -317,15 +322,23 @@ The three-variable equation `(x + z)² − 2y² = 1` also has a proved exact
 parametrization: `(a + u, b, d − u)` over ordinary solutions
 `(a + d)² − 2b² = 1`, with `u` purely infinite. Its common kernel permits
 nonordinary solutions such as `(3 − ω, 2, ω)` even at this nonzero level.
+Nonsingular central conics with nonzero value at their center now have
+proved rigidity too: their real support-ring solutions are constants, and
+their integer-coefficient omnific solutions have ordinary integer coordinates.
 Power differences `x^m − y^n = c ≠ 0` are also proved to have exactly their
 ordinary integer solutions when both exponents are positive and their gcd
 is greater than one. A checked counterexample, `ω^0 − 0² = 1`, shows why
-the positive-exponent condition must be added to the source remark.
+the positive-exponent condition is necessary; the source remark now includes
+it and restricts its pointer to the separated theorem to exponents at least two.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
-Its class constructions and proofs remain pending in Lean.
+Its class constructions and proofs remain pending in Lean. Its second
+manuscript adds rank tests and differential-transcendence obstructions to
+ordinary composita; these new proofs await independent review. The latest
+dynamics, surcomplex real-form and Hahn–Hilbert additions likewise remain
+outside the earlier review scopes recorded in the ledger.
 
 The expanded [critical-point-defects report](docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
 compares two actions of a large-cardinal embedding on surreal normal forms.
@@ -386,18 +399,25 @@ simple normal-crossings boundaries, spells out arithmetic descent, and
 corrects the distinction between ring retractions and common-field inclusions.
 The scope review makes the workspace restrictions and two kinds of smooth
 curve fibers explicit, and updates the formalization route to the proved
-arithmetic and linear-algebra prerequisites.
+arithmetic and linear-algebra prerequisites. The subsequent comparison
+review distinguishes an affine-line real fiber from an affine-line model
+over the integers, and retains the unresolved arithmetic existence case
+for singular real curves. It also explains why one nonconstant unit
+suffices for curve rigidity through the dimension-one argument.
 These geometric and coefficient-algebra results remain pending in Lean.
 A new manuscript in the same report treats monic polynomials with nonzero
 constant discriminant as translates of their constant-term polynomials,
 and studies units of finite étale algebras. That addition awaits independent
 proof review and Lean formalization.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
-now assembles fourteen manuscripts. Its latest parts propose formal orbit
+now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed
 fields, and formal integration of all omnific derivations. These additions
 await independent proof review and Lean formalization; the surcomplex
-group classification requires compatibility with conjugation.
+group classification requires compatibility with conjugation. A further
+chapter treats universal symmetries and exact difference equations. The
+quotient report adds class residue fields and semialgebraic preservers;
+these new claims also await independent proof review.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
