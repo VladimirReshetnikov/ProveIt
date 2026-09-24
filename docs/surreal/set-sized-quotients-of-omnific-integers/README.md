@@ -194,13 +194,26 @@ injection, then lifts every symmetric relation. No division by two is used.
 For an order the product submodule and its quotient have equal ranks;
 this does not specify a canonical splitting into symmetric tensors.
 
-The subsequent framed reconstruction and derived constant-term shadow,
-and reconciliation of the parallel sources, remain pending review. Exact scope
+Framed reconstruction and the derived constant-term shadow are now reviewed.
+The proof gives both directions of the reconstruction criterion, proves
+that the unit extends to an integral basis, and constructs a basis of the
+located multiplication kernel. The arithmetic examples include integral
+spanning checks and trace matrices; Gaussian conjugation is identified as
+semilinear over `Z[i]`. The shadow proof works for any coefficient module,
+including torsion modules, and identifies the actual zero-differential
+complex and its square-zero product when `E = D`. The shift `[1]` is in
+homological degree one. Equal-rank orders have isomorphic shadows despite
+their different framed relations. In the two-universe reading, the universal
+module claim concerns lower-universe-small modules; the regular module in
+the larger universe is an explicit counterexample to dropping that bound.
+
+The subsequent polyhedral-core results and reconciliation of the parallel
+sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 300 pages
+article.pdf   the compiled report, 302 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

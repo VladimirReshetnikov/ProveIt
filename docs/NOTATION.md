@@ -269,6 +269,18 @@ of `Sym²_D M → M²`. For orders, the “two halves” are equal ranks in a
 short exact sequence, with no splitting specified. Linear disjointness
 always refers to the given embeddings of the fields into k over Frac D.
 
+The framed order data include the actual embedding of the multiplication
+kernel in `𝔬 ⊗_D 𝔬` and the specified unit 1. An abstract isomorphism type
+of Tor₂ alone omits this information. The derived constant-term shadow
+`E ⊕ (M ⊗_D E)[1]` uses homological degree one for `[1]` (cohomological
+degree −1), with both differentials zero. For E = D its degree-one part
+has square-zero multiplication; for general E only a complex of modules
+is asserted. In the two-universe convention U ∈ V, all modules and tensor
+products may be formed in V, but “every set-sized module acts through ct”
+means U-small underlying modules. The regular module A in V does not
+satisfy that action condition. Conjugation transports Gaussian order data
+semilinearly with respect to conjugation on D = ℤ[i].
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
