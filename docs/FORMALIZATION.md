@@ -120,6 +120,11 @@ main-text integration and claim indexing remain pending. These new results remai
 **Pending** in Lean; placing companion audits and verification code does not
 by itself integrate or formalize their mathematics.
 
+The later delivery merged through `51c1cc7` adds nine archives under
+`docs/new/`. Placement, main-text integration, statement indexing and proof
+review are pending; these archives do not change the 61 maintained reports
+or their 3,871-result inventory.
+
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
 (Sections 7.7–7.13), with the corresponding limitations in Section 26.10.

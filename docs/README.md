@@ -88,6 +88,9 @@ are now integrated: automatic summability (`d4d72d7`) and singular curves
 Newton rigidity (`2c4debb`), while the other three await integration.
 Nine further manuscripts placed in `7d04483` are additions to eight existing
 reports; their main-text integration and proof review remain pending.
+The synchronization through `51c1cc7` delivers another nine archives in
+`docs/new/`, awaiting placement, integration and review. They are not yet
+part of the 61-report inventory.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a

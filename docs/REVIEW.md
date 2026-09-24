@@ -3947,6 +3947,12 @@ the axiom audit passes 15,245 declarations with only `propext`,
 1,594 local Markdown destinations resolve. This merge changes no report
 source or PDF and leaves the application review's scope intact.
 
+The last fetch also merges delivery `51c1cc7`: nine ZIP archives, all passing
+ZIP integrity checks and each containing an article source. They await
+placement, integration and review. No maintained report source, PDF or Lean
+file changes, so the existing inventory and build validation remain
+applicable. Archive integrity is not a mathematical review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
