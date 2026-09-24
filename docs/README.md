@@ -82,11 +82,14 @@ strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
-written as a single-source report in `781b19e`. Seven of its eight companions
+written as a single-source report in `781b19e`. All eight companions
 are now integrated: automatic summability (`d4d72d7`) and singular curves
 (`1ad4ad8`), finite tests at new scales (`9b463f7`), and unit dilation and
 Newton rigidity (`2c4debb`), plus theta hierarchies and single-scale freedom
-(`1d3f503`). The polynomial-composition companion awaits integration.
+(`1d3f503`) and polynomial composition (`8bc7994`). The holonomic report
+now contains 211 standard statements. These additions remain pending in Lean.
+The universal-symmetries archive delivered in `bbe23a3` awaits placement
+and integration.
 Nine further manuscripts placed in `7d04483` are additions to eight existing
 reports and are now integrated by the eight batch-32 writes through
 `c315ac9`. Their new statements are indexed but remain pending in Lean and
