@@ -219,6 +219,13 @@ coordinate tuples while preserving all their homogeneous equations. Every
 small family of nonzero omnific integers also has a nonzero common multiple
 of all ordinary powers simultaneously, with purely infinite quotients.
 
+The purely infinite ideals in both the omnific and Gaussian omnific rings
+now have the same parameter-free existential definition:
+`∃ y, x² = 2y²`. The general Hahn-ring version and its nonsquare-radicand
+extension are proved too. Consequently every unital homomorphism between
+two omnific rings, or between two Gaussian omnific rings, preserves the
+purely infinite ideal, without injectivity or a condition on the target’s size.
+
 The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
 ideal generators; in particular it is not finitely generated. Its cotangent
 module `Π/Π²` vanishes even though `Π` is nonzero. Every positive ideal-power
