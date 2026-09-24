@@ -1,7 +1,8 @@
 import Surreal.Algebra.IdealCongruenceTopology
 import Mathlib.RingTheory.Ideal.Lattice
 
-/-!+# Closure of ideals in congruence topologies
+/-!
+# Closure of ideals in congruence topologies
 
 Generic topological input to `osq:thm:closure`. For any directed ideal
 neighborhood basis, closure of an ideal is the intersection of its sums

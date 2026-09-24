@@ -462,7 +462,14 @@ of its fibre is idempotent. An added example realizes every real
 or complex Laurent constant coefficient on an integral element; their
 residues give an additive copy of the coefficient field with all products
 zero. These local residues disappear in the full-class fibre. The results
-remain pending in Lean.
+remain pending in Lean. The completed cyclic-workspace proof review also
+makes the scale distinction explicit: even one fixed cyclic workspace has
+continuum many independent idempotents and exactly 2^(2^ℵ₀) places over
+zero. Its coefficient fibre has a periodic free resolution with nonzero
+Tor in every degree. The analogous arithmetic complex fails to be exact;
+every coefficient outside the algebraic integers supplies an obstruction.
+The countable coefficient fragment has the Boolean algebra of clopen
+subsets of Cantor space. These conclusions also await Lean formalization.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

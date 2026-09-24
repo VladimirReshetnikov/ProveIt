@@ -610,6 +610,14 @@ Keep 𝖨=T𝓑, its radical 𝖩 in the domain, and the nilradical 𝖩/T𝓑 o
 fibre distinct. Only the last consists of nilpotent elements. Finite-stage local
 valuation rings have fraction fields L varying inside K^alg, not a shared
 fraction field equal to K^alg.
+Fresh quadratic irreducibility is tested at an unramified finite prime;
+the two residue choices lie over T=0, while the prescribed Laurent root
+is expanded at infinity. These are three distinct uses of places.
+Write Z̄_k for the constants of k integral over D. The obstruction
+k/Z̄_k in the cyclic arithmetic annihilator calculation is an additive
+D-module quotient, not a quotient ring. The coefficient fibre's periodic
+free resolution does not give an arithmetic free resolution: its
+annihilator ideals contain additional coefficient multiples.
 
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its

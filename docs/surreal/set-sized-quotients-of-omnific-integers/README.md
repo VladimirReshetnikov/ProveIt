@@ -76,6 +76,23 @@ restrictions provide actual representatives for every small index type,
 proving the source's quotient-size alternative. The proof uses finite
 telescope certificates and a well-ordering of the index type.
 
+The real principal quotient is small exactly for a nonzero ordinary
+integer generator. For a nonconstant generator, distinct positive
+monomials below its leading exponent have distinct residues. The
+quotients by ω, 2+ω and 1+ω are nonzero and large; their universal
+small images are respectively ℤ, ℤ/2ℤ and the zero ring. Among ideals
+with small quotient, only Π lacks a small generating set. The Gaussian
+and arbitrary-coefficient principal-size statements remain pending.
+
+For every real omnific ideal J, Lean now identifies its finite-congruence
+closure with J+Π, equivalently the inverse image of its integer constant
+ideal. A generic directed-ideal-basis theorem identifies this with native
+topological closure. A principal ideal is dense exactly for constant term
+±1; nonconstant generators with this property give proper dense ideals.
+Every nonconstant irreducible has this property. Even a nonunital map to
+a small ring that kills a unit-constant element must be zero; targets
+may be infinite and noncommutative.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator
@@ -715,14 +732,33 @@ elements belong to the quotient ideal 𝖩/T𝓑. By contrast the original ideal
 𝖨 has powers T^r𝓑, a nonzero conormal module, and the stated coefficient-fibre
 Tor group. The completion proof constructs the pullback at every finite
 level before passing to compatible sequences. These eight results and the
-added filtration consequences remain pending in Lean. The next review
-starts with quadratic branch splitting inside a fixed cyclic workspace.
+added filtration consequences remain pending in Lean.
+
+The final nine results complete the review of all twenty-seven standard
+cyclic-workspace results. Fresh finite primes prove quadratic
+irreducibility; splitting over zero preserves the Laurent expansion at
+infinity. Fewer than continuum many representatives exclude fewer than
+continuum many parameters, without any regularity assumption on the
+continuum. Finite sign assignments give continuum many independent
+idempotents, exact order density continuum, and exactly 2^(2^ℵ₀) places
+above zero. Idempotents lift uniquely across the nilradical.
+
+The coefficient fibre has exact principal annihilators and a periodic free
+resolution whose self-Tor is nonzero in every degree. The arithmetic
+complex is not exact. An added consequence identifies the kernel of the
+coefficient-to-annihilator-quotient map as Z̄_k, giving an injection of the
+additive D-module k/Z̄_k. This does not classify the whole annihilator
+quotient or determine the arithmetic weak global dimension. The countable
+fragment uses rational-square parameters and an explicit back-and-forth
+proof of the Cantor clopen Boolean algebra classification. These nine
+results and the new coefficient obstruction remain pending in Lean.
+The next review starts with the henselian branching results.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 343 pages
+article.pdf   the compiled report, 345 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

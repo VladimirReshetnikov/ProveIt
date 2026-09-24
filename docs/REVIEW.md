@@ -9175,3 +9175,82 @@ Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
 36 pages; inspected pages 12–13. The 343-page article remains unchanged.
 Audits pass 4,626 anchors in 63 reports, 5,240 source-label references and
 1,989 local Markdown destinations in 226 files.
+
+
+### Cyclic branching, exact annihilators and countable fragments (2026-09-24)
+
+Reviewed the final nine standard cyclic-workspace results, from
+`osq:rm:lem:freshquad` through `osq:rm:thm:countable`, completing all
+27 standard results in that subsection. The quadratic proof now separates
+a fresh unramified finite prime, the two residue branches over zero, and
+the fixed Laurent expansion at infinity. Monic presentations, integrality
+of the intermediate inclusion and lying over make both branches explicit.
+Uniform splitting counts finite exceptional sets without assuming the
+continuum is regular. Finite sign presentations prove independence;
+nonzero Boolean words, the order-density obstruction and finite ideal
+certificates give the exact cardinal and branch counts. The nil-ideal
+lifting remark includes the error-squaring calculation and uniqueness.
+Checked the primary Stacks statements 00GQ (lying over for an integral
+inclusion) and 00J9 (idempotent lifting); the latter is linked in the article.
+
+The coefficient annihilator proof cancels T in the domain before passing
+to the fibre. The periodic resolution now checks its augmentation, every
+kernel and image, the n=2 case, and nonzero self-Tor in every degree. The
+arithmetic proof keeps coefficient multiples distinct from arithmetic
+principal multiples. A new unnumbered consequence identifies exactly the
+kernel of the coefficient-to-annihilator-quotient map as the constants
+integral over D. It yields an injective D-linear map k/Zbar_k into the
+quotient of annihilator modules; no quotient-ring structure, surjectivity
+or arithmetic weak-global-dimension formula is claimed. The countable
+fragment proof supplies its coefficient-span and residue arguments,
+rational-square splitting parameters and explicit Boolean back-and-forth.
+All nine results and the new coefficient obstruction remain pending in Lean.
+
+Updated root/report guides, notation, coverage ledger and catalogue.
+Three final TeX passes for each PDF are diagnostic-free: article 345 pages,
+catalogue 36 pages. Inspected article PDF pages 241–246 and catalogue page 13.
+All 418 result statements, 828 labels and 1,656 AUX label-number pairs are
+unchanged; all 66 questions and 28 examples are unchanged, with only the
+intended idempotent-lifting remark changed among 60 remarks. A byte-identical
+scratch copy of Source 23 passes all 18,040 finite checks; its JSON differs
+from the archive only in Python version and the absent scratch article
+hash. These finite checks do not establish the infinite valuation,
+cardinality or homological claims, which were reviewed mathematically.
+Audits pass 4,626 source anchors in 63 reports, 5,240 cited source labels
+and 1,989 local Markdown destinations in 226 files. No Lean source changed
+in this review; the incoming Lean commit is validated separately below.
+
+
+### Principal quotient sizes, their images and ideal closure sync (2026-09-24)
+
+Merged `fa605e0` and `6891dd1` from origin/main. Read all five new modules
+against the principal-quotient and reflection statements and the ideal
+closure theorem and dense-ideal corollary. Divisibility bounds the leading
+exponent, separating the residues of positive monomials below a nonconstant
+generator. The actual real principal quotient is small exactly for a
+nonzero ordinary integer generator. Only Pi among the small-quotient
+ideals lacks a small generating set. Principal reflection is the ordinary
+residue ring of the absolute constant coefficient: quotients by omega,
+2+omega and 1+omega are nonzero and large, with small reflections Z, Z/2Z
+and zero. Gaussian and arbitrary-coefficient principal-size claims remain
+pending.
+
+The generic directed-ideal-basis theorem computes native closure of any
+ideal by its neighborhood sums. Its actual real omnific specialization is
+J+Pi, the inverse image of the integer constant ideal, including the zero
+image ideal. Density of a principal ideal is equivalent to unit constant
+term; nonconstant generators then give proper dense ideals. The result
+applies to every nonconstant irreducible. Any small-target nonunital map
+killing a unit-constant element is zero, including infinite and
+noncommutative targets. Corrected a stray plus sign in the generic module's
+heading; no proof changed.
+
+Updated the report guide and catalogue to match the incoming root README
+and exact coverage ledger. After the heading correction,
+`LEAN_NUM_THREADS=2 lake build` passes all 5,041 jobs. The axiom audit
+accepts 18,958 declarations using only propext, Classical.choice and
+Quot.sound. Three final catalogue TeX passes are diagnostic-free, still
+36 pages; inspected pages 12–13. The article is unchanged by this merge,
+at 345 pages, with all previously checked statements, labels and numbering
+preserved. Audits pass 4,626 anchors in 63 reports, 5,240 cited source labels
+and 1,995 local Markdown destinations in 226 files. git diff --check passes.
