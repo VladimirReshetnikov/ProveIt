@@ -1926,3 +1926,33 @@ checking. No Lean source changed; the two-thread 4,625-job build and
 16,987-declaration axiom audit remain the baseline before synchronization.
 Finite example calculations do not establish the general reconstruction,
 derived-category or universe-relative assertions.
+
+## Synchronization: full first-order real-axis nondefinability
+
+Merged origin/main through b8f4328, including 4fabd72, and reviewed the
+two new modules and the phase-twist docstring update against every clause
+of `odg:def:thm:norealaxis`. The generic invariance theorem uses Mathlib's
+native parameter-set definability and formula semantics for arbitrary
+formulas. It transports both definable tuple sets and function graphs
+under automorphisms fixing the entire parameter set.
+
+The actual surcomplex structure is explicitly the ring language with a
+unary predicate for the Gaussian omnific image. The phase twist preserves
+and reflects this predicate, fixes every ordinary complex parameter, and
+is packaged as an automorphism of that language. The existing omega
+witness disproves definability of the real axis; failure to commute with
+conjugation disproves definability of its graph. Equivalent statements
+in the expanded language name every ordinary complex constant. The pure
+Gaussian omnific ring has its own language automorphism and the ordinary
+Gaussian integer parameter set; the moved omnific omega proves the real
+omnific subring is not definable there. The README and ledger now correctly
+mark the full theorem proved, including quantified formulas, rather than
+only its algebraic witnesses. The scope remains the actual universe-indexed
+carriers; no proper-class first-order structure is introduced.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,628 jobs; the
+axiom audit checks 17,035 declarations using only propext, Classical.choice
+and Quot.sound. All 4,626 anchors in 63 reports, 5,219 source-label
+references and 1,841 local Markdown destinations in 226 files pass,
+as does whitespace checking. No incoming TeX changed; the reviewed
+302-page article and 34-page catalogue remain current.

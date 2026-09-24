@@ -557,8 +557,11 @@ composition-preserving section, with no continuity assumption.
 An explicit phase twist now fixes every ordinary complex number and preserves
 Gaussian omnific integers, yet sends `ω` to `iω`. Lean verifies that its image
 lies outside the actual real axis and that the twist fails to commute with
-conjugation. These supply the automorphism witnesses for the next logical
-nondefinability theorem; its first-order formulation remains pending.
+conjugation. Using Mathlib's first-order semantics, this now proves that
+neither the real axis nor conjugation is definable in the surcomplex field
+with a Gaussian omnific predicate, even when every ordinary complex number
+is named. Likewise, the real omnific subring is not definable in the pure
+Gaussian omnific ring with parameters from `ℤ[i]`.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
