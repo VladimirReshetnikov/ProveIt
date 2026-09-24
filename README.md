@@ -44,10 +44,10 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; and [`SurrealNumbers/`](Algebra/SurrealNumbers/), the merged Surreal project: research reports on surreal and surcomplex numbers and omnific integers, with a Lean library for the actual surreal field. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
-| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
+| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1; admitting published results, see below); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
-| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; and [`Cardinals/`](SetTheory/Cardinals/), the merged Cardinals project: exacting and cover-exacting large cardinals, with the coarse-Turing-degrees formalization and further research reports in the same package. |
+| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; and [`Cardinals/`](SetTheory/Cardinals/), the merged Cardinals project: exacting and cover-exacting large cardinals (admitting published results; see below), with further research reports. |
 | [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
@@ -178,7 +178,9 @@ requirement to build Lean one module at a time.
   covering the quotient/setoid order, degree zero, exact even/odd joins,
   cardinalities of degree classes and cones, jump strictness, Kleene--Post
   incomparability, c.e.-completeness, Shoenfield's limit lemma, Post's theorem,
-  and a conditional constructive solution of Post's problem.
+  and a conditional constructive solution of Post's problem. Its second Lean
+  library, `CoarseDegrees`, refutes the coarse least-degree statement C1 three
+  ways, conditional on admitted published theorems.
 
 ## Lean workspace
 
@@ -291,6 +293,7 @@ lake build +BusyBeaver.BB3
 lake build +BusyBeaver.Mathlib
 lake build +TuringDegrees
 lake build +TuringDegrees.Audit
+lake build CoarseDegrees          # admits published results; see "Trust and status"
 ```
 
 These projects also have project-local Lake files for focused builds:
@@ -374,6 +377,14 @@ and classical boundaries and provides a `coqchk` command.
 - Conditional theorems remain explicitly conditional. The A198683 research
   ledger distinguishes semantic proofs, finite data checks, conditional
   results, and heuristic evidence.
+- **`admit` is used in two merged projects, and nowhere else.** The
+  [`Cardinals`](SetTheory/Cardinals/Cardinals/README.md) library (19) and the
+  [`CoarseDegrees`](Computability/TuringDegrees/Lean/CoarseDegrees/README.md)
+  library (8) close results from the published literature with `admit`, each
+  with its reference in the docstring; their READMEs list every admitted
+  statement, and their `Audit.lean` files show `sorryAx` in exactly the
+  theorems that depend on them. Neither library is imported by `ProveIt.lean`
+  or built by the root default targets.
 - Everything tracked here is ordinary mathematics held to those standards. The
   deliberate paradox and kernel-defect work that used to sit outside them has
   moved to its own repository; see the section below.

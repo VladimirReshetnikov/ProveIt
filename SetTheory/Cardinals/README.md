@@ -11,7 +11,11 @@ September 2026; the history of both is preserved.
 | | Subject | Lean library | Documents |
 |---|---|---|---|
 | **Large cardinals** | Exacting, ultraexacting and cover-exacting cardinals at the inconsistency frontier | `Cardinals/` | `docs/cardinals/` |
-| **Coarse degrees** | Coarse Turing equivalence, and the failure of C1 | `CoarseDegrees/` | `docs/coarse-degrees/` |
+| **Coarse degrees** | Coarse Turing equivalence, and the failure of C1 | moved to `Computability/TuringDegrees/Lean/CoarseDegrees/` | moved to `Computability/TuringDegrees/Research/CoarseDegrees/` |
+
+Since the merge into ProveIt, the coarse-degrees project lives with the Turing-degree
+project it builds on, `Computability/TuringDegrees/` (relative to the ProveIt root); this
+directory keeps the large-cardinal project and the other reports.
 
 The two are mathematically independent.  They do share a technical layer: both use
 `ProveIt`'s first-order syntax (`SetTheory.Form`, `Sat`) and, on the set-theoretic
@@ -40,9 +44,10 @@ strongly compact cardinals — a partial negative answer to a problem of Blue an
 Ten research reports on coarse Turing equivalence, nine of them attacking the statement
 **C1** — every nonuniform coarse-equivalence class contains a representative of least
 Turing degree, the coarse instance of Question 7 of Gerdes — which is false.
-`CoarseDegrees/` proves `¬ C1`, `¬ C1Uniform` and a third independent route through
-dyadic codes, and formalizes report 10 on coarse hyperdegrees and the failure of
-Martin's cone theorem for the coarse degrees.  See `CoarseDegrees/README.md`.
+The library `CoarseDegrees` proves `¬ C1`, `¬ C1Uniform` and a third independent route
+through dyadic codes, and formalizes report 10 on coarse hyperdegrees and the failure of
+Martin's cone theorem for the coarse degrees.  It and its documents now live in ProveIt's
+`Computability/TuringDegrees/` (`Lean/CoarseDegrees/README.md`, `Research/CoarseDegrees/`).
 
 ## Other research reports
 
@@ -69,13 +74,16 @@ repository root); before the move it was a sibling checkout. Run from
 
 ```sh
 # once: share ProveIt's package cache instead of re-downloading and rebuilding Mathlib
-lake build          # both libraries
+lake build          # the Cardinals library
 lake build Cardinals
-lake build CoarseDegrees
 ```
 
-Each library has an `Audit.lean` that prints, for its main theorems, the axioms they
-depend on, so that the admitted published results are visible rather than buried.
+`CoarseDegrees` is now built from the ProveIt root (`lake build CoarseDegrees`).
+
+**Admitted statements.** Unlike the rest of ProveIt, the `Cardinals` library closes nineteen
+declarations with `admit` (and `CoarseDegrees` eight), all for results from the literature.  Each library has an `Audit.lean`
+that prints, for its main theorems, the axioms they depend on, so that the admitted published
+results appear as `sorryAx` rather than being buried; `Cardinals/README.md` lists them.
 
 ## Status
 

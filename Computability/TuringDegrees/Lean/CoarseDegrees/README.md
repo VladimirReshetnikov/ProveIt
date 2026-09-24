@@ -14,10 +14,11 @@ theorem CoarseDegrees.not_C1_dyadic  : ¬ C1   -- a third route, independent of 
 
 Turing reducibility is Mathlib's oracle semantics (`Mathlib.Computability.TuringDegree`,
 `RecursiveIn`).  Set-level reducibility (`≤ᵀₛ`), characteristic oracles and the finite
-oracle-program syntax used for *uniform* coarse reductions come from the enclosing ProveIt repository
-(library `TuringDegrees`, in `Computability/TuringDegrees/Lean`), which `lakefile.toml` requires
-by path as `../..`. (Until this project moved into ProveIt at `SetTheory/Cardinals/`, ProveIt
-was a sibling checkout at `C:\ProveIt`; the comments in the Lean sources still name it so.)
+oracle-program syntax used for *uniform* coarse reductions come from the `TuringDegrees`
+library beside it in this project (`Computability/TuringDegrees/Lean`).  This library was
+developed in the separate Cardinals repository, where ProveIt was a sibling checkout at
+`C:\ProveIt`; the comments in the Lean sources still name it so.  It reached ProveIt with the
+Cardinals merge and now lives in the Turing-degrees project.
 
 The library also formalizes research report 10 (`Computability/TuringDegrees/Research/CoarseDegrees/research-reports/10`): coarse classes
 with no representative of least *hyperdegree*, and the failure of Martin's cone theorem for the
@@ -25,12 +26,21 @@ coarse degrees.  See "Report 10" below.
 
 ## Build
 
-```sh
-# from SetTheory/Cardinals; once: share ProveIt's package cache instead of re-downloading and rebuilding Mathlib
-powershell -Command "New-Item -ItemType Junction -Path .lake\packages -Target C:\ProveIt\.lake\packages"
-lake build
-lake env lean CoarseDegrees/Audit.lean     # prints the axioms behind each main theorem
+From the ProveIt root (one target at a time, as the repository README requires):
+
+```powershell
+$env:LAKE_JOBS = '1'; $env:LEAN_NUM_THREADS = '2'
+lake build CoarseDegrees
+lake build CoarseDegrees.Audit     # prints the axioms behind each main theorem
 ```
+
+or with the project-local package, `lake --dir Computability/TuringDegrees/Lean build`.
+
+**Admitted statements.** Unlike the rest of ProveIt, this library closes eight published
+results with `admit` (listed in the two admitted-statement tables below).  The build therefore
+reports eight `declaration uses 'sorry'` warnings, and `CoarseDegrees.Audit` shows `sorryAx`
+in exactly the theorems that rest on them.  The `TuringDegrees` library admits nothing, and
+the repository-wide import surface `ProveIt.lean` does not import `CoarseDegrees`.
 
 ## What is formalized
 

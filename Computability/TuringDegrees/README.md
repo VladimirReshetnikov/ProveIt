@@ -69,6 +69,40 @@ axiom dependencies.
 - `Lean/TuringDegrees/Cardinality.lean`: program coding and cardinality proofs.
 - `Lean/TuringDegrees/Audit.lean`: public API and axiom audit.
 
+## Coarse Turing degrees
+
+[`Lean/CoarseDegrees/`](Lean/CoarseDegrees/README.md) is a second Lean library in
+this project, built on `TuringDegrees`. It formalizes coarse Turing equivalence
+and refutes the statement **C1** (every nonuniform coarse-equivalence class
+contains a representative of least Turing degree, the coarse instance of
+Question 7 of Gerdes): `CoarseDegrees.not_C1`, `not_C1Uniform`, and a third
+route through dyadic codes, `not_C1_dyadic`. It also formalizes the dyadic-code
+criterion `description_iff_limit`, the block-code characterization of the
+classes that do have a least degree, and research report 10 on coarse
+hyperdegrees and the failure of Martin's cone theorem for the coarse degrees.
+The research plan, ten reports and the synthesis it follows are in
+[`Research/CoarseDegrees/`](Research/CoarseDegrees/).
+
+**Admitted statements.** This library, unlike `TuringDegrees` and the rest of
+ProveIt, uses `admit`: eight results from the literature (Hirschfeldt, Jockusch,
+Kuyper and Schupp 2016; Jockusch and Schupp 2012; a consequence of Cooper 1973;
+transitivity of hyperarithmetic reducibility; a packaged Cohen-forcing statement;
+two relativized published theorems) are admitted, each with its reference in its
+docstring. The main theorems are therefore conditional on them, and
+`CoarseDegrees.Audit` prints `sorryAx` for exactly the theorems that use them;
+the library README lists every admitted statement and its users. `ProveIt.lean`
+does not import this library.
+
+```powershell
+$env:LAKE_JOBS = '1'; $env:LEAN_NUM_THREADS = '2'
+lake build CoarseDegrees
+lake build CoarseDegrees.Audit
+```
+
+The library came into ProveIt with the Cardinals repository (see
+[`../../SetTheory/Cardinals/`](../../SetTheory/Cardinals/)) and was moved here
+afterwards; `git log --follow` traces its files through that move.
+
 ## Rocq development
 
 The Rocq files use the constructive oracle-machine semantics from
