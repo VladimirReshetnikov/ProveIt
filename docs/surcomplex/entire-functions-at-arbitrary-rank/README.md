@@ -1,26 +1,31 @@
 # Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank
 
-**A merged research report, 133 pages, from seven manuscripts.** Everything in
+**A merged research report, 159 pages, from eight manuscripts.** Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 133-page report
+article.pdf   the compiled 159-page report
 README.md     this guide
 07-scale-moderate-interpolation-SOURCE_AUDIT.md   source 4: provenance, scope and novelty audit
 09-prime-spectra-SOURCE_AUDIT.md                  source 6: provenance, claim boundaries and literature
 10-entire-rectification-SOURCE_AUDIT.md           source 7: provenance, literature, proposed contributions, non-claims
-code/         the seven source verification programs, unmodified, and four delivered build helpers
+11-arithmetic-sampling-SOURCE_AUDIT.md            source 11 (the eighth): repository snapshot, literature, proposed contributions, checks
+code/         the eight source verification programs, unmodified, and five delivered build helpers
 data/         the recorded verification runs, the sources' build reports, source 4's
-              package manifest, source 5's research audit and source 7's requirements file
+              package manifest, source 5's research audit, source 7's and source 11's
+              requirements files, and source 11's artifact manifest
 ```
 
 Every label in `article.tex` carries the prefix `ent:`. Material added from
 the fourth source carries `ent:sm:`, from the fifth `ent:mv:`, from the sixth
-`ent:ps:`, and from the seventh `ent:rc:`. File names keep the local numbers
-they were placed under: `06` is the first source, `03` the second, `01` the
-third, `07` the fourth, `08` the fifth, `09` the sixth and `10` the seventh.
+`ent:ps:`, from the seventh `ent:rc:`, and from the eighth `ent:as:`. File
+names keep the local numbers they were placed under: `06` is the first source,
+`03` the second, `01` the third, `07` the fourth, `08` the fifth, `09` the
+sixth, `10` the seventh and `11` the eighth. Because this report already has a
+file prefix `09` of its own, the eighth manuscript (batch 32, manuscript 09) is
+called **source 11** after its file prefix, in the article and here.
 
 | file prefix | source | pinned commit | contribution |
 |---|---|---|---|
@@ -31,6 +36,7 @@ third, `07` the fourth, `08` the fifth, `09` the sixth and `10` the seventh.
 | `08-multivariate-extension` | 5 | `4cf691c` | several variables: exact extension domains |
 | `09-prime-spectra` | 6 | `465a54b` | all prime ideals above a one-simple-node product; cofinal splitting |
 | `10-entire-rectification` | 7 | `71e9606` | several variables: rectification dichotomy, reduction obstruction, fat-point ideals |
+| `11-arithmetic-sampling` | 8 (source 11) | `343dc2c` | ordinary points: coefficientwise division, faithful flatness over `k[X]`, arithmetic sampling, exceptional ideals, halting barrier |
 
 The sixth source's files are `code/09-prime-spectra-verify_finite.py`,
 `code/09-prime-spectra-build.sh`, `data/09-prime-spectra-verification_results.json`,
@@ -49,6 +55,19 @@ The seventh source's files are `code/10-entire-rectification-verify.py`,
 shipped; its build helper and build report refer to them, and its source
 audit refers to "Sections 10–11 of the article" (its provenance and proof
 audit), which are summarized in Section 11.15 and Appendices A–C here.
+
+Source 11's files are `code/11-arithmetic-sampling-verify.py` (delivered as
+`verify.py`), `code/11-arithmetic-sampling-build.py` (`build.py`),
+`data/11-arithmetic-sampling-verification.json` (`verification.json`),
+`data/11-arithmetic-sampling-build_report.json` (`build_report.json`),
+`data/11-arithmetic-sampling-requirements.txt` (`requirements.txt`),
+`data/11-arithmetic-sampling-ARTIFACT_MANIFEST.json` (`ARTIFACT_MANIFEST.json`)
+and `11-arithmetic-sampling-SOURCE_AUDIT.md` (`SOURCE_AUDIT.md`). Its own
+article (`arithmetic_sampling.tex`, 24 pages), PDF and delivery README are not
+shipped. The audit, the manifest and the build report use the delivery names;
+the manifest hashes nine files, of which the six shipped here match and three
+(the article, its PDF and the delivery README) are not shipped, and the build
+report hashes the unshipped article and PDF.
 
 ## What the report is
 
@@ -133,6 +152,82 @@ second proof of Lemma 11.44). Its reduction theorem generalizes
 `hol:cf:lem:reduction` of the holonomic-rigidity report and this report's
 Lemma 8.4 and Theorem 4.1 argument, which it did not cite; the merge credits
 them.
+
+An **eighth manuscript**, source 11, *Arithmetic Sampling in Surreal Hahn
+Fields: Entire rigidity, coefficientwise algebraic division, omnific
+exceptional loci, and a computability barrier* (23 September 2026, 24 pages,
+batch 32 manuscript 09, pinned at `343dc2c`, after the seventh source was
+merged; this directory is identical at that pin and at the base of the merge),
+asks what happens when arithmetic values are prescribed at **ordinary**
+coefficient-field points of `K^d`, rather than along escaping sequences. It
+presented that as a question different from the report's; it is a partial
+answer to the ideal-theory clause of Question 16.5 (`ent:q:several`) and is
+placed accordingly, as **Sections 11.16–11.26** (`ent:as:`), the last
+subsections of Section 11, after the seventh source's, so that **no existing
+section, theorem, question or equation number changed**: its items are
+numbered 11.71–11.111, its displayed equations (S1)–(S25), and its ten
+questions 16.17–16.26. See the section *Source 11* below.
+
+## Source 11 (batch 32): Arithmetic Sampling in Surreal Hahn Fields
+
+| | |
+|---|---|
+| manuscript | batch 32, manuscript 09; archive `arithmetic_sampling_surreal` (delivered in `aa268a4`, placed in `7d04483`); main file `arithmetic_sampling.tex`, 24 pages, 23 September 2026 |
+| title | *Arithmetic Sampling in Surreal Hahn Fields: Entire rigidity, coefficientwise algebraic division, omnific exceptional loci, and a computability barrier* |
+| pin | `343dc2c471212bb9b53ff4623bace2e1943f255b` (this directory unchanged from the pin to the merge base) |
+| contributes | Sections 11.16–11.26 (`ent:as:`, 87 labels), items 11.71–11.111, equations (S1)–(S25), Questions 16.17–16.26 |
+| answers | part of the ideal-theory clause of Question 16.5 (ideals extended from `k[X]`) |
+
+**Placement.** The material is the last eleven subsections of Section 11, after
+the seventh source's, not a new section, so that no existing section, theorem,
+question or equation number changes; its displayed equations are numbered (S1),
+(S2), … for the same reason. Section 11 already works without divisibility,
+which source 11 needs; its standing hypotheses are Convention 11.71 (`k = R` or
+`C`, any `Gamma`, including `0`).
+
+**Renamed symbols** (full table in Section 2.5, with the tempting false
+readings): its `D` (`Z` or `Z[i]`) is `Z_k` (our `D` is a divisor); its
+omnific ring `A = D + Pi` is `Oz_K` (our `A_Gamma` is the Hahn algebra
+`C[X]((t^Gamma))`, and `A` a Bézout cofactor); its `B = k + Pi` is the seventh
+source's `K^{<=0}`; its `Pi` is `Pi_K` (not the class `Pi`, not the shell
+factors `Pi_n`); its scale `gamma`, weight `rho` and bound `beta` are `eta`,
+`gamma` and `b` (our `rho` is a node); its `p_gamma(F)` is `p_eta(F)`
+(sans-serif), its `P_B(F)` is `F_{<=0}`, its `R_0` is `k[X]`, its matrices
+`M`, `H` are `M`, `N` (bold) and its affine `H` is `L` (our `H` is a convex
+subgroup) with new variables `Y` for its `Z`, its `H_F` and `D_0` are `gcd_+(F)` and `n_0`, its `J_r(F)` is
+`I_{+,m}(F)`, its `Delta_j` is the forward difference `nabla_j` (our `Delta`
+is a larger value group), its `I(S)` and `V_k(I)` are `I_k(S)` and `V_k(I)`
+(blackboard V), its machine `M` is `M` (typewriter), and its examples `L`, `P`,
+`T` are `F_loc`, `P_esc`, `Theta`. No normalization changes: valuations have
+the same sign as ours.
+
+**Printed once.** Its locally finite families lemma is Lemma 11.2(a); its
+entire coefficient criterion is Theorem 11.3, already proved for any trivially
+valued field and any group, so its claim to remove divisibility adds nothing;
+its cofinality dichotomy is Corollary 3.3 with the last clause of Theorem 11.3
+and Proposition 11.4; its full-class corollary is Corollary 10.12 and
+Proposition 11.32 (its short route is kept in Remark 11.109). For divisible
+`Gamma` its affine changes (Proposition 11.74) are in Lemma 11.40 and its
+ordinary fibres (Corollary 11.85) are the one-point case of Corollary 11.63.
+
+**Merge additions**, marked "the merge's" in the article: Corollary 11.92
+(vanishing ideals of ordinary point sets and, over `C`, of algebraic sets, via
+the Nullstellensatz); the identification of `p_eta` with the coefficients
+`P_eta` of the Hahn algebra and `P_(n,eta)` of Theorem 11.27; the remark that
+`E_d ⊆ k[X]((t^Gamma))`; the comparisons after Corollary 11.85, Theorem 11.94
+and Corollary 11.95 (set-sized-quotients report) and at the end of Section 11.21
+(the fifth source's Theorems 11.27–11.28); the last paragraph of Section 11.24;
+the note after Question 16.17 (in one variable `K[Z] -> E` is faithfully flat);
+the status note on Question 16.5 and the related notes on Questions 16.2 and
+16.7; the abstract, the eighth notation table (Section 2.5), and the paragraphs in
+Sections 1.3, 1.4, 11 (head), 11.8, 13, 15, 16.3, 16.4, 16.5, 17 and
+Appendices A–C.
+
+**Verification.** `code/11-arithmetic-sampling-verify.py`, rerun on a copy:
+8,774 exact assertions in ten groups, seed 20260923, all pass, identical to the
+delivered record except the Python version. The mathematics was re-read for
+this merge; no false statement was found. The finite checks prove no infinite
+theorem (Appendix B, Suite H).
 
 ## What the report claims
 
@@ -337,6 +432,49 @@ automorphism (with entire inverse) maps it into `K × 0^(d-1)`.
   Theorem 8.7; with an order unit arbitrary values on any radially finite
   subset of `K^d` are interpolated.
 
+**8. Arithmetic sampling at ordinary points (Sections 11.16–11.26, source
+11).** Here `k = R` or `C`, `Gamma` is **any** set-sized ordered abelian group
+(not divisible, possibly `0`), `K = k((t^Gamma))`, *entire* is whole-family
+entire in `d` variables, `Pi_K` is the series supported in `Gamma_{<0}`,
+`K^{<=0} = k + Pi_K` the polynomial-part ring, and `Oz_K = Z_k + Pi_K`, with
+`Z_R = Z` and `Z_C = Z[i]`, the omnific integers of the workspace. The scale
+polynomial `p_eta(F) = [t^eta] F` is an ordinary polynomial in `k[X]`
+(Lemma 11.76).
+- **Division and flatness (Theorem 11.81, Corollaries 11.82, 11.84, 11.85,
+  Theorem 11.83).** For a matrix `M` over `k[X]`, `F` is in `M E_d^s` iff every
+  `p_eta(F)` is in `M k[X]^s`, with a lift using no new scales; so
+  `F in I E_d` iff every `p_eta(F) in I`, `(I E_d) ∩ k[X] = I`, cosets have
+  unique normal forms, ordinary fibres are `K`, and `k[X] -> E_d` is
+  **faithfully flat** for every `Gamma`. The key step is a bounded-degree
+  lifting lemma (Lemmas 11.79–11.80).
+- **Sampling (Theorem 11.87, Corollaries 11.88, 11.89, Theorem 11.90).**
+  `K^{<=0}`-values on a Zariski-dense set of ordinary points force
+  `F in K^{<=0}[X]`; in one variable a nonpolynomial entire function has only
+  finitely many ordinary points with omnific values; affine Hahn images of
+  dense sets, including infinitesimally spaced grids, work too; and
+  `F(S) ⊆ K^{<=0}` iff every positive scale polynomial vanishes on `S`.
+- **Vanishing ideals (Corollary 11.92, the merge's).** The entire functions
+  vanishing on a set `S` of ordinary points are `I_k(S) E_d`; for `k = C` those
+  vanishing on the `K`-points of an algebraic set `V(I)` are `sqrt(I) E_d`.
+- **Omnific-preserving entire maps (Theorem 11.94, Corollary 11.95).**
+  `F(Z_k^d) ⊆ Oz_K` iff `F(Oz_K^d) ⊆ Oz_K` iff
+  `F in Int(Z_k^d, Z_k) ⊕ Pi_K[X]`; over `R`, a finite binomial expansion with
+  coefficients in `Oz_K`. The polynomial half is the set-sized-quotients
+  report's `osq:pm:thm:numreal`/`numgaussian` in its workspace form
+  `osq:or:cor:workspace`; the new step is the collapse to a polynomial.
+- **Exceptional loci (Theorems 11.99, 11.101, 11.104, 11.107).** The ordinary
+  `K^{<=0}`-valued locus is the zero set of the finitely generated
+  positive-tail ideal `I_+(F)`, and the omnific locus adds `p_0(F)(s) in Z_k`
+  (not Zariski closed in general); in one variable at most `n_0 + 1` actual
+  scales generate `I_+(F)`, sharply; the same scales control every jet order;
+  every ideal is `I_+(F)` of some polynomial, and every nonzero ideal of a
+  nonpolynomial entire `F` when `cf(Gamma) = aleph_0`.
+- **Halting barrier (Theorem 11.111).** In `R((t))` with coefficients in
+  `Q[t]` and `v(a_m) >= (m-1)^2`, the family `F_M` has exceptional set `{0,1}`
+  or `{0}` according as the machine `M` never halts or halts, so
+  `{M : F_M(1) omnific}` is `Pi^0_1`-complete: finite certificates exist but
+  cannot be computed in general.
+
 ## Three things to read before using a theorem from here
 
 **The two extension statements are one statement (Remarks 1.8 and 10.6).**
@@ -466,6 +604,33 @@ generated fat-point ideal on a straight line (Example 11.70).
   radical distinction is not claimed new as a phenomenon; projection-and-shear
   is classical and jet counting elementary; "proposed" means only not found in
   a bounded search; no named conjecture is settled.
+  *Re-scoped by source 11 (batch 32):* for `k = R` or `C` and ideals extended
+  from `k[X]`, membership, normal forms and contraction are decided scale by
+  scale and `k[X] -> E_d` is faithfully flat (Sections 11.18–11.19); the
+  vanishing ideals of ordinary point sets, and for `k = C` of algebraic sets
+  over `C`, are extended ideals (Corollary 11.92, the merge's). Ideals not
+  extended from `k[X]`, preparation and GCD/Bézout theory remain open.
+- Source 11's limits (Section 11.26, a numbered list of seventeen): strong
+  Hahn summation is not complex convergence; nonpolynomial results live in fixed
+  set-sized workspaces, and an entire series on the whole class `No[i]` is a
+  polynomial; the omnific locus carries the residue condition and need not be
+  Zariski closed, and the leading valuation is not an omnific test; flatness
+  and the image theorem are over `k[X]`, not `K[X]`; `E_d` is not claimed
+  Noetherian, a PID or Bézout; `Oz_K` is not an integer polynomial ring and
+  `Frac(Oz_K) = K` is not assumed; the binomial basis is not a basis of
+  `Int(Z[i]^d, Z[i])`, and an infinite sample gives polynomiality, not
+  integer-valuedness; the classification is inside `E_d`, not about arbitrary
+  functions on `Oz_K`; sharpness of `n_0 + 1` concerns actual scales;
+  certificates exist but are not computable in general, the undecidability
+  concerns one presentation, restricted classes and the integer conditions
+  `p_0(s) in Z_k` are not decided, and it is not a new negative solution to
+  Hilbert's tenth problem; the scale polynomials depend on the coefficient field
+  and monomial section, and the Gaussian automorphism problems of the companion
+  reports are not settled; the 8,774 checks are finite; no Lean, no referee, no
+  repository build, priority not certified, no named conjecture settled; the
+  repository comparison was targeted, the omnific Diophantine-geometry article
+  and most of the collection were not read, and a failed search is not evidence
+  of originality; Wikipedia was orientation only.
 - All supports and index sets are sets; the extension theorems keep the
   coefficient field fixed; the hidden-tail table covers monomial arguments
   only; strong summability, intrinsic valuation convergence and the fine
@@ -510,6 +675,23 @@ generated fat-point ideal on a straight line (Example 11.70).
   without an order unit, lower-dimensional targets, ideals of non-rectifiable
   configurations, extension of prescribed maps, and countable coefficient
   fields and descent.
+- *Status (batch 32):* Question 16.5's ideal-theory clause is partly answered
+  further by source 11, for ideals extended from `k[X]` (Corollaries 11.82,
+  11.84, Theorem 11.83) and for vanishing ideals of ordinary point sets and,
+  over `C`, of algebraic sets defined over `C` (Corollary 11.92, the merge's).
+  Still open: ideals not extended from `k[X]` (in particular from `K[X]`,
+  Question 16.17), the Bézout obstruction and GCD theory, preparation,
+  non-algebraic zero sets, non-rectifiable configurations, jet interpolation.
+  Questions 16.2 and 16.7 carry a note that source 11's undecidability theorem
+  concerns a different test and answers neither.
+- Questions 16.17–16.26 are source 11's: polynomial matrices with Hahn
+  coefficients (flatness of `K[X] -> E_d` for `d >= 2`; the merge notes the
+  one-variable case is positive), meromorphic arithmetic rigidity, effective
+  certificate classes, sampling sets beyond affine grids, intrinsic exceptional
+  ideals, function theory on varieties, composition, other integer parts and
+  coefficient rings, characteristic and cardinal extensions, and formalization
+  with proof certificates. It calls them proposed directions, not published
+  open problems.
 
 ## Stale statements corrected
 
@@ -553,6 +735,28 @@ generated fat-point ideal on a straight line (Example 11.70).
   sentences "the sixth source's letters are translated by the last table of
   Section 2.5" (and the same for the fifth) had become inaccurate once a
   later table was appended; they now name the table.
+- Source 11 says it gives "a proof that allows arbitrary rank and does not
+  assume divisibility" of the coefficient criterion; that adds nothing here,
+  since Theorem 11.3 (`ent:thm:multi-criterion`) is already stated and proved
+  for any trivially valued field and any, not necessarily divisible, group by
+  the same descending-sequence argument. Printed once, as are its lemma on
+  locally finite families (Lemma 11.2(a)), its cofinality dichotomy
+  (Corollary 3.3 with Proposition 11.4) and its whole-class corollary
+  (Corollary 10.12, Proposition 11.32). Its account of this report, read at
+  `343dc2c`, is current: the directory is unchanged between that pin and the
+  merge base. It did not cite the fifth source's exceptional-direction
+  theorems (Theorems 11.27–11.28), which run parallel to its exceptional
+  ideals, nor the set-sized-quotients report's numerical-polynomial theorems,
+  which are the polynomial half of Theorem 11.94; Sections 11.20–11.21 and
+  Section 15 record both.
+- The statements that the seventh source's subsections are the "closing" or
+  "last seven" subsections of Section 11 (Sections 1.3, 11 and 16.3, Question
+  16.2's note and Appendix C) became inaccurate once source 11's subsections were
+  appended; they now name the subsections. The counts "seven manuscripts",
+  "seven suites" and "five of them arrived with letters that collide" are now
+  eight, eight and six. The sentence of Section 16.3 that Section 11 has "no
+  preparation, divisor or ideal theory" and the Section 11.8 limits bullet are
+  kept, with a sentence on what source 11 adds.
 
 ## Relation to the rest of the collection
 
@@ -594,6 +798,26 @@ generated fat-point ideal on a straight line (Example 11.70).
   normal form `Oz = Pi ⊕ Z` read in a workspace, which agrees with
   `found:eq:omnific`, `odg:def:rings` and `odg:lem:workspace`; no theorem is
   shared, and the rectifying maps are not asserted to preserve `Oz`.
+- **`surreal/set-sized-quotients-of-omnific-integers` — source 11 shares a
+  theorem.** The polynomial half of Theorem 11.94 and Corollary 11.95 is that
+  report's `osq:pm:thm:numreal`, `osq:pm:thm:numgaussian`, `osq:pm:thm:grid` and
+  `osq:pm:lem:binomial`, transferred to fixed workspaces by
+  `osq:or:cor:workspace` (its `A_Gamma = Z ⊕ J_Gamma`, with `J_Gamma` our
+  `Pi_K` with the exponent sign reversed); `osq:or:thm:matrix` is the
+  polynomial counterpart of the jet conditions of Theorem 11.104. The analytic
+  half, the collapse of an entire series to a polynomial, is what that report
+  excludes ("entire Hahn series and expressions of nonstandard degree are
+  outside the theorems", after `osq:or:cor:workspace`, and in its limits
+  lists). A reciprocal note there is proposed, not made.
+- **`surreal/omnific-diophantine-geometry`** lists among its non-claims that
+  "Polynomial lifting does not license evaluating infinite power series";
+  source 11 shows what does hold for entire series in one fixed workspace
+  (Theorems 11.87 and 11.94) and does not contradict it. Source 11 did not read
+  that article. A reciprocal note is proposed, not made.
+- **`surreal/omnific-preserving-automorphisms`** studies the automorphism
+  distinctions on which source 11's scale polynomials depend (Section 11.25);
+  source 11 read its README and source audits 12 and 13, and uses no theorem of
+  it.
 - **`surcomplex/nonabelian-support`** uses `Pol` for a normalized polar
   factor; the polynomial-direction locus is written `Pdir` here.
 
@@ -623,15 +847,26 @@ generated fat-point ideal on a straight line (Example 11.70).
   and 51 kernel vectors reduced to zero by a Gröbner basis). The output is
   identical to `data/10-entire-rectification-verification-results.json`
   except the recorded Python version (3.13.5 there).
-- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 133
+- For the eighth merge, `11-arithmetic-sampling-verify.py --output <scratch>`
+  on a copy, Python 3.14.4 with SymPy 1.14.0: **PASS, 8,774 assertions** in
+  ten groups (450, 1193, 1000, 720, 521, 421, 260, 87, 3818 and 304), about 11
+  seconds; the output is identical to
+  `data/11-arithmetic-sampling-verification.json` except the recorded Python
+  version (3.13.5 there) and line endings. The SHA-256 hashes in
+  `data/11-arithmetic-sampling-ARTIFACT_MANIFEST.json` match the six source-11
+  files shipped here; the build report's hashes of the unshipped article and
+  PDF match a fresh extraction of the delivered archive.
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 159
   pages, 0 errors, 0 undefined references or citations, 0 multiply defined
   labels, 0 duplicate PDF destinations, no overfull or underfull boxes, no
-  LaTeX or package warnings. 227 numbered statements: 50 theorems, 43 lemmas,
-  21 propositions, 42 corollaries, 12 definitions, 3 conventions, 11 examples,
-  16 questions, 29 remarks. The sixth merge kept all 266 earlier labels and
-  added 61 (`ent:ps:`), 327 in all; the seventh kept those 327 and added 79
-  (`ent:rc:`), 406 in all. Every one of the 327 earlier labels resolves to the
-  same number as before the seventh merge.
+  LaTeX or package warnings (the committed 133-page baseline builds the same
+  way). 278 numbered statements: 60 theorems, 49 lemmas, 22 propositions, 52
+  corollaries, 15 definitions, 4 conventions, 13 examples, 26 questions, 37
+  remarks. The sixth merge kept all 266 earlier labels and added 61
+  (`ent:ps:`), 327 in all; the seventh kept those 327 and added 79 (`ent:rc:`),
+  406 in all; the eighth kept those 406 and added 87 (`ent:as:`), 493 in all.
+  Every one of the 406 earlier labels resolves to the same number as before
+  the eighth merge (compared through the `.aux` files of the two builds).
 
 The checks prove no infinite theorem. In particular the **finite truncations
 of the counterexample pair are coprime polynomials and do satisfy polynomial
@@ -651,7 +886,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 **Run the programs on a copy, or with an output path outside this
 directory.** The first six use only the Python standard library; the seventh
 needs Python 3.10 or later and SymPy (`pip install -r
-data/10-entire-rectification-requirements.txt`, which pins `sympy==1.14.0`).
+data/10-entire-rectification-requirements.txt`, which pins `sympy==1.14.0`);
+source 11's needs Python 3.9 or later and the same SymPy
+(`data/11-arithmetic-sampling-requirements.txt`).
 
 - `06-cofinality-bezout-trichotomy-verify-examples.py` requires `--output`
   and exits nonzero without one; it cannot overwrite the delivered record by
@@ -673,6 +910,9 @@ data/10-entire-rectification-requirements.txt`, which pins `sympy==1.14.0`).
   without it, it writes `verification-results.json` **next to the script**.
   In the source's layout that rewrites the delivered record in place; here it
   would add a file to `code/`. Name a scratch path, on a copy.
+- `11-arithmetic-sampling-verify.py` takes an optional `--output PATH` and
+  otherwise only prints; its documented command (`--output verification.json`)
+  rewrites the delivered record in place. Name a scratch path, on a copy.
 
 ```sh
 mkdir -p /tmp/ent/code /tmp/ent/data
@@ -684,6 +924,7 @@ python /tmp/ent/code/07-scale-moderate-interpolation-verify.py --output /tmp/ent
 python /tmp/ent/code/08-multivariate-extension-verify_examples.py --output /tmp/ent/E.json
 python /tmp/ent/code/09-prime-spectra-verify_finite.py --json /tmp/ent/F.json
 python /tmp/ent/code/10-entire-rectification-verify.py --output /tmp/ent/G.json
+python /tmp/ent/code/11-arithmetic-sampling-verify.py --output /tmp/ent/H.json
 ```
 
 `code/03-cofinality-and-scalar-extension-Makefile`,
@@ -699,6 +940,11 @@ the delivered PDF and rewrites `verification_results.json` in place.
 `entire_rectification.tex` and an unprefixed `verify.py`; in its original
 layout it reruns `verify.py`, rewriting `verification-results.json` in place,
 and overwrites the delivered PDF.
+`code/11-arithmetic-sampling-build.py` compiles the unshipped
+`arithmetic_sampling.tex` next to itself in a temporary directory; here it
+exits for lack of that file. In its original layout it copies the PDF back
+over the delivered one and rewrites `build_report.json` beside the output
+PDF, even when `--output` names another PDF path.
 
 ## Maintained review scope
 
@@ -721,5 +967,5 @@ do not establish priority or independent peer review.
 The review reran the first two unmodified programs on temporary copies:
 **831/831** and **664/664** checks passed. This does not verify the later suites
 or the infinite mathematical statements. Section 12, from the sixth source,
-and Sections 11.9–11.15, from the seventh, have not received that review
-either.
+Sections 11.9–11.15, from the seventh, and Sections 11.16–11.26, from source
+11, have not received that review either.
