@@ -368,6 +368,14 @@ primes have an exact convex-subgroup classification. A new consequence removes t
 closure hypothesis when the associated subgroup has a set-sized cofinal
 subset, including every principal convex subgroup. These are manuscript
 proofs, pending in Lean; full source reconciliation remains pending review.
+The initial normalization proofs are reviewed too. Every surreal is almost
+integral over `Oz`, but its integral closure is a proper dense subring
+with zero conductor and no set of algebra generators. Uniform denominators
+make every set-generated overring closed and uniformly discrete in the
+fine topology. In the countable-support model, exactly `cf(κ)` negative
+monomials generate the ambient field over its integer part, proving the
+denominator size bound sharp. This leaves the normalization's own generator
+count open. These conclusions also remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted

@@ -483,6 +483,24 @@ image, whose defining kernel may strictly contain `J`. For example,
 `A/(f)` is `D/(ct(f))`. The zero ring is allowed, so “no nonzero set-sized
 image” is the appropriate statement for `Oz/(1+ω)`.
 
+In the integral-closure section, `IC_F(A)` means the roots in F of monic
+polynomials over A; `Int` remains reserved for integer-valued polynomials.
+The complete integral closure A* is taken in Frac(A), and almost
+integrality means that **one** nonzero d∈A clears every ordinary finite
+power x^n. Clearing the generator x alone is weaker. The conductor
+(A:R) consists of a∈A with aR⊆A. Finite generation as an A-module means
+a finite list of generators, not that the module is a set when A is a class.
+
+For the countable-support two-armed model, μ=cf(κ)>ℵ₀. The normalization
+needs at least μ algebra generators; the ambient field needs exactly μ,
+with a cofinal family of negative monomials giving the upper bound.
+Those monomials are nonintegral and do not bound the normalization's
+generator count from above. The small field's intrinsic order topology
+differs from the topology induced by the fine topology of No: a μ-indexed net of
+these monomials tends to zero in the small field, but not in No.
+Convergent nets in No with a set-sized index set are eventually constant;
+initial variation is allowed.
+
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
 localization is the zero ring; it has no unital map to a nonzero ring, though
