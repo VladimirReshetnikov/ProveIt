@@ -518,6 +518,13 @@ the surreal exponent group lifts to an ordered field automorphism fixing
 the reals. The lift transports the natural valuation, preserves strong
 summability and commutes with every strong sum supported in the birthday
 universe. The construction retains small supports throughout.
+The Gaussian fraction-field identity is now proved on the actual carrier:
+one monomial simultaneously clears both coordinates of any small surcomplex
+family into the purely infinite Gaussian omnific ideal. Every Gaussian
+omnific automorphism therefore extends uniquely to the surcomplex field
+and preserves the ordinary complex coefficient field. Restricting to those
+coefficients respects composition; constructing a lift of every complex
+automorphism remains pending.
 
 These results now prove a single parameter-free definition of both ordinary
 constant rings. The same three equations, of exact degrees `3, 3, 7`, with
