@@ -496,6 +496,11 @@ Lean also proves that both actual normalizations have no unital map to a
 nonzero finite ring, including noncommutative targets; every proper ideal
 has an infinite quotient. The real algebraic-integer constants already
 supply the obstruction. The named fixed-model instances remain pending.
+The full actual-field valuation obstruction is now proved too: a valuation
+whose ring contains the real or Gaussian omnific ring is trivial when its
+value group is small in the birthday universe. The nonintegral half then
+has value zero. The proof uses small-image ordered additive maps and
+monomial clearing, with no order compatibility assumed for the valuation.
 
 Two added consequences sharpen the normalization picture. A negative
 minimum of a normal-form support prevents integrality, so every nonempty

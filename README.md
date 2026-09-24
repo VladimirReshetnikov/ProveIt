@@ -384,6 +384,12 @@ Both normalizations also have **no nonzero finite ring images**: every
 quotient by a proper ideal is infinite. This is proved even for
 noncommutative target rings, using only the real algebraic-integer
 constants and the finite-field obstruction to `x^q = x + 1`.
+Every valuation of `No` or `No[i]` whose valuation ring contains the
+corresponding omnific ring is now proved trivial when its value group
+is small in the birthday universe. The nonintegral half has value zero
+under every such valuation, so these valuations cannot detect integrality.
+The proof uses vanishing of monotone additive maps with small image and
+the common-monomial denominator theorem.
 The real density proof constructs integral units
 `√(H²+1) − H` below every positive surreal radius and uses the omnific floor
 to approximate from below. Its generic form applies to any integer part of

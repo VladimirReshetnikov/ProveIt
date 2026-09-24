@@ -8739,3 +8739,31 @@ were diagnostic-free, still 35 pages; inspected the refreshed page 12.
 The article remains 333 pages and all statement, label and numbering
 checks remain unchanged. Audits pass 4,626 anchors in 63 reports, 5,230
 source-label references and 1,958 local Markdown destinations in 226 files.
+
+### Small-valued valuation obstruction sync (2026-09-24)
+
+Merged `origin/main` through `76c535d` after the preceding push was
+rejected. Read all five new modules against `osq:nm:lem:orderedmap`,
+`osq:nm:thm:valuation` and `osq:nm:rem:valsize`. A monotone additive map
+from the actual surreals with small image is zero: lift the small image
+to a family of preimages, take an upper bound, and translate the bound.
+This uses only additivity, not ordinal scalar linearity. For a valuation
+nonnegative on the real omnific ring, the values of omega monomials
+therefore vanish. Monomial clearing then gives nonnegativity on the
+whole field, and inversion forces every nonzero value to be zero. The
+Gaussian proof restricts to the real field and uses Gaussian monomial
+clearing. The value group is small in the birthday universe; no order
+compatibility of the valuation is assumed. The nonintegral half has
+value zero. Large value groups and the separate higher-rank example
+are not covered by these declarations.
+
+Updated the report guide and catalogue to match the merged root README
+and coverage ledger. `LEAN_NUM_THREADS=2 lake build` passed 5,016 jobs;
+the axiom audit passed all 18,589 declarations using only propext,
+Classical.choice and Quot.sound. Three final catalogue TeX passes were
+diagnostic-free, still 35 pages; inspected pages 12–13. The article
+remains 333 pages, with all 418 result statements, 828 labels and 1,656
+AUX number entries unchanged. Audits pass 4,626 anchors in 63 reports,
+5,231 source-label references and 1,963 local Markdown destinations in
+226 files. The support-descent review and its new model radicality
+consequence remain pending in Lean.
