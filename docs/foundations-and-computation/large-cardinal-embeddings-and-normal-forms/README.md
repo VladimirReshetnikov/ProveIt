@@ -427,10 +427,19 @@ Section 20.3 gives these with labels.
   report yet. The Kaplan–Krapp–Serra automorphism cited in `opa:as:rem:main`
   fails a countable sum (Remark 26.3), so it is consistent with Theorem 24.1.
 - [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
-  (`fkc:`; batch 32 adds to it concurrently). Its Hahn fields of series with
-  fewer than `κ` terms are, over all surreal monomials, the short field
-  `𝒮_{<κ}` here; a `<κ`-strong linear map agrees with its canonical strong part
-  on that field (Theorem 24.4). Cited by directory only.
+  (`fkc:`; written concurrently in batch 32, now cited by label). Its Hahn
+  fields of series with fewer than `κ` terms are, over all surreal monomials,
+  the short field `𝒮_{<κ}` here; a `<κ`-strong linear map agrees with its
+  canonical strong part on that field (Theorem 24.4). Its Part II proves for
+  `𝒮_{<κ}`, at every uncountable κ and without large cardinals: closedness
+  and nowhere density for valuation neighbourhoods (`fkc:sb:prop:closed`),
+  gap character `(cf κ, cf κ)` (`fkc:sb:thm:gapcharacter`), saturation
+  exactly up to `cf κ` (`fkc:sb:cor:saturation`), the strong-sum threshold
+  `cf κ` (`fkc:sb:thm:sums`), exponential without logarithmic closure with
+  the same witness `z_κ` (`fkc:sb:thm:expclosure`, `fkc:sb:cor:expsep`), and
+  the absence of any surjective ordered exponential (`fkc:sb:thm:noexp`).
+  Notes after Proposition 3.5 and Corollary 15.5 record these; `C_j` is not
+  treated there.
 - [`birthday-cutoffs-and-hereditary-sets`](../birthday-cutoffs-and-hereditary-sets/)
   (`hset:`). Its embedding correspondence (`hset:thm:embeddings`) acts on sign
   sequences as `J` does, with the same warning that `j(A)` is not `j″A`; its
@@ -442,7 +451,10 @@ Section 20.3 gives these with labels.
   answered.
 - [`transcendence-over-bounded-support`](../../surreal/transcendence-over-bounded-support/)
   (`bst:`). Order-bounded supports there, cardinality-bounded here (09's own
-  comparison); neither result implies the other.
+  comparison); neither result implies the other. Its batch-32 question
+  `bst:gr:q:cardinal` asks for its Galois constructions in fields with fewer
+  than κ terms; Theorem 3.1 supplies the real closed field `𝒮_{<κ}` at every
+  uncountable κ, but the question is not answered.
 - [`set-sized-quotients-of-omnific-integers`](../../surreal/set-sized-quotients-of-omnific-integers/)
   (`osq:`). The constant-term discussion is kept apart from its quotients.
 - [`independent-surreal-copies`](../../surreal/independent-surreal-copies/)

@@ -282,7 +282,14 @@ cardinality is not asserted to be a transcendence basis. The transcendence
 degree for arbitrary `G` is not determined (`2^{cf(G)}` may be smaller than
 the Hahn field's cardinality). Finite coefficient fields are not covered; the
 positive-integer form is characteristic zero. No differential-independence
-theorem. Hahn partial sums are not claimed to converge in the full fine
+theorem. (Since batch 31 the
+[holonomic report](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/)
+proves one over this report's base: its source 17 gives `∂_BM`-jet algebraic
+independence over the bounded-support field `F_R(R)` for its
+finite-private-tail witnesses, `hol:fh:cor:boundedjets` (its Corollary 35.8),
+through `hol:fh:lem:bounded`, the order-unit, integer-lattice case of
+`bst:thm:descent`. That is a result of that report, not of this one, and the
+non-claim stands for this report.) Hahn partial sums are not claimed to converge in the full fine
 topology. The bounded-truncation remark after Corollary 5.6 is
 information-theoretic, not an undecidability claim; the integer family is not
 asserted to consist of computable streams; `coefficients.py` decides no
