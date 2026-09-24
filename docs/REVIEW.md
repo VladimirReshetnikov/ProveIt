@@ -3809,6 +3809,150 @@ No manuscript or PDF changes in this merge. The independent inventory
 still verifies 3,838 standard results in 61 reports, all 4,382 source
 references resolve, and all 1,581 local Markdown destinations pass.
 
+## Singular-curve normalization and conductor review
+
+The Diophantine proof review now covers Section 17.5 and Sections
+17.6.1–17.6.5, through the polynomial witness in every fiber. It reviews
+eleven standard results: the classification, finite power identity,
+conductor certificate, derivative-order bound, boundary place, one-place
+obstruction, positive genus and four structural consequences. The
+repeated-root and arithmetic applications remain unreviewed.
+
+The corrections distinguish failure of normality from an actual failed
+curve lift, and normality in the fraction field from integral closure in
+a larger Hahn field. A nonconstant curve point over `𝕜[ω]` does lift;
+the displayed square root outside `𝕜(ω)` cannot obstruct it. The
+contracted differential need not belong to the function field. Its
+valuation is nevertheless commensurable with the conductor's, by the
+chosen Euler derivative of a uniformizer. The revised proof constructs
+the conductor, explains the fixed multiplier and order-zero identity,
+gives the finite one-place bound, and expands coefficient descent and
+polynomial-fiber nonconstancy.
+
+The nonzero-group convention is explicit in the singular subsection and
+in the dimension-one theorem: `Γ=0`, `X=𝔸¹` refutes that equivalence
+without the guard. All other standard statements, all 471 labels and
+their existing numbers are preserved. Targeted comparison with source
+C16 and primary checks of Seidenberg's argument and the relevant
+normalization, valuation and differential inputs are recorded in the
+report reconciliation. This adds no Lean coverage.
+
+The article and catalogue build in three passes to 199 and 32 pages with
+no warnings, unresolved references or bad boxes. Affected normalization,
+conductor and structural pages and the catalogue entry were inspected.
+The independent inventory verifies 3,838 standard results in 61 reports;
+all 4,382 cited source references and 1,581 local Markdown destinations
+resolve. The root README, notation guide and review boundaries agree
+with this scope. No Lean source changed in this review.
+
+## Singular-review integration and automorphism wording
+
+The singular-curve review was committed as `860b622`; the subsequent merge
+includes upstream work through `336b216`. The incoming Lean results cover
+the purely infinite ideal, its completion and nilpotent tests, and omnific
+irreducibles and failure of atomic factorization. Their mapped source
+statements were reread. The combined `LEAN_NUM_THREADS=2 lake build` passes
+all 4,432 jobs; its axiom audit passes 15,186 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`.
+
+The six incoming main-text changes preserve all their earlier labeled
+standard and principal theorem statements. The holonomic addition has 33
+new standard results and two new principal theorems. The reader map, root
+README and catalogue now reflect the written order-two obstruction,
+third-order obstruction through cubic jet degree, and relative-scale
+criterion for mixed linear equations. The latter retains the condition
+that no quotient of distinct multipliers is a root of unity and concerns
+existence of some operator, not solvability of a prescribed one. These
+chapters remain pending independent proof review and Lean formalization.
+The catalogue entry now groups the mathematics by subject instead of
+recounting each manuscript's arrival. The three unintegrated companions
+and nine newly placed manuscripts have their current status recorded.
+
+A targeted correction to `opa:as:cor:invisible` and its reciprocal status
+note at `osq:q:invisible` distinguishes an automorphism of `Oz` from its
+extension to `No`: it is the extension that fixes all ordinary reals.
+Preserving constant coefficient is written `ct ∘ σ = ct`. The same two
+passages now apply `u` before the monomial map in `M_{χ,τ} ∘ u`; the earlier
+corollary described the order in reverse. These changes match the cited
+extension and factorization theorems. They do not constitute a proof review
+of automatic strongness or the factorization theorem. The notation guide
+records both distinctions. All 316 automorphism-report labels and 551
+quotient-report labels remain in order; only that corollary's statement
+changes, and no labels or source-index line numbers move.
+
+The corrected automorphism and quotient PDFs build in three passes to 104
+and 177 pages, and the revised catalogue to 32 pages, with no warnings,
+unresolved references or bad boxes. The affected passages and catalogue
+entry were visually inspected. The independent inventory verifies all
+3,871 standard results across 61 reports; all 4,416 cited source references
+and 1,588 local Markdown destinations across 197 files resolve. This
+integration validation leaves the review boundaries stated above intact.
+
+The final synchronization also includes `ea802cc`, formalizing projective
+clearing and simultaneous common multiples of all ordinary powers. The
+source corollary and both new modules were checked for the distinction
+between a small family and the whole proper class; homogeneous rescaling
+does not assert primitive coordinates. The combined build passes 4,434
+jobs and the axiom audit passes 15,193 declarations with the same three
+axioms. All 4,417 cited source references and 1,590 local Markdown
+destinations resolve. This merge changes no report source or PDF.
+
+## Repeated-root and singular arithmetic application review
+
+The Diophantine review now reaches Section 17.6.8, covering six further
+standard results: the superelliptic and quadratic-root criteria, the
+pinched elliptic example, omnific rigidity, arithmetic families and the
+Gaussian existence dichotomy. The source comparison and exact boundaries
+are recorded in the report reconciliation.
+
+The merged superelliptic theorem omitted C16's irreducibility assumption.
+The polynomial graphs of `Y²=X²` refute the criterion without that guard.
+The assumption is now explicit in the setup and theorem, and the adjoining
+explanation has the correct direction of the power-divisibility condition.
+The ramification calculation now distinguishes finite-root multiplicities
+from the negative exponent at infinity, computes each branch and explains
+why precisely the points over infinity are omitted. The normalization
+parameter is recovered in the function field by an integer Bézout identity.
+
+The pinched elliptic proof verifies its conductor and displays each term
+cleared by `x³`; its seventh-order valuation contradiction and derivative
+count are explicit. Arithmetic families now check the defining equations,
+allowed coefficients, finite support and proper-class distinctness. The
+Gaussian argument supplies the normalization-preimage step. The real
+isolated node with only `±i` over its origin illustrates the limitation
+without claiming that every possible Hahn point in that fiber is excluded.
+The notation guide, reader map, root README and catalogue have matching scope.
+
+All 217 standard statements remain, with only the superelliptic hypothesis
+changed. All 471 labels and their numbers are preserved. The corrected
+article and catalogue build in three passes to 200 and 32 pages without
+warnings, unresolved references or bad boxes; the application pages and
+catalogue entry were visually inspected. The preserved C16 finite suite,
+run on a copy, passes all 113,940 assertions. Its full JSON record matches
+the delivered one apart from Python 3.13.5 becoming 3.13.14 and runtime.
+It checks identities and bounded examples, not the geometric or infinite
+claims. The independent inventory verifies 3,871 results in 61 reports;
+all 4,417 cited source references and 1,590 local Markdown destinations
+resolve. No Lean source changed; the preceding 4,434-job build and
+15,193-declaration axiom audit remain applicable. These six results are
+still **Pending** in Lean, and the broader proof review remains incomplete.
+
+The subsequent synchronization through `7b256e0` adds ordered omnific
+division, the nonterminating Euclidean sequence and irrational pairs without
+a gcd. Their source statements and four new modules were checked for the
+positive-divisor guard, ordinary finite iteration and divisibility meaning
+of gcd. The combined `LEAN_NUM_THREADS=2 lake build` passes 4,438 jobs;
+the axiom audit passes 15,245 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,419 cited source references and
+1,594 local Markdown destinations resolve. This merge changes no report
+source or PDF and leaves the application review's scope intact.
+
+The last fetch also merges delivery `51c1cc7`: nine ZIP archives, all passing
+ZIP integrity checks and each containing an article source. They await
+placement, integration and review. No maintained report source, PDF or Lean
+file changes, so the existing inventory and build validation remain
+applicable. Archive integrity is not a mathematical review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
