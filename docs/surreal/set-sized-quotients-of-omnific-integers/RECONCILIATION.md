@@ -2185,3 +2185,35 @@ All 4,626 source anchors in 63 reports, 5,219 source-label references
 and 1,852 local Markdown destinations in 226 files pass, as does whitespace
 checking. No Lean source changed; the two-thread 4,639-job build and
 17,258-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: quantifier-free lower bounds and failure of elimination
+
+Merged origin/main through f2d0fda, including ec8aa5b, and reviewed all
+five new modules against `odg:def:prop:notqf`. Native ring terms are
+interpreted as univariate polynomials, with evaluation commuting with
+realization. Polynomial root finiteness and induction on native IsQF,
+including Boolean implication, show that any unary quantifier-free
+definition with arbitrary ring parameters is finite or cofinite.
+
+A split retraction with a nonzero kernel point in characteristic zero
+supplies infinite and coinfinite kernel and coefficient-image sets.
+Positive natural multiples of that point suffice; infinitely many
+different exponents are not needed. The generic obstruction specializes
+to every full Hahn pullback with a nontrivial exponent group and to both
+actual omnific carriers, using their existing monomial witnesses.
+
+The complete-theory consequence has an explicit native witness: no
+quantifier-free unary formula is semantically equivalent to the already
+constructed Xi formula modulo the complete theory. The integer and
+Gaussian cases use the proved constant-definition equivalences. Thus
+the README and ledger's full-Proved status includes the quantifier-
+elimination obstruction, not merely the infinite/coinfinite prerequisites.
+No optimal degree or witness-count bound is inferred, and the following
+omitted-type theorem remains Pending.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,664 jobs, and
+its axiom audit checks 17,316 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,857 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 307-page article and 34-page catalogue remain current.
