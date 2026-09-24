@@ -492,6 +492,10 @@ slice equalities: the constant coefficient must be an ordinary algebraic
 integer, while positive-growth coefficients are unrestricted. The real
 normalization meets the ordinary rationals exactly in the integers.
 The fixed-model slices remain pending.
+Lean also proves that both actual normalizations have no unital map to a
+nonzero finite ring, including noncommutative targets; every proper ideal
+has an infinite quotient. The real algebraic-integer constants already
+supply the obstruction. The named fixed-model instances remain pending.
 
 Two added consequences sharpen the normalization picture. A negative
 minimum of a normal-form support prevents integrality, so every nonempty

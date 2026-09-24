@@ -3806,3 +3806,28 @@ arbitrary-support descent, integrality or the new radicality consequence.
 Audits pass all 4,626 statement anchors in 63 reports, 5,230 source-label
 references and 1,956 local Markdown destinations in 226 files. No Lean,
 verification code or historical output record was changed in this pass.
+
+### Finite-target obstruction sync (2026-09-24)
+
+Merged `origin/main` through `cd18903`, including `63daf63`, and read both
+new modules against `osq:nm:thm:nofinite`. The generic proof constructs a
+real algebraic integer in (0,2) satisfying x^n=x+1 for each n≥2 by the
+ordinary real intermediate value theorem and an explicit monic polynomial.
+The finite-field cardinality power identity excludes every such field
+target. For a possibly noncommutative finite target, the kernel quotient
+is finite, nonzero and commutative; its maximal-ideal quotient supplies
+the finite field. A canonical map of real algebraic integers into the
+native normalization gives both actual real and Gaussian instances.
+All proper ideal quotients are infinite. The named countable-support
+instances remain pending; the generic obstruction needs only their real
+constant maps. No restriction on infinite targets is inferred.
+
+Updated the report guide and catalogue to match the merged root README
+and ledger, retaining the support-descent review and new model radicality
+consequence as pending in Lean. `LEAN_NUM_THREADS=2 lake build` passed
+5,011 jobs; the axiom audit passed all 18,560 declarations using only
+propext, Classical.choice and Quot.sound. Three final catalogue TeX passes
+were diagnostic-free, still 35 pages; inspected the refreshed page 12.
+The article remains 333 pages and all statement, label and numbering
+checks remain unchanged. Audits pass 4,626 anchors in 63 reports, 5,230
+source-label references and 1,958 local Markdown destinations in 226 files.

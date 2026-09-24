@@ -868,3 +868,5 @@ import Surreal.Surcomplex.GaussianIntegralSlices
 import Surreal.Surcomplex.GaussianNormalizationEmbedding
 import Surreal.Surcomplex.GaussianNormalizationDensity
 import Surreal.Surcomplex.GaussianNormalization
+import Surreal.Algebra.NormalizationFiniteTargets
+import Surreal.Surcomplex.NormalizationFiniteTargets
