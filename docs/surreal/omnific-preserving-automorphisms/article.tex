@@ -135,7 +135,7 @@
 {\Large Convex-scale stabilizers, definable constants,\\[1mm]
  nondefinable monomials, and algebraic-parameter rigidity\par}
 \vspace{5mm}
-{\large Built from fourteen manuscripts dated September 23, 2026\par}
+{\large Built from fifteen manuscripts dated September 23, 2026\par}
 \vspace{4mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
@@ -190,9 +190,14 @@ automorphism is monomial exactly when $\Hom(G,\Z)=0$ (with a published defect
 theorem). Three more parts compute the full formal orbit field of the
 constant-term Euler flow, show that the set groups acting faithfully on $\No$ or
 $\Oz$ are exactly the left-orderable ones, with prescribed fixed fields, and prove
-that every derivation of $\Oz$ integrates to a unique formal Hasse--Schmidt flow.
+that every derivation of $\Oz$ integrates to a unique formal Hasse--Schmidt flow. A
+tenth part re-derives that classification, adds independence of the orbit of $\omega$
+and a proper-class relative fixed field, and solves difference equations for these
+automorphisms: $\sigma x-x=b$ exactly when $\ct(b)=0$, $\sigma x/x=a$ exactly when
+$\lc(a)=1$, every scalar first-order equation, and cocycles of groups with a central
+element.
 
-This report merges fourteen independently written manuscripts, prints shared
+This report merges fifteen independently written manuscripts, prints shared
 results once with every source named, and keeps every source's limitations.
 It is an AI-assisted draft: it has not been refereed, and nothing in it has
 been formalized in Lean.
@@ -208,8 +213,9 @@ and 13, pinned to \texttt{cf56b89}, \texttt{a6c68ac} and \texttt{0865f04},
 the batch-31 addition 14, pinned to \texttt{3d40856}, and the batch-32
 additions 15, which names blobs of this report's source at \texttt{b3fa9e2} and
 \texttt{20c4c9f}, and 16, pinned to \texttt{1ab41af}, and the batch-33 additions 17
-and 18, pinned to \texttt{efc5446}, and 19, pinned to \texttt{889b87c};
-their titles are in \cref{opa:sub:provenance,opa:as:sub:sources,opa:cm:sub:source,opa:tc:sub:source,opa:cr:sub:source,opa:of:sub:source,opa:es:sub:source,opa:hs:sub:source}. Results already printed in the omnific
+and 18, pinned to \texttt{efc5446}, and 19, pinned to \texttt{889b87c}, and the batch-34 addition 20,
+pinned to \texttt{e93a06d};
+their titles are in \cref{opa:sub:provenance,opa:as:sub:sources,opa:cm:sub:source,opa:tc:sub:source,opa:cr:sub:source,opa:of:sub:source,opa:es:sub:source,opa:hs:sub:source,opa:us:sub:source}. Results already printed in the omnific
 Diophantine report \fn{docs/surreal/omnific-diophantine-geometry} are cited,
 not reprinted. The provenance of every section is recorded in
 \cref{opa:app:provenance}; non-claims are collected in
@@ -258,7 +264,9 @@ picture of \cref{opa:part:par}'s formal flows and of the symmetry groups:
 \cref{opa:part:par} had only the monomial part; \cref{opa:es:part} identifies the set
 groups of automorphisms preserving $\Oz$ as the left-orderable groups, with prescribed
 fixed fields; and \cref{opa:hs:part} shows that every derivation of $\Oz$ integrates
-formally, answering \cref{opa:par:q:directions}.
+formally, answering \cref{opa:par:q:directions}. \Cref{opa:us:part}, from a fifteenth
+manuscript, derives the left-orderable classification a second time and solves the
+difference equations of these automorphisms.
 
 \subsection{Principal results}\label{opa:sub:results}
 
@@ -439,6 +447,17 @@ exponentials of integral Lie series, finite jets always lift, and the jet extens
 do not split (\cref{opa:hs:thm:lie}); the quartic formula of \cref{opa:cr:part}
 becomes universal in $\Oz[[s]]$ and no set of parameters defines the coefficient copy
 there (\cref{opa:hs:thm:logic}).
+\item \textbf{Universal symmetries and difference equations} \src{20}. An independent
+derivation of the left-orderable classification, adding that the orbit of $\omega$ is
+algebraically independent (\cref{opa:us:thm:main}) and a relative action whose fixed field
+is a proper-class two-level field (\cref{opa:us:thm:relative}). For a nonidentity element,
+$\sigma x-x=b$ is solvable exactly when $\ct(b)=0$, $\sigma x/x=a$ exactly when $\lc(a)=1$,
+every nonzero Laurent polynomial in $\sigma$ is bijective off the constants
+(\cref{opa:us:thm:maindiff}), with a three-condition retraction for the relative action
+(\cref{opa:us:thm:retraction}); every scalar first-order equation is classified
+(\cref{opa:us:thm:firstorder}), and cocycles of groups with a central element are
+characters plus coboundaries (\cref{opa:us:thm:cocycles}). The difference core re-derives
+the single-dilation report's resolvent (\lbl{dsup:thm:resolvent}).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a claim
@@ -450,12 +469,12 @@ contributions, and no exhaustive priority claim is made
 
 \subsection{Provenance of this report}\label{opa:sub:provenance}
 
-The report is built from fourteen manuscripts written independently: five for
+The report is built from fifteen manuscripts written independently: five for
 \cref{opa:part:aut,opa:part:par}, described here, three for
 \cref{opa:part:as}, described in \cref{opa:as:sub:sources}, one for
 \cref{opa:cm:part}, described in \cref{opa:cm:sub:source}, and one each for
-\cref{opa:tc:part,opa:cr:part,opa:of:part,opa:es:part,opa:hs:part}, described in
-\cref{opa:tc:sub:source,opa:cr:sub:source,opa:of:sub:source,opa:es:sub:source,opa:hs:sub:source}. Four were
+\cref{opa:tc:part,opa:cr:part,opa:of:part,opa:es:part,opa:hs:part,opa:us:part}, described in
+\cref{opa:tc:sub:source,opa:cr:sub:source,opa:of:sub:source,opa:es:sub:source,opa:hs:sub:source,opa:us:sub:source}. Four were
 placed together in commit \texttt{f4c9504} (batch 26, items 02, 04, 08 and
 09; they keep these numbers here, as their shipped file prefixes do).
 Manuscripts 02, 04 and 09 pin repository commit \texttt{fb5c4b53} (12 commits
@@ -569,6 +588,15 @@ derivation, answering \cref{opa:par:q:directions}; the integral exponential--log
 correspondence, the nonsplit jet tower, residue sections and their common core, the
 polynomial--formal definability boundary (its quartic formula is \cref{opa:cr:part}'s,
 printed once) and seven new questions.\\
+20 & \emph{Universal Symmetries and Exact Difference Equations over the Surreals:
+left-orderable groups, omnific stabilizers, fixed fields, and surcomplex descent} & All of
+\cref{opa:us:part}: an independent derivation of \cref{opa:es:part}'s classification with the
+orbit of $\omega$ independent, a second cut filling, the translation family, a proper-class
+relative fixed field with an independent interval of double exponentials, the weighted Green
+operator, constant-coefficient operators and the operator field, the inner difference lemma,
+global and relative multiplicative criteria, the first-order criterion, central and free-group
+cocycle normal forms, set-sized models and eight new questions; its difference core
+re-derives the single-dilation report.\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -655,6 +683,17 @@ group, in the monomial factor of \cref{opa:as:thm:factor}; 19 answers
 \cref{opa:par:q:directions}, and its quartic formula re-derives \cref{opa:cr:thm:quartic}
 and is printed once there. None contradicts this report or another report.
 
+Manuscript 20, item 01 of batch 34, was placed as an addition in commit \texttt{a7a435f}
+under the file prefix \fn{20-universal-symmetries-}. It forms \cref{opa:us:part}, placed
+after \cref{opa:hs:part} and before the appendices, so that no existing number changes, with
+the sub-prefix \lbl{opa:us:}. It pins \texttt{e93a06d}, which contains
+\cref{opa:part:aut,opa:part:par,opa:part:as,opa:cm:part} but not \cref{opa:tc:part,opa:cr:part}
+nor \cref{opa:of:part,opa:es:part,opa:hs:part}; so its universality theorem is an independent
+second derivation of \cref{opa:es:part}'s, printed once there. Its difference-equation core
+re-derives the single-dilation report, which was in the tree at its pin but which it did not
+read (\cref{opa:us:sub:once}). It answers no named question, contradicts neither this report
+nor another, and adds a new instance to \cref{opa:es:q:beyond}.
+
 \subsection{Imported results}\label{opa:sub:imported}
 
 Conway normal forms, real closedness of $\No$ and the omnific integers are
@@ -733,9 +772,9 @@ the convention of the other omnific reports; see \cref{opa:par:sub:conv}.
 \cref{opa:as:sub:notation}, and those of \cref{opa:cm:part,opa:tc:part,opa:cr:part} in
 \cref{opa:cm:sub:notation,opa:tc:sub:notation,opa:cr:sub:notation}; the monomials $U^g$
 of \cref{opa:cr:part} are external indeterminates, not Hahn monomials.
-\Cref{opa:of:part,opa:es:part,opa:hs:part} use the large-monomial convention of
+\Cref{opa:of:part,opa:es:part,opa:hs:part,opa:us:part} use the large-monomial convention of
 \cref{opa:part:par}; their symbols are fixed in
-\cref{opa:of:sub:notation,opa:es:sub:notation,opa:hs:sub:notation}, and their formal
+\cref{opa:of:sub:notation,opa:es:sub:notation,opa:hs:sub:notation,opa:us:sub:notation}, and their formal
 variables $s$ and $v$ are external indeterminates. For actual surreals
 \begin{equation}\label{opa:eq:sign}
  t^\gamma=\omega^{-\gamma}.
@@ -2985,7 +3024,9 @@ criteria; a full answer would have to separate algebraic support generation from
 the information contributed by the order and by $\Oz$ \src{10}. \emph{Related} (batch 33):
 source 18's automorphisms fixing $A$ lie in the monomial factor, not in $\UU_\Oz$, so they do
 not bear on this question; a single one of them can have fixed field exactly
-$\mathsf K_{\Sigma_2(A)}\supseteq\Hahn\R{V_A}$ (\cref{opa:es:rem:relation}). Open.
+$\mathsf K_{\Sigma_2(A)}\supseteq\Hahn\R{V_A}$ (\cref{opa:es:rem:relation}). \emph{Related} (batch 34): source 20's
+relative action, with the larger proper-class fixed field $\mathsf K_{\No\setminus\mathsf J}$, also lies in the monomial factor and
+does not bear on it (\cref{opa:us:rem:twofields}). Open.
 
 \begin{question}[Generation and exhaustion \src{04, 08, 10, 15}]\label{opa:q:generation}
 How much of $\UU_\Oz$ is generated by elementary shears and their
@@ -5389,7 +5430,7 @@ $\Frac\mathcal R_\Gamma$ and its position in $K_\Gamma$, since extension through
 problem \src{14}. \emph{Status} (batch 31): an extension, if it exists, is unique (\cref{opa:cm:prop:unique},
 \mergetag); existence stays open.
 
-\begin{question}[Exponential, omega-map and differential structure \src{11, 12, 13, 18}]\label{opa:as:q:exp}
+\begin{question}[Exponential, omega-map and differential structure \src{11, 12, 13, 18, 20}]\label{opa:as:q:exp}
 Which proper embeddings preserving $\Oz$, and which gap sections and value embeddings, are compatible with the surreal
 exponential, the omega-map, a surreal derivation or a simplicity relation? Intersect the full omnific stabilizer with the
 automorphisms preserving such a structure.
@@ -5401,7 +5442,11 @@ Question~11.5): which left-orderable groups remain realizable when the Gonshor e
 surreal derivation must be preserved, and can an exact fixed-field theorem survive? Its construction does not answer this:
 compatibility $M_{1,\iota_\varphi}(\omega^a)=\omega^{M_{1,\iota_\varphi}(a)}$ already ties the two lifting levels together, which a general order
 action does not (\cref{opa:es:rem:notpreserved}); relevant rigidity results and questions are in \cite{KKS} \src{18}.
-\emph{Status} (batch 33): open.
+\emph{Status} (batch 33): open. Source 20 asks it again (its Question~1): which left-orderable groups admit faithful
+omnific-preserving actions commuting with the omega-map or the Gonshor exponential, and can part of the universality survive
+either requirement? Its obstruction $\sigma^{\mathrm{tr}}_1(\omega)\ne\omega^{\sigma^{\mathrm{tr}}_1(1)}$ shows that its actions do not
+answer it; a first step is to translate the compatibility into a condition coupling the index map and both lifts rather than treating
+the lifts independently \src{20}. \emph{Status} (batch 34): open.
 
 \begin{question}[Restricted workspaces \src{11}]\label{opa:as:q:workspaces}
 For a support-restricted subfield of a full Hahn field, when does the bottom-gap extension stay inside it, and which
@@ -8365,7 +8410,7 @@ The equality of relation ideals is proved; an algorithm needs representations of
 finite basis of evaluated monomials. The natural first domain is finite sums of monomials and finite algebraic extensions of
 $\mathsf C_0(\omega)$ with certified coefficients, not arbitrary normal forms \src{17}.
 
-\begin{question}[Formalization of Parts VII--IX \src{17, 18, 19}]\label{opa:of:q:formal}
+\begin{question}[Formalization of Parts VII--IX and X \src{17, 18, 19, 20}]\label{opa:of:q:formal}
 Formalize in Lean the constants lemmas and the exact trajectory classification (17), the free cut-insertion lemma, the two-level
 fixed-support theorem and the fraction-field transfer (18), and the divisible-ideal integration theorem (19), first for set-sized
 structures, then for the repository's surreal field.
@@ -8379,7 +8424,10 @@ recursions and only then a class-sensitive or universe-indexed formulation; its 
 for the divisible-ideal integration theorem for a set-sized characteristic-zero domain first, instantiated in the omnific ring, then
 finite logarithms and the nonsplit second-jet extension before infinite operator series; the first milestone needs only
 divisibility, torsion-freeness, iterated Leibniz and unique division in the ideal, while the genus-one definition and the
-class-size nondefinability need separate geometric and foundational infrastructure \src{19}. Nothing in these parts is formalized.
+class-size nondefinability need separate geometric and foundational infrastructure \src{19}. 20 (its Question~12, \cref{opa:us:part})
+asks to formalize the downward-orbit lemma and the weighted Green operator in a Hahn-series library, then the two lifts and the arithmetic
+restrictions, and whether the class construction can be proved under weaker choice while keeping the explicit translation family without it;
+the support lemma is a first milestone with no surreal-specific recursion \src{20}. Nothing in these parts is formalized.
 
 \part{Left-orderable symmetry groups with prescribed fixed fields}\label{opa:es:part}
 
@@ -9075,14 +9123,19 @@ For which divisible ordered subgroups $E\subseteq\No$ can every left-orderable s
 $\Fix(\sigma_g)=\NF(E)$ for every $g\ne1$?
 \end{question}
 This is not the problem of realizing one automorphism: all group relations and a common exact fixed subgroup must survive the additive-group
-construction \src{18}.
+construction \src{18}. \emph{Status} (batch 34): partly answered. Source 20's relative action (\cref{opa:us:thm:relative}) realizes
+$E=\NF(\No\setminus\mathsf J)$ for every nonempty bounded open interval $\mathsf J$ and every left-orderable set group; this $E$ is a proper class and
+not of the form $\NF(S)$ for a set $S$ (\cref{opa:us:rem:twofields}). Other $E$ stay open (compare \cref{opa:us:q:fixedsets}).
 
-\begin{question}[Conjugacy of free-complement actions \src{18}]\label{opa:es:q:conjugacy}
+\begin{question}[Conjugacy of free-complement actions \src{18, 20}]\label{opa:es:q:conjugacy}
 When are two realizations with the same $G$ and $S$ conjugate by a strong $\Oz$-preserving automorphism fixing $\mathsf K_S$? Which invariants of
 the chosen left order survive the cut filling and the double lift?
 \end{question}
 Different actions can have the same fixed fields for all nontrivial subgroups, so fixed fields do not classify them; centralizers, invariant
-convex equivalence relations and stabilizers of cuts are candidate finer invariants \src{18}.
+convex equivalence relations and stabilizers of cuts are candidate finer invariants \src{18}. Source 20 asks the same (its Question~3):
+when do two left orders or two equivariant cut constructions give conjugate actions on $(\No,\Oz)$, and can the order on a regular orbit, the
+arrangement of index orbits or a support invariant distinguish them? An embedding classification does not imply uniqueness, and a uniform fixed
+field cannot distinguish them \src{20}.
 
 \begin{question}[Centralizers and normalizers \src{18}]\label{opa:es:q:centralizers}
 Compute the centralizer and normalizer of an exact realization, first for the translation lift of \cref{opa:es:ex:translation}, then for a free
@@ -9104,12 +9157,14 @@ Determine $\Frac(\Oz\cap\mathsf K_S)$ inside $\mathsf K_S$ as a function of $S$.
 \Cref{opa:es:eq:gap} is the extreme case $S=\varnothing$, with $\Q\subsetneq\R$. Support bounds inside the set-sized exponent group $\NF(S)$,
 rather than bounds available only in $\No$, should control further examples \src{18}.
 
-\begin{question}[Surcomplex actions without named conjugation \src{18}]\label{opa:es:q:surcomplex}
+\begin{question}[Surcomplex actions without named conjugation \src{18, 20}]\label{opa:es:q:surcomplex}
 Characterize the set groups with faithful $\Og$-preserving strong actions on $\SC$ when commutation with conjugation is dropped. Which fixed-field
 geometries arise from combining exponent actions with character twists such as \eqref{opa:es:eq:character}?
 \end{question}
 \Cref{opa:es:thm:complexmain} is not asserted in this larger category; the non-algebraically-closed fixed fields of \cref{opa:es:prop:character}
 are a test family \src{18}. It is a relative of \cref{opa:as:q:gaussian}, which asks whether such automorphisms are strong at all.
+Source 20 asks it too (its Question~5), for the set groups acting faithfully on $(\SC,\Og)$ without conjugation, and which arithmetic or support
+data force preservation of the real form: without the real form the direct-product argument no longer applies \src{20}.
 
 \begin{question}[Fixed fields and orbit types together \src{18}]\label{opa:es:q:orbittypes}
 Can the fixed fields of selected subgroups be prescribed together with the stabilizers of individual nonfixed surreals? Which subgroup-lattice
@@ -9878,6 +9933,901 @@ keep a small ordinary arithmetic intersection of all coefficient copies?
 The $s$-adic order makes each operator coefficient a finite calculation; a generalized parameter support can destroy that finiteness, so replacing $s$ by
 a monomial is not a proof \src{19}.
 
+\part{Universal symmetries and exact difference equations}\label{opa:us:part}
+
+This part records manuscript 20, the addition of batch 34. It proves again, independently, the universality theorem of
+\cref{opa:es:part}: the set groups acting faithfully on $\No$, or on $\Oz$, are exactly the left-orderable ones, and they can act so
+that every nonidentity element fixes exactly $\R$ (\cref{opa:us:thm:main}). Its new material is of two kinds. On the symmetry side it
+adds that the orbit of $\omega$ is algebraically independent, and a relative action fixing a given set of parameters whose common
+fixed field is a proper-class two-level field over which a whole interval of double exponentials is independent
+(\cref{opa:us:thm:relative}). On the equation side it solves difference equations for these automorphisms: additive equations with
+a weighted Green operator (\cref{opa:us:thm:green}), all constant-coefficient operators (\cref{opa:us:thm:operators}),
+multiplicative equations globally and relative to parameters (\cref{opa:us:thm:multiplicative,opa:us:thm:retraction}), every
+scalar first-order equation (\cref{opa:us:thm:firstorder}), and cocycles of groups with a central element or free groups
+(\cref{opa:us:thm:cocycles,opa:us:prop:free}). The difference-equation core was already in the single-dilation report
+\fn{docs/surcomplex/single-dilation-hahn-support} (\lbl{dsup:}), for monomial automorphisms of set-sized Hahn fields; the
+correspondence is recorded in \cref{opa:us:sub:once}. Its labels carry the sub-prefix \lbl{opa:us:}.
+
+\section{Source 20, what it re-derives, and its notation}\label{opa:us:sec:intro}
+
+\subsection{The manuscript and its pin}\label{opa:us:sub:source}
+
+Manuscript 20 is \emph{Universal Symmetries and Exact Difference Equations over the Surreals: left-orderable groups, omnific
+stabilizers, fixed fields, and surcomplex descent}, dated 23 September 2026, 25 pages (title page, contents, twelve questions,
+two appendices and bibliography included). It is manuscript 01 of batch 34, delivered as the archive
+\fn{Surreal_Universal_Symmetries_and_Difference_Equations} (inner directory \fn{surreal_universal_symmetries}) in commit
+\texttt{bbe23a3} and placed as an addition in commit \texttt{a7a435f}; it is numbered 20 here. Its checks, their recorded run, its
+\fn{Makefile}, its build record and its source and proof audit are shipped as \fn{code/20-universal-symmetries-verify.py},
+\fn{data/20-universal-symmetries-verification.json}, \fn{code/20-universal-symmetries-Makefile},
+\fn{data/20-universal-symmetries-BUILD_REPORT.json} and \fn{20-universal-symmetries-SOURCE_AND_PROOF_AUDIT.md}; its
+\fn{article.tex}, PDF and README are not shipped. 20's numbers are those of its own PDF.
+
+It pins \texttt{e93a06d} (tree \texttt{42aec05}). That commit contains \cref{opa:part:aut,opa:part:par,opa:part:as,opa:cm:part}
+of this report (the batch-31 text with the reciprocal notes \texttt{ab18444}) and the single-dilation, autonomous-dilation and
+surcomplex-automorphism reports, but neither the write of \cref{opa:tc:part,opa:cr:part} (\texttt{c315ac9}) nor the placement
+\texttt{aa9c891} of sources 17--19. So 20 could not see \cref{opa:es:part}: its universality theorem is an independent
+re-derivation. It read the root guide, the catalogue and five report guides (this report's, the independent-copies, quotient,
+surcomplex-automorphism and differential-equations reports), some truncated, and the first hundred lines of the Diophantine article,
+not this article and not the single-dilation report (its audit, Section~1). Its account of what it read is accurate: it credits
+the two Hahn lifts to \cite{KKS} (Definitions~2.5 and 2.8, Construction~3.7 and Proposition~3.9, the first and second lifts) and
+\cite{KSgroups}, the monomial maps and arithmetic preservation to this report, and the centralizer factorization to the surcomplex
+automorphism report (\lbl{saut:thm:axis}). Its novelty statement is incomplete against its own pin, which already contained the
+single-dilation report, and it is stale at the merge (\cref{opa:us:sub:status}).
+
+\subsection{What it re-derives, and what is printed once}\label{opa:us:sub:once}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}}
+\toprule
+20 & Printed as & Comparison\\
+\midrule
+\endhead
+Thm.~1.1 (i)--(iii) and the fixed field $\R$ & \cref{opa:es:cor:classification,opa:es:cor:ordinary,opa:es:prop:complexfixed} & Same theorem;
+20 is an independent second derivation. The algebraic independence of the orbit of $\omega$ is new (\cref{opa:us:prop:orbitindep}).\\
+Lem.~2.3 & \lbl{odg:thm:fractions} & Same; cited.\\
+Lem.~3.2 & \cref{opa:es:lem:necessity} & Same lexicographic argument (20 chooses a witness for each pair, 18 for each
+nonidentity element).\\
+Def.~3.3 ($\eta_\On$), Thm.~3.4, Rem.~3.5 & \cref{opa:es:def:setcut,opa:es:thm:freeorder,opa:es:lem:backforth} & Same theorem; 20's cut filling
+(a whole regular copy of $G$ at \emph{every} cut) differs from 18's (fibers over cut orbits) and is kept as a second route
+(\cref{opa:us:prop:cutcopies}).\\
+Lems.~4.1, 4.2 & \cref{opa:es:prop:lifts,opa:as:lem:inner}; \eqref{opa:eq:monomialmap} & Same lifts; 20's complex and
+conjugation clauses are printed in \cref{opa:us:lem:outer}.\\
+Lem.~4.3, Thm.~4.4 & \cref{opa:es:lem:orbit,opa:es:thm:fixedsupport,opa:es:prop:complexfixed} & Same; 20's proof by forward and
+backward iterates is recorded after \cref{opa:us:lem:outer}.\\
+Cor.~4.5 & \cref{opa:es:thm:main} with $S=\varnothing$; \cref{opa:es:prop:complexfixed} & Same.\\
+Prop.~4.6 ($s=1$) & \cref{opa:es:ex:translation} & Same map; the family, its group law and the choice-free subgroup actions are
+new (\cref{opa:us:prop:translations}).\\
+Thm.~5.1 & \cref{opa:es:cor:parameters} (existence) & Different fixed field: 20's is a proper class, 18's is set sized and minimal among
+the $\mathsf K_S$ containing the parameters; both printed and compared (\cref{opa:us:rem:twofields}). The independence clauses are new.\\
+Lem.~6.2 & \lbl{dsup:lem:orbit} & Same lemma, with the chambers swapped between growth and valuation notation; 20 states it for
+ordered classes without addition, which \cref{opa:us:lem:innerdiff} needs.\\
+Thm.~7.1 & \lbl{dsup:thm:resolvent} with $\chi=1$ & Identical formula (\cref{opa:us:rem:dsup}); dsup's is for set-sized $\Gamma$ and
+transfers to classes by its set localization; 20's proof is direct for classes and for $\Oz$-preserving double lifts.\\
+Rem.~7.2 & dsup's remark ``Not a residue homomorphism'' & Same counterexample.\\
+Thm.~8.1, Cor.~8.2 & \lbl{dsup:cor:poly}, \lbl{dsup:cor:fixed} & dsup's needs a polynomial split over the coefficient field; 20
+treats real non-split polynomials by conjugation.\\
+Thm.~9.2 & \lbl{dsup:thm:multsingle}, \lbl{dsup:thm:surreal}\,(2) & The first specializes dsup's criterion; the second is the same
+statement for rational dilations.\\
+Thm.~9.4 & \lbl{dsup:thm:multsingle} & A specialization, made explicit by \cref{opa:us:lem:innerdiff} and the inner projection.\\
+Cor.~11.3 & \lbl{dsup:cor:simultaneous} & The global case; 20's one-operator proof is kept as a second route.\\
+Thm.~11.2, $H^1$ & \lbl{dsup:thm:dilationcohom} & dsup has $\Z^d$ acting by rational dilations; 20 has every group with a central
+element.\\
+Prop.~12.1 & \cref{opa:es:lem:centralizer}; \lbl{saut:thm:axis} & Same; credited by 20.\\
+Thm.~12.2 & \cref{opa:es:thm:complexmain} & Same classification, same route; 20's finite-subgroup clause is weaker than
+\lbl{saut:thm:torsion}.\\
+Rem.~after Thm.~10.1 & \lbl{adr:sr:cor:free} and the non-claims of the autonomous-dilation report & The same remark
+($x\mapsto\sigma x-x$ misses $1$) for its dilations.\\
+Questions & \cref{opa:us:sub:questions} & Eight new, four merged.\\
+All else & This part & New.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Genuinely new in 20, beyond \cref{opa:es:part} and the single-dilation report: the algebraic independence of the orbit of $\omega$
+(\cref{opa:us:prop:orbitindep}) and of $\{\omega^{\omega^a}:a\in\mathsf J\}$ over the relative fixed field, and that proper-class fixed
+field itself (\cref{opa:us:thm:relative}); the translation family (\cref{opa:us:prop:translations}); the inner difference lemma
+(\cref{opa:us:lem:innerdiff}) and with it the explicit image $\ker\varpi^{\mathrm{in}}_B$ in the relative multiplicative criterion
+(\cref{opa:us:thm:retraction}); the first-order criterion (\cref{opa:us:thm:firstorder}); the operator field
+(\cref{opa:us:cor:operatorfield}); cocycle normal forms for every group with a central element (\cref{opa:us:thm:cocycles},
+\cref{opa:us:rem:relcocycles}) and for free groups (\cref{opa:us:prop:free}); the choice-free set model and the
+$\eta_\kappa$-orders (\cref{opa:us:prop:setmodel,opa:us:prop:etakappa}). 20 is an $\Oz$-preserving double lift, not a rational
+dilation: dsup's $S_q$ multiplies exponents by $q$, while the maps here relabel inner indices. The single-dilation proofs use only a
+coefficient-fixing monomial automorphism with an ordered additive exponent map, and transfer to them \mergetag.
+
+\subsection{Conventions and notation of this part}\label{opa:us:sub:notation}
+
+This part uses the growth convention of \cref{opa:part:par,opa:es:part}: $x=\sum_\gamma c_\gamma\omega^\gamma$ with reverse well-ordered
+set support; in the $t$-convention of \cref{opa:part:aut} $\omega^\gamma=t^{-\gamma}$. $\omega^\gamma$ is always Conway's monomial, not
+$\exp(\gamma\log\omega)$; a positive exponent, even an infinitesimal one, gives an infinite monomial. Let $k=\R$ or $\C$ and write
+$\No_\R=\No$, $\No_\C=\SC$ (the surcomplex field, 20's $\No[i]$). Put
+\begin{equation}\label{opa:us:eq:decomposition}
+ \No_k=\Pi_k\oplus k\oplus\mm_k,\qquad \mathsf V_k=\ker\ct=\Pi_k\oplus\mm_k,
+\end{equation}
+where $\Pi_k$ and $\mm_k$ are the series supported in $\No^{>0}$ and $\No^{<0}$ ($\Pi_\R=\Pi$, the purely infinite part, not necessarily
+positive; $\mm_k$ the infinitesimals), and $\ct$ is the coefficient of $\omega^0$. For $x\ne0$, $\lc(x)$ is the coefficient of the largest
+exponent $\gamma(x)$, and $x=\lc(x)\omega^{\gamma(x)}(1+\varepsilon_x)$ with $\varepsilon_x\in\mm_k$ uniquely; $\lc(xy)=\lc(x)\lc(y)$.
+$\Oz=\Z\oplus\Pi$ and $\Og=\Z[i]\oplus\Pi_\C$; on them $\ct$ is a ring homomorphism, since two nonnegative exponents add to $0$ only if
+both are $0$. For a subclass $E\subseteq\No$ of exponents, $k((\omega^E))$ is the class of series in $\No_k$ supported in $E$ (a full
+Hahn subfield when $E$ is an additive subgroup, set sized or not; inversion uses finite sums of elements of $E$), and $\varpi_E$ is
+the \emph{outer} support projection $\sum c_\gamma\omega^\gamma\mapsto\sum_{\gamma\in E}c_\gamma\omega^\gamma$ on field elements. For a
+subclass $B$ of \emph{indices} and an exponent $\gamma=\sum_ar_a\omega^a$, $\varpi^{\mathrm{in}}_B\gamma=\sum_{a\in B}r_a\omega^a$ is the
+\emph{inner} projection. With Part VIII's $\NF(B)=\{\gamma:\supp\gamma\subseteq B\}$ and $\mathsf K_B=\NF(\NF(B))$, put
+$\mathsf K_{B,\R}=\mathsf K_B$ and $\mathsf K_{B,\C}=\C((\omega^{\NF(B)}))=\mathsf K_B(i)$. For a \emph{class} $B$ these are classes.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.62\textwidth}}
+\toprule
+20's symbol & Here\\
+\midrule
+\endhead
+$\No[i]$, $\Oz[i]$; $K_k$; $M_k=\ker c_0$ & $\SC$, $\Og$; $\No_k$; $\mathsf V_k=\ker\ct$.\\
+$c_0$ (its macro \texttt{\textbackslash ct}); $\lc$; $\Pi_k$, $\mathfrak m_k$ & $\ct$; $\lc$; $\Pi_k$, $\mm_k$ (unchanged meaning).\\
+$p$, $p_g$; $T_p$, $T_g$; $\sigma_p$, $\sigma_T$, $\sigma_g$ & $\varphi$, $\varphi_g$; $\iota_\varphi$, $\iota_{\varphi_g}$; $M_{1,\iota_\varphi}$,
+$M_{1,\tau}$, $\sigma_g=M_{1,\iota_{\varphi_g}}$ (Parts III and VIII).\\
+$T$ (an ordered additive automorphism of the exponent group) & $\tau$.\\
+$F=\Fix(p)$; $H_F$; $k((\omega^{H_F}))$ & $B=\Fix(\varphi)$; $\NF(B)$; $\mathsf K_{B,k}$.\\
+$J=(u,u+1)$; $H_J$, $F_{J,k}$; $B_A$; $y_a$ & $\mathsf J$; $\NF(\No\setminus\mathsf J)$, $\mathsf K_{\No\setminus\mathsf J,k}$; $\Sigma_2(A)$; $w_a$.\\
+$H=\Fix(T)$, $K_H$; $P_H$; $Q_F$ & $\Gamma_\tau$, $k((\omega^{\Gamma_\tau}))$; $\varpi_{\Gamma_\tau}$; $\varpi^{\mathrm{in}}_B$.\\
+$f_+$, $f_-$ (orbit directions) & $f_\uparrow$, $f_\downarrow$.\\
+$\mathcal G_c$ (Green operator) & $\operatorname{Gr}_c$.\\
+$\mathcal R_F$ (multiplicative retraction) & $\operatorname{mr}_B$.\\
+$S_s$, $S=S_1$ & $\sigma^{\mathrm{tr}}_s$, $\sigma^{\mathrm{tr}}_1$.\\
+$P\in k[X,X^{-1}]$; $k(X)$ & $\mathsf p\in k[\mathsf Y,\mathsf Y^{-1}]$; $k(\mathsf Y)$.\\
+$h\in\Hom(G,k)$, $\chi\in\Hom(G,k^\times)$ (cocycle characters) & $\mathrm{ch}^+$, $\mathrm{ch}^\times$.\\
+$j$; $\mathcal A=\Aut(\No,\Oz)$; identity $e$ & $\mathrm{cj}$; written out; $1$.\\
+$\eta_{\On}$-order & an ordered class with the set-cut property (\cref{opa:es:def:setcut}).\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The collisions are resolved here only, and the tempting false readings are wrong:
+\begin{itemize}[itemsep=1pt]
+\item 20's $S_s$ is the double lift of the index \emph{translation} $a\mapsto a+s$, so $S_s(\omega^\gamma)=\omega^{\omega^s\gamma}$ and $S_1\ne\id$;
+the single-dilation and autonomous-dilation reports' $S_q$, $S_d$ multiply exponents by a positive number ($S_d(\omega^g)=\omega^{dg}$), so $S_1=\id$ there. Reading 20's
+$S_1$ as a dilation is wrong; it is $\sigma^{\mathrm{tr}}_1$ here, the map of \cref{opa:es:ex:translation}.
+\item 20's $\mathcal G_c$ is not Part III's bottom gap $\gap$, the surcomplex report's group $\mathcal G$ or Part IX's $\mathcal G(R)$; 20's
+$\mathcal R_F$ is not Part III's retraction $\ret_\phi$, dsup's resonance set $R_\lambda$ or the ring $\Ro$; its $P_H$ is not dsup's
+$P_\lambda$ in general (it is $P_1$ for $\chi=1$) nor Part I's zero-cut projections $P_-,P_0,P_+$ ($\varpi_{\{0\}}=P_0=\ct$ only in the
+global case).
+\item 20's $M_k$ is not a monomial map $M_{\chi,\tau}$; its $H$, $H_F$, $H_J$, $K_H$ are not the convex subgroups $H_g$, the hull
+$\HH(A)$ or Part VIII's $\NF(B)$ \emph{as notation} (though $H_F=\NF(F)$); its $F$ is neither Part III's isomorphism $F$ nor 18's $F_\varphi$;
+its $J$ is not an embedding $J_{\tau,\rho}$.
+\item $f_\uparrow$ ($\tau\gamma>\gamma$) and $f_\downarrow$ ($\tau\gamma<\gamma$) record orbit direction, not the sign of $\gamma$; they agree with
+the signs for $\sigma^{\mathrm{tr}}_1$ but not in general. dsup writes the valuation chambers $A_\pm=\{g:\theta g\gtrless g\}$ with $t^g=\omega^{-g}$,
+so its $f_+$ is $f_\downarrow$ here.
+\item 20's $j$ (conjugation) is $\mathrm{cj}$, not the surcomplex report's involution $j$; 20's $\chi$ in cocycles is a character of the
+acting group $G$, not a character of the exponent group as in $M_{\chi,\tau}$; its $X$ is an operator variable, not a monomial $X^g$ of
+Part II.
+\end{itemize}
+Foundations are those of \cref{opa:sub:foundations,opa:es:sub:notation}: NBG with global choice, a set-sized group acting on a class
+means one class map $G\times\No\to\No$ satisfying the action identities, $\Aut(\No,\Oz)$ and its ``subgroups'' are metanotation for
+joint actions and elementwise factorizations \cite[Remark~2.1]{KKS}, class recursions have set-valued stages, every support and every
+index set of a sum is a set, and no cut with a proper-class side is filled \src{20}. \emph{Strong} means strongly additive in both
+directions (\cref{opa:es:sub:notation}); it is a support condition with a finite coefficient calculation at each exponent, not convergence
+in the fine order topology.
+
+\subsection{Principal results of source 20}\label{opa:us:sub:results}
+
+\begin{theorem}[Universality with minimal fixed fields \src{20; 18}; 20's Theorem~1.1]\label{opa:us:thm:main}
+For a set-sized group $G$ the following are equivalent: \textup{(i)} $G$ is left-orderable; \textup{(ii)} $G$ acts faithfully by field
+automorphisms on $\No$; \textup{(iii)} $G$ acts faithfully by ring automorphisms on $\Oz$; \textup{(iv)} $G$ acts faithfully on $(\No,\Oz)$
+by strong, $\R$-linear, exact-monomial field automorphisms $\sigma_g$ with
+\begin{equation}\label{opa:us:eq:main}
+ \Fix(\sigma_g)=\R\quad(g\ne1),\qquad \{\sigma_g(\omega):g\in G\}\ \text{algebraically independent over }\R .
+\end{equation}
+The constructed action extends $\C$-linearly to $\SC$, commutes with conjugation, preserves $\Og$ and has $\Fix(\sigma_g)=\C$ for $g\ne1$.
+\end{theorem}
+
+The equivalence and the fixed fields are \cref{opa:es:cor:classification,opa:es:cor:ordinary,opa:es:prop:complexfixed}, proved by 18;
+20 proves them independently, and only the independence clause is new (\cref{opa:us:prop:orbitindep}). Requiring the fixed field of
+\emph{each} nonidentity element to be $\R$ is more than a common fixed field $\R$; the proof uses a free action on the inner index order,
+not on the field, whose automorphisms all fix $0$ and $1$ \src{20}.
+
+\begin{theorem}[Uniform difference obstructions \src{20}; 20's Theorem~1.2]\label{opa:us:thm:maindiff}
+Let $G\ne1$ act as in the construction of \cref{opa:us:thm:main}, $g\ne1$ and $\sigma=\sigma_g$. Then
+\begin{align}
+ \operatorname{im}(\sigma-1)&=\ker\ct, & \ker(\sigma-1)&=k,\label{opa:us:eq:introadd}\\
+ \{\sigma x/x:x\in\No_k^\times\}&=\lc^{-1}(1), & \Fix(\sigma)\cap\No_k^\times&=k^\times.\label{opa:us:eq:intromult}
+\end{align}
+If $\mathsf p\in k[\mathsf Y,\mathsf Y^{-1}]$ is nonzero, $\mathsf p(\sigma)$ is bijective on $\ker\ct$; on $\No_k$ it is bijective if $\mathsf p(1)\ne0$,
+and if $\mathsf p(1)=0$ its kernel is $k$ and its image $\ker\ct$. Moreover $\operatorname{im}(\sigma-1:\Oz\to\Oz)=\Pi$ and $\ker(\sigma-1:\Oz\to\Oz)=\Z$, and
+likewise with $\Og$, $\Pi_\C$ and $\Z[i]$.
+\end{theorem}
+
+The proofs are \cref{opa:us:thm:green,opa:us:cor:primitives,opa:us:thm:operators,opa:us:thm:multiplicative}. For rational dilations the
+additive and multiplicative clauses are \lbl{dsup:thm:surreal}\,(1)--(2), which 20 did not cite.
+
+\begin{example}[An infinite-support omnific solution \src{20}]\label{opa:us:ex:opening}
+For the explicit automorphism $\sigma^{\mathrm{tr}}_1\bigl(\sum_\gamma c_\gamma\omega^\gamma\bigr)=\sum_\gamma c_\gamma\omega^{\omega\gamma}$ of
+\cref{opa:es:ex:translation},
+\begin{equation}\label{opa:us:eq:opening}
+ x=\sum_{n\ge1}\omega^{\omega^{-n}}\in\Oz,\qquad \sigma^{\mathrm{tr}}_1x-x=\omega ,
+\end{equation}
+the support of $x$ being strictly decreasing and positive; whereas $\sigma^{\mathrm{tr}}_1x-x=1$ has no solution in $\SC$. The obstruction is a
+coefficient, not a size bound.
+\end{example}
+
+\section{Universality, fixed fields and algebraic independence}\label{opa:us:sec:universal}
+
+\subsection{What is printed once}
+
+Every surreal is a quotient of omnific integers, so a ring automorphism of $\Oz$ extends uniquely to $\No$ (\lbl{odg:thm:fractions}); 20
+proves it by choosing $\delta$ above $0$ and the negatives of all exponents, as 18 does (\cref{opa:es:sec:lift}). A set group acting
+faithfully by increasing bijections on a linearly ordered class is left-orderable (\cref{opa:es:lem:necessity}); 20 chooses a witness
+$x_{g,h}$ with $gx_{g,h}\ne hx_{g,h}$ for each pair, well-orders the set of witnesses and compares at the first witness that separates, the
+same lexicographic argument. Every field automorphism of the real closed $\No$ is increasing, which gives necessity in
+\cref{opa:us:thm:main}; this does not assert that every surreal field automorphism fixes $\R$ \src{20}. An ordered class with the
+set-cut property (20's $\eta_\On$-order) is order isomorphic to $\No$ (\cref{opa:es:lem:backforth}), and every set group with a left
+order acts freely and increasingly on $\No$ (\cref{opa:es:thm:freeorder}). 20 builds that action by a different cut filling, kept as a
+second route:
+
+\begin{proposition}[Free equivariant cut completion, second route \src{20}; 20's Theorem~3.4]\label{opa:us:prop:cutcopies}
+Let $G$ be a set group with a left-invariant order. Put $L_0=G$ with left translation. Given a set $L_\alpha$ with a free increasing
+$G$-action, let $\mathcal D_\alpha$ be the set of downward-closed subsets $C\subseteq L_\alpha$, $\varnothing$ and $L_\alpha$ included, and insert
+at every $C\in\mathcal D_\alpha$ a disjoint copy $\{(\alpha,C,h):h\in G\}$ of the ordered set $G$: old points keep their order, an old point $x$ is
+below $(\alpha,C,h)$ exactly when $x\in C$, copies at distinct cuts are ordered by inclusion of the cuts and each copy by the order of $G$.
+Then
+\begin{equation}\label{opa:us:eq:cutaction}
+ g\cdot(\alpha,C,h)=(\alpha,gC,gh)
+\end{equation}
+extends the action freely and increasingly to the linear order $L_{\alpha+1}$; with unions at limits, $L=\bigcup_{\alpha\in\On}L_\alpha$ has the
+set-cut property, and the action transports to a free increasing action on $\No$.
+\end{proposition}
+\begin{proof}
+Downward-closed subsets of a linear order are linearly ordered by inclusion, so the rules define a linear order. The map
+\eqref{opa:us:eq:cutaction} preserves cut inclusion and the old-point rule, and is increasing on each copy by left invariance; both coordinates
+respect composition. On new points $gh=h$ forces $g=1$, and old points stay free. Every stage is a set. If $A<B$ are sets in $L$, their stages
+are bounded by some $\alpha$; the downward closure of $A$ in $L_\alpha$ (empty if $A$ is) contains $A$ and excludes $B$, and a point inserted
+there lies strictly between them. So $L$ has the set-cut property and is a proper class. Both $L$ and $\No$ have set-like enumerations
+along $\On$ by global choice and their set exhaustions; the back-and-forth of \cref{opa:es:lem:backforth} gives $L\cong\No$.
+\end{proof}
+
+18 inserts, over each cut orbit, fibers indexed by the stabilizer of a representative cut (\cref{opa:es:lem:cutinsert}); 20 inserts a whole
+regular copy of $G$ at every cut, including cuts not stabilized by anything, so the new points need no choice of orbit representatives.
+Inserting one point at a cut stabilized by $g\ne1$ would create a fixed point: the regular copy is what the fixed-field conclusions need.
+The construction does not preserve Dedekind completeness and asserts no free action on the real line \src{20}.
+
+\begin{lemma}[The outer lift in both coefficient cases \src{20}; \src{11, 18}]\label{opa:us:lem:outer}
+Let $\tau$ be an ordered additive automorphism of $(\No,+)$. The monomial map $M_{1,\tau}\bigl(\sum_\gamma c_\gamma\omega^\gamma\bigr)=\sum_\gamma
+c_\gamma\omega^{\tau(\gamma)}$ is a strong $k$-linear field automorphism of $\No_k$. It fixes $k$, preserves $\ct$ and $\lc$, preserves
+$\Pi_k$ and $\mm_k$, preserves $\Oz$, respectively $\Og$, sends monomials to monomials, and for $k=\C$ commutes with conjugation. For an
+increasing bijection $\varphi$ of $\No$, $\iota_\varphi$ is such a $\tau$, $\iota_\varphi(1)=\omega^{\varphi(0)}$, and $\varphi\mapsto M_{1,\iota_\varphi}$
+is a faithful action.
+\end{lemma}
+\begin{proof}
+This is \eqref{opa:eq:monomialmap} with $\chi=1$ and \cref{opa:es:prop:lifts}; additivity of $\tau$ transports every finite convolution, and
+$\tau(0)=0$ gives unitality. Order preservation gives $\gamma>0\Leftrightarrow\tau\gamma>0$, hence the support and arithmetic clauses; the
+leading and zero coefficients are unchanged. Conjugation acts only on coefficients, the map only on exponents \src{20}.
+\end{proof}
+
+The inner lift $\iota_\varphi$ is additive, not a field map, and not unital; its additivity is what the outer level needs. For an increasing
+bijection $q$ of a linear order and a reverse well-ordered $S$ with $q(S)=S$, $q$ fixes $S$ pointwise: if $q(a)>a$ the forward orbit, if
+$q(a)<a$ the backward orbit, is an infinite increasing sequence in $S$ \src{20}. This is the cyclic case of \cref{opa:es:lem:orbit}, and
+applied at both levels it gives, for $B=\Fix(\varphi)$,
+\begin{equation}\label{opa:us:eq:fixedfields}
+ \Fix(\iota_\varphi)=\NF(B),\qquad \Fix(M_{1,\iota_\varphi})=\mathsf K_{B,k},
+\end{equation}
+so $\Fix(\iota_\varphi)=\{0\}$ and $\Fix(M_{1,\iota_\varphi})=k$ when $\varphi$ has no fixed point (20's Theorem~4.4;
+\cref{opa:es:thm:fixedsupport,opa:es:prop:complexfixed}). $\NF(B)$ is an additive group and an $\R$-vector space by its support description.
+
+\subsection{The regular orbit of \texorpdfstring{$\omega$}{omega}}
+
+\begin{proposition}[Independence of the orbit of $\omega$ \src{20}]\label{opa:us:prop:orbitindep}
+Let $g\mapsto\varphi_g$ be a free increasing action of $G$ on $\No$ and $\sigma_g=M_{1,\iota_{\varphi_g}}$. Then
+\begin{equation}\label{opa:us:eq:regularorbit}
+ \sigma_g(\omega)=\omega^{\omega^{\varphi_g(0)}},
+\end{equation}
+and $\{\sigma_g(\omega):g\in G\}$ is algebraically independent over $k$.
+\end{proposition}
+\begin{proof}
+$\iota_{\varphi_g}(1)=\omega^{\varphi_g(0)}$ gives \eqref{opa:us:eq:regularorbit}. Freeness makes the $\varphi_g(0)$ pairwise distinct, so the inner
+monomials $\omega^{\varphi_g(0)}$ are linearly independent over $\Q$. A monomial $\prod_g\sigma_g(\omega)^{n_g}$ of a polynomial in finitely many
+orbit points is $\omega^{\sum n_g\omega^{\varphi_g(0)}}$, and distinct exponent vectors give distinct outer exponents; the nonzero coefficients
+of distinct monomials cannot cancel.
+\end{proof}
+
+\begin{proof}[Proof of \cref{opa:us:thm:main}]
+Necessity and the equivalences are \cref{opa:es:cor:classification}. For (iv), choose a left order, take the free action of
+\cref{opa:es:thm:freeorder} or \cref{opa:us:prop:cutcopies}, and put $\sigma_g=M_{1,\iota_{\varphi_g}}$; \cref{opa:us:lem:outer} and
+\eqref{opa:us:eq:fixedfields} give the structure and the fixed fields, faithfulness on $\Oz$ follows from \lbl{odg:thm:fractions}, and
+\cref{opa:us:prop:orbitindep} gives independence, with real or complex coefficients.
+\end{proof}
+
+For the global action every nontrivial subgroup $U\le G$ has $\No_k^U=k$ and fixed omnific ring $\Z$ or $\Z[i]$ (20's Corollary~4.5;
+\cref{opa:es:thm:main,opa:es:prop:complexfixed}). This is not a finite Galois correspondence: $\No_k/k$ is transcendental and a fixed field
+need not distinguish the infinite subgroups acting on it \src{20}.
+
+\subsection{An explicit family}
+
+\begin{proposition}[Translations of the inner index \src{20}; 20's Proposition~4.6]\label{opa:us:prop:translations}
+For $s\in\No$ put
+\begin{equation}\label{opa:us:eq:translation}
+ \sigma^{\mathrm{tr}}_s\Bigl(\sum_\gamma c_\gamma\omega^\gamma\Bigr)=\sum_\gamma c_\gamma\omega^{\omega^s\gamma}.
+\end{equation}
+Then $\sigma^{\mathrm{tr}}_s\sigma^{\mathrm{tr}}_t=\sigma^{\mathrm{tr}}_{s+t}$, and for $s\ne0$ the map $\sigma^{\mathrm{tr}}_s$ has all the fixed-field and
+difference-equation properties of a nonidentity element of the global construction proved in this part. For every set-sized additive
+subgroup $U\subseteq\No$, $s\mapsto\sigma^{\mathrm{tr}}_s$ is a faithful joint action of $U$ needing no choice of a cut completion.
+\end{proposition}
+\begin{proof}
+$\sigma^{\mathrm{tr}}_s=M_{1,\iota_{\varphi_s}}$ for the translation $\varphi_s(a)=a+s$, whose inner lift is multiplication by $\omega^s$; translations
+compose additively, and $\varphi_s$ has no fixed point for $s\ne0$. The results below use only fixed-point-freeness of the inner index
+action.
+\end{proof}
+
+$\sigma^{\mathrm{tr}}_1$ is the map of \cref{opa:es:ex:translation}. Exact monomial preservation is not preservation of the omega-map:
+$\sigma^{\mathrm{tr}}_1(\omega)=\omega^\omega$ while $\omega^{\sigma^{\mathrm{tr}}_1(1)}=\omega$ (compare \cref{opa:es:rem:notpreserved}) \src{20}. It is not a
+dilation of exponents by a rational number (\cref{opa:us:sub:notation}).
+
+\subsection{Fixing a set of parameters}
+
+A fixed field equal to $\R$ cannot contain a nonreal parameter; 20's relative statement has a larger explicit common fixed field.
+
+\begin{theorem}[Universality inside every set-parameter stabilizer \src{20}; 20's Theorem~5.1]\label{opa:us:thm:relative}
+Let $A\subseteq\SC$ be a set and $G$ a set-sized left-orderable group. Put
+\begin{equation}\label{opa:us:eq:secondsupport}
+ \Sigma_2(A)=\bigcup_{x\in A}\ \bigcup_{\gamma\in\supp x}\supp\gamma ,
+\end{equation}
+choose $u>\Sigma_2(A)$ and let $\mathsf J=(u,u+1)$. There is a faithful strong $\C$-linear action $g\mapsto\sigma_g$ on $\SC$ preserving
+$\No$, $\Og$ and conjugation, fixing $A$ pointwise, such that for every $g\ne1$
+\begin{equation}\label{opa:us:eq:relativefixed}
+ \Fix(\sigma_g)=\mathsf K_{\No\setminus\mathsf J,\C}=\C\bigl(\bigl(\omega^{\NF(\No\setminus\mathsf J)}\bigr)\bigr).
+\end{equation}
+The restriction to $\No$ preserves $\Oz$ and has fixed field $\mathsf K_{\No\setminus\mathsf J}$. For each $a\in\mathsf J$ the orbit of
+$w_a=\omega^{\omega^a}$ is algebraically independent over $\mathsf K_{\No\setminus\mathsf J,k}$, and so is $\{w_a:a\in\mathsf J\}$, in the sense of all
+finite polynomial tests.
+\end{theorem}
+\begin{proof}
+$\Sigma_2(A)$ is a set (real and imaginary parts taken together), so $u$ exists. A nonempty bounded open interval of $\No$ has the set-cut
+property (add the endpoints to the appropriate sides of a set cut) and a set-like enumeration, so $\mathsf J\cong\No$
+(\cref{opa:es:lem:backforth}). Transport a free increasing action of $G$ onto $\mathsf J$ and extend by the identity off $\mathsf J$: the
+$\varphi_g$ are increasing bijections of $\No$ with $\Fix(\varphi_g)=\No\setminus\mathsf J$ for $g\ne1$. Lift twice. Every exponent of an element of $A$
+lies in $\NF(\No\setminus\mathsf J)$, so $A$ is fixed, and \eqref{opa:us:eq:fixedfields} gives \eqref{opa:us:eq:relativefixed}.
+
+For independence, distinct finite integer combinations of the $\omega^a$, $a\in\mathsf J$, lie in distinct cosets of $\NF(\No\setminus\mathsf J)$: a
+nonzero difference is supported in $\mathsf J$. In a polynomial in finitely many $w_a$ with coefficients in $\mathsf K_{\No\setminus\mathsf J,k}$, distinct
+monomials therefore contribute supports in disjoint cosets and cannot cancel. Finally $\sigma_g(w_a)=w_{\varphi_g(a)}$, and freeness on $\mathsf J$
+makes the orbit indices distinct.
+\end{proof}
+
+So a set group has a faithful action on $(\No,\Oz)$ fixing a given set of surreal parameters if and only if it is left-orderable (20's
+Corollary~5.2; \cref{opa:es:cor:parameters,opa:es:cor:classification}). The fixed field in \eqref{opa:us:eq:relativefixed} is a two-level
+support field; the theorem does not identify all possible fixed fields, and does not claim that an arbitrary Hahn subfield can replace it;
+its independence statement concerns a proper-class family only through finite subsets, since no polynomial has a proper class of
+variables \src{20}.
+
+\begin{remark}[Two relative fixed fields \mergetag]\label{opa:us:rem:twofields}
+\Cref{opa:es:cor:parameters} fixes the same $A$ (real) with $\Fix(\sigma_g)=\mathsf K_{\Sigma_2(A)}$ for $g\ne1$, the index action being free off the
+\emph{set} $\Sigma_2(A)$ (\cref{opa:es:thm:exactindex}); 20's is free on the interval $\mathsf J$ and the identity on the \emph{class}
+$\No\setminus\mathsf J$. Since $\Sigma_2(A)\subseteq\No\setminus\mathsf J$ and $S\mapsto\mathsf K_S$ is monotone (\cref{opa:es:prop:hulls}),
+\[
+ A\subseteq\mathsf K_{\Sigma_2(A)}\subsetneq\mathsf K_{\No\setminus\mathsf J}\subsetneq\No:
+\]
+18's fixed field is set sized, real closed and the smallest of the form $\mathsf K_S$ containing $A$; 20's is a proper class (it contains
+$\omega^{\omega^b}$ for every $b\notin\mathsf J$). The two constructions answer different questions: 18 prescribes a minimal fixed field, 20
+keeps a whole interval of indices free, which gives the independent family $\{w_a:a\in\mathsf J\}$ and the uniform obstruction maps of
+\cref{opa:us:thm:retraction,opa:us:rem:relcocycles}. Both lie in the monomial factor of \cref{opa:as:thm:factor}, not in $\UU_\Oz$, so neither
+bears on \cref{opa:q:relative}. The fixed exponent group $\NF(\No\setminus\mathsf J)$ is divisible and not of the form $\NF(S)$ for a set $S$, so
+\cref{opa:us:thm:relative} realizes, for every left-orderable set group, a new instance of \cref{opa:es:q:beyond}.
+\end{remark}
+
+\section{Downward orbits and the weighted Green operator}\label{opa:us:sec:green}
+
+The support result behind exact difference solvability applies to arbitrary ordered index sets, with no Archimedean hypothesis and no cofinal
+orbit \src{20}.
+
+\begin{lemma}[Sequential test \src{20}]\label{opa:us:lem:sequence}
+In ZFC a linear order is reverse well-ordered if and only if it has no infinite strictly increasing sequence, and every sequence in a
+reverse well-ordered set has an infinite nonincreasing subsequence.
+\end{lemma}
+\begin{proof}
+A subset with no greatest element yields a strictly increasing sequence by recursive choice; the values of such a sequence have no greatest
+element. For the second claim, color a pair $i<j$ by whether $s_i<s_j$; select successively a point and an infinite tail on which its pair
+color is constant, then infinitely many selected points of one color. This gives a strictly increasing or a nonincreasing subsequence, and
+the former is impossible.
+\end{proof}
+
+\begin{lemma}[Downward-orbit lemma \src{20}; \lbl{dsup:lem:orbit}]\label{opa:us:lem:downward}
+Let $U$ be an increasing bijection of a linearly ordered set or class $E$ with $U(a)<a$ for all $a\in E$, and $S\subseteq E$ a reverse well-ordered
+set. Then $\bigcup_{n\ge0}U^n(S)$ is a reverse well-ordered set, and each point lies in $U^n(S)$ for only finitely many $n\ge0$. Hence the Hahn
+translates of a series supported on $S$, with arbitrary scalar weights, form a summable family.
+\end{lemma}
+\begin{proof}
+The union is a set by replacement. Let $t_j=U^{n_j}(s_j)$, $s_j\in S$, be strictly increasing. Pass to a subsequence with $(n_j)$ nondecreasing
+(one value infinitely often, or a strictly increasing subsequence) and then, by \cref{opa:us:lem:sequence}, with $(s_j)$ nonincreasing. For
+$i<j$, $U^{n_j}(s_j)\le U^{n_i}(s_j)\le U^{n_i}(s_i)$, a contradiction. If $a\in U^{n_j}(S)$ for increasing $n_j$, the points $U^{-n_j}(a)\in S$ are
+strictly increasing, again a contradiction. Scalar weights only remove support.
+\end{proof}
+
+This is dsup's increasing-orbit hull, with the growth order reversed; 20 states it for a bare ordered class, which the inner level of
+\cref{opa:us:lem:innerdiff} needs (there the index class carries no addition).
+
+\begin{lemma}[The downward direction on every orbit \src{20}]\label{opa:us:lem:minorbit}
+For an increasing bijection $q$ of a linear order $E$, the complement of $\Fix(q)$ is invariant, and on it $U(a)=\min\{q(a),q^{-1}(a)\}$ and
+$V(a)=\max\{q(a),q^{-1}(a)\}$ are mutually inverse increasing bijections with $U(a)<a$.
+\end{lemma}
+\begin{proof}
+Whether $q(a)>a$ is constant along the orbit of $a$; on orbits with $q(a)>a$, $(U,V)=(q^{-1},q)$, otherwise $(q,q^{-1})$. If $a<b$, the smaller
+value at $a$ is below both candidates at $b$, so $U$ is increasing; likewise $V$.
+\end{proof}
+
+\begin{remark}[What the lemma does not say \src{20}]\label{opa:us:rem:notsay}
+It does not say that $\sum_{n\ge0}q^n(f)$ is always summable: on an upward orbit that family has increasing support, and the downward
+direction must be chosen separately on the two invariant orbit regions. Nor does it say that exponents tend cofinally to $-\infty$. Both
+distinctions matter in the surreal value group (compare the shear remark after \lbl{dsup:cor:labeled}).
+\end{remark}
+
+\subsection{The Green operator}
+
+Let $\Gamma$ be an exponent group (a set, or $\No$), $\tau$ an ordered additive automorphism of $\Gamma$, and $\sigma=M_{1,\tau}$ on
+$k((\omega^\Gamma))$, all series with set support. Put $\Gamma_\tau=\Fix(\tau)$, write $\varpi=\varpi_{\Gamma_\tau}$, and let $f_\uparrow$, $f_\downarrow$ keep
+the exponents with $\tau\gamma>\gamma$, respectively $\tau\gamma<\gamma$, so that $f=\varpi f+f_\uparrow+f_\downarrow$.
+
+\begin{theorem}[Weighted Green operator \src{20}; \lbl{dsup:thm:resolvent}]\label{opa:us:thm:green}
+For $c\in k^\times$ and $\varpi f=0$ the series
+\begin{equation}\label{opa:us:eq:green}
+ \operatorname{Gr}_c(f)=\sum_{n\ge1}c^{n-1}\sigma^{-n}(f_\uparrow)-\sum_{n\ge0}c^{-n-1}\sigma^n(f_\downarrow)
+\end{equation}
+is Hahn summable and is the unique solution $x$ of $(\sigma-c)x=f$ with $\varpi x=0$. Consequently
+\begin{align}
+ \ker(\sigma-1)&=k((\omega^{\Gamma_\tau})), & \operatorname{im}(\sigma-1)&=\ker\varpi,\label{opa:us:eq:generalexact}\\
+ (\sigma-c)^{-1}f&=\frac{\varpi f}{1-c}+\operatorname{Gr}_c(f-\varpi f) && (c\ne1),\label{opa:us:eq:generalinverse}
+\end{align}
+the last an inverse on all of $k((\omega^\Gamma))$; for $c\in k$ these maps are $k((\omega^{\Gamma_\tau}))$-linear.
+\end{theorem}
+\begin{proof}
+On the complement of $\Gamma_\tau$ use $U$ of \cref{opa:us:lem:minorbit}: the terms on $f_\uparrow$ are downward iterates of $\sigma^{-1}$, those on
+$f_\downarrow$ of $\sigma$, and all supports lie in the union of \cref{opa:us:lem:downward} for $\supp f$, which gives summability with finite
+multiplicity; the support avoids $\Gamma_\tau$. The finite partial sums satisfy
+\begin{align}
+ (\sigma-c)\sum_{n=1}^Nc^{n-1}\sigma^{-n}f_\uparrow&=f_\uparrow-c^N\sigma^{-N}f_\uparrow,\label{opa:us:eq:residualup}\\
+ (\sigma-c)\Bigl(-\sum_{n=0}^{N-1}c^{-n-1}\sigma^nf_\downarrow\Bigr)&=f_\downarrow-c^{-N}\sigma^Nf_\downarrow,\label{opa:us:eq:residualdown}
+\end{align}
+and at each exponent the residual eventually vanishes, by finite multiplicity; strongness justifies the infinite cancellation, so
+$(\sigma-c)\operatorname{Gr}_c(f)=f$. If $(\sigma-c)x=0$, then $\supp x$ is $\tau$-invariant, hence inside $\Gamma_\tau$ (the cyclic case of
+\cref{opa:es:lem:orbit}), where $\sigma$ is the identity and $(1-c)x=0$. This proves uniqueness on $\ker\varpi$, the kernels and
+\eqref{opa:us:eq:generalinverse}; for $c=1$ the $\Gamma_\tau$-part of every difference vanishes. Multiplying an exponent outside $\Gamma_\tau$ by a
+$\Gamma_\tau$-supported series stays in a coset disjoint from $\Gamma_\tau$, so $\varpi$ is $k((\omega^{\Gamma_\tau}))$-linear, as is the unique
+normalized inverse.
+\end{proof}
+
+\begin{remark}[Relation to the single-dilation report \mergetag]\label{opa:us:rem:dsup}
+In the $t$-convention $\sigma=M_{1,\tau}$ is dsup's monomial automorphism \lbl{dsup:eq:sigma} with $\theta=\tau$ and $\chi=1$; its chamber
+$A_+=\{g:\theta g>g\}$ is the set of $t$-exponents $g=-\gamma$ with $\tau\gamma<\gamma$, so dsup's $f_+$ is $f_\downarrow$. With this dictionary its $Q_c$
+(the resolvent \lbl{dsup:eq:Q}) is the right side of \eqref{opa:us:eq:generalinverse} for $c\ne1$, and $Q_1=\operatorname{Gr}_1$ on $\ker\varpi$; its
+resonance projection $P_1$ is $\varpi$. dsup proves it for set-sized $\Gamma$ and any character; for a class exponent automorphism its proofs
+localize to a set-sized subgroup containing the input supports and their orbits (dsup's set localization before \lbl{dsup:thm:surreal}),
+which is what 20's direct class argument avoids.
+\end{remark}
+
+The projection $\varpi$ need not be multiplicative: a monomial outside $\Gamma_\tau$ and its inverse give the counterexample for $\ct$, and dsup's
+remark ``Not a residue homomorphism'' is the same. $\ct$ is additive and $k$-linear but not a ring homomorphism on $\No$ ($\ct(\omega)=\ct(\omega^{-1})=0$,
+$\ct(\omega\omega^{-1})=1$); $\lc$ is multiplicative, not additive; additive obstructions use $\ct$, multiplicative ones $\lc$. In the relative
+construction $\Gamma_\tau=\NF(\No\setminus\mathsf J)$, and no convexity is assumed \src{20}.
+
+\subsection{The global action and omnific solutions}
+
+For the global action, $\Gamma_\tau=\{0\}$ and $\varpi=\ct$, so \cref{opa:us:thm:green} gives \eqref{opa:us:eq:introadd}. An ordered additive $\tau$
+preserves the sign of every exponent, and so do its iterates, so \eqref{opa:us:eq:green} preserves $\Pi_k$ and $\mm_k$ separately \src{20}.
+
+\begin{corollary}[Normalized arithmetic primitives \src{20}]\label{opa:us:cor:primitives}
+For $g\ne1$ in the global action, $\sigma_g-1$ is bijective on $\Pi_k$ and on $\mm_k$. Each purely infinite series has a unique purely infinite
+primitive, its primitives in $\Oz$ differ exactly by integers, and in $\Og$ by Gaussian integers.
+\end{corollary}
+\begin{proof}
+Restrict the normalized inverse to each support region; the constants of $\Oz$, $\Og$ are $\Z$, $\Z[i]$.
+\end{proof}
+
+\begin{example}[Two exact primitives for $\sigma^{\mathrm{tr}}_1$ \src{20}]\label{opa:us:ex:primitives}
+The normalized solutions are
+\begin{equation}\label{opa:us:eq:primitives}
+ (\sigma^{\mathrm{tr}}_1-1)^{-1}(\omega)=\sum_{n\ge1}\omega^{\omega^{-n}},\qquad (\sigma^{\mathrm{tr}}_1-1)^{-1}(\omega^{-1})=-\sum_{n\ge0}\omega^{-\omega^n},
+\end{equation}
+the first purely infinite and omnific, the second infinitesimal. For $c\in k^\times$, $(\sigma^{\mathrm{tr}}_1-c)^{-1}(\omega)=\sum_{n\ge1}c^{n-1}\omega^{\omega^{-n}}$,
+valid also for $c=1$ on the normalized subspace. For a nonzero ordinary constant $b$, $(\sigma^{\mathrm{tr}}_1-1)x=b$ has no solution.
+\end{example}
+
+\section{Constant-coefficient operators and multiplicative equations}\label{opa:us:sec:operators}
+
+\begin{theorem}[Scalar operator classification \src{20}; \lbl{dsup:cor:poly}]\label{opa:us:thm:operators}
+For a nonidentity $\sigma$ of the global action and a nonzero $\mathsf p\in k[\mathsf Y,\mathsf Y^{-1}]$, $\mathsf p(\sigma)$ restricts to bijections of
+$\mathsf V_k$, $\Pi_k$ and $\mm_k$; on $\No_k$ its kernel and image are those of \cref{opa:us:thm:maindiff}.
+\end{theorem}
+\begin{proof}
+For $k=\C$ factor $\mathsf p$ into a nonzero scalar, a power of $\mathsf Y$ and factors $\mathsf Y-c$, $c\ne0$, with multiplicity. $\sigma$ is invertible, every
+$\sigma-c$ is invertible on $\mathsf V_\C$ by \cref{opa:us:thm:green}, and the factors and their inverses preserve the two sign subspaces. On $k$,
+$\mathsf p(\sigma)$ is multiplication by $\mathsf p(1)$, and $\No_k=k\oplus\mathsf V_k$. For $k=\R$ solve over $\C$ and conjugate: $\mathsf p$ and the input are
+real, so the conjugate of the unique normalized solution (or of the unique solution when $\mathsf p(1)\ne0$) is again one, hence equal to it and
+real; the same uniqueness gives the sign subspaces.
+\end{proof}
+
+dsup's corollary needs $\mathsf p$ split over the coefficient field; for $k=\R$ the conjugation step removes that hypothesis here.
+
+\begin{corollary}[No generalized constant eigenvectors \src{20}; \lbl{dsup:cor:fixed}]\label{opa:us:cor:noeigen}
+$\ker(\sigma-1)^m=k$ for every $m\ge1$: no nonconstant element satisfies a nonzero homogeneous linear difference equation with coefficients in $k$.
+\end{corollary}
+
+\begin{corollary}[A field of difference operators \src{20}]\label{opa:us:cor:operatorfield}
+The additive class $\mathsf V_k$ is a vector space over $k(\mathsf Y)$, with $\mathsf Y$ acting by $\sigma$ and $(\mathsf p/\mathsf q)\cdot f=\mathsf p(\sigma)\mathsf q(\sigma)^{-1}f$ for
+$\mathsf q\ne0$; $\Pi_k$ and $\mm_k$ are subspaces.
+\end{corollary}
+\begin{proof}
+Nonzero polynomial operators are bijective on $\mathsf V_k$ and commute, so the localization identities define a field action; a nonzero $\mathsf p$ cannot act
+as zero on the nonzero space $\mathsf V_k$; stability of the subspaces is from the proof above.
+\end{proof}
+
+$k(\mathsf Y)$ is a field of \emph{operators}: $\mathsf Y$ is not identified with a surreal scalar, and the action is not multiplication by a new coefficient
+subfield. The constant line is the only obstruction to extending this structure to $\No_k$ with the same action of $\mathsf Y$ \src{20}.
+
+\subsection{The inner difference and the global multiplicative criterion}
+
+\begin{lemma}[The exponent difference is onto \src{20}]\label{opa:us:lem:innerdiff}
+If $\varphi$ has no fixed point, $\iota_\varphi-1$ is a bijective $\R$-linear map of $(\No,+)$. In general $\operatorname{im}(\iota_\varphi-1)=\ker\varpi^{\mathrm{in}}_B$
+and $\ker(\iota_\varphi-1)=\NF(B)$ for $B=\Fix(\varphi)$, with a unique solution $\beta$ of $(\iota_\varphi-1)\beta=\gamma$, $\varpi^{\mathrm{in}}_B\beta=0$ when
+$\varpi^{\mathrm{in}}_B\gamma=0$.
+\end{lemma}
+\begin{proof}
+Apply the proof of \cref{opa:us:thm:green} with $c=1$ to the inner normal forms, indexed by the ordered class $\No$ with index permutation
+$\varphi$; it uses only the order of the index class, not addition of indices (\cref{opa:us:lem:downward,opa:us:lem:minorbit}). The fixed indices are
+$B$, the projection is $\varpi^{\mathrm{in}}_B$, and the downward-orbit sums supply the inverse; for $B=\varnothing$ the projection and the kernel are zero.
+\end{proof}
+
+For $\varepsilon,h\in\mm_k$ the formal series $\log(1+\varepsilon)=\sum_{n\ge1}(-1)^{n+1}\varepsilon^n/n$ and $\exp(h)=\sum_{n\ge0}h^n/n!$ are summable (finite
+sums of a reverse well-ordered negative support) and give mutually inverse group isomorphisms $1+\mm_k\leftrightarrow\mm_k$, with the usual
+identities since every rearrangement is finite; a strong coefficient-fixing automorphism commutes with both. Only these local maps are used, not a
+surcomplex exponential at arbitrary arguments (dsup's \lbl{dsup:eq:explog}) \src{20}.
+
+\begin{theorem}[Exact multiplicative obstruction \src{20}; \lbl{dsup:thm:multsingle}]\label{opa:us:thm:multiplicative}
+Let $\sigma=\sigma_g$, $g\ne1$, in the global action and $a\in\No_k^\times$. Then $\sigma x/x=a$ has a solution $x\ne0$ if and only if $\lc(a)=1$; then
+exactly one solution has leading coefficient $1$, and the solutions are its multiples by $k^\times$.
+\end{theorem}
+\begin{proof}
+$\lc(\sigma x)=\lc(x)$ and multiplicativity give necessity. Conversely write $a=\omega^\gamma(1+\varepsilon)$, $\varepsilon\in\mm_k$. By
+\cref{opa:us:lem:innerdiff} there is a unique $\beta$ with $(\iota_{\varphi_g}-1)\beta=\gamma$, and by \cref{opa:us:cor:primitives} a unique $h\in\mm_k$ with
+$(\sigma-1)h=\log(1+\varepsilon)$. Then $x=\omega^\beta\exp(h)$ has leading coefficient $1$ and $\sigma x/x=\omega^{\iota_{\varphi_g}\beta-\beta}\exp(\sigma h-h)=a$.
+A quotient of two solutions is fixed, hence in $k^\times$.
+\end{proof}
+
+In dsup's form a solution exists iff some $g$ satisfies $(\theta-1)g=\gamma$, $\chi(g)=\lc(a)$ and $P_1h=0$; here $\chi=1$, the first condition always
+holds by \cref{opa:us:lem:innerdiff} and the third by $P_1=\ct$ on $\mm_k$, which leaves $\lc(a)=1$ \mergetag. Equivalently the sequence of classes and
+class maps
+\begin{equation}\label{opa:us:eq:multexact}
+ 1\longrightarrow k^\times\longrightarrow\No_k^\times\xrightarrow{\ x\mapsto\sigma x/x\ }\No_k^\times\xrightarrow{\ \lc\ }k^\times\longrightarrow1
+\end{equation}
+is exact, shorthand for the kernel, image and surjectivity statements, not an assertion that a proper-class quotient is a set \src{20}.
+
+\begin{example}[Monomial and unit equations \src{20}]\label{opa:us:ex:multiplicative}
+For $\sigma^{\mathrm{tr}}_1$ the normalized solution of $\sigma^{\mathrm{tr}}_1x/x=\omega$ is $x=\omega^{1/(\omega-1)}$, and that of $\sigma^{\mathrm{tr}}_1x/x=1+\omega^{-1}$ is
+$x=\exp\bigl(-\sum_{n\ge0}(\sigma^{\mathrm{tr}}_1)^n\log(1+\omega^{-1})\bigr)$, the inner sum summable by \cref{opa:us:lem:downward} on negative support. The
+equations $\sigma^{\mathrm{tr}}_1x/x=2$ and $\sigma^{\mathrm{tr}}_1x/x=-1$ have no nonzero solution even in $\SC$.
+\end{example}
+
+\subsection{A multiplicative retraction for the relative action}\label{opa:us:sub:retraction}
+
+Let $\varphi$ be any increasing bijection of $\No$, $B=\Fix(\varphi)$, $\sigma=M_{1,\iota_\varphi}$, and $\varpi=\varpi_{\NF(B)}$ (outer) and $\varpi^{\mathrm{in}}_B$
+(inner): different linear maps on different normal-form levels. For $a=d\,\omega^\gamma\exp(\ell)$ with $d=\lc(a)\in k^\times$ and $\ell\in\mm_k$ put
+\begin{equation}\label{opa:us:eq:retraction}
+ \operatorname{mr}_B(a)=d\,\omega^{\varpi^{\mathrm{in}}_B\gamma}\exp(\varpi\ell)\in\mathsf K_{B,k}^\times ;
+\end{equation}
+$\varpi\ell$ still has negative support, and $\varpi^{\mathrm{in}}_B\gamma\in\NF(B)$.
+
+\begin{theorem}[Relative multiplicative retraction \src{20}; 20's Theorem~9.4]\label{opa:us:thm:retraction}
+$\operatorname{mr}_B:\No_k^\times\to\mathsf K_{B,k}^\times$ is a $\sigma$-invariant multiplicative retraction, and
+\begin{equation}\label{opa:us:eq:relmultimage}
+ \{\sigma x/x:x\in\No_k^\times\}=\ker\operatorname{mr}_B ;
+\end{equation}
+$x\mapsto\sigma x/x$ is a bijection of $\ker\operatorname{mr}_B$ onto itself. Equivalently $\sigma x/x=a$ is solvable exactly when
+\begin{equation}\label{opa:us:eq:threeobstructions}
+ \lc(a)=1,\qquad \varpi^{\mathrm{in}}_B\gamma(a)=0,\qquad \varpi\log\bigl(a/(\lc(a)\omega^{\gamma(a)})\bigr)=0,
+\end{equation}
+all solutions differ by elements of $\mathsf K_{B,k}^\times$, and exactly one has $\operatorname{mr}_B(x)=1$.
+\end{theorem}
+\begin{proof}
+Leading coefficients multiply, leading exponents and logarithms of normalized units add, and both projections are additive, so $\operatorname{mr}_B$ is a
+homomorphism. On $\mathsf K_{B,k}^\times$ the leading exponent lies in $\NF(B)$ and the normalized unit and its logarithm are $\NF(B)$-supported, so
+$\operatorname{mr}_B$ is the identity there. $\varpi^{\mathrm{in}}_B\iota_\varphi=\varpi^{\mathrm{in}}_B$ and $\varpi\sigma=\varpi$ make it $\sigma$-invariant, which gives
+necessity. If $\operatorname{mr}_B(a)=1$, uniqueness of the factorization gives \eqref{opa:us:eq:threeobstructions}; \cref{opa:us:lem:innerdiff} gives
+$\beta$ with $(\iota_\varphi-1)\beta=\gamma(a)$, $\varpi^{\mathrm{in}}_B\beta=0$, and \cref{opa:us:thm:green} gives $h\in\mm_k$ with $(\sigma-1)h=\ell$, $\varpi h=0$.
+Then $x=\omega^\beta\exp(h)$ has $\operatorname{mr}_B(x)=1$ and $\sigma x/x=a$. Quotients of solutions lie in $\mathsf K_{B,k}^\times$ by
+\eqref{opa:us:eq:fixedfields}, where $\operatorname{mr}_B$ is the identity, so two normalized solutions coincide.
+\end{proof}
+
+For the global action $B=\varnothing$, $\varpi^{\mathrm{in}}_B=0$, $\varpi=\ct$ vanishes on $\mm_k$, and $\operatorname{mr}_B=\lc$. For the relative action of
+\cref{opa:us:thm:relative}, $B=\No\setminus\mathsf J$ and the retraction is the \emph{same map for every nonidentity element}, so both obstruction spaces
+are uniform while a prescribed set of parameters stays fixed. $\operatorname{mr}_B$ is a homomorphism of multiplicative groups, not a field
+homomorphism, and is not asserted to preserve $\Oz$: projecting an inner exponent can change its sign, which $\iota_\varphi$ cannot \src{20}. It
+specializes \lbl{dsup:thm:multsingle} (with $\chi=1$ its conditions are $\gamma\in\operatorname{im}(\theta-1)$, $\lc(a)=1$ and $P_1h=0$); what is new is the explicit
+image $\operatorname{im}(\iota_\varphi-1)=\ker\varpi^{\mathrm{in}}_B$ of \cref{opa:us:lem:innerdiff} and the retraction packaging.
+
+\section{First-order equations and cocycles}\label{opa:us:sec:cocycles}
+
+\begin{theorem}[Variable-coefficient criterion \src{20}; 20's Theorem~10.1]\label{opa:us:thm:firstorder}
+Fix a nonidentity $\sigma$ of the global action, $a\in\No_k^\times$, $b\in\No_k$, $c=\lc(a)$, and let $u$ be the leading-coefficient-one solution of
+$\sigma u/u=a/c$. The equation
+\begin{equation}\label{opa:us:eq:firstorder}
+ \sigma x-ax=b
+\end{equation}
+has a unique solution for every $b$ if $c\ne1$. If $c=1$, it is solvable exactly when
+\begin{equation}\label{opa:us:eq:twistedresidue}
+ \ct\bigl(b/\sigma u\bigr)=0,
+\end{equation}
+and then its solutions are $u(y_0+k)$ with $y_0=\operatorname{Gr}_1(b/\sigma u)$, the solution with $\ct(y_0)=0$. For $a=0$ the unique solution is
+$\sigma^{-1}b$.
+\end{theorem}
+\begin{proof}
+\Cref{opa:us:thm:multiplicative} gives $u$, since $\lc(a/c)=1$. With $x=uy$ and $\sigma u=(a/c)u$,
+\begin{equation}\label{opa:us:eq:gauge}
+ \sigma(uy)-a(uy)=\sigma u\,(\sigma y-cy),
+\end{equation}
+and \cref{opa:us:thm:green} with $\Gamma_\tau=\{0\}$ finishes. Replacing $u$ by $du$, $d\in k^\times$, multiplies \eqref{opa:us:eq:twistedresidue} by $d^{-1}$.
+\end{proof}
+
+For $c\ne1$ an explicit solution is
+\begin{equation}\label{opa:us:eq:firstorderformula}
+ x=u\Bigl[\frac{\ct(b/\sigma u)}{1-c}+\operatorname{Gr}_c\Bigl(\frac b{\sigma u}-\ct\Bigl(\frac b{\sigma u}\Bigr)\Bigr)\Bigr].
+\end{equation}
+A general coefficient is reduced to its ordinary leading coefficient, but the forcing term must undergo the same gauge change: testing $\ct(b)$ would
+give the wrong criterion. Variable-coefficient operators of order two or more and matrix equations are not classified, and $(\SC,\sigma)$ is not
+difference closed: $\sigma x-x=1$ has no solution \src{20}. The autonomous-dilation report records the same fact for its dilations ($S_dx-x=1$, in its
+comment after \lbl{adr:sr:cor:free}).
+
+\subsection{Groups with a central element}
+
+An \emph{additive cocycle} is a family $b_g\in\No_k$ with $b_{gh}=b_g+\sigma_gb_h$, a \emph{multiplicative} one a family $a_g\in\No_k^\times$ with
+$a_{gh}=a_g\sigma_g(a_h)$; coboundaries are $\sigma_gm-m$ and $\sigma_g(u)/u$. Throughout, $G\ne1$ acts by the global construction \src{20}.
+
+\begin{theorem}[Central cocycle normal forms \src{20}; 20's Theorem~11.2]\label{opa:us:thm:cocycles}
+Suppose the center of $G$ contains $z\ne1$. Every additive cocycle has a unique expression
+\begin{equation}\label{opa:us:eq:additivecocycle}
+ b_g=\mathrm{ch}^+(g)+(\sigma_g-1)m,\qquad \mathrm{ch}^+\in\Hom(G,(k,+)),\ m\in\mathsf V_k,
+\end{equation}
+and every multiplicative cocycle a unique expression
+\begin{equation}\label{opa:us:eq:multcocycle}
+ a_g=\mathrm{ch}^\times(g)\,\sigma_g(u)/u,\qquad \mathrm{ch}^\times\in\Hom(G,k^\times),\ u\in\No_k^\times,\ \lc(u)=1 .
+\end{equation}
+\end{theorem}
+\begin{proof}
+$\mathrm{ch}^+(g)=\ct(b_g)$ is a homomorphism since $\ct\sigma_g=\ct$, and $d_g=b_g-\mathrm{ch}^+(g)\in\mathsf V_k$ is a cocycle. Comparing $d_{gz}$ and $d_{zg}$,
+\begin{equation}\label{opa:us:eq:centralcompat}
+ (\sigma_z-1)d_g=(\sigma_g-1)d_z .
+\end{equation}
+Let $m=(\sigma_z-1)^{-1}d_z\in\mathsf V_k$; the inverse commutes with every $\sigma_g$, $z$ being central and the inverse on $\mathsf V_k$ unique, so
+\eqref{opa:us:eq:centralcompat} gives $d_g=(\sigma_g-1)m$. $\ct$ determines $\mathrm{ch}^+$, and the $z$-equation the normalized $m$. Multiplicatively, $\mathrm{ch}^\times(g)=\lc(a_g)$ is a
+homomorphism and $d_g=a_g/\mathrm{ch}^\times(g)$ a cocycle with leading coefficient $1$. Take the normalized $u$ with $\sigma_z(u)/u=d_z$ and divide by its coboundary: the
+cocycle $r_g$ has $r_z=1$ and $\lc(r_g)=1$, and comparing $r_{gz}$ with $r_{zg}$ gives $\sigma_z(r_g)=r_g$, so $r_g\in k^\times$ and $r_g=1$. Uniqueness follows from
+leading coefficients and the normalized $z$-equation.
+\end{proof}
+
+With cohomology read through these normal forms, $H^1(G,(\No_k,+))=\Hom(G,(k,+))$ and $H^1(G,\No_k^\times)=\Hom(G,k^\times)$; the formulas, not a set-sized
+quotient, are the assertions \src{20}. For $G=\Z^d$ acting by rational dilations the same groups appear in \lbl{dsup:thm:dilationcohom}, degree~$1$;
+there all degrees are computed, here all groups with a central nonidentity element.
+
+\begin{corollary}[Commuting inhomogeneous equations \src{20}; \lbl{dsup:cor:simultaneous}]\label{opa:us:cor:compatible}
+Let $g_1,\dots,g_r$ commute, $g_1\ne1$, and $f_i\in\No_k$. Some $x$ satisfies $(\sigma_{g_i}-1)x=f_i$ for all $i$ if and only if
+\begin{equation}\label{opa:us:eq:compatibility}
+ \ct(f_i)=0,\qquad (\sigma_{g_i}-1)f_j=(\sigma_{g_j}-1)f_i\qquad(\text{all }i,j),
+\end{equation}
+and then $x$ is unique modulo $k$.
+\end{corollary}
+\begin{proof}[Proof \textup{(second route, 20)}]
+Necessity is immediate. Take $x=(\sigma_{g_1}-1)^{-1}f_1\in\mathsf V_k$; the error $e_i=(\sigma_{g_i}-1)x-f_i\in\mathsf V_k$ satisfies $(\sigma_{g_1}-1)e_i=0$ by compatibility,
+so $e_i=0$. Two solutions differ by an element fixed by $g_1$, a constant.
+\end{proof}
+
+dsup's route solves the system with the explicit Koszul contraction $y=\sum_jQ_jE_{j-1}f_j$ (\lbl{dsup:eq:simultaneoussolution}); 20 needs only the
+inverse of one nonidentity element, which exists because the global action is uniform \mergetag.
+
+\begin{remark}[The same normal forms relative to parameters \src{20}]\label{opa:us:rem:relcocycles}
+For the relative action of \cref{opa:us:thm:relative}, with $B=\No\setminus\mathsf J$ and common fixed field $F_0=\mathsf K_{B,k}$, replace in
+\cref{opa:us:thm:cocycles} $k$ by $F_0$, $\ct$ by $\varpi_{\NF(B)}$ and $\lc$ by $\operatorname{mr}_B$, with the normalizations $\varpi_{\NF(B)}m=0$ and
+$\operatorname{mr}_B(u)=1$. These give valid unique normal forms for groups with a central nonidentity element: the projections are invariant under all
+group elements and the identity on $F_0$, and \cref{opa:us:thm:green,opa:us:thm:retraction} make every nonidentity difference bijective on the
+normalized kernels, so the two proofs apply unchanged. No weighted inverse with coefficients in $F_0\setminus k$ is needed.
+\end{remark}
+
+\subsection{Free groups}
+
+\begin{proposition}[Free-group comparison \src{20}; 20's Proposition~11.4]\label{opa:us:prop:free}
+For the free group $F_r$ on $s_1,\dots,s_r$, $r\ge2$, every additive cocycle is equivalent modulo a coboundary to exactly one with
+\begin{equation}\label{opa:us:eq:freenormal}
+ b_{s_1}=h_1,\qquad b_{s_i}=h_i+v_i\quad(2\le i\le r),\qquad h_i\in k,\ v_i\in\mathsf V_k ,
+\end{equation}
+so constants are not the only invariants. Multiplicatively there is a unique generator normal form $a_{s_1}=c_1$, $a_{s_i}=c_iw_i$ with
+$c_i\in k^\times$ and $\lc(w_i)=1$.
+\end{proposition}
+\begin{proof}
+A cocycle on a free group is determined by arbitrary generator values, extended along reduced words with $b_{s^{-1}}=-\sigma_{s^{-1}}b_s$, which makes
+adjacent inverse letters cancel. Subtract $h_i=\ct(b_{s_i})$ and the unique coboundary whose $s_1$-value is the remaining part of $b_{s_1}$, possible
+since $\sigma_{s_1}-1$ is bijective on $\mathsf V_k$; the other values stay arbitrary in $\mathsf V_k$. A coboundary preserving the normalized first value
+comes from an element fixed by $s_1$, a constant, and vanishes. Multiplicatively remove $c_i=\lc(a_{s_i})$, which extend to a character of $F_r$,
+normalize the first generator by \cref{opa:us:thm:multiplicative}, and argue the same way.
+\end{proof}
+
+Free groups are left-orderable \cite{Navas}, so \cref{opa:us:thm:main} supplies the action. Uniform one-automorphism solvability does not by
+itself trivialize the cocycles of noncommutative groups \src{20}.
+
+\section{The surcomplex classification and set-sized models}\label{opa:us:sec:complex}
+
+\subsection{Named conjugation}
+
+Every automorphism of $\SC$ preserving $\Og$ and commuting with $\mathrm{cj}$ is uniquely $\widetilde\alpha\,\mathrm{cj}^\epsilon$ with $\alpha$ an automorphism of
+$(\No,\Oz)$ and $\epsilon\in\{0,1\}$, so the centralizer of $\mathrm{cj}$ is $\Aut(\No,\Oz)\times C_2$ in the joint-action sense (20's Proposition~12.1). This
+is the ring clause of \cref{opa:es:lem:centralizer} and, for the field, \lbl{saut:thm:axis}, which 20 credits; its proof (commutation preserves
+$\No=\Fix(\mathrm{cj})$ and $\No\cap\Og=\Oz$, and $i\mapsto\pm i$) is 18's. No strongness is assumed \src{20}.
+
+20's Theorem~12.2 is \cref{opa:es:thm:complexmain} without parameters: a set group acts faithfully on $(\SC,\Og,\mathrm{cj})$ if and only if it is
+left-orderable or $H\times C_2$ with $H$ left-orderable ($G_0\times C_2$ in Part VIII), by the same route: the kernel of restriction to $\No$ has order
+at most two; if nontrivial its element acts as $\mathrm{cj}$ and is central, the sign $\epsilon:G\to C_2$ splits it off, and $\ker\epsilon$ acts faithfully
+on $\No$. Its consequence that finite subgroups are trivial or of order two, from torsion-freeness of left-orderable groups, is weaker than
+\lbl{saut:thm:torsion} (every nontrivial finite subgroup of $\Aut(\SC)$ has order two). The theorem requires named conjugation: it does not
+classify automorphisms preserving only $\Og$, all automorphisms of the pure field or all real forms, and it does not assert that arbitrary real
+field automorphisms fix $\R$ \src{20}.
+
+\subsection{Set-sized models and saturation}
+
+\begin{proposition}[A direct ZFC model for every left-orderable group \src{20}]\label{opa:us:prop:setmodel}
+Let $G$ be a set group with a left order, $I$ its underlying ordered set, $\Gamma=\{\sum_{a\in S}r_ae_a:S\subseteq I\text{ reverse well-ordered},\ r_a\in\R\}$
+the ordered Hahn group (sign of the largest index), $\iota_g$ the inner lift of left translation, and $K=k((\omega^\Gamma))$ the set-sized Hahn field.
+Then the proofs of \cref{opa:us:sec:green,opa:us:sec:operators,opa:us:sec:cocycles} apply verbatim: the fixed fields are $k$, $\iota_g-1$ is bijective for
+$g\ne1$, the additive and multiplicative obstructions and the operator classification hold, and $\Z\oplus\Pi_\R$, $\Z[i]\oplus\Pi_\C$ are preserved.
+\end{proposition}
+\begin{proof}
+Left translation is a free increasing index action, so every step above goes through with $\Gamma$ in place of the surreal exponent group; no cardinal
+arithmetic hypothesis is used.
+\end{proof}
+
+What the class completion adds is the identification of the actual inner index order with $\No$, hence realization inside the specified surreal and
+omnific objects \src{20}.
+
+\begin{proposition}[Saturated orders at a regular cardinal \src{20}; 20's Proposition~13.1]\label{opa:us:prop:etakappa}
+Let $\kappa$ be an infinite regular cardinal with $\kappa^{<\kappa}=\kappa$ and $|G|\le\kappa$, $G$ left-ordered. Then $G$ has a free increasing action on
+an $\eta_\kappa$-order of cardinality $\kappa$.
+\end{proposition}
+\begin{proof}
+Run the construction of \cref{opa:us:prop:cutcopies} for $\kappa$ stages, inserting copies only at downward closures of subsets of size $<\kappa$, a
+$G$-invariant family. Each stage has at most $\kappa^{<\kappa}=\kappa$ such cuts and stays of size at most $\kappa$. Separated subsets of total size
+$<\kappa$ lie in one stage by regularity, and the next stage inserts a point between them. At least one point is added at each stage, so the size is
+exactly $\kappa$; freeness and order preservation are unchanged.
+\end{proof}
+
+For $\kappa=\omega$ every countable left-orderable group acts freely on a countable dense order without endpoints. This is not a free extension to the
+Dedekind completion, and for larger $\kappa$ no preservation of a chosen surreal birthday cutoff is asserted \src{20}. Compare the countable route of
+\cref{opa:es:rem:countable}, which gives faithful but not free actions.
+
+\section{Scope, relations and questions of source 20}\label{opa:us:sec:questions}
+
+\subsection{What the theorems determine, and the proof obligations}
+
+\Cref{opa:us:thm:main} classifies the set groups that \emph{embed} as actions, not the automorphism object itself: it neither realizes a group as the
+entire automorphism group of a named structure nor classifies conjugacy classes of the actions. The fixed-field mechanism (an invariant reverse
+well-ordered support contains no nontrivial ordered orbit), the independence mechanism (separate inner monomials) and the solvability mechanism
+(summable downward half-orbits) are different consequences of one two-level construction. 20's dependency chain is: left order $\Rightarrow$ free
+equivariant cut completion $\Rightarrow$ $\varphi_g$ on $\No$ $\Rightarrow$ $\iota_{\varphi_g}\Rightarrow\sigma_g$; invariant support $\Rightarrow$
+$\Fix(\sigma_g)=k$; downward orbits $\Rightarrow\operatorname{Gr}_c\Rightarrow$ additive and operator classification; $(\iota_{\varphi_g}-1)^{-1}$ and
+$\operatorname{Gr}_1$ on $\mm_k$ $\Rightarrow$ the multiplicative criterion $\Rightarrow$ first-order and cocycle normal forms. Neither automatic strongness
+nor an exponential decomposition is an input \src{20}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.66\textwidth}}
+\toprule
+Proof obligation & Check and boundary \src{20}\\
+\midrule
+\endhead
+Class sizes & Stages, cuts at a stage, supports, witness collections and orbit unions of a set support are sets; automorphisms are one joint class
+action.\\
+Freeness & Each new cut receives an entire regular $G$-orbit; fixed points are excluded for every nonidentity element, not only for the group.\\
+Two lifts & The inner lift is additive, not multiplicative; the outer lift needs and uses that additivity.\\
+Fixed fields & Equality of series gives invariant support; forward and backward orbits exclude a moved exponent.\\
+Green summability & Reverse well-ordering and finite multiplicity are proved separately; scalar weights add no support; no convergence or cofinality.\\
+Arithmetic & Positive support stays positive under forward and backward iterates; the constants of the omnific rings are $\Z$, $\Z[i]$.\\
+Multiplicative step & The global exponent equation uses the free inner index action; the relative theorem uses both projections; logarithms only on
+$1+\mm_k$.\\
+Variable coefficients & After $x=uy$ the resonant obstruction is $\ct(b/\sigma u)$, not $\ct(b)$; the weighted formula uses coefficients in $k$, not in a
+relative fixed field.\\
+Cocycles & The central element is used explicitly; the free-group normal form shows extra invariants without it.\\
+Complex classification & Conjugation is named; the centralizer factorization is credited as prior.\\
+Verification & Finite exact-arithmetic checks test formulas and residuals, not infinite summability, class recursions, priority or formalization.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Status and relations}\label{opa:us:sub:status}
+
+\begin{itemize}[itemsep=2pt]
+\item \emph{No named question is answered.} Checked against \cref{opa:q:strong,opa:q:relative,opa:q:generation,opa:as:q:gaussian,opa:as:q:exp}, the
+single-dilation report's questions (\lbl{dsup:sec:questions}) and the surcomplex report's (\lbl{saut:sec:questions}). 20's automorphisms lie in the
+monomial factor, so \cref{opa:q:relative} (the stabilizer in $\UU_\Oz$) is not addressed, and none of the questions of \cite[Section~5]{KKS} on the
+exponential, simplicity or the omega-map is answered.
+\item \emph{Partly answered here.} \Cref{opa:es:q:beyond}: \cref{opa:us:thm:relative} realizes $E=\NF(\No\setminus\mathsf J)$, for every nonempty
+bounded open interval $\mathsf J$ and every left-orderable set group (status note after the question). 20's own question on fixed sets beyond two-level
+complements is partly settled by \cref{opa:es:part} (\cref{opa:us:q:fixedsets}).
+\item \emph{Merged.} 20's questions on additional surreal structure, conjugacy invariants, the Gaussian ring without conjugation and formalization
+are merged into \cref{opa:as:q:exp,opa:es:q:conjugacy,opa:es:q:surcomplex,opa:of:q:formal}, with 20 added.
+\item \emph{Stale against the tree.} 20's contribution statement (the ``combined structure'' of universality, exact fixed fields and difference
+solvability, its audit's Section~3) is stale at the merge for the universality and fixed-field half, which is \cref{opa:es:part} (placed after its pin),
+and was incomplete at its pin for the difference half: the resolvent, the polynomial operators, the multiplicative obstruction, the commuting systems
+and the dilation cohomology were in the single-dilation report (\cref{opa:us:sub:once}), which 20 did not read. Both are credited, and only the
+material listed after the table in \cref{opa:us:sub:once} is printed as new. Its reading of the collection, and its crediting of the lifts and of the
+centralizer, are accurate.
+\item \emph{Checked true.} The pin \texttt{e93a06d}, its tree \texttt{42aec05} and its content; the 61-report catalogue at the pin; the KKS numbering
+it cites (the first and second lifts are Construction~3.7 and Proposition~3.9 of \cite{KKS}, 18's double lift is its Construction~3.10); every
+proof of \cref{opa:us:sec:universal,opa:us:sec:green,opa:us:sec:operators,opa:us:sec:cocycles,opa:us:sec:complex} and the worked calculations below; its
+suite, rerun for the merge (\cref{opa:app:checks}). No mathematical error was found in 20.
+\end{itemize}
+
+\begin{example}[A worked real equation \src{20}; 20's Appendix~A]\label{opa:us:ex:worked}
+For $f=3\omega^2-5\omega^{-1}+7$, the equation $(\sigma^{\mathrm{tr}}_1-2)x=f$ has the unique solution
+\begin{equation}\label{opa:us:eq:worked}
+ x=-7+3\sum_{n\ge1}2^{n-1}\omega^{2\omega^{-n}}+5\sum_{n\ge0}2^{-n-1}\omega^{-\omega^n}:
+\end{equation}
+the constant part is $7/(1-2)$, the exponent $2$ is in the upward region and $-1$ in the downward one, the two supports are reverse well-ordered and
+disjoint, and \eqref{opa:us:eq:residualup}--\eqref{opa:us:eq:residualdown} give $f$ coefficientwise. $(\sigma^{\mathrm{tr}}_1-1)x=f$ has no solution since
+$\ct(f)=7$; without the constant it has a unique solution with $\ct(x)=0$, with the weights at $c=1$. For a localized action replace $7$ by the whole
+$\NF(B)$-supported part: a nonconstant series can then be fixed, so testing $\ct$ alone is not sufficient.
+\end{example}
+
+\subsection{Questions of source 20}\label{opa:us:sub:questions}
+
+20 poses twelve questions (its Questions~1--12), proposed as research directions, not as published problems. Eight are new; its Question~1 is merged into
+\cref{opa:as:q:exp}, Question~3 into \cref{opa:es:q:conjugacy}, Question~5 into \cref{opa:es:q:surcomplex} and Question~12 into \cref{opa:of:q:formal}.
+
+\begin{question}[Prescribed fixed sets beyond two-level complements \src{20}]\label{opa:us:q:fixedsets}
+Which additive subgroups $H\subseteq\No$ occur as $\Fix(\iota_\varphi)$ for an ordered action free on the complement of its fixed indices, every
+nonidentity element having the same fixed set? Which full Hahn subfields occur as the common individual fixed field of an arbitrary left-orderable
+group?
+\end{question}
+$\NF(\No\setminus\mathsf J)$ is a large explicit family; subgroups not defined by supports are a separate problem \src{20}. \emph{Status} (batch 34):
+by \eqref{opa:us:eq:fixedfields} every such $H$ is $\NF(B)$ with $B$ the common fixed class; \cref{opa:es:thm:exactindex} realizes every \emph{set}
+$B$ and \cref{opa:us:thm:relative} every complement of a bounded open interval, for every left-orderable set group. The second clause is
+\cref{opa:es:q:fixedfields,opa:es:q:beyond}. Open otherwise.
+
+\begin{question}[Full automorphism-group realization \src{20}]\label{opa:us:q:fullgroup}
+Can every set-sized left-orderable group be realized as the entire symmetry group of a naturally expanded surreal structure, not merely as a subgroup?
+What parameter or predicate resources are needed?
+\end{question}
+Naming a set of ordinary parameters does not eliminate the nontrivial actions (\cref{opa:us:thm:relative}) \src{20}.
+
+\begin{question}[Higher-order variable coefficients \src{20}]\label{opa:us:q:higher}
+For $L=\sum_{j=0}^na_j\sigma^j$ with $a_j\in\No_k$, describe kernel and image by finitely or transfinitely structured support invariants. Does a slope
+decomposition reduce some such operators to \cref{opa:us:thm:firstorder}?
+\end{question}
+One leading coefficient suffices in order one; no scalar factorization theorem for all operators is proved \src{20}.
+
+\begin{question}[Matrix difference equations \src{20}]\label{opa:us:q:matrix}
+For $A\in\GL_n(\No_k)$, when does $\sigma Y=AY$ have a fundamental matrix in $\GL_n(\No_k)$? Is there an exact matrix analogue of the
+leading-coefficient obstruction, possibly with several invariants?
+\end{question}
+A determinant gives only a necessary rank-one test \src{20}.
+
+\begin{question}[Relative first-order equations \src{20}]\label{opa:us:q:relative}
+For the relative action with common fixed field $F_0$, when is $\sigma-c$ invertible for $c\in F_0^\times$, not only $c\in k^\times$? Does this solve every
+scalar first-order equation relative to $F_0$?
+\end{question}
+\Cref{opa:us:thm:retraction} gauges $a$ to $\operatorname{mr}_B(a)\in F_0^\times$; the remaining twisted operator has a fixed-field coefficient that may
+itself have infinite support, and the scalar weights of \eqref{opa:us:eq:green} do not settle that \src{20}.
+
+\begin{question}[Centerless groups and higher cocycles \src{20}]\label{opa:us:q:centerless}
+Extend the cocycle classification beyond groups with a central nonidentity element and free groups. How do relations, amenability or geometric
+properties influence the extra zero-constant invariants? What happens for higher cocycles?
+\end{question}
+\Cref{opa:us:prop:free} is a test case against an unjustified general vanishing principle \src{20}. For $\Z^d$ acting by rational dilations all
+degrees are in \lbl{dsup:thm:dilationcohom}.
+
+\begin{question}[Small workspaces and birthday bounds \src{20}]\label{opa:us:q:workspaces}
+For a group and a set of input equations, find a smallest useful set-sized Hahn workspace stable under the action and all normalized inverses. Can a
+transparent birthday bound be attached to it?
+\end{question}
+Countably many orbit translates preserve set support but do not control birthdays of new exponents \src{20}. Compare dsup's set localization,
+which bounds cardinality but not birthdays, and \cref{opa:es:q:birthday,opa:as:q:workspaces}.
+
+\begin{question}[Effective Green operators \src{20}]\label{opa:us:q:effective}
+For computable descriptions of exponents and index actions, which instances of \eqref{opa:us:eq:green} admit algorithms deciding coefficient queries,
+support membership or leading terms? Which finite certificates verify an exact solution?
+\end{question}
+The class back-and-forth is not an algorithm; the translation family $\sigma^{\mathrm{tr}}_s$ is a better first target \src{20}.
+
 \appendix
 
 \section{Provenance ledger}\label{opa:app:provenance}
@@ -9898,7 +10848,8 @@ automorphism sources; the Fact~4.2 recheck is the merge's (\cref{opa:rem:import}
 \cref{opa:sub:provenance} were added in batch 30; item (9), the row and paragraph for 14,
 and the counts on the title page and in the abstract were updated in batch 31; items (10) and
 (11), the rows and paragraph for 15 and 16, the abstract and the counts in batch 32; items (12)--(14), the rows and
-paragraph for 17, 18 and 19, the abstract, the notation pointer and the counts in batch 33.\\
+paragraph for 17, 18 and 19, the abstract, the notation pointer and the counts in batch 33; item (15), the row and paragraph
+for 20, the abstract, the notation pointer and the counts in batch 34.\\
 \ref{opa:sec:prelim} & 04's one-shift lemma and coefficient polynomial; 09's and 04's
 ring decompositions; 04's and 08's divisible part. Units and constant products are
 cited from the Diophantine report, not reprinted. 10's one-shift lemma is
@@ -10010,6 +10961,14 @@ its ten questions (eight new, two merged).\\
 11.1 are cited; its Theorem~8.2 and Corollary~8.3 are printed once with \cref{opa:cr:part} as \cref{opa:hs:cor:intermediate,opa:hs:rem:theta},
 its Lemma~8.1 kept as a second route; the relations to \cref{opa:cr:ex:hahn,opa:thm:lie,opa:par:cor:multiflow,opa:lem:avoid} are the
 merge's. \ref{opa:hs:sec:questions}: 19's Section~12, Appendix~A and its eleven questions (seven new, four merged).\\
+\cref{opa:us:part} & Manuscript 20 (batch 34). \ref{opa:us:sec:intro}: the merge's, from 20's Section~1, Appendix~B and source audit, with
+its Theorems~1.1, 1.2 and Example (1.3)--(1.4). \ref{opa:us:sec:universal}--\ref{opa:us:sec:complex}: 20's Sections~2--13; its Lemmas~2.3, 3.2,
+4.1, 4.3, Definition~3.3, Theorem~4.4, Corollaries~4.5, 5.2, Proposition~12.1 and Theorem~12.2 are printed once in \cref{opa:es:part} (or cited to
+the Diophantine report); its Theorem~3.4 is kept as a second route (\cref{opa:us:prop:cutcopies}); its Lemma~6.2, Theorem~7.1, Theorem~8.1,
+Corollary~8.2, Theorems~9.2, 9.4 and Corollary~11.3 are printed with their correspondence to the single-dilation report;
+\cref{opa:us:rem:twofields,opa:us:rem:dsup}, the comparisons with \lbl{dsup:}, \lbl{adr:} and \lbl{saut:thm:torsion}, and the relation of
+\cref{opa:us:thm:multiplicative} to \lbl{dsup:thm:multsingle} are the merge's. \ref{opa:us:sec:questions}: 20's Section~14, Appendix~A and its twelve
+questions (eight new, four merged).\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -10147,6 +11106,21 @@ the phase twists and its torsion statement to \lbl{saut:thm:torsion}; the relati
 \cref{opa:of:q:evaluation,opa:of:q:formal}; the status notes after
 \cref{opa:par:cor:continuum,opa:par:q:directions,opa:par:q:reduced,opa:q:relative,opa:as:q:exp,opa:cr:q:equational,opa:hs:q:orbitfield},
 in \cref{opa:par:sec:relation,opa:cr:sub:stale}, after \cref{opa:thm:product}, and in \cref{opa:app:nonclaims}.
+\item \emph{Source 20, printed once} (batch 34; table in \cref{opa:us:sub:once}): Theorem~1.1 (i)--(iii) and its fixed fields as
+\cref{opa:es:cor:classification,opa:es:cor:ordinary,opa:es:prop:complexfixed}; Lemma~2.3 as \lbl{odg:thm:fractions}; Lemma~3.2 as
+\cref{opa:es:lem:necessity}; Definition~3.3 as \cref{opa:es:def:setcut}; Lemmas~4.1--4.3 and Theorem~4.4 as
+\cref{opa:es:prop:lifts,opa:es:lem:orbit,opa:es:thm:fixedsupport} (with \cref{opa:us:lem:outer} for the general outer lift); Corollary~4.5 as
+\cref{opa:es:thm:main}; Corollary~5.2 as \cref{opa:es:cor:parameters}; Proposition~12.1 as \cref{opa:es:lem:centralizer} and \lbl{saut:thm:axis};
+Theorem~12.2 as \cref{opa:es:thm:complexmain}. Its difference core, which re-derives \lbl{dsup:lem:orbit}, \lbl{dsup:thm:resolvent},
+\lbl{dsup:cor:fixed}, \lbl{dsup:cor:poly}, \lbl{dsup:thm:multsingle} and \lbl{dsup:cor:simultaneous} for class-sized double lifts, is printed
+in \cref{opa:us:part} with each correspondence stated, since the single-dilation report states these only for set-sized fields and, on
+$\No$, for rational dilations.
+\item \emph{Kept as second routes} (batch 34): 20's cut filling by a regular copy of $G$ at every cut (\cref{opa:us:prop:cutcopies}), beside
+18's fibers over cut orbits; its one-operator proof of \cref{opa:us:cor:compatible}, beside dsup's Koszul contraction.
+\item \emph{Added by the merge} (batch 34): \cref{opa:us:rem:twofields,opa:us:rem:dsup}; the dictionary between 20's operators and dsup's
+(chambers, $Q_c$, $P_1$) and the specialization remarks after \cref{opa:us:thm:multiplicative,opa:us:thm:retraction,opa:us:cor:compatible}; the
+status note after \cref{opa:us:q:fixedsets}; the merged questions \cref{opa:as:q:exp,opa:es:q:conjugacy,opa:es:q:surcomplex,opa:of:q:formal}; the
+status notes after \cref{opa:q:relative,opa:es:q:beyond}.
 \end{itemize}
 
 \subsection{Corrections and stale statements}\label{opa:sub:corrections}
@@ -10289,6 +11263,19 @@ given, so run in place it would create an unprefixed \fn{data/verification.json}
 \fn{code/19-formal-symmetry-build.sh} changes to its own directory, creates \fn{code/build/} and \fn{code/data/}, and then fails on the
 absent \fn{code/code/verify.py}. The build records of 18 and 19 give PDF sizes but no file hashes. The files are not edited; the collection
 README gives rerun instructions on a copy.
+\item \emph{Repository statements checked} (20, batch 34): its pin \texttt{e93a06d} (tree \texttt{42aec05}) contains
+\cref{opa:part:aut,opa:part:par,opa:part:as,opa:cm:part} and the single-dilation report, but not the write of \cref{opa:tc:part,opa:cr:part} nor
+\cref{opa:of:part,opa:es:part,opa:hs:part}. Its description of the five guides it read, its credits of the lifts to \cite{KKS} and of the
+centralizer to \lbl{saut:thm:axis}, and its KKS numbering are accurate. No mathematical error was found in 20 (\cref{opa:us:sub:status}).
+\item \emph{Stale novelty} (20, batch 34): its contribution statement is stale at the merge for universality and exact fixed fields, which
+are \cref{opa:es:part}'s, and was incomplete at its pin for the difference-equation core, which the single-dilation report already contained;
+both are credited, and only the material listed in \cref{opa:us:sub:once} is printed as new.
+\item \emph{Delivered-file behaviour} (20, batch 34): \fn{code/20-universal-symmetries-verify.py} writes \fn{verification.json} beside itself
+unless \fn{--output} is given (run in place: \fn{code/verification.json}); \fn{code/20-universal-symmetries-Makefile} runs \fn{latexmk} on
+\fn{article.tex} and \fn{python3 verify.py} in the working directory, so run from this report's root it would rebuild this report in place and then
+fail on the absent \fn{verify.py}, and its \fn{clean} target runs \fn{latexmk -c} there. \fn{data/20-universal-symmetries-BUILD_REPORT.json} gives
+file sizes but no hashes, and its recorded PDF (25 pages) and \fn{README.md} are not shipped. The files are not edited; the collection README gives
+rerun instructions on a copy.
 \end{enumerate}
 
 \subsection{Symbols renamed from the sources}
@@ -10372,6 +11359,15 @@ $\Pi^\sharp_R$; its $H_n$ are $\mathsf H_n$; its Lie series $L$ is $\mathsf L$; 
 $\ell_\eta$ is $q_\eta$ and its $E_m$ is $\omega^mD_0$; its $C_R$ is $\mathsf C_R$; its $\Theta$ is $\mathsf Q$; its coefficient sections $s$ are
 residue sections $\varsigma$ (not Part III's coefficient sections $\rho$); its $D_d$ is $d_*$; its $\Delta=\Phi-\id$ is written out; its curve $C$ is
 $\mathsf X$; its $\No[i]$, $\Oz[i]$ are $\SC$, $\Og$. No normalization changes.
+Source 20 (the table of \cref{opa:us:sub:notation}; growth convention): its $\No[i]$, $\Oz[i]$, $K_k$, $M_k=\ker c_0$ are $\SC$, $\Og$, $\No_k$,
+$\mathsf V_k=\ker\ct$ (not a monomial map $M_{\chi,\tau}$); its $c_0$ is $\ct$; its $p$, $T_p$, $\sigma_p$, $\sigma_T$ are $\varphi$, $\iota_\varphi$,
+$M_{1,\iota_\varphi}$, $M_{1,\tau}$; its $F=\Fix(p)$, $H_F$ are $B$, $\NF(B)$; its $J$, $H_J$, $F_{J,k}$, $B_A$, $y_a$ are $\mathsf J$,
+$\NF(\No\setminus\mathsf J)$, $\mathsf K_{\No\setminus\mathsf J,k}$, $\Sigma_2(A)$, $w_a$; its $H=\Fix(T)$, $K_H$, $P_H$, $Q_F$ are $\Gamma_\tau$,
+$k((\omega^{\Gamma_\tau}))$, $\varpi_{\Gamma_\tau}$, $\varpi^{\mathrm{in}}_B$; its $f_\pm$ are $f_\uparrow$, $f_\downarrow$; its Green operator
+$\mathcal G_c$ is $\operatorname{Gr}_c$ (not $\gap$ or $\mathcal G(R)$); its retraction $\mathcal R_F$ is $\operatorname{mr}_B$ (not $\ret_\phi$); its
+$S_s$ is $\sigma^{\mathrm{tr}}_s$ (the translation lift, $\sigma^{\mathrm{tr}}_1\ne\id$, not a dilation $S_q$ of the single-dilation report); its
+$P\in k[X,X^{-1}]$ and $k(X)$ are $\mathsf p\in k[\mathsf Y,\mathsf Y^{-1}]$ and $k(\mathsf Y)$; its cocycle characters $h$, $\chi$ are
+$\mathrm{ch}^+$, $\mathrm{ch}^\times$; its $j$ is $\mathrm{cj}$ and its identity $e$ is $1$. No normalization changes.
 
 \section{Non-claims, by source}\label{opa:app:nonclaims}
 
@@ -10846,6 +11842,44 @@ reads were truncated, and packaging happened after midnight UTC on 24 September.
 settled, and its questions are continuations, not established problems.
 \end{enumerate}
 
+\paragraph{Source 20.}
+\begin{enumerate}[itemsep=1pt]
+\item Manuscript proofs only: not independently refereed, not formalized in Lean, and no repository build or Lean audit was run.
+\item The two Hahn lifts \cite{KKS,KSgroups} and the real-form centralizer factorization (\lbl{saut:thm:axis}) are prior constructions; the
+contribution claimed is their combination with a free ordered action and the fixed-field, inverse-operator, retraction and cocycle results.
+\item Priority is not certified: the repository review was targeted (five report guides, some truncated, at the pin \texttt{e93a06d}) and not
+exhaustive, and the literature search did not establish a priority history.
+\item No named published problem is claimed solved; in particular none of the exponential or omega-map questions of \cite[Section~5]{KKS}.
+\item The maps need not preserve simplicity, birthdays, the omega-map as a function ($\sigma^{\mathrm{tr}}_1(\omega)\ne\omega^{\sigma^{\mathrm{tr}}_1(1)}$),
+the Gonshor exponential or the Berarducci--Mantova derivation; exact monomial preservation is not commutation with the omega-map.
+\item Higher-order variable-coefficient and matrix difference equations are not classified.
+\item $(\SC,\sigma)$ is not difference closed: $\sigma x-x=1$ has no solution.
+\item The leading-coefficient-only multiplicative criterion is proved only for the global free-index action; the relative action has the three
+obstructions of \cref{opa:us:thm:retraction} and cannot be reduced to the leading coefficient.
+\item $\operatorname{mr}_B$ is a multiplicative-group map, not a field homomorphism, and is not asserted to preserve $\Oz$.
+\item $\varpi_{\Gamma_\tau}$ (and $\ct$ on $\No$) is not multiplicative; $\ct$ is a ring homomorphism only on $\Oz$ and $\Og$.
+\item $k(\mathsf Y)$ acts by operators, not as scalars or a new coefficient subfield.
+\item Formal logarithms and exponentials are used only on $1+\mm_k$ and $\mm_k$; no global surcomplex exponential is introduced.
+\item The fixed-field results give no finite Galois correspondence; fixed fields do not distinguish subgroups.
+\item \Cref{opa:us:thm:relative} does not identify all fixed fields, nor claim that an arbitrary Hahn subfield can be the fixed field; its
+proper-class independence is only through finite subsets.
+\item \Cref{opa:us:thm:main} classifies the set groups that embed as actions, not full automorphism groups of a named structure, and not the
+conjugacy classes of the actions.
+\item The complex classification needs a named standard conjugation; automorphisms preserving only $\Og$, all automorphisms of the pure field and
+all real forms are not classified.
+\item It is not claimed that every field automorphism of $\No$ fixes $\R$; that property holds for the constructed maps.
+\item The cut completion does not preserve Dedekind completeness and gives no free action on the real line; the $\eta_\kappa$-orders carry no
+birthday cutoff and are not Dedekind completions.
+\item No weighted Green inverse with coefficients in a relative fixed field beyond $k$ is claimed (\cref{opa:us:q:relative}); the exact sequences
+and cohomology groups are shorthand for explicit normal forms, not quotients of proper classes; no universal vanishing of cocycles of
+noncommutative groups is asserted.
+\item The downward-orbit lemma does not assert summability of forward orbits or cofinal decrease of exponents; the class back-and-forth is not an
+algorithm.
+\item The finite checks (5{,}555 assertions) certify no infinite summability, arbitrary support, class recursion, $\eta_\On$ isomorphism, global
+choice argument, originality or priority.
+\item Its questions are research directions, not published problems.
+\end{enumerate}
+
 \emph{Status note} (batch 33). Non-claim~6 of 02 (only a lower bound for the full formal image) is kept as its record; for $D_0$ the full
 image is now described exactly (\cref{opa:of:part}), and for other characters its size is open. Non-claim~3 of 02 (no classification of
 all derivations) stays true: \cref{opa:hs:part} shows that all derivations integrate, not what they are. Non-claim~2 of 18 is kept; for $\Oz$
@@ -10860,19 +11894,23 @@ valuation data, and for a general $(k,\oo)$, those non-claims still describe the
 knowledge (\cref{opa:as:q:gaussian,opa:as:q:otherrings}).
 
 Counts: 13 non-claims from 09, 13 from 04, 12 from 08, 11 from 02, 18 from 10, 13 from 11,
-14 from 12, 12 from 13, 16 from 14, 17 from 15, 14 from 16, 15 from 17, 15 from 18, 14 from 19.
+14 from 12, 12 from 13, 16 from 14, 17 from 15, 14 from 16, 15 from 17, 15 from 18, 14 from 19, 22 from 20.
+
+\emph{Status note} (batch 34). Non-claims~1 and 3 of 18 (no classification of fixed subfields; minimality only within the family $\mathsf K_S$) and
+non-claim~14 of 20 are consistent: 20's relative fixed field $\mathsf K_{\No\setminus\mathsf J}$ is another member of that family, indexed by a class
+(\cref{opa:us:rem:twofields}).
 
 \section{Finite checks}\label{opa:app:checks}
 
-Fourteen suites ship with the report, byte-identical to their delivery, under the prefixes
+Fifteen suites ship with the report, byte-identical to their delivery, under the prefixes
 of their manuscripts. They check finite identities in exact arithmetic; they do not
 prove Hahn summability, class-sized statements, definability or novelty. They were
 rerun on copies for the merges (10's for the batch-28 addition, 11's, 12's and 13's for
 the batch-30 addition, 14's for the batch-31 addition, 15's and 16's for the batch-32
-additions, 17's, 18's and 19's for the batch-33 additions) with Python~3.14.4 and SymPy~1.14.0,
+additions, 17's, 18's and 19's for the batch-33 additions, 20's for the batch-34 addition) with Python~3.14.4 and SymPy~1.14.0,
 with the recorded results reproduced: 15's rewritten record is identical to the shipped one,
 16's differs only in its \texttt{python} and \texttt{elapsed\_seconds} fields, 17's only in its
-\texttt{python\_version} field, and 18's and 19's are identical up to line endings.
+\texttt{python\_version} field, and 18's, 19's and 20's are identical up to line endings.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.15}
@@ -10977,6 +12015,15 @@ Hasse--Schmidt Leibniz, iterativity, integral coefficients, exponential and loga
 and nonsplit jet witnesses to order 7, the Witt relation, and the formal square-root recursion to order 10. It is not a proof about
 surreal supports, derivations, class maps or genus. \emph{Writes} \fn{data/verification.json} under the parent of its own directory
 unless \fn{--output} is given (\cref{opa:sub:corrections}).\\
+\fn{code/20-universal-symmetries-verify.py};
+\fn{data/20-universal-symmetries-verification.json} & Standard library, exact fractions, seed 20260923, deterministic. 5{,}555
+assertions in 29 groups: finite inner and outer Hahn lifts (linearity, order, composition, addition, multiplication, constant and
+leading coefficients, fixed projections, positive-support preservation), localized index actions, the weighted Green residuals
+\eqref{opa:us:eq:residualup}--\eqref{opa:us:eq:residualdown} for both directions and constant-plus-tail inputs, distinct outer polynomial
+exponents and the relative independence and projection tests, the monomial part of the relative retraction, gauge, cocycle and commuting
+compatibility identities with cleared denominators, and truncated formal logarithm and exponential identities. It does not check infinite
+summability, arbitrary supports, class recursion, the $\eta_\On$ isomorphism or global choice. \emph{Writes} \fn{verification.json} beside itself
+unless \fn{--output} is given; 20's \fn{code/20-universal-symmetries-Makefile} names its delivered files (\cref{opa:sub:corrections}).\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -11075,6 +12122,10 @@ S.~Kuhlmann and M.~Serra, \emph{The automorphism group of a valued field of gene
 formal power series}, J.~Algebra \textbf{605} (2022), 339--376;
 \href{https://arxiv.org/abs/2107.03362}{arXiv:2107.03362}.
 
+\bibitem{KSgroups}
+S.~Kuhlmann and M.~Serra, \emph{Automorphisms of valued Hahn groups},
+\href{https://arxiv.org/abs/2302.06290v4}{arXiv:2302.06290v4}, 2026 (cited by source 20 for the Hahn-group context).
+
 \bibitem{LM}
 S.~L'Innocente and V.~Mantova, \emph{A factorisation theory for generalised power
 series and omnific integers}, Adv. Math. \textbf{442} (2024), 109513;
@@ -11093,6 +12144,10 @@ Springer, 2002.
 S.~Mattarei, \emph{Root multiplicities and number of nonzero coefficients of a polynomial},
 J.~Algebra Appl. \textbf{6} (2007), 469--475;
 \href{https://arxiv.org/abs/math/0512239}{arXiv:math/0512239}.
+
+\bibitem{Navas}
+A.~Navas, \emph{On the dynamics of (left) orderable groups}, Ann. Inst. Fourier \textbf{60} (2010), no.~5, 1685--1740;
+\href{https://doi.org/10.5802/aif.2570}{doi:10.5802/aif.2570} (cited by source 20 for ordered-group background).
 
 \bibitem{NT}
 L.~Narv\'aez-Macarro and M.~de la Paz Tirado Hern\'andez, \emph{On the bracket of integrable derivations},
@@ -11129,6 +12184,6 @@ definable-surreals report
 \fn{docs/foundations-and-computation/large-cardinal-embeddings-and-normal-forms}, cited by directory
 only before batch 32 and by its \lbl{lce:mf:} labels in the batch-32 notes, and the first-$\kappa$ coefficient report
 \fn{docs/surcomplex/first-kappa-coefficients} (\lbl{fkc:}). Part V also cites the foundations report \fn{docs/foundations-and-computation/foundations}
-(\lbl{found:}).
+(\lbl{found:}), and Part X the autonomous-dilation report \fn{docs/surcomplex/autonomous-dilation-relations} (\lbl{adr:}).
 
 \end{document}
