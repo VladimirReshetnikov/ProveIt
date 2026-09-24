@@ -3913,3 +3913,36 @@ integrality or proper-class claims. Audits pass all 4,626 statement anchors
 in 63 reports, 5,231 source-label references and 1,963 local Markdown
 destinations in 226 files. No Lean or historical verification files were
 changed in this review pass.
+
+### Binomial substitution and omnific-root obstruction sync (2026-09-24)
+
+Merged `origin/main` through `16507c9` and read all five new Lean modules
+against `osq:nm:lem:binomial`, `osq:nm:thm:invisible`, its root expansion,
+`osq:nm:rem:rootinN` and `osq:nm:cor:notintclosed`. The formal binomial
+power identity is proved over any characteristic-zero field. Positive-order
+Hahn monomial evaluation preserves the nth coefficient, has no off-grid
+coefficients and is injective, with countable support. The actual surreal
+version uses negative growth exponents and the native strong-sum map;
+it identifies the coefficients with ordinary rational binomial coefficients.
+No convergence of partial sums in the fine topology is claimed.
+
+The actual positive root of T^m=omega^g+1 is constructed for every g>0
+and ordinary m≥2. Its second coefficient is 1/m at g/m−g<0, proving
+it is outside Oz, although integral over Oz. Absolute-value power
+injectivity excludes all real omnific roots. Dividing a surcomplex root
+by this real root and applying the ordinary roots-of-unity classification
+gives every root; its second coefficient c/m is nonzero, excluding all
+Gaussian omnific roots. All such roots are integral over the Gaussian
+ring. The square-root case supplies exactly sqrt(omega+1), the source's
+non-integral-closedness witness. The universal small-target clauses and
+maps from the normalization still require the universal quotient theorem
+and remain pending; none follows merely from the finite-target obstruction.
+
+Updated the report guide and catalogue to match the merged root README
+and ledger. `LEAN_NUM_THREADS=2 lake build` passed 5,021 jobs; the axiom
+audit accepted all 18,646 declarations using only propext, Classical.choice
+and Quot.sound. Three final catalogue TeX passes were diagnostic-free,
+still 36 pages; inspected refreshed pages 12–13. The article stays at
+336 pages, with statements, labels and numbering unchanged. Audits pass
+4,626 anchors in 63 reports, 5,234 source-label references and 1,970 local
+Markdown destinations in 226 files.

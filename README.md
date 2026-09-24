@@ -530,6 +530,14 @@ ideal domain, and not integrally closed in its surreal fraction field.
 Both `√2` and `√(ω²+1)` are verified integral elements outside the ring;
 more generally, `√(w²+1)` is integral and non-omnific for every nonzero
 omnific integer `w`.
+Lean now also constructs the positive roots of `T^m = ω^γ + 1` for
+every `γ > 0` and ordinary `m ≥ 2`, with exact binomial normal-form
+coefficients. Monomial substitution preserves coefficients and is injective.
+Every surcomplex root is an ordinary complex root-of-unity multiple of
+the positive root. Its nonzero coefficient at `γ/m − γ < 0` excludes
+every root from both omnific rings, although the roots are integral over
+them. The claimed invisibility in every small ring image still awaits
+the universal quotient theorem.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the

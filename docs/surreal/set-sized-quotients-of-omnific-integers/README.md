@@ -501,6 +501,13 @@ whose ring contains the real or Gaussian omnific ring is trivial when its
 value group is small in the birthday universe. The nonintegral half then
 has value zero. The proof uses small-image ordered additive maps and
 monomial clearing, with no order compatibility assumed for the valuation.
+Lean now also proves the formal binomial identity and injective monomial
+substitution with exact coefficients. For every positive actual surreal g
+and ordinary m≥2, the constructed positive root of T^m=ω^g+1 is integral
+but non-omnific. Every surcomplex root is an ordinary root-of-unity multiple
+of it, and the nonzero coefficient at g/m−g excludes all Gaussian omnific
+roots as well. The specified √(ω+1) witness is proved. The small-target
+invisibility assertion still awaits the universal quotient theorem.
 
 Two added consequences sharpen the normalization picture. A negative
 minimum of a normal-form support prevents integrality, so every nonempty

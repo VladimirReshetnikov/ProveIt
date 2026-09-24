@@ -875,3 +875,8 @@ import Surreal.Foundations.SignSequenceOrderedMaps
 import Surreal.Algebra.MonomialValuationObstruction
 import Surreal.Foundations.OmnificValuationObstruction
 import Surreal.Surcomplex.GaussianValuationObstruction
+import Surreal.Algebra.FormalBinomialRoots
+import Surreal.HahnSeries.MonomialPowerSeries
+import Surreal.Foundations.MonomialPowerSeries
+import Surreal.Foundations.OmnificBinomialRoots
+import Surreal.Surcomplex.GaussianBinomialRoots
