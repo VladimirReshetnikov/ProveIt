@@ -11,7 +11,7 @@
 \usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink]{hyperref}
 \hypersetup{pdftitle={Critical-Point Defects in Surreal Arithmetic},
  pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
- pdfsubject={Large-cardinal embeddings, strong Hahn summation, normal-form support, surcomplex numbers, and omnific integers}}
+ pdfsubject={Large-cardinal embeddings, strong Hahn summation, normal-form support, surcomplex numbers, omnific integers, and measurable first failures of summation}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small\scshape Critical-point defects}
 \fancyhead[R]{\small Surreals and large cardinals}
@@ -95,6 +95,13 @@
 \newcommand{\Hahn}[1]{\R((\omega^{#1}))}
 \newcommand{\lecoeff}{\preccurlyeq_{\mathrm{coeff}}}
 \newcommand{\OPC}{\mathsf{OPC}}
+% Added with manuscript 10 (batch 32).
+\newcommand{\HF}[2]{#1((\omega^{#2}))}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\at}{\mathrm{at}}
+\newcommand{\gh}{\mathrm{gh}}
+\newcommand{\fail}{\operatorname{fail}}
+\newcommand{\id}{\operatorname{id}}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \begin{document}
@@ -108,13 +115,12 @@
 \vspace{0.25in}
 {\Large Large-cardinal embeddings, exact support thresholds,\\[5pt]
  descent to the target model, omnific independence,\\[5pt]
- surcomplex fields, and omnific integers\par}
+ surcomplex fields, omnific integers, and first failures\par}
 \vspace{0.35in}
-{\large A merged research report from three manuscripts}\par
+{\large A merged research report from four manuscripts}\par
 \vspace{0.13in}
-Manuscripts 06, 07 and 09 of batch 30, each prepared for Vladimir
-Reshetnikov (07 and 09 with ChatGPT), 23 September 2026; 07 is the base
-text\par
+Manuscripts 06, 07, 09 (batch 30) and 10 (batch 32), prepared for Vladimir
+Reshetnikov (07, 09, 10 with ChatGPT), 23 September 2026; 07 is the base text\par
 \vspace{0.3in}
 \status{\textbf{Main result.} An elementary embedding $j:V\to M$ with critical
 point $\kappa$ induces two ordered-field embeddings $J,H_j:\No\to\No$.
@@ -130,7 +136,8 @@ $H_j(x)$ lies in the target model exactly when $\imset j\lambda\in M$; for a
 normal-measure ultrapower this happens exactly when $x$ has at most $\kappa$
 terms \src{06}. Without any large cardinal, almost-disjoint families give
 algebraically independent omnific integers over the whole short-support
-field \src{09}.}
+field \src{09}. Countably strong linear maps first fail at measurable
+cardinals \src{10}.}
 \vfill
 \textbf{Scope and status.} All central assertions below have written proofs
 under explicit hypotheses. The general Hahn and large-cardinal ingredients
@@ -208,6 +215,26 @@ characterizations. As a consequence, if there is a measurable cardinal then
 there is a field embedding of $\No$ that preserves and reflects the omnific
 integers and their constant terms but is not strongly additive. There are
 34 research questions in all, and a list of every source's non-claims.
+
+\mergetag{} Manuscript 10 (batch 32, Sections
+\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}) proves a converse for
+countably strong maps. If a coefficient-linear map between full real or
+complex Hahn fields preserves every countable strong sum, then it preserves
+the summability of every set-indexed family, and its first failure to
+commute with a sum, if any, occurs at a measurable cardinal; the proof
+localizes to one output coefficient on one support and uses the classical
+finite complete-ultrafilter factorization of product functionals. Every such
+map is the sum of a canonical strong part and a countably strong remainder
+vanishing on all monomials; for $J$ these are $H_j$ and $D_j$. Conversely a
+measure on $\kappa$ gives order-preserving additive automorphisms of $\No$
+that stabilize $\Oz$, fix every monomial and any prescribed set of
+parameters, and first fail at $\kappa$; they are not multiplicative. The
+least size of a full Hahn field with such a failure is $2^\kappa$, attained
+by 09's field $K_\kappa$. Hence the absence of measurable cardinals is
+equivalent to strongness of every countably strong linear map, and, with
+$J$, of every countably strong coefficient-fixing $\Oz$-preserving field
+embedding. The merge deduces that 09's criterion for measurability needs no
+Hadamard product. Manuscript 10 adds twelve questions, for 46 in all.
 \end{abstract}
 \vspace{4pt}
 \noindent\textbf{Keywords.} Surreal number; Conway normal form; strong summation;
@@ -399,6 +426,13 @@ universe. We do not identify the two embeddings as automorphisms. Nor do we
 claim that their equality on monomials implies equality on a completed
 field: the whole point is that the relevant external sums need not be
 preserved by $J$.
+\mergetag{} \emph{Re-scoped in batch 32.} The first sentence stays true of
+arbitrary embeddings, but manuscript 10 establishes the converse for
+embeddings, indeed for all $\R$-linear maps, that preserve every countable
+strong sum: their first failure is a measurable cardinal
+(\thref{lce:mf:thm:spectrum}, \thref{lce:mf:thm:equivalence}). An embedding
+that fails a countable sum is outside that theorem
+(Remark~\ref{lce:mf:rem:unrestricted}).
 
 The proofs are mathematical arguments, not output from a theorem prover.
 The accompanying finite checks test finite identities used in the arguments;
@@ -433,6 +467,12 @@ maps $(J,H_j)$ induced by an elementary embedding with critical point
 $\kappa$. They prove the same spine independently: the companion lift, the
 first missing index, the exact defect formula, the short-support equalizer,
 the small-family summation threshold and the measure coefficient.
+\mergetag{} A fourth manuscript, 10 (manuscript 05 of batch 32, pinned to
+\texttt{7af8a30}), was added later as
+Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}; its
+conventions, renamed symbols and pin are in
+Section~\ref{lce:mf:sub:conventions}, and its labels carry the sub-prefix
+\texttt{lce:mf:} (``measurable failures'').
 
 \begin{center}\small
 \begin{longtable}{@{}P{0.07\textwidth}P{0.33\textwidth}P{0.53\textwidth}@{}}
@@ -467,7 +507,15 @@ independence and the $2^\kappa$ family (Section~\ref{lce:sg:sec:independence});
 the compatible-field-embedding criterion; seed coefficients over arbitrary
 index sets; weak compactness as an omnific prefix principle
 (Section~\ref{lce:sg:sec:weak}); the visibility hierarchy; thirteen
-questions.\\
+questions.\\[3pt]
+10 & \emph{Measurable Cardinals and the First Failure of Surreal Summation:
+Exact failure spectra, canonical strong parts, and omnific-preserving
+additive symmetries} (batch 32) & The first failure of a countably strong
+linear map is measurable; complete-ultrafilter localization; the canonical
+strong part; measurable transvections; the workspace criterion and the
+$2^\kappa$ bound; the exact boundary for countably strong embeddings; the
+target test $\omega^\kappa$; twelve questions
+(Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}).\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -2763,6 +2811,13 @@ question's clauses about dense images or images that are neither closed nor
 discrete. The pair $(J,H_j)$ also shows that preservation and reflection of
 $\Oz$ together with agreement on all monomials does not determine an
 embedding: $H_j$ has the same properties and is strong.
+\emph{Batch 32.} Manuscript 10 sharpens the large-cardinal-free case for
+coefficient-fixing embeddings: if there is no measurable cardinal, every
+countably strong coefficient-fixing field embedding preserving $\Oz$ is
+strong (\thref{lce:mf:thm:equivalence}), so such a counterexample would have
+to fail a countable sum. Embeddings that move real coefficients are outside
+that theorem, and the existence question itself stays open
+(Question~\ref{lce:mf:q:countable}).
 \end{remark}
 
 \section{Surcomplex numbers and the Gaussian omnific lattice}\label{lce:sec:complex}
@@ -4148,6 +4203,12 @@ pure surreal field is established. In particular, one should not infer a
 large cardinal from the existence of an arbitrary non-strong field map; such
 behavior already has constructions unrelated to the universe embeddings
 used here.
+\mergetag{} \emph{Re-scoped in batch 32.} For maps that preserve every
+countable strong sum the inference is valid: by \thref{lce:mf:thm:spectrum}
+the first failure of a countably strong $\R$-linear map is a measurable
+cardinal. The known construction without large cardinals, the
+Kaplan--Krapp--Serra automorphism, fails a countable sum
+(Remark~\ref{lce:mf:rem:unrestricted}).
 
 \section{Position relative to the literature and the supplied repository}
 \label{lce:sec:position}
@@ -4350,7 +4411,18 @@ the intermediate support fields) stays open.
 \item \fn{docs/surreal/omnific-preserving-automorphisms} (\lbl{opa:}). $J$
 gives a negative answer, under a measurable cardinal, to the first two
 clauses of \lbl{opa:as:q:embeddingstrong} (Remark~\ref{lce:rem:opa}); that
-report records this, writing $J$ as $\hat\jmath$.
+report records this, writing $J$ as $\hat\jmath$. \mergetag{} Batch 32:
+\thref{lce:mf:thm:equivalence} shows that without measurable cardinals a
+coefficient-fixing counterexample to those clauses must fail a countable
+sum, and \thref{lce:mf:thm:target} gives the explicit unrepresentable target
+test $\omega^\kappa$ for \lbl{opa:as:q:targettests}, whose conditional
+negative answer already followed from \lbl{opa:as:thm:adjoint} and the
+non-strongness of $J$.
+\item \fn{docs/surcomplex/first-kappa-coefficients}, cited by directory
+(batch 32 adds to it concurrently). It studies Hahn fields of series with
+fewer than $\kappa$ nonzero terms; over all surreal monomials that field is
+$\Sk$ here. By \thref{lce:mf:thm:atomic} a ${<}\kappa$-strong linear map
+agrees with its canonical strong part on $\Sk$.
 \item \fn{docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets}
 (\lbl{hset:}). Its embedding correspondence \lbl{hset:thm:embeddings} and
 Kunen transfer \lbl{hset:thm:kunen} are the birthday-enriched side of
@@ -4394,6 +4466,10 @@ Rather, our construction answers a new precisely stated family of
 structural questions under an explicit large-cardinal hypothesis. A
 specialist comparison with the unpublished details of related projects
 would be appropriate before submitting a priority claim.
+\mergetag{} Manuscript 10's lower bound is consistent with the non-strong
+automorphism of \cite[Example~4.4]{KKS}: that automorphism fixes $\R$ and
+every monomial and fails a countable sum, so it is not countably strong
+(Remark~\ref{lce:mf:rem:unrestricted}).
 
 \section{Further research questions and concrete next steps}\label{lce:sec:questions}
 
@@ -4416,6 +4492,14 @@ is not automatically a character for the Hadamard product merely because
 $P$ is multiplicative for ordinary surreal multiplication.
 \thref{lce:thm:measurablecriterion} solves the converse only when the
 coefficient-algebra structure and its small-union law are available.
+\mergetag{} \emph{Status (batch 32): partly answered.} If $P$ is in
+addition countably strong, then $Q=P_{\at}$ and $\fail(P)$ is a measurable
+cardinal at most $\kappa$; if $P$ is ${<}\kappa$-strong, $\kappa$ itself is
+measurable (\prref{lce:mf:prop:pairs}\,(a), from manuscript 10's
+\thref{lce:mf:thm:spectrum}). So for countably strong $P$ such a pair cannot
+exist without a measurable cardinal, hence without an ultrapower embedding
+of set theory. Whether $\kappa$ itself must be measurable for countably
+strong $P$, and the case of a $P$ failing a countable sum, stay open.
 
 \begin{question}[Classification of strong companions]\label{lce:q:classification}
 For an arbitrary real-fixing omega-map-compatible ordered-field embedding
@@ -4426,6 +4510,12 @@ shape, cofinality, or iterated structure of the exponent support?
 The construction $T_P$ is always available by \leref{lce:lem:reindex}.
 What is special to the present large-cardinal setting is the exact
 missing-index formula and the absence of cancellation in it.
+\mergetag{} \emph{Status (batch 32): partial progress.} For countably strong
+$P$, $T_P$ is the canonical strong part $P_{\at}$, and either $P=T_P$ or the
+equalizer contains $\mathscr S_{<\fail(P)}$ with $\fail(P)$ measurable
+(\prref{lce:mf:prop:pairs}\,(b)); without measurable cardinals every
+countably strong such $P$ equals $T_P$. The classification itself stays
+open.
 
 \begin{question}[Recovering an embedding from fewer coefficient probes]\label{lce:q:probes}
 What is the least family of masks and coefficient positions that determines
@@ -4554,6 +4644,15 @@ noted rather than merged, since their formulations differ. One question is
 partly answered inside this report: the exponential half of
 Question~\ref{lce:sg:q:exp} (09) is settled by 06's and 07's
 \thref{lce:thm:expdefect}. All others remain open here.
+\emph{Batch 32.} Manuscript 10 (Sections
+\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}) answers
+Question~\ref{lce:sg:q:converse} for the criterion
+(Corollary~\ref{lce:mf:cor:numerical}), meets the ultrafilter demand of
+Question~\ref{lce:cs:q:converse}, and makes partial progress on
+Questions~\ref{lce:q:strength}, \ref{lce:q:classification}
+and~\ref{lce:sg:q:equalizer}; the status notes at those questions give the
+scope. Its own twelve questions are in Section~\ref{lce:mf:sec:embeddings},
+for 46 in all.
 
 \subsection{Questions of manuscript 06 \src{06}}
 06's questions are proposed directions, not assertions that each is a
@@ -4575,6 +4674,14 @@ ultrafilter or embedding, not assume it in the language from the outset.
 (Compare Question~\ref{lce:q:strength} and Question~\ref{lce:sg:q:converse};
 the criteria \thref{lce:thm:measurablecriterion} and
 \thref{lce:sg:thm:numerical} add exactly such a coefficientwise operation.)
+\mergetag{} \emph{Status (batch 32): partly answered.} Manuscript 10
+constructs the ultrafilter instead of assuming it, with summation as the
+only extra structure: for any countably strong $\R$-linear map that is not
+strong, the null ideal of one output coefficient on a least failing support
+carries a nonprincipal complete ultrafilter on the first failing cardinal
+(\thref{lce:mf:thm:spectrum}, \prref{lce:mf:prop:pairs}\,(c)); no
+coefficientwise multiplication is used. Which pairs arise as $(J,H_j)$ from
+a universe embedding is not characterized.
 
 \begin{question}[Which landing spectra occur?]\label{lce:cs:q:spectra}
 For a fixed critical point $\kappa$, classify the downward-closed classes
@@ -4690,6 +4797,20 @@ supports, together with binary-valued coefficients at the designated probe.
 Any proposed converse should explicitly explain how it yields a \emph{set}
 of subsets of $\kappa$ and why that set is closed under fewer than $\kappa$
 intersections. Bare field elementarity cannot supply this by itself.
+\mergetag{} \emph{Status (batch 32): answered for the criterion.} By
+manuscript 10's \thref{lce:mf:thm:spectrum}, the whole coefficient algebra
+can be removed: $\kappa$ is measurable if and only if some $\R$-linear map
+$E:\No\to\No$ satisfies (a), (b) and (d) of \thref{lce:sg:thm:numerical},
+with no order, multiplicativity, omega-map or Hadamard condition
+(Corollary~\ref{lce:mf:cor:numerical}); (a) may even be weakened to
+$\coef{q_\kappa}{E(\tau_\alpha)}=0$. The set of subsets is the ultrafilter of
+a null ideal (\thref{lce:mf:thm:product}), and its closure under fewer than
+$\kappa$ intersections comes from ${<}\kappa$-strong additivity. The mask
+criterion can likewise drop the Hadamard product
+(Corollary~\ref{lce:mf:cor:maskcriterion}). $\R$-linearity is used and is not
+dropped. Whether condition (c) actually follows from the other conditions of
+\thref{lce:sg:thm:numerical} is not decided, and is no longer needed for the
+criterion.
 
 \begin{question}[The bare exact-equalizer principle]\label{lce:sg:q:equalizer}
 For which uncountable cardinals $\kappa$ can there exist ordered field
@@ -4703,6 +4824,12 @@ is impossible at an ordinary uncountable cardinal. Separating the algebraic
 condition from an encoded ultrafilter would clarify the genuine
 large-cardinal content of the main construction. (Related:
 Question~\ref{lce:q:strength}, which adds more conditions on the pair.)
+\mergetag{} \emph{Status (batch 32): partial progress.} If $E$ fixes $\R$ and
+is countably strong, and $H$ is strongly $\R$-linear, then $H=E_{\at}$ and
+$\fail(E)$ is a measurable cardinal at most $\kappa$; if $E$ is also
+${<}\kappa$-strong, $\kappa$ is measurable (\prref{lce:mf:prop:pairs}\,(a)).
+Embeddings failing a countable sum, embeddings moving reals, and the
+consistency strength of omega compatibility stay open.
 
 \begin{question}[Iterated discrepancies]\label{lce:sg:q:iteration}
 Given an iteration of normal ultrapowers, can its successive missing-index
@@ -4846,6 +4973,1792 @@ interface to actual surreal sign sequences and ultrapowers. This ordering
 would keep the algebraic verification independent of the largest
 foundational infrastructure task. (Related: Question~\ref{lce:q:formal}.)
 
+\section{Measurable first failures: source, conventions and headline \src{10}}
+\label{lce:mf:sec:intro}
+
+\mergetag{} Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}
+print manuscript~10 of this report: manuscript~05 of batch~32, delivered as
+\fn{surreal_measurable_spectrum.zip}, a 24-page article titled
+\emph{Measurable Cardinals and the First Failure of Surreal Summation: Exact
+failure spectra, canonical strong parts, and omnific-preserving additive
+symmetries}, prepared for Vladimir Reshetnikov with ChatGPT on 23 September
+2026 and pinned to repository commit \texttt{7af8a30}. It was added after
+the three-source merge and is placed after the questions of
+Section~\ref{lce:sec:questions}, so that no earlier number changes. The
+preceding sections construct an obstruction from a measurable cardinal;
+manuscript~10 proves a converse. For coefficient-linear maps that preserve
+every \emph{countable} Hahn sum, the first failure of a larger sum is always
+a measurable cardinal, and every measurable cardinal occurs. This is the
+converse that Section~\ref{lce:sub:nonasserted} disclaims, obtained for
+countably strong maps only (Remark~\ref{lce:mf:rem:unrestricted}). In
+Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings} every passage
+is 10's unless it is marked \mergetag; results that this report already
+proves are printed once, with their sources. The conventions of these five
+sections are fixed in Section~\ref{lce:mf:sub:conventions} before they are
+used.
+
+\subsection{The problem and the headline statement}
+An infinite normal form has two distinct features: the family of its terms
+is admissible, and a proposed map commutes with their sum. For finite sums
+these issues disappear. For arbitrary Hahn sums they must be kept separate.
+The main result of manuscript~10 is that, once countable sums are respected,
+\emph{the first remaining obstruction is exactly measurable-cardinal sized}.
+
+For the introductory statement regard $\No$ as the Hahn field
+$\HF{\R}{\No}$ of Conway normal forms, with reverse well-ordered \emph{set}
+supports, as in \eqref{lce:eq:NF}. The exponent of a monomial is itself a
+surreal; this is notation for Conway normal forms, not the introduction of
+proper-class supports. Definitions and foundations follow in
+Section~\ref{lce:mf:sec:detect}.
+
+\begin{theorem}[Exact surreal failure spectrum \src{10}]\label{lce:mf:thm:intro}
+Let $\Psi:\No\to\No$ be $\R$-linear and preserve every countable strongly
+summable family and its sum. Then it preserves the summability of every
+set-indexed strongly summable family. If it does not commute with every such
+sum, define
+\begin{equation}\label{lce:mf:eq:fail}
+ \fail(\Psi)=\min\Bigl\{\abs I:
+ \Psi\Bigl(\sum_{i\in I}x_i\Bigr)\ne\sum_{i\in I}\Psi(x_i),\quad
+ (x_i)_{i\in I}\text{ strongly summable}\Bigr\}.
+\end{equation}
+The cardinal $\fail(\Psi)$ is measurable.
+
+Conversely, for every measurable cardinal $\kappa$ and every set
+$Z\subseteq\No$, there is an $\R$-linear additive automorphism $\Theta$ of
+$\No$ with $\fail(\Theta)=\kappa$. It preserves order and leading terms,
+stabilizes $\Oz$, fixes $Z$ pointwise, and fixes every Conway monomial. It is
+not a field homomorphism. Both $\Theta$ and $\Theta^{-1}$ preserve all strong
+sums indexed by sets of size less than $\kappa$.
+\end{theorem}
+Proof pointers: the first assertion is
+Corollary~\ref{lce:mf:cor:admissibility}; measurability of $\fail(\Psi)$ is
+\thref{lce:mf:thm:spectrum}; the converse, with all the additional
+preservation properties, is \thref{lce:mf:thm:shear} together with
+\thref{lce:mf:thm:parameters}. The distinction between an \emph{additive}
+automorphism and a \emph{field} automorphism is indispensable. In
+particular, the theorem is compatible with the omnific-preserving report's
+theorem that every field automorphism of $\No$ preserving $\Oz$ is strongly
+additive (\lbl{opa:as:thm:main} in
+\fn{docs/surreal/omnific-preserving-automorphisms}).
+
+\subsection{Why the result is more than an example}
+A measurable cardinal has long supplied ultrapower embeddings, and the
+preceding sections of this report turn those embeddings into explicit
+non-strong surreal field embeddings. An example by itself gives an upper
+bound on the set-theoretic strength of an obstruction. The present theorem
+supplies a converse under a precise hypothesis: \emph{every
+coefficient-linear map that passes all countable strong-sum tests but fails a
+larger one yields an actual measurable cardinal}. It also identifies the
+first failing cardinal, not merely the existence of some measurable cardinal
+somewhere below a large support.
+
+The proof is local to one well-ordered support and one output coefficient.
+It does not assume elementarity, multiplicativity, order preservation,
+valuation compatibility, or an omnific predicate. These stronger structures
+enter only in the applications and sharp examples.
+
+\subsection{Prior work and proposed contributions}
+Conway normal forms and their Hahn arithmetic are classical
+\cite{Conway,Gonshor}. The distinction between strong and unrestricted
+surreal automorphisms belongs to an existing literature, including
+Kaplan--Krapp--Serra \cite{KKS}. Generalized power series also fit the
+finiteness-space framework of Blute--Cockett--Jacqmin--Scott \cite{BCJS}.
+The filter-theoretic engine below is the finite complete-ultrafilter
+factorization mechanism treated by Bergman \cite{BergmanFamilies}, with
+related linear product-map results in \cite{BergmanNahlus}; 10 gives the
+specialized proof needed here, rather than claim a new general theorem about
+maps on products.
+
+At its pin, 10 found in the omnific-preserving report automatic strongness
+for $\Oz$-automorphisms, constant-term adjoints, a proper-class dual
+obstruction, and proper embeddings \cite{RepoOpa}, and its question
+\lbl{opa:as:q:targettests} on representing pulled-back target tests for
+coefficient-fixing omnific-preserving embeddings. It found in this report
+(then 07's placed text) the elementary embedding $J$, its strong companion
+$H_j$ and their support defects. None of those results is claimed anew.
+
+The proposed additions are the general least-failure theorem, its complete
+linear localization, the canonical strong-part construction for all
+countably strong linear maps, the exact full-Hahn workspace criterion and
+size bound, and the monomial-fixing ordered additive transvections. The
+field-embedding equivalence and target-test obstruction combine these
+results with the existing elementary-embedding construction. An audit of
+this boundary is Section~\ref{lce:mf:sub:audit}.
+
+\subsection{Conventions, notation and the pin \mergetag}
+\label{lce:mf:sub:conventions}
+
+\paragraph{Exponent convention.} Manuscript~10 writes Hahn series in a
+variable $t$ with $t^\gamma=\omega^{-\gamma}$ and \emph{well-ordered}
+supports, and writes $[t^\gamma]x$ for the coefficient of
+$\omega^{-\gamma}$. This report writes $\omega^a$ with \emph{reverse
+well-ordered} supports and $\coef ax$ for the coefficient of $\omega^a$
+(\eqref{lce:eq:NF}, Definition~\ref{lce:def:strong}). Every statement of 10
+is printed here after the substitution $t^\gamma\mapsto\omega^{-\gamma}$,
+so every exponent changes sign: 10's $[t^\gamma]x$ is $\coef{-\gamma}{x}$
+here, ``well ordered'' becomes ``reverse well ordered'', 10's negative
+support is positive support here, and 10's detector exponents
+$d-\omega^{-\alpha}$ with $d\le-1$ become $\delta+q_\alpha$ with
+$\delta=-d\ge1$. For an abstract ordered group $\Gamma$ the two fields are
+identified by $t^\gamma\mapsto\omega^{-\gamma}$; no other normalization
+changes. The valuation is unaffected: 10's $v(x)=\min\supp_t(x)$ is this
+report's $v(x)=-(\text{leading exponent})$ of \eqref{lce:eq:NF}.
+
+\paragraph{Renamed symbols.} The following symbols of 10 collide with
+symbols of Sections~\ref{lce:sec:intro}--\ref{lce:sec:questions} and are
+renamed in Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings};
+10's delivered proof-status and audit files keep 10's names.
+
+\begin{center}\small
+\begin{longtable}{@{}P{0.26\textwidth}P{0.2\textwidth}P{0.46\textwidth}@{}}
+\toprule
+\textbf{10's symbol} & \textbf{Here} & \textbf{Reason and meaning}\\
+\midrule\endhead
+$t^\gamma$, $[t^\gamma]x$, $k((t^\Gamma))$ & $\omega^{-\gamma}$,
+$\coef{-\gamma}{x}$, $\HF k\Gamma$ & the exponent convention above\\
+$L=k((t^\Delta))$ & $K'=\HF k{\Gamma'}$ & $L_j$ is the logarithmic defect\\
+$T$, $T_{\at}$, $T_{\gh}$ & $\Psi$, $\Psi_{\at}$, $\Psi_{\gh}$ & $T_f$, $T_P$
+are reindexing maps and 09's $T$ is $H_j$\\
+$G$ (a ghost map) & $\Upsilon$ & $G_\kappa$ is 09's exponent group\\
+$F$ (a field embedding) & $E$ & $F$ is 07's letter for a family $F:I\to\No$;
+$E$ is also 09's field embedding in \thref{lce:sg:thm:numerical}\\
+$D$ (a derivation) & $\partial$ & $D_j$ is the defect $J-H_j$\\
+$\theta$ in ``$<\theta$-strong'' & $\nu$ & $\theta$ is a normal-form length
+in \eqref{lce:eq:NF}\\
+$\nu$ of Lemma 4.4 (least incomplete partition) & $\mu_{\mathcal U}$ &
+freed for the previous line\\
+$U$, $U_j$ (ultrafilters), index $j$ & $\mathcal U$, $\mathcal U_p$, index
+$p$ & $U_j$ is the derived measure, $j$ the embedding\\
+$\ell_{S,\eta}$, $\ell$ & $\psi_{X,b}$, $\psi$ & $\ell_\alpha$ is 09's
+coordinate functional (\leref{lce:sg:lem:separate})\\
+support $S$, $K[S]$ & $X$, $K[X]$ & $\Sk$ is the short-support field\\
+output exponent $\eta$ & $b$ & $\eta$ is an ordinal index throughout\\
+null ideal $\mathcal I_\ell$; atoms $A_1,\dots,A_m$ & $\mathcal N_\psi$;
+cells $I_1,\dots,I_m$ & $\Ik$ is the short omnific ring; $A$ is a subset of
+$\kappa$\\
+vectors $a\in k^I$; series $f_i$ & $f\in k^I$; $x_i$ & $a$ is an exponent;
+$f$ as in $h_f$ \eqref{lce:eq:hf}\\
+$d\le-1$, $s_\alpha=d-\omega^{-\alpha}$, $S_d$ & $\delta\ge1$, the exponent
+$\delta+q_\alpha$, $X_\delta$ & sign change; $q_\alpha=\omega^{-\alpha}$ is
+09's scale \eqref{lce:sg:eq:scales}\\
+$a=t^d$ & $\omega^\delta$ & $a$ is an exponent\\
+$\lambda_U$, $N_U$, $A_{c,U}$ & $\vartheta_{\mathcal U}$,
+$N_{\mathcal U}$, $\Theta_{c,\mathcal U}$ & $\lambda$ is a length or
+cardinal; $A$ a subset of $\kappa$\\
+masks $F_B=\sum_{\alpha\in B}t^{s_\alpha}$, $B\subseteq\kappa$; $F=F_\kappa$
+& $\omega^\delta Y_A$, $A\subseteq\kappa$; $\omega^\delta Y_\kappa$ & 09's
+omnific mask \eqref{lce:sg:eq:mask} shifted by $\omega^\delta$; 09's
+$F_\kappa$ is $\Sk$\\
+$B=\sum_{\alpha<\kappa}t^\alpha$ & $h_\kappa$ & 07's \eqref{lce:eq:heta}\\
+$\Lambda$ & $\Lambda_j$ & it depends on $j$\\
+parameter set $P$, union of supports $E$ & $Z$, $E_Z$ & $P_\theta$ is the
+missing-index set\\
+$\Gamma_\kappa$, $K_\kappa$ of Theorem 8.2 & $G_\kappa$, $K_\kappa$ & the
+same objects as 09's (\thref{lce:sg:thm:maximal}); see
+\thref{lce:mf:thm:size}\\
+$\Pi_k$, $\mathfrak m_k$ & $\mathfrak P_K$, $\infideal_K$ & $\Pi_j$ is the
+coefficient projection\\
+multiplication operator $M_f$ & $\operatorname{mul}_y$ & $M$ is the target
+model\\
+$\No[i]$, $\Oz[i]$, $\langle x,y\rangle_0$ & $\SC$, $\Oz[i]$,
+$\ct(xy)$ & this report's notation\\
+\bottomrule
+\end{longtable}
+\end{center}
+Kept: $k\in\{\R,\C\}$, $\Gamma$ (an abstract exponent group, not
+$\Gam=J(\No)$), $K=\HF k\Gamma$ (a generic Hahn field, not 09's $K_\kappa$
+except in \thref{lce:mf:thm:size}), $\ev_{\mathcal U}$, $\fail$, the
+subscripts $\at$ and $\gh$, $\ct$, $c$ for scalars, $m$ for a finite count
+(not 07's supercompact masks $m_A$), and $\mathcal O_\Gamma=\Z\oplus\mathfrak
+P_K$.
+
+\paragraph{Tempting false readings.} The detector functional
+$\vartheta_{\mathcal U}$ of Section~\ref{lce:mf:sec:shears} is an
+ultrafilter limit of $\kappa$ coefficients of its \emph{input}; it involves
+no embedding. The functional $\chi_j$ of \eqref{lce:eq:chi} reads one
+coefficient of the \emph{image} $J(h_f)$. Both evaluate along a
+$\kappa$-complete ultrafilter, on different supports ($X_\delta$ and
+$\{-\alpha:\alpha<\kappa\}$). The masks $\omega^\delta Y_A$, 09's $Y_A$ and
+07's $z_A=\omega^\kappa h_A$ are three different numbers. The pointwise
+product on $k^X$ is not Hahn multiplication: a Boolean mask is not an
+idempotent of the field. ``Countably strong'' is a summation condition, not
+continuity in the valuation topology. The transvections $\Theta_{c,\mathcal
+U}$ fix every monomial but are not the identity; fixing every monomial as an
+element is not compatibility with the omega-map as a function. An additive
+automorphism is not a field automorphism. Reversing the exponent
+convention without changing the signs would destroy well-ordering: the
+exponents $\delta+q_\alpha$ decrease in $\alpha$.
+
+\paragraph{Hypotheses.} Set-sized statements are proved in $\ZFC$;
+class-sized statements are read in NBG with global choice, with each map an
+individual class function and all summation families sets
+(Section~\ref{lce:mf:sub:foundations}). A measurable cardinal is assumed
+exactly where stated. Section~\ref{lce:mf:sec:embeddings} uses the
+normal-measure ultrapower instance of \eqref{lce:eq:setting} and imports
+this report's absoluteness package (\leref{lce:lem:absolute}); the earlier
+sections do not.
+
+\paragraph{The pin.} 10 was pinned to \texttt{7af8a30}, which precedes the
+three-source merge \texttt{de45cee}. At the pin this report was 07's placed
+text alone, and the omnific-preserving report lacked its source~14. 10
+therefore cites this report as ``source 07'' and its ``Sections 2--4''
+(now Sections~\ref{lce:sec:foundations}, \ref{lce:sec:companion}
+and~\ref{lce:sec:defect}), and did not see 06's and 09's material, in
+particular 09's criterion \thref{lce:sg:thm:numerical} and the questions
+\ref{lce:cs:q:converse} and~\ref{lce:sg:q:converse}, which it answers or
+bears on (Section~\ref{lce:mf:sub:consequences}). Its claim to give ``a
+concrete conditional negative answer'' to \lbl{opa:as:q:targettests} is
+stale against the tree; the negative answer already followed from results
+recorded at the pin, and 10's contribution there is the explicit test
+(the note after \thref{lce:mf:thm:target}). Nothing else 10 says about the
+repository is false at the time of this merge.
+
+\section{Countable detection and complete-ultrafilter functionals \src{10}}
+\label{lce:mf:sec:detect}
+
+\subsection{Fields, supports, and class size}\label{lce:mf:sub:foundations}
+Unless explicitly varied, $k$ is $\R$ or $\C$. For an ordered abelian group
+$\Gamma$, write
+\[
+ K=\HF k\Gamma=\Bigl\{\sum_{a\in X}c_a\omega^a:
+ X\subseteq\Gamma\text{ reverse well ordered},\ c_a\in k\Bigr\}.
+\]
+Zero coefficients are omitted from the support. For set-sized $\Gamma$ this
+is an ordinary Hahn field. We also allow $\Gamma=\No$, but every individual
+support must still be a set. This gives $\No$ for $k=\R$ and $\SC$ for
+$k=\C$ by separating real and imaginary coefficients. The valuation is
+$v(x)=-\max\supp(x)$ for $x\ne0$ and $v(0)=\infty$. For real coefficients
+the sign is the sign of the leading coefficient.
+
+Set-sized statements are proved in $\ZFC$. Class-sized statements may be
+read in NBG with global choice, with each map an individual class function
+and all quantified summation families sets. The proofs never form a class
+whose members are all proper-class maps. Assertions about all such maps are
+class-quantified statements, not an assertion that their collection is a
+set or an NBG class. Restrictions of a class map to set-sized products are
+set functions. This is precisely what the localization arguments need.
+
+\subsection{Hahn summability}
+\begin{definition}[Hahn summability \src{10}]\label{lce:mf:def:summable}
+A set-indexed family $(x_i)_{i\in I}$ in $K$ is \emph{Hahn-summable} if
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $X=\bigcup_{i\in I}\supp(x_i)$ is reverse well ordered;
+\item for every $a\in\Gamma$, the set $\{i:\coef a{x_i}\ne0\}$ is finite.
+\end{enumerate}
+Its sum has coefficient $\sum_i\coef a{x_i}$ at $\omega^a$, a finite sum at
+each exponent. The empty family has sum zero.
+\end{definition}
+\mergetag{} For $K=\No$ this is Definition~\ref{lce:def:strong}; ``Hahn-summable''
+and ``strongly summable'' are used interchangeably below.
+
+A family of ordinary scalars, regarded as constant Hahn series, is
+Hahn-summable exactly when only finitely many members are nonzero. Thus
+nothing below replaces an infinite numerical sum by a conditionally
+convergent or analytically convergent one.
+
+\begin{definition}[Strong, countably strong, ${<}\nu$-strong \src{10}]
+\label{lce:mf:def:strong}
+A $k$-linear map between Hahn fields is \emph{strong} if it sends every
+Hahn-summable set family to a Hahn-summable family and commutes with its
+sum. It is \emph{countably strong} if this holds for countable families,
+and \emph{${<}\nu$-strong} if it holds for families of cardinality less than
+an uncountable cardinal $\nu$.
+\end{definition}
+
+Here countably strong is the same as ${<}\aleph_1$-strong. Linearity is over
+the coefficient field, not over the whole Hahn field. The phrase
+``countably strong'' is a summation condition; it is not shorthand for
+continuity in the valuation topology. A summable Hahn family need not have
+valuation-topological partial sums converging to its Hahn sum.
+\mergetag{} For $\R$-linear maps of $\No$, ``strong'' is ``strongly
+$\R$-linear'' of Definition~\ref{lce:def:strong}, and ${<}\nu$-strong is the
+notion introduced after \thref{lce:sg:thm:threshold}; compare
+Remark~\ref{lce:rem:topology}.
+
+\subsection{The omnific subring}
+Put
+\[
+ \mathfrak P_K=\{x:\supp(x)\subseteq\Gamma^{>0}\},\qquad
+ \infideal_K=\{x:\supp(x)\subseteq\Gamma^{<0}\}.
+\]
+Both include zero. For $k=\R$ the canonical omnific-type ring is
+$\mathcal O_\Gamma=\Z\oplus\mathfrak P_K$. For $\Gamma=\No$ this is
+Conway's $\Oz$ of \eqref{lce:eq:Oz}, $\mathfrak P_{\No}$ is the class of
+purely infinite parts $p(x)$ and $\infideal_{\No}=\infideal$. The surcomplex
+analogue is $\Z[i]\oplus\mathfrak P_{\SC}=\Oz[i]$. The direct decomposition
+\[
+ K=\mathfrak P_K\oplus k\oplus\infideal_K
+\]
+is additive. Constant extraction is denoted by $\ct$. On the whole field it
+is linear, not multiplicative; on $k\oplus\mathfrak P_K$ it is a ring
+homomorphism. This distinction will prevent several tempting but incorrect
+shortcuts.
+
+\subsection{Products on a fixed support are only coefficient products}
+For a reverse well-ordered set $X\subseteq\Gamma$, define
+\[
+ K[X]=\{x\in K:\supp(x)\subseteq X\}.
+\]
+The map $f\mapsto\sum_{s\in X}f(s)\omega^s$ identifies $K[X]$ with the
+\emph{vector space} $k^X$. It need not be a subring of $K$. In particular,
+pointwise multiplication on $k^X$ is not Hahn multiplication. Boolean masks
+on $X$ are idempotent for the former operation, not the latter. The
+product-functional theorem uses only the vector-space identification.
+\mergetag{} This is the Hadamard product $\odot$ of \eqref{lce:eq:hadamard}
+and the product warning after \prref{lce:sg:prop:weighted}.
+
+\subsection{Countability detects admissibility, not the sum}
+\begin{lemma}[Countable obstruction to summability \src{10}]\label{lce:mf:lem:countable}
+A set-indexed family of Hahn series is summable if and only if each of its
+countable subfamilies is summable.
+\end{lemma}
+\begin{proof}
+Only the reverse implication needs proof. If infinitely many members have a
+nonzero coefficient at one exponent, choose a countably infinite subfamily
+of them. This contradicts coefficientwise finiteness. If the union of
+supports is not reverse well ordered, dependent choice gives a strictly
+increasing sequence of exponents in that union. Choose for each exponent
+one family member containing it. These members form a countable subfamily
+whose union of supports contains the increasing sequence. The contradiction
+proves the claim. The witnesses use sets even when the ambient exponent
+group is $\No$.
+\end{proof}
+\mergetag{} The omnific-preserving report proves a sharper form: a
+nonsummable family has a countable subfamily \emph{and} a countably
+supported binary test $y$ with $\ct(yx_i)\ne0$ for infinitely many $i$
+(\lbl{opa:as:cor:countable}, from \lbl{opa:as:thm:detect}). The lemma is
+the elementary half of that statement and is printed as 10's because the
+arguments below use no pairing.
+
+\begin{corollary}[Countably strong maps preserve admissibility \src{10}]\label{lce:mf:cor:admissibility}
+Every countably strong map sends every set-indexed Hahn-summable family to a
+Hahn-summable family.
+\end{corollary}
+\begin{proof}
+Every countable subfamily of an image family is the image of a countable
+subfamily of the original one. Apply the hypothesis and
+\leref{lce:mf:lem:countable}.
+\end{proof}
+\mergetag{} For $J$ this is the first assertion of \thref{lce:thm:positive},
+proved there by transfer.
+
+Consequently, for a countably strong $\Psi$, a failure at an uncountable
+family is always a failure of the equality
+\begin{equation}\label{lce:mf:eq:sumdefect}
+ \Psi\Bigl(\sum_ix_i\Bigr)=\sum_i\Psi(x_i).
+\end{equation}
+The right side exists. It is not an undefined expression that has been
+mistaken for a counterexample.
+
+\begin{lemma}[Support localization \src{10}]\label{lce:mf:lem:local}
+Let $\Psi:K\to K'$ be ${<}\nu$-strong, where $K'=\HF k{\Gamma'}$, and let
+$X\subseteq\Gamma$ be reverse well ordered. For each $b\in\Gamma'$, the
+functional
+\begin{equation}\label{lce:mf:eq:localfunctional}
+ \psi_{X,b}:k^X\to k,\qquad
+ \psi_{X,b}(f)=\coef b{\Psi\Bigl(\sum_{s\in X}f(s)\omega^s\Bigr)}
+\end{equation}
+commutes with every point-finite family of vectors indexed by a set of size
+less than $\nu$; its nonzero scalar values on that family are finite in
+number.
+\end{lemma}
+\begin{proof}
+A point-finite family in $k^X$ corresponds to a Hahn-summable family in
+$K[X]$: the total support is contained in the reverse well-ordered set $X$.
+Apply $\Psi$ and then coefficient extraction. At one output exponent only
+finitely many image members contribute.
+\end{proof}
+
+The adjective point-finite means that each coordinate belongs to the
+nonzero support of only finitely many vectors. It places no uniform bound on
+that finite number.
+
+\subsection{The product-functional theorem}
+This subsection is the classical engine, stated in the exact form needed for
+Hahn localization. The finite-ultrafilter factorization of the support
+filter is the mechanism of Bergman's Lemmas 3--4 \cite{BergmanFamilies}. 10
+gives a null-ideal proof and then uses the special nature of real and
+complex coefficients to turn ultrapower factors into ordinary scalar
+evaluations. No novelty is claimed for this mechanism. \mergetag{} The
+paper \cite{Bergman} cited in Section~\ref{lce:sec:measure} is a different
+paper by the same author.
+
+An ultrafilter $\mathcal U$ on a set $I$ is \emph{$\nu$-complete} if it is
+closed under intersections of fewer than $\nu$ members. Countable
+completeness means $\aleph_1$-completeness. A \emph{measurable cardinal} is
+an \emph{uncountable} cardinal $\kappa$ carrying a nonprincipal
+$\kappa$-complete ultrafilter. \mergetag{} This is the meaning used
+throughout this report; for the critical point it is
+\leref{lce:cs:lem:critical}.
+
+\begin{lemma}[Real and complex functions are almost constant \src{10}]\label{lce:mf:lem:eval}
+If $\mathcal U$ is a countably complete ultrafilter on $I$ and $f:I\to k$,
+where $k=\R$ or $\C$, there is a unique $r\in k$ such that
+$\{i:f(i)=r\}\in\mathcal U$. Write $\ev_{\mathcal U}(f)=r$. This is a unital
+$k$-algebra homomorphism for pointwise operations.
+\end{lemma}
+\begin{proof}
+First take real values. The sets $\{\abs f\le n\}$, $n\ge1$, cover $I$. One
+belongs to $\mathcal U$, since otherwise the countable intersection of their
+complements would belong to $\mathcal U$ and be empty. On that set,
+repeatedly bisect a closed bounded interval containing the values. At each
+step at least one half has a preimage in $\mathcal U$. The resulting nested
+intervals have lengths tending to zero and a single common point $r$.
+Countable completeness puts the intersection of their preimages in
+$\mathcal U$, and on this intersection $f=r$. Uniqueness follows because
+disjoint sets cannot both belong to an ultrafilter. For complex values apply
+this to real and imaginary parts. Intersecting the finitely many relevant
+full-measure fibers proves the addition, multiplication, and scalar
+identities.
+\end{proof}
+\mergetag{} For the $\kappa$-complete derived measure $U_j$ the same value
+is $j(f)(\kappa)$ (\thref{lce:thm:character}); 09's fiber argument in
+\prref{lce:sg:prop:weighted} finds the large fiber using $\abs\R<\kappa$ and
+$\kappa$-completeness, whereas the bisection above needs only countable
+completeness. This is a genuinely different route to the same fiber.
+
+\begin{theorem}[Complete-ultrafilter representation \src{10}]\label{lce:mf:thm:product}
+Let $\nu$ be an uncountable cardinal, $I$ a set, and $k=\R$ or $\C$. A
+$k$-linear functional $\psi:k^I\to k$ preserves all point-finite sums
+indexed by sets of size less than $\nu$, with only finitely many nonzero
+scalar images, if and only if
+\begin{equation}\label{lce:mf:eq:ultrarep}
+ \psi(f)=\sum_{p=1}^mc_p\ev_{\mathcal U_p}(f),
+\end{equation}
+where $m<\omega$, the $\mathcal U_p$ are distinct $\nu$-complete ultrafilters
+on $I$, and $c_p\in k\setminus\{0\}$. For the zero functional take $m=0$. The
+unordered list of pairs $(\mathcal U_p,c_p)$ is unique.
+\end{theorem}
+\begin{proof}
+Define the support-null ideal
+\[
+ \mathcal N_\psi=\{B\subseteq I:\psi(f)=0
+          \text{ whenever }\supp(f)\subseteq B\}.
+\]
+It is an ideal of subsets. It is closed under unions of fewer than $\nu$
+sets: disjointify such a family $(B_\xi)$ and decompose an arbitrary vector
+supported on its union into the corresponding disjoint pieces. These pieces
+are point-finite, and each has zero image.
+
+There cannot be countably infinitely many pairwise disjoint sets outside
+$\mathcal N_\psi$. Otherwise choose on each such set a vector with nonzero
+image. Their family is point-finite but has infinitely many nonzero scalar
+images. It follows that the Boolean algebra $\Pow(I)/\mathcal N_\psi$ is
+finite. For completeness, every infinite Boolean algebra has a countably
+infinite disjoint nonzero family: either it has infinitely many atoms, or
+after removing finitely many atoms a nonzero atomless element can be
+repeatedly split. Representatives of a countable disjoint family modulo the
+ideal can be made actually disjoint by removing the finitely many earlier
+representatives.
+
+If the quotient is zero, then $\psi=0$. Otherwise represent its finitely
+many atoms by a partition $I=I_1\sqcup\cdots\sqcup I_m$. For each atom put
+\[
+ \mathcal U_p=\{B\subseteq I:I_p\setminus B\in\mathcal N_\psi\}.
+\]
+The atom property makes $\mathcal U_p$ an ultrafilter; closure of the ideal
+under ${<}\nu$ unions makes it $\nu$-complete. The ultrafilters are
+distinct because $I_p\in\mathcal U_p$ and $I_p\notin\mathcal U_{p'}$ for
+$p'\ne p$.
+
+Given $f\in k^I$, use \leref{lce:mf:lem:eval} to set
+$r_p=\ev_{\mathcal U_p}(f)$. The subset of $I_p$ where $f\ne r_p$ belongs to
+$\mathcal N_\psi$. Hence $f-\sum_pr_p\mathbf 1_{I_p}$ is supported on an
+ideal member, and
+\[
+ \psi(f)=\sum_p\psi(\mathbf 1_{I_p})r_p.
+\]
+Each coefficient $c_p=\psi(\mathbf 1_{I_p})$ is nonzero: if it were zero,
+the same argument for all vectors supported on $I_p$ would put $I_p$ in the
+null ideal, contradicting the choice of an atom.
+
+Conversely, suppose \eqref{lce:mf:eq:ultrarep} holds. For a point-finite
+family $(f_\xi)_{\xi<\mu}$ with $\mu<\nu$, intersect the $\mathcal
+U_p$-large fibers $f_\xi=\ev_{\mathcal U_p}(f_\xi)$ over all $\xi$,
+separately for each $p$. On the nonempty intersection, point-finiteness
+says that only finitely many of these scalar values are nonzero. There the
+pointwise sum equals their finite sum. Its evaluation therefore has the
+required value. A finite sum over $p$ proves the assertion for $\psi$.
+
+Finally the null ideal determines its finite Boolean quotient and hence the
+ultrafilters. Equivalently, finitely many distinct ultrafilters can be
+separated by a finite partition, one cell in each ultrafilter. Applying
+$\psi$ to the cell indicators determines the coefficients. This proves
+uniqueness.
+\end{proof}
+
+\begin{remark}[No regularity is used \src{10}]\label{lce:mf:rem:nu}
+No regularity of $\nu$ is used in \thref{lce:mf:thm:product}.
+Disjointifying a family of length $\mu<\nu$ still gives a point-finite
+family of that length. This is a statement about linear sums, not a claim
+that every support-restricted Hahn subspace is a field at singular
+cardinals.
+\end{remark}
+
+\begin{lemma}[The first incomplete partition \src{10}]\label{lce:mf:lem:partition}
+Let $\mathcal U$ be a nonprincipal countably complete ultrafilter on a set
+$I$. There is a least cardinal $\mu_{\mathcal U}$ for which $I$ has a
+partition into $\mu_{\mathcal U}$ sets none belonging to $\mathcal U$. This
+$\mu_{\mathcal U}$ is measurable, and $\mathcal U$ is
+$\mu_{\mathcal U}$-complete. If $\mathcal U$ is $\nu$-complete, then
+$\mu_{\mathcal U}\ge\nu$. If $\mathcal U$ is $\kappa$-complete but not
+$\kappa^+$-complete, then $\mu_{\mathcal U}=\kappa$.
+\end{lemma}
+\begin{proof}
+Singletons give some such partition, while countable completeness excludes
+countable partitions. For a family of $\mu<\mu_{\mathcal U}$ members of
+$\mathcal U$, suppose its intersection were not in $\mathcal U$.
+Disjointifying their complements and adding the remaining intersection
+would partition $I$ into at most $\mu+1<\mu_{\mathcal U}$ small sets, a
+contradiction. Thus $\mathcal U$ is $\mu_{\mathcal U}$-complete. Push
+$\mathcal U$ forward along a least partition $I\to\mu_{\mathcal U}$. The
+resulting ultrafilter on $\mu_{\mathcal U}$ is $\mu_{\mathcal U}$-complete
+and contains no singleton, so $\mu_{\mathcal U}$ is measurable. The other
+statements follow from the same partition criterion for completeness. In
+the last statement, failure of $\kappa^+$-completeness yields a small-set
+partition of size at most $\kappa$, whereas $\kappa$-completeness excludes
+a smaller one.
+\end{proof}
+
+This elementary argument is the familiar complete-ultrafilter route to
+measurable cardinals; compare \cite{BergmanFamilies,Jech}. It does not assume
+that every complete filter extends to a complete ultrafilter. Such an
+extension principle would be much stronger and is unnecessary here.
+
+\begin{remark}[The character theorem as an instance \mergetag]
+\label{lce:mf:rem:character}
+Take $j$ as in \eqref{lce:eq:setting}, $\Psi=J$, the support
+$X=\{-\alpha:\alpha<\kappa\}$ and the output exponent $b=-\kappa$. Then
+$\psi_{X,b}(f)=\coef{-\kappa}{J(h_f)}=\chi_j(h_f)$ by \eqref{lce:eq:hf} and
+\eqref{lce:eq:chi}, since $H_j(h_f)=h_f$ has no term at $\omega^{-\kappa}$.
+By \thref{lce:thm:character} this is $\ev_{U_j}(f)$: in
+\eqref{lce:mf:eq:ultrarep}, $m=1$, $c_1=1$ and $\mathcal U_1=U_j$, with no
+principal term because $J(\omega^{-\alpha})=\omega^{-\alpha}$ has no
+coefficient at $\omega^{-\kappa}$. Thus 07's and 09's character theorem is
+the case of \thref{lce:mf:thm:product} in which the functional is also a
+Hadamard character. The converse half of
+\thref{lce:thm:measurablecriterion} reads the ultrafilter off the values on
+idempotent masks; \thref{lce:mf:thm:product} reads it off the null ideal of
+an arbitrary linear functional, with no product at all
+(Corollary~\ref{lce:mf:cor:maskcriterion}).
+\end{remark}
+
+\section{The least failure is measurable, and the canonical strong part \src{10}}
+\label{lce:mf:sec:spectrum}
+
+\begin{theorem}[Least failure is measurable \src{10}]\label{lce:mf:thm:spectrum}
+Let $K=\HF k\Gamma$ and $K'=\HF k{\Gamma'}$ be full Hahn fields over $k=\R$
+or $\C$, with set-sized exponent groups or the class-sized interpretation of
+Section~\ref{lce:mf:sub:foundations}. Let $\Psi:K\to K'$ be countably strong
+and $k$-linear. If $\Psi$ is not strong, the least cardinality $\kappa$ of a
+family on which it fails to commute with the sum is a measurable cardinal.
+\end{theorem}
+\begin{proof}
+By Corollary~\ref{lce:mf:cor:admissibility}, all the image families under
+consideration are summable. Choose a least failing cardinal $\kappa$ and a
+witness $(x_i)_{i\in I}$ with $\abs I=\kappa$. This least cardinal exists:
+one witness bounds a nonempty set of candidate cardinals, even when $\Psi$
+is a class map. It is uncountable, and $\Psi$ is ${<}\kappa$-strong.
+
+Put $X=\bigcup_i\supp(x_i)$, a reverse well-ordered set. Choose an exponent
+$b\in\Gamma'$ at which the nonzero defect has a nonzero coefficient. Under
+$K[X]\cong k^X$, let $f_i$ be the coefficient vector of $x_i$. The
+functional $\psi=\psi_{X,b}$ of \eqref{lce:mf:eq:localfunctional}
+satisfies
+\begin{equation}\label{lce:mf:eq:scalarbad}
+ \psi\Bigl(\sum_{i\in I}f_i\Bigr)\ne\sum_{i\in I}\psi(f_i).
+\end{equation}
+It is ${<}\kappa$-strong for point-finite sums by \leref{lce:mf:lem:local}.
+Apply \thref{lce:mf:thm:product} with $\nu=\kappa$:
+\[
+ \psi=\sum_{p=1}^mc_p\ev_{\mathcal U_p},
+\]
+where all $\mathcal U_p$ are $\kappa$-complete. If every $\mathcal U_p$ were
+$\kappa^+$-complete, the converse direction of \thref{lce:mf:thm:product}
+would make $\psi$ preserve the $\kappa$-indexed sum in
+\eqref{lce:mf:eq:scalarbad}. Therefore one $\mathcal U_p$ is
+$\kappa$-complete but not $\kappa^+$-complete. It is nonprincipal. By
+\leref{lce:mf:lem:partition}, its least incomplete partition has size
+$\kappa$ and yields a nonprincipal $\kappa$-complete ultrafilter on
+$\kappa$. Thus $\kappa$ is measurable.
+\end{proof}
+
+The theorem is a converse to a kind of behavior exhibited by large-cardinal
+embeddings, but it does not presuppose such an embedding. Its hypotheses
+concern one linear map and summation only. In particular, it does not
+merely show that some measurable cardinal is at most the support size of a
+witness: it identifies the first failing size itself.
+\mergetag{} For $\Psi=J$ the first failure is $\kappa=\crit(j)$
+(\thref{lce:thm:positive} and Corollary~\ref{lce:cor:firstfailure}), and
+the theorem re-derives that $\kappa$ is measurable, which
+\leref{lce:cs:lem:critical} obtains directly from $U_j$.
+
+\begin{corollary}[No-measurable-cardinal principle \src{10}]\label{lce:mf:cor:nomeas}
+If there are no measurable cardinals, every countably strong
+coefficient-linear map between full real or complex Hahn fields is strong.
+More generally, if there is no measurable cardinal at least $\nu$, then
+every ${<}\nu$-strong such map is strong.
+\end{corollary}
+\begin{proof}
+A first failure would be a measurable cardinal; in the second assertion it
+would also be at least $\nu$.
+\end{proof}
+
+\begin{corollary}[Individual failure spectrum \src{10}]\label{lce:mf:cor:individual}
+For a countably strong coefficient-linear map, failure at a successor
+cardinal or at a singular cardinal cannot be the first failure. In
+particular, failure on some large family does not license a claim of a new
+obstruction at that family's cardinality without checking smaller families.
+\end{corollary}
+\begin{proof}
+Measurable cardinals are regular limit cardinals, a standard consequence of
+the completeness of their measures \cite{Jech}. Apply
+\thref{lce:mf:thm:spectrum}.
+\end{proof}
+
+\subsection{A coefficient-by-coefficient description}
+The proof gives more than a cardinal bound. On every fixed reverse
+well-ordered support $X$ and at every output exponent $b$, a countably
+strong map has a uniquely determined finite representation
+\begin{equation}\label{lce:mf:eq:matrixultra}
+ \coef b{\Psi\Bigl(\sum_{s\in X}f(s)\omega^s\Bigr)}
+   =\sum_{p=1}^{m(X,b)}c_{X,b,p}\ev_{\mathcal U_{X,b,p}}(f).
+\end{equation}
+The ultrafilters are countably complete, and they are $\nu$-complete when
+$\Psi$ is ${<}\nu$-strong. Principal ultrafilters give ordinary matrix
+coefficients. Nonprincipal ones are exactly the additional local terms
+invisible to individual coordinates.
+
+This is a local representation, not a prescription for assembling an
+arbitrary family of ultrafilters into a global Hahn map. Compatibility when
+supports enlarge, reverse well-ordering of output supports, and
+coefficientwise finiteness across output rows still have to be checked. No
+converse global assembly theorem is asserted.
+
+\subsection{A canonical strong part and a monomial-invisible remainder}
+The preceding localization suggests separating the part determined by
+individual monomials from everything else. This can be done without assuming
+the absence of measurable cardinals.
+
+\begin{theorem}[Canonical strong part \src{10}]\label{lce:mf:thm:atomic}
+Let $\Psi:K\to K'$ be countably strong and $k$-linear. The formula
+\begin{equation}\label{lce:mf:eq:atomic}
+ \Psi_{\at}\Bigl(\sum_{a\in X}c_a\omega^a\Bigr)
+    =\sum_{a\in X}c_a\Psi(\omega^a)
+\end{equation}
+defines a strong $k$-linear map. It is the unique strong map agreeing with
+$\Psi$ on all monomials. The remainder
+\[
+ \Psi_{\gh}=\Psi-\Psi_{\at}
+\]
+is countably strong and vanishes on every monomial. If $\Psi$ is
+${<}\nu$-strong, then so is $\Psi_{\gh}$, and it vanishes on every series
+whose support has cardinality less than $\nu$.
+\end{theorem}
+\begin{proof}
+The family $(\omega^a)_{a\in X}$ is summable. By
+Corollary~\ref{lce:mf:cor:admissibility}, its image family is summable.
+Multiplying its members by coefficient scalars preserves summability, so
+the right side of \eqref{lce:mf:eq:atomic} exists. Uniqueness of normal
+forms makes the prescription unambiguous; finite linearity follows
+coefficientwise.
+
+Let $(x_i)_{i\in I}$ be any summable family, with common reverse
+well-ordered support $X$ and coefficients $c_{i,a}$. The doubly indexed
+family
+\[
+ \bigl(c_{i,a}\Psi(\omega^a)\bigr)_{(i,a)}
+\]
+is summable. Indeed, its total support is contained in the reverse
+well-ordered union of the supports of $(\Psi(\omega^a))_{a\in X}$. At a
+fixed output exponent only finitely many $a$ contribute, and for each such
+$a$ only finitely many $i$ have $c_{i,a}\ne0$. Finite coefficient sums can
+therefore be regrouped in either order. This gives
+\[
+ \Psi_{\at}\Bigl(\sum_ix_i\Bigr)
+ =\sum_{a\in X}\Bigl(\sum_ic_{i,a}\Bigr)\Psi(\omega^a)
+ =\sum_i\Psi_{\at}(x_i).
+\]
+The same argument proves summability of the final family. Thus
+$\Psi_{\at}$ is strong. Any strong map with the prescribed monomial values
+must satisfy \eqref{lce:mf:eq:atomic}, proving uniqueness.
+
+Differences of two ${<}\nu$-strong linear maps are ${<}\nu$-strong: the
+union of two summable output supports is reverse well ordered, and local
+finiteness and the sum identity survive subtraction. Finally, for a series
+with support of size less than $\nu$, the defining normal-form sum itself
+is covered by the hypothesis on $\Psi$, so $\Psi=\Psi_{\at}$ there.
+\end{proof}
+
+We call $\Psi_{\gh}$ a \emph{monomial-invisible remainder}, or briefly a
+ghost map. This is just terminology for a linear map that vanishes on all
+monomials; it asserts no extra geometric object. In the local formula
+\eqref{lce:mf:eq:matrixultra}, $\Psi_{\at}$ is exactly the sum of the
+principal ultrafilter terms, and $\Psi_{\gh}$ is the sum of the
+nonprincipal terms.
+
+\mergetag{} For $\Psi=J$: the uniqueness clause is that of
+\thref{lce:thm:companion}, so $J_{\at}=H_j$ and $J_{\gh}=D_j$
+(Definition~\ref{lce:def:companion}); and the last clause, with $\nu=\kappa$,
+is the inclusion $\Sk\subseteq\Eq(J,H_j)$ of \thref{lce:thm:defect}. The
+reverse inclusion, and the exact missing-index formula, are special to $J$
+and are not consequences of \thref{lce:mf:thm:atomic}. The theorem also
+extends \leref{lce:lem:reindex} in the direction of uniqueness: a reindexing
+map is the canonical strong part of every countably strong map with its
+monomial values.
+
+\begin{proposition}[Algebra of the decomposition \src{10}]\label{lce:mf:prop:algebra}
+The assignment $\Psi\mapsto\Psi_{\at}$ is a linear idempotent projection from
+countably strong linear maps onto strong linear maps. Ghost maps form a left
+ideal under composition with countably strong endomorphisms. If a nonzero
+ghost map exists, this projection is not, in general, a ring homomorphism
+for composition.
+\end{proposition}
+\begin{proof}
+Linearity and idempotence follow from uniqueness in
+\thref{lce:mf:thm:atomic}. If $\Upsilon$ vanishes on monomials, then
+$\Psi\circ\Upsilon$ does as well, and composition preserves countable
+strongness. For the last assertion choose $y$ with $\Upsilon(y)\ne0$ and let
+$\operatorname{mul}_y$ be multiplication by $y$, a strong map. Then
+\[
+ (\Upsilon\circ\operatorname{mul}_y)_{\at}(1)=\Upsilon(y)\ne0,
+ \qquad \Upsilon_{\at}\circ(\operatorname{mul}_y)_{\at}=0.
+\]
+Thus the projection cannot preserve this product.
+\end{proof}
+
+\subsection{Multiplicative maps and derivations}
+\begin{theorem}[The canonical strong part respects finite algebra \src{10}]\label{lce:mf:thm:fieldpart}
+If $E:K\to K'$ is a countably strong coefficient-fixing field embedding, then
+$E_{\at}$ is a strong coefficient-fixing field embedding. If
+$\partial:K\to K$ is a countably strong $k$-linear derivation, then
+$\partial_{\at}$ is a strong derivation, and $\partial-\partial_{\at}$ is a
+derivation vanishing on all monomials.
+\end{theorem}
+\begin{proof}
+For monomials, multiplicativity gives
+$E(\omega^{a+b})=E(\omega^a)E(\omega^b)$. For arbitrary $x,y$, expand both
+normal forms. The family of pairwise products of their image monomials is
+summable by Hahn multiplication and the summability already proved in
+\thref{lce:mf:thm:atomic}. Regrouping finite contributions at each exponent
+therefore yields $E_{\at}(xy)=E_{\at}(x)E_{\at}(y)$. Also $E_{\at}(1)=1$ and
+coefficients are fixed. A unital homomorphism out of a field is injective.
+
+For a derivation, use on monomials the identity
+\[
+ \partial(\omega^{a+b})=\omega^a\partial(\omega^b)+\partial(\omega^a)\omega^b.
+\]
+The same summable double expansion extends this to arbitrary $x,y$ for
+$\partial_{\at}$. Subtracting two derivations gives the last assertion.
+\end{proof}
+
+For a field embedding put $\Upsilon=E-E_{\at}$. Its failure to be a
+derivation has the exact, finite identity
+\begin{equation}\label{lce:mf:eq:ghostproduct}
+ \Upsilon(xy)=E_{\at}(x)\Upsilon(y)+\Upsilon(x)E_{\at}(y)+\Upsilon(x)\Upsilon(y).
+\end{equation}
+The quadratic final term must not be dropped. In particular, the additive
+examples below do not automatically integrate into field automorphisms.
+\mergetag{} For $E=J$ one has $E_{\at}=H_j$ and $\Upsilon=D_j$, and
+\eqref{lce:mf:eq:ghostproduct} is 06's and 09's symmetric product law
+\eqref{lce:cs:eq:product-defect}, equivalent to 07's twisted law
+\eqref{lce:eq:twisted}; manuscript 10 proves it for every countably strong
+coefficient-fixing field embedding.
+
+\begin{proposition}[Omnific preservation passes to the strong part \src{10}]\label{lce:mf:prop:omnificpart}
+Suppose $E:\No\to\No$ is a countably strong $\R$-linear field embedding and
+$E(\Oz)\subseteq\Oz$. Then $E_{\at}$ preserves and reflects $\Oz$. Both $E$
+and $E_{\at}$ preserve constant terms.
+\end{proposition}
+\begin{proof}
+Inside $\Oz$ one has
+\[
+ \mathfrak P_{\No}=\bigcap_{n\ge1}n\Oz.
+\]
+Indeed, a purely infinite series is divisible by every positive integer,
+whereas its ordinary integer constant term can be divisible by all such
+integers only if it is zero. Hence $E(\mathfrak P_{\No})\subseteq\mathfrak
+P_{\No}$. Termwise summation shows the same for $E_{\at}$.
+
+Both embeddings fix $\R$ and preserve order, since the positive elements of
+a real-closed field are its nonzero squares. Thus they send ordinary
+infinitesimals to ordinary infinitesimals, which here means $\infideal$ to
+itself. Applying either embedding to $x=x_{\mathfrak P}+r+x_{\infideal}$
+respects these three additive summands, so its constant term remains $r$.
+For $E_{\at}(x)$ to be omnific requires $r\in\Z$ and
+$E_{\at}(x_{\infideal})=0$. Injectivity makes the latter equivalent to
+$x_{\infideal}=0$. This proves reflection as well as preservation.
+\end{proof}
+\mergetag{} The divisibility description of the purely infinite part is
+also the omnific-preserving report's \lbl{opa:lem:divisible}. The last
+paragraph of the proof applies verbatim to $E$, so $E$ reflects $\Oz$ as
+well; 10 states reflection only for $E_{\at}$. For $E=J$ both statements
+are \thref{lce:thm:Oz}.
+
+\section{Measurable transvections, set-sized workspaces and the surcomplex transfer \src{10}}
+\label{lce:mf:sec:shears}
+
+We now realize every allowable first-failure cardinal explicitly. Unlike a
+universe ultrapower, the construction needs only a measure as a set
+parameter and coefficient extraction from ordinary set-supported normal
+forms.
+
+\subsection{A bounded support interval}
+Fix a measurable cardinal $\kappa$ and a nonprincipal $\kappa$-complete
+ultrafilter $\mathcal U$ on $\kappa$. Choose $\delta\in\No$ with
+$\delta\ge1$, and put, with $q_\alpha=\omega^{-\alpha}$ as in
+\eqref{lce:sg:eq:scales},
+\begin{equation}\label{lce:mf:eq:detectorsupport}
+ X_\delta=\{\delta+q_\alpha:\alpha<\kappa\},\qquad
+ \delta<\delta+q_\alpha\le\delta+1 .
+\end{equation}
+The expressions $\omega^{-\alpha}$ inside the \emph{exponents} use the
+Conway omega-map. The exponents $\delta+q_\alpha$ strictly decrease in
+$\alpha$. Thus $X_\delta$ is a reverse well-ordered set of cardinality
+$\kappa$, contained in the bounded positive interval $(\delta,\delta+1]$.
+There is no improper increasing-support Conway sum here: the Conway
+exponents $\delta+q_\alpha$ decrease along the index. (In 10's convention
+the $t$-exponents $d-\omega^{-\alpha}$, $d=-\delta$, increase; see
+Section~\ref{lce:mf:sub:conventions}.)
+
+Define the scalar functional
+\begin{equation}\label{lce:mf:eq:detector}
+ \vartheta_{\mathcal U}(x)=\ev_{\mathcal U}\bigl((\coef{\delta+q_\alpha}x)_{\alpha<\kappa}\bigr).
+\end{equation}
+Existence and uniqueness of this real scalar follow from
+\leref{lce:mf:lem:eval}. No analytic limit is being taken.
+
+\begin{lemma}[The detector functional \src{10}]\label{lce:mf:lem:detector}
+The map $\vartheta_{\mathcal U}:\No\to\R$ is $\R$-linear and
+${<}\kappa$-strong. It vanishes on every series having fewer than $\kappa$
+terms, and in particular on every monomial. For $A\subseteq\kappa$ the
+shifted omnific mask
+\begin{equation}\label{lce:mf:eq:mask}
+ \omega^\delta Y_A=\sum_{\alpha\in A}\omega^{\delta+q_\alpha}
+\end{equation}
+(09's mask $Y_A$ of \eqref{lce:sg:eq:mask}, multiplied by $\omega^\delta$)
+lies in $\mathfrak P_{\No}\subseteq\Oz$, and
+\[
+ \vartheta_{\mathcal U}(\omega^\delta Y_A)=\begin{cases}1,&A\in\mathcal U,\\
+ 0,&A\notin\mathcal U.\end{cases}
+\]
+Its first strong-sum failure has cardinality $\kappa$.
+\end{lemma}
+\begin{proof}
+Coefficient restriction to $X_\delta$ carries every summable family to a
+point-finite family in $\R^\kappa$. The converse direction of
+\thref{lce:mf:thm:product}, applied to the single $\kappa$-complete
+ultrafilter $\mathcal U$, proves ${<}\kappa$-strongness. A nonprincipal
+$\kappa$-complete ultrafilter contains no set of cardinality less than
+$\kappa$; intersect the complements of its singletons to see this. Hence a
+coefficient vector supported on fewer than $\kappa$ indices has evaluation
+zero. The mask formula is evaluation of its indicator function. Each
+individual $\omega^{\delta+q_\alpha}$ has image zero, but their
+$\kappa$-term sum has image one, which proves the exact failure cardinal.
+\end{proof}
+
+\subsection{The symmetry and all its preservation properties}
+Set $N_{\mathcal U}(x)=\vartheta_{\mathcal U}(x)\,\omega^\delta$. Since
+$\delta\notin X_\delta$, one has $\vartheta_{\mathcal U}(\omega^\delta)=0$ and
+therefore $N_{\mathcal U}^2=0$. For $c\in\R$ define
+\begin{equation}\label{lce:mf:eq:AU}
+ \Theta_{c,\mathcal U}(x)=x+cN_{\mathcal U}(x)
+   =x+c\,\vartheta_{\mathcal U}(x)\,\omega^\delta.
+\end{equation}
+
+\begin{theorem}[Ordered omnific-preserving transvections \src{10}]\label{lce:mf:thm:shear}
+For every $c\in\R$, the map $\Theta_{c,\mathcal U}$ is an $\R$-linear
+additive automorphism of $\No$, and
+\[
+ \Theta_{c,\mathcal U}\Theta_{c',\mathcal U}=\Theta_{c+c',\mathcal U},\qquad
+ \Theta_{c,\mathcal U}^{-1}=\Theta_{-c,\mathcal U}.
+\]
+It preserves leading exponents, leading coefficients, order, constant terms,
+and each of $\mathfrak P_{\No}$, $\R$, $\infideal$ and $\Oz$ setwise. It
+fixes every monomial and every series with fewer than $\kappa$ terms. For
+$c\ne0$ it has first strong-sum failure exactly $\kappa$ and is not
+multiplicative. Its canonical strong part is the identity.
+\end{theorem}
+\begin{proof}
+Nilpotence gives the group and inverse formulas by finite algebra. All these
+maps are ${<}\kappa$-strong by \leref{lce:mf:lem:detector}. Suppose
+$\vartheta_{\mathcal U}(x)\ne0$. Then $x$ has a nonzero coefficient at some
+exponent $\delta+q_\alpha>\delta$, so its leading exponent exceeds $\delta$.
+The correction in \eqref{lce:mf:eq:AU} has exponent $\delta$ when nonzero.
+It cannot change the leading term. If $\vartheta_{\mathcal U}(x)=0$, the
+map does not change $x$ at all. Thus all leading terms are preserved.
+Additivity then gives order preservation by applying the leading-sign
+assertion to differences.
+
+The correction has positive exponent $\delta\ge1$, so it sends $\mathfrak
+P_{\No}$ into itself and does not change the constant term. The functional
+is zero on real constants and on infinitesimals, so both of those summands
+are fixed pointwise. The same facts hold for the inverse. They prove setwise
+preservation of the three summands and of $\Oz=\Z\oplus\mathfrak P_{\No}$.
+Fixing of short-support series and monomials follows from
+\leref{lce:mf:lem:detector}.
+
+Put $y=\omega^\delta Y_\kappa$. Then
+\[
+ \Theta_{c,\mathcal U}(y)=y+c\,\omega^\delta,\qquad
+ \sum_{\alpha<\kappa}\Theta_{c,\mathcal U}(\omega^{\delta+q_\alpha})=y.
+\]
+For $c\ne0$ this is a failure of size $\kappa$, while smaller families are
+preserved. Fixing every monomial implies $(\Theta_{c,\mathcal
+U})_{\at}=\id$ by \thref{lce:mf:thm:atomic}.
+
+Finally $\omega^\delta y=\omega^{2\delta}Y_\kappa$ has support
+$\{2\delta+q_\alpha:\alpha<\kappa\}\subseteq(2\delta,2\delta+1]$, disjoint
+from $X_\delta\subseteq(\delta,\delta+1]$ because $\delta\ge1$ gives
+$2\delta\ge\delta+1$. Thus $\vartheta_{\mathcal U}(\omega^\delta y)=0$, and
+$\Theta_{c,\mathcal U}(\omega^\delta y)=\omega^\delta y$. On the other hand,
+\[
+ \Theta_{c,\mathcal U}(\omega^\delta)\,\Theta_{c,\mathcal U}(y)
+ =\omega^\delta(y+c\,\omega^\delta)=\omega^\delta y+c\,\omega^{2\delta}
+ \ne\omega^\delta y.
+\]
+This proves nonmultiplicativity, rather than merely leaving it
+unspecified.
+\end{proof}
+
+The image of every set-indexed summable family under $\Theta_{c,\mathcal U}$
+is still summable. Its exact discrepancy is
+\begin{equation}\label{lce:mf:eq:Adefect}
+ \Theta_{c,\mathcal U}\Bigl(\sum_ix_i\Bigr)-\sum_i\Theta_{c,\mathcal U}(x_i)
+ =c\,\omega^\delta\Bigl(\vartheta_{\mathcal U}\Bigl(\sum_ix_i\Bigr)
+   -\sum_i\vartheta_{\mathcal U}(x_i)\Bigr).
+\end{equation}
+The scalar sum on the right is finite. Indeed, if infinitely many
+$\vartheta_{\mathcal U}(x_i)$ were nonzero, a countably infinite subfamily
+would contradict countable strongness of $\vartheta_{\mathcal U}$.
+
+\begin{corollary}[Recovering the measure from the symmetry \src{10}]\label{lce:mf:cor:recover}
+For $c\ne0$, the action of $\Theta_{c,\mathcal U}$ on the masks
+$\omega^\delta Y_A$ determines $\mathcal U$:
+\[
+ A\in\mathcal U\quad\Longleftrightarrow\quad
+ \Theta_{c,\mathcal U}(\omega^\delta Y_A)-\omega^\delta Y_A=c\,\omega^\delta.
+\]
+For fixed $\delta$ and nonzero $c$, different measures give different
+additive automorphisms.
+\end{corollary}
+\begin{proof}
+Apply the mask formula of \leref{lce:mf:lem:detector}.
+\end{proof}
+
+This report already recovers derived measures from normal-form defects of
+an elementary embedding (\thref{lce:thm:measure}, with 06's and 09's codes
+in \thref{lce:cs:thm:recover} and \thref{lce:sg:thm:measure}). Here the
+same coefficient philosophy is realized by a rank-one \emph{additive
+automorphism} with fixed monomials and preserved order; it is not presented
+as a new construction of the measure itself. \mergetag{} The detector reads
+09's omnific masks shifted by $\omega^\delta$; no embedding is involved, and
+the measure is a set parameter rather than a derived one.
+
+\subsection{Arbitrary set parameters can be fixed}
+\begin{theorem}[Parameter avoidance \src{10}]\label{lce:mf:thm:parameters}
+For any set $Z\subseteq\No$, the choice of $\delta$ in
+\eqref{lce:mf:eq:detectorsupport} can be made so that every
+$\Theta_{c,\mathcal U}$ fixes $Z$ pointwise. All conclusions of
+\thref{lce:mf:thm:shear} remain valid.
+\end{theorem}
+\begin{proof}
+The union $E_Z$ of the supports of the elements of $Z$ is a set of surreals.
+Every set of surreals has a strict upper bound; for example, an ordinal
+larger than the birthdays of its members, increased by one. Choose
+$\delta\ge1$ strictly above every member of $E_Z$. Then
+$E_Z<\delta<X_\delta$, so the coefficient restriction of every $z\in Z$ to
+$X_\delta$ is zero. Consequently $\vartheta_{\mathcal U}(z)=0$.
+\end{proof}
+
+\begin{corollary}[An additive definability obstruction \src{10}]\label{lce:mf:cor:definability}
+Assume a measurable cardinal. In the additive ordered structure
+$(\No,+,<,\Oz)$, multiplication and the coefficient relation are not
+definable from any prescribed set of surreal parameters, even after naming
+all real scalars and all Conway monomials individually. The same is true
+after adding the real scalar-action operations.
+\end{corollary}
+\begin{proof}
+Choose a nontrivial parameter-fixing $\Theta_{c,\mathcal U}$ as in
+\thref{lce:mf:thm:parameters}. It is an automorphism of all the indicated
+additive structure and fixes each named monomial and scalar. It is not
+multiplicative, so a definable multiplication would not be invariant under
+this automorphism. For the coefficient relation, $y=\omega^\delta Y_\kappa$
+has coefficient zero at $\omega^\delta$, whereas
+$\Theta_{c,\mathcal U}(y)=y+c\,\omega^\delta$ has coefficient $c$ there; the
+monomial $\omega^\delta$ and both scalars are fixed. Thus that relation is
+not invariant either. Naming a proper class of constants is understood
+schematically: every individual formula still uses only finitely many
+constant symbols.
+\end{proof}
+
+This is a result about the \emph{additive} reduct. The omnific-preserving
+report reconstructs much more from the full ring or field pair
+\cite{RepoOpa}; no contradiction is involved. \mergetag{} Without a
+measurable cardinal a witness of the same kind would have to fail a
+countable sum: an $\R$-linear countably strong map fixing every monomial has
+canonical strong part the identity (\thref{lce:mf:thm:atomic}), so by
+Corollary~\ref{lce:mf:cor:nomeas} it \emph{is} the identity. This bears on
+Question~\ref{lce:mf:q:definability} without answering it.
+
+\subsection{Set-sized workspaces and a sharp cardinal bound}
+The measurable obstruction is not an artifact of proper classes. It is
+already visible in ordinary Hahn fields, provided their allowed supports are
+sufficiently long.
+
+\begin{theorem}[Exact full-Hahn workspace criterion \src{10}]\label{lce:mf:thm:workspace}
+Let $\Gamma$ be a set-sized ordered abelian group and $K=\HF k\Gamma$, where
+$k=\R$ or $\C$. The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every countably strong $k$-linear functional $K\to k$ is strong;
+\item every countably strong $k$-linear map from $K$ into any full Hahn
+field over $k$ is strong;
+\item no reverse well-ordered subset $X\subseteq\Gamma$ has cardinality at
+least an uncountable measurable cardinal.
+\end{enumerate}
+More precisely, a measurable cardinal $\kappa$ occurs as the first failure
+of a countably strong $k$-linear map on $K$ if and only if $\Gamma$ contains
+a reverse well-ordered subset of cardinality $\kappa$.
+\end{theorem}
+\begin{proof}
+Assume (iii). For any fixed support $X$, a nonprincipal countably complete
+ultrafilter on $X$ would, by \leref{lce:mf:lem:partition}, yield a
+measurable cardinal at most $\abs X$. Thus every ultrafilter in each local
+representation \eqref{lce:mf:eq:matrixultra} is principal. Each output
+coefficient is then a finite coordinate functional on $K[X]$, so it
+commutes with every point-finite family supported on $X$. Together with
+Corollary~\ref{lce:mf:cor:admissibility}, this proves (ii). Clearly (ii)
+implies (i).
+
+If (iii) fails, take a measurable $\kappa$ and a reverse well-ordered
+support with at least $\kappa$ elements. Its first $\kappa$ elements in the
+decreasing enumeration form a support $X_0=\{s_\alpha:\alpha<\kappa\}$.
+Choose a nonprincipal $\kappa$-complete $\mathcal U$ on $\kappa$ and define
+\[
+ \vartheta(x)=\ev_{\mathcal U}\bigl((\coef{s_\alpha}x)_{\alpha<\kappa}\bigr).
+\]
+The proof of \leref{lce:mf:lem:detector} works without the special shape of
+$X_\delta$: $\vartheta$ is ${<}\kappa$-strong, vanishes on monomials, and
+takes value one on $\sum_{\alpha<\kappa}\omega^{s_\alpha}$. Hence its first
+failure is $\kappa$, disproving (i).
+
+For the final necessity assertion, localize a least $\kappa$-failure as in
+\thref{lce:mf:thm:spectrum}. A $\kappa$-complete nonprincipal ultrafilter
+appears on the witness support $X$, so $\abs X\ge\kappa$. Taking an initial
+segment gives a reverse well-ordered subset of cardinality $\kappa$.
+\end{proof}
+
+For example, an ordered subgroup of $\R$ has only countable reverse
+well-ordered subsets. To see this, choose a rational number strictly
+between each nonfinal element of such a subset and its successor in the
+decreasing enumeration; the chosen rational interval witnesses are distinct.
+Hence all the implications above hold for those exponent groups in $\ZFC$,
+even if the universe contains measurable cardinals elsewhere. The relevant
+issue is the size of an allowed support, not simply the cardinality of the
+ambient universe.
+
+\begin{theorem}[Sharp minimal size \src{10}]\label{lce:mf:thm:size}
+Fix a measurable cardinal $\kappa$. Among full real Hahn fields admitting a
+countably strong linear map whose first failure is $\kappa$, the least
+possible field cardinality is $2^\kappa$. This size is attained by a
+real-closed Hahn field that admits an order- and leading-term-preserving
+additive automorphism stabilizing its canonical omnific-type ring and
+fixing every monomial, with first failure $\kappa$.
+\end{theorem}
+\begin{proof}
+Necessity in \thref{lce:mf:thm:workspace} gives a reverse well-ordered
+support of cardinality $\kappa$. All assignments of zero or one to that
+support are Hahn series, so the field has at least $2^\kappa$ elements.
+
+For attainment, take $\delta=1$ in \eqref{lce:mf:eq:detectorsupport} and let
+\[
+ G_\kappa=\Span\bigl(\{\delta\}\cup X_\delta\bigr)
+   =\Span\{1+q_\alpha,1:\alpha<\kappa\}
+   =\bigoplus_{\alpha<\kappa}\Q q_\alpha\subseteq(\No,+),
+\]
+where the last equality uses $q_0=\omega^0=1$. This is a divisible ordered
+abelian \emph{set} group of cardinality $\kappa$: the generators already
+contain $\kappa$ distinct elements and finite rational combinations give at
+most $\kappa$ elements. The field $K_\kappa=\Hahn{G_\kappa}$ has cardinality
+at most $\abs\R^\kappa=2^\kappa$, and the support $X_1$ gives the reverse
+inequality. The real closedness is the classical Hahn-field theorem for a
+real-closed coefficient field and divisible value group; equivalently, the
+full complex Hahn field on that group is algebraically closed, and its real
+part is real closed \cite{Gonshor,Kaplansky}.
+
+The proof of \thref{lce:mf:thm:shear} takes place entirely inside
+$K_\kappa$: all detector exponents $1+q_\alpha$, the correction exponent $1$
+and the exponents $2+q_\alpha$ of the product test belong to $G_\kappa$, and
+the map adds only one allowed monomial. It therefore provides the asserted
+additive automorphism of the field and of its omnific-type ring
+$\mathcal O_{G_\kappa}=\Z\oplus\mathfrak P_{K_\kappa}$.
+\end{proof}
+\mergetag{} 10 defines its group as the rational span of $d$ and the
+$d-\omega^{-\alpha}$ with $d=-1$ in the $t$-convention; after the sign
+change of Section~\ref{lce:mf:sub:conventions} it is exactly 09's
+$G_\kappa$, and 10's field is 09's $K_\kappa$ of
+\thref{lce:sg:thm:maximal}. That theorem proves $\abs{K_\kappa}=2^\kappa$
+under $2^{<\kappa}=\kappa$, which holds at a measurable cardinal; the upper
+bound above, $(2^{\aleph_0})^\kappa=2^\kappa$, needs no hypothesis. The same
+field therefore carries both 09's $2^\kappa$ algebraically independent
+omnific masks and 10's additive transvections.
+
+No assertion that this set-sized ring has the entire Hahn field as its
+fraction field is needed. That property can fail for set-sized exponent
+groups (\lbl{opa:as:ex:smallfrac}) and must not be imported from the full
+surreal case.
+
+\subsection{Surcomplex and Gaussian-omnific consequences}
+All arguments through \thref{lce:mf:thm:workspace} apply directly to
+$\SC=\HF\C\No$. Countable completeness makes every complex coefficient
+function almost constant, by \leref{lce:mf:lem:eval}.
+
+\begin{theorem}[Surcomplex transfer \src{10}]\label{lce:mf:thm:complex}
+Every countably strong $\C$-linear map $\Psi:\SC\to\SC$ is either strong or
+has measurable first failure. Every measurable $\kappa$ is realized by a
+$\C$-linear additive automorphism $\Theta$ that preserves the Hahn valuation
+and leading coefficients, stabilizes $\Oz[i]$, fixes all ordinary complex
+numbers and every monomial, and first fails at $\kappa$. The automorphism
+can commute with conjugation and fix any prescribed set of surcomplex
+parameters.
+\end{theorem}
+\begin{proof}
+The first assertion is \thref{lce:mf:thm:spectrum}. For the construction
+replace real coefficient evaluation in \eqref{lce:mf:eq:detector} by complex
+evaluation and keep $\delta\ge1$. The maps
+\[
+ \Theta_{c,\mathcal U}(z)=z+c\,\vartheta_{\mathcal U}(z)\,\omega^\delta
+\]
+are $\C$-linear additive automorphisms for $c\in\C$. The valuation argument
+still proves leading-term preservation. Their corrections are purely
+infinite complex series, so they preserve $\Z[i]\oplus\mathfrak P_{\SC}$ in
+both directions. Take $c\in\R$ to make the maps commute with conjugation;
+this follows either from almost-constant fibers or from coefficientwise real
+and imaginary parts. Parameter avoidance uses the union of the supports of
+the prescribed parameters, exactly as in \thref{lce:mf:thm:parameters}. The
+same mask and product calculations prove exact failure and
+nonmultiplicativity.
+\end{proof}
+
+These are not field homomorphisms, and no unitarity assertion is made. In
+fact they are locally translations on infinitesimal neighborhoods: for
+$v(h)>0$, one has $\vartheta_{\mathcal U}(h)=0$ and
+$\Theta_{c,\mathcal U}(z+h)=\Theta_{c,\mathcal U}(z)+h$. Thus even this
+local affine regularity is compatible with failure of a large Hahn sum. No
+global entire-series representation is asserted. Preservation of leading
+coefficients is much weaker than preservation of a complex modulus or an
+inner product. In particular, this theorem does \emph{not} settle the
+omnific-preserving report's question whether every Gaussian-omnific
+\emph{ring} automorphism preserves the natural valuation
+(\lbl{opa:as:q:gaussian}). \mergetag{} The transfer of $J$ and $H_j$ to
+$\SC$ is \thref{lce:thm:complex}; the maps here are not of that kind.
+
+\section{Field embeddings, target tests, and what manuscript 10 answers \src{10}}
+\label{lce:mf:sec:embeddings}
+
+This section combines the lower bound with the elementary-embedding
+construction of the preceding sections of this report. The ultrapower
+construction, its normal-form interpretation, and its strong companion are
+not new here. The new role is that the general first-failure theorem makes
+their measurable hypothesis optimal among embeddings that are countably
+strong.
+
+\subsection{The elementary-embedding input, recalled}
+\begin{proposition}[Existing construction \src{06, 07, 09, 10}]\label{lce:mf:prop:J}
+A measurable cardinal $\kappa$ gives a coefficient-fixing ordered-field
+embedding $J:\No\to\No$ that preserves and reflects $\Oz$, is
+${<}\kappa$-strong, and first fails strong summation at $\kappa$. On
+monomials it satisfies $J(\omega^a)=\omega^{J(a)}$. Its canonical strong
+part in \thref{lce:mf:thm:atomic} is the strong companion $H_j$.
+\end{proposition}
+\begin{proof}[Proof pointers]
+Take the normal-measure ultrapower $j:V\to M$, an instance of
+\eqref{lce:eq:setting}. The embedding, fixing of $\R$ and the monomial
+formula are \prref{lce:prop:J}; preservation and reflection of $\Oz$ are
+\thref{lce:thm:Oz}; ${<}\kappa$-strongness is \thref{lce:thm:positive}.
+For the first failure, $J(h_\kappa)=h_{j(\kappa)}$ while
+$\sum_{\alpha<\kappa}J(\omega^{-\alpha})=h_\kappa$
+(\thref{lce:thm:witness}); the coefficient at $\omega^{-\kappa}$ is one on
+the left and zero on the right (Corollary~\ref{lce:cor:firstfailure}). The
+termwise formula \eqref{lce:eq:Hintro} for $H_j$ is exactly
+\eqref{lce:mf:eq:atomic}, and uniqueness of the strong extension proves the
+last assertion (\thref{lce:thm:companion}).
+\end{proof}
+10 recalls the same construction with its witness (its Proposition 10.1:
+apply $j$ to surreal sign codes; the sign-code arithmetic and normal-form
+absoluteness package of \leref{lce:lem:absolute} identifies $\No^M$ with a
+subfield of $\No$; a family of fewer than $\kappa$ members has
+$j(I)=\imset jI$) and says it is not new; it is printed once, here with
+pointers.
+
+The class notation in this construction does not posit an elementary
+self-embedding $V\to V$. The codomain is the transitive ultrapower class
+$M$. Nor does it turn the proper embedding $J$ into an automorphism. The
+first-failure and additive-transvection theorems of the earlier sections do
+not depend on the imported absoluteness package.
+
+\begin{theorem}[Exact boundary for countably strong embeddings \src{10}]\label{lce:mf:thm:equivalence}
+Over the stated class-theoretic conventions, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item there are no measurable cardinals;
+\item every countably strong $\R$-linear map $\No\to\No$ is strong;
+\item every countably strong $\R$-linear ordered additive automorphism of
+$\No$ stabilizing $\Oz$ and fixing every monomial is strong;
+\item every countably strong coefficient-fixing field embedding $\No\to\No$
+preserving $\Oz$ is strong.
+\end{enumerate}
+Moreover, for each uncountable $\nu$, absence of measurable cardinals at
+least $\nu$ is equivalent to the corresponding universal strongness
+statement for ${<}\nu$-strong linear maps. The same ${<}\nu$ equivalence
+holds for the field embeddings in (iv).
+\end{theorem}
+\begin{proof}
+The first-failure theorem gives (i)$\Rightarrow$(ii), and (ii) implies (iii)
+and (iv). A measurable cardinal contradicts (iii) by \thref{lce:mf:thm:shear},
+and contradicts (iv) by \prref{lce:mf:prop:J}. For the ${<}\nu$ statements,
+any first failure must be a measurable $\kappa\ge\nu$. Conversely a measure
+on such a $\kappa$ supplies a ${<}\kappa$-strong, hence ${<}\nu$-strong,
+counterexample of either type.
+\end{proof}
+\mergetag{} Under (i) every map in (iii) is in fact the identity: it is
+strong, $\R$-linear and fixes every monomial, so it equals its canonical
+strong part, which is the identity (\thref{lce:mf:thm:atomic}).
+
+\begin{remark}[The hypothesis not removed \src{10}]\label{lce:mf:rem:unrestricted}
+The theorem does not say that every nonstrong omnific-preserving field
+embedding requires a measurable cardinal. It says this for embeddings that
+already preserve every countable Hahn sum. A counterexample failing at a
+countable family would fall outside the theorem. Deciding whether such a
+coefficient-fixing omnific-preserving field embedding exists is a separate
+question, left open here (Question~\ref{lce:mf:q:countable}).
+
+\mergetag{} \emph{The countable hypothesis is not removable, and there is no
+conflict with Kaplan--Krapp--Serra.} Their Example~4.4 \cite{KKS} builds, in
+NBG with global choice and without large cardinals, a field automorphism
+$\sigma$ of $\No$ that fixes every real number and every monomial
+$\omega^y$ but is not strongly additive. Its failing family is countable:
+$\sigma$ moves a sum $a$ of an $\omega$-indexed family of monomials, the
+pseudolimit of the $\omega$-sequence of its partial sums over the Puiseux
+field, to $a+\omega^{-\omega}$ while fixing every summand. So $\sigma$ is
+$\R$-linear and not countably strong, $\fail(\sigma)=\aleph_0$ in the
+sense of \eqref{lce:mf:eq:fail}, and \thref{lce:mf:thm:spectrum} does not
+apply to it. It shows that the countable hypothesis cannot be dropped even
+for field automorphisms fixing every monomial. By \lbl{opa:as:thm:main}
+(and \lbl{opa:as:cor:monodet}) $\sigma$ does not preserve $\Oz$, so it does
+not bear on Question~\ref{lce:mf:q:countable}. (As printed in
+\cite[Example~4.4]{KKS} the family is $\sum_{n}\omega^{-1/n}$, whose
+exponents increase and so do not form a Conway normal form; a sign slip such
+as $\sum_n\omega^{1/n}$ appears to be meant. In any reading the pseudo-Cauchy
+sequence is indexed by $\omega$, so the failing family is countable.) The
+statements ``one should not infer a large cardinal from an arbitrary
+non-strong field map'' in Sections~\ref{lce:sub:nonasserted}
+and~\ref{lce:sec:interpretation} are consistent with this and are re-scoped
+there.
+\end{remark}
+
+\subsection{An explicit unrepresentable target test}
+For a coefficient-linear embedding $E$, a target element $y$ has a
+\emph{source multiplier representative} if there exists $a\in\No$ such that
+\begin{equation}\label{lce:mf:eq:targettest}
+ \ct(yE(x))=\ct(ax)\qquad\text{for every }x\in\No.
+\end{equation}
+Question \lbl{opa:as:q:targettests} of the omnific-preserving report asks
+whether all target tests can be represented for the $\R$-linear embeddings
+preserving the omnific predicate.
+
+\begin{theorem}[Conditional negative answer for target tests \src{10}]\label{lce:mf:thm:target}
+Assume a measurable cardinal and take $J$ from \prref{lce:mf:prop:J}. The
+target element $y=\omega^\kappa$ has no source multiplier representative.
+The pulled-back functional
+\[
+ \Lambda_j(x)=\ct\bigl(\omega^\kappa J(x)\bigr)=\coef{-\kappa}{J(x)}
+\]
+is ${<}\kappa$-strong, vanishes on every monomial, and takes value one on
+$h_\kappa$.
+\end{theorem}
+\begin{proof}
+No surreal $g$ satisfies $J(g)=\kappa$. If it did, elementarity and
+absoluteness of the property of a sign code being an ordinal would imply
+that $g$ is an ordinal. But an ordinal below $\kappa$ is fixed, whereas an
+ordinal at least $\kappa$ has image at least $j(\kappa)>\kappa$. Thus
+$\kappa$, and hence $-\kappa$, is not in the range of $J$ on exponents.
+
+Since $J(\omega^g)=\omega^{J(g)}$, it follows that $\Lambda_j(\omega^g)=0$
+for every $g$. On the other hand $J(h_\kappa)=h_{j(\kappa)}$ gives
+$\Lambda_j(h_\kappa)=1$. If \eqref{lce:mf:eq:targettest} held for some $a$,
+testing all $\omega^g$ would give $\coef{-g}a=0$ for every $g$, and hence
+$a=0$. Testing $h_\kappa$ would then say $1=0$. The asserted
+${<}\kappa$-strongness follows by composing the ${<}\kappa$-strong $J$ with
+coefficient extraction.
+\end{proof}
+
+\begin{proof}[Second route to $-\kappa\notin J(\No)$ \mergetag]
+By \thref{lce:thm:defect} applied to $h_\kappa$, the exponent $-\kappa$ of
+the leading term of $D_j(h_\kappa)$ (\eqref{lce:eq:Dh}) is a missing-image
+exponent and lies outside $\Gam=J(\No)$.
+\end{proof}
+
+This resolves the universal target-test assertion negatively \emph{under a
+measurable-cardinal hypothesis}. It is not a $\ZFC$ construction without that
+hypothesis, and it does not settle the narrower question with \emph{strong}
+field embeddings in place of merely coefficient-fixing embeddings. The
+distinction also separates this example from the omnific-preserving report's
+strongly linear proper-class functional that has no representing surreal
+(\lbl{opa:as:thm:classdefect}): $\Lambda_j$ here is not strong and is
+invisible on all monomials, whereas that earlier functional is strong and
+has proper-class monomial data.
+
+\mergetag{} Three remarks place the theorem in this report. First,
+$\supp(H_j(x))\subseteq\Gam\not\ni-\kappa$, so
+$\Lambda_j(x)=\coef{-\kappa}{D_j(x)}$ for every $x$: $\Lambda_j$ is the
+$\omega^{-\kappa}$-row of the ghost map $J_{\gh}=D_j$, and on the masks it
+is 07's functional, $\Lambda_j(h_f)=\chi_j(h_f)$ \eqref{lce:eq:chi}. So
+$\Lambda_j$ extends $\chi_j$ from masks to all of $\No$, and on
+$K[\{-\alpha:\alpha<\kappa\}]$ it is $\ev_{U_j}$
+(Remark~\ref{lce:mf:rem:character}); recovery of the measure from masks is
+\thref{lce:thm:measure} and \thref{lce:sg:thm:measure}. Second, the negative
+answer to \lbl{opa:as:q:targettests} already followed from results recorded
+before 10's pin: if every target test of $J$ had a source multiplier
+representative, the representatives would form a constant-term adjoint, and
+``adjoint implies strong'' holds for $\No$ (the note after
+\lbl{opa:as:thm:adjoint}), whereas $J$ is not strongly additive
+(Remark~\ref{lce:rem:opa}, recorded in the omnific-preserving report's status
+note on \lbl{opa:as:q:embeddingstrong}). What 10 adds is the explicit test
+$\omega^\kappa$, its invisibility on every monomial, and its identification
+with the measure functional. Third, the sharper question for strong
+embeddings is Question~\ref{lce:mf:q:targetstrong}.
+
+\subsection{Consequences for the questions of Section~\ref{lce:sec:questions} \mergetag}
+\label{lce:mf:sub:consequences}
+
+Manuscript 10 did not see 06's and 09's questions (Section
+\ref{lce:mf:sub:conventions}); the consequences below are deduced here from
+its theorems and are recorded as status notes at the questions.
+
+\begin{corollary}[A numerical criterion without coefficient algebra \mergetag]
+\label{lce:mf:cor:numerical}
+Let $\kappa$ be an uncountable cardinal. The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The cardinal $\kappa$ is measurable.
+\item There is an $\R$-linear map $E:\No\to\No$ such that
+\begin{enumerate}
+\item[\textup{(a)}] $\coef{q_\kappa}{E(\tau_\alpha)}=0$ for every
+$\alpha<\kappa$ (for instance $E(\tau_\alpha)=\tau_\alpha$);
+\item[\textup{(b)}] $E$ preserves every strongly summable family of
+cardinality less than $\kappa$;
+\item[\textup{(d)}] $\coef{q_\kappa}{E(Y_\kappa)}=1$.
+\end{enumerate}
+The letters are those of \thref{lce:sg:thm:numerical}; its condition (c) is
+omitted.
+\end{enumerate}
+No order, multiplicativity, omega-map compatibility or Hadamard condition is
+required. Under (i) the map $J$ of a normal-measure ultrapower satisfies
+(ii), and so do all four conditions of \thref{lce:sg:thm:numerical}.
+\end{corollary}
+\begin{proof}
+(i)$\Rightarrow$(ii) is the forward direction of
+\thref{lce:sg:thm:numerical}. Assume (ii). Since $\kappa$ is uncountable, (b)
+makes $E$ countably strong. The family $(\tau_\alpha)_{\alpha<\kappa}$ is
+strongly summable with sum $Y_\kappa$ (\eqref{lce:sg:eq:QZ}). By
+Corollary~\ref{lce:mf:cor:admissibility} its image family is strongly
+summable, and by (a) and finiteness of coefficient sums its sum has
+coefficient zero at $\tau_\kappa$, whereas $E(Y_\kappa)$ has coefficient one
+there by (d). So $E$ fails on a family of size $\kappa$, while by (b) it
+preserves all smaller families. Thus $\fail(E)=\kappa$, which is measurable
+by \thref{lce:mf:thm:spectrum}.
+\end{proof}
+
+\begin{corollary}[The mask criterion without the Hadamard product \mergetag]
+\label{lce:mf:cor:maskcriterion}
+An uncountable cardinal $\kappa$ is measurable if and only if there is an
+$\R$-linear functional $\chi:\mathcal B_\kappa\to\R$ that vanishes on every
+$h_{\{\alpha\}}$, satisfies $\chi(h_\kappa)\ne0$, and carries every
+point-finite family $(h_{f_\xi})_{\xi<\mu}$ with $\mu<\kappa$ to a scalar
+family with finitely many nonzero members and the sum
+$\chi(h_{\sum_\xi f_\xi})$.
+\end{corollary}
+\begin{proof}
+If $\kappa$ is measurable, $\chi_j$ of a normal-measure ultrapower is
+$\ev_{U_j}$ under $h_f\leftrightarrow f$ (\thref{lce:thm:character}); the
+converse half of \thref{lce:mf:thm:product} gives the summation property,
+and $\chi_j(h_{\{\alpha\}})=0$, $\chi_j(h_\kappa)=1$. Conversely,
+$\mathcal B_\kappa\cong\R^\kappa$ by \eqref{lce:eq:hf}, so
+\thref{lce:mf:thm:product} with $\nu=\kappa$ writes
+$\chi=\sum_pc_p\ev_{\mathcal U_p}$ with $\kappa$-complete $\mathcal U_p$ and
+$m\ge1$ because $\chi(h_\kappa)\ne0$. A principal $\mathcal U_p$ at $\alpha$
+would give $\chi(h_{\{\alpha\}})=c_p\ne0$. So $\mathcal U_1$ is a nonprincipal
+$\kappa$-complete ultrafilter on $\kappa$.
+\end{proof}
+This trades the Hadamard homomorphism of \thref{lce:thm:measurablecriterion}
+for preservation of all small point-finite sums of masks, not only unions of
+disjoint indicator masks; neither criterion is first-order in the field
+language.
+
+\begin{proposition}[Pairs of embeddings with a countably strong member \mergetag]
+\label{lce:mf:prop:pairs}
+Let $\kappa$ be uncountable.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Let $P,Q:\No\to\No$ be field embeddings fixing $\R$ that agree on
+every monomial, with $Q$ strongly $\R$-linear and $\Eq(P,Q)=\Sk$. If $P$ is
+countably strong, then $Q=P_{\at}$, $P$ is not strong, and $\fail(P)$ is a
+measurable cardinal at most $\kappa$, on whose short-support field
+$\mathscr S_{<\fail(P)}$ the two maps agree. If $P$ is moreover
+${<}\kappa$-strong, then $\fail(P)=\kappa$ is measurable.
+\item Let $P:\No\to\No$ be an ordered field embedding fixing $\R$ and
+commuting with the omega-map, and let $T_P$ be its Hahn reindexing map
+(\leref{lce:lem:reindex}). If $P$ is countably strong, then $T_P=P_{\at}$;
+either $P=T_P$, or $\fail(P)$ is measurable and
+$\mathscr S_{<\fail(P)}\subseteq\Eq(P,T_P)$. Without measurable cardinals
+every countably strong such $P$ equals $T_P$.
+\item For every countably strong $\R$-linear $\Psi:\No\to\No$ that is not
+strong, the null ideal of one output coefficient of $\Psi$ on the support of
+a least failing family carries a nonprincipal $\fail(\Psi)$-complete
+ultrafilter on $\fail(\Psi)$; the only structure used is summation.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $Q$ is strong and agrees with $P$ on monomials, so $Q=P_{\at}$ by
+uniqueness in \thref{lce:mf:thm:atomic}. The mask $h_\kappa$ has $\kappa$
+terms, so $h_\kappa\notin\Sk=\Eq(P,Q)$ and
+$P(h_\kappa)\ne Q(h_\kappa)=\sum_{\alpha<\kappa}P(\omega^{-\alpha})$: $P$
+fails on a family of size $\kappa$. Hence $P$ is not strong,
+$\fail(P)\le\kappa$, and $\fail(P)$ is measurable by
+\thref{lce:mf:thm:spectrum}. Agreement on $\mathscr S_{<\fail(P)}$ is the last
+clause of \thref{lce:mf:thm:atomic}. If $P$ is ${<}\kappa$-strong, then
+$\fail(P)\ge\kappa$.
+(b) Commutation with the omega-map gives
+$T_P(\omega^a)=\omega^{P(a)}=P(\omega^a)$, and $T_P$ is strong, so
+$T_P=P_{\at}$; apply \thref{lce:mf:thm:atomic},
+\thref{lce:mf:thm:spectrum} and Corollary~\ref{lce:mf:cor:nomeas}.
+(c) is the proof of \thref{lce:mf:thm:spectrum} with
+\leref{lce:mf:lem:partition}.
+\end{proof}
+Part (a) does not decide whether $\kappa$ itself must be measurable when $P$
+is only countably strong: the equalizer condition bounds the first failure
+by $\kappa$ but does not obviously force $P$ to be ${<}\kappa$-strong. Nor
+does it say anything about embeddings that fail a countable sum. Part (b)
+does not classify the equalizers asked for in
+Question~\ref{lce:q:classification}; it only bounds them below.
+
+\subsection{Proof audit and limits of the conclusions \src{10}}
+\label{lce:mf:sub:audit}
+The core route is
+\[
+ \begin{gathered}
+ \text{countable obstruction to Hahn admissibility}\\
+ \Downarrow\\
+ \text{local coefficient functionals on }k^X\\
+ \Downarrow\\
+ \text{finite complete-ultrafilter representation}\\
+ \Downarrow\\
+ \text{least failing partition }\Longrightarrow\text{ a measure on its size}.
+ \end{gathered}
+\]
+The additive converse uses the independent route
+\[
+ \mathcal U\ \Longrightarrow\ \vartheta_{\mathcal U}\ \Longrightarrow\
+ N_{\mathcal U}^2=0\ \Longrightarrow\ \Theta_{c,\mathcal U}=\id+cN_{\mathcal U}.
+\]
+Only the field-embedding equivalence and its particular target-test
+counterexample use the $j$-construction and its normal-form absoluteness. No
+field-automorphism classification is needed in the proof of the lower bound
+or in the additive construction.
+
+\begin{center}\small
+\begin{longtable}{@{}P{0.24\textwidth}P{0.34\textwidth}P{0.34\textwidth}@{}}
+\toprule
+\textbf{Result} & \textbf{Status and input} & \textbf{Boundary}\\
+\midrule\endhead
+Product functional theorem & Specialized proof of the classical
+finite-ultrafilter mechanism; Bergman is credited. & Not a new general
+product-factorization theorem.\\[3pt]
+Least-failure spectrum & Proposed Hahn/surreal contribution; proved from
+support localization and the product theorem. & Requires coefficient
+linearity and countable strongness.\\[3pt]
+Canonical strong part & Proposed generalization of the particular companion
+construction $H_j$. & Projection is linear, generally not multiplicative for
+composition.\\[3pt]
+Ordered additive transvections & Explicit construction from a measurable
+cardinal; all preservation and failure claims proved. & They are
+deliberately not field homomorphisms.\\[3pt]
+Workspace criterion and $2^\kappa$ bound & Exact linear criterion and
+matching example. & Full Hahn fields are essential; not arbitrary
+subfields.\\[3pt]
+Field-embedding equivalence & New lower bound combined with the existing
+$J,H_j$ construction. & The unrestricted embedding problem is not
+settled.\\[3pt]
+Target-test obstruction & Explicit consequence for $J$, with a monomial test
+proof of nonrepresentation. & Conditional on measurability; not a
+counterexample among strong field embeddings.\\[3pt]
+Gaussian transfer & Direct complex-linear transfer of the core results. & No
+unrestricted Gaussian ring-automorphism theorem.\\
+\bottomrule
+\end{longtable}
+\end{center}
+(10's table; 10 wrote ``the repository's particular companion
+construction'' for $H_j$.)
+
+\paragraph{Common pitfalls explicitly excluded.} The scalar target in the
+product-functional theorem has only finite strong sums. Replacing this by
+ordinary convergence of scalar series would change the theorem and could
+introduce real-valued measures rather than the complete ultrafilters used
+here. All source supports are sets. No formal sum indexed by the proper
+class of all ordinals is an element of $\No$. The exponents
+$\delta+q_\alpha$ decrease; reversing a convention without changing signs
+would destroy well-ordering. The product space $k^X$ is a coefficient vector
+space, not a Cauchy-product subring. A Boolean mask is not an idempotent of
+the surreal field. The ultrafilter evaluations in the proof are
+multiplicative only for the pointwise coefficient product. Nothing
+therefore turns the rank-one transvections into field homomorphisms. The
+word ``measurable'' denotes an uncountable cardinal carrying a
+$\kappa$-complete nonprincipal ultrafilter. 10 proves equivalences and
+conditional constructions, not the existence or consistency of such
+cardinals. The least-failure theorem gives a genuine measurable cardinal in
+the ambient universe, not merely one in an unspecified inner model. Strong
+summation is not ordinary valuation-topological convergence. The
+order-preserving counterexamples preserve valuation and leading terms; that
+does not force them to commute with all Hahn sums. Countable strongness is a
+substantial extra assumption even for a linear map that is order-preserving.
+
+\paragraph{Verification supplied and not supplied.} The companion program
+\fn{code/10-measurable-spectrum-finite_regression.py} uses exact rational
+coefficients and finite Laurent supports, written in 10's $t$-convention. It
+tests the nilpotent transvection identities, inverses, leading-term
+preservation, constant-term preservation, preservation of the finite
+omnific-type subring, and an explicit failure of multiplicativity. It also
+checks finite weighted-coordinate formulas. These are regression tests for
+finite algebraic steps, not tests of the main large-cardinal statements. A
+finite set has no nonprincipal ultrafilter. Consequently no finite
+simulation can verify the monomial-invisible phenomenon, a measurable first
+failure, the normality of an infinite measure, a class elementary
+embedding, or the arbitrary-support assertions; the finite functional is a
+principal coefficient projection and does not vanish on every monomial.
+The central results require independent mathematical review; none has been
+formalized in Lean. \mergetag{} The program was rerun on a copy for this
+merge: 11{,}955 assertions in 18 categories, output identical to the
+recorded files (Appendix~\ref{lce:app:provenance}).
+
+\paragraph{10's checklist for independent proof review.} A reviewer can
+check the core in the following order. First verify that countable
+subfamilies detect both clauses of Hahn summability. Next verify that the
+support-null ideal in \thref{lce:mf:thm:product} is closed under ${<}\nu$
+unions and has a finite Boolean quotient; this must use the requirement that
+only finitely many scalar images are nonzero. Check that complete-ultrafilter
+evaluation of real and complex functions is actual almost-constant
+evaluation, not a limit requiring boundedness. In the least-failure
+argument, verify that a $\kappa$-complete but not $\kappa^+$-complete
+ultrafilter really appears, rather than just some nonprincipal countably
+complete ultrafilter. For the construction, check the convention
+$X_\delta\subseteq(\delta,\delta+1]$, the fact that $\delta\notin X_\delta$,
+and $N_{\mathcal U}^2=0$. Leading-term preservation depends on the strict
+inequality between the leading exponent of $x$ and $\delta$ whenever
+$\vartheta_{\mathcal U}(x)\ne0$. The product counterexample depends on
+$\delta\ge1$. Parameter avoidance chooses a new detector interval and must
+not try to choose a measure on a proper class. For the field applications,
+verify the imported normal-form absoluteness interface
+(\leref{lce:lem:absolute}) independently; those applications are the only
+part that needs it.
+
+\subsection{Questions of manuscript 10 \src{10}}
+The first four questions locate the remaining conceptual boundaries. The
+others suggest concrete extensions of the proofs. They are proposed research
+questions, not a list of named historical conjectures.
+
+\begin{question}[Remove the countable hypothesis for field embeddings]\label{lce:mf:q:countable}
+Must a coefficient-fixing field embedding $E:\No\to\No$ preserving $\Oz$ be
+countably strong? If not, construct one with a countable failure and
+determine the assumptions needed.
+\end{question}
+A positive answer would extend \thref{lce:mf:thm:equivalence} to all such
+embeddings; the present proof does not supply that answer. \mergetag{} The
+Kaplan--Krapp--Serra automorphism (Remark~\ref{lce:mf:rem:unrestricted})
+fails a countable sum but does not preserve $\Oz$. A positive answer would
+also answer the first two clauses of \lbl{opa:as:q:embeddingstrong} for
+coefficient-fixing embeddings in universes without measurable cardinals.
+
+\begin{question}[The unrestricted Gaussian stabilizer]\label{lce:mf:q:gaussian}
+Does every ring automorphism of $\Oz[i]$ preserve the positive-support
+component of its fraction field?
+\end{question}
+This is the omnific-preserving report's still-open question
+\lbl{opa:as:q:gaussian}. The complex additive examples here do not address
+it, since they fail multiplication.
+
+\begin{question}[Target tests for strong proper embeddings]\label{lce:mf:q:targetstrong}
+For a strongly $\R$-linear omnific-preserving field embedding, does every
+pulled-back constant-term test have a source multiplier representative?
+\end{question}
+\thref{lce:mf:thm:target} only answers the version allowing nonstrong
+embeddings. The proper-class scalar dual obstruction
+(\lbl{opa:as:thm:classdefect}) shows why a blanket linear duality argument is
+insufficient.
+
+\begin{question}[Global assembly of local ultrafilter data]\label{lce:mf:q:assembly}
+Give necessary and sufficient compatibility conditions on the finite
+representations \eqref{lce:mf:eq:matrixultra} for them to arise from one
+countably strong Hahn map. Then impose the finite multiplicative identities
+needed for a field embedding.
+\end{question}
+The local theorem alone does not control output supports or consistency
+under enlargement of $X$.
+
+\begin{question}[Classification of measurable transvections]\label{lce:mf:q:transvections}
+Classify the maps $\Theta_{c,\mathcal U}$ up to conjugacy by strong
+omnific-preserving maps. Determine which equivalence relations on measures,
+such as pushforward equivalence of ultrafilters, are detected by this
+conjugacy.
+\end{question}
+The mask action already recovers $\mathcal U$ when the detector support is
+named (Corollary~\ref{lce:mf:cor:recover}). \mergetag{} Compare
+Questions~\ref{lce:q:mitchell} and~\ref{lce:sg:q:mitchell}, which ask for
+relations between measures through the defect functionals of $J$.
+
+\begin{question}[Nonstrong derivations]\label{lce:mf:q:derivations}
+Can a measurable cardinal produce a nonzero countably strong derivation of
+$\No$ that vanishes on all monomials and on $\R$?
+\end{question}
+The canonical strong part of a derivation exists by
+\thref{lce:mf:thm:fieldpart}, and a nonzero remainder would have measurable
+first failure. The rank-one additive construction does not satisfy the
+Leibniz rule. \mergetag{} The defect $D_j$ satisfies the twisted law
+\eqref{lce:eq:twisted}, not the Leibniz rule; compare
+Questions~\ref{lce:q:differential} and~\ref{lce:cs:q:derivations}.
+
+\begin{question}[Compatibility with exponential and differential structure]\label{lce:mf:q:exp}
+Which countably strong proper embeddings preserving $\Oz$ also commute with
+the Gonshor exponential, the Conway omega-map, or a chosen surreal
+derivation?
+\end{question}
+The critical-point construction supplies particular examples and
+constraints; a general classification should use the ultrafilter data rather
+than infer compatibility from additive behavior. \mergetag{} For $J$ and
+$H_j$ the exponential and omega-map loci are \thref{lce:thm:expdefect} and
+Corollary~\ref{lce:cor:omegalocus}; the derivation half is
+Questions~\ref{lce:q:differential}, \ref{lce:cs:q:derivations}
+and~\ref{lce:sg:q:exp}.
+
+\begin{question}[Support-restricted subfields]\label{lce:mf:q:subfields}
+Extend the workspace criterion to truncation-closed or support-restricted
+subfields that do not contain every coefficient function on an allowed
+support. Identify precisely which product fragments still force a
+complete-ultrafilter factorization, especially at singular support bounds.
+\end{question}
+The full product $k^X$ is crucial in the present proof. \mergetag{} The
+short-support field $\Sk$ is such a subfield (Section~\ref{lce:sg:sec:short});
+compare Question~\ref{lce:sg:q:singular}.
+
+\begin{question}[Other coefficient fields]\label{lce:mf:q:fields}
+For a general coefficient field $k$, replace scalar ultrafilter evaluation
+by linear maps from the ultrapowers $k^X/\mathcal U$ to $k$. Determine
+useful hypotheses under which a comparably explicit local representation and
+first-failure spectrum remain available.
+\end{question}
+The real and complex cases are special because countably complete
+ultrafilters make every coefficient function almost constant. \mergetag{}
+Compare Question~\ref{lce:sg:q:fields}.
+
+\begin{question}[Cancellation and composition of defects]\label{lce:mf:q:composition}
+Describe how first-failure cardinals change under sums and compositions of
+countably strong maps.
+\end{question}
+They cannot become a nonmeasurable first failure, but different local
+nonprincipal terms may cancel. The canonical projection is not a composition
+homomorphism, as \prref{lce:mf:prop:algebra} shows.
+
+\begin{question}[Additive definability without measurability]\label{lce:mf:q:definability}
+Determine whether the additive nondefinability statement of
+Corollary~\ref{lce:mf:cor:definability} has a $\ZFC$ proof without
+measurable cardinals.
+\end{question}
+The current witnesses satisfy the much stronger countable-sum condition; a
+different additive automorphism may require less set theory. \mergetag{} By
+the note after Corollary~\ref{lce:mf:cor:definability}, in a universe
+without measurable cardinals such a witness fixing every monomial and
+commuting with the real scalar action must fail a countable sum.
+
+\begin{question}[Formalization and foundational weakening]\label{lce:mf:q:formal}
+Formalize the null-ideal/product theorem and the set-sized Hahn
+first-failure theorem first, and then the sharp workspace construction.
+Separate the use of dependent choice, ordinary choice, and class
+replacement.
+\end{question}
+The class-surreal applications should follow from an explicit normal-form
+interface rather than from an informal collection of all class maps.
+\mergetag{} Compare Questions~\ref{lce:q:formal} and~\ref{lce:sg:q:formal}.
+
+\subsection{What manuscript 10 does not claim \src{10}}
+\label{lce:mf:sub:nonclaims}
+Every limitation stated by manuscript 10 is kept; the delivered proof-status
+and audit files are shipped unchanged. Manuscript 10 does not claim:
+\begin{enumerate}[label=10.\arabic*]
+\item that every non-strong omnific-preserving field embedding requires a
+measurable cardinal: an embedding failing a countable sum is outside
+\thref{lce:mf:thm:spectrum}, and the countable hypothesis is essential
+(Remark~\ref{lce:mf:rem:unrestricted}, Question~\ref{lce:mf:q:countable});
+\item anything about unrestricted Gaussian-omnific ring automorphisms or
+their valuation preservation (\lbl{opa:as:q:gaussian}); its complex additive
+examples fail multiplication;
+\item a target-test theorem for strong proper field embeddings:
+\thref{lce:mf:thm:target} is conditional on a measurable cardinal and
+concerns the non-strong $J$;
+\item a classification of support-restricted or truncation-closed Hahn
+subfields: full Hahn fields are essential to the workspace criterion;
+\item a global assembly of local ultrafilter data: the local representation
+\eqref{lce:mf:eq:matrixultra} has no converse;
+\item that the additive maps $\Theta_{c,\mathcal U}$ preserve
+multiplication, the omega-map as a function, the Gonshor exponential or the
+Berarducci--Mantova derivation; no unitarity is asserted in the complex
+case;
+\item that fixing every monomial as an element is compatibility with the
+omega-map as a function on moved exponents;
+\item a global entire-series representation: the additive examples are only
+locally translations on infinitesimal neighborhoods;
+\item that a set-sized canonical omnific-type ring $\mathcal O_\Gamma$ has
+the full Hahn field as its fraction field;
+\item novelty for Bergman's finite complete-ultrafilter mechanism or for the
+first-incomplete-partition argument: \thref{lce:mf:thm:product} is a
+specialized proof, not a new product-factorization theorem;
+\item the existence or consistency of measurable cardinals: 10 proves
+equivalences and conditional constructions;
+\item independence of Section~\ref{lce:mf:sec:embeddings} from this
+report's normal-form absoluteness and elementary-embedding construction,
+which need independent review; Sections~\ref{lce:mf:sec:detect}
+to~\ref{lce:mf:sec:shears} do not use them;
+\item any computational verification of an ultrafilter, a measurable
+cardinal, a transfinite sum, a proof or novelty: the finite checks use a
+principal functional that does not vanish on every monomial;
+\item refereeing, a Lean formalization, or certified priority: it is an
+AI-assisted research draft, and its repository and literature comparisons
+were targeted, not exhaustive; the repository was not modified;
+\item any contradiction with automatic strongness of $\Oz$-preserving field
+automorphisms (\lbl{opa:as:thm:main}): the $\Theta_{c,\mathcal U}$ are
+additive, not multiplicative;
+\item any infinite scalar summation: the scalar sums in the product theorem
+are finite, and replacing them by convergent series would change the
+theorem;
+\item more than an additive-reduct statement in
+Corollary~\ref{lce:mf:cor:definability}; the full ring or field pair
+reconstructs much more;
+\item that its questions are published open problems;
+\item that strong summation is valuation-topological convergence;
+countable strongness is a substantial extra assumption even for
+order-preserving maps.
+\end{enumerate}
+Added by the merge:
+\begin{enumerate}[label=M10.\arabic*]
+\item Corollaries~\ref{lce:mf:cor:numerical} and~\ref{lce:mf:cor:maskcriterion}
+and \prref{lce:mf:prop:pairs} are deductions made for this merge from 10's
+theorems; 10 does not state them. Corollary~\ref{lce:mf:cor:numerical} does
+not decide whether condition (c) of \thref{lce:sg:thm:numerical} follows
+from the other conditions; it shows that the criterion does not need it.
+\item The partial answers of \prref{lce:mf:prop:pairs} assume countable
+strongness; for embeddings that fail a countable sum, and for whether
+$\kappa$ itself is measurable in (a), nothing is claimed.
+\item The comparison with Kaplan--Krapp--Serra's Example 4.4 is a reading of
+that example, not a new theorem; the note on its displayed formula concerns
+notation only.
+\end{enumerate}
+
 \section{Conclusion}
 The difference between $j(I)$ and $\imset jI$ becomes a literal normal-form
 difference in surreal arithmetic. Comparing the elementary-induced map
@@ -4894,6 +6807,21 @@ seed data make the set-theoretic information visible. The pure field
 language does not. The exact boundary between those two levels is a
 concrete research program rather than a reason to conflate ordinary surreal
 arithmetic with the entire large-cardinal hierarchy.
+
+\src{10} The large-cardinal examples suggest that uncountable normal forms
+can contain information invisible to their individual monomials.
+Manuscript 10 identifies an exact converse in the countably strong linear
+setting. Every first loss of a sum has measurable size, every measurable
+size occurs, and the phenomenon can coexist with order, valuation, leading
+terms, the omnific predicate, and complete fixing of the monomial
+system---provided multiplication is not demanded of the additive symmetry.
+The decisive step is not a new consistency principle. It is localization: a
+single coefficient on a fixed support is a product functional, and its
+nonprincipal complete-ultrafilter components precisely account for what
+monomial data miss. This yields a canonical strong part, sharp set-sized
+realization bounds, and a conditional resolution of the unrestricted
+target-test question. The remaining multiplicative and Gaussian questions
+are now separated from this linear obstruction rather than obscured by it.
 
 \appendix
 \section{Proof dependencies and a formalization plan}\label{lce:app:formalization}
@@ -5207,6 +7135,16 @@ The 34 research questions of the three sources remain outside the claims,
 except the exponential half of Question~\ref{lce:sg:q:exp}.
 Appendix~\ref{lce:app:nonclaims} lists every non-claim.
 
+\mergetag{} Batch 32: manuscript 10's first-failure theorem, local
+representation, canonical strong part, transvections, workspace criterion
+and $2^\kappa$ bound, and surcomplex transfer are proved in $\ZFC$ or NBG
+with global choice, the constructions under a measurable cardinal; its
+field-embedding equivalence and target test are proved relative to this
+report's absoluteness lemma. The consistency-strength converse is now
+proved for countably strong maps only
+(Section~\ref{lce:mf:sec:embeddings}); its twelve questions, and the
+unanswered parts of the questions it bears on, remain outside the claims.
+
 \section{Non-claims, by source \mergetag}\label{lce:app:nonclaims}
 Every limitation, disclaimer and priority caveat stated by any source is
 kept, with its place in this report; the delivered proof-status files are
@@ -5419,16 +7357,38 @@ open.
 \item Remark~\ref{lce:rem:opa} is conditional on a measurable cardinal (or a
 class embedding with critical point); whether an $\Oz$-reflecting non-strong
 embedding exists without large cardinals, and the clauses on dense images,
-are not addressed.
-\item Of the 34 questions only the exponential half of
-Question~\ref{lce:sg:q:exp} is answered here;
+are not addressed. (Batch 32: such an embedding fixing $\R$ would have to
+fail a countable sum, \thref{lce:mf:thm:equivalence}; existence stays
+open.)
+\item Of the 34 questions of 06, 07 and 09 only the exponential half of
+Question~\ref{lce:sg:q:exp} was answered by the three-source merge (batch 32
+adds the status notes listed in M.7);
 \thref{lce:sg:thm:AD} does not decide Question~\ref{lce:q:jointdependence}.
 \item The merge found no contradiction between the three sources; its
 corrections (Appendix~\ref{lce:app:provenance}) are bibliographic and
 concern the repository identifier, not mathematics.
 \item A clean build and the rerun finite regression certify no
 transfinite statement.
+\item Batch 32: the status notes at Questions~\ref{lce:q:strength},
+\ref{lce:q:classification}, \ref{lce:cs:q:converse},
+\ref{lce:sg:q:converse} and~\ref{lce:sg:q:equalizer} record answers or
+partial progress for countably strong maps only; the parts they name stay
+open. The re-scoped sentences of Sections~\ref{lce:sub:nonasserted}
+and~\ref{lce:sec:interpretation}, and items 07.2 and 06.12 above, remain
+true of arbitrary maps.
 \end{enumerate}
+
+\paragraph{Manuscript 10 (batch 32).} Its non-claims are items 10.1--10.19
+of Section~\ref{lce:mf:sub:nonclaims}, with three merge items M10.1--M10.3
+there; in brief: the countable hypothesis is essential and embeddings
+failing a countable sum are not covered; nothing on Gaussian ring
+automorphisms or target tests for strong embeddings; full Hahn fields only;
+no global assembly of local data; the transvections are additive, not
+multiplicative, and fix monomials without respecting the omega-map as a
+function; Bergman's mechanism is classical; no existence or consistency of
+measurable cardinals; Section~\ref{lce:mf:sec:embeddings} depends on this
+report's absoluteness lemma; the finite checks verify no ultrafilter;
+unrefereed, no Lean, priority not certified.
 
 \section{Provenance and merge decisions \mergetag}\label{lce:app:provenance}
 
@@ -5450,7 +7410,11 @@ finite regression and its three recorded outputs (prefixed
 \texttt{07-critical-point-defects-})\\[3pt]
 09 & \fn{surreal_large_cardinals_article.zip} (30-page PDF) &
 \texttt{0865f04} & proof status, build helper (prefixed
-\texttt{09-support-geometry-})\\
+\texttt{09-support-geometry-})\\[3pt]
+10 & \fn{surreal_measurable_spectrum.zip} (24-page PDF; batch 32, in
+\texttt{aa268a4}) & \texttt{7af8a30} & proof status, source audit, build
+helper, finite regression and its four recorded outputs (prefixed
+\texttt{10-measurable-spectrum-})\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -5510,6 +7474,50 @@ shipped paths are given in Appendix~\ref{lce:app:verification}.
 \end{itemize}
 No false theorem and no contradiction between the sources was found.
 
+\paragraph{Manuscript 10 (batch 32).} Manuscript 05 of batch 32, local number
+10, archive \fn{surreal_measurable_spectrum.zip} delivered in
+\texttt{aa268a4} and placed in \texttt{7d04483}; pinned to
+\texttt{7af8a3026c8440944e94df89020d42ca08f4e3dd}, which precedes the
+three-source merge \texttt{de45cee}. It contributes
+Sections~\ref{lce:mf:sec:intro}--\ref{lce:mf:sec:embeddings}, placed after
+Section~\ref{lce:sec:questions} so that no existing number changes; its
+\texttt{.tex}, PDF and README are not shipped. Where the merge chose:
+\begin{itemize}
+\item \emph{Exponent convention.} 10's $t$-exponents are converted to this
+report's $\omega$-exponents with a sign change throughout
+(Section~\ref{lce:mf:sub:conventions}); 10's detector $d\le-1$ is
+$\delta=-d\ge1$, and its masks are 09's $Y_A$ shifted by $\omega^\delta$.
+\item \emph{Printed once.} 10's Proposition 10.1 (the construction of $J$,
+its ${<}\kappa$-strongness, first failure at $\kappa$, $\Oz$ reflection
+and $J_{\at}=H_j$) is \prref{lce:mf:prop:J} with pointers to
+\prref{lce:prop:J}, \thref{lce:thm:Oz}, \thref{lce:thm:positive},
+Corollary~\ref{lce:cor:firstfailure} and \thref{lce:thm:companion}; 10 says
+it is not new. 10's group and field of Theorem 8.2 are 09's $G_\kappa$ and
+$K_\kappa$ (\thref{lce:sg:thm:maximal}). 10's Lemma 3.1 is the elementary
+half of \lbl{opa:as:cor:countable}; its product law for $F-F_{\at}$ is 06's
+and 09's \eqref{lce:cs:eq:product-defect} for $J$.
+\item \emph{Second routes.} The exclusion $-\kappa\notin J(\No)$ in
+\thref{lce:mf:thm:target} (10's elementarity argument and the defect
+theorem); the existence of the $U_j$-large fiber (10's bisection,
+\leref{lce:mf:lem:eval}, and 09's cardinality argument in
+\prref{lce:sg:prop:weighted}).
+\item \emph{Merge deductions,} marked \mergetag: Remark
+\ref{lce:mf:rem:character}, Corollaries~\ref{lce:mf:cor:numerical}
+and~\ref{lce:mf:cor:maskcriterion}, \prref{lce:mf:prop:pairs}, the
+reflection clause after \prref{lce:mf:prop:omnificpart}, the
+Kaplan--Krapp--Serra comparison in Remark~\ref{lce:mf:rem:unrestricted},
+and the status notes in Section~\ref{lce:sec:questions}.
+\end{itemize}
+Stale against the tree: 10 cites this report as 07's text and its
+``Sections 2--4''; it did not see 06's and 09's questions that it answers;
+its claim to give a conditional negative answer to
+\lbl{opa:as:q:targettests} was already implied at its pin (the note after
+\thref{lce:mf:thm:target}). 10 states reflection of $\Oz$ only for the
+strong part; its proof gives it for the embedding too (not a false
+statement). No false theorem was found. The delivered finite regression was
+rerun on a copy under Python 3.14.4: 11{,}955 assertions in 18 categories,
+console and JSON identical to the recorded files.
+
 \begingroup
 \small
 \raggedright
@@ -5553,6 +7561,8 @@ Elliot Kaplan, Lothar Sebastian Krapp, and Michele Serra,
 \url{https://arxiv.org/html/2509.22374v3}.
 Used for the contemporary Hahn and strong-map framework, not as a
 premise for a particular non-strong automorphism example.
+\mergetag{} Manuscript 10 consulted the same version; its Example 4.4 is
+discussed in Remark~\ref{lce:mf:rem:unrestricted}.
 
 \bibitem{Neeman}
 Itay Neeman,
@@ -5568,6 +7578,7 @@ George M. Bergman,
 \texttt{arXiv:1406.1932}, version 2, consulted 23 September 2026.
 \url{https://arxiv.org/html/1406.1932v2}.
 Context for ultrafilters and homomorphisms of infinite product algebras.
+\mergetag{} Not the paper \cite{BergmanFamilies} cited by manuscript 10.
 
 \bibitem{Repo}
 Vladimir Reshetnikov and contributors,
@@ -5690,6 +7701,52 @@ consulted 23 September 2026. Technical arguments use the primary sources
 rather than this overview. \src{09}; 06 used the same page as orientation
 only.
 \url{https://en.wikipedia.org/wiki/Surreal_number}.
+
+\medskip\noindent\mergetag{} Entries added from manuscript 10 (batch 32; its
+\emph{Conway}, \emph{Gonshor} and \emph{KKS} are the entries above, and its
+\emph{RepoCrit} is this report).
+
+\bibitem{BergmanFamilies}
+George M. Bergman,
+``Families of ultrafilters, and homomorphisms on infinite direct product
+algebras,'' \emph{Journal of Symbolic Logic} \textbf{79} (2014), 223--239.
+In particular Lemmas 3--4 of the preprint.
+\url{https://doi.org/10.1017/jsl.2013.5};
+\url{https://arxiv.org/abs/1301.6383}. \src{10}
+
+\bibitem{BergmanNahlus}
+George M. Bergman and Nazih Nahlus,
+``Linear maps on $k^I$, and homomorphic images of infinite direct product
+algebras,'' \emph{Journal of Algebra} \textbf{356} (2012), 257--274.
+\url{https://doi.org/10.1016/j.jalgebra.2012.01.004};
+\url{https://arxiv.org/abs/0910.5183}. \src{10}
+
+\bibitem{BCJS}
+Richard Blute, Robin Cockett, Pierre-Alain Jacqmin, and Philip Scott,
+``Finiteness spaces and generalized power series,''
+\emph{Electronic Notes in Theoretical Computer Science} \textbf{341}
+(2018).
+\url{https://doi.org/10.1016/j.entcs.2018.11.002};
+\url{https://arxiv.org/abs/1805.09836}. \src{10}
+
+\bibitem{Jech}
+Thomas Jech, \emph{Set Theory: The Third Millennium Edition, Revised and
+Expanded}, Springer Monographs in Mathematics, Springer, 2003.
+\url{https://doi.org/10.1007/3-540-44761-X}. \src{10}
+
+\bibitem{Kaplansky}
+Irving Kaplansky, ``Maximal fields with valuations,''
+\emph{Duke Mathematical Journal} \textbf{9} (1942), 303--321.
+\url{https://doi.org/10.1215/S0012-7094-42-00922-0}. \src{10}
+
+\bibitem{RepoOpa}
+\emph{Omnific-Preserving Automorphisms}, repository research report,
+especially its Part III, ``Automatic strongness and proper embeddings of the
+omnific pair,'' and Questions \lbl{opa:as:q:targettests} and
+\lbl{opa:as:q:gaussian}; inspected by manuscript 10 at snapshot
+\texttt{7af8a3026c8440944e94df89020d42ca08f4e3dd}.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/7af8a3026c8440944e94df89020d42ca08f4e3dd/docs/surreal/omnific-preserving-automorphisms/article.tex}.
+Now \fn{docs/surreal/omnific-preserving-automorphisms}. \src{10}
 
 \end{thebibliography}
 \endgroup

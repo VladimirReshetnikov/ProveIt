@@ -1,51 +1,67 @@
 # Critical-Point Defects in Surreal Arithmetic
 
-**Large-cardinal embeddings, exact support thresholds, descent to the target model, omnific independence, surcomplex fields, and omnific integers**
-Merged research report, 23 September 2026, built from three manuscripts of
-batch 30 (manuscripts 06, 07 and 09, placed in `21375f8`; they keep those
-numbers here). Each was prepared for Vladimir Reshetnikov (07 and 09 with
-ChatGPT) and pinned to repository commit `0865f04`. Manuscript 07 is the base
-text.
+**Large-cardinal embeddings, exact support thresholds, descent to the target model, omnific independence, surcomplex fields, omnific integers, and measurable first failures of summation**
+Merged research report, 23 September 2026, built from four manuscripts:
+three of batch 30 (manuscripts 06, 07 and 09, placed in `21375f8`; they keep
+those numbers here), pinned to repository commit `0865f04`, and manuscript
+05 of batch 32 (local number 10, placed in `7d04483`), pinned to `7af8a30`.
+Each was prepared for Vladimir Reshetnikov (07, 09 and 10 with ChatGPT).
+Manuscript 07 is the base text; manuscript 10 is Sections 22–26.
 
 Independent proof review and formalization are pending. No statement of this
 report has a Lean implementation mapping, and the report was not refereed.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 80 pages (unnumbered title page,
-                                            front matter i–iii, then pages 1–76)
+article.pdf                                 the compiled report, 109 pages (unnumbered title page,
+                                            front matter i–iv, then pages 1–104)
 README.md                                   this guide
 06-critical-supports-PROOF_STATUS.md        source 06's proof status and source audit, as delivered
 07-critical-point-defects-PROOF_STATUS.md   source 07's proof, provenance and verification status, as delivered
 09-support-geometry-PROOF_STATUS.md         source 09's proof status and assumptions, as delivered
+10-measurable-spectrum-PROOF_STATUS.md      source 10's claim inventory, review priorities and non-claims, as delivered
+10-measurable-spectrum-SOURCE_AUDIT.md      source 10's repository and literature audit, as delivered
 code/
   06-critical-supports-build.sh             source 06's build helper, as delivered (does not run here)
   07-critical-point-defects-build.sh        source 07's build helper, as delivered (does not run here)
   07-critical-point-defects-finite_regression.py
                                             source 07's exact finite checks (standard library only)
   09-support-geometry-build.sh              source 09's build helper, as delivered (does not run here)
+  10-measurable-spectrum-build.sh           source 10's build helper, as delivered (does not run here)
+  10-measurable-spectrum-finite_regression.py
+                                            source 10's exact finite checks (standard library only)
 data/
   07-critical-point-defects-build_validation.json         07's record of its delivered PDF build
   07-critical-point-defects-finite_regression_results.json  07's recorded run of the finite checks
   07-critical-point-defects-finite_regression_console.txt   the same run's console output
+  10-measurable-spectrum-build_validation.json            10's record of its delivered 24-page PDF
+  10-measurable-spectrum-compile_console.txt              10's latexmk transcript of that build
+  10-measurable-spectrum-finite_regression_console.txt    10's recorded console output of its finite checks
+  10-measurable-spectrum-finite_regression_results.json   10's recorded JSON of the same run
 ```
 
-Every label in `article.tex` carries the prefix `lce:` (254 labels). The 120
-labels delivered with 07 are kept, unchanged after the prefix. The merge added
-134: 56 for 06's material (`lce:cs:`, "critical supports"), 59 for 09's
-(`lce:sg:`, "support geometry"), 11 on 07's previously unlabelled questions
-(`lce:q:classification` … `lce:q:formal`), and 8 for merge text
-(`lce:sub:headlines`, `lce:sub:nonasserted`, `lce:sec:conventions`,
-`lce:rem:dsnsupport`, `lce:rem:opa`, `lce:sub:collection`,
-`lce:app:nonclaims`, `lce:app:provenance`). The
-[formalization ledger](../../FORMALIZATION.md) indexed the placed base under
-its unprefixed delivered labels (`lem:index`, `thm:defect`, …); those labels
-are now `lce:lem:index`, `lce:thm:defect`, and so on.
+Every label in `article.tex` carries the prefix `lce:` (323 labels). The 120
+labels delivered with 07 are kept, unchanged after the prefix. The
+three-source merge added 134: 56 for 06's material (`lce:cs:`, "critical
+supports"), 59 for 09's (`lce:sg:`, "support geometry"), 11 on 07's
+previously unlabelled questions (`lce:q:classification` … `lce:q:formal`),
+and 8 for merge text (`lce:sub:headlines`, `lce:sub:nonasserted`,
+`lce:sec:conventions`, `lce:rem:dsnsupport`, `lce:rem:opa`,
+`lce:sub:collection`, `lce:app:nonclaims`, `lce:app:provenance`). Batch 32
+kept all 254 and added 69 with the sub-prefix `lce:mf:` ("measurable
+failures") for manuscript 10 and its merge text; no label was renamed or
+removed, and every pre-existing theorem, section and equation number is
+unchanged (the Conclusion, which has no label, moved from Section 22 to
+Section 27). The [formalization ledger](../../FORMALIZATION.md) indexed the
+placed base under its unprefixed delivered labels (`lem:index`,
+`thm:defect`, …); those labels are now `lce:lem:index`, `lce:thm:defect`,
+and so on.
 
-Delivered files under `code/` and `data/` and the three proof-status files are
-byte-identical to the delivery. Not shipped: the three manuscripts' PDFs, the
-`.tex` and README of 06 and 09, and 07's delivered README (replaced by this
-one). `article.pdf` is a build of this text.
+Delivered files under `code/` and `data/` and the five proof-status and
+audit files are byte-identical to the delivery. Not shipped: the four
+manuscripts' PDFs, the `.tex` and README of 06, 09 and 10, and 07's
+delivered README (replaced by this one). `article.pdf` is a build of this
+text.
 
 ## Three sources, one report
 
@@ -92,11 +108,13 @@ omnific shifts; 07's mask criterion and 09's compatible-field-embedding
 criterion; 07's supercompact seed coefficient, 06's exact-descent and cover
 characterizations and 09's covering and exact seeds; the 34 questions.
 
-**Marking.** `[06]`, `[07]`, `[09]` tag statements by source; `[merge]` marks
-text written for the merge. 06's and 09's headline theorems are printed in
-Section 1.3 with proof pointers. Section 1.5 has the sources table, the
-hypotheses of each source, and the full renaming table; Appendix C lists every
-non-claim by source; Appendix D records provenance and every merge decision.
+**Marking.** `[06]`, `[07]`, `[09]`, `[10]` tag statements by source; `[merge]`
+marks text written for the merge. 06's and 09's headline theorems are printed
+in Section 1.3 with proof pointers. Section 1.5 has the sources table, the
+hypotheses of each source, and the full renaming table for 06 and 09
+(Section 22.4 has 10's); Appendix C lists every non-claim by source;
+Appendix D records provenance and every merge decision, for 10 in its last
+paragraph.
 
 **Notation.** 07's symbols are kept. Renamed from the other sources (no
 normalization changed):
@@ -120,6 +138,88 @@ normalization changed):
   the Hadamard product `⊙` is not surreal multiplication; `ω^a` is Conway's
   omega-map, never `exp(a log ω)`; `z_A` and `Y_A` are different numbers; the
   landing spectrum `𝓛(j)` is not the logarithmic defect `L_j`.
+
+## Source 10 (batch 32): measurable first failures
+
+| | Archive (in `aa268a4`) | Manuscript | Pin | Contributes |
+|---|---|---|---|---|
+| **10** | `surreal_measurable_spectrum.zip` (batch 32, manuscript 05) | *Measurable Cardinals and the First Failure of Surreal Summation: Exact failure spectra, canonical strong parts, and omnific-preserving additive symmetries* (24-page PDF, with ChatGPT) | `7af8a30` | Sections 22–26: the first failure of a countably strong linear map is measurable; complete-ultrafilter localization (credited to Bergman); the canonical strong part; measurable transvections of `(No, +, <, Oz)`; the workspace criterion and the `2^κ` bound; the surcomplex transfer; the exact boundary for countably strong embeddings; the target test `ω^κ`; 12 questions; proof audit and review checklist; finite regression. |
+
+**Placement.** Manuscript 10 arrived after the three-source merge. It is
+printed as new Sections 22–26, after the questions (Section 21) and before the
+Conclusion, so that no existing number changes; its conclusion is a `[10]`
+paragraph of the Conclusion (now Section 27). Section 22.4 fixes its
+conventions; its labels are `lce:mf:`; untagged text in Sections 22–26 is
+10's, and `[merge]` marks text written for the merge. Its pin `7af8a30`
+precedes the three-source merge (`de45cee`): 10 saw this report as 07's placed
+text and cites its "Sections 2–4" (now Sections 2, 4 and 5), and it did not
+see 06's and 09's questions that it answers.
+
+**Renamed symbols** (Section 22.4 has the full table). 10 writes Hahn series
+in `t` with `t^γ = ω^{−γ}` and well-ordered supports; everything is printed
+here in this report's `ω`-exponents with reverse well-ordered supports, so
+every exponent changes sign: 10's `[t^γ]x` is `[ω^{−γ}]x`, its detector
+exponents `d − ω^{−α}` with `d ≤ −1` are `δ + q_α` with `δ = −d ≥ 1`, and its
+correction monomial `a = t^d` is `ω^δ`. Further: 10's `L = k((t^Δ))` is
+`K' = k((ω^{Γ'}))` (`L_j` is the logarithmic defect); `T`, `T_at`, `T_gh` are
+`Ψ`, `Ψ_at`, `Ψ_gh`; a ghost map `G` is `Υ` (`G_κ` is 09's group); a field
+embedding `F` is `E`; a derivation `D` is `∂` (`D_j` is the defect); `θ` in
+"`<θ`-strong" is `ν` (`θ` is a normal-form length) and the least incomplete
+partition `ν` of its Lemma 4.4 is `μ_𝒰`; ultrafilters `U`, `U_j` with index
+`j` are `𝒰`, `𝒰_p` with index `p` (`U_j` is the derived measure); `ℓ_{S,η}` is
+`ψ_{X,b}` (`ℓ_α` is 09's coordinate functional, `𝒮_{<κ}` the short field,
+`η` an ordinal); the null ideal `𝓘_ℓ` is `𝒩_ψ` with cells `I_p`; `λ_U`, `N_U`,
+`A_{c,U}` are `ϑ_𝒰`, `N_𝒰`, `Θ_{c,𝒰}`; its masks `F_B`, `F = F_κ` are
+`ω^δ Y_A`, `ω^δ Y_κ` (09's omnific masks shifted; 09's `F_κ` is `𝒮_{<κ}`); its
+`B = Σ_{α<κ} t^α` is 07's `h_κ`; its `Λ` is `Λ_j`; its parameter set `P` is `Z`
+(`P_θ` is the missing-index set); `Π_k`, `𝔪_k` are `𝔓_K`, `𝔪_K` (`Π_j` is the
+coefficient projection); `M_f` is `mul_y` (`M` is the target model).
+Tempting false readings are excluded in Section 22.4: 10's detector `ϑ_𝒰`
+reads its input and involves no embedding, whereas 07's `χ_j` reads an image
+coefficient; `ω^δ Y_A`, `Y_A` and `z_A` are different numbers; masks are not
+field idempotents; countably strong is not valuation continuity; fixing
+every monomial is neither being the identity nor omega-map compatibility; an
+additive automorphism is not a field automorphism.
+
+**Printed once.** 10's Proposition 10.1 (the construction of `J`, its
+`<κ`-strongness and first failure at `κ`, `Oz` reflection, `J_at = H_j`) is
+Proposition 26.1 with pointers to Proposition 2.10, Theorems 11.1, 8.1, 7.1,
+Corollary 8.3 and Theorem 4.3; 10 itself says it is not new. 10's group and
+field of its Theorem 8.2 are exactly 09's `G_κ` and `K_κ` (Theorem 13.5). 10's
+Lemma 3.1 is the elementary half of `opa:as:cor:countable`. 10's product law
+for `F − F_at` specializes, for `J`, to 06's and 09's product law (14.3).
+
+**Second routes.** `−κ ∉ J(No)` in Theorem 26.4 (10's elementarity argument,
+and the defect theorem); the `U_j`-large fiber (10's bisection in Lemma
+23.6, and 09's cardinality argument in Proposition 10.8).
+
+**Merge additions** (`[merge]`). Remark 23.10: 07's and 09's character theorem
+is the case of 10's representation theorem for `J`. The reflection clause
+after Proposition 24.7 (10's proof also gives reflection of `Oz` for the
+embedding itself, which 10 states only for the strong part). Remark 26.3: the
+Kaplan–Krapp–Serra non-strong automorphism (their Example 4.4) fixes `ℝ` and
+every monomial but fails a countable sum, so it is outside Theorem 24.1 and
+shows that the countable hypothesis cannot be dropped; it does not preserve
+`Oz`. Corollary 26.5: 09's measurability criterion (Theorem 10.10) holds for
+an `ℝ`-linear `E` with its conditions (a), (b), (d) alone, no order,
+multiplicativity, omega-map or Hadamard condition. Corollary 26.6: the same
+for 07's mask criterion, trading the Hadamard homomorphism for small
+point-finite sums. Proposition 26.7: partial answers for countably strong
+maps. The note after Theorem 26.4 identifies `Λ_j` with the
+`ω^{−κ}`-row of `D_j` and with 07's `χ_j` on masks, and records that the
+negative answer to `opa:as:q:targettests` already followed from
+`opa:as:thm:adjoint` and the non-strongness of `J`.
+
+**Stale in the source.** Besides the pin, 10 claims a "concrete conditional
+negative answer" to `opa:as:q:targettests`; that answer was already implied
+at its pin (above), and 10's contribution there is the explicit test. No
+false theorem was found; every proof was re-read in the converted
+convention.
+
+**Verification.** The suite `code/10-measurable-spectrum-finite_regression.py`
+was rerun on a copy (below): 11,955 assertions in 18 categories, output
+identical to the recorded files. It checks finite algebra only, in 10's
+`t`-convention, with a principal functional.
 
 ## What the report claims
 
@@ -199,14 +299,56 @@ ultrapower is an instance); where stated, more.
 - **Absoluteness (Lemma 2.6; 06, 07, 09)** for transitive inner classes with
   the same ordinals and reals, including normal forms and the omega map; its
   consequence for the definable-surreals report is Remark 2.9 (below).
-- **Questions.** 34: 07's twelve (21.1–21.12), 06's nine (21.13–21.21), 09's
-  thirteen (21.22–21.34). Only the exponential half of Question 21.30 (09) is
-  answered here, by Theorem 15.3; overlaps are cross-referenced.
+- **Measurable first failures (Sections 22–26; 10).** Summability of a
+  set-indexed family is detected by its countable subfamilies (Lemma 23.3), so
+  a countably strong map preserves admissibility (Corollary 23.4). A linear
+  functional on `k^I` (`k = ℝ, ℂ`) preserving point-finite sums of fewer than
+  `ν` vectors is a unique finite combination of `ν`-complete ultrafilter
+  evaluations (Theorem 23.7, Bergman's mechanism, credited); a nonprincipal
+  countably complete ultrafilter yields a measurable cardinal (Lemma 23.9).
+  **Theorem 24.1:** the first failure of a countably strong coefficient-linear
+  map between full real or complex Hahn fields (set-sized or `No`) is a
+  measurable cardinal; without measurables countable strongness implies
+  strongness (Corollary 24.2); failures at successor or singular cardinals
+  are never first (Corollary 24.3). **Theorem 24.4:** every such map is its
+  canonical strong part (determined by the monomial images) plus a countably
+  strong ghost vanishing on monomials and on short supports; for `J` these
+  are `H_j` and `D_j`; the strong part of a field embedding or derivation is
+  one (Theorem 24.6), and preserves and reflects `Oz` (Proposition 24.7).
+  **Theorem 25.2:** a measure `𝒰` on `κ` gives `Θ_{c,𝒰} = id + c ω^δ ϑ_𝒰`,
+  an `ℝ`-linear additive automorphism of `No` preserving order, leading
+  terms, constant terms and `Oz`, fixing every monomial, with first failure
+  exactly `κ`, not multiplicative; it recovers `𝒰` (Corollary 25.3) and can
+  fix any set of parameters (Theorem 25.4); hence multiplication is not
+  definable in `(No, +, <, Oz)` with those parameters (Corollary 25.5). For
+  a set-sized `Γ`, countable tests suffice iff `Γ` has no reverse
+  well-ordered subset of measurable size (Theorem 25.6); the least full real
+  Hahn field with first failure `κ` has size `2^κ`, attained by 09's
+  `K_κ` (Theorem 25.7); surcomplex transfer (Theorem 25.8). **Theorem
+  26.2:** no measurable cardinals iff every countably strong `ℝ`-linear map
+  of `No` is strong, iff the same for `Oz`-stabilizing monomial-fixing
+  additive automorphisms, iff the same for coefficient-fixing `Oz`-preserving
+  field embeddings (with a `<ν` version). **Theorem 26.4:** given a
+  measurable, the target test `ω^κ` for `J` has no source multiplier
+  representative (`opa:as:q:targettests`, conditional). Merge deductions:
+  Corollaries 26.5, 26.6 and Proposition 26.7 (above).
+- **Questions.** 46: 07's twelve (21.1–21.12), 06's nine (21.13–21.21), 09's
+  thirteen (21.22–21.34), 10's twelve (26.8–26.19). The exponential half of
+  Question 21.30 (09) is answered by Theorem 15.3. Batch 32 status notes:
+  Question 21.22 (09's "removing coefficientwise multiplication") is answered
+  for the criterion by Corollary 26.5 (whether condition (c) of Theorem 10.10
+  follows from the others is not decided); Question 21.13 (06's intrinsic
+  converse) is partly answered (the ultrafilter is constructed from a null
+  ideal, with summation as the only extra structure; pairs `(J, H_j)` are not
+  characterized); Questions 21.1, 21.2 and 21.23 get partial progress for
+  countably strong maps (Proposition 26.7). Overlaps are cross-referenced.
 
 ## What the report does not claim
 
 Appendix C lists every non-claim with its place: 21 from 07, 15 from 06, 16
-from 09, and 6 added by the merge. In brief:
+from 09, and 7 added by the merge (M.7 for batch 32); 10's 19 non-claims and
+3 merge items are in Section 26.6 (10.1–10.19, M10.1–M10.3), summarized in
+Appendix C. In brief:
 
 - Not refereed, not Lean-verified, no Lean mapping; AI-assisted drafts;
   priority is proposed, not certified; the literature and repository checks
@@ -230,8 +372,31 @@ from 09, and 6 added by the merge. In brief:
 - The finite checks test finite identities only.
 - Merge: Remark 2.9 covers inner models with the same reals only and leaves
   `dsn:q:support` open; Remark 11.6 is conditional on a measurable cardinal and
-  leaves open whether a counterexample exists without large cardinals, and the
-  clauses on dense images.
+  leaves open whether a counterexample exists without large cardinals (batch
+  32: one fixing `ℝ` would have to fail a countable sum), and the clauses on
+  dense images.
+- Source 10: the countable hypothesis is essential; nothing is claimed for
+  maps or embeddings that fail a countable sum (Question 26.8), for
+  unrestricted Gaussian ring automorphisms (`opa:as:q:gaussian`), or for
+  target tests of strong embeddings; full Hahn fields only, no classification
+  of support-restricted subfields; no global assembly of the local ultrafilter
+  data; the transvections are additive, not multiplicative, and do not
+  respect the omega-map as a function, the exponential or the
+  Berarducci–Mantova derivation, and are only locally translations; no
+  claim that a set-sized `𝒪_Γ` has the full Hahn field as fraction field;
+  Bergman's mechanism is classical; no existence or consistency of
+  measurable cardinals; Section 26 depends on this report's absoluteness
+  lemma (Sections 23–25 do not); the finite checks simulate no ultrafilter;
+  the scalar sums are finite; Corollary 25.5 concerns the additive reduct
+  only; no contradiction with automatic strongness of `Oz` field
+  automorphisms; unrefereed, no Lean, priority not certified. Merge items:
+  Corollaries 26.5, 26.6 and Proposition 26.7 are merge deductions, not 10's
+  statements, and cover countably strong maps only; the Kaplan–Krapp–Serra
+  comparison is a reading of their example, not a theorem.
+- The sentences "we do not establish that arbitrary non-strong surreal
+  embeddings require a measurable cardinal" (Section 1.4) and "one should not
+  infer a large cardinal from an arbitrary non-strong field map" (Section
+  19.7) stay true for arbitrary maps and carry batch-32 re-scoping notes.
 
 ## Relation to the neighbouring reports
 
@@ -252,7 +417,20 @@ Section 20.3 gives these with labels.
   the strongness question `opa:as:q:embeddingstrong`; Remark 11.6 states and
   proves exactly the properties it uses (field embedding fixing `R`,
   preserving and reflecting `Oz`, preserving `ct`, not strongly additive, not
-  onto), consistent with its automorphism theorem `opa:as:thm:main`.
+  onto), consistent with its automorphism theorem `opa:as:thm:main`. Batch 32
+  (source 10): without measurable cardinals a coefficient-fixing
+  counterexample to `opa:as:q:embeddingstrong` must fail a countable sum
+  (Theorem 26.2); Theorem 26.4 gives the explicit unrepresentable target test
+  `ω^κ` for `opa:as:q:targettests`, whose conditional negative answer already
+  followed from `opa:as:thm:adjoint` and the non-strongness of `J`;
+  `opa:as:q:gaussian` is untouched. No reciprocal note has been added to that
+  report yet. The Kaplan–Krapp–Serra automorphism cited in `opa:as:rem:main`
+  fails a countable sum (Remark 26.3), so it is consistent with Theorem 24.1.
+- [`first-kappa-coefficients`](../../surcomplex/first-kappa-coefficients/)
+  (`fkc:`; batch 32 adds to it concurrently). Its Hahn fields of series with
+  fewer than `κ` terms are, over all surreal monomials, the short field
+  `𝒮_{<κ}` here; a `<κ`-strong linear map agrees with its canonical strong part
+  on that field (Theorem 24.4). Cited by directory only.
 - [`birthday-cutoffs-and-hereditary-sets`](../birthday-cutoffs-and-hereditary-sets/)
   (`hset:`). Its embedding correspondence (`hset:thm:embeddings`) acts on sign
   sequences as `J` does, with the same warning that `j(A)` is not `j″A`; its
@@ -294,6 +472,16 @@ Appendix D records these.
   the merged bibliography keeps 07's entries.
 - 06 says its short-field counting uses "regularity and uncountability"; only
   uncountability is needed (note after Corollary 3.2). Not a false statement.
+- Source 10 (batch 32): its pin `7af8a30` precedes the three-source merge, so it
+  cites this report as 07's text; its target-test "negative answer" was
+  already implied at the pin; it states `Oz` reflection only for the strong
+  part, although its proof covers the embedding too. Its bibliography's
+  Bergman paper (JSL 2014, arXiv 1301.6383) is not 07's Bergman entry (arXiv
+  1406.1932); both are cited. Its `RepoCrit` is this report and is replaced by
+  internal references. In the Kaplan–Krapp–Serra example it cites, the
+  displayed family `Σ_n ω^{−1/n}` has increasing exponents and is not a Conway
+  normal form as printed (a sign slip such as `Σ_n ω^{1/n}` appears meant);
+  the failing family is countable in any reading (Remark 26.3).
 
 **Delivered files that use delivery names or numbering.** All shipped as
 delivered:
@@ -326,6 +514,32 @@ delivered:
 - Run without arguments, the finite regression writes
   `data/finite_regression_results.json`, a delivery name next to the shipped
   prefixed file; run it on a copy with `--output` (below).
+- Source 10's proof status and source audit number results as in its own
+  manuscript and write `t^g = ω^{−g}`, `T`, `F`, `λ_U`, `A_{c,U}`, `B`, `S_d`.
+  Correspondence: its Theorem 1.1, Definitions 2.1–2.2, Lemma 3.1, Corollary
+  3.2, Lemma 3.3, Lemma 4.1, Theorem 4.2, Remark 4.3, Lemma 4.4, Theorem 5.1,
+  Corollaries 5.2–5.3, Theorem 6.1, Proposition 6.2, Theorem 6.3, Proposition
+  6.4, Lemma 7.1, Theorem 7.2, Corollary 7.3, Theorem 7.4, Corollary 7.5,
+  Theorems 8.1, 8.2, 9.1, Proposition 10.1, Theorem 10.2, Remark 10.3,
+  Theorem 10.4, Section 11, Questions 12.1–12.12 and Appendices A–B are here
+  Theorem 22.1, Definitions 23.1–23.2, Lemma 23.3, Corollary 23.4, Lemma
+  23.5, Lemma 23.6, Theorem 23.7, Remark 23.8, Lemma 23.9, Theorem 24.1,
+  Corollaries 24.2–24.3, Theorem 24.4, Proposition 24.5, Theorem 24.6,
+  Proposition 24.7, Lemma 25.1, Theorem 25.2, Corollary 25.3, Theorem 25.4,
+  Corollary 25.5, Theorems 25.6, 25.7, 25.8, Proposition 26.1, Theorem 26.2,
+  Remark 26.3, Theorem 26.4, Section 26.4, Questions 26.8–26.19, and the
+  checklist in Section 26.4 with the table of Section 22.4.
+- Source 10's `build.sh` assumes its flat package. Do not run it here: it
+  `cd`s to its own directory (`code/`), creates `code/data/`, pipes
+  `python3 code/finite_regression.py` (a path that does not exist from
+  `code/`) into `tee`, which without `pipefail` still writes an empty
+  `code/data/finite_regression_console.txt`, and then fails at `latexmk` on an
+  `article.tex` that is not in `code/`. It does not build this report. Its
+  finite regression always writes `<script dir>/../data/finite_regression_results.json`,
+  a delivery name next to the shipped prefixed file; it has no output option,
+  so run it on a copy (below). `data/10-measurable-spectrum-build_validation.json`
+  and `data/10-measurable-spectrum-compile_console.txt` describe 10's delivered
+  24-page PDF, not `article.pdf` here.
 
 ## Build and reproduce
 
@@ -339,12 +553,13 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Build in a scratch directory; the auxiliary files are not kept here. The
-recorded build (MiKTeX) has 80 pages and no errors, undefined references or
-citations, multiply defined labels, duplicate destinations, LaTeX or package
-warnings, or overfull boxes. It has seven underfull-box notices, all inside
-07's two delivered tables (the literature table of Section 20 and the Lean
-interface table of Appendix A), identical to a build of the placed text. A
-clean compile proves nothing about the proofs.
+recorded build (MiKTeX, batch 32) has 109 pages and no errors, undefined
+references or citations, multiply defined labels, duplicate destinations,
+LaTeX or package warnings, or overfull boxes. It has seven underfull-box
+notices, all inside 07's two delivered tables (the literature table of
+Section 20 and the Lean interface table of Appendix A), identical to a build
+of the committed text before batch 32; all 254 pre-existing labels keep their
+numbers in the `.aux` file. A clean compile proves nothing about the proofs.
 
 The finite regression needs Python 3.10 or later and no packages. Run it on a
 copy, from this directory:
@@ -367,3 +582,28 @@ principal characters), and one Hadamard-versus-convolution distinction. They
 model no elementary embedding, measurability, class recursion, normal-form
 absoluteness, transfinite summation or supercompactness. 06 and 09 ship no
 programs.
+
+Source 10's finite regression (Python 3.10 or later, standard library only)
+always writes `finite_regression_results.json` into `../data/` relative to
+the script and has no output option, so run it on a copy laid out as
+`code/` and `data/`:
+
+```sh
+T=$(mktemp -d); mkdir -p "$T/code"
+cp code/10-measurable-spectrum-finite_regression.py "$T/code/finite_regression.py"
+(cd "$T" && python code/finite_regression.py > console.txt)
+diff <(tr -d '\r' < "$T/data/finite_regression_results.json") data/10-measurable-spectrum-finite_regression_results.json
+diff <(tr -d '\r' < "$T/console.txt") data/10-measurable-spectrum-finite_regression_console.txt
+```
+
+This was run for batch 32 under Python 3.14.4 on Windows: exit code 0,
+`PASS: 11955 exact finite assertions across 18 categories`, seed 20260923,
+600 random cases; the written JSON and the console output are identical to
+the recorded files after line-ending normalization. The checks are finite
+rational models in 10's `t`-convention: nilpotence, group law, inverse,
+additivity, scalar linearity, leading term, order on differences, constant
+term, omnific-type preservation and its inverse, a finite sum identity, the
+coordinate matrix, weighted-coordinate additivity and scaling, and the
+nonmultiplicativity formulas. The finite functional is a principal
+coefficient projection that does not vanish on every monomial; no
+ultrafilter, measurable cardinal, transfinite sum or proof is verified.
