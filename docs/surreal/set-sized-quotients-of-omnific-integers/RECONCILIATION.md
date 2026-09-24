@@ -4195,3 +4195,43 @@ Audits pass 4,626 anchors in 63 reports, 5,240 source-label references and
 1,979 local Markdown destinations in 226 files. No Lean, verifier or
 historical data file changed in this review pass. The next review begins
 with quadratic branch splitting inside the fixed cyclic workspace.
+
+
+### Small quotient classification and unit-forcing obstruction sync (2026-09-24)
+
+Merged `origin/main` through `69363f9` (implementation `17894c1`) and read
+all four new modules against `osq:thm:reflection`, `osq:thm:quotients`,
+`osq:cor:nofield`, `osq:prop:fractions`(iv) and `odg:fact:settarget`.
+The generic reflection constructs the image-ideal quotient map, its exact
+kernel and the natural correspondence of target homomorphisms. Both actual
+instances apply to every ideal, without assuming the original quotient is
+small. All target maps in this reflection statement are unital.
+
+An actual real or Gaussian quotient is small exactly when its ideal
+contains the appropriate purely infinite ideal. The corresponding ordinary
+ideal is unique. For the real ring the native equivalences give precisely
+Z or Z/nZ for positive n, including n=1. Modulus zero represents the
+inverse image of the zero integer ideal, namely Pi, not the zero principal
+omnific ideal. For Gaussian constants the proofs give principal-kernel
+classification, the ordinary quotient equivalence, and equality of kernels
+exactly for associated moduli. The explicit Gaussian finiteness proof and
+norm-cardinality formula remain pending, as does the arbitrary coefficient
+field instance.
+
+The unit obstruction works in any extension making a purely infinite
+element a unit. Its small unital ring images are zero, and its small unital
+modules are trivial by applying the invertible scalar directly to each
+vector. Native localizations and the actual surreal/surcomplex fields are
+instantiated. No field hypothesis on the extension and no size estimate
+for an endomorphism ring are needed; the extension and target rings may
+be noncommutative. Smallness remains relative to the birthday universe.
+
+Updated the report guide and catalogue to match the merged root README
+and coverage ledger. `LEAN_NUM_THREADS=2 lake build` passed 5,034 jobs;
+the axiom audit accepted 18,882 declarations using only propext,
+Classical.choice and Quot.sound. Three final catalogue TeX passes were
+diagnostic-free, still 36 pages; inspected refreshed pages 12–13. The
+article remains 343 pages and unchanged by the merge, with the previously
+checked statements, labels and numbering preserved. Audits pass 4,626
+anchors in 63 reports, 5,240 source-label references and 1,986 local Markdown
+destinations in 226 files.
