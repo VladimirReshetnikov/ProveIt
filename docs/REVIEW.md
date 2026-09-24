@@ -8634,3 +8634,31 @@ do not certify class recursion, prime existence or the new ideal arguments.
 Independent audits pass all 4,626 anchors in 63 reports, 5,230 source-label
 references and 1,953 local Markdown destinations in 226 files. No Lean code,
 verification code or historical output record was changed in this review.
+
+### Gaussian-normalization sync (2026-09-24)
+
+Merged `origin/main` through `b3b7e52` and read its three new modules
+against the actual-field clause of `osq:nm:thm:complexnormal` and the
+Gaussian modulus assertion of `osq:nm:lem:intpart`. The canonical real
+omnific inclusion transports integral elements and units to the Gaussian
+normalization. A nonzero Gaussian omnific integer has a nonzero real or
+imaginary omnific coordinate, which gives modulus at least one. Real
+integral approximations with tolerance ε/2 in each coordinate prove
+Gaussian density for every positive surreal radius in the native topology.
+A small real integral unit gives a multiple with modulus between zero and
+one, forcing zero conductor. The common algebra denominator then excludes
+small generating sets. The nonintegral half proves properness in the
+ambient field; the package includes the already proved constant slices.
+The fixed-model clauses and specified H=|p|+|q| witness remain pending.
+
+Updated report/catalogue scope to match the merged root README and ledger,
+while preserving the new fibre review and its pending Lean status. Explicitly
+called the proved Cauchy-net/discreteness algebra real to avoid ambiguity
+in the now combined real/Gaussian summary. No article proof changed in this
+sync. `LEAN_NUM_THREADS=2 lake build` passed 5,009 jobs, with 18,536
+declarations passing the axiom audit using only propext, Classical.choice
+and Quot.sound. Three final catalogue passes remain diagnostic-free at
+35 pages; visually inspected the updated page 12. Article and numbering
+checks remain unchanged at 331 pages. Audits pass all 4,626 anchors in
+63 reports, 5,230 source-label references and 1,956 local Markdown
+destinations in 226 files.

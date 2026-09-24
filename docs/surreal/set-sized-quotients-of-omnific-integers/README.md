@@ -466,15 +466,16 @@ are not integral, so the normalization's generator count remains open.
 Lean now proves the actual real and Gaussian uniform-denominator theorems,
 the complete-integral-closure claims for both actual fields and all
 intermediate rings, and the general reciprocal obstruction, including
-nonintegrality of 1/2 in both omnific rings. For the actual real omnific
-ring it also proves the full normalization theorem: both strict inclusions,
-fine density, zero conductor and the obstruction to generation by a small
-set. Small-generated omnific algebras are closed and uniformly discrete;
+nonintegrality of 1/2 in both omnific rings. For both actual omnific rings
+it also proves the full normalization theorem: both strict inclusions,
+density in the fine order or surreal-modulus topology, zero conductor and
+the obstruction to generation by a small set. Small-generated real omnific
+algebras are closed and uniformly discrete;
 every Cauchy net in one is eventually constant, without a bound on its
 index or range. The small-unit, density and conductor arguments are
 formalized generically for integer parts with nonnegative square roots.
 The fixed countable-support versions, sharp generator counts and remaining
-Gaussian normalization consequences remain pending. The section
+explicit Gaussian basis and conductor-comparison consequences remain pending. The section
 introduction now distinguishes the Noetherian equality of integral and almost integral closure from
 equality with the original ring, which also requires integral closedness;
 Z[√5] and (1+√5)/2 provide the counterexample to the former wording.

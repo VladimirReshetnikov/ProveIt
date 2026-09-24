@@ -376,13 +376,17 @@ over its omnific ring, as are all elements over any intermediate ring.
 These rings have the full ambient field as their fraction field and complete
 integral closure. Ordinary integral closure is strictly smaller: `1/2` is
 almost integral but not integral, since a nonunit cannot gain an integral
-reciprocal. For the real omnific ring, Lean also proves the full actual-field
-normalization theorem: its integral closure properly contains `Oz`, is a
-proper dense subring of `No`, has zero conductor and has no small set of
-algebra generators. The density proof constructs integral units
+reciprocal. For both real and Gaussian omnific integers, Lean also proves
+the full actual-field normalization theorem: the integral closure properly
+contains the original ring, is a proper dense subring of `No` or `No[i]`,
+has zero conductor and has no small set of algebra generators.
+The real density proof constructs integral units
 `√(H²+1) − H` below every positive surreal radius and uses the omnific floor
 to approximate from below. Its generic form applies to any integer part of
-an ordered field with nonnegative square roots. Every omnific algebra generated
+an ordered field with nonnegative square roots. Approximating both coordinates
+gives Gaussian density in every positive surreal-modulus ball; the modulus
+bound of one for nonzero Gaussian omnific integers forces zero conductor.
+Every real omnific algebra generated
 by a small surreal set is now proved closed and uniformly discrete in the
 fine topology, even though the algebra itself need not be small. One positive
 monomial denominator separates every pair of distinct elements. Every
