@@ -233,6 +233,14 @@ coefficients. A positive monomial has no finite irreducible factorization,
 even up to a unit. Thus the omnific ring is neither atomic nor a unique
 factorization domain.
 
+Ordered division is proved for every positive omnific divisor: the quotient
+is the omnific floor of the surreal ratio, and the remainder is uniquely
+between zero and the divisor. Yet Euclidean iteration can run forever.
+Starting from `√2 ω` and `ω`, the verified quotients are `1`, then always `2`;
+the remainders `(√2−1)^n ω` remain positive and infinite at every finite
+stage. This explicit descending chain also proves that the positive omnific
+order is not well founded.
+
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
