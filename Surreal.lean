@@ -897,3 +897,6 @@ import Surreal.Algebra.GaussianQuotientCardinality
 import Surreal.Foundations.OmnificQuotientSize
 import Surreal.Foundations.OmnificPrincipalQuotients
 import Surreal.Foundations.OmnificPrincipalImages
+import Surreal.Algebra.IdealCongruenceClosure
+import Surreal.Foundations.OmnificIdealClosure
+import Surreal.Foundations.OmnificDenseIdeals

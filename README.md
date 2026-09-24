@@ -592,6 +592,12 @@ its leading exponent have distinct residues. The quotients by `ω`, `2+ω`
 and `1+ω` are all nonzero and large: the first two surject onto `ℤ` and
 `ℤ/2ℤ`, while the third has no nonzero small unital ring image. Among ideals
 with small quotient, only the purely infinite ideal lacks a small generating set.
+The finite-congruence closure of every omnific ideal J is now proved to be
+`J + Pi`, equivalently the inverse image of its integer constant ideal.
+This is also its closure in the native congruence topology. A principal
+ideal is dense exactly when its generator has constant term `±1`.
+Every nonconstant irreducible therefore generates a proper dense ideal;
+even a nonunital map to a small ring that kills it must be zero.
 
 Integer-coefficient polynomial systems have omnific solutions exactly when
 they have ordinary integer solutions. Constant extraction retracts the
