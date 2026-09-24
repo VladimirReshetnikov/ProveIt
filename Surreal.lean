@@ -686,6 +686,10 @@ import Surreal.Surcomplex.DiophantineConstants
 import Surreal.Algebra.DiophantineConstantsBoundary
 import Surreal.Surcomplex.DiophantineConstantsBoundary
 import Surreal.Algebra.QuinticConstants
+import Surreal.Algebra.PellTwoGrowth
+import Surreal.Algebra.QuarticConstants
+import Surreal.Algebra.QuarticPolynomial
+import Surreal.Foundations.OmnificQuartic
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants
