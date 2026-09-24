@@ -4596,3 +4596,24 @@ The 33-page catalogue also builds cleanly in three passes. All 4,550 indexed
 standard results across 63 reports, 5,107 source references and 1,709 local
 Markdown destinations pass their checks. The index anchors were refreshed
 after the incoming reciprocal notes moved source lines.
+
+
+## Reciprocal-note synchronization after the discriminant review
+
+Merged `84c6398`, which adds cross-report notes in eight reports without
+changing their standard or principal statements. The new Diophantine
+pointers were compared with the cited floor, formal integration, formal
+fraction, quartic-collapse, exponential-fiber/decidability and uniform
+real-form arithmetic statements. The congruence pointer explicitly retains
+positive ordinary `n`. This is a statement-scope comparison, not a proof
+review of those imported results.
+
+The Diophantine PDF was rebuilt from both branches' merged source rather
+than selecting either binary version. It now has 227 pages, with no
+warnings, unresolved references or bad boxes after three passes, preserving
+all 553 source labels and 1,106 auxiliary label numbers. All 244 standard
+statements agree with the preceding review commit. The collection still
+has 4,550 standard results in 63 reports; refreshed indexes, 5,107 source
+references and 1,718 local Markdown destinations pass. This merge changes
+only documentation, so the successful 4,503-job Lean build and 15,678-
+declaration audit remain applicable.

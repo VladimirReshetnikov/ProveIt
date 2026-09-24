@@ -320,6 +320,14 @@ ordered initial" found nothing outside this directory.
   "initial" is defined as here). Its maximal initial elementary exponential core
   (`dsn:thm:core`) concerns initial *subfields* of definable surreals; related
   in spirit, no overlap.
+- **[exponential-relations-over-omnific-integers](../../foundations-and-computation/exponential-relations-over-omnific-integers/)**
+  (batch 33) reads `Oz` as a Presburger `Z`-group: its division with remainder
+  (`exr:prop:division`) is Lemma 14.1 for `G = Oz`, re-derived independently,
+  its splitting `Oz = Π ⊕ Z` is the split form of Main Theorem E, and with
+  rational-slope exponential predicates it is a definitional expansion of
+  Presburger arithmetic with `Z` elementary in `Oz` (`exr:thm:rational`).
+  Nothing there concerns initiality. An unnumbered note at the end of the
+  collection section records this; it changed no number and no page count.
 - The symbols `Θ_α`, `Ψ_α`, `q_β`, `N_{α,n}` are local (Section 1.4) and
   unrelated to theta series or the nome `q` of the surcomplex reports; `♭_E`
   and `res_G` are local to Sections 11–18.
