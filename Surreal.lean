@@ -668,3 +668,5 @@ import Surreal.Algebra.QuadraticIdealDefinition
 import Surreal.Algebra.QuadraticConstantObstruction
 import Surreal.HahnSeries.QuadraticIdealDefinition
 import Surreal.Surcomplex.QuadraticIdealDefinition
+import Surreal.Algebra.QuadraticIdealBoundary
+import Surreal.HahnSeries.QuadraticIdealBoundary

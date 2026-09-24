@@ -1747,3 +1747,14 @@ No article or catalogue source changed in this merge, so their validated
 229-page and 33-page PDFs remain current. The source-label audit finds
 5,194 references with none missing; all 1,739 Markdown destinations and
 the 4,626-result index across 63 reports pass, as do whitespace checks.
+
+The first push was rejected because `main` advanced. A further merge of
+`ff5b5ad` adds formal proofs of both displayed quadratic-definition boundary
+examples: the generated integer-polynomial subring has a purely infinite
+generator without a quadratic witness, while adjoining sqrt(2) to the
+constant ring supplies a nonzero constant witness. The generic range
+statement is also instantiated at the integer-exponent Hahn monomial
+`t^(-1)`. The two-thread full build now passes 4,526 jobs and audits 15,827
+declarations with the same permitted axioms. Article/catalogue sources
+remain unchanged; the index, 5,194 source references, 1,741 Markdown
+destinations and whitespace checks pass after this merge.
