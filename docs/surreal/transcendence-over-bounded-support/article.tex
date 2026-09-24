@@ -33,6 +33,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{construction}[theorem]{Construction}
+\newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
@@ -60,7 +61,15 @@
 \newcommand{\auditcommit}{\texttt{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}}
 \newcommand{\placecommit}{\texttt{30dfb4f}}
 \newcommand{\assemblycommit}{\texttt{ed88b8f}}
-\hypersetup{pdftitle={Bounded-Support Hahn Arithmetic: Cofinal Descent and Maximal Transcendence},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Surreal and surcomplex numbers; Hahn fields; algebraic independence; cofinality}}
+% Batch 32 (source 02, Sections 11--19): Galois theory of the bounded fraction fields.
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Zh}{\widehat{\Z}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\AbsGal}[1]{\mathfrak G_{#1}}
+\newcommand{\AAG}[3]{\mathcal A_{#3}(#1,#2)}
+\newcommand{\grpin}{\texttt{343dc2c471212bb9b53ff4623bace2e1943f255b}}
+\newcounter{bstgrsavedequation}
+\hypersetup{pdftitle={Bounded-Support Hahn Arithmetic: Cofinal Descent, Maximal Transcendence, and a Galois Rank Dichotomy},pdfauthor={Research drafts prepared with ChatGPT},pdfsubject={Surreal and surcomplex numbers; Hahn fields; algebraic independence; cofinality; Galois groups}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -70,9 +79,9 @@
 \vspace{0.25in}
 {\Huge\bfseries\color{ink} Bounded-Support\par Hahn Arithmetic}\par
 \vspace{0.2in}
-{\LARGE Cofinal descent, optimal support thresholds,\par and maximal transcendence}\par
+{\LARGE Cofinal descent, optimal support thresholds,\par maximal transcendence, and a Galois rank dichotomy}\par
 \vspace{0.3in}
-{\large Research draft prepared with ChatGPT\par 22 September 2026}\par
+{\large Research drafts prepared with ChatGPT\par 22 and 23 September 2026}\par
 \vspace{0.25in}
 \noindent\rule{\textwidth}{0.6pt}
 \begin{abstract}
@@ -97,6 +106,18 @@ a conditional GCD-descent theorem relevant to a published pre-Schreier
 question. Concrete Conway-normal-form specializations give independent
 families of actual surreal numbers, including maximal families of size
 $2^\kappa$ at every infinite regular cardinal.
+
+A second part, from a second manuscript, develops the Galois theory of
+$\FF{\C}G$ and $\FF{\R}G$, which are also the fraction fields of the
+canonical omnific subrings at the scale $G$. For divisible $G$ there is an
+exact rank dichotomy: without an order unit $\FF{\C}G$ is algebraically
+closed and $\FF{\R}G$ real closed; with one, every product of at most
+continuum many finite groups is a Galois group over $\FF{\C}G$ inside the
+ambient Hahn field, with explicit independent radical towers and an
+explicit $S_m$ family. Cofinal inclusions of exponent groups preserve every
+finite Galois extension, while noncofinal ones split every finite
+extension after scalar extension; an explicit countable tower inside
+$\No[i]$ repeats this.
 \end{abstract}
 \vfill
 \noindent\small\textbf{Status.} Complete arguments for the stated new results are given relative
@@ -106,10 +127,13 @@ or Lean-verified. The GCD application is explicitly conditional and is not used
 in any transcendence theorem.
 
 \smallskip
-\noindent\textbf{In this collection.} A single-source report, built from one
-manuscript; every label carries the prefix \texttt{bst:}. Its relation to
-the neighbouring reports is Section~\ref{bst:sec:collection}; its provenance is
-Section~\ref{bst:subsec:provenance}.
+\noindent\textbf{In this collection.} A two-source report: Sections 1--10 and
+the appendices come from the first manuscript, Sections~\ref{bst:gr:sec:overview}--\ref{bst:gr:sec:questions}
+(the Galois part, added in batch 32) from the second; every label carries
+the prefix \texttt{bst:}, and those of the Galois part the sub-prefix
+\texttt{bst:gr:}. Its relation to the neighbouring reports is
+Sections~\ref{bst:sec:collection} and~\ref{bst:gr:subsec:neighbours}; its
+provenance is Sections~\ref{bst:subsec:provenance} and~\ref{bst:gr:subsec:source}.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \begingroup
@@ -250,7 +274,8 @@ problem; it does not supply the missing real-exponent GCD input.
 
 \subsection{Provenance of this report}\label{bst:subsec:provenance}
 
-This report is built from one manuscript, \emph{Bounded-Support Hahn
+Sections 1--10 and the appendices are built from one manuscript
+(source~01), \emph{Bounded-Support Hahn
 Arithmetic: cofinal descent, optimal support thresholds, and maximal
 transcendence}, a research draft prepared with ChatGPT and dated
 22 September 2026. It arrived as item~07 of the nineteenth batch of external
@@ -258,9 +283,13 @@ manuscripts. Commit \placecommit\ placed the raw source and artifacts;
 commit \assemblycommit\ assembled the article and added its first repository
 PDF. Its own
 repository audit is pinned to revision \auditcommit\ (Appendix~\ref{bst:sec:audit}).
-The manuscript contributed every theorem, proof, example, appendix and
-non-claim printed here; nothing was merged from another source, so no result
-is printed twice and there was no choice between competing proofs.
+That manuscript contributed every theorem, proof, example, appendix and
+non-claim printed in Sections 1--10 and Appendices~\ref{bst:sec:gcd}--\ref{bst:sec:audit}.
+Until batch 32 nothing was merged from another source. Sections~\ref{bst:gr:sec:overview}--\ref{bst:gr:sec:questions}
+were added in batch 32 from a second manuscript (source~02) on the Galois
+theory of the same fraction fields; Section~\ref{bst:gr:subsec:source}
+gives its provenance, the results of Sections 1--10 that it re-derives
+(each printed once and credited), and where the merge had to choose.
 
 The editorial changes made when the report entered the collection are:
 every label received the prefix \texttt{bst:}; the actual surreal witnesses
@@ -277,6 +306,9 @@ The subsequent proof review expands the arguments and corrects the
 convergence and comparison wording. It also replaces the former
 \texttt{52c7ab6} placement citation, which is unavailable in the local
 history, by the distinct placement and assembly commits above.
+The editorial conventions of the Galois part (its notation, which renames
+several of source~02's symbols, and its \textup{[merge]} marks) are stated in
+Sections~\ref{bst:gr:subsec:source} and~\ref{bst:gr:subsec:notation}.
 
 \section{Hahn series and bounded-support algebra}\label{bst:sec:setup}
 
@@ -570,6 +602,11 @@ linear map and therefore surjective. Its distinct
 base-field automorphisms extend by the identity on $\FF LG$, and their
 number already equals that degree. This observation does not assert that
 every algebraic germ extension is Galois.
+(Added in batch 32.) Corollary~\ref{bst:gr:cor:transport} adds that the whole
+subgroup--intermediate-field correspondence is transported, and
+Sections~\ref{bst:gr:sec:covers}--\ref{bst:gr:sec:real} use this transport to
+realize every finite group, and products of at most $\cc$ of them, as Galois
+groups over $\FF{\C}G$ when $G$ has an order unit.
 
 \subsection{The ordinary Laurent-series case}
 
@@ -602,6 +639,14 @@ bounded-support fraction field. In contrast, $(1-s)^{-1}$ is in that
 fraction field, although its support is unbounded.
 \end{example}
 
+(Added in batch 32.) In the notation of Section~\ref{bst:gr:sec:radicals},
+$z=r_{-1,2}$. Proposition~\ref{bst:gr:prop:single} and
+Theorem~\ref{bst:gr:thm:multirad} extend the example to all roots
+$r_{a,n}$ of $1-as$ and to their joint degrees, and
+Theorem~\ref{bst:gr:thm:closedness} uses the case $a=1$, $n=2$ to show that
+the closedness of Corollary~\ref{bst:cor:closedbase} fails whenever $G$ has an
+order unit.
+
 \subsection{Why noncofinal enlargement behaves oppositely}
 
 If $H$ is not cofinal, the entire group $H$ is bounded above in $G$.
@@ -624,6 +669,10 @@ fraction field are both just $K$.
 This dichotomy is about the actual embedding of exponent groups. Merely
 saying that both groups are divisible or both have countable cofinality does
 not imply that the embedding is cofinal.
+(Added in batch 32.) Theorem~\ref{bst:gr:thm:transition} states the Galois
+form of this dichotomy for $K=L=\C$ and divisible $H$: a cofinal inclusion
+keeps every finite extension of $\FF{\C}H$ a field of the same degree, and a
+noncofinal one splits every finite extension completely.
 
 \section{The support-separation mechanism}\label{bst:sec:gaps}
 
@@ -1206,6 +1255,9 @@ Hahn order.
 These fields can be proper and dense in the full Hahn field. There is no
 conflict with algebraic closedness: the remaining extension is
 transcendental. Theorem~\ref{bst:thm:independent} measures how large it is.
+(Added in batch 32.) For divisible $G$ and $K=\R,\C$ the hypothesis ``no
+order unit'' is also necessary: Theorem~\ref{bst:gr:thm:closedness} shows that
+with an order unit $u$ the element $1-t^u$ has no square root in $\FF{\C}G$.
 
 \subsection{Reduction to the highest Archimedean quotient}
 
@@ -1478,6 +1530,11 @@ a surreal number. Consequently the naive class-wide version of
 All the nontrivial statements in this article are deliberately
 workspace-relative. A set-sized cofinal support in $G_\kappa$ is not a
 cofinal subclass of all of $\No$.
+(Added in batch 32.) Section~\ref{bst:gr:sec:rankjump} computes the Galois
+consequence of such an enlargement: one dominating exponent absorbs the
+whole old Hahn field, hence an algebraic closure of the old complex
+fraction field, and Section~\ref{bst:gr:sec:surreal} repeats this along an
+explicit countable tower in $\No[i]$.
 
 The valuation topology used for density is likewise the topology of the
 named Hahn workspace. For a constructed family member, the bounded initial
@@ -1699,6 +1756,8 @@ directory; an explicit scratch path keeps the delivered record in
 \texttt{data/} unchanged. The delivered verification record is separate from
 the PDF build record \texttt{data/build\_audit.json}, which describes the
 delivered 24-page PDF, not the PDF of this report.
+(Added in batch 32.) The second source's suite, with its own record, is
+described in Section~\ref{bst:gr:subsec:verification}.
 
 \subsection{A feasible formalization decomposition}
 
@@ -1749,6 +1808,1947 @@ ring, while the main theorem concerns algebraic independence over its
 fraction field. Neither assertion substitutes for the other. In
 particular, proving a ring to be GCD would not make the huge transcendental
 extension disappear.
+
+% ======================================================================
+% Batch 32: the Galois part (source 02), Sections 11--19.
+% Equations of this part are numbered within sections, with their own
+% hyperref anchors; the global equation counter is restored before the
+% appendices, so no pre-existing equation number changes.
+% ======================================================================
+\setcounter{bstgrsavedequation}{\value{equation}}
+\let\bstgrsavedtheequation\theequation
+\let\bstgrsavedtheHequation\theHequation
+\counterwithin*{equation}{section}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\theHequation}{bstgr.\thesection.\arabic{equation}}
+
+\section{The Galois part: overview, provenance and notation}\label{bst:gr:sec:overview}
+
+Sections~\ref{bst:gr:sec:overview}--\ref{bst:gr:sec:questions} were added
+in batch 32. They develop the Galois theory of the bounded-support fraction
+fields $\FF{\C}G$ and $\FF{\R}G$, using the descent theorem of
+Section~\ref{bst:sec:descent} as their engine. Everything in them comes from
+a second manuscript (source~02) unless it is marked \textup{[merge]}; a
+\textup{[merge]} mark covers the sentence or paragraph it heads and records
+text written when the manuscript was merged into this report.
+
+An algebraically closed ambient field need not reveal the algebraic
+complexity of its natural subfields. The surcomplex field $\No[i]$ is an
+especially striking setting for this distinction. A prescribed exponent
+group gives a full Hahn field, a canonical omnific subring, and the
+fraction field of that subring. The first of these is algebraically closed
+when the coefficients are complex and the exponent group is divisible.
+The third can have Galois extensions with every finite group. The relevant
+boundary is not merely the number of available exponents. It is whether a
+single exponent controls their Archimedean growth, that is, whether $G$ has
+an order unit (Section~\ref{bst:sec:setup}); equivalently, whether $G$ has a
+largest Archimedean class. A group can have countable cofinality without
+having an order unit.
+
+\subsection{Source and provenance of this part}\label{bst:gr:subsec:source}
+
+\emph{Source~02.} \emph{A Galois Rank Dichotomy for Omnific Fraction Fields:
+finite covers, independent radical towers, and collapse at a new surreal
+scale}, a research manuscript prepared for Vladimir Reshetnikov with
+ChatGPT, dated 23 September 2026; a 27-page PDF (four front-matter pages and
+23 numbered pages). It is manuscript~06 of batch~32 (archive
+\texttt{surreal\_galois\_rank\_article}, main file
+\texttt{galois\_rank\_dichotomy.tex}), placed as an addition to this report
+in commit \texttt{7d04483} with the local file prefix \texttt{02-}. Its
+repository comparison is pinned to \grpin. At that pin this report consisted
+of Sections 1--10 and the appendices with the numbering used here, so the
+source's citations of Theorem~3.2, Corollaries~3.3--3.4, Theorem~7.1,
+Corollary~7.2 and Section~8.4 still refer to the same statements. The
+batch-31 comparisons (the paragraph after Corollary~\ref{bst:cor:onegap} and
+Section~\ref{bst:subsec:copies}) were added after the pin.
+
+\emph{What it contributed.} Every result, proof, example, remark, question
+and non-claim of Sections~\ref{bst:gr:sec:overview}--\ref{bst:gr:sec:questions}:
+the omnific fraction bridge and complexification; finite coset slices; the
+transport of whole finite Galois correspondences; realization of every
+finite group, and of products of at most $\cc$ finite groups, at an order
+unit; the preserved local Galois envelope; explicit radical towers with
+exact degrees and group $\prod\Zh$; the closedness boundary; an explicit
+$S_m$ family; real multiquadratic and generalized-dihedral extensions; the
+cardinality $2^{\cc}$ of the absolute Galois group in real rank; absorption
+of the old Hahn field by one dominating exponent and the resulting
+all-or-nothing Galois transition; the explicit omnific quotient
+$\sqrt{1-\omega^{-1}}=(\omega^\omega-\cdots)/\omega^\omega$; the countable
+tower in $\No[i]$; twelve research questions.
+
+\emph{Where the merge chose.} \textup{[merge]}
+\begin{enumerate}
+\item \emph{Printed once.} Source~02 re-derives, and credits, several
+results of Sections 1--10. Each is printed once, at its original place, and
+credited there: its Theorem~3.2 (local-field descent) is
+Corollary~\ref{bst:cor:onescale} with $L=K$; its Theorem~3.5 (cofinal
+subgroup descent) is Theorem~\ref{bst:thm:descent} with $L=K$; its
+Proposition~7.1 is Theorem~\ref{bst:thm:fieldcriterion}; the positive half
+of its Theorem~7.2 is Corollary~\ref{bst:cor:closedbase}; the inclusion of
+its Theorem~10.1 is \eqref{bst:eq:collapse}; its normal-form embedding is
+\eqref{bst:eq:conway}; and its closing discussion of the full surreal field
+repeats Section~8.4. Its own proofs of the first two are the coset-projection
+proof of Theorem~\ref{bst:thm:descent} without the coefficient functional
+(not needed when $L=K$); they are printed as marked second routes in
+Remarks~\ref{bst:gr:rem:cyclicroute} and~\ref{bst:gr:rem:cofinalroute}.
+\item \emph{Generality.} Source~02 states its Corollary~3.3 over the base
+$K(s)$, and in its transition theorem applies the same argument over
+$\FF{\C}H$ for cofinal $H$. Corollary~\ref{bst:gr:cor:transport} is stated at
+the generality of Theorem~\ref{bst:thm:descent}, which contains both uses.
+\item \emph{A stale ledger entry.} Source~02's ledger calls the Galois-group
+part of its Corollary~3.3 ``already implicit in prior degree preservation''.
+It is explicit: the paragraph after Corollary~\ref{bst:cor:relations} proves
+preservation of degree and Galois group after compositum. Only the
+intermediate-field correspondence is added (Section~\ref{bst:gr:subsec:ledger}).
+\item \emph{Stale against the tree.} Source~02's Proposition~2.1 (the
+fraction bridge, Proposition~\ref{bst:gr:prop:fractions}) was printed after the
+pin, for $D=\Z$ or $\Z[i]$, as \texttt{isc:prop:boundedfrac} in the
+independent-copies report \cite{RepoIsc}, which calls it a localization of
+Proposition~\ref{bst:prop:localdensity}. Source~02 allows any unital subring
+$D$ and any coefficient field.
+\item \emph{Questions.} Source~02's twelve research directions, printed as
+subsections there, are Questions~\ref{bst:gr:q:absolute}--\ref{bst:gr:q:formal}
+here, with their text kept.
+\item \emph{Notation.} Source~02's notation is translated into this report's
+(Section~\ref{bst:gr:subsec:notation}); its two definitions of $E_T$ are one
+definition here.
+\item \emph{Named questions.} Source~02 answers none of the questions of
+Section~10.3 (transcendence degree for arbitrary $G$, naturality of the
+independent family, GCD); none of them is changed.
+\end{enumerate}
+
+\emph{Numbering.} Source~02's results appear here as follows.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Source~02 & This report \\
+\midrule
+Theorems 1.1, 1.2, 1.3 & Theorems~\ref{bst:gr:thm:main}, \ref{bst:gr:thm:mainrad}, \ref{bst:gr:thm:mainjump} \\
+Propositions 2.1, 2.3; Remark 2.2 & Propositions~\ref{bst:gr:prop:fractions}, \ref{bst:gr:prop:complexify}; Remark~\ref{bst:gr:rem:notwhole} \\
+Lemma 3.1; Theorem 3.2; Corollary 3.3 & Lemma~\ref{bst:gr:lem:slices}; Corollary~\ref{bst:cor:onescale} and Remark~\ref{bst:gr:rem:cyclicroute}; Corollary~\ref{bst:gr:cor:transport} \\
+Remark 3.4; Theorem 3.5 & Remark~\ref{bst:gr:rem:intersections}; Theorem~\ref{bst:thm:descent} and Remark~\ref{bst:gr:rem:cofinalroute} \\
+Lemma 4.1; Theorems 4.2, 4.3 & Lemma~\ref{bst:gr:lem:ret}; Theorems~\ref{bst:gr:thm:finitegroups}, \ref{bst:gr:thm:envelope} \\
+Lemma 5.1; Theorem 5.2; Corollary 5.3 & Lemma~\ref{bst:gr:lem:branches}; Theorem~\ref{bst:gr:thm:products}; Corollary~\ref{bst:gr:cor:absquotient} \\
+Lemma 6.1; Proposition 6.2; Theorem 6.3; Remark 6.4; Theorem 6.5 & Lemma~\ref{bst:gr:lem:binomial}; Proposition~\ref{bst:gr:prop:single}; Theorem~\ref{bst:gr:thm:multirad}; Remark~\ref{bst:gr:rem:divisor}; Theorem~\ref{bst:gr:thm:radicaltower} \\
+Proposition 7.1; Theorem 7.2; Example 7.3 & Theorem~\ref{bst:thm:fieldcriterion} and Remark~\ref{bst:gr:rem:nounit}; Theorem~\ref{bst:gr:thm:closedness}; Example~\ref{bst:gr:ex:countable} \\
+Theorem 8.1; Remark 8.2 & Theorem~\ref{bst:gr:thm:symmetric}; Remark~\ref{bst:gr:rem:smallroots} \\
+Proposition 9.1; Theorems 9.2, 9.3 & Proposition~\ref{bst:gr:prop:realquad}; Theorems~\ref{bst:gr:thm:dihedral}, \ref{bst:gr:thm:cardinality} \\
+Theorems 10.1--10.3; Remark 10.4 & Theorems~\ref{bst:gr:thm:absorption}, \ref{bst:gr:thm:allcollapse}, \ref{bst:gr:thm:transition}; Remark~\ref{bst:gr:rem:binary} \\
+Proposition 10.5; Remark 10.6 & Proposition~\ref{bst:gr:prop:realclosure}; Remark~\ref{bst:gr:rem:uniform} \\
+Section 11; Theorem 11.1 & Section~\ref{bst:gr:sec:surreal}; Theorem~\ref{bst:gr:thm:tower} \\
+Sections 12, 14; Appendices A, B & Section~\ref{bst:gr:sec:scope} \\
+Section 13 (twelve subsections) & Questions~\ref{bst:gr:q:absolute}--\ref{bst:gr:q:formal} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\emph{Reading guide} (from source~02). The main statements are in
+Section~\ref{bst:gr:subsec:main}. The support proof of
+Section~\ref{bst:gr:sec:descent} is the algebraic engine. Readers interested
+in explicit numbers can proceed from there to
+Sections~\ref{bst:gr:sec:radicals}, \ref{bst:gr:sec:real}
+and~\ref{bst:gr:sec:surreal}. The rank-change theorem of
+Section~\ref{bst:gr:sec:rankjump} is independent of the geometric
+construction of arbitrary finite groups in Section~\ref{bst:gr:sec:covers}.
+The questions of Section~\ref{bst:gr:sec:questions} are proposed directions,
+not assertions that all have been recognized as open in the published
+literature.
+
+\emph{The delivered audit.} Source~02's audit, shipped as
+\texttt{02-galois-rank-SOURCE\_AUDIT.md}, records its claim boundary, the
+repository files it read at the pin, the primary sources it used
+(L'Innocente--Mantova and Milne's two sets of course notes; a Wikipedia
+article was consulted for orientation only, and Conway's and Gonshor's books
+are cited as background without a fresh review), its proof checkpoints, and
+its computational and build validation. It speaks at the pin and in the
+delivered file layout.
+
+\subsection{Notation of the Galois part}\label{bst:gr:subsec:notation}
+
+Source~02 writes $\Gamma$ and $k$ where this report writes $G$ and $K$, and
+several of its letters already carry other meanings here. The Galois part
+uses this report's notation throughout. \textup{[merge]} The renamed symbols
+are these; the tempting false reading is named where there is one.
+\begin{enumerate}
+\item \emph{Groups and fields.} The exponent group $\Gamma$ is $G$, and the
+coefficient field $k$ is $K$ (usually $K=\R$ or $\C$, as stated). Source~02's
+calligraphic $\mathcal K_\Gamma(k)$ is the \emph{full} Hahn field, written
+$\HH KG=K((t^G))$ here. \emph{False reading:} in this report $K$ is always a
+coefficient field, never a Hahn field. Source~02's $\mathcal B_\Gamma(k)$ and
+$\mathcal F_\Gamma(k)$ are exactly $\BB KG$ and $\FF KG$ of~\eqref{bst:eq:base}.
+The notation guide's $F_\Gamma$ is the full field $\R((t^\Gamma))$
+(Section~\ref{bst:subsec:terms}); it is never meant here.
+\item \emph{The omnific-type ring.} Source~02's $\mathcal A_\Gamma(D,k)=D+k((t^{\Gamma^{<0}}))$
+is $\AAG DKG=D+K((t^{G^{<0}}))$, for a unital subring $D\subseteq K$.
+The independent-copies report writes the case $D=D_K$ ($\Z$ or $\Z[i]$) as
+$\mathcal A_K(H)$, with the two arguments in the other order \cite{RepoIsc}.
+Source~02's $P_\Gamma(k)=k((t^{\Gamma^{\le0}}))$ and $I_\Gamma(k)=k((t^{\Gamma^{<0}}))$
+are written out as $K((t^{G^{\le0}}))$ and $K((t^{G^{<0}}))$. \emph{False
+reading:} source~02's $I_\Gamma(k)$ is a ring of series, not the relation
+ideal $I_K(z)$ of Corollary~\ref{bst:cor:relations}.
+\item \emph{The local coordinate.} Source~02's $z=t^u$, for an order unit
+$u$, is $s=t^u$, as in the example after Corollary~\ref{bst:cor:onescale};
+its $\C(z)$, $\C((z))$, $\C[[z]]$ are $\C(s)$, $\C((s))=\C((t^u))$,
+$\C[[s]]$, and its curve points $z=a^{-1}$ are $s=a^{-1}$. In
+Section~\ref{bst:sec:descent} the letter $z$ denotes a series or tuple in $\HH KH$.
+\item \emph{Extensions and groups.} Source~02's finite extensions $L$, $L_j$
+are $\Lambda$, $\Lambda_j$: here $L$ is a larger \emph{coefficient} field
+(Theorem~\ref{bst:thm:descent}). Its finite groups $H$, $H_j$ are $\Phi$,
+$\Phi_j$, and its subgroups $H$ of a Galois group are $\Psi$: here $H$ is an
+exponent subgroup. Its absolute Galois group $G_E$ is $\AbsGal E$: here $G$ is
+the exponent group.
+\item \emph{Inclusions of exponent groups.} Source~02's inclusion
+$\Gamma\subseteq\Delta$ (its Section~10) is $H\subseteq G$, the small group
+first, as in Theorem~\ref{bst:thm:descent} and~\eqref{bst:eq:collapse}; its
+cofinal subgroup $H\subseteq\Gamma$ (its Theorem~3.5) is $H\subseteq G$. Its
+dominating exponent $h$ is $\theta$, as in Section~8.4, where $\theta$ is
+already a surreal exponent above $G$: here $h$ is a series in
+$f=at^g(1+h)$ and an element of $H$. Its lexicographic $\Q h\oplus\Gamma$ is
+$\Q\theta\oplus H$.
+\item \emph{Convex subgroups and the tower.} Source~02's principal convex
+subgroup $\Gamma_g$ is $C(g)$ of Section~\ref{bst:sec:rank}. Its tower
+$\Gamma_n$, $\Gamma_\infty$ (which clashes with $\Gamma_g$ in the source) is
+$\Omega_n$, $\Omega_\infty$; the group $G_\kappa$ of~\eqref{bst:eq:Gkappa} is a
+different group. Its $F_n^k$, $K_n^k$ are $\FF K{\Omega_n}$ and $\HH K{\Omega_n}$.
+\item \emph{Actual fields.} Source~02's $F_0^\R=\mathcal F_\R(\R)$ and
+$F_0^\C=\mathcal F_\R(\C)$ are $\FF{\R}{\R}$ and $\FF{\C}{\R}$, identified
+by~\eqref{bst:eq:conway} with $\mathscr F_\R$ and $\mathscr F_\C$ of
+Section~8.2.
+\item \emph{The local envelope.} Source~02's $\mathcal U_0$ and
+$\mathcal U_\Gamma$ are $\mathcal E_0$ and $\mathcal E_G$: here $U(f,\delta)$
+is a valuation ball (Corollary~\ref{bst:cor:balls}).
+\item \emph{One field $E_T$.} Source~02 defines
+$E_T=\mathcal F_\Gamma(\C)(r_{a,n}:a\in T,\,n\ge1)$ twice, for
+$T\subseteq\C^\times$ and again for $T\subseteq\R_{>0}$; the second is the
+first restricted to real positive $T$. Here it is defined once,
+in~\eqref{bst:gr:eq:ET}.
+\item \emph{Local letters.} In proofs, $F$, $F'$ and $F_0$ abbreviate the
+fraction fields named at each use; source~02's compositum $M$ is
+$\Lambda_{<s}$ (here $M$ is a coefficient field in
+Proposition~\ref{bst:prop:toprank}), its field $K=\mathcal K_\Gamma(\C)$ in
+the splitting proof is $\HH{\C}H$, and its map $f(x)=x^m-x$ is $\varphi$.
+Where source~02 counts radicals or extensions by $s$ (its Theorems~1.2 and
+6.3, Lemma~5.1), the count is $q$ here, since $s$ is the local coordinate.
+\end{enumerate}
+Unchanged: the order unit $u$, the sign convention $t^\gamma\leftrightarrow\omega^{-\gamma}$
+of~\eqref{bst:eq:conway}, the valuation $v$, $\cc=2^{\aleph_0}=\abs{\C}$ (no
+continuum hypothesis), the radicals $r_{a,n}$, the roots of unity $\zeta_n$,
+$\Zh=\varprojlim_n\Z/n\Z$ with its profinite topology, and $\No[i]$
+identified with complex-coefficient Conway normal forms.
+
+Upper boundedness of a Hahn support must not be confused with bounded
+cardinality, bounded birthday, or boundedness of the value of the series
+in the ordered field. Source~02's arguments use ordinary ZFC for set-sized
+fields. Only the final interpretation of all surreals uses the customary
+class notation, always with set-sized normal-form supports. The strictly
+negative $t$-exponents form the purely infinite part of an omnific integer.
+
+\subsection{The principal theorems of the Galois part}\label{bst:gr:subsec:main}
+
+\begin{theorem}[Galois rank dichotomy]\label{bst:gr:thm:main}
+Let $G$ be a nonzero divisible ordered abelian group.
+\begin{enumerate}
+\item If $G$ has no order unit, $\FF{\C}G$ is algebraically
+closed and $\FF{\R}G$ is real closed.
+\item If $G$ has an order unit, then for every family $(\Phi_j)_{j\in J}$
+of finite groups with $\abs{J}\leq\cc$ there is a Galois extension
+$E/\FF{\C}G$ inside $\HH{\C}G$ such that
+\[
+ \Gal(E/\FF{\C}G)\cong\prod_{j\in J}\Phi_j
+\]
+as topological groups. In particular, every finite group is realized.
+\item In the second case neither $\FF{\C}G$ nor $\FF{\R}G$ has the
+corresponding closedness property in \textup{(1)}. Indeed, for an order unit
+$u$, $1-t^u$ has no square root in either fraction field, although its root
+with constant term $1$ belongs to the ambient real Hahn field.
+\end{enumerate}
+\end{theorem}
+
+Part (1) is prior material of this report (Corollary~\ref{bst:cor:closedbase}),
+and the obstruction in (3) follows quickly from its descent theorem.
+\textup{[merge]} The example after Corollary~\ref{bst:cor:onescale} proves the
+same obstruction for $1+t^u$ by the same argument.
+The additional content developed here is the Galois realization in (2), its
+simultaneous and explicit variants, and its behavior under rank
+enlargement. The proofs of all three parts are supplied, with the old
+ingredients explicitly identified: (1) and (3) in
+Theorem~\ref{bst:gr:thm:closedness}, (2) in Theorem~\ref{bst:gr:thm:products}.
+
+\begin{theorem}[Explicit independent radical towers]\label{bst:gr:thm:mainrad}
+Suppose $u$ is an order unit of a nonzero ordered abelian group $G$,
+and put $s=t^u$. For $a\in\C^\times$ and $n\geq1$, let
+\[
+ r_{a,n}=\sum_{m\geq0}\binom{1/n}{m}(-a)^m s^m.
+\]
+For distinct $a_1,\ldots,a_q$ and $n\geq2$,
+\[
+ \big[\FF{\C}G(r_{a_1,n},\ldots,r_{a_q,n}):\FF{\C}G\big]=n^q,
+\]
+and the Galois group is $(\Z/n\Z)^q$. The field generated by all
+$r_{a,n}$ has Galois group $\prod_{a\in\C^\times}\Zh$.
+Divisibility of $G$ is not required for these assertions.
+\end{theorem}
+
+\textup{[merge]} The number of radicals is written $q$ here, and in
+Theorem~\ref{bst:gr:thm:multirad}, because $s$ is the local coordinate;
+source~02 writes $s$. The theorem is proved in
+Theorems~\ref{bst:gr:thm:multirad} and~\ref{bst:gr:thm:radicaltower}.
+
+The second principal phenomenon goes in the opposite direction.
+One new scale absorbs not just a selected root, but an algebraic closure
+of the entire old complex fraction field.
+
+\begin{theorem}[One-rank absorption and renewed obstruction]\label{bst:gr:thm:mainjump}
+Let $H$ be nonzero and divisible, and form $G=\Q\theta\oplus H$ with the
+lexicographic order in which $\theta$ dominates $H$. Then
+\[
+ \HH KH\subseteq\BB KG\subseteq\FF KG
+ \qquad (K=\R,\C).
+\]
+The field $\FF{\C}G$ contains an algebraic closure of $\FF{\C}H$. For every
+finite extension $\Lambda/\FF{\C}H$,
+\[
+ \Lambda\otimes_{\FF{\C}H}\FF{\C}G\cong\FF{\C}G^{\,[\Lambda:\FF{\C}H]}.
+\]
+Nevertheless, $\theta$ is an order unit of $G$, so $\FF{\C}G$ again has the
+realization property of Theorem~\ref{bst:gr:thm:main}\textup{(2)}. Its own
+element $1-t^\theta$ has no square root in $\FF{\C}G$.
+\end{theorem}
+
+It is proved at the end of Section~\ref{bst:gr:sec:rankjump}. More generally,
+Theorem~\ref{bst:gr:thm:transition} proves an exhaustive alternative:
+cofinal exponent-group inclusions preserve every finite extension and its
+degree, while noncofinal inclusions split every finite extension of the
+old complex fraction field. On absolute Galois groups, the induced
+restriction is respectively surjective or trivial.
+
+This theorem is about \emph{extension of the scalar field}. It does not
+say that a previously nontrivial field extension becomes equal to its
+base, or that a Galois automorphism ceases to exist as an abstract map.
+Rather, its finite separable algebra becomes a product of copies of the
+new base. This distinction will be important in Section~\ref{bst:gr:sec:rankjump}.
+
+\subsection{Relationship with Sections 1--10 and with published work}\label{bst:gr:subsec:prior}
+
+Section~\ref{bst:sec:descent} proves cofinal linear disjointness
+(Theorem~\ref{bst:thm:descent}), including the special case
+\begin{equation}\label{bst:gr:eq:priordescent}
+ K((s))\ \text{and}\ \FF KG
+      \text{ are linearly disjoint over }K(s)
+      \quad\text{when }s=t^u\text{ and }u\text{ is an order unit}
+\end{equation}
+(Corollary~\ref{bst:cor:onescale}). Section~\ref{bst:sec:rank} proves that the
+bounded-support ring is a field exactly when there is no order unit, and
+its real or algebraic closedness under the corresponding hypotheses. Those
+are not new claims of the Galois part. Source~02 gives a short direct proof
+of~\eqref{bst:gr:eq:priordescent} that is sufficient for all the Galois
+applications (Remark~\ref{bst:gr:rem:cyclicroute}).
+
+The normal-form and Hahn-field background is classical; the formulation
+used is that of L'Innocente and Mantova \cite[Sections 2.1, 2.3--2.4]{LM24}. Finite
+covers of the punctured complex sphere are supplied by the Riemann existence
+theorem, in the form of Milne \cite[Theorem~21.3]{MilneEC}. Elementary finite
+and infinite Galois theory can be found in \cite{MilneFT}. None of these
+ingredients is claimed as an invention.
+
+The proposed contribution of source~02 is a specific synthesis: local
+algebraic branches survive unchanged over omnific fraction fields at an
+order-unit scale; independent finite covers give arbitrarily prescribed
+finite-group products; explicit radical towers record a large profinite
+quotient; and a single dominating scale simultaneously splits every old
+finite extension. Its targeted source inspection did not establish
+historical priority for this package. In particular, no implication is made
+that a standard consequence has never been noticed in another language.
+
+\section{Omnific fractions and cyclic-coset descent}\label{bst:gr:sec:descent}
+
+\subsection{Supports, summation, and the ambient field}
+
+Source~02's Hahn-series conventions are those of Section~\ref{bst:sec:setup}:
+well-ordered supports, coefficientwise addition, convolution, the valuation
+$v(f)=\min\supp(f)$ with $v(0)=+\infty$, and the field
+$\HH KG$ \cite[Fact~2.1.1]{LM24}. When $K$ is ordered, the sign of $f\ne0$ is
+the sign of its leading coefficient. Only the usual Hahn valuation is used,
+not an ordinal-valued support degree.
+
+No analytic convergence is being used. For example, if $u>0$, the family
+$(c_m t^{mu})_{m\geq0}$ is a legitimate Hahn family because $\{mu:m\geq0\}$
+is well ordered and its terms have distinct exponents. Its sum exists even
+when the family is bounded above in a larger ordered group. Neither ordinary
+complex convergence nor convergence in a fine topology on all of $\No$ is
+needed.
+
+\subsection{From an omnific subring to bounded fractions}
+
+The set $\BB KG$ is a ring (Lemma~\ref{bst:lem:bounds}). For a unital subring
+$D\subseteq K$ put
+\[
+ \AAG DKG=D+K((t^{G^{<0}}))\subseteq K((t^{G^{\le0}}))=K+K((t^{G^{<0}})).
+\]
+It is a subring. For $(D,K)=(\Z,\R)$ it is the canonical omnific subring at
+scale $G$, and for $(D,K)=(\Z[i],\C)$ its Gaussian counterpart.
+
+\begin{proposition}[The fraction-field bridge]\label{bst:gr:prop:fractions}
+For every nonzero ordered abelian group $G$, every field $K$ and every
+unital subring $D\subseteq K$,
+\begin{equation}\label{bst:gr:eq:fracbridge}
+ \Frac\AAG DKG=\Frac K((t^{G^{\le0}}))=\Frac\BB KG=\FF KG
+\end{equation}
+inside $\HH KG$. In particular the field is independent of $D$.
+\end{proposition}
+\begin{proof}
+The inclusions of rings from left to right are immediate. Conversely,
+let $f\in\BB KG$, with support bounded above by $b$. Choose $h>0$ with
+$h>b$. Such an $h$ exists in every nonzero ordered abelian group: add a
+positive element to $\max(b,0)$. Then
+\[
+ t^{-h}f\in K((t^{G^{<0}})),\qquad
+ t^{-h}\in K((t^{G^{<0}}))\setminus\{0\},\qquad
+ f=\frac{t^{-h}f}{t^{-h}}.
+\]
+Thus $\BB KG\subseteq\Frac\AAG DKG$, proving the reverse inclusion after
+taking fractions. The argument also covers constant coefficients in $K$ that
+do not belong to $D$.
+\end{proof}
+
+\textup{[merge]} This is the localization of
+Proposition~\ref{bst:prop:localdensity} (which writes
+$\BB KG=t^GK((t^{G^{\le0}}))$), with the constant coefficient restricted to
+$D$; the independent-copies report prints the case $D=\Z,\Z[i]$ as
+\texttt{isc:prop:boundedfrac} \cite{RepoIsc}. The bridge is why the Galois
+part concerns omnific arithmetic rather than an unrelated subfield
+construction.
+
+\begin{remark}\label{bst:gr:rem:notwhole}
+The equality~\eqref{bst:gr:eq:fracbridge} is not the assertion
+$\Frac\AAG DKG=\HH KG$. That stronger equality frequently fails. The
+distinction is central to the Galois part and to the cofinality discussion
+in \cite[Proposition~2.4.5]{LM24}; Theorem~\ref{bst:thm:independent} measures
+the gap.
+\end{remark}
+
+\begin{proposition}[Complexification]\label{bst:gr:prop:complexify}
+For every nonzero ordered abelian group $G$,
+\[
+ \BB{\C}G=\BB{\R}G+i\,\BB{\R}G,\qquad \FF{\C}G=\FF{\R}G(i).
+\]
+The fixed field of coefficientwise conjugation on $\FF{\C}G$ is $\FF{\R}G$.
+\end{proposition}
+\begin{proof}
+Real and imaginary coefficient parts have supports contained in the
+original support. This proves the first identity. If a fraction has
+numerator $a+ib$ and denominator $c+id$, with all four terms real and
+bounded supported, multiplication by $c-id$ expresses it in $\FF{\R}G(i)$.
+The denominator $c^2+d^2$ is nonzero because $\HH{\R}G$ is ordered. The
+reverse inclusion and the fixed-field assertion follow at once.
+\end{proof}
+
+\emph{The basic closedness input.} Source~02 uses the classical result that
+$K((t^G))$ is algebraically closed when $K$ is algebraically closed and $G$
+is divisible, and is real closed when $K$ is real closed and $G$ is
+divisible \cite[Fact~2.1.1]{LM24}, as Corollary~\ref{bst:cor:closedbase} does.
+Its use is restricted to those places where a full Hahn field, not a
+bounded-support fraction field, appears. The finite Galois constructions in
+an order-unit group do not themselves require that the ambient Hahn field be
+algebraically closed.
+
+\subsection{Cyclic-coset descent at an order unit}
+
+This subsection reproves the cyclic instance of the cofinal
+linear-disjointness theorem (Theorem~\ref{bst:thm:descent} and
+Corollary~\ref{bst:cor:onescale}). The proof explains exactly why an order
+unit preserves local algebraic obstructions in the larger fraction field.
+
+\begin{lemma}[Finite slices]\label{bst:gr:lem:slices}
+Suppose $u$ is an order unit of $G$, and $S\subseteq G$ is well ordered and
+bounded above. For each coset $c+\Z u$, the set $S\cap(c+\Z u)$ is finite.
+\end{lemma}
+\begin{proof}
+If $S$ is nonempty, write $a=\min S$ and let $b$ be an upper bound.
+Choose an integer $N>0$ such that both $\abs{a-c}$ and $\abs{b-c}$
+are at most $Nu$. Any integer $m$ for which $c+mu\in S$ then satisfies
+$-N\leq m\leq N$. There are only finitely many such integers.
+\end{proof}
+
+In particular, the projection of $f\in\BB KG$ onto a single coset is
+$t^cp_c(s)$ for a Laurent polynomial $p_c\in K[s,s^{-1}]$, where $s=t^u$.
+In the notation of~\eqref{bst:eq:projection} with $H=\Z u$, $t^cp_c(s)$ is
+$t^c\pi_c(f)$. There can be infinitely many nonzero cosets. Their sum is not
+replaced by a finite decomposition; only one coset at a time is tested.
+
+Source~02's Theorem~3.2 (local-field descent) states: \emph{if $u$ is an order
+unit of $G$ and $s=t^u$, then $K((s))$ and $\FF KG$ are linearly disjoint over
+$K(s)$ inside $\HH KG$, and consequently $K((s))\cap\FF KG=K(s)$.} This is
+Corollary~\ref{bst:cor:onescale} with $L=K$; it is printed once, there.
+
+\begin{remark}[Second route to Corollary~\ref{bst:cor:onescale} for $L=K$, from source~02]\label{bst:gr:rem:cyclicroute}
+Let $x_1,\ldots,x_r\in K((s))$ be linearly independent over $K(s)$, and
+suppose $\sum_{j=1}^r a_jx_j=0$ with $a_j\in\FF KG$. Choose a common nonzero
+denominator in $\BB KG$. After multiplying through, we may assume
+$a_j\in\BB KG$. Fix a representative $c$ of a coset modulo $\Z u$. By
+Lemma~\ref{bst:gr:lem:slices}, the $c+\Z u$ component of $a_j$ is
+$t^cp_{j,c}(s)$ with $p_{j,c}\in K[s,s^{-1}]$. Every exponent of $x_j$ belongs
+to $\Z u$, so multiplication by $x_j$ preserves the coset of an exponent of
+$a_j$. Projecting the relation onto $c+\Z u$ therefore gives
+$t^c\sum_{j=1}^rp_{j,c}(s)x_j=0$. The convolution coefficients are finite
+Hahn sums, so this projection commutes with the finite sum and with these
+products. Linear independence over $K(s)$ yields $p_{j,c}=0$ for every $j$.
+This is true for every coset, hence every $a_j$ vanishes. This proves linear
+disjointness. For the intersection, an element $x\in K((s))\setminus K(s)$
+makes $1,x$ linearly independent over $K(s)$. It therefore cannot belong to
+$\FF KG$.
+
+\textup{[merge]} This is the mechanism of the proof of
+Theorem~\ref{bst:thm:descent} (Lemma~\ref{bst:lem:projection}), specialized to
+$H=\Z u$ and $L=K$: no coefficient functional is needed, every coset is
+projected instead of one chosen exponent, and the projected coefficients are
+Laurent polynomials by Lemma~\ref{bst:gr:lem:slices}.
+\end{remark}
+
+\begin{corollary}[Exact preservation of algebraic data]\label{bst:gr:cor:transport}
+Let $K\subseteq L$ be fields, let $0\ne H\subseteq G$ be cofinal, and put
+$F_0=\FF KH$ and $F=\FF LG$. Let $\Lambda/F_0$ be a finite extension contained
+in $\HH KH$. Then
+\[
+ F\otimes_{F_0}\Lambda\ \cong\ F\Lambda,
+ \qquad [F\Lambda:F]=[\Lambda:F_0].
+\]
+Minimal polynomials of elements of $\Lambda$ over $F_0$ remain minimal after
+passing to $F$. If $\Lambda/F_0$ is Galois, restriction induces an isomorphism
+\[
+ \Gal(F\Lambda/F)\cong\Gal(\Lambda/F_0).
+\]
+The isomorphism preserves the entire subgroup/intermediate-field
+correspondence: a subgroup $\Psi$ corresponds to $F\Lambda^\Psi$.
+In particular, for an order unit $u$ of $G$, $s=t^u$, $H=\Z u$ and $L=K$,
+this applies to every finite extension $\Lambda/K(s)$ embedded in $K((s))$.
+\end{corollary}
+\begin{proof}
+Linear disjointness (Theorem~\ref{bst:thm:descent}) makes the multiplication
+map on the tensor product injective. Its image is a finite-dimensional domain
+over $F$, hence a field and therefore $F\Lambda$. A basis of $\Lambda$ remains
+independent, proving the degree assertion. Apply the same argument to
+$F_0(\alpha)$ to preserve the minimal polynomial of any $\alpha\in\Lambda$.
+
+In the Galois case each automorphism of $\Lambda/F_0$ extends by the identity
+on $F$ to the tensor product, and hence to $F\Lambda$. The resulting
+$[\Lambda:F_0]$ automorphisms exhaust the automorphisms of the extension.
+For a subgroup $\Psi$, $F\Lambda^\Psi$ is fixed by $\Psi$, and its degree is
+the correct index by the first part. Galois correspondence gives equality
+with the fixed field.
+\end{proof}
+
+\textup{[merge]} Source~02 states this corollary for $H=\Z u$ and $L=K$
+(base $K(s)$), and applies the same argument with base $\FF{\C}H$ in
+Theorem~\ref{bst:gr:thm:transition}; the proof uses only linear
+disjointness, which Theorem~\ref{bst:thm:descent} supplies in the stated
+generality. The degree, minimal-polynomial and Galois-group assertions are
+Corollary~\ref{bst:cor:relations}(4) and the paragraph after it; the
+intermediate-field correspondence is the addition.
+
+\begin{remark}[Why intersections alone are not enough]\label{bst:gr:rem:intersections}
+The elementary equality $K((s))\cap\FF KG=K(s)$ rules out individual rational
+representations of a local branch. For simultaneous extensions, one needs
+the stronger linear-disjointness statement. A trivial field intersection,
+without appropriate hypotheses, is not a general substitute for linear
+disjointness. All subsequent degree and Galois assertions use linear
+disjointness, not merely the intersection.
+\end{remark}
+
+\subsection{The general cofinal subgroup form}
+
+An ordered subgroup $H\subseteq G$ is cofinal if every $g\in G$ is at most
+some $h\in H$ (Section~\ref{bst:sec:setup}). The cyclic subgroup $\Z u$ is
+cofinal exactly when $u$ is an order unit. For rank transitions source~02
+needs the general theorem, which is Theorem~\ref{bst:thm:descent}; it
+reproves its same-coefficient-field case ($L=K$) rather than relying on an
+unaudited manuscript proof. Its statement (source~02, Theorem~3.5):
+\emph{for $0\ne H\subseteq G$ cofinal and any field $K$, $\HH KH$ and $\FF KG$
+are linearly disjoint over $\FF KH$ inside $\HH KG$.} It is printed once,
+as Theorem~\ref{bst:thm:descent}.
+
+\begin{remark}[Second route to Theorem~\ref{bst:thm:descent} for $L=K$, from source~02]\label{bst:gr:rem:cofinalroute}
+Let $x_1,\ldots,x_r\in\HH KH$ be linearly independent over $\FF KH$. In a
+relation $\sum_ja_jx_j=0$ with $a_j\in\FF KG$, clear a common bounded-support
+denominator, so that $a_j\in\BB KG$. For a coset $c+H$, let $b_{j,c}$ be
+$t^{-c}$ times the projection of $a_j$ to that coset. It is a Hahn series
+supported in $H$. If $\supp(a_j)\leq d_j$ in $G$, then
+$\supp(b_{j,c})\leq d_j-c$. Cofinality supplies an element of $H$ above
+$d_j-c$, so $b_{j,c}\in\BB KH\subseteq\FF KH$. Projecting the relation gives
+$\sum_jb_{j,c}x_j=0$ in $\HH KH$. Independence over $\FF KH$ implies that
+every $b_{j,c}$ is zero. Every coefficient of every $a_j$ lies in one of these
+cosets, so all $a_j$ are zero.
+
+For $H=\Z u$, every upper bounded well-ordered support in $H$ is finite, so
+$\BB KH=K[s,s^{-1}]$ and $\FF KH=K(s)$. Thus this proof specializes exactly
+to the cyclic-coset argument of Remark~\ref{bst:gr:rem:cyclicroute}. The
+general theorem adds no novelty claim, but makes the all-extension
+transition theorem (Theorem~\ref{bst:gr:thm:transition}) exhaustive.
+\textup{[merge]} The proof is that of Theorem~\ref{bst:thm:descent} with the
+coefficient functional omitted.
+\end{remark}
+
+\section{Finite covers and prescribed products}\label{bst:gr:sec:covers}
+
+\subsection{A classical geometric input with a split local place}
+
+Here and below a branch point refers to the usual ramification of a finite
+cover of the complex projective line. It does not refer to the Hahn
+valuation on $\HH{\C}G$.
+
+\begin{lemma}[Finite groups in a fixed local coordinate]\label{bst:gr:lem:ret}
+For every finite group $\Phi$, there is a finite Galois extension
+$\Lambda/\C(s)$ with group $\Phi$, unramified at $s=0$ and at infinity, whose
+entire field embeds over $\C(s)$ into $\C((s))$. Its possible branch points
+can be confined to any sufficiently large prescribed finite subset of
+$\C^\times$.
+\end{lemma}
+\begin{proof}
+The trivial group is immediate. For nontrivial $\Phi$, choose generators
+$g_1,\ldots,g_r$ and append $(g_1\cdots g_r)^{-1}$. The resulting tuple
+generates $\Phi$ and has product $1$. Add identity entries if more marked
+points have been prescribed.
+
+For a finite set $S\subset\C^\times$ of the required size,
+$\pi_1(\mathbf P^1(\C)\setminus S,0)$ has loops around the points of $S$
+as generators with their product equal to $1$. Map these loops to the tuple
+above. The kernel defines a connected regular topological cover with deck
+group $\Phi$. The Riemann existence theorem \cite[Theorem~21.3]{MilneEC}
+algebraizes this finite cover. Its smooth projective completion is branched
+only in $S$. In particular neither $0$ nor infinity is a branch point.
+
+Choose a point above $0$. Its residue field is $\C$, and its ramification
+index is $1$. The completed local ring is thus $\C[[s]]$, with the base
+coordinate $s$ itself a uniformizer. The injection of the function field
+into the fraction field of that completion gives the required embedding
+$\Lambda\hookrightarrow\C((s))$. Since the cover is regular, $\Lambda/\C(s)$
+is Galois with group $\Phi$. This embeds the whole splitting field, not
+merely one root of a polynomial.
+\end{proof}
+
+\begin{theorem}[Finite-group realization]\label{bst:gr:thm:finitegroups}
+If $G$ has an order unit, every finite group is the Galois group of a finite
+extension of $\FF{\C}G$ inside $\HH{\C}G$. The extension has a basis
+consisting of local Laurent series in a single monomial $s=t^u$.
+\end{theorem}
+\begin{proof}
+Choose $\Lambda/\C(s)$ from Lemma~\ref{bst:gr:lem:ret}, view it inside
+$\C((s))\subseteq\HH{\C}G$, and apply Corollary~\ref{bst:gr:cor:transport}.
+A $\C(s)$-basis of $\Lambda$ remains a basis after scalar extension.
+\end{proof}
+
+This is an inverse-Galois statement over the specifically defined field
+$\FF{\C}G$. It says nothing about the inverse Galois problem over $\Q$. The
+source of arbitrary finite groups is the classical complex covering theorem;
+the new arithmetic issue is whether their function-field degrees and
+symmetries survive the much larger omnific fraction field.
+
+\subsection{All locally split finite Galois covers at once}
+
+Inside the fixed field $\C((s))$, let $\mathcal E_0$ be the compositum of all
+finite Galois extensions of $\C(s)$ that it contains. This is an algebraic
+Galois extension: every finite collection is contained in a finite Galois
+compositum. For an order unit $u$, set
+\[
+ \mathcal E_G=\FF{\C}G\,\mathcal E_0\subseteq\HH{\C}G.
+\]
+
+\begin{theorem}[Galois-envelope preservation]\label{bst:gr:thm:envelope}
+The multiplication map identifies $\FF{\C}G\otimes_{\C(s)}\mathcal E_0$ with
+$\mathcal E_G$, and restriction induces a topological isomorphism
+\[
+ \Gal(\mathcal E_G/\FF{\C}G)\cong\Gal(\mathcal E_0/\C(s)).
+\]
+Every finite Galois diagram in this local envelope, including its
+restriction maps and its intermediate fields, is preserved.
+\end{theorem}
+\begin{proof}
+Apply Corollary~\ref{bst:gr:cor:transport} to every finite Galois
+subextension of $\mathcal E_0$. The extensions of automorphisms are uniquely
+determined by acting trivially on $\FF{\C}G$, so they commute with
+restriction between finite subextensions. Passing to the directed union of
+the fields and the inverse limit of their finite Galois groups proves the
+assertion. This also proves the topological claim, because both Krull
+topologies are the inverse-limit topologies of those finite quotients
+\cite[Chapter~7]{MilneFT}.
+\end{proof}
+
+The theorem is stronger than a disconnected list of finite-group
+realizations. It preserves the relations among all the covers in the
+chosen envelope. It does not identify this envelope with an algebraic
+closure of $\FF{\C}G$, or identify its Galois group with the full absolute
+Galois group. Those additional assertions would need new arguments.
+
+\subsection{Independent products of arbitrary finite groups}
+
+\begin{lemma}[Separation by disjoint branch loci]\label{bst:gr:lem:branches}
+Let $\Lambda_1,\ldots,\Lambda_q$ be finite Galois extensions of $\C(s)$.
+Suppose their branch loci on $\mathbf P^1(\C)$ are pairwise disjoint. Then
+they are jointly linearly disjoint, and
+\[
+ \Gal(\Lambda_1\cdots\Lambda_q/\C(s))\cong\prod_{j=1}^q\Gal(\Lambda_j/\C(s)).
+\]
+\end{lemma}
+\begin{proof}
+We argue by induction on $q$. The compositum
+$\Lambda_{<q}=\Lambda_1\cdots\Lambda_{q-1}$ is Galois and is unramified
+outside the union of the earlier branch loci. This last assertion can be
+checked locally: a compositum of finite unramified covers is unramified, and
+over a complex point an unramified completion is simply the base Laurent
+series field.
+
+The intersection $\Lambda_q\cap\Lambda_{<q}$ is a finite Galois extension of
+$\C(s)$. Its branch locus is contained in that of $\Lambda_q$ and also in
+that of $\Lambda_{<q}$, hence is empty. A connected finite unramified cover
+$Y\to\mathbf P^1_\C$ of degree $d$ must have $d=1$: the Riemann--Hurwitz
+formula gives $2g(Y)-2=-2d$, which is impossible for $d>1$. Therefore
+$\Lambda_q\cap\Lambda_{<q}=\C(s)$. For these finite Galois extensions, the
+restriction formula for a compositum gives
+$[\Lambda_q\Lambda_{<q}:\Lambda_{<q}]=[\Lambda_q:\C(s)]$. Induction proves the
+product assertion and joint linear disjointness.
+\end{proof}
+
+\textup{[merge]} The number of extensions is written $q$ here and
+$\Lambda_{<q}$ is source~02's $M$ (Section~\ref{bst:gr:subsec:notation}).
+
+\begin{theorem}[Continuum-sized prescribed products]\label{bst:gr:thm:products}
+Suppose $u$ is an order unit of $G$. For every family $(\Phi_j)_{j\in J}$ of
+finite groups with $\abs{J}\leq\cc$, there is a Galois extension
+$E/\FF{\C}G$ in $\HH{\C}G$ such that
+\[
+ \Gal(E/\FF{\C}G)\cong\prod_{j\in J}\Phi_j.
+\]
+One can choose finite Galois subextensions $E_j$ with the specified groups
+that are jointly linearly disjoint over $\FF{\C}G$, and take $E$ to be their
+compositum.
+\end{theorem}
+\begin{proof}
+Choose pairwise disjoint finite subsets $S_j\subset\C^\times$, each large
+enough for the construction in Lemma~\ref{bst:gr:lem:ret}. This is possible
+since at most $\cc$ finite sets are required. For example, partition a set
+of cardinality $\cc$ into $\cc$ countable sets and select the required
+finite numbers of points.
+
+Construct $\Lambda_j/\C(s)$ with group $\Phi_j$, branched only in $S_j$, and
+embed each $\Lambda_j$ into the same $\C((s))$ by choosing a point above $0$.
+Every finite collection is jointly linearly disjoint by
+Lemma~\ref{bst:gr:lem:branches}. No common branch point at infinity has been
+introduced: infinity was excluded from all branch loci in
+Lemma~\ref{bst:gr:lem:ret}.
+
+Put $F=\FF{\C}G$ and $E_j=F\Lambda_j$. The full finite compositum
+$\prod_{j\in J_0}\Lambda_j$ lies in $\C((s))$ for every finite
+$J_0\subseteq J$. Corollary~\ref{bst:gr:cor:transport} preserves its degree
+and Galois group, so the $E_j$ are also jointly linearly disjoint. The
+compositum $E$ is a Galois algebraic extension of $F$, and
+\[
+ \Gal(E/F)=\varprojlim_{J_0\subseteq J\ \mathrm{finite}}\prod_{j\in J_0}\Phi_j
+          =\prod_{j\in J}\Phi_j
+\]
+with the product topology.
+\end{proof}
+
+\begin{corollary}\label{bst:gr:cor:absquotient}
+For an order-unit group $G$, every product in
+Theorem~\ref{bst:gr:thm:products} is a continuous quotient of
+$\AbsGal{\FF{\C}G}$.
+\end{corollary}
+\begin{proof}
+Embed the algebraic extension $E/F$ in an algebraic closure of $F$.
+Restriction from the absolute Galois group onto the Galois group of a
+Galois subextension is surjective.
+\end{proof}
+
+The conclusion is a quotient assertion. A profinite group can have all
+finite groups as quotients and still have substantial relations or
+cohomological restrictions. In particular, the theorem is not a proof that
+$\AbsGal{\FF{\C}G}$ is a free profinite group.
+
+\section{Radical towers and the closedness boundary}\label{bst:gr:sec:radicals}
+
+The construction of Section~\ref{bst:gr:sec:covers} is geometric. This
+section supplies concrete normal forms and an elementary independence
+argument. It also avoids the need to infer multiradical independence from
+single-root examples.
+
+\subsection{Normalized binomial branches}
+
+For $a\in\C^\times$ and $n\geq1$, define
+\begin{equation}\label{bst:gr:eq:radical}
+ r_{a,n}(s)=\sum_{m\geq0}\binom{1/n}{m}(-a)^m s^m,
+ \qquad
+ \binom{x}{m}=\frac{x(x-1)\cdots(x-m+1)}{m!}.
+\end{equation}
+These are formal power series, hence Hahn series at $s=t^u$ for any $u>0$.
+
+\begin{lemma}\label{bst:gr:lem:binomial}
+The series $r_{a,n}$ is the unique element of $1+s\C[[s]]$ satisfying
+$r_{a,n}^n=1-as$. Moreover
+\begin{equation}\label{bst:gr:eq:compat}
+ r_{a,mn}^{\,m}=r_{a,n}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In a formal series $r=1+\sum_{j\geq1}b_js^j$, the coefficient of $s^j$ in
+$r^n$ is $nb_j$ plus an expression in the preceding coefficients. Since the
+characteristic is zero, there is a unique recursive solution to $r^n=1-as$.
+The binomial coefficients in~\eqref{bst:gr:eq:radical} give this solution by
+the formal binomial identity. Alternatively, their recurrence verifies the
+differential identity $(1-as)r'=-ar/n$, and hence that $r^n/(1-as)$ has
+derivative zero and constant term $1$. The normalized branch of its $n$th
+power is therefore as stated. Finally $r_{a,mn}^{\,m}$ has constant term $1$
+and its $n$th power is $1-as$, so uniqueness proves~\eqref{bst:gr:eq:compat}.
+\end{proof}
+
+\begin{proposition}[Single-root degree]\label{bst:gr:prop:single}
+For $a\ne0$ and $n\geq2$, the polynomial $X^n-(1-as)$ is irreducible over
+$\C(s)$ and, when $u$ is an order unit, over $\FF{\C}G$. Its splitting field
+in the Hahn field is obtained by adjoining $r_{a,n}$ and has cyclic Galois
+group of order $n$.
+\end{proposition}
+\begin{proof}
+At the discrete valuation associated with $s=a^{-1}$, the element $1-as$ has
+valuation $1$. Eisenstein's criterion proves irreducibility over $\C(s)$.
+Transfer by Corollary~\ref{bst:gr:cor:transport} proves irreducibility over
+$\FF{\C}G$. All roots are $\zeta r_{a,n}$ with $\zeta\in\mu_n\subset\C$, so
+the splitting field is the indicated cyclic extension.
+\end{proof}
+
+\textup{[merge]} The case $a=-1$, $n=2$ is the example after
+Corollary~\ref{bst:cor:onescale}: $(1+s)^{1/2}=r_{-1,2}$ has degree two over
+$\FF LG$ for every characteristic-zero $L$.
+
+\subsection{Independence of all marked linear factors}
+
+\begin{theorem}[Finite multiradical independence]\label{bst:gr:thm:multirad}
+Let $a_1,\ldots,a_q$ be distinct nonzero complex numbers and $n\geq2$. Then
+\[
+ [\C(s)(r_{a_1,n},\ldots,r_{a_q,n}):\C(s)]=n^q,
+ \qquad
+ \Gal\cong(\Z/n\Z)^q.
+\]
+If $u$ is an order unit, both conclusions remain true with $\C(s)$ replaced
+by $\FF{\C}G$.
+\end{theorem}
+\begin{proof}
+We prove the degree by adjoining the radicals in order. Suppose the first
+$j-1$ have been adjoined and set $b=a_j^{-1}$, $w=s-b$. For every $i<j$,
+$1-a_i(b+w)$ has nonzero constant term because $a_i\ne a_j$. It has $n$
+distinct $n$th roots in $\C[[w]]$: choose an $n$th root of the constant and
+apply the normalized binomial construction to the remaining unit.
+
+Consequently the splitting field of the first $j-1$ polynomials admits a
+$\C(s)$-embedding into $\C((w))$. Use this embedding to restrict the
+$w$-adic valuation to $\Lambda_{j-1}=\C(s)(r_{a_1,n},\ldots,r_{a_{j-1},n})$.
+Its value group is $\Z$: it is a subgroup of $\Z$ and already contains the
+value $1$ of $s-b$. In this valuation,
+\[
+ v_w(1-a_js)=1.
+\]
+Thus $X^n-(1-a_js)$ is Eisenstein over the valuation ring of
+$\Lambda_{j-1}$, and its degree over that field is $n$. This proves the
+inductive degree $n^q$.
+
+The compositum is the splitting field of the product of these polynomials.
+Its automorphisms act by $r_{a_j,n}\mapsto\zeta_n^{e_j}r_{a_j,n}$ and embed
+the Galois group in $(\Z/n\Z)^q$. Equality of orders makes this an
+isomorphism. Finally the whole compositum lies in $\C((s))$, so
+Corollary~\ref{bst:gr:cor:transport} preserves the result over $\FF{\C}G$.
+\end{proof}
+
+\textup{[merge]} The $w$-adic valuation is written $v_w$ to keep it apart
+from the Hahn valuation $v$; source~02 writes $v$.
+
+\begin{remark}[A divisor interpretation]\label{bst:gr:rem:divisor}
+The same independence is visible in the valuations
+$\operatorname{ord}_{s=a_j^{-1}}$. If $\prod_j(1-a_js)^{e_j}$ is an $n$th
+power in $\C(s)$, each $e_j$ is divisible by $n$. This is the usual
+Kummer-theoretic description \cite[Chapter~5, Kummer theory]{MilneFT}. The
+proof above spells out the successive degree argument, including composite
+values of $n$.
+\end{remark}
+
+\subsection{The infinite tower}
+
+For $T\subseteq\C^\times$, let
+\begin{equation}\label{bst:gr:eq:ET}
+ E_T=\FF{\C}G\,(r_{a,n}:a\in T,\ n\geq1).
+\end{equation}
+Choose the compatible roots of unity $\zeta_n=\exp(2\pi i/n)$ among the
+ordinary complex constants.
+
+\begin{theorem}[An explicit profinite quotient]\label{bst:gr:thm:radicaltower}
+For an order-unit group $G$,
+\begin{equation}\label{bst:gr:eq:radicalgal}
+ \Gal(E_T/\FF{\C}G)\cong\prod_{a\in T}\Zh.
+\end{equation}
+For infinite $T$,
+\[
+ [E_T:\FF{\C}G]=\max(\abs T,\aleph_0),
+ \qquad
+ \abs{\Gal(E_T/\FF{\C}G)}=2^{\max(\abs T,\aleph_0)}.
+\]
+In particular, for $T=\C^\times$ the extension has field degree $\cc$ and its
+Galois group has cardinality $2^{\cc}$.
+\end{theorem}
+\begin{proof}
+An automorphism is determined by residues $e_{a,n}\in\Z/n\Z$ through
+\[
+ r_{a,n}\longmapsto\zeta_n^{e_{a,n}}r_{a,n}.
+\]
+The compatibility~\eqref{bst:gr:eq:compat} makes these residues compatible
+when one integer divides another. Conversely, any compatible family acts on
+every finite subextension: choose a common multiple of its finitely many root
+orders and use Theorem~\ref{bst:gr:thm:multirad}. These actions agree on
+overlaps, so give an automorphism of $E_T$. The finite-level restriction maps
+give exactly the topology in~\eqref{bst:gr:eq:radicalgal}.
+
+There are at most $\max(\abs T,\aleph_0)$ finite radical data, and each
+produces a finite-dimensional extension, giving that upper bound for the
+field degree. When $T$ is infinite, the elements $r_{a,2}$, $a\in T$, are
+linearly independent over the base: every finite subset is part of the
+standard basis of a multiquadratic extension. This gives the lower bound
+$\abs T$. If necessary, unbounded degrees in a single radical tower give the
+additional lower bound $\aleph_0$. Finally each $\Zh$ has cardinality $\cc$,
+so the displayed group cardinality follows from cardinal exponentiation.
+\end{proof}
+
+The comparison of infinite field degree with group cardinality is
+intentional. For $T=\C^\times$, the answer is $\cc$ for the former and
+$2^{\cc}$ for the latter. They must not be conflated.
+
+\subsection{Closedness without an order unit}
+
+The positive closedness assertion here is prior material of this report
+(Theorem~\ref{bst:thm:fieldcriterion} and Corollary~\ref{bst:cor:closedbase}).
+Source~02 includes its proof to make the opposite side of the Galois
+dichotomy transparent.
+
+\begin{remark}[Source~02's Proposition~7.1, printed once as Theorem~\ref{bst:thm:fieldcriterion}]\label{bst:gr:rem:nounit}
+Source~02 states: \emph{if $G$ has no order unit, then}
+\[
+ \BB KG=\FF KG=\bigcup_{g>0}\HH K{C(g)},
+\]
+\emph{so $\BB KG$ is a field; conversely, if $G$ has an order unit, $\BB KG$ is
+not a field.} Here $C(g)$ is the principal convex subgroup of
+Section~\ref{bst:sec:rank}, divisible when $G$ is. This is
+Theorem~\ref{bst:thm:fieldcriterion}, and source~02's proof is that proof:
+a bounded well-ordered support lies in some $[-g,g]$, hence in $C(g)$; for
+$g$ not an order unit some $h>0$ exceeds every $ng$, so every series supported
+in $C(g)$ has support bounded above in $G$, whether or not that support is
+bounded inside $C(g)$; the principal convex subgroups form a directed family;
+and with an order unit $u$ the inverse $\sum_{n\ge0}t^{nu}$ of $1-t^u$ has
+unbounded support. \textup{[merge]} The union over the principal convex
+subgroups $C(g)$ equals the union over all proper convex subgroups in
+Theorem~\ref{bst:thm:fieldcriterion}(2): every $C(g)$ with $g$ not an order
+unit is proper, and a proper convex $C$ lies in $C(g)$ for any positive
+$g\notin C$.
+\end{remark}
+
+\begin{theorem}[Exact closedness boundary]\label{bst:gr:thm:closedness}
+For a nonzero divisible ordered abelian group $G$,
+\[
+ \FF{\C}G\text{ is algebraically closed}
+ \quad\Longleftrightarrow\quad
+ G\text{ has no order unit},
+\]
+and
+\[
+ \FF{\R}G\text{ is real closed}
+ \quad\Longleftrightarrow\quad
+ G\text{ has no order unit}.
+\]
+\end{theorem}
+\begin{proof}
+Without an order unit, Remark~\ref{bst:gr:rem:nounit} expresses the fraction
+field as a directed union of full Hahn fields over divisible convex
+subgroups. Each is algebraically closed for $K=\C$ and real closed for
+$K=\R$, by the classical Hahn-field theorem. A polynomial has only finitely
+many coefficients, all in one of these fields. This proves algebraic
+closedness in the complex case. In the real case, every positive element
+gets a square root and every odd-degree polynomial gets a root in one of the
+real-closed subfields, proving real closedness of the union.
+
+With an order unit $u$, Proposition~\ref{bst:gr:prop:single} for $a=1$, $n=2$
+proves that $1-t^u$ has no square root in $\FF{\C}G$. It therefore has none
+in the real subfield either. But $1-t^u$ is positive in that ordered field.
+This rules out both asserted forms of closedness.
+\end{proof}
+
+\textup{[merge]} The forward implications are Corollary~\ref{bst:cor:closedbase},
+which allows any real closed $K$, and any algebraically closed $K$ of
+characteristic zero. The reverse implications hold at that generality too:
+$X^2-(1-s)$ is irreducible over $K(s)$ for every field $K$ of characteristic
+zero, since $1-s$ has odd degree, so it stays irreducible over $\FF KG$ by
+Corollary~\ref{bst:cor:relations}(4) with $H=\Z u$ and $L=K$.
+
+\begin{example}[Countable cofinality is not the boundary]\label{bst:gr:ex:countable}
+Let $G=\bigoplus_{n\geq0}\Q e_n$, ordered by the largest index with nonzero
+coefficient, with all $e_n>0$. Then $e_{n+1}>me_n$ for every positive integer
+$m$. The group has countable cofinality but no order unit. Hence $\FF{\C}G$ is
+algebraically closed.
+
+It is nevertheless smaller than $\HH{\C}G$. The series $\sum_{n\geq0}t^{e_n}$
+is a legitimate Hahn series with an upper unbounded support. It does not
+belong to $\BB{\C}G$, which in this case is already $\FF{\C}G$. Thus
+closedness of the fraction field need not mean equality with the full Hahn
+field.
+\end{example}
+
+\textup{[merge]} With $e_n=\omega^n$ this group is $G_{\aleph_0}$
+of~\eqref{bst:eq:Gkappa}, and the example is Theorem~\ref{bst:thm:kappa}(1) at
+$\kappa=\aleph_0$ together with the remark after Lemma~\ref{bst:lem:cofinality}
+(countable cofinality does not give an order unit). The series
+$\sum_nt^{e_n}$ is even transcendental over $\FF{\C}G$, by
+Corollary~\ref{bst:cor:onegap}, and Theorem~\ref{bst:thm:kappa}(2) gives
+$2^{\aleph_0}$ independent elements.
+
+\section{A nonsolvable family, real forms and cardinality}\label{bst:gr:sec:real}
+
+\subsection{An explicit nonsolvable family}
+
+The geometric existence theorem can be complemented by one uniform
+polynomial family. Its classical monodromy calculation is elementary; it is
+included to make the surcomplex realization concrete.
+
+\begin{theorem}[Symmetric groups at a monomial scale]\label{bst:gr:thm:symmetric}
+Let $m\geq2$, let $u$ be an order unit, and put $s=t^u$. Then
+\[
+ X^m-X-s
+\]
+is irreducible over $\FF{\C}G$, and its splitting field inside $\HH{\C}G$
+has Galois group $S_m$. All its roots belong to $\C[[s]]$. In particular
+$m=5$ gives an explicit nonsolvable Galois extension.
+\end{theorem}
+\begin{proof}
+First work over $\C(s)$. The polynomial map
+$\varphi:\mathbf P^1_x\to\mathbf P^1_s$, $\varphi(x)=x^m-x$, has degree $m$.
+The corresponding extension of function fields has degree $m$, so $X^m-X-s$
+is irreducible over $\C(s)$.
+
+Its finite critical points satisfy $mc^{m-1}=1$. They are nonzero and
+distinct, and $\varphi''(c)=m(m-1)c^{m-2}\ne0$. Their critical values are
+\[
+ \varphi(c)=-\frac{m-1}{m}\,c,
+\]
+so are also distinct. A small loop about each finite critical value therefore
+exchanges exactly two sheets. The finite local monodromies are
+transpositions. They generate the full monodromy group because a loop about
+infinity is the inverse of their product. The cover is connected, so the
+group they generate is transitive.
+
+A transitive subgroup of $S_m$ generated by transpositions is $S_m$: form the
+graph whose edges are the transpositions. Its orbits are the connected
+components, so it is connected; transpositions on the edges of a connected
+graph generate all permutations. Thus the splitting field over $\C(s)$ has
+group $S_m$.
+
+At $s=0$, the roots of $X^m-X$ are $0$ and the $(m-1)$st roots of unity, all
+distinct. At $0$ the derivative is $-1$, and at the other roots it is $m-1$.
+Formal coefficient recursion therefore lifts each root uniquely to
+$\C[[s]]$. The whole splitting field embeds into $\C((s))$. Apply
+Corollary~\ref{bst:gr:cor:transport} to preserve the polynomial's minimal
+degree and splitting-field Galois group over $\FF{\C}G$.
+\end{proof}
+
+\begin{remark}[Small roots and large algebraic complexity]\label{bst:gr:rem:smallroots}
+The root $x_0(s)$ with constant term $0$ is determined by
+\[
+ x_0=x_0^m-s.
+\]
+For $m=5$ it begins $-s-s^5-5s^9-\cdots$. It is a perfectly explicit
+surcomplex infinitesimal at $s=\omega^{-1}$. Its degree over the
+real-exponent complex omnific fraction field $\mathscr F_\C=\FF{\C}{\R}$ is
+$5$, and the normal closure of its field has group $S_5$. Being represented
+by a convergent local complex series, or by a legitimate Hahn sum, does not
+make that series a bounded-support fraction.
+\end{remark}
+
+\subsection{Real multiquadratic extensions}
+
+\begin{proposition}\label{bst:gr:prop:realquad}
+Let $u$ be an order unit and $T\subseteq\R_{>0}$. The field
+\[
+ \FF{\R}G(r_{a,2}:a\in T)\subseteq\HH{\R}G
+\]
+is Galois over $\FF{\R}G$ with group $\prod_{a\in T}\Z/2\Z$.
+\end{proposition}
+\begin{proof}
+For a finite subset $\{a_1,\ldots,a_q\}$, the degree over $\R(s)$ is at most
+$2^q$. Its complexification has degree $2^q$ over $\C(s)$ by
+Theorem~\ref{bst:gr:thm:multirad}, so its real degree is also $2^q$.
+Alternatively, any smaller real linear relation would be a complex one. The
+real form of Corollary~\ref{bst:gr:cor:transport} preserves this degree over
+$\FF{\R}G$. Sign changes of the square roots give the full Galois group.
+Passing to the directed union gives the product.
+\end{proof}
+
+Every normalized root $r_{a,2}$ is positive in the Hahn order, because its
+constant term is $1$. A nonidentity automorphism of one of these
+multiquadratic extensions need not preserve that order. There is no
+contradiction: these are abstract field automorphisms of fields that are not
+real closed. \textup{[merge]} The restriction $T\subseteq\R_{>0}$ is
+source~02's; the proof uses only that each $a$ is real and nonzero.
+
+\subsection{A generalized-dihedral radical extension}
+
+For $T\subseteq\R_{>0}$, consider the field $E_T$ of~\eqref{bst:gr:eq:ET}.
+Coefficientwise conjugation fixes every $r_{a,n}$ and restricts to the
+nonidentity element of $\Gal(\FF{\C}G/\FF{\R}G)$.
+
+\begin{theorem}[Real radical symmetry]\label{bst:gr:thm:dihedral}
+For an order-unit group $G$ and $T\subseteq\R_{>0}$,
+\[
+ \Gal(E_T/\FF{\R}G)\cong\left(\prod_{a\in T}\Zh\right)\rtimes C_2,
+\]
+where the nontrivial element of $C_2$ acts by inversion on every $\Zh$
+coordinate.
+\end{theorem}
+\begin{proof}
+The field $E_T$ is the splitting field, over $\FF{\R}G$, of the family
+consisting of $X^2+1$ and all $X^n-(1-at^u)$. Thus it is Galois. By
+Proposition~\ref{bst:gr:prop:complexify} and
+Theorem~\ref{bst:gr:thm:radicaltower}, the kernel of restriction to
+$\FF{\C}G$ is $\prod_{a\in T}\Zh$. Conjugation supplies an order-two section
+of the quotient $C_2$.
+
+If $\sigma(r_{a,n})=\zeta_n^{e_{a,n}}r_{a,n}$, conjugating this automorphism
+by coefficientwise conjugation changes $\zeta_n$ to $\zeta_n^{-1}$ and leaves
+$r_{a,n}$ fixed. The resulting coordinate is $-e_{a,n}$, proving the claimed
+semidirect action.
+\end{proof}
+
+\subsection{An exact cardinality calculation}
+
+\begin{theorem}[Size of the absolute Galois group in real rank]\label{bst:gr:thm:cardinality}
+Let $G$ be any nonzero additive subgroup of $\R$. Then
+\[
+ \abs{\FF{\C}G}=\abs{\FF{\R}G}=\cc,
+ \qquad
+ \abs{\AbsGal{\FF{\C}G}}=\abs{\AbsGal{\FF{\R}G}}=2^{\cc}.
+\]
+Each fraction field has exactly $\cc$ distinct quadratic extensions inside
+an algebraic closure. Divisibility of $G$ is not necessary for this
+statement.
+\end{theorem}
+\begin{proof}
+Every well-ordered subset of $\R$ is countable. One proof assigns to each
+non-last element of such a set a rational number strictly between it and its
+successor; these disjoint intervals give an injection into $\Q$. There is at
+most one last element. Therefore the Hahn supports in $G$ are countable. The
+number of countable supports and coefficient assignments is at most
+$\cc^{\aleph_0}=\cc$. Ordinary real or complex constants already give the
+reverse bound for the fraction fields.
+
+Every positive $u\in G$ is an order unit. By
+Theorem~\ref{bst:gr:thm:radicaltower}, the complex absolute Galois group has a
+quotient of cardinality $2^{\cc}$. By Proposition~\ref{bst:gr:prop:realquad},
+the real absolute Galois group has such a quotient as well. An algebraic
+closure of an infinite field of cardinality $\cc$ has cardinality $\cc$, and
+its automorphism group has cardinality at most $\cc^{\cc}=2^{\cc}$. This
+proves equality.
+
+The distinct marked square roots in Theorem~\ref{bst:gr:thm:multirad} and
+Proposition~\ref{bst:gr:prop:realquad} give $\cc$ distinct quadratic
+extensions: equality of two would contradict their degree-four compositum.
+There are at most $\cc$ quadratic polynomials over either base field, which
+proves the upper bound.
+\end{proof}
+
+\textup{[merge]} The count $\abs{\HH KG}\le\cc$ is the one in the proof of
+Corollary~\ref{bst:cor:realgroup}.
+
+No conclusion about the least number of topological generators follows from
+this cardinality calculation. Cardinality, topological weight, and profinite
+generator rank are different invariants.
+
+\section{One dominating scale splits all old finite extensions}\label{bst:gr:sec:rankjump}
+
+\subsection{Absorbing the entire old Hahn field}
+
+Let $H\subseteq G$ be an ordered subgroup inclusion. Say that
+$\theta\in G_{>0}$ \emph{dominates $H$} if $\theta>h$ for every $h\in H$. In
+particular, $\theta>nh$ for every $h>0$ in $H$ and every ordinary positive
+integer $n$.
+
+\begin{theorem}[Uniform monomial denominator]\label{bst:gr:thm:absorption}
+If $\theta$ dominates $H$, then for every coefficient field $K$,
+\[
+ \HH KH\subseteq\BB KG.
+\]
+More explicitly, for every $f\in\HH KH$ and every unital subring $D\subseteq K$,
+\begin{equation}\label{bst:gr:eq:uniformdenom}
+ t^{-\theta}f\in K((t^{G^{<0}})),\qquad
+ f=\frac{t^{-\theta}f}{t^{-\theta}}\in\Frac\AAG DKG.
+\end{equation}
+The same denominator $t^{-\theta}$ works for every old Hahn series.
+\end{theorem}
+\begin{proof}
+The ordered inclusion preserves well-ordering of supports. Every old support
+is a subset of $H$ and therefore bounded above by $\theta$ in $G$.
+Subtracting $\theta$ from its exponents puts the entire support in $G^{<0}$.
+Translation preserves well-ordering, giving both assertions
+in~\eqref{bst:gr:eq:uniformdenom}.
+\end{proof}
+
+The upper bound here is external to the old group. This is precisely why an
+old unbounded support can become a numerator with only negative
+$t$-exponents. The support enlargement phenomenon itself is already
+illustrated in Section~8.4 of this report, and the displayed inclusion is
+\eqref{bst:eq:collapse} with $L=K$ \textup{[merge]}. The next theorem makes
+its full Galois consequence explicit.
+
+\begin{theorem}[Simultaneous splitting of every old finite extension]\label{bst:gr:thm:allcollapse}
+Assume $H$ is divisible, and let $\theta\in G$ dominate it. Put
+$F=\FF{\C}H$ and $F'=\FF{\C}G$. Then $F'$ contains an algebraic closure
+$\overline F$ of $F$. For every finite extension $\Lambda/F$ there is an
+$F'$-algebra isomorphism
+\begin{equation}\label{bst:gr:eq:splitall}
+ \Lambda\otimes_FF'\cong(F')^{[\Lambda:F]}.
+\end{equation}
+More generally every finite \emph{\'etale} $F$-algebra becomes a finite
+product of copies of $F'$.
+\end{theorem}
+\begin{proof}
+By the full Hahn-field closedness theorem, $\HH{\C}H$ is algebraically
+closed. Let $\overline F$ be the subfield of elements of $\HH{\C}H$ algebraic
+over $F$. This is an algebraic closure of $F$: the roots in $\HH{\C}H$ of a
+polynomial with coefficients algebraic over $F$ are themselves algebraic
+over $F$. By Theorem~\ref{bst:gr:thm:absorption}, $\HH{\C}H\subseteq F'$, so
+$\overline F\subseteq F'$.
+
+Since the characteristic is zero, a finite extension $\Lambda/F$ is separable
+and simple. Write $\Lambda=F(\alpha)$ with irreducible polynomial $p$ of
+degree $d$. In $F'[X]$ the polynomial factors as
+\[
+ p(X)=\prod_{j=1}^d(X-\alpha_j)
+\]
+with distinct roots $\alpha_j\in\overline F\subseteq F'$. The Chinese
+remainder theorem gives
+\[
+ \Lambda\otimes_FF'\cong F'[X]/(p)\cong\prod_{j=1}^dF',
+\]
+proving~\eqref{bst:gr:eq:splitall}. A finite \'etale algebra is a finite
+product of finite separable field extensions, so the final assertion
+follows.
+\end{proof}
+
+For an embedded finite Galois extension $\Lambda/F\subseteq F'$, the
+isomorphism has the concrete form
+\[
+ x\otimes a\ \longmapsto\ (\sigma(x)a)_{\sigma\in\Gal(\Lambda/F)}.
+\]
+The different factors record the different old embeddings. Thus the
+symmetry is reflected in the splitting into factors; it is not erased from
+the abstract field $\Lambda/F$.
+
+\subsection{An exhaustive cofinality alternative}
+
+For an ordered subgroup inclusion there is no intermediate case between
+cofinality and the existence of a dominating element. Indeed, if
+$H\subseteq G$ is not cofinal, some $\theta\in G$ is strictly greater than
+every element of $H$. Since $0\in H$, this $\theta$ is positive.
+\textup{[merge]} This is the last assertion of Lemma~\ref{bst:lem:cofinality}.
+
+\begin{theorem}[All-or-nothing Galois transition]\label{bst:gr:thm:transition}
+Let $H\subseteq G$ be an inclusion of nonzero set-sized ordered abelian
+groups, with $H$ divisible. Write $F=\FF{\C}H$ and $F'=\FF{\C}G$.
+\begin{enumerate}
+\item If $H$ is cofinal in $G$, then for every finite extension $\Lambda/F$
+the tensor product $\Lambda\otimes_FF'$ is a field of degree $[\Lambda:F]$ over
+$F'$. If $\Lambda/F$ is Galois, its Galois group and all intermediate-field
+degrees are preserved.
+\item If $H$ is not cofinal in $G$, then for every finite extension
+$\Lambda/F$,
+\[
+ \Lambda\otimes_FF'\cong(F')^{[\Lambda:F]}.
+\]
+\end{enumerate}
+With compatible choices of algebraic closures, the restriction map
+$\AbsGal{F'}\to\AbsGal F$ is surjective in case \textup{(1)} and trivial in
+case \textup{(2)}. When $\AbsGal F$ is trivial the two conclusions about
+this group homomorphism coincide; the criterion is a criterion on the
+exponent inclusion, not an assertion that these group properties are then
+disjoint.
+\end{theorem}
+\begin{proof}
+Because $H$ is divisible, $\HH{\C}H$ is algebraically closed and contains an
+algebraic closure $\overline F$ of $F$. Every finite extension of $F$ is
+isomorphic over $F$ to a subfield of $\overline F$.
+
+In the cofinal case, Theorem~\ref{bst:thm:descent}, with $K=L=\C$, shows that
+$\HH{\C}H$ and $F'$ are linearly disjoint over $F$. The same is true of each
+$\Lambda$. The tensor and Galois arguments of
+Corollary~\ref{bst:gr:cor:transport} apply with base $F$, proving (1).
+Restriction is surjective on every finite Galois quotient of $\AbsGal F$. Its
+image in $\AbsGal F$ is compact, hence closed, and these finite surjections
+make that image dense. It is therefore all of $\AbsGal F$.
+
+In the noncofinal case, choose a dominating $\theta\in G$.
+Theorem~\ref{bst:gr:thm:allcollapse} proves (2) and puts
+$\overline F\subseteq F'$. An automorphism fixing $F'$ fixes $\overline F$
+pointwise, so its image in $\AbsGal F$ is trivial.
+\end{proof}
+
+\begin{remark}\label{bst:gr:rem:binary}
+The field-theoretic statements in the two cases are genuinely distinct when
+$H$ has an order unit, since $F$ then has nontrivial finite extensions. This
+provides a binary classification of how monomial exponent-group inclusions
+affect \emph{all} finite Galois data at once. The cofinal support theorem is
+prior work; its combination with algebraic closedness of the old full Hahn
+field and noncofinal absorption is the Galois transition statement here.
+\end{remark}
+
+\begin{proposition}[The real counterpart]\label{bst:gr:prop:realclosure}
+If $H$ is divisible and $\theta$ dominates it, then $\FF{\R}G$ contains a real
+closure of $\FF{\R}H$ compatible with its Hahn order.
+\end{proposition}
+\begin{proof}
+The field $\HH{\R}H$ is real closed. Its relative algebraic subfield over
+$\FF{\R}H$ is a real closure for the induced order: positive elements have
+square roots there, and odd-degree polynomials have roots there, because such
+roots in the ambient real closed field remain algebraic over the base. Apply
+Theorem~\ref{bst:gr:thm:absorption}.
+\end{proof}
+
+The real statement does not say that every finite extension of the real base
+field splits after this base change. For example, $X^2+1$ still has no root
+in an ordered field. The complete splitting theorem is deliberately stated
+for complex coefficients.
+
+\subsection{The new group still has an order unit}
+
+Take the lexicographic extension
+\[
+ G=\Q\theta\oplus H,
+\]
+where a nonzero $\theta$-coordinate decides the sign before the $H$
+coordinate is considered. Then $\theta$ dominates $H$ and is an order unit of
+$G$: every $q\theta+h$ lies between $-N\theta$ and $N\theta$ for an integer
+$N>\abs q+1$. If $H$ is divisible, so is $G$.
+
+Consequently Theorems~\ref{bst:gr:thm:allcollapse}
+and~\ref{bst:gr:thm:products} hold simultaneously. All old finite extensions
+split after this scalar extension, yet the new field has extensions
+realizing every finite group. When $u$ is an order unit of $H$, the old
+missing root $\sqrt{1-t^u}$ is now in the new fraction field, whereas the
+normalized root $\sqrt{1-t^\theta}$ is not (Proposition~\ref{bst:gr:prop:single}
+at the order unit $\theta$). With Theorem~\ref{bst:gr:thm:absorption}, this
+proves Theorem~\ref{bst:gr:thm:mainjump}.
+
+\begin{remark}[What is uniform]\label{bst:gr:rem:uniform}
+The scale $\theta$ depends on the old exponent group, not on an individual
+polynomial, a finite group, or a selected algebraic extension. A single
+$\theta$ absorbs the full old Hahn field and therefore all old algebraic
+extensions simultaneously. It does not absorb the full Hahn field over $G$
+itself.
+\end{remark}
+
+\section{Actual surreal examples and a countable rank tower}\label{bst:gr:sec:surreal}
+
+\subsection{The normal-form embedding}
+
+Source~02 uses the Conway normal-form map~\eqref{bst:eq:conway}, for an
+ordered additive subgroup $G\subseteq\No$, which identifies $\HH{\R}G$ with a
+subfield of $\No$ and $\HH{\C}G$ with a subfield of $\No[i]$
+\cite{Conway,Gonshor,LM24}; it is printed once, in Section~8.1. The image of
+$\AAG{\Z}{\R}G$ consists of omnific integers: all growth exponents are
+positive except for an integer constant term. Likewise $\AAG{\Z[i]}{\C}G$
+maps into $\Oz[i]$. Hence all the fraction-field distinctions of the Galois
+part are distinctions between actual surreal or surcomplex numbers. They are
+not constructions of a separate model with an unspecified embedding.
+
+\subsection{Real exponents: a root that is not an omnific fraction at that scale}
+
+Take $G=\R$ and $u=1$, so $s=\omega^{-1}$, and consider the fields
+$\mathscr F_\R=\FF{\R}{\R}$ and $\mathscr F_\C=\FF{\C}{\R}$ of Section~8.2.
+The normalized square root has the Conway expansion
+\begin{equation}\label{bst:gr:eq:sqrtconway}
+ \sqrt{1-\omega^{-1}}
+ =1-\frac12\omega^{-1}-\frac18\omega^{-2}
+ -\frac1{16}\omega^{-3}-\frac5{128}\omega^{-4}-\cdots.
+\end{equation}
+It belongs to $\HH{\R}{\R}$ but not to $\mathscr F_\R$, nor to $\mathscr F_\C$.
+Thus it cannot be represented as a fraction of two omnific integers all of
+whose growth exponents are real. The restriction on exponents is essential.
+
+Now take $G'=\Q\omega+\R$. The exponent $\theta=\omega$ dominates all of $\R$.
+Formula~\eqref{bst:gr:eq:uniformdenom} becomes
+\begin{equation}\label{bst:gr:eq:explicitquotient}
+ \sqrt{1-\omega^{-1}}
+ =\frac{\displaystyle
+   \omega^\omega-\frac12\omega^{\omega-1}
+    -\frac18\omega^{\omega-2}-\frac1{16}\omega^{\omega-3}
+    -\cdots}{\omega^\omega}.
+\end{equation}
+The numerator is a legitimate omnific integer. Its exponents
+$\omega,\omega-1,\omega-2,\ldots$ are decreasing and positive, and its
+coefficient at exponent $0$ is $0$. The denominator is also omnific. Both use
+exponents in $G'$.
+
+However,
+\[
+ \sqrt{1-\omega^{-\omega}}\notin\FF{\R}{G'},
+\]
+and it does not belong to $\FF{\C}{G'}$ either. The new order unit has
+recreated the same obstruction at the new scale.
+
+\textup{[merge]} The larger group is written $G'$ because $G$ is the
+generic exponent group. Section~8.4 uses $\R\omega+\R$ instead of
+$\Q\omega+\R$; $\omega$ dominates $\R$ and is an order unit there too, so
+the same two statements hold in that group.
+
+\subsection{An explicit direct limit of Galois-rich fields}
+
+Define ordered additive subgroups of $\No$ by
+\[
+ \Omega_0=\R,\qquad
+ \Omega_n=\R+\Q\omega+\Q\omega^2+\cdots+\Q\omega^n\quad(n\geq1),
+ \qquad \Omega_\infty=\bigcup_{n\geq0}\Omega_n.
+\]
+All sums here are finite within an element of a group.
+
+\begin{theorem}[A countable tower inside the surreal field]\label{bst:gr:thm:tower}
+For $K=\R$ or $\C$,
+\begin{equation}\label{bst:gr:eq:towerinterlace}
+ \FF K{\Omega_n}\subsetneq\HH K{\Omega_n}\subseteq\FF K{\Omega_{n+1}},
+\end{equation}
+and
+\begin{equation}\label{bst:gr:eq:towerunion}
+ \bigcup_{n\geq0}\FF K{\Omega_n}=\bigcup_{n\geq0}\HH K{\Omega_n}=\FF K{\Omega_\infty}.
+\end{equation}
+Every $\FF{\C}{\Omega_n}$ realizes every finite group as a Galois group, and
+every finite extension of $\FF{\C}{\Omega_n}$ splits over
+$\FF{\C}{\Omega_{n+1}}$. The union in~\eqref{bst:gr:eq:towerunion} is
+algebraically closed for $K=\C$ and real closed for $K=\R$. It is properly
+contained in $\HH K{\Omega_\infty}$.
+\end{theorem}
+\begin{proof}
+The group $\Omega_n$ is divisible and has order unit $\omega^n$ (with
+$\omega^0=1$). The exponent $\omega^{n+1}$ dominates all of $\Omega_n$. The
+first inclusion in~\eqref{bst:gr:eq:towerinterlace} is strict because the
+normalized root of $1-t^{\omega^n}$ belongs to $\HH K{\Omega_n}$ but not to
+$\FF K{\Omega_n}$. The second inclusion follows from
+Theorem~\ref{bst:gr:thm:absorption}. It already gives equality of the first
+two unions in~\eqref{bst:gr:eq:towerunion}.
+
+The group $\Omega_\infty$ has no order unit. Any support bounded above and
+below in it is contained in some $\Omega_n$: choose $n$ large enough to
+contain its two bounds. An exponent with a nonzero coefficient at a higher
+power of $\omega$ would exceed one of those bounds in absolute order.
+Conversely, the whole group $\Omega_n$ is bounded above by $\omega^{n+1}$ in
+$\Omega_\infty$. Hence
+\[
+ \BB K{\Omega_\infty}=\bigcup_n\HH K{\Omega_n}.
+\]
+By Remark~\ref{bst:gr:rem:nounit} this bounded ring is its own fraction field,
+proving~\eqref{bst:gr:eq:towerunion}. Closedness follows either from
+Theorem~\ref{bst:gr:thm:closedness} or from the directed union of the closed
+fields $\HH K{\Omega_n}$. Finite-group realization and splitting between
+successive stages follow from Theorems~\ref{bst:gr:thm:products}
+and~\ref{bst:gr:thm:allcollapse}.
+
+Finally the Hahn series
+\[
+ \sum_{n\geq0}t^{\omega^n}
+\]
+has well-ordered support unbounded in $\Omega_\infty$. It belongs to
+$\HH K{\Omega_\infty}$ but not to its bounded ring, which is the union
+in~\eqref{bst:gr:eq:towerunion}.
+\end{proof}
+
+Under~\eqref{bst:eq:conway}, the last witness is the actual surreal
+infinitesimal $\sum_{n\geq0}\omega^{-\omega^n}$. Thus a proper algebraically
+closed subfield of $\No[i]$ can be the union of a countable increasing
+sequence of fields, each of which has the full finite-group realization
+property. The transition maps, rather than the abstract groups at the
+individual stages, are decisive.
+
+\textup{[merge]} The tower plays out, stage by stage, the enlargement of
+Section~8.4. Its witness is transcendental, not only outside the union:
+with $a_n=\omega^n$ the gap hypothesis of Corollary~\ref{bst:cor:onegap}
+holds in $\Omega_\infty$ (every $w\in\Omega_\infty$ is below some
+$N\omega^m$), so $\sum_nt^{\omega^n}$ is transcendental over
+$\FF K{\Omega_\infty}$, and Theorem~\ref{bst:thm:independent} gives
+$2^{\aleph_0}$ algebraically independent elements over this algebraically
+closed union.
+
+\subsection{Why the full omnific field has no contradiction}
+
+Every set of surreal exponents has a surreal upper bound. For example, a
+Conway cut with that set on its left gives a larger surreal number. Thus for
+the full proper-class exponent group $\No$, every individual normal-form
+support is upper bounded. The formal bounded-support construction then gives
+the whole surreal or surcomplex field, with set-sized supports understood
+throughout. \textup{[merge]} Section~8.4 makes the same observation; it is
+printed once there, with this argument added here.
+
+The classical identity $\Frac\Oz=\No$ is recovered by the same monomial-shift
+argument; it is not a new theorem here \cite[Proposition~2.4.5 and its
+discussion of Conway's Theorem~32]{LM24}. The nontrivial Galois phenomena
+above live in the specified set-sized fraction subfields. It is never
+asserted that $\No[i]$ itself has a nontrivial finite algebraic extension.
+
+\section{Scope, verification and relations of the Galois part}\label{bst:gr:sec:scope}
+
+\subsection{The role of divisibility}
+
+The finite-slice lemma, local descent, finite-group realizations, radical
+degrees, and uniform-denominator absorption hold for a general nonzero
+ordered abelian group subject to the stated order-unit or new-scale
+assumption. Divisibility enters the closedness dichotomy and the universal
+splitting theorem because those arguments use algebraic or real closedness of
+a full Hahn field.
+
+Without divisibility, absence of an order unit does not by itself make the
+full convex-subgroup Hahn fields algebraically closed. Similarly, absorption
+of $\HH{\C}H$ need not absorb an algebraic closure of the old field if this
+Hahn field is not algebraically closed. It still absorbs every explicitly
+constructed extension contained in that Hahn field.
+
+\subsection{Two unrelated senses of ramification}
+
+The points $s=a^{-1}$ used in the radical proof are valuations of function
+fields of complex algebraic curves. The Hahn valuation at $s=t^u$ instead
+records the least exponent of a series. Every normalized radical
+in~\eqref{bst:gr:eq:radical} has Hahn valuation $0$ and constant term $1$. Its
+degree is nevertheless detected by ramification at the remote curve point
+$a^{-1}$ before descent. This is not a contradiction; the two valuations have
+different domains of geometric interpretation.
+
+In particular, the prime ideals of $\AAG{\Z}{\R}G$, its integral closure, and
+ramification in that ring have not been classified. Those are ring-theoretic
+questions and require more than a function-field Galois group.
+
+\subsection{Finite groups versus the absolute Galois group}
+
+The Galois part gives a large explicit supply of quotients of
+$\AbsGal{\FF{\C}G}$, and preserves a complete local Galois envelope. This does
+not determine the entire absolute Galois group. Its cohomological dimension,
+projectivity, freeness, and all finite embedding problems are not answered by
+the present proofs. The exact cardinality calculation in
+Theorem~\ref{bst:gr:thm:cardinality} must not be read as an isomorphism
+classification.
+
+\subsection{Support size and set theory}
+
+The dichotomy does not use CH, GCH, a measurable cardinal, or another
+large-cardinal axiom. The continuum bound in Theorem~\ref{bst:gr:thm:products}
+comes from choosing independent branch points on the ordinary complex line.
+The results are not assertions that large cardinals have no effect on other
+surreal structures. Nor do they classify birthday-bounded or cardinally
+restricted Hahn fields. In a support-restricted setting, the formation of a
+binomial series, a field inverse, or an algebraic closure must be checked
+against the restriction.
+
+\subsection{Novelty and verification}
+
+The old descent theorem already implies the preservation of finite algebraic
+degrees. Source~02 does not relabel that implication as an independent
+breakthrough. Its proposed additional result is the systematic Galois theory
+obtained from it, including arbitrary independent finite-group products,
+explicit infinite radical groups, and uniform rank-transition splitting. The
+elementary pieces make these claims checkable, but do not certify historical
+priority. Its ledger and audit (Sections~\ref{bst:gr:subsec:ledger}
+and~\ref{bst:gr:subsec:audit}) distinguish the source inputs from new
+deductions.
+
+\subsection{What the Galois part does not claim}\label{bst:gr:subsec:nonclaims}
+
+Every limitation stated by source~02, in its text, its delivery README or its
+audit, is kept; each also stands at its place above.
+\begin{enumerate}
+\item No nontrivial finite algebraic extension of $\No[i]$ is asserted. The
+Galois phenomena concern named set-sized fraction subfields, and every Galois
+group and tensor product is formed for set-sized fields; no proper-class
+absolute Galois group is defined.
+\item $\FF KG$ is not identified with the full Hahn field $\HH KG$
+(Remark~\ref{bst:gr:rem:notwhole}); the omnific fraction bridge is an equality
+with the bounded-support fraction field only.
+\item The local Galois envelope $\mathcal E_G$ is not identified with an
+algebraic closure of $\FF{\C}G$, and its group is not identified with the
+absolute Galois group.
+\item The absolute Galois group $\AbsGal{\FF{\C}G}$ is not determined: its
+cohomological dimension, projectivity, freeness and finite embedding problems
+are not answered, and it is not claimed to be a free profinite group.
+Realizing every finite group, and having cardinality $2^{\cc}$, do not
+determine it.
+\item Cardinality is not generator rank: Theorem~\ref{bst:gr:thm:cardinality}
+says nothing about the least number of topological generators or the
+topological weight, and infinite field degree ($\cc$) and group cardinality
+($2^{\cc}$) are different numbers.
+\item Nothing is said about the inverse Galois problem over $\Q$.
+\item The prime ideals, integral closure and arithmetic ramification of
+$\AAG{\Z}{\R}G$ and $\AAG{\Z[i]}{\C}G$ are not classified. The curve
+valuations at $s=a^{-1}$ and the Hahn valuation are two unrelated senses of
+ramification and are kept separate.
+\item Divisibility is used only for closedness and for universal splitting.
+Without it only the extensions already inside the old Hahn field are
+absorbed, and absence of an order unit does not make the convex-subgroup Hahn
+fields closed.
+\item The real case does not split every finite extension: $X^2+1$ has no root
+in an ordered field, and $\FF{\R}G$ absorbs a real closure, not an algebraic
+closure (Proposition~\ref{bst:gr:prop:realclosure}).
+\item Splitting after scalar extension is not collapse of the old extension:
+$\Lambda/F$ does not become equal to its base, and its automorphisms do not
+cease to exist.
+\item The binary alternative of Theorem~\ref{bst:gr:thm:transition} concerns
+monomial inclusions of exponent groups only; general field embeddings of
+these fraction fields, possibly with intermediate behaviour, are open
+(Question~\ref{bst:gr:q:functorial}).
+\item A single dominating scale does not absorb the full Hahn field over the
+enlarged group itself (Remark~\ref{bst:gr:rem:uniform}).
+\item No CH, GCH, measurable or other large cardinal is used, and nothing is
+asserted about the effect of large cardinals on other surreal structures.
+\item Birthday-bounded and cardinally restricted Hahn fields are not treated.
+\item Nothing is claimed in positive characteristic; the complex covering
+argument is not available there unchanged.
+\item A description of the relative algebraic closure of $\FF{\C}G$ in
+$\HH{\C}G$ by a single local coordinate is not justified
+(Question~\ref{bst:gr:q:relclosure}), and embedding problems are solved only
+for independent products (Question~\ref{bst:gr:q:embedding}).
+\item The finite checks are regression tests of identities, signs,
+normalizations and finite algebra only. They do not prove cofinal descent,
+the existence of covers with arbitrary finite groups, infinite linear
+disjointness, cardinalities of absolute Galois groups, or any proper-class
+assertion, and no numerical approximation establishes a degree or a Galois
+group.
+\item No Lean or other proof-assistant certificate exists, no repository
+build was performed by the source, and there has been no independent
+refereeing.
+\item Historical priority is not certified. The support descent, the
+closedness without an order unit, Hahn closedness, the Riemann existence
+theorem, Kummer theory, transposition monodromy, Conway normal form and
+$\Frac\Oz=\No$ are credited, not claimed; several conclusions are short
+consequences of known mechanisms once the right fraction fields are
+identified.
+\item No named published conjecture is claimed solved, and
+L'Innocente--Mantova's GCD and factorization conjectures are neither assumed
+nor claimed.
+\item Source~02's repository comparison was targeted (selected guides and
+audits at its pin, read through a connector with some responses truncated),
+not an exhaustive reading or build; its incomplete code search is not
+evidence of absence.
+\item Byte-for-byte reproducibility of source~02's PDF was not promised.
+\item The research questions of Section~\ref{bst:gr:sec:questions} are not
+claimed to be open in the published literature.
+\end{enumerate}
+
+\subsection{Computational supplement}\label{bst:gr:subsec:verification}
+
+Source~02 ships a deterministic program using exact rational arithmetic and
+SymPy; here it is \nolinkurl{code/02-galois-rank-verify.py}. It checks truncated
+binomial-power identities, compatibility of normalized radical branches,
+finite coset projection identities, discriminants of $X^m-X-s$ for
+$2\le m\le9$, local implicit-series identities, Chinese-remainder
+idempotents, finite permutation generation, finite generalized-dihedral
+identities, and finite lexicographic instances of the rank-shift
+construction. The delivered run (Python 3.13.5, SymPy 1.14.0, seed
+20260923) passed 8,950 assertions in 18 named groups; its record is
+\texttt{data/02-galois-rank-verification\_results.json}, and
+\texttt{data/02-galois-rank-verification\_console.txt} is a byte-identical
+copy of it.
+
+These tests do not prove the cofinal descent theorem, the existence of
+covers with arbitrary finite groups, infinite linear disjointness,
+cardinalities of absolute Galois groups, or any proper-class assertion. They
+are regression tests for signs, normalizations, and finite algebra used in
+the written proofs. No numerical approximation is used to establish a degree
+or a Galois group.
+
+\textup{[merge]} When the Galois part was merged, the unchanged script was
+run on a copy under Python 3.14.4 and SymPy 1.14.0 with an explicit
+\texttt{--output} path: all 8,950 assertions passed, and its output agreed
+with the delivered record in every field except the recorded Python version.
+Without \texttt{--output} the script writes
+\texttt{data/verification\_results.json} beside its own \texttt{code/}
+directory, a file not shipped in this layout, so it should be run on a copy
+or with an explicit scratch path. The delivered
+\texttt{code/02-galois-rank-build.py} looks for
+\texttt{galois\_rank\_dichotomy.tex}, which is not shipped, and writes build
+transcripts into \texttt{data/}; \texttt{data/02-galois-rank-build\_audit.json}
+records the delivered 27-page PDF, not this report's.
+
+A practical proof-assistant implementation can be divided into four
+interfaces. First, prove that a bounded support has finite intersection with
+each coset of an order-unit cyclic subgroup. Second, show that coset
+projection intertwines multiplication by a series supported on that
+subgroup. Third, translate the resulting independence statement into
+injectivity of a field tensor product. Fourth, apply finite Galois base
+change. This organization does not require a full formalization of all
+surreal numbers before the central descent proof can be checked.
+
+For the rank-jump theorem, an independent implementation needs only an
+ordered-group inclusion, a strict upper bound for its image, translation of a
+well-ordered support, and a verified algebraic-closedness theorem for the old
+full Hahn field. The Chinese-remainder splitting can then reuse ordinary
+field theory. This proof path is short enough to make formalization a
+realistic next verification step, but no such certificate accompanies the
+source manuscript, and no statement of the Galois part has an
+implementation mapping in the collection's formalization ledger.
+
+\subsection{Dependency and contribution ledger}\label{bst:gr:subsec:ledger}
+
+Source~02's ledger, with its result numbers replaced by this report's.
+\textup{[merge]} The entry for Corollary~\ref{bst:gr:cor:transport} is
+corrected: source~02 calls it ``already implicit in prior degree
+preservation'', but the degree and Galois-group assertions are explicit in
+Corollary~\ref{bst:cor:relations} and the paragraph after it.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}
+>{\raggedright\arraybackslash}p{0.33\textwidth}
+>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Result here & Essential input & Contribution status \\
+\midrule
+\endfirsthead
+\toprule
+Result here & Essential input & Contribution status \\
+\midrule
+\endhead
+Proposition~\ref{bst:gr:prop:fractions} & Translation of Hahn supports & Elementary bridge;
+not claimed new. \\
+Corollary~\ref{bst:cor:onescale} (source~02's Theorem~3.2; Remark~\ref{bst:gr:rem:cyclicroute}) & Finite cyclic-coset slices & Reproof of a special
+case of cofinal descent. \\
+Corollary~\ref{bst:gr:cor:transport} & Linear disjointness; finite Galois theory & Standard
+consequence; degree and Galois group explicit in Section~\ref{bst:sec:descent} \textup{[merge]}, correspondence added. \\
+Theorems~\ref{bst:gr:thm:finitegroups}, \ref{bst:gr:thm:envelope} & Descent; Riemann existence; split
+local completion & Proposed application to the specified omnific
+fraction fields. \\
+Theorem~\ref{bst:gr:thm:products} & Pairwise disjoint branch loci and joint descent &
+Proposed simultaneous realization package. \\
+Theorems~\ref{bst:gr:thm:multirad}, \ref{bst:gr:thm:radicaltower} & Eisenstein at marked curve points;
+formal binomial branches & Explicit degrees and profinite quotient over
+the named fraction fields; classical Kummer mechanisms credited. \\
+Theorem~\ref{bst:gr:thm:closedness} & Prior bounded-ring theorem; Hahn closedness;
+single radical obstruction & Exact dichotomy, with the positive half
+already in this report. \\
+Theorem~\ref{bst:gr:thm:symmetric} & Classical transposition monodromy; descent &
+Explicit application, not a new $S_m$ calculation over $\C(s)$. \\
+Theorems~\ref{bst:gr:thm:dihedral}, \ref{bst:gr:thm:cardinality} & Explicit towers; conjugation;
+cardinality bounds & Proposed real and cardinal refinements. \\
+Theorem~\ref{bst:gr:thm:absorption} & A dominating exponent & Support phenomenon already
+present in this report; uniform formula restated. \\
+Theorems~\ref{bst:gr:thm:allcollapse}, \ref{bst:gr:thm:transition}, \ref{bst:gr:thm:tower} & Cofinal descent; absorption; Hahn closedness;
+finite separability & Proposed exhaustive Galois transition and explicit rank-tower synthesis. \\
+\bottomrule
+\end{longtable}
+
+The ledger separates mathematical dependence from priority. A statement can
+be useful and have a complete proof while still being a short application of
+known results. Conversely, a claim of novelty would need a broader literature
+comparison than a successful proof alone provides.
+
+\subsection{Audit of possible failure points}\label{bst:gr:subsec:audit}
+
+\emph{Upper bounds must be internal to the named group.} At an order unit,
+the support $\{nu:n\geq0\}$ is unbounded in $G$, but becomes bounded after
+adjoining a dominating $\theta$. Every use of boundedness specifies the
+ambient group.
+
+\emph{Coset projection uses both ends of a support.} A well-ordered support
+has a least exponent. Upper boundedness supplies the other end. Both are used
+to make a cyclic-coset slice finite. The result is false for arbitrary sets
+without a lower bound.
+
+\emph{Degrees require linear disjointness.} Finitely many denominators are
+cleared before a linear relation is projected. No attempt is made to project
+a quotient term by term. The full finite compositum is transported in the
+independent-family arguments.
+
+\emph{The whole local splitting field is embedded.} The finite cover is
+unramified over $0$, and the residue field is $\C$. This makes its completion
+the base Laurent series field. Embedding a single ramified branch would not
+suffice for the Galois-group statement.
+
+\emph{The branch sets include infinity in their accounting.} For the
+arbitrary-product construction infinity is unramified in every cover. The
+Kummer construction, which may have a common branch point at infinity,
+instead uses its separate marked-point Eisenstein proof. These two
+independence arguments are not interchangeable without checking their
+hypotheses.
+
+\emph{No independence from coefficient transcendence is used.} The radical
+coefficients can all be algebraic for rational $a$. Their algebraic
+obstruction comes from the support coordinate and function-field degree, not
+from choosing transcendental coefficients.
+
+\emph{Divisibility is used exactly at closedness.} The new group
+$\Q\theta\oplus H$ is divisible when $H$ is. Full Hahn closedness then gives
+the old algebraic closure that is absorbed. Without this hypothesis only the
+extensions already present in the old Hahn field are automatically absorbed.
+
+\emph{Infinite groups have their Krull topology.} All displayed infinite
+product groups are topological isomorphisms, obtained from explicitly
+compatible finite quotient maps. Field degree and group cardinality are
+recorded separately.
+
+\emph{The rank tower remains set-sized.} Each $\Omega_n$ and $\Omega_\infty$
+is a set, so ordinary field and Galois theory applies. The closing discussion
+of all of $\No$ is not used to define an unrestricted proper-class absolute
+Galois group.
+
+\emph{Formal verification is not inferred from a repository.} Although the
+repository contains Lean formalizations, source~02 was not checked by Lean
+and no repository build was performed in its preparation. Finite exact
+calculations are not promoted to proofs of infinite statements.
+
+\subsection{Relation to neighbouring reports}\label{bst:gr:subsec:neighbours}
+
+\textup{[merge]} This subsection compares statements only; no theorem of
+another report is used in a proof of the Galois part.
+\begin{itemize}
+\item \emph{Tail-spans and differential transcendence} \cite{RepoTail}. Its
+\texttt{tail:thm:closure} describes the valuation closure of the relative
+algebraic closure of a \emph{full} Hahn field $M((t^\Gamma))$ inside
+$\overline M((t^\Gamma))$, and its noncofinal example $\Q\hookrightarrow\Q^2$
+loses algebraic approximability. Here the base is the bounded fraction field
+and the noncofinal enlargement of Theorem~\ref{bst:gr:thm:transition} splits
+every finite extension. Both illustrate that a noncofinal embedding changes
+algebraic answers for the same series; the objects differ, and
+Question~\ref{bst:gr:q:relclosure} asks for the relative algebraic closure over
+the bounded base, which that report does not treat.
+\item \emph{Entire functions at arbitrary rank} \cite{RepoEntire}. Its
+\texttt{ent:thm:main-extension}(b): a nonpolynomial entire series over
+$\C((t^\Gamma))$ remains entire over a larger group exactly when the old group
+is cofinal in it. Theorem~\ref{bst:gr:thm:transition}: a finite extension of
+$\FF{\C}H$ remains a field of the same degree over $\FF{\C}G$ exactly when $H$
+is cofinal in $G$, and splits completely otherwise. The same cofinal/noncofinal
+dichotomy, for different objects, with independent proofs.
+\item \emph{Independent surreal copies} \cite{RepoIsc}. Its
+\texttt{isc:prop:boundedfrac} is Proposition~\ref{bst:gr:prop:fractions} for
+$D=\Z,\Z[i]$ (written after source~02's pin); its coset slices are the
+projections used in Remarks~\ref{bst:gr:rem:cyclicroute}
+and~\ref{bst:gr:rem:cofinalroute}.
+\item \emph{Cardinally restricted fields.} Question~\ref{bst:gr:q:cardinal}
+concerns fields of Hahn series with fewer than $\kappa$ terms. Such fields
+are studied in the reports \emph{The First-$\kappa$ Coefficients}
+\cite{RepoFkc} and \emph{Critical-Point Defects in Surreal Arithmetic}
+\cite{RepoLce}, whose short-support field $\mathscr S_{<\kappa}$ is of this kind. Nothing from
+them is used here, and no answer to the question is claimed from them.
+\end{itemize}
+
+\section{Research questions from the Galois part}\label{bst:gr:sec:questions}
+
+The following are proposed research problems motivated by the proved results
+of source~02. They are not all asserted to be open in the wider literature;
+settling their exact prior status is part of the first task in pursuing them.
+\textup{[merge]} Source~02 prints them as the twelve subsections of its
+Section~13; their text is kept, in this report's notation.
+
+\begin{question}[The complete absolute Galois group]\label{bst:gr:q:absolute}
+Determine $\AbsGal{\FF{\C}G}$ for a divisible order-unit group $G$, beginning
+with $G=\Q$ and $G=\R$. Is its isomorphism type controlled by the top
+Archimedean quotient, by the lower convex subgroups, or by finer support
+structure? A first useful invariant would be its cohomological dimension.
+Realizing every finite group and having cardinality $2^{\cc}$ do not answer
+this question.
+\end{question}
+
+\begin{question}[The kernel outside the local envelope]\label{bst:gr:q:kernel}
+Study the restriction epimorphism
+\[
+ \AbsGal{\FF{\C}G}\longrightarrow\Gal(\mathcal E_0/\C(s))
+\]
+from Theorem~\ref{bst:gr:thm:envelope}. Describe its kernel and compare the
+images coming from different order units. Existing results about fundamental
+groups of complex curves may identify the target more explicitly, but they do
+not automatically identify the kernel.
+\end{question}
+
+\begin{question}[Finite embedding problems]\label{bst:gr:q:embedding}
+Given a finite quotient of $\AbsGal{\FF{\C}G}$ and an epimorphism onto that
+quotient from another finite group, determine when a compatible proper
+solution exists. The construction by disjoint branch loci solves independent
+product problems, not arbitrary prescribed compatibility problems. A useful
+intermediate target is an embedding problem entirely contained in the local
+envelope.
+\end{question}
+
+\begin{question}[The relative algebraic closure inside the Hahn field]\label{bst:gr:q:relclosure}
+Give an intrinsic support description of the elements of $\HH{\C}G$ algebraic
+over $\FF{\C}G$. The local algebraic series in $t^u$ provide many examples,
+but the coefficients of a polynomial over the fraction field may involve
+infinitely many cosets. A description using only a single local coordinate is
+not justified by source~02.
+\end{question}
+
+\begin{question}[Minimal enlargement for a prescribed root]\label{bst:gr:q:minimal}
+For $f\in\HH KG$, classify the smallest ordered group extensions in which $f$
+becomes a fraction of canonical omnific integers. A dominating element always
+suffices, but may be much more than is needed for a particular support. An
+exact criterion for finite families of algebraic branches would sharpen the
+uniform denominator construction.
+\end{question}
+
+\begin{question}[Integral closure and arithmetic ramification]\label{bst:gr:q:integral}
+Let $E/\FF{\C}G$ be one of the explicit cyclic or symmetric extensions.
+Determine the integral closure of $\AAG{\Z[i]}{\C}G$ in $E$, and identify the
+primes at which this ring extension ramifies. The curve valuations that prove
+independence are an input, not an already established classification of
+omnific prime ideals.
+\end{question}
+
+\begin{question}[Real realization with prescribed orderings]\label{bst:gr:q:real}
+Beyond the multiquadratic and generalized-dihedral families, which finite
+Galois groups can be realized inside $\HH{\R}G$ over $\FF{\R}G$? How many
+orderings extend the base Hahn order? Real covers with carefully chosen split
+real fibers should give an approach, but complex realization alone does not
+prove a real theorem.
+\end{question}
+
+\begin{question}[Nondivisible groups and positive characteristic]\label{bst:gr:q:charp}
+Separate the contribution of missing divisibility from the contribution of an
+order unit. In positive characteristic, replace the radical towers by suitable
+Artin--Schreier or Witt towers and analyze wild ramification. The complex
+covering argument is not available unchanged, and a naive
+characteristic-zero transcription would be invalid.
+\end{question}
+
+\begin{question}[Cardinally restricted supports]\label{bst:gr:q:cardinal}
+Repeat the constructions in fields of Hahn series with fewer than $\kappa$
+terms. Which steps are preserved by regular uncountable $\kappa$, and what
+happens at singular cardinals? It is necessary to check both algebraic
+closure operations and the supports of all coefficients appearing in a finite
+cover. Counting the displayed radicals alone is not sufficient.
+\end{question}
+
+\begin{question}[Functorial rank transitions]\label{bst:gr:q:functorial}
+Develop a category of exponent groups together with the induced fraction
+fields and finite \'etale algebras. A dominating extension sends every finite
+\'etale algebra from the old divisible complex stage to a split algebra.
+Theorem~\ref{bst:gr:thm:transition} settles the binary behavior for ordered
+exponent-group inclusions. Which more general embeddings of these fraction
+fields can exhibit intermediate behavior, splitting some finite extensions but
+preserving others? Distinguishing monomial embeddings from general field
+embeddings is essential here.
+\end{question}
+
+\begin{question}[Effective computation and certificates]\label{bst:gr:q:effective}
+Build algorithms that take a polynomial with a split simple fiber and produce
+certified local series, degree information, and the resulting Hahn-field
+embedding. Explicit monodromy or group certificates would be needed for a
+general finite cover. Such an algorithm should not claim to decide equality of
+arbitrary surreal presentations.
+\end{question}
+
+\begin{question}[Formalization of the support-to-Galois bridge]\label{bst:gr:q:formal}
+Formalize the finite-slice lemma and the tensor injectivity proof before
+attempting the geometric existence theorem. This gives a useful theorem in any
+library with Hahn series, ordered groups, and field extensions. A second stage
+can formalize the explicit radical families and rank absorption entirely
+algebraically. The Riemann-existence input can then be isolated behind an
+exact theorem interface rather than silently assumed by the code.
+\end{question}
+
+% End of the Galois part: restore the global equation numbering, so that the
+% appendices keep their original equation numbers.
+\counterwithout*{equation}{section}
+\setcounter{equation}{\value{bstgrsavedequation}}
+\let\theequation\bstgrsavedtheequation
+\let\theHequation\bstgrsavedtheHequation
 
 \appendix
 \section{Normalized GCD descent and a published question}\label{bst:sec:gcd}
@@ -1943,6 +3943,9 @@ Lean certification of this article
 Comparison with other reports (Section~\ref{bst:sec:collection})
 & Editorial addition at placement; no new theorem.
 & Statements of the cited reports, quoted by label; none is used in the proof of a theorem here. \\
+Galois part, Sections~\ref{bst:gr:sec:overview}--\ref{bst:gr:sec:questions} (batch 32)
+& Second source; its own contribution ledger is Section~\ref{bst:gr:subsec:ledger}.
+& Descent of Section~\ref{bst:sec:descent}; Riemann existence; Hahn closedness. \\
 \bottomrule
 \end{longtable}
 
@@ -2099,6 +4102,39 @@ public provisional project \texttt{gaearon/conway-refinement}, 2026.
 \href{https://github.com/gaearon/conway-refinement/blob/main/ConwayRefinement/Standalone/Mathlib/HahnSeriesGCD.lean}{standalone Hahn-series GCD statement}.
 Accessed 22 September 2026. The proof build was not independently rerun in
 this audit; the stated GCD input is retained as a hypothesis.
+
+\bibitem{RepoFkc}
+\emph{The First-$\kappa$ Coefficients}, AI-assisted research report in \repo,
+\texttt{docs/surcomplex/first-kappa-coefficients/}. Cited by name in the
+Galois part (batch 32); no label or result of it is used. Not treated as a
+refereed source.
+
+\bibitem{RepoLce}
+\emph{Critical-Point Defects in Surreal Arithmetic}, AI-assisted research
+report in \repo, \texttt{docs/foundations-and-computation/}\allowbreak
+\texttt{large-cardinal-embeddings-and-normal-forms/}. Cited by name in the
+Galois part (batch 32) for its short-support field; no label or result of it
+is used. Not treated as a refereed source.
+
+\bibitem{MilneFT}
+James S. Milne,
+\emph{Fields and Galois Theory}, version 5.10, September 2022, 144 pp.
+\href{https://www.jmilne.org/math/CourseNotes/FT.pdf}{Author's course notes}.
+Chapters 3, 5, 7, and 8 provide the finite, Kummer, infinite, and
+\'etale-algebra background used in the Galois part (source~02).
+
+\bibitem{MilneEC}
+James S. Milne,
+\emph{Lectures on \'Etale Cohomology}, version 2.21, 22 March 2013, 202 pp.
+\href{https://www.jmilne.org/math/CourseNotes/LEC.pdf}{Author's course notes}.
+Theorem 21.3 is the Riemann existence theorem; the account refers to
+SGA 1, Expos\'e XII. Cited by source~02.
+
+\bibitem{Conway}
+John H. Conway,
+\emph{On Numbers and Games}, second edition, A K Peters, 2001
+(first edition, 1976). Classical background reference, cited by source~02;
+not newly reviewed in full for it.
 
 \bibitem{RepoIsc}
 \emph{Independent Surreal Copies and Arithmetic Intersections}, AI-assisted
