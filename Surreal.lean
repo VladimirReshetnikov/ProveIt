@@ -826,3 +826,9 @@ import Surreal.Algebra.TailoredConstantTermGraph
 import Surreal.Algebra.TailoredDetectorFormulas
 import Surreal.HahnSeries.NumberFieldDetector
 import Surreal.HahnSeries.NumberFieldDetectorFormulas
+import Surreal.Algebra.QuadraticEmbeddedObstruction
+import Surreal.Algebra.NumberFieldQuadraticRadicand
+import Surreal.Algebra.TailoredExistentialGraphFormulas
+import Surreal.HahnSeries.NumberFieldQuadraticBoundary
+import Surreal.HahnSeries.NumberFieldQuadraticIdeal
+import Surreal.HahnSeries.NumberFieldExistentialGraph

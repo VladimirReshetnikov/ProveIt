@@ -496,7 +496,15 @@ the nonzero constant terms in the full coefficient pullback. The same
 polynomial tests every ideal and identifies the purely infinite ideal as the
 largest ideal with a root-free quotient. Native parameter-free formulas also
 define the constant-term graph in both existential–universal and
-universal–existential form, with a unique output for every input.
+universal–existential form, with a unique output for every input. In fact,
+the same root hypothesis gives stronger **purely existential definitions**:
+one witness for the purely infinite ideal and six for the constant-term
+graph. A factor of the sextic supplies a nonsquare integer radicand in the
+number field whose square root lies in the coefficient field. The formulas
+use only its numeral, so no square-root parameter is needed. The quadratic
+criterion also applies independently whenever such a radicand is available;
+if it is already a square in the fraction field of the ordinary coefficient
+ring, clearing denominators instead produces a verified false positive.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

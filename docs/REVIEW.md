@@ -7992,3 +7992,38 @@ references and 1,908 local Markdown destinations in 226 files pass, together
 with whitespace checks. Incoming work changes no TeX or PDF, so the final
 three-pass document builds and rendered-page inspections remain applicable.
 The locally reviewed class-residue material remains Pending in Lean.
+
+### Existential number-field definitions: synchronization retry (2026-09-24)
+
+The first push was rejected because origin/main advanced. Fetched and merged
+2796ff22f190afa60ac17fe526ac912255278be4, then read all six new modules
+against `odg:def:rem:numberfieldideal` and checked its revised coverage row.
+This resolves the stronger existential-definition dependency recorded above.
+
+A nonsquare radicand in a containing field excludes nonzero ordinary
+quadratic solutions. With a square root in the larger coefficient field,
+the existing quadratic kernel theorem gives a one-witness definition of the
+purely infinite ideal in the full coefficient pullback. Combining this with
+the tailored coefficient guard yields a six-witness existential graph with
+unique outputs. The literal native formulas use a natural numeral, not a
+parameter naming its square root, and have exact realization and definability
+theorems. A root of the tailored sextic selects p, q or pq, all nonsquare in
+the number field; thus the earlier detector hypothesis supplies existential
+definitions of the ideal, its complement and the graph. Independently, a
+prime nonsquare exists in every number field. No uniform algorithm over
+field presentations is asserted.
+
+The converse boundary clears denominators in the coefficient fraction field:
+when a nonzero radicand is a square there, a nonzero ordinary solution
+produces a false positive in the Hahn ring. This does not require the square
+root to lie in the coefficient ring itself. The existing Z[sqrt(2)] example
+is retained. The statements remain about full coefficient pullbacks, with
+no unsupported identification of a generic Hahn workspace with all surreals.
+
+Validation: the repeated `LEAN_NUM_THREADS=2 lake build` passed 4,967 jobs;
+the axiom audit passed 18,201 declarations with only propext, Classical.choice
+and Quot.sound. All 4,626 source anchors in 63 reports, 5,222 source-label
+references and 1,914 local Markdown destinations in 226 files pass, with
+whitespace checks. No incoming TeX or PDF changed; the final three-pass
+compilation and page inspections remain valid. The local manuscript
+scale/branch improvements remain Pending in Lean.
