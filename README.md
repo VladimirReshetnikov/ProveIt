@@ -225,6 +225,9 @@ now have the same parameter-free existential definition:
 extension are proved too. Consequently every unital homomorphism between
 two omnific rings, or between two Gaussian omnific rings, preserves the
 purely infinite ideal, without injectivity or a condition on the target’s size.
+Checked counterexamples show why the hypotheses matter: in `ℤ[ω]`, the
+purely infinite element `ω` has no quadratic witness; if the constant ring
+contains `√2`, the equation admits the nonzero constant solution `(√2, 1)`.
 
 The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
 ideal generators; in particular it is not finitely generated. Its cotangent
