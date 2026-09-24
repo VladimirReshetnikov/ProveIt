@@ -270,7 +270,11 @@ now have a proved complete solution criterion. Nonzero diagonal entries
 impose divisibility conditions on constant coefficients; zero rows require
 the full transformed entry to vanish. The proof also describes every
 solution: pivot coordinates are fixed quotients and the remaining omnific
-coordinates are arbitrary.
+coordinates are arbitrary. For ordinary integer right-hand sides, every
+solution splits into an ordinary solution and a purely infinite kernel
+vector. Any rational basis of the matrix kernel uniquely parametrizes that
+purely infinite part. In particular, full column rank forces every solution
+to be ordinary.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
