@@ -159,6 +159,18 @@ Over `ℝ` a factor may be quadratic; use its degree when computing
 `deg P_odd`. The normalization parameter `T` is a function-field element
 and need not be a regular function on the singular model.
 
+In the group-variety applications, `ct:X(𝒜_k(Γ))→X(k)` is the map on
+scheme-valued points induced by the ring retraction. The splitting
+`G(𝒜_k(Γ)) ≅ G(k) ⊕ Π_k(Γ)^d` is a splitting of abelian groups of
+points; it does not assert an algebraic-group product decomposition.
+The vector coordinates on the unipotent subgroup are chosen.
+For coefficient algebras, `S[ε]` means `S[T]/(T²)`, with `ε` the class
+of `T`. This nilpotent is not a surreal infinitesimal. Finite coefficient
+bases allow the Hahn construction to commute with finite scalar extension
+and dual numbers; arbitrary coefficient algebras need not give a tensor
+product. Joint injectivity of all coefficient maps is the descent condition
+used for reduced algebras.
+
 The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
 Its rational residue `res` has domain `Oz_Π`; standard part `st` has
 domain the finite surreals. On their common domain, the maps agree
