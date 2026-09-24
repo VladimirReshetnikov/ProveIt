@@ -4376,6 +4376,27 @@ its validated 225-page PDF. No incoming finite suite was rerun in this
 synchronization, and the new manuscript proofs remain outside earlier
 review scopes.
 
+## Full-surreal Pell contrast synchronization
+
+The merge through `b401f5d` adds `e6b654a`'s split-norm field algebra,
+actual two-term normal-form calculation and canonical truncation theorem.
+These three modules match the contrast following `odg:ex:pell2`: positive
+real `D` and any nonzero surreal parameter give the rational Pell
+parametrization; at a positive monomial parameter and nonzero ordinary real
+level both coordinates have forbidden negative terms. Their canonical
+positive-growth parts have norm zero, so truncation does not preserve the
+original nonzero equation. The corrected power remark and the count of
+seven integrated companions are retained when resolving the ledger overlap.
+No manuscript source changes in this merge.
+
+The combined two-thread build passes 4,500 jobs and audits 15,654 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. The independent
+inventory passes for 4,550 standard results across 63 reports; all 5,106
+source references and 1,701 local Markdown destinations in 225 files resolve.
+The preceding clean 225-page article and 33-page catalogue builds remain
+applicable. Pending mathematical review and source-reconciliation scopes
+are unchanged.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
