@@ -112,8 +112,14 @@
 \newcommand{\mergetag}{\textup{\textsf{\small[merge]}}}
 \newcommand{\replabel}[1]{\nolinkurl{#1}}
 \newcommand{\fn}[1]{\nolinkurl{#1}}
+\newcommand{\sSOT}{\mathop{\sum}\nolimits^{\mathrm{SOT}}}
+\newcommand{\Bnn}{\mathscr B^{\ge0}_\Gamma(H,H)}
+\newcommand{\Dg}{\mathscr D}
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\cb}{\mathrm{cb}}
+\newcommand{\Oz}{\mathbf{Oz}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\hypersetup{pdftitle={Hilbert Geometry at Surreal Scales},pdfauthor={Merged research report for the Surreal project},pdfsubject={Surreal and surcomplex Hahn--Hilbert spaces; orthogonal projections; amplified and infinitesimal graphs; projection-lattice obstructions; metric rigidity; Moore--Penrose inverses}}
+\hypersetup{pdftitle={Hilbert Geometry at Surreal Scales},pdfauthor={Merged research report for the Surreal project},pdfsubject={Surreal and surcomplex Hahn--Hilbert spaces; orthogonal projections; amplified and infinitesimal graphs; projection-lattice obstructions; infinite simultaneous unitary straightening; metric rigidity; Moore--Penrose inverses}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -124,10 +130,10 @@
 {\Huge\bfseries\color{Ink} Hilbert Geometry\\[.15em] at Surreal Scales\par}
 \vspace{6mm}
 {\Large Orthogonal splitting, amplified and infinitesimal graphs,\\[.2em]
-projection-lattice obstructions, metric rigidity,\\[.2em]
-and Fredholm least squares\par}
+projection-lattice obstructions, infinite unitary straightening,\\[.2em]
+metric rigidity, and Fredholm least squares\par}
 \vspace{6mm}
-{\large Built from two manuscripts dated September 23, 2026\par}
+{\large Built from three manuscripts dated September 23, 2026\par}
 \vspace{5mm}
 \begin{minipage}{.96\textwidth}
 \begin{abstract}\noindent
@@ -150,9 +156,11 @@ exactly when its domain is closed. For a nontrivial value group the poset of
 complemented subspaces is a lattice exactly when the coefficient space is
 finite dimensional; a positive operator with three exponents has a
 noncomplemented kernel, and a countable orthogonal family of rank-one
-projections has no join. A positive Hahn metric with strictly positive
-residue is isometric to the canonical one exactly when its residue is
-uniformly positive.
+projections has no join; an orthogonal family of projections is conjugated
+to its residues by one unitary exactly when its coefficient columns are
+bounded and have well-ordered support. A positive Hahn metric with strictly
+positive residue is isometric to the canonical one exactly when its residue
+is uniformly positive.
 
 A positive counterpart: every positive-order Hahn perturbation of an
 ordinary Fredholm operator has an adjointable Moore--Penrose inverse, and a
@@ -160,20 +168,20 @@ finite Schur matrix determines its kernel, cokernel, index and exact inverse
 valuation. Adjointable operators on the class of all surcomplex vectors have
 one set-sized support.
 
-This report merges two independently written manuscripts; it says which
-source proved each result, prints shared results once, and keeps every
-source's limitations. It is an AI-assisted draft: it has not been refereed,
+This report is built from three manuscripts; it says which source proved
+each result, prints shared results once, and keeps every source's
+limitations. It is an AI-assisted draft: it has not been refereed,
 and nothing in it has been formalized in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{.96\textwidth}\small
-\textbf{Sources and status.} Manuscript 03 (the base text), pinned to
-repository commit \texttt{9a385d3}, and manuscript 06, pinned to
-\texttt{a45d722}; their titles are in \cref{hgeo:sub:provenance}. Results
+\textbf{Sources and status.} Manuscripts 03 (the base text), 06 and 07
+(added later), pinned to commits \texttt{9a385d3}, \texttt{a45d722} and
+\texttt{fc27d87}; titles in \cref{hgeo:sub:provenance,hgeo:us:sub:source}. Results
 already printed elsewhere in the collection are cited, not reprinted. The
-construction, the automatic adjoint theorem, the direct-rotation formula and
-the classical perturbation tools are credited, not claimed. The provenance of
+construction, the automatic adjoint theorem, the direct-rotation and polar
+formulas and the classical perturbation tools are credited, not claimed. The provenance of
 every section is recorded in \cref{hgeo:app:provenance}; non-claims are
 collected in \cref{hgeo:app:nonclaims}. Finite checks accompany the report
 and check finite identities only. No named published conjecture is asserted
@@ -295,6 +303,16 @@ or $\No[i]$ in a class theory without global choice, every class-linear map
 with an everywhere-defined class adjoint has one set-sized Hahn expansion in
 ordinary bounded operators, so the whole theory applies to literal surreal
 and surcomplex vector components (\cref{hgeo:thm:class,hgeo:cor:globalgeometry}).
+\item \emph{Infinite simultaneous straightening} \src{07}. A set-indexed
+orthogonal family of projections $P_i$ with residues $E_i$ has one unitary
+$U$ with $P_i=UE_iU^*$ for all $i$ if and only if, at every exponent, the
+canonical columns $\sum_i(P_i)_\gamma E_i$ synthesize to a bounded operator,
+and their active support is well ordered. An explicit $U$ is given for
+complete and incomplete families; the criterion is equivalent to a unique
+normal completely bounded atomic calculus, and it gives joins. A complete
+family with uniformly bounded coefficients at every order fails it, and one
+of its subfamilies has no join
+(\cref{hgeo:us:thm:main,hgeo:us:thm:calculus,hgeo:us:thm:uniform}).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a
@@ -342,12 +360,24 @@ where they met the field letters or the rotation: see
 \end{itemize}
 Inner products are linear in the first argument. The valuation of a vector
 or an operator is the least exponent of its support; $v(0)=+\infty$.
+\Cref{hgeo:us:sec:intro,hgeo:us:sec:criterion,hgeo:us:sec:consequences,%
+hgeo:us:sec:calculus,hgeo:us:sec:uniform,hgeo:us:sec:support,%
+hgeo:us:sec:surreal,hgeo:us:sec:questions}, added with source~07, fix further
+conventions in \cref{hgeo:us:sub:conventions}.
 
 \subsection{Provenance of this report}\label{hgeo:sub:provenance}
 This report is built from two manuscripts written independently and dated
 September 23, 2026, items 03 and 06 of the twenty-seventh batch placed in
 commit \texttt{a4dcb91}; their shipped file prefixes are
 \fn{03-orthogonal-splitting-} and \fn{06-hilbert-foundations-}.
+A third manuscript, source~07 (batch~34, manuscript~09, pinned to
+\texttt{fc27d87}, prefix \fn{07-unitary-synthesis-}), was written later
+against this report and is added after the merged text, in
+\cref{hgeo:us:sec:intro,hgeo:us:sec:criterion,hgeo:us:sec:consequences,%
+hgeo:us:sec:calculus,hgeo:us:sec:uniform,hgeo:us:sec:support,%
+hgeo:us:sec:surreal,hgeo:us:sec:questions}; its provenance and the choices
+of that addition are in \cref{hgeo:us:sub:source}. The rest of this subsection
+concerns the merge of sources~03 and~06.
 Source~03 pins repository commit \texttt{9a385d3} (35 commits before that
 placement) and source~06 pins \texttt{a45d722} (30 commits before it). None
 of the reports cited below changed between the pins and the placement.
@@ -1300,7 +1330,9 @@ Its residue is $I$.
 For $r=2$ this is \cref{hgeo:thm:normalform} with a different unitary. The
 finite qualification is essential: a countable family may fail to have even
 an orthogonal join, and countable simultaneous straightening can fail for two
-independent reasons (\cref{hgeo:sub:countable}).
+independent reasons (\cref{hgeo:sub:countable}). Source~07 gives the exact
+infinite criterion (\cref{hgeo:us:thm:main}), of which this theorem is the
+finite case (\cref{hgeo:us:rem:finite}).
 
 \section{Amplified and infinitesimal graphs}
 \label{hgeo:sec:graphs}
@@ -1951,8 +1983,13 @@ $\widetilde P_n$ at $\eta/n$ is nonzero.
 Thus infinite orthogonal synthesis has two genuinely distinct requirements:
 a coherent common support and bounded ordinary coefficient synthesis.
 Finite families automatically meet both; arbitrary countable families do
-not. These are necessary conditions only; no sufficient condition is proved
-(\cref{hgeo:q:synthesis}).
+not. Sources~03 and~06 prove them as necessary conditions only. \mergetag{}
+Source~07 shows that, in the form of bounded synthesized coefficients and
+well-ordered active support, they are together also sufficient
+(\cref{hgeo:us:thm:main}), and that neither can be dropped, even under
+uniform bounds on the individual coefficients
+(\cref{hgeo:us:thm:uniform,hgeo:us:thm:support}); this answers
+\cref{hgeo:q:synthesis}.
 
 \section{Metric rigidity and the exact positivity threshold}
 \label{hgeo:sec:metric}
@@ -2777,7 +2814,11 @@ countable join (\cref{hgeo:thm:nojoin}) does not contradict that report's
 complete Boolean algebra of coordinate projections
 (\replabel{ihs:rf:thm:commutant}), which concerns constant coordinate
 projections in its row- and column-finite model; the $P_n$ here are not
-constant.
+constant. Source~07 answers the first further question of Part~IV
+(\replabel{ihs:fr:sec:questions}) in exact-criterion form
+(\cref{hgeo:us:sub:status}); Part~II's row- and column-finite calculus is a
+different category from the bounded-coefficient one used there
+(\cref{hgeo:us:sub:why}).
 \item \emph{Three Duals at Surreal Scales}
 (\fn{docs/surcomplex/three-duals-of-hahn-vector-spaces}): spherical
 completeness (\replabel{duals:prop:spherical}), the coefficientwise Riesz
@@ -2808,7 +2849,9 @@ The relevant repository portions were inspected by the sources, not the
 complete proof corpus: source~03 read the relevant parts of the spectral and
 duals reports; source~06 read the root README, the opening of the
 formalization ledger, the spectral report's README and article opening, and
-the duals report's README. Neither source claims inherited Lean
+the duals report's README; source~07 read the catalogues and the guides of
+this report, the spectral report and two omnific reports
+(\cref{hgeo:us:app:provenance}). No source claims inherited Lean
 verification, and \fn{docs/FORMALIZATION.md} maps no label of this report to
 Lean.
 
@@ -2818,7 +2861,8 @@ Both literature searches were targeted, not exhaustive. Source~03 searched
 the phrases ``Hahn Hilbert orthogonal graph'', ``Hahn Moore--Penrose'',
 ``Hahn Fredholm least squares'', non-Archimedean orthogonal complementation
 and the works below; source~06 searched Hahn/Hilbert orthogonal graphs,
-projection lattices and isometric positive forms. Failure to identify an
+projection lattices and isometric positive forms; source~07's check was also
+targeted (\cref{hgeo:us:app:provenance}). Failure to identify an
 exact predecessor is evidence for a candidate contribution, not a proof that
 none exists under other terminology.
 
@@ -2859,6 +2903,9 @@ unitaries relating projections and records the classical direct-rotation
 formula \cite{Simon,SimonKato}; Kato's book is the standard source for the
 two-projection theory and for closed operators \cite{Kato}. Neither
 projection deformation nor that formula is claimed to originate here.
+Corach and Maestripieri relate products of projections to polar
+decompositions \cite{CorachMaestripieri}; source~07 credits them and Kato for
+projection geometry and polar decomposition, and claims neither.
 Avrachenkov--Lasserre investigate analytic perturbations of generalized
 inverses \cite{Avrachenkov}, and M\"uller--Strohmaier develop
 Hahn-meromorphic functions and a holomorphic Fredholm theorem \cite{MS}. They
@@ -2917,6 +2964,15 @@ Sharp inverse valuation
 Full surcomplex extension
  & Class replacement; normal forms; automatic adjoints
  & Explicit set support of global adjointable operators (03, 06)\\
+Infinite simultaneous straightening, atomic calculus, joins
+ & Polar decomposition and projection geometry
+ \cite{Kato,CorachMaestripieri}; support calculus;
+ \cref{hgeo:thm:finite,hgeo:sub:countable}
+ & Exact criterion, jets, calculus equivalence, uniformly controlled
+ counterexample (07)\\
+Omnific matrix rigidity
+ & Omnific normal forms \cite{LInnocenteMantova}
+ & Elementary boundary corollary (07)\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -2929,7 +2985,9 @@ publication claim of priority.
 
 \subsection{Open questions}\label{hgeo:sub:questions}
 The sources' questions are collected here, with what the other source
-settles. None is a named published problem.
+settles. None is a named published problem. Notes marked ``Status (batch 34)''
+record what source~07 settles; its own questions are in
+\cref{hgeo:us:sub:questions}.
 
 \begin{question}[Beyond Fredholm residues \src{03}]\label{hgeo:q:mp}
 The Fredholm assumption is sufficient, not asserted necessary, for an
@@ -2955,6 +3013,9 @@ make them complemented; the graph chart gives a local model, but closed
 residue is not asserted to settle every orthoclosed subspace.
 \end{question}
 
+\noindent\emph{Status (batch 34).} Source~07 restates this question
+(\cref{hgeo:us:q:closedresidue}) and does not settle it; it stays open.
+
 \begin{question}[Infinite orthogonal synthesis \src{06}]\label{hgeo:q:synthesis}
 For infinite orthogonal families, a coherent common support and bounded
 ordinary coefficient synthesis are separate necessary conditions
@@ -2963,16 +3024,29 @@ sufficient conditions, stable under composition and scale enlargement, make
 a countable family simultaneously straightenable, or give it a join?
 \end{question}
 
+\noindent\emph{Status (batch 34).} Answered by source~07. For any set-indexed
+orthogonal family, complete or not, over any set-sized ordered group, a
+simultaneous unitary exists if and only if the canonical columns are bounded
+at every exponent (B) and their active support is well ordered (H)
+(\cref{hgeo:us:thm:main}); solvability is unchanged by every ordered scale
+enlargement (\cref{hgeo:us:cor:extension}), and families satisfying the
+criterion have joins (\cref{hgeo:us:prop:joins,hgeo:us:rem:joins}). The
+criterion is exact, not an effective test, and stability under composition is
+not treated separately (\cref{hgeo:us:sub:status}).
+
 This bears on the first further question of the spectral report's Part~IV
 (\replabel{ihs:fr:sec:questions}): what uniform spectral-gap and
 coefficient-ideal hypotheses ensure that all cluster rotations assemble into
 a bounded-coefficient Hahn unitary? Assembling the cluster rotations into one
 unitary would conjugate all the cluster projections simultaneously, so the
 two conditions above are necessary for it; \cref{hgeo:cor:nosimultaneous}
-and \cref{hgeo:prop:incoherent} give families for which each fails. No
-sufficient hypothesis is proved, and that question stays open, as do its
-other two parts (regularized spectral products; compact residues with a
-kernel), which neither source addresses.
+and \cref{hgeo:prop:incoherent} give families for which each fails. Sources~03
+and~06 prove no sufficient hypothesis. \emph{Status (batch 34):} source~07's
+criterion answers that question in exact-criterion form, for the family of
+cluster projections, but not in the spectral-gap and coefficient-ideal form in
+which it is posed; in that form it stays open (\cref{hgeo:us:sub:status}).
+Its other two parts (regularized spectral products; compact residues with a
+kernel) are addressed by no source.
 
 \begin{question}[Singular positive forms \src{06}]\label{hgeo:q:metric}
 \Cref{hgeo:thm:metric} suggests a stratification of positive Hahn metrics by
@@ -2995,6 +3069,13 @@ spectral measures for particular operators or other coefficientwise
 summation rules.
 \end{question}
 
+\noindent\emph{Status (batch 34).} Answered in part by source~07: every
+family satisfying the criterion of \cref{hgeo:us:thm:main}, and each of its
+subfamilies, has a join (\cref{hgeo:us:prop:joins,hgeo:us:rem:joins}), and
+\cref{hgeo:us:thm:uniform} gives a further family, complete and with uniformly
+bounded coefficients, with a subfamily that has no join. A characterization of
+the countable families with joins is not given (\cref{hgeo:us:q:boolean}).
+
 For computational use, the finite Schur matrix is exact but its entries may
 themselves be infinite Hahn series. The minor formula specifies an invariant
 and an algebraic reduction; it is not an algorithm for deciding equality or
@@ -3008,10 +3089,1467 @@ bounded-inverse and Riesz theorems, the adjoint theorem for closed densely
 defined operators, ordinary positive square roots, the Hahn--Neumann support
 lemma, Conway normal forms, and finite linear algebra; these are identified
 inputs, not proved from set theory here. The class section additionally uses
-class replacement in NBG without global choice. No proof assistant was run,
-neither source has been independently refereed, and no assertion rests on
+class replacement in NBG without global choice.
+\Cref{hgeo:us:sec:intro,hgeo:us:sec:criterion,hgeo:us:sec:consequences,%
+hgeo:us:sec:calculus,hgeo:us:sec:uniform,hgeo:us:sec:support,%
+hgeo:us:sec:surreal,hgeo:us:sec:questions} use in addition ordinary bounded
+extension from dense subspaces, the diagonal representation of
+$\ell^\infty$ on a Hilbert direct sum, and the matrix-amplification estimate
+for completely bounded maps. No proof assistant was run,
+no source has been independently refereed, and no assertion rests on
 numerical evidence. The mathematical claims should be evaluated by checking
 the proofs and their hypotheses, not the novelty wording.
+
+\section{Infinite simultaneous straightening: the source, its results and
+conventions}
+\label{hgeo:us:sec:intro}
+
+\Cref{hgeo:us:sec:intro,hgeo:us:sec:criterion,hgeo:us:sec:consequences,%
+hgeo:us:sec:calculus,hgeo:us:sec:uniform,hgeo:us:sec:support,%
+hgeo:us:sec:surreal,hgeo:us:sec:questions} add a third manuscript,
+source~07, to the report. They are placed after \cref{hgeo:sec:provenance}
+so that no earlier number changes. Source~07 was written against this
+report's guide and answers its \cref{hgeo:q:synthesis}: for a set-indexed
+orthogonal family of Hahn projections it gives an exact criterion for one
+unitary conjugating every member back to its residue.
+
+\subsection{Source 07 and what it settles}\label{hgeo:us:sub:source}
+Source~07 is manuscript~09 of the thirty-fourth batch, placed in commit
+\texttt{a7a435f} from the archive \fn{surreal_unitary_synthesis} (delivered
+in \texttt{a4611ad}). It continues this report's local file sequence after
+\fn{03-} and \fn{06-}, so its shipped files carry the prefix
+\fn{07-unitary-synthesis-}.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.49\textwidth}}
+\toprule
+Source & Manuscript & Contribution to this report\\
+\midrule
+07 & \emph{Simultaneous Unitary Straightening at Surreal Scales: An exact
+synthesis criterion, atomic spectral calculus, and uniformly controlled
+counterexamples} (22 pp., dated September 23, 2026; pin
+\texttt{fc27d87}) &
+The exact criterion (B)$+$(H) for simultaneous straightening, with an
+explicit unitary for complete and incomplete residual families; no new
+scales, gauge classification, scale-enlargement invariance; the finite-jet
+theorem and the first-order equation; the equivalent atomic functional
+calculus, joins and weighted reconstruction; a complete family with uniform
+coefficient bounds at every order and no straightener, with a subfamily
+lacking a join; bounded columns with incoherent support; surreal descent;
+omnific matrix rigidity; twelve questions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The pin \texttt{fc27d87} (committed September 23, 2026 at 17:27:33 in
+America/Los\_Angeles) is 61 commits before the placement. Between the pin
+and the placement neither this report nor the infinite-dimensional spectral
+report changed, except that the placement added source~07's files here. The
+report numbers source~07 quotes (Question~15.3, Part~IV of the spectral
+report) are therefore still correct.
+
+\paragraph{What source~07 settles here.}
+\begin{itemize}[leftmargin=*]
+\item \Cref{hgeo:q:synthesis} is answered: the two necessary conditions of
+\cref{hgeo:sub:countable}, in the precise form of bounded synthesized
+coefficients (B) and well-ordered active support (H), are together
+sufficient (\cref{hgeo:us:thm:main}). Families satisfying them have joins
+(\cref{hgeo:us:prop:joins,hgeo:us:rem:joins}).
+\item \Cref{hgeo:q:notdeveloped} is answered in part: a sufficient condition
+for joins and a further family with a subfamily lacking a join
+(\cref{hgeo:us:thm:uniform}). A characterization of the countable families
+with joins remains open.
+\item The first further question of the spectral report's Part~IV
+(\replabel{ihs:fr:sec:questions}) is answered in exact-criterion form, not in
+the spectral-gap form in which it is posed (\cref{hgeo:us:sub:status}).
+\item \Cref{hgeo:q:orthoclosed} stays open; source~07 says so itself
+(\cref{hgeo:us:q:closedresidue}).
+\end{itemize}
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}[leftmargin=*]
+\item \emph{Printed once.} Source~07's integrality lemma is
+\cref{hgeo:lem:integralproj} together with the unitary residue argument of
+\cref{hgeo:cor:orbits}; its two small additions are kept
+(\cref{hgeo:us:lem:integral}). Its support principle and formal functions
+are \cref{hgeo:lem:support} and \eqref{hgeo:eq:formalcalculus}; its strong
+Hahn summability is \cref{hgeo:def:strong}; its substitution
+$t^\gamma=\omega^{-\gamma}$ is \eqref{hgeo:eq:embedding}. Its finite-family
+corollary is \cref{hgeo:thm:finite}, re-derived independently from the
+criterion (\cref{hgeo:us:rem:finite}).
+\item \emph{Second routes kept.} The necessity direction of
+\cref{hgeo:us:thm:main} contains \cref{hgeo:cor:nosimultaneous} and
+\cref{hgeo:prop:incoherent} (\cref{hgeo:us:rem:instances}); source~06's
+direct proofs, which argue from the support of a hypothetical unitary, are
+kept. \Cref{hgeo:us:thm:support} contains the family of
+\cref{hgeo:prop:incoherent}; both nonexistence proofs are printed.
+\item \emph{Added by the merge} \mergetag, with complete proofs: the
+identification of the construction with \cref{hgeo:thm:finite} in the finite
+case (\cref{hgeo:us:rem:finite}); joins without completeness or complex
+scalars, and the range projection as the join (\cref{hgeo:us:rem:joins});
+the class-map form of the surreal descent, from \cref{hgeo:thm:class}
+(\cref{hgeo:us:cor:classmaps}); the transport of \cref{hgeo:us:thm:support}
+to every group containing $\Q\eta$ (\cref{hgeo:us:rem:transport}); the status
+notes of \cref{hgeo:us:sub:status} and in \cref{hgeo:sub:questions}.
+\item \emph{Renamed symbols.} Source~07's letters meet the report's reserved
+letters in many places; \cref{hgeo:us:sub:conventions} and
+\cref{hgeo:tab:renames} list every renaming.
+\item \emph{A stale scope statement.} Source~07 deliberately does not use an
+automatic class-operator representation theorem of a neighbouring report
+(it means \cref{hgeo:thm:class}), and asks for one
+(\cref{hgeo:us:q:classmaps}). For maps with an everywhere-defined class
+adjoint that theorem is proved in this report, which gives
+\cref{hgeo:us:cor:classmaps}.
+\end{itemize}
+Source~07's limitations are kept in \cref{hgeo:app:nonclaims}, its
+provenance appendix is printed in \cref{hgeo:us:app:provenance}, and its suite
+is described in \cref{hgeo:app:verification}.
+
+\subsection{Why an infinite family is different}\label{hgeo:us:sub:why}
+Let $(E_i)_{i\in\mathcal I}$ be an orthogonal family of ordinary projections
+on $H$, and let $P_i$ be Hahn projections with residues $E_i$. For finitely
+many $i$ one near-identity unitary removes the infinitesimal perturbation
+(\cref{hgeo:thm:finite}); for infinitely many it need not
+(\cref{hgeo:sub:countable}). The difficulty is not the algebraic polar
+formula. It is whether the would-be intertwiner is an element of the operator
+algebra at all \src{07}.
+
+Two logically different failures occur. At a fixed exponent, infinitely many
+harmless-looking columns may assemble into an unbounded operator. Across
+exponents, individually legal Hahn supports may have a union that is not well
+ordered. Neither failure is visible on finitely many projections. Source~07
+turns these observations into an exact and constructive equivalence, rather
+than a list of necessary conditions.
+
+The setting is the concrete space $\HH{H}=H((t^\Gamma))$ with the concrete
+algebra $\BH=\mathcal B(H)((t^\Gamma))$, not a Banach space over a
+non-Archimedean field with an unspecified completion. Every coefficient is an
+ordinary bounded operator, and membership in the algebra is part of each
+theorem, not a suppressed convention.
+
+This is not a repetition of Part~II of the spectral report
+\cite{RepoSpectral}. That part uses row- and column-finite matrices on series
+with finitely supported coordinate coefficients. Here the coefficient space
+is the whole ordinary Hilbert space and the coefficients must be bounded:
+infinite rows and columns are allowed when they define bounded operators, and
+unbounded synthesis is forbidden. The two categories have different
+infinite-dimensional obstructions.
+
+The report already contains the projection-lattice counterexamples and the
+support-incoherence obstruction (\cref{hgeo:thm:nojoin,hgeo:cor:nosimultaneous,%
+hgeo:prop:incoherent}); source~07 does not claim either phenomenon for the
+first time. Its strengthened coefficient example imposes simultaneously a
+common discrete support and uniform bounds on every individual coefficient
+at every order, and isolates the collective synthesis obstruction that these
+stronger assumptions still fail to control.
+
+Source~07 names as its proposed contributions the exact criterion with its
+incomplete-family construction, invariance of solvability under scale
+enlargement, the finite-jet equivalence, the atomic functional-calculus
+equivalence, and the uniformly controlled counterexample with its explicit
+missing join. They are candidate contributions relative to the inspected
+sources, not a certified exhaustive novelty claim. Polar intertwiners are
+classical; projection geometry and polar decomposition are developed, for
+example, by Kato and by Corach--Maestripieri \cite{Kato,CorachMaestripieri};
+well-ordered support calculus is Hahn--Neumann algebra \cite{Neumann}; the
+omnific normal form used in \cref{hgeo:us:sec:surreal} is standard
+\cite{LInnocenteMantova}. None of these is advertised as new. The proofs
+supply the infinite-family membership and support arguments that a formal
+appeal to polar decomposition would leave out. Source~07 needs no unreviewed
+theorem of the collection: the report guides fixed its target and its
+comparison, and its argument starts from ordinary Hilbert operator theory and
+the support lemma.
+
+\subsection{Conventions and renamed symbols of this part}
+\label{hgeo:us:sub:conventions}
+The following conventions hold in
+\cref{hgeo:us:sec:intro,hgeo:us:sec:criterion,hgeo:us:sec:consequences,%
+hgeo:us:sec:calculus,hgeo:us:sec:uniform,hgeo:us:sec:support,%
+hgeo:us:sec:surreal,hgeo:us:sec:questions}. Source~07's notation is
+renamed where it meets a letter the report already uses; each renaming is
+also listed in \cref{hgeo:tab:renames}.
+\begin{itemize}
+\item \emph{Scalars and spaces.} $\kk\in\{\R,\C\}$ is the coefficient field of
+$H$ (07: $\mathbb F$), and the Hahn scalars are $\F$ or $\K$ as in
+\cref{hgeo:sub:conventions} (07: $K=\mathbb F((t^\Gamma))$).
+The space is $\HH{H}$ (07: $\mathscr H$) and the algebra is $\BH$ (07:
+$\mathscr A$); its integral and positive-order parts are $\Bnn$ and
+$\Bpos{H}{H}$ (07: $\mathscr A_{\ge0}$, $\mathscr A_{>0}$). The identity is
+$I$ (07: $I_H$). Inner products are linear in the first argument, as in the
+rest of the report; source~07's are conjugate-linear in the first, and its
+two formulas that depend on this (rank-one maps and matrix entries) are
+converted.
+\item \emph{Indices.} The family is indexed by a set $\mathcal I$ (07: $I$,
+which here is the identity); finite subsets are $\mathcal J$ (07: $J$), Boolean
+subsets $\mathcal S$ (07: $A,B$), the left-half subfamily of
+\cref{hgeo:us:thm:uniform} is $\mathcal L$ (07: $J$), and the index set of an
+orthonormal basis is $\mathcal N$ (07: $J$). The letter $J$ keeps its meanings
+of \cref{hgeo:cor:graphchart,hgeo:thm:metric}.
+\item \emph{Residues.} $E_i=(P_i)_0$, $E=\sSOT_iE_i$ and $H_E=\ran E$ are
+source~07's. The letter $E$ in this part always denotes such a residue
+projection, never the positive-order perturbation $E$ of
+\cref{hgeo:sec:schur,hgeo:sec:least,hgeo:sec:valuation}. The residue
+projections of \cref{hgeo:thm:finite,hgeo:cor:nosimultaneous}, written
+$Q_j$ and $Q_n$ there, are $E_j$ here. The complementary projection is
+$E^\perp=I-E$ (07: $F$, which here is the real Hahn field); it projects onto
+$(H_E)^\perp$.
+\item \emph{The construction.} The canonical column series $C$, its
+coefficients $C_\gamma$ and $C_\gamma^\fin$, the active support $S_C$ and the
+constants $b_\gamma$ are source~07's; $C$ is not the complex field $\C$, nor
+the block map of the proof of \cref{hgeo:thm:adjoint}. The diagonal
+compression is $\Dg_E$ (07: $\mathcal D_E$; $\mathcal D$ is the block matrix
+of \cref{hgeo:sec:schur}). Source~07's $G=C^*C+F$ is $\Omega=C^*C+E^\perp$,
+because $G$ is a Hilbert space here. Its range projection $Q=CG^{-1}C^*$ is
+$P_\vee$: the $Q$'s of the report are residue projections, and $P_\vee$ is
+indeed the join of the family (\cref{hgeo:us:rem:joins}). Its $T=C+(I-Q)F$ is
+$W$: $T$ is $\diag(1/n)$ here, and in the finite case this $W$ is exactly the
+$W$ of \cref{hgeo:thm:finite} (\cref{hgeo:us:rem:finite}). Its
+$B=(T^*T)^{-1/2}$ is $\abs{W}^{-1}=(W^*W)^{-1/2}$, the formal binomial series
+of \eqref{hgeo:eq:formalcalculus}, not an ordinary operator absolute value;
+$B$ is the row operator \eqref{hgeo:eq:rowB}.
+\item \emph{Other operators.} A generic positive-order series is $Y$ (07:
+$R$, a closed linear relation here). The block unitaries $\exp(tA_m)$ and
+$(I+q_nJ)(1+q_n^2)^{-1/2}$ are $V_m$ and $V_n$ (07: $R_m$, $R_n$), their
+generator is $X_m$ (07: $A_m$; $A$ is an unbounded or Fredholm operator
+here), and the $2\times2$ rotation is $\mathsf J$ (07: $J$). The monomials
+$q_n=t^{1/n}$ are written out, since $q=t^\eta$ is fixed. The flat vectors
+are $u_m,u_m'$ (07: $u_m,v_m$; $v$ is the valuation), and the block identity
+projection is $\Pi_m$ (07: $F_m$). The bounded skew-adjoint solution of the
+first-order equation is $Y$ (07: $K$, the complex Hahn field here), its
+commuting part $Y_c$ (07: $D$), and a gauge unitary is $\Xi$ (07: $W$). The
+jet rings are $\mathscr B^{[N]}$ (07: $\mathscr A_N$), and the weighted
+operator is $N_\lambda$ (07: $A_\lambda$). A generic operator is $A$ (07:
+$T$). Source~07's generated monoid $\langle S\rangle$ is $S^*$ as in
+\cref{hgeo:lem:support}; it is not an adjoint.
+\item \emph{Kept letters with a scoped meaning.} $\Phi,\Psi$ are atomic
+calculi (not the map in the proof of \cref{hgeo:prop:closedresidue}); $S$,
+$S_C$, $S_\lambda$ are supports, as in \cref{hgeo:prop:incoherent}, never the
+Schur matrix $S$ of \cref{hgeo:sec:schur}; $U$ is a Hahn unitary and
+$\Un$ keeps its meaning of \cref{hgeo:thm:unitary}; $m$ indexes blocks, not
+$\dim\ker T_0$.
+\end{itemize}
+A tempting false reading: ``$P_\vee$ is a residue projection'' or ``$P_\vee$
+is the formal sum of the $P_i$''. It is the Hahn projection with residue $E$
+onto the range of $C$; it equals $\sum_iP_i$ only for finite families, and in
+general no strong Hahn sum of the $P_i$ exists, since infinitely many of them
+have nonzero coefficient at exponent zero.
+
+\subsection{The Hahn operator algebra and three summation conventions}
+\label{hgeo:us:sub:algebra}
+Throughout this part $H$ is a nonzero real or complex Hilbert space and
+$\Gamma$ is any set-sized ordered abelian group; it need not be divisible, and
+its order need not be Archimedean. The algebra $\BH$ acts on $\HH{H}$ as in
+\cref{hgeo:sec:adjoints}: multiplication is convolution, $t^\gamma$ is
+central, coefficient products are compositions in the displayed order, and
+$A^*=\sum_\gamma A_\gamma^*t^\gamma$. We write $v(A)=\min\supp A$,
+$v(0)=+\infty$, and $A_0=\res A$ for the coefficient at zero. The general
+inequality $v(AB)\ge v(A)+v(B)$ is not an equality, since operator
+coefficients can multiply to zero; but $v(A^*A)=2v(A)$ for $A\ne0$
+(\cref{hgeo:cor:vop}), because $A_a^*A_a\ne0$ for a nonzero bounded $A_a$.
+Likewise, if $x\ne0$ has first exponent $a$, the first coefficient of
+$\ip{x}{x}$ is $\norm{x_a}^2>0$, at $2a$.
+
+Source~07 uses the support principle of \cref{hgeo:lem:support}: a fixed
+group element has only finitely many representations as an ordered finite
+word in a well-ordered $S\subseteq\Gamma_{>0}$, repeated copies of an exponent
+counting as repeated letters. Hence every ordinary formal power series
+$\sum_na_nz^n$ can be evaluated at $Y\in\Bpos{H}{H}$, each coefficient using
+finitely many products of operator coefficients and no operator-norm
+convergence. In particular $(I+Y)^{-1}$ and $(I+Y)^{-1/2}$ are the series of
+\eqref{hgeo:eq:formalcalculus}. Identities between such series follow from the
+one-variable formal power-series ring even though the coefficient algebra is
+noncommutative, because every evaluated factor is a power of the same $Y$.
+The inverse square root is self-adjoint when $Y$ is, and commutes with every
+operator commuting with $Y$.
+
+\begin{lemma}[Integral projections and unitaries \src{07}; see also
+\src{03, 06}]\label{hgeo:us:lem:integral}
+Every nonzero projection $P\in\BH$ has $v(P)=0$ and a nonzero ordinary
+orthogonal projection $P_0$. Every unitary $U\in\BH$ has $v(U)=0$ and an
+ordinary unitary $U_0$. A projection with residue zero is zero, and two
+projections $Q\le P$ with $P_0=Q_0$ are equal.
+\end{lemma}
+\begin{proof}
+The projection assertion is \cref{hgeo:lem:integralproj}. Source~07's proof
+is source~03's route: $P=P^*P$ gives $v(P)=2v(P)$, and an ordered abelian
+group has no torsion. For a unitary, $U^*U=I$ gives $2v(U)=0$, so $v(U)=0$, and
+the zero coefficients of both unitary identities give $U_0^*U_0=U_0U_0^*=I$;
+source~06 obtains the same from contractivity (\cref{hgeo:cor:orbits}). A
+nonzero projection has nonzero residue, which gives the third assertion. For
+the last, $Q\le P$ means $PQ=QP=Q$, so $P-Q$ is a projection with residue
+zero.
+\end{proof}
+
+A \emph{near-identity unitary} is a unitary $U$ with $U_0=I$, equivalently
+$U-I\in\Bpos{H}{H}$, including $U=I$; these form the group
+$\Un_{1,\Gamma}(H)$ of \cref{hgeo:thm:unitary}.
+
+\begin{warning}[Three summation conventions \src{07}]\label{hgeo:us:warn:sums}
+Three notions of an infinite sum occur in this part and must not be
+confused.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{Strong Hahn summability} (\cref{hgeo:def:strong}): the union of the
+supports is well ordered and at each exponent only finitely many members are
+nonzero; the sum is formed by finite coefficient sums.
+\item A \emph{coefficientwise strong operator sum} $\sSOT$: at each exponent
+separately, the ordinary strong-operator limit of the finite partial sums,
+whose values converge in the norm of $H$ on every ordinary vector; infinitely
+many operators may be nonzero at one exponent, and the Hahn support of the
+result must then be checked. Such a family need not be strongly Hahn
+summable.
+\item \emph{Valuation convergence}: the first exponent of the error moves
+above every prescribed scale. Ordinary convergence of each coefficient does
+not imply it.
+\end{enumerate}
+\end{warning}
+
+\section{The exact synthesis criterion}\label{hgeo:us:sec:criterion}
+
+\subsection{Canonical columns and the theorem}
+Let $(P_i)_{i\in\mathcal I}$ be a set-indexed family of pairwise orthogonal
+projections in $\BH$ and put $E_i=(P_i)_0$. By \cref{hgeo:us:lem:integral}
+the $E_i$ form an ordinary orthogonal family of projections; zero members may
+be discarded. Let
+\[
+ H_E=\overline{\bigoplus_{i\in\mathcal I}E_iH},\qquad
+ E=\sSOT_{i\in\mathcal I}E_i,\qquad E^\perp=I-E .
+\]
+The sum defining $E$ is an ordinary Hilbert-space sum. It is \emph{not}
+required that $E=I$: incomplete residual families are allowed.
+
+\begin{definition}[Canonical coefficient columns \src{07}]
+\label{hgeo:us:def:columns}
+For $\gamma\in\Gamma$ define, on the algebraic direct sum
+$\bigoplus_i^{\mathrm{alg}}E_iH$, the linear map
+\begin{equation}\label{hgeo:us:eq:columns}
+ C_\gamma^\fin\Bigl(\sum_{i\in\mathcal J}x_i\Bigr)
+ =\sum_{i\in\mathcal J}(P_i)_\gamma x_i,
+ \qquad \mathcal J\subseteq\mathcal I\text{ finite},\quad x_i\in E_iH .
+\end{equation}
+Its \emph{active support} is $S_C=\{\gamma:C_\gamma^\fin\ne0\}$. The family
+satisfies
+\begin{itemize}[leftmargin=2.2em]
+\item[\textup{(B)}] \emph{bounded coefficient synthesis} if for every
+$\gamma$ there is a finite constant $b_\gamma$ with
+\[
+ \Bigl\|\sum_{i\in\mathcal J}(P_i)_\gamma x_i\Bigr\|
+ \le b_\gamma\Bigl(\sum_{i\in\mathcal J}\norm{x_i}^2\Bigr)^{1/2}
+ \quad\text{for all finite }\mathcal J\text{ and all }x_i\in E_iH;
+\]
+\item[\textup{(H)}] \emph{Hahn coherence} if $S_C$ is well ordered in
+$\Gamma$.
+\end{itemize}
+\end{definition}
+
+Condition (B) is equivalent to
+\begin{equation}\label{hgeo:us:eq:finitesup}
+ \sup_{\mathcal J\subseteq\mathcal I\text{ finite}}
+ \Bigl\|\sum_{i\in\mathcal J}(P_i)_\gamma E_i\Bigr\|<\infty\qquad
+ (\gamma\in\Gamma):
+\end{equation}
+the vectors $x_i=E_ix$ give one direction, and $x=\sum_ix_i$, whose norm is
+$(\sum_i\norm{x_i}^2)^{1/2}$ by orthogonality, gives the other. Under (B),
+$C_\gamma^\fin$ extends uniquely to a bounded map on $H_E$; extending by zero
+on $E^\perp H$ gives $C_\gamma\in\mathcal B(H)$. The finite sums in
+\eqref{hgeo:us:eq:finitesup} are $C_\gamma\sum_{i\in\mathcal J}E_i$, so they
+converge strongly to $C_\gamma$. Note that
+\[
+ C_0=E,\qquad C_\gamma E^\perp=0,\qquad S_C\subseteq\Gamma_{\ge0}.
+\]
+The constants $b_\gamma$ need not be bounded uniformly in $\gamma$.
+
+\begin{theorem}[Exact simultaneous straightening \src{07}]
+\label{hgeo:us:thm:main}
+For the family above the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a near-identity unitary $U\in\BH$ with $P_i=UE_iU^*$ for every
+$i\in\mathcal I$.
+\item There is a unitary $U\in\BH$, not necessarily near the identity, with
+the same identities.
+\item Conditions \textup{(B)} and \textup{(H)} both hold.
+\end{enumerate}
+Under these conditions let $C=\sum_\gamma C_\gamma t^\gamma\in\BH$. A
+specific near-identity straightener is given by
+\begin{align}
+ \Omega&=C^*C+E^\perp, & P_\vee&=C\,\Omega^{-1}C^*,
+ \label{hgeo:us:eq:constructiona}\\
+ W&=C+(I-P_\vee)E^\perp, & U&=W\abs{W}^{-1},\quad
+ \abs{W}^{-1}=(W^*W)^{-1/2}.
+ \label{hgeo:us:eq:constructionb}
+\end{align}
+Here $\Omega_0=I$, $P_\vee$ is a projection with residue $E$, and $W_0=I$;
+the inverse and the inverse square root are the formal series of
+\eqref{hgeo:eq:formalcalculus}. If $E=I$, the formula reduces to
+\begin{equation}\label{hgeo:us:eq:polar}
+ U=C\,(C^*C)^{-1/2}.
+\end{equation}
+\end{theorem}
+
+The test is exact, but it is not an effective decision procedure for
+arbitrary infinite data. It replaces the unknown common unitary by explicitly
+specified linear maps, one at each exponent, and one support condition.
+\Cref{hgeo:us:thm:uniform,hgeo:us:thm:support} show that neither condition
+can be dropped, and that bounds on the individual coefficients do not
+replace (B).
+
+\subsection{The diagonal compression}
+For $A\in\mathcal B(H)$ put
+\[
+ \Dg_E(A)=\sSOT_{i\in\mathcal I}E_iAE_i .
+\]
+It acts by the diagonal block $E_iAE_i$ on $E_iH$ and by zero on $E^\perp H$.
+For a finite orthogonal sum,
+$\norm{\sum_iE_iAE_ix}^2=\sum_i\norm{E_iAE_ix}^2\le\norm A^2\sum_i\norm{E_ix}^2$,
+so by completion $\Dg_E$ is a linear contraction of $\mathcal B(H)$. Applied
+coefficient by coefficient it defines $\Dg_E$ on $\BH$ without enlarging
+supports. It need not be multiplicative.
+
+\subsection{Necessity}
+Let $U$ be a near-identity straightener. The Hahn operator
+\begin{equation}\label{hgeo:us:eq:necessity}
+ C=U\,\Dg_E(U^*)
+\end{equation}
+exists, as a product of two members of $\BH$. It vanishes on $E^\perp H$, and
+since $\Dg_E(U^*)E_i=E_iU^*E_i$ coefficientwise,
+\[
+ CE_i=UE_iU^*E_i=P_iE_i .
+\]
+Comparing coefficients identifies $C_\gamma$ with the bounded extension of
+\eqref{hgeo:us:eq:columns}, which proves (B). The active support of the
+columns is exactly $\supp C$, since a bounded coefficient vanishing on every
+$E_iH$ and on $E^\perp H$ is zero; this proves (H). No infinite Hahn sum is
+interchanged with a product: two bounded coefficients are identified on a
+dense ordinary subspace.
+
+If $U$ is an arbitrary straightener, its residue $U_0$ is an ordinary unitary
+(\cref{hgeo:us:lem:integral}) with $U_0E_iU_0^*=E_i$, so $U_0$ commutes with
+every $E_i$ and $UU_0^*$ is a near-identity straightener. This proves
+(ii)$\Rightarrow$(i)$\Rightarrow$(iii).
+
+\subsection{The intertwining identities}
+Assume (B) and (H). Then $C\in\BH$, $C=CE$, $C_0=E$ and $CE_i=P_iE_i$. For
+$x\in E_jH$,
+\[
+ P_iCx=P_iP_jx=\delta_{ij}P_jx=CE_ix .
+\]
+Both sides vanish on $E^\perp H$. Each coefficient of either side is a finite
+sum of bounded operators, so equality on the dense subspace
+$\bigoplus_j^{\mathrm{alg}}E_jH+E^\perp H$ extends to $H$:
+\begin{equation}\label{hgeo:us:eq:intertwine}
+ P_iC=CE_i,\qquad C^*P_i=E_iC^* .
+\end{equation}
+In particular
+\begin{equation}\label{hgeo:us:eq:commute}
+ C^*CE_i=C^*P_iC=E_iC^*C .
+\end{equation}
+The coefficients of $C^*C$ therefore commute with every $E_i$, hence with
+their strong sum $E$ and with $E^\perp$; moreover $C^*CE^\perp=0=E^\perp C^*C$.
+Thus $\Omega=C^*C+E^\perp$ commutes with every $E_i$, with $E$ and with
+$E^\perp$. Since $\Omega_0=E+E^\perp=I$, it has a formal inverse in $\Bnn$,
+and both $\Omega$ and $\Omega^{-1}$ are self-adjoint.
+
+\subsection{Completing the partial range}
+Define $P_\vee$ by \eqref{hgeo:us:eq:constructiona}. It is self-adjoint with
+residue $E$. From $CE^\perp=0$, $E^\perp C^*=0$ and $\Omega E^\perp=E^\perp$,
+hence $\Omega^{-1}E^\perp=E^\perp$,
+\[
+ P_\vee^2=C\Omega^{-1}(C^*C)\Omega^{-1}C^*
+ =C\Omega^{-1}(\Omega-E^\perp)\Omega^{-1}C^*=P_\vee ,
+\]
+and the same calculation gives $P_\vee C=C$. By
+\eqref{hgeo:us:eq:intertwine} and \eqref{hgeo:us:eq:commute},
+\[
+ P_iP_\vee=CE_i\Omega^{-1}C^*=C\Omega^{-1}E_iC^*=P_\vee P_i .
+\]
+Hence $P_iP_\vee$ is a projection with residue $E_iE=E_i$, and
+$P_i-P_iP_\vee$ is a projection with residue zero, so
+\cref{hgeo:us:lem:integral} gives
+\begin{equation}\label{hgeo:us:eq:underP}
+ P_iP_\vee=P_\vee P_i=P_i .
+\end{equation}
+This is where self-adjointness rules out a hidden positive-order remainder
+projection.
+
+Put $W=C+(I-P_\vee)E^\perp$. Its residue is $E+(I-E)E^\perp=I$, so it is
+invertible by \eqref{hgeo:eq:formalcalculus}. From \eqref{hgeo:us:eq:underP}
+and $E^\perp E_i=0$,
+\begin{equation}\label{hgeo:us:eq:Wintertwine}
+ P_iW=CE_i=WE_i .
+\end{equation}
+Taking adjoints and multiplying gives $E_iW^*W=W^*P_iW=W^*WE_i$. Thus
+$W^*W=I+Y$ with $Y\in\Bpos{H}{H}$ self-adjoint, and
+$\abs{W}^{-1}=(W^*W)^{-1/2}$ is self-adjoint and commutes with every $E_i$.
+The operator $U=W\abs W^{-1}$ satisfies $U^*U=I$. Both factors are
+invertible, so $U$ is invertible and $U^*U=I$ implies $UU^*=I$. Finally
+\eqref{hgeo:us:eq:Wintertwine} gives $P_iU=UE_i$, hence $P_i=UE_iU^*$, and
+$U_0=I$.
+
+If $E=I$, then $C_0=I$, $C$ is invertible, $P_\vee=C(C^*C)^{-1}C^*=I$ and
+$W=C$, which gives \eqref{hgeo:us:eq:polar} and completes the proof of
+\cref{hgeo:us:thm:main}.\hfill$\square$
+
+\subsection{The range projection}
+The projection $P_\vee$ is the projection onto the range of $C$ in the
+algebraic Hahn sense: $P_\vee C=C$ and $P_\vee=C(\Omega^{-1}C^*)$ show that
+the two operators have the same range on $\HH{H}$. Moreover
+$P_\vee W=C=WE$. Since $W^*W$ commutes with every $E_i$, each of its bounded
+coefficients commutes with their strong sum $E$, and so does $\abs W^{-1}$.
+Hence $P_\vee U=P_\vee W\abs W^{-1}=WE\abs W^{-1}=UE$, and
+\begin{equation}\label{hgeo:us:eq:range}
+ P_\vee=UEU^* .
+\end{equation}
+No ordinary topological closure of a range in a non-Archimedean completion
+is used here \src{07}.
+
+\subsection{Relation to the finite theorem and to the countable obstructions
+\mergetag}\label{hgeo:us:sub:relation}
+
+\begin{remark}[The finite case is \cref{hgeo:thm:finite} \mergetag]
+\label{hgeo:us:rem:finite}
+Every finite orthogonal family satisfies (B) and (H): a finite sum of bounded
+coefficient maps is bounded and a finite union of well-ordered supports is
+well ordered. \Cref{hgeo:us:thm:main} therefore re-derives
+\cref{hgeo:thm:finite} \src{07}. The two constructions agree. For a finite
+family, \eqref{hgeo:us:eq:range} gives
+$P_\vee=\sum_jUE_jU^*=\sum_jP_j$, so
+\[
+ W=\sum_jP_jE_j+\Bigl(I-\sum_jP_j\Bigr)E^\perp ,
+\]
+which is the operator $W$ of \cref{hgeo:thm:finite} for the family with its
+complementary projection $I-\sum_jP_j$, of residue $E^\perp$, adjoined; in
+the complete case $W=C$ and \eqref{hgeo:us:eq:polar} is the formula of
+\cref{hgeo:thm:finite}. What is new in \cref{hgeo:us:thm:main} is the infinite
+case: then no strong Hahn sum $\sum_jP_j$ exists, and $P_\vee$ is obtained
+from the synthesized columns alone. By \cref{hgeo:us:rem:joins}, $P_\vee$ is
+still the join of the family.
+\end{remark}
+
+\begin{remark}[The countable obstructions are instances of necessity
+\mergetag]\label{hgeo:us:rem:instances}
+For the family $(P_n)$ of \eqref{hgeo:eq:Pn}, which is incomplete (its
+residues $E_n$ project onto $\kk e_n$), the coefficient of $P_n$ at $\eta$ is
+the block $\left(\begin{smallmatrix}0&n\\n&0\end{smallmatrix}\right)$, so
+$C_\eta^\fin e_n=nf_n$ and (B) fails at $\eta$: this is
+\cref{hgeo:cor:nosimultaneous}. For the projections $\widetilde P_n$ of
+\cref{hgeo:prop:incoherent}, $C^\fin_{\eta/n}\ne0$ for every $n$, so $S_C$
+contains $\eta,\eta/2,\eta/3,\ldots$ and (H) fails: this is
+\cref{hgeo:prop:incoherent}. Source~06's proofs argue instead from the
+support of a hypothetical unitary; they are kept as the first routes.
+\Cref{hgeo:us:thm:uniform} shows that uniform bounds on every individual
+coefficient still do not give (B), and \cref{hgeo:us:thm:support} adds
+(B) with $b_\gamma\le1$ to a complete version of the family of
+\cref{hgeo:prop:incoherent}.
+\end{remark}
+
+\section{Support control, gauge freedom, and finite jets}
+\label{hgeo:us:sec:consequences}
+
+\begin{corollary}[No new scales \src{07}]\label{hgeo:us:cor:support}
+Assume the criterion and put $S=S_C\setminus\{0\}$. The construction
+\eqref{hgeo:us:eq:constructiona}--\eqref{hgeo:us:eq:constructionb} satisfies
+\[
+ \supp(U-I)\cup\supp(P_\vee-E)\subseteq S^*\setminus\{0\},
+\]
+where $S^*$ is the additive monoid generated by $S$
+(\cref{hgeo:lem:support}; 07: $\langle S\rangle$). In particular it needs no
+divisible hull and no enlargement of $\Gamma$.
+\end{corollary}
+\begin{proof}
+Write $C=E+C_+$ with $\supp C_+\subseteq S$. The positive supports of
+$\Omega-I$, $\Omega^{-1}-I$, $P_\vee-E$, $W-I$ and $W^*W-I$ lie, successively,
+in the positive part of $S^*$, and so do those of $\abs W^{-1}-I$ and $U-I$.
+\Cref{hgeo:lem:support} justifies each infinite power-series operation; the
+ordinary factors $E$, $E^\perp$, $I$ have support $\{0\}$.
+\end{proof}
+
+\begin{corollary}[Gauge classification \src{07}]\label{hgeo:us:cor:gauge}
+If $U$ is one near-identity straightener, the near-identity straighteners are
+exactly the products $U\Xi$, where $\Xi$ ranges over the near-identity
+unitaries in $\BH$ commuting with every $E_i$.
+\end{corollary}
+\begin{proof}
+For another straightener $U'$, the unitary $\Xi=U^*U'$ satisfies
+$\Xi E_i\Xi^*=E_i$, hence $\Xi E_i=E_i\Xi$, and $\Xi_0=I$. The converse is
+substitution.
+\end{proof}
+
+The formula of \cref{hgeo:us:thm:main} selects one member of this gauge
+class; uniqueness is not claimed without a specified choice. A commuting gauge
+also preserves $E$ and $E^\perp$, by boundedness of each coefficient and
+strong convergence of the residual partial sums. For a single projection the
+gauge freedom is the nonuniqueness recorded after \cref{hgeo:thm:normalform}.
+
+\begin{corollary}[Scale enlargement cannot repair failure \src{07}]
+\label{hgeo:us:cor:extension}
+Let $\iota:\Gamma\hookrightarrow\Gamma'$ be an order-preserving group
+embedding, and regard the family in $\mathcal B(H)((t^{\Gamma'}))$. It has a
+simultaneous unitary there if and only if it has one in $\BH$.
+\end{corollary}
+\begin{proof}
+One direction is coefficient transport (\cref{hgeo:prop:extension}).
+Conversely, a straightener over $\Gamma'$ gives the two necessary conditions
+for the canonical columns over $\Gamma'$. These have no coefficients outside
+$\iota(\Gamma)$, and inside it they are exactly the original maps
+$C_\gamma^\fin$. Their boundedness is an ordinary Hilbert-space fact, and a
+subset of $\Gamma$ is well ordered exactly when its image under $\iota$ is.
+The criterion applies over $\Gamma$.
+\end{proof}
+
+\Cref{hgeo:prop:extension} transports solutions upward; the new content of
+\cref{hgeo:us:cor:extension} is the converse, that nonexistence persists under
+every enlargement, cofinal or not.
+
+\subsection{Finite jets for an entire infinite family}
+In this subsection $\Gamma=\Z$, so an integral Hahn operator is an ordinary
+formal power series in $\mathcal B(H)[[t]]$. For $N\ge0$ put
+\[
+ \mathscr B^{[N]}=\mathcal B(H)[t]/(t^{N+1}).
+\]
+A unitary modulo $t^{N+1}$ is an element whose two unitary identities hold in
+this quotient, not a polynomial that is exactly unitary at ordinary real
+values of $t$.
+
+\begin{theorem}[Jetwise existence implies existence \src{07}]
+\label{hgeo:us:thm:jets}
+For a set-indexed orthogonal family $(P_i)$ of projections in
+$\mathcal B(H)[[t]]$, a simultaneous near-identity formal unitary exists if and
+only if for every $N$ there is a near-identity unitary
+$U_N\in\mathscr B^{[N]}$ with
+\[
+ P_i\equiv U_NE_iU_N^*\pmod{t^{N+1}}\qquad\text{for every }i\in\mathcal I .
+\]
+No compatibility between the separately chosen $U_N$ is assumed, and no bound
+uniform in $N$ is required.
+\end{theorem}
+\begin{proof}
+Truncation proves necessity. For sufficiency fix $k\ge0$ and choose $N\ge k$.
+The identity $C^{(N)}=U_N\Dg_E(U_N^*)$ modulo $t^{N+1}$ satisfies
+$C^{(N)}E_i\equiv U_NE_iU_N^*E_i\equiv P_iE_i$, so its coefficient of $t^k$
+is a bounded extension of the canonical column $C_k^\fin$. This is finite
+coefficient algebra, valid modulo $t^{N+1}$, and it proves (B) at every $k$.
+Condition (H) is automatic for a subset of $\N$. \Cref{hgeo:us:thm:main}
+then constructs one actual series, independently of the choices of $U_N$.
+\end{proof}
+
+The order of quantifiers matters. The theorem asks for one finite jet
+straightening \emph{all} members at once. It does not say that exact
+straightening of every finite subfamily implies a common straightener: the
+families of \cref{hgeo:us:thm:uniform,hgeo:thm:nojoin} straighten on every
+finite subfamily and already fail the whole-family jet condition at their
+first scale.
+
+\subsection{The first-order obstruction is gauge invariant}
+Assume $E=I$ and $\Gamma=\Z$. The following proposition makes the initial
+linear obstruction explicit before the higher coefficients are known to
+synthesize.
+
+\begin{proposition}[First-order equation \src{07}]\label{hgeo:us:prop:first}
+A bounded skew-adjoint $Y$ with
+\begin{equation}\label{hgeo:us:eq:firstorder}
+ [Y,E_i]=(P_i)_1\qquad(i\in\mathcal I)
+\end{equation}
+exists if and only if $C_1^\fin$ has a bounded extension $C_1$. Then $C_1$ is
+skew-adjoint, $\Dg_E(C_1)=0$, and the solutions are exactly $Y=C_1+Y_c$ with
+$Y_c$ bounded, skew-adjoint and commuting with every $E_i$.
+\end{proposition}
+\begin{proof}
+The coefficient of $t$ in $P_i^2=P_i$ gives $E_i(P_i)_1E_i=0$ and
+$(I-E_i)(P_i)_1(I-E_i)=0$. For $i\ne j$ the coefficient of $t$ in $P_iP_j=0$
+gives $E_i(P_j)_1+(P_i)_1E_j=0$. Suppose $C_1$ is bounded; its block
+$E_kC_1E_l$ is $E_k(P_l)_1E_l$, so the diagonal blocks vanish. For $k\ne l$,
+multiplying $E_l(P_k)_1+(P_l)_1E_k=0$ by $E_l$ on the left and by $E_k$ on
+the right gives $E_l(P_l)_1E_k=-E_l(P_k)_1E_k=-E_lC_1E_k$; since $(P_l)_1$ is
+self-adjoint, the left side is $(E_kC_1E_l)^*$. So $C_1$ is skew-adjoint.
+The blocks of $[C_1,E_i]$ are $E_kC_1E_i$ for $l=i\ne k$,
+$-E_iC_1E_l$ for $k=i\ne l$, and zero otherwise; those of $(P_i)_1$ are the
+same, by the two identities from $P_i^2=P_i$ and skew-adjointness. Equality
+of all blocks on the dense algebraic direct sum gives
+$[C_1,E_i]=(P_i)_1$.
+
+Conversely, if $Y$ solves \eqref{hgeo:us:eq:firstorder}, then
+$(Y-\Dg_E(Y))E_i=YE_i-E_iYE_i=(P_i)_1E_i$ for every $i$, so $Y-\Dg_E(Y)$ is
+the required bounded extension $C_1$. The difference of two solutions
+commutes with every $E_i$, which describes all solutions.
+\end{proof}
+
+In particular an unbounded canonical first coefficient cannot be made bounded
+by a clever choice of diagonal gauge. When the full criterion holds, the
+complete-family polar formula begins with
+\[
+ U_1=C_1,\qquad U_2=\frac{C_2-C_2^*}{2}-\frac12C_1^*C_1 ,
+\]
+since $(C^*C)_1=C_1+C_1^*=0$ and $(C^*C)_2=C_2+C_2^*+C_1^*C_1$, and the first
+two coefficients of the inverse square root then give the formula.
+
+\section{An exact atomic functional calculus, and joins}
+\label{hgeo:us:sec:calculus}
+
+In this section, except in \cref{hgeo:us:rem:joins}, $H$ is complex, every
+$E_i$ is nonzero and $\sSOT_iE_i=I$. Let
+\begin{equation}\label{hgeo:us:eq:rho}
+ \rho(a)=\sSOT_{i\in\mathcal I}a_iE_i,\qquad a=(a_i)\in\ell^\infty(\mathcal I).
+\end{equation}
+This is the ordinary normal unital $*$-representation of the bounded scalar
+families on the orthogonal Hilbert direct sum, with
+$\norm{\rho(a)}=\sup_i\abs{a_i}$. The characteristic function of
+$\{i\}$ is written $1_i$.
+
+\begin{definition}[Coherent coefficientwise atomic calculus \src{07}]
+\label{hgeo:us:def:calculus}
+A \emph{calculus} for $(P_i)$ is a unital complex-linear $*$-homomorphism
+$\Phi:\ell^\infty(\mathcal I)\to\Bnn$ with $\Phi(1_i)=P_i$ and $\Phi_0=\rho$,
+satisfying the following regularity. There is one well-ordered
+$S\subseteq\Gamma_{\ge0}$ containing $\supp\Phi(a)$ for every $a$, and for
+each $\gamma$ the coefficient map
+\[
+ \Phi_\gamma:\ell^\infty(\mathcal I)\to\mathcal B(H),\qquad
+ a\mapsto(\Phi(a))_\gamma ,
+\]
+is normal and completely bounded. Normal means ultraweakly continuous;
+completely bounded means that its entrywise actions on matrices of all
+finite sizes have one common finite norm bound $\norm{\Phi_\gamma}_{\cb}$.
+These bounds may depend on $\gamma$.
+\end{definition}
+
+\begin{theorem}[Atomic calculus equivalence \src{07}]
+\label{hgeo:us:thm:calculus}
+For a complete residual family $(P_i)$, a calculus in the sense of
+\cref{hgeo:us:def:calculus} exists if and only if \textup{(B)} and
+\textup{(H)} hold. It is then unique and given by
+\begin{equation}\label{hgeo:us:eq:Phi}
+ \Phi(a)=U\rho(a)U^*
+\end{equation}
+for any simultaneous straightener $U$ of \cref{hgeo:us:thm:main}, and
+\begin{equation}\label{hgeo:us:eq:cbbound}
+ \norm{\Phi_\gamma}_{\cb}\le
+ \sum_{\alpha+\beta=\gamma}\norm{U_\alpha}\,\norm{U_\beta}.
+\end{equation}
+The displayed sum is finite, and the common support may be chosen inside
+$\supp U+\supp U$.
+\end{theorem}
+\begin{proof}
+Given the criterion, choose $U$ and define \eqref{hgeo:us:eq:Phi}. This is a
+unital $*$-homomorphism with the required atoms and residue. Each coefficient
+is a finite sum of maps $a\mapsto U_\alpha\rho(a)U_\beta^*$. Such a map is
+normal, and its matrix amplification is multiplication on either side by the
+diagonal amplifications of $U_\alpha$ and $U_\beta^*$, so its completely
+bounded norm is at most $\norm{U_\alpha}\norm{U_\beta}$. This proves
+\eqref{hgeo:us:eq:cbbound} and the support claims.
+
+Conversely, let a calculus be given and fix $\gamma$. For a finite
+$\mathcal J=\{i_1,\ldots,i_n\}$, rectangular matrix multiplication gives
+\[
+ \sum_{i\in\mathcal J}(P_i)_\gamma E_i
+ =\bigl[\Phi_\gamma(1_{i_1})\ \cdots\ \Phi_\gamma(1_{i_n})\bigr]
+ \begin{bmatrix}E_{i_1}\\ \vdots\\ E_{i_n}\end{bmatrix}.
+\]
+The column of the $E_i$ has norm at most one, because its squared norm
+operator is $\sum_{i\in\mathcal J}E_i\le I$. The row
+$[1_{i_1}\ \cdots\ 1_{i_n}]$ has norm one in
+$M_{1,n}(\ell^\infty(\mathcal I))$, since at each index at most one entry is
+one. Complete boundedness therefore gives
+\begin{equation}\label{hgeo:us:eq:synthesiscb}
+ \Bigl\|\sum_{i\in\mathcal J}(P_i)_\gamma E_i\Bigr\|
+ \le\norm{\Phi_\gamma}_{\cb},
+\end{equation}
+which is (B) by \eqref{hgeo:us:eq:finitesup}. The common support of the
+calculus contains the active column support, which gives (H), and
+\cref{hgeo:us:thm:main} supplies $U$.
+
+For uniqueness there is a simpler algebraic argument than approximation by
+finitely supported families. If $\Psi$ is \emph{any} unital complex-linear
+homomorphism into $\BH$ with the prescribed atoms, then
+$\Psi(a)P_i=\Psi(a1_i)=a_iP_i$, and conjugating by $U$ gives
+$(U^*\Psi(a)U)E_i=a_iE_i$ for every $i$. Every coefficient of
+$U^*\Psi(a)U-\rho(a)$ is a bounded operator vanishing on every $E_iH$, whose
+algebraic sum is dense, so it is zero. Thus $\Psi(a)=U\rho(a)U^*$ for all
+$a$; in particular the regular calculus is unique, and the gauge freedom of
+\cref{hgeo:us:cor:gauge} does not change it.
+\end{proof}
+
+The last paragraph is a rigidity statement once a straightener exists. It
+does not prove that an arbitrary algebra map defined pointwise has coherent
+support or supplies a straightener without the hypotheses of the theorem;
+that automatic-regularity question remains open
+(\cref{hgeo:us:q:regularity}).
+
+\subsection{Boolean projections and coefficientwise additivity}
+For $\mathcal S\subseteq\mathcal I$ put
+$E(\mathcal S)=\rho(1_{\mathcal S})$ and
+$P(\mathcal S)=\Phi(1_{\mathcal S})=UE(\mathcal S)U^*$. Then
+\[
+ P(\mathcal S\cap\mathcal S')=P(\mathcal S)P(\mathcal S'),\qquad
+ P(\mathcal I\setminus\mathcal S)=I-P(\mathcal S),\qquad P(\mathcal I)=I .
+\]
+If $\mathcal S_1,\mathcal S_2,\ldots$ are disjoint, then for every $\gamma$
+\begin{equation}\label{hgeo:us:eq:additivity}
+ \Bigl(P\bigl(\textstyle\bigcup_n\mathcal S_n\bigr)\Bigr)_\gamma
+ =\sSOT_{n\ge1}\bigl(P(\mathcal S_n)\bigr)_\gamma ,
+\end{equation}
+because $\sSOT_nE(\mathcal S_n)=E(\bigcup_n\mathcal S_n)$ and each coefficient
+of $UE(\mathcal S)U^*$ is a fixed finite sum of left and right multiplications
+by bounded operators. The same argument works for the net of finite subsets of
+any disjoint set-indexed family.
+
+\begin{proposition}[Joins when the criterion holds \src{07}]
+\label{hgeo:us:prop:joins}
+The projection $P(\mathcal S)$ is the least upper bound of
+$\{P_i:i\in\mathcal S\}$ in the full projection poset of $\BH$.
+\end{proposition}
+\begin{proof}
+It is an upper bound. If $P'$ is another upper bound, put $P''=U^*P'U$. Then
+$P''E_i=E_i$ for $i\in\mathcal S$. Each bounded coefficient of
+$(P''-I)E(\mathcal S)$ vanishes on the dense algebraic sum of the $E_iH$,
+$i\in\mathcal S$, and on the range of $I-E(\mathcal S)$, so
+$P''E(\mathcal S)=E(\mathcal S)$; taking adjoints,
+$E(\mathcal S)P''=E(\mathcal S)$. Thus $E(\mathcal S)\le P''$, that is
+$P(\mathcal S)\le P'$.
+\end{proof}
+
+\begin{remark}[Joins for incomplete families and real scalars
+\mergetag]\label{hgeo:us:rem:joins}
+The proof of \cref{hgeo:us:prop:joins} uses only a straightener. Hence, for a
+possibly incomplete family over a real or complex $H$ satisfying (B) and (H),
+with straightener $U$, every subfamily $\{P_i:i\in\mathcal S\}$ has the join
+$UE(\mathcal S)U^*$, where $E(\mathcal S)=\sSOT_{i\in\mathcal S}E_i$: it is an
+upper bound since $UE(\mathcal S)U^*P_i=UE(\mathcal S)E_iU^*=P_i$ for
+$i\in\mathcal S$, and the leastness argument above applies verbatim. By
+\eqref{hgeo:us:eq:range}, the range projection $P_\vee=UEU^*$ of
+\cref{hgeo:us:thm:main} is the join of the whole family. Every subfamily of
+a family satisfying the criterion satisfies it too (its columns are
+restrictions, its active support a subset), so this is a sufficient
+condition for all subfamily joins at once. It is not necessary for the
+join of a family to exist: the whole family of \cref{hgeo:us:thm:uniform} has
+the join $I$ but no straightener.
+This is the partial answer to \cref{hgeo:q:notdeveloped} recorded in
+\cref{hgeo:us:sub:status}; \cref{hgeo:us:q:boolean} asks for the converse
+direction.
+\end{remark}
+
+This is an atomic spectral calculus in a carefully stated sense \src{07}. It
+does not make $(P_i)$ strongly Hahn summable, since infinitely many nonzero
+$P_i$ have a nonzero coefficient at exponent zero. Nor does
+\eqref{hgeo:us:eq:additivity} give valuation convergence: for the constant
+coordinate projections on $\ell^2(\N)$ and a vector $x$ with infinitely many
+nonzero coordinates, $E(\{1,\ldots,n\})x\to x$ in the ordinary Hilbert norm,
+whereas each nonzero difference, as a constant Hahn vector, has valuation
+zero. No continuous-spectrum spectral measure and no valuation-topologically
+countably additive general spectral theorem is proved. This is consistent with
+the non-claims of sources~03 and~06 on spectral measures
+(\cref{hgeo:q:notdeveloped}).
+
+\subsection{Coherent eigenvalue reconstruction}
+Eigenvalue series need not be uniformly bounded as whole Hahn scalars,
+provided they are bounded at each coefficient and have one common support.
+
+\begin{proposition}[Weighted reconstruction \src{07}]
+\label{hgeo:us:prop:weighted}
+Suppose the criterion holds with $E=I$. Let $(\lambda_i)_{i\in\mathcal I}$ be
+scalar Hahn series whose supports lie in one well-ordered
+$S_\lambda\subseteq\Gamma$, and assume
+$\sup_i\abs{(\lambda_i)_\gamma}<\infty$ for every $\gamma$. Then
+\[
+ D_\lambda=\sum_\gamma\rho\bigl(((\lambda_i)_\gamma)_{i\in\mathcal I}\bigr)
+ t^\gamma,\qquad N_\lambda=UD_\lambda U^*
+\]
+are Hahn operators, $N_\lambda$ is normal, and
+$N_\lambda P_i=P_iN_\lambda=\lambda_iP_i$. It is the unique operator
+$A\in\BH$ with $AP_i=\lambda_iP_i$ for all $i$.
+\end{proposition}
+\begin{proof}
+The coefficient bound makes every diagonal coefficient bounded, and the
+support hypothesis makes their series a Hahn series. All diagonal
+coefficients commute with one another and with their adjoints, so $D_\lambda$
+is normal. Conjugation gives the equations and normality of $N_\lambda$. For
+uniqueness, conjugate the difference of two solutions by $U$: every
+coefficient annihilates every $E_iH$, hence is zero by density.
+\end{proof}
+
+This reconstructs an operator from coherent atomic data. It does not assert
+that every normal Hahn operator admits such data, nor that its
+algebra-relative spectrum consists only of the labels $\lambda_i$;
+accumulation phenomena and inverse coherence are separate issues, as the
+spectral report emphasizes \cite{RepoSpectral}.
+
+\section{Uniform individual bounds do not suffice}\label{hgeo:us:sec:uniform}
+
+The next construction strengthens the observation that an unbounded direct
+sum of infinitesimal rotations need not be a Hahn operator
+(\cref{hgeo:cor:nosimultaneous}, where the coefficients of the $P_n$ at $\eta$
+have norm $n$). Here every individual projection is controlled uniformly, at
+every fixed order, over the entire countable family \src{07}.
+
+\begin{theorem}[A uniformly controlled nonsynthesizable family \src{07}]
+\label{hgeo:us:thm:uniform}
+There is a countable pairwise orthogonal family of rank-one projections
+$(P_i)$ in $\mathcal B(\ell^2)[[t]]$, with complete coordinate residues
+$(E_i)$, such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item all supports lie in $\N$;
+\item for every $n\ge0$, $\sup_i\norm{(P_i)_n}<\infty$;
+\item every finite subfamily has an exact near-identity simultaneous Hahn
+unitary;
+\item the whole family has no simultaneous Hahn unitary, even after any
+ordered enlargement of the exponent group;
+\item a specified subfamily has no least upper bound in the projection poset,
+although the whole family has the least upper bound $I$.
+\end{enumerate}
+The same example works over real coefficients and after complexification.
+\end{theorem}
+
+\subsection{The block construction}
+For $m\ge1$ put $d_m=4^{m^2}$ and
+\[
+ H_m=\kk^{d_m}\oplus\kk^{d_m},\qquad H=\bigoplus_{m\ge1}H_m ,
+\]
+a separable infinite-dimensional Hilbert space (identified with $\ell^2$ by
+its coordinate basis). Let $u_m$ be the normalized all-ones vector of the left
+half of $H_m$ and $u_m'$ the corresponding vector of the right half. With the
+rank-one notation $xy^*:z\mapsto\ip{z}{y}x$, define the ordinary finite-rank
+skew-adjoint operator
+\begin{equation}\label{hgeo:us:eq:Xm}
+ X_m=m\bigl(u_m'u_m^*-u_mu_m'^*\bigr)\quad\text{on }H_m .
+\end{equation}
+Then $X_mu_m=mu_m'$, $X_mu_m'=-mu_m$, $\norm{X_m}=m$, and $X_m$ annihilates
+the orthogonal complement of $\Span\{u_m,u_m'\}$ in $H_m$. For each
+coordinate vector $e\in H_m$ let $E_e=ee^*$ and define
+\begin{equation}\label{hgeo:us:eq:Pe}
+ V_m(t)=\exp(tX_m),\qquad P_e(t)=V_m(t)E_eV_m(t)^* .
+\end{equation}
+These are formal matrix power series on a \emph{finite} block, extended by
+zero to the other blocks. Since $X_m^*=-X_m$, $V_m$ is formally unitary. Within
+a block the $P_e$ are mutually orthogonal and sum to the ordinary projection
+$\Pi_m$ onto $H_m$; different blocks are orthogonal; their residues are all the
+coordinate projections of $H$. No global operator $\exp(t\bigoplus_mX_m)$ is
+assumed in \eqref{hgeo:us:eq:Pe}: the direct sum of the $X_m$ is unbounded.
+Only the separately legitimate finite-block exponentials define the
+individual projections.
+
+\subsection{Uniform estimates at every order}
+For every coordinate vector $e\in H_m$ and $k\ge1$,
+\begin{equation}\label{hgeo:us:eq:column}
+ \norm{X_m^ke}=\frac{m^k}{\sqrt{d_m}} ,
+\end{equation}
+because the component of $e$ in the plane $\Span\{u_m,u_m'\}$ has length
+$1/\sqrt{d_m}$ and $X_m$ acts on that plane as $m$ times an isometry. For
+$n\ge1$, expanding \eqref{hgeo:us:eq:Pe} gives
+\[
+ (P_e)_n=\sum_{a+b=n}\frac{X_m^aE_e(-X_m)^b}{a!\,b!} .
+\]
+The two terms with $a=0$ or $b=0$ have norm $m^n/(n!\sqrt{d_m})$ each. Each
+interior term is rank one with norm $m^n/(a!\,b!\,d_m)$ by
+\eqref{hgeo:us:eq:column}, and $\sum_{a=1}^{n-1}n!/(a!\,b!)=2^n-2$. Hence
+\begin{align}
+ \norm{(P_e)_n}
+ &\le\frac{m^n}{n!}\Bigl(\frac{2}{\sqrt{d_m}}+\frac{2^n-2}{d_m}\Bigr)
+ \notag\\
+ &\le\frac{2^nm^n}{n!\,2^{m^2}} .\label{hgeo:us:eq:allorder}
+\end{align}
+For fixed $n$ the right-hand side is bounded over all $m\ge1$; at order zero
+the bound is one. This proves (ii) without a bound depending on the
+individual projection. In fact the positive-order coefficients from far-out
+blocks tend to zero, uniformly within each block. Every finite subfamily meets
+only finitely many blocks, and the direct sum of the corresponding finitely
+many $V_m$ with the identity on the other blocks is an actual
+bounded-coefficient Hahn unitary straightening that subfamily; this proves
+(iii) directly, and (i) is clear.
+
+\subsection{The synthesis obstruction}
+Since the diagonal of $X_m$ in the coordinate basis is zero,
+\[
+ (P_e)_1e=[X_m,E_e]e=X_me .
+\]
+Hence $C_1^\fin$ restricts to $X_m$ on the whole finite block $H_m$, and
+$\norm{C_1^\fin u_m}=m$ with $\norm{u_m}=1$. The canonical first coefficient is
+unbounded: (B) fails, although (H) and every individual estimate
+\eqref{hgeo:us:eq:allorder} hold. \Cref{hgeo:us:thm:main} excludes a common
+unitary, \cref{hgeo:us:cor:extension} excludes one at every enlarged scale,
+and \cref{hgeo:us:prop:first} shows that no block-diagonal first-order gauge
+can hide the failure. This proves (iv).
+
+The mechanism is collective. Each coordinate vector has a very small
+component in the active plane, but a coherent sum of many coordinates recovers
+the unit vector $u_m$, on which the operator norm is $m$. An estimate on
+individual columns does not bound synthesis on arbitrary unit vectors of their
+Hilbert direct sum.
+
+\subsection{A missing Boolean join}
+Let $\mathcal L$ consist of the coordinate vectors in the left halves of all
+blocks, and suppose a projection $Q\in\BH$ were the join of
+$\{P_e:e\in\mathcal L\}$. For every coordinate $f\notin\mathcal L$, $I-P_f$ is
+an upper bound for this family, since all its members are orthogonal to
+$P_f$. Leastness would give
+\[
+ QP_e=P_e\ (e\in\mathcal L),\qquad QP_f=0\ (f\notin\mathcal L).
+\]
+Each block projection $\Pi_m$ is the sum of its finitely many $P_e$, so
+$Q\Pi_m=\sum_{e\in\mathcal L\cap H_m}P_e$ is self-adjoint; therefore $Q$
+commutes with $\Pi_m$, and its compression to $H_m$ is forced to be
+\[
+ Q|_{H_m}=V_mE_{L,m}V_m^* ,
+\]
+where $E_{L,m}$ is the ordinary left-half projection. Its first coefficient is
+$[X_m,E_{L,m}]$, which sends $u_m$ to $mu_m'$ and $u_m'$ to $mu_m$ and
+annihilates the orthogonal complement of the plane; its norm is exactly $m$.
+But $Q_1$ would be a bounded operator on $H$, whose compressions to all $H_m$
+have norm at most $\norm{Q_1}$. This is impossible. So the selected subfamily
+has no join; it is not merely that a particular formula for the join
+diverges.
+
+The whole family does have the join $I$. Any upper-bound projection has a
+residue dominating every coordinate projection, hence residue $I$; its
+complementary projection has zero residue and is zero by
+\cref{hgeo:us:lem:integral}. This proves (v) and
+\cref{hgeo:us:thm:uniform}.\hfill$\square$
+
+\begin{remark}[Total vectors are not a synthesis theorem \src{07}]
+\label{hgeo:us:rem:total}
+The vectors $V_me$, taken one at a time, form an orthonormal family in
+$\HH{H}$ with $\Gamma=\Z$. If a nonzero Hahn vector were orthogonal to every one,
+its leading ordinary coefficient would be orthogonal to every coordinate
+vector, which is impossible. So the family is total in this orthogonality
+sense. Nevertheless no bounded-coefficient Hahn unitary synthesizes it from
+the ordinary basis: totality and a valid global synthesis operator are
+different notions in this category.
+\end{remark}
+
+Compared with \cref{hgeo:thm:nojoin,hgeo:cor:nosimultaneous}, whose family is
+incomplete and has coefficients of norm $n$ at $\eta$, the family here is
+complete, has uniformly bounded coefficients at every order and common support
+$\N$, and still has no straightener, and a subfamily still has no join
+\src{07}.
+
+\section{The independent support obstruction}\label{hgeo:us:sec:support}
+
+The family of \cref{hgeo:us:thm:uniform} is perfectly support coherent. The
+next one has all canonical coefficient maps bounded, with norm at most one,
+but active support that is not well ordered.
+
+\begin{theorem}[Bounded columns with incoherent support \src{07}]
+\label{hgeo:us:thm:support}
+Over $\Gamma=\Q$ there is a countable orthogonal family of rank-one Hahn
+projections with complete coordinate residues such that \textup{(B)} holds
+with $b_\gamma\le1$ for every $\gamma$, whereas \textup{(H)} fails. Every
+finite subfamily straightens, but the whole family does not, even after
+ordered scale enlargement.
+\end{theorem}
+\begin{proof}
+Take $H=\bigoplus_{n\ge1}\kk^2$ with basis $e_n,f_n$ of the $n$th block, and
+on each block put
+\[
+ \mathsf J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+ V_n=\bigl(I+t^{1/n}\mathsf J\bigr)\bigl(1+t^{2/n}\bigr)^{-1/2},
+\]
+with $I$ the $2\times2$ identity. The scalar inverse square root is a Hahn
+series supported in $(2/n)\N$. Since $\mathsf J^*=-\mathsf J$ and
+$\mathsf J^2=-I$, $V_n$ is unitary. Define the block projections
+$P_{n,j}=V_nE_{n,j}V_n^*$, $j=1,2$, where $E_{n,1},E_{n,2}$ project onto
+$\kk e_n,\kk f_n$, and extend them by zero off the block. Each has a
+well-ordered support contained in $(1/n)\N$. The blockwise canonical column
+expression is
+\begin{equation}\label{hgeo:us:eq:rationalblock}
+ C^{(n)}=P_{n,1}E_{n,1}+P_{n,2}E_{n,2}=V_n\,\Dg_E\bigl(V_n^*\bigr)
+ =\frac{I+t^{1/n}\mathsf J}{1+t^{2/n}},
+\end{equation}
+where on a block $\Dg_E$ takes the diagonal of a $2\times2$ matrix. Its coefficient at
+$k/n$ is $(-1)^{k/2}I$ for even $k$ and $(-1)^{(k-1)/2}\mathsf J$ for odd $k$.
+At a fixed rational $\gamma>0$, the canonical coefficient on all of $H$ is the
+block diagonal operator with this coefficient in the blocks where $n\gamma$ is
+an integer and zero elsewhere. Every nonzero block has norm one, so the full
+coefficient has norm at most one; this proves (B), and order zero is the
+identity. The active support is all of $\Q_{\ge0}$, since every positive
+rational $k/n$ carries a nonzero block coefficient; it contains the strictly
+decreasing sequence $1,1/2,1/3,\ldots$ and is not well ordered. So (H) fails
+and \cref{hgeo:us:thm:main} excludes a simultaneous unitary. Finite
+subfamilies and scale enlargement are handled by
+\cref{hgeo:us:rem:finite,hgeo:us:cor:extension}.
+\end{proof}
+
+The projections $P_{n,1}$ project onto $\K(e_n+t^{1/n}f_n)$: they are the
+projections $\widetilde P_n$ of \cref{hgeo:prop:incoherent} with $\eta=1$.
+The theorem adds their complements $P_{n,2}$, so that the residual family is
+complete, and proves (B) with $b_\gamma\le1$. Source~06's proof of
+\cref{hgeo:prop:incoherent} is a second route to nonexistence: a straightener
+$U$ would give $\supp P_{n,1}\subseteq\supp U+\supp U$, a well-ordered set,
+which cannot contain $1,1/2,1/3,\ldots$.
+
+\begin{remark}[Any group containing $\Q\eta$ \mergetag]
+\label{hgeo:us:rem:transport}
+If $\Gamma'$ contains $\Q\eta$ for some $\eta>0$, the order embedding
+$\Q\to\Gamma'$, $r\mapsto r\eta$, transports the family to the one built with
+$t^{\eta/n}$ in place of $t^{1/n}$, and \cref{hgeo:us:cor:extension} shows that
+it has no straightener over $\Gamma'$. This is the hypothesis of
+\cref{hgeo:prop:incoherent}.
+\end{remark}
+
+Both counterexamples are rank one, countable, and already defined over real
+coefficients \src{07}. The first cannot be repaired by bounding individual
+coefficients at more Taylor orders: it fails collective boundedness at its
+first order. The second cannot be repaired by improving any coefficient bound,
+since every such bound already has the value one. Their obstructions belong to
+different parts of the definition of a Hahn operator.
+
+\section{Surreal workspaces and the omnific boundary}\label{hgeo:us:sec:surreal}
+
+\subsection{From formal scales to actual surreal monomials}
+Let $\Gamma$ be a set-sized ordered additive subgroup of $\No$. The
+substitution $t^\gamma=\omega^{-\gamma}$ of \eqref{hgeo:eq:embedding}
+identifies $\F$ with a normal-form subfield of $\No$ and $\K$ with a subfield
+of $\No[i]$; well-ordered $t$-support becomes reverse well-ordered Conway
+support \cite{Conway,LInnocenteMantova}. All operator identities of this part
+therefore hold for real or surcomplex scalar series in such a workspace. They
+are not asymptotic formulas modulo an unspecified error but equalities of full
+Hahn normal forms. In \cref{hgeo:us:thm:uniform} one may take $t=\omega^{-1}$;
+\cref{hgeo:us:thm:support} uses the actual monomials $\omega^{-1/n}$
+\src{07}.
+
+\begin{corollary}[Set-indexed surreal descent \src{07}]\label{hgeo:us:cor:surreal}
+Consider a set-indexed family of orthogonal projections given as set-supported
+series of ordinary bounded operators with exponents in $\No$. The criterion of
+\cref{hgeo:us:thm:main} applies after all their supports are placed in one
+set-sized ordered subgroup. If no straightener exists in that subgroup, none
+exists in any larger bounded-coefficient surreal Hahn workspace.
+\end{corollary}
+\begin{proof}
+The union of the supports of a set-indexed family is a set, and the subgroup
+of $(\No,+)$ it generates by finite sums and integer multiples is a set-sized
+ordered subgroup; the family belongs to the corresponding Hahn operator
+algebra. Any proposed straightener given by a set-supported bounded-operator
+series, even one using further surreal exponents, lies with the family in a
+larger such subgroup. Apply \cref{hgeo:us:cor:extension}.
+\end{proof}
+
+Source~07 states this for its specified category of operators, not as an
+identification of all class-linear maps on a proper-class vector space with
+Hahn series; it uses only set-indexed support unions, and neither a
+large-cardinal axiom nor global choice beyond the ordinary set theory used for
+Hilbert spaces. It leaves automatic representation theorems for class-linear
+adjointable maps outside its scope. Within this report such a theorem is
+\cref{hgeo:thm:class}(ii), and it removes the restriction for maps with an
+everywhere-defined class adjoint.
+
+\begin{corollary}[Class unitaries \mergetag]\label{hgeo:us:cor:classmaps}
+Work in the class formulation of \cref{hgeo:sec:global} (NBG without global
+choice). Let $(P_i)_{i\in\mathcal I}$ be a set-indexed family of pairwise
+orthogonal class projections on $\mathscr H_{\No}(H)$, that is,
+everywhere-defined self-adjoint idempotent class-linear maps. Then the
+$P_i$ have set-supported expansions with supports in one set-sized
+ordered subgroup $\Gamma$. If the family fails \textup{(B)} or \textup{(H)}
+there, no class-linear unitary of $\mathscr H_{\No}(H)$ conjugates every $E_i$
+to $P_i$. If it satisfies both, the straightener of \cref{hgeo:us:thm:main}
+acts on the whole class and conjugates every $E_i$ to $P_i$ there.
+\end{corollary}
+\begin{proof}
+Each $P_i$ is its own everywhere-defined class adjoint, so
+\cref{hgeo:thm:class}(ii) gives it a set support $S_i$; the union over the set
+$\mathcal I$ is a set by replacement, and it generates a set-sized ordered
+subgroup $\Gamma$. A class unitary $U$ has the everywhere-defined class
+adjoint $U^{-1}$, so it too has a set support $S_U$. In the set-sized subgroup
+$\Gamma'$ generated by $\Gamma$ and $S_U$ the identities $P_i=UE_iU^*$ hold on
+the workspace vectors, hence as identities of Hahn series, because operators
+of the algebra are determined by their values on constants. By
+\cref{hgeo:us:cor:extension} the family then straightens over $\Gamma$. The
+last assertion is \cref{hgeo:thm:class}(ii): the straightener has set support
+and acts on every class vector, and the identities hold there by coefficient
+transport (\cref{hgeo:prop:extension}).
+\end{proof}
+
+A class-linear map without an everywhere-defined class adjoint, such as a
+nonsurjective isometry, is not covered; \cref{hgeo:us:q:classmaps} remains
+open for such maps.
+
+\subsection{Omnific entries remove all infinitesimal unitary freedom}
+Recall the normal-form description of the omnific integers
+\[
+ \Oz=\Bigl\{\sum_xr_x\omega^x:\supp(r)\subseteq\No_{\ge0},\ r_0\in\Z\Bigr\},
+\]
+with reverse well-ordered support and real coefficients
+\cite{Conway,LInnocenteMantova}. In the convention $t^\gamma=\omega^{-\gamma}$,
+an omnific number has support in nonpositive exponents and an ordinary
+integer as constant coefficient. Put $\Oz[i]=\Oz+i\Oz$, whose constant
+coefficients are Gaussian integers. Only this description is used.
+
+Fix an ordinary orthonormal basis $(e_j)_{j\in\mathcal N}$ of $H$. The scalar
+matrix entry of $A\in\BH$ at $(j,k)$ is the Hahn series
+\[
+ A_{jk}=\sum_\gamma\ip{A_\gamma e_k}{e_j}\,t^\gamma ;
+\]
+the matrix need not have finite rows or columns.
+
+\begin{theorem}[Omnific matrix rigidity \src{07}]\label{hgeo:us:thm:omnific}
+In a surreal Hahn workspace:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a projection all of whose entries lie in $\Oz$ in the real case, or in
+$\Oz[i]$ in the complex case, is an ordinary coordinate projection relative
+to $(e_j)$;
+\item a unitary with such entries is an ordinary signed permutation in the
+real case, or an ordinary permutation with phases in $\{1,-1,i,-i\}$ in the
+complex case;
+\item a near-identity unitary with such entries is the identity.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By \cref{hgeo:us:lem:integral} the operator has no negative $t$-exponents,
+and by the omnific condition none of its entries has a positive one. So for
+every $\gamma>0$ all matrix entries of $A_\gamma$ vanish, and a bounded
+operator with all entries zero relative to an orthonormal basis is zero, by
+density of finite linear combinations. Hence $A=A_0$ is ordinary, with
+integer or Gaussian-integer entries.
+
+For an ordinary orthogonal projection $P$, each diagonal entry is real and
+$P_{jj}=\norm{Pe_j}^2\in[0,1]$; being an integer, it is $0$ or $1$. If it is
+$0$ then $Pe_j=0$; if $1$, the orthogonal decomposition
+$e_j=Pe_j+(I-P)e_j$ gives $Pe_j=e_j$. So $P$ is the coordinate projection onto
+the indices with $P_{jj}=1$.
+
+For an ordinary unitary $U$, Parseval's identity in a column gives
+$\sum_j\abs{U_{jk}}^2=1$ with nonnegative integer summands, so each column has
+exactly one nonzero entry, equal to $\pm1$ or to a Gaussian unit. Orthogonality
+of the columns makes the resulting map of basis indices injective, and
+surjectivity of $U$ makes it bijective. This proves (ii); a constant unitary
+with residue $I$ is $I$, which proves (iii).
+\end{proof}
+
+The possible omnific-entry unitary groups are therefore
+$\{\pm1\}^{\mathcal N}\rtimes\operatorname{Sym}(\mathcal N)$ and
+$\{\pm1,\pm i\}^{\mathcal N}\rtimes\operatorname{Sym}(\mathcal N)$. This is an
+elementary boundary corollary, not a claimed new theorem of omnific
+factorization. It explains why the infinitesimal rotations of the
+constructions above cannot stay inside the omnific matrix ring: positive
+$t$-exponents and the omnific support restriction are incompatible.
+
+\section{Status of the questions; further questions of source 07}
+\label{hgeo:us:sec:questions}
+
+\subsection{Answered and re-scoped questions}\label{hgeo:us:sub:status}
+\begin{itemize}[leftmargin=*]
+\item \emph{\Cref{hgeo:q:synthesis}} (Infinite orthogonal synthesis) is
+answered. The two conditions that sources~03 and~06 isolated as necessary are,
+in the form (B) and (H), also sufficient (\cref{hgeo:us:thm:main}), for every
+set-indexed family, complete or not, over every set-sized ordered group. They
+are stable under scale enlargement in the strongest sense: solvability is
+unchanged by any ordered embedding (\cref{hgeo:us:cor:extension}). Families
+satisfying them have joins (\cref{hgeo:us:prop:joins,hgeo:us:rem:joins}).
+The criterion is exact but not an effective test
+(\cref{hgeo:us:q:intrinsic,hgeo:us:q:effective}), and neither condition can be
+dropped (\cref{hgeo:us:thm:uniform,hgeo:us:thm:support}). Stability under
+composition, also asked for in the question, is not treated separately.
+\item \emph{\Cref{hgeo:q:notdeveloped}} (Which countable families have joins)
+is answered in part: families satisfying the criterion, and all their
+subfamilies, have joins (\cref{hgeo:us:rem:joins}), and
+\cref{hgeo:us:thm:uniform} adds a complete family with uniformly bounded
+coefficients some of whose subfamilies lack a join. A characterization of the
+countable families with joins is not given; \cref{hgeo:us:q:boolean} asks
+whether Boolean joins for all subfamilies force the criterion. Tensor
+products, frame bounds and general spectral measures remain undeveloped;
+\cref{hgeo:us:q:intrinsic} proposes frame-type bounds as a route to (B).
+\item \emph{\Cref{hgeo:q:orthoclosed}} (Orthoclosed subspaces with closed
+residue) stays open. Source~07 restates it (\cref{hgeo:us:q:closedresidue})
+and notes that its criterion, which starts from existing projections, does not
+settle it.
+\item \emph{The spectral report's assembly question}
+(\replabel{ihs:fr:sec:questions}, first question: which uniform spectral-gap
+and coefficient-ideal hypotheses make all cluster rotations assemble into a
+bounded-coefficient Hahn unitary?). One bounded-coefficient unitary
+conjugating every residual cluster projection to its deformed cluster
+projection is a simultaneous straightener of the family of cluster
+projections, so for that family \cref{hgeo:us:thm:main} answers the question
+in exact-criterion form: such a unitary exists if and only if the family
+satisfies (B) at every order and (H). \Cref{hgeo:us:prop:first} is the
+corresponding first-order equation, stated for the projection family rather
+than for the operator. The spectral report does not assert that its
+first-order condition is sufficient at higher orders; the criterion supplies
+the missing conditions, namely (B) at every order together with (H). The
+question as posed, in terms of spectral gaps and coefficient ideals of the
+operator, is not answered in that form. The spectral report is not edited
+here, and its other two further questions are not addressed.
+\end{itemize}
+
+\subsection{Further questions}\label{hgeo:us:sub:questions}
+The questions of source~07 are kept separate from the established statements.
+Some continue a question of this report; others ask for a stronger category or
+a more intrinsic test. None is a named published problem.
+
+\begin{question}[Closed residue versus orthogonal splitting
+\src{07}]\label{hgeo:us:q:closedresidue}
+Does every orthoclosed subspace $M=M^{\perp\perp}$ of $\HH{H}$ with closed
+ordinary residue admit an orthogonal projection? This is
+\cref{hgeo:q:orthoclosed}. The present criterion starts from existing
+projections and does not settle it. A promising test case is the graph of a
+closed densely defined ordinary operator after a positive-order perturbation
+with closed residue.
+\end{question}
+
+\begin{question}[Boolean existence versus coherent synthesis
+\src{07}]\label{hgeo:us:q:boolean}
+Suppose that for every $\mathcal S\subseteq\mathcal I$ there is a projection
+separating the atoms in $\mathcal S$ from those outside $\mathcal S$, for a
+complete residual family. Must (B) and (H) follow? Such a separating
+projection, when it exists, is unique: the difference of two candidates
+annihilates all deformed atoms, and its leading coefficient then annihilates
+all residual blocks. The difficulty is to derive a common support and
+collective coefficient bounds from existence for all subsets, without assuming
+them.
+\end{question}
+
+\begin{question}[Automatic regularity of an atomic representation
+\src{07}]\label{hgeo:us:q:regularity}
+Can the common-support and completely bounded coefficient assumptions of
+\cref{hgeo:us:def:calculus} be deduced for a unital $*$-homomorphism
+$\ell^\infty(\mathcal I)\to\BH$ with the specified atoms and complete residue?
+\Cref{hgeo:us:thm:calculus} gives uniqueness once synthesis exists, not this
+automatic existence. A bounded, rather than completely bounded, hypothesis on
+each coefficient map is an intermediate problem.
+\end{question}
+
+\begin{question}[Intrinsic estimates for the synthesis constants
+\src{07}]\label{hgeo:us:q:intrinsic}
+Find usable conditions on the Gram blocks $E_i(P_i)_\gamma^*(P_j)_\gamma E_j$
+that imply (B) with effective bounds, without first constructing $C_\gamma$.
+Schur-type block estimates or weighted frame bounds may give tractable
+sufficient tests. \Cref{hgeo:us:thm:uniform} shows why bounds on the
+individual blocks alone cannot work without control of their correlations.
+\end{question}
+
+\begin{question}[Non-discrete jet compactness \src{07}]\label{hgeo:us:q:jets}
+Which filtrations of a general ordered group admit an analogue of
+\cref{hgeo:us:thm:jets}? A useful answer must specify the truncated rings and
+must recover well-ordered support, not merely boundedness at each exponent;
+\cref{hgeo:us:thm:support} shows that coefficientwise local solvability cannot
+by itself impose that support property.
+\end{question}
+
+\begin{question}[Continuous spectral decompositions \src{07}]
+\label{hgeo:us:q:continuous}
+Replace $\ell^\infty(\mathcal I)$ by $L^\infty(X,\mu)$ and the atomic Hilbert
+direct sum by an ordinary direct integral. Is there an exact Hahn criterion
+for straightening a deformed projection-valued measure? There are no atomic
+columns on which to perform the present dense test; a replacement may involve
+bounded coefficient bimodules and a normal conditional expectation.
+\end{question}
+
+\begin{question}[Other coefficient algebras \src{07}]\label{hgeo:us:q:algebras}
+For which involutive subalgebras $\mathcal M\subseteq\mathcal B(H)$ does the
+criterion produce $U\in\mathcal M((t^\Gamma))$? The proof needs closure under
+the relevant diagonal compression and the synthesized coefficients; formal
+inversion near the identity then stays in any unital algebra. Von Neumann
+subalgebras, block operator algebras and ideals with a unit adjoined give
+distinct test cases.
+\end{question}
+
+\begin{question}[Non-self-adjoint idempotents \src{07}]
+\label{hgeo:us:q:idempotents}
+What replaces the theorem for pairwise annihilating, not necessarily
+self-adjoint idempotents? Similarity may replace unitary equivalence, but
+integrality and zero-residue rigidity cannot simply be imported from
+\cref{hgeo:us:lem:integral}: positivity of $A_a^*A_a$ is a genuine ingredient
+of the argument.
+\end{question}
+
+\begin{question}[Effective infinite families \src{07}]\label{hgeo:us:q:effective}
+For computably presented countable families, identify useful decidable or
+semidecidable subclasses of (B) and (H). A finite algorithm cannot simply
+sample more atoms: \cref{hgeo:us:thm:uniform} hides an unbounded synthesis
+constant in increasingly large finite blocks. Certificates based on an a
+priori structural bound may be more realistic than unrestricted decidability.
+\end{question}
+
+\begin{question}[Beyond the bounded-coefficient class \src{07}]
+\label{hgeo:us:q:classmaps}
+Under which explicit foundational and continuity hypotheses is every
+surreal-linear isometry or everywhere-defined adjointable map represented by
+one set-supported series of ordinary bounded operators? Such an automatic
+representation theorem would extend the negative examples to a larger class
+of maps; \cref{hgeo:us:cor:surreal} alone does not establish it.
+\end{question}
+
+\noindent\emph{Status \mergetag.} For everywhere-defined class-linear maps
+with an everywhere-defined class adjoint, in NBG without global choice and
+with ordinary Hilbert coefficient spaces, this representation is
+\cref{hgeo:thm:class}(ii) (sources~03 and~06), which gives
+\cref{hgeo:us:cor:classmaps}. It remains open for isometries and other maps
+without such an adjoint, and under other foundational hypotheses.
+
+\begin{question}[Optimal gauges and perturbative costs \src{07}]
+\label{hgeo:us:q:gauge}
+Can the gauge freedom of \cref{hgeo:us:cor:gauge} be used to minimize
+specified ordinary norms of successive coefficients, and does a minimizer
+exist? The canonical first coefficient is fixed off the diagonal, but higher
+coefficients interact nonlinearly. A satisfactory result should separate norm
+minimization at each order from any unsupported notion of a single real-valued
+norm of a whole Hahn operator.
+\end{question}
+
+\begin{question}[Machine-checked assembly \src{07}]\label{hgeo:us:q:lean}
+Formalize \cref{hgeo:us:thm:main} for arbitrary ordered abelian exponent
+groups, including the incomplete-family formula. This would turn the finite
+rotations and support obstructions of the collection into a reusable verified
+assembly interface. The infinite-family boundedness extension, not the finite
+matrix identities, is the principal formalization milestone.
+\end{question}
+
+\subsection{What the finite computations test, and a formalization route}
+\label{hgeo:us:sub:verification}
+The suite \fn{code/07-unitary-synthesis-verify.py} performs exact rational
+matrix power-series arithmetic with truncation, without floating point
+\src{07}. It builds noncommuting finite-dimensional unitary series from
+skew-adjoint generators, forms complete and incomplete projection families,
+and independently executes
+\eqref{hgeo:us:eq:constructiona}--\eqref{hgeo:us:eq:constructionb}. It checks
+both unitary identities, the projection identities, intertwining, the
+identities for $\Omega$, $P_\vee$ and $W$, agreement of the synthesized
+columns with the necessity formula \eqref{hgeo:us:eq:necessity}, the first two
+coefficients of the complete-family polar formula, and consistency of all
+shorter jets of the canonical construction. Separate tests check the
+two-dimensional identity \eqref{hgeo:us:eq:rationalblock} and the finite-block
+rank-two identities behind \eqref{hgeo:us:eq:column} and the missing join. The
+recorded run passes 159 named assertion groups; its log records the matrix
+sizes and truncation orders; no randomness is used. Details and the rerun are
+in \cref{hgeo:app:verification}.
+
+These checks are diagnostic evidence for coefficient algebra. They cannot
+prove well-ordered support in arbitrary ordered groups, the passage from a
+dense ordinary subspace to bounded operators, the unboundedness across
+infinitely many blocks, or novelty relative to published work; those claims
+rest on the written proofs, not on the number of tests.
+
+Source~07 proposes a formalization route. A Hahn-series algebra with
+coefficients in bounded operators must expose the support lemma, the
+involution and substitution into positive-order series; the ordinary
+orthogonal direct-sum interface must provide extension of bounded maps from
+the algebraic sum, the diagonal compression and equality by dense testing;
+projection residue rigidity and the four formulas for $\Omega$, $P_\vee$, $W$
+and $U$ then give the constructive proof, and necessity needs only the
+compression identity \eqref{hgeo:us:eq:necessity}. The uniform counterexample
+can be formalized without constructing matrices of dimension $4^{m^2}$ entry by
+entry: it needs two orthonormal flat vectors in finite coordinate blocks, the
+norm of their rank-two skew operator, and \eqref{hgeo:us:eq:allorder}. The
+support example needs an ordered copy of $\Q$ and the sequence $1/n$. A
+verified finite-jet package would be useful but would not replace the general
+well-ordered support proof. No formalization is included or claimed, and the
+collection's existing Lean coverage should not be read as covering these
+labels.
+
+\subsection{Summary of source 07}\label{hgeo:us:sub:summary}
+A simultaneous infinite straightening problem has an exact answer in the
+bounded-operator Hahn category: the canonical columns must synthesize to a
+bounded operator at every exponent, and the active exponent set must be well
+ordered. The conditions are necessary and sufficient, and the proof gives an
+explicit unitary, a support bound and descent from every larger scale group.
+In discrete scale, independently solvable finite jets for the whole family
+already force one exact formal solution. The criterion is equivalent to a
+precise atomic spectral calculus, whose countable additivity is coefficientwise
+in the ordinary strong operator topology, not strong Hahn summability and not
+valuation convergence. The uniformly controlled counterexample shows why the
+distinctions matter: every individual coefficient can be uniformly bounded at
+every order while collective synthesis, and even a selected Boolean join,
+fail. The omnific-entry theorem marks the opposite boundary, where support
+restrictions remove every nonconstant unitary deformation. Independent
+correctness review, priority assessment and formal verification remain
+separate tasks \src{07}. The limitations of source~07 are listed in
+\cref{hgeo:app:nonclaims}.
 
 \clearpage
 \appendix
@@ -3075,7 +4613,31 @@ Prop.~12.4 and 06 Prop.~11.3 printed once as the vector form of
 \Cref{hgeo:sec:provenance} & 03 \S13 and 06 \S12, Appendix~A; the relations
 to the collection and the status of the questions are the merge's.\\
 \Cref{hgeo:app:checklist} & 03 Appendix~A, with rows for 06's results and the
-merge.\\
+merge; rows for 07 and 07 Appendix~B added in batch 34.\\
+\Cref{hgeo:us:sec:intro} & 07 \S1 and abstract; 07 \S2 in
+\cref{hgeo:us:sub:algebra}, its Lem.~2.1 printed once with
+\cref{hgeo:lem:integralproj,hgeo:cor:orbits} (\cref{hgeo:us:lem:integral}),
+its support principle and strong summability by citation of
+\cref{hgeo:lem:support,hgeo:def:strong}. \Cref{hgeo:us:sub:source} and
+\cref{hgeo:us:sub:conventions} are the merge's.\\
+\Cref{hgeo:us:sec:criterion} & 07 \S\S3--4 (Def.~3.1, Thm.~3.2 and its
+proof); \cref{hgeo:us:sub:relation} is the merge's.\\
+\Cref{hgeo:us:sec:consequences} & 07 \S5: Cors.~5.1--5.3, Thm.~5.5,
+Prop.~5.6. 07 Cor.~5.4 is \cref{hgeo:thm:finite}
+(\cref{hgeo:us:rem:finite}).\\
+\Cref{hgeo:us:sec:calculus} & 07 \S6: Def.~6.1, Thm.~6.2, Props.~6.3
+and~6.4; \cref{hgeo:us:rem:joins} is the merge's.\\
+\Cref{hgeo:us:sec:uniform} & 07 \S7: Thm.~7.1 and Rem.~7.2.\\
+\Cref{hgeo:us:sec:support} & 07 \S8: Thm.~8.1, whose family contains that of
+06's \cref{hgeo:prop:incoherent}; \cref{hgeo:us:rem:transport} is the
+merge's.\\
+\Cref{hgeo:us:sec:surreal} & 07 \S9: Cor.~9.1 and Thm.~9.2;
+\cref{hgeo:us:cor:classmaps} is the merge's, from \cref{hgeo:thm:class}.\\
+\Cref{hgeo:us:sec:questions} & 07 \S10 (verification and formalization
+route), \S11 (Questions~11.1--11.12) and \S12 (conclusion);
+\cref{hgeo:us:sub:status} and the status note after
+\cref{hgeo:us:q:classmaps} are the merge's.\\
+\Cref{hgeo:us:app:provenance} & 07 Appendix~A.\\
 \bottomrule
 \end{longtable}}
 
@@ -3092,6 +4654,14 @@ with 69 bare labels; nothing in the collection cited them, and each was
 prefixed unchanged (for example \replabel{thm:threshold} is
 \replabel{hgeo:thm:threshold}); the other labels were added for source~06's
 results, the merge, and the appendices.
+
+Source~07 (batch 34) arrived with bare labels (for example
+\replabel{thm:main}); nothing in the collection cited them. Its material
+carries the sub-prefix \replabel{hgeo:us:}, unused before, with names chosen
+for this report (\replabel{thm:main} is \replabel{hgeo:us:thm:main},
+\replabel{thm:uniform-counter} is \replabel{hgeo:us:thm:uniform}). No existing
+label was renamed or removed, and no earlier section, theorem or equation
+number changed.
 
 \subsection{Renamed symbols}
 
@@ -3146,6 +4716,38 @@ $A^-_1$; $A^-_0$ in the case $S=0$.\\
 03 & $\eta=v(b)$ in the threshold proof & $\eta'$, since $\eta$ is fixed by
 $q=t^\eta$.\\
 03 & $R=(I+X^*X)^{-1}$ in the graph chart & $R_X$.\\
+07 & $\mathbb F\in\{\R,\C\}$, $K=\mathbb F((t^\Gamma))$ & $\kk$; $\F$ or
+$\K$.\\
+07 & $\mathscr H$, $\mathscr A$, $\mathscr A_{\ge0}$, $\mathscr A_{>0}$,
+$I_H$ & $\HH{H}$, $\BH$, $\Bnn$, $\Bpos{H}{H}$, $I$.\\
+07 & index set $I$; finite subsets $J$; subsets $A,B$; left-half set $J$;
+basis index set $J$ & $\mathcal I$, $\mathcal J$, $\mathcal S,\mathcal S'$,
+$\mathcal L$, $\mathcal N$, since $I$ is the identity and $J$ the graph-chart
+column and the metric isometry.\\
+07 & $F=I-E$ & $E^\perp$, since $F$ is the real Hahn field.\\
+07 & $\mathcal D_E$ & $\Dg_E$, since $\mathcal D$ is the Schur block
+matrix.\\
+07 & $G=C^*C+F$ & $\Omega$, since $G$ is a Hilbert space.\\
+07 & $Q=CG^{-1}C^*$ & $P_\vee$, since the report's $Q_j$, $Q_n$ are residue
+projections (07's $E_j$); $P_\vee$ is the join.\\
+07 & $T=C+(I-Q)F$, $B=(T^*T)^{-1/2}$ & $W$ (the $W$ of
+\cref{hgeo:thm:finite} in the finite case) and $\abs W^{-1}$, since
+$T=\diag(1/n)$ and $B$ is the row operator.\\
+07 & $R$ (generic), $R$ (upper bound), $S=U^*RU$ & $Y$, $P'$, $P''$, since
+$R$ is a relation and $S$ a support.\\
+07 & $R_m=\exp(tA_m)$, $A_m$, $u_m,v_m$, $F_m$ & $V_m=\exp(tX_m)$, $X_m$,
+$u_m,u_m'$, $\Pi_m$; $v$ is the valuation.\\
+07 & $J$ ($2\times2$), $q_n=t^{1/n}$, $R_n$ & $\mathsf J$, $t^{1/n}$, $V_n$;
+$q=t^\eta$ is fixed.\\
+07 & $K$, $D$ (first-order equation), $W$ (gauge), $V$ (residue of $U$;
+second straightener) & $Y$, $Y_c$, $\Xi$, $U_0$, $U'$; $\K$ is the complex
+field.\\
+07 & $\mathscr A_N$, $A_\lambda$, generic $T$, $\langle S\rangle$ &
+$\mathscr B^{[N]}$, $N_\lambda$, $A$, $S^*$.\\
+07 & inner product conjugate-linear in the first argument;
+$xy^*:z\mapsto x\ip{y}{z}$; entries $\ip{e_j}{T_\gamma e_k}$ & linear in the
+first argument; $xy^*:z\mapsto\ip{z}{y}x$; entries $\ip{A_\gamma e_k}{e_j}$
+(the same maps and entries).\\
 \bottomrule
 \end{longtable}}
 
@@ -3197,11 +4799,100 @@ converse (\cref{hgeo:thm:lattice}).
 \item Both sources describe their delivery archives (source PDFs, build
 records). The source manuscripts and PDFs are not shipped with this report;
 the shipped files are listed in \cref{hgeo:app:verification}.
+\item Source~07 (pin \texttt{fc27d87}, 61 commits before its placement
+\texttt{a7a435f}) quotes this report's Question~15.3 and Part~IV of the
+spectral report correctly; neither report changed between the pin and the
+placement, apart from the placement itself.
+\item Source~07 says its finite-family corollary recovers a statement of the
+repository without naming it; it is \cref{hgeo:thm:finite}, and the two
+constructions agree (\cref{hgeo:us:rem:finite}). It likewise names the
+support-incoherence obstruction without a label; its
+\cref{hgeo:us:thm:support} contains the family of \cref{hgeo:prop:incoherent}
+with $\eta=1$.
+\item Source~07 does not use, and asks for (its Question~11.10), an automatic
+representation theorem for class maps. For maps with an everywhere-defined
+class adjoint this is \cref{hgeo:thm:class}(ii), present at its pin; the merge
+applies it in \cref{hgeo:us:cor:classmaps}, and the status note after
+\cref{hgeo:us:q:classmaps} re-scopes the question.
+\item Source~07's delivered build scripts and build report refer to its own
+manuscript and PDF, which are not shipped (\cref{hgeo:app:verification}).
 \end{enumerate}
+
+\subsection{Source 07: snapshot, scope and dependency ledger}
+\label{hgeo:us:app:provenance}
+This subsection prints source~07's own provenance appendix.
+
+\emph{Repository snapshot.} Source~07 identified its target at repository
+revision \fn{fc27d87646ea3b7ed5e04e0a9c00a307dfe12fe2}, committed on
+September 24, 2026 at 00:27:33 UTC, that is September 23, 2026 at 17:27:33 in
+America/Los\_Angeles; the manuscript's date uses that local date. Repository
+content may change after the pin. It inspected the main and documentation
+catalogues and the guides of four reports: this report;
+\emph{Infinite-Dimensional Hahn Spectral Theory}; \emph{Set-Sized Quotients of
+the Omnific Integers} (\fn{docs/surreal/set-sized-quotients-of-omnific-integers});
+and \emph{Omnific Integers and Omnific--Diophantine Geometry}
+(\fn{docs/surreal/omnific-diophantine-geometry}). The last two ruled out
+normalization and basic Diophantine rigidity as useful nonduplicative
+targets. The detailed proofs in the long report sources were not audited. The
+target statements and the comparison with finite straightening come from the
+two operator-theory guides, and source~07's proofs are not assertions that
+all claims of those reports were independently checked. In particular it does
+not use an automatic class-operator representation theorem of a neighbouring
+report in its surreal descent (\cref{hgeo:us:cor:surreal}); in this report that
+theorem is \cref{hgeo:thm:class}, used only in the merge's
+\cref{hgeo:us:cor:classmaps}.
+
+\emph{Dependency ledger.} The proof of the main criterion uses the
+positive-support lemma, ordinary bounded extension from a dense subspace,
+ordinary orthogonal projections and the elementary coefficient identities of
+\cref{hgeo:us:sub:algebra}; no spectral theorem for Hahn operators is used.
+The functional calculus uses in addition the matrix-amplification norm
+estimate for ordinary bounded maps and the ordinary diagonal representation on
+a Hilbert direct sum. The examples use finite-dimensional rank-one norm
+identities and unboundedness across infinitely many finite blocks. The omnific
+application uses only the normal-form support condition.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Result & Essential proof obligation\\
+\midrule
+\Cref{hgeo:us:thm:main} & Coefficientwise bounded synthesis and legal support
+before polar normalization\\
+\Cref{hgeo:us:cor:extension} & The canonical columns are unchanged by exponent
+embedding\\
+\Cref{hgeo:us:thm:jets} & Every finite jet concerns the entire family, not a
+finite subfamily\\
+\Cref{hgeo:us:thm:calculus} & A rectangular completely bounded estimate gives
+collective synthesis\\
+\Cref{hgeo:us:thm:uniform} & Small coordinate columns coexist with unbounded
+block norms\\
+\Cref{hgeo:us:thm:support} & Bounded coefficient operators have a
+non-well-ordered active support\\
+\Cref{hgeo:us:thm:omnific} & Integral operator support and omnific scalar
+support meet only at zero\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Literature status and a current announcement.} The literature check was
+targeted, not exhaustive. The older projection and polar-decomposition
+literature supplies conceptual precedents, and the novelty claim is restricted
+to the exact combination and strengthening stated in \cref{hgeo:us:sub:why}. A
+user-supplied Wikipedia page was used for orientation, not as a source of a
+theorem. During its current-status check source~07 found a September~18, 2026
+author announcement of a Lean proof of Conway's refinement conjecture
+\cite{Abramov}; the announcement itself distinguishes machine checking from
+independent mathematical review. That proof was not audited, is used by no
+argument, and no conclusion about its eventual acceptance is drawn: source~07
+neither treats that conjecture as untouched nor claims to have resolved it.
+The citation is provenance only; the target is the operator assembly problem.
 
 \section{What this report does not claim}\label{hgeo:app:nonclaims}
 Every limitation, disclaimer and priority caveat stated by a source is kept
-here, numbered per source.
+here, numbered per source; source~07's are items 07.1--07.26, and the batch-34
+addition's are A.1--A.7.
 
 \subsection{Source 03 (34 items)}
 \begin{enumerate}[leftmargin=*,widest=00,label=03.\arabic*]
@@ -3391,12 +5082,119 @@ orthoclosed; the orthoclosed case of \cref{hgeo:q:orthoclosed} is open.
 \item The comparison with \replabel{ihs:fr:thm:fredholm} recovers only its
 determinant-free clauses.
 \item The spectral report's cluster-rotation question
-(\replabel{ihs:fr:sec:questions}) receives only necessary conditions; it and
-the other questions of \cref{hgeo:sub:questions} remain open.
+(\replabel{ihs:fr:sec:questions}) receives only necessary conditions from
+sources~03 and~06; after batch~34, source~07's criterion answers it in
+exact-criterion form only, not in the spectral-gap form in which it is posed
+(\cref{hgeo:us:sub:status}). Its other two parts, and the questions of
+\cref{hgeo:sub:questions} not marked as answered there, remain open.
 \item Results printed by citation are not reproved here; their proofs are
 those of the cited reports, which are themselves unrefereed drafts.
 \item Nothing in this report is formalized in Lean, and
 \fn{docs/FORMALIZATION.md} maps none of its labels.
+\end{enumerate}
+
+\subsection{Source 07 (26 items)}
+\begin{enumerate}[leftmargin=*,widest=00,label=07.\arabic*]
+\item An AI-assisted, unrefereed proof draft; priority has not been
+independently established; independent correctness review, priority
+assessment and formal verification remain separate tasks.
+\item The principal claims are proved in the explicitly defined Hahn operator
+category; they propose a resolution of a repository research question, not of
+a named classical conjecture, and are neither a general
+infinite-dimensional spectral theorem nor a solution of every spectral problem
+over surreal scalars.
+\item The setting is the concrete algebra $\mathcal B(H)((t^\Gamma))$, not a
+Banach space over a non-Archimedean field with an unspecified completion;
+membership in the algebra is part of each theorem.
+\item The proposed contributions (the exact criterion with its
+incomplete-family construction, scale-enlargement invariance, the finite-jet
+equivalence, the atomic calculus equivalence, the uniformly controlled
+counterexample with its missing join) are candidate contributions relative to
+the inspected sources, not a certified exhaustive novelty claim.
+\item Polar intertwiners, projection geometry and polar decomposition
+\cite{Kato,CorachMaestripieri}, well-ordered support calculus \cite{Neumann}
+and the omnific normal-form description \cite{LInnocenteMantova} are credited,
+not advertised as new.
+\item No unreviewed theorem of the collection is used; the collection's
+guides fixed only the target and the comparison.
+\item The collection's projection-lattice counterexamples and
+support-incoherence obstruction are not claimed for the first time.
+\item The work does not repeat Part~II of the spectral report, whose
+row- and column-finite category is different.
+\item The criterion is exact but is not an effective decision procedure for
+arbitrary infinite data.
+\item A straightener is unique only up to the commuting gauge; uniqueness is
+not claimed without a specified choice.
+\item The finite-family corollary recovers a statement already in the
+collection (\cref{hgeo:thm:finite}).
+\item The jet theorem asks for one jet for the whole family; it does not say
+that straightening every finite subfamily gives a common straightener.
+\item Uniqueness of the atomic calculus is a rigidity statement once a
+straightener exists; it does not show that an arbitrary pointwise-defined
+algebra map has coherent support or supplies a straightener, and automatic
+regularity is open.
+\item The atomic calculus is not strong Hahn summability, and its
+coefficientwise additivity is not valuation convergence; no continuous-spectrum
+spectral measure and no valuation-topologically countably additive general
+spectral theorem is proved.
+\item Weighted reconstruction does not assert that every normal Hahn operator
+admits atomic data, nor that its algebra-relative spectrum consists only of
+the labels.
+\item The uniform example uses no global exponential of the unbounded
+direct-sum generator; totality of an orthonormal family is not a synthesis
+theorem.
+\item The surreal descent concerns the specified category of set-supported
+bounded-coefficient series, not all class-linear maps; automatic representation
+theorems for general class-linear adjointable maps are left outside its scope;
+the set-workspace assertions use neither a large-cardinal axiom nor global
+choice.
+\item Omnific matrix rigidity is an elementary boundary corollary, not a new
+theorem of omnific factorization.
+\item The closed-residue question (\cref{hgeo:q:orthoclosed}) is not settled.
+\item The finite computations check finite identities only, with small block
+dimensions; they do not prove well-ordered support in arbitrary ordered groups,
+bounded extension from a dense subspace, unboundedness across infinitely many
+blocks, or novelty. The claims rest on the written proofs, not on the number of
+tests.
+\item No Lean formalization is included or claimed; the collection's Lean
+coverage should not be read as covering its labels; a verified finite-jet
+package would not replace the support proof.
+\item The repository comparison inspected the catalogues and four report
+guides, not the detailed proofs of the long report sources; its proofs are
+not assertions that the claims of those reports were checked.
+\item The literature check was targeted, not exhaustive; the novelty claim is
+restricted to the stated combination and strengthening; a user-supplied
+Wikipedia page was used for orientation only.
+\item The September~18, 2026 announcement of a Lean proof of Conway's
+refinement conjecture is cited for current-status provenance only: it was not
+audited or used, and no conclusion about its acceptance is drawn; the
+conjecture is neither treated as untouched nor claimed resolved.
+\item The further questions are separated from the established statements
+and are not claimed resolved.
+\item The proof-checking checklist marks where a plausible but incorrect
+infinite-dimensional argument could arise; the finite tests make no claim to
+discharge those obligations.
+\end{enumerate}
+
+\subsection{The batch-34 addition (7 items)}
+\begin{enumerate}[leftmargin=*,widest=00,label=A.\arabic*]
+\item \Cref{hgeo:us:cor:classmaps} depends on \cref{hgeo:thm:class}(ii)
+(sources~03 and~06, unrefereed) and covers only class maps with an
+everywhere-defined class adjoint.
+\item \Cref{hgeo:us:rem:joins} gives a sufficient condition for joins, not a
+characterization; \cref{hgeo:q:notdeveloped} stays open as a
+characterization question.
+\item The spectral report's first further question is answered only in
+exact-criterion form; that report is not edited, and its other two questions
+are untouched.
+\item \Cref{hgeo:us:rem:finite,hgeo:us:rem:instances} identify constructions
+and counterexamples of different sources; they add no existence claim beyond
+the sources.
+\item \Cref{hgeo:q:orthoclosed} stays open.
+\item Stability under composition, asked for in \cref{hgeo:q:synthesis}, is not
+treated.
+\item Nothing in the addition is formalized, and \fn{docs/FORMALIZATION.md}
+maps none of its \replabel{hgeo:us:} labels.
 \end{enumerate}
 
 \section{A dependency and hypothesis checklist}\label{hgeo:app:checklist}
@@ -3451,7 +5249,21 @@ Full-class adjoints & Set coefficient spaces; class replacement;
 everywhere-defined adjoint; no global choice
  & Set image of constants, then the automatic adjoint proof\\[.4em]
 Fine discreteness & Set index and all surreal radii
- & Surreal cut below a set of distances\\
+ & Surreal cut below a set of distances\\[.4em]
+Infinite straightening criterion & Set-indexed orthogonal projections;
+complete or incomplete residues & Canonical columns, dense bounded extension,
+residue rigidity, formal polar normalization\\[.4em]
+Jets, first-order equation & $\Gamma=\Z$; one jet for the whole family
+ & Jet column identity; block commutator identities\\[.4em]
+Atomic calculus, joins & Complete residues and complex $H$ (joins: any
+straightener) & Rectangular completely bounded estimate; density on residual
+blocks\\[.4em]
+Uniform counterexample & Blocks of dimension $4^{m^2}$ & Flat vectors;
+$C_1=X_m$ on each block; compression of a would-be join\\[.4em]
+Support counterexample & $\Gamma\supseteq\Q\eta$ & Coefficients $\pm I$,
+$\pm\mathsf J$ at $k/n$; active support $\Q_{\ge0}$\\[.4em]
+Omnific rigidity & Entries in $\Oz$ or $\Oz[i]$ & Integral support meets
+omnific support only at zero; Parseval\\
 \bottomrule
 \end{longtable}}
 
@@ -3462,10 +5274,25 @@ of an ordinary Hilbert coordinate sum with a strong Hahn family is
 performed. All nearest-point statements compare exact ordered-field
 norms; they do not replace minimization by an unproved infimum.
 
+Source~07's proof-checking checklist names the highest-value checks for its
+part: that the canonical column series exists \emph{before} any
+infinite-family operator manipulation; in the incomplete case, $CE^\perp=0$,
+$\Omega E^\perp=E^\perp$, $P_\vee^2=P_\vee$ and the zero-residue argument
+giving $P_i\le P_\vee$; both unitary identities, since $U^*U=I$ alone is not
+enough in a general operator algebra and the proof uses invertibility for the
+other; in the uniform example, the difference between legal finite-block
+exponentials and the illegal exponential of an unbounded direct-sum
+generator; that the missing-join argument excludes \emph{every} projection,
+not one suggested infinite sum; and the distinctions among the three
+summation conventions (\cref{hgeo:us:warn:sums}). These are where a plausible
+but incorrect infinite-dimensional argument could most easily arise; the
+finite tests cover parts of the algebraic identities and do not discharge
+these obligations.
+
 \section{Verification suites}\label{hgeo:app:verification}
-Two finite suites accompany the report, byte-identical to the deliveries
-under prefixed names; neither is a proof of any infinite-dimensional, Baire,
-domain, lattice or class assertion.
+Three finite suites accompany the report, byte-identical to the deliveries
+under prefixed names; none is a proof of any infinite-dimensional, Baire,
+domain, lattice, support or class assertion.
 \begin{itemize}[leftmargin=*]
 \item \fn{code/03-orthogonal-splitting-checks.py} (Python with SymPy) runs 16
 named exact symbolic checks: graph-projection idempotence and self-adjointness;
@@ -3486,6 +5313,28 @@ graph projections (60), graph intertwiners (40), the positive block operator
 \fn{data/06-hilbert-foundations-verification.json}.
 \fn{code/06-hilbert-foundations-build.sh} is the source's build script for
 its own manuscript, which is not shipped; it is kept as delivered.
+\item \fn{code/07-unitary-synthesis-verify.py} (Python with SymPy~1.14.0,
+pinned in \fn{data/07-unitary-synthesis-requirements.txt}) runs 159 named
+assertion groups of exact rational truncated matrix power-series arithmetic.
+The construction
+\eqref{hgeo:us:eq:constructiona}--\eqref{hgeo:us:eq:constructionb} is tested
+on a complete rank-one family of size~3 to order~6 (38 groups), an incomplete
+family of size~4 with residual blocks $\{1,2\},\{3\}$ to order~6 (28) and a
+complete block family of size~5 to order~5 (37): both unitary identities, the
+identities for $\Omega$, $P_\vee$ and $W$, the necessity formula, the atom
+identities and consistency of all shorter jets, and for the complete families
+the polar formula and its first two coefficients. The flat-block identities
+are tested for $m=1,2,3$ with block dimensions $d=1,4,9$, not $4^{m^2}$ (14
+groups each), and the support block to order~10 (14). The recorded run is
+\fn{data/07-unitary-synthesis-verification_results.json}; it records the SymPy
+version but not the Python version.
+\fn{code/07-unitary-synthesis-build.sh} and
+\fn{code/07-unitary-synthesis-build.ps1} run pdfLaTeX three times on an
+\fn{article.tex} next to themselves, which is source~07's manuscript and is
+not shipped; they cannot build this report and are kept as delivered.
+\fn{data/07-unitary-synthesis-BUILD_REPORT.json} records source~07's own
+22-page build and the suite's count; its file names (\fn{article.pdf},
+\fn{verification_results.json}) are delivery names.
 \end{itemize}
 Both suites were rerun for this report on copies (Python 3.14.4, SymPy
 1.14.0): 03 printed ``16 checks passed, including 125 exponent triples'', and
@@ -3494,7 +5343,12 @@ version (3.13.5); 06 printed status PASS with 234 checks, and its written JSON
 equals the recorded one up to line endings. Both scripts write their outputs
 (03 into a \fn{verification} directory next to the script, 06 into
 \fn{verification.json} in the working directory by default), so they should
-be run on a copy; the README gives the commands.
+be run on a copy; the README gives the commands. For the batch-34 addition
+the 07 suite was rerun on a copy (Python 3.14.4, SymPy 1.14.0): it printed
+``Passed 159 exact assertion groups'', and its written JSON equals the
+recorded one up to line endings (the Windows run wrote CRLF). By default it
+writes \fn{verification_results.json} in the working directory, and its
+\texttt{--output} option names another path; it too should be run on a copy.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -3626,6 +5480,27 @@ Surreal project, \emph{Analysis} report, directory
 Surreal project, \emph{Foundations} report and the collection's notation and
 reading guide, directory \fn{docs/foundations-and-computation/foundations};
 label \replabel{found:thm:discrete}.
+
+\bibitem{CorachMaestripieri}
+G.~Corach and A.~Maestripieri,
+\emph{Products of orthogonal projections and polar decompositions},
+Linear Algebra and its Applications \textbf{434} (2011), 1594--1609.
+\url{https://doi.org/10.1016/j.laa.2010.11.033};
+\url{https://arxiv.org/abs/1011.5237}.
+
+\bibitem{LInnocenteMantova}
+S.~L'Innocente and V.~Mantova,
+\emph{A factorisation theory for generalised power series and omnific
+integers}, arXiv:1710.07304, version~5, January 22, 2024.
+\url{https://arxiv.org/abs/1710.07304v5}. Cited by source~07 for normal-form
+conventions and the omnific support description only.
+
+\bibitem{Abramov}
+D.~Abramov, \emph{How I Vibed a Proof of Conway's Conjecture}, author
+announcement, September 18, 2026.
+\url{https://overreacted.io/how-i-vibed-a-proof-of-conways-conjecture/}.
+Cited by source~07 solely for a current-status provenance note; the announced
+proof is not audited or used.
 
 \end{thebibliography}
 \end{document}
