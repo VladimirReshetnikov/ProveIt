@@ -335,6 +335,10 @@ Number-field norm equations now have a complete rigidity proof for every
 rational basis: a nonzero rational norm level forces all omnific coordinates
 to be ordinary integers. A basis of algebraic integers also gives an integer
 norm polynomial, whose omnific and ordinary integer solution sets agree.
+The explicit cubic `x³ + 2y³ + 4z³ − 6xyz` now has a checked norm identity
+and factorization. At every nonzero ordinary level, its omnific solutions
+are ordinary integer triples; its Gaussian omnific solutions are ordinary
+Gaussian integer triples. Both statements identify the exact solution sets.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
