@@ -1152,8 +1152,12 @@ claims that these are open in the literature.
   field-theoretic squarefreeness explicit, supplies the algebraic-embedding argument,
   and corrects the nonmonic counterexample. The following pass through Remark
   19.28 supplies the generic-factor derivation and constant-subalgebra details,
-  and explicit positive-degree and nonempty-family conventions. Review of the
-  monogenic and later applications remains pending.
+  and explicit positive-degree and nonempty-family conventions. The next pass
+  covers monogenic and arithmetic descent, critical-point and normal-matrix
+  applications, the boundary examples and the splitting-algebra second proof.
+  It handles zero-degree presentations, requires matrix size `n ≥ 1`, and
+  distinguishes simple critical points from distinct critical values.
+  Later question/status notes and full parallel-source reconciliation remain pending.
   Its Lemmas 2.1, 3.1 and 6.3 are printed once as Lemmas 16.1–16.3 and Corollary 16.4.
 
 **Stale repository statements.** Source 01 said the repository's

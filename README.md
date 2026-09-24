@@ -449,8 +449,14 @@ covers factors, Galois groups, coherent translations and units of finite
 étale algebras: every such unit is algebraic over the coefficient field.
 It explains the generic field factors and why the constant subalgebra
 injects into the reduction fiber, while full descent still requires an
-additional hypothesis. Monogenic descent and the later matrix arguments
-remain unreviewed; these C17 results remain pending in Lean.
+additional hypothesis. The review now covers monogenic and arithmetic
+descent and the critical-point and normal-matrix applications. In particular,
+a normal matrix over the one-sided complex Hahn ring with nonzero constant
+characteristic discriminant differs from its constant matrix by a scalar
+purely infinite matrix; its eigenspaces remain ordinary. The boundary
+examples and splitting-algebra second proof are also reviewed. These C17
+results remain pending in Lean; their later question/status notes and full
+parallel-source reconciliation remain pending review.
 The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
 now assembles fifteen manuscripts. Its latest parts propose formal orbit
 fields, actions of set-sized left-orderable groups with prescribed fixed
