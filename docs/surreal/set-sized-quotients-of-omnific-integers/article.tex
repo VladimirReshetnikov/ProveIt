@@ -283,7 +283,7 @@ and more generally of $D+\mm_k$ (04). For every infinite $\lambda$, the rings of
 with supports of size at most $\lambda$ (full surreal exponents) already have universal
 set-sized quotient $D$ on both sides, while the finite-support rings admit the augmentation
 $\sum c_g\omega^g\mapsto\sum c_g$; a map on the finite-support ring extends to the countable-support
-ring if and only if it factors through $\ct$ (the failure for the augmentation is 04's and 11's,
+ring if and only if it factors through $\ct$ or $\st$ on the respective side (the failure for the augmentation is 04's and 11's,
 the criterion is 11's). (\Cref{osq:thm:finite,osq:thm:support}.)
 \end{maintheorem}
 
@@ -2534,7 +2534,9 @@ $R_{\mathrm{fin}}=\A^{<\aleph_0}_{D,k}$. These are rings: the support of a sum l
 finite union and that of a product in the image of the product of the two supports under
 addition, and for an infinite $\lambda$ finite unions and products of sets of size $<\lambda$
 (or $\le\lambda$) keep that bound; regularity of $\lambda$ is not needed. They remain
-proper classes, since a one-term series may have any positive exponent (04, 11).
+proper classes: the positive-side ring contains every $\omega^a$ with $a>0$,
+and the finite-side ring every $\omega^{-a}$ with $a>0$ (04, 11). In each case
+the bound is on one element's support, not on the number of elements of the ring.
 
 \begin{theorem}[Support threshold \src{04, 11; 03, 07, 09}]\label{osq:thm:support}
 \leavevmode
@@ -2552,36 +2554,49 @@ on both sides, and so does $R_{\le\mu}$ for every infinite $\mu$.
 \[
  E\Bigl(d+\sum_{g\in F}c_g\omega^g\Bigr)=d+\sum_{g\in F}c_g\qquad(F\text{ finite})
 \]
-is a unital ring homomorphism from each finite-support ring to $k$, sending every monomial,
-including $\omega$ and $\omega^{-1}$, to $1$; it does not factor through $\ct$ or $\st$.
+is a unital ring homomorphism from each finite-support ring to $k$, sending every monomial
+in its domain to $1$: in particular $\omega$ on the positive side and $\omega^{-1}$ on the finite side; it does not factor through $\ct$ or $\st$.
 \item (Extension criterion.) For a set-sized unital ring $S$ and a unital map
 $h:R_{\mathrm{fin}}\to S$ the following are equivalent: (a) $h$ extends to $R_{\le\aleph_0}$;
 (b) $h$ extends to $R_{\le\mu}$ for some infinite $\mu$; (c) $h=g\circ\ct$ for a map
 $g:D\to S$; (d) $h$ extends to $\A_{D,k}$. Whenever an extension exists it is unique at each
 of these support levels. In particular $E$ does not extend to $R_{\le\aleph_0}$.
 \item \merge\ The same equivalence holds on the finite side, with $\B^{<\aleph_0}_{D,k}$,
-$\B^{<\aleph_1}_{D,k}$, $\B^{<\lambda}_{D,k}$, $\B_{D,k}$ and $\st$ in place of
-$R_{\mathrm{fin}}$, $R_{\le\aleph_0}$, $R_{\le\mu}$, $\A_{D,k}$ and $\ct$.
+$\B^{<\aleph_1}_{D,k}$, $\B^{<\mu^+}_{D,k}$, $\B_{D,k}$ and $\st$ in place of
+$R_{\mathrm{fin}}$, $R_{\le\aleph_0}$, $R_{\le\mu}$, $\A_{D,k}$ and $\ct$,
+where $\mu$ is infinite as in (iii).
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-(i), positive side. Fix $s\in\Pi_k$ with $|\supp s|<\lambda$. For $a>b$ in $U_{\No}(\supp s)$,
+(i), positive side. The zero element is already killed, so fix $0\ne s\in\Pi_k$
+with $|\supp s|<\lambda$. For $a>b$ in $U_{\No}(\supp s)$,
 the quotient of \cref{osq:lem:division} has support of cardinality at most
 $\max(|\supp s|,\aleph_0)<\lambda$, and the monomials $\omega^a$ are in the ring; so the
-families of \cref{osq:thm:packing} and all their quotients lie in $\A^{<\lambda}_{D,k}$, and
-\cref{osq:lem:separation}(iii) gives $\varphi(s)=0$ (11). Alternatively (04), every
+separating families of \cref{osq:thm:packing}, applied to the singleton $\{s\}$,
+and every individual quotient lie in $\A^{<\lambda}_{D,k}$. Take a family indexed
+by the Hartogs ordinal of $S$. A collision of two monomial images and the finite
+identity $s=(\omega^a-\omega^b)q$ force $\varphi(s)=0$, as in
+\cref{osq:lem:separation}(iii) (11). No sum of the whole separating family is
+formed; its index set may be much larger than $\lambda$. Alternatively (04), every
 monomial and every telescope $q_{c;a,b}$ has at most countable support, so the explicit-telescope
 route (\cref{osq:lem:telescope} with \cref{osq:lem:separation}(i); see the second routes after
 \cref{osq:thm:universal}) kills all positive monomials inside the bounded ring (the
-field-collision proof of \cref{osq:thm:universal} does not apply here, since the Hahn field over
-$H_g$ is not contained in the bounded ring), and the factorization
+field-collision proof of \cref{osq:thm:universal} cannot use the whole Hahn field
+over $H_g$ here, since shifting a support does not reduce its cardinality), and the factorization
 $s=\omega^a(\omega^{-a}s)$ of \cref{osq:prop:common} only translates the support, keeping
 its cardinality. A third route (batch 32) is in the first-$\kappa$ report \cite{RepoFKC}: its reservoir lemma
 (\nolinkurl{fkc:sb:lem:reservoir}) supplies, below every positive scale, a set field of arbitrarily large cardinality
 whose members have at most countable support, so the scaled-field collision of \cref{osq:lem:collision} can be run
 with that field inside the bounded ring; for $D=\Z$, $k=\R$ and $\lambda=\kappa$ this is its
-\nolinkurl{fkc:sb:thm:smallquotient}, which it identifies with the present statement.
+\nolinkurl{fkc:sb:thm:smallquotient}, which it identifies with the present statement. The
+field used in that route is $k(X^h:h\in H)$ for a sufficiently large set group
+$H$ of exponents infinitesimal relative to the chosen scale. An individual
+rational expression uses finitely many monomials. Inverting its denominator
+by a Hahn geometric series introduces at most countably many exponents;
+finite sums and products retain that bound. Scaling shifts each support into
+the positive side without changing its size. Thus a large field of elements
+with individually countable supports supplies the collision witnesses.
 
 (i), finite side (04). For $0\ne\varepsilon$ with $|\supp\varepsilon|<\lambda$,
 $a=v(\varepsilon)$, $0<\gamma<\delta<a$ and $d=\delta-\gamma$,
@@ -2591,13 +2606,20 @@ $a=v(\varepsilon)$, $0<\gamma<\delta<a$ and $d=\delta-\gamma$,
 the geometric series being the inverse of $1-\omega^{-d}$. Its support lies in
 $\{\beta+\gamma-nd:\beta\in\supp\varepsilon,\ n\in\N\}$, of cardinality at most
 $|\supp\varepsilon|\cdot\aleph_0<\lambda$, and its largest exponent is $-a+\gamma<0$. So the
-quotient of \cref{osq:lem:finitediff} stays in the bounded ring, and the proof of
-\cref{osq:thm:finite} applies. A valuation inequality alone would not control the support
+quotient of \cref{osq:lem:finitediff} stays in the bounded ring. The geometric
+family is Hahn summable, and its product with $\varepsilon$ is an ordinary Hahn
+product; a homomorphism is applied only to the resulting finite identity.
+The Hartogs family in the proof of \cref{osq:thm:finite} consequently still works.
+The cardinal estimate uses one support times a countable set; since $\lambda$
+is uncountable, their maximum is below $\lambda$ even when $\lambda$ is singular. A valuation inequality alone would not control the support
 size; this check is needed.
 
 (ii) Additivity and $E(1)=1$ are clear; for finite supports
 $E(xy)=\sum_{\alpha,\beta}c_\alpha d_\beta=E(x)E(y)$ by expanding the finite double sum.
-$E(\omega)=1\ne0=\ct(\omega)$ and $E(\omega^{-1})=1\ne0=\st(\omega^{-1})$.
+Coincident exponents in a product merely regroup this finite sum, so there is
+no ambiguity from cancellation. The ring $k$ is set-sized, and
+$E(\omega)=1\ne0=\ct(\omega)$ on the positive side, while
+$E(\omega^{-1})=1\ne0=\st(\omega^{-1})$ on the finite side.
 
 (iii) An extension to some $R_{\le\mu}$ factors through $\ct$ by (i), giving (a)$\Rightarrow$(c)
 and (b)$\Rightarrow$(c); an extension to $\A_{D,k}$ factors by \cref{osq:thm:universal}, giving
@@ -2605,8 +2627,13 @@ and (b)$\Rightarrow$(c); an extension to $\A_{D,k}$ factors by \cref{osq:thm:uni
 $h$, and two extensions to one ring both factor through $\ct$ and agree on $D$. Since
 $E(\omega)=1\ne\ct(\omega)$, $E$ violates (c).
 
-(iv) The same argument with (i) on the finite side, \cref{osq:thm:finite} and $\st$; the
-extension $g\circ\st$ exists on every ring of the list, and uniqueness follows as before.
+(iv) Use (i) on the finite side, \cref{osq:thm:finite} and $\st$. Here
+$|\supp f|<\mu^+$ means $|\supp f|\le\mu$; since $\mu$ is infinite, this
+extension ring contains every countably supported element. Thus (i) applies,
+and the extension $g\circ\st$ exists on every ring of the list with the same
+uniqueness argument. Replacing this ring by $\B^{<\aleph_0}_{D,k}$ would make
+extension automatic and the assertion false for augmentation; the infinite
+support allowance is essential.
 \end{proof}
 
 \begin{remark}[Why the threshold is about closure, not continuity]\label{osq:rem:closure}
@@ -2632,12 +2659,21 @@ exponents, yet $E$ sees every monomial as $1$ (04). Neither size nor additive di
 alone suffices; the proof needs many subordinate scales together with enough support closure
 for geometric division (11). For $D=\Z$, finite targets still kill the positive-support
 ideal of $R_{\mathrm{fin}}$ ($f=n(f/n)$ in characteristic $n$), so its finite quotient theory is
-ordinary congruence theory; having profinite completion $\widehat\Z$ is much weaker than having
-$\Z$ universal for all set-sized targets (09).
+ordinary congruence theory: for a finite unital target of characteristic $n\ge1$,
+the equation $f=n(f/n)$ kills each positive finite-support element, and a
+surjective map is determined by its ordinary integer scalars. Every kernel of
+a finite quotient is therefore $n\Z+\Pi_{\mathrm{fin}}$, where
+$\Pi_{\mathrm{fin}}=\Pi_k\cap R_{\mathrm{fin}}$, and every such kernel occurs.
+Having profinite completion $\widehat\Z$ is thus weaker than having $\Z$
+universal for all set-sized targets (09).
 
 The quotient and module classifications extend to the bounded rings of (i), and so does the
 derivation statement, because the monomial factorizations proving idempotence preserve support
-cardinality (04). 04 does \emph{not} infer that these smaller rings have fraction field
+cardinality (04). On the positive side the cofactor only translates the support;
+on the finite side $\varepsilon=\omega^{-a/2}(\omega^{a/2}\varepsilon)$ does the
+same, with the other factor a single monomial. For modules apply the bounded-ring
+mapping property to the set-sized ring $\End_\Z(M)$; the resulting annihilation
+and these factorizations then give the derivation correspondence. 04 does \emph{not} infer that these smaller rings have fraction field
 $\hahn k\No$: arbitrary normal forms need not have the required support size. The result is
 also different from completion or omitted-type questions for bounded-support series over a
 \emph{fixed} set-sized exponent group (compare \cite{RepoFKC}): here the exponent class is
@@ -2683,16 +2719,30 @@ $s>a+n(a-b)$ for $a>b$ in $T$, $s\in\supp x$).
 \item On the negative side, if $0\ne\varepsilon\in\mm_k(\Gamma)$, $a=v(\varepsilon)$ and
 $\varphi(\varepsilon)\ne0$ for a map $\varphi$ on $\B_{D,k}(\Gamma)$, then
 $\gamma\mapsto\varphi(X^{-\gamma})$ is injective on $(0,a)_\Gamma$ (04).
-\item For a module $M$ and $v\in M$ with $X^hv\ne0$, $a\mapsto X^av$ is injective on
+\item For $h>0$, an $A$-module $M$ and $v\in M$ with $X^hv\ne0$, $a\mapsto X^av$ is injective on
 $\{a\in\Gamma: a\ll h\}$ (03).
 \end{enumerate}
 No divisibility of $\Gamma$ is needed.
 \end{proposition}
 \begin{proof}
-The telescope, the weighted certificate, the division lemma and the finite-side division
-(\cref{osq:lem:telescope,osq:lem:weighted,osq:lem:division,osq:lem:finitediff}) use only
-$a$, $\gamma$, $\delta$, subtraction and ordinary integer multiples, so their witnesses lie in
-$\A_{D,k}(\Gamma)$ or $\B_{D,k}(\Gamma)$; apply \cref{osq:lem:separation}.
+For (i), subtract two distinct weighted monomials $rX^\delta$ and $sX^\eta$.
+If $\delta\ne\eta$, order them and apply the weighted telescope; if they are
+equal, then $r\ne s$ and use $(r-s)^{-1}X^{a-\delta}$. In both cases the
+quotient multiplying the difference to $X^a$ has positive support. All exponents
+are integer combinations of $a,\delta,\eta$, hence lie in $\Gamma$; the coefficients
+lie in $k$. This proves the claimed injections by \cref{osq:lem:separation}(i).
+If $g=X^aq$ is detected, then $X^a$ must be detected as well.
+
+For (ii), the quotient in \cref{osq:lem:division} belongs to $\Pi_k(\Gamma)$,
+so the same argument works even when the map is defined only on that nonunital
+ring. For (iii), the valuation of
+$\varepsilon/(X^{-\gamma}-X^{-\delta})$ is $a-\min(\gamma,\delta)>0$;
+this is the proof of \cref{osq:lem:finitediff}, unchanged for any coefficient
+field and ordered abelian group. The quotient belongs to $\mm_k(\Gamma)$.
+For (iv), if $X^av=X^bv$ with distinct $a,b\ll h$, the telescope gives
+$X^h=(X^a-X^b)q$ with $q\in A$. Acting by $q$ and using commutativity of $A$
+contradicts $X^hv\ne0$. No step uses halves or division of an exponent by an
+integer; this explains why divisibility of $\Gamma$ is unnecessary.
 \end{proof}
 
 \begin{example}[Where these bounds are vacuous \src{04, 08, 10, 13}]\label{osq:ex:archimedean}
@@ -2726,16 +2776,26 @@ $x$ has cardinality at least $|L_c(F)|$.
 (i) $\hahn k{H_c(\Gamma)}$ is a subfield by \cref{osq:lem:Ha}(ii), so $L_c(F)$ is an
 intersection of two subfields. For $h\in H_c(\Gamma)$, $|h|<c$, so $c+h>0$ and
 $X^cf\in F$ has positive support. (ii) is \cref{osq:lem:collision} with $m=X^c$ and
-$L=L_c(F)$, inside the field $\hahn k\Gamma$. (iii) If $x=X^{2c}y$ with $y\in A$ and
+$L=L_c(F)$, inside the field $\hahn k\Gamma$. More explicitly, for distinct
+$f,g\in L_c(F)$ the multiplier $X^c/(f-g)$ belongs to $X^cL_c(F)\subseteq A$,
+and
+\[
+ (X^cf-X^cg)\frac{X^c}{f-g}=X^{2c}.
+\]
+This gives both the ring injection and the module injection by acting on the
+specified vector; it bounds the underlying set of $M$, not its endomorphism ring.
+(iii) If $x=X^{2c}y$ with $y\in A$ and
 $\varphi(x)\ne0$, then $\varphi(X^{2c})\ne0$; if $xv\ne0$ then $X^{2c}(yv)\ne0$. If $2c<\supp x$
 then $X^{-2c}x\in F$ has positive support, so it lies in $\Pi(F)\subseteq A$.
+This lower-bound condition is required for that example of (iii); arbitrary
+positive support in a fixed group need not have a positive strict lower bound.
 \end{proof}
 
 For $F=\Hc{k}{\Gamma}$ and $c=h/2$ this is exactly 03's theorem ($H_{h/2}=H_h$). The bound
 contains 04's and 10's monomial counts whenever those monomials lie in $H_c(\Gamma)$, and
 07's weighted count, because $L_c(F)$ contains every $rX^\delta$ with $r\in k$ and
-$\delta\in H_c(\Gamma)$; it also contains $k$ itself, so with real coefficients every detecting
-target has at least $2^{\aleph_0}$ elements (03). The following examples show that it can be
+$\delta\in H_c(\Gamma)$; it also contains $k$ itself, so with real coefficients every target detecting an element as in (iii), in particular
+a monomial $X^{2c}$, has at least $2^{\aleph_0}$ elements (03). The following examples show that it can be
 strictly and decisively larger.
 
 \begin{example}[The exact threshold in 04's example \merge]\label{osq:ex:lexQQ}
@@ -2751,7 +2811,8 @@ module. The same holds on the negative side: if $\varepsilon\in\mm_k(\Gamma)$ ha
 $v(\varepsilon)=(1,0)$, then with $c=(1/4,0)$ the element $X^{-2c}$ divides $\varepsilon$ in
 $\B_{D,k}(\Gamma)$ (the cofactor $X^{2c}\varepsilon$ has largest exponent $(-1/2,0)<0$),
 $X^{-c}L_c\subseteq\mm_k(\Gamma)$, and \cref{osq:lem:collision} gives the bound $2^{\aleph_0}$,
-which is again attained.
+which is again attained by the identity of the negative-support ring and its
+regular module: that ring also has at most continuum many elements.
 \end{example}
 
 In this example 07's weighted bound ($|k^\times|\cdot\aleph_0=2^{\aleph_0}$) is also attained,
@@ -2765,9 +2826,12 @@ $H_c(\Gamma)=\bigoplus_{n\ge1}\Q e_n$, and $L_c$ contains the $2^{\aleph_0}$ dis
 $\sum_{n\in B}X^{e_n}$, $B\subseteq\omega\setminus\{0\}$ (the exponents $e_n$ decrease with $n$,
 so each support is reverse well ordered). Since $\Gamma$ is countable,
 $|A|\le2^{\aleph_0}\cdot\aleph_0^{\aleph_0}=2^{\aleph_0}$. So the exact detection threshold of
-$X^{e_0}$ is $2^{\aleph_0}$, while 04's bound $|H_{e_0}(\Gamma)_{>0}|$, 07's bound
+$X^{e_0}$ is $2^{\aleph_0}$, attained by the identity map and regular module of $A$, while 04's bound $|H_{e_0}(\Gamma)_{>0}|$, 07's bound
 $|\Q^\times|\cdot|H_{e_0}(\Gamma)_{>0}|$ and 10's bound $|U_\Gamma(\{e_0\})|$ are all
-$\aleph_0$.
+$\aleph_0$. Indeed the group and coefficient field are countable, the positive
+tail contains infinitely many $e_n$, and membership of $n$ in $B$ is recovered
+from the coefficient of $X^{e_n}$. Thus the lower field bound really counts
+continuum many distinct series; it is not just a count of monomials.
 \end{example}
 
 These examples settle the two example-level questions of the sources and leave the general
@@ -2814,6 +2878,8 @@ $F$; so $q_{c;a,b}\in\Pi(F)\subseteq A$, and a nonzero image of $X^c$ would make
 $\kappa$ monomials distinct. Under (b$'$) use \cref{osq:prop:fieldbound}(ii) with $c/2$ in
 place of $c$. So every positive monomial is killed. For $f\in\Pi(F)$, (a) gives
 $f=X^\epsilon g$ with $g=X^{-\epsilon}f\in F$ of positive support, so $f$ is killed.
+Writing an arbitrary element as $d+f$ now gives the unique factor
+$\varphi|_D$ through $\ct$; no unital hypothesis on $\varphi$ was used.
 \end{proof}
 
 Condition (a) is a gap property of the chosen field and (b) a supply of lower Archimedean
@@ -2835,7 +2901,12 @@ $\kappa>\aleph_0$); every $a\in E=(0,\eta)$ satisfies $na<\delta$. The set $E$ h
 elements: otherwise it would have a positive strict lower bound $b$, but then $b\in E$ (as
 $b<\eta/2\in E$), which is absurd. For distinct $a,b\in E$, \cref{osq:lem:division} gives
 $s\in(X^a-X^b)R_{\Gamma,<\kappa}$ with a quotient of support size at most
-$\max(|\supp s|,\aleph_0)<\kappa$. Since $|S|<|E|$, two of the monomials collide and $s$ is killed.
+$\max(|\supp s|,\aleph_0)<\kappa$. The inequality is valid without regularity,
+since it is the maximum of two fixed cardinals below the uncountable $\kappa$.
+All $X^a$ for $a\in E$ lie in the source. Since $|S|<\kappa\le|E|$, two images
+collide, and applying the map to this finite product identity kills $s$.
+The zero element needs no argument. Restriction to $D$ then supplies the unique
+factorization of the map.
 \end{proof}
 
 This theorem concerns an ordinary set-sized source and cannot exclude its identity
@@ -2848,8 +2919,13 @@ homomorphism from $A$ onto a ring of cardinality $<\kappa$ kills $I$. Then $IM=0
 $A$-module $M$ with $|M|<\kappa$.
 \end{lemma}
 \begin{proof}
-For $m\in M$, $A/\Ann(m)\to Am$, $a\mapsto am$, is a bijection, so the quotient ring
-$A/\Ann(m)$ has fewer than $\kappa$ elements, and $I\subseteq\Ann(m)$.
+For $m\in M$, commutativity makes $\Ann(m)=\{a\in A:am=0\}$ a two-sided ideal.
+The map $A/\Ann(m)\to Am$, $[a]\mapsto am$, is well defined and bijective:
+equality of the two images is exactly $(a-b)m=0$. Thus its source has cardinality
+$|Am|\le|M|<\kappa$. Apply the hypothesis to the surjective quotient ring map
+$A\to A/\Ann(m)$ to obtain $I\subseteq\Ann(m)$. This holds for every $m$,
+so $IM=0$. The set $Am$ is used only to count elements; it is not asserted to
+be a subring of $M$.
 \end{proof}
 
 Applying the ring statement to $\End_\Z(M)$ would need an estimate of $|\End_\Z(M)|$, which may

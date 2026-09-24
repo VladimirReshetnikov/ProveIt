@@ -208,7 +208,8 @@ family, without transporting an infinite sum through a homomorphism. Its
 integer-divisibility shortcut now states the necessary characteristic
 condition. The review now also covers representations, small quotients,
 completions, localizations, positive existential conservativity, modules and
-the finite-side standard-part theorem. A large quotient can still have a nonzero small
+the finite-side standard-part theorem, support thresholds and fixed-group
+lower bounds. A large quotient can still have a nonzero small
 image: `Oz/(ω)` surjects onto `ℤ`, whereas `Oz/(1+ω)` has only the zero
 set-sized image. More generally, the universal set-sized image of `Oz/(f)`
 is `ℤ/(ct(f))`. These are manuscript consequences of the universal theorem;
@@ -217,6 +218,10 @@ The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
 in particular, a nonzero derivation to `𝔽₂` survives. The coefficient-weighted
 derivations of the full surreal field instead have class-sized targets.
+Finite-support omnific rings retain the ordinary finite quotients and admit
+an augmentation to `ℝ` that detects every monomial. Including countable
+supports blocks that map through a finite product identity; no continuity
+assumption on target maps is needed.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway

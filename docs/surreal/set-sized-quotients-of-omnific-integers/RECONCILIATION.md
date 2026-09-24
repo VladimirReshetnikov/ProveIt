@@ -313,3 +313,86 @@ accepts 15,954 declarations with only `propext`, `Classical.choice` and
 1,758 local Markdown destinations and whitespace checks pass. The article
 and catalogue sources and PDFs are unchanged by the merge, so their clean
 three-pass builds remain current.
+
+## Support thresholds and initial fixed-group bounds
+
+This pass reviews the six standard results `osq:thm:support`,
+`osq:prop:monomialbounds`, `osq:prop:fieldbound`, `osq:thm:criterion`,
+`osq:thm:coinitial` and `osq:lem:cyclic`, with the adjacent threshold examples
+and the support principal summary. The organizing theorem and the later
+model classifications remain pending, as does full source reconciliation.
+
+The finite-side extension criterion used an unqualified B^{<λ} as the
+replacement for the positive-side at-most-μ ring. With λ=ℵ₀ this allows
+extension to the original finite-support ring, which augmentation satisfies
+without factoring through standard part. The corrected ring is B^{<μ⁺}
+for infinite μ, so every permitted extension level includes countable
+supports. The augmentation statement also specifies that each monomial must
+belong to its domain: ω on the positive side and ω⁻¹ on the finite side.
+The principal summary names ct and st on their respective sides. The
+monomial-bound module clause explicitly assumes h>0 and an A-module.
+
+The support proof treats zero separately, applies packing to a singleton,
+and uses a Hartogs family without taking its sum. Each quotient separately
+has support size at most max(original support size, ℵ₀); this estimate works
+at singular uncountable bounds. The finite-side geometric product is formed
+in the source, and only its finite identity is mapped. The alternate
+small-field route was compared with `fkc:sb:lem:reservoir`: it uses rational
+expressions in a set of tiny monomials, whose individual inverses have
+countable supports. A scaled copy of the whole Hahn field need not satisfy
+the support bound, since shifting does not reduce support cardinality.
+The sibling report's later nonisomorphism classification remains an imported
+comparison, not a newly reviewed conclusion here.
+
+The finite-support augmentation proof handles coincident exponents and
+cancellations by finite regrouping. The ordinary finite-quotient assertion
+now identifies the kernels nZ+Π_fin explicitly. The bounded module and
+derivation consequences explain the endomorphism-ring step and support-
+preserving factorizations. This distinguishes equal finite quotient theories
+from the stronger universal property for arbitrary set-sized targets.
+
+The monomial-bound proof treats weighted equal-exponent differences,
+nonunital maps on the positive ideal, negative-side division over arbitrary
+coefficient fields, and the module collision individually. The field bound
+writes its multiplier explicitly and bounds the module itself. Its general-
+element conclusion retains the positive-monomial-divisor hypothesis; arbitrary
+positive supports in a fixed group need not have a positive lower bound.
+The two examples include attaining identity/regular representations and the
+coefficient coding that gives continuum many series over a countable group.
+The quantitative and coinitial criteria spell out unique factorization and
+why singular cardinals cause no extra step. The cyclic-module lemma uses the
+quotient ring A/Ann(m), counting it via the bijection with Am without claiming
+that Am is itself a ring.
+
+Validation: the article (267 pages) and catalogue (33 pages) build in three
+clean passes, without TeX warnings or box diagnostics. The support and field-
+bound pages were inspected visually. All 828 labels, 1,656 auxiliary numbers,
+409 standard results and nine principal summaries remain. Only the support
+summary, support theorem and monomial-bound statement change text, as
+described above. All 4,626 indexed statements in 63 reports, 5,197 source
+references, 1,758 local Markdown destinations across 226 files, and whitespace
+checks pass. No Lean or verifier source changed. Existing finite checks were
+not rerun to claim evidence for cardinal arguments; the previous 4,547-job
+Lean build and 15,954-declaration audit remain the documentation-only baseline.
+
+### Synchronization after the support review
+
+Merged `31dacc2`, including `7aef1fc`, which formalizes the real quintic
+integer definition and the four-square natural-number corollary. The source
+comparison covers `odg:def:rem:quintic`, `odg:def:eq:quintic` and
+`odg:def:cor:naturals`: the exact degree-five polynomial, ordinary witnesses,
+ordered Hahn-ring and actual omnific instances, and the real/Gaussian
+boundary examples. The Gaussian witness uses a complex square root of -i;
+the ledger does not claim the particular trigonometric choice printed in
+the article. The natural-number statement includes zero and allows the
+four-square witnesses to range over the whole ordered ring. Neither the
+quartic guards nor the support-threshold arguments are claimed as proved
+by these additions.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` succeeds with 4,556 jobs. The
+axiom audit covers 16,010 declarations and uses only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,626 indexed statements in 63
+reports, 5,199 cited source labels and 1,766 local Markdown destinations
+across 226 files pass their checks. The article and catalogue sources and
+PDFs are unchanged by this merge, so their clean three-pass builds remain
+current.
