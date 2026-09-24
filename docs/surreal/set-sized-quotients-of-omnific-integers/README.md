@@ -64,13 +64,22 @@ retains each coefficient field and support bound. The comparison explains
 why every realized size outside source 08 is fixed by countable cardinal
 exponentiation.
 
-The full homological package, later classifications and reconciliation of
-the parallel sources remain pending review. Exact scope
+The set-sized homological package is now reviewed too: the projective-ideal
+lemma, flatness and idempotence, Tor vanishing, nonflatness of the quotient,
+the natural inflation isomorphisms for Ext, and the explicit nonzero
+classes in degrees one and two. Nonsplitting is stated in the category of
+A-modules, consistently with the existing additive and ring section.
+A countable telescope proves projective dimension two in the countably
+generated case; no general exact projective dimension is asserted.
+The coefficient-module thresholds for Ext¹ and Ext² are exactly |A|.
+
+The later core/tensor classifications and reconciliation of the parallel
+sources remain pending review. Exact scope
 and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 275 pages
+article.pdf   the compiled report, 278 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

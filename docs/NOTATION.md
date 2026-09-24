@@ -116,6 +116,18 @@ the corresponding omnific rings; positive-characteristic choices do not.
 In the five-model comparison, use θ for a **realized size** when discussing
 `θ^{ℵ₀}=θ`, to distinguish it from the support parameter κ.
 
+In the set-sized homological package, `A = D ⊕ I` is an **additive**
+decomposition, with D the embedded constant subring and `A/I ≅ D`.
+Inflation gives a D-module N the action `a·n = ct(a)n`. The constant
+inclusion is a ring section and D-linear, but is not A-linear for that
+inflated action. Thus the quotient sequence is nonsplit as A-modules.
+`fd_A D = 1` and `pd_A D ≥ 2` refer to flat and projective dimension,
+respectively; a countable generating set for I gives `pd_A D = 2`.
+Inflation maps `Ext_D^n(N,M)` to `Ext_A^n(N,M)`; the resolution/adjunction
+comparison gives its inverse for modules annihilated by I. These Ext
+groups are computed in the full module categories. Their detection
+threshold counts the elements of M, not those of the Ext group.
+
 An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
 a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
 realization. It is stronger than saying that `A/J` has a further set-sized
