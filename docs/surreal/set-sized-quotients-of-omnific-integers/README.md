@@ -847,13 +847,41 @@ coefficients constant on a finite partition and includes rank zero.
 The valuation-component count applies the external theorem with precisely
 the same domination condition and topology, without Noetherianity.
 All these results and the new finite-descent consequence remain pending
-in Lean. The twelve henselian question/status notes still await review.
+in Lean. All twelve henselian question/status notes are now reviewed,
+with their questions preserved and several partial answers supplied.
+
+The countable Stone-space question reduces to atomlessness; the free
+subalgebra alone does not decide it. A map of generic fibres is injective
+exactly when it kills no nonzero idempotent, equivalently when the map on
+Stone spectra is onto. The proof of the cited valuation theorem already
+provides a normalization-point/minimal-prime bijection; the new argument
+checks its compatibility with every explicit Boolean coordinate. This
+identifies points without asserting an isomorphism of the full clopen or
+residue algebras. The local ring and both henselizations have the same
+positive Krull dimension, whose exact value remains unresolved.
+
+At every ordinary prime p, the local ring at pB_𝔼 and its henselization
+have all adic quotients ℤ/pⁿℤ and completion ℤ_p. Both completion maps
+are nonflat. Forced generic complexification still works at p=2;
+a square root of −1 is present in the local henselization exactly for
+p≡1 mod 4. At p=2, reduction modulo 4 rules it out locally.
+The maximal branch count and strict arithmetic splitting at those
+centres remain unresolved here.
+
+Perfect complexes on the generic fibre split into finitely many
+projective homology modules; their graded rank functions classify
+objects and convolve under derived tensor. This gives no higher K-group
+calculation or classification of general derived morphisms. The review
+also distinguishes an a posteriori birthday bound from a prescribed
+cutoff, constructs common hull enlargements and their compatible maps,
+and orders the proposed formalization by prerequisites. These added
+consequences remain pending in Lean.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 353 pages
+article.pdf   the compiled report, 356 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks
@@ -2124,13 +2152,19 @@ strictly positive set support and coefficients in `K`.
   recollement or compact generation is claimed.
 - 27's henselizations and spectra are those of set-sized local rings, not of
   `Oz`; `Idem(𝒢)` and `X` are not classified (atomlessness, isolated points, the
-  Cantor space for `κ = ℵ0` open); `𝔏^h` and `𝔏^h[i]` are local, not products,
-  and contain no `√−1`; the rings are non-Noetherian with no Krull dimension
-  determined; `X ≇ X ⊔ X` is not asserted; the valuation count imports de
-  Felipe–Teissier and says nothing about the components; the finite étale
-  equivalence concerns `𝔏^h`, not `B_𝔼` or `Oz`; only `K_0(𝒢)` is computed; no
-  birthday bound is given; independent checking of the support-to-localization
-  bridge is warranted.
+  Cantor space for `κ = ℵ0` unresolved, with the equivalence now explained);
+  `𝔏^h` and `𝔏^h[i]` are local, not products. The former has no `√−1`,
+  whereas the latter contains the adjoined i. The rings are non-Noetherian;
+  their exact dimension is undetermined, but the local ring and both its
+  henselizations have the same dimension, at least one. `X ≇ X ⊔ X` is
+  not asserted. The valuation and normalization-point correspondences use
+  de Felipe–Teissier. The finite étale equivalence concerns `𝔏^h`, not
+  `B_𝔼` or `Oz`. The question review adds perfect-complex object and tensor
+  formulas, not higher K-groups or general derived morphisms. There is an
+  a posteriori birthday bound, but no prescribed uniform cutoff. The
+  mixed-characteristic notes compute completions and complexification,
+  not maximal branch counts. Independent checking of the
+  support-to-localization argument remains warranted.
 - Section 18.2 keeps every limitation stated by a source, numbered per source:
   03 (19 items), 04 (14), 06 (14), 07 (13), 08 (13), 09 (12), 10 (12), 11 (12),
   12 (12), 13 (10), 14 (12), 15 (11), 16 (8), 17 (12), 18 (10), 19 (12),

@@ -9570,3 +9570,50 @@ extra blank line at EOF, flagged by git diff --cached --check. Removed it
 without changing a declaration. LEAN_NUM_THREADS=2 lake build again passes
 5,058 jobs, replaying the 19,114-declaration audit. The full diff from the
 pre-sync review commit now passes git diff eea2255 --check.
+
+
+### Henselian questions and partial answers (2026-09-24)
+
+Reviewed all twelve status notes osq:hb:q:boolean through osq:hb:q:formal,
+preserving the questions. The countable Stone space is compact metrizable;
+a free Boolean subalgebra alone does not establish atomlessness. A map of
+generic fibres is injective exactly when its spectrum map is surjective.
+The proof of the cited de Felipe–Teissier Corollary 4.2 supplies the
+normalization-point/henselian-branch bijection; simple-root uniqueness
+matches the certified Boolean coordinates. This remains an external
+import, without a claimed full clopen or residue-algebra isomorphism.
+
+Added the positive common dimension of the local ring and its two
+henselizations, with a finite-chain argument. At every ordinary prime p,
+the local ring and its henselization have adic quotients Z/p^n and nonflat
+completion Z_p. The completion kernel of the original local ring is its
+purely infinite ideal. Generic complexification works even at p=2, while
+a local square root of minus one exists exactly for p congruent to 1
+modulo 4; reduction modulo 4 rules it out at 2. Exact mixed-characteristic
+branch counts and strict splitting remain unresolved.
+
+Perfect complexes over the generic fibre split into finitely generated
+projective homology; graded locally constant ranks classify objects,
+convolve under derived tensor and give the alternating K0 class. This
+computes neither higher K-groups nor arbitrary derived morphisms. Other
+notes separate valuation existence from direct construction, finite etale
+classification from descent, a posteriori birthday bounds from prescribed
+cutoffs, and common hulls from a class-level spectrum. The Lean plan now
+orders prerequisites before the all-denominators localization target.
+All new manuscript consequences remain pending in Lean.
+
+Corrected two stale summaries: formal smoothness has an infinitesimal
+lifting definition without finite presentation, and the Gaussian
+henselization contains its adjoined i even though the real henselization
+has no square root of minus one. Updated root/report guides, notation,
+coverage ledger and catalogue. Checked the primary Stacks permanence
+section (07QL, Lemmas 15.46.1 and 15.46.7) and the proof of de Felipe–Teissier,
+arXiv:1903.10793v1, Corollary 4.2.
+
+Three final TeX passes per PDF are diagnostic-free: article 356 pages,
+catalogue 37 pages. Inspected article PDF pages 324, 342–346 and 351 and
+catalogue pages 14–15. All 418 numbered statements, 828 labels and 1,656
+AUX numbering pairs remain unchanged, as do 66 questions, 60 remarks and
+28 examples. No finite-verifier source or Lean source changed in this
+review; the finite checks were not rerun. Cross-report reconciliation
+remains pending.

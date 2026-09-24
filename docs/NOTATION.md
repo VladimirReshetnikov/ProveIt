@@ -647,6 +647,15 @@ the external generator i acts as (ȷ,−ȷ) on the two copies of 𝒢;
 it is distinct from the internal ȷ already in 𝒢. Finite projective
 and finite étale ranks take values in ℕ including zero. Rank-zero
 algebra pieces use the zero ring, the empty finite product of fields.
+For a map ψ between generic fibres, the branch map ψ* goes in the
+opposite direction on spectra. Surjectivity of ψ* means every old branch
+has an extension; its fibres record multiple extensions. For the mixed
+ordinary-prime centre write 𝔭_p=pB_𝔼, A_p=(B_𝔼)_{𝔭_p} and
+I_p=Π_𝔼A_p. Here I_p is the completion kernel; the maximal ideal is
+pA_p, and these two ideals are different. Completion is ℤ_p, whereas
+the rational centre 𝔏 completes to ℚ. For perfect complexes, use
+cohomological degree n and Hⁿ[-n]; the splitting into homology is not
+canonical, and the invariant is a finite family of rank functions.
 
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its

@@ -6300,8 +6300,57 @@ fields. Ranks classify isomorphism classes, not morphisms. The valuation
 corollary's spaces and topology match de Felipe–Teissier, Corollary 4.2
 in arXiv:1903.10793v1; that correspondence remains an external import.
 Its application needs no Noetherian or excellence hypothesis.
-The twelve henselian research-question status notes and a full audit of
-cross-report comparisons remain separate review tasks.
+All twelve henselian question/status notes `osq:hb:q:boolean` through
+`osq:hb:q:formal` are now reviewed, with the questions themselves unchanged.
+The added conclusions below are **Pending** in Lean:
+
+- The Boolean algebra has cardinality κ. At countable κ its Stone space is
+  compact metrizable, and atomlessness, absence of isolated points and the
+  Cantor-space conclusion are equivalent. A Cantor-space-plus-point example
+  shows why a free subalgebra alone does not prove atomlessness.
+- For a unital map between the generic fibres, injectivity is equivalent
+  to killing no nonzero idempotent and to surjectivity of the contravariant
+  map on Stone spectra. This gives a criterion, not injectivity for every
+  hull enlargement.
+- The proof of the already-cited de Felipe–Teissier Corollary 4.2 gives the
+  bijection from maximal ideals of the local normalization to minimal
+  henselian primes. The new argument checks that it matches every certified
+  Boolean coordinate by simple-root uniqueness. The reduced normalization
+  fibre is a reduced algebraic ℚ-algebra and has a Stone spectrum with
+  exactly 2^κ points. No full clopen/algebra isomorphism is claimed.
+- The local ring and its ordinary and strict henselizations have the same
+  Krull dimension, at least one. The proof compares finite prime chains
+  using faithful flatness, going down and zero-dimensional fibres. Exact
+  dimensions remain unresolved.
+- At an ordinary prime p, Π_𝔼 is p-divisible, the centre is pB_𝔼, and the
+  local ring A_p has quotients ℤ/pⁿℤ and completion ℤ_p with kernel
+  I_p=Π_𝔼A_p. Henselization has the same adic quotients and completion.
+  Both completion maps are nonflat, detected by the regular element ω.
+  The general complexification proposition applies at every p, including
+  2. The local henselization has a square root of −1 exactly for p≡1 mod 4;
+  at 2 the quotient modulo 4 excludes it. Maximal mixed-characteristic
+  branch counts and strict splitting remain unresolved.
+- Each set-sized hull has an a posteriori birthday bound, without a uniform
+  bound from κ alone. Common larger hulls induce coherent local maps and
+  henselization maps, without a class spectrum or injectivity theorem.
+- Every perfect complex on the generic fibre is isomorphic in the derived
+  category to its finitely supported projective homology. Finite graded
+  locally constant ranks classify these objects, convolve under derived
+  tensor and give the alternating K₀ class. This does not compute higher
+  K-groups or general derived morphisms.
+
+The remaining notes distinguish a direct valuation construction from
+existence via the imported component theorem, local finite étale
+classification from effective gluing, and the central localization target
+from its prerequisite formalization order. A full cross-report/source
+reconciliation remains pending.
+
+**Needs correction** (original summaries, now corrected): the limitation
+list repeated the false blanket exclusion of infinitesimal smoothness
+criteria already corrected after the completion proof. The report guide
+also incorrectly said that both 𝔏ʰ and 𝔏ʰ[i] contain no square root of −1;
+only the former lacks one, while the latter contains the adjoined i.
+The current summaries distinguish these rings and the partial answers.
 
 The 9 `maintheorem` statements are in scope: `osq:main:universal` (line 269), `osq:main:support` (line 280), `osq:main:thresholds` (line 290), `osq:main:fieldbound` (line 304), `osq:main:internal` (line 313), `osq:main:closure` (line 326), `osq:main:polynomial` (line 345), `osq:main:ordinal` (line 370), `osq:hd:main:cores` (line 376).
 They are not included in the literal standard-environment table below.

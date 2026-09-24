@@ -488,6 +488,13 @@ conjugate scalar actions. Finite projective modules and finite étale
 algebras on the generic fibre are classified by locally constant ranks;
 all constant-rank projectives are free. The valuation space has exactly
 2^κ connected components, using the cited external correspondence.
+The question review adds partial answers: normalization points correspond
+to henselian branches with matching Boolean coordinates, and perfect
+complexes on the generic fibre split into their projective homology.
+At every ordinary prime centre, both the local ring and its henselization
+complete to ℤ_p through nonflat maps. Their generic fibre still contains
+the complexified field, even at p=2; a local square root of −1 exists
+exactly for primes congruent to 1 modulo 4.
 These manuscript results remain pending in Lean.
 The derivation analysis preserves an arithmetic exception: Gaussian omnific
 derivations into a set-sized module correspond to its elements killed by 2;
