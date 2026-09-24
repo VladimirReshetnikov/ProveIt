@@ -9698,3 +9698,35 @@ remarks are unchanged, and only the identified one of 28 examples changed.
 Audits pass 4,626 anchors in 63 reports, 5,244 source-label references and
 2,016 local Markdown destinations in 226 files. No Lean source changed.
 Working and staged diff checks pass.
+
+
+### Polynomial-presentation reflection sync (2026-09-24)
+
+Merged origin/main through 5945449, including 37ed194. Read the three new
+modules against osq:thm:presentations and its adjacent examples. The
+generic split coefficient reflection extends to native multivariate
+polynomials and arbitrary relation ideals. Both actual omnific instances
+allow noncommutative small targets and arbitrary variable types; small
+variables are needed only to conclude that the ordinary reflected
+presentation is small. The canonical map is onto, its Hom-equivalence
+inverse is precomposition, and the mapped ideal has the stated
+coefficient-wise relation generators.
+
+The native AdjoinRoot example Oz[T]/(T^2-omega) classifies maps to small
+commutative rings by square-zero images of T. The square-zero consequence
+also holds for small noncommutative targets; small fields kill T. The
+actual half-exponent monomial gives a map to Oz with nonzero generator
+image. The reciprocal relation omega*T=1 has no nonzero small unital
+solution but has the explicit surreal solution omega inverse. These are
+precise target-map results, not reconstruction of all class-valued points.
+Updated the report guide and catalogue to match the merged root README
+and coverage ledger, retaining the coefficient-general source as pending.
+
+LEAN_NUM_THREADS=2 lake build passes 5,066 jobs. The axiom audit accepts
+19,280 declarations using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 37 pages;
+inspected pages 14–15. The article remains 357 pages with all numbered
+results, labels and numbering preserved, and only the previously recorded
+resultant example changed. Audits pass 4,626 anchors in 63 reports, 5,244
+source-label references and 2,019 local Markdown destinations in 226 files.
+Working and staged diff checks pass.

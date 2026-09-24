@@ -88,6 +88,16 @@ rules out a nonzero small unital target. The nonzero quotient by ω+1
 also has only trivial small unital modules; this module result holds for
 every principal generator with unit integer constant. The arbitrary
 coefficient-field versions remain pending.
+Polynomial presentations now have the same constant-coefficient
+reflection for both actual rings, with arbitrary relation ideals and
+small possibly noncommutative targets. Variables need be small only to
+make the ordinary reflected presentation small. In Oz[T]/(T²−ω), maps
+to small commutative rings are classified by square-zero images of T;
+small fields kill T, while the nonzero root ω^(1/2) defines a map to Oz.
+The relation ωT=1 has no nonzero small unital representation, although
+ω⁻¹ solves it in the surreal field. These classify the stated target
+maps, without recovering all class-valued solutions.
+
 When a real omnific ideal misses a purely infinite element, explicit
 monomials indexed by ordinals give pairwise distinct residues. Their
 restrictions provide actual representatives for every small index type,
