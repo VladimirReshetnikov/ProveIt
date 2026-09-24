@@ -589,6 +589,7 @@ import Surreal.Foundations.OmnificConstantRigidity
 import Surreal.Algebra.HomogeneousScaling
 import Surreal.Foundations.OmnificProjectiveClearing
 import Surreal.Foundations.OmnificSupportBounds
+import Surreal.Foundations.OmnificNoGCD
 import Surreal.Foundations.OmnificPurelyInfiniteIdeal
 import Surreal.Foundations.OmnificIrreducibles
 import Surreal.Algebra.IdempotentAdicCompletion
