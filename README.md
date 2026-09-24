@@ -206,8 +206,12 @@ report's elementary proof through the universal theorem has now been reviewed:
 the collision uses only a finite product identity and a set-sized Hartogs
 family, without transporting an infinite sum through a homomorphism. Its
 integer-divisibility shortcut now states the necessary characteristic
-condition. Later cardinal classifications and full source reconciliation
-remain pending review.
+condition. The review now also covers representations, small quotients,
+completions, localizations and positive existential conservativity. A large quotient can still have a nonzero small
+image: `Oz/(ω)` surjects onto `ℤ`, whereas `Oz/(1+ω)` has only the zero
+set-sized image. More generally, the universal set-sized image of `Oz/(f)`
+is `ℤ/(ct(f))`. These are manuscript consequences of the universal theorem;
+later cardinal classifications and full source reconciliation remain pending review.
 
 The actual surreal field is also proved to be a field of fractions of its
 omnific subring, using Mathlib's `IsFractionRing`. One positive Conway

@@ -28,12 +28,19 @@ The first independent proof pass reviews the maintained elementary arguments
 from the ring definitions through the universal quotient theorem, plus its
 unit-forcing localization consequence. It corrects integer divisibility in
 positive characteristic and the noncommutative module route in the separation
-proof. Later classifications and full reconciliation of the parallel sources
+proof. The next pass extends through representations, residual targets, small
+quotients, principal ideals and finite-congruence closure. It distinguishes a
+quotient being set-sized from having a further set-sized image: `Oz/(ω)` is
+large but surjects onto `ℤ`. The following pass covers the prime-quotient example,
+arithmetic completions, localizations, presentations and positive existential
+conservativity. It makes unital map conventions explicit and proves the completion
+and density statements coordinatewise. The cited primality input remains imported;
+later module/cardinal results and full reconciliation of the parallel sources
 remain pending. Exact scope and validation are in [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 262 pages
+article.pdf   the compiled report, 265 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

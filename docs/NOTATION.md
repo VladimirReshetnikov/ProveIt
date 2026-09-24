@@ -59,6 +59,23 @@ exponents: `na < c` for every ordinary positive integer `n`. These integer
 multiples are taken in the ordered exponent group, independently of the
 characteristic of the coefficient field. They do not say that `X^a` is small.
 
+An ideal `J` **admits a set-sized quotient** when it is exactly the kernel of
+a surjection onto a set-sized ring. This means `A/J` itself has a set-sized
+realization. It is stronger than saying that `A/J` has a further set-sized
+image, whose defining kernel may strictly contain `J`. For example,
+`Oz/(ω)` is large but maps onto `ℤ`; the universal set-sized image of
+`A/(f)` is `D/(ct(f))`. The zero ring is allowed, so “no nonzero set-sized
+image” is the appropriate statement for `Oz/(1+ω)`.
+
+The quotient-localization and polynomial-presentation mapping properties use
+`Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its
+localization is the zero ring; it has no unital map to a nonzero ring, though
+it still has the nonunital zero map. Profinite inverse limits are indexed by
+positive ordinary integers under divisibility, with reduction from modulus
+`m` to `n` when `n` divides `m`. Prime-adic limits use the positive powers
+of one fixed prime. A Gaussian completion `ℤ_ℓ[i]` means
+`ℤ_ℓ[T]/(T²+1)`, without an assumption that this ring is a domain.
+
 Constant coefficient `ct` is a ring retraction on these support-restricted
 rings. It is not a ring homomorphism on all of `No`, since `ω · ω⁻¹ = 1`,
 and it is not order preserving: `ω − 1 > 0` but `ct(ω − 1) = −1`.

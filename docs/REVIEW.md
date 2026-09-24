@@ -5004,3 +5004,134 @@ The full two-thread Lean build passes 4,530 jobs, and the audit checks
 so the validated 262-page and 33-page PDFs remain current. The index,
 5,195 source references, 1,747 Markdown destinations and whitespace
 checks pass.
+
+## Representations, small quotients and finite-congruence closure
+
+This pass reviews the sixteen standard results from `osq:cor:Oz` through
+`osq:cor:dense`, including the previously reviewed localization consequence
+`osq:cor:nofield`. The scope is the maintained text on representations,
+residual targets, quotient reflection, small prime and principal ideals,
+quotient size, and finite-congruence closure. Later prime examples,
+completions, localizations, cardinal classifications and full reconciliation
+of the parallel manuscripts remain pending. This is manuscript proof review,
+not a new Lean proof or a certification of the full assembled report.
+
+The original clause in `osq:prop:principal` that a nonconstant principal
+quotient admits no set-sized quotient is false when read as excluding
+further small images. The quotient Oz/(ω) surjects onto Z. The corrected
+statement says that the quotient itself cannot be realized as a set-sized
+ring; it also makes the later quantifier over arbitrary f explicit. The
+universal set-sized image of A/(f) is D/(ct(f)), since ct(fA) = ct(f)D.
+The examples ω, 2+ω and 1+ω distinguish a large quotient with infinite
+small image, one with nonzero finite small image, and one with only the
+zero small image. All three source quotients are nonzero. The notation
+guide, ledger, catalogue and root README now preserve this distinction.
+
+The Gaussian representation discussion records that the image of i need
+not be central in the whole target. A new unnumbered consequence classifies
+nonunital maps by pairs (e,j) with e²=e, ej=je=j and j²=−e, with the
+multiplication identity supplied. The common-kernel proof uses specified
+witnesses, class replacement and the empty-family case. The module proof
+includes the zero vector space. The matrix proof spells out the passage
+from a complex basis to a real basis and verifies both exhaustiveness and
+uniqueness of the complex conjugacy list. The Gaussian automorphism proof
+establishes invariance of the infinite-part ideal before descending.
+
+The residual-target proof defines substitution on finite polynomials even
+when the variables form a proper class. Quotient reflection now verifies
+that ct(J) is a set ideal, the map on residues is well defined and surjective,
+and the preimage identity holds in both directions. The ideal classification
+proves uniqueness of its constant ideal. The small-prime proof distinguishes
+the characteristic-zero image Z from its fraction field Q. The size argument
+uses a set-indexed family and an explicit telescope contradiction. The
+closure proof justifies preimages and intersections, including d=0. The
+dense-principal consequence explains why even a nonunital small-target map
+killing a unit-constant generator is zero.
+
+Validation: three-pass builds produce a clean 263-page article and 33-page
+catalogue, with no TeX warnings or box diagnostics. All 828 source labels,
+1,656 auxiliary label numbers, 409 standard statements and nine principal
+summaries are preserved; only the principal-quotient statement changes text.
+The changed representation and principal-quotient pages were inspected
+visually. All 4,626 indexed statements across 63 reports, 5,195 source-label
+references, 1,747 local Markdown destinations across 226 files, and whitespace
+checks pass. The unchanged source-06/source-11 finite verifiers retain their
+previous 19,444-check baseline; they were not rerun and do not certify the
+class-size or universal arguments. No Lean or shipped verifier source changed.
+
+## Synchronization with the intersective-polynomial formalization
+
+Merged `3b91351`, including `e684975` and `622f0fe`. The incoming statements
+were compared with `odg:def:eq:Lambda`, `odg:def:prop:intersective` and its
+following certificate caveat. They establish the expanded polynomial,
+root exclusion in Q(i), intermediate Hahn rings and actual omnific rings,
+roots modulo every positive integer, and the Gaussian multiple certificate.
+The prime-two argument lifts x²+x−4 and transfers by 2x+1; it does not
+assume that the derivative of x²−17 is invertible modulo two. The certificate
+characterizes nonzero ordinary Gaussian constants, and cannot hold for an
+actual Gaussian omnific element with zero constant term. These results do
+not establish the full-class universal quotient theorem reviewed above.
+
+The combined two-thread Lean build passes all 4,535 jobs. The audit checks
+15,895 declarations and accepts only `propext`, `Classical.choice` and
+`Quot.sound`. All 4,626 statement anchors across 63 reports, 5,196 source
+references and 1,752 local Markdown destinations pass. The article and
+catalogue sources and PDFs did not change during this merge; their clean
+three-pass builds remain current. Whitespace checks pass.
+
+## Prime quotients, completions, localizations and positive formulas
+
+This pass reviews the seven standard results from `osq:cor:primeexample`
+through `osq:prop:conservative`, plus the adjacent localization and
+presentation examples. It completes the maintained Section 6 proof pass.
+Later module and derivation results, cardinal classifications, and full
+reconciliation of the parallel manuscripts remain pending.
+
+The prime input for q = ω^(√2)+ω+1 was checked against Theorem B on page 3
+of [L’Innocente–Mantova v5](https://arxiv.org/pdf/1710.07304v5).
+The proof still imports primality; this review does not reprove the external
+factorization theory. The quotient argument now proves characteristic zero
+by degree and invokes the explicit large residue families for its size.
+The adjacent continuum-family note has the same conditional consequence
+once its referenced primality and nonassociation are supplied; its source
+construction was not independently reviewed here. The unit-constant ideal
+proof now separates its ring, module and proper-quotient assertions.
+
+The completion proof specifies the divisibility index and all reduction
+maps, proves compatibility with constant extraction, and identifies the
+canonical coordinates and kernels. The Gaussian argument uses the cofinal
+ordinary-modulus ideals and unique pairs of ordinary residues; multiplication
+of compatible pairs gives the quadratic quotient ring without assuming that
+it is a domain. A new unnumbered paragraph proves the topological
+isomorphisms and density of the diagonal images using one common modulus.
+Strong sums are compatible with the pulled-back topologies because only
+finitely many summands contribute at exponent zero. The broader topology
+classification is still imported from the cited sibling report; checking
+its statement does not extend independent proof review to that theorem.
+
+The monomial localization proof gives its embedding in the ambient field,
+explains why shifting the lower support endpoint removes the coefficient
+restriction, and exhibits an element whose inverse is missing. The
+quotient-localization and presentation formulas now explicitly use Hom₁.
+This removes a material ambiguity: if nonunital maps were allowed, the
+zero map would contradict the empty-Hom assertion for a nonzero target.
+The proof explains zero denominators, surjectivity on fractions of constants,
+and the central inverse formula for noncommutative targets. Polynomial
+presentations use finite evaluation and explicitly set-sized relation ideals.
+The formula-conservativity proof gives the induction on equations,
+conjunctions, disjunctions and existential witnesses. Its general
+coefficient-ring and Gaussian variants are recorded as proof consequences;
+the parameter and positivity restrictions are retained.
+
+Validation: clean three-pass builds produce the 265-page article and
+33-page catalogue, with no TeX warning or box diagnostic. Changed completion
+and localization pages were inspected visually. All 828 source labels,
+1,656 auxiliary label numbers, 409 standard results and nine principal
+summaries are preserved. Four statements change only index or map-convention
+text: completions, monomial localization, quotient-localization and
+presentations. The 4,626-result index across 63 reports, 5,196 source-label
+references, 1,752 local Markdown destinations across 226 files, and whitespace
+checks pass. No Lean or shipped verifier code changed. Existing real omnific
+completion mappings retain their scope; no Gaussian completion or new
+formula-level mapping is asserted. The previous 4,535-job Lean build and
+15,895-declaration axiom audit remain the documentation-only baseline.
