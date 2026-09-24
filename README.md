@@ -288,7 +288,9 @@ The Gaussian omnific ring is now constructed from Mathlib's Gaussian integers:
 its two coordinates are precisely real omnific integers. The corresponding
 fiber theorem is proved over this ring too, with ordinary Gaussian points,
 unique purely infinite complex kernel parameters, and disjoint fibers over
-distinct ordinary points.
+distinct ordinary points. The distinction between the two kernels is explicit:
+`X + iY` has zero real kernel and only ordinary real omnific solutions,
+but the Gaussian omnific point `(1 + ω, iω)` solves its level-one equation.
 The converse is proved in both rings: once an ordinary point exists at a
 nonzero level, nonordinary points exist exactly when the relevant real or
 complex kernel is nonzero. Multiplying a nonzero kernel direction by the
