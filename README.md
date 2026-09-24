@@ -64,8 +64,9 @@ none of the results below is.
   multiplicative order has a nonpolynomial entire solution iff `|v(q)|` is
   an order unit of `Γ`. `Γ` has an order unit iff some nonpolynomial entire
   series is differentially algebraic (Theorem H); an explicit theta series
-  has differential order three. Whether order two occurs is open in the
-  written text.
+  has differential order three. The later chapters exclude order two for
+  every value group, and order three with total jet degree at most three;
+  these additions await independent proof review.
   [Report](docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
 - **Exponential automorphisms of `No`.** Every exponential 1-automorphism of
   `No` is the identity, a proposed negative answer to Question 5.4 of
@@ -212,6 +213,11 @@ Each nonzero purely infinite element therefore factors into two nonzero
 purely infinite nonunits. These arguments use bounds on the union of the
 actual normal-form supports; the new exponent can leave any previously
 chosen Hahn workspace. Smallness is explicit in the carrier's lower universe.
+Every surreal projective point now has purely infinite omnific homogeneous
+coordinates. A single positive monomial clears an entire small family of
+coordinate tuples while preserving all their homogeneous equations. Every
+small family of nonzero omnific integers also has a nonzero common multiple
+of all ordinary powers simultaneously, with purely infinite quotients.
 
 The purely infinite ideal `Π` satisfies `Π² = Π` and has no small set of
 ideal generators; in particular it is not finitely generated. Its cotangent
@@ -220,6 +226,32 @@ quotient is `ℤ`, and completion at `Π` is the discrete integer ring, with
 constant extraction as the canonical map. No finite product of irreducibles
 belongs to `Π`. Any homomorphism sending `Π` into a nilpotent ideal of any
 target ring kills `Π` entirely.
+
+Constant omnific irreducibles are exactly the ordinary signed primes.
+Every nonconstant irreducible has constant coefficient `1` or `-1`, but
+`(ω+1)^2` and `ω^2-1` are proved nonconstant and reducible with those respective
+coefficients. A positive monomial has no finite irreducible factorization,
+even up to a unit. Thus the omnific ring is neither atomic nor a unique
+factorization domain.
+
+Ordered division is proved for every positive omnific divisor: the quotient
+is the omnific floor of the surreal ratio, and the remainder is uniquely
+between zero and the divisor. Yet Euclidean iteration can run forever.
+Starting from `√2 ω` and `ω`, the verified quotients are `1`, then always `2`;
+the remainders `(√2−1)^n ω` remain positive and infinite at every finite
+stage. This explicit descending chain also proves that the positive omnific
+order is not well founded. Moreover, every pair consisting of a nonzero
+purely infinite omnific integer and its irrational real multiple is proved
+to have no greatest common divisor: every common divisor can be strictly
+enlarged. Its two-generated ideal is not principal. Thus the omnific ring
+is neither a GCD domain nor a Bézout domain.
+
+The principal ideals `(ω) ⊊ (ω^(1/2)) ⊊ (ω^(1/4)) ⊊ …` form a proved
+strictly ascending chain. The omnific ring is not Noetherian, not a principal
+ideal domain, and not integrally closed in its surreal fraction field.
+Both `√2` and `√(ω²+1)` are verified integral elements outside the ring;
+more generally, `√(w²+1)` is integral and non-omnific for every nonzero
+omnific integer `w`.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
@@ -253,6 +285,16 @@ integer polynomial parametrization covers each entire exceptional fiber,
 including infinite-support points; a finite-support witness can always be
 chosen in the same fiber. The projective review makes the coordinate-ideal
 obstruction explicit and separates rational points from rational specialization.
+The singular-curve criterion now has a manuscript proof review as well:
+over a characteristic-zero field and a nonzero exponent group, a geometrically
+integral affine curve has nonconstant points exactly when its normalization
+is the affine line. A conductor and a discrete boundary valuation supply
+a finite derivative-order obstruction. This classifies existence without
+assuming that every point lifts to the normalization. The review corrects
+the ambient-field normality comparison and the zero-group boundary case. The
+application review restores the irreducibility assumption in the repeated-root
+superelliptic test and expands the singular elliptic certificate and Gaussian
+arithmetic existence proof.
 These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.

@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-one research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -657,36 +657,26 @@ nonsingular Weierstrass cubics, abelian and semiabelian varieties, proper
 varieties with enough symmetric differentials, and logarithmic complements
 whose logarithmic forms separate tangent directions. The new singular-curve
 companion claims that a geometrically integral affine curve has nonconstant
-points exactly when its normalization is the affine line; this addition
-awaits proof review. Pell rigidity with the
+points exactly when its normalization is the affine line; the criterion
+now has a manuscript proof review. Pell rigidity with the
 three- or four-square theorem gives single quartic equations defining $\Z$
 in $\Oz$; $x^2=2y^2$ defines $\Pi$, one order-free system defines $\Z$ in
 $\Oz$ and $\Z[i]$ in $\Oz[i]$, and the graph of $\mathrm{ct}$ is Diophantine,
 so every homomorphism preserves constant terms.  The pure ring $\Oz$
-interprets $\No$ and its automorphisms fix $\R$, while a phase twist shows
+interprets $\No$ and its automorphisms extend to maps fixing $\R$, while a phase twist shows
 that $\Oz[i]$ does not determine the real axis.  Fractions: a point with a
 unimodular presentation has unique lowest terms or no gcd at all, according
 as its standard part is rational, and the specialization fibers are dense
 orbits of the congruence kernel of $\mathrm{SL}_2(\Oz)$.  \emph{Assembled
 from fourteen manuscripts through \texttt{1ad4ad8}; the report states which source proved each result and
-prints shared results once.}  A proof review covers the original material of
-Sections 1--10 and Sections 11--15 and 19, with corrections recorded in
-\texttt{RECONCILIATION.md}. The Gaussian-fiber and \'etale-norm additions
-in Section 6 now have explicit support and splitting arguments and
-boundary examples; the abstract \'etale-norm proof also works in arbitrary
-characteristic. The review also covers source 07's quartic and all of
-Section 16, through the two-ring principle, symmetric differentials and
-inheritance. It corrects the differential normalization and hypotheses,
-and makes tangent evaluation and scalar extension explicit. Sections 17.1--17.2
-now also have a proof review of the smooth-curve classification, coefficient
-descent and the logarithmic argument, correcting the real-circle boundary
-example. Section 17.3 now also has a proof review of exact arithmetic fibers,
-integer polynomial arcs and separated-model descent. It distinguishes fixed
-workspace fibers from proper classes and explains why denominator clearing
-preserves the whole purely infinite fiber. Section 17.4 now has a proof review
-of projective coordinates and their ideal obstruction, correcting a conflation
-of rational specialization with rational points. Singular curves and subsequent
-applications, their pointers and later additions await review. Lean covers the ring and constant-term
+prints shared results once.} A manuscript proof review covers elementary
+arithmetic, fractions and differential-rigidity prerequisites, then curves
+through Section 17.6.8. It corrects rational specialization, normalization
+lifting and superelliptic irreducibility, and expands the conductor and
+arithmetic proofs. The exact
+scope and source comparisons are in \texttt{RECONCILIATION.md}. Final scope
+notes, later geometry and full source reconciliation remain pending.
+Lean covers the ring and constant-term
 package, degree laws, units and finite elements, the exact omnific floor,
 ordinary polynomial-root rigidity, ordinary residue rings and divisors
 of nonzero ordinary integers, mixed gcds, Chinese remainders and all
@@ -1384,73 +1374,48 @@ addition lies outside the earlier proof-review scope.}
 
 \entry{Holonomic rigidity for entire Hahn functions: a sharp order-unit criterion for dilations}
 {surcomplex/holonomic-rigidity-for-entire-hahn-functions}
-{article.pdf}{six manuscripts, delivered 22--23~September 2026}
-{Power series over one fixed Hahn field $K_\Gamma=\C((t^\Gamma))$, with
-$\Gamma$ a nonzero set-sized ordered abelian group \emph{not assumed
-divisible}; \emph{entire} means that the evaluation family is strongly Hahn
-summable at every point of that one field, never of all of $\SC$.
-Theorem~A: a nonzero linear differential operator $L$ has $B_L\ge0$ and
-$N_L$, determined by its finitely many coefficients, such that a formal
-solution strongly evaluable at one $x\ne0$ with $v(x)\le-B_L$ has degree
-below $N_L$; so entire D-finite series are polynomials, also in $d$
-variables (Theorem~C).  Theorem~B, the principal proposed contribution: for
-$q$ of infinite multiplicative order, a nonpolynomial entire solution of a
-nonzero polynomial-coefficient linear $q$-difference equation exists
-\textbf{iff} $v(q)\ne0$ and $|v(q)|$ is an order unit of $\Gamma$; units
-with root-of-unity residue are covered, and a classical partial theta series
-is the witness.  The engine is a finite-step escape chain forcing
-nonincreasing leading exponents, so the recurrence exclusion region is
-closed, and a formal exponential attains it (Proposition~5.3), while the
-coarsened region of Theorem~7.4 must be open.  Also the exact partial theta
-domain for any Hahn parameter $p$ with $v(p)>0$ (Theorem~8.1), mixed
-differential--dilation rigidity at nonzero noncofinal scales
-(Theorem~10.2), and, for $\Gamma=\bigoplus_{j\ge0}\Q\omega^j$ (no order
-unit), the entire series $\sum_n\omega^{-\omega^n}z^n$, satisfying no
-nonzero linear differential equation, nor a nonzero linear dilation equation
-for any nontorsion parameter (Theorem~11.2).  Source~08, assuming only
-$\Gamma\ne0$, is the base; proofs from 09, which assumes divisibility, were
-re-read for hidden divisions. Divisibility is now restricted to three
-threshold constructions (Section~1.4): inward stability of strong evaluation
-removes it from the torsion eigenspace equivalence in Proposition~9.1.
-The recurrence thresholds handle an empty forward set explicitly, and
-coarsening changes the valuation on the field rather than projecting every
-Hahn support to a smaller exponent group.  Remarks~4.5 and~8.2 keep both
-sources' proofs, and both exact-arithmetic suites are kept (08: 3{,}705
-checks; 09: 2{,}043; no failures; no infinite statement proved).  Not
-claimed: torsion $q$ (counterexamples in Section~9), unit-valuation mixed
-equations when $\Gamma$ has an order unit (Question~19.4), optimal
-thresholds, a named conjecture, certified priority or refereeing; nonlinear
-equations are taken up by the later manuscripts below. The Lean
-ledger maps the positive-support word lemma, escape mechanism, bounded-cost
-exclusion and formal exponential domain; the main classifications remain
-unformalized. $D_z$
-kills every scalar: it is not the Berarducci--Mantova scalar derivation used
-in \nolinkurl{surcomplex/differential-equations}.  From
-\nolinkurl{surcomplex/entire-functions-at-arbitrary-rank} it cites the
-coarsening lemma and background, not the ring theorems, and that report's
-order-unit dichotomy (B\'ezout, Hermite interpolation) is \textbf{not} this
-one.  As \nolinkurl{surcomplex/rank-one-berkovich} has $\sum t^{n^2}z^n$, the
-theta witness is not counted as new.  A third manuscript (Sections~14--17) proves that every strongly
-entire solution of a nonzero \emph{first-order algebraic} differential
-equation over $k((t^\Gamma))$, any field $k$ of characteristic zero and any
-$\Gamma\ne0$, is a polynomial (Theorem~D), with a higher-order corner
-criterion and Euler rigidity; it left higher-order nonlinear equations open,
-and the wider coefficient field is not transferred to
-Theorems~A--C.  Two later manuscripts (Sections~20--22) answer the nonlinear question
-when $\Gamma$ has no order unit: a differential or dilation relation forces all
-Taylor coefficients into one finitely generated field, so every nonpolynomial
-strongly entire series is differentially transcendental in all orders, jointly
-with its non-torsion dilates, and a continuum-sized differentially independent
-family exists.  A sixth manuscript (Sections~23--25) settles the order-unit
-case by theta descent: for an order unit $\mu$ and $p=t^\mu$ the series
-$\mathcal T_p=1+\sum_{n\ge1}p^{n^2}C_n(z)$, $C_n$ the monic Chebyshev
-polynomials, is strongly entire and not D-finite, and satisfies an algebraic
-differential equation of order three with $\mathcal T_p,\mathcal
-T_p',\mathcal T_p''$ algebraically independent.  Hence (Theorem~H) $\Gamma$
-has an order unit iff some nonpolynomial strongly entire series is
-differentially algebraic.  Whether minimal order two occurs stays open in the
-written text (Question~19.1); a companion placed in \texttt{21375f8}, not yet
-integrated, proposes to exclude orders at most two.}
+{article.pdf}{nine manuscripts, delivered 22--23~September 2026}
+{Power series over one fixed Hahn field $K_\Gamma=k((t^\Gamma))$, with
+$\Gamma$ a nonzero set-sized ordered abelian group, not assumed divisible.
+Entire means strongly Hahn-summable at every point of that field; entireness
+can fail after enlarging the value group. The linear base is stated over
+$k=\C$, and the later algebraic-differential and mixed parts over any
+characteristic-zero field. The variable derivative $D_z$ kills every scalar;
+it is not the Berarducci--Mantova derivation on surreal coefficients.
+\textbf{Differential rigidity.} Entire D-finite series are polynomials,
+also in several variables. More precisely, a fixed nonzero linear operator
+has a uniform degree bound for formal solutions strongly evaluable at a
+sufficiently large argument. First-order algebraic differential equations
+also have only polynomial entire solutions. If $\Gamma$ has no order unit,
+every nonpolynomial entire series is differentially transcendental in all
+orders. If $\Gamma$ has an order unit, an explicit Chebyshev--theta series
+has minimal differential order three (Theorem~H). The later chapters exclude
+order two for every value group (Theorem~I), and order three with total
+jet degree at most three. Thus order three is the exact least possible
+order when an order unit exists, but a cubic jet equation cannot attain it.
+\textbf{Dilations and mixed equations.} For a parameter $q$ of infinite
+multiplicative order, some nonzero polynomial-coefficient linear
+$q$-difference equation has a nonpolynomial entire solution exactly when
+$|v(q)|$ is an order unit. A partial theta series witnesses existence;
+its precise strong domain and the torsion boundary are also studied.
+For a finite list of multipliers with no root-of-unity quotient between
+distinct members, some mixed linear differential--dilation equation supported
+on that list has a nonpolynomial entire solution exactly when the absolute
+valuation of some quotient is an order unit. Two multipliers and first
+derivatives suffice for a witness. This answers the report's mixed
+unit-valuation question; it does not decide solvability of a prescribed
+operator or classify torsion blocks. These are distinct from the B\'ezout
+and interpolation dichotomy in the entire-functions report.
+\textbf{Scope and verification.} The report also gives coefficient-field
+recovery, mixed-jet independence, uniform exclusion bounds and explicit
+infinite-rank witnesses. The source-08/09 linear arguments and source-10--12
+nonlinear and coefficient-field parts have targeted manuscript reviews;
+the theta, low-order and newer mixed chapters await independent proof
+review. The Lean ledger maps support, evaluation, recurrence and valuation
+lemmas; it does not formalize the main classifications. Finite suites check
+identities and examples, not the infinite claims. No certified priority or
+independent refereeing is claimed. Three placed companions (polynomial
+composition, theta hierarchies and single scales) remain unintegrated.}
 
 \entry{Hahn--Tate uniformization at arbitrary valuation rank}
 {surcomplex/hahn-tate-uniformization}
