@@ -799,3 +799,12 @@ import Surreal.Algebra.RingFormulaCode
 import Surreal.Algebra.RingFormulaValidity
 import Surreal.Algebra.RingFormulaCodeComputability
 import Surreal.Algebra.RingFormulaFixedContext
+import Surreal.Algebra.IntegerArithmeticComputability
+import Surreal.Algebra.RingTermFoldComputability
+import Surreal.Algebra.IntegerPolynomialParserComputability
+import Surreal.Algebra.IntegerPolynomialSyntaxRelabel
+import Surreal.Algebra.AlgebraicTypeCode
+import Surreal.Algebra.AlgebraicTypeComputability
+import Surreal.Algebra.RecursiveSaturation
+import Surreal.HahnSeries.RecursiveSaturation
+import Surreal.Surcomplex.RecursiveSaturation
