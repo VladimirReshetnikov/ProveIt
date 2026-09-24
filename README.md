@@ -516,7 +516,12 @@ theorem: their traces on ordinary integer tuples are computably enumerable,
 both in the actual omnific ring and in every characteristic-zero Hahn
 integer-coefficient pullback. Integer polynomial evaluation is primitive
 recursive, and searching integer witnesses suffices by constant-term
-transfer. The reverse MRDP classification remains pending.
+transfer. Conversely, every integer Diophantine presentation now lifts to
+exactly its standard-supported image by guarding each free coordinate. This
+gives an equivalence of Diophantine definability over the integers and in
+those ambient rings; ordered rings also admit a single sum-of-squares
+equation. The remaining classification step is the reverse integer MRDP
+theorem.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

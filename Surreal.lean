@@ -840,3 +840,7 @@ import Surreal.Algebra.IntegerDiophantineSystems
 import Surreal.Algebra.IntegerDiophantineEnumeration
 import Surreal.HahnSeries.DiophantineEnumeration
 import Surreal.Foundations.OmnificDiophantineEnumeration
+import Surreal.Algebra.IntegerDiophantineGuards
+import Surreal.Algebra.IntegerDiophantineSingleEquation
+import Surreal.HahnSeries.DiophantineStandardImages
+import Surreal.Foundations.OmnificDiophantineStandardImages
