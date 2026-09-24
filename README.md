@@ -372,7 +372,20 @@ by the ordinary dual-number points is `Lie(A) ⊗ Π_k(Γ)` for an abelian varie
 The logarithmic review extends the differential argument to complements of
 simple normal-crossings boundaries, spells out arithmetic descent, and
 corrects the distinction between ring retractions and common-field inclusions.
+The scope review makes the workspace restrictions and two kinds of smooth
+curve fibers explicit, and updates the formalization route to the proved
+arithmetic and linear-algebra prerequisites.
 These geometric and coefficient-algebra results remain pending in Lean.
+A new manuscript in the same report treats monic polynomials with nonzero
+constant discriminant as translates of their constant-term polynomials,
+and studies units of finite étale algebras. That addition awaits independent
+proof review and Lean formalization.
+The expanded [omnific-automorphism report](docs/surreal/omnific-preserving-automorphisms/)
+now assembles fourteen manuscripts. Its latest parts propose formal orbit
+fields, actions of set-sized left-orderable groups with prescribed fixed
+fields, and formal integration of all omnific derivations. These additions
+await independent proof review and Lean formalization; the surcomplex
+group classification requires compatibility with conjugation.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

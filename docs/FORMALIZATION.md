@@ -145,7 +145,8 @@ Diophantine constant-discriminant companion are integrated. The final batch-33
 write `19d0b0e` integrates the three remaining companions into the
 omnific-preserving automorphisms report, adding 89 standard statements on
 formal orbit fields and symmetry groups. This completes batch-33 main-text
-integration; the new mathematics remains **Pending** in Lean. The eight archives from `a4611ad` and the universal-
+integration; independent proof review and Lean formalization of the new
+mathematics remain **Pending**. The eight archives from `a4611ad` and the universal-
 symmetries archive are placed in `a7a435f` as nine additions to six existing
 reports. Their main-text integration and indexing remain pending; placement
 adds no inferred Lean coverage. The Hahn-joins archive delivered in `267b910`
@@ -1343,6 +1344,27 @@ closed equalizer, and class points are treated in set-sized workspaces.
 These six results remain **Pending** in Lean. Later pointers, scope notes,
 parallel-source reconciliation and imported foundations remain to review.
 
+The scope pass checks Section 20 and Sections 21.1–21.6 against the
+maintained statements and this ledger. It corrects the unconditional
+product-with-affine-line and smooth-fiber summaries, and distinguishes
+vanishing Euler contractions from vanishing differential forms. The fixed
+workspace `Γ = ℤ` has `Π = ω ℝ[ω]` and `Π² ≠ Π`; this counterexample is
+explained in the manuscript, not newly formalized. All standard statements
+and question environments are unchanged. The implementation route now
+records the proved arithmetic and fiber prerequisites in dependency order;
+the remaining pointers, neighbouring-report comparisons, imported
+foundations and complete parallel-source reconciliation still need review.
+
+The subsequent C17 merge `fdedce0` adds 27 standard results in Section 19.4
+of the Diophantine report, plus Questions 21.31–21.40 and new pointers.
+These additions remain **Pending** and outside the earlier proof and scope
+reviews, including their text inside Sections 20–21.6. Only source credits
+change in five existing standard statements. At that merge the inventory contained
+4,309 standard results in 63 reports; the holonomic coefficient-observable
+addition contributed 11 of the 38 results since the preceding scope review.
+The later automorphism integration `19d0b0e` adds 89 more, bringing the
+current total to 4,398. Its new material is also outside the earlier review scopes.
+
 ### Synchronization of the September 23 expansions
 
 The merge through `6f47cf9` brings in the batch-28 assemblies: discrete-initial
@@ -1395,6 +1417,16 @@ scope recorded in the implementation table above.
 
 ## Main-report statement index
 
+The final batch-33 write `19d0b0e` integrates three omnific-automorphism
+companions on formal orbit fields, left-orderable symmetry groups and
+formal integration of derivations. It adds 89 standard results, bringing
+that report to 274 and the collection to **4,398** in **63** reports.
+All 185 earlier standard statements and all earlier labels are retained
+unchanged. The refreshed index records the new claims as **Pending** in
+Lean and independent proof review; their class, parameter and conjugation
+hypotheses must be retained. The later universal-symmetries companion
+placed in `a7a435f` remains outside the main text.
+
 The fifth batch-33 write `fdedce0` adds 27 standard results on constant
 discriminants and étale units, bringing the Diophantine report to 244 and
 the collection to **4,309** in **63** reports. All 39 mapped/cited statements
@@ -1405,7 +1437,7 @@ placement, integration and indexing.
 
 The fourth batch-33 write `76dd876` adds 11 standard results on coefficient
 observables and Noetherian compression to the holonomic report, bringing it
-to 222 standard results and the collection to **4,282** in **63** reports.
+to 222 standard results and the collection then to **4,282** in **63** reports.
 All 49 mapped/cited statements checked in that changed report are unchanged.
 The new material remains **Pending** in Lean and independent proof review.
 Placement `a7a435f` adds supporting files for nine more companions to six
