@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **61 research reports in five families**. Start with the
+This collection has **63 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -75,22 +75,29 @@ and [dilation rigidity](surcomplex/autonomous-dilation-relations/), and
 companions to the holonomic, nonabelian-support and omnific-preserving
 reports. The first four writes through `1ab41af` integrate those companions
 and the dilation report; `de45cee` completes the three-manuscript
-critical-point-defects assembly. Its 76 standard results are now indexed;
+critical-point-defects assembly. Its initial 76 standard results were indexed;
 independent proof review and Lean formalization remain pending.
-The automorphism assembly now has nine manuscripts and states automatic
+That automorphism assembly had nine manuscripts and states automatic
 strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
-written as a single-source report in `781b19e`. Five of its eight companions
+written as a single-source report in `781b19e`. Seven of its eight companions
 are now integrated: automatic summability (`d4d72d7`) and singular curves
 (`1ad4ad8`), finite tests at new scales (`9b463f7`), and unit dilation and
-Newton rigidity (`2c4debb`), while the other three await integration.
+Newton rigidity (`2c4debb`), plus theta hierarchies and single-scale freedom
+(`1d3f503`). The polynomial-composition companion awaits integration.
 Nine further manuscripts placed in `7d04483` are additions to eight existing
-reports; their main-text integration and proof review remain pending.
-The synchronization through `51c1cc7` delivers another nine archives in
-`docs/new/`, awaiting placement, integration and review. They are not yet
-part of the 61-report inventory.
+reports and are now integrated by the eight batch-32 writes through
+`c315ac9`. Their new statements are indexed but remain pending in Lean and
+independent proof review.
+The nine archives delivered through `51c1cc7` are now placed in `aa9c891`:
+two new reports on [omnific continued fractions](surreal/omnific-continued-fractions/)
+and [exponential relations](foundations-and-computation/exponential-relations-over-omnific-integers/),
+plus seven companions for four existing reports. The two base texts add 60
+indexed standard statements; independent review and Lean formalization are
+pending, and their repository PDFs have not yet been added. The companions
+await integration into their main reports.
 The singular-curve addition
 gives a normalization criterion beyond the smooth case; its proof, structural
 consequences, repeated-root test and arithmetic applications now have a
@@ -154,7 +161,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty-one reports
+## Surreal numbers: twenty-three reports
 
 | Report | Question or main subject |
 |---|---|
@@ -180,6 +187,8 @@ not extend their earlier proof-review scope.
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Which strong automorphisms of a Hahn field preserve its omnific integers: the convex-support criterion, stabilizers, nondefinable monomials, and polynomial coefficient rigidity; five manuscripts; strongness of arbitrary automorphisms is open in the written text |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; four manuscripts |
 | [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; two manuscripts |
+| [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings and transcendence gaps; class assumptions and proof review pending |
+| [Omnific continued fractions](surreal/omnific-continued-fractions/) | Exact precision fibers, full Hahn realization, algebraic trichotomy and eventually periodic codes; newly placed draft, review and formalization pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -290,7 +299,7 @@ soft-mode Schur defects, optimal identification of an infinitesimal holonomy,
 and Hahn deformations of gauge fields. It claims no departure from ordinary
 quantum theory and no measurable infinitesimal.
 
-## Foundations and computation: eight reports
+## Foundations and computation: nine reports
 
 | Report | Main subject |
 |---|---|
@@ -301,7 +310,8 @@ quantum theory and no measurable infinitesimal.
 | [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/) | The definable surreals form a real closed subfield, elementary in `No` and closed under `exp`, `log` and the omnific floor; `No ∩ HOD = No^HOD`, and `V = HOD` iff every omnific integer in `(0, ω)` is ordinal definable; the maximal initial core |
 | [Omnific notations](foundations-and-computation/omnific-notations/) | Holonomic towers, hereditary forms and rational `ω`-terms with decidable equality and floor; raw `d`-block equality is `Π⁰₁`-complete and support validity `Π¹₁`-complete |
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
-| [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Three manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
+| [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Four manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
+| [Exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/) | Toric exponential relations, decidable additive languages and one-scale elementary cores; newly placed draft, review and formalization pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
 chosen names. In particular, numerical coefficient access does not supply a
