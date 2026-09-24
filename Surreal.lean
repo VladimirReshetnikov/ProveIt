@@ -700,6 +700,12 @@ import Surreal.Algebra.IntersectiveDetector
 import Surreal.Algebra.AugmentationDetectorExample
 import Surreal.HahnSeries.IntersectiveDetector
 import Surreal.Surcomplex.IntersectiveDetector
+import Surreal.Algebra.IntersectiveIdealTest
+import Surreal.HahnSeries.IntersectiveIdealTest
+import Surreal.Surcomplex.IntersectiveIdealTest
+import Surreal.Algebra.ConstantTermGraph
+import Surreal.HahnSeries.ConstantTermGraph
+import Surreal.Surcomplex.ConstantTermGraph
 import Surreal.Algebra.QuinticPolynomial
 import Surreal.Algebra.QuinticBoundary
 import Surreal.HahnSeries.QuinticConstants

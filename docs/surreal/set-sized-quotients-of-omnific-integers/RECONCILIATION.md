@@ -659,3 +659,32 @@ Quot.sound. All 4,626 statement anchors across 63 reports, 5,207 cited
 source labels, and 1,780 local Markdown destinations across 226 files pass.
 The merge changes no TeX sources or PDFs, so the clean three-pass builds
 recorded above remain current. Whitespace checks pass.
+
+## Synchronization of ideal tests and the constant-term graph
+
+Merged cf9bcce and 4b62e90 and reviewed all six new modules against
+`odg:def:thm:idealtest`, `odg:def:eq:idealtest`,
+`odg:def:cor:universal`, `odg:def:thm:ctgraph` and
+`odg:def:eq:ctgraph`. The ideal test first proves the value-membership
+criterion without forming a quotient, then handles native ideal quotients,
+including the top ideal and zero ring. The greatest-ideal result includes
+membership of the kernel itself. Negating the detector gives the universal
+kernel and equal-constant formulas. Instances cover the full real and
+Gaussian Hahn pullbacks and separately the actual omnific carriers.
+
+The graph proof combines the ordinary-constant predicate with the quadratic
+kernel test, expands exactly six existential witnesses, and proves existence
+and uniqueness of the output, not of those witnesses. The Hahn versions
+allow arbitrary ordered abelian exponent groups; their general coefficient
+fields have characteristic zero and a square root of two. The actual real
+version also admits any predicate defining exactly the integer constants.
+The ledger correctly leaves the single-polynomial degree-ten variant,
+quartic-graph and canonical-splitting corollaries outside this mapping, and
+does not claim the external intersection-of-integer-multiples discussion.
+
+Validation: LEAN_NUM_THREADS=2 lake build passes all 4,576 jobs and audits
+16,185 declarations with only propext, Classical.choice and Quot.sound.
+All 4,626 statement anchors across 63 reports, 5,209 source-label references,
+and 1,786 local Markdown destinations across 226 files pass. Whitespace
+checks pass. No TeX or PDF changes were merged; the article and catalogue
+builds from the controlled-field review remain current.
