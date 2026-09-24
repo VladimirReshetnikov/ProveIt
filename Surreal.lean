@@ -849,3 +849,5 @@ import Surreal.Algebra.NaturalDiophantineBridge
 import Surreal.Algebra.NaturalDiophantineIntegers
 import Surreal.HahnSeries.NaturalDiophantine
 import Surreal.Foundations.OmnificNaturalDiophantine
+import Surreal.Algebra.IntegerDiophantineImages
+import Surreal.Algebra.IntegerDiophantineSignedCoding

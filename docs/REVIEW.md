@@ -8383,3 +8383,27 @@ certify the class or integral-closure arguments. The independent audits
 pass for 4,626 anchors in 63 reports, 5,223 source-label references and
 1,931 local Markdown destinations in 226 files. No Lean code or historical
 verification records change.
+
+### Signed-natural coding sync after the fibre review (2026-09-24)
+
+Merged `origin/main` through `326785f`. Read the two new Lean modules,
+the source proof of `odg:def:thm:ce` with its characteristic-zero
+extension, and the merged README and ledger claims. The finite-system
+polynomial-image construction works in any commutative ring, using source
+coordinates as new witnesses and one output equation per coordinate.
+Signed decoding subtracts two natural blocks, and positive/negative parts
+give a primitive-recursive section. The integer set is computably
+enumerable exactly when its full signed natural preimage is; a natural
+Diophantine definition of that preimage transfers to the integer set by
+four-square conversion and the polynomial-image construction. Empty
+tuples are included. The remaining general natural MRDP representation
+is neither assumed nor marked proved; the full classification retains
+Prerequisites proved status.
+
+`LEAN_NUM_THREADS=2 lake build` passed all 4,990 jobs and the axiom audit
+passed 18,420 declarations, using only propext, Classical.choice and
+Quot.sound. The merged tree passes all 4,626 anchors in 63 reports,
+5,223 source-label references and 1,933 Markdown destinations in 226
+files. The merge changes no TeX or PDF, so the fibre pass's three-pass
+builds, numbering checks and visual inspections remain valid. No local
+manuscript claim was promoted to formalized by this merge.

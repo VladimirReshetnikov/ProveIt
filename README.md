@@ -547,6 +547,11 @@ removes unused witness variables, and uses four-square certificates to obtain
 integer systems. In particular, Mathlib's Matiyasevic theorem now supplies a
 finite Diophantine definition of the **ordinary natural power graph** on
 standard omnific tuples and in every characteristic-zero Hahn pullback.
+The signed-integer reduction is also checked: coordinatewise differences of
+two natural tuples cover every integer tuple, preserve computable
+enumerability in both directions, and turn a Diophantine definition of the
+signed preimage into an integer definition. Thus the remaining MRDP
+representation problem can be stated entirely over the naturals.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
