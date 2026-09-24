@@ -775,3 +775,8 @@ import Surreal.HahnSeries.ArithmeticInterpretation
 import Surreal.Algebra.PositiveExistentialDefinability
 import Surreal.HahnSeries.PositiveExistentialCollapse
 import Surreal.Surcomplex.PositiveExistentialCollapse
+import Surreal.Algebra.QuantifierFreeFiniteCofinite
+import Surreal.Algebra.RetractionInfiniteSets
+import Surreal.Algebra.QuantifierFreeRetraction
+import Surreal.HahnSeries.QuantifierFreeObstructions
+import Surreal.Surcomplex.QuantifierFreeObstructions

@@ -409,6 +409,13 @@ a purely infinite element must contain zero, when its parameters are ordinary
 coefficients. Consequently neither the nonconstant set nor the purely infinite
 ideal with zero removed has such a definition. Allowing a nonconstant parameter
 changes the conclusion: a singleton is positively definable using its point.
+There is also a separate quantifier-free lower bound: neither the purely
+infinite ideal nor the ordinary constants can be defined without quantifiers,
+even with arbitrary ring parameters. Unary quantifier-free ring formulas
+define finite or cofinite sets, whereas these sets are infinite and have
+infinite complements. The explicit constant-definition formula therefore
+witnesses failure of quantifier elimination for the complete theories of
+both actual omnific rings and their integer and Gaussian Hahn counterparts.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier
