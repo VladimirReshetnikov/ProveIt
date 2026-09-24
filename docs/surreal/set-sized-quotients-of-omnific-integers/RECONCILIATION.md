@@ -150,3 +150,23 @@ references, 1,747 local Markdown destinations across 226 files, and whitespace
 checks pass. The unchanged source-06/source-11 finite verifiers retain their
 previous 19,444-check baseline; they were not rerun and do not certify the
 class-size or universal arguments. No Lean or shipped verifier source changed.
+
+## Synchronization with the intersective-polynomial formalization
+
+Merged `3b91351`, including `e684975` and `622f0fe`. The incoming statements
+were compared with `odg:def:eq:Lambda`, `odg:def:prop:intersective` and its
+following certificate caveat. They establish the expanded polynomial,
+root exclusion in Q(i), intermediate Hahn rings and actual omnific rings,
+roots modulo every positive integer, and the Gaussian multiple certificate.
+The prime-two argument lifts x²+x−4 and transfers by 2x+1; it does not
+assume that the derivative of x²−17 is invertible modulo two. The certificate
+characterizes nonzero ordinary Gaussian constants, and cannot hold for an
+actual Gaussian omnific element with zero constant term. These results do
+not establish the full-class universal quotient theorem reviewed above.
+
+The combined two-thread Lean build passes all 4,535 jobs. The audit checks
+15,895 declarations and accepts only `propext`, `Classical.choice` and
+`Quot.sound`. All 4,626 statement anchors across 63 reports, 5,196 source
+references and 1,752 local Markdown destinations pass. The article and
+catalogue sources and PDFs did not change during this merge; their clean
+three-pass builds remain current. Whitespace checks pass.
