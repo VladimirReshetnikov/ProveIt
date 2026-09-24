@@ -407,6 +407,12 @@ closed under constant extraction. This rules out such definitions of
 nonvanishing, positivity and nonnegativity with integer parameters. The
 explicit equation `(X+1)^2 = 2(Y+1)^2` has a positive omnific solution even
 though it has no solution in ordinary natural numbers.
+The same obstruction now covers every full Hahn coefficient pullback and
+both actual omnific rings: a positive existential definable set containing
+a purely infinite element must contain zero, when its parameters are ordinary
+coefficients. Consequently neither the nonconstant set nor the purely infinite
+ideal with zero removed has such a definition. Allowing a nonconstant parameter
+changes the conclusion: a singleton is positively definable using its point.
 
 Explicit formulas in Mathlib's ring language now define the ordinary integer
 and natural-number domains inside the omnific ring. A recursive quantifier

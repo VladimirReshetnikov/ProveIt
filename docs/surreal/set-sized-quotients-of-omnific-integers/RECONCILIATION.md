@@ -2102,3 +2102,35 @@ anchors in 63 reports, 5,219 source-label references and 1,849 local
 Markdown destinations in 226 files pass, as does whitespace checking.
 No Lean source changed; the two-thread 4,636-job build and
 17,202-declaration axiom audit remain the baseline before synchronization.
+
+## Synchronization: positive-existential collapse for coefficient pullbacks
+
+Merged origin/main through e575ccd, including 24222b9, and reviewed the
+three new modules against `odg:def:thm:collapse` and its parameter example.
+The logical layer uses native formulas in the existing equality-based
+positive-existential fragment, which is the full positive-existential
+fragment for the pure ring language. Fixed-parameter endomorphisms preserve
+the defined tuple sets; composing a split retraction with its section
+therefore obstructs a definition containing a kernel point but excluding
+zero. The atomic equality with a named point proves why the parameter
+restriction matters.
+
+For full Hahn coefficient pullbacks, every ordinary coefficient parameter
+is fixed. A negative-exponent monomial supplies the nonzero purely infinite
+witness when the ordered group is nontrivial, and its leading coefficient
+makes it positive over an ordered coefficient field. This proves all
+displayed nonzero, nonconstant, punctured-ideal and positive-cone clauses.
+The actual real and Gaussian omnific constant retractions instantiate the
+general obstruction; existing real nonzero and positivity results combine
+with the new nonconstant and punctured-ideal instances, and all three
+Gaussian instances are explicit. The README and ledger correctly mark
+the full source theorem Proved while keeping the later quantifier-free
+and omitted-type results Pending. The result concerns the specified
+positive-existential fragment, not arbitrary first-order nondefinability.
+
+Validation: `LEAN_NUM_THREADS=2 lake build` passes all 4,639 jobs, and
+its axiom audit checks 17,258 declarations using only propext,
+Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
+5,219 source-label references and 1,852 local Markdown destinations in
+226 files pass, as does whitespace checking. No incoming TeX changed;
+the 305-page article and 34-page catalogue remain current.
