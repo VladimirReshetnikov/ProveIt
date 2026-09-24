@@ -1,30 +1,54 @@
 # Bounded-Support Hahn Arithmetic
 
-**Cofinal descent, optimal support thresholds, and maximal transcendence**
-Single-source research report, 22 September 2026, built from one manuscript
-(item 07 of batch 19, a research draft prepared with ChatGPT). Its own
-repository audit is pinned to `048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`; its
-raw source and artifacts were placed in `30dfb4f`, and the editorial article
-and first repository PDF were assembled in `ed88b8f`.
+**Cofinal descent, optimal support thresholds, maximal transcendence, and a
+Galois rank dichotomy**
+Two-source research report, 22 and 23 September 2026, built from two
+research drafts prepared with ChatGPT:
+
+- **source 01** (Sections 1–10, Appendices A–B), *Bounded-Support Hahn
+  Arithmetic*, item 07 of batch 19. Its own repository audit is pinned to
+  `048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`; its raw source and artifacts
+  were placed in `30dfb4f`, and the editorial article and first repository
+  PDF were assembled in `ed88b8f`.
+- **source 02** (Sections 11–19, the Galois part), *A Galois Rank Dichotomy
+  for Omnific Fraction Fields*, manuscript 06 of batch 32, placed as an
+  addition in `7d04483` with the local prefix `02-`; pinned to
+  `343dc2c471212bb9b53ff4623bace2e1943f255b`. See "Source 02" below.
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 32 pages
+article.pdf         the compiled report, 61 pages
 README.md           this guide
-research_audit.md   the manuscript's repository and literature audit, as delivered
-code/  build.py          three-pass pdfLaTeX builder (expects the flat delivered layout, see "Build")
-       coefficients.py   the explicit countable coefficient code; standard library only
-       verify.py         exact finite regression checks; imports coefficients.py
-data/  verification.json the delivered run: 3,163 assertions in 12 groups, all passed
-       build_audit.json  layout audit of the delivered 24-page PDF (not of this PDF)
-       manifest.json     SHA-256 digests of the delivered files (see "Provenance")
+research_audit.md   source 01: repository and literature audit, as delivered
+02-galois-rank-SOURCE_AUDIT.md   source 02: source, contribution and proof audit, as delivered
+code/  build.py          source 01: three-pass pdfLaTeX builder (expects the flat delivered layout, see "Build")
+       coefficients.py   source 01: the explicit countable coefficient code; standard library only
+       verify.py         source 01: exact finite regression checks; imports coefficients.py
+       02-galois-rank-build.py    source 02: three-pass builder for its unshipped manuscript (see "Build")
+       02-galois-rank-verify.py   source 02: exact finite regression checks (Python 3.10+, SymPy)
+data/  verification.json the delivered run of verify.py: 3,163 assertions in 12 groups, all passed
+       build_audit.json  layout audit of source 01's delivered 24-page PDF (not of this PDF)
+       manifest.json     SHA-256 digests of source 01's delivered files (see "Provenance")
+       02-galois-rank-verification_results.json   delivered run of 02-galois-rank-verify.py: 8,950 assertions in 18 groups, all passed
+       02-galois-rank-verification_console.txt    its console output, byte-identical to the results file
+       02-galois-rank-build_audit.json            build and hash record of source 02's delivered 27-page PDF (not of this PDF)
+       02-galois-rank-requirements.txt            sympy==1.14.0
 ```
 
-Every label in `article.tex` carries the prefix `bst:`. The source manuscript
-itself is not shipped. The code and data files are the delivered bytes.
+Every label in `article.tex` carries the prefix `bst:`; the labels of the
+Galois part carry the sub-prefix `bst:gr:`. The report had 74 labels before
+batch 32 and has 153 now: the merge of source 02 renamed or removed none and
+added 79, all `bst:gr:`. Every section, theorem-like and equation number of
+Sections 1–10 and Appendices A–B is unchanged (checked against a build of the
+committed text); the Galois part is inserted after Section 10 and before the
+appendices, with its equations numbered within its sections. Neither source
+manuscript, nor its PDF or delivery README, is shipped. The code, data and
+audit files are the delivered bytes.
 
 ## What the report claims
 
+Items 1–8 are source 01's (Sections 1–10, Appendix A); the Galois part of
+source 02 is summarized in "Source 02" below.
 Numbers refer to the built `article.pdf`. Throughout, `G` is a nonzero
 set-sized ordered abelian group, `B_G(K)` is the ring of Hahn series in
 `K((t^G))` whose support is **bounded above in G**, `F_G(K)` is its fraction
@@ -84,6 +108,8 @@ above.
 
 ## What the report does not claim
 
+This section lists source 01's non-claims; source 02's 23 are summarized in
+"Source 02" below and listed in Section 18.6 of the article.
 No non-claim of the manuscript was dropped. The article states each at its
 point of use; Section 10.3 and Appendix B collect the principal ones, and the
 delivered `research_audit.md` repeats most of them. There are 24, grouped here.
@@ -109,6 +135,145 @@ Conway's refinement conjecture. The external Lean project
 `gaearon/conway-refinement` was read, not built or validated, and is not a
 premise. Proving GCD would not remove the transcendental extension, and the
 transcendence theorems do not use the appendix.
+
+## Source 02: the Galois part (Sections 11–19)
+
+| | |
+|---|---|
+| Manuscript | *A Galois Rank Dichotomy for Omnific Fraction Fields: finite covers, independent radical towers, and collapse at a new surreal scale*, prepared for Vladimir Reshetnikov with ChatGPT, 23 September 2026; 27-page PDF (4 front-matter + 23 numbered pages) |
+| Batch, archive | batch 32, manuscript 06; `surreal_galois_rank_article` (main file `galois_rank_dichotomy.tex`), delivered in `aa268a4`, placed as an addition in `7d04483` with local prefix `02-` |
+| Pin | `343dc2c471212bb9b53ff4623bace2e1943f255b`; at the pin this report had Sections 1–10 and Appendices A–B with today's numbering, so its citations of Theorem 3.2, Corollaries 3.3–3.4, Theorem 7.1, Corollary 7.2 and Section 8.4 still match |
+| Contributes | every result, proof, example, question and non-claim of Sections 11–19 |
+| Placement | new Sections 11–19 after Section 10 and before the appendices (no existing number changes); short pointers marked "Added in batch 32" in Sections 3.2, 3.3, 3.4, 7.1, 8.4 and 10.1; a corrected provenance paragraph in Section 1.4; the title page, subtitle and abstract; one row in the Appendix B table |
+
+**Setting.** `G` a nonzero set-sized ordered abelian group (divisible where
+stated), `K = R` or `C` (or any field where stated), `F_G(K)` the
+bounded-support fraction field of the report, `s = t^u` for an order unit
+`u`. Via `t^γ ↔ ω^{-γ}` these are subfields of `No` and `No[i]`, and
+`F_G(K)` is also the fraction field of the omnific-type ring
+`A_G(D,K) = D + K((t^{G<0}))` for every unital `D ⊆ K` (Proposition 12.1).
+
+**Results** (numbers of this report).
+
+- **Galois rank dichotomy** (Theorem 11.1; proofs in 14.7, 13.5). For divisible
+  `G`: without an order unit `F_G(C)` is algebraically closed and `F_G(R)`
+  real closed; with one, every product of at most `c = 2^ℵ0` finite groups is
+  a Galois group over `F_G(C)` inside `C((t^G))`, and `1 − t^u` has no square
+  root in `F_G(C)` or `F_G(R)`.
+- **Descent tools** (Section 12). The fraction bridge (12.1) and
+  complexification `F_G(C) = F_G(R)(i)` (12.3); finite coset slices at an
+  order unit (Lemma 12.4); transport of degrees, minimal polynomials, Galois
+  groups and the whole intermediate-field correspondence under any cofinal
+  descent (Corollary 12.6).
+- **Finite covers** (Section 13). Riemann existence with a split place over
+  `s = 0` (Lemma 13.1) gives every finite group (Theorem 13.2); the local
+  Galois envelope `E_0` of `C(s)` in `C((s))` keeps its whole Galois group
+  over `F_G(C)` (Theorem 13.3); disjoint branch loci give products of
+  `≤ c` finite groups (Lemma 13.4, Theorem 13.5), all continuous quotients of
+  the absolute Galois group (Corollary 13.6). Divisibility is not needed.
+- **Radicals and closedness** (Section 14). The normalized roots `r_{a,n}` of
+  `1 − as` (Lemma 14.1): `X^n − (1 − as)` irreducible (Proposition 14.2); `q`
+  distinct `a` give degree `n^q` and group `(Z/n)^q` (Theorem 14.3); the whole
+  tower `E_T` has group `∏_{a∈T} Ẑ`, degree `max(|T|, ℵ0)` and group
+  cardinality `2^{max(|T|,ℵ0)}` (Theorem 14.5); the exact closedness boundary
+  (Theorem 14.7) and Example 14.8 (countable cofinality without order unit).
+- **Symmetric, real, cardinal** (Section 15). `X^m − X − t^u` has group `S_m`
+  (Theorem 15.1); real multiquadratic extensions with group `∏ Z/2`
+  (Proposition 15.3); `Gal(E_T/F_G(R)) ≅ (∏ Ẑ) ⋊ C_2` with inversion
+  (Theorem 15.4); for `0 ≠ G ⊆ R`: `|F_G(K)| = c`, `|absolute Galois group| = 2^c`,
+  exactly `c` quadratic extensions (Theorem 15.5).
+- **Rank transitions** (Section 16). A dominating `θ` puts the whole old Hahn
+  field `K((t^H))` into `B_G(K)` with the single denominator `t^{−θ}`
+  (Theorem 16.1); for divisible `H` every finite extension of `F_H(C)`
+  splits completely over `F_G(C)` (Theorem 16.2); **all-or-nothing
+  transition** (Theorem 16.3): cofinal `H ⊆ G` keeps every finite extension a
+  field of the same degree (restriction of absolute Galois groups surjective),
+  noncofinal splits all (restriction trivial); the real counterpart absorbs a
+  real closure (Proposition 16.5); for `G = Qθ ⊕ H` the new field again
+  realizes every finite group (Theorem 11.3).
+- **Actual surreals** (Section 17). `√(1 − ω^{−1})` is not a fraction of
+  omnific integers with real exponents but is `(ω^ω − ½ω^{ω−1} − …)/ω^ω`
+  with exponents in `Qω + R` (equations 17.1–17.2), where
+  `√(1 − ω^{−ω})` is again missing; the tower `Ω_n = R + Qω + … + Qω^n`
+  (Theorem 17.1): each stage realizes every finite group, each splits over
+  the next, and the union is a proper algebraically (real) closed subfield.
+- **Twelve research questions**, Questions 19.1–19.12 (absolute Galois group,
+  kernel, embedding problems, relative algebraic closure, minimal
+  enlargement, integral closure, real realization, nondivisible and
+  positive characteristic, cardinally restricted supports, functorial
+  transitions, effective certificates, formalization).
+
+**Renamed symbols** (Section 11.2). Source 02 → here: `Γ, k` → `G, K`;
+its calligraphic `K_Γ(k)` (the **full** Hahn field) → `K((t^G))` (here `K`
+is always a coefficient field); `B_Γ(k), F_Γ(k)` → `B_G(K), F_G(K)`;
+`A_Γ(D,k)` → `A_G(D,K)` (the independent-copies report writes
+`A_k(H)`, arguments reversed); `P_Γ(k), I_Γ(k)` written out (its `I_Γ` is not
+the relation ideal `I_K(z)`); `z = t^u` → `s` (here `z` is a germ or tuple);
+finite extensions `L` → `Λ` (here `L` is a coefficient field); finite groups
+`H, H_j` → `Φ, Φ_j` and Galois subgroups `H` → `Ψ` (here `H` is an exponent
+subgroup); absolute Galois group `G_E` → `𝔊_E`; inclusion `Γ ⊆ Δ` →
+`H ⊆ G`; dominating `h` → `θ` (as in Section 8.4); `Γ_g` → `C(g)`; tower
+`Γ_n` → `Ω_n` (distinct from `G_κ`); `F_0^R, F_0^C` → `F_R(R), F_R(C)`, that
+is `𝓕_R, 𝓕_C` of Section 8.2; `U_0, U_Γ` → `E_0, E_G`; its two definitions of
+`E_T` are one; counts `s` → `q`; `f(x) = x^m − x` → `φ`. The notation guide's
+`F_Γ = R((t^Γ))` is never meant.
+
+**Printed once** (credited at the original place). Source 02's Theorem 3.2 =
+Corollary 3.4 with `L = K`; Theorem 3.5 = Theorem 3.2 with `L = K` (its
+proofs, the coset-projection proof without the coefficient functional, are
+Remarks 12.5 and 12.8); Proposition 7.1 = Theorem 7.1 (Remark 14.6); the
+positive half of Theorem 7.2 = Corollary 7.2; the inclusion of Theorem 10.1 =
+equation (6); its normal-form map = equation (21); its full-surreal remark =
+Section 8.4. Theorem 1.1(iii)'s obstruction is the example after
+Corollary 3.4 (for `1 + t^u`).
+
+**Merge additions** (marked `[merge]` in the article). Corollary 12.6 stated
+at the generality of Theorem 3.2; a corrected ledger entry (the Galois-group
+part of source 02's Corollary 3.3 is explicit, not "implicit", in the
+paragraph after Corollary 3.3); the reverse implications of Theorem 14.7 for
+every real closed or algebraically closed `K` of characteristic zero; the
+identification of Example 14.8 with `G_{ℵ0}` and Theorem 8.2(1), and
+transcendence of its witness; transcendence of the tower witness
+`Σ t^{ω^n}` over the algebraically closed union (Corollary 4.6); the
+comparison with neighbouring reports (Section 18.10); the questions as
+numbered environments. Source 02 answers none of Section 10.3's questions.
+
+**Stale against the tree.** Source 02's fraction bridge (Proposition 12.1)
+was printed after its pin, for `D = Z, Z[i]`, as `isc:prop:boundedfrac` in
+the independent-copies report; source 02 is more general (any unital `D`,
+any `K`). Its ledger's "implicit" is corrected as above.
+
+**What source 02 does not claim** (Section 18.6, 23 items). No nontrivial
+algebraic extension of `No[i]`; `F_G(K)` is not the full Hahn field; the
+local envelope is not an algebraic closure; the absolute Galois group is not
+determined (cohomological dimension, projectivity, freeness, embedding
+problems open) and not claimed free profinite; cardinality is not generator
+rank; nothing about inverse Galois over `Q`; prime ideals, integral closure
+and arithmetic ramification of `A_G` not classified, and the curve and Hahn
+senses of ramification kept apart; divisibility used only for closedness and
+universal splitting (without it only extensions already in the Hahn field
+are absorbed); the real case does not split `X^2 + 1`; scalar-extension
+splitting is not collapse of the old extension; the binary alternative is
+for monomial exponent inclusions only, general field embeddings open; one
+dominating scale does not absorb the new Hahn field; no CH, GCH or large
+cardinals; birthday-bounded and cardinally restricted fields not treated;
+nothing in positive characteristic; no single-coordinate description of the
+relative algebraic closure and embedding problems only for independent
+products; finite checks only; no Lean, no repository build, no referee;
+priority not certified, classical inputs credited; no named conjecture
+solved; targeted, non-exhaustive repository comparison; PDF reproducibility
+not promised; the questions are not claimed open in the literature.
+
+**Verification.** `code/02-galois-rank-verify.py` (exact rationals and
+SymPy, seed `20260923`): the delivered run passed **8,950 assertions in 18
+groups** (Python 3.13.5, SymPy 1.14.0). Rerun at this merge on a copy with an
+explicit `--output` (Python 3.14.4, SymPy 1.14.0): 8,950 passed, output
+identical to `data/02-galois-rank-verification_results.json` except the
+`python` field. `data/02-galois-rank-verification_console.txt` is
+byte-identical to the results file. The SHA-256 digests in
+`data/02-galois-rank-build_audit.json` match the unshipped delivered
+`galois_rank_dichotomy.tex` and `.pdf`, and the staged files match the
+delivery's checksum manifest (not shipped).
 
 **Scope of the theorems (12).** Nothing is transcendental over all of **No**
 or `No[i]`: every statement is relative to named set-sized subfields, and
@@ -200,6 +365,20 @@ topology distinction is the guide's "Topologies and strong summation"; the
 Lean normal-form bridge is tracked in
 [NORMAL_FORM_BRIDGE.md](../../NORMAL_FORM_BRIDGE.md).
 
+**The Galois part** (Section 18.10, batch 32). Its all-or-nothing transition
+(Theorem 16.3) is a third instance of the cofinal/noncofinal dichotomy, beside
+`ent:thm:main-extension`(b) of the entire-functions report (entire series
+stay entire exactly over cofinal enlargements) and the `Q ↪ Q²` example of
+`tail:thm:closure` in the tail-span report (a noncofinal embedding loses
+algebraic approximability over a *full* Hahn base); different objects,
+independent proofs. The independent-copies report's `isc:prop:boundedfrac`
+is Proposition 12.1 for `D = Z, Z[i]`. Question 19.9 (cardinally restricted
+supports) concerns the kind of field studied in
+[first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/) and the
+short-support field of
+[large-cardinal-embeddings-and-normal-forms](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/);
+nothing from them is used.
+
 Cardinally bounded Hahn fields, which this report excludes, are studied in
 [first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/): omitted
 types, completion and spherical completeness of the fields of series with fewer
@@ -234,9 +413,12 @@ and literature priority remain separate obligations. See
 
 ## Provenance
 
-One manuscript; nothing was merged, so no result is printed twice and no
-proof was chosen over another. It contributed every theorem, proof, example,
-appendix and non-claim. Editorial changes (Section 1.4): the `bst:` prefix on
+Two manuscripts. Source 02 (batch 32) and where the merge chose are
+described in "Source 02" above and in Section 11.1 of the article. The rest
+of this section concerns source 01. Until batch 32 nothing was merged, so no
+result of Sections 1–10 is printed twice and no proof was chosen over
+another; source 01 contributed every theorem, proof, example, appendix and
+non-claim of Sections 1–10 and Appendices A–B. Editorial changes (Section 1.4): the `bst:` prefix on
 all 67 delivered labels (none lost; 6 labels added, 73 in all); the renaming
 `ξ → η` above; the terminology conventions of Section 2.3; the comparison of
 Section 9 and its four bibliography entries; one tagged display changed to
@@ -288,11 +470,16 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 or `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-Last build: exit 0, **32 pages** (31 before the batch-31 reciprocal
-remarks; every earlier statement, section and equation number unchanged),
-no errors, no LaTeX or package warnings, no
-undefined or multiply defined references or citations, no duplicate PDF
-destinations, no overfull or underfull boxes.
+Last build (batch 32, MiKTeX): exit 0, **61 pages** (32 before the Galois
+part, 31 before the batch-31 reciprocal remarks; every statement, section and
+equation number of Sections 1–10 and Appendices A–B unchanged), no errors, no
+LaTeX or package warnings, no undefined or multiply defined references or
+citations, no duplicate PDF destinations, no overfull or underfull boxes. The
+log contains two informational lines "ignored: Infinite glue shrinkage found
+in box being split", one at each page break inside a `longtable` (the
+Galois-part ledger of Section 18.8 and the Appendix B table, which now
+crosses a page); a minimal `longtable` test document produces the same line
+at every page break with this TeX installation. They are not warnings.
 
 The delivered `code/build.py` looks for `article.tex` **beside itself**, as in
 the flat delivered package, so `python code/build.py` in this directory stops
@@ -303,9 +490,17 @@ into one scratch directory and run `python build.py` there; it writes
 harmless `epstopdf` shell-escape warning that the delivered README mentions
 (the article has no EPS graphics). `build.py` is kept byte-identical.
 
+Source 02's `code/02-galois-rank-build.py` builds that manuscript, not this
+report: it looks for `galois_rank_dichotomy.tex` in the parent of its own
+directory, which is not shipped, so here it stops with "Missing article
+source"; when it runs it writes `data/build_pass_1.txt`–`build_pass_3.txt`
+and, with `--verify`, overwrites `data/verification_console.txt` (delivered
+names, not the shipped `02-` names). Do not run it in this directory.
+`data/02-galois-rank-build_audit.json` records the delivered 27-page PDF.
+
 ## Rerun the checks
 
-Python 3.10 or later, standard library only. From this directory:
+**Source 01.** Python 3.10 or later, standard library only. From this directory:
 
 ```sh
 python code/verify.py --output <scratch>/verification-local.json
@@ -328,3 +523,21 @@ all 3,163 assertions passed, with JSON identical apart from `python_version`.
 All seven delivered audit/code/data files, including the manifest, remain
 byte-identical; its six recorded digests for retained historical files match.
 The current PDF was rebuilt with three clean `pdflatex` passes.
+
+**Source 02.** Python 3.10 or later with SymPy
+(`pip install -r data/02-galois-rank-requirements.txt`, which pins
+`sympy==1.14.0`). From this directory:
+
+```sh
+python code/02-galois-rank-verify.py --output <scratch>/galois-rank-local.json
+```
+
+Without `--output` the script writes `data/verification_results.json` in
+the parent of its own `code/` directory (here: this directory), an
+unprefixed file that is not part of this report, so always pass a scratch path (or run on a copy); it never
+touches the shipped `02-` record unless pointed at it. Seed `20260923`,
+exact arithmetic, no floating point. At the batch-32 merge it was run on a
+copy under Python 3.14.4 and SymPy 1.14.0: **8,950 assertions in 18 groups,
+all passed**, identical to `data/02-galois-rank-verification_results.json`
+in every field except `python` (the delivered run used 3.13.5). These are
+finite regression checks; they prove none of the infinite statements.
