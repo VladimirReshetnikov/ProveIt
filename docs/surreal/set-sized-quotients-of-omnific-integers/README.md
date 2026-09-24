@@ -124,6 +124,16 @@ by one operator J with J²=−id. The real matrix formula includes dimension
 zero; the Gaussian finite-dimensional conjugacy classifications remain
 pending in Lean.
 
+For both actual rings, Lean also constructs one nonzero positive real
+monomial in every kernel of a small family of maps with specified nonzero
+kernel witnesses; the targets themselves may be large. The family is
+therefore not jointly injective, including the empty-family case.
+The real omnific ring has no monotone unital map to a nonzero small
+ordered ring, and its only small unital subring retract is ℤ.
+Every Gaussian endomorphism acts on constant terms by identity or
+conjugation and preserves and reflects the purely infinite ideal;
+automorphisms carry that ideal onto itself.
+
 Source 08's controlled-field construction is now reviewed as well: every
 element uses finitely many exponent coordinates, although its support may
 be infinite. Its exact cardinality, small-target theorem, ideal generator
@@ -819,14 +829,31 @@ equivalence from applying here. No formal-smoothness conclusion is claimed.
 A new unnumbered consequence extends residue factorization to all separated
 local ℚ-algebra targets, including ℚ[[ε]], with no rational-residue-field
 requirement on the target. It too awaits Lean formalization.
-The next review begins with strict henselization, followed by the arithmetic,
-Gaussian and valuation consequences and their factor summary theorem.
+The final eight standard proofs and the factor summary are now reviewed
+too, completing all twenty-two standard henselian statements. The strict
+henselization is built from finite local extensions of the rational
+constants; its generic tensor map is explicit and Galois equivariant.
+An added finite-descent consequence identifies the fixed rings under
+Gal(ℚ̄/L) both locally and generically, even for non-Galois L. The generic
+factors are indexed by embeddings of L, without choosing an order.
+
+The Gaussian localization proof now gives both inclusions and its residue
+map. The henselization stays local with residue and completion ℚ(i);
+only its generic base change doubles, with conjugate complex scalar
+actions and explicit idempotents. Finite projectives are trivialized by
+matrices on clopen pieces; their rank semiring and K₀ ring follow directly.
+The finite étale classification makes the unit and multiplication
+coefficients constant on a finite partition and includes rank zero.
+The valuation-component count applies the external theorem with precisely
+the same domination condition and topology, without Noetherianity.
+All these results and the new finite-descent consequence remain pending
+in Lean. The twelve henselian question/status notes still await review.
 Exact scope and validation are in
 [RECONCILIATION.md](RECONCILIATION.md).
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 349 pages
+article.pdf   the compiled report, 353 pages
 README.md     this guide
 03-cardinality-normalization-SOURCE_NOTES.md   source 03: repository pin, companion draft, literature
 04-universal-residue-SOURCE_AUDIT.md           source 04: repository pin, prior manuscript, novelty, checks

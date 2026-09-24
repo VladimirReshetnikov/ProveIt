@@ -637,6 +637,16 @@ augmentation maximal ideal, not the order or valuation topology.
 A separated local target means ∩ₙ≥₁𝔯ⁿ=0; the residue-factorization
 consequence requires the map to be local. Vanishing tangent spaces
 at the rational point do not assert formal smoothness over ℚ.
+Strict henselization uses the coefficient section ℚ→𝔏ʰ and a chosen
+algebraic closure ℚ̄. Its generic tensor map sends g⊗a to
+(x,σ)↦g(x)σ(a), so 1⊗τ acts by right translation σ↦στ.
+For finite L⊂ℚ̄, the orbits σGal(ℚ̄/L) under right translation
+correspond to embeddings of L; they do not form a quotient group
+unless L/ℚ is Galois. In the Gaussian doubling,
+the external generator i acts as (ȷ,−ȷ) on the two copies of 𝒢;
+it is distinct from the internal ȷ already in 𝒢. Finite projective
+and finite étale ranks take values in ℕ including zero. Rank-zero
+algebra pieces use the zero ring, the empty finite product of fields.
 
 The quotient-localization and polynomial-presentation mapping properties use
 `Hom₁`, meaning **unital** ring maps. If a denominator becomes zero, its

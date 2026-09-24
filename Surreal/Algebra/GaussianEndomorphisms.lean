@@ -26,4 +26,3 @@ theorem gaussian_endomorphism_eq_id_or_star (φ : GaussianInt →+* GaussianInt)
     rfl
 
 end Surreal.OrdinaryRingMaps
-

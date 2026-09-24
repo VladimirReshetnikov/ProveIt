@@ -9467,3 +9467,106 @@ the changed page 14. The article remains 349 pages with all numbered
 statements, labels, numbering, questions, remarks and examples unchanged.
 The renewed audits pass 4,626 anchors in 63 reports, 5,240 source references
 and 2,007 local Markdown destinations in 226 files. git diff --check passes.
+
+
+### Strict and Gaussian factors, projectives and valuations (2026-09-24)
+
+Expanded the final eight standard henselian proofs, from
+`osq:hb:prop:strict` through `osq:hb:cor:rz`, and explicitly assembled
+`osq:hb:thm:factors`. All twenty-two standard results in the section now
+have a manuscript proof review. The twelve research-question status notes
+and full cross-report/source reconciliation remain separate tasks.
+All these results still await Lean formalization.
+
+The strict-henselization proof uses the actual rational coefficient section.
+It checks locality and henselianity of finite constant extensions,
+injectivity and locality of their transitions, simple-root lifting at a
+common finite stage and the residue-compatible characterization. The
+idempotent maximal ideal gives the completion directly. The arithmetic
+tensor proof constructs the finite Chinese remainder maps and proves their
+compatibility under restriction. The generic-fibre proof constructs its
+map, proves both directions on finite clopen rectangular partitions,
+checks the right-translation order, identifies invariants and verifies the
+spectrum and minimal-prime cardinality separately from the ring cardinality.
+
+A new unnumbered finite-arithmetic-descent consequence identifies fixed
+rings under Gal(Qbar/L) before and after generic base change. Independence
+of tensor coefficients reduces the fixed-ring assertion to ordinary Galois
+theory. Right-translation orbits sigma Gal(Qbar/L) correspond to embeddings
+of L, even when L/Q is not normal; no quotient-group structure is claimed.
+The generic algebra is the product indexed by those embeddings, whereas
+the local fixed ring retains residue field L. This consequence is pending
+in Lean.
+
+The Gaussian localization proof now establishes both inclusions, the exact
+residue kernel, units and fraction field. The doubling proof checks the
+local henselization and its residue-preserving ind-etale base change, then
+writes out tensor associativity and the Chinese remainder map and inverse.
+The external imaginary generator and the internal generic root are kept
+distinct; the two factors have conjugate complex scalar actions. Explicit
+factor idempotents are generic, not idempotents of the local ring.
+
+The projective proof uses finite matrix trivializations to identify the
+rank semiring, proves cancellation and the K0 ring, and includes rank zero.
+The finite etale proof supplies the inverse on residue algebras and the
+morphism scope. On the generic fibre, unit and multiplication coefficients
+become constant on a finite clopen partition, giving a direct residue-field
+classification without an unexplained descent step. Zero-rank pieces use
+the zero algebra; ranks classify objects, not algebra maps.
+
+Checked the primary Stacks henselization and henselian-local-ring sections
+(0BSK, 04GE) and de Felipe–Teissier, arXiv:1903.10793v1, Corollary 4.2.
+The valuation corollary uses exactly the cited domination condition and
+topology; no Noetherian or excellence assumption is required. The component
+correspondence remains an imported theorem, not a new proof of it.
+
+A byte-identical scratch copy of Source 27 passes all 5,760 assertions
+with SymPy 1.14.0, and its JSON equals the archive. These tests check
+finite identities, including the Gaussian maps and a Galois splitting
+matrix; they do not prove infinite descent, spectra or cardinal counts.
+Three final TeX passes for each PDF are diagnostic-free: article 353 pages,
+catalogue 37 pages. Inspected article pages 257–261 and catalogue pages
+14–15. All 418 numbered statements, 828 labels and 1,656 AUX numbering
+pairs remain unchanged, as do all 66 questions, 60 remarks and 28 examples.
+Audits pass all 4,626 anchors in 63 reports, 5,240 source-label references
+and 2,007 local Markdown destinations in 226 files. No Lean source changed.
+Updated the root/report guides, notation, ledger and catalogue.
+git diff --check passes.
+
+
+### Common kernels and endomorphism rigidity sync (2026-09-24)
+
+Merged origin/main at `6a04482` before publication. Read all four added
+modules against `osq:rep:cor:kernels` and `osq:cor:rigid`. For both actual
+omnific rings, clearing inverses of a small family of nonzero elements
+produces a common positive real monomial multiple with purely infinite
+quotients. Specified nonzero kernel witnesses therefore give a nonzero
+monomial in every kernel, excluding joint injectivity. Targets may be
+large and noncommutative; only the index family is required to be small,
+and the empty family is included.
+
+The ordered-map obstruction works for nonzero small partially ordered
+rings. A small unital subring admits a pointwise retraction exactly when
+it is the ordinary integer subring. The ordinary Gaussian endomorphism
+classification reduces to the two roots of minus one; its actual-ring
+transfer strengthens the manuscript's automorphism clause to all unital
+endomorphisms for the induced constant-term action. Those maps preserve
+and reflect the purely infinite ideal; automorphisms carry it onto itself.
+The coefficient-general common-kernel instance remains pending. Updated
+the report guide and catalogue to match the merged scope.
+
+LEAN_NUM_THREADS=2 lake build passes 5,058 jobs. The axiom audit accepts
+19,114 declarations using only propext, Classical.choice and Quot.sound.
+Three final catalogue TeX passes are diagnostic-free, still 37 pages;
+inspected the affected pages. The article remains 353 pages with all
+418 numbered statements, 828 labels, 1,656 numbering pairs and all
+questions/remarks/examples preserved. Audits pass 4,626 anchors in 63
+reports, 5,240 source-label references and 2,011 local Markdown destinations
+in 226 files. git diff --check passes.
+
+
+Final staged-diff cleanup: the incoming ordinary Gaussian module had one
+extra blank line at EOF, flagged by git diff --cached --check. Removed it
+without changing a declaration. LEAN_NUM_THREADS=2 lake build again passes
+5,058 jobs, replaying the 19,114-declaration audit. The full diff from the
+pre-sync review commit now passes git diff eea2255 --check.
