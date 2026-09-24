@@ -5229,8 +5229,13 @@ coefficient field. A second pass covers `odg:disc:prop:factors` through
 `odg:disc:rem:etalenorm`: translation consequences and finite étale units,
 including the generic-factor derivations and constant-subalgebra injection.
 It retains positive degree in the Galois statement and a nonempty family
-in the coherent-translations theorem. Monogenic descent and later C17
-applications remain unreviewed. All C17 results remain **Pending** in Lean.
+in the coherent-translations theorem. The next pass covers monogenic and
+arithmetic descent, critical-point and normal-matrix applications, boundary
+examples and the splitting-algebra second proof. It handles degree-zero
+presentations, makes `n ≥ 1` explicit in the matrix theorem, and distinguishes
+simple critical points from distinct critical values. Later question/status
+notes and full parallel-source reconciliation remain pending review.
+All C17 results remain **Pending** in Lean.
 The ring/retraction proposition
 `odg:prop:ring`, degree lemma `odg:lem:degree`, unit/finite-element
 proposition `odg:prop:units`, exact floor theorem `odg:thm:floor`,
@@ -5461,33 +5466,33 @@ The separately styled cited theorem
 | Theorem | `odg:thm:quadraticformula` (line 10147) | Square-discriminant criterion \src{02} |
 | Proposition | `odg:prop:initial` (line 10208) | Initial forms of an omnific solution \src{01, 02} |
 | Proposition | `odg:prop:binomial` (line 10250) | A two-term root obstruction \src{05} |
-| Lemma | `odg:disc:lem:hahn` (line 10447) | The Hahn splitting field \src{C17} |
-| Lemma | `odg:disc:lem:extension` (line 10481) | Compatibility with algebraic embeddings \src{C17} |
-| Lemma | `odg:disc:lem:independence` (line 10502) | Constant coefficients remain independent \src{C17} |
-| Lemma | `odg:disc:lem:certificate` (line 10529) | Universal denominator certificate \src{C17} |
-| Proposition | `odg:disc:prop:velocities` (line 10585) | All relative Euler velocities vanish \src{C17} |
-| Theorem | `odg:disc:thm:translation` (line 10604) | Translation classification \src{C17} |
-| Corollary | `odg:disc:cor:param` (line 10644) | Complete parameterization \src{C17} |
-| Corollary | `odg:disc:cor:omnific` (line 10679) | Omnific and Gaussian omnific form \src{C17} |
-| Corollary | `odg:disc:cor:roots` (line 10693) | Omnific roots at a constant discriminant \mergetag |
-| Proposition | `odg:disc:prop:factors` (line 10744) | Monic factors are translated constant factors \src{C17} |
-| Theorem | `odg:disc:thm:galois` (line 10766) | Galois groups are unchanged \src{C17} |
-| Corollary | `odg:disc:cor:marks` (line 10799) | Marked-value rigidity \src{C17} |
-| Theorem | `odg:disc:thm:resultants` (line 10819) | Coherent translations \src{C17} |
-| Lemma | `odg:disc:lem:reduction` (line 10876) | Characteristic polynomials after reduction \src{C17} |
-| Lemma | `odg:disc:lem:etaleD` (line 10890) | The extended derivation vanishes in the augmentation fiber \src{C17} |
-| Proposition | `odg:disc:prop:unitD` (line 10918) | No nonconstant logarithmic derivative of a unit \src{C17} |
-| Proposition | `odg:disc:prop:constants` (line 10938) | Constants, their dimension and their fiber \src{C17} |
-| Theorem | `odg:disc:thm:units` (line 10978) | Units of finite \'etale algebras \src{C17} |
-| Corollary | `odg:disc:cor:algclosed` (line 11001) | Geometrically constant coefficients \src{C17} |
-| Theorem | `odg:disc:thm:monogenic` (line 11050) | Monogenic finite \'etale algebras are constant \src{C17} |
-| Corollary | `odg:disc:cor:split` (line 11070) | The split complex case \src{C17} |
-| Theorem | `odg:disc:thm:arithmetic` (line 11080) | Arithmetic monic descent \src{C17} |
-| Theorem | `odg:disc:thm:critical` (line 11123) | Two-translation classification \src{C17} |
-| Lemma | `odg:disc:lem:projection` (line 11185) | A normal idempotent is an orthogonal projection \src{C17} |
-| Theorem | `odg:disc:thm:matrix` (line 11205) | Normal matrices \src{C17} |
-| Corollary | `odg:disc:cor:traceless` (line 11232) | Traceless rigidity and fixed eigenspaces \src{C17} |
-| Lemma | `odg:disc:lem:splitting` (line 11339) | Finite \'etale splitting algebra \src{C17} |
+| Lemma | `odg:disc:lem:hahn` (line 10448) | The Hahn splitting field \src{C17} |
+| Lemma | `odg:disc:lem:extension` (line 10482) | Compatibility with algebraic embeddings \src{C17} |
+| Lemma | `odg:disc:lem:independence` (line 10503) | Constant coefficients remain independent \src{C17} |
+| Lemma | `odg:disc:lem:certificate` (line 10531) | Universal denominator certificate \src{C17} |
+| Proposition | `odg:disc:prop:velocities` (line 10587) | All relative Euler velocities vanish \src{C17} |
+| Theorem | `odg:disc:thm:translation` (line 10606) | Translation classification \src{C17} |
+| Corollary | `odg:disc:cor:param` (line 10646) | Complete parameterization \src{C17} |
+| Corollary | `odg:disc:cor:omnific` (line 10681) | Omnific and Gaussian omnific form \src{C17} |
+| Corollary | `odg:disc:cor:roots` (line 10695) | Omnific roots at a constant discriminant \mergetag |
+| Proposition | `odg:disc:prop:factors` (line 10746) | Monic factors are translated constant factors \src{C17} |
+| Theorem | `odg:disc:thm:galois` (line 10768) | Galois groups are unchanged \src{C17} |
+| Corollary | `odg:disc:cor:marks` (line 10801) | Marked-value rigidity \src{C17} |
+| Theorem | `odg:disc:thm:resultants` (line 10821) | Coherent translations \src{C17} |
+| Lemma | `odg:disc:lem:reduction` (line 10878) | Characteristic polynomials after reduction \src{C17} |
+| Lemma | `odg:disc:lem:etaleD` (line 10892) | The extended derivation vanishes in the augmentation fiber \src{C17} |
+| Proposition | `odg:disc:prop:unitD` (line 10920) | No nonconstant logarithmic derivative of a unit \src{C17} |
+| Proposition | `odg:disc:prop:constants` (line 10940) | Constants, their dimension and their fiber \src{C17} |
+| Theorem | `odg:disc:thm:units` (line 10980) | Units of finite \'etale algebras \src{C17} |
+| Corollary | `odg:disc:cor:algclosed` (line 11003) | Geometrically constant coefficients \src{C17} |
+| Theorem | `odg:disc:thm:monogenic` (line 11052) | Monogenic finite \'etale algebras are constant \src{C17} |
+| Corollary | `odg:disc:cor:split` (line 11080) | The split complex case \src{C17} |
+| Theorem | `odg:disc:thm:arithmetic` (line 11090) | Arithmetic monic descent \src{C17} |
+| Theorem | `odg:disc:thm:critical` (line 11139) | Two-translation classification \src{C17} |
+| Lemma | `odg:disc:lem:projection` (line 11209) | A normal idempotent is an orthogonal projection \src{C17} |
+| Theorem | `odg:disc:thm:matrix` (line 11233) | Normal matrices \src{C17} |
+| Corollary | `odg:disc:cor:traceless` (line 11268) | Traceless rigidity and fixed eigenspaces \src{C17} |
+| Lemma | `odg:disc:lem:splitting` (line 11379) | Finite \'etale splitting algebra \src{C17} |
 
 ### set-sized-quotients-of-omnific-integers
 

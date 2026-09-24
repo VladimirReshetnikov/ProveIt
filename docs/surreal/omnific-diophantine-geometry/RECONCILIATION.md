@@ -1584,3 +1584,55 @@ labels and 1,106 auxiliary label numbers are preserved. The revised
 The independent index, 5,188 source references, 1,726 local Markdown
 destinations and whitespace checks pass. The finite verification scripts
 are unchanged and were not rerun during this synchronization.
+
+## C17 monogenic descent, critical points and normal matrices
+
+This pass reviews the maintained Section 19.4 from
+`odg:disc:thm:monogenic` through the splitting-algebra second proof,
+including its eight standard results, comparisons and boundary examples.
+Together with the previous two passes, the main C17 theorem package has
+been reviewed. Its later question/status notes and full reconciliation
+against the parallel source manuscripts remain pending; these are distinct
+from reviewing the maintained proofs. No C17 Lean coverage is claimed.
+
+The monogenic proof now supplies the local square-matrix argument, the
+trace-pairing/Vandermonde identity, explicit inverse translations and the
+base-change presentation. The discriminant criterion is the finite locally
+free criterion in [Stacks 0BJF](https://stacks.math.columbia.edu/tag/0BJF).
+Zero algebras and the monic degree-zero polynomial are treated separately;
+the empty-product discriminant is one in degrees zero and one. Arithmetic
+descent uses a perfect trace pairing when the discriminant is a unit, and
+the tensor-product presentation requires no flatness hypothesis.
+
+The critical-point proof applies translation over the coefficient field's
+one-sided ring, where division by the degree is allowed. It explains why
+the residual constant is purely infinite. Critical gaps lie in the
+algebraic closure of the coefficient field; simple critical points may
+have repeated critical values. The sibling comparison was checked against
+`osq:or:thm:canonical`, `osq:or:thm:eta` and `osq:or:thm:targets`: positive
+degree is retained for canonical translation, degree at least two for rich
+targets, and the ordinary target is explicitly Z or Z[i] in its arithmetic
+case. This is a comparison of statements, not a new review of those proofs.
+
+The matrix theorem now requires size at least one for its trace formula.
+The projection proof derives orthogonality directly from idempotence and
+normality, then bounds the entries. The spectral-projector proof explains
+interpolation modulo the characteristic polynomial, the empty product in
+size one, and commutation with adjoints with conjugated scalar coefficients.
+The ordinary unitary diagonalization follows by taking constant terms.
+The two-sided-support counterexample now rationalizes its small root,
+making the infinitesimal coefficient explicit. The splitting-algebra
+induction gives its base cases and free rank n!, and the second proof
+explains why root differences stay nonzero in a generic field factor.
+
+Validation: 51 assertions passed with SymPy 1.14.0 in the unchanged finite
+resultant/critical-point and matrix/boundary groups (8 resultant, 18 critical,
+1 example, 9 matrix, 7 counterexample and 8 positive-characteristic checks).
+These do not certify arbitrary-support, descent or positivity arguments.
+All 244 standard results and 553 labels are retained; the matrix size is
+the only changed standard statement. All 1,106 auxiliary label numbers
+are preserved. Three-pass builds of the 228-page article and 33-page
+catalogue have no warnings, unresolved references or bad boxes; changed
+pages were inspected visually. The 4,626-result index across 63 reports,
+5,188 source references and 1,726 local Markdown destinations pass before
+this record is appended. No Lean file or finite verifier was modified.

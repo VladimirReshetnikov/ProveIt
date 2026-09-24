@@ -10364,8 +10364,9 @@ zero (\cref{odg:disc:rem:etalenorm}). Labels of this subsection carry the sub-pr
 section, statement or equation number changed; its ten questions follow the last question
 of \cref{odg:sec:questions}. The elementary lemmas, root-velocity certificate and
 translation classification, its factor/Galois/resultant consequences and the finite
-\'etale unit theorem through \cref{odg:disc:rem:etalenorm} have been reviewed;
-monogenic descent, the later applications and the second proof remain outside that review, as recorded in
+\'etale unit theorem, monogenic descent, critical-point and matrix applications,
+boundary examples and the second proof have been reviewed. The later question/status
+notes and complete parallel-source reconciliation remain pending, as recorded in
 \fn{RECONCILIATION.md}.
 
 \paragraph{Conventions and renamed symbols.} As in the curve part
@@ -10523,7 +10524,8 @@ the discriminant gives only
 and a vanishing sum does not force the individual $w_{ij}$ to vanish. The missing
 information is supplied by \emph{every} elementary symmetric function of the $w_{ij}$
 \src{C17}. We use $\Disc(P)=\prod_{i<j}(r_i-r_j)^2=(-1)^{n(n-1)/2}\Res(P,P')$ for monic
-$P$, and $\Disc(P)=1$ when $n=1$; the sign disappears under logarithmic differentiation,
+$P$, with the empty-product convention $\Disc(P)=1$ in degrees zero and one;
+the sign disappears under logarithmic differentiation,
 so \eqref{odg:disc:eq:sumvelocity} has no extra sign.
 
 \begin{lemma}[Universal denominator certificate \src{C17}]\label{odg:disc:lem:certificate}
@@ -11057,14 +11059,22 @@ precisely, if $\mathsf B$ has rank $r$ and $P=\operatorname{ch}_b$, then
 the second isomorphism being induced by a translation by an element of $\crP$.
 \end{theorem}
 \begin{proof}
-Cayley--Hamilton gives a surjection $\crA[X]/(P)\to\mathsf B$ from a free module of rank
-$r$ onto a projective module of rank $r$; locally it is a surjection between free modules
-of the same finite rank, hence an isomorphism, and so it is one globally. In this monic
-presentation \'etaleness makes $\Disc(P)$ a unit of $\crA$ by the discriminant criterion
+If $\mathsf B=0$, take $C=0$ and $P=1$; both displayed quotients are zero. Otherwise
+$r\ge1$. Evaluation at the generator $b$ is surjective, and Cayley--Hamilton makes it
+factor through $\crA[X]/(P)$. Since $P$ is monic of degree $r$, its quotient has basis
+$1,X,\ldots,X^{r-1}$. On any localization where $\mathsf B$ is free, the resulting
+surjection is a square matrix with a right inverse, so its determinant is a unit and
+the matrix is invertible. Thus the map is an isomorphism locally everywhere, hence
+globally. In the induced power basis of $\mathsf B$, the trace-pairing determinant is
+$\Disc(P)$: after splitting over a field it is the determinant of $V^{\mathsf T}V$ for
+the Vandermonde matrix of roots. This is a universal polynomial identity in the
+coefficients, so it holds over the original ring. \'Etaleness makes this a unit of
+$\crA$ by the discriminant criterion
 \cite{StacksDisc}, hence an element of $\Bbbk^\times$ (\cref{odg:cr:lem:rings}(c)).
 \Cref{odg:disc:thm:translation} gives $P=\overline P(X-h)$ with $h\in\crP$, and $Y=X-h$
-gives the second isomorphism; $\Bbbk[Y]/(\overline P)$ is finite \'etale because
-$\overline P$ is squarefree.
+gives the second isomorphism explicitly by $Y\mapsto X-h$, with inverse $X\mapsto Y+h$.
+Now $C=\Bbbk[Y]/(\overline P)$ is finite \'etale because $\overline P$ is squarefree,
+and base change identifies $\crA\otimes_\Bbbk C$ with $\crA[Y]/(\overline P)$.
 \end{proof}
 
 \begin{corollary}[The split complex case \src{C17}]\label{odg:disc:cor:split}
@@ -11091,14 +11101,20 @@ $\mathfrak o$. Every monogenic finite \'etale $\mathcal R_{\mathfrak o}$-algebra
 this way.
 \end{theorem}
 \begin{proof}
-Translation by $h\in\crP\subseteq\mathcal R_{\mathfrak o}$ is an automorphism of the
-polynomial ring, so \cref{odg:disc:thm:translation} gives \eqref{odg:disc:eq:arithmetic}.
-For a unit discriminant the finite free trace pairing is nondegenerate, and the
+For the degree-zero polynomial $P=1$, both sides of \eqref{odg:disc:eq:arithmetic}
+are zero and the assertion is immediate. Otherwise translation by
+$h\in\crP\subseteq\mathcal R_{\mathfrak o}$ is an automorphism of the polynomial ring,
+so \cref{odg:disc:thm:translation} gives
+$\mathcal R_{\mathfrak o}[X]/(P)\cong\mathcal R_{\mathfrak o}[Y]/(\overline P)$.
+The latter is the displayed tensor product by base change of the presentation;
+no flatness of $\mathcal R_{\mathfrak o}$ over $\mathfrak o$ is needed for this identity.
+For a unit discriminant the finite free trace pairing is perfect, and the
 discriminant criterion gives \'etaleness over each coefficient ring. For a monogenic
-finite \'etale algebra the characteristic-polynomial argument of
+nonzero finite \'etale algebra the characteristic-polynomial argument of
 \cref{odg:disc:thm:monogenic} works over the domain $\mathcal R_{\mathfrak o}$, and its
 discriminant is a unit of $\mathcal R_{\mathfrak o}$, hence of $\mathfrak o$
-(\cref{odg:cr:lem:rings}(c)).
+(\cref{odg:cr:lem:rings}(c)). The zero algebra descends from the zero
+$\mathfrak o$-algebra separately.
 \end{proof}
 
 For example $P=(X-h)^2-2\in\Oz[X]$, $h\in\Pi$, has discriminant $8$ and is a translate of
@@ -11134,41 +11150,49 @@ critical discriminant exactly when $\overline f'/d$ is squarefree.
 \begin{proof}
 The coefficient of $X^{d-2}$ in $f'/d$ is $(d-1)a_1/d$, so
 \cref{odg:disc:thm:translation} over $\crA$ gives $f'(X)=\overline f'(X-h)$ with $h$ as
-stated. Then $f(X)-\overline f(X-h)$ has zero derivative, so it is a constant $\beta$ in
-characteristic zero; it lies in $\mathcal R_{\mathfrak o}$, and $\ct\beta=0$, so
-$\beta\in\crP$. Evaluation at $X=h$ gives the formula. Uniqueness of $h$ follows from the
+stated. We apply the theorem over $\crA$: division by $d$ need not preserve
+$\mathcal R_{\mathfrak o}$. Constant extraction commutes with formal differentiation,
+so the constant-term polynomial of $f'/d$ is $\overline f'/d$.
+Then $f(X)-\overline f(X-h)$ has zero derivative. In characteristic zero every positive
+degree coefficient of this difference vanishes, so it is a constant $\beta$ with
+respect to $X$. It belongs to $\mathcal R_{\mathfrak o}$, and applying $\ct$ to the
+identity gives $\overline f(X)-\overline f(X)=\ct\beta=0$. Thus $\beta\in\crP$.
+Evaluation at $X=h$ gives the formula. Uniqueness of $h$ follows from the
 coefficient of $X^{d-1}$, and that of $\beta$ is then immediate. The converse follows by
 differentiating, since translation does not change the discriminant.
 \end{proof}
 
-If $\xi_1,\ldots,\xi_{d-1}$ are the critical points of $\overline f$, those of $f$ are
+If $\xi_1,\ldots,\xi_{d-1}\in\bar\Bbbk$ are the critical points of $\overline f$, those of $f$ are
 $h+\xi_j$, with critical values $\beta+\overline f(\xi_j)$; all gaps between critical
-points and between critical values are ordinary constants, and distinct critical values of
+points and between critical values lie in $\bar\Bbbk$ (not necessarily in $\Bbbk$), and distinct critical values of
 $\overline f$ remain distinct. This is a classification up to independent source and
 target translations. It is not in general a conjugacy $f=T_h\circ\overline f\circ T_{-h}$,
-which would need $\beta=h$ \src{C17}.
+where $T_h(X)=X+h$; that would need $\beta=h$ \src{C17}.
 
 \begin{example}[A repeated critical value \src{C17}]\label{odg:disc:ex:critical}
 For $s,t\in\crP$, $f(X)=(X-s)^4-2(X-s)^2+t$ has critical polynomial $(X-s)^3-(X-s)$, of
 discriminant $4$, critical points $s-1,s,s+1$ and critical values $t-1,t,t-1$, and
-$\overline f=X^4-2X^2$. The theorem allows the repeated critical value; no Morse or
-distinct-critical-value hypothesis is imposed.
+$\overline f=X^4-2X^2$. The critical points must be simple, but the theorem allows
+repeated critical values.
 \end{example}
 
 \begin{remark}[The same normal forms in the sibling report \mergetag]\label{odg:disc:rem:osq}
 The sibling report \fn{docs/surreal/set-sized-quotients-of-omnific-integers} reaches the
-same normal forms from a different hypothesis. For an integer-valued polynomial $f$ over
+same normal forms from a different hypothesis. For a positive-degree integer-valued polynomial $f$ over
 $\Oz$ or $\Og$ with more than $d=\deg f$ inputs of ordinary output, its canonical
 translation (\replabel{osq:or:thm:canonical}, \replabel{osq:or:thm:eta}) gives
 $f=\ct_*(f)(X-\eta)$ with $\eta=-\mathring a_{d-1}/(da_d)$, where $\ct_*(f)=\overline f$ and
 $\mathring a=a-\ct a$; for monic $f$ this is \eqref{odg:disc:eq:h}. Its rich-target theorem
-(\replabel{osq:or:thm:targets}) gives $f=\overline f(X-\eta)+\beta$ with
+(\replabel{osq:or:thm:targets}), for $d\ge2$, gives $f=\overline f(X-\eta)+\beta$ with
 $\beta=f(\eta)-\ct f(\eta)$, the form \eqref{odg:disc:eq:critical}. For monic $P\in\Oz[X]$
 with $\Disc(P)\in\Z\setminus\{0\}$, \cref{odg:disc:cor:omnific} gives
 $P(h+c)=\overline P(c)\in\Z$ for every $c\in\Z$, so the sibling hypothesis holds and the two
-translations coincide; likewise \cref{odg:disc:thm:critical} makes $\beta+\Z$ a rich target.
+translations coincide. Likewise, for $f\in\Oz[X]$, \cref{odg:disc:thm:critical} makes
+$\beta+\Z$ a rich target, since $f(h+c)=\overline f(c)+\beta$ for all $c\in\Z$.
+For $f\in\Og[X]$ the same assertion uses $\beta+\Z[i]$ and $c\in\Z[i]$.
 The converse fails: $(X-h)^2$ with $0\ne h\in\Pi$ has ordinary outputs on all of $h+\Z$ and
-discriminant zero. The sibling hypothesis needs the discrete order of $\Oz$, whereas
+discriminant zero. The sibling theorems concern integer-valued polynomials and the
+specified ordinary-output sets $\Z$ or $\Z[i]$, not discreteness alone, whereas
 \cref{odg:disc:thm:translation} holds over every $\crA$ and $\mathcal R_{\mathfrak o}$.
 Source C17 does not cite the sibling report, of which it read only the guide.
 \end{remark}
@@ -11190,10 +11214,14 @@ $\mathcal A_\C(\Gamma)$, they lie in $\C$.
 \end{lemma}
 \begin{proof}
 Normality gives $\langle\mathsf Pv,\mathsf Pv\rangle=\langle\mathsf P^*v,\mathsf P^*v\rangle$,
-so $\ker\mathsf P=\ker\mathsf P^*$. With $(\operatorname{im}\mathsf P)^\perp=\ker\mathsf P^*$,
-the decomposition $\operatorname{im}\mathsf P\oplus\ker\mathsf P$ is orthogonal, and
-$\mathsf P$ acts on its summands by $1$ and $0$; so $\mathsf P=\mathsf P^*$. This uses only
-positive definiteness and the dimension formula for orthogonal complements. The $jj$ entry of
+so positive definiteness gives $\ker\mathsf P=\ker\mathsf P^*$. Idempotence decomposes
+each vector as $v=\mathsf Pv+(v-\mathsf Pv)$, in
+$\operatorname{im}\mathsf P\oplus\ker\mathsf P$. The summands are orthogonal: if
+$z\in\ker\mathsf P$, then $\langle\mathsf Px,z\rangle=\langle x,\mathsf P^*z\rangle=0$.
+Applying these decompositions to two vectors gives
+$\langle\mathsf Pv,w\rangle=\langle\mathsf Pv,\mathsf Pw\rangle=
+\langle v,\mathsf Pw\rangle$, hence $\mathsf P=\mathsf P^*$.
+Its diagonal entries are therefore real. The $jj$ entry of
 $\mathsf P=\mathsf P\mathsf P^*$ is $\mathsf P_{jj}=\sum_k\mathsf P_{jk}\overline{\mathsf
 P_{jk}}$, so $\mathsf P_{jj}\ge0$ and $\mathsf P_{jj}\ge\mathsf P_{jj}^2$, whence
 $\mathsf P_{jj}\le1$, and every summand is at most $1$. An element of positive degree has
@@ -11203,7 +11231,7 @@ $\mathcal A_\C(\Gamma)$ lies in $\C$ by \eqref{odg:disc:eq:hahn}.
 \end{proof}
 
 \begin{theorem}[Normal matrices \src{C17}]\label{odg:disc:thm:matrix}
-Let $M\in M_n(\mathcal A_\C(\Gamma))$ satisfy $MM^*=M^*M$, and suppose that its
+Let $n\ge1$ and let $M\in M_n(\mathcal A_\C(\Gamma))$ satisfy $MM^*=M^*M$, and suppose that its
 characteristic polynomial has nonzero constant discriminant. Then
 \begin{equation}\label{odg:disc:eq:matrix}
  M=\ct M+hI_n,\qquad h=\frac{\tr M-\ct(\tr M)}{n}\in\Pi_\C(\Gamma).
@@ -11212,8 +11240,10 @@ For Hermitian $M$, $h$ has real coefficients. In particular this applies to norm
 matrices over $\Og$ and real symmetric matrices over $\Oz$, read in a workspace.
 \end{theorem}
 \begin{proof}
-By \cref{odg:disc:thm:translation} applied to the characteristic polynomial, whose constant
-term is the characteristic polynomial of $\ct M$, the eigenvalues of $M$ are the distinct
+Since the determinant is a polynomial in the matrix entries,
+$\ct\bigl(\det(XI_n-M)\bigr)=\det(XI_n-\ct M)$, where $\ct$ acts on coefficients.
+Thus \cref{odg:disc:thm:translation} applied to the characteristic polynomial says that
+the eigenvalues of $M$ are the distinct
 elements $h+c_j$, where $c_1,\ldots,c_n\in\C$ are the eigenvalues of $\ct M$ and $h$ is as
 stated. The Lagrange spectral idempotents
 \begin{equation}\label{odg:disc:eq:projectors}
@@ -11222,8 +11252,14 @@ stated. The Lagrange spectral idempotents
 have entries in $\mathcal A_\C(\Gamma)$, since the denominators are nonzero complex
 numbers. Interpolation modulo the squarefree characteristic polynomial and Cayley--Hamilton
 give $\mathsf P_j^2=\mathsf P_j$, $\mathsf P_j\mathsf P_u=0$ for $j\ne u$,
-$\sum_j\mathsf P_j=I_n$ and $M=\sum_j(h+c_j)\mathsf P_j$. A polynomial in the normal
-matrix $M$ commutes with the adjoint of any polynomial in $M$, so every $\mathsf P_j$ is
+$\sum_j\mathsf P_j=I_n$ and $M=\sum_j(h+c_j)\mathsf P_j$. These identities follow by
+evaluating the corresponding scalar polynomials at each of the distinct roots, then
+using divisibility by the characteristic polynomial. For $n=1$ the empty product in
+\eqref{odg:disc:eq:projectors} is $I_1$.
+The adjoint of a polynomial in $M$ is a polynomial in $M^*$ with conjugated
+scalar coefficients.
+Since $M$ and $M^*$ commute, polynomials in them commute as well, including with these
+possibly nonconstant scalar coefficients. Thus every $\mathsf P_j$ is
 normal, and \cref{odg:disc:lem:projection} gives $\mathsf P_j\in M_n(\C)$. Thus
 $M=hI_n+\sum_jc_j\mathsf P_j$, and taking constant terms identifies the sum as $\ct M$.
 For Hermitian $M$ the trace is real, hence so is $h$.
@@ -11237,8 +11273,10 @@ basis diagonalizes $\ct M$ and $M$ simultaneously.
 \end{corollary}
 \begin{proof}
 Subtract the traces in \eqref{odg:disc:eq:matrix}. The proof of the theorem makes every
-spectral projection ordinary; alternatively, diagonalize the ordinary normal matrix
-$\ct M$, whose eigenspaces are not changed by adding $hI_n$.
+spectral projection ordinary. Constant extraction commutes with conjugation, transpose
+and matrix multiplication, so $\ct M$ is a normal complex matrix. The ordinary
+finite-dimensional spectral theorem supplies a unitary matrix over $\C$ diagonalizing
+$\ct M$; it also diagonalizes $M$, since adding $hI_n$ leaves the eigenspaces unchanged.
 \end{proof}
 
 \begin{remark}[What positivity contributes \src{C17}]\label{odg:disc:rem:positivity}
@@ -11269,9 +11307,11 @@ In a real closed Hahn field, or in $\No$, let $x=\omega$ and
 \begin{equation}\label{odg:disc:eq:twosided}
  \rho=\frac{x-\sqrt{x^2-4/x}}2 .
 \end{equation}
-The square root exists since $x^2-4/x>0$; $\rho$ and $x-\rho$ are the roots of
-$Y^2-xY+1/x$, so $\rho(x-\rho)=x^{-1}$, $0<\rho<x$, and $\rho$ is positive
-infinitesimal with dominant term $x^{-2}$. The monic cubic $P=X(X-x)(X-\rho)$ has
+The square root exists since $x^2-4/x>0$. Rationalizing gives
+$\rho=2/[x(x+\sqrt{x^2-4/x})]$; its denominator has dominant term $2x^2$, so
+$\rho$ is positive infinitesimal with dominant term $x^{-2}$.
+The elements $\rho$ and $x-\rho$ are the roots of
+$Y^2-xY+1/x$, so $\rho(x-\rho)=x^{-1}$ and $0<\rho<x$. The monic cubic $P=X(X-x)(X-\rho)$ has
 distinct roots and $\Disc(P)=x^2\rho^2(x-\rho)^2=1$, but its root gap $x$ is infinite, so
 it is not a translate of a constant polynomial. Its coefficient $x\rho$ is a nonzero
 infinitesimal, so $P$ does not have coefficients in $\BR$. The real diagonal matrix
@@ -11342,18 +11382,25 @@ there is a finite free \'etale $R$-algebra $\mathsf B_P$ of rank $n!$ in which
 $P=\prod_{j=1}^n(X-r_j)$ and every difference $r_i-r_j$, $i\ne j$, is a unit.
 \end{lemma}
 \begin{proof}
-Adjoin a root $r_1$ by $R_1=R[X]/(P)$, finite free of rank $n$ and \'etale by the
+For $n=0$, take $\mathsf B_P=R$, using the empty product $P=1$ and $0!=1$.
+For $n=1$, its root already lies in $R$, so again take $\mathsf B_P=R$.
+For $n\ge2$, adjoin a root $r_1$ by $R_1=R[X]/(P)$, finite free of rank $n$ and \'etale by the
 discriminant criterion. Divide $P$ by $X-r_1$ to get a monic $Q_1\in R_1[X]$ of degree
 $n-1$. The identity $\Disc(P)=\Disc(Q_1)Q_1(r_1)^2$ shows that $\Disc(Q_1)$ is a unit,
-since factors of a unit are units. Repeat with $Q_1$. The ranks multiply to $n!$, and
+since factors of a unit are units. Apply induction to $Q_1$ over $R_1$.
+The composite has an $R$-basis obtained by multiplying the two free bases, so its
+rank is $n(n-1)!=n!$, and
 compositions of finite \'etale maps are finite \'etale. In the result the product of the
-squared differences is $\Disc(P)$, so each difference is a unit. This also covers $n=1$.
+squared differences is $\Disc(P)$, so each difference is a unit.
 \end{proof}
 
 \begin{proof}[Second proof of \cref{odg:disc:thm:translation} \src{C17}]
-Over $\crA$, apply \cref{odg:disc:lem:splitting} and \cref{odg:disc:thm:units}: the root
+Over $\crA$, the splitting algebra in \cref{odg:disc:lem:splitting} is nonzero because
+it is free of positive rank $n!$. Apply \cref{odg:disc:thm:units}: the root
 differences in $\mathsf B_P$ are units, hence algebraic over $\Bbbk$. Map a field factor of
-the generic algebra of $\mathsf B_P$ to $\Hbar$. The images of the roots split $P$, and
+the generic algebra of $\mathsf B_P$ to $\Hbar$. The images of the roots split $P$;
+their differences remain nonzero because units map to units. Thus the roots remain
+distinct, and
 every gap is algebraic over $\Bbbk$, so it lies in $\bar\Bbbk$ (by \cref{odg:cr:cor:algclosed}
 for the coefficient field $\bar\Bbbk$).
 Subtracting the mean and taking constant terms proves $P=\overline P(X-h)$ as in the first
@@ -11365,7 +11412,7 @@ formal \'etale lifting, characteristic polynomials and opposite supports, not
 \cref{odg:disc:thm:translation}. The first proof remains useful because its certificate is
 finite and uniform in the degree and avoids the splitting algebra of rank $n!$ \src{C17}.
 
-Both proofs follow one pattern. A derivation sends ordinary coefficients into a strict
+Both proofs follow one pattern. A derivation sends the coefficient ring $\crA$ into the strict
 ideal; logarithmic differentiation produces quantities in the opposite valuation ring; a
 symmetric or characteristic polynomial puts all their invariants into the strict ideal as
 well; the intersection is zero, so the polynomial is a pure power and reducedness kills the
