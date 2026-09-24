@@ -7042,3 +7042,54 @@ Classical.choice and Quot.sound. All 4,626 source anchors in 63 reports,
 5,219 source-label references and 1,852 local Markdown destinations in
 226 files pass, as does whitespace checking. No incoming TeX changed;
 the 305-page article and 34-page catalogue remain current.
+
+## Polyhedral cores: detecting exact dimensions and homological epimorphisms
+
+Reviewed `osq:pc:thm:isolation`, `osq:pc:thm:exactfd`,
+`osq:pc:cor:pdbounds` and `osq:pc:thm:homological` in Section 13.11
+of the omnific-quotient report. Their statements are unchanged. The cap
+module proof now identifies the graded principal-ideal tensors, all
+degree shifts and transition multiplications, the support obstruction
+for faces outside G, the cap equality for proper subfaces, and the
+cofinal system of copies of K with identity maps when the labels agree.
+
+The exact-dimension proof verifies that the maximum is defined, computes
+the zero-differential detecting component, and explains why its nonzero
+homology is part of ordinary ungraded Tor. It obstructs every shorter
+flat resolution, with no grading or finite-generation restriction on
+competitors. Truncation and Tor dimension shifting give the ideal formula,
+including the flat length-one case. Explicit syzygies and the Ext
+inequality prove the projective upper bound; the dual-basis finite-generation
+criterion gives the lower bound of two. The one-face quotient therefore
+has flat dimension one and projective dimension two.
+
+The homological-epimorphism proof gives the degree-zero tensor isomorphism
+and its inverse, kills each positive face summand by the balanced-tensor
+quotient, and checks nonflatness using multiplication by a killed nonzero
+monomial. Corrected the surrounding claim about cap modules: only the
+detecting labels are necessarily outside the quotient-module class. A cap
+on G is a module over A/r_F exactly when G contains none of the defining
+antichain faces. For the first coordinate-ray ideal in the two-dimensional
+orthant, second-ray caps are quotient modules; first-ray caps detect Tor_1.
+The new explanation proves both directions of this criterion.
+
+Replaced “usually not finitely generated” by the exact criterion: a cap
+module is finitely generated over A exactly when K is finitely generated
+as a D-module. The constant-term quotient proves necessity; constant
+generators and the action on 1 generate every surviving term for sufficiency.
+In particular D = K gives a cyclic module. Updated README, guide, notation,
+catalogue and source anchors. These are manuscript proofs; the four source
+results remain Pending in Lean. The topology and multiplicities of face
+quotients, later classifications and full reconciliation remain pending
+review. The preceding pass's unchanged source-26 finite-check baseline
+does not establish these arbitrary-module or homological-dimension claims.
+
+Validation: three clean final TeX passes for the 307-page article and
+34-page catalogue, with no warnings or box diagnostics; inspected the
+revised proofs, cap qualifications and catalogue entry. All 418
+standard/principal statements, 828 labels, 1,656 auxiliary label/number
+pairs, 66 questions, 60 remarks and 28 numbered examples are unchanged.
+All 4,626 source anchors in 63 reports, 5,219 source-label references
+and 1,852 local Markdown destinations in 226 files pass, as does whitespace
+checking. No Lean source changed; the two-thread 4,639-job build and
+17,258-declaration axiom audit remain the baseline before synchronization.
