@@ -8,13 +8,14 @@
   Rocq/Coq verifications of the linear, quadratic, Cardano cubic, and Ferrari
   quartic formulas, together with root-collection functions and entrywise
   correctness and exhaustiveness theorems.
-- [`SurrealNumbers/`](SurrealNumbers/) is the former
-  [VladimirReshetnikov/Surreal](https://github.com/VladimirReshetnikov/Surreal)
-  repository, merged here with its full history: 63 research reports on the
-  surreal field `No`, the surcomplex numbers `No[i]`, Conway's omnific
-  integers and related structures ([`docs/`](SurrealNumbers/docs/README.md)),
-  and a Lean 4 library that constructs the actual surreal field, proves it
-  real closed and the surcomplex numbers algebraically closed, and formalizes
-  results from the reports. It remains a self-contained Lake package
-  (`lake --dir Algebra/SurrealNumbers build`); its own
-  [README](SurrealNumbers/README.md) and agent guide describe its workflow.
+- [`SurrealNumbers/`](SurrealNumbers/) contains a Lean 4 library that
+  constructs the surreal field `No` as an ordered field of sign sequences,
+  proves it real closed and the surcomplex numbers `No[i]` algebraically
+  closed, constructs Conway's omnific integers inside `No` and proves their
+  basic arithmetic (constant term, units, floor, integer roots, finite
+  quotients), and formalizes further results from 63 research reports on
+  `No`, `No[i]`, the omnific integers and related structures
+  ([`docs/`](SurrealNumbers/docs/README.md)). It is a self-contained Lake
+  package (`lake --dir Algebra/SurrealNumbers build`) whose default build
+  also runs an axiom audit; its [README](SurrealNumbers/README.md) and agent
+  guide describe its workflow.

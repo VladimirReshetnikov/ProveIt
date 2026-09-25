@@ -8,7 +8,7 @@ pre-1980 and elementary-fact axiom allowances are superseded; no project
 mathematical axiom was introduced under them. Existing proofs are retained,
 and transitive axiom audits identify the dependencies of each published
 milestone. Results may be borrowed from
-`C:\ProveIt` (in particular its Busy Beaver library) and from Cameron Freer's
+the rest of ProveIt (in particular its Busy Beaver library) and from Cameron Freer's
 `hilbert10` (Lean 4 DPRM development, bibliography entry 40).
 
 ## Layout
@@ -73,19 +73,13 @@ lake env lean Computability/HilbertTenthProblem/Lean/checks/MRDPAxioms.lean
 ```
 
 The finite-trace closure uses ProveIt's own `PAListCoding` library
-(`Logic/PeanoArithmetic/ListCoding/Lean/`). Before it moved into ProveIt,
-this project was a standalone Lake package built against a pinned
-twelve-module extraction of that library (`vendor/pa-list-coding`: ten
-modules byte-identical, `IterationDioph` with one import changed, and
-`ExactTrace`, the exact-iteration block of `TetrationDiophantine.lean`), which
-kept the Foundation library out of its imports. On the move the same split
-was made in ProveIt itself: `PAListCoding.ExactTrace` now holds that block,
-`TetrationDiophantine` and `IterationDioph` import it, and this library uses
-the original modules. (Importing Foundation here would fail: its `Matrix`
-lemmas clash with Mathlib modules in this library's import closure.) The logs in
-`STATUS.md`, `TRACE_INTEGRATION.md` and the other dated records describe the
-standalone layout (`lean/`, `current/`, `vendor/`), which is now `Lean/`,
-`../Papers/` and ProveIt's `PAListCoding`.
+(`Logic/PeanoArithmetic/ListCoding/Lean/`). Its module `PAListCoding.ExactTrace`
+holds the exact-iteration and beta-trace facts apart from
+`TetrationDiophantine`, so that this library does not import the Foundation
+library, whose `Matrix` lemmas clash with Mathlib modules in this library's
+import closure. The dated records in `STATUS.md`, `TRACE_INTEGRATION.md` and
+the other notes cite files by an earlier layout: `lean/` is `Lean/`,
+`current/` is `../Papers/`, and `vendor/pa-list-coding` is `PAListCoding`.
 
 ## Status
 

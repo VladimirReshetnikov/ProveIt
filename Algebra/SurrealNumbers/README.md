@@ -5,7 +5,7 @@ collection of research reports in [`docs/`](docs/README.md), and a Lean 4
 formalization of their theorems that proceeds from foundational lemmas to
 dependent results, reusing mathlib constructions.
 
-## What the repository contains
+## Contents
 
 - **Research reports.** [`docs/`](docs/README.md) holds 63 reports in five
   families: the surreal field `No` (23, including six on Conway's omnific
@@ -134,7 +134,7 @@ Apache license are included in the repository.
 ## Formalization
 
 The [source inventory](docs/FORMALIZATION.md) covers 63 maintained main texts
-and the source manuscripts preserved in Git history. The
+and their source manuscripts. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
@@ -1151,7 +1151,7 @@ from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
 descent, support cuts and convex factors, plus a new
 [quantum and gauge report](docs/physics/quantum-and-gauge-scale-reductions/).
-These additions and the newly delivered companions still need proof review
+These additions and their companion reports still need proof review
 and source reconciliation.
 
 The complex cosine fold now has its exact infinitesimal root classification,

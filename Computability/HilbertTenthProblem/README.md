@@ -71,17 +71,13 @@ checker with, for example,
 $env:PYTHONUTF8 = '1'; py Computability/HilbertTenthProblem/Papers/verification/round4_1984_checks.py
 ```
 
-## Provenance
+## Scope
 
-This project was developed separately and moved into ProveIt on
-24 September 2026: its `current/` directory became `Papers/` and its
-`lean/` directory became `Lean/`. The standalone Lake package was dropped;
-the vendored twelve-module extraction of ProveIt's `PAListCoding` was
-replaced by the original library in `Logic/PeanoArithmetic/ListCoding/Lean/`,
-whose exact-iteration block was split out of `TetrationDiophantine` into the
-new module `PAListCoding.ExactTrace` so that this library does not import
-Foundation.
-The journal scans and their raw Mathpix OCR (cited by the editorial notes as
-`original/<year>/…`) and the standalone MRDP extraction are not
-included. Dated records in the notes and
-in `Lean/STATUS.md` describe the earlier layout.
+The editorial notes compare each edition with the journal scan and its raw
+Mathpix OCR, which they cite as `original/<year>/jones<year>.pdf` and
+`original/<year>/jones<year>.tex`; these inputs are not included. The Lean
+library uses ProveIt's `PAListCoding` for finite traces; its module
+`PAListCoding.ExactTrace` keeps the Foundation library out of this
+library's imports. Dated records in the editorial log and in
+`Lean/STATUS.md` cite files by an earlier layout: `lean/` is `Lean/`,
+`current/` is `Papers/`, and `vendor/pa-list-coding` is `PAListCoding`.

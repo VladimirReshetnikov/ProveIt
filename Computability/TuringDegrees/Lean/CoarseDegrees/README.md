@@ -15,10 +15,8 @@ theorem CoarseDegrees.not_C1_dyadic  : ¬ C1   -- a third route, independent of 
 Turing reducibility is Mathlib's oracle semantics (`Mathlib.Computability.TuringDegree`,
 `RecursiveIn`).  Set-level reducibility (`≤ᵀₛ`), characteristic oracles and the finite
 oracle-program syntax used for *uniform* coarse reductions come from the `TuringDegrees`
-library beside it in this project (`Computability/TuringDegrees/Lean`).  This library was
-developed in the separate Cardinals repository, where ProveIt was a sibling checkout at
-`C:\ProveIt`; the comments in the Lean sources still name it so.  It reached ProveIt with the
-Cardinals merge and now lives in the Turing-degrees project.
+library beside it in this project (`Computability/TuringDegrees/Lean`); comments in the Lean
+sources refer to it as `C:\ProveIt`.
 
 The library also formalizes research report 10 (`Computability/TuringDegrees/Research/CoarseDegrees/research-reports/10`): coarse classes
 with no representative of least *hyperdegree*, and the failure of Martin's cone theorem for the
@@ -92,7 +90,7 @@ HJKS = D. R. Hirschfeldt, C. G. Jockusch Jr., R. Kuyper, P. E. Schupp, *Coarse r
 algorithmic randomness*, J. Symb. Log. 81 (2016), 1028–1046, arXiv:1505.01707.  JS = C. G.
 Jockusch Jr., P. E. Schupp, *Generic computability, Turing degrees, and asymptotic density*,
 J. London Math. Soc. 85 (2012), 472–490, arXiv:1010.5212.  Theorem numbers were checked against
-the arXiv texts on 18 September 2026.  Neither paper is formalized in `C:\ProveIt`.
+the arXiv texts on 18 September 2026.  Neither paper is formalized in ProveIt.
 
 A third route, in `DyadicRoute.lean`, uses neither paper; see "The dyadic route" below.
 
@@ -179,7 +177,7 @@ synthesis can be run, and it uses neither HJKS nor JS:
   if `A ≰ᵀ ∅′`, then `R(A)` is not coarsely computable — a computable coarse description *is* a
   computable approximation.
 * `exists_not_limitComputable`: such an `A` exists.  The sets reducible to `∅` form a countable
-  lower cone (`lowerConeSets_countable`, from `C:\ProveIt`), each determines the limit of the
+  lower cone (`lowerConeSets_countable`, from `TuringDegrees`), each determines the limit of the
   approximation it codes, and Cantor's theorem finishes it.
 * `no_least_of_dyadic`: if `A` is limit-computable in each half of a minimal pair, the two
   descriptions the criterion supplies are the two witnesses of `no_least_of_two_witnesses`, so
@@ -257,7 +255,7 @@ the classes with a least degree) *is* formalized, in `Block.lean` and `BlockChar
 `Spectrum.lean`, and `DyadicRoute.lean` makes `¬ C1` independent of HJKS at the cost of one
 admitted consequence of Cooper 1973; building the minimal pair in Lean instead would need a
 use-bounded model of Turing functionals, which neither Mathlib nor the Lean side of
-`C:\ProveIt` provides (`RecursiveIn` takes the oracle as a total function, with no use).
+ProveIt provides (`RecursiveIn` takes the oracle as a total function, with no use).
 The spectrum identity (synthesis, Theorem 3.1) and the block-code
 characterization (Theorem 3.6) are also left for later.  `no_least_of_two_witnesses` (Lemma 2.4)
 is proved and is the entry point for any such witness construction.

@@ -99,10 +99,6 @@ lake build CoarseDegrees
 lake build CoarseDegrees.Audit
 ```
 
-The library came into ProveIt with the Cardinals repository (see
-[`../../SetTheory/Cardinals/`](../../SetTheory/Cardinals/)) and was moved here
-afterwards; `git log --follow` traces its files through that move.
-
 ## Rocq development
 
 The Rocq files use the constructive oracle-machine semantics from
