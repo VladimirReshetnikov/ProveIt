@@ -41,13 +41,13 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 
 | Topic | Contents |
 | --- | --- |
-| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; and [`SurrealNumbers/`](Algebra/SurrealNumbers/), the merged Surreal project: research reports on surreal and surcomplex numbers and omnific integers, with a Lean library for the actual surreal field. |
+| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction; and [`SurrealNumbers/`](Algebra/SurrealNumbers/): the surreal field built from sign sequences and proved real closed, the algebraically closed surcomplex numbers, and Conway's omnific integers, with research reports on surreal and surcomplex numbers. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
-| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1; admitting published results, see below); Hilbert's tenth problem (MRDP in both directions, universal Diophantine equations, and corrected editions of six articles by J. P. Jones); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
+| [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem) and coarse Turing degrees (the failure of C1 and of Martin's cone theorem; admitting published results, see below); Hilbert's tenth problem (MRDP in both directions, universal Diophantine equations, prime-representing polynomials, and corrected editions of six articles by J. P. Jones); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
-| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; and [`Cardinals/`](SetTheory/Cardinals/), the merged Cardinals project: exacting and cover-exacting large cardinals (admitting published results; see below), with further research reports. |
+| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`; exacting, ultraexacting and cover-exacting large cardinals in [`Cardinals/`](SetTheory/Cardinals/) (admitting published results; see below), which also holds a collection of unformalized research reports on conjectures in combinatorics, number theory and analysis. |
 | [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
@@ -93,6 +93,20 @@ requirement to build Lean one module at a time.
   in ten variables.  Both developments also prove the witness's discrete
   mirror symmetry and the weighted torus action behind it, exhibiting the
   rational collision family as the orbit of a single integral collision.
+- A [Lean library for the surreal numbers](Algebra/SurrealNumbers/README.md):
+  the surreal field `No` constructed as an ordered field of sign sequences and
+  identified with small Conway normal forms, proved real closed, with the
+  surcomplex numbers `No[i]` proved algebraically closed; strong summation,
+  surreal-valued valuation and modulus, and fine calculus on the actual
+  fields.  Conway's omnific integers `Oz` are constructed inside `No`: the
+  constant-term map onto `ℤ` is a surjective ring homomorphism with the purely
+  infinite ideal as kernel, the units are `±1`, every surreal has a unique
+  omnific floor, integer polynomials have only their ordinary integer roots,
+  and every nonzero finite quotient is `ℤ/nℤ`.  An audit checks that every
+  declaration uses only the standard axioms.  Beside it, 63 research reports
+  on `No`, `No[i]` and `Oz` — among them proposed answers to published
+  questions of Ehrlich–Kaplan and Kaplan–Krapp–Serra, and Diophantine
+  geometry over `Oz` — with a ledger mapping their statements to Lean.
 - Fermat's Last Theorem for `n = 4`, an exact floor-square-root sum, and a
   bijective Calkin-Wilf rational orbit.
 - Exact trigonometric, arctangent, and tiny-exponent-tower identities.
@@ -121,6 +135,13 @@ requirement to build Lean one module at a time.
   translation.
 - Full deductive equivalence between the Closure axiomatization and ZF,
   checked independently in Lean and Coq.
+- [Exacting, ultraexacting and cover-exacting cardinals](SetTheory/Cardinals/README.md):
+  a synthesis of research reports at the inconsistency frontier of large
+  cardinals, whose strongest result is that in ZFC a cover-exacting cardinal
+  cannot lie between two strongly compact cardinals (a partial negative
+  answer to a problem of Blue and Goldberg), and a Lean formalization, in
+  Mathlib's model `ZFSet`, of its ZFC theorems about a single witness,
+  conditional on nineteen admitted published results.
 - A deductive bi-interpretation between PA and finite-generation hereditary
   finite set theory.
 - A [constructive Lean/Coq proof](Logic/PeanoArithmetic/NoFiniteModel/README.md)
@@ -179,13 +200,26 @@ requirement to build Lean one module at a time.
   cardinalities of degree classes and cones, jump strictness, Kleene--Post
   incomparability, c.e.-completeness, Shoenfield's limit lemma, Post's theorem,
   and a conditional constructive solution of Post's problem. Its second Lean
-  library, `CoarseDegrees`, refutes the coarse least-degree statement C1 three
-  ways, conditional on admitted published theorems.
+  library, [`CoarseDegrees`](Computability/TuringDegrees/Lean/CoarseDegrees/README.md),
+  formalizes coarse Turing equivalence and refutes, by three independent
+  routes, the statement C1 that every nonuniform coarse-equivalence class
+  contains a representative of least Turing degree (the coarse instance of a
+  question of Gerdes), together with its uniform analogue; it also gives
+  coarse classes with no representative of least hyperdegree, and the failure
+  of Martin's cone theorem for the coarse degrees.  These results are
+  conditional on eight admitted published theorems.
 - [Hilbert's tenth problem](Computability/HilbertTenthProblem/README.md):
   MRDP in both directions (`Diophantine.mrdp`, `Diophantine.mrdp_iff`), the
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
+- A [collection of 104 research reports](SetTheory/Cardinals/docs/reports/README.md)
+  without Lean counterparts, most of them attacking a specific conjecture from
+  the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
+  determinants, supercongruences, tetration and digit stabilization,
+  log-concavity, graphs, automata and formal languages, enumerative
+  combinatorics, generating-function asymptotics, and quaternionic analysis;
+  about a quarter are counterexamples rather than proofs.
 
 ## Lean workspace
 
@@ -331,9 +365,9 @@ lake --dir Computability/TuringDegrees/Lean build
 The Busy Beaver facade excludes the expensive BB2/BB3 classifications and the
 mathlib compiler bridge; request those modules explicitly.
 
-`Algebra/SurrealNumbers/` is the merged Surreal repository: a Lake package
-named `Surreal` with the same Lean and mathlib pins as the root workspace plus
-a vendored path dependency. Its default target also runs an axiom audit
+`Algebra/SurrealNumbers/` is a separate Lake package named `Surreal`, with the
+same Lean and mathlib pins as the root workspace plus a vendored path
+dependency. Its default target also runs an axiom audit
 (`SurrealAudit`); follow its own README and agent guide, and keep the
 one-build-at-a-time rule above.
 
@@ -383,7 +417,7 @@ and classical boundaries and provides a `coqchk` command.
 - Conditional theorems remain explicitly conditional. The A198683 research
   ledger distinguishes semantic proofs, finite data checks, conditional
   results, and heuristic evidence.
-- **`admit` is used in two merged projects, and nowhere else.** The
+- **`admit` is used in two libraries, and nowhere else.** The
   [`Cardinals`](SetTheory/Cardinals/Cardinals/README.md) library (19) and the
   [`CoarseDegrees`](Computability/TuringDegrees/Lean/CoarseDegrees/README.md)
   library (8) close results from the published literature with `admit`, each
@@ -445,9 +479,8 @@ build compiles the pinned sources under the `Abel` logical path.
 The exception is
 [`Algebra/SurrealNumbers/vendor/combinatorial-games`](Algebra/SurrealNumbers/vendor/combinatorial-games/),
 a 28-module subset of `vihdzp/combinatorial-games` (Apache-2.0, license
-retained) that the merged Surreal project uses as a Lake path dependency; it
-stays inside that project so the subtree merge keeps Surreal's history and
-build unchanged.
+retained) that the surreal-numbers package uses as a Lake path dependency; it
+stays inside that package.
 
 ## License
 
