@@ -1,19 +1,42 @@
 # Incoming reports
 
-This directory is the drop zone for new external research reports, delivered
-as `.zip` archives. Each archive is one manuscript package. It holds a LaTeX
-article, and usually its PDF, a delivery README, verification code, recorded
-outputs, audit notes and a checksum manifest.
+This directory is ProveIt's drop zone for new external research reports,
+delivered as `.zip` archives. Each archive is one manuscript package. It holds
+a LaTeX article, and usually its PDF, a delivery README, verification code,
+recorded outputs, audit notes and a checksum manifest.
 
 **Do not delete this `README.md`.** Once a batch has been placed, remove its
 archives as section 7 describes, not this file.
 
-Nothing in this directory is part of the collection. An archive becomes part
-of it only once it has been placed in, and written into, a report under
-`docs/<family>/<report>/`.
+Nothing in this directory is part of the repository's research material. An
+archive becomes part of it only once it has been placed in, and written into,
+a report at one of the destinations of section 2.
 
-The procedure below is the current form of what the git history records.
-Earlier batches differ from it in recorded ways:
+## Where this procedure comes from
+
+The procedure was developed in the Surreal repository, whose drop zone was
+`docs/new`, over surreal batches 13 to 35. That repository is now
+[`Algebra/SurrealNumbers`](../../Algebra/SurrealNumbers/), merged with its
+full history, and this directory replaced `docs/new` when it arrived. The
+Cardinals repository, now [`SetTheory/Cardinals`](../../SetTheory/Cardinals/),
+ran a parallel intake of ten "deliveries" into its research-report collection
+before its own merge. Both histories are part of ProveIt's, so every commit
+cited here can be inspected with `git show`.
+
+Two consequences for reading those commits:
+
+- **Paths moved.** In a Surreal-era commit the report collection is at the
+  tree root's `docs/`, and its archives at `docs/new/`; in ProveIt it is at
+  `Algebra/SurrealNumbers/docs/`. In a Cardinals-era commit the collection is
+  at `docs/reports/`; in ProveIt it is at `SetTheory/Cardinals/docs/reports/`.
+  A path quoted below without a prefix, such as `docs/README.md` in a
+  Surreal-era worked example, is relative to that project.
+- **Batch numbers continue the Surreal sequence.** The batch index counts
+  every batch processed from this directory and from `docs/new` before it. The
+  last Surreal batch was 35, so the first batch processed here is **36**. The
+  Cardinals deliveries (first to tenth) are a separate, closed numbering.
+
+Earlier batches differ from the procedure below in recorded ways:
 
 - Batches 13 to 15 (`b071389`, `d6eee04`, `d3d9688`) put every manuscript
   under a `sources/` directory, with its README beside it. That covered merge
@@ -25,52 +48,72 @@ Earlier batches differ from it in recorded ways:
   them.
 - The catalogue step was done late for batches 14 and 15, in `e5791a8`, and
   batch 17 was catalogued together with batch 18.
-- No batch after 13 has a separate audit commit.
-- This directory first appears in `f7f9a96`, after batch 17 was placed, so
-  batch 18 is the first batch processed from it.
+- No Surreal batch after 13 has a separate audit commit.
+- `docs/new` first appears in `f7f9a96`, after batch 17 was placed, so batch
+  18 is the first batch processed from a drop zone.
+- The Cardinals deliveries were not committed as archives (they went to the
+  Recycle Bin), kept each package's delivered layout at the report root, and
+  merged duplicates in commits of their own after a placement commit
+  (`cb0af0ad8` placed, `0e5075f81` merged).
 
-Reports placed before batch 13 predate the layout described here. They keep
-main files such as `surreal_graphs.tex`, output directories such as
-`results/`, and scripts at the report root. Do not "fix" them while processing
-a batch. Where a past commit and this README differ, follow this README. The
+Reports placed before Surreal batch 13 predate the layout described here. They
+keep main files such as `surreal_graphs.tex`, output directories such as
+`results/`, and scripts at the report root; most Cardinals-collection reports
+likewise keep their delivered layout. Do not "fix" them while processing a
+batch. Where a past commit and this README differ, follow this README. The
 commits cited at the end are worked examples, subject to these differences.
 
 ## 1. Inventory
 
 - **Check that every archive is committed as delivered.** Run
-  `git status --short -- docs/new`; it must show no untracked `.zip`.
-  Deliveries are committed on arrival, as in `f7f9a96` and `15d4bab` ("New
-  incoming external reports: …"). `*.zip` is in `.gitignore`, so a delivery
-  is committed with `git add -f`. If an archive is untracked, ask the user to
-  commit it before placing anything. Never delete it. Only a committed
-  archive can be recovered after section 7 removes it.
+  `git status --short -- docs/incoming`; it must show no untracked `.zip`.
+  Deliveries are committed on arrival in a commit titled "New incoming
+  external reports: …", as in `f7f9a96` and `15d4bab`. The root `.gitignore`
+  does not ignore archives here, so a plain `git add docs/incoming/<archive>.zip`
+  commits one. (The surreal package's own `.gitignore` ignores `*.zip`, which
+  is why the Surreal-era deliveries needed `git add -f`; it does not reach this
+  directory.) If an archive is untracked, commit it on its own, unchanged,
+  before placing anything, or ask Vladimir to. Never delete it. Only a
+  committed archive can be recovered after section 7 removes it.
 - Extract every archive into a scratch directory **outside the repository**,
   such as the session scratchpad under `%TEMP%`. Never extract into the
-  repository or into `C:\` root.
+  repository or into `C:\` root. Extract each archive into its own directory
+  named after the archive: several archives may wrap an inner directory of the
+  same name (`persistent_frontier_heights/` in two archives of batch 36), and
+  on Windows a second extraction into the same place silently merges them.
 - **Check whether an archive was already processed.** A later delivery may
   repeat an earlier one.
   - Hash every extracted file with `git hash-object`.
-  - Look the hashes up in `git ls-tree -r <place> -- docs` for each earlier
-    placement commit (a commit titled "Place N manuscripts …"). Do not look
-    them up at `HEAD`: later commits rewrite articles and READMEs, and
-    sometimes staged code, data or audits too.
+  - Find each hash in history with
+    `git log --all --format=%h --find-object=<hash>`. A hit shows the commit
+    that introduced that exact blob. Look for placement commits ("Place N
+    manuscripts …" in ProveIt and the Surreal history, "Place N new reports …"
+    or "Unpack, classify and catalogue …" in the Cardinals history).
+  - Then confirm in the placement commit's own tree (`git ls-tree -r <place>`),
+    not at `HEAD`: later commits rewrite articles and READMEs, and sometimes
+    staged code, data or audits too.
   - At its placement commit, every staged file matches the delivered bytes,
     with one recorded exception. `a826a41` staged manuscript 05's
     `SOURCE_AUDIT.md` with a dated correction appended, because that audit
-    made a false claim about this repository. A hash miss on such a file does
+    made a false claim about the repository. A hash miss on such a file does
     not show that its archive is new.
   - `e9a9650` checked its nine repeated archives this way against
     `a826a41`.
+- **Check the pin.** A delivery names the ProveIt commit it was written
+  against (for Surreal-era deliveries, a Surreal commit). Record it for every
+  manuscript; the report cites it as provenance (section 4, item 6).
 - **Number the manuscripts.** Number the new manuscripts of the batch `01`,
   `02`, … in arrival order. This **manuscript number** names each manuscript
   in the placement commit message and, for a new merged report, is its file
-  prefix. It is not the batch's own index (13, 14, …). The batch index appears
+  prefix. It is not the batch's own index (36, 37, …). The batch index appears
   only in write and audit commit titles and in the table at the end.
 - **Checksum manifests.** Verify each checksum manifest against the extracted
   files, then plan to drop it. A checksum manifest is a file whose purpose is
-  to list the package's hashes: `SHA256SUMS.txt`, `CHECKSUMS.sha256`,
-  `MANIFEST.sha256`, `sha256.json` and the like. The collection ships none.
-  A record that carries hashes alongside other content, such as a package,
+  to list the package's hashes: `SHA256SUMS`, `SHA256SUMS.txt`,
+  `CHECKSUMS.sha256`, `MANIFEST.sha256`, `sha256.json` and the like.
+  Repository policy abolishes them (the root `.gitignore` ignores
+  `**/SHA256SUMS` and `**/SHA256SUMS.*`), and no collection ships one. A
+  record that carries hashes alongside other content, such as a package,
   build or provenance manifest, is data. Verify its hashes too and stage it
   under `data/`. The report's README says which of the files it lists are not
   shipped. For example, `e9a9650` dropped four `SHA256SUMS.txt` files but
@@ -79,7 +122,9 @@ commits cited at the end are worked examples, subject to these differences.
 - **Run every verification suite on a copy**, never in place. Many suites
   rewrite their own evidence files, and some write timings or version strings.
   A check made after running a suite in place would compare two equally
-  modified copies.
+  modified copies. Use `py` or `uv run --no-project python`; bare `python` does
+  not resolve reliably here. A suite that needs a package (SymPy, say) runs
+  under `uv run --no-project --with sympy==<pinned> python …`.
 
 ## 2. Decide placement
 
@@ -87,6 +132,48 @@ Read each manuscript, not its title. Titles and archive names mislead in both
 directions. A `surreal_` archive may be about surcomplex objects. A shared word
 such as "moment", "spectrum", "phase", "resonance" or "small divisor" can hide
 different mathematics, and different titles can hide the same theorem.
+
+### Destinations
+
+ProveIt holds external research reports in three kinds of place. The delivery
+README usually names the ProveIt path it continues; verify that path against
+the current tree rather than trusting it.
+
+| Kind | Destination | Holds |
+|---|---|---|
+| Surreal collection | `Algebra/SurrealNumbers/docs/<family>/<report>/` | reports on `No`, `No[i]`, omnific integers and related structures; families below |
+| Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | unformalized reports on specific problems: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, … |
+| Project research | `<Topic>/<Project>/Research/<report>/` | reports continuing a Lean/Rocq project that has no report collection of its own, such as `Algebra/JacobianConjecture` or `Combinatorics/Polyominoes/KlarnerConstant` |
+
+- A manuscript that continues a report already in one of the collections goes
+  to that report, whatever its subject.
+- A manuscript that continues a formal project goes to that project's
+  `Research/`, each report in its own subdirectory beside whatever the
+  directory already holds. The first report placed in a project states that
+  layout in the placement commit.
+- Placing a report beside a formal development confers no formal status on
+  it. Its README says which of its statements, if any, the project has already
+  formalized (by declaration name), and that the rest are not.
+
+The Surreal collection's family directory follows the scalar system:
+
+| Family | Contents |
+|---|---|
+| `surreal/` | `No` and real Hahn fields |
+| `surcomplex/` | `No[i]` and complex Hahn fields, or results uniform in `R` and `C` |
+| `surquaternions/` | quaternions over `No` |
+| `physics/` | physical assessments |
+| `foundations-and-computation/` | mathematics about the subject |
+
+The research-report collection's categories are listed in
+[its README](../../SetTheory/Cardinals/docs/reports/README.md). Neither list is
+closed. A new family, category or project `Research/` directory may be opened,
+but only in the placement commit and with the reason stated there. `d6eee04`
+opened `surquaternions/` because its scalar system is new, and `physics/` to
+keep assessments apart from mathematics. `d7fc004` opened
+`foundations-and-computation/`.
+
+### Role of each manuscript
 
 For each manuscript, decide one of the following.
 
@@ -112,35 +199,26 @@ For each manuscript, decide one of the following.
     weaker hypotheses or greater generality. `a826a41` chose 08, which assumes
     only Γ ≠ 0, over 09, which assumes divisibility. Proofs taken from the
     others must be re-read for hidden uses of their stronger hypotheses.
+  - A merge can also be an addition: several manuscripts that all answer one
+    report's question are merged with each other and become one addition to
+    that report.
 - **New standalone report.** Choose this when the manuscript shares no named
   question and no spine with anything in the tree.
-
-The family directory follows the scalar system:
-
-| Family | Contents |
-|---|---|
-| `surreal/` | `No` and real Hahn fields |
-| `surcomplex/` | `No[i]` and complex Hahn fields, or results uniform in `R` and `C` |
-| `surquaternions/` | quaternions over `No` |
-| `physics/` | physical assessments |
-| `foundations-and-computation/` | mathematics about the subject |
-
-These are the families that exist so far, and the list is not closed. A new
-family may be opened, but only in the placement commit and with the reason
-stated there. `d6eee04` opened `surquaternions/` because its scalar system is
-new, and `physics/` to keep assessments apart from mathematics. `d7fc004`
-opened `foundations-and-computation/`.
 
 Check every gap a manuscript claims to fill against the **current** tree, and
 quote the passage with file and line. Manuscripts are written against pinned
 older snapshots, so a gap may already be filled, perhaps by the previous
-batch.
+batch, or by a Lean or Rocq development the manuscript did not inspect.
 
-If a manuscript refutes a claim that an existing report makes, check the
-refutation against the tree yourself. Also look for the same claim repeated in
-other reports and READMEs. Retract the claim in a commit of its own before the
+If a manuscript refutes a claim that an existing report or project README
+makes, check the refutation against the tree yourself. Also look for the same
+claim repeated in other reports and READMEs, including the topic READMEs and
+the root README. Retract the claim in a commit of its own before the
 placement commit, and cite that retraction there. `d0e61c4` retracted a
-claim, and `d3d9688` then placed the refuting manuscript.
+claim, and `d3d9688` then placed the refuting manuscript. A manuscript that
+improves a bound a README states (rather than refuting it) is a stale-claim
+correction for the write phase (section 4, item 5), not a retraction; a
+formally verified bound stays stated, beside the unverified improvement.
 
 For a large batch, write one dossier per cluster before deciding. A dossier
 records:
@@ -176,9 +254,12 @@ examples of placement decisions, not of staging.
   instead.
 - **Where files go:**
   - scripts, proof sketches and build files (`.py`, `.sh`, `.ps1`, `.wl`,
-    `.wls`, `.lean`, `Makefile`, …) → `code/`;
-  - recorded outputs and requirements → `data/`;
+    `.wls`, `.lean`, `.cpp`, `Makefile`, …) → `code/`;
+  - recorded outputs, certificates, examples and requirements → `data/`;
   - audit and provenance markdown → the report root.
+  - An existing report whose delivered layout differs (a Cardinals-collection
+    report with `verify.py` at its root, say) still receives its additions in
+    `code/` and `data/`; do not move its existing files.
 - **Prefixes** have the form `NN-short-slug-`, for example
   `08-exact-and-drifting-multipliers-verify.py`.
   - A new merged report keeps its members' **manuscript** numbers, as every
@@ -190,7 +271,8 @@ examples of placement decisions, not of staging.
     sequence**. Use the next number after its highest existing prefix, with an
     unprefixed original counting as `01`. `d6eee04` already numbered this way:
     its manuscript 07 became `05-` in `contours-and-stokes`. `d3d9688` states
-    the rule, and `e9a9650` spells out both clauses.
+    the rule, and `e9a9650` spells out both clauses. Several manuscripts
+    merged into one addition each take their own number in that sequence.
   - `a826a41` gave its additions their batch numbers instead. That is why
     `entire-functions-at-arbitrary-rank` has a `01-` below its `03-`, and why
     `exponential-automorphism-rigidity` has `04-` and `05-` after its
@@ -203,7 +285,7 @@ examples of placement decisions, not of staging.
   - The one exception so far is an audit staged with a dated correcting
     finding appended (`a826a41`). Announce any such exception in the placement
     commit.
-  - Disclose every other discrepancy in the collection README, and do not fix
+  - Disclose every other discrepancy in the report's README, and do not fix
     it in the delivered file.
   - `de84d8b` broke this rule: it patched a `build.py` and reran a suite in
     place. It is not a precedent, and batch 18 restored the delivered bytes.
@@ -212,18 +294,25 @@ examples of placement decisions, not of staging.
   audits, build reports, and Makefiles that now live in `code/`. Rerun
   instructions must work with the shipped names: run on a copy, or pass an
   explicit output path.
+- **Keep paths short.** Windows tools fail on paths over 260 characters, and
+  the error they give is "file not found", not "path too long". The
+  research-report collection is deep, so check that every staged path,
+  prefixed with `C:\ProveIt\`, stays well under that limit (aim for 200), and
+  shorten the slug of the prefix if not.
 - **Verify the staging.** Copy every staged file from a **fresh** extraction,
   not from a directory where a suite was run. Then verify every staged blob
-  against the fresh extraction. `.gitattributes` normalizes text to LF, so
-  check that staged text files contain no CR bytes; otherwise the committed
-  blob will differ from the delivered bytes.
+  against the fresh extraction. `.gitattributes` normalizes text to LF
+  (`* text=auto eol=lf`), so check that staged text files contain no CR bytes
+  and read the "CRLF will be replaced by LF" warnings of `git add`; otherwise
+  the committed blob will differ from the delivered bytes.
 - **Retire the archives in this same commit**, as described in section 7.
 
 ## 4. Write the reports
 
 Turn the placed material into finished reports. Commit them in one or more
-commits titled "Write batch <index>: …" or "Merge …". The rules below come
-from defects found in earlier batches.
+commits titled "Write batch <index> (<k>/<n>): <subject> into <report>", as
+batches 30 to 35 did, or "Merge …". The rules below come from defects found in
+earlier batches.
 
 1. **Labels.** Every new `\label` carries a report prefix, for example `dyn:`
    or `ent:`.
@@ -232,7 +321,8 @@ from defects found in earlier batches.
        `rank-one-berkovich`, `exponential-automorphism-rigidity`,
        `computable-surreals` and others;
      - bare names alongside `spec:` in `spectral-theory`;
-     - per-part `a:` … `f:` prefixes in `analysis`.
+     - per-part `a:` … `f:` prefixes in `analysis`;
+     - nearly every report of the research-report collection, as delivered.
    - In a new report, give the delivered labels the report prefix during the
      write phase, before anything cites them.
    - New material in an existing report takes that report's prefix, plus a
@@ -242,8 +332,9 @@ from defects found in earlier batches.
      `de84d8b` added to `exponential-automorphism-rigidity` are not a
      precedent.
    - Once a report has been written, **never rename or delete any of its
-     labels.** `docs/FORMALIZATION.md` cites labels by name, bare ones
-     included, and maps them to Lean declarations.
+     labels.** The surreal collection's `FORMALIZATION.md` cites labels by
+     name, bare ones included, and maps them to Lean declarations; other
+     projects' crosswalks may do the same.
    - Snapshot the labels before editing and compare afterwards. Count both
      `\label{…}` and the cleveref form `\label[type]{…}`, for example with the
      pattern `\\label(\[[^]]*\])?\{`.
@@ -269,7 +360,7 @@ from defects found in earlier batches.
    - Before committing, check every reserved symbol, and every declaration
      such as "uses no J", against every use in the article. The batch-13 audit
      found three such declarations false as printed (`6048fb6`).
-5. **Stale claims.** Correct any sentence that says the collection lacks
+5. **Stale claims.** Correct any sentence that says the repository lacks
    something it now has, and keep the pin as provenance.
    - An open question that is only partly answered stays open and is
      re-scoped.
@@ -277,6 +368,9 @@ from defects found in earlier batches.
      claim is incomplete, correct that report's existing text as well
      (`e9a9650` found such a gap in `hahn-tate-uniformization`). Item 4 limits
      notation changes only; it does not forbid these corrections.
+   - A project README that states a result the new report improves keeps its
+     statement, with its formal status, and gains a sentence on the
+     unverified improvement and where it is.
 6. **Provenance.** Say:
    - how many manuscripts the report was built from;
    - what each contributed;
@@ -286,7 +380,9 @@ from defects found in earlier batches.
    Promise no file that is not shipped, in text you write. Where a verbatim
    delivered file names one, say so in the README.
 7. **Build.** Run
-   `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`.
+   `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`
+   (MiKTeX provides `latexmk`, `pdflatex` and `lualatex`; use the engine the
+   report already uses).
    - The build must have zero errors, zero undefined references or
      citations, zero multiply-defined labels, zero duplicate PDF
      destinations, and zero mistyped cross-references (`d06ea7a`, `fa9af09`,
@@ -298,51 +394,79 @@ from defects found in earlier batches.
      with a build of the committed text.
    - Build in a scratch directory. Commit `article.pdf`, but no auxiliary
      files (`.aux`, `.log`, `.toc`, `.out`, `.fls`, `.fdb_latexmk`).
-8. **README.** Each report has a collection README, not the delivery README.
+   - Render the changed pages (`pdftoppm`) and look at them; text extraction
+     is not layout verification.
+8. **README.** Each report has a report README, not the delivery README.
    It gives the title and provenance, a listing that matches the directory,
    and the label prefix. It says what is claimed and what is not, describes
-   the relation to neighbouring reports, and gives build and rerun
-   instructions. Check every number in it against the build or the data.
-9. **Every edited report is rebuilt.** A reciprocal remark added to a
-   neighbouring report changes that report too. Rebuild its PDF, and update
-   any page count its README states.
+   the relation to neighbouring reports and to any formal development
+   nearby, and gives build and rerun instructions. Check every number in it
+   against the build or the data.
+9. **Reciprocal notes.** Where a new result answers, sharpens or bears on
+   another report, record it there in a short remark, in a commit of its own
+   titled "Write batch <index> (reciprocal notes …): …", as batches 31 to 35
+   did (`ab18444bb`, `6477b1c24`).
+10. **Every edited report is rebuilt.** A reciprocal remark added to a
+    neighbouring report changes that report too. Rebuild its PDF, and update
+    any page count its README states.
 
 ## 5. Catalogue
 
-- **Update `docs/README.md`:** the report count in its opening sentence, the
-  per-family counts in its section headings, and the family tables.
-- **Update `docs/manifest.tex`:** one `\entry` per report, plus every count
-  it spells out. Those are the `pdfsubject` in the preamble, the title page,
-  the Scope paragraph with its per-family breakdown, and the opening
-  paragraph of each family section, including sub-counts. Then rebuild
-  `docs/manifest.pdf`.
+Catalogue every destination the batch touched, in one commit titled
+"Catalogue batch <index>: …".
+
+- **Surreal collection:**
+  - Update `Algebra/SurrealNumbers/docs/README.md`: the report count in its
+    opening sentence, the per-family counts in its section headings, and the
+    family tables.
+  - Update `Algebra/SurrealNumbers/docs/manifest.tex`: one `\entry` per
+    report, plus every count it spells out. Those are the `pdfsubject` in the
+    preamble, the title page, the Scope paragraph with its per-family
+    breakdown, and the opening paragraph of each family section, including
+    sub-counts. Then rebuild `manifest.pdf`.
+- **Research-report collection:**
+  - Update `SetTheory/Cardinals/docs/reports/README.md`: the count in its
+    opening sentence and the category table with its total, and the account
+    of deliveries and merges when the batch merged anything.
+  - Update `SetTheory/Cardinals/docs/reports/manifest.tex`: one `\entry` per
+    report (an extended report's entry gains the new result and its source
+    archives), plus every count it spells out, including the `pdfsubject`,
+    the Scope section and the directory-tree table. Then rebuild
+    `manifest.pdf`.
+- **Project research:** the project README, and its `Research/README.md` if
+  it has one, list the new report with what it claims and its status.
+- **Counts elsewhere.** The root `README.md`, the topic READMEs
+  (`Algebra/README.md`, `SetTheory/README.md`, …) and the Surreal package's
+  own README state collection sizes ("63 research reports", "104 research
+  reports"). Correct every count the batch changed.
 - **Catalogue every report without a row**, not only this batch's. Take the
-  count from the report directories under `docs/<family>/`, not by adding to
-  the old total, and check the rows against `git ls-tree -d HEAD docs/*/`.
+  count from the report directories, not by adding to the old total, and check
+  the rows against `git ls-tree -d HEAD` of the collection.
 
 A lagging catalogue has already misled an incoming manuscript. The source
-audit delivered with batch 17's manuscript 05 read `docs/README.md`, found no
-exponential-automorphism row, and concluded that the collection had no such
-report. See `a826a41`.
+audit delivered with batch 17's manuscript 05 read the collection README,
+found no exponential-automorphism row, and concluded that the collection had
+no such report. See `a826a41`.
 
-Four other shared files are maintained by the collection's review and
-formalization work:
-- `docs/FORMALIZATION.md`
-- `docs/NORMAL_FORM_BRIDGE.md`
-- `docs/NOTATION.md`
-- `docs/REVIEW.md`
+Four other shared files of the surreal collection are maintained by its
+review and formalization work:
+- `Algebra/SurrealNumbers/docs/FORMALIZATION.md`
+- `Algebra/SurrealNumbers/docs/NORMAL_FORM_BRIDGE.md`
+- `Algebra/SurrealNumbers/docs/NOTATION.md`
+- `Algebra/SurrealNumbers/docs/REVIEW.md`
 
 Do not rewrite them while processing a batch.
 
-**Check their label citations report by report.** For each report the batch
-edited, every label cited in that report's section of `FORMALIZATION.md` must
-still resolve in the file named on the section's `Source:` line. That file is
-`article.tex`, except in `canonical-forms-need-not-be-subgraphs`
+**Check their label citations report by report.** For each surreal report the
+batch edited, every label cited in that report's section of `FORMALIZATION.md`
+must still resolve in the file named on the section's `Source:` line. That
+file is `article.tex`, except in `canonical-forms-need-not-be-subgraphs`
 (`surreal_graphs.tex`) and `gonshor-product-birthdays`
 (`surreal_product_birthdays.tex`). Do not search the whole collection
 instead: bare labels such as `thm:main` are defined in several reports, so a
 label lost from one would still be found in another. Check the other three
-files' label citations into the edited reports the same way.
+files' label citations into the edited reports the same way. A project whose
+Lean crosswalk cites report labels is checked the same way.
 
 Line numbers in `FORMALIZATION.md` are navigation hints, and the formalization
 work refreshes them. A batch may correct a figure there that it has made
@@ -356,7 +480,8 @@ Audit the written reports independently, with each auditor taking one lens:
 - fidelity to the sources;
 - notation;
 - non-claims;
-- whether a reader could believe more was verified than was.
+- whether a reader could believe more was verified than was, in particular
+  that a report placed beside a Lean or Rocq development is itself verified.
 
 Commit the fixes as "Fix <count> defects found auditing batch <index>", for
 example `6048fb6`, "Fix twenty defects found auditing batch 13". Rebuild and
@@ -366,22 +491,26 @@ re-check labels afterwards.
 
 In the placement commit of section 3, as `e9a9650` did, remove the batch's
 archives from this directory:
-- Use `git rm docs/new/<archive>.zip` for each archive of the batch. Also
-  remove any archives of earlier batches still here, after verifying them
+- Use `git rm docs/incoming/<archive>.zip` for each archive of the batch.
+  Also remove any archives of earlier batches still here, after verifying them
   against the placement commit that used them.
-- Never run `git rm -r docs/new` or delete the directory: a later delivery may
-  already be waiting here. **Keep this `README.md`.**
+- Never run `git rm -r docs/incoming` or delete the directory: a later
+  delivery may already be waiting here. **Keep this `README.md`.**
 - Record in the placement commit which archives were retired and how each was
   accounted for.
 - If `git rm` reports that an archive is not tracked, stop. Do not delete the
-  file; ask the user to commit it.
+  file; commit it first (section 1).
 
-The archives remain available from the commit that added them. The write
-phase needs the manuscripts, READMEs and pins of merge members and additions,
-which are never staged. Re-extract them into a fresh scratch directory from
-that commit.
+The archives remain available from the commit that added them
+(`git show <arrival>:docs/incoming/<archive>.zip > <scratch>/<archive>.zip`).
+The write phase needs the manuscripts, READMEs and pins of merge members and
+additions, which are never staged. Re-extract them into a fresh scratch
+directory from that commit.
 
 ## Worked examples in the history
+
+Surreal-era batches (paths relative to `Algebra/SurrealNumbers/`; archives
+under `docs/new/`):
 
 | Batch | Place | Write or merge | Catalogue | Audit |
 |---|---|---|---|---|
@@ -395,12 +524,20 @@ that commit.
 | 21 | `d4e71b7` | `3a2d35d` | `13cb68e` | — |
 | 22 | `7b5f934` | `68e2960` | `5d369a0` | — |
 | 23 | `e4f8848` | `7af7056` | `087ee37` | audited before commit (`7af7056`) |
-| 24 | `be06fc8` | `bbdd536`, `7494d53` | this catalogue commit | — |
-| 25 | `cf350b1` | `e27070f`, `0240140`, `3daef3c` | this catalogue commit | — |
-| 26 | `f4c9504` | `9b80a30`, `1e54d5a`, `aae58bb` | this catalogue commit | — |
-| 27 | `a4dcb91` | `337d4a4`, `600397e`, `e118d89`, `b829d8b` | this catalogue commit | — |
-| 28 | `c6359e4` | `3d9dbe9`, `b3fa9e2`, `74b8974`, `a2b22a9`, `ac54217` | this catalogue commit | — |
-| 29 | `66d7e55` | `1bdd65c`, `4420ec6`, `a8f35b5`, `298bed6`, `e9d1959`, `2da3bd4` | this catalogue commit | — |
+| 24 | `be06fc8` | `bbdd536`, `7494d53` | `b5f0bfd` | — |
+| 25 | `cf350b1` | `e27070f`, `0240140`, `3daef3c` | `b5f0bfd` | — |
+| 26 | `f4c9504` | `9b80a30`, `1e54d5a`, `aae58bb` | `b5f0bfd` | — |
+| 27 | `a4dcb91` | `337d4a4`, `600397e`, `e118d89`, `b829d8b` | `b5f0bfd` | — |
+| 28 | `c6359e4` | `3d9dbe9`, `b3fa9e2`, `74b8974`, `a2b22a9`, `ac54217` | `b5f0bfd` | — |
+| 29 | `66d7e55` | `1bdd65c`, `4420ec6`, `a8f35b5`, `298bed6`, `e9d1959`, `2da3bd4` | `b5f0bfd` | — |
+| 30 | `21375f8` | `Write batch 30 (1/5)` … `(5/5)` | kept current by review commits | — |
+| 31 | `9d28e28` | `Write batch 31 (1/7)` … `(7/7)`; notes `ab18444` | kept current by review commits | — |
+| 32 | `7d04483` | `Write batch 32 (1/8)` … `(8/8)`; notes `2535d52`, `fbb8d2d`, `749d429` | kept current by review commits | — |
+| 33 | `aa9c891` | `Write batch 33 (1/6)` … `(6/6)`; notes `0e16436`, `6fb0f74` | `5055c82`, `b41c41c` | — |
+| 34 | `a7a435f` | `Write batch 34 (1/9)` … `(7/9)`; no commit is titled `(8/9)` or `(9/9)` | kept current by review commits | — |
+| 35 | `dec8d56` | `32bb723`; notes `6477b1c` | kept current by review commits | — |
+
+List a batch's write commits with `git log --oneline --grep="Write batch 34"`.
 
 Batch numbers:
 - No commit names a batch 16. The only report added between batches 15 and 17
@@ -408,6 +545,23 @@ Batch numbers:
   `e5791a8` without a placement commit.
 - The number 18 for `e9a9650` is inferred: that commit numbers the manuscripts
   of two deliveries, `f7f9a96` and `15d4bab`, as one sequence 01–18.
+- The numbers 30 to 35 of the placement commits are inferred from the write
+  commits that follow them; the placement messages do not state them.
+- Batches 30 to 35 have no catalogue commits of their own: the concurrent
+  proof-review and formalization commits kept `docs/README.md` and
+  `docs/manifest.tex` current, most fully in `b41c41c` ("Synchronize the
+  63-report catalogue"). A batch processed here catalogues itself (section 5).
 
 Earlier merges were audited in `b5231b1` (the six surcomplex merges of
 `1349004`), and in `abce2d6` and `e260237` (the two merges of `e268b51`).
+
+Cardinals-era deliveries (paths relative to `SetTheory/Cardinals/`): the
+first unpacking `a3fe9660e`; sorting and duplicate merges `f0f61b70d`,
+`8374aaa79`; the seventh delivery placed in `854a8b4f9` and catalogued in
+`b64b2c0c1`; the eighth placed in `cb0af0ad8` and merged in `0e5075f81`.
+
+ProveIt-era batches (from this directory):
+
+| Batch | Place | Write or merge | Catalogue | Audit |
+|---|---|---|---|---|
+| 36 | | | | |
