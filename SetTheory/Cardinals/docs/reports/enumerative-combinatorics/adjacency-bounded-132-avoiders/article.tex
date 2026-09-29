@@ -45,6 +45,9 @@
 \theoremstyle{remark}\newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+\newaliascnt{example}{theorem}% Part III (batch 43)
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=OliveLight,colframe=Forest,
   boxrule=.45pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
 \newcommand{\Av}{\operatorname{Av}}
@@ -59,6 +62,17 @@
 \newcommand{\shift}{\Phi}
 \newcommand{\dd}{\mathrm d}
 \newcommand{\Bformal}{\mathcal B}% Part II (batch 38)
+% Part III (batch 43): the manuscript's \PP, \EE, \TV, \Law, \skel, \cost,
+% \Q, \clip, \corr under report-local names; \corr is printed as \Upsilon.
+\newcommand{\ljP}{\mathbb P}
+\newcommand{\ljE}{\mathbb E}
+\newcommand{\ljTV}{d_{\mathrm{TV}}}
+\newcommand{\ljLaw}{\mathcal L}
+\newcommand{\ljskel}{\mathfrak s}
+\newcommand{\ljcost}{\operatorname{cost}}
+\newcommand{\ljQ}{\mathcal Q}
+\newcommand{\ljK}{\mathcal K}
+\newcommand{\ljU}{\Upsilon}
 \allowdisplaybreaks[2]
 \setlength{\parindent}{1.1em}
 \setlength{\parskip}{.25em}
@@ -112,6 +126,14 @@ manuscript, proves $\alpha_m<\beta_m$ for the root $\beta_m^{-1}$ of
 $\sum_{k=1}^mC_{k-1}x^k=1$ and $\beta_m-\alpha_m=O((\log m)^2/m^2)$; hence the
 constant term converges, $m(4-\alpha_m)-2\log m-4\log\log m\to2\log\pi$, and
 the growth deficit has an expansion to every inverse-logarithmic order.
+
+\emph{Addition of 29 September 2026 (batch 43).} Part~III, from a further
+manuscript, takes the bound near its trivial value, $m=n-d$. The deficit
+$n-M_n$ of the largest adjacent jump of a uniform $132$-avoider converges in
+total variation, at the sharp rate $n^{-1/2}$, to an explicit algebraic law
+with $\mathbb P(D>k)\sim3/\sqrt{\pi k}$; uniformly,
+$a_n^{(n-d)}/C_n=3/\sqrt{\pi d}+O(d^{-3/2}+n^{-1/2})$. This answers the joint
+limit in $n$ and $m$ near the boundary only; the bulk regime stays open.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -153,6 +175,10 @@ The order of limits matters: $n\to\infty$ is taken for each fixed $m$, and
 only afterwards do we let $m\to\infty$. The trivial identity
 $a_n^{(m)}=C_n$ for $m\ge n-1$ does not by itself settle this iterated limit.
 Here $C_n=\binom{2n}{n}/(n+1)$ is the $n$th Catalan number.
+[Added 29 September 2026, batch 43: Part~III studies the joint regime next
+to that identity, $m=n-d$ with $d$ fixed or $d=o(n)$
+(\cref{lj:thm:main,lj:thm:tail-main}); it does not bear on the iterated
+limit taken here.]
 
 \subsection{Which part was still open?}
 Nadler's Conjecture~2 in Section~5.2 of \cite{Nadler} asks for the existence of
@@ -1461,7 +1487,10 @@ hence $r_U(m)<1$.
 \begin{remark}[Constants depend on $m$]\label{crem:rem:fixed-m}
 All constants in the proof of \cref{prop:growth} (the $c$, $C$ and $D$ of
 its last paragraph) may depend on $m$; no joint-limit uniformity is claimed,
-in Part~I or here. The interface is all that Part~II uses: not explicit
+in Part~I or here. [Added 29 September 2026, batch 43: this remains true of
+Parts~I and~II. Part~III proves a joint estimate near the boundary $m=n-d$
+by a separate route that does not use this interface
+(\cref{lj:thm:tail-main}).] The interface is all that Part~II uses: not explicit
 determinants, a conjectural ordering of components, or a simple-pole
 assertion about $A_m$.
 \end{remark}
@@ -2452,6 +2481,13 @@ and the Catalan polynomial factor. A satisfactory result would establish an
 explicit range of uniformity before proposing a transition law. The identity
 $a_n^{(m)}=C_n$ when $m\ge n-1$ provides an exact boundary condition for such
 a theory.
+[Added 29 September 2026, batch 43: the boundary end of this direction is
+answered in Part~III. For fixed $d$, $a_n^{(n-d)}/C_n$ converges to an
+explicit rational limit, and uniformly for $n\ge8$, $2\le d\le n-1$,
+$a_n^{(n-d)}/C_n=3/\sqrt{\pi d}+O(d^{-3/2}+n^{-1/2})$, an equivalent whenever
+$d\to\infty$ and $d=o(n)$ (\cref{lj:thm:tail-main,lj:eq:fixed-window}). The
+direction stays open for $n-m\asymp n$ (\cref{lj:rem:bulk}) and for any
+interpolation with the fixed-$m$ regime (\cref{lj:sec:q-reconnect}).]
 
 \subsection{Renewal comparisons for other constrained tree classes}
 The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
@@ -2527,7 +2563,7 @@ First four inverse-log polynomials & Executed exact symbolic checks\\
 Large-$m$ numerical figures and component table & Floating-point illustrations only\\
 New Lean or Rocq theorem declarations & None supplied or claimed\\
 External peer review or exhaustive novelty verification & Not performed\\
-Component ordering, optimal scalar defect, joint limits & Open directions (\cref{crem:sec:future})\\
+Component ordering, optimal scalar defect, joint limits & Open directions (\cref{crem:sec:future}) [joint limits near $m=n$: Part~III, added 29 September 2026]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2651,6 +2687,1768 @@ uninspected paper.
  wording is kept.
 \end{itemize}
 
+%% ====================================================================
+%% Batch-43 addition (manuscript 02, "The Largest Jump Is Almost
+%% Maximal"). All labels of Part III carry the prefix lj: (largest jump).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad The largest jump near the boundary}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } The largest jump near the boundary}
+
+\noindent\emph{Part~III was added on 29 September 2026 in batch~43 of
+ProveIt's incoming-report intake, from one manuscript written against the
+state of Parts~I and~II printed above. Parts~I and~II take $n\to\infty$ with
+the adjacency bound $m$ fixed. Part~III takes the other side of the joint
+problem: the bound sits a distance $d$ below its trivial value, $m=n-d$, with
+$d$ fixed or growing slower than $n$. It answers Part~II's research direction
+``Joint growth of length and adjacency bound'' (\cref{crem:sec:future}) in
+that boundary regime only; the bulk regime $n-m\asymp n$ and the fixed-$m$
+spectral questions stay open (\cref{lj:sec:scope}).}
+
+\section{Provenance, conventions and the answer}
+\label{lj:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{lj:sec:source}
+Part~III is batch-43 manuscript~02, \emph{The Largest Jump Is Almost
+Maximal: An algebraic boundary law for random 132-avoiding permutations},
+an AI-assisted research manuscript prepared for Vladimir Reshetnikov and
+dated September 29, 2026 (26 pages, US Letter, as delivered). It arrived as
+the archive \texttt{ProveIt\_Largest\_Jump\_Research.zip} (inner directory
+\texttt{ProveIt\_Largest\_Jump/}, main file \texttt{article.tex}) in ProveIt
+commit \texttt{06bcc37a8} and was placed in \texttt{faef2ed2a}. It was
+written against ProveIt commit \texttt{8d936ee23}, at which this report's
+\texttt{README.md} and \texttt{article.tex} had the Git blobs
+\texttt{7f56b878} and \texttt{f24ea59a}. Both blobs were unchanged at the
+placement commit, so every statement the manuscript makes about this report
+refers to Parts~I and~II as printed above. Its code, data and audit notes are
+shipped beside the earlier parts' files with the prefix
+\path{03-largest-jump-} (Part~I's unprefixed files count as~01, Part~II's
+\path{02-centered-remainder-} files as~02); its manuscript, README and PDF are
+not shipped and survive in the arrival commit. Its two figures were added to
+\texttt{figures/} in the write phase (\cref{lj:sec:merge}).
+
+The manuscript contributes, in the order printed here: its main theorems and
+their scope (\cref{lj:sec:introduction}); first- and last-entry identities
+for $132$-avoiders (\cref{lj:sec:preliminaries}); a countable probability
+space of finite absorbing skeletons (\cref{lj:sec:skeleton}); a deterministic
+reconstruction lemma (\cref{lj:sec:reconstruction}); a total-variation bound
+by counting domination (\cref{lj:sec:tv}); the exact algebraic probability
+generating function of the limit law (\cref{lj:sec:pgf}); singularity
+analysis and a sharp rate (\cref{lj:sec:singularity}); the joint limits for
+the adjacency bound (\cref{lj:sec:joint}); a moment transition
+(\cref{lj:sec:moments}); exact probabilities and finite checks
+(\cref{lj:sec:checks}); ten research questions (\cref{lj:sec:questions}); a
+proof audit (\cref{lj:sec:audit}); and, as the last three sections of this
+part, its coefficient recursions, an algebraic certificate and its
+provenance (\cref{lj:app:recursions,lj:app:algebra,lj:app:provenance}), which
+were appendices in the manuscript. Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\begin{resultbox}
+\textbf{Status (manuscript 02).} The theorems of Part~III have written
+proofs and reproducible exact finite checks. They are not Lean- or
+Rocq-verified and have not undergone external peer review. The contribution
+is an extension of the report's subject, not a verified claim of publication
+priority. No asymptotic theorem from an unrefereed repository report is
+assumed: Part~III uses none of the growth-constant theorems of Parts~I
+and~II. Nothing in Part~III is formalized in any proof assistant.
+\end{resultbox}
+
+\subsection{Notation of Part~III}
+\label{lj:sec:notation}
+The symbols $a_n^{(m)}$, $C_n$, $\Cat$ and $\Av_n(132)$ keep the meanings
+of Parts~I and~II, and $m$ is again the adjacency bound and $n$ the length.
+Part~III is otherwise self-contained, and several of its letters are used in
+Parts~I and~II for other objects. \Cref{lj:tab:notation} lists them, with the
+tempting false reading in the last column; five symbols are renamed from the
+manuscript.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~III. ``Renamed'' gives the manuscript's own symbol.
+The last column prints the tempting false reading.}
+\label{lj:tab:notation}
+\begin{tabular}{>{\raggedright}p{.19\linewidth}>{\raggedright}p{.36\linewidth}>{\raggedright\arraybackslash}p{.37\linewidth}}
+\toprule
+Symbol & Meaning in Part~III & Not to be confused with\\
+\midrule
+$M(\pi)$, $M_n$ & largest adjacent absolute difference; that of a uniform
+ $\Pi_n\in\Av_n(132)$ & the matrix $M$ of \cref{crem:lem:positivity}.\\
+$D(\pi)$, $D_n$, $D$ & the deficit $n-M(\pi)$, its value $n-M_n$, and the
+ limit law of $D_n$ & Part~I's common denominator $D(x)$ of
+ \eqref{eq:symbolic-certificate}, its denominators $D_U(x)$, $D_V(x)$
+ (\cref{app:algebra}), the integer $D$ of its Perron certificates, and the
+ exponent $D$ in the proof of \cref{prop:growth}.\\
+$d$ & a deficit threshold, $m=n-d$; also the first coordinate of the
+ endpoint state $(d,\ell)$ & Part~I's fixed cutoff $d$ and Part~II's
+ $d_m=\lceil\log_2m\rceil$; neither is tied to $n$.\\
+$F(\pi)=\pi_1$ & first entry & Part~I's series $F_{p,q}$. Part~I's
+ first deficiency is $n-F(\pi)$.\\
+$N_{N,f}$ & avoiders of size $N$ with first entry $f$ & the same count as
+ Part~I's $h(k,j)$, with $k=N+1$, $j=N+1-f$ (\cref{lj:rem:first-entry}).\\
+$P(x,z)$ & bivariate first-entry series & Part~I's numerators $P_3$,
+ $P_4$; Part~II's $\mathcal P_j$.\\
+$R_\beta$, $A$, $T_\tau$ & skeleton operations; $\beta$, $\tau$ are
+ avoiders & $R_m=x+K_m$, $A_m(x)$, the counts $T^{(m)}_{p,q}(n)$, and
+ Part~II's number $\beta_m=r_m^{-1}$.\\
+$t$, $T$ & cost of a skeleton; the random cost & Part~II's
+ $t_m=m\log(4r_m)$; $T^{(m)}_{p,q}(n)$.\\
+$b_t$, $B(x)$ & number of skeletons of cost $t$; $B=(\Cat-1)^2$ &
+ Part~II's $b_k=C_{k-1}4^{-k}$; Part~I's threshold set $B_m$ and $B_d$.\\
+$c_j$ (one index) & $C_j/4^j$ & Part~I's $c_{k,p}$ (two indices).\\
+$h$ (no argument) & the cutoff $\lfloor n/4\rfloor$, or a cutoff below
+ $n/2$ & Part~I's first-entry count $h(k,j)$.\\
+$L$ & random last-entry state, in $\N_{>0}\cup\{\infty\}$ & the left block
+ $L$ of $\pi=L\,n\,R$ (also used here), Part~I's $L_m$.\\
+$\omega_n$ (renamed from $\eps_n$) & $n(n+1)(2n+1)2^{-n/2}$ & Part~II's
+ $\eps_d=(d+2)2^{-d}$, a different bound for a related fraction
+ (\cref{lj:rem:first-entry}).\\
+$z$; $s$, $r$ & generating-function variable; $\sqrt{1-z}$,
+ $\sqrt{(1+s)/2}$ & Part~II's $z=\log\log m+\frac12\log\pi$; Part~I's
+ $s_{m,d}$; Part~II's root $r_m$ and $r_U$, $r_V$.\\
+$q=\ljQ(z)$ & $(1-\sqrt{1-z})/2$ & Part~I's root $q_m$ and threshold
+ index $q$.\\
+$G$, $H$, $J$ & generating function of $D$; its parts with $L<\infty$ and
+ $L=\infty$ & Part~II's $H_q(x)$, the matrix $H$ in the proof of
+ \cref{prop:growth}, Part~II's order index $J$.\\
+$\ljK(z)$ & clipping series & $K_{m,d}$ (Part~I), $K_m$ (Part~II).\\
+$\ljU(z)$ (renamed from $\mathcal A$) & clipping correction &
+ Part~I's class $\Aclass_n^{(m)}$, the manuscript's own glyph.\\
+$\kappa_{1-\epsilon}$ (renamed from $q_{1-\epsilon}$) & quantile of $D$ &
+ $q=\ljQ(z)$.\\
+$C_{\mathrm{TV}}$ (renamed from $C$, $C_0$), $\underline c_p$ (renamed from
+ $c_p$) & constants in two proofs & the Catalan numbers, $C_0=1$; $c_j$;
+ $c_{k,p}$; Part~II's $C_\ast$, $c_\ast$.\\
+$p$ & a moment order & Part~I's threshold $p\in B_m$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the
+manuscript's quantity. Probability, expectation, total variation and law are
+written $\ljP$, $\ljE$, $\ljTV$, $\ljLaw$, as in the manuscript. The
+equations of Part~III are numbered consecutively with those of Parts~I
+and~II, not by section as in the manuscript.
+
+\subsection{Which question is answered, and how far}
+\label{lj:sec:scope}
+Part~II's research direction ``Joint growth of length and adjacency bound''
+(\cref{crem:sec:future}) asks for $a_n^{(m(n))}/C_n$ when $m=m(n)$ grows
+with $n$, warns that the fixed-$m$ limit is not automatically uniform, asks
+that ``a satisfactory result'' establish an explicit range of uniformity
+before a transition law, and names the identity $a_n^{(m)}=C_n$ for $m\ge
+n-1$ as a boundary condition. The report's README lists ``no joint limit in
+$n$ and $m$'' among the things not claimed. Part~III settles the regime next
+to that boundary condition:
+\begin{itemize}
+\item for each fixed $d$, $a_n^{(n-d)}/C_n\to\ljP(D\ge d)$, an explicit
+ rational number (\cref{lj:eq:fixed-window});
+\item uniformly for $n\ge8$ and $2\le d\le n-1$,
+ $a_n^{(n-d)}/C_n=3/\sqrt{\pi d}+O(d^{-3/2}+n^{-1/2})$ with an absolute
+ constant (\cref{lj:thm:tail-main}), which is an explicit range of
+ uniformity of the kind Part~II asks for;
+\item hence $a_n^{(n-d)}/C_n\sim3/\sqrt{\pi d}$ whenever $d\to\infty$ and
+ $d=o(n)$.
+\end{itemize}
+It does not settle the question. When $n-m$ is a fixed fraction of $n$, the
+additive error is as large as the main term and no equivalent is claimed
+(\cref{lj:rem:bulk}); for fixed $m$ the growth-constant regime of Parts~I
+and~II is untouched; and nothing connects the two regimes yet
+(\cref{lj:sec:q-reconnect}). Part~II's direction is therefore re-scoped, not
+closed: its boundary end is answered here, and its bulk and interpolation
+questions remain open. Part~III refutes nothing in Parts~I and~II and uses
+none of their theorems.
+
+\section{The question, its context, and the main results}
+\label{lj:sec:introduction}
+
+\subsection{A different order of limits}
+As in Part~I, a permutation $\pi\in S_n$ avoids $132$ if no three indices
+$i<j<k$ satisfy $\pi_i<\pi_k<\pi_j$. Write $\Av_n(132)$ for this class, and let
+\[
+ C_n=\frac1{n+1}\binom{2n}{n},\qquad
+ \Cat(x)=\sum_{n\ge0}C_nx^n=\frac{1-\sqrt{1-4x}}{2x}.
+\]
+For $n\ge2$, set
+\begin{equation}
+ M(\pi)=\max_{1\le i<n}|\pi_{i+1}-\pi_i|,
+ \qquad D(\pi)=n-M(\pi).
+ \label{lj:eq:statistics}
+\end{equation}
+If $\Pi_n$ is uniform on $\Av_n(132)$, write $M_n=M(\Pi_n)$ and
+$D_n=D(\Pi_n)$. Thus $1\le D_n\le n-1$.
+
+Let $a_n^{(m)}$ count the avoiders with every adjacent difference at most
+$m$. The identity connecting enumeration and probability is
+\begin{equation}
+ \frac{a_n^{(m)}}{C_n}=\ljP(M_n\le m)
+ =\ljP(D_n\ge n-m).
+ \label{lj:eq:bridge}
+\end{equation}
+The fixed-$m$ problem studies $n\to\infty$ with $m$ unchanged. Part~III
+studies the boundary $m=n-d$, and then allows $d$ to grow with $n$.
+Neither problem is a substitution into the other.
+
+Nadler initiated the adjacency-constrained enumeration and analyzed $m=2$
+\cite{Nadler}. Mayama and Akita supplied a uniform endpoint-state system,
+rational generating functions for every fixed $m$, and a spectral
+characterization of growth \cite{MayamaAkita}. The ProveIt report
+\emph{Strict growth and the Catalan limit for adjacency-bounded
+132-avoiding permutations}, including its September 28 continuation, that
+is, Parts~I and~II above, addresses strict growth and increasingly precise
+fixed-bound growth asymptotics. Its README explicitly excludes a joint limit
+in $n$ and $m$ from its claims (at the pin recorded in
+\cref{lj:app:provenance}).
+
+Our connection to that report is the same counting class and the same
+maximum decomposition, not a dependence on its claimed growth-constant
+estimates. The proofs below derive their own finite combinatorics. The
+infinite-tree viewpoint is standard background in conditioned tree
+probability \cite{JansonTrees}; here it is made into an explicit finite
+counting argument. Other statistics on random $132$-avoiders have been
+studied through tree and excursion methods \cite{JansonPatterns}; those
+results are not substituted for the extreme-jump analysis.
+
+\subsection{The law and the rate}
+For real $0\le z\le1$, put
+\begin{equation}
+ s=\sqrt{1-z},\qquad r=\sqrt{\frac{1+s}{2}}.
+ \label{lj:eq:s-r}
+\end{equation}
+Both square roots are the nonnegative ones. Around $z=0$, they denote the
+analytic branches with $s(0)=r(0)=1$.
+
+\begin{theorem}[Algebraic boundary law]\label{lj:thm:main}
+There is a positive integer-valued random variable $D$ with probability
+generating function
+\begin{equation}
+ \boxed{\displaystyle
+ G(z)=\ljE z^D=
+ \frac{(1-s)\bigl(4+8s+3s^2-s^2r\bigr)}
+      {4(1+2s)(1+s)^2}.}
+ \label{lj:eq:main-pgf}
+\end{equation}
+Moreover,
+\begin{equation}
+ \ljTV(\ljLaw(D_n),\ljLaw(D))=\Theta(n^{-1/2}).
+ \label{lj:eq:main-tv}
+\end{equation}
+With $h=\lfloor n/4\rfloor$, an explicit bound for $n\ge8$ is
+\begin{equation}
+ \ljTV(\ljLaw(D_n),\ljLaw(D))\le
+ \min\left\{1,
+ \frac{2(h+1)(2h+1)}{h+2}\frac{C_h}{4^h}
+ +n(n+1)(2n+1)2^{-n/2}\right\}.
+ \label{lj:eq:explicit-tv}
+\end{equation}
+In particular, $D_n=O_{\ljP}(1)$ and $M_n/n\to1$ in probability.
+\end{theorem}
+
+The convention for total variation is
+$\ljTV(\mu,\nu)=\sup_B|\mu(B)-\nu(B)|$, equivalently half the
+$\ell^1$ distance on a countable space. The explicit bound is designed for a
+transparent proof rather than a small finite-$n$ constant. The matching
+lower bound follows from the limiting heavy tail and the finite support
+of $D_n$, as shown in \cref{lj:cor:sharp-tv}.
+
+\begin{theorem}[Tail and joint enumeration]\label{lj:thm:tail-main}
+As $k\to\infty$,
+\begin{align}
+ \ljP(D=k)&=\frac{3}{2\sqrt\pi}\,k^{-3/2}
+          +O(k^{-5/2}),\label{lj:eq:pmf-leading}\\
+ \ljP(D>k)&=\frac{3}{\sqrt\pi}\,k^{-1/2}
+          +O(k^{-3/2}).\label{lj:eq:tail-leading}
+\end{align}
+Uniformly for integers $n\ge8$ and $2\le d\le n-1$,
+\begin{equation}
+ \frac{a_n^{(n-d)}}{C_n}
+ =\frac{3}{\sqrt{\pi d}}+O(d^{-3/2}+n^{-1/2}),
+ \label{lj:eq:uniform-joint}
+\end{equation}
+with an absolute implied constant. Consequently, if $d\to\infty$ and
+$d=o(n)$, then
+\begin{equation}
+ \frac{a_n^{(n-d)}}{C_n}\sim\frac{3}{\sqrt{\pi d}},
+ \qquad
+ a_n^{(n-d)}\sim\frac{3}{\pi}\frac{4^n}{n^{3/2}\sqrt d}.
+ \label{lj:eq:joint-equivalent}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Moment transition]\label{lj:thm:moments-main}
+For each fixed real $p>0$,
+\begin{align}
+ 0<p<\tfrac12:\quad
+ &\ljE D_n^p=\ljE D^p+O(n^{p-1/2}),\label{lj:eq:small-moments}\\
+ p=\tfrac12:\quad
+ &\ljE\sqrt{D_n}=\frac{3}{2\sqrt\pi}\log n+O(1),
+ \label{lj:eq:critical-moment}\\
+ p>\tfrac12:\quad
+ &\ljE D_n^p=\Theta(n^{p-1/2}).\label{lj:eq:large-moments}
+\end{align}
+The constants in the first and third lines may depend on $p$.
+In particular,
+\begin{equation}
+ \ljE M_n=n-\Theta(\sqrt n),\qquad
+ \operatorname{Var}(D_n)=\Theta(n^{3/2}).
+ \label{lj:eq:mean-variance}
+\end{equation}
+\end{theorem}
+
+\subsection{What is and is not resolved}
+The results determine the entire fixed-deficit boundary law, give a
+uniform quantitative approximation to it, and establish a growing-deficit
+regime. They do not determine the asymptotic equivalent of
+$\ljE D_n$, nor the fraction $a_n^{(\lfloor\theta n\rfloor)}/C_n$ to
+relative precision for fixed $0<\theta<1$. The additive error in
+\eqref{lj:eq:uniform-joint} has the same order as its displayed term when
+$d$ is proportional to $n$; it must not be advertised as an equivalent
+there. The component-ordering question in the fixed-$m$ finite-state
+system is also untouched.
+
+\section{Catalan decompositions and endpoint identities}
+\label{lj:sec:preliminaries}
+
+\subsection{Decomposition at the maximum}
+If $\pi=L\,n\,R$ avoids $132$, every value of $L$ is greater than every
+value of $R$. Conversely, two avoiding standardized blocks with this
+separation give an avoiding permutation. If $|R|=b$, the left block is
+obtained by adding $b$ to each entry of an avoider of size $n-b-1$.
+This proves
+\[
+ C_n=\sum_{b=0}^{n-1}C_bC_{n-b-1},\qquad
+ \Cat(x)=1+x\Cat(x)^2.
+\]
+All the reconstruction operations used below are instances of this
+bijection; no approximate counting is involved. (The decomposition is the
+one of Part~I, \cref{sec:endpoints}, where the separation property is also
+proved; manuscript~02 re-derives it independently.)
+
+\subsection{First entries and first deficiencies}
+For a nonempty avoider $\pi$, let $F(\pi)=\pi_1$. Define
+\[
+ P(x,z)=\sum_{n\ge1}\ \sum_{\pi\in\Av_n(132)}x^nz^{F(\pi)}.
+\]
+When the left block at the maximum is empty, the first value is the
+maximum. When it is nonempty, its first value is shifted by the size of
+the right block. Hence
+\[
+ P(x,z)=xz\Cat(xz)+x\Cat(xz)P(x,z),
+\]
+and therefore
+\begin{equation}
+ P(x,z)=\frac{xz\Cat(xz)}{1-x\Cat(xz)}.
+ \label{lj:eq:first-gf}
+\end{equation}
+Replacing $x$ by $xu$ and $z$ by $u^{-1}$ gives the useful deficiency form
+\begin{equation}
+ \sum_{n\ge1}\sum_{\pi\in\Av_n(132)}x^nu^{n-F(\pi)}
+ =\frac{x\Cat(x)}{1-ux\Cat(x)}.
+ \label{lj:eq:deficiency-gf}
+\end{equation}
+In particular, for every $j\ge0$,
+\begin{equation}
+ \sum_{n\ge j+1}
+ \#\{\pi\in\Av_n(132):n-F(\pi)=j\}\,x^n
+ =(x\Cat(x))^{j+1}.
+ \label{lj:eq:deficiency-fixed}
+\end{equation}
+
+\begin{lemma}[First-entry count]\label{lj:lem:first-count}
+For $1\le f\le N$,
+\begin{equation}
+ N_{N,f}:=\#\{\pi\in\Av_N(132):F(\pi)=f\}
+ =\frac{N-f+1}{N}\binom{N+f-2}{N-1}.
+ \label{lj:eq:first-count}
+\end{equation}
+Moreover, for $1\le t\le N$,
+\begin{equation}
+ \frac{\#\{\pi\in\Av_N(132):F(\pi)\le t\}}{C_N}
+ \le t(N+1)(2N+1)2^{t-N-2}.
+ \label{lj:eq:first-small}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The coefficient formula
+\[
+ [x^a]\Cat(x)^b=\frac{b}{2a+b}\binom{2a+b}{a}
+\]
+follows by applying Lagrange inversion to $\Cat=1+x\Cat^2$.
+Apply it to \eqref{lj:eq:deficiency-fixed}, with $j=N-f$, to obtain
+\eqref{lj:eq:first-count}; the two binomial forms are equal by cancellation
+of factorials. For the bound, discard the prefactor, use
+$\binom uv\le2^u$, and sum over $f\le t$:
+\[
+ \sum_{f\le t}N_{N,f}\le t2^{N+t-2}.
+\]
+Since the largest binomial coefficient in the expansion of $(1+1)^{2N}$
+is central, $\binom{2N}{N}\ge4^N/(2N+1)$. Dividing proves the claim.
+\end{proof}
+
+\begin{remark}[Merge note: the same count in Parts~I and~II]
+\label{lj:rem:first-entry}
+Deleting the final maximum of a block of length $k$ that ends at its
+maximum and has first entry $k-j$ leaves an avoider of size $N=k-1$ with
+first entry $f=N+1-j$. Hence $N_{N,f}=h(N+1,N+1-f)$, and
+\eqref{lj:eq:first-count} is Part~I's formula \eqref{eq:h} for $h(k,j)$,
+reindexed. Part~I proves it by a slot decomposition at the first entry
+(\cref{lem:firstentry}), manuscript~02 by the maximum decomposition and the
+bivariate series \eqref{lj:eq:first-gf}; both finish with Lagrange
+inversion. The manuscript's route is kept here, because
+\eqref{lj:eq:first-gf} and \eqref{lj:eq:deficiency-fixed} are used again in
+\cref{lj:sec:pgf}.
+
+The fraction bounded in \eqref{lj:eq:first-small} is also bounded by
+Part~II's uniform tail estimate. With $k=N+1$ and $d=N-t\ge1$, the
+difference $C_N-c_{N+1,N-t}$ counts exactly the avoiders of size $N$ with
+first entry at most $t$, so \eqref{crem:eq:uniform-tail} gives
+\[
+ \frac{\#\{\pi\in\Av_N(132):F(\pi)\le t\}}{C_N}\le(N-t+2)\,2^{-(N-t)}
+ \qquad(1\le t\le N-1).
+\]
+This is sharper than \eqref{lj:eq:first-small} by a factor of order $N^3$.
+In the setting of \cref{lj:lem:exception}, $N-t=n-2t\ge n/2$, and
+$x\mapsto(x+2)2^{-x}$ decreases for $x\ge0$, so the exceptional fraction is
+at most $(n/2+2)2^{-n/2}$, which is below $1$ for every $n\ge8$; the term
+$n(n+1)(2n+1)2^{2h-n}$ in the proof of \cref{lj:cor:sharp-tv} can likewise
+be replaced by $(n-2h+2)2^{2h-n}$. Neither replacement changes an order of
+magnitude or any statement of Part~III, which prints the manuscript's
+bounds. This remark is the merge's, not the manuscript's; the bound was
+checked by exhaustive enumeration for $N\le8$.
+\end{remark}
+
+\subsection{Last entries}
+A particularly simple decomposition occurs at the last value $\ell$.
+Every entry greater than $\ell$ must precede every entry smaller than
+$\ell$: otherwise the smaller entry, the greater entry, and the final
+$\ell$ form $132$. Thus, uniquely,
+\begin{equation}
+ \pi=(\tau+\ell)\,\sigma\,\ell,
+ \quad |\tau|=n-\ell,\quad |\sigma|=\ell-1,
+ \label{lj:eq:last-decomposition}
+\end{equation}
+where $\tau$ and $\sigma$ are arbitrary avoiders of those sizes.
+The converse is verified directly, or by the maximum decomposition.
+Consequently,
+\begin{equation}
+ \#\{\pi\in\Av_n(132):\pi_n=\ell\}=C_{n-\ell}C_{\ell-1}.
+ \label{lj:eq:last-count}
+\end{equation}
+An additional consequence will control the clipping operation:
+if the last value is not the maximum, then the first value is greater
+than the last value. Indeed, $\tau$ in \eqref{lj:eq:last-decomposition}
+is then nonempty.
+
+\section{A finite absorbing decomposition}
+\label{lj:sec:skeleton}
+
+\subsection{Three operations with one unexpanded block}
+We use a finite decorated word, called a \emph{skeleton}, whose outer
+operations end at one terminal operation. The unexpanded block will later
+be filled with a large avoiding permutation. There are three operation
+types:
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[$R_\beta$: a large right block.]
+Here $\beta$ is any avoider of size $b\ge0$. Applied to a core $\sigma$
+of size $N$, it returns
+$(\beta+N)\,(N+b+1)\,\sigma$. Its cost is $b+1$.
+\item[$A$: append a maximum.]
+Applied to a core of size $N$, it returns $\sigma\,(N+1)$.
+Its cost is $1$.
+\item[$T_\tau$: a terminal finite right block.]
+Here $\tau$ is any nonempty avoider of size $b\ge1$. Applied to the hole
+$\sigma$ of size $N$, it returns
+$(\sigma+b)\,(N+b+1)\,\tau$. Its cost is $b+1$.
+\end{description}
+A skeleton is a word in $R_\beta$ and $A$, followed by exactly one
+$T_\tau$. Operations act from the terminal outward. Its cost $t$ is the
+sum of their costs, so inserting a hole of size $N$ gives a permutation
+of size $N+t$. All resulting permutations avoid $132$.
+
+For example, the word $A R_{(1)}T_{(2,1)}$ has cost $1+2+3=6$.
+The terminal will initialize the pair $(2,1)$, $R_{(1)}$ changes it to
+$(4,1)$, and $A$ changes it to $(1,\infty)$. Thus this skeleton produces
+a maximal possible jump, once a sufficiently large hole with a sufficiently
+large first value is inserted.
+
+\subsection{A probability measure on skeletons}
+Give each individually decorated operation of cost $c$ weight $4^{-c}$.
+The total weights are
+\begin{equation}
+ \sum_\beta4^{-(|\beta|+1)}=\frac12,
+ \qquad w(A)=\frac14,
+ \qquad\sum_{\tau\ne\varnothing}4^{-(|\tau|+1)}=\frac14.
+ \label{lj:eq:operation-masses}
+\end{equation}
+Thus one can repeatedly choose an operation using these weights, stopping
+when a terminal is chosen. The probability of not stopping after $j$
+choices is $(3/4)^j$. Every skeleton is finite almost surely, and a
+specified decorated skeleton of cost $t$ has probability $4^{-t}$.
+
+This is a probability measure on a countable set, not a heuristic
+``typical giant block'' assertion. The finite comparison in the next two
+sections will connect it to the uniform permutation measure.
+
+\subsection{Exact cost distribution}
+Let $b_t$ be the number of skeletons of cost $t$. Their ordinary generating
+function is
+\begin{equation}
+ B(x)=\sum_{t\ge0}b_tx^t
+ =\frac{x(\Cat(x)-1)}{1-x\Cat(x)-x}
+ =(\Cat(x)-1)^2.
+ \label{lj:eq:cost-gf}
+\end{equation}
+For the last equality, note that
+$1-x\Cat(x)-x=\Cat(x)^{-2}$ and
+$x\Cat(x)^2=\Cat(x)-1$.
+For $t\ge1$,
+\begin{equation}
+ b_t=C_{t+1}-2C_t=\frac{2(t-1)}{t+2}C_t,
+ \quad b_0=b_1=0.
+ \label{lj:eq:b-t}
+\end{equation}
+If $T$ denotes the random cost, then
+\begin{equation}
+ \ljE z^T=B(z/4)
+ =\left(\frac{1-\sqrt{1-z}}{1+\sqrt{1-z}}\right)^2.
+ \label{lj:eq:cost-pgf}
+\end{equation}
+
+\begin{lemma}[Exact cost tail]\label{lj:lem:cost-tail}
+For every integer $h\ge0$,
+\begin{equation}
+ \ljP(T>h)=\frac{2(h+1)(2h+1)}{h+2}\frac{C_h}{4^h}
+ \sim\frac4{\sqrt{\pi h}}.
+ \label{lj:eq:cost-tail}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $c_j=C_j/4^j$. The Catalan ratio is
+$c_{j+1}/c_j=(2j+1)/(2j+4)$, and induction gives
+$\sum_{j=0}^hc_j=2-(2h+1)c_h$.
+Using $b_t4^{-t}=4c_{t+1}-2c_t$ for $t\ge1$, with the constant-term
+adjustment at $t=0$, yields
+\[
+ \sum_{t=0}^hb_t4^{-t}
+ =1-\frac{2(h+1)(2h+1)}{h+2}c_h.
+\]
+Stirling's formula gives the equivalent.
+\end{proof}
+
+\subsection{The endpoint state and its transformations}
+The state is a pair $(d,\ell)$, where $d$ is a positive integer and
+$\ell\in\N_{>0}\cup\{\infty\}$. The symbol $\infty$ records a last
+entry close to the high end of a large block; it is not an actual entry
+of a finite permutation. Starting at the terminal, define
+\begin{align}
+ T_\tau &: \quad (d,\ell)=(F(\tau),\tau_{|\tau|}),
+ \label{lj:eq:state-terminal}\\
+ R_\beta &: \quad (d,\ell)\longmapsto(d+|\beta|+1,\ell),
+ \label{lj:eq:state-right}\\
+ A &: \quad (d,\ell)\longmapsto
+       (\min\{d+1,\ell\},\infty),
+ \label{lj:eq:state-append}
+\end{align}
+where $\min(d+1,\infty)=d+1$.
+Let $(D,L)$ be the resulting pair on the probability space of skeletons.
+It is finite in its first coordinate almost surely and obeys
+\begin{equation}
+ 1\le D\le T-1.
+ \label{lj:eq:D-cost}
+\end{equation}
+This defines the candidate law probabilistically before any generating
+function is simplified; coefficient nonnegativity will therefore not
+need to be guessed from the radical expression.
+
+\section{The deterministic reconstruction lemma}
+\label{lj:sec:reconstruction}
+
+The state rules need proof: an endpoint heuristic would not justify a law
+for the largest jump. The following statement is the central finite lemma.
+
+\begin{lemma}[A large hole determines the extreme jump]
+\label{lj:lem:reconstruction}
+Fix a skeleton $\ljskel$ of cost $t$ and state $(d,\ell)$. Insert an avoider
+$\sigma$ of size $N>t$ whose first entry satisfies $F(\sigma)>t$.
+Let $\pi$ be the resulting permutation of size $n=N+t$. Then
+\begin{equation}
+ D(\pi)=d.
+ \label{lj:eq:deterministic-deficit}
+\end{equation}
+If $\ell<\infty$, then $\pi_n=\ell$. If $\ell=\infty$, then
+$\pi_n\ge N+1$. At every intermediate reconstruction stage, the first
+entry is greater than $t$ and the largest jump is at least $N+1$.
+\end{lemma}
+\begin{proof}
+Proceed from the terminal outward. Suppose the terminal decoration has
+size $b\ge1$, first entry $f$, and last entry $\ell$. The reconstructed
+terminal block is
+\[
+ (\sigma+b)\,(N+b+1)\,\tau.
+\]
+The jump from its maximum to $f$ has size $N+b+1-f\ge N+1$.
+The jumps internal to $\sigma$ are at most $N-1$; the jump into the
+maximum from the left is at most $N$; and the jumps internal to $\tau$
+are at most $b-1<N+1$. Thus that downward jump is largest, its deficit
+is exactly $f$, and the last value is $\ell$. The first value is
+$F(\sigma)+b>t$.
+
+Maintain the following stronger invariants. If $c$ is the cost used so
+far, the current length is $N+c$, its deficit $d_c$ satisfies
+$d_c\le c-1$, its first entry exceeds $t$, and its last entry is either
+the recorded finite value, at most $t$, or at least $N+1$ when the state
+records $\infty$. The largest jump is then at least $N+1$.
+
+For $R_\beta$, let $b=|\beta|$ and let the old length be $a$.
+The old internal maximum jump has new deficit $d_c+b+1$.
+The finite left block contributes only jumps of size at most $b$,
+including its boundary with the new maximum. These cannot exceed the
+old maximum jump. The jump from the new maximum to the old first value
+is strictly less than $a+b+1-t$, whereas the old maximum is
+\[
+ a-d_c=(a+b+1)-(d_c+b+1)\ge(a+b+1)-t+1,
+\]
+because the new accumulated cost is at most $t$.
+So the old internal maximum remains largest, giving
+\eqref{lj:eq:state-right}. The last entry is unchanged. The new first
+entry is either the new maximum or a value exceeding $a$, hence exceeds
+$t$ since $a\ge N>t$.
+
+For $A$, appending the new maximum changes the deficit of the old
+largest jump from $d_c$ to $d_c+1$. The new boundary jump has deficit
+equal to the old last value. When that value is finite, the new deficit
+is precisely $\min(d_c+1,\ell)$. When it is recorded as $\infty$,
+the actual value is at least $N+1>t$, while $d_c+1\le t-1$; the new
+jump cannot win. The last value becomes the new maximum, at least
+$N+1$, and the first value is unchanged. These are
+\eqref{lj:eq:state-append} and all the invariants.
+\end{proof}
+
+\begin{lemma}[Disjoint reconstruction families]\label{lj:lem:injective}
+Fix a total size $n$ and a cutoff $h<n/2$. Reconstructions from distinct
+skeletons of cost $t\le h$, with holes of size $n-t$, are disjoint.
+For each fixed skeleton, reconstruction is injective in the hole.
+\end{lemma}
+\begin{proof}
+At every maximum decomposition, the block containing the hole is larger
+than its finite sibling: its size is at least $n-t>t$, while the sibling
+has size at most $t$. Hence it is identifiable from the final
+permutation. A large right block specifies an $R$ operation. A large
+left block with empty right block specifies $A$. A large left block
+with nonempty finite right block specifies the terminal $T$, where
+parsing stops. Each finite decoration is recovered from the actual
+sibling values by standardization. The remaining large left block at
+that terminal recovers the hole. Thus the whole decorated word and the
+hole are uniquely determined.
+\end{proof}
+
+\begin{remark}
+The first-entry hypothesis cannot simply be deleted. A very small first
+entry in the hole can create an additional large downward jump at an
+outer $R$ operation. The next section bounds precisely this exceptional
+set. Likewise, using only the deficit and omitting the last-entry state
+would lose the clipping at an append operation.
+\end{remark}
+
+\section{Counting domination and total variation}
+\label{lj:sec:tv}
+
+\subsection{Why each short skeleton has enough finite mass}
+The normalized Catalan numbers $c_j=C_j/4^j$ decrease strictly, because
+$c_{j+1}/c_j=(2j+1)/(2j+4)<1$. Consequently, whenever $0\le t<n$,
+\begin{equation}
+ \frac{C_{n-t}}{C_n}
+ =4^{-t}\frac{c_{n-t}}{c_n}\ge4^{-t}.
+ \label{lj:eq:domination}
+\end{equation}
+The left side is the probability mass of the reconstruction family of
+one fixed skeleton of cost $t$ under the uniform size-$n$ measure,
+before the first-entry restriction is imposed. The right side is
+exactly that skeleton's probability under the limiting construction.
+This one-sided comparison is stronger for our purpose than an
+unquantified local convergence statement.
+
+\begin{lemma}[Exceptional first entries]\label{lj:lem:exception}
+For $n\ge8$, $t\le\lfloor n/4\rfloor$, and $N=n-t$, the fraction of
+holes in $\Av_N(132)$ with first entry at most $t$ is at most
+\begin{equation}
+ \omega_n=n(n+1)(2n+1)2^{-n/2}.
+ \label{lj:eq:epsilon}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Apply \eqref{lj:eq:first-small}. Since $t-N=2t-n\le-n/2$ and
+$t\le n$, $N\le n$, its right side is at most the displayed bound.
+The deliberately enlarged prefactor avoids unnecessary finite-size
+casework. If it exceeds $1$, the assertion is still valid.
+\end{proof}
+
+\subsection{A common subprobability measure}
+For probability measures on a countable space, a common subprobability
+measure of mass $1-\delta$ implies total-variation distance at most
+$\delta$. This follows immediately from
+$\ljTV(\mu,\nu)=1-\sum_x\min(\mu\{x\},\nu\{x\})$.
+
+\begin{proof}[Proof of the rate in \cref{lj:thm:main}]
+Let $h=\lfloor n/4\rfloor$ and suppose first that $\omega_n\le1$.
+For each skeleton $\ljskel$ of cost $t\le h$, the good reconstruction
+family has probability at least
+\[
+ \frac{C_{n-t}}{C_n}(1-\omega_n)
+ \ge4^{-t}(1-\omega_n).
+\]
+The families are disjoint by \cref{lj:lem:injective}. Every good member has
+deficit $d(\ljskel)$ by \cref{lj:lem:reconstruction}. The limiting deficit
+law also puts the skeleton mass $4^{-t}$ at that same value.
+After summing over skeletons, even when multiple skeletons yield the
+same deficit, the two deficit laws have a common subprobability measure
+of mass at least
+\[
+ (1-\omega_n)\sum_{\ljcost(\ljskel)\le h}4^{-\ljcost(\ljskel)}
+ =(1-\omega_n)\ljP(T\le h).
+\]
+It follows that
+\begin{equation}
+ \ljTV(\ljLaw(D_n),\ljLaw(D))\le\ljP(T>h)+\omega_n.
+ \label{lj:eq:tv-common}
+\end{equation}
+If $\omega_n>1$, the same displayed upper bound is trivial.
+Insert the exact tail from \cref{lj:lem:cost-tail} and combine with the
+universal bound $\ljTV\le1$. Stirling's formula gives
+\[
+ \ljP(T>\lfloor n/4\rfloor)
+ =\frac8{\sqrt{\pi n}}+O(n^{-3/2}),
+\]
+while $\omega_n$ is exponentially small up to its polynomial
+factor. This proves the upper bound in \eqref{lj:eq:main-tv} and proves
+\eqref{lj:eq:explicit-tv}; the lower bound is given in
+\cref{lj:cor:sharp-tv}.
+Since $D$ is a proper finite-valued random variable, the laws of $D_n$
+are tight, and $M_n/n=1-D_n/n\to1$ in probability.
+\end{proof}
+
+\begin{remark}[The order is sharp; the leading constant remains open]
+The cutoff $n/4$ makes every inequality transparent. After deriving the
+limiting tail, \cref{lj:cor:sharp-tv} will prove the matching order and improve
+the upper constant by taking a cutoff approaching $n/2$. These arguments
+do not identify an exact asymptotic constant for the total-variation
+error.
+\end{remark}
+
+\section{Evaluation of the algebraic probability generating function}
+\label{lj:sec:pgf}
+
+\subsection{Renewal notation}
+For $0\le z\le1$, write
+\begin{equation}
+ q=\ljQ(z)=\frac z4\Cat(z/4)
+ =\frac{1-\sqrt{1-z}}2.
+ \label{lj:eq:q}
+\end{equation}
+Then
+\begin{equation}
+ z=4q(1-q),\qquad
+ \frac1{1-q}=\Cat(z/4),\qquad s=1-2q.
+ \label{lj:eq:q-identities}
+\end{equation}
+An $R_\beta$ operation adds $|\beta|+1$ to the deficit and has
+weight $4^{-(|\beta|+1)}$. Its deficit-increment generating function is
+therefore $q$. A sequence of such operations has generating function
+\begin{equation}
+ \frac1{1-q}=\sum_{b\ge0}\frac{C_b}{4^b}z^b.
+ \label{lj:eq:R-renewal}
+\end{equation}
+Here $b$ records the \emph{sum of increments}, not the number of
+operations and not the size of a single decoration.
+
+Define two subprobability generating functions
+\begin{equation}
+ H(z)=\ljE[z^D;L<\infty],\qquad
+ J(z)=\ljE[z^D;L=\infty],\qquad G=H+J.
+ \label{lj:eq:H-J}
+\end{equation}
+The last-entry state is finite exactly when there is no $A$ operation:
+it starts finite at the terminal, $R$ preserves it, and $A$ changes it
+permanently to $\infty$.
+
+\subsection{The finite-last part}
+The terminal first-entry series is
+$\tfrac14P(\tfrac14,z)$. By \eqref{lj:eq:first-gf},
+\[
+ P(\tfrac14,z)=\frac{z}{1+2\sqrt{1-z}}=\frac{z}{3-4q}.
+\]
+Adding an arbitrary outer sequence of $R$ operations gives
+\begin{equation}
+ H(z)=\frac{P(\tfrac14,z)}{4(1-q)}
+ =\frac{q}{3-4q}.
+ \label{lj:eq:H}
+\end{equation}
+We also need the last-entry marginal, rather than its joint relation
+with $D$. From \eqref{lj:eq:last-count},
+\[
+ \sum_{n\ge1}\sum_{\pi\in\Av_n(132)}x^nz^{\pi_n}
+ =\Cat(x)\,xz\Cat(xz).
+\]
+At $x=1/4$ the terminal last-entry series is $q/2$. An arbitrary
+sequence of $R$ operations has total weight
+$1/(1-\ljQ(1))=2$. Therefore
+\begin{equation}
+ \ljE[z^L;L<\infty]=q.
+ \label{lj:eq:last-marginal}
+\end{equation}
+In particular, $H(1)=J(1)=1/2$ and
+$\ljP(L=\ell)=C_{\ell-1}/4^\ell$ for finite $\ell\ge1$.
+
+\subsection{Why the append operation is not independent}
+Let
+\begin{equation}
+ \ljK(z)=\ljE[z^{\min(D+1,L)};L<\infty].
+ \label{lj:eq:K-definition}
+\end{equation}
+The outermost-operation decomposition gives
+\[
+ J(z)=qJ(z)+\frac z4J(z)+\frac14\ljK(z).
+\]
+The first term is an outer $R$, the second an outer $A$ applied to an
+infinite-last state, and the third an outer $A$ applied to a finite-last
+state. Hence
+\begin{equation}
+ J(z)=\frac{\ljK(z)}{4(1-q-z/4)}
+ =\frac{\ljK(z)}{4(1-q)^2}.
+ \label{lj:eq:J}
+\end{equation}
+The dependence between $D$ and $L$ is concentrated in $\ljK$.
+Replacing $L$ by an independent variable with its marginal law would
+be incorrect. The next calculation retains the full dependence.
+
+\subsection{An exact clipping calculation}
+If a terminal permutation $\tau$ does not end in its maximum, then
+$F(\tau)>\tau_{|\tau|}$ by \eqref{lj:eq:last-decomposition}. Every
+outer $R$ only increases the first state coordinate, so clipping returns
+the terminal last value. The only correction to the marginal
+\eqref{lj:eq:last-marginal} arises from terminal permutations ending in
+their maximum.
+
+Write such a non-singleton terminal as $\sigma(k+1)$, where
+$|\sigma|=k\ge1$, $F(\sigma)=f$, and $j=k-f$. If the outer $R$ sequence
+has total increment $b$, the state before clipping is $(b+f,k+1)$.
+Clipping is strict exactly when $b<j$. The singleton terminal produces
+no correction. Its non-singleton correction therefore has generating
+function
+\begin{align}
+ \ljK(z)-q
+ &=\frac z{16}\sum_{j\ge1}q^{j+1}
+       \sum_{0\le b<j}\frac{C_b}{4^b}(z^{b-j}-1).
+ \label{lj:eq:clipping-double}
+\end{align}
+To see the factor $1/16$, the terminal size is $k+1$, hence its weight
+is $4^{-(k+2)}$. Formula \eqref{lj:eq:deficiency-fixed}, evaluated at
+$x=z/4$, sums its possible $\sigma$ to $q^{j+1}$.
+The factor $z$ records the final maximum; \eqref{lj:eq:R-renewal} supplies
+$C_b/4^b$.
+
+For $0<z<1$, the geometric sums converge absolutely; in particular
+$q/z=1/(4(1-q))<1$. Interchanging the sums in
+\eqref{lj:eq:clipping-double} gives
+\begin{align}
+ \ljK(z)-q
+ &=\frac z{16}\sum_{b\ge0}\frac{C_b}{4^b}q^{b+2}
+      \left(\frac1{z-q}-\frac1{1-q}\right)\notag\\
+ &=\frac{z(1-z)q^2\Cat(q/4)}{16(z-q)(1-q)}\notag\\
+ &=(1-z)\frac{q^2\Cat(q/4)}{4(3-4q)}.
+ \label{lj:eq:clipping-sum}
+\end{align}
+Both sides extend analytically to $z=0$. As
+$q\Cat(q/4)=2(1-\sqrt{1-q})$, define
+\begin{equation}
+ \ljU(z)=\frac{q(1-\sqrt{1-q})}{2(3-4q)}.
+ \label{lj:eq:A}
+\end{equation}
+We have proved the particularly useful representation
+\begin{equation}
+ \boxed{\ljK(z)=q+(1-z)\ljU(z).}
+ \label{lj:eq:K}
+\end{equation}
+The series $\ljU$ also has the direct tail interpretation
+\begin{equation}
+ [z^k]\ljU(z)=\ljP(L>k,\ D\le k-1,\ L<\infty).
+ \label{lj:eq:A-probability}
+\end{equation}
+Indeed, for finite $L$, the tail of $\min(D+1,L)$ at $k$ differs
+from the tail of $L$ precisely on this event; use the standard
+probability-generating-function tail identity.
+
+\subsection{Completion of the formula}
+Combining \eqref{lj:eq:H}, \eqref{lj:eq:J}, and \eqref{lj:eq:K},
+\begin{equation}
+ G(z)=\frac{q}{3-4q}
+ +\frac{q+(1-z)\,q(1-\sqrt{1-q})/(2(3-4q))}
+       {4(1-q)^2}.
+ \label{lj:eq:pgf-q}
+\end{equation}
+Substitute $q=(1-s)/2$ and $\sqrt{1-q}=r$. The result is
+\eqref{lj:eq:main-pgf}, proving the generating-function assertion of
+\cref{lj:thm:main}. This derivation also verifies $G(0)=0$ and $G(1)=1$.
+The probabilistic construction has already proved that its coefficients
+are nonnegative and sum to one.
+
+\begin{remark}[Algebraicity, but not a finite constant-coefficient recurrence]
+The expression lies in the field obtained from $\mathbb Q(z)$ by adjoining
+$s$ and then $r$, so its algebraic degree is at most four. It is not
+rational: the nonzero square-root term at $z=1$, computed next, excludes
+rationality. Thus the limiting probability sequence does not satisfy an
+eventual constant-coefficient linear recurrence. This is compatible with
+rationality of each fixed-$m$ generating function $A_m(x)$: it concerns a
+different sequence and a different limit.
+\end{remark}
+
+\section{Singularity analysis and the heavy tail}
+\label{lj:sec:singularity}
+
+\subsection{The dominant singularity is genuinely unique}
+The square-root branches in \eqref{lj:eq:main-pgf} extend to
+$\mathbb C\setminus[1,\infty)$. On this domain the principal value of
+$s=\sqrt{1-z}$ has positive real part. Consequently $1+s$ and $1+2s$
+do not vanish, and $(1+s)/2$ never meets the negative real axis or zero.
+Thus $r$ is analytic there as well. In particular, $G$ is analytic in a
+slit neighborhood of the closed unit disk except at $z=1$.
+There are no competing unit-circle singularities or periodicity factors
+hidden in the coefficient asymptotics.
+
+Expansion of the explicit formula at $s=0$ gives
+\begin{align}
+ G(z)={}&1-3s
+ +\left(\frac{23}{4}-\frac{\sqrt2}{8}\right)s^2
+ +\left(-\frac{43}{4}+\frac{9\sqrt2}{16}\right)s^3\notag\\
+ &+\left(\frac{81}{4}-\frac{99\sqrt2}{64}\right)s^4
+ +\left(-\frac{155}{4}+\frac{461\sqrt2}{128}\right)s^5
+ +O(s^6).
+ \label{lj:eq:singular-expansion}
+\end{align}
+This calculation uses only
+$r=2^{-1/2}(1+s)^{1/2}$ and ordinary Taylor expansion. An optional
+symbolic checker in the package
+(\path{code/03-largest-jump-verify_symbolic.py}) verifies the displayed
+coefficients.
+The term $-3\sqrt{1-z}$ is the source of both the infinite mean of $D$
+and the critical exponent $1/2$.
+
+\subsection{Coefficient extraction, including the second term}
+For a fixed nonintegral $\gamma$, the exact generalized binomial formula
+and the asymptotic expansion of the gamma quotient give
+\begin{equation}
+ [z^k](1-z)^\gamma
+ =\frac{k^{-\gamma-1}}{\Gamma(-\gamma)}
+ \left(1+\frac{\gamma(\gamma+1)}{2k}+O(k^{-2})\right).
+ \label{lj:eq:transfer-basic}
+\end{equation}
+Analytic continuation in the slit neighborhood just established permits
+termwise singularity transfer; this is the standard univariate transfer
+principle of \cite{FlajoletOdlyzko}. Integer powers of $1-z$ are locally
+analytic terms and do not contribute the displayed algebraic orders.
+For completeness, the nonanalytic terms needed for the first two orders
+are $(1-z)^{1/2}$ and $(1-z)^{3/2}$, whose leading coefficient constants
+are respectively $-1/(2\sqrt\pi)$ and $3/(4\sqrt\pi)$.
+
+\begin{proposition}[Two-term probability and survival expansions]
+\label{lj:prop:two-term}
+As $k\to\infty$,
+\begin{align}
+ \ljP(D=k)
+ &=\frac{3}{2\sqrt\pi}\,k^{-3/2}
+   +\frac{-480+27\sqrt2}{64\sqrt\pi}\,k^{-5/2}
+   +O(k^{-7/2}),\label{lj:eq:pmf-two}\\
+ \ljP(D>k)
+ &=\frac{3}{\sqrt\pi}\,k^{-1/2}
+   +\frac{-184+9\sqrt2}{32\sqrt\pi}\,k^{-3/2}
+   +O(k^{-5/2}).\label{lj:eq:tail-two}
+\end{align}
+\end{proposition}
+\begin{proof}
+For the point probabilities, apply \eqref{lj:eq:transfer-basic} to the $s$
+and $s^3$ terms of \eqref{lj:eq:singular-expansion}. The coefficient of
+$k^{-5/2}$ is
+\[
+ \frac{9}{16\sqrt\pi}
+ +\frac3{4\sqrt\pi}
+    \left(-\frac{43}{4}+\frac{9\sqrt2}{16}\right)
+ =\frac{-480+27\sqrt2}{64\sqrt\pi}.
+\]
+For the survival probabilities use the exact identity
+\begin{equation}
+ \sum_{k\ge0}\ljP(D>k)z^k=\frac{1-G(z)}{1-z}.
+ \label{lj:eq:tail-gf}
+\end{equation}
+Writing $a_2=23/4-\sqrt2/8$ and
+$a_3=-43/4+9\sqrt2/16$, its expansion begins
+$3(1-z)^{-1/2}-a_2-a_3(1-z)^{1/2}+O(1-z)$.
+The second coefficient is
+\[
+ -\frac3{8\sqrt\pi}+\frac{a_3}{2\sqrt\pi}
+ =\frac{-184+9\sqrt2}{32\sqrt\pi}.
+\]
+Continuing the expansion two half-orders further gives the stated
+remainders. The analyticity argument above supplies the hypotheses of
+singularity transfer throughout.
+\end{proof}
+
+
+\begin{corollary}[Sharp total-variation order]
+\label{lj:cor:sharp-tv}
+The error in the boundary law has order exactly $n^{-1/2}$. More precisely,
+\begin{equation}
+ \frac3{\sqrt\pi}
+ \le \liminf_{n\to\infty}\sqrt n\,
+       \ljTV(\ljLaw(D_n),\ljLaw(D))
+ \le \limsup_{n\to\infty}\sqrt n\,
+       \ljTV(\ljLaw(D_n),\ljLaw(D))
+ \le \frac{4\sqrt2}{\sqrt\pi}.
+ \label{lj:eq:tv-constants}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Because $D_n\le n-1$, the event $\{n,n+1,\ldots\}$ gives
+\[
+ \ljTV(\ljLaw(D_n),\ljLaw(D))\ge\ljP(D\ge n)
+ =\frac3{\sqrt{\pi n}}+O(n^{-3/2}).
+\]
+For the improved upper bound, repeat the common-submeasure proof with
+any integer $2\le h<n/2$. The first-entry estimate gives
+\[
+ \ljTV(\ljLaw(D_n),\ljLaw(D))
+ \le\ljP(T>h)+n(n+1)(2n+1)2^{2h-n}.
+\]
+For all sufficiently large $n$, choose
+$h=\lfloor n/2-2\log_2 n\rfloor$. The second term is $O(n^{-1})$,
+while the exact cost tail is
+$(4\sqrt2/\sqrt\pi)n^{-1/2}(1+o(1))$.
+This proves the three inequalities and completes the sharp-rate claim
+in \cref{lj:thm:main}.
+\end{proof}
+
+\begin{corollary}[Quantiles and limiting moments]
+\label{lj:cor:quantiles}
+The variable $D$ has finite moment of order $p>0$ exactly when $p<1/2$.
+If $\kappa_{1-\epsilon}=\min\{k:\ljP(D\le k)\ge1-\epsilon\}$, then
+\begin{equation}
+ \kappa_{1-\epsilon}\sim\frac9{\pi\epsilon^2}
+ \qquad(\epsilon\downarrow0).
+ \label{lj:eq:quantiles}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The moment criterion follows by summing
+$k^p\ljP(D=k)\sim(3/(2\sqrt\pi))k^{p-3/2}$.
+For the quantile statement, bracket the survival function between
+$(1\pm\eta)3/\sqrt{\pi k}$ for all sufficiently large $k$, invert these
+inequalities, and then let $\eta\downarrow0$. Rounding the resulting
+bounds to integers has no effect on the equivalent.
+\end{proof}
+
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=.88\linewidth]{figures/03-largest-jump-tail_scaling.pdf}
+ \caption{The scaled survival function $\sqrt{\pi k}\,\ljP(D>k)$, computed
+ from exact rational coefficients of $G$. The horizontal reference is
+ $3$. The graph illustrates \eqref{lj:eq:tail-two}; it is not used
+ as evidence in its proof.}
+ \label{lj:fig:tail}
+\end{figure}
+
+\section{Joint limits for the adjacency bound}
+\label{lj:sec:joint}
+
+\subsection{A fixed distance from the maximal possible jump}
+For every fixed integer $d\ge1$, \eqref{lj:eq:bridge} and total-variation
+convergence give
+\begin{equation}
+ \lim_{n\to\infty}\frac{a_n^{(n-d)}}{C_n}
+ =\ljP(D\ge d)
+ =1-\sum_{k=1}^{d-1}[z^k]G(z).
+ \label{lj:eq:fixed-window}
+\end{equation}
+Thus the limiting profile across the boundary consists of explicit
+rational numbers. At $d=1$ the fraction is identically one. At $d=2$,
+its limit is $41/48$: asymptotically $7/48$ of all avoiders contain a
+jump of the largest possible size, namely $n-1$.
+
+This is not a smooth limiting distribution for $M_n/n$. That normalized
+statistic tends to the constant $1$. The nontrivial distribution is
+visible only after retaining the integer distance $n-M_n$.
+
+\subsection{A uniform estimate and its domain of relative validity}
+\begin{proof}[Proof of \cref{lj:thm:tail-main}]
+The point and survival estimates follow from \cref{lj:prop:two-term}.
+For $2\le d\le n-1$, total variation gives
+\[
+ \left|\frac{a_n^{(n-d)}}{C_n}-\ljP(D\ge d)\right|
+ \le C_{\mathrm{TV}} n^{-1/2}
+\]
+for an absolute constant $C_{\mathrm{TV}}$. Also
+\[
+ \ljP(D\ge d)=\ljP(D>d-1)
+ =\frac3{\sqrt{\pi d}}+O(d^{-3/2}).
+\]
+Combining these inequalities proves \eqref{lj:eq:uniform-joint}.
+Dividing the error by the main term gives
+\begin{equation}
+ \frac{a_n^{(n-d)}}{C_n}
+ =\frac3{\sqrt{\pi d}}
+   \left(1+O\left(d^{-1}+\sqrt{d/n}\right)\right).
+ \label{lj:eq:relative-joint}
+\end{equation}
+When $d\to\infty$ and $d=o(n)$ the relative error tends to zero.
+Finally $C_n\sim4^n/(\sqrt\pi\,n^{3/2})$ gives the second equivalent
+in \eqref{lj:eq:joint-equivalent}.
+\end{proof}
+
+\begin{example}[Polynomial and logarithmic boundary windows]
+For any fixed $0<\alpha<1$ and $d_n=\lfloor n^\alpha\rfloor$,
+\[
+ \frac{a_n^{(n-d_n)}}{C_n}
+ \sim\frac3{\sqrt\pi}\,n^{-\alpha/2}.
+\]
+Taking $d_n=\lfloor\log n\rfloor$ gives the equivalent
+$3/\sqrt{\pi\log n}$. More generally, the same formula with
+$d_n$ in place of these choices holds along every unbounded sublinear
+integer sequence. Neither monotonicity nor regular variation of $d_n$
+is required.
+\end{example}
+
+\begin{corollary}[All diverging boundary deficits are negligible]
+\label{lj:cor:diverging}
+If $d_n\to\infty$ and $1\le d_n\le n-1$, then
+\[
+ a_n^{(n-d_n)}/C_n\longrightarrow0.
+\]
+For every fixed $0<\theta<1$,
+\[
+ a_n^{(\lfloor\theta n\rfloor)}/C_n=O(n^{-1/2}).
+\]
+\end{corollary}
+\begin{proof}
+The first assertion follows either from tightness of $D_n$ or directly
+from the absolute estimate. In the second, $d_n=n-\lfloor\theta n\rfloor$
+is of order $n$, and both terms of \eqref{lj:eq:uniform-joint} are
+$O(n^{-1/2})$.
+\end{proof}
+
+\begin{remark}[The unresolved bulk regime]\label{lj:rem:bulk}
+When $d$ is a fixed positive fraction of $n$, the total-variation error
+is of the same order as the proposed leading term in
+\eqref{lj:eq:uniform-joint}. The equation is still a valid absolute estimate,
+but it does \emph{not} prove a relative equivalent there. In particular,
+Part~III does not assert
+$a_n^{(\lfloor\theta n\rfloor)}/C_n\sim
+3/\sqrt{\pi(1-\theta)n}$. An additional finite-size scaling analysis would
+be needed, and it could yield a different function of $\theta$.
+\end{remark}
+
+\section{The moment transition and its consequences}
+\label{lj:sec:moments}
+
+\subsection{Truncation converts total variation into moment bounds}
+For two probability measures $\mu,\nu$ and a measurable function with
+$0\le f\le B$, the layer-cake representation gives
+\begin{equation}
+ \left|\int f\,\dd\mu-\int f\,\dd\nu\right|
+ \le B\,\ljTV(\mu,\nu).
+ \label{lj:eq:bounded-test}
+\end{equation}
+Apply this to $f(x)=\min(x,n)^p$. Since $D_n<n$,
+\begin{equation}
+ \left|\ljE D_n^p-\ljE\min(D,n)^p\right|
+ =O(n^{p-1/2}).
+ \label{lj:eq:moment-comparison}
+\end{equation}
+The finite support of $D_n$ matters: total-variation convergence without
+a rate or a truncation bound would not control these unbounded moments.
+
+For any positive integer-valued $X$, summation by parts gives
+\begin{equation}
+ \ljE\min(X,n)^p
+ =\sum_{k=0}^{n-1}\bigl((k+1)^p-k^p\bigr)\ljP(X>k).
+ \label{lj:eq:layer-cake}
+\end{equation}
+Using \eqref{lj:eq:tail-two} and
+$(k+1)^p-k^p=pk^{p-1}+O(k^{p-2})$ for $k\ge1$,
+we obtain all three moment regimes.
+
+\subsection{Subcritical and critical moments}
+\begin{proof}[Proof of \cref{lj:thm:moments-main}, for $p\le1/2$]
+If $0<p<1/2$, the tail of the sum \eqref{lj:eq:layer-cake} is
+$O(n^{p-1/2})$, and therefore
+\[
+ \ljE\min(D,n)^p=\ljE D^p+O(n^{p-1/2}).
+\]
+Equation \eqref{lj:eq:moment-comparison} proves
+\eqref{lj:eq:small-moments}.
+
+If $p=1/2$, the summand in \eqref{lj:eq:layer-cake} is
+\[
+ \bigl(\sqrt{k+1}-\sqrt k\bigr)\ljP(D>k)
+ =\frac3{2\sqrt\pi}\frac1k+O(k^{-2}).
+\]
+Consequently
+\[
+ \ljE\min(D,n)^{1/2}
+ =\frac3{2\sqrt\pi}\log n+O(1).
+\]
+The error in \eqref{lj:eq:moment-comparison} is now $O(1)$, proving the
+critical statement.
+\end{proof}
+
+\subsection{Supercritical moments: the order, not the constant}
+\begin{proof}[Completion of the proof of \cref{lj:thm:moments-main}]
+Let $p>1/2$. The sum in \eqref{lj:eq:layer-cake} is
+$O(n^{p-1/2})$, so \eqref{lj:eq:moment-comparison} gives the upper bound.
+For the lower bound choose a constant $C_{\mathrm{TV}}$ such that
+$\ljTV(\ljLaw(D_n),\ljLaw(D))\le C_{\mathrm{TV}}n^{-1/2}$ for all sufficiently large $n$.
+Fix a sufficiently small $\epsilon>0$ such that
+\[
+ \frac3{2\sqrt{\pi\epsilon}}>C_{\mathrm{TV}}+1.
+\]
+Set $d=\lfloor\epsilon n\rfloor$. The limiting tail estimate implies,
+for all sufficiently large $n$,
+\[
+ \ljP(D\ge d)\ge
+ \frac3{2\sqrt{\pi\epsilon}}n^{-1/2}.
+\]
+Hence $\ljP(D_n\ge d)\ge n^{-1/2}$, and
+\[
+ \ljE D_n^p\ge d^p\ljP(D_n\ge d)
+ \ge \underline c_p n^{p-1/2}
+\]
+for some $\underline c_p>0$. This proves the claimed two-sided order.
+\end{proof}
+
+\begin{corollary}[Mean and variance of the largest-jump deficit]
+\label{lj:cor:mean-var}
+As $n\to\infty$,
+\begin{equation}
+ \ljE D_n=\Theta(\sqrt n),\qquad
+ \ljE M_n=n-\Theta(\sqrt n),\qquad
+ \operatorname{Var}(D_n)=\Theta(n^{3/2}).
+ \label{lj:eq:mean-variance-cor}
+\end{equation}
+The same variance identity holds for $M_n$.
+\end{corollary}
+\begin{proof}
+Use \cref{lj:thm:moments-main} with $p=1,2$. The squared mean is $O(n)$,
+whereas the second moment is bounded above and below by positive
+constants times $n^{3/2}$. Subtracting the squared mean preserves this
+order. Finally $M_n=n-D_n$.
+\end{proof}
+
+\begin{remark}[Why a bounded typical deficit and an unbounded mean coexist]
+The limit has median $9$, but an infinite mean. Rare permutations with
+much larger deficits carry an increasing fraction of the finite-size
+mean. There is therefore no contradiction between $D_n=O_{\ljP}(1)$ and
+$\ljE D_n=\Theta(\sqrt n)$. Nor can the constant in the mean be read off
+from the tail constant $3/\sqrt\pi$: the range $D_n$ of order $n$ can
+contribute to the mean at the same order, and that bulk range has not been
+identified asymptotically in Part~III.
+\end{remark}
+
+\section{Exact probabilities, finite checks, and reproducibility}
+\label{lj:sec:checks}
+
+\subsection{The first probabilities and the median}
+The probability coefficients are rational: the branches of the two
+square roots at $z=0$ have rational Taylor coefficients, as do all the
+rational operations in \eqref{lj:eq:main-pgf}. Table~\ref{lj:tab:probabilities}
+shows the first twelve values. The decimals are rounded displays of
+exact fractions, not floating-point coefficients used in the proof.
+
+\begin{table}[tbp]
+\centering
+\caption{Initial point probabilities and cumulative probabilities of the
+limiting deficit. The full first $256$ point probabilities are included
+as exact numerator--denominator pairs in the package
+(\texttt{data/03-largest-jump-limit\_probabilities.csv}).}
+\label{lj:tab:probabilities}
+\begin{tabular}{rcc}
+\toprule
+$k$ & $\ljP(D=k)$ & $\ljP(D\le k)$\\
+\midrule
+1 & $7/48=0.1458333333$ & $0.1458333333$\\
+2 & $223/2304=0.0967881944$ & $0.2426215278$\\
+3 & $7657/110592=0.0692364728$ & $0.3118580006$\\
+4 & $139913/2654208=0.0527136532$ & $0.3645716538$\\
+5 & $10681477/254803968=0.0419203715$ & $0.4064920253$\\
+6 & $0.0344074271$ & $0.4408994524$\\
+7 & $0.0289238487$ & $0.4698233011$\\
+8 & $0.0247727295$ & $0.4945960306$\\
+9 & $0.0215382164$ & $0.5161342470$\\
+10 & $0.0189582188$ & $0.5350924658$\\
+11 & $0.0168600735$ & $0.5519525393$\\
+12 & $0.0151257982$ & $0.5670783376$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact inequalities
+$\ljP(D\le8)<1/2<\ljP(D\le9)$, checked with rational arithmetic,
+show that $9$ is the unique integer median. Total-variation convergence
+also implies that, for every sufficiently large $n$, the finite deficit
+$D_n$ has the same integer median. This is an eventual statement; the
+article does not give a minimal such $n$.
+
+\subsection{An independent exact check of the first mass}
+\begin{proposition}[The largest possible jump]
+\label{lj:prop:exact-extreme}
+For $n\ge3$,
+\begin{equation}
+ \#\{\pi\in\Av_n(132):M(\pi)=n-1\}
+ =C_{n-2}+\sum_{j=0}^{n-2}C_j.
+ \label{lj:eq:extreme-exact}
+\end{equation}
+Consequently $\ljP(D_n=1)\to7/48$.
+\end{proposition}
+\begin{proof}
+A jump of size $n-1$ is exactly an adjacency of the values $1$ and $n$.
+If it is the ascent $1,n$, this pair must be at the end: any later entry
+would form $132$ with the pair. The preceding entries, standardized,
+are an arbitrary avoider of length $n-2$, giving $C_{n-2}$ choices.
+
+If it is the descent $n,1$, decompose at the maximum. The right block
+starts with $1$ and must be increasing, since a later descent together
+with that first $1$ would form $132$. For each right-block length
+$r\in\{1,\ldots,n-1\}$, the left block is an arbitrary avoider of
+length $n-r-1$. This gives the sum in \eqref{lj:eq:extreme-exact}.
+The two cases are disjoint.
+
+Finally $C_{n-2}/C_n\to1/16$. Also
+$\sum_{j=0}^{n-2}C_j\sim(4/3)C_{n-2}$, as follows either by reversing
+this sum and using the Catalan ratio, or by Stolz--Ces\`aro applied to
+$\sum_{j=0}^N C_j$ and $C_N$. Thus the second term divided by $C_n$
+tends to $1/12$. Their sum is $7/48$.
+\end{proof}
+
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=.88\linewidth]{figures/03-largest-jump-finite_probabilities.pdf}
+ \caption{Exact finite point probabilities of $D_n$ for selected small
+ sizes, compared with the limiting coefficients. Finite support strongly
+ affects the far end of each finite distribution. The curves are
+ illustrations generated from exhaustive Catalan enumeration, not
+ Monte Carlo samples.}
+ \label{lj:fig:finite}
+\end{figure}
+
+\subsection{What the verifier actually checks}
+The standard-library verifier performs the following separate tests.
+The wording is deliberately finite: passing them supports implementation
+correctness, not the infinite or asymptotic claims by itself.
+\begin{enumerate}
+\item It computes the first $40$ point probabilities exactly, verifies
+positivity, the first five printed fractions, and the median. It compares
+$31$ clipping-correction coefficients computed from the radical formula
+with a separate finite-endpoint tail summation.
+\item For sizes $1$ through $8$, it compares the Catalan recursive
+generator with all ordinary permutations filtered by a direct three-index
+$132$ test. This checks $2{,}055$ avoiders and verifies every first-entry
+count and the extreme-jump formula in that range.
+\item For every one of the $804$ decorated skeletons of costs $2$ through
+$7$, it tests every hole of size $t+1$ with first entry greater than $t$.
+There are $269{,}402$ reconstruction tests. Each checks the exact deficit,
+the last-entry state, and absence of collisions within the fixed-cost
+reconstruction family. The counts of skeletons and their probability
+masses are checked against the exact Catalan formulas as well.
+\end{enumerate}
+All tests passed in the recorded run. The cross-cost disjointness needed
+in the proof is established by \cref{lj:lem:injective}; the finite collision
+check is not described as a test of every pair of costs.
+
+\subsection{Rebuilding and rerunning}
+\label{lj:sec:reproduce}
+Part~III's files are
+\begin{lstlisting}
+code/03-largest-jump-model.py          Exact Catalan, endpoint, skeleton and
+                                       rational-series code
+code/03-largest-jump-verify.py         Standard-library exact finite verifier
+code/03-largest-jump-verify_symbolic.py  Optional SymPy identity and
+                                       expansion checks
+code/03-largest-jump-make_data.py      Regenerates the three CSV files
+code/03-largest-jump-plot_results.py   Optional Matplotlib figures
+code/03-largest-jump-build.sh          The manuscript's three-pass build
+data/03-largest-jump-*                 Recorded runs, 256 exact limiting
+                                       probabilities, finite histograms
+                                       n = 2..12, extreme-jump checks,
+                                       optional requirements
+figures/03-largest-jump-*.pdf          The two figures of this part
+03-largest-jump-{PROOF_STATUS,SOURCES,VALIDATION}.md  Audit notes
+\end{lstlisting}
+The scripts are shipped byte-identical to the delivery and still use the
+delivered names: they write \texttt{data/verification.json},
+\texttt{data/symbolic\_verification.json}, the three unprefixed CSV files
+and \texttt{figures/tail\_scaling.*}, \texttt{figures/finite\_probabilities.*},
+and the verifier and the data generator execute \texttt{from model import}.
+Run in place, that import would load Part~I's different
+\texttt{code/model.py} and fail with \texttt{ImportError}, and
+\path{code/03-largest-jump-build.sh} would look for an \texttt{article.tex}
+in \texttt{code/}. The report's README gives a recipe that restores the
+delivered layout in a scratch copy. There, the manuscript's instructions
+apply unchanged. The exact verification needs Python 3.10 or later and no
+third-party package:
+\begin{verbatim}
+python code/verify.py
+python code/make_data.py
+\end{verbatim}
+Do not use Python's \texttt{-O} option, which disables the verifier's
+assertions. The optional symbolic checks need SymPy, and optional plot
+regeneration needs Matplotlib:
+\begin{verbatim}
+python code/verify_symbolic.py
+python code/plot_results.py
+\end{verbatim}
+The retained figures make Python unnecessary for rebuilding the article.
+The manuscript's build script placed auxiliary files in a temporary
+directory and copied back only its \texttt{article.pdf}; this report is built
+as described in its README. The included data files record exact fractions;
+rounded display columns and plots are not interval-arithmetic certificates.
+
+\section{Further research questions}
+\label{lj:sec:questions}
+The results above settle the bounded and unbounded sublinear deficit
+windows. They also reveal several questions whose answers would extend
+the theory rather than merely recompute its constants.
+
+\subsection{Bulk finite-size scaling}
+For $0<u<1$, determine whether the limit
+\begin{equation}
+ \Psi(u)=\lim_{n\to\infty}\sqrt n\,\ljP(D_n>\lfloor un\rfloor)
+ \label{lj:eq:bulk-question}
+\end{equation}
+exists, and if so compute it, including its endpoint behavior.
+This is a proposed problem, not a theorem or an asserted formula.
+Part~III proves an upper bound on the expression, and a positive
+lower bound for sufficiently small fixed $u$. It does not establish a
+limit. A likely starting point is to retain the finite Catalan ratio
+$C_{n-t}/C_n$ instead of replacing it by $4^{-t}$, and to analyze the
+regime where both sides at a maximum decomposition are macroscopic.
+
+\subsection{Exact constants for the mean and higher moments}
+Determine whether
+$n^{1/2-p}\ljE D_n^p$ converges for each $p>1/2$, especially whether
+$\ljE D_n/\sqrt n$ has a limit. A bulk profile with sufficient uniform
+integrability would make these constants integrals of that profile.
+At the critical point, ask whether
+\[
+ \ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n
+\]
+converges. The $O(1)$ result proved here does not imply convergence of
+the centered quantity.
+
+\subsection{The sharp total-variation constant and local corrections}
+The order $n^{-1/2}$ is now proved sharp, but the interval in
+\eqref{lj:eq:tv-constants} leaves the leading constant open. Does
+$\sqrt n\,\ljTV(\ljLaw(D_n),\ljLaw(D))$ converge? Is the missing limiting
+mass beyond the finite support the whole leading discrepancy, or does
+an additional contribution arise inside the support?
+Separately, for each fixed $k$, determine the first correction to
+$\ljP(D_n=k)$. A pointwise expansion can be much sharper than the global
+total-variation bound and would give effective finite-size estimates
+for the first several adjacency thresholds.
+
+\subsection{Ascending and descending extreme jumps jointly}
+Define the largest ascent and largest descent by
+\[
+ M_n^+=\max_i(\Pi_n(i+1)-\Pi_n(i))_+,
+ \qquad
+ M_n^-=\max_i(\Pi_n(i)-\Pi_n(i+1))_+.
+\]
+Determine their joint limiting behavior, allowing the possibility that
+one coordinate requires an extended state space or a different scale.
+The current clipping step mixes an old extreme jump with a newly created
+ascent, so its explicit dependence on the terminal endpoint should
+provide useful information. Independence must not be assumed.
+
+\subsection{Near-maximal jumps as a point process}
+Instead of retaining only the minimum deficit, retain the multiset
+\[
+ \left\{n-|\Pi_n(i+1)-\Pi_n(i)|:1\le i<n\right\}
+\]
+near the finite end of the positive integers. Determine its joint count
+law on every fixed finite set, including ties for the maximum jump.
+A decorated skeleton records where a finite number of new extreme
+candidates are created. It may therefore support a marked extension of
+the present generating-function calculation. A proof must also control
+unrecorded jumps inside the large hole.
+
+\subsection{Weighted Catalan models}
+Replace the uniform measure by weights tracking descents, leaves of the
+associated binary tree, or another statistic with an explicit bivariate
+Catalan generating function. Determine when an absorbing finite
+skeleton still exists, whether the moment threshold remains $1/2$, and
+which critical parameter values change the tail exponent. Both the
+operation probabilities and the endpoint clipping law would have to be
+recomputed; a formal substitution into \eqref{lj:eq:main-pgf} is not justified.
+
+\subsection{Other avoidance classes}
+Develop an analogous boundary analysis for other pattern classes, with
+particular attention to classes whose recursive specifications have
+several large-block types. Before treating a new pattern as a distinct
+case, account for the reversal and complement symmetries that preserve
+absolute adjacent differences. The difficult extension is not a mere
+renaming of a symmetry-equivalent class, but a new decomposition in which
+the competition between large adjacent jumps has a different structure.
+
+\subsection{An exact sampler with controlled work}
+The skeleton probability space is an exact description of the limit, but
+its cost has infinite expectation by \eqref{lj:eq:cost-tail}. Sampling full
+finite decorations literally can therefore be expensive on rare runs.
+Design an exact sampler for $D$ that manipulates only the endpoint
+information and clipping events it needs. Determine its expected bit
+complexity, and compare a state-based sampler with inversion of the
+rational coefficient sequence. Almost-sure termination alone is not a
+finite expected-cost theorem.
+
+\subsection{A formalization boundary}
+A feasible first formal target is the deterministic reconstruction lemma:
+define $132$-avoidance, the maximum decomposition, decorated skeletons,
+and the endpoint state, then prove reconstruction and injectivity by
+induction. Next formalize the first-entry formula and the common-submeasure
+inequality. These steps isolate the combinatorial content from the later
+analytic transfer theorem. A complete formalization would still need
+countable probability, formal power series or analytic identities, and
+asymptotic coefficient transfer; the present package does not claim to
+supply them.
+
+\subsection{Reconnect to the fixed-bound spectral questions}
+\label{lj:sec:q-reconnect}
+The boundary law does not decide which of the two irreducible endpoint
+components controls the fixed-$m$ growth rate, nor the optimal defect
+between that rate and the Catalan scalar comparison rate discussed in
+Parts~I and~II (\cref{sec:remaining,crem:sec:future}). Study whether a two-parameter endpoint system can interpolate
+between the fixed-$m$ spectral regime and the boundary regime here.
+Any proposed interpolation must specify its uniform error before taking
+a moving-bound limit; fixed-parameter rationality alone is insufficient.
+
+\section{Proof audit, scope, and conclusion}
+\label{lj:sec:audit}
+
+\subsection{The dependency chain}
+The argument proceeds through explicit finite objects:
+\[
+\begin{gathered}
+ \text{maximum decomposition and endpoint counts}\\
+ \Downarrow\\
+ \text{absorbing skeleton, reconstruction, and injectivity}\\
+ \Downarrow\\
+ \text{Catalan counting domination and total variation}\\
+ \Downarrow\\
+ \text{endpoint clipping and the algebraic generating function}\\
+ \Downarrow\\
+ \text{singular tail, sharp rate, joint limits, and moment transition}.
+\end{gathered}
+\]
+The only analytic coefficient-transfer input is standard singularity
+analysis, with the needed continuation and local expansion checked
+explicitly. No growth-constant estimate from the existing ProveIt report
+(Parts~I and~II) is needed, and no general conditioned-tree convergence theorem is used
+as a black box.
+
+\begin{table}[tbp]
+\centering
+\caption{Claim-by-claim status of Part~III (manuscript~02).}
+\label{lj:tab:audit}
+\small
+\begin{tabular}{p{.42\linewidth}p{.51\linewidth}}
+\toprule
+Claim & Status and limitation\\
+\midrule
+Algebraic law for $D_n$ & Written proof from finite counting and exact
+state equations; not formally verified.\\
+Sharp order $n^{-1/2}$ in total variation & Upper bound by common mass;
+lower bound by the limiting mass beyond finite support. Exact constant open.\\
+Uniform estimate for $m=n-d$ & Absolute estimate for $2\le d\le n-1$;
+relative equivalent only when $d\to\infty$ and $d=o(n)$.\\
+Moment transition & Exact critical logarithmic coefficient and subcritical
+convergence; only two-sided orders above the critical exponent.\\
+Finite verification & Exact rational and integer regression tests over
+specified finite ranges; not a substitute for the proofs.\\
+Novelty and priority & Targeted comparison with the cited papers and
+repository report; no exhaustive literature or priority certification.\\
+Bulk profile, exact mean constant & Proposed research questions, not
+claimed results.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What is resolved}
+The adjacency-bounded enumeration has a nontrivial joint-limit boundary
+at distance $O(1)$ below $n$. Part~III identifies the entire limiting
+profile there, gives a sharp-order convergence rate, and extends it
+uniformly to every growing sublinear deficit window. The algebraic law
+has a heavy enough tail to force a moment transition, so typical and
+average deficits live on different scales. These conclusions answer a
+specific missing regime in the repository's program while leaving its
+fixed-bound spectral problems and the bulk finite-size profile separate.
+
+The reusable mechanism is the common-mass comparison: a finite stopping
+skeleton of cost $t$ has limiting weight $4^{-t}$, while the corresponding
+finite Catalan family has at least that weight. Once exceptional first
+entries are removed, the extreme statistic agrees exactly. This finite
+argument simultaneously supplies convergence, its quantitative rate, and
+a controlled bridge from limiting probabilities to moving-bound counts.
+
+\section{Exact coefficient recursions}
+\label{lj:app:recursions}
+This section and the next two were the manuscript's Appendices~A--C. They
+are numbered here as sections of Part~III, so that Part~I's appendices keep
+their letters. The package computes all coefficients with rational arithmetic. To degree
+$N$, begin with
+\[
+ q(z)=\sum_{k=1}^N\frac{C_{k-1}}{4^k}z^k+O(z^{N+1}).
+\]
+For a series $a(z)=1+\sum_{k\ge1}a_kz^k$, the square root
+$b(z)=1+\sum_{k\ge1}b_kz^k$ is obtained from
+\begin{equation}
+ b_k=\frac12\left(a_k-\sum_{j=1}^{k-1}b_jb_{k-j}\right).
+ \label{lj:eq:sqrt-recursion}
+\end{equation}
+For a series $a$ with nonzero constant term, its inverse is obtained from
+\begin{equation}
+ b_0=a_0^{-1},\qquad
+ b_k=-a_0^{-1}\sum_{j=1}^k a_jb_{k-j}.
+ \label{lj:eq:inverse-recursion}
+\end{equation}
+Use these recursions to compute $r=\sqrt{1-q}$,
+$H=q/(3-4q)$,
+$\ljU=q(1-r)/(2(3-4q))$, and
+$J=(q+(1-z)\ljU)/(4(1-q)^2)$. Their sum is $G$.
+Only the first $N$ coefficients of each input are needed. Ordinary
+convolution gives $O(N^2)$ rational arithmetic operations; this is not a
+bit-complexity bound, because numerators and denominators grow.
+
+The independent clipping computation uses instead the endpoint counts
+\eqref{lj:eq:first-count} and their tails. Writing
+$P(z)=P(1/4,z)=z/(1+2\sqrt{1-z})$, it extracts coefficients of $P$
+without the formula for $\ljU$, subtracts finite first-entry counts,
+and sums over the possible finite $R$-increments. Agreement is therefore
+not merely two evaluations of the same line of code.
+
+\section{An algebraic certificate without branch ambiguity}
+\label{lj:app:algebra}
+One may describe $G$ without nested radical notation by introducing
+$q$ and $r$ and imposing
+\begin{align}
+ 4q^2-4q+z&=0, & q(0)&=0,\label{lj:eq:q-algebraic}\\
+ r^2-(1-q)&=0, & r(0)&=1.\label{lj:eq:r-algebraic}
+\end{align}
+In addition,
+\begin{equation}
+ 8(3-4q)(1-q)^2G
+ =q\bigl(15-24q+8q^2-z-(1-z)r\bigr).
+ \label{lj:eq:G-certificate}
+\end{equation}
+Equations \eqref{lj:eq:q-algebraic}--\eqref{lj:eq:G-certificate}, with the stated
+initial values, select the same analytic series as \eqref{lj:eq:main-pgf}.
+Eliminating $r$ first gives
+\begin{align}
+ &\bigl[q(15-24q+8q^2-z)
+       -8(3-4q)(1-q)^2G\bigr]^2\notag\\
+ &\hspace{2cm}-q^2(1-z)^2(1-q)=0.
+ \label{lj:eq:eliminate-r}
+\end{align}
+The resultant of \eqref{lj:eq:eliminate-r} and $4q^2-4q+z$ eliminates $q$.
+Squaring can add branches, so the conditions at zero must be retained;
+an arbitrary root of the eliminated polynomial is not automatically the
+probability generating function. Part~III claims degree at most four,
+not an independently proved irreducibility statement for a minimal
+polynomial.
+
+\section{Repository pin, literature scope and merge}
+\label{lj:app:provenance}
+
+\subsection{The manuscript's pin and literature scope}
+The inspected repository head was
+\begin{center}
+\texttt{8d936ee2357f9decf78c2ecc7d9baf3100a6787d}.
+\end{center}
+The relevant report is in the directory
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+ enumerative-combinatorics/\\
+ adjacency-bounded-132-avoiders/.
+\end{quote}
+The inspected README blob was
+\texttt{7f56b878e420c9fb0a0df299f54f9c154c68780e}; its LaTeX article blob
+was \texttt{f24ea59acf0f9809462f7fb0f055e78d38d4740a}.
+The README identifies two source parts, from September 19 and September
+28, 2026, and explicitly says that no joint limit in $n$ and $m$ is
+claimed there. That exclusion motivates the present target; it is not
+presented as a named classical conjecture.
+
+The literature comparison used the arXiv records and available HTML of
+Nadler and Mayama--Akita, the records of the two Janson papers, and
+targeted searches for extreme adjacent differences in $132$-avoiders.
+The searches did not establish exhaustive coverage. In particular,
+absence of a matching result from the returned material is not evidence
+sufficient to certify priority. The full metadata ledger is retained in
+\texttt{SOURCES.md} (shipped as \path{03-largest-jump-SOURCES.md}). No
+external PDF or source article is redistributed in this package.
+
+Both blobs above are the ones this report still had when the manuscript was
+placed (\cref{lj:sec:source}); in particular the README sentence quoted
+above is the one Part~III re-scopes, and it now carries a dated pointer
+here, as does Part~II's research direction ``Joint growth of length and
+adjacency bound'' (\cref{crem:sec:future}).
+
+\subsection{Where the merge had to choose}
+\label{lj:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~III follows Part~II and precedes Part~I's
+ appendices, which contain no numbered equations, tables or figures; no
+ number of Part~I or Part~II changed. The manuscript's three appendices are
+ printed as \cref{lj:app:recursions,lj:app:algebra,lj:app:provenance}. Its
+ title page and abstract are replaced by the opening note of Part~III, the
+ status box of \cref{lj:sec:source} (which prints its research-status box)
+ and a paragraph of the report's abstract; every claim of its abstract is
+ stated in \cref{lj:sec:introduction}.
+\item \emph{Scope.} The manuscript describes its target as the joint limit
+ the report's README excluded. Here it is recorded as answering that
+ question, and Part~II's corresponding research direction, only in the
+ boundary regime $m=n-d$ with $d=o(n)$ (\cref{lj:sec:scope}); the README and
+ Part~II's text keep their wording, with dated pointers.
+\item \emph{Duplicates.} The maximum decomposition is Part~I's
+ (\cref{sec:endpoints}) and is credited there; the first-entry count is
+ Part~I's \eqref{eq:h}, reindexed, and the manuscript's different
+ derivation is kept (\cref{lj:rem:first-entry}). No other result of
+ Part~III is proved in Parts~I or~II; elementary Catalan identities such as
+ $\sum_{k\ge1}C_{k-1}4^{-k}=\frac12$ are used in both. \Cref{lj:rem:first-entry}'s comparison with
+ Part~II's tail bound is the merge's, as are \cref{lj:sec:intro} and this
+ list.
+\item \emph{Notation.} $\eps_n\to\omega_n$, $\mathcal A\to\ljU$,
+ $q_{1-\epsilon}\to\kappa_{1-\epsilon}$, $C,C_0\to C_{\mathrm{TV}}$,
+ $c_p\to\underline c_p$ (\cref{lj:tab:notation}). The deficit $D_n$, its
+ law $D$, the threshold $d$ and the cutoff $h$ keep the manuscript's
+ letters, because each collides only with objects of a different kind
+ (polynomials, constants, two-argument counts) that are listed in the
+ table. No normalization changed.
+\item \emph{References to this report.} The manuscript cites Parts~I and~II
+ as a repository report (its reference ``Repo''); here those citations are
+ internal cross-references. Its entries for Nadler and Mayama--Akita are
+ Part~I's; its Janson and Flajolet--Odlyzko entries are added to the
+ bibliography.
+\item \emph{Reproduction.} The manuscript's package listing and commands are
+ replaced by the shipped names and the copy recipe
+ (\cref{lj:sec:reproduce}); its \texttt{article.tex}, \texttt{article.pdf},
+ \texttt{README.md} and the PNG versions of its figures are not shipped.
+\item \emph{Figures.} In the write phase the manuscript's two figure PDFs
+ were copied byte-identically into \texttt{figures/}, under their delivered
+ names with the prefix \path{03-largest-jump-}
+ (\cref{lj:fig:tail,lj:fig:finite}).
+\item \emph{Stale sentences elsewhere.} The abstract, Part~I's remark on the
+ order of limits (\cref{sec:results}), Part~II's
+ \cref{crem:rem:fixed-m}, its research direction on joint growth, its
+ scope ledger (\cref{crem:tab:ledger}) and Part~I's \cref{app:reproduction}
+ carry dated pointers to Part~III; their original wording is kept.
+\end{itemize}
+
+
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
@@ -2703,7 +4501,9 @@ data/large_m_scalar_bounds.csv     Scalar evaluations through m = 1000000
 \end{lstlisting}
 [Added 28 September 2026, batch 38: Part~II's code, data and figures carry
 the prefix \path{02-centered-remainder-} and are listed in
-\cref{crem:sec:reproduce}.]
+\cref{crem:sec:reproduce}.
+Added 29 September 2026, batch 43: Part~III's carry the prefix
+\path{03-largest-jump-} and are listed in \cref{lj:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
@@ -2786,5 +4586,21 @@ T. Mayama and D. Akita, \emph{Finite-state enumeration of adjacency-constrained
 \url{https://arxiv.org/abs/2605.23519}.
 Relevant locations: Theorem~2.4, Proposition~2.7, Theorems~4.12 and~4.14,
 and Problem~P3 in Section~5.
+
+\bibitem{JansonTrees}
+S. Janson, \emph{Simply generated trees, conditioned Galton--Watson trees,
+random allocations and condensation}, arXiv:1112.0510, 2011.
+\url{https://arxiv.org/abs/1112.0510}. Cited in Part~III as background only.
+
+\bibitem{JansonPatterns}
+S. Janson, \emph{Patterns in random permutations avoiding the pattern 132},
+arXiv:1401.5679, 2014. \url{https://arxiv.org/abs/1401.5679}.
+Cited in Part~III as background only.
+
+\bibitem{FlajoletOdlyzko}
+P. Flajolet and A. Odlyzko, \emph{Singularity analysis of generating
+functions}, SIAM Journal on Discrete Mathematics \textbf{3}(2) (1990),
+216--240. DOI: 10.1137/0403019. Manuscript~02 records that it did not inspect
+the PDF of this paper (\path{03-largest-jump-SOURCES.md}).
 \end{thebibliography}
 \end{document}
