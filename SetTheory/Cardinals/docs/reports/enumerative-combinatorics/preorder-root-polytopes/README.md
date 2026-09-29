@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; and cactus rigidity for matching-support determinants**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; and gamma-positivity for every finite preorder**
 
-This is a research report in three parts. Part I is the original report of
+This is a research report in four parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -11,6 +11,11 @@ on 29 September 2026 in batch 42, from a further manuscript that answers
 Part II's Research question 4, "Beyond the sixth-root cactus matrices". All
 three were prepared for Vladimir Reshetnikov and are AI-assisted (the article
 credits ChatGPT for Parts I and II; manuscript 05 calls itself AI-assisted).
+Part IV was added on 29 September 2026 in batch 44, from two further
+manuscripts merged into one addition (batch-44 manuscripts 06, the base, and
+01), both prepared with ChatGPT for Vladimir Reshetnikov. Both prove
+Conjecture 5.2 (gamma-positivity) for every finite preorder, which answers
+Part II's Research question 1, "Extend the matching-support interpretation".
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -25,9 +30,11 @@ credits ChatGPT for Parts I and II; manuscript 05 calls itself AI-assisted).
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 5–17) and Appendices A–C (pp. 71–73) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 18–45) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 46–70) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 6–18) and Appendices A–C (pp. 113–115) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 19–47) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 48–72) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 73–112) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 73–112) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -54,10 +61,45 @@ Section k is Section k+26 here, its Appendices A and B are Sections 44 and 45,
 and its nine research questions are Research questions 11–19. Section 26.4
 of the article lists where the merge had to choose.
 
+Batch 44's manuscripts 06 and 01 arrived in `ae28ea2db` and were placed in
+`203016015`. Both archives wrap an inner directory of the same name,
+`ProveIt_Preorder_Gamma/`, but they are different packages (no file
+coincides). They prove the same main theorem by the same route and are
+printed as **one** Part IV, with **06 as the base**: its transitivity theorem
+covers every reflexive relation, not only preorders, and has a proof
+independent of the imported counting identity. The base took the later local
+number (`05-`), because the prefixes follow arrival order. Manuscript 06 is
+pinned to `9b24a3a8d`, where this article was Parts I and II exactly as
+printed (it did not read Part III); manuscript 01 is pinned to `077672c84`,
+where it was Parts I–III exactly as printed. Their manuscripts, PDFs and
+delivery READMEs are not shipped and survive in the arrival commit;
+manuscript 01's `SHA256SUMS` was verified (7/7) at placement and retired, and
+manuscript 06 shipped none. Part IV prints every result, proof, example,
+remark, limitation, question and non-claim of both, plus both abstracts and
+status boxes and manuscript 01's "shortest proof audit" box: a result proved
+in both is printed once with both sources named, and genuinely different
+proofs are kept as marked second routes (manuscript 01's path-decomposition
+proof of overlap cancellation, its profile form of the block formula, its
+initial-segment chain count and reflection proof of the Narayana formula).
+The shared demand/support counting lemma is Part II's Lemma 14.1, which both
+manuscripts reprove by the same reduction; it is printed once, in Part II.
+Material only manuscript 01 contains (Boolean orbits of commuting toggles,
+multivariate complement-duality, the second gamma coefficient, the leading
+Taylor coefficient at −1, the induced-deck identity with odd-cardinality
+reconstruction, an Ehrhart reinterpretation, three false variants, a
+dependency graph, a compact proof certificate) is printed under its own
+headings. The twenty research questions become seventeen (three pairs ask
+the same question), numbered 20–36. Section 46.4 of the article lists where
+the merge had to choose. Manuscript 06's own numbering, used in its shipped
+notes, maps as follows: Theorem 2.2 → 48.2, Theorem 2.3 → 48.3, Lemma 3.1 →
+49.1, Lemma 4.1 → 50.1, Lemma 6.1 → 53.1.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
 programs check finite instances; they do not prove the all-`n`, all-`m`,
-all-`r` or all-graph statements.
+all-`r` or all-graph statements. (Part IV: the programs check all labeled
+preorders through `n = 5`; the all-preorder theorem rests on the written
+proof and on two imported published root-polytope theorems.)
 
 ## Results
 
@@ -151,16 +193,76 @@ proves:
    connected subcubic treewidth-two noncactus (an odd theta of girth > 2r) on
    which every phase matrix passes all minor tests of order ≤ r.
 
+**Part IV** (manuscripts 06 and 01 of batch 44, merged) works with an
+arbitrary finite preorder `tau` on `n` elements: no height bound, and
+equivalence classes of any size. Call an ordered pair `(U,V)` of disjoint
+`k`-sets a *transport pair* if some bijection `f: U → V` has
+`u ≤_tau f(u)`; a pair is counted once however many such bijections exist.
+It proves:
+
+1. **Gamma-positivity for every finite preorder** (Theorem 48.2, both
+   manuscripts): `h_tau(t) = Σ_k gamma_k t^k (1+t)^(n−2k)` with
+   `gamma_k = |T_k(tau)|`, the number of transport pairs of size `k`. So
+   **Conjecture 5.2 of Athanasiadis–Chapoton holds in general.** A
+   multivariate form counts lattice points by their exact support. The proof
+   partitions lattice points by their *whole* zero set (Lemma 50.1). Each
+   support fibre is then a bipartite demand set, which Part II's counting
+   Lemma 14.1 turns into Boolean intervals. Part II's height-two theorem is
+   the special case (Section 55.3). Strict unimodality and palindromicity
+   follow without Part I's geometry (Corollary 50.3).
+2. **Transitivity criterion** (Theorem 48.3, manuscript 06). For every
+   reflexive relation `R`, the doubled matching-support polynomial `p_R` has
+   coefficients `|R|` in degree 1 and `|closure(R)|` in degree `n−1`.
+   Palindromic, gamma-positive, overlap-cancelling and transitive are all
+   equivalent. This classifies the balanced bipartite graphs with a perfect
+   matching whose matchable-set polynomial is palindromic (Corollary 53.2).
+   It also explains Part I's nonpalindromic example (Section 8.5,
+   `(1,5,6,1) = (1,|R|,|closure(R)|,1)`).
+3. **Structure** (both manuscripts unless marked):
+   - positive block formulas on the quotient poset, in signed form
+     (Theorem 54.1, 06) and in profile form (Theorem 54.3, 01);
+   - gamma-monotonicity under relation extension, strict in `gamma_1`
+     (Theorem 55.1);
+   - multivariate complement-duality (Theorem 55.2, 01);
+   - sharp bounds, attained by the universal equivalence and by chains
+     (Theorem 55.6);
+   - `deg Gamma_tau = nu(Comp(tau))`, the matching number of the
+     *undirected* comparability graph, and the multiplicity of `−1` as a
+     root of `h_tau` is exactly `n − 2 nu` (Theorem 56.1), with the leading
+     Taylor coefficient there (Corollary 56.2, 01);
+   - commuting Boolean toggles on a support-pair model (Theorem 52.1, 01),
+     *not* on lattice points;
+   - the induced-deck identity `(1−t) Σ_v h_(tau−v) = n h_tau − 2t h_tau'`,
+     which reconstructs `h_tau` from its deck for odd `n` (Theorem 57.1,
+     Corollary 57.2, 01);
+   - a centered-binomial mixture law for the support size, with exact
+     variance and a Hoeffding-type tail bound (Theorem 58.1, 06);
+   - the octopus formula of Athanasiadis–Xiao–Yan and Menon, recovered and
+     credited (Section 55, 01).
+
 **What Parts II and III do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
-reading-route box, Section 19 and Research questions 3 and 4 of Section 24):
+reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
+Part IV's answers are in Section 46.3, and its dated pointers, marked
+"Added 29 September 2026, batch 44", in the title block, the abstract, the
+scope box, the reading-route box, Section 8.5, Section 10, Part II's status
+box, Section 11.3 and Research questions 1 and 2, and Part III's Section 26.3
+and Research question 18):
 
 - Conjecture 5.3 (real roots) is **false** — first counterexample credited to
   Patel. Part I never asserted it, so nothing is retracted.
 - Conjecture 5.2 (gamma-positivity) is **proved in height ≤ 2 only**; open in
   general, including height-two posets blown up by nontrivial equivalence
   classes (Research question 1).
+  [Updated 29 September 2026, batch 44: proved in height ≤ 2 and, by
+  Part IV, in general — for every finite preorder, blowups included
+  (Theorem 48.2; Example 54.2 is a height-two blowup). Research question 1
+  is **answered**. Part III's Research question 18 ("Transfer beyond
+  height-two posets") is answered in its aim, by transport pairs rather than
+  stable signed-support methods. Research question 2 (a bijective counting
+  bridge) **remains open**: both manuscripts use the same imported identity
+  and re-pose it as Research question 20. See Section 46.3.]
 - Conjecture 5.1(d) (a flag polytope) **remains open**. For every preorder
   with an induced crown on at least six elements, Part I's polytope `S_tau` is
   not flag, since its boundary is a pulling (hence lattice) triangulation;
@@ -171,6 +273,12 @@ reading-route box, Section 19 and Research questions 3 and 4 of Section 24):
   stability. Research question 3 (which graph structures preserve
   real-rootedness) is **re-scoped, still open**: Part III's `K_{2,3}` tree
   attachments are noncacti with real-rooted `p_G`.
+- [Added 29 September 2026, batch 44.] Conjectures 5.3 and 5.1(d) are
+  unchanged by Part IV: gamma-positivity does not imply real-rootedness, and
+  Part IV constructs no flag polytope (Research question 22). Part IV proves
+  Conjecture 5.1(a)–(b) (palindromicity, unimodality) again, by a route
+  independent of Part I's unrefereed geometry. It refutes nothing in Parts
+  I–III; nothing is retracted.
 
 ## Not claimed
 
@@ -179,6 +287,9 @@ already settled duality (Conjecture 5.4); no claim that the support
 polynomial is `h*(Q_tau)` (it is `h*(B_tau)` and `h*(C_tau)`); nothing about
 arbitrary reflexive nontransitive relations (Section 8.5 gives a
 nonpalindromic example); the finite computations are not size records.
+[Added 29 September 2026, batch 44: Part IV's Theorem 48.3 now treats every
+reflexive relation — palindromic exactly when transitive — and explains
+Section 8.5's example.]
 
 From Part II (see also `02-height-two-STATUS.md`, `02-height-two-sources.md`):
 
@@ -187,6 +298,8 @@ From Part II (see also `02-height-two-STATUS.md`, `02-height-two-sources.md`):
   classical graph polynomial. Minimality of the eight-element example is not
   claimed beyond the authors' reported small-size tests (Research question 9).
 - No gamma-positivity beyond height two, or for nontrivial block blowups.
+  [Added 29 September 2026, batch 44: this remains Part II's scope; the
+  property holds in height two and, by Part IV, in general.]
 - No disproof of Conjecture 5.1(d); the crown obstruction concerns lattice
   triangulations and the toric configuration of `C_tau` only. Chordal
   bipartiteness is shown necessary for a flag lattice triangulation of `D_G`,
@@ -230,11 +343,53 @@ From Part III (see also `03-cactus-STATUS.md`, `03-cactus-SOURCES.md`):
   (Research question 12).
 - No fixed-size minor test (Theorem 38.1 shows none can work); no
   gamma-positivity or flag-realization result for preorders; no exhaustive
-  survey of the repository.
+  survey of the repository. [Added 29 September 2026, batch 44:
+  gamma-positivity for every preorder is now Part IV's; flag realization
+  remains open.]
 - The `K_{2,3}` stability proof imports Brändén's multiaffine Rayleigh
   criterion (Theorem 5.6 of *Adv. Math.* 216 (2007)); the classification,
   gauge count, gap and bounded-order results use no unproved repository
   theorem.
+
+From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
+`05-gamma-positivity-SOURCE_AUDIT.md`; manuscript 01 shipped no notes):
+
+- **Imported input.** The main theorem rests on the demand/support
+  counting identity (Part II's Lemma 14.1). That identity is reduced to two
+  published root-polytope theorems (Kálmán–Postnikov; Ohsugi–Tsuchiya, as
+  stated by Davis–Kohl). These are cited inputs, not reproved. The theorem
+  does not use Part I's unrefereed polytope theorem.
+- **No bijections.** No canonical bijection between demand vectors and
+  matchable support pairs is given. No natural Boolean action on the actual
+  lattice points is given either: manuscript 01's toggles act on an
+  auxiliary support-pair model.
+- **Open conjectures and other statistics.** No flag-polytopal realization
+  (Conjecture 5.1(d)). No real-rootedness, and no log-concavity or
+  unimodality of the gamma vector. No identification of `h_tau` with the
+  Ehrhart numerator of the original `Q_tau`.
+- **Limits of the reflexive-relation criterion.** It is no classification
+  for unbalanced bipartite graphs, for balanced graphs without a perfect
+  matching, or for graphs whose maximum matching is smaller than a shore.
+  It is no real-rootedness criterion.
+- **Credited, not claimed.** Nothing new is claimed for:
+  - the matching-support interpretation (Ohsugi–Tsuchiya, Davis–Kohl);
+  - the hypertree volume count (Kálmán–Postnikov);
+  - the support-enumerator identity and preorder duality `h_tau = h_(tau*)`
+    (Dai–Hou–Liu–Thawinrak–Wang), which Part IV recovers and refines;
+  - the octopus and lopsided-octopus results (Menon; the octopus formula is
+    attributed there to Athanasiadis, Xiao and Yan);
+  - the height-two theorem (Part II);
+  - the classical chain (Narayana), binomial and universal-equivalence
+    formulas;
+  - the Patel and Stembridge–Ohsugi–Tsuchiya counterexamples, which Part IV
+    cites and does not re-claim.
+- **Priority.** No worldwide publication priority is claimed. The source
+  searches of 29 September 2026 were targeted and partly uninformative. The
+  relation of the endpoint-defect criterion to older matching and Gorenstein
+  characterizations deserves further historical review.
+- **Finite checks and formalization.** The finite checks do not prove the
+  all-`n` statements. No Lean or Rocq formalization exists. Both
+  manuscripts' formalization plans (Section 60) are unstarted.
 
 ## Labels
 
@@ -253,10 +408,28 @@ labels are unchanged (compared in the `.aux` files of the committed and the
 new build). Part III begins at Section 26, after Part II and before Part I's
 appendices, whose letters and numbers are unchanged.
 
+Part IV added **129** labels, all with the prefix `gam:` ("gamma"). There
+are 94 plain `gam:` labels and 32 `gam:gv:` ("gamma vector") labels in
+Part IV, the latter for material only manuscript 01 contains. The other
+3 are new labels on existing text, so that Part IV can cite it:
+`gam:sec:reflexiveex` on Part I's Section 8.5, and `gam:q:extend` and
+`gam:q:bridge` on Part II's Research questions 1 and 2. The manuscripts'
+own labels (bare, with no prefix) were all renamed into `gam:` or
+`gam:gv:` before anything cited them. New total: **346**. No label was
+renamed or removed. The numbers of all 217 earlier labels are unchanged
+(compared in the `.aux` files of the committed and the new build). Their
+page numbers moved by one to three pages, because the table of contents and
+the abstract grew; those in Part I's appendices moved by 42 pages, past
+Part IV. Part IV begins at Section 46, after Part III and before
+Part I's appendices, whose letters and numbers are unchanged. Its research
+questions continue the report's numbering as 20–36. Its tables are Tables
+3–5; they follow Part III's two tables, and Part I's appendices have none.
+
 ## Notation
 
 Table 1 (Section 11.2) fixes Part II's symbols against Part I's; Table 2
-(Section 26.2) fixes Part III's against both. Watch in particular:
+(Section 26.2) fixes Part III's against both; Table 3 (Section 46.2) fixes
+Part IV's against all three. Watch in particular:
 
 - `P_G`, `P_0`, `P_r`, `P_{Theta_m}` are **posets**; Part I's `P_tau` is a
   **lattice-point set**, which Part II writes `Q(P) ∩ Z^V`. With `tau = P`,
@@ -282,14 +455,39 @@ Table 1 (Section 11.2) fixes Part II's symbols against Part I's; Table 2
   set `E` or Part II's `D_G`, `T_G`; its defect `d(G)` is not the vertex `d`
   of `Theta_m`; its `p, q, r` in Lemma 36.6 are inner products and `q` in
   Proposition 35.3 is a field size, not shore sizes.
+- **Part IV renames four symbols and retypesets one; no normalization was
+  changed.**
+  - Manuscript 06's transitive closure `R*` is printed `R̄` (overline):
+    `tau*` is the *opposite* preorder in Part I and in manuscript 01.
+  - Manuscript 06's opposite preorder `tau^op` is printed `tau*`.
+  - Manuscript 01's comparability graph `C_tau` is printed `Comp(tau)`:
+    Part I's `C_tau` is the polytope.
+  - Manuscript 01's `g_k`, `D_k(tau)` and variables `t_v` are printed
+    `gamma_k`, `T_k(tau)` and `z_v`.
+  - Both manuscripts' `Q_tau` is printed as Part I's calligraphic `Q_tau`.
+- **Part IV's doubled graph `G_tau`** has an edge `a_L b_R` iff
+  `a ≤_tau b`. That is Part I's `G_tau` (edge `i_L j_R` iff `j ≤_tau i`)
+  with its two shores exchanged. The polynomial `p_(G_tau)` is the same,
+  but the receiver side recorded by Part IV's multivariate formulas is
+  Part I's left side.
+- **Transport pairs versus Part II's sets.** Part IV's transport pairs
+  `T_k(tau)` are *ordered* pairs of disjoint sets. Part II's `M_k(G)` are
+  *unordered* vertex sets. The two agree only in height two
+  (Section 55.3).
+- **Other letters.** `Gamma_tau` is the gamma polynomial. `Gamma(1/4)` in
+  Section 58 is its value at 1/4, not Euler's Gamma function. `K`, `L`
+  there are a mixing variable and the support size (Part II's `S`). The
+  letters `d`, `D`, `P`, `B_{s,r}`, `A_{s,r}` and `m_i` of the block
+  formulas are not Part I's or Part II's symbols of the same letter.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 74 pages, A4 (title p. 1, scope box and contents pp. 2–4,
-                                             Part I pp. 5–17, Part II pp. 18–45, Part III pp. 46–70,
-                                             Part I's appendices pp. 71–73, references pp. 73–74)
+article.pdf                                  the compiled report, 116 pages, A4 (title p. 1, scope box and contents pp. 2–5,
+                                             Part I pp. 6–18, Part II pp. 19–47, Part III pp. 48–72,
+                                             Part IV pp. 73–112, Part I's appendices pp. 113–115,
+                                             references pp. 115–116)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -316,6 +514,17 @@ code/03-cactus-Makefile                      Part III: the delivered Makefile (d
 data/03-cactus-verification.json             Part III: recorded output of verify.py (Python 3.13.5)
 data/03-cactus-verification_log.txt          Part III: console output of that run (byte-identical to the JSON)
 data/03-cactus-build_status.json             Part III: the manuscript's record of its own 24-page PDF build
+code/04-gamma-vector-verify.py               Part IV (manuscript 01): exact finite checks (standard library)
+code/04-gamma-vector-build.sh                Part IV (manuscript 01): the delivered two-pass build script (do not run here)
+data/04-gamma-vector-verification.json       Part IV (manuscript 01): recorded output of verify.py (Python 3.13.5)
+data/04-gamma-vector-verification.txt        Part IV (manuscript 01): console output of that run
+05-gamma-positivity-PROOF_STATUS.md          Part IV (manuscript 06): theorem dependencies and verification boundary (delivered PROOF_STATUS.md)
+05-gamma-positivity-SOURCE_AUDIT.md          Part IV (manuscript 06): source roles, pin and priority limits (delivered SOURCE_AUDIT.md)
+code/05-gamma-positivity-verify.py           Part IV (manuscript 06): exact finite checks (standard library)
+code/05-gamma-positivity-build.py            Part IV (manuscript 06): the delivered three-pass build script (do not run here)
+data/05-gamma-positivity-preorders.csv       Part IV (manuscript 06): all 7,332 labeled preorders through n = 5, h- and gamma-vectors (CRLF)
+data/05-gamma-positivity-verification.json   Part IV (manuscript 06): detailed results of the recorded run, with all 140 samples
+data/05-gamma-positivity-verification.log    Part IV (manuscript 06): console transcript of that run
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -323,6 +532,13 @@ The ten `02-height-two-` files were staged in the placement commit
 byte-identical to their deliveries. The board-certificate CSV is all-CRLF as
 delivered (Python's `csv` writer) and is protected by a `-text` line in
 `SetTheory/Cardinals/.gitattributes`; the `03-cactus-` files are LF text.
+The four `04-gamma-vector-` and seven `05-gamma-positivity-` files were
+staged in `203016015`, byte-identical to their deliveries (manuscript 01's
+`results/` directory became `data/`). `data/05-gamma-positivity-preorders.csv`
+is all-CRLF as delivered (7,333 lines) and has its own `-text` line in
+`SetTheory/Cardinals/.gitattributes`; `data/05-gamma-positivity-verification.log`
+was force-added past the root `*.log` ignore rule. The other Part IV files are
+LF text.
 
 ## Data conventions
 
@@ -365,6 +581,42 @@ augmented-minor norm/support comparisons on the thetas (2,2,4), (1,3,5),
 (3,3,5); `"all_passed": true`. These are finite checks: enumerating sixth-root
 phases does not exclude arbitrary complex phases, which the proofs do.
 
+**Part IV.** The two programs use **opposite row conventions**.
+
+- **Manuscript 06's CSV.** It has the same layout as Part I's CSV, with
+  fields `n`, `principal_ideal_bitmasks`, `h_coefficients` and
+  `gamma_coefficients`. Entry `i` of `principal_ideal_bitmasks` is
+  `{j : j ≤_tau i}` (an ideal). Bits are zero-based, vector fields use
+  semicolons, and coefficients are in increasing degree. Gamma vectors keep
+  trailing zeros, and the `n = 0` row has polynomial 1.
+- **Manuscript 01's JSON.** Its `rows` use bit `j` of row `i` for
+  `i ≤_tau j`: principal *filters*, not ideals.
+
+What the records show:
+
+- **Manuscript 06** (`data/05-gamma-positivity-verification.json`,
+  `"all_checks_passed": true`, seed 20260929):
+  - all 7,332 labeled preorders through `n = 5`, with 228,075 support fibres
+    and 1,774,841 equal-size doubled pairs (Table 5 of the article);
+  - 689 bipartite graphs with shores of size at most 3 (5,880 feasible
+    demand vectors);
+  - all 4,166 reflexive relations through `n = 4` (the empty one included),
+    with the number that satisfy common-support cancellation;
+  - 140 deterministic, non-uniform samples on 6, 7 and 8 elements (46, 47
+    and 47);
+  - explicit-formula checks through `n = 20`.
+- **Manuscript 01** (`data/04-gamma-vector-verification.json`,
+  `"status": "ALL CHECKS PASSED"`, seed 20260929):
+  - the same 7,332 preorders;
+  - all bipartite graphs on shores (2,3), (3,3) and (3,4) (64, 512 and
+    4,096), plus the empty-shore cases;
+  - 119 distinct seeded closures (from 120 generated) on 6 or 7 elements;
+  - 87 block-profile cases;
+  - five named examples (Section 59.2 of the article).
+
+Both are exact integer checks with no floating-point step. They are finite:
+they do not prove the all-`n` theorems.
+
 ## Build the article
 
 ```sh
@@ -375,13 +627,16 @@ Build in a scratch copy of `article.tex` so that no auxiliary files land here
 (`build.py` writes a `build/` directory beside the source before copying
 `article.pdf` back). The preamble needs Part I's packages (newpxtext,
 newpxmath, tcolorbox, titlesec, fancyhdr, listings, hyperref, …) plus TikZ
-and needspace for Part II; Part III adds only macros. No image or font files
-are needed. The shipped PDF (74 pages) was built on 29 September 2026 with
-MiKTeX (pdfTeX 1.40.26): no errors, no undefined or multiply defined
-references or citations, no duplicate destinations, no overfull boxes; one
-underfull box (badness 1817) in Part II's provenance-ledger table, which the
-committed build before Part III and the delivered manuscript 02's own build
-also show.
+and needspace for Part II; Part III adds only macros; Part IV adds macros,
+an `example` environment and the TikZ library `arrows.meta` (for manuscript
+01's dependency graph, Section 60). No image or font files are needed. The
+shipped PDF (116 pages) was built on 29 September 2026 with MiKTeX (pdfTeX
+1.40.26) by `latexmk`: no errors, no undefined or multiply defined
+references or citations, no duplicate destinations, no overfull boxes and no
+other LaTeX warnings; one underfull box (badness 1817) in Part II's
+provenance-ledger table, which the committed builds before Parts III and IV
+and the delivered manuscript 02's own build also show. (The earlier build
+of 29 September 2026, before Part IV, had 74 pages.)
 
 ## Rerun the checks
 
@@ -452,6 +707,54 @@ py code/verify.py          # or python3; prints the JSON and rewrites data/verif
 (3.14.4 vs 3.13.5) and `elapsed_seconds`. The program needs Python 3.10 or
 later and only its standard library.
 
+**Part IV.** Both programs are single standard-library files needing Python
+3.10 or later, and neither imports a sibling module, so they run under their
+shipped names. Their **default output paths are relative to the working
+directory**. Run from this directory without arguments:
+
+- manuscript 06's verifier would write unprefixed files `data/preorders.csv`
+  and `data/verification.json` here, beside the prefixed copies;
+- manuscript 01's verifier would create a stray `results/verification.json`.
+
+Always pass an explicit scratch output (Git Bash or another shell, from this
+directory):
+
+```sh
+W=/path/to/scratch
+py code/05-gamma-positivity-verify.py --max-n 5 --out "$W/05"                      # prints the console record; writes preorders.csv, verification.json
+py code/04-gamma-vector-verify.py --max-n 5 --output "$W/04/verification.json"   # prints the console record
+```
+
+Do not run manuscript 06's verifier with `python -O`: it exits, because it
+relies on assertions. Neither delivered build script can build this article:
+
+- `code/04-gamma-vector-build.sh` changes to `code/` and runs `pdflatex`
+  on a nonexistent `code/article.tex`;
+- `code/05-gamma-positivity-build.py` does the same after creating a stray
+  `code/build/` directory.
+
+Build this article as described above instead.
+
+Run this way on 29 September 2026 (Python 3.14.4, Windows), both passed, in
+about 19 s and 15 s. The regenerated CSV is byte-identical to
+`data/05-gamma-positivity-preorders.csv`. The two JSON records differ from the
+shipped ones only in timings, the Python version (the recorded runs used
+3.13.5) and, for manuscript 06, the platform string. The console outputs
+differ in the same fields and in the printed output path.
+
+The batch-44 placement dossier also compared, independently of both
+programs:
+
+- for all 390 labeled preorders with `n ≤ 4`, a direct count of lattice
+  points by support size with `Σ_k gamma_k t^k (1+t)^(n−2k)`;
+- for all 4,165 reflexive relations with `1 ≤ n ≤ 4`, the endpoint
+  formula `(|R|, |closure(R)|)` and the palindromic-iff-transitive
+  criterion (Part I's Section 8.5 relation gives `(1,5,6,1)`).
+
+There were no mismatches. The write phase recomputed the article's numerical
+examples by brute force. None of these scratch checks is shipped
+(Section 59.3).
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** Part II's programs, Makefile and status notes use the
@@ -489,13 +792,62 @@ later and only its standard library.
   describe Part I at 20 September 2026 and are unchanged; for Conjectures
   5.2, 5.3 and 5.1(d) read Section 11.3 of the article. Part I's Appendix C
   describes Part I's original archive layout (with `build.py`).
+  [Added 29 September 2026, batch 44: for Conjecture 5.2 read Section 46.3.]
+- **Stale delivered status notes after Part IV** (all left byte-identical):
+  - `STATUS.md` (Part I) lists gamma-positivity among what is not proved;
+  - `02-height-two-STATUS.md` lists "General gamma-positivity for all
+    preorders or for nontrivial block blowups" as not established;
+  - `03-cactus-STATUS.md` lists "No solution of general preorder gamma
+    positivity";
+  - `02-height-two-sources.md` says the report leaves gamma-positivity
+    unproved.
+
+  Each was true of its own part, and of the report when it was written.
+  Part IV now proves gamma-positivity for every finite preorder.
+  `05-gamma-positivity-SOURCE_AUDIT.md` likewise describes the report at
+  manuscript 06's pin, as Parts I and II only, "leaving general
+  gamma-positivity and nontrivial equivalence-class blowups beyond its proved
+  scope"; Part III already existed when the manuscript was placed.
+- **Part IV's delivery names.**
+  - `05-gamma-positivity-PROOF_STATUS.md` names "the article", its own
+    theorem numbers (Theorem 2.2 → 48.2, Theorem 2.3 → 48.3, Lemma 3.1 →
+    49.1, Lemma 4.1 → 50.1, Lemma 6.1 → 53.1) and `data/verification.json`
+    and `data/verification.log` (shipped as `data/05-gamma-positivity-*`).
+  - `05-gamma-positivity-SOURCE_AUDIT.md` speaks of "the present article",
+    which is manuscript 06, printed as Part IV.
+  - `code/04-gamma-vector-verify.py` gives the usage line
+    `python3 code/verify.py --max-n 5 --output results/verification.json`,
+    and `data/04-gamma-vector-verification.txt` ends "results written to
+    results/verification.json".
+  - Manuscript 06's program writes `preorders.csv` and `verification.json`
+    into its output directory.
+  - The two build scripts name `article.tex` beside themselves.
+  - The unshipped delivery README of manuscript 01 lists `SHA256SUMS`
+    (verified and retired), `article.pdf` and `article.tex`. The unshipped
+    delivery README of manuscript 06 lists `article.pdf`, `article.tex` and
+    `build.py` (the last shipped as `code/05-gamma-positivity-build.py`), and
+    manuscript 06's Section 11.3 (Section 59.1 here, with a merge note) says
+    the package contains `README.md`, the two notes, a build script and the
+    PDF.
+  - The article quotes the shipped names (Section 59).
+- **Part IV's recorded outputs.** Manuscript 06's `verification.log` is its
+  console transcript (it prints the 689-graph and cancellation summaries
+  before the per-size lines). Manuscript 06's JSON counts 4,166 reflexive
+  relations because it includes the empty relation at `n = 0`; the dossier's
+  figure 4,165 excludes it. Manuscript 01's text file is its console output,
+  not a copy of its JSON.
+- **Part IV's two runs** were recorded under Python 3.13.5, manuscript 06's
+  on Linux. Their stated times (about 11 s and 10 s) are properties of those
+  runs.
 - **Part I's equation numbers.** Part I prints two displays numbered (1.1)
   (a manual tag on the preorder polytope and the automatic number of the
   support polynomial); this predates the additions and is left as it was.
 - **Self-citation.** Manuscripts 02 and 05 cited this report as an external
   repository report; those citations became internal references
   (Sections 11.4 and 26.4). Two of manuscript 05's section headings keep its
-  wording "the repository".
+  wording "the repository". Batch 44's manuscripts 06 and 01 did the same;
+  their citations became references to Parts I–III (Section 46.4), with the
+  pins kept in Section 47.
 - **Layout changes in the front matter.** Part III's abstract paragraph
   pushed Part I's scope box to page 2, so the page break between that box
   and the table of contents was removed (the contents now follow the box).
@@ -518,6 +870,12 @@ stability. Batch 42's manuscript 04, placed in
 `ordinals-and-order-types/wqo-powersets-and-statures/cofinal-strata-of-finitary-powersets`,
 also speaks of "height two" and of (uniquely restricted) matchings, but it
 concerns ordinal heights of downsets and shares no theorem with this report.
+Part IV (batch 44) proves gamma-positivity for every finite preorder. The
+three neighbouring preorder reports' remarks that they do not establish
+gamma-positivity describe their own proofs and stay accurate. The q-zeta
+report's `H_tau` is a different polynomial, and none of those reports
+states Conjecture 5.2 as open. So Part IV adds no reciprocal note there
+either; the catalogue step may mention Part IV in the collection's entries.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -527,7 +885,10 @@ matchable-set, support-polynomial, gamma-positivity and real-rootedness terms
 finds nothing about preorder polytopes, and a search of the tracked `.lean`
 and `.v` files for cactus, superregular, real-stable and matchable finds
 nothing). Sections 23 and 41.3 record the formalization plans the manuscripts
-propose; none of them has been started.
+propose; none of them has been started. The same holds for Part IV: a search
+of the tracked `.lean` and `.v` files for gamma-positivity, Athanasiadis,
+matchable, root-polytope, preorder-polytope and transport-pair terms finds
+nothing, and Part IV's two formalization plans (Section 60) are unstarted.
 
 ## Sources and attribution
 
@@ -551,5 +912,12 @@ propose; none of them has been started.
   matroids); S. Burton, C. Vinzant and Y. Youm, arXiv:1411.2038 (stability
   without determinants); M. Nakamura, Graphs Combin. 5 (1989) (binary
   fundamental transversal matroids) — terminology and context for Part III.
+- K. Menon, arXiv:2608.13247v1 — bijective gamma-positivity for octopuses and
+  lopsided octopuses; the octopus formula, attributed there to Athanasiadis,
+  Xiao and Yan, is recovered and credited in Part IV (Part I cites the paper
+  as special cases of gamma-positivity).
+- Part IV's inputs are the Kálmán–Postnikov, Ohsugi–Tsuchiya (arXiv:1810.12258v4,
+  Propositions 3.3–3.4), Davis–Kohl (Theorem 3.10) and Dai et al.
+  (Theorems 1.2–1.3, Problem 5.3) entries above, and Part II's counting lemma.
 
 No third-party papers or font files are included.

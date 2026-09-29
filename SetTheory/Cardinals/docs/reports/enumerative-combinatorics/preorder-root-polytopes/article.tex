@@ -12,6 +12,7 @@
 \usepackage{titlesec,fancyhdr}
 \usepackage{listings}
 \usepackage{tikz,needspace}% Part II (batch 39)
+\usetikzlibrary{arrows.meta}% Part IV (batch 44)
 \usepackage{hyperref}
 % Part II (batch 39): let long shipped file names break at hyphens.
 \makeatletter\g@addto@macro\UrlBreaks{\do\-}\makeatother
@@ -24,7 +25,8 @@
   pdfauthor={Research manuscript prepared with ChatGPT},
   pdfsubject={Proposed proof of the simplicial-polytopal realization conjecture for finite preorders;
     Part II: height-two preorders, matching supports, nonreal roots and crown obstructions;
-    Part III: cactus rigidity for matching-support determinants}}
+    Part III: cactus rigidity for matching-support determinants;
+    Part IV: gamma-positivity for every finite preorder}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -46,6 +48,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{question}{Research question}% Part II (batch 39)
+\newtheorem{example}[theorem]{Example}% Part IV (batch 44)
 \newcommand{\R}{\mathbb R}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb Z_{\geq0}}
@@ -85,6 +88,14 @@
 \newcommand{\Ecore}{\mathsf E}\newcommand{\Dcore}{\mathsf D}\newcommand{\Tcore}{\mathsf T}
 \newcommand{\zv}{\mathbf z}
 \newcommand{\normsq}[1]{\left|#1\right|^2}
+% Part IV (batch 44): macros of manuscripts 06 and 01
+\newcommand{\Tset}{\mathcal T}
+\newcommand{\Comp}{\operatorname{Comp}}
+\newcommand{\ordm}{\operatorname{ord}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\match}{\rightsquigarrow}
 
 \begin{document}
 \thispagestyle{empty}
@@ -101,6 +112,9 @@ matching supports, nonreal-root families, and crown obstructions}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~III (added 29 September 2026): cactus rigidity for
 matching-support determinants}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~IV (added 29 September 2026): gamma-positivity for
+every finite preorder}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -148,6 +162,13 @@ perfect-matchability indicator if and only if it is a cactus, and that this
 is strictly stronger than real stability of the signed matching-support
 polynomial; noncacti miss the exact model by the sharp universal defect
 $(\sqrt{17}-3)/2$.
+
+\emph{Addition of 29 September 2026 (batch 44).} Part~IV, from two further
+manuscripts, proves Conjecture~5.2 for every finite preorder: the $k$th
+$\gamma$-coefficient of $h_\tau$ counts ordered pairs of disjoint
+$k$-element sets joined by a $\tau$-increasing bijection. It also shows that
+for a reflexive relation the doubled matching-support polynomial is
+palindromic exactly when the relation is transitive.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -164,6 +185,8 @@ proves $\gamma$-positivity for posets of height at most two, records
 counterexamples to real-rootedness (the first credited to prior work), and
 obstructs flag lattice triangulations of $C_\tau$; see
 Section~\ref{htwo:sec:answers}.]
+[Added 29 September 2026, batch 44: Part~IV proves $\gamma$-positivity for
+every finite preorder; see Section~\ref{gam:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -181,7 +204,10 @@ on 28 September 2026, treats height-two preorders; it precedes the
 appendices of Part~I. Part~III
 (Sections~\ref{cac:sec:prov}--\ref{cac:sec:ledger}), added on
 29 September 2026, answers Part~II's question on exact cactus-style
-matrices; it follows Part~II.
+matrices; it follows Part~II. Part~IV
+(Sections~\ref{gam:sec:prov}--\ref{gam:sec:ledger}), added on
+29 September 2026, proves $\gamma$-positivity for every finite preorder; it
+follows Part~III.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -898,6 +924,7 @@ no lattice triangulation of its $C_\tau$, pulling or not, is flag
 (Theorem~\ref{htwo:thm:crownintro}).]
 
 \subsection{Why arbitrary reflexive relations are not enough}
+\label{gam:sec:reflexiveex}% label added in batch 44 (Part IV)
 
 Transitivity cannot simply be dropped from the fiber theorem. Consider the
 neighborhoods
@@ -921,6 +948,12 @@ matching ideal differences $u(I)-v(I)$. In particular, subtracting a common
 coordinate from the two margins can damage an inequality involving different
 row and column subsets. Thus the argument does not inadvertently imply
 palindromicity for all graph support-enumerators.
+[Added 29 September 2026, batch 44: Part~IV explains this example exactly.
+For every reflexive relation $R$ the coefficients of degrees $1$ and $n-1$
+are $|R|$ and the size of its transitive closure, and palindromicity holds
+if and only if $R$ is transitive (Theorem~\ref{gam:thm:graphintro}); here
+$(1,5,6,1)=(1,|R|,|\overline R|,1)$ with one missing transitive pair
+(Example~\ref{gam:ex:nontrans}).]
 
 \section{Exact computational verification}\label{sec:computations}
 
@@ -1016,6 +1049,11 @@ Theorem~\ref{htwo:thm:thetaintro}. Conjecture~5.2 holds for posets of height at
 most two, with $\gamma_k$ the number of perfectly matchable vertex sets of
 size $2k$ in the comparability graph (Theorem~\ref{htwo:thm:main}), and is
 open in general. See Section~\ref{htwo:sec:answers}.]
+[Added 29 September 2026, batch 44: Conjecture~5.2 is no longer open. Part~IV
+proves it for every finite preorder, with $\gamma_k$ the number of ordered
+pairs of disjoint $k$-element sets joined by a $\tau$-increasing bijection
+(Theorem~\ref{gam:thm:main}); see Section~\ref{gam:sec:answers}. Its proof
+does not use Part~I's geometric argument. Conjecture~5.3 stays false.]
 
 For independent mathematical review, the shortest audit is to verify four
 links: the identification of the draconian vectors with $P_\tau$;
@@ -1129,6 +1167,8 @@ root-polytope results are imported explicitly. The manuscript has not been
 independently refereed or checked in Lean. General flag realizability and
 $\gamma$-positivity beyond height two remain unsettled here; absolute
 publication priority is not certified.
+[Added 29 September 2026, batch 44: $\gamma$-positivity beyond height two is
+proved in Part~IV (Theorem~\ref{gam:thm:main}).]
 \end{statusbox}
 
 \begin{statusbox}
@@ -1273,6 +1313,10 @@ real-rootedness, so nothing in it is retracted.
 at most two} (Theorem~\ref{htwo:thm:main}: $\gamma_k=|\PM_k(G)|$). It remains
 open for general preorders, including height-two posets whose elements are
 blown up into nontrivial equivalence classes (Research question~1).
+[Added 29 September 2026, batch 44: it holds in height two and, by Part~IV,
+in general: Theorem~\ref{gam:thm:main} proves it for every finite preorder,
+blowups included (Example~\ref{gam:ex:twoblocks}), and answers Research
+question~\ref{gam:q:extend}; see Section~\ref{gam:sec:answers}.]
 \item \textbf{Conjecture~5.1(d) (a flag simplicial polytope) remains open.}
 Part~II shows that no lattice triangulation of $C_\tau$ or of its boundary is
 flag when $\tau$ contains an induced crown on $2r\ge6$ elements
@@ -2865,7 +2909,7 @@ not assertions that they have been settled by this article. Except for
 explicitly attributed conjectures, they are directions arising from these
 proofs, not claims that no answer exists anywhere in the literature.
 
-\begin{question}[Extend the matching-support interpretation]
+\begin{question}[Extend the matching-support interpretation]\label{gam:q:extend}% label added in batch 44 (Part IV)
 Does the $\gamma$-vector of a larger class of posets admit a similarly
 concrete nonnegative interpretation? Height three and preorders with
 nontrivial equivalence classes are natural next cases. Determine exactly
@@ -2874,8 +2918,17 @@ which step of the lower-zero-set argument survives weighted blocks.
 A successful extension must account for the fact that a coordinate in a
 nontrivial equivalence block need not be individually bounded by one.
 Simply replacing the preorder by its quotient poset loses information.
+[Added 29 September 2026, batch 44: answered in Part~IV. For every finite
+preorder, $\gamma_k$ counts ordered pairs of disjoint $k$-element sets joined
+by a $\tau$-increasing bijection (Theorem~\ref{gam:thm:main}); in height two
+these are Part~II's matchable vertex sets
+(Section~\ref{gam:sec:heighttwo}). The step that survives is the zero-set
+partition, taken over all zero coordinates rather than a minimal shore
+(Lemma~\ref{gam:lem:fibre}), and it allows coordinates larger than one.
+Positive block formulas are Theorems~\ref{gam:thm:blocks}
+and~\ref{gam:gv:thm:blocks}. See Section~\ref{gam:sec:answers}.]
 
-\begin{question}[A purely combinatorial bridge]
+\begin{question}[A purely combinatorial bridge]\label{gam:q:bridge}% label added in batch 44 (Part IV)
 Construct an explicit bijection between $\mathcal R_G$ and perfectly
 matchable vertex subsets, or an equally elementary proof of their equal
 cardinality. Can the choice be made compatible with induced subgraphs,
@@ -2885,6 +2938,10 @@ Such a construction would remove the two root-polytope inputs from the
 height-two theorem and substantially reduce its formalization burden.
 The hypertree-vector bijection in Section~\ref{htwo:sec:count} does not itself
 solve this problem.
+[Added 29 September 2026, batch 44: still open. Part~IV's general theorem
+uses the same counting lemma and constructs no such bijection; its Research
+question~\ref{gam:q:bijection} asks for one that also preserves the
+receiver support.]
 
 \begin{question}[Which graph structures preserve real-rootedness?]
 Characterize useful hereditary classes of bipartite graphs for which
@@ -3230,6 +3287,9 @@ classes stays open.
 \item Research question~1 (a $\gamma$-interpretation beyond height two)
 remains open; Research question~18 below proposes stable signed-support
 methods as one route.
+[Added 29 September 2026, batch 44: Research question~1 is answered in
+Part~IV, by transport pairs rather than stability
+(Theorem~\ref{gam:thm:main}); see Section~\ref{gam:sec:answers}.]
 \end{itemize}
 Part~III refutes no statement of Parts~I and~II, and nothing in them is
 retracted.
@@ -4082,6 +4142,7 @@ The constructive proof finds a theta and traces a failing core minor back throug
 Can stable signed-support methods, rather than faithful matrices, extend Part~II's $\gamma$-interpretation (Theorem~\ref{htwo:thm:main}; compare Research question~1) to height-three posets or nontrivial preorder-equivalence blocks? Identify an explicit intermediate class where the combinatorial support model remains valid.
 \end{question}
 Neither the cactus theorem nor the $K_{2,3}$ example answers general $\gamma$-positivity or existential flag-polytope realization. Those questions require an additional bridge beyond Theorem~\ref{htwo:thm:main}.
+[Added 29 September 2026, batch 44: the aim of this question is reached in Part~IV by a different route. The combinatorial support model is valid for every finite preorder, with ordered transport pairs in place of matchable sets (Theorem~\ref{gam:thm:main}, Section~\ref{gam:sec:heighttwo}); no stable signed-support method is used, and whether one gives a second route is not addressed. Existential flag realization remains open (Research question~\ref{gam:q:flag}).]
 
 \begin{question}[Kernel-checked certificate theory]
 Formalize the ternary support-pattern classification first, then extend it to the complex phase and sharp-gap theorems. Can the induced-theta reduction and the augmented-minor map be packaged as a reusable verified obstruction framework?
@@ -4151,6 +4212,2811 @@ Stable noncactus family & Three Rayleigh identities; Br\"and\'en's criterion; di
 No bounded minor-order test & High-girth odd theta; uniqueness of a forest perfect matching; classification.\\\bottomrule
 \end{tabularx}
 \end{center}
+
+
+%% ====================================================================
+%% Batch-44 addition (manuscripts 06 "Gamma-Positivity for Every Finite
+%% Preorder", the base, and 01 "The Gamma-Vector of Every Finite
+%% Preorder", merged). All labels of Part IV carry the prefix gam:
+%% (gamma); material only manuscript 01 contains carries gam:gv:
+%% (gamma vector). Part IV follows Part III and precedes Part I's
+%% appendices.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad Gamma-positivity for every finite preorder}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Gamma-positivity for every finite preorder}
+
+\noindent\emph{Part~IV was added on 29 September 2026 in batch~44 of
+ProveIt's incoming-report intake, from two manuscripts that prove the same
+theorem: for every finite preorder $\tau$, the $k$th $\gamma$-coefficient of
+$h_\tau$ is the number of ordered pairs of disjoint $k$-element sets joined
+by a $\tau$-increasing bijection. This proves Conjecture~5.2 of Athanasiadis
+and Chapoton~\cite{AC} in general and answers Part~II's Research
+question~\ref{gam:q:extend}, ``Extend the matching-support interpretation'',
+which Part~III's Research question~18 had re-posed. Part~II's height-two
+theorem (Theorem~\ref{htwo:thm:main}) is the special case of height at most
+two. Parts~I--III are unchanged except for dated pointers to this addition.
+Section~\ref{gam:sec:prov} records the provenance, fixes the notation and
+states what is answered.}
+
+\section{Provenance, conventions and what Part~IV answers}
+\label{gam:sec:prov}
+
+\subsection{Two manuscripts, one addition}
+\label{gam:sec:source}
+Part~IV merges two batch-44 manuscripts, both AI-assisted research
+manuscripts prepared with ChatGPT for Vladimir Reshetnikov and dated
+29 September 2026, both 22 A4 pages as delivered. They arrived in ProveIt
+commit \texttt{ae28ea2db} and were placed in \texttt{203016015}. Both
+archives wrap an inner directory of the same name,
+\nolinkurl{ProveIt_Preorder_Gamma/}, but they are different packages: no
+file of one coincides with a file of the other.
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Manuscript~06 (the base):} \emph{Gamma-Positivity for Every
+Finite Preorder: Disjoint transport supports, Boolean expansions, block
+formulas, and a transitivity criterion for palindromicity}, archive
+\nolinkurl{ProveIt_Preorder_Gamma_Research.zip}. It is pinned to ProveIt
+commit \texttt{9b24a3a8d} (full hash in Section~\ref{gam:sec:context}), at
+which this report's \texttt{article.tex} was the Git blob
+\texttt{8739a224fa8956adab5d\allowbreak 8df9f2d5012a6a220959}: Parts~I
+and~II exactly as printed above, \emph{before} Part~III. Its statements
+about ``the repository'' therefore concern Parts~I and~II. Its program,
+recorded outputs, build script and two notes are shipped with the prefix
+\texttt{05-gamma-positivity-}.
+\item \textbf{Manuscript~01:} \emph{The Gamma-Vector of Every Finite
+Preorder: Disjoint matching supports, Boolean expansions, and sharp degree
+laws}, archive \nolinkurl{ProveIt_Preorder_Gamma.zip}. It is pinned to
+ProveIt commit \texttt{077672c84} (full hash in
+Section~\ref{gam:sec:context}), at which this report's \texttt{article.tex}
+was the blob \texttt{cd80088f04daeabdf6e3\allowbreak 20e08bdd1b61a5c9cf4c},
+Parts~I--III exactly as printed above; it cites Part~III once. Its program,
+recorded outputs and build script are shipped with the prefix
+\texttt{04-gamma-vector-}; it delivered no audit notes.
+\end{itemize}
+The two prefixes continue this report's local sequence (Part~I's unprefixed
+files count as~01, Part~II's are~\texttt{02-}, Part~III's~\texttt{03-}) in
+arrival order; the base took the later number, as in earlier merges of the
+collection. The manuscripts, delivery READMEs and PDFs of both are not
+shipped and survive in the arrival commit. Manuscript~01's checksum list
+\texttt{SHA256SUMS} was verified (7/7) at placement and retired;
+manuscript~06 shipped none. Section~\ref{gam:sec:verification} lists the
+shipped files.
+
+\emph{Why 06 is the base.} The two manuscripts prove the same main theorem
+by the same route and share most corollaries. Manuscript~06 is the more
+general: its second theorem (Theorem~\ref{gam:thm:graphintro}) concerns
+every \emph{reflexive} relation, shows that palindromicity,
+$\gamma$-positivity and transitivity are equivalent there, and has an
+elementary proof independent of the imported counting identity.
+Manuscript~01 treats preorders only. Proofs taken from manuscript~01 were
+re-read for hidden uses of antisymmetry or bounded height; there are none
+(its own words: its reduction ``applies unchanged to arbitrary height and to
+supports which split equivalence classes''). What only manuscript~01
+contains is printed under its own headings: the Boolean orbits of commuting
+toggles (Section~\ref{gam:gv:sec:orbits}), multivariate
+complement-duality and the low coefficients
+(Section~\ref{gam:sec:extremal}), the leading Taylor coefficient at~$-1$
+(Section~\ref{gam:sec:deficiency}), the induced-deck identity with
+odd-cardinality reconstruction (Section~\ref{gam:gv:sec:deck}), an Ehrhart
+reinterpretation, three false variants, a dependency graph, and a compact
+proof certificate (Section~\ref{gam:gv:sec:certificate}).
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of manuscript~06 (as delivered).}
+Let $h_\tau(t)$ count the lattice points of the preorder polytope of a finite
+preorder $\tau$ by support size. We prove
+\[
+ h_\tau(t)=\sum_{k=0}^{\lfloor n/2\rfloor}|\Tset_k(\tau)|\,
+              t^k(1+t)^{n-2k},\qquad n=|\tau|,
+\]
+where $\Tset_k(\tau)$ consists of ordered pairs of disjoint $k$-element sets
+$(U,V)$ for which a bijection $f:U\to V$ with $u\le_\tau f(u)$ exists.
+The objects counted are support pairs, not individual bijections. This
+establishes Conjecture~5.2 of Athanasiadis and Chapoton for all finite
+preorders, without a height or antisymmetry assumption. A support-resolved
+multivariate identity is proved at the same time. The essential new step is
+that, after fixing the zero coordinates, every preorder support fibre is a
+bipartite demand polymatroid. An established matching-support counting
+identity then turns the fibre sum into Boolean intervals.
+
+We also prove that, for any reflexive relation $R$ on $n$ elements, the
+coefficients of degrees $1$ and $n-1$ of its doubled matching-support
+polynomial are $|R|$ and $|R^*|$, respectively, where $R^*$ is transitive
+closure. Consequently that polynomial is palindromic if and only if $R$ is
+transitive, and in that case it is gamma-positive. This gives an exact
+classification for balanced bipartite graphs admitting a perfect matching.
+Further consequences include positive quotient-block formulas, coefficientwise
+monotonicity, sharp universal bounds, an exact multiplicity formula at $-1$,
+and a centered-binomial mixture description of support size. Reproducible
+integer computations check all 7,332 labeled preorders through size five,
+140 larger examples, and all reflexive relations through size four.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of manuscript~01 (as delivered).}
+For a finite preorder $\tau$ on $n$ elements, let $h_\tau(t)$ count the lattice
+points of its preorder polytope by the number of nonzero coordinates. We prove
+that its $k$th gamma coefficient counts ordered pairs of disjoint $k$-element
+sets $U,V$ admitting a bijection $f:U\to V$ with $u\le_\tau f(u)$. Thus
+\[
+ h_\tau(t)=\sum_{\substack{U\cap V=\varnothing\\U\match_\tau V}}
+ t^{|V|}(1+t)^{n-2|V|}.
+\]
+This establishes gamma-positivity for every finite preorder, with no restriction
+on height or on the sizes of its equivalence classes. It extends the
+height-two matching-support theorem in ProveIt and proves the full
+Athanasiadis--Chapoton conjecture in the cited version.
+
+The proof partitions a lattice point by its entire zero set, converts its
+remaining excess coordinates into a bipartite demand vector, and applies a
+classical demand--matching-support counting identity. A second reduction uses
+transitivity to cancel the overlap of two matched sets; it realizes the gamma
+expansion as Boolean orbits in a support-pair model. We obtain a multivariate
+refinement, complement-duality, coefficientwise gamma-monotonicity under
+relation extension, and the exact degree law
+$\deg\Gamma_\tau=\nu(C_\tau)$, where $C_\tau$ is the undirected comparability
+graph. Consequently the multiplicity of $-1$ is exactly the matching deficiency
+$n-2\nu(C_\tau)$. Sharp extremal bounds, an explicit equivalence-block formula,
+recoveries of known special cases, exhaustive finite checks, and further
+research directions are included.
+\end{tcolorbox}
+\noindent The two abstracts are reproduced as delivered, in their own
+notation: manuscript~06's $R^*$ (transitive closure) is written $\overline R$
+below, and manuscript~01's $C_\tau$ (comparability graph) is written
+$\Comp(\tau)$, because $C_\tau$ is Part~I's polytope
+(Table~\ref{gam:tab:notation}).
+
+\begin{statusbox}
+\small\textbf{Status and dependence (manuscript~06, as delivered).} Full
+mathematical proofs are supplied. The general preorder theorem uses a
+classical bipartite counting identity, whose reduction to explicitly cited
+root-polytope theorems is included. The transitivity/palindromicity
+classification has a separate elementary proof. This manuscript is
+AI-assisted and unrefereed, and is not verified in Lean or Rocq. Computation
+supports the arguments but does not replace them. The source audit
+establishes the relation to the inspected sources; it does not certify
+absolute publication priority.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Status (manuscript~01, as delivered).} The article supplies
+ordinary mathematical proofs with explicitly cited classical inputs. It has
+not been independently refereed or verified in Lean or another proof
+assistant. The literature and repository comparison is bounded; worldwide
+priority is not certified. Computations are independent finite checks, not
+substitutes for the proofs.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (from both manuscripts and their
+notes).} The matching-support interpretation of the augmented bipartite root
+polytope is Ohsugi--Tsuchiya's~\cite[Propositions~3.3--3.4]{OT20}, restated
+by Davis--Kohl~\cite[Theorem~3.10]{DK}; the hypertree count of root-polytope
+volume is K\'alm\'an--Postnikov's~\cite{KP}; the demand/support counting
+identity these give is Part~II's Lemma~\ref{htwo:lem:count}. None of these
+is claimed as new. The support-enumerator/root-polytope identity and
+preorder duality $h_\tau=h_{\tau^*}$ are Dai, Hou, Liu, Thawinrak and
+Wang's~\cite[Theorems~1.2--1.3]{DHLTW}; Part~IV recovers duality and refines
+it, and claims no first proof. Menon~\cite{Menon} gives a bijective proof of
+$\gamma$-positivity for octopuses and lopsided octopuses; the octopus formula
+(attributed there to Athanasiadis, Xiao and Yan) is recovered in
+Section~\ref{gam:sec:extremal}, not discovered. The height-two case is
+Part~II's Theorem~\ref{htwo:thm:main}. The nonreal-root counterexamples to
+Conjecture~5.3, with priority credited to Shivam Patel~\cite{Patel}, are
+Part~II's and are not re-claimed. The classical chain (Narayana), binomial
+and universal-equivalence formulas are checks, not novelty claims; the
+matching-theoretic ingredients of the reflexive-relation criterion are
+standard, and its relation to older matching and Gorenstein
+characterizations deserves further historical review. Targeted searches on
+29 September 2026 (manuscript~06: ``preorders'', ``gamma-positivity'',
+``Athanasiadis'', ``Chapoton'', ``Conjecture~5.2'', ``perfectly matchable
+set polynomial'', ``transitive'') located no earlier general proof of the
+main formula, but some search responses were poor or unrelated; this is a
+bounded search, not a proof of the absence of a preprint, an unpublished
+argument or parallel work. No worldwide publication priority is claimed for
+any result of Part~IV.
+\end{statusbox}
+
+\subsection{Notation of Part~IV}
+\label{gam:sec:notation}
+Part~IV works with an arbitrary finite preorder $\tau$ on a ground set $E$
+of size $n$, as Part~I does, and uses Part~I's $\J$ (all order ideals),
+$\Qt$, $h_\tau$ and $\down$; its $\gamma$-coefficients are those of
+Section~\ref{sec:limits}, in the basis $t^k(1+t)^{n-2k}$, and $\Vol$ is the
+normalized volume of~\eqref{eq:vol}. For a poset of height at most two,
+$\tau=P_G$ and Part~II's $\PM_k(G)$, $p_G$ and $\nu(G)$ are recovered
+(Section~\ref{gam:sec:heighttwo}). Table~\ref{gam:tab:notation} lists what
+Part~IV adds or uses differently. Four symbols of the manuscripts were
+renamed and one was retypeset; no normalization was changed:
+\begin{itemize}[leftmargin=1.4em]
+\item manuscript~06's transitive closure $R^*$ is written $\overline R$,
+because $\tau^*$ is the \emph{opposite} preorder in Part~I and in
+manuscript~01;
+\item manuscript~06's opposite preorder $\tau^{\mathrm{op}}$ is written
+$\tau^*$, as in Part~I;
+\item manuscript~01's comparability graph $C_\tau$ is written $\Comp(\tau)$,
+manuscript~06's notation, because $C_\tau$ is Part~I's polytope
+(manuscript~01 itself warns of this);
+\item manuscript~01's $g_k(\tau)$, $\mathcal D_k(\tau)$ and variables
+$\mathbf t=(t_v)$ are written $\gamma_k(\tau)$, $\Tset_k(\tau)$ and
+$\zv=(z_v)$, manuscript~06's notation for the same objects;
+\item the preorder polytope, $Q_\tau$ in both manuscripts, is printed
+$\Qt=\mathcal Q_\tau$, as in Part~I.
+\end{itemize}
+
+\begin{table}[p]
+\centering\footnotesize
+\caption{Symbols of Part~IV. The last column prints the tempting false
+reading, usually a symbol of Parts~I--III with the same letter.}
+\label{gam:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.36\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~IV & Not to be confused with\\
+\midrule
+$\Tset_k(\tau)$, $\Tset(\tau)$ & ordered pairs $(U,V)$ of disjoint
+ $k$-subsets of $E$ joined by a bijection $f:U\to V$ with $u\le_\tau f(u)$,
+ counted once however many bijections exist (\emph{transport pairs});
+ all~$k$ (manuscript~01's $\mathcal D_k(\tau)$) & Part~II's $\PM_k(G)$, a set
+ of \emph{unordered} vertex sets of size $2k$ (Section~\ref{gam:sec:heighttwo}
+ relates them); the number of such bijections.\\
+$\gamma_k(\tau)$, $\Gamma_\tau(u)$ & $|\Tset_k(\tau)|$ (manuscript~01's
+ $g_k(\tau)$); $\Gamma_\tau(u)=\sum_k\gamma_k(\tau)u^k$ &
+ $\Gamma(1/4)$ in Section~\ref{gam:sec:statistics} is $\Gamma_\tau$ at $1/4$,
+ \emph{not} Euler's Gamma function; Part~III's cycle phase $\Gamma$.\\
+$A\match_\tau B$ & $|A|=|B|$ and a bijection $f:A\to B$ with
+ $a\le_\tau f(a)$ exists; $A,B$ may overlap & a relation between elements.\\
+$\zv=(z_i)$, $z_A$, $H_\tau(\zv)$ & support variables, $z_A=\prod_{i\in A}z_i$,
+ the multivariate support enumerator $\sum_{x\in\Qt\cap\Z^E}z_{\supp(x)}$ &
+ Part~III's $\zv$ in $\Phi_G(\zv)$; Part~II's graph $H$ and matrix $H_G$.\\
+$G_\tau$, $G_R$ & doubled graph on $E_L\sqcup E_R$ with edge $a_Lb_R$ iff
+ $a\le_\tau b$ (iff $aRb$) & Part~I's $G_\tau$, which has $i_Lj_R$ iff
+ $j\le_\tau i$: the same graph with its two shores exchanged. Matchable vertex
+ sets correspond, so $p_{G_\tau}$ is the same polynomial; the receiver
+ side~$B$ here is Part~I's left side.\\
+$H=(X\sqcup Y,F)$, $\mathcal R_H$, $\mathcal M(H)$, $H_{Z,S}$ & a bipartite
+ graph with edge set $F$; its demand vectors (Part~II's $\mathcal R_H$);
+ its matchable pairs $(U,V)$, $U\subseteq X$, $V\subseteq Y$; the zero/support
+ graph of Lemma~\ref{gam:lem:fibre} (manuscript~01's $H_S$) &
+ $\mathcal M=\PM$ in Part~II indexes vertex \emph{sets} $W=U\sqcup V$ by size;
+ $F$ is not a face or $F_H$.\\
+$p_H$, $p_R$, $F_H(\zv)$ & perfectly-matchable-set polynomial (Part~II's);
+ $p_{G_R}$; the demand support enumerator & Part~I's $p(y)$; $p=|A|$.\\
+$R$, $\overline R$, $|R|$ & a reflexive relation, its transitive closure
+ (manuscript~06's $R^*$), number of related ordered pairs including the
+ diagonal & $\tau^*$, the \emph{opposite} preorder (Part~I, manuscript~01,
+ Theorem~\ref{gam:gv:thm:duality}); for a preorder $\overline\tau=\tau$.\\
+$\tau^*$ & opposite preorder (manuscript~06's $\tau^{\mathrm{op}}$) &
+ transitive closure.\\
+$\Comp(\tau)$, $\nu$ & simple undirected comparability graph on $E$
+ (manuscript~01's $C_\tau$), its matching number & Part~I's polytope $C_\tau$;
+ a maximum matching of $G_\tau$, which is perfect (size $n$).\\
+$P$, $E_v$, $s_v$, $\mathcal D(P,\mathbf s)$, $D(d)$, $B_{s,r}$, $A_{s,r}$ &
+ quotient poset of $\tau$, blocks, block sizes, feasible signed block vectors
+ and $\sum_v\max(d_v,0)$, local polynomials (manuscript~06) & Part~I's
+ $P_\tau$ and $B_\tau$; Part~II's $P_G$, $D_G$.\\
+$E_i$, $m_i$, $b$, $(\alpha,\beta)$, $\mathcal A(P,\mathbf m)$ & the same
+ blocks, sizes and number of blocks, source/receiver profiles, feasible
+ profiles (manuscript~01) & Part~II's $m$ indexing $\Theta_m$; a dilation $m$
+ in~\eqref{gam:gv:eq:ehrhart}.\\
+$d$ & a signed vector in $\{-1,0,1\}^E$ or $\Z^P$; in
+ Corollary~\ref{gam:gv:cor:derivative} the deficiency $n-2\nu$ & Part~I's
+ diagonal vertices $d_i$; Part~III's defect $d(G)$.\\
+$D_\tau(t)$, $D_2(\tau)$, $R_{2,2}(\tau)$ & the one-element deletion deck
+ polynomial; two counts in Proposition~\ref{gam:gv:prop:low} & Part~I's
+ neighbourhoods $D_i$; $\mathcal D(P,\mathbf s)$.\\
+$K$, $L$ & mixing variable, uniform support size
+ (Section~\ref{gam:sec:statistics}) & Part~II's cactus matrix $K$ and its
+ support size $S$ in~\eqref{htwo:eq:variance}; Part~I's triangulation $K$.\\
+$L_n$, $\mathbf E_n$, $C_k$ & the $n$-chain, the universal equivalence
+ preorder, the Catalan number & Part~I's $C_\tau$; the ground set $E$.\\
+$T$, $Z$, $S$, $W$ & a subset; the zero set and the support of a lattice
+ point; a common subset & Part~I's $S_\tau$; Part~II's $T_G$ and matchable
+ sets $W$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~IV answers}
+\label{gam:sec:answers}
+Status after Part~IV, as of 29 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Conjecture~5.2 of~\cite{AC} ($\gamma$-positivity) holds for
+every finite preorder} (Theorem~\ref{gam:thm:main}), with no height or
+antisymmetry assumption and an explicit count:
+$\gamma_k(\tau)=|\Tset_k(\tau)|$. This settles what Part~I's
+Section~\ref{sec:limits} left open for Conjecture~5.2 and what Part~II's
+Section~\ref{htwo:sec:answers} left open beyond height two, including
+height-two posets blown up into nontrivial equivalence classes
+(Example~\ref{gam:ex:twoblocks}). Both manuscripts prove it, by the same
+route. Its proof does not use Part~I's unrefereed polytope theorem.
+\item \textbf{Part~II's Research question~\ref{gam:q:extend} (``Extend the
+matching-support interpretation'') is answered.} The interpretation extends
+to every finite preorder with ordered transport pairs in place of
+matchable vertex sets; for posets of height at most two the two coincide
+(Section~\ref{gam:sec:heighttwo}), so Part~II's Theorem~\ref{htwo:thm:main}
+is the special case. The ``step of the lower-zero-set argument'' that
+survives weighted blocks is the zero-set partition itself, taken over
+\emph{all} zero coordinates rather than a minimal shore
+(Lemma~\ref{gam:lem:fibre}); coordinates in nontrivial blocks may exceed
+one, as the question's remark warns, and the reduction allows that.
+\item \textbf{Part~III's Research question~18 (``Transfer beyond height-two
+posets'') is answered in its aim, by a different route}: the combinatorial
+support model is valid for every preorder, and no stable signed-support
+method is needed. Whether such methods give a second route is not
+addressed.
+\item \textbf{Part~II's Research question~\ref{gam:q:bridge} (``A purely
+combinatorial bridge'') remains open}: both manuscripts use the same
+imported counting identity (Lemma~\ref{htwo:lem:count}) and construct no
+bijection; it is re-posed in support-resolved form as Research
+question~\ref{gam:q:bijection}.
+\item \textbf{Part~I's nonpalindromic reflexive example} (Section~\ref{sec:examples},
+subsection~\ref{gam:sec:reflexiveex}) is an instance of
+Theorem~\ref{gam:thm:graphintro}: its support counts $(1,5,6,1)$ are
+$(1,|R|,|\overline R|,1)$ with one missing transitive pair
+(Example~\ref{gam:ex:nontrans}).
+\item \textbf{Conjecture~5.1(d) (flag realization) and Conjecture~5.3 remain
+as Parts~II and~III left them}: Part~IV proves no flag realization, and
+$\gamma$-positivity does not imply real-rootedness (Section~\ref{gam:sec:audit}).
+Palindromicity and unimodality, Conjecture~5.1(a)--(b), follow again, by a
+route independent of Part~I's geometry (Corollary~\ref{gam:cor:unimodal}).
+\end{itemize}
+Part~IV refutes no statement of Parts~I--III, and nothing in them is
+retracted. Parts~I--III gain dated pointers: the title block, abstract,
+scope box and reading route; Section~\ref{sec:limits}; Part~I's reflexive
+example; Part~II's status box, Section~\ref{htwo:sec:answers} and Research
+question~\ref{gam:q:extend}; Part~III's Section~\ref{cac:sec:answers} and
+Research question~18.
+
+\subsection{Where the merge had to choose}
+\label{gam:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Placement.} Part~IV follows Part~III and precedes Part~I's
+appendices, whose letters and numbers are unchanged. The manuscripts'
+appendices (06: normalization checklist and source ledger; 01: proof
+certificate and source ledger) are printed as the ordinary
+Sections~\ref{gam:sec:normalization}--\ref{gam:sec:ledger}.
+\item \emph{Order and base.} Manuscript~06's order of sections is kept;
+manuscript~01's sections are placed beside the matching ones of 06, and its
+sections without a counterpart are printed as separate sections or
+subsections marked ``(manuscript~01)''. Every result of both is printed;
+a result proved in both is printed once, with both sources named.
+\item \emph{Duplicated results.} The main theorem, its support-fibre (06) or
+all-zero-set (01) lemma and its Boolean summation are the same argument in
+both manuscripts and are printed once, from~06, with manuscript~01's
+remarks and example. The same holds for the doubled-graph identity and the
+second derivation through cancellation, the support-resolved counting
+identity, $\gamma$-monotonicity, disjoint unions, $\gamma_0$ and $\gamma_1$,
+the universal bounds, the chain and universal-equivalence formulas, the
+degree and $-1$-multiplicity theorem, and the algorithmic remark on block
+formulas. Where one statement is sharper (manuscript~01's strict
+unimodality, strict increase of $\gamma_1$, bounds on $h$ and equality
+cases), the sharper statement is printed and attributed.
+\item \emph{Second routes.} Genuinely different proofs are kept: manuscript~01's
+path-decomposition proof of overlap cancellation (after
+Corollary~\ref{gam:cor:cancel}) beside 06's ideal-Hall proof;
+manuscript~01's profile form of the block formula
+(Theorem~\ref{gam:gv:thm:blocks}) beside 06's signed form; manuscript~01's
+direct initial-segment proof of the chain count and its reflection proof of
+the Narayana formula.
+\item \emph{The counting identity.} Both manuscripts prove the
+demand/support identity by the reduction of Part~II's
+Section~\ref{htwo:sec:count}, step for step (augmentation, the two
+published inputs at $u=1$, the clone-and-Hall hypertree bijection), and
+say so. It is printed once, in Part~II; Section~\ref{gam:sec:count} states
+it in Part~IV's notation and records the manuscripts' additional remarks.
+\item \emph{Research questions.} The two manuscripts' twenty questions
+continue Part~III's numbering as Research questions~\ref{gam:q:first}--36.
+Three pairs ask the same question (flag realization; a support-preserving
+bijection; formal verification) and are printed once each with both
+formulations, so there are seventeen.
+\item \emph{Self-citation.} Both manuscripts cite this report as an external
+repository report (reference ``Repo'', with their pins). Here those
+citations become references to Parts~I--III, and ``the repository('s)''
+becomes ``Part~II('s)'' or ``this report'' where it means this report; the
+pins are kept in Section~\ref{gam:sec:context}.
+\item \emph{File names.} The delivered names, such as
+\nolinkurl{code/verify.py}, \nolinkurl{results/verification.json} and
+\nolinkurl{data/verification.json}, are replaced by the shipped names in
+Section~\ref{gam:sec:verification},
+because \texttt{code/verify.py} in this directory is Part~I's verifier; the
+run commands are replaced by commands that run on a copy or with explicit
+output paths. Package-content lists that name unshipped files are kept and
+annotated.
+\item \emph{Bibliography.} Every external reference of both manuscripts was
+already in this report's bibliography: 06's and 01's \texttt{OT} is
+\cite{OT20}, 01's \texttt{Dai} is \cite{DHLTW}; nothing is appended.
+\item \emph{Labels and front matter.} Labels carry the prefix \texttt{gam:},
+and \texttt{gam:gv:} for material only manuscript~01 contains. Part~II's
+Research questions~1 and~2 and Part~I's subsection on reflexive relations
+received the labels \texttt{gam:q:extend}, \texttt{gam:q:bridge} and
+\texttt{gam:sec:reflexiveex} so that Part~IV can cite them. The two title
+pages, abstracts and status boxes are printed in this section, and
+manuscript~01's ``shortest proof audit'' box in Section~\ref{gam:sec:context};
+both tables of contents and manuscript~06's reading-route box, which only
+lists its own sections, are dropped.
+\end{itemize}
+
+\section{The question, its provenance, and the advance}\label{gam:sec:context}
+Athanasiadis and Chapoton associate a support polynomial to every finite
+preorder and ask whether it has nonnegative coefficients in the gamma basis
+$t^k(1+t)^{n-2k}$ \cite[Conjecture~5.2]{AC}. The question is stronger than
+palindromicity and unimodality: positive combinations of these centered
+binomial polynomials have both properties, but a symmetric unimodal
+polynomial need not be gamma-positive. It is weaker than real-rootedness.
+Their separate Conjecture~5.1(d) asks for a flag simplicial-polytope
+realization; that is a geometric statement, not a reformulation of
+gamma-positivity (manuscript~01).
+
+Part~II of this report provides the immediate research context. At the
+snapshot manuscript~06 inspected, Part~II proves gamma-positivity for posets
+of height at most two. Its explicit open boundary includes arbitrary height
+and height-two quotient posets whose elements have been replaced by
+nontrivial equivalence classes. The main result below removes both
+restrictions. It also identifies every gamma coefficient by a finite
+matching condition. The answer to Conjecture~5.2 is affirmative. The word
+``supports'' is essential: a pair of vertex sets is counted once whenever at
+least one suitable matching exists, regardless of how many such matchings it
+has. Likewise, ``disjoint'' refers to the underlying elements of the
+preorder, not merely to left and right copies of a bipartite graph
+(manuscript~01).
+
+\subsection{What is inherited, and what is proved here}
+The matching-support interpretation for augmented bipartite root polytopes
+is prior work of Ohsugi and Tsuchiya \cite[Propositions~3.3--3.4]{OT20},
+restated by Davis and Kohl \cite[Theorem~3.10]{DK}. The needed total-count
+identity follows with the hypertree interpretation of root-polytope volume
+\cite{KP}; Part~II already uses this identity in its height-two
+argument (Lemma~\ref{htwo:lem:count}). None of these facts is claimed as new.
+
+Dai, Hou, Liu, Thawinrak, and Wang identify bipartite demand support
+polynomials with the corresponding root-polytope numerators and prove
+preorder duality \cite[Theorems~1.2--1.3]{DHLTW}. Menon gives a bijective
+proof of gamma-positivity for octopuses and an extension to lopsided
+octopuses \cite{Menon}. These are relevant antecedents, not results that
+this addition claims to discover. The theorem below includes Menon's
+families and all other finite preorders; their explicit special-case
+formulas are recoveries (Section~\ref{gam:sec:extremal}), and univariate
+duality is recovered and refined rather than claimed
+(Theorem~\ref{gam:gv:thm:duality}).
+
+The additional argument is the universal support-fibre reduction in
+Lemma~\ref{gam:lem:fibre}, together with its Boolean summation. It applies to
+\emph{every} finite preorder. The cancellation theorem gives another
+explanation, and the endpoint-defect theorem identifies exactly when
+palindromicity occurs in the balanced perfect-matching setting. The block,
+extremal, matching-deficiency, and probabilistic formulas make the resulting
+structure usable beyond the original conjecture.
+
+\subsection{Precise scope of the conclusions}
+The theorem settles the statement of Conjecture~5.2 in the version of
+\cite{AC} consulted here; it also proves its asserted palindromicity and
+unimodality consequences. Part~I's ordinary simplicial-polytopal
+realization is not an input. In particular, no unrefereed geometric assertion
+in ProveIt is needed to complete the proof.
+
+The stronger flag-polytopal realization question is not settled. Nor does
+gamma-positivity imply real-rootedness: Part~II records and extends
+previously posted counterexamples to the latter conjecture, with priority
+credited there to Shivam Patel~\cite{Patel}. We do not re-claim those
+counterexamples. We also do not identify $h_\tau$ with the Ehrhart numerator
+of the \emph{original} preorder polytope; those are different invariants.
+
+The ProveIt tree inspected by manuscript~06 is pinned to commit
+\begin{center}
+\small\texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6}.
+\end{center}
+[Merge note: at that commit this report consisted of Parts~I and~II as
+printed above; see Section~\ref{gam:sec:source}.] Its relevant report path
+and the primary-source details appear in the bibliography and in the
+accompanying source audit (\texttt{05-gamma-positivity-SOURCE\_AUDIT.md}). A
+targeted search on 29 September 2026 did not locate an earlier general proof
+of the main formula, but search results were not uniformly informative. No
+exhaustive priority claim follows from that search.
+
+\subsection{The repository frontier seen by manuscript~01}
+The ProveIt snapshot inspected by manuscript~01 is commit
+\begin{center}
+\small\texttt{077672c84f743ff5de82ce6becc3ad6b2ff8787a}.
+\end{center}
+Its report \emph{A Reflexive Root-Polytope Model for Preorder
+$h$-Polynomials}, in
+\begin{center}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/}\par
+\nolinkurl{preorder-root-polytopes/}
+\end{center}
+contains a height-two theorem in Part~II and later cactus results in
+Part~III. [Merge note: that is this report, Parts~I--III as printed above.]
+Part~II expresses the gamma coefficients of a height-at-most-two
+\emph{poset} through perfectly matchable subsets of its bipartite
+comparability graph. Its further-research section explicitly asks for an
+extension to greater height and to nontrivial preorder-equivalence blocks
+(Research question~\ref{gam:q:extend}). The README at that snapshot still
+distinguishes this restricted theorem from the unsettled general
+gamma-positivity question.
+
+The new observation is that one should partition by \emph{all} zero
+coordinates, not only by zeros on a minimal shore. For a support $S$ with
+complement $Z$, excess demand at any element of $S$ can be supplied from
+comparable elements of $Z$. Transitivity turns the ideal inequalities into
+the appropriate Hall inequalities. This construction applies unchanged to
+arbitrary height and to supports which split equivalence classes.
+
+Part~II supplies the useful demand-counting lemma by a reduction to
+classical root-polytope results. Manuscript~01 reproduces the reduction with
+its published dependencies identified. Therefore the general theorem does
+not require accepting Part~I's unrefereed geometric claims.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.28\textwidth}Y@{}}
+\toprule
+Item & Status (manuscript~01's table, as delivered)\\
+\midrule
+General gamma-positivity & Proved for every finite preorder, with an explicit
+nonnegative formula for each coefficient.\\
+Multivariate and structural laws & Proved: support refinement, complement-duality,
+Boolean support-pair action, relation-monotonicity, exact degree and
+$-1$-multiplicity, and block compression.\\
+Classical input & The demand--matching-support count, derived from the
+K\'alm\'an--Postnikov and Ohsugi--Tsuchiya root-polytope identities.\\
+Previously settled statements & Height-two gamma-positivity, special arbor
+formulas, and univariate duality are credited and recovered.\\
+Not established & Flag simplicial-polytope realization, a natural lattice-point
+bijection implementing the Boolean action, or a general real-rootedness
+statement.\\
+Verification & Exhaustive integer tests and explicit proofs; no new
+proof-assistant verification.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The priority assessment concerns the cited primary papers and the pinned
+repository report. A search that finds no matching general theorem does not
+establish that no such theorem exists elsewhere.
+
+\begin{statusbox}
+\small\textbf{Shortest proof audit (manuscript~01).} Read the main statement
+in Section~\ref{gam:sec:main}, the counting lemma in
+Section~\ref{gam:sec:count} (with its proof in Part~II,
+Section~\ref{htwo:sec:count}), and the zero-set reduction in
+Section~\ref{gam:sec:proof}. The latter reduction is the step that removes
+Part~II's height-two restriction. Section~\ref{gam:sec:cancel} gives a
+second reduction sharing the same counting lemma. No unrefereed
+root-polytope theorem from this report is assumed.
+\end{statusbox}
+
+\section{Definitions and main theorems}\label{gam:sec:main}
+Let $E$ be a finite set of size $n$. A preorder $\tau$ is a reflexive,
+transitive relation $\le_\tau$ on $E$. We do not assume antisymmetry. An
+\emph{ideal} is a subset $I$ such that $v\in I$ and $u\le_\tau v$ imply
+$u\in I$. Write $\J$ for all ideals, including $\varnothing$ and $E$.
+For $T\subseteq E$, put
+\[
+ \down T=\{u\in E:u\le_\tau v\text{ for some }v\in T\}.
+\]
+Reflexivity gives $T\subseteq\down T$, and transitivity makes $\down T$ an
+ideal. These are exactly the two properties used in the main reduction.
+
+For $x\in\R^E$ and $I\subseteq E$, write $x(I)=\sum_{i\in I}x_i$.
+The preorder polytope and its support polynomials are, as in Part~I,
+\begin{align}
+ \Qt&=\{x\in\R_{\ge0}^{E}:x(I)\le |I|\text{ for every }I\in\J\},
+ \label{gam:eq:Q}\\
+ h_\tau(t)&=\sum_{x\in\Qt\cap\Z^E}t^{|\supp(x)|},
+ \qquad \supp(x)=\{i:x_i>0\},\label{gam:eq:h}\\
+ H_\tau(\zv)&=\sum_{x\in\Qt\cap\Z^E}z_{\supp(x)},\qquad
+ z_A=\prod_{i\in A}z_i,\qquad h_\tau(t)=H_\tau(t,\ldots,t).\label{gam:gv:eq:H}
+\end{align}
+The full-set inequality makes the lattice-point set finite. The all-zero
+point is the only point of empty support, and the all-one point is the only
+point of full support, since its $n$ positive integer coordinates already sum
+to at least $n$. Thus $h_\tau$ has degree $n$ and both endpoint
+coefficients are one.
+
+The polynomial $h_\tau$ is initially a \emph{support enumerator}. It must not
+be confused with the Ehrhart numerator $h^*(\Qt;t)$. An Ehrhart numerator
+of a different root polytope appears in Section~\ref{gam:gv:sec:orbits}
+(manuscript~01).
+
+\begin{definition}[Disjoint transport supports]\label{gam:def:cores}
+Let $\Tset_k(\tau)$ be the set of ordered pairs $(U,V)$ of subsets of $E$ such
+that
+\[
+ U\cap V=\varnothing,\qquad |U|=|V|=k,
+\]
+and there exists a bijection $f:U\to V$ satisfying $u\le_\tau f(u)$ for every
+$u\in U$. Set $\Tset(\tau)=\bigcup_k\Tset_k(\tau)$. More generally, for
+subsets $A,B\subseteq E$, write $A\match_\tau B$ if $|A|=|B|$ and there
+exists a bijection $f:A\to B$ satisfying $a\le_\tau f(a)$ for every $a\in A$
+(manuscript~01's ``compatible support pairs''; $A$ and $B$ may overlap).
+\end{definition}
+The empty pair is included. A support pair with several possible bijections
+is counted once. The order of the pair matters, especially inside a
+nontrivial equivalence class.
+
+\begin{theorem}[General preorder gamma formula; manuscripts~06 and~01]\label{gam:thm:main}
+For every finite preorder $\tau$ on $E$,
+\begin{equation}
+ \boxed{\displaystyle
+ h_\tau(t)=\sum_{k=0}^{\lfloor n/2\rfloor}|\Tset_k(\tau)|\,
+                  t^k(1+t)^{n-2k}.}\label{gam:eq:main}
+\end{equation}
+More strongly, for commuting variables $\zv=(z_i)_{i\in E}$,
+\begin{equation}
+ \boxed{\displaystyle
+ H_\tau(\zv)=\sum_{x\in\Qt\cap\Z^E}z_{\supp(x)}
+   =\sum_{(U,V)\in\Tset(\tau)}z_V\!
+          \prod_{i\in E\setminus(U\cup V)}(1+z_i).}\label{gam:eq:multi}
+\end{equation}
+Consequently $\gamma_k(\tau)=|\Tset_k(\tau)|$ are nonnegative integers, proving
+Athanasiadis--Chapoton Conjecture~5.2 for arbitrary finite preorders.
+\end{theorem}
+Here and below a gamma expansion is a polynomial identity; no value is
+assigned to a rational substitution at its pole $t=-1$. The expansion is
+unique: $t^k(1+t)^{n-2k}$ has lowest degree $k$ with coefficient one, so
+successive coefficients in increasing degree determine
+$\gamma_0,\gamma_1,\ldots$ (manuscript~01). Define the gamma polynomial
+\begin{equation}
+ \Gamma_\tau(u)=\sum_k\gamma_k(\tau)u^k.
+ \label{gam:eq:gammapoly}
+\end{equation}
+Then \eqref{gam:eq:main} can be abbreviated as
+$h_\tau(t)=(1+t)^n\Gamma_\tau(t/(1+t)^2)$, with the right side interpreted
+by its polynomial expansion, not by substitution at the undefined quotient
+$t=-1$. The degree of $\Gamma_\tau$ and the multiplicity of $-1$ as a root
+of $h_\tau$ are determined exactly in Theorem~\ref{gam:thm:deficiency}, which
+both manuscripts state (manuscript~01 already in its introduction): with
+$\Comp(\tau)$ the simple undirected graph on $E$ in which distinct vertices
+are adjacent precisely when they are comparable in at least one direction,
+$\deg\Gamma_\tau=\nu(\Comp(\tau))$ and $\gamma_k(\tau)>0$ exactly for
+$0\le k\le\nu(\Comp(\tau))$.
+
+There is a second result about a relation which need not be transitive.
+For a reflexive relation $R$ on $E$, form the bipartite graph $G_R$ on two
+copies of $E$, with edge $i_Lj_R$ exactly when $iRj$; for a preorder,
+$G_\tau$ has edge $a_Lb_R$ exactly when $a\le_\tau b$. Define
+\begin{equation}
+ p_R(t)=\sum_{\substack{A,B\subseteq E,\ |A|=|B|\\
+                         G_R[A_L,B_R]\text{ has a perfect matching}}}
+                 t^{|A|}.
+ \label{gam:eq:pR}
+\end{equation}
+Its degree is $n$, since all diagonal edges are present. The relation
+$\overline R$ denotes reflexive transitive closure, and $|R|$ counts ordered
+related pairs, including the $n$ diagonal pairs. [Merge note: $G_\tau$ is
+Part~I's $G_\tau$ with its shores exchanged, and $p_\tau=p_{G_\tau}$ is the
+polynomial of Part~II's Remark~\ref{htwo:rem:doubled}; see
+Table~\ref{gam:tab:notation}.]
+
+\begin{theorem}[Transitivity is the palindromicity criterion; manuscript~06]\label{gam:thm:graphintro}
+For $n\ge1$ and every reflexive relation $R$,
+\begin{equation}
+ [t]p_R(t)=|R|,\qquad [t^{n-1}]p_R(t)=|\overline R|.
+ \label{gam:eq:endpoints}
+\end{equation}
+The following conditions are equivalent:
+\begin{enumerate}[label=(\roman*),itemsep=1pt,topsep=3pt]
+\item $R$ is transitive;
+\item every matchable pair $(A,B)$ remains matchable after removing $A\cap B$;
+\item $p_R(t)$ is palindromic of degree $n$;
+\item $p_R(t)$ is gamma-positive of degree $n$;
+\item $[t^{n-1}]p_R(t)=[t]p_R(t)$.
+\end{enumerate}
+In particular, the asymmetry between these two coefficients counts exactly
+the ordered pairs missing from transitive closure:
+\begin{equation}
+ [t^{n-1}]p_R-[t]p_R=|\overline R\setminus R|.
+ \label{gam:eq:defect}
+\end{equation}
+\end{theorem}
+For $n=0$, all statements except the displayed coefficient indices have the
+obvious trivial interpretation. The theorem's proof in
+Sections~\ref{gam:sec:cancel} and~\ref{gam:sec:graph} is elementary and does
+not use root polytopes or Theorem~\ref{gam:thm:main}.
+
+\section{The established bipartite counting identity}\label{gam:sec:count}
+We state the non-elementary enumerative input precisely and record its
+reduction to the cited classical theorems. This also fixes the distinction
+between support counts, matching counts, and hypertree counts.
+
+Let $H=(X\sqcup Y,F)$ be a finite bipartite graph with specified shores, and
+let $N_H(T)\subseteq X$ be the neighborhood of $T\subseteq Y$. Its integral
+demand set is Part~II's
+\begin{equation}
+ \mathcal R_H=\{c\in\N^Y:c(T)\le |N_H(T)|\text{ for all }T\subseteq Y\}.
+ \label{gam:eq:demands}
+\end{equation}
+A vector in $\mathcal R_H$ describes integer requests at right vertices that
+can be served by distinct unit-capacity left vertices; we count demand
+\emph{vectors}, not allocations serving them. Write $\mathcal M(H)$ for the
+pairs $(U,V)$ with $U\subseteq X$, $V\subseteq Y$, $|U|=|V|$, such that
+$H[U,V]$ has a perfect matching, and
+$p_H(u)=\sum_{(U,V)\in\mathcal M(H)}u^{|V|}$, the perfectly matchable set
+polynomial; the specified shores allow us to write a matchable vertex set
+uniquely as $U\sqcup V$.
+
+\begin{lemma}[Demand/support equinumeracy, inherited]\label{gam:lem:count}
+For every finite bipartite graph $H$,
+\begin{equation}
+ |\mathcal R_H|=|\mathcal M(H)|=p_H(1).
+ \label{gam:eq:count}
+\end{equation}
+\end{lemma}
+This is Lemma~\ref{htwo:lem:count} of Part~II. Both manuscripts prove it by
+the reduction printed there: adjoin $x_0$, $y_0$ with all edges $x_0y$,
+$xy_0$, $x_0y_0$ to obtain the connected graph $\widehat H$; combine
+\eqref{htwo:eq:KPinput} (K\'alm\'an--Postnikov~\cite{KP}, evaluated at one;
+manuscript~01 cites its Theorems~1.1 and~3.10) with \eqref{htwo:eq:OTinput}
+(Ohsugi--Tsuchiya~\cite[Propositions~3.3--3.4]{OT20}, in the augmented form
+of Davis--Kohl~\cite[Theorem~3.10]{DK}) through $h^*(B;1)=\Vol(B)$, with the
+full affine integer lattice; and identify the right hypertree vectors with
+$\mathcal R_H$ by the forest count and the clone-and-Hall construction of
+Section~\ref{htwo:sec:count}. The manuscripts' versions differ from Part~II's
+only in presentation: manuscript~06 bounds the forest on
+$T\cup N_H(T)\cup\{x_0\}$ directly, and manuscript~01 spells out the
+augmenting-path proof of the required direction of Hall's criterion (choose
+a largest matching; absence of an augmenting path from an unmatched clone
+yields a reached clone set larger than its neighborhood). Both note that
+empty shores give the single empty matching support, and manuscript~01 that
+the construction need not choose a unique tree, because the resulting
+\emph{vector} is unique. Manuscript~01 adds: the augmentation matters;
+identity~\eqref{htwo:eq:OTinput} is about the edge polytope of $\widehat H$,
+not the unaugmented edge polytope of $H$ and not a polytope whose vertices
+are individual matchings.
+
+\begin{remark}[The input is not a matching enumeration; manuscript~06]\label{gam:rem:K22}
+For $H=K_{2,2}$, there are six demand vectors: the nonnegative pairs of total
+at most two. There are also six matchable support pairs: the empty pair,
+four single-edge supports, and one full support. There are two perfect
+matchings on the full support, but it contributes only one. Replacing
+$|\mathcal M(H)|$ by the number of individual matchings would already fail
+in this example.
+\end{remark}
+
+\subsection{A support-resolved version by Boolean inversion}
+For later use, the total identity also determines every prescribed right
+support. This refinement recovers the known support-enumerator identity;
+it is not a new priority claim for that identity. It requires no additional
+geometric theorem.
+
+\begin{proposition}[Prescribed demand support; manuscripts~06 and~01]\label{gam:prop:gradedinput}
+For every $S\subseteq Y$,
+\begin{equation}
+ \#\{c\in\mathcal R_H:\supp(c)=S\}
+  =\#\{U\subseteq X:(U,S)\in\mathcal M(H)\}.
+ \label{gam:eq:gradedinput}
+\end{equation}
+Consequently
+\begin{equation}
+ F_H(\zv):=\sum_{c\in\mathcal R_H}z_{\supp(c)}
+       =\sum_{(U,V)\in\mathcal M(H)}z_V.
+ \label{gam:eq:FH}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $T\subseteq Y$, the demands supported inside $T$ are exactly those for
+$H[X,T]$: inequalities involving outside vertices follow from the ones on
+$T$, since outside coordinates are zero and neighborhoods only enlarge.
+By Lemma~\ref{gam:lem:count}, their number is
+\[
+ a(T)=\#\{(U,V)\in\mathcal M(H):V\subseteq T\}.
+\]
+Both sides of \eqref{gam:eq:gradedinput}, as functions of $S$, therefore have
+the same sums over all $S\subseteq T$. Boolean inversion gives their
+equality. Explicitly, a fixed $V\subseteq S$ contributes
+\[
+ \sum_{V\subseteq T\subseteq S}(-1)^{|S|-|T|}
+ =\begin{cases}1&V=S,\\0&V\ne S.\end{cases}
+\]
+Summing \eqref{gam:eq:gradedinput} against $z_S$ proves \eqref{gam:eq:FH}.
+\end{proof}
+Manuscript~01 proves the same refinement by induction on $|T|$ and records
+the explicit value: both sides of~\eqref{gam:eq:gradedinput} equal
+$\sum_{V\subseteq S}(-1)^{|S|-|V|}p_{H[X\sqcup V]}(1)$.
+
+No explicit canonical bijection between the two sets in
+\eqref{gam:eq:gradedinput} has been constructed in this argument. The
+equality is enough for all the polynomial identities below.
+
+\begin{remark}[What is not constructed; manuscript~01]\label{gam:gv:rem:notconstructed}
+The lemmas give equality of cardinalities, refined by the receiver support.
+They do not specify a natural bijection from a demand vector to a matchable
+support pair. The explicit tree construction is a bijection with hypertree
+\emph{vectors}, not with matchings or with the pairs counted by $p_H$.
+This distinction remains important when we introduce Boolean actions
+(Section~\ref{gam:gv:sec:orbits}).
+\end{remark}
+
+\section{Proof of the general preorder theorem}\label{gam:sec:proof}
+The decisive step is to apply the bipartite identity to the zeros and the
+positive coordinates of an arbitrary preorder point, rather than to fixed
+minimal and maximal levels of a height-two poset.
+
+\begin{lemma}[Every support fibre is a bipartite demand set; manuscripts~06 and~01]\label{gam:lem:fibre}
+Fix $S\subseteq E$ and set $Z=E\setminus S$. Let $H_{Z,S}$ be the bipartite
+graph with shores $Z,S$ and edges $zs$ exactly when $z\le_\tau s$. The map
+\begin{equation}
+ c\longmapsto x,\qquad x_z=0\ (z\in Z),\quad x_s=1+c_s\ (s\in S)
+ \label{gam:eq:fibremap}
+\end{equation}
+is a bijection from $\mathcal R_{H_{Z,S}}$ onto the lattice points of
+$\Qt$ with support exactly $S$.
+\end{lemma}
+\begin{proof}
+The map is plainly a bijection between $\N^S$ and all nonnegative integral
+vectors of support $S$. We prove the equivalence of its feasibility
+conditions. For an ideal $I$, the preorder inequality is
+\begin{equation}
+ c(I\cap S)\le |I\cap Z|.
+ \label{gam:eq:idealexcess}
+\end{equation}
+Suppose these inequalities hold. Given $T\subseteq S$, take the ideal
+$I=\down T$. Then $T\subseteq I\cap S$, and $c$ is nonnegative, so
+\[
+ c(T)\le c((\down T)\cap S)
+       \le |(\down T)\cap Z|=|N_{H_{Z,S}}(T)|.
+\]
+Thus $c\in\mathcal R_{H_{Z,S}}$.
+
+Conversely, suppose all the displayed neighborhood bounds hold. For an
+arbitrary ideal $I$, put $T=I\cap S$. Downward closure gives
+$\down T\subseteq I$, whence
+\[
+ c(I\cap S)\le |(\down (I\cap S))\cap Z|\le |I\cap Z|.
+\]
+This is \eqref{gam:eq:idealexcess}, so $x\in\Qt$. Both implications use only
+reflexivity, transitivity, and nonnegativity. They do not use a height bound,
+or require equivalence classes to be singletons.
+\end{proof}
+Manuscript~01 calls this the all-zero-set reduction and adds: no property of
+a minimal or maximal layer is used. In particular, the set $Z$ need not be an
+ideal, the set $S$ need not be a filter, and neither set need be a union of
+equivalence classes. The only order-theoretic facts used are that $\down T$
+is an ideal and that an ideal contains the lower closure of each of its
+subsets.
+
+\begin{proof}[Proof of Theorem~\ref{gam:thm:main}]
+For each $S\subseteq E$, Lemmas~\ref{gam:lem:fibre} and~\ref{gam:lem:count} give
+\begin{equation}
+ \#\{x\in\Qt\cap\Z^E:\supp(x)=S\}
+   =\#\{(U,V)\in\Tset(\tau):U\subseteq E\setminus S,\ V\subseteq S\}.
+ \label{gam:eq:fixedsupport}
+\end{equation}
+Indeed, the pairs on the right are exactly the matchable support pairs in
+$H_{E\setminus S,S}$. Multiply by $z_S$ and sum over $S$; all sums are
+finite, so we may sum first over the pairs. For a fixed
+$(U,V)\in\Tset(\tau)$, the permissible supports are precisely
+\[
+ V\subseteq S\subseteq E\setminus U.
+\]
+Every such $S$ is uniquely $V\cup W$ with
+$W\subseteq E\setminus(U\cup V)$. Its total contribution is
+\[
+ \sum_{W\subseteq E\setminus(U\cup V)}z_Vz_W
+   =z_V\prod_{i\in E\setminus(U\cup V)}(1+z_i).
+\]
+This proves \eqref{gam:eq:multi}. Specializing all $z_i$ to $t$ gives
+\eqref{gam:eq:main}, because $|U|=|V|=k$ leaves exactly $n-2k$ free labels.
+\end{proof}
+Equation~\eqref{gam:eq:fixedsupport} is manuscript~01's Corollary
+``Support-by-support counting formula'': the general theorem is not merely an
+equality after forgetting which coordinates are nonzero.
+
+\begin{example}[Why equivalence classes cause no exception; manuscript~01]\label{gam:gv:ex:equiv3}
+If $E=\{1,2,3\}$ is a single equivalence class, the only ideals are
+$\varnothing$ and $E$. The lattice point $(3,0,0)$ is allowed. Its support
+$S=\{1\}$ is not a union of equivalence classes, but the reduction still
+works: the two zero coordinates supply the excess demand $c_1=2$ through
+the two edges of $H_{Z,S}$. Nothing requires an individual coordinate to be
+bounded by one. In this example $h_\tau=1+9t+9t^2+t^3$ and
+$\Gamma_\tau=1+6u$.
+\end{example}
+
+\subsection{What the Boolean expansion does and does not provide}
+Equation~\eqref{gam:eq:fixedsupport} says that each lattice-point support count
+is the number of abstract intervals
+$[V,E\setminus U]$ containing that support, with $(U,V)$ a transport pair.
+An interval has bottom rank $k$, top rank $n-k$, and rank enumerator
+$t^k(1+t)^{n-2k}$. This is the source of gamma-positivity.
+
+The intervals are an \emph{enumerative model}; they are not asserted to be
+actual coordinatewise subposets of the lattice-point set. Manuscript~06
+constructs no commuting involutions on those lattice points and no canonical
+partition of them into geometric cubes. Those stronger structures would
+require a compatible, explicit realization of the counting identity in
+Lemma~\ref{gam:lem:count}. (Manuscript~01's commuting toggles,
+Theorem~\ref{gam:gv:thm:orbits}, act on a support-pair model, not on the
+lattice points.)
+
+\begin{corollary}[Palindromicity and strict unimodality; manuscripts~06 and~01]\label{gam:cor:unimodal}
+For every finite preorder, $h_\tau(t)=t^nh_\tau(t^{-1})$, that is,
+$h_j(\tau)=h_{n-j}(\tau)$, and
+$h_0(\tau)\le h_1(\tau)\le\cdots\le h_{\lfloor n/2\rfloor}(\tau)$ (manuscript~06).
+In fact the coefficients are strictly increasing up to the middle
+(manuscript~01):
+\[
+ [t^j]h_\tau<[t^{j+1}]h_\tau
+                 \quad(0\le j<\lfloor n/2\rfloor).
+\]
+When $n$ is odd, the two middle coefficients are equal. The inequalities on
+the other side follow by symmetry.
+\end{corollary}
+\begin{proof}
+Each polynomial $t^k(1+t)^{n-2k}$ has symmetric coefficients centered at
+$n/2$, nondecreasing up to that center. A nonnegative sum preserves both
+properties. There is no appeal to a geometric realization. Moreover
+$\gamma_0=1$, and $(1+t)^n$ has strictly increasing coefficients for the
+indicated indices. Adding the remaining nonnegative symmetric-unimodal
+summands preserves these strict inequalities.
+\end{proof}
+Thus the theorem proves the palindromicity and unimodality assertions of
+Athanasiadis--Chapoton Conjecture~5.1(a)--(b) as well as Conjecture~5.2.
+It makes no implication in the reverse direction: a palindromic unimodal
+polynomial need not be gamma-positive. [Merge note: Part~I proposes these
+properties, and more, through its simplicial polytope $S_\tau$
+(Theorem~\ref{thm:main}); the proof here is independent of Part~I's
+unrefereed geometric argument.]
+
+\section{Ideal inequalities, cancellation, and a second proof}\label{gam:sec:cancel}
+The gamma coefficients can be recognized without searching through
+bijections. This also explains why transitivity is the exact structural
+hypothesis behind the Boolean intervals.
+
+\begin{lemma}[The ideal Hall criterion; manuscript~06]\label{gam:lem:idealhall}
+For subsets $A,B\subseteq E$ of equal size, there is a bijection
+$f:A\to B$ with $a\le_\tau f(a)$ if and only if
+\begin{equation}
+ |A\cap I|\ge |B\cap I|\qquad\text{for every }I\in\J.
+ \label{gam:eq:idealhall}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $b\in B\cap I$, its matched predecessor belongs to $A\cap I$. Distinct
+$b$ have distinct predecessors, proving necessity. Conversely, let
+$T\subseteq B$. The predecessors of $T$ inside $A$ are $A\cap\down T$.
+Since $\down T$ is an ideal and $T\subseteq B\cap\down T$,
+\[
+ |T|\le |B\cap\down T|\le |A\cap\down T|.
+\]
+Hall's criterion gives a matching saturating $B$; equality of the shore
+sizes makes it a bijection.
+\end{proof}
+
+\begin{corollary}[Common-support cancellation; manuscripts~06 and~01]\label{gam:cor:cancel}
+For any $A,B\subseteq E$ with $|A|=|B|$, the pair $(A,B)$ is matchable in
+$G_\tau$ if and only if $(A\setminus B,B\setminus A)$ is matchable; that is,
+\begin{equation}
+ A\match_\tau B
+ \quad\Longleftrightarrow\quad
+ A\setminus B\match_\tau B\setminus A.
+ \label{gam:eq:cancellation}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The common intersection contributes the same quantity to both sides of
+\eqref{gam:eq:idealhall}, so it cancels. Alternatively, the reverse implication
+extends a matching by the diagonal edges on $A\cap B$.
+\end{proof}
+
+Manuscript~01 states~\eqref{gam:eq:cancellation} as its Lemma ``Canceling
+common support'' and proves it without the ideal Hall criterion.
+
+\begin{proof}[Second proof of Corollary~\ref{gam:cor:cancel}, by path decomposition (manuscript~01)]
+Suppose first that $f:A\to B$ is a compatible bijection. On the original
+ground set draw the directed edges $a\to f(a)$, retaining possible loops.
+Every vertex has indegree and outdegree at most one. A vertex in
+$U=A\setminus B$ has outdegree one and indegree zero; one in
+$V=B\setminus A$ has indegree one and outdegree zero; one in $A\cap B$ has
+both degrees one. The nontrivial components are therefore directed paths
+from $U$ to $V$ and directed cycles lying entirely in $A\cap B$.
+
+To justify that a path beginning in $U$ cannot enter a cycle, the first entry
+vertex of that cycle would receive two incoming edges. Since the graph is
+finite, the path must instead terminate, and it can terminate only in $V$.
+Different starting vertices yield disjoint paths. Along each path,
+transitivity implies that its starting vertex is below its ending vertex.
+Replacing every path by this direct relation gives a bijection from $U$ to
+$V$. Cycles and loops are discarded.
+
+Conversely, a compatible bijection from $U$ to $V$ extends to one from $A$
+to $B$ by fixing every element of $A\cap B$. The additional relations are
+valid by reflexivity.
+\end{proof}
+In particular, the truth of $A\match_\tau B$ depends on the disjoint core
+$(A\setminus B,B\setminus A)$, not on the choice of common elements
+(manuscript~01).
+
+\subsection{Signed vectors and transport feasibility}
+For a disjoint pair $(U,V)$, define $d_i=1$ on $U$, $d_i=-1$ on $V$, and
+$d_i=0$ elsewhere. Lemma~\ref{gam:lem:idealhall} gives a useful equivalent
+formula:
+\begin{equation}
+ \Gamma_\tau(u)=\sum_k\gamma_k(\tau)u^k
+  =\sum_{\substack{d\in\{-1,0,1\}^{E}\\d(E)=0\\
+                          d(I)\ge0\ (I\in\J)}}
+                      u^{|\{i:d_i=1\}|}.
+ \label{gam:eq:signed}
+\end{equation}
+Thus the coefficients count balanced signed labelings whose cumulative sum
+on every ideal is nonnegative. This is not a count of integer flows with
+multiplicity: distinct realizations of the same signed labeling still
+contribute once.
+
+For a chain, these are Dyck words with zero symbols inserted. For a general
+preorder, ideals replace initial intervals. Equivalent elements are tested
+only together in the ideal inequalities, but their signs remain individually
+visible in \eqref{gam:eq:signed}. This distinction will produce the block
+multiplicities in Section~\ref{gam:sec:block}.
+
+\subsection{Recovering the doubled-graph identity}
+\begin{lemma}[The doubled graph's demand body; manuscripts~06 and~01]\label{gam:lem:fullgraph}
+After identifying right coordinates with $E$,
+$\Qt\cap\Z^E=\mathcal R_{G_\tau}$. The analogous equality holds for real
+nonnegative vectors satisfying the same inequalities.
+\end{lemma}
+\begin{proof}
+The neighborhood of $T_R$ in $G_\tau$ is $(\down T)_L$. If $x\in\Qt$,
+nonnegativity and the ideal inequality for $\down T$ give
+$x(T)\le x(\down T)\le|\down T|$. Conversely, when the demand inequalities
+hold, take $T=I$ for an ideal; then $\down I=I$, so $x(I)\le |I|$.
+\end{proof}
+[Merge note: this is Part~I's Lemma~\ref{lem:draconian} with the shores of
+$G_\tau$ exchanged.] Proposition~\ref{gam:prop:gradedinput} therefore yields
+\begin{equation}
+ h_\tau(t)=p_\tau(t),\qquad
+ H_\tau(\zv)=\sum_{x\in\Qt\cap\Z^E}z_{\supp(x)}
+     =\sum_{A\match_\tau B}z_B,
+ \label{gam:eq:doubled}
+\end{equation}
+where $p_\tau=p_{G_\tau}$ and the sets $A$ and $B$ need not be disjoint as
+subsets of $E$ (manuscript~01's Proposition ``Relation-graph
+realization''). The univariate identity is already contained in the cited
+support-enumerator and root-polytope results; it is Part~II's
+Remark~\ref{htwo:rem:doubled}. Here it follows from the weaker total-count
+input by Boolean inversion.
+
+For a matchable pair, set
+\[
+ U=A\setminus B,\quad V=B\setminus A,\quad W=A\cap B.
+\]
+Cancellation says exactly that $(U,V)\in\Tset(\tau)$, while $W$ is an arbitrary
+subset of $E\setminus(U\cup V)$. Conversely, every such triple gives
+$A=U\cup W$, $B=V\cup W$ and a matchable pair. Hence
+\[
+ \sum_{A\match_\tau B}z_B
+   =\sum_{(U,V)\in\Tset(\tau)}z_V
+        \sum_{W\subseteq E\setminus(U\cup V)}z_W,
+\]
+which is a second derivation of Theorem~\ref{gam:thm:main}. This proof and the
+support-fibre proof share the classical counting input but not the same
+preorder reduction; manuscript~01 stresses that the second route is not an
+independent replacement for the classical input.
+
+\subsection{Cancellation characterizes transitivity}
+\begin{proposition}[Manuscript~06]\label{gam:prop:canceliff}
+Let $R$ be reflexive on a finite set. Common-support cancellation holds for
+all equally sized pairs if and only if $R$ is transitive.
+\end{proposition}
+\begin{proof}
+The transitive case is Corollary~\ref{gam:cor:cancel}. If $R$ is not
+transitive, choose $aRb$ and $bRc$ with $aRc$ false. Reflexivity ensures
+that $a,b,c$ are distinct. The pair
+\[
+ A=\{a,b\},\qquad B=\{b,c\}
+\]
+is matched by $a\mapsto b$ and $b\mapsto c$. After deleting the common
+vertex $b$, the pair $(\{a\},\{c\})$ is not matchable. Thus cancellation
+fails already on a two-edge path.
+\end{proof}
+
+\section{Boolean orbits and a recovered Ehrhart interpretation}\label{gam:gv:sec:orbits}
+\noindent\emph{(Manuscript~01 only.)}
+\begin{theorem}[Boolean orbits]\label{gam:gv:thm:orbits}
+Let $\mathscr M_\tau$ be the set of compatible ordered pairs $(A,B)$,
+$A\match_\tau B$, graded by $|B|$. For each $v\in E$, define a map $T_v$ as
+follows: if $v$ belongs to exactly one of $A,B$, leave the pair unchanged;
+otherwise toggle its membership in both sets. Then each $T_v$ is a
+well-defined involution of $\mathscr M_\tau$, the involutions commute, and
+their orbits are indexed by the disjoint compatible pairs $(U,V)$. The orbit
+of a core of size $|U|=|V|=k$ is a Boolean family of dimension $n-2k$, with
+rank polynomial $t^k(1+t)^{n-2k}$.
+\end{theorem}
+\begin{proof}
+Each toggle preserves the disjoint core, so
+Corollary~\ref{gam:cor:cancel} proves that it preserves compatibility.
+Toggling twice returns the original pair. Different toggles act on different
+element memberships and commute. For fixed core $(U,V)$, the common subset
+$C$ can be chosen arbitrarily in the complement of $U\cup V$; the toggles
+there add or remove its elements. The resulting orbit consists of all
+$2^{n-2k}$ choices, and $|B|=|V|+|C|$.
+\end{proof}
+This is an explicit combinatorial orbit interpretation of the gamma
+coefficients. It is an action on the \emph{support-pair model}, not an
+explicit action on $\Qt\cap\Z^E$. The counting bridge supplies equal
+support-fiber cardinalities, but transporting the toggles to lattice points
+naturally would require an additional bijection. No such bijection is
+claimed here (compare Research question~\ref{gam:q:orbits}).
+
+\subsection{A recovered Ehrhart interpretation}
+Let $B_{\widehat{G_\tau}}$ be the augmented edge polytope of the relation
+graph. Its dimension is $2n$: its connected graph has $2n+2$ vertices, and
+the sums on the two shores each equal one. Combining
+\eqref{htwo:eq:OTinput} and \eqref{gam:eq:doubled} gives
+\begin{equation}
+ h^*(B_{\widehat{G_\tau}};t)=h_\tau(t).
+ \label{gam:gv:eq:rootrecovered}
+\end{equation}
+This is a geometric consequence of the counting proof, not an identification
+of $h_\tau$ with $h^*(\Qt;t)$. Root-polytope interpretations of support
+enumerators are already part of the primary literature \cite{DHLTW}; the
+importance here is the additional explicit gamma interpretation. [Merge
+note: $B_{\widehat{G_\tau}}$ is Part~I's $B_\tau$ of~\eqref{eq:B} with its two
+coordinate blocks exchanged, a lattice isomorphism, so
+\eqref{gam:gv:eq:rootrecovered} is Part~I's Proposition~\ref{prop:known}.]
+
+In particular,
+\begin{align}
+ \Vol(B_{\widehat{G_\tau}})
+ &=|\Qt\cap\Z^E|
+   =\sum_k\gamma_k(\tau)2^{n-2k},\label{gam:gv:eq:volume}\\
+ |mB_{\widehat{G_\tau}}\cap\Z^{2n+2}|
+ &=\sum_{j=0}^n [t^j]h_\tau(t)
+           \binom{m+2n-j}{2n}\qquad(m\in\N).
+ \label{gam:gv:eq:ehrhart}
+\end{align}
+The lattice in the second line is restricted automatically to the affine
+span of the dilation. These are standard consequences of the Ehrhart
+numerator identity. A $2n$-dimensional root-polytope realization does not,
+by itself, settle the flag $n$-dimensional simplicial-polytope question.
+(Manuscript~01 writes $\operatorname{NVol}$ for the normalized volume, which
+is Part~I's $\Vol$ of~\eqref{eq:vol}.)
+
+\section{An exact classification for balanced bipartite graphs}\label{gam:sec:graph}
+For reflexive relations, failure of transitivity is visible in two
+coefficients of the matching-support polynomial. This is stronger than
+merely exhibiting a nonpalindromic counterexample. This section is
+manuscript~06's.
+
+\begin{lemma}[Near-perfect supports detect reachability]\label{gam:lem:reach}
+Let $R$ be reflexive on $E$. For $a,b\in E$, there is a perfect matching
+from $E\setminus\{a\}$ to $E\setminus\{b\}$ using $R$ if and only if
+$b\,\overline R\,a$.
+\end{lemma}
+\begin{proof}
+When $a=b$, diagonal edges give the matching and reachability is reflexive.
+Assume $a\ne b$. A matching is a bijection
+$f:E\setminus\{a\}\to E\setminus\{b\}$ with $iRf(i)$. Draw its edges as
+arrows on $E$. The vertex $b$ has one outgoing arrow and no incoming arrow;
+$a$ has one incoming arrow and no outgoing arrow; every other vertex has
+one of each. Starting at $b$ and following arrows must reach $a$. It cannot
+enter a directed cycle: the first cycle vertex entered would have two
+incoming arrows, unless the path started on the cycle, which is impossible
+at $b$. Thus there is an $R$-path from $b$ to $a$.
+
+Conversely, choose a simple directed path
+$b=x_0Rx_1R\cdots Rx_\ell=a$. Match $x_i$ to $x_{i+1}$ along the path, and
+match every vertex outside the path to itself. These edges match precisely
+$E\setminus\{a\}$ onto $E\setminus\{b\}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{gam:thm:graphintro}]
+Matchable singleton pairs are the edges of $G_R$, so $[t]p_R=|R|$.
+Pairs of size $n-1$ are indexed uniquely by their omitted labels $(a,b)$.
+Lemma~\ref{gam:lem:reach} makes their number $|\overline R|$, proving
+\eqref{gam:eq:endpoints} and \eqref{gam:eq:defect}.
+
+Transitivity is equivalent to cancellation by
+Proposition~\ref{gam:prop:canceliff}. Under transitivity, the decomposition
+$(A,B)\leftrightarrow(U,V,W)$ in Section~\ref{gam:sec:cancel}, used directly on
+\eqref{gam:eq:pR}, gives
+\[
+ p_R(t)=\sum_{(U,V)\in\Tset(R)}t^{|U|}(1+t)^{n-2|U|}.
+\]
+This implication uses no demand or root-polytope identity. Thus transitivity
+implies gamma-positivity, which implies palindromicity and hence equality of
+the coefficients of degrees $1$ and $n-1$. If those coefficients are equal,
+then $|\overline R|=|R|$. Since $R\subseteq\overline R$ and both sets are
+finite, $R=\overline R$; that is, $R$ is transitive. All five conditions are
+equivalent.
+\end{proof}
+
+\begin{corollary}[Balanced graphs with a perfect matching]\label{gam:cor:balanced}
+Let $H=(X\sqcup Y,F)$ be a bipartite graph with $|X|=|Y|=n$, admitting a
+perfect matching. Label the shores $x_1,\ldots,x_n$ and $y_1,\ldots,y_n$ so
+that $x_iy_i$ are the edges of a chosen perfect matching, and define
+$iRj$ by $x_iy_j\in F$. The following are equivalent:
+\begin{enumerate}[label=(\roman*),itemsep=1pt,topsep=3pt]
+\item the perfectly matchable set polynomial $p_H(t)$ is palindromic;
+\item $p_H(t)$ is gamma-positive;
+\item the relation $R$ is a preorder.
+\end{enumerate}
+These conditions do not depend on the chosen perfect matching. They are also
+equivalent to palindromicity, or to gamma-positivity, of the demand support
+polynomial $F_H(t)$.
+\end{corollary}
+\begin{proof}
+The chosen matching supplies every diagonal relation, so
+Theorem~\ref{gam:thm:graphintro} applies. The polynomial $p_H$ is unchanged by
+relabeling or by a different choice of distinguished matching. Thus the
+criterion must hold for every such choice whenever it holds for one.
+Finally, Proposition~\ref{gam:prop:gradedinput} gives $F_H=p_H$.
+\end{proof}
+This answers the palindromicity/gamma-positivity part of the
+support-enumerator classification question in \cite[Problem~5.3]{DHLTW}
+for the balanced perfect-matching class. It is not a classification for
+unbalanced graphs or for balanced graphs without perfect matchings, nor is
+it a real-rootedness criterion. The matching-theoretic ingredients are
+standard; the explicit endpoint-defect interpretation and its application
+here are supplied with proofs, without a separate claim of absolute
+historical priority.
+
+\begin{example}[A missing transitive edge]\label{gam:ex:nontrans}
+Let $E=\{a,b,c\}$, with all loops and just the additional relations $aRb$
+and $bRc$. There are five related pairs, but its transitive closure has six.
+Directly,
+\[
+ p_R(t)=1+5t+6t^2+t^3.
+\]
+The defect $6-5=1$ detects the single missing pair $(a,c)$. Adding that pair
+produces the three-element chain, with
+\[
+ p_{\overline R}(t)=1+6t+6t^2+t^3=(1+t)^3+3t(1+t).
+\]
+This example illustrates why one cannot simply drop transitivity in the
+preorder theorem. It also shows why using a Hasse diagram instead of the
+full order relation changes the polynomial.
+\end{example}
+[Merge note, not in manuscript~06: this is Part~I's nonpalindromic example
+of subsection~\ref{gam:sec:reflexiveex}. There $D_i$ is the set of $j$ with
+$jRi$, so $D_1=\{1\}$, $D_2=\{1,2\}$, $D_3=\{2,3\}$ is the relation above with
+$(a,b,c)=(1,2,3)$, and by Proposition~\ref{gam:prop:gradedinput} its
+draconian support counts $(1,5,6,1)$ are the coefficients of $p_R$:
+$(1,|R|,|\overline R|,1)$. Part~I's explanation of what fails (the reduction
+to ideal differences) is Proposition~\ref{gam:prop:canceliff} in another
+form. The endpoint formula~\eqref{gam:eq:endpoints} and the equivalence of
+palindromicity with transitivity were also checked by the batch-44 dossier
+on all $4{,}165$ reflexive relations with $1\le n\le4$; that check is not
+shipped.]
+
+\section{Positive formulas for equivalence-class blowups}\label{gam:sec:block}
+A preorder is a poset of equivalence classes, each carrying a positive
+integer size. The signed-vector formula compresses the gamma polynomial to
+this quotient without sacrificing positivity.
+
+Let $P$ be the quotient poset of $\tau$, with blocks $E_v$ of sizes
+$s_v\ge1$, and let $N=\sum_{v\in P}s_v$. Ideals of $\tau$ are exactly unions
+of blocks whose indices form ideals of $P$. Define
+\begin{equation}
+ \mathcal D(P,\mathbf s)=
+ \left\{d\in\Z^P:
+ \begin{array}{l}
+ |d_v|\le s_v\text{ for all }v,\quad \sum_vd_v=0,\\
+ \sum_{v\in I}d_v\ge0\text{ for every }I\in\mathcal J(P)
+ \end{array}\right\},\qquad
+ D(d)=\sum_v\max(d_v,0).
+ \label{gam:eq:blockdomain}
+\end{equation}
+For $0\le r\le s$, put
+\begin{equation}
+ B_{s,r}(u)=\sum_{j=0}^{\lfloor(s-r)/2\rfloor}
+       \frac{s!}{j!(j+r)!(s-r-2j)!}\,u^j.
+ \label{gam:eq:localB}
+\end{equation}
+All these coefficients are multinomial integers.
+
+\begin{theorem}[Quotient-block formula; manuscript~06]\label{gam:thm:blocks}
+For every finite preorder with quotient data $(P,\mathbf s)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Gamma_\tau(u)=\sum_{d\in\mathcal D(P,\mathbf s)}
+                   u^{D(d)}\prod_{v\in P}B_{s_v,|d_v|}(u).}
+ \label{gam:eq:blocks}
+\end{equation}
+This applies to arbitrary quotient height and arbitrary nontrivial block
+sizes.
+\end{theorem}
+\begin{proof}
+For a transport pair $(U,V)$, put
+$a_v=|U\cap E_v|$, $b_v=|V\cap E_v|$, and $d_v=a_v-b_v$.
+Lemma~\ref{gam:lem:idealhall} says that the pair is matchable exactly when its
+block differences lie in \eqref{gam:eq:blockdomain}: all labels in a block have
+the same comparisons to every other block, and all ideals are block unions.
+
+For fixed $d_v$, let $j_v=\min(a_v,b_v)$. The counts in the block are then
+$j_v+|d_v|$ of one sign, $j_v$ of the other, and
+$s_v-|d_v|-2j_v$ zeros. The number of assignments of these signs to the
+labeled elements is
+\[
+ \frac{s_v!}{j_v!(j_v+|d_v|)!(s_v-|d_v|-2j_v)!}.
+\]
+Every assignment has the same feasibility status, because the ideal
+conditions depend only on $d$. The common cardinality of the two supports is
+\[
+ |U|=\sum_v\bigl(\max(d_v,0)+j_v\bigr)=D(d)+\sum_vj_v.
+\]
+Multiplying the local counts and summing first over $j_v$, then over $d$,
+proves the formula.
+\end{proof}
+
+\subsection{A companion formula in the ordinary basis}
+For $0\le r\le s$, define
+\begin{equation}
+ A_{s,r}(t)=\sum_{j=0}^{s-r}\binom{s}{j+r}\binom{s}{j}t^j.
+ \label{gam:eq:localA}
+\end{equation}
+Extracting the coefficient of $z^r$ in the Laurent identity
+\[
+ (1+z)^s(1+t/z)^s=(1+t+z+t/z)^s
+\]
+gives the positive gamma expansion
+\begin{equation}
+ A_{s,r}(t)=\sum_{j=0}^{\lfloor(s-r)/2\rfloor}
+       \frac{s!}{j!(j+r)!(s-r-2j)!}\,t^j(1+t)^{s-r-2j}.
+ \label{gam:eq:Aexpand}
+\end{equation}
+To see the right-hand count explicitly, choose $j+r$ copies of $z$, $j$
+copies of $t/z$, and $s-r-2j$ copies of $1+t$ in the second expression.
+The first expression yields \eqref{gam:eq:localA}.
+
+Since $\sum_v|d_v|=2D(d)$, substitution into
+Theorem~\ref{gam:thm:blocks} gives
+\begin{equation}
+ h_\tau(t)=\sum_{d\in\mathcal D(P,\mathbf s)}
+                    t^{D(d)}\prod_{v\in P}A_{s_v,|d_v|}(t).
+ \label{gam:eq:blockh}
+\end{equation}
+No rational functions remain in this identity. Each summand has center
+$N/2$ because its degree after the shift is $N-D(d)$ and its smallest
+possible exponent is $D(d)$.
+
+\begin{example}[A nontrivial height-two blowup]\label{gam:ex:twoblocks}
+Take two equivalence classes of size two, with every member of the first
+below every member of the second. The feasible differences are $(r,-r)$,
+$r=0,1,2$. Since
+\[
+ B_{2,0}=1+2u,\qquad B_{2,1}=2,\qquad B_{2,2}=1,
+\]
+we get
+\[
+ \Gamma_\tau(u)=(1+2u)^2+4u+u^2=1+8u+5u^2,
+\]
+and therefore
+\[
+ h_\tau(t)=1+12t+27t^2+12t^3+t^4.
+\]
+The quotient has height two, but the preorder is not a height-two poset.
+It lies beyond the scope of Part~II's height-two theorem.
+The example also exposes the importance of counting ordered support pairs
+inside an equivalence class.
+\end{example}
+
+\subsection{Algorithmic consequence and its encoding qualification}
+The empty quotient gives $\Gamma_\tau=1$. With $r=|P|\ge1$ fixed,
+\eqref{gam:eq:blocks} computes $\Gamma_\tau$ in a number of integer
+arithmetic operations polynomial in the expanded size $N$. Enumerate the
+ideals of the $r$-element quotient once. Enumerate $d_1,\ldots,d_{r-1}$ and
+determine $d_r$ from the zero-sum equation, rejecting out-of-range values and
+failed ideal inequalities. There are at most $(2N+1)^{r-1}$ candidates. For
+each accepted candidate multiply the local polynomials, using ordinary
+polynomial multiplication.
+
+For example, a coarse bound after local precomputation is
+\[
+ O\!\left(2^r r^2+(2N+1)^{r-1}(r2^r+rN^2)\right)
+\]
+arithmetic operations. This is an arithmetic, not bit-operation, estimate.
+It is polynomial for fixed quotient size when $N$ measures the expanded
+input. If the block sizes are encoded in binary, the bound is only
+pseudopolynomial in that compressed input; no stronger complexity assertion
+is intended.
+
+\subsection{The profile form of the block formula (manuscript~01)}
+\label{gam:gv:sec:blocks}
+Manuscript~01 proves an equivalent block formula with a different
+parametrization and proof. Let $P=\tau/{\sim}$ be the quotient poset, where
+$u\sim v$ means both $u\le_\tau v$ and $v\le_\tau u$. Index its equivalence
+classes by $1,\ldots,b$, with positive sizes $m_1,\ldots,m_b$. Relations
+between two classes are uniform: every element of class $i$ lies below every
+element of class $j$ precisely when $i\le_P j$. Set $n=\sum_i m_i$.
+
+For a disjoint pair $(U,V)$, let
+$\alpha_i=|U\cap E_i|$ and $\beta_i=|V\cap E_i|$. These profiles satisfy
+\[
+ \alpha_i,\beta_i\in\N,\qquad \alpha_i+\beta_i\le m_i,
+ \qquad \sum_i\alpha_i=\sum_i\beta_i.
+\]
+For $T\subseteq[b]$, set
+$\down_P T=\{i:i\le_P j\text{ for some }j\in T\}$.
+
+\begin{theorem}[Exact block formula; manuscript~01]\label{gam:gv:thm:blocks}
+Let $\mathcal A(P,\mathbf m)$ consist of the profiles above which also satisfy
+\begin{equation}
+ \sum_{j\in T}\beta_j\le
+        \sum_{i\in\down_P T}\alpha_i
+                   \qquad(T\subseteq[b]).
+ \label{gam:gv:eq:blockhall}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ \Gamma_\tau(u)=\sum_{(\alpha,\beta)\in\mathcal A(P,\mathbf m)}
+   \left(\prod_{i=1}^b
+       \frac{m_i!}{\alpha_i!\,\beta_i!\,(m_i-\alpha_i-\beta_i)!}\right)
+         u^{\sum_i\beta_i}.}
+ \label{gam:gv:eq:blockformula}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A matching covering the chosen receivers can use exactly the selected
+sources in predecessor classes. For the set of all selected receivers in
+classes $T$, Hall's inequality is \eqref{gam:gv:eq:blockhall}. These inequalities
+are also sufficient: any subset of selected receivers uses some class set
+$T$ and has at most $\sum_{j\in T}\beta_j$ members; its neighbors are all
+selected sources in $\down_P T$. Thus Hall's criterion applies to the
+individual selected vertices. Equality of the total source and receiver
+counts makes a receiver-covering matching a bijection.
+
+For a fixed feasible profile, the choices of disjoint sources and receivers
+in class $i$ number
+$\binom{m_i}{\alpha_i}\binom{m_i-\alpha_i}{\beta_i}$.
+Compatibility depends only on the profiles, not on the chosen labels,
+because class-to-class relations are uniform. Multiplying these counts and
+summing the feasible profiles gives \eqref{gam:gv:eq:blockformula}.
+\end{proof}
+This is a closed finite formula, not a claim that the quotient poset alone
+determines $h_\tau$: the multiplicities $m_i$ are indispensable. Replacing
+the classes by singletons loses both the profile range and the multinomial
+weights. [Merge note: grouping the profiles of~\eqref{gam:gv:eq:blockformula}
+by $d_i=\alpha_i-\beta_i$ and $j_i=\min(\alpha_i,\beta_i)$ gives
+\eqref{gam:eq:blocks}; \eqref{gam:gv:eq:blockhall} is Hall's condition on
+receivers, whereas \eqref{gam:eq:blockdomain} is the ideal form of
+Lemma~\ref{gam:lem:idealhall}.]
+
+\emph{Algorithmic consequence (manuscript~01).} For fixed $b$, there are at most
+\begin{equation}
+ \prod_{i=1}^b\binom{m_i+2}{2}=O(n^{2b})
+ \label{gam:gv:eq:profilestates}
+\end{equation}
+profiles before imposing equal totals. Testing a profile by
+\eqref{gam:gv:eq:blockhall} takes at most $2^b$ subset inequalities, each involving
+at most $b$ additions after the lower closures are precomputed. Therefore
+\eqref{gam:gv:eq:blockformula} computes the entire gamma polynomial in polynomial
+time in the \emph{expanded cardinality} $n$ for a fixed number of classes.
+This is not a bound polynomial in the bit length of binary-encoded
+$m_i$, and it is not a polynomial bound when $b$ varies with $n$.
+The weights and their sums use exact integers. The universal gamma bound
+is at most $3^n$, since a disjoint pair assigns each element to source,
+receiver, or neither, so the output coefficients have $O(n)$ bits. Large
+block sizes therefore enlarge the enumerated state space, but do not create
+uncontrolled coefficient bit lengths relative to expanded $n$.
+
+\begin{example}[Examples beyond Part~II's domain; manuscript~01]\label{gam:gv:ex:beyond}
+For a chain of three quotient classes of sizes $(2,1,2)$, the formula gives
+\[
+ \Gamma_\tau(u)=1+12u+17u^2,
+ \qquad
+ h_\tau(t)=1+17t+63t^2+63t^3+17t^4+t^5.
+\]
+The quotient has height three and two classes are nontrivial. Both
+restrictions excluded by Part~II's height-two-poset proof fail here.
+
+For two incomparable classes of sizes $2$ and $1$ below a class of size $3$,
+\[
+ \Gamma_\tau(u)=1+17u+36u^2+7u^3,
+\]
+\[
+ h_\tau(t)=1+23t+119t^2+201t^3+119t^4+23t^5+t^6.
+\]
+Its comparability graph has a perfect matching. Hence
+$h_\tau(-1)=-7$, agreeing with Corollary~\ref{gam:gv:cor:derivative}.
+The companion program checks these values both by direct ideal-inequality
+lattice enumeration and by the block formula.
+\end{example}
+
+\section{Monotonicity, duality, extremal coefficients, and basic families}\label{gam:sec:extremal}
+The transport interpretation gives comparisons between different preorders
+without comparing their lattice points individually.
+
+\begin{theorem}[Monotonicity and products; manuscripts~06 and~01]\label{gam:thm:monotone}
+Suppose $\tau$ and $\sigma$ are preorders on the same set and
+$\le_\tau\,\subseteq\,\le_\sigma$. Then
+\begin{equation}
+ \gamma_k(\tau)\le\gamma_k(\sigma)\quad\text{for every }k.
+ \label{gam:eq:monotonicity}
+\end{equation}
+More precisely $h_\sigma-h_\tau$ has a nonnegative expansion in the
+$n$-centered gamma basis. If the relations differ, then
+$\gamma_1(\tau)<\gamma_1(\sigma)$, so the two gamma vectors and the two
+support polynomials differ (manuscript~01). Moreover, for disjoint unions
+and opposites,
+\begin{equation}
+ \Gamma_{\tau\sqcup\sigma}(u)=\Gamma_\tau(u)\Gamma_\sigma(u),
+ \qquad \Gamma_{\tau^*}(u)=\Gamma_\tau(u).
+ \label{gam:eq:productdual}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every matching allowed by $\tau$ is allowed by $\sigma$, so
+$\Tset_k(\tau)\subseteq\Tset_k(\sigma)$. For $k=1$, these pairs are exactly
+the distinct-element relations; since both preorders contain all diagonal
+relations, a proper inclusion adds at least one such pair. Subtract the two
+expansions in~\eqref{gam:eq:main}. In a disjoint union, matchings cannot
+cross components. Thus each transport support pair splits uniquely into a
+transport pair in each component, and cardinalities add. Finally, duality
+sends $(U,V)$ to $(V,U)$ and reverses a witnessing bijection.
+\end{proof}
+The corresponding duality for $h$ was already proved in \cite{DHLTW}; this
+is a transport-support explanation of it, not a first proof claim. The
+monotonicity also implies coefficientwise monotonicity of $h$, since every
+gamma-basis polynomial has nonnegative coefficients; that weaker statement
+also follows from $\Qt\subseteq\mathcal Q_\sigma$, because every
+$\sigma$-ideal is a $\tau$-ideal. Manuscript~01 notes that the theorem is
+stronger: the difference remains nonnegative in the more restrictive gamma
+basis.
+
+\begin{theorem}[Multivariate complement-duality; manuscript~01]\label{gam:gv:thm:duality}
+Let $\tau^*$ be the opposite preorder. Then
+\begin{equation}
+ H_\tau(\zv)=z_E\, H_{\tau^*}(\zv^{-1}).
+ \label{gam:gv:eq:duality}
+\end{equation}
+In particular $\gamma_k(\tau)=\gamma_k(\tau^*)$ and $h_\tau=h_{\tau^*}$.
+\end{theorem}
+\begin{proof}
+The map $(U,V)\mapsto(V,U)$ is a bijection from
+$\Tset_k(\tau)$ to $\Tset_k(\tau^*)$, since a compatible bijection
+can be inverted. In the term of \eqref{gam:eq:multi} indexed by $(V,U)$ for
+$\tau^*$, invert all variables and multiply by $z_E$. With
+$F=E\setminus(U\cup V)$, the term becomes
+\[
+ z_E\,z_U^{-1}\prod_{w\in F}(1+z_w^{-1})
+   =z_V\prod_{w\in F}(1+z_w),
+\]
+which is exactly the corresponding term for $\tau$. The Laurent expression
+simplifies to a polynomial. The univariate conclusions also follow directly
+by swapping the disjoint pairs.
+\end{proof}
+Equivalently, the number of lattice points of exact support $S$ for $\tau$
+equals the number of exact support $E\setminus S$ for $\tau^*$. This does
+\emph{not} assert that $H_\tau$ itself is invariant under complementing the
+support. For the chain $1<2$,
+$H_\tau=1+z_1+2z_2+z_1z_2$, which illustrates the distinction. [Merge note:
+the univariate identity $h_\tau=h_{\tau^*}$ is Conjecture~5.4 of~\cite{AC},
+settled by~\cite[Theorem~1.3]{DHLTW}; see Part~I,
+Section~\ref{sec:consequences}.]
+
+\begin{proposition}[Disjoint unions; manuscript~01]\label{gam:gv:prop:products}
+For preorders on disjoint sets with no cross-relations,
+\[
+ H_{\tau\sqcup\sigma}=H_\tau H_\sigma,\qquad
+ h_{\tau\sqcup\sigma}=h_\tau h_\sigma,\qquad
+ \Gamma_{\tau\sqcup\sigma}=\Gamma_\tau\Gamma_\sigma.
+\]
+Adjoining an isolated element multiplies $h$ by $1+t$ and leaves
+$\Gamma$ unchanged.
+\end{proposition}
+\begin{proof}
+The defining ideal inequalities separate, giving a product of polytopes.
+Alternatively a compatible pair and its matching separate into the two
+ground sets, with equal source and receiver cardinalities within each.
+Disjoint compatible cores therefore multiply as well.
+\end{proof}
+
+\begin{corollary}[The first gamma coefficient; manuscripts~06 and~01]\label{gam:cor:gammaone}
+For every preorder,
+\begin{equation}
+ \gamma_0(\tau)=1,\qquad
+ \gamma_1(\tau)=\#\{(u,v):u\ne v,\ u\le_\tau v\}=|\tau|-n.
+ \label{gam:eq:gammaone}
+\end{equation}
+In particular, $h_1(\tau)=|\tau|=\sum_{v\in E}|\down\{v\}|$. Equivalent
+distinct elements contribute in both directions to $\gamma_1$.
+\end{corollary}
+\begin{proof}
+The $k=1$ transport pairs are exactly the non-diagonal related pairs. The
+coefficient of $t$ in \eqref{gam:eq:main} is $n+\gamma_1$. Directly
+(manuscript~01): for a fixed single-element support $\{v\}$, the admissible
+positive coordinate values are $1,\ldots,|\down\{v\}|$, because every ideal
+containing $v$ contains its principal ideal. [Merge note: this is Part~I's
+formula~\eqref{eq:h1}.]
+\end{proof}
+
+\begin{proposition}[The second gamma coefficient; manuscript~01]\label{gam:gv:prop:low}
+Let $D_2(\tau)$ count unordered pairs of directed distinct-element relations
+with four distinct endpoints. Let $R_{2,2}(\tau)$ count ordered disjoint pairs
+$(U,V)$ with $|U|=|V|=2$ and every relation $u\le_\tau v$, $u\in U$, $v\in V$,
+present. Then
+\begin{equation}
+ \gamma_2(\tau)=D_2(\tau)-R_{2,2}(\tau).
+ \label{gam:gv:eq:g2}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every pair counted by $D_2$ is a matching witnessing some disjoint
+$(U,V)$ of size two. Such a support pair has two witnessing bijections
+exactly when all four possible source-to-receiver relations exist; otherwise
+it has one. Subtracting the number of doubled pairs gives \eqref{gam:gv:eq:g2}.
+\end{proof}
+[Merge note: for a height-two poset $P_G$ this is Part~II's
+$\gamma_2=m_2(G)-c_4(G)$ of Corollary~\ref{htwo:cor:small}: $D_2=m_2(G)$, and
+$R_{2,2}$ counts the four-cycles.]
+
+\begin{theorem}[Sharp coefficientwise bounds; manuscripts~06 and~01]\label{gam:thm:bounds}
+For every preorder on $n$ elements and $0\le k\le\lfloor n/2\rfloor$,
+\begin{equation}
+ 0\le\gamma_k(\tau)\le
+     \frac{n!}{k!^2(n-2k)!}=\binom n{2k}\binom{2k}k,
+ \qquad
+ \binom n j\le[t^j]h_\tau(t)\le\binom n j^2\quad(0\le j\le n).
+ \label{gam:eq:universalbound}
+\end{equation}
+For an ordinary poset the sharper bound is
+\begin{equation}
+ \gamma_k(\tau)\le\binom{n}{2k}C_k,
+ \qquad C_k=\frac{1}{k+1}\binom{2k}{k}.
+ \label{gam:eq:posetbound}
+\end{equation}
+The upper bounds are attained simultaneously for all $k$ by, respectively,
+the universal equivalence preorder $\mathbf E_n$ and a total order $L_n$.
+The antichain attains $\gamma_k=0$ for all $k\ge1$, and the lower bounds
+on~$h$. For $n\ge2$, equality of the complete gamma vector with the upper
+or lower extremal vector characterizes the corresponding extremal preorder,
+and equality with the chain vector characterizes a chain among posets
+(manuscript~01).
+\end{theorem}
+\begin{proof}
+There are $\binom{n}{k}\binom{n-k}{k}=n!/(k!^2(n-2k)!)$ ordered pairs of
+disjoint $k$-element sets, which gives the first upper bound. Every such
+pair is matchable in the universal equivalence preorder. The antichain
+relation is contained in every preorder, and every preorder is contained in
+$\mathbf E_n$; Theorem~\ref{gam:thm:monotone} gives the bounds on $h$ from
+\eqref{gam:eq:antichainh} and~\eqref{gam:eq:universal} below.
+Alternatively, the unit cube is contained in $\Qt$, while $\Qt$ is contained
+in the full simplex $\{x\ge0:x(E)\le n\}$ (manuscript~01).
+
+Every finite poset has a linear extension, obtained recursively by removing
+a minimal element. Its relation is a subset of that total order. It is
+therefore enough, by Theorem~\ref{gam:thm:monotone}, to compute the chain case.
+Choose the $2k$ nonzero positions in the signed-vector formula
+\eqref{gam:eq:signed}. In their increasing order, the signs must have total zero
+and nonnegative partial sums. There are $C_k$ such words: among the
+$\binom{2k}{k}$ balanced sign words, reflection up to the first negative
+partial sum bijects the bad ones with words having $k+1$ plus signs and
+$k-1$ minus signs. Hence the good count is
+$\binom{2k}{k}-\binom{2k}{k-1}=C_k$. This proves
+\eqref{gam:eq:posetbound} and sharpness. In an antichain a disjoint nonempty
+transport pair cannot be matched, since the only relation edges are loops.
+
+The characterizations follow from $\gamma_1$: zero means that no
+off-diagonal relations exist, $n(n-1)$ means that all of them exist, and
+$\binom n2$ for a poset forces total comparability.
+\end{proof}
+
+\begin{proof}[Second proof of the chain count, by initial segments (manuscript~01)]
+Manuscript~01 states $\gamma_k(L_n)=\binom n{2k}C_k$ as its Proposition
+``The chain gamma vector''. Fix the $2k$ elements in $U\cup V$, and list
+them in increasing order. A compatible matching exists exactly when every
+initial segment contains at least as many elements of $U$ as of $V$.
+Necessity holds because a target must be matched to an earlier source. For
+sufficiency, pair the $i$th source with the $i$th target; the
+initial-segment inequalities force the source to precede the target. Among
+the $\binom{2k}k$ words with $k$ source letters and $k$ target letters, the
+words whose running source-minus-target balance never becomes negative are
+counted by $\binom{2k}k-\binom{2k}{k-1}=C_k$; the subtraction follows by
+reflecting the prefix ending at the first negative balance. Multiply by the
+choice of $U\cup V$. Relation-monotonicity under a linear extension gives
+the bound.
+\end{proof}
+
+\subsection{Explicit consistency checks from classical families}
+For an antichain, $\Qt=[0,1]^n$, so
+\begin{equation}
+ h_\tau(t)=(1+t)^n,\qquad \Gamma_\tau(u)=1.
+ \label{gam:eq:antichainh}
+\end{equation}
+For a total order, the preceding proof gives
+\begin{equation}
+ \Gamma_\tau(u)=\sum_{k=0}^{\lfloor n/2\rfloor}\binom n{2k}C_k u^k.
+ \label{gam:eq:chaingamma}
+\end{equation}
+This agrees with the classical Narayana specialization for a chain,
+\begin{equation}
+ [t^j]h_{L_n}(t)
+  =\binom n j^2-\binom n{j-1}\binom n{j+1}
+  =\frac1{n+1}\binom{n+1}j\binom{n+1}{j+1},
+ \label{gam:gv:eq:narayana}
+\end{equation}
+recorded among the elementary families of \cite{AC}; the identity also
+follows by expanding \eqref{gam:eq:chaingamma}. Here a binomial coefficient
+with lower index outside its usual range is zero. Manuscript~01 gives a
+direct proof using~\eqref{gam:eq:doubled}: if the two $j$-subsets are
+$A=\{a_1<\cdots<a_j\}$ and $B=\{b_1<\cdots<b_j\}$, compatibility is
+equivalent to $a_i\le b_i$ for all $i$, or to $|A\cap[r]|\ge|B\cap[r]|$ for
+every $r$. There are $\binom n j^2$ pairs in total. For a violating pair,
+exchange the two memberships on the first prefix for which the target count
+exceeds the source count by one. This is a bijection to a pair of subsets of
+sizes $j+1$ and $j-1$; the inverse uses the first prefix with source surplus
+one. This proves the first equality, and factorial simplification proves
+the second. Thus~\eqref{gam:gv:eq:narayana} gives sharp ordinary coefficient
+bounds for posets as well. These classical formulas are checks, not novelty
+claims.
+
+For the universal equivalence preorder $\mathbf E_n$, the only ideals are
+$\varnothing$ and $E$, so $\Qt=\{x\ge0:x(E)\le n\}$. Choosing a support of
+size $j$ and then its positive coordinates gives
+\begin{equation}
+ h_{\mathbf E_n}(t)=\sum_{j=0}^n\binom nj^2t^j,
+ \qquad
+ \Gamma_{\mathbf E_n}(u)=\sum_{k=0}^{\lfloor n/2\rfloor}
+                 \frac{n!}{k!^2(n-2k)!}u^k.
+ \label{gam:eq:universal}
+\end{equation}
+For the first formula, subtract one on the chosen support; the number of
+resulting nonnegative $j$-tuples of total at most $n-j$ is $\binom nj$.
+The second follows directly from unrestricted disjoint transport pairs.
+These are familiar special-case polynomials (Part~I's indiscrete preorder,
+Section~\ref{sec:examples}); the point is their role as universal
+coefficientwise bounds.
+
+\begin{table}[htbp]
+\centering
+\caption{Four-element examples (manuscript~06). Each $h$ is
+$1+h_1t+h_2t^2+h_1t^3+t^4$, and each $\Gamma$ is $1+\gamma_1u+\gamma_2u^2$.}
+\label{gam:tab:examples}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Preorder & $h_1$ & $h_2$ & $\gamma_1$ & $\gamma_2$\\
+\midrule
+Antichain & 4 & 6 & 0 & 0\\
+Diamond poset & 9 & 18 & 5 & 2\\
+Total order & 10 & 20 & 6 & 2\\
+Two ordered blocks of size two & 12 & 27 & 8 & 5\\
+Universal equivalence & 16 & 36 & 12 & 6\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The octopus formula as an immediate specialization (manuscript~01)}
+Consider $\ell$ pairwise incomparable singleton leaves below a root
+equivalence class of size $n-\ell$. In a nonempty disjoint compatible pair,
+a receiver cannot be a leaf, because its only predecessor outside the root
+order is itself and sources and receivers are disjoint. Conversely, once
+$V$ is any $k$-subset of the root, every $k$-subset $U\subseteq E\setminus V$
+is compatible with it. Therefore
+\begin{equation}
+ \gamma_k=\binom{n-\ell}k\binom{n-k}k.
+ \label{gam:gv:eq:octopus}
+\end{equation}
+This recovers the octopus formula attributed to Athanasiadis, Xiao, and Yan
+and reproved bijectively by Menon \cite[Proposition~1.1]{Menon}. It is not a
+new formula claimed here. The general theorem also applies when leaf blocks
+have arbitrary positive size and when the quotient is not a star;
+Section~\ref{gam:sec:block} gives the exact count without any unit-block
+assumption.
+
+\subsection{Recovery of the height-two matching-support formula}
+\label{gam:sec:heighttwo}
+If $\tau$ is a poset of height at most two, write its strict relations as
+edges of a bipartite graph $G=(A\sqcup B,F)$ with $a<b$ on each edge.
+Every nonempty transport pair has $U\subseteq A$ and $V\subseteq B$.
+Therefore its union $U\cup V$ determines the ordered pair uniquely, and
+\[
+ \Gamma_\tau(u)=\sum_{\substack{W\subseteq A\sqcup B\\
+                                  G[W]\text{ has a perfect matching}}}
+                         u^{|W|/2}=p_G(u).
+\]
+This recovers Part~II's height-two result (Theorem~\ref{htwo:thm:main})
+exactly. Beyond height two, the two signs of a transport pair need not
+occupy fixed shores of the original poset, which is why a fixed
+comparability-graph support count is no longer the right general
+definition. In a preorder with equivalence classes, the union may also admit
+several orientations; those are genuinely distinct ordered pairs and must
+not be collapsed. [Merge note: Part~II's proof partitions a point by its
+zeros on the minimal shore $A$ and its support on $B$
+(Section~\ref{htwo:sec:gamma}); Lemma~\ref{gam:lem:fibre} partitions by
+the whole zero set, which is what removes the height restriction.]
+
+\section{Matching deficiency and the exact root at minus one}\label{gam:sec:deficiency}
+Let $\Comp(\tau)$ denote the \emph{simple comparability graph}: its vertices
+are $E$, and distinct $u,v$ are adjacent when $u\le_\tau v$ or
+$v\le_\tau u$. Write $\nu(\Comp(\tau))$ for its maximum matching size.
+
+\begin{theorem}[Degree and root multiplicity; manuscripts~06 and~01]\label{gam:thm:deficiency}
+For every finite preorder,
+\begin{equation}
+ \deg\Gamma_\tau=\nu(\Comp(\tau)),\qquad
+ \ordm_{t=-1}h_\tau(t)=n-2\nu(\Comp(\tau)).
+ \label{gam:eq:deficiency}
+\end{equation}
+Furthermore $\gamma_k(\tau)>0$ exactly for $0\le k\le\nu(\Comp(\tau))$.
+\end{theorem}
+\begin{proof}
+A transport pair of size $k$ has a witnessing directed matching on $2k$
+distinct vertices. Forgetting orientations gives a $k$-matching in
+$\Comp(\tau)$, so $\deg\Gamma_\tau\le\nu(\Comp(\tau))$. Conversely, orient
+each edge of an undirected matching in a permitted preorder direction. Its
+tails and heads form a disjoint transport pair. Submatchings supply every
+smaller size. Hence the degree is exactly $\nu=\nu(\Comp(\tau))$.
+
+Factor the smallest power of $1+t$ from \eqref{gam:eq:main}:
+\begin{equation}
+ h_\tau(t)=(1+t)^{n-2\nu}
+   \left(\gamma_\nu t^\nu+
+    \sum_{k<\nu}\gamma_k t^k(1+t)^{2(\nu-k)}\right).
+ \label{gam:eq:minusonefactor}
+\end{equation}
+The expression in parentheses has value $(-1)^\nu\gamma_\nu\ne0$ at $-1$.
+Thus the displayed exponent is the exact multiplicity, not just a lower
+bound.
+\end{proof}
+This reduces the gamma degree and the entire $-1$ multiplicity question to a
+single ordinary maximum-matching problem, even when the remaining
+coefficients are expensive to count. It uses the full comparability graph,
+not merely the cover graph. The maximum matching here is an ordinary
+matching in the \emph{undirected} comparability graph. It is not a maximum
+matching in $G_\tau$, whose reflexive diagonal already supplies a perfect
+matching of size $n$. Confusing these two graphs would destroy the degree
+formula (manuscript~01). [Merge note: in height two, $\Comp(P_G)=G$, and
+this is the multiplicity $n-2\nu(G)$ of Part~II's
+Proposition~\ref{htwo:prop:roottransfer}.]
+
+For example, a height-two star with $m$ edges has $n=m+1$ and maximum
+matching size one. Its polynomial is
+\[
+ h_\tau(t)=(1+t)^{m-1}\bigl((1+t)^2+mt\bigr),
+\]
+so its exact multiplicity at $-1$ is $m-1$. A chain has matching number
+$\lfloor n/2\rfloor$, giving multiplicity zero for even $n$ and one for odd
+$n$. Equivalent vertices cause no exception: one may choose either
+allowed direction when both are present.
+
+\begin{corollary}[The leading Taylor coefficient at $-1$; manuscript~01]\label{gam:gv:cor:derivative}
+Put $d=n-2\nu(\Comp(\tau))$. Then
+\begin{equation}
+ h_\tau^{(j)}(-1)=0\quad(0\le j<d),\qquad
+ h_\tau^{(d)}(-1)=d!(-1)^{\nu(\Comp(\tau))}\gamma_{\nu(\Comp(\tau))}(\tau).
+ \label{gam:gv:eq:derivative}
+\end{equation}
+For even $n$, the signed value $(-1)^{n/2}h_\tau(-1)$ is positive exactly
+when $\Comp(\tau)$ has a perfect matching, and is zero otherwise.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{gam:eq:minusonefactor} identifies the first nonzero coefficient
+of the Taylor expansion at $-1$. If $n$ is even, $d=0$ is equivalent to
+$\nu=n/2$.
+\end{proof}
+
+\section{Induced restrictions and a deletion--differentiation law}\label{gam:gv:sec:deck}
+\noindent\emph{(Manuscript~01 only.)}
+For $W\subseteq E$, let $\tau|W$ be the induced preorder, retaining every
+relation of $\tau$ whose endpoints lie in $W$. A matching between specified
+subsets of $W$ is compatible in $\tau|W$ exactly when it is compatible in
+$\tau$. In particular, no choice of an intermediate element outside $W$
+is needed: the relation itself is already transitive.
+
+\begin{theorem}[Induced-deck identities]\label{gam:gv:thm:deck}
+For $0\le m\le n$ and $k\ge0$,
+\begin{equation}
+ \sum_{\substack{W\subseteq E\\|W|=m}}\gamma_k(\tau|W)
+   =\binom{n-2k}{m-2k}\gamma_k(\tau),
+ \label{gam:gv:eq:deckgamma}
+\end{equation}
+where the right side is zero when $2k>m$ or $2k>n$.
+In particular, $\gamma_k(\tau)$ is the sum of the top gamma coefficients of its
+induced $2k$-element subpreorders. If
+\[
+ D_\tau(t)=\sum_{v\in E}h_{\tau|(E\setminus\{v\})}(t),
+\]
+then
+\begin{equation}
+ \boxed{(1-t)D_\tau(t)=n h_\tau(t)-2t h_\tau'(t).}
+ \label{gam:gv:eq:deletiondifferential}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A fixed disjoint compatible pair of size $k$ is counted in the induced
+preorder on $W$ exactly when its $2k$ endpoints lie in $W$. There are
+$\binom{n-2k}{m-2k}$ such $W$, proving \eqref{gam:gv:eq:deckgamma}.
+For one-element deletions this gives
+\[
+ D_\tau(t)=\sum_{2k\le n-1}(n-2k)\gamma_k(\tau)
+                      t^k(1+t)^{n-1-2k}.
+\]
+On each gamma-basis term, direct differentiation yields
+\[
+ n\,t^k(1+t)^{n-2k}
+ -2t\frac{\mathrm d}{\mathrm dt}\bigl(t^k(1+t)^{n-2k}\bigr)
+ =(n-2k)(1-t)t^k(1+t)^{n-1-2k}.
+\]
+When $2k=n$, the left side is zero and that term is omitted on the right;
+there is no evaluation of a negative exponent. Sum the identities.
+\end{proof}
+
+\begin{corollary}[Odd-cardinality reconstruction]\label{gam:gv:cor:odddeck}
+If $n$ is odd, the multiset of polynomials of the one-element deletions
+determines $h_\tau$. Explicitly, writing $D_\tau(t)=\sum_j d_jt^j$ with
+$d_{-1}=d_n=0$, one has
+\begin{equation}
+ [t^j]h_\tau(t)=\frac{d_j-d_{j-1}}{n-2j}
+                                      \qquad(0\le j\le n).
+ \label{gam:gv:eq:oddreconstruction}
+\end{equation}
+For even $n$, the same formulas determine every coefficient except the
+middle coefficient; the differential identity alone leaves one scalar free.
+\end{corollary}
+\begin{proof}
+Compare coefficients in \eqref{gam:gv:eq:deletiondifferential}. For odd $n$, none
+of the integers $n-2j$ is zero. For even $n$, exactly the middle one vanishes.
+\end{proof}
+The final statement is a limitation of this identity, not a claim that the
+full combinatorial deletion deck never determines the middle coefficient.
+This separates polynomial reconstruction from the harder reconstruction of
+the preorder itself. (Here $d_j$ are coefficients of $D_\tau$, not the
+deficiency $d$ of Corollary~\ref{gam:gv:cor:derivative}.)
+
+\section{Support size as a mixture of centered binomials}\label{gam:sec:statistics}
+The Boolean expansion provides a probability law without assuming a
+canonical bijection on the original lattice points. Choose a lattice point
+uniformly from $\Qt\cap\Z^E$, and let $L$ be its support size. All
+probabilities below refer to this uniform distribution. This section is
+manuscript~06's.
+
+\begin{theorem}[Exact mixture and concentration]\label{gam:thm:statistics}
+Let $\Gamma=\Gamma_\tau$ and $\nu=\deg\Gamma$. There is a mixing variable
+$K\in\{0,\ldots,\nu\}$ with
+\begin{equation}
+ \PP(K=k)=\frac{\gamma_k4^{-k}}{\Gamma(1/4)}
+ \label{gam:eq:mixweights}
+\end{equation}
+such that the law of $L$ is the mixture
+\begin{equation}
+ L\mid K=k\ \overset{\mathrm{law}}=\ k+\operatorname{Bin}(n-2k,1/2).
+ \label{gam:eq:mixture}
+\end{equation}
+Consequently
+\begin{align}
+ |\Qt\cap\Z^E|&=2^n\Gamma(1/4),\label{gam:eq:pointcount}\\
+ \EE L&=\frac n2,\qquad
+ \Var L=\frac n4-\frac{\Gamma'(1/4)}{8\Gamma(1/4)},
+ \label{gam:eq:variance}\\
+ \frac{n-2\nu}{4}&\le\Var L\le\frac n4.\label{gam:eq:varbounds}
+\end{align}
+For $n\ge1$ and $a\ge0$,
+\begin{equation}
+ \PP\bigl(|L-n/2|\ge a\bigr)\le 2\exp(-2a^2/n).
+ \label{gam:eq:tail}
+\end{equation}
+The upper variance bound is an equality exactly for antichains.
+\end{theorem}
+\begin{proof}
+Evaluation of \eqref{gam:eq:main} at one gives \eqref{gam:eq:pointcount}. Divide
+\eqref{gam:eq:main} by that value. The $k$th summand has total mass
+$\gamma_k2^{n-2k}/h_\tau(1)$, which is \eqref{gam:eq:mixweights}, and its
+normalized coefficients are those in \eqref{gam:eq:mixture}. Every component
+has mean $n/2$ and variance $(n-2k)/4$. Thus the total variance is
+$n/4-\EE K/2$. Since
+\[
+ \EE K=\frac{\Gamma'(1/4)}{4\Gamma(1/4)},
+\]
+we obtain \eqref{gam:eq:variance} and \eqref{gam:eq:varbounds}. Equality at the
+upper bound means all $\gamma_k$ with $k>0$ vanish. By
+Corollary~\ref{gam:cor:gammaone}, this is equivalent to having no non-diagonal
+comparabilities.
+
+For the tail bound, the centered moment generating function of the $k$th
+component is $\cosh(s/2)^{n-2k}$. Since
+$\cosh x\le\exp(x^2/2)$, this is at most $\exp(ns^2/8)$ for every real $s$.
+The same bound holds after mixing. For $s>0$, Markov's inequality gives
+\[
+ \PP(L-n/2\ge a)\le\exp(-sa+ns^2/8).
+\]
+Choosing $s=4a/n$ gives $\exp(-2a^2/n)$, and the lower tail has the same
+bound. Their sum proves \eqref{gam:eq:tail}. The elementary hyperbolic-cosine
+inequality follows, for example, by integrating $\tanh x\le x$ for
+$x\ge0$ and using evenness.
+\end{proof}
+The mixture law is not a representation of $L$ as a sum of a fixed family
+of independent Bernoulli variables. In particular it does not imply
+real-rootedness. Its value is that it gives exact central statistics and a
+uniform tail bound directly from the proven gamma expansion. [Merge note,
+not in manuscript~06: for a bipartite cactus $G$, Part~II's
+\eqref{htwo:eq:variance} gives $\Var S=(n-2\nu)/4+\sum_j2/(4+\lambda_j)$ for
+the same statistic ($S=L$), from $p_G(u)=\prod_j(1+\lambda_ju)$. Since then
+$\Gamma'(1/4)/\Gamma(1/4)=\sum_j4\lambda_j/(4+\lambda_j)$,
+formula~\eqref{gam:eq:variance} gives
+$n/4-\sum_j\lambda_j/(2(4+\lambda_j))$, the same number, because
+$\tfrac12-\lambda_j/(2(4+\lambda_j))=2/(4+\lambda_j)$. Here
+$\Gamma(1/4)$ is $\Gamma_\tau$ evaluated at $1/4$, not Euler's Gamma
+function.]
+
+\section{Exact computations and reproducibility}\label{gam:sec:verification}
+Both manuscripts supply a standard-library Python program that uses exact
+integer arithmetic throughout its mathematical checks. Each is designed as a
+cross-check of several logically different descriptions, not as an
+unbounded theorem prover. The shipped files are:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.47\textwidth}Y@{}}
+\toprule
+Shipped path (delivered path) & Content\\
+\midrule
+\nolinkurl{code/05-gamma-positivity-verify.py} (\nolinkurl{code/verify.py}) &
+ manuscript~06's verifier\\
+\nolinkurl{data/05-gamma-positivity-preorders.csv} (\nolinkurl{data/preorders.csv}) &
+ every labeled preorder through size five with its $h$- and $\gamma$-vectors
+ (CRLF line endings, as delivered)\\
+\nolinkurl{data/05-gamma-positivity-verification.json},
+\nolinkurl{data/05-gamma-positivity-verification.log} &
+ the recorded run: detailed results with all larger samples; its console
+ transcript\\
+\nolinkurl{05-gamma-positivity-PROOF_STATUS.md},
+\nolinkurl{05-gamma-positivity-SOURCE_AUDIT.md} &
+ manuscript~06's theorem-dependency and source-audit notes\\
+\nolinkurl{code/05-gamma-positivity-build.py} (\nolinkurl{build.py}) &
+ manuscript~06's three-pass build script (for its own article; do not run here)\\
+\nolinkurl{code/04-gamma-vector-verify.py} (\nolinkurl{code/verify.py}) &
+ manuscript~01's verifier\\
+\nolinkurl{data/04-gamma-vector-verification.json},
+\nolinkurl{data/04-gamma-vector-verification.txt}
+(\nolinkurl{results/verification.json}, \nolinkurl{results/verification.txt}) &
+ manuscript~01's recorded run and its console output\\
+\nolinkurl{code/04-gamma-vector-build.sh} (\nolinkurl{build.sh}) &
+ manuscript~01's two-pass build script (for its own article; do not run here)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Manuscript~06: exhaustive preorder tests}
+The program enumerates every reflexive relation on a labeled $n$-element
+set and retains exactly those that are transitive. For each resulting
+preorder it independently enumerates all nonnegative integer vectors of
+total at most $n$ and tests every ideal inequality. It also enumerates
+ordered disjoint support pairs and decides matchability by recursive
+bipartite matching, without using the ideal Hall criterion in that matching
+routine. The resulting counts are compared in the following ways:
+\begin{enumerate}[itemsep=2pt,topsep=4pt]
+\item Each individual support fibre is compared with the Boolean-interval
+count in \eqref{gam:eq:fixedsupport}; this tests the multivariate identity,
+not only a specialization.
+\item Gamma expansion, the quotient-block formula, and both sharp upper
+bounds are checked. Matchability is also compared with the ideal Hall test.
+\item All equal-size support pairs in the doubled graph are tested for
+common-support cancellation, and its polynomial is compared with $h_\tau$.
+An independent undirected matching recursion checks
+$\deg\Gamma_\tau=\nu(\Comp(\tau))$.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Manuscript~06's recorded exhaustive run. A support fibre is
+specified by a preorder and a subset of its labeled ground set.}
+\label{gam:tab:checks}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Preorders & Support fibres & Equal-size doubled pairs\\
+\midrule
+0 & 1 & 1 & 1\\
+1 & 1 & 2 & 2\\
+2 & 4 & 16 & 24\\
+3 & 29 & 232 & 580\\
+4 & 355 & 5,680 & 24,850\\
+5 & 6,942 & 222,144 & 1,749,384\\
+\midrule
+Total & 7,332 & 228,075 & 1,774,841\\
+\bottomrule
+\end{tabular}
+\end{table}
+All comparisons passed. These are labeled preorders, including nontrivial
+equivalence classes; the totals do not count only unlabeled posets.
+The accompanying CSV contains every tested preorder and both coefficient
+vectors, not merely summary totals.
+
+\emph{Additional independent scopes.} The demand/support identity, including
+its prescribed-support refinement, was tested on all 689 bipartite graphs
+with each labeled shore of size at most three, including empty shores. The
+run counts 5,880 feasible demand vectors across those graphs.
+
+The full transitivity/cancellation/palindromicity characterization and both
+endpoint coefficient formulas were tested on all 4,166 reflexive relations
+through size four. This includes nontransitive relations, so it tests the
+negative direction rather than assuming the input is a preorder. [Merge
+note: $4{,}166$ counts the empty relation at $n=0$; there are $4{,}165$ with
+$1\le n\le4$.]
+
+A further 140 distinct deterministic samples have sizes six, seven, and
+eight: respectively 46, 47, and 47 examples. They were generated with seed
+\texttt{20260929} by taking transitive closures of both arbitrary directed
+relations and acyclic ones. This is not uniform sampling from preorders.
+Every sampled relation is listed in the JSON output. The direct support
+counts, gamma formula, block formula, ideal Hall criterion, extremal bounds,
+and matching-number identity were checked on these samples. Exhaustive
+all-pairs doubled cancellation was reserved for the small-size run.
+
+Finally, the binomial and Narayana specializations were compared with their
+gamma expansions through $n=20$. These last tests are identities between
+explicit formulas, not exhaustive lattice-point enumerations in dimension
+20. No root approximations, floating-point certificates, or randomized
+claims of proof are used.
+
+\emph{Files and execution.} The delivered command, run from the package
+root, was \texttt{python code/verify.py --max-n 5 --out data}. In this
+directory, pass a new output directory, so that the shipped record is
+preserved (the default \texttt{--out data} is relative to the working
+directory and would write unprefixed files):
+\begin{quote}\small\ttfamily
+py code/05-gamma-positivity-verify.py --max-n 5 --out /path/to/scratch
+\end{quote}
+Python 3.10 or later is required. No external Python packages are needed.
+The program refuses to run under \texttt{python -O}, because it uses
+assertions. It deliberately rejects exhaustive sizes above five, whose
+relation search grows too rapidly for its intended role. The article's
+production algorithm can instead enumerate signed pairs and use an
+augmenting-path matching test, requiring at most $O(3^n n^3)$ elementary
+operations and polynomial workspace; the verifier uses simple recursive
+matching because its small-instance independence is more important than
+asymptotic speed.
+
+The package also contains \texttt{README.md}, \texttt{SOURCE\_AUDIT.md},
+\texttt{PROOF\_STATUS.md}, a build script, and the compiled PDF. The theorem
+proofs are in this article, not in the test log. [Merge note: the two notes
+and the build script are shipped under the prefixed names above; the
+delivery README and PDF are not shipped.]
+
+\subsection{Manuscript~01: independent representations and completed suites}
+Manuscript~01's program performs several logically distinct finite checks
+rather than evaluating the same formula twice. The direct enumerator lists
+all nonnegative $n$-vectors with total at most $n$, computes every lower
+ideal from the input relation, and tests the original
+inequalities~\eqref{gam:eq:Q}. It records the number of lattice points
+\emph{for each exact support}. This part does not use Hall's condition,
+matching supports, or a gamma expansion.
+
+A separate recursive matching checker tests bijections between selected
+source and receiver masks. It does not use the ideal inequalities or the
+Hall inequalities. Disjoint compatible pairs are accumulated to predict
+both the gamma coefficients and every multivariate coefficient in
+\eqref{gam:eq:multi}. Independently, compatible pairs with overlapping sets
+are accumulated to check \eqref{gam:eq:doubled}. The program also checks
+cancellation of overlaps, complement-duality, the maximum-matching degree
+law, and the deletion--differentiation identity using directly enumerated
+deleted preorders.
+
+Finally, for fixed bipartite shores, the program enumerates integer demands
+by their defining subset inequalities and compares their exact support
+counts against matching-support counts. This directly tests the classical
+bridge and its support refinement on thousands of separate graphs.
+
+Every reflexive relation on a fixed labeled $n$-element set is generated,
+and exactly the transitive ones are retained. Thus the following is an
+exhaustive test of \emph{labeled preorders}, not merely of naturally labeled
+posets and not merely of random closures:
+\begin{center}
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$n$ & 0 & 1 & 2 & 3 & 4 & 5\\
+\midrule
+Preorders checked & 1 & 1 & 4 & 29 & 355 & 6,942\\
+\bottomrule
+\end{tabular}
+\end{center}
+All 7,332 cases passed. Additional completed checks comprise all 512
+bipartite graphs on fixed shores of sizes $(3,3)$, all 4,096 on shores
+$(3,4)$, all 64 on shores $(2,3)$, and the empty-shore boundary cases.
+A seeded generation of 120 preorder closures on six or seven elements
+produced 119 distinct relations, all of which passed. These latter cases
+are explicitly \emph{not} exhaustive.
+
+The block formula was checked on 87 cases: every preorder on three
+indexed blocks, with block-size vectors $(1,1,1)$, $(2,1,2)$, and $(2,2,2)$.
+Allowing equivalent block indices is harmless for the capacity formula,
+although the canonical equivalence-class quotient in
+Theorem~\ref{gam:gv:thm:blocks} is a poset. The five named examples below are also
+included in the saved output.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.34\textwidth}Yrr@{}}
+\toprule
+Preorder & Gamma vector & Lattice points & $\ordm_{-1}h$\\
+\midrule
+Three-element chain & $(1,3)$ & 14 & 1\\
+One equivalence class of size 3 & $(1,6)$ & 20 & 1\\
+Diamond poset, size 4 & $(1,5,2)$ & 38 & 0\\
+Block chain $(2,1,2)$ & $(1,12,17)$ & 162 & 1\\
+Two lower blocks $(2,1)$ below size 3 & $(1,17,36,7)$ & 487 & 0\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+To reproduce the full finite run, manuscript~01 gave, from the extracted
+package directory, \texttt{python3 code/verify.py --max-n 5 --output
+results/verification.json}. In this directory pass an explicit output path
+(the default is relative to the working directory):
+\begin{quote}\small\ttfamily
+py code/04-gamma-vector-verify.py --max-n 5 \textbackslash\\
+\hspace*{2em}--output /path/to/scratch/verification.json
+\end{quote}
+Python 3.10 or later is required. No external Python packages, network
+access, computer algebra system, or proof-assistant installation is used.
+The JSON records the interpreter version, random seed, case counts,
+examples, and elapsed times. The recorded times are properties of this run,
+not performance guarantees.
+
+\emph{What the checks establish (manuscript~01).} Exhaustive agreement
+detects normalization mistakes, reversed relations, incorrect treatment of
+equivalence classes, confusion between matchings and supports, and
+implementation errors in small cases. It does not prove an all-cardinality
+assertion. The infinite statements are justified by the arguments in
+Sections~\ref{gam:sec:count}--\ref{gam:sec:statistics}, with the classical
+inputs \eqref{htwo:eq:KPinput}--\eqref{htwo:eq:OTinput} explicitly imported.
+
+\subsection{Reruns and cross-checks in the write phase}
+\label{gam:sec:build}
+Both programs were rerun on 29 September 2026 (Python 3.14.4, Windows),
+from a scratch copy with the shipped names and explicit output paths as
+above. Both passed. Manuscript~06's regenerated CSV is byte-identical to
+\nolinkurl{data/05-gamma-positivity-preorders.csv}, and both JSON records
+differ from the shipped ones only in timings, the Python version (the
+recorded runs used 3.13.5) and, for 06, the platform string. Independently,
+the batch-44 placement dossier compared, for all 390 labeled preorders with
+$n\le4$, a direct count of lattice points by support size with
+$\sum_k\gamma_kt^k(1+t)^{n-2k}$, and checked the endpoint formula and the
+transitivity criterion of Theorem~\ref{gam:thm:graphintro} on all $4{,}165$
+reflexive relations with $1\le n\le4$ (Part~I's reflexive example gives
+$(1,5,6,1)$); there were no mismatches. The write phase recomputed the
+numerical examples of Sections~\ref{gam:sec:proof}--\ref{gam:sec:deficiency}
+(Examples~\ref{gam:gv:ex:equiv3}, \ref{gam:ex:twoblocks} and~\ref{gam:gv:ex:beyond},
+Table~\ref{gam:tab:examples}, the star with three edges and an octopus) by
+direct lattice-point and transport-pair enumeration, and checked the chain
+and $\Theta_3$ identities by hand; all agree. These scratch checks are not
+shipped. None of the programs is a proof.
+
+\section{Proof dependencies, audit, and a formalization route}\label{gam:sec:audit}
+The mathematical dependency chain for the main theorem is short
+(manuscript~06):
+\[
+ \begin{gathered}
+ \text{classical augmented-root/hypertree identities}\\
+ \Downarrow\\
+ \text{bipartite demand/support equinumeracy}\\
+ \Downarrow\\
+ \text{preorder support-fibre equivalence and finite Boolean summation}\\
+ \Downarrow\\
+ \text{the full gamma and multivariate formulas.}
+ \end{gathered}
+\]
+The other principal chain is independent:
+\[
+ \begin{gathered}
+ \text{finite matching, reachability, and transitivity}\\
+ \Downarrow\\
+ [t]p_R=|R|,\quad[t^{n-1}]p_R=|\overline R|,\quad
+ \text{common-support cancellation}\\
+ \Downarrow\\
+ \text{palindromicity}\ \Longleftrightarrow\ \text{transitivity}
+ \ \Longleftrightarrow\ \text{gamma-positivity}.
+ \end{gathered}
+\]
+A verification of the second chain would not by itself formalize the
+preorder-polytope theorem: the bridge from lattice points to matching
+supports must also be checked.
+
+Manuscript~01 displays the central dependencies without any hidden appeal to
+this report's unrefereed results:
+\begin{center}
+\begin{tikzpicture}[
+ box/.style={draw=Accent,fill=Pale,rounded corners=1mm,
+ align=center,font=\small,inner sep=6pt,text width=58mm},
+ >={Stealth[length=2mm]}]
+\node[box] (prior) at (0,0) {Published root-polytope identities\\
+K\'alm\'an--Postnikov; Ohsugi--Tsuchiya};
+\node[box] (bridge) at (0,-1.55) {Demand--support counting lemma\\
+plus the explicit hypertree reduction};
+\node[box] (zero) at (-3.7,-3.05) {Full zero-set Hall reduction};
+\node[box] (cancel) at (3.7,-3.05) {Relation graph and\\overlap cancellation};
+\node[box] (main) at (0,-4.6) {Universal multivariate expansion\\and nonnegative gamma coefficients};
+\draw[->,Accent] (prior)--(bridge);
+\draw[->,Accent] (bridge)--(zero);
+\draw[->,Accent] (bridge)--(cancel);
+\draw[->,Accent] (zero)--(main);
+\draw[->,Accent] (cancel)--(main);
+\end{tikzpicture}
+\end{center}
+The two lower branches are different reductions but share the same counting
+bridge. The degree, deletion, monotonicity, and block laws then use only
+finite combinatorics and polynomial algebra.
+
+\subsection{Three easy ways to state a false variant (manuscript~01)}
+\paragraph{Using only covering relations.}
+For the chain $1<2<3$, the relation $1<3$ must appear in the matching graph.
+Using just the two Hasse edges would give $\gamma_1=2$, whereas the correct
+value is $3$ and $h=1+6t+6t^2+t^3$. The lower ideals are unchanged by taking
+transitive closure, but the compatible-pair formula is not unchanged unless
+the closure is taken as well. The second proof of
+Corollary~\ref{gam:cor:cancel} explains why: paths must be compressible to
+edges of the relation.
+
+\paragraph{Testing only principal ideals.}
+For the poset $a<b$ and $a<c$, the vector $(x_a,x_b,x_c)=(0,2,2)$ satisfies
+the inequalities for the three principal ideals. It violates the inequality
+for the full ideal, because its total is four while the ground set has size
+three. The polytope in \eqref{gam:eq:Q} uses \emph{all} lower ideals.
+
+\paragraph{Counting witnesses rather than supports.}
+With two sources and two targets and every source below every target,
+there are two compatible bijections but only one ordered support pair with
+those specified sources and targets. That pair contributes one, not two.
+This distinction is the reason the gamma polynomial is not in general the
+ordinary matching generating polynomial.
+
+\subsection{Real-rootedness and flagness remain separate}
+The universal theorem does not imply real-rootedness. Part~II's height-two
+analysis already contains counterexamples, with the earlier small example
+credited to Shivam Patel~\cite{Patel}. To see the distinction in an exact
+instance (manuscript~01), let $\Theta_3$ be the bipartite graph consisting
+of three internally disjoint paths of length three with common endpoints.
+Its height-two poset has gamma polynomial
+\[
+ p(u)=1+9u+24u^2+16u^3+u^4,
+\]
+as counted in Part~II (the case $m=3$ of~\eqref{htwo:eq:thetapoly}). The
+identity
+\[
+ p(-x)=(1-x)(1-4x)^2+x^4
+\]
+shows that $p$ is positive on $[-1,0]$. Its nonnegative coefficients exclude
+nonnegative roots. If all its roots were real, all four would therefore be
+strictly below $-1$, contradicting the fact that their product is one.
+A nonreal zero $u_0$ of $p$ lifts through $t=u_0(1+t)^2$ to nonreal
+zeros of $h_\tau(t)=(1+t)^8p(t/(1+t)^2)$: the quotient is real for real
+$t\ne-1$, and $t=-1$ cannot solve this equation. Thus $h_\tau$ is not
+real-rooted. This example and its discovery are not claimed anew. [Merge
+note: this is a short second proof that $P_{\Theta_3}$ is not real-rooted;
+Part~II's Theorem~\ref{htwo:thm:thetaintro} counts its real roots exactly,
+and Proposition~\ref{htwo:prop:roottransfer} is the lifting argument.]
+
+Similarly, Boolean orbits of an auxiliary finite set are not a flag
+simplicial sphere. Theorem~\ref{gam:gv:thm:orbits} supplies a nonnegative gamma
+expansion, not the face-incidence structure demanded by
+Conjecture~5.1(d). The root-polytope formula in
+\eqref{gam:gv:eq:rootrecovered} does not remove that distinction.
+
+\subsection{Suggested Lean development order (manuscript~06)}
+A useful first module would treat finite relations, disjoint pairs of finite
+sets, and relation-respecting bijections. It should prove the near-perfect
+support/reachability lemma and the coefficient defect before introducing
+any geometry. A second module would establish the ideal Hall criterion and
+common-support cancellation, then perform the finite-sum reindexing that
+gives the gamma expansion of $p_\tau$.
+
+A third module can express the demand/support identity as an explicit
+hypothesis and prove the support-fibre reduction and
+Theorem~\ref{gam:thm:main} conditional on that hypothesis. Such a theorem must
+be labeled conditional; it would not be a completed formal proof of the
+conjecture. Discharging the hypothesis requires formalizing the classical
+root-polytope route or developing a direct finite combinatorial proof.
+The quotient-block and deficiency formulas can then be proved by finite
+counting and elementary polynomial algebra.
+
+The elementary graph classification is therefore a realistic independent
+formalization target, while the main theorem has one substantial library
+boundary. No Lean source or successful Lean compilation is claimed in this
+package. Likewise, the external mathematical theorems used in the paper
+are ordinary cited inputs, not assertions that they already exist in the
+repository's trusted kernel boundary.
+
+\subsection{A staged proof-assistant project (manuscript~01)}
+A practical formalization can separate the new order-theoretic work from
+the existing geometric input. First define finite preorders, lower ideals,
+and the support-fiber excess map. The equivalence in
+Lemma~\ref{gam:lem:fibre} is a finite-sum inequality argument and should be a
+small, independent target. Next prove the Boolean summation: this gives a
+formal implication from the explicit counting-bridge statement to the
+universal gamma theorem.
+
+A second finite target is overlap cancellation. One may formalize the
+partial-permutation graph and its path decomposition, or iterate a
+bijection from a source until it reaches a target. Finiteness and injectivity
+exclude entry into a cycle. The resulting compatible core supports the
+commuting toggles and every restriction-counting identity.
+
+To obtain a fully closed formal proof, the counting bridge must itself be
+proved rather than silently postulated. The supplied ordinary proof reduces
+it to Hall's theorem and the two published root-polytope results; a natural
+bijective proof of the bridge could yield a substantially smaller formal
+library dependency. A Lean theorem with an unproved bridge hypothesis is a
+valuable intermediate artifact, but is not a complete formal verification
+of Conjecture~5.2. No uncompiled Lean file or such conditional proof is
+presented as verified in this package.
+
+[Merge note: neither plan has been started. No Lean or Rocq declaration in
+ProveIt formalizes any statement of Part~IV.]
+
+\section{Further research questions and topics}\label{gam:sec:questions}
+The following questions are proposed research directions. Except where an
+existing conjecture is named, no claim is made that the formulation is new
+or that the literature has never addressed a related version (manuscript~06).
+Manuscript~01 adds: the flag question is the remaining named conjecture in
+the cited source; the others are proposed directions arising from the proof,
+whose worldwide open status has not been exhaustively surveyed, and they
+should be viewed as specific research tasks, not as assertions that the
+literature contains no related results. Research
+questions~\ref{gam:q:first}--\ref{gam:q:review} are manuscript~06's, in its
+order, with manuscript~01's formulation added where it asks the same
+question; Research questions~\ref{gam:gv:q:faces}--36 are the rest of
+manuscript~01's.
+
+\begin{question}[A direct demand/support bijection; manuscripts~06 and~01]\label{gam:q:first}\label{gam:q:bijection}
+Construct an explicit bijection in Lemma~\ref{gam:lem:count} that is compatible
+with right-support restriction as in Proposition~\ref{gam:prop:gradedinput}.
+A mere lexicographic matching of two equally sized lists is not the target.
+Can an augmenting-path or activity construction explain the correspondence
+without importing Ehrhart theory? This would remove the largest
+formalization dependency of the main theorem. (Manuscript~01: construct an
+explicit bijection from $\mathcal R_H$ to perfectly matchable support pairs
+that preserves the exact receiver support. Can it respect induced subgraphs
+or a controlled choice of vertex ordering?)
+\end{question}
+Proposition~\ref{gam:prop:gradedinput} proves the required cardinality
+identities, but the geometric proof does not identify a natural map. Such a
+construction would make the Boolean action on actual preorder lattice points
+explicit and would simplify a complete formalization (manuscript~01).
+[Merge note: this is Part~II's Research question~\ref{gam:q:bridge}, asked
+again with the receiver support preserved.]
+
+\begin{question}[Boolean orbits on actual lattice points]\label{gam:q:orbits}
+Can one realize the terms in \eqref{gam:eq:main} as orbits of a natural system
+of involutions on $\Qt\cap\Z^E$, with a $k$th orbit containing one point
+for every subset of $n-2k$ free labels? Compatibility with relabeling and
+restriction is desirable. The present support-count identity does not
+supply such an action.
+\end{question}
+[Merge note: manuscript~01's Theorem~\ref{gam:gv:thm:orbits} realizes such
+orbits on the support-pair model $\mathscr M_\tau$, not on $\Qt\cap\Z^E$;
+the question stays open as stated.]
+
+\begin{question}[Flag-polytopal realization; manuscripts~06 and~01]\label{gam:q:flag}
+Does every $h_\tau$ occur as the $h$-polynomial of an $n$-dimensional flag
+simplicial polytope, as asked in \cite[Conjecture~5.1(d)]{AC}? The gamma
+formula gives nonnegative coefficients but no flag face complex. A useful
+intermediate objective is a simplicial model whose face numbers are the
+transport-support counts; it must account for the fact that deleting an
+arbitrary single signed endpoint need not preserve balance. (Manuscript~01:
+can the disjoint-support model be used to construct a flag simplicial
+$n$-polytope whose $h$-polynomial is $h_\tau$?)
+\end{question}
+The existing Boolean families provide ranks but no face-gluing rules.
+A successful construction must address intersections and sphere topology,
+not merely reproduce the gamma coefficients. It need not use the same
+canonical lattice triangulation considered in Part~I (manuscript~01).
+[Merge note: compare Part~II's Research questions~6 and~7 and its crown
+obstruction, Theorem~\ref{htwo:thm:crownintro}.]
+
+\begin{question}[Classification beyond a perfect matching]
+Extend Corollary~\ref{gam:cor:balanced} to arbitrary bipartite graphs, including
+unequal shores and graphs whose maximum matching does not saturate either
+shore. Is there a useful decomposition of the palindromic cases into
+balanced preorder blocks and residual components? Palindromicity is to be
+measured in the actual polynomial degree. The endpoint argument here does
+not directly apply when that degree is smaller than a shore size.
+\end{question}
+
+\begin{question}[Coefficient shape beyond gamma-positivity]
+Which preorders have log-concave, unimodal, or real-rooted gamma polynomials?
+The general theorem answers none of these stronger questions for
+$\Gamma_\tau$. For real-rootedness, the already documented height-two
+counterexamples rule out an unrestricted assertion. Relations to quotient
+width and induced comparability configurations are concrete targets.
+\end{question}
+
+\begin{question}[Extremal profiles with prescribed structure]
+Determine the maximal and minimal $\gamma_k$ when block sizes, quotient
+width, or matching number are fixed. Theorem~\ref{gam:thm:bounds} gives sharp
+unrestricted bounds, but fixing these structural parameters may make the
+extremizers quite different from chains or universal equivalence classes.
+The positive block formula offers a way to separate local multiplicities
+from quotient feasibility.
+\end{question}
+
+\begin{question}[Parameterized exact algorithms]
+Can \eqref{gam:eq:signed} be evaluated efficiently for bounded-width quotient
+posets, or when the \emph{comparability graph} has bounded treewidth? A
+cover-graph parameter is a separate question because transitive closure
+can enlarge neighborhoods and graph width. Establish precise arithmetic
+and bit-complexity bounds, and determine the counting complexity without
+parameter restrictions.
+\end{question}
+
+\begin{question}[A geometric interpretation of the gamma coefficients]
+The signed-vector formula counts balanced points of the cube
+$\{-1,0,1\}^E$ satisfying ideal inequalities. Can these points be realized
+as a natural collection of faces, lattice points in a canonical section,
+or standard monomials of a graded algebra? Such an interpretation might
+connect positivity to Part~I's root-polytope model, but would
+require more than the enumerative identity established here.
+\end{question}
+
+\begin{question}[Limit laws for support size]
+For growing families of preorders, what conditions on $\Gamma_\tau$ or the
+quotient structure imply a central limit theorem for $L$? The mixture in
+Theorem~\ref{gam:thm:statistics} reduces the question to the fluctuations of its
+mixing variable and the conditional binomial size. Can the variance and
+tail bounds be sharpened using comparability density or matching
+structure, rather than $n$ alone?
+\end{question}
+
+\begin{question}[Independent formal and mathematical review; manuscripts~06 and~01]\label{gam:q:review}
+Formalize first the elementary endpoint-defect and cancellation theorems,
+and independently review the support-fibre equivalence. Then discharge the
+bipartite counting bridge in a proof assistant. In parallel, compare the
+balanced-graph characterization with existing Gorenstein and
+matching-decomposition criteria to determine which parts are already
+implicit in the literature and sharpen the priority assessment.
+(Manuscript~01: formalize the universal theorem with no unproved
+assumptions, and develop an independent proof of the counting bridge that
+avoids the root-polytope machinery.)
+\end{question}
+The finite-order part is short enough to audit separately. Closing the
+bridge dependency, while retaining the multivariate support interpretation,
+would turn the current mathematical proof into a compact and reusable
+formal combinatorial library result (manuscript~01).
+
+\begin{question}[Which gamma vectors are face vectors?; manuscript~01]\label{gam:gv:q:faces}
+Do the numbers $\gamma_k(\tau)$ arise as the face numbers of a useful simplicial
+or balanced complex, with a construction natural under induced restriction?
+\end{question}
+Simply treating compatible pairs as faces is inadequate: removing one
+source without a receiver destroys equal cardinality. The locality formula
+\eqref{gam:gv:eq:deckgamma} suggests studying endpoint-supported structures or
+quotients of matching complexes with carefully controlled identifications.
+
+\begin{question}[The even-cardinality reconstruction defect; manuscript~01]
+What additional deletion, marking, or contraction data determines the top
+gamma coefficient when $n$ is even? Can one reconstruct it from a suitably
+enriched polynomial deck without reconstructing the entire preorder?
+\end{question}
+Equation~\eqref{gam:gv:eq:deletiondifferential} reconstructs every other
+coefficient but annihilates the middle monomial.
+Corollary~\ref{gam:gv:cor:derivative} identifies the missing scalar as a
+signed value at $-1$, counted by full endpoint cores. This gives a precise
+target for richer reconstruction data.
+
+\begin{question}[Exact counting complexity; manuscript~01]
+For which classes of quotient posets can the profile formula be evaluated
+more efficiently than $O(n^{2b}2^b)$? What is the complexity of computing a
+specified $\gamma_k$, or the whole gamma polynomial, for unrestricted preorders?
+\end{question}
+A single pair's feasibility is a matching problem; counting distinct pairs
+is a different task. The fixed-block algorithm gives one tractable regime,
+but does not supply a general efficient counting algorithm or a hardness
+classification. Tree decompositions of the quotient and repeated
+neighborhood classes are natural structural parameters.
+
+\begin{question}[Local changes of the relation; manuscript~01]
+Find effective formulas for the gamma increment when one adds a relation
+and then takes transitive closure. Can the newly compatible cores be
+partitioned without overcounting multiple new witnessing matchings?
+\end{question}
+Theorem~\ref{gam:thm:monotone} already proves nonnegativity of every increment.
+An exact local rule would be stronger and could lead to constructive
+recurrences, particularly for modular or series--parallel quotient
+operations. The closure operation must be included in the input model.
+
+\begin{question}[Root geometry and negative dependence; manuscript~01]
+Identify structural classes of preorders for which $\Gamma_\tau$ is
+real-rooted or admits a useful multivariate stability refinement. Which
+operations preserve these properties in the presence of nontrivial blocks?
+\end{question}
+General positivity is now separated from these stronger analytic properties.
+The arbitrary height-two bipartite subclass already contains nonreal-root
+examples, so bounded height alone is insufficient. Part~III's cactus
+results offer positive comparison cases, not a classification of all
+preorders. [Merge note: compare Part~II's Research question~3 and Part~III's
+Research question~11.]
+
+\begin{question}[Refining the lattice-point statistic; manuscript~01]
+What counterpart of the Boolean expansion survives if one records both
+support and coordinate sum, or weights the individual excess coordinates?
+\end{question}
+The present proof deliberately forgets the total demand in the classical
+bridge. A two-parameter identity would require extra information about its
+hypertree or matching-support correspondence. It cannot be obtained by
+inserting arbitrary weights into an equality of unweighted cardinalities.
+
+\begin{question}[Beyond unit ideal budgets; manuscript~01]\label{gam:gv:q:last}
+Which integral budget functions $b(I)$ admit an analogue for
+$\{x\ge0:x(I)\le b(I)\}$? What replaces the centered gamma basis when the
+all-one vector is no longer the unique full-support lattice point?
+\end{question}
+The excess substitution changes the right-hand side to
+$b(I)-|I\cap S|$. The special cancellation into the number of zero
+coordinates is lost. Any extension must identify new supply capacities or
+a different symmetry center, rather than assuming the same formula persists.
+
+\section{Conclusion}\label{gam:sec:conclusion}
+The main formula treats the gamma coefficients of a preorder not as
+mysterious alternating combinations of lattice-point counts, but as counts
+of disjoint feasible transport supports. Fixing a lattice point's zeros
+exposes a bipartite demand problem; summing those problems exposes Boolean
+intervals. This proves gamma-positivity for every finite preorder, including
+all equivalence-class blowups and all heights.
+
+The matching viewpoint also gives a structural converse. In a balanced
+bipartite graph with a perfect matching, a palindromic support polynomial
+forces the relation obtained from that matching to be transitive. The
+failure is measured exactly by missing reachability pairs. Positive block
+formulas, coefficientwise monotonicity, sharp bounds, and the exact root
+multiplicity at $-1$ then follow from the same finite support model.
+
+The unresolved step toward a more conceptual and more readily formalized
+proof is not another positivity inequality. It is a natural combinatorial
+realization of the inherited demand/support equinumeracy. The proofs and
+checks supplied here isolate that issue while giving an explicit answer to
+the stated gamma-positivity conjecture.
+
+Manuscript~01 concludes in the same sense. The general preorder problem
+admits a uniform solution once zero coordinates are allowed on the entire
+ground set. The ideal inequalities then become a bipartite supply--demand
+system, and the classical counting bridge turns each support fiber into a
+family of matchable pairs. Summing over the free coordinates produces the
+gamma basis with no cancellation of signs. The resulting coefficients count
+ordered disjoint compatible source and receiver sets. This proves the full
+gamma-positivity conjecture, explains why arbitrary height and arbitrary
+equivalence blocks cause no exception, and supplies an exact
+matching-theoretic meaning for the vanishing at $-1$. The same finite model
+gives relation-monotonicity, complement-duality, induced-deck identities,
+and a block-capacity formula. The remaining work is not to infer positivity
+from more examples, but to understand natural bijections, geometric
+realizations, stronger root properties, and complete formal verification of
+the classical bridge and its new consequences.
+
+\section{Normalization and independent-review checklist}\label{gam:sec:normalization}
+\noindent\emph{(Appendix~A of manuscript~06.)}
+
+\subsection{The three different cardinalities}
+A perfect matching is a set of edges. A matchable support pair $(U,V)$ is a
+pair of vertex sets admitting at least one perfect matching. A hypertree is
+a degree-minus-one vector admitting at least one realizing spanning tree.
+The proofs count the latter two without realization multiplicity. The
+$K_{2,2}$ example in Remark~\ref{gam:rem:K22} is a minimal check against
+conflating these notions.
+
+\subsection{Three polynomial models, with different dimensions}
+The original preorder polytope $\Qt$ lies in $\R^n$, and $h_\tau$ counts
+its points by support. The doubled graph $G_\tau$ has $2n$ vertices and
+$p_{G_\tau}$ has degree $n$. The augmented edge polytope
+$B_{\widehat{G_\tau}}$ has dimension $2n$ and its Ehrhart numerator is the
+same polynomial, with higher coefficients zero. These dimension statements
+are consistent because the degree of an Ehrhart numerator can be strictly
+smaller than the polytope dimension.
+
+For a general graph $H$ with shores of sizes $p,q$, its augmented graph has
+$p+q+2$ vertices, is connected and bipartite, and its edge polytope has
+dimension $p+q$. The two affine equations say that the coordinate sum on
+each augmented shore is one. The natural affine lattice is the intersection
+of that affine space with the ambient integer lattice. No factor of a
+lattice index is inserted in \eqref{htwo:eq:KPinput}.
+
+\subsection{Orientation and equality cases}
+A relation edge is always directed from a source in the lower direction to
+a target in the upper direction. Hence a matching must satisfy
+$|A\cap I|\ge|B\cap I|$ for ideals $I$, not the reverse inequality. In the
+near-perfect-support lemma, omitting $a$ on the source side and $b$ on the
+target side detects a path from $b$ to $a$. The count $|\overline R|$ is
+invariant under swapping their dummy names, but the proof is not.
+
+The signed-vector formula uses signs on individual elements, not just
+blocks. Once block differences are fixed, the multinomial coefficients in
+\eqref{gam:eq:localB} recover precisely the lost labeling information. The
+formula would be wrong without these factors.
+
+\subsection{A short audit path}
+An independent reviewer can check the main theorem by verifying the two
+implications of Lemma~\ref{gam:lem:fibre}, the normalization in the established
+input Lemma~\ref{gam:lem:count}, and the finite sum in
+\eqref{gam:eq:fixedsupport}. The second principal theorem can be checked
+separately from the directed-path construction in Lemma~\ref{gam:lem:reach} and
+the cancellation counterexample in Proposition~\ref{gam:prop:canceliff}.
+None of those steps depends on the finite verification data.
+
+\section{A compact proof certificate}\label{gam:gv:sec:certificate}
+\noindent\emph{(Appendix~A of manuscript~01.)}
+This section records the complete logical skeleton for a reader checking
+the generalization rather than its consequences.
+
+Let $S\subseteq E$, $Z=E\setminus S$, and $H_{Z,S}$ have edge $zs$ when
+$z\le_\tau s$. Write $x=\one_S+c$ on $S$, with zero coordinates on $Z$.
+For $T\subseteq S$,
+\[
+ x\in\Qt
+ \ \Longrightarrow\
+ c(T)\le c(S\cap\down T)
+ \le |Z\cap\down T|=|N_{H_{Z,S}}(T)|.
+\]
+Conversely, for a lower ideal $I$,
+\[
+ c(I\cap S)\le |Z\cap\down(I\cap S)|\le |Z\cap I|
+ \ \Longrightarrow\ x(I)\le|I|.
+\]
+Thus the exact-support fiber has size $|\mathcal R_{H_{Z,S}}|$.
+The classical bridge says that this is
+\[
+ \#\{(U,V):U\subseteq Z,\ V\subseteq S,\ U\match_\tau V\}.
+\]
+For any fixed disjoint compatible $(U,V)$, its allowed supports are exactly
+$S=V\sqcup C$, $C\subseteq E\setminus(U\cup V)$. Hence
+\[
+ H_\tau(\zv)
+ =\sum_{(U,V)}\sum_C z_{V\cup C}
+ =\sum_{(U,V)}z_V\prod_{w\notin U\cup V}(1+z_w).
+\]
+This proves the theorem. The only imported count is justified by the
+explicit demand-to-hypertree-vector correspondence and the published
+identities \eqref{htwo:eq:KPinput}--\eqref{htwo:eq:OTinput}. No statement about
+preorder gamma-positivity is used in those inputs.
+
+\section{Provenance and source-use ledgers}\label{gam:sec:ledger}
+\noindent\emph{(Appendix~B of manuscript~06 and Appendix~B of
+manuscript~01.)}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+Source & Role in manuscript~06\\
+\midrule
+Athanasiadis--Chapoton \cite{AC} & Definitions and the precise target,
+Conjecture~5.2; flag realization is not settled here.\\
+K\'alm\'an--Postnikov \cite{KP} & Root-polytope volume equals the number of
+hypertree vectors, with ordinary lattice normalization.\\
+Ohsugi--Tsuchiya \cite{OT20}; Davis--Kohl \cite{DK} & The matching-support
+interpretation of the augmented root-polytope numerator.\\
+Dai et al.\ \cite{DHLTW} & Prior support-enumerator identity and preorder
+duality; Problem~5.3 motivates the balanced-graph classification.\\
+Menon \cite{Menon} & A prior special-family gamma-positivity result.\\
+ProveIt (Parts~I--II) & The height-two theorem, inherited counting lemma,
+explicit unresolved boundary, and existing nonreal-root examples.\\
+Manuscript~06 & The arbitrary-preorder fibre reduction, general gamma
+formula, graph classification proof, and the stated derived refinements.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The ledger is a dependency and scope statement, not a certification that
+every derived refinement is unprecedented. The root-polytope identities are
+standard mathematical inputs; this report's unrefereed geometric results
+are not used as axioms. The delivered proof-status file
+(\texttt{05-gamma-positivity-PROOF\_STATUS.md}) repeats this boundary so
+that computational output is not mistaken for kernel checking.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}Y@{}}
+\toprule
+Source & Use and boundary in manuscript~01\\
+\midrule
+Athanasiadis--Chapoton, v1 & Definition of $h_\tau$ and precise target
+Conjecture~5.2; flag realization is kept separate.\\
+ProveIt, pinned commit & Identifies the height-two predecessor and its explicit
+extension question. Not used as an unproved axiom.\\
+K\'alm\'an--Postnikov & Published normalized-volume/hypertree consequence,
+with its original $h$-polynomial convention evaluated at one.\\
+Ohsugi--Tsuchiya, v4 & Published augmented-graph matching-support identity;
+counts covered vertex sets rather than individual matchings.\\
+Davis--Kohl, v1 & Theorem~3.10 states the precise augmentation and Ehrhart
+identity used in the bridge.\\
+Dai et al., v2 & Prior univariate duality and root-polytope context; no new
+claim of having first proved duality.\\
+Menon, v1 & Prior octopus and lopsided-octopus results; the special formula is
+recovered and credited.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+All cited online versions were inspected for manuscript~01 on
+29 September 2026. The citation labels and conjecture numbers refer to these
+versions, not to an assumed future revision. The supplied package does not
+redistribute the source papers or any font files.
+[Merge note: manuscript~01 cites Davis--Kohl as \arxiv{2207.14759v1}, and
+manuscript~06 cites the inspected versions v1 of~\cite{AC} and~\cite{Menon},
+v4 of~\cite{OT20} and v2 of~\cite{DHLTW}, as this report's bibliography
+does.]
 
 \clearpage
 \appendix
