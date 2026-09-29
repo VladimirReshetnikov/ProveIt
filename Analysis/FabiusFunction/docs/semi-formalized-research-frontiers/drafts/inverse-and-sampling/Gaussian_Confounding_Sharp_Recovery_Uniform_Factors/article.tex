@@ -1,0 +1,1319 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor,xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{183249}
+\definecolor{accent}{HTML}{176B70}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Gaussian Confounding and Sharp Recovery of Uniform Convolution Factors},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Shifted moment inversion, uniform convolutions, sharp minimax rates}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Gaussian confounding and uniform factors}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\kap}{\kappa}
+\newcommand{\As}{\mathcal A_m}
+\newcommand{\Xs}{\mathcal X_m}
+\newcommand{\risk}{\mathcal R}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\supp}{\operatorname{supp}}
+\title{\textbf{Gaussian Confounding and Sharp Recovery\\of Uniform Convolution Factors}\\[0.55em]
+\large Shifted power sums, minimax estimation, and detection\\above a Fabius--Rvachev background}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let a known bounded random variable be convolved with at most $m$ centered
+uniform factors and a Gaussian whose variance may be unknown. We determine
+the exact global minimax rates for recovering the ordered uniform half-lengths
+from independent observations. The rate is $n^{-1/(4m)}$ when the Gaussian
+variance is known and $n^{-1/(4m+4)}$ when it is unknown. In the latter model,
+the optimal rate for the Gaussian variance itself is $n^{-1/(2m+2)}$.
+The constants may depend on the fixed capacity $m$, the background, and a
+compact positive variance interval.
+
+The algebraic engine is a sharp shifted-power-sum inequality: the moments of
+orders $r+1,\ldots,r+m$ determine $m$ ordered nonnegative nodes with optimal
+inverse H\"older exponent $1/(m+r)$. We prove this directly using sign changes
+of an integer-valued counting function, and construct exact moment-preserving
+curves attaining the exponent. Gaussian compensation converts the missing
+first power sum into a genuine loss of statistical information. A weighted
+likelihood expansion supplies matching Hellinger and chi-square asymptotics,
+closing the gap between algebraic moment cancellation and statistical lower
+bounds.
+
+Detection has a different scale: the presence of any nonzero uniform factor
+has critical separation $n^{-1/8}$ with unknown Gaussian variance, independent
+of $m$, versus $n^{-1/4}$ with known variance. The Rvachev up law is an explicit
+admissible background. The article includes proofs, a feasible moment estimator,
+exact finite algebraic checks, a source comparison, and a research agenda.
+These are conventional mathematical proofs, not a Lean verification or a claim
+of worldwide publication priority.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Research target and relation to ProveIt}
+\label{sec:scope}
+
+\subsection{The extension addressed here}
+A convolution factorization can be identifiable while its recovery from noisy
+data is extremely unstable. The ProveIt repository develops this question for
+Fabius--Rvachev laws and more general uniform convolutions. Its recent report
+\emph{Sharp Stability Strata for Finite Fabius--Rvachev Deconvolution}
+\cite{RepoFinite} studies at most $m$ unknown uniform factors over a known smooth
+compactly supported background. It gives deterministic total-variation inverse
+exponents, explicitly distinguishes pairwise and fixed-base stability, and
+explicitly does not establish a statistical minimax lower bound. The repository
+index records that report as an unreviewed research intake rather than a
+Lean-verified theorem \cite{RepoIndex}.
+
+We change the statistical experiment in an essential way: there is a
+\emph{positive Gaussian convolution}, and its variance can be an unknown
+nuisance parameter. Gaussian noise contributes only to the second cumulant.
+Consequently, it can conceal the variance of small uniform factors while
+leaving their higher cumulants visible. How much statistical information does
+this remove? Can one recover the noise variance and all the factors at matching
+upper and lower rates? Is detecting a factor as hard as recovering the entire
+factorization? These are the concrete questions answered below.
+
+Our conclusions are not asserted for the unsmoothed experiment of the preceding
+report. Compact-support boundaries create additional likelihood issues there.
+Positive Gaussian smoothing is a hypothesis, not a disposable technical
+convenience. Conversely, we require only that the known background be bounded;
+it need not have a density or be symmetric.
+
+\subsection{Classical ingredients and the contribution boundary}
+Cumulants, Newton identities, Vandermonde matrices, and the geometry of singular
+moment inversion are classical. Prony-map singularities provide closely related
+algebraic context \cite{BatenkovYomdin}. Moment fitting and moment-matching
+statistical lower bounds have an extensive literature for finite mixtures;
+Heinrich--Kahn and Wu--Yang are relevant examples \cite{HeinrichKahn,WuYang}.
+Those mixture models have unknown component locations and usually unknown
+mixing weights. Our model instead has a \emph{sum of independent uniforms},
+with fixed unit multiplicities in its power sums. Mixture theorems are not
+being applied as though they directly proved the rates below.
+
+The results developed here are a sharp consecutive shifted-moment inequality,
+an explicit variance-confounding moment flow, a weighted likelihood expansion,
+and matching estimation and testing bounds for this convolution model. All
+proofs needed for those conclusions are supplied. The source comparison is
+focused, not an exhaustive worldwide novelty audit; no claim of publication
+priority is made. None of the new proofs has been independently refereed or
+checked in Lean or Rocq.
+
+The repository snapshot used for the principal comparison is
+\begin{center}
+\small\texttt{c130dba623c420551d90db41dae7b3d9cff72dfd}.
+\end{center}
+The accompanying \texttt{SOURCE\_AUDIT.md} records the exact paths and scope.
+Search-index hits at other commits were used for discovery, not silently
+identified with this snapshot. No repository files were modified.
+
+\section{Model and main statistical results}
+\label{sec:model}
+
+Fix an integer $m\ge1$ and a known random variable $Z$ with $|Z|\le L$ almost
+surely. Let $U_1,\ldots,U_m$ be independent uniforms on $[-1,1]$, and let $G$ be
+a standard normal, all independent of $Z$. Write
+\begin{equation}
+ \As=\{a\in[0,1]^m:a_1\le\cdots\le a_m\},\qquad
+ X_{a,v}=Z+\sum_{i=1}^m a_iU_i+\sqrt v\,G,
+ \quad P_{a,v}=\Law(X_{a,v}).
+ \label{eq:model}
+\end{equation}
+Zero entries pad the list to capacity $m$; they do not represent observable
+factors. The variance parameter is either fixed at a known $v_0>0$, or ranges
+in a fixed interval
+\begin{equation}
+ 0<\underline v<\overline v<\infty.
+ \label{eq:varianceinterval}
+\end{equation}
+We observe $n$ independent copies of $X_{a,v}$. Ordered maximum error is the
+loss for $a$, and absolute error is the loss for $v$. Thus, in the unknown
+variance model, define
+\begin{align}
+ \risk^a_n&=\inf_{\widehat a}\sup_{a\in\As,\ v\in[\underline v,\overline v]}
+       \E_{a,v}\norm{\widehat a-a}_\infty,\\
+ \risk^v_n&=\inf_{\widehat v}\sup_{a\in\As,\ v\in[\underline v,\overline v]}
+       \E_{a,v}|\widehat v-v|.
+ \label{eq:risks}
+\end{align}
+Estimators may be measurable functions of the entire sample. Let
+$\risk^{a,\mathrm{known}}_n$ denote the analogous scale risk with $v=v_0$ fixed.
+All asymptotic constants below can depend on fixed $m,L,Z$ and the variance
+bounds (or $v_0$), but not on $n$ or the varying parameters.
+
+\begin{theorem}[Sharp global estimation rates]
+\label{thm:main}
+There are positive constants $c,C$ and $n_0$ such that, for $n\ge n_0$,
+\begin{align}
+ c n^{-1/(4m+4)}\le\risk^a_n&\le C n^{-1/(4m+4)},
+ \label{eq:unknownrate}\\
+ c n^{-1/(2m+2)}\le\risk^v_n&\le C n^{-1/(2m+2)},
+ \label{eq:variancerate}\\
+ c n^{-1/(4m)}\le\risk^{a,\mathrm{known}}_n&\le C n^{-1/(4m)}.
+ \label{eq:knownrate}
+\end{align}
+A single moment-fitting procedure attains both upper bounds in the unknown
+variance model.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Capacity & Known-variance scales & Unknown-variance scales & Unknown variance\\
+\midrule
+$m=1$ & $n^{-1/4}$ & $n^{-1/8}$ & $n^{-1/4}$\\
+$m=2$ & $n^{-1/8}$ & $n^{-1/12}$ & $n^{-1/6}$\\
+$m=3$ & $n^{-1/12}$ & $n^{-1/16}$ & $n^{-1/8}$\\
+General $m$ & $n^{-1/(4m)}$ & $n^{-1/(4m+4)}$ & $n^{-1/(2m+2)}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For detection, compare the null $a=0$ with alternatives
+$\norm a_\infty\ge h$. The variance is allowed to vary under both hypotheses
+when it is unknown. Write $\mathcal T_n(h)$ for the infimum, over tests, of
+the sum of the maximal type-I and type-II errors.
+
+\begin{theorem}[Detection boundary]
+\label{thm:detectionintro}
+In the unknown variance model, there is a test with
+$\mathcal T_n(h)\le C/(nh^8)$. If $h_n\to0$ and $nh_n^8\to0$, then
+$\mathcal T_n(h_n)\ge1-o(1)$. With known variance, the corresponding statements
+hold with $h^4$ in place of $h^8$.
+\end{theorem}
+
+Thus consistent detection is possible when $nh^8\to\infty$ and impossible
+when $nh^8\to0$ in the unknown-variance experiment. The critical order is
+$n^{-1/8}$, independently of $m$. For $m>1$, recovering every half-length to
+its worst-case optimal precision is strictly harder than detecting the
+presence of at least one factor. Proofs appear in Sections~\ref{sec:upper},
+\ref{sec:lower}, and~\ref{sec:testing}.
+
+\section{Cumulants and the missing first power sum}
+\label{sec:cumulants}
+
+For a vector $x=(x_1,\ldots,x_m)$, let $p_k(x)=\sum_i x_i^k$ and put
+$x_i=a_i^2$. All random variables in our model have moment generating
+functions in a neighborhood of the origin. Cumulants are defined by
+\begin{equation}
+ \log\E e^{tX}=\sum_{j\ge1}\kap_j(X)\frac{t^j}{j!}.
+\end{equation}
+For $U$ uniform on $[-1,1]$, $\E e^{tU}=\sinh(t)/t$. Its even cumulants are
+\begin{equation}
+ c_k:=\kap_{2k}(U)=\frac{2^{2k}B_{2k}}{2k}
+ =(-1)^{k+1}\frac{(2k)!\zeta(2k)}{k\pi^{2k}},
+ \qquad k\ge1,
+ \label{eq:ck}
+\end{equation}
+where the Bernoulli convention is $B_2=1/6$. The formula follows by integrating
+the Taylor series of $\coth t-1/t$, or by expanding the product for
+$\sinh(t)/t$. In particular,
+\begin{equation}
+ c_1=\frac13,\qquad c_2=-\frac{2}{15},\qquad c_3=\frac{16}{63};
+ \quad c_k\ne0\text{ for every }k.
+\end{equation}
+Independence and scaling give the exact identities
+\begin{align}
+ \kap_2(X_{a,v})-\kap_2(Z)&=v+\frac13p_1(x),
+ \label{eq:varianceidentity}\\
+ \kap_{2k}(X_{a,v})-\kap_{2k}(Z)&=c_kp_k(x),\qquad k\ge2.
+ \label{eq:cumulantidentity}
+\end{align}
+All odd cumulants of the added noise are zero. If $v$ is known, $p_1$ is
+observed through the second cumulant. If $v$ is unknown, only the combination
+$v+p_1/3$ is observed there. The available uncontaminated consecutive power
+sums begin at $p_2$, not $p_1$.
+
+\subsection{The Fabius--Rvachev specialization}
+Arias de Reyna discusses the smooth compactly supported up function and its
+infinite product representation \cite{Arias}. For our normalization it suffices
+to define the background probabilistically:
+\begin{equation}
+ Z_{\mathrm{up}}=\sum_{j=1}^{\infty}2^{-j}U_j.
+ \label{eq:up}
+\end{equation}
+The series converges absolutely for every outcome and has support in $[-1,1]$.
+Its characteristic function is
+\begin{equation}
+ \E e^{itZ_{\mathrm{up}}}=\prod_{j=1}^{\infty}\sinc(2^{-j}t),
+ \qquad \sinc t=\frac{\sin t}{t},\quad\sinc0=1.
+\end{equation}
+Bounded convergence gives the product, and locally convergent logarithms give
+\begin{equation}
+ \kap_{2k}(Z_{\mathrm{up}})=\frac{c_k}{2^{2k}-1}.
+ \label{eq:upcumulants}
+\end{equation}
+In particular, its variance is $1/9$ and its fourth cumulant is $-2/225$.
+These formulas make the required background cumulants explicit. Our proofs
+use boundedness, not any unproved regularity claim about the up density.
+
+\section{A sharp inverse theorem for shifted power sums}
+\label{sec:shifted}
+
+Let $\Xs=\{x\in[0,1]^m:x_1\le\cdots\le x_m\}$. For an integer $r\ge0$ define
+\begin{equation}
+ E_r(x,y)=\max_{r+1\le k\le r+m}|p_k(x)-p_k(y)|.
+\end{equation}
+
+\begin{theorem}[Consecutive shifted power sums]
+\label{thm:shifted}
+For all $x,y\in\Xs$ and all integers $r\ge0$,
+\begin{equation}
+ \norm{x-y}_\infty\le 8 E_r(x,y)^{1/(m+r)}.
+ \label{eq:shifted}
+\end{equation}
+The exponent $1/(m+r)$ cannot be replaced by any larger exponent in a uniform
+bound on $\Xs$. Consequently, the map
+$x\mapsto(p_{r+1}(x),\ldots,p_{r+m}(x))$ is injective.
+\end{theorem}
+
+\begin{proof}[Proof of the upper bound]
+Set
+\[
+ C(t)=\#\{i:x_i\le t\}-\#\{i:y_i\le t\},\qquad 0<t<1.
+\]
+This is an integer-valued step function. Its nonzero sign changes at most
+$m-1$ times. To see this even when atoms coincide, split its jumps into unit
+up-steps and down-steps. There are $m$ of each, and the resulting walk starts
+and ends at zero. Each excursion from zero consumes at least one up-step and
+one down-step, so there are at most $m$ excursions. Consecutive nonzero sign
+blocks of $C$ can only decrease this count. Intermediate steps at a common
+atom occupy no interval and do not create an extra sign block of $C$.
+
+Choose points $z_1,\ldots,z_s\in[0,1]$ between consecutive nonzero sign blocks
+of opposite sign, with $s\le m-1$. There is a sign choice such that
+\[
+ Q(t)=\pm\prod_{j=1}^s(t-z_j),\qquad Q(t)C(t)\ge0
+\]
+almost everywhere. If there are no sign changes, $Q$ is the appropriate
+constant $1$ or $-1$. The sum of the absolute values of the coefficients of
+$Q$ is at most $2^s$.
+
+Put $h=\norm{x-y}_\infty$. There is nothing to prove for $h=0$. By interchanging
+$x,y$ if necessary, some $i$ satisfies $y_i-x_i=h$. For $x_i<t<y_i$,
+$C(t)\ge1$. No $z_j$ lies in this open interval. On its middle half, which
+has length $h/2$, we therefore have $t\ge h/4$ and $|t-z_j|\ge h/4$ for every
+$j$. It follows that
+\begin{equation}
+ \int_0^1 t^r Q(t)C(t)\dd t
+ \ge \frac h2\left(\frac h4\right)^{r+s}.
+ \label{eq:lowercount}
+\end{equation}
+For $k\ge1$, direct integration of the counting functions gives
+\begin{equation}
+ p_k(x)-p_k(y)=-k\int_0^1t^{k-1}C(t)\dd t.
+ \label{eq:countmoment}
+\end{equation}
+Writing $Q$ in monomials and using $s\le m-1$ yields
+\begin{equation}
+ \abs{\int_0^1t^rQ(t)C(t)\dd t}
+ \le\frac{2^s}{r+1}E_r(x,y).
+\end{equation}
+Thus $h^{r+s+1}\le 2^{2r+3s+1}E_r/(r+1)$. Since $0<h\le1$ and
+$s\le m-1$, we obtain
+\[
+ h^{m+r}\le\frac{2^{2r+3m-2}}{r+1}E_r(x,y)
+ \le8^{m+r}E_r(x,y),
+\]
+which proves~\eqref{eq:shifted}.
+\end{proof}
+
+The proof uses nonnegativity of the nodes and their fixed unit weights.
+An arbitrary signed or unequal-weight moment problem is not covered by this
+argument. In particular, changing the model can change its critical exponent.
+
+\begin{corollary}[Half-length inversion]
+\label{cor:half}
+For $a,b\in\As$ and $x_i=a_i^2,y_i=b_i^2$,
+\begin{equation}
+ \norm{a-b}_\infty\le\sqrt8\, E_r(x,y)^{1/(2m+2r)}.
+ \label{eq:halfinverse}
+\end{equation}
+This exponent is also sharp.
+\end{corollary}
+\begin{proof}
+Use $|\sqrt x-\sqrt y|\le\sqrt{|x-y|}$. Sharpness follows from the scaled
+positive-node pairs constructed in the next section.
+\end{proof}
+
+\section{Exact moment fibres and optimality of the exponents}
+\label{sec:fibres}
+
+\subsection{A general construction for every shift}
+
+\begin{lemma}[A moment-preserving tangent]
+\label{lem:tangent}
+Let $0<u_1<\cdots<u_m<1$ and $P(z)=\prod_i(z-u_i)$. For $r\ge0$ set
+\begin{equation}
+ b_i=\frac{1}{u_i^rP'(u_i)}.
+ \label{eq:tangent}
+\end{equation}
+The differentials of $p_{r+1},\ldots,p_{r+m-1}$ vanish on $b$, while
+$D p_{r+m}(u)b=r+m$. These first $m-1$ differentials are linearly independent.
+\end{lemma}
+\begin{proof}
+Lagrange interpolation of $z^j$, followed by comparison of the coefficient of
+$z^{m-1}$, gives
+\begin{equation}
+ \sum_{i=1}^m\frac{u_i^j}{P'(u_i)}=
+ \begin{cases}0,&0\le j<m-1,\\1,&j=m-1.\end{cases}
+ \label{eq:lagrange}
+\end{equation}
+Now $D p_k(u)b=k\sum_i u_i^{k-1-r}/P'(u_i)$, proving the asserted values.
+For rank, factor the nonzero $u_i^r$ from each column of the derivative matrix
+and the nonzero row constants. What remains is a rectangular Vandermonde
+matrix of rank $m-1$. The statements include $m=1$, with no constraints and
+an empty rank assertion.
+\end{proof}
+
+The implicit function theorem gives a smooth one-dimensional local curve
+through $u$, with tangent $b$, on which $p_{r+1},\ldots,p_{r+m-1}$ are exactly
+constant. Along this curve $p_{r+m}$ has nonzero derivative. Choose another
+point $w$ sufficiently close to $u$ so that all coordinates remain distinct
+and in $(0,1)$, and $p_{r+m}(u)\ne p_{r+m}(w)$. Then, for $0<\lambda\le1$,
+\begin{align}
+ \norm{\lambda u-\lambda w}_\infty
+   &=\lambda\norm{u-w}_\infty,\\
+ E_r(\lambda u,\lambda w)
+   &=\lambda^{m+r}|p_{m+r}(u)-p_{m+r}(w)|.
+ \label{eq:sharp-scaled}
+\end{align}
+A bound with exponent $\alpha>1/(m+r)$ would force a positive constant times
+$\lambda$ to be at most a constant times $\lambda^{(m+r)\alpha}$ as
+$\lambda\downarrow0$, which is impossible. This proves the sharpness clause
+of Theorem~\ref{thm:shifted}. Applying the same pair to half-lengths
+$\sqrt\lambda\sqrt{u_i}$ and $\sqrt\lambda\sqrt{w_i}$ proves
+Corollary~\ref{cor:half}'s sharpness.
+
+\subsection{An explicit flow that changes only the first visible deficit}
+The general construction suffices for sharpness, but statistical variance
+recovery needs control of $p_1$ as well. For shift $r=1$, the following
+coefficient flow provides it without an unspecified choice of tangent.
+
+\begin{proposition}[First-power-sum flow]
+\label{prop:flow}
+Let $0<u_1<\cdots<u_m<1$, and let $e_k(0)$ be their elementary symmetric
+functions, with $e_0(0)=1$. Define
+\begin{equation}
+ e_k(s)=\sum_{j=0}^k\frac{s^j}{j!}e_{k-j}(0),\qquad
+ P_s(z)=\sum_{k=0}^m(-1)^k e_k(s)z^{m-k}.
+ \label{eq:flow}
+\end{equation}
+For all sufficiently small real $s$, the roots $u_i(s)$ of $P_s$ remain
+simple, ordered, and in $(0,1)$. Their power sums satisfy
+\begin{align}
+ p_1(u(s))&=p_1(u(0))+s,\\
+ p_k(u(s))&=p_k(u(0)),\qquad 2\le k\le m,\\
+ \frac{\mathrm d}{\mathrm ds}p_{m+1}(u(s))
+   &=(-1)^{m+1}(m+1)e_m(s)\ne0.
+ \label{eq:flowidentities}
+\end{align}
+\end{proposition}
+\begin{proof}
+Simple real roots continue smoothly by the implicit function theorem; choose
+$s$ small enough that disjoint root neighborhoods lie in $(0,1)$. Set
+$E_s(t)=\sum_{k=0}^m e_k(s)t^k$. Then
+\begin{equation}
+ E_s(t)=e^{st}E_0(t)\pmod {t^{m+1}},\qquad
+ \partial_s E_s(t)=tE_s(t)-e_m(s)t^{m+1}.
+\end{equation}
+As a formal power series at zero,
+\begin{equation}
+ \log E_s(t)=\sum_{k\ge1}\frac{(-1)^{k-1}}{k}p_k(u(s))t^k.
+\end{equation}
+Taking logarithms in the first identity gives the first two assertions.
+Dividing the second identity by $E_s(t)$ and taking the coefficient of
+$t^{m+1}$ gives the third. Since all roots are positive, $e_m(s)>0$.
+\end{proof}
+
+The flow is exact, not just a cancellation of first derivatives. Choosing a
+fixed small nonzero $s$ gives two configurations $u,w$ with
+\begin{equation}
+ p_2(u)=p_2(w),\ldots,p_m(u)=p_m(w),\qquad
+ p_1(u)\ne p_1(w),\quad p_{m+1}(u)\ne p_{m+1}(w).
+ \label{eq:unknownpair}
+\end{equation}
+These are the hard pairs used below. They explain concretely how a change in
+the unknown Gaussian variance can hide a change in the first power sum while
+many additional cumulants also agree.
+
+\section{Identifiability and deterministic Hellinger stability}
+\label{sec:hellinger}
+
+For densities $f,g$, use the conventions
+\begin{equation}
+ H^2(f,g)=\int(\sqrt f-\sqrt g)^2\dd x,\qquad
+ \chi^2(f,g)=\int\frac{(f-g)^2}{g}\dd x,
+ \quad \TV(f,g)=\frac12\int|f-g|\dd x.
+ \label{eq:metrics}
+\end{equation}
+Here $0\le H^2\le2$, and $\TV\le H$.
+
+\begin{proposition}[Finite-cumulant identifiability]
+\label{prop:identifiable}
+In the unknown variance model, cumulants of orders
+$2,4,6,\ldots,2m+2$ determine $(a,v)$ uniquely. With known variance, orders
+$2,4,\ldots,2m$ determine $a$ uniquely.
+\end{proposition}
+\begin{proof}
+Use~\eqref{eq:cumulantidentity} to obtain $p_2,\ldots,p_{m+1}$ when $v$ is
+unknown. Theorem~\ref{thm:shifted} with $r=1$ determines the ordered $x$;
+then $a_i=\sqrt{x_i}$ and~\eqref{eq:varianceidentity} determines $v$.
+For known variance use $r=0$ and $p_1,\ldots,p_m$ instead.
+\end{proof}
+
+\begin{theorem}[Global Hellinger inverse moduli]
+\label{thm:hellinger}
+On the parameter sets of Section~\ref{sec:model},
+\begin{align}
+ \norm{a-b}_\infty&\le C H(P_{a,v},P_{b,w})^{1/(2m+2)},
+ \label{eq:ha}\\
+ |v-w|&\le C H(P_{a,v},P_{b,w})^{1/(m+1)}.
+ \label{eq:hv}
+\end{align}
+If $v=w=v_0$ is known, the stronger scale estimate is
+\begin{equation}
+ \norm{a-b}_\infty\le C H(P_{a,v_0},P_{b,v_0})^{1/(2m)}.
+ \label{eq:hknown}
+\end{equation}
+All three exponents are optimal for uniform bounds on these parameter sets.
+\end{theorem}
+\begin{proof}[Proof of the upper estimates]
+All absolute moments of any fixed order are uniformly bounded in the model.
+For raw moments of order $j$, Cauchy--Schwarz gives
+\begin{align}
+ \abs{\int x^j(f-g)\dd x}
+ &\le H(f,g)\left(\int |x|^{2j}(\sqrt f+\sqrt g)^2\dd x\right)^{1/2}\\
+ &\le H(f,g)\left(2\E_f|X|^{2j}+2\E_g|X|^{2j}\right)^{1/2}
+ \le C_jH(f,g).
+ \label{eq:momenthellinger}
+\end{align}
+Cumulants are polynomials in finitely many raw moments, so they are Lipschitz
+on the bounded moment range. Equations~\eqref{eq:varianceidentity}--
+\eqref{eq:cumulantidentity} and Theorem~\ref{thm:shifted} now give
+\[
+ \norm{x-y}_\infty\le C H^{1/(m+1)}
+\]
+in the unknown case, and the analogous bound with exponent $1/m$ in the
+known case. Taking square roots proves the scale estimates. Finally,
+\[
+ |v-w|\le |\kap_2(P_{a,v})-\kap_2(P_{b,w})|
+              +\frac m3\norm{x-y}_\infty
+\]
+proves~\eqref{eq:hv}, absorbing the term $CH$ since $H\le\sqrt2$.
+Optimality follows from the pairs and asymptotics in Sections~\ref{sec:likelihood}
+and~\ref{sec:lower}.
+\end{proof}
+
+The inverse modulus alone does not prove a minimax sampling lower bound. One
+must construct pairs whose \emph{likelihoods}, not merely a chosen finite
+list of moments, are close. That step is the subject of the next section.
+
+\section{From exact moment cancellation to likelihood asymptotics}
+\label{sec:likelihood}
+
+Write $\phi_v(x)=(2\pi v)^{-1/2}\exp(-x^2/(2v))$. Fix a positive base variance
+$v$, let $f_0(x)=\E\phi_v(x-Z)$, and define
+\begin{equation}
+ J_k(f_0)=\int_\R\frac{(f_0^{(k)}(x))^2}{f_0(x)}\dd x.
+ \label{eq:J}
+\end{equation}
+These quantities are finite despite the unbounded observation space.
+
+\begin{lemma}[Weighted derivative information]
+\label{lem:J}
+For every integer $k\ge1$,
+\begin{equation}
+ 0<J_k(f_0)\le k!v^{-k}.
+ \label{eq:Jbound}
+\end{equation}
+For $Z=0$ equality holds.
+\end{lemma}
+\begin{proof}
+Differentiating the Gaussian convolution is justified by its integrable
+Gaussian bounds. Conditional Cauchy--Schwarz gives pointwise
+\[
+ \frac{(\E\phi_v^{(k)}(x-Z))^2}{\E\phi_v(x-Z)}
+ \le \E\frac{(\phi_v^{(k)}(x-Z))^2}{\phi_v(x-Z)}.
+\]
+Integrating and using Tonelli bounds $J_k(f_0)$ by the corresponding Gaussian
+integral. The derivative identity
+\[
+ \phi_v^{(k)}(x)=(-1)^k v^{-k/2}\He_k(x/\sqrt v)\phi_v(x)
+\]
+and the Gaussian orthogonality relation $\E\He_k(G)^2=k!$ evaluate it as
+$k!v^{-k}$. Equality for $Z=0$ is immediate. If $J_k(f_0)=0$, its continuous
+numerator would vanish identically, so $f_0$ would be a polynomial of degree
+at most $k-1$. No nonzero polynomial on $\R$ is an integrable probability
+density, a contradiction.
+\end{proof}
+
+For any fixed nonnegative vector $u=(u_1,\ldots,u_m)$ put
+\begin{equation}
+ V_u=\sum_i\sqrt{u_i}U_i,\qquad \beta_u=\frac13p_1(u).
+\end{equation}
+Two families will be used. The fixed-variance family is
+\begin{equation}
+ f^{\mathrm{fix}}_{t,u}=\mathrm{density}\bigl(Z+tV_u+\sqrt vG\bigr).
+ \label{eq:fixedfamily}
+\end{equation}
+The compensated family, defined for sufficiently small real $t$, is
+\begin{equation}
+ f^{\mathrm{comp}}_{t,u}
+ =\mathrm{density}\bigl(Z+tV_u+\sqrt{v-t^2\beta_u}\,G\bigr).
+ \label{eq:compfamily}
+\end{equation}
+The total variance contributed by the added variables in the compensated
+family is exactly $v$ for every $t$.
+
+\begin{theorem}[Exact leading likelihood term]
+\label{thm:likelihood}
+Consider either of the following cases:
+\begin{enumerate}[label=(\alph*)]
+\item The fixed family, with $q\ge1$, and vectors $u,w$ satisfying
+$p_k(u)=p_k(w)$ for $1\le k<q$.
+\item The compensated family, with $q\ge2$, and vectors $u,w$ satisfying
+$p_k(u)=p_k(w)$ for $2\le k<q$.
+\end{enumerate}
+Assume $d=c_q(p_q(u)-p_q(w))\ne0$, and set $A=d/(2q)!$. Write $f_{t,u},f_{t,w}$
+for the chosen family. As $t\to0$,
+\begin{equation}
+ f_{t,u}-f_{t,w}
+   =A t^{2q}f_0^{(2q)}+O_{\mathcal H}(t^{2q+2}),
+ \qquad \mathcal H=L^2\bigl(\R,\phi_{3v/4}(x)^{-1}\dd x\bigr).
+ \label{eq:densityexpansion}
+\end{equation}
+Moreover,
+\begin{align}
+ \chi^2(f_{t,u},f_{t,w})
+   &=A^2J_{2q}(f_0)t^{4q}+o(t^{4q}),
+ \label{eq:chiexpansion}\\
+ H^2(f_{t,u},f_{t,w})
+   &=\frac{A^2}{4}J_{2q}(f_0)t^{4q}+o(t^{4q}).
+ \label{eq:hexpansion}
+\end{align}
+In particular, both leading constants are strictly positive.
+\end{theorem}
+
+\begin{proof}
+We give the tail and denominator details because they are essential for a
+statistical lower bound.
+
+\emph{Step 1: a common positive lower envelope.}
+Choose $|t|\le t_0$ so that all Gaussian variances in the two families belong
+to $[7v/8,v]$. The shifts $W=Z+tV_u$ and $Z+tV_w$ are uniformly bounded by
+some $M$. Put $s=3v/4$. For $b\in[7v/8,v]$ and $|W|\le M$, minimization of
+a quadratic in $x$ gives
+\begin{equation}
+ \frac{\phi_b(x-W)}{\phi_s(x)}
+ \ge\sqrt{\frac{s}{b}}\exp\left(-\frac{W^2}{2(b-s)}\right)\ge c>0.
+ \label{eq:envelope}
+\end{equation}
+Averaging preserves the inequality. Thus each density in the two families,
+and $f_0$, is bounded below by $c\phi_s$ uniformly in $t$.
+
+\emph{Step 2: Taylor expansion in a weighted Hilbert space.}
+Every fixed-order derivative in $t$ of
+$\phi_{v-t^2\beta_u}(x-Z-tV_u)$, or of its fixed-variance counterpart, is a
+finite sum of Gaussian terms times polynomials in $x,Z,V_u$ and bounded
+inverse powers of the variance. Consequently, for each derivative order it
+is bounded uniformly by
+\begin{equation}
+ C(1+|x|)^N\exp\left(-\frac{x^2}{2v}+C|x|\right).
+ \label{eq:derivativebound}
+\end{equation}
+After squaring and dividing by $\phi_s$, the quadratic part of the exponent
+is $-x^2/(3v)$. This is integrable, including any polynomial and linear
+exponential factor. Differentiation under the expectation and differentiation
+in $\mathcal H$ are therefore justified to any fixed order. Symmetry of
+$V_u$ makes the density an even function of $t$. Taylor's theorem in
+$\mathcal H$ gives an expansion with an $O_{\mathcal H}(t^{2q+2})$ remainder
+through order $2q$.
+
+\emph{Step 3: identify the first unequal coefficient.}
+For each fixed Fourier frequency $\xi$, the logarithm of the uniform part
+has its convergent germ
+\[
+ \log\E e^{i\xi tV_u}
+   =\sum_{k\ge1}\frac{c_kp_k(u)}{(2k)!}(i\xi t)^{2k}.
+\]
+In the compensated family the Gaussian adjustment cancels the $k=1$ term
+exactly. The moment equalities in (a) or (b) then show that the first unequal
+coefficient of the two characteristic functions is
+\[
+ A t^{2q}(i\xi)^{2q}\widehat f_0(\xi).
+\]
+Here the characteristic-function convention is
+$\widehat f(\xi)=\int e^{i\xi x}f(x)\dd x$; the Fourier transform of an even
+$2q$th derivative has the same multiplier $(i\xi)^{2q}$.
+No logarithm of $\widehat f_0$ is needed, so its possible zeros cause no
+problem. Coefficients in the Hilbert-space expansion are integrable by
+Cauchy--Schwarz against $\phi_s$, and Fourier uniqueness identifies their
+difference as $A f_0^{(2q)}$. This proves~\eqref{eq:densityexpansion}.
+
+\emph{Step 4: pass to the likelihood metrics.}
+Let $D_t=(f_{t,u}-f_{t,w})/t^{2q}$ and $D=A f_0^{(2q)}$. We know
+$D_t\to D$ in $\mathcal H$. The weights $\phi_s/f_{t,w}$ are uniformly bounded
+by~\eqref{eq:envelope} and converge pointwise to $\phi_s/f_0$. Weighted
+Cauchy--Schwarz first replaces $D_t$ by $D$ in the integral, and dominated
+convergence then gives
+\[
+ \int\frac{D_t^2}{f_{t,w}}\dd x\longrightarrow\int\frac{D^2}{f_0}\dd x.
+\]
+This is~\eqref{eq:chiexpansion}. Finally, the identity
+\[
+ (\sqrt f-\sqrt g)^2=\frac{(f-g)^2}{(\sqrt f+\sqrt g)^2}
+\]
+has denominator converging pointwise to $4f_0$ and bounded below by
+$4c\phi_s$. The identical argument gives~\eqref{eq:hexpansion}. Positivity
+of the limits follows from Lemma~\ref{lem:J}.
+\end{proof}
+
+This proof explains why merely matching finitely many moments is not enough:
+the required control is in a space weighted by a reciprocal density. The
+positive Gaussian component supplies a common tail envelope and prevents
+rare tail events from defeating the lower-bound construction.
+
+\section{A feasible moment estimator and upper bounds}
+\label{sec:upper}
+
+This section constructs a measurable estimator and proves the upper half of
+Theorem~\ref{thm:main}. The procedure is deliberately elementary and globally
+specified. It is not claimed to be computationally optimal.
+
+\subsection{Uniform moment control and cumulant estimation}
+For every integer $j\ge1$, all parameters in the unknown model satisfy
+\begin{equation}
+ \E|X_{a,v}|^j\le B_j
+ :=2^{j-1}\left((L+m)^j+\overline v^{j/2}\E|G|^j\right).
+ \label{eq:Bj}
+\end{equation}
+For known variance use $v_0$ instead of $\overline v$. Given observations
+$X_1,\ldots,X_n$, set $\widehat\mu_0=1$ and
+\begin{equation}
+ \widehat\mu_j=
+ \clip_{[-B_j,B_j]}\left(\frac1n\sum_{\ell=1}^n X_\ell^j\right).
+ \label{eq:rawestimator}
+\end{equation}
+Because the true raw moment lies in the clipping interval,
+\begin{equation}
+ \E|\widehat\mu_j-\mu_j|^2\le\frac{B_{2j}}{n}.
+ \label{eq:rawMSE}
+\end{equation}
+Cumulants are computed recursively from these clipped moments:
+\begin{equation}
+ \widehat\kap_j=\widehat\mu_j-
+ \sum_{\ell=1}^{j-1}\binom{j-1}{\ell-1}
+                \widehat\kap_\ell\widehat\mu_{j-\ell}.
+ \label{eq:cumulantrecursion}
+\end{equation}
+The exact identity follows by differentiating the relation between a moment
+generating function and its logarithm, then comparing coefficients. Its
+estimated version is a polynomial in a bounded moment vector. Every fixed
+polynomial is Lipschitz on this compact box, so for fixed $K$,
+\begin{equation}
+ \E\max_{1\le j\le K}|\widehat\kap_j-\kap_j(X_{a,v})|^2\le\frac{C_K}{n}.
+ \label{eq:cumulantMSE}
+\end{equation}
+The estimators need not be unbiased; the bound, not unbiasedness, is what the
+inversion argument requires.
+
+For unknown variance use $K=2m+2$ and define
+\begin{equation}
+ \widehat p_k=\frac{\widehat\kap_{2k}-\kap_{2k}(Z)}{c_k},
+ \qquad 2\le k\le m+1.
+ \label{eq:phatunknown}
+\end{equation}
+For known variance use $K=2m$, the same formula for $2\le k\le m$, and
+\begin{equation}
+ \widehat p_1=3\bigl(\widehat\kap_2-\kap_2(Z)-v_0\bigr).
+ \label{eq:phatknown}
+\end{equation}
+With $r=1$ in the unknown case and $r=0$ in the known case, write
+\begin{equation}
+ \Delta=\max_{r+1\le k\le r+m}|\widehat p_k-p_k(x)|.
+\end{equation}
+Equations~\eqref{eq:cumulantMSE} and $c_k\ne0$ imply
+\begin{equation}
+ \E\Delta^2\le C/n,\qquad \E\Delta\le Cn^{-1/2}.
+ \label{eq:delta}
+\end{equation}
+
+\subsection{Globally feasible fitting instead of unstable root clipping}
+A noisy moment vector need not correspond to nonnegative real nodes. We
+therefore fit within the admissible set rather than form a polynomial and
+silently discard its complex or negative roots. Let
+\begin{equation}
+ \mathcal G_n=\Xs\cap\{0,1/n,\ldots,1\}^m.
+\end{equation}
+Choose the lexicographically first minimizer
+\begin{equation}
+ \widehat x\in\operatorname*{arg\,min}_{z\in\mathcal G_n}
+ \max_{r+1\le k\le r+m}|p_k(z)-\widehat p_k|,
+ \qquad \widehat a_i=\sqrt{\widehat x_i}.
+ \label{eq:fit}
+\end{equation}
+There are exactly $\binom{n+m}{m}$ grid points, so the rule exists and is
+measurable. It is an exhaustive finite algorithm when the required constants
+and objective comparisons are provided to the desired accuracy. Its grid
+size is a statistical existence device, not a recommendation for large-$m$
+numerical implementation.
+
+Coordinatewise downward rounding of the true $x$ to this grid preserves
+order and changes each coordinate by at most $1/n$. Since $z\mapsto z^k$ is
+$k$-Lipschitz on $[0,1]$, the rounded vector has objective at most
+$\Delta+m(m+r)/n$. The minimizer therefore satisfies
+\begin{equation}
+ E_r(\widehat x,x)\le 2\Delta+\frac{m(m+r)}n.
+ \label{eq:fitresidual}
+\end{equation}
+Theorem~\ref{thm:shifted} and Corollary~\ref{cor:half} yield
+\begin{align}
+ \norm{\widehat x-x}_\infty
+ &\le C(\Delta+n^{-1})^{1/(m+r)},
+ \label{eq:xestbound}\\
+ \norm{\widehat a-a}_\infty
+ &\le C(\Delta+n^{-1})^{1/(2m+2r)}.
+ \label{eq:aestbound}
+\end{align}
+Jensen's inequality and~\eqref{eq:delta} prove
+\begin{equation}
+ \sup\E\norm{\widehat a-a}_\infty\le Cn^{-1/(4m+4r)}.
+ \label{eq:aupper}
+\end{equation}
+Taking $r=0,1$ gives the two scale upper bounds.
+
+In the unknown case define the variance estimator
+\begin{equation}
+ \widehat v=\clip_{[\underline v,\overline v]}
+ \left(\widehat\kap_2-\kap_2(Z)-\frac13p_1(\widehat x)\right).
+ \label{eq:vestimator}
+\end{equation}
+Clipping cannot increase its distance from the true $v$. Thus
+\begin{equation}
+ \E|\widehat v-v|
+ \le\E|\widehat\kap_2-\kap_2(X)|
+        +\frac m3\E\norm{\widehat x-x}_\infty
+ \le C n^{-1/(2m+2)},
+ \label{eq:vupper}
+\end{equation}
+where the faster $n^{-1/2}$ term is absorbed. This completes all upper bounds
+in Theorem~\ref{thm:main}.
+
+\subsection{Approximate optimization and confidence bounds}
+The estimator remains valid if the achieved objective is within $\eta_n$ of
+the global grid minimum. Equation~\eqref{eq:fitresidual} then acquires an
+additional $\eta_n$. In particular, a certified objective gap
+$\eta_n=O(n^{-1/2})$ preserves the rates. An arbitrary local optimum, without
+a bound on its gap, has no such guarantee.
+
+For $0<\delta<1$, Markov's inequality applied to $\Delta^2$ gives, with
+probability at least $1-\delta$,
+\begin{equation}
+ \norm{\widehat a-a}_\infty
+ \le C\left((n\delta)^{-1/2}+n^{-1}\right)^{1/(2m+2r)}.
+ \label{eq:confidence}
+\end{equation}
+These elementary confidence bounds are conservative. Sharper concentration
+or adaptive confidence procedures are separate questions; neither is needed
+for the minimax mean-risk result.
+
+\section{Matching statistical lower bounds}
+\label{sec:lower}
+
+We first record the testing reduction with the metric conventions used here.
+If two parameters are separated by $D$ in a metric loss, the test that chooses
+the parameter nearer an estimator has an error only if that estimator's loss
+is at least $D/2$. Consequently, for every estimator,
+\begin{equation}
+ \max_{i=0,1}\E_i[\mathrm{loss}]
+ \ge\frac D4\left(1-\TV(P_0^{\otimes n},P_1^{\otimes n})\right).
+ \label{eq:lecam}
+\end{equation}
+This follows because the minimum sum of the two simple testing errors is
+$1-\TV$. Hellinger affinity tensorizes, so
+\begin{equation}
+ H^2(P^{\otimes n},Q^{\otimes n})
+ =2\left[1-\left(1-\frac{H^2(P,Q)}2\right)^n\right]
+ \le nH^2(P,Q).
+ \label{eq:tensor}
+\end{equation}
+Together with $\TV\le H$, this controls the bracket in~\eqref{eq:lecam}.
+
+\subsection{Unknown Gaussian variance}
+Choose $v_*\in(\underline v,\overline v)$ and the fixed positive distinct
+vectors $u,w$ from Proposition~\ref{prop:flow}, with a sufficiently small
+nonzero flow parameter. They satisfy~\eqref{eq:unknownpair}. For small $t>0$
+define two model parameters by
+\begin{align}
+ a_i(t)&=t\sqrt{u_i},& v_u(t)&=v_* -\frac{t^2}{3}p_1(u),\\
+ b_i(t)&=t\sqrt{w_i},& v_w(t)&=v_* -\frac{t^2}{3}p_1(w).
+ \label{eq:hardunknown}
+\end{align}
+They belong to the parameter set for every sufficiently small $t$, including
+the variance interval. Their scale and variance separations are
+\begin{equation}
+ \norm{a(t)-b(t)}_\infty=D_a t,\qquad
+ |v_u(t)-v_w(t)|=D_v t^2,
+ \label{eq:separations}
+\end{equation}
+where $D_a,D_v>0$ are fixed. Theorem~\ref{thm:likelihood}, with $q=m+1$,
+gives
+\begin{equation}
+ H^2(P_{a(t),v_u(t)},P_{b(t),v_w(t)})
+ =K t^{4m+4}+o(t^{4m+4}),\qquad K>0.
+ \label{eq:hardHunknown}
+\end{equation}
+Set $t=\gamma n^{-1/(4m+4)}$ with fixed $\gamma>0$ small enough. Equations
+\eqref{eq:tensor} and~\eqref{eq:hardHunknown} ensure product total variation
+at most $1/2$ for all sufficiently large $n$. Applying~\eqref{eq:lecam}
+separately to the two separations in~\eqref{eq:separations} proves
+\begin{equation}
+ \risk^a_n\ge c n^{-1/(4m+4)},\qquad
+ \risk^v_n\ge c n^{-1/(2m+2)}.
+\end{equation}
+The same pair proves both lower bounds; the variance difficulty is not an
+artifact of the plug-in estimator.
+
+\subsection{Known Gaussian variance}
+Use the construction of Lemma~\ref{lem:tangent} with $r=0$ to choose positive
+vectors $u,w$ for which $p_1,\ldots,p_{m-1}$ agree but $p_m$ differs. For $m=1$
+there are no matching constraints, and any two distinct positive nodes
+suffice. Set $a=t\sqrt u$, $b=t\sqrt w$, and keep the Gaussian variance
+fixed at $v_0$. Theorem~\ref{thm:likelihood}, now with $q=m$ in the fixed
+family, gives $H^2\asymp t^{4m}$. Choosing $t=\gamma n^{-1/(4m)}$ in the same
+two-point argument proves
+\begin{equation}
+ \risk^{a,\mathrm{known}}_n\ge c n^{-1/(4m)}.
+\end{equation}
+This completes Theorem~\ref{thm:main}.
+
+\subsection{Optimality of the deterministic moduli}
+The same pairs also complete Theorem~\ref{thm:hellinger}. In the unknown
+case $H\asymp t^{2m+2}$ while scale distance is $D_at$ and variance distance
+is $D_vt^2$. An exponent larger than $1/(2m+2)$ or $1/(m+1)$, respectively,
+would contradict these asymptotics. In the known case $H\asymp t^{2m}$ and
+scale distance is proportional to $t$, excluding a larger exponent there.
+
+\subsection{Why these are global, not everywhere-local, rates}
+The hard parameters approach the boundary where all uniform factors vanish.
+They do not say that well-separated positive factors are always recovered
+slowly. In fact, for the unknown-variance moment map
+$F(x)=(p_2(x),\ldots,p_{m+1}(x))$,
+\begin{equation}
+ \det DF(x)=(m+1)!\left(\prod_{i=1}^m x_i\right)
+                   \prod_{1\le i<j\le m}(x_j-x_i).
+ \label{eq:jacobian}
+\end{equation}
+To check this, factor $k$ from the row for $p_k$ and $x_i$ from column $i$;
+the remaining determinant is Vandermonde. At a strictly positive, distinct
+configuration this determinant is nonzero. The inverse function theorem,
+together with the moment bounds of Section~\ref{sec:upper}, yields local
+$n^{-1/2}$ estimation on a sufficiently small regular neighborhood, including
+for $v$ and for the half-lengths. The slow global exponents reflect loss of
+rank near vanishing or colliding configurations, not a uniform penalty at
+every point.
+
+\section{Detection, rank, and the distinction from recovery}
+\label{sec:testing}
+
+We prove Theorem~\ref{thm:detectionintro}. For unknown variance the exact
+fourth-cumulant contrast is
+\begin{equation}
+ T=\kap_4(X_{a,v})-\kap_4(Z)
+   =-\frac{2}{15}\sum_i a_i^4.
+ \label{eq:testcontrast}
+\end{equation}
+Let $\widehat T=\widehat\kap_4-\kap_4(Z)$, using the clipped-moment procedure.
+By~\eqref{eq:cumulantMSE}, $\E|\widehat T-T|^2\le C/n$ uniformly. Reject
+$a=0$ when
+\begin{equation}
+ \widehat T<-h^4/15.
+\end{equation}
+Under the null $T=0$; under any alternative with $\norm a_\infty\ge h$,
+$T\le-2h^4/15$. Either kind of error requires
+$|\widehat T-T|\ge h^4/15$. Hence the sum of maximal errors is at most
+$C/(nh^8)$.
+
+For the converse, fix $v_*\in(\underline v,\overline v)$ and compare
+\begin{equation}
+ (a,v)=(0,v_*)\quad\text{with}\quad
+ (a,v)=((0,\ldots,0,h),v_*-h^2/3).
+ \label{eq:detectionpair}
+\end{equation}
+For small $h$ both are admissible. Apply Theorem~\ref{thm:likelihood} with
+$q=2$, one node equal to $1$ versus all nodes zero, and $t=h$. There are no
+higher matching constraints before $p_2$; compensation matches variance.
+The one-observation squared Hellinger distance is $O(h^8)$. If $nh_n^8\to0$,
+product total variation tends to zero by~\eqref{eq:tensor}, so every test
+has the sum of its two errors at least $1-o(1)$. Composite maximal risks
+are at least these two simple risks.
+
+When variance is known, use
+\begin{equation}
+ T_2=\kap_2(X_{a,v_0})-\kap_2(Z)-v_0
+     =\frac13\sum_i a_i^2
+\end{equation}
+and reject for $\widehat T_2>h^2/6$. This gives $C/(nh^4)$ by the same mean
+square argument. The fixed-variance one-factor pair has $H^2=O(h^4)$ by
+Theorem~\ref{thm:likelihood} with $q=1$, proving the lower bound.
+
+At a fixed large multiple of the critical scale the upper bounds can be
+made arbitrarily small by increasing that multiple. Consistency, meaning
+errors tending to zero with $n$, follows for diverging multiples. We do not
+confuse these two statements.
+
+\begin{corollary}[No uniform exact factor-count estimation without separation]
+\label{cor:rank}
+Let the factor count be $\#\{i:a_i>0\}$. Over either full parameter set of
+Section~\ref{sec:model}, no sequence of estimators of this count has
+probability of error tending to zero uniformly over all parameters.
+\end{corollary}
+\begin{proof}
+Choose $h_n$ below the respective detection scale in~\eqref{eq:detectionpair},
+or in its known-variance counterpart. The two parameters have different
+counts, but their product laws have total variation tending to zero. An
+exact count estimator would distinguish them, contradicting the testing
+lower bound.
+\end{proof}
+
+This does not rule out pointwise consistency when every nonzero factor has
+a fixed positive half-length. It rules out \emph{uniform} recovery of the
+count without a lower bound on the smallest positive half-length.
+
+\section{Explicit two-factor and one-factor examples}
+\label{sec:examples}
+
+\subsection{A two-factor pair with a sixth-order first difference}
+Take squared-scale templates
+\begin{equation}
+ u=(0,5),\qquad w=(3,4).
+ \label{eq:explicitpair}
+\end{equation}
+The templates themselves exceed $1$, but the actual squared scales are
+$t^2u,t^2w$, which lie in $[0,1]^2$ for sufficiently small $t$. They satisfy
+\begin{equation}
+ p_1(u)=5,\quad p_1(w)=7,\qquad
+ p_2(u)=p_2(w)=25,\qquad p_3(u)-p_3(w)=34.
+\end{equation}
+Choose Gaussian variances $v_*-5t^2/3$ and $v_*-7t^2/3$. The two uniform
+half-length vectors are $(0,\sqrt5\,t)$ and $(\sqrt3\,t,2t)$, separated by
+$\sqrt3\,t$, while the variances differ by $2t^2/3$. The first unequal added
+cumulant is the sixth:
+\begin{equation}
+ \Delta\kap_6=\frac{16}{63}\,34t^6=\frac{544}{63}t^6.
+\end{equation}
+Theorem~\ref{thm:likelihood} therefore gives
+\begin{equation}
+ f_{t,u}-f_{t,w}=\frac{34}{2835}t^6 f_0^{(6)}+O_{\mathcal H}(t^8).
+ \label{eq:explicitdensity}
+\end{equation}
+For $Z=0$ and $v_*=1$, the corresponding chi-square expansion is
+\begin{equation}
+ \chi^2(f_{t,u},f_{t,w})
+ =\frac{18496}{178605}t^{12}+o(t^{12}).
+ \label{eq:explicitchi}
+\end{equation}
+Indeed, $J_6(\phi_1)=6!=720$, and
+$720(34/2835)^2=18496/178605$. This gives the unknown-variance two-factor
+scale $t\asymp n^{-1/12}$ and variance separation of order $n^{-1/6}$ without
+requiring a numerically solved polynomial.
+
+For a known-variance comparison, use $u=(1,4)$ and $w=(2,3)$.
+Their first power sums agree and their second power sums differ by $4$.
+The leading density difference is
+\begin{equation}
+ f_{t,u}^{\mathrm{fix}}-f_{t,w}^{\mathrm{fix}}
+   =-\frac1{45}t^4f_0^{(4)}+O_{\mathcal H}(t^6),
+\end{equation}
+which gives the faster two-factor scale $n^{-1/8}$.
+
+\subsection{One small factor and an unknown Gaussian variance}
+Compare $\sqrt{v_*}G$ with $tU+\sqrt{v_*-t^2/3}G$. Variance is exactly
+matched, and the fourth cumulant is the first non-Gaussian signal:
+\begin{equation}
+ f_t-\phi_{v_*}=-\frac{t^4}{180}\phi_{v_*}^{(4)}+O_{\mathcal H}(t^6),
+ \qquad
+ \chi^2(f_t,\phi_{v_*})
+   =\frac{4!}{180^2v_*^4}t^8+o(t^8).
+\end{equation}
+This is the simplest instance of the $n^{-1/8}$ threshold. If the variance
+cannot adjust, the leading density difference is instead
+$t^2\phi_{v_*}''/6$, giving an $n^{-1/4}$ threshold. The nuisance parameter
+removes a genuine leading observable term.
+
+\subsection{A Fourier diagnostic with a known exact limit}
+For the pair~\eqref{eq:explicitpair}, $Z=0$, $v_*=1$, and frequency $1$, put
+\begin{align}
+ \ell_u(t)&=-\frac{1-5t^2/3}{2}+\log\sinc(\sqrt5\,t),\\
+ \ell_w(t)&=-\frac{1-7t^2/3}{2}
+                 +\log\sinc(\sqrt3\,t)+\log\sinc(2t).
+\end{align}
+For small positive $t$ the sinc factors are positive, so these real logarithms
+are unambiguous. The proved coefficient identity gives
+\begin{equation}
+ \frac{\ell_u(t)-\ell_w(t)}{t^6}\longrightarrow-\frac{34}{2835}.
+\end{equation}
+The included program evaluates this diagnostic at 80-digit working precision:
+\begin{center}
+\begin{tabular}{@{}rr@{}}
+\toprule
+$t$ & $(\ell_u(t)-\ell_w(t))/t^6$\\
+\midrule
+$0.2$ & $-0.0123041895267270$\\
+$0.1$ & $-0.0120695349593127$\\
+$0.05$ & $-0.0120120178007690$\\
+$0.025$ & $-0.0119977087830769$\\
+$0.0125$ & $-0.0119941358994491$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The calculation is a diagnostic, not an interval-certified proof of the
+asymptotic statement or of the likelihood integrals.
+
+\section{Verification record and a formalization route}
+\label{sec:verification}
+
+\subsection{What the accompanying program checks}
+The package contains \texttt{verify\_results.py}, requiring SymPy and mpmath,
+with random seed \texttt{20260929}. It produces a machine-readable JSON record
+and a plain-text summary. The completed checks are:
+\begin{enumerate}
+\item $7000$ exact rational instances of~\eqref{eq:shifted}, for
+$1\le m\le7$, $0\le r\le3$, including zero entries and repeated nodes.
+Each comparison uses integer or rational arithmetic, not floating-point
+H\"older powers.
+\item $40$ exact Lagrange/Vandermonde tangent checks for $1\le m\le8$ and
+$0\le r\le4$.
+\item Eight exact coefficient-flow checks, one for each $1\le m\le8$.
+For every case, a nonzero rational shift is accompanied by $m$ disjoint
+positive rational intervals on each of which the resulting degree-$m$
+polynomial changes sign. This certifies all its roots to be real, positive,
+and distinct. Power-sum conservation and the derivative of $p_{m+1}$ are
+verified symbolically.
+\item Exact evaluation of the two-factor leading constants in
+\eqref{eq:explicitdensity}--\eqref{eq:explicitchi}, followed by the
+high-precision Fourier diagnostic above.
+\end{enumerate}
+Every listed exact check passed. These finite checks support the algebra and
+examples but do not replace the all-parameter proofs. The program does not
+claim a simulated minimax theorem, an empirical risk study, an interval bound
+on an integral, or a proof-assistant verification.
+
+\subsection{A useful division of the formalization work}
+The argument separates into three fairly independent layers.
+
+\emph{Finite algebra and order.} Formalize ordered nonnegative vectors,
+power sums, counting functions, their sign blocks, and
+Theorem~\ref{thm:shifted}. The bottleneck is not symbolic manipulation but the
+finite combinatorial bound on sign changes, including ties. Lagrange
+interpolation and the elementary-symmetric flow can then be proved as exact
+polynomial identities. The program's rational root intervals are natural
+certificate data for this layer, provided a proved checker supplies their
+semantics.
+
+\emph{Analysis of Gaussian convolutions.} Formalize the common lower envelope,
+Gaussian derivative/Hermite bounds, parameter differentiation in a weighted
+$L^2$ space, and the passage from that convergence to chi-square and Hellinger
+limits. This is the essential analytic bridge; an unproved assertion that
+moment matching implies Hellinger closeness must not substitute for it.
+
+\emph{Statistical decisions.} Formalize measurable finite-grid minimization,
+uniform moment bounds, clipping, the two-point testing inequality, and
+Hellinger tensorization. Once these are available, the exponents follow by
+short substitutions. Theorems about the known and unknown variance experiments
+should retain different parameter types or explicit hypotheses, preventing
+an accidental removal of the positive-smoothing assumption.
+
+This is a roadmap, not delivered Lean code. The repository's existing formal
+Fabius tools motivate the background, but no assertion in this article is
+promoted to a formal theorem merely because an adjacent repository module
+has been kernel-checked.
+
+\section{Further research questions and success criteria}
+\label{sec:future}
+
+\begin{problem}[Remove Gaussian smoothing without losing the lower bound]
+For the unsmoothed model $Z_{\mathrm{up}}+\sum_i a_iU_i$, determine the sharp
+sampling minimax rates at vanishing factors. The key issue is whether a
+suitable replacement for the weighted Taylor argument holds near the flat,
+moving support boundary. A first concrete target is finiteness, or a precise
+failure mode, of $\int (g^{(k)})^2/g$ for the up density $g$, together with
+control of the support change under convolution. A total-variation inverse
+modulus alone does not settle this problem.
+\end{problem}
+
+\begin{problem}[Classify all local strata with unknown variance]
+At a base configuration with positive squared-scale multiplicities
+$m_1,\ldots,m_s$ and $m_0$ zero slots, determine the exact local pairwise
+Hellinger inverse exponent. A candidate denominator for the half-length
+exponent is
+\begin{equation}
+ M=\max\bigl(\{m_1,\ldots,m_s\}\cup
+                  \{2(m_0+1):m_0>0\}\bigr).
+ \label{eq:localconjecture}
+\end{equation}
+The proposed exponent is $1/M$ for the Hellinger modulus and $1/(2M)$ for
+the corresponding sampling rate. This is a conjectural extension, not a
+result proved here. It agrees with the fully vanishing and regular cases
+proved above, but mixed clusters require a separate local argument and
+matching likelihood constructions.
+\end{problem}
+
+\begin{problem}[Adapt to collision and vanishing patterns]
+Construct a single practical estimator attaining the regular $n^{-1/2}$ rate
+away from singularities and the correct slower rates on every singular
+stratum without being told the stratum. Determine which honest confidence
+sets can adapt to these rates. Separate impossibility due to testing between
+strata from failures of a particular algorithm.
+\end{problem}
+
+\begin{problem}[Efficient globally certified shifted-moment fitting]
+Replace the $\binom{n+m}{m}$ grid search by an algorithm with explicit
+complexity in $m$ and the requested objective tolerance. One route is to use
+hyperbolic polynomial coefficients and the special flow of
+Proposition~\ref{prop:flow}; another is constrained optimization with a
+certificate of a global objective gap. A useful endpoint is a solver whose
+certificate guarantees the $O(n^{-1/2})$ gap sufficient for the statistical
+rates, including multiple and zero roots.
+\end{problem}
+
+\begin{problem}[Growing capacity and the infinite-factor transition]
+Allow $m=m_n\to\infty$ or a summable infinite half-length spectrum. Track
+constants in the shifted-moment, cumulant-estimation, and likelihood bounds
+instead of hiding them in fixed-$m$ notation. Determine where the polynomial
+rates proved here cease to be informative and connect that regime to the
+repository's infinite-factor instability questions. The fixed-$m$ theorem
+cannot simply be read with a growing $m$ substituted into its exponent.
+\end{problem}
+
+\begin{problem}[Learn the background from calibration samples]
+Suppose the background law is not known exactly but a second independent
+sample from $Z$ is available. Quantify the joint dependence on the observation
+sample size and calibration sample size, particularly when high cumulants of
+$Z$ must be estimated. A second variant is an explicitly bounded deterministic
+error in each background cumulant. Determine when background uncertainty
+becomes the dominant obstruction.
+\end{problem}
+
+\begin{problem}[Multivariate uniform directions and covariance confounding]
+Replace each $a_iU_i$ by $U_i b_i$ with unknown vectors $b_i\in\R^d$, and let
+the Gaussian covariance matrix be unknown. Higher even cumulants are then
+sums of tensors $b_i^{\otimes 2k}$. Establish identifiability up to signs and
+permutations, and sharp rates near collinear, colliding, or vanishing vectors.
+The one-dimensional sign-count proof no longer applies directly; it isolates
+what a genuine multivariate replacement must accomplish.
+\end{problem}
+
+\begin{problem}[Optimal constants and different moment windows]
+Determine the best constant in~\eqref{eq:shifted}, including its dependence
+on $m,r$. More structurally, classify which nonconsecutive power windows
+retain injectivity and what their optimal inverse exponents are. Then examine
+known unequal positive weights in the power sums. Equal unit weights were
+used in the excursion-count argument, so a weighted extension needs its own
+hypotheses rather than an automatic transfer.
+\end{problem}
+
+\section{Conclusion}
+Unknown Gaussian variance does more than add an extra parameter. It absorbs
+the second-cumulant signature of small uniform factors, so the recoverable
+power-sum window shifts from $p_1,\ldots,p_m$ to $p_2,\ldots,p_{m+1}$.
+The sharp shifted-moment inequality quantifies that loss algebraically;
+exact moment fibres and a weighted Gaussian likelihood expansion show that
+it persists at the level of statistical information. The resulting scale
+rates are $n^{-1/(4m)}$ with known variance and $n^{-1/(4m+4)}$ with unknown
+variance, with variance estimation at $n^{-1/(2m+2)}$. Detection uses only the
+first unconfounded non-Gaussian cumulant and has the different, capacity-free
+threshold $n^{-1/8}$.
+
+These conclusions extend a specific ProveIt research direction without
+assuming the unreviewed preceding report as a proved analytic black box.
+They leave explicit boundaries: positive smoothing, fixed capacity, known
+bounded background, and conventional rather than machine-checked proofs.
+The most direct next advance is a sharp treatment of mixed local strata or
+of the unsmoothed up-law likelihood boundary.
+
+\begin{thebibliography}{9}
+\bibitem{Arias}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition
+and properties}, arXiv:1702.05442 (2017).
+English translation of the 1982 article in
+\emph{Rev. Real Acad. Ciencias Madrid} \textbf{76}, 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{BatenkovYomdin}
+D.~Batenkov and Y.~Yomdin,
+\emph{Geometry and Singularities of the Prony mapping},
+arXiv:1301.1336 (2013).
+\url{https://arxiv.org/abs/1301.1336}.
+
+\bibitem{HeinrichKahn}
+P.~Heinrich and J.~Kahn,
+\emph{Optimal rates for finite mixture estimation},
+arXiv:1507.04313 (2015).
+\url{https://arxiv.org/abs/1507.04313}.
+
+\bibitem{WuYang}
+Y.~Wu and P.~Yang,
+\emph{Optimal estimation of Gaussian mixtures via denoised method of moments},
+arXiv:1807.07237v2 (2019).
+\url{https://arxiv.org/abs/1807.07237v2}.
+
+\bibitem{RepoFinite}
+V.~Reshetnikov, ProveIt repository research collection,
+\emph{Sharp Stability Strata for Finite Fabius--Rvachev Deconvolution},
+article dated 28 September 2026, indexed as an unreviewed intake on
+29 September 2026. Read at commit
+\texttt{c130dba623c420551d90db41dae7b3d9cff72dfd}.
+Repository \url{https://github.com/VladimirReshetnikov/ProveIt}; path
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/article.tex}.
+
+\bibitem{RepoIndex}
+V.~Reshetnikov, ProveIt repository,
+\emph{Inverse and sampling: research index}, read 29 September 2026 at the
+same commit. Repository \url{https://github.com/VladimirReshetnikov/ProveIt};
+path
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/README.md}.
+\end{thebibliography}
+\end{document}

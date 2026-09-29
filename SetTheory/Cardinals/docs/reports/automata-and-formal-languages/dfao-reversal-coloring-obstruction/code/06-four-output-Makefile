@@ -1,0 +1,27 @@
+PYTHON ?= python3
+CXX ?= g++
+CXXFLAGS ?= -O3 -std=c++17 -Wall -Wextra -pedantic
+
+.PHONY: all check independent bfs pdf clean
+
+all: independent bfs pdf
+
+check:
+	$(PYTHON) -O code/verify.py
+
+independent: check
+	$(PYTHON) -O code/independent_check.py
+
+witness_bfs: code/witness_bfs.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+bfs: witness_bfs
+	./witness_bfs 12 > data/bfs.json
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex
+	rm -f witness_bfs
+	rm -rf code/__pycache__

@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has six live navigation targets:
+This theme has seven live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -18,6 +18,9 @@ This theme has six live navigation targets:
 - [`Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/`](Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/)
   — an archival arrival of 2026-09-29 on optimal Hölder exponents for
   recovering finitely many uniform factors; unreviewed.
+- [`Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/`](Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on minimax rates for recovering
+  uniform factors under Gaussian smoothing; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -196,6 +199,21 @@ is 1 or `1/2` when one of the two configurations is the fixed base point.
 Sharpness again comes from Chebyshev constructions.  It was written before
 the uniform-factor article was filed and does not cite it.  Unreviewed; no
 Lean statement.
+
+[`Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/`](Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/)
+holds *Gaussian Confounding and Sharp Recovery of Uniform Convolution
+Factors*, filed on 2026-09-29 by a quick archival intake (19-page A4 PDF,
+1,319-line source, an exact SymPy check program with 80-digit Fourier
+diagnostics).  It changes the experiment of the finite-factor article above
+by adding a Gaussian convolution: with a known bounded background (for
+example the up law), at most `m` uniform factors and Gaussian variance `v`,
+the optimal global rate for recovering the half-lengths from `n` samples is
+`n^{−1/(4m)}` when `v` is known and `n^{−1/(4m+4)}` when it is unknown, and
+detecting any factor has critical scale `n^{−1/4}` or `n^{−1/8}`
+independently of `m`.  The key tool is a sharp inverse inequality for
+consecutive shifted power sums.  The unsmoothed up-law experiment, and so
+the finite-factor article's own statistical question, remains open.
+Unreviewed; no Lean statement.
 
 ## Formalization notes
 
