@@ -27,10 +27,12 @@ data/
   02-support-bounded-fields-BUILD_REPORT.json  build record of source 02's delivered 25-page PDF
 ```
 
-Every label in `article.tex` carries the prefix `fkc:` (170 labels). The 77
+Every label in `article.tex` carries the prefix `fkc:` (171 labels). The 77
 labels of Part I (source 01's 72 and 5 added at assembly) are all kept, and
 no number of Part I changed; the 93 labels added in batch 32 carry the
-sub-prefix `fkc:sb:` (two part headings and Part II). The
+sub-prefix `fkc:sb:` (two part headings and Part II). Batch 37 added one more,
+`fkc:sb:rem:gapspectra` (Remark 22.6, a cross-report note), without changing
+any other number. The
 [Lean ledger](../../FORMALIZATION.md) indexes the Part I statements under
 `first-kappa-coefficients` as **Pending**; no `fkc:` label is mapped to a
 Lean declaration, and the `fkc:sb:` labels are not yet indexed.
@@ -487,7 +489,14 @@ one numbering.
   `No^N` for inner models. Part I answers none of its questions; Part II
   answers one clause of `univ:q:families` in a single universe (above) and
   parallels `univ:thm:firstgap`, `univ:cor:recover`, `univ:cor:spectrum`,
-  `univ:prop:topology` and `univ:thm:involutions` for other fields.
+  `univ:prop:topology` and `univ:thm:involutions` for other fields. Its
+  batch-37 Part VIII realizes, by set forcing and for old fields `No^M`, the
+  multicharacter and equal-spectrum real forms that Question 24.4
+  (`fkc:sb:q:realforms`) asks for without forcing, and shows that equal full
+  gap spectra do not force isomorphism; its separating invariant, the real
+  trace, is `R` for every field here, so Question 24.1 (`fkc:sb:q:equalcf`) is
+  untouched. Remark 22.6 (`fkc:sb:rem:gapspectra`) records this; both
+  questions stay open.
 - **[transcendence-over-bounded-support](../../surreal/transcendence-over-bounded-support/)**
   works over supports **bounded above in order** and explicitly excludes
   cardinal support bounds (`bst:eq:base` and its conventions list). Its

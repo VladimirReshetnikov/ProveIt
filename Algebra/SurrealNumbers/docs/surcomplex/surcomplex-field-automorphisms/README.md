@@ -59,7 +59,8 @@ after the prefix, and 20 new) and `saut:app:source02`. Not carried:
 `saut:fs:sec:closing`). The merge of source 03 (sub-prefix `saut:gr:`, unused
 before) kept all 169 labels with unchanged numbers (checked against a build of
 the committed text) and added 59, 228 in all: 58 `saut:gr:` labels and
-`saut:app:source03`. Source 03's own bare labels (`thm:overview`,
+`saut:app:source03`. Batch 37 added `saut:rem:univspectra` (Remark 14.1, a
+cross-report note), 229 in all, with no other number changed. Source 03's own bare labels (`thm:overview`,
 `thm:orbit`, …) are not carried: each of its results is either mapped to an
 existing label (Section 31.2) or printed under a new one. The source
 manuscripts, their PDFs and delivery READMEs, and source 03's checksum
@@ -686,7 +687,12 @@ global choice it transports an inner model's conjugation to real forms of
 such forms by an external gap invariant, and lets them agree with `c` on `C`.
 By Proposition 23.1, those that agree with `c` on `C` are not both valued and
 `Oz[i]`-preserving; its `univ:q:compatible` is related to source 02 and not
-answered.
+answered. Its batch-37 Part VIII (Section 30) adds families of pairwise
+nonconjugate forms that agree with `c` on `C`, are elementarily equivalent and
+have one saturation spectrum, and families whose fixed fields have one full gap
+spectrum; Remark 14.1 (`saut:rem:univspectra`, added in batch 37) records that
+these invariants are therefore not complete for the unrestricted
+classification, which stays open.
 [birthday-cutoffs-and-hereditary-sets](../../foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 enriches bounded surcomplex fields by conjugation and a coordinate birthday;
 its bounded `Aut = {id, c}` statements are credited to `saut:thm:axis` and the

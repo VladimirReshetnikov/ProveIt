@@ -8,7 +8,7 @@ Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 61 pages
+article.pdf      the compiled report, 62 pages
 README.md        this guide
 02-birthday-cutoffs-SOURCE_AUDIT.md        source 02's source and novelty audit, as delivered
 code/            02-birthday-cutoffs-verify_finite.py            (source 02)
@@ -25,7 +25,8 @@ data/            02-birthday-cutoffs-verification.json, -verification_summary.te
                  09-bounded-arithmetic-verification_report.json, -build_report.json
 ```
 
-Every label in `article.tex` carries the prefix `hset:` (155 labels). All 69
+Every label in `article.tex` carries the prefix `hset:` (156 labels; batch 37
+added `hset:rem:cutoffgaps` and changed no other number). All 69
 labels of the delivered base text (source 09) survive with that prefix; three of
 them (`hset:prop:powerset`, `hset:sec:extensions`, `hset:app:verification`) now
 sit, as second labels, on the unit into which that material was merged. No
@@ -242,7 +243,12 @@ sibling report of this batch, studies external saturation of the *pure* field
 birthday (also written `β` there) and the forcing examples; it writes `δ` for the
 first new ordinal-sequence length, which this report does not use. The pure
 inclusion is elementary but can lose saturation; the birthday inclusion loses
-elementarity (Remarks 12.4, 15.8).
+elementarity (Remarks 12.4, 15.8). Its batch-37 Part VIII computes the exact
+external gap pairs of the pure cutoff fields `(No_{<θ})^M` (its Lemma 26.1),
+including asymmetric boundary pairs `(μ,θ)`, `(θ,μ)` that already occur in the
+internal field `No_{<θ}`, and uses them at `θ = ℵ_{ω+2}` for `2^{ℵ₀}`
+nonisomorphic real closed fields with one saturation spectrum; Remark 15.9
+(`hset:rem:cutoffgaps`, added in batch 37) records this.
 
 **[gonshor-product-birthdays](../../surreal/gonshor-product-birthdays/)**: see
 above; no argument here depends on it.
@@ -258,7 +264,7 @@ TP₂ witness, for a Hahn field expanded by one exponent dilation
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  61 pages; no errors, undefined references or citations, multiply defined
+  62 pages (61 before the batch-37 Remark 15.9); no errors, undefined references or citations, multiply defined
   labels, duplicate destinations, LaTeX or package warnings, or overfull or
   underfull boxes. Cross-references are typed (lemma, proposition, ...) through
   alias counters.
