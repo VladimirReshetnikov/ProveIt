@@ -43,13 +43,19 @@
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\norm}[1]{\left\|#1\right\|}
 \newcommand{\degree}{\operatorname{deg}}
+% Part II (batch 41): difference spectrum, the two cores, the fixed set.
+\newcommand{\scD}{\mathcal D}
+\newcommand{\core}{\mathcal R}
+\newcommand{\pcore}{\mathcal K}
+\DeclareMathOperator{\Fix}{Fix}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
   keepspaces=true,showstringspaces=false,frame=single,framerule=0.3pt}
 \hypersetup{pdftitle={Nonreal Roots Survive in Polynomial Iterative Equations},
  pdfauthor={Research draft prepared for Vladimir Reshetnikov},
- pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification}}
+ pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification; Part II: the increasing spectral core on several circles}}
 \title{\textbf{Nonreal Roots Survive\\in Polynomial Iterative Equations}\\[0.5em]
-  \large A cubic counterexample and a classification of circular spectra}
+  \large A cubic counterexample and a classification of circular spectra\\[0.2em]
+  \large Part~II: the increasing spectral core on several circles}
 \author{Research draft prepared for Vladimir Reshetnikov}
 \date{20 September 2026}
 
@@ -86,6 +92,15 @@ publication. A targeted literature search located the published open question
 but did not establish priority for the answer or for the classification.
 The conjugacy mechanism itself is not claimed to be new.
 
+\noindent\textbf{Part~II} (added 29 September 2026, batch~41; from
+Section~\ref{nrr:sc:sec:intro} on) removes the single-circle restriction for
+increasing homeomorphisms of $\R$: it classifies the minimal iterative
+polynomials with arbitrary root moduli (Theorem~\ref{nrr:sc:thm:main}), gives
+the exact universal order reduction $\core(P)$ of every equation with nonzero
+constant coefficient (Theorem~\ref{nrr:sc:thm:core}), and decides affine
+rigidity and the existence of fixed points. It is likewise an AI-assisted,
+unrefereed draft with no priority claim.
+
 \clearpage
 \begingroup
 \small
@@ -94,6 +109,7 @@ The conjugacy mechanism itself is not claimed to be new.
 \endgroup
 \clearpage
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A cubic counterexample and a classification of circular spectra}
 \section{The problem selected and the scope of the answer}
 \label{sec:problem}
 
@@ -146,6 +162,8 @@ multiple root. We do not claim a complete answer to Petrov's question for
 arbitrary polynomials or for both monotonicity orientations. We do obtain
 an exact answer for \emph{increasing solutions when all characteristic
 roots lie on one circle}; see Section~\ref{sec:rigidity}.
+[Added 29 September 2026, batch~41: Part~II extends this answer to increasing
+solutions with arbitrary root moduli, Theorem~\ref{nrr:sc:thm:rigidity}.]
 
 \subsection{Random selection, exclusion, and priority}
 
@@ -738,6 +756,10 @@ This is a classification of the polynomials that can be \emph{minimal}.
 It is not a parametrization of every function realizing any one polynomial.
 The minimality qualification is essential: for example, the identity
 satisfies $(z-1)^7[\id]=0$, but its minimal polynomial is only $z-1$.
+[Added 29 September 2026, batch~41: Theorem~\ref{nrr:sc:thm:main} of Part~II
+classifies the minimal polynomials with roots of arbitrary moduli; on one
+circle it reduces to the present theorem
+(Remark~\ref{nrr:sc:rem:circular}).]
 
 \subsection{Necessity when \texorpdfstring{$r\ne1$}{r is not 1}}
 
@@ -1105,6 +1127,10 @@ positive root at $1$ eliminates all other circular modes for increasing
 solutions. A double root at $1$ supplies enough linear drift to allow
 nonconstant bounded oscillations. The analytic quartic example realizes
 exactly that first nonreal possibility.
+[Added 29 September 2026, batch~41: for arbitrary root moduli, affine and
+homogeneous-linear rigidity are decided by the universal core $\core(P)$ of
+Part~II, Theorem~\ref{nrr:sc:thm:rigidity}; on one circle this gives the two
+corollaries above (Remark~\ref{nrr:sc:rem:rigidity-recovers}).]
 
 \section{What additional regularity does and does not restore}
 \label{sec:regularity}
@@ -1304,6 +1330,13 @@ reverse order. Nor have we handled noninjective equations with zero
 constant coefficient or arbitrary proper interval domains. These are
 limitations of the proved statements, not qualifications needed by the
 two counterexamples on $\R$.
+[Added 29 September 2026, batch~41: Part~II classifies minimal polynomials
+with roots on several distinct circles for increasing homeomorphisms of $\R$
+(Theorem~\ref{nrr:sc:thm:main}) and gives the exact universal reduction of
+every equation with nonzero constant coefficient over its increasing
+solutions (Theorem~\ref{nrr:sc:thm:core}). Decreasing
+homeomorphisms, zero constant coefficient and proper interval domains remain
+outside both parts.]
 
 Finally, mathematical verification and historical priority are different
 questions. The paper gives complete arguments and exact finite
@@ -1312,6 +1345,1416 @@ exhaustive priority search. The broader linearity problem is not declared
 solved. What is established here is the failure of the proposed general
 nonreal-root deletion and an exact, constructive classification in the
 increasing single-circle setting.
+[Added 29 September 2026, batch~41: Part~II answers the increasing,
+nonzero-constant-coefficient version of the linearity problem for arbitrary
+root moduli (Theorem~\ref{nrr:sc:thm:rigidity}); the problem for decreasing
+maps is still not declared solved.]
+
+%% ====================================================================
+%% Batch-41 addition (manuscript 02, "The Complete Increasing Spectral
+%% Core"). All labels of Part II carry the prefix nrr:sc: (nonreal roots,
+%% spectral core).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad The increasing spectral core on several circles}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } The increasing spectral core on several circles}
+
+\noindent\emph{Sections~\ref{sec:problem}--\ref{sec:conclusion} and
+Appendices~\ref{app:sources}--\ref{app:reproduce} form the original report
+(Part~I) of 20 September 2026, unchanged except for a second subtitle line,
+a paragraph on the title page and dated pointers to this addition. Part~II was added on 29 September 2026 in batch~41 of ProveIt's
+incoming-report intake, from one manuscript written against the text of
+Part~I printed above. It answers the first boundary that Part~I names in
+Section~\ref{sec:conclusion}, ``We have not classified minimal polynomials
+with roots on several distinct circles'', for increasing homeomorphisms of
+$\R$: Theorem~\ref{nrr:sc:thm:main} classifies the minimal iterative
+polynomials of increasing homeomorphisms with arbitrary root moduli, and
+Theorem~\ref{nrr:sc:thm:core} gives the exact universal order reduction for
+every prescribed equation. The other boundaries of that paragraph (decreasing
+maps, zero constant coefficient, proper intervals) remain open.
+Section~\ref{nrr:sc:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance, conventions and the main results}
+\label{nrr:sc:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{nrr:sc:sec:source}
+
+Part~II is batch-41 manuscript~02, \emph{The Complete Increasing Spectral
+Core: Arbitrary-radius classification, optimal order reduction, and
+fixed-point spectra for polynomial iterative equations}, an AI-assisted
+research draft prepared for Vladimir Reshetnikov and dated 28 September 2026
+(20 pages as delivered). It arrived as the archive
+\texttt{ProveIt\_Increasing\_Spectral\_Core.zip} (inner directory
+\texttt{Increasing\_Spectral\_Core/}) in ProveIt commit \texttt{9754e8360} and
+was placed in \texttt{eaf787d50}. The manuscript is pinned not by a commit but
+by the Git blob of the file it inspected: Part~I's \texttt{article.tex} with
+blob \texttt{ae6ea0aa0566316ba9ed06b1750c6e73275059da}, retrieved through the
+GitHub content API on 28 September 2026. That blob is the one committed in
+\texttt{dc54c3cb3} and was unchanged at the placement commit, so every
+statement the manuscript makes about Part~I refers to the text printed above.
+Its code, recorded outputs, status note and source audit are shipped beside
+Part~I's files with the prefix \nolinkurl{02-spectral-core-} (Part~I's unprefixed
+files count as~01); its manuscript, PDF, delivery README and checksum ledger
+are not shipped and survive in the arrival commit.
+
+The manuscript contributes, in the order printed here: the difference-spectrum
+identity (Section~\ref{nrr:sc:sec:algebra}); a complete spectral test for
+positive bilateral recurrences, with an analytic realization
+(Section~\ref{nrr:sc:sec:positive}); the classification of minimal iterative
+polynomials of increasing homeomorphisms with arbitrary root moduli
+(Theorem~\ref{nrr:sc:thm:main}, proved in
+Section~\ref{nrr:sc:sec:classification}); the explicit universal annihilator
+$\core(P)$ (Section~\ref{nrr:sc:sec:core}); an exact affine and
+homogeneous-linear rigidity criterion (Section~\ref{nrr:sc:sec:rigidity});
+criteria for realizations with and without fixed points
+(Section~\ref{nrr:sc:sec:fixed}); explicit and uniformly bi-Lipschitz
+examples (Section~\ref{nrr:sc:sec:examples}); its finite checks and their
+limits (Section~\ref{nrr:sc:sec:verification}); ten research questions
+(Section~\ref{nrr:sc:sec:research}); its conclusion
+(Section~\ref{nrr:sc:sec:conclusion}); a Hankel-certificate lemma
+(Section~\ref{nrr:sc:app:hankel}); and its source audit
+(Section~\ref{nrr:sc:app:audit}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2.2em]
+\item The manuscript reproves, so as not to assume Part~I, the lemmas on
+homeomorphisms, the annihilator ideal, two-sided recurrence decomposition,
+orbitwise least common multiples, simultaneous returns and positive means, and
+the translation argument for $(z-1)^2$. Its proofs are the same arguments as
+Part~I's; they are printed once, in Part~I, and credited where Part~II uses
+them (Section~\ref{nrr:sc:sec:imported}, Lemma~\ref{nrr:sc:lem:trig},
+Theorem~\ref{nrr:sc:thm:rigidity}). The one-circle paragraph of
+Proposition~\ref{nrr:sc:prop:positive-necessary} repeats the parity argument
+of Theorem~\ref{thm:positive}; it is kept, because the proposition covers
+several circles at once.
+\item Remarks~\ref{nrr:sc:rem:circular} and~\ref{nrr:sc:rem:rigidity-recovers}
+were added in the merge. They show that on one circle
+Theorem~\ref{nrr:sc:thm:main} is Theorem~\ref{thm:classification} and
+Theorem~\ref{nrr:sc:thm:rigidity} gives Corollaries~\ref{cor:nonunitrigidity}
+and~\ref{cor:unitrigidity}; Remark~\ref{nrr:sc:rem:circular} also records a
+finite comparison of the two classifications made in the write phase.
+\item Four symbols were renamed to avoid collisions
+(Section~\ref{nrr:sc:sec:notation}); no normalization changed. The
+manuscript's references to ``the ProveIt report'' now read ``Part~I'', and its
+file names are replaced by the shipped names.
+\item The manuscript's appendices (a Hankel lemma and its source audit) are
+printed as the last two sections of Part~II, so that Part~I's appendices keep
+their letters.
+\end{enumerate}
+
+\paragraph{Status (manuscript 02).}
+The classification is for continuous increasing maps $\R\to\R$ and
+polynomials with nonzero constant coefficient. The proofs are
+self-contained. This is an AI-assisted, unrefereed research draft; it is not
+Lean- or Rocq-verified, and no declaration in ProveIt formalizes any statement
+of Part~I or Part~II. The extension beyond Part~I is explicit, but an
+exhaustive claim of historical priority is not made. Part~II does not classify
+decreasing solutions, arbitrary proper-interval domains, noninjective equations
+with zero constant coefficient, or all individual maps realizing an admissible
+spectrum; its code accepts factored spectra only and does not factor arbitrary
+polynomials; and no finite test in it certifies the infinite or analytic parts
+of the proofs.
+
+\subsection{Notation across the two parts}
+\label{nrr:sc:sec:notation}
+
+Part~I's symbols keep their meanings in Part~I. Part~II introduces the
+difference spectrum, positive admissibility and two cores, and reuses several
+letters that Part~I employs differently. Table~\ref{nrr:sc:tab:notation}
+fixes the meanings used from here on; letters not listed ($P$, $Q$, $\mu_f$,
+$E$, $\Ann$, $r$) agree with Part~I.
+
+\begin{table}[htbp]
+\centering
+\caption{Symbols of Part~II, with the tempting false reading beside the true one.}
+\label{nrr:sc:tab:notation}
+\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$\scD A$ & $A$ with \emph{one} copy of $z-1$ removed, if present
+(\eqref{nrr:sc:eq:D}); the \emph{difference spectrum} &
+the dilations $D_2$, $D_8$ of Section~\ref{sec:cubic}; removal of the whole
+$(z-1)$-primary factor\\
+$\delta(A)$ & $1$ if $A(1)=0$, else $0$ & ---\\
+$m_A(\lambda)$ & multiplicity of the root $\lambda$ in $A$ & the same notion
+as Part~I's $m_\lambda$, $m_r$, $m_1$\\
+positive-admissible & Definition~\ref{nrr:sc:def:admissible} &
+``realizable'': $\mu$ is a minimal polynomial iff $\mu=z-1$ or $\scD\mu$ is
+positive-admissible (Theorem~\ref{nrr:sc:thm:main})\\
+$r_-$, $r_+$ & least and greatest root moduli of the polynomial in question
+(usually $\scD\mu$) & Part~I's single common radius $r$\\
+$\core(P)$ & the increasing spectral core (Definition~\ref{nrr:sc:def:core}) &
+the real line $\R$\\
+$\pcore(B)$ & the positive-recurrence core (Section~\ref{nrr:sc:sec:core}) & ---\\
+$\kappa$ & the largest odd integer $\le m_B(r)$ in \eqref{nrr:sc:eq:onecore}
+(\emph{renamed} from the manuscript's $k$) & Part~I's $k$, where $m_r=2k+1$\\
+$b_-<b_+$ & least and greatest positive roots of $B$ in
+\eqref{nrr:sc:eq:annularcore} (\emph{renamed} from $a<b$) & the logarithmic
+rates $a<b$ of Lemma~\ref{nrr:sc:lem:envelope}\\
+$\Lambda$ & the large constant of Lemma~\ref{nrr:sc:lem:envelope}
+(\emph{renamed} from $T$) & a trigonometric sequence $T(n)$; the translation
+$T(t)=t+1$\\
+$\Phi$ & the glued fixed-point map in Theorem~\ref{nrr:sc:thm:fixedpoint}
+(\emph{renamed} from $G$) & the envelope $G$ of
+Lemma~\ref{nrr:sc:lem:envelope}\\
+$A$ & a monic polynomial (a spectrum), usually $\scD\mu$ & Part~I's
+polynomial \emph{function} $A(t)$ in \eqref{eq:nonunitH}, \eqref{eq:unitA}\\
+$G$, $W$ & two-ended envelope and weight, \eqref{nrr:sc:eq:envelope},
+\eqref{nrr:sc:eq:W}; $W=2^t+2^{-t}$ in Theorem~\ref{nrr:sc:thm:uniform} &
+Part~I's perturbed envelope $W(t)$ in \eqref{eq:nonunitH}, \eqref{eq:simpleH}\\
+$g$, $h$ & positive coordinate $g=h'$ and its antiderivative & Part~I's $h$
+plays the same role (a conjugating coordinate)\\
+$F$ & the conjugated map $F(h(t))=h(t+1)$ on $h(\R)$; the polygonal map of
+Section~\ref{nrr:sc:sec:examples} & Part~I's cubic counterexample $F$
+(Theorem~\ref{thm:cubic})\\
+$H_\lambda$, $H$ & real modes \eqref{nrr:sc:eq:mode} and their sum; $H$ is
+also a polygonal interpolation in Section~\ref{nrr:sc:sec:examples} &
+Part~I's conjugating map $H$ of \eqref{eq:conjF}\\
+$\mu_<$, $\mu_>$ & monic factors of $\mu$ from roots of modulus $<1$, $>1$ &
+---\\
+$\Fix(f)$ & the fixed-point set of $f$ & ---\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{A specific continuation, not another circular example}
+
+Part~I proves a circular-spectrum classification and counterexamples to
+unrestricted deletion of nonreal characteristic roots. Its conclusion
+expressly leaves spectra on several distinct circles unclassified. Its
+circular theorem distinguishes a nonunit circle from the unit circle, and its
+rigidity statements are correspondingly restricted. Part~II addresses that
+stated gap.
+
+The external background is the order-reduction program of Draga and Morawiec
+\cite{DM2016}, including their Problem~6.1 about nonreal roots tied in modulus
+with a real root. Draga's subsequent note \cite{D2016} treats additional
+elimination cases. Petrov \cite{Petrov2016} asks for polynomial conditions
+forcing continuous solutions to be linear. We answer the \emph{increasing,
+nonzero-constant-coefficient} version of the associated rigidity problem,
+distinguishing homogeneous linearity from affineness. We do not classify
+decreasing solutions or every individual solution.
+
+No theorem of Part~I is assumed without proof. The classical orbit-recurrence
+framework and the circular positivity mechanism are reproved in the
+manuscript, because the passage from them to an arbitrary-radius theorem
+requires a new sufficiency construction and careful treatment of the
+root~$1$; in this report those reproofs are Part~I's arguments and are cited
+there.
+
+\subsection{Conventions}
+
+Write $\itn{f}{0}=\id$ and, for a real polynomial $P$,
+\begin{equation}
+ P[f](x)=\sum_{j=0}^{\deg P}a_j\itn{f}{j}(x),
+ \qquad P(z)=\sum_{j=0}^{\deg P}a_jz^j.
+ \label{nrr:sc:eq:iterative}
+\end{equation}
+An increasing map is strictly increasing. A map is globally bi-Lipschitz
+if there are $0<c\le C<\infty$ such that
+$c|x-y|\le |f(x)-f(y)|\le C|x-y|$ for all $x,y$.
+When a nonzero polynomial annihilates $f$, its monic least-degree
+annihilator is denoted by $\mu_f$.
+
+For a nonzero monic polynomial $A$ with $A(0)\ne0$, set
+\begin{equation}
+ \delta(A)=\begin{cases}1,&A(1)=0,\\0,&A(1)\ne0,\end{cases}
+ \qquad
+ \scD A=\frac{A}{(z-1)^{\delta(A)}}.
+ \label{nrr:sc:eq:D}
+\end{equation}
+Thus $\scD$ removes \emph{one copy}, not the entire $1$-primary factor.
+For a root $\lambda$, write $m_A(\lambda)$ for its multiplicity in $A$.
+
+\begin{definition}[Positive-admissible spectrum]
+\label{nrr:sc:def:admissible}
+A nonconstant monic real polynomial $A$ with $A(0)\ne0$ is
+\emph{positive-admissible} if the following conditions hold.
+Let $r_-$ and $r_+$ be the least and greatest moduli of its roots.
+At each extreme radius $r\in\{r_-,r_+\}$, the positive real number $r$
+is a root, and
+\begin{equation}
+ m_A(r)=\max_{|\lambda|=r}m_A(\lambda).
+ \label{nrr:sc:eq:dominance}
+\end{equation}
+If $r_-=r_+$, this multiplicity must also be odd.
+There is no additional condition at a strictly intermediate radius.
+The constant polynomial $1$ is not positive-admissible.
+\end{definition}
+
+\begin{theorem}[Complete increasing-spectrum classification]
+\label{nrr:sc:thm:main}
+Let $\mu$ be nonconstant, monic, and real, with $\mu(0)\ne0$.
+The following are equivalent:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2.4em]
+\item $\mu=\mu_f$ for an increasing homeomorphism $f:\R\to\R$.
+\item Either $\mu=z-1$, or $\scD\mu$ is positive-admissible.
+\item $\mu=\mu_f$ for a globally bi-Lipschitz increasing homeomorphism,
+real analytic outside at most one point.
+\end{enumerate}
+When $\mu\ne z-1$ and the extreme root moduli of $\scD\mu$ bracket $1$,
+the realization in \textnormal{(iii)} is real analytic everywhere and has
+no fixed point.
+\end{theorem}
+
+The phrase ``at each extreme radius'' is essential. When two or more
+circles occur, even multiplicities at both extremes are allowed.
+For example, $(z-2)^2(z-4)^2$ is realizable, although $(z-2)^2$ alone is not.
+The root $1$ must be processed before deciding how many circles remain:
+$(z-1)(z-2)^2$ is not realizable as a minimal polynomial.
+
+\subsection{Optimal universal reduction}
+
+For any real $P$ with $P(0)\ne0$, we will construct a monic divisor
+$\core(P)$ with the exact universal property
+\begin{equation}
+ \bigl[P[f]=0\Longrightarrow Q[f]=0
+ \text{ for every continuous increasing }f:\R\to\R\bigr]
+ \quad\Longleftrightarrow\quad \core(P)\mid Q.
+ \label{nrr:sc:eq:universal}
+\end{equation}
+If increasing solutions exist, a single globally bi-Lipschitz map with
+minimal polynomial $\core(P)$ witnesses the sharpness of every retained
+root and multiplicity simultaneously. Section~\ref{nrr:sc:sec:core} gives the
+explicit formula; no search through all polynomial divisors is necessary.
+
+\subsection{What is added and what is inherited}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{0.24\linewidth}XX@{}}
+\toprule
+Question & Part~I & Part~II\\
+\midrule
+Minimal spectra & One modulus circle & Arbitrary finite sets of circles\\
+Multiplicity restrictions & Circular parity and dominance & Extreme-circle rules and unrestricted interior multiplicities\\
+Universal reduction & Circular rigidity tests & Exact smallest common annihilator for every $P$\\
+Realizations & Circular coordinates & Two-ended analytic coordinates and global bi-Lipschitz extension\\
+Fixed points & Selected regularity results & Separate spectral existence criteria with and without fixed points\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{From a nonlinear map to a finite-dimensional recurrence}
+\label{nrr:sc:sec:algebra}
+
+\subsection{What is taken from Part~I}
+\label{nrr:sc:sec:imported}
+
+The manuscript opens by reproving four facts that Part~I proves by the same
+arguments; they are used here in Part~I's form.
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2.2em]
+\item A continuous solution $f:\R\to\R$ of $P[f]=0$ with $P(0)\ne0$ is a
+strictly monotone homeomorphism (Lemma~\ref{lem:homeo}).
+\item $\Ann(f)$ is an ideal of $\R[z]$, generated by $\mu_f$ when it is
+nonzero, because $(zP)[f](x)=P[f](f(x))$ uses \emph{right composition}
+(Lemma~\ref{lem:ideal}, \eqref{eq:rightcomp}). One must not distribute $f$
+over a linear combination of its values.
+\item Every bilateral sequence annihilated by $A(E)$, $A(0)\ne0$, has a unique
+exponential-polynomial expression $u(n)=\sum_\lambda p_\lambda(n)\lambda^n$
+with $\deg p_\lambda<m_A(\lambda)$, and its minimal recurrence polynomial is
+$\prod_{p_\lambda\ne0}(z-\lambda)^{1+\deg p_\lambda}$
+(Lemma~\ref{lem:recurrence}).
+\item $\mu_f$ is the least common multiple of the minimal recurrence
+polynomials of the orbits $u_x(n)=\itn{f}{n}(x)$, $n\in\Z$, and finitely many
+orbits attain every multiplicity (Lemma~\ref{lem:lcm}).
+\end{enumerate}
+The manuscript adds two observations. For a homeomorphism, a factor $z$ could
+be cancelled from an annihilator by surjectivity; consequently
+$\mu_f(0)\ne0$. And if $E$ acts on functions by $Ev=v\circ f$, then on the
+finite-dimensional cyclic space generated by $\id$ it is an invertible linear
+operator whose cyclic-vector minimal polynomial is $\mu_f$ (compare the remark
+after Lemma~\ref{lem:lcm}); the same letter $E$ denotes the shift
+$n\mapsto n+1$ on sequences, because evaluation intertwines the two actions.
+The nonlinear nature of $f$ as a real map does not interfere with this linear
+action on functions.
+
+\subsection{Why exactly one factor at one disappears}
+
+\begin{lemma}[Difference-spectrum identity]
+\label{nrr:sc:lem:difference}
+For a homeomorphism with minimal polynomial $\mu$, the function
+$f-\id$ has minimal polynomial $\scD\mu$ under right composition by $f$.
+Equivalently, $\scD\mu$ is the least common multiple of the minimal
+recurrence polynomials of
+\begin{equation}
+ d_x(n)=\itn{f}{n+1}(x)-\itn{f}{n}(x).
+ \label{nrr:sc:eq:increments}
+\end{equation}
+If $f=\id$, the difference function is zero and its monic annihilator
+is the constant polynomial~$1$.
+\end{lemma}
+\begin{proof}
+The difference function is $(E-1)\id$. A polynomial $Q$ annihilates it
+if and only if $\mu\mid(z-1)Q$. The least monic such $Q$ is
+$\mu/\gcd(\mu,z-1)$, which is precisely $\scD\mu$.
+Evaluation at every point gives the scalar formulation.
+\end{proof}
+
+For increasing $f$, each nonzero sequence $d_x$ has one strict sign for
+all $n\in\Z$. Apply $\itn{f}{n}$ to the strict inequality
+$f(x)>x$ or $f(x)<x$. This sign property is the bridge between dynamics
+and positive recurrence spectra. (Part~I uses the same increments
+\eqref{eq:increments} on the unit circle only.)
+
+\section{Positive bilateral recurrences: a complete spectral test}
+\label{nrr:sc:sec:positive}
+
+\subsection{The elementary oscillation argument}
+
+A finite trigonometric sequence is a finite sum
+$T(n)=\sum_{\zeta\in S}c_\zeta\zeta^n$ with distinct $|\zeta|=1$.
+Two elementary facts will be used.
+
+\begin{lemma}
+\label{nrr:sc:lem:trig}
+There exist integers $N_k\to+\infty$ such that
+$\zeta^{N_k}\to1$ for every $\zeta\in S$.
+If a real trigonometric sequence satisfies
+$\liminf_{n\to+\infty}T(n)\ge0$, then $T(n)\ge0$ for all $n\in\Z$.
+If such a sequence is nonzero and nonnegative, its constant-frequency
+coefficient is strictly positive.
+\end{lemma}
+\begin{proof}
+The first assertion, and the returns $T(N_k+\ell)\to T(\ell)$ and
+$T(-N_k+\ell)\to T(\ell)$ in both time directions, are
+Lemma~\ref{lem:returns}; the second assertion follows from them exactly as in
+the proof of Theorem~\ref{thm:positive}; the third is
+Lemma~\ref{lem:mean}. The manuscript proves all three by the same
+compactness and Ces\`aro-mean arguments.
+\end{proof}
+
+\begin{proposition}[Necessary extreme-circle conditions]
+\label{nrr:sc:prop:positive-necessary}
+The minimal polynomial of a nonzero nonnegative real bilateral
+recurrence sequence is positive-admissible.
+\end{proposition}
+\begin{proof}
+Let $r_+$ be the greatest active root modulus and $d_+$ the greatest
+polynomial degree on that circle. As $n\to+\infty$,
+\[
+ u(n)=r_+^n n^{d_+}\bigl(T_+(n)+o(1)\bigr),
+\]
+where $T_+$ is the nonzero trigonometric sequence made from the leading
+coefficients on that circle. Positivity and Lemma~\ref{nrr:sc:lem:trig} show
+that $T_+\ge0$ and its constant frequency is positive. Thus the root
+$r_+$ occurs with degree $d_+$, giving maximal multiplicity.
+
+At $n\to-\infty$, the least active modulus $r_-$ dominates instead.
+Apply the same argument to $u(-m)$ as $m\to+\infty$. The positive root
+$r_-$ must again attain the greatest multiplicity on its circle.
+
+If there is only one circle, let $d$ be its maximum degree and $T$ its
+leading trigonometric sequence. Positive time gives $T(\ell)\ge0$;
+negative time, using the same simultaneous returns, gives
+$(-1)^dT(\ell)\ge0$ for all integers $\ell$. Since $T\ne0$, $d$ is even.
+The positive-root multiplicity $d+1$ is therefore odd. (This paragraph is
+the argument of Theorem~\ref{thm:positive}.)
+\end{proof}
+
+The two distinct extreme circles use different leading coefficients,
+so there is no parity relation between them. A parity condition imposed
+separately on every extreme circle would be false.
+
+\subsection{A positive analytic interpolation with any allowed spectrum}
+
+\begin{lemma}[Two-ended positive envelope]
+\label{nrr:sc:lem:envelope}
+Let $a<b$ and let $d,e$ be arbitrary nonnegative integers.
+For sufficiently large $\Lambda>0$, the function
+\begin{equation}
+ G(t)=e^{at}(\Lambda-t)^d+e^{bt}(\Lambda+t)^e
+ \label{nrr:sc:eq:envelope}
+\end{equation}
+is strictly positive on $\R$ and satisfies
+\begin{equation}
+ cW(t)\le G(t)\le CW(t),\qquad
+ W(t)=e^{at}(1+|t|)^d+e^{bt}(1+|t|)^e,
+ \label{nrr:sc:eq:W}
+\end{equation}
+for some constants $c,C>0$.
+\end{lemma}
+\begin{proof}
+On $[-\Lambda,\Lambda]$ both summands are nonnegative and they do not vanish
+simultaneously. For $t\ge\Lambda$, the second summand is positive.
+The first can be negative only when $d$ is odd, and then the ratio of
+its absolute value to the second is bounded by
+\[
+ e^{-(b-a)t}t^{d-e}.
+\]
+Choose $\Lambda\ge1$ large enough that this bound is at most $1/2$ for all
+$t\ge\Lambda$. At $t\le-\Lambda$, the first summand is positive, and a
+potentially negative second summand is controlled by
+$e^{-(b-a)|t|}|t|^{e-d}$. Enlarge $\Lambda$ to make that bound at most $1/2$.
+This proves positivity everywhere.
+At $-\infty$, $G/W\to1$; the same is true at $+\infty$.
+A strictly positive continuous quotient has positive minimum and finite
+maximum on the remaining compact interval, giving \eqref{nrr:sc:eq:W}.
+\end{proof}
+
+\begin{theorem}[Positive recurrence realization]
+\label{nrr:sc:thm:positive-realization}
+A nonconstant monic real polynomial $A$ with $A(0)\ne0$ is
+positive-admissible if and only if it is the minimal polynomial of a
+strictly positive bilateral recurrence sequence. Moreover, every such
+$A$ is the minimal shift polynomial of a strictly positive real-analytic
+exponential polynomial $g:\R\to(0,\infty)$ such that
+\begin{equation}
+ 0<c\le\frac{g(t+1)}{g(t)}\le C<\infty\quad(t\in\R).
+ \label{nrr:sc:eq:ratio}
+\end{equation}
+Here a shift polynomial annihilates a function of $t$ under $t\mapsto t+1$.
+\end{theorem}
+\begin{proof}
+Necessity is Proposition~\ref{nrr:sc:prop:positive-necessary}.
+For sufficiency, first suppose there are at least two root moduli.
+Put $a=\log r_-$, $b=\log r_+$,
+$d=m_A(r_-)-1$, and $e=m_A(r_+)-1$.
+Use $G$ from Lemma~\ref{nrr:sc:lem:envelope} as the two positive-real-root
+parts.
+
+For every remaining real root or conjugate pair, choose the representative
+$\lambda=\rho e^{i\theta}$ with $0\le\theta\le\pi$ and insert the real term
+\begin{equation}
+ H_\lambda(t)=e^{(\log\rho)t}t^{m_A(\lambda)-1}\cos(\theta t).
+ \label{nrr:sc:eq:mode}
+\end{equation}
+For positive real roots $\theta=0$; for negative ones $\theta=\pi$.
+On an extreme circle, the degree condition bounds $|H_\lambda|/W$.
+For a strictly interior radius, exponential separation at both ends
+bounds the same quotient, regardless of polynomial degree.
+Thus, with $H=\sum H_\lambda$, there is $M<\infty$ such that $|H|\le MW$.
+Choose a nonzero positive $\varepsilon$ small enough that
+$g=G+\varepsilon H\ge cW/2$.
+All intended leading mode coefficients are nonzero, and no new mode
+has been introduced.
+
+If there is only one radius $r$, write $a=\log r$ and
+$d=m_A(r)-1$. The admissibility condition makes $d$ even. Start instead
+with
+\[
+ G(t)=e^{at}(1+t^2)^{d/2}.
+\]
+Each remaining term \eqref{nrr:sc:eq:mode} has polynomial degree at most $d$,
+so a sufficiently small nonzero perturbation again stays between two
+positive multiples of $G$.
+
+To justify exact minimality under a real shift, write cosine terms as
+pairs of complex exponentials. On $e^{st}p(t)$, $E-e^s$ lowers polynomial
+degree by one. Distinct continuous exponents give independent functions.
+The exponents $s=\log\rho\pm i\theta$ have $e^s=\lambda,\overline\lambda$;
+when $\theta=\pi$ both give the same negative root, but their leading
+coefficient functions cannot cancel identically. The maximal degree
+in that primary component is still $m_A(\lambda)-1$.
+It follows that the minimal shift polynomial is exactly $A$.
+
+The weights $W(t+1)/W(t)$ are bounded above and away from zero:
+$1+|t+1|$ and $1+|t|$ differ by factors between $1/2$ and $2$, and the
+exponential factors acquire fixed multipliers. The same assertion holds
+for the single-circle weight. Comparability gives \eqref{nrr:sc:eq:ratio}.
+
+Finally, for each root the leading coefficient of the sampled sequence
+$g(t_0+n)$ is a nonzero real-analytic function of $t_0$ (or a nonzero
+complex-valued analytic function). Avoid the finitely many zero sets.
+Then $g(t_0+n)>0$ has minimal polynomial $A$.
+\end{proof}
+
+The last generic-sampling step matters for negative roots. An
+antiderivative can contain $\sin(\pi t)$, which vanishes at every integer
+although it is not the zero function. Exact minimality must be proved
+as a function of the continuous coordinate, or at a nonsingular sampling
+phase, not inferred carelessly from phase zero.
+
+\section{Proof of the increasing-spectrum classification}
+\label{nrr:sc:sec:classification}
+
+\subsection{Necessity for a family of orbit increments}
+
+\begin{lemma}
+\label{nrr:sc:lem:lcm-positive}
+The least common multiple of finitely many positive-admissible
+polynomials is positive-admissible.
+\end{lemma}
+\begin{proof}
+Take any root at an extreme circle of the least common multiple, with
+its attained maximal multiplicity. In a factor attaining it, this circle
+is also extreme; that factor supplies the positive root with at least
+that multiplicity. If the union has only one circle, every factor has
+that circle, and the maximum of its positive-root multiplicities is the
+maximum of finitely many odd integers, hence is odd.
+\end{proof}
+
+Suppose $f\ne\id$ is increasing with minimal polynomial $\mu$.
+By Lemma~\ref{nrr:sc:lem:difference}, $\scD\mu$ is the least common multiple
+of the nonzero increment-orbit minimal polynomials, using finitely many
+orbits. Multiply each increment sequence by its constant sign to make
+it positive. Proposition~\ref{nrr:sc:prop:positive-necessary} and
+Lemma~\ref{nrr:sc:lem:lcm-positive} show that $\scD\mu$ is
+positive-admissible. For $f=\id$ the minimal polynomial is $z-1$.
+This proves the necessity in Theorem~\ref{nrr:sc:thm:main}.
+
+\subsection{Integrating the positive coordinate}
+
+Assume $A=\scD\mu$ is positive-admissible. Construct $g>0$ as in
+Theorem~\ref{nrr:sc:thm:positive-realization}. We choose a real-analytic
+antiderivative $h$ whose minimal shift polynomial is exactly $\mu$.
+
+For a nonzero continuous exponent $s$, a canonical antiderivative is
+\begin{equation}
+ \int e^{st}p(t)\,dt
+ =e^{st}\sum_{j=0}^{\deg p}\frac{(-1)^jp^{(j)}(t)}{s^{j+1}}.
+ \label{nrr:sc:eq:primitive}
+\end{equation}
+It preserves polynomial degree and hence the shift-root multiplicity.
+For the frequency $s=0$, ordinary integration increases polynomial
+degree by one. Apply this term by term, respecting complex conjugation.
+If $1$ is a root of $A$, the multiplicity at $1$ increases by one, as
+required. If $1$ is absent from $A$ but present in $\mu$, add a nonzero
+constant, say $1$. If $1$ is absent from $\mu$, add no constant.
+Thus $h'=g>0$ and its exact shift polynomial is $\mu$.
+
+Let $(\alpha,\beta)=h(\R)$, with infinite endpoints permitted.
+Define on this interval
+\begin{equation}
+ F(h(t))=h(t+1).
+ \label{nrr:sc:eq:conjugacy}
+\end{equation}
+The analytic inverse function theorem makes $F$ real analytic there,
+and
+\begin{equation}
+ F'(h(t))=\frac{g(t+1)}{g(t)}.
+ \label{nrr:sc:eq:Fprime}
+\end{equation}
+Consequently it is bi-Lipschitz with constants uniform on the interval.
+Also $P[F](h(t))=P(E)h(t)$ for every polynomial $P$, proving exact
+minimality on that interval.
+
+\subsection{The range and extension through a finite endpoint}
+
+Write $r_-$ and $r_+$ for the extreme root moduli of $A$.
+The envelope asymptotics give the following exhaustive possibilities:
+\begin{equation}
+ h(\R)=
+ \begin{cases}
+ \R,&r_-\le1\le r_+,\\
+ (c,\infty),&1<r_-,\\
+ (-\infty,c),&r_+<1.
+ \end{cases}
+ \label{nrr:sc:eq:range}
+\end{equation}
+Indeed, at an endpoint with exponential rate zero, $g$ has a nondecaying
+polynomial envelope and is not integrable. A positive rate is integrable
+only at $-\infty$, and a negative rate only at $+\infty$.
+The extreme rates are ordered, so both endpoints cannot be finite.
+
+When the range is $\R$, take $f=F$. It has no fixed point because
+$h(t+1)>h(t)$. In a half-line case, set $f(c)=c$ and extend by reflection:
+\begin{equation}
+ f(2c-x)=2c-F(x)
+ \label{nrr:sc:eq:reflection}
+\end{equation}
+for $x$ in the original half-line. The limiting value of $F$ at $c$ is
+$c$, since both $h(t)$ and $h(t+1)$ tend there.
+This extension is an increasing homeomorphism. Its bi-Lipschitz bounds
+hold on each side and pass across $c$ by addition.
+It is analytic away from $c$.
+
+If $\mu(1)\ne0$, our choice of primitive gives $c=0$.
+If $\mu(1)=0$, the constant contribution $c$ is annihilated.
+Thus in both cases $\mu(1)c=0$. Iterating \eqref{nrr:sc:eq:reflection} gives
+\[
+ \mu[f](2c-x)=2c\mu(1)-\mu[F](x)=0.
+\]
+The value at $c$ satisfies the same equation. Minimality on the original
+half-line forces minimality globally. This proves sufficiency and all
+regularity claims of Theorem~\ref{nrr:sc:thm:main}.
+
+\begin{remark}[What is not being claimed about analyticity]
+The construction is globally real analytic when its coordinate covers
+$\R$. In a half-line case the reflected map need not be differentiable
+at $c$. No complex-entire inverse is used, and no global complex
+analyticity is asserted. These distinctions avoid an otherwise incorrect
+regularity upgrade at an accumulating fixed point.
+\end{remark}
+
+\begin{remark}[Added in the merge: one circle recovers Part~I]
+\label{nrr:sc:rem:circular}
+When all roots of $\mu$ lie on one circle $|z|=r$,
+Theorem~\ref{nrr:sc:thm:main} is Theorem~\ref{thm:classification}. If
+$r\ne1$, then $\scD\mu=\mu$ has one circle, and positive admissibility says
+that $r$ is a root of odd multiplicity at least every other multiplicity:
+condition~(i) of Theorem~\ref{thm:classification}. If $r=1$ and
+$\mu\ne z-1$, then $\scD\mu$ is nonconstant and lies on the unit circle; it
+is positive-admissible exactly when $1$ is a root of $\scD\mu$ of odd
+multiplicity $m_\mu(1)-1\ge1$ that is at least every other multiplicity,
+that is, when $m_\mu(1)$ is even, at least $2$, and exceeds every other
+multiplicity: condition~(ii). The realizations agree in kind as well:
+by Theorem~\ref{nrr:sc:thm:fixedfree} below, for $\mu\ne z-1$ on one circle
+a fixed-point-free realization exists exactly when $r=1$, in accordance with
+Section~\ref{sec:classification} (every realization fixes $0$ when $r\ne1$
+and has no fixed point when $r=1$). As a finite check of the implementation, the manuscript's
+\texttt{realizable} test (shipped as
+\nolinkurl{code/02-spectral-core-spectral_core.py}) was compared in the write
+phase with the conditions of Theorem~\ref{thm:classification} on 638
+single-circle spectra: radii $2$ and $1$; the roots $\pm r$, the pair
+$\pm ri$ and the pair $r(3\pm4i)/5$; the positive root with multiplicity
+$0$ to $4$ and the other three with multiplicity $0$ to $3$, the empty
+spectrum excluded ($2\times319$ cases). There were no disagreements. The
+comparison script is not shipped; the grid above specifies it completely.
+\end{remark}
+
+\section{The exact universal spectral core}
+\label{nrr:sc:sec:core}
+
+\subsection{A root-by-root formula}
+
+Normalize $P$ to be monic, which does not change its solution set.
+First define a positive-recurrence core $\pcore(B)$ for any monic real
+$B$ with $B(0)\ne0$.
+
+If $B$ has no positive real root, set $\pcore(B)=1$.
+If its only distinct positive root is $r$, put
+\begin{equation}
+ \kappa=2\left\lfloor\frac{m_B(r)-1}{2}\right\rfloor+1,
+ \qquad
+ \pcore(B)=\prod_{|\lambda|=r}
+       (z-\lambda)^{\min(m_B(\lambda),\kappa)}.
+ \label{nrr:sc:eq:onecore}
+\end{equation}
+Thus $\kappa$ is the largest odd integer not exceeding $m_B(r)$.
+
+If there are at least two distinct positive roots, let $b_-<b_+$ be the
+least and greatest such roots. Define
+\begin{equation}
+ k_B(\lambda)=
+ \begin{cases}
+ 0,&|\lambda|<b_-\text{ or }|\lambda|>b_+,\\
+ \min(m_B(\lambda),m_B(b_-)),&|\lambda|=b_-,\\
+ m_B(\lambda),&b_-<|\lambda|<b_+,\\
+ \min(m_B(\lambda),m_B(b_+)),&|\lambda|=b_+,
+ \end{cases}
+ \label{nrr:sc:eq:annularcore}
+\end{equation}
+and set $\pcore(B)=\prod_\lambda(z-\lambda)^{k_B(\lambda)}$.
+Conjugate roots receive identical multiplicities, so these are real
+polynomials.
+
+\begin{definition}[Increasing spectral core]
+\label{nrr:sc:def:core}
+For monic $P$ with $P(0)\ne0$, define
+\begin{equation}
+ \boxed{\quad\core(P)=(z-1)^{\delta(P)}\pcore(\scD P).\quad}
+ \label{nrr:sc:eq:core}
+\end{equation}
+The value $\core(P)=1$ means that no increasing solution exists.
+\end{definition}
+
+\begin{lemma}
+\label{nrr:sc:lem:largest-positive}
+Every positive-admissible divisor of $B$ divides $\pcore(B)$.
+When $\pcore(B)\ne1$, it is itself positive-admissible.
+\end{lemma}
+\begin{proof}
+For an admissible divisor, its extreme root moduli are positive roots
+of $B$. Thus all its roots lie between the least and greatest positive
+roots of $B$. At a boundary of that full interval, its multiplicities
+cannot exceed the positive-root multiplicity there. This gives all bounds
+in \eqref{nrr:sc:eq:annularcore}.
+If $B$ has just one positive root, the divisor has only that radius,
+and its positive-root multiplicity is odd. Formula \eqref{nrr:sc:eq:onecore}
+is exactly the largest permitted cap.
+Conversely the displayed cores satisfy the defining extreme and parity
+conditions directly.
+\end{proof}
+
+\begin{theorem}[Sharp universal order reduction]
+\label{nrr:sc:thm:core}
+For every real $P$ with $P(0)\ne0$, the polynomial $\core(P)$ satisfies:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2.4em]
+\item $\core(P)\mid P$, and for continuous increasing maps on $\R$,
+$P[f]=0$ if and only if $\core(P)[f]=0$.
+\item Increasing solutions exist if and only if $\core(P)\ne1$;
+equivalently, if and only if $P$ has a positive real root.
+\item When solutions exist, there is a globally bi-Lipschitz increasing
+map with minimal polynomial exactly $\core(P)$.
+\item For every real polynomial $Q$, the universal implication
+\eqref{nrr:sc:eq:universal} holds exactly when $\core(P)\mid Q$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Divisibility in (i) follows from the construction. Suppose $P[f]=0$
+and let $\mu=\mu_f$, so $\mu\mid P$. The operation $\scD$ preserves
+divisibility: at the root $1$ it replaces multiplicity $m$ by
+$\max(m-1,0)$, a monotone function of $m$.
+If $f\ne\id$, the classification makes $\scD\mu$ admissible.
+Lemma~\ref{nrr:sc:lem:largest-positive} gives
+$\scD\mu\mid\pcore(\scD P)$. Restoring the possible one copy of $z-1$
+yields $\mu\mid\core(P)$, hence $\core(P)[f]=0$.
+For $f=\id$, the factor $z-1$ in $P$ and in $\core(P)$ gives the same result.
+The reverse implication follows because $\core(P)$ divides $P$.
+
+If $\core(P)\ne1$ but $\pcore(\scD P)=1$, then $\core(P)=z-1$,
+realized by the identity. Otherwise
+$\scD\core(P)=\pcore(\scD P)$: when $P$ has no root at one, neither does
+its positive core. Theorem~\ref{nrr:sc:thm:main} gives (iii).
+If $\core(P)=1$, (i) would force $\id=0$, impossible on $\R$.
+A positive root $r$ supplies the solution $f(x)=rx$, and the formula has
+no nontrivial value without a positive root. This proves (ii).
+
+If $\core(P)\mid Q$, every solution of the reduced equation satisfies
+$Q[f]=0$. Conversely, apply any proposed universal relation to the map
+in (iii); its minimal polynomial forces $\core(P)\mid Q$.
+When there are no solutions, the implication is vacuous and $1$ divides
+every $Q$, so (iv) remains valid.
+\end{proof}
+
+Equivalently, the ideal of common iterative relations of the increasing
+solution class is
+\begin{equation}
+ \bigcap_{\substack{f:\,P[f]=0\\ f\text{ continuous increasing}}}\Ann(f)
+       =(\core(P)).
+ \label{nrr:sc:eq:commonideal}
+\end{equation}
+The intersection over an empty class is the full polynomial ring.
+This is stronger than merely exhibiting some eliminable roots: it
+identifies the exact obstruction to \emph{every} further universal reduction.
+
+\subsection{Consequences for boundary and interior roots}
+
+When $\scD P$ has two distinct positive roots, every root strictly between
+the smallest and largest positive radii survives at its full multiplicity
+in the universal core. At a boundary, a nonreal or negative root survives
+up to the multiplicity of the positive root there. It need not disappear.
+When only one positive root remains, the additional odd cap is exact.
+The unit root affects these conclusions only through the preliminary
+one-step multiplicity reduction, but omitting that step changes answers.
+
+The core is idempotent:
+\begin{equation}
+ \core(\core(P))=\core(P).
+ \label{nrr:sc:eq:idempotent}
+\end{equation}
+It also respects divisibility: $P\mid Q$ implies
+$\core(P)\mid\core(Q)$. This follows either from the sharp universal
+property or by observing that realizable divisors of $P$ are realizable
+divisors of $Q$.
+
+\section{An exact answer to increasing affine rigidity}
+\label{nrr:sc:sec:rigidity}
+
+The distinction between a polynomial being the minimal polynomial of
+\emph{an affine map} and forcing \emph{all maps} to be affine cannot be
+ignored. A small piecewise-linear example is decisive.
+
+\begin{theorem}[Affine and homogeneous-linear rigidity]
+\label{nrr:sc:thm:rigidity}
+Assume that $P$ has at least one increasing continuous solution on $\R$.
+Then all such solutions are affine if and only if
+\begin{equation}
+ \core(P)=z-r\quad\text{for some }r>0,
+ \qquad\text{or}\qquad \core(P)=(z-1)^2.
+ \label{nrr:sc:eq:affine}
+\end{equation}
+All such solutions are homogeneous linear if and only if
+$\core(P)=z-r$ for some $r>0$.
+In that case the unique increasing solution is $f(x)=rx$.
+When $\core(P)=(z-1)^2$, the solutions are exactly the translations
+$f(x)=x+c$.
+\end{theorem}
+\begin{proof}
+A reduced polynomial $z-r$ forces $f=r\id$.
+If $(z-1)^2[f]=0$, the argument in the proof of
+Corollary~\ref{cor:unitrigidity} (each bilateral orbit is
+$\itn{f}{n}(x)=x+n(f(x)-x)$, and order preservation for every $n\in\Z$
+forces the coefficient of $n$ in $(y-x)+n\bigl((f(y)-y)-(f(x)-x)\bigr)>0$ to
+vanish) shows that $f(x)-x$ is constant, and every translation does satisfy
+the equation. The manuscript gives the same argument.
+
+For necessity, let $R=\core(P)$ and use a realization with $\mu_f=R$.
+An increasing affine map $ax+b$ has minimal polynomial
+$z-a$ if $b=0$, $(z-1)^2$ if $a=1,b\ne0$, and
+$(z-1)(z-a)$ if $a\ne1,b\ne0$.
+Thus unless $R$ has one of these forms, the realization is nonaffine.
+The remaining case $R=(z-1)(z-r)$ with $r>0$, $r\ne1$, also fails
+universal affine rigidity. Indeed
+\begin{equation}
+ f(x)=\begin{cases}x,&x\le0,\\rx,&x\ge0\end{cases}
+ \label{nrr:sc:eq:piecewise-rigidity}
+\end{equation}
+is increasing and continuous, satisfies $R[f]=0$, and is not affine.
+This completes the affine classification.
+Finally nonzero translations are not homogeneous linear, proving the
+last assertions.
+\end{proof}
+
+The piecewise-linear mechanism is already visible in Bogdanov's comment
+on Petrov's question \cite{Petrov2016}; it is not claimed as a new
+construction. What the present result adds is an exact test for arbitrary
+input spectra, including multiplicities and nonreal roots, through
+$\core(P)$. The unrestricted version of Petrov's question includes decreasing
+maps and is not declared solved here.
+
+\begin{remark}[Added in the merge: the circular rigidity criteria]
+\label{nrr:sc:rem:rigidity-recovers}
+For $P$ supported on one circle, Theorem~\ref{nrr:sc:thm:rigidity} gives
+Corollaries~\ref{cor:nonunitrigidity} and~\ref{cor:unitrigidity}. If
+$r\ne1$ and $r$ is a root, then $\core(P)=\pcore(P)$ is given by
+\eqref{nrr:sc:eq:onecore}, and it equals $z-r$ exactly when $\kappa=1$ and
+$P$ has no other root, that is, $P=(z-r)^m$ with $m\in\{1,2\}$. If $r=1$
+and $M=m_P(1)\ge1$, then $\core(P)=z-1$ exactly when $\scD P$ has no
+positive root, that is, $M=1$; and $\core(P)=(z-1)^2$ exactly when
+$\pcore(\scD P)=z-1$, that is, $P=(z-1)^M$ with $M-1\in\{1,2\}$. By
+Theorem~\ref{nrr:sc:thm:core}(ii), $M=0$ (or $r$ not a root) leaves no
+increasing solution. These are the statements of the two corollaries.
+\end{remark}
+
+\section{Which spectra admit fixed points?}
+\label{nrr:sc:sec:fixed}
+
+\subsection{Finite limits eliminate incompatible modes}
+
+\begin{lemma}
+\label{nrr:sc:lem:limits}
+Suppose a real recurrence sequence $u(n)$ has a finite limit as
+$n\to+\infty$. Its active roots are either of modulus less than $1$,
+or a simple root at $1$. Its $1$-component equals the limit.
+With a finite limit as $n\to-\infty$, replace ``less'' by ``greater''.
+A recurrence sequence with finite limits at both ends is constant.
+\end{lemma}
+\begin{proof}
+A greatest-modulus, greatest-degree normalization, as in
+Proposition~\ref{nrr:sc:prop:positive-necessary}, shows that a nonzero
+component with modulus greater than one cannot remain bounded: a nonzero
+finite trigonometric leading term returns away from zero along a subsequence.
+Apply this successively to remove the finitely many growing levels.
+On the unit circle, positive polynomial degree is likewise impossible
+under boundedness. A degree-zero trigonometric sequence having a limit
+must be constant: its difference from that limit tends to zero, and the
+simultaneous returns in Lemma~\ref{nrr:sc:lem:trig} make it identically zero.
+The negative-time claim follows by replacing $n$ by $-n$.
+The intersection of the two permitted supports is the simple constant mode.
+\end{proof}
+
+\begin{proposition}[The fixed set is an interval]
+\label{nrr:sc:prop:fixedinterval}
+For an increasing polynomial-iterative homeomorphism, $\Fix(f)$ is
+empty or a closed interval, with points, rays, and the whole line allowed.
+In particular, a nontrivial bounded component of $\R\setminus\Fix(f)$
+cannot occur.
+\end{proposition}
+\begin{proof}
+The fixed set is closed. If $a<b$ are fixed, every orbit of a point
+$x\in[a,b]$ stays in $[a,b]$ for all integer times and is monotone.
+It has finite limits at both ends. Lemma~\ref{nrr:sc:lem:limits} makes the
+orbit constant, so $x$ is fixed.
+\end{proof}
+
+\subsection{Fixed-point-free realization}
+
+\begin{theorem}
+\label{nrr:sc:thm:fixedfree}
+Let $\mu\ne z-1$ satisfy Theorem~\ref{nrr:sc:thm:main}, and let $r_-,r_+$ be
+the extreme root moduli of $\scD\mu$. A realization with no fixed point
+exists if and only if
+\begin{equation}
+ r_-\le1\le r_+.
+ \label{nrr:sc:eq:fixedfree}
+\end{equation}
+When it exists it can be globally real analytic and bi-Lipschitz.
+\end{theorem}
+\begin{proof}
+Sufficiency is the full-line case of \eqref{nrr:sc:eq:range}.
+For necessity, if all roots of $\scD\mu$ have modulus greater than one,
+every increment sequence is absolutely summable toward $-\infty$.
+Thus every orbit has a finite backward limit, necessarily fixed by
+continuity. If all roots have modulus less than one, the forward limit
+is finite instead. Both contradict the absence of fixed points.
+\end{proof}
+
+\subsection{Fixed-point realization}
+
+For a polynomial $\mu$, let $\mu_{<}$ and $\mu_{>}$ be its monic factors
+formed from roots with modulus respectively less and greater than one.
+An empty factor is $1$.
+
+\begin{theorem}[Fixed-point spectra]
+\label{nrr:sc:thm:fixedpoint}
+A nonconstant monic real $\mu$, with $\mu(0)\ne0$, is the exact minimal
+polynomial of an increasing homeomorphism having a fixed point if and
+only if either $\mu=z-1$, or all the following hold:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2.4em]
+\item Its only possible root on the unit circle is $1$, with multiplicity
+at most one.
+\item At least one of $\mu_{<},\mu_{>}$ is nonconstant.
+\item Each nonconstant member of $\{\mu_{<},\mu_{>}\}$ is
+positive-admissible.
+\end{enumerate}
+These realizations can be chosen globally bi-Lipschitz and analytic away
+from one fixed point.
+\end{theorem}
+\begin{proof}
+Suppose a nonidentity realization has a fixed point. By
+Proposition~\ref{nrr:sc:prop:fixedinterval}, each nonfixed component is a ray
+with a finite fixed endpoint $c$. Every orbit on it tends to $c$ in one
+time direction: otherwise its finite limit would be another fixed point
+inside the ray. Lemma~\ref{nrr:sc:lem:limits} shows that such an orbit has
+only roots strictly on one side of the unit circle, together with a possible
+simple constant mode. Consequently (i) holds globally.
+For increments, the constant mode disappears. The factors $\mu_{<}$
+and $\mu_{>}$ are separately least common multiples of positive
+increment-orbit spectra, and hence are admissible by
+Lemma~\ref{nrr:sc:lem:lcm-positive}. Nonidentity gives (ii).
+
+Conversely construct, for each nonconstant factor, a half-line map
+with that exact minimal polynomial and finite endpoint zero, using
+Section~\ref{nrr:sc:sec:classification}. Reflection or reversal of the
+coordinate moves its domain to either desired half-line. If both factors
+occur, put one on each side of zero. If only one occurs, use it on both
+sides. The combined map $\Phi$ fixes zero, is globally bi-Lipschitz, is
+analytic away from zero, and has minimal polynomial $\mu_{<}\mu_{>}$.
+There is no root at one in this product.
+
+If $\mu$ includes a simple $z-1$, translate the map:
+$f(x)=1+\Phi(x-1)$. Any annihilator of $f$, evaluated at its fixed point
+$1$, must vanish at one. Subtracting this constant contribution shows
+that it must also annihilate $\Phi$. Conversely the product of those two
+coprime factors annihilates $f$. Its minimal polynomial is therefore
+$(z-1)\mu_{<}\mu_{>}$, as required.
+\end{proof}
+
+Theorem~\ref{nrr:sc:thm:fixedpoint} is genuinely stronger than the general
+classification. For example $(z-\tfrac12)(z-2)^2$ is admissible globally,
+but its exterior factor $(z-2)^2$ is not. Every realization is therefore
+fixed-point-free. In contrast, $(z-\tfrac12)(z-2)$ has both fixed-point
+and fixed-point-free realizations. A spectrum does not in general
+determine the dynamical type of every solution.
+
+\section{Explicit examples and arbitrarily high nonreal multiplicity}
+\label{nrr:sc:sec:examples}
+
+\subsection{Even multiplicities on two extreme circles}
+
+Set, for every $n\in\Z$,
+\begin{align}
+ v_n&=2^n(2-n)+4^n(2+n),\label{nrr:sc:eq:vexample}\\
+ u_n&=2^n(4-n)+4^n\left(\frac n3+\frac29\right).
+ \label{nrr:sc:eq:uexample}
+\end{align}
+Direct subtraction gives $u_{n+1}-u_n=v_n$.
+The value $v_n$ is positive: for $|n|\le2$ both summands in
+\eqref{nrr:sc:eq:vexample} are nonnegative and not both zero; for $n>2$ the
+positive $4^n(n+2)$ exceeds $2^n(n-2)$; and for $n<-2$ the corresponding
+inequality is reversed between the two bases. In fact the same argument
+works for all real $n$.
+
+The sequence $u_n$ increases from $0$ to $+\infty$.
+Let $H$ be its strictly increasing polygonal interpolation,
+$H(n+s)=(1-s)u_n+su_{n+1}$ for $0\le s\le1$.
+Define $F(H(t))=H(t+1)$ on the positive half-line and extend oddly through
+zero. Each orbit at phase $s$ is a linear combination of two shifted
+copies of $u_n$, so
+\begin{equation}
+ \bigl((z-2)^2(z-4)^2\bigr)[F]=0.
+ \label{nrr:sc:eq:evenexample}
+\end{equation}
+The exact determinant
+\begin{equation}
+ \det(u_{i+j})_{0\le i,j\le3}=\frac{16384}{9}\ne0
+ \label{nrr:sc:eq:evenhankel}
+\end{equation}
+certifies minimal degree four, hence the displayed minimal polynomial.
+The slopes on consecutive intervals are $v_{n+1}/v_n$. They have
+positive finite limits $2$ and $4$ at the two ends; positivity on the
+remaining finite set gives global bi-Lipschitz bounds.
+This rational polygonal example is supplemental to the analytic
+realization theorem, not a substitute for it.
+
+\subsection{An everywhere analytic annular example with rational orbit data}
+
+Let
+\begin{equation}
+ h(t)=2^t-2^{-t}+\frac1{10}\sin\frac{\pi t}{2},
+ \qquad f(h(t))=h(t+1).
+ \label{nrr:sc:eq:analyticexample}
+\end{equation}
+Since
+\[
+ h'(t)=(\log2)(2^t+2^{-t})+\frac\pi{20}\cos\frac{\pi t}{2}
+ \ge2\log2-\frac\pi{20}>0,
+\]
+the coordinate is an analytic bijection $\R\to\R$ with nonvanishing
+derivative. The last strict inequality follows, for example, from
+$\log2>1/2$ and $\pi<4$.
+The resulting $f$ is analytic and fixed-point-free, and its minimal
+polynomial is
+\begin{equation}
+ \mu_f(z)=(z-\tfrac12)(z-2)(z^2+1)
+ =z^4-\tfrac52z^3+2z^2-\tfrac52z+1.
+ \label{nrr:sc:eq:analyticpoly}
+\end{equation}
+All terms of $h(n)$ are rational. The first four are
+$0,8/5,15/4,311/40$, and
+\begin{equation}
+ \det(h(i+j))_{0\le i,j\le3}=\frac{225}{256}\ne0.
+ \label{nrr:sc:eq:analytichankel}
+\end{equation}
+Thus even the unit-circle nonreal pair survives without any root at one
+in the characteristic polynomial. The two real roots lie on opposite
+sides of the unit circle and supply the two ends of the coordinate.
+(Compare Part~I's analytic quartic, Theorem~\ref{thm:quartic}, where the
+pair $\pm i$ needs the double root at one that
+Theorem~\ref{thm:classification} requires on a single circle.)
+
+\subsection{No multiplicity penalty inside the annulus}
+
+\begin{theorem}[Uniformly bi-Lipschitz high-order nonreal modes]
+\label{nrr:sc:thm:uniform}
+For every integer $m\ge1$, there is an everywhere real-analytic,
+fixed-point-free increasing homeomorphism $f_m$ with
+\begin{equation}
+ \mu_{f_m}(z)=(z-\tfrac12)(z-2)(z^2+1)^m,
+ \qquad
+ \frac16\le f_m'(x)\le6\quad(x\in\R).
+ \label{nrr:sc:eq:uniformexample}
+\end{equation}
+In particular, a common global bi-Lipschitz bound places no upper bound
+on the multiplicity of an interior nonreal characteristic root.
+\end{theorem}
+\begin{proof}
+Write $a=\log2$, $k=m-1$, and $\varepsilon=a^k/(2k!)$.
+Set
+\begin{equation}
+ W(t)=2^t+2^{-t},\qquad
+ g_m(t)=W(t)+\varepsilon t^k\cos\frac{\pi t}{2}.
+ \label{nrr:sc:eq:uniformg}
+\end{equation}
+The exponential-series inequality
+$e^{a|t|}\ge(a|t|)^k/k!$ implies
+\[
+ \varepsilon|t|^k\le\tfrac12 e^{a|t|}\le\tfrac12W(t).
+\]
+Hence $W/2\le g_m\le3W/2$.
+Take the canonical real antiderivative from \eqref{nrr:sc:eq:primitive},
+with no added constant. It is an increasing analytic bijection
+$h_m:\R\to\R$. Its exact shift polynomial is the one in
+\eqref{nrr:sc:eq:uniformexample}: integration preserves degree $k$ in the
+nonzero frequencies $\pm\pi i/2$ and introduces no zero frequency.
+
+Define $f_m=h_m\circ(t\mapsto t+1)\circ h_m^{-1}$.
+Because $\tfrac12\le W(t+1)/W(t)\le2$,
+\[
+ \frac16\le\frac{g_m(t+1)}{g_m(t)}\le6.
+\]
+Equation \eqref{nrr:sc:eq:Fprime} proves the claimed derivative bounds.
+\end{proof}
+
+The proof does not infer minimality from the orbit at $h_m(0)$.
+For certain parities an integrated oscillatory component can vanish at
+that sampling phase. The shift-space argument proves exact minimality
+for the map, and a generic phase supplies a full scalar-orbit certificate.
+
+\subsection{A complete order-32 to order-23 reduction}
+
+Consider the factored polynomial
+\begin{equation}
+ P=(z-1)^3(z-\tfrac12)^2(z-2)^4(z+2)^7
+       (z^2+1)^5(z^2+9)^3.
+ \label{nrr:sc:eq:largeP}
+\end{equation}
+After removing one copy at one, the least and greatest positive roots
+are $1/2$ and $2$, of multiplicities $2$ and $4$.
+The roots $\pm i$ are interior and keep multiplicity $5$.
+The boundary root $-2$ is capped at $4$, and $\pm3i$ disappear.
+Restoring the root at one gives
+\begin{equation}
+ \boxed{\core(P)=(z-1)^3(z-\tfrac12)^2(z-2)^4(z+2)^4(z^2+1)^5.}
+ \label{nrr:sc:eq:largecore}
+\end{equation}
+The degree falls from $32$ to $23$. Every increasing solution satisfies
+the reduced equation, and a single globally analytic bi-Lipschitz
+solution has exactly that degree-$23$ minimal polynomial.
+Therefore no further universal factor or multiplicity can be removed.
+
+\section{Reproducibility and verification boundaries}
+\label{nrr:sc:sec:verification}
+
+\subsection{Exact code and the scope of its input}
+
+Part~II ships a standard-library Python implementation,
+\nolinkurl{code/02-spectral-core-spectral_core.py} (delivered as
+\texttt{code/spectral\_core.py}). It accepts a factor-level spectrum of
+Gaussian-rational roots, with rational real and imaginary parts and
+integer multiplicities. Conjugation symmetry is validated. Squared
+moduli are rational, so every comparison is exact.
+
+The implementation does \emph{not} claim to factor an arbitrary input
+polynomial over the algebraic numbers. The theorem applies to all real
+coefficient polynomials; the shipped implementation has the narrower,
+explicit input representation above. For rational or real-algebraic
+coefficients, exact root isolation and comparisons of algebraic squared
+moduli would extend the front end without changing the core algorithm.
+
+The manuscript's example below imports the module under its delivered name
+\texttt{spectral\_core}. Under the shipped names that import fails; run it in
+a copy of \texttt{code/} with the delivered names restored, as the report's
+\texttt{README.md} describes, with that directory on Python's module search
+path (for example, \texttt{PYTHONPATH=code python}).
+
+\begin{lstlisting}
+from fractions import Fraction
+from spectral_core import Root, increasing_core
+
+one = Root(1)
+two = Root(2)
+P = {one: 1, two: 2}
+assert increasing_core(P) == {one: 1, two: 1}
+\end{lstlisting}
+
+The module also implements tests for exact realizability, fixed-point
+realizability, fixed-point-free realizability, and affine rigidity.
+It rejects zero roots, invalid multiplicities, and asymmetric conjugate
+spectra rather than silently applying the theorem outside its hypotheses.
+
+\subsection{Recorded exact checks}
+
+The verifier (\nolinkurl{code/02-spectral-core-verify.py}, delivered as
+\texttt{code/verify.py}; the file of that name here is Part~I's verifier)
+produced the following results, recorded in
+\nolinkurl{data/02-spectral-core-exact_checks.json} and
+\nolinkurl{data/02-spectral-core-verification.txt}.
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Check & Count or exact result\\
+\midrule
+Spectra in two finite multiplicity grids & $1354$\\
+Divisors examined against the admissibility criterion & $97281$\\
+Rational recurrence windows for each example & $-80\le n\le80$\\
+Exact increment/monotonicity assertions & $402$\\
+Hankel determinant for \eqref{nrr:sc:eq:uexample} & $16384/9$\\
+Hankel determinant for \eqref{nrr:sc:eq:analyticexample} & $225/256$\\
+Large-core degree reduction & $32\to23$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For each finite input spectrum, the verifier computes the core formula
+and independently enumerates all divisors satisfying the theorem's
+admissibility test. It verifies equality with their least common multiple,
+core idempotence, divisibility, and exact realizability of every nontrivial
+core. This checks the finite combinatorics and implementation of the
+formula, not the analytic realization proof. (Merge note: the enumeration is
+independent of the core formula but uses the same
+\texttt{positive\_admissible} routine as the rest of the module; the
+comparison with Part~I's independently stated circular theorem is the one in
+Remark~\ref{nrr:sc:rem:circular}.)
+
+For each explicit orbit, rational arithmetic verifies the recurrence
+through the stated window and computes a nonzero Hankel determinant.
+The recurrence holds for all integers because of the symbolic
+exponential-polynomial formulas, not because of the finite window.
+The determinant certifies that no lower-order recurrence can annihilate
+that orbit; the all-real constructions connect those orbits to actual maps.
+
+The worked example of Section~\ref{nrr:sc:sec:examples} is also a script,
+\nolinkurl{code/02-spectral-core-example.py} (delivered as
+\texttt{code/example.py}); its recorded output is
+\nolinkurl{data/02-spectral-core-example.txt}. In the write phase
+(29 September 2026, Python 3.14.4) both scripts were rerun in a copy with the
+delivered names restored: both passed, and their outputs equal the shipped
+records apart from Windows line endings.
+
+\subsection{Rebuilding}
+
+The report's \texttt{README.md} gives the rerun commands for both parts
+and the build command for this article. No bibliography processor is
+needed; Part~II adds no figure files. The JSON output gives full exact
+matrices, polynomial coefficients in ascending order, and initial values.
+The short verification log is also included. The complete universal theorem
+is not machine-checked by these scripts, and no Lean certification is
+implied.
+
+\section{Further research questions and a formalization program}
+\label{nrr:sc:sec:research}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3.2em,itemsep=0.8em]
+\item \textbf{Decreasing spectra and failure of single-witness sharpness.}
+Determine the exact minimal spectra and universal relation ideal for
+decreasing homeomorphisms. Simply replacing ``positive root'' by
+``negative root'' is insufficient: odd-time order reversal and even-time
+monotonicity must hold simultaneously. Draga's theorem \cite{D2016}
+shows that certain two-negative-root equations reduce to a disjunction
+of lower-order equations. In such a class, the least common annihilator
+can require factors that are not simultaneously realized by any one map.
+The increasing case's single-witness theorem may therefore have no
+direct decreasing counterpart.
+
+\item \textbf{Smoothness at a fixed point with several radii.}
+Classify spectra realizable by globally $C^k$, $C^{k,\alpha}$, or
+real-analytic maps having a fixed point. The present construction is
+analytic off the point, and Part~I (Section~\ref{sec:regularity}) establishes
+some single-circle regularity obstructions. Several radii introduce
+competing power scales and possible resonances. An exact threshold theorem
+would refine Theorem~\ref{nrr:sc:thm:fixedpoint}, rather than merely improve
+a construction.
+
+\item \textbf{The least possible bi-Lipschitz distortion.}
+For an admissible $\mu$, minimize a symmetric constant $L$ in
+$L^{-1}|x-y|\le|f(x)-f(y)|\le L|x-y|$ over realizations with minimal
+polynomial $\mu$. Extreme recurrence growth gives natural lower bounds,
+while Theorem~\ref{nrr:sc:thm:uniform} shows that large interior
+multiplicities need not force large distortion. Determine whether the
+infimum depends only on extreme radii, and when it is attained.
+
+\item \textbf{All solutions, not only their possible spectra.}
+Describe the moduli of increasing solutions of a fixed equation.
+The realization theorem selects convenient coordinates but is not a
+parametrization of all solutions. One possible route is a positive cone
+of recurrence initial data together with an order-compatible choice of
+a fundamental interval and a gluing law.
+
+\item \textbf{Convexity, concavity, and stronger order restrictions.}
+Find the analogue of $\core(P)$ for globally convex or concave increasing
+solutions. Convexity controls differences between nearby orbits, not just
+signs of individual increments. It may yield stronger multiplicity or
+oscillation restrictions than the positive-recurrence criterion.
+
+\item \textbf{Proper intervals and one-sided iteration.}
+Classify self-maps of bounded intervals, half-lines, and proper open
+intervals without surjectivity. The proof here uses bilateral orbits in
+an essential way. A one-sided recurrence need not have the negative-time
+parity obstruction, and a finite endpoint changes which modes can occur.
+
+\item \textbf{A certified algebraic-coefficient front end.}
+Implement exact factorization and algebraic modulus comparison for
+$P\in\mathbb{Q}[z]$, returning $\core(P)$ together with root-isolation
+certificates. Equal-modulus decisions, rather than approximate root
+clustering, are essential at the sharp boundary. The factor-level code
+shipped with Part~II is a testable starting point, not that completed front
+end.
+
+\item \textbf{Stability of the core under coefficient perturbation.}
+Determine the strata on which the degree and multiplicity pattern of
+$\core(P)$ are constant, and describe their jumps. Equal-modulus and
+positive-real-root collisions are natural boundary loci. A useful output
+would distinguish stable eliminations from eliminations destroyed by an
+arbitrarily small perturbation.
+
+\item \textbf{Constructive positive envelopes and rational certificates.}
+The sufficiency proof uses an existentially large $\Lambda$ and a small
+perturbation parameter. Produce explicit certified bounds in terms of
+root separations, degrees, and coefficient heights. This would turn an
+existence construction into a predictable numerical and symbolic
+realization algorithm.
+
+\item \textbf{Lean formalization in separable stages.}
+A practical sequence is: the annihilator ideal and difference-spectrum
+identity; bilateral recurrence decomposition; finite trigonometric
+returns and the positive-mean lemma; the necessary spectral test; the
+finite root-level core formula; then the analytic positive-envelope and
+conjugacy construction. The algebraic reduction and the finite
+classification can be audited independently before the analytic
+realization library is complete. (As of 29 September 2026 none of these
+stages has been started in ProveIt.)
+\end{enumerate}
+
+These are proposed projects, not claims of unresolved status throughout
+all literature. The decreasing and regularity questions require a renewed
+bibliographic check before being presented as newly formulated problems.
+
+\section{Conclusion of Part~II}
+\label{nrr:sc:sec:conclusion}
+
+Removing one $1$-factor converts the increasing iterative-equation problem
+into a problem about positive bilateral recurrences. At two different
+ends, different exponential envelopes can dominate. That permits even
+extreme multiplicities and arbitrary interior multiplicities, exactly
+where the circular theorem no longer supplies the answer.
+
+The resulting classification is both necessary and sufficient, and its
+sufficiency is global: every permitted spectrum is realized by a
+bi-Lipschitz increasing homeomorphism. The universal core then identifies
+the exact amount of order reduction available from an arbitrary input
+polynomial, with one realization witnessing all retained multiplicities.
+The fixed-point theorems separate two dynamical regimes, and the analytic
+family shows that high nonreal multiplicity is compatible with uniformly
+controlled metric distortion.
+
+The result closes the several-circle gap in Part~I within the increasing
+whole-line setting. It does not assert a classification of decreasing maps,
+noninjective zero-constant equations, or every individual solution. Its
+mathematical claims are the stated and proved theorems; historical priority
+and independent formal verification remain separate questions.
+
+\section{A finite Hankel certificate for minimality}
+\label{nrr:sc:app:hankel}
+
+Suppose a scalar sequence $u_n$ is annihilated by a monic degree-$d$
+polynomial. If a polynomial of degree $e<d$ also annihilated it, then
+there would be a nontrivial linear relation among the first $e+1$ columns
+of the Hankel matrix $(u_{i+j})_{0\le i,j\le d-1}$: evaluate that
+recurrence at $i=0,\ldots,d-1$. Hence a nonzero determinant proves
+minimal order $d$. This does not require numerical conditioning estimates.
+(Part~I uses the same argument for \eqref{eq:hankelF}
+and \eqref{eq:quarticdet}.)
+
+For the analytic example, the exact matrix is
+\[
+ \begin{pmatrix}
+ 0&8/5&15/4&311/40\\
+ 8/5&15/4&311/40&255/16\\
+ 15/4&311/40&255/16&5131/160\\
+ 311/40&255/16&5131/160&4095/64
+ \end{pmatrix},
+\]
+with determinant $225/256$.
+Its recurrence polynomial is \eqref{nrr:sc:eq:analyticpoly}. The stored JSON
+contains the analogous exact matrix for the even-multiplicity example.
+
+\section{Source and novelty audit of Part~II}
+\label{nrr:sc:app:audit}
+
+\paragraph{Repository source.}
+The inspected source is Part~I, at
+\nolinkurl{SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/}
+\nolinkurl{nonreal-roots-in-iterative-equations/article.tex} in ProveIt
+(\url{https://github.com/VladimirReshetnikov/ProveIt}), inspected on
+28 September 2026. The GitHub content API returned blob SHA
+\begin{center}\small\texttt{ae6ea0aa0566316ba9ed06b1750c6e73275059da}.\end{center}
+The retrieved conclusion explicitly leaves several-circle spectra
+unclassified. The manuscript does not reuse the circular counterexamples
+as its new result, and it does not claim that the repository's unrefereed
+report is a formal certification.
+
+\paragraph{External sources checked.}
+The primary preprints \cite{DM2016,D2016} were read for the formulation and
+scope of the order-reduction problem. Page~13 of \cite{DM2016}, including
+Problem~6.1, was also visually inspected. Petrov's original question and
+its displayed comments \cite{Petrov2016}, including I.~Bogdanov's, were
+checked directly. (The manuscript cites arXiv:1503.00570 without a version
+and arXiv:1604.01287v2; Part~I's bibliography entries, used here, give the
+same works.) Searches for broader iterative-spectrum classifications
+returned a mixture of relevant and irrelevant results; no exhaustive
+citation-database review was completed. Thus Part~II establishes a concrete
+extension of Part~I, not a certified first-in-literature claim.
+
+\paragraph{Trust boundary.}
+All universal statements in Part~II rest on the written proofs.
+The rational scripts check explicit examples and finite consistency of
+the root-level rule. No specialized theorem from the repository or cited
+iterative-equation papers is used as an unproved premise; the argument uses
+standard real analysis and finite-dimensional linear algebra. No independent
+referee or proof assistant has checked the complete development. The
+manuscript's author read the repository only; no files were committed or
+modified there. The manuscript's own status note and source record are
+shipped verbatim as \nolinkurl{02-spectral-core-STATUS.md} and
+\nolinkurl{02-spectral-core-source_audit.md}.
+
 
 \appendix
 \section{Source and status audit}
@@ -1433,6 +2876,9 @@ F.~Petrov,
 MathOverflow question 232493, 1 March 2016.
 \url{https://mathoverflow.net/questions/232493/continuous-linear-recurrent-relations}.
 Retrieved 20 September 2026.
+[Part~II, added 29 September 2026: the question's comments by I.~Bogdanov,
+checked for Part~II on 28 September 2026, contain the piecewise-linear
+mechanism used in Theorem~\ref{nrr:sc:thm:rigidity}.]
 
 \bibitem{DM2018}
 S.~Draga and J.~Morawiec,
