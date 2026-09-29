@@ -48,14 +48,19 @@
 \newcommand{\core}{\mathcal R}
 \newcommand{\pcore}{\mathcal K}
 \DeclareMathOperator{\Fix}{Fix}
+% Part III (batch 42): the decreasing and smooth decreasing cores, root sets.
+\newcommand{\dcore}{\mathcal C_{\downarrow}}
+\newcommand{\smoothcore}{\mathcal C_{\infty}}
+\newcommand{\roots}{\operatorname{Roots}}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
   keepspaces=true,showstringspaces=false,frame=single,framerule=0.3pt}
 \hypersetup{pdftitle={Nonreal Roots Survive in Polynomial Iterative Equations},
  pdfauthor={Research draft prepared for Vladimir Reshetnikov},
- pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification; Part II: the increasing spectral core on several circles}}
+ pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification; Part II: the increasing spectral core on several circles; Part III: orientation-reversing spectra, the decreasing spectral core and finite-smoothness rigidity}}
 \title{\textbf{Nonreal Roots Survive\\in Polynomial Iterative Equations}\\[0.5em]
   \large A cubic counterexample and a classification of circular spectra\\[0.2em]
-  \large Part~II: the increasing spectral core on several circles}
+  \large Part~II: the increasing spectral core on several circles\\[0.2em]
+  \large Part~III: orientation-reversing spectra}
 \author{Research draft prepared for Vladimir Reshetnikov}
 \date{20 September 2026}
 
@@ -100,6 +105,14 @@ the exact universal order reduction $\core(P)$ of every equation with nonzero
 constant coefficient (Theorem~\ref{nrr:sc:thm:core}), and decides affine
 rigidity and the existence of fixed points. It is likewise an AI-assisted,
 unrefereed draft with no priority claim.
+
+\noindent\textbf{Part~III} (added 29 September 2026, batch~42; from
+Section~\ref{nrr:dc:sec:intro} on) classifies the minimal polynomials of
+decreasing homeomorphisms of $\R$ (Theorem~\ref{nrr:dc:thm:main}), gives the
+exact universal reduction $\dcore(P)$, which needs one or two witnesses
+(Theorem~\ref{nrr:dc:thm:core}), and proves polynomial-coordinate rigidity
+above a finite smoothness (Theorem~\ref{nrr:dc:thm:finite-threshold}). It is
+likewise AI-assisted and unrefereed, with no priority claim.
 
 \clearpage
 \begingroup
@@ -164,6 +177,10 @@ an exact answer for \emph{increasing solutions when all characteristic
 roots lie on one circle}; see Section~\ref{sec:rigidity}.
 [Added 29 September 2026, batch~41: Part~II extends this answer to increasing
 solutions with arbitrary root moduli, Theorem~\ref{nrr:sc:thm:rigidity}.]
+[Added 29 September 2026, batch~42: Part~III decides affine rigidity for
+decreasing solutions (Theorem~\ref{nrr:dc:thm:affine}); with Part~II this
+answers Petrov's question for both orientations when $P(0)\ne0$
+(Remark~\ref{nrr:dc:rem:petrov}).]
 
 \subsection{Random selection, exclusion, and priority}
 
@@ -1337,6 +1354,14 @@ every equation with nonzero constant coefficient over its increasing
 solutions (Theorem~\ref{nrr:sc:thm:core}). Decreasing
 homeomorphisms, zero constant coefficient and proper interval domains remain
 outside both parts.]
+[Added 29 September 2026, batch~42: Part~III classifies the minimal
+polynomials of decreasing homeomorphisms of $\R$ (Theorem~\ref{nrr:dc:thm:main})
+and gives the exact universal reduction over decreasing solutions
+(Theorem~\ref{nrr:dc:thm:core}); it also shows that a decreasing homeomorphism
+of a bounded interval satisfying such an equation is an involution
+(Corollary~\ref{nrr:dc:cor:bounded}). Zero constant coefficient remains open
+in both orientations, and proper interval domains remain open apart from that
+corollary.]
 
 Finally, mathematical verification and historical priority are different
 questions. The paper gives complete arguments and exact finite
@@ -1349,6 +1374,10 @@ increasing single-circle setting.
 nonzero-constant-coefficient version of the linearity problem for arbitrary
 root moduli (Theorem~\ref{nrr:sc:thm:rigidity}); the problem for decreasing
 maps is still not declared solved.]
+[Added 29 September 2026, batch~42: Part~III answers the decreasing version
+(Theorem~\ref{nrr:dc:thm:affine}); together the two parts answer the
+linearity problem for every $P$ with $P(0)\ne0$
+(Remark~\ref{nrr:dc:rem:petrov}). Zero constant coefficient remains open.]
 
 %% ====================================================================
 %% Batch-41 addition (manuscript 02, "The Complete Increasing Spectral
@@ -1362,7 +1391,9 @@ maps is still not declared solved.]
 \noindent\emph{Sections~\ref{sec:problem}--\ref{sec:conclusion} and
 Appendices~\ref{app:sources}--\ref{app:reproduce} form the original report
 (Part~I) of 20 September 2026, unchanged except for a second subtitle line,
-a paragraph on the title page and dated pointers to this addition. Part~II was added on 29 September 2026 in batch~41 of ProveIt's
+a paragraph on the title page and dated pointers to this addition (and, since
+batch~42, a third subtitle line, a second title-page paragraph and dated
+pointers to Part~III). Part~II was added on 29 September 2026 in batch~41 of ProveIt's
 incoming-report intake, from one manuscript written against the text of
 Part~I printed above. It answers the first boundary that Part~I names in
 Section~\ref{sec:conclusion}, ``We have not classified minimal polynomials
@@ -1372,6 +1403,8 @@ polynomials of increasing homeomorphisms with arbitrary root moduli, and
 Theorem~\ref{nrr:sc:thm:core} gives the exact universal order reduction for
 every prescribed equation. The other boundaries of that paragraph (decreasing
 maps, zero constant coefficient, proper intervals) remain open.
+[Added 29 September 2026, batch~42: decreasing maps of $\R$ with $P(0)\ne0$
+are treated in Part~III.]
 Section~\ref{nrr:sc:sec:intro} records the provenance and fixes the notation
 of the addition.}
 
@@ -2198,6 +2231,9 @@ construction. What the present result adds is an exact test for arbitrary
 input spectra, including multiplicities and nonreal roots, through
 $\core(P)$. The unrestricted version of Petrov's question includes decreasing
 maps and is not declared solved here.
+[Added 29 September 2026, batch~42: decreasing maps are decided in Part~III,
+Theorem~\ref{nrr:dc:thm:affine} and Remark~\ref{nrr:dc:rem:petrov}; the
+version with $P(0)=0$ remains open.]
 
 \begin{remark}[Added in the merge: the circular rigidity criteria]
 \label{nrr:sc:rem:rigidity-recovers}
@@ -2593,6 +2629,14 @@ of lower-order equations. In such a class, the least common annihilator
 can require factors that are not simultaneously realized by any one map.
 The increasing case's single-witness theorem may therefore have no
 direct decreasing counterpart.
+[Added 29 September 2026, batch~42: answered in Part~III for continuous maps
+of $\R$ with $P(0)\ne0$. The minimal spectra are those of
+Theorem~\ref{nrr:dc:thm:main}, the universal relation ideal is generated by
+$\dcore(P)$ (Theorem~\ref{nrr:dc:thm:core}), and single-witness sharpness does
+fail as predicted: exactly two witnesses are needed precisely when both a
+contracting and an expanding side core survive
+(Corollary~\ref{nrr:dc:cor:two-branches}), which includes Draga's
+disjunction. Proper intervals and $P(0)=0$ remain open.]
 
 \item \textbf{Smoothness at a fixed point with several radii.}
 Classify spectra realizable by globally $C^k$, $C^{k,\alpha}$, or
@@ -2602,6 +2646,12 @@ some single-circle regularity obstructions. Several radii introduce
 competing power scales and possible resonances. An exact threshold theorem
 would refine Theorem~\ref{nrr:sc:thm:fixedpoint}, rather than merely improve
 a construction.
+[Added 29 September 2026, batch~42: for \emph{decreasing} maps, which always
+have a fixed point, Part~III gives a finite threshold
+(Theorem~\ref{nrr:dc:thm:finite-threshold}) above which every non-involutive
+solution is analytic with the spectra of
+Theorem~\ref{nrr:dc:thm:smooth-occurrence}; the threshold is sufficient, not
+shown optimal. The increasing question stays open.]
 
 \item \textbf{The least possible bi-Lipschitz distortion.}
 For an admissible $\mu$, minimize a symmetric constant $L$ in
@@ -2666,6 +2716,9 @@ stages has been started in ProveIt.)
 These are proposed projects, not claims of unresolved status throughout
 all literature. The decreasing and regularity questions require a renewed
 bibliographic check before being presented as newly formulated problems.
+[Added 29 September 2026, batch~42: Part~III's literature check for the
+decreasing question is recorded in Section~\ref{nrr:dc:sec:audit}; it too is
+not exhaustive.]
 
 \section{Conclusion of Part~II}
 \label{nrr:sc:sec:conclusion}
@@ -2690,6 +2743,8 @@ whole-line setting. It does not assert a classification of decreasing maps,
 noninjective zero-constant equations, or every individual solution. Its
 mathematical claims are the stated and proved theorems; historical priority
 and independent formal verification remain separate questions.
+[Added 29 September 2026, batch~42: decreasing maps are classified in
+Part~III.]
 
 \section{A finite Hankel certificate for minimality}
 \label{nrr:sc:app:hankel}
@@ -2754,6 +2809,1979 @@ manuscript's author read the repository only; no files were committed or
 modified there. The manuscript's own status note and source record are
 shipped verbatim as \nolinkurl{02-spectral-core-STATUS.md} and
 \nolinkurl{02-spectral-core-source_audit.md}.
+
+
+%% ====================================================================
+%% Batch-42 addition (manuscript 02, "The Decreasing Spectral Core").
+%% All labels of Part III carry the prefix nrr:dc: (nonreal roots,
+%% decreasing core).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Orientation-reversing spectra: the decreasing spectral core}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Orientation-reversing spectra: the decreasing spectral core}
+
+\noindent\emph{Part~III was added on 29 September 2026 in batch~42 of
+ProveIt's incoming-report intake, from one manuscript. It answers the boundary
+that Parts~I and~II both leave open, ``We have not classified decreasing
+homeomorphisms, for which consecutive iterates reverse order''
+(Section~\ref{sec:conclusion}), and Part~II's first research question
+(Section~\ref{nrr:sc:sec:research}, Q1), for continuous maps of $\R$ and
+equations with nonzero constant coefficient:
+Theorem~\ref{nrr:dc:thm:main} classifies the minimal iterative polynomials of
+decreasing homeomorphisms, Theorem~\ref{nrr:dc:thm:core} gives the exact
+universal reduction $\dcore(P)$, and Corollary~\ref{nrr:dc:cor:two-branches}
+shows that it needs one or two witnesses, exactly as Q1 anticipated. It adds a
+finite-smoothness rigidity theorem (Theorem~\ref{nrr:dc:thm:finite-threshold})
+with no counterpart in Parts~I--II. Zero constant coefficient and proper
+interval domains remain open. Parts~I and~II are unchanged except for the title
+page and dated pointers to this addition.
+Section~\ref{nrr:dc:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance, conventions and the main results}
+\label{nrr:dc:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{nrr:dc:sec:source}
+
+Part~III is batch-42 manuscript~02, an AI-assisted research draft prepared
+for Vladimir Reshetnikov, dated 29 September 2026 and titled \emph{The
+Decreasing Spectral Core: Complete minimal spectra, finite-smoothness
+rigidity, and global polynomial conjugacy} (27 US Letter pages as
+delivered). It arrived as
+the archive \texttt{ProveIt\_Orientation\_Reversing\_Spectra.zip} (inner
+directory \texttt{ProveIt\_Orientation\_Reversing\_Spectra/}) in ProveIt
+commit \texttt{8315d24e3} and was placed in \texttt{3609d0473}. It is pinned
+to ProveIt commit \texttt{afb2d1227} (full hash in
+Section~\ref{nrr:dc:sec:audit}). At that commit this report contained Part~I
+only, as the Git blob \texttt{ae6ea0aa} of \texttt{article.tex} (the blob that
+pins Part~II; Section~\ref{nrr:sc:sec:source}), so
+the manuscript's statements about ``the ProveIt report'' refer to the text of
+Part~I printed above. It read Part~II not in the repository but as the
+batch-41 manuscript itself, a copy in Vladimir's file library
+(\nolinkurl{article(20260929-042518).tex}), and does not assert that this copy
+belongs to the pinned commit; Part~II prints that manuscript. Its verifier,
+Makefile, recorded output and status note are shipped beside Parts~I--II with
+the prefix \nolinkurl{03-decreasing-core-}; its manuscript, PDF, delivery
+README and checksum ledger (\texttt{CHECKSUMS.sha256}, 8/8 verified) are not
+shipped and survive in the arrival commit.
+
+\begin{quote}\small
+\textbf{The manuscript's abstract.} For a real polynomial
+$P(z)=\sum a_jz^j$, write $P[f]=\sum a_j f^{\circ j}$, with composition in
+place of pointwise powers. We classify all minimal iterative polynomials of
+decreasing homeomorphisms of $\R$. Apart from involutions, the nonunit roots
+must all lie strictly inside or all strictly outside the unit circle. On each
+extreme modulus circle, its negative real root must have maximal
+multiplicity; on a single circle that multiplicity must also be odd. These
+conditions, with optional simple factors at $1$ and $-1$, are sufficient,
+with globally bi-Lipschitz realizations analytic away from at most two
+points.
+
+The classification gives an explicit root-by-root formula for the smallest
+polynomial annihilating every decreasing solution of $P[f]=0$. Two solutions
+always suffice to witness its sharpness, and two are necessary precisely when
+both contracting and expanding spectral branches survive.
+
+A second theorem is substantially more rigid. Every non-involutive
+$C^\infty$ decreasing solution is globally of the form $f(c+H(t))=c+H(at)$,
+where $a<0$, $a\ne-1$, and $H$ is a polynomial with $H(0)=0$, $H'(0)=1$, and
+$H'>0$ on $\R$. In fact, an explicit finite $C^N$ hypothesis suffices.
+Consequently these solutions are automatically real analytic and algebraic,
+and their minimal roots are distinct real integer powers of one negative
+multiplier. We derive the exact smooth spectral core, exhibit unbounded
+smooth witness complexity, supply self-contained proofs and exact finite
+checks, and identify further regularity and formalization problems.
+\end{quote}
+
+The manuscript contributes, in the order printed here: its statement of the
+target and the two main theorems (this section); a regularity complement to
+Part~I's homeomorphism lemma and a two-periodic limit lemma
+(Section~\ref{nrr:dc:sec:recurrences}); the two-cycle interval and the global
+separation of contracting and expanding spectra
+(Section~\ref{nrr:dc:sec:geometry}); its use of Part~II's positive-recurrence
+theorem (Section~\ref{nrr:dc:sec:positive}); the classification of decreasing
+minimal spectra (Section~\ref{nrr:dc:sec:classification}); the universal
+decreasing core, its two sharp branches, the witness count and an affine
+rigidity test (Section~\ref{nrr:dc:sec:core}); $C^1$ hyperbolicity, an
+explicit smoothness threshold and the polynomial-coordinate theorem
+(Section~\ref{nrr:dc:sec:smooth}); smooth spectra, the smooth core and
+unbounded smooth witness counts (Section~\ref{nrr:dc:sec:smooth-core});
+examples (Section~\ref{nrr:dc:sec:examples}); its finite checks and a
+formalization route (Section~\ref{nrr:dc:sec:verification}); ten research
+questions (Section~\ref{nrr:dc:sec:research}); its conclusion
+(Section~\ref{nrr:dc:sec:conclusion}); and its source, dependency and claim
+audit (Section~\ref{nrr:dc:sec:audit}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2.2em]
+\item The manuscript reproves, so as not to assume Parts~I--II, the
+homeomorphism lemma, the annihilator ideal and cyclic composition space, the
+two-sided recurrence decomposition, orbitwise least common multiples, the
+simultaneous returns and positive means of finite trigonometric sequences,
+and, from Part~II, positive admissibility with its necessity proposition and
+least-common-multiple lemma, the two-ended positive envelope and the positive
+analytic interpolation theorem. Its proofs are the same arguments as those
+printed in Parts~I and~II. They are printed once, there, and credited where
+Part~III uses them (Sections~\ref{nrr:dc:sec:imported}
+and~\ref{nrr:dc:sec:positive}). What the manuscript adds to them is printed:
+the regularity of the inverse (Lemma~\ref{nrr:dc:lem:homeomorphism}), the
+trigonometric limit statement (Lemma~\ref{nrr:dc:lem:trig}(iii)) and the
+two-periodic limit lemma (Lemma~\ref{nrr:dc:lem:limits}), which extends
+Part~II's Lemma~\ref{nrr:sc:lem:limits}.
+\item Remarks~\ref{nrr:dc:rem:reflected-core} and~\ref{nrr:dc:rem:petrov}
+were added in the merge. The first expresses the decreasing core through
+Part~II's positive-recurrence core $\pcore$ and records a finite check of that
+identity made in the write phase; the second combines Part~II's and
+Part~III's rigidity theorems into an answer to Petrov's linearity question for
+equations with nonzero constant coefficient.
+\item Symbols were renamed to avoid collisions with Parts~I--II and within the
+manuscript (Section~\ref{nrr:dc:sec:notation}); no normalization changed.
+The manuscript's $\mathcal C_{\downarrow}$ and $\mathcal C_\infty$ are kept.
+Its references to ``the ProveIt report'' and to ``the increasing companion''
+now read ``Part~I'' and ``Part~II'', and its file names are replaced by the
+shipped names.
+\item The manuscript's appendix (its source audit) is printed as the last
+section of Part~III, so that Part~I's appendices keep their letters. Its
+unnumbered verification table stays unnumbered.
+\end{enumerate}
+
+\paragraph{Status (manuscript 02 of batch 42).}
+This is an AI-assisted, unrefereed research draft, not a Lean- or
+Rocq-verified development, and no declaration in ProveIt formalizes any
+statement of Parts~I--III. The main classifications and the finite-smoothness
+theorem are proved below, rather than assumed from the repository; no theorem
+of an unverified repository manuscript is used as an unproved premise. Their
+extension beyond the inspected repository reports is explicit; a complete
+historical-priority claim is not made. Classical recurrence methods and the
+previously known two-branch phenomenon (Draga's Theorem~3 and Remark~4
+\cite{D2016}) are credited. The domain is the whole real line and $P(0)\ne0$:
+Part~III does not classify maps of arbitrary intervals, equations with zero
+constant coefficient, nonhomogeneous equations, higher-dimensional systems, or
+every individual continuous solution (it does classify every individual
+non-involutive solution in the stated sufficiently smooth class). The
+finite-smoothness threshold is sufficient; its optimality is not claimed. The
+finite computations check the algebraic rules on finite atlases; they are not
+proofs of the all-real theorems.
+
+\subsection{Notation across the three parts}
+\label{nrr:dc:sec:notation}
+
+Part~I's and Part~II's symbols keep their meanings in their parts.
+Table~\ref{nrr:dc:tab:notation} fixes the meanings used in Part~III; letters
+not listed ($P$, $Q$, $\mu_f$, $E$, $\Ann$, $\Fix$, $W$, $G$, $\Lambda$ as in
+Part~II's envelope lemma, and $\pcore$) agree with Parts~I--II.
+For a monic polynomial $A$ and a root $\lambda$, $m_A(\lambda)$ is the
+multiplicity of $\lambda$ in $A$ (Part~II's notation; the manuscript writes
+$\operatorname{mult}_A(\lambda)$), and $\roots(A)$ is the set of distinct
+complex roots.
+
+\begin{table}[htbp]
+\centering
+\caption{Symbols of Part~III, with the tempting false reading beside the true one.}
+\label{nrr:dc:tab:notation}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning in Part~III & Not to be confused with\\
+\midrule
+$\dcore(P)$ & the decreasing spectral core: the least universal annihilator
+of all continuous decreasing solutions (Theorem~\ref{nrr:dc:thm:core}) &
+Part~II's \emph{increasing} core $\core(P)$ \eqref{nrr:sc:eq:core}\\
+$\smoothcore(P)$ & the smooth decreasing core
+(Theorem~\ref{nrr:dc:thm:smooth-core}) & $\dcore(P)$, which it divides\\
+negative-admissible & Definition in Section~\ref{nrr:dc:sec:main} &
+Part~II's positive admissibility: $R$ is negative-admissible iff $R^\#$ is
+positive-admissible\\
+$A^\#$ & the sign reflection $(-1)^{\deg A}A(-z)$ \eqref{nrr:dc:eq:reflection}
+& ---\\
+$\varepsilon_+$, $\varepsilon_-$ & the exponents of $z-1$ and $z+1$; in
+\eqref{nrr:dc:eq:unit-core}, $\mathbf 1_{P(1)=0}$ and $\mathbf 1_{P(-1)=0}$
+(\emph{renamed} from the manuscript's $\varepsilon$, $\delta$) &
+Part~II's $\delta(A)$, which is $\varepsilon_+$ (not $\varepsilon_-$); Part~I's
+perturbation coefficients $\varepsilon_j$\\
+$U$ & the unit core $(z-1)^{\varepsilon_+}(z+1)^{\varepsilon_-}$ & ---\\
+$R$; $R_S$, $R_<$, $R_>$ & the nonunit part of $\mu$
+(Theorem~\ref{nrr:dc:thm:main}); the side cores of $P$
+(Section~\ref{nrr:dc:sec:core}); $R_m$ is the example
+\eqref{nrr:dc:eq:interior-multiplicity} & Part~II's $R=\core(P)$ in its
+rigidity proof; Part~II's factors $\mu_<$, $\mu_>$ of $\mu$ (here
+$R_<=\pcore(P_<^\#)^\#$, Remark~\ref{nrr:dc:rem:reflected-core})\\
+$A_S$ & the set of negative-anchor radii on the side $S$ & a polynomial $A$
+(Part~II); Part~I's function $A(t)$\\
+$r_-$, $r_+$ & in Section~\ref{nrr:dc:sec:core}: least and greatest negative
+anchors, which are the extreme root moduli of $R_S$ & $r_-(P)$, $r_+(P)$
+below\\
+$r_-(P)$, $r_+(P)$ & least and greatest root moduli of $P$ (\emph{renamed}
+from $r(P)$, $R(P)$) & Part~II's core $\core(P)$\\
+$\kappa$ & the largest odd integer $\le m_P(-r)$ \eqref{nrr:dc:eq:odd-cap}
+(\emph{renamed} from $h$), Part~II's $\kappa$ after reflection & Part~I's $k$,
+where $m_r=2k+1$\\
+$\omega$ & a lower bound for root moduli (Lemma~\ref{nrr:dc:lem:limits}(iii));
+$\min_\lambda|\lambda|^\sigma$ in \eqref{nrr:dc:eq:kappa} (\emph{renamed} from
+$\kappa$) & $\kappa$ above\\
+$\Theta_P(a)$, $\Theta(P)$ & the smoothness threshold ratios
+\eqref{nrr:dc:eq:threshold-ratio} (\emph{renamed} from $D_P(a)$, $D(P)$) &
+Part~II's difference spectrum $\scD P$; Part~I's dilations $D_2$, $D_8$\\
+$N$ & a differentiability order with $N\ge1$, $N>\Theta(P)$ \eqref{nrr:dc:eq:N}
+& Part~I's return times $N_k$\\
+$E_g$ & right composition $v\mapsto v\circ g$ on $V$ (\emph{renamed} from $T$)
+& a trigonometric sequence $T(n)$; Part~I's translation $T$\\
+$c$; $\alpha\le\beta$ & the unique fixed point of $f$;
+$\Fix(f^{\circ2})=[\alpha,\beta]$ & Part~II's endpoint $c$ and range
+$(\alpha,\beta)=h(\R)$\\
+$g$ & $f^{\circ2}$ in Section~\ref{nrr:dc:sec:geometry} and
+Proposition~\ref{nrr:dc:prop:c1}; the centred map $f(c+x)-c$ in
+Lemma~\ref{nrr:dc:lem:jet} and Theorem~\ref{nrr:dc:thm:finite-threshold} &
+Part~II's positive coordinate $g$, which is $w$ here\\
+$w$, $h$ & positive analytic exponential polynomial (Part~II's $g$) and its
+integral, a bijection $\R\to(0,\infty)$ & Part~II's $h$ onto an interval\\
+$a$; $\sigma$ & the multiplier $f'(c)<0$ (or a negative root); the
+contracting time direction & Part~II's rate $a=\log r_-$; Part~I's
+coefficients $a_j$\\
+$b$ & the half-width of the central interval $[-b,b]$; in
+Lemma~\ref{nrr:dc:lem:jet}, $|a|^\sigma<1$ & Part~II's $b_\pm$\\
+$H$; $K$, $h_k$ & the normalized polynomial coordinate; its support and
+coefficients & Part~I's conjugating map $H$ \eqref{eq:conjF}; Part~II's
+modes $H_\lambda$\\
+$K_P(a)$, $J_P(a)$, $M_P(a)$, $B_a$, $B_{\rm inv}$, $\mathcal B(P)$ & the
+smooth branch data \eqref{nrr:dc:eq:KPa}--\eqref{nrr:dc:eq:Binv} & Part~II's
+positive-recurrence core $\pcore(B)$\\
+$F$ & an odd decreasing realization $F(\pm h(t))=\mp h(t+1)$, and other
+explicit maps & Part~I's cubic counterexample $F$ (Theorem~\ref{thm:cubic})\\
+witness & a member of a witness family, whose minimal polynomials have the
+core as least common multiple & Part~II's single witness: here one or two
+suffice continuously, and unboundedly many may be needed smoothly\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The research target and the contribution}
+
+Part~I studies the obstruction to eliminating nonreal characteristic roots
+and classifies increasing minimal spectra supported on a single modulus
+circle. Its scope does not include a complete decreasing classification.
+Part~II (the manuscript's ``increasing companion'') treats arbitrary-radius
+increasing spectra and explicitly excludes decreasing solutions. Part~III
+addresses that remaining orientation, then goes beyond spectral occurrence to
+a global classification under smoothness assumptions.
+
+The distinction is not a change of a sign in the increasing theorem.
+A decreasing homeomorphism has a unique fixed point, but its square may
+have an interval of fixed points. Every exterior orbit approaches a
+finite two-cycle in one time direction. This forces a global separation
+between contraction and expansion and accounts for two different universal
+reductions. After sufficient differentiability is imposed, the two-cycle
+interval collapses and all non-polynomial spectral behavior disappears.
+
+The external background is the characteristic-root and order-reduction
+program, including Yang--Zhang \cite{YZ2004}, Draga--Morawiec \cite{DM2016},
+and Draga \cite{D2016}. The use of bilateral orbit recurrences is classical.
+In particular, Draga's Theorem~3 eliminates one of two negative extreme
+roots straddling $-1$, and his Remark~4 already explains why the result
+can be a disjunction of two lower-order equations. We do not claim that
+phenomenon or its quadratic example as new. Our target is the exact
+arbitrary-multiplicity classification, its sharp reduction formula,
+and the separate finite-smoothness rigidity theorem.
+
+\subsection{Conventions and main statements}
+\label{nrr:dc:sec:main}
+
+Throughout Part~III, $P\in\R[z]$ is nonzero and $P(0)\ne0$. Constant nonzero
+polynomials are permitted as input equations, although they have no
+solutions. Iterates are denoted by $f^{\circ j}$, with $f^{\circ0}=\id$;
+negative iterates use the inverse. A map is \emph{decreasing} here if it
+is strictly decreasing. Its \emph{minimal iterative polynomial} $\mu_f$
+is the monic generator of
+\[
+ \Ann(f)=\{Q\in\R[z]:Q[f]=0\}.
+\]
+The generator exists whenever $f$ satisfies a nonzero polynomial iterative
+equation. All multiplicities are complex-root multiplicities, with
+conjugate roots counted separately in polynomial degrees.
+
+For a polynomial $R$ with no root on the unit circle, say that $R$ is
+\emph{negative-admissible} when, on its smallest and largest modulus
+circles, the negative real root has multiplicity at least as large as
+that of every other root on the same circle. If there is just one
+modulus circle, require this negative-root multiplicity to be odd.
+There is no restriction on multiplicities on strictly intermediate circles.
+
+\begin{theorem}[Continuous spectral classification, preview]
+\label{nrr:dc:thm:main}
+A monic nonconstant real polynomial $\mu$ with $\mu(0)\ne0$ is the minimal
+polynomial of a decreasing homeomorphism of $\R$ if and only if either
+\[
+ \mu=z+1\quad\hbox{or}\quad\mu=(z-1)(z+1),
+\]
+or
+\begin{equation}
+ \mu=(z-1)^{\varepsilon_+}(z+1)^{\varepsilon_-}R,
+ \qquad \varepsilon_+,\varepsilon_-\in\{0,1\},
+ \label{nrr:dc:eq:main-form}
+\end{equation}
+where $R$ is nonconstant, negative-admissible, and all its roots have
+modulus less than $1$, or all have modulus greater than $1$.
+Every permitted $\mu$ has a globally bi-Lipschitz realization, real
+analytic outside at most two points.
+\end{theorem}
+
+\begin{theorem}[Smooth rigidity, preview]
+\label{nrr:dc:thm:smooth}
+Let $f:\R\to\R$ be a $C^\infty$ decreasing solution of $P[f]=0$.
+Either $f^{\circ2}=\id$, or there are unique $c\in\R$, $a<0$ with
+$a\ne-1$, and $H\in\R[t]$ such that
+\begin{equation}
+ H(0)=0,\qquad H'(0)=1,\qquad H'(t)>0\ (t\in\R),\qquad
+ f(c+H(t))=c+H(at).
+ \label{nrr:dc:eq:poly-conjugacy}
+\end{equation}
+Here $c$ is the fixed point and $a=f'(c)$. If
+$H(t)=\sum_{k\in K}h_kt^k$ with every $h_k\ne0$, then
+\begin{equation}
+ \mu_f(z)=(z-1)^{\mathbf1_{c\ne0}}\prod_{k\in K}(z-a^k),
+ \qquad 1\in K,\quad \max K\ \hbox{odd}.
+ \label{nrr:dc:eq:smooth-spectrum}
+\end{equation}
+Moreover, a computable finite differentiability threshold depending only
+on the root moduli of $P$ can replace $C^\infty$.
+\end{theorem}
+
+The full proofs appear in Sections~\ref{nrr:dc:sec:classification} and
+\ref{nrr:dc:sec:smooth}. The threshold is stated explicitly in
+Theorem~\ref{nrr:dc:thm:finite-threshold}. Sections~\ref{nrr:dc:sec:core}
+and~\ref{nrr:dc:sec:smooth-core} turn these theorems into exact universal
+reductions.
+
+\subsection{What is inherited and what is developed here}
+
+The positive-recurrence criterion used in Section~\ref{nrr:dc:sec:positive}
+is the mechanism of Part~II; the manuscript reproves it because the decreasing
+construction needs its continuous positive interpolation, not merely a
+necessary condition. Neither its reuse nor the orientation-reversed cubic
+example is the principal claim. The substantive continuation is the complete
+decreasing classification, including the unit-root and two-cycle geometry,
+the maximal reduction branches with arbitrary multiplicities, and the global
+polynomial-coordinate theorem under an explicit finite regularity assumption.
+No theorem from an unverified repository manuscript is used as an unproved
+premise.
+
+\section{Linear algebra behind a nonlinear equation}
+\label{nrr:dc:sec:recurrences}
+
+\subsection{What is taken from Parts~I and~II}
+\label{nrr:dc:sec:imported}
+
+The manuscript opens by reproving facts that Part~I proves by the same
+arguments; they are used here in Part~I's form.
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2.2em]
+\item Every continuous solution $f:\R\to\R$ of $P[f]=0$ is a strictly
+monotone homeomorphism (Lemma~\ref{lem:homeo}).
+\item $\Ann(f)$ is an ideal, generated by $\mu_f$, because
+$(zQ)[f]=Q[f]\circ f$ is \emph{right} composition
+(Lemma~\ref{lem:ideal}, \eqref{eq:rightcomp}). One must not replace it by left
+composition and distribute $f$ over a sum; that invalid maneuver would destroy
+the linear-algebra argument.
+\item If $A(0)\ne0$, every complex bilateral sequence annihilated by $A(E)$,
+where $Eu(n)=u(n+1)$, has a unique expansion
+$u(n)=\sum_{\lambda\in\roots(A)}p_\lambda(n)\lambda^n$ with
+$\deg p_\lambda<m_A(\lambda)$, and its minimal recurrence polynomial is
+$\prod_{p_\lambda\ne0}(z-\lambda)^{1+\deg p_\lambda}$; real sequences have
+conjugate coefficient polynomials at conjugate roots
+(Lemma~\ref{lem:recurrence}, \eqref{eq:expoly}).
+\item The scalar orbit $u_x(n)=f^{\circ n}(x)$ is such a sequence. A
+polynomial annihilates all orbits if and only if it annihilates $f$, by
+evaluation at $n=0$. Hence $\mu_f$ is the least common multiple of the orbit
+minimal polynomials, and only finitely many orbits are needed
+(Lemma~\ref{lem:lcm}).
+\end{enumerate}
+As in Part~II, let $E$ act on real-valued functions by $Ev=v\circ f$. The
+vector space
+\[
+ V_f=\operatorname{span}_{\R}\{\id,f,f^{\circ2},\ldots\}
+\]
+is finite dimensional when $P[f]=0$. Right composition is linear on this
+space, even though $f$ need not be a linear map of $\R$. It is invertible by
+\eqref{nrr:dc:eq:inverse} below, and $\id$ is a cyclic vector. The minimal
+polynomial of $E|_{V_f}$ equals $\mu_f$, and $\mu_f(0)\ne0$.
+
+The manuscript's version of the homeomorphism lemma adds regularity of the
+inverse.
+
+\begin{lemma}
+\label{nrr:dc:lem:homeomorphism}
+Every continuous solution $f:\R\to\R$ of $P[f]=0$ is a strictly monotone
+homeomorphism. If $f$ is $C^k$, $1\le k\le\infty$, then its inverse is
+$C^k$ and $f'(x)\ne0$ everywhere. The analogous assertion holds for real
+analytic $f$.
+\end{lemma}
+\begin{proof}
+The first sentence is Lemma~\ref{lem:homeo}; the manuscript gives the same
+proof. Write $P(z)=\sum_{j=0}^d a_jz^j$, $a_0a_d\ne0$.
+Substitution of $x=f^{-1}(y)$ gives
+\begin{equation}
+ f^{-1}(y)=-\frac1{a_0}\sum_{j=1}^d a_j f^{\circ(j-1)}(y).
+ \label{nrr:dc:eq:inverse}
+\end{equation}
+This proves the regularity assertion. Differentiating
+$f^{-1}\circ f=\id$ proves that $f'$ is nowhere zero.
+The constant-polynomial case has no solution and is vacuous.
+\end{proof}
+
+\subsection{Trigonometric returns and two-periodic limits}
+
+\begin{lemma}[Elementary trigonometric facts]
+\label{nrr:dc:lem:trig}
+Let $T(n)=\sum_{\zeta\in S}c_\zeta\zeta^n$, with distinct $|\zeta|=1$.
+There are integers $N_j\to+\infty$ such that $\zeta^{N_j}\to1$ for all
+$\zeta\in S$. Consequently:
+\begin{enumerate}[label=(\roman*),itemsep=1pt]
+\item if $T$ is real and $\liminf_{n\to\infty}T(n)\ge0$, then
+$T(n)\ge0$ for every integer $n$;
+\item a nonzero nonnegative real $T$ has a strictly positive coefficient
+at frequency $1$;
+\item if $T(n)$ has a limit as $n\to\infty$, then $T$ is constant.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The returns are Lemma~\ref{lem:returns}, and (i) and (ii) are
+Lemma~\ref{nrr:sc:lem:trig} (that is, Lemma~\ref{lem:returns} with the proof
+of Theorem~\ref{thm:positive}, and Lemma~\ref{lem:mean}). For (iii), fix
+$\ell$; then $T(N_j+\ell)\to T(\ell)$, and the left side tends to the limit,
+so $T(\ell)$ equals the limit for every $\ell$. (Equivalently, $T$ minus its
+limit is a unit-circle exponential polynomial tending to zero, hence zero by
+Corollary~\ref{cor:vanishing}.) The manuscript proves all three by the same
+compactness and Ces\`aro-mean arguments; the same return argument works in
+negative time.
+\end{proof}
+
+\begin{lemma}[Boundedness, convergence, and spectral size]
+\label{nrr:dc:lem:limits}
+The following hold for a nonzero sequence of the form \eqref{eq:expoly}.
+\begin{enumerate}[label=(\roman*),itemsep=2pt]
+\item If it is bounded for all $n\in\Z$, all active roots are simple
+and have modulus $1$.
+\item If it has finite limits along the even and odd subsequences as
+$n\to+\infty$, its active roots have modulus less than $1$, except
+possibly simple roots $1$ and $-1$. Their contribution is exactly the
+limiting two-periodic sequence. For $n\to-\infty$, replace ``less''
+by ``greater''.
+\item If every active root has modulus at least $\omega>0$,
+then $u(n)=O(\rho^n)$ with $0<\rho<\omega$ is impossible as
+$n\to+\infty$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Let $r$ be the largest active modulus and $d$ the largest polynomial
+degree on that circle. Then
+\[
+ u(n)=r^n n^d\bigl(T(n)+o(1)\bigr),
+\]
+where $T$ is a nonzero finite trigonometric sequence. Such a $T$ is
+bounded away from zero along a subsequence: its positive mean square
+precludes convergence to zero. This rules out exponential growth and
+then polynomial growth when boundedness is required. Applying the same
+argument to $u(-n)$ proves (i), and proves the growth exclusions in (ii).
+The remaining unit-circle component has convergent even and odd
+subsequences. Group its frequencies after squaring;
+Lemma~\ref{nrr:dc:lem:trig}(iii) shows that only $\lambda^2=1$ can remain.
+Considering both parities rules out cancellation between $\lambda$ and
+$-\lambda$ with $\lambda^2\ne1$. This proves (ii). The same leading-term
+argument proves (iii).
+\end{proof}
+
+Part~II's Lemma~\ref{nrr:sc:lem:limits} is the case of (ii) in which the whole
+sequence has one limit; then only a simple root $1$ can remain on the unit
+circle. The two-periodic version is what decreasing maps need.
+
+\section{Two-cycles force a global spectral separation}
+\label{nrr:dc:sec:geometry}
+
+\begin{theorem}[The two-cycle interval]
+\label{nrr:dc:thm:interval}
+Let $f$ be a decreasing solution of $P[f]=0$, and put $g=f^{\circ2}$.
+The map $f$ has a unique fixed point $c$. Either $g=\id$, or
+\begin{equation}
+ \Fix(g)=[\alpha,\beta],\qquad
+ -\infty<\alpha\le c\le\beta<\infty,
+ \qquad f(\alpha)=\beta,
+ \label{nrr:dc:eq:interval}
+\end{equation}
+with $f(\beta)=\alpha$. On $(\beta,\infty)$, either $g(x)>x$ for every
+$x$, or $g(x)<x$ for every $x$. In exactly one common time direction,
+every exterior orbit tends to the endpoint two-cycle.
+\end{theorem}
+\begin{proof}
+The continuous function $f(x)-x$ is strictly decreasing from $+\infty$
+to $-\infty$, so it has exactly one zero $c$.
+Suppose $p<q$ are fixed by $g$ and $p<x<q$. All even iterates of $x$
+remain in $[p,q]$, in both time directions, and all odd iterates remain
+in $[f(q),f(p)]$. Thus the whole bilateral orbit is bounded.
+By Lemma~\ref{nrr:dc:lem:limits}(i), it is a finite trigonometric sequence.
+The even subsequence $g^{\circ n}(x)$ is monotone in $n$, because $g$
+is increasing, and is bounded. It therefore converges, and
+Lemma~\ref{nrr:dc:lem:trig}(iii), applied to the squared frequencies, shows
+that it is constant. Hence $g(x)=x$.
+
+This proves that $\Fix(g)$ is a nonempty closed interval. It is invariant
+under $f$. If it were unbounded above, its image under the decreasing
+homeomorphism $f$ would be unbounded below, and conversely. Thus a
+proper such interval is bounded on both sides, proving
+\eqref{nrr:dc:eq:interval}. On its right complement the continuous function
+$g(x)-x$ has no zero, hence a fixed strict sign. If that sign is positive,
+$g^{\circ n}(x)\to\beta$ as $n\to-\infty$, and tends to $+\infty$
+as $n\to+\infty$; any other finite limit would be a further fixed point.
+For the negative sign, reverse time. Odd iterates tend to $\alpha$
+at the finite end. The left ray is the image of the right ray under
+$f$, so its time direction is the same.
+\end{proof}
+
+\begin{corollary}[Unit roots and one-sided nonunit spectrum]
+\label{nrr:dc:cor:separation}
+For a non-involutive decreasing solution, all nonunit roots of $\mu_f$
+lie on one side of the unit circle: all have modulus less than $1$,
+or all have modulus greater than $1$. The only possible unit roots
+are simple $1$ and simple $-1$. Moreover,
+\begin{equation}
+ -1\in\roots(\mu_f)\quad\Longleftrightarrow\quad\alpha<\beta.
+ \label{nrr:dc:eq:minus-one}
+\end{equation}
+If $\alpha=\beta=c$, the root $1$ occurs if and only if $c\ne0$.
+\end{corollary}
+\begin{proof}
+Every exterior orbit has a finite two-periodic limit in the common
+time direction from Theorem~\ref{nrr:dc:thm:interval}. Apply
+Lemma~\ref{nrr:dc:lem:limits}(ii). Every interior orbit is exactly
+two-periodic. Taking the finite least common multiple of their minimal
+polynomials preserves these restrictions and proves the global, rather than
+merely orbitwise, separation.
+
+When $\alpha<\beta$, the endpoint orbit itself has a nonzero
+$(-1)^n$ component. When the interval is a singleton, every orbit
+has constant limit $c$ and no $(-1)^n$ component. In that case the
+constant component is exactly $c$, proving the last assertion.
+\end{proof}
+
+\begin{remark}
+For a genuine two-cycle interval, the presence of the root $1$ is not
+determined just by the fixed point. A nonlinear involution on the
+interval may have nonconstant pair averages even when $c=0$.
+The equivalence between a simple root $1$ and a nonzero fixed point
+is asserted only when the interval is a singleton.
+\end{remark}
+
+The periodic cases are now completely separated. If $f^{\circ2}=\id$,
+then $\mu_f$ divides $z^2-1$. It cannot be $z-1$, since $f$ is
+decreasing. Thus it is either $z+1$, which forces $f=-\id$, or
+$z^2-1$. Conversely, reflections $x\mapsto-x$ and $x\mapsto2c-x$,
+$c\ne0$, realize these two polynomials.
+
+\begin{corollary}[Bounded-interval version]
+\label{nrr:dc:cor:bounded}
+A decreasing homeomorphism of a bounded interval that satisfies a
+nonzero polynomial iterative equation is an involution.
+\end{corollary}
+\begin{proof}
+Every bilateral orbit is bounded. The bounded-orbit argument in the
+proof of Theorem~\ref{nrr:dc:thm:interval} makes each even subsequence
+constant. This does not require the interval to be closed.
+\end{proof}
+
+\section{Positive bilateral recurrences and their realization}
+\label{nrr:dc:sec:positive}
+
+The manuscript's Section~4 reproves Part~II's positive-recurrence theory with
+Part~II's statements and arguments; it is used here in Part~II's form, with
+one change of letter: the positive exponential polynomial that Part~II calls
+$g$ is called $w$ in Part~III, because $g$ denotes $f^{\circ2}$ and a centred
+map here.
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2.2em]
+\item \emph{Positive admissibility} is Part~II's
+Definition~\ref{nrr:sc:def:admissible}: the positive real root on each
+extreme modulus circle has maximal multiplicity on that circle, and it is odd
+when there is only one circle.
+\item The minimal polynomial of a nonzero nonnegative bilateral recurrence
+sequence is positive-admissible, and a least common multiple of finitely many
+positive-admissible polynomials is positive-admissible
+(Proposition~\ref{nrr:sc:prop:positive-necessary} and
+Lemma~\ref{nrr:sc:lem:lcm-positive}; the manuscript states them as one
+proposition, with the same proofs).
+\item The two-ended positive envelope $G$ and weight $W$ of
+Lemma~\ref{nrr:sc:lem:envelope} (the manuscript's large constant $T$ is
+Part~II's $\Lambda$).
+\item \emph{Exact positive interpolation}
+(Theorem~\ref{nrr:sc:thm:positive-realization}): a monic nonconstant real $B$
+with $B(0)\ne0$ is positive-admissible if and only if it is the minimal
+polynomial of a strictly positive bilateral recurrence sequence, and every
+such $B$ is the exact unit-shift minimal polynomial of a positive
+real-analytic exponential polynomial $w:\R\to(0,\infty)$ with
+$0<m\le w(t+1)/w(t)\le M<\infty$ (Part~II's \eqref{nrr:sc:eq:ratio}),
+comparable above and below to the weight $W$ of \eqref{nrr:sc:eq:W}, and
+built from the modes \eqref{nrr:sc:eq:mode}.
+\end{enumerate}
+
+\begin{remark}[A sampling pitfall]
+Exact minimality is a statement about the continuous coordinate, or
+about a nonsingular sampling phase. A sine term created by integration
+can vanish at every integer without being the zero function. Neither
+integer samples alone nor positive numerical samples establish the
+continuous minimality or positivity required here. (This is the manuscript's
+restatement of the caution printed after
+Theorem~\ref{nrr:sc:thm:positive-realization}.)
+\end{remark}
+
+\section{Complete classification of decreasing minimal spectra}
+\label{nrr:dc:sec:classification}
+
+For a monic polynomial $A$, define its sign reflection by
+\begin{equation}
+ A^\#(z)=(-1)^{\deg A}A(-z).
+ \label{nrr:dc:eq:reflection}
+\end{equation}
+Its roots are the negatives of the roots of $A$, with unchanged
+multiplicities. Thus negative-admissibility of $R$ is precisely
+positive-admissibility of $R^\#$.
+
+\subsection{Necessity: positive distances from the limiting two-cycle}
+
+\begin{proof}[Necessity in Theorem~\ref{nrr:dc:thm:main}]
+The involution case was settled after
+Corollary~\ref{nrr:dc:cor:separation}. Suppose $f$ is not an involution.
+Write the unit part of its minimal polynomial as
+$(z-1)^{\varepsilon_+}(z+1)^{\varepsilon_-}$; the exponents are at most one by
+that corollary. Its nonunit part $R$ is nonconstant. Indeed, if
+there were no nonunit roots, $\mu_f$ would divide $z^2-1$ and $f$
+would be an involution. All roots of $R$ lie on the same side of the
+unit circle.
+
+Let $x>\beta$, where $[\alpha,\beta]=\Fix(f^{\circ2})$, and set
+$b_n=\beta$ for even $n$, $b_n=\alpha$ for odd $n$. Then
+\begin{equation}
+ v_x(n)=(-1)^n\bigl(f^{\circ n}(x)-b_n\bigr)>0
+ \qquad(n\in\Z).
+ \label{nrr:dc:eq:positive-distances}
+\end{equation}
+The limiting unit component of the orbit is exactly $b_n$, by
+Lemma~\ref{nrr:dc:lem:limits}. Hence subtraction removes all its unit roots
+and no nonunit root. Multiplication by $(-1)^n$ negates the remaining
+roots. Every left exterior orbit is a shift of a right exterior orbit,
+and every interior orbit is two-periodic. Consequently the least
+common multiple of the minimal polynomials of the $v_x$ is $R^\#$,
+and finitely many $x$ suffice to attain it.
+
+Part~II's Proposition~\ref{nrr:sc:prop:positive-necessary} and
+Lemma~\ref{nrr:sc:lem:lcm-positive} imply that $R^\#$ is positive-admissible.
+Therefore $R$ is negative-admissible. This proves all necessary conditions.
+\end{proof}
+
+\subsection{Sufficiency: an odd analytic construction on two rays}
+
+\begin{lemma}[Integrating a one-sided spectrum]
+\label{nrr:dc:lem:integrating}
+Let $B$ be positive-admissible, with all roots of modulus greater than
+$1$, or all of modulus less than $1$. There is a positive real-analytic
+bijection $h:\R\to(0,\infty)$, increasing in the former case and
+decreasing in the latter, whose exact unit-shift polynomial is $B$.
+It satisfies $|h'(t)|=w(t)$ for a positive $w$ with bounded ratios
+$w(t+1)/w(t)$ as in \eqref{nrr:sc:eq:ratio}.
+\end{lemma}
+\begin{proof}
+Use $w$ from Theorem~\ref{nrr:sc:thm:positive-realization} (Part~II's $g$), and
+define
+\begin{equation}
+ h(t)=
+ \begin{cases}
+ \displaystyle\int_{-\infty}^{t}w(s)\,ds,&\text{all root moduli exceed }1,\\[6pt]
+ \displaystyle\int_t^{\infty}w(s)\,ds,&\text{all root moduli are below }1.
+ \end{cases}
+ \label{nrr:dc:eq:integrated-coordinate}
+\end{equation}
+The envelopes show integrability at the displayed finite end and
+nonintegrability at the other end. Thus $h$ is a bijection as stated,
+with derivative nowhere zero.
+
+Every continuous exponent $s$ used in constructing $w$ has nonzero
+real part. For a polynomial $p$, a primitive of $e^{st}p(t)$ is Part~II's
+\eqref{nrr:sc:eq:primitive}. This preserves its nonzero leading degree. The
+primitive vanishes at the convergent end in
+\eqref{nrr:dc:eq:integrated-coordinate}, so no constant mode is added. The
+exact minimal polynomial is still $B$.
+\end{proof}
+
+\begin{proof}[Sufficiency and regularity in Theorem~\ref{nrr:dc:thm:main}]
+Let $R$ satisfy the nonunit conditions. Apply
+Lemma~\ref{nrr:dc:lem:integrating} to $B=R^\#$, and define $F(0)=0$ and
+\begin{equation}
+ F(h(t))=-h(t+1),\qquad F(-h(t))=h(t+1).
+ \label{nrr:dc:eq:odd-map}
+\end{equation}
+The same-direction change of $h(t)$ and $h(t+1)$ makes $F$ strictly
+decreasing on each ray, and the signs make it strictly decreasing
+across zero. The finite-end limit makes it continuous there, and the
+infinite-end limit makes it onto. Its iterates satisfy
+\begin{equation}
+ F^{\circ n}(\pm h(t))=\pm(-1)^n h(t+n)
+ \qquad(n\in\Z).
+ \label{nrr:dc:eq:odd-orbit}
+\end{equation}
+For every polynomial $Q$, the equation $Q[F]=0$ on the positive ray
+is therefore equivalent to $Q(-E)h=0$. Since the exact shift polynomial
+of $h$ is $R^\#$, the exact iterative polynomial of $F$ is $R$.
+
+The inverse function theorem shows analyticity on both open rays, and
+\begin{equation}
+ |F'(\pm h(t))|=\frac{w(t+1)}{w(t)}.
+ \label{nrr:dc:eq:slope}
+\end{equation}
+This is bounded above and away from zero. The mean value theorem on
+each ray and continuity at zero extend the same Lipschitz bounds across
+zero. Thus $F$ is globally bi-Lipschitz.
+
+To add one factor $z+1$, choose $b>0$, use $F(x)=-x$ on $[-b,b]$,
+and replace \eqref{nrr:dc:eq:odd-map} by
+\begin{equation}
+ F(b+h(t))=-b-h(t+1),\qquad
+ F(-b-h(t))=b+h(t+1).
+ \label{nrr:dc:eq:plateau-general}
+\end{equation}
+The exterior orbit becomes
+$\pm(-1)^n(b+h(t+n))$. Since $R$ has no unit root, its new
+$(-1)^n b$ component adds exactly the simple factor $z+1$.
+The map is still globally bi-Lipschitz, with bounds incorporating the
+slope $1$ on the central interval, and it is analytic away from the
+two endpoints.
+
+Finally, to add one factor $z-1$, translate any of these odd maps:
+\begin{equation}
+ F_c(x)=c+F(x-c),\qquad c\ne0.
+ \label{nrr:dc:eq:translate}
+\end{equation}
+For a polynomial $Q$,
+$Q[F_c](x)=cQ(1)+Q[F](x-c)$. The second summand is odd as a function
+of $x-c$. It can cancel the first everywhere only when both are zero.
+Thus $\mu_{F_c}=\lcm(\mu_F,z-1)$, which adds exactly one copy of
+$z-1$. The pure involution cases are realized by reflections.
+All cases of \eqref{nrr:dc:eq:main-form} are now constructed.
+\end{proof}
+
+\begin{corollary}[Existence criterion]
+\label{nrr:dc:cor:existence}
+There is a decreasing continuous solution of $P[f]=0$ if and only if
+$P$ has a negative real root.
+\end{corollary}
+\begin{proof}
+Every permitted minimal polynomial has a negative real root. Conversely,
+if $a<0$ and $P(a)=0$, the linear map $f(x)=ax$ is a solution.
+\end{proof}
+
+(Added in the merge.) Together with Part~II's
+Theorem~\ref{nrr:sc:thm:core}(ii), which gives increasing solutions exactly
+when $P$ has a positive real root, this says that $P[f]=0$ has a continuous
+solution on $\R$ if and only if $P$ has a real root, every continuous
+solution being monotone by Lemma~\ref{lem:homeo}.
+
+\begin{remark}[Not every formal least common multiple is realizable]
+The least common multiple of two decreasing minimal spectra need not
+itself be a decreasing minimal spectrum. A contracting and an expanding
+nonunit spectrum cannot coexist in one map. This is the precise point
+at which the increasing and decreasing universal reductions differ.
+\end{remark}
+
+\section{The exact universal decreasing core}
+\label{nrr:dc:sec:core}
+
+The objective is a monic polynomial $\dcore(P)$ such that, for every
+$Q\in\R[z]$,
+\begin{equation}
+ \left[
+ \begin{array}{c}
+ P[f]=0\ \Longrightarrow\ Q[f]=0\ \text{for every}\\[-2pt]
+ \text{continuous decreasing }f:\R\to\R
+ \end{array}\right]
+ \quad\Longleftrightarrow\quad \dcore(P)\mid Q.
+ \label{nrr:dc:eq:universal-property}
+\end{equation}
+When there are no decreasing solutions, this is the vacuous property
+and $\dcore(P)=1$. By Corollary~\ref{nrr:dc:cor:existence}, this happens
+exactly when $P$ has no negative real root.
+
+\subsection{A closed root-by-root construction}
+
+Assume henceforth that at least one negative root exists. Set
+\begin{equation}
+ \varepsilon_+=\mathbf1_{P(1)=0},\qquad
+ \varepsilon_-=\mathbf1_{P(-1)=0},\qquad
+ U(z)=(z-1)^{\varepsilon_+}(z+1)^{\varepsilon_-}.
+ \label{nrr:dc:eq:unit-core}
+\end{equation}
+Construct two polynomials $R_<,R_>$, independently, as follows.
+For the selected side $S=(0,1)$ or $S=(1,\infty)$, let
+\[
+ A_S=\{r\in S:P(-r)=0\}
+\]
+be its set of \emph{negative-anchor radii}.
+
+\paragraph{No negative anchor.}
+If $A_S$ is empty, set $R_S=1$.
+
+\paragraph{One negative anchor.}
+If $A_S=\{r\}$, let
+\begin{equation}
+ \kappa=2\left\lfloor\frac{m_P(-r)-1}{2}\right\rfloor+1,
+ \label{nrr:dc:eq:odd-cap}
+\end{equation}
+the largest odd integer not exceeding $m_P(-r)$. Keep exactly the
+roots on $|z|=r$, with multiplicities
+\begin{equation}
+ m_{R_S}(\lambda)=\min\{m_P(\lambda),\kappa\}.
+ \label{nrr:dc:eq:one-anchor}
+\end{equation}
+Discard all other roots on this side.
+
+\paragraph{Two or more negative anchors.}
+Let $r_- =\min A_S$ and $r_+=\max A_S$. Discard roots outside the
+closed annulus $r_-\le|z|\le r_+$. Inside its open part, keep every
+multiplicity unchanged. On its boundary circles set
+\begin{equation}
+ m_{R_S}(\lambda)=
+ \begin{cases}
+ \min\{m_P(\lambda),m_P(-r_-)\},&|\lambda|=r_-,\\
+ \min\{m_P(\lambda),m_P(-r_+)\},&|\lambda|=r_+.
+ \end{cases}
+ \label{nrr:dc:eq:two-anchors}
+\end{equation}
+These instructions define $R_<:=R_{(0,1)}$ and
+$R_>:=R_{(1,\infty)}$ completely. In particular, nonreal unit roots
+are always discarded, and the multiplicities at $\pm1$ are clipped
+to one by \eqref{nrr:dc:eq:unit-core}.
+
+\begin{theorem}[Closed universal reduction]
+\label{nrr:dc:thm:core}
+With the conventions above,
+\begin{equation}
+ \boxed{\ \dcore(P)=U R_<R_>\ }
+ \label{nrr:dc:eq:core-formula}
+\end{equation}
+when decreasing solutions exist, and $\dcore(P)=1$ otherwise.
+This polynomial has property \eqref{nrr:dc:eq:universal-property} and
+divides $P$ up to its nonzero leading scalar.
+\end{theorem}
+\begin{proof}
+Fix one side of the unit circle. Every nonconstant negative-admissible
+divisor of $P$ on that side must have negative roots on both of its
+extreme circles. If there is one available negative anchor, the divisor
+must have just that circle; its negative-root multiplicity is odd and
+at most $\kappa$, so \eqref{nrr:dc:eq:one-anchor} is an upper bound for all
+its multiplicities. The polynomial defined there itself satisfies the
+admissibility conditions.
+
+With at least two available anchors, no root outside
+$[r_-,r_+]$ can occur in such a divisor. A root on one of these outer
+boundary circles, if used, must be bounded in multiplicity by the
+negative root of that circle. Thus \eqref{nrr:dc:eq:two-anchors} bounds all
+permitted divisors. In the open annulus there is no universal
+multiplicity loss: the proposed $R_S$ includes all roots there and
+uses the two outer negative anchors to satisfy its only extreme-circle
+conditions. It is itself negative-admissible. Therefore $R_S$ is both
+an upper bound for, and a member of, the set of possible nonunit
+minimal spectra on the selected side.
+
+Theorem~\ref{nrr:dc:thm:main} now implies that every decreasing
+minimal polynomial dividing $P$ divides $UR_<R_>$. Conversely,
+whenever $R_S\ne1$, that theorem realizes $UR_S$ as an exact minimal
+polynomial. If both side polynomials are $1$, existence forces
+$\varepsilon_-=1$, and $U$ is realized by an involution. Thus the least common
+multiple of attainable minimal polynomials is exactly
+\eqref{nrr:dc:eq:core-formula}.
+A polynomial $Q$ annihilates every solution exactly when it is a
+multiple of each attainable minimal polynomial. This is
+\eqref{nrr:dc:eq:universal-property}.
+\end{proof}
+
+\begin{remark}[Added in the merge: the decreasing core through Part~II's positive core]
+\label{nrr:dc:rem:reflected-core}
+Let $P_<$ and $P_>$ be the monic factors of $P$ formed from its roots of
+modulus less than and greater than $1$ (Part~II's $\mu_<$, $\mu_>$ applied to
+$P$), and let $\pcore$ be Part~II's positive-recurrence core
+(Section~\ref{nrr:sc:sec:core}), with $\pcore(1)=1$ and $1^\#=1$. If $P$ has
+a negative real root, then
+\[
+ R_<=\pcore\bigl(P_<^\#\bigr)^\#,\qquad R_>=\pcore\bigl(P_>^\#\bigr)^\#,
+ \qquad
+ \dcore(P)=(z-1)^{\varepsilon_+}(z+1)^{\varepsilon_-}\,
+ \pcore\bigl(P_<^\#\bigr)^\#\,\pcore\bigl(P_>^\#\bigr)^\#.
+\]
+Indeed the negative anchors on the side $S$ are exactly the positive roots of
+$P_S^\#$, with $m_{P_S^\#}(r)=m_P(-r)$, and the three rules above are
+\eqref{nrr:sc:eq:onecore} (with the same $\kappa$) and
+\eqref{nrr:sc:eq:annularcore} for $B=P_S^\#$, read back through the
+reflection. Compare Part~II's $\core(P)=(z-1)^{\delta(P)}\pcore(\scD P)$: the
+increasing core applies $\pcore$ once, to all of $\scD P$ across the unit
+circle, whereas the decreasing core applies it to the two sides separately,
+keeps at most simple roots $\pm1$ and discards the other unit roots. The
+two separate applications are why two witnesses may be needed
+(Corollary~\ref{nrr:dc:cor:two-branches}). As a finite check made in the write
+phase, the closed core of the shipped verifier
+(\nolinkurl{code/03-decreasing-core-verify.py}) was compared with the displayed
+formula evaluated by Part~II's \texttt{positive\_core}
+(\nolinkurl{code/02-spectral-core-spectral_core.py}) on every profile of the
+four continuous atlases of Section~\ref{nrr:dc:sec:verification} that has a
+negative real root: $2{,}552$ of the $2{,}693$ profiles, with no disagreement.
+The comparison script is not shipped; this description specifies it.
+\end{remark}
+
+\subsection{Two sharp branches, and the minimum witness count}
+
+A \emph{witness family} for a universal core consists of solutions of
+the original equation whose minimal polynomials have that core as their
+least common multiple. Such a family certifies that no further factor
+or multiplicity can be deleted universally.
+
+\begin{corollary}[The sharp disjunction]
+\label{nrr:dc:cor:two-branches}
+If $R_<\ne1$ and $R_>\ne1$, every continuous decreasing solution of
+$P[f]=0$ satisfies at least one of
+\begin{equation}
+ (UR_<)[f]=0\qquad\hbox{or}\qquad (UR_>)[f]=0.
+ \label{nrr:dc:eq:disjunction}
+\end{equation}
+Both maximal branch polynomials are attained by globally bi-Lipschitz
+solutions. Exactly two witnesses are required for $\dcore(P)$.
+If solutions exist and at most one side survives, exactly one witness
+suffices. If there are no solutions, the empty family witnesses the
+constant core $1$.
+\end{corollary}
+\begin{proof}
+The nonunit roots of any one solution lie on a single side of the
+unit circle. Its unit roots divide $U$, and its nonunit part divides
+the corresponding side core. This proves the disjunction, including
+involutions, which satisfy both branch equations when both are present.
+The realization theorem supplies both maximal branches. Their least
+common multiple is the core. A single witness in the two-sided case
+would have a minimal polynomial containing nonunit roots on both sides,
+contradicting Corollary~\ref{nrr:dc:cor:separation}. The remaining cases
+follow from the same realization construction.
+\end{proof}
+
+The two-branch phenomenon in this corollary includes the classical
+example discussed by Draga \cite[Remark~4]{D2016}. Its role here is a
+benchmark for a fully explicit maximum, not a new discovery of the
+existence of alternative reductions. The additional content is that
+all roots, all multiplicities, both maximal branches, and the exact
+minimum witness count are determined simultaneously.
+
+\subsection{An exact affine-rigidity test}
+
+\begin{theorem}[When every decreasing solution is affine]
+\label{nrr:dc:thm:affine}
+Assume $P$ has a negative real root, and use \eqref{nrr:dc:eq:unit-core}.
+Every continuous decreasing solution of $P[f]=0$ is affine if and only
+if one of the following mutually exclusive conditions holds:
+\begin{enumerate}[label=(\roman*),itemsep=2pt]
+\item $\varepsilon_-=1$, $\varepsilon_+=0$, and $R_<=R_>=1$;
+\item $\varepsilon_-=0$, and each nonconstant one of $R_<,R_>$ is linear.
+\end{enumerate}
+Under these conditions, every solution is homogeneous linear if and
+only if $\varepsilon_+=0$.
+\end{theorem}
+\begin{proof}
+In (i), the universal core is $z+1$, so $f=-\id$.
+In (ii), any nonconstant branch has the form
+$(z-1)^{\varepsilon_+}(z-a)$, $a<0$, $a\ne-1$. There is no two-cycle interval,
+since $-1$ is absent. If the fixed point is $c$, every orbit's unit
+component is the constant $c$. Centering the map removes it, leaving
+only the root $a$ with multiplicity one. Thus
+$f(x)=c+a(x-c)$. If $\varepsilon_+=0$, the fixed-point equation forces $c=0$.
+
+Conversely, if $\varepsilon_-=0$ and a side core has degree at least two,
+its exact realization cannot be affine: an affine decreasing map with
+slope $a\ne-1$ has minimal polynomial $z-a$ or $(z-1)(z-a)$.
+If $\varepsilon_-=1$ and a nonunit side survives, its realization with a
+nondegenerate two-cycle interval is non-affine. Finally, when
+$\varepsilon_-=\varepsilon_+=1$, the polynomial $z^2-1$ divides $P$ and admits
+nonlinear decreasing involutions. For instance, conjugating reflection
+by the nonodd increasing polynomial
+$H(t)=t+t^2/4+t^3$ gives one; its derivative is positive, as checked
+in Section~\ref{nrr:dc:sec:examples}.
+
+If $\varepsilon_+=1$, any negative root $a$ gives nonzero translations of
+$x\mapsto ax$ with minimal polynomial dividing $(z-1)(z-a)$, or
+translated reflections when $a=-1$. Hence not all solutions are
+homogeneous linear. This proves the final assertion.
+\end{proof}
+
+\begin{remark}[Added in the merge: Petrov's question with nonzero constant coefficient]
+\label{nrr:dc:rem:petrov}
+Let $P(0)\ne0$. Every continuous solution of $P[f]=0$ on $\R$ is increasing
+or decreasing (Lemma~\ref{lem:homeo}), so Part~II's
+Theorem~\ref{nrr:sc:thm:rigidity} and Theorem~\ref{nrr:dc:thm:affine} together
+decide Petrov's linearity question \cite{Petrov2016} for such $P$. Every
+continuous solution is affine if and only if (a)~$P$ has no positive root, or
+$\core(P)=z-r$ with $r>0$, or $\core(P)=(z-1)^2$; and (b)~$P$ has no negative
+root, or condition (i) or~(ii) of Theorem~\ref{nrr:dc:thm:affine} holds.
+Every continuous solution is homogeneous linear if and only if (a$'$)~$P$ has
+no positive root or $\core(P)=z-r$ with $r>0$; and (b$'$)~$P$ has no negative
+root, or (i) or~(ii) holds with $\varepsilon_+=0$. This combination is
+immediate and is not claimed as a separate result of either manuscript.
+Equations with $P(0)=0$, whose solutions need not be injective, remain open.
+\end{remark}
+
+\section{Finite-smoothness rigidity and global polynomial conjugacy}
+\label{nrr:dc:sec:smooth}
+
+The bi-Lipschitz realization theorem permits nonreal roots and repeated
+roots of arbitrarily large multiplicity. Sufficient differentiability
+at the finite end of the orbits eliminates both phenomena. The crucial
+point is that this is a global theorem, not just a local linearization.
+We prove it directly from the finite-dimensional composition space.
+
+\subsection{One derivative already rules out a two-cycle interval}
+
+\begin{proposition}[$C^1$ hyperbolicity]
+\label{nrr:dc:prop:c1}
+Let $f$ be a $C^1$ decreasing solution of $P[f]=0$ that is not an
+involution. Then
+\begin{equation}
+ \Fix(f^{\circ2})=\{c\},\qquad a=f'(c)<0,\qquad a\ne-1,
+ \qquad P(a)=0.
+ \label{nrr:dc:eq:hyperbolic}
+\end{equation}
+Put $\sigma=1$ if $|a|<1$ and $\sigma=-1$ if $|a|>1$.
+Then $f^{\circ(\sigma n)}(x)\to c$ for every $x\in\R$ as
+$n\to+\infty$. Near $c$, the map $f^{\circ\sigma}$ is a strict
+Lipschitz contraction.
+\end{proposition}
+\begin{proof}
+The inverse is $C^1$ and $f'$ is negative everywhere by
+Lemma~\ref{nrr:dc:lem:homeomorphism}. Suppose the interval
+$[\alpha,\beta]=\Fix(f^{\circ2})$ is nondegenerate, and put
+$g=f^{\circ2}$. Since $g=\id$ on this interval, differentiability at
+$\beta$ gives $g'(\beta)=1$; the inverse derivative is also $1$.
+Choose $x>\beta$, and let $\tau\in\{1,-1\}$ be the time direction
+in which $g^{\circ(\tau n)}(x)\to\beta$. The positive sequence
+\[
+ u_n=g^{\circ(\tau n)}(x)-\beta
+\]
+is a recurrence sequence with limit zero. Lemma~\ref{nrr:dc:lem:limits},
+applied to the even subsequence of the original orbit, says that all
+its active roots have modulus less than $1$. Therefore
+$u_n=O(\rho^n)$ for some $\rho<1$. Differentiability at $\beta$,
+however, gives $u_{n+1}/u_n\to1$. A positive sequence with this ratio
+limit has $u_n^{1/n}\to1$, contradicting the exponential upper bound.
+Hence the interval is a singleton.
+
+If $a=-1$, the identical argument at $c$, where $g'(c)=a^2=1$,
+gives the same contradiction. Thus $a\ne-1$. Differentiating
+$P[f]=0$ at the fixed point gives $P(a)=0$.
+
+The common convergent time direction already exists by
+Theorem~\ref{nrr:dc:thm:interval}. In that direction the successive ratios
+of the positive even distances tend to $|a|^{2\tau}$.
+They cannot exceed $1$ in the limit, and equality was just ruled out.
+Thus $|a|^\tau<1$ and $\tau=\sigma$. Continuity of the derivative
+makes $f^{\circ\sigma}$ a local strict contraction. The two-cycle
+interval is a singleton, so both parities of every orbit converge
+to $c$ in this direction.
+\end{proof}
+
+\subsection{An explicit regularity threshold}
+
+For a nonconstant $P$ with $P(0)\ne0$, write
+\[
+ r_-(P)=\min_{\lambda\in\roots(P)}|\lambda|,
+ \qquad r_+(P)=\max_{\lambda\in\roots(P)}|\lambda|.
+\]
+For each negative real root $a\ne-1$, define
+\begin{equation}
+ \Theta_P(a)=
+ \begin{cases}
+ \displaystyle\frac{\log r_-(P)}{\log|a|},&-1<a<0,\\[7pt]
+ \displaystyle\frac{\log r_+(P)}{\log|a|},&a<-1.
+ \end{cases}
+ \label{nrr:dc:eq:threshold-ratio}
+\end{equation}
+Both quantities, when used, are at least $1$. Let $\Theta(P)$ be their
+maximum; set $\Theta(P)=0$ when there is no such negative root. Choose any
+integer
+\begin{equation}
+ N\ge1,\qquad N>\Theta(P).
+ \label{nrr:dc:eq:N}
+\end{equation}
+For a nonzero constant $P$, set $\Theta(P)=0$; its solution class is empty.
+For example, $N=\lfloor \Theta(P)\rfloor+1$ works. This is a sufficient
+threshold, not a claim that the least sufficient regularity has been
+found in every case. Roots that can already be removed by
+Theorem~\ref{nrr:dc:thm:core} may be removed before computing it, to improve
+the bound.
+
+\begin{lemma}[Finite jets detect the whole composition space]
+\label{nrr:dc:lem:jet}
+Let $f$ be a non-involutive $C^N$ decreasing solution, with $N$ as in
+\eqref{nrr:dc:eq:N}. Center it at its fixed point:
+\[
+ g(x)=f(c+x)-c,
+ \qquad V=\operatorname{span}_{\R}\{\id,g,g^{\circ2},\ldots\}.
+\]
+The map taking a function in $V$ to its Taylor coefficients of orders
+$1,\ldots,N$ at $0$ is injective.
+\end{lemma}
+\begin{proof}
+Evaluation at the fixed point gives $cP(1)=0$, so $P[g]=0$.
+Every function in $V$ vanishes at $0$, and right composition
+$E_g\colon v\mapsto v\circ g$ is invertible on $V$. Its minimal polynomial
+divides $P$. Let $a=g'(0)$ and $\sigma$ be as in
+Proposition~\ref{nrr:dc:prop:c1}; set
+\begin{equation}
+ b=|a|^\sigma<1,
+ \qquad \omega=\min_{\lambda\in\roots(P)}|\lambda|^\sigma
+ =\begin{cases}r_-(P),&\sigma=1,\\1/r_+(P),&\sigma=-1.\end{cases}
+ \label{nrr:dc:eq:kappa}
+\end{equation}
+Condition \eqref{nrr:dc:eq:N} gives $b^N<\omega$. Choose $q$ with
+$b<q<1$ and $q^N<\omega$.
+
+Suppose $v\in V$ has zero derivatives through order $N$ at $0$.
+Taylor's theorem gives $v(y)=O(|y|^N)$ near zero. Every orbit
+$g^{\circ(\sigma n)}(x)$ eventually enters a neighborhood on which
+$g^{\circ\sigma}$ has Lipschitz constant at most $q$. Hence, for each
+fixed $x$,
+\[
+ |g^{\circ(\sigma n)}(x)|\le C_xq^n,
+ \qquad v(g^{\circ(\sigma n)}(x))=O(q^{Nn}).
+\]
+The latter is a recurrence sequence whose possible roots are
+$\lambda^\sigma$, with $\lambda$ a root of $P$. All have modulus
+at least $\omega$. By Lemma~\ref{nrr:dc:lem:limits}(iii), the sequence must
+be zero. In particular $v(x)=0$. Since $x$ was arbitrary, $v=0$.
+\end{proof}
+
+The proof is the finite-regularity replacement for an analytic identity
+theorem. A nonzero element of the composition space cannot vanish too
+rapidly at the fixed point: exponential contraction would make its
+orbit decay faster than any permitted recurrence mode.
+
+\begin{theorem}[Finite-smoothness polynomial-coordinate theorem]
+\label{nrr:dc:thm:finite-threshold}
+Let $N$ satisfy \eqref{nrr:dc:eq:N}. Every $C^N$ decreasing solution of
+$P[f]=0$ is either an involution or has the unique global representation
+\eqref{nrr:dc:eq:poly-conjugacy}. In the latter case it is real analytic,
+real algebraic, and globally bi-Lipschitz, with exact minimal polynomial
+\eqref{nrr:dc:eq:smooth-spectrum}. In particular,
+Theorem~\ref{nrr:dc:thm:smooth} holds for $C^\infty$ solutions.
+\end{theorem}
+\begin{proof}
+Suppose the solution is not an involution and retain the notation of
+Lemma~\ref{nrr:dc:lem:jet}. The order-of-vanishing filtration on $V$ is
+separated by the first $N$ derivatives. Each successive graded piece
+has dimension at most one: its first nonzero Taylor coefficient is a
+scalar. Thus $V$ has a basis of distinct vanishing orders
+\[
+ K\subseteq\{1,\ldots,N\},\qquad 1\in K.
+\]
+Right composition by $g(x)=ax+o(x)$ preserves this filtration and acts
+on the order-$k$ graded piece by $a^k$. The matrix of $E_g$ is triangular
+with diagonal entries $a^k$, $k\in K$. These entries are distinct, since
+$|a|\ne1$. Therefore $E_g$ is diagonalizable over $\R$.
+An eigenfunction with eigenvalue $a^k$ has vanishing order exactly $k$,
+as comparison of its leading Taylor coefficient shows.
+
+Choose the eigenfunction $\psi$ with eigenvalue $a$, normalized by
+$\psi'(0)=1$. Then
+\begin{equation}
+ \psi(0)=0,\qquad \psi\circ g=a\psi.
+ \label{nrr:dc:eq:schroeder}
+\end{equation}
+Its derivative is positive near zero. Differentiating the iterated
+identity at an arbitrary point gives
+\begin{equation}
+ \psi'(g^{\circ n}(x))(g^{\circ n})'(x)=a^n\psi'(x)
+ \qquad(n\in\Z).
+ \label{nrr:dc:eq:propagate-derivative}
+\end{equation}
+Take $n=\sigma j$ with $j$ large enough to enter that neighborhood.
+Both $(g^{\circ n})'(x)$ and $a^n$ have sign $(-1)^n$, and neither
+vanishes. Therefore $\psi'(x)>0$ everywhere.
+Its range is an interval. Equation \eqref{nrr:dc:eq:schroeder}, in the
+opposite time direction, produces arbitrarily large positive and
+negative values from any nonzero value of $\psi$. Its range is
+therefore all of $\R$. Thus $\psi$ is a global $C^N$ diffeomorphism.
+Let $H=\psi^{-1}$; then $H(0)=0$, $H'(0)=1$, and $H'>0$.
+
+For an eigenfunction $v_k$ with eigenvalue $a^k$, set
+$w_k(t)=v_k(H(t))$. It obeys
+\[
+ w_k(at)=a^k w_k(t),\qquad
+ w_k(t)=\gamma_k t^k+o(t^k)\quad(t\to0),\qquad\gamma_k\ne0.
+\]
+For fixed $t$, use $a^{\sigma j}t\to0$ to obtain
+\[
+ w_k(t)=a^{-k\sigma j}w_k(a^{\sigma j}t)
+       \longrightarrow\gamma_k t^k.
+\]
+The left side is independent of $j$, so $w_k(t)=\gamma_k t^k$
+for every real $t$. Expand $\id$ in the eigenbasis of $E_g$ and compose
+with $H$. The result is a polynomial identity
+\begin{equation}
+ H(t)=\sum_{k\in K}h_kt^k.
+ \label{nrr:dc:eq:H-polynomial}
+\end{equation}
+Every $h_k$ is nonzero: if the cyclic vector $\id$ missed an eigenspace,
+all its iterates would miss it, contradicting the definition of $V$.
+Since $H$ is an increasing polynomial bijection, its degree is odd
+and its leading coefficient is positive. Equation \eqref{nrr:dc:eq:schroeder}
+now yields \eqref{nrr:dc:eq:poly-conjugacy} globally.
+
+The fixed point $c$ and multiplier $a$ are intrinsic. For uniqueness
+of $H$, if $H_1,H_2$ are two normalized coordinates, then
+$L=H_1^{-1}\circ H_2$ commutes with $t\mapsto at$ and
+$L(t)=t+o(t)$ at zero. The same scaling argument gives $L(t)=t$
+everywhere. Hence $H_1=H_2$.
+
+In the $t$ coordinate, the scalar iterates are
+\begin{equation}
+ f^{\circ n}(c+H(t))=c+\sum_{k\in K}h_k a^{kn}t^k.
+ \label{nrr:dc:eq:smooth-iterates}
+\end{equation}
+Distinct $a^k$ and the independent functions $t^k$ give the exact
+minimal polynomial \eqref{nrr:dc:eq:smooth-spectrum}; the constant mode
+is present precisely when $c\ne0$. Since $H'>0$, the inverse
+function theorem makes $H^{-1}$ real analytic at every real point.
+Thus $f$ is real analytic. Eliminating $t$ from
+$x=c+H(t)$ and $y=c+H(at)$ shows that $f$ is real algebraic.
+Finally,
+\[
+ f'(c+H(t))=a\frac{H'(at)}{H'(t)}.
+\]
+Its absolute value is positive and continuous, and tends to
+$|a|^{\deg H}$ as $t\to\pm\infty$. It therefore has positive lower
+and finite upper bounds, proving global bi-Lipschitz regularity.
+\end{proof}
+
+\begin{corollary}[Automatic analyticity with the exact exception]
+\label{nrr:dc:cor:automatic}
+If $P$ is not divisible by $z^2-1$, every decreasing $C^N$ solution,
+with $N$ as in \eqref{nrr:dc:eq:N}, is real analytic. If $z^2-1$ divides
+$P$, nonanalytic $C^\infty$ involutions are genuine exceptions.
+\end{corollary}
+\begin{proof}
+The theorem handles non-involutions. An involution has minimal
+polynomial $z+1$ or $z^2-1$; without the second divisor only $-\id$
+can occur.
+For the exception, take a nonzero smooth bump $\eta$ supported in
+$(1,2)$, small enough that $\psi(x)=x+\eta(x)$ has positive derivative.
+Then $f=\psi^{-1}\circ(-\id)\circ\psi$ is a smooth decreasing
+involution. It equals $-x$ outside a compact set but is not $-x$
+everywhere, so the real-analytic identity theorem shows that it is
+not globally real analytic.
+\end{proof}
+
+\begin{corollary}[Spectral deletion under sufficient regularity]
+\label{nrr:dc:cor:deletion}
+Every nonreal root and every repeated root can be deleted from a
+universal annihilator for decreasing $C^\infty$ solutions, and also
+for decreasing $C^N$ solutions at the threshold \eqref{nrr:dc:eq:N}.
+In particular all their minimal polynomials are squarefree and real-rooted.
+\end{corollary}
+\begin{proof}
+For non-involutions use \eqref{nrr:dc:eq:smooth-spectrum}; for involutions
+use $\mu_f\mid z^2-1$.
+\end{proof}
+
+\subsection{Algebraic does not mean rational}
+
+\begin{corollary}[Rational solutions are affine]
+\label{nrr:dc:cor:rational}
+A decreasing rational function defined on all of $\R$ that satisfies
+$P[f]=0$ is affine.
+\end{corollary}
+\begin{proof}
+Its rational iterates span a finite-dimensional space. A common
+denominator for a fixed finite basis shows that their degrees as
+rational maps are uniformly bounded. If $d$ is the degree of $f$
+as a rational map of the complex projective line, its $n$th iterate
+has degree $d^n$. For completeness, degree multiplicativity follows
+by homogenizing coprime numerator--denominator pairs: substitution of
+a pair of degree $e$ into a pair of degree $d$ yields degree $de$
+and no common projective zero, hence no cancellation. Boundedness
+therefore forces $d=1$.
+A real degree-one rational map with a nonconstant denominator has a
+real pole. Since $f$ is defined on all of $\R$, its denominator must
+be constant. Thus $f$ is affine.
+\end{proof}
+
+The polynomial-coordinate theorem supplies many nonlinear algebraic
+solutions, but this corollary prevents them from simplifying to
+nonlinear rational functions. The degree of $H$ bounds the algebraic
+degree of $f$ over $\R(x)$; that bound need not be asserted to be sharp
+in every specialization.
+
+\section{Exact smooth spectra and their universal core}
+\label{nrr:dc:sec:smooth-core}
+
+\subsection{Which integer-power spectra actually occur?}
+
+\begin{theorem}[Smooth spectral occurrence]
+\label{nrr:dc:thm:smooth-occurrence}
+Apart from $z+1$ and $z^2-1$, the polynomials occurring as decreasing
+$C^\infty$ minimal spectra are exactly
+\begin{equation}
+ (z-1)^{\varepsilon_+}\prod_{k\in K}(z-a^k),
+ \qquad \varepsilon_+\in\{0,1\},\quad a<0,\ a\ne-1,
+ \label{nrr:dc:eq:smooth-occurrence}
+\end{equation}
+where $K$ is a finite set of positive integers containing $1$ and
+having odd maximum. Each is realized by a globally real-analytic,
+globally bi-Lipschitz map. Thus the $C^\infty$ and real-analytic classes
+have exactly the same possible minimal polynomials.
+\end{theorem}
+\begin{proof}
+Necessity follows from Theorem~\ref{nrr:dc:thm:finite-threshold} applied to
+$P=\mu_f$. For sufficiency, let $M=\max K$. If $M=1$, take $H(t)=t$.
+For odd $M\ge3$, start with
+\[
+ H_0(t)=t+t^M,\qquad H_0'(t)=1+Mt^{M-1}>0.
+\]
+For every $1<k<M$ in $K$, the function
+$k|t|^{k-1}/(1+M|t|^{M-1})$ is bounded on $\R$. Add sufficiently
+small nonzero multiples of these $t^k$ to $H_0$. The derivative stays
+positive, the support becomes exactly $K$, and the normalization
+$H'(0)=1$ is unchanged. Define
+$f(c+H(t))=c+H(at)$, taking $c=0$ when $\varepsilon_+=0$ and $c=1$ when
+$\varepsilon_+=1$. The exact formula \eqref{nrr:dc:eq:smooth-iterates} proves
+the claimed minimum. The two involution spectra have analytic reflection
+realizations.
+\end{proof}
+
+The odd-maximum condition is indispensable. For example, the support
+$\{1,2\}$ cannot be the support of an increasing polynomial bijection
+of $\R$, while $\{1,2,3\}$ can. The roots $a^k$ are not arbitrary
+real roots of the correct signs: the same multiplier $a$ must account
+for every one of them by an integer exponent.
+
+\subsection{The exact smooth reduction formula}
+
+Let $\varepsilon_+=\mathbf1_{P(1)=0}$. For each negative root $a\ne-1$ of
+$P$, form the finite set
+\begin{equation}
+ K_P(a)=\{k\ge1:P(a^k)=0\}.
+ \label{nrr:dc:eq:KPa}
+\end{equation}
+It is finite because the powers of $a$ are distinct, and it contains
+$1$. Let $M_P(a)$ be its largest odd member, and set
+\begin{equation}
+ J_P(a)=K_P(a)\cap\{1,\ldots,M_P(a)\},\qquad
+ B_a(z)=(z-1)^{\varepsilon_+}\prod_{k\in J_P(a)}(z-a^k).
+ \label{nrr:dc:eq:Ba}
+\end{equation}
+If $P(-1)=0$, also form the involution branch
+\begin{equation}
+ B_{\rm inv}(z)=(z-1)^{\varepsilon_+}(z+1).
+ \label{nrr:dc:eq:Binv}
+\end{equation}
+Let $\mathcal B(P)$ consist of all the polynomials in
+\eqref{nrr:dc:eq:Ba} and, when present, \eqref{nrr:dc:eq:Binv}.
+
+\begin{theorem}[Universal smooth core]
+\label{nrr:dc:thm:smooth-core}
+The polynomial
+\begin{equation}
+ \boxed{\ \smoothcore(P)=\lcm_{B\in\mathcal B(P)}B\ }
+ \label{nrr:dc:eq:smoothcore}
+\end{equation}
+with the empty least common multiple interpreted as $1$, satisfies
+\begin{equation}
+ \bigl[P[f]=0\Rightarrow Q[f]=0
+       \text{ for all decreasing }C^\infty\text{ maps }f\bigr]
+ \quad\Longleftrightarrow\quad \smoothcore(P)\mid Q.
+ \label{nrr:dc:eq:smooth-universal}
+\end{equation}
+The same polynomial works for globally real-analytic solutions and
+for $C^N$ solutions whenever $N>\Theta(P)$.
+Every branch $B\in\mathcal B(P)$ is itself attained as an exact
+real-analytic minimal polynomial, and every solution in any of these
+regularity classes has minimum dividing at least one branch.
+\end{theorem}
+\begin{proof}
+For a non-involutive smooth solution, its multiplier $a$ is a negative
+root of $P$. Its coordinate support $K$ lies in $K_P(a)$, contains
+$1$, and has odd maximum. Therefore $K\subseteq J_P(a)$, and its
+minimal polynomial divides $B_a$. Conversely, $J_P(a)$ itself has
+odd maximum, so Theorem~\ref{nrr:dc:thm:smooth-occurrence} realizes the
+whole branch $B_a$. Involutions are exactly accounted for by $B_{\rm inv}$.
+Taking the least common multiple proves the universal property and
+its sharpness.
+The finite-smoothness theorem says that the $C^N$ class introduces
+no additional non-involutive spectra. Any additional nonanalytic
+involutions still have minimum dividing $B_{\rm inv}$. Since all
+maximal branches have analytic realizations, the core is unchanged.
+\end{proof}
+
+\begin{remark}[Exact computation versus floating-point root plots]
+Formulas \eqref{nrr:dc:eq:KPa}--\eqref{nrr:dc:eq:Ba} use equality of real
+numbers, not a tolerance test on approximate logarithms. For a polynomial with
+rational or algebraic coefficients, root isolation and exact algebraic
+arithmetic can decide the finitely many tests. A finite exponent bound
+comes from the extreme moduli of $P$: for $|a|>1$, only
+$k\le\log r_+(P)/\log|a|$ can occur; for $|a|<1$, only
+$k\le\log r_-(P)/\log|a|$ can occur. Certified overestimates suffice.
+The formulas do not promise a particular bit-complexity for the root
+isolation step.
+\end{remark}
+
+\subsection{Smooth witness complexity is unbounded}
+
+Because \eqref{nrr:dc:eq:smoothcore} is squarefree, the least number of
+smooth witnesses is the minimum number of branch root sets needed to cover
+$\roots(\smoothcore(P))$. This is an exact finite covering formulation:
+every solution is contained in one branch, and every branch can be
+realized. Branches contained in larger branches may first be discarded.
+No general complexity classification of this special covering problem
+is needed for the following sharp contrast with
+Corollary~\ref{nrr:dc:cor:two-branches}.
+
+\begin{theorem}[One continuous witness versus arbitrarily many smooth witnesses]
+\label{nrr:dc:thm:witness-growth}
+For every positive integer $m$, there is a polynomial $P_m$ whose
+continuous decreasing core is attained by one globally bi-Lipschitz
+$C^1$ solution, but whose smooth core requires exactly $m$ witnesses.
+Indeed, let
+\begin{equation}
+ r_j=2+\frac{j}{m+1}\quad(1\le j\le m),\qquad
+ P_m(z)=\prod_{j=1}^m(z+r_j).
+ \label{nrr:dc:eq:clustered}
+\end{equation}
+Its only decreasing $C^2$ solutions are $f(x)=-r_jx$, $1\le j\le m$.
+For $m\ge2$, a single exact-core $C^1$ realization is not $C^2$.
+\end{theorem}
+\begin{proof}
+All roots of $P_m$ are negative, distinct, and outside the unit circle,
+so the continuous core is $P_m$ itself. Since $2<r_j<3$, no positive
+integer power of $r_j$ of exponent at least two belongs to the interval
+$(2,3)$. Hence $K_{P_m}(-r_j)=\{1\}$, and each smooth branch is just
+$z+r_j$. Also
+\[
+ \Theta(P_m)=\frac{\log r_m}{\log r_1}<\frac{\log3}{\log2}<2.
+\]
+Theorem~\ref{nrr:dc:thm:finite-threshold} therefore applies already at $C^2$.
+There is no unit root, so its only $C^2$ solutions are the stated
+homogeneous linear maps. Their distinct singleton spectra show that
+exactly $m$ witnesses are required.
+
+For the $C^1$ realization, set $h(t)=\sum_{j=1}^m r_j^t$ and use
+\eqref{nrr:dc:eq:odd-map}. This positive increasing coordinate has exact
+shift spectrum $\{r_1,\ldots,r_m\}$, and the resulting $F$ has minimum
+$P_m$. Its derivative on the positive ray is
+\[
+ F'(h(t))=-\frac{\sum_j(\log r_j)r_j^{t+1}}
+                    {\sum_j(\log r_j)r_j^t},
+\]
+a negative weighted average of the $r_j$. As $t\to-\infty$, both
+$F(h(t))/h(t)$ and $F'(h(t))$ tend to $-r_1$. Odd extension makes
+$F$ a global $C^1$ diffeomorphism.
+If $m\ge2$, put $\gamma=\log r_2/\log r_1\in(1,2)$.
+Writing $x=h(t)$ at the finite end gives
+\[
+ F(x)+r_1x
+ =-\sum_{j=2}^m(r_j-r_1)r_j^t
+ \sim -(r_2-r_1)x^\gamma\qquad(x\downarrow0).
+\]
+This is incompatible with the $O(x^2)$ remainder of a $C^2$ function
+with value $0$ and derivative $-r_1$ at zero. Thus the realization
+is not $C^2$.
+\end{proof}
+
+The witness-count difference is not due to root multiplicities,
+nonreal roots, opposite sides of the unit circle, or a nonzero fixed
+point: none of those occurs in \eqref{nrr:dc:eq:clustered}. It is caused
+solely by the common-multiplier constraint imposed by smoothness.
+
+\section{Examples, sharp boundaries, and exact certificates}
+\label{nrr:dc:sec:examples}
+
+\subsection{A classical benchmark: contraction or expansion, not both}
+
+Take
+\[
+ P(z)=(z+2)(z+\tfrac12).
+\]
+The two continuous branch cores are $z+2$ and $z+\tfrac12$, so the
+only decreasing solutions are $-2x$ and $-x/2$. Their least common
+multiple is $P$, but no single solution has that minimal polynomial.
+This is the quadratic example behind Draga's Remark~4
+\cite{D2016}, not a new counterexample. It illustrates why a sharp
+universal annihilator need not itself be a minimal polynomial of one
+solution.
+
+\subsection{A nondegenerate two-cycle interval}
+
+For $b>0$ and $r>0$, $r\ne1$, define
+\begin{equation}
+ F(x)=
+ \begin{cases}
+ -x,&|x|\le b,\\
+ -rx+(r-1)b\sgn(x),&|x|>b.
+ \end{cases}
+ \label{nrr:dc:eq:piecewise-plateau}
+\end{equation}
+It is odd, decreasing, and globally bi-Lipschitz. Its square fixes
+exactly $[-b,b]$. For $x>b$,
+\[
+ F^{\circ n}(x)=(-1)^n\bigl(b+r^n(x-b)\bigr),
+\]
+so its exact minimal polynomial is $(z+1)(z+r)$. At the endpoints,
+the magnitudes of the one-sided derivatives are $1$ and $r$.
+Thus the map is not $C^1$, in agreement with
+Proposition~\ref{nrr:dc:prop:c1}. The verifier checks the identity for
+$b=1$, $r=2$ at 401 rational points, while the displayed orbit formula
+proves it for all real inputs.
+
+\subsection{Nonreal roots really survive in the decreasing class}
+
+Let
+\begin{equation}
+ h(t)=2^t\left(1+\frac1{100}\cos\frac{2\pi t}{3}\right),
+ \qquad F(h(t))=-h(t+1),\qquad F(-x)=-F(x).
+ \label{nrr:dc:eq:cubic-example}
+\end{equation}
+The derivative of $h$ is positive: the constant term in its bracket
+is $\log2$, and the sum of the absolute perturbation amplitudes is
+at most $(\log2+2\pi/3)/100<\log2$.
+The limits at the two ends make $h$ an increasing bijection onto
+$(0,\infty)$. Its exact shift polynomial is $z^3-8$, with three
+nonzero spectral components. Consequently
+\begin{equation}
+ \mu_F=z^3+8=(z+2)(z^2-2z+4),\qquad F^{\circ3}(x)=-8x.
+ \label{nrr:dc:eq:cubic-minimum}
+\end{equation}
+Its orbit beginning at $h(0)$ has exact first values
+\[
+ \frac{101}{100},\quad-\frac{199}{100},\quad
+ \frac{199}{50},\quad-\frac{202}{25},\quad
+ \frac{398}{25},\quad-\frac{796}{25}.
+\]
+The $3\times3$ Hankel determinant of its first five values is
+$-27/625\ne0$, independently certifying that the orbit has no
+recurrence of order below three (the argument of
+Section~\ref{nrr:sc:app:hankel}). The map is globally bi-Lipschitz
+and analytic off zero, but is not differentiable at zero: the quotient
+$F(h(t))/h(t)$ is a nonconstant three-periodic function of $t$, so it
+has no limit as $t\to-\infty$. Consistently, $\Theta(z^3+8)=1$ gives a
+$C^2$ obstruction from the finite-smoothness theorem as well.
+
+This construction is the orientation-reversed counterpart of Part~I's
+increasing cubic mechanism (Theorem~\ref{thm:cubic}, with minimal polynomial
+$z^3-8$). Its value here is as a transparent sharpness example for the new
+classification, not as the principal novelty of Part~III.
+
+\subsection{Multiplicity is constrained at the extremes, not inside}
+
+For every positive integer $m$, the polynomial
+\begin{equation}
+ R_m(z)=(z+2)(z^2+9)^m(z+4)
+ \label{nrr:dc:eq:interior-multiplicity}
+\end{equation}
+is negative-admissible. Its negative extreme roots have multiplicity
+one, while the interior nonreal roots $\pm3i$ have arbitrary
+multiplicity $m$. Thus $R_m$ is realized by a globally bi-Lipschitz
+decreasing map. No sufficiently smooth solution has this exact
+minimum. In fact $\Theta(R_m)=\log4/\log2=2$, so $C^3$ already rules it
+out, regardless of $m$.
+
+At two distinct extreme radii, even multiplicities are permitted:
+\[
+ (z+2)^2(z+4)^2
+\]
+is realizable, whereas $(z+2)^2$ is not a minimal decreasing spectrum.
+For the former, an explicit positive envelope is
+\[
+ w(t)=(1-t)2^t+(1+t)4^t>0.
+\]
+On $[-1,1]$ both summands are nonnegative. Outside that interval,
+the ratio of a negative summand to the positive one is less than
+$1/2$. Integrating from $-\infty$ gives
+\[
+ h(t)=2^t\left(\frac{1-t}{\log2}+\frac1{(\log2)^2}\right)
+ +4^t\left(\frac{1+t}{\log4}-\frac1{(\log4)^2}\right),
+\]
+and \eqref{nrr:dc:eq:odd-map} realizes the claimed multiplicities exactly.
+The parity condition belongs to a \emph{single} circle, not independently
+to each of two extreme circles. (Compare Part~II's increasing example
+$(z-2)^2(z-4)^2$, Section~\ref{nrr:sc:sec:examples}.)
+
+\subsection{A nonlinear analytic map with a positive characteristic root}
+
+Let
+\begin{equation}
+ H(t)=t+\tfrac14t^2+t^3,
+ \qquad H'(t)=3\left(t+\tfrac1{12}\right)^2+\tfrac{47}{48}>0.
+ \label{nrr:dc:eq:H-example}
+\end{equation}
+Define $f(H(t))=H(-2t)$. Then $f$ is decreasing, globally analytic,
+and nonlinear, with
+\begin{equation}
+ \mu_f=(z+2)(z-4)(z+8)=z^3+6z^2-24z-64.
+ \label{nrr:dc:eq:smooth-cubic}
+\end{equation}
+Thus smooth rigidity does not mean that every root must be negative.
+The positive root $4=(-2)^2$ is an allowed even power of the common
+negative multiplier. Its orbit at $H(1)=9/4$ begins
+\[
+ \tfrac94,\quad -9,\quad72,\quad-504,\quad4176.
+\]
+The corresponding $3\times3$ Hankel determinant is $46656\ne0$.
+The exact polynomial identity
+\[
+ H((-2)^3t)+6H((-2)^2t)-24H(-2t)-64H(t)=0
+\]
+is checked coefficient by coefficient by the shipped verifier.
+A nonzero translation of the fixed point adds exactly the simple
+factor $z-1$.
+
+Using the same nonodd $H$ with multiplier $-1$ gives a nonlinear
+analytic involution. It has minimum $z^2-1$, not $z+1$:
+if it were $-\id$, the defining identity would force $H$ to be odd.
+This is why the involutive exception must be retained in the smooth theorem.
+
+\subsection{\texorpdfstring{A sharp $C^1$ versus $C^2$ boundary}{A sharp C1 versus C2 boundary}}
+
+An especially simple non-polynomial coordinate is
+\[
+ h(t)=2^t+3^t,\qquad F(h(t))=-h(t+1),\qquad F(-x)=-F(x).
+\]
+Its exact minimum is $(z+2)(z+3)$. Its derivative on the positive
+ray lies between $-3$ and $-2$ and tends to $-2$ at zero, so the
+odd extension is $C^1$. Write $y=2^t$ and
+$\gamma=\log3/\log2\in(1,2)$. Then
+\[
+ x=y+y^\gamma,\qquad F(x)=-2x-y^\gamma
+       =-2x-x^\gamma+o(x^\gamma)\quad(x\downarrow0).
+\]
+It is not $C^2$. Conversely $\Theta((z+2)(z+3))=\log3/\log2<2$,
+so every decreasing $C^2$ solution is polynomial-coordinate and the
+smooth-core formula reduces it to $-2x$ or $-3x$.
+This verifies the sharpness of the sufficient threshold in this
+particular equation; it does not prove that the bound is optimal for
+all input polynomials. (Part~I's Section~\ref{sec:regularity} records the
+corresponding $C^1$ versus $C^{1,\alpha}$ boundary for increasing maps on one
+circle.)
+
+\section{Verification, effective use, and a formalization route}
+\label{nrr:dc:sec:verification}
+
+\subsection{What the exact computations check}
+
+The verifier \nolinkurl{code/03-decreasing-core-verify.py} (delivered as
+\texttt{code/verify.py}; the file of that name here is Part~I's verifier)
+uses only Python's standard library and exact rational arithmetic. It
+represents a root profile by its radius, its type (negative real, other real,
+conjugate pair, or unit root), and its multiplicity. Two deliberately separate
+procedures are compared: a direct admissibility predicate and the closed
+universal-core construction of Section~\ref{nrr:dc:sec:core}. For each input
+profile, every divisor profile is enumerated; the least common multiple of all
+admissible divisors must equal the proposed closed core. The attained
+branch and one-versus-two-witness criteria are checked as well.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Atlas & Input profiles & Divisor tests\\
+\midrule
+Squarefree, two sides and unit roots & 1,024 & 59,049\\
+Single-circle multiplicities & 1,125 & 121,500\\
+Interior and boundary multiplicities & 288 & 12,600\\
+Two-sided multiplicities & 256 & 10,000\\
+\midrule
+Total across the four atlases & 2,693 & 203,149\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every test passed. A separate exact-rational smooth-spectrum atlas checks
+1,024 input root sets and 59,049 candidate divisors against the
+integer-power and odd-maximum formula of
+Theorem~\ref{nrr:dc:thm:smooth-core}; all of those checks passed as well. The
+table above counts only the continuous-core checks. These counts are test
+instances across the four atlases, not a claim that all profiles across
+different atlases are distinct. The script also checks the two cubic Hankel
+determinants, the polynomial-coordinate identity, the rational plateau sample,
+and an eight-slope instance of the witness family
+\eqref{nrr:dc:eq:clustered}. Recorded output is supplied in both
+\nolinkurl{data/03-decreasing-core-verification.json} and
+\nolinkurl{data/03-decreasing-core-verification.txt} (delivered as
+\texttt{results/verification.json} and \texttt{results/verification.txt};
+the two files are byte-identical, and both hold the JSON record). (Merge note:
+in the write phase, 29 September 2026, Python~3.14.4, the verifier was rerun
+in a scratch copy with its delivered name restored, in about 2~seconds; it
+passed, and its JSON output and its printed output equal the shipped records
+apart from Windows line endings. It also passes under \texttt{python -O}, as
+its checks raise explicit exceptions rather than use \texttt{assert}.)
+
+These are finite consistency checks. In particular, the profile
+predicate encodes the theorem's stated conditions; exhaustive
+agreement with it does not establish their equivalence to existence
+of a real map. The all-real construction, the spectral necessity,
+and the finite-smoothness theorem rest on the proofs in Part~III,
+not on numerical experimentation or exhaustive sampling.
+
+\subsection{A practical decision workflow}
+
+For a polynomial with certified algebraic roots, the following workflow
+produces exact answers.
+First, test for a negative real root; without one, the decreasing
+solution class is empty. Next construct $R_<,R_>,U$ using exact
+modulus comparisons and multiplicities. This gives the continuous
+core, its maximum one or two branches, and the affine-rigidity test.
+To restrict regularity, compute a certified upper bound for $\Theta(P)$
+and choose an integer strictly above it. The finite-smoothness theorem
+then reduces the spectral problem to the power tests $P(a^k)=0$.
+These tests generate the branches $B_a$ and the involution branch,
+and their least common multiple gives the smooth core.
+
+The construction of a bi-Lipschitz witness is effective in principle:
+choose the finite exponential modes, enlarge $\Lambda$ until the envelope's
+two tail inequalities hold, and choose a positive perturbation smaller
+than a certified domination bound. The proofs establish termination of
+these searches, but the supplied checker does not implement a general
+certified transcendental inequality engine. An implementation of that
+engine would be a separate deliverable, not something hidden behind
+the exact finite test counts.
+
+\subsection{A possible Lean development}
+
+A formal proof should begin with the right-composition module, not
+with an attempt to normalize nested nonlinear expressions. The
+natural algebraic layer consists of a finite-dimensional cyclic space,
+an invertible composition operator, orbit evaluation maps, and the
+least-common-multiple description of the minimal polynomial.
+The recurrence layer can then establish the exponential-polynomial
+basis and its growth lemmas. The order-topological layer proves the
+two-cycle interval and the common finite-end direction.
+
+The continuous occurrence theorem additionally needs the positive
+envelope, domination of finitely many exponential-polynomial modes,
+and the analytic inverse function theorem on rays. The finite-smoothness
+result takes a different route after the recurrence layer: local
+contraction, Taylor remainder bounds, finite-jet injectivity,
+diagonalization by distinct vanishing orders, and global propagation
+of an eigenfunction coordinate.
+
+A useful formalization milestone would be the finite-smoothness
+polynomial-coordinate theorem conditional only on an abstract
+recurrence growth lemma. A second milestone would discharge that
+lemma. A third would formalize the root-profile algorithms and show
+that their returned polynomials have the universal properties. This
+separation makes the trusted assumptions visible. No Lean source is
+included in the delivered package, and no existing repository formalization
+is claimed to certify these results. (As of 29 September 2026 none of these
+milestones, nor any stage of Part~II's plan, has been started in ProveIt.)
+
+\section{Further research questions}
+\label{nrr:dc:sec:research}
+
+The following problems are proposed continuations, not assertions that
+no related special case has ever been studied. They distinguish
+questions left open by Part~III from statements already proved here.
+
+\subsection{Optimal finite differentiability}
+
+Determine the least integer $N_{\rm opt}(P)$ such that every decreasing
+$C^{N_{\rm opt}(P)}$ solution is either an involution or polynomial-coordinate.
+The bound $N>\Theta(P)$ is explicit but can overcount roots that are
+incompatible with a particular multiplier. A stronger algorithm should
+combine the continuous branch reduction, the derivative multiplier,
+and exact integer-power resonances before assigning a threshold.
+The equation $f(x)+2x=0$ is already rigid at
+$C^0$, whereas the two-root examples in Section~\ref{nrr:dc:sec:examples}
+show that $C^1$ genuinely fails where $C^2$ succeeds.
+
+\subsection{Complete intermediate-regularity spectra}
+
+Classify minimal spectra for each fixed $C^k$ class below the automatic
+analyticity threshold, and for H\"older or Zygmund regularity. The
+coordinate terms suggest a mixture of fractional powers, logarithmic
+powers from repeated roots, and oscillations in $\log|x-c|$ from
+nonreal roots. A complete theorem must handle cancellations at the
+same asymptotic degree and the matching of the two sides of the fixed
+point; an inspection of one mode is not enough.
+
+\subsection{All continuous solutions, rather than only their spectra}
+
+The continuous theorem classifies which minimal polynomials occur
+and constructs a witness, but it does not parametrize every continuous
+solution with a given minimum. Develop a complete parameter space for
+such solutions, including the possible involution on the central
+interval and compatible data on an exterior fundamental interval.
+The recurrence equation makes that data highly constrained, while
+monotonicity imposes an infinite family of inequalities.
+
+\subsection{Optimal distortion and quantitative realizations}
+
+For an admissible $\mu$, minimize a natural bi-Lipschitz distortion
+such as $\operatorname{Lip}(f)\operatorname{Lip}(f^{-1})$ over its
+realizations. Determine which spectral features force a positive gap
+from the best affine distortion, and whether the infimum is attained.
+The existing construction gives finite bounds but is not optimized;
+small spectral coefficients can preserve exact minimality while
+making a mode difficult to detect numerically.
+
+\subsection{Certified construction from algebraic input}
+
+Turn the existence construction into a certificate-producing program.
+Input should be a polynomial with algebraic coefficients and isolated
+roots; output should include explicit envelope parameters, exact
+certified domination bounds, a coordinate expression, and a proof
+object for the Lipschitz constants. The symbolic spectral test is
+finite and elementary after root data are supplied, but certification
+of the global exponential inequalities is a separate analytic task.
+
+\subsection{The special covering problem for smooth witnesses}
+
+Determine the complexity of the minimum branch-cover problem from
+Section~\ref{nrr:dc:sec:smooth-core}. The root sets are not arbitrary:
+they arise from integer powers of negative anchors and an odd-maximum
+cutoff. This arithmetic structure might allow a simpler algorithm
+than general set cover. Theorem~\ref{nrr:dc:thm:witness-growth} proves that
+no uniform bound on the answer exists, but says nothing about the
+complexity of computing that answer.
+
+\subsection{Algebraic degree and exceptional polynomial coordinates}
+
+For $f=H\circ(a\id)\circ H^{-1}$, determine the exact degree of
+$f$ over $\R(x)$ from $H$ and $a$. The upper bound $\deg H$ can
+have special reductions when the coordinate has compositional
+structure. Classify these reductions, and characterize when two
+polynomial-coordinate descriptions yield algebraically related maps.
+The normalized coordinate of a fixed non-involutive map is already
+unique; the unresolved issue concerns algebraic degree and families,
+not that uniqueness theorem.
+
+\subsection{Higher-dimensional ordered systems}
+
+Investigate analogues for maps preserving or reversing a proper cone
+in $\R^d$ and satisfying a finite linear relation among iterates.
+The one-dimensional proof relies on a finite two-cycle limit and a
+one-dimensional graded jet at each order. Both features change in
+higher dimensions: bounded recurrent motion need not collapse, and
+resonant jets have multidimensional eigenspaces. Identify hypotheses
+under which a finite-dimensional composition space still forces an
+algebraic global conjugacy.
+
+\subsection{Nonhomogeneous equations and stability}
+
+Extend the classification where possible to
+$\sum_{j=1}^d a_jf^{\circ j}(x)=F(x)$ with prescribed non-linear
+$F$, and to approximate equations on invariant domains. Existing
+existence and stability programs, including \cite{LZ2013,XHWX2026},
+operate in this broader setting. An appropriate first target is a
+forcing term lying in a finite-dimensional space preserved by right
+composition, so that a replacement for the cyclic recurrence space
+survives. Small residual in an equation should not be confused with
+small error in exact minimal spectral support.
+
+\subsection{Independent audit and formal verification}
+
+The highest-priority mathematical audit is the passage from a family
+of alternating orbits to a single global spectral branch, followed by
+the finite-jet injectivity and global-coordinate argument. The
+highest-priority literature audit is a full-text comparison with the
+older characteristic-solution and differentiability papers, not just
+their abstracts. The highest-priority formal task is a verified
+recurrence growth lemma feeding both classification theorems. These
+three activities address correctness, priority, and machine-checking
+respectively; none substitutes for the others.
+
+\section{Conclusion of Part~III}
+\label{nrr:dc:sec:conclusion}
+
+Orientation reversal imposes a structure absent from the unrestricted
+increasing problem: a finite two-cycle interval, a common convergent
+time direction, and a prohibition on mixing contracting and expanding
+nonunit spectra. Combined with the positive bilateral recurrence
+criterion, this yields a complete occurrence theorem and a closed
+universal reduction with at most two sharp branches.
+
+Sufficient differentiability changes the answer more radically.
+The two-cycle interval disappears, the fixed point is hyperbolic,
+and a finite jet detects the entire composition space. Its eigenfunctions
+then become integer powers of one global coordinate, forcing that
+coordinate's inverse to be a polynomial. This proves automatic
+analyticity and algebraicity for non-involutions at an explicit finite
+regularity threshold. The smooth core is therefore governed by exact
+integer-power compatibility, rather than merely by extreme-circle
+multiplicity conditions. The unbounded witness-count example separates
+these two mechanisms even for simple negative real roots on one side
+of the unit circle.
+
+\section{Source, dependency, and claim audit of Part~III}
+\label{nrr:dc:sec:audit}
+
+\paragraph{Repository and companion provenance.}
+The repository anchor was inspected at commit
+\begin{center}\small
+\texttt{afb2d1227d8bc5df3beffc1463e958db3544960b}.
+\end{center}
+The relevant report is under
+\begin{quote}\small\raggedright
+\nolinkurl{SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/nonreal-roots-in-iterative-equations/}
+\end{quote}
+(the manuscript cites it as the GitHub tree of that path at that commit,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/afb2d1227d8bc5df3beffc1463e958db3544960b/SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}).
+Its README, status information, and indexed source excerpts identify
+a circular increasing classification and explicitly limited scope; at that
+commit it held Part~I only. The separate increasing companion, printed here
+as Part~II, was retrieved from the user's prior-file library as the LaTeX
+source \nolinkurl{article(20260929-042518).tex}, including the
+positive-recurrence construction and its scope statement. The manuscript
+does not represent it as an independently refereed publication or as a file
+verified to be part of the pinned repository commit.
+
+\paragraph{Extent of the external literature check.}
+The relevant full arXiv text of Draga--Morawiec \cite{DM2016}, including
+Problem~6.1 on preprint page~13, and Draga's follow-up \cite{D2016},
+including Theorem~3 and Remarks~4--6, were inspected. The former asks
+about nonreal maximal-modulus roots tied with a real root. The latter
+already proves a particular negative-root disjunction. Neither the
+recurrence method nor the existence of that disjunction is a priority
+claim of Part~III.
+
+For Yang--Zhang \cite{YZ2004} and Li--Zhang \cite{LZ2013}, the
+publisher's abstract and bibliographic record were inspected, not the
+subscription full text. The former describes multiple characteristic
+roots and linear-difference constructions; the latter concerns
+existence and uniqueness of decreasing solutions in a leading-coefficient
+problem. A recent paper of Xia--Huo--Wang--Xia \cite{XHWX2026}, published
+in April 2026, was also checked at abstract level. It treats sufficient
+conditions for existence, uniqueness, and stability in a nonhomogeneous
+half-line setting, not a stated complete homogeneous spectral
+classification in its abstract.
+
+The broader search surfaced older differentiability and linear-dependence
+papers whose full contents were not obtained. Therefore Part~III
+claims a self-contained proved extension of the inspected ProveIt
+program, not an exhaustive determination of first publication.
+The source list is a record of relevant checked context, not a complete
+bibliography of iterative functional equations.
+
+\paragraph{Logical dependencies and limitations.}
+The main continuous theorem depends on elementary recurrence
+decomposition, finite trigonometric averages, one-dimensional order
+dynamics, exponential domination, and the inverse function theorem.
+The finite-smoothness theorem additionally uses Taylor remainder bounds
+and elementary finite-dimensional diagonalization. The universal-core
+formulas are consequences of these occurrence theorems. The exact
+computations are supplements and are not logical premises of any
+all-real theorem.
+
+The domain is the whole real line and $P(0)\ne0$. Part~III does not
+classify arbitrary maps on arbitrary intervals, equations with a zero
+constant coefficient, nonhomogeneous equations, higher-dimensional
+systems, or every individual continuous solution. It does classify
+every individual non-involutive solution in the stated sufficiently
+smooth class. The suggested future questions are not claimed solved.
+All new proofs remain open to independent mathematical review.
+The manuscript's own status note is shipped verbatim as
+\nolinkurl{03-decreasing-core-STATUS.md}.
 
 
 \appendix
@@ -2892,6 +4920,27 @@ S.~Thangroongvongthana, V.~Laohakosol, and S.~Mavecha,
 iterative equation},
 Current Applied Science and Technology \textbf{21}(3) (2021), 495--523.
 \url{https://li01.tci-thaijo.org/index.php/cast/article/view/248735}.
+
+\bibitem{YZ2004}
+D.~Yang and W.~Zhang,
+\emph{Characteristic solutions of polynomial-like iterative equations},
+Aequationes Mathematicae \textbf{67} (2004), 80--105.
+\href{https://doi.org/10.1007/s00010-003-2708-4}{doi:10.1007/s00010-003-2708-4}.
+[Part~III, added 29 September 2026.]
+
+\bibitem{LZ2013}
+L.~Li and W.~Zhang,
+\emph{Continuously decreasing solutions for polynomial-like iterative
+equations}, Science China Mathematics \textbf{56} (2013), 1051--1058.
+\href{https://doi.org/10.1007/s11425-013-4589-x}{doi:10.1007/s11425-013-4589-x}.
+[Part~III, added 29 September 2026.]
+
+\bibitem{XHWX2026}
+C.~Xia, R.~Huo, X.~Wang, and Z.~Xia,
+\emph{Asymptotically periodic and continuous solutions of a polynomial-like
+iterative equation}, Aequationes Mathematicae \textbf{100} (2026), article~44.
+\href{https://doi.org/10.1007/s00010-026-01289-3}{doi:10.1007/s00010-026-01289-3}.
+[Part~III, added 29 September 2026.]
 
 \end{thebibliography}
 \end{document}
