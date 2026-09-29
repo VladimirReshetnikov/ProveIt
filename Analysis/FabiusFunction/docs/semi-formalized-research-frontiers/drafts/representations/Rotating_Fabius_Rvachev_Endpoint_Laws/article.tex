@@ -1,0 +1,1633 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,array,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=green!30!black,
+ urlcolor=blue!40!black,pdftitle={Resonance Profiles and Sharp Endpoint Laws for Rotating Fabius--Rvachev Distributions},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Irrational rotations, small deviations, singular Birkhoff sums, and inverse quantiles}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Rotating Fabius--Rvachev endpoint laws}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{itemsep=0.25em,topsep=0.35em,leftmargin=2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research question}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb R/\mathbb Z}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Unif}{\operatorname{Unif}}
+\newcommand{\dn}[1]{\left\|#1\right\|_{\T}}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\at}{\alpha,\lambda}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pinned}{\texttt{fbba58593dc0622aa914972896150d4848f935b5}}
+
+\title{\textbf{Resonance Profiles and Sharp Endpoint Laws\\
+for Rotating Fabius--Rvachev Distributions}\\[0.55em]
+\large Uniform irrational asymptotics, phase-dependent quantiles,\\
+and superlinear Liouville corrections}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small Mathematical development and computational checks by ChatGPT}
+\date{28 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate two explicit endpoint conjectures in the matrix-dilated
+Fabius--Rvachev report in the \repo\ repository.  For independent uniform
+random variables, consider
+\[
+ S_\beta=\sum_{n\ge1}2\e^{-\lambda n}
+       |\cos\pi(n\alpha+\beta)|V_n,
+ \qquad V_n\sim\Unif[0,1],\quad \lambda>0.
+\]
+Every irrational rotation has the same leading logarithmic Laplace and
+small-deviation laws, uniformly in the phase; no Diophantine hypothesis is
+needed for this leading term.  For a badly approximable rotation, we obtain
+an explicit phase-uniform refinement
+\[
+ -\log\EE\e^{-\e^tS_\beta}
+ =\frac{t^2}{2\lambda}-\frac t2-R_\beta(t)
+   +O_{\alpha,\lambda}\!\bigl(\log^2(2+t)\bigr),
+\]
+where $R_\beta$ is a nonnegative, nondecreasing, $1$-Lipschitz profile formed
+from the deepest truncated return to a cosine zero.  This proves a stronger
+version of the displayed Diophantine estimate in the repository, including
+phases with an exact zero.  A tilted gamma approximation supplies a relative
+saddle-point formula, a three-term logarithmic cap-probability expansion,
+and an explicit multiplicative inverse-quantile asymptotic.
+
+The phase profile cannot in general be replaced by a bounded or logarithmic
+carrier merely by excluding exact zeros.  Almost every phase has a common
+quantile asymptotic, whereas a dense $G_\delta$ set of nonexact phases, of
+Hausdorff dimension zero, has a quantile ratio with lower limit
+$q=\e^{-\lambda}$ and upper limit $1$.  More generally, the limits are
+classified by an inhomogeneous exponential approximation exponent.  Finally,
+for a dense $G_\delta$ set of Liouville rotations we construct, for every
+integer $k\ge2$, Laplace-correction subsequences of order
+$t^{2-1/k}$.  These resolve the repository's Liouville-spike question in a
+stronger, baseline-corrected form.  All arguments are given in ordinary
+mathematical detail; numerical checks are supplementary, not proofs.
+\end{abstract}
+\vspace{0.3em}
+\noindent\textbf{Keywords.} Fabius function; small deviations; irrational rotation;
+Sudler products; exponential tilting; inverse quantiles; Liouville numbers.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research target, contribution boundary, and source status}
+\label{sec:scope}
+
+\subsection{The concrete questions being addressed}
+
+The repository report \emph{Matrix-Dilated Fabius--Rvachev Laws}
+\cite{RepoMatrix} constructs smooth laws on self-affine zonotopes and reduces
+their directional boundary probabilities to infinite products of uniform
+Laplace transforms.  In its section on directional caps, the source labels
+\texttt{conj:diophantine-endpoint} and \texttt{conj:liouville} ask, respectively,
+for control of irrational-rotation endpoint corrections and for exceptional
+Liouville spikes.  The first displayed conjectural estimate, in the source's
+notation, is
+\begin{equation}
+ \log\LL_w(s)=-\frac{(\log s)^2}{2\lambda}
+       +O(\log s\,\log\log s).
+ \label{eq:repoestimate}
+\end{equation}
+It assumes bounded continued-fraction type and a phase described as
+nonresonant.  Its accompanying discussion suggests a bounded or
+logarithmically growing quasiperiodic correction.  The second question asks
+whether sufficiently close Liouville returns force unbounded corrections.
+
+We resolve the displayed estimate with a stronger $O(\log s)$ error, uniformly
+in \emph{all} phases, and identify the additional term responsible for that
+error.  We also prove that excluding exact zeros alone does not justify the
+suggested small carrier: exceptionally well approximated phases already give
+linear corrections for a fixed badly approximable rotation.  The Liouville
+construction gives still larger, but subquadratic, corrections.  We do
+\emph{not} assert a full all-orders endpoint expansion or a bounded
+quasiperiodic residual under stronger phase hypotheses.
+
+\subsection{Relation to existing mathematics}
+
+The scalar infinitely differentiable compactly supported function and its
+probabilistic structure are classical; Arias de Reyna's exposition
+\cite{Arias} is a primary reference relevant to the repository's scalar
+normalization.  The products generated by
+$\log|2\sin\pi(n\alpha+\gamma)|$ belong to the established theory of Sudler
+products and singular Birkhoff sums.  Verschueren and Mestel
+\cite{VerschuerenMestel} prove convergence along a Fibonacci subsequence and
+power-law bounds for the golden rotation.  Borda \cite{Borda} studies value
+distributions and concentration of Sudler products, together with Birkhoff
+sums for irrational rotations.  Hauke \cite{Hauke} investigates how badly
+approximable continued fractions affect extreme Sudler-product behavior.
+These are related antecedents, not references establishing the present
+cap-distribution and inverse-quantile conclusions.
+
+Our use of bounded-variation discrepancy, exponential tilting, gamma
+asymptotics, Borel--Cantelli, and Baire category is standard methodology.
+In particular, a useful trimmed $O(\log^2 N)$ rotation estimate below is
+proved directly; it is not presented as a new general theorem about Sudler
+products.  The research contribution developed here is the explicit
+phase-uniform endpoint profile, its transfer through a relative saddle
+formula to inverse quantiles, the resulting phase classification, and the
+rational-shadowing construction for the source's Liouville question.
+
+\subsection{What the provenance check does and does not establish}
+
+The source conjectures were inspected at repository commit
+\begin{center}\small\pinned.\end{center}
+The source-file blob is
+\texttt{143f6da778dfc0d5ab04133005ba6715a3cf155b}.
+Appendix~\ref{app:provenance} records the path and exact source labels.
+The audit was targeted: it inspected the matrix report, its relevant
+surrounding definitions, the repository manifest, and searches for the
+conjecture label and proposed profile terminology.  It was not a proof-by-proof
+review of the entire repository.  The search index and pinned-file revision
+were not identical, so an unsuccessful phrase search is not treated as a
+certificate of repository-wide novelty.
+
+All theorems in this article are supported by the proofs below rather than by
+assuming that the repository's other research claims are correct.  The cap
+product itself is rederived.  The proofs have not been checked by a proof
+assistant or independent referee.  The targeted literature check establishes
+context, not universal publication priority.  Accordingly, ``proved here''
+means a mathematical argument is supplied here; it does not mean that a
+priority claim has been independently certified.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Source question or issue & Result and remaining boundary \\
+\midrule
+Leading irrational endpoint scale & Theorem~\ref{thm:universal}: no bounded-type
+assumption is needed; convergence is phase-uniform. \\
+Displayed Diophantine estimate & Theorem~\ref{thm:profile}: an explicit profile
+and $O(\log^2\log s)$ residual, with total error $O(\log s)$. \\
+Boundary probabilities and inversion & Theorems~\ref{thm:saddle}--\ref{thm:quantile}:
+relative saddle formula and phase-corrected inverse asymptotic. \\
+Meaning of ``nonresonant'' & Theorems~\ref{thm:spectrum}--\ref{thm:category}:
+no exact zero is too weak for a bounded or logarithmic correction. \\
+Liouville spikes & Theorem~\ref{thm:liouville}: corrections of order
+$(\log s)^{2-1/k}$ along subsequences, for every integer $k\ge2$. \\
+All-orders quasiperiodic expansion & Not proved; precise remaining questions
+are given in Section~\ref{sec:future}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Rotating caps and a fixed normalization}
+\label{sec:normalization}
+
+Fix $\lambda>0$, set $q=\e^{-\lambda}$, and let $\alpha\in\R$ and
+$\beta\in\T$.  Unless a rational comparison is explicitly under discussion,
+$\alpha$ is irrational.  Let $(V_n)_{n\ge1}$ be independent random variables
+with distribution $\Unif[0,1]$.  Define
+\begin{align}
+ a_n(\beta)&=2|\cos\pi(n\alpha+\beta)|, &
+ b_n(\beta)&=q^n a_n(\beta),\label{eq:weights}\\
+ S_\beta&=\sum_{n\ge1}b_n(\beta)V_n, &
+ C_\beta(x)&=\PP(S_\beta\le x),\label{eq:S}\\
+ \LL_\beta(s)&=\EE\e^{-sS_\beta}, &
+ H_\beta(t)&=-\log\LL_\beta(\e^t).
+ \label{eq:H}
+\end{align}
+The series converges for every sample point, since
+$\sum b_n\le2q/(1-q)$.  All logarithms are natural.
+
+\begin{proposition}[Reduction of a directional cap]
+\label{prop:cap}
+Let $U_n$ be independent $\Unif[-1,1]$ variables, let $R_\theta$ denote planar
+rotation through $\theta$, and let
+\[
+ X=\sum_{n\ge1}q^nR_{n\theta}v\,U_n,
+ \qquad v\in\R^2\setminus\{0\}.
+\]
+For $w\ne0$, put
+$h(w)=\sum_{n\ge1}q^n|\langle w,R_{n\theta}v\rangle|$.
+If $\alpha=\theta/\pi$ and $\delta$ is the angle of $v$ minus the angle of
+$w$, then
+\[
+ h(w)-\langle w,X\rangle\ \overset{d}=\
+ \|v\|\|w\|S_\beta,\qquad \beta=\delta/\pi\pmod1.
+\]
+Moreover,
+\begin{equation}
+ \LL_\beta(s)=\prod_{n\ge1:b_n>0}
+            \frac{1-\e^{-sb_n}}{sb_n},\qquad s\ge0.
+ \label{eq:product}
+\end{equation}
+A zero coefficient contributes a factor $1$.
+\end{proposition}
+\begin{proof}
+The support bound in direction $w$ is the sum of the absolute projected
+segment lengths, and every finite choice of segment endpoints is approximable
+within the support, so its supremum is $h(w)$.  For a real coefficient $c$,
+$|c|-cU$ has the same law as $2|c|V$.  Apply this independently to every
+projected term and use
+$\langle w,R_{n\theta}v\rangle=\|v\|\|w\|\cos(n\theta+\delta)$.
+The finite-product formula follows by integration of a uniform variable.
+Bounded convergence of the exponential as the finite sum tends to $S_\beta$
+gives the infinite-product identity.
+\end{proof}
+
+The factor $\|v\|\|w\|$ is not silently absorbed into $\lambda$ or $\beta$.
+For a physical deficit $D=A S_\beta$ with $A>0$, substitute $s\mapsto As$ in
+the Laplace formulas and $x\mapsto x/A$ in the probability formulas.  Its
+quantile is exactly $A C_\beta^{-1}(y)$.
+
+Write $\dn{u}=\min_{m\in\mathbb Z}|u-m|$ and
+$d_n(\beta)=\dn{n\alpha+\beta-1/2}$.  For $0\le d\le1/2$,
+\begin{equation}
+ 4d\le2\sin(\pi d)\le2\pi d.
+ \label{eq:distance-amplitude}
+\end{equation}
+A phase is called \emph{exact} if $d_m(\beta)=0$ for some $m\ge1$, and
+\emph{nonexact} otherwise.  Irrationality permits at most one exact index.
+This terminology deliberately avoids imposing an unstated quantitative
+meaning on the word ``nonresonant.''
+
+\begin{lemma}[Support and quantiles]
+\label{lem:quantile-exists}
+For irrational $\alpha$, $S_\beta$ has no atoms and its support is the whole
+interval $[0,\sum b_n]$.  Its distribution function is continuous and strictly
+increasing on that interval.  Thus $C_\beta^{-1}(y)$ is unambiguous for
+$0<y<1$.
+\end{lemma}
+\begin{proof}
+At least one coefficient is positive, so convolution with its uniform law
+eliminates atoms.  Finite sums have full interval supports; their deterministic
+tail bound tends to zero.  More explicitly, any interior point can be
+approximated by a finite sum with values in the interiors of its positive
+uniform intervals, while the remaining tail is made smaller than a prescribed
+neighborhood.  This gives positive probability to every open subinterval of
+the claimed support.  The stated strict increase follows.
+\end{proof}
+
+\section{The soft cutoff and the scalar baseline}
+\label{sec:kernel}
+
+Set
+\begin{equation}
+ F(u)=\log\frac{u}{1-\e^{-u}}\quad(u>0),\quad F(0)=0,
+ \qquad h(z)=F(\e^z),\quad h(-\infty)=0.
+ \label{eq:kernel}
+\end{equation}
+The infinite product becomes
+\begin{equation}
+ H_\beta(t)=\sum_{n\ge1}h(t-\lambda n+f_n),
+ \qquad f_n=\log a_n\in[-\infty,\log2].
+ \label{eq:Hsum}
+\end{equation}
+
+\begin{lemma}[Elementary kernel estimates]
+\label{lem:kernel}
+There is an absolute constant $C$ such that
+\begin{align}
+ &0\le F(u)\le u/2,\qquad 0\le F'(u)\le1/2,\label{eq:Fbounds}\\
+ &0\le h(z)-z_+\le C\e^{-|z|}\qquad(z\in\R),\label{eq:hcut}\\
+ &h'(z)=J(\e^z),\qquad
+ J(u)=1-\frac{u}{\e^u-1},\label{eq:J}\\
+ &J(u)-uJ'(u)=V(u),\qquad
+ V(u)=1-\frac{u^2\e^u}{(\e^u-1)^2}.
+ \label{eq:V}
+\end{align}
+At $u=0$, $J(0)=V(0)=0$.  For $u\ge0$,
+$0\le J(u)\le1$, $0\le V(u)\le1$, and
+\[
+ J(u)=O(u),\quad V(u)=O(u^2)\quad(u\downarrow0),
+ \qquad J(u),V(u)\longrightarrow1\quad(u\to\infty)
+\]
+with exponentially small errors at infinity, up to polynomial factors.
+\end{lemma}
+\begin{proof}
+$F(u)$ is the negative logarithm of the Laplace transform of $\Unif[0,1]$.
+Jensen's inequality gives $F(u)\le u/2$.  Its derivative is the mean of this
+uniform variable under exponential tilt; it lies between $0$ and its untilted
+mean $1/2$, since the derivative of that mean is the negative tilted variance.
+For $z\le0$, $h(z)\le\e^z/2$.  For $z\ge0$,
+\[
+ h(z)-z=-\log(1-\e^{-\e^z})\ge0;
+\]
+this is bounded by $C\e^{-z}$, with a larger constant covering $z=0$.
+Differentiation gives \eqref{eq:J} and \eqref{eq:V}.
+
+Under tilt, $uV_1$ has density
+$\e^{-w}/(1-\e^{-u})$ on $[0,u]$.  Its mean and variance are $J(u)$ and
+$V(u)$, respectively.  This proves nonnegativity.  The displayed formulas
+prove the upper bounds by $1$; alternatively the mean is at most the mean of
+an unconditioned unit exponential.  Taylor expansion at zero and the explicit
+formulas at infinity prove the remaining estimates.
+\end{proof}
+
+Define, for $t\ge0$,
+\begin{equation}
+ B_\lambda(t)=\sum_{n\ge1}(t-\lambda n)_+.
+ \label{eq:Bdef}
+\end{equation}
+Writing $N=\lfloor t/\lambda\rfloor$ and $\eta=\{t/\lambda\}$ gives the
+\emph{exact} identity
+\begin{equation}
+ B_\lambda(t)=Nt-\frac{\lambda N(N+1)}2
+ =\frac{t^2}{2\lambda}-\frac t2+
+       \frac\lambda2\eta(1-\eta).
+ \label{eq:Bexact}
+\end{equation}
+Thus the linear term $-t/2$ is forced by the indexing $n\ge1$; it is not a
+resonance effect.
+
+For later use, the kernel bounds imply
+\begin{equation}
+ \sum_{n\ge1}h(t-an)=B_a(t)+O_\lambda(1)
+ \quad\text{uniformly for }a\ge\lambda,
+ \label{eq:scalarcut}
+\end{equation}
+since the exponentially decaying errors in \eqref{eq:hcut} can be summed over
+any lattice with spacing at least $\lambda$.  They also give the useful
+truncation certificate
+\begin{equation}
+ 0\le H_\beta(t)-\sum_{n=1}^{M}F(\e^t b_n)
+ \le\frac{\e^tq^{M+1}}{1-q}.
+ \label{eq:tail}
+\end{equation}
+The same bound holds for the omitted part of $H_\beta'(t)$, because
+$J(u)=uF'(u)\le u/2$.  A safe variance-tail bound is
+$4\e^{2t}q^{2(M+1)}/(1-q^2)$, using $V(u)\le u^2$.
+
+\section{The universal leading law for every irrational rotation}
+\label{sec:universal}
+
+\begin{theorem}[Phase-uniform irrational universality]
+\label{thm:universal}
+For every fixed irrational $\alpha$ and every $\lambda>0$, uniformly in
+$\beta\in\T$,
+\begin{align}
+ H_\beta(t)&=\frac{t^2}{2\lambda}+o(t^2),\qquad t\to\infty,
+ \label{eq:universalH}\\
+ \log C_\beta(x)&=-\frac{\log^2(1/x)}{2\lambda}
+                  +o\!\bigl(\log^2(1/x)\bigr),\qquad x\downarrow0,
+ \label{eq:universalC}\\
+ -\log C_\beta^{-1}(y)&\sim\sqrt{2\lambda\log(1/y)},\qquad y\downarrow0.
+ \label{eq:universalQ}
+\end{align}
+The little-$o$ terms need not be uniform over irrational $\alpha$.
+\end{theorem}
+\begin{proof}
+Since $a_n\le2$, monotonicity of $h$ and \eqref{eq:scalarcut} imply
+\[
+ H_\beta(t)\le B_\lambda(t+\log2)+O_\lambda(1)
+             =\frac{t^2}{2\lambda}+O_\lambda(t).
+\]
+For the lower bound, fix $0<\eps<1$.  The set
+$E_\eps=\{u\in\T:2|\cos\pi u|<\eps\}$ is an interval about $1/2$,
+of length tending to zero as $\eps\downarrow0$.  Irrational rotation gives
+\begin{equation}
+ \#\{1\le n\le N:n\alpha+\beta\in E_\eps\}
+ =|E_\eps|N+o(N)
+ \label{eq:uniformequi}
+\end{equation}
+uniformly in $\beta$.  To see the uniformity directly, a nonconstant Fourier
+mode has average bounded by
+$2/(N|1-\e^{2\pi i k\alpha}|)$, independently of the starting phase.
+Approximate the interval indicator from above and below by continuous
+periodic functions and then by finite trigonometric polynomials.
+
+Retain the terms with $a_n\ge\eps$, and put
+$N=\lfloor(t+\log\eps)/\lambda\rfloor$.  The inequality $h(z)\ge z_+$
+gives
+\[
+ H_\beta(t)\ge B_\lambda(t+\log\eps)
+  -(t+|\log\eps|)\bigl(|E_\eps|N+o(N)\bigr).
+\]
+Divide by $t^2$, first let $t\to\infty$, and then let $\eps\downarrow0$.
+This proves \eqref{eq:universalH} uniformly in phase.
+
+Set $L=\log(1/x)$.  Chernoff's inequality at $s=1/x$ gives
+\begin{equation}
+ C_\beta(x)\le\exp(1-H_\beta(L)).
+ \label{eq:chernoff}
+\end{equation}
+For a phase-independent lower bound, couple
+$S_\beta\le S^*=2\sum q^nV_n$.  Choose
+\[
+ N=\left\lceil\frac{L+\log(4/(1-q))}{\lambda}\right\rceil.
+\]
+The deterministic tail of $S^*$ after $N$ is at most $x/2$.
+For sufficiently large $L$, each threshold $x/(4Nq^n)$, $1\le n\le N$,
+lies in $(0,1)$.  On the event $V_n\le x/(4Nq^n)$ for all these indices,
+the first $N$ terms contribute at most $x/2$.  Independence therefore gives
+\begin{align*}
+ \log C_\beta(x)
+ &\ge -NL-N\log(4N)+\frac{\lambda N(N+1)}2\\
+ &=-\frac{L^2}{2\lambda}-\frac{L\log L}{\lambda}+O_\lambda(L).
+\end{align*}
+Together with \eqref{eq:chernoff}, this proves \eqref{eq:universalC}.
+Monotone inversion of the two uniform quadratic bounds proves
+\eqref{eq:universalQ}; Lemma~\ref{lem:quantile-exists} supplies the inverse.
+\end{proof}
+
+\begin{proposition}[Rational comparison]
+\label{prop:rationalleading}
+Let $\alpha=p/r$ be reduced, and let $\nu$ of the $r$ periodic amplitudes
+$a_1,\ldots,a_r$ be positive.  If $\nu>0$, then
+\[
+ H_\beta(t)\sim\frac{\nu}{r}\frac{t^2}{2\lambda},\qquad
+ \log C_\beta(x)\sim-\frac{\nu}{r}\frac{\log^2(1/x)}{2\lambda}.
+\]
+For $r\ge2$, a generic phase has $\nu=r$, while a phase orthogonal to one
+orbit direction has $\nu=r-1$.
+\end{proposition}
+\begin{proof}
+For each positive residue $j$, its contribution is
+$\sum_{k\ge0}h(t-\lambda j-\lambda rk+\log a_j)$, whose leading term is
+$t^2/(2\lambda r)$ by the scalar cutoff.  Sum over the $\nu$ residues.
+Chernoff gives the probability upper bound.  The finite-coordinate lower-bound
+event used above now needs only the positive indices: their count through
+$N$ is $\nu N/r+O_r(1)$ and their index sum is
+$\nu N^2/(2r)+O_r(N)$.  The fixed nonzero amplitude factors change the
+logarithm by only $O_{\alpha,\beta,\lambda}(N)$, proving the lower bound.
+Distinct residues yield distinct points modulo one, so at most one amplitude
+vanishes when $r\ge2$.
+\end{proof}
+
+This rational/irrational difference is relevant to the Liouville construction:
+a very accurate rational approximation can temporarily suppress a positive
+fraction of the effective digits, although that fraction tends to zero along
+increasing rational denominators.
+
+\section{A uniform trimmed rotation estimate}
+\label{sec:rotation}
+
+For the next five sections impose the bounded-type hypothesis
+\begin{equation}
+ \dn{m\alpha}\ge\frac{\kappa}{m}\qquad(m\ge1)
+ \quad\text{for some fixed }\kappa>0.
+ \tag{BT}\label{eq:BT}
+\end{equation}
+This is the usual badly approximable condition, equivalent to bounded
+continued-fraction partial quotients.  Constants may depend on $\alpha$
+(or a chosen bound for its partial quotients) and $\lambda$, but never on
+$\beta$ unless explicitly indicated.
+
+\begin{lemma}[Uniform interval discrepancy]
+\label{lem:discrepancy}
+Under \eqref{eq:BT}, there is $D_\alpha$ such that, for every interval
+$I\subset\T$, $N\ge1$, and $\beta\in\T$,
+\[
+ \left|\#\{1\le n\le N:n\alpha+\beta\in I\}-N|I|\right|
+ \le D_\alpha\log(2N).
+\]
+Consequently, for a periodic function $g$ of bounded variation,
+\begin{equation}
+ \left|\sum_{n=1}^N g(n\alpha+\beta)-N\int_\T g\right|
+ \le D_\alpha\operatorname{Var}(g)\log(2N),
+ \label{eq:BV}
+\end{equation}
+with a harmless change of the constant.
+\end{lemma}
+\begin{proof}
+Let $p_j/Q_j$ be a continued-fraction convergent.  The first $Q_j$ points
+of an orbit block differ, after a permutation, from a translated equally
+spaced $Q_j$-point grid by less than $1/Q_{j+1}\le1/Q_j$ on the circle.
+Indeed, $|\alpha-p_j/Q_j|<1/(Q_jQ_{j+1})$, and the accumulated error over a
+block of $Q_j$ successive indices is at most $1/Q_{j+1}$ after fixing its
+starting phase.  The grid count in an interval differs from $Q_j|I|$ by
+at most two.  Only a bounded number of grid points can lie within $1/Q_j$
+of the interval's endpoints.  Thus a block of length $Q_j$ has an absolute
+counting error bounded by a universal constant, uniformly in its starting
+phase.
+
+If all partial quotients are bounded by $A$, the greedy continued-fraction
+expansion of $N$ decomposes its first $N$ orbit points into at most $A+1$
+blocks of each convergent length.  The denominators grow at least as fast
+as the Fibonacci denominators, so there are $O(\log(2N))$ different lengths.
+Adding the block errors proves the interval estimate.  Finally, apply
+Stieltjes integration by parts to the signed counting measure minus
+$N$ times Lebesgue measure; its total mass is zero and its interval
+cumulative function is bounded by the estimate just proved.  This gives
+\eqref{eq:BV}.
+\end{proof}
+
+\begin{lemma}[One exceptional term suffices]
+\label{lem:trim}
+Let $f(u)=\log(2|\cos\pi u|)$, with value $-\infty$ at $1/2$.
+For $N\ge2$, choose $m\in\{1,\ldots,N\}$ minimizing
+$d_n=\dn{n\alpha+\beta-1/2}$.  Under \eqref{eq:BT},
+\begin{align}
+ d_n&\ge\frac{\kappa}{2N}\quad(n\ne m),\label{eq:spacing}\\
+ f(n\alpha+\beta)&\ge-\log N-C_\alpha\quad(n\ne m),
+ \label{eq:fmin}\\
+ \left|\sum_{\substack{1\le n\le N\\n\ne m}}
+               f(n\alpha+\beta)\right|
+ &\le C_\alpha\log^2(2N).
+ \label{eq:trim}
+\end{align}
+The sum in \eqref{eq:trim} is finite even at an exact phase, since its only
+possible infinite term was removed.
+\end{lemma}
+\begin{proof}
+Any two of the first $N$ orbit points are separated by at least $\kappa/N$.
+If $d_m\ge\kappa/(2N)$, the first assertion is immediate.  Otherwise the
+triangle inequality and the separation bound give
+$d_n\ge\kappa/N-d_m>\kappa/(2N)$ for every $n\ne m$.
+Inequality~\eqref{eq:distance-amplitude} gives \eqref{eq:fmin}.
+
+Choose a constant $C_0$ large enough that
+$\tau_N=-\log N-C_0$ is no larger than the lower bound in
+\eqref{eq:fmin}, and put $g_N=\max(f,\tau_N)$.
+Its variation on the circle is $O_\alpha(\log(2N))$.  Also
+\begin{equation}
+ \int_\T f=0,\qquad
+ 0\le\int_\T(g_N-f)=O_\alpha(1/N).
+ \label{eq:truncatedmean}
+\end{equation}
+For completeness, the mean-zero identity follows from
+$\int_0^{\pi/2}\log\sin u\dd u=-(\pi/2)\log2$ and reflection.
+The integral identity for sine is obtained by adding its sine and cosine
+versions and substituting $2u$ in their product.  The truncation correction
+is supported where the distance to $1/2$ is $O(1/N)$; integration of
+$\log(c/(Nd))$ over such an interval is $O(1/N)$, proving the second claim.
+
+Equation~\eqref{eq:BV} now gives
+$\sum_{n\le N}g_N(n\alpha+\beta)=O_\alpha(\log^2(2N))$.
+Except at $m$, $g_N$ agrees with $f$; and
+$|g_N(m\alpha+\beta)|=O_\alpha(\log(2N))$.
+Subtract this one finite term.  This proves \eqref{eq:trim}.
+\end{proof}
+
+The uniformity in this lemma is important.  An estimate for a fixed unshifted
+Sudler product would not, without an additional argument, control a phase
+chosen extremely close to one of the first $N$ singular orbit locations.
+
+\section{The resonance profile and the sharp Laplace law}
+\label{sec:profile}
+
+\begin{definition}[Truncated resonance profile]
+\label{def:profile}
+Let
+\begin{equation}
+ k_n(\beta)=\bigl(-\log a_n(\beta)\bigr)_+\in[0,\infty],
+ \qquad
+ R_\beta(t)=\max_{n\ge1}\min\{k_n(\beta),(t-\lambda n)_+\}.
+ \label{eq:profiledef}
+\end{equation}
+The conventions are $\min\{\infty,u\}=u$ for finite $u$ and $R_\beta(t)=0$
+for $0\le t<\lambda$.  Only finitely many indices contribute when $t$ is fixed.
+\end{definition}
+
+Each function in the maximum grows with slope $1$ after its starting time
+$\lambda n$ until it reaches height $k_n$, after which it stays constant.
+Thus
+\begin{equation}
+ 0\le R_\beta(t)\le t,\qquad
+ 0\le R_\beta(t_2)-R_\beta(t_1)\le t_2-t_1
+ \quad(t_2\ge t_1).
+ \label{eq:Lipschitz}
+\end{equation}
+This elementary finite maximum, rather than an untruncated singular sum,
+is the correction that survives uniformly over arbitrary phases.
+
+\begin{theorem}[Uniform profile expansion]
+\label{thm:profile}
+Under \eqref{eq:BT}, as $t\to\infty$,
+\begin{equation}
+ H_\beta(t)=B_\lambda(t)-R_\beta(t)
+                   +O_{\at}\!\bigl(\log^2(2+t)\bigr)
+ \label{eq:mainprofile}
+\end{equation}
+uniformly for every $\beta\in\T$, including exact phases.  Equivalently,
+\begin{equation}
+ \log\LL_\beta(\e^t)
+ =-\frac{t^2}{2\lambda}+\frac t2+R_\beta(t)
+                   +O_{\at}\!\bigl(\log^2(2+t)\bigr).
+ \label{eq:laplaceprofile}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $N=\lfloor t/\lambda\rfloor$ and choose the exceptional index $m$ from
+Lemma~\ref{lem:trim}.  Set $a=t-\lambda m\ge0$.
+First consider all $n\le N$ other than $m$.  Their $f_n$ lie between
+$-\log N-C_\alpha$ and $\log2$.
+Except in a final interval of $O_{\at}(\log(2N))$ indices, the quantity
+$t-\lambda n+f_n$ is at least $3\log(2N)$.  On that early interval,
+\eqref{eq:hcut} permits replacing $h(t-\lambda n+f_n)$ by
+$t-\lambda n+f_n$ with a total error $O_{\at}(1)$.
+On the final interval both the negative part of this linear expression and
+the soft-cutoff error are $O_{\at}(\log(2N))$ per term.  Consequently,
+\begin{align}
+ \sum_{\substack{n\le N\\n\ne m}}h(t-\lambda n+f_n)
+ &=\sum_{\substack{n\le N\\n\ne m}}(t-\lambda n)
+   +\sum_{\substack{n\le N\\n\ne m}}f_n
+   +O_{\at}(\log^2(2N))\nonumber\\
+ &=B_\lambda(t)-a+O_{\at}(\log^2(2N)).
+ \label{eq:trimmedH}
+\end{align}
+For $n>N$, $h(t-\lambda n+f_n)\le\e^{t-\lambda n}$, so the total tail is
+$O_\lambda(1)$.
+
+If $f_m\le0$, including $f_m=-\infty$, the cutoff estimate gives
+\[
+ h(a+f_m)-a=-\min\{k_m,a\}+O(1).
+\]
+For $f_m>0$, the same statement holds with $k_m=0$ and an $O(1)$ error,
+since $f_m\le\log2$ and $h$ is $1$-Lipschitz.
+Combining this with \eqref{eq:trimmedH} yields
+\[
+ H_\beta(t)=B_\lambda(t)-\min\{k_m,t-\lambda m\}
+                           +O_{\at}(\log^2(2N)).
+\]
+All other indices $n\le N$ have $k_n\le\log N+C_\alpha$.  Thus replacing
+the exceptional term by the maximum $R_\beta(t)$ changes the expression by
+at most $O_\alpha(\log(2N))$.  Equation~\eqref{eq:Bexact} finishes the proof.
+\end{proof}
+
+\begin{corollary}[Resolution of the displayed source estimate]
+\label{cor:repo}
+Under \eqref{eq:BT}, uniformly in phase,
+\[
+ \log\LL_\beta(s)=-\frac{(\log s)^2}{2\lambda}+O_{\at}(\log s).
+\]
+In particular, the estimate \eqref{eq:repoestimate} holds, with no phase
+exclusion at all.
+\end{corollary}
+\begin{proof}
+Use $0\le R_\beta(t)\le t$ and $\log^2 t=o(t)$ in
+Theorem~\ref{thm:profile}.
+\end{proof}
+
+\begin{corollary}[A quantitative nonresonance condition]
+\label{cor:polynomial}
+Suppose that, in addition to \eqref{eq:BT}, there are $c>0$ and $\tau>0$ with
+\begin{equation}
+ \dn{n\alpha+\beta-1/2}\ge c n^{-\tau}\qquad(n\ge1).
+ \label{eq:polynomialphase}
+\end{equation}
+Then $R_\beta(t)=O_{c,\tau,\lambda}(\log(2+t))$ and
+\[
+ \log\LL_\beta(\e^t)=-\frac{t^2}{2\lambda}+\frac t2
+                     +O_{\alpha,\lambda,c,\tau}(\log^2(2+t)).
+\]
+\end{corollary}
+\begin{proof}
+Inequality~\eqref{eq:distance-amplitude} gives
+$k_n\le\tau\log n+C_c$.  In \eqref{eq:profiledef}, only
+$n\le t/\lambda$ matter.
+\end{proof}
+
+\begin{remark}[Why the untruncated cocycle is not the uniform correction]
+The source's cocycle is $\sum_{n\le N}f_n$.  A single $f_m$ can be arbitrarily
+negative, or $-\infty$, while its actual Laplace contribution stays between
+$0$ and a quantity of order $t-\lambda m$.  The minimum in
+\eqref{eq:profiledef} is precisely this saturation.  Before saturation, a
+small digit is effectively missing; after saturation, its full logarithmic
+amplitude enters.  The formula is therefore compatible with continuity of the
+Laplace transform at a phase where a digit becomes exactly zero.
+\end{remark}
+
+\section{A relative saddle formula from tilted gamma blocks}
+\label{sec:saddle}
+
+A logarithmic Laplace estimate by itself is not a relative asymptotic for a
+small probability.  This section supplies the missing local argument.  For
+$s=\e^t$, define the tilted probability measure
+\begin{equation}
+ \frac{\dd\PP_t}{\dd\PP}=\exp(-sS_\beta+H_\beta(t)).
+ \label{eq:tilt}
+\end{equation}
+Expectations and variances under this measure are denoted by $\EE_t$ and
+$\Var_t$.  Set
+\begin{equation}
+ m_\beta(t)=H_\beta'(t),\qquad
+ \VV_\beta(t)=H_\beta'(t)-H_\beta''(t)
+             =s^2\Var_t(S_\beta).
+ \label{eq:tiltedparameters}
+\end{equation}
+The variance is strictly positive.
+
+\begin{lemma}[Tilted summands and their effective number]
+\label{lem:tilted}
+Under \eqref{eq:BT}, uniformly in $\beta$ as $t\to\infty$,
+\begin{equation}
+ H_\beta'(t)=\frac t\lambda+O_{\at}(\log(2+t)),\qquad
+ \VV_\beta(t)=\frac t\lambda+O_{\at}(\log(2+t)).
+ \label{eq:derivativeasymptotic}
+\end{equation}
+More specifically, write $u_n=s b_n$ and $W_n=s b_nV_n$ under $\PP_t$.
+The nonzero $W_n$ are independent unit exponential variables conditioned to
+lie in $[0,u_n]$.  Their mean and variance are $J(u_n)$ and $V(u_n)$.
+If $N=\lfloor t/\lambda\rfloor$, then all but one of the indices
+\[
+ 1\le n\le N-C_{\at}\log(2N)
+\]
+have $u_n\ge N^3$, after increasing the constant and taking $N$ large.
+The sum of the means and the sum of the variances of all remaining terms
+are $O_{\at}(\log(2N))$.
+\end{lemma}
+\begin{proof}
+Tilting a product of independent laws preserves independence: for any finite
+set of indices, integrate the complementary factors in
+\eqref{eq:tilt} and cancel their Laplace transforms.  A uniform variable on
+$[0,u]$ becomes a variable with density
+$\e^{-w}/(1-\e^{-u})$ on that interval.  The formulas for $J$ and $V$
+therefore apply, and summing them proves \eqref{eq:tiltedparameters}.
+Termwise differentiation is also justified directly by the summable small-$u$
+bounds on any compact $t$ interval.
+
+Use the same exceptional index as in Lemma~\ref{lem:trim}.  For every other
+$n\le N$, $a_n\ge\e^{-C_\alpha}/N$.  If
+$\lambda(N-n)\ge4\log N+C_\alpha$, then
+$u_n=\e^{t-\lambda n}a_n\ge N^3$.
+There are $N-O_{\at}(\log(2N))$ such indices.  For them, both mean and
+variance are $1$ with exponentially small errors.  The remaining indices
+through $N$ number $O_{\at}(\log(2N))$, and each has mean and variance at
+most $1$.  For $n>N$, the bounds $J(u)=O(u)$ and $V(u)=O(u^2)$ give
+bounded geometric tails.  Summing proves all assertions.
+\end{proof}
+
+\begin{lemma}[A gamma block gives the needed local limit]
+\label{lem:gamma}
+Suppose $G_M$ has the gamma density
+\[
+ g_M(w)=\frac{w^{M-1}\e^{-w}}{\Gamma(M)}\ind_{w>0},
+ \qquad M\to\infty,
+\]
+and $B_M$ is independent of $G_M$ with
+$\Var(B_M)=O(\log M)$.  Let
+$a_M=M+\EE B_M+o(1)$.  Then
+\begin{equation}
+ \EE\left[\e^{G_M+B_M-a_M}
+                \ind_{G_M+B_M\le a_M}\right]
+ =\frac{1+o(1)}{\sqrt{2\pi M}}.
+ \label{eq:gammalocal}
+\end{equation}
+The conclusion is uniform in any auxiliary parameters for which the stated
+variance bound and $o(1)$ are uniform.  It remains true if the law of
+$G_M+B_M$ is changed by total variation $o(M^{-1/2})$, provided the same
+centering $a_M$ is used.
+\end{lemma}
+\begin{proof}
+Stirling's formula implies
+\begin{equation}
+ g_M(M+y)=\frac{1+o(1)}{\sqrt{2\pi M}}
+       \quad\text{uniformly for }|y|\le M^{1/4},
+ \qquad \sup_w g_M(w)\le\frac{C}{\sqrt M}.
+ \label{eq:gammastirling}
+\end{equation}
+For example, substitute $w=M+y$ in the logarithm of the density; the quadratic
+term is $-y^2/(2M)=O(M^{-1/2})$ and the remaining terms tend to zero uniformly
+on that window.  The supremum occurs at $M-1$ when $M>1$ and follows from
+the same formula.
+
+Let $\widetilde g_M$ be the density of $G_M+B_M$.  Conditioning on $B_M$,
+\[
+ \widetilde g_M(a_M-v)=\EE\,g_M(a_M-v-B_M).
+\]
+Chebyshev's inequality gives
+$\PP(|B_M-\EE B_M|>M^{1/4}/3)=O(\log M/\sqrt M)=o(1)$.
+For $0\le v\le M^{1/4}/3$, the complementary event puts the gamma density
+inside the window in \eqref{eq:gammastirling}, for large $M$.
+The exceptional event contributes $o(M^{-1/2})$ by the global density bound.
+Thus $\widetilde g_M(a_M-v)=(2\pi M)^{-1/2}(1+o(1))$ uniformly on that
+$v$ interval, and globally it is bounded by $C/\sqrt M$.
+Finally,
+\[
+ \EE[\e^{G_M+B_M-a_M}\ind_{G_M+B_M\le a_M}]
+ =\int_0^\infty\e^{-v}\widetilde g_M(a_M-v)\dd v.
+\]
+The tail after $M^{1/4}/3$ is negligible, proving the claim.
+The integrand defining the expectation is bounded by $1$, so a total
+variation perturbation of the stated order changes it by $o(M^{-1/2})$.
+\end{proof}
+
+\begin{theorem}[Uniform relative cap saddle]
+\label{thm:saddle}
+Assume \eqref{eq:BT}.  For sufficiently small $x>0$, let $t_x=t_x(\beta)$
+be the unique solution of
+\begin{equation}
+ \e^{t_x}x=H_\beta'(t_x).
+ \label{eq:saddle-equation}
+\end{equation}
+Then, uniformly in $\beta\in\T$ as $x\downarrow0$,
+\begin{equation}
+ C_\beta(x)=
+ \frac{\exp\!\bigl(\e^{t_x}x-H_\beta(t_x)\bigr)}
+      {\sqrt{2\pi\VV_\beta(t_x)}}\,(1+o(1)).
+ \label{eq:saddle}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The tilted mean $\EE_sS_\beta$ is strictly decreasing in $s$, because its
+derivative is $-\Var_s(S_\beta)<0$.  It tends to zero as $s\to\infty$,
+as also follows from Lemma~\ref{lem:tilted}.  Its value at $s=0$ is positive.
+For irrational $\alpha$, two successive cosine factors cannot both vanish;
+compactness in $\beta$ gives a positive uniform lower bound for the sum of
+their absolute values.  The first two coefficients therefore give a positive
+uniform lower bound for $\EE S_\beta$.  It follows that for all sufficiently
+small $x$, the equation $\EE_sS_\beta=x$ has a unique solution.  That solution
+has $t_x\to\infty$ uniformly: for bounded $s$, positivity and continuity in
+$\beta$, again using the first two coefficients, bound the tilted mean away
+from zero.  Equation~\eqref{eq:saddle-equation} is its logarithmic form.
+
+We now prove the required local statement at an arbitrary large $t$.
+Use the early indices of Lemma~\ref{lem:tilted}, excluding its possible
+exceptional index.  Let their number be $M=N-O_{\at}(\log(2N))$.
+Each early summand is a unit exponential conditioned to be at most $u_n$,
+where $u_n\ge N^3$.  The total variation distance between that conditioned
+law and the unconditioned exponential law is $\e^{-u_n}$.  A product coupling
+therefore replaces the entire early sum by an independent gamma variable
+$G_M$ with total variation error at most $N\e^{-N^3}$.
+
+Let $B_M$ be the sum of all the other tilted summands.  It is independent
+of the replaced early block and has mean and variance $O_{\at}(\log(2N))$.
+The replacement changes the mean of the early block by at most
+\[
+ \sum_{\mathrm{early}\ n}\frac{u_n}{\e^{u_n}-1}
+ =O(N^4\e^{-N^3})=o(1).
+\]
+Consequently the original dimensionless sum $W=sS_\beta$ has center
+$m_\beta(t)=M+\EE B_M+o(1)$ and its law is exponentially close in total
+variation to $G_M+B_M$.  Lemma~\ref{lem:gamma} yields
+\begin{equation}
+ \EE_t[\e^{W-m_\beta(t)}\ind_{W\le m_\beta(t)}]
+ =\frac{1+o(1)}{\sqrt{2\pi\VV_\beta(t)}},
+ \label{eq:localtilt}
+\end{equation}
+since $M\sim\VV_\beta(t)$ uniformly.  This proves more than a weak central
+limit theorem: it gives the exponentially weighted, one-sided local estimate
+needed for a relative probability.
+
+At $t=t_x$, $sx=m_\beta(t_x)$.  Reversing the tilt gives the exact identity
+\[
+ C_\beta(x)=\e^{sx-H_\beta(t_x)}
+       \EE_{t_x}[\e^{sS_\beta-sx}\ind_{sS_\beta\le sx}].
+\]
+Insert \eqref{eq:localtilt}.  Every preceding estimate is phase-uniform,
+so the relative $o(1)$ in \eqref{eq:saddle} is phase-uniform as well.
+\end{proof}
+
+\begin{remark}[Scope of the relative formula]
+Theorem~\ref{thm:saddle} retains the \emph{exact} functions $H_\beta$ and
+$\VV_\beta$ at the exact saddle.  Replacing $H_\beta$ by an approximation
+with $O(\log^2 t)$ error does not preserve a relative $1+o(1)$ probability
+estimate.  It does preserve the logarithmic expansion below, and that
+logarithmic accuracy is enough to give a relative inverse-quantile formula.
+\end{remark}
+
+\section{Three-term cap asymptotics and inverse quantiles}
+\label{sec:quantile}
+
+Define the constant
+\begin{equation}
+ c_\lambda=\frac{1+\log\lambda}{\lambda}+\frac12.
+ \label{eq:clambda}
+\end{equation}
+For small $x>0$, let
+\begin{equation}
+ L=\log(1/x),\qquad T=-W_{-1}(-\lambda x),
+ \label{eq:Lambert}
+\end{equation}
+where $W_{-1}$ is the real lower branch of Lambert's function.  Equivalently,
+$T>1$ is the large solution of $T\e^{-T}=\lambda x$.  Thus
+\begin{equation}
+ T=L+\log L-\log\lambda+O_\lambda(\log L/L).
+ \label{eq:Texp}
+\end{equation}
+No complex branch convention is involved.
+
+\begin{theorem}[Phase-corrected cap probability]
+\label{thm:CDF}
+Under \eqref{eq:BT}, uniformly in phase,
+\begin{equation}
+ t_x=T+O_{\at}(\log T/T).
+ \label{eq:saddlelocation}
+\end{equation}
+Moreover,
+\begin{align}
+ \log C_\beta(x)
+ &=-\frac{T^2}{2\lambda}
+   +\left(\frac12+\frac1\lambda\right)T+R_\beta(T)
+      +O_{\at}(\log^2 T),\label{eq:CDFT}\\
+ &=-\frac{L^2}{2\lambda}-\frac{L\log L}{\lambda}
+      +c_\lambda L+R_\beta(L)+O_{\at}(\log^2 L).
+ \label{eq:CDFL}
+\end{align}
+\end{theorem}
+\begin{proof}
+At the saddle, Lemma~\ref{lem:tilted} gives
+$x=\e^{-t_x}(t_x/\lambda)(1+O_{\at}(\log t_x/t_x))$.
+Taking logarithms yields
+\[
+ t_x-\log t_x=L-\log\lambda+O_{\at}(\log t_x/t_x).
+\]
+First this implies $t_x\sim L$ uniformly.  Since
+$T-\log T=L-\log\lambda$ and the derivative of $u-\log u$ is bounded below
+by $1/2$ for $u\ge2$, it gives \eqref{eq:saddlelocation}.
+Equation~\eqref{eq:Texp} follows either by one substitution in the same
+implicit equation or by the identical derivative comparison.
+
+Taking logarithms of the relative formula \eqref{eq:saddle} and inserting
+Theorem~\ref{thm:profile} and Lemma~\ref{lem:tilted} gives
+\[
+ \log C_\beta(x)
+ =-\frac{t_x^2}{2\lambda}
+   +\left(\frac12+\frac1\lambda\right)t_x+R_\beta(t_x)
+     +O_{\at}(\log^2 t_x).
+\]
+The variance prefactor contributes only $O(\log t_x)$ here.
+Changing $t_x$ to $T$ changes the quadratic expression by $O_{\at}(\log T)$;
+\eqref{eq:Lipschitz} bounds the change in the profile.  This proves
+\eqref{eq:CDFT}.  Expand $T$ using \eqref{eq:Texp}, and note that
+$R_\beta(T)-R_\beta(L)=O_\lambda(\log L)$.
+The coefficient of $L$ is exactly the constant in \eqref{eq:clambda}, giving
+\eqref{eq:CDFL}.
+\end{proof}
+
+\begin{theorem}[Uniform multiplicative inverse-quantile law]
+\label{thm:quantile}
+Assume \eqref{eq:BT}.  Put
+\begin{equation}
+ z=\sqrt{2\lambda\log(1/y)},\qquad
+ Q_\lambda(y)=\frac z\lambda\exp(-1-\lambda/2-z).
+ \label{eq:Qdef}
+\end{equation}
+Then, uniformly in $\beta$ as $y\downarrow0$,
+\begin{equation}
+ C_\beta^{-1}(y)=Q_\lambda(y)
+     \exp\!\left(-\frac{\lambda R_\beta(z)}{z}\right)
+     \left(1+O_{\at}\!\left(\frac{\log^2 z}{z}\right)\right).
+ \label{eq:quantilemain}
+\end{equation}
+Equivalently,
+\begin{equation}
+ -\log C_\beta^{-1}(y)
+ =z-\log z+1+\log\lambda+\frac\lambda2
+       +\frac{\lambda R_\beta(z)}{z}
+       +O_{\at}(\log^2 z/z).
+ \label{eq:logquantile}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $M=\log(1/y)$, and consider
+\[
+ E_\beta(L)=\frac{L^2}{2\lambda}+\frac{L\log L}{\lambda}
+             -c_\lambda L-R_\beta(L).
+\]
+Equation~\eqref{eq:CDFL} says
+$-\log C_\beta(\e^{-L})=E_\beta(L)+O_{\at}(\log^2 L)$.
+Set
+\[
+ L_0=z-\log z+\lambda c_\lambda+\frac{\lambda R_\beta(z)}{z}.
+\]
+Since $R_\beta(z)\le z$, $L_0=z+O_\lambda(\log z)$ uniformly.
+Expanding the elementary terms, and using the Lipschitz bound for $R_\beta$,
+gives
+$E_\beta(L_0)=M+O_{\at}(\log^2 z)$.
+For $L$ near $L_0$, the elementary part of $E_\beta$ has slope at least
+$z/(2\lambda)$ for sufficiently large $z$, while the profile has Lipschitz
+constant $1$.  Hence increasing $L$ by $K\log^2 z/z$ increases $E_\beta(L)$
+by more than the possible error when $K$ is sufficiently large; decreasing
+$L$ has the reverse effect.  Monotonicity of $C_\beta$ brackets its inverse
+between these two choices of $L$.
+Thus $-\log C_\beta^{-1}(y)=L_0+O_{\at}(\log^2 z/z)$.
+Insert $\lambda c_\lambda=1+\log\lambda+\lambda/2$ and exponentiate.
+Since $\log^2 z/z\to0$, exponentiating the error gives the relative error in
+\eqref{eq:quantilemain}.
+\end{proof}
+
+\begin{corollary}[A common asymptotic and a universal multiplicative range]
+\label{cor:Qcommon}
+Under \eqref{eq:BT}, condition \eqref{eq:polynomialphase} implies
+\[
+ C_\beta^{-1}(y)=Q_\lambda(y)
+       \bigl(1+O_{\alpha,\lambda,c,\tau}(\log^2 z/z)\bigr).
+\]
+For arbitrary phases, the ratio $C_\beta^{-1}(y)/Q_\lambda(y)$ is
+asymptotically confined to $[q,1]$, in the sense that its distance from this
+interval tends to zero uniformly in $\beta$.
+\end{corollary}
+\begin{proof}
+Apply Corollary~\ref{cor:polynomial} in \eqref{eq:quantilemain} for the first
+statement, and use $0\le R_\beta(z)/z\le1$ for the second.
+\end{proof}
+
+\section{Phase classification: measure, category, and quantile oscillation}
+\label{sec:phases}
+
+For a nonexact phase define its inhomogeneous exponential approximation
+exponent by
+\begin{equation}
+ \mu(\alpha,\beta)=\limsup_{n\to\infty}\frac{k_n(\beta)}n
+                      \in[0,\infty].
+ \label{eq:mu}
+\end{equation}
+By \eqref{eq:distance-amplitude}, replacing $k_n$ by
+$(-\log d_n)_+$ leaves the exponent unchanged.
+
+\begin{lemma}[Optimization of the profile]
+\label{lem:profilespectrum}
+For any irrational $\alpha$ and any nonexact phase,
+\begin{equation}
+ \limsup_{t\to\infty}\frac{R_\beta(t)}t
+       =\frac{\mu(\alpha,\beta)}{\lambda+\mu(\alpha,\beta)},
+ \label{eq:Rlimsup}
+\end{equation}
+where the right side is $1$ when $\mu=\infty$.  Under \eqref{eq:BT}, one
+also has
+\begin{equation}
+ \liminf_{t\to\infty}\frac{R_\beta(t)}t=0.
+ \label{eq:Rliminf}
+\end{equation}
+For an exact phase, instead, $R_\beta(t)/t\to1$.
+\end{lemma}
+\begin{proof}
+For a fixed $n$ with finite $k_n$, the largest value of
+$\min\{k_n,(t-\lambda n)_+\}/t$ is
+$k_n/(\lambda n+k_n)$, attained at $t=\lambda n+k_n$.
+For finite $\mu$, eventually $k_n\le(\mu+\eps)n$, giving the upper bound
+$(\mu+\eps)/(\lambda+\mu+\eps)$ for all sufficiently late indices.
+The finitely many earlier indices have bounded heights and contribute
+$o(1)$ after division by $t$.  Indices with $k_n/n$ approaching its limsup
+give the matching lower bound at their optimizing times.  The case
+$\mu=\infty$ follows the same way from a sequence with $k_n/n\to\infty$;
+the case $\mu=0$ follows already from the upper bound.
+
+For \eqref{eq:Rliminf}, note that the sequence $k_n$ is unbounded by density
+of the irrational orbit.  At a nonexact phase every term is finite, so it
+has infinitely many strict record indices $m_j$.  Ignore initial records
+with height zero.  Writing $d_j=d_{m_j}$, the next record has
+$d_{j+1}<d_j$.  The two orbit points therefore satisfy
+\[
+ \frac{\kappa}{m_{j+1}-m_j}
+ \le\dn{(m_{j+1}-m_j)\alpha}
+ \le d_j+d_{j+1}
+ \le2d_j\le\tfrac12\e^{-k_{m_j}},
+\]
+where the last inequality follows from $4d_j\le a_{m_j}=\e^{-k_{m_j}}$.
+Hence $k_{m_j}\le\log m_{j+1}+C_\alpha$.
+At the time $t_j=\lambda(m_{j+1}-1/2)$ the new record has not yet entered
+the profile, so $R_\beta(t_j)\le k_{m_j}$ and
+$R_\beta(t_j)/t_j\to0$.
+Finally, if $k_m=\infty$ for an exact index, then
+$R_\beta(t)\ge(t-\lambda m)_+$; combine this with $R_\beta(t)\le t$.
+\end{proof}
+
+\begin{theorem}[Endpoint and inverse-quantile spectrum]
+\label{thm:spectrum}
+Assume \eqref{eq:BT}, let $\beta$ be nonexact, and put
+$p_\beta=\mu(\alpha,\beta)/(\lambda+\mu(\alpha,\beta))$ with the preceding
+convention at infinity.  Then
+\begin{align}
+ \liminf_{t\to\infty}
+   \frac{\log\LL_\beta(\e^t)+t^2/(2\lambda)}t&=\frac12,\nonumber\\
+ \limsup_{t\to\infty}
+   \frac{\log\LL_\beta(\e^t)+t^2/(2\lambda)}t&=\frac12+p_\beta,
+ \label{eq:Lspec}\\
+ \liminf_{L\to\infty}
+   \frac{\log C_\beta(\e^{-L})+L^2/(2\lambda)+(L\log L)/\lambda}{L}
+ &=c_\lambda,
+ \label{eq:Cspecinf}\\
+ \limsup_{L\to\infty}
+   \frac{\log C_\beta(\e^{-L})+L^2/(2\lambda)+(L\log L)/\lambda}{L}
+ &=c_\lambda+p_\beta,
+ \label{eq:Cspecsup}\\
+ \limsup_{y\downarrow0}\frac{C_\beta^{-1}(y)}{Q_\lambda(y)}&=1,\nonumber\\
+ \liminf_{y\downarrow0}\frac{C_\beta^{-1}(y)}{Q_\lambda(y)}
+ &=\exp(-\lambda p_\beta).
+ \label{eq:Qspec}
+\end{align}
+In particular, $\mu=0$ gives $C_\beta^{-1}(y)\sim Q_\lambda(y)$, while
+$\mu=\infty$ gives lower and upper quantile-ratio limits $q$ and $1$.
+For an exact phase, the quantile ratio converges to $q$.
+\end{theorem}
+\begin{proof}
+Divide \eqref{eq:laplaceprofile} and \eqref{eq:CDFL} by their large variables;
+$\log^2 t/t\to0$.  Insert Lemma~\ref{lem:profilespectrum}.
+Equation~\eqref{eq:quantilemain} and continuity and monotonicity of
+$u\mapsto\exp(-\lambda u)$ give the quantile limits.
+For an exact phase use the final conclusion of that lemma instead.
+\end{proof}
+
+\begin{theorem}[Almost every phase versus a thin residual set]
+\label{thm:category}
+Fix a badly approximable irrational $\alpha$ and $\lambda>0$.
+For Lebesgue-almost every phase $\beta$, condition
+\eqref{eq:polynomialphase} holds for every fixed $\tau>1$ with a suitable
+constant, and
+\begin{equation}
+ C_\beta^{-1}(y)\sim Q_\lambda(y).
+ \label{eq:a.e.Q}
+\end{equation}
+There is also a dense $G_\delta$ set of nonexact phases with $\mu=\infty$.
+This set has Hausdorff dimension zero and for all its phases
+\begin{equation}
+ \liminf_{y\downarrow0}\frac{C_\beta^{-1}(y)}{Q_\lambda(y)}=q,
+ \qquad
+ \limsup_{y\downarrow0}\frac{C_\beta^{-1}(y)}{Q_\lambda(y)}=1.
+ \label{eq:residualQ}
+\end{equation}
+Indeed, the entire set of nonexact phases with $\mu>0$ has Hausdorff
+dimension zero.
+\end{theorem}
+\begin{proof}
+For $\tau>1$, the phase event $d_n(\beta)<n^{-\tau}$ is an interval of length
+at most $2n^{-\tau}$.  Its lengths are summable.  Borel--Cantelli implies
+that almost every phase belongs to only finitely many of these events.
+Remove the countable exact phases; the finitely many early positive
+distances can be included by decreasing the constant $c$.
+Taking a countable collection of rational exponents $\tau>1$ gives the
+claim for every fixed real $\tau>1$ as well, by choosing a smaller rational
+exponent.  Corollary~\ref{cor:Qcommon} proves \eqref{eq:a.e.Q}.
+
+For integers $K,N\ge1$, let
+\[
+ U_{K,N}=\bigcup_{n\ge N}\{\beta\in\T:a_n(\beta)<\e^{-Kn}\}.
+\]
+Each is open and dense: it contains a neighborhood of every center
+$1/2-n\alpha$ for $n\ge N$, and those centers are dense.
+The intersection of all $U_{K,N}$ is a dense $G_\delta$ set on which
+$\mu=\infty$.  Intersecting further with the complement of the countable
+exact phases preserves the dense $G_\delta$ property.
+Theorem~\ref{thm:spectrum} then proves \eqref{eq:residualQ}.
+
+Finally, if $\mu>0$, then for some integer $K\ge1$ the inequality
+$a_n<\e^{-n/K}$ holds infinitely often.  By
+\eqref{eq:distance-amplitude}, each such event is contained in an interval
+of length $O(\e^{-n/K})$.  For every $d>0$, the sum of the $d$th powers of
+these lengths is finite.  Covering the limsup set by all intervals after
+an arbitrary index $N$, and then letting $N\to\infty$, makes its
+$d$-dimensional Hausdorff measure zero.  A countable union over $K$ still
+has Hausdorff dimension zero.
+\end{proof}
+
+\begin{corollary}[A precise obstruction to a small carrier]
+\label{cor:carrier}
+For every fixed badly approximable $\alpha$, there are nonexact phases,
+forming a dense $G_\delta$ set, such that
+\[
+ \limsup_{t\to\infty}
+ \frac{\log\LL_\beta(\e^t)+t^2/(2\lambda)-t/2}{t}=1.
+\]
+Thus at these phases the remainder after the universal quadratic and linear
+terms is neither bounded nor $O(\log t)$.
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:Lspec} with $\mu=\infty$ and subtract $1/2$.
+\end{proof}
+
+\begin{remark}[Interpretation of the source conjecture]
+The preceding corollary does not contradict the source's displayed estimate;
+that estimate holds in the stronger form of Corollary~\ref{cor:repo}.
+It corrects the accompanying carrier expectation \emph{if} the word
+nonresonant is taken to mean only that no factor is exactly zero.
+Under a quantitative interpretation such as \eqref{eq:polynomialphase},
+the exceptional profile is only logarithmic, and further control of the
+remaining $O(\log^2 t)$ term is an open refinement rather than a contradiction.
+\end{remark}
+
+\section{Liouville rotations with superlinear corrections}
+\label{sec:liouville}
+
+We now drop \eqref{eq:BT} and fix the phase $\beta=1/2$.
+Thus $a_n=2|\sin\pi n\alpha|$.  To isolate a genuine resonance effect rather
+than the automatic linear term, define the baseline-corrected defect
+\begin{equation}
+ \Delta_\alpha(t)=B_\lambda(t)-H_{\alpha,1/2}(t).
+ \label{eq:Delta}
+\end{equation}
+The extra $\alpha$ subscript makes variation in the rotation explicit.
+
+\begin{lemma}[Uniform rational shadow and continuity bound]
+\label{lem:rationalshadow}
+For a reduced rational $p/r$, $r\ge2$,
+\begin{equation}
+ \Delta_{p/r}(t)=B_{\lambda r}(t)
+      +O_\lambda((t+1)\log(2r))
+ =\frac{t^2}{2\lambda r}
+      +O_\lambda((t+1)\log(2r)+r).
+ \label{eq:rationalshadow}
+\end{equation}
+The constants are independent of $p$ and $r$.  For any real $\alpha,\alpha'$,
+\begin{equation}
+ |H_{\alpha,1/2}(t)-H_{\alpha',1/2}(t)|
+ \le K_\lambda\e^t|\alpha-\alpha'|,
+ \qquad K_\lambda=\frac{\pi q}{(1-q)^2}.
+ \label{eq:continuityalpha}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $\alpha=p/r$, exactly the multiples of $r$ vanish.  For all other
+indices, multiplication by $p$ permutes the nonzero residues, so
+\[
+ 2\sin(\pi/r)\le a_n\le2,
+ \qquad 4/r\le a_n\le2.
+\]
+For $n\le\lfloor t/\lambda\rfloor$, replacing the nonzero factor $a_n$ by
+$1$ changes its $h$ value by at most $|\log a_n|\le C\log(2r)$ because
+$0\le h'\le1$.  The sum of all terms past that index is $O_\lambda(1)$
+both before and after the replacement.  Consequently,
+\[
+ H_{p/r,1/2}(t)=
+   \sum_{n\ge1}h(t-\lambda n)
+  -\sum_{j\ge1}h(t-\lambda rj)
+  +O_\lambda((t+1)\log(2r)).
+\]
+Use \eqref{eq:scalarcut}, which is uniform for lattice spacings
+$\lambda r\ge\lambda$, followed by \eqref{eq:Bexact}.
+
+For the continuity bound,
+\[
+ |2q^n|\sin\pi n\alpha|-2q^n|\sin\pi n\alpha'||
+ \le2\pi nq^n|\alpha-\alpha'|.
+\]
+Since $F$ is $1/2$-Lipschitz by Lemma~\ref{lem:kernel}, sum the resulting
+bounds for $F(\e^t b_n)$ and use
+$\sum_{n\ge1}nq^n=q/(1-q)^2$.
+\end{proof}
+
+\begin{theorem}[Dense Liouville families with arbitrarily near-quadratic spikes]
+\label{thm:liouville}
+Fix $\lambda>0$.  There is a dense $G_\delta$ set of irrational Liouville
+numbers $\alpha$ such that the following holds simultaneously for every
+integer $k\ge2$: there is a sequence $t_j\to\infty$ with
+\begin{equation}
+ \Delta_\alpha(t_j)
+ \sim\frac{1}{2\lambda}\,t_j^{\,2-1/k}.
+ \label{eq:liouvillespikes}
+\end{equation}
+The phase can be fixed at $\beta=1/2$ for the whole construction.
+In particular, the correction is larger than every fixed multiple of $t$
+along the $k=2$ subsequence, even after subtracting the exact scalar baseline.
+\end{theorem}
+\begin{proof}
+For integers $k\ge2$ and $N\ge1$, define
+\[
+ \mathcal U_{k,N}=
+ \bigcup_{\substack{r\ge N,\ p\in\mathbb Z\\(p,r)=1}}
+ \left(\frac pr-\e^{-2r^k},\frac pr+\e^{-2r^k}\right).
+\]
+These sets are open and dense in $\R$, since reduced rationals with
+arbitrarily large denominators are dense.  Their countable intersection
+$\mathcal A=\bigcap_{k\ge2}\bigcap_{N\ge1}\mathcal U_{k,N}$ is dense
+$G_\delta$.  A rational $a/b$ cannot belong: for sufficiently large $r$,
+its distance to a different reduced $p/r$ is at least $1/(br)$, which
+exceeds $\e^{-2r^k}$.  Every member is therefore irrational and admits
+approximations stronger than $r^{-M}$ for every $M$, hence is Liouville.
+
+Fix $\alpha\in\mathcal A$ and an integer $k\ge2$.
+Choose reduced $p_j/r_j$ with $r_j\to\infty$ and
+$|\alpha-p_j/r_j|<\e^{-2r_j^k}$, and set $t_j=r_j^k$.
+By \eqref{eq:continuityalpha},
+\[
+ |\Delta_\alpha(t_j)-\Delta_{p_j/r_j}(t_j)|
+ \le K_\lambda\e^{-t_j}.
+\]
+The rational estimate gives
+\[
+ \Delta_{p_j/r_j}(t_j)
+ =\frac{r_j^{2k-1}}{2\lambda}
+   +O_\lambda(r_j^k\log(2r_j)+r_j).
+\]
+The error is $o(r_j^{2k-1})$ because $k\ge2$.
+Since $r_j^{2k-1}=t_j^{2-1/k}$, the desired asymptotic follows.
+The definition of $\mathcal A$ ensures that this works for every $k$,
+with different subsequences allowed.
+\end{proof}
+
+\begin{remark}[Consistency with irrational universality]
+For each fixed $k$, the exponent $2-1/k$ is strictly below $2$.
+Thus these large corrections are compatible with
+$H_\alpha(t)\sim t^2/(2\lambda)$ from Theorem~\ref{thm:universal}.
+The effective rational fraction of missing digits is $1/r_j$, which tends
+to zero, although its integrated contribution $t_j^2/(2\lambda r_j)$
+can be much larger than a linear term.
+\end{remark}
+
+\begin{remark}[What is not transferred to Liouville cap quantiles]
+The relative saddle proof above uses a bounded-type separation estimate to
+produce a gamma block with only logarithmically many exceptions.  It has not
+been extended here to the Liouville family.  The Liouville result concerns
+Laplace corrections; the leading cap and inverse laws still follow from
+Theorem~\ref{thm:universal}, but a sharp Liouville probability or quantile
+spike formula is not asserted.
+\end{remark}
+
+\section{Reproducible calculations and validation limits}
+\label{sec:computations}
+
+The accompanying program \path{verify_endpoints.py} evaluates the elementary
+infinite sums directly in logarithmic coordinates.  It requires Python and
+\texttt{mpmath}, uses no network access or random sampling, and writes its
+results to CSV and JSON.  The mathematical proofs do not depend on these
+calculations.  The tables below are finite examples, not evidence sufficient
+to infer an infinite-subsequence theorem.
+
+\subsection{Bounded-type and deliberately resonant phases}
+
+Take $q=1/2$, $\lambda=\log2$, and
+$\alpha=(\sqrt5-1)/2$.  Alongside $\beta=0$, consider the phase
+\begin{equation}
+ \beta_* =\frac12-20\alpha+\e^{-120}\pmod1.
+ \label{eq:engineeredphase}
+\end{equation}
+Its twentieth amplitude is
+$2\sin(\pi\e^{-120})$, so
+$k_{20}=120-\log(2\pi)+O(\e^{-240})$.
+Before the corresponding height is reached, its contribution to the profile
+is $t-20\log2$; after that it saturates.  This is a controlled demonstration
+of one long ramp, not a construction of infinitely many ramps at a fixed
+phase.  The latter is supplied by the Baire argument, not by the example.
+
+\begin{center}\small
+\input{data/bounded_type_table.tex}
+\end{center}
+
+The residual $H-B+R$ is modest at the displayed scales, while omitting $R$
+would miss a correction exceeding $100$ in the deliberately resonant case.
+The table does not establish an optimal residual order or numerical constants
+for the asymptotic theorems.  The second ordinary phase $\beta=1/2$ and
+additional values are retained in the CSV file.
+
+\subsection{Rational shadows for the Liouville construction}
+
+For $\alpha=1/r$, $\beta=1/2$, and $t=r^2$, the theorem predicts
+$\Delta_{1/r}(t)\sim t^2/(2\lambda r)$ as $r\to\infty$.
+Multiples of $r$ are set to zero exactly in the code rather than by rounded
+sine evaluation.
+
+\begin{center}\small
+\input{data/rational_table.tex}
+\end{center}
+
+For any irrational $\alpha'$ satisfying
+$|\alpha'-1/r|<\e^{-2r^2}$, Lemma~\ref{lem:rationalshadow} transfers the
+corresponding value of $H$ with error at most $K_\lambda\e^{-r^2}$.
+This continuity bound is analytic.  The table alone does not exhibit one
+irrational number having all these approximations; the nested dense-open
+construction in Theorem~\ref{thm:liouville} supplies suitable single numbers.
+
+\subsection{Kernel, precision, and saddle checks}
+
+The program checks the finite-sum and fractional-part versions of
+\eqref{eq:Bexact}; numerically differentiates the kernel to check
+$h'=J$ and $J-uJ'=V$; tests one profile increment against its monotonicity and
+Lipschitz bounds; and recomputes the deliberately resonant example at higher
+precision.  With the default $110$ decimal digits and an additional
+$35$ digits for that comparison, the absolute difference in $H_{\beta_*}(120)$
+was approximately $5.51\times10^{-65}$.
+
+For $\beta=0$ and $x=\e^{-20}$, deterministic bisection gave
+\[
+ T=23.52455780924499\ldots,\qquad
+ t_x=23.51292579548681\ldots,
+\]
+with a relative residual in the saddle equation below $6\times10^{-31}$.
+The saddle expression for $\log C_0(\e^{-20})$ evaluates to approximately
+$-357.5854846402$.  This last number is explicitly a \emph{saddle
+approximation}: the program does not independently evaluate the exact cap
+CDF, so it supplies no finite-$x$ relative error certificate for that number.
+
+The analytic omitted-tail bounds in the main tables are below $10^{-40}$.
+Rounding error is separate: calculations use high precision and a precision
+comparison, not interval arithmetic.  The JSON report records these limits,
+the actual equation residual, and the checks performed.  No Lean, Coq, or
+other kernel verification is claimed.
+
+\subsection{Dependency and formalization roadmap}
+
+The proof dependencies are short enough to separate into four layers.
+The distributional layer consists of the uniform-series construction,
+Laplace product, tilted summands, and scalar kernel inequalities.  The
+arithmetic layer consists of the bounded-type spacing and interval-discrepancy
+bounds, followed by the trimmed singular sum.  The analytic layer passes
+from that sum to the profile expansion and the gamma-block local limit.
+The final layer is real-variable inversion and the measure/category
+classification.  The Liouville argument branches off after the kernel layer
+and uses rational comparison, continuity, and Baire category instead.
+
+A practical formalization should first establish the deterministic finite
+profile and the kernel bounds, which also support certified computation.
+Next it should formalize the continued-fraction block discrepancy and the
+truncation integral.  Only then is the infinite-product and probability
+infrastructure needed.  The relative local-limit step should be formalized
+as the standalone gamma-convolution lemma rather than hidden inside an
+unproved appeal to a saddle-point method.  A separate classical-analysis
+proof of monotone inverse bracketing suffices for the quantile theorem.
+These are proposed proof interfaces, not untested Lean code presented as
+working implementation.
+
+\section{Further research questions and topics}
+\label{sec:future}
+
+The questions below distinguish refinements of this article from broader
+problems requiring an additional literature check.  In particular, a question
+about importing a sharper shifted Sudler estimate is not a claim that the
+corresponding estimate is unknown in all existing work.
+
+\begin{problem}[Sharp uniform residual after extracting the profile]
+Can the $O_{\at}(\log^2 t)$ residual in
+\eqref{eq:mainprofile} be replaced by $O_{\at}(\log t)$, or by a smaller
+explicit arithmetic term plus a bounded remainder?  First determine which
+available shifted Sudler-product estimates apply with constants uniform in
+phase after the nearest singular term has been removed.  The target is the
+cap expansion, not a rediscovery of an existing unshifted product estimate.
+\end{problem}
+
+\begin{problem}[Renormalized carriers at quadratic rotations]
+For a quadratic irrational $\alpha$ and an explicitly specified arithmetic
+class of phases, identify the behavior of
+$H_\beta(t)-B_\lambda(t)+R_\beta(t)$ along continued-fraction scales.
+Is the natural carrier periodic in a renormalization coordinate,
+quasiperiodic, or better described by an iterated functional relation?
+Any proposed bounded carrier should state the phase class and the variable
+in which boundedness is claimed.
+\end{problem}
+
+\begin{problem}[Effective finite-exponent phase realization]
+For a fixed badly approximable $\alpha$ and prescribed
+$0<\mu<\infty$, construct or import a construction of nonexact phases with
+$\mu(\alpha,\beta)=\mu$, while controlling the optimizing subsequences.
+Theorem~\ref{thm:spectrum} then gives the corresponding quantile-ratio
+interval explicitly.  An effective construction with error bounds would add
+more information than the conditional classification proved here.
+\end{problem}
+
+\begin{problem}[Sharp Liouville cap and inverse spikes]
+Extend the rational-shadow argument beyond the Laplace transform to a
+relative tilted local limit on the subsequences $t_j=r_j^k$.
+Determine the resulting deviations of $C_{\alpha,1/2}(x)$ and its inverse
+from their universal leading laws.  A promising route is to separate the
+nearly vanished rational-residue terms from a large remaining gamma block;
+the required estimates must be uniform in the increasing denominator.
+\end{problem}
+
+\begin{problem}[Several singular directions and matrix cap laws]
+Replace one cosine amplitude by a finite family of projected rotating
+vectors, or by a periodic amplitude with several zeros of specified orders.
+Determine whether a sum of finitely many truncated resonance profiles gives
+a phase-uniform expansion.  For genuine matrix dilations, investigate how
+multiple rotation frequencies, unequal contraction rates, and polynomial
+Jordan factors change both the quadratic coefficient and the
+$L\log L$ correction.
+\end{problem}
+
+\begin{problem}[Quantitative local errors and joint parameter limits]
+Derive explicit constants and rates in the gamma-block approximation and in
+\eqref{eq:saddle}.  Then study a joint limit $x\downarrow0$ and $q\uparrow1$.
+The present constants are allowed to depend on $\lambda$, so the theorems
+cannot simply be used uniformly as $\lambda\downarrow0$.  Locating the
+transition between the cap regime and the nearly Gaussian central regime
+would connect endpoint and bulk asymptotics.
+\end{problem}
+
+\begin{problem}[Statistics under phase averaging]
+For a uniformly distributed phase, estimate the distribution of
+$R_\beta(t)$, its moments, and the tails of the quantile ratio at a finite
+scale.  Almost-everywhere asymptotics and Hausdorff dimension zero do not
+supply quantitative finite-scale probabilities.  The truncated nature of the
+profile makes this a bounded observable even at exact phases.
+\end{problem}
+
+\begin{problem}[Certified computation and proof-assistant integration]
+Implement interval-certified evaluation of $H_\beta$, $H_\beta'$, and
+$\VV_\beta$, combined with a rigorous saddle bracket and explicit local-limit
+bounds.  Exploit the finite maximum in \eqref{eq:profiledef} to avoid having
+to decide whether a computable phase is exactly singular.  Formalize the
+kernel, discrepancy, trimming, and inverse-bracketing interfaces in the
+repository before attempting a monolithic formalization of the full saddle
+theorem.
+\end{problem}
+
+\section{Conclusions}
+
+The leading quadratic endpoint scale is much more robust than the singular
+cocycle alone suggests: every irrational rotation has it, uniformly in phase.
+Bounded type gives a stronger structural conclusion.  After a deterministic
+scalar baseline is removed, a single truncated deepest-return profile controls
+the Laplace transform up to a squared-logarithmic error.  This control is
+strong enough, through a relative tilted local limit, to determine a
+multiplicative inverse-quantile asymptotic.
+
+The arithmetic distinction is not merely between rational, Diophantine, and
+Liouville angles.  Even at one fixed badly approximable angle, the phase has
+its own exponential approximation exponent.  It governs a real, explicitly
+quantified oscillation in extreme quantiles.  Almost-everywhere universality
+coexists with a dense, dimension-zero exceptional set.  Liouville angles
+introduce a further mechanism: long rational shadows suppress whole residue
+classes and produce near-quadratic corrections along selected subsequences.
+
+Thus the two concrete repository questions lead to both positive theorems and
+a necessary qualification.  The displayed Diophantine bound is valid in a
+stronger form, and Liouville spikes exist in a stronger baseline-corrected
+form.  A bounded or logarithmic carrier, however, needs a quantitative phase
+hypothesis and cannot follow from absence of exact zeros alone.
+
+\appendix
+\section{Source provenance, normalization checks, and package contents}
+\label{app:provenance}
+
+The inspected repository is \url{https://github.com/VladimirReshetnikov/ProveIt}.
+The relevant report is located at
+\begin{quote}\small
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex}.
+\end{quote}
+The pinned repository revision is \pinned, and the report blob is
+\texttt{143f6da778dfc0d5ab04133005ba6715a3cf155b}.
+The defining cap product appears in the section on directional caps; the two
+question labels are \texttt{conj:diophantine-endpoint} and
+\texttt{conj:liouville}, inspected in source lines approximately
+1565--1610 of this revision.  The report is a repository research document,
+not an independently refereed source of the new theorems in this article.
+
+The present normalization uses $n\ge1$, the factor
+$2|\cos\pi(n\alpha+\beta)|$, and the convention $q=\e^{-\lambda}$.
+The logarithmic phase average is zero:
+$\int_\T\log(2|\cos\pi u|)\dd u=0$.
+Consequently the common quantile $Q_\lambda$ corresponds to the scalar
+baseline with weights $q^n$, not to a silently rescaled scalar law with
+weights $2q^n$.  A deterministic external scale multiplies every quantile
+by that scale, as in Proposition~\ref{prop:cap}.  Exact zero factors are
+omitted from products, assigned $k_n=\infty$ in profiles, and are handled
+separately from nonexact phases in the exponent classification.
+
+The archive contains the self-contained LaTeX driver \path{article.tex}, its
+compiled \path{article.pdf}, the deterministic verification program,
+\path{requirements.txt}, a README with reproduction commands, the two CSV
+result files, their LaTeX table counterparts, a JSON verification report,
+and a machine-readable provenance record.  No external repository source,
+font file, or unverified proof-assistant script is needed to build the article.
+The only LaTeX inclusions are the two small table files supplied in
+\path{data/}.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{RepoMatrix}
+\repo\ repository research report.
+\emph{Matrix-Dilated Fabius--Rvachev Laws: Infinite Box Splines,
+Thue--Morse Directional Derivatives, Bell--Bernoulli Tensor Resolvents,
+and Rotating-Zonoid $q$-Series}.
+Report dated 30 August 2026; inspected at the repository revision recorded in
+Appendix~\ref{app:provenance}.  In particular, the directional-cap section
+and source labels \texttt{conj:diophantine-endpoint} and
+\texttt{conj:liouville}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fbba58593dc0622aa914972896150d4848f935b5/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/matrix_dilated_fabius_rvachev.tex}.
+
+\bibitem{Arias}
+J.~Arias de Reyna.
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}.
+ArXiv:1702.05442, 2017 posting of the author's earlier article.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{VerschuerenMestel}
+P.~Verschueren and B.~Mestel.
+\emph{On the growth of Sudler's sine product at the golden rotation number}.
+ArXiv:1411.2252, 2014.
+\url{https://arxiv.org/abs/1411.2252}.
+
+\bibitem{Borda}
+B.~Borda.
+\emph{On the distribution of Sudler products and Birkhoff sums for the
+irrational rotation}.
+ArXiv:2104.06716, version 2, 2023.
+\url{https://arxiv.org/abs/2104.06716}.
+
+\bibitem{Hauke}
+M.~Hauke.
+\emph{On the asymptotic behaviour of Sudler products for badly
+approximable numbers}.
+ArXiv:2210.07743, 2022.
+\url{https://arxiv.org/abs/2210.07743}.
+
+\end{thebibliography}
+\end{document}

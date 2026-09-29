@@ -101,6 +101,21 @@ of an existing draft; semantic consolidation is deferred to the post-
   readable and unencrypted.  No page rendering, experiment replay, TeX rebuild,
   claim audit, or Lean build was part of this quick intake, and manuscript
   result labels do not establish Lean proof status.
+- [`Rotating_Fabius_Rvachev_Endpoint_Laws/`](Rotating_Fabius_Rvachev_Endpoint_Laws/),
+  *Resonance Profiles and Sharp Endpoint Laws for Rotating
+  Fabius–Rvachev Distributions* (22-page A4 PDF, 1,633-line source, a
+  110-digit mpmath check program), filed on 2026-09-28 by a quick archival
+  intake from the repository-level `docs/incoming/` drop zone.  It
+  addresses the two directional-cap questions `conj:diophantine-endpoint`
+  and `conj:liouville` of
+  [`Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`](Matrix_Dilated_Fabius_Rvachev_Frontier_Report/):
+  a phase-uniform leading endpoint law for every irrational rotation, a
+  resonance-profile refinement for badly approximable rotations that
+  proves the displayed estimate in a stronger form, a dense exceptional
+  phase set showing that excluding exact zeros does not yield a bounded
+  or logarithmic carrier, and dense Liouville families with
+  `t^{2−1/k}` Laplace corrections.  Unreviewed; the matrix-dilated report
+  still states both conjectures; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

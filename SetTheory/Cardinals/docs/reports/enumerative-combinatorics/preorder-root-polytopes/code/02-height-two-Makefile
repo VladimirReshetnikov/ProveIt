@@ -1,0 +1,17 @@
+.PHONY: pdf verify clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+build/direct_counterexample: code/direct_counterexample.cpp
+	mkdir -p build
+	$(CXX) -O3 -std=c++17 -Wall -Wextra -pedantic $< -o $@
+
+verify: build/direct_counterexample
+	python3 code/verify.py
+	python3 code/verify_theta.py
+	./build/direct_counterexample > data/direct_counterexample.json
+
+clean:
+	latexmk -c article.tex
+	rm -rf build

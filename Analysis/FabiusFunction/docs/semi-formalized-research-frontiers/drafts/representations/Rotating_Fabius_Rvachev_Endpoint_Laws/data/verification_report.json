@@ -1,0 +1,27 @@
+{
+  "precision_digits": 110,
+  "normalization": "q=1/2; b_n=2*q^n*abs(cos(pi*(n*alpha+beta)))",
+  "checks_passed": [
+    "baseline sum agrees with the exact fractional-part formula",
+    "h'=J and J-J'=V checked by numerical differentiation",
+    "profile monotonicity and Lipschitz bound checked on one increment",
+    "engineered phase at t=120 agrees after adding 35 precision digits",
+    "unique saddle equation solved by deterministic bisection"
+  ],
+  "precision_comparison_absolute_H_difference": "5.51234336960801562267773e-65",
+  "saddle_check": {
+    "L": "20",
+    "Lambert_T": "23.5245578092449925536808",
+    "saddle_t": "23.5129257954868055866222",
+    "difference": "-0.0116320137581869670586661",
+    "relative_equation_residual": "5.63758629978998186630979e-31",
+    "log_C_saddle_approximation": "-357.585484640177757084769"
+  },
+  "limitations": [
+    "No formal proof verification.",
+    "No interval-arithmetic rounding certificate.",
+    "Tail bounds are analytic bounds; floating-point error is separate.",
+    "Finite examples do not establish infinite-subsequence results.",
+    "No independent numerical computation of the exact cap CDF."
+  ]
+}

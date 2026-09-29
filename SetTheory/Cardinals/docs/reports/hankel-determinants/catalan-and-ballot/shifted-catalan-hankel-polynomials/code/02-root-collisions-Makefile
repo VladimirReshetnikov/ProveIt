@@ -1,0 +1,13 @@
+.PHONY: all check pdf clean
+
+all: check pdf
+
+check:
+	python3 code/verify.py --out data
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex
+	find code -type d -name __pycache__ -prune -exec rm -rf {} +

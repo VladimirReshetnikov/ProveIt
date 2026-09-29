@@ -1,0 +1,1723 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Arithmetic Convolution Factors of Fabius-Type Laws},
+ pdfauthor={Research manuscript prepared for the ProveIt programme},
+ pdfsubject={Divisibility ladders, singular remainders, Borel classification and computability}}
+\urlstyle{same}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Arithmetic convolution factors}
+\fancyhead[R]{\small ProveIt research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Law}{\operatorname{Law}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\BV}{\operatorname{BV}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Unif}{\mathsf U}
+\newcommand{\Mu}[1]{\mu^{[#1]}}
+\newcommand{\etaam}{\eta_{a,m}}
+\newcommand{\sourcecommit}{\texttt{fbba58593dc0622aa914972896150d4848f935b5}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+\begin{center}
+{\small RESEARCH ARTICLE \quad\textbar\quad 28 SEPTEMBER 2026}\par
+\vspace{13mm}
+{\LARGE\bfseries Arithmetic Convolution Factors\\[5pt]
+of Fabius-Type Laws}\par
+\vspace{8mm}
+{\large Exact divisibility, fractal remainders,\\[3pt]
+and classification barriers}\par
+\vspace{12mm}
+{\normalsize Prepared for the ProveIt research programme}
+\end{center}
+\vspace{9mm}
+\begin{abstract}
+Let $A_0=1$ and let $A_k$ be a strictly increasing chain of positive
+integers under divisibility. The random series
+$X_A=\sum_{k\ge0}U_k/A_k$, with independent centered unit uniforms $U_k$,
+has a compactly supported $C^\infty$ density. We give an exact classification
+of factorizations $\mu_A=\D_c\mu_B*\nu$ by probability measures:
+they exist precisely when $c=1/m$ for a positive integer $m$ and
+$A_k\mid mB_k$ for every $k$. The unique remainder has an explicit
+independent-digit representation. This converts a positive-definiteness
+problem for entire Fourier quotients into coordinatewise arithmetic.
+
+The classification yields a rigid cross-base theorem for geometric-uniform
+laws, an embedding of inclusion modulo finite sets into scaled convolution
+factorability, and a compact family of smooth convolution divisors of the single
+Rvachev law on which mutual factorability has no Borel real-valued complete
+invariant. With
+primitive-recursive ladder presentations, fixed-scale factorability is
+$\Pi^0_1$-complete and existence of some scale is $\Sigma^0_2$-complete.
+Explicit spline approximation bounds show that these barriers persist for
+uniformly computable smooth densities. For same-base geometric laws we
+also classify the remainder as singular continuous, a finite uniform
+spline, or a finite smoothing of a singular measure; we prove sharp
+integer regularity, sharp power Fourier decay, and a sharp H\"older result
+in the separated-digit case. Further questions isolate the boundaries
+of the classification rather than presuming that they are already solved.
+\end{abstract}
+\vfill
+\noindent\textbf{Status and scope.}
+All asserted mathematical results below have written proofs. The auxiliary
+program performs exact finite regression checks, not proof-assistant
+verification. No Lean verification or peer review is claimed. Classical
+inputs and identified repository overlaps are distinguished from the
+extensions developed here. Priority of the latter has not been established
+by an exhaustive literature or repository audit.
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research question, provenance, and main conclusions}
+\label{sec:introduction}
+
+\subsection{The question behind the Fourier product}
+The Rvachev up-function is a particularly structured compactly supported
+smooth probability density. Its Fourier transform is an infinite product
+of sinc functions. In the normalization used here,
+\begin{equation}\label{eq:up-product}
+ \widehat{\mathrm{up}}(t)=\prod_{k=0}^{\infty}
+ \frac{\sin(\pi t/2^k)}{\pi t/2^k}.
+\end{equation}
+Arias de Reyna gives this product and the integer-zero multiplicity formula
+$1+v_2(n)$ explicitly \cite{arias}. These formulas, and the probabilistic
+construction underlying them, are established starting points, not new
+claims of this article. Fabius's original construction provides the
+historical probabilistic context \cite{fabius}.
+
+The product suggests a question that is more restrictive than formal
+power-series division. Given two such laws, when does removing a scaled
+copy of one from the other leave a \emph{probability measure}? Precisely,
+for which $c>0$ is there a probability $\nu$ such that
+\begin{equation}\label{eq:factor-question}
+ \mu=\D_c\rho*\nu?
+\end{equation}
+Here $\D_c\rho$ is the law of $cY$ when $Y$ has law $\rho$, and $*$ is
+convolution, equivalently addition of independent random variables.
+A formally defined Fourier quotient need not be a characteristic function.
+Even an entire quotient is not automatically positive definite. The
+central result is that for a natural class of nested integer denominators,
+these analytic and positivity questions have a complete arithmetic answer.
+
+\subsection{Connection with the repository and limits of the audit}
+The repository was inspected at commit \sourcecommit.
+Its Fabius research documentation discusses geometric-uniform laws,
+Fourier and Laplace products, moment reciprocity, and deconvolution
+\cite{repo-inverse}. Its Shape, Divisibility, and Stein Geometry package
+already includes identical-convolution rootlessness for the Fabius--Rvachev
+law \cite{repo-shape}. We therefore do not present the dyadic zero formula,
+probabilistic construction, or dyadic rootlessness as repository-new results.
+
+Our principal extension is to two arbitrary divisibility ladders, and then
+to the order-theoretic and effective complexity encoded by those ladders.
+The same-base remainder analysis supplies a complementary analytic
+classification. The general geometric self-factor theorem is included as
+a useful bridge and is proved independently; no priority claim is attached
+to that elementary product consequence.
+
+The audit was scoped, not exhaustive. In particular, direct retrieval of
+the large geometric-$q$ frontier TeX file exceeded the connector's supported
+response size. Navigation records and smaller relevant files were inspected,
+but absence of a theorem from those records is not evidence that it occurs
+nowhere in the larger corpus. The article thus establishes mathematical
+statements and gives their proofs, without claiming to settle a named
+long-standing conjecture whose open status has not been verified. The
+classical descriptive-set-theoretic obstruction used later is also not new:
+the contribution there is its explicit realization by these smooth laws,
+not the nonsmoothness of finite-change equivalence itself \cite{hkl}.
+
+\subsection{What is resolved here}
+The first classification is the following exact criterion. Suppose
+$A_0=B_0=1$, $A_k\mid A_{k+1}$ and $B_k\mid B_{k+1}$, with both
+chains strictly increasing. Then
+\begin{equation}\label{eq:main-preview}
+ \mu_A=\D_c\mu_B*\nu
+ \quad\Longleftrightarrow\quad
+ \left\{\begin{array}{l}
+ c=1/m\text{ for an integer }m\ge1,\\
+ A_k\mid mB_k\text{ for every }k\ge0.
+ \end{array}\right.
+\end{equation}
+This is Theorem~\ref{thm:ladder}. The implication from left to right uses
+zero multiplicities; the reverse implication constructs positive digit
+measures and therefore resolves, rather than assumes, positive definiteness.
+
+Several consequences make the criterion more than an isolated product
+identity. An integer-base target can contain a geometric-uniform source
+only when the reciprocal source ratio is an integer multiple of the target
+base (Theorem~\ref{thm:crossbase}). A single compact family of smooth densities
+realizes inclusion modulo finite sets (Theorem~\ref{thm:boolean}) and
+finite-change equivalence (Theorem~\ref{thm:nonsmooth}). Exact effective
+classification has specified arithmetical-hierarchy complexity even though
+the densities themselves are uniformly approximable with every derivative
+(Theorem~\ref{thm:complexity}). Finally, the explicit remainders exhibit a
+sharp division between singular measures and finite levels of smoothing
+(Theorem~\ref{thm:regularity}).
+
+The results concern genuine independent convolution factors. They do not
+classify signed deconvolution kernels, arbitrary nonlinear transports,
+approximate factorizations, or every compactly supported smooth law.
+
+\section{Probability laws, entire products, and finite approximations}
+\label{sec:preliminaries}
+
+\subsection{Definitions and normalization}
+Throughout, $\N_0=\{0,1,2,\ldots\}$ and $\N_{>0}=\{1,2,\ldots\}$.
+Let $\Unif_L$ denote uniform probability on $[-L/2,L/2]$, for $L>0$.
+Let $(U_k)_{k\ge0}$ be independent random variables with law $\Unif_1$.
+Our Fourier convention and normalized sinc are
+\[
+ \widehat\sigma(t)=\int_\R e^{2\pi itx}\,d\sigma(x),\qquad
+ \sinc z=\begin{cases}\sin(\pi z)/(\pi z),&z\ne0,\\1,&z=0.\end{cases}
+\]
+All laws considered as targets are symmetric, so the opposite Fourier sign
+gives the same products.
+
+\begin{definition}[Divisibility ladder]
+A divisibility ladder is a sequence $A=(A_k)_{k\ge0}$ of positive integers
+such that $A_0=1$, $A_k\mid A_{k+1}$, and $A_{k+1}>A_k$. Set
+\begin{equation}\label{eq:ladder-law}
+ X_A=\sum_{k\ge0}\frac{U_k}{A_k},\qquad
+ \mu_A=\Law(X_A),\qquad R_A=\frac12\sum_{k\ge0}A_k^{-1}.
+\end{equation}
+For a real ratio $0<q<1$, separately set
+\begin{equation}\label{eq:geometric-law}
+ X_q=\sum_{k\ge0}q^kU_k,\qquad \mu_q=\Law(X_q).
+\end{equation}
+For an integer $a\ge2$, abbreviate $\Mu a=\mu_{1/a}$; this is the ladder
+law for $A_k=a^k$. In particular, $\Mu2$ has density $\mathrm{up}$ in
+\eqref{eq:up-product}, and is not its cumulative distribution function.
+\end{definition}
+
+The ladder ratios are integers at least two, so $A_k\ge2^k$.
+Both random series converge absolutely for every choice of the bounded
+coordinates. In the ladder case $R_A\le1$; in the geometric case the
+support radius is $1/(2(1-q))$.
+
+\begin{lemma}[Transforms, support, and smoothness]\label{lem:product}
+For a divisibility ladder,
+\begin{equation}\label{eq:ladder-product}
+ \Phi_A(z):=\widehat\mu_A(z)=\prod_{k\ge0}\sinc(z/A_k)
+\end{equation}
+converges locally uniformly on $\C$, defines an entire function, and has no
+zeros other than the zeros of its individual factors. The law $\mu_A$ has
+a $C^\infty$ density $f_A$ with support $[-R_A,R_A]$.
+The same assertions hold for $\mu_q$, with factors $\sinc(q^kz)$ and
+support $[-1/(2(1-q)),1/(2(1-q))]$.
+\end{lemma}
+\begin{proof}
+Uniform convergence of the random series implies convergence of its
+characteristic functions by bounded convergence. On a compact disk,
+$\sinc(z/A_k)=1+O(A_k^{-2})$ uniformly, and $\sum A_k^{-2}<\infty$.
+The usual product criterion follows directly by taking the analytic
+logarithm of sufficiently late factors: their deviations from one have
+summable suprema. Thus the tail product is analytic and nonzero on each
+small disk avoiding zeros of the finitely many initial factors. This proves
+both local uniform convergence and the assertion about zeros.
+
+For every positive integer $M$ and real $|t|\ge1$,
+\begin{equation}\label{eq:rapid-decay}
+ |\Phi_A(t)|\le \prod_{k=0}^{M-1}\frac{A_k}{\pi|t|}
+ =\frac{\prod_{k<M}A_k}{\pi^M|t|^M},
+\end{equation}
+since the other factors have absolute value at most one. Consequently
+$t^r\Phi_A(t)$ is integrable for every $r\ge0$. Fourier inversion and
+termwise differentiation under the integral give a smooth density.
+
+The series is confined to $[-R_A,R_A]$. For completeness its support is
+the entire interval. The possible sums of the first $N+1$ support intervals
+form $[-R_{A,N},R_{A,N}]$, where $R_{A,N}\uparrow R_A$.
+The tail has zero in its support: its first finitely many variables can be
+made arbitrarily small with positive probability, and its remaining
+absolute bound tends to zero. Any interior point of $[-R_A,R_A]$ therefore
+lies in the support of a sufficiently long prefix plus its independent
+tail. Taking closures includes the endpoints. Replace $A_k^{-1}$ by $q^k$
+for the geometric case; all arguments are unchanged.
+\end{proof}
+
+\begin{lemma}[Zero multiplicities]\label{lem:zeros}
+The zero set of $\Phi_A$ is $\Z\setminus\{0\}$, and for $n\ne0$,
+\begin{equation}\label{eq:zero-orders}
+ \ord_{z=n}\Phi_A(z)=v_A(n):=\#\{k\ge0:A_k\mid n\}.
+\end{equation}
+The zero at $1$ is simple. For a geometric law, the zero set is
+$\{nq^{-k}:n\in\Z\setminus\{0\},\ k\ge0\}$, and the zero at $1$
+is again simple.
+\end{lemma}
+\begin{proof}
+The $k$th ladder factor vanishes simply exactly at nonzero multiples of
+$A_k$. Only finitely many factors vanish at a fixed point. Their orders
+add, and the remaining product is nonzero by Lemma~\ref{lem:product}.
+The first factor accounts for every nonzero integer, and later factors
+produce no noninteger zeros. Only the first factor vanishes at $1$.
+The same argument applies to the geometric factors; $0<q^k<1$ for $k>0$
+prevents any additional vanishing at $1$.
+\end{proof}
+
+\subsection{Why compactness makes zero multiplicities legitimate}
+\begin{lemma}[Compact factor and cancellation]\label{lem:compact}
+Suppose compactly supported probability measures $\mu,\rho$ satisfy
+$\mu=\rho*\nu$ for a probability measure $\nu$. Then $\nu$ is compactly
+supported, the Fourier identity extends to entire functions, and
+\[
+ \ord_z\widehat\mu\ \ge\ \ord_z\widehat\rho
+\]
+at every zero of $\widehat\rho$. If $\widehat\rho$ is nonzero except at
+isolated real points, the factor $\nu$ is unique. If $\mu$ and $\rho$
+are symmetric, this unique factor is symmetric.
+\end{lemma}
+\begin{proof}
+For support points $x\in\supp\rho$ and $y\in\supp\nu$, every neighborhood
+of $x+y$ contains the sum of two positive-measure neighborhoods; independence
+therefore gives $x+y\in\supp\mu$. Fixing one $x$ bounds every possible
+$y$, so $\nu$ has bounded closed support. The transforms are entire and
+agree on the real axis, hence everywhere. Orders of zeros add under
+multiplication.
+
+For uniqueness, divide the characteristic functions where
+$\widehat\rho(t)\ne0$. The resulting equality for two candidate factors
+extends to every real $t$ by continuity, and Fourier uniqueness gives equality
+of measures. Reflection of a factor is another factor when both target and
+source are symmetric, proving symmetry by uniqueness. The same support
+argument, applied to minimum and maximum points of compact supports, shows
+that the extreme support points add under convolution.
+\end{proof}
+
+\begin{corollary}[Identical-convolution rootlessness]\label{cor:rootless}
+None of the laws $\mu_A$ or $\mu_q$ is $\rho^{*j}$ for a probability
+measure $\rho$ and an integer $j\ge2$.
+\end{corollary}
+\begin{proof}
+A putative root is compact by the support argument. Its entire transform
+raised to the $j$th power would have a zero at $1$ of order divisible by
+$j$, contradicting Lemma~\ref{lem:zeros}.
+\end{proof}
+\noindent The dyadic instance of this short obstruction is already covered
+by the repository's divisibility report \cite{repo-shape}. We include the
+uniform extension only to delimit the meaning of factorization here:
+nonidentical factors can exist even though identical roots do not.
+
+\subsection{Explicit approximation in every derivative}
+\begin{proposition}[Effective spline approximation]\label{prop:approximation}
+Let $f_{A,N}$ be the density of $\sum_{k=0}^NU_k/A_k$. For $r\ge0$ and
+$N\ge r+2$, put
+\[
+ L_r(A)=2^{r+1}\prod_{j=0}^{r+1}A_j.
+\]
+Then
+\begin{equation}\label{eq:approximation}
+ \|f_A^{(r)}-f_{A,N}^{(r)}\|_\infty
+ \le \frac{L_r(A)}{2A_N}.
+\end{equation}
+Every computable ladder therefore yields a computable $C^\infty$ density,
+with a modulus supplied explicitly for each derivative.
+\end{proposition}
+\begin{proof}
+Let $g$ be the density of the first $r+3$ uniforms, indexed $0$ through
+$r+2$. The distributional derivative of the density of $\Unif_{1/A_j}$
+is $A_j(\delta_{-1/(2A_j)}-\delta_{1/(2A_j)})$, with total variation
+$2A_j$. Differentiate the factors $j=0,\ldots,r$, leaving two uniform
+factors undifferentiated. Their convolution is continuous and has sup norm
+at most $A_{r+1}$. It follows that $g^{(r+1)}$ is continuous with norm at
+most $L_r(A)$, and $g^{(r)}$ is globally $L_r(A)$-Lipschitz.
+Convolution with any remaining prefix preserves this Lipschitz bound.
+
+The tail $T_N=\sum_{k>N}U_k/A_k$ obeys
+\[
+ |T_N|\le\frac12\sum_{h\ge1}\frac1{A_{N+h}}
+ \le\frac1{2A_N}.
+\]
+Since $f_A^{(r)}(x)=\E f_{A,N}^{(r)}(x-T_N)$, the Lipschitz estimate gives
+\eqref{eq:approximation}.
+
+To make computability explicit, write $\ell_j=1/A_j$ and
+$S_N=\sum_{j=0}^N\ell_j$. The prefix has the finite spline formula
+\begin{equation}\label{eq:box-spline}
+ f_{A,N}(x)=\frac1{N!\prod_{j=0}^N\ell_j}
+ \sum_{E\subseteq\{0,\ldots,N\}}(-1)^{|E|}
+ \left(x+\frac{S_N}{2}-\sum_{j\in E}\ell_j\right)_+^{N}.
+\end{equation}
+This follows by repeated convolution of interval indicators, or by applying
+the corresponding finite differences to $x_+^N/N!$. It is a rational
+piecewise polynomial with computable knots. Choose $N$ until the right side
+of \eqref{eq:approximation} is smaller than the requested error; this search
+terminates because $A_N\ge2^N$. Differentiating the rational spline gives
+uniform approximants for each prescribed derivative. No efficiency claim
+is made for the exponential-size subset formula.
+\end{proof}
+
+\section{A complete classification of ladder factors}
+\label{sec:ladder}
+
+\subsection{The positive splitting identity}
+\begin{lemma}[One uniform splits into a smaller uniform and digits]
+\label{lem:uniform-split}
+For an integer $M\ge1$ and $L>0$, let $\ell=L/M$. Then
+\begin{equation}\label{eq:uniform-split}
+ \Unif_L=\Unif_\ell *
+ \left(\frac1M\sum_{j=0}^{M-1}
+ \delta_{\ell(j-(M-1)/2)}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The translated intervals of length $\ell$ are adjacent and tile
+$[-L/2,L/2]$, up to endpoints of Lebesgue measure zero. On each interval
+the mixture density is $(1/M)(1/\ell)=1/L$. This proves the probability
+identity directly, including $M=1$ when the digit law is $\delta_0$.
+\end{proof}
+
+\subsection{The main theorem}
+\begin{theorem}[Arithmetic convolution classification]\label{thm:ladder}
+Let $A$ and $B$ be divisibility ladders and let $c>0$. There is a probability
+measure $\nu$ satisfying
+\[
+ \mu_A=\D_c\mu_B*\nu
+\]
+if and only if there is an integer $m\ge1$ with
+\begin{equation}\label{eq:criterion}
+ c=\frac1m,\qquad A_k\mid mB_k\quad(k\ge0).
+\end{equation}
+When these conditions hold, the unique factor is
+\begin{equation}\label{eq:digit-remainder}
+ \nu_{A,B,m}=\Law\left(
+ \sum_{k\ge0}\frac{J_k-(M_k-1)/2}{mB_k}\right),\qquad
+ M_k=\frac{mB_k}{A_k},
+\end{equation}
+where the $J_k$ are independent and uniform on
+$\{0,\ldots,M_k-1\}$. It is symmetric and has extreme support points
+$\pm(R_A-R_B/m)$.
+\end{theorem}
+\begin{proof}
+Assume a factor exists. Its compactness and the entire Fourier identity
+follow from Lemma~\ref{lem:compact}. The source transform
+$\Phi_B(cz)$ vanishes at $z=1/c$. Every target zero is a nonzero integer,
+so $1/c=m$ is a positive integer.
+
+Fix $k\ge0$ and evaluate zero orders at $z=mB_k$. In the source,
+\[
+ \ord_{z=mB_k}\Phi_B(z/m)=v_B(B_k)=k+1,
+\]
+because the divisors $B_j$ of $B_k$ are exactly those with $j\le k$.
+The target must have order at least $k+1$. For a divisibility chain,
+$\{j:A_j\mid mB_k\}$ is an initial segment. Having at least $k+1$
+elements is therefore equivalent to $A_k\mid mB_k$. This proves all
+conditions in \eqref{eq:criterion}.
+
+Conversely suppose those conditions hold. The integers $M_k$ in
+\eqref{eq:digit-remainder} are positive. Apply
+Lemma~\ref{lem:uniform-split} to the target uniform of length $1/A_k$,
+with small length $1/(mB_k)$ and digit count $M_k$. Construct all small
+uniforms and all digits independently. Each target summand is then the
+sum of one small uniform and one centered digit, and these target summands
+are independent across $k$.
+
+The digit series converges absolutely, since its $k$th term has absolute
+value at most
+\[
+ \frac{M_k-1}{2mB_k}
+ =\frac12\left(\frac1{A_k}-\frac1{mB_k}\right),
+\]
+and the sum of these bounds is finite. Summing the independent small
+uniforms gives law $\D_{1/m}\mu_B$; summing the digits gives
+\eqref{eq:digit-remainder}. This proves the factorization by an actual
+probability measure, without an appeal to a merely formal quotient.
+
+Uniqueness and symmetry follow from Lemma~\ref{lem:compact}. Its support
+extrema must add to those of the source to give $\pm R_A$, so they are
+$\pm(R_A-R_B/m)$. This conclusion concerns extreme points; the intervening
+support need not be an interval.
+\end{proof}
+
+\begin{remark}[Why the indexing matters]
+The argument would fail for a general unordered list of integer
+frequencies: zero counts need not then form initial segments. The ladder
+hypothesis is the mechanism that converts a zero-order inequality into a
+coordinatewise divisibility condition. Positivity is supplied separately
+by interval tiling. Neither step may be omitted in an attempted
+extension to arbitrary products.
+\end{remark}
+
+\begin{corollary}[Equivalent zero-order criterion]\label{cor:zero-criterion}
+For $m\ge1$, the factor in Theorem~\ref{thm:ladder} exists if and only if
+\begin{equation}\label{eq:all-zero-criterion}
+ v_A(mn)\ge v_B(n)\qquad(n\ge1).
+\end{equation}
+It is enough to test the generator frequencies $n=B_k$.
+\end{corollary}
+\begin{proof}
+Necessity follows from the entire factorization. If all generator
+inequalities hold, the proof of Theorem~\ref{thm:ladder} gives the
+coordinatewise criterion. Conversely, if $B_j\mid n$ then
+$A_j\mid mB_j\mid mn$, proving \eqref{eq:all-zero-criterion}.
+\end{proof}
+
+\subsection{The scale set is controlled by a single lcm obstruction}
+\begin{definition}[Finite obstruction lcm]
+Put $d_k=A_k/\gcd(A_k,B_k)$. If the integers $d_k$ have a common positive
+integer multiple, let $L(A,B)$ be their least common multiple. Otherwise
+write $L(A,B)=\infty$; the symbol $\infty$ here means absence of an ordinary
+finite integer common multiple, not a permitted scale parameter.
+\end{definition}
+
+\begin{corollary}[All scales and a largest one]\label{cor:lcm}
+If $L(A,B)<\infty$, all possible positive scales are exactly
+\begin{equation}\label{eq:lcm-scales}
+ \left\{\frac1{L(A,B)r}:r\in\N_{>0}\right\}.
+\end{equation}
+If $L(A,B)=\infty$, there is no possible positive scale. Equivalently,
+finite existence requires a positive integer whose prime exponents dominate
+\begin{equation}\label{eq:prime-deficits}
+ \lambda_p=\sup_{k\ge0}\max\{0,v_p(A_k)-v_p(B_k)\}
+\end{equation}
+for every prime $p$. Thus every $\lambda_p$ must be finite and only finitely
+many of them may be positive; then $L(A,B)=\prod_p p^{\lambda_p}$.
+\end{corollary}
+\begin{proof}
+The elementary equivalence $A_k\mid mB_k$ if and only if
+$A_k/\gcd(A_k,B_k)\mid m$ reduces Theorem~\ref{thm:ladder} to the definition
+of the least common multiple. Prime factorization gives the last assertion.
+Both finiteness requirements are essential: bounded deficits at each prime
+do not help when infinitely many different primes are needed.
+\end{proof}
+
+A failed fixed-scale factorization has a finite certificate: a single index
+$k$ and prime $p$ for which $v_p(A_k)>v_p(m)+v_p(B_k)$.
+The real number $mB_k$ is then an explicit analytic obstruction, because the
+source has too high a zero multiplicity there. In contrast, confirming the
+criterion for arbitrarily many initial indices does not certify its truth
+for all indices. Section~\ref{sec:computability} makes this distinction exact.
+
+\begin{proposition}[Recovery and composition]\label{prop:composition}
+The law $\mu_A$ determines its ladder, by
+\begin{equation}\label{eq:recover-ladder}
+ A_k=\min\{n\ge1:v_A(n)\ge k+1\}.
+\end{equation}
+If $A_k\mid mB_k$ and $B_k\mid nC_k$ for every $k$, then
+\begin{equation}\label{eq:cocycle}
+ \nu_{A,C,mn}=\nu_{A,B,m}*\D_{1/m}\nu_{B,C,n}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The integers with at least $k+1$ zero factors are exactly the positive
+multiples of $A_k$, proving \eqref{eq:recover-ladder}. For composition,
+substitute $\mu_B=\D_{1/n}\mu_C*\nu_{B,C,n}$ into the factorization of
+$\mu_A$. The resulting remainder must be the unique factor for scale
+$1/(mn)$, by Theorem~\ref{thm:ladder}.
+\end{proof}
+
+\subsection{Moment information carried by the factor}
+Let $B_{2j}$ denote the usual even Bernoulli numbers, defined by
+$z/(e^z-1)=\sum B_nz^n/n!$ near zero. For a compact law, its cumulants are
+the derivatives at zero of the logarithm of its moment generating function.
+\begin{proposition}[Exact cumulants]\label{prop:cumulants}
+For every $j\ge1$,
+\begin{align}
+ \kappa_{2j}(\mu_A)&=\frac{B_{2j}}{2j}\sum_{k\ge0}A_k^{-2j},
+ \label{eq:cumulants-law}\\
+ \kappa_{2j}(\nu_{A,B,m})&=\frac{B_{2j}}{2j}
+ \left(\sum_{k\ge0}A_k^{-2j}-m^{-2j}\sum_{k\ge0}B_k^{-2j}\right).
+ \label{eq:cumulants-noise}
+\end{align}
+All odd cumulants vanish. In particular,
+$\Var(X_A)=\frac1{12}\sum A_k^{-2}$.
+\end{proposition}
+\begin{proof}
+For a centered unit uniform the moment generating function is
+$\sinh(z/2)/(z/2)$. Differentiating its logarithm gives
+$\frac12\coth(z/2)-1/z$, whose power series integrates to
+\[
+ \log\frac{\sinh(z/2)}{z/2}
+ =\sum_{j\ge1}\frac{B_{2j}}{2j(2j)!}z^{2j}.
+\]
+Substitute $z/A_k$ and sum near zero. Normal convergence justifies the
+coefficient calculation. Cumulants add under independent convolution and
+scale homogeneously, yielding \eqref{eq:cumulants-noise}.
+\end{proof}
+
+
+\subsection{A quantitative obstruction, without a bound on the remainder}
+For probability laws with finite first moments, write $W_1(\sigma,\tau)$
+for the infimum of $\E|X-Y|$ over all couplings with these marginal laws.
+A simple characteristic-function inequality already gives a useful
+support-independent obstruction.
+
+\begin{proposition}[A Fourier lower bound for approximate factors]
+\label{prop:wasserstein}
+For probability laws $\mu,\rho$ and every real $t\ne0$,
+\begin{equation}\label{eq:fourier-wasserstein}
+ W_1(\mu,\rho*\nu)\ge
+ \frac{\bigl(|\widehat\mu(t)|-|\widehat\rho(t)|\bigr)_+}{2\pi|t|}
+\end{equation}
+for every probability remainder $\nu$ for which the left side is finite.
+Suppose in particular that $A_k\nmid mB_k$, put $t_0=mB_k$ and
+$r=v_A(t_0)<k+1$, and define
+\begin{align}
+ a_r&=\frac{|\Phi_A^{(r)}(t_0)|}{r!}>0,\notag\\
+ D_r&=\frac{(2\pi R_A)^{r+1}+(2\pi R_B/m)^{r+1}}{(r+1)!}.
+ \label{eq:quantitative-constants}
+\end{align}
+For every $0<h\le a_r/(2D_r)$ and every probability $\nu$,
+\begin{equation}\label{eq:quantitative-obstruction}
+ W_1(\mu_A,\D_{1/m}\mu_B*\nu)
+ \ge\frac{a_r h^r}{4\pi(t_0+h)}>0,
+\end{equation}
+interpreting the bound trivially if the distance is infinite.
+\end{proposition}
+\begin{proof}
+For a coupling, the inequality
+$|e^{2\pi itx}-e^{2\pi ity}|\le2\pi|t|\,|x-y|$
+gives
+$|\widehat\mu(t)-\widehat{\rho*\nu}(t)|\le2\pi|t|W_1(\mu,\rho*\nu)$.
+Also $|\widehat{\rho*\nu}(t)|\le|\widehat\rho(t)|$ because a probability
+characteristic function has modulus at most one. The triangle inequality
+proves \eqref{eq:fourier-wasserstein}.
+
+At $t_0$ the target has order $r$, while the source has order at least
+$r+1$. A compact law of radius $R$ has Fourier derivatives bounded on the
+real axis by $(2\pi R)^j$ in order $j$. Taylor's formula with an integral
+remainder therefore gives
+\[
+ |\Phi_A(t_0+h)|-|\Phi_B((t_0+h)/m)|
+ \ge a_rh^r-D_rh^{r+1}\ge\frac12a_rh^r.
+\]
+Apply \eqref{eq:fourier-wasserstein} at $t=t_0+h$ to obtain the claimed
+bound. No derivative, support, or moment estimate for $\nu$ was needed.
+\end{proof}
+
+The leading coefficient in this bound can itself be written explicitly:
+\begin{equation}\label{eq:leading-coefficient}
+ a_r=t_0^{-r}\prod_{j\ge r}|\sinc(t_0/A_j)|.
+\end{equation}
+Indeed, each of the $r$ vanishing factors has first derivative of absolute
+value $1/t_0$ at $t_0$, and the remaining product is nonzero. Thus an
+arithmetic failure yields not only an exact nonexistence witness but a
+strict lower bound against \emph{every} independent probability remainder.
+The bound may be very small for a high-index obstruction; no uniform
+separation over all failed instances is implied.
+
+\section{Geometric laws and cross-base rigidity}
+\label{sec:geometric}
+
+\subsection{All self-factoring contractions, for every real ratio}
+\begin{theorem}[Geometric self-factor spectrum]\label{thm:self-spectrum}
+For $0<q<1$,
+\begin{equation}\label{eq:self-spectrum}
+ \{c>0:\mu_q=\D_c\mu_q*\nu\text{ for some probability }\nu\}
+ =\{q^j/m:j\in\N_0,\ m\in\N_{>0}\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+If the factor exists, its compactness forces the zero $1/c$ of the scaled
+source to be a zero of the target. Lemma~\ref{lem:zeros} gives
+$1/c=mq^{-j}$ with $m\ge1$ and $j\ge0$.
+
+For the converse, first split the series at index $j$:
+\[
+ \mu_q=(\Unif_1*\Unif_q*\cdots*\Unif_{q^{j-1}})*\D_{q^j}\mu_q,
+\]
+where the first convolution is $\delta_0$ when $j=0$. Split every uniform
+in the tail using the same integer digit count $m$, by
+Lemma~\ref{lem:uniform-split}. The smaller uniforms sum to law
+$\D_{q^j/m}\mu_q$, and the initial block and all the independent digit
+terms form the probability remainder. Absolute convergence follows from
+the geometric bound.
+\end{proof}
+
+This spectrum is countable and has no accumulation point other than zero:
+for a fixed $\varepsilon>0$, $q^j/m\ge\varepsilon$ bounds both $j$ and $m$.
+In particular, these laws do not admit such a self-factor decomposition at
+every contraction $0<c<1$. For integer reciprocal $q=1/a$, the spectrum
+simplifies to all reciprocal positive integers, consistent with
+Theorem~\ref{thm:ladder} for $A=B$.
+
+\subsection{An integer-base target forces an integer-base source}
+\begin{theorem}[Cross-base classification]\label{thm:crossbase}
+Let $a\ge2$ be an integer, $0<q<1$, and $c>0$. Then
+\begin{equation}\label{eq:crossbase}
+ \Mu a=\D_c\mu_q*\nu
+\end{equation}
+for a probability $\nu$ if and only if
+\begin{equation}\label{eq:crossbase-criterion}
+ q=\frac1b\text{ for an integer }b\ge2,\qquad a\mid b,\qquad
+ c=\frac1m\text{ for an integer }m\ge1.
+\end{equation}
+When this holds, the digit count in \eqref{eq:digit-remainder} is
+$M_k=m(b/a)^k$.
+\end{theorem}
+\begin{proof}
+The zero at $1/c$ first gives $c=1/m$. Every zero $mq^{-k}$ of the source
+must be an integer zero of the target. Write $b=1/q$. Since $mb$ is an
+integer, $b$ is rational. In lowest terms let $b=u/v$ with positive coprime
+integers $u,v$. The integrality of $mu^k/v^k$ for every $k$ forces
+$v^k\mid m$ for every $k$, which is impossible unless $v=1$.
+Thus $b$ is an integer at least two.
+
+Theorem~\ref{thm:ladder} now says $a^k\mid mb^k$ for every $k$.
+For each prime this is
+$k v_p(a)\le v_p(m)+k v_p(b)$. Letting $k$ increase forces
+$v_p(a)\le v_p(b)$, hence $a\mid b$. Conversely that divisibility makes
+$a^k\mid mb^k$ automatic, and the explicit construction applies.
+\end{proof}
+
+\begin{corollary}[The Rvachev target]
+A geometric-uniform law can be a positively scaled convolution factor of
+$\Mu2$ exactly when its ratio is $1/b$ with $b$ even. The permitted scales
+are precisely $1/m$, $m\ge1$. In particular, bases $6$ and $10$ are allowed,
+not only powers of $2$; base $3$ and all irrational ratios are excluded.
+\end{corollary}
+
+\begin{example}[Support and variance do not decide factorability]
+Consider the target $\Mu3$, the source $\Mu2$, and scale $c=1/2$.
+The target has support radius $3/4$ and variance $3/32$; the scaled source
+has radius $1/2$ and variance $1/36$. These necessary size inequalities are
+satisfied. Nevertheless, at $t=4$ the source transform $\Phi_{(2^k)}(t/2)$
+has a zero of order $2$, whereas $\Phi_{(3^k)}(t)$ has order $1$.
+No probability remainder exists. This obstruction survives arbitrarily
+strong shrinking by changing the frequency at which the contradiction is
+read; the failure $3\nmid2$ rules out every positive scale.
+\end{example}
+
+\begin{example}[A non-dyadic factor of the dyadic law]
+For target base $2$, source base $6$, and $m=1$, the complement is
+\[
+ \Law\left(\sum_{k\ge0}
+ \frac{J_k-(3^k-1)/2}{6^k}\right),\qquad
+ J_k\text{ uniform on }\{0,\ldots,3^k-1\}.
+\]
+The $k=0$ digit is deterministic. The support radius of this remainder is
+$1-3/5=2/5$. The theorem proves its existence and uniqueness, but does not
+by itself determine its absolute continuity or exact smoothness.
+\end{example}
+
+\section{A compact smooth realization of inclusion modulo finite sets}
+\label{sec:boolean}
+
+\subsection{Encoding one bit by one prime}
+Let $p_1,p_2,\ldots$ list the odd primes in increasing order.
+For $S\subseteq\N_{>0}$ define
+\begin{equation}\label{eq:boolean-ladder}
+ A_{S,0}=1,\qquad
+ A_{S,k}=2^k\prod_{\substack{1\le j\le k\\j\in S}}p_j\quad(k\ge1),
+ \qquad \mu_S=\mu_{A_S}.
+\end{equation}
+Each ratio is either $2$ or $2p_{k+1}$, so these are divisibility ladders.
+Every $\mu_S$ consequently has a smooth density $f_S$ supported in $[-1,1]$.
+In fact, the whole family consists of unscaled convolution divisors of the
+single classical Rvachev law $\Mu2$.
+
+Write $S\subseteq^*T$ when $S\setminus T$ is finite, and $S\mathrel{E_0}T$
+when $S\triangle T$ is finite. The symbol $E_0$ denotes finite-change
+ equivalence on binary sequences; its classical role in Borel
+classification is discussed in \cite{hkl}. We will prove the obstruction
+needed here directly.
+
+\begin{theorem}[Exact arithmetic encoding]\label{thm:boolean}
+For $S,T\subseteq\N_{>0}$ and $m\ge1$,
+\begin{equation}\label{eq:boolean-factor}
+ \mu_S=\D_{1/m}\mu_T*\nu
+ \quad\Longleftrightarrow\quad
+ S\setminus T\text{ is finite and }
+ \prod_{j\in S\setminus T}p_j\mid m.
+\end{equation}
+In particular, an unscaled factorization exists exactly when $S\subseteq T$;
+a factorization at some positive scale exists exactly when $S\subseteq^*T$.
+Mutual factorability at possibly different positive scales is equivalent
+to $S\mathrel{E_0}T$. The unscaled laws themselves are equal only when $S=T$.
+Every $\mu_S$ is an unscaled convolution factor of $\Mu2$.
+\end{theorem}
+\begin{proof}
+For each $k$ cancellation of the common factors gives
+\[
+ \frac{A_{S,k}}{\gcd(A_{S,k},A_{T,k})}
+ =\prod_{\substack{j\le k\\j\in S\setminus T}}p_j.
+\]
+The least common multiple of these initial products is finite exactly when
+$S\setminus T$ is finite, and is then the product in
+\eqref{eq:boolean-factor}. Corollary~\ref{cor:lcm} proves the equivalence
+and all the assertions about scales. Applying it in both directions gives
+finite symmetric difference. Finally equality of laws recovers equality of
+ladders by Proposition~\ref{prop:composition}; the ratio at index $j$
+recovers membership of $j$ in $S$. Taking $S=\varnothing$ in the
+unscaled criterion gives $\mu_{\varnothing}=\Mu2=\mu_T*\nu$ for
+every $T$, proving the final assertion.
+\end{proof}
+
+\begin{remark}[Orientation of the order]
+The displayed equations fix the order convention: the \emph{target}
+$\mu_S$ contains a scaled copy of the \emph{source} $\mu_T$ when
+$S\subseteq^*T$. Larger sets introduce more prime denominators and hence
+smaller summands. This avoids the ambiguity of calling convolution
+containment an order without specifying its direction.
+\end{remark}
+
+\subsection{The encoding is continuous in all derivatives}
+Equip $2^{\N_{>0}}$ with its product topology, and equip
+$C^\infty_{[-1,1]}(\R)$ with the seminorms
+$\|f^{(r)}\|_\infty$, $r\ge0$, restricting to functions supported in
+$[-1,1]$.
+
+\begin{proposition}[A compact family of smooth densities]\label{prop:continuous}
+The map $S\mapsto f_S$ is continuous and injective, and hence a
+homeomorphism onto a compact subset $\mathcal K$ of
+$C^\infty_{[-1,1]}(\R)$. More explicitly, put
+\[
+ \overline A_j=2^j\prod_{i=1}^jp_i,\qquad
+ C_r=2^{r+1}\prod_{j=0}^{r+1}\overline A_j.
+\]
+If $S,T$ agree on the first $N$ positions and $N\ge r+2$, then
+\begin{equation}\label{eq:continuity-bound}
+ \|f_S^{(r)}-f_T^{(r)}\|_\infty\le C_r2^{-N}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Their prefix densities through index $N$ agree. Couple the remaining tails
+using the same uniforms. Each tail is bounded by $1/(2A_{S,N})$, and
+$A_{S,N}=A_{T,N}\ge2^N$. Therefore the difference of the two tails has
+absolute value at most $1/A_{S,N}\le2^{-N}$.
+The common prefix has $r$th derivative Lipschitz with constant
+$L_r(A_S)\le C_r$, by the proof of
+Proposition~\ref{prop:approximation}. Taking expectations of the shifted
+prefix proves \eqref{eq:continuity-bound}. This is continuity in every
+seminorm. Injectivity was proved in Theorem~\ref{thm:boolean}; a continuous
+injection from compact Cantor space into a Hausdorff space is a
+homeomorphism onto its image.
+\end{proof}
+
+The common compact support and the continuity in every derivative are
+important. The classification barrier below is not produced by a sequence
+of increasingly singular target densities, by unbounded supports, or by
+a discontinuous coding map. It is present inside one compact family of
+ordinary smooth probability densities.
+
+\subsection{No Borel real-valued complete invariant}
+Define $f\sim g$ on $\mathcal K$ when each of the corresponding laws is a
+convolution of a positive dilation of the other with a probability measure.
+A real-valued \emph{complete invariant} would be a map $I$ such that
+$I(f)=I(g)$ holds exactly when $f\sim g$. The requirement that $I$ be
+Borel measurable excludes arbitrary nonmeasurable choices of representatives.
+
+\begin{theorem}[Nonsmooth classification on a compact smooth family]
+\label{thm:nonsmooth}
+There is no Borel measurable real-valued complete invariant for $\sim$ on
+$\mathcal K$. There is also no complete invariant consisting of countably
+many Borel real-valued coordinates. In fact, every continuous real-valued
+invariant for $\sim$ is constant on $\mathcal K$.
+\end{theorem}
+\begin{proof}
+Suppose first that $I$ were a Borel complete invariant, and pull it back
+along the continuous map of Proposition~\ref{prop:continuous}:
+$J(S)=I(f_S)$. By Theorem~\ref{thm:boolean}, $J$ is unchanged under every
+finite modification of $S$.
+
+Give the bits of $S$ the independent fair-coin law. For each rational $t$,
+the Borel event $\{J\le t\}$ is unchanged by modifying the first $N$ bits,
+for every $N$. It is therefore measurable with respect to the bits after
+$N$: fix the first $N$ bits to zero to see that its membership depends only
+on the remaining coordinates. Hence it is a tail event.
+
+A tail event has probability zero or one. One elementary proof is that
+such an event is independent of each finite-coordinate cylinder; the
+monotone-class argument extends independence to the sigma-algebra generated
+by all cylinders, which contains the event itself. Its probability $p$
+then obeys $p=p^2$.
+It follows that the distribution function of the real random variable
+$J$ takes only the values zero and one at rational arguments. Consequently
+$J$ is almost surely equal to a constant: take the cut between rational
+arguments of probability zero and those of probability one. The cut is
+finite because $J$ is real valued, and continuity of probability from
+above and below gives the claim.
+
+Completeness of $I$ would place this conull level set inside a single
+$E_0$-class. But each such class is countable, since there are only
+countably many finite changes of a fixed sequence; each individual sequence
+has fair-coin measure zero. This is a contradiction.
+
+For countably many Borel real coordinates, apply the same argument to each
+coordinate and intersect their conull sets of constancy. The complete
+coordinate vector is again constant on a conull set, giving the same
+contradiction. Finally each $E_0$-class is dense in Cantor space, since a
+finite change can prescribe any finite initial block. A continuous invariant
+constant on one such dense class is constant everywhere.
+\end{proof}
+
+\begin{remark}[What the obstruction does not say]
+The full Fourier transform remains a complete invariant for \emph{equality}
+of probability laws. The theorem instead concerns the coarser relation
+of mutual scaled factorability. It does not say that this relation is
+non-Borel: on the constructed family it is the familiar Borel relation
+$E_0$. Nor does it prohibit a nonmeasurable choice-based assignment of real
+labels. The precise negative conclusion is the absence of measurable
+complete labels by equality of real numbers or countable real sequences.
+\end{remark}
+
+\section{Effective classification: exact arithmetical complexity}
+\label{sec:computability}
+
+\subsection{Input model and the meaning of completeness}
+An effective assertion requires a presentation model. Use finite program
+codes for primitive-recursive functions specifying the positive ladder
+ratios, with validity guaranteed by construction. For example, from any
+primitive-recursive $h:\N_0\to\N_0$ take
+\[
+ A_0=1,\qquad A_{k+1}=A_k(2+h(k)).
+\]
+This represents valid ladders without a separate undecidable totality or
+validity test. All the hardness constructions below have ratios of this
+form. The conclusions also hold as promise-problem statements for any
+larger presentation system containing these examples and providing their
+integer entries effectively.
+
+A predicate is $\Pi^0_1$ when it has the form $\forall k\,R(e,k)$ with
+a decidable relation $R$; it is $\Sigma^0_2$ when it has the form
+$\exists m\,\forall k\,R(e,m,k)$. Completeness means that every predicate
+at the indicated level can be transformed effectively into the problem
+under consideration, preserving yes and no answers. For the hardness
+proofs we use the usual primitive-recursive matrix normal forms, so the
+constructed ladder entries remain primitive recursive.
+
+\begin{theorem}[Effective complexity of exact factors]\label{thm:complexity}
+For primitive-recursively presented divisibility ladders $A,B$:
+\begin{enumerate}[label=(\roman*)]
+\item For each fixed integer $m\ge1$, existence of a factor in
+$\mu_A=\D_{1/m}\mu_B*\nu$ is $\Pi^0_1$-complete.
+\item Existence of a factor at \emph{some} positive real scale $c$ is
+$\Sigma^0_2$-complete.
+\end{enumerate}
+The target and source densities in the hardness examples are uniformly
+computable together with all derivatives, with the quantitative error
+bounds of Proposition~\ref{prop:approximation}.
+\end{theorem}
+\begin{proof}
+For (i), the upper bound follows from the criterion
+$\forall k\;(A_k\mid mB_k)$, which is a universal quantification of a
+decidable integer test.
+
+For hardness, start with an arbitrary $\Pi^0_1$ predicate
+$\forall t\,R(e,t)$ in primitive-recursive normal form. Choose an odd prime
+$p$ that does not divide the fixed integer $m$. Set $\varepsilon_0=0$ and,
+for $k\ge1$, set $\varepsilon_k=1$ if some $t<k$ violates $R(e,t)$,
+and $\varepsilon_k=0$ otherwise. This is a nondecreasing binary sequence
+computed by a bounded search. Define
+\[
+ B_k=2^k,\qquad A_k=2^kp^{\varepsilon_k}.
+\]
+Both are valid primitive-recursive ladders. If there is no violation, they
+are equal and the factor exists. If there is a violation, all sufficiently
+late $A_k$ contain the extra prime $p$, which cannot divide $mB_k$.
+The factor therefore exists exactly when the original $\Pi^0_1$
+predicate holds.
+
+For (ii), Theorem~\ref{thm:ladder} eliminates quantification over arbitrary
+real scales and gives the $\Sigma^0_2$ upper bound
+\[
+ \exists m\ge1\ \forall k\ge0\;(A_k\mid mB_k).
+\]
+To prove hardness, let $W_e$ be a computably enumerable set of positive
+integers, with a fixed bounded-stage enumeration. Define
+\begin{equation}\label{eq:ce-ladders}
+ B_k=2^k,\qquad
+ A_k=2^k\prod_{\substack{1\le j\le k\\
+                    j\text{ enumerated in }W_e\text{ by stage }k}}p_j.
+\end{equation}
+Membership in this finite stage condition is decided by bounded simulation;
+products and the enumeration of the first $k$ odd primes are primitive
+recursive. The set of prime factors included is nondecreasing in $k$, so
+these are valid ladders. Every $j\in W_e$ eventually contributes $p_j$.
+Corollary~\ref{cor:lcm} shows that some scale exists if and only if $W_e$
+is finite.
+
+Here is a direct verification of the needed hardness of finiteness, rather
+than an unsupported appeal to it. Given
+$\exists n\,\forall t\,R(e,n,t)$ with primitive-recursive $R$, let
+$\ell_s$ be the least $n\le s$ for which $R(e,n,t)$ holds for every
+$t\le s$, or $s+1$ if no such $n$ exists. Enumerate a fresh integer whenever
+$\ell_s$ changes. If there is a true witness, the least one eventually
+survives while all smaller candidates have been refuted, so $\ell_s$
+stabilizes and the enumerated set is finite. If there is no witness, every
+bounded collection of candidates is eventually refuted, so
+$\ell_s\to\infty$ and changes infinitely often. Thus the enumerated set
+is finite exactly when the given $\Sigma^0_2$ predicate holds. Composing
+this construction with \eqref{eq:ce-ladders} proves hardness.
+
+Finally, every entry of the constructed ladders is uniformly computable
+from the input code. The rational spline and explicit derivative error
+bound in Proposition~\ref{prop:approximation} apply uniformly to them.
+The complexity is therefore a property of exact factorization, not a
+failure to compute the smooth input functions.
+\end{proof}
+
+\subsection{Consequences for certificate-based computation}
+For a fixed reciprocal-integer scale, a search for a failed divisibility
+condition semidecides nonexistence: the first failed index is an exact
+certificate. A general terminating algorithm for both existence and
+nonexistence would contradict Theorem~\ref{thm:complexity}. Likewise,
+searching for successively better numerical agreement between transforms
+cannot solve the unrestricted exact problem.
+
+This does not obstruct useful algorithms on structured subclasses. For
+constant integer bases, Theorem~\ref{thm:crossbase} reduces everything to
+finite prime factorization. More generally, a symbolic description that
+proves eventual periodicity or bounded prime deficits can certify the
+infinite condition. The theorem identifies what additional structural
+information an implementation must exploit; it does not say that every
+individual instance is difficult.
+
+There is also a separation between computing a factor and recognizing
+that it exists. Once the arithmetic hypotheses are provided with a proof,
+\eqref{eq:digit-remainder} computes the factor weakly by its finite digit
+prefixes with an explicit tail bound. Such a computation is perfectly
+compatible with undecidability of the unpromised existence problem.
+
+
+\subsection{A terminating algorithm for eventually periodic ratios}
+\begin{proposition}[Periodic-ratio decision theorem]\label{prop:periodic}
+Suppose the integer ratios $A_{k+1}/A_k$ and $B_{k+1}/B_k$ are periodic
+for $k\ge K$ with a common period $P\ge1$. Put
+\[
+ Q_A=A_{K+P}/A_K,\qquad Q_B=B_{K+P}/B_K.
+\]
+Some positive-scale factor exists if and only if $Q_A\mid Q_B$.
+When this holds,
+\begin{equation}\label{eq:periodic-lcm}
+ L(A,B)=\lcm_{0\le k<K+P}\frac{A_k}{\gcd(A_k,B_k)}.
+\end{equation}
+Thus the existence problem, all scales, and the largest scale are decided
+by a finite calculation from a certified eventually periodic presentation.
+\end{proposition}
+\begin{proof}
+For $0\le r<P$ and $j\ge0$, periodicity gives
+$A_{K+jP+r}=A_{K+r}Q_A^j$ and
+$B_{K+jP+r}=B_{K+r}Q_B^j$.
+At any prime $p$ the exponent difference is therefore
+\[
+ v_p(A_{K+r})-v_p(B_{K+r})
+   +j\bigl(v_p(Q_A)-v_p(Q_B)\bigr).
+\]
+A positive slope makes the deficits unbounded and excludes every finite
+$m$. When all slopes are nonpositive, their maxima are attained at $j=0$;
+together with the initial indices these are exactly the finite tests in
+\eqref{eq:periodic-lcm}. Corollary~\ref{cor:lcm} completes the proof.
+\end{proof}
+
+For example, alternating ratios $(2,6)$ and $(3,4)$ have the same period
+product $12$. Their laws are mutually scaled-factorable, with minimal
+scale denominators $2$ and $3$ in the respective directions. On the other
+hand, period products $12$ and $18$ do not admit the factor in the first
+direction: ordinary numerical size $12<18$ is insufficient because
+$12\nmid18$. This finite algorithm and the unrestricted impossibility
+result apply to different input classes and are entirely consistent.
+
+\section{Same-base remainders: singularity and finite smoothing}
+\label{sec:regularity}
+
+\subsection{Digit representation and extraction of full base factors}
+Fix integers $a\ge2$ and $m\ge1$. Let $\eta_{a,m}$ be the unique measure
+such that
+\begin{equation}\label{eq:same-base}
+ \Mu a=\D_{1/m}\Mu a*\eta_{a,m}.
+\end{equation}
+Theorem~\ref{thm:ladder} gives
+\begin{equation}\label{eq:same-digits}
+ \eta_{a,m}=\Law\left(\frac1m\sum_{k\ge0}a^{-k}
+       \left(J_k-\frac{m-1}{2}\right)\right),
+ \qquad J_k\text{ uniform on }\{0,\ldots,m-1\}.
+\end{equation}
+The support radius is $(1-1/m)a/(2(a-1))$. For $m=1$ this is $\delta_0$.
+
+Write
+\begin{equation}\label{eq:base-valuation}
+ m=a^d r,\qquad d=\max\{j\ge0:a^j\mid m\},\qquad a\nmid r.
+\end{equation}
+When $r=1$, the last condition holds automatically because $a\ge2$.
+For composite $a$, $d$ is divisibility by powers of the \emph{whole} base;
+it is not the valuation at a single arbitrarily chosen prime.
+
+\begin{proposition}[Uniform smoothing decomposition]\label{prop:smoothing}
+With \eqref{eq:base-valuation},
+\begin{equation}\label{eq:smoothing}
+ \eta_{a,m}=
+ \left(\mathop{*}_{j=0}^{d-1}\Unif_{a^{-j}}\right)
+ *\D_{a^{-d}}\eta_{a,r},
+\end{equation}
+where an empty convolution is $\delta_0$.
+\end{proposition}
+\begin{proof}
+The self-factor formula for the scale $a^{-d}$ is obtained by splitting
+the geometric series into its first $d$ terms and its tail. Thus
+$\eta_{a,a^d}=\mathop{*}_{j<d}\Unif_{a^{-j}}$.
+Apply the composition identity \eqref{eq:cocycle} with scales $a^{-d}$
+and $1/r$. This gives \eqref{eq:smoothing} without division at Fourier zeros.
+Equivalently, the quotient of transforms telescopes through the first $d$
+sinc factors.
+\end{proof}
+
+\subsection{The primitive remainder is singular continuous}
+Define the centered digit mask
+\begin{equation}\label{eq:mask}
+ h_r(u)=\frac1r\sum_{j=0}^{r-1}e^{2\pi iu(j-(r-1)/2)}.
+\end{equation}
+The absolute value $|h_r|$ is one-periodic. The mask itself equals
+$h_r(u)=\sin(\pi ru)/(r\sin(\pi u))$ whenever the denominator is nonzero,
+with the removable values filled in by \eqref{eq:mask}. Thus
+\begin{equation}\label{eq:eta-transform}
+ \widehat\eta_{a,r}(t)=\prod_{k\ge0}h_r\left(\frac{t}{ra^k}\right).
+\end{equation}
+
+\begin{lemma}[Exact Fourier resonance]\label{lem:resonance}
+If $r\ge2$ and $a\nmid r$, the number
+\begin{equation}\label{eq:resonance-constant}
+ C_{a,r}:=\prod_{\ell\ge1}
+ \left|\frac{\sin(\pi r/a^\ell)}{r\sin(\pi/a^\ell)}\right|
+\end{equation}
+is positive, and for every $N\ge0$,
+\begin{equation}\label{eq:resonance}
+ |\widehat\eta_{a,r}(ra^N)|=C_{a,r}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $t=ra^N$, the mask arguments for $k\le N$ are integers and their
+absolute values are one. Reindexing the remaining factors gives
+\eqref{eq:resonance-constant}. Its denominators are nonzero. A numerator
+could vanish only if $a^\ell\mid r$, which would imply $a\mid r$.
+Every factor is therefore nonzero. As $\ell\to\infty$ the factor is
+$1+O(a^{-2\ell})$, so the product of their absolute values converges to
+a nonzero number.
+\end{proof}
+
+\begin{theorem}[Primitive digit remainder]\label{thm:primitive}
+If $r\ge2$ and $a\nmid r$, the probability measure $\eta_{a,r}$ is
+atomless and singular with respect to Lebesgue measure. If $r<a$, its
+self-similar support has disjoint first-level pieces. If $r\ge a$, its
+support is its entire closed support interval, despite the singularity.
+\end{theorem}
+\begin{proof}
+The random series satisfies the self-similar distributional equation
+\begin{equation}\label{eq:ifs}
+ Y\ \stackrel{d}{=}\ \frac{Y'}a+\frac{J-(r-1)/2}{r},
+\end{equation}
+with $Y'$ an independent copy and $J$ a uniform digit. This equation has a
+unique probability solution. Indeed, iterate its characteristic-function
+equation $n$ times; the remaining characteristic factor is evaluated at
+$t/a^n$ and tends to one. The other factors converge to
+\eqref{eq:eta-transform}, determining the law uniquely. This is a direct
+special-case proof of the contracting self-similar measure construction
+associated with \cite{hutchinson}.
+
+The affine maps in \eqref{eq:ifs} preserve absolute continuity and also
+preserve singularity of measures with respect to Lebesgue measure. The
+operator that averages their pushforwards therefore preserves both parts
+of the Lebesgue decomposition separately. If the stationary measure had
+both parts with positive mass, each part after normalization would be a
+stationary probability, contradicting uniqueness. The measure is consequently
+of pure type. Its Fourier transform does not tend to zero by
+Lemma~\ref{lem:resonance}, whereas the Fourier transform of every integrable
+density tends to zero. The latter elementary Riemann--Lebesgue assertion
+follows by approximating the density in $L^1$ by step functions on bounded
+intervals, whose Fourier integrals tend to zero explicitly. The measure
+cannot be absolutely continuous, and hence is purely singular.
+
+To exclude atoms, suppose the largest atom mass were $p>0$. Such a maximum
+is attained: only finitely many atoms can have mass at least half the
+supremum. Let $E$ be the finite nonempty set of atoms of mass $p$.
+For $x\in E$, the average in \eqref{eq:ifs} can equal $p$ only if every
+inverse image under all $r$ affine maps also has mass $p$. Each inverse
+map is injective and sends $E$ into $E$, hence permutes it. An affine map
+with expansion factor $a>1$ cannot permute a finite set of positive diameter,
+so $E$ is a singleton. Distinct digit maps have distinct fixed points and
+cannot all preserve that singleton. This contradiction proves atomlessness.
+
+Finally the convex hull of the support has length
+$H=(r-1)a/(r(a-1))$. Its first-level images have length $H/a$ and adjacent
+left endpoints separated by $1/r$. They are disjoint when $r<a$ and
+cover the full hull when $r\ge a$. In the latter case the hull is an
+invariant compact set, so it equals the self-similar attractor. Uniqueness
+of that compact attractor follows by iterating the maps: their Hausdorff
+contraction ratio is $1/a$. Alternatively, the possible digit prefixes
+plus a tail of diameter $Ha^{-n}$ converge to the same set.
+\end{proof}
+
+\subsection{Sharp differentiability of every same-base remainder}
+The space $W^{d,1}(\R)$ consists of integrable functions whose distributional
+derivatives through order $d$ are integrable functions. A function is of
+bounded variation when its distributional first derivative is a finite
+signed measure. These distinctions matter for a continuous function whose
+derivative is singular, as with a Cantor distribution function.
+
+\begin{theorem}[Complete integer regularity classification]
+\label{thm:regularity}
+Write $m=a^dr$ as in \eqref{eq:base-valuation}.
+\begin{enumerate}[label=(\roman*)]
+\item If $m=1$, then $\eta_{a,m}=\delta_0$.
+\item If $d=0$ and $r\ge2$, then $\eta_{a,m}$ is singular continuous.
+\item If $d\ge1$ and $r=1$, then $\eta_{a,m}$ is the convolution of the
+$d$ uniforms in \eqref{eq:smoothing}. For $d=1$ its density has no continuous
+representative. For $d\ge2$ its density is $C^{d-2}$ but not $C^{d-1}$.
+In every case it has bounded weak derivatives through order $d-1$.
+\item If $d\ge1$ and $r\ge2$, then $\eta_{a,m}$ has a compactly supported
+density $f\in C^{d-1}(\R)$. The derivative $f^{(d-1)}$ is continuous and
+of bounded variation, but is not absolutely continuous. Consequently
+$f\notin W^{d,1}(\R)$ and $f\notin C^d(\R)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first two assertions follow immediately from the digit representation
+and Theorem~\ref{thm:primitive}. For (iii), repeated convolution of interval
+indicators gives a degree-$(d-1)$ spline, with continuous derivatives
+through order $d-2$ when $d\ge2$. Differentiate $d-1$ different uniform
+factors distributionally and leave the last uniform undifferentiated;
+this also shows that the $(d-1)$st weak derivative is bounded.
+Near the left endpoint $L$ of the support, before any other spline knot,
+the density is a positive constant times $(x-L)_+^{d-1}$.
+Its $(d-1)$st derivative has a nonzero jump, proving the sharp failure
+of $C^{d-1}$. For $d=1$ this is exactly the jump of a uniform density.
+
+For (iv), put $\lambda=\D_{a^{-d}}\eta_{a,r}$, which is atomless singular.
+After differentiating $d-1$ of the uniform factors, $f^{(d-1)}$ is a finite
+linear combination of translates of the convolution of one uniform with
+$\lambda$. Such a convolution is continuous: for a uniform of length
+$\ell$ its density is
+\[
+ x\longmapsto \frac{\lambda([x-\ell/2,x+\ell/2])}{\ell},
+\]
+with endpoint conventions immaterial because $\lambda$ is atomless.
+Its continuity follows from continuity of the distribution function of
+$\lambda$. This proves $f\in C^{d-1}$.
+
+Differentiating all $d$ uniform factors instead gives
+\begin{equation}\label{eq:singular-derivative}
+ D^df=\left(\mathop{*}_{j=0}^{d-1}
+ a^j(\delta_{-a^{-j}/2}-\delta_{a^{-j}/2})\right)*\lambda,
+\end{equation}
+a finite signed sum of translates of a singular measure. It is a singular
+finite signed measure. It is nonzero, since $D^df=0$ would make $f$ a
+polynomial of degree at most $d-1$ as a distribution, and a compactly
+supported polynomial must be zero, contradicting mass one. Thus
+$f^{(d-1)}$ is of bounded variation but cannot be absolutely continuous:
+its derivative is a nonzero singular measure. The asserted Sobolev and
+classical nonmembership follow.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}cc>{\raggedright\arraybackslash}p{9.0cm}@{}}
+\toprule
+Base $a$ & $m$ & Remainder type and sharp integer regularity\\
+\midrule
+2 & 2 & One uniform; discontinuous density.\\
+2 & 3 & Singular continuous with interval support.\\
+2 & 4 & Two-uniform spline; continuous, not $C^1$.\\
+2 & 6 & Continuous density with a nonzero singular derivative.\\
+2 & 8 & Three-uniform spline; $C^1$, not $C^2$.\\
+2 & 12 & $C^1$ density whose second derivative is singular.\\
+3 & 2 & Separated two-digit Cantor-type measure.\\
+3 & 6 & Continuous density of exact H\"older exponent $\log 2/\log 3$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last entry uses the sharper result proved in
+Section~\ref{sec:holder}. The table concerns the remainder, not the target:
+all geometric target laws in it have $C^\infty$ densities.
+
+\section{Sharp Fourier order and separated-digit H\"older regularity}
+\label{sec:fourier}
+
+\subsection{The exact power envelope after smoothing}
+The density regularity in Theorem~\ref{thm:regularity} has a matching
+Fourier statement. The nondecaying primitive digit transform loses exactly
+one power for each extracted uniform factor, not an unspecified amount.
+
+\begin{lemma}[Offset resonance]\label{lem:offset}
+Let $r\ge2$, $a\nmid r$, and $\delta\in\R$. Then
+\begin{equation}\label{eq:offset}
+ \lim_{N\to\infty}|\widehat\eta_{a,r}(ra^N+\delta)|
+ =C_{a,r}|\widehat\eta_{a,r}(\delta)|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Split the mask product \eqref{eq:eta-transform} at $k=N$. For $k\le N$,
+periodicity of the absolute value of $h_r$ gives
+\[
+ \left|h_r\left(a^{N-k}+\frac{\delta}{ra^k}\right)\right|
+ =\left|h_r\left(\frac{\delta}{ra^k}\right)\right|.
+\]
+Their product converges to $|\widehat\eta_{a,r}(\delta)|$.
+For $k=N+\ell$ with $\ell\ge1$, the factors are
+\[
+ \left|h_r\left(a^{-\ell}+\frac{\delta}{ra^{N+\ell}}\right)\right|.
+\]
+For each fixed $\ell$ they tend to $|h_r(a^{-\ell})|$. The convergence
+of the infinite products is justified uniformly in $N$ after discarding
+finitely many initial values of $N$: for large $\ell$, all arguments are
+bounded by a constant times $a^{-\ell}$ and
+$h_r(u)=1+O(u^2)$ near zero. The summable bound $O(a^{-2\ell})$ controls
+the product tails uniformly. The limiting tail product is $C_{a,r}$.
+\end{proof}
+
+\begin{theorem}[Sharp power Fourier decay]\label{thm:fourier}
+Let $m=a^dr$ as in \eqref{eq:base-valuation}, with $d\ge1$. Then
+\begin{equation}\label{eq:fourier-order}
+ |\widehat\eta_{a,m}(t)|=O(|t|^{-d})\qquad(|t|\to\infty),
+ \qquad
+ \limsup_{t\to\infty}t^d|\widehat\eta_{a,m}(t)|>0.
+\end{equation}
+More precisely, let $t_N=ma^N+1/2$. With the conventions
+$C_{a,1}=1$ and $\widehat\eta_{a,1}=1$,
+\begin{align}\label{eq:fourier-limit}
+ \lim_{N\to\infty}t_N^d|\widehat\eta_{a,m}(t_N)|
+ &=\frac{a^{d(d-1)/2}}{\pi^d}
+   \left(\prod_{j=0}^{d-1}\sin\frac{\pi}{2a^j}\right)
+   C_{a,r}\left|\widehat\eta_{a,r}\left(\frac1{2a^d}\right)\right|
+ >0.
+\end{align}
+Thus the power $d$ cannot be replaced by any larger power in a global
+upper bound. When $d=0$ and $r\ge2$, there is no decay to zero at all.
+\end{theorem}
+\begin{proof}
+Taking Fourier transforms in \eqref{eq:smoothing} gives
+\[
+ \widehat\eta_{a,m}(t)
+ =\left(\prod_{j=0}^{d-1}\sinc(t/a^j)\right)
+   \widehat\eta_{a,r}(t/a^d).
+\]
+The last factor has modulus at most one, and the finite product is
+$O(|t|^{-d})$.
+For the special sequence $t_N$, every $ma^N/a^j$ with $j<d$ is an integer.
+Consequently
+\[
+ t_N^d\prod_{j=0}^{d-1}|\sinc(t_N/a^j)|
+ =\frac{a^{d(d-1)/2}}{\pi^d}
+   \prod_{j=0}^{d-1}\sin\frac{\pi}{2a^j}.
+\]
+The remaining argument is
+$t_N/a^d=ra^N+1/(2a^d)$. Apply Lemma~\ref{lem:offset}, or use the constant
+transform if $r=1$, to obtain \eqref{eq:fourier-limit}.
+Every finite sine factor is positive. The residual transform at
+$\delta=1/(2a^d)$ is nonzero: in \eqref{eq:eta-transform} its numerator
+arguments are $\delta/a^k\in(0,1)$, no factor vanishes, and the tail product
+is nonzero. Finally the $d=0$ assertion is Lemma~\ref{lem:resonance}.
+\end{proof}
+
+A positive limsup is the appropriate sharpness statement, not a pointwise
+lower bound: these transforms have many zeros. In particular, the theorem
+does not assert $|\widehat\eta(t)|\asymp|t|^{-d}$ at every large frequency.
+
+\subsection{An exact fractional exponent in the separated case}
+\label{sec:holder}
+When $2\le r<a$, let $\alpha=\log r/\log a\in(0,1)$. For a function $g$,
+H\"older continuity of exponent $\alpha$ means
+$|g(x)-g(y)|\le C|x-y|^\alpha$ for all real $x,y$ and a fixed constant $C$.
+
+\begin{theorem}[Sharp separated-digit H\"older exponent]\label{thm:holder}
+Assume $2\le r<a$.
+The distribution function of $\eta_{a,r}$ is globally H\"older continuous
+of exponent $\alpha=\log r/\log a$, and is not H\"older continuous with
+any exponent $\beta$ satisfying $\alpha<\beta\le1$.
+For $d\ge1$ and $m=a^dr$, the density in Theorem~\ref{thm:regularity}
+satisfies
+\begin{equation}\label{eq:holder}
+ f\in C^{d-1,\alpha}(\R),\qquad
+ f\notin C^{d-1,\beta}(\R)\quad(\alpha<\beta\le1).
+\end{equation}
+Here $C^{d-1,\alpha}$ means that the $(d-1)$st derivative is globally
+H\"older of exponent $\alpha$.
+\end{theorem}
+\begin{proof}
+Let $H$ be the convex-hull length of the primitive support. At level $n$,
+there are $r^n$ cylinder sets, each of mass $r^{-n}$, each contained in an
+interval of length $Ha^{-n}$. Strong separation gives a constant $g>0$
+such that distinct level-$n$ hull intervals are separated by at least
+$ga^{-(n-1)}$. Indeed, two cylinders first differing at level $j\le n$
+lie in different first-level pieces of a common level-$(j-1)$ cylinder;
+scaling the first-level gap gives at least this bound.
+
+An interval of length at most $Ha^{-n}$ can therefore meet only a bounded
+number of level-$n$ cylinders, independently of $n$. Choose $n$ so that
+$Ha^{-(n+1)}<|I|\le Ha^{-n}$. Its measure is at most $K r^{-n}$ for a
+constant $K$, and $r^{-n}=(a^{-n})^\alpha\le(a|I|/H)^\alpha$.
+The finitely larger interval sizes are absorbed by increasing the
+constant. Thus $\eta_{a,r}(I)\le C|I|^\alpha$, which proves the H\"older
+bound for its distribution function.
+
+For sharpness let $L$ be the left endpoint of the primitive support.
+The leftmost level-$n$ cylinder lies in $[L,L+Ha^{-n}]$ and has exactly
+mass $r^{-n}$; no other cylinder intersects this hull. Since there is no
+atom at $L$, the distribution-function increment on this interval is
+$r^{-n}$. The quotient of that increment by $(Ha^{-n})^\beta$ is
+$H^{-\beta}a^{n\beta}/r^n$, which tends to infinity for $\beta>\alpha$.
+
+For the smoothed density set $\lambda=\D_{a^{-d}}\eta_{a,r}$,
+$\ell_j=a^{-j}$, and $R_d=\frac12\sum_{j<d}\ell_j$. Integrating
+\eqref{eq:singular-derivative} once from $-\infty$ gives the explicit formula
+\begin{equation}\label{eq:cdf-derivative}
+ f^{(d-1)}(x)=\frac1{\prod_{j<d}\ell_j}
+ \sum_{E\subseteq\{0,\ldots,d-1\}}(-1)^{|E|}
+ F_\lambda\left(x+R_d-\sum_{j\in E}\ell_j\right).
+\end{equation}
+Each summand is H\"older of exponent $\alpha$, proving the upper assertion.
+Near the left endpoint of the support of $f$, with distance smaller than
+$\min_j\ell_j$, all terms except $E=\varnothing$ vanish. At that endpoint
+the sharp increments just established for the scaled distribution function
+therefore survive without cancellation, proving the lower assertion.
+\end{proof}
+
+The separated assumption is substantive. When $r\ge a$ and $a\nmid r$,
+the measure is still singular by Theorem~\ref{thm:primitive}, but cylinder
+intervals overlap and the bounded-intersection estimate used here is no
+longer valid. No formula for its exact H\"older exponent is asserted.
+
+\section{Verification, mathematical dependencies, and integration}
+\label{sec:verification}
+
+\subsection{What was checked computationally}
+The accompanying \texttt{verify.py} uses only Python's standard library,
+unbounded integers, and \texttt{fractions.Fraction}. Its exact finite tests
+were run successfully for this article. The machine-readable receipt is
+\texttt{verification\_results.json}. The principal test counts are:
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{10.1cm}r@{}}
+\toprule
+Test family & Cases or equalities\\
+\midrule
+Five-entry ladders with ratios in $\{2,3,4\}$, all ordered pairs,
+scale denominators $1$ through $12$ & 78,732\\
+Additional zero-order comparisons at fixed integer frequencies & 214,180\\
+Exact uniform interval tilings & 96\\
+Uniform splitting moments, through order $12$ & 1,248\\
+Geometric finite-prefix factorization cases & 108\\
+Finite-prefix factorization moments, through order $10$ & 1,188\\
+Ordered pairs of subsets of an eight-element prime index set & 65,536\\
+Allowed integer-base/scale triples checked at initial powers & 920\\
+Forbidden integer-base/scale triples with explicit prime witnesses & 6,300\\
+Composition-of-remainders moment equalities, through order $10$ & 825\\
+Period-two ratio schedules and scale denominators $1$ through $24$ & 6,144\\
+\bottomrule
+\end{tabular}
+\end{center}
+The ladder tests compare coordinate divisibility, zero-order conditions at
+source generators, and the lcm criterion. The moment tests check the
+positive digit construction independently through exact rational moments.
+For forbidden integer-base pairs the program computes a prime and an index
+at which the zero-order inequality fails; it does not infer impossibility
+from a finite absence of successful examples.
+
+These are regression tests for algebra, indexing, normalization, and
+finite instances. They are \emph{not} a replacement for the proofs of
+infinite product convergence, singularity, Borel nonsmoothness, or hierarchy
+completeness. No random sampling or floating-point experiment is used as
+evidence for those conclusions.
+
+\subsection{Proof dependencies and candidate formalization boundaries}
+The mathematical dependencies can be separated into four layers. The first
+is elementary integer arithmetic: divisibility chains, prime valuations,
+initial-segment zero counts, and lcm obstructions. The second is probability:
+independent bounded sums, finite uniform splitting, and uniqueness of
+characteristic functions. The third is analysis: entire product convergence,
+zero multiplicities, Fourier inversion, and finite-measure distributional
+derivatives. The fourth is classification: prime coding, tail zero--one
+arguments, and explicit computability reductions.
+
+The repository's existing product and probability infrastructure is a
+natural place to reuse established interfaces \cite{repo-inverse}. A sound
+formalization plan should not simply postulate that a quotient is a
+characteristic function. It should first formalize the uniform splitting
+identity and assemble the actual independent digit law. Conversely, the
+necessary direction should record compactness of the unknown factor before
+using entire zero multiplicities.
+
+A practical first formalization target is the arithmetic equivalence between
+$\forall k\;(A_k\mid mB_k)$ and the generator zero-count inequalities.
+A second target is the finite-prefix probability identity, followed by its
+limit under an explicit deterministic tail bound. Those components already
+isolate most of the main theorem's logical burden. The periodic-ratio
+algorithm then reduces to finite arithmetic. The non-Borel classification
+and hierarchy-completeness sections require additional libraries and should
+not be labeled verified merely because the arithmetic component compiles.
+
+\subsection{Result-status ledger}
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}p{7.6cm}@{}}
+\toprule
+Result or ingredient & Status in this article\\
+\midrule
+Dyadic sinc product and dyadic zero orders & Classical; attributed to
+Arias de Reyna.\\
+Dyadic identical-convolution rootlessness & Identified repository overlap;
+included only as a baseline corollary.\\
+General ladder and cross-base factor classifications & Proved here from
+explicit hypotheses; broader priority unconfirmed.\\
+Prime coding in a compact smooth family; effective hardness & Proved here;
+classical $E_0$ and computability methods are not claimed as new.\\
+Primitive singularity and smoothing classification & Full proofs supplied;
+related to classical self-similar-measure theory, with no exhaustive novelty
+claim.\\
+Sharp Fourier order and separated H\"older exponent & Proved here, including
+noncancellation and resonance details.\\
+Finite verification program & Executed successfully; not a Lean proof.\\
+Further research questions & Proposed boundaries and extensions, not
+assertions that their global open status has been fully audited.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Further research questions and topics}
+\label{sec:questions}
+The questions below specify extensions not settled by this article.
+They should be checked against the relevant specialist literature before
+being advertised as globally open problems. The aim is to identify concrete
+next theorems and the precise mechanisms that the present proofs leave out.
+
+\begin{question}[Beyond divisibility ladders]
+For summable positive lengths $(\ell_k)$ and $(s_k)$, characterize when
+$\prod_k\sinc(\ell_kt)/\prod_k\sinc(cs_kt)$ is the Fourier transform of a
+probability measure. Which additional hypotheses make zero-divisor
+domination sufficient, and can one construct a compactly supported
+uniform-product counterexample where all zeros cancel but positivity fails?
+\end{question}
+Theorem~\ref{thm:ladder} uses an initial-segment property and coordinatewise
+interval tilings. Without a ladder, a successful approach may require
+matching several source factors to one target block, or a genuinely new
+positive-factor criterion. A useful first target is a finite union of
+integer divisibility chains with specified interlacing.
+
+\begin{question}[Two arbitrary geometric ratios]
+Determine all triples $(p,q,c)$ with $0<p,q<1$, $c>0$, for which
+$\mu_p=\D_c\mu_q*\nu$ has a probability solution.
+\end{question}
+Theorem~\ref{thm:self-spectrum} treats $p=q$, and
+Theorem~\ref{thm:crossbase} treats $p=1/a$ for an integer $a$.
+For general $p$, the target zeros are no longer confined to integers.
+The necessary inclusion of multiplicative zero sets suggests a role for
+relations between powers of $p$ and $q$, but zero inclusion alone has not
+been proved sufficient in that setting.
+
+\begin{question}[Regularity of cross-base digit remainders]
+When $a\mid b$ and $b>a$, classify the absolute continuity, exact smoothness,
+and Fourier decay of $\nu_{(a^k),(b^k),m}$.
+\end{question}
+Here digit counts grow as $m(b/a)^k$, so the remainder is not the
+fixed-digit self-similar law treated in Sections~\ref{sec:regularity}
+and~\ref{sec:fourier}. The finite digit mesh becomes much smaller than the
+width it fills. A quantitative comparison with an infinite uniform product
+might yield smoothing beyond the same-base classification, but this
+requires a proof controlling all frequency scales.
+
+\begin{question}[Overlapping primitive digits]
+For $r\ge a$ with $a\nmid r$, find effective formulas or algorithms for
+local dimensions and optimal H\"older exponents of the distribution
+function of $\eta_{a,r}$.
+\end{question}
+The measure has interval support and is singular; neither fact determines
+its local exponents. Finite carry-state descriptions of base-$a$
+expansions offer one concrete route. The separated-case exponent
+$\log r/\log a$ cannot simply be reused: it is at least one in this range
+and the separated-cylinder proof breaks down.
+
+\begin{question}[Finer function-space regularity]
+Determine sharp Sobolev, Besov, and fractional-variation membership for the
+densities of $\eta_{a,a^dr}$, especially when the primitive digits overlap.
+\end{question}
+The article fixes the last continuous integer derivative and proves a
+sharp pointwise power Fourier envelope. These do not alone determine
+integrated Fourier norms or all fractional smoothness scales, because a
+resonant subsequence can be thin. Quantifying the width and frequency of
+resonance neighborhoods is a possible next step.
+
+\begin{question}[Optimal approximate factorization]
+Determine or sharply estimate
+$\inf_\nu W_1(\mu_A,\D_{1/m}\mu_B*\nu)$, and identify when the Fourier
+obstruction in Proposition~\ref{prop:wasserstein} is asymptotically optimal.
+\end{question}
+The proposition already gives a strictly positive, support-independent
+lower bound from any failed divisibility condition. Remaining targets
+include upper bounds from constructive approximate factors, optimization
+over witness frequencies, and analogous sharp estimates in other metrics.
+Any estimate must depend on the witness scale:
+Proposition~\ref{prop:continuous} shows how small changes in high prime
+positions can be in every fixed derivative norm. A uniform separation over
+all nonfactorable pairs is therefore not a plausible substitute for a
+scale-sensitive analysis.
+
+\begin{question}[Decidable presentations beyond eventual periodicity]
+Extend Proposition~\ref{prop:periodic} to ratio sequences given by finite
+automata, substitutions, or other certified finite-state presentations.
+\end{question}
+The arithmetic problem is to decide whether all prime-exponent deficits
+remain bounded above and whether only finitely many primes contribute.
+For a finite alphabet of ratios, the second issue disappears, leaving a
+finite collection of weighted prefix-sum boundedness problems. The precise
+answer depends on the presentation class and should be stated with its
+input model and complexity, rather than as a generic algorithm for all
+computable ladders.
+
+\begin{question}[Classification complexity on larger classes]
+What is the exact Borel classification complexity of mutual scaled
+convolution factorability for arbitrary smooth compactly supported
+probability laws, or for broader infinite uniform products?
+\end{question}
+Theorem~\ref{thm:nonsmooth} supplies a concrete $E_0$ lower bound, even on a
+compact family. It does not establish a maximal lower bound or an upper
+classification theorem for the ambient class. A useful intermediate
+problem is to determine the complexity for finitely many interlaced ladders.
+
+\begin{question}[Multivariate arithmetic factors]
+Develop an analogue of Theorem~\ref{thm:ladder} for sums of uniforms on
+nested boxes, parallelotopes, or lattice fundamental domains in $\R^d$.
+\end{question}
+For products of independent one-dimensional ladders, the theorem applies
+coordinatewise when the dilation is diagonal. Non-diagonal integer maps
+introduce genuine lattice geometry. Smith normal forms may describe finite
+uniform tilings, but the Fourier zero sets are hyperplanes rather than
+isolated points, and multiplicity bookkeeping must be redesigned.
+
+\begin{question}[Certified probability-factor software]
+Implement an exact factorization engine that takes a certified ladder
+presentation, returns either an explicit zero-order obstruction or a
+proof of the infinite divisibility condition, and produces a verified
+sampler or weak approximation for the remainder.
+\end{question}
+The unrestricted decision problem is impossible by
+Theorem~\ref{thm:complexity}, so the specification must permit an
+``undetermined'' result outside certified subclasses. Positive outputs
+should include a constructive digit law, not only cancellation of an
+entire quotient. The finite-prefix test suite in this package is a
+regression starting point, while the convergence and positivity statements
+are the essential proof obligations.
+
+\section{Conclusion}
+The classification problem admits an unusually exact answer once its
+arithmetic structure is exposed. For nested integer denominators,
+probability factorization is equivalent to divisibility at every level;
+the remainder is then an explicit independent-digit sum. The same criterion
+simultaneously yields elementary cross-base rigidity, a finite algorithm
+for periodic schedules, and sharp nonclassification results for unrestricted
+presentations.
+
+This coexistence is the main conceptual point. The targets are smooth,
+compactly supported, and effectively approximable, yet their exact
+convolution relation can remember infinitely many independent arithmetic
+choices. The remainder measures also retain that structure analytically:
+removing a scaled smooth factor can leave a singular law, a finite spline,
+or a density whose highest continuous derivative has singular variation.
+The written proofs and finite exact checks establish these statements
+within the hypotheses given here; the broader questions and priority
+assessment remain separate research tasks.
+
+\appendix
+\section{Reproduction and source notes}
+\label{sec:reproduction}
+The package is self-contained for typesetting. From its directory, run
+\begin{verbatim}
+python3 verify.py --output verification_results.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The three TeX passes resolve the contents and cross-references. A
+\texttt{Makefile} is included as a convenience. The PDF supplied with this
+package was generated from this TeX source, not copied from the repository.
+No external figures, downloaded font files, proprietary packages, or network
+requests are required. Standard LaTeX packages listed in the preamble are
+needed.
+
+\texttt{SOURCES.md} records the inspected repository locations and primary
+bibliographic sources. The repository snapshot is identified by the commit
+printed in Section~\ref{sec:introduction}; subsequent changes are outside
+this audit. The standalone article is an addition for consideration, not
+a commit, pull request, or modification of the user's repository.
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\begin{thebibliography}{9}
+\bibitem{fabius}
+J. Fabius,
+\emph{A probabilistic example of a nowhere analytic $C^\infty$-function},
+Zeitschrift f\"ur Wahrscheinlichkeitstheorie und verwandte Gebiete
+\textbf{5} (1966), 173--174.
+CWI archival record and report: \url{https://ir.cwi.nl/pub/8160}.
+
+\bibitem{arias}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties},
+English translation (2017) of the 1982 article in
+Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales
+\textbf{76}, 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+In particular, equations (4) and (9) give the dyadic Fourier product and
+integer-zero multiplicities.
+
+\bibitem{hutchinson}
+J. E. Hutchinson,
+\emph{Fractals and self-similarity},
+Indiana University Mathematics Journal \textbf{30} (1981), no.~5, 713--747.
+\url{https://doi.org/10.1512/iumj.1981.30.30055}.
+
+\bibitem{hkl}
+L. A. Harrington, A. S. Kechris, and A. Louveau,
+\emph{A Glimm--Effros dichotomy for Borel equivalence relations},
+Journal of the American Mathematical Society \textbf{3} (1990), no.~4,
+903--928.
+\url{https://doi.org/10.1090/S0894-0347-1990-1057041-5}.
+Author-repository record:
+\url{https://authors.library.caltech.edu/records/cvb33-qt212}.
+
+\bibitem{repo-inverse}
+V. Reshetnikov and contributors,
+\emph{ProveIt: Inverse and sampling}, Fabius-function research documentation,
+inspected at commit \sourcecommit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/fbba58593dc0622aa914972896150d4848f935b5/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/README.md}{Pinned repository README}.
+
+\bibitem{repo-shape}
+V. Reshetnikov and contributors,
+\emph{ProveIt: Shape, divisibility, and Stein geometry of the Fabius--Rvachev law},
+research-package README, inspected at the same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/fbba58593dc0622aa914972896150d4848f935b5/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_Shape_Divisibility_Stein_Geometry/README.md}{Pinned repository README}.
+This source explicitly identifies the identical-convolution rootlessness
+strand and distinguishes manuscript proofs from Lean verification.
+\end{thebibliography}
+\endgroup
+\end{document}

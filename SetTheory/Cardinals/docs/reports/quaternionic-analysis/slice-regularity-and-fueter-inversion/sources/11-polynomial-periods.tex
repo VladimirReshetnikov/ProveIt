@@ -1,0 +1,1773 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{173D4F}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Polynomial Periods and Sharp Residue Hierarchies for the Global Inverse Fueter Map},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Hermite interpolation, global Fueter inversion, polynomial monodromy and sharp singularity bounds}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Polynomial periods for the inverse Fueter map}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Hol}{\mathcal O}
+\newcommand{\AM}{\mathcal A_h}
+\newcommand{\Fu}{\mathcal F_h}
+\newcommand{\PP}{\mathscr P_{<2h}(E)}
+\newcommand{\PPl}[1]{\mathscr P_{<#1}(E)}
+\newcommand{\Om}{\Omega_h}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\barz}{\overline z}
+\newcommand{\barp}{\overline p}
+\newcommand{\Rop}{\mathsf R}
+\newcommand{\Sop}{\mathsf S}
+\newcommand{\sig}{\sigma_{2h}}
+\newcommand{\disc}{\mathbb D}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\sourcepath}{\texttt{SetTheory/Cardinals/docs/reports/}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ showstringspaces=false,frame=single,rulecolor=\color{black!25},
+ xleftmargin=5pt,xrightmargin=5pt}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+\noindent{\color{ink}\large ANALYSIS / GLOBAL INVERSION / CLIFFORD MODULES}
+\vspace{13mm}
+\begin{flushleft}
+{\color{ink}\LARGE\bfseries Polynomial Periods and\\[5pt]
+Sharp Residue Hierarchies\\[5pt]
+for the Global Inverse Fueter Map}\par
+\vspace{8mm}
+{\large A Hermite-interpolation construction in every\\
+even ambient dimension at least four}\par
+\vspace{13mm}
+Research article prepared for Vladimir Reshetnikov\\
+September 2026
+\end{flushleft}
+\vspace{8mm}
+\begin{abstract}
+The quaternionic inverse Fueter problem has a two-period obstruction: a
+single-valued slice-regular primitive exists precisely when two target-derived
+closed one-forms have zero periods. We construct its higher-dimensional
+counterpart. In ambient dimension $2h+2$, one explicit polynomial-valued
+closed form of degree $2h-1$ captures all obstructions. Its normalization and
+completeness follow from a two-node Hermite-interpolation identity, proved for
+arbitrary holomorphic stems by an exact finite-jet argument. Integrating its
+coefficients and evaluating the resulting polynomial at the moving point
+constructs every global inverse.
+
+The period polynomial gives complete monodromy, an explicit finite-connectivity
+cokernel, and the smallest covering on which inversion is possible. Near a
+punctured conjugacy sphere it has a finer structure: divisibility by a real
+quadratic determines the least possible singularity order among all targets
+with that residue. We prove sharp axial-pair growth bounds and sharp physical
+$L^2$ energy constants, exhibit logarithmic representatives attaining them,
+and classify the residue classes compatible with local $L^p$ integrability
+for $p\ge1$. The arguments are self-contained within smooth axial analysis on
+product domains disjoint from the real axis.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} These are written mathematical proofs and proposed
+extensions of the inspected ProveIt project, not a claim of established priority
+or a resolution of an identified published conjecture. The article is unrefereed
+and is not formally verified in Lean. The accompanying finite symbolic and
+numerical checks support the derivations but do not replace them.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\setcounter{tocdepth}{2}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The questions and the contribution}
+\label{sec:intro}
+
+Local Fueter inversion, global single-valued inversion, and the singularity
+forced by a global obstruction are distinct questions. A local inverse can
+change after continuation around a hole; a quantitative theory must also
+measure the cost of that change.
+
+The inspected ProveIt report on slice regularity and Fueter inversion
+\cite{repo} gives a quaternionic pair of target-derived closed forms, affine
+monodromy, an $8b$-dimensional real cokernel for $b$ holes, and a distinction
+between axial-pair and whole-sphere norms. We rederive that starting point and
+extend it to higher dimensions, including a residue filtration with optimal
+constants.
+
+The questions are concrete: is there a finite target-only period system in
+every dimension covered by the differential Fueter map? Are its periods
+complete and freely realizable? Do they determine a sharp minimum singularity
+scale? The answers below are affirmative under explicit hypotheses.
+
+\subsection{Main results in one place}
+
+Fix $h\ge1$, a connected planar domain $D\subset\{\operatorname{Im}z>0\}$,
+and a real coefficient module $E$ as in Section~\ref{sec:setting}. The physical
+ambient dimension is $2h+2$, and $d=\dim_{\R}E$. Write an axially monogenic target
+as $g=P+IQ$, and put
+\begin{equation}\label{eq:intro-current}
+\begin{split}
+\Om[g](t)={}&\kappa_h\bigl((t-x)^2+y^2\bigr)^{h-1}\\
+&\quad\cdot\left[\bigl((x-t)P+yQ\bigr)\dd x
+ +\bigl(yP-(x-t)Q\bigr)\dd y\right],\\
+\kappa_h={}&\frac{(-1)^{h+1}}{2^{2h-1}h!(h-1)!}.
+\end{split}
+\end{equation}
+Here $t$ is a real formal variable, not a coordinate on $D$.
+
+\begin{theorem}[Summary of the global and local conclusions]\label{thm:summary}
+With the definitions and hypotheses made precise in the subsequent sections:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item The form \eqref{eq:intro-current} is closed coefficientwise. A global
+holomorphic stem $F$ satisfying $\Fu F=g$ exists if and only if all its period
+polynomials vanish. Every inverse is obtained by coefficientwise integration
+followed by evaluation at $t=z$.
+\item If $D$ has $b$ holes with the regularity specified in
+Section~\ref{sec:cokernel}, then the real cokernel is isomorphic to
+$\PP^b$ and has dimension $2hdb$. Every period assignment has an explicit
+logarithmic representative.
+\item Let $M\ne0$ be the residue polynomial at $p=u+\ii v$, $v>0$, and let
+$r=\ord_p M$. Then $0\le r\le h-1$, and the least possible pole-growth
+order of a target with residue $M$ is $s=h-r$. Equivalently, the residues
+realizable with growth $O(|z-p|^{-s})$ are exactly
+\[
+ \bigl((t-u)^2+v^2\bigr)^{h-s}\PPl{2s},\qquad 0\le s\le h.
+\]
+The level $s$ has real dimension $2sd$.
+\item The least leading axial-pair size is
+\[
+ A_{h,p,M}=\frac{2^h h!(s-1)!}{2\pi v^h}\norm{M^{(r)}(p)}.
+\]
+Every representative satisfies the corresponding lower bound, and an explicit
+one attains it. Its physical energy is logarithmically divergent at $s=1$ and
+has optimal power divergence $\varepsilon^{2-2s}$ for $s\ge2$; the exact
+constants are given in Theorem~\ref{thm:energy}.
+\end{enumerate}
+\end{theorem}
+
+The displayed conclusions are proved below, not inferred from a finite
+experiment. The summary's reference to a \emph{least} growth order is important:
+a target may have extra zero-residue singular terms and therefore grow faster
+than the obstruction itself requires.
+
+\subsection{What is inherited, what is extended, and what is not claimed}
+
+The Fueter--Sce mapping, local inverse formulas, and a finite-dimensional
+polynomial kernel belong to established theory
+\cite{colombo2014,colombo2013,demartino2023}. We reprove the particular radial
+formula and kernel needed here to fix all constants and hypotheses. Their
+existence is not presented as a new result.
+
+The proposed additions are the normalized target-only polynomial current,
+the moving Hermite-polynomial identity that makes it complete, the constructive
+period splitting, and the higher-dimensional residue filtration with sharp
+size and energy constants. These provide explicit answers to the extension
+questions posed above. A focused comparison with the cited primary sources
+and the inspected repository report did not establish priority for these
+formulas. Absence from that comparison is not proof of absence from the wider
+literature.
+
+There is also no claimed contradiction with published surjectivity results.
+For example, Perotti's Theorem~2 explicitly assumes that every connected
+component of the planar stem domain is simply connected \cite{perotti2024}.
+Our quaternionic criterion is compatible with that theorem; on upper-half-plane
+product domains it explains precisely what can obstruct the same conclusion
+when that topological hypothesis is removed.
+
+\section{Setting, coefficients, and the two complex structures}
+\label{sec:setting}
+
+\subsection{An orthogonal Clifford module}
+
+Let $m=2h+1$. Let $E$ be a finite-dimensional real Hilbert space carrying
+operators $J_1,\ldots,J_m$ such that
+\begin{equation}\label{eq:clifford}
+ J_j^*=-J_j,\qquad J_jJ_k+J_kJ_j=-2\delta_{jk}\operatorname{Id}_E.
+\end{equation}
+Thus $E$ is an orthogonal module for $\Cl_{0,m}$. For
+$I=(I_1,\ldots,I_m)\in S^{m-1}$, write $J_I=\sum I_jJ_j$ and abbreviate
+$J_I a$ to $Ia$. Then $J_I^2=-\operatorname{Id}_E$ and $J_I$ is an isometry.
+
+The regular Clifford module is one example. For $h=1$, the quaternionic
+module $E=\HH$, with the three operators given by left multiplication by the
+quaternionic imaginary units, is another. In the latter case $d=4$; this is
+not an identification of the eight-dimensional algebra $\Cl_{0,3}$ with $\HH$.
+
+Let $E_{\C}=E\oplus\ii E$ be the complexification of $E$. The symbol $\ii$ is
+\emph{central}; it is not any one of the operators $J_I$. Complex conjugation
+acts by $\overline{a+\ii b}=a-\ii b$, and
+\[
+ \norm{a+\ii b}^2=\norm a^2+\norm b^2.
+\]
+All polynomial coefficients below lie in the real space $E$, unless the
+contrary is explicitly stated. This distinction is essential to the kernel.
+
+\subsection{Stems and axial targets}
+
+Let $D$ be a connected open subset of $\C^+=\{x+\ii y:y>0\}$. Its circularization
+is
+\[
+ U_D=\{(x,yI)\in\R\times\R^m:x+\ii y\in D,\ I\in S^{m-1}\}.
+\]
+We use $q=x+yI$ as coordinate notation for this point; no multiplication of
+points in $\R^{m+1}$ is needed. A holomorphic map
+\[
+ F=A+\ii B\in\Hol(D;E_{\C})
+\]
+induces the slice function $f(q)=A(x,y)+IB(x,y)$. Holomorphicity means
+\begin{equation}\label{eq:CR}
+ A_x=B_y,\qquad A_y=-B_x.
+\end{equation}
+This upper-half-plane formulation is equivalent to defining a conjugate-symmetric
+stem on the disjoint union $D\cup\overline D$. It imposes no matching condition
+across the real axis because that axis is excluded.
+
+\begin{definition}[Axially monogenic target]\label{def:AM}
+The real vector space $\AM(D;E)$ consists of smooth pairs $(P,Q):D\to E^2$
+that satisfy the Vekua system
+\begin{equation}\label{eq:vekua}
+ P_x-Q_y=\frac{2h}{y}Q,\qquad P_y+Q_x=0.
+\end{equation}
+We identify the pair with $g(x+yI)=P(x,y)+IQ(x,y)$ and set
+$W=P+\ii Q\in E_{\C}$.
+\end{definition}
+
+Indeed, applying the Dirac operator
+$\partial_x+\sum_{j=1}^mJ_j\partial_{x_j}$ to the axial expression gives
+\[
+ \left(P_x-Q_y-\frac{m-1}{y}Q\right)+I(P_y+Q_x).
+\]
+Vanishing for both $I$ and $-I$ is equivalent to \eqref{eq:vekua}. This also
+shows that the coefficient formalism describes genuine monogenic functions
+on $U_D$.
+
+The norm $\norm W=(\norm P^2+\norm Q^2)^{1/2}$ is called the
+\emph{axial-pair norm}. It is not in general equal to
+$\max_{I\in S^{m-1}}\norm{P+IQ}$. The distinction will be retained throughout
+our sharp estimates.
+
+\subsection{The map and its normalization}
+
+The Fueter map in this article is the unnormalized differential operator
+\begin{equation}\label{eq:fueter-definition}
+ \Fu F=\Delta_{2h+2}^{\,h}f,
+ \qquad f=\mathcal I(F)=A+IB.
+\end{equation}
+It is real-linear. Multiplying the stem by the central scalar $\ii$ does not,
+in general, multiply its image by an analogous scalar. Put
+\begin{equation}\label{eq:constants}
+ c_h=2^hh!,\qquad C_h=(-1)^h c_h^2,\qquad
+ \kappa_h=\frac{(-1)^{h+1}}{2^{2h-1}h!(h-1)!}.
+\end{equation}
+The normalization identity used repeatedly below is
+\begin{equation}\label{eq:calibration-constant}
+ \kappa_h C_h=-2h.
+\end{equation}
+For example, $(c_1,\kappa_1)=(2,1/2)$ and
+$(c_2,\kappa_2)=(8,-1/16)$.
+
+\section{Radial calculus and two calibration monomials}
+\label{sec:radial}
+
+Define two operators on smooth functions of $(x,y)$, with $y>0$, by
+\[
+ \Rop u=\frac1y\partial_yu,\qquad
+ \Sop u=\partial_y\!\left(\frac uy\right).
+\]
+The operators act componentwise on $E$-valued functions.
+
+\begin{lemma}[Radial expression for the Fueter map]\label{lem:radial}
+For every holomorphic stem $F=A+\ii B$,
+\begin{equation}\label{eq:radial}
+ \Fu F=P+IQ,\qquad
+ P=c_h\Rop^hA,\qquad Q=c_h\Sop^hB.
+\end{equation}
+The resulting pair satisfies \eqref{eq:vekua}.
+\end{lemma}
+
+\begin{proof}
+On a scalar axial component the ambient Laplacian acts as $L_{2h}$, where
+\[
+ L_s=\partial_x^2+\partial_y^2+\frac{s}{y}\partial_y.
+\]
+On $IB$ it acts as $I M_{2h}B$, where
+\[
+ M_s=\partial_x^2+\partial_y^2+\frac{s}{y}\partial_y-\frac{s}{y^2}.
+\]
+For arbitrary real $s$, direct differentiation gives
+\[
+ L_s\Rop=\Rop L_{s-2},\qquad M_s\Sop=\Sop M_{s-2}.
+\]
+Because $A$ and $B$ are harmonic in the planar variables,
+$L_sA=s\Rop A$ and $M_sB=s\Sop B$. An induction therefore gives
+\[
+ \Delta_{2h+2}^{\,j}(A+IB)
+ =\prod_{a=0}^{j-1}(2h-2a)\,\bigl(\Rop^jA+I\Sop^jB\bigr)
+ \quad(0\le j\le h).
+\]
+At $j=h$ the product is $c_h$.
+
+The identities
+\[
+ \partial_y\Rop^h=\Sop^h\partial_y,
+ \qquad
+ \Rop^h\partial_y=\left(\partial_y+\frac{2h}{y}\right)\Sop^h
+\]
+follow by induction from the definitions. Consequently
+\[
+ P_y+Q_x=c_h\Sop^h(A_y+B_x)=0,
+\]
+and
+\[
+ P_x=c_h\Rop^h B_y
+ =c_h\left(\partial_y+\frac{2h}{y}\right)\Sop^hB
+ =Q_y+\frac{2h}{y}Q.
+\]
+These are the two required equations.
+\end{proof}
+
+\begin{lemma}[Calibration]\label{lem:calibration}
+For a real coefficient $a\in E$ and integer $k\ge0$,
+\begin{align}
+ \Fu(z^ka)&=0 &&(k<2h),\label{eq:low-calibration}\\
+ \Fu(z^{2h}a)&=C_h a,\label{eq:even-calibration}\\
+ \Fu(z^{2h+1}a)&=C_h\bigl((2h+1)xa+Iy a\bigr).
+ \label{eq:odd-calibration}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The slice lift of $z^ka$ is a polynomial of total degree $k$ in the ambient
+coordinates. In fact its even powers of $y$ are powers of
+$x_1^2+\cdots+x_m^2$, and its odd terms have $Iy=\sum x_jJ_j$ as a factor.
+An operator of differential order $2h$ annihilates it when $k<2h$.
+
+For $z^{2h}$ the only real-part term surviving $\Rop^h$ is
+$(-1)^hy^{2h}$, and
+$\Rop^hy^{2h}=2^hh!=c_h$. All imaginary terms are annihilated by $\Sop^h$.
+For $z^{2h+1}$, the relevant highest terms are
+$(-1)^h(2h+1)xy^{2h}$ in the real part and
+$(-1)^hy^{2h+1}$ in the imaginary part. Since
+$\Sop^hy^{2h+1}=c_hy$, the remaining formulas follow.
+\end{proof}
+
+\begin{remark}[Why the coefficient field matters]
+For $h=1$, the constant stem $F=\ii a$ has $A=0$ and $B=a$, whence
+$\mathcal F_1F=-2Ia/y^2$. It is not in the kernel unless $a=0$.
+Thus a claim that the kernel consists of arbitrary \emph{complex}-coefficient
+polynomials of degree below $2h$ would already be false for constants.
+\end{remark}
+
+\section{A target-only polynomial current}
+\label{sec:current}
+
+For a real formal variable $t$, let
+\begin{equation}\label{eq:rt}
+ R_t=(t-x)^2+y^2=(t-z)(t-\barz).
+\end{equation}
+Let $\PPl{k}$ denote the real vector space of $E$-coefficient polynomials in
+$t$ of degree less than $k$, with $\PPl{0}=\{0\}$. Its real dimension is $kd$.
+The current $\Om[g]$ defined in \eqref{eq:intro-current} takes values in $\PP$:
+its degree in $t$ is at most $2h-1$.
+
+\begin{theorem}[Closedness]\label{thm:closed}
+For every $g\in\AM(D;E)$, $\mathrm d\Om[g]=0$ coefficientwise.
+\end{theorem}
+
+\begin{proof}
+Set $a=x-t$, $L=aP+yQ$, and $N=yP-aQ$. The Vekua system yields
+\begin{align*}
+ N_x-L_y
+ &=y(P_x-Q_y)-2Q-a(Q_x+P_y)\\
+ &=2(h-1)Q.
+\end{align*}
+For $h>1$, the contribution from differentiating the factor $R_t^{h-1}$ is
+\begin{align*}
+ (\partial_xR_t^{h-1})N-(\partial_yR_t^{h-1})L
+ &=2(h-1)R_t^{h-2}(aN-yL)\\
+ &=-2(h-1)R_t^{h-1}Q.
+\end{align*}
+It cancels the preceding contribution. For $h=1$ the factor is constant and
+both contributions are zero. Multiplication by $\kappa_h$ preserves closedness.
+\end{proof}
+
+A useful equivalent expression uses central complex notation:
+\begin{equation}\label{eq:complex-current}
+\begin{split}
+ \Om[g](t)=-\frac{\kappa_h}{2}\bigl[
+ &(t-z)^{h-1}(t-\barz)^h W\dd z\\
+ {}+{}&(t-z)^h(t-\barz)^{h-1}\overline W\dd\barz\bigr].
+\end{split}
+\end{equation}
+To verify it, write the real-form coefficients as $L,N$. Then
+$L-\ii N=(\barz-t)W$ and
+$L+\ii N=(z-t)\overline W$, and use
+$\dd x=(\dd z+\dd\barz)/2$ and
+$\dd y=(\dd z-\dd\barz)/(2\ii)$.
+
+\begin{lemma}[Injectivity of the current]\label{lem:current-injective}
+If $\Om[g_1]=\Om[g_2]$, then $g_1=g_2$.
+\end{lemma}
+
+\begin{proof}
+Apply the assertion to the difference and fix $(x,y)$. Evaluate the polynomial
+identity at the real number $t=x$. Its $\dd x$ coefficient is
+$\kappa_h y^{2h-1}Q$ and its $\dd y$ coefficient is
+$\kappa_h y^{2h-1}P$. Neither $\kappa_h$ nor $y$ is zero.
+\end{proof}
+
+\subsection{Recovery of the quaternionic pair}
+
+When $h=1$,
+\[
+ \Om[g](t)=\theta_g+t\omega_g,
+\]
+where
+\[
+ \omega_g=\tfrac12(-P\dd x+Q\dd y),\qquad
+ \theta_g=\tfrac12\bigl((xP+yQ)\dd x+(yP-xQ)\dd y\bigr).
+\]
+Thus the polynomial current specializes exactly to the two forms in the
+inspected repository report \cite{repo}. It does not introduce a different
+normalization of their periods.
+
+\section{The moving Hermite-polynomial identity}
+\label{sec:hermite}
+
+The main completeness mechanism is not a repeated choice of harmonic
+conjugates. It is a polynomial interpolation problem with two moving nodes.
+
+\begin{definition}[Hermite polynomial of a stem]\label{def:hermite}
+For $F\in\Hol(D;E_{\C})$ and $z\in D$, let $H_F(z;t)\in\PP$ be the unique
+polynomial such that
+\begin{align}
+ \partial_t^j H_F(z;z)&=F^{(j)}(z),\label{eq:hermite-jets}\\
+ \partial_t^j H_F(z;\barz)&=\overline{F^{(j)}(z)},
+ \qquad 0\le j<h.\nonumber
+\end{align}
+\end{definition}
+
+The nodes $z$ and $\barz$ are distinct. Componentwise polynomial Hermite
+interpolation therefore gives a unique $E_{\C}$-coefficient polynomial of
+degree below $2h$. Conjugating its coefficients and interchanging the nodes
+preserves the interpolation data, so uniqueness makes its coefficients real,
+i.e. elements of $E$. Its coefficients depend smoothly on $(x,y)$: the inverse
+interpolation matrix is rational in the nodes with nonzero powers of
+$z-\barz$ in its denominator.
+
+\begin{theorem}[Hermite differential identity]\label{thm:hermite}
+For every holomorphic stem $F$,
+\begin{equation}\label{eq:hermite-identity}
+ \mathrm d_{x,y}H_F(z;t)=\Om[\Fu F](t).
+\end{equation}
+The formal variable $t$ is held fixed while the left side is differentiated.
+\end{theorem}
+
+\begin{proof}
+Fix a point $z_0\in D$. Both sides at $z_0$ are real-linear functions of the
+finite jet
+\[
+ \bigl(F(z_0),F'(z_0),\ldots,F^{(h)}(z_0)\bigr).
+\]
+For the left side, differentiating the coefficients of the interpolation
+problem introduces derivatives only through order $h$. For the right side,
+this follows from the radial formula \eqref{eq:radial} and holomorphicity.
+
+Every such jet is the jet at $z_0$ of a polynomial with coefficients in $E$
+and degree at most $2h+1$. Indeed, interpolate the jet through order $h$
+at $z_0$ and its conjugate jet at $\bar z_0$. The two-node Hermite problem
+has $2h+2$ conditions, and its unique solution has real coefficients by the
+same conjugation argument used above. Therefore it is enough to check
+\eqref{eq:hermite-identity} for the $2h+2$ monomials
+$1,z,\ldots,z^{2h+1}$ with an arbitrary coefficient in $E$.
+This is an exact spanning argument for arbitrary jets, not a finite-range
+experimental inference.
+
+For $k<2h$, the interpolant of $z^k$ is the constant-in-$z$ polynomial $t^k$;
+both sides vanish by Lemma~\ref{lem:calibration}.
+For the remaining two monomials, put $R_t=(t-z)(t-\barz)$. Polynomial division
+gives their Hermite remainders:
+\begin{align}
+ H_{z^{2h}}(z;t)&=t^{2h}-R_t^h,\label{eq:hermite-even}\\
+ H_{z^{2h+1}}(z;t)&=t^{2h+1}-(t+2hx)R_t^h.
+ \label{eq:hermite-odd}
+\end{align}
+The remainders have degree below $2h$ and differ from the original monomial
+by a multiple of both $(t-z)^h$ and $(t-\barz)^h$, proving the asserted
+interpolation conditions.
+
+Differentiating \eqref{eq:hermite-even} gives
+\[
+ \mathrm dH_{z^{2h}}=-2hR_t^{h-1}\bigl((x-t)\dd x+y\dd y\bigr).
+\]
+This is the current of the constant target $C_h$, because
+$\kappa_hC_h=-2h$. Differentiating \eqref{eq:hermite-odd} gives
+\begin{equation*}
+\begin{split}
+ \mathrm dH_{z^{2h+1}}=-2hR_t^{h-1}\bigl[
+ &\bigl((2h+1)x(x-t)+y^2\bigr)\dd x\\
+ &+y(t+2hx)\dd y\bigr].
+\end{split}
+\end{equation*}
+The target in \eqref{eq:odd-calibration} has
+$P=C_h(2h+1)x$ and $Q=C_hy$, and substitution into its current gives exactly
+this expression. These checks establish the identity for every jet at the
+arbitrary point $z_0$, hence everywhere on $D$.
+\end{proof}
+
+\begin{corollary}[Polynomial kernel]\label{cor:kernel}
+For connected $D\subset\C^+$,
+\begin{equation}\label{eq:kernel}
+ \ker\Fu=\{F(z)=K(z):K\in\PP\}.
+\end{equation}
+In particular, the kernel has real dimension $2hd$.
+\end{corollary}
+
+\begin{proof}
+If $\Fu F=0$, Theorem~\ref{thm:hermite} says that every coefficient of
+$H_F$ has zero differential. It is therefore constant on the connected domain:
+$H_F(z;t)=K(t)$. Evaluating at $t=z$ gives $F(z)=K(z)$, with $K\in\PP$.
+Conversely, Lemma~\ref{lem:calibration} annihilates every such polynomial.
+\end{proof}
+
+The existence of a polynomial kernel is classical
+\cite{colombo2014,demartino2023}. The proof above is included because it identifies
+precisely the coefficient space needed for the global obstruction and because
+it uses the same identity as the inverse construction.
+
+\section{A complete constructive global inverse theorem}
+\label{sec:inverse}
+
+For a piecewise smooth closed curve $\gamma$ in $D$, define its period
+polynomial by
+\begin{equation}\label{eq:period}
+ \Per_g(\gamma;t)=\int_\gamma\Om[g](t)\in\PP.
+\end{equation}
+Integration is coefficientwise. Since the current is closed, its periods
+are invariant under homotopy and depend only on the homology class of the
+curve. The choice of a basepoint affects neither a closed-curve integral nor
+its polynomial value.
+
+\begin{theorem}[Global inverse and all solutions]\label{thm:inverse}
+Let $g\in\AM(D;E)$. The following are equivalent:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item There exists $F\in\Hol(D;E_{\C})$ such that $\Fu F=g$.
+\item $\Per_g(\gamma;t)=0$ for every closed curve $\gamma$ in $D$.
+\item Every coefficient one-form of $\Om[g]$ is exact on $D$.
+\end{enumerate}
+When they hold, fix $z_0\in D$ and any $H_0\in\PP$. Then
+\begin{equation}\label{eq:inverse-formula}
+ H(z;t)=H_0(t)+\int_{z_0}^{z}\Om[g](t),\qquad F(z)=H(z;z)
+\end{equation}
+defines a holomorphic inverse. The integral is independent of path. Every
+inverse occurs in this way, and any two differ by an element of $\PP$
+evaluated at $z$.
+\end{theorem}
+
+\begin{proof}
+If $g=\Fu F$, Theorem~\ref{thm:hermite} identifies the current with
+$\mathrm dH_F$, so all coefficients are exact and all periods vanish.
+Conversely, vanishing periods make the coefficientwise path integrals in
+\eqref{eq:inverse-formula} path independent. Differentiation gives
+$\mathrm dH=\Om[g]$. The standard elementary path-integral proof of exactness
+applies componentwise; there are finitely many components.
+
+It remains to prove that evaluating the resulting polynomial produces an
+inverse. In central complex notation, \eqref{eq:complex-current} gives
+\begin{align}
+ \partial_zH(z;t)&=-\frac{\kappa_h}{2}(t-z)^{h-1}(t-\barz)^hW,
+ \label{eq:H-z}\\
+ \partial_{\barz}H(z;t)&=-\frac{\kappa_h}{2}(t-z)^h(t-\barz)^{h-1}\overline W.
+ \label{eq:H-zbar}
+\end{align}
+For $F(z)=H(z;z)$ the $\barz$ derivative of the substituted variable $t=z$
+is zero, and the right side of \eqref{eq:H-zbar} vanishes at $t=z$.
+Thus $\partial_{\barz}F=0$.
+
+We next establish the Hermite jets of $H$. The identity
+$F(z)=H(z;z)$ is the case $j=0$ of
+\begin{equation}\label{eq:reconstructed-jets}
+ F^{(j)}(z)=\partial_t^jH(z;z),\qquad 0\le j<h.
+\end{equation}
+If $j<h-1$, differentiate this equality with respect to $z$. The total
+derivative of its right side is
+\[
+ \partial_z\partial_t^jH(z;t)\big|_{t=z}
+ +\partial_t^{j+1}H(z;z).
+\]
+The first term is zero: by \eqref{eq:H-z}, differentiating $j\le h-2$ times
+in $t$ leaves at least one factor $t-z$. This proves the induction. For
+$h=1$ there is no induction step and the value condition alone suffices.
+The coefficients of $H$ are real, so the conjugate-node jets follow as well.
+Uniqueness of Hermite interpolation now yields $H=H_F$.
+
+Apply Theorem~\ref{thm:hermite} to the holomorphic stem just constructed:
+\[
+ \Om[\Fu F]=\mathrm dH_F=\mathrm dH=\Om[g].
+\]
+Lemma~\ref{lem:current-injective} gives $\Fu F=g$. Finally, if $F$ is any
+inverse, its Hermite polynomial satisfies the same differential equation and
+differs from the chosen $H$ by a constant element of $\PP$. This proves
+both exhaustiveness and uniqueness modulo the kernel.
+\end{proof}
+
+\begin{corollary}[Local inversion and simply connected domains]
+Every smooth axial target has a local holomorphic Fueter inverse. If $D$ is
+simply connected, it has a global inverse on $D$.
+\end{corollary}
+
+\begin{proof}
+On a sufficiently small disc, or on a simply connected planar domain, every
+closed coefficient form has zero periods. Apply Theorem~\ref{thm:inverse}.
+\end{proof}
+
+There is no circular dependence on a pre-existing inverse theorem in this
+argument: radial differentiation proves that the forward map lands in the
+Vekua system; the Hermite identity is obtained from jets and two calibrations;
+and the integral construction proves the inverse theorem directly.
+
+\section{Polynomial monodromy, period realization, and covers}
+\label{sec:cokernel}
+
+\subsection{Continuation and its complete invariant}
+
+On the universal cover of $D$, integrate the pullback of the current and use
+\eqref{eq:inverse-formula}. Analytic continuation of this inverse around a
+closed curve $\gamma$ adds the polynomial
+\begin{equation}\label{eq:monodromy}
+ F\longmapsto F+M_\gamma(z),\qquad
+ M_\gamma(t)=\Per_g(\gamma;t).
+\end{equation}
+Indeed, continuation of the coefficient primitive $H$ adds the integral of
+its differential around the curve, and subsequent evaluation at $t=z$ adds
+exactly $M_\gamma(z)$.
+
+Thus monodromy is additive and polynomial of degree below $2h$, with coefficients
+in $E$. It is independent of which local inverse was chosen. The period map
+\[
+ \pi_1(D,z_0)\longrightarrow\PP,
+ \qquad [\gamma]\longmapsto M_\gamma
+\]
+is a group homomorphism into an additive real vector group; it factors through
+$H_1(D;\Z)$. Theorem~\ref{thm:inverse} says that it is a \emph{complete}
+obstruction, not merely one invariant among several.
+
+\subsection{Every finite period assignment occurs}
+
+For the remainder of this subsection, assume that $D$ is bounded,
+$\overline D\subset\C^+$, and its boundary consists of $b+1$ disjoint
+$C^1$ Jordan curves. Select a point $p_j$ in each bounded complementary
+component and select curves $\gamma_1,\ldots,\gamma_b$ in $D$ with
+\[
+ \operatorname{wind}(\gamma_i,p_j)=\delta_{ij}.
+\]
+Their homology classes form a basis of $H_1(D;\Z)$.
+
+\begin{lemma}[Logarithmic representative]\label{lem:log-representative}
+For $p\notin D$ and $M\in\PP$, define a local holomorphic stem by
+\begin{equation}\label{eq:log-stem}
+ F_{p,M}(z)=\frac{1}{2\pi\ii}M(z)\operatorname{Log}(z-p).
+\end{equation}
+Its Fueter image $G_{p,M}=\Fu F_{p,M}$ is single valued on $D$, independent
+of branch, and belongs to $\AM(D;E)$. Moreover
+\begin{equation}\label{eq:log-period}
+ \Per_{G_{p,M}}(\gamma;t)=\operatorname{wind}(\gamma,p)M(t).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Two logarithm branches differ by $2\pi\ii n$. The corresponding stems differ
+by $nM(z)$, which lies in the real polynomial kernel of the Fueter map.
+Their targets therefore agree, so the local targets patch to a smooth global
+one. Continuation of the stem around $\gamma$ adds
+$\operatorname{wind}(\gamma,p)M(z)$. The Hermite polynomial of a kernel
+polynomial $M(z)$ is $M(t)$ itself. Integrating
+$\mathrm dH_{F_{p,M}}=\Om[G_{p,M}]$ around the continued branch proves the
+period formula, including its sign and normalization.
+\end{proof}
+
+\begin{remark}
+The target $G_{p,M}$ need not be rational and need not be free of logarithmic
+terms. Branch independence only says that changing $\operatorname{Log}$ by
+$2\pi\ii n$ has zero Fueter image. Terms involving $\log|z-p|$ can remain.
+No rationality assertion is required in any proof.
+\end{remark}
+
+\begin{theorem}[Explicit cokernel and splitting]\label{thm:cokernel}
+Under the finite-connectivity hypotheses above, there is an exact sequence of
+real vector spaces
+\begin{equation}\label{eq:exact-sequence}
+ 0\longrightarrow\PP\longrightarrow\Hol(D;E_{\C})
+ \xrightarrow{\ \Fu\ }\AM(D;E)
+ \xrightarrow{\ \Per\ }\PP^b\longrightarrow0,
+\end{equation}
+where $\Per(g)=(\Per_g(\gamma_j;t))_{j=1}^b$. In particular,
+\begin{equation}\label{eq:cokernel-dimension}
+ \dim_{\R}\operatorname{coker}\Fu=2hdb.
+\end{equation}
+If $M_j=\Per_g(\gamma_j;t)$, then
+\begin{equation}\label{eq:decomposition}
+ g=\Fu F+\sum_{j=1}^bG_{p_j,M_j}
+\end{equation}
+for some global holomorphic stem $F$, unique modulo $\PP$.
+\end{theorem}
+
+\begin{proof}
+Exactness at the first two nonzero terms follows from the kernel theorem.
+Exactness at $\AM(D;E)$ is precisely Theorem~\ref{thm:inverse}, since the
+chosen curves generate homology. Lemma~\ref{lem:log-representative} realizes
+an arbitrary polynomial on one basis curve and zero on the others, proving
+surjectivity of the last map. Subtract those representatives from $g$ and
+apply the global inverse theorem to obtain \eqref{eq:decomposition}. Counting
+the $2h$ coefficients in each of $b$ copies gives the dimension.
+\end{proof}
+
+For $h=1$ and $E=\HH$, \eqref{eq:cokernel-dimension} is $8b$, recovering the
+quaternionic result. For $h=2$, there are four independent $E$-valued periods
+per hole. The splitting depends on the chosen points and homology basis; the
+period obstruction itself does not depend on a choice of local primitive.
+
+\subsection{The smallest inverse cover and the finite-cover obstruction}
+
+\begin{theorem}[Covering criterion]\label{thm:covers}
+Let $g\in\AM(D;E)$, with no finite-connectivity assumption. A connected pointed
+covering $\pi:\widetilde D\to D$ supports a single-valued inverse of the pulled-back
+target, in the pulled-back local coordinate $z$, if and only if
+\[
+ \pi_*\pi_1(\widetilde D)\subseteq\ker\Per_g.
+\]
+The covering corresponding to $\ker\Per_g$ is the smallest such covering, in
+the sense that every other connected inverse cover factors through it.
+Its deck group is naturally $\operatorname{im}\Per_g$, regarded as an abstract
+discrete group. If $\Per_g\ne0$, no finite-sheeted covering supports an inverse.
+\end{theorem}
+
+\begin{proof}
+The integral construction and its necessity apply in the local coordinates
+of a covering exactly as on $D$. The periods of the pulled-back current are
+the original periods restricted to the image of its fundamental group. This
+proves the criterion. The subgroup $\ker\Per_g$ is normal, so covering-space
+classification gives the stated regular covering and deck group. Inclusion
+of subgroups gives the factorization assertion.
+
+For the last statement, let $\gamma$ have nonzero period $M$. If $H$ is any
+finite-index subgroup of $\pi_1(D)$, some positive power $\gamma^N$ belongs to
+$H$; for example, use the finite permutation action on cosets. Its period is
+$NM\ne0$, because a real vector group has no nonzero torsion. Thus restriction
+to $H$ cannot annihilate all periods.
+\end{proof}
+
+\begin{remark}[A topology caveat]
+The image of the period homomorphism is a discrete group for purposes of the
+deck action; it need not be a discrete subset of the Euclidean coefficient
+space. For example, two polynomial periods can be irrationally proportional.
+For finite $b$, the image is a finitely generated torsion-free abelian group
+of rank at most $b$, even when its image in a real line is dense.
+\end{remark}
+
+\section{Coefficient formulas and the six-dimensional case}
+\label{sec:algorithm}
+
+The polynomial formulation is directly usable without expanding higher-order
+inverses or choosing successive primitives. Write
+\[
+ C_j(x,y)=[t^j]\bigl((t-x)^2+y^2\bigr)^{h-1},
+\]
+with $C_j=0$ outside $0\le j\le2h-2$. Expansion of the three terms
+$t^2$, $-2xt$, and $x^2+y^2$ gives
+\begin{equation}\label{eq:C-coefficients}
+ C_j=\sum_{\substack{a+b+c=h-1\\2a+b=j}}
+ \frac{(h-1)!}{a!b!c!}(-2x)^b(x^2+y^2)^c.
+\end{equation}
+If $\Om[g](t)=\sum_{j=0}^{2h-1}\Omega_j[g]t^j$, then
+\begin{equation}\label{eq:coefficient-forms}
+\begin{split}
+ \Omega_j[g]=\kappa_h\bigl[
+ &\bigl((xC_j-C_{j-1})P+yC_jQ\bigr)\dd x\\
+ &+\bigl(yC_jP+(C_{j-1}-xC_j)Q\bigr)\dd y\bigr].
+\end{split}
+\end{equation}
+These forms use the values of $P,Q$, not their derivatives. The Vekua equations
+are the proof that the forms are closed, not an additional step in evaluating
+them along a curve.
+
+\subsection{A constructive procedure}
+
+For exact analytic input on a finitely connected domain, the procedure is:
+compute the $2h$ coefficient forms, integrate them over a homology basis,
+subtract logarithmic representatives of the resulting periods, integrate the
+remaining exact forms along paths from a basepoint, and evaluate the resulting
+polynomial at $t=z$. Formula~\eqref{eq:inverse-formula} proves the result,
+including its kernel ambiguity.
+
+Numerical data require an additional distinction. A small floating-point period
+is not a proof that the period is zero. Certified claims require symbolic
+integration, rigorous intervals together with a suitable exact zero criterion,
+or another proof of vanishing. In particular, interval enclosures containing
+zero by themselves do not certify exactness.
+
+\subsection{Four explicit forms when the ambient dimension is six}
+
+For $h=2$, $R_t=t^2-2xt+x^2+y^2$ and $\kappa_2=-1/16$. The complete four-form
+system is
+\begin{align}
+ \Omega_0={}&-\frac{x^2+y^2}{16}
+ \bigl[(xP+yQ)\dd x+(yP-xQ)\dd y\bigr],\label{eq:h2-0}\\
+ \Omega_1={}&-\frac1{16}\bigl[
+ ((-3x^2-y^2)P-2xyQ)\dd x\nonumber\\
+ &\hspace{28mm}+(-2xyP+(3x^2+y^2)Q)\dd y\bigr],\label{eq:h2-1}\\
+ \Omega_2={}&-\frac1{16}\bigl[(3xP+yQ)\dd x+(yP-3xQ)\dd y\bigr],
+ \label{eq:h2-2}\\
+ \Omega_3={}&\frac1{16}(P\dd x-Q\dd y).\label{eq:h2-3}
+\end{align}
+A global inverse exists exactly when all four forms have zero periods.
+If $\mathrm dH_j=\Omega_j$, its stem is
+\[
+ F(z)=H_0(z)+H_1(z)z+H_2(z)z^2+H_3(z)z^3.
+\]
+Each $H_j$ is an $E$-valued real function; the displayed expression is a
+central-complex evaluation, and its holomorphicity follows from the theorem,
+not from separate holomorphicity of the $H_j$.
+
+For the calibration target $P=64$, $Q=0$, which is
+$\mathcal F_2(z^4)$, a coefficient primitive is
+\[
+ H(z;t)=t^4-\bigl((t-x)^2+y^2\bigr)^2.
+\]
+Although written as a difference of quartics, it is a cubic in $t$, and
+$H(z;z)=z^4$. This is a simple exact check on all four forms simultaneously.
+
+\section{Residue polynomials and a sharp growth filtration}
+\label{sec:filtration}
+
+Let $p=u+\ii v\in\C^+$ and choose $0<R<v$. Suppose $g\in\AM(D_R^*;E)$ on
+\[
+ D_R^*=\{z:0<|z-p|<R\}.
+\]
+Define its residue polynomial by
+\begin{equation}\label{eq:residue-definition}
+ M(t)=\int_{|z-p|=\rho}\Om[g](t),\qquad 0<\rho<R,
+\end{equation}
+where the circle is positively oriented. Closedness makes $M$ independent of
+$\rho$. The excluded point $p$ corresponds physically to the conjugacy sphere
+$\{u+vI:I\in S^{2h}\}$, not to a single point of the ambient space.
+
+Put
+\begin{equation}\label{eq:quadratic}
+ \Delta_p(t)=(t-u)^2+v^2=(t-p)(t-\barp).
+\end{equation}
+For a vector-valued polynomial, vanishing of a jet means vanishing of all its
+components. If $M\ne0$, define
+\[
+ \ord_pM=\min\{j\ge0:M^{(j)}(p)\ne0\}.
+\]
+Because its coefficients are real, a zero of order $r$ at $p$ is accompanied
+by a zero of order $r$ at $\barp$. Consequently
+\begin{equation}\label{eq:order-divisibility}
+ \ord_pM\ge r\quad\Longleftrightarrow\quad
+ M(t)\text{ is divisible in }E[t]\text{ by }\Delta_p(t)^r.
+\end{equation}
+This follows by scalar polynomial division in any real basis of $E$.
+For nonzero $M\in\PP$, it implies $\ord_pM\le h-1$.
+
+\subsection{A jet estimate extracted from the current}
+
+\begin{lemma}[Residue jet bound]\label{lem:jet-bound}
+For $0\le j\le h-1$, there is a constant $K_{h,p,j}$, independent of $g$
+and of sufficiently small $\rho$, such that
+\begin{equation}\label{eq:jet-bound}
+ \norm{M^{(j)}(p)}
+ \le K_{h,p,j}\rho^{h-j}
+       \max_{|z-p|=\rho}\norm{W(z)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Differentiate \eqref{eq:complex-current} $j$ times in $t$, set $t=p$, and
+integrate over the circle. In the first term, the smallest possible power of
+$p-z$ is $h-1-j$; in the second it is $h-j$. The other factor $p-\barz$
+stays in a compact set bounded away from zero as $\rho\to0$, since
+$p-\barp=2\ii v\ne0$. The arc element has length $\rho\dd\theta$.
+Leibniz's rule, the triangle inequality, and the circle length $2\pi\rho$
+therefore give \eqref{eq:jet-bound}. There are finitely many terms, so one
+constant controls the whole sum.
+\end{proof}
+
+\begin{definition}[Growth-compatible residue space]
+For an integer $0\le s\le h$, let $\mathcal R_s(p)$ be the set of polynomials
+that occur as residues of at least one target satisfying
+\[
+ \norm{W(z)}=O(|z-p|^{-s})\quad(z\to p).
+\]
+This is a condition on the existence of a representative, not a claim that
+every representative of the residue has that growth.
+\end{definition}
+
+\begin{theorem}[Exact residue filtration]\label{thm:filtration}
+For $0\le s\le h$,
+\begin{equation}\label{eq:filtration}
+ \mathcal R_s(p)=\Delta_p(t)^{h-s}\PPl{2s},
+ \qquad \dim_{\R}\mathcal R_s(p)=2sd.
+\end{equation}
+For a nonzero residue $M$, set $r=\ord_pM$ and $s=h-r$. There exists a target
+with residue $M$ and growth $O(|z-p|^{-s})$, whereas no target with residue $M$
+can have growth $O(|z-p|^{-\alpha})$ for any real $\alpha<s$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $g$ has growth $O(\rho^{-s})$. For $j<h-s$,
+Lemma~\ref{lem:jet-bound} gives
+\[
+ \norm{M^{(j)}(p)}=O(\rho^{h-j-s})\longrightarrow0.
+\]
+Since the left side is independent of $\rho$, it is zero. Thus
+$\Delta_p^{h-s}$ divides $M$. The degree condition $\deg M<2h$ makes the
+quotient have degree below $2s$. For $s=0$ this forces $M=0$.
+
+For sufficiency, first take $M\ne0$ with $r=\ord_pM$ and $s_0=h-r$.
+Use the logarithmic stem \eqref{eq:log-stem} on a punctured disc, with local
+branches. Since $M$ vanishes to order $r$ at $p$, its derivatives after
+multiplication by $\operatorname{Log}(z-p)$ satisfy, for $0\le j\le h$,
+\[
+ F_{p,M}^{(j)}(z)
+ =O\!\left(1+|z-p|^{r-j}(1+|\log|z-p||)\right).
+\]
+At order $j=h>r$, differentiation of the lowest Taylor term gives a pole
+of order $h-r=s_0$ without a logarithm in its leading term. All lower terms
+have smaller order, with a possible logarithmic factor. The radial formula,
+whose coefficients are smooth near $y=v>0$, therefore gives
+$\norm{G_{p,M}}_{\mathrm{pair}}=O(|z-p|^{-s_0})$.
+A fully normalized expansion is proved in Proposition~\ref{prop:canonical-asymptotic}.
+If $M$ is divisible by $\Delta_p^{h-s}$, then $s_0\le s$, which proves
+sufficiency for the claimed level. The zero residue is realized by the zero
+target. Multiplication by a fixed nonzero scalar polynomial is injective on
+$E[t]$, so the displayed space has dimension $2sd$.
+
+Finally, for a nonzero residue use \eqref{eq:jet-bound} with $j=r$. Growth
+$O(\rho^{-\alpha})$ for $\alpha<h-r$ would force its nonzero $r$th jet to
+vanish. This is impossible.
+\end{proof}
+
+The successive quotients
+$\mathcal R_s(p)/\mathcal R_{s-1}(p)$ all have dimension $2d$. In particular,
+only a $2d$-dimensional subspace of the full $2hd$-dimensional residue space
+can be represented by a simple-pole-growth target. This is the first
+qualitative difference from the quaternionic case, where $h=1$ and every
+nonzero obstruction is already on that first level.
+
+\section{Optimal axial-pair singularity constants}
+\label{sec:sharp}
+
+The order filtration alone does not determine a leading coefficient. We now
+show that its first nonzero jet determines an optimal one.
+
+Fix $M\ne0$, let $r=\ord_pM$ and $s=h-r$, and define
+\begin{equation}\label{eq:Aconstant}
+ A_{h,p,M}=\frac{c_h(s-1)!}{2\pi v^h}\norm{M^{(r)}(p)}.
+\end{equation}
+For any target $g$ with residue $M$, put
+\[
+ B_g(\rho)=\max_{0\le\theta\le2\pi}
+ \norm{W(p+\rho e^{\ii\theta})}.
+\]
+
+\begin{lemma}[Leading residue Fourier coefficient]\label{lem:fourier}
+For sufficiently small $\rho$,
+\begin{equation}\label{eq:fourier-extraction}
+ M^{(r)}(p)=\gamma_{h,r,p}\rho^s
+ \int_0^{2\pi}e^{\ii s\theta}W(p+\rho e^{\ii\theta})\dd\theta
+ +\mathcal E(\rho),
+\end{equation}
+where
+\begin{equation}\label{eq:gamma}
+ \gamma_{h,r,p}=-\frac{\kappa_h}{2}
+ \frac{(h-1)!}{(s-1)!}(-1)^{s-1}(2\ii v)^h\ii
+\end{equation}
+and, with a constant independent of the target,
+\begin{equation}\label{eq:fourier-error}
+ \norm{\mathcal E(\rho)}
+ \le C\rho^{s+1}\int_0^{2\pi}
+ \norm{W(p+\rho e^{\ii\theta})}\dd\theta.
+\end{equation}
+The modulus of the scalar in \eqref{eq:gamma} is
+\begin{equation}\label{eq:gamma-modulus}
+ b_{h,r,p}=|\gamma_{h,r,p}|=\frac{v^h}{c_h(s-1)!}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In the first term of \eqref{eq:complex-current}, differentiate $r$ times in
+$t$ and set $t=p$. The unique lowest-order contribution in $p-z$ occurs when
+all $r$ derivatives hit $(t-z)^{h-1}$. It is
+\[
+ -\frac{\kappa_h}{2}\frac{(h-1)!}{(s-1)!}
+ (p-z)^{s-1}(p-\barz)^hW\dd z.
+\]
+On the circle, $p-z=-\rho e^{\ii\theta}$,
+$\dd z=\ii\rho e^{\ii\theta}\dd\theta$, and
+$p-\barz=2\ii v-\rho e^{-\ii\theta}$. Replacing its $h$th power by
+$(2\ii v)^h$ produces the leading term in \eqref{eq:fourier-extraction};
+the replacement error has one more power of $\rho$.
+
+Every other distribution of derivatives in the first term leaves at least
+$s$ factors of $p-z$. The entire second term of the complex current also
+has at least $s$ such factors after differentiation. The additional arc
+factor $\rho$ gives the common error estimate \eqref{eq:fourier-error}.
+The bounded remaining factors and finitely many coefficients are absorbed
+into $C$. Finally, inserting the value of $\kappa_h$ into
+$|\gamma_{h,r,p}|$ and cancelling factorials gives \eqref{eq:gamma-modulus}.
+\end{proof}
+
+\Needspace{15\baselineskip}
+\begin{theorem}[Sharp size and circle-energy bounds]\label{thm:sharp-size}
+Every smooth axial target with nonzero residue $M$ satisfies
+\begin{equation}\label{eq:sharp-sup}
+ \liminf_{\rho\downarrow0}\rho^s B_g(\rho)\ge A_{h,p,M}.
+\end{equation}
+More precisely, for small $\rho$,
+\begin{equation}\label{eq:circle-L2}
+ \int_0^{2\pi}\norm{W(p+\rho e^{\ii\theta})}^2\dd\theta
+ \ge 2\pi A_{h,p,M}^{\,2}\rho^{-2s}(1-O(\rho)).
+\end{equation}
+No upper growth assumption on $g$ is needed for either conclusion.
+Both constants are attained asymptotically by $G_{p,M}$ from
+Lemma~\ref{lem:log-representative}.
+\end{theorem}
+
+\begin{proof}[Proof of the lower bounds]
+Lemma~\ref{lem:fourier} and the triangle inequality imply
+\begin{equation}\label{eq:circle-L1}
+ \norm{M^{(r)}(p)}
+ \le(b_{h,r,p}+C\rho)\rho^s
+ \int_0^{2\pi}\norm{W(p+\rho e^{\ii\theta})}\dd\theta.
+\end{equation}
+The integral is at most $2\pi B_g(\rho)$, which gives
+\eqref{eq:sharp-sup} because
+$\norm{M^{(r)}(p)}/(2\pi b_{h,r,p})=A_{h,p,M}$.
+Alternatively, apply Cauchy--Schwarz to the integral in
+\eqref{eq:circle-L1}, square, and rearrange:
+\[
+ \int_0^{2\pi}\norm W^2\dd\theta
+ \ge\frac{\norm{M^{(r)}(p)}^2}
+ {2\pi(b_{h,r,p}+C\rho)^2\rho^{2s}}.
+\]
+Expansion of the scalar denominator proves \eqref{eq:circle-L2}.
+These estimates remain valid for a target growing faster than any power;
+they used only integrals on individual compact circles.
+\end{proof}
+
+\begin{proposition}[Canonical leading asymptotic]\label{prop:canonical-asymptotic}
+The target of the logarithmic stem \eqref{eq:log-stem} has axial pair
+$W_{p,M}$ satisfying
+\begin{equation}\label{eq:canonical-leading}
+\begin{split}
+ W_{p,M}(z)={}&
+ \frac{c_h\ii^{h-1}(-1)^{s-1}(s-1)!}{2\pi v^h}
+ M^{(r)}(p)(z-p)^{-s}\\
+ &+O\!\left(|z-p|^{-s+1}(1+|\log|z-p||)\right).
+\end{split}
+\end{equation}
+The remainder estimate is uniform in the angular variable. Hence
+\begin{align}
+ \lim_{\rho\downarrow0}\rho^sB_{G_{p,M}}(\rho)&=A_{h,p,M},
+ \label{eq:canonical-sup}\\
+ \lim_{\rho\downarrow0}\rho^{2s}\int_0^{2\pi}
+ \norm{W_{p,M}(p+\rho e^{\ii\theta})}^2\dd\theta
+ &=2\pi A_{h,p,M}^2.\label{eq:canonical-circle}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Expand the real-coefficient polynomial at $p$:
+\[
+ M(z)=\frac{M^{(r)}(p)}{r!}(z-p)^r+O((z-p)^{r+1}).
+\]
+For $h=r+s$ and $s\ge1$,
+\[
+ \frac{\mathrm d^h}{\mathrm dz^h}\bigl((z-p)^r\operatorname{Log}(z-p)\bigr)
+ =r!(-1)^{s-1}(s-1)!(z-p)^{-s}.
+\]
+Thus the $h$th derivative of the logarithmic stem is
+\begin{equation}\label{eq:log-high-derivative}
+\begin{split}
+ F_{p,M}^{(h)}(z)={}&
+ \frac{(-1)^{s-1}(s-1)!}{2\pi\ii}
+ M^{(r)}(p)(z-p)^{-s}\\
+ &+O\!\left(|z-p|^{-s+1}(1+|\log|z-p||)\right).
+\end{split}
+\end{equation}
+Use a branch with argument in an interval of length $2\pi$ for this estimate.
+The resulting target is branch independent, so the bounds extend uniformly
+around the circle.
+
+Both radial operators have leading term $y^{-h}\partial_y^h$ after $h$
+iterations. All other terms have $y$-smooth coefficients and derivatives of
+order at most $h-1$. Since a holomorphic stem satisfies
+$\partial_y^hF=\ii^hF^{(h)}$, the pair form of \eqref{eq:radial} gives
+\[
+ W_{p,M}=c_h\ii^hy^{-h}F_{p,M}^{(h)}
+   +\text{terms involving derivatives of order at most }h-1.
+\]
+The lower-order terms obey the remainder estimate in
+\eqref{eq:canonical-leading}. Replacing $y^{-h}$ by $v^{-h}$ also changes
+only that remainder, because $y-v=O(|z-p|)$. Formula
+\eqref{eq:log-high-derivative} now yields \eqref{eq:canonical-leading}.
+The scalar angular factor $e^{-\ii s\theta}$ has modulus one and acts
+isometrically on $E_{\C}$. The norm of the leading coefficient is exactly
+$A_{h,p,M}$; the remainder divided by $\rho^{-s}$ tends uniformly to zero.
+Both limits follow.
+\end{proof}
+
+\subsection{Normalization against the quaternionic case}
+
+If $h=1$ and $M(t)=ta+b$, then $r=0$, $s=1$, and
+\[
+ A_{1,p,M}=\frac1{\pi v}\norm{pa+b}
+ =\frac1{\pi v}\sqrt{\norm{ua+b}^2+v^2\norm a^2}.
+\]
+Here the first norm is in the central complexification of $E$. If $E=\HH$,
+$p=\ii$, $a=1$, and $b$ is a unit quaternionic imaginary vector orthogonal to
+$1$, this constant is $\sqrt2/\pi$. A whole-conjugacy-sphere supremum is a
+different norm and can have a different sharp constant. This explicitly
+preserves the distinction emphasized by the repository's quaternionic report
+\cite{repo}.
+
+\section{Sharp physical energy and the integrability obstruction}
+\label{sec:energy}
+
+Let
+\[
+ \sig=\operatorname{area}(S^{2h})
+       =\frac{2\pi^{h+1/2}}{\Gamma(h+1/2)}.
+\]
+For $0<\varepsilon<R<v$, define the tube around the punctured sphere by
+\[
+ T_{\varepsilon,R}(p)
+ =\{x+yI:\varepsilon<|x+\ii y-p|<R,\ I\in S^{2h}\}.
+\]
+Its Euclidean volume element is
+$\dd q=y^{2h}\dd x\dd y\dd\sigma(I)$. The physical energy is
+\begin{equation}\label{eq:physical-energy}
+ \mathcal E_g(\varepsilon,R)
+ =\int_{T_{\varepsilon,R}(p)}\norm{g(q)}^2\dd q.
+\end{equation}
+
+\begin{lemma}[Exact spherical averaging]\label{lem:spherical-average}
+For all $P,Q\in E$,
+\begin{equation}\label{eq:spherical-average}
+ \int_{S^{2h}}\norm{P+IQ}^2\dd\sigma(I)
+ =\sig\bigl(\norm P^2+\norm Q^2\bigr).
+\end{equation}
+Consequently
+\begin{equation}\label{eq:pair-energy}
+ \mathcal E_g(\varepsilon,R)
+ =\sig\int_{\varepsilon<|z-p|<R}y^{2h}\norm{W(z)}^2\dd x\dd y.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The identity $\norm{IQ}=\norm Q$ follows from the orthogonal module structure.
+The cross term $2\langle P,IQ\rangle$ changes sign under $I\mapsto-I$ and
+therefore has zero spherical integral. The volume formula gives the second
+assertion.
+\end{proof}
+
+\Needspace{17\baselineskip}
+\begin{theorem}[Optimal energy divergence]\label{thm:energy}
+Let $g$ have nonzero residue $M$ at $p$, with $r=\ord_pM$ and $s=h-r$.
+Fix $R$ with $0<R<v$. If $s=1$, then
+\begin{equation}\label{eq:energy-log}
+ \liminf_{\varepsilon\downarrow0}
+ \frac{\mathcal E_g(\varepsilon,R)}{\log(1/\varepsilon)}
+ \ge \frac{\sig c_h^2}{2\pi}\norm{M^{(h-1)}(p)}^2.
+\end{equation}
+If $s\ge2$, then
+\begin{equation}\label{eq:energy-power}
+ \liminf_{\varepsilon\downarrow0}
+ \varepsilon^{2s-2}\mathcal E_g(\varepsilon,R)
+ \ge\frac{\sig c_h^2((s-1)!)^2}{4\pi(s-1)}
+       \norm{M^{(r)}(p)}^2.
+\end{equation}
+The logarithmic representatives $G_{p,M}$ attain equality as limits in both
+formulas. In particular, nonzero polynomial residue forces infinite physical
+$L^2$ energy near the conjugacy sphere.
+\end{theorem}
+
+\begin{proof}
+Use polar coordinates $z=p+\rho e^{\ii\theta}$ in
+\eqref{eq:pair-energy}. Uniformly in $\theta$,
+\[
+ y^{2h}=v^{2h}(1+O(\rho)).
+\]
+The circle lower bound \eqref{eq:circle-L2} therefore gives, on a sufficiently
+small fixed radial interval,
+\[
+ \mathcal E_g(\varepsilon,R)
+ \ge2\pi\sig v^{2h} A_{h,p,M}^2
+ \int_\varepsilon^{R_0}\rho^{1-2s}(1-O(\rho))\dd\rho.
+\]
+For $s=1$, the main integral is $\log(R_0/\varepsilon)$, and its error is
+bounded. For $s\ge2$, its main divergent term is
+$\varepsilon^{2-2s}/(2s-2)$, while the error is lower order. Substitution of
+\eqref{eq:Aconstant} cancels the factor $v^{2h}$ and gives the stated
+constants. The discarded outer annulus has nonnegative energy, so it does
+not weaken these lower bounds.
+
+For $G_{p,M}$, Proposition~\ref{prop:canonical-asymptotic} gives the matching
+uniform leading integrand. The relative error is
+$O(\rho(1+|\log\rho|))$, whose integral is lower order in both regimes.
+The energy on a fixed outer annulus is finite because the target is smooth
+there. Hence equality holds as a full limit.
+\end{proof}
+
+\subsection{An exact local \texorpdfstring{$L^p$}{Lp} classification of residue classes}
+
+The same argument has a consequence beyond the quadratic norm. To avoid
+confusing an exponent with the point $p$, write the integrability exponent
+as $\alpha$.
+
+\begin{corollary}[$L^\alpha$-compatible residues, $\alpha\ge1$]
+\label{cor:Lp}
+Fix a nonzero residue $M$, with $s=h-\ord_pM$. There exists a representative
+with finite physical $L^\alpha$ norm near the punctured sphere if and only if
+\begin{equation}\label{eq:Lp-threshold}
+ \alpha s<2.
+\end{equation}
+Equivalently, the spaces of residues admitting an $L^\alpha$ representative
+are
+\begin{equation}\label{eq:Lp-spaces}
+ \begin{cases}
+  \Delta_p^{h-1}\PPl{2},&1\le\alpha<2,\\
+  \{0\},&\alpha\ge2.
+ \end{cases}
+\end{equation}
+This classifies attainable residue classes, not all singular functions with
+a given residue.
+\end{corollary}
+
+\begin{proof}
+For a fixed pair $P,Q$, averaging $P+IQ$ over $I$ recovers $P$, and averaging
+$-I(P+IQ)$ recovers $Q$. By the triangle inequality and the isometry of $I$,
+\[
+ \frac1{\sig}\int\norm{P+IQ}\dd\sigma(I)
+ \ge\max(\norm P,\norm Q)\ge2^{-1/2}\norm W.
+\]
+Jensen's inequality for $\alpha\ge1$ then gives a lower bound
+$\sig 2^{-\alpha/2}\norm W^\alpha$ for the integral of
+$\norm{P+IQ}^\alpha$ over the sphere. The elementary upper bound
+$\norm{P+IQ}\le\sqrt2\norm W$ gives a matching equivalence up to constants.
+Thus physical $L^\alpha$ integrability is equivalent to integrability of
+$y^{2h}\norm W^\alpha$ in the planar variables.
+
+Equation~\eqref{eq:circle-L1} and H\"older's inequality imply
+\[
+ \int_0^{2\pi}\norm W^\alpha\dd\theta
+ \ge2\pi A_{h,p,M}^{\alpha}\rho^{-\alpha s}(1-O(\rho)).
+\]
+Its radial integral diverges when $\alpha s\ge2$, including equality. On the
+other hand, the canonical target has $\norm W\sim A_{h,p,M}\rho^{-s}$
+uniformly, so it is integrable precisely when $\alpha s<2$.
+For $\alpha\ge1$ and integer $s\ge1$, this condition means $s=1$ and
+$\alpha<2$. Apply the residue filtration. The zero residue is realized by
+the zero target for every exponent.
+\end{proof}
+
+\subsection{What zero residue does not imply}
+
+Finite physical $L^2$ energy implies that the period polynomial is zero, so
+a single-valued holomorphic Fueter inverse exists on the punctured disc.
+Neither implication asserts that the target or the inverse extends through
+the puncture. For example, the single-valued stem
+\[
+ F(z)=\frac{a}{z-p},\qquad a\in E\setminus\{0\},
+\]
+has zero monodromy and hence zero polynomial residue, but its Fueter image
+has leading axial-pair order $|z-p|^{-h-1}$ by the radial formula. It is
+singular and has infinite energy. A removability theorem needs additional
+analytic hypotheses; the period obstruction alone is topological.
+
+\section{Worked singularity examples in dimension six}
+\label{sec:examples}
+
+Take $h=2$, $p=\ii$, and a unit real coefficient $a\in E$. Here $c_2=8$,
+$\kappa_2=-1/16$, and $\sigma_4=8\pi^2/3$. The residue space is the space
+of cubic polynomials with coefficients in $E$.
+
+\subsection{A residue that forces a double-pole scale}
+
+Let $M(t)=a$. Its first nonzero jet is $M(p)=a$, so $r=0$ and $s=2$.
+The canonical stem is
+\[
+ F(z)=\frac{a}{2\pi\ii}\operatorname{Log}(z-\ii).
+\]
+Every target with this residue satisfies
+\[
+ \liminf_{\rho\downarrow0}\rho^2B_g(\rho)\ge\frac4\pi.
+\]
+The logarithmic representative attains equality. Its optimal physical energy
+constant, and the lower bound for every representative, are
+\[
+ \liminf_{\varepsilon\downarrow0}\varepsilon^2\mathcal E_g(\varepsilon,R)
+ \ge\frac{128\pi}{3}.
+\]
+No simple-pole-growth representative exists. In fact no representative has
+finite physical $L^1$ norm near the sphere, by Corollary~\ref{cor:Lp}.
+
+\subsection{A quadratic factor lowers the forced order}
+
+Let $M(t)=(t^2+1)a$. Then $M(p)=0$, $M'(p)=2\ii a$, so $r=1$ and $s=1$.
+A canonical stem is
+\[
+ F(z)=\frac{(z^2+1)a}{2\pi\ii}\operatorname{Log}(z-\ii).
+\]
+The minimum axial-pair leading size is now
+\[
+ \liminf_{\rho\downarrow0}\rho B_g(\rho)\ge\frac8\pi,
+\]
+and the optimal energy law is
+\[
+ \liminf_{\varepsilon\downarrow0}
+ \frac{\mathcal E_g(\varepsilon,R)}{\log(1/\varepsilon)}
+ \ge\frac{1024\pi}{3}.
+\]
+Both are attained by the canonical target. It belongs locally to every
+physical $L^\alpha$ space with $1\le\alpha<2$, but not to $L^2$.
+
+The full simple-pole-compatible residue subspace in this dimension is
+\[
+ (t^2+1)\{a_0+ta_1:a_0,a_1\in E\},
+\]
+of dimension $2d$ inside a $4d$-dimensional total residue space. Thus the
+quadratic divisibility condition is not a cosmetic rewriting of a norm
+estimate: it removes half the independent obstruction directions at the
+simple-pole level.
+
+\subsection{General dimensions and higher levels}
+
+At $p=\ii$, the family
+\[
+ M_s(t)=(t^2+1)^{h-s}a,\qquad 1\le s\le h,
+\]
+realizes every possible least growth order. Its first nonzero jet is
+\[
+ M_s^{(h-s)}(\ii)=(h-s)!(2\ii)^{h-s}a.
+\]
+Therefore
+\[
+ A_{h,\ii,M_s}=
+ \frac{2^hh!(s-1)!(h-s)!2^{h-s}}{2\pi}\norm a.
+\]
+These are the families used in the numerical asymptotic diagnostics shipped
+with the article. Their purpose is to test constants at all levels, not to
+supply the general proof of the filtration.
+
+\section{Verification, proof dependencies, and scope of the research claim}
+\label{sec:audit}
+
+\subsection{The all-order proofs versus finite diagnostics}
+
+The code in \texttt{code/verify.py} was executed for this package. It uses
+SymPy for exact symbolic identities and mpmath at 50 decimal digits for
+numerical diagnostics. The complete retained output is in
+\texttt{data/verification.json}, with a readable run log alongside it.
+
+The exact checks establish closedness after substituting the Vekua system for
+$1\le h\le8$; the Hermite differential identity for 60 real-monomial cases
+($1\le h\le5$, $0\le k\le2h+5$); 13 additional imaginary-monomial cases;
+and calibration and leading-residue phase identities through $h=8$.
+The imaginary tests are especially useful because they detect an accidental
+replacement of the real polynomial kernel by a complex polynomial kernel.
+
+The numerical tests integrate every coefficient of the period current for a
+nontrivial logarithmic representative in each of $h=1,2,3,4$, using 384 equally
+spaced quadrature nodes. The largest observed absolute error over these tests
+was below $4\times10^{-48}$. The tests also sample all ten pairs
+$1\le s\le h\le4$ at four radii from $10^{-2}$ to $10^{-5}$. At the smallest
+radius, the sampled normalized maximum in every case differed from the
+predicted limit by less than $3.7\times10^{-4}$. These are observed numerical
+errors, not rigorous enclosures of quadrature errors or certified bounds on
+unsampled extrema.
+
+None of those finite ranges is used to prove an unbounded assertion in the
+article. The general Hermite identity follows from the exact jet-spanning
+argument in Theorem~\ref{thm:hermite}; its reduction to $2h+2$ monomials is
+valid for every symbolic $h$. The sharp constants follow from the explicit
+Fourier extraction and logarithmic asymptotic. This is a logical distinction,
+not simply a difference in precision.
+
+\subsection{A dependency map}
+
+The argument has two main chains:
+\[
+ \text{radial calculus}
+ \ \Longrightarrow\ \text{two calibrations}
+ \ \Longrightarrow\ \text{Hermite identity}
+ \ \Longrightarrow\ \text{global inverse},
+\]
+and
+\[
+ \text{polynomial current}
+ \ \Longrightarrow\ \text{residue jet extraction}
+ \ \Longrightarrow\ \text{growth and energy lower bounds}.
+\]
+The logarithmic representative connects them: the polynomial kernel guarantees
+its target is single valued, the Hermite identity computes its residue, and
+ordinary differentiation computes its leading singularity. This supplies
+attainment, rather than only a universal lower estimate.
+
+\begin{center}
+\begin{tabular}{p{0.28\textwidth}p{0.60\textwidth}}
+\toprule
+Conclusion & Essential ingredients \\
+\midrule
+Complete period criterion & Closedness, Hermite jets, current injectivity \\
+Finite cokernel and splitting & Kernel theorem, logarithm monodromy, planar homology \\
+No finite inverse cover & Additivity of periods, torsion-freeness \\
+Residue filtration & Jet estimate, real conjugate roots, logarithmic representative \\
+Sharp size constant & Leading Fourier coefficient and its exact normalization \\
+Sharp physical energy & Circle estimate, spherical average, radial integration \\
+$L^\alpha$ residue classes & Circle $L^1$ estimate, Jensen/H\"older, attainment \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Repository and literature boundaries}
+
+The repository source inspected for this extension was its merged
+quaternionic-inversion README, in the tree identified by commit
+\texttt{fbba58593dc0622aa914972896150d4848f935b5}; the report's path is recorded
+in the bibliography and the package README. This was a targeted inspection,
+not a proof-level audit of every source manuscript or every file in ProveIt.
+All repository formulas used as a starting point have been rederived here
+in the $h=1$ specialization.
+
+Colombo, Pe\~na Pe\~na, Sabadini, and Sommen give integral inverses through
+radial operators and coefficient ordinary differential equations
+\cite{colombo2014}; their Theorem~3 is formulated on a rectangular radial
+region bounded away from the axis. Colombo, Sabadini, and Sommen develop an
+integral inverse using spherical monogenics \cite{colombo2013}. De Martino,
+Diki, and Guzm\'an Ad\'an study Fueter--Sce images, generalized
+Cauchy--Kovalevskaya extension, and the polynomial kernel
+\cite{demartino2023}. Those works provide the primary theoretical context;
+this article does not rebrand the forward mapping theorem, local inversion,
+or the polynomial kernel as discoveries.
+
+For the quaternionic global topology comparison, the explicit simply connected
+hypothesis in Perotti's Theorem~2 is the relevant statement
+\cite{perotti2024}. It is compatible with our result. We do not infer a false
+unconditional surjectivity theorem from an abstract, introductory sentence,
+or a theorem quoted without its domain assumptions.
+
+The main proposed contribution should therefore be judged at the level of
+its actual formulas and implications: the target-only current of degree
+$2h-1$, the Hermite reconstruction, the explicit monodromy realization, and
+the sharp hierarchy of residue-forced singularities. Whether these exact
+results appear elsewhere under a different formalism remains a literature
+question. The proofs establish the statements under the given hypotheses;
+they do not establish historical priority.
+
+\subsection{Formalization opportunities and present status}
+
+No Lean source is included or claimed verified. A future formalization can be
+split at clear interfaces. The polynomial portion consists of conjugate-node
+Hermite interpolation, two remainders, and a finite-jet linearity theorem.
+The differential portion consists of the radial commutators, Cauchy--Riemann
+identities, and the coefficient-current calculation. The topological portion
+is coefficientwise exactness versus periods. Finally, the quantitative portion
+requires normed finite-dimensional complexification, a circle integral
+inequality, and explicit improper-integral asymptotics.
+
+This division would make a formal audit informative: one could certify the
+algebraic construction before formalizing covering spaces or singular
+integrals. Existing formal theorems elsewhere in the repository confer no
+formal status on the new results in this article.
+
+\section{Further research questions and topics}
+\label{sec:future}
+
+The following questions are continuations of the proved results, not assumptions
+used in their proofs. Several concern quantitative or constructive refinements
+of otherwise familiar general principles.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2em,itemsep=7pt]
+\item \textbf{Crossing the real axis.}
+The interpolation nodes $z$ and $\barz$ coalesce at $y=0$. Find a regularized
+current and an exact global criterion on axial domains meeting the real axis,
+with the required even/odd stem compatibility included explicitly. Determine
+which period coefficients become redundant or constrained when cycles can be
+moved through the axis. The present formulas do not settle this degeneration.
+
+\item \textbf{Higher angular monogenic degree.}
+For a fixed spherical monogenic of degree $\ell$, the radial Vekua coefficient
+is shifted from $2h$ to $2(h+\ell)$. Determine the correct target-only current,
+normalization, and real coefficient module for the corresponding weighted
+Fueter map. Establish which of the residue filtration and sharp physical
+energy constants survive after angular orthogonality and multiplicity are
+accounted for. Merely replacing $h$ in one display does not by itself verify
+the forward-map normalization or the energy measure.
+
+\item \textbf{Global least-energy representatives.}
+For a multiply connected smooth domain and fixed period polynomials, construct
+the least-energy target under natural boundary conditions. Determine the
+finite-dimensional quadratic form on the period space and its relation to a
+capacity or period matrix. Near shrinking holes, prove that its diagonal
+terms have the sharp divergent constants of Theorem~\ref{thm:energy} and
+compute the finite interaction terms.
+
+\item \textbf{Stable inverse operators.}
+After subtracting a fixed period splitting and fixing a polynomial gauge,
+prove norm estimates for the inverse on Sobolev or H\"older spaces. Identify
+the dependence on boundary regularity, the distance to the real axis, and
+neck degeneration in the planar domain. An explicit formula alone does not
+provide a uniformly bounded inverse in a chosen norm.
+
+\item \textbf{Infinite connectivity with growth control.}
+The zero-period criterion already holds on every connected $D\subset\C^+$.
+For infinitely many holes, characterize which polynomial period assignments
+admit representatives satisfying specified growth or summability conditions.
+Develop convergent analogues of the finite logarithmic splitting, including
+estimates near accumulating boundary components. Unrestricted sheaf-theoretic
+existence and constructive growth-controlled realization should be kept
+separate.
+
+\item \textbf{Collision and real-axis limits of residues.}
+Study families of punctures that approach one another or approach the real
+axis. Determine how the quadratic factors $\Delta_p$ and their filtrations
+combine, and derive a uniform asymptotic transition between distinct spherical
+singularities and the limiting singular set. The fixed-$v>0$ estimates here
+are not uniform as $v\to0$.
+
+\item \textbf{Nonaxial targets.}
+Expand a general monogenic function into angular modes and ask when modewise
+Fueter inverses can be recombined with convergence and compatible global
+monodromy. A useful theorem would give a common analytic class and a complete
+obstruction space, not just formal independent inverses of each mode.
+
+\item \textbf{Fractional Fueter maps.}
+In dimensions where the natural Fueter map is expressed through a fractional
+Laplacian rather than an integer power, determine whether an analogous
+finite-dimensional obstruction survives. The proof here relies on finite
+jets and a finite polynomial kernel; a nonlocal map may require a genuinely
+different invariant rather than more coefficient forms.
+
+\item \textbf{Endpoint spaces and stronger removability.}
+The strong $L^\alpha$ residue classification for $\alpha\ge1$ is settled here.
+Determine optimal weak-$L^\alpha$, Lorentz, and weighted analogues, and identify
+additional hypotheses that turn zero residue into removability. Separate
+conditions on the target from conditions on a selected holomorphic inverse,
+since a zero-residue target can still have arbitrarily severe singularities.
+
+\item \textbf{Certified symbolic and formal inversion.}
+Implement the coefficient-current construction, homology-basis integration,
+and polynomial gauge choice with exact certificates. A first proof-assistant
+target is the universal Hermite differential identity, followed by the global
+criterion and the sharp coefficient extraction. For numerical input, develop
+an error model that distinguishes small periods from provably zero periods.
+\end{enumerate}
+
+\section{Conclusion}
+
+The higher-dimensional inverse Fueter problem on upper-half-plane product
+domains is controlled by a finite polynomial object. Its coefficients are
+closed one-forms computed directly from the target. Its primitive is the
+Hermite polynomial of any local holomorphic inverse, and evaluating that
+polynomial at the moving node reconstructs the inverse. This proves
+completeness of the periods and realizes arbitrary finite period data by
+explicit logarithmic stems.
+
+The same current carries quantitative information. The first nonzero
+conjugate-node jet of a residue polynomial fixes the least possible growth
+order; its norm fixes an optimal leading size. Spherical averaging then gives
+sharp physical energy constants. These results extend the quaternionic
+pair-of-periods picture to a $2h$-coefficient obstruction and reveal a
+$h$-level residue hierarchy that has no nontrivial intermediate levels when
+$h=1$.
+
+The remaining limits are explicit: this is axial analysis on domains avoiding
+the real axis; the finite-dimensional cokernel realization was made
+constructive for finite connectivity; the sharp norm is the axial-pair norm;
+and zero residue is not a removability theorem. Within these boundaries, the
+article gives proofs rather than conjectural extrapolations.
+
+\appendix
+\section{An explicit formula for the Hermite interpolant}
+\label{app:hermite}
+
+The interpolation polynomial used in the proof can be written without solving
+a linear system. For fixed $z\in D$, regard $w$ as an independent complex
+variable, and let $F^*(w)=\overline{F(\overline w)}$ on a neighborhood of
+$\barz$. Then
+\begin{equation}\label{eq:explicit-hermite}
+\begin{split}
+ H_F(z;t)={}&(t-\barz)^h\sum_{j=0}^{h-1}
+ \frac{(t-z)^j}{j!}
+ \left.\frac{\mathrm d^j}{\mathrm dw^j}
+       \left(\frac{F(w)}{(w-\barz)^h}\right)\right|_{w=z}\\
+ &+(t-z)^h\sum_{j=0}^{h-1}
+ \frac{(t-\barz)^j}{j!}
+ \left.\frac{\mathrm d^j}{\mathrm dw^j}
+       \left(\frac{F^*(w)}{(w-z)^h}\right)\right|_{w=\barz}.
+\end{split}
+\end{equation}
+The first term matches the required Taylor jet at $z$ and vanishes to order
+$h$ at $\barz$; the second does the opposite. Each has degree at most $2h-1$.
+Their sum is invariant under conjugation of coefficients. This proves the
+formula and also exhibits its dependence on only the first $h$ stem jets.
+
+For a real-coefficient polynomial $F(w)$, $H_F$ is simply the remainder upon
+division of $F(t)$ by $R_t^h$. That observation is used in the exact
+real-monomial tests. For imaginary-coefficient stems, ordinary division of
+$F(t)$ by $R_t^h$ need not give a real-coefficient interpolant, so the tests
+instead use \eqref{eq:explicit-hermite}.
+
+\section{Explicit radial coefficient formulas}
+\label{app:radial}
+
+For computational use, repeated radial differentiation can be written as
+\begin{align}
+ \Rop^h
+ &=\sum_{j=1}^h
+ \frac{(-1)^{h+j}(2h-j-1)!}{2^{h-j}(h-j)!(j-1)!}
+ y^{j-2h}\partial_y^j,\label{eq:R-explicit}\\
+ \Sop^h
+ &=\sum_{j=0}^h
+ \frac{(-1)^{h+j}(2h-j)!}{2^{h-j}(h-j)!j!}
+ y^{j-2h}\partial_y^j.\label{eq:S-explicit}
+\end{align}
+For $h=1$, these are their defining formulas. Inductively, applying
+$y^{-1}\partial_y$ to a term $a_{h,j}y^{j-2h}\partial_y^j$ gives the
+coefficient recurrence
+\[
+ a_{h+1,j}=(j-2h)a_{h,j}+a_{h,j-1}.
+\]
+Applying $\partial_y(y^{-1}\,\cdot\,)$ gives
+\[
+ b_{h+1,j}=(j-2h-1)b_{h,j}+b_{h,j-1}.
+\]
+Missing coefficients are zero. Substitution of the factorial expressions
+verifies these recurrences and proves both formulas.
+
+For a logarithmic representative, derivatives can be computed exactly from
+\begin{equation}\label{eq:log-jets-algorithm}
+ F_{p,M}^{(j)}(z)=\frac1{2\pi\ii}
+ \sum_{\ell=0}^j\binom j\ell M^{(j-\ell)}(z)L_\ell(z),
+\end{equation}
+where
+\[
+ L_0(z)=\operatorname{Log}(z-p),\qquad
+ L_\ell(z)=(-1)^{\ell-1}(\ell-1)!(z-p)^{-\ell}\quad(\ell\ge1).
+\]
+For holomorphic stems $\partial_y^jF=\ii^jF^{(j)}$, so taking real and imaginary
+parts in \eqref{eq:R-explicit}--\eqref{eq:S-explicit} avoids numerical
+finite-difference differentiation. This is the method used in the period and
+asymptotic diagnostics.
+
+\section{Reproduction and package contents}
+
+The package contains the complete \texttt{article.tex} and compiled
+\texttt{article.pdf}, the verification program, its recorded JSON output and
+run log, a short proof audit, and build instructions. The bibliography is
+embedded in the source, so no separate bibliography processor is required.
+
+Rebuild the article using
+\begin{lstlisting}
+sh build.sh
+\end{lstlisting}
+and rerun the complete diagnostic suite using
+\begin{lstlisting}
+python code/verify.py
+\end{lstlisting}
+The verification script requires SymPy and mpmath. The recorded run used
+SymPy 1.14.0 and mpmath 1.3.0. A \texttt{--quick} switch reduces only the
+range of real-monomial symbolic checks; it does not change the statements
+proved in the article. Running the script replaces its JSON output with the
+newly observed results. There are no hidden certificate files and no
+probabilistic claims of exact nonvanishing.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{repo}
+\emph{ProveIt} project, \emph{Slice regularity and the global inverse Fueter
+problem}, repository report README, September 2026.
+Path: \texttt{SetTheory/Cardinals/docs/reports/quaternionic-analysis/}\\
+\texttt{slice-regularity-and-fueter-inversion/README.md}.
+Inspected repository snapshot:
+\texttt{fbba58593dc0622aa914972896150d4848f935b5}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/fbba58593dc0622aa914972896150d4848f935b5/SetTheory/Cardinals/docs/reports/quaternionic-analysis/slice-regularity-and-fueter-inversion}{Pinned repository report}.
+Unrefereed research materials; the present article rederives the formulas used.
+
+\bibitem{colombo2014}
+F.~Colombo, D.~Pe\~na Pe\~na, I.~Sabadini, and F.~Sommen,
+\emph{A new integral formula for the inverse Fueter mapping theorem},
+Journal of Mathematical Analysis and Applications \textbf{417} (2014),
+112--122.
+\href{https://doi.org/10.1016/j.jmaa.2014.03.016}{doi:10.1016/j.jmaa.2014.03.016}.
+Preprint: \href{https://arxiv.org/abs/1302.0685}{arXiv:1302.0685}.
+
+\bibitem{colombo2013}
+F.~Colombo, I.~Sabadini, and F.~Sommen,
+\emph{The inverse Fueter mapping theorem in integral form using spherical
+monogenics}, Israel Journal of Mathematics \textbf{194} (2013), 485--505.
+\href{https://doi.org/10.1007/s11856-012-0090-4}{doi:10.1007/s11856-012-0090-4}.
+
+\bibitem{demartino2023}
+A.~De Martino, K.~Diki, and A.~Guzm\'an Ad\'an,
+\emph{The Fueter--Sce mapping and the Clifford--Appell polynomials},
+2023 preprint, \href{https://arxiv.org/abs/2305.06998}{arXiv:2305.06998}.
+The kernel and its relation to generalized Cauchy--Kovalevskaya extension
+provide relevant background; no priority is claimed here for the polynomial
+kernel.
+
+\bibitem{perotti2024}
+A.~Perotti, \emph{A local Cauchy integral formula for slice-regular functions},
+Computational Methods and Function Theory \textbf{24} (2024), 185--203.
+Published online 30 May 2023.
+\href{https://doi.org/10.1007/s40315-023-00485-5}{doi:10.1007/s40315-023-00485-5}.
+Theorem~2 states the simply connected component hypothesis used in the
+comparison with global inversion.
+
+\end{thebibliography}
+\end{document}

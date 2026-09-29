@@ -233,6 +233,23 @@ case for a dependency lock. The report cites the adjacent exact
 claiming that the quotient-family results themselves are formalized.
 Manuscript theorem labels do not imply Lean proof status.
 
+Archival arrival of 2026-09-28:
+[`Arithmetic_Convolution_Factors_Fabius_Type_Laws/`](Arithmetic_Convolution_Factors_Fabius_Type_Laws/),
+*Arithmetic Convolution Factors of Fabius-Type Laws* (25-page A4 PDF,
+1,723-line source, an exact standard-library regression program), filed by
+a quick archival intake from the repository-level `docs/incoming/` drop
+zone.  It classifies scaled convolution factorizations
+`μ_A = D_c μ_B * ν` of laws of `Σ_k U_k/A_k` along divisibility ladders:
+they exist exactly when `c = 1/m` and `A_k ∣ m B_k`.  Its dyadic single-law
+case is the reciprocal-integer scale classification of
+`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`, and its base-2
+remainder regularity matches that report's parity classification; the
+article does not cite that report, so the overlap is recorded here for the
+deferred comparison.  Its new layers are the two-ladder criterion, the
+encoding of inclusion modulo finite sets with a no-Borel-invariant theorem,
+arithmetical-hierarchy completeness results, and Wasserstein bounds.
+Unreviewed; no Lean statement.
+
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,
