@@ -147,6 +147,26 @@ of an existing draft; semantic consolidation is deferred to the post-
   filed and does not cite it; the two are to be compared, and possibly
   merged, after review.  Unreviewed; its numerics are not certificates; no
   Lean statement.
+- [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
+  *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
+  Fekete Designs* (26-page A4 PDF, 1,823-line source, a SymPy/mpmath/SciPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone.  It answers the
+  equilibrium part of `question:design-limit` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the volume-maximizing hyperbolic node designs on `[0, L]` have an
+  explicit limiting density, an elliptic deformation of the arcsine law,
+  whose constant `−log tanh` potential is a ratio of complete elliptic
+  integrals (the classical elliptic capacity, credited as such).  For
+  finite designs it proves energy bounds, a bounded total deviation from
+  equal spacing, a boundary correction uniform in the dimension, and a
+  sharp determinant transition `exp(−4e^{−2s})` at
+  `h = ½ log n + s`.  It also factors the report's equally spaced volume
+  exactly into bulk, MacMahon and tail products, the algebraic part of
+  `question:q-barnes`.  The endpoint spacings and the joint
+  `d → ∞`, `h ↓ 0` asymptotic stay open.  Its "transseries" are
+  convergent elliptic and modular expansions.  Unreviewed; its numerics
+  are not certificates; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

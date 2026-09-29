@@ -1,0 +1,1606 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\usepackage{listings}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Natural boundaries of quadratic feedback}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=4pt,topsep=5pt,leftmargin=1.8em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\Imm}{\operatorname{Im}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\B}{\mathcal B_0}
+\newcommand{\U}{\widehat U}
+\newcommand{\Q}{\widehat Q}
+\newcommand{\inv}{\langle-1\rangle}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Dminus}{D_-}
+\newcommand{\Hheat}{\mathcal H}
+\newcommand{\res}{\operatorname{Res}}
+\newcommand{\rationalamp}{\mathcal A}
+\hypersetup{pdftitle={Natural Boundaries of Quadratic Exponential Feedback},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Natural boundaries, quadratic exponential feedback, fine versus angular Borel summability, rational amplitudes}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Natural Boundaries of\par Quadratic Exponential Feedback\par}
+\vspace{0.7em}
+{\large An exact obstruction to angular Borel summation,\par analytic-curve rigidity, and a rational-amplitude dichotomy\par}
+\vspace{1em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+
+\begin{abstract}
+We study the formal feedback equation
+\[
+ \U(q)=\sum_{j\ge1}q^j\ee^{j^2\U(q)}
+\]
+and the literal left-side realization of its compositional inverse,
+characterized by $\sum_{j\ge1}Q(u)^j\ee^{j^2u}=u$.
+We prove that a neighborhood of zero in the imaginary axis is a natural
+boundary for $Q$, although $Q$ is smooth up to that boundary.  Its integrated
+Borel transform is entire and exponentially bounded in every fixed-width
+neighborhood of the negative ray, but has no exponential bound in any open
+angular neighborhood of that ray.  Consequently $\Q$, and also $\U$, is not
+angularly $1$-summable in direction $\pi$.  This answers negatively the
+specific open-arc question in the repository's negative-ray summation article.
+
+The main tool is a local rigidity theorem for a heat expansion restricted
+to an arbitrary analytic curve.  If the initial meromorphic function has
+nearest poles at distances $s_\nu$, then the coefficient contribution of
+a pole of order $p$ retains the nonzero multiplier
+$\exp(-a'(0)s_\nu/2)$ under the curve $a=a(t)$.
+Distinct squared pole distances prevent persistent cancellation.  At
+rational imaginary times the quadratic kernel has rational generating data,
+so an analytic implicit inverse would contradict this rigidity theorem.
+
+We extend the argument to rational amplitude generating functions and
+eventually quadratic real slopes.  Within this class, angular negative-direction
+summability holds exactly for finite action support.  Nonpolynomial rational
+amplitudes instead give a smooth natural boundary.  Finite-action inverses
+nevertheless converge exponentially, with every fixed number of derivatives,
+on a closed left half-disc.  Full proofs, exact-arithmetic checks,
+120-digit numerical diagnostics, and further research questions are included.
+\end{abstract}
+
+\noindent\textbf{Status and scope.}
+These are conventional mathematical proofs, not Lean-verified or externally
+refereed results.  The proposed contribution is the implicit natural-boundary
+theorem and its consequences for the stated feedback class.  Classical heat
+summability, partial-theta methods, and factorial-composition mechanisms are
+credited rather than claimed as new.  Global publication priority is not
+established.  No general impossibility theorem for transseries summation is
+asserted.
+
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{The repository question and the distinction it requires}
+\label{sec:context}
+
+\subsection{The exact question answered}
+The ProveIt repository contains a transseries development and a collection
+of research articles on countable exponential feedback.  The snapshot
+inspected for this article is
+\begin{center}\small\ttfamily
+0c973d8f5e7ef4550f4df1bf486d890037fd9f14.
+\end{center}
+The immediate source is \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries} \cite{repo-negative}.  Its research agenda,
+in the subsection on angular summability of the quadratic model, asks
+whether an open arc of Borel directions containing $\pi$ can have the
+uniform exponential-growth bounds required for angular summation.
+The source explicitly distinguishes that problem from its proved
+fixed-width-strip result.  The answer obtained here is \emph{no}.
+
+The distinction is essential.  An entire Borel transform has no finite
+Borel singularities, but can still grow too rapidly away from one ray to
+permit rotation of the Laplace contour through any nonzero angle.
+Conversely, an analytic function in a half-disc can be infinitely
+differentiable on its diameter without admitting analytic continuation
+through even one point of that diameter.  Our example realizes both
+phenomena simultaneously, in a nonlinear implicit equation.
+
+The related regularity and negative-ray articles already establish formal
+existence, coefficient-growth information, and fine summation
+\cite{repo-regularity,repo-negative}.  We do not claim those as new.
+For the quadratic inverse we rederive the needed Borel representation and
+its fine-summation property, with particularly simple frequency bounds.
+This makes the main negative result independent of unverified asymptotic
+claims in other research drafts.
+
+\subsection{What is not answered}
+We do not determine the set of individual rays on which the Borel transform
+has finite exponential type.  An isolated ray is not an open arc.  We do
+not compute its precise growth in shrinking angular neighborhoods, the
+best Taylor-truncation error, or nonlinear Stokes constants.  We also do
+not infer differential transcendence from a natural boundary: nonlinear
+differential equations can have solutions with natural boundaries.
+
+Nor does the result contradict resurgence understood solely as suitable
+analytic continuation of a Borel germ.  An entire Borel transform already
+has unrestricted finite-plane continuation.  The obstruction here concerns
+growth at infinity and the resulting sectorial Laplace sums, not the
+existence of isolated finite Borel singularities.
+
+\subsection{Relation to classical work}
+The formal heat equation with meromorphic initial data is a classical
+source of Gevrey expansions and Stokes phenomena.  Lutz, Miyake, and
+Sch\"afke established foundational summability results for divergent heat
+solutions \cite{lms}; Michalik and Podhajecka analyze Stokes phenomena for
+meromorphic heat data \cite{mp}.  Han, Li, Sauzin, and Sun study partial
+theta series, rational boundary points, discrete Fourier transforms, and
+resurgence \cite{hlss}.  Sauzin distinguishes fine summation from summation
+in an arc and proves nonlinear stability results \cite{sauzin}.
+
+These works explain why heat poles and rational phases are natural tools.
+The extra issue here is \emph{implicit cancellation}: the quantity playing
+the role of the exponential amplitude is itself an unknown function of
+time.  A fixed-amplitude gap theorem alone does not exclude the possibility
+that this function removes a singularity.  Sections~\ref{sec:transfer}
+and~\ref{sec:rigidity} prove the analytic-curve obstruction needed to
+exclude precisely that possibility.
+
+\section{Main statements and conventions}
+\label{sec:main}
+
+We use $\widehat f$ for a formal power series and $f$ for an analytic or
+boundary-smooth realization.  The integrated Borel transform is
+\begin{equation}
+ \B\!\left(\sum_{n\ge0} f_n u^n\right)(\zeta)
+       =\sum_{n\ge0}\frac{f_n}{n!}\zeta^n.
+ \label{eq:borel-convention}
+\end{equation}
+Differentiating this transform gives the usual Borel minor of a series
+with zero constant term.
+
+\begin{definition}[Fine and angular negative-direction summability]
+For $\delta>0$ write
+\[
+ T_\delta=\{\zeta:\dist(\zeta,(-\infty,0])<\delta\}.
+\]
+A series is \emph{finely summable in direction $\pi$} if its Borel germ
+continues to some $T_\delta$ and there obeys
+$|\B\widehat f(\zeta)|\le C\ee^{H|\zeta|}$.
+It is \emph{angularly $1$-summable in direction $\pi$} if such a bound
+holds in an open sector
+$|\arg\zeta-\pi|<\eta$ for some $\eta>0$, together with a neighborhood
+of the origin.  The argument is understood on a continuous determination
+around $\pi$.  Equivalent definitions allow locally bounded exponential
+constants as the direction varies; restricting to a smaller closed arc
+recovers the uniform formulation used here.
+\end{definition}
+
+On the negative input ray the fine sum is
+\begin{equation}
+ \mathcal S_\pi\widehat f(-r)
+   =\frac1r\int_0^\infty\ee^{-s/r}\B\widehat f(-s)\,\dd s,
+ \qquad 0<r\ll1.
+ \label{eq:negative-laplace}
+\end{equation}
+A fixed-width Borel neighborhood gives an input domain tangent to the
+origin.  An angular Borel neighborhood permits rotated Laplace contours
+and produces an input sector of opening strictly greater than $\pi$.
+We give the precise contour argument used here in
+Section~\ref{sec:angular}.
+
+\begin{definition}[Natural boundary along an arc]
+Let $f$ be holomorphic on one side of an open boundary arc $I$.  We say
+that $I$ is a natural boundary for this branch of $f$ if no point of $I$
+has a complex neighborhood on which a holomorphic function agrees with
+$f$ on the original side.  This is a local statement about the specified
+branch, not a claim about an unrelated function having the same formal
+asymptotic expansion.
+\end{definition}
+
+Put
+\begin{equation}
+ K(q,u)=\sum_{j\ge1}q^j\ee^{j^2u},\qquad
+ r_0=\frac1{32},\qquad
+ D_- =\{u:|u|<r_0,\ \Ree u<0\}.
+ \label{eq:kernel-domain}
+\end{equation}
+We use boundary values on $\Ree u=0$ whenever $|u|<r_0$.
+
+\begin{theorem}[Quadratic feedback: smooth boundary, no angular sum]
+\label{thm:main}
+There is a unique small solution $Q$ of
+\begin{equation}
+ K(Q(u),u)=u,
+ \qquad |Q(u)|\le\frac1{16},\quad
+ |u|\le\frac1{32},\quad \Ree u\le0.
+ \label{eq:inverse-equation}
+\end{equation}
+It is holomorphic in $D_-$, has continuous derivatives of every order on
+the closed half-disc, and satisfies $Q(0)=0$, $Q'(0)=1$, and
+\begin{equation}
+ |Q'(u)-1|<\frac13.
+ \label{eq:Qprime}
+\end{equation}
+The following conclusions hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every point of $\{it:|t|<r_0\}$ is a natural-boundary point for $Q$.
+\item The formal Taylor series $\Q$ is the compositional inverse of the
+unique formal solution $\U$ of
+$\U(q)=K(q,\U(q))$.
+Its integrated Borel transform is entire and exponentially bounded on
+\emph{every} fixed-width $T_\delta$.  Its fine sum is $Q$.
+\item For every $\eta>0$ and every $H>0$,
+\begin{equation}
+ \sup_{\substack{\zeta\ne0\cr |\arg\zeta-\pi|<\eta}}
+       \ee^{-H|\zeta|}|\B\Q(\zeta)|=\infty.
+ \label{eq:no-angular-bound}
+\end{equation}
+Neither $\Q$ nor $\U$ is angularly $1$-summable in direction $\pi$.
+\item The inverse function $U=Q^{\inv}$ has the smooth arc
+$\Gamma=\{Q(it):|t|<r_0\}$ as a natural boundary.  This arc is nowhere
+real-analytic as a regular plane curve.
+\end{enumerate}
+\end{theorem}
+
+The words ``every fixed-width'' do not imply a common exponential constant:
+the constant can grow with $\delta$.  The impossibility in
+\eqref{eq:no-angular-bound} concerns wedges of fixed positive angle,
+whose width grows proportionally to their distance from zero.
+
+The next theorem is a classification, not merely a perturbative example.
+
+\begin{theorem}[Rational-amplitude dichotomy]
+\label{thm:rational-main}
+Let
+\begin{equation}
+ \rationalamp(z)=\sum_{j\ge1}c_jz^j
+ \label{eq:amplitudes}
+\end{equation}
+be rational and holomorphic at zero, with $c_1\ne0$.  Suppose the real
+slopes satisfy, for all sufficiently large $j$,
+\begin{equation}
+ \lambda_j=\alpha j^2+\beta j+\gamma,
+ \qquad \alpha>0,
+ \label{eq:eventual-quadratic}
+\end{equation}
+with arbitrary finite real modifications at smaller indices.  The small
+left-side inverse defined by
+\begin{equation}
+ \sum_{j\ge1}c_jQ(u)^j\ee^{\lambda_j u}=u
+ \label{eq:weighted-kernel}
+\end{equation}
+exists on a sufficiently small left half-disc and is smooth up to its
+diameter.  Its formal series has an entire integrated Borel transform and
+is finely summable in direction $\pi$, with sum $Q$.
+
+The following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\rationalamp$ is a polynomial, equivalently the action amplitudes
+have finite support;
+\item $Q$ extends holomorphically to a neighborhood of zero;
+\item the formal series $\Q$ has positive radius of convergence;
+\item $\Q$ is angularly $1$-summable in direction $\pi$.
+\end{enumerate}
+If these conditions fail, every point of a sufficiently small imaginary
+interval is a natural-boundary point for $Q$.
+\end{theorem}
+
+The rationality hypothesis is substantive.  Rapidly decaying nonrational
+amplitudes can make the kernel holomorphic across the boundary; an example
+appears in Section~\ref{sec:examples}.  Thus the theorem does not replace a
+joint amplitude--slope analysis for arbitrary amplitudes.
+
+\section{The literal inverse on a closed half-disc}
+\label{sec:inverse}
+
+\subsection{Uniform contraction with explicit constants}
+For $\Ree u\le0$ write \eqref{eq:inverse-equation} as
+\begin{equation}
+ q=T_u(q):=\ee^{-u}
+       \left(u-\sum_{j\ge2}q^j\ee^{j^2u}\right).
+ \label{eq:contraction}
+\end{equation}
+When $|q|\le1/16$ and $|u|\le1/32$,
+\[
+ |T_u(q)|\le\frac{32}{31}
+       \left(\frac1{32}+\frac1{240}\right)
+       =\frac{17}{465}<\frac1{16}.
+\]
+Here $\ee^{1/32}\le32/31$ follows from
+$\ee^x\le(1-x)^{-1}$ for $0\le x<1$.
+Moreover,
+\begin{equation}
+ |\partial_qT_u(q)|
+  \le\frac{32}{31}
+       \left(\frac1{(1-1/16)^2}-1\right)
+  =\frac{32}{225}<1.
+ \label{eq:contraction-constant}
+\end{equation}
+The contraction theorem gives the unique solution uniformly on the
+closed parameter half-disc.  Iterating from zero gives holomorphic
+functions on the open half-disc; uniform convergence proves holomorphy
+of their limit.  Continuity up to the diameter follows from the same
+uniform convergence.
+
+\subsection{Smooth boundary jets and injectivity}
+Every mixed derivative of $K$ is represented, on a slightly smaller
+$q$-disc, by a uniformly convergent series of the form
+\[
+ \sum_{j\ge1}(j)_s j^{2t} q^{j-s}\ee^{j^2u},
+ \qquad \Ree u\le0.
+\]
+Polynomial factors in $j$ are absorbed by the geometric decay in $q$.
+The denominator $K_q$ stays bounded away from zero.  Implicit
+differentiation, first in the interior and then by continuous extension,
+therefore gives all boundary derivatives of $Q$.  Tangential derivatives
+also follow directly by differentiating the uniformly contracting
+boundary equation.  Repeating this argument proves that the one-sided
+complex derivatives and the boundary tangential derivatives agree.
+This is the precise meaning of smoothness on the closed half-disc.
+
+For the quantitative first derivative, implicit differentiation gives
+\begin{equation}
+ Q'(u)=\frac{1-K_u(Q(u),u)}{K_q(Q(u),u)}.
+ \label{eq:implicit-derivative}
+\end{equation}
+Set
+\[
+ d=\frac1{31}+\frac{31}{225},\qquad e=\frac{272}{3375}.
+\]
+The elementary geometric sums yield
+\begin{align*}
+ |K_q-1|&\le |\ee^u-1|+\sum_{j\ge2}j(1/16)^{j-1}\le d,\\
+ |K_u|&\le\sum_{j\ge1}j^2(1/16)^j
+     =\frac{(1/16)(1+1/16)}{(1-1/16)^3}=e.
+\end{align*}
+Since $(d+e)/(1-d)<1/3$, equation~\eqref{eq:implicit-derivative}
+proves \eqref{eq:Qprime}.  Integrating $Q'-1$ on line segments in the
+convex half-disc gives
+\begin{equation}
+ \frac23|u-v|\le |Q(u)-Q(v)|\le\frac43|u-v|.
+ \label{eq:bilipschitz}
+\end{equation}
+The same inequality holds on the closure by continuity.  In particular,
+$Q$ is univalent, its boundary parametrization is regular, and $Q(u)=0$
+only when $u=0$.  The last fact also follows immediately from $K(0,u)=0$.
+
+\subsection{Formal identification}
+The operator
+\[
+ V\longmapsto\sum_{j\ge1}q^j\ee^{j^2V}
+\]
+improves agreement of series in $q\C[[q]]$ by one order.  It therefore has
+a unique formal fixed point $\U$ with linear coefficient one.  Its formal
+compositional inverse exists.  Substituting that inverse into the fixed
+point equation gives the formal version of
+\eqref{eq:inverse-equation}; conversely that equation determines its
+coefficients successively.  The boundary derivatives just constructed
+satisfy the same finite coefficient equations, so their Taylor series is
+$\Q=\U^{\inv}$.
+
+The beginning is
+\begin{equation}
+ \Q(u)=u-2u^2+\frac12u^3-\frac23u^4
+       -\frac{29}{8}u^5-\frac{743}{60}u^6
+       -\frac{8491}{144}u^7-\frac{92726}{315}u^8+\cdots.
+ \label{eq:first-coefficients}
+\end{equation}
+This identity is formal; it does not assert convergence.
+
+\section{Factorial expansions along analytic curves}
+\label{sec:transfer}
+
+We now prove the estimate that prevents an unknown analytic amplitude
+from hiding a heat singularity.  The proof is elementary and includes
+the uniform bound needed to justify the limiting coefficient sum.
+
+For an integer $p\ge1$ define
+\begin{equation}
+ D_{p,n}=\frac{\Gamma(2n+p)}{\Gamma(p)n!},\qquad
+ F_p(z)=\sum_{n\ge0}D_{p,n}z^n.
+ \label{eq:Dpn}
+\end{equation}
+The second expression is a formal series.  Differentiating a pole of
+order $p$ twice at each heat step produces exactly these coefficients.
+
+\begin{lemma}[Analytic composition of a factorial series]
+\label{lem:composition}
+Let $p\ge1$ be an integer, let $s(t)$ be analytic near zero with
+$s(0)=s_0\ne0$, and put $s_1=s'(0)$.  Then
+\begin{equation}
+ \coef{t}{n}\left\{
+  \sum_{\ell\ge0}\frac{D_{p,\ell}t^\ell}{s(t)^{2\ell+p}}
+ \right\}
+ =D_{p,n}s_0^{-2n-p}
+       \left(\ee^{-s_0s_1/2}+o(1)\right).
+ \label{eq:pole-transfer}
+\end{equation}
+The $o(1)$ is additive inside the displayed parentheses.  In particular,
+it does not assert a relative error for a sum of several pole
+contributions that might be small by oscillation.
+\end{lemma}
+
+\begin{proof}
+Let $R(t)=s_0^2/s(t)^2$ and $h(t)=s(t)^{-p}$.  Thus $R(0)=1$ and
+$R'(0)=-2s_1/s_0$.  If $b_n$ is the coefficient on the left of
+\eqref{eq:pole-transfer}, then the finite coefficient identity
+\begin{equation}
+ \frac{b_n}{D_{p,n}s_0^{-2n}}
+  =\sum_{k=0}^n
+       \frac{D_{p,n-k}}{D_{p,n}}s_0^{2k}
+       \coef{t}{k}\{h(t)R(t)^{n-k}\}
+ \label{eq:composition-sum}
+\end{equation}
+follows by setting $k=n-\ell$.
+
+For fixed $k$, the exact ratio
+\[
+ \frac{D_{p,m+1}}{D_{p,m}}
+       =\frac{(2m+p)(2m+p+1)}{m+1}
+\]
+gives
+$D_{p,n-k}/D_{p,n}\sim(4n)^{-k}$.
+Since $R(0)=1$, the coefficient
+$\coef{t}{k}\{h(t)R(t)^{n-k}\}$ is a polynomial in $n$ of degree at
+most $k$, with leading coefficient $h(0)R'(0)^k/k!$.  The $k$th summand
+in \eqref{eq:composition-sum} therefore tends to
+\[
+ h(0)\frac{(s_0^2R'(0)/4)^k}{k!}.
+\]
+
+To justify summation of these limits, first note that, for all $m\ge0$
+and $p\ge1$,
+\[
+ \frac{D_{p,m+1}}{D_{p,m}}\ge2(m+1).
+\]
+The geometric mean of the largest $k$ integers in $\{1,\ldots,n\}$
+is at least the geometric mean of all $n$ of them, and
+$n!\ge(n/\ee)^n$.  Consequently, for $1\le k\le n$,
+\begin{equation}
+ \frac{D_{p,n-k}}{D_{p,n}}
+ \le2^{-k}\frac{(n-k)!}{n!}
+ \le\left(\frac{\ee}{2n}\right)^k.
+ \label{eq:ratio-majorant}
+\end{equation}
+Choose $\delta>0$ small enough that $R$ has an analytic logarithm on
+$|t|\le\delta$.  There are constants $H,M$ such that
+$|h(t)|\le H$ and $|R(t)|\le\ee^{M|t|}$ there.
+Choose $B\ge\max(M,1/\delta,1)$.
+Cauchy's coefficient estimate on the circle $|t|=k/(Bn)$ gives
+\[
+ \left|\coef{t}{k}\{h(t)R(t)^{n-k}\}\right|
+       \le H\left(\frac{\ee Bn}{k}\right)^k.
+\]
+Combined with \eqref{eq:ratio-majorant}, the absolute value of the
+$k$th summand of \eqref{eq:composition-sum} is at most
+\begin{equation}
+ H\left(\frac{|s_0|^2\ee^2B}{2k}\right)^k.
+ \label{eq:summable-majorant}
+\end{equation}
+This majorant is summable over $k\ge1$ and independent of $n$.
+The term $k=0$ is bounded separately.  Dominated convergence in the
+counting measure now proves that \eqref{eq:composition-sum} tends to
+\[
+ h(0)\exp\left(\frac{s_0^2R'(0)}4\right)
+       =s_0^{-p}\ee^{-s_0s_1/2}.
+\]
+This is \eqref{eq:pole-transfer}.
+\end{proof}
+
+\begin{remark}[Why the first derivative, but not higher derivatives, survives]
+For a fixed loss of $k$ heat indices, the factorial ratio contributes
+$n^{-k}$ and the coefficient of the analytic substitution contributes
+$n^k$.  Only repeated uses of the linear coefficient of $R(t)-1$ reach
+that highest degree in $n$.  Higher derivatives of $s(t)$ affect lower
+orders.  The exponential multiplier is never zero, which is the feature
+needed for a noncancellation theorem.
+\end{remark}
+
+\begin{lemma}[Analytic remainder estimate]
+\label{lem:analytic-remainder}
+Let $\psi$ be analytic on $|a-a_0|<R_*$ and let $a(t)$ be analytic near
+zero with $a(0)=a_0$.  For every $R_1<R_*$ there is a constant $C$ such
+that, for all sufficiently large $n$,
+\begin{equation}
+ \left|\coef{t}{n}
+   \sum_{\ell\ge0}\frac{t^\ell}{\ell!}
+               \psi^{(2\ell)}(a(t))\right|
+       \le C D_{1,n}R_1^{-2n}.
+ \label{eq:analytic-remainder}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $R_2$ with $R_1<R_2<R_*$.  If
+$\psi(a_0+x)=\sum c_mx^m$, Cauchy's estimate gives
+$|c_m|\le M R_2^{-m}$.  Write
+$a(t)-a_0=\sum_{j\ge1}a_jt^j$ and
+$A(t)=\sum_{j\ge1}|a_j|t^j$.
+Coefficientwise absolute values of the series in
+\eqref{eq:analytic-remainder} are bounded by the coefficients of
+\[
+ M R_2\sum_{\ell\ge0}
+       \frac{D_{1,\ell}t^\ell}{(R_2-A(t))^{2\ell+1}}.
+\]
+Indeed $M R_2/(R_2-x)$ majorizes $\psi(a_0+x)$, and taking an even
+number of derivatives and substituting $A$ preserve this majorization.
+Lemma~\ref{lem:composition} bounds these coefficients by
+$C'D_{1,n}R_2^{-2n}$ for large $n$.  This is stronger than
+\eqref{eq:analytic-remainder}.
+\end{proof}
+
+\section{A heat-pole rigidity theorem}
+\label{sec:rigidity}
+
+Let $\phi$ be meromorphic near a closed disc centered at $a_0$, analytic
+at $a_0$, and with at least one pole.  Let $R>0$ be the distance from
+$a_0$ to the nearest poles, and denote those poles by
+$\omega_1,\ldots,\omega_d$.  Put
+\begin{equation}
+ s_\nu=a_0-\omega_\nu,\qquad |s_\nu|=R.
+ \label{eq:pole-distances}
+\end{equation}
+Suppose $\phi$ has no other singularity in some larger disc
+$|a-a_0|<R_*$, $R_*>R$.  Let $p$ be the largest pole order among the
+nearest poles, and let $J$ index those of order $p$.  For $\nu\in J$
+write the highest Laurent term as
+$r_\nu(a-\omega_\nu)^{-p}$, with $r_\nu\ne0$.
+
+\begin{theorem}[Rigidity under analytic curves]
+\label{thm:rigidity}
+For every analytic $a(t)$ with $a(0)=a_0$, the formal series
+\begin{equation}
+ \widehat G(t)=\sum_{\ell\ge0}\frac{t^\ell}{\ell!}
+                    \phi^{(2\ell)}(a(t))
+       =\sum_{n\ge0}g_nt^n
+ \label{eq:curved-heat}
+\end{equation}
+satisfies
+\begin{equation}
+ g_n=D_{p,n}R^{-2n}
+   \left\{\sum_{\nu\in J}
+       r_\nu s_\nu^{-p}\ee^{-a'(0)s_\nu/2}
+       \left(\frac{R}{s_\nu}\right)^{2n}+o(1)\right\}.
+ \label{eq:curved-pole-asymptotic}
+\end{equation}
+If the numbers $s_\nu^2$, $\nu\in J$, are pairwise distinct, then
+\begin{equation}
+ \limsup_{n\to\infty}
+      \left(\frac{|g_n|}{n!}\right)^{1/n}
+       =\frac4{R^2}>0.
+ \label{eq:exact-local-type}
+\end{equation}
+In particular $\widehat G$ cannot be the Taylor series of a holomorphic
+germ.  Pairwise distinctness holds automatically if all the nearest
+poles lie strictly to the left of $a_0$, that is,
+$\Ree(a_0-\omega_\nu)>0$.
+\end{theorem}
+
+\begin{proof}
+Subtract all principal parts at the nearest poles.  The remainder is
+analytic on a disc of radius greater than $R$.
+For a principal part $r(a-\omega)^{-h}$, its contribution to
+\eqref{eq:curved-heat} is
+\[
+ r\sum_{\ell\ge0}
+       \frac{D_{h,\ell}t^\ell}{(a(t)-\omega)^{2\ell+h}}.
+\]
+Lemma~\ref{lem:composition} gives its coefficient asymptotic.  If
+$h<p$, then
+\[
+ \frac{D_{h,n}}{D_{p,n}}
+       \sim\frac{\Gamma(p)}{\Gamma(h)}(2n)^{h-p}\longrightarrow0.
+\]
+Lemma~\ref{lem:analytic-remainder}, with $R<R_1<R_*$, makes the analytic
+remainder exponentially smaller than $D_{p,n}R^{-2n}$.
+This proves \eqref{eq:curved-pole-asymptotic}.
+
+Set
+\[
+ A_\nu=r_\nu s_\nu^{-p}\ee^{-a'(0)s_\nu/2},\qquad
+ \rho_\nu=(R/s_\nu)^2.
+\]
+All $A_\nu$ are nonzero and all $|\rho_\nu|=1$.  Distinct squared
+distances mean distinct $\rho_\nu$.  The finite geometric-sum identity
+implies
+\begin{equation}
+ \frac1N\sum_{n=0}^{N-1}
+       \left|\sum_{\nu\in J}A_\nu\rho_\nu^n\right|^2
+     \longrightarrow\sum_{\nu\in J}|A_\nu|^2>0.
+ \label{eq:cesaro}
+\end{equation}
+Thus the expression in braces in
+\eqref{eq:curved-pole-asymptotic} is bounded and bounded away from zero
+along an infinite subsequence.  Finally,
+\[
+ \left(\frac{D_{p,n}}{n!}\right)^{1/n}\longrightarrow4
+\]
+by Stirling's formula, or by the central-binomial coefficient estimate
+and the finite product relating $D_{p,n}$ to $D_{1,n}$.
+Equation~\eqref{eq:exact-local-type} follows.
+
+If $s_\nu^2=s_\mu^2$ with $\nu\ne\mu$, then
+$s_\nu=-s_\mu$.  This is impossible when both have strictly positive
+real part.  A holomorphic germ has exponentially bounded Taylor
+coefficients and hence zero value of the limsup in
+\eqref{eq:exact-local-type}, proving the final assertion.
+\end{proof}
+
+\subsection{From a formal heat expression to actual boundary derivatives}
+Suppose $f_j$ is periodic and $a(t)$ is analytic with $\Ree a(0)>0$.
+For $\Ree t\le0$ and sufficiently small $t$, define
+\begin{equation}
+ G(t)=\sum_{j\ge1}f_j\ee^{-ja(t)+j^2t},\qquad
+ \phi(a)=\sum_{j\ge1}f_j\ee^{-ja}.
+ \label{eq:actual-curved-heat}
+\end{equation}
+Every fixed derivative is uniformly dominated by a polynomial in $j$
+times $\ee^{-cj}$ for some $c>0$.  Differentiation to the boundary is
+therefore legitimate.  Expanding a fixed derivative, or collecting the
+finite Taylor coefficient of each exponential, shows that the Taylor
+jet of $G$ is exactly \eqref{eq:curved-heat}.  In particular, if $G$ had
+a holomorphic continuation through zero, that continuation would have
+those coefficients.  The same argument applies to exponentially
+bounded $f_j$ whenever $\Ree a(0)$ is sufficiently large.
+
+This observation does not replace the divergent series by a convergent
+one.  It only identifies each finite derivative, which is all the
+contradiction requires.
+
+\section{Rational phases force a natural boundary}
+\label{sec:natural}
+
+\subsection{The finite Fourier data}
+Fix a nonzero rational imaginary point
+\begin{equation}
+ u_0=\frac{2\pi i r}{m},\qquad r\in\mathbb Z,\quad m\in\N_{>0},
+ \qquad |u_0|<r_0.
+ \label{eq:rational-time}
+\end{equation}
+The sequence $f_j=\ee^{u_0j^2}$ is $m$-periodic, since
+$(j+m)^2-j^2=2jm+m^2$.
+Its generating function is rational in $z=\ee^{-a}$:
+\begin{equation}
+ \phi(a)=\sum_{j\ge1}f_j\ee^{-ja}
+     =\frac{\sum_{j=1}^m f_j\ee^{-ja}}{1-\ee^{-ma}}.
+ \label{eq:periodic-rational}
+\end{equation}
+Equivalently, with the finite Fourier coefficients
+\begin{equation}
+ \rho_k=\frac1m\sum_{j=1}^m
+             \exp\left(\frac{2\pi i(rj^2-kj)}m\right),
+       \qquad 0\le k<m,
+ \label{eq:gauss-fourier}
+\end{equation}
+we have
+\begin{equation}
+ \phi(a)=\sum_{k=0}^{m-1}
+       \frac{\rho_k}{\ee^{a-2\pi ik/m}-1}.
+ \label{eq:fourier-poles}
+\end{equation}
+Its poles are simple, lie on the imaginary axis, and have residues
+$\rho_k$ at $2\pi ik/m+2\pi i\mathbb Z$ whenever $\rho_k\ne0$.
+At least one such residue is nonzero, because the finite Fourier
+transform is invertible and $f_j$ is not the zero sequence.
+No nonvanishing theorem for a particular quadratic Gauss sum is needed.
+
+\subsection{Why an analytic implicit inverse is impossible}
+Suppose, for contradiction, that $Q$ extends holomorphically across $u_0$.
+Since $Q(u_0)\ne0$ and $|Q(u_0)|<1$, a local analytic logarithm gives
+\begin{equation}
+ a(t)=-\log Q(u_0+t),\qquad \Ree a(0)>0.
+ \label{eq:analytic-amplitude}
+\end{equation}
+On the left side of $t=0$, the defining equation becomes
+\begin{equation}
+ \sum_{j\ge1}f_j\ee^{-ja(t)+j^2t}=u_0+t.
+ \label{eq:contradiction-identity}
+\end{equation}
+The Taylor coefficients of the left side are those of the curved heat
+series generated by \eqref{eq:periodic-rational}.
+All its poles lie strictly to the left of $a(0)$ in real part.
+Theorem~\ref{thm:rigidity} therefore gives a strictly positive
+factorial-normalized type.  The right side has no coefficient of degree
+at least two.  This contradiction proves that $Q$ has no holomorphic
+continuation at $u_0$.
+
+Points \eqref{eq:rational-time} with $u_0\ne0$ are dense in the imaginary
+interval $|\Imm u|<r_0$.  A continuation across any point of that interval
+would give a continuation across nearby rational points.  Hence every
+point, including zero, is a natural-boundary point.  This proves
+Theorem~\ref{thm:main}(i).
+
+\begin{remark}[Why a fixed-amplitude argument is insufficient]
+For a fixed $q$, the series $\sum q^j\ee^{j^2u}$ has a familiar lacunary
+structure after putting $z=\ee^u$.  But the implicit identity uses
+$q=Q(u)$, not a constant $q$.  The nonzero multiplier in
+\eqref{eq:curved-pole-asymptotic} is what excludes cancellation by an
+analytic $Q$.  This is the additional argument needed to pass from a
+partial theta function to an implicitly defined branch.
+\end{remark}
+
+\subsection{The natural boundary of the forward realization}
+By \eqref{eq:bilipschitz}, $Q$ maps $D_-$ conformally onto
+$\Omega=Q(D_-)$ and maps its diameter homeomorphically onto $\Gamma$.
+Let $U=Q^{\inv}$ on $\Omega$.  Suppose $U$ had a holomorphic
+continuation across $q_0=Q(it_0)$.
+Its derivative there would be the interior limit
+$1/Q'(it_0)\ne0$.  The holomorphic inverse function theorem would then
+produce a local holomorphic inverse of this continuation near $it_0$.
+On the original side that inverse equals $Q$, contradicting the natural
+boundary just proved.
+
+If $\Gamma$ were a regular real-analytic arc near any of its points,
+an analytic parametrization with nonzero derivative would extend to a
+local holomorphic coordinate straightening the arc to a real interval.
+In that coordinate $Q$ has real boundary values on a straight interval.
+Schwarz reflection extends it holomorphically across that interval;
+undoing the coordinate contradicts the same natural boundary.
+Thus $\Gamma$ is nowhere real-analytic as a regular curve.
+
+Its smooth jet at the origin nevertheless begins
+\begin{equation}
+ Q(it)=it+2t^2-\frac{i}{2}t^3-\frac23t^4+O(t^5).
+ \label{eq:boundary-jet}
+\end{equation}
+A low-order polynomial plot can therefore look completely regular and
+almost parabolic.  The obstruction is not visible in a finite jet.
+
+\section{An entire Borel transform and its fine sum}
+\label{sec:borel}
+
+This section reproduces, in the quadratic specialization, the required
+summation facts.  The signed Lagrange-block method comes from the
+repository's negative-ray article \cite{repo-negative}; the simplified
+frequency bounds below make the present proof short.
+
+\subsection{Exact exponential blocks}
+Invert $q\mapsto K(q,u)$ while keeping $u$ temporarily fixed and the
+target $w$ independent.  The coefficient form of Lagrange inversion
+\cite{gessel} gives
+\[
+ q(w;u)=\sum_{k\ge1}\frac{w^k}{k}
+        \coef{q}{k-1}\left(\sum_{j\ge1}q^{j-1}\ee^{j^2u}\right)^{-k}.
+\]
+Setting $w=u$ is formally legitimate.  For $k\ge2$ and an ordered
+composition $\mathbf m=(m_1,\ldots,m_\ell)$ of $k-1$ into positive
+parts, define
+\begin{equation}
+ w_{k,\ell}=\frac{(-1)^\ell}{k}\binom{k+\ell-1}{\ell},\qquad
+ b_{k,\mathbf m}=\sum_{i=1}^{\ell}m_i^2+k-2.
+ \label{eq:block-weights}
+\end{equation}
+The exact block representation is
+\begin{equation}
+ \Q(u)=u\ee^{-u}
+       +\sum_{k\ge2}u^k
+          \sum_{\mathbf m\vDash k-1}
+                    w_{k,\ell(\mathbf m)}\ee^{b_{k,\mathbf m}u}.
+ \label{eq:quadratic-blocks}
+\end{equation}
+Indeed the exponent before simplification is
+$\sum_i(m_i+1)^2-(k+\ell)$, which equals the expression in
+\eqref{eq:block-weights}.  The important bounds are
+\begin{equation}
+ 2k-3\le b_{k,\mathbf m}\le k^2-k-1<k^2,
+ \qquad k\ge2.
+ \label{eq:frequency-range}
+\end{equation}
+Thus the only negative-frequency block is the initial $u\ee^{-u}$.
+
+The uncancelled total mass of the $k$th block is
+\begin{equation}
+ C_k=\frac1k\sum_{\ell=1}^{k-1}
+       \binom{k+\ell-1}{\ell}\binom{k-2}{\ell-1},\qquad C_1=1.
+ \label{eq:mass}
+\end{equation}
+A second application of Lagrange inversion, or substitution in the
+quadratic equation, yields
+\begin{equation}
+ \sum_{k\ge1}C_kt^k
+   =\frac{1+t-\sqrt{1-6t+t^2}}4.
+ \label{eq:mass-gf}
+\end{equation}
+The coefficients are nonnegative and the value at $t=1/6$ is $1/4$.
+Consequently
+\begin{equation}
+ C_k\le\frac{6^k}{4},\qquad k\ge1.
+ \label{eq:mass-bound}
+\end{equation}
+For $\Ree u\le0$, the blocks with $k\ge2$ have modulus at most
+$C_k|u|^k$.  Hence \eqref{eq:quadratic-blocks} converges normally on a
+small left half-disc and equals the literal inverse there, by ordinary
+Lagrange inversion in $q$ and the uniqueness from
+Section~\ref{sec:inverse}.
+
+\subsection{A normalized Bessel kernel}
+For $k\ge1$ and real $b$ put
+\begin{equation}
+ B_{k,b}(\zeta)=\sum_{m\ge0}
+      \frac{b^m\zeta^{m+k}}{m!(m+k)!}.
+ \label{eq:one-borel-block}
+\end{equation}
+This is the integrated Borel transform of $u^k\ee^{bu}$.
+The probability density
+\[
+ p_k(v)=\frac{\Gamma(k+1)}{\sqrt\pi\,\Gamma(k+1/2)}
+             (1-v^2)^{k-1/2},\qquad -1<v<1,
+\]
+has even moments
+\[
+ \int_{-1}^1v^{2m}p_k(v)\,\dd v
+       =\frac{(2m)!k!}{4^m m!(m+k)!}.
+\]
+Expanding the exponential and using those moments proves
+\begin{equation}
+ B_{k,b}(\zeta)=\frac{\zeta^k}{k!}
+        \int_{-1}^1\ee^{2\sqrt{b\zeta}\,v}p_k(v)\,\dd v.
+ \label{eq:bessel-integral}
+\end{equation}
+The integral is independent of the square-root choice.  In particular,
+for $b\ge0$,
+\begin{equation}
+ |B_{k,b}(\zeta)|\le\frac{|\zeta|^k}{k!}
+          \ee^{2\sqrt b\,|\Ree\sqrt\zeta|},\qquad
+ |B_{k,b}(-s)|\le\frac{s^k}{k!}.
+ \label{eq:bessel-bounds}
+\end{equation}
+For $b<0$, the same integral gives the less sharp but sufficient bound
+$|B_{k,b}(\zeta)|\le |\zeta|^k\ee^{2\sqrt{|b||\zeta|}}/k!$.
+
+\subsection{Entire continuation and tube bounds}
+Apply \eqref{eq:one-borel-block} termwise to
+\eqref{eq:quadratic-blocks}.  On $|\zeta|\le R$, equations
+\eqref{eq:frequency-range} and \eqref{eq:mass-bound} bound the $k$th
+block by
+\[
+ \frac{6^k}{4}\frac{R^k}{k!}\ee^{2k\sqrt R}.
+\]
+The sum converges for every $R$, so the resulting Borel function is entire.
+Its Taylor coefficients at zero equal those of $\B\Q$, because each
+ordinary coefficient uses only finitely many outer indices $k$.
+
+For $\zeta\in T_\delta$,
+\begin{equation}
+ |\Ree\sqrt\zeta|^2
+       =\frac{|\zeta|+\Ree\zeta}{2}\le\delta.
+ \label{eq:sqrt-tube}
+\end{equation}
+This follows from the $2$-Lipschitz property of
+$\zeta\mapsto|\zeta|+\Ree\zeta$, which vanishes on the negative ray.
+Therefore
+\begin{equation}
+ |\B\Q(\zeta)|
+ \le |\zeta|\ee^{2\sqrt{|\zeta|}}
+      +\frac14\exp\left(6\ee^{2\sqrt\delta}|\zeta|\right),
+ \qquad \zeta\in T_\delta.
+ \label{eq:explicit-tube-bound}
+\end{equation}
+The first term is also bounded by a constant times an exponential in
+$|\zeta|$.  This proves fine summability on every fixed-width tube.
+
+\subsection{Identification of the fine sum}
+For each fixed $k,b$, integrating the entire series in
+\eqref{eq:one-borel-block} termwise against $r^{-1}\ee^{-s/r}$ is
+justified by the integrable absolute series.  It gives
+\begin{equation}
+ \frac1r\int_0^\infty\ee^{-s/r}B_{k,b}(-s)\,\dd s
+       =(-r)^k\ee^{-br}.
+ \label{eq:block-laplace}
+\end{equation}
+To exchange the \emph{infinite block sum} with the integral, use the
+stronger ray estimate in \eqref{eq:bessel-bounds}:
+\[
+ \sum_{k\ge2}\sum_{\mathbf m\vDash k-1}
+     |w_{k,\ell}B_{k,b_{k,\mathbf m}}(-s)|
+       \le\sum_{k\ge2}\frac{6^ks^k}{4k!}\le\frac14\ee^{6s}.
+\]
+The initial block is bounded by $s\ee^{2\sqrt s}$.
+Thus dominated convergence applies when $0<r<1/6$, after also restricting
+$r$ to the small inverse domain.  Equation~\eqref{eq:block-laplace}
+then returns exactly \eqref{eq:quadratic-blocks} at $u=-r$.
+This proves $\mathcal S_\pi\Q(-r)=Q(-r)$.
+The same identity holds on the common complex domain by holomorphy.
+
+\section{Why no angular neighborhood can work}
+\label{sec:angular}
+
+\begin{lemma}[Angular growth produces a larger input sector]
+\label{lem:sector-laplace}
+Let $B$ be holomorphic near zero and on
+$|\arg\zeta-\pi|<\eta$, and suppose
+$|B(\zeta)|\le C\ee^{H|\zeta|}$ on a smaller closed angular sector
+still containing $\pi$.  Its Laplace transforms along those rays glue
+to a holomorphic function in an input sector centered at $\pi$ with
+opening strictly greater than $\pi$.  On the negative input ray it is
+the integral \eqref{eq:negative-laplace}.
+\end{lemma}
+
+\begin{proof}
+Take $0<\eta_1<\eta$ on which the exponential bound is uniform.  For a
+ray of direction $\theta\in[\pi-\eta_1,\pi+\eta_1]$, the integral
+\[
+ \frac1u\int_0^{\ee^{i\theta}\infty}
+             \ee^{-\zeta/u}B(\zeta)\,\dd\zeta
+\]
+converges whenever $\Ree(\ee^{i\theta}/u)>H$.
+On overlaps, contour deformation between two sufficiently close rays
+is justified by the exponential bound: the large joining arc has
+exponentially decreasing integrand, and the small arc tends to zero.
+The integrals therefore agree and glue.
+Choose $0<\eta_2<\eta_1$.  Every direction
+$|\arg u-\pi|<\pi/2+\eta_2$ makes an angle strictly less than $\pi/2$
+with an allowed Laplace ray; after decreasing the input radius uniformly
+on a slightly smaller closed sector, the convergence condition holds.
+The resulting opening is $\pi+2\eta_2>\pi$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}(iii)]
+Suppose an exponential bound existed for $\B\Q$ in an angular
+neighborhood of $\pi$.  Lemma~\ref{lem:sector-laplace} would produce a
+holomorphic sum on a sector of opening greater than $\pi$ centered at the
+negative axis.  By Section~\ref{sec:borel}, this function agrees with
+$Q$ on a negative real interval.  The identity theorem makes it an
+analytic continuation of $Q$ on the connected overlap with the left
+half-disc.  The larger sector contains sufficiently small nonzero
+points of both imaginary rays, with neighborhoods crossing the imaginary
+axis.  This contradicts Section~\ref{sec:natural}.
+
+Thus no such exponential bound exists.  Since $\B\Q$ is bounded on
+compact subsets of the plane, the unbounded supremum in
+\eqref{eq:no-angular-bound} must be witnessed at unbounded radii.
+This proves both the growth assertion and failure of angular summability
+for $\Q$.
+
+Angularly $1$-summable tangent-to-identity series form a group under
+composition, and their summation commutes with inversion; this is the
+standard nonlinear inversion theorem, in small-variable notation
+\cite[Theorem 17.3]{sauzin}.  Equivalently, it follows by changing from
+$u=0$ to $z=\infty$, applying the tangent-to-identity inversion theorem
+there, and using the algebra property for reciprocals.
+If $\U$ were angularly summable in direction $\pi$, its formal inverse
+$\Q$ would be so after shrinking the arc.  This contradiction proves
+the assertion for $\U$.
+\end{proof}
+
+\begin{corollary}[Divergence despite an entire Borel transform]
+\label{cor:divergence}
+The series $\Q$ has radius of convergence zero, although
+$\limsup(|[u^n]\Q|/n!)^{1/n}=0$.
+\end{corollary}
+\begin{proof}
+Entirety of $\B\Q$ gives the displayed zero limsup.  A convergent power
+series has a Borel transform of finite exponential type in every
+direction, so would contradict Theorem~\ref{thm:main}(iii).
+\end{proof}
+
+\begin{remark}[Finite-plane resurgence versus infinity]
+No finite Borel singularity can explain the obstruction in this example:
+there are none for $\B\Q$.  In a definition of resurgence based only on
+endless analytic continuation, the Borel transform is automatically
+resurgent.  Assertions that it is ``not resurgent'' would therefore be
+incorrect without an additional growth convention.  The precise
+conclusion is failure of angular $1$-summability at $\pi$.
+\end{remark}
+
+\section{Rational amplitudes and robustness}
+\label{sec:rational}
+
+\subsection{A general quadratic-growth fine-summation lemma}
+The Borel estimate extends beyond rational amplitudes.  Rationality will
+be used only for the natural-boundary obstruction.
+
+\begin{lemma}[Exponentially bounded amplitudes and quadratic slopes]
+\label{lem:weighted-borel}
+Suppose $c_1\ne0$, $|c_j|\le M D^j$, and the real slopes satisfy
+\[
+ -L\le\lambda_j\le L(1+j^2)
+\]
+for some positive $M,D,L$.  Then the small left-side inverse of
+\eqref{eq:weighted-kernel} has an entire integrated Borel transform,
+is finely summable in direction $\pi$, and is the corresponding fine
+sum.  It is holomorphic in a small left half-disc and smooth on its
+diameter.
+\end{lemma}
+
+\begin{proof}
+Choose a $q$-disc on which the geometric majorants and all their
+polynomially weighted derivatives converge.  For sufficiently small
+$u$ in the closed left half-plane, solve the equation by isolating
+$c_1\ee^{\lambda_1u}q$ and applying a uniform contraction to the
+remaining terms.  Because $\lambda_j\ge-L$,
+$|\ee^{\lambda_j u}|\le\ee^{L|u|}$ there.  The derivative at $q=0$
+tends to $c_1\ne0$.  This proves existence, uniqueness, holomorphy and,
+by the derivative argument of Section~\ref{sec:inverse}, smoothness.
+
+The Lagrange blocks are indexed as before.  Their scalar weights and
+frequencies are
+\begin{align}
+ w_{k,\mathbf m}
+   &=\frac{(-1)^\ell}{k}\binom{k+\ell-1}{\ell}
+       c_1^{-k-\ell}\prod_{i=1}^{\ell}c_{m_i+1},
+       \label{eq:general-weight}\\
+ b_{k,\mathbf m}
+   &=\sum_{i=1}^{\ell}\lambda_{m_i+1}-(k+\ell)\lambda_1.
+       \label{eq:general-frequency}
+\end{align}
+The initial block is $c_1^{-1}u\ee^{-\lambda_1u}$.
+The exponential coefficient bound, the number of compositions, and the
+binomial bound imply that the uncancelled total absolute weight of
+block $k$ is at most $C_0^k$ for a constant $C_0$.
+The slope assumptions give, after enlarging $C_1$,
+\begin{equation}
+ -C_1k\le b_{k,\mathbf m}\le C_1k^2.
+ \label{eq:general-frequency-bounds}
+\end{equation}
+For the upper bound use
+$\sum_i(m_i+1)^2\le(\sum_i(m_i+1))^2\le4k^2$;
+for the lower bound use $\ell\le k$ and the uniform lower bound
+on the slopes.
+
+On any compact Borel disc the bounds from
+\eqref{eq:bessel-integral} are $|\zeta|^k\exp(O(k))/k!$,
+so the weighted Borel series converges normally and is entire.
+For nonnegative frequencies in $T_\delta$, its terms are bounded by
+\[
+ C_0^k\frac{|\zeta|^k}{k!}
+          \exp(2\sqrt{C_1\delta}\,k).
+\]
+For negative frequencies, use
+\[
+ 2\sqrt{C_1k|\zeta|}\le k+C_1|\zeta|
+\]
+to obtain a bound
+$C_0^k|\zeta|^k\ee^{k+C_1|\zeta|}/k!$.
+Summing over $k$ yields an exponential bound on each fixed tube.
+
+On the negative ray, the same estimates dominate the complete Borel
+sum by $C\ee^{Hs}$ for some $C,H$.  Equation~\eqref{eq:block-laplace}
+and dominated convergence identify its Laplace transform with the
+convergent exponential-block inverse for small negative inputs.
+Its equality with the literal branch follows from the parameterized
+Lagrange formula and uniqueness.  This proves the lemma without
+assuming positivity of the amplitudes.
+\end{proof}
+
+\subsection{Periodic twisting preserves rationality and infinite support}
+Let $\rationalamp$ be as in \eqref{eq:amplitudes}, and let $f_j$ be a
+nonzero periodic sequence whose values are all nonzero.  Then
+\begin{equation}
+ \rationalamp_f(z)=\sum_{j\ge1}c_jf_jz^j
+ \label{eq:twisted-amplitude}
+\end{equation}
+is rational: expand $f_j$ in its finite Fourier series and write
+$\rationalamp_f$ as a finite linear combination of
+$\rationalamp(\omega z)$, where $\omega$ ranges over roots of unity.
+If $\rationalamp_f$ were a polynomial, its coefficients would vanish
+for all large $j$.  Since $f_j\ne0$, the same would hold for $c_j$,
+so $\rationalamp$ would be a polynomial.  Thus a nonpolynomial rational
+amplitude remains nonpolynomial after quadratic rational-phase twisting.
+
+All finite poles of $\rationalamp_f$ lie at rotated poles of
+$\rationalamp$; cancellations can remove poles but cannot introduce
+smaller-modulus ones.  If $R_A$ is the radius of convergence of
+$\rationalamp$, then for $|q_0|<R_A$, every pole of
+$\phi(a)=\rationalamp_f(\ee^{-a})$ lies strictly to the left of
+$a_0=-\log q_0$ in real part.  Indeed a pole $z_*$ gives
+$\Ree\omega=-\log|z_*|$, whereas
+$\Ree a_0=-\log|q_0|>-\log R_A$.
+The poles form a finite union of vertical lattices and have finite orders.
+Theorem~\ref{thm:rigidity} applies, including possible higher-order poles.
+
+\subsection{Eventually quadratic slopes}
+Assume now \eqref{eq:eventual-quadratic} and suppose
+$\rationalamp$ is nonpolynomial.  The assumptions of
+Lemma~\ref{lem:weighted-borel} hold, since the coefficients of any
+rational germ are exponentially bounded and the slopes are bounded
+below and grow at most quadratically.
+
+Take a nonzero imaginary point $u_0$ sufficiently close to zero with
+\begin{equation}
+ \alpha u_0=\frac{2\pi i r}{m}.
+ \label{eq:scaled-rational-time}
+\end{equation}
+Suppose that $Q$ extends analytically across $u_0$.  Set
+$u=u_0+t/\alpha$.  Apart from finitely many terms, the left side of
+\eqref{eq:weighted-kernel} is
+\begin{equation}
+ \ee^{\gamma u}\sum_{j\ge1}c_j
+      \ee^{\alpha u_0j^2}
+      \left(Q(u)\ee^{\beta u}\right)^j\ee^{j^2t}.
+ \label{eq:weighted-heat-reduction}
+\end{equation}
+The discrepancy from the exceptional slopes is a finite analytic sum
+under the assumed analyticity of $Q$.
+The factor $Q(u_0)$ is nonzero, because the right side of
+\eqref{eq:weighted-kernel} is $u_0\ne0$.
+Choose the half-disc small enough that
+$|Q(u_0)\ee^{\beta u_0}|<R_A$; this is possible because
+$Q(u)\to0$ and $\beta$ is real.
+An analytic logarithm of $Q(u)\ee^{\beta u}$ supplies an analytic curve
+$a(t)$ in the heat reduction.
+
+The twisted amplitude is rational and nonpolynomial by the preceding
+subsection.  Its nearest heat poles lie strictly to the left of $a(0)$.
+Theorem~\ref{thm:rigidity} shows that the heat expression in
+\eqref{eq:weighted-heat-reduction} cannot be analytic in $t$.
+But the defining equation, after subtracting the finite exceptional
+terms and dividing by $\ee^{\gamma u}$, says that it is analytic.
+This contradiction proves noncontinuability at every point
+\eqref{eq:scaled-rational-time}.  Density gives the entire small
+imaginary interval as a natural boundary.
+
+\begin{proof}[Completion of Theorem~\ref{thm:rational-main}]
+The preceding arguments prove the existence, Borel and natural-boundary
+assertions in the nonpolynomial case.  Fine-sum identification and
+Lemma~\ref{lem:sector-laplace} exclude angular summability just as in
+the quadratic unit-amplitude model.  Positive Taylor radius would imply
+angular summability and is therefore excluded as well.
+
+If $\rationalamp$ is a polynomial, the kernel in
+\eqref{eq:weighted-kernel} is a finite sum of entire functions of $u$
+and polynomials in $q$.  It is holomorphic near $(0,0)$, with
+$q$-derivative $c_1\ne0$.  The holomorphic implicit function theorem
+gives a convergent inverse germ.  Its Borel transform has finite
+exponential type in every direction and its usual sum agrees with the
+fine sum.  All four stated conditions then hold.
+\end{proof}
+
+\section{Finite-action approximation does not detect the boundary}
+\label{sec:truncation}
+
+The natural boundary coexists with exceptionally strong approximation by
+analytic finite-action models.  This is relevant to symbolic algorithms
+and to interpreting finite numerical evidence.
+
+For the unit quadratic model put
+\[
+ K_J(q,u)=\sum_{j=1}^Jq^j\ee^{j^2u},
+ \qquad K_J(Q_J(u),u)=u.
+\]
+The same contraction used for $Q$ defines $Q_J$ on the same closed
+half-disc.  Since the finite kernel is holomorphic across its diameter
+and its $q$-derivative remains nonzero there, each $Q_J$ extends
+holomorphically across every point of that diameter.  The size of the
+extension neighborhoods is not uniform in $J$.
+
+\begin{theorem}[Exponential approximation and exact finite jets]
+\label{thm:truncation}
+For every $J\ge1$,
+\begin{equation}
+ \sup_{\substack{|u|\le1/32\cr\Ree u\le0}}
+   |Q(u)-Q_J(u)|
+       \le\frac{7680}{5983}\,16^{-(J+1)}.
+ \label{eq:truncation-bound}
+\end{equation}
+For each fixed integer $m\ge0$ there is a constant $C_m$, independent
+of $J$, such that
+\begin{equation}
+ \max_{0\le h\le m}\ 
+ \sup_{\substack{|u|\le1/32\cr\Ree u\le0}}
+       |Q^{(h)}(u)-Q_J^{(h)}(u)|
+       \le C_m(J+1)^{2m}16^{-(J+1)}.
+ \label{eq:derivative-truncation}
+\end{equation}
+Furthermore,
+\begin{equation}
+ [u^n]\widehat Q_J=[u^n]\Q,\qquad n\le J.
+ \label{eq:jet-equality}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The difference between the full and truncated contraction maps is at most
+\[
+ \frac{32}{31}\sum_{j>J}(1/16)^j
+       =\frac{32}{31}\frac{16^{-(J+1)}}{1-1/16}.
+\]
+Divide by $1-32/225$, the fixed-point stability denominator from
+\eqref{eq:contraction-constant}.  The resulting constant is
+$7680/5983$, proving \eqref{eq:truncation-bound}.
+
+For derivatives, every mixed kernel derivative of total order at most
+$m$ introduces at most a constant times $j^{2m}$ into the tail, up to a
+fixed factor from $q$-differentiation.  Consequently its tail is bounded by
+$C_m'(J+1)^{2m}16^{-(J+1)}$.  To compare evaluation at $Q$ and $Q_J$,
+use the mean-value estimate in the $q$ variable; all needed kernel
+$q$-derivatives are uniformly bounded on a disc containing both values,
+because both actually lie in $|q|\le17/465<1/16$.
+Repeated implicit differentiation expresses the $h$th derivative of
+$Q$ as a rational polynomial in mixed kernel derivatives of order at
+most $h$, the lower derivatives of $Q$, and $1/K_q$.
+The denominators stay uniformly away from zero for all $J$.
+Induction on $h$, using \eqref{eq:truncation-bound} at the initial step,
+proves \eqref{eq:derivative-truncation}.  Additional $q$ derivatives used
+only to compare evaluation points are uniformly bounded and multiply
+the already controlled difference $Q-Q_J$; they do not increase the
+power of $J$ in the tail bound.
+
+Finally, the omitted kernel terms have $q$-order at least $J+1$.
+Since the inverse starts with $u$, they contribute only from $u$-order
+$J+1$ onward in the formal implicit equation.  Recursive uniqueness of
+the coefficients proves \eqref{eq:jet-equality}.
+\end{proof}
+
+This theorem rules out two tempting but invalid inference patterns.
+Convergence of analytic approximants in every fixed differentiability
+norm on a one-sided domain does not supply analytic continuation of the
+limit.  Likewise, agreement of arbitrarily long finite Taylor prefixes
+with convergent finite-action models does not supply a common convergence
+radius or angular Borel bound.
+
+\section{Examples, checks, and limitations}
+\label{sec:examples}
+
+\subsection{A nonlinear analytic curve and one dominant pole}
+Take
+\[
+ a(t)=\log2+\frac3{10}t+\frac17t^2,
+ \qquad
+ G(t)=\sum_{j\ge1}2^{-j}
+          \exp\left(tj^2-\frac3{10}jt-\frac17jt^2\right).
+\]
+The initial function is $\phi(a)=1/(\ee^a-1)$.
+The nearest pole to $a_0=\log2$ is the simple pole at zero with residue
+one.  Theorem~\ref{thm:rigidity} gives
+\begin{equation}
+ \frac{g_n(\log2)^{2n+1}}{D_{1,n}}
+       \longrightarrow2^{-3/20}.
+ \label{eq:heat-check-limit}
+\end{equation}
+All $g_n$ are rational: the moments
+$\sum_{j\ge1}j^h2^{-j}$ are integers for $h\ge1$, and the curve
+coefficients are rational.  The accompanying program computes $g_n$
+exactly before evaluating the normalization at 120-digit precision.
+
+\begin{center}
+\input{heat_table.tex}
+\end{center}
+
+These values test the nontrivial multiplier, including a genuinely
+nonlinear curve.  The quadratic coefficient of the curve changes finite
+orders but not the limit.  The computation is not used in the proof.
+
+\subsection{Two equally near poles: do not divide by an oscillating leading term}
+Replace the amplitude $2^{-j}$ by $(-1/2)^j$, keeping the same curve
+increment.  Now $\phi(a)=-1/(\ee^a+1)$ and the nearest poles to
+$\log2$ are $\pm i\pi$, both with residue one.  Let
+\[
+ R=\sqrt{(\log2)^2+\pi^2},\qquad s_\pm=\log2\pm i\pi.
+\]
+The theorem gives the additive asymptotic
+\begin{equation}
+ \frac{g_nR^{2n}}{D_{1,n}}
+   -\sum_{\sigma\in\{+,-\}}
+      \frac{\ee^{-3s_\sigma/20}}{s_\sigma}
+                (R/s_\sigma)^{2n}\longrightarrow0.
+ \label{eq:two-pole-check}
+\end{equation}
+The leading sum oscillates and can be small.  A relative error would be
+an unjustified strengthening.
+
+\begin{center}\small
+\input{oscillation_table.tex}
+\end{center}
+
+The nonmonotone displayed differences are compatible with an additive
+$o(1)$ statement.  The proof uses the positive Ces\`aro mean square
+\eqref{eq:cesaro}, not a pointwise lower bound at every index.
+
+\subsection{An actual rational boundary point}
+The point $u_0=2\pi i/257$ lies in the prescribed half-disc diameter.
+With $J=96$, fixed-point evaluation gives
+\[
+ Q_J(u_0)\approx
+ 0.00119519260283291956428615710818
+ +0.0244408539831444770352844651668\,i.
+\]
+The analytic action-truncation bound
+\eqref{eq:truncation-bound} is less than
+$2.04\times10^{-117}$.  This bounds the difference of the exact full
+and exact finite-action functions; it does \emph{not} by itself include
+floating-point rounding error.  The recorded 120-digit arithmetic is
+therefore labeled a diagnostic, not an outward-rounded enclosure.
+The theorem proves noncontinuability at this point from finite Fourier
+pole data, without using the numerical value of $Q(u_0)$.
+
+\subsection{Rational amplitudes covered by the dichotomy}
+The amplitudes $c_j=1$, $c_j=j$, and $c_j=j^d$ for a fixed nonnegative
+integer $d$ all have rational generating functions with infinite support.
+So do nonzero periodic amplitudes after any finite initial correction
+that preserves $c_1\ne0$.  Each is covered by
+Theorem~\ref{thm:rational-main}.  Higher-order poles in the polynomial
+amplitude examples are the reason the heat-rigidity theorem was proved
+for arbitrary pole order rather than only simple poles.
+
+Geometric amplitudes $c_j=\rho^j$, $\rho\ne0$, merely rescale the
+$q$ variable and also lie in the class.  Finite changes of coefficients
+or slopes cannot eliminate the obstruction as long as the amplitude
+generating function remains nonpolynomial and the linear coefficient
+remains nonzero.
+
+\subsection{Why the rationality restriction cannot be dropped}
+Consider $c_j=\ee^{-j^3}$ and $\lambda_j=j^2$.
+On every compact set in $(q,u)$,
+\[
+ |c_jq^j\ee^{j^2u}|
+       \le\exp(-j^3+Cj^2+C'j),
+\]
+so the kernel converges normally on all of $\C^2$.
+Its derivative with respect to $q$ at $(0,0)$ is $\ee^{-1}\ne0$,
+and its inverse is an ordinary holomorphic germ at zero.
+This infinite-support example is outside the rational-amplitude class.
+It shows that the general slogan ``infinitely many quadratic actions
+force a natural boundary'' is false.  The amplitude hypothesis must
+remain in the theorem.
+
+\subsection{What the exact verification establishes}
+The standard-library part of \texttt{verify.py} computes the formal
+fixed point and its inverse independently of the signed-block formula.
+It checks both compositions, the literal implicit coefficient residual,
+the block expansion, the frequency bounds, the first Schr\"oder masses,
+finite-action prefix agreement, and the rational contraction constants.
+The recorded run checks all these identities through degree sixteen.
+No finite verification is represented as a proof of the infinite
+natural-boundary or summability statements.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Individual Borel rays and their exponential types}
+The negative open-arc question is now settled, but the set
+\[
+ E_Q=\left\{\theta:
+   \limsup_{r\to\infty}\frac1r
+       \log^+|\B\Q(r\ee^{i\theta})|<\infty\right\}
+\]
+remains to be determined.  Theorem~\ref{thm:main} excludes a uniform
+angular neighborhood at $\pi$; it does not say that every neighboring
+individual ray fails.  A useful next result would distinguish isolated
+finite-type rays from families with locally bounded type.
+
+\subsection{The largest shrinking neighborhoods of the negative ray}
+Fixed-width neighborhoods admit exponential bounds, whereas fixed-angle
+wedges do not.  Determine a sharp width function $w(r)$ for domains
+$|\Imm\zeta|\le w(-\Ree\zeta)$ far along the negative axis.
+The Bessel estimate and
+$|\Ree\sqrt\zeta|\asymp |\Imm\zeta|/\sqrt{|\Ree\zeta|}$ suggest
+that parabolic and subparabolic scales are natural, but the uncancelled
+bound is not an optimality proof.  This is a quantitative question about
+cancellation at Borel infinity.
+
+\subsection{The actual boundary jets of the nonlinear inverse}
+The rigidity theorem tests a hypothetical analytic amplitude; it does
+not compute the large derivatives of the actual nonanalytic $Q$ at a
+rational boundary point.  Determine their exact Gevrey type, dominant
+phases and possible transseries.  A successful calculation must solve a
+nonlinear derivative recurrence rather than insert the nonexistent
+analytic Taylor germ of $Q$ into
+\eqref{eq:curved-pole-asymptotic}.
+
+\subsection{Irrational boundary points and arithmetic dependence}
+Density proves noncontinuability at irrational points without analyzing
+their local coefficient growth.  Do Diophantine approximation properties
+of $\Imm u/(2\pi)$ affect the optimal derivative bounds, quasi-analytic
+classes, or local summation procedures there?  Rational approximants give
+increasing periods, so uniform control in the period is the first
+technical target.
+
+\subsection{Where the finite-action singularities accumulate}
+Every $Q_J$ extends across the diameter, yet the limit does not.
+Locate the nearest branch points or other inverse singularities of
+$Q_J$, determine their distance to the imaginary axis as $J\to\infty$,
+and test whether their distribution converges to a measure on the
+limiting boundary.  This would explain how a natural boundary emerges
+from finite analytic models rather than merely proving that it does.
+
+\subsection{Beyond rational amplitudes}
+Classify amplitude generating functions for which analytic-curve
+rigidity still forces a natural boundary.  Algebraic functions with
+nonintegral local exponents are a natural next class: a corresponding
+transfer lemma should replace the integer pole order by a complex local
+exponent.  Entire amplitudes require a separate growth analysis, as the
+$\ee^{-j^3}$ example demonstrates.  The desired criterion must combine
+singularities of the amplitude generating function with the quadratic
+slope scale.
+
+\subsection{Higher-degree and nonpolynomial slopes}
+For $\lambda_j\sim j^d$, $d>2$, the local formal operator is a
+higher-order heat operator and the natural Gevrey scale changes.
+Analytic-curve multipliers and cancellation among equal $d$th powers of
+pole distances require new analysis.  The simple right-half-plane
+argument excluding opposite squared distances is special to $d=2$.
+For noninteger powers, rational boundary phases no longer become
+periodic by the argument used here.
+
+\subsection{Acceleration compatible with the literal branch}
+The failure of an angular $1$-sum need not prohibit acceleration or a
+summation scheme adapted to shrinking domains.  Construct such a
+procedure from the formal coefficients, prove that it selects the
+literal left-side inverse, and state exactly what continuation or
+uniqueness property it supplies.  An acceleration theorem should not
+silently claim analytic continuation through the proved natural
+boundary.
+
+\subsection{Formalization and finite certificates}
+A useful formalization starts with the finite coefficient identities,
+then proves the uniform domination in
+\eqref{eq:summable-majorant}, the pole decomposition, and the Ces\`aro
+noncancellation lemma.  These form a reusable analytic-curve rigidity
+module.  A separate complex-analysis layer should establish smooth
+implicit branches, boundary noncontinuation, and Laplace-sector gluing.
+The existing repository infrastructure does not make those new analytic
+obligations automatic.
+
+\section{Conclusion}
+The negative-ray summation problem and the angular summation problem
+have different answers for quadratic exponential feedback.  The inverse
+has an entire Borel transform, and its Laplace integral is controlled in
+fixed-width Borel neighborhoods.  Nevertheless a smooth natural boundary
+prevents every angular enlargement around the negative direction.
+The obstruction survives finite coefficient and slope perturbations and,
+more generally, gives a finite-support versus natural-boundary dichotomy
+for rational amplitudes with eventually quadratic slopes.
+
+The mechanism is not merely that a partial theta kernel is singular.
+Its singularity cannot be removed by making its amplitude an analytic
+unknown: each nearest heat pole retains a nonzero analytic-curve
+multiplier, and the finite pole contributions cannot cancel permanently.
+This closes the specific implicit-cancellation gap required to answer
+the repository's open-arc question.
+
+\appendix
+\section{Proof-dependency and claim audit}
+\label{app:audit}
+
+The natural-boundary theorem for the unit model depends only on the
+uniform implicit construction, the factorial composition lemma, analytic
+remainder majorization, the finite-pole Ces\`aro argument, and elementary
+periodic Fourier inversion.  It does not use the earlier regularity
+article's large-order asymptotics, a general transseries realization
+theorem, or a numerical computation.
+
+The entire-Borel and fine-summation statements are proved directly from
+Lagrange inversion and the normalized Bessel integral.  The block
+representation is credited to the earlier repository work in its general
+form.  The angular obstruction for $\Q$ then uses only elementary
+Laplace contour deformation and the identity theorem.  The extension of
+that obstruction to the formal forward series $\U$ uses the standard
+angular summability inversion theorem \cite{sauzin}.  The broader
+rational-amplitude classification uses the same elementary proof chain
+with a weighted block estimate and rational periodic twisting.
+
+The nowhere-real-analytic assertion concerns the boundary \emph{curve},
+not just one parametrization, and uses local analytic straightening and
+Schwarz reflection.  The finite-action theorem proves convergence on a
+closed one-sided domain; it does not supply a common two-sided
+holomorphic neighborhood.  The numerical tables are diagnostics, not
+interval-certified real inequalities or substitutes for the proofs.
+
+No Lean build was attempted and no Lean proof file is included.  No
+repository branch or file was modified.  The inspected research packages
+are themselves marked unmerged and not formalized in the repository
+README \cite{repo-index}.  The present article should receive an
+independent mathematical review before being treated as an audited result.
+
+\section{Reproducibility and source provenance}
+\label{app:reproduce}
+
+The package contains the editable \texttt{article.tex}, the compiled
+\texttt{article.pdf}, \texttt{verify.py}, generated exact and numerical
+JSON results, the two small TeX table inputs, the captured verification
+output, a README, and a source-provenance note.
+The TeX does not depend on a local copy of ProveIt or on custom fonts.
+
+The commands used are
+\begin{quote}\small\ttfamily
+python verify.py\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The exact checks use Python's \texttt{fractions.Fraction}.  The numerical
+diagnostics use \texttt{mpmath} 1.3.0 at 120 decimal digits.  The program
+makes no network requests.  Its order can be increased up to twenty with
+\texttt{--max-order}; the independent composition enumeration has
+exponential cost and is intentionally bounded.
+
+The following repository files were directly read at the pinned commit:
+\begin{itemize}
+\item \path{Analysis/Transseries/docs/series-and-transseries/README.md},
+including its descriptions of the recently filed feedback articles;
+\item \path{Negative_Ray_Summation_Exponential_Feedback/article.tex}
+under that directory, including its definitions, Lagrange blocks,
+Bessel representation and explicit angular-summability question.
+\end{itemize}
+The source review was focused, not an exhaustive audit of every statement
+in the repository's large transseries volumes.  The reference to the
+regularity article supplies context as recorded in the directly read
+index and negative-ray paper; the present proof does not depend on its
+sharp asymptotic theorem.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{repo-index}
+V. Reshetnikov, \emph{ProveIt: series and transseries}, repository index,
+commit \texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}, accessed
+29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{repo-negative}
+\emph{Negative-Ray Summation of Countable Exponential-Feedback Transseries},
+research draft prepared for V. Reshetnikov, 29 September 2026,
+ProveIt, same pinned commit, directory
+\path{Analysis/Transseries/docs/series-and-transseries/}
+\path{Negative_Ray_Summation_Exponential_Feedback/},
+\texttt{article.tex}.  In particular, the research-agenda subsection
+``Angular summability of the quadratic model''; the direct source range
+read for that question was lines 1330--1410.
+
+\bibitem{repo-regularity}
+\emph{A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries}, research draft in ProveIt, directory
+\path{Exponential_Feedback_Regularity_Classification/}
+under the same series-and-transseries group, as described in
+\cite{repo-index,repo-negative}.  Contextual reference; its sharp
+coefficient asymptotics are not a dependency here.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356, 2014.  Sections 7 and 9 distinguish fine summability
+from summability in an arc; Section 17 proves the nonlinear group and
+inverse properties.
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{lms}
+D. A. Lutz, M. Miyake, and R. Sch\"afke,
+On the Borel summability of divergent solutions of the heat equation,
+\emph{Nagoya Mathematical Journal} \textbf{154} (1999), 1--29.
+DOI: \href{https://doi.org/10.1017/S0027763000025289}{10.1017/S0027763000025289}.
+
+\bibitem{mp}
+S. Michalik and B. Podhajecka,
+\emph{The Stokes phenomenon for certain partial differential equations
+with meromorphic initial data}, arXiv:1603.04209, 2016.
+\url{https://arxiv.org/abs/1603.04209}.
+
+\bibitem{hlss}
+L. Han, Y. Li, D. Sauzin, and S. Sun,
+\emph{Resurgence and Partial Theta Series}, arXiv:2112.15223v3, 2022.
+\url{https://arxiv.org/abs/2112.15223}.
+
+\bibitem{gessel}
+I. M. Gessel, Lagrange inversion,
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144} (2016),
+212--249; arXiv:1609.05988.
+\url{https://arxiv.org/abs/1609.05988}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,1474 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{26,52,74}
+\definecolor{teal}{RGB}{0,98,108}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,breaklinks=true]{hyperref}
+\usepackage{bookmark,fancyhdr,enumitem}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Endpoint crossover of critical transseries}
+\fancyhead[R]{\small Uniform inversion and action budgets}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ph}{\varphi}
+\newcommand{\hc}{\mathcal H}
+\newcommand{\FF}{F_{\eps}}
+\newcommand{\KK}{K_{\eps}}
+\newcommand{\asympK}{\asymp_{K}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\supp}{supp}
+\hypersetup{pdftitle={Through the Stable--Gaussian Endpoint: Uniform Critical Transseries, Prefix-Independent Cutoff Corrections, and Conditional Extremes},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Joint tail-index and large-order asymptotics at alpha=2}}
+\begin{document}
+\begin{titlepage}
+\vspace*{9mm}
+{\color{teal}\large RESEARCH ARTICLE\par}
+\vspace{8mm}
+{\color{navy}\LARGE\bfseries Through the Stable--Gaussian Endpoint\par}
+\vspace{5mm}
+{\Large Uniform critical transseries, prefix-independent cutoff corrections, and conditional extremes\par}
+\vspace{9mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{29 September 2026\par}
+\vspace{9mm}
+\begin{abstract}
+We study the critical countable-action equation
+\(U(q)=\sum_{j\ge1}w_jq^j\ee^{jU(q)}\), with nonnegative weights,
+\(\sum jw_j=1\), and an eventually exact tail
+\(w_j=c_{\eps}j^{-3+\eps}\). The tail exponent approaches two while
+\(|\eps|\log n\) remains bounded. This is the joint-limit question explicitly
+left open in the companion marginal-critical manuscript. We prove a uniform,
+pole-cancelled inverse representation and a convergent correction chart about
+a deformed Lambert core. A direct Fourier argument gives the complete central
+coefficient through its first correction and a uniform local limit theorem.
+For action cutoffs we obtain a two-term formula in which all finite-prefix
+constants cancel. It yields a two-term minimal-budget formula and the exact
+criterion for asymptotically lossless truncation. Conditioned on the coefficient
+constraint, the rescaled large actions converge to a Poisson point process.
+The analysis works from both sides of the endpoint, including a triangular
+finite-variance regime in which the total variance is not the correct central
+normalization. Proofs are self-contained apart from explicitly identified
+classical analytic identities; reproducible algebraic and numerical checks
+are supplied.
+\end{abstract}
+\vfill
+\small
+\textbf{Status and scope.} The proposed contribution is the uniform joint-limit
+theory and its explicit correction formulas for the stated tail class, not the
+classical fixed-exponent stable or Gaussian laws. Publication priority has not
+been established. The article contains conventional proofs, not a new Lean
+formalization or an independently peer-reviewed result. The numerical checks
+are diagnostics, not interval certificates.
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{The research question and its precise resolution}
+\label{sec:intro}
+
+\subsection{The gap in the existing program}
+The inspected \repo\ transseries index describes a large canonical inversion
+volume, focused Lean modules, and separate research arrivals
+\cite{repo-index,repo-readme}. Among those arrivals,
+\emph{Beyond Finite-Action Folds} treats positive eventually exact tails
+\(j^{-1-\alpha}\), for fixed \(1<\alpha<2\), with stable coefficient laws and
+critical Hahn inversion \cite{repo-stable}. The later companion
+\emph{Marginal Critical Transseries} treats the endpoint \(\alpha=2\), including
+Lambert charts and cutoff corrections \cite{marginal}.
+Its first proposed research question asks for joint inverse and coefficient
+expansions when \((2-\alpha)\log n\) remains bounded, and specifically asks
+whether the prefix-independent correction has a uniform interpolating form.
+That is the target of this article.
+
+The difficulty is not solved by substituting \(\alpha=2\) in a stable formula.
+Two terms, one involving \(\Gamma(-\alpha)\) and the other involving
+\(\zeta(\alpha-1)\), separately diverge. Their cancellation is of leading
+order in the joint limit. Keeping one and discarding the other changes the
+normalization. We keep their difference before either inversion or Fourier
+analysis.
+
+\subsection{What is proved here}
+Let \(\eps=2-\alpha\). Define the entire crossover function
+\begin{equation}
+ \hc(z)=\frac{\ee^z-1}{z},\qquad \hc(0)=1,
+ \qquad \FF(H)=H\hc(\eps H).
+ \label{eq:Hfunction}
+\end{equation}
+For coefficient order \(n\), the main scales are determined by
+\begin{equation}
+ B^2=nc_{\eps}\FF(\log B),\quad H=\log B,\quad
+ N=(nc_{\eps})^{1/(2-\eps)},\quad
+ E=\ee^{\eps H},\quad F=\FF(H),\quad r=E/F.
+ \label{eq:scales-intro}
+\end{equation}
+The root defining \(B\) is the large positive root. Under
+\(|\eps|\log n\le K\), it exists uniquely in the range relevant below.
+Then \(B\) is the central fluctuation scale and \(N\) is the action-cutoff
+scale. They satisfy \(N/B\asymp_K H^{-1/2}\).
+
+Writing \(u_n=[q^n]U\), and denoting by \(u_{n,M}\) the coefficient after
+removing all actions larger than \(M\) \emph{without renormalizing the retained
+weights}, we prove, uniformly for \(\ell=M/N\) in compact subsets of
+\((0,\infty)\),
+\begin{equation}
+ \frac{u_{n,M}}{u_n}
+ =\exp\left(-\frac{\ell^{-\alpha}}{\alpha}\right)
+ \left[
+ 1+\frac r4\left\{\log\frac{2}{r\ell^2}+1-\gamma-\frac{2}{\ell^2}\right\}
+ +O_K\left(\frac{(\log H)^2}{H^2}\right)
+ \right].
+ \label{eq:main-ratio-intro}
+\end{equation}
+Here \(\gamma\) is Euler's constant; constants in the error may also depend on
+the chosen compact \(\ell\)-interval and on the fixed weight family.
+No finite-prefix moment appears in the displayed correction.
+At \(\eps=0\), \(r=1/H\), and this reduces to the correction in the marginal
+companion. The result here is its uniform extension through the endpoint,
+with a proved remainder on both sides.
+
+The inverse theorem, central coefficient theorem, cutoff theorem,
+minimal-budget corollary, and conditional point-process theorem are proved
+in Sections~\ref{sec:inverse}--\ref{sec:extremes}. None is deduced by an
+unjustified interchange of the limits in \(n\) and \(\alpha\).
+
+\subsection{Classical results and the novelty boundary}
+The Lagrange coefficient mechanism is classical. The connection between
+positive coefficient models, random allocations, and conditioned sums is
+also classical; Janson's treatment includes both fixed-index stable local
+limits and the \(\sqrt{n\log n}\) endpoint law
+\cite[Theorem 17.14 and Example 18.29]{janson}.
+The distinction between hard and soft truncation of heavy tails is an
+established subject \cite{chakrabarty}. We do not claim these mechanisms as
+new. The exact polylogarithm continuation formula is likewise classical
+\cite[Eq. 25.12.12]{dlmf-polylog}.
+
+The statements offered as a model-specific extension are the combined
+\emph{uniform} expansions, the first correction and its prefix cancellation,
+the corresponding convergent deformed-core chart, and the consequences for
+conditional actions in this moving-index regime. The literature inspection
+is targeted, not an exhaustive priority search. A proof in this article
+establishes its stated mathematical conclusion; it does not establish that
+no equivalent formula has appeared elsewhere.
+
+\section{The normalized family and exact coefficient identities}
+\label{sec:model}
+
+\begin{definition}[Admissible finite-prefix family]
+Fix \(\eps_0\in(0,1/4)\) and an integer \(J\ge1\). For
+\(|\eps|<\eps_0\), suppose
+\begin{equation}
+ w_j(\eps)=c_{\eps}j^{-3+\eps}+p_j(\eps),\qquad
+ p_j=0\quad(j>J),
+ \label{eq:weights}
+\end{equation}
+where \(c_{\eps}>0\) and the finitely many \(p_j\) are real analytic near zero.
+Assume \(w_j\ge0\), \(w_1\) is bounded away from zero, and
+\begin{equation}
+ \sum_{j\ge1}jw_j(\eps)=1.
+ \label{eq:criticality}
+\end{equation}
+All uniform assertions are made in a sufficiently small closed parameter
+interval on which these conditions hold. Individual \(p_j\) may be negative.
+Set
+\begin{equation}
+ G_{\eps}(z)=\sum_{j\ge1}w_jz^j
+ =c_{\eps}\Li_{3-\eps}(z)+P_{\eps}(z),\qquad
+ v_{\eps}=\frac{1}{c_{\eps}}\sum_{j=1}^J j^2p_j,
+ \label{eq:G}
+\end{equation}
+where \(P_{\eps}(z)=\sum_{j=1}^Jp_jz^j\).
+\end{definition}
+
+A particularly transparent test family is
+\begin{equation}
+ c_{\eps}=\frac{1}{\zeta(2-\eps)+\eta},\quad
+ p_1=\eta c_{\eps},\quad p_j=0\ (j>1),\quad \eta\ge0.
+ \label{eq:test-family}
+\end{equation}
+It has \(v_{\eps}=\eta\). Taking \(\eta=0\) gives the pure polylogarithm
+model; taking \(\eta=2\) changes only the raw first-action weight before
+critical normalization.
+
+Let \(U_{\eps}\in q\R[[q]]\) be the solution of
+\begin{equation}
+ U_{\eps}(q)=G_{\eps}\bigl(q\ee^{U_{\eps}(q)}\bigr).
+ \label{eq:feedback}
+\end{equation}
+Coefficientwise substitution determines the solution uniquely, one degree
+at a time. All its coefficients are nonnegative. The cutoff solution uses
+\(G_{\eps,M}(z)=\sum_{j\le M}w_jz^j\) in place of \(G_{\eps}\).
+The parameter \(\eps\) is fixed during each coefficient extraction, but may
+depend on \(n\) in an asymptotic statement.
+
+\begin{proposition}[Exact coefficient--Poisson correspondence]
+\label{prop:poisson}
+Put \(\rho_{\eps}=\exp(-G_{\eps}(1))\). For independent random variables
+\(Z_j\sim\operatorname{Poisson}(nw_j)\), define
+\(S_n=\sum_{j\ge1}jZ_j\) and \(S_{n,M}=\sum_{j\le M}jZ_j\).
+These sums are almost surely finite, and \(\E S_n=n\). Then
+\begin{align}
+ u_n&=\frac1n[z^n]\ee^{nG_{\eps}(z)}
+     =\frac{\rho_{\eps}^{-n}}n\Pp(S_n=n),\label{eq:coeff-poisson}\\
+ \frac{u_{n,M}}{u_n}
+ &=\ee^{-n\Lambda_M}
+   \frac{\Pp(S_{n,M}=n)}{\Pp(S_n=n)},
+ &\Lambda_M&=\sum_{j>M}w_j.\label{eq:cutoff-poisson}
+\end{align}
+Equivalently, the ratio in \eqref{eq:cutoff-poisson} is
+\(\Pp(Z_j=0\text{ for every }j>M\mid S_n=n)\).
+\end{proposition}
+\begin{proof}
+Set \(W=q\ee^{U}\); then \(W=q\ee^{G(W)}\). Lagrange inversion gives
+\[
+ [q^n]G(W)=\frac1n[z^{n-1}]G'(z)\ee^{nG(z)}
+ =\frac1{n^2}[z^{n-1}](\ee^{nG(z)})'
+ =\frac1n[z^n]\ee^{nG(z)}.
+\]
+The sum of the Poisson rates is finite, since \(\sum w_j<\infty\).
+The total number of jumps is consequently finite almost surely. Its weighted
+mean is \(n\sum jw_j=n\). The probability generating function of \(S_n\)
+is \(\exp(n(G(z)-G(1)))\), proving the first identity. Apply the same
+argument to the cutoff and divide. Independence of the retained and deleted
+Poisson variables proves the conditional interpretation.
+\end{proof}
+
+\begin{proposition}[The real critical branch]
+\label{prop:branch}
+For \(0<q<\rho_{\eps}\), the real branch is parameterized uniquely by
+\begin{equation}
+ W=\ee^{-s},\quad q=\ee^{-s-G_{\eps}(\ee^{-s})},\quad
+ U=G_{\eps}(\ee^{-s}),\quad s>0.
+ \label{eq:param}
+\end{equation}
+Its power series has radius \(\rho_{\eps}\). If
+\(\Delta=\log(\rho_{\eps}/q)\), then
+\begin{equation}
+ \Delta=s+G_{\eps}(\ee^{-s})-G_{\eps}(1),\qquad
+ U=G_{\eps}(1)+\Delta-s.
+ \label{eq:delta}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The function \(q(W)=W\ee^{-G(W)}\) increases strictly on \((0,1)\), since
+\(WG'(W)<\sum jw_j=1\). It runs from zero to \(\rho\).
+The positive formal solution converges at every such \(q\): its successive
+coefficientwise approximants are bounded by this real solution. Hence its
+radius is at least \(\rho\). But
+\(dU/dq=G'(W)\ee^{G(W)}/(1-WG'(W))\) tends to infinity as \(W\uparrow1\),
+so the radius cannot exceed \(\rho\). Taking logarithms gives
+\eqref{eq:delta}.
+\end{proof}
+
+In transseries notation, put \(q=\ee^{-x}\). Then
+\(U(\ee^{-x})=\sum_{n\ge1}u_n\ee^{-nx}\), convergent for
+\(x>G_{\eps}(1)\). The large-order questions concern these exponential-sector
+coefficients. The critical inverse concerns
+\(\Delta=x-G_{\eps}(1)\downarrow0\), rather than a claim about arbitrary
+transseries or arbitrary summation procedures.
+
+\section{Cancelling the endpoint pole before taking limits}
+\label{sec:kernel}
+
+Define analytic functions of \(\eps\) near zero by removable continuation:
+\begin{equation}
+ g_{\eps}=2\Gamma(-2+\eps)-\frac1\eps,\qquad
+ z_{\eps}=\zeta(1-\eps)+\frac1\eps,\qquad
+ a_{\eps}=1+\eps g_{\eps}.
+ \label{eq:regularized-constants}
+\end{equation}
+Their endpoint values are
+\begin{equation}
+ g_0=\frac32-\gamma,\qquad z_0=\gamma,\qquad a_0=1.
+ \label{eq:regularized-values}
+\end{equation}
+We write
+\begin{equation}
+ \KK(L)=\FF(L)+g_{\eps}\ee^{\eps L}+z_{\eps}+v_{\eps}.
+ \label{eq:exact-kernel}
+\end{equation}
+For \(\eps\ne0\), this is exactly
+\(2\Gamma(-2+\eps)\ee^{\eps L}+\zeta(1-\eps)+v_{\eps}\),
+but \eqref{eq:exact-kernel} is the stable expression at \(\eps=0\).
+In particular,
+\begin{equation}
+ K_0(L)=L+\frac32+v_0,
+ \qquad \KK'(L)=a_{\eps}\ee^{\eps L}.
+ \label{eq:kernel-derivative}
+\end{equation}
+
+\begin{lemma}[Exact desingularized expansion]
+\label{lem:kernel}
+There is a function \(R_{\eps}(s)\), jointly analytic near
+\((\eps,s)=(0,0)\), such that, with a consistent logarithm of \(s\),
+\begin{equation}
+ s+G_{\eps}(\ee^{-s})-G_{\eps}(1)
+ =\frac{c_{\eps}s^2}{2}
+   \left\{\KK(\log(1/s))+sR_{\eps}(s)\right\}.
+ \label{eq:exact-delta-kernel}
+\end{equation}
+More explicitly,
+\begin{equation}
+ R_{\eps}(s)=\frac2{c_{\eps}}
+ \sum_{k\ge3}\frac{(-1)^k}{k!}
+ \left(c_{\eps}\zeta(3-\eps-k)+\sum_{j=1}^Jp_jj^k\right)s^{k-3}.
+ \label{eq:Rseries}
+\end{equation}
+The series converges normally on sufficiently small product neighborhoods.
+\end{lemma}
+\begin{proof}
+Use the classical convergent expansion, for \(|s|<2\pi\) on a logarithmic
+branch and nonintegral order,
+\[
+ \Li_{3-\eps}(\ee^{-s})
+ =\Gamma(-2+\eps)s^{2-\eps}
+   +\sum_{k\ge0}\zeta(3-\eps-k)\frac{(-s)^k}{k!}.
+\]
+This is the specialization of \cite[Eq. 25.12.12]{dlmf-polylog}.
+The constant term cancels. The linear term cancels by
+\eqref{eq:criticality}. The quadratic and nonanalytic terms combine into
+\(c_{\eps}s^2\KK(\log(1/s))/2\). Terms of order at least three give
+\eqref{eq:Rseries}. Their zeta factors have no parameter pole near zero;
+normal convergence on smaller disks follows from the same polylogarithm
+expansion, or from the zeta functional equation and the geometric factor
+\((|s|/(2\pi))^k\) times a polynomial in \(k\).
+Thus the remaining parameter singularity is removable, proving the formula
+also at zero. Finite-prefix exponentials are entire in \(s\).
+\end{proof}
+
+\begin{lemma}[Uniform logarithmic estimates]
+\label{lem:log-estimates}
+Fix \(K<\infty\). As \(L\to\infty\), uniformly for \(|\eps|L\le K\),
+\begin{align}
+ \FF(L)&\asymp_K L,& \ee^{\eps L}&\asymp_K1,
+ &\KK(L)&=\FF(L)+O_K(1),\label{eq:kernel-estimates}\\
+ \KK(L)&=\FF(L)+(\tfrac32-\gamma)\ee^{\eps L}
+                  +\gamma+v_{\eps}+O_K(L^{-1}).\label{eq:kernel-two-term}
+\end{align}
+For real \(b=O(\log L)\),
+\begin{equation}
+ \FF(L+b)=\FF(L)+\ee^{\eps L}b
+     +O_K\left(\frac{b^2}{L}\right).
+ \label{eq:F-shift}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The continuous positive function \(\hc\) has positive lower and finite upper
+bounds on \([-K,K]\). Analyticity gives
+\(g_{\eps}=g_0+O(\eps)\), \(z_{\eps}=\gamma+O(\eps)\).
+Finally, \(\FF'=\ee^{\eps L}\), \(\FF''=\eps\ee^{\eps L}\);
+Taylor's formula gives the last estimate. These arguments also give the
+analogous complex estimates with factors
+\(\ee^{|\eps b|}\) when needed below.
+\end{proof}
+
+The term \((\ee^{\eps L}-1)/\eps\), not \(\ee^{\eps L}/\eps\), is the
+crossover kernel. The subtraction is indispensable when \(\eps L\) stays
+bounded. It retains the cancellation that is lost by taking a fixed-index
+stable approximation first.
+
+\section{A uniform inverse and a convergent deformed-core chart}
+\label{sec:inverse}
+
+\begin{theorem}[Two-term joint inverse]
+\label{thm:inverse}
+Let \(\Delta\downarrow0\), put \(D=\log(1/\Delta)\), and assume
+\(|\eps|D\le K\). Define
+\begin{equation}
+ F_*=\FF(D/2),\quad E_*=\ee^{\eps D/2},\quad
+ A_* =\frac12\log\frac{c_{\eps}F_*}{2},\quad
+ d_*=(\tfrac32-\gamma)E_*+\gamma+v_{\eps}.
+ \label{eq:inverse-vars}
+\end{equation}
+The solution of \eqref{eq:delta} has the uniform expansion
+\begin{equation}
+ s=\sqrt{\frac{2\Delta}{c_{\eps}F_*}}
+ \left[
+ 1-\frac{E_*A_*+d_*}{2F_*}
+ +O_K\left(\frac{(\log D)^2}{D^2}\right)
+ \right].
+ \label{eq:inverse-two-term}
+\end{equation}
+Consequently,
+\begin{equation}
+ s=2\sqrt{\frac{\Delta}
+ {c_{\eps}D\hc(\eps D/2)}}
+ \left[1+O_K\left(\frac{\log D}{D}\right)\right].
+ \label{eq:inverse-leading}
+\end{equation}
+The corresponding solution of the original feedback equation is
+\(U=G_{\eps}(1)+\Delta-s\).
+\end{theorem}
+\begin{proof}
+Write \(L=\log(1/s)\). By \eqref{eq:exact-delta-kernel},
+\begin{equation}
+ 2L=D+\log(c_{\eps}/2)
+ +\log\{\KK(L)+\ee^{-L}R_{\eps}(\ee^{-L})\}.
+ \label{eq:inverse-log-eq}
+\end{equation}
+First bracket the solution with \(L\) equal to
+\(D/2+C\log D\), using Lemma~\ref{lem:log-estimates} and two fixed constants
+\(C\) of opposite sufficiently large size. Monotonicity follows from
+Proposition~\ref{prop:branch}; hence \(L=D/2+O_K(\log D)\).
+All the subsequent estimates are therefore within a fixed bounded
+\(\eps L\)-window.
+
+Set \(L=D/2+A_*+b\). Initially the equation gives
+\(b=O_K(\log D/D)\). By \eqref{eq:F-shift} and
+\eqref{eq:kernel-two-term},
+\[
+ \KK(L)=F_*+E_*A_*+d_*
+       +O_K((\log D)^2/D).
+\]
+The term \(E_*b\) is within this error. The analytic remainder in
+\eqref{eq:inverse-log-eq} is exponentially smaller. Expanding the logarithm
+now yields
+\[
+ b=\frac{E_*A_*+d_*}{2F_*}
+      +O_K((\log D)^2/D^2).
+\]
+Exponentiate \(s=\ee^{-D/2-A_*-b}\). Since
+\(\ee^{-D/2-A_*}=\sqrt{2\Delta/(c_{\eps}F_*)}\), the theorem follows.
+\end{proof}
+
+The two-term formula is an asymptotic result. A different construction gives
+an actually convergent correction chart.
+
+\begin{theorem}[Uniform analytic correction about the deformed core]
+\label{thm:chart}
+For \(|\eps|D\le K\) and small \(\Delta>0\), let \(L_0\) be the unique
+large solution of
+\begin{equation}
+ \Delta=\frac{c_{\eps}}2\ee^{-2L_0}\KK(L_0),\qquad s_0=\ee^{-L_0}.
+ \label{eq:deformed-core}
+\end{equation}
+Put \(X=s_0\), \(Y=1/\KK(L_0)\), and
+\(Z=\ee^{\eps L_0}/\KK(L_0)\). There is a single holomorphic germ
+\(V(\eps,X,Y,Z)\), on a product neighborhood independent of the particular
+joint-limit path, such that the exact solution is
+\begin{equation}
+ s=s_0\exp\{-V(\eps,X,Y,Z)\}.
+ \label{eq:chart}
+\end{equation}
+The germ has a convergent multivariate power series, is divisible by \(XY\),
+and satisfies
+\begin{equation}
+ V=\frac{XYR_{\eps}(0)}{2-a_{\eps}Z}
+       +O(X^2Y)
+ \label{eq:chart-first}
+\end{equation}
+in a smaller fixed polydisk. In particular, on the real joint-limit paths,
+\(s/s_0=1+O_K(s_0/\log(1/s_0))\).
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:log-estimates} shows that the right side of
+\eqref{eq:deformed-core} is positive and strictly decreasing at the large
+root: its logarithmic derivative is
+\(-2+\KK'(L)/\KK(L)=-2+O_K(1/L)\).
+The same bracket used for Theorem~\ref{thm:inverse} gives existence and
+uniqueness in the large-root region.
+
+The exact identity
+\[
+ \KK(L_0+v)-\KK(L_0)
+ =a_{\eps}\ee^{\eps L_0}v\hc(\eps v)
+\]
+turns \eqref{eq:exact-delta-kernel}, with \(s=s_0\ee^{-v}\), into
+\begin{equation}
+ \ee^{-2v}\left[
+ 1+a_{\eps}Zv\hc(\eps v)
+ +XY\ee^{-v}R_{\eps}(X\ee^{-v})\right]=1.
+ \label{eq:analytic-chart-equation}
+\end{equation}
+Its left side minus one is holomorphic in all five variables. At
+\((\eps,X,Y,Z,v)=(0,0,0,0,0)\), the derivative with respect to \(v\) is
+\(-2\). The analytic implicit-function theorem gives one germ on a fixed
+polydisk, not a different germ for each asymptotic path. At \(X=0\) or
+\(Y=0\), its small solution is identically zero. Analytic division therefore
+gives the factor \(XY\). Taking the coefficient of \(X\) in
+\eqref{eq:analytic-chart-equation} gives \eqref{eq:chart-first}; the
+remainder retains the factor \(Y\). Finally,
+\(X\to0\), \(Y,Z=O_K(1/L_0)\), so every sufficiently late real path lies
+inside that fixed polydisk.
+\end{proof}
+
+\begin{remark}[What is and is not a finite-generator statement]
+The correction \(V\) is a genuinely convergent finite-generator analytic
+chart. Its core is the inverse of \eqref{eq:deformed-core}; it is not asserted
+to be an elementary function, nor an ordinary Lambert function when
+\(\eps\ne0\). We do not claim a global complex branch classification or a
+convergent expansion uniform over fixed nonzero \(\eps\) as \(D\to\infty\).
+\end{remark}
+
+At \(\eps=0\), put \(d=3/2+v_0\). The core becomes
+\(\Delta=(c_0/2)\ee^{-2L_0}(L_0+d)\), so it is explicitly
+\begin{equation}
+ s_0=\left[
+ \frac{-4\Delta}
+ {c_0 W_{-1}(-4\Delta\ee^{-2d}/c_0)}\right]^{1/2}.
+ \label{eq:lambert-core}
+\end{equation}
+Thus Theorem~\ref{thm:chart} deforms the real negative Lambert branch
+continuously and analytically at the level of the desingularized equation.
+The identity follows directly by setting \(y=2(L_0+d)\) and solving
+\(y\ee^{-y}=4\Delta\ee^{-2d}/c_0\).
+
+\section{The moving fluctuation and extreme-action scales}
+\label{sec:scales}
+
+\begin{lemma}[Existence, size, and exact scale identity]
+\label{lem:scales}
+For every fixed \(K\), all sufficiently large \(n\), and
+\(|\eps|\log n\le K\), the equation
+\(\ee^{2H}=nc_{\eps}\FF(H)\) has a unique root in
+\([\tfrac25\log n,\tfrac35\log n]\). At this root,
+\begin{equation}
+ H=\tfrac12\log n+\tfrac12\log\log n+O_K(1),\qquad
+ F\asymp_K H,\qquad r\asymp_K H^{-1}.
+ \label{eq:H-size}
+\end{equation}
+With \(\alpha=2-\eps\),
+\begin{equation}
+ \left(\frac NB\right)^{\alpha}=r,
+ \qquad \frac NB=r^{1/\alpha}\asymp_K H^{-1/2}.
+ \label{eq:N-B-identity}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On the displayed interval, \(\FF(H)\asymp_K\log n\). The function
+\(2H-\log(nc_{\eps})-\log\FF(H)\) changes sign at its endpoints.
+Its derivative is \(2-\ee^{\eps H}/\FF(H)>1\) for large \(n\).
+Taking logarithms of the defining equation gives \eqref{eq:H-size}.
+Finally,
+\[
+ (N/B)^{\alpha}=\frac{nc_{\eps}}{B^{2-\eps}}
+ =\frac{B^{\eps}}F=r.
+\]
+Since \(\eps=O_K(1/H)\),
+\(r^{1/\alpha}/\sqrt r=\exp(O_K(\log H/H))\), proving the comparison.
+\end{proof}
+
+\begin{corollary}[Explicit crossover function]
+\label{cor:explicit-scales}
+Write \(\theta_n=\eps\log n\). Uniformly for \(|\theta_n|\le K\),
+\begin{equation}
+ B^2=\frac{c_{\eps}n\log n}{2}\hc(\theta_n/2)
+ \left[1+O_K\left(\frac{\log\log n}{\log n}\right)\right].
+ \label{eq:B-explicit}
+\end{equation}
+If \(\theta_n\to\theta\), then
+\begin{equation}
+ \frac N{\sqrt n}\longrightarrow \sqrt{c_0}\ee^{\theta/4}.
+ \label{eq:N-explicit}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Insert \(H=\tfrac12\log n+O_K(\log\log n)\) into
+\(F=H\hc(\eps H)\). The function \(\hc\) and its derivatives are bounded
+on the relevant compact interval. For the second formula, take logarithms:
+\[
+ \log(N/\sqrt n)=\frac{\log c_{\eps}}{2-\eps}
+       +\frac{\eps\log n}{2(2-\eps)}.
+\]
+Analyticity implies \(c_{\eps}\to c_0\).
+\end{proof}
+
+\section{A uniform local limit theorem with its first central correction}
+\label{sec:coefficients}
+
+We now prove the needed triangular-array limit directly. Applying a fixed-law
+central or stable limit theorem separately for each \(\eps\) would not give
+the uniform result.
+
+\begin{lemma}[Uniform Fourier damping]
+\label{lem:damping}
+Let \(\chi_n(t)=\E\exp(\ii t(S_n-n)/B)\). For large \(n\) in the window,
+there exist positive constants \(b_1,b_2\), independent of \(n,\eps\), such
+that
+\begin{align}
+ |\chi_n(t)|&\le\ee^{-b_1t^2},&& |t|\le B^{1/2},\label{eq:damping-small}\\
+ |\chi_n(t)|&\le\ee^{-b_2n/B},&& B^{1/2}\le|t|\le\pi B.
+ \label{eq:damping-large}
+\end{align}
+The same estimates hold for
+\(\E\exp(\ii t(S_{n,M}-n)/B)\), uniformly when \(M/N\) is in a fixed
+compact subinterval of \((0,\infty)\).
+\end{lemma}
+\begin{proof}
+The real logarithm of the modulus is
+\(-n\sum w_j(1-\cos(jt/B))\). On \(|y|\le1\),
+\(1-\cos y\ge c y^2\). Retain actions
+\(J<j\le R\), where \(R=\lfloor B/\max(1,|t|)\rfloor\), or the
+minimum of this number and \(M\) in the cutoff case.
+For \(|t|\le B^{1/2}\), this gives \(\log R\ge H/2-O(1)\), because
+\(M\asymp N\gg B^{1/2}\). Integral comparison implies
+\[
+ \sum_{J<j\le R}j^{-1+\eps}\ge c_K F.
+\]
+The retained exponent is therefore at most
+\(-c_Knc_{\eps}Ft^2/B^2=-c_Kt^2\).
+For the remaining interval, retain only \(j=1\).
+Since \(|t/B|\le\pi\),
+\(1-\cos(t/B)\ge c t^2/B^2\), and \(w_1\) has a uniform positive lower
+bound. The exponent is at most \(-c nt^2/B^2\le-c n/B\).
+\end{proof}
+
+\begin{theorem}[Uniform local limit and central coefficient]
+\label{thm:coefficient}
+For the admissible family and \(|\eps|\log n\le K\),
+\begin{equation}
+ \sup_{k\in\mathbb Z}
+ \left|B\Pp(S_n=n+k)-\ph(k/B)\right|\longrightarrow0,
+ \qquad \ph(x)=\frac{\ee^{-x^2/2}}{\sqrt{2\pi}},
+ \label{eq:uniform-llt}
+\end{equation}
+uniformly in the parameter window. At the center the sharper expansion is
+\begin{equation}
+ u_n=\frac{\rho_{\eps}^{-n}}{\sqrt{2\pi}\,nB}
+ \left[1-\frac1F\left\{
+ \frac{E(1-\gamma+\log2)}4+\frac{\gamma+v_{\eps}}2
+ \right\}+O_K(H^{-2})\right].
+ \label{eq:coefficient-main}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For \(t\ne0\), use the principal logarithm of \(-\ii t\), and put
+\(L_t=\log(-\ii t)\). The exact cumulant is
+\[
+ \Psi_n(t)=n\sum_{j\ge1}w_j
+ (\ee^{\ii tj/B}-1-\ii tj/B).
+\]
+Lemma~\ref{lem:kernel}, with \(s=-\ii t/B\), gives
+\begin{equation}
+ \Psi_n(t)=-\frac{t^2}{2}
+ +\frac{t^2}{2F}
+ \{EL_t-(\tfrac32-\gamma)E-\gamma-v_{\eps}\}
+ +\mathcal E_n(t).
+ \label{eq:cf-expansion}
+\end{equation}
+Here we used
+\[
+ \FF(H-L_t)=F-EL_t+
+ O\bigl(|\eps|E|L_t|^2\ee^{|\eps L_t|}\bigr).
+\]
+On \(0<|t|\le T=H^{1/12}\), the error is bounded by
+\begin{equation}
+ |\mathcal E_n(t)|\le
+ \frac{C_K}{H^2}|t|^2(1+|\log|t||^2)
+ \max(|t|^{1/4},|t|^{-1/4})
+ +\frac{C_K|t|^3}{BF}.
+ \label{eq:cf-error}
+\end{equation}
+The last term is the analytic remainder. The replacement of
+\(g_{\eps},z_{\eps}\) by their endpoint values contributes the first bound.
+We may shrink the parameter interval so that \(|\eps|\le1/4\).
+The singularity at \(t=0\) in this bound is integrable.
+
+The displayed correction in \eqref{eq:cf-expansion} is uniformly small on
+this central interval. Expanding its exponential, and using
+Lemma~\ref{lem:damping}, gives an integrated error \(O_K(H^{-2})\).
+Indeed, its square is bounded by \(H^{-2}\) times an integrable
+Gaussian--power--logarithmic function. The integral of
+\eqref{eq:cf-error} has the same bound; \(1/(BF)\) is smaller than every
+fixed negative power of \(H\). The part \(|t|>T\) contributes
+\(O_K(\ee^{-bT^2})+O(B\ee^{-bn/B})\), again smaller than \(H^{-2}\).
+These estimates justify termwise integration, rather than merely a
+pointwise characteristic-function limit.
+
+At the center, Fourier inversion is
+\[
+ B\Pp(S_n=n)=\frac1{2\pi}\int_{-\pi B}^{\pi B}\ee^{\Psi_n(t)}\,dt.
+\]
+The imaginary part of \(L_t\) is odd and integrates to zero. For a standard
+normal random variable \(Z\),
+\begin{equation}
+ \E(Z^2\log|Z|)=1-\frac\gamma2-\frac{\log2}{2}.
+ \label{eq:Gaussian-log-moment}
+\end{equation}
+This follows by differentiating
+\(\E|Z|^p=2^{p/2}\Gamma((p+1)/2)/\sqrt\pi\) at \(p=2\).
+Consequently the normalized first correction is
+\[
+ \frac1{2F}
+ \left[E\left(1-\frac\gamma2-\frac{\log2}2\right)
+      -(\tfrac32-\gamma)E-\gamma-v_{\eps}\right]
+ =-\frac1F\left[\frac{E(1-\gamma+\log2)}4
+                 +\frac{\gamma+v_{\eps}}2\right].
+\]
+Combine this with \eqref{eq:coeff-poisson}.
+
+Finally, the same bounds prove that the characteristic function, extended
+by zero outside \([-\pi B,\pi B]\), converges to \(\ee^{-t^2/2}\) in
+\(L^1(\R)\), uniformly in the window. Fourier inversion at arbitrary
+\(k/B\) then gives \eqref{eq:uniform-llt}, since the exponential Fourier
+factor always has modulus one.
+\end{proof}
+
+\begin{corollary}[Explicit leading coefficient]
+\label{cor:leading-coefficient}
+With \(\theta_n=\eps\log n\),
+\begin{equation}
+ u_n=\frac{\rho_{\eps}^{-n}}
+ {n^{3/2}\sqrt{\pi c_{\eps}\log n\,\hc(\theta_n/2)}}
+ \left[1+O_K\left(\frac{\log\log n}{\log n}\right)\right].
+ \label{eq:leading-coefficient}
+\end{equation}
+\end{corollary}
+The exponential factor \(\rho_{\eps}^{-n}\) must be retained at the actual
+parameter. Replacing it by \(\rho_0^{-n}\) is generally invalid even when
+\(\eps=O(1/\log n)\), because an \(O(\eps)\) change in \(\log\rho\) is
+multiplied by \(n\).
+
+\section{The uniform cutoff correction and cancellation of prefix data}
+\label{sec:cutoff}
+
+\begin{lemma}[Deleted mean and retained moments]
+\label{lem:cutoff-moments}
+Assume \(\ell=M/N\in[\ell_-,\ell_+]\subset(0,\infty)\), and set
+\begin{equation}
+ b=\log(M/B)=\log\ell+\alpha^{-1}\log r,
+ \quad d_M=\frac{n-\E S_{n,M}}B,
+ \quad V_M=\frac{\Var S_{n,M}}{B^2}.
+ \label{eq:cutoff-vars}
+\end{equation}
+Uniformly in this range,
+\begin{align}
+ n\Lambda_M&=\ell^{-\alpha}/\alpha+O_K(M^{-1}),\label{eq:tail-rate}\\
+ d_M&=\frac{r^{1/\alpha}\ell^{1-\alpha}}{\alpha-1}+O_K(B^{-1}),
+ &d_M^2&=\frac{r}{\ell^2}+O_K(\log H/H^2),\label{eq:deleted-mean}\\
+ V_M&=1+\frac{Eb+\gamma+v_{\eps}}F
+      +O_K((\log H)^2/H^2).\label{eq:retained-variance}
+\end{align}
+For \(k=3,4\), the standardized retained cumulants satisfy
+\begin{equation}
+ \kappa_{k,M}:=\frac n{B^k}\sum_{j\le M}j^kw_j
+ =O_K(H^{-k/2}).
+ \label{eq:retained-cumulants}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For large \(n\), \(M>J\), so the deleted tail is exactly the power tail.
+Integral comparison gives, uniformly near \(\alpha=2\),
+\[
+ \sum_{j>M}j^{-1-\alpha}=M^{-\alpha}/\alpha+O(M^{-1-\alpha}),
+ \qquad
+ \sum_{j>M}j^{-\alpha}=M^{1-\alpha}/(\alpha-1)+O(M^{-\alpha}).
+\]
+Use \(nc_{\eps}=N^\alpha\) and \eqref{eq:N-B-identity}.
+For the squared deleted mean, the replacements
+\[
+ r^{2/\alpha}=r\{1+O_K(\log H/H)\},\quad
+ \ell^{2(1-\alpha)}=\ell^{-2}\{1+O_K(H^{-1})\},\quad
+ (\alpha-1)^{-2}=1+O_K(H^{-1})
+\]
+give the stated error.
+
+Uniform integral comparison with one endpoint correction gives
+\begin{equation}
+ \sum_{j\le M}j^{-1+\eps}
+ =\FF(\log M)+\gamma+O(|\eps|)+O(M^{-1+\eps}).
+ \label{eq:harmonic-uniform}
+\end{equation}
+For completeness, subtract the integral of \(x^{-1+\eps}\) on \([1,M]\).
+The resulting sum of successive sum--integral errors has terms
+\(O(j^{-2+\eps})\), and its parameter derivative has terms
+\(O(j^{-2+\eps}\log j)\). Both are uniformly summable near zero.
+The limiting constant is therefore \(\gamma+O(|\eps|)\); the remaining
+endpoint error is \(O(M^{-1+\eps})\). This proves
+\eqref{eq:harmonic-uniform} without any interchange of divergent sums.
+
+Add the finite-prefix second moment \(c_{\eps}v_{\eps}\), divide by
+\(c_{\eps}F\), and apply \eqref{eq:F-shift} with \(b=O_K(\log H)\).
+This proves \eqref{eq:retained-variance}. Finally,
+\[
+ \frac{nc_{\eps}M^{k-\alpha}}{B^k}
+ =\ell^{k-\alpha}r^{k/\alpha}=O_K(H^{-k/2}),\qquad k=3,4.
+\]
+The finite-prefix contribution \(O(n/B^k)\) is smaller. Integral comparison
+for the retained powers completes the proof.
+\end{proof}
+
+\begin{lemma}[Central probability for the cutoff]
+\label{lem:cutoff-central}
+In the same parameter range,
+\begin{equation}
+ B\sqrt{2\pi}\,\Pp(S_{n,M}=n)
+ =1-\frac{Eb+\gamma+v_{\eps}}{2F}
+    -\frac{E}{2F\ell^2}
+    +O_K((\log H)^2/H^2).
+ \label{eq:cutoff-central}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The real and imaginary parts of the centered cutoff cumulant obey
+\begin{align*}
+ \Rea\Psi_{n,M}(t)&=-V_Mt^2/2+O(\kappa_{4,M}t^4),\\
+ \Im\Psi_{n,M}(t)&=-d_Mt+O(\kappa_{3,M}|t|^3).
+\end{align*}
+These inequalities follow directly from the Taylor remainders for cosine
+and sine. Fourier inversion at the center integrates
+\(\ee^{\Rea\Psi_{n,M}}\cos(\Im\Psi_{n,M})\).
+On \(|t|\le H^{1/12}\), put \(a_M=V_M-1\).
+Its expansion through the required order is
+\[
+ \ee^{-t^2/2}\{1-a_Mt^2/2-d_M^2t^2/2\}.
+\]
+The integrated error is bounded by a fixed constant times
+\[
+ a_M^2+\kappa_{4,M}+d_M^4
+       +|d_M|\kappa_{3,M}+\kappa_{3,M}^2
+ =O_K((\log H)^2/H^2).
+\]
+For the phase estimate, use
+\(|\cos(x+y)-\cos x|\le |xy|+y^2/2\).
+This is why an apparent cubic error of size \(H^{-3/2}\) does not survive
+at the center: it is multiplied by the deleted-mean shift or enters
+quadratically. The tail of the Fourier integral is negligible by
+Lemma~\ref{lem:damping}. Integrating \(t^2\ee^{-t^2/2}\), then using
+Lemma~\ref{lem:cutoff-moments}, proves the result.
+\end{proof}
+
+\begin{theorem}[Uniform prefix-independent cutoff correction]
+\label{thm:cutoff}
+For every admissible family, uniformly for \(|\eps|\log n\le K\) and
+\(\ell=M/N\in[\ell_-,\ell_+]\subset(0,\infty)\),
+\begin{equation}
+ \frac{u_{n,M}}{u_n}
+ =\ee^{-\ell^{-\alpha}/\alpha}
+ \left[
+ 1+\frac r4\left\{\log\frac{2}{r\ell^2}+1-\gamma-\frac2{\ell^2}\right\}
+ +O_K\left(\frac{(\log H)^2}{H^2}\right)
+ \right].
+ \label{eq:cutoff-theorem}
+\end{equation}
+In particular, the displayed normalized correction is the same for all
+finite-prefix changes, after using that family's actual \(c_{\eps}\),
+\(N\), and \(B\).
+\end{theorem}
+\begin{proof}
+Write the full central probability as
+\((B\sqrt{2\pi})^{-1}(1+C/F+O(H^{-2}))\), where
+\[
+ C=-\frac{E(1-\gamma+\log2)}4-\frac{\gamma+v_{\eps}}2.
+\]
+Divide \eqref{eq:cutoff-central} by this expression. The numerator's
+\(-(\gamma+v_{\eps})/(2F)\) cancels the identical denominator term.
+What remains is
+\begin{equation}
+ \frac{\Pp(S_{n,M}=n)}{\Pp(S_n=n)}
+ =1+\frac EF\left\{-\frac b2
+        +\frac{1-\gamma+\log2}{4}-\frac1{2\ell^2}\right\}
+   +O_K((\log H)^2/H^2).
+ \label{eq:probability-ratio}
+\end{equation}
+Now \(b=\log\ell+\alpha^{-1}\log r\), and
+\(\alpha^{-1}=1/2+O_K(H^{-1})\). Multiplication by \(r=O_K(H^{-1})\)
+shows that replacing \(\alpha^{-1}\log r\) by \(\tfrac12\log r\)
+costs only \(O_K(\log H/H^2)\). Therefore the displayed term in
+\eqref{eq:probability-ratio} becomes
+\[
+ \frac r4\left\{\log\frac{2}{r\ell^2}+1-\gamma-\frac2{\ell^2}\right\}.
+\]
+Lastly, \eqref{eq:tail-rate} replaces the survival factor in
+\eqref{eq:cutoff-poisson} by \(\ee^{-\ell^{-\alpha}/\alpha}\) with relative
+error \(O_K(M^{-1})\), smaller than the stated remainder.
+\end{proof}
+
+\begin{remark}[The exponent in the survival factor must not be frozen]
+Although \(\alpha\to2\), replacing
+\(\ee^{-\ell^{-\alpha}/\alpha}\) by \(\ee^{-1/(2\ell^2)}\) can change a
+term of order \(1/H\). Such a replacement is allowed for the limiting
+law, but not generally for the first correction. Formula
+\eqref{eq:cutoff-theorem} keeps this contribution exactly.
+\end{remark}
+
+\begin{corollary}[Lossless truncation and the raw square-root scale]
+\label{cor:lossless}
+In the bounded window,
+\begin{equation}
+ \frac{u_{n,M_n}}{u_n}\longrightarrow1
+ \quad\Longleftrightarrow\quad \frac{M_n}{N_n}\longrightarrow\infty.
+ \label{eq:iff-lossless}
+\end{equation}
+If \(M_n/N_n\to0\), the ratio tends to zero. If \(M_n/N_n\to\ell>0\),
+the limit is \(\ee^{-1/(2\ell^2)}\). Equivalently, when
+\(\eps\log n\to\theta\) and \(M_n/\sqrt n\to m>0\),
+\begin{equation}
+ \frac{u_{n,M_n}}{u_n}\longrightarrow
+ \exp\left(-\frac{c_0\ee^{\theta/2}}{2m^2}\right).
+ \label{eq:raw-cutoff}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The coefficient ratio is increasing in \(M\) and lies in \([0,1]\).
+For each fixed \(L>0\), Theorem~\ref{thm:cutoff} applies at
+\(M=\lfloor LN\rfloor\). If \(M_n/N_n\to\infty\), use this cutoff as
+a lower bound and then let \(L\to\infty\). Conversely, a bounded
+subsequence of \(M_n/N_n\) is bounded above by some finite \(L\), giving
+an upper limit at most \(\ee^{-1/(2L^2)}<1\).
+The zero-limit statement follows by an upper bound at each fixed small
+\(L\) and then \(L\downarrow0\). The remaining assertions follow directly
+from the theorem and \eqref{eq:N-explicit}.
+\end{proof}
+
+\section{A two-term minimal action budget}
+\label{sec:budget}
+
+Fix a target retained fraction \(\tau\in(0,1)\), independent of \(n\).
+Since actions above \(n\) cannot contribute to \([q^n]\), there is always
+an integer \(M\le n\) retaining the whole coefficient. Thus define
+\begin{equation}
+ M_{\min}(n,\eps;\tau)=\min\{M\ge1:u_{n,M}/u_n\ge\tau\}.
+ \label{eq:min-budget}
+\end{equation}
+
+\begin{corollary}[Uniform two-term budget]
+\label{cor:budget}
+Let \(L_\tau=-\log\tau\) and
+\(\ell_0=(\alpha L_\tau)^{-1/\alpha}\). In the bounded parameter window,
+\begin{align}
+ \frac{M_{\min}}N
+ =\ell_0\biggl[1-&\frac{r}{4\alpha L_\tau}
+ \left\{\log\frac{2}{r\ell_0^2}+1-\gamma-\frac2{\ell_0^2}\right\}
+ \nonumber\\
+ &+O_{K,\tau}\left(\frac{(\log H)^2}{H^2}\right)\biggr].
+ \label{eq:budget-formula}
+\end{align}
+\end{corollary}
+\begin{proof}
+The leading cutoff law brackets \(M_{\min}/N\) inside a fixed compact
+interval around \(\ell_0\). The logarithm of
+\eqref{eq:cutoff-theorem} is
+\[
+ -\ell^{-\alpha}/\alpha
+ +\frac r4 h(\ell,r)+O_K((\log H)^2/H^2),\qquad
+ h(\ell,r)=\log\frac{2}{r\ell^2}+1-\gamma-\frac2{\ell^2}.
+\]
+The derivative of the leading term at \(\ell_0\) is
+\(\ell_0^{-\alpha-1}>0\). The first displacement of its crossing of
+\(\log\tau\) is therefore
+\(-r\ell_0^{\alpha+1}h(\ell_0,r)/4\).
+Taylor's formula on that compact interval bounds the remaining displacement
+by \(O_{K,\tau}((\log H)^2/H^2)\). Monotonicity brackets the integer
+crossing between the two continuous error bounds; the rounding error is
+at most \(1/N\), which is smaller. Since
+\(\ell_0^\alpha=(\alpha L_\tau)^{-1}\), this is
+\eqref{eq:budget-formula}.
+\end{proof}
+
+This is an asymptotic budget, not a finite-\(n\) interval certificate.
+For an actual finite computation, a positive coefficient recurrence gives a
+separate way of testing the requested retained fraction. Section~\ref{sec:checks}
+describes such a recurrence. A uniform numerical value for the constants in
+the asymptotic error has not been certified here.
+
+\section{Conditional large actions converge to a Poisson process}
+\label{sec:extremes}
+
+The cutoff theorem is a largest-action statement. The local limit theorem
+allows an extension to all macroscopic extreme actions at once.
+
+\begin{theorem}[Conditional Poisson limit]
+\label{thm:PPP}
+Let \(\eps=\eps_n\) with \(|\eps_n|\log n\le K\). Conditional on
+\(S_n=n\), define the random counting measure
+\begin{equation}
+ \Xi_n=\sum_{j\ge1}Z_j\,\delta_{j/N}
+ \quad\text{on }(0,\infty).
+ \label{eq:point-process}
+\end{equation}
+Then \(\Xi_n\) converges in distribution, for the vague topology on locally
+finite counting measures, to a Poisson point process with intensity
+\begin{equation}
+ \nu(dx)=x^{-3}\,dx.
+ \label{eq:PPP-intensity}
+\end{equation}
+In particular, if \(J_{(k)}\) is the \(k\)-th largest action, counting
+multiplicities and padded with zeros, then for each \(\ell>0\),
+\begin{equation}
+ \Pp(J_{(k)}/N\le\ell\mid S_n=n)
+ \longrightarrow
+ \ee^{-1/(2\ell^2)}
+ \sum_{m=0}^{k-1}\frac{(1/(2\ell^2))^m}{m!}.
+ \label{eq:kth-largest}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For finitely many distinct indices and integers \(m_j\ge0\), the Poisson
+factorial-moment identity is exact:
+\begin{equation}
+ \E\left[\prod_j(Z_j)_{m_j}\,\middle|\,S_n=n\right]
+ =\prod_j(nw_j)^{m_j}
+ \frac{\Pp(S_n=n-\sum_jjm_j)}{\Pp(S_n=n)}.
+ \label{eq:conditional-factorial}
+\end{equation}
+It follows by shifting each count in its Poisson probability mass function;
+\((z)_m=z(z-1)\cdots(z-m+1)\).
+
+Consider disjoint intervals \(I_1,\dots,I_d\) whose closures lie in
+\((0,\infty)\). A fixed mixed factorial moment of their counts has shifts
+of size \(O(N)\). Since \(N/B\to0\),
+Theorem~\ref{thm:coefficient} gives
+\[
+ \frac{\Pp(S_n=n-k)}{\Pp(S_n=n)}\longrightarrow1
+ \quad\text{uniformly for } |k|\le C N
+\]
+for every fixed \(C\). Summing \eqref{eq:conditional-factorial} over the
+indices in the intervals yields the mixed factorial moments of independent
+Poisson variables, because
+\begin{equation}
+ n\sum_{j/N\in I_a}w_j
+ =\frac1N\sum_{j/N\in I_a}(j/N)^{-1-\alpha}
+ \longrightarrow\int_{I_a}x^{-3}\,dx.
+ \label{eq:intensity-riemann}
+\end{equation}
+The finite prefix is eventually outside every such interval.
+
+There is no moment-determinacy gap: the uniform local limit also bounds
+\(\sup_k\Pp(S_n=k)/\Pp(S_n=n)\) by a fixed constant. Thus every mixed
+factorial moment is bounded by that constant times the corresponding
+product of the unconditioned means to the required powers. The exponential
+series for the joint count generating function is consequently dominated
+on a neighborhood of one. Its limit is the independent-Poisson generating
+function. The same first-moment bound gives tightness of the number of
+points in each compact set. Approximation of a nonnegative continuous
+compactly supported test function by interval step functions proves
+convergence of the Laplace functionals, and hence the asserted vague limit.
+
+To pass from compact intervals to the entire tail \((\ell,\infty)\), note
+from the same identity and probability-ratio bound that
+\[
+ \E[\Xi_n((L,\infty))\mid S_n=n]
+ \le Cn\Lambda_{\lfloor LN\rfloor}\le C_K L^{-7/4}
+\]
+for \(L\ge1\) and all sufficiently large \(n\).
+The omitted upper tail is therefore negligible as \(L\to\infty\).
+The limiting number of actions above \(\ell\) is Poisson with mean
+\(\int_\ell^\infty x^{-3}dx=1/(2\ell^2)\). At most \(k-1\) such actions
+is exactly the event in \eqref{eq:kth-largest}.
+\end{proof}
+
+The conditioning is essential in the formulation: coefficients are not
+unconditioned probabilities. The proof shows why it becomes invisible at
+the extreme-action scale in this window. Any fixed number of extreme
+actions shifts the total by \(O(N)=o(B)\), too little to alter the leading
+local Gaussian density. The first cutoff correction measures part of the
+remaining, smaller interaction.
+
+\section{Interpretation and the finite-variance-side surprise}
+\label{sec:interpretation}
+
+\subsection{Three different limits}
+For fixed \(1<\alpha<2\), the classical coefficient mechanism is stable,
+with a power scale \(n^{1/\alpha}\). At exactly \(\alpha=2\), the central
+scale is \(\sqrt{n\log n}\). In the window of this article,
+\(\alpha=2-\theta_n/\log n\), the central limit is Gaussian but its scale
+retains the nontrivial factor \(\hc(\theta_n/2)\). These are three different
+asymptotic assertions. A bounded-window theorem does not by itself justify
+letting \(\theta_n\to+\infty\) and claiming recovery of a fixed-index
+stable law.
+
+The action scale is different again:
+\(N\sim\sqrt{c_0n}\ee^{\theta/4}\), whereas
+\(B^2\sim(c_0n\log n/2)\hc(\theta/2)\).
+Thus a cutoff much larger than \(\sqrt n\), in the normalized sense of
+Corollary~\ref{cor:lossless}, preserves the coefficient even when it is much
+smaller than the central fluctuation scale. Confusing a largest-jump scale
+with a sum-fluctuation scale overestimates the required action budget.
+
+\subsection{Finite variance need not give the correct central scale}
+Take \(\eps_n=-\kappa/\log n\), with fixed \(\kappa>0\). Every member of
+this triangular family has \(\alpha_n>2\) and finite variance. Nevertheless,
+its total variance is not asymptotic to \(B^2\).
+Indeed,
+\begin{equation}
+ \Var S_n=nc_{\eps}\{\zeta(1-\eps)+v_{\eps}\},\qquad
+ \frac{\Var S_n}{B^2}\longrightarrow
+ \frac1{1-\ee^{-\kappa/2}}.
+ \label{eq:variance-mismatch}
+\end{equation}
+This follows from the zeta pole and \eqref{eq:B-explicit}.
+Theorem~\ref{thm:coefficient}, together with its characteristic-function
+proof, implies \((S_n-n)/B\Rightarrow N(0,1)\). Normalizing instead by the
+actual standard deviation therefore gives a Gaussian with limiting variance
+\(1-\ee^{-\kappa/2}\), not one.
+
+There is no contradiction. Rare actions far beyond the central scale retain
+a nonvanishing share of the second moment, although their probabilities
+vanish. For example, for fixed \(a>0\), integral comparison gives
+\[
+ \frac{nc_{\eps}\sum_{j>aB}j^{-1+\eps}}{\Var S_n}
+ \longrightarrow\ee^{-\kappa/2}.
+\]
+The numerator is the contribution of those jumps to the Poisson variance.
+This is an explicit failure of uniform integrability of the normalized
+second moments. A fixed-distribution finite-variance intuition is therefore
+not an adequate substitute for the triangular Fourier proof.
+
+\subsection{Why finite-prefix data cancel only in the displayed ratio}
+The inverse expansion contains \(v_{\eps}\), and the central coefficient
+contains \(v_{\eps}\). Neither is prefix-independent. The ratio is special:
+the same retained finite-prefix variance enters its numerator and denominator
+with the same coefficient, and disappears upon division. Prefix changes also
+alter \(c_{\eps}\), \(\rho_{\eps}\), \(B\), and \(N\). The theorem never
+claims invariance when these normalizations are held artificially fixed.
+Nor does it assert that prefix data cancel to every higher order.
+
+\section{Reproducible checks and numerical diagnostics}
+\label{sec:checks}
+
+\subsection{What was actually checked}
+The supplied program \texttt{code/verify.py} executed 17 exact symbolic checks:
+14 comparisons between direct formal iteration of the feedback equation and
+the Lagrange coefficient identity, plus three checks of the Gaussian constant
+and the prefix-cancellation algebra. The formal comparisons use two rational
+finite-action families and degrees one through seven. They test finite
+identities; they do not certify the analytic theorems.
+
+For an independent finite-\(n\) diagnostic, if
+\(p_k=\Pp(S_n=k)\), differentiation of the probability generating function
+gives the positive recurrence
+\begin{equation}
+ p_0=\ee^{-nG(1)},\qquad
+ p_k=\frac nk\sum_{j=1}^k jw_jp_{k-j}.
+ \label{eq:prob-recurrence}
+\end{equation}
+The cutoff version restricts the sum to \(j\le M\) and changes \(p_0\)
+accordingly. The program ran 18 such diagnostics, for
+\(n=512,2048,4096\), \(\theta=\eps\log n\in\{-1,0,1\}\), and
+\(\eta\in\{0,2\}\) in \eqref{eq:test-family}. In six cross-check cases at
+\(n=512\), recurrence and independently evaluated central Fourier integrals
+agreed with maximum absolute discrepancy
+\(3.3306690738754696\times10^{-16}\), across the tested ratios and normalized
+central probabilities.
+
+\subsection{Large-order cutoff checks}
+The larger orders in Table~\ref{tab:large} are evaluated by a scaled Fourier
+integral, not by constructing \(10^{32}\) coefficients. The full cumulant uses
+the desingularized polylogarithm formula and 16 analytic terms. The cutoff
+cumulant uses 60 terms, with finite moments evaluated by direct sums or
+14-term Euler--Maclaurin evaluation. Numerical integration is over
+\(0\le t\le14\). These implementation truncations and floating-point
+quadrature estimates are not rigorous enclosures.
+
+All displayed cutoff runs take \(M\) to be the nearest integer to \(N\),
+but evaluate both approximations at the actual \(\ell=M/N\). The column
+``leading'' keeps \(\alpha\) in the survival exponential. ``Corrected''
+uses the full displayed expression in Theorem~\ref{thm:cutoff}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $\theta$ & Computed ratio & Leading & Corrected\\
+\midrule
+$10^{8}$ & -2 & 0.639884263 & 0.622371360 & 0.639837832\\
+$10^{8}$ & 0 & 0.628290097 & 0.606533148 & 0.627967224\\
+$10^{8}$ & 2 & 0.610090576 & 0.589362780 & 0.611719991\\
+$10^{16}$ & -2 & 0.626485822 & 0.614597962 & 0.626437090\\
+$10^{16}$ & 0 & 0.622905481 & 0.606530659 & 0.622684654\\
+$10^{16}$ & 2 & 0.618154572 & 0.598128083 & 0.617962252\\
+$10^{32}$ & -2 & 0.618213163 & 0.610604999 & 0.618168907\\
+$10^{32}$ & 0 & 0.617565238 & 0.606530660 & 0.617441970\\
+$10^{32}$ & 2 & 0.617011900 & 0.602372524 & 0.616782127\\
+\bottomrule
+\end{tabular}
+\caption{Uniform-window cutoff diagnostics for the pure family. These are
+floating-point evaluations, not certified exact values.}
+\label{tab:large}
+\end{table}
+
+The convergence is logarithmically slow. A very large value of \(n\) need not
+make the uncorrected cutoff law highly accurate. For example, at
+\(n=10^{16}\), \(\theta=2\), the computed ratio is approximately
+\(0.618154572\), compared with \(0.598128083\) from the leading term and
+\(0.617962252\) from the correction. This is evidence consistent with the
+formula, not a substitute for its uniform error proof.
+
+\subsection{Inverse checks}
+For the inverse diagnostics, \(D=\log(1/\Delta)\) and
+\(\theta=\eps D\). A high-precision root solve in the variable
+\(L=\log(1/s)\), using the desingularized expression, was compared with
+both inverse approximations. The analytic remainder was evaluated through
+order 16. Table~\ref{tab:inverse} gives signed relative errors, approximation
+divided by the computed reference value minus one.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$D$ & $\theta$ & Leading relative error & Corrected relative error\\
+\midrule
+20 & -2 & 0.07631914 & -0.01277858\\
+20 & 0 & 0.10242388 & -0.01089807\\
+20 & 2 & 0.17846262 & -0.00151471\\
+40 & -2 & 0.04410638 & -0.00418078\\
+40 & 0 & 0.05972766 & -0.00392070\\
+40 & 2 & 0.09761422 & -0.00194281\\
+80 & -2 & 0.02490134 & -0.00133200\\
+80 & 0 & 0.03419827 & -0.00133957\\
+80 & 2 & 0.05423873 & -0.00095531\\
+\bottomrule
+\end{tabular}
+\caption{Two-term inverse diagnostics for $\eta=0$. The joint parameter here
+is $\theta=\varepsilon D$, not $\varepsilon\log n$.}
+\label{tab:inverse}
+\end{table}
+
+\subsection{Reproduction and limitations}
+The recorded environment was Python 3.13.5, NumPy 2.3.5, mpmath 1.3.0,
+SciPy 1.17.0, and SymPy 1.14.0. Constants and finite moments were evaluated
+with 75 mpmath decimal digits; the recurrence used NumPy long double;
+quadrature used ordinary double precision. The complete CSV data, exact-check
+list, environment record, and run summary are included. The default
+recurrence order is deliberately limited to avoid underflow of its initial
+Poisson mass on the recorded platform. The script reports underflow rather
+than silently returning a spurious answer.
+
+The numerical program is not a Lean proof, a certified arbitrary-precision
+interval implementation, or a proof of the asymptotic error constants.
+Theorems~\ref{thm:inverse}, \ref{thm:chart}, \ref{thm:coefficient},
+\ref{thm:cutoff}, and \ref{thm:PPP} stand on their written proofs.
+
+\section{Proof dependencies, repository scope, and formalization}
+\label{sec:audit}
+
+\subsection{Dependency structure}
+The inverse theory depends on the exact polylogarithm expansion, critical
+normalization, elementary uniform estimates, and the analytic
+implicit-function theorem. The coefficient theory depends on the Lagrange
+identity, the same desingularized expansion, Fourier inversion, and the
+explicit damping lemma. The cutoff correction then uses only retained
+moments and division of the two local expansions. The minimal budget uses
+monotonicity. The point-process result uses the uniform local limit and
+an exact Poisson factorial-moment identity.
+
+No result from the companion marginal manuscript is used as a proof premise.
+Its open question is the research target, and its displayed endpoint formula
+is an overlap check. The argument here rederives that endpoint while proving
+uniformity in the moving parameter. No unverified theorem from the full
+canonical \repo\ volume is needed.
+
+\subsection{Scope of the repository inspection}
+The inspected public snapshot is commit
+\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+The inspection covered the transseries project README, the opening portion
+of the group index, the relevant package inventory, and the complete README
+for the fixed-stable critical-Hahn package. The latter identifies its theorem
+scope and proof boundaries. The private companion
+\texttt{Marginal\_Critical\_Transseries.tex} was inspected through its abstract,
+main-result summary, and explicit further-research question. We did not audit
+the entire canonical volume or all source files in the repository. No
+repository files were modified.
+
+This separation matters. An entry in the Lean crosswalk is evidence about
+that entry, not automatic formal verification of a neighboring analytic
+research claim. The present results are not represented as already available
+in the repository's Lean development.
+
+\subsection{A realistic formalization route}
+A useful Lean development can be split into four interfaces.
+First, formalize the finite coefficient identity and positivity using formal
+power series and a truncated exponential. Second, formalize the elementary
+scale algebra, including \((N/B)^\alpha=r\), and the cancellation of the
+finite-prefix moment. Third, supply analytic interfaces for the removable
+polylogarithm kernel and the parameter-uniform implicit theorem. Fourth,
+formalize a reusable lattice Fourier lemma with integrable remainder and
+damping hypotheses, and instantiate it for the full and cutoff sums.
+
+The hard analytic obligations should remain explicit: normal convergence
+in the parameter, a uniform Fourier tail, the integrated central remainder,
+and the probability-ratio bound used in conditional factorial moments.
+Verifying a symbolic coefficient identity does not discharge any of these.
+The supplied exact checks suggest small initial formalization targets, not
+a claim of an existing machine-checked asymptotic proof.
+
+\section{Further research questions}
+\label{sec:further}
+
+\paragraph{1. Leave the bounded window and match the stable law.}
+Extend the argument to \(\eps\log n\to+\infty\) while \(\eps\to0\),
+with explicit uniform errors. Determine the maximal range in which a
+Gaussian approximation remains accurate after the deformed normalization,
+and construct an overlap expansion with the fixed-index stable density.
+The constants hidden in the bounded-window estimates cannot simply be
+assumed uniform as the window grows.
+
+\paragraph{2. Compute the next correction and locate prefix reentry.}
+Expand the full Fourier cumulant to order \(H^{-2}\), retaining the parameter
+variation of the regularized gamma and zeta constants. Combine it with the
+fourth retained cumulant and the squared deleted-mean shift. Determine exactly
+which finite-prefix moments survive at that order. The cancellation proved
+here gives a nontrivial check on any such calculation.
+
+\paragraph{3. Add a slowly varying tail.}
+Replace the eventually exact tail by
+\(c j^{-3+\eps}L(j)\), with quantified uniform regularity of \(L\).
+Identify necessary and sufficient conditions for the ratio between the
+extreme-action and central scales to vanish. Establish which slowly varying
+perturbations preserve a finite-generator inverse chart and which require
+new core inverses. A pointwise tail asymptotic alone is unlikely to control
+the first correction.
+
+\paragraph{4. Allow a drifting distance from criticality.}
+Replace \(\sum jw_j=1\) by a mean differing from one on the \(B/n\) scale.
+The leading local Gaussian is then sampled away from zero. Determine a joint
+coupling--index--cutoff expansion, including whether the odd Fourier term
+creates a prefix-dependent correction before order \(H^{-2}\).
+The cancellation of the cubic contribution at the center must be revisited.
+
+\paragraph{5. Quantify conditional Poisson convergence.}
+The point-process theorem is qualitative. Derive explicit total-variation
+or bounded-test-function rates for counts on intervals separated from zero,
+and compute the first conditioning-induced covariance between two disjoint
+large-action windows. The exact factorial-moment formula and the shifted
+local Fourier expansion provide a direct route.
+
+\paragraph{6. Develop complex continuation of the deformed core.}
+The correction germ is holomorphic, but the core is selected here on its
+large real branch. Classify its nearby complex branches on a logarithmic
+cover, locate parameter-dependent turning points, and compare the monodromy
+with the Lambert endpoint and nonintegral Hahn regimes. A global two-sheet
+or Stokes statement would require additional work; it is not implicit in
+Theorem~\ref{thm:chart}.
+
+\paragraph{7. Replace asymptotic budgets by certified finite budgets.}
+Make every constant in the damping and Taylor estimates explicit, and combine
+them with interval arithmetic for the positive recurrence or Fourier
+integrals. The goal is a proof-producing routine returning a guaranteed
+smallest or near-smallest \(M\) for a prescribed coefficient fraction. The
+current two-term formula is a principled initial estimate, not that certificate.
+
+\paragraph{8. Signed and multi-type feedback.}
+For signed weights the Poisson model and coefficient monotonicity disappear;
+for multiple feedback variables the criticality condition becomes a spectral
+condition. Determine which pole-cancellation and inverse-chart arguments
+survive, and identify replacement hypotheses for the scalar positive Fourier
+proof. These are distinct extensions, not consequences of analytic
+continuation of the positive-weight formulas.
+
+\section{Conclusion}
+The joint stable--Gaussian endpoint question has an explicit answer for
+positive finite-prefix power-tail feedback. The correct shared kernel is
+\((\ee^{\eps L}-1)/\eps\). It simultaneously controls critical inversion and
+central coefficient growth. The associated extreme-action scale is smaller
+than the fluctuation scale by a logarithmic factor. At that smaller scale,
+the first cutoff correction is universal after normalization: finite-prefix
+second moments cancel, even though they remain visible in the two separate
+local expansions. The same separation of scales makes the conditioned large
+actions asymptotically Poisson.
+
+These conclusions resolve the specified bounded-window follow-up, including
+its first interpolating cutoff correction, within the stated family and with
+conventional proofs. They do not assert an unrestricted transseries theorem,
+a global priority result, or a formal verification that has not been carried
+out. The exact formulas and explicit proof obligations make the next
+extensions concrete.
+
+\appendix
+\section{A geometric truncation bound for the convergent chart}
+\label{app:chart}
+The analyticity statement in Theorem~\ref{thm:chart} implies an ordinary
+geometric error bound, distinct from the large-order asymptotic errors.
+After shrinking its domain, there exist constants \(R_0,C>0\) such that,
+uniformly for \(|\eps|\le\delta\),
+\[
+ V(\eps,X,Y,Z)=\sum_{a,b,c\ge0}v_{abc}(\eps)X^aY^bZ^c,
+ \qquad |v_{abc}(\eps)|\le C R_0^{-a-b-c}.
+\]
+Let \(V_{\le m}\) be its truncation to total degree at most \(m\), and put
+\(t=\max(|X|,|Y|,|Z|)/R_0<1\). Cauchy's estimate gives
+\begin{equation}
+ |V-V_{\le m}|\le
+ C\sum_{k>m}\binom{k+2}{2}t^k
+ \le C\frac{(m+3)^2t^{m+1}}{(1-t)^3}.
+ \label{eq:geometric-tail}
+\end{equation}
+The second inequality follows by writing \(k=m+1+l\), bounding
+\(\binom{m+l+3}{2}\) by \((m+3)^2(l+1)^2/2\), and summing
+\(\sum_{l\ge0}(l+1)^2t^l=(1+t)/(1-t)^3\).
+A bound on the relative error of \(s_0\ee^{-V_{\le m}}\) follows from
+\(|\ee^z-1|\le |z|\ee^{|z|}\). This is a convergent analytic truncation
+statement. It does not turn the \(H^{-1}\) coefficient expansion into a
+convergent series, nor supply numerical values of \(C,R_0\) without a
+quantitative implicit-function analysis.
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{repo-readme}
+Vladimir Reshetnikov, \emph{ProveIt: Transseries project README}, inspected
+29 September 2026, snapshot
+\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/README.md}.
+
+\bibitem{repo-index}
+Vladimir Reshetnikov, \emph{ProveIt: Series and transseries group index},
+same snapshot; opening 140 source lines and relevant package inventory
+inspected.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{repo-stable}
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, research package prepared for Vladimir
+Reshetnikov, 29 September 2026. Package README inspected at the snapshot above;
+used for scope comparison, not as a proof premise.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds}.
+
+\bibitem{marginal}
+\emph{Marginal Critical Transseries: Convergent Lambert--$W$ Charts, Universal
+Cutoff Corrections, and Certified Action Budgets}, unpublished companion draft
+prepared for Vladimir Reshetnikov, 29 September 2026. Inspected in the user's
+file library as \texttt{Marginal\_Critical\_Transseries.tex}, especially the
+main-result summary and the first further-research question. No public
+publication or independent review is asserted.
+
+\bibitem{dlmf-polylog}
+F. W. J. Olver et al. (eds.), \emph{NIST Digital Library of Mathematical
+Functions}, Section 25.12, especially Eq. 25.12.12, polylogarithm expansion.
+\url{https://dlmf.nist.gov/25.12}. Accessed 29 September 2026.
+
+\bibitem{janson}
+Svante Janson, Simply generated trees, conditioned Galton--Watson trees,
+random allocations and condensation, \emph{Probability Surveys} \textbf{9}
+(2012), 103--252. DOI: \texttt{10.1214/11-PS188}.
+\url{https://arxiv.org/abs/1112.0510}. Theorem 17.14, its local-limit proof,
+and Example 18.29 provide relevant fixed-exponent and endpoint background.
+
+\bibitem{chakrabarty}
+Arijit Chakrabarty and Gennady Samorodnitsky, Understanding heavy tails in a
+bounded world or, is a truncated heavy tail heavy or not?,
+\emph{Stochastic Models} \textbf{28} (2012), no.~1, 109--143.
+DOI: \texttt{10.1080/15326349.2012.646551}.
+\url{https://arxiv.org/abs/1001.3218}. Used for historical context on truncation
+regimes, not to infer the moving-index corrections proved here.
+\end{thebibliography}
+\end{document}

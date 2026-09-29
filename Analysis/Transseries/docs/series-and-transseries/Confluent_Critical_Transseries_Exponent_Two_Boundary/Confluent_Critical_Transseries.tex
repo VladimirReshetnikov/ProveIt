@@ -1,0 +1,1664 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem,needspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Confluent critical transseries}
+\fancyhead[R]{\small Charts, local limits, and action budgets}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ph}{\varphi}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cR}{\mathcal R}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\hypersetup{pdftitle={Confluent Critical Transseries Across the Exponent-Two Boundary},pdfauthor={Research draft prepared for Vladimir Reshetnikov},pdfsubject={Convergent inverse charts, triangular local limit theorems, conditional Poisson limits, and sharp action budgets}}
+
+\begin{document}
+\begin{center}
+{\small\scshape Transseries / singular inversion / countable exponential feedback}\par
+\vspace{12pt}
+{\LARGE\bfseries Confluent Critical Transseries}\par
+\vspace{7pt}
+{\Large Across the Exponent-Two Boundary}\par
+\vspace{9pt}
+{\large A Uniform Inverse Chart, Conditional Poisson Limits,\par and Sharp Action Budgets}\par
+\vspace{14pt}
+{\normalsize Research draft prepared for Vladimir Reshetnikov}\par
+{\small 29 September 2026}
+\end{center}
+\vspace{6pt}
+\begin{abstract}
+We study the positive feedback equation
+\[
+ U_\eps(q)=c_\eps\sum_{j\ge1}j^{-3+\eps}q^j e^{jU_\eps(q)},
+ \qquad c_\eps=\zeta(2-\eps)^{-1},
+\]
+in the joint limit in which the coefficient order tends to infinity and
+\(\eps\to0\), from either side and at an arbitrary rate. A cancellation-free
+normal form yields a single convergent three-variable inverse chart over an
+exact implicit core. At \(\eps=0\) this core is a Lambert--\(W_{-1}\) core;
+its two outer limits recover fractional-power and finite-variance inversion.
+We prove a triangular local Gaussian theorem, stable under arbitrary thinning
+above the extreme-action scale. It gives a multiplicative equivalent for the
+sector coefficients and a conditional Poisson point-process limit even under
+exact lattice conditioning. The fluctuation scale \(B_n\) and extreme scale
+\(A_n\) satisfy \(A_n/B_n\to0\) for every \(\eps_n\to0\), while the sharp
+retained-coefficient fraction at cutoff \(M\sim sA_n\) is
+\(\exp(-1/(2s^2))\). Explicit crossover factors describe the window
+\(\eps_n\log n=O(1)\). An exact identity between the inverse core and the
+probabilistic normalization connects the two constructions. Complete proofs,
+finite real inequalities, exact algebraic checks, and reproducible numerical
+diagnostics are included.
+\end{abstract}
+
+\noindent\textbf{Research status and boundary.}
+This article addresses the \emph{upper-endpoint joint-limit part} of Research
+Question~4 in the repository's countable-action critical-Hahn article. The
+fixed logarithmic endpoint was already treated in subsequent drafts. The
+present contribution is the uniform confluent construction and its
+arbitrary-rate, locally conditioned limit theory for the specified model.
+The classical Gaussian/extreme-value separation at a fixed cubic tail is not
+claimed as new. Publication priority has not been established by an exhaustive
+literature review. No Lean formalization, outward-rounded implementation, or
+resolution of unrestricted transseries realization is claimed.
+
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{The research target and the main conclusions}
+\label{sec:intro}
+
+\subsection{A precise continuation of the repository program}
+The inspected \texttt{ProveIt} research index separates its formal Lean library
+from a collection of recent, unmerged research packages \cite{repo-index}.
+The article \emph{Beyond Finite-Action Folds} treats positive action weights
+with exponent \(1+\alpha\), for fixed \(1<\alpha<2\). Its Research Question~4
+asks for joint limits in which \(\alpha\) approaches an endpoint while the
+sector order grows, specifically warning against substituting into formulas
+containing \(\Gamma(-\alpha)\) \cite{repo-stable}.
+
+Two later drafts treat the fixed upper endpoint, where the tail is exactly
+inverse cubic outside a finite prefix \cite{prior-endpoint,prior-marginal}.
+The first explicitly excludes a simultaneous moving-exponent limit. We set
+\(\alpha=2-\eps\), allow either sign of \(\eps\), and solve a normalized,
+exact-tail version of that remaining problem. The restriction to an exact
+power tail makes it possible to combine an explicit analytic chart with a
+self-contained Fourier proof. A finite-prefix robustness result is proved
+separately; no general slowly varying triangular array is silently included.
+
+The existing manuscripts are used to identify a research target, not as
+unverified premises. The coefficient representation, normal form, scale
+estimates, local limits, and cutoff conclusions below are proved afresh.
+The inspected repository revision and the limits of this comparison are
+recorded in Appendix~\ref{app:provenance}.
+
+\subsection{What is proved}
+There are two natural problems. The first is local inversion near the critical
+value of \(q\); the second is the asymptotic size of \([q^n]U_\eps\). They are
+controlled by the same elementary function
+\begin{equation}
+ h_\eps(x)=\int_1^x y^{-1+\eps}\dd y
+ =\begin{cases}(x^\eps-1)/\eps,&\eps\ne0,\\ \log x,&\eps=0.
+ \end{cases}
+ \label{eq:h-intro}
+\end{equation}
+The analytic result is an \emph{exact convergent chart}, not merely a finite
+asymptotic approximation. For the small positive root of
+\(\Psi_\eps(t)=\delta\), it has the form
+\begin{equation}
+ t=r\,\cV\left(r,\eps,\frac1{h_\eps(1/r)}\right),
+ \qquad \frac{c_\eps}{2}r^2h_\eps(1/r)=\delta,
+ \label{eq:chart-intro}
+\end{equation}
+where one holomorphic function \(\cV\) works near the origin in three
+independent variables. Its coefficients have a finite recursive construction
+and a geometric tail bound.
+
+For any sequence \(\eps_n\to0\), the probabilistic scales are
+\begin{equation}
+ A_n=(nc_{\eps_n})^{1/(2-\eps_n)},
+ \qquad B_n^2=nc_{\eps_n}h_{\eps_n}(B_n),
+ \label{eq:scales-intro}
+\end{equation}
+with the large positive solution chosen for \(B_n\). We prove
+\(A_n/B_n\to0\), a uniform lattice local limit on scale \(B_n\), and a
+conditional Poisson limit on scale \(A_n\). Consequently,
+\begin{equation}
+ [q^n]U_{\eps_n}(q)\sim
+ \frac{\rho_{\eps_n}^{-n}}{\sqrt{2\pi}\,nB_n},
+ \qquad
+ \frac{[q^n]U_{\eps_n}^{[M_n]}(q)}{[q^n]U_{\eps_n}(q)}
+ \longrightarrow e^{-1/(2s^2)}
+ \quad\text{if }M_n/A_n\to s>0.
+ \label{eq:main-intro}
+\end{equation}
+The exponential factor \(\rho_{\eps_n}^{-n}\) must be kept at the actual
+parameter value. Substituting \(\rho_0\) there is generally invalid even when
+\(\eps_n\to0\).
+
+\subsection{Classical background and novelty qualifications}
+Lagrange inversion, Poisson coefficient representations, the analytic implicit
+function theorem, and Fourier inversion are standard tools. Janson's
+Example~18.29 gives a classical fixed cubic-tail instance of Gaussian
+fluctuations decoupling from extremes under conditioning \cite{janson}.
+Our point is not to rediscover that endpoint mechanism. It is to prove a
+single result for a moving exponent, with no restriction on the rate or sign
+of its approach, and to connect it to a convergent singular-inversion chart.
+We supply the triangular local-limit argument instead of assuming that a
+fixed-distribution theorem is uniform in a changing exponent.
+
+The formulas constitute model-specific theorems with proofs. Whether their
+precise combination, or any component in an equivalent normalization, has
+appeared elsewhere remains a bibliographic question. In particular,
+``confluent'' here describes the merging of the fractional-power and
+logarithmic descriptions; it is not a new axiom system for transseries.
+
+\section{The normalized model and exact coefficient identities}
+\label{sec:model}
+Throughout the real asymptotic arguments, \(|\eps|<1/4\),
+\(\alpha=2-\eps\), and
+\begin{equation}
+ c_\eps=\frac1{\zeta(\alpha)},\qquad
+ F_\eps(z)=c_\eps\Li_{1+\alpha}(z)
+ =\sum_{j\ge1}a_{\eps,j}z^j,\qquad
+ a_{\eps,j}=c_\eps j^{-1-\alpha}.
+ \label{eq:model}
+\end{equation}
+Thus \(\sum j a_{\eps,j}=1\). It is useful to include a coupling parameter:
+\begin{equation}
+ U_{\eps,\beta}(q)=\beta F_\eps(qe^{U_{\eps,\beta}(q)}),
+ \qquad \beta>0.
+ \label{eq:feedback}
+\end{equation}
+The notation without \(\beta\) means \(\beta=1\). A cutoff superscript
+\([M]\) means that only actions \(1\le j\le M\) are retained. All formal
+solutions have zero constant coefficient. Successive coefficient extraction
+in \eqref{eq:feedback} proves their uniqueness.
+
+\begin{proposition}[Lagrange and Poisson identities]
+\label{prop:lagrange}
+For \(n\ge1\), let \(u_n(\eps,\beta)=[q^n]U_{\eps,\beta}(q)\). Then
+\begin{equation}
+ u_n(\eps,\beta)=\frac1n[z^n]e^{n\beta F_\eps(z)}.
+ \label{eq:lagrange}
+\end{equation}
+Let \(Z_{n,j}\) be independent Poisson variables of means
+\(\nu_{n,j}=n\beta a_{\eps,j}\), and put
+\(S_n=\sum jZ_{n,j}\). This sum is finite almost surely, and
+\begin{equation}
+ u_n(\eps,\beta)=\frac{e^{n\beta F_\eps(1)}}n\Pr(S_n=n).
+ \label{eq:poisson}
+\end{equation}
+If \(S_{n,M}=\sum_{j\le M}jZ_{n,j}\) and
+\(\Lambda_{n,M}=\sum_{j>M}\nu_{n,j}\), then
+\begin{align}
+ R_n(M)&:=\frac{u_n^{[M]}(\eps,\beta)}{u_n(\eps,\beta)}
+ =e^{-\Lambda_{n,M}}\frac{\Pr(S_{n,M}=n)}{\Pr(S_n=n)} \label{eq:cutoff-identity}\\
+ &=\Pr(Z_{n,j}=0\text{ for all }j>M\mid S_n=n).
+ \label{eq:conditional-cutoff}
+\end{align}
+In particular, \(R_n(M)\) is nondecreasing, belongs to \((0,1]\), and equals
+one for \(M\ge n\).
+\end{proposition}
+\begin{proof}
+Set \(z=qe^U\). Then \(z=qe^{\beta F_\eps(z)}\), and the usual formal
+Lagrange formula gives
+\[
+ [q^n]\beta F_\eps(z(q))=
+ \frac\beta n[z^{n-1}]F_\eps'(z)e^{n\beta F_\eps(z)}.
+\]
+Differentiating the exponential proves \eqref{eq:lagrange}. The total Poisson
+intensity is finite, so only finitely many Poisson events occur almost surely.
+The probability generating function of their weighted sum is
+\(\exp(n\beta(F_\eps(z)-F_\eps(1)))\), proving \eqref{eq:poisson}.
+Independence of retained and deleted actions gives the two ratio identities.
+The positivity conclusions also follow directly from
+\eqref{eq:lagrange}; actions exceeding \(n\) cannot affect its \(n\)-th
+coefficient.
+\end{proof}
+
+At critical coupling define
+\begin{equation}
+ U_{\eps,c}=F_\eps(1),\qquad
+ \rho_\eps=e^{-F_\eps(1)}.
+ \label{eq:critical}
+\end{equation}
+For \(z=e^{-t}\), \(q=\rho_\eps e^{-\delta}\), the exact boundary equation is
+\begin{align}
+ \delta=\Psi_\eps(t)
+ &:=t+F_\eps(e^{-t})-F_\eps(1) \label{eq:psi}\\
+ &=c_\eps\sum_{j\ge1}j^{-1-\alpha}
+       (e^{-jt}-1+jt), \nonumber\\
+ U_{\eps,c}-U_\eps(q)&=t-\delta. \label{eq:udisplacement}
+\end{align}
+For \(t>0\), termwise differentiation gives
+\begin{equation}
+ \Psi_\eps'(t)=c_\eps\sum_{j\ge1}j^{-\alpha}(1-e^{-jt})>0,
+ \qquad
+ \Psi_\eps''(t)=c_\eps\sum_{j\ge1}j^{1-\alpha}e^{-jt}>0.
+ \label{eq:psi-derivatives}
+\end{equation}
+Also \(\Psi_\eps'(t)\to0\) as \(t\downarrow0\), by dominated convergence
+using \(\sum j^{-\alpha}<\infty\).
+
+\begin{proposition}[The critical radius]
+The radius of convergence of \(U_\eps\) is exactly \(\rho_\eps\), and its
+real boundary value is \(U_{\eps,c}\).
+\end{proposition}
+\begin{proof}
+The map \(q(z)=ze^{-F_\eps(z)}\) has positive derivative on \((0,1)\), since
+\(zF_\eps'(z)<F_\eps'(1)=1\). It maps that interval onto
+\((0,\rho_\eps)\), giving the claimed branch and boundary value. Identity
+\eqref{eq:poisson} bounds \(u_n(\eps)\le\rho_\eps^{-n}/n\), so the radius is
+at least \(\rho_\eps\). Equations \eqref{eq:udisplacement} and
+\eqref{eq:psi-derivatives} show that the derivative of the inverse branch
+becomes unbounded at the boundary, since \(\dd t/\dd\delta=1/\Psi_\eps'(t)\).
+The branch is therefore not analytic at \(\rho_\eps\), proving equality.
+\end{proof}
+
+\section{A cancellation-free normal form}
+\label{sec:normal}
+Define the entire crossover factor
+\begin{equation}
+ \cE(y)=\begin{cases}(e^y-1)/y,&y\ne0,\\1,&y=0.\end{cases}
+ \qquad h_\eps(x)=\log x\,\cE(\eps\log x).
+ \label{eq:E}
+\end{equation}
+For \(x>1\), let
+\begin{equation}
+ v_\eps(x)=\frac1{h_\eps(x)},\qquad
+ d_\eps(x)=\frac{x^\eps}{h_\eps(x)}=\eps+v_\eps(x).
+ \label{eq:vd}
+\end{equation}
+Both quantities are positive, including when \(\eps<0\).
+
+\begin{lemma}[Uniform elementary estimates]
+\label{lem:elementary}
+For real \(|\eps|<1/4\) and \(x>1\),
+\begin{equation}
+ v_\eps(x)+d_\eps(x)\le |\eps|+\frac2{\log x}.
+ \label{eq:vd-bound}
+\end{equation}
+If \(J=\lfloor x\rfloor\), then
+\begin{equation}
+ 0\le\sum_{j=1}^Jj^{-1+\eps}-h_\eps(x)\le1.
+ \label{eq:sum-integral}
+\end{equation}
+Uniformly as \(\eps\to0\) and \(t\downarrow0\),
+\begin{align}
+ \Psi_\eps(t)&=\frac{c_\eps}{2}t^2h_\eps(1/t)
+ \left(1+O\left(|\eps|+\frac1{\log(1/t)}\right)\right), \label{eq:psi-leading}\\
+ \Psi_\eps'(t)&=c_\eps t h_\eps(1/t)
+ \left(1+O\left(|\eps|+\frac1{\log(1/t)}\right)\right).
+ \label{eq:psi-prime-leading}
+\end{align}
+\end{lemma}
+\begin{proof}
+Write \(L=\log x\). For \(\eps\ge0\), \(h_\eps(x)\ge L\), so
+\(v\le1/L\) and \(d=\eps+v\). For \(\eps<0\), put \(a=-\eps\); then
+\(d=a/(e^{aL}-1)\le1/L\) and \(v=a+d\). This proves
+\eqref{eq:vd-bound}. The function \(y^{-1+\eps}\) is decreasing. Integrating
+on the intervals on either side of each integer gives
+\(\int_1^{J+1}f\le\sum_{j\le J}f(j)\le1+\int_1^Jf\), which implies
+\eqref{eq:sum-integral} even when \(x\) is not integral.
+
+For the remaining estimates split each series at \(J=\lfloor1/t\rfloor\).
+On the lower part,
+\(e^{-u}-1+u=u^2/2+O(u^3)\), with an absolute constant for \(0\le u\le1\).
+The error is
+\(O(t^3\sum_{j\le J}j^{2-\alpha})=O(t^\alpha)\), uniformly in the indicated
+exponent interval. On the upper part, \(0\le e^{-u}-1+u\le u\), so its
+contribution is also \(O(t^\alpha)\). The quadratic lower sum is
+\(t^2(h_\eps(1/t)+O(1))/2\). Relative to the main term the errors are
+\(O(v_\eps(1/t)+d_\eps(1/t))\). The derivative follows from
+\(1-e^{-u}=u+O(u^2)\) below the split and \(1-e^{-u}\le1\) above it, with
+errors \(O(t^{\alpha-1})\). Apply \eqref{eq:vd-bound}.
+\end{proof}
+
+The elementary estimates already give the leading crossover. To obtain a
+convergent chart we need an exact normal form. Define functions with their
+removable values at zero:
+\begin{align}
+ g(\eps)&=\Gamma(\eps-2)-\frac1{2\eps},&
+ b(\eps)&=\zeta(1-\eps)+\frac1\eps, \label{eq:regularparts}\\
+ \cR(\eps,t)&=\sum_{k\ge3}
+ \frac{(-1)^k\zeta(3-\eps-k)}{k!}\,t^{k-3}. \label{eq:R}
+\end{align}
+The first values, with \(\gamma_1\) the first Stieltjes constant, are
+\begin{align}
+ g_0:=g(0)&=\frac34-\frac\gamma2,&
+ g_1:=g'(0)&=\frac78-\frac{3\gamma}4+\frac{\gamma^2}4+\frac{\pi^2}{24},
+ \label{eq:g-values}\\
+ b(0)&=\gamma,& b'(0)&=\gamma_1,& \cR(0,0)&=\frac1{12}. \nonumber
+\end{align}
+Our sign convention is
+\(\zeta(1+s)=1/s+\sum_{k\ge0}(-1)^k\gamma_k s^k/k!\).
+
+\begin{proposition}[Exact confluent normal form]
+\label{prop:normal}
+The functions \(g\) and \(b\) are holomorphic near zero, and \(\cR\) is
+holomorphic on a product neighborhood of \((0,0)\). For small positive \(t\)
+and real \(\eps\) near zero,
+\begin{equation}
+ \frac{\Psi_\eps(t)}{c_\eps}
+ =\frac{t^2}{2}\left[h_\eps(1/t)+2g(\eps)t^{-\eps}+b(\eps)\right]
+       +t^3\cR(\eps,t).
+ \label{eq:exact-normal}
+\end{equation}
+In particular,
+\begin{equation}
+ \frac{\Psi_0(t)}{c_0}
+ =\frac{t^2}{2}\left(\log\frac1t+\frac32\right)
+   +\frac{t^3}{12}-\frac{t^4}{288}+O(t^6),
+ \qquad c_0=\frac6{\pi^2}.
+ \label{eq:normal-zero}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For nonzero \(\eps\) near zero, the standard polylogarithm expansion
+\cite[Eq.~25.12.12]{dlmf} gives
+\[
+ \Li_{3-\eps}(e^{-t})
+ =\Gamma(\eps-2)t^{2-\eps}
+  +\sum_{k\ge0}\frac{\zeta(3-\eps-k)(-t)^k}{k!},
+ \qquad |t|<2\pi,
+\]
+on the chosen logarithm branch. The constant and linear terms cancel in
+\eqref{eq:psi}. Separate the two poles as in \eqref{eq:regularparts}; their
+combined contribution is exactly \(t^2h_\eps(1/t)/2\). This proves
+\eqref{eq:exact-normal} away from zero. The Laurent expansions of \(\Gamma\)
+and \(\zeta\) give \eqref{eq:g-values} and the removable extensions.
+
+For completeness, the tail in \eqref{eq:R} converges locally uniformly in
+both variables. The functional equation of \(\zeta\), applied at
+\(3-\eps-k\), bounds its coefficient divided by \(k!\) by
+\(C k^C(2\pi)^{-k}\) on a sufficiently small closed complex \(\eps\)-disc;
+the finitely many initial terms cause no difficulty. The Weierstrass theorem
+then gives joint holomorphy for \(|t|<2\pi\) on smaller product domains.
+Continuity in \(\eps\) extends \eqref{eq:exact-normal} to zero. Finally,
+\(\zeta(0)=-1/2\), \(\zeta(-1)=-1/12\), and \(\zeta(-2)=0\) give
+\eqref{eq:normal-zero}.
+\end{proof}
+
+\begin{remark}
+The separate terms \(\Gamma(\eps-2)t^{2-\eps}\) and
+\(\zeta(1-\eps)t^2/2\) have opposite divergent poles. Retaining only the
+first one is not uniform when \(\eps\log(1/t)\) remains bounded. The
+function \(h_\eps\) retains their cancellation exactly, including at
+\(\eps=0\).
+\end{remark}
+
+\section{A single convergent inverse chart}
+\label{sec:chart}
+
+\subsection{The exact core and its three small parameters}
+For \(\delta>0\) small, let \(r=r_\eps(\delta)\in(0,e^{-2})\) solve
+\begin{equation}
+ \frac{c_\eps}{2}r^2h_\eps(1/r)=\delta,
+ \qquad v=\frac1{h_\eps(1/r)}.
+ \label{eq:core}
+\end{equation}
+Existence and uniqueness hold uniformly for \(|\eps|\) sufficiently small.
+Indeed, the left side tends to zero at \(r=0\) and its logarithmic derivative
+with respect to \(r\) is \(2-d_\eps(1/r)>0\) on this interval, by
+\eqref{eq:vd-bound}. At the endpoint,
+\begin{equation}
+ r_0(\delta)=\exp\left[\frac12W_{-1}\left(-\frac{4\delta}{c_0}\right)\right].
+ \label{eq:lambert-core}
+\end{equation}
+The three variables \((r,\eps,v)\) tend to zero in every joint limit
+\(\delta\downarrow0\), \(\eps\to0\), however slowly the exponent moves.
+
+Let
+\begin{equation}
+ Q_\eps(V)=\frac{V^{-\eps}-1}{\eps},\qquad Q_0(V)=-\log V,
+ \label{eq:Q}
+\end{equation}
+where \(\log V\) is the analytic branch near \(V=1\). This is holomorphic
+in \((\eps,V)\) near \((0,1)\).
+
+\begin{theorem}[Convergent confluent chart]
+\label{thm:chart}
+There is a holomorphic function \(\cV(r,\eps,v)\), on one neighborhood of
+\((0,0,0)\), with \(\cV(0,0,0)=1\), such that the unique small positive
+solution of \(\Psi_\eps(t)=\delta\) is exactly
+\begin{equation}
+ t=r\cV(r,\eps,v),\qquad
+ r=r_\eps(\delta),\quad v=h_\eps(1/r)^{-1}.
+ \label{eq:chart}
+\end{equation}
+The defining analytic equation for \(V=\cV(r,\eps,v)\) is
+\begin{align}
+ 0={}&V^2\Bigl[1+(\eps+v)Q_\eps(V)
+     +2g(\eps)(\eps+v)V^{-\eps}+b(\eps)v \nonumber\\
+    &\hspace{38mm}+2rvV\cR(\eps,rV)\Bigr]-1.
+ \label{eq:chart-equation}
+\end{align}
+Its Taylor series is convergent and has a finite coefficient recurrence.
+For suitable positive radii \(R_1,R_2,R_3\) and \(K<\infty\), its
+truncation \(\cV_{\le N}\) by total degree satisfies
+\begin{equation}
+ |\cV-\cV_{\le N}|
+ \le K\frac{(N+3)^2\theta^{N+1}}{(1-\theta)^3}
+ \quad\text{when}\quad
+ |r|\le\theta R_1,\quad |\eps|\le\theta R_2,\quad |v|\le\theta R_3,
+ \label{eq:chart-tail}
+\end{equation}
+for \(0<\theta<1\).
+\end{theorem}
+\begin{proof}
+Substitute \(t=rV\) in \eqref{eq:exact-normal} and divide by
+\(\delta=c_\eps r^2h_\eps(1/r)/2\). The exact identity
+\[
+ \frac{h_\eps(1/(rV))}{h_\eps(1/r)}
+ =1+(\eps+v)Q_\eps(V),\qquad
+ \frac{r^{-\eps}}{h_\eps(1/r)}=\eps+v
+\]
+gives \eqref{eq:chart-equation}. Its left side, denoted by
+\(\mathscr F(r,\eps,v;V)\), is holomorphic in a neighborhood of
+\((0,0,0;1)\). At \((r,\eps,v)=(0,0,0)\) it is \(V^2-1\), with derivative
+\(2\) at \(V=1\). The analytic implicit function theorem proves the existence
+and uniqueness of \(\cV\). For real small parameters this branch is real and
+close to one; the positivity and strict monotonicity of \(\Psi_\eps\) identify
+it with the desired real root.
+
+Choose a closed polydisc strictly inside the domain of holomorphy, with radii
+\(R_i\), on which \(|\cV|\le K\). Cauchy's coefficient estimate bounds the
+sum of terms of total degree \(k\) at the stated point by
+\(K\binom{k+2}{2}\theta^k\). Summing for \(k>N\), and using
+\[
+ \sum_{k>N}\binom{k+2}{2}\theta^k
+ \le\frac{(N+3)^2\theta^{N+1}}{(1-\theta)^3},
+\]
+proves \eqref{eq:chart-tail}.
+
+To make the coefficient construction explicit, write
+\(\cV=1+\sum_{m\ge1}P_m\), where \(P_m\) is homogeneous of degree \(m\).
+If \(P_1,\ldots,P_{m-1}\) are known, then
+\begin{equation}
+ P_m=-\frac12[s^m]\mathscr F\left(sr,s\eps,sv;
+                  1+\sum_{k<m}s^kP_k\right).
+ \label{eq:chart-recursion}
+\end{equation}
+Only finitely many Taylor coefficients enter this extraction. The factor
+\(1/2\) comes from the same nonzero derivative, so induction proves the
+recurrence at every degree.
+\end{proof}
+
+\subsection{The first corrections and their support}
+The first two homogeneous terms are
+\begin{align}
+ P_1={}&-g_0\eps-\frac34v, \label{eq:P1}\\
+ P_2={}&\left(\frac32g_0^2-\frac12g_0-g_1\right)\eps^2
+ +\left(\frac74g_0-\frac38-g_1-\frac12\gamma_1\right)\eps v \nonumber\\
+ &+\frac{15}{32}v^2-\frac1{12}rv.
+ \label{eq:P2}
+\end{align}
+For example, the endpoint specialization is
+\begin{equation}
+ \frac{t}{r}=1-\frac34v+\frac{15}{32}v^2-\frac1{12}rv
+       +O\bigl((|r|+|v|)^3\bigr),\qquad \eps=0.
+ \label{eq:endpoint-chart}
+\end{equation}
+The formulas follow by inserting \(V=1+P_1+P_2\) into
+\eqref{eq:chart-equation} and collecting total degrees. The supplied exact
+symbolic check verifies that the residual through degree two is identically
+zero, treating the constants as symbols subject only to
+\(2g_0+\gamma=3/2\).
+
+The support before evaluation is the ordinary locally finite semigroup
+\(\N^3\): terms are \(r^i\eps^jv^k\). After evaluation, \(v\) is a
+nontrivial logarithmic/exponential function of \(r\) and \(\eps\). Thus the
+theorem gives one convergent analytic chart \emph{over an exact core}; it does
+not assert that the resulting family has one finite Puiseux or Hahn grid in
+\(\delta\), independent of the parameter. That distinction is what permits
+confluence without introducing a false uniform ramification assertion.
+
+The constants in \eqref{eq:chart-tail} exist by holomorphy; numerical values
+for a certified polydisc have not been computed here. The separate real
+inequalities in Section~\ref{sec:certificates} provide finite root brackets
+without requiring those constants.
+
+\subsection{Recovery of the two fixed-exponent boundary laws}
+The same chart also displays the two limits when a sufficiently small nonzero
+\(\eps\) is held fixed while \(r\downarrow0\). For \(\eps>0\), one has
+\(v\to0\), and \eqref{eq:chart-equation} at \((r,v)=(0,0)\) reduces to
+\[
+ V^{2-\eps}\bigl(1+2\eps g(\eps)\bigr)=1.
+\]
+For \(\eps<0\), one has \(v\to-\eps\), and the limiting equation is
+\(V^2(1-\eps b(\eps))=1\). Hence, by the branch near one,
+\begin{align}
+ \cV(0,\eps,0)&=[2\eps\Gamma(\eps-2)]^{-1/(2-\eps)}
+       &&(\eps>0), \label{eq:stable-chart-limit}\\
+ \cV(0,\eps,-\eps)&=[-\eps\zeta(1-\eps)]^{-1/2}
+       &&(\eps<0). \label{eq:gauss-chart-limit}
+\end{align}
+Combining these identities with the core gives the familiar leading forms
+\begin{equation}
+ t\sim
+ \begin{cases}
+ [\delta/(c_\eps\Gamma(\eps-2))]^{1/(2-\eps)},&\eps>0,\\[2pt]
+ [2\delta/(c_\eps\zeta(1-\eps))]^{1/2},&\eps<0.
+ \end{cases}
+ \label{eq:fixed-exponents}
+\end{equation}
+The negative-\(\eps\) side has a finite second moment and a leading square
+root. It is not an analytic finite-action fold: higher moments and higher
+boundary derivatives can still be singular.
+
+\section{The two scales in an arbitrary joint limit}
+\label{sec:scales}
+Now let \(\eps_n\to0\), with either sign and without a rate restriction. Write
+\(\alpha_n=2-\eps_n\), \(c_n=c_{\eps_n}\), and define \(A_n,B_n\) by
+\eqref{eq:scales-intro}. All statements below concern sufficiently large
+\(n\), so the large root \(B_n>e^2\) is unambiguous. Set
+\begin{equation}
+ v_n=\frac1{h_{\eps_n}(B_n)},\qquad
+ d_n=\frac{B_n^{\eps_n}}{h_{\eps_n}(B_n)}
+     =nc_nB_n^{-\alpha_n}=\eps_n+v_n.
+ \label{eq:dn}
+\end{equation}
+
+\begin{lemma}[Scale separation and retained truncated variance]
+\label{lem:scales}
+The scales satisfy
+\begin{equation}
+ A_n=n^{1/2+o(1)},\qquad B_n=n^{1/2+o(1)},\qquad
+ v_n,d_n\to0,\qquad \frac{A_n}{B_n}=d_n^{1/\alpha_n}\to0.
+ \label{eq:scale-separation}
+\end{equation}
+For every fixed \(a>0\),
+\begin{equation}
+ \frac{h_{\eps_n}(aA_n)}{h_{\eps_n}(B_n)}\longrightarrow1,
+ \qquad
+ nc_n\sum_{j>aA_n}j^{-\alpha_n}=O_a(A_n)=o(B_n).
+ \label{eq:truncated-variance}
+\end{equation}
+The first assertion is uniform for \(a\) in a compact subset of \((0,\infty)\).
+\end{lemma}
+\begin{proof}
+The function \(x^2/h_\eps(x)\) is increasing on \(x>e^2\) for small
+\(|\eps|\), and tends to infinity, which proves uniqueness and existence of
+\(B_n\) there. It also shows \(B_n\to\infty\). Bound
+\eqref{eq:vd-bound} then proves \(v_n,d_n\to0\). Moreover
+\[
+ h_\eps(x)\le(\log x)e^{\eps_+\log x},\qquad \eps_+=\max(\eps,0),
+\]
+so \(\log h_{\eps_n}(B_n)=o(\log B_n)\); here \(h\to\infty\), so no
+negative lower-order logarithm is needed. Taking logarithms in the defining
+equation gives \(\log B_n/\log n\to1/2\). The assertion for \(A_n\) is
+direct, and \((A_n/B_n)^{\alpha_n}=d_n\) is exact.
+
+For the truncated-variance assertion, put \(B=B_n\), \(A=A_n\),
+\(\eps=\eps_n\), \(d=d_n\), and
+\(\Delta=\log(B/(aA))\); eventually \(aA<B\). If \(\eps\ge0\),
+\[
+ \frac{h_\eps(B)-h_\eps(aA)}{h_\eps(B)}
+ =\frac1{h_\eps(B)}\int_{aA}^B y^\eps\frac{\dd y}{y}
+ \le d\Delta.
+\]
+If \(\eps<0\), the same integral is bounded by
+\[
+ \frac{(aA)^\eps}{h_\eps(B)}\Delta
+ =a^\eps d^{\,1+\eps/\alpha_n}\Delta
+ =a^\eps d^{\,2/\alpha_n}\Delta.
+\]
+Since \(\Delta=-\log a-(\log d)/\alpha_n\), both bounds tend to zero,
+uniformly for \(a\) in compact positive intervals. Finally, the integral
+bound for the decreasing function \(y^{-\alpha_n}\), together with
+\(nc_n=A_n^{\alpha_n}\), bounds the deleted mean by a constant times
+\(nc_n(aA_n)^{1-\alpha_n}=O_a(A_n)\).
+\end{proof}
+
+The second-moment sum up to \(B_n\) is of order \(h_{\eps_n}(B_n)\).
+Lemma~\ref{lem:scales} says that retaining only actions up to a fixed multiple
+of \(A_n\), though \(A_n\ll B_n\), still retains asymptotically all of this
+quantity. This fact is stronger than scale separation alone and is the key
+to the local conditioning theorem.
+
+\begin{theorem}[Explicit scale crossover]
+\label{thm:scale-crossover}
+Let \(\lambda_n=\eps_n\log n\). If \(|\lambda_n|\le K\), then uniformly
+for such sequences,
+\begin{align}
+ B_n^2&=\frac{c_n}{2}n\log n\,\cE(\lambda_n/2)
+       \left(1+O_K\left(\frac{\log\log n}{\log n}\right)\right),
+       \label{eq:B-window}\\
+ A_n&=\sqrt{nc_n}\,e^{\lambda_n/4}
+       \left(1+O_K\left(\frac1{\log n}\right)\right).
+       \label{eq:A-window}
+\end{align}
+In particular, if \(\lambda_n\to\lambda\in\R\),
+\begin{equation}
+ \frac{B_n}{A_n}\sim
+ \sqrt{\log n\,\frac{1-e^{-\lambda/2}}{\lambda}},
+ \label{eq:separation-window}
+\end{equation}
+where the fraction at zero equals \(1/2\). In the outer joint regimes,
+\begin{align}
+ B_n&\sim(nc_n/\eps_n)^{1/(2-\eps_n)}
+ &&\text{if }\eps_n\log n\to+\infty, \label{eq:B-positive}\\
+ B_n&\sim\sqrt{nc_n/|\eps_n|}
+ &&\text{if }\eps_n\log n\to-\infty. \label{eq:B-negative}
+\end{align}
+\end{theorem}
+\begin{proof}
+When \(|\lambda_n|\le K\), the defining equation and
+\(h_\eps(x)=\log x\,\cE(\eps\log x)\) first give
+\(\log B_n=\tfrac12\log n+O_K(\log\log n)\). On compact real intervals
+\(\cE\) is positive with bounded logarithmic derivative. Substitution gives
+\eqref{eq:B-window}. Expanding \(1/(2-\eps_n)\) in the exact expression for
+\(A_n\) gives \eqref{eq:A-window}. Their quotient gives
+\eqref{eq:separation-window}.
+
+In the positive outer regime, \(\eps_n\log B_n\to+\infty\), by
+Lemma~\ref{lem:scales}. Consequently
+\(h_{\eps_n}(B_n)\sim B_n^{\eps_n}/\eps_n\). Raising the resulting
+relation for \(B_n^{2-\eps_n}\) to the bounded power \(1/(2-\eps_n)\)
+proves \eqref{eq:B-positive}. In the negative regime,
+\(h_{\eps_n}(B_n)\sim1/|\eps_n|\), proving \eqref{eq:B-negative}.
+\end{proof}
+
+\section{A local Gaussian theorem stable under tail thinning}
+\label{sec:llt}
+Let \(\ph(x)=(2\pi)^{-1/2}e^{-x^2/2}\). In this section the unthinned
+Poisson means are \(nc_nj^{-1-\alpha_n}\), so \(\E S_n=n\).
+
+\begin{theorem}[Masked triangular local limit]
+\label{thm:masked-llt}
+Fix \(a>0\). For each \(n\), choose arbitrary numbers
+\(0\le w_{n,j}\le1\) satisfying \(w_{n,j}=1\) for all \(j\le aA_n\).
+Let \(T_n\) be the weighted sum of independent Poisson variables with means
+\(w_{n,j}nc_nj^{-1-\alpha_n}\), and let \(\mu_n=\E T_n\). Then
+\begin{equation}
+ \sup_{k\in\Z}\left|
+ B_n\Pr(T_n=k)-\ph\left(\frac{k-\mu_n}{B_n}\right)
+ \right|\longrightarrow0.
+ \label{eq:masked-llt}
+\end{equation}
+The convergence is uniform over the indicated masks, and
+\(\mu_n=n+O_a(A_n)=n+o(B_n)\). In particular,
+\begin{equation}
+ \sup_{k\in\Z}\left|
+ B_n\Pr(S_n=k)-\ph\left(\frac{k-n}{B_n}\right)
+ \right|\longrightarrow0.
+ \label{eq:llt}
+\end{equation}
+\end{theorem}
+
+\subsection{Convergence on compact Fourier intervals}
+\begin{proof}[Proof of Theorem~\ref{thm:masked-llt}, first part]
+Suppress the subscript \(n\), and write \(B=B_n\), \(A=A_n\),
+\(\eps=\eps_n\), \(\alpha=\alpha_n\), \(c=c_n\), \(h=h_\eps(B)\).
+The centered unthinned logarithmic characteristic function at frequency
+\(x/B\) is
+\begin{equation}
+ K_n(x)=nc\sum_{j\ge1}j^{-1-\alpha}
+        \left(e^{ijx/B}-1-\frac{ijx}{B}\right).
+ \label{eq:K}
+\end{equation}
+On every fixed interval \(|x|\le T\), Taylor's formula for \(j\le B\) gives
+\begin{equation}
+ K_n(x)=-\frac{x^2}{2}\frac{\sum_{j\le B}j^{1-\alpha}}h+O_T(d_n)
+       =-\frac{x^2}{2}+O_T(v_n+d_n).
+ \label{eq:K-compact}
+\end{equation}
+Indeed the lower-part cubic error is bounded by
+\[
+ C_T\frac{nc}{B^3}\sum_{j\le B}j^{2-\alpha}
+ \le C_TncB^{-\alpha}=C_Td_n.
+\]
+For \(j>B\), the bound
+\(\lvert e^{iu}-1-iu\rvert\le2+|u|\) gives the same order. The sum-integral
+estimate \eqref{eq:sum-integral} accounts for \(v_n\).
+
+The masked centered logarithm has an extra factor \(w_{n,j}\) in the sum.
+For deleted terms with \(aA<j\le B\), the inequality
+\(\lvert e^{iu}-1-iu\rvert\le u^2/2\) bounds the difference by
+\[
+ C_T\frac{\sum_{aA<j\le B}j^{1-\alpha}}h.
+\]
+For \(j>B\), it is \(O_T(d_n)\). Lemma~\ref{lem:scales} and
+\eqref{eq:sum-integral} show that the difference tends to zero, independently
+of the mask. Thus the centered masked characteristic functions converge to
+\(e^{-x^2/2}\), uniformly on compact \(x\)-intervals. The mean estimate is
+exactly the deleted-mean bound in \eqref{eq:truncated-variance}.
+\end{proof}
+
+\subsection{A uniform integrable Fourier majorant}
+Compact convergence is not enough for a local limit. We next bound the full
+lattice inversion integral, including frequencies that grow with \(n\).
+
+\begin{lemma}[Two Fourier bounds]
+\label{lem:fourier}
+There are positive constants \(C_1,C_2\), depending at most on \(a\), such
+that all sufficiently large \(n\), and every mask in
+Theorem~\ref{thm:masked-llt}, satisfy
+\begin{align}
+ \left|\E e^{ix(T_n-\mu_n)/B_n}\right|
+ &\le e^{-C_1|x|^{7/4}}
+ &&(1\le|x|\le\sqrt{B_n}), \label{eq:fourier-near}\\
+ \left|\E e^{ix(T_n-\mu_n)/B_n}\right|
+ &\le e^{-C_2n/B_n}
+ &&(\sqrt{B_n}\le|x|\le\pi B_n).
+ \label{eq:fourier-far}
+\end{align}
+\end{lemma}
+\begin{proof}
+The modulus is
+\[
+ \exp\left[-nc\sum_{j\ge1}w_{n,j}j^{-1-\alpha}
+                   (1-\cos(jx/B))\right].
+\]
+For the first range put \(y=\min(aA,B/|x|)\). All integers \(j\le y\)
+are retained and satisfy \(|jx/B|\le1\). Since
+\(1-\cos u\ge u^2/4\) there,
+\begin{equation}
+ -\log\left|\E e^{ix(T_n-\mu_n)/B}\right|
+ \ge\frac{x^2}{4h}\sum_{j\le y}j^{1-\alpha}
+ \ge\frac{x^2}{4}\frac{h_\eps(y)}h.
+ \label{eq:fourier-basic}
+\end{equation}
+If \(y=aA\), the ratio tends to one by Lemma~\ref{lem:scales}. If
+\(y=B/|x|\), write \(L=\log B\), \(b=\log|x|\le L/2\).
+For \(\eps\ge0\), changing variables in the defining integral shows
+\[
+ h_\eps(B/|x|)
+ =e^{-\eps b}\int_b^L e^{\eps u}\dd u
+ \ge\tfrac12 e^{-\eps b}h_\eps(B).
+\]
+The last inequality follows because the increasing integrand has at least
+half its integral on the upper interval of length at least \(L/2\).
+For \(\eps<0\), the decreasing integrand gives
+\(\int_0^{L-b}e^{\eps u}\dd u\ge\tfrac12\int_0^Le^{\eps u}\dd u\).
+Therefore in either case
+\[
+ \frac{h_\eps(B/|x|)}{h_\eps(B)}
+ \ge\frac12|x|^{-\eps_+}\ge\frac12|x|^{-1/4}.
+\]
+Together with \eqref{eq:fourier-basic} this proves
+\eqref{eq:fourier-near}, with a smaller constant if necessary.
+
+For the second range the retained action \(j=1\) alone suffices. On
+\(|u|\le\pi\), \(1-\cos u\ge2u^2/\pi^2\). The exponent is consequently
+at least \(C n x^2/B^2\), which is at least \(C n/B\) on the stated range.
+The constants are uniform because \(c_n\to c_0>0\).
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:masked-llt}]
+Extend the centered scaled characteristic function by zero outside
+\([ -\pi B_n,\pi B_n]\). Compact convergence, the integrable majorant in
+\eqref{eq:fourier-near}, and
+\[
+ B_ne^{-C_2n/B_n}\longrightarrow0
+\]
+from \(B_n=n^{1/2+o(1)}\), prove convergence in \(L^1(\R)\) to
+\(e^{-x^2/2}\). Every bound is independent of the mask. Lattice Fourier
+inversion, after the change of variables \(x=B_n\theta\), gives
+\[
+ B_n\Pr(T_n=k)=\frac1{2\pi}\int_{-\pi B_n}^{\pi B_n}
+ e^{-ix(k-\mu_n)/B_n}\E e^{ix(T_n-\mu_n)/B_n}\dd x.
+\]
+The difference from the Gaussian inversion integral is bounded uniformly
+in \(k\) by the \(L^1\) difference divided by \(2\pi\). This proves the
+claim and completes the proof without an unproved interchange of limits.
+\end{proof}
+
+\begin{remark}[Meaning of arbitrary-rate uniformity]
+The theorem applies to every sequence \(\eps_n\to0\), including sign changes
+and \(|\eps_n|\log n\to\infty\). Equivalently, its errors tend to zero
+uniformly over any prescribed shrinking neighborhoods
+\(|\eps|\le\eta_n\to0\). It does not assert Gaussian convergence uniformly
+on a fixed exponent neighborhood: a fixed \(\eps>0\) belongs to a
+non-Gaussian stable regime.
+\end{remark}
+
+\section{Sector asymptotics and sharp action budgets}
+\label{sec:budgets}
+
+\begin{theorem}[Multiplicative sector equivalent]
+\label{thm:sectors}
+For every \(\eps_n\to0\),
+\begin{equation}
+ u_n(\eps_n)=\frac{\rho_{\eps_n}^{-n}}{\sqrt{2\pi}\,nB_n}(1+o(1)).
+ \label{eq:sectors}
+\end{equation}
+If \(\eps_n\log n\to\lambda\in\R\), then
+\begin{equation}
+ u_n(\eps_n)\sim
+ \frac{\rho_{\eps_n}^{-n}}
+ {\sqrt{\pi c_0}\,n^{3/2}\sqrt{\log n}\sqrt{\cE(\lambda/2)}}.
+ \label{eq:sectors-window}
+\end{equation}
+\end{theorem}
+\begin{proof}
+At critical coupling the mean of \(S_n\) is exactly \(n\). Theorem
+\ref{thm:masked-llt} gives \(B_n\Pr(S_n=n)\to\ph(0)>0\), so its additive
+local limit is a relative equivalent at that point. Substitute into
+\eqref{eq:poisson}, and then use \eqref{eq:B-window}.
+\end{proof}
+
+\begin{theorem}[Cutoff profile and necessary-and-sufficient budget]
+\label{thm:budget}
+Define
+\begin{equation}
+ H(s)=e^{-1/(2s^2)}\quad(s>0),\qquad H(0)=0,\quad H(\infty)=1.
+ \label{eq:H-profile}
+\end{equation}
+For any positive integer sequence \(M_n\), if \(M_n/A_n\to s\) in
+\([0,\infty]\), then
+\begin{equation}
+ R_n(M_n)\longrightarrow H(s).
+ \label{eq:budget-profile}
+\end{equation}
+The convergence is uniform when \(M_n/A_n\) ranges over a compact positive
+interval, with the profile evaluated at the actual ratio. Moreover,
+\begin{equation}
+ R_n(M_n)\to1\quad\Longleftrightarrow\quad M_n/A_n\to\infty.
+ \label{eq:iff-budget}
+\end{equation}
+For fixed allowed loss \(\theta\in(0,1)\), let
+\(M_{\min}(n,\theta)=\min\{M:R_n(M)\ge1-\theta\}\). Then
+\begin{equation}
+ \frac{M_{\min}(n,\theta)}{A_n}\longrightarrow
+ \frac1{\sqrt{2\log(1/(1-\theta))}}.
+ \label{eq:min-budget}
+\end{equation}
+\end{theorem}
+\begin{proof}
+First suppose \(M_n/A_n\to s\in(0,\infty)\). An integral comparison, uniform
+for \(\alpha_n\) near two, gives
+\begin{equation}
+ \Lambda_{n,M_n}=nc_n\sum_{j>M_n}j^{-1-\alpha_n}
+ =\frac{nc_n}{\alpha_nM_n^{\alpha_n}}(1+O(M_n^{-1}))
+ \longrightarrow\frac1{2s^2}.
+ \label{eq:lambda-limit}
+\end{equation}
+The cutoff mask retains every action up to \(aA_n\), for any fixed
+\(0<a<s\) and all sufficiently large \(n\). Its mean differs from \(n\) by
+\(O(A_n)=o(B_n)\). The masked local limit thus gives
+\(B_n\Pr(S_{n,M_n}=n)\to\ph(0)\), as for the full sum. The exact ratio
+\eqref{eq:cutoff-identity} proves \eqref{eq:budget-profile}.
+
+Uniformity on compact positive intervals follows either from the uniform
+mask bounds or from the usual monotonicity argument: choose a finite mesh,
+apply pointwise convergence on that mesh, and use uniform continuity of the
+continuous increasing function \(H\) between adjacent mesh points.
+
+If \(M_n/A_n\to0\), compare \(M_n\) to \(\lfloor sA_n\rfloor\) for every
+fixed \(s>0\), and then let \(s\downarrow0\). If \(M_n/A_n\to\infty\),
+compare in the opposite direction and let \(s\to\infty\). This proves the
+endpoint statements. Conversely, if the ratio of cutoffs does not tend to
+infinity, some subsequence is bounded above by a fixed \(C\). On that
+subsequence \(R_n(M_n)\le R_n(\lceil CA_n\rceil)\to H(C)<1\), proving
+necessity in \eqref{eq:iff-budget}.
+
+Finally, the strictly increasing continuous profile crosses \(1-\theta\)
+only at the value displayed in \eqref{eq:min-budget}. Compare cutoffs just
+below and just above that value times \(A_n\), and use monotonicity and
+\(A_n\to\infty\) to remove integer rounding.
+\end{proof}
+
+\begin{corollary}[The explicit exponent/order window]
+\label{cor:window-budget}
+If \(\eps_n\log n\to\lambda\in\R\) and
+\(M_n/\sqrt{nc_0}\to m>0\), then
+\begin{equation}
+ R_n(M_n)\longrightarrow
+ \exp\left(-\frac{e^{\lambda/2}}{2m^2}\right).
+ \label{eq:window-budget}
+\end{equation}
+Thus a budget appropriate to the endpoint \(\lambda=0\) does not retain the
+same fraction throughout the crossover window.
+\end{corollary}
+\begin{proof}
+Equation \eqref{eq:A-window} gives
+\(M_n/A_n\to me^{-\lambda/4}\). Apply Theorem~\ref{thm:budget}.
+\end{proof}
+
+These are statements about a \emph{prefix cutoff}. No optimality among all
+possible non-prefix subsets of actions is claimed. Likewise,
+\eqref{eq:min-budget} is proved for a fixed loss tolerance, not for a tolerance
+\(\theta_n\) tending to zero. The latter requires quantitative errors.
+
+\section{Conditional Poisson limits for the entire extreme-action process}
+\label{sec:ppp}
+Define the random point measure
+\begin{equation}
+ \Pi_n=\sum_{j\ge1}Z_{n,j}\,\delta_{j/A_n}
+ \quad\text{on }(0,\infty).
+ \label{eq:pointprocess}
+\end{equation}
+It is locally finite. A Poisson point process with intensity
+\(y^{-3}\dd y\) is characterized by the Laplace functional
+\begin{equation}
+ \exp\left[-\int_0^\infty(1-e^{-f(y)})y^{-3}\dd y\right],
+ \qquad f\ge0,\quad f\in C_c((0,\infty)).
+ \label{eq:ppp-laplace}
+\end{equation}
+The infinite intensity near zero causes no problem for compactly supported
+test functions in \((0,\infty)\).
+
+\begin{theorem}[Local factorization under exact conditioning]
+\label{thm:ppp}
+Let \(\eps_n\to0\), and let integers \(k_n\) satisfy
+\((k_n-n)/B_n\to x\in\R\). For every nonnegative
+\(f\in C_c((0,\infty))\),
+\begin{align}
+ &B_n\E\left[e^{-\Pi_n(f)}\mathbf1_{\{S_n=k_n\}}\right] \nonumber\\
+ &\qquad\longrightarrow
+ \ph(x)\exp\left[-\int_0^\infty(1-e^{-f(y)})y^{-3}\dd y\right].
+ \label{eq:local-factorization}
+\end{align}
+Consequently, under \(S_n=k_n\), the point process \(\Pi_n\) converges to
+that Poisson point process. The limit is independent of the limiting central
+location \(x\). Unconditionally, \(((S_n-n)/B_n,\Pi_n)\) converges jointly
+to an independent standard normal variable and the same Poisson process.
+\end{theorem}
+\begin{proof}
+Choose \(a>0\) below the support of \(f\), and set
+\(w_{n,j}=e^{-f(j/A_n)}\). Poisson exponential tilting, first for finitely
+many nontrivial weights and then directly for the present compact support,
+gives the exact identity
+\begin{equation}
+ \E[e^{-\Pi_n(f)}\mathbf1_{\{S_n=k\}}]
+ =e^{-L_n(f)}\Pr(T_n=k),\qquad
+ L_n(f)=\sum_jnc_nj^{-1-\alpha_n}(1-w_{n,j}),
+ \label{eq:poisson-tilt}
+\end{equation}
+where \(T_n\) uses the masked means from
+Theorem~\ref{thm:masked-llt}. The identity follows already for one Poisson
+variable from multiplying its mass at \(m\) by \(w^m\); independence gives
+the product.
+
+Since \(nc_nA_n^{-\alpha_n}=1\), a Riemann sum on the compact support of
+\(f\), bounded away from zero, yields
+\begin{equation}
+ L_n(f)=\frac1{A_n}\sum_j
+ (j/A_n)^{-1-\alpha_n}(1-e^{-f(j/A_n)})
+ \longrightarrow\int_0^\infty(1-e^{-f(y)})y^{-3}\dd y.
+ \label{eq:tilt-riemann}
+\end{equation}
+The masked mean is \(n+O(A_n)=n+o(B_n)\). Its local limit therefore gives
+\(B_n\Pr(T_n=k_n)\to\ph(x)\). Combine this with
+\eqref{eq:poisson-tilt} to obtain \eqref{eq:local-factorization}. Dividing by
+\(B_n\Pr(S_n=k_n)\to\ph(x)>0\) proves convergence of the conditional
+Laplace functionals, which characterizes the point-process limit.
+
+For the unconditional joint assertion, the same proof is uniform for
+\((k-n)/B_n\) in a fixed compact interval. Sum
+\eqref{eq:poisson-tilt} against a bounded continuous function of
+\((k-n)/B_n\); the local limit gives a Gaussian Riemann integral on that
+interval. The unmasked central limit, already implied by compact
+characteristic-function convergence, controls the complement. This proves
+factorization for products of a central test function and a point-process
+Laplace functional, and hence the stated joint convergence.
+\end{proof}
+
+The local assertion is stronger than an unconditional independence statement:
+the event \(S_n=k_n\) has probability of order \(1/B_n\). An unconditional
+weak limit alone would not justify dividing by that vanishing probability.
+The masked local limit is precisely what makes that division legitimate.
+
+\begin{corollary}[Ordered extreme actions]
+\label{cor:ordered}
+Let \(J_{n,(1)}\ge J_{n,(2)}\ge\cdots\) be the action sizes in the Poisson
+multiset, including multiplicities and padded by zeros if necessary. Under
+\(S_n=n\), for each fixed \(r\ge1\) and \(s>0\),
+\begin{equation}
+ \Pr\left(J_{n,(r)}/A_n\le s\mid S_n=n\right)
+ \longrightarrow e^{-\mu(s)}\sum_{\ell=0}^{r-1}\frac{\mu(s)^\ell}{\ell!},
+ \qquad \mu(s)=\frac1{2s^2}.
+ \label{eq:ordered}
+\end{equation}
+\end{corollary}
+\begin{proof}
+On any bounded interval bounded away from zero, Theorem~\ref{thm:ppp} gives
+the corresponding Poisson counting limit; boundary points have zero limiting
+intensity. To pass from \((s,R]\) to \((s,\infty)\), observe from
+Theorem~\ref{thm:budget} that the conditional probability of any action
+exceeding \(RA_n\) tends to \(1-H(R)\), which vanishes as \(R\to\infty\).
+The limiting number above \(s\) is Poisson of mean
+\(\int_s^\infty y^{-3}\dd y=1/(2s^2)\). The \(r\)-th largest is at most
+\(s\) precisely when this count is at most \(r-1\).
+\end{proof}
+
+\section{A moving coupling window and finite-prefix robustness}
+\label{sec:coupling}
+
+\begin{theorem}[A bounded critical coupling window]
+\label{thm:coupling}
+Let \(\eps_n\to0\), and let \(\omega_n\) range over a fixed compact subset
+of \(\R\). Define
+\begin{equation}
+ \beta_n=1+\omega_n\frac{B_n}{n}.
+ \label{eq:beta-window}
+\end{equation}
+Then \(\beta_n>0\) for all sufficiently large \(n\), and uniformly over
+this window,
+\begin{equation}
+ u_n(\eps_n,\beta_n)
+ =\frac{e^{n\beta_nF_{\eps_n}(1)}}{\sqrt{2\pi}\,nB_n}
+    e^{-\omega_n^2/2}(1+o(1)).
+ \label{eq:coupling-sector}
+\end{equation}
+For \(M_n/A_n\to s>0\), the cutoff ratio remains \(H(s)\). Conditioned on
+the total weighted action being \(n\), the point-process limit remains the
+Poisson process with intensity \(y^{-3}\dd y\).
+\end{theorem}
+\begin{proof}
+The factor \(\beta_n\to1\) multiplies every Poisson mean. The centered
+characteristic exponent and each Fourier lower bound in the proof of
+Theorem~\ref{thm:masked-llt} are multiplied by this factor. All compact
+limits and integrable bounds therefore remain valid uniformly in
+\(\omega_n\). The unmasked mean is \(n\beta_n=n+\omega_nB_n\). At the
+target lattice point \(n\), the centered coordinate is exactly
+\(-\omega_n\), giving the local factor \(\ph(\omega_n)\), bounded away from
+zero on the compact window. Equation \eqref{eq:poisson} proves
+\eqref{eq:coupling-sector}.
+
+Deletion above a fixed multiple of \(A_n\) still shifts the mean by only
+\(O(A_n)=o(B_n)\). Thus numerator and denominator in the cutoff ratio have
+the same Gaussian factor. The deleted intensity has the same limit because
+\(\beta_n\to1\). Similarly, the tilted Riemann sum and the ratio of local
+masses in \eqref{eq:poisson-tilt} are unchanged in the limit, proving the
+point-process assertion.
+\end{proof}
+
+For \(\beta_n\ne1\), the carrier \(e^{n\beta_nF_{\eps_n}(1)}\) in
+\eqref{eq:coupling-sector} is an exact factor from coefficient extraction.
+It is not being identified with the reciprocal radius of convergence raised
+to the \(n\)-th power. In particular, on the supercritical side the dominant
+singularity can move into the analytic interior. The bounded-window proof
+does not require a separate assertion about that singularity.
+
+\begin{corollary}[Robustness under a bounded finite prefix]
+\label{cor:prefix}
+The probabilistic results of Sections~\ref{sec:llt}--\ref{sec:coupling} remain
+valid for weights \(a_{n,j}\ge0\) satisfying, for some fixed \(J\),
+\begin{equation}
+ a_{n,j}=c_nj^{-3+\eps_n}\quad(j>J),\qquad
+ \sum_{j\ge1}j a_{n,j}=1,
+ \label{eq:prefix-model}
+\end{equation}
+where \(\eps_n\to0\), \(c_n\to c_*>0\), the finitely many prefix weights
+are bounded, and \(a_{n,1}\ge a_*>0\). Define \(A_n,B_n\) using this \(c_n\),
+and set \(\rho_n=\exp(-\sum_j a_{n,j})\). In the explicit bounded-window
+formulas replace \(c_0\) by \(c_*\).
+\end{corollary}
+\begin{proof}
+The scale lemmas use only \(c_n\to c_*>0\). After exact centering, altering a
+fixed bounded prefix changes the compact characteristic exponent by
+\(O(n/B_n^2)=O(1/h_{\eps_n}(B_n))=o(1)\). The tail integrals, mean deletion
+bounds, and Riemann sums are unchanged. In the near-frequency bound, omitting
+finitely many terms changes the diverging second-moment sum by \(O(1)\),
+which is negligible even at the smallest truncation used there. The far
+bound uses \(a_{n,1}\ge a_*>0\) instead of \(c_n\). The Lagrange and Poisson
+identities hold for arbitrary nonnegative weights, completing the proof.
+\end{proof}
+
+This corollary concerns the asymptotic coefficient and point-process results.
+The explicit chart coefficients \eqref{eq:P1}--\eqref{eq:P2} belong to the
+normalized polylogarithm model; finite-prefix changes generally alter them.
+
+\section{Inverse crossover profiles and an exact core duality}
+\label{sec:duality}
+
+\begin{theorem}[Real inverse crossover]
+\label{thm:inverse-window}
+Let \(\delta\downarrow0\), \(\eps\to0\), and let \(t>0\) solve
+\(\Psi_\eps(t)=\delta\). Write \(L=\log(1/\delta)\). Uniformly when
+\(|\eps L|\le K\),
+\begin{equation}
+ t=2\sqrt{\frac{\delta}{c_\eps L\cE(\eps L/2)}}
+       \left(1+O_K\left(\frac{\log L}{L}\right)\right).
+ \label{eq:inverse-window}
+\end{equation}
+In the outer joint regimes,
+\begin{align}
+ t&\sim(2\eps\delta/c_\eps)^{1/(2-\eps)}
+ &&\text{if }\eps L\to+\infty, \label{eq:inverse-positive}\\
+ t&\sim\sqrt{2|\eps|\delta/c_\eps}
+ &&\text{if }\eps L\to-\infty. \label{eq:inverse-negative}
+\end{align}
+At \(\eps=0\), the leading form is
+\(t\sim2\sqrt{\delta/(c_0\log(1/\delta))}\). In all these limits,
+\(U_{\eps,c}-U_\eps(\rho_\eps e^{-\delta})\sim t\).
+\end{theorem}
+\begin{proof}
+The chart gives \(t/r\to1\) in every joint limit. Put
+\(\ell=\log(1/r)\). Taking logarithms of the core equation shows
+\(\ell\sim L/2\), by the same estimates used for \(\log B_n\). If
+\(|\eps L|\le K\), refine this to
+\(\ell=L/2+O_K(\log L)\). Hence
+\[
+ h_\eps(1/r)=\frac L2\cE(\eps L/2)
+              \left(1+O_K\left(\frac{\log L}{L}\right)\right).
+\]
+The core equation gives the displayed formula for \(r\); the chart error is
+\(O(|\eps|+v+r)=O_K(1/L)\), which is smaller than the retained error.
+
+When \(\eps L\to+\infty\), one has
+\(h_\eps(1/r)\sim r^{-\eps}/\eps\); on the negative side it is
+\(\sim1/|\eps|\). Solve the core equation in each case and use \(t/r\to1\).
+Finally, \(\delta/t=\Psi_\eps(t)/t\to0\) uniformly in this joint limit:
+\eqref{eq:psi-leading} and
+\(h_\eps(1/t)\le\log(1/t)t^{-\eps_+}\) make this immediate for
+\(|\eps|<1/4\). Apply \eqref{eq:udisplacement}.
+\end{proof}
+
+\begin{proposition}[Exact core duality and boundary/sector matching]
+\label{prop:duality}
+For all sufficiently large \(n\), the two core normalizations satisfy the
+exact identity
+\begin{equation}
+ r_{\eps_n}\left(\frac1{2n}\right)=\frac1{B_n}.
+ \label{eq:exact-duality}
+\end{equation}
+Moreover,
+\begin{equation}
+ \frac{n\rho_{\eps_n}^{\,n}u_n(\eps_n)}
+ {U_{\eps_n,c}-U_{\eps_n}(\rho_{\eps_n}e^{-1/(2n)})}
+ \longrightarrow\frac1{\sqrt{2\pi}}.
+ \label{eq:boundary-sector}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Substituting \(r=1/B_n\) into the core equation gives
+\[
+ \frac{c_n}{2B_n^2}h_{\eps_n}(B_n)=\frac1{2n},
+\]
+so uniqueness proves \eqref{eq:exact-duality}. The convergent chart gives
+\(t(1/(2n))\sim1/B_n\). Also \(B_n/n\to0\), so the term \(\delta=1/(2n)\)
+is negligible in \(t-\delta\). The numerator in
+\eqref{eq:boundary-sector} equals \(\Pr(S_n=n)\sim1/(\sqrt{2\pi}B_n)\),
+which proves the result.
+\end{proof}
+
+The exact identity \eqref{eq:exact-duality} explains why the same crossover
+factor appears in local inversion and large-sector coefficients. Equation
+\eqref{eq:boundary-sector} is a leading-order bridge, not an all-orders
+transfer theorem. Constructing a uniform correction calculus on the Fourier
+side is a distinct next step.
+
+\section{Finite real bounds for inversion}
+\label{sec:certificates}
+The convergent chart has an existence-level geometric remainder. The
+following finite inequalities offer an independent route to real enclosures.
+They also avoid evaluating nearly cancelling gamma and zeta poles.
+
+\begin{proposition}[Finite inversion inequalities]
+\label{prop:finite}
+For real \(|\eps|<1/4\), \(\alpha=2-\eps\), integer \(J\ge1\), and
+\(t>0\), set
+\begin{equation}
+ H_J=\sum_{j=1}^Jj^{1-\alpha},\qquad
+ K_J=\sum_{j=1}^Jj^{2-\alpha}.
+ \label{eq:HK}
+\end{equation}
+Then
+\begin{align}
+ L_J(t):=c_\eps\left(\frac{t^2H_J}{2}-\frac{t^3K_J}{6}\right)
+ &\le\Psi_\eps(t) \nonumber\\
+ &\le c_\eps\left(\frac{t^2H_J}{2}
+             +\frac{tJ^{1-\alpha}}{\alpha-1}\right)=:U_J(t),
+ \label{eq:finite-bounds}\\
+ c_\eps\left(tH_J-\frac{t^2K_J}{2}\right)
+ &\le\Psi_\eps'(t)
+ \le c_\eps\left(tH_J+\frac{J^{1-\alpha}}{\alpha-1}\right).
+ \label{eq:finite-derivative}
+\end{align}
+If \(0<t_-<t_+\), and finite evaluations establish
+\begin{equation}
+ U_{J_-}(t_-)\le\delta\le L_{J_+}(t_+),
+ \label{eq:root-certificate}
+\end{equation}
+then the root of \(\Psi_\eps(t)=\delta\) lies in \([t_-,t_+]\).
+\end{proposition}
+\begin{proof}
+For all \(x\ge0\), Taylor's integral remainder gives
+\[
+ \frac{x^2}{2}-\frac{x^3}{6}\le e^{-x}-1+x\le\frac{x^2}{2},
+ \qquad 0\le e^{-x}-1+x\le x,
+\]
+and
+\(x-x^2/2\le1-e^{-x}\le x\), together with \(1-e^{-x}\le1\).
+Apply the quadratic or cubic bounds to \(j\le J\), keep the omitted part
+nonnegative for the lower bounds, and use
+\[
+ \sum_{j>J}j^{-\alpha}\le\int_J^\infty y^{-\alpha}\dd y
+ =\frac{J^{1-\alpha}}{\alpha-1}
+\]
+for the upper tails. This proves both inequalities. Strict monotonicity of
+\(\Psi_\eps\) proves the bracket assertion.
+\end{proof}
+
+If \(t_0\in[t_-,t_+]\) and a positive lower derivative bound \(m\) is
+obtained at \(t_-\) from \eqref{eq:finite-derivative}, then convexity makes
+\(m\) a lower derivative bound on the whole interval. Therefore
+\begin{equation}
+ |t-t_0|\le
+ \frac{\max\{|L_J(t_0)-\delta|,|U_J(t_0)-\delta|\}}m.
+ \label{eq:residual-certificate}
+\end{equation}
+Choosing \(J\) of order \(1/t\) is natural near the boundary; larger or
+adaptively chosen finite sums can sharpen the bracket. These statements are
+rigorous inequalities between real numbers. To turn them into numerical
+certificates, the finite sums, powers, and \(c_\eps\) must themselves be
+outward-rounded. The supplied numerical diagnostics do not do that, and are
+not labeled interval certificates.
+
+\section{Reproducible checks and numerical diagnostics}
+\label{sec:checks}
+The package contains \path{code/verify.py}, exact-check reports, CSV data, and
+the generated tables below. The analytic proofs do not depend on the
+numerical observations. The checks serve different purposes and are reported
+separately rather than combined into a misleading ``verified theorem'' label.
+
+\subsection{Exact finite algebra}
+The program uses rational arithmetic to compare direct formal fixed-point
+iteration with the Lagrange formula for
+\[
+ U(q)=\sum_{1\le j\le M}\frac{q^j e^{jU(q)}}{j^3}.
+\]
+This rational-amplitude test model deliberately omits the critical factor
+\(c_0=1/\zeta(2)\). It checks the general algebraic identity, not a claim that
+the critically normalized coefficients are rational. Degrees \(1\) through
+\(12\), five cutoffs, positivity, and equality of coefficients below the
+cutoff are checked exactly. A symbolic residual check independently verifies
+\eqref{eq:P1}--\eqref{eq:P2}. The combined report records \textbf{122 passing
+exact assertions}. These are finite computer-algebra checks, not a
+proof-assistant formalization of the infinite statements.
+
+\subsection{Positive coefficient recurrences}
+For Poisson means \(\nu_j\), define \(p_k=\Pr(S=k)\). Differentiation of the
+probability generating function gives the positive recurrence
+\begin{equation}
+ p_0=e^{-\sum_j\nu_j},\qquad
+ kp_k=\sum_{j=1}^k j\nu_jp_{k-j}.
+ \label{eq:panjer}
+\end{equation}
+The total intensity includes the full infinite tail even though only
+\(j\le k\) enters the recurrence for \(p_k\). For a cutoff the intensity
+and recurrence are both truncated consistently. The program evaluates this
+recurrence through \(n=8192\), and forms the ratio using the exact expression
+\eqref{eq:cutoff-identity}, with high-precision evaluations of the tail
+intensity.
+
+\begin{table}[htbp]
+\centering\small
+\input{data/coefficient_table.tex}
+\caption{Coefficient diagnostics for \(\eps=\lambda/\log n\). Cutoff
+arguments are rounded down to integers. The limiting values in the last
+three columns are \(1\), \(e^{-1/2}\approx0.60653\), and
+\(e^{-2/9}\approx0.80074\), respectively.}
+\label{tab:coefficients}
+\end{table}
+
+The logarithmic convergence is slow, and the cutoff rounding is visible;
+the table is not evidence for a monotone error law. Six separate comparisons
+at \(n=128\), using an independent arbitrary-precision implementation of
+\eqref{eq:panjer}, gave maximum relative disagreement
+\(7.13\times10^{-18}\) or less. That tests the finite numerical calculation,
+not its distance from the asymptotic limit.
+
+The large-order recurrence uses NumPy's extended-range \texttt{longdouble}
+when available. The program detects platforms with insufficient exponent
+range and raises an error instead of silently underflowing. The exact checks
+and the arbitrary-precision inverse checks do not require that extended
+floating-point format. None of these calculations is outward-rounded.
+
+\subsection{Direct checks of the convergent chart}
+Choose \(r=e^{-L_r}\), \(\eps=\tau/L_r\), and set \(\delta\) by the exact
+core. The program solves the original polylogarithm equation at 160 decimal
+digits and compares \(t/r\) with \(1+P_1\) and \(1+P_1+P_2\).
+All nine root residuals, measured as
+\(|\Psi_\eps(t)/\delta-1|\), are below \(10^{-55}\).
+
+\begin{table}[htbp]
+\centering\small
+\input{data/inversion_table.tex}
+\caption{Direct inversion diagnostics. The error columns are absolute
+errors in the ratio \(t/r\), not in \(t\). The two approximations are the
+Taylor polynomials by total degree from \eqref{eq:P1}--\eqref{eq:P2}.}
+\label{tab:inversion}
+\end{table}
+
+The observed improvement is consistent with the convergent chart but does not
+supply a numerical value for the Cauchy constants in
+\eqref{eq:chart-tail}. The reports distinguish a small evaluated residual
+from an interval enclosure of the true root.
+
+\subsection{Rebuilding and rerunning}
+The source is self-contained apart from standard TeX packages and the two
+included table fragments. From the package directory, run
+\begin{verbatim}
+python code/verify.py --part all
+latexmk -pdf -interaction=nonstopmode Confluent_Critical_Transseries.tex
+\end{verbatim}
+The options \texttt{--part exact}, \texttt{--part coefficients}, and
+\texttt{--part inversion} run the groups independently. Recorded package
+versions, build instructions, and validation status are included alongside
+the article. Python assertions should not be disabled with optimization flags
+when running the check program.
+
+\section{Further research questions and concrete targets}
+\label{sec:future}
+
+\paragraph{1. Uniform higher-order sector corrections.}
+The local chart is convergent to all orders, whereas the triangular sector
+law is leading-order. Expand the centered characteristic exponent beyond
+\eqref{eq:K-compact} in a set of parameters that remains ordered when
+\(\eps\log n\) crosses zero. The terms generated by
+\(x^{2-\eps}\), \(x^2\), and their coalescing coefficients should be retained
+in cancellation-free blocks. A useful target is a relative expansion uniform
+for \(|\eps\log n|\le K\), with an explicit first correction and a remainder
+small enough to distinguish it from the leading Gaussian term.
+
+\paragraph{2. Quantitative cutoff errors and shrinking tolerances.}
+Make the compact characteristic-function error and the two tail integrals
+explicit in \(v_n,d_n\), and in
+\(1-h_{\eps_n}(sA_n)/h_{\eps_n}(B_n)\). This would give a computable error
+for \(R_n(M)\) on compact positive cutoff intervals. Then study
+\(\theta_n\downarrow0\) in \eqref{eq:min-budget}. The fixed-tolerance
+quantile argument does not itself justify a vanishing-tolerance budget.
+An eventual interval implementation should certify a finite coefficient
+ratio, not merely print its limiting profile.
+
+\paragraph{3. The largest coupling window with untilted extremes.}
+In Theorem~\ref{thm:coupling}, a bounded central displacement has no effect on
+the limiting extreme process. If the target displacement is \(x_nB_n\),
+a heuristic Gaussian density ratio for adding an action of size \(A_ny\)
+contains \(\exp(x_nA_ny/B_n)\). This suggests that a new tilt can emerge
+when \(|x_n|A_n/B_n\) is order one. Determine the actual validity range of
+this heuristic, the necessary moderate-deviation estimates, and the resulting
+conditional point process. The heuristic is not a theorem of this article.
+
+\paragraph{4. General triangular slowly varying tails.}
+Replace the exact tail by
+\(c_nj^{-3+\eps_n}\ell_n(j)\). Identify verifiable uniform conditions under
+which an implicit truncated-second-moment scale and a tail-quantile extreme
+scale still satisfy the retained-variance property
+\eqref{eq:truncated-variance}. Mere slow variation separately for each \(n\)
+is unlikely to control the joint limit. The masked local-limit proof suggests
+that this retained-variance property, an aperiodicity condition, and uniform
+tail bounds are the correct inputs for a more general theorem.
+
+\paragraph{5. Joint finite-fold drift.}
+Truncating the kernel restores an analytic finite-action fold. Determine the
+critical-point and critical-value drift uniformly in
+\((\eps,M,n)\), particularly for \(M\asymp A_n\). Match the resulting
+saddle formula to the cutoff factor \(H(M/A_n)\) with an error that remains
+small after multiplication of logarithmic errors by \(n\). This would extend
+the repository's fixed-exponent finite-fold analysis into the confluent window.
+
+\paragraph{6. Complex continuation of the core.}
+The analytic correction \(\cV\) is holomorphic in independent local
+variables, but the parameterized core \(r_\eps(\delta)\) has its own complex
+branch geometry. Construct explicit sectorial domains and track their
+critical values uniformly as \(\eps\to0\). Only after doing so is it
+reasonable to ask for uniform complex asymptotics, Stokes transitions, or
+resurgent properties. A convergent correction chart alone does not establish
+any of those global assertions.
+
+\paragraph{7. Nonlinear slopes.}
+For feedback of the form
+\(U=\sum a_jq^j\exp((j+r_j)U)\), the substitution \(z=qe^U\) no longer
+reduces the problem to a scalar polylogarithm. Start with
+\(r_j=\gamma j^\theta\), \(0<\theta<1\), and determine whether it changes
+the extreme scale, the Gaussian normalization, or only the critical centering.
+A successful result must replace the exact coefficient/Poisson identity, not
+use it after its hypotheses have been lost.
+
+\paragraph{8. Signed weights and competing singularities.}
+Positivity underlies cutoff monotonicity, the conditioning interpretation,
+and several estimates. For signed or complex amplitudes, seek explicit
+analytic hypotheses that permit a multi-saddle replacement. A particularly
+concrete target is a finite signed prefix with a positive tail, where the
+local normal form still exists but coefficient cancellation can invalidate
+probability arguments.
+
+\paragraph{9. Growing prefixes and the edge of robustness.}
+Corollary~\ref{cor:prefix} keeps the altered prefix length fixed. Permit a
+prefix length \(J_n\to\infty\), and characterize the allowable changes by
+their centered second-moment contribution and their action-scale mass.
+Perturbations at \(j\asymp A_n\) can change the limiting Poisson intensity
+while leaving the central Gaussian limit unchanged; perturbations spread
+through the variance-carrying range can change both. Prove a classification
+that separates these effects quantitatively.
+
+\paragraph{10. The lower endpoint \(\alpha\downarrow1\).}
+The other half of the repository's endpoint question remains distinct. There
+the first moment, not just the second, approaches divergence; the present
+normalization \(c_\eps=1/\zeta(\alpha)\) tends to zero and the centering
+mechanism changes. Derive an appropriate compensated core and determine
+whether conditioning couples the largest actions to the total at leading
+order. None of the upper-endpoint Gaussian estimates should be transported
+there without a new proof.
+
+\paragraph{11. Uniform matching to the fixed stable conditioned process.}
+For fixed \(\alpha<2\), the natural fluctuation and largest-action scales
+are comparable, while they separate in the joint limit proved here.
+Construct an explicit normalization of the fixed stable bridge and show how
+its conditioned jump process tends to the independent Poisson extreme
+process as \(\alpha\uparrow2\). Then compare that limit with the present
+arbitrary-rate theorem. This would explain the transition at the level of
+entire conditioned processes, not only coefficient ratios.
+
+\paragraph{12. Proof-producing computation and formalization.}
+A practical first milestone is to formalize the finite identities
+\eqref{eq:lagrange}, \eqref{eq:cutoff-identity}, and
+\eqref{eq:finite-bounds}, while keeping their different algebraic and analytic
+hypotheses explicit. Next build an interval evaluator for the real core and
+finite root brackets. The harder Lean interfaces concern the masked Fourier
+majorant, countable Poisson sums, and local conditioning. An implementation
+should expose separately: an exact coefficient identity, a certified finite
+numerical bound, and an asymptotic theorem with its hypotheses.
+
+\section{Conclusion}
+The upper endpoint is not obtained by inserting \(\alpha=2\) into a
+fractional-power formula. The divergent gamma and zeta terms must first be
+combined. Their exact combination is the elementary function
+\(h_\eps\), which produces both a convergent inverse chart and the correct
+triangular fluctuation scale.
+
+For every rate of approach to exponent two, the extreme scale becomes small
+relative to the fluctuation scale, yet a fixed multiple of the extreme scale
+retains asymptotically all of the relevant truncated variance. This is why
+exact conditioning preserves a Poisson extreme process and why the action
+budget has a sharp explicit profile. The same normalization enters the local
+inverse through the exact identity \(r_\eps(1/(2n))=1/B_n\).
+
+These results resolve a specified upper-endpoint model problem left open in
+the inspected research sequence. They supply new material for that sequence
+without treating the fixed-endpoint classical mechanism as a new discovery,
+without promoting numerical agreement to proof, and without conflating a
+convergent local chart with global transseries realization or resurgence.
+
+\appendix
+\section{Source audit and dependency boundaries}
+\label{app:provenance}
+
+\subsection{Repository and library provenance}
+The repository snapshot used for the final open-question crosswalk is
+\begin{center}
+\small\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+\end{center}
+The inspected project group is
+\begin{center}
+\small\path{Analysis/Transseries/docs/series-and-transseries/}.
+\end{center}
+The project README, group index, and the critical-Hahn article's research
+questions and dependency discussion were read. The exact upper-endpoint
+question was checked in the pinned article at source lines 1467--1472.
+The full canonical transseries volume and every unmerged arrival were not
+audited. Accordingly, this article makes a precise continuation claim for the
+identified question, not an assertion that all possible repository overlap
+has been excluded.
+
+The user's Library supplied the scope statements of
+\path{article(20260929-201315).tex}, titled \emph{The Logarithmic Critical
+Endpoint}, and \path{Marginal_Critical_Transseries.tex}. These documents
+identify the fixed endpoint and the still-unaddressed uniform crossover.
+They are unpublished research drafts, not independent validation of the
+present claims. No repository files were modified, and no Lean build of this
+article's theorems was performed.
+
+\subsection{Proof dependencies}
+The analytic branch of the argument is
+\[
+ \text{polylogarithm expansion}
+ \ \Longrightarrow\ \text{pole cancellation}
+ \ \Longrightarrow\ \text{analytic implicit chart}.
+\]
+The coefficient branch is
+\[
+ \text{Lagrange identity}
+ \ \Longrightarrow\ \text{Poisson representation}
+ \ \Longrightarrow\ \text{masked local limit}.
+\]
+The scale estimates needed by the second branch follow directly from the
+integral defining \(h_\eps\), not from an assumed stable-limit theorem.
+Poisson tilting and tail Riemann sums then give the conditional process;
+positivity and monotonicity give the sharp budget and its necessity.
+The exact core duality connects the two branches after their independent
+construction. The finite root bounds use only scalar exponential inequalities
+and integral comparisons. All computational checks are downstream of these
+proofs.
+
+\section{A notation and regime ledger}
+\small
+\begin{longtable}{@{}p{0.23\textwidth}p{0.72\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+\(\eps,\alpha\) & Moving parameter and exponent, related by \(\alpha=2-\eps\).\\[1pt]
+\(c_\eps,F_\eps\) & Critical normalization \(1/\zeta(2-\eps)\) and normalized polylogarithm kernel.\\[1pt]
+\(\rho_\eps,U_{\eps,c}\) & Critical radius \(e^{-F_\eps(1)}\) and boundary value \(F_\eps(1)\).\\[1pt]
+\(\delta,t\) & Boundary coordinates \(q=\rho_\eps e^{-\delta}\), \(z=e^{-t}\).\\[1pt]
+\(h_\eps,\cE\) & Exact crossover integral and entire divided exponential.\\[1pt]
+\(r,v,\cV\) & Exact inverse core, its inverse-logarithmic parameter, and convergent analytic correction.\\[1pt]
+\(A_n\) & Extreme-action scale \((nc_n)^{1/\alpha_n}\).\\[1pt]
+\(B_n\) & Large root of \(B_n^2=nc_nh_{\eps_n}(B_n)\); central fluctuation scale.\\[1pt]
+\(v_n,d_n\) & Small quantities \(h_{\eps_n}(B_n)^{-1}\) and \(nc_nB_n^{-\alpha_n}\).\\[1pt]
+\(S_n,T_n\) & Full and thinned compound Poisson weighted sums.\\[1pt]
+\(R_n(M),H(s)\) & Exact retained coefficient fraction and limiting profile \(e^{-1/(2s^2)}\).\\[1pt]
+\(\Pi_n\) & Point process of action sizes divided by \(A_n\), with multiplicities.\\[1pt]
+\(\lambda_n\) & Coefficient crossover parameter \(\eps_n\log n\).\\[1pt]
+\(\omega_n\) & Bounded coupling displacement in \(\beta_n=1+\omega_nB_n/n\).\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Joint regime & Fluctuation normalization & Extreme normalization\\
+\midrule
+\(\eps\log n\to\lambda\in\R\) &
+\(\sqrt{(c_0/2)n\log n\,\cE(\lambda/2)}\) &
+\(\sqrt{nc_0}\,e^{\lambda/4}\)\\[5pt]
+\(\eps\log n\to+\infty\) &
+\((nc_\eps/\eps)^{1/(2-\eps)}\) &
+\((nc_\eps)^{1/(2-\eps)}\)\\[5pt]
+\(\eps\log n\to-\infty\) &
+\(\sqrt{nc_\eps/|\eps|}\) &
+\((nc_\eps)^{1/(2-\eps)}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+In every row \(\eps\to0\) is part of the hypothesis. The entries for \(B_n\)
+are asymptotic equivalents; the general expression for \(A_n\) is exact.
+The Gaussian local limit is not asserted for fixed positive \(\eps\).
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{repo-index}
+Vladimir Reshetnikov, \emph{ProveIt: Transseries project and
+series-and-transseries index}, repository documentation, inspected revision
+\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/README.md}.
+Inspection scope and status caveats are described in Appendix~\ref{app:provenance}.
+
+\bibitem{repo-stable}
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, research package in \texttt{ProveIt},
+29 September 2026. Research Question~4, source lines 1467--1472, inspected at
+the revision above.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}.
+
+\bibitem{prior-endpoint}
+\emph{The Logarithmic Critical Endpoint: Convergent Lambert Charts,
+All-Order Sector Laws, and Sharp Action-Cutoff Corrections}, unpublished
+research draft prepared for Vladimir Reshetnikov, 29 September 2026.
+Inspected in the user's Library under
+\path{article(20260929-201315).tex}. The scope statement explicitly treats
+the fixed endpoint and excludes the joint exponent/order limit. Used for
+scope comparison, not as a proof dependency.
+
+\bibitem{prior-marginal}
+\emph{Marginal Critical Transseries: Convergent Lambert--W Charts,
+Universal Cutoff Corrections, and Certified Action Budgets}, unpublished
+research draft prepared for Vladimir Reshetnikov, 29 September 2026.
+Inspected in the user's Library under
+\path{Marginal_Critical_Transseries.tex}. Its conclusion identifies uniform
+endpoint crossover as a further task. Used for scope comparison only.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, Chapter~25, especially
+\S25.12(ii), Eq.~25.12.12, and the zeta functional equation in \S25.4.
+\url{https://dlmf.nist.gov/25.12.E12}.
+Accessed 29 September 2026. The standard polylogarithm expansion is the
+external special-function identity used in Proposition~\ref{prop:normal}.
+
+\bibitem{janson}
+Svante Janson, Simply generated trees, conditioned Galton--Watson trees,
+random allocations and condensation, \emph{Probability Surveys} \textbf{9}
+(2012), 103--252. DOI: \texttt{10.1214/11-PS188}.
+\url{https://arxiv.org/abs/1112.0510}.
+Example~18.29 is a classical fixed cubic-tail antecedent of
+Gaussian/extreme-value separation. The moving-exponent local-limit proof in
+this article is given independently.
+
+\end{thebibliography}
+\end{document}
