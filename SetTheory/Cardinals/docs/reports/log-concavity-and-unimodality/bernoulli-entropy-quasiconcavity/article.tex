@@ -9,6 +9,8 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr,titlesec}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{pgfplots}% Part II figures (batch 43)
+\pgfplotsset{compat=1.18}
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.7em}{}
@@ -44,10 +46,20 @@
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\diag}{\operatorname{diag}}
 \newcommand{\dd}{\,\mathrm d}
+% Part II (batch 43, manuscript 01) macros
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\artanh}{\operatorname{artanh}}
+\newcommand{\p}{\boldsymbol p}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\Tq}{T_{q,n}}
+\newcommand{\Rq}{R_{q,n}}
+\newcommand{\Zq}{Z_{q,n}}
 \hypersetup{pdftitle={Two-coin counterexamples to the proposed generalized Shepp--Olkin thresholds},
  pdfauthor={AI-assisted research draft prepared for Vladimir Reshetnikov},
  pdfsubject={Bernoulli sums, Renyi and Tsallis entropy, concavity, exact counterexamples}}
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{1.0cm}
@@ -57,7 +69,10 @@ proposed generalized\\[.25em] Shepp--Olkin thresholds\par}
 \vspace{.7cm}
 {\large All finite orders above one, exact rational certificates,\\
 and the fixed-mean entropy phase diagram\par}
-\vspace{.8cm}
+\vspace{.35cm}
+{\normalsize With Part~II (added 29 September 2026): \emph{Nine bits, ten
+bits}, sharp dimension\\ boundaries for product-Bernoulli entropy\par}
+\vspace{.6cm}
 {\normalsize Research draft prepared for Vladimir Reshetnikov\par}
 \vspace{.2cm}
 {\normalsize 20 September 2026\par}
@@ -87,6 +102,11 @@ The all-order disproof is elementary and does not depend on numerical
 experiments. Reproducible exact and symbolic checks accompany the article.
 The general joint-concavity question for $0<q<1$ is not settled here, and
 bibliographic priority and the proofs have not been independently refereed.
+
+[Added 29 September 2026, batch~43: Part~II settles this question for the
+joint bit vector (collision-free weighted sums) instead of the sum: R\'enyi
+entropy is jointly concave in every dimension, Tsallis entropy for every
+$0<q<1$ exactly up to nine bits. For the ordinary sum it stays open here.]
 \end{abstract}
 \vfill
 \noindent\textbf{Selection record.} A single OS-backed uniform draw selected
@@ -94,10 +114,12 @@ bibliographic priority and the proofs have not been independently refereed.
 $71$ excluded research packages were reviewed before the problem was chosen.
 The complete area list and original draw are included in the archive.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \tableofcontents
 \clearpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Two-coin counterexamples: the ordinary sum}
 
-\section{The published problem and the scope of the result}
+\section{The published problem and the scope of the result}\label{bep:sec:problem}
 \subsection{Bernoulli sums and entropy}
 Let $X_1,\ldots,X_n$ be independent, with
 $\mathbb P(X_i=1)=p_i$ and $\mathbb P(X_i=0)=1-p_i$. Write
@@ -161,6 +183,14 @@ known, the largest finite order for which universal joint concavity can hold
 is exactly $1$; the full set of admissible orders below $1$ is not determined
 here.
 
+\noindent[Added 29 September 2026, batch~43: for the ordinary sum studied
+here this is still undetermined in this report. Part~II determines it for
+the joint vector $(X_1,\ldots,X_n)$: R\'enyi entropy is jointly concave
+for all $0<q\leq2$ in every dimension, and Tsallis entropy for all
+$0<q<1$ exactly when $n\leq9$ (Section~\ref{bep:pe:sec:settles}). An
+unverified external preprint claims the ordinary-sum threshold one; see
+there.]
+
 \subsection{Source and novelty audit}
 The original arXiv PDF, including page~7 with the conjecture, was inspected.
 The survey independently confirms the proposed constants. The later
@@ -221,7 +251,7 @@ probability vector is irrelevant. Although $\boldsymbol m$ is the midpoint
 of the \emph{coin parameters}, $f(\boldsymbol m)$ is not the midpoint of the
 endpoint probability vectors; that midpoint is simply $f(\boldsymbol x)$.
 
-\section{Counterexamples for every finite order above one}
+\section{Counterexamples for every finite order above one}\label{bep:sec:allorders}
 \subsection{The mean-preserving two-coin path}
 Fix $0<p\leq1/2$ and consider
 \begin{equation}
@@ -704,7 +734,13 @@ This theorem concerns a one-dimensional family of directions in a
 \emph{two}-dimensional parameter cube. It is not a proof of joint concavity
 on that cube for $q<1$, much less for arbitrary numbers of coins.
 
-\section{Minimum dimension and separate coordinate concavity}
+\noindent[Added 29 September 2026, batch~43: for the joint vector of two
+bits, instead of their sum, Part~II proves joint concavity on the whole
+square for every $0<q<1$ (Theorem~\ref{bep:pe:thm:nine}, any $n\leq9$).
+That is a statement about a different function and implies nothing about
+the sum; see Section~\ref{bep:pe:sec:settles}.]
+
+\section{Minimum dimension and separate coordinate concavity}\label{bep:sec:mindim}
 \subsection{Tsallis entropy remains concave in each coordinate}
 \begin{proposition}\label{prop:separate}
 For every $n$ and every finite $q>0$, Tsallis entropy of a Bernoulli sum is
@@ -776,6 +812,11 @@ For example, at $q=2$ the one-coin identity simplifies to
 The elementary one-coin obstruction above order two is consistent with the
 source's original test family; the two-coin antisymmetric direction is what
 forces the bound down to one.
+
+\noindent[Added 29 September 2026, batch~43: Part~II's Theorem~\ref{bep:pe:thm:renyi}
+re-derives the one-coin statement by a second route and extends it
+additively to the joint vector of $n$ bits: there R\'enyi entropy is
+jointly concave in every dimension exactly for $0<q\leq2$.]
 
 \section{Higher dimensions and structural consequences}
 \subsection{Strictly interior counterexamples with any number of coins}
@@ -850,7 +891,7 @@ is not a counterexample to that question. Likewise, convolution
 entropy-power inequalities such as those studied in \cite{MMR2023} are not
 Jensen inequalities in the Bernoulli parameters.
 
-\section{Verification, computation and reproducibility}
+\section{Verification, computation and reproducibility}\label{bep:sec:verification}
 \subsection{Three independent layers}
 The mathematical argument is deliberately independent of a search program.
 The main disproof consists of the three-probability identity
@@ -898,7 +939,14 @@ A prebuilt PDF, the numerical table and the two figure PDFs are included,
 so rebuilding the article itself does not require running Python.
 The dependency versions used are recorded in \texttt{results/environment.txt}.
 
-\section{Conclusions and remaining questions}
+\noindent[Added 29 September 2026, batch~43: this section describes Part~I's
+files. Part~II's checks and their shipped names are in
+Section~\ref{bep:pe:sec:reproduce}. The article build now also reads
+\nolinkurl{data/02-product-entropy-profile_table.tex} and
+\nolinkurl{data/02-product-entropy-profile_plot.csv} and needs the
+\texttt{pgfplots} package; it still needs no Python.]
+
+\section{Conclusions and remaining questions}\label{bep:sec:conclusions}
 The proposed numerical generalized Shepp--Olkin thresholds are false in the
 unrestricted affine-interpolation setting. The failure is already visible
 with two independent coins, at a fixed mean, away from every face of the
@@ -923,6 +971,17 @@ classify fixed-mean entropy maximizers for three or more Bernoulli
 parameters; Theorem~\ref{thm:anyn} rules out a universal balanced-maximizer
 principle above one, but is not such a classification.
 
+\noindent[Added 29 September 2026, batch~43: the first question is open in
+this report for the ordinary sum studied here. For the joint bit vector,
+equivalently a weighted sum with distinct subset sums, Part~II answers it:
+R\'enyi entropy yes in every dimension; Tsallis entropy yes exactly when
+$n\leq9$, with the sharp fixed-order criterion $n\Psi(q)\leq1$ and failure
+at $q=20/41$ from ten bits on (Section~\ref{bep:pe:sec:settles}). A
+preprint by Wang \cite{bep:pe:Wang} claims the ordinary-sum threshold is
+exactly one; it is recorded there as an unverified external claim, and
+this question is not marked answered on its strength. The second and
+third questions are not addressed by Part~II.]
+
 \paragraph{Scope of the order parameter.}
 All threshold and minimum-dimension assertions in this article concern
 finite positive orders. In particular, the direct limit of the Tsallis
@@ -939,8 +998,1646 @@ The novelty claim is limited to what the documented literature search
 established. These limitations concern review and priority; they do not
 replace or weaken the explicit mathematical statements and proofs.
 
+%% ====================================================================
+%% Part II: batch 43, manuscript 01 (proveit_product_entropy)
+%% ====================================================================
+\clearpage
+\fancyhead[L]{\small Nine bits, ten bits}
+\fancyhead[R]{\small Part II: product-Bernoulli entropy}
+\phantomsection\part*{Part II.\quad Nine bits, ten bits: sharp dimension boundaries for product-Bernoulli entropy}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Nine bits, ten bits: product-Bernoulli entropy}
+
+\noindent\emph{Sections~\ref{bep:sec:problem}--\ref{bep:sec:conclusions}
+and Appendices~\ref{bep:app:selection}--\ref{bep:app:certificate} form the
+original report (Part~I) of 20 September 2026, unchanged except for six
+dated pointers to this addition (one in the abstract), a two-line notice
+on the title page, contents entries for the two parts, labels on seven
+headings, a page-anchor fix around the title page, and two bibliography
+entries used only by Part~II.
+Part~II was added on 29 September 2026 in batch~43 of ProveIt's
+incoming-report intake, from one manuscript written against the pinned
+state of Part~I. It takes up Part~I's ``most immediate remaining
+mathematical question'', whether universal joint concavity holds for all
+$0<q<1$, for a different observable: the \emph{joint bit vector}
+$(X_1,\ldots,X_n)$, equivalently a weighted sum whose subset sums are all
+distinct, and not Part~I's ordinary sum $X_1+\cdots+X_n$. For that
+observable it settles the question: R\'enyi entropy is jointly concave in
+every dimension, and Tsallis entropy is jointly concave for every $0<q<1$
+exactly when $n\leq9$. Part~I's question for the ordinary sum stays open
+in this report. Section~\ref{bep:pe:sec:intro} records the provenance,
+what is and is not settled, and the notation of the addition.}
+
+\section{Provenance and conventions of Part~II}\label{bep:pe:sec:intro}
+
+\subsection{One manuscript, one addition}\label{bep:pe:sec:source}
+Part~II is batch-43 manuscript~01, \emph{Nine Bits, Ten Bits: Sharp
+dimension boundaries for product-Bernoulli entropy. A scalar curvature
+criterion, exact counterexamples, and mean-preserving weighted-sum
+obstructions}, an AI-assisted research draft prepared for Vladimir
+Reshetnikov and dated 29 September 2026 (21~A4 pages as delivered). It
+arrived as the archive \nolinkurl{proveit_product_entropy.zip} (inner
+directory \nolinkurl{proveit_product_entropy/}, main file
+\nolinkurl{article.tex}) in ProveIt commit \texttt{06bcc37a8} and was
+placed in \texttt{faef2ed2a}. It was written against ProveIt commit
+\texttt{ac9107d74083fcfe8064b4aaeda7989612e6a5b6}, reading Part~I's
+\nolinkurl{article.tex} and \nolinkurl{README.md} there (its source notes
+name the setup, the subunit fixed-mean theorem, the one-coin R\'enyi
+threshold, the separate-coordinate concavity and the higher-dimensional
+counterexample), through
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ac9107d74083fcfe8064b4aaeda7989612e6a5b6/SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/bernoulli-entropy-quasiconcavity/article.tex}{the
+pinned source}. Part~I's files are unchanged between that commit and the
+placement commit, so every statement the manuscript makes about ``the
+repository report'' refers to Part~I as printed above.
+
+\begin{sloppypar}
+The manuscript's code and data are shipped beside Part~I's files with the
+prefix \texttt{02-product-entropy-} (Part~I's unprefixed files count
+as~01): its three scripts and its Makefile in \nolinkurl{code/}, its six
+recorded outputs (delivered in \nolinkurl{results/}) in
+\nolinkurl{data/}, and its source notes, delivered as
+\nolinkurl{SOURCES_AND_STATUS.md}, as
+\nolinkurl{02-product-entropy-SOURCES_AND_STATUS.md} at the report root.
+Its manuscript, delivery README, PDF, two figure PDFs and checksum file
+are not shipped; they survive in the arrival commit.
+Section~\ref{bep:pe:sec:reproduce} gives the shipped names and how to
+rerun the checks.
+\end{sloppypar}
+
+In Part~II, ``this article'', ``here'' and ``we'' refer to the
+manuscript, and ``the repository report'' to Part~I. The manuscript
+contributes, in the order printed here: its question and scope, the
+notation and three summary theorems (Section~\ref{bep:pe:sec:question});
+the rank-one Hessian (Section~\ref{bep:pe:sec:rankone}); the hyperbolic
+profile and its unique optimizer (Section~\ref{bep:pe:sec:profile}); the
+inequality behind nine dimensions (Section~\ref{bep:pe:sec:nine}); the
+exact orders $1/2$ and $1/3$, the quartic law and the derivative at $1/2$
+(Section~\ref{bep:pe:sec:exactorders}); the rational counterexamples at
+$q=20/41$ (Section~\ref{bep:pe:sec:rational}); the weighted-mean
+obstruction near equal weights (Section~\ref{bep:pe:sec:weighted});
+strong concavity, the R\'enyi and above-one orders and quasiconcavity
+(Section~\ref{bep:pe:sec:strong}); endpoint asymptotics
+(Section~\ref{bep:pe:sec:endpoints}); the rational-order decision
+procedure (Section~\ref{bep:pe:sec:algebraic}); the block-product
+criterion and a formalization plan (Section~\ref{bep:pe:sec:blocks}); ten
+research questions (Section~\ref{bep:pe:sec:questions}); its verification,
+provenance and limitations (Section~\ref{bep:pe:sec:verification}); and
+its reproduction appendix (Section~\ref{bep:pe:sec:reproduce}). Every
+result, proof, example, remark, limitation and question of the manuscript
+is printed. Its abstract reads:
+\begin{quote}\small
+Let $X_1,\ldots,X_n$ be independent Bernoulli variables, and consider Tsallis
+entropy of the full bit vector, equivalently of a weighted sum whose subset
+sums are all distinct. We prove a sharp dimension theorem: joint concavity
+in the Bernoulli parameters holds for \emph{every} order $0<q<1$ precisely
+when $n\leq9$. Ten bits are the first obstruction. For each fixed order,
+concavity is equivalent to $n\Psi(q)\leq1$, where an explicit scalar profile
+$\Psi$ is evaluated at the unique solution of
+$\tanh((1-q)t)\tanh t=1-q$.
+
+An elementary hyperbolic inequality gives $\Psi(q)<1/9$. At $q=1/2$,
+$\Psi=1/10$ exactly, but its derivative is negative; orders just below
+$1/2$ already violate ten-dimensional concavity. A rational witness at
+$q=20/41$ reduces local failure to a positive 96-digit integer. We also
+certify a finite rational midpoint inequality without floating-point
+assumptions. A second certificate preserves the mean of a genuinely
+weighted sum with positive weights arbitrarily close to one.
+
+We determine the exceptional thresholds $N(1/2)=10$ and $N(1/3)=11$,
+prove a fourth-order bending law at the half-order degeneracies, obtain
+strong-concavity bounds and endpoint asymptotics, and give an exact
+algebraic decision procedure for rational orders. For comparison, product
+R\'enyi entropy is concave in every dimension exactly for $0<q\leq2$.
+Our subunit Tsallis counterexamples remain quasiconcave.
+
+These results concern the collision-free weighted extension of the
+repository's Bernoulli-entropy project, not a new solution of the ordinary
+unweighted Shepp--Olkin problem. All principal statements have
+self-contained proofs. The accompanying finite certificates are not a
+Lean formalization, and bibliographic priority and the proofs have not
+been independently reviewed.
+\end{quote}
+
+\subsection{What Part~II settles in Part~I, and what it does not}
+\label{bep:pe:sec:settles}
+Part~I closes (Section~\ref{bep:sec:conclusions}) with ``the most
+immediate remaining mathematical question'': whether universal joint
+concavity holds for all $0<q<1$. There, as throughout Part~I, the
+entropies are those of the \emph{ordinary sum}
+$S_{\boldsymbol p}=X_1+\cdots+X_n$, see \eqref{eq:entropies}, joint
+concavity is \eqref{eq:jensen} on $[0,1]^n$, and both R\'enyi and Tsallis
+entropy are meant. Part~II answers the same question for the \emph{joint
+vector} $(X_1,\ldots,X_n)$, equivalently for every weighted sum
+$\sum_iw_iX_i$ whose $2^n$ subset sums are distinct:
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item \textbf{R\'enyi: yes, in every dimension.} $R_{q,n}$ is jointly
+concave on $[0,1]^n$ for every $n$ exactly when $0<q\leq2$
+(Theorem~\ref{bep:pe:thm:renyi}). The subunit case is the additive
+consequence of the one-bit statement.
+\item \textbf{Tsallis: yes exactly up to nine bits.} $T_{q,n}$ is jointly
+concave for every $0<q<1$ if and only if $n\leq9$
+(Theorem~\ref{bep:pe:thm:nine}); at a fixed order, if and only if
+$n\Psi(q)\leq1$ (Theorem~\ref{bep:pe:thm:profile-summary}). For every
+$n\geq10$ it fails at $q=20/41$ with strictly interior rational parameters
+and a certified finite Jensen gap (Theorem~\ref{bep:pe:thm:exact},
+Proposition~\ref{bep:pe:prop:finite}), and, with positive weights
+arbitrarily close to one, even at constant weighted mean
+(Theorem~\ref{bep:pe:thm:weighted}). These failures are of concavity only:
+product Tsallis entropy stays quasiconcave for $0<q\leq2$
+(Proposition~\ref{bep:pe:prop:quasiconcavity}).
+\item \textbf{Above one, for comparison.} For the joint vector, Tsallis
+entropy with $n\geq2$ bits is concave for $1\leq q\leq2$ and fails
+quasiconcavity for every $q>2$ (Theorem~\ref{bep:pe:thm:tsallisabove}),
+whereas the ordinary sum fails quasiconcavity for every $q>1$ already with
+two coins (Theorem~\ref{thm:main}). The two observables behave differently
+on both sides of order one.
+\end{enumerate}
+
+\noindent What is \emph{not} settled:
+\begin{itemize}
+\item \textbf{Part~I's question for the ordinary sum.} Part~II does not
+answer it, and neither does this report. The ordinary sum is the
+coarsening of the vector by Hamming weight, and entropy does not pass
+continuously from one to the other as weights coalesce
+(Section~\ref{bep:pe:sec:coalesce}). Tempting false readings: ``ten bits
+fail, so ordinary-sum Tsallis entropy fails below order one for
+$n\geq10$'' (not implied; nothing is proved here about failure of the
+ordinary sum below order one), and ``nine bits are concave, so the
+ordinary sum is concave for $n\leq9$'' (not implied either). Likewise
+Part~I's Theorem~\ref{thm:subcritical} (two coins, fixed-mean segments,
+ordinary sum) and the case $n=2$ of Theorem~\ref{bep:pe:thm:nine} (two
+bits, all directions, joint vector) are statements about different
+functions, and neither implies the other.
+\item \textbf{An external claim, recorded and not verified.} The
+manuscript records the preprint of H.~Wang \cite{bep:pe:Wang}
+(arXiv:2609.27433v1, submitted 23 September 2026). By the manuscript's
+account (its source notes, shipped as
+\nolinkurl{02-product-entropy-SOURCES_AND_STATUS.md}, which consulted the
+abstract and HTML), that preprint states that the ordinary-sum threshold
+is exactly one and establishes subunit power-sum concavity; if correct, it
+would answer Part~I's question affirmatively for the ordinary sum. The
+manuscript does not rely on it or certify it. This report has not read or
+verified the preprint and does not mark Part~I's question answered on its
+strength: in this report the question remains open, with that claim
+recorded.
+\item \textbf{Partially colliding weights} (question Q4 of
+Section~\ref{bep:pe:sec:questions}), and every other question of
+Part~I's Section~\ref{bep:sec:conclusions}: same-sign interpolation slopes
+and fixed-mean maximizers for three or more coins. Part~II does not
+address them.
+\end{itemize}
+Part~I's delivered status file \nolinkurl{STATUS.md} (20 September 2026)
+is shipped unchanged; its items ``General joint concavity for every
+$0<q<1$'' and ``An all-order interval theorem for arbitrary $n$'' remain
+accurate for the ordinary sum.
+
+\subsection{Notation of Part~II beside Part~I}\label{bep:pe:sec:notation}
+Part~II keeps the manuscript's symbols, with one exception (below). Its
+entropies use the same unnormalized conventions as Part~I's
+\eqref{eq:entropies}: $T_{q,n}=(Z_{q,n}-1)/(1-q)$ and
+$R_{q,n}=\log Z_{q,n}/(1-q)$ are $H_{\mathrm T,q}$ and $H_{\mathrm R,q}$
+applied to the joint vector instead of the sum, and for $n=1$ they
+coincide with Part~I's. Several letters carry different meanings in the
+two parts (Table~\ref{bep:pe:tab:notation}); within Part~II the Part~II
+meaning always applies.
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.2\textwidth}
+ >{\raggedright\arraybackslash}p{.4\textwidth}
+ >{\raggedright\arraybackslash}p{.34\textwidth}@{}}
+\caption{Symbols of Part~II that differ from, or could be confused with,
+Part~I's.}\label{bep:pe:tab:notation}\\
+\toprule
+Part~II symbol & Meaning in Part~II & Not to be read as (Part~I)\\
+\midrule\endfirsthead
+\toprule
+Part~II symbol & Meaning in Part~II & Not to be read as (Part~I)\\
+\midrule\endhead
+observable & joint vector $(X_1,\ldots,X_n)$, or a collision-free
+ $S_w=\sum_iw_iX_i$ & the ordinary sum $S_{\boldsymbol p}$\\
+$Z_{q,n}$ & $\sum_xP_{\p}(x)^q=\prod_ih_q(p_i)$, power sum of the vector &
+ $F_q$, power sum of the sum, \eqref{eq:powersum}\\
+$T_{q,n}$, $R_{q,n}$ & Tsallis, R\'enyi entropy of the vector &
+ $H_{\mathrm T,q}$, $H_{\mathrm R,q}$ of the sum\\
+$h_q(p)$ & $p^q+(1-p)^q$, one-bit power sum & equals Part~I's
+ $C(z)$ at $z=p$ (proof of Proposition~\ref{prop:minimalrenyi})\\
+$a$ & $1-q$ (Sections~\ref{bep:pe:sec:question}--\ref{bep:pe:sec:exactorders},
+ \ref{bep:pe:sec:strong} for $q<1$, \ref{bep:pe:sec:endpoints}); but $q-1$
+ in the above-one part of the proof of Theorem~\ref{bep:pe:thm:renyi} &
+ $a=q-1$ throughout Part~I; the sign flips\\
+$b_q,d_q,\rho_q$; $b$, $D$ & gradient and curvature of $\log h_q$; $D$ is the
+ diagonal matrix $\diag(d_q(p_i))$ (block-diagonal in
+ Theorem~\ref{bep:pe:thm:blocks}) & $D_q(p)$, the balanced-point
+ quantity \eqref{eq:D}\\
+$D_{\mathrm{cert}}$ & the 96-digit integer of
+ \eqref{bep:pe:eq:integerD} (the manuscript's $D$) & --- \\
+$\Psi(q)$, $N(q)$ & $\max_p\rho_q(p)$; $\lfloor1/\Psi(q)\rfloor$, the
+ \emph{largest concave} dimension of $T_{q,n}$ & Part~I's minimum number
+ of coins for failure (Section~\ref{bep:sec:mindim}); for the vector that
+ is $N(q)+1$\\
+$t$, $t_q$, $t_*$ & half log-odds $\tfrac12|\log(p/(1-p))|$; its optimal
+ value; the root of $t\tanh t=1$ & $t$, the imbalance on the path
+ \eqref{eq:path}\\
+$\beta_a(t)$, $B_q$, $p_q$, $p_*$ & profile quotient, its root, optimizing
+ parameters & $\pb$, $\pc$, the phase boundaries\\
+$F_a(t)$; $F(s)$; $F$ & a series in the proof of
+ Lemma~\ref{bep:pe:lem:ineq}; a one-variable restriction
+ (Section~\ref{bep:pe:sec:rational}); the block product
+ (Theorem~\ref{bep:pe:thm:blocks}) & $F_q$, the power sum\\
+$L$ & rational root bounds $L,U$ (Section~\ref{bep:pe:sec:rational});
+ $\log(4/q)$ (Theorem~\ref{bep:pe:thm:smallq}) & $\log2$
+ (Proposition~\ref{prop:asymptotics})\\
+$C$ & $t_*^2-1$ (Theorem~\ref{bep:pe:thm:nearone}) & $p^2$ (from Section~\ref{bep:sec:allorders} on);
+ $C(z)$ (Proposition~\ref{prop:minimalrenyi})\\
+$w$, $w_i$ & weights (Section~\ref{bep:pe:sec:weighted}); in the proof of
+ Theorem~\ref{bep:pe:thm:smallq}, $w=z^{1-q}$ & ---\\
+$m,k$; $P_{m,k}$, $K_{m,k,n}$, $y$ & $q=m/k$; the polynomials of
+ Theorem~\ref{bep:pe:thm:algebraic}; $y=e^{-2t_q/k}$ & $m$, the dyadic
+ exponent \eqref{eq:dyadic}; $K(t)=G(t^2)$; $y=x^a$ in
+ Theorem~\ref{thm:curvature}\\
+$g$ & the one-variable function in the proof of
+ Theorem~\ref{bep:pe:thm:quartic} & $g(a)$, $g_k$\\
+$\sigma$, $v$, $c$, $\delta$, $\varepsilon$, $\Delta$, $\Delta_w$ & sign
+ vector, directions, weight perturbation, step, Jensen gaps & ---\\
+$\one$, $\p$ & all-ones vector; parameter vector $\boldsymbol p$ & ---\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\noindent\textbf{Renamed symbol.} The 96-digit certificate integer is
+$D_{\mathrm{cert}}$ here; the manuscript, its verifier output
+(\nolinkurl{data/02-product-entropy-checks.txt}) and its certificate file
+call it $D$. The renaming separates it from the matrix $D$ of the same
+proof and from Part~I's $D_q(p)$; nothing else is renamed and no
+normalization changes.
+
+\subsection{Where the write had to choose}\label{bep:pe:sec:choices}
+\begin{itemize}
+\item \textbf{Placement and numbering.} Part~II follows Part~I's last
+section and precedes Part~I's appendices, so no number of Part~I moves (the
+\texttt{.aux} numbers of all of Part~I's labels were compared with a build
+of the committed text). The manuscript's Section~$n$ is
+Section~$n+11$ here ($n=1,\ldots,13$), and each numbered statement and
+equation keeps its position: its Theorem~$n.m$ is Theorem~$(n+11).m$ and
+its equation $(n.m)$ is $(n+11.m)$. Its Figures~1--2 are
+Figures~\ref{bep:pe:fig:profile}--\ref{bep:pe:fig:detail} and its Table~1
+is Table~\ref{bep:pe:tab:profile} (Table~\ref{bep:pe:tab:notation} is new); its
+questions keep the names Q1--Q10.
+Its Appendix~A is Section~\ref{bep:pe:sec:reproduce}.
+\item \textbf{Front matter.} The manuscript's title page, abstract,
+contents and repository-baseline line are replaced by this section (the
+abstract is quoted above, the baseline in
+Section~\ref{bep:pe:sec:source}).
+\item \textbf{Bibliography.} The manuscript's entry for Hillion--Johnson
+is the same paper as Part~I's \cite{HJ2017} and is cited as such; its
+entries for Wang and Tsallis are added as \cite{bep:pe:Wang} and
+\cite{bep:pe:Tsallis}. Its two citations of Part~I (``the repository
+report'') are now references to Part~I's sections and propositions, and
+the pinned URL of that entry is in Section~\ref{bep:pe:sec:source}.
+\item \textbf{Figures and files.} The two figures are redrawn with
+\texttt{pgfplots} from the shipped profile data (their captions say so),
+and the delivered file names in Section~\ref{bep:pe:sec:rational} are
+replaced by the shipped ones, with the delivered names beside them.
+\item \textbf{Overlaps with Part~I.} The manuscript itself disclaims
+novelty for the ordinary-sum counterexample above one, its fixed-mean
+construction and the one-bit R\'enyi threshold
+(Section~\ref{bep:pe:sec:verification}). Concretely: the one-bit case of
+Theorem~\ref{bep:pe:thm:renyi} for $q>1$ is Part~I's
+Proposition~\ref{prop:minimalrenyi}, proved there through the convexity of
+$\cosh$ and here through $\sinh(at)\leq a\sinh t$, a second route; the
+one-bit case of Theorem~\ref{bep:pe:thm:tsallisabove} is the remark after
+Part~I's Proposition~\ref{prop:separate} that one coin is never a Tsallis
+counterexample; and the separate-coordinate clause of
+Proposition~\ref{bep:pe:prop:quasiconcavity} is the product-model
+counterpart of Proposition~\ref{prop:separate}. The rest of Part~II
+concerns the joint vector and has no counterpart in Part~I.
+\item \textbf{Dated notes.} Text added at the write is marked
+``[Write, 29 September 2026, batch~43: \ldots]'' in Part~II and
+``[Added 29 September 2026, batch~43: \ldots]'' in Part~I; in the two
+figure captions and Section~\ref{bep:pe:sec:reproduce} the added words
+are in brackets. Unmarked substitutions in the manuscript's text are
+only these: its two citations of Part~I became references (``(Part~I
+above)'', ``(Part~I, Section~\ref{bep:sec:conclusions})'' in
+Section~\ref{bep:pe:sec:question}, and ``(Part~I,
+Proposition~\ref{prop:minimalrenyi}, for $1<q\leq2$ and $q>2$)'' after
+Theorem~\ref{bep:pe:thm:renyi}); $D$ became $D_{\mathrm{cert}}$ and ``$D$
+in the Hessian lemma'' became ``the matrix $D$ in the Hessian lemma'' in
+the proof of Theorem~\ref{bep:pe:thm:exact}; and the file names in the
+proof of Proposition~\ref{bep:pe:prop:finite}. No mathematical statement
+of the manuscript or of Part~I was changed, and nothing of the manuscript
+was omitted.
+\item \textbf{Status.} The write read the manuscript's proofs and spot-checked
+its principal constants numerically; that reading is not an independent
+proof review. Part~II is AI-assisted and unrefereed, and nothing in it is
+formalized: the proof-assistant decomposition in
+Section~\ref{bep:pe:sec:blocks} and question Q10 are proposals, and
+ProveIt has no Lean or Rocq development of R\'enyi or Tsallis entropy.
+\end{itemize}
+
+\section{Research question, context, and precise scope}\label{bep:pe:sec:question}
+\subsection{Why this extension is different}
+The ProveIt report \emph{Two-coin counterexamples to the proposed generalized
+Shepp--Olkin thresholds} (Part~I above) studies the entropy of the
+ordinary sum $X_1+\cdots+X_n$. It gives counterexamples above order one
+and leaves the full subunit joint-concavity question unresolved in that
+report (Part~I, Section~\ref{bep:sec:conclusions}). The present
+investigation changes the observable:
+instead of identifying bit strings with the same number of ones, it
+retains the full vector, or encodes that vector in a scalar weighted sum.
+This removes collisions between outcomes. The resulting probability
+model factorizes completely, but its Tsallis entropy need not be jointly
+concave. The first failing dimension turns out to be ten.
+
+For historical context, Hillion and Johnson proved the ordinary-sum
+Shannon concavity theorem and proposed R\'enyi and Tsallis extensions
+\cite{HJ2017}. A preprint submitted on 23 September 2026 by Wang states the
+sharp ordinary-sum range $0<q\leq1$ \cite{bep:pe:Wang}. We record that current
+claim rather than treating the unweighted question as untouched. None of
+our proofs invokes its argument. Tsallis entropy is used in its standard
+unnormalized convention \cite{bep:pe:Tsallis}.
+
+\noindent[Write, 29 September 2026, batch~43: the preprint's claim is
+recorded here as the manuscript reports it. Neither the manuscript nor
+this report has verified its proof, so Part~I's ordinary-sum question is
+not marked answered in this report; see
+Section~\ref{bep:pe:sec:settles}.]
+
+The question resolved here is therefore the following independent
+extension:
+\begin{quote}
+For which dimensions and entropy orders is the entropy of an independent
+Bernoulli vector jointly concave in its success probabilities? Does that
+property survive a collision-free weighted encoding, including weights
+arbitrarily close to equal weights?
+\end{quote}
+The second formulation is exactly equivalent to the first whenever the
+encoding is injective. It is not equivalent when subset sums collide.
+
+\subsection{Notation and definitions}
+Let $n\geq1$ and let $X_i\sim\Bern(p_i)$ be independent. Their joint mass
+function is
+\begin{equation}
+ P_{\p}(x)=\prod_{i=1}^n p_i^{x_i}(1-p_i)^{1-x_i},
+ \qquad x\in\{0,1\}^n,\quad\p\in[0,1]^n.
+\end{equation}
+For finite $q>0$, define
+\begin{align}
+ h_q(p)&=p^q+(1-p)^q,\\
+ \Zq(\p)&=\sum_xP_{\p}(x)^q=\prod_{i=1}^n h_q(p_i),\label{bep:pe:eq:factor}\\
+ \Tq(\p)&=\frac{\Zq(\p)-1}{1-q},\qquad
+ \Rq(\p)=\frac{\log\Zq(\p)}{1-q}\quad(q\ne1).\label{bep:pe:eq:entropies}
+\end{align}
+We set $0^q=0$. At $q=1$ both entropies mean the Shannon limit
+\begin{equation}
+ T_{1,n}(\p)=R_{1,n}(\p)
+ =\sum_i[-p_i\log p_i-(1-p_i)\log(1-p_i)],
+\end{equation}
+with $0\log0=0$. All logarithms are natural.
+
+Joint concavity means concavity on the \emph{parameter cube}:
+\begin{equation}
+ H((1-\theta)x+\theta y)\geq(1-\theta)H(x)+\theta H(y),
+ \quad x,y\in[0,1]^n,\quad0\leq\theta\leq1.\label{bep:pe:eq:jensen}
+\end{equation}
+It is stronger than concavity in each coordinate. Concavity of entropy as
+a function of an unrestricted mass vector does not settle this question:
+$\p\mapsto P_{\p}$ is not affine.
+
+\begin{definition}
+Weights $w_1,\ldots,w_n\in\R$ are \emph{collision-free} if
+$x\mapsto\sum_iw_ix_i$ is injective on $\{0,1\}^n$.
+Equivalently, no nonzero vector in $\{-1,0,1\}^n$ has weighted sum zero.
+\end{definition}
+If the weights are collision-free, $S_w=\sum_iw_iX_i$ has exactly the same
+nonzero probabilities as the vector, merely relabeled. Thus its entropies
+are \eqref{bep:pe:eq:entropies}. The weights $w_i=2^{i-1}$ are an example.
+All subsequent theorems about collision-free sums concern ordinary
+\emph{discrete} entropy, not differential entropy.
+
+\subsection{Main conclusions at a glance}
+\begin{theorem}[Sharp universal dimension]\label{bep:pe:thm:nine}
+For $n\geq1$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $T_{q,n}$ is jointly concave on $[0,1]^n$ for every $0<q<1$;
+\item $n\leq9$.
+\end{enumerate}
+For $n\leq9$ it is in fact strongly concave for each fixed such $q$.
+For $n=10$ failure occurs at $q=20/41$, with strictly interior rational
+parameters and a finite rational midpoint certificate. Every $n>10$
+also fails at that same order.
+\end{theorem}
+
+\begin{theorem}[Complete fixed-order criterion]\label{bep:pe:thm:profile-summary}
+For $0<q<1$, let $a=1-q$ and let $t_q>0$ be the unique solution of
+\begin{equation}
+ \tanh(a t_q)\tanh t_q=a.\label{bep:pe:eq:critical-summary}
+\end{equation}
+Put
+\begin{equation}
+ B_q=\frac{\sinh(a t_q)}{\cosh t_q},\qquad
+ \Psi(q)=\frac{qB_q^2}{a+B_q^2}.
+\end{equation}
+Then $T_{q,n}$ is jointly concave if and only if $n\Psi(q)\leq1$.
+Consequently the largest concave dimension is
+\begin{equation}
+ N(q)=\left\lfloor\frac1{\Psi(q)}\right\rfloor.
+\end{equation}
+In particular, $N(1/2)=10$ and $N(1/3)=11$.
+\end{theorem}
+
+\begin{theorem}[Weighted and R\'enyi consequences]\label{bep:pe:thm:other-summary}
+The preceding conclusions hold unchanged for every collision-free
+weighted sum. At $q=20/41$ there are ten positive weights arbitrarily
+close to one for which Tsallis concavity fails even on an affine
+hyperplane of constant $\mathbb E S_w$.
+
+For every $n$, $R_{q,n}$ is jointly concave exactly when $0<q\leq2$.
+For $n\geq2$, $T_{q,n}$ is concave throughout $1\leq q\leq2$ and fails
+concavity for every $q>2$. For $n=1$, Tsallis entropy is concave for all
+finite $q>0$.
+\end{theorem}
+Theorems~\ref{bep:pe:thm:nine}--\ref{bep:pe:thm:other-summary} are proved below; their
+statement here introduces no additional hypotheses.
+
+\section{A rank-one description of the entire Hessian}\label{bep:pe:sec:rankone}
+\subsection{Local curvature in one scalar statistic}
+Fix $0<q<1$. Define, for $0<p<1$,
+\begin{equation}
+ b_q(p)=\frac{h'_q(p)}{h_q(p)},\qquad
+ d_q(p)=-\bigl(\log h_q(p)\bigr)'',\qquad
+ \rho_q(p)=\frac{b_q(p)^2}{d_q(p)}.\label{bep:pe:eq:bdrho}
+\end{equation}
+Since
+\begin{equation}
+ h_q''(p)=-q(1-q)\bigl[p^{q-2}+(1-p)^{q-2}\bigr]<0,
+\end{equation}
+we have $d_q=b_q^2-h_q''/h_q>0$ and
+\begin{equation}
+ \rho_q(p)=\frac{h_q'(p)^2}{h_q'(p)^2-h_q(p)h_q''(p)}\in[0,1).
+\end{equation}
+Let $b=(b_q(p_i))_i$ and $D=\diag(d_q(p_i))$.
+
+\begin{lemma}[Rank-one Hessian]\label{bep:pe:lem:hessian}
+Throughout the open cube,
+\begin{equation}
+ \frac{1-q}{\Zq}\nabla^2\Tq=bb^{\mathsf T}-D.\label{bep:pe:eq:hessian}
+\end{equation}
+The Hessian is negative semidefinite exactly when
+$\sum_i\rho_q(p_i)\leq1$. If the sum is less than one, it is negative
+definite. If the sum equals one, it has a one-dimensional kernel spanned
+by $D^{-1}b$. If the sum exceeds one, it has exactly one positive
+and $n-1$ negative eigenvalues.
+\end{lemma}
+\begin{proof}
+Differentiate $\log\Zq=\sum_i\log h_q(p_i)$. Its gradient is $b$ and its
+Hessian is $-D$, so differentiating the exponential gives
+$\nabla^2\Zq=\Zq(bb^{\mathsf T}-D)$. Congruence by $D^{-1/2}$ transforms
+the last matrix to $uu^{\mathsf T}-I$, where $u=D^{-1/2}b$ and
+$\|u\|^2=\sum_i\rho_q(p_i)$. Its eigenvalues are $-1$ on the
+orthogonal complement of $u$ and $\|u\|^2-1$ in direction $u$.
+Congruence preserves inertia. At equality $u\ne0$, and the stated
+kernel follows by direct multiplication.
+\end{proof}
+
+This lemma identifies the obstruction, not just its sign: there can be
+only one unstable direction. A useful explicit positive-curvature
+direction when $\sum_i\rho_q(p_i)>1$ is $v=D^{-1}b$, since
+\begin{equation}
+ v^{\mathsf T}(bb^{\mathsf T}-D)v
+ =\left(\sum_i\rho_q(p_i)\right)
+  \left(\sum_i\rho_q(p_i)-1\right)>0.
+\end{equation}
+
+\subsection{From local curvature to global concavity}
+\begin{proposition}\label{bep:pe:prop:criterion}
+Suppose $\Psi(q)=\max_{0<p<1}\rho_q(p)$ exists. Then $T_{q,n}$ is
+concave on $[0,1]^n$ if and only if $n\Psi(q)\leq1$.
+\end{proposition}
+\begin{proof}
+If the inequality holds, Lemma~\ref{bep:pe:lem:hessian} makes the Hessian
+negative semidefinite everywhere in the open cube. Restricting to any
+line segment there and integrating its nonpositive second derivative
+proves concavity. Continuity of \eqref{bep:pe:eq:entropies} extends it to the
+closed cube by approaching the endpoints from the interior.
+
+Conversely, let $p_*$ attain the maximum. If $n\Psi(q)>1$, the
+Hessian at $(p_*,\ldots,p_*)$ has a positive direction. For a sufficiently
+small nonzero displacement in that direction, Taylor expansion gives
+\[
+ \frac{T(\p+\varepsilon v)+T(\p-\varepsilon v)}2-T(\p)>0.
+\]
+This contradicts concavity. Existence and uniqueness up to reflection of
+the maximizing parameter are proved next.
+\end{proof}
+
+\section{The hyperbolic profile and its unique optimizer}\label{bep:pe:sec:profile}
+\subsection{Exact reduction}
+\begin{lemma}\label{bep:pe:lem:hyperbolic}
+Set $a=1-q$ and
+$t=\tfrac12|\log(p/(1-p))|$. With
+\begin{equation}
+ \beta_a(t)=\frac{\sinh^2(at)}{\cosh^2t},
+\end{equation}
+we have
+\begin{equation}
+ \rho_q(p)=\frac{q\beta_a(t)}{a+\beta_a(t)}.\label{bep:pe:eq:rhohyper}
+\end{equation}
+\end{lemma}
+\begin{proof}
+By reflection symmetry, write
+$p=e^{-t}/(2\cosh t)$ and $1-p=e^t/(2\cosh t)$. The three relevant
+expressions are
+\begin{align*}
+ h_q(p)&=\frac{2\cosh(qt)}{(2\cosh t)^q},\\
+ h'_q(p)&=2q(2\cosh t)^a\sinh(at),\\
+ -h''_q(p)&=2qa(2\cosh t)^{1+a}\cosh((1+a)t).
+\end{align*}
+Consequently
+\[
+ \frac{h_q'(p)^2}{-h_q(p)h_q''(p)}
+ =\frac qa\frac{\sinh^2(at)}{
+ \cosh((1-a)t)\cosh((1+a)t)}.
+\]
+Use
+$\cosh((1-a)t)\cosh((1+a)t)=\cosh^2t+\sinh^2(at)$
+and then $\rho=r/(1+r)$ for the displayed ratio $r$. Simplification
+gives \eqref{bep:pe:eq:rhohyper}.
+\end{proof}
+
+\begin{proposition}[Unique critical point]\label{bep:pe:prop:unique}
+For each $0<q<1$, $t\mapsto\sinh(at)/\cosh t$ has a unique maximum
+on $[0,\infty)$, attained at $t_q$ in
+\eqref{bep:pe:eq:critical-summary}. Thus $\rho_q$ has exactly two maximizers,
+\begin{equation}
+ p_q=\frac{1-\tanh t_q}{2},\qquad 1-p_q.\label{bep:pe:eq:maximizers}
+\end{equation}
+The function $\Psi$ is positive and real analytic on $(0,1)$.
+\end{proposition}
+\begin{proof}
+The ratio vanishes at zero and tends to zero at infinity because
+$a<1$. For $t>0$ its logarithmic derivative is
+$a\coth(at)-\tanh t$, whose sign is the sign of
+$a-\tanh(at)\tanh t$. The product of the two hyperbolic tangents is
+strictly increasing from zero to one. It crosses $a$ exactly once,
+proving all the maximizing statements. Analytic dependence follows
+from the implicit function theorem: the derivative with respect to $t$
+of $\tanh(at)\tanh t-a$ is strictly positive at its root.
+\end{proof}
+Combining this proposition and Proposition~\ref{bep:pe:prop:criterion} proves
+the fixed-order criterion in Theorem~\ref{bep:pe:thm:profile-summary}.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.96\linewidth,height=6.3cm,xmin=0,xmax=1,ymin=0,ymax=0.12,
+ xlabel={Entropy order $q$},ylabel={Maximum curvature ratio},
+ grid=major,grid style={gray!25},legend style={at={(0.5,0.03)},anchor=south},
+ legend cell align=left,
+ legend style={font=\footnotesize},
+ yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+ scaled y ticks=false]
+\addplot[Ink,thick] table[x=q,y=Psi_approx,col sep=comma]
+ {data/02-product-entropy-profile_plot.csv};
+\addlegendentry{$\Psi(q)$}
+\addplot[Accent,dotted,thick,domain=0:1,samples=2] {1/9};
+\addlegendentry{Nine-bit bound: $1/9$}
+\addplot[BrickRed,dashed,domain=0:1,samples=2] {1/10};
+\addlegendentry{Ten-bit boundary: $1/10$}
+\end{axis}
+\end{tikzpicture}
+\caption{The scalar profile, numerically plotted. The analytic bound
+$\Psi(q)<1/9$ proves the nine-bit result. The very small excursion above
+$1/10$ is resolved in Figure~\ref{bep:pe:fig:detail}. The plot is illustrative,
+not a numerical proof. [Write: redrawn with \texttt{pgfplots} from the
+shipped \nolinkurl{data/02-product-entropy-profile_plot.csv}, the
+manuscript's own data for this figure; the delivered Matplotlib PDF is not
+shipped.]}
+\label{bep:pe:fig:profile}
+\end{figure}
+
+\section{The elementary inequality behind nine dimensions}\label{bep:pe:sec:nine}
+The key estimate is sufficiently explicit that the universal dimension
+bound does not require numerical maximization.
+
+\begin{lemma}[Uniform hyperbolic inequality]\label{bep:pe:lem:ineq}
+For $0<a<1$ and every real $t$,
+\begin{equation}
+ (2-a^2)\sinh^2(at)<a^2\cosh^2t.\label{bep:pe:eq:keyineq}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Twice the difference between the right and left sides is
+\[
+ F_a(t)=a^2(\cosh2t+1)-(2-a^2)(\cosh2at-1).
+\]
+Its power series is absolutely convergent. The constant term is $2a^2$.
+The terms of degrees two and four are respectively
+$-2a^2(1-a^2)t^2$ and $\tfrac23a^2(1-a^2)^2t^4$.
+For every $k\geq2$, the coefficient of $t^{2k}$ is
+\[
+ \frac{2^{2k}a^2}{(2k)!}
+ \bigl[1-(2-a^2)a^{2k-2}\bigr]\geq0,
+\]
+because $(2-a^2)a^{2k-2}\leq(2-a^2)a^2\leq1$.
+Discarding terms of degree at least six and putting
+$u=(1-a^2)t^2$ gives
+\[
+ F_a(t)\geq2a^2\left(1-u+\frac{u^2}{3}\right)
+ =2a^2\left(\frac{(u-3/2)^2}{3}+\frac14\right)
+ \geq\frac{a^2}{2}>0.
+\]
+This proves the strict inequality.
+\end{proof}
+
+\begin{theorem}[A uniform scalar bound]\label{bep:pe:thm:bound}
+For $0<q<1$,
+\begin{equation}
+ 0<\Psi(q)<\frac{q(1-q)}{2+q(1-q)}\leq\frac19.\label{bep:pe:eq:profilebound}
+\end{equation}
+Thus $T_{q,n}$ is concave whenever
+\begin{equation}
+ (n-1)q(1-q)\leq2.\label{bep:pe:eq:sufficient}
+\end{equation}
+In particular it is concave for every subunit order when $n\leq9$.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{bep:pe:lem:ineq} gives
+$\beta_a(t)<a^2/(2-a^2)$. The right side of
+\eqref{bep:pe:eq:rhohyper} is strictly increasing in $\beta_a$, so
+\[
+ \rho_q(p)<\frac{a(1-a)}{2+a-a^2}
+ =\frac{q(1-q)}{2+q(1-q)}.
+\]
+The maximum is attained, hence the strict inequality survives
+maximization. Now $q(1-q)\leq1/4$ gives the bound $1/9$.
+Condition~\eqref{bep:pe:eq:sufficient} implies that $n$ times the middle
+fraction is at most one; strictness then yields $n\Psi(q)<1$.
+\end{proof}
+
+This proves the positive half of Theorem~\ref{bep:pe:thm:nine}. Notice that the
+bound is designed to separate the integers nine and ten, not to equal
+the true maximum of $\Psi$. No assertion that $1/9$ is the sharp
+continuous upper bound is being made.
+
+\section{Two exact orders and an exceptional ten-bit boundary}\label{bep:pe:sec:exactorders}
+\subsection{The half-order profile}
+\begin{theorem}\label{bep:pe:thm:half}
+At $q=1/2$, $\Psi(q)=1/10$. The maximizing parameters are
+\begin{equation}
+ p_* =\frac{2-\sqrt3}{4},\qquad1-p_*.
+\end{equation}
+Consequently $T_{1/2,n}$ is concave if and only if $n\leq10$.
+\end{theorem}
+\begin{proof}
+Set $a=1/2$ and $y=\cosh t\geq1$. Then
+\[
+ \beta_{1/2}(t)=\frac{y-1}{2y^2}\leq\frac18,
+\]
+with equality exactly at $y=2$, as follows either by differentiation or
+from $y^2-4y+4\geq0$. Substitution in
+\eqref{bep:pe:eq:rhohyper} gives
+$\Psi=(\tfrac12\cdot\tfrac18)/(\tfrac12+\tfrac18)=1/10$.
+Since $\tanh(\arcosh2)=\sqrt3/2$, the maximizing parameters follow.
+\end{proof}
+
+\begin{theorem}[The third-order counterpart]\label{bep:pe:thm:third}
+At $q=1/3$, $\Psi(q)=1/11$, and the maximizing parameters are
+\begin{equation}
+ p_{1/3}=\frac{5-2\sqrt5}{10},\qquad1-p_{1/3}.
+\end{equation}
+Thus $T_{1/3,n}$ is concave exactly when $n\leq11$.
+\end{theorem}
+\begin{proof}
+Write $t=3u$ and $s=\sinh u\geq0$. For $a=2/3$,
+\[
+ \frac{\sinh(at)}{\cosh t}
+ =\frac{\sinh2u}{\cosh3u}=\frac{2s}{1+4s^2}\leq\frac12,
+\]
+with equality exactly when $s=1/2$. Therefore $\beta=1/4$ and
+$\Psi=(\tfrac13\cdot\tfrac14)/(\tfrac23+\tfrac14)=1/11$.
+At equality $u=\log((1+\sqrt5)/2)$, so
+$e^{2t}=9+4\sqrt5$ and $p=1/(1+e^{2t})=(5-2\sqrt5)/10$.
+\end{proof}
+
+\subsection{Degenerate Hessians still allow strict concavity}
+\begin{theorem}[Half-order degeneracy and fourth-order bending]\label{bep:pe:thm:quartic}
+The function $T_{1/2,10}$ is strictly concave on its closed cube, but
+not strongly concave. Its interior Hessian is negative definite except
+at the $2^{10}$ points whose coordinates all belong to $\{p_*,1-p_*\}$.
+At such a point, let $\sigma_i=1$ when $p_i=p_*$ and $\sigma_i=-1$
+otherwise. Then
+\begin{equation}
+ \nabla^2T_{1/2,10}(\p)
+ =\frac{81}{4}\left(\sigma\sigma^{\mathsf T}-10I\right).\label{bep:pe:eq:exceptionalhessian}
+\end{equation}
+Its null direction is $\sigma$. Along that direction,
+\begin{equation}
+ T_{1/2,10}(\p+s\sigma)
+ =\frac{211}{16}+\frac{405\sqrt3}{4}s-6480s^4+O(s^5).
+ \label{bep:pe:eq:quartic}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equality in $\sum_i\rho\leq10\Psi=1$ requires equality in each of the
+ten scalar inequalities. Theorem~\ref{bep:pe:thm:half} identifies the points.
+At them,
+\[
+ h^2=\frac32,\quad Z=\frac{243}{32},\quad
+ b_i=\frac2{\sqrt3}\sigma_i,\quad d_i=\frac{40}{3}.
+\]
+Substitution in \eqref{bep:pe:eq:hessian} gives
+\eqref{bep:pe:eq:exceptionalhessian}.
+
+Every nontrivial line segment in the open cube has strictly negative
+second derivative except possibly at finitely many points. Therefore
+its restriction is strictly concave. A line segment on the boundary
+lies in a minimal face of dimension $m<10$; its deterministic
+coordinates contribute factors $h(0)=h(1)=1$, reducing the restriction
+to $T_{1/2,m}$, whose Hessian is negative definite in that face's
+relative interior. This proves strict concavity on the closed cube.
+The zero Hessian directions rule out any positive strong-concavity
+constant.
+
+By reflection of the high coordinates, the left side of
+\eqref{bep:pe:eq:quartic} equals $g(p_*+s)$, where
+\[
+ g(p)=2\left[(1+2\sqrt{p(1-p)})^5-1\right].
+\]
+Direct differentiation at $p_*$ gives
+$g=211/16$, $g'=405\sqrt3/4$, $g''=g'''=0$, and
+$g^{(4)}=-155520$. Taylor's theorem proves the expansion.
+\end{proof}
+The same finite-degeneracy argument proves strict, but not strong,
+concavity of $T_{1/3,11}$. We do not need its fourth derivative.
+
+\subsection{Why ten bits fail just below one half}
+\begin{theorem}[A nonzero profile derivative]\label{bep:pe:thm:derivative}
+The profile satisfies
+\begin{equation}
+ \Psi'(1/2)=\frac{9-4\sqrt3\log(2+\sqrt3)}{25}<0.\label{bep:pe:eq:profilederivative}
+\end{equation}
+Consequently $\Psi(q)>1/10$ throughout a nonempty interval immediately
+below $1/2$.
+\end{theorem}
+\begin{proof}
+At the maximizing $t_q$, the $t$ derivative of the profile vanishes, so
+its $q$ derivative is obtained by differentiating
+$q\beta/(1-q+\beta)$ while holding $t$ fixed. At
+$q=1/2$, $t_0=\arcosh2$, $\beta=1/8$, and
+\[
+ \left.\frac{\partial\beta}{\partial q}\right|_{t=t_0}
+ =-2t_0\coth(t_0/2)\beta=-\frac{\sqrt3 t_0}{4}.
+\]
+The quotient rule gives \eqref{bep:pe:eq:profilederivative}.
+To verify the strict sign without decimals, use
+$t_0=2\artanh(1/\sqrt3)$ and the positive power series:
+\[
+ 4\sqrt3t_0=8\sum_{k=0}^{\infty}\frac1{(2k+1)3^k}
+ >8\left(1+\frac19+\frac1{45}\right)=\frac{136}{15}>9.
+\]
+Analyticity and the nonzero derivative give the final assertion.
+\end{proof}
+This proves that the integer nine in Theorem~\ref{bep:pe:thm:nine} is optimal.
+The next section supplies an explicit order and finite certificate,
+rather than leaving the counterexample existential.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=.88\linewidth,height=6.3cm,xmin=0.48,xmax=0.51,
+ xlabel={Entropy order $q$},ylabel={Maximum curvature ratio},
+ grid=major,grid style={gray!25},legend style={at={(0.5,0.03)},anchor=south},
+ legend cell align=left,xtick={0.48,0.485,...,0.51},
+ legend style={font=\footnotesize},restrict x to domain=0.479:0.511,
+ xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=3},
+ yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=5},
+ scaled x ticks=false,scaled y ticks=false]
+\addplot[Ink,thick] table[x=q,y=Psi_approx,col sep=comma]
+ {data/02-product-entropy-profile_plot.csv};
+\addlegendentry{$\Psi(q)$}
+\addplot[BrickRed,dashed,domain=0.48:0.51,samples=2] {0.1};
+\addlegendentry{Ten-bit boundary}
+\addplot[only marks,mark=*,Accent] coordinates
+ {(0.487804878,0.100008270243) (0.5,0.1)};
+\addlegendentry{Certified order $20/41$; exact order $1/2$}
+\end{axis}
+\end{tikzpicture}
+\caption{The narrow failure region near $q=1/2$. The value at $1/2$ and
+the sign of the derivative there are proved exactly. The rational order
+$20/41$ is independently certified. The shape elsewhere in this plot
+is numerical and does not prove global unimodality. [Write: redrawn with
+\texttt{pgfplots} from the shipped
+\nolinkurl{data/02-product-entropy-profile_plot.csv}, whose step in $q$ is
+$0.001$; the delivered plot evaluated $\Psi$ at step $10^{-5}$ on this
+window and is not shipped. The marked value at $20/41$ is
+$\Psi(20/41)\approx0.100008270243$ from
+Table~\ref{bep:pe:tab:profile}.]}
+\label{bep:pe:fig:detail}
+\end{figure}
+
+\section{Exact rational counterexamples}\label{bep:pe:sec:rational}
+\subsection{A 96-digit integer certifies local failure}
+\begin{theorem}[Rational curvature certificate]\label{bep:pe:thm:exact}
+Set
+\begin{equation}
+ q_0=\frac{20}{41},\qquad
+ p_0=\frac{15^{41}}{15^{41}+16^{41}}.
+ \label{bep:pe:eq:witnessparameters}
+\end{equation}
+At $\p_0=(p_0,\ldots,p_0)\in(0,1)^{10}$, the second derivative of
+$T_{q_0,10}(\p_0+s\one)$ at $s=0$ is strictly positive.
+The same construction works with all $n\geq10$ coordinates equal to
+$p_0$.
+\end{theorem}
+\begin{proof}
+Put $y=15/16$. Since $p_0/(1-p_0)=y^{41}$,
+\eqref{bep:pe:eq:rhohyper} becomes
+\begin{equation}
+ \beta=\frac{y^{20}(1-y^{21})^2}{(1+y^{41})^2},\qquad
+ \rho=\frac{20\beta}{21+41\beta}.\label{bep:pe:eq:rationalrho}
+\end{equation}
+Thus $10\rho>1$ is equivalent to $53\beta>7$. Clearing denominators
+reduces this to $D_{\mathrm{cert}}>0$, where
+\begin{align}
+ D_{\mathrm{cert}}={}&53\cdot15^{20}16^{20}(16^{21}-15^{21})^2
+       -7(16^{41}+15^{41})^2.\label{bep:pe:eq:integerD}
+\end{align}
+Its exact decimal expansion, written in consecutive blocks, is
+\begin{equation}
+\begin{gathered}
+\texttt{45454170259471782223845613664512}\\[-.2em]
+\texttt{86206963512698735119030706120924}\\[-.2em]
+\texttt{25935633848945080535442406921433}.
+\end{gathered}\label{bep:pe:eq:Ddigits}
+\end{equation}
+Equivalently, one may verify positivity directly from
+\eqref{bep:pe:eq:integerD}; the code checks that expression and its full
+96-digit decimal string. At an equal-parameter point $b$ is a constant
+multiple of $\one$ and the matrix $D$ in the Hessian lemma is scalar diagonal,
+so $\one$ is the positive direction exactly when $n\rho>1$.
+The inequality for ten implies it for every larger $n$.
+\end{proof}
+
+\begin{remark}
+The approximate quantities
+\[
+ p_0\approx0.0662310671864749,\qquad
+ \rho_{q_0}(p_0)\approx0.100008231403062
+\]
+help locate the witness but play no role in its proof. In particular,
+$\rho_{q_0}(p_0)$ is a value at our rational parameter, not the exact
+maximum $\Psi(q_0)$, which is slightly larger.
+\end{remark}
+
+\subsection{A finite midpoint inequality, not only a Hessian test}
+Define the one-variable restriction
+\begin{equation}
+ F(s)=\frac{[ (p_0+s)^{20/41}+(1-p_0-s)^{20/41}]^{10}-1}{21/41}.
+\end{equation}
+Let $\varepsilon=1/1000$. Both vectors $\p_0\pm\varepsilon\one$ have
+strictly interior rational coordinates.
+
+\begin{proposition}[Certified finite Jensen deficit]\label{bep:pe:prop:finite}
+The midpoint deficit
+\begin{equation}
+ \Delta=\frac{F(\varepsilon)+F(-\varepsilon)}2-F(0)
+\end{equation}
+satisfies the exact rational bounds
+\begin{equation}
+ \frac{8379718}{10^{14}}<\Delta<\frac{8379719}{10^{14}}.
+ \label{bep:pe:eq:gapbounds}
+\end{equation}
+In particular these two endpoints explicitly violate joint concavity.
+\end{proposition}
+\begin{proof}[Exact certificate method]
+For every rational $r\in[0,1]$, the program constructs dyadic rational
+bounds $L,U$ of denominator $2^{96}$ such that
+\begin{equation}
+ L^{41}\leq r^{20}\leq U^{41},\qquad U-L=2^{-96}.
+ \label{bep:pe:eq:rootbounds}
+\end{equation}
+Integer binary search establishes these inequalities without numerical
+root extraction. Since $x\mapsto x^{41}$ is increasing on the
+nonnegative reals, they prove $L\leq r^{20/41}\leq U$.
+
+Apply \eqref{bep:pe:eq:rootbounds} to $r=p_0+s$ and $1-p_0-s$ for each of
+$s=-\varepsilon,0,\varepsilon$. Add the bounds, raise them to the tenth
+power, and form the outward-rounded difference
+\[
+ \frac{41}{21}\left(\frac{Z_++Z_-}{2}-Z_0\right).
+\]
+Here a lower bound uses lower endpoint values and an upper midpoint
+value; an upper bound uses the opposite choices. The resulting rational
+bounds, recorded in
+\nolinkurl{data/02-product-entropy-certificates.json} (delivered as
+\nolinkurl{results/certificates.json}), are strictly
+inside the rational interval \eqref{bep:pe:eq:gapbounds}. Every comparison is
+an integer comparison after clearing positive denominators. The
+complete dependency-free verifier is included as
+\nolinkurl{code/02-product-entropy-verify_exact.py} (delivered as
+\nolinkurl{code/verify_exact.py}).
+\end{proof}
+This proposition is a finite computer-assisted certificate. The
+all-dimension theorem and the exact local witness have separate analytic
+proofs; neither depends on trusting a floating-point calculation.
+
+\subsection{A constant Hamming-mean version}
+Replace the midpoint vector by
+\begin{equation}
+ \bar\p=(\underbrace{p_0,\ldots,p_0}_{5},
+          \underbrace{1-p_0,\ldots,1-p_0}_{5}),
+ \qquad \sigma=(1,1,1,1,1,-1,-1,-1,-1,-1).
+ \label{bep:pe:eq:mixedvector}
+\end{equation}
+The path $\bar\p+s\sigma$ has $\sum_i p_i=5$ for all $s$.
+Reflection invariance $h_q(1-p)=h_q(p)$ makes its entropy exactly
+$F(s)$, so Proposition~\ref{bep:pe:prop:finite} supplies a constant-mean
+\emph{Hamming-count} counterexample. This is not yet a claim about
+constant mean for a nonconstant weighted sum; that stronger statement
+requires the adjustment in the next section.
+
+\section{Weighted means and arbitrarily small perturbations of equal weights}\label{bep:pe:sec:weighted}
+\subsection{Injective weights close to one}
+\begin{lemma}\label{bep:pe:lem:nearweights}
+For $n\geq1$ and $0<\delta<(2^n-1)^{-1}$, the weights
+\begin{equation}
+ w_i=1+\delta2^{i-1},\qquad1\leq i\leq n,\label{bep:pe:eq:nearweights}
+\end{equation}
+are positive and collision-free.
+\end{lemma}
+\begin{proof}
+If two bit strings have different Hamming weights, the difference of
+their weighted sums has a nonzero integer part and a perturbation of
+absolute value at most $\delta(2^n-1)<1$, so it cannot be zero.
+If they have the same Hamming weight, equality would require equality
+of their binary encodings $\sum_i2^{i-1}x_i$, which forces the strings
+to agree.
+\end{proof}
+
+\subsection{An exactly mean-preserving direction}
+\begin{theorem}[Weighted-mean obstruction]\label{bep:pe:thm:weighted}
+Let $q_0,p_0,\bar\p,\sigma$ be as in
+\eqref{bep:pe:eq:witnessparameters} and \eqref{bep:pe:eq:mixedvector}.
+For every sufficiently small $\delta>0$, there is a rational direction
+when $\delta$ is rational along which the mean of the weighted sum with
+weights \eqref{bep:pe:eq:nearweights} is constant but its Tsallis entropy has
+positive second derivative at $\bar\p$.
+Thus arbitrarily small positive perturbations of equal weights admit
+mean-preserving failures of subunit-order concavity.
+\end{theorem}
+\begin{proof}
+Set $n=10$. Since $\sum_{i=1}^52^{i-1}=31$ and
+$\sum_{i=6}^{10}2^{i-1}=992$, define
+\begin{equation}
+ c=\frac{w\cdot\sigma}{w\cdot\one}
+   =\frac{-961\delta}{10+1023\delta},\qquad
+ v=\sigma-c\one.\label{bep:pe:eq:weightedv}
+\end{equation}
+Then $w\cdot v=0$, so $\mathbb E S_w$ is constant along
+$\bar\p+sv$. At $\bar\p$ we have $b=b_0\sigma$ and $D=d_0I$,
+with $b_0^2/d_0=\rho_{q_0}(p_0)=\rho$. Also
+$\sigma\cdot\one=0$, whence
+\[
+ b\cdot v=10b_0,\qquad\|v\|^2=10(1+c^2).
+\]
+The Hessian quadratic form has the sign of
+\begin{equation}
+ 10\rho-1-c^2.\label{bep:pe:eq:weightedcondition}
+\end{equation}
+By Theorem~\ref{bep:pe:thm:exact}, $10\rho-1>0$, whereas $c\to0$ as
+$\delta\to0$. Hence \eqref{bep:pe:eq:weightedcondition} is positive for all
+sufficiently small $\delta$. For such $\delta$, Lemma~\ref{bep:pe:lem:nearweights}
+identifies the weighted entropy with the product entropy. Interior
+parameters permit a nondegenerate interval of the path.
+\end{proof}
+
+\begin{proposition}[Explicit weighted-mean certificate]\label{bep:pe:prop:weightedfinite}
+Take $\delta=10^{-6}$, so $c=-961/10001023$, and use
+$v=\sigma-c\one$ and $\varepsilon=1/1000$. The endpoints
+$\bar\p\pm\varepsilon v$ are strictly interior rational vectors,
+have identical weighted mean, and have Tsallis midpoint deficit
+$\Delta_w$ satisfying
+\begin{equation}
+ \frac{8378699}{10^{14}}<\Delta_w<\frac{8378700}{10^{14}}.
+\end{equation}
+\end{proposition}
+\begin{proof}[Exact certificate]
+The verifier checks $w\cdot v=0$ exactly and verifies
+$10\rho>1+c^2$ with rational arithmetic. It also checks the $1024$
+subset sums are distinct. For the finite inequality, reflection of the
+last five coordinates gives the power sum
+\[
+ Z(s)=\bigl[h_{q_0}(p_0+(1-c)s)
+             h_{q_0}(p_0+(1+c)s)\bigr]^5.
+\]
+The outward dyadic root bounds \eqref{bep:pe:eq:rootbounds}, followed by
+rational multiplication and subtraction, yield the asserted interval.
+The exact enclosing rationals are stored with the first certificate.
+\end{proof}
+
+\subsection{What happens as the weights coalesce}\label{bep:pe:sec:coalesce}
+For every allowed $\delta>0$, the weights encode all $2^{10}$ bit
+strings separately, so their entropy equals the same product entropy,
+independently of the magnitude of $\delta$. At $\delta=0$, many
+probabilities are added together: the observable becomes the ordinary
+Hamming sum. This is a discontinuity of discrete entropy as outcomes
+merge, not a discontinuity of the finite probability vector before
+merging. Consequently there is no valid continuity argument in the
+weights that transfers unweighted concavity to all nearby weighted
+models. Theorem~\ref{bep:pe:thm:weighted} exhibits the obstruction even after
+imposing the weighted-mean constraint itself.
+
+No conclusion is drawn here about the minimum failing dimension among
+\emph{all} possible weight systems with collisions. The sharp number ten
+applies to the collision-free class and to independent bit vectors.
+
+\section{Strong concavity, quasiconcavity, and all orders above one}\label{bep:pe:sec:strong}
+\subsection{A quantitative Jensen inequality}
+\begin{theorem}[Strong concavity]\label{bep:pe:thm:strong}
+For $0<q<1$, if $n\Psi(q)<1$, then
+\begin{equation}
+ -\nabla^2T_{q,n}(\p)\succeq4q(1-n\Psi(q))I
+ \quad(\p\in(0,1)^n).\label{bep:pe:eq:stronghessian}
+\end{equation}
+Consequently for all $x,y\in[0,1]^n$ and $0\leq\theta\leq1$,
+\begin{align}
+ T_{q,n}((1-\theta)x+\theta y)\geq{}&
+ (1-\theta)T_{q,n}(x)+\theta T_{q,n}(y)\notag\\
+ &+2q(1-n\Psi(q))\theta(1-\theta)\|x-y\|^2.
+ \label{bep:pe:eq:strongjensen}
+\end{align}
+\end{theorem}
+\begin{proof}
+Weighted Cauchy--Schwarz gives
+$(b\cdot v)^2\leq(\sum_i\rho_i)v^{\mathsf T}Dv
+\leq n\Psi(q)v^{\mathsf T}Dv$. Therefore
+\[
+ -\nabla^2T\succeq\frac{Z}{1-q}(1-n\Psi(q))D.
+\]
+For $0<q<1$, $Z\geq1$, $h_q(p)\leq2^{1-q}$, and convexity of
+$x^{q-2}$ gives
+$p^{q-2}+(1-p)^{q-2}\geq2^{3-q}$. Hence
+\[
+ d_q(p)\geq-\frac{h_q''(p)}{h_q(p)}\geq4q(1-q).
+\]
+This proves \eqref{bep:pe:eq:stronghessian}. Apply ordinary concavity to
+$T_{q,n}(x)+2q(1-n\Psi(q))\|x\|^2$ and rearrange. Interior approximation
+extends the result to boundary endpoints.
+\end{proof}
+Theorem~\ref{bep:pe:thm:bound} makes this apply to every $n\leq9$ and every
+fixed subunit order. The constant is explicit but is not claimed optimal.
+
+\subsection{R\'enyi additivity and its exact concavity range}
+\begin{theorem}\label{bep:pe:thm:renyi}
+For each $n\geq1$, $R_{q,n}$ is jointly concave on $[0,1]^n$ exactly for
+$0<q\leq2$. It is strictly concave in the interior throughout that range.
+\end{theorem}
+\begin{proof}
+By \eqref{bep:pe:eq:factor},
+\[
+ R_{q,n}(\p)=\sum_i\frac{\log h_q(p_i)}{1-q}.
+\]
+When $0<q<1$, $h_q''<0$ gives $(\log h_q)''<0$. The Shannon case is
+immediate from the binary entropy second derivative
+$-1/[p(1-p)]$.
+
+For $1<q\leq2$, put $a=q-1\in(0,1]$ and use the same half-log-odds
+variable $t$. Direct substitution in $hh''-h'^2$ shows its sign is the
+sign of
+\begin{equation}
+ a\cosh^2t-\sinh^2(at).\label{bep:pe:eq:aboveonesign}
+\end{equation}
+For completeness the positive common factor comes from
+\[
+ \frac{hh''-h'^2}{4q(2\cosh t)^{-2a}}
+ =a\cosh((1+a)t)\cosh((1-a)t)-(1+a)\sinh^2(at)
+ =a\cosh^2t-\sinh^2(at).
+\]
+Convexity of $\sinh$ on $[0,\infty)$ gives
+$\sinh(at)\leq a\sinh t$, so \eqref{bep:pe:eq:aboveonesign} is positive.
+Thus $\log h_q$ is strictly convex and division by $1-q<0$ gives
+strict concavity. Reflection treats negative log odds.
+
+If $q>2$, as $p\downarrow0$ we have $h\to1$, $h'\to-q$ and
+$h''\to q(q-1)$, so $(\log h)''\to-q<0$. Consequently
+$(\log h/(1-q))''\to q/(q-1)>0$, disproving one-coordinate concavity.
+Holding all other coordinates fixed proves failure for every $n$.
+\end{proof}
+The binary portion of this theorem is also present in the repository
+report (Part~I, Proposition~\ref{prop:minimalrenyi}, for $1<q\leq2$ and
+$q>2$); the product conclusion is the additive
+consequence, not the main novelty claim of this article.
+
+\begin{theorem}[Remaining Tsallis orders]\label{bep:pe:thm:tsallisabove}
+For $n=1$, $T_{q,1}$ is concave for every $q>0$. For $n\geq2$, it is
+concave for $1\leq q\leq2$ and fails even quasiconcavity for every $q>2$.
+\end{theorem}
+\begin{proof}
+For one bit and $q\ne1$,
+\[
+ T_{q,1}''(p)=-q[p^{q-2}+(1-p)^{q-2}]<0.
+\]
+The Shannon limit has the same sign. For $1<q\leq2$,
+Theorem~\ref{bep:pe:thm:renyi}'s proof gives convexity of
+$\log Z=\sum_i\log h(p_i)$; its exponential $Z$ is convex.
+Since $T=(1-Z)/(q-1)$, it is concave.
+
+For $q>2$, choose $p>0$ sufficiently small that
+$(\log h_q)''(p)<0$. Keep all but two parameters fixed and use the path
+$(p+s,p-s)$. The logarithmic first derivative of $Z$ vanishes at zero,
+and its second derivative is $2(\log h_q)''(p)<0$. Thus $Z''(0)<0$ and
+$T''(0)>0$. Exchanging the two parameters makes the endpoint entropies
+equal. The midpoint is a strict local minimum, which violates
+quasiconcavity as well as concavity.
+\end{proof}
+
+\subsection{Why the subunit counterexample is not a quasiconcavity failure}
+\begin{proposition}\label{bep:pe:prop:quasiconcavity}
+For every $n$ and $0<q\leq2$, product Tsallis entropy is quasiconcave,
+even when it is not concave. It is also concave in every coordinate
+separately for every $q>0$.
+\end{proposition}
+\begin{proof}
+For $q\ne1$,
+\begin{equation}
+ T_{q,n}=\frac{\exp((1-q)R_{q,n})-1}{1-q},
+\end{equation}
+which is a strictly increasing function of $R_{q,n}$. A monotone
+transform of a concave function has convex superlevel sets, giving
+quasiconcavity through order two. The Shannon case is immediate.
+With all but coordinate $i$ fixed, the second derivative of $T$ is a
+positive product of the other $h_q$ factors times the negative binary
+second derivative displayed above.
+\end{proof}
+Thus the positive Jensen gaps below one compare the midpoint to the
+\emph{average} endpoint entropy, not to their minimum. Conflating the
+two would falsely strengthen the ten-bit theorem. All product entropies
+here still have their unique maximum at $p_i=1/2$ for all $i$, since
+this separately maximizes each binary contribution in the relevant
+monotone direction.
+
+\section{Endpoint asymptotics and recovery of concavity}\label{bep:pe:sec:endpoints}
+The optimal dimension is finite for each fixed $q\in(0,1)$, but tends
+to infinity at both endpoints. This explains why the ten-bit obstruction
+occupies an interior range of orders rather than extending to either
+endpoint.
+
+\subsection{The small-order regime}
+\begin{theorem}\label{bep:pe:thm:smallq}
+As $q\downarrow0$, with $L=\log(4/q)$,
+\begin{align}
+ t_q&=\frac12L+O(qL),\label{bep:pe:eq:smallt}\\
+ \Psi(q)&=\frac q2-\frac{q^2}{4}\log\frac4q+O(q^3L^2),\label{bep:pe:eq:smallpsi}\\
+ \frac1{\Psi(q)}&=\frac2q+\log\frac4q+O(qL^2),\label{bep:pe:eq:smallrecip}\\
+ N(q)&=\frac2q+\log\frac4q+O(1).
+\end{align}
+\end{theorem}
+\begin{proof}
+Let $z=e^{-2t_q}$ and $w=z^{1-q}$. The critical-point equation is
+exactly
+\begin{equation}
+ q(1+zw)=(2-q)(z+w).\label{bep:pe:eq:zcritical}
+\end{equation}
+First $t_q\to\infty$: otherwise a bounded subsequence and $q\to0$
+would give $\tanh^2t=1$ for finite $t$. Thus $z,w\to0$.
+Because $0<z\leq w<1$, \eqref{bep:pe:eq:zcritical} bounds $w$ above and below
+by positive constant multiples of $q$. Hence
+$\log z=\log q+O(1)$ and $qt_q\to0$.
+It follows that $w/z=\exp(-q\log z)=1+O(qL)$ and then, using
+\eqref{bep:pe:eq:zcritical} again,
+\[
+ z=\frac q4(1+O(qL)),\qquad t_q=\frac12L+O(qL).
+\]
+The hyperbolic quotient has the exact representation
+\[
+ \beta=e^{-2qt_q}\frac{(1-w)^2}{(1+z)^2}.
+\]
+The first factor is $1-qL+O(q^2L^2)$. For the second,
+$z+w=q/2+O(q^2)$ follows directly from \eqref{bep:pe:eq:zcritical}, and a
+logarithmic expansion gives $1-q+O(q^2L)$. Therefore
+\begin{equation}
+ \beta=1-q(L+1)+O(q^2L^2).
+\end{equation}
+Substitution in $\Psi=q\beta/(1-q+\beta)$ yields
+\eqref{bep:pe:eq:smallpsi}; the order-$q^2$ constant cancels. Taking its
+reciprocal gives \eqref{bep:pe:eq:smallrecip}. Finally, taking a floor changes
+the expression by less than one, and $qL^2\to0$.
+\end{proof}
+The optimizer itself approaches the parameter boundary, with
+$p_q=z/(1+z)\sim q/4$. The maximum of the local curvature ratio therefore
+escapes to rare-event probabilities as the entropy order tends to zero.
+
+\subsection{The Shannon endpoint}
+\begin{theorem}\label{bep:pe:thm:nearone}
+Let $t_*>0$ be the unique solution of $t_*\tanh t_*=1$, and set
+\begin{equation}
+ C=t_*^2\sech^2t_*=t_*^2-1.
+\end{equation}
+Then, with $a=1-q\downarrow0$,
+\begin{align}
+ t_q&=t_*+\frac{t_*}{3}a^2+O(a^4),\label{bep:pe:eq:tnearone}\\
+ \Psi(q)&=Ca-C(1+C)a^2+O(a^3),\label{bep:pe:eq:psinearone}\\
+ \frac1{\Psi(q)}&=\frac1{Ca}+\frac{1+C}{C}+O(a),\label{bep:pe:eq:recipnearone}\\
+ N(q)&=\frac1{C(1-q)}+O(1).
+\end{align}
+Numerically, $t_*\approx1.19967864025773$ and
+$C\approx0.439228839890645$.
+\end{theorem}
+\begin{proof}
+Divide the critical-point equation by $a$ and extend analytically to
+$a=0$:
+\begin{equation}
+ \frac{\tanh(at)}a\tanh t=1.
+\end{equation}
+At zero the left side is $t\tanh t$, strictly increasing from zero to
+infinity. Its derivative at $t_*$ is
+$\tanh t_*+t_*\sech^2t_*=t_*>0$.
+The implicit function theorem supplies an even analytic solution in
+$a$ near zero. For positive $a$ this is the unique optimizer already
+established. Expanding $\tanh(at)/a=t-a^2t^3/3+O(a^4)$ gives
+\eqref{bep:pe:eq:tnearone}.
+
+Now $\beta=\sinh^2(at_q)/\cosh^2t_q=Ca^2+O(a^4)$, and
+\[
+ \Psi=\frac{(1-a)\beta}{a+\beta}
+ =Ca-C(1+C)a^2+O(a^3).
+\]
+Taking the reciprocal and then the floor gives the remaining formulas.
+The identity $C=t_*^2-1$ follows from $\tanh t_*=1/t_*$.
+\end{proof}
+
+\begin{corollary}[Recovery near both endpoints]\label{bep:pe:cor:recovery}
+For each fixed dimension $n$, product Tsallis entropy is concave for
+all sufficiently small positive orders and for all orders sufficiently
+close to one from below. For every $n\geq10$, it nonetheless fails at
+$q=20/41$.
+\end{corollary}
+\begin{proof}
+Both endpoint expansions give $\Psi(q)\to0$. The fixed-order criterion
+and Theorem~\ref{bep:pe:thm:exact} finish the proof. Alternatively,
+\eqref{bep:pe:eq:sufficient} supplies explicit sufficient endpoint regions.
+\end{proof}
+We have proved the existence of these concave and nonconcave regions,
+not that the nonconcave orders form one connected interval. That
+stronger assertion requires further control of $\Psi$.
+
+\section{Exact algebraic decisions at rational orders}\label{bep:pe:sec:algebraic}
+\subsection{A unique polynomial root}
+\begin{theorem}\label{bep:pe:thm:algebraic}
+Let $q=m/k\in(0,1)$, with positive integers $m<k$. There is exactly one
+root $y_q\in(0,1)$ of
+\begin{equation}
+ P_{m,k}(y)=m(1+y^{2k-m})-(2k-m)(y^k+y^{k-m}).
+ \label{bep:pe:eq:P}
+\end{equation}
+At that root put
+\begin{equation}
+ \beta(y)=\frac{y^m(1-y^{k-m})^2}{(1+y^k)^2}.
+\end{equation}
+Then
+\begin{equation}
+ \Psi(m/k)=\frac{m\beta(y_q)}{k-m+k\beta(y_q)}.
+ \label{bep:pe:eq:algebraicpsi}
+\end{equation}
+For a given $n$, concavity is equivalent to
+\begin{equation}
+ K_{m,k,n}(y_q)\leq0,\label{bep:pe:eq:Ktest}
+\end{equation}
+where
+\begin{equation}
+ K_{m,k,n}(y)=(nm-k)y^m(1-y^{k-m})^2
+ -(k-m)(1+y^k)^2.\label{bep:pe:eq:K}
+\end{equation}
+In particular this is an exact, decidable algebraic question.
+\end{theorem}
+\begin{proof}
+Set $y=e^{-2t_q/k}$. The hyperbolic critical equation becomes
+\[
+ \frac{(1-y^{k-m})(1-y^k)}{(1+y^{k-m})(1+y^k)}=\frac{k-m}{k}.
+\]
+Clearing the positive denominator gives \eqref{bep:pe:eq:P}.
+The change of variable is a bijection from $t\in(0,\infty)$ to
+$y\in(0,1)$, so uniqueness follows from Proposition~\ref{bep:pe:prop:unique}.
+The same substitution in the hyperbolic quotient gives $\beta(y)$.
+Equation~\eqref{bep:pe:eq:algebraicpsi} is \eqref{bep:pe:eq:rhohyper} with
+$q=m/k$. Multiplying $n\Psi\leq1$ by positive denominators gives
+\eqref{bep:pe:eq:Ktest}.
+
+For decidability, compute the rational polynomial greatest common
+divisor of $P$ and $K$. Exact real-root counting determines whether
+this gcd has a root in $(0,1)$; if so, it must be the unique $y_q$,
+and equality holds. If not, $K(y_q)\ne0$. Isolate $y_q$ by successively
+smaller rational intervals and evaluate $K$ by interval arithmetic.
+Continuity and its nonzero value guarantee eventual strict sign
+separation. Rational polynomial real-root counting itself is available
+by the Euclidean remainder sign-variation procedure, so every step
+uses finite exact algebra.
+\end{proof}
+
+\subsection{Certified bounds without general algebraic-number software}
+For rational $0<\ell\leq y_q\leq u<1$, monotonicity of each positive
+factor yields
+\begin{equation}
+ \frac{\ell^m(1-u^{k-m})^2}{(1+u^k)^2}
+ \leq\beta(y_q)\leq
+ \frac{u^m(1-\ell^{k-m})^2}{(1+\ell^k)^2}.\label{bep:pe:eq:betabounds}
+\end{equation}
+The fractional map in \eqref{bep:pe:eq:algebraicpsi} is increasing, giving
+rational bounds $L\leq\Psi\leq U$. Whenever
+\[
+ \left\lfloor\frac1U\right\rfloor
+ =\left\lfloor\frac1L\right\rfloor,
+\]
+the common integer is a certified value of $N(q)$. Exact equality
+cases cannot generally be settled by progressively tighter strict
+intervals alone. The orders $1/2$ and $1/3$ illustrate this point:
+their exact boundary values require the analytic arguments in
+Theorems~\ref{bep:pe:thm:half} and~\ref{bep:pe:thm:third}, or the gcd branch of the
+complete decision procedure.
+
+\begin{table}[tbp]
+\centering
+\input{data/02-product-entropy-profile_table.tex}
+\caption{Fixed-order dimension thresholds. Decimal profile values are
+approximations. The integers are certified using rational root isolation
+and outward bounds, except the two equality cases $1/2$ and $1/3$,
+which follow from exact analytic formulas.}
+\label{bep:pe:tab:profile}
+\end{table}
+
+The included standard-library verifier implements the interval branch
+for the nonexceptional entries in Table~\ref{bep:pe:tab:profile}. It does
+\emph{not} purport to implement the general gcd/root-counting branch;
+that branch is an algorithmic theorem, not a claimed completed software
+feature. In particular, no arbitrary timeout is being interpreted as
+an exact equality decision.
+
+\section{A block-product principle and formalization architecture}\label{bep:pe:sec:blocks}
+\subsection{The matrix argument survives beyond binary factors}
+\begin{theorem}[Block-product curvature criterion]\label{bep:pe:thm:blocks}
+For $1\leq j\leq r$, let $U_j\subseteq\R^{d_j}$ be open and convex,
+and let $f_j:U_j\to(0,\infty)$ be twice continuously differentiable.
+Assume $D_j=-\nabla^2\log f_j$ is positive definite everywhere.
+Define
+\[
+ F(x_1,\ldots,x_r)=\prod_jf_j(x_j),\qquad
+ b_j=\nabla\log f_j(x_j),\qquad
+ \lambda_j=b_j^{\mathsf T}D_j^{-1}b_j.
+\]
+Then $\nabla^2F$ is negative semidefinite at $(x_j)_j$ exactly when
+\begin{equation}
+ \sum_j\lambda_j\leq1.\label{bep:pe:eq:blockcriterion}
+\end{equation}
+If this sum exceeds one, there is exactly one positive eigenvalue.
+If the separate suprema $M_j=\sup_{x_j\in U_j}\lambda_j$ are finite,
+$F$ is concave on the product domain exactly when $\sum_jM_j\leq1$.
+\end{theorem}
+\begin{proof}
+Concatenating the $b_j$ and forming the block-diagonal $D$ yields
+$\nabla^2F=F(bb^{\mathsf T}-D)$. Congruence by $D^{-1/2}$ gives the
+same rank-one matrix as in Lemma~\ref{bep:pe:lem:hessian}. For the global
+statement, the supremum of the sum over a Cartesian product is the sum
+of the separate suprema: approximate each within any prescribed
+positive error. Thus a sum of suprema exceeding one produces a point
+of positive curvature. The reverse implication follows from the local
+criterion and restriction to line segments.
+\end{proof}
+No blanket assertion about all categorical distributions follows without
+calculating their block quantities $M_j$. The theorem isolates exactly
+which estimate would be needed to generalize the nine-bit phenomenon.
+
+\subsection{Suggested proof-assistant decomposition}
+The repository supplies motivation and a location for integration, but
+this article does not depend on trusting its unformalized entropy
+claims. A formalization can be organized around the following boundaries.
+
+The finite probability layer defines the independent bit mass function
+and proves \eqref{bep:pe:eq:factor} by induction on the number of bits. An
+injective relabeling lemma transfers it to collision-free weighted sums.
+This layer is finite algebra and can be separated from calculus.
+
+The linear-algebra layer proves that $bb^{\mathsf T}-D\preceq0$ if and
+only if $b^{\mathsf T}D^{-1}b\leq1$ for a positive diagonal matrix,
+using weighted Cauchy--Schwarz. Full spectral machinery is unnecessary
+for the main concavity theorem; inertia is only needed for the stronger
+one-positive-eigenvalue statement.
+
+The analytic layer differentiates $h_q$, identifies the Hessian, proves
+the hyperbolic identity, and establishes the positive-coefficient
+inequality in Lemma~\ref{bep:pe:lem:ineq}. A route through absolutely
+convergent real power series keeps the proof faithful to the article.
+The optimizer's uniqueness follows from monotonicity; the implicit
+function and asymptotic arguments can be formalized later without
+blocking the dimension theorem.
+
+Finally, an exact arithmetic checker should validate
+\eqref{bep:pe:eq:integerD} and the dyadic inequalities
+\eqref{bep:pe:eq:rootbounds}, and a proved bridge should turn those certificates
+into the real inequalities claimed here. Executing Python successfully
+is not that bridge. The main nine-bit proof and rational ten-bit
+curvature witness form a smaller initial target than the entire paper.
+
+\section{Further research questions}\label{bep:pe:sec:questions}
+The following are concrete continuations rather than claims proved in
+this article.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3.2em]
+\item \textbf{Global shape of the scalar profile.}
+Is $\Psi$ strictly unimodal on $(0,1)$? An affirmative answer would
+prove that the nonconcave orders in each fixed dimension form at most
+one interval. The graphs suggest this, but our derivative calculation
+is only local.
+
+\item \textbf{An exact description of the ten-bit failure interval.}
+Determine the other solution of $\Psi(q)=1/10$ besides $q=1/2$, prove
+there are no others, and bound the interior maximum with certified
+transcendental interval methods. The algebraic certificate at $20/41$
+provides a rigorous interior point, not the complete interval.
+
+\item \textbf{Exceptional rational orders.}
+Classify rational $q$ for which $1/\Psi(q)$ is an integer, extending
+$1/2$ and $1/3$. The polynomial pair $(P,K)$ in
+Theorem~\ref{bep:pe:thm:algebraic} turns each instance into a gcd problem, but
+an infinite classification would require additional structure.
+
+\item \textbf{Weights with collisions.}
+Find the minimum failing dimension when arbitrary positive weights,
+including partially colliding subset sums, are allowed. Is nine-bit
+concavity valid for every such weight system below order one? Our
+nine-bit theorem proves this only for collision-free weights.
+
+\item \textbf{A combinatorial classification of coarsenings.}
+Which partitions of the bit cube preserve parameter concavity of
+subunit power sums? The ordinary Hamming layers and singleton
+partitions are fundamentally different examples. A classification
+could explain when aggregation removes the rank-one obstruction.
+
+\item \textbf{Sharp constrained concavity.}
+For fixed weights $w$, determine the threshold after restricting the
+Hessian to $w^\perp$. The explicit adjustment
+$v=\sigma-c\one$ proves failure near equal weights but does not give a
+complete constrained analogue of $N(q)$.
+
+\item \textbf{Higher alphabets and nonidentical blocks.}
+Compute the block supremum $M_j$ for categorical probability simplices
+or structured finite distributions. Determine whether sharp integer
+dimension transitions analogous to nine versus ten persist, and how
+they depend on alphabet size.
+
+\item \textbf{Optimal quantitative stability.}
+Determine the best strong-concavity constant, classify null directions
+at every algebraic equality order, and compute the first nonzero
+bending term. The half-order quartic law provides an exactly solvable
+test case.
+
+\item \textbf{Certified decision software.}
+Implement the complete rational-order gcd/root-counting branch and
+produce compact proof certificates for $N(m/k)$. Seek degree reduction
+from reciprocal symmetries of $P_{m,k}$ before using general-purpose
+real-root isolation.
+
+\item \textbf{Machine-checked core theorem.}
+Formalize the rank-one criterion, the hyperbolic coefficient inequality,
+and the 96-digit certificate in Lean. Then add a verified dyadic-root
+checker for the finite midpoint examples. This would establish a clear
+kernel-checked boundary for the result inside ProveIt.
+\end{enumerate}
+
+\section{Verification, provenance, and limitations}\label{bep:pe:sec:verification}
+\subsection{What is established, and how}
+The all-order nine-bit theorem, the unique scalar optimizer, exact
+half- and third-order thresholds, derivative sign, weighted-mean
+obstruction, strong-concavity bound, order classification, endpoint
+asymptotics, and block criterion have mathematical proofs in the text.
+The finite decimal-enclosure inequalities are separately certified by
+exact rational computation. The profile figures are numerical
+illustrations only.
+
+The package's dependency-free verifier completed \textbf{17,927 exact
+arithmetic checks}. These include independently enumerated joint mass
+functions versus the product formula, collision-free binary encodings,
+finite coefficient checks, the cleared-denominator identity and positive
+integer, both finite midpoint certificates, exact mean preservation,
+and rational enclosures for the nonexceptional table entries. The
+finite coefficient checks support the implementation but do not replace
+the infinite-series proof.
+
+An additional optional symbolic script checks the special-order
+identities, the rank-one determinant identity in small dimensions, and
+the half-order Taylor coefficients. Its symbolic simplifications are
+independent implementation checks, not kernel certification of the
+real-analytic arguments.
+
+\subsection{Relation to the existing repository}
+The mathematical baseline was read at commit
+\texttt{ac9107d74083fcfe8064b4aaeda7989612e6a5b6}. The relevant report is
+located at
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+log-concavity-and-unimodality/\\
+bernoulli-entropy-quasiconcavity/
+\end{quote}
+The ordinary-sum $q>1$ counterexample, its fixed-mean construction, and
+the binary R\'enyi threshold are not claimed as new contributions here.
+The new target is the product/collision-free weighted model, especially
+the sharp universal dimension, the nearby-weight mean constraint, and
+the exact scalar threshold theory. We did not modify the GitHub
+repository.
+
+\noindent[Write, 29 September 2026, batch~43: the report read at that
+commit is Part~I as printed above. Between the pinned commit and the
+placement commit \texttt{faef2ed2a} its files are unchanged; the placement
+only added this manuscript's code, data and source notes beside them.
+Part~I's paragraph in its Section~\ref{bep:sec:conclusions} that poses
+the subunit question now carries a dated pointer to this part.]
+
+\subsection{Priority and reliability statement}
+The inspected sources do not state the nine-versus-ten product-bit
+result or the formulas developed here. Targeted searches on
+29 September 2026 did not establish an earlier occurrence, but several
+queries returned weakly relevant material; they are not a comprehensive
+priority search. We therefore present these as candidate original
+results with explicit proofs, not as a bibliographically certified
+breakthrough. The recent ordinary-sum preprint is acknowledged to avoid
+mistaking a change of model for a fresh solution of that question.
+
+The manuscript has not been independently refereed and has not been
+formalized in Lean. Its general weighted conclusions require
+collision-freeness, except where the specifically constructed weights
+are proved to have that property. No result here resolves the general
+partially colliding weighted problem. These scope restrictions are
+part of the mathematical statements, not merely implementation caveats.
+
+
+\section{Reproducing Part~II}\label{bep:pe:sec:reproduce}
+\noindent[Write, 29 September 2026, batch~43: this section is the
+manuscript's Appendix~A, ``Reproducing the package'', rewritten for the
+names under which its files are shipped in this report. Every statement
+the manuscript makes about its package is kept; the changes are in
+brackets.]
+
+The principal files [of the delivered package] are \texttt{article.tex}
+and \texttt{article.pdf} [here: Part~II is printed in the report's
+\nolinkurl{article.tex} and \nolinkurl{article.pdf}]. The bibliography is
+inline [here: merged into the report's bibliography], and the two vector
+figures and generated LaTeX table are included [here: the table is
+shipped as \nolinkurl{data/02-product-entropy-profile_table.tex} and input
+by the article; the two figure PDFs are not shipped, and
+Figures~\ref{bep:pe:fig:profile} and~\ref{bep:pe:fig:detail} are drawn at
+build time with \texttt{pgfplots} from
+\nolinkurl{data/02-product-entropy-profile_plot.csv}]. A standard
+pdfLaTeX installation [with \texttt{pgfplots}] suffices to rebuild the
+article; no network access is required. [In this report, from a
+\emph{copy} of the report directory:]
+\begin{verbatim}
+python code/02-product-entropy-verify_exact.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+\begin{sloppypar}
+The exact verifier uses only the Python standard library and can be run
+from any working directory. It writes \texttt{results/certificates.json}
+and \texttt{results/profile\_table.tex} [under the report root, beside
+Part~I's own files in \nolinkurl{results/}; the recorded copies are
+shipped as \nolinkurl{data/02-product-entropy-certificates.json} and
+\nolinkurl{data/02-product-entropy-profile_table.tex}, and its standard
+output as \nolinkurl{data/02-product-entropy-checks.txt}]. Its decimal
+strings are for readability; all accept/reject decisions use integer or
+rational arithmetic.
+\end{sloppypar}
+
+Optional checks and figure generation are available separately:
+\begin{verbatim}
+python code/02-product-entropy-verify_symbolic.py
+python code/02-product-entropy-make_figures.py
+\end{verbatim}
+Their dependencies and the versions actually used are recorded in
+\texttt{README.md} [of the delivered package, which is not shipped: Python
+3.13.5, SymPy~1.14.0, Matplotlib~3.10.8 and pdfTeX~1.40.26]. Prebuilt
+figures make these commands unnecessary for compiling the supplied
+manuscript [here the figures need no Python at all]. No third-party
+papers, fonts, or software distributions are bundled.
+
+[The symbolic script prints its result, recorded as
+\nolinkurl{data/02-product-entropy-symbolic_checks.txt}; do not redirect
+it to \nolinkurl{results/symbolic_checks.txt}, which is Part~I's record.
+The figure script writes \nolinkurl{results/profile_plot.csv} and
+\nolinkurl{figures/profile.pdf}, \nolinkurl{figures/ten_bit_detail.pdf}
+under the report root. The shipped
+\nolinkurl{code/02-product-entropy-Makefile} names the delivered paths, so
+its \texttt{check}, \texttt{symbolic} and \texttt{figures} targets would
+run Part~I's scripts \nolinkurl{code/verify_exact.py},
+\nolinkurl{code/verify_symbolic.py} and \nolinkurl{code/make_figures.py};
+it is shipped as delivered and should not be used in this directory. On
+29 September 2026 the exact and symbolic scripts were rerun on a copy of
+the report directory (Python~3.14.4; SymPy~1.14.0): both passed, with
+17,927 and 14 checks, and every output agreed with the recorded file
+apart from line endings.]
+
+\clearpage
+\fancyhead[L]{\small Two-coin entropy counterexamples}
+\fancyhead[R]{\small Research draft}
 \appendix
-\section{Random area selection and manifest exclusion}
+\section{Random area selection and manifest exclusion}\label{bep:app:selection}
 The area list was fixed before a single call to Python's
 \texttt{secrets.randbelow(96)}. The returned zero-based index was $57$, hence
 the selected one-based area was $58$: \emph{Discrete probability}.
@@ -966,7 +2663,7 @@ in \texttt{notes/manifest\_exclusion.md}.
 \end{enumerate}
 \end{multicols}
 
-\section{A compact independent certificate}
+\section{A compact independent certificate}\label{bep:app:certificate}
 The following Python fragment is a complete exact verification of the
 order-two Jensen obstruction. It uses neither the derivative formulas nor
 any third-party package.
@@ -1020,5 +2717,19 @@ Bernoulli \textbf{29}(2) (2023), 1578--1599.
 \href{https://doi.org/10.3150/22-BEJ1511}{doi:10.3150/22-BEJ1511}.
 \href{https://arxiv.org/abs/2103.00896}{arXiv:2103.00896}; the version consulted
 was v2, dated 15 March 2024.
+\bibitem{bep:pe:Wang}
+H.~Wang,
+\emph{The Sharp R\'enyi and Tsallis Threshold in the Shepp--Olkin
+Concavity Problem}, preprint, submitted 23 September 2026,
+\href{https://arxiv.org/abs/2609.27433v1}{arXiv:2609.27433v1}.
+Cited by Part~II's manuscript, which consulted its abstract and HTML and
+records its stated ordinary-sum theorem for context without relying on it;
+not read or verified for this report.
+
+\bibitem{bep:pe:Tsallis}
+C.~Tsallis,
+\emph{Possible generalization of Boltzmann--Gibbs statistics},
+Journal of Statistical Physics \textbf{52} (1988), 479--487.
+\href{https://doi.org/10.1007/BF01016429}{doi:10.1007/BF01016429}.
 \end{thebibliography}
 \end{document}
