@@ -72,15 +72,18 @@
 \newcommand{\target}{\boldsymbol b}
 \newcommand{\psha}{\nolinkurl{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}}
 \newcommand{\rsha}{\nolinkurl{caf5685db1099cb90e608556d4b8d825734f29cb}}
+\newcommand{\wtag}{\textup{[write]}}% text added when the report was written into ProveIt
+\newcommand{\rpath}[1]{\nolinkurl{#1}}
 \lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,
  keepspaces=true,showstringspaces=false,breaklines=true,
  frame=single,rulecolor=\color{black!20},xleftmargin=0.4em,xrightmargin=0.4em,
  aboveskip=0.8em,belowskip=0.8em}
 \setlist[enumerate]{itemsep=4pt,topsep=5pt}
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \setlength{\parindent}{0pt}
-\vspace*{0.65in}
+\vspace*{0.3in}
 \noindent{\large\scshape ProveIt research article}\par
 \vspace{0.35in}
 \noindent{\huge\bfseries Arithmetic Local--Global\par Dichotomies for ProveIt's\par Three-Variable Keller Map}\par
@@ -93,7 +96,9 @@
 \begin{abstract}
 We study the arithmetic image of the explicit polynomial map with constant
 Jacobian determinant $-2$ developed in ProveIt's Jacobian-conjecture project.
-The complex geometry and finite-field fiber laws are prior results; our focus
+The complex geometry and finite-field fiber laws are prior results
+(\wtag{} of Gao and of the \texttt{royvanrijn/jacobian-research} notes
+respectively; neither is part of ProveIt); our focus
 is the distinction between rational, integral, and locally integral inverse
 images. We construct an explicit family of targets having exactly three
 rational preimages, none integral, but at least one integral preimage over
@@ -121,11 +126,19 @@ and the dyadic refinement are candidate new contributions relative to the
 sources reviewed here. Global priority has not been established. This is
 not a new disproof of the Jacobian conjecture, nor a solution of the plane
 Jacobian problem.
+
+\smallskip
+\noindent\wtag{} Batch~36, manuscript~03, placed in \texttt{1a1396d4d}: a
+report of ProveIt's research-report collection that continues the formal
+project \rpath{Algebra/JacobianConjecture}. AI-assisted, unrefereed, not
+formalized; labels carry the prefix \texttt{alg:}. See
+Section~\ref{alg:sub:attribution} and Appendix~\ref{alg:app:report}.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
-\section{The research question and its exact scope}\label{sec:scope}
+\section{The research question and its exact scope}\label{alg:sec:scope}
 
 \subsection{From a formal polynomial witness to an arithmetic problem}
 ProveIt contains independent Lean and Rocq/Coq developments for a
@@ -133,7 +146,7 @@ three-variable polynomial map announced by Levent Alp\"oge, including
 its constant Jacobian determinant, explicit collisions, symmetry, and
 stable changes of variables \cite{proveit,proveitresearch}. We use the
 following compact presentation, over $\Z$:
-\begin{equation}\label{eq:F}
+\begin{equation}\label{alg:eq:F}
 \begin{gathered}
  u=1+xy,\qquad h=u^2z+y^2(1+3u),\\
  F(x,y,z)=(P,Q,R)=(uh,\;y+3xh,\;x(5-3u-x^2z)).
@@ -154,7 +167,7 @@ A collision establishes noninjectivity. It does not answer which integral
 targets occur as values, how much congruences detect, or whether rational
 and integral local--global principles agree. We therefore pose the concrete
 question
-\begin{equation}\label{eq:localglobal-question}
+\begin{equation}\label{alg:eq:localglobal-question}
 \target\in\Z^3,\qquad
 \target\in F(\Z_p^3)\ \text{for every prime }p
 \quad\stackrel{?}{\Longrightarrow}\quad
@@ -205,9 +218,60 @@ Our source review is dated September 24, 2026, with ProveIt pinned to
 The review did not locate the same split-plane or dyadic statements in
 the inspected material. That is a bounded literature finding, not a proof
 of worldwide novelty. Nor do we claim that the question in
-\eqref{eq:localglobal-question} was a previously published named open
+\eqref{alg:eq:localglobal-question} was a previously published named open
 problem. It is a natural unresolved arithmetic question arising from the
 repo, and the proofs below resolve it for this map.
+
+\subsection{Attribution and the formal project}\label{alg:sub:attribution}
+\wtag{} This subsection was added when the manuscript was written into
+ProveIt. It makes the attribution of the inherited material precise.
+\begin{itemize}[itemsep=2pt,topsep=3pt]\raggedright
+\item \emph{The map} was announced by Alp\"oge. ProveIt's Jacobian project
+formalizes it, in Lean 4 as \texttt{counterexample}
+(\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean},
+lines 95--101, namespace \texttt{LeanProofs.JacobianCounterexample}) and
+in Rocq/Coq as \texttt{counterexample}
+(\rpath{Algebra/JacobianConjecture/Coq/Counterexample.v}, line 110),
+with exactly the coordinates $P,Q,R$ displayed below.
+\item \emph{The determinant and the collisions} are kernel-checked there:
+\texttt{jacobianDet\_counterexample} ($\det JF=-2$ as a polynomial identity
+over every commutative ring), the integral collision
+\texttt{collision} with \texttt{collision\textsubscript{0}}${}=(-1,1,5)$,
+\texttt{collision\textsubscript{1}}${}=(0,-2,-16)$ and
+\texttt{collisionValue}${}=(0,-2,0)$, the rational triple collision
+\texttt{counterexample\_triple\_collision} over $(-\tfrac14,0,0)$, the
+mirror symmetry \texttt{counterexample\_equivariant}, the torus action
+\texttt{counterexample\_scaling}
+$F(x/s,sy,s^2z)=(s^2P,sQ,R/s)$, the one-parameter collision family
+\texttt{collisionFamily}, and the refutation
+\texttt{jacobianConjectureInDimensionThree\_false}; the Coq development
+proves the corresponding statements (\texttt{jacobian\_det\_is\_minus\_two},
+\texttt{counterexample\_scaling},
+\texttt{jacobian\_conjecture\_dimension\_three\_is\_false}).
+\item \emph{The complex fiber stratification} (fibers of size $3$, $1$,
+$0$; \cref{alg:cor:geometric}) is Gao's \cite[Theorems 3.3--3.4]{gao}. It
+is \emph{not} in ProveIt. At the write it was checked on arXiv that Gao's
+Theorem~3.3 concerns this very map (component degrees $7,6,4$,
+determinant $-2$, three points in the generic fiber) and that his
+polynomial $c_3=27v_1^2v_3^2-18v_1v_2v_3+16v_1+v_2^3v_3-v_2^2$ is
+$-\Delta/4$ in the notation of \eqref{alg:eq:discriminant}.
+\item \emph{The cubic inverse model and the finite-field histograms}
+(\cref{alg:thm:finitefields} and the count \eqref{alg:eq:irredcount}) are
+from the archived note \cite{finitefield} of
+\texttt{royvanrijn/jacobian-research}, which already uses the variable
+$t=y+1/x$ and the cubic \eqref{alg:eq:inversecubic}. They are \emph{not}
+in ProveIt. At the write it was checked that the pinned note states the
+formulas \eqref{alg:eq:fflaw} and \eqref{alg:eq:fflaw3}.
+\item \emph{Nothing arithmetic about the fibers} is in ProveIt: the
+project has no material on fiber stratification, finite fields, $p$-adic
+or dyadic fibers, or Hasse principles, at the pin and at the placement
+commit. The theorems of \cref{alg:sec:split,alg:sec:plane,alg:sec:stability,alg:sec:rational,alg:sec:ball,alg:sec:dyadic,alg:sec:sparse}
+are this manuscript's (with the priority caveats stated above), and
+\emph{none of them is formalized}. The stable representatives used in
+\cref{alg:prop:stable} are the project's: its degree-six one is
+kernel-checked (\texttt{simplerCounterexample}), the lower-degree ones
+have SymPy certificates only.
+\end{itemize}
 
 \subsection{Notation and the headline results}
 We write $\target=(A,B,C)$ for a target. The letter $p$ denotes a rational
@@ -217,7 +281,7 @@ of primes, $\Z[S^{-1}]$ denotes the rationals whose denominators use only
 primes in $S$.
 
 The main explicit example is especially small:
-\begin{equation}\label{eq:headline-example}
+\begin{equation}\label{alg:eq:headline-example}
 F^{-1}(0,-4,2)(\overline\Q)=
 \left\{
 \left(-\tfrac12,2,36\right),
@@ -227,8 +291,8 @@ F^{-1}(0,-4,2)(\overline\Q)=
 \end{equation}
 Every prime sees an integral point in this fiber, but no point is integral
 over $\Z$. The complete proof, including exhaustiveness, is in
-\cref{sec:split}. The larger split-plane family and density theorem follow
-in \cref{sec:plane}. The dyadic law is proved in \cref{sec:dyadic}:
+\cref{alg:sec:split}. The larger split-plane family and density theorem follow
+in \cref{alg:sec:plane}. The dyadic law is proved in \cref{alg:sec:dyadic}:
 \[
 \Pr_{\target\in\Z_2^3}\bigl(\#F^{-1}(\target)(\Z_2)=j\bigr)
 =\frac1{32}(21,7,3,1)_j,\qquad j=0,1,2,3.
@@ -236,47 +300,47 @@ in \cref{sec:plane}. The dyadic law is proved in \cref{sec:dyadic}:
 Both results depend on distinguishing actual source points from roots of
 an inverse polynomial which have escaped to infinity.
 
-\section{A complete simple-root model}\label{sec:root}
+\section{A complete simple-root model}\label{alg:sec:root}
 
 \subsection{An elementary coordinate change}
 The following calculation supplies all the inverse formulas needed later.
 It is valid over any field of characteristic different from $2$.
 On the source chart $x\ne0$, introduce
-\begin{equation}\label{eq:wt}
+\begin{equation}\label{alg:eq:wt}
 w=\frac1x,\qquad t=y+\frac1x,\qquad C=R(x,y,z).
 \end{equation}
 Then $u=xt$, and solving the definition of $R$ gives
-\begin{equation}\label{eq:sourcewt}
+\begin{equation}\label{alg:eq:sourcewt}
 x=\frac1w,\qquad y=t-w,\qquad
 z=5w^2-3tw-Cw^3.
 \end{equation}
-Direct substitution into \eqref{eq:F} now yields the much smaller formulas
-\begin{equation}\label{eq:targetwt}
+Direct substitution into \eqref{alg:eq:F} now yields the much smaller formulas
+\begin{equation}\label{alg:eq:targetwt}
  A=wt+t^2-Ct^3,\qquad B=2w+4t-3Ct^2,\qquad R=C.
 \end{equation}
 For example, substitution first gives $u=t/w$ and
 $h=w^2+tw-Ct^2w$, from which both first coordinates follow immediately.
 Eliminating $w$ gives
-\begin{equation}\label{eq:inversecubic}
+\begin{equation}\label{alg:eq:inversecubic}
 g_{A,B,C}(T)=CT^3-2T^2+BT-2A,
 \qquad g_{A,B,C}(t)=0,
 \end{equation}
 and the derivative is
-\begin{equation}\label{eq:derivative}
+\begin{equation}\label{alg:eq:derivative}
 d(t):=g'_{A,B,C}(t)=3Ct^2-4t+B=2w=\frac2x.
 \end{equation}
 In particular, every finite source point on this chart determines a
 \emph{simple} root. A repeated root cannot be reconstructed by dividing
 by its derivative.
 
-\begin{proposition}[A short determinant proof]\label{prop:jacobian}
+\begin{proposition}[A short determinant proof]\label{alg:prop:jacobian}
 As an identity in $\Z[x,y,z]$, one has $\det JF=-2$.
 \end{proposition}
 \begin{proof}
 In the localization where $x$ is invertible, the change
 $(x,y,z)\mapsto(w,t,C)$ has determinant
 $(-x^{-2})\cdot1\cdot(-x^3)=x=1/w$.
-From \eqref{eq:targetwt}, the determinant of
+From \eqref{alg:eq:targetwt}, the determinant of
 $(w,t,C)\mapsto(A,B,C)$ is
 \[
 \det\begin{pmatrix}
@@ -291,33 +355,33 @@ globally. This is a derivation of the identity, independent of the
 accompanying symbolic expansion check.
 \end{proof}
 
-\begin{theorem}[Complete field-valued inverse]\label{thm:root}
+\begin{theorem}[Complete field-valued inverse]\label{alg:thm:root}
 Let $k$ be a field with $\operatorname{char}k\ne2$, and
 $(A,B,C)\in k^3$. Every simple root $t\in k$ of
 $g_{A,B,C}$ determines exactly one preimage with $x\ne0$, namely
-\begin{equation}\label{eq:reconstruction}
+\begin{equation}\label{alg:eq:reconstruction}
  w=\frac{g'_{A,B,C}(t)}2,\qquad
  (x,y,z)=\left(\frac1w,\ t-w,\ 5w^2-3tw-Cw^3\right).
 \end{equation}
 These are all the preimages with $x\ne0$. There is a preimage with
 $x=0$ exactly when $C=0$, and then it is uniquely
-\begin{equation}\label{eq:boundarypoint}
+\begin{equation}\label{alg:eq:boundarypoint}
  (0,B,A-4B^2).
 \end{equation}
 Equivalently, the complete fiber is in natural bijection with the simple
 $k$-rational projective roots of
-\begin{equation}\label{eq:binarycubic}
+\begin{equation}\label{alg:eq:binarycubic}
 G_{A,B,C}(T,S)=CT^3-2T^2S+BTS^2-2AS^3.
 \end{equation}
 \end{theorem}
 \begin{proof}
 The forward construction and simplicity follow from
-\eqref{eq:wt}--\eqref{eq:derivative}. Conversely, set $w=g'(t)/2\ne0$.
-The second expression in \eqref{eq:targetwt} is $B$. The first expression
+\eqref{alg:eq:wt}--\eqref{alg:eq:derivative}. Conversely, set $w=g'(t)/2\ne0$.
+The second expression in \eqref{alg:eq:targetwt} is $B$. The first expression
 minus $A$ equals $g(t)/2$ after this substitution, so it vanishes.
-This proves that \eqref{eq:reconstruction} is a two-sided inverse
-on the chart. If $x=0$, \eqref{eq:F} reduces to
-$F(0,y,z)=(z+4y^2,y,0)$, proving \eqref{eq:boundarypoint}.
+This proves that \eqref{alg:eq:reconstruction} is a two-sided inverse
+on the chart. If $x=0$, \eqref{alg:eq:F} reduces to
+$F(0,y,z)=(z+4y^2,y,0)$, proving \eqref{alg:eq:boundarypoint}.
 Finally, the projective point $[1:0]$ is a root of $G$ exactly when
 $C=0$. On the chart $T=1$, its derivative with respect to $S$ is $-2$,
 so it is always simple. All other projective roots are the affine roots
@@ -328,7 +392,7 @@ already classified.
 A cubic may have three roots counted with multiplicity while the actual
 fiber has only one point, or none. Also, setting $C=0$ lowers the degree
 of the affine inverse polynomial but \emph{adds} the source point
-\eqref{eq:boundarypoint}. Both issues must be handled before making any
+\eqref{alg:eq:boundarypoint}. Both issues must be handled before making any
 arithmetic inference. In particular, a resultant equation alone is not
 an exhaustive inverse description.
 \end{remark}
@@ -336,16 +400,16 @@ an exhaustive inverse description.
 \subsection{The known geometric stratification}
 The discriminant of the binary cubic, or of $g$ with its cubic coefficient
 retained, is
-\begin{equation}\label{eq:discriminant}
+\begin{equation}\label{alg:eq:discriminant}
 \Delta=4B^2-4CB^3-64A+72CAB-108C^2A^2.
 \end{equation}
 Over an algebraically closed field of characteristic different from
-$2$ and $3$, \cref{thm:root} immediately gives the following result.
+$2$ and $3$, \cref{alg:thm:root} immediately gives the following result.
 
-\begin{corollary}[Previously known complex fiber law]\label{cor:geometric}
+\begin{corollary}[Previously known complex fiber law]\label{alg:cor:geometric}
 There are three preimages if $\Delta\ne0$, one if $\Delta=0$ but the
 binary cubic is not a cube, and none on the triple-root locus
-\begin{equation}\label{eq:triple}
+\begin{equation}\label{alg:eq:triple}
  C\ne0,\qquad 3BC=4,\qquad 27AC^2=4.
 \end{equation}
 There is no fiber of cardinality two over an algebraically closed field.
@@ -355,17 +419,17 @@ A separable degree-three divisor on $\PP^1$ has three simple points.
 A degree-three divisor with a repeated point, but not supported at a
 single point, has one double point and one simple point. A cube has no simple point. Comparing
 $C(T-t_0)^3$ with $g$ gives $t_0=2/(3C)$ and then
-\eqref{eq:triple}. A triple root at infinity is impossible because the
+\eqref{alg:eq:triple}. A triple root at infinity is impossible because the
 coefficient of $T^2S$ is $-2$.
 \end{proof}
 This recovers Gao's stratification \cite[Theorem 3.4]{gao}; indeed his
 polynomial $c_3$ is $-\Delta/4$. We use a different inverse coordinate
-because the derivative identity \eqref{eq:derivative} is especially
+because the derivative identity \eqref{alg:eq:derivative} is especially
 convenient for denominators. The geometric law does not imply that every
 \emph{integral} fiber has size $0,1$, or $3$; integrality can discard just
 one of three rational points.
 
-\subsection{The projective chart at infinity}\label{sec:schemechart}
+\subsection{The projective chart at infinity}\label{alg:sec:schemechart}
 For completeness, the projective-root picture can be made into an
 explicit scheme description over $\Z[1/2]$. Let $Y$ be the incidence
 subscheme $G=0$ in $\A^3\times\PP^1$, and let $Y^{\mathrm{simp}}$ be the
@@ -375,7 +439,7 @@ The map from the source is
  (x,y,z)\longmapsto\bigl(F(x,y,z),[1+xy:x]\bigr).
 \]
 The projective pair is globally defined because $(1+xy)-yx=1$.
-On $S\ne0$, \cref{thm:root} gives its inverse.
+On $S\ne0$, \cref{alg:thm:root} gives its inverse.
 On $T\ne0$, put $s=S/T$; the incidence equation becomes
 \[
  C=2s-Bs^2+2As^3.
@@ -386,7 +450,7 @@ Set
 \]
 Simplicity is precisely $k\ne0$, because the derivative of
 $C-2s+Bs^2-2As^3$ is $-2k$. An inverse chart is
-\begin{equation}\label{eq:infinitychart}
+\begin{equation}\label{alg:eq:infinitychart}
  x=\frac{s}{k},\qquad y=Y_0,\qquad
  z=Ak^3-k(k+3)Y_0^2.
 \end{equation}
@@ -397,12 +461,12 @@ This is a coordinate interpretation, not a separate novelty claim.
 No scheme-theoretic machinery from this paragraph is needed in the
 integral arguments below.
 
-\section{An explicit infinite integral Hasse failure}\label{sec:split}
+\section{An explicit infinite integral Hasse failure}\label{alg:sec:split}
 
 \subsection{The family and all its points}
-\begin{theorem}[A split three-point obstruction]\label{thm:family}
+\begin{theorem}[A split three-point obstruction]\label{alg:thm:family}
 For every integer $n\ge2$, let
-\begin{equation}\label{eq:bn}
+\begin{equation}\label{alg:eq:bn}
  \target_n=(0,-2n(n-1),2).
 \end{equation}
 Then
@@ -413,7 +477,7 @@ Then
 \]
 The complete geometric fiber consists of three rational points. More
 precisely, with
-\begin{equation}\label{eq:familyD}
+\begin{equation}\label{alg:eq:familyD}
 \begin{array}{c|c|c}
 i&t_i&D_i\\ \hline
 0&0&-n(n-1)\\
@@ -422,7 +486,7 @@ i&t_i&D_i\\ \hline
 \end{array}
 \end{equation}
 those points are
-\begin{equation}\label{eq:familypoints}
+\begin{equation}\label{alg:eq:familypoints}
  v_i(n)=\left(D_i^{-1},\;t_i-D_i,\;
                   5D_i^2-3t_iD_i-2D_i^3\right).
 \end{equation}
@@ -434,10 +498,10 @@ The inverse cubic factors exactly as
               =2T(T-n)(T+n-1).
 \]
 For $n\ge2$, its roots $0,n,1-n$ are distinct. Half its derivative at
-these roots is respectively the three values in \eqref{eq:familyD}.
+these roots is respectively the three values in \eqref{alg:eq:familyD}.
 Since the third target coordinate is nonzero, there is no $x=0$ point.
 The complete inverse theorem therefore gives exactly
-\eqref{eq:familypoints}, even over $\overline\Q$.
+\eqref{alg:eq:familypoints}, even over $\overline\Q$.
 
 All second and third coordinates of these points are integers. Their
 first coordinates are $1/D_i$, with $|D_i|>1$, so none is an integer
@@ -455,7 +519,7 @@ preimage. The displayed points themselves are rational and real.
 
 \begin{example}[The smallest displayed parameter]
 At $n=2$, the points are exactly those in
-\eqref{eq:headline-example}. At the prime $2$, use $(1/3,-4,0)$.
+\eqref{alg:eq:headline-example}. At the prime $2$, use $(1/3,-4,0)$.
 At the prime $3$, use $(-1/2,2,36)$. At every other prime all three
 points are integral. A single rational point integral at every prime
 would be a $\Z$-point, but here the locally selected point changes with
@@ -471,7 +535,7 @@ are genuinely different, despite the fiber having only three points.
 \subsection{A denominator criterion for every split finite fiber}
 The preceding mechanism is elementary and reusable.
 
-\begin{lemma}[Denominator covering]\label{lem:denominator}
+\begin{lemma}[Denominator covering]\label{alg:lem:denominator}
 Let $f\in\Z[X_1,\ldots,X_d]^d$ and $\target\in\Z^d$. Suppose its complete
 geometric fiber is a finite nonempty set of rational points
 $v_1,\ldots,v_r$. Let $d_i$ be the least positive common denominator of
@@ -497,7 +561,7 @@ over some completions. We will not silently apply the lemma to a cubic
 with an irreducible quadratic factor.
 
 \subsection{An actual solution of every congruence}
-\begin{corollary}\label{cor:congruence}
+\begin{corollary}\label{alg:cor:congruence}
 For every $n\ge2$ and every positive integer $m$, there is an integer
 vector $a$ with $F(a)\equiv\target_n\pmod m$, although
 $F(a)=\target_n$ has no integer solution.
@@ -517,15 +581,15 @@ this construction. For example,
 This is an exact certificate, not a numerical approximation to a nonexistent
 integer solution.
 
-\section{A dense two-parameter family and its exact density}\label{sec:plane}
+\section{A dense two-parameter family and its exact density}\label{alg:sec:plane}
 
 \subsection{Complete classification on the integral split-root locus}
 The one-parameter family is the specialization $(a,b,c)=(0,n,1-n)$
 of a much larger construction.
 
-\begin{theorem}[Split-plane classification]\label{thm:plane}
+\begin{theorem}[Split-plane classification]\label{alg:thm:plane}
 Let $a,b,c\in\Z$ be pairwise distinct with $a+b+c=1$, and define
-\begin{equation}\label{eq:planemap}
+\begin{equation}\label{alg:eq:planemap}
  \Phi(a,b)=\bigl(abc,\;2(ab+ac+bc),\;2\bigr),\qquad c=1-a-b.
 \end{equation}
 For $r\in\{a,b,c\}$ put
@@ -533,16 +597,16 @@ For $r\in\{a,b,c\}$ put
  D_r=\prod_{s\in\{a,b,c\},\ s\ne r}(r-s).
 \]
 Then the complete geometric fiber of $F$ over $\Phi(a,b)$ consists of
-\begin{equation}\label{eq:planepoints}
+\begin{equation}\label{alg:eq:planepoints}
  \left(D_r^{-1},\ r-D_r,\ 5D_r^2-3rD_r-2D_r^3\right),
  \qquad r=a,b,c.
 \end{equation}
 It has no integral point. Writing
-\begin{equation}\label{eq:primitivecondition}
+\begin{equation}\label{alg:eq:primitivecondition}
  g=\gcd(a-b,a-c)=\gcd(a-b,3a-1),
 \end{equation}
 we have
-\begin{equation}\label{eq:alllocalcriterion}
+\begin{equation}\label{alg:eq:alllocalcriterion}
  \Phi(a,b)\in F(\Z_p^3)\text{ for every prime }p
  \quad\Longleftrightarrow\quad g=1.
 \end{equation}
@@ -553,7 +617,7 @@ The coefficient identities for three roots of sum $1$ give
 \[
  g_{\Phi(a,b)}(T)=2(T-a)(T-b)(T-c).
 \]
-Thus \cref{thm:root} gives \eqref{eq:planepoints}, with no boundary point.
+Thus \cref{alg:thm:root} gives \eqref{alg:eq:planepoints}, with no boundary point.
 If $|D_r|=1$, both other roots must be integers at distance one from $r$.
 Because they are distinct, they must be $r-1$ and $r+1$. Their sum with
 $r$ would be $3r=1$, an impossibility for integral $r$. Hence all three
@@ -567,11 +631,11 @@ $D$'s are
 After writing $u=gu_0$, $v=gv_0$, the integers $u_0,v_0,v_0-u_0$ are
 pairwise coprime. No prime can divide all three of their pairwise products.
 Consequently
-\begin{equation}\label{eq:gcdD}
+\begin{equation}\label{alg:eq:gcdD}
  \gcd(|D_a|,|D_b|,|D_c|)=g^2.
 \end{equation}
-All other coordinates in \eqref{eq:planepoints} are integral. Apply
-\cref{lem:denominator}. Finally,
+All other coordinates in \eqref{alg:eq:planepoints} are integral. Apply
+\cref{alg:lem:denominator}. Finally,
 $(a-b)+(a-c)=3a-1$, proving the second expression for $g$.
 \end{proof}
 
@@ -589,11 +653,11 @@ residues would sum to $0$, whereas the root sum is $1$.
 Density here refers to ordered integer parameters $(a,b)$, not to all
 integer targets in $\A^3$. The distinction is essential.
 
-\begin{theorem}[Parameter density]\label{thm:densityparams}
+\begin{theorem}[Parameter density]\label{alg:thm:densityparams}
 Let $M(H)$ count pairs $(a,b)\in[-H,H]^2\cap\Z^2$ such that the three
 integers $a,b,1-a-b$ are distinct and
 $\gcd(a-b,3a-1)=1$. As $H\to\infty$ through positive integers,
-\begin{equation}\label{eq:paramdensity}
+\begin{equation}\label{alg:eq:paramdensity}
  M(H)=\frac{27}{4\pi^2}(2H+1)^2+O(H\log H).
 \end{equation}
 Every counted pair gives a locally integral but globally nonintegral
@@ -624,7 +688,7 @@ infinity costs $O(H)$. Its value is
 The three root-coincidence equations
 $a=b$, $2a+b=1$, and $a+2b=1$ account for only $O(H)$ pairs.
 Removing them does not affect the displayed asymptotic. The last
-assertion is \cref{thm:plane}.
+assertion is \cref{alg:thm:plane}.
 \end{proof}
 The approximate value of the density is $0.683918$. Exact enumeration,
 used only as a check on the proof, gives the following data.
@@ -642,19 +706,19 @@ $H$ & $M(H)$ & $M(H)/(2H+1)^2$\\
 \end{tabular}
 \end{center}
 
-\begin{corollary}[Zariski density in a fixed target plane]\label{cor:zariski}
+\begin{corollary}[Zariski density in a fixed target plane]\label{alg:cor:zariski}
 The set
 \[
  \{\Phi(a,b):a,b,1-a-b\text{ distinct},\ \gcd(a-b,3a-1)=1\}
 \]
 is Zariski dense in the plane $C=2$. Every target in it is an integral
-Hasse failure for $F$ in the sense of \eqref{eq:localglobal-question}.
+Hasse failure for $F$ in the sense of \eqref{alg:eq:localglobal-question}.
 \end{corollary}
 \begin{proof}
 A nonzero polynomial in two variables has only $O(H)$ zeros in
 $[-H,H]^2\cap\Z^2$: view it as a polynomial in one variable and separate
 the finitely many values where all coefficient polynomials vanish.
-By \cref{thm:densityparams}, the allowed parameter pairs have positive
+By \cref{alg:thm:densityparams}, the allowed parameter pairs have positive
 two-dimensional density, so are Zariski dense in $\A^2$.
 
 The map $\Phi$ is dominant onto the target plane. Indeed, for any
@@ -673,15 +737,15 @@ vanish identically on the target plane.
 The map from ordered distinct root triples to a fixed target has six
 permutations. Moreover, a parameter box has coefficient heights
 $|A|=O(H^3)$ and $|B|=O(H^2)$, not a uniform target box. Thus
-\eqref{eq:paramdensity} is not a density formula in target space.
+\eqref{alg:eq:paramdensity} is not a density formula in target space.
 It does prove that the integral obstruction is much more than an isolated
 collision or a single exceptional arithmetic progression.
 \end{remark}
 
-\section{\texorpdfstring{$S$}{S}-integers, stable equivalence, and congruence closure}\label{sec:stability}
+\section{\texorpdfstring{$S$}{S}-integers, stable equivalence, and congruence closure}\label{alg:sec:stability}
 
 \subsection{Inverting finitely many primes does not remove the obstruction}
-\begin{theorem}[Persistence over every prescribed $S$]\label{thm:S}
+\begin{theorem}[Persistence over every prescribed $S$]\label{alg:thm:S}
 For every finite set $S$ of rational primes, infinitely many $n\ge2$
 satisfy
 \[
@@ -696,20 +760,20 @@ $\Z[1/2]$.
 Choose distinct primes $\ell_1,\ell_2$ outside $S$. By the Chinese
 remainder theorem, there are infinitely many $n\ge2$ satisfying
 $n\equiv0\pmod{\ell_1}$ and $n\equiv1\pmod{\ell_2}$.
-In \eqref{eq:familyD}, the denominators $D_0,D_1$ are divisible by
+In \eqref{alg:eq:familyD}, the denominators $D_0,D_1$ are divisible by
 $\ell_1$, and $D_2$ is divisible by $\ell_2$. Their numerators are one,
 so no cancellation is possible. None of the three complete rational
 preimages lies in $\Z[S^{-1}]^3$. Local integrality at every prime was
-proved for every $n$ in \cref{thm:family}.
+proved for every $n$ in \cref{alg:thm:family}.
 \end{proof}
 For example, $n=6$ gives the target $(0,-60,2)$ and denominators
 $-30,66,55$. None is a power of two up to sign, so this example has no
 $\Z[1/2]$-point. The obstruction is therefore not a defect caused solely
 by bad reduction at $2$.
 
-\begin{corollary}[The same dense obstruction over every fixed $S$]\label{cor:Sdensity}
+\begin{corollary}[The same dense obstruction over every fixed $S$]\label{alg:cor:Sdensity}
 For a fixed finite set $S$, let $M_S(H)$ count the parameter pairs in
-\cref{thm:densityparams} whose target has no preimage over
+\cref{alg:thm:densityparams} whose target has no preimage over
 $\Z[S^{-1}]$. Then
 \[
  M_S(H)=\frac{27}{4\pi^2}(2H+1)^2+O_S(H\log H).
@@ -718,7 +782,7 @@ Their targets are Zariski dense in $C=2$ and have integral preimages over
 $\Z_p$ for every prime, including the primes of $S$.
 \end{corollary}
 \begin{proof}
-All second and third coordinates in \eqref{eq:planepoints} are integers.
+All second and third coordinates in \eqref{alg:eq:planepoints} are integers.
 A preimage belongs to $\Z[S^{-1}]^3$ exactly when some $D_r$ has no prime
 factor outside $S$. Then both nonzero integer differences $r-s$ and
 $r-t$ have all prime factors in $S$ as well.
@@ -734,15 +798,15 @@ Given two such differences $u=r-s$, $v=r-t$, the root sum forces
 $3r=1+u+v$ and hence determines the root triple, up to its finitely many
 orderings. Thus only $O_S((\log H)^{2|S|})$ parameter pairs in the whole
 box can give an $S$-integral point. Removing this set from the locally
-soluble pairs of \cref{thm:densityparams} preserves its stated asymptotic;
+soluble pairs of \cref{alg:thm:densityparams} preserves its stated asymptotic;
 for fixed $S$ the polylogarithmic error is absorbed into $O_S(H\log H)$.
 Positive parameter density implies target Zariski density by the proof
-of \cref{cor:zariski}. The all-prime local assertion was not weakened
+of \cref{alg:cor:zariski}. The all-prime local assertion was not weakened
 when these pairs were removed.
 \end{proof}
 
 \subsection{Transport to the repository's stabilized maps}
-\begin{proposition}[Integral stable-equivalence invariance]\label{prop:stable}
+\begin{proposition}[Integral stable-equivalence invariance]\label{alg:prop:stable}
 Let $R$ be either $\Z$ or $\Z[S^{-1}]$, let $f\in R[X]^d$, and let
 \[
  h=\beta\circ(f\times\operatorname{id}_{\A^m})\circ\alpha,
@@ -772,9 +836,9 @@ that reduction retains the proof status documented by the repository.
 We do not upgrade its symbolic certificates to kernel-checked proofs.
 
 \subsection{The exact profinite closure}
-\begin{theorem}[Closure of the integral image]\label{thm:closure}
+\begin{theorem}[Closure of the integral image]\label{alg:thm:closure}
 For any polynomial map $f\in\Z[X_1,\ldots,X_d]^r$,
-\begin{equation}\label{eq:closure}
+\begin{equation}\label{alg:eq:closure}
  \overline{f(\Z^d)}^{\,\widehat\Z^r}
  =f(\widehat\Z^d)
  =\prod_p f(\Z_p^d).
@@ -792,14 +856,14 @@ $f(x)$ pulls back to a neighborhood of $x$ meeting $\Z^d$.
 This proves the first equality. Polynomial evaluation on the product
 is coordinatewise, and choices of preimages can be made separately at
 each prime, proving the second equality. The final assertions follow
-from \cref{thm:family,cor:zariski}.
+from \cref{alg:thm:family,alg:cor:zariski}.
 \end{proof}
 Thus even \emph{all} congruences, not merely all congruences below a fixed
 bound, fail to characterize the integer image. On a split fiber,
-\cref{lem:denominator} identifies exactly what they miss: local points
+\cref{alg:lem:denominator} identifies exactly what they miss: local points
 can live on different rational components.
 
-\section{The contrasting rational Hasse principle}\label{sec:rational}
+\section{The contrasting rational Hasse principle}\label{alg:sec:rational}
 
 \subsection{A cubic obstruction at infinitely many primes}
 We use one standard external theorem in this section: Chebotarev's
@@ -810,7 +874,7 @@ of a separable polynomial at a good place is given by the cycle lengths
 of that Frobenius action. See Milne \cite[Theorem 8.31 and Example 8.36]{milne}.
 No effective version is required.
 
-\begin{lemma}\label{lem:cubicHasse}
+\begin{lemma}\label{alg:lem:cubicHasse}
 If an irreducible cubic over a number field $K$ has a root in every finite
 completion $K_v$, a contradiction follows. In fact, it has no root at
 infinitely many finite places.
@@ -826,9 +890,9 @@ root would be integral and would reduce to a root of this irreducible
 cubic. This is impossible.
 \end{proof}
 
-\begin{theorem}[Rational local--global equality]\label{thm:rationalHasse}
+\begin{theorem}[Rational local--global equality]\label{alg:thm:rationalHasse}
 For every number field $K$ and $\target\in K^3$,
-\begin{equation}\label{eq:rationalHasse}
+\begin{equation}\label{alg:eq:rationalHasse}
  \target\in F(K^3)
  \quad\Longleftrightarrow\quad
  \target\in F(K_v^3)\ \text{for every finite place }v.
@@ -839,10 +903,10 @@ Archimedean places can be added without changing the equality.
 The forward implication is immediate. Write $\target=(A,B,C)$ and
 assume local solubility at every finite place. If $C=0$, the point
 $(0,B,A-4B^2)$ lies in $K^3$. Suppose $C\ne0$.
-By \cref{thm:root}, local solubility means that $g_{A,B,C}$ has a simple
+By \cref{alg:thm:root}, local solubility means that $g_{A,B,C}$ has a simple
 root in every $K_v$.
 
-An irreducible $g$ is impossible by \cref{lem:cubicHasse}. A reducible
+An irreducible $g$ is impossible by \cref{alg:lem:cubicHasse}. A reducible
 cubic has a root in $K$. If some $K$-root is simple, reconstruction
 finishes the proof. If a $K$-root has multiplicity two, the remaining
 linear factor is also defined over $K$ and is simple. The only remaining
@@ -853,7 +917,7 @@ assumption. Thus a simple $K$-root always exists.
 
 \begin{remark}[Reconciliation with the integral counterexamples]
 The targets $\target_n$ do have rational preimages, so they satisfy
-\cref{thm:rationalHasse}. What fails is simultaneous integrality of one
+\cref{alg:thm:rationalHasse}. What fails is simultaneous integrality of one
 of those points. The earlier degree-five construction with no rational
 preimage \cite{degreefive} is of a different kind: a product of an
 irreducible cubic and its quadratic discriminant-field polynomial can
@@ -866,8 +930,8 @@ known degree-five examples.
 \subsection{A practical exact rational inverse algorithm}
 The proof gives a short, complete rational algorithm. On input
 $(A,B,C)\in\Q^3$, factor $g_{A,B,C}$ over $\Q$. Retain each rational
-root of multiplicity one, reconstruct it by \eqref{eq:reconstruction},
-and add \eqref{eq:boundarypoint} when $C=0$. To decide integer or
+root of multiplicity one, reconstruct it by \eqref{alg:eq:reconstruction},
+and add \eqref{alg:eq:boundarypoint} when $C=0$. To decide integer or
 $S$-integer membership, inspect the reduced denominators of this finite
 list. An irreducible quadratic factor can be ignored for the rational
 list, but not for a local integral-image problem.
@@ -875,10 +939,10 @@ list, but not for a local integral-image problem.
 The file \texttt{code/rational\_inverse.py} implements this procedure
 using exact rational arithmetic and SymPy's rational factorization.
 It verifies every reconstructed point by substitution. The mathematical
-completeness of the procedure is \cref{thm:root}, rather than any
+completeness of the procedure is \cref{alg:thm:root}, rather than any
 heuristic search bound.
 
-\section{Known finite-field laws and their arithmetic use}\label{sec:finitefields}
+\section{Known finite-field laws and their arithmetic use}\label{alg:sec:finitefields}
 
 \subsection{Odd-characteristic fiber counts}
 For a finite field $k=\F_q$ of odd characteristic, let
@@ -888,15 +952,15 @@ For a finite field $k=\F_q$ of odd characteristic, let
 The following formulas are prior results from \cite{finitefield}.
 We include their elementary proof to fix exactly which roots are counted.
 
-\begin{theorem}[Finite-field law, credited to the archived note]\label{thm:finitefields}
+\begin{theorem}[Finite-field law, credited to the archived note]\label{alg:thm:finitefields}
 If $\operatorname{char}k>3$, the only fiber sizes are $0,1,3$, and
-\begin{equation}\label{eq:fflaw}
+\begin{equation}\label{alg:eq:fflaw}
  N_0=\frac{(q-1)(q^2+2)}3,\qquad
  N_1=\frac{q^3+q^2-2q+2}2,\qquad
  N_3=\frac{(q-1)(q^2+2)}6.
 \end{equation}
 If $\operatorname{char}k=3$, the only fiber sizes are again $0,1,3$, but
-\begin{equation}\label{eq:fflaw3}
+\begin{equation}\label{alg:eq:fflaw3}
  N_0=\frac{q^2(q-1)}3,\qquad
  N_1=\frac{q^2(q+1)}2,\qquad
  N_3=\frac{q^2(q-1)}6.
@@ -915,7 +979,7 @@ of distinct roots $\{r,s,t\}$ with nonzero sum. The sum determines
 $C=2/(r+s+t)$, and the other elementary symmetric functions determine
 $B,A$. For $C=0$, a three-point fiber is determined by an unordered
 pair of distinct roots of $-2T^2+BT-2A$. Therefore
-\begin{equation}\label{eq:triplecount}
+\begin{equation}\label{alg:eq:triplecount}
  N_3=\binom q2+\binom q3-Z_q,
 \end{equation}
 where $Z_q$ counts unordered distinct zero-sum triples.
@@ -927,7 +991,7 @@ The union has $3q-2$ elements. Hence
 $6Z_q=q^2-3q+2=(q-1)(q-2)$.
 In characteristic three, any equality in a zero-sum triple forces all
 three entries equal, and there are $q$ such triples. Thus
-$6Z_q=q^2-q$ instead. Substitution in \eqref{eq:triplecount} gives
+$6Z_q=q^2-q$ instead. Substitution in \eqref{alg:eq:triplecount} gives
 both values of $N_3$.
 
 Finally, counting targets and source points respectively gives
@@ -941,17 +1005,17 @@ independently by trace counting. Fix $C\ne0$ and assume
 $\operatorname{char}k>3$. As $(A,B)$ varies, $g/C$ ranges over all monic
 cubics with the fixed coefficient $-2/C$ of $T^2$. The irreducible ones
 number
-\begin{equation}\label{eq:irredcount}
+\begin{equation}\label{alg:eq:irredcount}
  \frac{q^2-1}{3}.
 \end{equation}
 Indeed, the trace map $\F_{q^3}\to\F_q$ has $q^2$ elements of any prescribed
 trace. Exactly one of those lies in $\F_q$, since the trace of a ground-field
 element is three times that element. Every other element has degree three
 and belongs to a Frobenius orbit of size three. This proves
-\eqref{eq:irredcount}.
+\eqref{alg:eq:irredcount}.
 Across all $C\ne0$, the number of target residue classes whose inverse
 binary cubic has \emph{no} projective root is consequently
-\begin{equation}\label{eq:Iq}
+\begin{equation}\label{alg:eq:Iq}
  I(q)=\frac{(q-1)(q^2-1)}3
      =\frac{(q-1)^2(q+1)}3.
 \end{equation}
@@ -960,7 +1024,7 @@ They should not be confused with \emph{all} omitted targets of $F$ over
 $k$, because a repeated projective root is still a root but contributes
 no finite source point.
 
-\section{An inverse-ball theorem at every precision}\label{sec:ball}
+\section{An inverse-ball theorem at every precision}\label{alg:sec:ball}
 
 \subsection{The exact image of a sufficiently small ball}
 We now establish the analytic bridge which makes a finite dyadic
@@ -968,19 +1032,19 @@ calculation conclusive. The lemma is a quantitative version of the
 $p$-adic inverse-function argument, with its image lattice retained
 explicitly. We give a proof rather than relying on a convergence claim.
 
-\begin{lemma}[Exact inverse ball]\label{lem:ball}
+\begin{lemma}[Exact inverse ball]\label{alg:lem:ball}
 Let $f:\Z_p^d\to\Z_p^d$ be given by polynomials with coefficients in
 $\Z_p$, let $a\in\Z_p^d$, and set $J=Df(a)$. Suppose
 $v_p(\det J)=e<\infty$. For every integer $k>e$, the restriction of $f$
 to $a+p^k\Z_p^d$ is a bijection onto
-\begin{equation}\label{eq:ballimage}
+\begin{equation}\label{alg:eq:ballimage}
  f(a)+p^kJ\Z_p^d.
 \end{equation}
 This image is a union of target residue classes modulo $p^{k+e}$.
 For every $m\ge k+e$, a target residue class modulo $p^m$ has either
 zero or exactly $p^e$ preimages modulo $p^m$ within the source class
 $a\pmod{p^k}$. It has $p^e$ precisely when its lifts lie in
-\eqref{eq:ballimage}.
+\eqref{alg:eq:ballimage}.
 \end{lemma}
 \begin{proof}
 Taylor expansion, with integral polynomial coefficients, gives
@@ -1006,7 +1070,7 @@ modulo every $p^r$. Since
 \[
  f(a+p^kt)=f(a)+p^kJ\Psi(t),
 \]
-we have both injectivity and the exact image \eqref{eq:ballimage}.
+we have both injectivity and the exact image \eqref{alg:eq:ballimage}.
 
 Also $p^e\Z_p^d\subset J\Z_p^d$, so the image contains a full target
 ball of radius $p^{-(k+e)}$ around each of its points. It is therefore
@@ -1022,12 +1086,12 @@ $p^m$ is equivalent to membership in the actual image lattice. This
 proves the last assertion without extrapolating from finite precision.
 \end{proof}
 
-\begin{corollary}[Uniform determinant valuation]\label{cor:precision}
+\begin{corollary}[Uniform determinant valuation]\label{alg:cor:precision}
 Suppose $v_p(\det Df(a))=e$ for every $a\in\Z_p^d$, and fix $k>e$.
 Then the actual integral fiber cardinality
 $J_f(\target)=\#f^{-1}(\target)(\Z_p)$ is finite and determined by
 $\target\bmod p^{k+e}$. For every $m\ge k+e$,
-\begin{equation}\label{eq:finiteactual}
+\begin{equation}\label{alg:eq:finiteactual}
  \#\{a\bmod p^m:f(a)\equiv\target\pmod{p^m}\}
  =p^eJ_f(\target).
 \end{equation}
@@ -1037,7 +1101,7 @@ In particular, both the image and its fiber-cardinality strata are clopen.
 Partition the source into its $p^{kd}$ residue balls modulo $p^k$.
 Each ball contributes either one actual preimage or none, and its image
 membership depends only on the target class modulo $p^{k+e}$ by
-\cref{lem:ball}. Sum the point counts and the finite congruence counts
+\cref{alg:lem:ball}. Sum the point counts and the finite congruence counts
 over these disjoint source balls.
 \end{proof}
 
@@ -1045,14 +1109,14 @@ over these disjoint source balls.
 For $F$, every odd prime has $e=0$, so we can take $k=1$.
 Each source point modulo $p$ lifts uniquely above every target lift
 with that residue. Thus, exactly and not just asymptotically,
-\begin{equation}\label{eq:oddpadiclaw}
+\begin{equation}\label{alg:eq:oddpadiclaw}
  \Pr_{\target\in\Z_p^3}
  \bigl(\#F^{-1}(\target)(\Z_p)=j\bigr)=\frac{N_j(p)}{p^3},
  \qquad p\text{ odd},\ j=0,1,3.
 \end{equation}
 This is the direct $p$-adic consequence of the previously known
 finite-field formulas. In particular,
-\begin{equation}\label{eq:oddimage}
+\begin{equation}\label{alg:eq:oddimage}
  \rho_p:=\vol(F(\Z_p^3))=
  \begin{cases}
  7/9,&p=3,\\[2pt]
@@ -1063,49 +1127,49 @@ The same lifting proof works over the ring of integers of an unramified
 extension of $\Q_p$, with $p$ replaced in the finite-field counts by its
 residue cardinality. We do not use that extension below.
 
-\section{The exceptional prime: the exact dyadic law}\label{sec:dyadic}
+\section{The exceptional prime: the exact dyadic law}\label{alg:sec:dyadic}
 
 \subsection{From 64 source balls to 512 target classes}
 At $p=2$, the determinant has constant valuation one. Taking $e=1$,
-$k=2$ in \cref{lem:ball} partitions the source into 64 balls
+$k=2$ in \cref{alg:lem:ball} partitions the source into 64 balls
 $a+4\Z_2^3$. Their images are
-\begin{equation}\label{eq:dyadicballs}
+\begin{equation}\label{alg:eq:dyadicballs}
  F(a)+4J_F(a)\Z_2^3.
 \end{equation}
 Because $v_2(\det J_F(a))=1$, the matrix $J_F(a)\bmod2$ has rank two.
-Thus each image in \eqref{eq:dyadicballs} consists of exactly four
+Thus each image in \eqref{alg:eq:dyadicballs} consists of exactly four
 classes modulo $8$, specifically
-\begin{equation}\label{eq:finiteballimage}
+\begin{equation}\label{alg:eq:finiteballimage}
  \{F(a)+4J_F(a)h\pmod8:h\in\{0,1\}^3\}.
 \end{equation}
 Every target in such an image has exactly one preimage in that source
 ball. Therefore the desired integral fiber cardinality is obtained by
 counting how many of the 64 four-element sets contain the target class.
 
-\begin{theorem}[Exact dyadic integral law]\label{thm:dyadic}
-For the fixed map $F$ in \eqref{eq:F}, the number
+\begin{theorem}[Exact dyadic integral law]\label{alg:thm:dyadic}
+For the fixed map $F$ in \eqref{alg:eq:F}, the number
 $j(\target)=\#F^{-1}(\target)(\Z_2)$ is determined by
 $\target\bmod8$. Its Haar distribution is
-\begin{equation}\label{eq:dyadiclaw}
+\begin{equation}\label{alg:eq:dyadiclaw}
 \begin{array}{c|rrrr}
  j&0&1&2&3\\ \hline
  \Pr(j(\target)=j)&21/32&7/32&3/32&1/32.
 \end{array}
 \end{equation}
 In particular,
-\begin{equation}\label{eq:rho2}
+\begin{equation}\label{alg:eq:rho2}
  \vol(F(\Z_2^3))=\frac{11}{32}.
 \end{equation}
 For every $m\ge3$, the possible fiber sizes of
 $F:(\Z/2^m\Z)^3\to(\Z/2^m\Z)^3$ are $0,2,4,6$, with counts
-\begin{equation}\label{eq:dyadicfinite}
+\begin{equation}\label{alg:eq:dyadicfinite}
  2^{3m}\left(\frac{21}{32},\frac7{32},\frac3{32},\frac1{32}\right)
 \end{equation}
 respectively. Modulo $8$ is necessary for image membership: modulo $4$
 does not suffice.
 \end{theorem}
 \begin{proof}
-The reduction to \eqref{eq:finiteballimage} proves that a finite table
+The reduction to \eqref{alg:eq:finiteballimage} proves that a finite table
 at modulus $8$ settles the infinite-precision assertion. The exact table
 is below. Each row fixes the parity of $(A,B,C)$ and thus contains 64
 target classes modulo $8$.
@@ -1129,7 +1193,7 @@ Total&336&112&48&16\\
 \end{center}
 Here is a complete finite enumeration defining and checking the total
 row using only integer arithmetic. The derivative is not needed in this
-version: \cref{cor:precision} says that each actual preimage contributes
+version: \cref{alg:cor:precision} says that each actual preimage contributes
 exactly two source residues modulo $8$.
 \begin{lstlisting}[language=Python]
 from collections import Counter
@@ -1148,16 +1212,16 @@ actual = {b: count[b] // 2
 assert Counter(actual.values()) == {0:336, 1:112, 2:48, 3:16}
 \end{lstlisting}
 The accompanying certificate independently constructs all 64 sets in
-\eqref{eq:finiteballimage} using the product-rule Jacobian and verifies
+\eqref{alg:eq:finiteballimage} using the product-rule Jacobian and verifies
 equality \emph{for every target residue}, not merely agreement of the
 total histogram. It also reproduces each parity row. This finite integer
 enumeration is the computational part of the proof; the all-precision
-part is \cref{lem:ball}.
+part is \cref{alg:lem:ball}.
 
-Divide the total row by 512 to obtain \eqref{eq:dyadiclaw} and sum its
-nonzero columns to obtain \eqref{eq:rho2}. Equation
-\eqref{eq:finiteactual} multiplies actual cardinalities by two at every
-modulus $2^m$, $m\ge3$, proving \eqref{eq:dyadicfinite}.
+Divide the total row by 512 to obtain \eqref{alg:eq:dyadiclaw} and sum its
+nonzero columns to obtain \eqref{alg:eq:rho2}. Equation
+\eqref{alg:eq:finiteactual} multiplies actual cardinalities by two at every
+modulus $2^m$, $m\ge3$, proving \eqref{alg:eq:dyadicfinite}.
 Finally, the target classes $(0,1,0)$ and $(0,1,4)$ agree modulo $4$;
 the former has two integral $2$-adic preimages and the latter none,
 as certified by the same pointwise table. Hence image membership
@@ -1173,6 +1237,29 @@ Only the first and third are in $\Z_2^3$, so its dyadic integral fiber
 has two points. This is compatible with the three-point rational fiber
 and the known geometric law. In fact, it also has exactly two ordinary
 integer preimages.
+
+\begin{remark}[\wtag{} An intake observation: the project's collision fiber]\label{alg:rem:collisionfiber}
+This remark is \emph{not} a claim of the manuscript. It was observed when
+the manuscript was taken into ProveIt and checked there by exact
+computation (SymPy~1.14.0: evaluation, and a lex Gr\"obner basis whose
+$x$-polynomial is $x(x-1)(x+1)$). Apply \cref{alg:thm:root} to the
+project's collision value $(0,-2,0)$ (\texttt{collisionValue},
+\cref{alg:sub:attribution}). Since $C=0$ there is the boundary point
+$(0,-2,-16)$, and $g(T)=-2T(T+1)$ has the simple roots $t=0$ and $t=-1$,
+which reconstruct $(-1,1,5)$ and $(1,-2,8)$. So
+\[
+ F^{-1}(0,-2,0)(\overline\Q)=\{(-1,1,5),\ (0,-2,-16),\ (1,-2,8)\},
+\]
+three \emph{integral} points: $F$ has an integral triple collision. The
+project records and formalizes only the first two
+(\texttt{collision\textsubscript{0}}, \texttt{collision\textsubscript{1}}).
+Along the project's family $F(t,-1/t,5/t^2)=F(0,2/t,-16/t^2)=(0,2/t,0)$
+the third point is $(-t,2/t,8/t^2)$. The torus action
+$F(x/s,sy,s^2z)=(s^2P,sQ,R/s)$ at $s=-\tfrac12$ carries these three points
+to $(2,-\tfrac12,\tfrac54)$, $(0,1,-4)$ and $(-2,1,2)$, the fiber over
+$(0,1,0)$ displayed above; its two integral points have largest coordinate
+$4$, against $16$ for the project's integral collision.
+\end{remark}
 
 There are three different distributions that must not be interchanged:
 \begin{center}
@@ -1207,21 +1294,21 @@ fiber size at an odd prime is one. These are exactly the factors suggested
 by the determinant's local absolute value, but the argument here is a
 finite lattice count rather than an appeal to a change-of-variables formula.
 
-\section{Sparse rational images and a measure-zero congruence closure}\label{sec:sparse}
+\section{Sparse rational images and a measure-zero congruence closure}\label{alg:sec:sparse}
 
 \subsection{A closed subset of profinite measure zero}
-\begin{theorem}\label{thm:measurezero}
+\begin{theorem}\label{alg:thm:measurezero}
 The compact image $F(\widehat\Z^3)$ has Haar measure zero in
 $\widehat\Z^3$. Nevertheless, its intersection with $\Z^3$ contains
-the Zariski-dense split-plane family of \cref{cor:zariski}.
+the Zariski-dense split-plane family of \cref{alg:cor:zariski}.
 \end{theorem}
 \begin{proof}
-By \cref{thm:closure}, the image is the product of the local images.
-For $p>3$, \eqref{eq:oddimage} gives $\rho_p<3/4$. The image is
+By \cref{alg:thm:closure}, the image is the product of the local images.
+For $p>3$, \eqref{alg:eq:oddimage} gives $\rho_p<3/4$. The image is
 contained in the cylinder imposing local membership at any chosen
 $N$ primes greater than three, and that cylinder has measure at most
 $(3/4)^N$. Letting $N$ tend to infinity proves measure zero.
-The second assertion was already proved in \cref{thm:closure}.
+The second assertion was already proved in \cref{alg:thm:closure}.
 \end{proof}
 This is a density statement in a compact topological space. It neither
 asserts emptiness nor contradicts Zariski density in a plane. Topological
@@ -1239,12 +1326,12 @@ all residue classes outside $F(\F_p^3)$: a rational source may have a
 $p$-adic denominator. The correct necessary reduction condition is that
 the \emph{binary} inverse cubic have a projective root modulo $p$.
 
-\begin{lemma}\label{lem:reductionroot}
+\begin{lemma}\label{alg:lem:reductionroot}
 If $(A,B,C)\in\Z^3\cap F(\Q^3)$, then $G_{A,B,C}$ has a projective
 root over $\F_p$ for every prime $p>2$.
 \end{lemma}
 \begin{proof}
-The rational source gives a rational projective root by \cref{thm:root}.
+The rational source gives a rational projective root by \cref{alg:thm:root}.
 Represent it by coprime integers $(T,S)$. At every prime they are not
 both zero after reduction, and the homogeneous equation remains valid.
 The coefficient $-2$ ensures that the reduced binary polynomial is not
@@ -1252,10 +1339,10 @@ the zero polynomial for odd $p$. The reduced root need not remain simple,
 which is why the stronger exclusion would be invalid.
 \end{proof}
 
-\begin{theorem}[An elementary quantitative sieve]\label{thm:thinsieve}
+\begin{theorem}[An elementary quantitative sieve]\label{alg:thm:thinsieve}
 Let $p_1,\ldots,p_N$ be distinct primes greater than three and
 $M=\prod_{i=1}^N p_i$. Then
-\begin{equation}\label{eq:CRTbound}
+\begin{equation}\label{alg:eq:CRTbound}
  \mathcal A(H)\le
  \left(\prod_{i=1}^N\alpha_{p_i}\right)(2H+1+M)^3,
  \qquad
@@ -1263,17 +1350,17 @@ $M=\prod_{i=1}^N p_i$. Then
 \end{equation}
 In particular, $F(\Q^3)\cap\Z^3$ has zero density in integer boxes.
 There is an absolute $c>0$ such that
-\begin{equation}\label{eq:quantzero}
+\begin{equation}\label{alg:eq:quantzero}
  \mathcal A(H)\ll H^3\exp(-c\sqrt{\log H}).
 \end{equation}
 \end{theorem}
 \begin{proof}
-By \eqref{eq:Iq} and \cref{lem:reductionroot}, a fraction
+By \eqref{alg:eq:Iq} and \cref{alg:lem:reductionroot}, a fraction
 $I(p)/p^3$ of target residues is forbidden at $p$. The allowed fraction
 is exactly $\alpha_p$. The Chinese remainder theorem makes the number
 of allowed classes modulo $M$ equal to $M^3\prod_i\alpha_{p_i}$.
 Each class contains at most $((2H+1)/M+1)^3$ points of the integer cube.
-This proves \eqref{eq:CRTbound}.
+This proves \eqref{alg:eq:CRTbound}.
 For $p\ge5$, the positive correction
 $1/(3p)+1/(3p^2)$ is at most $2/25<1/12$, proving
 $\alpha_p<3/4$.
@@ -1290,7 +1377,7 @@ $p_i<2^{i+2}$, and hence
 Choose the largest nonnegative integer $N$ with
 $N(N+5)/2\le\log_2 H$. Then $M\le H$ and
 $N=\sqrt{2\log H/\log2}+O(1)$. Substituting into
-\eqref{eq:CRTbound} gives
+\eqref{alg:eq:CRTbound} gives
 \[
  \mathcal A(H)\ll H^3
  \exp\left(-\log(4/3)\sqrt{\frac{2}{\log2}}\sqrt{\log H}\right),
@@ -1304,12 +1391,16 @@ estimate. It is useful here because it is derived directly from the same
 inverse cubic and makes the necessary rational-versus-integral sieve
 correction transparent.
 
-\section{Verification artifacts and the route to formal proofs}\label{sec:verification}
+\section{Verification artifacts and the route to formal proofs}\label{alg:sec:verification}
 
 \subsection{What was actually executed}
 The accompanying archive contains three independent-purpose checkers and
 an exact rational inverse utility. They were run in the preparation of this
 article, with results recorded under \texttt{certificates/}.
+\wtag{} In this report that directory is shipped as \rpath{data/}, with
+the same file names; two of the scripts still write to
+\rpath{../certificates/} next to their own directory
+(\cref{alg:app:rerun}).
 
 \paragraph{Symbolic identities.}
 \texttt{verify\_symbolic.py}, run with SymPy 1.14.0, verifies 27 exact
@@ -1335,7 +1426,7 @@ the universal conclusions are proved in the preceding sections.
 \texttt{verify\_split\_plane.py} uses only exact integers and fractions.
 It checks all 1600 distinct-root fibers with $(a,b)\in[-20,20]^2$,
 including the exact denominator gcd $g^2$. Its parameter counts through
-$H=250$ provide a check on \cref{thm:densityparams}, not evidence substituted
+$H=250$ provide a check on \cref{alg:thm:densityparams}, not evidence substituted
 for the M\"obius proof.
 
 \subsection{Trust boundaries}
@@ -1358,14 +1449,14 @@ A practical Lean extension should proceed in four layers.
 
 \paragraph{Layer 1: exact algebra over a field.}
 Reuse the repository's definition of $F$. Formalize
-\eqref{eq:targetwt}, \eqref{eq:derivative}, and
-\eqref{eq:reconstruction} over a field with $2\ne0$. The central API should
+\eqref{alg:eq:targetwt}, \eqref{alg:eq:derivative}, and
+\eqref{alg:eq:reconstruction} over a field with $2\ne0$. The central API should
 state both directions of the preimage characterization and explicitly
 separate $x=0$. Polynomial normalization proves the identities; the main
 logical obligation is completeness, not evaluation of examples.
 
 \paragraph{Layer 2: rational denominators and local selection.}
-Formalize \cref{thm:family,thm:plane} over $\Q$ and $\Z$. The no-integer
+Formalize \cref{alg:thm:family,alg:thm:plane} over $\Q$ and $\Z$. The no-integer
 point result needs only denominator arithmetic once completeness is
 available. Before introducing $p$-adic numbers, prove the stronger
 constructive congruence statement for every natural modulus by modular
@@ -1391,7 +1482,7 @@ sieve form further analytic-number-theory branches. Keeping these
 branches separate prevents a deep external result from becoming an
 unnecessary assumption of the elementary headline family.
 
-\section{Further research questions}\label{sec:questions}
+\section{Further research questions}\label{alg:sec:questions}
 The following questions are proposed research targets. They are not
 represented as settled results, and their priority status would require
 additional literature review before publication.
@@ -1402,7 +1493,7 @@ Can the 512-entry dyadic certificate be compressed into a short list of
 explicit congruence conditions on $(A,B,C)$, with a hand-checkable
 case proof for each integral fiber size?
 \end{question}
-\cref{thm:dyadic} proves that modulus eight suffices and modulus four
+\cref{alg:thm:dyadic} proves that modulus eight suffices and modulus four
 does not. Thus the remaining problem is logical and algebraic compression,
 not an unbounded precision search. The eight parity rows suggest a small
 branching structure. A compact description would improve both exposition
@@ -1414,7 +1505,7 @@ Classify the integral targets with three rational preimages, and then
 those with a single rational preimage and a quadratic pair, according to
 local integral solubility at every prime.
 \end{question}
-For arbitrary split rational fibers, \cref{lem:denominator} already gives
+For arbitrary split rational fibers, \cref{alg:lem:denominator} already gives
 a criterion once denominators are known. The challenge is to express it
 in target coefficients without factoring every fiber individually.
 The quadratic case is qualitatively different: the nonrational pair can
@@ -1463,7 +1554,7 @@ For an integral target with irreducible inverse cubic, how small can one
 guarantee a prime $p$ with no $\Q_p$-preimage, in terms of the target's
 height and cubic discriminant?
 \end{question}
-\cref{thm:rationalHasse} uses qualitative Chebotarev. An effective
+\cref{alg:thm:rationalHasse} uses qualitative Chebotarev. An effective
 specialized estimate could turn the abstract rational Hasse principle
 into a practical proof-producing negative decision procedure. Unconditional
 and conditional bounds should be separated, and the finite exceptional
@@ -1474,7 +1565,7 @@ must be included in the implementation.
 \begin{question}
 Can one obtain the correct exponent or a main-term asymptotic for
 $\mathcal A(H)$, rather than the elementary bound in
-\cref{thm:thinsieve}?
+\cref{alg:thm:thinsieve}?
 \end{question}
 The projective root condition gives a uniform positive congruence loss,
 but the simple CRT argument uses the moduli inefficiently. A large-sieve
@@ -1488,7 +1579,7 @@ Among the integral stable representatives in ProveIt, which realizes
 integral Hasse failures with the smallest target height, source denominator
 height, degree, or ambient dimension?
 \end{question}
-\cref{prop:stable} guarantees existence but not small formulas after
+\cref{alg:prop:stable} guarantees existence but not small formulas after
 transport. Complexity should be reported as a vector of separate
 measures; minimizing degree alone can raise dimension and coefficient
 height. A search accompanied by exact certificates could produce useful
@@ -1500,7 +1591,7 @@ Can the combination of a complete inverse certificate, denominator
 covering, and the inverse-ball theorem become a generic proof-producing
 workflow for polynomial maps with small geometric fibers?
 \end{question}
-The division of labor in \cref{sec:verification} suggests a reusable
+The division of labor in \cref{alg:sec:verification} suggests a reusable
 architecture: exact elimination produces a candidate inverse; algebraic
 lemmas certify completeness; finite local tables are reflected; and an
 analytic theorem upgrades them to all precisions. This would convert
@@ -1530,7 +1621,7 @@ proofs and replayed exact computations are supplied here; new
 kernel-checked formal proofs remain to be implemented.
 
 \appendix
-\section{Replay guide and artifact inventory}\label{app:replay}
+\section{Replay guide and artifact inventory}\label{alg:app:replay}
 The archive is self-contained except for standard TeX packages and the
 optional SymPy dependency. From its root directory:
 \begin{lstlisting}[language=bash]
@@ -1567,9 +1658,17 @@ Path & Purpose\\
 No external article PDFs, font files, or copies of third-party research
 repositories are redistributed in this archive.
 
+\wtag{} In ProveIt the article is \rpath{article.tex} (this text, rewritten
+as described in \cref{alg:app:report}), \rpath{article.pdf} is a build of
+it, \texttt{certificates/} is shipped as \rpath{data/}, the delivered
+README is replaced by the report README, and the delivered PDF
+\texttt{arithmetic\_fibers.pdf} is not shipped. The commands above are the
+delivery's; \cref{alg:app:rerun} gives commands that work with the shipped
+names.
+
 \section{A characteristic-three simplification}
 The separate characteristic-three finite-field count has a direct
-algebraic explanation. Reducing \eqref{eq:F} modulo $3$ gives
+algebraic explanation. Reducing \eqref{alg:eq:F} modulo $3$ gives
 \[
  Q=y,\qquad P=z+y^2-y^3R,\qquad R=-x-x^3z.
 \]
@@ -1587,6 +1686,85 @@ has one or three elements. This confirms the possible rational fiber
 sizes $0,1,3$, without carrying characteristic-zero cusp formulas
 through an invalid division by three. It is an explanatory calculation,
 not a new finite-field histogram claim.
+
+\section{Provenance of this report}\label{alg:app:report}
+
+\subsection{One manuscript}\label{alg:app:onesource}
+\wtag{} This report is built from \emph{one} manuscript: manuscript~03 of
+batch~36 of ProveIt's incoming reports, the archive
+\texttt{ProveIt\_Arithmetic\_Local\_Global} (inner directory
+\texttt{proveit\_arithmetic\_fibers}, main file
+\texttt{arithmetic\_fibers.tex}, a 26-page PDF dated 24~September 2026,
+author line ``Research draft prepared for Vladimir Reshetnikov'', PDF
+metadata ``Research draft prepared with ChatGPT''), pinned to ProveIt
+commit \nolinkurl{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}. The archive
+arrived in commit \texttt{e13affd32} and was placed in \texttt{1a1396d4d}
+as a new report. Nothing was merged and nothing was selected away: every
+result, proof, example, table, question and limitation of the manuscript
+is printed. The manuscript contributed everything except the text marked
+\wtag.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{alg:}. The source's 77 labels
+are kept, unchanged after the prefix. Six were added:
+\texttt{alg:sub:attribution}, \texttt{alg:rem:collisionfiber},
+\texttt{alg:app:report}, \texttt{alg:app:onesource},
+\texttt{alg:app:pinned} and \texttt{alg:app:rerun}.
+\item Attribution was made precise: a bracketed \wtag{} clause in the
+abstract, the status note on the title page, and
+\cref{alg:sub:attribution}, which names the formalized statements of the
+project and says where the complex stratification and the finite-field
+laws come from.
+\item \Cref{alg:rem:collisionfiber} records an observation made at the
+write, not a claim of the manuscript. It is the only new numbered item and
+the last one of its section, so no source number moved.
+\item Notes marked \wtag{} were added in \cref{alg:sec:verification} and
+in Appendix~\ref{alg:app:replay} (shipped names), and this appendix is
+new.
+\end{enumerate}
+No mathematical statement of the manuscript was changed and no symbol was
+renamed. The manuscript's $t=y+1/x$ is not the project's $t$ (which is
+$xy$ in \rpath{Algebra/JacobianConjecture/Research/README.md} and the
+family parameter in the project README), and its $p$, $q$ are a prime and a
+field size, not the project's $p=xy^2$, $q=x^2yz$. The PDF bookmark of the
+title page was fixed (no duplicate page anchor), and its top space was
+reduced from 0.65 to 0.3~inch so that the added status note fits.
+
+\subsection{Repository statements at the pin}\label{alg:app:pinned}
+\wtag{} The source read the root README, the project README and
+\rpath{Algebra/JacobianConjecture/Research/README.md} at its pin (its
+delivered \rpath{SOURCE_REVIEW.md}). Between the pin and the placement
+commit the project did not change, so its statements about ProveIt are
+current. They are accurate: the formal developments, the integral stable
+shears of \cref{alg:prop:stable} (unitriangular source and target maps
+over $\Z$), and the refusal to upgrade the project's SymPy frontier
+certificates to kernel proofs. The manuscript claims no gap in the
+project; the question \eqref{alg:eq:localglobal-question} is its own. The
+two external sources were checked at the write
+(\cref{alg:sub:attribution}); Milne was not.
+
+\subsection{Rerunning the checks}\label{alg:app:rerun}
+\wtag{} Rerun on a copy with the delivered layout, never in the report:
+\rpath{verify_split_plane.py} and \rpath{verify_symbolic.py} always
+write \rpath{split_plane_checks.json} and \rpath{symbolic_checks.json}
+into \rpath{../certificates/} relative to their own directory, and fail
+after passing their checks if it does not exist.
+\begin{lstlisting}[language=bash]
+mkdir <scratch>          # outside the repository
+cp -r code <scratch>/code
+cp -r data <scratch>/certificates
+cd <scratch>
+python code/verify_finite.py --output certificates/finite_checks.json
+python code/verify_split_plane.py
+python code/verify_symbolic.py
+python code/rational_inverse.py 0 -4 2
+\end{lstlisting}
+The last two need SymPy (the recorded runs used 1.14.0 and Python 3.13.5;
+no requirements file was delivered). At the write the four commands were
+run so with Python 3.13.5 and SymPy 1.14.0: every regenerated file equals
+the shipped one apart from Windows line endings.
+\rpath{data/build_review.json} is a static build record, not regenerated.
 
 \clearpage
 \begin{thebibliography}{9}
