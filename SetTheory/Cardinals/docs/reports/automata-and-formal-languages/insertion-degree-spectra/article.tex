@@ -29,6 +29,8 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Part II (batch 41): research questions share the theorem counter.
+\theoremstyle{definition}\newtheorem{question}[theorem]{Question}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Nzero}{\mathbb N_0}
 \newcommand{\eps}{\varepsilon}
@@ -39,6 +41,13 @@
 \newcommand{\card}[1]{\lvert #1\rvert}
 \DeclareMathOperator{\runs}{runs}
 \DeclareMathOperator{\supp}{supp}
+% Part II (batch 41): gap vectors of binary words (manuscript macros
+% \pos, \gap, \CC, \WW renamed to avoid clashes; \gap now prints omega).
+\newcommand{\bppos}[1]{(#1)_+}
+\newcommand{\bpgap}[1]{\omega(#1)}
+\newcommand{\bpC}[2]{\mathcal C_{#1,#2}}
+\newcommand{\bpW}[2]{\mathcal W_{#1,#2}}
+\newcommand{\bpE}{\mathcal E}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!25},xleftmargin=0.5em,xrightmargin=0.5em}
 
@@ -59,11 +68,13 @@ The five-letter exceptional word has the smallest possible length for any gap wi
 \end{abstract}
 
 \noindent\textbf{Scope and status.} The statements proved below address the indicated no-gap questions, not the surrounding undecidability results. The unrestricted singleton conjecture is not settled here. The proofs have not been checked in a proof assistant or independently peer reviewed.
+[Added 29 September 2026, batch 41: Part~II (Section~\ref{ids:bp:sec:intro} onwards) realizes every finite spectrum containing~$1$ over the binary alphabet $\{a,b\}$ with one inserted unary word. It does not settle the singleton conjecture either, and it is not formalized.]
 
 \newpage
 \tableofcontents
 \newpage
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Gaps in bounded-shuffle hierarchies}
 \section{The problem and the outcome}
 
 The question investigated here is whether an increasing hierarchy of bounded interleavings can pause and subsequently grow. It is elementary to state, concerns finite words rather than encodings of computations, and admits exact finite experiments. It also makes a useful distinction between a resource bound and the number of applications of a fixed operation.
@@ -75,6 +86,7 @@ Here is the precise answer developed in this note. Among pairs of nonempty finit
 The proof is constructive. It first makes almost every output word easy: a local defect produces a contiguous source factor, hence insertion degree $1$. The few outputs with no local defect are rigid, explicitly designated words. Their unique source-position assignments determine their degrees. Selecting those assignments selects the spectrum.
 
 Three complementary constructions make the result transparent. Section~\ref{sec:ternary} gives a small counterexample that can be checked without a computer. Sections~\ref{sec:delay}--\ref{sec:realization} give the general theorem. Section~\ref{sec:binary} supplies a binary counterexample and a finite certificate demonstrating that source-pair ambiguity can erase an entire intermediate degree even when each individual pair has no gap.
+[Added 29 September 2026, batch 41: this paragraph describes Part~I. Part~II, from Section~\ref{ids:bp:sec:intro} on, proves a fixed-alphabet version of the realization theorem: over $\{a,b\}$ and with the single inserted word $a^m$, every finite spectrum containing~$1$ occurs, with prescribed multiplicities above degree~$1$ (Theorem~\ref{ids:bp:thm:profile-main}).]
 
 The iteration-depth problem has the opposite answer. Once a word is reached by a shortest sequence of insertions, every intermediate word on that sequence must have the corresponding shortest depth. This statement does not require finiteness, regularity, or an empty-word assumption.
 
@@ -403,7 +415,9 @@ For each fixed $k$, one may also recognize $\ins{k}{A}{B}$ by a finite automaton
 
 \section{A binary counterexample and representation erasure}\label{sec:binary}
 
-The parametric theorem uses an alphabet that grows with the prescribed profile. A separate small example demonstrates that a binary alphabet already supports a gap. Set
+The parametric theorem uses an alphabet that grows with the prescribed profile. A separate small example demonstrates that a binary alphabet already supports a gap.
+[Added 29 September 2026, batch 41: Part~II removes the growing alphabet altogether: every finite spectrum containing~$1$ is realized over $\{a,b\}$ (Corollary~\ref{ids:bp:cor:classification}).]
+Set
 \begin{equation}
  A=\{aaba,aabb,abbb,bbaa,bbba,bbbb\},
  \qquad B=\{aaa,aba,bab\}.
@@ -436,6 +450,7 @@ The first assertion is exactly the binary example and its pair table, answering 
 \end{proof}
 
 This does not disprove the singleton no-gap conjecture: the source languages in the counterexample have six and three words. It disproves the inference from good behavior of every individual source pair to good behavior of their union.
+[Added 29 September 2026, batch 41: Part~II's constructions reduce the inserted language to the single word $a^m$, but still use many target words, so they do not disprove it either (Question~\ref{ids:bp:q:singleton}).]
 
 \section{Iteration depth has no gaps}\label{sec:depth}
 
@@ -556,10 +571,1462 @@ A Z3 search suggested the small examples; the general construction was subsequen
 The insertion-degree no-gap assertion is false, already for finite regular languages. The finite representation-erasure question has an affirmative answer: the binary certificate exhibits the required source-pair behavior. The general finite-spectrum realization theorem strengthens the negative answer from an isolated gap to an arbitrary finite profile. Separately, the iteration-depth no-gap assertion is true for arbitrary languages.
 
 The unrestricted singleton insertion-degree question remains outside the proofs in this note. The arbitrary-spectrum construction intentionally exploits multiple possible source words and cannot be read as a singleton counterexample. Similarly, the argument does not classify infinite spectra over a fixed finite alphabet, and it does not establish which finite spectra can all be realized over one fixed binary alphabet.
+[Added 29 September 2026, batch 41: the last point is settled in Part~II. Every finite set of positive integers containing~$1$ is the spectrum of a pair of finite binary languages, with the inserted language the single unary word $\{a^m\}$ (Theorem~\ref{ids:bp:thm:profile-main}, Corollary~\ref{ids:bp:cor:classification}). The unrestricted singleton question and the classification of infinite spectra over a fixed finite alphabet remain open (Questions~\ref{ids:bp:q:singleton} and~\ref{ids:bp:q:infinite}).]
 
 Several concrete problems are left by these results. One can seek smaller source languages for a specified spectrum, determine the least alphabet needed to realize $\{1,r\}$ as $r$ grows, or study descriptions by small deterministic automata rather than by cardinality. The proof of Theorem~\ref{thm:profile} also suggests investigating classes where competing source-pair representations are controlled strongly enough to restore an interval theorem. These are research directions, not additional claims of unresolved status in the published literature.
+[Added 29 September 2026, batch 41: Part~II answers the least-alphabet question: for every $r\geq2$ the spectrum $\{1,r\}$ is realized over two letters, and no fewer suffice (Corollary~\ref{ids:bp:cor:classification}). It answers the smallest-source question for the inserted language only, which it reduces to one word; the minimum size of the target language stays open (Question~\ref{ids:bp:q:target}), as do small automaton descriptions (Question~\ref{ids:bp:q:automata}) and interval-restoring classes (Question~\ref{ids:bp:q:structure}). Its quadratic length bound (Theorem~\ref{ids:bp:thm:length-main}) holds only in its full-coverage class, not for every binary spectrum.]
 
 The central lesson is specific: an insertion-degree spectrum is a minimum over representations, and taking that minimum can erase intermediate costs. The same phenomenon does not affect shortest derivation depth, because a cheaper prefix could always be substituted into a derivation. This difference accounts for the opposite answers without appealing to general undecidability machinery.
+
+%% ====================================================================
+%% Batch-41 addition (manuscript 01, "Binary Insertion Spectra from a
+%% Single Unary Word"). All labels of Part II carry the prefix ids:bp:
+%% (insertion-degree spectra, binary profiles).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Binary insertion spectra from a single unary word}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Binary insertion spectra from a single unary word}
+
+\noindent\emph{Sections~1--10 and Appendices~A and~B form the
+original report (Part~I) of 20 September 2026, unchanged except for dated
+pointers to this addition. Part~II was added on 29 September 2026 in
+batch~41 of ProveIt's incoming-report intake, from one manuscript written
+against the state of Part~I printed above. It answers the fixed-binary
+question that Section~10 left open: every finite set of positive integers
+containing~$1$ is the insertion-degree spectrum of a pair of finite binary
+languages, even with the inserted language a single unary word $\{a^m\}$.
+Section~\ref{ids:bp:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance, conventions and the answer}\label{ids:bp:sec:intro}
+
+\subsection{One manuscript, one addition}\label{ids:bp:sec:source}
+
+Part~II is batch-41 manuscript~01, \emph{Binary Insertion Spectra from a
+Single Unary Word: Arbitrary finite profiles and a sharp quadratic witness
+bound}, a research draft prepared with ChatGPT for Vladimir Reshetnikov and
+dated 28 September 2026 (18 pages as delivered). It arrived as the archive
+\texttt{ProveIt\_Binary\_Insertion\_Spectra.zip} (inner directory of the same
+name) in ProveIt commit \texttt{9754e8360} and was placed in
+\texttt{eaf787d50}. It was written against ProveIt commit
+\texttt{e2b1f016a} (in full
+\nolinkurl{e2b1f016a94102663f12b970e6dd434229f90d01}), at which Part~I's
+\texttt{article.tex} had the Git blob \texttt{946173d8}; that blob is
+unchanged at the placement commit, so every statement the manuscript makes
+about Part~I refers to the text printed above. Its code, data and audit files
+are shipped beside Part~I's files with the prefix
+\nolinkurl{02-binary-profiles-} (Part~I's unprefixed files count as~01); its
+manuscript, delivery README and PDF are not shipped and survive in the
+arrival commit.
+
+The manuscript contributes, in the order printed here: the main statements,
+namely arbitrary finite profiles over $\{a,b\}$ with one unary inserted word,
+the fixed-binary classification, and a sharp length bound in the full-coverage
+class (Section~\ref{ids:bp:sec:main}); the gap-vector formula for the degree
+and the exact singleton histogram (Section~\ref{ids:bp:sec:gaps}); a geometric
+realization principle (Section~\ref{ids:bp:sec:geometry}); the explicit
+construction with exact sizes and arbitrary higher-degree multiplicities
+(Section~\ref{ids:bp:sec:construction}); the sharp quadratic lower bound and
+its optimal family (Section~\ref{ids:bp:sec:sharp}); a fourteen-symbol worked
+example (Section~\ref{ids:bp:sec:example}); real-rooted singleton histograms
+against arbitrary aggregate gaps (Section~\ref{ids:bp:sec:roots}); algorithms
+(Section~\ref{ids:bp:sec:algorithms}); its executed checks
+(Section~\ref{ids:bp:sec:validation}); ten research questions
+(Section~\ref{ids:bp:sec:questions}); its conclusion
+(Section~\ref{ids:bp:sec:conclusion}); a construction blueprint
+(Section~\ref{ids:bp:sec:blueprint}); and its package notes
+(Section~\ref{ids:bp:sec:package}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed. The definitions it
+repeats from Part~I are printed once, in Part~I, and cited
+(Section~\ref{ids:bp:sec:imported}). Remark~\ref{ids:bp:rem:compare} and the
+re-scoped passages of Part~I were added in the merge.
+
+\subsection{The answer in brief}\label{ids:bp:sec:brief}
+
+Part~I realizes arbitrary finite insertion-degree spectra over alphabets that
+grow with the requested profile (Theorem~\ref{thm:profile}) and leaves the
+fixed binary alphabet open (Section~10). Part~II proves that every finite
+subset of the positive integers containing~$1$ is realizable over $\{a,b\}$,
+even with the inserted language equal to the single word $\{a^m\}$. More
+strongly, any prescribed finite multiplicities of degrees $2,\ldots,m$ can be
+realized, with every other output having degree~$1$. Both inputs are finite
+and homogeneous, and their shuffle is an entire fixed-letter-count class.
+
+The proof turns a binary word into its vector of $a$-gap lengths. Insertion
+degree becomes the minimum support size of a nonnegative vector difference.
+Separated exceptional vectors protect the desired degrees, while a
+quantitative escape lemma makes every other output a one-piece insertion. This
+mechanism requires no search oracle or unproved singleton conjecture.
+
+Part~II also proves an exact extremal result. With $A=\{a^m\}$, if the shuffle
+is an entire binary fixed-letter-count class, every output but one has
+degree~$1$, and the remaining output has degree $m\geq3$, then its length is
+at least $m^2$. For every $m\geq6$, the construction attains $m^2$.
+\emph{The full-coverage hypothesis is essential to the scope of this bound: it
+is not a lower bound on the length of an arbitrary binary word of insertion
+degree~$m$, for which the elementary bound is $2m-1$
+(Proposition~\ref{prop:bounds}(ii)).}
+
+Each individual source pair nevertheless has the same gap-free degree
+histogram. Part~II computes that histogram and proves its real-rootedness in
+the balanced case, while the combined language can have arbitrary missing
+degrees and almost entirely nonreal histogram zeros. Full proofs, an explicit
+14-symbol example, exact verification code, executed receipts, and further
+research questions are included.
+
+\subsection{The repository question and an attribution}\label{ids:bp:sec:question}
+
+The manuscript read Part~I at the pin as follows. Part~I proves arbitrary
+finite-spectrum realization with an alphabet that grows with the requested
+profile (Theorem~\ref{thm:profile}), and supplies a binary example with
+spectrum $\{1,2,4\}$ (Theorem~\ref{thm:binary}). It explicitly leaves open the
+classification over a fixed binary alphabet and the least alphabet size for
+spectra $\{1,r\}$ (Section~10). The earlier realization theorem is not claimed
+as new here.
+
+Part~II proves a stronger fixed-alphabet statement. The inserted language can
+contain just one word, consisting entirely of copies of one letter; all the
+source-pair ambiguity can be confined to the target language. The target
+words have the same length and the same number of each letter. Moreover, one
+can prescribe not only which degrees occur but the exact number of words of
+each degree above~$1$.
+
+Hughes formulates the general insertion-degree no-gap conjecture, its
+both-singleton restriction, and a finite representation-erasure problem in
+Section~11 of~\cite{Hughes2026}. The same source already proves that a unary
+inserted word and a single arbitrary target word have an initial-interval
+spectrum \cite[Theorem~9, page~9]{Hughes2026}. Part~II uses and reproves its
+gap-distribution observation; \emph{the unary-source singleton interval
+theorem is not a new contribution of this addition}.
+
+The new result is that an arbitrary finite spectrum can arise by taking the
+minimum over a finite family of these particularly well-behaved singleton
+pairs, while keeping the inserted word fixed. It is a uniform strengthening
+of the representation-erasure phenomenon already exhibited in Part~I
+(Section~\ref{sec:binary}). It is not a resolution of the unrestricted
+both-singleton conjecture.
+
+\subsection{Status of the claims}\label{ids:bp:sec:status}
+
+The manuscript inspected the repository at commit \texttt{e2b1f016a}, in
+particular Part~I's source
+\begin{quote}\small\nolinkurl{SetTheory/Cardinals/docs/reports/}\\
+\nolinkurl{automata-and-formal-languages/insertion-degree-spectra/article.tex}\end{quote}
+(its definitions, finite-profile construction, binary example,
+algorithm and validation discussion, and closing limitations), together with
+Part~I's README and the collection's report manifest. The primary preprint
+consulted was arXiv:2608.27755v1; its definitions and Section~11 were checked
+directly, including the rendered ninth page. A targeted repository search and
+web searches did not identify the fixed-binary, single-unary-source profile
+theorem or the extremal theorem below. This is a bounded search record, not a
+guarantee of priority. The technical arguments are supplied in full so their
+validity does not depend on novelty assertions or on the correctness of
+unrelated repository drafts. All constructions and checks of the manuscript
+are independent of a repository checkout.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.26\textwidth}p{.68\textwidth}@{}}
+\toprule
+\textbf{Status} & \textbf{Content}\\
+\midrule
+Established background & Unary-source singleton no-gap theorem
+\cite[Theorem~9]{Hughes2026}; Part~I's variable-alphabet realization and
+binary gap example.\\[2mm]
+Proved in Part~II & Fixed-binary realization of arbitrary finite profiles with
+$A=\{a^m\}$; explicit size formulas; sharp $m^2$ isolated-witness length for
+$m\geq6$ in the full-coverage class.\\[2mm]
+Supporting developments & A gap-vector minimization formula, a
+separated-center construction, exact singleton histograms, and a
+self-contained real-rootedness proof.\\[2mm]
+Not established & The unrestricted both-singleton conjecture; optimal
+target-language cardinality; general infinite spectra; exact optimal lengths
+for $m=3,4,5$; proof-assistant verification or independent peer review.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Status (manuscript 01).} The new theorems are unrefereed
+research claims with written proofs, not Lean-verified results. Nothing in
+Part~II, and nothing in Part~I, is formalized in any proof assistant; the
+report's placement in a collection that sits beside Lean and Rocq
+developments confers no formal status on it. The finite computations of
+Section~\ref{ids:bp:sec:validation} are additional exact checks, not
+inductive evidence substituted for the proofs.
+
+\subsection{Notation of Part~II}\label{ids:bp:sec:notation}
+
+Part~I's symbols keep their meanings. In particular $\ins{k}{A}{B}$,
+$A\sh B$, $d_{A,B}(w)$ and $\spec{A}{B}$ are those of Section~\ref{sec:definitions};
+the manuscript's definitions of them agree with Part~I's, orientation
+included ($A$ is the inserted source, $B$ the target source), and follow
+\cite[Sections~2 and~11]{Hughes2026}. Where a symbol of the manuscript clashes
+with a symbol of Part~I, Part~II renames it; Table~\ref{ids:bp:tab:notation}
+lists the new symbols, the renamings, and the tempting false readings. No
+normalization was changed. Equations of Part~II continue Part~I's single
+equation sequence, and theorem-like items are numbered by section, so the
+numbers differ from those of the delivered manuscript.
+
+\begin{table}[htbp]
+\centering\small\renewcommand{\arraystretch}{1.15}
+\caption{Symbols of Part~II. ``Renamed'' gives the manuscript's own symbol.
+The last column prints the tempting false reading.}
+\label{ids:bp:tab:notation}
+\begin{tabular}{>{\raggedright}p{.19\linewidth}>{\raggedright}p{.39\linewidth}>{\raggedright\arraybackslash}p{.34\linewidth}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$A=\{a^m\}$, $B$ & the inserted source, one unary word, and the target
+ language (same roles as in Section~\ref{sec:definitions}) & Part~I's
+ particular languages \eqref{eq:ternary}, \eqref{eq:one-block},
+ \eqref{eq:profile-construction}, \eqref{eq:binary}\\
+$m$, $q$, $t_i$, $W_i$ & inserted length; number of prescribed degrees; the
+ list $t_0,\ldots,t_{q-1}$; the exceptional outputs & the same roles in
+ Theorem~\ref{thm:profile}, whose list is $t_1,\ldots,t_q$ and whose $W_i$
+ lie in $\Sigma^{2m-1}$ over a growing alphabet\\
+$g$ (renamed from $d$) & number of gaps of a binary word, one more than its
+ number of $b$'s & the degree $d_{A,B}(w)$\\
+$T$ & number of $a$'s in an output & $\mathcal T(A,B)$, the
+ iteration-depth spectrum of Section~\ref{sec:depth}\\
+$N=T+g-1$ & common output length & Part~I's $N=2r-1$ or $2m-1$, also an output
+ length, of other constructions\\
+$\bpC{T}{g}$, $\bpW{T}{g}$ & weak compositions of $T$ into $g$ parts; the
+ binary words with $T$ letters $a$ and $g-1$ letters $b$ & ---\\
+$\bpgap{\mathbf c}$ (renamed from $w(\mathbf c)$) & the binary word with gap
+ vector $\mathbf c$, \eqref{ids:bp:eq:gap-word} & a word $w$; $w$ still names
+ an arbitrary output word\\
+$\bpE$, $\bpE_{\rm safe}$ (renamed from $E$, $E_{\rm safe}$) & a set of
+ target gap vectors; the safe vectors \eqref{ids:bp:eq:safe} & Part~I's $E$,
+ the bad adjacent pairs of \eqref{eq:regex}, and its nonterminal $E_0$\\
+$\eta_m$ (renamed from $E_m$) & $\max(0,m^2-6m+3)$, \eqref{ids:bp:eq:base} &
+ ---\\
+$\Lambda=2m+1$ (renamed from $D$) & spacing of the centres,
+ \eqref{ids:bp:eq:centers} & the dynamic-programming table $D(i,j,s)$ of
+ Section~\ref{sec:algorithms} and the spectrum $\spec{A}{B}$\\
+$\Delta(\mathbf x,\mathbf y)$ & half the $\ell^1$ distance of equal-sum
+ vectors, \eqref{ids:bp:eq:distance} & ---\\
+$\rho_j(\mathbf v)$ (renamed from $R_j$) & the escape sums of
+ \eqref{ids:bp:eq:escape-hypotheses} & the relation $R$ of
+ Lemma~\ref{lem:prefix}\\
+$\mathbf b_m$, $b_{m,j}$ & the base vector \eqref{ids:bp:eq:base} and its
+ coordinates & the letter $b$\\
+$\operatorname{Box}_i$ (renamed from $Q_i$) & the target vectors below
+ $\mathbf v_i$ & $Q=|\Sigma|$ and the formulas $Q_{w,k}$ of Part~I\\
+$\kappa_m$ (renamed from $K_m$) & $|\operatorname{Box}_i|$,
+ \eqref{ids:bp:eq:K} & the uniform degree bound $K$ of
+ Section~\ref{sec:depth}\\
+$h_{m,g,r}$, $H_m(z)$ & singleton degree counts and their polynomial & ---\\
+$\Phi_n$ (renamed from $J_n$) & the Rodrigues polynomial
+ \eqref{ids:bp:eq:Rodrigues} & Part~I's position sets $J_{m,t}$ of
+ \eqref{eq:positions}\\
+$\operatorname{Deg}_{A,B}(z)$ (renamed from $F_{A,B}$) & the
+ degree-enumerating polynomial \eqref{ids:bp:eq:aggregate-polynomial} &
+ Part~I's set $F$ of forbidden triples, \eqref{eq:ternary}\\
+$\mu$ (renamed from $M$) & $\binom{N}{m-1}-1$ in
+ \eqref{ids:bp:eq:two-term} & Part~I's $M$, the length-based maximum degree
+ of its search encoding\\
+$p$ (renamed from $Q$) & a test polynomial in
+ Lemma~\ref{ids:bp:lem:orthogonal} & $Q=|\Sigma|$\\
+$m^2$ & the minimum output length in the full-coverage class of
+ Theorem~\ref{ids:bp:thm:length-main} & \emph{not} a lower bound for every
+ word of degree $m$: that bound is $2m-1$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Material printed once}\label{ids:bp:sec:imported}
+
+The manuscript restates Part~I's definitions: the $k$-insertion
+$\ins{k}{A}{B}$ with empty factors allowed \eqref{eq:insertion}, the shuffle,
+the degree $d_{A,B}$ and the spectrum $\spec{A}{B}$, and the characterization
+of the degree as the minimum number of inserted-source runs over all source
+pairs and all valid masks. These are printed once, in
+Section~\ref{sec:definitions}; the run characterization is
+Lemma~\ref{lem:runs}, which the manuscript proves by the same argument
+(maximal runs give one direction, the nonempty inserted factors
+of~\eqref{eq:insertion} the other). The manuscript's degree-one argument for
+a one-letter alphabet is Proposition~\ref{prop:bounds}(iv), and its remark
+that allowing empty input languages adds precisely the empty spectrum is
+Part~I's remark after Corollary~\ref{cor:classification}. Its literal-word
+dynamic program (Section~\ref{ids:bp:sec:literal-dp}) is Part~I's dynamic
+program of Section~\ref{sec:algorithms} in another encoding; it is printed as
+the manuscript gives it, with that identification noted.
+
+\begin{remark}[Two realizations compared; added in the merge]\label{ids:bp:rem:compare}
+Part~I's Theorem~\ref{thm:profile} realizes a profile with largest degree $m$
+at output length $2m-1$, the least length any word of degree $m$ can have
+(Proposition~\ref{prop:bounds}(ii)), over an alphabet of $q(2m-1)$ symbols;
+its shuffle is all of $\Sigma^{2m-1}$. Part~II fixes the alphabet
+$\{a,b\}$ and the inserted language $\{a^m\}$, and pays in length and in
+target words: for $q=1$ and $m\geq6$ its outputs have length exactly $m^2$,
+and Theorem~\ref{ids:bp:thm:length-main} shows that no single-unary-source
+pair whose shuffle is a whole binary fixed-letter-count class does better. The
+two statements do not conflict, because Part~I's full coverage is of
+$\Sigma^{2m-1}$ over a large alphabet with a many-word inserted language. For
+the spectrum $\{1,2,4\}$, Part~I's binary example \eqref{eq:binary} uses six
+inserted and three target words of lengths four and three; Part~II's
+construction for the list $(2,4)$ uses one inserted word and $2570$ target
+words, with outputs of length $30$ (the row $m=4$, profile $2;4$ of
+\nolinkurl{data/02-binary-profiles-profile_checks.csv}). Neither source claims
+minimal language sizes.
+\end{remark}
+
+\section{Definitions and main statements}\label{ids:bp:sec:main}
+
+The oriented insertion degree is that of Section~\ref{sec:definitions}.
+
+\subsection{Fixed-letter-count classes}
+Write $\Nzero=\{0,1,2,\ldots\}$ and, for $g\geq1$, set
+\[
+ \bpC{T}{g}=\{\mathbf c=(c_1,\ldots,c_g)\in\Nzero^g:
+                   c_1+\cdots+c_g=T\}.
+\]
+Encode a gap vector by
+\begin{equation}
+ \bpgap{\mathbf c}=a^{c_1}b a^{c_2}b\cdots b a^{c_g},\qquad
+ \bpW{T}{g}=\{\bpgap{\mathbf c}:\mathbf c\in\bpC{T}{g}\}.
+ \label{ids:bp:eq:gap-word}
+\end{equation}
+There are exactly $g-1$ separators, even when some gap lengths are zero.
+Consequently the encoding is one-to-one, and $\bpW{T}{g}$ is the entire set of
+binary words with $T$ copies of $a$ and $g-1$ copies of $b$. In particular,
+\begin{equation}
+ |\bpW{T}{g}|=\binom{T+g-1}{g-1}.
+ \label{ids:bp:eq:class-size}
+\end{equation}
+This is often called a Parikh class; only the explicit description above is
+needed in the proofs.
+
+\begin{theorem}[Arbitrary binary profiles with one unary inserted word]
+\label{ids:bp:thm:profile-main}
+Let $m\geq2$, and let $(t_0,\ldots,t_{q-1})$ be a nonempty finite list with
+$2\leq t_i\leq m$. There are an integer $T$, a finite language
+$B\subseteq\bpW{T-m}{m}$, and distinct words $W_0,\ldots,W_{q-1}$ in
+$\bpW{T}{m}$ such that, for $A=\{a^m\}$,
+\begin{equation}
+ \ins{k}{A}{B}=\bpW{T}{m}\setminus\{W_i:t_i>k\}
+ \qquad(k\geq1).
+ \label{ids:bp:eq:profile-main}
+\end{equation}
+In particular $A\sh B=\bpW{T}{m}$, $d_{A,B}(W_i)=t_i$, and every other
+output has degree~$1$. Each $W_i$ is produced by exactly one target word of
+$B$, although it can have more than one position mask for that target.
+\end{theorem}
+
+An explicit formula for $T$ and every word of $B$ is given in
+Section~\ref{ids:bp:sec:construction}. Repeated entries in the list are
+allowed and control multiplicities, not merely the support of the spectrum.
+
+\begin{corollary}[Fixed-binary classification]
+\label{ids:bp:cor:classification}
+The spectra of pairs of nonempty finite binary languages are exactly the
+finite subsets of $\N$ containing~$1$. Every such set is attained with the
+inserted language a singleton $\{a^m\}$. If the spectrum contains a degree
+greater than~$1$, two is its minimum possible alphabet size, and one is the
+minimum possible cardinality of the nonempty inserted language.
+\end{corollary}
+\begin{proof}
+A shuffle of finite languages is finite. Concatenating any chosen source pair
+shows that degree~$1$ occurs. Conversely, list the elements of
+$S\setminus\{1\}$ and apply Theorem~\ref{ids:bp:thm:profile-main} with
+$m=\max S$. For $S=\{1\}$ use $A=\{a\}$, $B=\{b\}$. Over a one-letter alphabet
+every shuffle output is the concatenation of its sources, so every degree
+is~$1$ (Proposition~\ref{prop:bounds}(iv)). Finally, a nonempty language
+cannot have fewer than one word.
+\end{proof}
+Allowing empty input languages adds precisely the empty spectrum, as in
+Part~I. In particular, for every $r\geq2$ the least alphabet realizing
+$\{1,r\}$ has two letters, which answers the least-alphabet question of
+Part~I's Section~10; the smallest-source question there is answered for the
+inserted language only (one word), not for the target language
+(Question~\ref{ids:bp:q:target}).
+
+\begin{theorem}[Sharp isolated-witness length in the full-coverage class]
+\label{ids:bp:thm:length-main}
+Let $m\geq3$. Suppose $A=\{a^m\}$, $B\subseteq\bpW{T-m}{g}$ is nonempty,
+and
+\[
+ A\sh B=\bpW{T}{g}.
+\]
+If exactly one output has degree greater than~$1$, and its degree is $m$,
+then every output has length
+\begin{equation}
+ N=T+g-1\geq m^2.
+ \label{ids:bp:eq:sharp-main}
+\end{equation}
+For every $m\geq6$, equality is attained with $g=m$ and
+$T=m^2-m+1$. Thus the minimum length in this class is exactly $m^2$ for
+all $m\geq6$.
+\end{theorem}
+
+The full-coverage and singleton-unary-source hypotheses are part of the
+extremal theorem. The assertion is \emph{not} a universal $m^2$ lower bound
+for a word of insertion degree $m$: without these hypotheses the elementary
+length bound is only $2m-1$.
+
+\section{Gap vectors and the minimum over representations}
+\label{ids:bp:sec:gaps}
+
+For vectors, inequalities are coordinatewise, and
+$\supp(\mathbf z)=\{j:z_j\ne0\}$.
+
+\begin{lemma}[Gap-support formula]
+\label{ids:bp:lem:gap}
+Fix $m\geq1$, $g\geq1$, and $\boldsymbol\beta\in\Nzero^g$. A word
+$\bpgap{\mathbf c}$ is a shuffle of $a^m$ and $\bpgap{\boldsymbol\beta}$ if and
+only if
+\[
+ \boldsymbol\beta\leq\mathbf c,\qquad
+ \sum_j(c_j-\beta_j)=m.
+\]
+For every such output,
+\begin{equation}
+ d_{\{a^m\},\{\bpgap{\boldsymbol\beta}\}}(\bpgap{\mathbf c})
+   =|\supp(\mathbf c-\boldsymbol\beta)|.
+ \label{ids:bp:eq:singleton-gap}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The inserted source supplies no $b$. Hence all $b$'s come from the target,
+in their original order. The $j$th output gap retains the target's $\beta_j$
+copies of $a$ and receives exactly $c_j-\beta_j$ new copies. This proves the
+necessary coordinate and sum conditions; they are sufficient by placing the
+new copies in those gaps.
+
+Each gap receiving new copies contains at least one inserted-source run.
+Distinct gaps are separated by a target $b$, so those runs cannot merge.
+Conversely, within each receiving gap put all its new copies consecutively.
+This gives exactly one run per receiving gap and proves the minimum formula.
+The argument minimizes over all masks for the fixed target; it does not
+assume that a mask is unique.
+\end{proof}
+
+\begin{corollary}[Language-level gap optimization]
+\label{ids:bp:cor:gap-language}
+Let $\bpE\subseteq\bpC{T-m}{g}$ and
+$B=\{\bpgap{\boldsymbol\beta}:\boldsymbol\beta\in \bpE\}$. For
+$\mathbf c\in\bpC{T}{g}$,
+\begin{equation}
+ d_{\{a^m\},B}(\bpgap{\mathbf c})
+ =\min_{\substack{\boldsymbol\beta\in \bpE\\\boldsymbol\beta\leq\mathbf c}}
+       |\supp(\mathbf c-\boldsymbol\beta)|,
+ \label{ids:bp:eq:language-gap}
+\end{equation}
+where an empty minimum means the word is not a shuffle output. In particular,
+it has degree~$1$ precisely when
+\begin{equation}
+ \mathbf c-m\mathbf e_j\in \bpE
+ \quad\hbox{for some $j$ with $c_j\geq m$}.
+ \label{ids:bp:eq:one-run}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take the minimum of \eqref{ids:bp:eq:singleton-gap} over the target words. A
+nonnegative vector of total $m$ has support one exactly when it is
+$m\mathbf e_j$.
+\end{proof}
+
+The distinction between \eqref{ids:bp:eq:singleton-gap} and
+\eqref{ids:bp:eq:language-gap} is the entire source of the examples below. A
+union of target languages takes a pointwise minimum of costs, not a union of
+the sets of their minimum costs.
+
+\subsection{The exact singleton histogram}
+\begin{proposition}[Singleton degree counts]
+\label{ids:bp:prop:histogram}
+For every fixed target gap vector $\boldsymbol\beta\in\Nzero^g$, the number
+of distinct outputs of the pair $(a^m,\bpgap{\boldsymbol\beta})$ whose minimum
+degree is $r$ is
+\begin{equation}
+ h_{m,g,r}=\binom gr\binom{m-1}{r-1}
+ \qquad(1\leq r\leq\min(m,g)).
+ \label{ids:bp:eq:histogram}
+\end{equation}
+These counts are independent of $\boldsymbol\beta$. The total number of
+outputs is $\binom{m+g-1}{g-1}$, and the spectrum is
+$\{1,\ldots,\min(m,g)\}$.
+\end{proposition}
+\begin{proof}
+Every output corresponds to a unique weak composition
+$\boldsymbol\delta=\mathbf c-\boldsymbol\beta$ of $m$ into $g$ parts.
+To have support $r$, choose its $r$ positive coordinates in $\binom gr$ ways
+and distribute $m$ positively over them in $\binom{m-1}{r-1}$ ways.
+The encoding by gap vectors is injective, so these count distinct words rather
+than masks. Summing counts all weak compositions of $m$.
+\end{proof}
+
+The spectrum conclusion is Hughes's unary-source singleton theorem
+\cite[Theorem~9]{Hughes2026}; the displayed counts are its elementary
+counting refinement. The same proof works with an arbitrary fixed sequence of
+non-$a$ separator letters, not only repeated $b$'s.
+
+\section{A geometric realization principle}
+\label{ids:bp:sec:geometry}
+
+We first isolate the geometry needed to protect exceptional outputs. This
+also makes the construction adaptable to other parameter choices.
+For equal-sum vectors, define
+\begin{equation}
+ \Delta(\mathbf x,\mathbf y)
+   =\sum_j\bppos{x_j-y_j}
+   =\frac12\sum_j|x_j-y_j|.
+ \label{ids:bp:eq:distance}
+\end{equation}
+The second equality follows by equating total positive and negative parts.
+Consequently $\Delta$ is a metric on each fixed-sum class.
+
+\begin{lemma}[A target below an exceptional vector is nearby]
+\label{ids:bp:lem:near}
+Let $\mathbf c,\mathbf v\in\bpC{T}{g}$ and
+$\boldsymbol\gamma\in\Nzero^g$ have total $m$. If
+$\mathbf c-\boldsymbol\gamma\geq0$ and
+$\mathbf c-\boldsymbol\gamma\leq\mathbf v$, then
+\[
+ \Delta(\mathbf c,\mathbf v)\leq m.
+\]
+\end{lemma}
+\begin{proof}
+For each coordinate, $(c_j-v_j)_+\leq\gamma_j$. Sum.
+\end{proof}
+
+\begin{lemma}[One-piece escape]
+\label{ids:bp:lem:escape}
+Let $\mathbf v\in\bpC{T}{g}$ and assume
+\begin{equation}
+ T>g(m-1),\qquad
+ \rho_j(\mathbf v):=\sum_{k\ne j}\bppos{v_k-m+1}>m
+ \quad(1\leq j\leq g).
+ \label{ids:bp:eq:escape-hypotheses}
+\end{equation}
+For every $\mathbf c\in\bpC{T}{g}$ with $\mathbf c\ne\mathbf v$, there
+exists $j$ such that $c_j\geq m$ and
+\begin{equation}
+ \mathbf c-m\mathbf e_j\not\leq\mathbf v.
+ \label{ids:bp:eq:escape}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Call $j$ eligible if $c_j\geq m$. At least one coordinate is eligible,
+otherwise $T\leq g(m-1)$. Also some coordinate $i$ satisfies $c_i>v_i$,
+because the two vectors have the same total and are distinct.
+
+If at least two coordinates are eligible, choose an eligible $j\ne i$.
+Subtracting $m$ there leaves the excess at $i$, proving
+\eqref{ids:bp:eq:escape}. Suppose instead that $j$ is the unique eligible
+coordinate. If an excess $c_i>v_i$ occurs at an $i\ne j$, subtraction at $j$
+again preserves it. The remaining case has
+\[
+ c_k\leq\min(v_k,m-1)\quad(k\ne j).
+\]
+Equality of totals then gives
+\[
+ c_j-v_j=\sum_{k\ne j}(v_k-c_k)
+ \geq\sum_{k\ne j}\bppos{v_k-m+1}=\rho_j(\mathbf v)>m.
+\]
+Thus $c_j-m>v_j$, and subtracting at $j$ still leaves an excess.
+These cases exhaust all possibilities.
+\end{proof}
+
+\begin{remark}[Why both hypotheses matter]
+\label{ids:bp:rem:escape-guardrail}
+Large values of $\rho_j$ do not by themselves imply that an eligible coordinate
+exists. For $m=g=6$, the vector $(12,12,1,1,1,1)$ satisfies $\rho_j>6$ for
+every $j$, but has total $28$. The other vector $(5,5,5,5,4,4)$ has the same
+total and no coordinate at least~$6$. It admits no one-piece insertion of
+$a^6$ at all. The strict total-size condition in
+\eqref{ids:bp:eq:escape-hypotheses} cannot be dropped. This obstruction is the
+reason the sharp construction becomes quadratic rather than remaining linear
+in $m$.
+\end{remark}
+
+\begin{theorem}[Separated exceptional vectors]
+\label{ids:bp:thm:geometric}
+Let $m\geq1$, $g\geq2$, $q\geq1$, and let distinct vectors
+$\mathbf v_0,\ldots,\mathbf v_{q-1}\in\bpC{T}{g}$ satisfy
+\eqref{ids:bp:eq:escape-hypotheses} and
+\begin{equation}
+ \Delta(\mathbf v_i,\mathbf v_h)>2m\qquad(i\ne h).
+ \label{ids:bp:eq:separation}
+\end{equation}
+Choose $\boldsymbol\delta_i\leq\mathbf v_i$ of total $m$, with
+$t_i=|\supp(\boldsymbol\delta_i)|\geq2$, and put
+$\boldsymbol\beta_i=\mathbf v_i-\boldsymbol\delta_i$.
+Define
+\begin{align}
+ \bpE_{\rm safe}
+ &=\{\boldsymbol\beta\in\bpC{T-m}{g}:
+          \boldsymbol\beta\not\leq\mathbf v_i\text{ for every }i\},
+ \label{ids:bp:eq:safe}\\
+ \bpE&=\bpE_{\rm safe}\cup\{\boldsymbol\beta_0,\ldots,
+                         \boldsymbol\beta_{q-1}\},\qquad
+ B=\{\bpgap{\boldsymbol\beta}:\boldsymbol\beta\in \bpE\}.
+ \label{ids:bp:eq:targets}
+\end{align}
+Then $A=\{a^m\}$ and $B$ satisfy
+\[
+ \ins{k}{A}{B}=\bpW{T}{g}\setminus
+                 \{\bpgap{\mathbf v_i}:t_i>k\}
+ \quad(k\geq1).
+\]
+Each exceptional output $\bpgap{\mathbf v_i}$ has the unique target
+$\bpgap{\boldsymbol\beta_i}$ in $B$.
+\end{theorem}
+\begin{proof}
+All possible shuffles have the asserted letter counts. We determine the
+minimum degree of every vector in $\bpC{T}{g}$.
+
+\emph{Exceptional vectors.} No element of $\bpE_{\rm safe}$ lies below
+$\mathbf v_i$. For $h\ne i$, the inequality
+$\boldsymbol\beta_h\leq\mathbf v_i$, together with
+$\mathbf v_h-\boldsymbol\beta_h=\boldsymbol\delta_h$ of total $m$,
+would imply $\Delta(\mathbf v_h,\mathbf v_i)\leq m$ by
+Lemma~\ref{ids:bp:lem:near}. This contradicts separation. Thus the only
+accepted target below $\mathbf v_i$ is $\boldsymbol\beta_i$, and
+Lemma~\ref{ids:bp:lem:gap} gives minimum degree $t_i$. The same argument shows
+that the special targets are distinct and proves uniqueness of the target
+word.
+
+\emph{Every other vector.} Fix $\mathbf c$ distinct from all exceptional
+vectors. A center $\mathbf v_i$ will be called an obstruction for $\mathbf c$
+if some eligible coordinate $j$ has
+$\mathbf c-m\mathbf e_j\leq\mathbf v_i$. By Lemma~\ref{ids:bp:lem:near}, each
+such center lies at distance at most $m$ from $\mathbf c$. There is at most
+one obstructing center: two would violate \eqref{ids:bp:eq:separation} by the
+triangle inequality.
+
+There is at least one eligible coordinate because $T>g(m-1)$. If no center
+is an obstruction, any eligible subtraction lies in $\bpE_{\rm safe}$. If
+$\mathbf v_i$ is the sole obstruction, Lemma~\ref{ids:bp:lem:escape} gives an
+eligible subtraction not below that center. It cannot be below any other
+center, because that would make the other center an obstruction as well.
+Again it lies in $\bpE_{\rm safe}$. In both cases
+Corollary~\ref{ids:bp:cor:gap-language} gives degree~$1$.
+
+Every vector has now been assigned an accepted representation, and its
+minimum degree has been proved. This establishes the entire hierarchy.
+\end{proof}
+
+\section{Explicit binary profiles and exact sizes}
+\label{ids:bp:sec:construction}
+
+The next parameter choices turn Theorem~\ref{ids:bp:thm:geometric} into a
+completely explicit recipe. They keep the alphabet fixed and give the sharp
+isolated length for all sufficiently large $m$.
+
+\subsection{Base vectors and separated translates}
+For $m\geq2$, put $\Lambda=2m+1$ and define a vector $\mathbf b_m$ with $m$
+coordinates by
+\begin{equation}
+ \mathbf b_m=
+ \begin{cases}
+ (4,4),&m=2,\\
+ (4,4,4),&m=3,\\
+ (2m+\eta_m,\,2m,\,1,\ldots,1),&m\geq4,
+ \end{cases}
+ \qquad \eta_m=\max(0,m^2-6m+3).
+ \label{ids:bp:eq:base}
+\end{equation}
+Let $T_0=\sum_j b_{m,j}$. Thus
+\begin{equation}
+ T_0=
+ \begin{cases}
+ 8,&m=2,\\
+ 12,&m=3,\\
+ \max(5m-2,m^2-m+1),&m\geq4.
+ \end{cases}
+ \label{ids:bp:eq:T0}
+\end{equation}
+Given a profile list $(t_0,\ldots,t_{q-1})$, set
+\begin{align}
+ \mathbf v_i&=\mathbf b_m+\Lambda i\mathbf e_1+\Lambda(q-1-i)\mathbf e_2,
+       &&0\leq i<q,\label{ids:bp:eq:centers}\\
+ T&=T_0+\Lambda(q-1),\qquad N=T+m-1,\label{ids:bp:eq:length-formula}\\
+ \boldsymbol\delta_i
+   &=(m-t_i+1,\underbrace{1,\ldots,1}_{t_i-1},
+                          \underbrace{0,\ldots,0}_{m-t_i}),
+       \qquad\boldsymbol\beta_i=\mathbf v_i-\boldsymbol\delta_i.
+ \label{ids:bp:eq:deficits}
+\end{align}
+Use \eqref{ids:bp:eq:safe}--\eqref{ids:bp:eq:targets} with these vectors.
+Equations \eqref{ids:bp:eq:base}--\eqref{ids:bp:eq:deficits} and the
+membership condition are an explicit specification of every target word; no
+existential choices remain.
+
+\begin{lemma}[The parameters meet every hypothesis]
+\label{ids:bp:lem:parameters}
+The vectors in \eqref{ids:bp:eq:centers} and \eqref{ids:bp:eq:deficits}
+satisfy all the hypotheses of Theorem~\ref{ids:bp:thm:geometric}, with $g=m$.
+\end{lemma}
+\begin{proof}
+Every center has total $T$ and positive coordinates. For $m=2$, $T_0=8>2$
+and each $\rho_j$ of the base equals $3>2$. For $m=3$, $T_0=12>6$ and
+each $\rho_j$ equals $2(4-3+1)=4>3$.
+
+For $m\geq4$, $T_0\geq m(m-1)+1$. The first two base coordinates are
+at least $2m$. After any one coordinate is excluded from the sum defining
+$\rho_j$, at least one of these two remains. It contributes at least
+$2m-m+1=m+1>m$. Increasing coordinates preserves all these inequalities,
+so every translated center satisfies the escape hypotheses.
+
+For distinct indices,
+\[
+ \Delta(\mathbf v_i,\mathbf v_h)=\Lambda|i-h|>2m.
+\]
+Each deficit has total $m$ and exactly $t_i$ positive coordinates. Its first
+coordinate is at most $m-1$, while the first coordinate of the center is at
+least $m$. Every other positive deficit coordinate is one and every center
+coordinate is positive. Thus $\boldsymbol\delta_i\leq\mathbf v_i$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ids:bp:thm:profile-main}]
+Apply Theorem~\ref{ids:bp:thm:geometric} to
+Lemma~\ref{ids:bp:lem:parameters}, taking $W_i=\bpgap{\mathbf v_i}$.
+\end{proof}
+
+\subsection{Exact language cardinalities}
+\begin{proposition}[Input and output sizes]
+\label{ids:bp:prop:sizes}
+For the explicit construction, define
+\begin{equation}
+ \kappa_m=
+ \begin{cases}
+ 3,&m=2,\\
+ 10,&m=3,\\
+ (m+4)2^{m-3},&m\geq4.
+ \end{cases}
+ \label{ids:bp:eq:K}
+\end{equation}
+Then
+\begin{align}
+ |A|&=1,\qquad |B|=\binom{T-1}{m-1}-q(\kappa_m-1),
+                         \label{ids:bp:eq:input-count}\\
+ |A\sh B|&=\binom{N}{m-1},\qquad
+ |\ins{k}{A}{B}|=\binom{N}{m-1}-|\{i:t_i>k\}|.
+                         \label{ids:bp:eq:output-count}
+\end{align}
+Every target word has length $N-m$, and every output has length $N$.
+\end{proposition}
+\begin{proof}
+At total $T-m$, let
+$\operatorname{Box}_i=\{\boldsymbol\beta\in\bpC{T-m}{m}:
+\boldsymbol\beta\leq\mathbf v_i\}$. These sets are pairwise disjoint.
+Indeed, if $\boldsymbol\beta\leq\mathbf v_i,\mathbf v_h$, then on the
+coordinates where $v_{i,j}>v_{h,j}$ one has
+$v_{i,j}-v_{h,j}\leq v_{i,j}-\beta_j$. Summing bounds
+$\Delta(\mathbf v_i,\mathbf v_h)$ by $m$, contradicting separation.
+
+Count $\operatorname{Box}_i$ through deficits $\boldsymbol\delta=\mathbf v_i-
+\boldsymbol\beta$ of total $m$. For $m=2$ and $m=3$ none of their coordinates
+is capped below $m$, so the counts are $\binom31=3$ and $\binom52=10$.
+For $m\geq4$, the first two deficit coordinates are unrestricted, while the
+remaining $m-2$ lie in $\{0,1\}$. Hence
+\[
+ |\operatorname{Box}_i|=\sum_{s=0}^{m-2}\binom{m-2}{s}(m-s+1)
+ =(m+1)2^{m-2}-(m-2)2^{m-3}=\kappa_m.
+\]
+The safe set removes all $q\kappa_m$ vectors and the construction restores
+one in each box, proving \eqref{ids:bp:eq:input-count}. The exceptional
+targets are distinct and were all removed before restoration. The output
+formulas follow from Theorem~\ref{ids:bp:thm:profile-main} and
+\eqref{ids:bp:eq:class-size}. Letter counts give the length statements.
+\end{proof}
+
+For one prescribed degree $m$, representative sizes are as follows. No
+minimality is asserted in the first four rows.
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $T_0$ & output length $N$ & $|B|$ & $|A\sh B|$\\
+\midrule
+2 & 8 & 9 & 5 & 9\\
+3 & 12 & 14 & 46 & 91\\
+4 & 18 & 21 & 665 & 1,330\\
+5 & 23 & 27 & 7,280 & 17,550\\
+6 & 31 & 36 & 142,427 & 376,992\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $m\geq6$, the length for an arbitrary $q$-entry profile is
+\begin{equation}
+ N=m^2+(2m+1)(q-1).
+ \label{ids:bp:eq:large-m-length}
+\end{equation}
+The exact $m=5$ count in the table is
+$\binom{22}{4}-(36-1)=7315-35=7280$.
+
+\subsection{All possible finite higher-degree count sequences}
+\begin{corollary}[Arbitrary higher-degree multiplicities]
+\label{ids:bp:cor:multiplicity}
+Fix $m\geq2$ and nonnegative integers $q_2,\ldots,q_m$, not all zero.
+There are finite binary languages as above for which
+\[
+ |\{w:d_{A,B}(w)=r\}|=q_r\quad(2\leq r\leq m),
+\]
+and every other output has degree~$1$. Consequently the degree-enumerating
+polynomial is
+\begin{equation}
+ \operatorname{Deg}_{A,B}(z)=\left(\binom{N}{m-1}-q\right)z
+                         +\sum_{r=2}^m q_rz^r,
+ \qquad q=\sum_{r=2}^m q_r.
+ \label{ids:bp:eq:aggregate-polynomial}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Repeat the entry $r$ exactly $q_r$ times in the profile list and apply
+Theorem~\ref{ids:bp:thm:profile-main} and Proposition~\ref{ids:bp:prop:sizes}.
+\end{proof}
+The degree-one coefficient is determined by the construction. The theorem
+does not prescribe that coefficient independently. The entirely zero
+higher-degree profile is already represented by any nonempty pair with
+spectrum $\{1\}$.
+
+\section{Sharp quadratic size for an isolated high degree}
+\label{ids:bp:sec:sharp}
+
+The optimized parameter choice is forced by a combinatorial obstruction,
+not merely suggested by finite experiments.
+
+\subsection{Outputs with no long enough gap}
+\begin{lemma}[A capped-composition obstruction]
+\label{ids:bp:lem:capped}
+Assume $A=\{a^m\}$, $B\subseteq\bpW{T-m}{g}$, and
+$A\sh B=\bpW{T}{g}$. The number of outputs with degree greater than~$1$
+is at least
+\begin{equation}
+ [x^T](1+x+\cdots+x^{m-1})^g.
+ \label{ids:bp:eq:cap-coeff}
+\end{equation}
+If $m\geq2$ and $0<T<g(m-1)$, this coefficient is at least $g$.
+\end{lemma}
+\begin{proof}
+Each vector with every coordinate at most $m-1$ lacks an eligible one-run
+deletion in \eqref{ids:bp:eq:one-run}. Full coverage guarantees it is
+nevertheless an output, so its degree exceeds one. The coefficient counts
+exactly those vectors.
+
+For the second assertion, the case $g=1$ has coefficient one. For $g\geq2$,
+form a vector by filling coordinates greedily to
+$m-1$, then using a possible remainder, then zeros. At an interior total it
+is not constant. Permuting its coordinates yields at least $g$ distinct
+vectors: if a value has multiplicity $s$ with $1\leq s<g$, the number of
+permutations is at least $\binom gs\geq g$. Each permutation still has the
+required total and coordinate cap.
+\end{proof}
+
+\subsection{The boundary total cannot attain high degree}
+\begin{proposition}[Universal lower bound in the specified class]
+\label{ids:bp:prop:lower}
+Under the hypotheses of Theorem~\ref{ids:bp:thm:length-main}, one has
+\[
+ g\geq m,\qquad T\geq g(m-1)+1,\qquad N\geq gm\geq m^2.
+\]
+\end{proposition}
+\begin{proof}
+An inserted word of length $m$ can occupy at most $g$ gaps, so an output of
+degree $m$ forces $g\geq m$. Also $T\geq m$ because the nonempty target
+language contains $T-m$ copies of $a$.
+
+If $T<g(m-1)$, Lemma~\ref{ids:bp:lem:capped} supplies at least $g\geq m\geq3$
+outputs of degree greater than~$1$, contrary to uniqueness. Thus
+$T\geq g(m-1)$. Suppose equality holds. The vector
+\[
+ \mathbf v_*=(m-1,m-1,\ldots,m-1)
+\]
+has no eligible one-run deletion, so it must be the unique exceptional
+vector. Consider its distinct neighbor
+\[
+ \mathbf c=(m,m-2,m-1,\ldots,m-1).
+\]
+It has the same total, hence is an output, and must have degree~$1$. Only
+its first gap has length at least $m$. Its only possible one-run target is
+therefore
+\[
+ \boldsymbol\beta=(0,m-2,m-1,\ldots,m-1),
+\]
+which must be in the target set. But $\boldsymbol\beta\leq\mathbf v_*$ and
+\[
+ \mathbf v_*-\boldsymbol\beta=(m-1,1,0,\ldots,0).
+\]
+By Lemma~\ref{ids:bp:lem:gap}, this target gives the exceptional output a
+representation of degree~$2$, contradicting its degree $m\geq3$. Equality in
+the total is impossible. Finally $N=T+g-1\geq gm\geq m^2$.
+\end{proof}
+
+\subsection{An explicit optimal family}
+For $m\geq6$, take $q=1$ and $t_0=m$. The center is
+\begin{equation}
+ \mathbf v=(m^2-4m+3,\ 2m,\ \underbrace{1,\ldots,1}_{m-2}),
+ \qquad T=m^2-m+1.
+ \label{ids:bp:eq:optimal-center}
+\end{equation}
+The first coordinate is at least $2m$ because $m^2-6m+3\geq0$ for all
+integers $m\geq6$. The special target gap vector is
+$\boldsymbol\beta_* = \mathbf v-(1,\ldots,1)$. In ordinary word notation,
+\begin{align}
+ W_*&=a^{m^2-4m+3}b a^{2m}(ba)^{m-2},
+                    \label{ids:bp:eq:optimal-word}\\
+ V_*&=a^{m^2-4m+2}b a^{2m-1}b^{m-2}.
+                    \label{ids:bp:eq:optimal-target}
+\end{align}
+Let $B$ contain $V_*$ and every target word whose gap vector has total
+$(m-1)^2$ and is not coordinatewise below $\mathbf v$.
+Then $W_*$ is the unique degree-$m$ output, all other words with $T$ copies
+of $a$ and $m-1$ copies of $b$ have degree~$1$, and the common output length
+is $m^2$.
+
+\begin{proof}[Proof of Theorem~\ref{ids:bp:thm:length-main}]
+The lower bound is Proposition~\ref{ids:bp:prop:lower}. Equations
+\eqref{ids:bp:eq:optimal-center}--\eqref{ids:bp:eq:optimal-target} are the
+$q=1$ instance of Theorem~\ref{ids:bp:thm:profile-main}, whose hypotheses were
+proved in Lemma~\ref{ids:bp:lem:parameters}. Its length is
+$T+m-1=m^2$, giving equality for every $m\geq6$.
+\end{proof}
+
+This theorem minimizes over \emph{all} finite target languages in the stated
+full-coverage class, not only over targets arising from the separated-center
+construction. It also permits arbitrary numbers of separator letters in the
+lower bound. For $m\geq6$, any equality case necessarily has $g=m$ and
+$T=m^2-m+1$, since both inequalities $N\geq gm\geq m^2$ must be equalities.
+No classification of the target languages at equality is claimed.
+
+\section{A fully explicit fourteen-symbol gap}
+\label{ids:bp:sec:example}
+
+The balanced $m=3$ instance is particularly easy to inspect. Set
+\begin{equation}
+ A=\{aaa\},\qquad
+ B=\{a^ib a^jb a^k:i+j+k=9,\ \max(i,j,k)\geq5\}
+        \cup\{a^3ba^3ba^3\}.
+ \label{ids:bp:eq:worked}
+\end{equation}
+There are $\binom{11}{2}=55$ nonnegative triples of total~$9$. Exactly ten
+are coordinatewise at most $(4,4,4)$, since subtracting them from $(4,4,4)$
+gives the ten weak compositions of~$3$ into three parts. Removing those ten
+and restoring $(3,3,3)$ gives $|B|=46$.
+
+\begin{theorem}[The worked example]
+\label{ids:bp:thm:example}
+For \eqref{ids:bp:eq:worked}, with $W=a^4ba^4ba^4$,
+\[
+ \ins{1}{A}{B}=\ins{2}{A}{B}=\bpW{12}{3}\setminus\{W\},
+ \qquad \ins{k}{A}{B}=\bpW{12}{3}\quad(k\geq3).
+\]
+There are $90$ degree-one outputs and one degree-three output. Every one of
+the $46$ singleton source pairs has exactly three degree-one, six degree-two,
+and one degree-three outputs.
+\end{theorem}
+\begin{proof}
+For $W$, any valid target is coordinatewise at most $(4,4,4)$. Among the
+accepted targets, only $(3,3,3)$ has that property. Its deficit is $(1,1,1)$,
+which forces degree three.
+
+For any other vector $\mathbf c$ of total $12$, the escape lemma applies to
+$\mathbf v=(4,4,4)$ with $m=g=3$: the total exceeds $3(3-1)$, and each
+$\rho_j$ is~$4>3$. It gives a coordinate with $c_j\geq3$ for which
+$\mathbf c-3\mathbf e_j\not\leq(4,4,4)$. That target has a coordinate at
+least five and belongs to $B$, giving degree one. Thus all
+$\binom{14}{2}=91$ output words occur with the stated degrees.
+The singleton counts are \eqref{ids:bp:eq:histogram} at $m=g=3$.
+\end{proof}
+
+For example, the output with vector $(5,4,3)$ is easy: remove all three
+inserted $a$'s from its second gap to obtain the target $(5,1,3)$. On the
+other hand, the special target $(3,3,3)$ has the ten outputs below. Only one
+retains its higher degree when the remaining $45$ target words are admitted.
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Deficit type & Output gap vectors & Singleton degree\\
+\midrule
+$(3,0,0)$ and permutations & $(6,3,3)$ and permutations & 1\\
+$(2,1,0)$ and permutations & $(5,4,3)$ and permutations & 2\\
+$(1,1,1)$ & $(4,4,4)$ & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+Across all $46$ pairs there are $46\cdot6=276$ pair/output incidences of
+singleton degree two. Every one is assigned degree one at the language
+level. This number counts incidences, not distinct words. The shipped files
+\nolinkurl{data/02-binary-profiles-worked_targets.csv} and
+\nolinkurl{data/02-binary-profiles-worked_outputs.csv} record all $46$ target
+words and all $91$ language-level output degrees.
+
+\section{Identical real-rooted singleton histograms, arbitrary aggregate gaps}
+\label{ids:bp:sec:roots}
+
+There is a stronger algebraic contrast than the absence of a singleton gap.
+Every target in the $g=m$ construction has the same polynomial
+\begin{equation}
+ H_m(z)=\sum_{r=1}^m\binom mr\binom{m-1}{r-1}z^r.
+ \label{ids:bp:eq:H}
+\end{equation}
+We give a short self-contained proof that all its zeros are real. This is a
+classical orthogonal-polynomial type argument; no priority is asserted for
+the real-rootedness fact itself. Its role here is to delimit what can survive
+minimization over source representations.
+
+\subsection{A Rodrigues polynomial}
+For $n\geq0$, define
+\begin{equation}
+ \Phi_n(x)=\frac{1}{n!x}\frac{d^n}{dx^n}
+                  \bigl[x^{n+1}(1-x)^n\bigr].
+ \label{ids:bp:eq:Rodrigues}
+\end{equation}
+The apparent singularity at zero is removable: every differentiated monomial
+still contains a factor $x$. Expansion gives
+\begin{equation}
+ \Phi_n(x)=\sum_{j=0}^n(-1)^j\binom nj\binom{n+j+1}{n}x^j,
+ \label{ids:bp:eq:J-expansion}
+\end{equation}
+so it has degree exactly $n$.
+
+\begin{lemma}
+\label{ids:bp:lem:orthogonal}
+For $n\geq1$, $\Phi_n$ has $n$ distinct zeros, all in $(0,1)$.
+\end{lemma}
+\begin{proof}
+For every polynomial $p$ of degree less than $n$, integration by parts $n$
+times gives
+\[
+ \int_0^1 x\Phi_n(x)p(x)\,dx
+ =\frac1{n!}\int_0^1
+      \frac{d^n}{dx^n}[x^{n+1}(1-x)^n]p(x)\,dx=0.
+\]
+Every boundary term vanishes, because derivatives of order at most $n-1$
+of $x^{n+1}(1-x)^n$ vanish at both endpoints. The remaining integral contains
+$p^{(n)}=0$.
+
+Suppose $\Phi_n$ had fewer than $n$ sign-changing zeros in $(0,1)$. Let $p$ be
+the product of $x-r$ over those zeros, once each. Its degree is less than
+$n$, while $\Phi_np$ has one constant sign on $(0,1)$ apart from its finitely
+many zeros and is not identically zero. Multiplying by $x>0$ and integrating
+cannot give zero, a contradiction. Thus there are at least $n$ sign-changing
+zeros there. Degree $n$ forces exactly $n$, all simple.
+\end{proof}
+
+\begin{lemma}[Finite polynomial identity]
+\label{ids:bp:lem:mobius}
+For $n=m-1$,
+\begin{equation}
+ H_m(z)=z(1-z)^n \Phi_n\!\left(\frac{z}{z-1}\right).
+ \label{ids:bp:eq:H-J}
+\end{equation}
+The right side is interpreted after polynomial cancellation at $z=1$.
+\end{lemma}
+\begin{proof}
+Using \eqref{ids:bp:eq:J-expansion}, the coefficient of $z^k$ in
+$(1-z)^n\Phi_n(z/(z-1))$ is
+\[
+ \sum_{j=0}^k(-1)^{k-j}\binom nj\binom{n+j+1}{n}\binom{n-j}{k-j}.
+\]
+Since $\binom nj\binom{n-j}{k-j}=\binom nk\binom kj$, this becomes
+\[
+ \binom nk\sum_{j=0}^k(-1)^{k-j}\binom kj\binom{n+j+1}{n}
+ =\binom nk\binom{n+1}{k+1}.
+\]
+For the last equality, apply the forward-difference identity
+$\binom{y+1}{n}-\binom yn=\binom y{n-1}$ successively $k$ times, starting
+at $y=n+1$. These are exactly the coefficients of $H_m(z)/z$ in
+\eqref{ids:bp:eq:H}, proving the identity.
+\end{proof}
+
+\begin{theorem}[Real-rooted singleton histograms]
+\label{ids:bp:thm:realroots}
+For $m\geq2$, $H_m$ has a simple zero at $0$ and $m-1$ distinct negative
+real zeros.
+\end{theorem}
+\begin{proof}
+Each zero $x\in(0,1)$ of $\Phi_{m-1}$ gives the distinct negative zero
+$z=x/(x-1)$ in \eqref{ids:bp:eq:H-J}. The additional zero at $0$ is simple
+because $[z]H_m=m$. There are $m$ zeros in total, so these exhaust its
+degree.
+\end{proof}
+
+\subsection{The aggregate can have almost no real zeros}
+For an isolated degree $m$, \eqref{ids:bp:eq:aggregate-polynomial} reduces to
+\begin{equation}
+ \operatorname{Deg}_{A,B}(z)=\mu z+z^m,\qquad \mu=\binom{N}{m-1}-1>0.
+ \label{ids:bp:eq:two-term}
+\end{equation}
+Apart from zero, its roots solve $z^{m-1}=-\mu$. If $m$ is odd, all $m-1$
+nonzero roots are nonreal. If $m$ is even, exactly one is negative real and
+$m-2$ are nonreal. Thus the proportion of nonreal roots tends to one as
+$m\to\infty$, even though \emph{each} singleton source-pair polynomial is
+exactly the same real-rooted polynomial $H_m$.
+
+Already $m=3$ gives the coefficient sequence $(\mu,0,1)$, which fails
+log-concavity. Thus neither a general log-concavity nor a no-internal-zero
+conclusion survives this minimization.
+This is not a counterexample to a theorem about sums of real-rooted
+polynomials: the language-level polynomial is not their sum. It counts each
+output once at its cheapest degree, an operation that retains neither the
+singleton coefficient sequence nor its real zeros.
+
+\section{Algorithms, succinct descriptions, and certificates}
+\label{ids:bp:sec:algorithms}
+
+\subsection{Membership without enumerating the target language}
+Although $|B|$ can be large, the vector description is short. A target word is
+parsed into its gap vector $\boldsymbol\beta$, checked to have $m-1$
+separators and total $T-m$, and then accepted exactly if
+\[
+ \boldsymbol\beta\in\{\boldsymbol\beta_i:0\leq i<q\}
+ \quad\hbox{or}\quad
+ \forall i\ \boldsymbol\beta\not\leq\mathbf v_i.
+\]
+A direct implementation uses $O(N+qm)$ elementary operations on the explicit
+word and the stored vectors. This is a membership-algorithm bound, not a
+claim that a minimal deterministic finite automaton has that size.
+
+The safe-set test has an even simpler form for the translates
+\eqref{ids:bp:eq:centers}. If some $j\geq3$ has $\beta_j>b_{m,j}$, the vector
+is safe. Otherwise, domination by some center is equivalent to the existence
+of an integer $i$ in the interval
+\begin{equation}
+ \max\left(0,\left\lceil\frac{\beta_1-b_{m,1}}\Lambda\right\rceil\right)
+ \ \leq\ i\ \leq\
+ \min\left(q-1,q-1-\left\lceil\frac{\beta_2-b_{m,2}}\Lambda\right\rceil\right).
+ \label{ids:bp:eq:interval-test}
+\end{equation}
+The interval is empty precisely when the vector is safe. This follows by
+solving the first two coordinate inequalities for $i$; the remaining
+coordinate inequalities have already been checked. For $m=2$ there are no
+remaining coordinates. Ceiling division must retain its mathematical meaning
+for negative numerators.
+
+All target languages are finite and hence regular: a trie of their words is
+one explicit finite automaton. The concise membership test should not be
+confused with a minimal-state construction, and no unproved polynomial DFA
+state bound is used.
+
+\subsection{Computing a minimum degree}
+For an arbitrary finite gap-vector target set,
+\eqref{ids:bp:eq:language-gap} is an exact algorithm. An alternative
+enumerates weak compositions $\boldsymbol\delta$ of $m$ and tests whether
+$\boldsymbol\delta\leq\mathbf c$ and
+$\mathbf c-\boldsymbol\delta\in \bpE$. Ordering the compositions by support
+size permits stopping at the first accepted one. For $g=m$, at most
+$\binom{2m-1}{m-1}$ candidates are tested.
+
+For the constructed languages there is a faster certified route. Compare the
+output vector with the $q$ centers. Equality with a center gives its declared
+degree, with the uniqueness proof certifying minimality. For any other output,
+try the at most $m$ vectors $\mathbf c-m\mathbf e_j$ with $c_j\geq m$.
+The escape argument guarantees that one is safe. Direct comparisons give an
+$O(qm^2)$ arithmetic-operation bound, in addition to reading the word. The
+successful target and chosen gap are an explicit degree-one certificate.
+
+\subsection{A literal-word dynamic program}\label{ids:bp:sec:literal-dp}
+For independent verification, it is useful to avoid the gap lemma entirely.
+Fix literal words $u,v,w$ with $|w|=|u|+|v|$. A state $(i,j,\ell)$ records
+how many letters of $u$ and $v$ have been consumed and whether the preceding
+output letter was assigned to $u$ ($\ell=1$) or not ($\ell=0$). Initialize
+$(0,0,0)$ at cost zero. At output position $i+j$, a transition taking the
+next matching letter of $u$ adds $1-\ell$ to the cost and sets $\ell=1$;
+a transition taking the next matching letter of $v$ adds zero and sets
+$\ell=0$. Keep the smallest cost at every state.
+
+Induction on the consumed output prefix shows that the state cost is exactly
+the smallest number of inserted-source runs among its compatible partial
+masks. Hence the minimum terminal cost is the desired degree for nonempty
+$u$. There are $O((|u|+1)(|v|+1))$ states and constant work per outgoing
+transition. This program can be compared directly with enumeration of the
+$\binom{|u|+|v|}{|u|}$ position masks, providing a check by a different
+algorithm. [Merge note: this is the dynamic program of
+Section~\ref{sec:algorithms}, with $\ell=1$ for Part~I's state $s=A$ and
+$\ell=0$ for $s=B$; Part~I proves its exactness in the unnumbered proposition
+there.]
+
+\section{Executed validation and proof audit}
+\label{ids:bp:sec:validation}
+
+The infinite families are proved in the preceding sections. Computations are
+additional exact checks, not inductive evidence substituted for proofs. The
+standard-library script, shipped as
+\nolinkurl{code/02-binary-profiles-verify.py} (delivered as
+\texttt{code/verify.py}), was executed with Python 3.13.5; it uses explicit
+exceptions, so validation is not disabled by Python's optimization flag. Its
+executed receipt is \nolinkurl{data/02-binary-profiles-verification.json}.
+
+\begin{center}
+\begin{tabular}{@{}p{.62\textwidth}r@{}}
+\toprule
+\textbf{Executed check} & \textbf{Count}\\
+\midrule
+Complete constructed profiles & 26\\
+Output/profile comparisons, exhaustive in those profiles & 493,704\\
+Direct/interval target-membership comparisons & 207,694\\
+Literal position masks for the worked example & 16,744\\
+Independent fixed-pair/output dynamic-program comparisons & 4,186\\
+Weak-composition singleton histograms & 56\\
+Exact coefficients in the Rodrigues identity & 819\\
+Large-parameter hypothesis checks, up to $m=80$ & 316\\
+Seeded large-parameter output samples & 12,640\\
+Capped-composition coefficient levels & 315\\
+Boundary obstruction checks by literal-word dynamic programming & 15\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exhaustive profile checks include every list over $\{2,3\}$ of lengths
+one through three, several mixed degree-four and degree-five profiles, and
+all $376{,}992$ outputs of the optimal degree-six example. For each output the
+script computes the minimum by cost-ordered exhaustive deficit enumeration
+against the \emph{definition} of the target set, and compares that minimum
+with the theorem. Its early stop at cost one is exact because no smaller
+positive degree exists. The sizes of all target sets in these 26 cases are
+also counted independently by enumerating their gap vectors.
+
+For the worked example, literal masks and the literal-word dynamic program
+agree for every source pair and every word of the correct letter counts,
+including the fixed-pair nonmembers. All 91 language-level output degrees and
+all 46 targets are recorded. The larger $m\leq80$ output tests are explicitly
+\emph{samples}, not exhaustive coverage. Their parameters and random seed
+(20260928) are stored in the JSON receipt. A regression guardrail rejects the
+insufficient-total example of Remark~\ref{ids:bp:rem:escape-guardrail}.
+
+[Added in the merge: the suite was rerun on a copy on 29 September 2026 with
+Python 3.14.4, writing to a scratch directory. It passed; its three CSV files
+were byte-identical to the shipped ones, and its JSON receipt equal to the
+shipped one in every field except \texttt{python\_version}.]
+
+\subsection{Specific failure modes excluded by the proofs}
+The proof does not rely on a uniquely chosen position mask; only the target
+word for an exceptional output is unique. It does not transfer an interval
+property through a union of targets; it calculates the resulting minimum.
+It does not assume that a fixed-sum output has an eligible one-run deletion:
+that is guaranteed by the separate strict total-size condition. It does not
+infer infinite validity from the enumerated cases. Finally, the optimal-length
+lower bound is proved for its stated full-coverage class and is not extended
+to arbitrary binary spectra.
+
+The finite histogram identity is checked through degree~40, but its root
+location comes from the integration-by-parts proof, not from floating-point
+root plots. No external theorem-proving service, SMT solver, or network data
+is needed to run the verification suite. No Lean proof was produced for
+Part~II.
+
+\section{Further research questions and topics}
+\label{ids:bp:sec:questions}
+
+The following program separates the cited both-singleton question from
+new questions suggested by the present construction. Except where a source
+is explicitly named, these are proposed research problems rather than claims
+about an exhaustive literature consensus. Together with the questions of
+Part~I's Section~10 that Part~II leaves open, they are the report's current
+open list.
+
+\begin{question}[The unrestricted both-singleton conjecture]
+\label{ids:bp:q:singleton}
+Does $\spec{\{u\}}{\{v\}}$ always form an initial interval for arbitrary
+words $u,v$? This is Hughes's Conjecture~2 \cite[Section~11]{Hughes2026}.
+The present construction leaves it untouched: it keeps $u=a^m$ fixed but
+uses multiple targets. A useful next case is a two-run inserted word such as
+$a^pb^q$, where the single-skeleton gap model no longer applies unchanged.
+\end{question}
+
+\begin{question}[How small can the target language be?]
+\label{ids:bp:q:target}
+For a prescribed spectrum, or prescribed higher-degree multiplicities, what
+is the minimum $|B|$ when $A$ is a singleton? The inserted-language size here
+is optimal, but optimality of the target counts in
+\eqref{ids:bp:eq:input-count} is not established. In particular, how many
+targets are needed to erase all intermediate degrees below a surviving degree
+$m$? A lower bound must account for overlaps between the sets of outputs a
+single target makes cheaper.
+\end{question}
+
+\begin{question}[Small isolated full-coverage witnesses]
+\label{ids:bp:q:small}
+Determine the exact minimum length in Theorem~\ref{ids:bp:thm:length-main} for
+$m=3,4,5$. The proved lower bounds are $9,16,25$, while this construction
+gives upper bounds $14,21,27$. Varying the number of gaps, rather than only
+the center within $g=m$ gaps, may matter. No optimality of the small examples
+is asserted here.
+\end{question}
+
+\begin{question}[Classification at the sharp bound]
+\label{ids:bp:q:classification}
+For $m\geq6$, classify the pairs attaining $N=m^2$. The lower-bound proof
+forces $g=m$ and $T=m^2-m+1$, but does not force the center shape
+\eqref{ids:bp:eq:optimal-center}. Which vectors permit one isolated degree-$m$
+output? Which target words are mandatory in every realizing language?
+\end{question}
+
+\begin{question}[Optimal packing for many exceptions]
+\label{ids:bp:q:packing}
+For $q>1$, can the added length $(2m+1)(q-1)$ in
+\eqref{ids:bp:eq:large-m-length} be reduced by placing centers in more than
+two varying coordinates? The relevant objects are fixed-sum integer vectors
+whose radius-$m$ obstruction neighborhoods do not overlap. Separation greater
+than $2m$ is sufficient; determining when overlapping neighborhoods can be
+handled without introducing unintended degrees is a sharper problem.
+\end{question}
+
+\begin{question}[Removing full coverage]
+\label{ids:bp:q:coverage}
+Without requiring $A\sh B$ to fill an entire fixed-letter-count class, how
+short can a binary witness to spectrum $\{1,m\}$ be with $A=\{a^m\}$?
+The general lower bound is $2m-1$, while the present family uses $m^2$ for
+$m\geq6$. The quadratic lower bound proved here does not answer this
+question. A construction of length $O(m)$ would require avoiding the many
+short-gap words, rather than making them one-piece outputs.
+\end{question}
+
+\begin{question}[Descriptional complexity]
+\label{ids:bp:q:automata}
+What are optimal deterministic or nondeterministic automaton sizes for these
+languages and their bounded-insertion stages? The arithmetic membership test
+is compact, but this alone is not a state bound. One can ask for a family
+with arbitrary prescribed plateaus and a target automaton whose state count
+is polynomial in the profile parameters.
+\end{question}
+
+\begin{question}[Structural hypotheses restoring regular degree shapes]
+\label{ids:bp:q:structure}
+Which overlap restrictions on target shuffle sets force an interval spectrum,
+log-concavity, or real-rooted degree polynomials? Pairwise source
+separability eliminates the minimization conflict, but is much stronger than
+necessary. Bounds on the number of target representations per output, or
+laminarity of their low-cost regions, may offer intermediate conditions.
+\end{question}
+
+\begin{question}[Infinite spectra over a fixed alphabet]
+\label{ids:bp:q:infinite}
+Classify the spectra of infinite binary language pairs. A fixed inserted
+word $a^m$ bounds all degrees by $m$, so an unbounded spectrum requires
+unbounded inserted length. Combining finite constructions across lengths is
+not automatic: cross-shuffles can introduce new degrees. A successful
+construction needs a mechanism controlling those interactions without a
+growing alphabet.
+\end{question}
+
+\begin{question}[Formal verification and weighted extensions]
+\label{ids:bp:q:formal}
+A Lean development could start with finite vectors, the support formula,
+Lemmas~\ref{ids:bp:lem:near} and~\ref{ids:bp:lem:escape}, and the
+full-coverage lower bound. These are finite combinatorial statements and
+require no real analysis. A separate extension could assign different costs
+to insertion runs in different gaps, or track several inserted colors. Which
+finite sets of costs or vectors of costs admit analogous profile
+realizations?
+\end{question}
+
+\section{Conclusion of Part~II}
+\label{ids:bp:sec:conclusion}
+The fixed-binary classification is as unrestricted as the earlier
+variable-alphabet classification: finiteness and the unavoidable degree~$1$
+are the only conditions. Even one unary inserted word suffices. Its individual
+source pairs have identical, gap-free, real-rooted degree histograms, but
+minimization over targets can erase any chosen intermediate degrees and can
+prescribe every higher-degree multiplicity.
+
+The gap-vector representation makes the mechanism explicit. Coordinatewise
+exclusion protects a designated expensive output; distance separation prevents
+other designated targets from reducing its cost; and a one-piece escape
+lemma makes all remaining outputs cheap. The same representation exposes a
+sharp extremal threshold: an isolated degree $m$ in a full binary
+fixed-letter-count class needs $m^2$ symbols, and that threshold is attained
+for every $m\geq6$. These are the proposed additions to the repository's
+insertion-degree program.
+
+\section{A reproducible construction blueprint}
+\label{ids:bp:sec:blueprint}
+Given $m\geq2$ and a list $t_0,\ldots,t_{q-1}\in\{2,\ldots,m\}$,
+compute $\Lambda$, $\mathbf b_m$, $\mathbf v_i$, $T$, and
+$\boldsymbol\beta_i$ from Section~\ref{ids:bp:sec:construction}. The
+following pseudocode is a direct implementation of the target definition.
+\begin{lstlisting}
+def target_member(beta):
+    if len(beta) != m or min(beta) < 0:
+        return False
+    if sum(beta) != T - m:
+        return False
+    if beta in special_targets:
+        return True
+    for v in centers:
+        if all(beta[j] <= v[j] for j in range(m)):
+            return False
+    return True
+\end{lstlisting}
+Enumerating weak compositions of $T-m$ and applying this predicate lists all
+of $B$. Enumeration is not required to use the mathematical definition or
+the membership algorithm. To obtain the actual binary word from a vector,
+join the strings $a^{\beta_j}$ with a single $b$ between consecutive gaps.
+Zero gaps must be retained, not deleted from the vector.
+
+\section{Package contents, rebuilding and the choices of the merge}
+\label{ids:bp:sec:package}
+
+\subsection{Shipped files}
+Manuscript~01 was delivered with its source \texttt{article.tex}, its compiled
+PDF, \texttt{code/verify.py}, the executed results in \texttt{data/}, a
+delivery README, \texttt{CLAIMS\_AND\_VALIDATION.md}, \texttt{SOURCES.md}, a
+\texttt{Makefile} and a checksum file. There are no external data downloads
+and no bundled font files. The report ships, beside Part~I's files:
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright}p{.49\textwidth}>{\raggedright\arraybackslash}p{.45\textwidth}@{}}
+\toprule
+Shipped path & Delivered as\\
+\midrule
+\nolinkurl{code/02-binary-profiles-verify.py} & \texttt{code/verify.py}\\
+\nolinkurl{code/02-binary-profiles-Makefile} & \texttt{Makefile}\\
+\nolinkurl{data/02-binary-profiles-verification.json} & \texttt{data/verification.json}\\
+\nolinkurl{data/02-binary-profiles-profile_checks.csv} & \texttt{data/profile\_checks.csv}\\
+\nolinkurl{data/02-binary-profiles-worked_targets.csv} & \texttt{data/worked\_targets.csv}\\
+\nolinkurl{data/02-binary-profiles-worked_outputs.csv} & \texttt{data/worked\_outputs.csv}\\
+\nolinkurl{02-binary-profiles-CLAIMS_AND_VALIDATION.md} & \texttt{CLAIMS\_AND\_VALIDATION.md}\\
+\nolinkurl{02-binary-profiles-SOURCES.md} & \texttt{SOURCES.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The delivered article, PDF and README are printed or replaced by this report
+and its README; the checksum file was verified and not shipped. The shipped
+files are byte-identical to the delivered ones.
+
+\subsection{Rebuilding and rerunning}
+The article is rebuilt from the report directory with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The Part~II verifier needs Python 3.10 or later and only its standard
+library. \emph{Its default output directory is the report's \texttt{data/},
+where it would overwrite Part~I's own \texttt{data/verification.json} and add
+unprefixed CSV files.} Always pass an explicit output directory outside the
+report, for example
+\begin{lstlisting}
+python code/02-binary-profiles-verify.py --out <scratch-directory>
+\end{lstlisting}
+and compare the results with the shipped
+\nolinkurl{data/02-binary-profiles-*} files. The shipped
+\nolinkurl{code/02-binary-profiles-Makefile} still uses the delivered layout: its
+\texttt{verify} target runs \texttt{code/verify.py}, which in this report is
+Part~I's verifier, and its \texttt{all} and \texttt{clean} targets run
+\texttt{latexmk} on the merged \texttt{article.tex}. It is shipped as
+delivered and should not be used from the report directory.
+
+\subsection{Where the merge had to choose}
+\begin{enumerate}[nosep]
+\item Placement: the manuscript answers questions Part~I names in its
+Section~10, so it became Part~II of this report rather than a separate
+report; it is printed after Part~I's Section~10 and before Part~I's
+appendices, which contain no numbered items, so no number of Part~I moved.
+\item The definitions the manuscript repeats from Part~I are printed once
+(Section~\ref{ids:bp:sec:imported}); the manuscript's own bibliography entry
+for Part~I is replaced by internal references, and its entry for Hughes's
+preprint is merged with Part~I's (the same version, v1).
+\item Twelve symbols were renamed where they clash with Part~I
+(Table~\ref{ids:bp:tab:notation}); no normalization changed.
+\item The manuscript's title page, abstract and Section~1 became
+Sections~\ref{ids:bp:sec:source}--\ref{ids:bp:sec:status}; its two appendices
+became Sections~\ref{ids:bp:sec:blueprint} and~\ref{ids:bp:sec:package},
+because the report's appendices belong to Part~I.
+\item Remark~\ref{ids:bp:rem:compare}, the merge notes in
+Sections~\ref{ids:bp:sec:literal-dp} and~\ref{ids:bp:sec:validation}, the
+last paragraph after Corollary~\ref{ids:bp:cor:classification}, and the dated
+pointers in Part~I were added in the merge.
+\end{enumerate}
 
 \appendix
 \section{The binary finite certificate}\label{app:binary}
@@ -577,6 +2044,7 @@ These tables certify the missing degree as follows. A language-level degree-thre
 \section{Archive contents and rebuilding}
 
 The archive contains the complete \LaTeX\ source, the compiled PDF, the included table sources, the exact Python verifier, a portable search-instance generator, an SMT-LIB file, the verified degree tables, and a machine-readable verification report. The small examples and all input constants are embedded in the verifier, so no external data downloads are necessary.
+[Added 29 September 2026, batch 41: this appendix describes Part~I's files. Part~II's files carry the prefix \texttt{02-binary-profiles-}; Section~\ref{ids:bp:sec:package} lists them and explains how to rerun their verifier without overwriting Part~I's \texttt{data/verification.json}.]
 
 From the archive's root directory, verification is:
 \begin{lstlisting}
