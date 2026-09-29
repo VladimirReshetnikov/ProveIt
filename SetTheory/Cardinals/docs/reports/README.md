@@ -55,6 +55,18 @@ batch 36 (September 2026) added six reports and extended a seventh:
   bound on Klarner's constant is `4.5235`; its own bound `4.498` is
   computer-assisted and not formalized.
 
+Later batches extended existing reports rather than adding new ones: batch 38
+gave [`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+a Part II proving `E_m -> 2 log pi`, and batch 39 added parts to
+[`slice-regularity-and-fueter-inversion`](quaternionic-analysis/slice-regularity-and-fueter-inversion)
+(polynomial periods in every even dimension),
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(height-two preorders; real-rootedness fails),
+[`shifted-catalan-hankel-polynomials`](hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials)
+(root collisions for arbitrary multipliers) and
+[`dfao-reversal-coloring-obstruction`](automata-and-formal-languages/dfao-reversal-coloring-obstruction)
+(the exact three-output maximum).
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
