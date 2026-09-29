@@ -236,6 +236,7 @@ remarks taken from source~05 carry the tag \src{05} in their heading or
 first sentence. Untagged text is source~02's, except the editorial text
 written for this merge: Sections~\ref{f6:sec:merge} and~\ref{f6:sec:dictionary},
 the rewritten Appendix~\ref{f6:app:reproduce}, Appendix~\ref{f6:app:provenance},
+Remark~\ref{f6:rem:realoffc0},
 the re-scoping notes in Section~\ref{f6:sec:future}, and short linking
 sentences that say which source proved what.
 Appendix~\ref{f6:app:provenance} records the provenance and every choice the
@@ -468,7 +469,7 @@ polynomial self-map in at most three variables.
 \end{enumerate}
 \end{theorem}
 
-The geometry is stronger than a list of sample collisions: the theorem
+The geometry is stronger than a list of sample collisions \src{05}: the theorem
 identifies every target with no preimage, every possible loss of sheets, and
 an exact algebraic decision rule for arbitrary targets.
 
@@ -2305,6 +2306,27 @@ roots; the preceding bound proves there are no others. Exact Sturm
 counts independently verify all five examples.
 \end{proof}
 
+\begin{remark}[All four values occur off $c=0$ (merge)]\label{f6:rem:realoffc0}
+The containment for $c\ne0$ in Theorem~\ref{f6:thm:real} is an equality:
+every value in $\{0,1,2,4\}$ is the real fiber cardinality of some target
+with $c=1$. Three of them are already realized in the proof above, at
+$b_*=(1,0,0,1,0)$ (zero), $(1,0,0,0,0)$ (two) and $(1,-8,0,-6,70)$ (four).
+For the value one take $b=(1,-1,0,0,1)$. Then $\kk=1$, $T=0$ and $L=0$ in
+\eqref{f6:eq:TL}, and
+\[
+ P_b(w)=w^3\,(2w^3-2w^2-1).
+\]
+The triple root $0$ contributes no point. The cubic factor does not vanish
+at $0$ and has discriminant $-140<0$, so it has exactly one real root
+(near $1.2972$), and that root is simple. Hence the real fiber has exactly
+one point. This target is source~05's witness $(a,b,d)=(0,0,0)$ for the
+pattern $3\,1^3$ in Proposition~\ref{f6:kf:prop:witnesses}, taken at $c=1$.
+For all four targets the merge recomputed the real simple roots of
+$\simp(q_b)$ exactly with SymPy and mapped each reconstructed real point
+forward through the expanded map, recovering the target to within
+$10^{-50}$ at $80$-digit working precision.
+\end{remark}
+
 A particularly instructive target is therefore $b_*$. Its geometric
 fiber has six points, its real fiber is empty, and its rational fiber is
 empty. These statements coexist without contradiction: geometric
@@ -2666,11 +2688,11 @@ reconstruction formulas are defined over $\Q$, so for real targets with
 $c\ne0$ the real fiber is exactly the set of real simple roots of $P_b$; on
 $c=0$ the real count is three when $A^2+4B>0$ and one otherwise.
 Theorem~\ref{f6:thm:real} of source~02 has since determined the possible real
-fiber cardinalities, $\{0,1,2,3,4\}$, with $\{0,1,2,4\}$ containing the values
-off $c=0$. What remains open is source~05's actual request: the connected
-real chambers, the real fiber count on each, and the semialgebraic boundary
-of the real image, and whether each value in $\{0,1,2,4\}$ is attained off
-$c=0$. Sturm sequences for the exact simple-root factor provide an immediate
+fiber cardinalities, $\{0,1,2,3,4\}$, and the values off $c=0$ are exactly
+$\{0,1,2,4\}$, each attained at a target with $c=1$
+(Remark~\ref{f6:rem:realoffc0}). What remains open is source~05's actual
+request: the connected real chambers, the real fiber count on each, and the
+semialgebraic boundary of the real image. Sturm sequences for the exact simple-root factor provide an immediate
 computational route, but a useful result should describe the chambers
 geometrically rather than merely output a quantifier-elimination formula.
 
@@ -2989,26 +3011,30 @@ different Morse line (geometric $S_6$). Source~05's arithmetic certificate
 is a different target and is printed as its own theorem.
 \item Source~05's corollary on the rational omitted point is printed as a
 remark, since the point is already the zero-point witness of
-Table~\ref{f6:tab:witness}. Its Lemma on connected covers is printed with
-the proof of Theorem~\ref{f6:thm:geometricS6}, which contains the same
-argument. Its appendix of Frobenius tests is printed in
+Table~\ref{f6:tab:witness}. Its Lemma on connected covers is printed as the
+standalone Lemma~\ref{f6:kf:lem:transpositiongraph}, beside its second proof
+of Theorem~\ref{f6:thm:geometricS6}; its proof notes that source~02's proof
+of that theorem contains the same argument. Its appendix of Frobenius tests is printed in
 Section~\ref{f6:kf:sec:arithmetic}.
 \item Source~05's eight directions are printed as 11--18. Direction~11 (a
 global finite completion) is answered by source~02 and marked so;
 direction~15 (real chambers) is re-scoped after source~02's
-Theorem~\ref{f6:thm:real}; source~02's question~3 is re-scoped after
+Theorem~\ref{f6:thm:real}, and the merge checked that all four values
+$0,1,2,4$ occur off $c=0$ (Remark~\ref{f6:rem:realoffc0}), a point neither
+source raised; source~02's question~3 is re-scoped after
 source~05's local types. No other question is answered by the other source.
 \item Source~02's source-audit appendix and source~05's audit are kept as
-historical records of the pinned commit; the files they inspected are
-unchanged since the pin. The reproducibility appendix was rewritten for the
+historical records of the pinned commit; the files they inspected were
+unchanged from the pin to the placement commit. The reproducibility appendix was rewritten for the
 shipped file names.
 \end{enumerate}
 Label prefixes: every label carries \code{f6:}. Labels of source~02 keep
 their names after the prefix; labels introduced for source~05's material
-carry \code{f6:kf:}; the five other labels added by the merge (four on editorial text, one on
+carry \code{f6:kf:}; the six other labels added by the merge (five on editorial text, one on
 source~02's previously unlabelled Conclusion)
 (\code{f6:sec:merge}, \code{f6:sec:dictionary}, \code{f6:tab:dictionary},
-\code{f6:sec:conclusion} and \code{f6:app:provenance}) carry \code{f6:} only.
+\code{f6:rem:realoffc0}, \code{f6:sec:conclusion} and \code{f6:app:provenance})
+carry \code{f6:} only.
 
 \begin{thebibliography}{9}
 \addcontentsline{toc}{section}{References}

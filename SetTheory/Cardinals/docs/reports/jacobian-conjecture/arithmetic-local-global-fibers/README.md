@@ -66,7 +66,8 @@ rescaling). The inverse coordinate is `t = y + 1/x`, a root of the cubic
 - The report's `t = y + 1/x` is **not** the `t = xy` of
   `Algebra/JacobianConjecture/Research/README.md` (and of the sibling
   report `weighted-keller-rigidity`), nor the family parameter `t` of the
-  project README.
+  project README (written `τ` in the report's Remark on the collision
+  fiber).
 - Its `p` is a prime and `q` a finite-field size, **not** the project's
   `p = xy²`, `q = x²yz` of the stable shear.
 - Density `27/(4π²)` counts **ordered root parameters** `(a, b)`, not
@@ -188,9 +189,11 @@ project records and formalizes only the first two. Checked with SymPy
 1.14.0: all three evaluate to `(0,−2,0)`, and a lex Gröbner basis of
 `{P, Q+2, R}` is zero-dimensional with `x`-polynomial `x(x−1)(x+1)`, so there
 is no fourth geometric point; the delivered `code/rational_inverse.py 0 -2 0`
-returns the same three points, all integral. Along the project's family
-`F(t,−1/t,5/t²) = F(0,2/t,−16/t²) = (0,2/t,0)` the third point is
-`(−t, 2/t, 8/t²)`. The torus action at `s = −1/2` carries the three points
+returns the same three points, all integral. Along the project's family,
+whose parameter (`t` in the project README) the remark writes `τ` to keep it
+apart from the report's root `t = y + 1/x`,
+`F(τ,−1/τ,5/τ²) = F(0,2/τ,−16/τ²) = (0,2/τ,0)` and the third point is
+`(−τ, 2/τ, 8/τ²)`. The torus action at `s = −1/2` carries the three points
 to the fiber over `(0,1,0)` that the report prints in Section 9.2,
 `(2,−1/2,5/4)`, `(0,1,−4)`, `(−2,1,2)`, whose two integral points have
 largest coordinate 4, against 16 for the project's collision. A Lean or Rocq

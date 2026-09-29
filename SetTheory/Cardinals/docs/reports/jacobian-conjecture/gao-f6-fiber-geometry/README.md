@@ -13,7 +13,7 @@ built from two manuscripts, both "prepared with ChatGPT".
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 02 (base) | batch 36, manuscript 02 | `ProveIt_Six_Sheets_Research` (main file `Six_Sheets_Three_Escapes.tex`, 22-page PDF; delivered in `e13affd32`) | `e21766d04` | `1a1396d4d` | the untagged, non-editorial text of Sections 1–12 and Appendices A–B (the merge's editorial text is Sections 1.2, 1.4, Appendix A as rewritten, Appendix D) |
+| 02 (base) | batch 36, manuscript 02 | `ProveIt_Six_Sheets_Research` (main file `Six_Sheets_Three_Escapes.tex`, 22-page PDF; delivered in `e13affd32`) | `e21766d04` | `1a1396d4d` | the untagged, non-editorial text of Sections 1–12 and Appendices A–B (the merge's editorial text is Sections 1.2, 1.4, Remark 9.2, Appendix A as rewritten, Appendix D) |
 | 05 | batch 36, manuscript 05 | `ProveIt_Keller_Fibers_Research` (*A Codimension-Three Omitted Surface for a Five-Dimensional Keller Map*, main file `article.tex`, 24-page PDF; delivered in `e13affd32`) | `e21766d04` | `1a1396d4d` | everything tagged "(source 05)", and Appendix C |
 
 Every result, proof, example, remark, limitation and question of both
@@ -27,7 +27,7 @@ anywhere in ProveIt** (see "The formal project" below).
 README.md                                        this guide (replaces both delivered READMEs)
 article.tex                                      the report: source 02's text, labels prefixed, with source 05 merged in
 article.pdf                                      the compiled report, 45 pages (unnumbered title page, abstract page 1,
-                                                 contents pages 2–3, text pages 4–43, references pages 43–44)
+                                                 contents pages 2–3, text pages 4–44, references page 44)
 02-six-sheets-SOURCE_AUDIT.md                    source 02's source audit and claim boundary, as delivered
 05-keller-fibers-SOURCE_AUDIT.md                 source 05's source and attribution audit, as delivered
 code/02-six-sheets-build_map.py                  source 02: sparse exact construction of F6 (SymPy)
@@ -60,12 +60,12 @@ delivery. `article.pdf` is a build of this text.
 ## Labels
 
 Every label in `article.tex` carries the prefix `f6:`. Source 02's 72 labels
-are kept, unchanged after the prefix. The merge added 65 labels: 60 for
+are kept, unchanged after the prefix. The merge added 66 labels: 60 for
 source 05's material, with the sub-prefix `f6:kf:` (nine of source 05's
 label names, such as `thm:main` and `lem:derivative`, already existed in
-source 02), and five others (four on editorial text, one on source 02's unlabelled Conclusion: `f6:sec:merge`,
-`f6:sec:dictionary`, `f6:tab:dictionary`, `f6:sec:conclusion`,
-`f6:app:provenance`): 137 in total, all distinct. Theorem, section and
+source 02), and six others (five on editorial text, one on source 02's unlabelled Conclusion: `f6:sec:merge`,
+`f6:sec:dictionary`, `f6:tab:dictionary`, `f6:rem:realoffc0`, `f6:sec:conclusion`,
+`f6:app:provenance`): 138 in total, all distinct. Theorem, section and
 equation numbers are those of the built `article.pdf`; since this report is
 new, many of source 02's own numbers have moved (for example
 its Theorem 6.3 on nonproperness is Theorem 6.4 here). No label has a Lean
@@ -162,8 +162,11 @@ source that proves it; "both" means both do.
   intermediate field (Corollary 8.3, 05); arithmetic `S6` with no radical
   inverse point at `(1,0,0,1,0)` modulo 3, 13, 37 (Theorem 8.4, 02) and at
   `(1,−1,0,1,1)` modulo 7, 11, 269 (Theorem 8.5, 05).
-- **Real fibers (Theorem 9.1, 02).** Sizes exactly `{0,1,2,3,4}`; off `c = 0`
-  contained in `{0,1,2,4}`.
+- **Real fibers (Theorem 9.1, 02; Remark 9.2, merge).** Sizes exactly
+  `{0,1,2,3,4}`; off `c = 0` exactly `{0,1,2,4}`: Theorem 9.1 proves the
+  containment and its proof attains 0, 2, 4 at `c = 1`; the merge's
+  Remark 9.2 attains 1 at `(1,−1,0,0,1)`, where the sextic is
+  `w³(2w³−2w²−1)` with one real simple root.
 - **Proposed work.** An exact inversion procedure (Section 9.1), two Lean
   plans (Sections 10.3–10.4), and questions 1–18 (Section 11; 1–10 from 02,
   11–18 from 05).
@@ -178,9 +181,9 @@ source that proves it; "both" means both do.
 - Codimension three is not claimed to be a universal maximum for omitted
   sets of Keller maps, and the omitted set is not the nonproperness set.
 - Smoothness of `V(H)` is asserted only along `c = 0`, `A²+4B = 0`.
-- Geometric image ≠ rational image ≠ real image. The real result off
-  `c = 0` is containment in `{0,1,2,4}`, not attainment; the value 1 off
-  `c = 0` is open (question 15).
+- Geometric image ≠ rational image ≠ real image. Off `c = 0` the report
+  determines which real fiber sizes occur (`{0,1,2,4}`), not where: the real
+  chambers and the boundary of the real image are open (question 15).
 - The radical obstruction does not forbid an inverse by algebraic numbers.
   The `S6` certificates are starting points, not a distribution theorem;
   characteristic-zero conclusions do not transfer to characteristic p.
@@ -207,8 +210,9 @@ source that proves it; "both" means both do.
   boundary theorem.
 - Source 05's question on real image and real fiber chambers (direction 15)
   is **re-scoped**: source 02's Theorem 9.1 gives the possible real
-  cardinalities; the chambers, the semialgebraic boundary of the real image
-  and attainment off `c = 0` remain open.
+  cardinalities, and the merge's Remark 9.2 shows that all four values
+  `0,1,2,4` occur off `c = 0` (a point neither source raised); the chambers
+  and the semialgebraic boundary of the real image remain open.
 - Source 02's question 3 (singular strata of `H`) is **re-scoped** after
   source 05's local types: the local type and singular-locus criterion in
   coefficient space are known; a Whitney stratification and explicit
@@ -235,9 +239,11 @@ not about Gao's F6:
 
 The report states no result that the project has formalized, and its
 relation to the project confers no formal status on it. Outside the reports
-of this collection, the only mention of Gao's paper in the repository is
-`ProveIt_Walkthrough.tex` (section "Current-event context"), which cites it
-as external context and not as a dependency of the Lean/Rocq proof.
+of this collection, the only mention of Gao's paper in the repository at the
+placement commit was `ProveIt_Walkthrough.tex` (section "Current-event
+context"), which cites it as external context and not as a dependency of the
+Lean/Rocq proof; the batch-36 catalogue commit later added pointers to the
+reports in the project's READMEs.
 
 ## Neighbouring reports
 
@@ -324,7 +330,8 @@ text mode adds (the shipped files contain none).
   as they were then (`Algebra/JacobianConjecture/README.md`,
   `Algebra/JacobianConjecture/Research/README.md`,
   `Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean`,
-  `ProveIt_Walkthrough.tex`); these files are unchanged since the pin.
+  `ProveIt_Walkthrough.tex`); these files were unchanged from the pin to the
+  placement commit.
   Source 05's audit refers to "the README" for repository paths; the paths
   are in its article, printed in Appendix B here.
 - The two sources cite Gao's pages differently (source 05: PDF pages 22, 23

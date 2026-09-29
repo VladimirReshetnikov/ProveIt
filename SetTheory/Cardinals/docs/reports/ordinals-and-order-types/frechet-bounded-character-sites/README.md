@@ -26,7 +26,7 @@ neighbouring report and to formal work* below).
 
 ```
 article.tex                                    the merged report, standalone LaTeX with an internal bibliography
-article.pdf                                    the compiled report, 48 pages (unnumbered title page, then pages 1–47)
+article.pdf                                    the compiled report, 49 pages (unnumbered title page, then pages 1–48)
 README.md                                      this guide
 08-filter-complexity-proof_audit.md            source 08's author-side proof audit, as delivered
 08-filter-complexity-literature_audit.md       source 08's repository and literature audit, as delivered
@@ -48,7 +48,7 @@ suite. There were no checksum manifests in either package.
 ## Labels and numbering
 
 Every label in `article.tex` carries the prefix `fbc:`. Source 08's text, as
-staged, had 55 labels; the merged report has **123**. Source 08's keys are
+staged, had 55 labels; the merged report has **124**. Source 08's keys are
 kept after the prefix, except two keys that collided with other texts:
 `sec:model` (source 10 used the same key for a different section) is
 `fbc:sec:early-atomicity`, and `thm:sheafification` (the neighbouring report
@@ -129,7 +129,10 @@ those results are **not** proved there (Section 5.1). They are not claimed at
 regular limit stages either. Through the marked isomorphism `C_ω ≅ C_{ℵ1}`
 they apply to `C_ω`. The reverse barrier uses no closure; source 10 states it
 for `λ ≥ p`, and the report states it for every `κ > p` after re-reading the
-proof (merge note after Theorem 4.4).
+proof (merge note after Theorem 4.4). The same is done, and said, for three
+other source-10 statements whose proofs use no closure: the cone lemma
+(Lemma 3.4), the residual formula of Theorem 7.5 and ordinary
+specializations (Proposition 12.3).
 
 ## What the report claims
 
@@ -191,8 +194,12 @@ All in ZFC, with ordinary proofs; one application imports a forcing model.
   target" of source 08's Q6 (countable types in a countable language). Q6 is
   re-scoped to types of size at least ℵ1, and to the limit stages.
 - Source 10's Corollary 6.3 answers source 08's Q4 (marked versus unmarked)
-  negatively at the successor stages above h; Q4 is re-scoped to the
-  interval `p < κ ≤ h` (R1) and the limit stages.
+  negatively, for the comparison with `C_ω`, at the successor stages above h;
+  Theorem 7.1 (atoms) already does so at every stage `κ > u`. For that
+  comparison Q4 is re-scoped to the stages `p < κ ≤ u` that Corollary 6.3
+  does not reach: the successor stages `κ ≤ h` (R1) and the limit stages.
+  Q4's comparison of two stages other than ω with each other is not addressed
+  by source 10 and stays as stated.
 - Source 08's Propositions 11.2 and 11.3 partly address source 10's
   questions 14.9 and 14.4 (R9, R4).
 
@@ -275,7 +282,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Build in a scratch copy so that no auxiliary files land here. The recorded
-build (MiKTeX 26.2, pdfTeX 1.40.29) has 48 pages and no errors, LaTeX or
+build (MiKTeX 26.2, pdfTeX 1.40.29) has 49 pages and no errors, LaTeX or
 package warnings, undefined references or citations, multiply defined labels,
 duplicate destinations, or overfull or underfull boxes. Source 08's delivered
 text builds equally cleanly to 24 pages with the same toolchain. Identical PDF

@@ -18,8 +18,9 @@ A later external report, `polyomino-growth-finite-prefix-corrections` in the
 research-report collection
 ([`SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections`](../../../SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections/README.md)),
 improves the bound to `λ ≤ 2249/500 = 4.498` by correcting Bui's system with
-an exact marked-occurrence table through size 18 (regenerated from scratch
-when the report was placed).  That bound is computer-assisted and **not
+an exact marked-occurrence table through size 18 (regenerated when the
+report was placed by a fresh build of the delivered enumerator — the same
+program, not an independent check).  That bound is computer-assisted and **not
 formalized**: it rests on the enumeration and on a finite-prefix correction
 theorem that this project does not prove, and the Lean endpoint theorems here
 are specific to `ζ = 2000/9047`.  `4.5235` remains the formally verified

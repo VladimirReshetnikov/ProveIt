@@ -305,12 +305,13 @@ certificates and proves afterward that their centers match every exact root.
 
 [`specialization-safe-radical-solvers`](../../SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/specialization-safe-radical-solvers/README.md),
 an external report in ProveIt's research-report collection, starts from
-`LazardGeneralFourier` and the branch-sensitive invariant-recovery boundary
-recorded there.  It determines exactly the characteristics in which subset
+`LazardGeneralFourier` and works next to the branch-sensitive
+invariant-recovery boundary recorded there, without crossing it.  It determines exactly the characteristics in which subset
 sums of the roots of a prime-degree polynomial can collide (`{5}` for quintic
 pairs, `{2,7,29}` for septic triples), reconstructs all roots from one
-coherent radical on each Fourier chart (generalizing Lazard's pivot-one
-scheme), and gives a Lean integration plan.  None of it is formalized.
+coherent radical on each Fourier chart once the intermediate-field invariant
+data are given (generalizing Lazard's pivot-one scheme; a coefficient-only
+solver is left as further work), and gives a Lean integration plan.  None of it is formalized.
 
 ## Checking
 

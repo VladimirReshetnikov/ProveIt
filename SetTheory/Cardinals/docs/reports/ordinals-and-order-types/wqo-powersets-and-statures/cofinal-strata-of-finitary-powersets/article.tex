@@ -1472,7 +1472,9 @@ Theorem~\ref{thm:height} and the persistent counterexample
 by all four and recovered here, not presented as new. All four manuscripts
 are unrefereed and none was checked by a proof assistant. No theorem of
 Parts~II--III uses an unrefereed repository theorem as a premise: the
-canonical-frontier facts they need are reproved, and the survivor formula of
+canonical-frontier facts they need are reproved, with the sources' proofs
+printed (Lemmas~\ref{nh:lem:canonicalcompare} and~\ref{nh:wpo:lem:canonical}),
+and the survivor formula of
 Theorem~\ref{thm:general} is not used.
 
 \subsection{The answer}\label{nh:sec:answer}
@@ -2374,14 +2376,17 @@ counted as polynomial preprocessing.
 
 Throughout this section $Q$ is finite and nonempty and
 $\alpha_q=\omega^{\rho_q}$ with $\rho_q>0$. Such a fibre is a nonzero limit
-with no greatest element and no finite cofinal subset, so the canonical
-frontier of Lemma~\ref{lem:canonical} is available. The support model of
+with no greatest element and no finite cofinal subset, so every
+$K\in\K(S_{\boldsymbol\alpha}(Q))$ has the canonical frontier of
+Lemma~\ref{nh:lem:canonicalcompare}(ii) below (12's reproof of Part~I's
+Lemma~\ref{lem:canonical}). The support model of
 Section~\ref{nh:sec:dag} is exact and handles finite endpoints; here a smaller
 state system, the frontier poset $\M(Q)$ of Part~I, gives \eqref{nh:eq:answer}.
 
 \subsection{Weighted frontiers}
 
-Lemma~\ref{lem:frontiers} gives $A=\min(Q\setminus D(A))$ and
+Lemma~\ref{nh:lem:canonicalcompare}(i) below (12 Lemma~5.1, reproving
+Part~I's Lemma~\ref{lem:frontiers}) gives $A=\min(Q\setminus D(A))$ and
 $A\preceq B\iff D(A)\subseteq D(B)$. Two more facts are needed (07, 11, 12):
 if $A\prec B$ in $\M(Q)$ then $A\setminus B\ne\varnothing$, because one
 inclusion-maximal antichain cannot properly contain another; and the active-set
@@ -2417,29 +2422,69 @@ special case of Part~III, whose upper bound goes through Wolk's theorem.
 
 \subsection{First proof (12, 11): two embeddings}
 
-\begin{lemma}[Comparison across strata; 11 Lemma~6.1]\label{nh:lem:canonicalcompare}
-Let $K,L\in\K(S_{\boldsymbol\alpha}(Q))$ have canonical frontiers $A,B$ and
-active sections $K_a=K\cap P_a$, $L_b=L\cap P_b$. Then
+\begin{lemma}[Canonical frontier and comparison across strata; 12 Lemmas~5.1--5.2, 11 Lemma~6.1]\label{nh:lem:canonicalcompare}
+Write $P_q$ for the chain fibre $\alpha_q$ over $q$.
+\begin{enumerate}[label=(\roman*)]
+\item \textup{(12 Lemma~5.1.)} For $A,B\in\M(Q)$, $A=\min(Q\setminus D(A))$
+and $A\preceq B\iff D(A)\subseteq D(B)$.
+\item \textup{(12 Lemma~5.2.)} For $K\in\K(S_{\boldsymbol\alpha}(Q))$ let
+$D_K=\{q\in Q:P_q\subseteq K\}$ be its set of completed fibres. There is a
+unique $A\in\M(Q)$ with $D_K=D(A)$, the \emph{canonical frontier} of $K$. The
+downset $K$ contains all fibres in $D(A)$, contains a possibly empty principal
+downset in every fibre of $A$, and is empty in all remaining fibres.
+\item \textup{(11 Lemma~6.1.)} Let $K,L\in\K(S_{\boldsymbol\alpha}(Q))$ have
+canonical frontiers $A,B$ and active sections $K_a=K\cap P_a$,
+$L_b=L\cap P_b$. Then
 \begin{equation}\label{nh:eq:canonicalcompare}
  K\subseteq L\iff A\preceq B\ \text{and}\ K_a\subseteq L_a
  \ \text{for every }a\in A\cap B .
 \end{equation}
-Every tuple of nonempty principal sections at $A$ occurs in the stratum of $A$.
+\item Every tuple of nonempty principal sections at $A$ occurs in the stratum
+of $A$.
+\end{enumerate}
 \end{lemma}
 \begin{proof}
-If $K\subseteq L$, completed fibres stay completed, so $D(A)\subseteq D(B)$
-and $A\preceq B$, and shared sections are included. Conversely, if
+(i) (12.) Every predecessor of an element of $A$ is in $D(A)$, so $A$ consists
+of minimal elements outside $D(A)$. Conversely, a minimal element outside
+$D(A)$ must be comparable with some element of the maximal antichain $A$; it
+can lie neither below nor strictly above it, so it equals it. Domination
+implies inclusion of strict-predecessor sets. Conversely, suppose
+$D(A)\subseteq D(B)$. An $a\in A$ either belongs to $D(B)$, in which case it
+lies below a member of $B$, or is minimal outside $D(B)$ (its strict
+predecessors lie in $D(A)\subseteq D(B)$) and therefore belongs to $B$. This
+proves domination.
+
+(ii) (12.) Let $A_0$ be the support of the maximal generators of $K$
+(Lemma~\ref{nh:lem:support}). A fibre is entirely present exactly when some
+generator has strictly greater index: internal finite generators cannot be
+cofinal in a limit chain. Thus $D_K=D(A_0)$, where the same strict-predecessor
+notation is used for a possibly nonmaximal antichain, including
+$A_0=\varnothing$. Set $D=D_K$ and $A=\min(Q\setminus D)$. Every member of
+$A_0$ is in $A$, while all predecessors of members of $A$ belong to $D$. Hence
+$D(A)=D(A_0)=D$. Any element outside $D$ lies above some member of $A$; any
+element of $D$ lies below a member of $A_0\subseteq A$. Consequently $A$ is
+inclusion-maximal. A nonempty nonfull section must lie at the index of a
+maximal generator, so its index is in $A$. Uniqueness follows from~(i).
+
+(iii) (11.) If $K\subseteq L$, completed fibres stay completed, so
+$D(A)\subseteq D(B)$ and $A\preceq B$ by~(i), and shared sections are
+included. Conversely, if
 $A\preceq B$, every $a\in A\setminus B$ lies below some $b\in B$, strictly
 since $a\notin B$, so $a\in D(B)=D_L$ and the fibre of $a$ is completed in
 $L$; completed fibres of $K$ remain completed in $L$ because
 $D(A)\subseteq D(B)$; and the shared active sections are
-included by hypothesis. The last assertion is the sufficiency part of
-\eqref{eq:tuplecondition}.
+included by hypothesis.
+
+(iv) (12.) The downset generated by one point $(a,x_a)$ for each $a\in A$ has
+support $A$, so by the proof of~(ii) its completed-fibre set is $D(A)$, and its
+section at $a$ is ${\downarrow}x_a$.
 \end{proof}
 
-Lemma~\ref{lem:canonical} and this comparison rule are the structural part
-inherited from Part~I; 11 and 12 reprove them to keep the new height theorem
-independent of Part~I's other arguments. Not every tuple of empty or nonempty
+Parts (i) and~(ii) are Part~I's Lemmas~\ref{lem:frontiers}
+and~\ref{lem:canonical} for chain fibres, and (iii) and~(iv) are Part~I's
+comparison rule and the sufficiency half of \eqref{eq:tuplecondition}. The
+proofs printed here are 12's and 11's reproofs, so the new height theorem does
+not rest on Part~I's arguments. Not every tuple of empty or nonempty
 sections belongs to the indicated stratum, but every tuple with all active
 sections nonempty does, and this suffices for matching bounds (12).
 
@@ -2463,7 +2508,7 @@ $\K(\alpha_q)\cong1+\alpha_q=\alpha_q$ for infinite $\alpha_q$. Send $K$ with
 canonical frontier $A$ to $(A,(\theta_a(K_a))_{a\in A})$. By
 \eqref{nh:eq:canonicalcompare} this preserves and reflects order. It need not
 be surjective: empty coordinates are subject to the support condition of
-\eqref{eq:tuplecondition}.
+Part~I's \eqref{eq:tuplecondition}, which the proof does not use.
 \end{proof}
 
 \begin{proof}[First proof of Theorem~\ref{nh:thm:frontier}]
@@ -2682,7 +2727,7 @@ Proposition~\ref{nh:prop:pathheight} to its chain pieces; one of the finitely
 many chains realizes the maximum, and its constructed chain realizes the height.
 \end{proof}
 
-\begin{proposition}[Saturation does not reduce cost; 07 Prop.~7.3, 09 Lemma~6.1]
+\begin{proposition}[Saturation does not reduce cost; 07 Prop.~7.3, 09 Lemma~6.1 and end of proof of Thm~7.2]
 \label{nh:prop:saturation}
 Every nonempty frontier chain extends to a saturated chain from $\min Q$ to
 $\max Q$ without decreasing its cost $W$.
@@ -3261,7 +3306,8 @@ exponents. Replace the distinct exponents by any strictly increasing list of
 ordinals, keeping $0$ at $0$ when it occurs and positive exponents positive.
 The output keeps its Cantor-normal-form coefficient pattern, with the exponents
 relabelled in the same way, and an optimizing path remains optimizing. In
-particular, if $\phi:\{\rho_q\}\to\mathrm{Ord}\setminus\{0\}$ is strictly
+particular, if all $\rho_q>0$ (07's standing hypothesis) and
+$\phi:\{\rho_q\}\to\mathrm{Ord}\setminus\{0\}$ is strictly
 increasing and $\hgt(\K(\lxsi_q\omega^{\rho_q}))=\omega^{\sigma_1}c_1+\cdots+
 \omega^{\sigma_s}c_s$ with $\sigma_1>\cdots>\sigma_s$, then
 $\hgt(\K(\lxsi_q\omega^{\phi(\rho_q)}))=\omega^{\phi(\sigma_1)}c_1+\cdots+
@@ -3277,6 +3323,12 @@ exponents). So it commutes with every step of \eqref{nh:eq:dp}, including tie
 comparisons and terminal addition (12), and equally with every path evaluation
 of \eqref{nh:eq:cost} and their finite maximum (07).
 \end{proof}
+
+The hypothesis $\rho_q>0$ of the last sentence cannot be dropped, since $\phi$
+may move the exponent $0$ that the first sentence keeps fixed. For a single
+vertex with $\rho=0$ the height is $\hgt(\K(1))=2=\omega^0\cdot2$, while
+$0\mapsto1$ would predict $\omega\cdot2$ for $\hgt(\K(\omega))=\omega$. (This
+example is an editorial addition of the merge.)
 
 The formula is thus a finite combinatorial calculation on the \emph{weak order
 pattern} of the exponents; their magnitudes, cardinalities and cofinalities are
@@ -4547,7 +4599,11 @@ exponentially larger than the input (11).
 \label{nh:prob:width}
 Compute the ordinal width (and, 09, the maximal linear-extension type) of the same
 mixed-fibre finitary powersets, beginning (11) with persistent systems with two
-distinct positive capacity levels and state posets of bounded width.
+distinct positive capacity levels and state posets of bounded width. In
+particular (07), can the finite weighted frontier data
+\eqref{nh:eq:frontierweights} that compute the height also compute the ordinal
+width, or must they be enriched by information about concurrent rather than
+sequential coordinate changes?
 \end{problem}
 The height proofs concern decreasing sequences; antichain sequences need not have
 chain-ordered labels, so the finite chain cover is unavailable in that form and a
@@ -4592,14 +4648,16 @@ statement (07, 09, 11, 12); increasing ordinal skeletons are a test class (09).
 
 \begin{problem}[Minimal presentations, chambers and schedules; 12 Problem~10.8, 07 Question~8, 09 \S\S14.10--14.11, 11 Problems~12.4 and~12.6]
 \label{nh:prob:presentations}
-Characterize when two finite persistence presentations, or two weighted frontier
-graphs arising from finite skeletons, give the same height for every
-order-preserving exponent substitution, and find minimal or canonical
-presentations; find a stronger equivalence that also preserves every point rank.
-Classify, for a fixed skeleton, all output coefficient vectors as the exponent
-preorder varies, and represent them compactly without enumerating all ordered
-partitions of the labels. Describe equivalence classes of linear extensions with
-the same retirement groups or value.
+Characterize which weighted finite frontier graphs arise from finite skeletons
+with ordinal fibres (07). Characterize when two finite persistence presentations,
+or two weighted frontier graphs arising from finite skeletons, give the same
+height for every order-preserving exponent substitution, and find minimal or
+canonical presentations; find a stronger equivalence that also preserves every
+point rank. Classify, for a fixed skeleton, all output coefficient vectors as the
+exponent preorder varies, and represent them compactly without enumerating all
+ordered partitions of the labels; determine which skeletons admit one schedule
+optimal in every chamber (09). Describe equivalence classes of linear extensions
+with the same retirement groups or value.
 \end{problem}
 Exponent invariance removes the numerical names of scales; a further reduction must
 preserve lifetime intersections and retirement opportunities, and equality of active
@@ -4608,7 +4666,9 @@ maximizing path may be redundant, and deciding universal redundancy is a finite
 symbolic optimization (07). The compact frontier model shows that height-only
 compression can exist without a pointwise-rank identification, so the two goals
 should be studied separately (11). Two parallel chains show that a schedule optimal
-in every chamber need not exist (09); zero-weight insertions and absorbed lower terms
+in every chamber need not exist, so the question is which skeletons admit one; an
+intrinsic characterization could say more than enumerating all weak-order
+patterns (09). Zero-weight insertions and absorbed lower terms
 create redundancy that a quotient of schedules could remove, giving smaller
 certificates (09).
 
@@ -4723,15 +4783,21 @@ example uses Part~I's $x$, $y<z$ throughout.
 $1+x<\alpha_q$ and so needs infinite pure fibres, which Section~\ref{nh:sec:frontier}
 assumes; 11's peeling assumes $\rho_q>0$, handled by convention~3; 09's lower bound
 needs Wolk chains; 12's non-chain proposition needs least elements.
-\item \emph{Editorial additions.} Remark~\ref{nh:rem:threenames} and
-Problem~\ref{nh:prob:editorial} are the merge's own and are marked as such. The
+\item \emph{Editorial additions.} Remark~\ref{nh:rem:threenames},
+Problem~\ref{nh:prob:editorial} and the example after
+Corollary~\ref{nh:cor:scale} showing that its positivity hypothesis is needed
+are the merge's own and are marked as such. The
 placement-time cross-check of the four programs is reported from the placement commit;
 its script is not shipped.
 \item \emph{Bibliography.} Entries were merged into Part~I's list. 11's entry for
 Vialard's lexicographic-product paper, which gave no DOI, is replaced by Part~I's
 published record \cite{Vialard2025}. The Hilton, Schmidt, Wolk, Marcone--Montalb\'an--Shore
 and Vialard width entries are new.
-\item \emph{Part~I.} Its labelled text is unchanged. Sentences in Part~I that said
+\item \emph{Part~I.} Its labelled text is unchanged, and so are its section,
+theorem and equation numbers with one exception: equations are numbered
+continuously and Part~I's appendices now follow Parts~II--III, so the
+truncation formula of Appendix~\ref{sec:lex}, equation (24) in the pinned
+article, is now \eqref{eq:truncation}. Sentences in Part~I that said
 no nonuniform height formula was known or claimed were kept as provenance of the
 pinned state and given dated pointers to this addition. The delivered data files
 \path{data/weighted_N_result.json} and

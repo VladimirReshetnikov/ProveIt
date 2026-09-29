@@ -172,9 +172,11 @@ names the declarations here that it builds on.
   that the fiber over the collision value `(0,-2,0)` contains a third
   integral point, `(1,-2,8)`.
 - [`weighted-keller-rigidity`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity/README.md):
-  classifies the Keller maps of weights `(-1,1,2)` in every degree; every
-  noninvertible one in its class is this map up to the diagonal action and
-  tame composition, so it sharpens the degree-seven sparsity search of
+  classifies, in every degree, the Keller maps of weights `(-1,1,2)` whose
+  components are affine in `v = x^2 z` (with `r` affine in `(t,v)`, extended
+  to `r = R(t) + γv`); every noninvertible one in that class is this map up
+  to the diagonal action and tame composition.  Unrestricted weighted maps
+  are not covered.  The report sharpens the degree-seven sparsity search of
   [`Research/README.md`](Research/README.md) to all degrees.  It does not show
   that degree seven is minimal in dimension three.
 - [`gao-f6-fiber-geometry`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/gao-f6-fiber-geometry/README.md):

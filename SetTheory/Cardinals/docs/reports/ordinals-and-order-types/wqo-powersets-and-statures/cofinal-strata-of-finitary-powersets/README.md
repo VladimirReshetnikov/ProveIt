@@ -11,11 +11,11 @@ Reshetnikov with ChatGPT.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 19 Sep 2026 | *Cofinal strata and ordinal absorption* | (none) | unpacked `a3fe9660e`, filed here `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–14, Appendices A–B (pp. 1–16, 67–69) |
+| 01 (original) | Cardinals-collection report, 19 Sep 2026 | *Cofinal strata and ordinal absorption* | (none) | unpacked `a3fe9660e`, filed here `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–14, Appendices A–B (pp. 1–16, 68–70) |
 | 07 | batch 36, manuscript 07 | `ProveIt_Nonuniform_Powerset_Heights` (*Retirement paths and exact heights of nonuniform finitary powersets*) | `e21766d04` | `1a1396d4d` (prefix `02-retire-`) | in Part II, notably the second proof of Theorem 21.1 (Section 21.3), examples in Section 23, Sections 24 and 25 |
-| 09 | batch 36, manuscript 09 | `ProveIt_Persistent_Frontier_Heights` (*Persistent frontiers and exact heights: a pure-height substitution theorem, a limit-ordinal calculus, and finite certificates*) | `e21766d04` | `1a1396d4d` (prefix `03-wpo-`) | Part III: Sections 26–36 (pp. 49–60) |
+| 09 | batch 36, manuscript 09 | `ProveIt_Persistent_Frontier_Heights` (*Persistent frontiers and exact heights: a pure-height substitution theorem, a limit-ordinal calculus, and finite certificates*) | `e21766d04` | `1a1396d4d` (prefix `03-wpo-`) | Part III: Sections 26–36 (pp. 50–61) |
 | 11 | batch 36, manuscript 11 | `persistent_frontier_heights` (*Persistent frontiers and exact ordinal heights ... with exact local ranks*) | `e21766d04` | `1a1396d4d` (prefix `04-peel-`) | in Part II, notably the second proof of Theorem 17.4 (Section 17.4), Sections 18–19, 22, examples in Section 23, Section 25 |
-| 12 | batch 36, manuscript 12 | `ProveIt_Ordinal_Heights_Research` (*Exact ordinal heights of finitely generated downsets: persistent coordinates, mixed ordinal fibers, and a finite-state rank calculus*) | `e21766d04` | `1a1396d4d` (prefix `05-ranks-`) | base of Part II: Sections 15–25 (pp. 17–48) |
+| 12 | batch 36, manuscript 12 | `ProveIt_Ordinal_Heights_Research` (*Exact ordinal heights of finitely generated downsets: persistent coordinates, mixed ordinal fibers, and a finite-state rank calculus*) | `e21766d04` | `1a1396d4d` (prefix `05-ranks-`) | base of Part II: Sections 15–25 (pp. 17–49) |
 
 The pin `e21766d04` is ProveIt commit
 `e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9`; at that commit this directory was
@@ -24,7 +24,7 @@ blob `57498d1b…` of the `article.tex` they read. The archives arrived in
 `e13affd32`. Their manuscripts, PDFs and delivery READMEs are not shipped; they
 survive in the arrival commit. Archives 09 and 11 wrap inner directories of the
 same name (`persistent_frontier_heights/`) but are different packages. The
-"Closing the addition" part (Sections 37–40, pp. 61–66) gathers the questions,
+"Closing the addition" part (Sections 37–40, pp. 62–67) gathers the questions,
 non-claims and merge provenance of all four sources.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean or
@@ -103,8 +103,14 @@ Part I's 56 labels are bare (`sec:`, `eq:`, `thm:`, …) and are unchanged. The
 addition added 181 labels, all with the prefix `nh:` ("nonuniform heights"):
 130 plain `nh:` labels for Part II, the closing part and one new label
 `nh:sec:remainedopen` on Part I's Section 14 heading, and 51 with the
-sub-prefix `nh:wpo:` for Part III. Total: 237. No label was renamed or removed,
-and no Part I section, theorem or equation number changed.
+sub-prefix `nh:wpo:` for Part III. Total: 237. No label was renamed or removed.
+Every Part I section and theorem number, and 55 of Part I's 56 label numbers,
+are as in the pinned article. The one exception is equation `eq:truncation`
+(Theorem A.2's truncation formula in Appendix A): equations are numbered
+continuously and Part I's appendices now come after Parts II–III, so it moved
+from (24) to (83). The commit that wrote Parts II–III (`3a15f3421`) said no
+number changed; that was wrong for this equation. Section 39 of the article
+records the move.
 
 ## Notation
 
@@ -133,7 +139,7 @@ source. Watch in particular for:
 ```
 README.md                                   this guide
 article.tex                                 the report (Parts I-III); \inputs references.tex
-article.pdf                                 72 pages: unnumbered title page, contents i-ii, pages 1-69
+article.pdf                                 73 pages: unnumbered title page, contents i-ii, pages 1-70
 references.tex                              bibliography included by article.tex (9 entries)
 references.bib                              the same 9 entries in BibTeX, for reuse
 build.py                                    Part I's build helper (runs code/verify.py, then latexmk)
@@ -332,7 +338,7 @@ delivered manuscripts, which are not shipped (11's helper would also write
   the largest coordinate persists". These predate the addition and stay
   byte-identical; Parts II–III now give that formula. Likewise
   `data/quality_assurance.json` records the original 20-page PDF; the
-  current `article.pdf` has 72 pages.
+  current `article.pdf` has 73 pages.
 - **Label conventions in data.** The inputs number vertices from 0. 09's
   `nonuniform_N` input has edges `0<2, 0<3, 1<3`, its own labelling of the
   N-poset (`a<c, a<d, b<d`), the mirror image of the article's `a<c, b<c, b<d`

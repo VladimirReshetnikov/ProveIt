@@ -131,8 +131,9 @@ Fr\'echet reduced-power presheaf is not a sheaf even on the site of
 countably generated free filters. It computes the associated sheaf on the
 full filter site as a product of ultrapowers, but that computation cannot
 be transferred to the smaller site: its ultrafilters are absent. That
-report explicitly does not assert anything about other filter sites. This
-report studies them. It merges two manuscripts written independently
+report explicitly does not assert that every reduced-power presheaf on a
+different filter site has the same behavior. This report studies such
+other sites. It merges two manuscripts written independently
 against the same repository snapshot.
 
 Let $\PP_\kappa$ be the free filters on $\om$ generated, modulo the
@@ -418,7 +419,7 @@ $\operatorname{Mix}_i(b_i,f_i)$ & $\sum_i b_i\cdot f_i$ & a presentation\\
 $S_\lambda(A)$; $S_\lambda(A;d)$ & $\Mix_M(1)$; $\Mix_M(w)$ at stage $\lambda^+$ & $S_\kappa$ is a set of ultrafilters here\\
 $\Ssh_{\lambda,A}$ & $\Ssh_{M,\lambda^+}$ & $\Ssh_{M,\cc^+}$ is the earlier report's $\mathcal S_A$\\
 $\lVert\cdot\rVert$; $T_\varphi$ & $\truth{\cdot}$; $V_\varphi$ & \\
-region $d$; $d_m$, $d_\infty$; $e_m$ & $w$; $\pi_m$, $\pi_\infty$; $\theta_m$ & $d_\kappa$ is the arity invariant\\
+region $d$; cells $d_a$ (Prop.~9.3); $d_m$, $d_\infty$; $e_m$ & $w$; $w_m$; $\pi_m$, $\pi_\infty$; $\theta_m$ & $d_\kappa$ is the arity invariant\\
 $E_m$ (satisfiability sets) & $\Sigma_m$ & \\
 ultrafilter $V$ on $\mathbb D_\lambda$; ground model $V$ & $\cV$ on $\C_{\lambda^+}$; ground model $\bV$ & $V$ is a regular open, $V_\varphi$ a truth set\\
 $\Omega$ (independent-family index) & $I$ & same construction\\
@@ -813,6 +814,7 @@ Lemma~\ref{fbc:lem:index-shift}.
 \label{fbc:sec:p}
 
 \subsection{The two cardinal invariants}
+\label{fbc:sec:invariants}
 A family $\mathcal A\subseteq[\om]^\om$ has the strong finite
 intersection property, or SFIP, if every finite intersection is infinite.
 An infinite $A$ is a pseudointersection of $\mathcal A$ if
@@ -1049,9 +1051,13 @@ $\mathcal F_\lambda$ with $\lambda\geq\cp$, that is, for successor
 $\kappa=\lambda^+>\cp$. Its proof uses only the density of $N_\kappa$,
 and the extension built there needs at most $\cp$ generators, which is
 allowed at \emph{every} $\kappa>\cp$. No closure of the site is used.
-We therefore state it for every $\kappa>\cp$, limit stages included;
-this is the only place where a statement of source~10 is printed for
-stages it did not name, and the reason is this re-reading of the proof.
+We therefore state it for every $\kappa>\cp$, limit stages included,
+and the reason is this re-reading of the proof. It is one of four places
+where a statement of source~10 is printed for stages it did not name,
+each after checking that the proof uses no closure of the site: Lemma~\ref{fbc:lem:cones}
+(the remark after it), this theorem, the residual formula
+\eqref{fbc:eq:residual} (the remark after Theorem~\ref{fbc:thm:atomicity}),
+and Proposition~\ref{fbc:prop:specialize} (the remark after it).
 \end{mergenote}
 
 \begin{corollary}[The two-sided comparison boundary \src{10 Thm~4.3}]
@@ -1467,17 +1473,26 @@ transfers the conclusion to $\C_\kappa$.
 
 \begin{proposition}[Geometric points of the Booleanization \src{08 Prop.~5.2; 10 Lemma~7.5, Cor.~7.6}]
 \label{fbc:prop:points}
-The points of the localic topos
+A \emph{complete Boolean point} of a complete Boolean algebra $\Eb$ is a
+unital map $\Eb\to2$ preserving finite meets and arbitrary joins.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textup{(Complete points are atoms \src{10 Lemma~7.5}.)} For every
+complete Boolean algebra $\Eb$, the complete Boolean points of $\Eb$ are
+in bijection with its atoms, by
+\[
+ a\longmapsto q_a,\qquad q_a(b)=1\ \Longleftrightarrow\ a\leq b.
+\]
+\item The points of the localic topos
 $\Sh(\PP_\kappa,J_{\rm dense})$, equivalently the complete Boolean
-points of $\C_\kappa$ (unital maps $\C_\kappa\to2$ preserving finite
-meets and arbitrary joins), are indexed by $S_\kappa$.
+points of $\C_\kappa$, are indexed by $S_\kappa$.
 In particular, there are none when $\kappa\leq\cu$.
+\end{enumerate}
 \end{proposition}
 \begin{proof}
 A point of a locale is a map from its frame to $2$ preserving finite
 meets and arbitrary joins; such a map preserves complements
-automatically. Let $q:\Eb\to2$ be such a map from a nontrivial complete
-Boolean algebra $\Eb$. Put
+automatically. For \textup{(a)}, let $q:\Eb\to2$ be such a map; then
+$\Eb$ is nontrivial, since $q(1)=1\ne0=q(0)$. Put
 \[
  z=\bigvee\{b\in\Eb:q(b)=0\},\qquad a=\neg z.
 \]
@@ -1489,8 +1504,9 @@ zero meet. Thus $a$ is an atom. Conversely an atom $a$ defines
 $q_a(b)=1$ exactly when $a\leq b$; an atom lies below an arbitrary join
 exactly when it lies below one of the terms (distribute its meet over
 the join), so $q_a$ preserves arbitrary joins. These constructions are
-inverse. Apply Theorems~\ref{fbc:thm:representation}
-and~\ref{fbc:thm:atoms}.
+inverse, which proves \textup{(a)}. Part \textup{(b)} follows from
+\textup{(a)} applied to $\Eb=\C_\kappa$ and
+Theorems~\ref{fbc:thm:representation} and~\ref{fbc:thm:atoms}.
 \end{proof}
 
 The two sources give this same kernel-join proof.
@@ -1504,7 +1520,8 @@ The completion $\C_\om$ is atomless, because below each nonzero element
 there is an old infinite-set event that can be split into two nonzero
 events. A complete map $\C_\om\to\pow(I)$ with $I\ne\varnothing$,
 followed by evaluation at any $i\in I$, would be a complete Boolean point
-of $\C_\om$.
+of $\C_\om$, which by Proposition~\ref{fbc:prop:points}\textup{(a)} would
+determine an atom.
 \end{proof}
 
 At the full-site endpoint $\C_{\cc^+}=\pow(\om^*)$ this is stronger than
@@ -1616,7 +1633,7 @@ For uncountable $\kappa$, the criterion above is exactly
 This identifies full atomicity with a familiar but stronger extension
 problem, rather than silently deducing it from $\cu<\kappa$.
 
-\begin{remark}[Why ordinary density is insufficient \src{08 Remark~5.4}]\label{fbc:rem:density}
+\begin{remark}[Why ordinary density is insufficient \src{08 Remark~5.4; last sentence 10 \S13}]\label{fbc:rem:density}
 If $S_\kappa$ is nonempty, it is dense in the \emph{original} Stone
 topology. To see this, transport one small-character free ultrafilter
 along a bijection from $\om$ to any prescribed infinite
@@ -1940,7 +1957,15 @@ that distinction is essential for infinite $M$
 
 \begin{lemma}[Equality, refinement, restriction, and flattening \src{08 Lemma~8.3; 10 Lemma~9.1}]
 \label{fbc:lem:mix-well-defined}
-Equality at support $b$ is an equivalence relation. Replacing a
+Formula~\eqref{fbc:eq:mix-equality} is a Boolean-valued equality on the
+mixtures over $b$: for mixtures $x,y,z$ over $b$,
+\[
+ \truth{x=x}=b,\qquad \truth{x=y}=\truth{y=x},\qquad
+ \truth{x=y}\wedge\truth{y=z}\leq\truth{x=z},
+\]
+and each value is unchanged when a mixture is replaced by one equal to
+it at support $b$. \textup{(At $b=1$ these are source~10's laws.)} In
+particular, equality at support $b$ is an equivalence relation. Replacing a
 partition by a refinement and retaining its labels does not change
 the mixture. For $c\leq b$, intersecting each partition element
 with $c$ and dropping zeros defines a well-defined restriction
@@ -1959,7 +1984,10 @@ cell $p\wedge q\wedge r$, the ordinary implication
 becomes a Boolean inequality after applying $e$. Taking joins over
 all cells gives
 $\truth{x=y}\wedge\truth{y=z}\leq\truth{x=z}$.
-Thus equality at $b$ is transitive. The same formula shows that
+Thus equality at $b$ is transitive. If $\truth{x=x'}=b$, then
+transitivity and symmetry give $\truth{x=y}\geq\truth{x'=y}$ and
+$\truth{x'=y}\geq\truth{x=y}$, since every value is at most $b$; this is
+the invariance of the values. The same formula shows that
 refinement preserves equality values. Intersecting every term with
 $c$ multiplies the equality value by $c$, proving that restriction
 is independent of representatives. Successive restrictions agree
@@ -2095,7 +2123,7 @@ to its finitely many fibers $f^{-1}\{m\}$ and then joins the pieces
 carrying each value. Finite preservation by $e$ makes the resulting
 events a partition of the support. Distinct constant labels have
 equality value zero, so the partition is recovered from the section $s$
-as $d_m=\truth{s=\overline m}$, where $\overline m$ is the constant
+as $w_m=\truth{s=\overline m}$, where $\overline m$ is the constant
 sequence.
 \end{proof}
 
@@ -3133,10 +3161,17 @@ them. Atom counts settle the two atomic stages in our model, while the
 finite--cofinite example shows that marking can matter even when
 atom counts coincide. Cellularities, distributivity spectra, and
 relative densities are natural additional tests.
-\emph{Re-scoped:} Corollary~\ref{fbc:cor:abstract} (source~10) settles
-the unmarked question negatively at every successor stage $\kappa>\ch$,
-using partition distributivity. What remains is the interval
-$\cp<\kappa\leq\ch$ (R1) and the limit stages.
+\emph{Re-scoped:} for the comparison of a stage with $\C_\om$,
+Theorem~\ref{fbc:thm:atoms} already settles the unmarked question
+negatively at every stage $\kappa>\cu$, limit stages included, since
+$\C_\kappa$ then has atoms and $\C_\om$ has none; and
+Corollary~\ref{fbc:cor:abstract} (source~10) settles it negatively at
+every successor stage $\kappa>\ch$, using partition distributivity. What
+remains of that comparison is the stages $\cp<\kappa\leq\cu$ outside the
+reach of Corollary~\ref{fbc:cor:abstract}: the successor stages with
+$\kappa\leq\ch$ (R1) and the limit stages. The question's comparison of two
+stages with each other, neither of them $\om$, is not addressed by
+source~10 and remains as stated.
 
 \item \textbf{Analyze singular stages.}
 At singular $\kappa$, compute closure and distributivity of
@@ -3495,7 +3530,9 @@ closure theorem are stated at the successor stages only, with the
 coverage of $\PP_\om$ and the non-coverage of limit stages recorded in
 Section~\ref{fbc:sec:closure-scope}. The reverse barrier uses no closure
 and is stated at every $\kappa>\cp$, with the reason given after
-Theorem~\ref{fbc:thm:reverse}.
+Theorem~\ref{fbc:thm:reverse}; the same holds, and is said where each is
+printed, for the cone lemma, the residual formula and ordinary
+specializations.
 \item \emph{One-sided versus two-sided.} Source~08's barrier is one-sided
 and is printed as such (Theorem~\ref{fbc:thm:p-threshold}); the reverse
 direction and the two-sided Corollary~\ref{fbc:cor:two-sided} are
@@ -3570,6 +3607,7 @@ Source number (delivered PDF) & This report\\
 08 Thm~3.3 & Theorem~\ref{fbc:thm:representation}\\
 10 Lemma~2.2 & Lemma~\ref{fbc:lem:cones}\\
 08 Lemma~4.1; 10 Lemmas~4.2, 7.2 & Lemma~\ref{fbc:lem:cardinal-bounds}\\
+10 Defs.~3.1, 4.1, 7.1 & Section~\ref{fbc:sec:invariants}; $\mathcal U_\lambda=S_{\lambda^+}$ in Section~\ref{fbc:sec:atoms}\\
 10 Thm~3.2 & Theorem~\ref{fbc:thm:criterion}\\
 08 Thm~4.2; 10 Thm~4.3(a),(b) & Theorem~\ref{fbc:thm:p-threshold}\\
 10 Thm~4.3(c) & Theorem~\ref{fbc:thm:reverse}\\
@@ -3581,7 +3619,7 @@ Source number (delivered PDF) & This report\\
 10 Thm~5.1, Cor.~5.2 & Theorem~\ref{fbc:thm:closure}, Corollary~\ref{fbc:cor:decisions}\\
 10 Def.~6.1, Thm~6.2, Cor.~6.3 & Definition~\ref{fbc:def:h}, Theorem~\ref{fbc:thm:h}, Corollary~\ref{fbc:cor:abstract}\\
 08 Thm~5.1; 10 Thm~7.3, Cor.~7.4 & Theorem~\ref{fbc:thm:atoms}, Corollary~\ref{fbc:cor:full-site}\\
-08 Prop.~5.2; 10 Lemma~7.5, Cor.~7.6 & Proposition~\ref{fbc:prop:points}, Corollary~\ref{fbc:cor:no-powerset}\\
+08 Prop.~5.2; 10 Lemma~7.5, Cor.~7.6 & Proposition~\ref{fbc:prop:points}(a),(b), Corollary~\ref{fbc:cor:no-powerset}\\
 08 Thm~5.3; 10 Thm~7.3 & Theorem~\ref{fbc:thm:atomicity}\\
 08 Remark~5.4; 10 Remark~7.7 & Remarks~\ref{fbc:rem:density}, \ref{fbc:rem:two-points}\\
 10 Prop.~8.1 & Proposition~\ref{fbc:prop:forcing}\\
@@ -3602,6 +3640,7 @@ Source number (delivered PDF) & This report\\
 08 Thm~10.1, Cor.~10.2; 10 Example~11.3 & Theorem~\ref{fbc:thm:rings}, Corollary~\ref{fbc:cor:not-product}\\
 10 Lemma~12.2, Thm~12.4 & Lemma~\ref{fbc:lem:sizeC}, Theorem~\ref{fbc:thm:sizes}\\
 08 Def.~11.1, Prop.~11.2, 11.3 & Definition~\ref{fbc:def:general-p}, Propositions~\ref{fbc:prop:general-p}, \ref{fbc:prop:intermediate}\\
+10 \S13 & Section~\ref{fbc:sec:picture}; the last sentence of Remark~\ref{fbc:rem:density}\\
 08 \S12; 10 \S15 & Section~\ref{fbc:sec:audit}\\
 08 Q1--Q10; 10 Questions~14.1--14.10 & Q1--Q10; R1--R10 (Section~\ref{fbc:sec:future})\\
 \bottomrule

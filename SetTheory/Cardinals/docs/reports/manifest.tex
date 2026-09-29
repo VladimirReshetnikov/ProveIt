@@ -263,13 +263,16 @@ maximal antichains not dominated by a larger one.  The maximal-order-type
 theorem allows nonuniform pure well-partial-order fibers and is proved by a
 finite cofinal-stratification argument.  Parts~II and~III, merged in batch~36
 from four manuscripts that each prove it, supply the nonuniform height formula
-the original left open: for every finite lexicographic sum of ordinal chains,
-$h(K)$ is the largest ordinary ordinal sum, along a chain of maximal frontiers,
-of the largest fiber leaving the frontier at each step plus the largest fiber
-of the last frontier; finite and successor fibers enter by Cantor-normal-form
-refinement.  Adds exact point ranks, a finite dynamic program with NP
-membership of the threshold problem, and a separate part for
-well-partial-order fibers with $h(K(P_q))$ a positive pure power.}
+the original left open.  For positive pure fibers $\omega^{\rho_q}$, $h(K)$ is
+the largest ordinary ordinal sum, along a chain of maximal frontiers, of the
+largest fiber leaving the frontier at each step plus the largest fiber of the
+last frontier; after Cantor-normal-form refinement the same formula covers
+nonzero limit fibers.  For arbitrary ordinal fibers, finite and successor ones
+included, the height is given instead by a finite dynamic program over
+downsets with fallback weight~1, and the frontier compression is not valid
+there.  Adds exact point ranks, NP membership of the threshold problem for the
+explicit pure-block encoding, and a separate part for well-partial-order
+fibers with $h(K(P_q))$ a positive pure power.}
 
 \entry{Intrinsic ordinal approximations for finitary powersets}
 {ordinals-and-order-types/wqo-powersets-and-statures/intrinsic-ordinal-approximations}
@@ -1389,11 +1392,12 @@ polynomial recurrences and applies it to Bui's seventeen-neighbourhood system
 with an exact marked-occurrence table through size~18, giving the
 computer-assisted, unformalized bound $\lambda\le2249/500=4.498$ and
 $A_n\le(927884613/10^9)(2249/500)^n$.  A second theorem gives balanced
-integer-monomial divergence certificates, complete for productive strongly
-connected systems, and yields $4.52349\le\mu_{\mathrm{original}}\le4.5235$
+integer-monomial divergence certificates, complete for productive, strongly
+connected, nonlinear systems, and yields $4.52349\le\mu_{\mathrm{original}}\le4.5235$
 for the original recurrence --- a statement about the recurrence, not a lower
-bound on~$\lambda$.  The size-18 table was regenerated from scratch at intake
-and matched exactly.}
+bound on~$\lambda$.  At intake, a fresh build of the delivered enumerator (the
+same program, not an independent one) regenerated the size-18 table and matched
+it exactly.}
 
 \section{Generating functions and asymptotics}
 
@@ -1630,8 +1634,10 @@ boxed identities were character-identical up to macro names.}
 \section{The Jacobian conjecture and Keller maps}
 
 Three reports continuing the formal project \dir{Algebra/JacobianConjecture},
-which verifies in Lean and Rocq Alpöge's three-variable counterexample, a
-lower-degree stable representative and exact reductions.  None of the three
+which verifies in Lean and Rocq Alpöge's three-variable counterexample and a
+degree-six stable representative in five variables (its stabilization to all
+higher dimensions in Lean only); its further degree reductions are SymPy
+certificates.  None of the three
 reports' own theorems is formalized; each README names the project
 declarations it builds on.  Two study the project's three-variable map; the
 third studies a different map, Gao's five-dimensional~$F_6$.
@@ -1681,10 +1687,12 @@ characteristic zero: those with $p,q$ affine in $v$ and $r$ affine in $(t,v)$
 are an explicit tame family and a two-parameter diagonal orbit of the known
 map, so every noninvertible member has coordinate degrees $(7,6,4)$ and
 sixteen monomials, with no input degree bound.  Extends to
-$r=R(t)+\gamma v$, where the possible maximum degrees are exactly $7$ and every
-even integer at least $8$, and shows that the fixed degree-seven coefficient
-scheme is the double point $\mathbb{Q}[\varepsilon]/(\varepsilon^2)$, with an
-explicitly obstructed tangent.  Sharpens to all degrees the project's
+$r=R(t)+\gamma v$, where the possible maximum degrees of the noninvertible
+members are exactly $7$ and every even integer at least $8$, and shows that
+with $r=1+t+v$ the fixed degree-seven coefficient scheme is the double point
+$\mathbb{Q}[\varepsilon]/(\varepsilon^2)$, with an explicitly obstructed
+tangent (a torus times it when the two coefficients of $r$ are freed).  The
+classification does not cover unrestricted weighted maps.  Sharpens to all degrees the project's
 degree-seven sparsity search; it does not show degree seven minimal in
 dimension three.}
 
@@ -1705,8 +1713,9 @@ triples.  Classifies the collisions completely in characteristic~29 (exactly
 the cyclic polynomials $(X-\eta)^7-b$) and in characteristic~2 (translated
 $Z^7+aZ^3+bZ+d$, realizing the nonsolvable $\mathrm{GL}_3(\mathbb{F}_2)$).
 Constructs separating subset invariants in every characteristic, reconstructs
-all roots from one coherent $p$-th radical on each Fourier chart (generalizing
-Lazard's pivot-one scheme for quintics), realizes every Fourier support by
+all roots from one coherent $p$-th radical on each Fourier chart once the
+intermediate-field invariant data are given (generalizing Lazard's pivot-one
+scheme for quintics; a coefficient-only solver is left as further work), realizes every Fourier support by
 rational polynomials with full affine Galois group, and shows the Picard group
 of the cyclic configuration quotient is $\mathbb{Z}/p$, so no single global
 Kummer coordinate exists.  The Picard result has a written proof only.}

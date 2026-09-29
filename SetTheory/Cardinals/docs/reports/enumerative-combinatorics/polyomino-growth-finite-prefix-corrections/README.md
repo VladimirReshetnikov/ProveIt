@@ -84,7 +84,9 @@ normalization changed.
   the coordinates of the vector `X`. Many of these letters are reused
   (`P_N` the exact prefix, `D_N` the defect, `T_N`, `Y_N`, `B_N`, the
   enumerator's sets `S`, `U`, `E`, the offset sets `R`, `E`, `B`, the nonlinear
-  part `H`, the dual product `𝒞`, …); Section 1.4 tabulates every reuse.
+  part `H`, the dual product `𝒞`, the map `F(X) = Φ(ζ,X)` and the unknowns
+  `X_1, …, X_d` of a general system, …); Section 1.4 tabulates every reuse
+  across sections (constants local to one proof are left to context).
 - **Collision with the project.** The project's research note
   (`Combinatorics/Polyominoes/KlarnerConstant/Research/klarner-bound-4.5235.md`,
   §3) writes `b_N` for the ζ-weighted prefix profile. That profile is

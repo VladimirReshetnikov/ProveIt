@@ -13,9 +13,10 @@ part of that development.
 | 01 | batch 36, manuscript 04 | `ProveIt_Radical_Solvers_Research` (main file `article.tex`, 29-page PDF) | `e21766d04` | `e13affd32` | `1a1396d4d` | the whole article, Sections 1–15 and Appendices A–B |
 
 The pin is the full commit `e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9` (the
-article's `\snapshot` macro). `Algebra/PolynomialFormulas` is byte-identical
-at the pin and at batch 36, so every repository statement in the report was
-checked against the current tree. The placement commit first filed the
+article's `\snapshot` macro). `Algebra/PolynomialFormulas` was byte-identical
+at the pin and at the placement commit, so every repository statement in the
+report was checked against the tree it describes; the batch-36 catalogue
+commit later added a pointer to this report in its README. The placement commit first filed the
 package under `Algebra/PolynomialFormulas/Research/`; use `git log --follow`
 for its history before the move into this collection.
 

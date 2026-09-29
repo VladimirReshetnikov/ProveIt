@@ -149,16 +149,17 @@ The report cites Shuhong Gao (arXiv:2608.00222) for "a three-dimensional map
 of degree four" (Section 1.3) and "a three-dimensional degree-four example"
 (Section 10.6). **Gao's "degree" there is the geometric degree**, the number
 of preimages of a generic point, as his abstract defines it. His
-three-dimensional map `G` (Theorem 3.5) has components of ordinary degrees
+three-dimensional map `G_Gao` (Theorem 3.5; the subscript keeps it apart
+from the report's coefficient `G(t)` of `v` in `r`) has components of ordinary degrees
 **4, 11 and 12**, Jacobian determinant 2 and four generic preimages. This was
 read from his Section 3.5 at the write and checked with SymPy 1.14.0 from his
-printed formulas (degrees `(4,11,12)`, `det J_G = 2`). For Alpöge's map his
+printed formulas (degrees `(4,11,12)`, `det J_{G_Gao} = 2`). For Alpöge's map his
 Theorem 3.3 gives ordinary degrees `(7,6,4)` and geometric degree three.
 
-So Gao's `G` does **not** lower the ordinary degree of a three-dimensional
+So Gao's `G_Gao` does **not** lower the ordinary degree of a three-dimensional
 Keller counterexample below seven. The report's sentence that forced degree
 seven "is compatible with examples outside this class of lower degree"
-stays true as a compatibility statement, but `G` is not such an example.
+stays true as a compatibility statement, but `G_Gao` is not such an example.
 The project's framing is unaffected: its notes say that its finite searches
 "do not prove that ordinary degree seven or sixteen monomials is globally
 minimal in dimension three", and that a simpler three-variable map would have
@@ -230,7 +231,7 @@ SymPy certificates, not kernel proofs.
   equality holds computationally over `Q`.
 - The normalization `F_* = diag(−1/2,−3/2,1/2) ∘ F_0 ∘ diag(1,−2/3,−2)`, and
   `F_*(1,0,−1) = F_*(0,−9,71) = (−1,−9,0)` via the project's mechanism.
-- Gao's `G`: ordinary degrees `(4,11,12)`, `det J_G = 2`.
+- Gao's `G_Gao`: ordinary degrees `(4,11,12)`, `det J_{G_Gao} = 2`.
 
 ## Relation to the neighbouring reports
 
