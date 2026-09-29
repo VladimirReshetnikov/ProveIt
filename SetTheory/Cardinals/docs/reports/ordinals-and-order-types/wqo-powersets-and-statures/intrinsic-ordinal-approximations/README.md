@@ -1,7 +1,7 @@
 # Intrinsic ordinal approximations for finitary powersets
 
 **Research date:** 19 September 2026  
-**Article:** `article.pdf` (24 pages) and `article.tex`  
+**Article:** `article.pdf` (25 pages; `artifact_validation.txt` describes the original 24-page build, before Remark 8.2 was added in batch 36) and `article.tex`  
 **Outcome:** a partial answer to a documented intrinsic-invariant question, with full proposed proofs, exact formulas, and a sharp obstruction to an unrestricted extension.
 
 ## Read this first
