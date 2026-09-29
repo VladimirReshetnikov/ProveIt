@@ -1,0 +1,227 @@
+{
+  "status": "PASS_NATIVE_STREAM_RAW_QUEUE_COMPONENT",
+  "six_operation_source": {
+    "operations": 6,
+    "multiplications": 3,
+    "additions": 3,
+    "instructions": [
+      [
+        "Wcalc",
+        "*",
+        3,
+        "L"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ],
+      [
+        "shiftA0",
+        "*",
+        "W",
+        "A0"
+      ],
+      [
+        "read0",
+        "+",
+        "x",
+        "shiftA0"
+      ],
+      [
+        "shiftA1",
+        "*",
+        "W",
+        "A1"
+      ],
+      [
+        "read1",
+        "+",
+        "L",
+        "shiftA1"
+      ]
+    ],
+    "comparisons": [
+      [
+        "W",
+        "Wcalc"
+      ],
+      [
+        "input_bound",
+        "L"
+      ],
+      [
+        "D0",
+        "read0"
+      ],
+      [
+        "D1",
+        "read1"
+      ]
+    ],
+    "sources": [
+      "-3*L + W",
+      "-L + alpha + x",
+      "-A0*W + D0 - x",
+      "-A1*W + D1 - L"
+    ],
+    "word_bound": "external 0<=D0,D1<q",
+    "unpaid_hypotheses": [
+      "L=3^ell",
+      "q=3^t",
+      "one common t-step finite-controller path on the four native streams"
+    ]
+  },
+  "eight_operation_source": {
+    "operations": 8,
+    "multiplications": 3,
+    "additions": 5,
+    "instructions": [
+      [
+        "Wcalc",
+        "*",
+        3,
+        "L"
+      ],
+      [
+        "input_bound",
+        "+",
+        "x",
+        "alpha"
+      ],
+      [
+        "shiftA0",
+        "*",
+        "W",
+        "A0"
+      ],
+      [
+        "read0",
+        "+",
+        "x",
+        "shiftA0"
+      ],
+      [
+        "shiftA1",
+        "*",
+        "W",
+        "A1"
+      ],
+      [
+        "read1",
+        "+",
+        "L",
+        "shiftA1"
+      ],
+      [
+        "read_sum",
+        "+",
+        "D0",
+        "D1"
+      ],
+      [
+        "bound",
+        "+",
+        "read_sum",
+        "beta"
+      ]
+    ],
+    "comparisons": [
+      [
+        "W",
+        "Wcalc"
+      ],
+      [
+        "input_bound",
+        "L"
+      ],
+      [
+        "D0",
+        "read0"
+      ],
+      [
+        "D1",
+        "read1"
+      ],
+      [
+        "bound",
+        "q"
+      ]
+    ],
+    "sources": [
+      "-3*L + W",
+      "-L + alpha + x",
+      "-A0*W + D0 - x",
+      "-A1*W + D1 - L",
+      "D0 + D1 + beta - q"
+    ],
+    "word_bound": "paid D0+D1+beta=q with beta>0",
+    "unpaid_hypotheses": [
+      "L=3^ell",
+      "q=3^t",
+      "one common t-step finite-controller path on the four native streams"
+    ]
+  },
+  "scalar_queue_lemma": {
+    "arbitrary_stream_tuples": 31980,
+    "admitted": 120,
+    "noncausal_rejected": 30420,
+    "t_zero_tuples": 39,
+    "short_history_tuples": 2550,
+    "forward_runs": 131160,
+    "zero_final_runs": 4372,
+    "short_zero_final_runs": 58,
+    "omitted_bound_counterexamples": 1
+  },
+  "native_machine_runs": {
+    "native_checks": {
+      "histories": 463,
+      "queue_steps": 43665,
+      "controller_replays": 463,
+      "scalar_replays": 926,
+      "positive_stream_tuples": 463,
+      "zero_extensions": 463,
+      "joint_bounds_already_strict": 463,
+      "final_delimiter_bounds": 463,
+      "native_wide_differences": 463,
+      "max_native_exponent": 188
+    },
+    "inherited_loader_counts": {
+      "controls": 84,
+      "entries": 756,
+      "initial_words": 1093,
+      "accepted": 363,
+      "rejected": 730,
+      "normalized": 363,
+      "queue_steps": 37724,
+      "positive_transports": 363,
+      "ell_zero_rejections": 1,
+      "ell_one_rejections": 3,
+      "high_nonzero_rejections": 726
+    },
+    "inherited_run_counts": {
+      "machines": 7,
+      "compiled_states": 687,
+      "compiled_entries": 6183,
+      "inputs": 420,
+      "loaded": 287,
+      "normalizations": 280,
+      "tm_steps": 6575,
+      "queue_steps": 54228,
+      "accepted": 100,
+      "rejected": 280,
+      "named_stay_cutoffs": 40,
+      "positive_transports": 100,
+      "rejecting_loop_steps": 1400,
+      "strict_padding_improvements": 20
+    }
+  },
+  "dependency_canonical_lf_sha256": {
+    "1980/EXPLORATION_DELAYED_BLANK_RAW_QUEUE.md": "c55c68b72e99ca7a25ac0adf1ce108eca7b0b325ac6d217d17b410bbf4d19bd6",
+    "verification/explore_delayed_blank_raw_queue.py": "ca198c8a58b6437cddf206c9245e834665b5d0679626978eb5f3ac501ea00123",
+    "verification/explore_delayed_blank_raw_queue.json": "ec5d221ccc7f4fd1be8322be6286ef35b0e1bd8c9d486bb29571e825cd145c25"
+  },
+  "proof": "../1980/EXPLORATION_NATIVE_STREAM_RAW_QUEUE.md",
+  "scope": "Exact causal native-base-three queue streams with conditional6-operation and explicitly bounded8-operation interfaces. Finite-controller arithmetic, power geometry and radix dilation are not compiled; no complete universal operation bound is asserted."
+}

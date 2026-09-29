@@ -25,6 +25,13 @@ further corrections are found; `EDITORIAL_NOTES.md` is their dated log.
 
 ## Findings
 
+The [native-stream queue WIP handoff](research-wip/native-stream-queue/README.md)
+preserves the conditional six/eight-operation stream component, portable
+independent audits, unfinished controller research and archived scratch
+evidence. Its [continuation prompt](research-wip/native-stream-queue/CONTINUATION_PROMPT.md)
+describes the proved 76-operation frontier and promising next directions.
+The WIP component does not lower the complete universal bound.
+
 - Every displayed system, machine table and count of the six articles was
   re-derived by the checkers. The corrections to the printed articles are
   justified entry by entry in the editorial notes.

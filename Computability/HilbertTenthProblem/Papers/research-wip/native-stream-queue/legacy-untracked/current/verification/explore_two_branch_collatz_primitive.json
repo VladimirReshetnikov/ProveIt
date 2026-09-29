@@ -1,0 +1,76 @@
+{
+  "status": "PASS_TWO_BRANCH_COLLATZ_SCALAR_AND_LOADER_BOUNDARY",
+  "scalar": {
+    "operations": 6,
+    "histogram": {
+      "+": 5,
+      "*": 1
+    },
+    "positive_auxiliaries": [
+      "A",
+      "beta"
+    ],
+    "required_selector": "beta in {1,2}",
+    "primitive_instructions": [
+      [
+        "twice_A",
+        "+",
+        "A",
+        "A"
+      ],
+      [
+        "input_lhs",
+        "+",
+        "n",
+        3
+      ],
+      [
+        "input_rhs",
+        "+",
+        "twice_A",
+        "beta"
+      ],
+      [
+        "output_product",
+        "*",
+        "twice_A",
+        "beta"
+      ],
+      [
+        "output_lhs",
+        "+",
+        "m",
+        1
+      ],
+      [
+        "output_rhs",
+        "-",
+        "output_product",
+        "A"
+      ]
+    ],
+    "source_equations": [
+      "-2*A - beta + n + 3",
+      "-2*A*beta + A + m + 1"
+    ],
+    "direct_steps": 2048,
+    "standalone_selector_extra_operations": 2,
+    "standalone_total": 8,
+    "scope": "One scalar step. The native selector may come from a surrounding mask; otherwise beta*(3-beta)=2 costs two more operations. No parallel-history or universal-machine claim."
+  },
+  "inverse_family": {
+    "confirmed_nontrivial_odd_seeds": 1991,
+    "constructed_odd_predecessors": 5973,
+    "cutoff_or_cycle_cases_not_used_as_halting_evidence": 11009,
+    "singleton_example": {
+      "a": 3,
+      "b": 3,
+      "target": 5,
+      "raw_loader": "2x+1",
+      "accepted_positive_input": 2
+    },
+    "scope": "Each predecessor follows an explicitly checked odd step and a finite halving chain into a confirmed target-reaching suffix. Finite cutoffs do not classify an orbit. The unbounded theorem is in the proof."
+  },
+  "proof": "../1980/EXPLORATION_TWO_BRANCH_COLLATZ_PRIMITIVE.md",
+  "scope": "A cheaper exact scalar primitive and an obstruction for direct/odd affine raw loaders, not a complete history certificate or a new universal bound."
+}

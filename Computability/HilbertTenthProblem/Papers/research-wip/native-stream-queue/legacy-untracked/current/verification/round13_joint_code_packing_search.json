@@ -1,0 +1,476 @@
+{
+  "status": "PASS",
+  "baseline_operations": 107,
+  "baseline_measured_operations": 5,
+  "cases": [
+    {
+      "name": "baseline_g_input",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "C",
+          "+",
+          "x",
+          "g"
+        ],
+        [
+          "S",
+          "+",
+          "g",
+          "W"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": ""
+    },
+    {
+      "name": "C_input_subtract_x_first",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "g_reconstructed",
+          "-",
+          "C_input",
+          "x"
+        ],
+        [
+          "S",
+          "+",
+          "g_reconstructed",
+          "W"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Requires C>x to preserve positive g; no cost-free domain assertion is claimed"
+    },
+    {
+      "name": "C_input_subtract_x_from_W",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "Wminusx",
+          "-",
+          "W",
+          "x"
+        ],
+        [
+          "S",
+          "+",
+          "C_input",
+          "Wminusx"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Requires C>x to preserve positive g; no cost-free domain assertion is claimed"
+    },
+    {
+      "name": "C_input_sum_first",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "CplusW",
+          "+",
+          "C_input",
+          "W"
+        ],
+        [
+          "S",
+          "-",
+          "CplusW",
+          "x"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Requires C>x to preserve positive g; no cost-free domain assertion is claimed"
+    },
+    {
+      "name": "C_input_distribute_input_correction",
+      "region_operations": 6,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 108,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 3
+      },
+      "schedule": [
+        [
+          "CplusW",
+          "+",
+          "C_input",
+          "W"
+        ],
+        [
+          "positive_term",
+          "*",
+          "A",
+          "CplusW"
+        ],
+        [
+          "negative_term",
+          "*",
+          "A",
+          "x"
+        ],
+        [
+          "TD",
+          "*",
+          "D",
+          "Tplus"
+        ],
+        [
+          "total",
+          "+",
+          "positive_term",
+          "TD"
+        ],
+        [
+          "r",
+          "-",
+          "total",
+          "negative_term"
+        ]
+      ],
+      "domain_note": "Same reconstructed-g domain issue; splitting x*A adds a multiplication"
+    },
+    {
+      "name": "S_input_reconstruct_code",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "SminusW",
+          "-",
+          "S_input",
+          "W"
+        ],
+        [
+          "C",
+          "+",
+          "SminusW",
+          "x"
+        ],
+        [
+          "SA",
+          "*",
+          "S_input",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Requires S>W to preserve positive g; no free domain assertion is claimed"
+    },
+    {
+      "name": "supplied_joint_sum_J",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "J_rhs",
+          "+",
+          "C_input",
+          "W"
+        ],
+        [
+          "S",
+          "-",
+          "J_input",
+          "x"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Includes one arithmetic operation for the free equality J=C+W; still requires positive reconstructed g"
+    },
+    {
+      "name": "C_input_compute_S_plus_T",
+      "region_operations": 7,
+      "removed_global_operations": 2,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 5,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "CplusW",
+          "+",
+          "C_input",
+          "W"
+        ],
+        [
+          "S",
+          "-",
+          "CplusW",
+          "x"
+        ],
+        [
+          "ST",
+          "+",
+          "S",
+          "Tplus"
+        ],
+        [
+          "n2ST",
+          "*",
+          "n2",
+          "ST"
+        ],
+        [
+          "nS",
+          "*",
+          "n",
+          "S"
+        ],
+        [
+          "remainder",
+          "-",
+          "n2ST",
+          "nS"
+        ],
+        [
+          "r",
+          "-",
+          "remainder",
+          "Tplus"
+        ]
+      ],
+      "domain_note": "A and D are not computed in this variant; reconstructed-g positivity still needs justification"
+    },
+    {
+      "name": "C_input_factor_n_minus_one",
+      "region_operations": 8,
+      "removed_global_operations": 2,
+      "whole_arithmetic_candidate": 108,
+      "histogram": {
+        "additions": 5,
+        "multiplications": 3
+      },
+      "schedule": [
+        [
+          "CplusW",
+          "+",
+          "C_input",
+          "W"
+        ],
+        [
+          "S",
+          "-",
+          "CplusW",
+          "x"
+        ],
+        [
+          "nm1",
+          "-",
+          "n",
+          1
+        ],
+        [
+          "np1",
+          "+",
+          "n",
+          1
+        ],
+        [
+          "nS",
+          "*",
+          "n",
+          "S"
+        ],
+        [
+          "npT",
+          "*",
+          "np1",
+          "Tplus"
+        ],
+        [
+          "inner",
+          "+",
+          "nS",
+          "npT"
+        ],
+        [
+          "r",
+          "*",
+          "nm1",
+          "inner"
+        ]
+      ],
+      "domain_note": "A and D are removed; reconstructed-g positivity still needs justification"
+    },
+    {
+      "name": "extra_positive_C_keep_positive_g",
+      "region_operations": 5,
+      "removed_global_operations": 0,
+      "whole_arithmetic_candidate": 107,
+      "histogram": {
+        "additions": 3,
+        "multiplications": 2
+      },
+      "schedule": [
+        [
+          "C_constraint_rhs",
+          "+",
+          "x",
+          "g"
+        ],
+        [
+          "S",
+          "+",
+          "g",
+          "W"
+        ],
+        [
+          "SA",
+          "*",
+          "S",
+          "A"
+        ],
+        [
+          "TD",
+          "*",
+          "Tplus",
+          "D"
+        ],
+        [
+          "r",
+          "+",
+          "SA",
+          "TD"
+        ]
+      ],
+      "domain_note": "Fully preserves positivity with the extra free equality C=x+g; no arithmetic saving"
+    }
+  ],
+  "frontier": "W=q^2(Y+q^2*sigma), A=n^2-n, D=n^2-1, Tplus already available",
+  "scope": "Ten exact affine frontier factorizations; no global circuit-optimality claim and no unproved positive-domain equivalence claimed",
+  "observation": "With C supplied, the packed sum C+W-x still requires two affine operations; the missing x correction is not free"
+}
