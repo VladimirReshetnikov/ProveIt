@@ -34,6 +34,11 @@ See `literature_search.md` for precise references and the status limits.
   F, of the ultrapowers A^ω/U. The binary obstruction becomes a missing
   characteristic-function section.
 
+The reduced-power presheaf on other filter sites, those of free filters with
+fewer than κ generators, is studied in the separate report
+[`frechet-bounded-character-sites`](../frechet-bounded-character-sites/),
+to which Remark 10.1 of the article points.
+
 ## Contents
 
 | File | Purpose |
