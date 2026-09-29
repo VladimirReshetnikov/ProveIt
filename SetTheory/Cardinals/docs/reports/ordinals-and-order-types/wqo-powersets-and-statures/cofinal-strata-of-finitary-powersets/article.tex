@@ -66,6 +66,24 @@
 \newcommand{\Fin}{\operatorname{Fin}}
 \newcommand{\lxs}{\mathop{\sum}\limits^{\mathrm{lex}}}
 \newcommand{\cR}{\mathcal R}
+% Macros of the batch-36 addition (Parts II--III)
+\newcommand{\J}{\mathcal J}
+\newcommand{\Ant}{\operatorname{Ant}}
+\newcommand{\Inc}{\operatorname{Inc}}
+\newcommand{\Dec}{\operatorname{Dec}}
+\newcommand{\LE}{\operatorname{LE}}
+\newcommand{\otp}{\operatorname{otp}}
+\newcommand{\mcl}{\operatorname{cl}}
+\newcommand{\Kmax}{\K^{\max}}
+\newcommand{\ew}{\mathsf e}
+\newcommand{\tw}{\mathsf t}
+\newcommand{\HH}{\mathsf H}
+\newcommand{\Fdp}{\mathsf F}
+\newcommand{\Wz}{\mathsf W^{0}}
+\newcommand{\Tz}{\mathsf T^{0}}
+\newcommand{\Vz}{\mathsf V^{0}}
+\newcommand{\lxsi}{\mathop{\textstyle\sum}\nolimits^{\mathrm{lex}}}
+\DeclareMathOperator{\depth}{depth}
 \allowdisplaybreaks[2]
 \emergencystretch=1em
 \setlength{\parskip}{3pt}
@@ -115,6 +133,11 @@ Python code and finite structural checks. This is a partial answer to the
 broader research direction, not a solution of its general width or
 arbitrary-iteration problems; priority of the derived formulas is not
 independently established.
+
+\emph{Addition of 28 September 2026 (batch 36).} Parts~II and~III, merged
+from four later manuscripts, determine the height for nonuniform fibres:
+a coordinate is charged, by ordinary ordinal addition, only when its
+vertex leaves the frontier.
 \end{abstract}
 \vfill
 \begin{resultbox}
@@ -132,6 +155,7 @@ class treated here.
 \tableofcontents
 \newpage
 \pagenumbering{arabic}
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Cofinal strata and ordinal absorption}
 
 \section{The selected open direction and the precise target}
 
@@ -180,6 +204,10 @@ We do not determine ordinal width in general. Nor do we claim a formula
 for arbitrary repeated applications of $\K$, arbitrary impure fiber types,
 or infinite indexing posets. A concrete failure of a tempting nonuniform
 height formula is proved in Section~\ref{sec:boundaries}.
+[Added 28 September 2026, batch 36: the nonuniform height itself, which
+the report determined only for uniform fibers at its pinned state
+\texttt{e21766d04}, is now proved in Parts~II and~III; see
+Section~\ref{nh:sec:intro}.]
 
 \subsection{Status and relation to existing results}
 
@@ -1231,6 +1259,10 @@ Here the disappearing coordinate has only type $\omega$, not $\omega^2$.
 This pinpoints the obstruction rather than merely exhibiting a numerical
 failure. The general maximal-type theorem remains valid and gives
 $\omega^3\cdot2$, agreeing with natural multiplication.
+[Added in batch 36: the exact nonuniform formula of
+Theorem~\ref{nh:thm:frontier} charges only the retiring $y$-coordinate
+here, giving $\omega+\omega^2=\omega^2$; see
+Section~\ref{nh:sec:examples}.]
 
 \subsection{Finite cofinality and impure types}
 
@@ -1266,7 +1298,7 @@ are $1$. The main formulas explicitly assume $Q\ne\varnothing$; the
 implementation handles the empty case separately.
 
 \Needspace{8\baselineskip}
-\section{What remains open and what the attempt achieved}
+\section{What remains open and what the attempt achieved}\label{nh:sec:remainedopen}
 
 Problem~\ref{prob:target} is answered for maximal order type under the
 pure-type hypotheses, and for height with uniform additively
@@ -1280,6 +1312,13 @@ counterexample in \eqref{eq:counterheight} shows that a scalar stratum
 height is not sufficient for a naive chain-sum recurrence. The canonical
 product profiles retain enough information to formulate more refined
 rank bounds, but no exact general formula is claimed here.
+[Added 28 September 2026, batch 36: the two preceding sentences describe
+the report as pinned at \texttt{e21766d04}. That target has since been
+reached. Parts~II and~III prove the exact nonuniform height formula, which
+charges each coordinate when it disappears
+(Theorems~\ref{nh:thm:frontier}, \ref{nh:thm:arbitrary}
+and~\ref{nh:wpo:thm:main}), and they re-scope the open questions of this
+section in Section~\ref{nh:sec:questions}.]
 
 Ordinal width remains a separate target. The inequalities
 $\wid(X)\le\ot(X)$ and the known invariant theory provide bounds, but the
@@ -1302,6 +1341,3426 @@ a separate cofinality proof ruling out larger interleavings. This claim
 is narrower than solving all finitary-powerset invariants, and stronger
 than an experimentally guessed formula for a few examples.
 
+%% ====================================================================
+%% Batch-36 addition (manuscripts 07, 09, 11, 12). All labels: nh:...
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Nonuniform heights: ordinal-chain fibres}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Nonuniform heights: ordinal-chain fibres}
+
+\noindent\emph{Sections~1--\ref{nh:sec:remainedopen} and the appendices
+form the original report (Part~I), unchanged except for dated pointers to this addition.
+Parts~II and~III were added in batch~36 of ProveIt's incoming-report
+intake, from four manuscripts written against the pinned state of this
+report. Section~\ref{nh:sec:intro} records their provenance and fixes the
+notation of the addition.}
+
+\section{Provenance, conventions and the answer}\label{nh:sec:intro}
+
+\subsection{Four manuscripts, one addition}\label{nh:sec:sources}
+
+Section~\ref{sec:boundaries} proves that the tempting chain sum of stratum
+heights fails, and Section~\ref{nh:sec:remainedopen} names ``a nonuniform
+height formula that tracks which coordinates disappear on each frontier
+transition'' as the natural next target. Four independently prepared
+manuscripts, all pinned to ProveIt commit
+\texttt{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9} (abbreviated
+\texttt{e21766d04}), prove that formula. At that commit this report's
+directory was byte-identical to the one to which this addition was made;
+two of the manuscripts quote the Git blob
+\texttt{57498d1bdc438f469df33d296095edc2b8a5a707} of the inspected
+\texttt{article.tex}. The archives arrived in commit \texttt{e13affd32} and
+were placed in commit \texttt{1a1396d4d}, which staged their code, data and
+audit files under the prefixes below. Their manuscripts and delivery
+READMEs are not shipped; they survive in the arrival commit.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.24\linewidth}l@{}}
+\toprule
+No. & Manuscript (date) & Archive & Prefix\\
+\midrule
+07 & \emph{Retirement paths and exact heights of nonuniform finitary
+powersets} (24 Sep.\ 2026) & \texttt{ProveIt\_Nonuniform\_\allowbreak Powerset\_Heights} & \texttt{02-retire-}\\
+09 & \emph{Persistent frontiers and exact heights: a pure-height
+substitution theorem, a limit-ordinal calculus, and finite certificates}
+(Sep.\ 2026) & \texttt{ProveIt\_Persistent\_\allowbreak Frontier\_Heights} & \texttt{03-wpo-}\\
+11 & \emph{Persistent frontiers and exact ordinal heights: finitary
+powersets of nonuniform ordinal lexicographic sums, with exact local ranks}
+(24 Sep.\ 2026) & \texttt{persistent\_frontier\_\allowbreak heights} & \texttt{04-peel-}\\
+12 & \emph{Exact ordinal heights of finitely generated downsets: persistent
+coordinates, mixed ordinal fibers, and a finite-state rank calculus}
+(24 Sep.\ 2026) & \texttt{ProveIt\_Ordinal\_\allowbreak Heights\_Research} & \texttt{05-ranks-}\\
+\bottomrule
+\end{tabularx}
+\caption{The four merged manuscripts. The numbers are batch-36 manuscript
+numbers; the prefixes continue this report's local file sequence, the
+unprefixed original counting as \texttt{01-}. All four were prepared for
+Vladimir Reshetnikov with ChatGPT and all four are pinned to
+\texttt{e21766d04}. Archives 09 and 11 wrap inner directories of the same
+name but are different packages.}
+\label{nh:tab:sources}
+\end{table}
+
+All four prove the same core formula for positive pure chain fibres
+(Theorem~\ref{nh:thm:frontier}), with four different proof architectures.
+No statement of one contradicts a statement of another, and every worked
+value they share agrees. They differ in scope:
+\begin{itemize}
+\item \textbf{12} (the base of this part) proves a finite persistence
+theorem for abstract state systems with convex coordinate lifetimes, an
+exact ideal-state dynamic program, the height for \emph{every} finite
+ordinal lexicographic sum (zero, finite and successor fibres included),
+exact point ranks, NP membership of the threshold problem, and a sufficient
+extension to non-chain coordinates.
+\item \textbf{11} proves the same persistence theorem by a different,
+leading-exponent peeling induction that yields an upper-bound certificate,
+an exact all-antichain isomorphism for arbitrary ordinal fibres, and exact
+point ranks in \emph{any} finite persistent system.
+\item \textbf{07} proves the core formula by a strict normalization onto
+maximal supports and a standalone height theorem for retirement boxes,
+with a paired stratum-types example and a frontier-graph program.
+\item \textbf{09} proves the formula for fibres that are arbitrary
+well-partial-orders whose finitary powersets have positive pure
+\emph{height}. This hypothesis is incomparable with those of 12: more
+general in fibre structure, less general in ordinal range. It therefore
+keeps its own part (Part~III, Section~\ref{nh:wpo:sec:setting}) with its
+own hypotheses. It also proves unbounded ambiguity of stratum heights and a
+height-two scheduling formula.
+\end{itemize}
+A result proved by several sources is printed once, with its provers named;
+a genuinely different proof is kept as a marked second route. The choices
+the merge had to make are listed in Section~\ref{nh:sec:choices}.
+
+\subsection{Scope, priority and relation to the published programme}
+\label{nh:sec:scope}
+
+Abriola, Halfon, Lopez, Schmitz, Schnoebelen and Vialard ask how to enlarge a
+compositional family while keeping its ordinal invariants computable
+\cite[Section~6]{AbriolaEtAl2024}; the author's publication list, consulted by
+12 on 24 September 2026, reports that paper's acceptance in \emph{Mathematical
+Structures in Computer Science}, but the version used by every source is v2.
+The finite-gluing height problem of this part is a concrete subproblem in
+that direction, not a separately numbered conjecture, and its solution does
+not settle the published programme for arbitrary wqos, width or iteration.
+Height, width and maximal order type are different invariants; Parts~II
+and~III compute height and individual well-founded ranks only.
+
+Ordinal product-height arithmetic is classical: the Milner--Rado formula,
+recalled in Lemma~\ref{nh:lem:productrank} and recorded by Hilton
+\cite[Theorem~2.20]{Hilton2016}, serves only as a test oracle. Existence
+results connecting heights and chains also belong to the classical theory
+\cite{Schmidt1981,DSS2020}. The proofs of Part~II do not invoke general
+chain-attainment theorems (12); Part~III does, through Wolk's theorem
+\cite{Wolk1967,MMS2012}. Vialard's published work on maximal order types of
+lexicographic products \cite{Vialard2025} concerns a different invariant, and
+no formula from it is used; nor is the survey's subsequently corrected
+general lexicographic-product assertion, whose erratum is in the arXiv v5
+revision of \cite{DSS2020}.
+
+Each source reports a targeted literature search that did not locate the
+formula in the form proved; each says that this is not a proof of novelty.
+The accurate claim, in the sources' words, is a proved extension relative to
+the inspected report, ``not a certification of global novelty'' (07), and
+``not a certified first solution of a famous named conjecture'' (09);
+``resolves the gap'' refers to the repository's stated problem, ``not to a
+verified claim of first publication'' (11); priority ``has not been
+independently established'' (12). The uniform formula of
+Theorem~\ref{thm:height} and the persistent counterexample
+\eqref{eq:counterheight} are prior material of this report, credited as such
+by all four and recovered here, not presented as new. All four manuscripts
+are unrefereed and none was checked by a proof assistant. No theorem of
+Parts~II--III uses an unrefereed repository theorem as a premise: the
+canonical-frontier facts they need are reproved, and the survivor formula of
+Theorem~\ref{thm:general} is not used.
+
+\subsection{The answer}\label{nh:sec:answer}
+
+For a finite poset $Q$ and ordinals $\alpha_q$ ($q\in Q$) write
+\[
+ S_{\boldsymbol\alpha}(Q)=\lxs_{q\in Q}\alpha_q
+\]
+for the lexicographic sum of the ordinal chains $\alpha_q$; this extends the
+notation $S_\alpha(Q)$ of Section~\ref{sec:tools} to unequal fibres. For
+positive pure fibres $\alpha_q=\omega^{\rho_q}$, $\rho_q>0$, and a chain
+$C=(A_0\prec\cdots\prec A_m)$ in the frontier poset $\M(Q)$, put
+\begin{equation}\label{nh:eq:cost}
+ W(C)=\sum_{i<m}\ \max_{q\in A_i\setminus A_{i+1}}\alpha_q
+      \;+\;\max_{q\in A_m}\alpha_q .
+\end{equation}
+Every sum here is \emph{ordinary ordinal addition, in the written order}; the
+differences $A_i\setminus A_{i+1}$ are nonempty. The core theorem
+(Theorem~\ref{nh:thm:frontier}) is
+\begin{equation}\label{nh:eq:answer}
+ \boxed{\displaystyle
+ \hgt\bigl(\K(S_{\boldsymbol\alpha}(Q))\bigr)=\max_{C}W(C),}
+\end{equation}
+over nonempty chains of $\M(Q)$, attained by an explicit chain of downsets.
+A coordinate is charged when it \emph{retires}, that is, when its vertex
+leaves the frontier and its fibre becomes completed; a coordinate that
+persists through a transition must respect its old value and cannot supply a
+fresh copy of its whole fibre there. For arbitrary ordinal fibres, finite
+Cantor-normal-form refinement and a dynamic program on finite downsets give
+the answer (Theorem~\ref{nh:thm:arbitrary}); the same program applied to a
+principal lower interval gives the exact rank of any finitely generated
+downset (Theorem~\ref{nh:thm:localrank}). The mathematics allows arbitrary
+ordinal exponents; the executable notations of 07, 11 and 12 stop below
+$\eps$ (07's code takes positive integers, read as order labels), and 09's
+code accepts symbolic exponent labels whose order it does not check.
+
+\subsection{Notation and conventions of the addition}\label{nh:sec:notation}
+
+The existing macros and meanings of Part~I win: $\ns$ is the Hessenberg
+natural sum (07, 09 and 11 print it $\oplus$; 11's macro of the same name as
+ours prints $\oplus$), $r_P$ is well-founded rank, $\hgt$ is height,
+$\preceq$ is Hoare domination on $\M(Q)$, a \emph{frontier} is an
+inclusion-maximal antichain of $Q$, and $D(A)$ is the set of strict
+predecessors of an antichain~$A$. Unmarked $+$ and $\cdot$ are ordinary
+ordinal operations. Table~\ref{nh:tab:notation} fixes the new symbols and
+lists what each source called them.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Here & Meaning; names in the sources\\
+\midrule
+$\alpha_q$ & ordinal length of the chain fibre over $q$ (07, 11, 12).
+In Part~III, 09's $\alpha_q:=\hgt(\K(P_q))$ is renamed $h_q$: it is a
+height, \emph{not} a fibre, and not $\hgt(P_q)$.\\
+$\Ant(Q)$, $\le_H$ & all antichains of $Q$, including $\varnothing$, under
+Hoare domination (12's $\Ant$; 07 writes $\le_{\!H}$).\\
+$\J(Q)$, ``ideal'' & all downsets of the finite skeleton $Q$; an ``ideal''
+of $Q$ is \emph{any} downset, not a directed one (12, 09). Directed ideals,
+the $\operatorname{Idl}$ of the neighbouring report on intrinsic
+approximations, do not occur.\\
+support & the index antichain of the maximal generators of a downset (07,
+11, 12). 09's ``support ideal'' $I$ is the downset of $Q$ generated by it.\\
+$\max I$ & the active set of an ideal $I$; 09 calls it the ``active
+frontier'' $F(I)$. It is an antichain, \emph{not} necessarily a frontier.\\
+$\langle A;x\rangle$ & the downset generated by $\{(q,x_q):q\in A\}$ (07's
+$D(A,x)$, renamed to avoid Part~I's $D(A)$).\\
+$T$, $U$, $A_t$, $\lambda_q$, $Y$ & state poset, label set, active sets,
+coordinate lengths and persistence order (12). 11 writes $I$, $L$, $A_i$,
+$\alpha_q$, $X(I,A,\alpha)$.\\
+$\ew(s,t)$, $\tw(t)$, $L(C)$, $\HH(T)$ & exit and terminal weights with
+fallback value $1$, chain cost and optimum (11's $\mathsf e$, $\mathsf t$,
+$V$, $\HH$; 12's $w_i$, $L(C)$).\\
+$w(A,B)$, $t(A)$, $W(C)$ & frontier weights and chain cost (07; 09's $w,t$;
+11's $E(A,B)$, $T(A)$).\\
+$\Lambda$, $U^{\top}$, $d_\Lambda$, $c_\Lambda$, $Z$ & 11's peeling data
+(its $\lambda$, $T$, $d$, $c$, $E$).\\
+$Q^\sharp$, $U^\sharp$ & CNF-expanded skeleton and its infinite blocks (09's
+$Q^\sharp$; 07's $Q^*$; 11's $R$, $U$; 12's $R$).\\
+$\Fdp(J)$, $\mathsf c(I,v)$, $\tau_Q$ & 12's ideal-state program, edge cost
+and terminal cost (its $F$, $c$, $\tau_R$); $\tau_Q$ is unrelated to the
+$\tau(q)$ of Appendix~\ref{sec:lex}. $\Fdp^{\M}(A)$ is 07's frontier program
+(its $F(A)$), $\mathsf p(t)$ is 11's pair program (its $p$).\\
+$\mcl(A)$, $\Kmax(S)$, $\nu$, $\iota$ & 07's minimal completion (its
+$\operatorname{c}(A)$), maximal-support part (its $Y$), normalization map
+(its $N$) and box embedding (its $e$).\\
+$G_i$, $\mathsf B$, $n_\Lambda(i)$, $\operatorname{res}_i$ & 07's retirement
+groups (with $\lambda_i$ the largest capacity in $G_i$), box, large-group
+count and residual (its $R_i$, $E$, $c(i)$, $R_i(z)$); 11's rank term
+$\theta$ is written $\vartheta$.\\
+$\Wz,\Tz,\Vz,\Phi$ & Part~III only: 09's weights with \emph{empty maximum
+$0$}, path value and optimum (its $\mathsf W$, $T$, $\mathsf V$,
+$\mathsf H$); its programs $d$, $g$ are $\mathsf d^0$, $\mathsf g$, its
+component chains $\mathscr C_q$ are $\mathbf C_q$, and its height-two sets
+are renamed in Section~\ref{nh:wpo:sec:examples}.\\
+\bottomrule
+\end{tabularx}
+\caption{Symbols of Parts~II--III and their names in the sources. Every
+source symbol not listed keeps its name.}
+\label{nh:tab:notation}
+\end{table}
+
+Four conventions differ between the sources and are fixed as follows.
+\begin{enumerate}
+\item \textbf{Empty exits.} 11 and 12 give a transition with no departing
+coordinate, and a coordinate-free state, the weight $1$: ``an empty exit
+still costs one point'' (12), ``the fallback value is one, not zero'' (11).
+Part~II uses this convention throughout. 09 gives an empty retirement set
+the weight $0$ ($\max\varnothing:=0$). For positive pure fibres the final
+answers coincide, since the terminal weight is infinite and absorbs every
+earlier finite term; intermediate dynamic-programming values differ
+(Remark~\ref{nh:wpo:rem:conventions}), so certificates are not
+interchangeable. The weight-$0$ convention is wrong for finite fibres, which
+09 excludes; it is used only in Part~III.
+\item \textbf{Maximization domain.} 07 and 11 maximize over all nonempty
+chains of $\M(Q)$, 12 over maximal chains, 09 over saturated chains from
+$\min Q$ to $\max Q$. These agree by
+Proposition~\ref{nh:prop:saturation}.
+\item \textbf{Capacity range.} 12's abstract theorem allows exponents
+$\rho_q\ge0$; 11's requires $\rho_q>0$ with the fallback weight $1$. These
+are equivalent: a coordinate of length $\omega^0=1$ takes only the value $0$,
+so deleting it changes neither the order nor any weight.
+\item \textbf{Labels.} The $N$-poset is $a<c$, $b<c$, $b<d$ everywhere here, as
+in Part~I, 07, 11 and 12; 09 labels it $a<c$, $a<d$, $b<d$, and its
+examples are transcribed by the isomorphism $a\leftrightarrow b$,
+$c\leftrightarrow d$. The persistent example of \eqref{eq:counterheight} is
+an isolated $x$ beside $y<z$, as in Part~I and 12; 07 and 11 call these
+$a$ and $b<c$, 09 calls them $x$ and $a<b$. The delivered data files keep
+their own labels.
+\end{enumerate}
+
+\section{Height, rank bounds and the two additions}\label{nh:sec:prelim}
+
+All posets and ordinals are sets and we work in ZFC; no large-cardinal
+hypothesis and no countability restriction is used. Rank and height are
+those of Section~\ref{sec:tools}: $r_P(x)=\sup_{y<x}(r_P(y)+1)$ and
+$\hgt(P)=\sup_{x\in P}(r_P(x)+1)$, with empty suprema $0$. Thus
+$\hgt(\varnothing)=0$, a singleton has height $1$, an ordinal chain $\alpha$
+has height $\alpha$, and $\K(\varnothing)=\{\varnothing\}$ has height $1$, not
+$0$. These agree with the rank of the tree of finite strictly descending
+sequences, including its empty root.
+
+\begin{lemma}[Height tools; 07, 11, 12]\label{nh:lem:rankbound}
+Let $X$ and $Y$ be well-founded posets.
+\begin{enumerate}[label=(\roman*)]
+\item If $R:X\to\eta$ is strictly increasing on strict comparisons, then
+$r_X(x)\le R(x)$ for every $x$ and $\hgt(X)\le\eta$. (A poset admitting such
+a map is automatically well-founded.)
+\item If $f:X\to Y$ satisfies $x<x'\Rightarrow f(x)<f(x')$, then
+$\hgt(X)\le\hgt(Y)$; no reflection of incomparability is required. In
+particular order embeddings cannot decrease height, and a strictly
+increasing copy of an ordinal $\eta$ in $X$ gives $\hgt(X)\ge\eta$.
+\item For the ordinal sum of posets, $\hgt(X+Y)=\hgt(X)+\hgt(Y)$.
+\item Natural sum is strictly increasing in each argument. Ordinary addition
+is nondecreasing in each argument, strictly increasing and continuous in its
+right argument, and need not be strictly increasing in its left argument.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+A descending sequence in $X$ would give a descending sequence of ordinals.
+By well-founded induction,
+$r_X(x)=\sup_{y<x}(r_X(y)+1)\le\sup_{y<x}(R(y)+1)\le R(x)$, and
+$R(x)<\eta$ gives $r_X(x)+1\le\eta$; this is (i). For (ii), induction in $X$
+gives $r_X(x)\le r_Y(f(x))$, since each strict predecessor of $x$ maps to a
+strict predecessor of $f(x)$; take suprema. Along an embedded chain the point
+at position $\xi$ has rank at least $\xi$. In $X+Y$ the rank of a point of $X$
+is unchanged and that of $y\in Y$ is $\hgt(X)+r_Y(y)$, by induction and
+continuity of ordinary addition in its right variable; this proves (iii).
+Natural addition aligns exponents and adds coefficients in Cantor normal
+form, which gives its strict monotonicity; the assertions on ordinary
+addition follow from its recursive definition.
+\end{proof}
+
+No assertion about linearizations is involved: height is not maximal order
+type, and no maximal-linearization theorem enters Part~II. Throughout, both
+an upper rank bound and an attaining chain are supplied; height is never
+inferred merely by listing some chains, since it is the rank argument that
+excludes larger, branching contributions (11). The two additions
+play different roles and are never interchanged:
+\[
+ \omega+\omega^2=\omega^2,\qquad \omega^2+\omega>\omega^2,\qquad
+ \omega\ns\omega^2=\omega^2+\omega.
+\]
+Appending a nonzero ordinal on the right deletes the lower-exponent tail of
+the left operand below the leading exponent of the right operand, then
+combines coefficients at that exponent if present. A \emph{pure ordinal} is
+$\omega^\rho$, including $\omega^0=1$. By \eqref{eq:closure}, finite natural
+sums of ordinals below a pure ordinal stay below it; moreover, if
+$\kappa=\omega^\sigma<\lambda=\omega^\rho$ with $\rho>0$ and $n<\omega$, then
+$\kappa\cdot n<\lambda$, and every finite $n$ is below every such $\lambda$
+(11). These facts hold for uncountable exponents as well.
+
+\begin{lemma}[Absorption with a strict margin; 12]\label{nh:lem:absorb}
+For any ordinal $p$, pure ordinal $w=\omega^\rho$ and $\delta<w$,
+\begin{equation}\label{nh:eq:absorb}
+ p\ns\delta<p+w.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $\rho=0$, $\delta=0$ and the claim is $p<p+1$. Suppose $\rho>0$. Split $p$
+into its terms of exponent at least $\rho$, written $p_{\ge\rho}$, and its
+tail $p_{<\rho}<\omega^\rho$. Natural addition gives
+$p\ns\delta=p_{\ge\rho}+(p_{<\rho}\ns\delta)<p_{\ge\rho}+\omega^\rho=p+\omega^\rho$,
+by finite natural-sum closure below $\omega^\rho$.
+\end{proof}
+
+The strict margin controls transitions between states: coordinates that have
+not yet retired stay in a natural-sum term, while a completed stage
+contributes to an ordinary-sum prefix. Part~III uses a different mechanism,
+deferred absorption (Lemma~\ref{nh:wpo:lem:absorb}), for the same purpose.
+\section{A finite persistence theorem}\label{nh:sec:persistence}
+
+The rank argument is isolated from the representation of finitely generated
+downsets by first proving it for abstract finite state systems (12, 11).
+
+\subsection{State systems with convex coordinate lifetimes}
+
+\begin{definition}[Persistence system; 12, 11]\label{nh:def:system}
+Let $T$ be a finite poset and $U$ a finite set of coordinate labels. For each
+$t\in T$ choose an active set $A_t\subseteq U$, and require
+\begin{equation}\label{nh:eq:convex}
+ s\le t\le u\quad\Longrightarrow\quad A_s\cap A_u\subseteq A_t .
+\end{equation}
+Give each label $q$ a nonzero ordinal length $\lambda_q$. The
+\emph{persistence order} is
+\[
+ Y=Y(T,A,\lambda)=\Bigl\{(t,x):t\in T,\ x\in\prod_{q\in A_t}\lambda_q\Bigr\},
+\]
+with the empty product a singleton, ordered by
+\begin{equation}\label{nh:eq:stateorder}
+ (t,x)\le(u,y)\quad\Longleftrightarrow\quad
+ t\le u\ \text{and}\ x_q\le y_q\ \text{for every }q\in A_t\cap A_u .
+\end{equation}
+\end{definition}
+
+Condition \eqref{nh:eq:convex}, 12's convex lifetimes and 11's
+no-resurrection condition (NR), says that along a chain a label may be absent
+at first, become active and disappear, but cannot disappear and then
+reappear: each label's set of active states is order-convex. Empty active
+sets are allowed. Coordinates shared by two states persist; a coordinate
+absent at the later state imposes no comparison there.
+
+\begin{lemma}[12, 11]\label{nh:lem:order}
+Relation \eqref{nh:eq:stateorder} is a well-founded partial order.
+\end{lemma}
+\begin{proof}
+Reflexivity is immediate, and antisymmetry forces equality of states and
+then of every coordinate. For transitivity, let $(s,x)\le(t,y)\le(u,z)$; a
+label shared by $s$ and $u$ is active at $t$ by \eqref{nh:eq:convex}, so
+$x_q\le y_q\le z_q$. Within one state, $x\mapsto\bigns_q x_q$ strictly
+increases on strict product comparisons, so each state's product is
+well-founded; a strictly decreasing sequence changes its state only finitely
+often, and afterwards lies in one of these products. (Alternatively, use
+well-founded induction on the finite state order.)
+\end{proof}
+
+The finite-product and finite-union closure of well-quasi-orders also shows
+that $Y$ is a WPO; only well-foundedness is needed for the height proof (11).
+
+\begin{example}[Why \eqref{nh:eq:convex} is structural; 12, 11]\label{nh:ex:noreturn}
+Take states $0<1<2$ with $A_0=A_2=\{q\}$ and $A_1=\varnothing$. Then
+$(0,1)\le(1,\varnothing)\le(2,0)$ by \eqref{nh:eq:stateorder}, but
+$(0,1)\not\le(2,0)$. Without \eqref{nh:eq:convex} the relation need not
+be transitive, and taking its transitive closure would define a different
+construction. The condition is used twice below: for transitivity, and to
+stop a coordinate varied in an earlier block of a chain from reappearing.
+\end{example}
+
+\subsection{Retirement costs}
+
+For the rest of this section the lengths are pure,
+$\lambda_q=\omega^{\rho_q}$ with $\rho_q\ge0$. For states $s<t$ put
+\begin{equation}\label{nh:eq:weights}
+ \ew(s,t)=\max\bigl(\{1\}\cup\{\lambda_q:q\in A_s\setminus A_t\}\bigr),
+ \qquad
+ \tw(t)=\max\bigl(\{1\}\cup\{\lambda_q:q\in A_t\}\bigr).
+\end{equation}
+For a nonempty chain (a \emph{state path}) $C=(t_0<\cdots<t_m)$, not
+necessarily saturated and not necessarily starting at a minimal state, write
+$A_i=A_{t_i}$ and define the exit sets and stage costs
+\begin{equation}\label{nh:eq:chaincost}
+ \begin{gathered}
+ E_i=A_i\setminus A_{i+1}\ (i<m),\qquad E_m=A_m,\\
+ w_i=\max\bigl(\{1\}\cup\{\lambda_q:q\in E_i\}\bigr),\qquad
+ L(C)=w_0+w_1+\cdots+w_m .
+ \end{gathered}
+\end{equation}
+Thus $w_i=\ew(t_i,t_{i+1})$ for $i<m$ and $w_m=\tw(t_m)$. The fallback value
+is one, not zero: a coordinate-free state is not absent, and a strict
+transition with no departing coordinate still contributes a finite step.
+Finally put $\HH(T)=\max_C L(C)$ over all nonempty chains, and
+$\HH(\varnothing)=0$.
+
+\begin{theorem}[Finite persistence theorem; 12 Thm~3.3, 11 Thm~3.3]
+\label{nh:thm:persistence}
+For a finite persistence system with pure lengths,
+\begin{equation}\label{nh:eq:persistence}
+ \boxed{\hgt(Y)=\max_{C\text{ a maximal chain of }T}L(C)=\HH(T).}
+\end{equation}
+For every nonempty chain $C$ of $T$, the configurations over the states of
+$C$ form an induced suborder $Y_C$ of height exactly $L(C)$ containing a chain
+of that exact type. There is an explicit strictly increasing ordinal-valued
+map on $Y$ with all values below $\HH(T)$.
+\end{theorem}
+
+12 proves the theorem with $\rho_q\ge0$ by a rank map over a fixed chain and a
+finite cover of the descending-sequence tree. 11 proves it with $\rho_q>0$ and
+the fallback weight by a leading-exponent induction; by convention~3 of
+Section~\ref{nh:sec:notation} the two statements are equivalent. The
+statement does not claim that either rank map equals the pointwise rank
+(11); exact ranks are computed separately in
+Theorem~\ref{nh:thm:local}.
+
+\subsection{First proof (12): a rank map over a fixed chain}
+
+Fix $C=(t_0<\cdots<t_m)$, write $A_i=A_{t_i}$, and let $p_i=\sum_{k<i}w_k$ be
+the completed prefix. At a configuration $x$ in stage $i$ set
+\begin{equation}\label{nh:eq:R}
+ R_C(i,x)=p_i\ns\Bigl(\bigns_{q\in A_i}x_q\Bigr),
+\end{equation}
+with the natural sum over the empty set equal to $0$.
+
+\begin{lemma}[12]\label{nh:lem:fixedupper}
+$R_C$ is strictly increasing on strict comparisons of $Y_C$, and
+$R_C(i,x)<L(C)$ for every configuration over $C$.
+\end{lemma}
+\begin{proof}
+Range: every coordinate active at stage $i$ retires later, either before a
+later state or at the final stage, and by \eqref{nh:eq:convex} it cannot
+return after retiring. Hence its length is at most $W_i=\max_{i\le k\le m}w_k$,
+the natural sum $\delta_i$ of the values at stage $i$ is below $W_i$, and
+Lemma~\ref{nh:lem:absorb} gives
+$R_C(i,x)=p_i\ns\delta_i<p_i+W_i\le p_i+\sum_{k=i}^mw_k=L(C)$.
+
+Within one stage a componentwise strict increase raises at least one summand
+and so raises $R_C$. Let $(i,x)<(j,y)$ with $i<j$, and split the active set
+at stage $i$ into $P=A_i\cap A_j$ and $D=A_i\setminus A_j$. Every member of
+$D$ retires at some transition $k\in[i,j)$, since it cannot disappear and
+return. With $W=\max_{i\le k<j}w_k$, the natural sum
+$\delta_D=\bigns_{q\in D}x_q$ is below $W$ (also when $D=\varnothing$), so
+$p_i\ns\delta_D<p_i+W\le p_j$. Adding the persistent coordinates by natural
+sum and using $x_q\le y_q$ for $q\in P$,
+\[
+ R_C(i,x)=(p_i\ns\delta_D)\ns\bigns_{q\in P}x_q
+ <p_j\ns\bigns_{q\in P}x_q\le p_j\ns\bigns_{q\in A_j}y_q=R_C(j,y).
+\]
+The same ordinal function controls movement inside a stage and across
+arbitrarily many stages.
+\end{proof}
+
+By Lemma~\ref{nh:lem:rankbound}, $\hgt(Y_C)\le L(C)$. The proof keeps the
+shared coordinates; it never replaces the strata by totally ordered blocks.
+
+\begin{lemma}[Block realization; 12 Lemma~3.5, 11 Lemma~4.1]
+\label{nh:lem:fixedlower}
+For every nonempty chain $C$ of $T$, $Y_C$ contains a chain of order type
+$L(C)$.
+\end{lemma}
+\begin{proof}
+If $w_i>1$, choose $q_i\in E_i$ with $\lambda_{q_i}=w_i$; at stage $i$, vary its
+value through all $\xi<w_i$ and keep every other coordinate $0$. This is a
+chain of type $w_i$. If $w_i=1$, take the all-zero configuration at that
+stage alone (at the last stage, a whole largest-length block, or one tuple
+if $A_m$ is empty). For $i<j$, a coordinate varied at stage $i$ is absent at
+every later state of $C$: if it reappeared, \eqref{nh:eq:convex} with
+$t_{i+1}$ as the middle state would fail. So all coordinates shared by stages
+$i$ and $j$ were $0$ at stage $i$, and every chosen configuration at stage $i$
+is below every chosen configuration at stage $j$, strictly because the states
+differ. The ordered concatenation has type $w_0+\cdots+w_m$.
+\end{proof}
+
+A long variation of a coordinate can be placed wholly before the next stage
+only if that coordinate disappears there; persistent coordinates cannot supply
+the same long block repeatedly. It remains to pass from one chain of states
+to the whole system. Let $\Dec(P)$ be the tree of finite strictly decreasing
+sequences in $P$, including the empty sequence; its rank at a nonempty
+sequence is the rank of the last element, and at the root it is $\hgt(P)$.
+
+\begin{lemma}[Finite unions of prefix-closed trees; 07 Lemma~5.1, 12 Lemma~3.6]
+\label{nh:lem:treeunion}
+Let $T_1,\dots,T_k$ be well-founded prefix-closed trees on a common alphabet,
+each containing the empty sequence. Their union $T$ is well-founded, and at
+every node $s$ of $T$
+\[
+ r_T(s)=\max_{i:\,s\in T_i}r_{T_i}(s);
+\]
+in particular the root rank of $T$ is the largest root rank of the $T_i$.
+\end{lemma}
+\begin{proof}
+An infinite branch of $T$ would have arbitrarily long prefixes in one of the
+finitely many $T_i$, and prefix closure would put the whole branch into that
+tree. For the rank identity induct on $s$: the rank at $s$ is the supremum,
+over children $u$, of $r_T(u)+1$; substituting the induction hypothesis and
+exchanging the supremum with a \emph{finite} maximum (successor commutes with
+finite maxima) gives the right-hand side. Prefix closure ensures that
+$u\in T_i$ implies $s\in T_i$; a tree in which $s$ has no child contributes
+$0$.
+\end{proof}
+
+\begin{proposition}[Finite monotone-index reduction; 07 Prop.~5.2]
+\label{nh:prop:chaincover}
+Let $\sigma:X\to F$ be a monotone map from a well-founded poset to a finite
+nonempty poset, and for a maximal chain $C$ of $F$ let $X_C=\sigma^{-1}(C)$ with
+the induced order. Then
+\[
+ \hgt(X)=\max_{C\text{ maximal chain in }F}\hgt(X_C).
+\]
+\end{proposition}
+\begin{proof}
+The labels of a finite strictly descending sequence of $X$ form, after
+removing repetitions, a chain of $F$, which lies in a maximal chain $C$.
+Hence $\Dec(X)=\bigcup_C\Dec(X_C)$, a finite union of prefix-closed trees.
+Apply Lemma~\ref{nh:lem:treeunion} at the root.
+\end{proof}
+
+\begin{proof}[Completion of the first proof of Theorem~\ref{nh:thm:persistence}]
+Apply Proposition~\ref{nh:prop:chaincover} to the state map $Y\to T$.
+Lemmas~\ref{nh:lem:fixedupper} and~\ref{nh:lem:fixedlower} give
+$\hgt(Y_C)=L(C)$ for every maximal chain; an optimal $C$ exists since there are
+finitely many, and Lemma~\ref{nh:lem:fixedlower} gives the attaining chain.
+A shorter chain of states extends to a maximal one, and its configurations
+form an induced suborder of the latter's; so maximizing over all nonempty
+chains gives the same value $\HH(T)$.
+\end{proof}
+
+\begin{remark}[A distinction that prevents a false proof; 12, 07]
+An arbitrary finite cover of a poset by induced subposets does not make its
+height the maximum of theirs: two singletons cover a two-point chain, and a
+union can create descending sequences crossing between pieces. Here the
+whole descending-sequence tree is covered by prefix-closed subtrees, so every
+entire descending sequence lies in one piece. Finiteness is essential for the
+maximum.
+\end{remark}
+
+\subsection{Second proof (11): leading-exponent peeling}
+
+This route supplies a recursive upper-bound certificate and the recurrence
+\eqref{nh:eq:peel}. By convention~3 we may delete coordinates of length $1$
+and assume every $\rho_q>0$. For a state $t$ let
+$\depth(t)=\max\{k:t_0<\cdots<t_k=t\}$; thus $s<t$ implies
+$\depth(s)<\depth(t)$.
+
+Assume some active set is nonempty and let
+\[
+ \Lambda=\max\{\lambda_q:q\in A_t\text{ for some }t\}=\omega^{\rho},\qquad
+ U^{\top}=\{q:\lambda_q=\Lambda\}.
+\]
+For $s<t$ let $\delta(s,t)=1$ if $(A_s\setminus A_t)\cap U^\top\ne\varnothing$
+and $\delta(s,t)=0$ otherwise, and define, along a linear extension of $T$,
+\begin{align}
+ d_\Lambda(t)&=\max\bigl(\{0\}\cup\{d_\Lambda(s)+\delta(s,t):s<t\}\bigr),
+   \label{nh:eq:d}\\
+ c_\Lambda&=\max_{t\in T}\bigl(d_\Lambda(t)+\mathbf 1_{A_t\cap U^\top\ne\varnothing}\bigr),
+   \label{nh:eq:c}\\
+ Z&=\{t\in T:d_\Lambda(t)=c_\Lambda\}.\label{nh:eq:Z}
+\end{align}
+So $d_\Lambda(t)$ is the largest number of $\Lambda$-departure events on a path
+ending at $t$, and $c_\Lambda$ also allows a terminal $\Lambda$-block. We call
+$Z$ the terminal region.
+
+\begin{lemma}[11]\label{nh:lem:leadingdata}
+$c_\Lambda\ge1$ and $d_\Lambda\le c_\Lambda$. The set $Z$ is upward closed in
+$T$ and no state of $Z$ has an active label of length $\Lambda$. If $s<t$ and
+$d_\Lambda(s)=d_\Lambda(t)$, then $A_s\cap U^\top\subseteq A_t\cap U^\top$.
+\end{lemma}
+\begin{proof}
+A state with an active $\Lambda$-label gives $c_\Lambda\ge1$; the other bound
+follows from \eqref{nh:eq:c}. By \eqref{nh:eq:d}, $d_\Lambda$ is nondecreasing
+along the order, so $s\in Z$, $s<t$ give
+$c_\Lambda=d_\Lambda(s)\le d_\Lambda(t)\le c_\Lambda$. An active
+$\Lambda$-label at $t\in Z$ would force $c_\Lambda\ge c_\Lambda+1$. Finally,
+deleting a $\Lambda$-label along $s<t$ forces $d_\Lambda(t)\ge d_\Lambda(s)+1$.
+\end{proof}
+
+The restriction of the system to $Z$ is again a persistence system, with fewer
+distinct lengths; write $Y_Z$ for its order. This is the induction parameter.
+The exponents themselves need not be finite or countable.
+
+\begin{lemma}[Upper-bound step; 11]\label{nh:lem:upperstep}
+If a strictly increasing map $R_Z:Y_Z\to\HH(Z)$ is available (the empty map
+when $Z=\varnothing$), then there is a strictly increasing map
+$R:Y\to\Lambda\cdot c_\Lambda+\HH(Z)$.
+\end{lemma}
+\begin{proof}
+Let $\kappa$ be the largest length below $\Lambda$ used anywhere, and $\kappa=1$
+if there is none. For $(t,x)\in Y$ put
+\[
+ u(t,x)=\kappa\cdot\depth(t)+\bigns_{\substack{q\in A_t\\ \lambda_q<\Lambda}}x_q,
+ \qquad
+ v(t,x)=\bigns_{\substack{q\in A_t\\ \lambda_q=\Lambda}}x_q,
+ \qquad
+ \vartheta(t,x)=v(t,x)\ns u(t,x).
+\]
+The lower-coordinate natural sum is below $\kappa$ (or absent when
+$\kappa=1$), so $u(t,x)<\kappa\cdot(\depth(t)+1)<\Lambda$, using finiteness of
+the depth; also $v(t,x)<\Lambda$ and $\vartheta(t,x)<\Lambda$. Define
+\begin{equation}\label{nh:eq:peelR}
+ R(t,x)=\begin{cases}
+ \Lambda\cdot d_\Lambda(t)+\vartheta(t,x),&t\notin Z,\\
+ \Lambda\cdot c_\Lambda+R_Z(t,x),&t\in Z.
+ \end{cases}
+\end{equation}
+The first line is below $\Lambda\cdot c_\Lambda$ because $d_\Lambda<c_\Lambda$
+off $Z$; the second is below $\Lambda\cdot c_\Lambda+\HH(Z)$.
+
+Strictness. Within one state off $Z$, a strict coordinate increase strictly
+raises $u$ or $v$ and lowers neither, so $\vartheta$ and $R$ rise. Let $s<t$ both
+lie off $Z$. If $d_\Lambda(s)<d_\Lambda(t)$, then
+$R(s,x)<\Lambda(d_\Lambda(s)+1)\le\Lambda d_\Lambda(t)\le R(t,y)$. If
+$d_\Lambda(s)=d_\Lambda(t)$, no $\Lambda$-coordinate is lost
+(Lemma~\ref{nh:lem:leadingdata}); shared coordinates do not decrease and new
+ones are nonnegative, so $v(s,x)\le v(t,y)$, while
+$u(s,x)<\kappa(\depth(s)+1)\le\kappa\depth(t)\le u(t,y)$. Thus $\vartheta$ rises
+strictly even if lower-length coordinates disappear. Inside $Z$ use the
+strictness of $R_Z$ and strict monotonicity of ordinary addition in its right
+argument. A comparison from outside $Z$ into $Z$ crosses the bound
+$\Lambda\cdot c_\Lambda$, and the reverse direction is impossible because $Z$
+is upward closed.
+\end{proof}
+
+The finite depth term pays for state changes that erase smaller coordinates
+while leaving every largest coordinate alive. It is harmless at scale $\Lambda$,
+yet without it the natural sum of surviving coordinates alone need not be
+monotone.
+
+\begin{lemma}[Attaining the step; 11]\label{nh:lem:lowerstep}
+If $\HH(Z)$ is attained by a state path whenever $Z\ne\varnothing$, then some
+state path of $T$ has cost $\Lambda\cdot c_\Lambda+\HH(Z)$.
+\end{lemma}
+\begin{proof}
+Let $Z\ne\varnothing$ and choose an attaining path in $Z$ with first state
+$t$. As $d_\Lambda(t)=c_\Lambda$, some path ending at $t$ realizes $c_\Lambda$
+departure events of $\Lambda$-labels. Keep the predecessor state of each such
+event, discard the other states except $t$, and concatenate with the path in
+$Z$. Each newly consecutive pair in the kept prefix has exit weight $\Lambda$:
+a $\Lambda$-label left right after the earlier state, and
+\eqref{nh:eq:convex} prevents its presence at any later kept state. The cost
+is $\Lambda\cdot c_\Lambda+\HH(Z)$. If $Z=\varnothing$, a state attaining
+\eqref{nh:eq:c} has an active $\Lambda$-label and $d_\Lambda=c_\Lambda-1$;
+keep the predecessor states of $c_\Lambda-1$ departures on a path to it, and
+let that state contribute the last $\Lambda$-block. The cost is
+$\Lambda\cdot c_\Lambda$.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{nh:thm:persistence}]
+Induct on the number of distinct lengths active somewhere. If $T$ is empty
+everything holds with value $0$. If no label is active, $Y\cong T$, every
+weight is $1$, $\HH(T)$ is the largest chain cardinality, the depth map is a
+strict map into it, and a longest chain attains it. Otherwise form
+$\Lambda,c_\Lambda,Z$; no $\Lambda$-label is active on $Z$, so the induction
+hypothesis applies to $Y_Z$. Lemma~\ref{nh:lem:upperstep} and
+Lemma~\ref{nh:lem:rankbound} give $\hgt(Y)\le\Lambda\cdot c_\Lambda+\HH(Z)$;
+Lemma~\ref{nh:lem:lowerstep} supplies a path of that cost, which
+Lemma~\ref{nh:lem:fixedlower} realizes by a chain; and every path cost is at
+most $\hgt(Y)$ by the same lemma. Hence
+\begin{equation}\label{nh:eq:peel}
+ \boxed{\HH(T)=\hgt(Y)=\Lambda\cdot c_\Lambda+\HH(Z),}
+\end{equation}
+and the induction supplies the strict map and the attaining chain.
+\end{proof}
+
+The recurrence \eqref{nh:eq:peel} and the path formula come out together;
+neither is justified by extrapolation from finite approximations.
+
+\section{Algorithms and certificates for persistence systems}
+\label{nh:sec:systemalgorithms}
+
+\subsection{An ordinal longest-path computation (11)}
+
+For the weights \eqref{nh:eq:weights} define, along a linear extension,
+\begin{equation}\label{nh:eq:pDP}
+ \mathsf p(t)=\max\bigl(\{0\}\cup\{\mathsf p(s)+\ew(s,t):s<t\}\bigr),
+ \qquad
+ \HH(T)=\max_{t\in T}\bigl(\mathsf p(t)+\tw(t)\bigr).
+\end{equation}
+Here $\mathsf p(t)$ is the transition part of a path ending at $t$, before its
+final state is charged; it starts at $0$ so that a path may begin at $t$.
+
+\begin{proposition}[11]\label{nh:prop:pDP}
+The recurrence \eqref{nh:eq:pDP} computes $\HH(T)$, and storing a maximizing
+predecessor yields an attaining state path.
+\end{proposition}
+\begin{proof}
+A path ending at $t$ is $t$ alone or has a penultimate state $s<t$; its
+transition sum is that of the path to $s$ followed by $\ew(s,t)$. Ordinary
+addition is nondecreasing in its left argument, so the largest prefix value
+at $s$ can be kept without losing a better continuation, and finite maxima
+are attained. Append the terminal weight and maximize over endpoints.
+\end{proof}
+
+All strict comparable pairs are used; no restriction to Hasse edges is
+claimed, and the code does not assume that an optimal path is saturated. With
+$m=|T|$ and $\ell=|U|$, all edge weights cost $O(m^2\ell)$ membership and
+ordinal-comparison operations and the program $O(m^2)$ ordinal additions and
+comparisons. These are operation counts, not bit-complexity claims for
+arbitrary notations; building $T$ from a skeleton may itself be exponential,
+and checking \eqref{nh:eq:convex} on all triples costs $O(m^3\ell)$ (in the
+applications it is proved structurally).
+
+\subsection{Two complementary certificates (11)}
+
+A maximizing path is a \emph{lower} certificate: one checks its state
+comparisons and the finite list of weights, and
+Lemma~\ref{nh:lem:fixedlower} turns it into an ordinal-indexed chain. The
+recursive records $(\Lambda,d_\Lambda,c_\Lambda,Z)$ are an \emph{upper}
+certificate: one checks \eqref{nh:eq:d}, \eqref{nh:eq:c} and \eqref{nh:eq:Z}
+at every stage, and the recipe \eqref{nh:eq:peelR} interprets them as a
+strict rank map. It explains why every point, not only the points of a
+maximizing path, receives an ordinal below the proposed height. 11's
+reference implementation computes both answers, and its peeling routine never
+calls the weighted-path routine; this separates implementation failure modes
+but does not replace the proof.
+
+\begin{corollary}[Finite CNF support; 11 Cor.~5.2]\label{nh:cor:support}
+The positive exponents in $\HH(T)$ are among the $\rho_q$ of used labels; its
+finite term, if any, is a natural number at most $|T|$; and the sum of the
+coefficients of its positive-exponent terms is at most the number of used
+labels.
+\end{corollary}
+\begin{proof}
+Each weight of an attaining path is $1$ or a pure power $\omega^{\rho_q}$, and
+ordinary addition of such a list can delete terms or merge equal exponents
+but creates no new exponent. For every infinite nonterminal weight choose a
+witnessing label as in Lemma~\ref{nh:lem:fixedlower}; it disappears before the
+next state and never returns, so it witnesses no later weight, the terminal
+one included. A path has at most $|T|$ weights, so at most that many finite
+ones survive.
+\end{proof}
+
+\begin{corollary}[Order-pattern invariance with certificates; 11 Cor.~5.3]
+\label{nh:cor:parametric}
+Keep the finite system fixed and replace its positive exponents by other
+positive ordinals with the same equalities and strict order relations. The
+Cantor-normal-form coefficient pattern of $\HH(T)$ is unchanged, only the
+exponents being relabelled, and the same peeling certificate remains valid.
+\end{corollary}
+\begin{proof}
+At each stage the set of labels of largest remaining length is unchanged,
+hence so are $\delta$, $d_\Lambda$, $c_\Lambda$ and $Z$. Induct on the
+finitely many exponent levels using \eqref{nh:eq:peel}; the final
+coordinate-free height is unchanged.
+\end{proof}
+
+No regularity, cofinality or countability assumption on an exponent is hidden
+in the theorem, and a symbolic implementation may compute with a finite
+ordered alphabet of exponent levels and substitute actual ordinals at the end.
+The lexicographic-sum forms of this invariance are
+Corollary~\ref{nh:cor:scale} and, for Part~III, Theorem~\ref{nh:wpo:thm:chambers}.
+
+\section{Arbitrary capacities and exact ranks in persistent systems}
+\label{nh:sec:local}
+
+\subsection{Phase refinement}
+
+Keep \eqref{nh:eq:convex} but let every length $\gamma_q$ be an arbitrary
+\emph{nonzero} ordinal. Split its Cantor normal form into a finite ordinal sum
+of pure blocks $\gamma_q=\sum_{b<B_q}\omega^{\tau_{q,b}}$, equal exponents
+repeated according to their coefficients, so that each value of the coordinate
+has a unique block index $b$ and a unique offset below $\omega^{\tau_{q,b}}$.
+Refine a state $t$ into the states $(t,\sigma)$ with
+$\sigma\in\prod_{q\in A_t}B_q$, ordered by
+\begin{equation}\label{nh:eq:phaseorder}
+ (s,\sigma)\le(t,\varsigma)\iff s\le t\ \text{and}\ \sigma_q\le\varsigma_q
+ \ \text{for every }q\in A_s\cap A_t .
+\end{equation}
+The active labels of $(t,\sigma)$ are the pairs $(q,\sigma_q)$ with
+$q\in A_t$ and $\tau_{q,\sigma_q}>0$, of length $\omega^{\tau_{q,\sigma_q}}$; a
+singleton phase carries no coordinate.
+
+\begin{theorem}[Phase refinement; 11 Thm~8.1, 12 Cor.~6.4]\label{nh:thm:phase}
+The refined system is a finite persistence system with pure lengths
+satisfying \eqref{nh:eq:convex}, and its persistence order is isomorphic to
+the original one. Hence the height of every finite persistence system with
+nonzero ordinal lengths, and a chain attaining it, are computed by refinement
+followed by Theorem~\ref{nh:thm:persistence}.
+\end{theorem}
+\begin{proof}
+Relation \eqref{nh:eq:phaseorder} is a finite partial order by the
+transitivity argument of Lemma~\ref{nh:lem:order}, now with block indices.
+If a refined label $(q,b)$ is active at both ends of a chain of three refined
+states, the original label is active at the middle state by
+\eqref{nh:eq:convex}, and the block index there is squeezed between two equal
+indices; so refined lifetimes are convex. Decompose each coordinate value into
+block and offset. This is bijective because the block intervals partition
+$\gamma_q$. Values in different blocks compare by block index, regardless of
+offsets; within an infinite block they compare by offset; a singleton block
+offers no choice. So the original comparison is exactly the refined-state
+comparison together with inequalities on the common refined active labels.
+\end{proof}
+
+\begin{remark}[Why impure lengths cannot simply be substituted; 12, 11]
+\label{nh:rem:impure}
+Two comparable states carrying the same coordinate of length $\omega+1$ give
+the order $2\times(\omega+1)$ of height $\omega+2$ (its greatest tuple has
+natural-sum rank $1\ns\omega=\omega+1$), while the unrefined cost rule gives
+$1+(\omega+1)=\omega+1$ (12). One state with two coordinates of length
+$\omega+1$ gives $(\omega+1)\times(\omega+1)$, of height $\omega\cdot2+1$
+(Section~\ref{nh:sec:examples}), while the unrefined terminal maximum gives
+$\omega+1$ (11). Phase refinement is a substantive correction, not
+bookkeeping.
+\end{remark}
+
+\subsection{Exact point ranks in any finite persistent system (11)}
+
+Let $z=(t,x)$ be a point of a persistence order with nonzero ordinal lengths
+$\gamma_q$. Let $J=\{s:s\le t\}$, keep the active sets on $J$, and cap
+\begin{equation}\label{nh:eq:capped}
+ \gamma'_q=\begin{cases}x_q+1,&q\in A_t,\\ \gamma_q,&q\notin A_t.\end{cases}
+\end{equation}
+Every $\gamma'_q$ is nonzero.
+
+\begin{lemma}[Principal-ideal representation; 11]\label{nh:lem:ideal}
+The inclusive principal ideal $Y_{\le z}$ is isomorphic to $Y(J,A,\gamma')$.
+\end{lemma}
+\begin{proof}
+A point $(s,y)$ is below $z$ exactly when $s\le t$ and $y_q\le x_q$, that is
+$y_q<x_q+1$, for every $q\in A_s\cap A_t$; all other coordinates keep their
+ranges, and the order on the restricted tuples is unchanged.
+\end{proof}
+
+\begin{theorem}[Exact point ranks in persistent systems; 11 Thm~8.4]
+\label{nh:thm:local}
+Form the capped system of Lemma~\ref{nh:lem:ideal}, refine it by
+Theorem~\ref{nh:thm:phase} and compute its height $H_z$. Then $H_z$ is a
+successor and
+\begin{equation}\label{nh:eq:local}
+ \boxed{r_Y(z)=\pred(H_z),}
+\end{equation}
+where $\pred(\eta+1)=\eta$.
+\end{theorem}
+\begin{proof}
+The principal ideal has greatest element $z$, and ranks of its points agree
+with their ranks in $Y$ because all their predecessors lie in the ideal. So
+$\hgt(Y_{\le z})=r_Y(z)+1$, and the two preceding results compute this height.
+\end{proof}
+
+In executable Cantor normal form the predecessor decrements the positive
+finite last coefficient (deleting the final term when it reaches zero); a
+returned limit would signal an implementation error. The algorithm does not
+claim that the rank maps of Theorem~\ref{nh:thm:persistence} are exact: it
+solves a different finite instance for each point, whose state space may be
+larger.
+\section{Support antichains and an exact finite dynamic program}
+\label{nh:sec:dag}
+
+\subsection{The support model, including the empty downset}
+
+For a finite poset $Q$ let $\Ant(Q)$ be the set of all antichains, including
+$\varnothing$, under the Hoare order $A\le_HB$ iff every $a\in A$ lies below
+some $b\in B$. The map $A\mapsto{\downarrow}A$ is an isomorphism onto the
+lattice $\J(Q)$ of downsets of $Q$, with inverse $I\mapsto\max I$. For an
+antichain $A$ and $x\in\prod_{q\in A}\alpha_q$ write
+$\langle A;x\rangle={\downarrow}\{(q,x_q):q\in A\}$, with
+$\langle\varnothing;\varnothing\rangle=\varnothing$.
+
+\begin{lemma}[Support coordinates; 12 Lemma~4.1, 07 Lemma~2.2]
+\label{nh:lem:support}
+Let $Q$ be finite and every $\alpha_q>0$. The map $(A,x)\mapsto\langle A;x\rangle$
+is an order isomorphism from
+\begin{equation}\label{nh:eq:supportmodel}
+ \Bigl\{(A,x):A\in\Ant(Q),\ x\in\prod_{q\in A}\alpha_q\Bigr\},
+ \qquad (A,x)\le(B,y)\iff A\le_HB\ \text{and}\ x_q\le y_q\ (q\in A\cap B),
+\end{equation}
+onto $\K(S_{\boldsymbol\alpha}(Q))$. Moreover, for antichains of any finite
+poset,
+\begin{equation}\label{nh:eq:noreturn}
+ A\le_HB\le_HC\quad\Longrightarrow\quad A\cap C\subseteq B .
+\end{equation}
+\end{lemma}
+\begin{proof}
+A finite generating set can be reduced to its maximal elements. They form an
+antichain of points, no two in one chain fibre, and they are exactly the
+maximal points of the generated downset; this gives existence and uniqueness,
+the empty set included. A generator $(a,x_a)$ lies below a generator
+$(b,y_b)$ exactly when $a<b$, or $a=b$ and $x_a\le y_b$. If $a\in A\cap B$, no
+other member of the antichain $B$ lies above $a$, so the comparison at $a$ must
+be $x_a\le y_a$; this proves both directions of the order criterion. For
+\eqref{nh:eq:noreturn} take $a\in A\cap C$ and $b\in B$, $c\in C$ with
+$a\le b\le c$; since $a,c\in C$, antichainness forces $c=a$ and then $b=a$.
+\end{proof}
+
+Inequality \eqref{nh:eq:noreturn} is the no-return lemma of 07
+(Lemma~7.1) and 11 (Lemma~6.2); maximality of the antichains is not used. When
+all $\alpha_q$ are pure, the support model is exactly the persistence system of
+Definition~\ref{nh:def:system} with state poset $\Ant(Q)$ and active sets $A$.
+No assumption excluding finite cofinal subsets is needed, and singleton
+fibres ($\alpha_q=1=\omega^0$) are legitimate (12). Since there are finitely
+many supports and each carries a finite product of ordinal chains,
+$\K(S_{\boldsymbol\alpha}(Q))$ is a WPO; well-foundedness alone also follows
+because a descending sequence changes support only finitely often (07).
+
+\subsection{The ideal-state recurrence (12)}
+
+Let $Q$ be a finite poset with pure nonzero weights $\lambda_v$ (weight $1$
+allowed). For $I\in\J(Q)$ and $v$ minimal in $Q\setminus I$, $I\cup\{v\}$ is a
+downset and the active set changes from $\max I$ to $\max(I\cup\{v\})$; the
+retiring set is
+\begin{equation}\label{nh:eq:retiredideal}
+ E(I,v)=\{a\in\max I:a<v\}.
+\end{equation}
+Define
+\begin{align}
+ \mathsf c(I,v)&=\max\bigl(\{1\}\cup\{\lambda_a:a\in E(I,v)\}\bigr),
+   \label{nh:eq:edgecost}\\
+ \tau_Q&=\max\bigl(\{1\}\cup\{\lambda_a:a\in\max Q\}\bigr),
+   \label{nh:eq:terminal}
+\end{align}
+put $\Fdp(\varnothing)=0$ and, for every nonempty ideal $J$,
+\begin{equation}\label{nh:eq:dp}
+ \boxed{\displaystyle
+ \Fdp(J)=\max_{v\in\max J}
+ \Bigl(\Fdp(J\setminus\{v\})+\mathsf c(J\setminus\{v\},v)\Bigr).}
+\end{equation}
+
+\begin{theorem}[Exact finite algorithm; 12 Thm~4.2]\label{nh:thm:dag}
+For a finite poset $Q$ and pure nonzero ordinal weights,
+\begin{equation}\label{nh:eq:dpheight}
+ \boxed{\hgt\bigl(\K(S_{\boldsymbol\lambda}(Q))\bigr)=\Fdp(Q)+\tau_Q.}
+\end{equation}
+This includes $Q=\varnothing$, where the answer is $1$. An optimizing path in
+the downset lattice supplies an explicit attaining chain of finitely generated
+downsets.
+\end{theorem}
+\begin{proof}
+A maximal chain of the finite lattice $\J(Q)$ starts at $\varnothing$, ends at
+$Q$ and adds one vertex at each step (otherwise an intermediate ideal could be
+inserted); such chains are the linear extensions of $Q$. Under the support
+model the exit weight of the state $\max I$ before adjoining $v$ is
+\eqref{nh:eq:edgecost}, and the terminal weight is \eqref{nh:eq:terminal}.
+Theorem~\ref{nh:thm:persistence} reduces the height to the greatest path cost
+plus the terminal cost, and \eqref{nh:eq:dp} computes that cost: the last
+vertex added is some $v\in\max J$, ordinary addition is monotone in its left
+argument, and finite maxima are attained, so keeping only the maximum at each
+state is valid. The chain is transported through Lemma~\ref{nh:lem:support}.
+\end{proof}
+
+The addition in \eqref{nh:eq:dp} must not be replaced by natural addition: the
+latter proves rank bounds, it does not concatenate stages
+($\omega+\omega^2=\omega^2$, whereas $\omega\ns\omega^2=\omega^2+\omega$).
+The recurrence has the shape of Part~I's block recurrence \eqref{eq:DP} but
+computes a different invariant with different weights.
+
+\subsection{Certificates and complexity (12)}\label{nh:sec:dagcert}
+
+A certificate consists of the expanded finite poset, its pure weights, a value
+$\Fdp(I)$ for every ideal and one optimizing path. A verifier checks that all
+ideals are present, checks every equality \eqref{nh:eq:dp}, and independently
+sums the path costs and the terminal cost. The table is the upper certificate;
+the path is the lower certificate, whose chain is described in
+Lemma~\ref{nh:lem:fixedlower}. With $N=|Q|$ and $J=|\J(Q)|$ there are at most
+$NJ$ edges and at most $NJ$ ordinal additions and comparisons; finite set
+operations add their usual costs, and the stored state space is $O(J)$ ordinal
+entries apart from the certificate. Since $J$ can equal $2^N$, this is an
+exact finite algorithm, not a polynomial-time claim. Enumerating all linear
+extensions is only an independent small-case test.
+
+\begin{corollary}[A supplied chain partition; 12 Cor.~4.3]\label{nh:cor:chaincover}
+If the expanded skeleton $Q$ is partitioned into $w$ chains of lengths
+$n_1,\dots,n_w$, then $|\J(Q)|\le\prod_{i=1}^w(n_i+1)\le(N+1)^w$, and the
+ideal-state method uses $O(N(N+1)^w)$ ordinal operations.
+Cantor-normal-form refinement (Section~\ref{nh:sec:arbitrary}) does not
+increase the minimum number of chains in a partition of the original skeleton.
+\end{corollary}
+\begin{proof}
+An ideal meets each chain in a prefix, so the tuple of prefix lengths
+determines it; cross-chain order constraints only reduce the count. Replacing
+each vertex of a chain of the original partition by its consecutive pure blocks
+gives a chain partition of the refinement with no more chains.
+\end{proof}
+
+A fixed supplied chain-partition size is therefore already a tractable case in
+the expanded input. This is not a bit-complexity result for succinctly encoded
+large Cantor coefficients.
+
+\begin{corollary}[Threshold certificates; 12 Cor.~4.4]\label{nh:cor:NP}
+For a pure-block input, encode the finitely many exponent scales by their
+ordered integer labels. Given a threshold $\gamma$ in Cantor normal form over
+an explicitly ordered finite list of scales, the problem
+$\hgt(\K(S_{\boldsymbol\lambda}(Q)))\ge\gamma$ belongs to $\mathrm{NP}$ with
+respect to this finite encoding.
+\end{corollary}
+\begin{proof}
+If the inequality holds, a winning linear extension of $Q$ is a witness of
+length $N$: check that it is a linear extension, compute its retiring sets and
+stage costs, and compare their ordinary sum with $\gamma$. A path has $N+1$
+pure costs, so its normal form has coefficient sum at most $N+1$ and exponent
+labels from the input together with $0$; all this is polynomial in the finite
+encoding. Conversely an accepted path gives a chain of its computed type by
+Theorem~\ref{nh:thm:persistence}.
+\end{proof}
+
+This is an upper bound, not an NP-completeness claim, and it refers to the
+pure-block encoding: unary expansion of a succinct coefficient is not silently
+counted as polynomial preprocessing.
+
+\section{The compressed formula for positive pure fibres}\label{nh:sec:frontier}
+
+Throughout this section $Q$ is finite and nonempty and
+$\alpha_q=\omega^{\rho_q}$ with $\rho_q>0$. Such a fibre is a nonzero limit
+with no greatest element and no finite cofinal subset, so the canonical
+frontier of Lemma~\ref{lem:canonical} is available. The support model of
+Section~\ref{nh:sec:dag} is exact and handles finite endpoints; here a smaller
+state system, the frontier poset $\M(Q)$ of Part~I, gives \eqref{nh:eq:answer}.
+
+\subsection{Weighted frontiers}
+
+Lemma~\ref{lem:frontiers} gives $A=\min(Q\setminus D(A))$ and
+$A\preceq B\iff D(A)\subseteq D(B)$. Two more facts are needed (07, 11, 12):
+if $A\prec B$ in $\M(Q)$ then $A\setminus B\ne\varnothing$, because one
+inclusion-maximal antichain cannot properly contain another; and the active-set
+assignment $A\mapsto A$ on $\M(Q)$ satisfies \eqref{nh:eq:convex}, by
+\eqref{nh:eq:noreturn}. For $A\prec B$ put
+\begin{equation}\label{nh:eq:frontierweights}
+ w(A,B)=\max_{q\in A\setminus B}\alpha_q,\qquad t(A)=\max_{q\in A}\alpha_q,
+\end{equation}
+and for a nonempty chain $C=(A_0\prec\cdots\prec A_m)$ let
+$W(C)=w(A_0,A_1)+\cdots+w(A_{m-1},A_m)+t(A_m)$ as in \eqref{nh:eq:cost}; for
+$m=0$ this is $t(A_0)$.
+
+\begin{theorem}[Mixed pure frontier formula; 07 Thm~3.1, 11 Thm~1.1, 12 Thm~5.4]
+\label{nh:thm:frontier}
+For finite nonempty $Q$ and $\alpha_q=\omega^{\rho_q}$, $\rho_q>0$,
+\begin{equation}\label{nh:eq:frontierheight}
+ \boxed{\displaystyle
+ \hgt\bigl(\K(S_{\boldsymbol\alpha}(Q))\bigr)
+ =\max_{A_0\prec\cdots\prec A_m}
+ \Bigl(\sum_{i<m}\max_{q\in A_i\setminus A_{i+1}}\alpha_q
+       +\max_{q\in A_m}\alpha_q\Bigr).}
+\end{equation}
+The maximum is over all nonempty strict chains of $\M(Q)$, one-element chains
+included; it may be restricted to maximal chains, or to saturated chains from
+$\min Q$ to $\max Q$ (Proposition~\ref{nh:prop:saturation}). It is attained by
+a chain in $\K(S_{\boldsymbol\alpha}(Q))$ of exactly that order type.
+\end{theorem}
+
+Part~III proves the same formula for well-partial-order fibres whose
+finitary powersets have pure height (09 Thm~7.2 with Cor.~3.2;
+Theorem~\ref{nh:wpo:thm:compressed}). Two proofs follow; a third is the
+special case of Part~III, whose upper bound goes through Wolk's theorem.
+
+\subsection{First proof (12, 11): two embeddings}
+
+\begin{lemma}[Comparison across strata; 11 Lemma~6.1]\label{nh:lem:canonicalcompare}
+Let $K,L\in\K(S_{\boldsymbol\alpha}(Q))$ have canonical frontiers $A,B$ and
+active sections $K_a=K\cap P_a$, $L_b=L\cap P_b$. Then
+\begin{equation}\label{nh:eq:canonicalcompare}
+ K\subseteq L\iff A\preceq B\ \text{and}\ K_a\subseteq L_a
+ \ \text{for every }a\in A\cap B .
+\end{equation}
+Every tuple of nonempty principal sections at $A$ occurs in the stratum of $A$.
+\end{lemma}
+\begin{proof}
+If $K\subseteq L$, completed fibres stay completed, so $D(A)\subseteq D(B)$
+and $A\preceq B$, and shared sections are included. Conversely, if
+$A\preceq B$, every $a\in A\setminus B$ lies below some $b\in B$, strictly
+since $a\notin B$, so $a\in D(B)=D_L$ and the fibre of $a$ is completed in
+$L$; completed fibres of $K$ remain completed in $L$ because
+$D(A)\subseteq D(B)$; and the shared active sections are
+included by hypothesis. The last assertion is the sufficiency part of
+\eqref{eq:tuplecondition}.
+\end{proof}
+
+Lemma~\ref{lem:canonical} and this comparison rule are the structural part
+inherited from Part~I; 11 and 12 reprove them to keep the new height theorem
+independent of Part~I's other arguments. Not every tuple of empty or nonempty
+sections belongs to the indicated stratum, but every tuple with all active
+sections nonempty does, and this suffices for matching bounds (12).
+
+Let $Y_{\M}$ be the persistence order with states $\M(Q)$, active sets $A$ and
+lengths $\alpha_q$.
+
+\begin{lemma}[Two embeddings; 12 Lemma~5.3, 11 \S6.2]\label{nh:lem:twoembeddings}
+There are order embeddings
+$Y_{\M}\hookrightarrow\K(S_{\boldsymbol\alpha}(Q))\hookrightarrow Y_{\M}$.
+\end{lemma}
+\begin{proof}
+First map: send $(A,x)$ to the downset generated by the points $(a,x_a)$,
+$a\in A$. It contains every fibre over $D(A)$ and the nonempty principal
+section ${\downarrow}x_a$ at each $a\in A$; by
+Lemma~\ref{nh:lem:canonicalcompare} comparison of two images is frontier
+domination plus comparison on shared coordinates, which is the order of
+$Y_{\M}$. Second map: use the order isomorphisms
+$\theta_q:\K(\alpha_q)\to\alpha_q$, $\theta_q(\varnothing)=0$,
+$\theta_q({\downarrow}\xi)=1+\xi$, which exist because
+$\K(\alpha_q)\cong1+\alpha_q=\alpha_q$ for infinite $\alpha_q$. Send $K$ with
+canonical frontier $A$ to $(A,(\theta_a(K_a))_{a\in A})$. By
+\eqref{nh:eq:canonicalcompare} this preserves and reflects order. It need not
+be surjective: empty coordinates are subject to the support condition of
+\eqref{eq:tuplecondition}.
+\end{proof}
+
+\begin{proof}[First proof of Theorem~\ref{nh:thm:frontier}]
+By Lemma~\ref{nh:lem:rankbound}(ii) the two embeddings give
+$\hgt(Y_{\M})=\hgt(\K(S_{\boldsymbol\alpha}(Q)))$, and
+Theorem~\ref{nh:thm:persistence} computes the first height. Every exit along a
+strict chain of $\M(Q)$ is nonempty and every state is nonempty, with pure
+weights greater than $1$, so the fallback $1$ disappears and the weights are
+exactly \eqref{nh:eq:frontierweights}. The first embedding transports the
+attaining chain.
+\end{proof}
+
+\begin{remark}[Height equivalence is not a rank identification; 11]
+\label{nh:rem:notlocal}
+The two embeddings prove equality of heights, not preservation of pointwise
+rank: the zero tuple of $Y_{\M}$ need not correspond to a rank-zero downset. For
+exact ranks use the support model (Theorems~\ref{nh:thm:local}
+and~\ref{nh:thm:localrank}), never this compression.
+\end{remark}
+
+\subsection{Second proof (07): normalization and retirement boxes}
+
+This route avoids abstract state systems. It normalizes onto maximal supports,
+covers descending sequences by frontier chains, and computes the height over one
+chain through a standalone box theorem.
+
+\begin{definition}[Minimal completion; 07]
+For an antichain $A$ of $Q$ let $\Inc(A)$ be the set of vertices incomparable
+with every member of $A$, and $\mcl(A)=A\cup\min\Inc(A)$; thus
+$\mcl(\varnothing)=\min Q$.
+\end{definition}
+
+\begin{lemma}[Least maximal completion; 07 Lemma~4.2]\label{nh:lem:completion}
+$\mcl(A)$ is a maximal antichain, and it is the least member of $\M(Q)$ lying
+Hoare-above $A$. Consequently $A\le_HB$ implies $\mcl(A)\preceq\mcl(B)$, and
+\begin{equation}\label{nh:eq:retirestrict}
+ A\le_HB\quad\Longrightarrow\quad A\setminus B\subseteq\mcl(A)\setminus\mcl(B).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The members of $\min\Inc(A)$ are pairwise incomparable and incomparable with
+$A$; every vertex of $\Inc(A)$ lies above one of them, and every other vertex is
+comparable with a member of $A$; so $\mcl(A)$ is maximal. Let $B\in\M(Q)$ with
+$A\le_HB$ and $u\in\min\Inc(A)$, and suppose no member of $B$ lies above $u$.
+Maximality of $B$ gives $b\in B$ with $b<u$. Then $b\in\Inc(A)$: $a\le b$ would
+give $a<u$, and $b\le a$ with $a\le b'\in B$ would force $b=a=b'$, both contrary
+to $u\in\Inc(A)$. This contradicts the minimality of $u$. So $\mcl(A)\le_HB$;
+apply this to $\mcl(B)$ for monotonicity. Finally, $a\in A\setminus B$ lies
+strictly below some $b\in B\subseteq\mcl(B)$, so $a\notin\mcl(B)$, while
+$a\in\mcl(A)$.
+\end{proof}
+
+\begin{remark}[Editorial: three names for one antichain]\label{nh:rem:threenames}
+For every antichain $A$, $\mcl(A)=\min(Q\setminus D(A))$. Both sets contain
+$A$. A member $u\notin A$ of $\min(Q\setminus D(A))$ is not below a member of
+$A$ (it would lie in $D(A)$) and not above one, say $a<u$ (then $a\notin D(A)$
+would contradict minimality); so $u\in\Inc(A)$, and it is minimal there because
+$\Inc(A)$ is disjoint from $D(A)$. Conversely let $u\in\min\Inc(A)$; then
+$u\notin D(A)$, and a strict predecessor $v\notin D(A)$ of $u$ would lie in
+$\Inc(A)$, against minimality, or satisfy $a\le v<u$ for some $a\in A$, against
+$u\in\Inc(A)$. Hence 07's completion, the canonical frontier of Lemma~\ref{lem:canonical}
+(for $A$ the support of $K$) and 09's canonical antichain
+$A(I)=\min(Q\setminus C(I))$ of Lemma~\ref{nh:wpo:lem:canonical} (for $A=\max I$)
+coincide. This identification is an editorial observation of the merge.
+\end{remark}
+
+Let $\Kmax(S)$ be the induced subposet of $\K(S_{\boldsymbol\alpha}(Q))$ on the
+downsets $\langle A;x\rangle$ with $A\in\M(Q)$ (07's $Y$); its support map to
+$\M(Q)$ is monotone. It omits, for example, the empty downset.
+
+\begin{proposition}[Height-preserving normalization; 07 Prop.~4.3]
+\label{nh:prop:normalization}
+There is a strictly order-preserving map
+$\nu:\K(S_{\boldsymbol\alpha}(Q))\to\Kmax(S)$, and hence
+$\hgt(\K(S_{\boldsymbol\alpha}(Q)))=\hgt(\Kmax(S))$.
+\end{proposition}
+\begin{proof}
+Put $\nu(\langle A;x\rangle)=\langle\mcl(A);z\rangle$ with $z_q=1+x_q$ for $q\in A$
+and $z_q=0$ for $q\in\mcl(A)\setminus A$. Left addition $1+x_q$ is strictly
+increasing in $x_q$ and stays below $\alpha_q$ because $1+\alpha_q=\alpha_q$, so
+$\nu$ is defined even on the empty profile. Let
+$\langle A;x\rangle\subseteq\langle B;y\rangle$. The completions are Hoare
+ordered (Lemma~\ref{nh:lem:completion}). If $q\in A\cap\mcl(B)$, choose $b\in B$
+with $q\le b$; both lie in the antichain $\mcl(B)$, so $q=b\in B$. Hence a
+coordinate common to the two completions that is originally active at the
+source is originally active at the target, and its shifted value does not
+decrease by Lemma~\ref{nh:lem:support}; a filler coordinate has value $0$. So
+$\nu$ is monotone. If the inclusion is strict and the completions differ, the
+images differ; if they agree, \eqref{nh:eq:retirestrict} gives $A\subseteq B$,
+and either $A\ne B$, when some filler $0$ becomes a positive $1+y_q$, or $A=B$
+and some original coordinate increases. So $\nu$ is strict, and
+Lemma~\ref{nh:lem:rankbound} and inclusion give equal heights.
+\end{proof}
+
+\begin{remark}[07]
+The normalization is a height comparison, not an order isomorphism, and not an
+argument that cofinal subposets preserve rank (they need not). Its treatment of
+the empty profile is essential: for a finite singleton fibre, $\K(P)$ has
+height $2$ while its nonempty maximal-support part has height $1$. The
+hypotheses of this section avoid that defect.
+\end{remark}
+
+\begin{definition}[Retirement box; 07]
+Let $G_0,\dots,G_m$ be pairwise disjoint nonempty finite groups of coordinates,
+coordinate $q$ having capacity $\alpha_q=\omega^{\rho_q}$, $\rho_q>0$, and let
+$\lambda_i=\max_{q\in G_i}\alpha_q$. The retirement box
+$\mathsf B=\mathsf B(G_0,\dots,G_m)$ is the union of the stages
+\[
+ \mathsf B_i=\bigl\{z:\ z_q=\alpha_q\ \text{for }q\in G_j,\ j<i;\ \
+ z_q<\alpha_q\ \text{for }q\in G_j,\ j\ge i\bigr\},
+\]
+ordered coordinatewise. The value $\alpha_q$ is a sentinel for a retired
+coordinate. The last group never retires: there is no stage $m+1$.
+\end{definition}
+
+\begin{theorem}[Retirement-box height; 07 Thm~6.2]\label{nh:thm:boxes}
+$\hgt(\mathsf B(G_0,\dots,G_m))=\lambda_0+\lambda_1+\cdots+\lambda_m$, and the
+box contains a chain of this order type.
+\end{theorem}
+\begin{proof}
+\emph{Lower bound.} In stage $i$ let a coordinate $q_i\in G_i$ with
+$\alpha_{q_i}=\lambda_i$ run through $\lambda_i$, keep every other nonretired
+coordinate $0$ and retired coordinates at their sentinels. Every point of this
+chain is below every point chosen in a later stage, since the varied
+coordinate has reached its sentinel and every coordinate still active at both
+stages was $0$. Concatenate.
+
+\emph{Upper bound.} Induct on the number of groups. Let
+$\Lambda=\max_i\lambda_i$, $j=\max\{i:\lambda_i=\Lambda\}$ and
+$k=|\{i:\lambda_i=\Lambda\}|$; call a group large when $\lambda_i=\Lambda$ and
+small otherwise. For $z\in\mathsf B_i$ with $i\le j$ let
+$n_\Lambda(i)=|\{\ell<i:\lambda_\ell=\Lambda\}|$ and
+\begin{equation}\label{nh:eq:residual}
+ \operatorname{res}_i(z)=\bigns_{\ell\ge i}\ \bigns_{q\in G_\ell}z_q
+ \ \ns\bigns_{\substack{\ell<i\\ \lambda_\ell<\Lambda}}\ \bigns_{q\in G_\ell}\alpha_q .
+\end{equation}
+The second sum records the full capacities of already retired \emph{small}
+groups; retired large groups are omitted and counted by $n_\Lambda(i)$. Every
+summand is below $\Lambda$ and there are finitely many, so
+$\operatorname{res}_i(z)<\Lambda$. Put
+\begin{equation}\label{nh:eq:prefixrank}
+ f(z)=\Lambda\cdot n_\Lambda(i)+\operatorname{res}_i(z)\qquad(z\in\mathsf B_i,\ i\le j).
+\end{equation}
+Since the last large group has not retired in this prefix, $n_\Lambda(i)\le k-1$
+and $f(z)<\Lambda\cdot k$. If $z<z'$ lie in one stage, an active coordinate
+rises and none falls, so $f$ rises. If they lie in stages $i<i'$ and a large
+group retires in between, $n_\Lambda(i')>n_\Lambda(i)$ and
+$f(z)<\Lambda(n_\Lambda(i)+1)\le\Lambda n_\Lambda(i')\le f(z')$. Otherwise the
+count is unchanged, the residual replaces at least one active coordinate of a
+retiring small group by its full capacity, and no residual term decreases; the
+replacement is strict. So the prefix has height at most $\Lambda\cdot k$. The
+stages after $j$ form a retirement box on $G_{j+1},\dots,G_m$, earlier
+coordinates being fixed sentinels; by induction its height is at most
+$\lambda_{j+1}+\cdots+\lambda_m$. Refining the order by putting every prefix
+point below every suffix point gives an ordinal sum, an upper bound by
+Lemma~\ref{nh:lem:rankbound}. Thus
+$\hgt(\mathsf B)\le\Lambda\cdot k+\lambda_{j+1}+\cdots+\lambda_m
+=\lambda_0+\cdots+\lambda_m$: the terms below $\Lambda$ before its last
+occurrence are absorbed and the $k$ occurrences of $\Lambda$ remain. When $j=m$
+the suffix is empty.
+\end{proof}
+
+\paragraph{Why the residual uses natural addition (07).} Path answers use
+ordinary addition because coordinate groups retire in a prescribed order; the
+within-stage bound uses natural addition because several active coordinates can
+increase independently. Confusing the roles produces exactly the wrong
+persistent-coordinate calculation. For $(\lambda_0,\lambda_1,\lambda_2)=
+(\omega,\omega^2,\omega)$ the first two stages have height at most $\omega^2$,
+not $\omega^2+\omega$, because the last large group has not retired and its
+active values absorb the finite natural-sum contributions of small groups; the
+final stage contributes a new $\omega$, giving $\omega^2+\omega$. The prefix map
+\eqref{nh:eq:prefixrank} makes this absorption rigorous for finitely many
+coordinates of any capacities, uncountable ones included.
+
+For a frontier chain $C=(A_0\prec\cdots\prec A_m)$ let $\Kmax_C(S)$ be the
+induced subposet of $\Kmax(S)$ on those supports. By \eqref{nh:eq:noreturn} a
+vertex in $A_i$ and $A_k$ ($i<k$) lies in every $A_j$ between, so
+\begin{equation}\label{nh:eq:retirementgroups}
+ G_i=A_i\setminus A_{i+1}\ (i<m),\qquad G_m=A_m
+\end{equation}
+are pairwise disjoint nonempty sets partitioning $\bigcup_iA_i$; each vertex
+lies in the group of its last occurrence (07 Lemma~7.1).
+
+\begin{proposition}[Exact height over one frontier chain; 07 Prop.~7.2]
+\label{nh:prop:pathheight}
+For every nonempty frontier chain $C$, $\hgt(\Kmax_C(S))=W(C)$, and a chain of
+that type is explicitly constructible in $\Kmax_C(S)$.
+\end{proposition}
+\begin{proof}
+Send $\langle A_i;x\rangle$ to the vector $\iota$ on $\bigcup_jA_j$ with
+$\iota_q=\alpha_q$ if $q$ retired before stage $i$, $\iota_q=1+x_q$ if
+$q\in A_i$, and $\iota_q=0$ if $q$ has not yet appeared. By the no-return
+property these are all cases and the vector lies in stage $\mathsf B_i$ of the
+box of the groups \eqref{nh:eq:retirementgroups}; shifted active values stay
+below their capacities. If $\langle A_i;x\rangle\subseteq\langle A_j;y\rangle$
+then $i\le j$; coordinates active at both stages do not decrease
+(Lemma~\ref{nh:lem:support}), coordinates not yet introduced are $0$, retiring
+coordinates rise to their sentinels and retired ones stay fixed. A proper
+inclusion in one support raises an active coordinate, and a change of support
+retires a group and raises a coordinate to its sentinel. So $\iota$ is strictly
+increasing and Theorem~\ref{nh:thm:boxes} gives
+$\hgt(\Kmax_C(S))\le\max_{G_0}\alpha+\cdots+\max_{G_m}\alpha=W(C)$. Conversely,
+in support $A_i$ let a coordinate of largest capacity in $G_i$ run through its
+whole fibre with every other active coordinate $0$. The varied coordinate is
+absent from every later support, so all coordinates shared with a later support
+are $0$ in the earlier profile, and each chosen profile at stage $i$ lies
+strictly below each chosen profile at a later stage. The concatenation has type
+$W(C)$.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{nh:thm:frontier}, except saturation]
+By Proposition~\ref{nh:prop:normalization},
+$\hgt(\K(S_{\boldsymbol\alpha}(Q)))=\hgt(\Kmax(S))$. Apply
+Proposition~\ref{nh:prop:chaincover} to the support map $\Kmax(S)\to\M(Q)$ and
+Proposition~\ref{nh:prop:pathheight} to its chain pieces; one of the finitely
+many chains realizes the maximum, and its constructed chain realizes the height.
+\end{proof}
+
+\begin{proposition}[Saturation does not reduce cost; 07 Prop.~7.3, 09 Lemma~6.1]
+\label{nh:prop:saturation}
+Every nonempty frontier chain extends to a saturated chain from $\min Q$ to
+$\max Q$ without decreasing its cost $W$.
+\end{proposition}
+\begin{proof}
+If $A\prec B\prec C$ then $A\setminus C\subseteq(A\setminus B)\cup(B\setminus C)$,
+since a vertex of $A\setminus C$ is absent from $B$ or lies in $B\setminus C$.
+Hence $w(A,C)\le\max\{w(A,B),w(B,C)\}\le w(A,B)+w(B,C)$, and replacing an edge
+by the two refined edges cannot reduce the cost, ordinary addition being
+nondecreasing in each argument. Prepending a smaller frontier prepends a
+nonnegative ordinal. To append $B$ above a terminal $A$, note
+$t(A)\le\max\{w(A,B),t(B)\}\le w(A,B)+t(B)$, since vertices of $A$ either retire
+or lie in $B$. Add the bottom and top frontiers and fill every gap; finiteness
+makes this terminate.
+\end{proof}
+
+This completes the second proof. No step sums the heights of whole adjacent
+strata; such a sum is used only in the auxiliary upper bound after the last
+largest retirement group, where it is justified (07).
+
+\begin{corollary}[Uniform recovery; all four sources]\label{nh:cor:uniform}
+If $\alpha_q=\alpha=\omega^\rho$ for every $q$, with $\rho>0$, then
+$\hgt(\K(S_\alpha(Q)))=\alpha\cdot\hgt(\M(Q))$.
+\end{corollary}
+\begin{proof}
+Every transition and terminal weight is $\alpha$, so a chain with $\ell$
+frontiers costs $\alpha\cdot\ell$; maximize over the finite poset $\M(Q)$.
+\end{proof}
+
+This is Theorem~\ref{thm:height} of Part~I, recovered as a special case and not
+claimed as new (07 Cor.~8.1, 09 Cor.~7.3, 11 Cor.~6.3, 12 Cor.~5.5).
+
+\section{Arbitrary ordinal fibres and exact point ranks}\label{nh:sec:arbitrary}
+
+\subsection{Cantor-normal-form refinement}
+
+Write each nonzero fibre length in Cantor normal form,
+\begin{equation}\label{nh:eq:cnf}
+ \alpha_q=\omega^{\rho_{q,1}}n_{q,1}+\cdots+\omega^{\rho_{q,k_q}}n_{q,k_q},
+ \qquad \rho_{q,1}>\cdots>\rho_{q,k_q}\ge0,\quad 0<n_{q,j}<\omega .
+\end{equation}
+Replace $q$ by a chain of $\sum_jn_{q,j}$ vertices carrying, in order,
+$n_{q,1}$ blocks of weight $\omega^{\rho_{q,1}}$, then $n_{q,2}$ of the next
+weight, and so on; exponent $0$ gives a singleton block. If $q<r$ put every
+$q$-block below every $r$-block; blocks of incomparable vertices stay
+incomparable; delete zero fibres. Call the result $Q^\sharp$ with pure weights
+$\boldsymbol\lambda$, and let $U^\sharp$ be its blocks of positive exponent.
+
+\begin{lemma}[Exact refinement; 12 Lemma~6.1; also 07, 09, 11]\label{nh:lem:refine}
+$S_{\boldsymbol\alpha}(Q)\cong S_{\boldsymbol\lambda}(Q^\sharp)$.
+\end{lemma}
+\begin{proof}
+Inside a fibre the ordinal concatenation of its blocks is its Cantor normal
+form; comparisons between distinct original fibres are unchanged by putting
+every block below every block when the original indices were comparable.
+\end{proof}
+
+\begin{theorem}[All finite ordinal lexicographic sums; 12 Thm~6.2, 11 Cor.~7.2]
+\label{nh:thm:arbitrary}
+For every finite poset $Q$ and ordinals $\alpha_q\ge0$,
+\[
+ \boxed{\hgt\bigl(\K(S_{\boldsymbol\alpha}(Q))\bigr)=\Fdp(Q^\sharp)+\tau_{Q^\sharp},}
+\]
+with $\Fdp$ and $\tau$ from \eqref{nh:eq:dp} and \eqref{nh:eq:terminal}, and the
+answer is attained by a chain. No countability, cofinality, purity or successor
+restriction is imposed on the fibres.
+\end{theorem}
+\begin{proof}
+An order isomorphism induces an isomorphism of finitely generated downsets.
+Apply Lemma~\ref{nh:lem:refine} and Theorem~\ref{nh:thm:dag}.
+\end{proof}
+
+\paragraph{Second route (11 Thm~7.1).} Deleting the coordinates of length $1$
+from the support model of $S_{\boldsymbol\lambda}(Q^\sharp)$ gives an exact
+representation
+\begin{equation}\label{nh:eq:mixed}
+ \K(S_{\boldsymbol\alpha}(Q))\cong
+ Y\bigl(\Ant(Q^\sharp),\ (B\cap U^\sharp)_{B\in\Ant(Q^\sharp)},\ \boldsymbol\lambda|_{U^\sharp}\bigr):
+\end{equation}
+singleton blocks may occur in a state but carry no coordinate. 11 proves it
+directly: a finitely generated downset has a unique finite antichain of maximal
+actual points, at most one per fibre; over a singleton block the point is
+forced, over $u\in B\cap U^\sharp$ it is a unique $\xi_u<\lambda_u$; one such
+downset lies in another exactly when every maximal generator of the first lies
+below one of the second, which for different fibres is the skeleton order and in
+a shared infinite fibre is $\xi_u\le\eta_u$ (a shared fibre cannot be matched to
+a strictly higher generator of an antichain already containing its index); and
+\eqref{nh:eq:noreturn} gives \eqref{nh:eq:convex}. The persistence theorem then
+gives the height and an attaining chain.
+
+Cantor normal forms are finite for every ordinal, and no recursive notation
+for the exponents is needed for the statement. An implementation needs a
+representation and comparison procedure for them, and 11 does not claim a
+uniform machine representation of all set ordinals. Expanding a coefficient
+$n$ into $n$ blocks is a unary expansion: an algorithm polynomial in the number
+of blocks is not polynomial in the bit length of a large coefficient, and the
+ideal state space may already be exponential; no stronger complexity claim is
+made (12).
+
+\begin{corollary}[Nonzero limit fibres; 07 Thm~9.1, 09 Thm~9.2]\label{nh:cor:limits}
+If every $\alpha_q$ is a nonzero limit ordinal, the last exponent of each
+Cantor normal form is positive, every block of $Q^\sharp$ is infinite, and
+Theorem~\ref{nh:thm:frontier} applied to $Q^\sharp$ computes the height and
+constructs an attaining chain. The reduction is not limited to countable
+ordinals or to ordinals below $\eps$.
+\end{corollary}
+
+\subsection{The empty, finite and successor cases}\label{nh:sec:finitecases}
+
+If all fibres are zero, $Q^\sharp=\varnothing$, $\Ant(Q^\sharp)=\{\varnothing\}$
+and the answer is $1$, as required for $\K(\varnothing)=\{\varnothing\}$. If the
+whole sum is finite with $N$ points, $Q^\sharp$ has $N$ singleton blocks, the
+state order is the finite downset lattice, and
+\begin{equation}\label{nh:eq:finite}
+ \hgt(\K(S))=N+1
+\end{equation}
+(each of the $N$ edges of a maximal ideal chain and the terminal stage cost
+$1$). The fallback weight $1$ recovers exactly this case and must not be
+dropped merely because the main application has infinite fibres (11). For one
+chain, $\K(\alpha)\cong1+\alpha$, which is $\alpha$ for infinite $\alpha$ and
+$n+1$ for finite $n$. Adjoining a greatest point adds one greatest element:
+$\hgt(\K(P+1))=\hgt(\K(P))+1$; for the chain $\omega+1$ the expanded skeleton is
+an $\omega$ block below a singleton, the stage costs are $1,\omega,1$, and the
+answer is $\omega+1$ (12). Successor endpoints must be kept explicitly; the
+maximal-frontier compression, which assumes no internally completed fibre, is
+not the right formula for such inputs.
+
+07 left finite fibres and successor tails outside its limit-fibre reduction and
+observed that exponent $0$ cannot simply be admitted there: for two
+incomparable singleton fibres $\K(P)$ is the four-element Boolean lattice of
+height $3$, whereas the maximum-fibre value would be $1$. The support model
+handles this case: \eqref{nh:eq:finite} gives $2+1=3$.
+
+\subsection{Exact point ranks of finitely generated downsets (12)}
+
+Let $K={\downarrow}F\in\K(S_{\boldsymbol\alpha}(Q))$, normalized to its maximal
+generators with support $A$ and positions $x_a<\alpha_a$, and set
+\begin{equation}\label{nh:eq:localfibers}
+ \beta_q=\begin{cases}
+ \alpha_q,&q<a\ \text{for some }a\in A,\\
+ x_q+1,&q\in A,\\
+ 0,&\text{otherwise}
+ \end{cases}
+\end{equation}
+(disjoint cases, $A$ being an antichain).
+
+\begin{theorem}[Exact point-rank algorithm; 12 Thm~6.3]\label{nh:thm:localrank}
+Let $H_K=\hgt(\K(S_{\boldsymbol\beta}(Q)))$, computed by
+Theorem~\ref{nh:thm:arbitrary}. Then $H_K$ is a successor and
+$r_{\K(S_{\boldsymbol\alpha}(Q))}(K)+1=H_K$. More precisely, in the expansion
+$Q^\sharp_K$ of $S_{\boldsymbol\beta}(Q)$ every maximal block is a singleton, so
+\[
+ \boxed{r_{\K(S_{\boldsymbol\alpha}(Q))}(K)=\Fdp(Q^\sharp_K).}
+\]
+This includes the empty downset, of rank $0$.
+\end{theorem}
+\begin{proof}
+As an induced poset, $K$ is $S_{\boldsymbol\beta}(Q)$. A finitely generated
+downset of $S$ inside $K$ is generated by points of itself, hence of $K$, and a
+finite subset of $K$ generates the same downset in $K$ and in $S$ because $K$ is
+downward closed; so $\{L\in\K(S):L\subseteq K\}\cong\K(K)$. Ranks in a principal
+lower interval agree with ambient ranks, and this interval has greatest element
+$K$, so its height is $r(K)+1$. Every maximal nonzero fibre in
+\eqref{nh:eq:localfibers} is a successor $x_a+1$ whose last Cantor term has
+exponent $0$, so its last block is a singleton; every completed nonmaximal fibre
+lies below one of them. Hence all maximal blocks of $Q^\sharp_K$ have weight $1$,
+or $Q^\sharp_K$ is empty, and $\tau=1$ in both cases.
+\end{proof}
+
+This computes the rank of each specified compact downset exactly, not merely an
+upper ranking function. In executable Cantor normal form the predecessor of
+$H_K$ is obtained by subtracting one from its nonzero finite final coefficient,
+never by commutative ordinal subtraction (12). 11 reaches the same ranks through
+the exact model \eqref{nh:eq:mixed} and Theorem~\ref{nh:thm:local}; only exact
+constructions, never the compressed model, are used for point ranks.
+\Needspace{8\baselineskip}
+\section{Worked examples and diagnostic counterexamples}\label{nh:sec:examples}
+
+\subsection{The persistent-coordinate obstruction, now resolved (07, 11, 12)}
+
+Let $Q$ consist of an isolated $x$ and a chain $y<z$, with
+$(\alpha_x,\alpha_y,\alpha_z)=(\omega^2,\omega,\omega)$, the example of
+\eqref{eq:counterheight}. Its frontiers are $\{x,y\}\prec\{x,z\}$; both
+states have largest length $\omega^2$, but only $y$ retires at the
+transition, so $w=\omega$ and $t(\{x,y\})=t(\{x,z\})=\omega^2$. The two-state
+path costs
+\[
+ \underbrace{\omega}_{y\text{ retires}}+
+ \underbrace{\omega^2}_{\text{terminal frontier}}=\omega^2,
+\]
+one-state paths cost $\omega^2$ as well, and
+\begin{equation}\label{nh:eq:obstructionfixed}
+ \hgt\bigl(\K(\omega^2\sqcup(\omega+\omega))\bigr)=\omega^2,
+\end{equation}
+in agreement with \eqref{eq:counterheight}. The obstruction of Part~I is a
+direct instance of the new rule, not an exception to it; replacing the
+retirement cost by the whole first-stratum height would give the wrong value
+$\omega^2+\omega^2$. An attaining chain first varies the $y$-coordinate through
+$\omega$ at $x=0$, then the $x$-coordinate through $\omega^2$ in the next
+frontier at $z=0$; its type is $\omega+\omega^2=\omega^2$, and the long
+$x$-coordinate is never reset. In the peeling calculation the top label $x$
+never departs, so $d_\Lambda=0$ on both states, $c_\Lambda=1$, $Z=\varnothing$,
+and the rank bound has the form $\theta<\omega^2$ despite the state change and
+the two lower fibres. The same holds with $\omega^2$ replaced by $\omega^\eta$
+and the lower fibres by $\omega^\sigma$, for any $0<\sigma<\eta$ (11).
+
+At ideal-state resolution (12), the six ideals and optimal prefix values are
+\[
+\begin{array}{c|cccccc}
+ I&\varnothing&\{x\}&\{y\}&\{x,y\}&\{y,z\}&\{x,y,z\}\\ \hline
+ \max I&\varnothing&\{x\}&\{y\}&\{x,y\}&\{z\}&\{x,z\}\\
+ \Fdp(I)&0&1&1&2&\omega&\omega+1
+\end{array}
+\]
+At the last state the two final additions give the prefix costs $2+\omega=\omega$
+and $\omega+1$, and the latter wins; with terminal cost $\omega^2$,
+$\Fdp(Q)+\tau_Q=(\omega+1)+\omega^2=\omega^2$. Maximizing prefixes is safe even
+when different prefixes are later absorbed to the same value: the recurrence
+records the actual greatest prefix rather than relying on future absorption.
+Part~III's weight-$0$ table for the same example is
+Remark~\ref{nh:wpo:rem:conventions}.
+
+\subsection{The order of transitions matters (07)}
+
+\begin{example}[07 Ex.~3.3]\label{nh:ex:diamond}
+Let $Q$ be the two disjoint chains $a<c$ and $b<d$ with
+$(\alpha_a,\alpha_b,\alpha_c,\alpha_d)=(\omega^2,\omega,\omega,\omega)$. The
+frontier poset is a diamond, and its two saturated paths cost
+\[
+ \begin{aligned}
+ \{a,b\}\to\{b,c\}\to\{c,d\}:&\quad \omega^2+\omega+\omega=\omega^2+\omega\cdot2,\\
+ \{a,b\}\to\{a,d\}\to\{c,d\}:&\quad \omega+\omega^2+\omega=\omega^2+\omega .
+ \end{aligned}
+\]
+The first is larger. A rule that forgets the order of transitions loses
+information even when every edge weight is known.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},
+ v/.style={draw=Olive,rounded corners=2pt,fill=Sage,minimum width=1.2cm,minimum height=.55cm}]
+\node[v] (ab) at (0,0) {$\{a,b\}$};
+\node[v] (bc) at (-2.3,1.5) {$\{b,c\}$};
+\node[v] (ad) at (2.3,1.5) {$\{a,d\}$};
+\node[v] (cd) at (0,3) {$\{c,d\}$};
+\draw[->,thick,Olive] (ab)--node[left] {$\omega^2$} (bc);
+\draw[->,thick,Olive] (bc)--node[left] {$\omega$} (cd);
+\draw[->] (ab)--node[right] {$\omega$} (ad);
+\draw[->] (ad)--node[right] {$\omega^2$} (cd);
+\node[anchor=west] at (1,3) {terminal cost $\omega$};
+\end{tikzpicture}
+\caption{The frontier diamond of Example~\ref{nh:ex:diamond}; edges carry the
+weight $w(A,B)$ of the retiring coordinate. The thick path is optimal.}
+\label{nh:fig:diamond}
+\end{figure}
+
+\subsection{The weighted \texorpdfstring{$N$}{N}-poset (07, 11, 12)}
+
+For $a<c$, $b<c$, $b<d$ the frontiers form the chain
+$\{a,b\}\prec\{a,d\}\prec\{c,d\}$ of \eqref{eq:Nfrontiers}. The transition
+weights are $\alpha_b$ and $\alpha_a$ and the terminal weight is
+$\max(\alpha_c,\alpha_d)$, so for all positive pure fibres
+\begin{equation}\label{nh:eq:N}
+ \boxed{\hgt\bigl(\K(S_{\boldsymbol\alpha}(N))\bigr)=\alpha_b+\alpha_a+\max(\alpha_c,\alpha_d),}
+\end{equation}
+an ordered sum: $b$ retires first, then $a$. Paths that skip a frontier and
+one-state paths are also in the maximum, but never exceed this one; both
+transition weights are forced, and a persistent terminal coordinate can absorb
+the first (07).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small},
+  dot/.style={circle,fill=Olive,inner sep=2pt},
+  box/.style={draw=Olive,rounded corners=2pt,fill=Sage,inner sep=5pt}]
+\node[dot,label=below:$a$] (a) at (0,0) {};
+\node[dot,label=below:$b$] (b) at (1.5,0) {};
+\node[dot,label=above:$c$] (c) at (0,1.5) {};
+\node[dot,label=above:$d$] (d) at (1.5,1.5) {};
+\draw[thick,Olive] (a)--(c) (b)--(c) (b)--(d);
+\node[box] (A) at (4.1,.75) {$\{a,b\}$};
+\node[box] (B) at (6.8,.75) {$\{a,d\}$};
+\node[box] (C) at (9.5,.75) {$\{c,d\}$};
+\draw[-{Stealth},thick,Olive] (A)--node[above] {$\alpha_b$}(B);
+\draw[-{Stealth},thick,Olive] (B)--node[above] {$\alpha_a$}(C);
+\node[below=9mm of C,align=center] {$\max(\alpha_c,\alpha_d)$\\terminal};
+\end{tikzpicture}
+\caption{The weighted $N$-poset and its retirement costs (12, 11). An edge is
+weighted by a disappearing coordinate, not by the height of its source stratum.}
+\label{nh:fig:N}
+\end{figure}
+
+For the weighted example of Section~\ref{sec:general}, realized by the fibres
+$(\alpha_a,\alpha_b,\alpha_c,\alpha_d)=(\omega^3,\omega,\omega,\omega^2)$, the
+height is $\omega+\omega^3+\omega^2=\omega^3+\omega^2$: this supplies the
+height missing from Part~I for that example (12). For
+$(\omega^2,\omega^3,\omega,\omega^2)$ it is $\omega^3+\omega^2+\omega^2=
+\omega^3+\omega^2\cdot2$, whereas skipping the middle frontier would give only
+$\omega^3+\omega^2$: intermediate retirement opportunities matter (12). Further
+values on this one skeleton (11, 07):
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$\alpha_a$ & $\alpha_b$ & $\alpha_c$ & $\alpha_d$ & $\hgt(\K(S))$\\
+\midrule
+$\omega$ & $\omega$ & $\omega$ & $\omega$ & $\omega\cdot3$\\
+$\omega^2$ & $\omega$ & $\omega$ & $\omega$ & $\omega^2+\omega$\\
+$\omega$ & $\omega^2$ & $\omega$ & $\omega$ & $\omega^2+\omega\cdot2$\\
+$\omega^3$ & $\omega$ & $\omega$ & $\omega^2$ & $\omega^3+\omega^2$\\
+$\omega^2$ & $\omega$ & $\omega$ & $\omega^2$ & $\omega^2\cdot2$\\
+$\omega^2$ & $\omega^3$ & $\omega$ & $\omega$ & $\omega^3+\omega^2+\omega$\\
+\bottomrule
+\end{tabular}
+\caption{Nonuniform heights on the $N$-skeleton. The first four rows are 11's
+table, the fifth is 07's, and the last is 09's example (Section~\ref{nh:wpo:sec:examples})
+in the labelling of this report.}
+\label{nh:tab:N}
+\end{table}
+In the third row the $\omega^2$ coordinate retires first, leaving two
+independent opportunities for later $\omega$ blocks; in the second, the early
+$\omega$ block is absorbed by the later $\omega^2$. The difference is the
+noncommutativity of ordinary addition, not a numerical approximation (11).
+
+\subsection{Stratum heights do not determine the height}
+
+\begin{corollary}[Stratum types do not determine the answer; 07 Cor.~8.4]
+\label{nh:cor:strata}
+The frontier poset together with the isomorphism type of each maximal-support
+stratum does not determine $\hgt(\K(S_{\boldsymbol\alpha}(Q)))$, even for pure
+fibres on a three-vertex skeleton.
+\end{corollary}
+\begin{proof}
+On the skeleton $\{x,\,y<z\}$ compare $P_X=\omega^2\sqcup(\omega+\omega)$ and
+$P_Y=\omega\sqcup(\omega^2+\omega^2)$. Both have the two-element frontier chain,
+and every maximal-support stratum of either is isomorphic to
+$\omega^2\times\omega$ (interchanging coordinates if needed). Yet
+$\hgt(\K(P_X))=\omega+\omega^2=\omega^2$ and
+$\hgt(\K(P_Y))=\omega^2+\omega^2=\omega^2\cdot2$. The difference is which
+coordinate is shared and which retires.
+\end{proof}
+
+The first member of the pair is Part~I's counterexample. 12 gives a second
+pair, comparing stratum heights only: the complete two-level poset $a,b<c,d$ with
+weights $(\omega^2,\omega,\omega^2,\omega)$ also has two comparable frontiers,
+each stratum of height $\omega^2$, but both lower coordinates retire and the
+height is $\omega^2+\omega^2=\omega^2\cdot2$. Each claimed stratum height
+follows without the main formula: the stratum is bounded by a product whose
+largest pure coordinate is $\omega^2$ (natural-sum rank below $\omega^2$) and
+contains a copy of that coordinate with the other active coordinates fixed
+nonempty; this does not assert that the strata are isomorphic. The input
+``frontier poset plus stratum heights'' is thus identical while the outputs
+differ; the missing data are which coordinates persist. Part~III shows that
+the resulting ambiguity is unbounded (Theorem~\ref{nh:wpo:thm:ambiguity}). An
+exact finite invariant must retain not merely sizes or heights of pieces but the
+capacities of coordinates lost along each transition (07).
+
+\subsection{Successor endpoints carry real information (11)}
+
+For two disjoint chains of type $\omega+1$, $\K$ commutes with the finite
+disjoint union, so
+$\K((\omega+1)\sqcup(\omega+1))\cong(\omega+1)\times(\omega+1)$, of height
+\begin{equation}\label{nh:eq:successorproduct}
+ \omega\cdot2+1 .
+\end{equation}
+Directly: $(\xi,\eta)\mapsto\xi\ns\eta$ is strictly increasing with largest
+value $\omega\cdot2$ at $(\omega,\omega)$, bounding the height by
+$\omega\cdot2+1$, and the chain
+$(0,0)<(1,0)<\cdots<(\omega,0)<(\omega,1)<\cdots<(\omega,\omega)$ has exactly that
+type. In the expanded skeleton each fibre is an $\omega$ block below a singleton
+block, and the last state consists of singleton blocks only and contributes the
+final $1$. Using only the maximal antichains of the expanded skeleton would
+discard essential earlier states; all antichains retain them. Similarly
+$\hgt((\omega^2+1)\times(\omega+1))=\omega^2+\omega+1$: the natural-sum bound has
+maximum $\omega^2+\omega$, and the chain through $(\xi,0)$ for $\xi<\omega^2$,
+then $(\omega^2,\eta)$ for $\eta<\omega$, then the greatest point attains its
+successor.
+
+These are heights of products $\K(\alpha_1\sqcup\alpha_2)\cong(1+\alpha_1)\times
+(1+\alpha_2)$, not of finitary powersets \emph{of} products: the neighbouring
+report on intrinsic ordinal approximations computes
+$\hgt(\K((\omega+1)\times(\omega+1)))=\omega^2+1$ for the latter.
+
+\subsection{A genuinely mixed Cantor-normal-form example (12)}
+
+On the $N$-skeleton put
+$\alpha_a=\omega^2+\omega\cdot2+1$, $\alpha_b=\omega+2$, $\alpha_c=\omega^2+1$,
+$\alpha_d=\omega\cdot2$. Expansion gives eleven pure blocks and a downset lattice
+with thirty-six states, and
+\begin{equation}\label{nh:eq:mixedexample}
+ \hgt\bigl(\K(S_{\boldsymbol\alpha}(N))\bigr)=\omega^2\cdot2+\omega\cdot2 .
+\end{equation}
+Adding all blocks of $a$, then of $b$, then of $c$, then of $d$ is an optimizing
+path; its stage costs, the last terminal, are
+$1,\ \omega^2,\ \omega,\ \omega,\ 1,\ \omega,\ 1,\ 1,\ \omega^2,\ 1,\ \omega,\ \omega$,
+whose ordinary sum is \eqref{nh:eq:mixedexample}. The recurrence table in
+\path{data/05-ranks-mixed_CNF_certificate.json} evaluates every state and
+certifies that no path is larger. This is an exact symbolic consequence of
+Theorem~\ref{nh:thm:arbitrary}, not an extrapolation from finite approximations
+to $\omega$.
+
+\subsection{Exact ranks inside infinite orders}
+
+In the persistent example let $K$ be generated by the point at position
+$\omega+2$ of the $x$-fibre and the point at position $3$ of the $z$-fibre. The
+whole $y$-fibre is present and $K\cong(\omega+3)\sqcup(\omega+4)$ as an induced
+order; its finitary powerset has height $\omega\cdot2+6$, so
+$r_{\K(S)}(K)=\omega\cdot2+5$. This agrees with the classical product point
+rank $(\omega+2)\ns(\omega+3)=\omega\cdot2+5$; the local-rank algorithm does not
+need to recognize the example as a product (12).
+
+In $X=\omega^2\times\omega^2$ take $z=(\omega+1,\omega)$. Its capped principal
+ideal is $(\omega+2)\times(\omega+1)$, of height $\omega\cdot2+2$, so
+$r_X(z)=\omega\cdot2+1$. Directly, the natural-sum bound at $z$ is
+$(\omega+1)\ns\omega=\omega\cdot2+1$, and the chain through $(n,0)$, then
+$(\omega,n)$, then $(\omega,\omega)$ and $(\omega+1,\omega)$ has type
+$\omega\cdot2+2$ (11).
+
+\subsection{Transfinite exponents are not a new combinatorial case (12)}
+
+On the $N$-skeleton take
+$(\alpha_a,\alpha_b,\alpha_c,\alpha_d)=(\omega^{\omega+1},\omega^\omega,\omega^\omega,\omega^{\omega+1})$.
+Formula \eqref{nh:eq:N} gives $\omega^\omega+\omega^{\omega+1}+\omega^{\omega+1}=
+\omega^{\omega+1}\cdot2$. The proof uses only the order of the exponents, not a
+finite-exponent approximation; Corollary~\ref{nh:cor:scale} makes this precise.
+
+\subsection{Products of chains: an independent check}
+
+The following classical product-height calculation is recorded as a separate
+verification route for antichain skeletons; it is not a new-priority claim
+(07, 12). The finite Milner--Rado expression is given, e.g., in
+\cite[Theorem~2.20]{Hilton2016}.
+
+\begin{lemma}[Ranks in finite products of chains; 12 App.~A, 07 Lemma~9.2]
+\label{nh:lem:productrank}
+For nonzero ordinal chains $\theta_1,\dots,\theta_k$ the rank of a tuple in the
+componentwise product is $r(x_1,\dots,x_k)=x_1\ns\cdots\ns x_k$. Let $\rho_i$ be
+the smallest exponent in the Cantor normal form of $\theta_i$ and
+$\rho=\max_i\rho_i$; let $B_i$ be $\theta_i$ with one copy of its final
+$\omega^\rho$ removed when $\rho_i=\rho$, and $\theta_i$ truncated to exponents
+at least $\rho$ when $\rho_i<\rho$. Then
+\begin{equation}\label{nh:eq:MR}
+ \hgt\Bigl(\prod_i\theta_i\Bigr)=\Bigl(\bigns_iB_i\Bigr)+\omega^\rho .
+\end{equation}
+The empty product has height $1$; a product with a zero factor has height $0$.
+\end{lemma}
+\begin{proof}[Proof (12)]
+Write $z=\bigns_ix_i$. Strict monotonicity gives $\bigns_iy_i+1\le z$ when one
+coordinate is decreased and the others fixed. Conversely fix $\gamma<z$, align
+the exponents of $z$ and $\gamma$, and let $\delta$ be the greatest exponent at
+which their coefficients differ; that of $z$ is larger. Choose $x_j$ contributing
+to the coefficient at $\delta$, keep its terms above $\delta$, lower that
+coefficient by one and replace its tail below $\delta$ by the tail of $\gamma$
+below $\delta$. The resulting $y_j<x_j$, and the natural sum with this one
+coordinate changed agrees with $z$ above $\delta$, has coefficient at $\delta$ at
+least that of $\gamma$ and, when these are equal, lower tail at least that of
+$\gamma$; so it is at least $\gamma$. This proves
+$z=\sup\{(\bigns_iy_i)+1:\text{one }y_i<x_i,\text{ the others }y_i=x_i\}$, and
+well-founded induction gives the rank formula. Hence
+$\hgt(\prod_i\theta_i)=\sup_{x_i<\theta_i}((\bigns_ix_i)+1)$. For $\rho=0$
+every factor is a successor with greatest element $B_i$, and the formula is the
+rank of the greatest tuple plus one. For $\rho>0$ every $x_i<\theta_i$ is bounded
+by some $B_i+t_i$ with $t_i<\omega^\rho$, and natural-sum closure gives the upper
+bound. For the lower bound, set the coordinates with $\rho_i<\rho$ equal to
+$B_i$ (allowed, since a positive lower tail remains), set all but one of the
+others to $B_i$ and vary the last as $B_i+t$, $t<\omega^\rho$; these natural sums
+are cofinal in the right side.
+\end{proof}
+
+\begin{proof}[Second route for limit factors (07)]
+If every $\theta_i=\beta_i$ is a nonzero limit, write $\beta_i=b_i+\omega^{\tau_i}$
+by removing one copy of the final monomial and put
+$\Lambda=\max_i\omega^{\tau_i}$; then \eqref{nh:eq:MR} reads
+$\hgt(\prod_i\beta_i)=(b_1\ns\cdots\ns b_r)+\Lambda$ (terms of $\bigns b_i$
+below the exponent of $\Lambda$ are absorbed either way). The product of the
+final intervals $[b_i,b_i+\omega^{\tau_i})$ is cofinal, and since natural
+addition is monotone the supremum of values plus one may be restricted to it.
+There $x_i=b_i+u_i=b_i\ns u_i$ with $u_i<\omega^{\tau_i}$, because the exponents
+of $b_i$ are at least $\tau_i$, so the rank is $B\ns\bigns_iu_i$ with
+$B=\bigns_ib_i$. All variable summands are below $\Lambda$, one of them varies
+cofinally in $\Lambda$, and aligning Cantor normal forms gives
+$\sup((B\ns\bigns_iu_i)+1)=B+\Lambda$. The rank recursion used for
+$\bigns_ix_i$ is the one proved above: at a successor reduce a coordinate
+with a nonzero finite term by one, and at a limit reduce inside the last
+monomial of a coordinate of least trailing exponent.
+\end{proof}
+
+Since $\K(\bigsqcup_i\alpha_i)\cong\prod_i\K(\alpha_i)\cong\prod_i(1+\alpha_i)$,
+the benchmark uses $\theta_i=1+\alpha_i$, not $\alpha_i$; the distinction matters
+for finite and zero fibres. For infinite fibres $1+\beta=\beta$, and the lemma
+checks Corollary~\ref{nh:cor:limits} independently on antichain skeletons. For
+example (07),
+\[
+ \beta_1=\omega^2+\omega,\quad\beta_2=\omega^3+\omega^2
+ \quad\Longrightarrow\quad
+ \hgt(\K(\beta_1\sqcup\beta_2))=\omega^3+\omega^2\cdot2 .
+\]
+
+\subsection{Several tempting generalizations are false (11)}
+
+The persistent example disproves adding full state heights.
+Example~\ref{nh:ex:noreturn} shows that disappearance and reappearance can
+destroy transitivity. The successor product shows that a maximum of impure
+capacities is not the right product height. Replacing ordinary by natural sums
+also fails: it would turn $\omega+\omega^2$ into $\omega^2+\omega$ in
+\eqref{nh:eq:obstructionfixed}. Finally, replacing every infinite fibre by a
+long finite chain makes the whole order finite, and then \eqref{nh:eq:finite}
+forces height ``number of points plus one''. That is not an approximation scheme
+for the transfinite formula: finite fibres have endpoints and pure infinite
+fibres do not. The finite tests of Section~\ref{nh:sec:verification} check
+representations and algorithms under their actual hypotheses, not a limit of
+finite height counts.
+
+\subsection{Summary of 07's worked certificates}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.36\textwidth}>{\raggedright\arraybackslash}p{.27\textwidth}X@{}}
+\toprule
+Skeleton and fibres & Maximizing weight word & Exact height\\
+\midrule
+Isolated $\omega^2$ beside $\omega+\omega$ & $\omega,\omega^2$ & $\omega^2$\\
+Isolated $\omega$ beside $\omega^2+\omega^2$ & $\omega^2,\omega^2$ & $\omega^2\cdot2$\\
+$N$ skeleton, all fibres $\omega$ & $\omega,\omega,\omega$ & $\omega\cdot3$\\
+$N$ skeleton, fibres $(\omega^2,\omega,\omega,\omega^2)$ & $\omega,\omega^2,\omega^2$ & $\omega^2\cdot2$\\
+Two disjoint two-chains, Example~\ref{nh:ex:diamond} & $\omega^2,\omega,\omega$ & $\omega^2+\omega\cdot2$\\
+Two incomparable limit fibres (above) & computed after block expansion & $\omega^3+\omega^2\cdot2$\\
+\bottomrule
+\end{tabularx}
+\caption{The examples whose inputs and certificates 07 ships, as
+\texttt{data/02-retire-*.json}.}
+\label{nh:tab:retire}
+\end{table}
+
+\section{Structural consequences}\label{nh:sec:consequences}
+
+\begin{corollary}[Small output and universal bounds; 12 Cor.~8.1, 07 Cor.~8.2]
+\label{nh:cor:smalloutput}
+Let $Q^\sharp$ have $N$ pure blocks. Every exponent of
+$\Fdp(Q^\sharp)+\tau_{Q^\sharp}$ is $0$ or the exponent of an input block, and
+the sum of its Cantor-normal-form coefficients is at most $N+1$. If $Q$ is
+nonempty and all fibres are positive pure, $\alpha_q=\omega^{\rho_q}$, then the
+coefficient sum is at most $|Q|$, no finite term occurs, the leading exponent is
+$\max_q\rho_q$, and
+\begin{equation}\label{nh:eq:bounds}
+ \max_{q\in Q}\alpha_q\ \le\ \hgt\bigl(\K(S_{\boldsymbol\alpha}(Q))\bigr)\ \le\
+ \bigns_{q\in Q}\alpha_q .
+\end{equation}
+Both bounds are sharp.
+\end{corollary}
+\begin{proof}
+A winning ideal path has $N+1$ pure stage costs; ordinary addition can merge
+equal exponents and erase smaller tails, but cannot introduce an exponent or
+increase the number of pure summands. For the compressed formula choose one
+coordinate attaining each retirement cost and one attaining the terminal cost;
+a chosen retiring coordinate never appears later, by convexity, so these are at
+most $|Q|$ distinct coordinates, all of positive exponent. The cost is an
+ordinary sum of their monomials, hence at most their natural sum and at most the
+right side of \eqref{nh:eq:bounds}. The principal downsets of one fibre form a
+chain of its full type, giving the left inequality, and the leading exponent
+follows from the two bounds. An antichain skeleton attains the left bound; a
+chain skeleton with fibre exponents in nonincreasing order attains the right
+one, where natural and ordinary sums agree (07).
+\end{proof}
+
+The optimization may have many states while the answer has a short normal form;
+the difficulty is choosing the order of useful retirements, not generating new
+exponent expressions (12).
+
+\begin{corollary}[Exponent-scale invariance; 12 Cor.~8.2, 07 Cor.~8.3]
+\label{nh:cor:scale}
+Fix a finite pure-block skeleton and its pattern of equal and unequal
+exponents. Replace the distinct exponents by any strictly increasing list of
+ordinals, keeping $0$ at $0$ when it occurs and positive exponents positive.
+The output keeps its Cantor-normal-form coefficient pattern, with the exponents
+relabelled in the same way, and an optimizing path remains optimizing. In
+particular, if $\phi:\{\rho_q\}\to\mathrm{Ord}\setminus\{0\}$ is strictly
+increasing and $\hgt(\K(\lxsi_q\omega^{\rho_q}))=\omega^{\sigma_1}c_1+\cdots+
+\omega^{\sigma_s}c_s$ with $\sigma_1>\cdots>\sigma_s$, then
+$\hgt(\K(\lxsi_q\omega^{\phi(\rho_q)}))=\omega^{\phi(\sigma_1)}c_1+\cdots+
+\omega^{\phi(\sigma_s)}c_s$.
+\end{corollary}
+\begin{proof}
+Include exponent $0$ among the scale labels to account for default costs. On
+finite ordinal polynomials in these labels a strictly increasing relabelling
+preserves comparison, maximum and ordinary addition: the algorithms use only
+equality and relative order of exponents and finite coefficient arithmetic
+(the addition rule deletes smaller trailing exponents and merges equal boundary
+exponents). So it commutes with every step of \eqref{nh:eq:dp}, including tie
+comparisons and terminal addition (12), and equally with every path evaluation
+of \eqref{nh:eq:cost} and their finite maximum (07).
+\end{proof}
+
+The formula is thus a finite combinatorial calculation on the \emph{weak order
+pattern} of the exponents; their magnitudes, cardinalities and cofinalities are
+not extra inputs, though the actual cardinalities and cofinalities of the
+output of course change after relabelling (07). This is why integer exponent
+ranks suffice in 07's implementation. For arbitrary fibres, apply the statement
+to the expanded blocks; the block skeleton is unchanged as long as the ordering
+and equalities of exponents and all finite coefficients are kept. This gives a
+parameter-uniform family of identities, not separate computations for finitely
+many integer exponents (12). Corollary~\ref{nh:cor:parametric} is the version
+for abstract systems, with its certificate.
+
+\begin{proposition}[A sufficient extension to non-chain coordinates; 12 Prop.~8.3]
+\label{nh:prop:generalcoordinates}
+In Definition~\ref{nh:def:system} replace each pure coordinate $\lambda_q$ by a
+well-founded poset $P_q$ with a least element, height $\lambda_q=\omega^{\rho_q}$,
+and an explicitly given chain of type $\lambda_q$, and use the order of $P_q$ on
+shared coordinates. Then the formula of Theorem~\ref{nh:thm:persistence} remains
+valid.
+\end{proposition}
+\begin{proof}
+For the upper bound replace $x_q$ in \eqref{nh:eq:R} by its rank
+$r_{P_q}(x_q)<\lambda_q$; ranks are nondecreasing on weak and strictly increasing
+on strict comparisons, so every step of Lemma~\ref{nh:lem:fixedupper} holds. For
+the lower bound vary a retiring coordinate along its given chain, the others at
+their least elements. The finite-tree argument is unchanged.
+\end{proof}
+
+This does not assert that the finitely generated downsets of arbitrary non-chain
+fibres have the same exact support representation; 12 names that representation
+question as an obstacle to a broad WPO extension. Part~III supplies such a
+representation for WPO fibres whose finitary powersets have pure height.
+
+\subsection{The frontier-graph algorithm (07)}\label{nh:sec:frontieralgorithm}
+
+For $A\in\M(Q)$ let $\Fdp^{\M}(A)$ be the largest cost of a nonempty frontier
+chain starting at $A$. By Theorem~\ref{nh:thm:frontier},
+\begin{equation}\label{nh:eq:frontierDP}
+ \Fdp^{\M}(A)=\max\Bigl(t(A),\ \max_{A\prec B}\bigl(w(A,B)+\Fdp^{\M}(B)\bigr)\Bigr),
+ \qquad
+ \hgt\bigl(\K(S_{\boldsymbol\alpha}(Q))\bigr)=\Fdp^{\M}(\min Q),
+\end{equation}
+the inner maximum omitted at $\max Q$. Reverse topological evaluation is
+well-defined on the finite poset, left addition of the fixed ordinal $w(A,B)$
+preserves finite maxima, and Proposition~\ref{nh:prop:saturation} allows cover
+edges only. A certificate is an attaining saturated path, its retirement groups,
+one largest-capacity vertex per group and the ordinary sum of those capacities.
+Checking it confirms the lower-bound chain recipe; it does not show that no
+better path exists unless the finite program is also checked.
+
+\begin{lstlisting}[language=Python,caption={Height computation after the frontiers are enumerated (07).}]
+for A in reverse_topological_order(frontiers):
+    F[A] = largest_fibre(A)
+    path[A] = [A]
+    for B in successors(A):
+        candidate = largest_fibre(A minus B) + F[B]  # ordinal +
+        if candidate > F[A]:
+            F[A] = candidate
+            path[A] = [A] + path[B]
+return F[minimal_vertices(Q)], path[minimal_vertices(Q)]
+\end{lstlisting}
+
+With $d$ distinct fibre exponents a cost is a decreasing list of
+exponent--coefficient pairs; to add a right operand with leading exponent
+$\tau$, erase the left operand's terms below $\tau$, merge coefficients at $\tau$
+and append the rest; no floating point is used. With $M=|\M(Q)|$, all frontier
+comparisons cost $O(M^2|Q|)$ with plain set representations, the program
+$O(M^2d)$ exponent comparisons and coefficient operations on the full graph,
+naive cover extraction $O(M^3)$ (not automatically preferable), and enumerating
+antichains by subsets $O(2^{|Q|}|Q|^2)$. The method is polynomial in an explicit
+frontier graph, \emph{not} asserted to be polynomial in the size of the
+skeleton. For arbitrary ordinal exponents these are operation counts relative to
+an oracle deciding their comparisons; 07's code uses positive integers,
+interpreted by Corollary~\ref{nh:cor:scale} as order labels for any finite set of
+positive exponents. Limit-fibre expansion has $\sum_{q,j}n_{q,j}$ vertices, so
+large coefficients make naive expansion expensive; a compressed implementation
+is a separate problem.
+\section{Implementation, verification and proof audit of Part~II}
+\label{nh:sec:verification}
+
+Each of 07, 11 and 12 ships an independent standard-library Python package; 09's
+is described in Section~\ref{nh:wpo:sec:verification}. The files are shipped
+under the prefixes of Table~\ref{nh:tab:sources} in \path{code/} and
+\path{data/}, and the delivered text of their scripts, Makefiles and audits
+still uses the delivered names (\path{code/verify.py}, \texttt{examples/\dots},
+\texttt{data/\dots}). The commands below are quoted in that delivered layout;
+the report's \texttt{README.md} explains how to recreate it on a scratch copy.
+Every suite rewrites its own evidence files and must not be run inside the
+repository. The recorded runs used Python~3.13.5. Before placement every suite
+was rerun on a copy; fresh outputs equalled the recorded ones apart from line
+endings, interpreter versions and timings, and a 152-instance comparison fed
+through all four programs found no disagreement (placement commit
+\texttt{1a1396d4d}; that comparison script is not shipped).
+
+\subsection{12: ideal-state heights and point ranks}
+
+The ordinal class stores hereditary Cantor normal forms below $\eps$; a finite
+ordinal is a nonnegative JSON integer and a nonfinite one a list of
+\texttt{[exponent, coefficient]} pairs in strictly decreasing exponent order,
+so $\omega^2+\omega\cdot3+2$ is \texttt{[[2,1],[1,3],[0,2]]}. Arithmetic is
+exact; cyclic inputs, invalid normal forms and out-of-range generator positions
+are rejected, and a default cap of twenty expanded vertices is a safety limit
+for the exponential state space, not a mathematical restriction. The principal
+commands of the delivered layout are \texttt{python code/verify.py} and
+\texttt{python code/heights.py examples/\{weighted\_N,mixed\_CNF,point\_rank\}.json};
+an input with a \texttt{generators} field requests a point rank. The recorded
+run passed 63{,}270 assertions; its ledger is shipped as
+\path{data/05-ranks-verification.json}. The census is $1,1,2,7,40,357$
+naturally labelled posets on zero through five vertices ($408$), covering every
+isomorphism type at these sizes but not isomorphism-reduced.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Validation family (12) & Assertions or cases\\
+\midrule
+Dynamic program versus all linear extensions & 2,196\\
+Full recurrence-and-path certificate checks & 2,196\\
+All-support versus maximal-frontier formula & 860\\
+Recovery of the uniform frontier theorem & 814\\
+Disjoint-chain cases versus the classical product-height formula & 820\\
+Finite support-order pairs versus generated downset inclusion & 12,585\\
+Exact local ranks versus directly computed finite ranks & 1,603\\
+Finite support injectivity / direct heights / size-plus-one checks & 291 each\\
+Ordinary / natural addition associativity on a fixed ordinal grid & 19,683 each\\
+Strict absorption inequalities & 1,809\\
+Exponent-scale relabelling checks & 100\\
+\bottomrule
+\end{tabularx}
+\caption{Principal families in 12's deterministic run; the ledger also records
+normal-form, example and invalid-input tests.}
+\label{nh:tab:ranksverify}
+\end{table}
+
+The path oracle enumerates linear extensions and updates active sets itself,
+without the production recurrence or cost helper; the finite-rank oracle builds
+actual finite downsets and ranks them by strict inclusion; the Cartesian oracle
+uses a separate Milner--Rado calculation. They share the separately tested
+ordinal representation, so they are ``not three independent proof assistants''
+(12). No test replaces an infinite ordinal by a large integer and reads off a
+trend; infinite examples are evaluated symbolically after the theorems reduce
+them to finite calculations. The ledger certifies the recorded execution of the
+finite and symbolic suite, not novelty, absence of proof errors, or Lean kernel
+checking.
+
+\subsection{07: retirement paths}
+
+The evaluator \path{code/02-retire-retirement.py} accepts cover edges or any
+acyclic relation with the intended closure and rejects cycles, missing fibre
+values, nonpositive exponents and finite tails in limit-fibre mode. Its outputs
+give a height, a saturated maximizing path, groups and pivot vertices, and for
+limit fibres the original owner of each expanded vertex. The recorded run of its
+\texttt{verify.py} passed 3{,}210{,}888 assertions
+(\path{data/02-retire-verification_results.json}) on the $1,2,7,40,357,4824$
+naturally labelled posets on one through six vertices ($5{,}231$): every
+exponent assignment in $\{1,2,3\}^n$ through five vertices ($90{,}201$ weighted
+instances) and eight deterministic assignments per six-vertex order, $128{,}793$
+weighted instances in all. The full-comparison program agrees with a cover-edge
+program on all of them, and on the $90{,}201$ smaller ones both agree with
+explicit enumeration of all nonempty frontier chains evaluated by a separate
+monomial-word routine. Minimal completion, Hoare monotonicity, strict
+retirement, disjoint retirement groups, uniform recovery, exponent relabelling,
+coefficient budgets and the universal bounds are checked throughout; sampled
+profile maps are checked for strict monotonicity through four vertices;
+limit-fibre expansion is compared with ordinary sums on chain skeletons and with
+Lemma~\ref{nh:lem:productrank} on antichain skeletons ($258$ instances each); and
+sampled prefix maps \eqref{nh:eq:prefixrank} are checked for range and
+strictness. These tests do not compute the rank of an infinite
+descending-sequence tree, prove anything for all ordinals, establish
+consistency, or certify novelty; they look for finite combinatorial errors,
+wrong ordinal arithmetic, wrong boundary conventions and disagreements between
+implementations.
+
+\subsection{11: persistent systems and local ranks}
+
+11 ships an ordinal engine (\path{code/04-peel-ordinals.py}, below $\eps$),
+the solver \path{code/04-peel-persistent_height.py} (compact pure-frontier
+construction, all-ordinal expanded construction, weighted-path and peeling
+algorithms, phase refinement, exact point ranks), and two test programs. The
+solver rejects cyclic skeletons, invalid normal forms and violations of
+\eqref{nh:eq:convex}; general expansion has a default guard of $18$ blocks
+(configurable) and phase refinement one of $4{,}096$ refined states, and the
+algorithm stays exponential in the worst case. The main verifier passed
+129{,}593 assertions (\path{data/04-peel-verification.json}) on the same
+labelled census $1,2,7,40,357,4824$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Test family (11) & Cases or comparisons\\
+\midrule
+Pure weighted skeletons through four vertices, exponents in $\{1,2,3\}$ & 3,450\\
+Uniform skeletons with five or six vertices & 5,181\\
+Accepted abstract two-label persistent systems through four states & 9,714\\
+Rejected abstract assignments violating \eqref{nh:eq:convex} & 1,011\\
+Finite all-antichain representation bijections & 147\\
+Finite representation order-pair comparisons & 47,221\\
+Finite ordinal-fibre height cases, including zero fibres & 3,451\\
+Worked ordinal examples & 10\\
+\bottomrule
+\end{tabularx}
+\caption{Selected families of 11's run; rows do not sum to the assertion total.}
+\label{nh:tab:peelverify}
+\end{table}
+
+Weighted-path answers were compared with independent peeling answers and with
+exhaustive path enumeration on the smaller cases, and pure maximal-frontier
+answers with exact all-antichain answers; arithmetic used an independent
+coefficient-array model below $\omega^4$. The local-rank program checked $940$
+finite coordinate systems and $6{,}132$ individual finite point ranks against
+direct enumeration, plus $37$ symbolic regressions
+(\path{data/04-peel-local_rank_verification.json}). These are not a Lean
+formalization, not an evaluation of infinite bad-sequence trees and not a
+replacement for the rank-map proof; agreement of two algorithms alone would not
+prove that either computes the height.
+
+\subsection{Proof dependencies, delicate points and formalization routes}
+\label{nh:sec:audit}
+
+\subsubsection{Dependency map}
+
+The principal chain of 12 is: Cantor normal form $\Rightarrow$ strict absorption
+$\Rightarrow$ fixed-chain upper bound; convex lifetimes $\Rightarrow$ attaining
+chain; finite tree union plus these bounds $\Rightarrow$ finite persistence
+theorem; support antichains $\Rightarrow$ ideal-state recurrence; finite CNF
+refinement $\Rightarrow$ arbitrary ordinal fibres; principal lower intervals
+$\Rightarrow$ exact point ranks. The compressed frontier theorem is a separate
+embedding-sandwich corollary. Neither the product-height benchmark nor Part~I's
+survivor formula is a premise. 07's route and 11's peeling route are summarized
+below.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result (07) & Depends on & Sensitive point\\
+\midrule
+Profile criterion & finite generators & equality constraints only on shared vertices\\
+Maximal-support normalization & minimal completion; left shift & empty profile and strictness, not cofinality\\
+Finite-chain cover & prefix-closed descending trees & finitely many chain pieces\\
+Retirement-box theorem & natural-sum residual; finite induction & retired large groups counted once, not per coordinate\\
+Fixed-path theorem & no return; box theorem & active shared coordinates never reset\\
+Global height formula & normalization; chain cover; path theorem & height, not maximal order type\\
+Limit-fibre extension & finite Cantor normal forms & no exponent-zero blocks\\
+\bottomrule
+\end{tabularx}
+\caption{07's proof-dependency audit.}
+\label{nh:tab:retireaudit}
+\end{table}
+
+\paragraph{Where a shortcut would change the result (11).} First,
+\eqref{nh:eq:convex} is used both for transitivity and when concatenating
+coordinate blocks. Second, state changes that preserve every highest coordinate
+still need a strictly increasing lower-scale term, which is why
+$\kappa\cdot\depth(t)$ occurs in \eqref{nh:eq:peelR}. Third, the terminal region
+is $Z=\{d_\Lambda=c_\Lambda\}$, not the set of states whose active maximum happens
+to be small. Fourth, the fallback weight is one, which is essential for
+endpoints and local ranks. In the compact frontier proof the two embeddings give
+equality of heights, not an isomorphism; only the exact mixed-block and
+phase-refinement isomorphisms are used for point ranks.
+
+\paragraph{07's checklist for an independent reader.}
+\begin{enumerate}[label=(\arabic*)]
+\item In a profile comparison, a vertex active in both supports cannot be
+dominated by a different target vertex; hence exactly the shared-coordinate
+inequalities of Lemma~\ref{nh:lem:support}.
+\item In the completion proof, a hypothetical $b<u$ must be shown incomparable
+with \emph{every} old support vertex before minimality of $u$ is used.
+\item In the normalization use $1+x$, not $x+1$: left addition is strictly
+increasing and stays below every infinite pure fibre, also at limit values.
+\item In the tree cover, cover complete descending sequences, not points.
+\item In the prefix residual, record retired small coordinates at full capacity
+and omit retired large groups; count large groups, not their coordinates.
+\item At a path transition, an old pivot lies below a strictly higher support
+vertex and never returns; shared old coordinates were kept at $0$.
+\item In the block extension, check that the final Cantor exponent is positive;
+finite tails are outside that reduction (and inside
+Theorem~\ref{nh:thm:arbitrary}).
+\end{enumerate}
+None of these checks invokes the status or correctness of any other repository
+report.
+
+No theorem of Part~II imports a large-cardinal assertion or an admitted
+repository or Lean declaration; the repository is the source of the target and of
+credited examples, not a logical dependency. The only background facts are
+elementary ordinal arithmetic, well-founded rank induction and finite-poset
+arguments. No proof assistant has checked any of it, and no placeholder
+formalization is supplied that could be mistaken for one (07); no Lean source is
+delivered as though checked (12).
+
+\subsubsection{Formalization routes proposed by the sources}
+
+All three sources separate finite combinatorics from ordinal ranks and define
+height by well-founded rank, never as the output of the proposed algorithm.
+\begin{itemize}
+\item \emph{12:} formalize strict absorption and the fixed-chain rank function,
+then finite tree union and the support-antichain isomorphism (the pure-block
+theorem), then CNF refinement, recurrence correctness and the
+principal-lower-interval rank identity. A certificate checker should be proved
+sound against the recurrence rather than make its JSON output an axiom;
+proof-relevant certificates need only the finite poset, weights, all ideal values
+and a path, with diagrams and formatted ordinals outside the trusted interface.
+It can be staged without the repository's large-cardinal material or its
+unrefereed research theorems.
+\item \emph{07:} finite antichains, Hoare order, completion and no-return first
+(testable on finite skeletons), then support profiles and the shifted
+normalization; for the transfinite layer, strict-map monotonicity, the tree
+union, and the box theorem, which needs only finite products of ordinals,
+natural sums, sentinels and induction on the group list. The first milestone is
+the prefix map \eqref{nh:eq:prefixrank}, the one place where a subtle nonuniform
+upper bound enters; a second is strictness of the normalization on the empty
+profile; finally, connect an executable frontier-graph evaluator to the
+mathematical maximum.
+\item \emph{11:} define the tagged product over a finite state poset and label
+type, prove the order axioms from \eqref{nh:eq:convex} and well-foundedness
+separately; formalize departure indicators, $d_\Lambda$, $c_\Lambda$ and upward
+closure of $Z$ by natural-number induction; in the ordinal layer, natural-sum
+monotonicity, closure below a pure power and Lemma~\ref{nh:lem:upperstep}, with
+the induction on the number of active lengths; then the exact all-antichain and
+phase-refinement isomorphisms, the compression as two embeddings (never coerced
+into an isomorphism), the principal-ideal lemma, and a small checked interpreter
+for CNF expressions. This is a proposed plan, not a completed verification.
+\end{itemize}
+\clearpage
+\phantomsection\part*{Part III.\quad Nonuniform heights: WPO fibres of pure finitary-powerset height}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Nonuniform heights: WPO fibres of pure finitary-powerset height}
+
+\noindent\emph{This part is manuscript 09. Its hypothesis is incomparable with
+those of Part~II: the fibres need not be chains, but their finitary powersets
+must have positive pure height, and finite or successor fibres are excluded.
+It keeps its own hypotheses and 09's weight-$0$ convention for empty
+retirements.}
+
+\section{Setting, hypotheses and classical inputs}\label{nh:wpo:sec:setting}
+
+\subsection{The hypothesis}
+
+Let $Q$ be a finite nonempty poset and let each fibre $P_q$ be a nonempty
+well-partial-order, and write $S=\lxsi_{q\in Q}P_q$ as in
+Problem~\ref{prob:target}. Throughout this part assume
+\begin{equation}\label{nh:wpo:eq:hyp}
+ h_q:=\hgt(\K(P_q))=\omega^{\rho_q},\qquad\rho_q>0 .
+\end{equation}
+09 writes $\alpha_q$ for $h_q$. It is a height of a finitary powerset,
+\emph{not} a fibre length and \emph{not} $\hgt(P_q)$: for an ordinal chain
+fibre $\alpha$, $h_q=\hgt(\K(\alpha))=1+\alpha=\alpha$ when $\alpha$ is
+infinite, but in general $\hgt(P_q)$ alone does not suffice. A \emph{positive
+pure power} means $\omega^\rho$ with $\rho>0$: infinite, a limit, additively
+indecomposable, and closed under finite natural sums of smaller ordinals. The
+restriction $\rho>0$ is deliberate; the finite ordinal $1$ is not admitted as a
+weight in this part. Part~I's hypothesis concerns maximal order type,
+$\ot(\K(P_q))=\omega^{\beta_q}$; the hypothesis here concerns height, and
+neither is assumed from the other.
+
+\subsection{Classical inputs}
+
+A WPO is a partial order with no infinite descending sequence and no infinite
+antichain. If $P$ is a WPO, so is $\K(P)$ \cite{AbriolaEtAl2024}: enumerate each
+finite set as a word and apply Higman's lemma, as in Section~\ref{sec:tools}.
+Finite disjoint unions of WPOs are WPOs, and adding cross-fibre comparabilities
+cannot create a bad sequence, so $S$ is a WPO.
+
+\begin{theorem}[Classical maximal-chain theorem \cite{Wolk1967,MMS2012}; 09 Thm~2.1]
+\label{nh:wpo:thm:wolk}
+A WPO $X$ has a chain of order type $\hgt(X)$; hence
+$\hgt(X)=\max\{\otp(C):C\subseteq X\text{ a chain}\}$.
+\end{theorem}
+\begin{proof}[A compactness proof of the classical input (09)]
+For $\beta<r_X(x)$ there is $y<x$ of rank exactly $\beta$: among predecessors
+of $x$ of rank at least $\beta$ choose one of least rank; were its rank larger
+than $\beta$, the rank recurrence would give a lower-rank predecessor of rank at
+least $\beta$. So each level $L_\beta=\{x:r_X(x)=\beta\}$, $\beta<\hgt(X)$, is
+nonempty, and it is finite, since equal-rank elements are incomparable and a
+WPO has no infinite antichain. Give the levels the discrete topology; their
+product is compact in ZFC. For $\beta<\gamma<\hgt(X)$ impose the closed
+condition $x_\beta<x_\gamma$. Finitely many conditions involve finitely many
+levels; choose an element at the greatest of them and use the predecessor
+observation repeatedly to obtain a chain through the others. So the conditions
+have the finite intersection property, and compactness gives a family
+satisfying all of them, a chain of type $\hgt(X)$. Conversely rank is strictly
+increasing on chains, so no chain is longer.
+\end{proof}
+
+This is the form of Wolk's theorem (Theorem~9 of \cite{Wolk1967}; stated as
+Theorem~1.2 of \cite{MMS2012}) used here. Maximal order type \emph{among
+chains} is not maximal order type \emph{among linear extensions}; only the
+former is used. An arbitrary well-founded poset need not admit this chain
+interpretation of rank, so the WPO assumption must not be dropped.
+
+\subsection{Support ideals}
+
+Write $\J(Q)$ for the downsets (``ideals'', without directedness) of $Q$. For
+$I\in\J(Q)$ call $\max I$ its \emph{active set} (09's ``active frontier''
+$F(I)$, which need not be a frontier) and $C(I)=I\setminus\max I$ its
+\emph{completed part}; $C(I)=D(\max I)$ in Part~I's notation, and $C(I)$ concerns
+vertices of $Q$, not a chain. Both are empty for $I=\varnothing$.
+
+\section{The exact formula}\label{nh:wpo:sec:statement}
+
+For $I\subseteq J$ in $\J(Q)$ define, with the \emph{empty maximum equal to
+$0$},
+\begin{equation}\label{nh:wpo:eq:weight}
+ \Wz(I,J)=\max\{h_q:q\in\max I\setminus\max J\},\qquad
+ \Tz(I)=\max\{h_q:q\in\max I\},\quad \Tz(\varnothing)=0 .
+\end{equation}
+A linear extension $\pi=(q_1,\dots,q_n)\in\LE(Q)$ gives the saturated ideal
+chain $I_j=\{q_1,\dots,q_j\}$, $I_0=\varnothing$, and the value
+\begin{equation}\label{nh:wpo:eq:pathvalue}
+ \Vz(\pi)=\Wz(I_0,I_1)+\Wz(I_1,I_2)+\cdots+\Wz(I_{n-1},I_n)+\Tz(Q),
+\end{equation}
+every plus sign ordinary ordinal addition.
+
+\begin{theorem}[Pure-height substitution; 09 Thm~3.1]\label{nh:wpo:thm:main}
+Under \eqref{nh:wpo:eq:hyp},
+\begin{equation}\label{nh:wpo:eq:main}
+ \boxed{\displaystyle
+ \hgt\Bigl(\K\Bigl(\lxs_{q\in Q}P_q\Bigr)\Bigr)=\Phi(Q;\boldsymbol h)
+ :=\max_{\pi\in\LE(Q)}\Vz(\pi).}
+\end{equation}
+For each $\pi$ there is an explicitly described chain in the powerset of order
+type $\Vz(\pi)$, once height-attaining chains in the component powersets have
+been chosen; in particular the maximum is attained.
+\end{theorem}
+
+\begin{corollary}[Ordinal fibres; 09 Cor.~3.2]\label{nh:wpo:cor:ordinal}
+For arbitrary positive ordinals $\rho_q$,
+$\hgt(\K(\lxsi_q\omega^{\rho_q}))=\Phi(Q;(\omega^{\rho_q})_q)$, with no
+restriction to countable exponents or to a notation system.
+\end{corollary}
+\begin{proof}
+The nonempty finitely generated downsets of an ordinal chain $\alpha$ are the
+initial intervals $[0,\xi]$, so $\K(\alpha)$ has type $1+\alpha=\alpha$ for
+infinite $\alpha$. Apply Theorem~\ref{nh:wpo:thm:main}.
+\end{proof}
+
+This recovers the chain-fibre formula of Part~II by an independent route, and
+Section~\ref{nh:wpo:sec:compression} shows that $\Phi$ equals the frontier
+formula \eqref{nh:eq:frontierheight} with $\alpha_q$ replaced by $h_q$.
+
+\section{A normal form for finitely generated downsets}\label{nh:wpo:sec:profiles}
+
+\begin{lemma}[No internally completed fibre; 09 Lemma~4.1]\label{nh:wpo:lem:notop}
+A fibre satisfying \eqref{nh:wpo:eq:hyp} has no finite cofinal subset; its
+underlying set is not an element of $\K(P_q)$.
+\end{lemma}
+\begin{proof}
+A finite cofinal subset would generate $P_q$, giving $\K(P_q)$ a greatest
+element and a successor height, contrary to the limit $\omega^{\rho_q}$.
+\end{proof}
+
+This is the height analogue of Part~I's remark that purity of $\ot(\K(P_q))$
+excludes finite cofinal subsets.
+
+\begin{proposition}[Support-profile normal form; 09 Prop.~4.2]\label{nh:wpo:prop:profiles}
+Every nonempty $D\in\K(S)$ is uniquely represented by a nonempty ideal
+$I\in\J(Q)$ and nonempty $B_q\in\K(P_q)\setminus\{\varnothing\}$ for
+$q\in\max I$, with
+\begin{equation}\label{nh:wpo:eq:profile}
+ D\cap P_q=\begin{cases}
+ P_q,&q\in C(I),\\ B_q,&q\in\max I,\\ \varnothing,&q\notin I,
+ \end{cases}
+\end{equation}
+and every such profile represents an element of $\K(S)$. For profiles
+$(I,(B_q))$ and $(J,(E_q))$,
+\begin{equation}\label{nh:wpo:eq:comparison}
+ D\subseteq E\iff I\subseteq J\ \text{and}\ B_q\subseteq E_q\ \
+ (q\in\max I\cap\max J).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Take a finite generating set of $D$. Its support $I=\{q:D\cap P_q\ne\varnothing\}$
+is a downset, since a point of a strictly higher fibre lies above every point of
+a lower one. For $q\in\max I$ no generator in a strictly higher fibre contributes
+to $D\cap P_q$, which is therefore a nonempty finitely generated downset of
+$P_q$, proper by Lemma~\ref{nh:wpo:lem:notop}. For $q\in C(I)$ some $r\in\max I$
+satisfies $q<r$, and one point of $D\cap P_r$ forces the whole $q$-fibre into
+$D$. This proves \eqref{nh:wpo:eq:profile} and uniqueness. Conversely the union
+of finite generating sets of the $B_q$ generates exactly \eqref{nh:wpo:eq:profile}:
+every vertex of $C(I)$ lies below a vertex of $\max I$, and every $B_q$ is
+nonempty. For inclusion, support inclusion and inclusion on common active fibres
+are necessary; they suffice because a formerly active fibre that is no longer
+active is now completed and completed fibres stay completed.
+\end{proof}
+
+A fixed-support stratum is thus a finite product of nonempty component
+powersets. Different strata are \emph{not} arranged as an ordinary
+lexicographic sum: common active coordinates keep the comparison conditions of
+\eqref{nh:wpo:eq:comparison}, and ignoring them is exactly the incorrect
+resetting operation that the transition formula avoids.
+
+\begin{lemma}[Nonempty height-attaining component chains; 09 Lemma~4.3]
+\label{nh:wpo:lem:componentchains}
+For each $q$ there is a chain $\mathbf C_q\subseteq\K(P_q)\setminus\{\varnothing\}$
+of order type $h_q$; it has a least element $b_q$.
+\end{lemma}
+\begin{proof}
+$\K(P_q)$ is a WPO of height $h_q$; apply Theorem~\ref{nh:wpo:thm:wolk}. If the
+chain contains $\varnothing$, delete that first element; removing one first
+element from an infinite additively indecomposable type leaves the type
+unchanged.
+\end{proof}
+
+\section{The ordinal mechanism: bounded progress is absorbed later}
+\label{nh:wpo:sec:absorption}
+
+\begin{lemma}[A finite product bound; 09 Lemma~5.1]\label{nh:wpo:lem:productbound}
+Let a chain vary in finitely many coordinates whose rank values lie below
+positive pure powers $h_q$, partitioned into unrestricted coordinates $R$ and
+bounded coordinates $B$, every $p\in B$ being bounded throughout the chain by an
+element of rank $\beta_p<h_p$. Put $\lambda=\max_{q\in R}h_q$ and
+$\gamma=\bigns_{p\in B}(\beta_p+1)$ (empty maximum and sum $0$). Then the chain
+has order type at most $\lambda\ns\gamma$.
+\end{lemma}
+\begin{proof}
+Map each tuple to the natural sum of its coordinate ranks; along a strict product
+comparison one coordinate rank rises and none falls, so the map is strictly
+increasing. The unrestricted part is below $\lambda$ (or $0$) and the bounded
+part below $\gamma$ (or $0$), so the chain embeds in $\lambda\ns\gamma$ whenever
+there is a coordinate; the coordinate-free case is not needed for nonempty
+strata.
+\end{proof}
+
+\begin{lemma}[Deferred absorption; 09 Lemma~5.2]\label{nh:wpo:lem:absorb}
+Let each of $\lambda_0,\dots,\lambda_k$ be $0$ or a positive pure power, with
+$\lambda_k>0$; for $i<k$ put $L_i=\max_{j>i}\lambda_j$, and suppose
+$\gamma_i<L_i$ for $i<k$ and $\gamma_k=0$. Then
+\begin{equation}\label{nh:wpo:eq:absorb}
+ (\lambda_0\ns\gamma_0)+\cdots+(\lambda_k\ns\gamma_k)=\lambda_0+\cdots+\lambda_k .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Work from the right. If the suffix after position $i$ is already
+$S_i=\lambda_{i+1}+\cdots+\lambda_k$, its leading monomial is $L_i$ (its
+coefficient may exceed one). Every exponent of $\gamma_i$ is below that of $L_i$,
+and ordinary addition of $S_i$ erases all terms of smaller exponent from the
+preceding summand; if $\lambda_i$ has smaller exponent it is erased too, and
+otherwise inserting $\gamma_i$ does not affect its surviving terms. So
+$(\lambda_i\ns\gamma_i)+S_i=\lambda_i+S_i$; the last step uses $\gamma_k=0$.
+\end{proof}
+
+The lemma lets a persistent large coordinate contribute a bounded amount before
+it is finally used at full scale; it does not let that coordinate's full pure
+power be added at every earlier stage. The strict inequality $\gamma_i<L_i$ is
+the substantive point. It plays the role of Part~II's strict-margin
+Lemma~\ref{nh:lem:absorb}, applied to a chain after the fact rather than inside
+a rank map.
+
+\section{Proof of the pure-height substitution theorem}\label{nh:wpo:sec:proof}
+
+\begin{lemma}[Refinement inequalities; 09 Lemma~6.1]\label{nh:wpo:lem:refinement}
+For ideals $I\subseteq J\subseteq K$,
+$\Wz(I,K)\le\Wz(I,J)+\Wz(J,K)$, and for a nonempty ideal $I$,
+$\Tz(I)\le\Wz(I,Q)+\Tz(Q)$. Consequently the value of any finite strictly
+increasing path of nonempty support ideals, with terminal weight at its last
+ideal, is at most the value of some saturated ideal path from $\varnothing$ to
+$Q$.
+\end{lemma}
+\begin{proof}
+If $q\in\max I\setminus\max K$, then either $q\notin\max J$, contributing to
+$\Wz(I,J)$, or $q\in\max J\setminus\max K$, contributing to $\Wz(J,K)$; an
+ordinary sum is at least its larger summand. A vertex witnessing $\Tz(I)$ either
+stays active at $Q$ or lies in $\max I\setminus\max Q$. Prepending $\varnothing$
+adds a zero weight, the last ideal extends to $Q$ by the second inequality, and
+intermediate ideals are inserted one vertex at a time by the first, using
+monotonicity of ordinary addition inside a finite sum. A saturated path is a
+linear extension.
+\end{proof}
+
+\subsection{Upper bound: an arbitrary chain}
+
+Let $\mathbf C\subseteq\K(S)$ be a chain. If it has no nonempty member, its type
+is at most $1$, below the infinite bound. Otherwise its nonempty supports form a
+finite chain $I_0\subsetneq\cdots\subsetneq I_k$; let $\mathbf C_i$ be the
+nonempty convex segment with support $I_i$, and for $i<k$ put
+\[
+ R_i=\max I_i\setminus\max I_{i+1},\qquad B_i=\max I_i\cap\max I_{i+1},\qquad
+ \lambda_i=\max_{q\in R_i}h_q,
+\]
+with $\lambda_k=\Tz(I_k)$; $R_i$ and $B_i$ partition $\max I_i$. Choose a member
+$E^{(i+1)}$ of $\mathbf C_{i+1}$. By \eqref{nh:wpo:eq:comparison}, for $p\in B_i$
+its coordinate $E^{(i+1)}_p$ bounds \emph{every} $p$-coordinate in $\mathbf C_i$.
+Put $\beta_{i,p}=r_{\K(P_p)}(E^{(i+1)}_p)$ and
+$\gamma_i=\bigns_{p\in B_i}(\beta_{i,p}+1)$, $\gamma_k=0$; as $h_p$ is a limit,
+$\beta_{i,p}+1<h_p$. Lemma~\ref{nh:wpo:lem:productbound} gives
+$\otp(\mathbf C_i)\le\lambda_i\ns\gamma_i$, and for $i=k$ all coordinates are
+unrestricted.
+
+Each persistent coordinate is charged in full later. A vertex $p\in B_i$ stays
+active until it first stops being maximal in a later support and never becomes
+active again; if it retires at a transition $j>i$ then $h_p\le\lambda_j$, and if
+it never retires then $p\in\max I_k$ and $h_p\le\lambda_k$. So
+$h_p\le L_i=\max_{j>i}\lambda_j$ for $p\in B_i$, every summand of $\gamma_i$ is
+below the pure power $L_i$, and $\gamma_i<L_i$. By
+Lemma~\ref{nh:wpo:lem:absorb},
+\begin{equation}\label{nh:wpo:eq:chainupper}
+ \otp(\mathbf C\setminus\{\varnothing\})=\sum_{i\le k}\otp(\mathbf C_i)
+ \le\sum_{i\le k}(\lambda_i\ns\gamma_i)=\lambda_0+\cdots+\lambda_k .
+\end{equation}
+The right side is a nonzero finite sum of positive infinite monomials (possibly
+with zero terms), so adding one on the left leaves it unchanged, and including
+$\varnothing$ does not enlarge the bound. By Lemma~\ref{nh:wpo:lem:refinement} it
+is at most $\Phi(Q;\boldsymbol h)$. Finally $\K(S)$ is a WPO and
+Theorem~\ref{nh:wpo:thm:wolk} converts the bound on chains into
+$\hgt(\K(S))\le\Phi(Q;\boldsymbol h)$.
+
+\subsection{Lower bound: spend a coordinate just before it retires}
+
+Fix $\pi$ with support ideals $I_j$ and choose $\mathbf C_q$, $b_q$ as in
+Lemma~\ref{nh:wpo:lem:componentchains}. At a step $I_{j-1}\subsetneq I_j$ of
+nonzero weight choose $r_j\in\max I_{j-1}\setminus\max I_j$ with
+$h_{r_j}=\Wz(I_{j-1},I_j)$; at support $I_{j-1}$ vary the $r_j$-coordinate through
+$\mathbf C_{r_j}$ and hold every other active coordinate at its base $b_q$. This
+block has type $\Wz(I_{j-1},I_j)$; skip zero-weight steps. At support $Q$ choose
+$r_*\in\max Q$ with $h_{r_*}=\Tz(Q)$ and vary it through $\mathbf C_{r_*}$ with
+the others at their bases. The blocks concatenate: a coordinate varied in an
+earlier block is completed at the next step and fully included later, and a
+coordinate active in an earlier and a later block had not yet been selected in
+the earlier one, so its earlier value is its base, below its later value in its
+chain. So \eqref{nh:wpo:eq:comparison} holds across every pair of blocks, strictly
+since the supports differ. The component chains need not be cofinal, since a
+strictly higher fibre dominates a whole lower fibre. The resulting chain has type
+\eqref{nh:wpo:eq:pathvalue}, and maximizing over the finitely many $\pi$ proves
+the theorem.\hfill$\square$
+
+\begin{remark}[Why this is not a reset argument; 09]
+Only a coordinate about to be fully dominated is varied through its whole
+component chain; a persistent coordinate stays at its base in the lower bound. In
+the upper bound it may vary, but only below an actual later coordinate value.
+These are two sides of one constraint.
+\end{remark}
+
+\section{Compression to inclusion-maximal antichains}\label{nh:wpo:sec:compression}
+
+\begin{lemma}[Canonical completion of a support frontier; 09 Lemma~7.1]
+\label{nh:wpo:lem:canonical}
+For $I\in\J(Q)$ put $A(I)=\min(Q\setminus C(I))$. Then $A(I)\in\M(Q)$,
+$\max I\subseteq A(I)$, and $C(I)=\{q:(\exists a\in A(I))\,q<a\}=D(A(I))$. If
+$I\subseteq J$ then $A(I)\preceq A(J)$, and for a one-vertex enlargement
+$J=I\cup\{v\}$,
+\begin{equation}\label{nh:wpo:eq:canonicalretire}
+ A(I)\setminus A(J)=\max I\setminus\max J .
+\end{equation}
+\end{lemma}
+\begin{proof}
+$C(I)$ is a downset. Every strict predecessor of a vertex of $\max I$ lies in
+$C(I)$, so $\max I\subseteq A(I)$. Each point of $C(I)$ lies below a member of
+$\max I$, and each point outside $C(I)$ lies above a minimal point of the
+complement, so every vertex is comparable with a member of the antichain $A(I)$.
+Minimality gives one inclusion for $C(I)$, and the fact that completed vertices
+lie strictly below $\max I$ the other. If $I\subseteq J$ then $C(I)\subseteq
+C(J)$; a member $a$ of $A(I)$ either lies in $C(J)$, hence below a member of
+$A(J)$, or has all strict predecessors in $C(I)\subseteq C(J)$ and so lies in
+$A(J)$. For a one-vertex enlargement the new vertex is maximal in $J$, the newly
+completed vertices are exactly $\max I\setminus\max J$, and a member of $A(I)$
+leaves $A(J)$ exactly when it enters $C(J)$.
+\end{proof}
+
+By Remark~\ref{nh:rem:threenames}, $A(I)$ is also 07's completion
+$\mcl(\max I)$ and Part~I's canonical frontier. With $w$ and $t$ as in
+\eqref{nh:eq:frontierweights}, but built from the heights $h_q$:
+
+\begin{theorem}[Maximal-frontier formula; 09 Thm~7.2]\label{nh:wpo:thm:compressed}
+\begin{equation}\label{nh:wpo:eq:compressed}
+ \boxed{\displaystyle
+ \Phi(Q;\boldsymbol h)=
+ \max_{\substack{A_0\prec\cdots\prec A_k\\ A_0=\min Q,\ A_k=\max Q}}
+ \bigl(w(A_0,A_1)+\cdots+w(A_{k-1},A_k)+t(A_k)\bigr).}
+\end{equation}
+When $\min Q=\max Q$ the length-zero path is allowed. It suffices to maximize
+over saturated chains of $\M(Q)$, though all comparable pairs are also correct.
+\end{theorem}
+\begin{proof}
+Map a saturated support path to its canonical antichains $A(I_j)$. By
+Lemma~\ref{nh:wpo:lem:canonical} they are nondecreasing from $\min Q$ to $\max Q$
+and their transition weights equal the support weights; repeated antichains are
+zero-weight steps and can be deleted. Conversely a strict chain of frontiers
+gives the ideals $I_i={\downarrow}A_i$ with $\max I_i=A_i$; prepending
+$\varnothing$ costs $0$, the last ideal is $Q$, and
+Lemma~\ref{nh:wpo:lem:refinement} refines it to a saturated support path of at
+least the same value. For $A\prec B\prec C$, $w(A,C)\le w(A,B)+w(B,C)$, so
+inserting intermediate frontiers cannot decrease a value.
+\end{proof}
+
+\begin{corollary}[Uniform formula, independently recovered; 09 Cor.~7.3]
+\label{nh:wpo:cor:uniform}
+If every $h_q=\alpha=\omega^\rho$, $\rho>0$, then
+$\hgt(\K(\lxsi_qP_q))=\alpha\cdot\hgt(\M(Q))$.
+\end{corollary}
+
+For chain fibres this is Theorem~\ref{thm:height}; for WPO fibres with a common
+pure powerset height it is new relative to Part~I, whose height theorem assumes
+ordinal fibres. No unrefereed repository theorem is imported.
+
+\section{First-successor scheduling and exact finite algorithms}
+\label{nh:wpo:sec:algorithms}
+
+\subsection{A second interpretation of the weights}
+
+For $\pi\in\LE(Q)$ with positions $\operatorname{pos}_\pi$, define the
+retirement time $\tau_\pi(q)=\min\{\operatorname{pos}_\pi(r):q<r\}$ for
+$q\notin\max Q$ and $\tau_\pi(q)=n+1$ for $q\in\max Q$. A vertex first stops being
+maximal in the current support when its first strict successor is inserted, so
+\begin{equation}\label{nh:wpo:eq:firstsuccessor}
+ \Vz(\pi)=\sum_{j=1}^{n+1}\max\{h_q:\tau_\pi(q)=j\},
+\end{equation}
+chronologically, with empty groups contributing $0$; the final group is
+$\max Q$. This needs no frontiers and is the independent linear-extension
+calculation of 09's verification suite.
+
+\subsection{The support-ideal and compressed programs}
+
+Let $\mathsf d^0(\varnothing)=0$ and, for nonempty ideals $J$,
+\begin{equation}\label{nh:wpo:eq:dp}
+ \mathsf d^0(J)=\max_{v\in\max J}\Bigl[\mathsf d^0(J\setminus\{v\})+
+ \Wz(J\setminus\{v\},J)\Bigr],\qquad \Phi(Q;\boldsymbol h)=\mathsf d^0(Q)+\Tz(Q).
+\end{equation}
+
+\begin{proposition}[Correctness of the recurrence; 09 Prop.~8.1]\label{nh:wpo:prop:dp}
+$\mathsf d^0(J)$ is the greatest transition sum of a saturated ideal path from
+$\varnothing$ to $J$, without terminal term, and recording a maximizing
+predecessor reconstructs an extension attaining \eqref{nh:wpo:eq:dp}.
+\end{proposition}
+\begin{proof}
+The last vertex of a saturated path to $J$ lies in $\max J$, and deleting it
+leaves a saturated path to $J\setminus\{v\}$; conversely every such path extends
+by $v$. For a fixed edge weight $\eta$ the map $\xi\mapsto\xi+\eta$ is
+nondecreasing, so a greatest predecessor value gives a greatest value after the
+edge, even though distinct values may become equal. Induct on $|J|$.
+\end{proof}
+
+There are at most $2^n$ ideals with at most $n$ incoming edges each, so after
+finite preprocessing the program uses $O(n2^n)$ ordinal additions and comparisons,
+and $O(n^22^n)$ elementary set operations with naive frontier handling: an
+exponential algorithm, not a polynomial-time claim. The compressed program sets
+$\mathsf g(\min Q)=0$ and $\mathsf g(B)=\max_{A\prec B}(\mathsf g(A)+w(A,B))$ for
+$B\ne\min Q$, with $\Phi=\mathsf g(\max Q)+t(\max Q)$; cover edges suffice, and
+with $m=|\M(Q)|$ it uses $O(m^2)$ ordinal updates beyond finding the frontiers.
+09's implementation deliberately uses all comparable pairs so that its
+correctness does not depend on a transitive-reduction routine. In
+pseudocode (09):
+\begin{lstlisting}
+Input: finite poset Q, positive pure weights h[q]
+D[empty] := 0
+for each nonempty ideal J, in increasing cardinality:
+    D[J] := maximum over v in Max(J) of
+            D[J - {v}] + max(h[q] : q in Max(J - {v}) - Max(J))
+return D[Q] + max(h[q] : q in Max(Q))
+# Empty maxima are 0. Every + above is ordinary ordinal addition.
+# Empty Q is a separate case with answer 1.
+\end{lstlisting} Neither program
+infers component heights (the weights $h_q$ are inputs justified outside the
+computation) or decides equality of arbitrary ordinal notations.
+
+\begin{remark}[The two empty-exit conventions on one example]
+\label{nh:wpo:rem:conventions}
+For the persistent example ($x$ isolated, $y<z$, heights
+$(\omega^2,\omega,\omega)$; 09's vertices $(x,a,b)=(0,1,2)$), 09's support
+program gives
+\[
+\begin{array}{c|cccccc}
+ \text{bitmask}&0&1&2&3&6&7\\ \hline
+ I&\varnothing&\{x\}&\{y\}&\{x,y\}&\{y,z\}&\{x,y,z\}\\
+ \mathsf d^0(I)&0&0&0&0&\omega&\omega
+\end{array}
+\]
+and $\omega+\omega^2=\omega^2$; its compressed certificate needs the two states
+$\{x,y\},\{x,z\}$ and one edge of weight $\omega$. Part~II's weight-$1$ program
+gives $0,1,1,2,\omega,\omega+1$ on the same ideals
+(Section~\ref{nh:sec:examples}) and the same final value. For positive pure
+weights the answers always agree, because the terminal weight is infinite and
+absorbs every earlier finite term; the tables, and therefore the certificates,
+differ. The weight-$0$ convention is wrong as soon as a fibre is finite: a
+singleton fibre has a two-element finitary powerset. 09 excludes such fibres, so
+this is a scope boundary, not an error.
+\end{remark}
+
+\subsection{Finite certificates (09)}
+
+A support certificate lists every ideal, its active set, its value
+$\mathsf d^0(I)$ and a selected predecessor for each nonempty ideal. A checker
+verifies $\mathsf d^0(\varnothing)=0$, $\mathsf d^0(I)+\Wz(I,J)\le\mathsf d^0(J)$
+for every unit edge, and equality on each selected edge; these prove both finite
+path bounds. It also validates a linear extension whose full value is the claimed
+answer. The supplied checker does not call the optimizer but shares its exact
+arithmetic and poset routines, so it is not an independent formal kernel; the
+first-successor calculation tests the shared choices from another direction. A
+certificate proves the \emph{finite optimization} relative to
+Theorem~\ref{nh:wpo:thm:main}; it formalizes neither that theorem, nor Wolk's
+theorem, nor the input height claims.
+
+\subsection{A bounded-width consequence (09)}
+
+If $Q$ has width at most $b$, every ideal is generated by an antichain of size at
+most $b$, so $|\J(Q)|\le\sum_{j=0}^b\binom nj$, and enumerating those antichains
+and their downclosures gives a finite-state algorithm in time $n^{O(b)}$,
+transition generation included. This is an XP bound in $b$, not an FPT bound. The
+default program enumerates subsets directly; the bound describes a proved
+algorithmic variant, not a performance claim about that implementation.
+
+\section{Substitution invariance and limit-ordinal fibres}\label{nh:wpo:sec:extension}
+
+\begin{corollary}[Pure-height congruence; 09 Cor.~9.1]\label{nh:wpo:cor:congruence}
+If $(P_q)$ and $(P'_q)$ are families of WPOs with
+$\hgt(\K(P_q))=\hgt(\K(P'_q))=\omega^{\rho_q}$, $\rho_q>0$, then
+$\hgt(\K(\lxsi_qP_q))=\hgt(\K(\lxsi_qP'_q))$.
+\end{corollary}
+\begin{proof}
+Both sides are the same finite optimization in the common weights.
+\end{proof}
+
+This is a genuine loss of dependence on the internal structure of a fibre, but
+only once its own finitary-powerset height is supplied. Replacing that input by
+$\hgt(P_q)$, by its maximal linear-extension type, or by its width is not
+justified; and knowing $\hgt(\K(P_q))$ does not give $\hgt(\K(\K(P_q)))$:
+unrestricted iteration is a different problem.
+
+\begin{theorem}[All nonzero limit-ordinal fibres; 09 Thm~9.2]\label{nh:wpo:thm:limits}
+For nonzero limit ordinals $\beta_q$, expanded as in \eqref{nh:eq:cnf} (all
+exponents positive) into $Q^\sharp$ with pure weights $\alpha^\sharp_v$,
+$\hgt(\K(\lxsi_q\beta_q))=\Phi(Q^\sharp;(\alpha^\sharp_v)_v)$. Finite ordinal
+normal forms and finite ordinal comparisons determine the answer exactly; the
+algorithm expands coefficients literally, and its size is measured in expanded
+blocks.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{nh:lem:refine} and Corollary~\ref{nh:wpo:cor:ordinal}.
+\end{proof}
+
+No recursive expansion of an exponent's own normal form is needed: a block
+$\omega^{\varepsilon_0}$ is one pure block with exponent label $\varepsilon_0$. A
+zero fibre is deleted and the induced skeleton used; the all-empty case is
+separate, $\K(\varnothing)$ being a singleton of height $1$. Successor fibres
+have finite terminal terms and are not covered by this theorem; for chain fibres
+they are covered by Theorem~\ref{nh:thm:arbitrary} of Part~II. This agrees with
+Corollary~\ref{nh:cor:limits}.
+
+\section{Exponent patterns, bounds and lost information}\label{nh:wpo:sec:invariants}
+
+\begin{theorem}[Exponent-order invariance; 09 Thm~10.1]\label{nh:wpo:thm:chambers}
+Fix $Q$ and two families of positive exponents $(\rho_q)$, $(\sigma_q)$ with the
+same equality and strict-order pattern. Replacing each $\rho$ by the corresponding
+$\sigma$ preserves the Cantor-normal-form coefficients of every path value, every
+program value and the final height, and preserves exactly the set of maximizing
+linear extensions and the set of maximizing frontier chains.
+\end{theorem}
+\begin{proof}
+Each transition takes the largest exponent in a finite subset; a path adds the
+selected monomials in order, which deletes strictly smaller trailing exponents and
+merges equal ones; comparing two results depends only on ordered exponents and
+finite coefficients. All of this commutes with a strictly increasing relabelling
+of the finite exponent set, for paths, maxima and both recurrences.
+\end{proof}
+
+The parameter space thus splits into finitely many weak-order patterns
+(``chambers''), each completely represented by integer priorities. A priority is
+not automatically an ordinal exponent: 09's optional symbolic labels may denote
+arbitrary positive exponents in a declared order, and checking that order is
+outside the program's scope. This theorem adds the preservation of maximizer sets
+to Corollaries~\ref{nh:cor:scale} and~\ref{nh:cor:parametric}.
+
+\begin{proposition}[Support and size of the answer; 09 Prop.~10.2]\label{nh:wpo:prop:budget}
+Every exponent of $\Phi(Q;\boldsymbol h)$ occurs among the $\rho_q$; its leading
+exponent is $\max_q\rho_q$; its coefficient sum is at most $n=|Q|$; it has no
+finite tail; and $\max_qh_q\le\Phi(Q;\boldsymbol h)\le\bigns_qh_q$.
+\end{proposition}
+\begin{proof}
+The retirement groups of \eqref{nh:wpo:eq:firstsuccessor}, terminal group
+included, partition $Q$. One maximizer per nonempty group gives at most $n$
+distinct monomials whose ordinary sum is the path value; normalization neither
+introduces exponents nor raises the coefficient count, and the value is at most
+their natural sum. A vertex of globally largest weight lies in one group, whose
+selected weight is that maximum, and no later summand can erase it; so every
+schedule has the stated leading exponent and at least the largest input monomial.
+\end{proof}
+
+Even for enormous input exponents the answer is thus a finite coefficient vector
+on the input exponent labels.
+
+\subsection{Unbounded ambiguity of local stratum heights}\label{nh:wpo:sec:ambiguity}
+
+For a frontier $A$ the unrestricted product of active coordinates has height
+$t(A)=\max_{q\in A}h_q$ (natural-sum rank bound above; vary a largest coordinate
+through its attaining chain below), and so has the fixed-support stratum at
+${\downarrow}A$. Thus $t(A)$ is exactly the local height label one might keep
+from a stratification.
+
+\begin{theorem}[Local labels do not determine the height; 09 Thm~10.3]
+\label{nh:wpo:thm:ambiguity}
+For every $m\ge1$ and pure powers $\beta<\alpha$ with positive exponents there is
+one finite skeleton $Q_m$ with $m$ weight assignments for which the labelled
+frontier poset $(\M(Q_m),t)$ is identical while the global heights are the
+distinct values $\alpha,\alpha\cdot2,\dots,\alpha\cdot m$.
+\end{theorem}
+\begin{proof}
+Take an isolated $x$ of weight $\alpha$ beside a chain $a_1<\cdots<a_m$ whose
+vertices get weight $\alpha$ or $\beta$. The frontiers are exactly
+$A_i=\{x,a_i\}$, an $m$-element chain, and every $t(A_i)=\alpha$. For
+$j\in\{1,\dots,m\}$ give exactly $j-1$ of $a_1,\dots,a_{m-1}$ weight $\alpha$ and
+the other chain vertices weight $\beta$. The compressed formula has successive
+weights $h_{a_1},\dots,h_{a_{m-1}}$ and terminal weight $\alpha$; each smaller
+term is absorbed by a later $\alpha$, and the sum is $\alpha\cdot j$.
+\end{proof}
+
+The deficiency of a stratum-only formula is therefore unbounded in the number of
+stages: even the whole frontier poset with every local height label is
+insufficient, and the identities of the coordinates leaving between frontiers
+carry indispensable information. This strengthens Part~I's single counterexample
+and Corollary~\ref{nh:cor:strata}.
+
+\section{Worked examples and a height-two reduction}\label{nh:wpo:sec:examples}
+
+\subsection{Chains, antichains and the persistent coordinate}
+
+If $Q$ is a chain $q_1<\cdots<q_n$, its frontiers are its singletons and
+$\Phi=h_{q_1}+\cdots+h_{q_n}$. If $Q$ is an antichain, $\M(Q)=\{Q\}$ and
+$\Phi=\max_qh_q$. This does not contradict the natural-sum bound for product
+ranks: the supremum of natural sums of finitely many coordinates strictly below
+pure limits is the largest such limit, not their natural sum. For the persistent
+skeleton $\{x,\,y<z\}$ the frontiers are $\{x,y\}\prec\{x,z\}$ and
+\begin{equation}\label{nh:wpo:eq:persistent}
+ \Phi=h_y+\max(h_x,h_z);
+\end{equation}
+$(h_x,h_y,h_z)=(\omega^2,\omega,\omega)$ gives $\omega+\omega^2=\omega^2$, and
+changing only $h_y$ to $\omega^2$ gives $\omega^2\cdot2$, although both frontier
+labels remain $\omega^2$.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.98,every node/.style={font=\small},
+ point/.style={circle,fill=Olive,inner sep=1.7pt}]
+ \begin{scope}[xshift=0cm]
+  \node[point,label=below:$x$] (x) at (0,0.7) {};
+  \node[point,label=below:$y$] (y) at (1.2,0) {};
+  \node[point,label=above:$z$] (z) at (1.2,1.4) {};
+  \draw[Olive] (y)--(z);
+  \node[align=center] at (0.6,-0.7) {Persistent coordinate};
+ \end{scope}
+ \begin{scope}[xshift=4cm]
+  \node[point,label=below:$a$] (a) at (0,0) {};
+  \node[point,label=below:$b$] (b) at (1.5,0) {};
+  \node[point,label=above:$c$] (c) at (0,1.4) {};
+  \node[point,label=above:$d$] (d) at (1.5,1.4) {};
+  \draw[Olive] (a)--(c) (b)--(c) (b)--(d);
+  \node at (0.75,-0.7) {$N$-skeleton};
+ \end{scope}
+ \begin{scope}[xshift=8.3cm]
+  \node[point,label=below:$a$] (a) at (0,0) {};
+  \node[point,label=below:$b$] (b) at (1.5,0) {};
+  \node[point,label=above:$c$] (c) at (0,1.4) {};
+  \node[point,label=above:$d$] (d) at (1.5,1.4) {};
+  \draw[Olive] (a)--(c) (b)--(d);
+  \node at (0.75,-0.7) {Two parallel chains};
+ \end{scope}
+\end{tikzpicture}
+\caption{The skeletons of 09's examples, in this report's labelling (09 draws
+the $N$-skeleton as $a<c$, $a<d$, $b<d$). The persistent coordinate contributes
+fully only at the terminal stage; the parallel chains permit different
+retirement orders.}
+\label{nh:wpo:fig:examples}
+\end{figure}
+
+\subsection{A genuinely non-series-parallel skeleton}
+
+The $N$-skeleton $a<c$, $b<c$, $b<d$ has connected comparability and
+incomparability graphs, so it is neither a disjoint union nor an ordinal sum and
+is not generated from singletons by those operations. Its frontiers form the
+chain \eqref{eq:Nfrontiers}, and $\Phi=h_b+h_a+\max(h_c,h_d)$. For
+$(h_a,h_b,h_c,h_d)=(\omega^2,\omega^3,\omega,\omega)$ this is
+$\omega^3+\omega^2+\omega$ (09's weights $(\omega^3,\omega^2,\omega,\omega)$ in
+its labelling). A path jumping from the first frontier to the last would charge
+only $\max(h_a,h_b)$ before the terminal term; refining a transition can keep an
+additional lower-order term, so grouping matters even when the leading exponent
+is fixed.
+
+\subsection{Optimization depends on the exponent pattern}
+
+For two disjoint chains $a<c$ and $b<d$, either $a$ or $b$ may retire first. With
+$t_{cd}=\max(h_c,h_d)$,
+\begin{equation}\label{nh:wpo:eq:parallel}
+ \Phi=\max(h_a+h_b+t_{cd},\ h_b+h_a+t_{cd})=(h_a\ns h_b)+t_{cd},
+\end{equation}
+because putting the larger of two monomials first produces their natural sum. For
+$(\omega^2,\omega^3,\omega,\omega)$ the result is $\omega^3+\omega^2+\omega$;
+retiring $a$ before $b$ would lose the $\omega^2$, and swapping the source
+weights swaps the preferred order. The limit fibres $\beta_a=\omega^2+\omega$ and
+$\beta_b=\omega\cdot2$ on a two-point antichain expand to exactly this pair of
+two-step chains with block weights $(\omega^2,\omega)$ and $(\omega,\omega)$, so
+\begin{equation}\label{nh:wpo:eq:limitworked}
+ \hgt\bigl(\K((\omega^2+\omega)\sqcup(\omega\cdot2))\bigr)=\omega^2+\omega\cdot2 ;
+\end{equation}
+both $\max(\beta_a,\beta_b)=\omega^2+\omega$ and
+$\beta_a\ns\beta_b=\omega^2+\omega\cdot3$ miss it. Purity matters in the simple
+antichain formula, and block expansion handles this nonpure limit case exactly.
+
+\subsection{Height-two skeletons as first-neighbour schedules}
+
+(09 writes $L$, $U$, $Z$, $N(\ell)$ and $G_i(\sigma)$ for the sets and
+groups renamed here, to avoid the label set $U$ and the terminal region $Z$
+of Part~II and the $N$-poset.)
+
+Let $Q$ be the disjoint union of $Q_{\mathrm{lo}}$, $Q_{\mathrm{up}}$ and $Q_{\mathrm{iso}}$, every strict relation having
+the form $\ell<u$ with $\ell\in Q_{\mathrm{lo}}$, $u\in Q_{\mathrm{up}}$; every point of $Q_{\mathrm{lo}}$ has an upper
+neighbour, every point of $Q_{\mathrm{up}}$ a lower neighbour, and $Q_{\mathrm{iso}}$ is the set of isolated
+vertices. Write $\mathcal N(\ell)\subseteq Q_{\mathrm{up}}$ for the nonempty upper-neighbour
+set of $\ell$; all of $Q_{\mathrm{up}}\cup Q_{\mathrm{iso}}$ is maximal.
+
+\begin{theorem}[Height-two scheduling formula; 09 Thm~11.1]\label{nh:wpo:thm:heighttwo}
+For a permutation $\sigma=(u_1,\dots,u_s)$ of $Q_{\mathrm{up}}$ let
+$\Gamma_i(\sigma)=\{\ell\in Q_{\mathrm{lo}}:u_i\in\mathcal N(\ell),\ u_j\notin\mathcal N(\ell)
+\text{ for }j<i\}$. Then
+\begin{equation}\label{nh:wpo:eq:heighttwo}
+ \Phi(Q;\boldsymbol h)=\max_\sigma\Bigl[\sum_{i=1}^s\max_{\ell\in\Gamma_i(\sigma)}h_\ell
+ +\max_{q\in Q_{\mathrm{up}}\cup Q_{\mathrm{iso}}}h_q\Bigr],
+\end{equation}
+the case $Q_{\mathrm{up}}=\varnothing$ being the antichain case.
+\end{theorem}
+\begin{proof}
+Restrict a linear extension to $Q_{\mathrm{up}}$. A lower vertex retires at its first upper
+neighbour in this order, so its retirement group is the corresponding
+$\Gamma_i(\sigma)$, and inserting lower or isolated vertices retires nothing already
+active. Every permutation of $Q_{\mathrm{up}}$ is realized by inserting all of $Q_{\mathrm{lo}}\cup Q_{\mathrm{iso}}$ first.
+So \eqref{nh:wpo:eq:firstsuccessor} becomes \eqref{nh:wpo:eq:heighttwo} with no lost
+schedules.
+\end{proof}
+
+For example take $Q_{\mathrm{lo}}=\{0,1,2\}$, $Q_{\mathrm{up}}=\{3,4,5\}$,
+$\mathcal N(0)=\{3,4\}$, $\mathcal N(1)=\{4,5\}$, $\mathcal N(2)=\{3,5\}$, source
+weights $(\omega^3,\omega^2,\omega)$ and upper weights $\omega$. The order
+$(3,5,4)$ retires $\{0,2\}$, then $\{1\}$, then nothing new, giving
+$\omega^3+\omega^2+\omega$ with the terminal term, and the shipped certificate
+\path{data/03-wpo-height_two_overlap_certificate.json} establishes
+optimality. This is a concrete finite set-system scheduling problem; its
+computational complexity is not classified here.
+
+\section{Implementation, verification and foundations of Part~III}
+\label{nh:wpo:sec:verification}
+
+09's module \path{code/03-wpo-frontier_heights.py} contains exact finite
+Cantor-normal-form arithmetic, transitive closure and cycle rejection, both
+programs, limit-fibre expansion and a certificate checker, with the standard
+library only and no floating point; answers are decreasing
+priority--coefficient lists. It takes pure weights or limit-fibre normal forms;
+the persistent input is \texttt{\{"n": 3, "edges": [[1, 2]], "priorities": [2, 1, 1]\}},
+vertices numbered from $0$ and edges any acyclic generating relation. Without
+labels priorities are read as finite exponents; an optional dictionary such as
+\texttt{\{"1": "omega", "2": "omega+1", "3": "epsilon\_0"\}} labels increasing
+positive exponents, and the program does not prove that the strings denote
+ordinals in the declared order; the justification for relabelling is
+Theorem~\ref{nh:wpo:thm:chambers}. An input-size guard rejects more than $22$
+vertices, expanded blocks included: a practical guard for an exponential
+implementation, neither a restriction of the theorem nor a promise that every
+$22$-vertex instance is cheap. In the delivered layout the commands are
+\texttt{python code/verify.py} and \texttt{python code/frontier\_heights.py}
+applied to \texttt{examples/nonuniform\_N.json} (with \texttt{--output} and
+\texttt{--check}) and \texttt{examples/limit\_fibers.json}; the verifier
+overwrites only its own results and generated examples and certificates.
+
+The recorded run (Python 3.13.5, seed 24092026) enumerated, for each $n\le6$,
+every transitive subrelation of the natural strict order on $\{0,\dots,n-1\}$:
+$1,1,2,7,40,357,4824$ posets for $n=0,\dots,6$, $5{,}232$ in all and $5{,}231$
+nonempty, covering every isomorphism type but not an unlabelled count. Uniform
+checks cover the census; weighted checks use all three-priority assignments for
+$n\le4$, all assignments from $\{1,3\}$ for $n=5$, and one seeded four-priority
+assignment for each of the first $256$ six-vertex posets; every weighted instance
+enumerates \emph{all} its linear extensions and values them by the first-successor
+rule.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Check or measured quantity (09) & Count\\
+\midrule
+Weighted instances & 15,131\\
+Independently valued linear extensions & 249,057\\
+Uniform finite certificates & 5,232\\
+Weighted finite certificates & 15,131\\
+Weighted program versus all-extension maximum & 15,131\\
+Weighted support/compressed program agreement & 15,131\\
+Uniform maximal-antichain height identities & 5,231\\
+Sampled profile inclusion comparisons & 39,371\\
+Canonical frontier membership checks & 407\\
+Compressed retirement identities & 555\\
+Deferred-absorption CNF checks & 20,000\\
+Priority relabelling / vertex relabelling / tamper rejection & 369 each\\
+\midrule
+Total recorded assertions, including further checks & 167,920\\
+\bottomrule
+\end{tabularx}
+\caption{Selected categories of 09's ledger, shipped as
+\texttt{data/03-wpo-verification.json}. The total also includes witness values,
+uniform program agreement, coefficient and natural-sum bounds and the limit-fibre
+example. Counts are not proof strength.}
+\label{nh:wpo:tab:verify}
+\end{table}
+
+The sampled profiles use a small concrete representation of full and partial
+fibres and check the inclusion criterion, not the rank of a truncation standing
+in for an infinite rank. The absorption tests use bounded coefficients; the proof
+of Lemma~\ref{nh:wpo:lem:absorb}, not their range, establishes the identity. The
+recorded runtime, about $9.2$ seconds, is not a performance guarantee. No finite
+test computes an uncountable order type from samples. The checks do not
+establish Wolk's theorem, the input component heights, the transfinite upper
+bound or novelty, and ``two programs can share an incorrect mathematical
+premise'' (09): the chain construction and the deferred-absorption proof are the
+justification for the infinite theorem.
+
+\subsection{Foundational scope and a formalization route (09)}\label{nh:wpo:sec:foundations}
+
+All inputs of an instance are sets; the fibre family, the set of component
+heights and the set of linear extensions are finite. The proof works for
+uncountable fibres and exponents without large-cardinal hypotheses; it is a
+theorem scheme over set-sized ordinals, not a claim about a set of all ordinals
+or a proper-class linear extension. For ordinal fibres the lower-bound chains are
+explicit initial-segment chains. For WPO fibres the finite schedule is computable
+from the weights, but selecting height-attaining chains in the components uses
+the classical maximal-chain theorem: a nonuniform input, not an algorithm, so the
+computability phenomena of \cite{MMS2012} are not bypassed.
+
+A formal development can separate the finite optimization from the transfinite
+mathematics: first the support-profile theorem, then the finite natural-sum bound
+and deferred absorption, then the main upper proof as a finite induction over the
+support values of a chain, and the lower proof as an ordinal-indexed
+concatenation of component chains with checked cross-block inclusions. The
+classical input should be stated exactly as ``a WPO has a chain attaining its
+rank-defined height'', never as a replacement of rank by a supremum of chain types
+for arbitrary well-founded orders. A separate finite layer should prove
+\eqref{nh:wpo:eq:dp}, certificate soundness and relabelling invariance; a checker
+verified there would certify values conditional on the transfinite theorem and the
+component-height lemmas. No Lean file is included or claimed to have been
+compiled; a future formalization must report which classical inputs are proved in
+its library and which, if any, are admitted.
+
+The boundaries are concrete. The skeleton is finite, since the number of support
+changes and the sums of bounded terms must be finite. The component powerset
+heights are positive pure powers, which supplies additive indecomposability,
+limits and the absence of internally completed fibres. Components are WPOs, which
+supplies closure and chain attainment. The order is the standard
+Hoare/finitely-generated-downset order; a different powerset ordering need not
+satisfy the profile rule. The empty skeleton needs its own case (the formula's
+empty maximum would be $0$, while $\K(\varnothing)$ has height $1$), and allowing
+the finite weight $1$ without correction is false, since a singleton has a
+two-element finitary powerset. 09's proof audit lists the same boundaries: empty
+$Q$ is separate; finite or successor components are not admitted to the
+pure-height theorem; general nonpure WPO components are not covered by the
+ordinal CNF expansion; infinite skeletons need new limit-stage arguments; the
+theorem computes height, not width or maximal linear-extension type; it does not
+justify repeated application of $\K$ without new component-height calculations;
+and set-sized instances in ZFC are used, with no proper-class rank object.
+
+09's dependency audit, in brief: the profile normal form needs the finite
+skeleton and no finite cofinal subset in a fibre (a completed fibre need not
+be compact internally); the product chain bound needs strictly increasing
+coordinate ranks, finite natural addition and persistent coordinates bounded
+by actual later elements; deferred absorption needs finite Cantor normal forms
+and a strictly smaller bounded term; the main upper bound combines profile
+comparisons, the finite support partition, the product bound, absorption,
+refinement and Wolk's theorem; the lower bound needs nonempty height-attaining
+component chains, varying a coordinate only just before it disappears; the
+compressed formula needs the canonical antichains and exact equality of
+retirement sets at one-vertex steps; the limit-fibre theorem is a finite order
+isomorphism by literal block expansion, finite and successor terminal blocks
+excluded; exponent chambers need only the finite exponent preorder; and the
+certificates check every state and edge, with no transfinite theorem
+machine-checked.
+\clearpage
+\phantomsection\part*{Closing the addition}
+\addcontentsline{toc}{part}{Closing the addition}
+
+\section{Research questions of the addition}\label{nh:sec:questions}
+
+The four sources propose nine (07), twelve (09), eight (11) and nine (12) further
+questions. None of them is asserted to be a previously recognized or numbered open
+problem in the literature, except for the broader published extension programme
+already cited; 09 adds that its directions are ``not all asserted to be previously
+unstudied'' and that each should first be compared with existing results. Where
+one source's question is answered by another, it is re-scoped here rather than
+printed as open.
+
+\subsection{Questions answered or partly answered inside the addition}
+
+\begin{itemize}
+\item \emph{Finite tails and successor fibres} (07 Question~1; 09 \S14.1, with the
+milestone ``fibres of the form $\omega^\rho c+k$''): \textbf{answered} for
+ordinal-chain fibres by Theorem~\ref{nh:thm:arbitrary} (12) and the exact model
+\eqref{nh:eq:mixed} (11). The ``extra rank data attached to a frontier'' that 07
+asked for are the all-antichain states with fallback weight $1$; the empty-downset
+and greatest-element corrections that 09 anticipated are exactly the states that
+maximal frontiers of the expanded skeleton would discard
+(Section~\ref{nh:sec:examples}).
+\item \emph{Rank-level refinement and a direct point-rank formula} (07
+Question~9, second half; 09 \S14.3): \textbf{answered} for ordinal-chain fibres by
+Theorems~\ref{nh:thm:localrank} (12) and~\ref{nh:thm:local} (11), the latter for
+any finite persistent system. 09's hope that a point-rank formula could remove the
+appeal to chain attainment in the ordinal-fibre upper bound is met differently:
+the proofs of Part~II never use chain attainment. For WPO fibres the point-rank
+question stays open.
+\item \emph{Non-chain fibres} (07 Question~2; 12 Problem~10.6; 11 Problem~12.1):
+\textbf{partly answered} by Part~III, for WPO fibres whose finitary powersets have
+positive pure height. 12's Proposition~\ref{nh:prop:generalcoordinates} gives an
+abstract non-chain version without a support representation. Still open: nonpure
+component heights (09 \S14.2: does equality of $\hgt(\K(P_q))$ still determine the
+output when those heights are not pure; if not, find a small counterexample and a
+replacement invariant describing bounded initial segments; Theorem~\ref{nh:wpo:thm:limits}
+does not answer this, since it expands actual ordinal fibres), and 11's question
+whether a finite family of principal-ideal height profiles could replace the
+ordinal-coordinate phases, with finite products of ordinal chains carrying their
+local rank functions as a first target. 07 asked whether a pure value of
+$\hgt(\K(P_q))$ together with ``suitable uniform upper-cone rank information''
+suffices: Part~III shows the pure value alone suffices for WPO fibres, at the price
+of Wolk's theorem. 12 asked whether pure height, a chosen least element and
+cofinal-chain data suffice on a nontrivial class; any positive answer must prove
+the representation conditions separately, since equal scalar heights do not
+identify which coordinates survive.
+\item \emph{Complexity} (07 Question~4; 09 \S14.4; 12 Problem~10.3):
+\textbf{partly addressed} by Corollary~\ref{nh:cor:NP}, NP membership of the
+threshold problem for the explicit pure-block encoding. A polynomial-time algorithm
+or an NP-hardness result, even for two positive scales, would sharpen it; the short
+output of Corollary~\ref{nh:cor:smalloutput} does not make the path problem easy.
+07 asked in particular about deciding whether the leading or a specified lower
+coefficient exceeds a threshold when $Q$ is given only by its order relation and
+exponent pattern, before enumerating frontiers; 09 asks whether the uniform case
+(largest number of nonempty retirement groups) and the mixed case (a
+lexicographically significant coefficient vector) are known ordered-set or
+set-system optimization problems, and to separate input-comparison cost from
+combinatorial cost before any hardness claim. Any hardness claim needs a separate
+reduction, not supplied here.
+\item \emph{The report's own next target} (Section~\ref{nh:sec:remainedopen}):
+\textbf{answered}, by Theorems~\ref{nh:thm:frontier}, \ref{nh:thm:arbitrary}
+and~\ref{nh:wpo:thm:main}.
+\end{itemize}
+
+\subsection{Questions that remain open}
+
+\begin{problem}[Coefficient-compressed algorithms; 12 Problem~10.1, 07 Question~3, 09 \S14.6]
+\label{nh:prob:compression}
+Compute the height directly on Cantor-normal-form coefficients given in binary,
+without expanding a coefficient $n$ into $n$ blocks, and determine the complexity
+in the coefficient bit lengths and the size of the original skeleton.
+\end{problem}
+Block expansion proves computability but can blow up before ideal enumeration even
+begins. A first target is a fixed skeleton with arbitrary coefficients and a fixed
+number of exponent scales (12); even an efficient rule for two interacting
+repeated chains would help, and it must keep lower-order terms that survive only
+for particular retirement interleavings (09). The issue is succinct finite
+combinatorics, not ordinal notation; chains and antichains give closed-form test
+cases (07). A compressed algorithm must account for finite tails rather than
+discard them (11).
+
+\begin{problem}[Structural and fixed-parameter algorithms; 12 Problem~10.2, 09 \S14.5, 11 Problem~12.5]
+\label{nh:prob:fpt}
+Beyond Corollary~\ref{nh:cor:chaincover} and the $n^{O(b)}$ bound of
+Section~\ref{nh:wpo:sec:algorithms}, find algorithms of the form $f(k)N^{O(1)}$ for
+a parameter $k$: the width of $Q$ or of $\M(Q)$, the number of distinct exponent
+priorities or capacity levels, a decomposition width of the comparability or cover
+graph (bounded treewidth, series--parallel skeletons), or the number of distinct
+upper-neighbour sets, avoiding the full antichain or phase expansion.
+\end{problem}
+The relevant parameter may be the number of simultaneously persistent coordinates
+rather than the number of frontiers; a proof must identify which partial-state
+information permits safe merging of histories under noncommutative ordinal addition
+(12). The present solvers are polynomial in an explicit state graph that may be
+exponentially larger than the input (11).
+
+\begin{problem}[Ordinal width and maximal linear-extension type; 12 Problem~10.4, 07 Question~5, 09 \S14.8, 11 Problem~12.2]
+\label{nh:prob:width}
+Compute the ordinal width (and, 09, the maximal linear-extension type) of the same
+mixed-fibre finitary powersets, beginning (11) with persistent systems with two
+distinct positive capacity levels and state posets of bounded width.
+\end{problem}
+The height proofs concern decreasing sequences; antichain sequences need not have
+chain-ordered labels, so the finite chain cover is unavailable in that form and a
+chain certificate no longer controls an antichain rank tree (07, 11, 12).
+Vialard's treatment of widths of Cartesian products of ordinals
+\cite{VialardWidth2025} is a starting point (11). Theorem~\ref{nh:wpo:thm:ambiguity}
+already shows that coarse local data lose information; for these invariants the
+replacement for bounded persistent progress may involve antichain or bad-sequence
+residuals (09). Part~I's own width question (Section~\ref{nh:sec:remainedopen})
+is unchanged.
+
+\begin{problem}[Repeated finitary powersets; 12 Problem~10.5, 07 Question~6, 11 Problem~12.3]
+\label{nh:prob:iteration}
+Find a finite representation, containing finite ordinal lexicographic sums and
+closed under $\K$, on which $\hgt(\K^r(S))$ is computable for every finite $r$, or
+at least $\hgt(\K(\K(S)))$ on a substantial subclass without reduction to finitely
+many numerical samples.
+\end{problem}
+The first output generally has product-like pieces rather than chain fibres, so it
+is not another finite lexicographic sum of chains; this is the exact obstruction to
+an iteration theorem from Theorem~\ref{nh:thm:arbitrary} (11, 12). The output height
+is not a sufficient description of the first powerset, and even stratum isomorphism
+types are insufficient without their attachments (Corollary~\ref{nh:cor:strata});
+a symbolic presentation of profiles and transitions (07), or of finite antichains of
+persistent tuples (11, whose state component need not remain finite), is a
+plausible start. Proposition~\ref{nh:prop:generalcoordinates} suggests building
+blocks but not the required support representation.
+
+\begin{problem}[Infinite skeletons and infinite state orders; 12 Problem~10.7, 07 Question~7, 09 \S14.7, 11 Problem~12.7]
+\label{nh:prob:infinite}
+Extend the theorems to well-founded or well-quasi-ordered infinite skeletons, or to
+infinite persistent-state systems, under explicit compactness, bounded-frontier or
+controlled-support-evolution hypotheses.
+\end{problem}
+Finiteness is used for the maximum of finitely many tree ranks, for keeping finitely
+many smaller monomials below a pure power, for the existence of a largest active
+capacity, and for the finite depth correction in \eqref{nh:eq:peelR}; infinite unions
+of well-founded trees can acquire infinite branches, finitely bounded progress can
+accumulate at a limit stage, and a support need not be captured by a finite chain of
+states. Replacing a maximum by a supremum is not a proof and may not be the right
+statement (07, 09, 11, 12); increasing ordinal skeletons are a test class (09).
+
+\begin{problem}[Minimal presentations, chambers and schedules; 12 Problem~10.8, 07 Question~8, 09 \S\S14.10--14.11, 11 Problems~12.4 and~12.6]
+\label{nh:prob:presentations}
+Characterize when two finite persistence presentations, or two weighted frontier
+graphs arising from finite skeletons, give the same height for every
+order-preserving exponent substitution, and find minimal or canonical
+presentations; find a stronger equivalence that also preserves every point rank.
+Classify, for a fixed skeleton, all output coefficient vectors as the exponent
+preorder varies, and represent them compactly without enumerating all ordered
+partitions of the labels. Describe equivalence classes of linear extensions with
+the same retirement groups or value.
+\end{problem}
+Exponent invariance removes the numerical names of scales; a further reduction must
+preserve lifetime intersections and retirement opportunities, and equality of active
+maxima or of stratum heights is too weak (11, 12). Edges that never lie on a
+maximizing path may be redundant, and deciding universal redundancy is a finite
+symbolic optimization (07). The compact frontier model shows that height-only
+compression can exist without a pointwise-rank identification, so the two goals
+should be studied separately (11). Two parallel chains show that a schedule optimal
+in every chamber need not exist (09); zero-weight insertions and absorbed lower terms
+create redundancy that a quotient of schedules could remove, giving smaller
+certificates (09).
+
+\begin{problem}[Formal verification and constructive scope; 12 Problem~10.9, 07 Question~9, 09 \S14.12, 11 Problem~12.8]
+\label{nh:prob:formal}
+Formalize the persistence theorem (or the retirement-box theorem and the
+normalization, or the compressed-frontier theorem and the support certificate
+checker) together with a certificate checker, and identify the weakest set-theoretic
+or type-theoretic setting in which the rank maps, attaining chains and checker can be
+developed uniformly for effective notations below a fixed bound.
+\end{problem}
+The arguments use finite choices and well-founded ordinal recursion, not a
+large-cardinal principle, and the $\eps$ bound of the code is a notation boundary,
+not an expected theorem boundary (12). For WPO components one should identify the
+minimum component-witness interface that turns a finite schedule into a represented
+infinite chain, keeping classical assumptions and algorithmic content visible (09).
+No reverse-mathematical equivalence is claimed, and for applications to termination
+a separate norm and control function would be needed: ordinal height alone does not
+bound all finite execution lengths (11).
+
+\begin{problem}[Noetherian spaces and Hoare powerspaces; 09 \S14.9]
+\label{nh:prob:noetherian}
+Which parts of the support-profile argument survive for a finite gluing of
+Noetherian spaces under a lower-Vietoris or Hoare construction?
+\end{problem}
+The combinatorial normal form and the chain-attainment step should be audited
+separately: a topological rank need not share every chain property of a WPO, so the
+present proof does not establish a topological generalization. The neighbouring
+report on Hoare powerspace statures treats a different, topological question.
+
+\begin{problem}[Editorial: relation between Part~III and Proposition~\ref{nh:prop:generalcoordinates}]
+\label{nh:prob:editorial}
+Can Theorem~\ref{nh:wpo:thm:main} be derived from
+Proposition~\ref{nh:prop:generalcoordinates}, applied with coordinates
+$\K(P_q)$ (least element $\varnothing$), Wolk's theorem and the canonical frontier of
+Lemma~\ref{lem:canonical}? The lower bound would need 09's base-point chains, since
+$\K(P_q)\setminus\{\varnothing\}$ has no least element. This question was raised
+during the merge and has not been checked; none of the four sources observes it.
+\end{problem}
+
+\section{What the addition does not claim}\label{nh:sec:nonclaims}
+
+Every limitation stated by any of the four sources is kept. Parts~II and~III compute
+height and individual ranks; they give no formula for ordinal width or for maximal
+order type or maximal linear-extension type of the powersets, no theorem for
+iterated or repeated finitary powersets, no theorem for infinite skeletons or
+infinite state systems, and no large-cardinal consistency or inconsistency
+conclusion. They do not solve the unrestricted finitary-powerset problem for
+arbitrary well-partial-orders (07) or settle the published programme (12). Part~III
+covers WPO fibres only under pure positive powerset height; general nonpure WPO
+components and finite or successor WPO components are not covered, and replacing
+$\hgt(\K(P_q))$ by $\hgt(P_q)$, a maximal linear-extension type or a width is not
+justified. Complexity statements count ordinal operations on explicit state graphs;
+none is a polynomial-time bound in the skeleton size or in a binary encoding of
+Cantor coefficients, and NP membership is not NP-completeness. There is no bound on
+lengths of controlled executions, and no claim that the first rank maps of
+Theorem~\ref{nh:thm:persistence} are pointwise exact. The executable notations stop
+below $\eps$ (07's code takes positive integer exponents and is ``not a general
+parser for arbitrary ordinal notations''; 09's symbolic labels are unchecked), with
+guards of $20$ (12), $22$ (09) and $18$ blocks or $4{,}096$ refined states (11).
+
+No elementary supporting lemma is claimed with priority (07), and the product-height
+arithmetic, Wolk's theorem and the uniform formula are credited to their sources.
+Each source's literature search was targeted and uneven, and non-discovery is not
+evidence of novelty. Earlier preprint versions of Vialard's lexicographic-product
+paper have different authorship and carry an author-disagreement notice; they must
+not be conflated with the published record \cite{Vialard2025} (07), and no theorem is
+borrowed from them (11). Each source's audit is a self-audit, not a referee review
+(12). The sources state that they made no repository write, and none of them
+assumes the correctness of the unrefereed theorems of Part~I; their
+repository comparisons are report-relative, and no review of every repository
+theorem, or build of the repository, is asserted (09, 11, 12). The computations
+certify finite identities and implementations only; they are not proof-assistant
+checks, not computations of infinite descending-tree ranks, and not certificates of
+novelty.
+
+\section{Provenance of the addition and choices made in merging}\label{nh:sec:choices}
+
+The addition was written from four manuscripts (Table~\ref{nh:tab:sources}), all
+pinned to \texttt{e21766d04}, batch-36 manuscripts 07, 09, 11 and 12, arrived in
+\texttt{e13affd32} and placed in \texttt{1a1396d4d}. Their contributions:
+12 is the base of Part~II (persistence theorem, ideal-state program, arbitrary
+fibres, point ranks, NP membership, chain-partition bound, scale invariance,
+non-chain coordinates, product benchmark); 11 supplies the peeling proof and upper
+certificate, the pair-based program, the exact all-antichain isomorphism, phase
+refinement as a theorem, point ranks in any persistent system, and the successor and
+local-rank examples; 07 supplies the normalization, the chain-cover proposition, the
+retirement-box theorem and its second proof of the frontier formula, saturation, the
+paired stratum-types example, the diamond, universal bounds, the product lemma for
+limit factors and the frontier-graph program; 09 is Part~III.
+
+The merge had to choose in the following places.
+\begin{enumerate}
+\item \emph{Base and parts.} 12 is the base for chain fibres because it is the most
+general there (all ordinal fibres, point ranks) and uses no chain-attainment theorem.
+09's theorem is incomparable with 12's and keeps its own part and hypotheses.
+\item \emph{Duplicates.} A result proved by several sources is printed once with its
+provers named. Genuinely different proofs are kept as marked routes: 11's peeling
+proof of Theorem~\ref{nh:thm:persistence}, 07's normalization-and-box proof of
+Theorem~\ref{nh:thm:frontier}, 11's direct proof of \eqref{nh:eq:mixed}, 11's route to
+point ranks, and 07's proof of the product lemma for limit factors. The tree-union
+lemma, block realization, the no-return inequality, uniform recovery, exponent
+invariance and the coefficient bounds were merged across sources.
+\item \emph{Conventions.} Empty exits weigh $1$ in Part~II and $0$ in Part~III, with
+the difference displayed in Remark~\ref{nh:wpo:rem:conventions}. The maximization
+domain is stated for all nonempty chains, with the saturated and maximal restrictions
+proved equivalent. Symbols follow Part~I, and every renamed symbol is listed in
+Table~\ref{nh:tab:notation}; 09's $\alpha_q$ became $h_q$ to keep heights and fibres
+apart. 09's examples were relabelled to this report's $N$-poset; the persistent
+example uses Part~I's $x$, $y<z$ throughout.
+\item \emph{Hidden hypotheses checked when splicing.} 07's normalization uses
+$1+x<\alpha_q$ and so needs infinite pure fibres, which Section~\ref{nh:sec:frontier}
+assumes; 11's peeling assumes $\rho_q>0$, handled by convention~3; 09's lower bound
+needs Wolk chains; 12's non-chain proposition needs least elements.
+\item \emph{Editorial additions.} Remark~\ref{nh:rem:threenames} and
+Problem~\ref{nh:prob:editorial} are the merge's own and are marked as such. The
+placement-time cross-check of the four programs is reported from the placement commit;
+its script is not shipped.
+\item \emph{Bibliography.} Entries were merged into Part~I's list. 11's entry for
+Vialard's lexicographic-product paper, which gave no DOI, is replaced by Part~I's
+published record \cite{Vialard2025}. The Hilton, Schmidt, Wolk, Marcone--Montalb\'an--Shore
+and Vialard width entries are new.
+\item \emph{Part~I.} Its labelled text is unchanged. Sentences in Part~I that said
+no nonuniform height formula was known or claimed were kept as provenance of the
+pinned state and given dated pointers to this addition. The delivered data files
+\path{data/weighted_N_result.json} and
+\path{data/mixed_height_counterexample_result.json} still say ``No nonuniform
+height formula is asserted.''; they predate the addition and stay byte-identical.
+\end{enumerate}
+
+\section{Conclusion of the addition}\label{nh:sec:conclusion}
+
+The missing quantity in a mixed-fibre height calculation is not the height of a
+stratum but the length of a coordinate that can be exhausted before leaving it (12).
+Charging a coordinate only when it retires gives an exact formula because two
+mechanisms match: a natural-sum rank bound that keeps the still-active coordinates,
+and a concatenated chain that exhausts one disappearing coordinate at each stage;
+a finite cover of the descending-sequence tree then makes the global maximum exact.
+Three further routes reach the same formula: a leading-exponent peeling induction
+(11), a normalization onto maximal supports with a box theorem (07), and, for WPO
+fibres, deferred absorption of bounded persistent progress together with Wolk's
+theorem (09). The result is a complete height and point-rank calculus for finitely
+generated downsets of finite lexicographic sums of ordinal chains, including finite
+and successor fibres, an exact extension to WPO fibres of pure powerset height, and a
+precise explanation of Part~I's persistent counterexample. Width, iteration,
+non-pure general fibres and infinite skeletons remain separate research tasks. The
+manuscripts are unrefereed; independent checking and a fuller priority search remain
+necessary before the addition is treated as a refereed or historically certified
+contribution.
+
+\clearpage
+\phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
 \section{Finite nonuniform lexicographic sums}\label{sec:lex}
 
