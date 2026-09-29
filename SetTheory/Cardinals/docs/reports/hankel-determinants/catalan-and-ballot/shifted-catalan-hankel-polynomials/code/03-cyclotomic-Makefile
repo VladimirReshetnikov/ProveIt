@@ -1,0 +1,17 @@
+.PHONY: all pdf verify quick clean
+
+all: pdf
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py
+
+quick:
+	python3 code/verify.py --quick --output data_quick
+
+clean:
+	rm -f article.aux article.log article.out article.toc

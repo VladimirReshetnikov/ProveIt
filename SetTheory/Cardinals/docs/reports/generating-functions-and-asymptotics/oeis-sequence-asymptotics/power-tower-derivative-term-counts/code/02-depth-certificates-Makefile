@@ -1,0 +1,16 @@
+.PHONY: all verify data clean
+
+all: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/minimal_verify.py
+	python3 code/verify.py
+
+data:
+	python3 code/verify.py --write-data
+
+clean:
+	latexmk -c article.tex

@@ -1,0 +1,1295 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{25,53,75}
+\definecolor{muted}{RGB}{85,90,96}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Fractional Cusps at the Atomic Phase},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Sharp noninteger regularity and relaxation for digital-product pressure}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Fractional cusps at the atomic phase}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.2em}
+\setlist{itemsep=.2em,topsep=.4em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Proj}{\Pi}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\e}[1]{\ee^{2\pi\ii #1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+{\small\sffamily\color{ink} PROVEIT\quad /\quad ANALYSIS AND DYNAMICAL SYSTEMS}\par
+\vspace{18mm}
+{\Huge\bfseries\color{ink} Fractional Cusps\\[3mm] at the Atomic Phase\par}
+\vspace{8mm}
+{\Large Sharp noninteger regularity of Thue--Morse pressure\\[2mm]
+and sharp relaxation for digital products in every base\par}
+\vspace{11mm}
+{\large Research draft prepared for Vladimir Reshetnikov\par}
+{Prepared with ChatGPT\quad\textbullet\quad 29 September 2026\par}
+\vspace{10mm}
+\hrule\vspace{4mm}
+\begin{abstract}
+For the doubling map and the singular potential
+$\psi_c(x)=\log\cos^2\!\pi(x-c)$, we determine the phase regularity of
+$P(q\psi_c)$ at the atomic phase for every $q>1/2$. For every noninteger
+$q$ in this range the pressure is locally $C^{\lceil2q\rceil-1}$, but its
+$\lceil2q\rceil$th derivative at the atomic phase does not exist. Its leading
+nonanalytic term is explicit:
+\[
+ P(q\psi_c)=2q\log\cos\pi c+
+ 2(2^{2q}-1)\zeta(2q)|c|^{2q}+o(|c|^{2q}).
+\]
+Thus analyticity at integer orders is exceptional, not evidence for
+analyticity at all positive orders.
+
+The proof constructs a base-independent, periodized-sinc eigenfunction and
+establishes a sharp operator-norm relaxation law on every H\"older space.
+This supplies the spectral gap directly, without assuming a general
+Perron theorem for a potential with zeros. A positive-eigenfunction
+perturbation argument, a pressure--integral comparison, and one exact
+identity at the fixed point then give the singular expansion. The same
+argument works in every integer base $b\ge2$, with cusp coefficient
+$2(b^{2q}-1)\zeta(2q)$. At positive integer $q=m$, the would-be cusp cancels
+exactly the $2m$th coefficient of the analytic fixed-branch contribution,
+recovering and extending the repository's missing-coefficient phenomenon.
+
+The article includes full proofs, a sharpness argument for the convergence
+rate, finite-size moment asymptotics, numerical diagnostics, explicit
+provenance and limitations, and a research agenda. The results are claims
+proved in this research draft; they are not independently refereed or
+proof-assistant verified.
+\end{abstract}
+\vfill
+{\small\color{muted} Repository snapshot inspected:
+\nolinkurl{afb2d1227d8bc5df3beffc1463e958db3544960b}.\\
+The package contains the source, compiled PDF, executable checks, and their output.}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question, the answer, and the scope}
+\label{sec:intro}
+
+\subsection{A published regularity question}
+Gohlke, Kesseb\"ohmer, and Schindler prove order-two phase analyticity for
+this pressure family and leave stronger regularity at general positive
+orders open \cite[Theorem~2.7 and subsequent discussion]{GKS}.
+Gohlke, Lamprinakis, and Schmeling subsequently prove continuity for all
+nonnegative orders and explicitly repeat the stronger-regularity question
+\cite[Theorems~2.2--2.3 and the following paragraph]{GLS}.
+The latter paper uses $\log\sin^2\pi(x-a)$; its atomic phase $a=1/2$
+corresponds to our phase $c=0$, by $a=c+1/2\pmod1$.
+
+This article settles the local question at that exceptional phase for all
+orders strictly above $1/2$. There is both a positive and a negative answer:
+there are as many continuous derivatives as the order of vanishing of the
+weight permits, but one further derivative fails at every noninteger
+order. In particular, global real-analyticity at every positive order is
+false. We do not claim to classify regularity at all other phases or at
+orders at or below $1/2$.
+
+\subsection{The connection to ProveIt}
+The inspected repository contains a substantial Fabius/Rvachev and
+Thue--Morse analysis program \cite{Repo}. Its recent article
+\emph{Integer Pressure and a Missing Taylor Coefficient} proves
+all-positive-integer phase analyticity, a vanishing $2m$th Taylor
+coefficient, and a sixth-moment phase optimum \cite{IntegerRepo}.
+That article explicitly excludes noninteger regularity. The present work
+addresses this excluded direction rather than repeating its finite-matrix
+construction or its optimization theorem.
+
+The main observation is that the periodized sinc function appearing at
+integer orders still makes sense at every real exponent $s>1$. Its
+Fourier support need not be finite, but its transfer iterates can be
+estimated explicitly. The loss of finite Fourier support is therefore
+not the fundamental obstacle. The surviving fractional power in the
+fixed-point eigenvalue equation is the actual source of nonanalyticity.
+
+\subsection{Status and boundaries of the claim}
+All central arguments below are supplied in ordinary mathematics. They
+use no unverified theorem from the repository as an axiom. The repository
+is credited for the integer-order predecessor, while the new proof
+rederives the atomic eigenfunction and the coefficient cancellation in a
+larger real-exponent framework.
+
+The literature check included both primary papers above, the repository's
+integer-pressure package, and targeted searches for fractional phase
+singularities. No matching sharp classification was located in those
+sources. This is a bounded search, not a guarantee of worldwide priority.
+Nothing in this package is a Lean or Rocq proof, and numerical agreement
+is not substituted for a proof of an infinite statement.
+
+\begin{center}
+\begin{tabular}{@{}p{.27\textwidth}p{.66\textwidth}@{}}
+\toprule
+\textbf{Status} & \textbf{Content}\\
+\midrule
+Prior work & Positive-order continuity; order-two analyticity; the repository's
+integer-order analyticity and missing coefficient.\\[1.5mm]
+Proved in this draft & The noninteger atomic cusp and exact integer differentiability
+class; a sharp H\"older operator-norm relaxation law; the all-base extension;
+a local uniform finite-size moment expansion.\\[1.5mm]
+Not settled here & The critical and subcritical phase asymptotics, regularity at
+arbitrary nonzero phases, endpoint H\"older regularity on whole neighborhoods,
+and independent priority or formal verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Definitions and main results}
+\label{sec:main}
+
+\subsection{Digital masks and pressure}
+Let $b\ge2$ be an integer and let $T_b(x)=bx\pmod1$ on
+$\TT=\RR/\ZZ$. Define the normalized digital mask
+\begin{equation}
+ d_b(x)=\frac1b\sum_{r=0}^{b-1}e^{2\pi\ii rx},\qquad
+ m_b(x)=|d_b(x)|
+ =\left|\frac{\sin\pi bx}{b\sin\pi x}\right|,
+ \label{eq:mask}
+\end{equation}
+with removable values at integers. For $s>1$ and a real phase $c$, put
+\begin{equation}
+ w_{b,s,c}(x)=m_b(x-c)^s,\qquad
+ (\Lop_{b,s,c}f)(x)=\sum_{k=0}^{b-1}
+ w_{b,s,c}\left(\frac{x+k}{b}\right)f\left(\frac{x+k}{b}\right).
+ \label{eq:operator}
+\end{equation}
+There is no factor $1/b$ in this transfer operator.
+
+Let $\mathcal D_{b,n}$ be the $b^n$ closed $b$-adic intervals of length
+$b^{-n}$. Shared endpoints cause no problem for the integrals used below.
+Set
+\begin{align}
+ F_{b,s,n,c}(x)&=\prod_{j=0}^{n-1}w_{b,s,c}(T_b^jx),\\
+ Z_{b,s,n}(c)&=\sum_{I\in\mathcal D_{b,n}}\sup_{x\in I}F_{b,s,n,c}(x),\\
+ P_{b,s}(c)&=\lim_{n\to\infty}\frac1n\log Z_{b,s,n}(c).
+ \label{eq:pressure}
+\end{align}
+The existence and spectral interpretation of the last limit near $c=0$
+will be proved, not assumed. All logarithms are natural.
+
+For the binary potential in the introduction,
+\begin{equation}
+ p_q(c):=P(q\psi_c)=P_{2,2q}(c),\qquad
+ \psi_c(x)=\log\cos^2\pi(x-c).
+ \label{eq:binary-translation}
+\end{equation}
+Thus $s$ is the absolute-moment exponent, while $q=s/2$ is the usual
+pressure order. This distinction accounts for the exponent $2q$ in the
+binary theorem.
+
+\subsection{The fractional normal form}
+For $|c|<1/b$, define the positive analytic function
+\begin{equation}
+ D_b(c)=\frac{\sin\pi bc}{b\sin\pi c},\qquad D_b(0)=1,
+ \qquad C_{b,s}=2(b^s-1)\zeta(s).
+ \label{eq:constants}
+\end{equation}
+
+\begin{theorem}[Atomic-phase normal form]
+\label{thm:normal}
+Fix $b\ge2$ and $s>1$. There is $\varepsilon>0$ such that on
+$|c|<\varepsilon$ the pressure exists, is even, and has the exact form
+\begin{equation}
+ P_{b,s}(c)=s\log D_b(c)+
+ \log\bigl(1+|c|^s E_{b,s}(c)\bigr),
+ \label{eq:normal}
+\end{equation}
+where $E_{b,s}$ is positive and even, satisfies
+\begin{equation}
+ E_{b,s}(0)=C_{b,s},
+ \label{eq:Ezero}
+\end{equation}
+and is locally $C^r$ for every nonnegative integer $r<s$.
+Consequently,
+\begin{equation}
+ P_{b,s}(c)=s\log D_b(c)+C_{b,s}|c|^s+o(|c|^{s+1}).
+ \label{eq:asymp-strong}
+\end{equation}
+For even integer $s$, both the pressure and $E_{b,s}$ are real-analytic
+near zero.
+\end{theorem}
+
+The one-extra-order remainder in \cref{eq:asymp-strong} is useful but is
+not needed for the nonanalyticity conclusion. It follows from evenness
+and one continuous derivative of $E_{b,s}$, not from an assumed power
+series for that function.
+
+\begin{theorem}[Sharp integer differentiability class]
+\label{thm:regularity}
+Let $s>1$ and assume that $s$ is not an even integer. Put
+$k=\lceil s\rceil-1$. Then $P_{b,s}$ is $C^k$ in a neighborhood of zero,
+but its derivative of order $k+1$ at zero does not exist. More precisely,
+for every integer $0\le r<s$, as $c\to0$ through nonzero real values,
+\begin{align}
+ \frac{\mathrm d^r}{\mathrm dc^r}
+ \bigl(P_{b,s}(c)-s\log D_b(c)\bigr)
+ & = C_{b,s}(s)_r\,\sgn(c)^r |c|^{s-r}
+   +o(|c|^{s-r}),
+ \label{eq:derivative-cusp}\\
+ (s)_r&=s(s-1)\cdots(s-r+1),\qquad (s)_0=1.
+\end{align}
+\end{theorem}
+
+\begin{corollary}[Binary pressure]
+\label{cor:binary}
+For every noninteger $q>1/2$, $p_q$ is locally
+$C^{\lceil2q\rceil-1}$ but has no derivative of order $\lceil2q\rceil$
+at zero. Its expansion is
+\begin{equation}
+ p_q(c)=2q\log\cos\pi c+
+ 2(2^{2q}-1)\zeta(2q)|c|^{2q}+o(|c|^{2q+1}).
+ \label{eq:binary-cusp}
+\end{equation}
+In particular, noninteger positive orders above $1/2$ do not admit a
+real-analytic phase dependence on the whole circle.
+\end{corollary}
+
+\subsection{The sharp relaxation theorem}
+Use the circle distance $\delta(x,y)$ and the norm
+\[
+ \|f\|_{\alpha}=\|f\|_\infty+[f]_{\alpha},\qquad
+ [f]_{\alpha}=\sup_{x\ne y}\frac{|f(x)-f(y)|}{\delta(x,y)^\alpha}
+\]
+on the complex Banach space $C^\alpha(\TT)$, where $0<\alpha\le1$.
+The case $\alpha=1$ means Lipschitz functions, not continuously
+differentiable functions. Define
+\begin{equation}
+ H_s(x)=\sum_{\ell\in\ZZ}|\sinc(x+\ell)|^s,
+ \qquad \sinc u=\frac{\sin\pi u}{\pi u},\quad \sinc0=1,
+ \qquad \Proj_sf=f(0)H_s.
+ \label{eq:H}
+\end{equation}
+
+\begin{theorem}[Sharp atomic relaxation]
+\label{thm:relax}
+For every $b\ge2$, $s>1$, and $0<\alpha\le1$, $H_s$ is strictly
+positive and belongs to $C^1(\TT)$, and
+\begin{equation}
+ \Lop_{b,s,0}H_s=H_s,\qquad
+ \Lop_{b,s,0}\Proj_s=\Proj_s\Lop_{b,s,0}=\Proj_s.
+\end{equation}
+There are positive constants $a,A$, depending only on $b,s,\alpha$, such
+that for all $n\ge1$,
+\begin{equation}
+ aR_{b,s,\alpha}(n)\le
+ \|\Lop_{b,s,0}^{\,n}-\Proj_s\|_{C^\alpha\to C^\alpha}
+ \le AR_{b,s,\alpha}(n),
+ \label{eq:sharp-relax}
+\end{equation}
+where
+\begin{equation}
+ R_{b,s,\alpha}(n)=
+ \begin{cases}
+ b^{-(s-1)n},&1<s<1+\alpha,\\
+ (n+1)b^{-\alpha n},&s=1+\alpha,\\
+ b^{-\alpha n},&s>1+\alpha.
+ \end{cases}
+ \label{eq:rate}
+\end{equation}
+In particular, $1$ is an algebraically simple isolated eigenvalue and all
+remaining spectrum lies in
+$|z|\le\max\{b^{-\alpha},b^{1-s}\}<1$.
+\end{theorem}
+
+The logarithmic factor at $s=1+\alpha$ is necessary in this operator norm.
+It is detected by the single test function $\delta(x,0)^\alpha$; it is
+not an artifact of an abstract spectral estimate.
+
+\section{The atomic eigenfunction and the telescoping identity}
+\label{sec:atomic}
+
+\subsection{Construction and regularity of the periodization}
+For $x\notin\ZZ$, the series in \cref{eq:H} becomes
+\begin{equation}
+ H_s(x)=\frac{|\sin\pi x|^s}{\pi^s}
+ \sum_{\ell\in\ZZ}|x+\ell|^{-s}.
+ \label{eq:Hsum}
+\end{equation}
+On compact subsets away from the integers, the series and its first
+derivative converge uniformly. Near zero, separate the $\ell=0$ term:
+\begin{equation}
+ H_s(x)=|\sinc x|^s+
+ \frac{|\sin\pi x|^s}{\pi^s}
+ \sum_{\ell\ne0}|x+\ell|^{-s}.
+ \label{eq:Hsplit}
+\end{equation}
+The second sum is continuously differentiable there, with uniformly
+convergent derivative series. Since $s>1$, multiplication by
+$|\sin\pi x|^s$ preserves $C^1$ regularity at zero. Thus $H_s\in C^1$,
+$H_s(0)=1$, and periodicity follows by reindexing.
+
+Every $x$ has an integer translate $u$ with $|u|\le1/2$. The corresponding
+summand is at least $(2/\pi)^s$. Hence
+\begin{equation}
+ H_s(x)\ge(2/\pi)^s>0\qquad(x\in\TT).
+ \label{eq:Hpositive}
+\end{equation}
+This uniform lower bound is important: it allows a small perturbation of
+the eigenfunction to remain strictly positive.
+
+\subsection{The eigenfunction identity}
+For $y=(x+k)/b$ with $0\le k<b$, use
+$|\sin\pi by|=|\sin\pi x|$ in \cref{eq:Hsum}. Away from removable
+points,
+\begin{align*}
+ m_b(y)^sH_s(y)
+ &=\frac{|\sin\pi x|^s}{b^s\pi^s}
+   \sum_{\ell\in\ZZ}|y+\ell|^{-s}\\
+ &=\frac{|\sin\pi x|^s}{\pi^s}
+   \sum_{\ell\in\ZZ}|x+k+b\ell|^{-s}.
+\end{align*}
+Summing over $k$ partitions $\ZZ$ into its residue classes modulo $b$,
+giving $\Lop_{b,s,0}H_s=H_s$. Continuity handles the removable points.
+At $x=0$, only the inverse branch $y=0$ has nonzero weight, so
+\begin{equation}
+ (\Lop_{b,s,0}f)(0)=f(0).
+ \label{eq:delta-left}
+\end{equation}
+Together these identities prove the projector relations in
+\cref{thm:relax}.
+
+\subsection{An exact formula for every iterate}
+Let $N=b^n$. The product of the masks telescopes:
+\begin{equation}
+ \prod_{j=0}^{n-1}m_b(b^jy)^s
+ =\left|\frac{\sin\pi Ny}{N\sin\pi y}\right|^s.
+ \label{eq:telescope}
+\end{equation}
+Therefore, for any complete set $K_N$ of $N$ consecutive integer residues
+modulo $N$,
+\begin{equation}
+ (\Lop_{b,s,0}^{\,n}f)(x)
+ =\sum_{k\in K_N}a_{N,k}(x)f\left(\frac{x+k}{N}\right),\qquad
+ a_{N,k}(x)=\left|
+ \frac{\sin\pi x}{N\sin(\pi(x+k)/N)}\right|^s.
+ \label{eq:iterate}
+\end{equation}
+Take representatives $x\in[-1/2,1/2]$ and a centered $K_N$ containing
+zero, for example $K_N=\{-N/2,\ldots,N/2-1\}$ when $N$ is even.
+At the removable zero of $a_{N,0}$, set its value to $1$.
+
+This formula is the analytic substitute for a finite moment matrix.
+The proof below keeps track of both the total mass and its H\"older
+variation, which is essential for a genuine spectral perturbation argument.
+
+\section{Proof of the sharp relaxation law}
+\label{sec:relax-proof}
+
+\subsection{Uniform bounds on the branch coefficients}
+\begin{lemma}
+\label{lem:coeff}
+For fixed $s>1$, there is a constant $C_s$ independent of $N\ge2$ such
+that on $[-1/2,1/2]$,
+\begin{equation}
+ \|a_{N,0}\|_{C^1}\le C_s,\qquad
+ \|a_{N,k}\|_{C^1}\le C_s|k|^{-s}\quad(0\ne k\in K_N).
+ \label{eq:coeff-bound}
+\end{equation}
+Here $C^1$ is used only for the scalar coefficient functions on the
+interval.
+\end{lemma}
+\begin{proof}
+For $k=0$,
+\[
+ a_{N,0}(x)=\left|\frac{\sinc x}{\sinc(x/N)}\right|^s.
+\]
+Both factors are uniformly bounded away from zero on the relevant
+intervals, and their first derivatives are uniformly bounded.
+
+For $k\ne0$, one has $|x+k|\ge|k|/2$. The quantity
+$(x+k)/N$ stays in a fixed interval strictly inside $(-1,1)$, and thus
+\[
+ N|\sin(\pi(x+k)/N)|\ge c_0|x+k|\ge(c_0/2)|k|
+\]
+with an absolute positive $c_0$. Differentiating the quotient, the derivative
+of the numerator power is uniformly bounded because $s>1$. The logarithmic
+derivative of the denominator is bounded by $C/|x+k|$:
+\[
+ \left|\frac{\pi}{N}\cot\frac{\pi(x+k)}N\right|
+ \le\frac{C}{|x+k|}.
+\]
+These estimates give \cref{eq:coeff-bound}.
+\end{proof}
+
+\subsection{Upper bound on the invariant ideal}
+Let
+\[
+ \mathcal I_\alpha=\{f\in C^\alpha(\TT):f(0)=0\}.
+\]
+By \cref{eq:delta-left}, this is an invariant closed subspace. For
+$f\in\mathcal I_\alpha$,
+\begin{equation}
+ |f(y)|\le[f]_\alpha\delta(y,0)^\alpha.
+ \label{eq:vanishing-bound}
+\end{equation}
+Put $f_{N,k}(x)=f((x+k)/N)$. On the representative interval,
+\begin{align}
+ [f_{N,k}]_\alpha&\le N^{-\alpha}[f]_\alpha,\\
+ \|f_{N,0}\|_\infty&\le C N^{-\alpha}[f]_\alpha,\\
+ \|f_{N,k}\|_\infty&\le C N^{-\alpha}|k|^\alpha[f]_\alpha
+ \quad(k\ne0).
+ \label{eq:branch-f}
+\end{align}
+The estimates remain valid when an inverse image crosses a chosen
+representative endpoint, because $f$ is periodic and circle distance is
+at most the distance between its lifts.
+
+Using the product inequality
+$[uv]_\alpha\le\|u\|_\infty[v]_\alpha+[u]_\alpha\|v\|_\infty$,
+\cref{lem:coeff}, and \cref{eq:branch-f}, we obtain
+\begin{equation}
+ \|\Lop_{b,s,0}^{\,n}f\|_\alpha
+ \le C N^{-\alpha}
+ \left(1+\sum_{k=1}^{N}k^{\alpha-s}\right)\|f\|_\alpha.
+ \label{eq:sum-bound}
+\end{equation}
+For completeness, the interval estimate gives the circle estimate up to a
+fixed factor: for two points separated by the cut, split their difference
+at the identified endpoints and use
+$a^\alpha+b^\alpha\le2^{1-\alpha}(a+b)^\alpha$.
+
+The elementary power-sum alternatives are
+\begin{equation}
+ 1+\sum_{k=1}^{N}k^{\alpha-s}\asymp
+ \begin{cases}
+ N^{1+\alpha-s},&s<1+\alpha,\\
+ 1+\log N,&s=1+\alpha,\\
+ 1,&s>1+\alpha.
+ \end{cases}
+ \label{eq:powersum}
+\end{equation}
+Since $N=b^n$, \cref{eq:sum-bound} gives the upper rate in
+\cref{eq:sharp-relax} on $\mathcal I_\alpha$.
+For arbitrary $f$, write
+\[
+ f=f(0)H_s+g,\qquad g\in\mathcal I_\alpha,
+ \qquad \|g\|_\alpha\le C_s\|f\|_\alpha.
+\]
+Because $H_s$ is fixed by the operator, the same bound holds for
+$\Lop^n-\Proj_s$ on the whole space.
+
+\subsection{Matching lower bound}
+\begin{lemma}
+\label{lem:lower}
+The fixed function $f_\alpha(x)=\delta(x,0)^\alpha$ satisfies
+\begin{equation}
+ \left(\Lop_{b,s,0}^{\,n}f_\alpha\right)(1/2)
+ \ge c N^{-\alpha}
+ \left(1+\sum_{k=1}^{\lfloor N/4\rfloor}k^{\alpha-s}\right)
+ \label{eq:lower}
+\end{equation}
+for all sufficiently large $N=b^n$.
+\end{lemma}
+\begin{proof}
+At $x=1/2$, the numerator of $a_{N,k}$ has absolute value $1$.
+For $0\le k\le N/4$, the inverse image $(k+1/2)/N$ lies in $[0,1/2]$,
+so its distance to zero is exactly $(k+1/2)/N$. Also,
+\[
+ N\sin\frac{\pi(k+1/2)}N\le\pi(k+1/2).
+\]
+Consequently each such summand in \cref{eq:iterate} is at least
+\[
+ \pi^{-s}N^{-\alpha}(k+1/2)^{\alpha-s}.
+\]
+All summands are nonnegative, and the $k=0$ term supplies the initial
+constant in \cref{eq:lower}.
+\end{proof}
+
+The function $f_\alpha$ belongs to $C^\alpha$ with bounded norm and
+$f_\alpha(0)=0$. Thus $\Proj_sf_\alpha=0$. Applying
+\cref{eq:powersum} to \cref{eq:lower} gives the lower operator-norm bound.
+Changing constants covers the finitely many small $n$.
+This proves the two-sided estimate in \cref{thm:relax}.
+
+\subsection{The spectral consequence}
+Write $R=\Lop_{b,s,0}-\Proj_s$. The projector relations imply
+$R^n=\Lop_{b,s,0}^{\,n}-\Proj_s$ for $n\ge1$, and the estimates give
+\[
+ r(R)\le\max\{b^{-\alpha},b^{1-s}\}<1.
+\]
+Since the range of $\Proj_s$ is one-dimensional, this decomposes the
+operator into the simple eigenvalue $1$ and a strictly smaller spectral
+part. In particular there is no generalized eigenvector attached to $1$.
+This supplies the spectral gap needed below directly, rather than by
+invoking a positivity theorem that might fail at an atomic phase.
+
+\section{Parameter regularity and spectral perturbation}
+\label{sec:perturb}
+
+\subsection{A translation lemma on H\"older spaces}
+\begin{lemma}
+\label{lem:translation}
+Fix $s>1$ and a nonnegative integer $r<s$. Choose
+$0<\alpha<\min\{1,s-r\}$. Then
+\[
+ c\longmapsto w_{b,s,c}\in C^\alpha(\TT),\qquad
+ c\longmapsto\Lop_{b,s,c}\in\mathcal B(C^\alpha(\TT))
+\]
+are $C^r$ maps. If $s$ is an even integer, the maps are real-analytic.
+\end{lemma}
+\begin{proof}
+The nontrivial zeros of the mask occur at $j/b$, $1\le j<b$, and are
+simple zeros before taking the absolute value. In a local coordinate $u$
+around each zero, the weight has the form $|u|^s v(u)$ with $v$ positive
+and real-analytic. Away from those zeros it is real-analytic.
+Its $r$th derivative is H\"older continuous of every exponent
+$\gamma<\min\{1,s-r\}$. Choose such a $\gamma$ larger than $\alpha$.
+
+Translations of a $C^\gamma$ function are continuous in the $C^\alpha$
+norm. One elementary proof splits the H\"older quotient into distances
+at most $\eta$ and greater than $\eta$: the first part is bounded by
+$C\eta^{\gamma-\alpha}$ and the second by
+$2\eta^{-\alpha}$ times the uniform translation error. First choose
+$\eta$, then let the translation tend to zero.
+Applying this to the $r$th derivative, and using the integral form of the
+Taylor remainder for the lower derivatives, proves $C^r$ translation
+dependence in $C^\alpha$.
+
+Multiplication is bounded on $C^\alpha$, and the finite sum over inverse
+branches is bounded there. Hence the same parameter regularity holds for
+the operator. When $s=2m$, the weight is a trigonometric polynomial, so
+its translation depends analytically on $c$ in the operator norm.
+\end{proof}
+
+The strict inequality $\alpha<s-r$ is intentional. Translating a function
+at its exact H\"older endpoint need not be norm-continuous. Passing to a
+slightly weaker H\"older space avoids that pitfall without losing an
+integer derivative of the pressure.
+
+\subsection{The isolated eigenvalue persists}
+\begin{proposition}
+\label{prop:perron}
+For every fixed $b\ge2$, $s>1$, and integer $r<s$, a neighborhood of
+zero has $C^r$ functions $\rho(c)>0$ and $h_c\in C^\alpha(\TT)$ such that
+\begin{equation}
+ \Lop_{b,s,c}h_c=\rho(c)h_c,\qquad
+ h_c(0)=1,\qquad h_c>0,\qquad
+ \rho(0)=1,\quad h_0=H_s.
+ \label{eq:perron}
+\end{equation}
+The eigenvalue is algebraically simple and strictly dominant. There is
+also a $C^r$ rank-one spectral projector $\Proj_c$, and, after possibly
+shrinking the neighborhood,
+\begin{equation}
+ \|\rho(c)^{-n}\Lop_{b,s,c}^{\,n}-\Proj_c\|_{\alpha\to\alpha}
+ \le K\theta^n\qquad(n\ge0)
+ \label{eq:uniform-gap}
+\end{equation}
+with $0<\theta<1$ and $K<\infty$ independent of $c$. For even integer
+$s$, the spectral data are real-analytic.
+\end{proposition}
+\begin{proof}
+By \cref{thm:relax}, a small circle $\Gamma$ around $1$ separates that
+simple eigenvalue from the rest of the spectrum of $\Lop_{b,s,0}$.
+Operator-norm continuity and the Neumann series preserve the resolvent
+on $\Gamma$ for small $c$. Define
+\[
+ \Proj_c=\frac1{2\pi\ii}\int_\Gamma
+ (z-\Lop_{b,s,c})^{-1}\dd z.
+\]
+Differentiating the resolvent identity gives the stated $C^r$ dependence.
+The projectors remain rank one: sufficiently close projections have
+isomorphic ranges, by restricting one projector to the other's range.
+Since $\Proj_0 1=H_s$, set
+\[
+ h_c=\frac{\Proj_c1}{(\Proj_c1)(0)}.
+\]
+The denominator tends to $1$, and \cref{eq:Hpositive} ensures that
+$h_c$ remains strictly positive. The invariant one-dimensional range
+supplies an eigenvalue; evaluating at zero gives
+$\rho(c)=(\Lop_{b,s,c}h_c)(0)$. Reality, positivity, and $C^r$ regularity
+follow immediately.
+
+The remaining spectrum stays in a disk of radius less than $1$, whereas
+$\rho(c)$ tends to $1$. This can be seen directly from resolvent stability:
+outside fixed neighborhoods of the old spectrum, cover a bounded region
+by finitely many resolvent neighborhoods and use the Neumann series;
+large $|z|$ are handled by the uniform operator-norm bound.
+Thus the eigenvalue remains strictly dominant.
+
+For the uniform estimate, normalize the complementary operator by
+$\rho(c)$. A fixed circle $|z|=\theta<1$ encloses all of its spectra for
+small $c$, with uniformly bounded resolvents on that circle. The Cauchy
+integral formula for its powers gives \cref{eq:uniform-gap}. Enlarge $K$
+to include $n=0$. Analytic input gives analytic resolvents and spectral
+data when $s$ is even.
+\end{proof}
+
+Although different $r$ may require different H\"older spaces, they give
+the same positive eigenvalue and normalized positive eigenfunction near
+zero. To see uniqueness without comparing the Banach spaces, compare
+two strictly positive eigenfunctions by their maximum and minimum ratio.
+Positivity of $\Lop$ forces their positive eigenvalues to be equal; their
+difference then lies in the unique eigenspace in a common weaker
+H\"older space. Hence the resulting pressure regularities are compatible.
+
+\subsection{Reflection symmetry}
+Let $(Jf)(x)=f(-x)$. Evenness of the mask gives
+\[
+ J\Lop_{b,s,c}=\Lop_{b,s,-c}J.
+\]
+Uniqueness and the normalization at zero imply
+\begin{equation}
+ \rho(-c)=\rho(c),\qquad h_{-c}(x)=h_c(-x).
+ \label{eq:reflection}
+\end{equation}
+The atomic eigenfunction is therefore the common limit of the perturbed
+positive eigenfunctions from both sides.
+
+\section{Why the spectral eigenvalue is the pressure}
+\label{sec:pressure}
+
+A positive eigenvalue on a chosen function space does not by itself
+identify cylinder-supremum pressure. The following comparison closes
+that gap.
+
+\begin{lemma}[A polynomial variation bound]
+\label{lem:bernstein}
+For every $p\ge1$ there is a constant $B_p$ such that every trigonometric
+polynomial $Q$ of degree at most $D\ge1$ satisfies
+\begin{equation}
+ \int_0^1\left|\frac{\mathrm d}{\mathrm dx}|Q(x)|^p\right|\dd x
+ \le B_pD\int_0^1|Q(x)|^p\dd x.
+ \label{eq:variation}
+\end{equation}
+The derivative is interpreted almost everywhere when necessary.
+\end{lemma}
+\begin{proof}
+A convolution proof of the elementary estimate
+$\|Q'\|_p\le CD\|Q\|_p$ is given in \cref{app:bernstein}.
+For $p>1$, the chain rule and H\"older's inequality give
+\[
+ \int\bigl|(|Q|^p)'\bigr|
+ \le p\int|Q|^{p-1}|Q'|
+ \le p\|Q\|_p^{p-1}\|Q'\|_p.
+\]
+For $p=1$, absolute continuity and $\bigl|(|Q|)'\bigr|\le|Q'|$
+almost everywhere give the same conclusion.
+\end{proof}
+
+Define the digital product
+\begin{equation}
+ Q_{b,n,c}(x)=\prod_{j=0}^{n-1}
+ \left(\sum_{r=0}^{b-1}e^{2\pi\ii r(b^jx-c)}\right).
+ \label{eq:digital-product}
+\end{equation}
+Its degree in $e^{2\pi\ii x}$ is $b^n-1$, and
+\begin{equation}
+ F_{b,s,n,c}(x)=b^{-sn}|Q_{b,n,c}(x)|^s.
+ \label{eq:Qnormal}
+\end{equation}
+On an interval of length $1/N$, the supremum of a nonnegative absolutely
+continuous function is at least its average and at most its average plus
+its variation. Summing over the partition, with $N=b^n$, gives
+\begin{equation}
+ N\int F\le Z_{b,s,n}(c)
+ \le N\int F+\int|F'|
+ \le(1+B_s)N\int F.
+ \label{eq:Zsandwich}
+\end{equation}
+The constants do not depend on $n$ or the phase.
+
+Changing variables in the inverse-branch sums yields
+\begin{equation}
+ \int_0^1\Lop_{b,s,c}^{\,n}1\dd x=N\int_0^1F_{b,s,n,c}(x)\dd x.
+ \label{eq:int-transfer}
+\end{equation}
+By \cref{prop:perron}, the left side equals
+\[
+ \rho(c)^n\bigl(\mathcal A_{b,s}(c)+O(\theta^n)\bigr),\qquad
+ \mathcal A_{b,s}(c)=\int_0^1\Proj_c1\dd x.
+\]
+At zero, $\mathcal A_{b,s}(0)=\int H_s>0$. Continuity gives a uniform
+positive lower bound on a smaller neighborhood. Taking logarithms in
+\cref{eq:Zsandwich} proves both existence of the limit and
+\begin{equation}
+ P_{b,s}(c)=\log\rho(c).
+ \label{eq:pressure-rho}
+\end{equation}
+No bounded-distortion estimate for the logarithm of a vanishing weight
+has been used.
+
+\section{The fixed-point identity and the fractional cusp}
+\label{sec:cusp}
+
+\subsection{An exact scalar equation}
+Evaluate the eigenfunction equation at $x=0$. The principal inverse
+branch gives $D_b(c)^s$, since $h_c(0)=1$. Every other inverse branch
+has numerator $|\sin\pi bc|^s$. Hence
+\begin{equation}
+ \rho(c)=D_b(c)^s+
+ \frac{|\sin\pi bc|^s}{b^s}
+ \sum_{k=1}^{b-1}
+ \frac{h_c(k/b)}{|\sin\pi(k/b-c)|^s}.
+ \label{eq:scalar}
+\end{equation}
+Choose the phase neighborhood small enough that the denominators do not
+vanish. Write
+\begin{equation}
+ B_{b,s}(c)=\sum_{k=1}^{b-1}
+ \frac{h_c(k/b)}{|\sin\pi(k/b-c)|^s}.
+ \label{eq:B}
+\end{equation}
+Dividing \cref{eq:scalar} by $D_b(c)^s$ gives the particularly simple
+identity
+\begin{equation}
+ \rho(c)=D_b(c)^s\bigl(1+|\sin\pi c|^sB_{b,s}(c)\bigr).
+ \label{eq:factor}
+\end{equation}
+Thus the logarithmic singularity of the original potential has become
+an explicit fractional power in a scalar eigenvalue equation.
+
+The function $B_{b,s}$ is positive and $C^r$ for every integer $r<s$.
+By \cref{eq:reflection}, replacing $k$ by $b-k$ shows that it is even.
+Define
+\begin{equation}
+ E_{b,s}(c)=\left(\frac{\sin\pi c}{c}\right)^sB_{b,s}(c),
+ \qquad E_{b,s}(0)=\pi^sB_{b,s}(0),
+ \label{eq:E}
+\end{equation}
+where the quotient is positive in the small neighborhood under
+consideration. Its power is real-analytic there. Equations
+\cref{eq:pressure-rho,eq:factor} now give the exact normal form.
+
+\subsection{Evaluation of the cusp coefficient}
+Using \cref{eq:Hsum},
+\begin{align}
+ \pi^sB_{b,s}(0)
+ &=\sum_{k=1}^{b-1}\sum_{\ell\in\ZZ}|k/b+\ell|^{-s}\\
+ &=b^s\sum_{\substack{j\in\ZZ\\b\nmid j}}|j|^{-s}
+ =2(b^s-1)\zeta(s).
+ \label{eq:amplitude}
+\end{align}
+All rearrangements are justified by absolute convergence, since $s>1$.
+The same coefficient works in every base, with the base entering only
+through the omitted multiples in the final zeta sum.
+
+Since $E_{b,s}$ is even and $C^1$, its derivative at zero is zero, so
+$E_{b,s}(c)=C_{b,s}+o(|c|)$. Consequently,
+\begin{align*}
+ \log(1+|c|^sE_{b,s}(c))
+ &=C_{b,s}|c|^s+o(|c|^{s+1})+O(|c|^{2s})\\
+ &=C_{b,s}|c|^s+o(|c|^{s+1}),
+\end{align*}
+because $s>1$. This proves \cref{thm:normal}, including its stronger
+remainder.
+
+\subsection{Differentiation and the exact loss of smoothness}
+Fix an integer $r<s$. On either side of zero, differentiate
+\cref{eq:normal}. The leading product term is
+\[
+ C_{b,s}\frac{\mathrm d^r}{\mathrm dc^r}|c|^s
+ =C_{b,s}(s)_r\sgn(c)^r|c|^{s-r}.
+\]
+Every term with a positive number $j$ of derivatives falling on $E$
+has an additional factor $|c|^j$ relative to this scale and a bounded
+derivative $E^{(j)}$. The term with no derivative falling on $E$ has
+$E(c)-C_{b,s}=o(1)$. Finally, the nonlinear part of $\log(1+u)-u$
+contributes $O(|c|^{2s-r})$ under these differentiations. This proves
+\cref{eq:derivative-cusp}.
+
+Let $k=\lceil s\rceil-1$ and subtract the analytic function
+$a(c)=s\log D_b(c)$. The derivatives of $P-a$ up to order $k$ exist
+continuously and vanish at zero. If $s$ is not an integer, then
+$0<s-k<1$, so
+\[
+ \frac{(P-a)^{(k)}(c)-(P-a)^{(k)}(0)}{c}
+ =C_{b,s}(s)_k\sgn(c)^{k-1}|c|^{s-k-1}
+   +o(|c|^{s-k-1})
+\]
+has no finite limit. If $s$ is an odd integer, $k=s-1$ is even and the
+two one-sided limits are $\pm C_{b,s}s!$. Thus a derivative of order
+$k+1$ fails in both cases. The only remaining integer case is even $s$,
+which is analytic and is treated next. This proves
+\cref{thm:regularity,cor:binary}.
+
+\section{Integer resonance and explicit consequences}
+\label{sec:integer}
+
+\subsection{Why the integer coefficient disappears}
+Euler's sine product, followed by an absolutely convergent logarithmic
+expansion, gives for $|c|<1/b$
+\begin{equation}
+ \log D_b(c)
+ =-\sum_{j\ge1}\frac{(b^{2j}-1)\zeta(2j)}{j}c^{2j}.
+ \label{eq:log-mask}
+\end{equation}
+For $s=2m$, \cref{eq:normal} is analytic. At degree $2m$, the first
+term contributes
+\[
+ -\frac{2m}{m}(b^{2m}-1)\zeta(2m)
+ =-2(b^{2m}-1)\zeta(2m),
+\]
+and the second contributes exactly the opposite number, by
+\cref{eq:amplitude}. Hence:
+
+\begin{corollary}[All-base integer cancellation]
+\label{cor:cancel}
+For every integer $m\ge1$ and base $b\ge2$,
+\begin{equation}
+ [c^{2m}]P_{b,2m}(c)=0,
+ \label{eq:cancel}
+\end{equation}
+and for $1\le j<m$,
+\begin{equation}
+ [c^{2j}]P_{b,2m}(c)
+ =-\frac{2m}{j}(b^{2j}-1)\zeta(2j).
+ \label{eq:lowercoeff}
+\end{equation}
+\end{corollary}
+
+The binary cancellation is credited to the repository predecessor
+\cite{IntegerRepo}; the role here is to explain it as the even-integer
+specialization of a real-exponent normal form and extend it to arbitrary
+integer bases. At a noninteger exponent, there is no analytic coefficient
+of degree $s$ available to cancel $|c|^s$.
+
+\subsection{The order-one normalization}
+When $s=2$, the pressure vanishes identically, not merely to a finite
+Taylor order. Indeed, discrete Fourier orthogonality gives
+\begin{equation}
+ \sum_{k=0}^{b-1}\left|
+ \frac1b\sum_{r=0}^{b-1}e^{2\pi\ii r((x+k)/b-c)}\right|^2=1.
+ \label{eq:g-normalization}
+\end{equation}
+To check it, expand the square and sum over $k$. Only $r=t$ survives,
+since $|r-t|<b$. Thus $\Lop_{b,2,c}1=1$ for every phase. The pressure
+comparison in \cref{sec:pressure} gives $P_{b,2}(c)=0$ everywhere.
+This is consistent with the normal form and isolates the simplest
+integer resonance.
+
+\subsection{Local sign and curvature}
+For $1<s<2$, the fractional term dominates the analytic quadratic term,
+so
+\begin{equation}
+ P_{b,s}(c)\sim C_{b,s}|c|^s>0\qquad(c\to0,\ c\ne0).
+ \label{eq:sub-two}
+\end{equation}
+For $s>2$, the quadratic term dominates:
+\begin{equation}
+ P_{b,s}(c)
+ =-\frac{s(b^2-1)\pi^2}{6}c^2+o(c^2),\qquad
+ P_{b,s}''(0)=-\frac{s(b^2-1)\pi^2}{3}.
+ \label{eq:curvature}
+\end{equation}
+Thus the atomic phase is a strict local minimum for $1<s<2$, a flat
+normalization point for $s=2$, and a strict local maximum for $s>2$.
+These assertions are local; no global optimization theorem is inferred.
+
+For the binary family, several representative cases are:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$q$ & Leading fractional coefficient & Exact local integer class\\
+\midrule
+$3/4$ & $2(2^{3/2}-1)\zeta(3/2)$ & $C^1$, no second derivative at $0$\\
+$5/4$ & $2(2^{5/2}-1)\zeta(5/2)$ & $C^2$, no third derivative at $0$\\
+$3/2$ & $14\zeta(3)$ & $C^2$, no third derivative at $0$\\
+$7/4$ & $2(2^{7/2}-1)\zeta(7/2)$ & $C^3$, no fourth derivative at $0$\\
+$2$ & The degree-four term cancels & Real-analytic near $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example,
+\[
+ p_{3/2}(c)=-\frac32\pi^2c^2+14\zeta(3)|c|^3+o(|c|^3).
+\]
+The odd absolute power is a genuine two-sided cusp even though its
+exponent is an integer.
+
+\section{Finite-size moments and the critical boundary}
+\label{sec:moments}
+
+\subsection{Uniform asymptotics for finite digital products}
+\begin{corollary}
+\label{cor:moments}
+For fixed $b\ge2$ and $s>1$, there is a phase neighborhood of zero on
+which
+\begin{equation}
+ \int_0^1|Q_{b,n,c}(x)|^s\dd x
+ =\mathcal A_{b,s}(c)
+ \exp\!\left(n\bigl((s-1)\log b+P_{b,s}(c)\bigr)\right)
+ \bigl(1+O(\theta^n)\bigr),
+ \label{eq:moment-asymp}
+\end{equation}
+uniformly in the phase, where $0<\theta<1$ and
+$\mathcal A_{b,s}(c)>0$. The amplitude is $C^r$ for each integer $r<s$,
+and
+\begin{equation}
+ \mathcal A_{b,s}(0)=\int_0^1H_s(x)\dd x
+ =\int_{\RR}|\sinc u|^s\dd u.
+ \label{eq:amplitude-moment}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Combine \cref{eq:uniform-gap,eq:int-transfer,eq:Qnormal}. The leading
+coefficient stays bounded away from zero, so an absolute error may be
+written as a relative error. The final equality follows from Tonelli's
+theorem applied to the nonnegative periodization; the integral converges
+because $s>1$.
+\end{proof}
+
+At $c=0$, the finite product is simply
+$\sum_{r=0}^{b^n-1}e^{2\pi\ii rx}$. Away from zero, it is a
+phase-deformed digit product; for $b=2$, $c=1/2$, its coefficients are
+the classical Thue--Morse signs. The theorem is local near the atomic
+phase and does not supply a uniform estimate reaching $c=1/2$.
+
+For binary Riesz-product measures, the established pressure--$L^q$
+spectrum identity identifies the two quantities up to division by
+$\log2$ at nonzero phases \cite[Theorem~2.6]{GKS}. At orders $q>1/2$,
+the pressure tends to zero at the atomic phase, consistent with the
+trivial spectrum of the point mass. Consequently the same local cusp
+classification transfers to that phase-dependent spectrum, with its
+coefficient divided by $\log2$. This corollary uses the cited
+measure-theoretic theorem; the pressure proof above does not.
+
+\subsection{Why the threshold is not a technical convenience}
+The coefficient $C_{b,s}$ diverges as $s\downarrow1$, and the slow
+relaxation factor $b^{1-s}$ tends to $1$. Both facts warn against passing
+to the critical exponent inside the supercritical expansion.
+There is also a direct critical obstruction.
+
+\begin{proposition}[Critical growth at the atomic phase]
+\label{prop:critical}
+Extend the definition of the continuous weight to $s=1$. Then
+\begin{equation}
+ \|\Lop_{b,1,0}^{\,n}1\|_\infty\asymp n+1.
+ \label{eq:critical-growth}
+\end{equation}
+In particular, the rank-one bounded-power convergence used above cannot
+hold at the critical exponent.
+\end{proposition}
+\begin{proof}
+The scalar iterate formula \cref{eq:iterate} is still valid. Its $k=0$
+coefficient is uniformly bounded, and the remaining coefficients are
+bounded by $C/|k|$. Hence the supremum is at most $C(1+\log N)$.
+At $x=1/2$, the terms with $1\le k\le N/4$ are at least
+$1/(\pi(k+1/2))$, giving a matching lower bound. Use $N=b^n$.
+\end{proof}
+
+This proposition does not determine the phase asymptotic of $P_{b,1}(c)$.
+It identifies the failure of the precise mechanism used for $s>1$ and
+motivates a separate critical analysis rather than an unjustified
+continuation of the zeta coefficient.
+
+\section{Computation, reproducibility, and verification limits}
+\label{sec:checks}
+
+\subsection{What the supplied program checks}
+The executable \code{code/verify.py} carries out three independent kinds
+of finite checks. It evaluates the atomic eigenfunction identity at
+65-decimal-digit precision using
+\begin{equation}
+ H_s(x)=\left(\frac{\sin\pi x}{\pi}\right)^s
+ \bigl(\zeta(s,x)+\zeta(s,1-x)\bigr),\qquad 0<x<1,
+ \label{eq:hurwitz}
+\end{equation}
+it verifies the residue-class formula for $C_{b,s}$, and it checks the
+integer cancellation after factoring out the common zeta value using
+exact symbolic arithmetic. It also iterates a positive piecewise-linear
+collocation of the transfer operator to test the cusp numerically.
+
+The recorded run contains 112 high-precision eigenfunction checks and
+28 high-precision amplitude checks for bases $2,3,5,7$ and seven real
+exponents. Their largest observed absolute residuals are approximately
+$1.2\times10^{-64}$ and $3.9\times10^{-61}$, respectively. The symbolic
+cancellation check covers $m=1,\ldots,20$ with symbolic base $b$.
+These computations test formulas; the all-exponent and all-base results
+are supplied by the proofs, not inferred from those finite ranges.
+
+\subsection{A stable numerical observable}
+Directly subtracting $s\log D_b(c)$ from a numerical pressure loses
+precision at large $s$ and small $c$. Instead the program evaluates the
+normal-form excess with \code{log1p}:
+\begin{equation}
+ \mathcal R_{b,s}(c)=
+ \frac{P_{b,s}(c)-s\log D_b(c)}{|c|^s}
+ =\frac{\log(1+|\sin\pi c|^sB_{b,s}(c))}{|c|^s}.
+ \label{eq:numeric-ratio}
+\end{equation}
+The theorem predicts $\mathcal R_{b,s}(c)\to C_{b,s}$. The following
+values use the default grid, rounded for display.
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$b$ & $s$ & $c=10^{-2}$ & $c=3\cdot10^{-3}$ & $c=10^{-3}$ & $C_{b,s}$\\
+\midrule
+2 & 1.5 & 8.909155 & 9.418009 & 9.522764 & 9.553076\\
+2 & 2.5 & 12.609818 & 12.505178 & 12.495476 & 12.494221\\
+2 & 3.0 & 17.065680 & 16.850219 & 16.831182 & 16.828797\\
+2 & 3.5 & 23.687926 & 23.281687 & 23.246062 & 23.241609\\
+3 & 1.5 & 19.960605 & 21.496843 & 21.827067 & 21.923850\\
+3 & 2.5 & 39.702426 & 39.194272 & 39.146656 & 39.140459\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The program records 18 such phase tests and two doubled-grid checks.
+The grid has 65,536 points for base two and is rounded upward to a
+multiple of the base when necessary. It uses nonnegative linear
+interpolation, preserving positivity of the discretized operator.
+The iteration is normalized by its value at zero, matching the proof's
+eigenfunction normalization.
+
+\subsection{What these numbers do not certify}
+The floating-point residual is the residual of the discretized iteration,
+not an enclosure of the true operator spectrum. No directed-rounding
+interval certificate or rigorous discretization-error bound is claimed.
+The doubled-grid tests are stability diagnostics only. The high-precision
+zeta checks are also numerical rather than exact proofs; only the
+separate symbolic cancellation identities use exact arithmetic.
+
+The package deliberately separates these layers in
+\code{results/verification.json}. It also includes a source ledger,
+rebuild instructions, and a claims ledger. No repository file has been
+modified by preparing this package.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{question}[Critical phase asymptotics]
+Determine the leading behavior of $P_{b,1}(c)$ as $c\to0$. The linear
+critical growth in \cref{prop:critical}, the pole of $\zeta(s)$, and the
+closing spectral gap should be treated together. An induced or renewal
+operator may replace the lost rank-one limit. A guessed logarithmic law
+is not asserted here.
+\end{question}
+
+\begin{question}[The subcritical range]
+For $0<s<1$, determine the phase regularity and the correct small-phase
+expansion. The periodized $H_s$ diverges, and the atomic fixed branch is
+no longer described by the positive eigenfunction used here. The
+appropriate normalization and dominant spectral component must be
+identified before perturbing.
+\end{question}
+
+\begin{question}[Regularity at nonzero phases]
+Classify phase regularity away from the atomic point. Does the answer
+depend on the orbit of the zero of the weight, for example on its
+periodicity or recurrence? The atomic result rules out a global analytic
+theorem, but it does not rule out stronger regularity on substantial
+subsets of the punctured phase circle.
+\end{question}
+
+\begin{question}[A complete fractional expansion]
+Determine the higher-order structure of $E_{b,s}(c)$. Does the pressure
+admit a convergent or asymptotic expansion involving even integer powers,
+$|c|^s$, their products, and possible resonant logarithms? The exact
+normal form isolates the unknown function and should be a better starting
+point than differentiating the singular potential directly.
+\end{question}
+
+\begin{question}[Endpoint H\"older regularity]
+For $k=\lceil s\rceil-1$ and non-even $s$, determine whether
+$P_{b,s}\in C^{k,s-k}$ on a full neighborhood when $s$ is nonintegral,
+and whether it belongs to $C^{s-1,1}$ when $s$ is odd. The derivative
+asymptotic proves the pointwise order at zero, but a two-point endpoint
+estimate needs additional control of $E_{b,s}$.
+\end{question}
+
+\begin{question}[A uniform critical crossover]
+Develop a two-parameter asymptotic as $s\downarrow1$ and $c\to0$
+simultaneously. The fixed-$s$ theorem is not uniform in that limit.
+A useful result would identify the correct combined scaling variable and
+match the supercritical cusp to the critical law.
+\end{question}
+
+\begin{question}[The full atomic spectrum]
+The relaxation theorem determines the sharp norm-decay scale. Determine
+the complete spectrum on $C^\alpha$ and on smoother or weighted spaces,
+including the mechanism behind the logarithmic factor at
+$s=1+\alpha$. Distinguish genuine eigenvalues, essential spectrum, and
+endpoint norm effects rather than inferring one from the other.
+\end{question}
+
+\begin{question}[Other masks and multiple zeros]
+Generalize the method to normalized trigonometric masks whose zeros have
+different multiplicities, and to several forbidden inverse branches.
+Which hypotheses yield a computable positive atomic eigenfunction, and
+when is the first nonanalytic exponent determined by a zero multiplicity?
+The arithmetic zeta sum in this paper may be replaced by a more general
+lattice or orbit sum.
+\end{question}
+
+\begin{question}[Certified numerics and formalization]
+Turn the explicit branch bounds into quantitative constants and combine
+them with interval arithmetic to certify a usable phase neighborhood and
+finite-size error. A proof-assistant development could then verify the
+periodization, the sharp power-sum estimate, the spectral separation,
+and the exact scalar identity in separate modules. This would convert
+the ordinary-mathematics theorem into the repository's trusted setting.
+\end{question}
+
+\appendix
+\section{A self-contained coarse Bernstein estimate}
+\label{app:bernstein}
+Here is the convolution argument used in \cref{lem:bernstein}. Let
+\[
+ F_M(x)=\frac1M\left(\frac{\sin\pi Mx}{\sin\pi x}\right)^2
+\]
+be the Fej\'er kernel. Its Fourier coefficients are
+$(1-|k|/M)_+$, as follows by expanding the squared geometric sum. On
+$|x|\le1/2$, direct differentiation gives
+\begin{equation}
+ |F_M'(x)|\le
+ \begin{cases}
+ CM^2,&|x|\le M^{-1},\\
+ C\bigl(|x|^{-2}+M^{-1}|x|^{-3}\bigr),&M^{-1}<|x|\le1/2.
+ \end{cases}
+ \label{eq:Fejer-derivative}
+\end{equation}
+For the first bound one may differentiate the finite Fourier expansion:
+$\sum_{|k|<M}|k|(1-|k|/M)=O(M^2)$. The second follows from the quotient
+formula and $|\sin\pi x|\ge2|x|$ on this interval. Integrating shows
+$\|F_M'\|_1\le CM$.
+
+The de la Vall\'ee Poussin kernel $V_D=2F_{2D}-F_D$ has Fourier
+coefficient $1$ for every $|k|\le D$. Hence $Q=Q*V_D$ for every
+trigonometric polynomial of degree at most $D$, and
+\[
+ \|Q'\|_p=\|Q*V_D'\|_p
+ \le\|Q\|_p\|V_D'\|_1\le CD\|Q\|_p\qquad(p\ge1)
+\]
+by the integral triangle inequality. Only a constant proportional to
+$D$ is needed for pressure, so no sharp Bernstein constant is required.
+
+\section{Proof dependencies and a formalization route}
+\label{app:dependencies}
+The central dependency chain is short:
+\[
+ \begin{gathered}
+ \text{telescoping masks}
+ \Longrightarrow\text{sharp relaxation}\\[2pt]
+ \Longrightarrow\text{simple eigenvalue perturbation}
+ \Longrightarrow\text{fixed-point normal form}.
+ \end{gathered}
+\]
+The polynomial variation bound is a separate bridge identifying the
+spectral eigenvalue with the cylinder definition of pressure. The zeta
+sum evaluates the coefficient after the normal form is established.
+The integer cancellation and the noninteger differentiability theorem
+then follow from one-variable calculus.
+
+A practical Lean integration could use the following boundaries.
+First formalize the finite mask and iterate identities, keeping the
+removable origin explicit. Next prove summability and the $C^1$ gluing
+of $H_s$. Then formalize the invariant ideal estimate with an explicit
+finite power sum; the lower bound uses only nonnegative summands of a
+single test function. The spectral step should state and prove a general
+isolated-rank-one perturbation lemma on a complex Banach space, rather
+than admitting a specialized Perron theorem. Finally, package the scalar
+identity at zero and the pressure comparison as independent interfaces.
+
+None of these modules is supplied as already checked code. The present
+package is designed to expose the theorem boundaries and the delicate
+points: H\"older translation at a strict exponent, uniform positivity of
+the eigenfunction, pressure identification in the presence of zeros, and
+two-sided nonexistence of the next derivative.
+
+\section{Source and convention ledger}
+\label{app:sources}
+The repository was inspected at commit
+\nolinkurl{afb2d1227d8bc5df3beffc1463e958db3544960b} on 29 September
+2026. The main predecessor is located under
+\begin{quote}\small\raggedright
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/}
+\end{quote}
+The primary-source check used arXiv:2509.22109v1 and
+arXiv:2603.19001v1. The latter's page~4, including the stronger-regularity
+question, was inspected in the rendered PDF. A separate machine-readable
+ledger records URLs, scope, and the snapshot.
+
+The essential convention conversions are
+\[
+ s=2q,\qquad p_q(c)=P_{2,2q}(c),\qquad
+ a_{\mathrm{sine}}=c_{\mathrm{cosine}}+\tfrac12\pmod1.
+\]
+The transfer operator is an unnormalized sum, and the pressure uses
+natural logarithms. The finite moment growth includes the additional
+term $(s-1)\log b$ in \cref{eq:moment-asymp}. These conventions prevent
+both the half-period ambiguity and the missing factor of $\log b$.
+
+\begin{thebibliography}{9}
+\bibitem{GKS}
+P.~Gohlke, M.~Kesseb\"ohmer, and T.~I.~Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+2025, \href{https://arxiv.org/abs/2509.22109v1}{arXiv:2509.22109v1}.
+
+\bibitem{GLS}
+P.~Gohlke, G.~Lamprinakis, and J.~Schmeling,
+\emph{On a family of singular potentials: Parameter dependence of
+thermodynamic characteristics}, 2026,
+\href{https://arxiv.org/abs/2603.19001v1}{arXiv:2603.19001v1}.
+
+\bibitem{Repo}
+V.~Reshetnikov, \emph{ProveIt}, repository snapshot
+\code{afb2d1227d8bc5df3beffc1463e958db3544960b}, inspected
+29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/afb2d1227d8bc5df3beffc1463e958db3544960b}{Repository snapshot}.
+
+\bibitem{IntegerRepo}
+ProveIt research corpus,
+\emph{Integer Pressure and a Missing Taylor Coefficient:
+Analytic phase dependence and the sixth-moment optimum for generalized
+Thue--Morse products}, research draft, 28 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/afb2d1227d8bc5df3beffc1463e958db3544960b/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Pinned LaTeX source}.
+\end{thebibliography}
+\end{document}

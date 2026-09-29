@@ -1,0 +1,9 @@
+.PHONY: all verify clean
+all: article.pdf
+article.pdf: article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+verify:
+	python3 code/verify.py
+clean:
+	rm -f article.aux article.log article.out article.toc

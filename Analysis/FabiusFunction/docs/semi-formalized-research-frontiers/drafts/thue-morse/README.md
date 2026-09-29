@@ -79,6 +79,22 @@ Mauduit–Montgomery–Rivat moments of the Thue–Morse generating product that
 and the `L^q` pressure of the sine cocycle in
 `../rvachev_up_fourier_decay/`.  Unreviewed; no Lean statement.
 
+## Fractional pressure at the atomic phase (arrival, 2026-09-29)
+
+[`Thue_Morse_Fractional_Pressure/`](Thue_Morse_Fractional_Pressure/) holds
+*Fractional Cusps at the Atomic Phase* (18-page A4 PDF, 1,295-line source, a
+SymPy/mpmath identity check with floating-point collocation diagnostics),
+filed on 2026-09-29 by a quick archival intake.  It takes up the
+noninteger question left open by the integer pressure article above: for
+every `q > 1/2` the pressure `P(qψ_c)` has the cusp
+`2(2^{2q}−1)ζ(2q)|c|^{2q}` at the atomic phase `c = 0`, so for noninteger `q`
+it is exactly `C^{⌈2q⌉−1}` there and no smoother, while at integer `q` the
+cusp cancels the Taylor coefficient that the integer article found missing.
+The argument works in every integer base through a periodized-sinc
+eigenfunction and a sharp Hölder-space relaxation estimate.  Nonzero phases
+and `q ≤ 1/2` are not settled.  Unreviewed; its numerics are diagnostics,
+not certificates; no Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
