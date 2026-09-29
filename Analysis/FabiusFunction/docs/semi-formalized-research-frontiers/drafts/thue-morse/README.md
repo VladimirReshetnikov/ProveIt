@@ -63,6 +63,22 @@ The three arrival directories and the companion directory are deleted; Git
 history retains them.  No Lean proof was added; Part III's closing section
 lists the formalization targets.
 
+## Integer pressure of generalized Thue–Morse products (arrival, 2026-09-28)
+
+[`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) holds
+*Integer Pressure and a Missing Taylor Coefficient* (24-page A4 PDF,
+1,604-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
+quick archival intake.  For the phase-shifted Riesz weight `cos²π(x−c)`
+under the doubling map it claims that every positive-integer pressure
+`p_m(c)` is real-analytic in `c` (a simple Perron eigenvalue of an explicit
+`(2m−1)`-dimensional matrix), that `[c^{2m}] p_m(c) = 0`, and that the
+classical Thue–Morse phase `c = 1/2` minimizes the fourth-moment rate but is
+a strict local maximum of the sixth-moment rate.  At `c = 1/2` these are the
+Mauduit–Montgomery–Rivat moments of the Thue–Morse generating product that
+`Thue_Morse_Frontier_Deductions/` treats (fourth moment as a Stern energy),
+and the `L^q` pressure of the sine cocycle in
+`../rvachev_up_fourier_decay/`.  Unreviewed; no Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities

@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has three live navigation targets:
+This theme has four live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -8,7 +8,10 @@ This theme has three live navigation targets:
   — the canonical additive and geometric comb synthesis;
 - [`fabius_information_frontier/`](fabius_information_frontier/)
   — a separate information-geometry intake with a synchronized canonical
-  source/PDF pair; claim-level acceptance remains explicitly qualified.
+  source/PDF pair; claim-level acceptance remains explicitly qualified;
+- [`Geometric_Uniform_Entropic_Edgeworth/`](Geometric_Uniform_Entropic_Edgeworth/)
+  — an archival arrival of 2026-09-28 that claims a proof of the
+  information frontier's `conj:entropic-edgeworth`; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -146,6 +149,17 @@ passes 28/29/29 produced a final 790,802-byte PDF with SHA-256
 Its recorded publication gates passed and no checksum ledger is a live gate.
 Manuscript theorem
 labels do not by themselves establish current Lean verification.
+
+[`Geometric_Uniform_Entropic_Edgeworth/`](Geometric_Uniform_Entropic_Edgeworth/)
+holds *Entropic Edgeworth Expansions for Geometric Uniform Laws*, filed on
+2026-09-28 by a quick archival intake (20-page A4 PDF, 1,399-line source,
+exact-coefficient and diagnostic programs).  It claims a conventional proof
+of `conj:entropic-edgeworth` in `fabius_information_frontier/`, the
+all-orders expansion of the entropy deficit of the geometric uniform law as
+`q ↑ 1`, with the new quartic coefficient `427297/4410000`, and Rényi and
+finite-prefix extensions.  It does not address `conj:deficit-monotone`.
+The claim has not been reviewed, the information frontier still states the
+conjecture as open, and no Lean statement exists.
 
 ## Formalization notes
 

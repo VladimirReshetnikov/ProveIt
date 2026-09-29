@@ -1,9 +1,20 @@
 # Comb interpolation
 
-This directory is an index. Its only live mathematical publication is
-[`comb_interpolation_synthesis/`](comb_interpolation_synthesis/), the canonical
-additive- and geometric-comb synthesis. No parallel manuscript remains at this
-level.
+This directory is an index. Its canonical publication is
+[`comb_interpolation_synthesis/`](comb_interpolation_synthesis/), the
+canonical additive- and geometric-comb synthesis.  Two archival arrivals of
+2026-09-28 are filed beside it pending review:
+[`Phase_Averaging_Rigidity/`](Phase_Averaging_Rigidity/) (*Rigidity and
+Quantitative Limits of Phase Averaging in Fabius–Rvachev Quadrature*) and
+[`Optimal_Phase_Filters/`](Optimal_Phase_Filters/) (*Complete
+Superconvergence Phases and Optimal Phase Filters for Rvachev Quadrature*).
+Both prove the same classification of translation-uniformly exact phase
+filters (invariance under rotation by `1/L`, `L = b·2^{max(0,r−v₂(a))}` at a
+reduced rational mesh `a/b`; Haar measure at an irrational mesh) and both
+re-derive the first-failing-level phase zero set that the synthesis
+already proves as `thm:phase-zero-set`.  Their comparison, merge and
+reconciliation with Chapter 3 of the synthesis are deferred; neither is
+Lean-checked.
 
 The canonical package keeps each kind of record in one place:
 

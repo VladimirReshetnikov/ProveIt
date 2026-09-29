@@ -1,7 +1,7 @@
 # Rvachev up-function Fourier decay
 
-This group has one canonical synthesis and a separately supplied rewrite awaiting
-reconciliation. The canonical document is:
+This group has one canonical synthesis, a separately supplied rewrite awaiting
+reconciliation, and one arrival addressing a gap the synthesis states. The canonical document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -28,6 +28,22 @@ not a declaration that it supersedes that synthesis, nor is this addition a
 restoration of the older donor with the same directory name at the
 pre-consolidation pin below. Manuscript proof labels do not establish Lean
 coverage.
+
+## Arrival on the spectral/RMS gap
+
+[`Spectral_Collapse_Alternating_RMS/`](Spectral_Collapse_Alternating_RMS/)
+holds *Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
+Up-Function* (23-page A4 PDF, 1,566-line source), filed on 2026-09-28 by a
+quick archival intake.  It addresses the gap the canonical synthesis states
+after its RMS transfer eigenfunctions: that `−1/4` has not been shown to be
+the second eigenvalue on a specified space, and that the alternating
+`(−1/2)^n` relative RMS rate is numerical evidence only.  On the Hardy disk
+spaces `H²({|z−1/2| < R})`, `R > 1/2`, it claims the complete spectrum
+`{0, 1/2, −1/4}` and the RMS law `R_n² = M/2 + (B/6)(−1/2)^n + ε_n`,
+with `B` and `M` enclosed by an exact-rational interval certificate
+(`certify_integer.py`, standard library only) and an independent `mpmath.iv`
+cross-check.  The claims are unreviewed, the synthesis still states the gap,
+and no Lean statement exists.
 
 ## Canonical synthesis
 

@@ -1,0 +1,1604 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{25,53,75}
+\definecolor{muted}{RGB}{80,88,96}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Integer Pressure and a Missing Taylor Coefficient},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Analytic phase dependence and the sixth-moment optimum for generalized Thue--Morse products}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Integer pressure and phase optimization}
+\fancyhead[R]{\small ProveIt research note}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{.24em}
+\setlist{itemsep=.25em,topsep=.4em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}[1]{\mathrm e^{2\pi\ii #1}}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Em}{\mathcal E_m}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\eul}[2]{\left\langle\!\begin{matrix}#1\\#2\end{matrix}\!\right\rangle}
+
+\begin{document}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\thispagestyle{empty}
+{\small\sffamily\color{ink} PROVEIT\quad /\quad ANALYSIS AND DYNAMICAL SYSTEMS}\par
+\vspace{18mm}
+{\Huge\bfseries\color{ink} Integer Pressure and a\\[3mm] Missing Taylor Coefficient\par}
+\vspace{7mm}
+{\Large Analytic phase dependence and the sixth-moment optimum\\[2mm]
+for generalized Thue--Morse products\par}
+\vspace{10mm}
+{\large Research draft prepared for Vladimir Reshetnikov\par}
+{\normalsize Prepared with ChatGPT\quad\textbullet\quad 28 September 2026\par}
+\vspace{12mm}
+\hrule\vspace{5mm}
+\begin{abstract}
+For the doubling map and the translated potential
+$\psi_c(x)=\log\cos^2\!\pi(x-c)$, we give an explicit finite-dimensional
+model of every positive integer pressure $p_m(c)=P(m\psi_c)$.
+Its Perron eigenvalue is algebraically simple for every phase, including the
+atomic phase $c=0$, and is uniformly separated from the remaining spectrum
+when $m$ is fixed. Consequently, every function $c\mapsto p_m(c)$ is
+real-analytic. This extends the previously established order-two phase
+regularity to all positive integer orders; it does not settle noninteger orders.
+
+The finite model also reveals an all-order cancellation:
+$[c^{2m}]p_m(c)=0$. All lower even coefficients are explicit zeta values.
+The mechanism is delayed feedback from the second inverse branch, whose
+weight first appears in degree $2m$, together with an exact periodized-sinc
+Perron eigenfunction at $c=0$.
+
+A separate exact optimization result shows that the classical Thue--Morse
+phase $c=1/2$ minimizes the fourth-moment growth rate but is a strict local
+maximum for the sixth-moment rate. We characterize the two global
+sixth-moment minimizers by a degree-fourteen polynomial and certify their
+uniqueness using rational Sturm and interval arithmetic. One minimizer is
+approximately $0.364919195551255$.
+
+The article supplies proofs, explicit matrices, recurrence formulas,
+reproducible exact-arithmetic checks, a connection to the Fabius/Rvachev
+Fourier program, and a proposed research agenda. The new claims are
+research results argued here, not independently refereed conclusions or
+Lean-verified theorems. Prior moment-matrix methods are explicitly credited.
+\end{abstract}
+\vfill
+{\small\color{muted} Repository snapshot: \nolinkurl{37e61c1fdec28c6e7ab7ff445043993077b42cbd}.\\
+Package: editable source, compiled PDF, two exact-arithmetic checkers, and their receipts.}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The research question and the contribution}
+\label{sec:intro}
+
+\subsection{A concrete question in the literature}
+The family of singular potentials
+\[
+ T(x)=2x\pmod 1,\qquad
+ g_c(x)=\cos^2\!\pi(x-c),\qquad \psi_c=\log g_c
+\]
+is a natural deformation of the classical Thue--Morse sine product.
+Gohlke, Kesseb\"ohmer, and Schindler establish real-analytic dependence on
+$c$ for the pressure at order two and explicitly leave stronger regularity
+at general positive orders open \cite[Theorem~2.7 and following discussion]{GKS}.
+Their pressure--spectrum identity also connects the question to generalized
+Thue--Morse diffraction measures \cite[Theorem~2.6]{GKS}.
+
+Here the integer cases admit a particularly effective answer. Although
+$\psi_c$ has a logarithmic singularity, $\exp(m\psi_c)=g_c^m$ is a
+trigonometric polynomial when $m$ is a positive integer. The associated
+transfer operator therefore has a small invariant space. The substantive
+point is not merely writing down this space: a complete argument must
+identify its spectral radius with pressure, prove simplicity at every phase,
+and handle the exceptional phase $c=0$ without silently assuming
+irreducibility there.
+
+\subsection{Relationship to the repository}
+The inspected \repo\ snapshot contains a large Fabius/Rvachev development
+and a Fourier-decay synthesis \cite{ProveIt,RepoFourier}. The synthesis
+already develops lacunary sine cocycles, pressure-based moment exponents,
+and several distinct interpretations of Fourier decay. These are not
+reintroduced as new results here. We instead study phase dependence and
+phase optimization of the finite cocycle underlying that program.
+
+Our arguments are self-contained at the level of finite-dimensional
+spectral theory and elementary Fourier analysis. They do not assume that
+a claim is correct merely because it appears in a repository draft. In
+particular, none of the conclusions below requires a general
+infinite-dimensional Ruelle--Perron--Frobenius theorem for a singular
+potential. The measure-theoretic corollaries are explicitly separated and
+uses the pressure--spectrum theorem of \cite{GKS}.
+
+\subsection{What is old, what is proved here, and what remains open}
+Finite recurrences for the classical even moments are established work.
+Mauduit, Montgomery, and Rivat obtained an order-$m$ recurrence and an
+$m\times m$ matrix for the $2m$th classical moment
+\cite{MMR,MontgomeryTalk}. Bettin and Drappeau subsequently studied the
+large-moment growth rate and answered a question from that work \cite{BD}.
+The present $(2m-1)\times(2m-1)$ Fourier model treats arbitrary phases;
+at the classical phase, reflection reduces the relevant space back to
+dimension $m$.
+
+\begin{center}
+\begin{tabular}{@{}p{.30\textwidth}p{.62\textwidth}@{}}
+\toprule
+Status & Content \\
+\midrule
+Established background & Classical moment recurrences; the Fabius sinc product;
+order-two phase analyticity; the cited measure--pressure identity.\\[2mm]
+Proved in this article & All-positive-integer phase analyticity and a uniform
+finite-size spectral expansion; the missing $2m$th Taylor coefficient;
+the exact global sixth-moment phase optimum.\\[2mm]
+Additional structural results & The entire spectrum at the atomic phase;
+a phase-independent determinant; exact arbitrary-phase recurrences and
+algebraicity statements.\\[2mm]
+Not established here & Real-analyticity for every noninteger positive order;
+large-$m$ optimal-phase asymptotics; independent priority or formal proof
+assistant verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The literature and repository search did not locate the all-integer
+regularity theorem, the all-order missing-coefficient identity, or the
+sixth-moment optimum in the forms proved below. This is a bounded novelty
+assessment, not a guarantee that no equivalent result exists elsewhere.
+The appropriate claim is a proposed research contribution with explicit
+proofs and reproducible certificates, rather than an unqualified assertion
+of a major breakthrough.
+
+\section{Conventions and the main theorems}
+\label{sec:main}
+All logarithms are natural. We identify $\TT=\RR/\ZZ$ and put
+$e(x)=\exp(2\pi\ii x)$. Write $\mathcal D_n$ for the $2^n$ dyadic
+intervals of length $2^{-n}$, using closed intervals when taking suprema.
+Shared endpoints do not affect the integrals.
+
+For an integer $m\geq1$, define
+\begin{align}
+ F_{m,n,c}(x)&=\prod_{j=0}^{n-1}g_c(T^jx)^m,\\
+ Z_{m,n}(c)&=\sum_{I\in\mathcal D_n}\sup_{x\in I}F_{m,n,c}(x),\\
+ p_m(c)&=\lim_{n\to\infty}\frac1n\log Z_{m,n}(c),
+ \label{eq:pressure-definition}
+\end{align}
+where existence of the last limit will be proved. This definition agrees
+with positive-order topological pressure in the conventions of
+\cite{GKS}. No use is made of the source's order-zero normalization:
+with natural logarithms, the zero-potential pressure is $\log2$.
+
+The phase-deformed finite product and its moments are
+\begin{equation}
+ Q_{n,c}(x)=\prod_{j=0}^{n-1}\bigl(1+e(2^jx-c)\bigr),\qquad
+ M_{m,n}(c)=\int_0^1|Q_{n,c}(x)|^{2m}\dd x.
+ \label{eq:Q}
+\end{equation}
+At $c=1/2$ this is the usual minus-sign Thue--Morse product. The elementary
+normalization
+\begin{equation}
+ |Q_{n,c}(x)|^{2m}=4^{mn}F_{m,n,c}(x)
+ \label{eq:normalization}
+\end{equation}
+will account for every power of two below.
+
+\begin{theorem}[All-integer phase regularity and uniform moment asymptotics]
+\label{thm:main-analytic}
+For every integer $m\geq1$, there is an explicit matrix $A_m(c)$ of order
+$2m-1$ with a positive, algebraically simple eigenvalue $\rho_m(c)$
+strictly larger in modulus than every other eigenvalue. Moreover:
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item $p_m(c)=\log\rho_m(c)$ exists and is real-analytic, even, and
+one-periodic in $c$.
+\item $\spec A_m(0)=\{2^{-j}:0\leq j\leq2m-2\}$ and
+$\det A_m(c)=2^{-(m-1)(2m-1)}$ for every $c$.
+\item There are a positive real-analytic function $b_m$ and constants
+$K_m<\infty$, $0<\eta_m<1$ such that, uniformly in $c$ and $n\geq0$,
+\[
+ M_{m,n}(c)=b_m(c)\bigl(2^{2m-1}\rho_m(c)\bigr)^n
+ \bigl(1+\varepsilon_{m,n}(c)\bigr),\qquad
+ |\varepsilon_{m,n}(c)|\leq K_m\eta_m^n.
+\]
+\end{enumerate}
+The constants are allowed to depend on $m$.
+\end{theorem}
+
+\begin{theorem}[The missing Taylor coefficient]
+\label{thm:main-jet}
+For $m\geq1$, let
+\[
+ R_m=\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}}.
+\]
+As $c\to0$, with $t=\pi c$,
+\begin{align}
+ \rho_m(c)&=\cos^{2m}t+R_m t^{2m}+O_m(t^{2m+2}),
+ \label{eq:rho-main-jet}\\
+ p_m(c)&=2m\log\cos t+R_m t^{2m}+O_m(t^{2m+2}).
+ \label{eq:p-main-jet}
+\end{align}
+In particular,
+\begin{equation}
+ [c^{2m}]p_m(c)=0,
+ \qquad
+ p_m(c)=-2m\sum_{k=1}^{m-1}
+ \frac{(2^{2k}-1)\zeta(2k)}{k}\,c^{2k}
+ +O_m(c^{2m+2}).
+ \label{eq:missing-main}
+\end{equation}
+For $m=1$, $p_1$ is identically zero.
+\end{theorem}
+
+\begin{theorem}[The fourth and sixth moments have different optimal phases]
+\label{thm:main-optimum}
+The unique minimizer of $\rho_2(c)$ modulo one is $c=1/2$, with
+\[
+ \rho_2(1/2)=\frac{1+\sqrt{17}}8.
+\]
+In contrast, $c=1/2$ is a strict local maximum of $\rho_3(c)$.
+There are exactly two global minimizers of $\rho_3$ modulo one:
+\[
+ c_*=\frac{\arccos C_*}{2\pi},\qquad 1-c_*,
+\]
+where $C_*$ is the unique root in
+$(-0.660930941723,-0.660930941722)$ of the explicit degree-fourteen
+polynomial in \cref{eq:resultant-R}. Numerically,
+\begin{align*}
+ c_*&\approx0.364919195551255,\\
+ \rho_3(c_*)&\approx0.430250310745843,\\
+ 32\rho_3(c_*)&\approx13.76800994386699.
+\end{align*}
+The two other phases $1/3$ and $1/2$ already give the exact separation
+\begin{equation}
+ \rho_3(1/3)<\frac7{16}<\rho_3(1/2).
+ \label{eq:separator-main}
+\end{equation}
+The decimal for $C_*$ is certified by a rational interval; the additional
+numerical displays are approximations, not the basis of the proof.
+\end{theorem}
+
+\section{The exact finite transfer model}
+\label{sec:finite}
+
+\subsection{An invariant Fourier space}
+Define the transfer operator using a sum, rather than an average:
+\begin{equation}
+ (\Lop_{m,c}f)(x)=\sum_{Ty=x}g_c(y)^m f(y).
+ \label{eq:transfer}
+\end{equation}
+Let
+\[
+ I_m=\{1-m,\ldots,m-1\},\qquad
+ \mathcal E_m=\operatorname{span}_{\CC}\{e(rx):r\in I_m\}.
+\]
+The real subspace consists of those Fourier coefficients satisfying
+$v_{-r}=\overline{v_r}$.
+
+The binomial expansion gives
+\begin{equation}
+ g_c(x)^m=\sum_{j=-m}^m a_j e(jx-jc),\qquad
+ a_j=4^{-m}\binom{2m}{m+j}.
+ \label{eq:weight-coeff}
+\end{equation}
+We set $a_j=0$ outside $[-m,m]$. Since
+\[
+ \sum_{Ty=x}e(ky)=
+ \begin{cases}2e(kx/2),&k\text{ even},\\0,&k\text{ odd},\end{cases}
+\]
+we obtain the following exact representation.
+
+\begin{proposition}[Fourier matrix]
+\label{prop:matrix}
+The space $\mathcal E_m$ is invariant under $\Lop_{m,c}$. In the basis
+indexed by $I_m$, its matrix is
+\begin{equation}
+ \boxed{\quad
+ A_m(c)_{k,r}=2a_{2k-r}\,e(-(2k-r)c),\qquad k,r\in I_m.
+ \quad}
+ \label{eq:matrix}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The product of a degree-$m$ trigonometric polynomial and one of degree at
+most $m-1$ has degree at most $2m-1$. Summing over inverse branches
+removes odd Fourier frequencies and halves the even ones. The resulting
+degree is at most $m-1$. Applying this observation to a basis function
+and using \cref{eq:weight-coeff} gives \cref{eq:matrix}.
+\end{proof}
+
+For example, with $z=e(c)$ and the order $-1,0,1$,
+\begin{equation}
+ A_2(c)=
+ \begin{pmatrix}
+ z/2&z^2/8&0\\
+ 1/(2z)&3/4&z/2\\
+ 0&1/(8z^2)&1/(2z)
+ \end{pmatrix}.
+ \label{eq:A2}
+\end{equation}
+The entries of this matrix need not be real or nonnegative. Positivity
+below always means positivity of functions, not entrywise positivity of
+the Fourier matrix.
+
+\subsection{Exact moment recovery}
+Let $v^{(0)}$ denote the coordinate vector of the constant function one,
+and let $\ell_0$ extract the zeroth Fourier coefficient. Iterating the
+transfer operator and changing variables gives
+\begin{align}
+ (\Lop_{m,c}^n1)(x)&=\sum_{T^ny=x}F_{m,n,c}(y),\\
+ \ell_0 A_m(c)^n v^{(0)}
+ &=2^n\int_0^1F_{m,n,c}(x)\dd x.
+ \label{eq:integral-transfer}
+\end{align}
+Combining with \cref{eq:normalization} yields
+\begin{equation}
+ \boxed{\quad
+ M_{m,n}(c)=2^{(2m-1)n}\ell_0 A_m(c)^n v^{(0)}.
+ \quad}
+ \label{eq:exact-moment}
+\end{equation}
+This identity holds for every $n\geq0$ and every phase, without an
+asymptotic approximation. In particular, $m=1$ gives $A_1(c)=(1)$ and
+$M_{1,n}(c)=2^n$, independently of $c$.
+
+\section{Simplicity away from the atomic phase}
+\label{sec:perron}
+
+\subsection{The positive cone}
+On the real subspace of $\mathcal E_m$, use the cone
+\[
+ \mathcal K_m=\{f\in\mathcal E_m:f(x)\geq0\text{ for all }x\in\TT\}.
+\]
+It is closed, pointed, generating, and has nonempty interior: the strictly
+positive functions form its interior. For example, adding a sufficiently
+large constant expresses any real trigonometric polynomial as a
+difference of two members of the cone. The operator $\Lop_{m,c}$
+preserves this cone.
+
+We use the elementary finite-dimensional cone version of the Perron
+principle: a linear map preserving a closed, pointed, solid cone has an
+eigenvector in the cone at its spectral radius. One justification is to
+add $\epsilon$ times a rank-one strongly positive map. Brouwer's fixed
+point theorem on a compact normalized cone base gives a positive
+eigenvector for the perturbed map; its eigenvalue dominates all others
+by the order-unit norm. Letting $\epsilon\downarrow0$ and using continuity
+of the finite spectrum gives the stated principle.
+
+For the two inverse branches, the values of $g_c$ are $a$ and $1-a$,
+where $0\leq a\leq1$. Therefore
+\begin{equation}
+ 2^{1-m}\leq\Lop_{m,c}1=a^m+(1-a)^m\leq1.
+ \label{eq:row-bound}
+\end{equation}
+Iteration and the spectral-radius formula imply
+\begin{equation}
+ 2^{1-m}\leq\rho_m(c)\leq1.
+ \label{eq:rho-bounds}
+\end{equation}
+In particular, the cone eigenvalue is positive.
+
+\subsection{A one-zero backward-tree lemma}
+The weight $g_c^m$ vanishes at exactly one point,
+$s=c+1/2\pmod1$. This gives a short replacement for an inappropriate
+entrywise-matrix irreducibility argument.
+
+\begin{lemma}[Finite backward-invariant sets]
+\label{lem:tree}
+Suppose that $Z\subset\TT$ is nonempty and finite and
+\[
+ T^{-1}Z\setminus\{s\}\subseteq Z.
+\]
+Then $Z=\{0\}$ and $s=1/2$.
+\end{lemma}
+\begin{proof}
+Writing $r=|Z|$, the left side has at least $2r-1$ points, so
+$2r-1\leq r$ and $r=1$. If $Z=\{x\}$, one inverse image of $x$
+must be $x$ itself, and the other must be the excluded point $s$.
+Thus $Tx=x$. The only fixed point of doubling on $\TT$ is zero;
+its two inverse images are $0$ and $1/2$.
+\end{proof}
+
+\begin{proposition}[Strictly positive Perron function]
+\label{prop:h-positive}
+If $c\neq0\pmod1$, every nonzero cone eigenfunction
+$\Lop_{m,c}h=\rho_m(c)h$ is strictly positive.
+\end{proposition}
+\begin{proof}
+A nonzero trigonometric polynomial has only finitely many zeros on the
+circle. If $Z$ is the zero set of $h$, nonnegativity in the eigenvalue
+equation implies $T^{-1}Z\setminus\{s\}\subseteq Z$. A nonempty
+$Z$ would force $s=1/2$ by \cref{lem:tree}, hence $c=0$, a contradiction.
+\end{proof}
+
+\subsection{Excluding other peripheral eigenvalues}
+\begin{proposition}[Simple dominant eigenvalue]
+\label{prop:peripheral}
+For $c\neq0$, the eigenvalue $\rho_m(c)$ is algebraically simple and
+is the only eigenvalue of its modulus.
+\end{proposition}
+\begin{proof}
+Let $h>0$ be a Perron eigenfunction and let $\Lop f=\lambda f$,
+where $|\lambda|=\rho=\rho_m(c)$. Put
+\[
+ R=\max_{x\in\TT}\frac{|f(x)|}{h(x)}.
+\]
+If $f\neq0$, then $R>0$. The function
+$H=R^2h^2-|f|^2$ is a nonnegative trigonometric polynomial. Whenever
+$H(x)=0$, equality must hold in
+\[
+ |\lambda f(x)|
+ \leq\sum_{Ty=x}g_c(y)^m|f(y)|
+ \leq R\sum_{Ty=x}g_c(y)^mh(y)
+ =R\rho h(x).
+\]
+Consequently, every inverse image of $x$ other than $s$ also lies in
+the zero set of $H$. If $H$ were nonzero, its zero set would be finite
+and nonempty, contradicting \cref{lem:tree}. Hence $|f/h|=R$
+everywhere.
+
+Write $F=f/h$. The normalized eigenvalue equation is a convex
+combination of complex numbers of constant modulus. Equality in the
+triangle inequality forces
+\[
+ F(y)=\frac\lambda\rho F(Ty)
+ \quad\text{for }y\neq s.
+\]
+Continuity extends this identity to $s$. At the fixed point zero,
+$F(0)\neq0$ gives $\lambda=\rho$. It then follows that $F=F\circ T$.
+Every dyadic inverse image of zero has the same value as zero; these
+points are dense, so $F$ is constant. The eigenspace is therefore
+one-dimensional and no other peripheral eigenvalue exists.
+
+Finally,
+\[
+ \|f\|_h=\max_x|f(x)|/h(x)
+ \quad\Longrightarrow\quad
+ \|\rho^{-1}\Lop f\|_h\leq\|f\|_h.
+\]
+A nontrivial Jordan block at $\rho$ would cause unbounded polynomial
+growth of the powers of $\rho^{-1}\Lop$, which this estimate forbids.
+Thus the eigenvalue is algebraically simple.
+\end{proof}
+
+\section{The atomic phase: spectrum and an exact Perron function}
+\label{sec:atomic}
+The backward-tree argument correctly identifies $c=0$ as exceptional.
+Rather than treating this as an ignorable endpoint, we diagonalize its
+spectrum and identify the positive Perron function explicitly.
+
+\subsection{A binomial finite-difference diagonalization}
+\begin{theorem}[Complete base-phase spectrum]
+\label{thm:base-spectrum}
+For every $m\geq1$,
+\[
+ \spec A_m(0)=\{1,2^{-1},2^{-2},\ldots,2^{-(2m-2)}\},
+\]
+and all eigenvalues are simple.
+\end{theorem}
+\begin{proof}
+Let $J$ be a centered binomial random variable with
+$\Pr(J=j)=a_j$, $-m\leq j\leq m$. Its two parity classes each have
+probability $1/2$, as follows from $(1-1)^{2m}=0$.
+For a function $P$ on $I_m$, \cref{eq:matrix} gives
+\begin{equation}
+ (A_m(0)^{\mathsf T}P)(r)
+ =\mathbb E\!\left[P\left(\frac{r+J}{2}\right)
+     \,\middle|\, J\equiv r\pmod2\right].
+ \label{eq:binomial-markov}
+\end{equation}
+Every admissible $(r+J)/2$ belongs to $I_m$.
+
+For every polynomial $U$ of degree less than $2m$,
+\[
+ \sum_{j=-m}^m(-1)^j a_jU(j)=0,
+\]
+because this is a constant multiple of a $2m$th finite difference.
+Therefore the conditional moments of $J$ of degrees at most $2m-2$
+are equal to the unconditional moments. If $P(r)=r^k$ for
+$0\leq k\leq2m-2$, the right side of \cref{eq:binomial-markov} is a
+polynomial in $r$ of degree $k$ with leading coefficient $2^{-k}$.
+
+The evaluations of $1,r,\ldots,r^{2m-2}$ form a basis of functions on
+$I_m$ by the Vandermonde determinant. In this basis the transpose
+matrix is triangular with diagonal $2^{-k}$. The diagonal values are
+distinct, proving the theorem.
+\end{proof}
+
+\subsection{The periodized-sinc eigenfunction}
+We use $\sinc u=\sin u/u$, with removable value one at zero.
+
+\begin{theorem}[The base-phase Perron function]
+\label{thm:H}
+The unique eigenfunction at eigenvalue one normalized by $H_m(0)=1$ is
+\begin{equation}
+ H_m(x)=\sum_{k\in\ZZ}\sinc^{2m}\!\bigl(\pi(x+k)\bigr).
+ \label{eq:H-sinc}
+\end{equation}
+It belongs to $\mathcal E_m$ and is strictly positive on $\TT$.
+Equivalently,
+\begin{equation}
+ H_m(x)=\frac1{(2m-1)!}
+ \sum_{r=1-m}^{m-1}\eul{2m-1}{m-1+r}e(rx),
+ \label{eq:H-eulerian}
+\end{equation}
+where the brackets denote Eulerian numbers.
+\end{theorem}
+\begin{proof}
+The series in \cref{eq:H-sinc} converges uniformly on a period: its tails
+are bounded by a constant times $\sum_{|k|\geq K}|k|^{-2m}$.
+It is positive away from integers because every nonzero term is positive,
+and equals one at integers.
+
+For completeness, its finite Fourier expansion follows from the Fourier
+transform of $\sinc^{2m}(\pi x)$. The transform of $\sinc(\pi x)$ is the
+indicator of $[-1/2,1/2]$ under the $e^{-2\pi\ii x\xi}$ convention.
+Thus the transform of the $2m$th power is the density $B_{2m}$ of the
+sum of $2m$ independent uniforms on $[-1/2,1/2]$. One may justify the
+product formula first in $L^2$ and then by convolution, since the even
+power is integrable. The density has support $[-m,m]$ and vanishes
+at its endpoints. Periodization therefore has no Fourier frequencies
+outside $I_m$.
+
+At an integer $r$ in that interval, the elementary inclusion--exclusion
+formula for the volume of a clipped simplex gives
+\[
+ B_{2m}(r)=\frac1{(2m-1)!}
+ \sum_{j=0}^{m+r}(-1)^j\binom{2m}{j}(m+r-j)^{2m-1}
+ =\frac1{(2m-1)!}\eul{2m-1}{m-1+r}.
+\]
+The Fourier series of the periodization is absolutely finite, giving
+\cref{eq:H-eulerian}. Alternatively, its coefficients follow by integrating
+the uniformly convergent periodized series over one period.
+
+It remains to verify the eigenvalue equation, which can be done without
+Fourier transforms. For noninteger $x$,
+\[
+ H_m(x)=\frac{\sin^{2m}\pi x}{\pi^{2m}}
+ \sum_{k\in\ZZ}(x+k)^{-2m}.
+\]
+In each term of $\Lop_{m,0}H_m$, use
+$\sin\pi y\cos\pi y=\tfrac12\sin2\pi y$.
+The branches $y=x/2$ and $y=(x+1)/2$ yield the even and odd terms of
+the displayed sum after rescaling. Their sum is exactly $H_m(x)$.
+Continuity gives the identity at integers. Uniqueness follows from
+\cref{thm:base-spectrum}.
+\end{proof}
+
+Examples are
+\[
+ H_1=1,\qquad
+ H_2(x)=\frac{2+\cos2\pi x}{3},\qquad
+ H_3(x)=\frac{66+52\cos2\pi x+2\cos4\pi x}{120}.
+\]
+In particular,
+\begin{equation}
+ H_m(1/2)=\frac1{\pi^{2m}}\sum_{k\in\ZZ}(k+1/2)^{-2m}
+ =\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}}=R_m.
+ \label{eq:H-half}
+\end{equation}
+The sum of the coefficients in \cref{eq:H-eulerian} is one, as it must
+be from the normalization at zero.
+
+\section{Analyticity, pressure identification, and uniform errors}
+\label{sec:analytic}
+
+\subsection{Analytic perturbation in finite dimensions}
+\begin{proposition}[Global analytic Perron data]
+\label{prop:analytic-data}
+For fixed $m$, the functions $\rho_m(c)$ and $p_m(c)=\log\rho_m(c)$
+are real-analytic once pressure is identified below. There are also a
+real-analytic rank-one spectral projector $P_m(c)$ and a real-analytic
+positive eigenfunction $h_{m,c}$ normalized by $h_{m,c}(0)=1$.
+\end{proposition}
+\begin{proof}
+Every entry of $A_m(c)$ is real-analytic in $c$.
+\Cref{prop:peripheral,thm:base-spectrum} show that the positive dominant
+eigenvalue is algebraically simple at every real phase. The implicit
+function theorem applied to the characteristic polynomial therefore
+gives a local analytic eigenvalue. The locally selected branches agree
+on overlaps because the positive dominant eigenvalue is unique.
+The rank-one projector can equivalently be obtained by integrating
+$(zI-A_m(c))^{-1}$ around a small circle enclosing that eigenvalue.
+
+The projector is positive as an operator on functions: the spectral gap
+implies $\rho_m(c)^{-n}\Lop_{m,c}^n\to P_m(c)$, and each normalized
+power is positive. If $h>0$ is any positive Perron function, then
+$1\geq h/\|h\|_\infty$, so
+$P_m(c)1\geq h/\|h\|_\infty>0$. Thus
+\[
+ h_{m,c}=\frac{P_m(c)1}{(P_m(c)1)(0)}
+\]
+is a well-defined positive analytic normalization, including at $c=0$
+by \cref{thm:H}. Reflection $x\mapsto-x$ conjugates the phase $c$
+operator to the phase $-c$ operator. Hence
+\begin{equation}
+ \rho_m(-c)=\rho_m(c),\qquad
+ h_{m,-c}(x)=h_{m,c}(-x).
+ \label{eq:reflection}
+\end{equation}
+Periodicity is immediate from the weights.
+\end{proof}
+
+\begin{proposition}[Uniform spectral estimate]
+\label{prop:uniform}
+For fixed $m$ there are constants $K<\infty$ and $0<\eta<1$ such that
+\[
+ \left\|\rho_m(c)^{-n}A_m(c)^n-P_m(c)\right\|
+ \leq K\eta^n
+\]
+for every real $c$ and every $n\geq0$, in any fixed matrix norm.
+\end{proposition}
+\begin{proof}
+Set $B(c)=A_m(c)/\rho_m(c)$ and $N(c)=B(c)-P_m(c)$.
+Every eigenvalue of $N(c)$ has modulus strictly less than one.
+Continuity of the finite spectrum and compactness of the phase circle
+give $r_0=\max_c\rho(N(c))<1$. Choose $r_0<\eta<1$.
+The resolvent $(zI-N(c))^{-1}$ is uniformly bounded for $|z|=\eta$
+and all $c$, again by compactness. Cauchy's integral formula for matrix
+powers gives $\|N(c)^n\|\leq K\eta^n$. Since $P_mN=NP_m=0$
+and $P_m^2=P_m$, this gives the result for $n\geq1$; enlarge $K$ to
+include $n=0$.
+\end{proof}
+
+Applying $\ell_0$ and $v^{(0)}$ to this estimate and using
+\cref{eq:exact-moment} proves the moment expansion in
+\cref{thm:main-analytic}, with
+\begin{equation}
+ b_m(c)=\ell_0P_m(c)v^{(0)}>0.
+ \label{eq:b}
+\end{equation}
+The positivity proof in \cref{prop:analytic-data} and compactness show
+that $b_m$ is bounded away from zero, so the absolute error may be
+expressed as a uniform relative error.
+
+At $c=0$, evaluation at zero is a left eigenfunctional because
+$(\Lop_{m,0}f)(0)=f(0)$. Consequently
+\begin{equation}
+ P_m(0)f=f(0)H_m,\qquad
+ b_m(0)=\int_0^1H_m(x)\dd x
+ =\frac1{(2m-1)!}\eul{2m-1}{m-1}.
+ \label{eq:bzero}
+\end{equation}
+
+\subsection{Why the finite eigenvalue is the actual pressure}
+The following comparison avoids an unproved claim that pressure must
+equal the spectral radius of an arbitrarily chosen invariant subspace.
+
+\begin{lemma}[Cylinder suprema versus the integral]
+\label{lem:variation}
+If $F\geq0$ is a trigonometric polynomial of degree at most $D$ and
+$N=2^n$, then
+\begin{equation}
+ N\int_0^1F\leq\sum_{I\in\mathcal D_n}\sup_I F
+ \leq N\int_0^1F+\int_0^1|F'|
+ \leq(N+4\pi D)\int_0^1F.
+ \label{eq:variation-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On an interval $I$ of length $1/N$, the supremum is at least its average
+and at most its average plus the variation of $F$ on $I$. Summing gives
+the first two inequalities.
+
+For the last inequality, factor $F(x)=|P(e(x))|^2$, with $P$ an ordinary
+polynomial of degree at most $D$. This is the elementary
+Fej\'er--Riesz factorization: reciprocal-conjugate roots of the Laurent
+polynomial are paired, and roots on the unit circle have even
+multiplicity because $F\geq0$; choosing one from each pair gives $P$.
+Writing the same function as $P(x)=\sum_{j=0}^D b_je(jx)$,
+Parseval and Cauchy--Schwarz give
+\[
+ \int|F'|\leq2\|P'\|_2\|P\|_2
+ \leq4\pi D\|P\|_2^2=4\pi D\int F.
+\]
+\end{proof}
+
+The polynomial $F_{m,n,c}$ has degree at most $m(2^n-1)$.
+By \cref{eq:integral-transfer,eq:variation-bound},
+\begin{equation}
+ \ell_0A_m(c)^nv^{(0)}\leq Z_{m,n}(c)
+ \leq(1+4\pi m)\ell_0A_m(c)^nv^{(0)}.
+ \label{eq:pressure-sandwich}
+\end{equation}
+The positive leading coefficient \cref{eq:b} and the spectral estimate
+now show that the logarithmic growth of both sides is $\log\rho_m(c)$.
+This proves existence in \cref{eq:pressure-definition} and identifies
+$p_m(c)$ with the finite eigenvalue. The proof of
+\cref{thm:main-analytic}(i) and (iii) is complete.
+
+\subsection{Strictness away from the atomic phase}
+\begin{proposition}
+\label{prop:strict}
+For $m>1$, $\rho_m(c)=1$ if and only if $c=0\pmod1$.
+\end{proposition}
+\begin{proof}
+We know $\rho_m(0)=1$. Suppose $\rho_m(c)=1$ and take a positive
+Perron function $h$. At any maximizer $x$ of $h$, equality in
+\[
+ h(x)=\sum_{Ty=x}g_c(y)^mh(y)
+ \leq\|h\|_\infty\sum_{Ty=x}g_c(y)^m
+ \leq\|h\|_\infty
+\]
+forces $a^m+(1-a)^m=1$. For $m>1$ this requires $a\in\{0,1\}$.
+The two inverse images are therefore $c$ and $c+1/2$, and $x=2c$.
+The branch at $c$ has weight one, so $h(c)=\|h\|_\infty$ as well.
+Every maximum must equal $2c$, hence $c=2c$ on the circle and $c=0$.
+\end{proof}
+
+\section{Algebraic structure: determinants and recurrences}
+\label{sec:algebra}
+
+\subsection{A phase-independent determinant}
+Let $z=e(c)$ and write $A_m(z)$ for the Laurent-polynomial matrix.
+From \cref{eq:matrix},
+\[
+ A_m(z)=\operatorname{diag}(z^{-2k})_{k\in I_m}\,
+ A_m(1)\,\operatorname{diag}(z^r)_{r\in I_m}.
+\]
+Because $\sum_{k\in I_m}k=0$,
+\begin{equation}
+ \det A_m(z)=\det A_m(1)
+ =\prod_{j=0}^{2m-2}2^{-j}
+ =2^{-(m-1)(2m-1)}.
+ \label{eq:det}
+\end{equation}
+This proves \cref{thm:main-analytic}(ii). In particular, none of the
+finite-model eigenvalues can pass through zero as the phase changes.
+
+\subsection{Characteristic polynomials in a single real parameter}
+Put $d=2m-1$ and $C=\cos2\pi c$. The principal-minor expansion gives
+\begin{equation}
+ \chi_m(\lambda,z)=
+ \sum_{S\subseteq I_m}(-1)^{|S|}\lambda^{d-|S|}
+ \det A_m(1)[S,S]\,z^{-\sum_{k\in S}k}.
+ \label{eq:principal-minors}
+\end{equation}
+Reflection $k\mapsto-k$ leaves the relevant determinants unchanged, so
+this Laurent polynomial is invariant under $z\mapsto z^{-1}$.
+It is therefore a polynomial in $C=(z+z^{-1})/2$ with rational
+coefficients. The largest possible absolute subset sum in
+\cref{eq:principal-minors} is $m(m-1)/2$, proving
+\begin{equation}
+ \chi_m(\lambda,C)\in\QQ[\lambda,C],\qquad
+ \deg_C\chi_m\leq\frac{m(m-1)}2.
+ \label{eq:degree-C}
+\end{equation}
+To distinguish phase and cosine parameters, set
+\[
+ \varrho_m(C)=\rho_m\!\left(\frac{\arccos C}{2\pi}\right).
+\]
+This is an analytic function of $C$ in a neighborhood of each point
+of $[-1,1]$. Indeed, it is a simple root of
+$\chi_m$ and the real implicit function theorem applies directly in
+$(\lambda,C)$, including at the two endpoints.
+
+\begin{corollary}[Algebraicity at arithmetic phases]
+If $c=a/b$ is rational, then $\rho_m(c)$ and
+$2^{2m-1}\rho_m(c)$ are algebraic numbers of degree at most
+$(2m-1)\varphi(b)$ over $\QQ$.
+More generally, they are algebraic whenever $\cos2\pi c$ is algebraic.
+\end{corollary}
+\begin{proof}
+At a rational phase, $z=e(a/b)$ lies in a cyclotomic field of degree at
+most $\varphi(b)$. The eigenvalue satisfies the degree-$2m-1$
+characteristic polynomial over that field. The second assertion follows
+from \cref{eq:degree-C}.
+\end{proof}
+
+\subsection{Exact linear recurrences}
+Write
+$\chi_m(\lambda,c)=\lambda^d+\gamma_1(c)\lambda^{d-1}
++\cdots+\gamma_d(c)$, and set
+$u_n(c)=\ell_0A_m(c)^nv^{(0)}$.
+Cayley--Hamilton yields
+\begin{equation}
+ u_{n+d}+\gamma_1u_{n+d-1}+\cdots+\gamma_du_n=0
+ \qquad(n\geq0).
+ \label{eq:recurrence}
+\end{equation}
+Since $M_{m,n}=2^{(2m-1)n}u_n$, this immediately gives a recurrence
+for the actual moments as well. The stated order is an upper bound;
+symmetry or cancellation can reduce the minimal order.
+
+At $c=0$ and $c=1/2$, the weight is even. Starting from the constant
+function, the operator stays in the even trigonometric subspace
+$\operatorname{span}\{1,\cos2\pi x,\ldots,\cos2\pi(m-1)x\}$,
+of dimension $m$. This explains compatibility with the earlier
+classical order-$m$ recurrence \cite{MMR,MontgomeryTalk}; the larger
+arbitrary-phase matrix is not claimed to improve that known bound.
+
+\section{Delayed feedback and the missing coefficient}
+\label{sec:jet}
+
+\subsection{An exact equation at the fixed point}
+Use the positive analytic normalization $h_{m,c}(0)=1$ from
+\cref{prop:analytic-data}. Evaluating the transfer equation at zero
+exposes its two inverse branches:
+\begin{equation}
+ \boxed{\quad
+ \rho_m(c)=\cos^{2m}(\pi c)
+   +\sin^{2m}(\pi c)\,h_{m,c}(1/2).
+ \quad}
+ \label{eq:feedback}
+\end{equation}
+The first summand comes from the fixed point zero. The second is the
+feedback from the other inverse branch; its weight has a zero of order
+$2m$ at the atomic phase.
+
+Reflection \cref{eq:reflection}, together with $-1/2=1/2$ on the
+circle, gives
+\[
+ h_{m,-c}(1/2)=h_{m,c}(1/2).
+\]
+Thus this value is an even analytic function of $c$. By
+\cref{eq:H-half},
+\begin{equation}
+ h_{m,c}(1/2)=R_m+O_m(c^2).
+ \label{eq:feedback-value}
+\end{equation}
+Substituting into \cref{eq:feedback}, and using
+$\sin^{2m}t=t^{2m}+O_m(t^{2m+2})$, proves
+\cref{eq:rho-main-jet}.
+
+To pass to logarithms, factor out $\cos^{2m}t$ near zero. The quotient
+is $1+R_mt^{2m}+O_m(t^{2m+2})$. Since its square-error term is
+$O(t^{4m})\subseteq O(t^{2m+2})$ for every $m\geq1$, this proves
+\cref{eq:p-main-jet}.
+
+\subsection{Why the coefficient cancels exactly}
+The Euler product for cosine is
+\[
+ \cos t=\prod_{j=0}^\infty
+ \left(1-\frac{4t^2}{\pi^2(2j+1)^2}\right).
+\]
+It follows from the sine product by dividing $\sin2t/(2t)$ by
+$\sin t/t$, or by pairing its zeros and using its value at zero.
+For $|t|<\pi/2$, absolute convergence permits logarithmic expansion:
+\begin{equation}
+ \log\cos t
+ =-\sum_{k\geq1}
+ \frac{(2^{2k}-1)\zeta(2k)}{k\pi^{2k}}\,t^{2k}.
+ \label{eq:logcos}
+\end{equation}
+The coefficient of $t^{2m}$ in $2m\log\cos t$ is
+\[
+ -\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}}=-R_m.
+\]
+This is precisely the negative of the feedback coefficient in
+\cref{eq:p-main-jet}. The degree-$2m$ term vanishes, proving
+\cref{thm:main-jet}.
+
+This is not a claim that the whole pressure is flat to order $2m$.
+For $m>1$, its leading curvature is
+\begin{equation}
+ p_m''(0)=-2m\pi^2<0.
+ \label{eq:curvature}
+\end{equation}
+The cancellation removes one specific higher even coefficient, while
+all lower even coefficients agree with the fixed-point contribution.
+
+\subsection{Exact low-order expansions}
+Let $t=\pi c$. The checker in the accompanying package computes the
+following Taylor coefficients using exact rational arithmetic:
+\begin{align}
+ p_2(c)&=-2t^2+\frac{376}{45}t^6+O(t^8),
+ \label{eq:jet2}\\
+ p_3(c)&=-3t^2-\frac12t^4+\frac{213}{28}t^8+O(t^{10}),
+ \label{eq:jet3}\\
+ p_4(c)&=-4t^2-\frac23t^4-\frac8{45}t^6
+ +\frac{16978624}{3075975}t^{10}+O(t^{12}).
+ \label{eq:jet4}
+\end{align}
+The all-order theorem proves the missing terms $t^4,t^6,t^8$ in these
+three displays. The next nonzero coefficients are finite exact
+calculations rather than an asserted all-order pattern. For example,
+$376/45$ in \cref{eq:jet2} is not inferred from the sign of a numerical
+plot.
+
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$m$&2&3&4&5&6\\
+\midrule
+$R_m$&$1/3$&$2/15$&$17/315$&$62/2835$&$1382/155925$\\
+Missing degree in $p_m$&4&6&8&10&12\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Fourth- and sixth-moment phase optimization}
+\label{sec:optimum}
+It is enough to minimize $\rho_m(c)$ because the exponential moment
+rate is $2^{2m-1}\rho_m(c)$, and the multiplier is phase-independent.
+By evenness and periodicity, we may work in $C=\cos2\pi c\in[-1,1]$.
+The characteristic-polynomial reductions used in this section are
+checked directly from \cref{eq:matrix} in the supplied scripts.
+
+\subsection{The fourth moment: a unique classical optimum}
+For $m=2$,
+\begin{equation}
+ \chi_2(\lambda,C)=\lambda^3-(3/4+C)\lambda^2
+ +(1/4+5C/8)\lambda-1/8.
+ \label{eq:chi2}
+\end{equation}
+At every $C$,
+\[
+ \chi_2(5/8,C)=-9/512<0.
+\]
+Since the polynomial is positive for sufficiently large $\lambda$,
+there is a positive root greater than $5/8$. The Perron root therefore
+satisfies $\varrho_2(C)>5/8$.
+
+At the Perron root, $\partial_\lambda\chi_2>0$. More generally,
+for a real monic polynomial with a simple strictly dominant positive
+root, every other real root contributes a positive difference, and
+complex-conjugate roots contribute positive squared moduli. Hence
+implicit differentiation gives
+\[
+ \frac{\dd\varrho_2}{\dd C}
+ =-\frac{\varrho_2(5/8-\varrho_2)}{\partial_\lambda\chi_2(\varrho_2,C)}>0.
+\]
+Thus the minimum occurs uniquely at $C=-1$. At that phase,
+\[
+ \chi_2(\lambda,-1)
+ =(\lambda+1/2)(\lambda^2-\lambda/4-1/4),
+\]
+and the positive root is $(1+\sqrt{17})/8$. This proves the
+fourth-moment assertion in \cref{thm:main-optimum}.
+
+\subsection{The sixth-moment characteristic polynomial}
+For $m=3$, it is convenient to clear denominators and write
+$f(\lambda,C)=2048\chi_3(\lambda,C)$:
+\begin{align}
+ f(\lambda,C)={}&2048\lambda^5
+ -128(12C^2+15C+4)\lambda^4 \notag\\
+ &+40(28C^3+24C^2+9C+1)\lambda^3 \notag\\
+ &-(448C^3+261C^2-126C+37)\lambda^2 \notag\\
+ &+(63C^2+21C-22)\lambda-2.
+ \label{eq:f}
+\end{align}
+At the classical phase,
+\begin{equation}
+ f(\lambda,-1)=2(16\lambda^2+4\lambda-1)
+ (64\lambda^3-20\lambda^2-6\lambda+1).
+ \label{eq:half-factor}
+\end{equation}
+At phase $c=1/3$, where $C=-1/2$,
+\begin{equation}
+ 4f(\lambda,-1/2)
+ =8192\lambda^5+256\lambda^4-160\lambda^3
+ -437\lambda^2-67\lambda-8=:P(\lambda).
+ \label{eq:third-poly}
+\end{equation}
+There is exactly one positive root of $P$ by Descartes' rule of signs.
+Since $P(0)<0$ and
+\begin{equation}
+ P(7/16)=405/64>0,
+ \qquad
+ (64\lambda^3-20\lambda^2-6\lambda+1)_{\lambda=7/16}
+ =-3/32<0,
+ \label{eq:separator}
+\end{equation}
+we get the exact strict separation
+$\rho_3(1/3)<7/16<\rho_3(1/2)$.
+This alone disproves the natural extrapolation that the classical phase
+minimizes every positive even moment.
+
+\subsection{The classical phase is a strict local maximum}
+At $C=-1$, the Perron root is greater than $7/16$. The positive root
+of the quadratic factor in \cref{eq:half-factor} is less than $1/4$,
+so the Perron root belongs to the cubic factor. Reduction modulo that
+cubic gives
+\begin{equation}
+ f_C(\rho,-1)=3\rho(720\rho^2-196\rho-41),
+ \qquad \rho=\rho_3(1/2).
+ \label{eq:fc-half}
+\end{equation}
+The quadratic in parentheses is positive for $\rho\geq7/16$:
+its value at $7/16$ is $177/16$, and its derivative is positive there
+and thereafter. Also $f_\lambda(\rho,-1)>0$ by the simple dominant
+root property. Thus $\dd\varrho_3/\dd C<0$ at $C=-1$.
+
+Writing $c=1/2+u$,
+\[
+ C=-1+2\pi^2u^2+O(u^4).
+\]
+It follows that $\rho_3(1/2+u)<\rho_3(1/2)$ for sufficiently small
+nonzero $u$. The same is true of $p_3$ and of the sixth-moment
+exponential growth factor.
+
+\subsection{Certifying the global minimizer}
+A stationary Perron root in $-1<C<1$ satisfies
+\[
+ f(\rho,C)=0,\qquad f_C(\rho,C)=0,
+\]
+because $f_\lambda(\rho,C)\neq0$. Eliminate $\rho$:
+\begin{equation}
+ \Res_\lambda(f,f_C)=-3057647616\,R(C),
+ \label{eq:resultant-id}
+\end{equation}
+where
+\begin{equation}
+\begin{aligned}
+ R(C)={}&478310547456C^{14}-263889031168C^{13}
+ -2211948322304C^{12}\\
+ &+2274923686784C^{11}+2772364425376C^{10}
+ -3601461331552C^9\\
+ &-2093687468208C^8+2695719201426C^7
+ +1231497289965C^6\\
+ &-1032213437124C^5-514151253800C^4
+ +146152959398C^3\\
+ &+104125846753C^2+11781400244C+375091954.
+ \end{aligned}
+\label{eq:resultant-R}
+\end{equation}
+A resultant alone is not enough: some of its zeros can represent
+stationary non-Perron eigenvalues. The following certificate explicitly
+removes those extraneous candidates.
+
+Let $V(x)$ be the number of sign changes in the Sturm sequence of $R$
+at $x$, ignoring zero entries. Exact rational arithmetic gives
+$V(-1)=9$, $V(1)=5$, and the four isolating intervals below.
+Every decimal endpoint in this table denotes an exact rational number.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.48\textwidth}cc@{}}
+\toprule
+Interval for $C$ & $V(\text{left}),V(\text{right})$
+ & Common-root enclosure\\
+\midrule
+$(-0.660930941723,-0.660930941722)$ & $9,8$ & $(0.430,0.431)$\\
+$(-0.070099130476,-0.070099130475)$ & $8,7$ & $(-0.152,-0.150)$\\
+$(-0.068679451074,-0.068679451073)$ & $7,6$ & $(-0.134,-0.132)$\\
+$(0.914028755782,0.914028755783)$ & $6,5$ & $(0.229,0.231)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here is how the last column is certified, rather than numerically
+assigned. The degree-one subresultant of $f$ and $f_C$ is
+\begin{equation}
+ 169869312\bigl(A(C)\lambda+B(C)\bigr),
+ \label{eq:linear-subresultant}
+\end{equation}
+where the integer polynomials $A,B$ are displayed in
+\cref{sec:certificate-polynomials}. Subresultants are polynomial
+combinations of the original two polynomials. The extracted content
+$169869312$ is a nonzero constant, not a parameter-dependent factor.
+Consequently every common root satisfies
+$A(C)\lambda+B(C)=0$.
+
+Rational interval Horner evaluation on each listed interval shows that
+$A(C)$ is bounded away from zero and that $-B(C)/A(C)$ belongs to the
+stated enclosure. Thus any stationary eigenvalue corresponding to the
+last three rows is less than $1/4$. But \cref{eq:rho-bounds} gives
+$\varrho_3(C)\geq1/4$ for all $C$, so none of those rows can represent a
+stationary Perron eigenvalue.
+
+A global Perron minimum exists by continuity. It lies in the interior
+because the value at $C=-1/2$ is smaller than both endpoint values:
+$\varrho_3(-1)>7/16$, $\varrho_3(1)=1$, and
+$\varrho_3(-1/2)<7/16$. Every interior minimum is stationary. Hence the
+first row must contain a stationary Perron point, and it is the only
+one. This proves uniqueness of the minimizing $C_*$ and, by reflection,
+exactly two minimizing phases modulo one.
+
+For orientation, high-precision numerical evaluation gives
+\[
+ C_*\approx-0.6609309417223258423,\qquad
+ \rho_3(1/2)\approx0.4443474454062066009.
+\]
+For comparison, the exponential sixth-moment rates are
+\[
+ 32\rho_3(1/2)\approx14.21911825299861,\qquad
+ 32\rho_3(c_*)\approx13.76800994386699.
+\]
+The strict inequalities and uniqueness do not depend on these decimals.
+
+\section{Consequences for dimensions and the Fabius program}
+\label{sec:applications}
+
+\subsection{Integer R\'enyi dimensions}
+This subsection uses an external theorem, unlike the finite-operator
+proofs above. Define the generalized Thue--Morse measure by the weak
+limit of Riesz-product densities
+\[
+ \mu_c=\operatorname*{w-lim}_{n\to\infty}
+ \left(\prod_{j=0}^{n-1}2g_c(T^jx)\right)\dd x.
+\]
+The existence and the identity
+\begin{equation}
+ \beta_{\mu_c}(m)=p_m(c)/\log2\qquad(c\neq0,\ m\geq1)
+ \label{eq:imported-beta}
+\end{equation}
+are imported from \cite[Theorem~2.6]{GKS}. Here
+\[
+ \beta_\mu(q)=\lim_{n\to\infty}
+ \frac1{n\log2}\log\sum_{I\in\mathcal D_n}\mu(I)^q,
+\]
+using a dyadic partition convention for the measure. For an integer
+$m>1$, the R\'enyi dimension is
+$D_m(\mu)=\beta_\mu(m)/(1-m)$.
+
+\begin{corollary}[Analytic integer dimension functions]
+\label{cor:dimensions}
+With the cited measure--pressure identity, for every integer $m>1$,
+\begin{equation}
+ D_m(\mu_c)=\frac{p_m(c)}{(1-m)\log2}
+ \label{eq:dimension}
+\end{equation}
+is real-analytic on the entire phase circle. Near $c=0$,
+\[
+ D_m(\mu_c)=\frac{2m}{(m-1)\log2}
+ \sum_{k=1}^{m-1}\frac{(2^{2k}-1)\zeta(2k)}{k}c^{2k}
+ +O_m(c^{2m+2}),
+\]
+and its $c^{2m}$ coefficient is zero.
+\end{corollary}
+\begin{proof}
+For $c\neq0$ the formula is \cref{eq:imported-beta}. At $c=0$, the
+measure is $\delta_0$ \cite{GKS}, so every positive-order dyadic mass
+sum equals one and $D_m=0$. Also $p_m(0)=0$ for $m\geq1$ by our
+base spectrum. Thus the equality extends at these integer orders.
+Analyticity and the expansion follow from
+\cref{thm:main-analytic,thm:main-jet}.
+\end{proof}
+
+The restriction to these orders matters: we have not asserted that the
+measure--pressure identity extends at the atomic phase for all real
+orders. Nor does the corollary give the entropy dimension at $m=1$ by
+substituting into a formula with zero denominator.
+
+\begin{corollary}[Distinct dimension-maximizing phases]
+Under the same cited identity, $D_2(\mu_c)$ has its unique maximum
+at $c=1/2$, whereas $D_3(\mu_c)$ has exactly two global maxima at
+$c_*,1-c_*$. At $c=1/2$, $D_3$ has a strict local minimum.
+\end{corollary}
+\begin{proof}
+The denominator in \cref{eq:dimension} is negative. Apply
+\cref{thm:main-optimum} and the strict monotonicity of the logarithm.
+\end{proof}
+
+Thus a phase optimized for one integer spectral dimension need not be
+optimized for the next. The sixth-moment computation is not merely an
+alternative decimal evaluation of the known fourth-moment exponent.
+
+\subsection{What the result says about the up-function}
+Under the Fourier convention
+$\widehat f(\xi)=\int f(x)e^{-2\pi\ii x\xi}\dd x$, the Rvachev
+up-function has the classical transform
+\begin{equation}
+ \Phi(\xi)=\widehat{\operatorname{up}}(\xi)
+ =\prod_{h=0}^{\infty}\sinc\!\left(\frac{\pi\xi}{2^h}\right).
+ \label{eq:Phi}
+\end{equation}
+See \cite{Arias,RepoFourier}. Factoring its first $n$ dilated terms gives
+for $x\neq0$
+\begin{equation}
+ \Phi(2^nx)=\Phi(x)\,(\pi x)^{-n}2^{-n(n+1)/2}
+ \prod_{j=1}^n\sin(\pi2^jx).
+ \label{eq:Phi-factor}
+\end{equation}
+The oscillatory factor is exactly
+\[
+ 2^n\left|\prod_{j=1}^n\sin(\pi2^jx)\right|
+ =|Q_{n,1/2}(2x)|.
+\]
+Since doubling preserves Lebesgue measure on the circle,
+\begin{equation}
+ \int_0^1\prod_{j=1}^n|2\sin(\pi2^jx)|^{2m}\dd x
+ =M_{m,n}(1/2).
+ \label{eq:fabius-moment}
+\end{equation}
+Thus the finite model directly computes the exponential rates of all
+even moments of the stripped Fourier numerator.
+
+The new phase theorems provide a controlled deformation of that
+numerator and exact comparison phases. They can be used as analytic
+benchmarks for pressure code, as finite algebraic test cases for
+formalization, and as obstructions to assuming the classical phase is
+universally moment-optimal.
+
+There is an important limitation. The factors $x^{-n}$ and $\Phi(x)$ in
+\cref{eq:Phi-factor} are not constant on a shell. Therefore
+\cref{eq:fabius-moment} is not automatically an asymptotic for an
+unweighted Fourier-shell integral. No new universal pointwise decay
+exponent, annular maximum formula, or noninteger shell-pressure theorem
+is claimed. The distinctions between these quantities are already
+central to the repository's Fourier-decay draft \cite{RepoFourier}.
+
+\section{Reproducible computation and a formalization route}
+\label{sec:verification}
+
+\subsection{Exact Taylor recursion}
+The matrices give a rational algorithm for arbitrary finite jets at
+$c=0$. Use $t=\pi c$ and write
+\[
+ A(t)=\sum_{n\geq0}A_nt^n,\quad
+ v(t)=\sum_{n\geq0}v_nt^n,\quad
+ \rho(t)=\sum_{n\geq0}\lambda_nt^n,
+\]
+where $\lambda_0=1$. By \cref{eq:matrix},
+\begin{equation}
+ (A_n)_{k,r}=(A_0)_{k,r}\frac{[-2\ii(2k-r)]^n}{n!}.
+ \label{eq:An}
+\end{equation}
+Let $u$ be the row of ones, so $uv$ is evaluation at zero. Normalize
+$uv_0=1$ and $uv_n=0$ for $n\geq1$. The vector $v_0$ is the
+Eulerian coefficient vector in \cref{eq:H-eulerian}.
+
+For each $n\geq1$, solve the same bordered linear system
+\begin{equation}
+ \begin{pmatrix}A_0-I&-v_0\\u&0\end{pmatrix}
+ \begin{pmatrix}v_n\\\lambda_n\end{pmatrix}
+ =\begin{pmatrix}
+ -\sum_{k=1}^nA_kv_{n-k}
+ +\sum_{k=1}^{n-1}\lambda_kv_{n-k}\\0
+ \end{pmatrix}.
+ \label{eq:bordered}
+\end{equation}
+The matrix is invertible because eigenvalue one is simple and
+$uv_0=1$. Its entries lie in $\QQ(\ii)$, so every coefficient is exact.
+If $p(t)=\log\rho(t)=\sum_{n\geq1}p_nt^n$, then differentiating
+$\rho=\exp p$ gives the recursion
+\begin{equation}
+ p_n=\lambda_n-\sum_{k=1}^{n-1}\frac{k}{n}p_k\lambda_{n-k}.
+ \label{eq:log-recursion}
+\end{equation}
+This is a finite algebraic way to check any desired coefficient without
+numerically differentiating a nearly degenerate matrix.
+
+\subsection{What was actually executed}
+The package includes two Python checkers requiring SymPy. The execution
+receipts were generated with SymPy~1.14.0. Neither checker uses floating
+point arithmetic for its assertions.
+
+\paragraph{\code{verify_pressure.py}.}
+The default run passes 23 groups of checks. It verifies the base spectrum,
+Eulerian Perron vector, and determinant for $1\leq m\leq10$; symbolic
+phase-independent determinants and reflection for $1\leq m\leq4$;
+exact Parseval moment identities for $1\leq m\leq4$, $0\leq n\leq6$,
+and both signs; and exact Taylor coefficients through degree $2m+2$
+for $2\leq m\leq6$. The receipt is \code{verification.json}.
+
+\paragraph{\code{verify_minimum.py}.}
+This checks the sixth-moment characteristic polynomial directly from
+the matrix, computes the exact resultant and linear subresultant,
+constructs a rational Sturm sequence, proves the four isolating intervals,
+and bounds each candidate common eigenvalue by rational interval Horner
+arithmetic. It also checks the separator values at $7/16$.
+The receipt is \code{minimum_certificate.json}.
+
+These finite checks are safeguards against transcription, scaling, and
+low-order algebra mistakes. They do not replace the all-$m$ proofs of
+analyticity or coefficient cancellation. The global sixth-moment theorem
+does use the finite exact certificate as part of its proof; the integer
+polynomials and verification recipe are supplied so it can be audited
+independently.
+
+\subsection{A practical Lean decomposition}
+No Lean build was performed for this article. A proposed implementation
+should keep the analytic and finite algebraic components separate.
+
+The first layer would define finite Laurent polynomials and prove the
+coefficient formula \cref{eq:matrix}, the moment identity, the
+phase-independent determinant, and the characteristic polynomials for
+$m=2,3$. These are finite algebraic targets and do not need a general
+thermodynamic-formalism library.
+
+A second layer would formalize the finite backward-tree lemma and the
+fact that a nonzero trigonometric polynomial has finitely many zeros.
+The positivity and peripheral-spectrum proof can then be phrased in
+terms of functions and a weighted supremum norm. This avoids trying to
+apply an entrywise-positive-matrix theorem to a complex Fourier matrix.
+
+A third layer would prove the binomial finite-difference spectrum at
+$c=0$ and the normalized $H_m$ formula. The finite Eulerian version may
+be the easier route for exact values, whereas periodization makes the
+analytic proof of $R_m$ conceptually transparent.
+
+Finally, a spectral perturbation layer would deliver real-analytic
+Perron data and feed the fixed-point equation \cref{eq:feedback} into a
+power-series argument. The sixth-moment certificate could be imported as
+explicit polynomial identities and rational sign checks, but a kernel
+checked Sturm theorem would be preferable to trusting an external
+computer-algebra receipt.
+
+This order produces useful intermediate theorems even before the entire
+article is formalized. It also preserves a visible boundary between
+proof-assistant results, exact external computations, and proposed
+analytic extensions.
+
+\section{Further research questions}
+\label{sec:questions}
+The following questions are proposed continuations, not claims that they
+have all been identified as open in the published literature. The first
+is the remaining part of the explicit regularity question in \cite{GKS}.
+
+\subsection{Noninteger regularity and the atomic threshold}
+\begin{question}
+For a fixed noninteger $q>0$, what is the exact regularity of
+$c\mapsto P(q\psi_c)$, especially at $c=0$?
+\end{question}
+The integer proof relies on a finite Fourier cutoff that disappears for
+noninteger $q$. The fixed-point equation suggests examining whether a
+term of order $|c|^{2q}$ appears and whether special cancellations can
+occur. This is a heuristic direction, not an established noninteger
+expansion. A rigorous route would need a suitable eigenfunction space,
+control of the singular branch, and a proof that the relevant eigenvalue
+still represents pressure. Different regimes near $q=1/2$ deserve
+separate treatment rather than extrapolating the integer argument.
+
+\subsection{The first coefficient after the cancellation}
+\begin{question}
+Is $[t^{2m+2}]p_m(t/\pi)$ positive for every integer $m\geq2$?
+Can it be written in a closed form in $m$?
+\end{question}
+The executed checks are positive for $2\leq m\leq6$.
+Differentiating \cref{eq:feedback} two additional times reduces the
+problem to the second phase derivative of $h_{m,c}(1/2)$ at zero.
+The completely explicit base spectrum might permit a finite resolvent
+sum with a useful sign structure.
+
+\subsection{Optimal phases for higher moments}
+\begin{question}
+For each $m\geq4$, how many phases globally minimize $\rho_m(c)$?
+How do those phases depend on $m$?
+\end{question}
+The change between $m=2$ and $m=3$ rules out a simple universal
+classical-phase principle. The characteristic polynomial in $C$ gives
+an exact elimination procedure at each fixed $m$, but resultant size
+grows rapidly. A combination of cone bounds, symmetry, and certified
+interval eigenvalue methods may scale better than full elimination.
+
+\subsection{The large-moment phase landscape}
+\begin{question}
+Do minimizing phases converge as $m\to\infty$? Can their accumulation
+points be characterized by ergodic optimization of $\log g_c$?
+\end{question}
+Existing large-moment results at the classical phase \cite{BD} should
+be treated as input and comparison, not rediscovered. A new result
+would have to control the phase uniformly. In particular, a fixed-$m$
+spectral gap cannot simply be interchanged with the limit $m\to\infty$.
+
+\subsection{Minimal recurrences and algebraic degree}
+\begin{question}
+What is the generic minimal recurrence order of $M_{m,n}(c)$, and
+which phases cause it to drop below $2m-1$?
+\end{question}
+Reflection explains the reduction at $0$ and $1/2$, but other
+cancellations could occur between the initial vector, spectral
+projectors, and the integration functional. The appropriate finite
+criterion is the rank of the corresponding Hankel or Krylov matrix,
+not merely the degree of the characteristic polynomial.
+
+\subsection{Quantitative gaps and certified errors}
+\begin{question}
+Can the constants $K_m,\eta_m$ in the uniform moment estimate be bounded
+explicitly and efficiently in $m$?
+\end{question}
+Compactness proves their existence but is not a numerical certificate.
+The one-zero argument proves strictness without a ready-made lower
+bound on separation. An effective proof could use a bounded iterate
+that contracts the positive cone, with a separate treatment near the
+atomic phase using its exact spectrum.
+
+\subsection{Beyond one zero and beyond base two}
+\begin{question}
+Which nonnegative trigonometric weights for $x\mapsto bx$ admit an
+analogous all-phase simple finite Perron model?
+\end{question}
+The degree cutoff generalizes immediately. The subtle part is spectral
+simplicity. With $s$ forbidden inverse images and a finite equality set
+of size $r$, the counting argument becomes $br-s\leq r$. Its possible
+small invariant sets should determine exceptional parameter loci.
+This suggests a classification theorem organized by finite backward
+orbits of the zero set.
+
+\subsection{Phase sequences and matrix products}
+\begin{question}
+What changes when the phase is allowed to vary with scale, replacing
+$c$ by $c_j$ in the $j$th factor?
+\end{question}
+The exact moment representation becomes a product of the same finite
+matrices. Periodic phase sequences are finite algebraic models; more
+general sequences lead to Lyapunov exponents and joint spectral radii.
+This extension may distinguish optimization by a constant phase from
+optimization by a scale-dependent protocol.
+
+\subsection{A kernel-checked optimization certificate}
+\begin{question}
+Can the sixth-moment optimum be formalized with a small, transparent
+certificate whose correctness is checked entirely in Lean?
+\end{question}
+The proof naturally splits into matrix identities, the analytic simple
+root theorem, and a degree-fourteen real-root certificate. Establishing
+this example would create a reusable workflow for moment optimization
+problems elsewhere in \repo.
+
+\section{Conclusions and scope}
+The integer powers of the generalized Thue--Morse weight turn a singular
+pressure problem into finite Fourier algebra. The key spectral step is
+a one-zero backward-tree argument, supplemented by an exact treatment
+of the atomic phase. Together they establish real-analytic phase
+dependence for every positive integer order and a uniform exponential
+moment expansion.
+
+The fixed-point eigenvalue equation then explains a more unexpected
+identity: feedback from the second branch enters precisely at degree
+$2m$ and cancels that coefficient of the pressure. The sixth-moment
+calculation shows that the phase geometry is genuinely richer than the
+fourth-moment case: the classical phase ceases to minimize the rate,
+and the true optimum has an explicit algebraic characterization.
+
+These conclusions concern a concrete slice of the repository's
+Fabius/Thue--Morse program. They do not resolve all positive real pressure
+orders, do not determine a universal Fourier-decay law, and have not
+been checked by a proof assistant or independent referee. The supplied
+proofs and exact certificates make those remaining validation tasks
+specific rather than leaving the central assertions at the level of
+numerical evidence.
+
+\appendix
+\section{The sixth-moment certificate polynomials}
+\label{sec:certificate-polynomials}
+The polynomials in \cref{eq:linear-subresultant} are
+\begin{align}
+ A(C)={}&-34165039104C^{13}-10163951616C^{12}
+ +145543077120C^{11}\notag\\
+ &-39584395200C^{10}-236661608848C^9
+ +88141321128C^8\notag\\
+ &+214754071532C^7-68497376017C^6
+ -115302016540C^5\notag\\
+ &+21790610488C^4+33317271568C^3
+ -2056400573C^2\notag\\
+ &-4362939336C-301154570,
+ \label{eq:A-certificate}\\[2mm]
+ B(C)={}&3253813248C^{11}-2632283136C^{10}
+ -7946511104C^9\notag\\
+ &+9092577984C^8+8363143264C^7
+ -10354590704C^6\notag\\
+ &-4894201844C^5+5242980644C^4
+ +2297293628C^3\notag\\
+ &-801503452C^2-418577016C-27190504.
+ \label{eq:B-certificate}
+\end{align}
+A reader can independently reproduce the certificate as follows.
+Compute the resultant and polynomial subresultant sequence of
+\cref{eq:f} and its $C$ derivative, eliminating $\lambda$.
+Check \cref{eq:resultant-id,eq:linear-subresultant}. Construct the Sturm
+sequence of $R$ using ordinary Euclidean remainders with reversed sign.
+Evaluate its signs at $-1,1$ and the eight rational endpoints in the
+table in \cref{sec:optimum}. Finally, interval-evaluate $A$ and $B$ by
+Horner's rule, check that the denominator interval excludes zero, and
+divide the interval for $-B$ by that for $A$.
+
+Every operation in this recipe is addition, multiplication, comparison,
+or exact division of rational numbers. Floating-point root finding,
+plot sampling, and heuristic root matching are unnecessary.
+
+\section{Build and verification instructions}
+The source uses a standard \LaTeX{} installation with the Libertinus,
+AMS, microtype, hyperref, and cleveref packages. No repository checkout
+or network access is needed to compile it. From the package directory:
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python verify_pressure.py
+python verify_minimum.py
+\end{verbatim}
+The last two commands require Python~3.10 or later and SymPy; the tested
+version is recorded in \code{requirements.txt}. The algebraic checks
+write JSON receipts to the working directory. Avoid running Python with
+\code{-O}, because assertions are part of these verification scripts.
+The article is self-contained; its bibliography URLs are for provenance
+and further reading, not build dependencies.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{GKS}
+P. Gohlke, M. Kesseb\"ohmer, and T. I. Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+arXiv:2509.22109v1, 26 September 2025.
+\url{https://arxiv.org/abs/2509.22109}.
+Theorem~2.7 and its following paragraph give the regularity question;
+Theorems~2.3 and 2.6 give the pressure identifications used for context
+and the measure corollary. Version checked on 28 September 2026.
+
+\bibitem{MMR}
+C. Mauduit, H. L. Montgomery, and J. Rivat,
+\emph{Moments of a Thue--Morse generating function},
+Journal d'Analyse Math\'ematique \textbf{135} (2018), 713--724.
+\url{https://doi.org/10.1007/s11854-018-0050-y}.
+The classical moment-matrix result is also described in the primary
+author presentation \cite{MontgomeryTalk}.
+
+\bibitem{MontgomeryTalk}
+H. L. Montgomery,
+\emph{Moments of a Thue--Morse generating function},
+CIRM research lecture recorded 12 February 2014.
+\url{https://doi.org/10.24350/CIRM.V.18610603}.
+\url{https://www.carmin.tv/en/collections/prime-numbers-new-perspectives-nombres-premiers-nouvelles-perspectives/video/moments-of-a-thue-morse-generating-function}.
+
+\bibitem{BD}
+S. Bettin and S. Drappeau,
+\emph{Two arithmetic applications of perturbations of composition operators},
+arXiv:2002.11417.
+\url{https://arxiv.org/abs/2002.11417}.
+Published version: \url{https://doi.org/10.1007/s11854-021-0184-1}.
+
+\bibitem{Arias}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, arXiv:1702.05442.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{ProveIt}
+V. Reshetnikov and contributors, \emph{ProveIt}. Repository snapshot
+\nolinkurl{37e61c1fdec28c6e7ab7ff445043993077b42cbd};
+inspected 28 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/37e61c1fdec28c6e7ab7ff445043993077b42cbd/Analysis/FabiusFunction}.
+
+\bibitem{RepoFourier}
+\emph{Fourier Decay of Rvachev's Up-Function: Exact products, pressure
+spectra, Ces\`aro gauges, fluctuations, peaks, and valleys},
+research synthesis in the \repo\ snapshot of \cite{ProveIt}.
+Repository path:
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex}.
+The inspected source is dated 31 August 2026. It is used as repository
+context, not as an independently refereed source or an unconditional
+black-box proof of the present results.
+\end{thebibliography}
+\end{document}

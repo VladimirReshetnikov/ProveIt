@@ -1,0 +1,1432 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Phase averaging in Fabius--Rvachev quadrature}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb T}\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\vTwo}{v_2}\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\Pol}{\mathcal P}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\Q}{\mathcal Q}\newcommand{\Def}{\mathcal D}
+\newcommand{\snapshot}{\texttt{37e61c1fdec28c6e7ab7ff445043993077b42cbd}}
+\hypersetup{pdftitle={Rigidity and Quantitative Limits of Phase Averaging in Fabius--Rvachev Quadrature},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Signed phase filters, exact quadrature, arithmetic rigidity and superconvergence}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+\noindent{\large\scshape Analysis / Approximation / Harmonic analysis}\par
+\vspace{13mm}
+{\LARGE\bfseries Rigidity and Quantitative Limits\par
+of Phase Averaging in\par
+Fabius--Rvachev Quadrature\par}
+\vspace{9mm}
+{\large Signed-filter classification, a rational--irrational dichotomy,\par
+and sharper superconvergence bounds\par}
+\vspace{14mm}
+\noindent Prepared for Vladimir Reshetnikov\par
+\noindent September 28, 2026\par
+\vspace{12mm}
+\begin{abstract}
+We study quadrature obtained by sampling Rvachev's smooth compactly supported
+probability density on a translated lattice and then averaging lattice phases.
+For a rational mesh parameter $M=a/b$ in lowest terms, we prove that a finite
+signed phase measure integrates every polynomial of degree at most $r$, for
+\emph{every} overall lattice translation, precisely when it is invariant under
+rotation by $1/L$, where
+\[
+ L=b\,2^{\max\{0,r-v_2(a)\}}.
+\]
+Consequently, an atomic rule requires at least $L$ distinct phases. Equality
+forces the equally weighted regular $L$-gon, even when negative weights are
+allowed. For irrational $M$, the only exact phase measure is Haar measure,
+so no finite phase rule is uniformly exact even on constants. A finite
+annihilating-polynomial argument strengthens these impossibility statements
+to explicit positive error bounds for under-budget signed rules.
+
+A second development improves the repository's odd-dilation estimate for the
+Fourier product from an inverse first power to an inverse square, and then
+to a log-Gaussian envelope uniform in the odd part. This gives
+a uniform relative first-harmonic factorization, a complete integer-mesh
+phase classification including the odd-mesh boundary case, simple zeros,
+and quantitative phase-error bounds. Existing phase-classification results
+in the repository are explicitly credited rather than claimed as new.
+All conclusions are proved in ordinary mathematics. Exact rational tests,
+independent Fourier checks, a formalization plan, and further research
+questions accompany the article. The proposed new refinements and filter
+theorems have not been independently peer reviewed or checked in Lean.
+\end{abstract}
+\vfill
+\noindent\small Repository baseline: ProveIt, commit\par
+\noindent\small\snapshot.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Research target, contributions, and source boundaries}
+
+\subsection{The question that phase averaging raises}
+
+Let $u$ denote the Rvachev up-function normalized to have support $[-1,1]$
+and integral one. For $M>0$ and a phase $\theta\in\T=\R/\Z$, consider
+\begin{equation}
+ \Q_{M,\theta}(P)
+ =\frac1M\sum_{k\in\Z}
+ P\!\left(\frac{k+\theta}{M}\right)
+ u\!\left(\frac{k+\theta}{M}\right).
+ \label{eq:quadrature}
+\end{equation}
+The sum is finite. On integer meshes the repository proves exactness through
+degree $v_2(M)$ at every phase, and one additional degree at certain
+parity-selected phases. Its prose development also contains stronger
+phase-zero classifications and multiple-angle estimates
+\cite{repoLean,repoComb}. These results naturally raise a different design
+question: \emph{can several carefully chosen phases, possibly with signed
+weights, raise the degree of exactness more economically than refining the
+lattice?}
+
+There are two distinct quantifiers. A single specially chosen phase can
+cancel an error at one translation. A fixed phase filter that must work
+\emph{for every overall translation} has to cancel the relevant Fourier
+coefficients individually. The main results characterize the latter
+requirement exactly. The answer is rigid: for a rational mesh all admissible
+phase measures have a prescribed rotational symmetry, and a minimum-size
+filter is simply a finer lattice in disguise. Moreover, allowing large
+positive and negative weights cannot make an under-budget rule arbitrarily
+accurate in the specified uniform moment-error norm.
+
+\subsection{Principal conclusions}
+
+Write $\Pol_r$ for the real polynomials of degree at most $r$, including zero.
+For a finite signed Borel measure $\nu$ on $\T$ of mass one, define
+\begin{equation}
+ \Q^\nu_{M,\theta}(P)
+ =\int_\T\Q_{M,\theta+\varphi}(P)\dd\nu(\varphi).
+ \label{eq:filtered}
+\end{equation}
+The following are the main statements, with all proofs supplied below.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.},itemsep=4pt]
+\item \textbf{Exact signed-filter classification.}
+If $M=a/b\in\Q_{>0}$ is reduced and
+$L=b2^{\max(0,r-v_2(a))}$, then \eqref{eq:filtered} is exact on
+$\Pol_r$ for every $\theta$ if and only if $\nu$ is invariant under
+$\varphi\mapsto\varphi+1/L$ (Theorem~\ref{thm:classification}).
+If $M$ is irrational, exactness on constants for every $\theta$ already forces
+$\nu$ to be Haar measure (Theorem~\ref{thm:irrational}).
+\item \textbf{Optimal cost and equality cases.}
+Every exact atomic filter has a number of support points divisible by $L$.
+The minimum is $L$, attained only by a rotated uniform $L$-gon.
+Negative weights do not improve this minimum
+(Theorem~\ref{thm:atomic}). For an integer mesh, each additional
+translation-uniform degree requires doubling the minimum phase count.
+\item \textbf{A quantitative obstruction below the minimum.}
+For $K<L$, an explicit constant $c_{M,r,K}>0$ bounds below the
+maximum uniform error on the monomials $1,x,\ldots,x^r$ of \emph{every}
+$K$-phase signed rule (Theorem~\ref{thm:quant-obstruction}).
+There is an analogous constant-error obstruction for every finite $K$ on
+an irrational mesh. Neither result imposes a bound on the weights.
+\item \textbf{A sharpened phase theorem.}
+For $M=2^dq$, $q$ odd, the first defect at degree $p=d+1$ has a
+nonvanishing amplitude times its parity-selected sine or cosine, times
+a positive continuous function lying between $1-\eta_p$ and $1+\eta_p$,
+where
+\[
+ \eta_p=(1-2^{-p-1})\zeta(p+1)-1\le\pi^2/8-1<0.234.
+\]
+This gives explicit root conditioning and a unified treatment of $p=1$
+as well as higher degrees (Theorem~\ref{thm:factorization}).
+\end{enumerate}
+
+\subsection{What is inherited, and what is proposed here}
+
+The classical Fourier product, its integer zero multiplicities, and the
+probability model are established facts; Arias de Reyna's paper is a primary
+reference \cite{arias}. Fourier-zero criteria for polynomial reproduction
+belong to the Strang--Fix tradition; see, for example, the research treatment
+in \cite{zakharov}. We rederive the particular periodization criterion needed
+here, rather than assuming that a general reproduction theorem applies
+without checking its normalization.
+
+The pinned repository's module
+\path{RvachevSuperconvergentSynthesis.lean} explicitly does not assert that its
+selected phases are the only ones. This is a limitation of that module's
+stated surface, \emph{not} evidence that the entire repository lacks a
+phase-classification proof. Indeed, the canonical comb manuscript contains
+\path{thm:phase-zero-set}, including general-odd-part corrected Fabius rules
+and dyadic Rvachev combs, together with the estimate
+$|H(qn/2)|\le |H(q/2)|/n$ \cite{repoComb}. We therefore do not claim to
+solve the already-settled dyadic phase conjecture again.
+
+The contribution proposed here is the measure-level classification and its
+sharp and quantitative cost consequences, together with the inverse-square
+and uniform log-Gaussian improvements, root estimates, and their synthesis. The stronger
+comparison uses an additional exactly controlled sinc factor. The proof
+works down to $p=1$, where the weaker comparison alone does not give the
+required summable relative sine bound. These are mathematically proved
+statements in this article, but their worldwide bibliographic novelty is not
+certified by the targeted literature and repository review. No claim of a
+solution to a major named open problem is made.
+
+\section{The kernel and the exact Fourier criterion}
+
+\subsection{Normalization and elementary analytic facts}
+
+Our Fourier transform convention is
+\begin{equation}
+ \widehat f(t)=\int_\R f(x)e^{-2\pi\ii tx}\dd x,
+ \qquad
+ \sinc(t)=\begin{cases}\sin(\pi t)/(\pi t),&t\ne0,\\1,&t=0.\end{cases}
+ \label{eq:fourier-convention}
+\end{equation}
+Let $U_0,U_1,\ldots$ be independent random variables uniform on
+$[-1/2,1/2]$, and set
+\begin{equation}
+ X=\sum_{j\ge0}2^{-j}U_j,
+ \qquad
+ H(t)=\prod_{j\ge0}\sinc(t/2^j).
+ \label{eq:product}
+\end{equation}
+The series converges absolutely for every outcome and takes values in
+$[-1,1]$. Its distribution has characteristic function $H$. Its density is
+$u$. This agrees with the repository normalization and with the standard
+up-function \cite{arias,repoComb}.
+
+\begin{lemma}[Smoothness, product convergence, and zeros]
+\label{lem:kernel}
+The distribution of $X$ has an even nonnegative density
+$u\in C_c^\infty(\R)$, with support contained in $[-1,1]$ and integral one.
+The product $H$ extends to an entire function and converges normally on
+compact subsets of $\C$. Its real zeros are exactly the nonzero integers.
+At $m\in\Z\setminus\{0\}$ the order of the zero is
+\begin{equation}
+ \operatorname{ord}_{t=m}H(t)=1+v_2(|m|).
+ \label{eq:zero-order}
+\end{equation}
+In particular $H(q/2)\ne0$ for every odd integer $q$.
+\end{lemma}
+
+\begin{proof}
+On each fixed compact set in $\C$,
+$\sinc(z/2^j)=1+O(4^{-j})$ uniformly. Thus the product is normally
+convergent. At a point where none of the factors vanishes, the summable
+perturbation from one implies that the tail product is nonzero. A factor
+vanishes precisely when $z$ is a nonzero integer multiple of $2^j$.
+At a nonzero integer $m$, exactly the factors indexed by
+$0\le j\le v_2(|m|)$ vanish, and every such zero is simple. This proves
+\eqref{eq:zero-order}, as well as the absence of any other zeros.
+
+For real $t\ne0$ and every positive integer $N$, retaining the first $N$
+factors and bounding the rest by one gives
+\begin{equation}
+ |H(t)|\le
+ \frac{2^{N(N-1)/2}}{(\pi|t|)^N}.
+ \label{eq:rough-decay}
+\end{equation}
+Consequently $t^rH(t)$ is integrable for every $r\ge0$. Fourier inversion
+of the probability distribution therefore gives a smooth density, with
+all derivatives obtained by differentiating the inverse integral. The
+support statement follows from the almost-sure bound on $X$; symmetry
+follows from the symmetric summands. Nonnegativity and normalization
+follow because this is a probability density. All its derivatives vanish
+at the endpoints of its support.
+\end{proof}
+
+The value $u(0)=1$ can also be seen without a special-function identity:
+write $X=U_0+Y$, where $Y$ is supported on $[-1/2,1/2]$. Convolving the
+unit-height density of $U_0$ with the distribution of $Y$ gives value one
+at zero; the boundary points of $Y$ have probability zero. This observation
+also fixes the central sample in the exact computations below.
+
+\subsection{Periodized moment defects}
+
+For $r\ge0$ define
+\begin{equation}
+ \mu_r=\int_\R x^ru(x)\dd x,
+ \qquad
+ \Def_{M,r}(\theta)=\Q_{M,\theta}(x^r)-\mu_r.
+ \label{eq:defect}
+\end{equation}
+The finite sum in \eqref{eq:quadrature} is a smooth periodic function of
+$\theta$: terms entering or leaving the support have every derivative zero.
+The following formula keeps all scaling and sign conventions explicit.
+
+\begin{lemma}[Alias formula]
+\label{lem:alias}
+For every $M>0$ and $r\ge0$,
+\begin{equation}
+ \Def_{M,r}(\theta)
+ =\left(\frac{\ii}{2\pi}\right)^r
+  \sum_{n\in\Z\setminus\{0\}}H^{(r)}(Mn)e^{2\pi\ii n\theta}.
+ \label{eq:alias}
+\end{equation}
+The series and all of its termwise derivatives in $\theta$ converge
+absolutely and uniformly.
+\end{lemma}
+
+\begin{proof}
+Put $f_r(x)=x^ru(x)$. The $n$th Fourier coefficient of the periodic
+sum in \eqref{eq:quadrature} is, by substituting $x=(k+\theta)/M$,
+\begin{align*}
+ \int_0^1\frac1M\sum_k f_r((k+\theta)/M)e^{-2\pi\ii n\theta}\dd\theta
+ &=\sum_k\int_{k/M}^{(k+1)/M}f_r(x)e^{-2\pi\ii nMx}\dd x\\
+ &=\widehat f_r(Mn).
+\end{align*}
+There is no extra power of $M$ in this coefficient. Differentiating
+$H$ under its integral gives
+$\widehat f_r(t)=(\ii/(2\pi))^rH^{(r)}(t)$.
+Since $f_r$ is smooth and compactly supported, repeated integration by
+parts shows that $\widehat f_r$ decreases faster than any fixed inverse
+power. This proves all convergence assertions and identifies the Fourier
+series. Its zero coefficient is $\mu_r$, so subtracting it yields
+\eqref{eq:alias}.
+\end{proof}
+
+\begin{corollary}[Unfiltered, translation-uniform exactness]
+\label{cor:unfiltered}
+An unfiltered rule at mesh $M>0$ integrates $\Pol_r$ for every phase if and
+only if $M$ is a positive integer and $r\le v_2(M)$.
+\end{corollary}
+\begin{proof}
+Exactness on constants requires $H(M)=0$, so $M$ must be an integer.
+For an integer $M$, all derivatives of orders at most $r$ vanish at every
+$Mn$, $n\ne0$, precisely when $r<1+v_2(M)$. The necessity of this
+inequality is witnessed already by $n=1$ in \eqref{eq:alias}.
+\end{proof}
+
+\section{Classification of all exact signed phase filters}
+
+\subsection{Multipliers of a finite signed measure}
+
+Throughout this section a finite signed measure means a real, countably
+additive Borel measure with finite total variation. For such a measure
+$\nu$ on $\T$ of total mass one, set
+\begin{equation}
+ a_n=\int_\T e^{2\pi\ii n\varphi}\dd\nu(\varphi),\qquad n\in\Z.
+ \label{eq:multipliers}
+\end{equation}
+Thus $a_0=1$, $a_{-n}=\overline{a_n}$, and
+$|a_n|\le\norm{\nu}_{\TV}$. We say $\nu$ is \emph{uniformly exact through
+$r$ at mesh $M$} when
+\begin{equation}
+ \Q^\nu_{M,\theta}(P)=\int_\R P(x)u(x)\dd x
+ \quad\text{for all }P\in\Pol_r\text{ and all }\theta\in\T.
+ \label{eq:uniform-exact}
+\end{equation}
+The same $\nu$ must work for all polynomials and all translations.
+
+\begin{lemma}[Filtered Fourier test]
+\label{lem:filtered-test}
+Condition \eqref{eq:uniform-exact} is equivalent to
+\begin{equation}
+ a_n H^{(j)}(Mn)=0
+ \quad (n\ne0,\ 0\le j\le r).
+ \label{eq:multiplier-condition}
+\end{equation}
+Equivalently, $a_n$ may be nonzero only at indices for which $Mn$ is a
+nonzero integer and $v_2(|Mn|)\ge r$.
+\end{lemma}
+\begin{proof}
+Integrate the uniformly absolutely convergent series \eqref{eq:alias}
+against $\nu$. Finite total variation justifies the interchange and gives
+\begin{equation}
+ \Def^\nu_{M,j}(\theta)
+ :=\Q^\nu_{M,\theta}(x^j)-\mu_j
+ =\left(\frac{\ii}{2\pi}\right)^j
+ \sum_{n\ne0}a_nH^{(j)}(Mn)e^{2\pi\ii n\theta}.
+ \label{eq:filtered-alias}
+\end{equation}
+A continuous periodic function vanishes identically if and only if all
+its Fourier coefficients vanish. Exactness on the monomial basis is
+therefore equivalent to \eqref{eq:multiplier-condition}. If $Mn$ is not an
+integer, $H(Mn)\ne0$ already forces $a_n=0$. At a nonzero integer of
+zero order $k$, all derivatives through $r$ vanish exactly when $k>r$;
+otherwise the derivative of order $k$ is nonzero. Apply
+Lemma~\ref{lem:kernel}.
+\end{proof}
+
+\subsection{Rational meshes: a cyclic symmetry is necessary and sufficient}
+
+\begin{theorem}[Rational-mesh rigidity]
+\label{thm:classification}
+Let $M=a/b>0$, where $a,b\in\N_{>0}$ and $\gcd(a,b)=1$.
+Let $r\ge0$ and put
+\begin{equation}
+ d=v_2(a),\qquad L=b\,2^{\max\{0,r-d\}}.
+ \label{eq:L}
+\end{equation}
+For a finite signed Borel measure $\nu$ on $\T$ of mass one, the following
+are equivalent:
+\begin{enumerate}[label=(\roman*),leftmargin=*,itemsep=1pt]
+\item $\nu$ is uniformly exact through degree $r$ at mesh $M$;
+\item $a_n=0$ for every $n\notin L\Z$;
+\item $\nu$ is invariant under rotation by $1/L$.
+\end{enumerate}
+For $L=1$, the rotation is the identity and (ii) imposes no restriction.
+\end{theorem}
+
+\begin{proof}
+First identify the permitted frequencies in Lemma~\ref{lem:filtered-test}.
+The condition $Mn\in\Z$ is equivalent to $b\mid n$ because $a/b$ is
+reduced. Writing $n=bk$, the remaining condition is
+\[
+ v_2(|ak|)=d+v_2(|k|)\ge r.
+\]
+This says exactly that $2^{\max(0,r-d)}$ divides $k$, or $L$ divides $n$.
+This proves (i)$\Leftrightarrow$(ii).
+
+Let $R_h\nu$ be the pushforward of $\nu$ under $\varphi\mapsto\varphi+h$.
+Its multiplier is $e^{2\pi\ii nh}a_n$. Invariance under $h=1/L$
+therefore implies that $a_n=0$ whenever $L\nmid n$.
+Conversely, if (ii) holds, $R_{1/L}\nu$ and $\nu$ have all the same
+Fourier coefficients. Trigonometric polynomials are uniformly dense in
+continuous functions on $\T$. Integrating their uniform approximations
+against these finite-variation measures shows that the measures agree
+on every continuous function, and hence are equal. This proves
+(ii)$\Leftrightarrow$(iii).
+\end{proof}
+
+The theorem classifies singular continuous measures as well as atomic and
+absolutely continuous ones. If $\nu$ has a density, that density must be
+$1/L$-periodic almost everywhere. In the signed setting there is no
+positivity premise hidden in the Fourier argument.
+
+\begin{corollary}[Symmetrization description]
+\label{cor:symmetrization}
+At a rational mesh with the integer $L$ in \eqref{eq:L}, every measure
+of the form
+\begin{equation}
+ \nu=\frac1L\sum_{j=0}^{L-1}R_{j/L}\rho,
+ \qquad \rho(\T)=1,
+ \label{eq:symmetrization}
+\end{equation}
+is uniformly exact through $r$. Conversely every exact measure has this
+form, for example by taking $\rho=\nu$.
+\end{corollary}
+\begin{proof}
+The averaging operator in \eqref{eq:symmetrization} has as its fixed
+points precisely the $1/L$-rotation-invariant measures.
+\end{proof}
+
+\subsection{Irrational meshes: continuous averaging is unavoidable}
+
+\begin{theorem}[Rational--irrational dichotomy]
+\label{thm:irrational}
+Let $M>0$ be irrational. A finite signed phase measure of mass one is
+uniformly exact on constants if and only if it is normalized Haar measure
+$m_\T$. Haar averaging, in fact, integrates $P(x)u(x)$ exactly for every
+polynomial $P$. No finite atomic phase measure is uniformly exact on
+constants at such a mesh.
+\end{theorem}
+\begin{proof}
+For every nonzero integer $n$, $Mn$ is not an integer and so $H(Mn)\ne0$.
+Lemma~\ref{lem:filtered-test}, even with $r=0$, gives $a_n=0$ for all
+$n\ne0$. Together with $a_0=1$, these are the Fourier coefficients of
+normalized Haar measure. Fourier uniqueness, as justified in the proof
+of Theorem~\ref{thm:classification}, gives $\nu=m_\T$.
+
+Conversely, directly unfolding the integral yields, for every integrable
+function $f$,
+\begin{equation}
+ \int_0^1\frac1M\sum_{k\in\Z}
+ f((k+\theta+\varphi)/M)\dd\varphi=\int_\R f(x)\dd x.
+ \label{eq:haar-unfold}
+\end{equation}
+For a signed integrable function this follows by applying the positive
+identity to its positive and negative parts. Take $f=Pu$. Haar measure
+is nonatomic and cannot equal a finitely supported measure of mass one.
+\end{proof}
+
+\subsection{Minimum support, signed weights, and equality cases}
+
+\begin{theorem}[Optimal atomic phase cost]
+\label{thm:atomic}
+Let $M=a/b$ and $L$ be as in Theorem~\ref{thm:classification}. Suppose
+\begin{equation}
+ \nu=\sum_{j=1}^K w_j\delta_{\varphi_j},\qquad
+ w_j\in\R\setminus\{0\},\quad \sum_jw_j=1,
+ \label{eq:atomic}
+\end{equation}
+where the phases are distinct modulo one. If $\nu$ is uniformly exact
+through $r$, then $L$ divides $K$, and in particular $K\ge L$.
+All such atomic measures are unions of complete $L$-cycles, with equal
+weights within each cycle. When $K=L$ there is an $\alpha\in\T$ such that
+\begin{equation}
+ \nu=\frac1L\sum_{j=0}^{L-1}\delta_{\alpha+j/L}.
+ \label{eq:optimal-filter}
+\end{equation}
+Thus every minimum-support exact signed filter is positive.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:classification}, rotation by $1/L$ leaves $\nu$
+unchanged. The orbit of every point under this rotation has exactly
+$L$ points. If an atom has nonzero mass $w$, all points in its orbit
+are atoms of mass $w$. Distinct orbits are disjoint, so the support is
+a disjoint union of $L$-point orbits and $L\mid K$.
+If $K=L$, there is just one orbit, and its common mass is $1/L$
+because the total mass is one. Conversely any union of such equally
+weighted orbits with total mass one is invariant and hence exact.
+\end{proof}
+
+\begin{proposition}[The optimum is a finer lattice]
+\label{prop:reindex}
+The measure in \eqref{eq:optimal-filter} satisfies
+\begin{equation}
+ \Q^\nu_{M,\theta}(P)=\Q_{LM,\,L(\theta+\alpha)}(P).
+ \label{eq:reindex}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The left side is
+\[
+ \frac1{LM}\sum_{j=0}^{L-1}\sum_{k\in\Z}
+ (Pu)\!\left(\frac{Lk+j+L(\theta+\alpha)}{LM}\right).
+\]
+Each integer has a unique representation $Lk+j$, $0\le j<L$.
+Reindexing gives \eqref{eq:reindex}.
+\end{proof}
+
+For an integer mesh $M=2^dq$ with $q$ odd, a gain of $s\ge0$
+translation-uniform degrees, from $d$ to $d+s$, costs exactly $2^s$
+phases. More generally, with a budget of at most $K$ phases at the
+rational mesh $a/b$, no uniform constant rule exists if $K<b$.
+If $K\ge b$, the largest attainable uniform degree is
+\begin{equation}
+ r_{\max}=v_2(a)+\left\lfloor\log_2(K/b)\right\rfloor.
+ \label{eq:budget}
+\end{equation}
+Indeed, the requirement $b2^{\max(0,r-d)}\le K$ is necessary by
+Theorem~\ref{thm:atomic} and sufficient by \eqref{eq:optimal-filter}.
+
+\begin{remark}[What this lower bound does not say]
+The bound is on distinct \emph{phase shifts} of the fixed kernel rule,
+with the weights fixed independently of the overall translation.
+It is not a lower bound for arbitrary Gaussian quadrature nodes, nor for
+a rule designed at just one phase, nor for weights allowed to vary with
+$\theta$ or with the polynomial. These changes alter the problem's
+quantifiers and invalidate the coefficientwise necessity argument.
+\end{remark}
+
+\section{A quantitative obstruction for under-budget signed filters}
+
+The preceding support count concerns exact equality. A stronger statement
+is possible: for fixed $M,r,K$ below the threshold, the entire class of
+$K$-phase signed rules has a strictly positive lower bound on uniform
+moment error. The weights need not lie in a compact or bounded set.
+
+\subsection{A finite annihilator certificate}
+
+\begin{lemma}[A nonzero early multiplier]
+\label{lem:annihilator}
+Let $\nu$ be as in \eqref{eq:atomic}. Then
+\begin{equation}
+ \max_{1\le n\le K}|a_n|\ge\frac1{2^K-1}.
+ \label{eq:early-multiplier}
+\end{equation}
+More precisely, if $z_j=e^{2\pi\ii\varphi_j}$ and
+\begin{equation}
+ A(z)=\prod_{j=1}^K(z-z_j)=\sum_{n=0}^Kc_nz^n,
+ \label{eq:annihilator-polynomial}
+\end{equation}
+then $|c_0|=1$, $\sum_{n=1}^K|c_n|\le2^K-1$, and
+\begin{equation}
+ \sum_{n=1}^Kc_na_n=-c_0.
+ \label{eq:certificate}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The polynomial $A$ vanishes at every $z_j$. Multiply $A(z_j)=0$ by
+$w_j$ and sum. Since $a_0=1$, this gives \eqref{eq:certificate}.
+The roots have modulus one, so $|c_0|=1$ and the elementary symmetric
+coefficient bound is $|c_n|\le\binom Kn$. Hence
+\[
+ 1\le\sum_{n=1}^K|c_n|\,|a_n|
+ \le(2^K-1)\max_{1\le n\le K}|a_n|.
+\]
+No step uses positivity of the weights. In fact the conclusion also
+holds for complex weights of total mass one.
+\end{proof}
+
+\subsection{Explicit uniform error bounds}
+
+Define the dimensionless moment-error norm
+\begin{equation}
+ E_{M,r}(\nu)=\max_{0\le j\le r}\norm{\Def^\nu_{M,j}}_{L^\infty(\T)}.
+ \label{eq:errornorm}
+\end{equation}
+The coordinate $x$ is already normalized to the fixed support $[-1,1]$.
+
+\begin{theorem}[Quantitative under-budget obstruction]
+\label{thm:quant-obstruction}
+Let $M=a/b$ be rational, let $L$ be given by \eqref{eq:L}, and let
+$1\le K<L$. For $1\le n\le K$ define
+\begin{equation}
+ j_n=\begin{cases}
+ 0,&Mn\notin\Z,\\
+ 1+v_2(Mn),&Mn\in\Z,
+ \end{cases}
+ \qquad
+ B_n=(2\pi)^{-j_n}|H^{(j_n)}(Mn)|.
+ \label{eq:Bn}
+\end{equation}
+Then $0\le j_n\le r$ and $B_n>0$. Every signed measure of
+mass one supported on at most $K$ phases satisfies
+\begin{equation}
+ \boxed{\quad
+ E_{M,r}(\nu)\ge
+ \frac{\min_{1\le n\le K}B_n}{2^K-1}>0.
+ \quad}
+ \label{eq:quant-obstruction}
+\end{equation}
+For an irrational $M>0$ and every $K\ge1$, the corresponding conclusion
+already holds on constants:
+\begin{equation}
+ \norm{\Def^\nu_{M,0}}_\infty
+ \ge\frac{\min_{1\le n\le K}|H(Mn)|}{2^K-1}>0.
+ \label{eq:irrational-quant}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+In the rational case, none of the indices $1,\ldots,K$ lies in $L\Z$.
+The frequency calculation in Theorem~\ref{thm:classification} shows that
+if $Mn$ is an integer, its zero order is at most $r$; otherwise order
+zero is a nonvanishing witness. Thus \eqref{eq:Bn} is defined with
+$j_n\le r$ and $B_n>0$.
+
+If the support has fewer than $K$ points, multiply its annihilating
+polynomial by additional factors with unit-modulus roots to reach degree
+$K$. The coefficient proof of Lemma~\ref{lem:annihilator} remains valid.
+The $n$th Fourier coefficient of the $j_n$th filtered defect has modulus
+$B_n|a_n|$ by \eqref{eq:filtered-alias}. The modulus of a Fourier
+coefficient of a continuous periodic function is at most its uniform
+norm, so
+\[
+ E_{M,r}(\nu)\ge B_n|a_n|\qquad(1\le n\le K).
+\]
+Combine this with Lemma~\ref{lem:annihilator} to obtain
+\eqref{eq:quant-obstruction}. More specifically, the actual nodes give
+\begin{equation}
+ E_{M,r}(\nu)\ge
+ \left(\sum_{n=1}^K\frac{|c_n|}{B_n}\right)^{-1},
+ \label{eq:node-dependent-bound}
+\end{equation}
+by inserting $|a_n|\le E_{M,r}(\nu)/B_n$ into
+\eqref{eq:certificate}. Formula \eqref{eq:quant-obstruction} is a
+node-independent consequence.
+
+For irrational $M$, each $H(Mn)$ is nonzero. Use $j_n=0$ for every
+$n$ and repeat the same argument. Positivity of the minimum follows
+from taking a minimum over a nonempty finite set of strictly positive
+numbers, not from a global lower bound for $H$.
+\end{proof}
+
+\begin{remark}[Explicit does not mean numerically large]
+The constants can be very small, because $H$ decays rapidly and because
+$2^K-1$ grows. The conclusion is a rigorous positive obstruction for
+\emph{fixed} parameters, not a claim of a practical lower error floor
+uniform in $M$ or $K$. Near a rational mesh, the irrational constant can
+tend to zero. That behavior is consistent with the exact rational--
+irrational dichotomy and prevents a false claim of a discontinuous
+positive universal error threshold.
+\end{remark}
+
+\begin{corollary}[Integer-mesh certificate without high derivatives]
+\label{cor:integer-B}
+Suppose $M=2^dq$ with $q$ odd, $r=d+s$, and $K<2^s$.
+For $1\le n\le K$, write $n=2^e\ell$ with $\ell$ odd and put
+$j_n=d+e+1$. Then the constants in \eqref{eq:Bn} are
+\begin{equation}
+ B_n=\frac{j_n!\,|H(q\ell/2)|}{(2\pi Mn)^{j_n}}.
+ \label{eq:explicit-B}
+\end{equation}
+\end{corollary}
+\begin{proof}
+At any positive integer $t=2^vq_0$ with $q_0$ odd, the leading-zero
+calculation in Lemma~\ref{lem:leading-jet} below gives
+$H^{(v+1)}(t)=-(v+1)!H(q_0/2)/t^{v+1}$.
+Apply it to $t=Mn=2^{d+e}q\ell$.
+\end{proof}
+
+These certificates are finite in a useful sense: only the first $K$
+phase multipliers and the corresponding nonzero kernel coefficients
+are required. One need not search all Fourier frequencies to find a
+witness that an under-budget rule fails.
+
+\section{Sharper odd-dilation bounds and pointwise superconvergence}
+
+\subsection{An inverse-square comparison}
+
+The repository's multiple-angle argument isolates one exactly controlled
+factor of the product and obtains an inverse first power
+\cite{repoComb}. Two factors can be controlled exactly, uniformly in the
+odd part of the mesh.
+
+\begin{lemma}[Odd-dilation inverse-square bound]
+\label{lem:dilation}
+For all positive odd integers $q,n$,
+\begin{equation}
+ 0<\left|\frac{H(qn/2)}{H(q/2)}\right|\le\frac1{n^2}.
+ \label{eq:dilation}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For every positive integer $n$ and real $x$,
+$|\sin(nx)|\le n|\sin x|$. For example, this follows from
+$e^{\ii nx}-e^{-\ii nx}=(e^{\ii x}-e^{-\ii x})
+\sum_{j=0}^{n-1}e^{\ii(n-1-2j)x}$ and the triangle inequality.
+Consequently $|\sinc(ny)|\le|\sinc(y)|$ for every real $y$.
+
+Compare the factors of $H(qn/2)$ and $H(q/2)$.
+At product index zero, $q$ and $qn$ are odd, so the absolute sine
+numerators are both one. The factor ratio is exactly $1/n$.
+At index one, the arguments of the sine are $\pi q/4$ and $\pi qn/4$;
+for every odd integer $h$, $|\sin(\pi h/4)|=1/\sqrt2$.
+This second factor ratio is also exactly $1/n$.
+Every remaining factor ratio is at most one by the multiple-angle
+inequality. No denominator factor vanishes. The comparison holds for
+every finite product with at least two factors, and passing to the limit
+gives the upper bound. Both full products are nonzero by
+Lemma~\ref{lem:kernel}, which gives the strict lower inequality.
+\end{proof}
+
+The improvement is especially useful when a derivative of a trigonometric
+harmonic costs one power of its frequency: the inverse square still leaves
+a summable majorant at the lowest threshold degree. In fact the arithmetic
+separation from zeros at every dyadic scale gives a stronger uniform result.
+
+\begin{proposition}[A uniform multiscale odd-dilation envelope]
+\label{prop:multiscale}
+For positive odd $q$ and odd $n\ge3$, put $m=\lfloor\log_2 n\rfloor$.
+Then
+\begin{equation}
+ \left|\frac{H(qn/2)}{H(q/2)}\right|
+ \le \frac{2^{m(m+1)/2-1}}{n^{m+1}}
+ \le \frac1{2\sqrt n}
+       \exp\!\left(-\frac{(\log n)^2}{2\log2}\right).
+ \label{eq:multiscale}
+\end{equation}
+In particular the relative odd-dilation ratio decreases faster than every
+fixed inverse power of $n$, uniformly over all positive odd $q$.
+\end{proposition}
+\begin{proof}
+At index $j\ge2$, oddness of $q$ gives
+\[
+ |\sin(\pi q/2^{j+1})|\ge\sin(\pi/2^{j+1})\ge2^{-j}.
+\]
+The first inequality follows by reducing the odd numerator modulo
+$2^{j+1}$ and measuring its distance from the nearest multiple of that
+integer. The second is $\sin x\ge2x/\pi$ on $[0,\pi/2]$.
+Thus the absolute ratio of the $j$th factors is at most $2^j/n$,
+as well as at most one by the multiple-angle inequality. Retain the
+exact $n^{-2}$ from the first two factors and the bounds $2^j/n$
+for $2\le j\le m$. All later ratios are at most one. Their product is
+\[
+ n^{-2}\prod_{j=2}^m\frac{2^j}{n}
+ =2^{m(m+1)/2-1}n^{-m-1},
+\]
+with the product empty when $m=1$.
+For the second inequality write $\log_2n=m+t$, $0\le t<1$.
+The logarithm of this upper bound is
+\[
+ -\frac{(\log n)^2}{2\log2}-\frac12\log n-\log2
+ +\frac{\log2}{2}(t^2-t),
+\]
+and the final term is nonpositive. The superalgebraic conclusion follows
+because a negative quadratic in $\log n$ dominates every fixed negative
+linear term in $\log n$.
+\end{proof}
+
+This is a relative estimate: it remains valid when $H(q/2)$ itself is
+extremely small. An ordinary decay estimate for $H(t)$ at large $t$ would
+not by itself provide this uniformity after dividing by $H(q/2)$. For the
+root theorem below we retain the simpler inverse-square bound, which makes
+the constants transparent; \eqref{eq:multiscale} can further reduce them.
+
+\subsection{Leading jets at all integer zeros}
+
+\begin{lemma}[The first nonzero derivative]
+\label{lem:leading-jet}
+Let $t_0=2^vq_0$ be a nonzero integer, $q_0$ odd, and put $k=v+1$.
+Then
+\begin{equation}
+ H^{(k)}(t_0)=-\frac{k!}{t_0^k}H(q_0/2).
+ \label{eq:leading-jet}
+\end{equation}
+In particular, if $M=2^dq$ with $q>0$ odd and $p=d+1$, then for
+odd $n\in\Z$,
+\begin{equation}
+ H^{(p)}(Mn)=-\frac{p!}{(Mn)^p}H(qn/2),
+ \label{eq:threshold-jet}
+\end{equation}
+whereas $H^{(p)}(Mn)=0$ for nonzero even $n$.
+\end{lemma}
+\begin{proof}
+Split the product into its $k$ vanishing factors and the tail:
+\[
+ H(t)=\prod_{j=0}^{v}\sinc(t/2^j)\; H(t/2^{v+1}).
+\]
+At $t=t_0$, the linear coefficient of the $j$th factor is
+$(-1)^{t_0/2^j}/t_0$. The product of their signs is
+\[
+ (-1)^{\sum_{j=0}^{v}t_0/2^j}
+ =(-1)^{q_0(2^{v+1}-1)}=-1.
+\]
+Thus the coefficient of $(t-t_0)^k$ is
+$-t_0^{-k}H(q_0/2)$, proving \eqref{eq:leading-jet}.
+For even $n\ne0$, the zero order at $Mn$ is at least $d+2=p+1$,
+so its $p$th derivative vanishes.
+\end{proof}
+
+This leading-jet identity is already represented in the repository's
+\path{CombFirstDefect.lean} development \cite{repoComb}. Its derivation
+is included to make the signs and constants of the new bounds auditable.
+
+\subsection{A positive relative factor and complete zero sets}
+
+Fix $M=2^dq$ with $d\ge0$ and $q>0$ odd. Write
+\begin{equation}
+ p=d+1,\qquad
+ \tau_p(t)=\begin{cases}\sin t,&p\text{ odd},\\\cos t,&p\text{ even},\end{cases}
+ \qquad \epsilon_p=(-1)^{\lfloor(p-1)/2\rfloor},
+ \label{eq:tau}
+\end{equation}
+and define the nonzero amplitude
+\begin{equation}
+ A_{M,p}=\frac{2p!\,\epsilon_pH(q/2)}{(2\pi M)^p}.
+ \label{eq:amplitude}
+\end{equation}
+Pairing positive and negative odd aliases in \eqref{eq:alias} gives
+\begin{equation}
+ \Def_{M,p}(\theta)=A_{M,p}
+ \sum_{\substack{n\ge1\\n\ \mathrm{odd}}}
+ \frac{H(qn/2)}{H(q/2)n^p}\,\tau_p(2\pi n\theta).
+ \label{eq:paired}
+\end{equation}
+For instance, the sign factors for $p=1,2,3,4$ are respectively
+$+,+,-,-$; this is a useful independent normalization check.
+
+\begin{theorem}[Relative factorization and all integer-mesh phase zeros]
+\label{thm:factorization}
+With the notation above, there exists a continuous one-periodic real
+function $G_{p,q}$ satisfying
+\begin{align}
+ \Def_{M,p}(\theta)
+ &=A_{M,p}\tau_p(2\pi\theta)G_{p,q}(\theta),
+ \label{eq:factorization}\\
+ 1-\eta_p\le G_{p,q}(\theta)&\le1+\eta_p,
+ \qquad
+ \eta_p=\sum_{\substack{n\ge3\\n\ \mathrm{odd}}}n^{-p-1}
+ =(1-2^{-p-1})\zeta(p+1)-1.
+ \label{eq:Gbound}
+\end{align}
+In particular $G_{p,q}$ is strictly positive, since
+$\eta_p\le\pi^2/8-1<1$. The rule $\Q_{M,\theta}$ integrates
+$\Pol_{d+1}$ exactly if and only if, modulo one,
+\begin{equation}
+ \theta\in Z_p:=
+ \begin{cases}
+ \{0,1/2\},&d\text{ even},\\
+ \{1/4,3/4\},&d\text{ odd}.
+ \end{cases}
+ \label{eq:phase-set}
+\end{equation}
+At any other phase its degree of precision is exactly $d$.
+\end{theorem}
+
+\begin{proof}
+For odd $n$ the quotients
+\[
+ R_{p,n}(t)=\frac{\tau_p(nt)}{\tau_p(t)}
+\]
+extend continuously across the zeros of the denominator. In the sine
+case, the quotient is the polynomial $U_{n-1}(\cos t)$, where $U$ is
+the Chebyshev polynomial of the second kind; equivalently the elementary
+multiple-angle identity proves the same divisibility. In the cosine case,
+$\cos(nt)$ is an odd polynomial in $\cos t$ because $n$ is odd,
+so division by $\cos t$ also leaves a polynomial. The sine inequality
+in the proof of Lemma~\ref{lem:dilation} gives $|R_{p,n}(t)|\le n$.
+For cosines use the same inequality after shifting $t$ by $\pi/2$;
+oddness of $n$ changes only a sign.
+
+Define
+\begin{equation}
+ G_{p,q}(\theta)=1+
+ \sum_{\substack{n\ge3\\n\ \mathrm{odd}}}
+ \frac{H(qn/2)}{H(q/2)n^p}R_{p,n}(2\pi\theta).
+ \label{eq:Gseries}
+\end{equation}
+By Lemma~\ref{lem:dilation}, the absolute value of each summand is at
+most $n^{-p-1}$. Since $p\ge1$, the series is uniformly convergent.
+It defines a continuous real periodic function and obeys
+\eqref{eq:Gbound}. Multiplying it by $\tau_p(2\pi\theta)$ gives
+\eqref{eq:paired}, including at the zeros by continuity. This proves
+\eqref{eq:factorization}.
+
+All degrees at most $d$ are exact at all phases by
+Corollary~\ref{cor:unfiltered}. The only extra monomial to check for
+$\Pol_{d+1}$ is $x^p$. Its defect vanishes exactly when
+$\tau_p(2\pi\theta)=0$, because both $A_{M,p}$ and $G_{p,q}$ are
+nonzero. These are exactly the phases in \eqref{eq:phase-set}.
+Outside them, $x^{d+1}$ witnesses failure, proving the final assertion.
+\end{proof}
+
+\begin{remark}[The lowest-degree endpoint matters]
+The theorem includes every odd mesh $M=q$, where $d=0$ and $p=1$.
+A comparison of size $n^{-1}$ alone would bound the relative sine tail
+by a divergent harmonic-type sum in this boundary case. The second
+exact sinc ratio makes the relevant majorant $n^{-2}$ and settles the
+boundary case by the same argument as every other integer mesh.
+For higher degrees, the result also sharpens the quantitative constants
+available from the weaker comparison. The statement does not assert
+that the selected phases fail at the very next degree.
+\end{remark}
+
+\subsection{Simple zeros, phase conditioning, and arithmetic signs}
+
+\begin{corollary}[Simple zeros with uniform relative derivative bounds]
+\label{cor:simplezeros}
+Every zero $\theta_*\in Z_p$ of $\Def_{M,p}$ is simple, and
+\begin{equation}
+ 2\pi|A_{M,p}|(1-\eta_p)
+ \le |\Def'_{M,p}(\theta_*)|
+ \le2\pi|A_{M,p}|(1+\eta_p).
+ \label{eq:root-slope}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The defect is smooth by Lemma~\ref{lem:alias}. Divide
+\eqref{eq:factorization} by $\theta-\theta_*$ and pass to the limit.
+Continuity of $G_{p,q}$ suffices, and
+$|\frac{\mathrm d}{\mathrm d\theta}\tau_p(2\pi\theta_*)|=2\pi$.
+Now use \eqref{eq:Gbound}. No unproved differentiability of the quotient
+series at a root is being assumed.
+\end{proof}
+
+\begin{corollary}[Global distance-to-phase bounds]
+\label{cor:phase-distance}
+Let $\rho=\operatorname{dist}_{\T}(\theta,Z_p)$, so $0\le\rho\le1/4$.
+Then
+\begin{equation}
+ 4|A_{M,p}|(1-\eta_p)\rho
+ \le |\Def_{M,p}(\theta)|
+ \le2\pi|A_{M,p}|(1+\eta_p)\rho.
+ \label{eq:phase-distance}
+\end{equation}
+Consequently, an observed bound
+$|\Def_{M,p}(\theta)|\le\varepsilon$ implies
+\begin{equation}
+ \operatorname{dist}_{\T}(\theta,Z_p)
+ \le\frac{\varepsilon}{4|A_{M,p}|(1-\eta_p)}.
+ \label{eq:phase-certificate}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For the nearest zero, $|\tau_p(2\pi\theta)|=\sin(2\pi\rho)$.
+On $[0,\pi/2]$, concavity gives $\sin x\ge2x/\pi$, while
+$\sin x\le x$. Combine these with \eqref{eq:factorization}.
+\end{proof}
+
+The dependence on the amplitude is essential. The roots are well
+conditioned after dividing by $A_{M,p}$, but the absolute defect can be
+extremely small for large odd $q$. An unnormalized absolute error test
+alone may then give a weak certificate for the actual phase.
+
+\begin{proposition}[Binary sign rule]
+\label{prop:sign}
+Let $s_2(q)$ be the number of ones in the binary expansion of a positive
+odd integer $q$. Then
+\begin{equation}
+ \sgn H(q/2)=(-1)^{s_2(q)-1}.
+ \label{eq:binary-sign}
+\end{equation}
+For $\theta\notin Z_p$,
+\begin{equation}
+ \sgn\Def_{M,p}(\theta)
+ =(-1)^{\lfloor(p-1)/2\rfloor+s_2(q)-1}
+   \sgn\tau_p(2\pi\theta).
+ \label{eq:defect-sign}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The sign of the $j$th sinc factor at $q/2$ is
+$(-1)^{\lfloor q/2^{j+1}\rfloor}$. All but finitely many are positive.
+If $q=\sum_{h\ge0}b_h2^h$, then
+\[
+ \sum_{k\ge1}\lfloor q/2^k\rfloor
+ =\sum_{h\ge1}b_h(2^h-1)=q-s_2(q).
+\]
+Since $q$ is odd, $q-s_2(q)$ has the same parity as $s_2(q)-1$.
+This proves \eqref{eq:binary-sign}. Equation \eqref{eq:defect-sign}
+follows from the positive factor in \eqref{eq:factorization}.
+\end{proof}
+
+The binary sign phenomenon itself is part of the existing repository
+analysis \cite{repoComb}; the point here is its combination with the
+sharper global magnitude and root estimates.
+
+\section{Consequences for polynomial synthesis and concrete examples}
+
+\subsection{Triangular moment deconvolution}
+
+The repository transports quadrature identities into polynomial synthesis
+using inverse moment operators \cite{repoLean}. The filter theorems respect
+this transport exactly; they are not restricted to monomials as a preferred
+application.
+
+Define the operator on polynomials
+\begin{equation}
+ (TP)(y)=\int_\R P(y-x)u(x)\dd x
+ =\sum_{j\ge0}\frac{(-1)^j\mu_j}{j!}P^{(j)}(y),
+ \label{eq:moment-operator}
+\end{equation}
+where the sum is finite. Since $\mu_0=1$, $T$ preserves the leading
+coefficient and is an invertible triangular operator on every $\Pol_r$.
+Indeed $T=I+N$ with $N$ degree-lowering, so on $\Pol_r$,
+$T^{-1}=\sum_{k=0}^r(-N)^k$.
+
+\begin{proposition}[Exact transfer, including necessity]
+\label{prop:transfer}
+Fix $M>0$, a phase measure $\nu$, and $r\ge0$. The uniform quadrature
+identity \eqref{eq:uniform-exact} is equivalent to
+\begin{equation}
+ P(y)=\int_\T\frac1M\sum_{k\in\Z}
+ (T^{-1}P)\!\left(y-\frac{k+\theta+\varphi}{M}\right)
+ u\!\left(\frac{k+\theta+\varphi}{M}\right)\dd\nu(\varphi)
+ \label{eq:synthesis}
+\end{equation}
+for all $P\in\Pol_r$, all $y\in\R$, and all $\theta\in\T$.
+\end{proposition}
+\begin{proof}
+If quadrature is exact, apply it to
+$R_y(x)=(T^{-1}P)(y-x)$, whose degree is at most $r$.
+Its integral against $u$ is $T(T^{-1}P)(y)=P(y)$.
+Conversely fix any $y$. As $P$ ranges through $\Pol_r$, invertibility
+of $T^{-1}$ and of the substitution $z\mapsto y-z$ implies that $R_y$
+ranges through all of $\Pol_r$. Thus \eqref{eq:synthesis} is precisely
+quadrature exactness for every such polynomial.
+\end{proof}
+
+Consequently the same cyclic invariance, minimum number of phases, and
+irrational obstruction hold for this deconvolved synthesis scheme.
+The selected-phase criterion in Theorem~\ref{thm:factorization} likewise
+transfers to a single phase at the first threshold degree.
+
+\subsection{Phase-cost examples}
+
+\begin{example}[An odd denominator]
+Take $M=3/5$. Then $v_2(3)=0$.
+Uniform exactness through degree two requires
+$L=5\cdot2^2=20$ phases, even with signed weights. At the minimum,
+the phases are $\alpha+j/20$ with weights $1/20$, and the resulting
+rule is the mesh-$12$ rule with phase $20(\theta+\alpha)$.
+Since $v_2(12)=2$, the degree matches exactly. A rule with at most
+19 phases has a positive uniform moment-error lower bound supplied
+by Theorem~\ref{thm:quant-obstruction}.
+\end{example}
+
+\begin{example}[Integer mesh versus special phase]
+For $M=12$, $d=2$ and $p=3$.
+Every phase integrates quadratics. Exactly phases $0$ and $1/2$
+modulo one integrate cubics as well. To integrate cubics for every
+overall translation using a fixed filter requires two antipodal
+phases of equal weight. Uniform degree five requires eight phases;
+at the minimum this is the mesh-$96$ rule. The phase count is about
+translation-uniform exactness, not about the two exceptional cubic phases.
+\end{example}
+
+\begin{example}[A concrete positive obstruction]
+Take $M=1$, target degree $r=1$, and $K=1$. Here $L=2$, $j_1=1$, and
+\[
+ E_{1,1}(\nu)\ge\frac{|H(1/2)|}{2\pi}.
+\]
+Since a one-point signed measure of mass one has weight one, this is a
+lower bound valid for every translation of that single phase. At a
+\emph{fixed} phase, however, the linear moment is exact at $0$ and $1/2$. This example explicitly
+separates the quantifiers responsible for the obstruction.
+\end{example}
+
+\begin{example}[Irrational scale]
+For $M=\sqrt2$ and any $K$-phase signed filter,
+\[
+ \sup_\theta|\Q^\nu_{\sqrt2,\theta}(1)-1|
+ \ge\frac{\min_{1\le n\le K}|H(n\sqrt2)|}{2^K-1}>0.
+\]
+No finite filter can produce a partition of unity at all translations.
+Continuous uniform phase averaging does so exactly by
+\eqref{eq:haar-unfold}.
+\end{example}
+
+\section{Exact evaluation and reproducible verification}
+
+\subsection{A moment recurrence}
+
+The verification program does not use a truncated infinite product to
+certify rational quadrature values. It evaluates dyadic samples exactly
+using finite convolution cells and rational moments.
+
+\begin{lemma}[Rational moments]
+\label{lem:moments}
+The moments satisfy $\mu_0=1$, $\mu_{2n+1}=0$, and for $n\ge1$,
+\begin{equation}
+ \mu_{2n}=\frac1{2^{2n}-1}
+ \sum_{j=1}^n\binom{2n}{2j}\frac{\mu_{2n-2j}}{2j+1}.
+ \label{eq:moments}
+\end{equation}
+In particular all moments are rational, with
+\[
+ \mu_2=\frac19,\qquad \mu_4=\frac{19}{675},\qquad
+ \mu_6=\frac{583}{59535}.
+\]
+\end{lemma}
+\begin{proof}
+The random series has the distributional identity
+$X\overset{\mathrm d}=(V+X')/2$, where $V$ is uniform on $[-1,1]$
+and independent of the copy $X'$ of $X$. Expand the $2n$th power.
+Odd moments vanish by symmetry and $\mathbb E V^{2j}=1/(2j+1)$.
+Moving the term involving $\mu_{2n}$ to the left gives
+\eqref{eq:moments}.
+\end{proof}
+
+\subsection{A finite exact dyadic evaluator}
+
+For a nonnegative integer $m$, write $\sigma(m)=(-1)^{s_2(m)}$.
+For $N\ge1$ and real $x$, put
+\begin{equation}
+ a_m(x)=x+1-2^{-N}-m2^{-(N-1)},\qquad 0\le m<2^N.
+ \label{eq:cell-offset}
+\end{equation}
+
+\begin{proposition}[Exact dyadic evaluation formula]
+\label{prop:dyadic-evaluator}
+Suppose $x$ is dyadic with $|x|<1$, and write its reduced denominator
+as $2^d$. Set $N=d+1$. Then
+\begin{equation}
+ \begin{split}
+ u(x)=\frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{\substack{0\le m<2^N\\a_m(x)>0}}\sigma(m)
+ \sum_{\substack{0\le j\le N-1\\j\ \mathrm{even}}}
+ \binom{N-1}{j}
+ a_m(x)^{N-1-j}2^{-Nj}\mu_j.
+ \end{split}
+ \label{eq:exact-evaluator}
+\end{equation}
+The value is therefore obtainable with finite rational arithmetic.
+\end{proposition}
+
+\begin{proof}
+Let $u_N$ be the density of $\sum_{j=0}^{N-1}2^{-j}U_j$.
+Convolution of the $N$ uniform densities gives the finite
+inclusion--exclusion formula
+\begin{equation}
+ u_N(t)=\frac{2^{N(N-1)/2}}{(N-1)!}
+ \sum_{m=0}^{2^N-1}\sigma(m)
+ \bigl(t+1-2^{-N}-m2^{-(N-1)}\bigr)_+^{N-1}.
+ \label{eq:box-spline}
+\end{equation}
+To verify this, shift the uniforms to intervals $[0,2^{-j}]$.
+The density of their sum is the derivative of the box-truncated simplex
+volume: inclusion--exclusion subtracts subsets of upper-bound violations,
+with sign $(-1)^{|S|}$ and displacement $\sum_{j\in S}2^{-j}$.
+These subset sums are exactly $m2^{-(N-1)}$, and $|S|$ has parity
+$s_2(m)$. The reciprocal product of interval lengths is
+$2^{N(N-1)/2}$. This yields \eqref{eq:box-spline}.
+
+The remaining random tail is $2^{-N}X'$, independent of the first
+$N$ terms. Hence $u(x)=\mathbb E u_N(x-2^{-N}X')$.
+Because $2^Nx$ is even, each $2^Na_m(x)$ is an odd integer. Thus
+$|a_m(x)|\ge2^{-N}$. As $|X'|\le1$, the argument
+$a_m(x)-2^{-N}X'$ never changes sign except possibly at an endpoint
+of probability zero. The negative terms vanish; the positive terms
+may be expanded as ordinary powers over the whole expectation.
+Only the even moments survive, and the binomial expansion is precisely
+\eqref{eq:exact-evaluator}. At $N=1$ the truncated zeroth power is
+interpreted as the positive-half-line indicator; the same almost-sure
+argument applies.
+\end{proof}
+
+The algorithm is a transparent exact certificate, not a claim of optimal
+bit complexity. Its number of summands grows exponentially with the
+denominator depth. More efficient evaluation is a separate algorithmic
+question and is not needed for the proofs above.
+
+\subsection{Reproduced exact values and scope of testing}
+
+The bundled \path{verify.py} uses Python's arbitrary-precision integers
+and \path{fractions.Fraction} for the exact part. The default run checks
+all eight phases $h/8$, $0\le h<8$, for meshes $2^d$, $0\le d\le4$;
+all lower-degree moments; the precise first-threshold zero pattern;
+and cyclic-filter reindexing examples. The arithmetic criterion for
+permitted frequencies is checked for reduced $a/b$ with
+$1\le a\le16$, $1\le b\le12$, $0\le r\le6$, and $1\le n\le64$.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$M$ & $p=v_2(M)+1$ & $\Def_{M,p}(0)$ & $\Def_{M,p}(1/4)$\\
+\midrule
+1&1&0&$13/72$\\[2pt]
+2&2&$1/72$&0\\[2pt]
+4&3&0&$-4643/11059200$\\[2pt]
+8&4&$-23/5529600$&0\\[2pt]
+16&5&0&$4966069/383551316951040$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The four even-mesh rows reproduce values already in the repository's
+comb manuscript \cite{repoComb}. They are cross-checks, not new numerical
+claims. The exact run passes 261 quadrature, moment, and reindexing
+assertions and 53,760 frequency-arithmetic assertions.
+
+An optional \path{mpmath} part, run at 75 decimal digits, checks 240
+odd-dilation ratios and their multiscale envelopes, 36 leading-zero
+derivative formulas, and 12
+Fourier-normalization comparisons with the independent exact evaluator.
+The largest absolute discrepancy in the last group, using 200 positive
+odd harmonics, is approximately $6.40\times10^{-19}$. These are
+floating-point diagnostics, \emph{not} interval enclosures. The numerical
+criterion used in the program is $10^{-18}$. No universal mathematical
+conclusion in this article depends on passing those finite tests.
+
+For orientation, the first relative-tail constants are
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$p$ & $\eta_p$ (approximately) & Guaranteed range of $G_{p,q}$\\
+\midrule
+1&0.2337005501&$[0.7662994499,\,1.2337005501]$\\
+2&0.0517997903&$[0.9482002097,\,1.0517997903]$\\
+3&0.0146780316&$[0.9853219684,\,1.0146780316]$\\
+4&0.0045237628&$[0.9954762372,\,1.0045237628]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact guaranteed endpoints are $1\pm\eta_p$; the displayed decimal
+endpoints are rounded illustrations, not outward-rounded certificates.
+
+\section{Formalization map and proof obligations}
+
+The article is independent of any unverified repository theorem because
+its kernel facts, Fourier criterion, and all new conclusions have explicit
+proofs. Nevertheless the existing Lean modules provide a natural route
+to formalizing the extensions. This section is a plan, not a report of a
+successful Lean build.
+
+The inspected \path{RvachevSuperconvergentSynthesis.lean} imports
+\path{CombDefectSeries} and \path{RvachevPolynomialSynthesis} and exposes
+physical-coordinate quadrature and polynomial-deconvolution statements
+\cite{repoLean}. The canonical prose also names existing formal
+multiple-angle and first-defect lemmas \cite{repoComb}. These are useful
+interfaces to reuse after checking their current types at the pinned
+revision.
+
+\begin{center}
+\begin{tabular}{p{0.28\linewidth}p{0.64\linewidth}}
+\toprule
+Proposed layer & Main formal obligations\\
+\midrule
+Inverse-square comparison & Isolate the two factors at $q/2$ and $q/4$;
+prove their absolute numerator identities for odd integers; pass the finite
+comparison to the nonzero infinite product.\\[4pt]
+Relative defect factor & Define removable sine/cosine quotients for odd
+frequencies; establish the $n$ bound; use a uniform summability theorem
+and transfer the exact alias identity.\\[4pt]
+Signed phase filters & Represent finite signed measures on the additive
+circle; justify termwise integration against finite total variation;
+prove Fourier uniqueness through trigonometric density.\\[4pt]
+Arithmetic rigidity & Formalize the reduced-fraction condition
+$b\mid n$ and the subsequent $2$-adic divisibility threshold.\\[4pt]
+Atomic optimality & Show that invariance permutes nonzero atoms in
+orbits of length $L$ and preserves the mass of each atom.\\[4pt]
+Quantitative obstruction & Form the annihilating polynomial on unit-modulus
+phase nodes, bound its elementary-symmetric coefficients, and compare
+Fourier coefficients with uniform norms.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Several distinctions should remain visible in a formal statement.
+First, $M$ is a positive real in the analytic definition and only later
+specialized to an integer or reduced rational. Second, $r$ may be zero;
+this is essential to the irrational obstruction. Third, phase equality
+is modulo one, rather than equality with just one of four literal real
+representatives. Fourth, support size counts distinct nonzero atoms;
+zero weights and duplicate listed phases must be removed before the
+sharp cardinality assertion. Finally, exactness is simultaneously for
+all $P\in\Pol_r$ and all $\theta$. Dropping the latter quantifier
+produces a different theorem and cannot be hidden in an abbreviation.
+
+\section{Further research questions and topics}
+
+The following questions are not asserted to be globally open in every
+formulation. They are precise next tasks suggested by the proved results,
+and should receive their own literature checks before a novelty claim.
+The first is closely related to a mixed-jet nonvanishing issue retained
+in the repository's comb discussion \cite{repoComb}.
+
+\begin{question}[The next defect at a selected phase]
+For $M=2^dq$ and $\theta\in Z_{d+1}$, determine exactly when
+$\Def_{M,d+2}(\theta)=0$. Is the degree of precision always exactly
+$d+1$, or do additional exceptional meshes and phases occur?
+\end{question}
+The first-defect theorem does not answer this: the next derivative
+involves higher jets at the odd aliases and leading jets at an additional
+valuation layer. A proof of noncancellation has to control both. For
+example, at $M=1$ the two selected phases fail on $x^2$, with defects
+$-1/9$ and $5/36$, respectively, but finite examples do not settle the
+general question.
+
+\begin{question}[Sharp relative dominance and root conditioning]
+Determine the best constant $\eta_p^*$ such that
+$|G_{p,q}(\theta)-1|\le\eta_p^*$ for all positive odd $q$ and all
+$\theta$. Is the supremum attained, and how does it depend on $p$?
+\end{question}
+Our $\eta_p$ comes from a termwise triangle inequality. It does not exploit
+the arithmetic correlation of the signs and amplitudes across distinct
+odd harmonics. Sharp constants could improve certified phase recovery.
+
+\begin{question}[Optimal quantitative under-budget error]
+For a rational mesh and $K<L$, compute or estimate sharply
+\[
+ \inf\{E_{M,r}(\nu):\nu\text{ has mass one and at most }K
+ \text{ atoms}\}.
+\]
+How do positive and signed filters differ away from exactness?
+\end{question}
+Theorem~\ref{thm:quant-obstruction} proves strict positivity without
+compactness assumptions on signed weights. It does not identify a
+minimizer or a sharp constant. Coalescing phases and unbounded signed
+weights are genuine issues in an optimization proof, even though they
+cannot drive the error to zero below the threshold.
+
+\begin{question}[Arithmetic behavior near rational scales]
+For fixed $K$, describe the smallness of the irrational lower bound
+in \eqref{eq:irrational-quant} as $M$ approaches a rational mesh. Can
+its vanishing rate be expressed using the multiplicities of the
+nearby integer zeros and rational approximation of $M$?
+\end{question}
+The leading-jet identity suggests a local power law near any fixed
+resonance. A uniform theorem over families with growing $K$ would also
+need control of which resonance supplies the minimum.
+
+\begin{question}[Several dimensions and correlated phases]
+For a product of Rvachev kernels, classify phase measures giving uniform
+exactness on rectangular or total-degree polynomial spaces. Can correlated
+shifts outperform the Cartesian product of one-dimensional optimal rules?
+\end{question}
+One must not simply tensor the one-dimensional necessity statement.
+A multidimensional alias is a product of derivative factors; a zero
+factor in one coordinate can annihilate the whole alias. The permitted
+Fourier set therefore has a different combinatorial structure, and the
+one-dimensional cyclic-invariance proof alone does not imply a product
+support lower bound. This distinction makes the correlated problem a
+substantive next target.
+
+\begin{question}[Other dilation systems]
+Replace the dyadic weights in the random series by $b^{-j}$ for an
+integer $b>2$, or by a nonintegral geometric ratio. Which phase
+classification, exact-filter symmetry, and finite-support rigidity
+statements survive?
+\end{question}
+The measure-level Fourier test survives unchanged for a smooth compactly
+supported kernel. The hard part is the arithmetic geometry of its zero
+set and multiplicities. The particularly strong two-factor half-integer
+comparison used here need not persist in another base.
+
+\begin{question}[Finite certificates and efficient formalization]
+Construct a certified implementation that returns either an exact cyclic
+symmetry certificate or a nonzero Fourier witness for a proposed filter,
+with rational or rigorously enclosed transcendental phase data. Formalize
+the main signed-filter theorem and the under-budget bound in Lean.
+\end{question}
+The finite annihilator supplies a natural witness search bound: the first
+$K$ multipliers suffice below the exactness threshold. The dyadic exact
+evaluator supplies a separate rational route for regression tests.
+Neither ingredient alone proves a favorable end-to-end bit-complexity
+bound; that would require a specified representation of phases and
+controlled evaluation of the nonzero kernel coefficients.
+
+\section{Conclusion}
+
+Uniform phase averaging has an exact arithmetic structure. At a reduced
+rational mesh $a/b$, polynomial degree $r$ forces invariance under a
+cyclic group of order $b2^{\max(0,r-v_2(a))}$. At the minimum support
+size, the only signed filter is the positive equally spaced one, and
+its action is exactly ordinary mesh refinement. At an irrational mesh,
+only continuous Haar averaging can be exact even on constants for all
+translations. A finite annihilating polynomial turns these structural
+facts into positive lower error bounds for every under-budget signed
+rule.
+
+The complementary inverse-square odd-dilation estimate and its uniform
+log-Gaussian strengthening refine the repository's established
+first-harmonic approach. It gives a single
+integer-mesh theorem with explicit relative constants, simple phase
+zeros, and a global distance-to-zero certificate, without confusing
+known phase classifications with new results or claiming unproved
+higher-order maximality. The principal remaining opportunities are
+sharp approximation below the phase threshold, mixed higher jets,
+and genuinely multidimensional phase correlations.
+
+\begin{thebibliography}{9}
+
+\bibitem{arias}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, arXiv:1702.05442, 2017.
+English translation of the author's 1982 article.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{zakharov}
+V.~G.~Zakharov,
+\emph{Polynomial spaces reproduced by elliptic scaling functions},
+arXiv:1310.8425, 2013.
+\url{https://arxiv.org/abs/1310.8425}.
+
+\bibitem{repoLean}
+V.~Reshetnikov and repository contributors,
+\emph{ProveIt: RvachevSuperconvergentSynthesis.lean},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RvachevSuperconvergentSynthesis.lean},
+pinned commit \snapshot, inspected September 28, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/37e61c1fdec28c6e7ab7ff445043993077b42cbd/Analysis/FabiusFunction/Lean/FabiusFunction/RvachevSuperconvergentSynthesis.lean}.
+
+\bibitem{repoComb}
+V.~Reshetnikov and repository contributors,
+\emph{Comb Interpolation and Sampling Frontiers}, chapter
+\path{03_additive_dyadic.tex}, pinned commit \snapshot.
+Relevant source ranges inspected: lines 1--100, 1500--1650,
+2030--2200, and 2200--2420. In particular:
+\path{lem:multiple-angle}, \path{thm:phase-zero-set},
+\path{thm:up-composite-mesh}, and the discussion of mixed-jet nonvanishing.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/37e61c1fdec28c6e7ab7ff445043993077b42cbd/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/chapters/03_additive_dyadic.tex}.
+
+\end{thebibliography}
+
+\end{document}

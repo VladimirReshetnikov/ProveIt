@@ -1,0 +1,1566 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,tabularx,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\definecolor{linkblue}{RGB}{25,57,91}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Spectral Collapse and Alternating RMS Asymptotics for the Rvachev Up-Function},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact analytic transfer spectra, a finite-matrix determinant formula, and certified RMS asymptotics}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Spectral collapse and Rvachev RMS asymptotics}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{itemsep=0.3em,topsep=0.35em}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,
+ aboveskip=0.7em,belowskip=0.7em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Pop}{\mathcal P}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\repoSHA}{\texttt{de4ac5ab1438bcbeed58481c4449b593074a1a1f}}
+\newcommand{\blobSHA}{\texttt{aeba04f6c5f2d1eccff67645f773ba71803fa2a7}}
+\numberwithin{equation}{section}
+
+\title{\textbf{Spectral Collapse and Alternating RMS Asymptotics\\
+for the Rvachev Up-Function}\\[0.6em]
+\large An exact finite-matrix and boundary-factor theorem\\
+for analytic transfer operators}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{28 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The Fourier-decay research in the ProveIt repository explicitly leaves open
+whether the exhibited eigenvalue $-1/4$ of its quadratic transfer operator is
+truly subleading, and whether the observed alternating RMS correction is
+nonzero. We resolve these questions on explicitly specified analytic Hardy
+spaces. More generally, for every integer dilation $b\ge2$ and trigonometric
+polynomial weight $w$, we prove that the Fredholm determinant of the interval
+transfer operator is the product of a finite Fourier determinant and the
+explicit boundary factor $\prod_{\ell\ge1}(1-zw(0)b^{-\ell})$. When $w(0)=0$,
+all nonzero generalized eigenspaces lie in a finite Fourier band.
+
+For $w(x)=\sin^2(\pi x)$ and $b=2$, the complete spectrum is
+$\{0,1/2,-1/4\}$, with algebraic multiplicities one and two at the nonzero
+values. We derive exact recursions for the spectral projections, a quantitative
+remainder of order $\exp(-\tfrac12(\log2)n^2+O(n\log n))$, and a two-term
+formula for the squared normalized shell RMS of the Rvachev Fourier product.
+An executable certificate using only integer and rational arithmetic proves
+that its alternating coefficient is strictly negative. In particular, every
+even shell index $n\ge10$ lies below the limiting RMS and every odd index
+$n\ge11$ lies above it. We also obtain complete finite-matrix spectral
+reductions for all even powers of the sine weight, exact fourth-moment
+formulas, and a high-dilation spectral-collapse corollary.
+
+The analytic proofs are conventional mathematical proofs, not new Lean
+formalizations. The contribution is a resolution of an identified repository
+frontier and explicit extensions; priority for the general determinant
+specialization in the wider literature is not asserted.
+\end{abstract}
+\noindent\textbf{Keywords.} Rvachev up-function; Fabius function; transfer operator;
+Fredholm determinant; Thue--Morse product; boundary jets; interval arithmetic.
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The question, its scope, and the answer}
+\label{sec:intro}
+
+\subsection{A precise repository frontier}
+The relevant source is the canonical Fourier-decay synthesis in
+ProveIt's Fabius-function project \cite{repo}. Its subsection
+\emph{Exact transfer identities without a spectral overclaim} distinguishes
+explicit eigenfunctions from a complete spectral theorem. It records that
+$-1/4$ is known to be an eigenvalue, but that its subleading status and an
+alternating $(-1/2)^n$ relative RMS correction still need a spectral bound on
+a specified function space. This is an appropriate target: it has a precise
+operator, an observable with concrete asymptotic significance, and a clear
+criterion for completion.
+
+The inspected source at commit \repoSHA\ has blob identifier \blobSHA.
+The statement of the gap occurs at source lines 1551--1555 of the canonical
+TeX file. The full path and immutable link are recorded in
+\cref{app:provenance}. The repository was changing during the investigation;
+these identifiers, rather than a claim about an indefinitely current branch,
+fix the comparison.
+
+There are two logically separate issues. First, an eigenfunction computation
+does not exclude other eigenvalues of larger modulus, or additional spectrum
+arising from nonperiodic analytic functions. Second, even a genuine
+subleading eigenvalue need not occur in the asymptotics of a particular
+observable. Its projection can vanish, or integration can annihilate its
+eigenfunction. Both issues must be settled to establish a genuine alternating
+RMS term.
+
+\subsection{The normalized quadratic operator}
+Write
+\begin{align}
+ (\Lop_2 f)(z)
+ &=\frac12\left(\sin^2\frac{\pi z}{2}\,f(z/2)
+       +\cos^2\frac{\pi z}{2}\,f((z+1)/2)\right),\label{eq:L2intro}\\
+ \Pop&=2\Lop_2.
+\end{align}
+On real $x\in[0,1]$, $\Pop$ is a positive operator satisfying
+$\Pop\one=\one$ and $\norm{\Pop f}_\infty\le\norm f_\infty$.
+For $R>1/2$, let $H_R$ be the Hardy Hilbert space of the disk
+$D_R=\{z:|z-1/2|<R\}$, defined precisely in \cref{sec:analytic}.
+
+\begin{theorem}[Quadratic spectral resolution]
+\label{thm:intro-spectrum}
+On every $H_R$, $R>1/2$, the operator $\Lop_2$ is trace class and
+\begin{equation}
+ \det(I-z\Lop_2)=(1-z/2)(1+z/4)^2.
+ \label{eq:L2detintro}
+\end{equation}
+Its complete spectrum is $\{0,1/2,-1/4\}$. The nonzero eigenvalues are
+semisimple, with respective algebraic multiplicities one and two. Their
+eigenspaces are
+\begin{equation}
+ \Span\{\one\},\qquad
+ \Span\{u,v\},\quad
+ u(x)=\cos(2\pi x)+\tfrac13,\quad v(x)=\sin(2\pi x).
+ \label{eq:uv}
+\end{equation}
+Consequently, continuous linear functionals $\mu,a,b$ on $H_R$ satisfy, for $n\ge1$,
+\begin{equation}
+ \Pop^n f=\mu(f)\one+(-1/2)^n\bigl(a(f)u+b(f)v\bigr)+Q^nf,
+ \label{eq:main-decomp}
+\end{equation}
+where $Q$ is quasinilpotent and, for every $\varepsilon>0$,
+$\norm{Q^n}_{H_R\to H_R}=O_{\varepsilon,R}(\varepsilon^n)$.
+\end{theorem}
+
+Here ``quasinilpotent'' means spectral radius zero. It does not mean
+nilpotent, finite rank, or identically zero. The statement is on the stated
+analytic Hilbert space; it is not a claim about the spectrum on $C[0,1]$ or
+$L^p[0,1]$.
+
+\subsection{The RMS conclusion}
+Define the entire product and real envelope
+\begin{equation}
+ \Phi(t)=\prod_{j=0}^{\infty}\frac{\sin(\pi t/2^j)}{\pi t/2^j},\qquad
+ E(t)=\exp\!\left(-\frac{(\log t)^2}{2\log2}\right)t^{-\kappa},\quad
+ \kappa=\frac{\log(2\pi)}{\log2}.
+ \label{eq:PhiE}
+\end{equation}
+The value of each sinc factor at zero is one. The product is the repository's
+Fourier-transform normalization for the Rvachev up-function; its classical
+construction is reviewed in \cite{arias}. For $n\ge1$, put
+\begin{equation}
+ \mathcal R_n^2=\frac{1}{2^{n-1}}
+   \int_{2^{n-1}}^{2^n}\abs{\frac{\Phi(t)}{E(t)}}^2\dd t.
+ \label{eq:RMSintro}
+\end{equation}
+The normalization agrees with the source's $\mathcal M_{2,n}$, without a
+shift in shell index.
+
+\begin{theorem}[Nonzero alternating RMS correction]
+\label{thm:intro-rms}
+There are explicitly defined constants $M>0$ and $B<0$ such that
+\begin{align}
+ \mathcal R_n^2&=\frac M2+\frac B6(-1/2)^n+\epsilon_n,\notag\\
+ |\epsilon_n|&\le C_0\exp\!\left(-\tfrac12(\log2)n^2+C_1n\log(n+1)\right).
+ \label{eq:RMSmainintro}
+\end{align}
+Here $C_0,C_1>0$ are constants independent of $n$. With $A=\sqrt{M/2}$,
+\begin{equation}
+ \mathcal R_n=A+\frac{B}{12A}(-1/2)^n+O(4^{-n}).
+ \label{eq:RMSrootintro}
+\end{equation}
+The supplied integer-arithmetic certificate proves the strict enclosures
+\begin{align}
+ -0.002907&<B<-0.002898,\label{eq:Bboundsintro}\\
+ 0.021221672&<M<0.021221677,\label{eq:Mboundsintro}\\
+ 0.10300890&<A<0.10300894.\label{eq:Aboundsintro}
+\end{align}
+Furthermore, $\mathcal R_n<A$ for every even $n\ge10$, and
+$\mathcal R_n>A$ for every odd $n\ge11$.
+\end{theorem}
+
+The constants are $M=\mu(H)$ and $B=a(H)$ for the explicitly given analytic
+function $H$ in \cref{eq:H}. The exact coefficient definitions, the analytic
+remainder bounds, and the finite certificate are all included below. Thus
+\cref{thm:intro-rms} does not infer nonvanishing from a floating-point plot.
+
+\subsection{Relation to established theory and novelty}
+Analytic transfer operators, periodic-orbit traces, and dynamical determinants
+belong to classical theory; Ruelle's work \cite{ruelle} is a central early
+reference. The trace-class determinant facts used here are standard and are
+stated explicitly in \cref{sec:analytic}; see \cite{simon,bornemann}.
+The relation of the sine product to the Thue--Morse measure and its Riesz
+products is also established mathematics \cite{baake}. Related transfer
+operators have been studied on continuous and $L^p$ spaces, for example in
+\cite{dutkay}; those settings must not be silently identified with the
+analytic interval space used here.
+
+The new work relative to the inspected repository consists of the complete
+analytic spectral proof, its boundary correction, the exact projection
+recursions used for certification, the quantitative remainder, and the
+certified nonzero correction for this specific Rvachev observable. The
+finite-matrix theorem below is presented with a proof rather than a global
+priority claim. No assertion that an internationally recognized longstanding
+open problem has been solved is needed or made.
+
+\section{Analytic spaces, compactness, and traces}
+\label{sec:analytic}
+
+\subsection{The Hardy disk space}
+For $R>1/2$, define
+\begin{equation}
+ H_R=\left\{f(z)=\sum_{k\ge0}f_k
+       \left(\frac{z-1/2}{R}\right)^k:
+       \sum_{k\ge0}|f_k|^2<\infty\right\},\qquad
+ \norm f_{H_R}^2=\sum_{k\ge0}|f_k|^2.
+ \label{eq:Hardy}
+\end{equation}
+This definition gives a separable Hilbert space with orthonormal basis
+$p_k(z)=((z-1/2)/R)^k$. Cauchy--Schwarz yields
+\begin{equation}
+ |f(z)|\le\frac{\norm f_{H_R}}
+ {\sqrt{1-|z-1/2|^2/R^2}}.
+ \label{eq:evaluation}
+\end{equation}
+In particular, restriction to $[0,1]$ is continuous into the uniform norm.
+Every function holomorphic on a neighborhood of the closed disk belongs to
+$H_R$.
+
+Let $b\ge2$ and let $w$ be an entire, one-periodic trigonometric polynomial.
+Set
+\begin{equation}
+ (\Lop_{b,w}f)(z)=\frac1b\sum_{a=0}^{b-1}
+       w\!\left(\frac{z+a}{b}\right)
+       f\!\left(\frac{z+a}{b}\right).
+ \label{eq:generalL}
+\end{equation}
+Every inverse branch $\phi_a(z)=(z+a)/b$ satisfies
+\begin{equation}
+ \abs{\frac{\phi_a(z)-1/2}{R}}
+ \le q_R:=\frac1b+\frac{b-1}{2bR}<1
+ \quad(z\in\overline D_R).
+ \label{eq:branchcontraction}
+\end{equation}
+
+\begin{lemma}[Trace-class realization]
+\label{lem:traceclass}
+The operator $\Lop_{b,w}:H_R\to H_R$ is trace class.
+\end{lemma}
+\begin{proof}
+Consider one branch $Tf=a(z)f(\phi(z))$, with $a$ holomorphic on a
+neighborhood of $\overline D_R$ and $\phi$ one of the inverse branches.
+If $A_0=\sup_{\overline D_R}|a|$, then
+$\norm{Tp_k}_{H_R}\le A_0q_R^k$, since the Hardy norm is bounded by the
+supremum on the boundary for these holomorphic functions. The rank-one
+expansion
+\[
+ Tf=\sum_{k\ge0}f_kTp_k
+\]
+converges in trace norm: the sum of the trace norms is at most
+$A_0/(1-q_R)$. A finite sum of these branch operators is trace class.
+\end{proof}
+
+\begin{lemma}[Weighted affine-composition trace]
+\label{lem:affine-trace}
+Suppose $Tf=a(z)f(\phi(z))$ is as above, $\phi$ is affine with slope
+$\alpha$, and $z_*$ is its fixed point. Then
+\begin{equation}
+ \tr T=\frac{a(z_*)}{1-\alpha}.
+ \label{eq:affine-trace}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the normalized coordinate $t=(z-1/2)/R$, so that
+$\phi$ becomes $\psi(t)=\alpha t+\gamma$ and
+$|\alpha|+|\gamma|<1$. Choose
+$|\gamma|/(1-|\alpha|)<\rho<1$. The $k$th diagonal coefficient of $T$ is
+\[
+ \frac{1}{2\pi\ii}\int_{|t|=\rho}
+      a(t)\psi(t)^k t^{-k-1}\dd t,
+\]
+where $a(t)$ denotes the weight in the normalized coordinate.
+Because $|\psi(t)|<|t|$ on this contour, the geometric series is uniformly
+convergent there. Summing gives
+\[
+ \tr T=\frac{1}{2\pi\ii}\int_{|t|=\rho}
+       \frac{a(t)}{t-\psi(t)}\dd t
+       =\frac{a(t_*)}{1-\alpha}.
+\]
+The trace-class expansion in \cref{lem:traceclass} justifies summing the
+diagonal entries. The residue formula proves the claim.
+\end{proof}
+
+\subsection{The standard spectral input}
+For clarity, the functional-analysis facts used subsequently are the
+following. A compact operator on an infinite-dimensional complex Hilbert
+space has only isolated eigenvalues of finite algebraic multiplicity away
+from zero. For a trace-class operator $T$, the Fredholm determinant
+$D_T(z)=\det(I-zT)$ is entire, its nonzero zeros are the reciprocals of
+nonzero eigenvalues with their algebraic multiplicities, and near zero
+\begin{equation}
+ \log D_T(z)=-\sum_{n\ge1}\frac{z^n}{n}\tr(T^n).
+ \label{eq:Fredholm-input}
+\end{equation}
+Riesz projections separate any finite set of isolated eigenvalues. Finally,
+the spectral-radius formula gives
+$\lim_n\norm{Q^n}^{1/n}=0$ if $\Spec(Q)=\{0\}$.
+These are standard compact-operator and trace-ideal results, not additional
+hypotheses about the particular sine product \cite[Ch.~3]{simon}.
+The determinant identities are also summarized in
+\cite[\S\S2--3, especially (3.1)--(3.4)]{bornemann}.
+
+All subsequent uses check trace class explicitly. In particular, we do not
+apply a trace formula to an operator on $C[0,1]$ merely because a finite
+collocation matrix has a trace.
+
+\section{The exact finite-matrix and boundary-factor theorem}
+\label{sec:general}
+
+Write
+\begin{equation}
+ w(z)=\sum_{j=-M}^{M}w_j\e^{2\pi\ii jz},\qquad
+ c=w(0)=\sum_{j=-M}^{M}w_j,
+ \qquad K=\left\lfloor\frac{M}{b-1}\right\rfloor.
+ \label{eq:weightdata}
+\end{equation}
+The coefficients may be complex. Put $w_j=0$ outside the displayed range,
+and use the notation $e_k(z)=\e^{2\pi\ii kz}$.
+
+\begin{lemma}[Invariant Fourier band]
+\label{lem:band}
+The space $V_K=\Span\{e_k:|k|\le K\}$ is invariant under $\Lop_{b,w}$.
+Its matrix, with rows and columns indexed by $-K,\ldots,K$, is
+\begin{equation}
+ A_{b,w}=(w_{br-k})_{-K\le r,k\le K}.
+ \label{eq:matrix}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Averaging the roots of unity gives the exact identity
+\begin{equation}
+ \Lop_{b,w}e_k=
+ \sum_{\substack{|j|\le M\\b\mid k+j}}w_j e_{(k+j)/b}.
+ \label{eq:mode-general}
+\end{equation}
+If $|k|\le K$, every resulting index has magnitude at most
+$\lfloor(K+M)/b\rfloor\le K$. To check the last inequality, write
+$M=(b-1)K+s$ with $0\le s<b-1$.
+The coefficient of $e_r$ is $w_{br-k}$, proving both assertions.
+\end{proof}
+
+\begin{theorem}[Exact determinant factorization]
+\label{thm:general-det}
+On every $H_R$, $R>1/2$, one has the entire-function identity
+\begin{equation}
+ \boxed{\displaystyle
+ \det(I-z\Lop_{b,w})=
+ \det(I-zA_{b,w})
+ \prod_{\ell=1}^{\infty}\left(1-\frac{zc}{b^\ell}\right).}
+ \label{eq:general-det}
+\end{equation}
+Thus the nonzero eigenvalues, counted with algebraic multiplicities, are the
+nonzero eigenvalues of $A_{b,w}$ together with
+$c/b,c/b^2,c/b^3,\ldots$ when $c\ne0$. Coincident values have their
+multiplicities added. Zero is also in the spectrum.
+\end{theorem}
+\begin{proof}
+Fix $n\ge1$ and put $B=b^n$ and
+\begin{equation}
+ W_n(y)=\prod_{j=0}^{n-1}w(b^jy).
+ \label{eq:Wn}
+\end{equation}
+By iterating the inverse branches and using one-periodicity,
+\begin{equation}
+ (\Lop_{b,w}^nf)(z)=\frac1B\sum_{a=0}^{B-1}
+       W_n\!\left(\frac{z+a}{B}\right)
+       f\!\left(\frac{z+a}{B}\right).
+ \label{eq:iterate}
+\end{equation}
+The fixed point of the $a$th branch is $a/(B-1)$. Applying
+\cref{lem:affine-trace} to all branches yields
+\begin{equation}
+ \tr(\Lop_{b,w}^n)=\frac{1}{B-1}
+    \sum_{a=0}^{B-1}W_n\!\left(\frac{a}{B-1}\right).
+ \label{eq:fulltrace}
+\end{equation}
+Notice that both $0$ and $1$ occur. They are distinct interval points even
+though $W_n$ is periodic.
+
+The Fourier degree of $W_n$ is at most
+$M(B-1)/(b-1)$. If $W_n=\sum_\ell d_\ell e_\ell$, then the coefficient of
+$e_k$ in $\Lop_{b,w}^ne_k$ is $d_{(B-1)k}$. Therefore
+\begin{align}
+ \tr(A_{b,w}^n)
+ &=\sum_{|k|\le K}d_{(B-1)k}\notag\\
+ &=\frac{1}{B-1}\sum_{a=0}^{B-2}
+      W_n\!\left(\frac{a}{B-1}\right).
+ \label{eq:bandtrace}
+\end{align}
+The roots-of-unity average selects exactly those Fourier coefficients, since
+$|(B-1)k|\le M(B-1)/(b-1)$ is equivalent to $|k|\le K$ for integral $k$.
+This also covers $B-1=1$.
+
+At the repeated endpoint, $W_n(1)=c^n$. Subtraction gives
+\begin{equation}
+ \tr(\Lop_{b,w}^n)-\tr(A_{b,w}^n)
+ =\frac{c^n}{b^n-1}
+ =\sum_{\ell\ge1}\left(\frac{c}{b^\ell}\right)^n.
+ \label{eq:trace-difference}
+\end{equation}
+Use \cref{eq:Fredholm-input} near $z=0$. Absolute convergence there permits
+interchanging the two sums, giving
+\[
+ \log\frac{\det(I-z\Lop_{b,w})}{\det(I-zA_{b,w})}
+ =\sum_{\ell\ge1}\log(1-zc/b^\ell).
+\]
+The infinite product converges locally uniformly on the entire complex plane
+because $\sum_\ell |c|b^{-\ell}<\infty$. The two entire functions agree
+near zero, and hence everywhere. The spectral conclusions follow from the
+standard determinant characterization of algebraic multiplicity. Compactness
+on the infinite-dimensional space supplies zero in the spectrum.
+\end{proof}
+
+\begin{corollary}[Boundary-zero collapse]
+\label{cor:collapse}
+If $w(0)=0$, the Fredholm determinant is a polynomial:
+\begin{equation}
+ \det(I-z\Lop_{b,w})=\det(I-zA_{b,w}).
+ \label{eq:collapse}
+\end{equation}
+There are only finitely many nonzero spectral values. This conclusion is
+exact, not a limit of finite-section spectra.
+\end{corollary}
+
+\begin{example}[Why the boundary factor cannot be deleted]
+\label{ex:constant}
+For $w\equiv1$, $K=0$ and $A=[1]$. Nevertheless, on the analytic interval
+space the spectrum is
+\[
+ \{0,1,b^{-1},b^{-2},\ldots\},
+\]
+not merely $\{0,1\}$. The Bernoulli polynomials give explicit eigenfunctions:
+$\Lop_{b,1}B_j=b^{-j}B_j$. Indeed, their generating function
+$t\e^{tz}/(\e^t-1)$ transforms under branch averaging into
+$(t/b)\e^{(t/b)z}/(\e^{t/b}-1)$. This verifies the eigenidentity coefficient
+by coefficient. The endpoint factor in \cref{eq:general-det} is exactly what
+accounts for these nonperiodic eigenfunctions.
+\end{example}
+
+\section{A direct explanation of spectral collapse}
+\label{sec:direct}
+The determinant argument proves the complete spectrum and multiplicities.
+A second argument explains why no nonperiodic generalized eigenfunction can
+survive when the boundary weight vanishes. This is useful both as an
+independent check and as a potential formalization route.
+
+\begin{theorem}[Generalized eigenspaces lie in the Fourier band]
+\label{thm:generalized-band}
+Assume $w(0)=0$ and $\lambda\ne0$. Every $f\in H_R$ satisfying
+$(\Lop_{b,w}-\lambda I)^qf=0$ for some $q\ge1$ extends to an entire
+one-periodic function and belongs to $V_K$. Consequently its Jordan-chain
+structure is exactly the one in the finite matrix $A_{b,w}$.
+\end{theorem}
+\begin{proof}
+We use induction on the length of a generalized eigenvector chain. Let
+$g=(\Lop_{b,w}-\lambda I)f$; at the first step $g=0$, and at later steps
+$g$ is entire and in $V_K$ by induction.
+
+\emph{Entire extension.} The equation
+$f=\lambda^{-1}(\Lop_{b,w}f-g)$ extends $f$ from $D_R$ to
+$D_{bR-(b-1)/2}$. Indeed all inverse branches map the latter disk into the
+former. Iteration gives radii $1/2+b^n(R-1/2)\to\infty$.
+The extensions agree on their overlaps by the original equation and the
+identity theorem.
+
+\emph{Periodicity.} For an entire function define
+$\Delta f(z)=f(z+1)-f(z)$. Reindex the inverse branches. All intermediate
+terms cancel, and periodicity of $w$ gives
+\begin{equation}
+ \Delta(\Lop_{b,w}f)(z)=\frac1b w(z/b)\Delta f(z/b).
+ \label{eq:boundaryintertwine}
+\end{equation}
+Because $g$ is periodic, $h=\Delta f$ satisfies
+\[
+ \lambda h(z)=\frac1b w(z/b)h(z/b).
+\]
+If $h$ were nonzero, let $r$ be its order of vanishing at zero. The left side
+has order $r$, while the right side has strictly greater order because
+$w(0)=0$. This is impossible. If $w$ is identically zero the conclusion
+follows directly as well. Thus $h=0$.
+
+\emph{Finite Fourier support.} An entire periodic function has a Fourier
+expansion $f=\sum_{k\in\Z}f_ke_k$, and for every fixed $\tau>0$ there is
+$C_\tau$ such that $|f_k|\le C_\tau\e^{-\tau|k|}$. This follows by shifting
+the coefficient integral to a horizontal line. Outside $[-K,K]$, the
+Fourier coefficients of $g$ vanish, so
+\begin{equation}
+ \lambda f_r=\sum_{|j|\le M}w_j f_{br-j}\qquad(|r|>K).
+ \label{eq:tailrecursion}
+\end{equation}
+Put $T_N=\sup_{|k|\ge N}|f_k|$ and $C_w=\sum_j|w_j|/|\lambda|$.
+For any integer $N>K$,
+\[
+ T_N\le C_wT_{bN-M}.
+\]
+The iterated index is
+$N_q=b^q(N-M/(b-1))+M/(b-1)$ and tends to infinity geometrically.
+Thus $T_N\le C_w^qC_\tau\e^{-\tau N_q}\to0$.
+Every Fourier coefficient outside the band vanishes.
+\end{proof}
+
+\begin{remark}[Boundary jets explain the geometric ladder]
+When $c=w(0)\ne0$, the same difference equation shows that a nonperiodic
+eigenfunction with $\Delta f$ vanishing to order $r$ must have eigenvalue
+$c/b^{r+1}$. The determinant theorem proves that all these ladder values
+occur and gives their multiplicities, including resonances with the finite
+Fourier spectrum. It does not assert that resonant Jordan blocks split as
+a direct sum without further argument.
+\end{remark}
+
+\section{The complete quadratic spectrum and its projections}
+\label{sec:quadratic}
+
+\subsection{The three-dimensional calculation}
+For $w(x)=\sin^2(\pi x)$, the nonzero Fourier coefficients are
+$w_0=1/2$ and $w_{\pm1}=-1/4$, and $w(0)=0$. In the ordered basis
+$(e_{-1},e_0,e_1)$,
+\begin{equation}
+ A_{2,w}=
+ \begin{pmatrix}
+ -1/4&0&0\\
+ -1/4&1/2&-1/4\\
+ 0&0&-1/4
+ \end{pmatrix}.
+ \label{eq:A2}
+\end{equation}
+It follows immediately that
+$\det(I-zA_{2,w})=(1-z/2)(1+z/4)^2$. The eigenvectors
+$1$, $e_1+1/3$, and $e_{-1}+1/3$ are linearly independent.
+Their real and imaginary combinations give $u$ and $v$ in \cref{eq:uv}.
+\Cref{thm:general-det,thm:generalized-band} now prove all the spectral
+assertions in \cref{thm:intro-spectrum}.
+
+Let $\Pi_0$ and $\Pi_-$ be the Riesz projections of $\Pop$ at $1$ and
+$-1/2$. They have the forms
+\[
+ \Pi_0f=\mu(f)\one,\qquad \Pi_-f=a(f)u+b(f)v.
+\]
+They commute with $\Pop$ and annihilate one another. For
+$Q=\Pop(I-\Pi_0-\Pi_-)$, compact spectral decomposition gives
+$\Spec(Q)=\{0\}$ and \cref{eq:main-decomp}. The spectral-radius formula
+then gives the asserted faster-than-geometric remainder in the Hardy norm.
+This argument does not assume that the operator is normal.
+
+\subsection{Positivity and the invariant probability}
+\begin{proposition}
+\label{prop:mu}
+The functional $\mu$ is integration against a unique stationary probability
+measure on $[0,1]$. This measure has full support. In particular,
+$\mu(f)>0$ for every nonzero continuous $f\ge0$.
+\end{proposition}
+\begin{proof}
+For real polynomials $f$, \cref{eq:main-decomp} converges uniformly to
+$\mu(f)$. Positivity and $\Pop\one=\one$ imply
+$|\mu(f)|\le\norm f_\infty$, $\mu(f)\ge0$ when $f\ge0$, and $\mu(1)=1$.
+Polynomial density extends $\mu$ to a positive norm-one functional on
+$C[0,1]$, represented by a probability measure. Uniform contraction of
+$\Pop$ shows, by polynomial approximation, that
+$\Pop^nf\to\mu(f)\one$ uniformly for every continuous $f$. Invariance
+$\mu(\Pop f)=\mu(f)$ follows; any stationary probability must agree with
+this limit and hence with $\mu$.
+
+For full support, let $S$ be the nonempty closed support. If $x\in S$ and a
+branch probability at $x$ is positive, the corresponding inverse-branch
+image belongs to $S$. This follows by applying stationarity to a nonnegative
+continuous function supported near that image. If $S$ initially contained
+only endpoints, either endpoint sends positive probability to $1/2$.
+Thus $S$ contains an interior point $x$. All inverse branches of every order
+then have positive probability, so $S$ contains
+$(x+j)/2^n$, $0\le j<2^n$. Their union is dense in $[0,1]$.
+\end{proof}
+
+This characterization connects the leading functional to the familiar
+Thue--Morse Fourier-coefficient recursion \cite{baake}. Singular continuity
+is not needed anywhere in the proof of the RMS theorem.
+
+\subsection{Exact coefficient recursions}
+The normalized operator acts on every integral Fourier mode by
+\begin{equation}
+ \Pop e_{2m}=e_m,\qquad
+ \Pop e_{2m+1}=-\tfrac12(e_m+e_{m+1}).
+ \label{eq:Pmode}
+\end{equation}
+Define real sequences $\eta(k)$ and $\alpha(k)$ for $k\ge0$ by
+\begin{align}
+ &\eta(0)=1,\quad \eta(1)=-\tfrac13,\qquad
+ \alpha(0)=0,\quad \alpha(1)=1,\notag\\
+ &\eta(2m)=\eta(m),\qquad
+   \eta(2m+1)=-\tfrac12\bigl(\eta(m)+\eta(m+1)\bigr),\label{eq:eta}\\
+ &\alpha(2m)=-2\alpha(m),\qquad
+   \alpha(2m+1)=\alpha(m)+\alpha(m+1).
+ \label{eq:alpha}
+\end{align}
+The recursive clauses are used for indices at least two, avoiding a circular
+definition at one. Induction proves
+\begin{equation}
+ |\eta(k)|\le1,\qquad \alpha(k)\in\Z,
+ \qquad |\alpha(k)|\le k.
+ \label{eq:sequencebounds}
+\end{equation}
+For example, $\alpha(1),\ldots,\alpha(8)=1,-2,-1,4,-3,2,3,-8$.
+
+\begin{proposition}[Exact finite-mode reduction]
+\label{prop:finite-mode}
+For $k\ge1$ and $n\ge\lceil\log_2 k\rceil$,
+\begin{equation}
+ \Pop^ne_k=\eta(k)+(-1/2)^n\alpha(k)(u+\ii v).
+ \label{eq:finite-mode}
+\end{equation}
+The formula for $-k$ is the complex conjugate. Thus the expansion terminates
+exactly after finitely many steps for each trigonometric polynomial.
+\end{proposition}
+\begin{proof}
+At $k=1$, $e_1=-1/3+u+\ii v$ and $u+\ii v$ is an eigenfunction with
+value $-1/2$. For larger $k$, use \cref{eq:Pmode} and induction. Every
+resulting frequency is at most $\lceil k/2\rceil$ in absolute value.
+The constant and eigenfunction coefficients are precisely
+\cref{eq:eta,eq:alpha}. The depth bound follows by iterating the halving.
+\end{proof}
+
+If $g$ is periodic with sufficiently rapidly decaying Fourier coefficients,
+these recursions calculate the projections without collocation:
+\begin{align}
+ \mu(g)&=\sum_{k\in\Z}\widehat g(k)\eta(|k|),\label{eq:mufourier}\\
+ a(g)&=\sum_{k\ne0}\widehat g(k)\alpha(|k|),\label{eq:afourier}\\
+ b(g)&=\ii\sum_{k\ne0}\operatorname{sgn}(k)
+                \widehat g(k)\alpha(|k|).
+ \label{eq:bfourier}
+\end{align}
+For real $g$, the second expression is
+$2\sum_{k\ge1}\alpha(k)\Re\widehat g(k)$. It is essential not to assume
+that an arbitrary analytic function on the interval is analytically
+periodic. The next section provides the required endpoint regularization
+and also justifies these coefficient formulas for the functions used here.
+
+\section{Endpoint smoothing and an explicit supergeometric remainder}
+\label{sec:quantitative}
+
+\begin{lemma}[Gain of two matching endpoint jets]
+\label{lem:jets}
+For every function holomorphic near $[0,1]$,
+\begin{equation}
+ \Delta(\Pop f)(z)=\sin^2(\pi z/2)\Delta f(z/2)
+ \label{eq:jetidentity}
+\end{equation}
+near zero. Consequently $g_r=\Pop^rf$ has matching derivatives at zero and
+one through order $2r-1$.
+\end{lemma}
+\begin{proof}
+The identity is \cref{eq:boundaryintertwine} multiplied by two with $b=2$.
+The factor $\sin^2(\pi z/2)$ has a zero of order two. Each iteration
+therefore increases the order of the endpoint difference by at least two.
+\end{proof}
+
+Let $\Omega_\delta=\{z:\operatorname{dist}(z,[0,1])\le\delta\}$, and
+suppose $f$ is holomorphic on a neighborhood of this closed set. Put
+$M_f=\sup_{\Omega_\delta}|f|$ and
+\begin{equation}
+ C_\delta=\frac{\sinh(2\pi\delta)}{2\pi\delta}.
+ \label{eq:Cdelta}
+\end{equation}
+Every inverse branch maps $\Omega_\delta$ into
+$\Omega_{\delta/2}$. Moreover,
+\[
+ \abs{\sin^2(\pi z/2)}+\abs{\cos^2(\pi z/2)}
+ =\cosh(\pi\Im z).
+\]
+Using the product identity
+$\prod_{j\ge0}\cosh(t/2^j)=\sinh(2t)/(2t)$ gives, uniformly in $r$,
+\begin{equation}
+ \sup_{\Omega_\delta}|\Pop^rf|\le C_\delta M_f.
+ \label{eq:uniform-complex-bound}
+\end{equation}
+The product identity follows by repeatedly applying
+$\sinh(2t)=2\sinh(t)\cosh(t)$ and taking the small-argument limit.
+
+Cauchy's formula on circles of radius $\delta$, followed by $2r$
+integrations by parts, now yields
+\begin{equation}
+ |\widehat{g_r}(k)|\le
+ \frac{C_\delta M_f(2r)!}{(2\pi\delta)^{2r}|k|^{2r}}
+ \quad(k\ne0).
+ \label{eq:Fourierboundgeneral}
+\end{equation}
+All boundary terms vanish by \cref{lem:jets}. The periodic extension need
+only have these finitely many matching jets; no holomorphic periodic
+extension is asserted.
+
+\begin{theorem}[Quantitative remainder]
+\label{thm:quantitative}
+Suppose $f\in H_R$ and is holomorphic on a neighborhood of
+$\Omega_\delta$. For integers $n\ge r\ge2$, put $s=n-r$. Then
+\begin{align}
+ &\norm{\Pop^nf-\mu(f)\one-(-1/2)^n(a(f)u+b(f)v)}_\infty\notag\\
+ &\quad\le
+ \frac{C_\delta M_f(2r)!}{(2\pi\delta)^{2r}}
+ 2^{-s(2r-1)}
+ \left(\frac4{2r-1}+\frac8{3(2r-2)}\right).
+ \label{eq:explicit-remainder}
+\end{align}
+In particular, choosing $r=\lfloor n/2\rfloor$ for $n\ge4$ gives
+\begin{equation}
+ \norm{\Pop^nf-\mu(f)\one-(-1/2)^n(a(f)u+b(f)v)}_\infty
+ \le C_{f,\delta}
+ \exp\!\left(-\frac{\log2}{2}n^2+O_\delta(n\log n)\right).
+ \label{eq:n-square-remainder}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $g=g_r$, \cref{eq:Fourierboundgeneral} implies absolute convergence of
+its Fourier series and of all three coefficient sums
+\cref{eq:mufourier,eq:afourier,eq:bfourier}. Apply $\Pop^s$ termwise in the
+uniform norm. For $|k|\le2^s$ the finite-mode formula is exact. For the
+remaining modes, $\norm{\Pop^se_k}_\infty\le1$, $|\eta(k)|\le1$, and
+$\norm{u\pm\ii v}_\infty\le4/3$. Their individual residuals have norm
+at most $2+(4/3)2^{-s}|k|$.
+
+Put $N=2^s$ and
+$D_r=C_\delta M_f(2r)!/(2\pi\delta)^{2r}$. The total residual is bounded by
+\begin{align*}
+ 2D_r\sum_{k>N}k^{-2r}\left(2+\frac{4k}{3N}\right)
+ &\le D_rN^{1-2r}
+     \left(\frac4{2r-1}+\frac8{3(2r-2)}\right),
+\end{align*}
+using the integral bounds for the two decreasing power sums.
+For fixed $r\ge2$, this residual and its product with $2^s$ tend to zero.
+Comparison with the unique leading and subleading terms in the Hardy-space
+spectral decomposition identifies the Fourier sums with $\mu(g),a(g),b(g)$.
+The commuting projection identities give
+$\mu(g)=\mu(f)$ and $(a(g),b(g))=(-1/2)^r(a(f),b(f))$.
+This proves \cref{eq:explicit-remainder} without an unjustified
+interchange in the Hardy norm.
+
+Finally, $\log((2r)!)=O(r\log r)$ and
+$(n-r)(2r-1)=n^2/2+O(n)$ at $r=\lfloor n/2\rfloor$.
+Substitution gives \cref{eq:n-square-remainder}.
+\end{proof}
+
+\begin{remark}[The Hardy hypothesis can be removed from the scalar estimate]
+For a function merely holomorphic near $[0,1]$, define the three coefficients
+from the absolutely convergent Fourier sums of $\Pop^2f$, undoing the factor
+$(-1/2)^2$ in the last two. The same proof gives convergence and the
+coefficient limits. Shifting the iteration shows that the definitions are
+independent of the smoothing depth. Hence \cref{eq:explicit-remainder}
+holds for all such observables, even if they do not extend to a disk $D_R$.
+This extension concerns the uniform asymptotic estimate, not an unstated
+spectral theorem on a different Banach space.
+\end{remark}
+
+\section{From the Fourier product to the shell observable}
+\label{sec:shell}
+
+\subsection{Convergence and a useful complex bound}
+On compact subsets of $\C$, the factors of $\Phi$ in \cref{eq:PhiE} are
+$1+O(4^{-j})$. The product therefore converges locally uniformly and defines
+an entire function. The identity
+\[
+ \frac{\sin u}{u}=\frac12\int_{-1}^1\e^{\ii tu}\dd t
+\]
+implies $|\sin u/u|\le\e^{|\Im u|}$. Multiplying the bounds gives
+\begin{equation}
+ |\Phi(z)|\le\exp(2\pi|\Im z|).
+ \label{eq:phibound}
+\end{equation}
+For $0<z<1$, every real factor is positive and the tail converges to a
+positive number. Thus $\Phi(z)>0$ there, while $\Phi(1)=0$.
+
+\subsection{Exact cancellation of the shell scale}
+Put $a_0=\log2$. Splitting the infinite product after $n$ factors gives
+\begin{equation}
+ \Phi(2^{n-1}y)=
+ \Phi(y/2)(\pi y)^{-n}2^{-n(n-1)/2}
+ \prod_{j=0}^{n-1}\sin(\pi2^jy),\qquad 1\le y\le2.
+ \label{eq:shellsplit}
+\end{equation}
+Define
+\begin{equation}
+ \boxed{\displaystyle
+ H(z)=\frac{\Phi((1+z)/2)^2}{\pi^2}
+ \exp\!\left(
+ \frac{\Log(1+z)^2}{a_0}+(2\kappa-2)\Log(1+z)\right).}
+ \label{eq:H}
+\end{equation}
+We use the principal logarithm. This function is holomorphic on a
+neighborhood of $\overline D_1$, since $\Re(1+z)>0$ there.
+In particular $H\in H_1$. It is real and strictly positive on $[0,1)$,
+with $H(1)=0$.
+
+Using $2^\kappa=2\pi$, a direct simplification of
+\cref{eq:shellsplit} gives, for $x=y-1$,
+\begin{equation}
+ \abs{\frac{\Phi(2^{n-1}y)}{E(2^{n-1}y)}}^2
+ =\frac12 H(x)\prod_{j=0}^{n-1}2\sin^2(\pi2^jx).
+ \label{eq:shellnormalized}
+\end{equation}
+For verification of the normalization, the powers independent of $y$
+simplify to
+\[
+ \pi^{-2n}2^{-n(n-1)+(n-1)^2+2\kappa(n-1)}
+ =2^{n-1}\pi^{-2};
+\]
+the remaining power of $y$ is
+$\exp((\log y)^2/a_0+(2\kappa-2)\log y)$.
+
+\begin{proposition}[Exact transfer representation of the RMS]
+\label{prop:RMStransfer}
+For every $n\ge1$,
+\begin{equation}
+ \boxed{\displaystyle \mathcal R_n^2=\frac12\int_0^1\Pop^nH(x)\dd x.}
+ \label{eq:RMStransfer}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Change variables $t=2^{n-1}y$ in \cref{eq:RMSintro} and use
+\cref{eq:shellnormalized}. The elementary branch-change identity for
+$\Pop$ is
+\[
+ \int_0^1\Pop^nf(x)\dd x
+ =\int_0^1 f(x)\prod_{j=0}^{n-1}2\sin^2(\pi2^jx)\dd x.
+\]
+It follows either by the substitutions in each inverse branch, or directly
+from \cref{eq:iterate} with the normalized weight. Applying it to $H$
+proves the result.
+\end{proof}
+
+This identity is exact for the infinite sinc product. No finite-product
+approximation enters the analytic reduction.
+
+\section{The RMS expansion, all orders, and explicit error bounds}
+\label{sec:RMS}
+Put
+\begin{equation}
+ M=\mu(H),\qquad B=a(H),\qquad A=\sqrt{M/2}.
+ \label{eq:constants}
+\end{equation}
+By \cref{prop:mu}, $M>0$. Since
+$\int_0^1u=1/3$ and $\int_0^1v=0$, integration of
+\cref{eq:main-decomp} immediately yields
+\begin{equation}
+ \mathcal R_n^2=\frac M2+\frac B6(-1/2)^n+
+            \frac12\int_0^1 Q^nH(x)\dd x.
+ \label{eq:RMSexactremainder}
+\end{equation}
+The remainder is faster than every geometric sequence, and
+\cref{thm:quantitative} gives the more explicit square-exponential bound
+in \cref{eq:RMSmainintro}.
+
+\begin{corollary}[All-orders scalar expansion]
+\label{cor:allorders}
+For sufficiently large $n$ and every $\varepsilon>0$,
+\begin{equation}
+ \mathcal R_n=
+ A\left(1+\frac{B}{3M}(-1/2)^n\right)^{1/2}
+ +O_\varepsilon(\varepsilon^n).
+ \label{eq:allordersroot}
+\end{equation}
+For every fixed $J\ge0$, this gives
+\begin{equation}
+ \mathcal R_n=
+ A\sum_{j=0}^{J}\binom{1/2}{j}
+       \left(\frac{B}{3M}\right)^j(-1/2)^{jn}
+ +O_J(2^{-(J+1)n}).
+ \label{eq:allordersbinomial}
+\end{equation}
+In particular, if $B\ne0$,
+\begin{equation}
+ (-2)^n(\mathcal R_n^2-A^2)\longrightarrow B/6,
+ \qquad
+ (-2)^n(\mathcal R_n-A)\longrightarrow B/(12A).
+ \label{eq:scaledlimits}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The expression inside the square root tends to one. On a fixed positive
+neighborhood of $A^2$, the square-root function is Lipschitz. Thus a
+supergeometric error in the squared quantity remains supergeometric after
+taking its square root. The binomial expansion gives the finite truncations,
+and the first-order term gives the two limits.
+\end{proof}
+
+\subsection{A fully explicit bound for the actual observable}
+The certificate in the next section uses $\delta=1/4$. We establish here the
+analytic constant needed both for certification and for a finite-shell sign
+result.
+
+\begin{lemma}[Uniform analytic bound]
+\label{lem:Hbound}
+On $\Omega_{1/4}$, $|H|<1000$. Moreover, for every $r\ge0$,
+$|\Pop^rH|<2000$ on this set. For $g=\Pop^4H$,
+\begin{equation}
+ |\widehat g(k)|\le \frac{C}{|k|^8}\quad(k\ne0),
+ \qquad C=3{,}200{,}000.
+ \label{eq:certificate-C}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $z\in\Omega_{1/4}$, then
+$\Re(1+z)\ge3/4$, $|1+z|\le9/4$, and $|\Im z|\le1/4$.
+The principal logarithm $L=\Log(1+z)$ satisfies $|L|<6/5$:
+$|\log|1+z||<1$ and $|\arg(1+z)|<1/3$ already suffice.
+Since $\log2>2/3$, $1<\kappa<3$, and \cref{eq:phibound} gives
+$|\Phi((1+z)/2)|^2\le\e^{2\pi|\Im z|}$, the modulus of the exponential
+factors in $H$ is less than
+\[
+ \exp\!\left(2+\frac{(6/5)^2}{2/3}+4\cdot\frac65\right)
+ =\e^{224/25}<\e^9.
+\]
+Thus $|H|<\e^9/\pi^2<1000$. The last elementary bound follows, for
+example, from $\pi>3$ and $\e<11/4$.
+
+Next $C_{1/4}=\sinh(\pi/2)/(\pi/2)<2$, so
+\cref{eq:uniform-complex-bound} gives $|\Pop^rH|<2000$.
+Cauchy's estimate yields $\norm{g^{(8)}}_\infty\le8!\,2000\,4^8$.
+After eight integrations by parts,
+\[
+ |\widehat g(k)|\le
+ 8!\,2000\left(\frac{2}{\pi}\right)^8|k|^{-8}
+ <3{,}200{,}000|k|^{-8},
+\]
+using $\pi>3$. The matching endpoint derivatives required for those
+integrations follow from \cref{lem:jets}.
+\end{proof}
+
+Taking $r=4$ in the proof of \cref{thm:quantitative}, and using this $C$,
+we obtain for every $n\ge4$ the particularly simple bound
+\begin{equation}
+ \boxed{\displaystyle
+ \abs{\mathcal R_n^2-\frac M2-\frac B6(-1/2)^n}
+ \le \frac{32C}{63}\,2^{-7(n-4)}.}
+ \label{eq:fixed-error}
+\end{equation}
+Indeed, half of the bracket $4/7+8/(3\cdot6)$ is $32/63$.
+Although choosing $r$ with $n$ gives a stronger asymptotic bound,
+\cref{eq:fixed-error} is already sufficient to certify the sign from shell
+ten onward.
+
+\section{A reproducible certificate for the nonzero coefficient}
+\label{sec:certificate}
+
+\subsection{Reduction to finitely many Fourier coefficients}
+Let $g=\Pop^4H$. Because the subleading eigenvalue of $\Pop$ is $-1/2$,
+\begin{equation}
+ B=16\,a(g),\qquad M=\mu(g).
+ \label{eq:smoothingconstants}
+\end{equation}
+For $K\ge1$, truncating \cref{eq:afourier,eq:mufourier} and using
+\cref{eq:sequencebounds,eq:certificate-C} gives
+\begin{align}
+ \abs{B-32\sum_{k=1}^K\alpha(k)\Re\widehat g(k)}
+ &\le\frac{16C}{3K^6},\label{eq:tail-a}\\
+ \abs{M-\widehat g(0)-2\sum_{k=1}^K\eta(k)\Re\widehat g(k)}
+ &\le\frac{2C}{7K^7}.
+ \label{eq:tail-mu}
+\end{align}
+For example, the first tail is bounded by
+$32C\sum_{k>K}k^{-7}\le16C/(3K^6)$.
+
+Let $N>2K$, and approximate the coefficients by the exact discrete averages
+\begin{equation}
+ \widetilde g_N(k)=\frac1N\sum_{j=0}^{N-1}
+            g(j/N)\e^{-2\pi\ii kj/N}.
+ \label{eq:DFT}
+\end{equation}
+Absolute Fourier convergence proves the aliasing identity
+$\widetilde g_N(k)=\sum_{\ell\in\Z}\widehat g(k+\ell N)$.
+For $|k|\le K$, therefore,
+\begin{equation}
+ |\widetilde g_N(k)-\widehat g(k)|
+ \le\frac{4C}{(N-K)^8}.
+ \label{eq:alias}
+\end{equation}
+To see this, use $|k+\ell N|\ge|\ell|(N-K)$ and
+$\sum_{\ell\ge1}\ell^{-8}<2$.
+
+Consequently the two finite sums
+\begin{align}
+ B_{K,N}&=32\sum_{k=1}^K\alpha(k)\Re\widetilde g_N(k),\notag\\
+ M_{K,N}&=\widetilde g_N(0)+2\sum_{k=1}^K
+                         \eta(k)\Re\widetilde g_N(k)
+ \label{eq:finite-estimates}
+\end{align}
+satisfy the explicit error bounds
+\begin{align}
+ |B-B_{K,N}|&\le E_B:=
+ \frac{16C}{3K^6}+\frac{64CK(K+1)}{(N-K)^8},\label{eq:EB}\\
+ |M-M_{K,N}|&\le E_M:=
+ \frac{2C}{7K^7}+\frac{4C(2K+1)}{(N-K)^8}.
+ \label{eq:EM}
+\end{align}
+The constants used by the program are
+\begin{equation}
+ r=4,\quad K=128,\quad N=512,\quad J=28,\quad C=3{,}200{,}000.
+ \label{eq:certificateparameters}
+\end{equation}
+Here $J$ is the number of sinc factors used for a sample evaluation.
+The rational error bounds satisfy
+$E_B<3.888\cdot10^{-6}$ and $E_M<1.632\cdot10^{-9}$.
+
+\subsection{Enclosing the infinite-product samples}
+For $z\in[1/2,1]$ and $J\ge2$, write
+$\Phi_J(z)=\prod_{j=0}^{J-1}\sinc(\pi z/2^j)$. The elementary inequalities
+$1-u^2/6\le\sin u/u\le1$ for the tail arguments, together with
+$\prod(1-a_j)\ge1-\sum a_j$ for $0\le a_j\le1$, give
+\begin{equation}
+ 1-\frac{20}{9}4^{-J}
+ \le \frac{\Phi(z)}{\Phi_J(z)}\le1.
+ \label{eq:sinctail}
+\end{equation}
+At an endpoint where the finite product vanishes, the equivalent product
+inequality is used rather than division. The estimate follows from
+\[
+ \sum_{j=J}^\infty\frac{(\pi z/2^j)^2}{6}
+ =\frac{2\pi^2z^2}{9}4^{-J}
+ \le\frac{20}{9}4^{-J}.
+\]
+Every evaluation of $H$ uses this tail interval; the program never treats a
+finite sinc product as equal to the infinite one.
+
+The inverse-branch formula needed for the samples is
+\begin{equation}
+ g(x)=\sum_{\ell=0}^{15}
+ \left(\prod_{p=0}^3\sin^2(\pi2^py_\ell)\right)H(y_\ell),
+ \qquad y_\ell=\frac{x+\ell}{16}.
+ \label{eq:g-samples}
+\end{equation}
+For $x=j/512$, all sample points are dyadic rationals with denominator
+$8192$. There are exactly $8192$ evaluations of $H$.
+The real parts in \cref{eq:finite-estimates} are calculated by finite cosine
+sums, not by an uncertified floating-point FFT.
+
+\subsection{Integer-only elementary-function enclosures}
+The primary program \texttt{certify\_integer.py} uses fixed-point intervals
+$[l2^{-100},h2^{-100}]$ with integer endpoints. Every addition, multiplication,
+and division rounds its rational endpoint result outward by integer floor
+or ceiling. Square roots use the integer square-root algorithm. Thus the
+certificate requires no floating-point library.
+
+The elementary constants and functions are enclosed as follows. Machin's
+identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+is evaluated with 40 alternating-series terms and the first omitted term as
+a remainder bound. For $|t|\le4$, sinc is evaluated with 20 terms of
+\[
+ \sinc t=\sum_{k\ge0}\frac{(-1)^kt^{2k}}{(2k+1)!};
+\]
+after the first term the absolute terms decrease, so the first omitted term
+bounds the remainder. For $y\ge1$, with $q=(y-1)/(y+1)$,
+\[
+ \log y=2\sum_{k=0}^{L-1}\frac{q^{2k+1}}{2k+1}+R_L,
+ \qquad 0\le R_L\le
+ \frac{2q^{2L+1}}{(2L+1)(1-q^2)}.
+\]
+The sample logarithms use $L=36$, and $\log(2\pi)$ uses $L=128$.
+Finally, for $0\le x\le4$ the exponential is summed through degree 60;
+the positive tail is bounded by its next term divided by $1-x/62$.
+All argument-range checks are assertions in the program.
+
+These choices are deliberately generous. The limiting accuracy is set by
+the proven Fourier-tail estimate, not by the elementary-function precision.
+An independent program, \texttt{certify\_constants.py}, repeats the same
+finite reduction with \texttt{mpmath.iv} interval arithmetic. It is a
+cross-check, not a dependency of the integer-only certificate.
+
+\subsection{Certificate output and the sign theorem}
+The integer-only run produced the following outward decimal enclosures.
+The JSON file also records the exact rational endpoints; the displayed
+decimals are obtained by integer floor and ceiling.
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Lower endpoint & Upper endpoint\\
+\midrule
+$B$ & $-0.002906388035461419823$ & $-0.002898612708277941829$\\
+$M$ & $\phantom{-}0.021221672714945662196$ & $\phantom{-}0.021221675977057311570$\\
+$A$ & $\phantom{-}0.103008913970941520154$ & $\phantom{-}0.103008921888002768209$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These enclosures imply \cref{eq:Bboundsintro,eq:Mboundsintro,eq:Aboundsintro}.
+The wider rational bounds, rather than any noncertified extra digits, are
+used in the theorem statements.
+
+It remains to verify the promised finite-shell sign. Since $B<-0.002898$,
+the magnitude of its alternating term is greater than
+$(0.002898/6)2^{-n}$. At $n=10$, the entirely rational inequality
+\begin{equation}
+ \frac{32C}{63}\,2^{-42}
+ <\frac{0.002898}{6}\,2^{-10}
+ \label{eq:signcheck}
+\end{equation}
+holds. For each increment of $n$, the ratio of the error bound in
+\cref{eq:fixed-error} to this lower bound for the alternating term decreases
+by $2^{-6}$. The error cannot overturn the sign of the alternating term for any $n\ge10$.
+The squared RMS is therefore below $A^2$ at even indices and above it at odd
+indices. Taking square roots preserves the comparison. This completes the
+proof of \cref{thm:intro-rms}, including nonvanishing, not just an upper bound.
+
+\begin{remark}[What is and is not mechanically checked]
+The primary certificate reduces the numerical assertions to explicit
+integer computations and elementary series inequalities. Its execution was
+checked, and the independent interval implementation agreed. It is not a
+Lean or Rocq proof object: the Python implementation and interpreter have
+not been verified in a proof assistant. The analytic theorem and all tail
+bounds are proved in the manuscript. The supplied code and exact output
+make the finite numerical step independently reproducible and auditable.
+\end{remark}
+
+\section{Even powers, exact moments, and larger dilations}
+\label{sec:evenpowers}
+
+\subsection{Every even sine power has a finite analytic spectrum}
+For $m\ge1$, let $\Lop_{2m}=\Lop_{2,w_m}$, where
+$w_m(x)=\sin^{2m}(\pi x)$. Its Fourier coefficients are
+\begin{equation}
+ (w_m)_j=\frac{(-1)^j}{4^m}\binom{2m}{m+j},\qquad |j|\le m.
+ \label{eq:evenweight}
+\end{equation}
+The expression $(-1)^j$ has its usual integral-parity meaning also for
+negative $j$.
+
+\begin{corollary}[Complete even-power reduction]
+\label{cor:evenpower}
+For every $m\ge1$, on every $H_R$ the nonzero spectrum of $\Lop_{2m}$ is
+exactly the nonzero spectrum of the $(2m+1)$-dimensional rational matrix
+\begin{equation}
+ (A_m)_{r,k}=\frac{(-1)^{2r-k}}{4^m}
+       \binom{2m}{m+2r-k},\qquad -m\le r,k\le m,
+ \label{eq:Am}
+\end{equation}
+where the binomial coefficient is zero outside its natural range.
+The determinant identity and every nonzero algebraic multiplicity are exact.
+\end{corollary}
+\begin{proof}
+Here $M=m$, $K=m$, and $w_m(0)=0$. Apply
+\cref{thm:general-det,thm:generalized-band} and substitute
+\cref{eq:evenweight}.
+\end{proof}
+
+For the integer matrix $B_m=4^mA_m$, exact algebra gives
+\begin{align}
+ \det(YI-B_1)&=(Y-2)(Y+1)^2,\notag\\
+ \det(YI-B_2)&=(Y-1)^2(Y+4)(Y^2-2Y-16),\notag\\
+ \det(YI-B_3)&=(Y+1)^2(Y^2+8Y-64)
+              (Y^3-10Y^2-96Y+512).
+ \label{eq:charpolys}
+\end{align}
+The accompanying algebra script checks these and the corresponding
+polynomials for $m=4,5$. The formulas in \cref{eq:charpolys} are finite
+consequences of the displayed matrices; they are not decimal eigenvalue
+fits.
+
+\begin{proposition}[A universal outer-row factor]
+\label{prop:outerfactor}
+For every $m\ge1$, $\det(YI-B_m)$ is divisible by
+$(Y-(-1)^m)^2$.
+\end{proposition}
+\begin{proof}
+The row with index $r=m$ has only one nonzero entry, at column $k=m$,
+equal to $(-1)^m$. Likewise the row $r=-m$ has only its diagonal entry.
+Expanding the characteristic determinant along these two outer rows proves
+the factor. This is a statement about algebraic multiplicity. It does not
+assert that the corresponding coordinate vectors are eigenvectors, or that
+all possible resonances are semisimple.
+\end{proof}
+
+\subsection{The quartic spectrum and a cancellation lesson}
+For $m=2$, the complete nonzero spectrum is
+\begin{equation}
+ \frac{1+\sqrt{17}}{16},\quad -\frac14,\quad
+ \frac{1-\sqrt{17}}{16},\quad \frac1{16},
+ \label{eq:quarticspectrum}
+\end{equation}
+with multiplicity two at $1/16$ and one at the other values. The leading
+spectral radius is $(1+\sqrt{17})/16$, and the next modulus is $1/4$.
+Nevertheless that subleading operator eigenvalue is absent from the
+following natural scalar moment.
+
+\begin{proposition}[Exact fourth moments]
+\label{prop:fourthmoment}
+Let
+\[
+ I_n=\int_0^1\prod_{j=0}^{n-1}\sin^4(\pi2^jx)\dd x,
+ \qquad I_0=1.
+\]
+Then
+\begin{equation}
+ \sum_{n\ge0}I_nz^n=\frac{1+z/4}{1-z/8-z^2/16},
+ \label{eq:fourthGF}
+\end{equation}
+and, with $s=\sqrt{17}$ and $r_\pm=(1\pm s)/16$,
+\begin{equation}
+ I_n=\frac{s+5}{2s}r_+^n+\frac{s-5}{2s}r_-^n.
+ \label{eq:fourthclosed}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The branch-change identity gives $I_n=\int_0^1\Lop_4^n\one$.
+Starting from $1$, the iterates stay in
+$\Span\{1,\cos(2\pi x)\}$. In that basis the matrix is
+\[
+ T=\begin{pmatrix}3/8&-1/4\\1/8&-1/4\end{pmatrix},
+\]
+because $\Lop_4\one=3/8+(1/8)\cos(2\pi x)$ and
+$\Lop_4\cos(2\pi x)=-1/4-(1/4)\cos(2\pi x)$.
+Integration selects the first coordinate. Thus the generating function is
+the $(1,1)$ entry of $(I-zT)^{-1}$, which is \cref{eq:fourthGF}.
+Equivalently,
+$I_{n+2}=I_{n+1}/8+I_n/16$, with $I_0=1$ and $I_1=3/8$.
+Solving that recurrence proves \cref{eq:fourthclosed}.
+\end{proof}
+
+Here the $-1/4$ eigenfunction of the full quartic operator is proportional
+to $\sin(2\pi x)$, which integration annihilates. The scalar correction in
+\cref{eq:fourthclosed} instead has relative ratio
+$(1-\sqrt{17})/(1+\sqrt{17})$. This example explains why the separate
+nonvanishing certificate for the quadratic Rvachev observable was necessary.
+The exact fourth-moment formula is included as a derived illustration,
+not as a claim of previously unknown classical moment theory.
+
+\subsection{High-dilation collapse}
+\begin{corollary}
+\label{cor:highdilation}
+Let $m\ge1$ and $b\ge m+2$. On every $H_R$, the operator
+$\Lop_{b,w_m}$ has spectrum
+\begin{equation}
+ \left\{0,\;\frac{1}{4^m}\binom{2m}{m}\right\}.
+ \label{eq:highdilationspectrum}
+\end{equation}
+The nonzero eigenvalue is simple. After division by this value, the powers
+converge to a rank-one projection faster than every geometric sequence in
+the Hardy operator norm.
+\end{corollary}
+\begin{proof}
+The inequality $b-1>m$ gives $K=0$, and the finite matrix is the scalar
+constant Fourier coefficient $4^{-m}\binom{2m}{m}$. The boundary factor
+vanishes because $w_m(0)=0$. Apply the determinant theorem and compact
+spectral decomposition. The remaining spectral radius is zero.
+\end{proof}
+
+This is a genuine simplification from the larger dilation. At $b=m+1$,
+the finite band can already have dimension three; the strict threshold in
+the statement is not to be replaced by a weak inequality without analysis.
+
+\section{Interpretation, limitations, and a formalization route}
+\label{sec:status}
+
+\subsection{What has been resolved}
+The operator in the repository is exactly \cref{eq:L2intro}. Its known
+pointwise eigen-identities are strengthened to a full spectral theorem on
+$H_R$, with algebraic multiplicities and a proof that nonperiodic analytic
+functions contribute no additional nonzero spectrum. The general theorem
+also identifies precisely when that last assertion would fail: a nonzero
+boundary value $w(0)$ creates an infinite geometric spectral ladder.
+
+The source's RMS normalization is reduced to an analytic observable that
+belongs to the chosen space. Its $-1/2$ projection survives integration and
+has a rigorously enclosed negative coefficient. The rate is therefore a
+true leading correction, not simply a possible rate in a norm estimate.
+The fixed-shell bound certifies alternating sides of the limit from
+$n=10$ onward.
+
+\subsection{What has not been claimed}
+The finite spectrum does not describe the operator on every regularity
+space. The trace-class disk norm is different from the uniform norm on all
+continuous functions, and scalar uniform convergence does not imply a
+uniform operator-norm spectral gap on $C[0,1]$. The statement for noninteger
+powers $|\sin\pi x|^q$ is not covered by the finite trigonometric-polynomial
+argument. The integer-only certificate does not constitute a kernel-checked
+Lean proof. Finally, the literature review establishes relevant classical
+context and a precise repository gap, not a definitive first-publication
+priority for every generalization.
+
+\subsection{Dependency and evidence ledger}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\toprule
+Result & Basis & Status in this package\\
+\midrule
+Fredholm determinant facts & Classical trace-class spectral theory
+\cite{simon,bornemann} & Explicitly stated standard input\\
+General factorization & Affine trace lemma and roots-of-unity filtering
+& Full conventional proof\\
+Quadratic complete spectrum & Exact $3\times3$ matrix and general theorem
+& Full conventional proof\\
+Projection recursions and remainder & Fourier halving, jet gain, Cauchy bounds
+& Full conventional proof\\
+RMS transfer identity & Exact sinc-product splitting and branch substitution
+& Full conventional proof\\
+$B<0$ and numerical enclosures & Proven analytic tails plus integer-only finite sums
+& Executed computer-assisted certificate\\
+Finite matrices and mode identities & Rational symbolic calculations
+& Executed checks; not substitutes for general proofs\\
+New Lean/Rocq declarations & None supplied or built
+& Not claimed\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{A practical formalization sequence}
+The shortest route into the repository begins with the finite algebra, not
+with a new spectral library. First formalize \cref{eq:Pmode}, the sequences
+$\eta,\alpha$, and the exact mode theorem. The existing
+\texttt{RMSTransferEigenfunctions} identities already match the base case.
+Next formalize the endpoint-difference identity and its derivative-order
+consequence. A verified checker for the finite certificate can be kept
+small: fixed-point interval operations, alternating-series remainders,
+positive-series tails, and exact rational comparisons suffice.
+
+The analytic bridge then has two possible routes. The spectral route
+formalizes trace-class weighted composition, the affine fixed-point trace,
+and the determinant theorem. The constructive route formalizes the Fourier
+remainder estimate and applies it directly to the shell identity. The latter
+can establish the RMS expansion without first building a complete Fredholm
+determinant API. Both routes should retain the explicit function-space
+hypotheses and the distinction between integer certificates and unverified
+floating-point computations.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+The following questions go beyond what is proved here. They are proposed
+research targets, not assertions of open status in the entire literature.
+
+\begin{question}[Sharp speed of the quasinilpotent remainder]
+Is the coefficient $\tfrac12\log2$ in the uniform upper bound
+\cref{eq:n-square-remainder} optimal for a natural bounded class of analytic
+observables? Can the stronger damping visible in repeated endpoint
+differences improve it? A useful result would give matching upper and lower
+bounds for an explicit nonperiodic observable, rather than only an improved
+constant in a general estimate.
+\end{question}
+
+\begin{question}[Spectra at finite smoothness]
+Determine the complete spectrum or essential spectral radius of $\Lop_2$
+on $C^r$, H\"older, Sobolev, and weighted endpoint spaces. Which analytic
+eigenvalues remain isolated, and how do unmatched endpoint jets interact
+with the noncompact part? The exact boundary intertwining relation provides
+a starting point, but the analytic determinant cannot simply be transferred.
+\end{question}
+
+\begin{question}[Even-power matrix structure]
+For the integer matrices $B_m$, classify realness, simplicity, interlacing,
+and the ordering of nonzero eigenvalue moduli as $m$ grows. Determine when
+the forced outer-row eigenvalue $(-1)^m$ resonates with the interior block
+and whether nontrivial Jordan chains occur. The exact polynomials in the
+package supply initial data, not an induction proof.
+\end{question}
+
+\begin{question}[Large-moment asymptotics]
+Use the finite matrices to derive asymptotic expansions for the leading and
+subleading eigenvalues as $m\to\infty$. Relate these expansions to the
+maximizing periodic orbit of the sine product, and quantify the transition
+from finite even moments to the extremal envelope.
+\end{question}
+
+\begin{question}[Noninteger powers and the arithmetic mean]
+For $q\notin2\N$, establish certified subleading spectra and nonzero
+observable corrections for the transfer weight $|\sin\pi x|^q$. The case
+$q=1$ is particularly relevant to the repository's arithmetic-mean decay.
+A suitable Banach space must accommodate the endpoint regularity and zeros;
+finite Fourier truncation alone is no longer exact.
+\end{question}
+
+\begin{question}[Boundary perturbations and resonances]
+For a trigonometric polynomial family $w_\varepsilon$ with
+$w_0(0)=0$ and $w_\varepsilon(0)\ne0$, the determinant theorem explicitly
+creates a geometric ladder. Describe the spectral projections and Jordan
+structure when one of these ladder values meets a finite-band eigenvalue.
+Can one obtain uniform perturbation expansions through a resonance?
+\end{question}
+
+\begin{question}[Infinite Fourier weights]
+Extend the boundary-factor formula to analytic weights with infinitely many
+Fourier coefficients by giving an explicit determinant truncation error.
+The finite-band theorem suggests an exact boundary factor and a controlled
+infinite periodic component. Such a result could turn heuristic spectral
+collocation into an a priori certified method.
+\end{question}
+
+\begin{question}[Higher-dimensional boundary corrections]
+For expanding integral matrices acting on a cube or parallelepiped,
+determine the analogues of the finite Fourier band and the repeated-endpoint
+factor. One expects distinct contributions from faces and their
+intersections. A correct theorem must distinguish the interval or cube
+operator from the corresponding torus operator.
+\end{question}
+
+\begin{question}[Arithmetic and regularity of the correction functional]
+The integer sequence $\alpha$ has $\alpha(2^j)=(-2)^j$, so its linear growth
+bound is sharp. Determine optimal regularity classes on which
+$g\mapsto\sum_{k\ne0}\alpha(|k|)\widehat g(k)$ extends continuously,
+and identify any useful distributional, refinement, or arithmetic
+interpretation of this functional.
+\end{question}
+
+\begin{question}[Verified constants and complete repository integration]
+Produce Lean or Rocq proof objects for the finite certificate and the
+constructive Fourier remainder theorem. Increase the rigorously enclosed
+digits of $A$ and $B$, and certify the earliest shell index at which the
+alternating sign persists. The theorem here proves the cutoff ten but does
+not claim it is minimal.
+\end{question}
+
+\section{Conclusion}
+The missing implication in the repository was not an additional numerical
+eigenvalue calculation. It was a bridge from a finite Fourier computation to
+the full analytic interval operator, followed by a check that the resulting
+spectral correction actually occurs in the Rvachev observable. The
+boundary-factor theorem supplies the first bridge, and the exact Fourier
+projection recursion with integer enclosures supplies the second.
+
+The resulting conclusion is stronger than the originally numerical rate:
+there are no other nonzero analytic spectral values in the quadratic case,
+the remainder after the two spectral terms has an explicit
+square-exponential upper bound, and the normalized RMS is provably on
+alternating sides of its limit from shell ten onward. The same mechanism
+gives exact finite-dimensional spectral problems for every even sine power
+and clarifies when nonperiodic boundary modes must instead be retained.
+
+\appendix
+\section{Repository provenance and reproducibility}
+\label{app:provenance}
+
+\subsection{Inspected repository source}
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+The comparison uses commit \repoSHA, observed on 28 September 2026 in
+Pacific time (29 September in UTC). The canonical article's Git blob is
+\blobSHA. Its path is
+\begin{quote}\small\ttfamily\raggedright
+Analysis/FabiusFunction/docs/\allowbreak
+semi-formalized-research-frontiers/drafts/\allowbreak
+rvachev\_up\_fourier\_decay/\allowbreak
+Rvachev\_Up\_Fourier\_Decay/\allowbreak
+Rvachev\_Up\_Fourier\_Decay.tex
+\end{quote}
+The immutable source link is provided in the bibliography as \cite{repo}.
+The sibling README identifies the canonical synthesis and distinguishes it
+from a separately supplied rewrite. Source lines 1551--1555 state the
+unresolved spectral/RMS claim. The source's explicit eigenfunctions and RMS
+power are treated as antecedents, not as new contributions of this article.
+No repository file was modified during preparation of this package.
+
+\subsection{Files and commands}
+The package contains this source and its compiled PDF, the primary
+integer-only certificate, an independent interval-arithmetic cross-check,
+an exact algebra checker, their executed outputs, a provenance file, and
+build instructions. The minimal numerical verification needs only Python:
+\begin{lstlisting}
+python certify_integer.py --output integer_certificate.json
+\end{lstlisting}
+The optional cross-check and finite symbolic checks use the versions listed
+in \texttt{requirements.txt}:
+\begin{lstlisting}
+python certify_constants.py --output constants_certificate.json
+python verify_algebra.py --output algebra_certificate.json
+\end{lstlisting}
+The article has an internal bibliography and no external figure dependencies.
+It can be rebuilt by running
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+All assertions in the checkers are part of the intended execution: do not
+run Python with its assertion-disabling optimization flag.
+
+\subsection{Finite checks performed}
+The algebra checker verifies the characteristic polynomials of $4^mA_m$
+for $1\le m\le5$, the semisimplicity of the quadratic nonzero spectrum,
+and the double quartic value $1/16$. It checks 80 finite root-of-unity trace
+identities across $2\le b\le5$, $0\le M\le4$, and $1\le n\le4$.
+It also verifies the exact finite-mode formula for $1\le k\le512$.
+These checks detect indexing and normalization mistakes; the proofs in the
+main text, not the finite test ranges, establish the general statements.
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Rvachev up-function Fourier-decay research},
+canonical synthesis, repository source at commit
+\texttt{de4ac5ab1438bcbeed58481c4449b593074a1a1f}, inspected
+28 September 2026 (Pacific time).
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/de4ac5ab1438bcbeed58481c4449b593074a1a1f/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex}{Immutable canonical TeX source}.
+
+\bibitem{arias}
+J.~Arias de Reyna, \emph{An infinitely differentiable function with compact
+support: Definition and properties}, arXiv:1702.05442 (2017), English
+translation of \emph{Definici\'on y estudio de una funci\'on indefinidamente
+diferenciable de soporte compacto}, Rev. Real Acad. Ciencias \textbf{76}
+(1982), 21--38. \url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{ruelle}
+D.~Ruelle, \emph{Zeta-functions for expanding maps and Anosov flows},
+Invent. Math. \textbf{34} (1976), 231--242.
+\href{https://doi.org/10.1007/BF01403069}{doi:10.1007/BF01403069}.
+
+\bibitem{simon}
+B.~Simon, \emph{Trace Ideals and Their Applications}, second edition,
+Mathematical Surveys and Monographs \textbf{120}, American Mathematical
+Society, Providence, 2005.
+
+\bibitem{bornemann}
+F.~Bornemann, \emph{On the numerical evaluation of Fredholm determinants},
+arXiv:0804.2543, especially \S\S2--3 and formulas (3.1)--(3.4).
+\url{https://arxiv.org/abs/0804.2543}.
+
+\bibitem{baake}
+M.~Baake, P.~Gohlke, M.~Kesseb\"ohmer, and T.~Schindler,
+\emph{Scaling properties of the Thue--Morse measure},
+Discrete Contin. Dyn. Syst. \textbf{39} (2019), 4157--4185.
+\href{https://doi.org/10.3934/dcds.2019168}{doi:10.3934/dcds.2019168};
+\url{https://arxiv.org/abs/1810.06949}.
+
+\bibitem{dutkay}
+D.~E.~Dutkay, \emph{The spectrum of the wavelet Galerkin operator},
+Integral Equations Operator Theory \textbf{50} (2004), no.~4, 477--487;
+arXiv posting (2005), \url{https://arxiv.org/abs/math/0511136}.
+\end{thebibliography}
+\end{document}
