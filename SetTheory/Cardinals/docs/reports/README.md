@@ -80,7 +80,10 @@ resonances (shifted Catalan Hankel polynomials), decreasing maps (nonreal
 roots), NP-completeness of the height problem via uniquely restricted
 matchings (cofinal strata), cactus rigidity (preorder root polytopes), and
 depth certificates closing deficits 3 and 4 for A290268 (power-tower
-derivative term counts).
+derivative term counts).  Batch 43 extended four: product entropy (Bernoulli
+entropy quasiconcavity), the largest jump near the boundary (adjacency-bounded
+132-avoiders), nonholonomicity of A003407, and a four-output Part IV of the
+DFAO report.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

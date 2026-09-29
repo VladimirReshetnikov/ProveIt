@@ -541,7 +541,7 @@ kept.}}
 
 \entry{A coloring obstruction to maximal binary DFAO reversal}
 {automata-and-formal-languages/dfao-reversal-coloring-obstruction}
-{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip; batch~43: ProveIt\_Four\_Output\_Reversal.zip, ProveIt\_Four\_Output\_Reversal~(1).zip}
 {For transformations $a,b$ on an $n$-element set and an output map to $k$
 labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
 with $g(k)$ the largest order of a permutation of $k$ symbols --- the
@@ -562,7 +562,10 @@ and for all $n\ge\max(7,k+1)$ when $k=4,\dots,7$ (computer-assisted below
 $N(k)$), with the lower construction imported from Davies; a non-effective
 eventual route for every $k\ge3$, 919 finite certificates and a second proof of
 the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ at small $n$ stays
-open.}
+open.  Part~IV, merged in batch~43 from two manuscripts on $k=4$, re-derives
+that case with an analytic threshold $n\ge26$ (against $212$), and adds
+stability, the missing-orbit inventory, the extremal output maps and a minimal
+order-15 recurrence.}
 
 \entry{Synchronizing D\.zyga's automata by a cyclic retract}
 {automata-and-formal-languages/dzyga-synchronizing-retract}
@@ -1042,13 +1045,17 @@ claimed as new.}
 
 \entry{Two-coin counterexamples to generalized Shepp--Olkin thresholds}
 {log-concavity-and-unimodality/bernoulli-entropy-quasiconcavity}
-{article.pdf}{bernoulli\_entropy\_research.zip}
+{article.pdf}{bernoulli\_entropy\_research.zip; batch~43: proveit\_product\_entropy.zip}
 {For every finite real $q>1$, both the R\'enyi-$q$ and the Tsallis-$q$ entropy of
 a sum of independent Bernoulli variables fail even \emph{quasi}concavity as a
 function of the parameter vector, already on the open square $(0,1)^2$ with two
 coins.  This disproves the proposed thresholds --- R\'enyi~2 and Tsallis
 $3.65986\ldots$ --- adjoined to Conjecture~4.2 of arXiv:1503.01570 and restated
-in arXiv:1510.05390, Section~8.}
+in arXiv:1510.05390, Section~8.  Part~II, added in batch~43, settles the
+subunit joint-concavity question for the joint bit vector only: product R\'enyi
+entropy is concave in every dimension for $0<q\le2$, and product Tsallis entropy
+is concave for every $0<q<1$ exactly when $n\le9$.  For the ordinary sum the
+question stays open; an external claim about it is recorded as unverified.}
 
 \entry{Nonreal roots survive in polynomial iterative equations}
 {log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}
@@ -1232,7 +1239,7 @@ for the type of leaves in that tree.}
 
 \entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
 {enumerative-combinatorics/adjacency-bounded-132-avoiders}
-{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip}
+{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip}
 {For $132$-avoiding permutations with every adjacent difference at most $m$ and
 growth constant $\alpha_m$: proves $\alpha_{m+1}>\alpha_m$ for all $m\ge1$ ---
 the remaining strict-inequality part of Nadler's Conjecture~2 --- and the
@@ -1241,7 +1248,11 @@ $2\log\pi-4\log2\le\liminf E_m\le\limsup E_m\le2\log\pi$.  Part~II, added in
 batch~38, closes that window: a Catalan-weighted supersolution and a growing
 cutoff give $E_m\to2\log\pi$, with an all-orders inverse-log expansion.  Its
 numerics at $m=10^6$ (near $3.15$) are far from the limit and are not evidence
-for it.  The all-$m$ component ordering is still not claimed.}
+for it.  The all-$m$ component ordering is still not claimed.  Part~III, added
+in batch~43, describes the joint limit near the boundary $m=n-d$: the
+distance $n-M_n$ of the largest jump converges in total variation at rate
+$n^{-1/2}$ to an explicit algebraic law, uniformly in $d=o(n)$; the bulk regime
+$n-m\asymp n$ stays open.}
 
 \entry{Throwback Dynamics with Repeated Entries}
 {enumerative-combinatorics/throwback-queue-dynamics}
@@ -1539,7 +1550,7 @@ claimed, and terms 22--28 get certified intervals rather than exact values.}
 
 \entry{Dyadic scaling rigidity of 3AP-free permutations}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity}
-{article.pdf}{ProveIt\_Dyadic\_Scaling\_Rigidity.zip (batch~40)}
+{article.pdf}{ProveIt\_Dyadic\_Scaling\_Rigidity.zip (batch~40); batch~43: ProveIt\_3AP\_Nonholonomicity.zip}
 {For $\theta(n)$, the number of permutations of $[n]$ with no three-term
 arithmetic progression (OEIS A003407), studies the dyadic scaling of
 $\theta(n)$: a continuous log-periodic growth profile with its exact
@@ -1549,7 +1560,10 @@ adjacent ratios $\theta(n+1)/\theta(n)$ have no limit.  The parity recurrences a
 Theorem~2.8, which the manuscript imports, are already proved in Lean in
 \dir{Combinatorics/Ramsey} (the table $\theta(1..20)$ there rests on a
 \texttt{native\_decide} certificate); the report's own theorems are not
-formalized.}
+formalized.  Part~II, added in batch~43, proves $\theta$ is not P-recursive and
+its generating functions are not D-finite (the ordinary one is transcendental),
+using the published counts $\theta(64)$, $\theta(75)$, which nothing in ProveIt
+certifies; whether the generating function has a natural boundary stays open.}
 
 \entry{An exact coefficient formula for Ramanujan's theta function}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260306-formula-proof}
