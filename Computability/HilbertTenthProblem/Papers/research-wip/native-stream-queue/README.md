@@ -10,6 +10,47 @@ component costs six operations with external bounds, or eight with a paid
 joint bound; finite-controller arithmetic and power geometry remain unpaid.
 The proposed five-operation loader has no completed proof or implementation.
 
+## Linux research continuation, 2026-09-29
+
+The handoff was fetched and checked at `3c6494aaaca68927cce4e8cc65bfde5a45e656c3`
+in a clean ProveIt worktree. The complete76 checker, native-stream checker,
+four independent queue audits and bridge-rewrite checker all pass with the
+pinned dependency on Linux. [LINUX_VALIDATION.json](LINUX_VALIDATION.json)
+records the focused commands, results and evidence boundaries. The original
+Windows receipt below remains a historical handoff record.
+
+New research, without a change to the complete universal bound:
+
+| Artifact | Established result | Remaining boundary |
+|---|---|---|
+| [One-field half mask](one_field_half_mask.md) | Exact bounded mask predicate in **51=30M+21A**, including power recovery and a positive-witness converse. The proof excludes its `F=q` boundary after the kernel. | A universal single-field compiler, input and acceptance are absent; 51 is a module count. |
+| [Discriminant input-gap projection](input_bridge_discriminant_gap_projection.md) | Exact two-coset projection of a distinct **75=41M+34A** gap-deletion candidate, its fibers over genuine76 witnesses, and a certified bridge-only alias. | No full false input or soundness proof for that candidate. |
+| [Squared-congruence kernel repair](pell_kernel_squared_congruence.md) | The same-cost change `jc` to `jc^2` preserves completeness but still permits the wrong-index kernel family; a numerical input bridge also attaches. | The actual compiler/transport is not attached, so this does not refute full75. |
+| [Arithmetic-carry controller analysis](native_controller_carry_obstruction.md) | Exact carry compiler criterion, scoped affine/polynomial controller obstructions, and a nonuniversality theorem for a single-coordinate zero-absorbing affine-carry queue. | Powers/bounds remain external to the conditional 13-operation controller schedule; the multi-coordinate effectivity question is expressly unaudited. |
+
+The first three proof/source/receipt packages have independent scoped review
+passes. The controller's carry, scalar-queue and polynomial arguments also
+have independent review; the separate parametric-Presburger application was
+checked against its primary theorem, without promoting algorithmic effectivity.
+These are mathematical proofs with symbolic and finite checks, not Lean
+formalizations or new publication bounds.
+
+Fresh default checks for the new artifacts:
+
+```sh
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_one_field_half_mask.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_discriminant_gap_projection.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_squared_congruence.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/audit_native_controller_carry.py
+```
+
+The immediate constructive target is a compiler that uses the single masked
+field without assuming a free interleaving or data-typing predicate. Reusing
+the existing sparse compiler without its separate input mask is not justified.
+The native-stream alternative needs additional typed/nonlinear witnesses or
+a different complete controller; larger affine state codes alone cannot
+encode the current erase/copy language.
+
 ## Preserved and runnable work
 
 The component proof and source live in their normal project locations:

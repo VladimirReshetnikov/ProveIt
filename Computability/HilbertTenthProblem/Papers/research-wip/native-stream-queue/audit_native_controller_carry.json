@@ -1,0 +1,186 @@
+{
+  "scope": "Conditional carry compiler and witness-free controller obstruction; complete bound unchanged at 76",
+  "source": {
+    "operations": 13,
+    "multiplications": 7,
+    "additions": 6,
+    "comparisons": 2,
+    "fixed_coefficients": [
+      "a0",
+      "a1",
+      "a2",
+      "a3",
+      "h",
+      "c_start",
+      "c_final"
+    ],
+    "unpaid": "q=3^t and stream bounds; no universal machine claimed",
+    "instructions": [
+      [
+        "p0",
+        "*",
+        "a0",
+        "Z0"
+      ],
+      [
+        "p1",
+        "*",
+        "a1",
+        "Z1"
+      ],
+      [
+        "p2",
+        "*",
+        "a2",
+        "Z2"
+      ],
+      [
+        "p3",
+        "*",
+        "a3",
+        "Z3"
+      ],
+      [
+        "s1",
+        "+",
+        "p0",
+        "p1"
+      ],
+      [
+        "s2",
+        "+",
+        "s1",
+        "p2"
+      ],
+      [
+        "s3",
+        "+",
+        "s2",
+        "p3"
+      ],
+      [
+        "clock",
+        "*",
+        "h",
+        "H"
+      ],
+      [
+        "total1",
+        "+",
+        "s3",
+        "clock"
+      ],
+      [
+        "total2",
+        "+",
+        "total1",
+        "c_start"
+      ],
+      [
+        "endpoint",
+        "*",
+        "q",
+        "c_final"
+      ],
+      [
+        "twiceH",
+        "*",
+        2,
+        "H"
+      ],
+      [
+        "repunit",
+        "+",
+        "twiceH",
+        1
+      ]
+    ]
+  },
+  "carry": {
+    "tuples": 551880,
+    "nonintegral_rejections": 529740
+  },
+  "table": {
+    "local_rank": 6,
+    "local_nullspace": [
+      [
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1
+      ]
+    ],
+    "fixtures": [
+      {
+        "name": "initial_accept",
+        "states": 84,
+        "productive_states": 71,
+        "prefix_length": 10
+      },
+      {
+        "name": "initial_reject",
+        "states": 83,
+        "productive_states": 0
+      },
+      {
+        "name": "undefined",
+        "states": 87,
+        "productive_states": 0
+      },
+      {
+        "name": "stay_accept",
+        "states": 98,
+        "productive_states": 85,
+        "prefix_length": 13
+      },
+      {
+        "name": "left_reject",
+        "states": 94,
+        "productive_states": 81,
+        "prefix_length": 14
+      },
+      {
+        "name": "infinite_stay",
+        "states": 95,
+        "productive_states": 0
+      },
+      {
+        "name": "needs_extra_space",
+        "states": 146,
+        "productive_states": 133,
+        "prefix_length": 22
+      }
+    ]
+  },
+  "scalar_queue": {
+    "symbolic_residuals": 2,
+    "local_transitions": 6300,
+    "arbitrary_flux_tuples": 313404,
+    "admitted_flux_tuples": 498,
+    "input_bound": "floor(max(abs(v),abs(c_final-c_start))/abs(u)) for u!=0"
+  },
+  "grids": {
+    "paths": 660,
+    "prefix_length": 10,
+    "tested_k": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "polynomial_degree": 3,
+    "polynomial_columns": 56,
+    "modular_rank": 56,
+    "prime": 1000003,
+    "affine_determinant": "u^2*s^2",
+    "positive_streams": true,
+    "joint_bound": true
+  },
+  "dependencies": {
+    "explore_delayed_blank_raw_queue.py": "ca198c8a58b6437cddf206c9245e834665b5d0679626978eb5f3ac501ea00123",
+    "explore_constant_length_raw_queue.py": "e63c3f8761e48ad5ad21ec9e225325a3627c07c8221853231173063308c33abc"
+  }
+}
