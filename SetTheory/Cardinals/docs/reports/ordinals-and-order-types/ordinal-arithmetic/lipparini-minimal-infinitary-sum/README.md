@@ -1,7 +1,9 @@
 # The minimal e-monotone infinitary ordinal sum
 
 **An unrefereed proposed solution to Paolo Lipparini's Problem 6.2.**
-Research note prepared with ChatGPT, 19 September 2026.
+Two research notes prepared with ChatGPT on 19 September 2026, consolidated
+on 29 September 2026. The former `lipparini-minimal-operation-formula` report
+is now part of this article.
 
 ## Read first
 
@@ -10,7 +12,7 @@ is `article/explicit_ordinal_sum.tex`. The note proposes an explicit formula
 for the least operation satisfying the weak monotonicity and e-special
 strict monotonicity axioms in arXiv:2505.00424v2 (30 April 2026).
 
-The proof consists of an arithmetic admissibility upper bound and a
+The first proof consists of an arithmetic admissibility upper bound and a
 rank-theoretic minimality lower bound. The one imported theorem about
 infinitary operations is Lipparini's explicit formula and minimality theorem
 for the weaker operation S (Definition 3.1 and Theorem 3.4). That dependency is
@@ -105,3 +107,40 @@ https://arxiv.org/abs/2505.00424v2
 Published counterpart: *A Monotone Infinitary Operation on Ordinals*,
 Mathematical Logic Quarterly 72(2), e70019 (2026).
 https://doi.org/10.1002/malq.70019
+
+## The second proof and implementation
+
+The article also retains the other report's corrected-block proof of the same
+formula, including threshold interpolation and the restoration of finite parts
+of large exceptions. This route avoids the finite-product-rank lemma. Both
+routes still import Lipparini's theorem for the weaker operation S.
+Additional results include exact equality on comparable inputs, cardinality
+preservation, and counterexamples to unrestricted grouping and continuity.
+The finite-cap formulas are the same after shifting exceptional entries by one;
+the alternative predecessor proof is retained, not counted as a new theorem.
+
+- `code/block/ordinals.py` and `code/block/verify.py`: the second implementation,
+  preserved byte for byte and isolated from the first module of the same name.
+- `data/block/verification.json`, `verification.txt`, `quality_report.txt`:
+  unchanged historical evidence from the second package (the quality report
+  describes its original PDF, not the merged PDF).
+- `02-block-proof_audit.md`, `02-block-sources.md`: unchanged source audits.
+- `MERGE_NOTES.md`: source contributions, label concordance, file relocation,
+  duplicate dispositions and validation boundaries.
+
+Run both suites on a copy of this directory so recorded evidence stays unchanged:
+
+```sh
+python code/verify.py --output checks/results.json
+python code/block/verify.py --seed 20260919 --trials 20000 --output data/block/rerun.json
+```
+
+The second recorded audit includes 20,000 comparable-profile pairs, 40,000
+formula comparisons, 24,916 block comparisons, and 994 finite-poset states.
+These categories overlap and must not be added to the first audit as a single
+independent-test count. Each engine covers ordinals below epsilon_0 and assumes
+a certified threshold. Neither suite verifies arbitrary infinite sequences.
+
+The original two manuscripts are recoverable at repository commit `5804c7aff`.
+Their literature searches date to September 19; consolidation did not refresh
+those searches or establish correctness or priority. This is not Lean/Rocq work.

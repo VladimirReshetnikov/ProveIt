@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and thirteen independent mathematical research packages, unpacked
+One hundred and eleven independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and thirteen reports, names the problem each one attacks
+numbers all one hundred and eleven reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -17,7 +17,7 @@ records what each report claims rather than verifying it.
 
 | Category | Reports |
 |---|---:|
-| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 21 |
+| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 19 |
 | [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth | 22 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
@@ -29,7 +29,7 @@ records what each report claims rather than verifying it.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| **Total** | **113** |
+| **Total** | **111** |
 
 ## Later deliveries
 
@@ -225,10 +225,28 @@ separate on inspection: the two Gonshor product-birthday reports prove the same
 bound on domains incomparable in both directions; Cigler's Conjectures 8, 13–15
 and 16 are three separate entries from one paper, as are Athanasiadis–Chapoton's
 Conjectures 4.9, 5.1 and Question 4.6, Chiozini–Csernák–Soukup's Problems 1.2
-and 1.3, and Deb–Sokal's clauses 1.4(c) and 1.4(d).  Three clusters share a
-theorem but not a proof and were left as they are: the two remaining
-friendly-order-type reports, the two Lipparini Problem 6.2 solutions, and
-`finite-alphabet-transfinite-words`.
+and 1.3, and Deb–Sokal's clauses 1.4(c) and 1.4(d).  The earlier sweep kept three clusters separate because their proofs
+differed. The September 29 consolidation below combines the Lipparini pair
+and the transfinite-word pair while retaining both proof routes. The
+friendly-order-type reports remain separate in this pass: their finite
+formula overlaps, but their transfinite continuations and certificate
+frameworks need a dedicated synthesis.
+
+## Consolidation of 29 September 2026
+
+Four maintained reports are now two, representing five original manuscripts:
+
+| Unified report | Merged material retained |
+|---|---|
+| [Minimal infinitary ordinal sum](ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-infinitary-sum/) | Both solutions of Lipparini Problem 6.2: profile/absorption and corrected-block proofs, distinct consequences, both implementations and audits |
+| [Finite-alphabet transfinite words](ordinals-and-order-types/transfinite-words/order-types-below-omega-squared/) | Finite-height atom induction plus the existing two-source guarded-block report: selected-tail classification, exact strata, both lower-bound routes and both computational suites |
+
+The collection now has **111** reports, including **19** in ordinals and order
+types. Old report directories contain redirects. Every existing destination
+label survives; incoming label and support-file mappings are in each report's
+`MERGE_NOTES.md`. Original sources remain recoverable in Git. The
+[consolidation record](CONSOLIDATION.md) states the review scope, decisions and
+fresh validation; it does not upgrade these drafts to formal proofs.
 
 ## Large regenerable artifacts
 

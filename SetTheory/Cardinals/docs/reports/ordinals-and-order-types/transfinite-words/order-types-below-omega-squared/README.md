@@ -1,8 +1,9 @@
-# Guarded periodic blocks and exact maximal order types below omega squared
+# Finite-alphabet transfinite words: exact order types and guarded periodic blocks
 
 Research report prepared with ChatGPT for Vladimir Reshetnikov, September 19, 2026.
 
-**Provenance.** This report merges two independently produced research reports on
+**Provenance.** This report now consolidates three source manuscripts. Its
+original two-source part merged research reports on
 the same question, `order-types-below-omega-squared` and `guarded-periodic-blocks`.
 Both reached the same formula by the same core mechanism, and that shared core is
 proved exactly once here. The two reports diverged at one step, the passage from
@@ -176,3 +177,52 @@ interpreted as unlabeled-poset counts.
 
 No third-party paper PDFs, font files, checksum files, or build intermediates
 are included.
+
+## Finite-height extension (consolidation of 29 September 2026)
+
+The former `finite-alphabet-transfinite-words` report is integrated into this
+article. For a finite poset P with at least two elements and each positive
+finite k, it claims `o(V_k(P)) = omega^(omega^(N_k(P)-1))`, where V_k contains
+words of length strictly less than omega^k. The canonical atom order I_k is
+constructed, with `N_1=|P|` and `N_(k+1)=|P|+J(I_k)-1`. Counting requires the
+actual order, not just the previous cardinality. Empty and one-letter
+alphabets remain explicit exceptions (types 1 and omega^k).
+
+The common height-two formula and extremal theorem occur once; both the
+guarded-tail argument and the height-uniform protected-separator construction
+are retained. The latter does not subsume the former's selected-family theorem,
+exact-length strata, canonical token representatives or elementary alternative
+to the product theorem. The all-height union and infinite alphabets stay outside
+the claims. All results remain unrefereed and unformalized.
+
+Additional preserved files:
+
+- `code/heights/atoms.py`, `omega_words.py`, `verify.py`: the independent
+  canonical-atom and symbolic-word implementation, unchanged.
+- `data/heights/`: all original atom tables, explicit atom posets,
+  `verification.json`, and `references.bib`.
+- `03-heights-proof_audit.md`, `03-heights-source_status.md`: original audits,
+  whose paths and page counts describe the delivered package.
+- `MERGE_NOTES.md`: label and file concordance, scope decisions and provenance.
+
+Run this additional suite on a copy, alongside the existing suite:
+
+```sh
+python code/heights/verify.py --out data/heights
+python code/heights/atoms.py --kind antichain --size 2 --k 3
+```
+
+The height suite's recorded counts include 24 alphabets, 72 atom posets,
+1,922 marker pairs, 10,000 equal-block pairs and 18,000 separator pairs.
+These are separate from the 3,240,040 assertions of the original guarded suite.
+Neither record proves the transfinite theorem. No previous evidence was
+overwritten during the consolidation; fresh runs use scratch copies.
+
+The destination directory retains its historical name so existing links
+continue to work. Its `article.tex` and `article.pdf` now cover both scopes.
+Use the existing build.sh for the whole article. The former build.py compiled
+the retired standalone article and is recoverable in Git at `5804c7aff`, as are
+both original manuscripts. That commit is the editorial snapshot, not a pin
+supplied by the source authors. The source archives are
+`omega2_order_types_proposed_solution.zip`, `ordinal_words_research.zip`, and
+`finite_alphabet_transfinite_words.zip`.

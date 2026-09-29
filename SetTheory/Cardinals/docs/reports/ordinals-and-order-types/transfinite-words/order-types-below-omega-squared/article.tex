@@ -15,13 +15,13 @@
 \definecolor{accent}{HTML}{126B73}
 \definecolor{pale}{HTML}{EEF5F6}
 \hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
-  pdftitle={Guarded periodic blocks and exact maximal order types of words below omega squared},
+  pdftitle={Finite-alphabet transfinite words: exact order types and guarded periodic blocks},
   pdfauthor={ChatGPT, research report prepared for Vladimir Reshetnikov},
   pdfsubject={A proposed solution to Altman's finite-alphabet sharpness question}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textsc{Guarded periodic blocks}}
-\fancyhead[R]{\small\textsc{Exact order types below $\omega^2$}}
+\fancyhead[R]{\small\textsc{Finite-height word orders}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{3pt}
@@ -68,12 +68,26 @@
 \newcommand{\BinaryStages}{14}}
 
 \title{\vspace{-10mm}\color{ink}\LARGE\bfseries
-Guarded periodic blocks and exact maximal order types\\[2mm]
-of words below $\omega^2$\\[3mm]
+Finite-alphabet transfinite words\\[2mm]
+Exact order types and guarded periodic blocks\\[3mm]
 \large A proposed solution to Altman's finite-alphabet\\sharpness question}
 \author{Research report prepared with ChatGPT\\
 \small For Vladimir Reshetnikov}
 \date{September 19, 2026}
+
+
+% Height-uniform notation: V_k is the full language, W(P,F) a selected family.
+\usepackage[nameinlink,noabbrev]{cleveref}
+\newcommand{\Vheight}{\mathcal V}
+\newcommand{\I}{\mathcal I}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\wordlen}[1]{\lvert #1\rvert}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\rankht}{\operatorname{ht}}
+\newcommand{\up}{\mathord{\uparrow}}
+\newcommand{\natprod}{\mathbin{\otimes}}
+\newcommand{\natsum}{\mathbin{\oplus}}
+\newcommand{\nemb}{\npreccurlyeq}
 
 \begin{document}
 \maketitle
@@ -107,40 +121,12 @@ that makes the main theorem independent of that import. Supplementary
 exact-length strata are computed, and they show explicitly why the answer
 cannot be assembled length by length. An exact symbolic embedding algorithm
 with canonical normal forms, negative controls for three invalid shortcuts,
-and a reproducible test suite accompany the proofs.
+and two separately recorded computational suites accompany the proofs.
+The finite-height extension also computes the full word order below every
+$\omega^k$, for positive finite $k$, from canonical finite atom posets.
 \end{abstract}
 
-\begin{resultbox}
-\textbf{Status and scope.} This is a new, unrefereed research argument, not a
-report of an independently certified result, and it has not been checked in a
-proof assistant. All proof steps beyond the explicitly stated classical
-maximal-order-type theorems are supplied below. The specific unresolved
-question was checked in the cited source; the claim of a solution rests on the
-argument given here and not on a claim of exhaustive literature coverage.
-The computer checks test symbolic embeddings, not infinite ordinal ranks.
-The theorem concerns \emph{strictly increasing} embeddings, finite alphabet
-posets, and the strict length cutoff $\omega^2$; it does not settle arbitrary
-alphabets or higher cutoffs.
 
-\medskip
-\textbf{Provenance.} This report merges two independently produced research
-reports on the same question, \texttt{order-types-below-omega-squared} and
-\texttt{guarded-periodic-blocks}. Both reached the same formula by the same
-core mechanism: a finite generating alphabet for the upper bound, cofinal
-synchronization of periodic separators, an excluded-letter guard for proper
-downsets, and a limit-length guard for the universal one. That shared core is
-proved exactly once below. The two reports diverged at one step, the passage
-from the Cartesian-power embeddings to the ordinal lower bound, and both
-arguments are kept: the classical natural-product route in
-Corollaries~\ref{cor:properlevel} and~\ref{cor:fulllevel}, and the elementary
-route of Section~\ref{sec:altroute}. Two different justifications of the
-monotone-surjection principle are likewise both recorded in
-Section~\ref{sec:mot}. Material contributed by the second report, and absent
-from the first, includes the exact-length strata of
-Section~\ref{sec:exact}, the canonical normal forms of
-Section~\ref{sec:canonical}, and the worked negative controls of
-Section~\ref{sec:negative}.
-\end{resultbox}
 
 \vfill
 \noindent\small\textbf{Keywords.} Well-quasi-order; maximal order type;
@@ -157,13 +143,48 @@ finite downset lattice; ordinal arithmetic; natural product.
 \section{The selected question and the result}
 \label{sec:intro}
 
+\begin{resultbox}
+\textbf{Status and scope.} This is a new, unrefereed research argument, not a
+report of an independently certified result, and it has not been checked in a
+proof assistant. All proof steps beyond the explicitly stated classical
+maximal-order-type theorems are supplied below. The specific unresolved
+question was checked in the cited source; the claim of a solution rests on the
+argument given here and not on a claim of exhaustive literature coverage.
+The computer checks test symbolic embeddings, not infinite ordinal ranks.
+The theorems concern \emph{strictly increasing} embeddings and finite
+alphabet posets. The selected-family and exact-stratum results concern
+the strict cutoff $\omega^2$; the full-language theorem also treats every
+finite height. Neither result settles arbitrary alphabets or the all-height union.
+
+\medskip
+\textbf{Provenance.} This article consolidates three source manuscripts.
+The original two-source part merged reports on the same question, \texttt{order-types-below-omega-squared} and
+\texttt{guarded-periodic-blocks}. Both reached the same formula by the same
+core mechanism: a finite generating alphabet for the upper bound, cofinal
+synchronization of periodic separators, an excluded-letter guard for proper
+downsets, and a limit-length guard for the universal one. That shared core is
+proved exactly once below. The two reports diverged at one step, the passage
+from the Cartesian-power embeddings to the ordinal lower bound, and both
+arguments are kept: the classical natural-product route in
+Corollaries~\ref{cor:properlevel} and~\ref{cor:fulllevel}, and the elementary
+route of Section~\ref{sec:altroute}. Two different justifications of the
+monotone-surjection principle are likewise both recorded in
+Section~\ref{sec:mot}. Material contributed by the second report, and absent
+from the first, includes the exact-length strata of
+Section~\ref{sec:exact}, the canonical normal forms of
+Section~\ref{sec:canonical}, and the worked negative controls of
+Section~\ref{sec:negative}. The third manuscript, formerly
+\texttt{finite-alphabet-transfinite-words}, contributes the finite-height
+induction and its separate implementation; see Section~\ref{merge:height-intro}.
+\end{resultbox}
+
 Altman studies finite-image words of bounded transfinite length in
 \cite{Altman2026}. Example~3.15, on printed page~10 of version~2, gives the
 upper bound $\omega^{\omega^4}$ for a two-element antichain and explicitly
 leaves its sharpness unverified. The same example improves the chain's
-upper bound to $\omega^{\omega^3}$. The arXiv record checked for this note
-lists version~2, dated March~10, 2026, as the latest revision. Targeted
-searches did not locate a subsequent resolution; this is a limited
+upper bound to $\omega^{\omega^3}$. The arXiv record checked on September~19, 2026
+listed version~2, dated March~10, 2026, as the latest revision. Targeted
+searches at that time did not locate a subsequent resolution; this is a limited
 literature check, not a guarantee of priority. No claim is made that the
 present literature check excludes every earlier formulation of the general
 finite-poset formula.
@@ -175,8 +196,8 @@ de Jongh--Parikh--Schmidt theory \cite{deJonghParikh1977,Schmidt2020}; the
 underlying well-quasi-order assertion is Higman's lemma \cite{Higman1952}.
 Recent work of Chopra and Pakhomov \cite{ChopraPakhomov2026} studies the limit
 cutoff $\omega^\omega$ through finite trees. The present article addresses the
-finite cutoff $\omega^2$ and the explicitly identified two-letter example, so
-the two lines of work are complementary rather than overlapping.
+finite cutoffs $\omega^k$ and the explicitly identified two-letter example
+at $k=2$; it does not settle the limit cutoff.
 
 This is an attractive problem to attack because the alphabet is tiny, all
 $\omega$-tails have finite descriptions up to embedding, and the candidate
@@ -191,7 +212,7 @@ that $x\le_P y\in D$ implies $x\in D$. Put
 \]
 The empty set is counted in $j(P)$ throughout.
 
-\begin{theorem}[Finite-alphabet formula]\label{thm:main}
+\begin{theorem}[Finite-alphabet formula]\label[theorem]{thm:main}
 Let $P$ be a finite poset with $n=|P|$ elements. With strictly increasing,
 label-respecting subsequence embedding and mutual embeddability quotiented
 out,
@@ -215,7 +236,7 @@ $\omega^2$. Since $P$ is finite, the finite-image superscript is automatic.
 The theorem is proved in Section~\ref{sec:classification} after two product
 embedding lemmas.
 
-\begin{corollary}[The selected binary cases]\label{cor:binary}
+\begin{corollary}[The selected binary cases]\label[corollary]{cor:binary}
 For a two-element antichain $A_2$ and a two-element chain $C_2$,
 \[
  \mot\bigl(\Wordspace {A_2}\bigr)=\omega^{\omega^4},
@@ -264,6 +285,84 @@ the finite-poset formula follow from that construction. The exact-length
 calculations of Section~\ref{sec:exact} are supplementary consequences, not
 the foundation of the main lower bound.
 
+
+\subsection{The finite-height extension and how the reports fit together}
+\label{merge:height-intro}
+The third source, \emph{Exact maximal order types of finite-alphabet
+transfinite words}, was also prepared on 19 September 2026. Its full-language
+formula at height two is precisely Theorem~\ref{thm:main}; its binary values
+and extremal-alphabet characterization are Corollaries~\ref{cor:binary}
+and~\ref{cor:extrema}. Those common statements are not repeated.
+The third source additionally treats every positive finite height. In contrast,
+the selected-family classification, exact-length strata and canonical token
+normalization below remain separate contributions of the two-source report.
+Neither contains the other in its full scope.
+
+To prevent a collision, write $\Vheight_k(P)$ for all words of length less
+than $\omega^k$, including the empty word, and reserve $\W(P,\F)$ for the
+selected periodic-tail families. Thus $\Vheight_2(P)=\Wordspace P$ up to the
+same mutual-embedding quotient. The third source wrote $\mathcal W_k$ for
+$\Vheight_k$. Its $J(P)$ and the earlier $j(P)$ both count all downsets,
+including the empty one. Its periodic node $\Omega(S)$ repeats maximal
+generators; at height one it is equivalent to the all-elements representative
+$B_{\down S}$. Natural and ordinary powers retain their distinct meanings.
+
+The following theorem is proved in
+Sections~\ref{height:sec:atoms}--\ref{height:sec:mainproof}.
+The height-uniform proof uses protected final segments and product layers;
+the earlier proof uses finite guards for proper downsets and limit padding
+for the universal downset. The elementary alternative in
+Section~\ref{sec:altroute} removes the product-theorem import only from the
+height-two main result, not from the displayed higher-height proof or the
+exact-stratum calculus. All three manuscripts remain unrefereed and
+unformalized; consolidation does not establish priority or refresh their
+September 19 literature searches.
+
+Precise definitions follow in \cref{sec:prelim,height:sec:atoms}. For now,
+$\I_k(P)$ denotes the poset of equivalence classes of nonempty
+indecomposable $P$-words of lengths
+\[
+  1,\ \omega,\ \omega^2,\ \ldots,\ \omega^{k-1},
+\]
+and $N_k(P)=|\I_k(P)|$. A word is \emph{indecomposable} here when it is
+mutually embeddable with every nonempty final segment of itself.
+
+\begin{theorem}[Finite-alphabet exactness]\label[theorem]{height:thm:main}
+Let $P$ be a finite poset with $n\ge2$ elements, and let $k\ge1$ be finite.
+Then $\I_k(P)$ is finite and
+\begin{equation}\label{height:eq:main}
+  \boxed{\mot(\Vheight_k(P))=\omega^{\omega^{N_k(P)-1}}.}
+\end{equation}
+Writing $J(R)$ for the number of order ideals of a finite poset $R$,
+including the empty ideal, the numbers are computed by
+\begin{equation}\label{height:eq:recurrence-intro}
+  \I_0(P)=\varnothing,\qquad N_1(P)=n,\qquad
+  N_{k+1}(P)=n+J(\I_k(P))-1.
+\end{equation}
+The recurrence requires the actual order on $\I_k(P)$, not just its cardinality.
+\end{theorem}
+
+The full proof is in \cref{height:sec:mainproof}. Two consequences can already be stated.
+
+\begin{corollary}[Necessary exceptional cases]\label[corollary]{height:cor:exception}
+For the empty alphabet, $\mot(\Vheight_k(\varnothing))=1$.
+For the one-element alphabet,
+\[
+  \mot(\Vheight_k(1))=\omega^k.
+\]
+A finite quasi-order is first replaced by its quotient under mutual comparison;
+the number of classes, not the number of original labels, determines whether
+these exceptions apply.
+\end{corollary}
+
+\begin{proof}
+There is only the empty word over the empty alphabet. Over one letter,
+a word is determined by its length up to equivalence, and embedding is
+exactly ordinal comparison of lengths. The set of lengths less than
+$\omega^k$ has order type $\omega^k$.
+\end{proof}
+
+
 \section{Definitions and classical inputs}
 \label{sec:prelim}
 
@@ -294,7 +393,7 @@ same remark explains why finite material preceding an infinite block can
 disappear from the \emph{length} expression, by $k+\omega=\omega$, while its
 labels may still matter for embeddability.
 
-\begin{lemma}[Concatenation is monotone]\label{lem:concat}
+\begin{lemma}[Concatenation is monotone]\label[lemma]{lem:concat}
 If $u_i\emb v_i$ for $0\le i<r$, where $r$ is finite, then
 $u_0\cdots u_{r-1}\emb v_0\cdots v_{r-1}$.
 \end{lemma}
@@ -318,7 +417,7 @@ poset. The existence of this maximum, its characterization by the tree of
 bad finite sequences, and the product theorem below are classical
 \cite{deJonghParikh1977}. We use the following precise inputs.
 
-\begin{theorem}[Classical maximal-order-type calculus]\label{thm:classical}
+\begin{theorem}[Classical maximal-order-type calculus]\label[theorem]{thm:classical}
 For well-quasi-orders $X,Y$:
 \begin{enumerate}[label=\textnormal{(\roman*)}]
 \item An order embedding $X\hookrightarrow Y$ implies $\mot(X)\le\mot(Y)$.
@@ -423,7 +522,7 @@ For a nonempty downset $D=\{d_0,\ldots,d_{t-1}\}$, fix a periodic word
 The chosen enumeration is immaterial up to $\eqv$: every element of $D$
 appears infinitely often in every such representative.
 
-\begin{lemma}[Comparison of periodic blocks]\label{lem:blocks}
+\begin{lemma}[Comparison of periodic blocks]\label[lemma]{lem:blocks}
 For nonempty downsets $D,E$ and a letter $a\in P$,
 \[
  a\emb B_D\ \Longleftrightarrow\ a\in D,
@@ -461,7 +560,7 @@ $\down R$ gives equivalent $\omega$-words. In the less immediate direction,
 each $x\in\down R$ can be matched to an element $r\in R$ above it, and each
 such $r$ recurs infinitely often.
 
-\begin{remark}[Repeating only the maximal elements]\label{rem:maxblock}
+\begin{remark}[Repeating only the maximal elements]\label[remark]{rem:maxblock}
 Let $\Max D$ denote the set of maximal elements of a nonempty downset $D$.
 Applying the previous paragraph with $R=\Max D$, whose downset is $D$, gives
 \[
@@ -472,7 +571,9 @@ repeating $\Max D$ rather than all of $D$. The two conventions are
 interchangeable everywhere below, and we keep the all-elements block $B_D$ of
 \eqref{eq:block} as the official definition. Where a proof below inspects the
 letters of a block, it only ever uses that the letters lie in $D$ and that
-every element of $D$ recurs, which both representatives satisfy.
+every element of $D$ is dominated by a recurrent letter. Both
+representatives have this property; literal recurrence of every element of
+$D$ holds only for the all-elements representative.
 \end{remark}
 
 \subsection{Reduction of arbitrary words}
@@ -492,7 +593,7 @@ The following periodic-tail reduction is standard; compare
 \cite[Propositions~3.3--3.4]{Altman2026}. A proof is included to specify
 exactly which equivalence is needed.
 
-\begin{lemma}[Finite prefix and recurrent tail]\label{lem:recurrent}
+\begin{lemma}[Finite prefix and recurrent tail]\label[lemma]{lem:recurrent}
 Every word $u:\omega\to P$ is equivalent to $vB_D$ for some finite word
 $v\in P^*$ and some nonempty downset $D$; one may take $D=I(u)$.
 \end{lemma}
@@ -515,7 +616,7 @@ The prefix can be normalized further, and the strengthened form is what the
 canonical representatives of Section~\ref{sec:canonical} and the exact-length
 computations of Section~\ref{sec:exact} require.
 
-\begin{lemma}[One-block normal form]\label{lem:oneblock}
+\begin{lemma}[One-block normal form]\label[lemma]{lem:oneblock}
 Every word $u:\omega\to P$ is equivalent to $pB_D$ with $D=I(u)$, where the
 finite word $p$ may in addition be required to be empty or to end in a letter
 outside $D$.
@@ -527,7 +628,7 @@ put $p=\eps$, or there is a last such occurrence, in which case let $p$ be the
 prefix ending at that occurrence. In both cases write $u=pt$ with every label
 of $t$ inside $D$.
 
-Every element of $D$ still recurs in $t$: given $d\in D$ there is, by
+Every element of $D$ is still dominated by a recurrent letter in $t$: given $d\in D$ there is, by
 $D=\down\rec(u)$, a recurrent $b\ge_P d$, and only finitely many positions
 were removed with $p$, so $b$ still recurs in $t$. Greedy matching of the
 labels of $t$ to dominating occurrences gives $t\emb B_D$, and matching each
@@ -535,7 +636,7 @@ requested $d\in D$ to a later occurrence of such a $b$ gives $B_D\emb t$.
 Hence $t\eqv B_D$, and concatenation gives $u\eqv pB_D$.
 \end{proof}
 
-\begin{proposition}[Finite representation]\label{prop:representation}
+\begin{proposition}[Finite representation]\label[proposition]{prop:representation}
 Every word of length less than $\omega^2$ is equivalent to a finite
 concatenation of one-letter words and blocks $B_D$, with
 $\varnothing\ne D\in\J(P)$. More precisely, a word of length $\omega r+k$ is
@@ -567,7 +668,7 @@ uses knowledge of which letters recur. The algorithm of
 Section~\ref{sec:algorithm} takes finite expressions as input; it is not an
 algorithm for discovering recurrence in an arbitrary stream.
 
-\begin{definition}[Selected families]\label{def:selected}
+\begin{definition}[Selected families]\label[definition]{def:selected}
 For $\F\subseteq\J(P)\setminus\{\varnothing\}$, let $\W(P,\F)$ be the
 quasi-order of all finite concatenations of letters in $P$ and periodic
 blocks $B_D$ with $D\in\F$, using actual ordinal-word embeddability.
@@ -579,7 +680,7 @@ In particular, $\W(P,\varnothing)=P^*$, and
 $\W(P,\J(P)\setminus\{\varnothing\})$ has the same quotient order as
 $\Wordspace P$ by Proposition~\ref{prop:representation}.
 
-\begin{remark}[An intrinsic description of $\W(P,\F)$]\label{rem:intrinsic}
+\begin{remark}[An intrinsic description of $\W(P,\F)$]\label[remark]{rem:intrinsic}
 Definition~\ref{def:selected} is syntactic, but the resulting class of words
 has an intrinsic description: up to equivalence, $\W(P,\F)$ consists exactly
 of those words below $\omega^2$ each of whose canonical $\omega$-blocks has
@@ -589,7 +690,7 @@ Lemma~\ref{lem:oneblock} gives the converse by rewriting each block as
 $pB_D$ with $D=I(u)\in\F$.
 \end{remark}
 
-\begin{proposition}[Atom-count upper bound]\label{prop:upper}
+\begin{proposition}[Atom-count upper bound]\label[proposition]{prop:upper}
 For $n=|P|\ge1$ and $m=|\F|$,
 \begin{equation}\label{eq:upper}
  \mot(\W(P,\F))\le H_{n+m}.
@@ -620,7 +721,7 @@ expression need not be a canonical decomposition of its ordinal length.
 Nevertheless, each displayed $B_E$ occupies a convex interval of order type
 $\omega$, and there are only finitely many displayed tokens.
 
-\begin{lemma}[Cofinal localization]\label{lem:cofinal}
+\begin{lemma}[Cofinal localization]\label[lemma]{lem:cofinal}
 Suppose a periodic block $B_D$ embeds into a finite token expression $v$.
 Then a tail of its image lies in one displayed target block $B_E$, is
 cofinal in that block, and satisfies $D\subseteq E$.
@@ -643,7 +744,7 @@ lie above every image point of $B_D$. Since those points are cofinal in the
 target $B_E$, no position of that target block remains available.
 \end{proof}
 
-\begin{remark}[A block may straddle earlier blocks]\label{rem:straddle}
+\begin{remark}[A block may straddle earlier blocks]\label[remark]{rem:straddle}
 The lemma does not say that the entire source block lands in a single
 target block. An initial finite part can be placed earlier. Only the tail
 is localized. All subsequent proofs use this weaker, correct statement.
@@ -655,7 +756,7 @@ compatible because their hypotheses differ, and nothing in
 Lemma~\ref{lem:equalblocks} retracts the present remark.
 \end{remark}
 
-\begin{remark}[The role of explicit segments]\label{rem:explicit}
+\begin{remark}[The role of explicit segments]\label[remark]{rem:explicit}
 A displayed token $B_E$ inside an expression need not begin at a canonical
 $\omega$-block boundary of the word it denotes: if a finite word precedes it,
 its pure periodic segment starts at a finite offset inside the corresponding
@@ -669,7 +770,7 @@ Remark~\ref{rem:straddle}, which is about a \emph{source} block straddling
 earlier target blocks.
 \end{remark}
 
-\begin{lemma}[Equal-count synchronization]\label{lem:sync}
+\begin{lemma}[Equal-count synchronization]\label[lemma]{lem:sync}
 Let $D$ be a nonempty downset, and suppose an old family $\G$ satisfies
 \begin{equation}\label{eq:newness}
   D\nsubseteq E\qquad\text{for every }E\in\G.
@@ -690,7 +791,7 @@ A strictly increasing injection from $\{1,\ldots,r\}$ into itself is the
 identity. This proves the claim.
 \end{proof}
 
-\begin{corollary}[Location between synchronized boundaries]\label{cor:between}
+\begin{corollary}[Location between synchronized boundaries]\label[corollary]{cor:between}
 In the situation of Lemma~\ref{lem:sync}, write the source expression as
 $b_0B_Db_1B_D\cdots B_Db_r$ and the target as $d_0B_Dd_1B_D\cdots B_Dd_r$,
 with all $b_i,d_i$ in $\W(P,\G)$. Then, for each $i$:
@@ -726,7 +827,7 @@ distinct set of no larger size. The full downset $P$, when present, is last.
 \section{Proper markers: finite guards give product embeddings}
 \label{sec:proper}
 
-\begin{lemma}[Right cancellation of a final letter]\label{lem:cancel}
+\begin{lemma}[Right cancellation of a final letter]\label[lemma]{lem:cancel}
 For arbitrary ordinal words $u,v$ and any fixed letter $c$,
 \[
  uc\emb vc\quad\Longrightarrow\quad u\emb v.
@@ -738,7 +839,7 @@ letter. Every position belonging to $u$ maps strictly before that image,
 hence inside the target prefix $v$. Restrict the embedding.
 \end{proof}
 
-\begin{theorem}[Proper-marker product embedding]\label{thm:proper}
+\begin{theorem}[Proper-marker product embedding]\label[theorem]{thm:proper}
 Let $D$ be a nonempty proper downset of $P$, and let $\G$ satisfy
 \eqref{eq:newness}. Choose $c\in P\setminus D$ and put
 $X=\W(P,\G)$, $Y=\W(P,\G\cup\{D\})$. For every $r\ge1$, the map
@@ -780,7 +881,7 @@ the explicitly displayed target guard. The proof only needs the fact that
 it lies no later than that guard. This is important when old components
 already contain many occurrences of $c$ or old infinite blocks.
 
-\begin{corollary}[One proper marker raises the level]\label{cor:properlevel}
+\begin{corollary}[One proper marker raises the level]\label[corollary]{cor:properlevel}
 Under the hypotheses of Theorem~\ref{thm:proper}, if
 $\mot(X)=H_N$ and $n+|\G|=N$, then $\mot(Y)=H_{N+1}$.
 \end{corollary}
@@ -806,7 +907,7 @@ The remedy is to end the component with a cancellable \emph{infinite} tail.
 
 \subsection{A cancellable map into limit lengths}
 
-\begin{lemma}[Limit padding]\label{lem:padding}
+\begin{lemma}[Limit padding]\label[lemma]{lem:padding}
 Let $E$ be a nonempty proper downset of $P$, and choose $c\notin E$.
 The map
 \begin{equation}\label{eq:padding}
@@ -832,7 +933,7 @@ which is a nonzero limit ordinal. The family assertion follows from the
 explicit concatenation.
 \end{proof}
 
-\begin{lemma}[No infinite tail fits below a finite bound]\label{lem:noleak}
+\begin{lemma}[No infinite tail fits below a finite bound]\label[lemma]{lem:noleak}
 Let $u$ have nonzero limit length below $\omega^2$. Suppose an embedding
 maps all of $u$ to positions preceding a fixed position $\eta$ inside a
 target interval of order type $\omega$. Then no position of $u$ can map
@@ -863,7 +964,7 @@ them.
 
 \subsection{The product embedding}
 
-\begin{theorem}[Universal-marker product embedding]\label{thm:full}
+\begin{theorem}[Universal-marker product embedding]\label[theorem]{thm:full}
 Let $\G$ consist of nonempty proper downsets of $P$, with
 $\G\ne\varnothing$. Choose $E\in\G$ and the map $G$ from
 Lemma~\ref{lem:padding}. Put
@@ -904,7 +1005,7 @@ $u_r\emb v_r$, completing product reflection.
 \end{proof}
 
 \begin{corollary}[One universal marker raises the level when padding exists]
-\label{cor:fulllevel}
+\label[corollary]{cor:fulllevel}
 Under the hypotheses of Theorem~\ref{thm:full}, if
 $\mot(X)=H_N$ and $n+|\G|=N$, then $\mot(Y)=H_{N+1}$.
 \end{corollary}
@@ -926,7 +1027,7 @@ Theorems~\ref{thm:proper} and~\ref{thm:full} differ only in which guard map is
 attached to a component. It is convenient, and it is what the quick reference
 of Appendix~\ref{app:quickref} states, to record them as a single theorem.
 
-\begin{theorem}[Unified guarded product embedding]\label{thm:product}
+\begin{theorem}[Unified guarded product embedding]\label[theorem]{thm:product}
 Let $D$ be a nonempty downset not in $\G$ with $D\nsubseteq E$ for every
 $E\in\G$, and assume either
 \begin{enumerate}[label=\textnormal{(\roman*)}]
@@ -973,7 +1074,7 @@ component is handled by Corollary~\ref{cor:between}(c). Reflection of $g_D$
 then gives $u_i\emb v_i$ for every $i$.
 \end{proof}
 
-\begin{remark}[Guarding the final component or not]\label{rem:lastguard}
+\begin{remark}[Guarding the final component or not]\label[remark]{rem:lastguard}
 Theorem~\ref{thm:product} guards \emph{every} component, including the last
 one, whereas the maps $\Phi_r$ of \eqref{eq:propermap} and $\Psi_r$ of
 \eqref{eq:fullmap} leave the final component $u_r$ unguarded. Both conventions
@@ -998,7 +1099,7 @@ the only consequence of it that the main theorem needs, and the route is
 recorded here in full because it changes the hypotheses of the main theorem
 rather than merely restating it.
 
-\begin{lemma}[Finite powers amplify a maximal order type]\label{lem:power}
+\begin{lemma}[Finite powers amplify a maximal order type]\label[lemma]{lem:power}
 For every well-quasi-order $X$ and every finite $r\ge1$,
 \begin{equation}\label{eq:lexlower}
  \mot(X^r)\ \ge\ \mot(X)^r,
@@ -1021,7 +1122,7 @@ $X^r$, and \eqref{eq:lexlower} follows from the definition of $\mot$.
 \end{proof}
 
 \begin{corollary}[One new block raises one Higman level, elementarily]
-\label{cor:altlevel}
+\label[corollary]{cor:altlevel}
 Let $X=\W(P,\G)$ and $Y=\W(P,\G\cup\{D\})$ be as in
 Theorem~\ref{thm:product}, and suppose $\mot(X)=\Hn N$ with $n+|\G|=N$. Then
 $\mot(Y)=\Hn{N+1}$.
@@ -1053,7 +1154,7 @@ elementary bound \eqref{eq:lexlower} does not supply.
 \section{The full classification and the main theorem}
 \label{sec:classification}
 
-\begin{theorem}[Selected-tail classification]\label{thm:family}
+\begin{theorem}[Selected-tail classification]\label[theorem]{thm:family}
 Let $P$ be a nonempty finite poset of size $n$, and let
 $\F\subseteq\J(P)\setminus\{\varnothing\}$.
 \begin{enumerate}[label=\textnormal{(\roman*)}]
@@ -1319,7 +1420,7 @@ The article asserts the necessity of $D\nsubseteq E$ in prose several times;
 
 \subsection{Chains, antichains, and extremal values}
 
-\begin{corollary}\label{cor:extrema}
+\begin{corollary}\label[corollary]{cor:extrema}
 For $n\ge2$,
 \[
  \mot\bigl(\Wordspace {C_n}\bigr)=\omega^{\omega^{2n-1}},
@@ -1413,6 +1514,991 @@ number of equivalence classes and $j$ equal to the number of downsets of
 the quotient poset. Counting raw labels instead of classes can give an
 incorrect answer.
 
+
+\section{Finite-height ordinal accounting}\label{height:sec:accounting}
+The common word, quotient and maximal-order-type conventions are those of
+Section~\ref{sec:prelim}. We use two additional explicit facts:
+\begin{equation}\label{height:eq:lengthmonotone}
+ u\emb v\ \Longrightarrow\ |u|\le |v|,
+ \qquad u\equiv v\ \Longrightarrow\ |u|=|v|.
+\end{equation}
+An increasing injection between ordinals implies the first inequality;
+apply it in both directions for the second. In addition to the product
+and disjoint-union identities in Theorem~\ref{thm:classical}, the classical
+residual calculus gives
+\begin{equation}\label{height:eq:wqocalculus}
+ \mot(X)=\sup_{x\in X}\bigl(\mot(X\setminus\up x)+1\bigr).
+\end{equation}
+Here an order-reflecting map into a wqo gives a lower bound for the target
+maximal order type. The finite-alphabet Higman formula used in both routes
+is Equation~\eqref{eq:finiteword}; a derivation from the classical residual
+calculus is supplied in Section~\ref{height:app:higman}.
+
+\subsection{The ordinal amplification identity}
+
+The numerical calculation used repeatedly below is simple but important.
+For $m,d\ge1$,
+\begin{equation}\label{height:eq:power}
+  H_m^{\otimes d}=\omega^{\omega^{m-1}\cdot d}.
+\end{equation}
+Indeed, multiplying monomials naturally adds their exponents naturally,
+and the natural sum of $d$ copies of $\omega^{m-1}$ is
+$\omega^{m-1}\cdot d$. The countable \emph{ordinary} ordinal sum satisfies
+\begin{equation}\label{height:eq:amplify}
+  \sum_{d=1}^{\infty}H_m^{\otimes d}
+  =\omega^{\omega^{m-1}\cdot\omega}
+  =\omega^{\omega^m}=H_{m+1}.
+\end{equation}
+The same expression is obtained by indexing $d=m'+1$ for $m'\ge0$.
+No countable natural product is being invoked.
+
+\begin{lemma}[Layered products]\label[lemma]{height:lem:layers}
+Suppose a wqo $Y$ contains induced copies $Y_d$ of $E^d$ for all $d\ge1$,
+where $\mot(E)=H_m$. Suppose the copies are pairwise disjoint on the
+quotient and
+\[
+  x\in Y_d,\ y\in Y_e,\ x\le y\quad\Longrightarrow\quad d\le e.
+\]
+Then $\mot(Y)\ge H_{m+1}$.
+\end{lemma}
+
+\begin{proof}
+For each $d$, choose a maximal linear extension of $Y_d$. Order the layers
+by increasing $d$ and use the chosen extension within each layer.
+The hypothesis guarantees that this is a linear extension of their
+\emph{induced union}. Its order type is the left side of
+\eqref{height:eq:amplify}, by the product rule. The induced union is a suborder of
+$Y$, so its type gives a lower bound for $\mot(Y)$.
+There is no assertion that this particular linear extension must extend
+to all of $Y$ with the same type.
+\end{proof}
+
+\section{Canonical indecomposables at finite height}\label{height:sec:atoms}
+
+This section supplies a self-contained bounded-height normal form.
+It is included to make the integer $N_k(P)$ effective and to identify
+precisely which generators are used by the lower-bound proof. The general
+tree/sequence correspondence is established in \cite{ChopraPakhomov2026}.
+
+\subsection{Indecomposability and finite concatenations}
+
+For a word $u\colon\alpha\to P$ and $\xi<\alpha$, its tail at $\xi$ is
+the restriction to $[\xi,\alpha)$, reindexed by that interval's order type.
+
+\begin{definition}
+A nonempty word $u$ is indecomposable if it is equivalent to every one of
+its nonempty tails.
+\end{definition}
+
+If $|u|<\omega^k$ and $u$ is indecomposable, then $|u|=\omega^r$ for some
+$r<k$. To see this, write $|u|$ in Cantor normal form. Unless it is a single
+power of $\omega$ with coefficient one, it has a nonempty tail of smaller
+order type. That contradicts \eqref{height:eq:lengthmonotone}.
+The property is invariant under equivalence: an embedding between two
+words of the same indecomposable ordinal length is cofinal, so a tail in
+one word receives a tail of the other.
+
+\begin{lemma}[An indecomposable lands in one factor]\label[lemma]{height:lem:onefactor}
+If $z$ is indecomposable and
+\[
+  z\emb u_1u_2\cdots u_t
+\]
+for a finite list of words, then $z\emb u_i$ for some $i$.
+\end{lemma}
+
+\begin{proof}
+Among the finitely many target factors met by the embedding, choose the
+last one. From any source position whose image lies in that factor onward,
+all source positions map into the same factor. Thus a nonempty tail of
+$z$ embeds in it. That tail is equivalent to $z$.
+\end{proof}
+
+The lemma does not say that the original embedding places the entire
+source inside one factor. It says that \emph{some} embedding does so.
+This distinction will also matter for separators.
+
+\subsection{Periodic terms and their order}
+
+Start with a leaf $p$ of height zero for each $p\in P$.
+Given a finite nonempty set $S$ of previously constructed terms, introduce
+\[
+  \Omega(S),\qquad
+  \rankht(\Omega(S))=1+\max_{s\in S}\rankht(s).
+\]
+We will retain only sets $S$ that are antichains under the already defined
+term order. Choose any enumeration $S=\{s_1,\ldots,s_t\}$ and define
+\begin{equation}\label{height:eq:evaluation}
+  \ev(p)=p,\qquad
+  \ev(\Omega(S))=
+  \bigl(\ev(s_1)\cdots\ev(s_t)\bigr)^\omega.
+\end{equation}
+The particular enumeration changes neither the embedding class nor the
+comparison rule below. Every evaluation is indecomposable, and
+\begin{equation}\label{height:eq:heightlength}
+  |\ev(s)|=\omega^{\rankht(s)}.
+\end{equation}
+For a node, every tail contains all sufficiently late complete periods,
+which proves indecomposability. The length calculation follows by taking
+the largest height among the finitely many factors of a period and then
+multiplying the period length by $\omega$ on the right.
+
+\begin{proposition}[Comparison of periodic terms]\label[proposition]{height:prop:comparison}
+The following recursive rules agree exactly with semantic embedding:
+\begin{align}
+  p\le q &\quad\Longleftrightarrow\quad p\le_P q,
+       \label{height:eq:leafleaf}\\
+  p\le\Omega(T) &\quad\Longleftrightarrow\quad
+       (\exists t\in T)\ p\le t,
+       \label{height:eq:leafnode}\\
+  \Omega(S)\le p &\quad\text{never},
+       \label{height:eq:nodeleaf}\\
+  \Omega(S)\le\Omega(T) &\quad\Longleftrightarrow\quad
+       (\forall s\in S)(\exists t\in T)\ s\le t.
+       \label{height:eq:nodenode}
+\end{align}
+In particular, comparison terminates by descending to lower-height terms.
+\end{proposition}
+
+\begin{proof}
+The leaf rules follow directly from the presence or absence of a suitable
+letter. A positive-height word cannot embed into a word of length one.
+
+For necessity in \eqref{height:eq:nodenode}, fix one occurrence of a source factor
+$\ev(s)$ inside a period of $\ev(\Omega(S))$. There is a later source
+position, so the image of this factor is bounded in the target word.
+A bounded initial segment of a countable repetition of a finite period
+meets only finitely many complete or partial periods. Therefore
+$\ev(s)$ embeds into a finite concatenation of target factors $\ev(t)$.
+By \cref{height:lem:onefactor}, it embeds into one of them. This holds for each
+$s\in S$.
+
+Conversely, choose for each $s$ a suitable $t$ with $s\le t$.
+Place successive source factors into suitably chosen target factors in
+successive fresh target periods. Repeating this construction through
+$\omega$ source periods gives an embedding. The argument with $S=T$
+but different enumerations proves independence of the enumeration.
+\end{proof}
+
+For a finite set $S$ of terms, remove every element strictly below another
+element of $S$, retaining the maximal elements. This changes neither side
+of the Hoare comparison in \eqref{height:eq:nodenode}. Thus every node has an
+antichain-reduced form. Moreover, if two finite antichains dominate one
+another, then they are equal: for $s\in S$, choose $t\in T$ and $s'\in S$
+with $s\le t\le s'$; the antichain property forces $s=s'$, and
+antisymmetry forces $s=t$.
+
+Induction on height now proves that the reduced terms form a genuine
+poset, with no distinct but equivalent terms. Leaves and nodes cannot be
+equivalent because their lengths differ.
+
+\subsection{Completeness and finiteness}
+
+\begin{theorem}[Finite decomposition and canonical atoms]\label[theorem]{height:thm:normalform}
+For every finite $P$ and integer $k\ge1$:
+\begin{enumerate}
+\item there are finitely many reduced terms of height less than $k$;
+\item every $P$-word of length less than $\omega^k$ is equivalent to a
+finite concatenation of evaluations of these terms;
+\item every indecomposable word of length $\omega^r$, $r<k$, is equivalent
+to exactly one reduced term of height $r$.
+\end{enumerate}
+Consequently those terms, with the order in \cref{height:prop:comparison}, are
+precisely $\I_k(P)$.
+\end{theorem}
+
+\begin{proof}
+For $k=1$ the words are finite and the only indecomposables are letters.
+Assume the result through height $r-1$ and consider a word $u$ of length
+$\omega^r$, where $r\ge1$.
+
+Partition its domain into $\omega$ consecutive intervals of length
+$\omega^{r-1}$. By induction, each resulting block is equivalent to a
+finite nonempty list of lower-height atoms. Replacing all blocks by those
+lists and flattening yields an $\omega$-indexed list of atoms of heights
+at most $r-1$. There are only finitely many available atom types.
+
+Let $S$ be the nonempty set of types occurring infinitely often in that
+list. Delete a finite initial part containing all occurrences of every
+type outside $S$. The remaining list is equivalent to a cyclic repetition
+of $S$: map each of its successive entries into a fresh target period in
+one direction, and choose successive sufficiently late occurrences of the
+required entries in the other. Replacing $S$ by its maximal elements
+gives a reduced node $\Omega(S)$.
+
+Every original block has length $\omega^{r-1}$, so its finite factorization
+must contain an atom of height $r-1$. Finitely many types are available;
+hence some such type recurs infinitely often. Therefore the reduced set
+$S$ still has maximal height $r-1$, and its node has height $r$.
+We have shown that $u$ is equivalent to a finite lower-height prefix
+followed by one atom of height $r$.
+
+If $u$ itself is indecomposable, it is equivalent to that last atom.
+One way to justify this without assuming a particular factorization of
+$u$ is to use \cref{height:lem:onefactor}: the finite prefix factors have length
+less than $\omega^r$, so $u$ cannot embed into them. It must embed into
+the final atom, which already embeds into $u$.
+
+For an arbitrary ordinal $\alpha<\omega^{r+1}$, split $\alpha$ into finitely
+many blocks of length $\omega^r$ and one remainder of smaller length.
+The preceding argument handles the blocks and induction handles the
+remainder. This proves finite decomposition at the next level.
+There are only finitely many nonempty antichains of the finite poset of
+lower-height terms, so there are finitely many new terms. Uniqueness and
+exact comparison follow from \cref{height:prop:comparison} and antichain reduction.
+\end{proof}
+
+\subsection{The exact atom-count recurrence}
+
+Every order ideal of a finite poset is determined by its antichain of
+maximal elements, and every antichain determines an ideal. Empty objects
+correspond to one another. Thus $J(R)$ also counts the antichains of $R$.
+
+All nonleaf terms of height at most $k$ are in bijection with the nonempty
+antichains of $\I_k(P)$. This includes lower-height nodes already present:
+a node with lower-height children is the same node, not a new copy.
+Adding the $n$ leaves gives
+\begin{equation}\label{height:eq:count}
+  N_{k+1}(P)=n+J(\I_k(P))-1.
+\end{equation}
+Equivalently, the number of \emph{new} height-$k$ atoms is
+$J(\I_k(P))-J(\I_{k-1}(P))$. This formulation avoids double-counting old nodes.
+
+\begin{corollary}[The finite-generator upper bound]\label[corollary]{height:cor:upper}
+If $P$ is nonempty, then
+\[
+  \mot(\Vheight_k(P))\le H_{N_k(P)}.
+\]
+More generally, if $B$ is any finite nonempty set of distinct indecomposable
+word classes and $\Lcal(B)$ is its finite-concatenation language, then
+$\mot(\Lcal(B))\le H_{|B|}$.
+\end{corollary}
+
+\begin{proof}
+Concatenation gives a monotone map from $B^*$ onto $\Lcal(B)$ up to
+equivalence. Apply the Higman formula and the monotone-surjection rule.
+For $B=\I_k(P)$, \cref{height:thm:normalform} identifies the image with $\Vheight_k(P)$.
+The same argument proves that all these languages are wqo.
+\end{proof}
+
+\section{Cofinal blocks and protected final segments}\label{height:sec:blocks}
+
+Fix throughout this section
+\[
+  \lambda=\omega^r,\qquad 1\le r<\omega.
+\]
+Every nonempty final interval of $\lambda$ has order type $\lambda$.
+Every bounded initial interval of $\lambda$ has order type less than
+$\lambda$. It follows that an increasing embedding of a word of length
+$\lambda$ into another word of that length has cofinal image.
+
+\subsection{The equal-block principle}
+
+\begin{lemma}[Equal blocks force coordinate preservation]\label[lemma]{height:lem:equalblocks}
+Let $u_1,\ldots,u_d$ and $v_1,\ldots,v_d$ be words, all of length exactly
+$\lambda$. Then
+\begin{equation}\label{height:eq:equalblocks}
+  u_1\cdots u_d\emb v_1\cdots v_d
+  \quad\Longleftrightarrow\quad
+  u_i\emb v_i\text{ for every }i.
+\end{equation}
+More generally, an embedding from $d$ such blocks into $e$ such blocks
+requires $d\le e$.
+\end{lemma}
+
+\begin{proof}
+For each source block, consider the last target block it meets. A tail of
+the source block lies entirely in that target block. Its length is still
+$\lambda$, so its image is cofinal there. Successive source blocks must
+therefore have strictly increasing last target blocks: a later source
+position cannot be placed after a cofinal image while remaining in the
+same target block. This proves $d\le e$.
+
+When $d=e$, the strictly increasing assignment from source block indices
+to their last target block indices must be the identity. The first source
+block is contained in the first target block. After its cofinal image,
+no position of the second source block can lie in the first target block;
+and its last target block is the second. Continue inductively. Thus each
+source block lies wholly in its corresponding target block, proving
+necessity in \eqref{height:eq:equalblocks}. Sufficiency is componentwise
+concatenation of embeddings.
+\end{proof}
+
+Indecomposability of the individual words is not assumed in this lemma.
+Their common ordinal length supplies the necessary cofinality.
+Equal numbers of blocks, however, are essential to its coordinate conclusion.
+
+\subsection{The protection condition}
+
+\begin{definition}
+A word is \emph{$\lambda$-ended} if its length is $\lambda d$ for some
+positive finite integer $d$.
+\end{definition}
+
+Every nonempty tail of a $\lambda$-ended word has order type at least
+$\lambda$. More precisely, its length is $\lambda e$ for some positive
+finite $e$. A tail may contain several remaining $\lambda$-blocks; it
+need not have length exactly $\lambda$.
+
+\begin{lemma}[No bounded spill into a protected block]\label[lemma]{height:lem:nospill}
+Let $u$ be $\lambda$-ended, and let $z$ have length $\lambda$.
+In an embedding, a nonempty tail of $u$ cannot be mapped into a bounded
+initial interval of a target occurrence of $z$.
+\end{lemma}
+
+\begin{proof}
+Such a tail has length at least $\lambda$, whereas the target interval
+has length less than $\lambda$. This violates
+\eqref{height:eq:lengthmonotone}.
+\end{proof}
+
+This tiny observation is the protection mechanism. Without it, an old
+finite suffix can disappear into the beginning of a new infinite
+separator, destroying coordinate reflection.
+
+\section{Activating the first atom at a new level}\label{height:sec:activation}
+
+The first atom of a new height needs a different construction from the
+later atoms. At this point there is not yet a large family of
+$\lambda$-ended words to place between separators.
+
+Choose a minimal letter $a\in P$ and another letter $b\ne a$.
+Then $b\not\le_P a$. Put
+\[
+  c=a^\lambda.
+\]
+This is an indecomposable of length $\lambda$. It is minimal among the
+indecomposables of that length: any word of length $\lambda$ embedding
+into it can use only letters at most $a$, hence only the letter $a$.
+
+\begin{lemma}[A terminal marker protects the whole lower-level word]
+\label[lemma]{height:lem:marker}
+The map
+\begin{equation}\label{height:eq:marker}
+  F\colon\Vheight_r(P)\longrightarrow\{\text{words of length }\lambda\},
+  \qquad F(u)=u\,b\,a^\lambda
+\end{equation}
+is an order embedding on equivalence classes.
+Its image is contained in $\Lcal(\I_r(P)\cup\{c\})$.
+\end{lemma}
+
+\begin{proof}
+Since $|u|<\lambda$ and $\lambda$ is an infinite additively indecomposable
+ordinal, $|u|+1+\lambda=\lambda$. Concatenation proves monotonicity.
+
+Suppose $u b a^\lambda\emb v b a^\lambda$. The distinguished source
+occurrence of $b$ cannot map into the target $a^\lambda$ tail, because
+$b\not\le_P a$. It must map either to the distinguished target $b$ or
+into $v$. Every position of $u$ maps strictly before that position, and
+therefore inside $v$. Hence $u\emb v$.
+
+Finally, $u$ is a finite concatenation of lower-height atoms up to
+equivalence, $b$ itself is a lower-height atom, and $a^\lambda=c$.
+\end{proof}
+
+It is not necessary that the distinguished source $b$ map to the
+\emph{distinguished} target $b$. The proof deliberately allows it to land
+earlier inside $v$; either possibility recovers $u\emb v$.
+
+\begin{proposition}[First-atom amplification]\label[proposition]{height:prop:activation}
+Suppose $\mot(\Vheight_r(P))=H_N$, where $N=N_r(P)$.
+Then the language $\Lcal(\I_r(P)\cup\{a^\lambda\})$ contains a
+$\lambda$-ended induced suborder of maximal order type $H_{N+1}$.
+The language itself has the same maximal order type.
+\end{proposition}
+
+\begin{proof}
+Let $D$ be the image of $F$. By \cref{height:lem:marker}, $\mot(D)=H_N$ and every
+word in $D$ has length $\lambda$. For every $d\ge1$, concatenate $d$
+independently chosen elements of $D$. By \cref{height:lem:equalblocks}, the
+resulting induced suborder is a copy of $D^d$.
+
+The images for different $d$ have distinct lengths $\lambda d$, so their
+quotient classes are disjoint. Length comparison prohibits an embedding
+from a higher-$d$ layer to a lower-$d$ layer. Their union is
+$\lambda$-ended, and \cref{height:lem:layers} gives type at least $H_{N+1}$.
+There are exactly $N+1$ available indecomposable generators, so
+\cref{height:cor:upper} gives the matching upper bound for the whole language
+and hence for this induced suborder.
+\end{proof}
+
+This is the only point in the main induction where the availability of
+a second inequivalent letter is required. For a singleton alphabet no
+such $b$ exists, and the much smaller order type in
+\cref{height:cor:exception} is the actual answer.
+
+\section{Separator amplification}\label{height:sec:separator}
+
+We now prove the main lower-bound lemma. It permits new generators that
+dominate old ones, so it is not merely a construction with pairwise
+incomparable separators.
+
+\begin{lemma}[Protected separators]\label[lemma]{height:lem:separator}
+Let $B$ be a finite set of indecomposable word classes, each of length at
+most $\lambda$. Let $z$ be an indecomposable word of length $\lambda$ such that
+\begin{equation}\label{height:eq:separatorcondition}
+  z\nemb b\qquad\text{for every }b\in B.
+\end{equation}
+Let $E\subseteq\Lcal(B)$ be an induced suborder consisting of
+$\lambda$-ended words. For $m\ge0$, define
+\begin{equation}\label{height:eq:separator-map}
+  \Phi_m(u_0,\ldots,u_m)=u_0 z u_1 z\cdots z u_m,
+  \qquad u_i\in E.
+\end{equation}
+Then $\Phi_m$ is an order embedding of $E^{m+1}$ into
+$\Lcal(B\cup\{z\})$. Moreover,
+\begin{equation}\label{height:eq:separatorcount}
+  \Phi_m(\vec u)\emb\Phi_t(\vec v)\quad\Longrightarrow\quad m\le t.
+\end{equation}
+All outputs are $\lambda$-ended.
+\end{lemma}
+
+\begin{proof}
+First, $z$ does not embed into \emph{any} word of $\Lcal(B)$.
+Indeed, otherwise \cref{height:lem:onefactor} would embed it into one generator,
+contrary to \eqref{height:eq:separatorcondition}.
+
+\emph{Step 1: each source separator has a target separator as its last
+component.} Consider an embedding of an output of $\Phi_m$ into an output
+of $\Phi_t$. Regard the latter as a finite concatenation of its displayed
+old words $v_j$ and displayed new separators $z$. Fix one displayed
+source separator and take the last displayed target component it meets.
+A tail of the source separator embeds into this component. Since the
+separator is indecomposable, the whole separator embeds into that component.
+The component cannot be an old word $v_j$. It must be a displayed target
+separator.
+
+\emph{Step 2: the matching of separators is strictly increasing.}
+The tail from Step~1 has length $\lambda$, so its image in that target
+separator is cofinal. No position of a subsequent source separator can
+follow that cofinal image while remaining in the same target separator.
+Thus the last target separators of consecutive source separators are
+strictly increasing. There are $t$ target separators, proving
+\eqref{height:eq:separatorcount}.
+
+\emph{Step 3: with equal counts, the old coordinates cannot spill.}
+Suppose $m=t$. The increasing assignment between two $m$-element index
+sets is the identity. Therefore the $i$th source separator ends cofinally
+in the $i$th target separator, for every $i$.
+
+Consider an old source word $u_i$. If $i>0$, the cofinal image of the
+preceding source separator prevents every position of $u_i$ from landing
+in or before the preceding target separator. If $i<m$, all positions
+of $u_i$ precede the image of the first position of the next source
+separator. That first image lies in or before the corresponding next
+target separator, because that separator is its last target component.
+
+If any position of $u_i$ entered the next target separator, all subsequent
+positions of $u_i$ would also lie there, strictly below the image of the
+first position of the next source separator. This would embed a nonempty
+tail of $u_i$ into a bounded initial interval of a length-$\lambda$ block.
+It is impossible by \cref{height:lem:nospill}. Therefore $u_i$ remains wholly
+inside $v_i$. The same argument handles $u_0$ without a left boundary;
+$u_m$ has no right separator, but the previous separator already forces
+it into the final target component $v_m$.
+
+Hence $\Phi_m(\vec u)\emb\Phi_m(\vec v)$ implies
+$u_i\emb v_i$ for all $i$. Conversely, coordinatewise embeddings together
+with identity embeddings on $z$ concatenate to an embedding of the
+outputs. This proves order reflection and preservation.
+
+Finally, finite concatenation of words whose lengths are positive finite
+multiples of $\lambda$, interleaved with words of length $\lambda$, again
+has length a positive finite multiple of $\lambda$.
+\end{proof}
+
+\begin{remark}[Why the protection assumption is indispensable]
+Take the old language to be finite words and $z=a^\omega$. The source
+coordinate $a$ does not embed into the empty target coordinate, yet
+$a z\equiv z$. Thus merely requiring $z$ not to embed into an old word
+is insufficient for coordinate reflection. It controls how many
+separators there can be, but not absorption before a separator.
+The $\lambda$-ended condition is exactly what rules out this failure.
+\end{remark}
+
+\begin{proposition}[One additional atom, one additional exponent step]
+\label[proposition]{height:prop:amplification}
+Under the hypotheses of \cref{height:lem:separator}, suppose $|B|=M$ and
+$\mot(E)=H_M$. Then $\Lcal(B\cup\{z\})$ contains a $\lambda$-ended induced
+suborder of maximal order type $H_{M+1}$, and its own maximal order type
+is $H_{M+1}$.
+\end{proposition}
+
+\begin{proof}
+Take the union of the images of $\Phi_m$ for all $m\ge0$.
+By \cref{height:lem:separator}, its layers are copies of $E^{m+1}$; an embedding
+cannot decrease $m$. Different layers cannot be equivalent, since
+applying the separator-count inequality in both directions would force
+their indices equal. \Cref{height:lem:layers} therefore gives lower bound
+$H_{M+1}$.
+
+Condition \eqref{height:eq:separatorcondition} ensures that $z$ is not equivalent
+to a generator in $B$, so the enlarged generator alphabet has $M+1$
+elements. Apply \cref{height:cor:upper} for the matching upper bound. The union
+is $\lambda$-ended by the last assertion of \cref{height:lem:separator}.
+\end{proof}
+
+\section{Proof of finite-alphabet exactness}\label{height:sec:mainproof}
+
+We now assemble the argument for \cref{height:thm:main}.
+The finiteness, canonical order, and recurrence were proved in
+\cref{height:sec:atoms}; only equality in the order-type bound remains.
+
+\begin{proof}[Proof of \cref{height:thm:main}]
+Induct on $k$. For $k=1$, $\Vheight_1(P)=P^*$ and $N_1(P)=n$, so the result
+is the finite-alphabet Higman formula.
+
+Assume
+\[
+  \mot(\Vheight_r(P))=H_{N_r(P)}
+\]
+for some $r\ge1$, and set $\lambda=\omega^r$ and $N=N_r(P)$.
+Let $Z$ be the finite poset of the new height-$r$ atoms:
+\[
+  Z=\I_{r+1}(P)\setminus\I_r(P).
+\]
+Choose a minimal letter $a\in P$. The constant word $a^\lambda$ is a
+minimal element of $Z$, as shown in \cref{height:sec:activation}. Choose a linear
+extension
+\[
+  z_1,z_2,\ldots,z_d
+\]
+of $Z$ that starts with $z_1=a^\lambda$.
+Define
+\[
+  B_i=\I_r(P)\cup\{z_1,\ldots,z_i\}\qquad(1\le i\le d).
+\]
+
+By \cref{height:prop:activation}, $\Lcal(B_1)$ contains a $\lambda$-ended induced
+suborder $E_1$ of type $H_{N+1}$. Suppose, for $i\ge2$, that
+$\Lcal(B_{i-1})$ contains a $\lambda$-ended induced suborder $E_{i-1}$
+of type $H_{N+i-1}$.
+
+The atom $z_i$ cannot embed into a lower-height atom: its ordinal length
+is larger. It cannot embed into any $z_j$ with $j<i$ either, because
+$z_1,\ldots,z_d$ is a linear extension of the atom order. Hence
+$z_i\nemb b$ for every $b\in B_{i-1}$.
+Apply \cref{height:prop:amplification} to obtain a $\lambda$-ended induced
+suborder $E_i\subseteq\Lcal(B_i)$ of type $H_{N+i}$.
+
+After all $d$ new atoms have been added,
+\[
+  B_d=\I_{r+1}(P),\qquad N+d=N_{r+1}(P).
+\]
+Its concatenation language is all of $\Vheight_{r+1}(P)$ up to equivalence,
+by \cref{height:thm:normalform}. The constructed lower bound is
+$H_{N_{r+1}(P)}$, and \cref{height:cor:upper} gives exactly the same upper bound.
+This completes the induction.
+\end{proof}
+
+\subsection{The stronger induction invariant}
+
+At every positive height the proof establishes slightly more than the
+statement of the theorem. Once the first atom of that height is activated,
+each intermediate language already realizes its full Higman upper bound
+on words ending in an entire block of that height. This invariant is
+what makes the next separator admissible without adding a new letter to
+$P$.
+
+The proof does \emph{not} exhibit an order embedding of the entire free
+word order $\I_k(P)^*$ into $\Vheight_k(P)$. It exhibits a sequence of induced
+product layers large enough to attain the same maximal order type.
+Equality of maximal order types is weaker than an isomorphism of these
+orders, and absorption shows why that distinction is necessary.
+
+\section{Binary cases through the height-uniform construction}\label{height:sec:binary}
+
+\subsection{Two incomparable letters}
+
+Let $P=A_2=\{a,b\}$. At heights zero and one the atoms are
+\[
+  a,\quad b,\quad A=a^\omega,\quad B=b^\omega,\quad C=(ab)^\omega.
+\]
+The nontrivial relations are generated by
+\[
+  a<A<C,\qquad b<B<C.
+\]
+The two middle atoms $A,B$ are incomparable, as are the two letters.
+There are exactly five distinct atoms, so the upper bound is $H_5$.
+
+The lower-bound construction can be read as three concrete stages.
+Start with finite binary words, whose type is $H_2=\omega^\omega$.
+The map
+\[
+  u\longmapsto u b a^\omega
+\]
+embeds them into words of length $\omega$. Finite products of these blocks,
+layered by the number of blocks, give a family $E_A$ of $\omega$-ended
+words with type
+\[
+  \sum_{d\ge1}(\omega^\omega)^{\otimes d}
+  =\omega^{\omega^2}=H_3.
+\]
+Only $a,b,A$ are needed as generators.
+
+Next add $B$. It embeds into neither a finite letter nor $A$, so it does
+not embed into any old word. Interleave $m$ copies of $B$ among $m+1$
+independently chosen members of $E_A$. The protected-separator lemma gives
+a new $\omega$-ended family $E_{A,B}$ of type
+\[
+  \sum_{m\ge0}H_3^{\otimes(m+1)}=H_4=\omega^{\omega^3}.
+\]
+Finally add $C$. It does not embed into any of $a,b,A,B$: an infinite
+repetition containing both letters cannot embed into a monochromatic
+infinite block. The same construction yields
+\[
+  \sum_{m\ge0}H_4^{\otimes(m+1)}=H_5=\omega^{\omega^4}.
+\]
+This matches the five-generator upper bound and proves the binary
+antichain instance of \cref{thm:main}.
+
+Notice that $C$ \emph{dominates} the old infinite atoms. This does not
+invalidate its use as a separator. What matters is that $C$ does not
+embed \emph{into} an old atom; protection prevents the old coordinates
+from being swallowed by a bounded part of a target $C$.
+
+\subsection{Two comparable letters}
+
+For $C_2=\{0<1\}$, the height-zero and height-one atoms are
+\[
+  0,\quad1,\quad A=0^\omega,\quad B=1^\omega.
+\]
+Here $(01)^\omega\equiv1^\omega$, because every source letter is at most
+$1$ and the $1$ positions occur cofinally. The atom order is a diamond:
+$0$ is below the incomparable atoms $1,A$, both of which are below $B$.
+
+The same activation map $u\mapsto u1\,0^\omega$ gives type $H_3$ after
+$A$ is added. Adding $B$ as a protected separator gives $H_4$.
+There are only four atoms, so
+\[
+  \mot(\Vheight_2(C_2))=\omega^{\omega^3}.
+\]
+Thus two alphabets with the same finite maximal order type $2$ already
+have different exact transfinite-word types.
+
+\subsection{All finite alphabets at height two}
+
+The height-one atoms correspond to nonempty order ideals of $P$.
+An antichain $S\subseteq P$ represents the periodic word
+$(\prod_{s\in S}s)^\omega$; its class depends precisely on the ideal
+$\down S$. Therefore
+\[
+  N_2(P)=n+J(P)-1,
+\]
+which proves \cref{thm:main} from the main theorem.
+
+\section{Effective enumeration and computed examples}\label{height:sec:computations}
+
+\subsection{Canonical generation as a finite algorithm}
+
+The recurrence \eqref{height:eq:count} comes with a direct algorithm. Store each
+leaf by its label and each node by a sorted tuple of child identifiers.
+At a new height, enumerate the antichains of the already constructed
+poset; retain those whose largest child height is the preceding height;
+and create the corresponding nodes. Compute comparisons by
+\eqref{height:eq:leafleaf}--\eqref{height:eq:nodenode}, memoizing each ordered pair of
+identifiers.
+
+This is a decision procedure for all bounded-height atom comparisons.
+It also gives an exact ordinal notation for the maximal order type:
+a finite integer $N_k(P)$ together with the fixed expression
+$\omega^{\omega^{N_k(P)-1}}$. No enumeration of actual infinite words is
+required.
+
+The finite objects can nevertheless become large. With $N$ existing
+nodes, there are at most $N^2$ ordered pairs to memoize and at most $N^2$
+child-pair checks per pair, giving a simple $O(N^4)$ arithmetic-operation
+bound for the complete comparison matrix. Antichain enumeration can have
+exponentially many outputs. The code uses integer bit masks and explicit
+size caps; it makes no claim of a polynomial-time algorithm in $k$ or
+in the original alphabet size.
+
+\subsection{Two independent ideal counters}
+
+The package counts $J(R)$ in two ways. Let $M$ be the set of remaining
+vertices in an induced subposet.
+
+The first method counts antichains as independent sets of the
+comparability graph. For a chosen $x\in M$, an antichain either omits
+$x$ or contains $x$ and omits every vertex comparable with $x$:
+\begin{equation}\label{height:eq:antichaincount}
+ A(M)=A(M\setminus\{x\})+
+ A\bigl(M\setminus\{y\in M:y\le x\text{ or }x\le y\}\bigr).
+\end{equation}
+The second method directly partitions ideals according to whether they
+contain $x$:
+\begin{equation}\label{height:eq:idealcount}
+ J(M)=J(M\setminus\up_M x)+J(M\setminus\down_M x).
+\end{equation}
+In the first branch, excluding $x$ forces exclusion of everything above
+it. In the second, the entire downset of $x$ is fixed as present, and
+one chooses an ideal in the remainder. Both recursions have value one
+on the empty poset and are memoized. For small posets the code additionally
+checks all subsets directly against the definition of an ideal.
+
+The two counters share the mathematically specified atom order, but they
+do not share an antichain-enumeration implementation. Their agreement is
+therefore a meaningful check of the numerical computations, not an
+independent proof of the atom-comparison theorem.
+
+\subsection{Counts and exact ordinal parameters}
+
+Write $A_n$ for the $n$-element antichain and $C_n$ for the $n$-element chain.
+The following are exact values of $N_k(P)$; a dash means not computed in
+this package.
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Alphabet & $k=1$ & $k=2$ & $k=3$ & $k=4$ & $k=5$ & $k=6$\\
+\midrule
+$A_2$ & 2 & 5 & 11 & 28 & 136 & ---\\
+$C_2$ & 2 & 4 & 7 & 12 & 22 & 50\\
+$A_3$ & 3 & 10 & 43 & 1962 & --- & ---\\
+$C_3$ & 3 & 6 & 12 & 28 & --- & ---\\
+\bottomrule
+\end{tabular}
+\caption{Canonical indecomposable counts. Each entry $N$ gives
+$\mot(\Vheight_k(P))=\omega^{\omega^{N-1}}$.}
+\label{height:tab:counts}
+\end{table}
+
+For example, the theorem and the table give
+\[
+\begin{aligned}
+  \mot(\Vheight_3(A_2))&=\omega^{\omega^{10}}, &
+  \mot(\Vheight_4(A_2))&=\omega^{\omega^{27}},\\
+  \mot(\Vheight_3(C_2))&=\omega^{\omega^6}, &
+  \mot(\Vheight_4(A_3))&=\omega^{\omega^{1961}}.
+\end{aligned}
+\]
+The last reported value for each family is obtained from the two exact
+ideal counts at the preceding level. Its full next-level atom poset is
+not materialized. The CSV records this distinction explicitly.
+
+The first binary counts can be verified without software. The five-element
+$\I_2(A_2)$ has nine ideals not containing $C$: choose a prefix in each of
+the two disjoint two-element chains $a<A$ and $b<B$. There is one more
+ideal containing $C$, namely the whole poset. Thus $J(\I_2(A_2))=10$
+and $N_3(A_2)=2+10-1=11$.
+
+The six height-two atoms in this case can be represented by
+\[
+\begin{gathered}
+  \Omega(\{A\}),\quad \Omega(\{B\}),\quad \Omega(\{C\}),\\
+  \Omega(\{A,B\}),\quad \Omega(\{A,b\}),\quad \Omega(\{a,B\}).
+\end{gathered}
+\]
+For the two-element chain, $\I_2(C_2)$ is the four-element diamond and
+has six ideals, giving $N_3(C_2)=2+6-1=7$.
+
+\section{Growth, interpretation, and limits of the result}\label{height:sec:scope}
+
+\subsection{A direct iterated-exponential lower bound}
+
+The exact formula also supplies a simple finite-alphabet growth result.
+For $n\ge2$, define integers
+\[
+  w_0(n)=n,\qquad
+  w_{r+1}(n)=\binom{w_r(n)}{\lfloor w_r(n)/2\rfloor}.
+\]
+
+\begin{proposition}\label[proposition]{height:prop:width}
+The height-$r$ atoms over $A_n$ contain an antichain of size $w_r(n)$.
+Consequently, for $k\ge2$,
+\begin{equation}\label{height:eq:widthbound}
+ N_k(A_n)\ge n+2^{w_{k-2}(n)}-1,
+ \qquad
+ \mot(\Vheight_k(A_n))\ge
+ \omega^{\omega^{n+2^{w_{k-2}(n)}-2}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The $n$ leaves give the height-zero antichain. Given an antichain $D$ of
+height-$r$ atoms, the nodes $\Omega(S)$ for nonempty $S\subseteq D$ are
+ordered exactly by subset inclusion: no distinct members of $D$ compare.
+Choosing all subsets of size $\lfloor|D|/2\rfloor$ produces an antichain
+of the claimed size at height $r+1$. For the stated $n$, this size is
+positive and the subsets used are nonempty.
+
+Also, all $2^{|D|}-1$ nonempty subsets give distinct nodes at the next
+height. Use a height-$(k-2)$ antichain and retain those nodes together with
+the $n$ leaves. This proves the first inequality in \eqref{height:eq:widthbound};
+the second follows from \cref{height:thm:main}.
+\end{proof}
+
+The elementary bounds
+\[
+  \frac{2^m}{m+1}\le\binom{m}{\lfloor m/2\rfloor}\le2^m
+\]
+follow because the largest binomial coefficient is at least the average
+of the $m+1$ coefficients. Thus, for fixed $k$ and growing $n$, the
+finite exponent parameter has the expected iterated-exponential growth.
+The upper estimate
+\[
+  N_{k+1}(P)\le n+2^{N_k(P)}-1
+\]
+follows from \eqref{height:eq:count}. These are statements about finite alphabets
+and growth in their size; no sharp asymptotic equivalent is claimed.
+
+\subsection{The quotient, not the literal set of words}
+
+There may be uncountably many literal words of length $\omega$ over a
+finite alphabet, but at each fixed finite level there are only countably
+many equivalence classes of all words. Indeed, every class has a finite
+code over the finite atom alphabet. The large ordinals in the theorem
+measure ordering complexity of this quotient, not the cardinality of
+the original set of functions.
+
+The integer $N_k(P)$ should also not be mistaken for the number of all
+word classes. It counts only indecomposable classes. Their finite
+concatenations have infinitely many classes and supply the much larger
+maximal order type.
+
+\subsection{Why this does not compute the all-height union}
+
+Although
+\[
+  \Vheight_{<\omega^\omega}(P):=\{u:|u|<\omega^\omega\}
+  =\bigcup_{k\ge1}\Vheight_k(P),
+\]
+one cannot infer its maximal order type merely by taking the supremum
+of the numbers in \cref{height:thm:main}. Maximal order type is not generally
+continuous under increasing unions of induced suborders.
+
+A simple example is the increasing union of the finite squares
+$\{0,\ldots,m-1\}^2$ under componentwise order. Each has maximal order
+type $m^2$, so the supremum of their types is $\omega$. The union is
+$\omega\times\omega$, whose maximal order type is
+$\omega\otimes\omega=\omega^2$. The all-height problem requires its own
+argument; the broader tree correspondence and all-height results in
+\cite{ChopraPakhomov2026} are separate from the finite-level proof here.
+
+\subsection{What remains outside the theorem}
+
+The proof uses finiteness in two different ways. The normal-form step
+needs only finitely many lower-height atom classes, so that recurrent
+types can be isolated after a finite prefix. The exactness step adds all
+new atoms in a finite linear extension and uses the finite-letter Higman
+formula. Neither argument directly provides an exact answer for every
+infinite wqo alphabet, arbitrary transfinite height, or arbitrary cutoff
+ordinal that is not a power $\omega^k$.
+
+Nor does a large maximal order type automatically specify an optimal
+length-function bound for finite controlled bad sequences. Such a bound
+also requires a norm and a control function. The ordinal theorem is an
+input to that separate analysis, not a substitute for it.
+
+\section{Verification, proof audit, and reproducibility}\label{height:sec:audit}
+
+\subsection{What was actually checked}
+
+The delivered height-suite record was produced under Python~3.13.5, using only the standard
+library. It is written to support Python~3.9 or later. The fixed random
+seed is \texttt{20260919}. The recorded run reports:
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.13}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Count\\
+\midrule
+All labelled posets on at most three elements & 24\\
+Canonical atom posets through $k=3$ for those alphabets & 72\\
+Agreements of two independent ideal counters & 87\\
+Agreements with direct exhaustive subset counting & 64\\
+Marker-map comparison pairs & 1,922\\
+Equal-block comparison pairs & 10,000\\
+Separator comparison pairs & 18,000\\
+\quad of which equal-separator coordinate checks & 13,489\\
+Singleton length-order comparison pairs & 625\\
+Absorption sanity checks & 2\\
+Exact count-table entries & 19\\
+\bottomrule
+\end{tabular}
+\caption{The completed reproducibility run. These are finite checks, not
+a formal verification of the transfinite proof.}
+\label{height:tab:verification}
+\end{table}
+
+The count ``24'' includes one empty poset, one one-element poset, three
+labelled two-element posets, and nineteen labelled three-element posets.
+The atom checks verify reflexivity, antisymmetry, transitivity,
+height monotonicity, and antichain reduction. The symbolic word checks
+operate on exact ultimately periodic $\omega$-blocks; they do not replace
+$\omega$ by a large finite integer. \Cref{height:app:decision} describes the
+embedding algorithm and its correctness argument.
+
+These checks exercise the finite representations, detect arithmetic and
+implementation mistakes, and test many instances of the structural
+lemmas. They do not establish arbitrary-height statements by exhaustive
+search. The latter are supported by the written induction and cofinality
+proofs.
+
+\subsection{The main points audited in the proof}
+
+The first possible failure is assuming that a surjective concatenation
+map is order-reflecting. It need not be; the proof uses it only for the
+upper bound. Order reflection for the lower bound is proved separately
+on the protected families.
+
+The second is confusing ``has the same cardinality'' with ``has the same
+ordinal length.'' All no-spill arguments compare ordinal order types.
+A tail of a $\lambda$-ended word has length at least $\lambda$, and cannot
+fit below a single position of a target $\lambda$-block.
+
+The third is silently treating an indecomposable as wholly contained in
+its last target factor. The original embedding may straddle factors.
+\Cref{height:lem:onefactor} extracts an equivalent tail to obtain a new
+embedding; \cref{height:lem:separator} then uses cofinality of that tail in its
+last target separator.
+
+The fourth is choosing separators in the wrong order. The requirement
+is that the \emph{new} atom not embed into any \emph{old} atom. An
+increasing linear extension of the same-height atom poset supplies
+exactly that direction. Old atoms are allowed to embed into the new one.
+
+The fifth is combining product layers without checking cross-layer
+comparisons. In activation, length makes the layer index monotone. In
+separator amplification, \cref{height:eq:separatorcount} does so. This also
+precludes identifying outputs from two different layers on the quotient.
+
+Finally, the singleton alphabet is checked separately. It has one atom
+at each height, so $N_k(1)=k$, but its word type is $\omega^k$, not
+$H_k$ for $k\ge2$. The missing second letter is a genuine mathematical
+obstruction to the activation argument, not a cosmetic exception.
+
+\subsection{How to reproduce the package}
+
+From the archive root, run
+\begin{lstlisting}
+python code/heights/verify.py --out data/heights
+\end{lstlisting}
+The program regenerates \texttt{data/heights/verification.json}, the CSV count
+table, and explicit JSON atom posets. To inspect a particular alphabet,
+for example the binary antichain through height two, run
+\begin{lstlisting}
+python code/heights/atoms.py --kind antichain --size 2 --k 3 --output atoms.json
+\end{lstlisting}
+A custom finite poset may be supplied as JSON containing distinct
+\texttt{labels} and a full reflexive Boolean \texttt{relation} matrix.
+The default cap prevents materialization of more than 5,000 atoms; the
+cap can be changed explicitly. Counting can still be expensive before
+a large object is materialized.
+
+Build this document using
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The bibliography is included in the source, so no bibliography database
+or network access is needed. A separate \texttt{data/heights/references.bib} is
+provided for reuse. The original third-party papers and font files are
+not included.
+
+
 \section{Exact-length strata}
 \label{sec:exact}
 
@@ -1439,7 +2525,7 @@ when $n\ge2$, and $d=0$ for a singleton alphabet.
 
 \subsection{A single infinite block}
 
-\begin{proposition}[Length exactly $\omega$]\label{prop:exactomega}
+\begin{proposition}[Length exactly $\omega$]\label[proposition]{prop:exactomega}
 For every nonempty finite poset $P$,
 \begin{align}
  \mot\bigl(\E_\omega(P)\bigr)&=\Hn n\cdot d+1,\label{eq:exactomega}\\
@@ -1504,7 +2590,7 @@ Theorem~\ref{thm:classical}(iv).
 
 \subsection{Several blocks and a fixed finite tail}
 
-\begin{lemma}[Rigidity at equal block count]\label{lem:equalblocks}
+\begin{lemma}[Rigidity at equal block count]\label[lemma]{lem:equalblocks}
 Let $u$ and $v$ each have exactly $r$ canonical $\omega$-blocks, and suppose
 $u\emb v$. Then the $i$th canonical source block is mapped, entirely and
 cofinally, inside the $i$th canonical target block, for every $i<r$, and the
@@ -1537,7 +2623,7 @@ constructions of Sections~\ref{sec:proper} and~\ref{sec:universal} do not
 assume. Within the present section that hypothesis is automatic, because the
 length is fixed.
 
-\begin{proposition}[Fixed-length product decomposition]\label{prop:exactproduct}
+\begin{proposition}[Fixed-length product decomposition]\label[proposition]{prop:exactproduct}
 For all $r,k<\omega$ there is an isomorphism of quotient orders
 \begin{equation}\label{eq:exactisom}
  \E_{\omega r+k}(P)\ \cong\ \E_\omega(P)^{\,r}\times P^{k},
@@ -1668,7 +2754,7 @@ cannot land in a single position. The second row is the only one that leaves
 the cursor where it is, because a finite match consumes only finitely many
 positions of a periodic tail and leaves an equivalent tail behind.
 
-\begin{theorem}[Exactness of the algorithm]\label{thm:algorithm}
+\begin{theorem}[Exactness of the algorithm]\label[theorem]{thm:algorithm}
 The greedy procedure accepts exactly when the represented source ordinal
 word embeds into the represented target ordinal word.
 \end{theorem}
@@ -1732,7 +2818,7 @@ prefix is now empty or ends outside the downset of the block that follows it.
 The procedure is linear in the number of tokens and is implemented as
 \texttt{normalize} in \texttt{code/omega2.py}.
 
-\begin{proposition}[Uniqueness of normalized expressions]\label{prop:canonical}
+\begin{proposition}[Uniqueness of normalized expressions]\label[proposition]{prop:canonical}
 Two normalized token expressions over a finite poset $P$ are mutually
 embeddable if and only if they are identical.
 \end{proposition}
@@ -1974,7 +3060,7 @@ word orders. It does not give a canonical representation for arbitrary
 infinite input streams. It also does not assert that selected block
 families at higher ordinal cutoffs have the same counting law.
 
-\subsection{Why the proof stops at this cutoff}
+\subsection{Why the selected-family proof stops at this cutoff}
 The decisive compactness feature is that a target word below $\omega^2$
 has only finitely many $\omega$-blocks. The image of a source $\omega$-block
 must eventually stabilize in one of them. At length $\omega^2$, a source
@@ -1983,9 +3069,10 @@ $\omega$-blocks, taking only finitely many points from each. Thus the
 cofinal localization lemma in its present form is no longer valid when
 that target length is allowed.
 
-A higher-cutoff extension would need a hierarchy of separator ranks and a
-new localization theorem that accounts for escape through infinitely many
-lower-rank blocks. Counting indecomposable blocks without that theorem
+The full-language extension in Sections~\ref{height:sec:blocks}--\ref{height:sec:mainproof}
+supplies a hierarchy of equal-length blocks and protected separators.
+It does not assert the same classification for arbitrary selected families
+at higher cutoffs; that extension still needs a separate argument. Counting indecomposable blocks without that theorem
 would reproduce the same logical mistake that naive atom counting makes
 at the universal-only stage.
 
@@ -2222,7 +3309,7 @@ a proof-audit note, and a README. It contains no third-party article PDFs,
 font files, checksum files, or LaTeX build intermediates. The file inventory
 is the following.
 
-\begin{longtable}{@{}p{0.38\linewidth}p{0.56\linewidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.38\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}
 \toprule
 File & Purpose\\
 \midrule
@@ -2253,6 +3340,148 @@ File & Purpose\\
   scope.\\
 \bottomrule
 \end{longtable}
+
+\section{The finite-alphabet Higman formula}\label{height:app:higman}
+
+This section records a proof of the finite case of
+\eqref{eq:finiteword}, using Higman's wqo theorem and the standard calculus
+\eqref{height:eq:wqocalculus}. It also explains why the separator construction
+in the main argument has the right ordinal shape.
+
+This proves clause (v) of Theorem~\ref{thm:classical}, rather than asserting a new result.
+
+\begin{proof}
+Induct on $n$. For $n=1$, words are ordered by their finite lengths, so
+the type is $\omega=H_1$.
+Assume $n\ge2$ and the result for smaller alphabets.
+
+\emph{Lower bound.} Choose a maximal letter $b\in R$ and set
+$Q=R\setminus\{b\}$. In words
+\[
+  u_0 b u_1 b\cdots b u_m,\qquad u_i\in Q^*,
+\]
+every source $b$ must map to a target $b$, since $b\not\le q$ for
+$q\in Q$. The number of displayed $b$'s cannot decrease under embedding.
+When the two words have the same number, all displayed $b$'s match in
+order, forcing the intervening coordinates into their corresponding
+intervals. Consequently, the layer with $m$ occurrences of $b$ is an
+induced copy of $(Q^*)^{m+1}$. The layers are disjoint and their index is
+monotone, so \cref{height:lem:layers}, with $\mot(Q^*)=H_{n-1}$, gives lower
+bound $H_n$.
+
+\emph{Upper bound.} Fix a forbidden nonempty word
+$w=p_1\cdots p_\ell$. A word that does not contain $w$ as an embedded
+subsequence has a greedy factorization
+\[
+  u_1 b_1 u_2 b_2\cdots u_j b_j u_{j+1},\qquad 0\le j<\ell,
+\]
+where $b_i\ge p_i$ and $u_i$ uses only letters in
+$Q_i=R\setminus\up p_i$. Each $Q_i$ is a proper subalphabet.
+This factorization is obtained by greedily matching $p_1$, then $p_2$,
+and so on, stopping when the next letter cannot be matched.
+
+For a fixed $j$ and fixed matched letters $b_i$, concatenation is a
+monotone surjection from a product of $j+1$ orders $Q_i^*$ onto this
+part of the residual. By induction every nonempty $Q_i^*$ has type at
+most $H_{n-1}$; an empty $Q_i$ contributes the one-element order,
+which also satisfies the bound. There are only finitely many choices
+of $j$ and of the $b_i$. Thus the residual
+$R^*\setminus\up w$ is a monotone image of a finite disjoint union of
+products, whose maximal order type is bounded by a finite natural sum
+of ordinals at most
+\[
+  H_{n-1}^{\otimes\ell}
+  =\omega^{\omega^{n-2}\cdot\ell}.
+\]
+Every such finite sum is strictly less than $H_n$.
+The residual for the empty forbidden word is empty.
+Using the residual identity in \eqref{height:eq:wqocalculus} and the fact that
+$H_n$ is a limit ordinal gives $\mot(R^*)\le H_n$.
+\end{proof}
+
+The transfinite proof differs in one crucial respect. A new separator
+is an infinite word, not a single letter. Old coordinates can in
+principle enter its beginning even when its occurrences have all been
+matched. Protected tails are what restore the coordinate conclusion.
+
+\section{Exact symbolic embedding below \texorpdfstring{$\omega^2$}{omega squared}}\label{height:app:decision}
+
+The test program represents a word as
+\begin{equation}\label{height:eq:symbolic}
+  p_1 c_1^\omega\ p_2 c_2^\omega\ \cdots\ p_t c_t^\omega\ q,
+\end{equation}
+where each $p_i,q$ is a finite word and each $c_i$ is a finite nonempty
+cycle. This is an exact symbolic representation of a transfinite word,
+not a truncation. It is sufficiently general to represent every class
+below $\omega^2$ over a finite alphabet, by the normal-form argument,
+although the tests use bounded finite parameter sets.
+
+\subsection{The greedy algorithm}
+
+Maintain a cursor in the target. Within a target block it consists of
+its block index and a finite offset in its finite prefix or periodic
+tail. After the final infinite block it is an offset in the finite suffix.
+Process a source finite prefix one letter at a time, always choosing
+the earliest target position carrying a label above the source label.
+In a periodic tail, checking one cycle suffices to find the earliest
+match; if no cycle letter is suitable, skip to the next target block.
+
+For a source periodic tail $c^\omega$, find the earliest target infinite
+block, at or after the cursor, whose recurring cycle $d$ satisfies
+\begin{equation}\label{height:eq:cyclecondition}
+  (\forall a\text{ occurring in }c)
+  (\exists b\text{ occurring in }d)\ a\le_P b.
+\end{equation}
+If there is no such block, embedding fails. Otherwise embed the periodic
+tail cofinally into that block and advance the cursor to the beginning
+of the next target block. Continue with the next source prefix. After
+all source infinite blocks are consumed, greedily process the finite
+source suffix.
+
+\subsection{Why the algorithm is exact}
+
+Greedy matching of a finite letter is safe because replacing its target
+position by an earlier suitable one can only enlarge the remaining
+target interval. This is the usual finite-subsequence argument and
+applies unchanged inside a transfinite target.
+
+An infinite periodic source tail has infinitely many occurrences of
+every label in its cycle. If it embeds into a finite concatenation of
+target infinite blocks and a finite suffix, its image ends cofinally
+in one target infinite block. A source tail of the same periodic type
+therefore embeds into that block's recurring tail. This forces
+\eqref{height:eq:cyclecondition}; finite exceptional target prefixes cannot
+supply infinitely many occurrences of a missing label.
+
+Conversely, \eqref{height:eq:cyclecondition} suffices: place successive source
+letters in suitable positions of successive sufficiently late target
+cycles. Any finite cursor offset is harmless. Choosing the earliest
+compatible target block leaves the largest possible collection of
+whole target blocks for subsequent source material. No subsequent
+source position could remain in the same target block after a cofinal
+image. Thus advancing to the next block is both sound and optimal.
+Induction over the finitely many source blocks proves correctness.
+
+\subsection{Test families and negative controls}
+
+The marker tests compare all finite binary source words of length at
+most four with all finite binary target words of length at most four,
+for both the chain and antichain letter orders. There are
+$2(1+2+4+8+16)^2=1{,}922$ pairs.
+
+The equal-block tests use up to four exact $\omega$-blocks, with finite
+prefixes and one of the cycles $0$, $1$, or $01$. The separator tests
+first add $1^\omega$ to a language whose infinite blocks have cycle $0$.
+For the antichain they also add $(01)^\omega$ to a language whose infinite
+blocks are monochromatic. Both equal and unequal separator counts are
+tested, including positive comparisons and self-comparisons.
+
+As negative controls against an incorrectly rigid concatenation
+implementation, the program verifies the genuine absorption
+$a a^\omega\equiv a^\omega$. It also checks that over a singleton
+alphabet, the embedding decision agrees exactly with comparison of the
+ordinal lengths $\omega t+s$ on the finite test range.
+
 
 \begin{thebibliography}{9}
 \bibitem{Altman2026}

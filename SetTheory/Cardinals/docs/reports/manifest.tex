@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 113 independent mathematical research packages}}
+  pdfsubject={Catalogue of 111 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and thirteen independent mathematical research packages,\\
+  {\large One hundred and eleven independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 29 September 2026}
@@ -63,13 +63,19 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and thirteen research packages stored
-under \dir{docs/reports}.  One hundred and four of them came with the
-collection; the other nine came through ProveIt's incoming-reports procedure
+This document catalogues the one hundred and eleven research packages stored
+under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
+consolidations it contributes one hundred and two maintained reports. The
+other nine came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36 and one each in batches~40, 41
 and~44 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
-The next paragraphs describe the first one hundred and four.  The seven surreal-number reports that this catalogue
+The next paragraphs describe the historical collection before those two
+consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
+were unified, and the finite-height transfinite-word report was integrated
+with its guarded-block companion. Both proof routes and all distinct
+extensions are retained; old directories contain redirects, not extra
+catalogue entries.  The seven surreal-number reports that this catalogue
 used to carry were moved out to a repository of their own, with their history,
 and are no longer listed here.  They arrived as one hundred and twenty-five ZIP
 archives, in seven deliveries, which have been unpacked and grouped into the
@@ -126,8 +132,8 @@ because it changes what the report is.
 The naming of the directories is editorial.  Several distinct reports attack the
 same published problem, and some arrived under colliding archive names, so each
 directory has been given a name describing its own angle on the problem; the
-merged directories are named for their combined scope, which is why none of them
-still carries the name that once distinguished it from its partner.  The
+merged directories usually name their combined scope. The September 29
+consolidations retain the base directory names to preserve existing links.  The
 original archive names are recorded with every entry.
 
 \clearpage
@@ -135,17 +141,18 @@ original archive names are recorded with every entry.
 \label{sec:tree}
 
 \begin{center}
+\small
 \begin{tabular}{@{}llr@{}}
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
 \dir{enumerative-combinatorics} & --- & 22\\
 \midrule
-\dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 4\\
+\dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 3\\
  & \dir{wqo-powersets-and-statures} & 4\\
  & \dir{friendly-order-types} & 3\\
  & \dir{games-on-ordinals} & 3\\
- & \dir{transfinite-words} & 2\\
+ & \dir{transfinite-words} & 1\\
  & (top level) & 5\\
 \midrule
 \dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 9\\
@@ -175,7 +182,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{113}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{111}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -309,62 +316,47 @@ Abriola et al.\ to arbitrary Noetherian spaces.}
 
 \subsection{Transfinite words}
 
-Two reports on Harry Altman, \emph{Bounding finite-image sequences of length
-$\omega^k$} (arXiv:2409.03199v2), Example~3.15: is the bound
-$\omega^{\omega^4}$ sharp for words of length ${<}\,\omega^2$ over the
-two-element antichain?  A third report matched the first lemma for lemma and has
-been merged into it.
+One unified report on Harry Altman's finite-alphabet sharpness question
+(arXiv:2409.03199v2, Example~3.15), combining three source manuscripts.
+The common height-two formula is stated once. The finite-height induction
+and the more detailed guarded-tail investigation are retained as distinct routes.
 
-\entry{Exact maximal order types of finite-alphabet transfinite words}
-{ordinals-and-order-types/transfinite-words/finite-alphabet-transfinite-words}
-{article.pdf}{finite\_alphabet\_transfinite\_words.zip}
-{Proves $o(W_k(P))=\omega^{\omega^{N_k(P)-1}}$ for words of ordinal length
-${<}\,\omega^k$ over a finite poset $P$ under subsequence embedding, where
-$N_k$ counts indecomposable classes of a canonical finite atom poset
-$I_k(P)$, with $N_1(P)=|P|$ and $N_{k+1}(P)=|P|+J(I_k(P))-1$.  For $k=2$ the
-binary antichain gives $\omega^{\omega^4}$ --- the tightness Altman leaves
-open --- and the binary chain gives $\omega^{\omega^3}$.}
-
-\entry{Guarded periodic blocks and exact maximal order types below omega squared}
+\entry{Finite-alphabet transfinite words: exact order types and guarded periodic blocks}
 {ordinals-and-order-types/transfinite-words/order-types-below-omega-squared}
-{article.pdf}{omega2\_order\_types\_proposed\_solution.zip + ordinal\_words\_research.zip}
-{Proves $o(s_{\omega^2}(P))=\omega^{\omega^{n+j(P)-2}}$ for $n=|P|\ge2$, with
-$j(P)$ the number of downsets including the empty one; the empty and singleton
-alphabets are genuine exceptions.  The binary antichain gives $\omega^{\omega^4}$
---- the tightness Altman leaves open --- and the binary chain $\omega^{\omega^3}$.
-Adds an extremality corollary with both equality characterisations (among
-$n$-element posets only the chain minimises and only the antichain maximises),
-the $j(P)$ toolkit, the arbitrary-support-family classification, and an
-exact-length stratum calculus showing the supremum over lengths is only
-$\omega^{\omega^n}$, strictly below the answer --- so the theorem cannot be
-obtained stratum by stratum.  \emph{Merged; the product amplification is done
-twice, once via de Jongh--Parikh and once by an elementary hand proof that
-removes the import.}}
+{article.pdf}{omega2\_order\_types\_proposed\_solution.zip + ordinal\_words\_research.zip + finite\_alphabet\_transfinite\_words.zip}
+{Claims $o(V_k(P))=\omega^{\omega^{N_k(P)-1}}$ for $|P|\ge2$ and each
+positive finite $k$, using canonical finite atom posets with
+$N_{k+1}=|P|+J(I_k(P))-1$. At height two this is
+$\omega^{\omega^{n+j(P)-2}}$; empty and singleton alphabets are explicit
+exceptions. Retains the selected-tail-family classification, its universal-only
+exception, chain/antichain extremality, exact-length strata, and canonical
+linear-time token comparison. The guarded proof has both natural-product and
+elementary amplification routes; the finite-height proof uses protected
+separators. Two independent implementations and their separate audit records
+are preserved. Neither an all-height union formula nor a higher-cutoff
+selected-family classification is claimed.}
 
 \subsection{Ordinal arithmetic}
 
-Four reports on ordinal and infinitary arithmetic, two of them independent
-proposed solutions to Problem~6.2 of Paolo Lipparini,
+Three reports on ordinal and infinitary arithmetic, including a consolidation
+of two independent proposed solutions to Problem~6.2 of Paolo Lipparini,
 \emph{Monotone infinitary operations on ordinals} (arXiv:2505.00424v2): define
 and study the least weakly monotone, $e$-special strictly increasing operation
 on countable sequences of ordinals.
 
 \entry{An Explicit Formula for the Minimal $e$-Monotone Infinitary Ordinal Sum}
 {ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-infinitary-sum}
-{article/explicit\_ordinal\_sum.pdf}{lipparini\_problem\_6\_2\_proposed\_solution.zip}
-{An explicit formula for the least admissible operation, proved by an arithmetic
-admissibility upper bound and a rank-theoretic minimality lower bound, using an
-explicit countable-multiset profile order, its rank, absorption and correction
-rules, bounded-poset heights and finite-cap ranks.  Imports Lipparini's
-formula and minimality theorem for the weaker operation $S$.}
-
-\entry{An Explicit Formula for Lipparini's Minimal Infinitary Ordinal Operation}
-{ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-operation-formula}
-{article.pdf}{ordinal\_operation\_research.zip}
-{A three-case finite ordinal-arithmetic formula with proofs of admissibility and
-pointwise minimality.  Relative to Lipparini's already evaluated $S$, the
-correction is zero, a finite increment, or one \emph{natural} summand $\omega$
---- ordinary addition of $\omega$ is not a substitute.}
+{article/explicit\_ordinal\_sum.pdf}{lipparini\_problem\_6\_2\_proposed\_solution.zip + ordinal\_operation\_research.zip}
+{The same three-case formula for the least admissible operation is proved
+by two retained routes: profile ranks with arithmetic absorption and
+finite-product lower bounds, and corrected blocks with threshold interpolation
+and finite-part restoration. The latter avoids the product-rank lemma;
+both import Lipparini's characterization of the weaker $S$. Retains the
+multiset quotient, bounded-poset heights, finite-cap ranks with alternative
+proofs, equality on comparable inputs, cardinality preservation, and
+counterexamples to grouping and continuity. The correction is zero, a finite
+increment, or one \emph{natural} summand $\omega$. Both implementations and
+their separate verification records are preserved.}
 
 \entry{Jacobsthal Products All at Once}
 {ordinals-and-order-types/ordinal-arithmetic/jacobsthal-products-all-at-once}
@@ -730,7 +722,9 @@ merged report sits at the category's top level.
 \entry{A Proof of an OEIS Hankel-Numerator Conjecture}
 {hankel-determinants/a122251-numerators-and-denominators}
 {report.pdf}{hankel\_numerator\_research.zip + hankel\_oeis\_conjecture\_proof.zip}
-{For $H_n(m,a)=\det(1/(a+m(i+j)))_{0\le i,j\le n}$, the reduced numerator is
+{For the Hankel determinant
+\[H_n(m,a)=\det(1/(a+m(i+j)))_{0\le i,j\le n},\]
+the reduced numerator is
 $\prod_{p\mid m}p^{\,n(n+1)v_p(m)+2\sum_{k\le n}v_p(k!)}$: independent of the
 coprime offset $a$, a perfect square, and supported on the primes dividing $m$.
 Taking $m=p$ and $a=1$ settles the OEIS A122251 conjecture, with A122249 as the
@@ -763,7 +757,7 @@ the binary expansion of $n$ and $\varepsilon$ is the low bit of
 the Gray code $n\oplus\lfloor n/2\rfloor$.  Settles statements 8, 10, 13 and 23 of Barry's 2021 paper
 (not the identically numbered ones elsewhere), with a correction.}
 
-\section{Congruences and $p$-adic valuations}
+\section{Congruences and \texorpdfstring{$p$}{p}-adic valuations}
 
 \subsection{Supercongruences}
 
