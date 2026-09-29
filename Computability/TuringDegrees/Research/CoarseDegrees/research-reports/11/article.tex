@@ -1,0 +1,1851 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.91in,headheight=15pt,headsep=18pt,footskip=27pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{mathtools,microtype}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor,titlesec,fancyhdr}
+\usepackage{xurl}
+\definecolor{Navy}{RGB}{25,49,72}
+\definecolor{Steel}{RGB}{47,81,111}
+\definecolor{Muted}{RGB}{90,99,107}
+\usepackage[colorlinks=true,linkcolor=Steel,citecolor=Steel,urlcolor=Steel,
+  bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Finite Realization of Coarse-Information Profiles},
+ pdfauthor={Research draft prepared for Vladimir Reshetnikov with ChatGPT},
+ pdfsubject={Countable Turing ideals, coarse descriptions, generic secret sharing, and representative spectra}}
+\urlstyle{same}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt plus .5pt minus .4pt}
+\setlength{\emergencystretch}{2em}
+\linespread{1.035}
+\titleformat{\section}{\Large\bfseries\color{Navy}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Navy}}{\thesubsection}{.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Navy}}{\thesubsubsection}{.6em}{}
+\setlist[enumerate]{leftmargin=2em,itemsep=3pt,topsep=4pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{Muted}COARSE-INFORMATION PROFILES}
+\fancyhead[R]{\sffamily\small\color{Muted}RESEARCH DRAFT}
+\fancyfoot[L]{\small\color{Muted}28 September 2026}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}28 September 2026}
+\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\ltT}{<_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\Core}{\operatorname{Core}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Low}{\operatorname{Low}}
+\newcommand{\Comp}{\mathrm{Comp}}
+\newcommand{\degT}{\deg_{\mathrm T}}
+\newcommand{\bitsum}{\mathbin{\triangle}}
+\newcommand{\join}{\mathbin{\oplus}}
+\newcommand{\rest}{\mathbin{\upharpoonright}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pref}{\preceq}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newcommand{\I}{\mathcal I}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\zero}{\mathbf 0}
+\DeclareMathOperator{\rk}{rank}
+\setcounter{tocdepth}{1}
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\sffamily\small\bfseries\color{Steel}COMPUTABILITY THEORY\quad /\quad PROVEIT RESEARCH EXTENSION}\par
+\vspace{10pt}
+{\fontsize{25}{30}\selectfont\bfseries\color{Navy}Finite Realization of\\Coarse-Information Profiles}\par
+\vspace{8pt}
+{\large Countable Turing ideals, generic secret sharing,\\and simultaneously unattained representative spectra}\par
+\vspace{10pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov with ChatGPT}\par
+{\small\color{Muted}28 September 2026}
+\end{center}
+
+\begin{abstract}
+For a binary sequence $X$, its coarse-information core consists of the sets
+computed by every density-zero perturbation of $X$. We prove a finite
+realization theorem: an assignment of countable Turing ideals to coalitions
+of finitely many participants is realizable as the cores of their oracle
+joins exactly when it is monotone and assigns the computable ideal to the
+empty coalition. All nonempty coalition classes can simultaneously be made
+to have no least Turing-degree representative. Relative to a presentation
+$P$ of the ideals, the full join $H$ can satisfy
+$P\ltT H\ltT P'$ and $H'\eqT P'$.
+
+The argument first verifies the single-ideal construction already sketched
+in the repository's target C4, then combines robust column coding with
+finite additive sharing and a generic-perturbation lemma. A coalition normal
+form proves the essential upper bound: its core contains no unintended
+information. As a particularly sharp consequence, two sequences with
+computable cores can have any prescribed countable Turing ideal as the core
+of their join. A separate access-structure version makes every unauthorized
+coalition itself $1$-generic relative to the secret presentation.
+
+The non-elementary inputs are named published theorems of Hirschfeldt,
+Jockusch, Kuyper, and Schupp. The finite-profile results are presented with
+conventional proofs as proposed research contributions, not as externally
+certified priority claims or machine-verified theorems. A proof audit,
+finite verification program, and further research agenda accompany the text.
+\end{abstract}
+
+\noindent\textbf{Scope.} This article does not claim a new solution to the
+already-retired least-representative question C1, nor a solution to the
+repository's question about \emph{minimal} elements of coarse spectra.
+Its main object is simultaneous control of all finite coalition cores.
+
+\newpage
+\tableofcontents
+\vspace{12pt}
+\section*{Reading guide}
+For the classification statement, read Section~\ref{sec:main}. For the
+shortest substantial example, read the two-share construction in
+Section~\ref{sec:two}. Its complete upper-bound mechanism is the transfer
+lemma in Section~\ref{sec:generic}.
+
+The proof of the general theorem is concentrated in
+Sections~\ref{sec:algebra}--\ref{sec:bounds}: finite sharing, the coalition
+normal form, elimination of unintended information, nonattainment, and the
+jump calculation. Section~\ref{sec:access} gives the stronger genericity
+property for unauthorized coalitions. Section~\ref{sec:attainment} explains
+why positive leastness flags cannot be prescribed without further
+conditions.
+
+The source and dependency distinctions are in
+Section~\ref{sec:provenance}; the audit and finite-check results are in
+Section~\ref{sec:audit}. The questions in Section~\ref{sec:questions} are
+separate research targets, not additional assertions established by the
+main theorem.
+\newpage
+
+\section{The problem and the main theorem}\label{sec:main}
+
+\subsection{Information surviving arbitrary sparse errors}
+
+Think of a set of natural numbers as an infinite binary oracle. Its exact
+Turing degree measures everything obtainable from a completely accurate
+copy. A different question is what remains obtainable when an adversary may
+change the oracle on an unknown set of asymptotic density zero. The reduction
+used to recover a particular set is allowed to depend on the corrupted
+copy. This nonuniformity is essential.
+
+For $E\subseteq\N$ and $N\geq1$, put
+\[
+ \rho_N(E)=\frac{|E\cap[0,N)|}{N},\qquad
+ \delta(X,Y)=\limsup_{N\to\infty}\rho_N(X\bitsum Y).
+\]
+Here $X\bitsum Y$ is symmetric difference, equivalently bitwise exclusive
+or. It is not the oracle join $X\join Y$. Write $D\approx X$ when
+$\delta(D,X)=0$, and let
+\[
+ \CD(X)=\{D\in\Cantor:D\approx X\},\qquad
+ \Core(X)=\{A:(\forall D\in\CD(X))\ A\leT D\}.
+\]
+This is the invariant denoted $X^{\mathfrak c}$ in
+Hirschfeldt--Jockusch--Kuyper--Schupp \cite{HJKS}. A \emph{Turing ideal} is a
+nonempty collection of sets closed downward under Turing reducibility and
+under finite oracle joins. Let $\Comp$ be the ideal of computable sets and
+$\Low(B)=\{A:A\leT B\}$ the principal ideal generated by $B$.
+
+For participants $[n]=\{1,\ldots,n\}$, set
+\[
+ X_C=\bigoplus_{i\in C}X_i\quad(C\ne\varnothing),\qquad
+ X_\varnothing=\varnothing.
+\]
+All finite joins in this article use equal-density periodic interleaving,
+in a fixed ordering of their coordinates. In particular, $X_C$ is a
+specified oracle, not merely an unspecified representative of a join degree.
+
+\begin{theorem}[Finite profile realization]\label{thm:main}
+Let $n\geq1$. An assignment $(\I_C)_{C\subseteq[n]}$ is of the form
+\begin{equation}\label{eq:profile}
+                \I_C=\Core(X_C)\qquad(C\subseteq[n]).
+\end{equation}
+for some binary sequences $X_1,\ldots,X_n$ if and only if:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every $\I_C$ is a countable Turing ideal;
+\item $\I_\varnothing=\Comp$;
+\item $\I_C\subseteq\I_D$ whenever $C\subseteq D$.
+\end{enumerate}
+Moreover, the realizing sequences can be chosen so that every nonempty
+$C$ has \emph{no least Turing degree} in its density-zero class, its uniform
+coarse-equivalence class, or its nonuniform coarse-equivalence class.
+
+Choose sequences $(A_{S,k})_{k\in\N}$ generating $\I_S$ for all nonempty
+$S\subseteq[n]$, and let $P$ be their combined oracle. There is a realization
+for which, with $H=X_{[n]}$,
+\begin{equation}\label{eq:jumpbound}
+      P\ltT H\ltT P',\qquad H'\eqT P'.
+\end{equation}
+In particular each $X_i\leT P'$.
+\end{theorem}
+
+The assumptions place no further restriction on how much information can
+appear when participants cooperate. The ideals for overlapping coalitions
+need not obey an intersection identity, and the ideal assigned to a union
+may be strictly larger than the ideal generated by the two constituent
+ideals. The theorem asserts a complete finite classification at the level
+of \emph{cores}, not of the full degree spectra or of coarse reducibility.
+
+\begin{corollary}[Arbitrary two-oracle synergy]\label{cor:synergyintro}
+For every countable Turing ideal $\I$, there are $X,Y$ such that
+\[
+ \Core(X)=\Core(Y)=\Comp,\qquad \Core(X\join Y)=\I.
+\]
+They can be chosen individually $1$-generic, with no least representative in
+any of the three relevant classes of $X$, $Y$, or $X\join Y$.
+\end{corollary}
+
+A direct two-oracle construction, stronger than merely applying the main
+theorem, appears in Section~\ref{sec:two}. The main theorem itself is proved
+in Sections~\ref{sec:algebra}--\ref{sec:bounds}. The construction is finite
+in its sharing architecture but infinite in its oracle coding and genericity.
+
+\subsection{Why the upper bound is the real issue}
+
+To make every authorized coalition recover a chosen ideal, it is enough to
+supply redundant encodings of its generators. That establishes only one
+inclusion in~\eqref{eq:profile}. It does not prevent masks, combinations of
+shares, or the choice of the presentation from encoding additional robust
+information. Finite probabilistic secrecy by itself also does not establish
+an equality of Turing ideals.
+
+Our proof handles this through three levels. The code for an ideal can be
+approximated in density by codes computable from finitely many generators.
+For a fixed coalition, every partly observed sharing component can be
+absorbed into a change of generic coordinates. Finally, a cone-avoidance
+compactness theorem converts information surviving all sparse errors into
+information surviving a whole positive-radius neighborhood. This lets us
+replace each full secret code by a finite approximation and eliminate the
+generic coordinates. The surviving information must belong to the prescribed
+ideal.
+
+\section{Repository provenance and dependency boundary}\label{sec:provenance}
+
+\subsection{What is already in ProveIt}
+
+The repository was inspected at commit
+\begin{center}\small\ttfamily
+1a1396d4d3a2ac6812692df520517d86ba3a4785.
+\end{center}
+The relevant program is
+\path{Computability/TuringDegrees/Research/CoarseDegrees/}.
+Its research plan already states target C4 and gives the precise dyadic
+column construction for realizing one countable Turing ideal as a core
+\cite{RepoPlan}. We verify that sketch in Section~\ref{sec:ideal}; we do not
+claim it as a new discovery. The same column-coding architecture occurs in
+the proof of Theorem~3.11(2) of Hirschfeldt--Jockusch--Schupp
+\cite{HJS}, together with their coarse-description projection lemma.
+
+The repository's synthesis already develops equality of representative
+spectra, criteria for a least representative, and examples with prescribed
+unattained principal infima \cite{RepoSynthesis}. The no-least statement
+below is therefore not advertised in isolation as a new phenomenon. Its
+role here is that it can be imposed \emph{simultaneously} on every nonempty
+coalition while its entire ideal-valued profile is prescribed.
+
+The finite access-structure architecture is related to the classical
+construction of general secret-sharing schemes by Ito, Saito, and Nishizeki
+\cite{ISN}. We prove the specific additive algebra needed here directly.
+No novelty is claimed for splitting one bit into exclusive-or shares. The
+proposed contribution is the combination with exact coarse-core upper
+bounds, arbitrary countable ideals, and a common relative jump bound.
+
+\subsection{Claim ledger}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.27\textwidth}Xp{.25\textwidth}@{}}
+\toprule
+Statement & Role in this article & Status / attribution\\
+\midrule
+Cone-avoiding compactness; generic trivial core & Two non-elementary inputs & Published, \cite{HJKS}\\
+Single-ideal column code & Complete verification of C4 & Already sketched in \cite{RepoPlan}; coding in \cite{HJS}\\
+Finite affine sharing & Algebraic mechanism & Classical architecture; direct proof supplied\\
+All finite monotone profiles & Main classification theorem & Proposed contribution; full conventional proof\\
+Simultaneous nonattainment and relative lowness & Strengthening of realization & Proved here for the constructed profile\\
+Unauthorized coalitions generic over the secret presentation & Access-structure refinement & Proved here\\
+Uniform exact core is computable & Clarification of C4's uniformity question & Elementary established obstruction, not a novelty claim\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A search and source comparison did not establish priority for the main
+combined statement. The inspected sources and the repository's stated
+results do not supply that statement in this form. This is a bounded
+literature assessment, not evidence that no equivalent theorem exists.
+Independent mathematical review and a broader priority search are still
+appropriate before publication.
+
+\subsection{Formal verification is a separate claim}
+
+The repository distinguishes its genuine oracle-recursion development from
+a coarse-degree library containing explicitly admitted literature inputs
+\cite{RepoReadme}. This article does not rely on an uninspected assertion
+that the relevant Lean declarations are assumption-free. Its proofs are
+ordinary mathematical proofs with the two published inputs isolated below.
+No Lean or Rocq build was performed for this article. The accompanying
+Python program checks finite identities only; its results are not a
+substitute for a proof of an infinite computability theorem.
+
+\section{Basic density and oracle calculus}\label{sec:calculus}
+
+\subsection{Periodic coordinates and finite operations}
+
+For $m\geq1$ and $Y_0,\ldots,Y_{m-1}\in\Cantor$, write
+\[
+ \operatorname{Join}_m(Y_0,\ldots,Y_{m-1})(mt+j)=Y_j(t)
+ \quad(0\leq j<m).
+\]
+There is a computable coordinate extraction map for every $j$. For sets
+$E_j$ on the coordinates, counting at lengths divisible by $m$ gives
+\begin{equation}\label{eq:joincount}
+ \rho_{mN}\!\left(\operatorname{Join}_m(E_0,\ldots,E_{m-1})\right)
+       =\frac1m\sum_{j<m}\rho_N(E_j).
+\end{equation}
+At other lengths the difference is bounded by a term tending to zero.
+
+\begin{lemma}[Density calculus]\label{lem:density}
+The following facts hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $D\approx\operatorname{Join}_m(Y_j)$, then every extracted
+coordinate $D_j$ satisfies $D_j\approx Y_j$.
+\item If $D_j\approx Y_j$ for all $j<m$, then
+$\operatorname{Join}_m(D_j)\approx\operatorname{Join}_m(Y_j)$.
+\item For two tuples,
+\[
+ \delta\!\left(\operatorname{Join}_m(Y_j),\operatorname{Join}_m(Z_j)\right)
+       \leq\frac1m\sum_{j<m}\delta(Y_j,Z_j).
+\]
+\item For finite exclusive-or sums,
+\[
+ \delta\!\left(\mathop{\triangle}_{j<r}Y_j,
+                    \mathop{\triangle}_{j<r}Z_j\right)
+       \leq\sum_{j<r}\delta(Y_j,Z_j).
+\]
+\end{enumerate}
+Consequently, finite coordinate projections, permutations, duplications,
+and pointwise exclusive-or operations preserve coarse similarity whenever
+all their input coordinates are coarsely similar.
+\end{lemma}
+\begin{proof}
+For (a), an error in coordinate $j$ before its $N$th position is an error
+in the full oracle before position $mN$. Hence its error fraction is at most
+$m\rho_{mN}(D\bitsum\operatorname{Join}_m(Y_j))$, which tends to zero.
+Parts (b) and (c) follow from~\eqref{eq:joincount} and finite subadditivity
+of the limsup. For (d), if the two exclusive-or outputs differ at a position,
+at least one corresponding pair of inputs differs there. Thus the output
+error set is contained in the finite union of the input error sets. The
+last assertion follows by composition of these operations. A fixed extra
+oracle used identically on both sides introduces no errors.
+\end{proof}
+
+A permutation of finitely many periodic coordinates preserves $\delta$
+exactly: at lengths $mN$ it preserves the error count. Regrouping a finite
+join of equally sized tuples into one tuple has the same effect. Later each
+participant receives exactly the same number of streams, so flattening
+coalition joins has no hidden density distortion.
+
+\begin{lemma}[Necessary profile conditions]\label{lem:necessity}
+For every $X$, $\Core(X)$ is a countable Turing ideal. If $C\subseteq D$,
+then $\Core(X_C)\subseteq\Core(X_D)$. Also
+$\Core(X_\varnothing)=\Comp$.
+\end{lemma}
+\begin{proof}
+Every lower cone is downward closed and closed under finite joins. The core
+is an intersection of such cones and contains all computable sets. Since
+$X$ itself is a coarse description, $\Core(X)\subseteq\Low(X)$; the latter
+is countable because there are countably many oracle programs. Given a
+coarse description of $X_D$, extract and regroup the coordinates belonging
+to $C$. Lemma~\ref{lem:density} produces a coarse description of $X_C$,
+proving monotonicity. The empty coalition is represented by a computable
+oracle, which proves the final assertion.
+\end{proof}
+
+\subsection{Relative cores and the two published inputs}
+
+For a background oracle $B$, define
+\[
+ \Core^B(X)=\{A:(\forall D\approx X)\ A\leT B\join D\}.
+\]
+All descriptions here are arbitrary binary sets; they are not required to
+be computable in the background oracle.
+
+\begin{theorem}[Cone-avoiding compactness, published input]\label{thm:compact}
+If for every $\eps>0$ there is a $Y$ with $\delta(X,Y)\leq\eps$ and
+$A\nleT B\join Y$, then there is a $D\approx X$ with
+$A\nleT B\join D$.
+\end{theorem}
+
+This is Theorem~3.7 of \cite{HJKS}, with all oracle computations relativized
+to $B$. Its contrapositive supplies the form we use.
+
+\begin{corollary}[Robust radius]\label{cor:radius}
+For all $A,B,X$,
+\begin{equation}\label{eq:radius}
+ A\in\Core^B(X)
+ \quad\Longleftrightarrow\quad
+ (\exists\eta>0)(\forall Y)
+       [\delta(X,Y)<\eta\ \Longrightarrow\ A\leT B\join Y].
+\end{equation}
+\end{corollary}
+\begin{proof}
+If no such radius exists, for every positive $\eps$ choose a counterexample
+at distance less than $\eps$ and apply Theorem~\ref{thm:compact}.
+Conversely, every coarse description has distance zero and hence is within
+any positive radius. The strict inequality avoids irrelevant boundary
+conventions; replacing a radius by a smaller one would give the same use.
+\end{proof}
+
+\begin{definition}
+A sequence $G$ is \emph{$1$-generic relative to $B$} if for every
+$B$-computably enumerable set $W$ of finite binary strings, either some
+prefix of $G$ belongs to $W$, or some prefix of $G$ has no extension in $W$.
+\end{definition}
+
+\begin{theorem}[Generic core, published input]\label{thm:genericcore}
+If $G$ is $1$-generic relative to $B$, then
+\begin{equation}\label{eq:genericcore}
+                     \Core^B(G)=\Low(B).
+\end{equation}
+\end{theorem}
+
+This is the relativization of Theorem~4.2 of \cite{HJKS}; the background
+oracle is present in every recovery computation. We use this precise
+relative formulation, not an inference that ordinary genericity is enough
+in the presence of an arbitrary background oracle. These two named inputs
+are the only non-elementary coarse-computability theorems used below.
+
+\section{Generic coordinates and a transfer principle}\label{sec:generic}
+
+\subsection{The elementary genericity facts needed later}
+
+We record the details to identify precisely which genericity properties the
+construction uses. Finite tuples of binary streams are always identified
+with one binary sequence by periodic interleaving.
+
+\begin{lemma}[Changes and projections of generic coordinates]\label{lem:genericmaps}
+Let $G$ be $1$-generic relative to $P$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $B\leT P$, then $G$ is $1$-generic relative to $B$.
+\item If $h$ is a $P$-computable homeomorphism of a finite product of
+Cantor spaces with $P$-computable inverse, then $h(G)$ is $1$-generic
+relative to $P$.
+\item Every nonempty finite coordinate projection of $G$ is $1$-generic
+relative to $P$.
+\end{enumerate}
+In particular, invertible affine changes over $\mathbb F_2$, applied
+pointwise to finitely many streams with $P$-computable offsets, preserve
+$1$-genericity relative to $P$.
+\end{lemma}
+\begin{proof}
+Part (a) follows because every $B$-c.e. set of strings is $P$-c.e. For (b),
+view a c.e. set of strings as the effectively open union of its cylinders.
+The inverse image under $h$ is $P$-effectively open. If $G$ belongs to it,
+then $h(G)$ meets the original open set. Otherwise genericity gives a
+cylinder about $G$ disjoint from the inverse image. Its image is an open
+neighborhood of $h(G)$ disjoint from the original open set; it contains a
+cylinder about $h(G)$, as required.
+
+For (c), pull back the effectively open set by the coordinate projection.
+If a cylinder about $G$ avoids this pullback, its projection is an open
+neighborhood of the projected sequence and avoids the original set. The
+projection of a basic finite-coordinate cylinder is again open. This proves
+the avoiding alternative. The meeting alternative is immediate. Finally,
+the stated affine maps and their inverses are pointwise finite Boolean
+operations, so they satisfy (b).
+\end{proof}
+
+\begin{lemma}[Genericity excludes a background-computable description]\label{lem:nodescription}
+If $G$ is $1$-generic relative to $P$ and $E\leT P$, then
+\[
+                         \delta(G,E)=1.
+\]
+In particular, $G$ has no $P$-computable coarse description.
+\end{lemma}
+\begin{proof}
+Fix a rational $q<1$ and an integer $b$. Consider strings $\sigma$ having a
+length $N>b$ with $\rho_N(\sigma\bitsum E)>q$. They form a $P$-c.e.
+upward-closed family, where membership is witnessed by a finite prefix.
+It is dense: extend any string by a sufficiently long interval on which
+the bits are the complements of the corresponding bits of $E$.
+A generic sequence must meet a dense c.e. family, since the avoiding
+alternative is impossible. Thus there are arbitrarily large such $N$ for
+every rational $q<1$. The limsup is one.
+\end{proof}
+
+\begin{lemma}[No noncomputable base]\label{lem:nobase}
+If $G$ is $1$-generic relative to $P$, $A\leT P$, and $A\leT G$, then
+$A$ is computable.
+\end{lemma}
+\begin{proof}
+Choose $\Phi$ with $\Phi^G=A$. The set of strings $\sigma$ for which
+$\Phi^\sigma(t)\downarrow\ne A(t)$ for some $t$ is $P$-c.e.
+No prefix of $G$ belongs to it. Hence a prefix $\tau$ of $G$ has no
+extension in this set. To compute $A(t)$ without an oracle, search finite
+extensions of this fixed $\tau$ for any convergent computation
+$\Phi^\sigma(t)$. Such an extension exists because $\Phi^G$ is total.
+Its output must equal $A(t)$ by the choice of $\tau$. Hard-coding the
+finite string $\tau$ gives an ordinary program for $A$.
+\end{proof}
+
+\begin{lemma}[A bounded generic with a controlled jump]\label{lem:lowgeneric}
+For every $P$ there is a $G\leT P'$ that is $1$-generic relative to $P$.
+Every such $G$ satisfies
+\begin{equation}\label{eq:genericjump}
+ (P\join G)'\eqT G\join P'\eqT P'.
+\end{equation}
+Consequently $P\ltT P\join G\ltT P'$.
+\end{lemma}
+\begin{proof}
+List the $P$-c.e. families $W_e$ of finite strings. Starting with an empty
+string $\sigma_e$, use $P'$ to decide whether there is an extension in
+$W_e$. If one exists, find one by $P$-effective search and extend to it;
+if none exists, leave the current string unchanged at this substep.
+Append a bit to ensure unbounded length. The union $G$ is $P'$-computable
+and meets or avoids each $W_e$.
+
+For the jump assertion, fix an index $e$ for a computation with oracle
+$P\join G$. The family of finite $G$-strings on which this computation
+halts is $P$-c.e. To decide its outcome using $G\join P'$, search prefixes
+$\sigma$ of $G$ until either the computation already halts on $\sigma$, or
+$P'$ reports that no extension of $\sigma$ permits it to halt.
+Genericity guarantees that one alternative eventually occurs. Thus
+$(P\join G)'\leT G\join P'$. The reverse reduction uses
+$G\leT(P\join G)'$ and monotonicity of the jump. Since $G\leT P'$, the
+last degree is $P'$.
+
+Lemma~\ref{lem:nodescription} implies $G\nleT P$, giving the first strict
+inequality. If $P\join G\eqT P'$, jumping and using~\eqref{eq:genericjump}
+would give $P''\eqT P'$, contrary to strictness of the Turing jump.
+\end{proof}
+
+The bound is relative to the \emph{chosen presentation oracle}. A countable
+ideal may have many presentations of different degrees. No canonical least
+presentation is assumed, and no absolute lowness conclusion is asserted
+unless $P$ itself is computable.
+
+\subsection{Generic perturbations of successively simpler data}
+
+The following lemma packages the upper-bound argument. Its strength comes
+from quantifying over \emph{every} coarse description of a generic oracle,
+not merely the chosen exact generic sequence.
+
+\begin{lemma}[Generic-perturbation transfer]\label{lem:transfer}
+Suppose $W$ is a binary sequence and, for each $m$, there are:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item an oracle $B_m$ and a sequence $G_m$ that is $1$-generic relative to
+$B_m$;
+\item a total $B_m$-computable oracle map $F_m:\Cantor\to\Cantor$ such that
+$D\approx G_m$ implies $F_m(D)\approx F_m(G_m)$;
+\item a bound $\eps_m\to0$ with
+$\delta(W,F_m(G_m))\leq\eps_m$.
+\end{enumerate}
+Then each $A\in\Core(W)$ satisfies $A\leT B_m$ for every sufficiently
+large $m$. In particular, if the lower cones $\Low(B_m)$ are increasing,
+\begin{equation}\label{eq:transfer}
+                 \Core(W)\subseteq\bigcup_m\Low(B_m).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $A\in\Core(W)$ and take a radius $\eta>0$ from
+Corollary~\ref{cor:radius}, with computable background. For every large $m$
+we have $\eps_m<\eta$. Fix such an $m$ and any $D\approx G_m$.
+The density triangle inequality gives
+\[
+ \delta(W,F_m(D))
+ \leq\delta(W,F_m(G_m))+\delta(F_m(G_m),F_m(D))
+ \leq\eps_m<\eta.
+\]
+Therefore $A\leT F_m(D)\leT B_m\join D$. As $D$ was arbitrary,
+$A\in\Core^{B_m}(G_m)$. Theorem~\ref{thm:genericcore} gives $A\leT B_m$.
+The same argument works for every sufficiently large $m$. If the lower
+cones are increasing, their eventual-membership union is simply the union
+in~\eqref{eq:transfer}.
+\end{proof}
+
+There is no assumption that $A$ is computable from the master presentation
+used to construct the objects. That fact is obtained as a conclusion when
+the $B_m$ belong to the intended ideal. This prevents a circular
+cone-avoidance argument in which the object to be excluded is silently
+placed into the background oracle.
+
+\section{Verifying C4: one countable ideal as a core}\label{sec:ideal}
+
+\subsection{Robust blocks and positive-density columns}
+
+For $A\in\Cantor$, define
+\begin{equation}\label{eq:block}
+ J(A)(0)=0,\qquad J(A)(t)=A(j)\quad\text{if }2^j\leq t<2^{j+1}.
+\end{equation}
+The map is uniform in $A$, and $J(A)\eqT A$ by reading the positions $2^j$.
+
+\begin{lemma}[Nonuniform block decoding]\label{lem:block}
+Every coarse description $D$ of $J(A)$ computes $A$.
+\end{lemma}
+\begin{proof}
+On the block $[2^j,2^{j+1})$, compute the majority value of $D$, assigning
+zero in a tie. If this value is wrong, at least $2^{j-1}$ positions of the
+block are errors. Thus the error density at the endpoint $2^{j+1}$ is at
+least $1/4$. This can happen for only finitely many $j$ when $D\approx J(A)$.
+The majority sequence, computable from $D$, is therefore a finite variant
+of $A$. Hard-code its finitely many exceptions to obtain a reduction of
+$A$ to $D$.
+\end{proof}
+
+The finite correction depends on $D$. We have proved
+$\forall D\,\exists e$, not $\exists e\,\forall D$. Neither a bound on the
+number of exceptional blocks nor a procedure locating them is part of the
+conclusion.
+
+Partition $\N$ into the computable columns
+\begin{equation}\label{eq:columns}
+ R_k=\{r_k(t):t\in\N\},\qquad
+ r_k(t)=2^k(2t+1)-1.
+\end{equation}
+The partition is disjoint and exhaustive because $k$ is the exponent of two
+in $x+1$. The column $R_k$ has density $2^{-(k+1)}$. More precisely,
+\begin{equation}\label{eq:tailcount}
+ \left|[0,N)\cap\bigcup_{k\geq m}R_k\right|
+                  =\left\lfloor\frac{N}{2^m}\right\rfloor.
+\end{equation}
+Indeed, membership in this union means that $x+1$ is divisible by $2^m$.
+
+Given a sequence $(A_k)$, define its ideal code $Z$ by
+\begin{equation}\label{eq:idealcode}
+                         Z(r_k(t))=J(A_k)(t).
+\end{equation}
+Let $Z^{[m]}$ agree with $Z$ on $R_0,\ldots,R_{m-1}$ and be zero on every
+other column. Then
+\begin{equation}\label{eq:truncation}
+ Z^{[m]}\leT B_m:=\bigoplus_{k<m}A_k,
+ \qquad \delta(Z,Z^{[m]})\leq2^{-m}.
+\end{equation}
+The empty join $B_0$ is computable.
+
+\begin{theorem}[C4, with the sketch fully verified]\label{thm:ideal}
+The code in~\eqref{eq:idealcode} satisfies
+\begin{equation}\label{eq:idealidentity}
+                    \Core(Z)=\bigcup_m\Low(B_m).
+\end{equation}
+Consequently every countable Turing ideal is the core of a binary sequence.
+Moreover, the exact code $Z$ is Turing equivalent, uniformly, to the full
+presentation $P_A=\bigoplus_{k\in\N}A_k$.
+\end{theorem}
+\begin{proof}
+Let $D\approx Z$ and write $E=D\bitsum Z$. Extract the $k$th column as
+$D_k(t)=D(r_k(t))$. Its first $N$ positions lie below $2^{k+1}N$, so
+\[
+ \rho_N(D_k\bitsum J(A_k))
+       \leq2^{k+1}\rho_{2^{k+1}N}(E)\longrightarrow0.
+\]
+Thus $D_k$ is a coarse description of $J(A_k)$ and computes $A_k$ by
+Lemma~\ref{lem:block}. A finite join of these reductions shows
+$B_m\leT D$ for every $m$. This proves the inclusion from right to left
+in~\eqref{eq:idealidentity}.
+
+For the reverse inclusion, let $A\in\Core(Z)$ and choose a robust radius
+$\eta$ from Corollary~\ref{cor:radius}. Choose $m$ with $2^{-m}<\eta$.
+Then~\eqref{eq:truncation} gives
+$A\leT Z^{[m]}\leT B_m$. This proves the equality. If $\I$ is a countable
+ideal, enumerate a generating sequence from it. Its closure under finite
+joins and downward reducibility is exactly the right side of the equality.
+
+Finally, $P_A$ computes $Z$ directly from~\eqref{eq:idealcode}. Conversely,
+to obtain $A_k(j)$ from the exact code, read
+$Z(r_k(2^j))$. This recovers the two-parameter array uniformly, proving the
+last assertion.
+\end{proof}
+
+\subsection{Two quantifier distinctions}
+
+Every coarse description of $Z$ computes each generator $A_k$ separately.
+It need not compute their infinite join $P_A$. The reductions to $A_k$ may
+require unrelated finite corrections, with no computable procedure choosing
+the corrections as a function of $k$. The exact equivalence $Z\eqT P_A$
+is therefore consistent with a nonprincipal core strictly below $\Low(P_A)$.
+
+The theorem also does not say that every degree which is an upper bound for
+all the $A_k$ computes a coarse description of $Z$. An arbitrary family of
+nonuniform upper-bound reductions need not yield a usable approximation to
+the full column array. Thus the theorem is an exact \emph{core}
+calculation, not an asserted complete spectrum calculation.
+
+\subsection{Uniform exact recovery collapses}
+
+One question attached to C4 concerns replacing its nonuniform quantifier by
+a single recovering functional. In that literal exact-output sense the
+answer is completely different, for a reason unrelated to the particular
+column code.
+
+\begin{proposition}[Uniform exact core]\label{prop:uniformcore}
+For every $X,B$, the collection of sets $A$ for which some fixed functional
+$\Phi$ satisfies
+\[
+                  (\forall D\approx X)\quad\Phi^{B\join D}=A
+\]
+is exactly $\Low(B)$. In particular the unrelativized uniform exact core of
+every $X$ is $\Comp$.
+\end{proposition}
+\begin{proof}
+Suppose such a $\Phi$ exists. For a given input $t$, search with oracle $B$
+through all finite binary strings $\sigma$ and all finite computations until
+$\Phi^{B\join\sigma}(t)$ converges. This search terminates since
+$\Phi^{B\join X}(t)$ does. Every finite $\sigma$ has an extension $D$ that
+is a finite variant of $X$: replace the corresponding prefix of $X$ by
+$\sigma$. Hence $D\approx X$, and the convergent finite computation must
+have output $A(t)$. The search computes $A$ in $B$. Conversely, when
+$A\leT B$, simply ignore the $D$-coordinate.
+\end{proof}
+
+This is an exact-recovery obstruction, also reflected in the discussion of
+uniform decoding in \cite{HJKS}. It is not a statement that all
+\emph{uniform coarse reductions} are trivial: such a reduction only has to
+output some coarse description of its target, and different input
+oracles may produce different output sequences.
+
+\section{Two masks reveal an arbitrary ideal}\label{sec:two}
+
+The smallest instance already captures the reason why cores do not determine
+how information combines.
+
+\begin{theorem}[Two-share realization]\label{thm:two}
+Let $\I$ be a countable Turing ideal and let $P$ present a generating
+sequence. There are binary $X,Y$ such that
+\begin{equation}\label{eq:two}
+ \Core(X)=\Core(Y)=\Comp,\qquad \Core(X\join Y)=\I.
+\end{equation}
+Both $X$ and $Y$ are $1$-generic relative to $P$. They and their join have
+no $P$-computable coarse descriptions. With a suitable choice, their full
+join $H=X\join Y$ satisfies~\eqref{eq:jumpbound}.
+\end{theorem}
+\begin{proof}
+Let $Z$ be the code of Theorem~\ref{thm:ideal}, so $Z\eqT P$. Choose $R$
+$1$-generic relative to $P$, and put
+\[
+                         X=R,\qquad Y=R\bitsum Z.
+\]
+Translation by the $P$-computable sequence $Z$ is an invertible
+$P$-computable homeomorphism. Thus both sequences are $1$-generic relative
+to $P$, hence also without an oracle. Theorem~\ref{thm:genericcore} with
+computable background gives their two trivial cores.
+
+If $D\approx X\join Y$, its two coordinates $D_0,D_1$ satisfy
+$D_0\approx R$ and $D_1\approx R\bitsum Z$. Therefore
+$D_0\bitsum D_1\approx Z$. Every member of $\I$ is computed by this
+coarse description of $Z$, giving $\I\subseteq\Core(X\join Y)$.
+
+For the opposite inclusion, set
+\[
+ F_m(V)=V\join(V\bitsum Z^{[m]}),\qquad
+ B_m=\bigoplus_{k<m}A_k.
+\]
+This map is $B_m$-computable and preserves coarse similarity by
+Lemma~\ref{lem:density}. Since only the second coordinate changes,
+\[
+ \delta(X\join Y,F_m(R))\leq 2^{-m-1}.
+\]
+Also $R$ is $1$-generic relative to every $B_m\leT P$.
+Lemma~\ref{lem:transfer} now gives
+$\Core(X\join Y)\subseteq\bigcup_m\Low(B_m)=\I$.
+
+Neither $X$ nor $Y$ has a $P$-computable coarse description by
+Lemma~\ref{lem:nodescription}. Such a description of their join would
+project to one of $X$, so it too is impossible. Finally,
+$H\eqT R\join Z\eqT R\join P$. Choosing $R\leT P'$ as in
+Lemma~\ref{lem:lowgeneric} gives the jump bound and the strict inequalities.
+\end{proof}
+
+The assertion about no least representatives will follow from the general
+spectrum criterion in Section~\ref{sec:bounds}. Every member of the three
+cores just calculated is computable in $P$, whereas none of these targets
+has a $P$-computable description.
+
+\begin{corollary}[There is no core-only operation for oracle join]\label{cor:nooperation}
+There is no operation $\mathfrak F$ on pairs of countable Turing ideals
+satisfying
+\[
+             \Core(X\join Y)=\mathfrak F(\Core(X),\Core(Y))
+             \qquad\text{for all }X,Y.
+\]
+\end{corollary}
+\begin{proof}
+The pair of inputs $(\Comp,\Comp)$ can have every countable Turing ideal
+as its output by Theorem~\ref{thm:two}, including two different ideals.
+\end{proof}
+
+\begin{example}[A principal secret and a nonprincipal secret]
+For a noncomputable $A$, take a presentation of $\I=\Low(A)$. The individual
+shares have trivial cores, while their join robustly computes exactly the
+sets below $A$. Its core has greatest degree $\degT(A)$, but that degree
+will not be the degree of any coarse representative.
+
+For a nonprincipal example, let $\I$ be the ideal generated by the finite
+Turing jumps $\varnothing^{(k)}$, $k\in\N$. The strictness of the jump
+makes this ideal nonprincipal. Each finite jump survives in every coarse
+description of the joined shares, but their infinite presentation need not
+survive. In this case the representative spectrum has no greatest lower
+bound at all; see Corollary~\ref{cor:infima}.
+\end{example}
+
+\section{Finite additive sharing and coalition normal forms}\label{sec:algebra}
+
+\subsection{An all-of-$S$ component}
+
+Let $S=\{s_1<\cdots<s_r\}$ be a nonempty set of participants, and let $Z_S$
+be a binary secret stream. For $r\geq2$, introduce $r-1$ mask streams
+$R_{S,1},\ldots,R_{S,r-1}$. Give participant $s_j$ the stream
+\begin{equation}\label{eq:shares}
+ W_{S,s_j}=
+ \begin{cases}
+ R_{S,j},&j<r,\\
+ Z_S\bitsum R_{S,1}\bitsum\cdots\bitsum R_{S,r-1},&j=r.
+ \end{cases}
+\end{equation}
+For $r=1$, give its unique participant $W_{S,s_1}=Z_S$.
+Always,
+\begin{equation}\label{eq:parity}
+                        \mathop{\triangle}_{i\in S}W_{S,i}=Z_S.
+\end{equation}
+
+This is the usual additive all-of-$r$ sharing identity. The point of the
+next lemma is not that the shares have a probability distribution: no
+randomness is assumed. The lemma identifies the observations as a
+projection of a computable change of generic coordinates.
+
+\begin{lemma}[Proper observations are free coordinates]\label{lem:affine}
+Suppose $Z_S\leT P$. Let $O$ be a proper subset of the $r$ share positions
+in~\eqref{eq:shares}. The tuple of shares observed in $O$ is a coordinate
+projection of a $P$-computable invertible affine change of the $r-1$ masks.
+If $O$ is empty this is the empty projection. If $O$ is nonempty and the
+mask tuple is $1$-generic relative to $P$, the observed tuple is
+$1$-generic relative to $P$.
+\end{lemma}
+\begin{proof}
+If the last share is not observed, the observations are already distinct
+raw masks. Otherwise the last share is observed but at least one earlier
+mask position, say $j$, is missing. Replace the $j$th mask coordinate by
+\begin{equation}\label{eq:maskchange}
+ \widetilde R_{S,j}=Z_S\bitsum\mathop{\triangle}_{\ell<r}R_{S,\ell},
+ \qquad \widetilde R_{S,\ell}=R_{S,\ell}\quad(\ell\ne j).
+\end{equation}
+This is invertible: the inverse recovers the omitted mask by
+\[
+ R_{S,j}=Z_S\bitsum\widetilde R_{S,j}
+                \bitsum\mathop{\triangle}_{\ell<r,\,\ell\ne j}
+                         \widetilde R_{S,\ell}.
+\]
+The new $j$th coordinate is precisely the observed last share; all observed
+earlier shares are unchanged. Distinct observations therefore become
+distinct new mask coordinates. Since $Z_S\leT P$, the map and its inverse
+are $P$-computable. Apply Lemma~\ref{lem:genericmaps} for the last assertion.
+When $r=1$, a proper observation can only be empty, which has already been
+excluded from the genericity assertion.
+\end{proof}
+
+\subsection{Assembling the complete finite profile}
+
+Fix data satisfying Theorem~\ref{thm:main}. For each nonempty
+$S\subseteq[n]$, choose generators $(A_{S,k})_{k\in\N}$ of $\I_S$ and let
+$Z_S$ be their ideal code. Fix a computable pairing convention and put
+\begin{equation}\label{eq:presentation}
+ P=\bigoplus_{\substack{\varnothing\ne S\subseteq[n]\\ k\in\N}} A_{S,k}.
+\end{equation}
+In particular $Z_S\leT P$ uniformly in the finite parameter $S$.
+
+Introduce disjoint coordinates for every mask in every all-of-$S$
+component. In addition, introduce one \emph{private generic stream} $T_i$
+for each participant $i$. Let $G$ be the regular finite join of all these
+mask and private coordinates, chosen $1$-generic relative to $P$.
+The number of its coordinates is
+\begin{equation}\label{eq:mastercount}
+ Q=n+\sum_{\varnothing\ne S\subseteq[n]}(|S|-1)
+                 =n+(n-2)2^{n-1}+1\geq1.
+\end{equation}
+The streams are projections of one generic tuple. We do not separately
+choose generic masks and then assume that their joint tuple is generic.
+
+Participant $i$ receives its private stream $T_i$ and its share $W_{S,i}$
+for every $S$ containing $i$. There are exactly
+\begin{equation}\label{eq:width}
+                               L=2^{n-1}+1
+\end{equation}
+streams per participant. Define $X_i$ to be their regular $L$-way join in
+a fixed computable order. For a coalition $C$, flatten its join to the
+$M_C=|C|L$ observed streams. This differs from any other fixed ordering only
+by a finite periodic-coordinate permutation.
+
+The private streams are not needed for the lower inclusion of cores.
+Their purpose is to guarantee that every nonempty coalition contains an
+unremovable generic obstruction to a $P$-computable coarse description.
+They will also ensure that the normal form always has at least one generic
+coordinate.
+
+\begin{lemma}[Coalition normal form]\label{lem:normalform}
+For every nonempty $C\subseteq[n]$, there is a finite tuple $V_C$ which is
+$1$-generic relative to $P$, and a fixed pointwise finite exclusive-or and
+interleaving map $F_C$, such that
+\begin{equation}\label{eq:normalform}
+       X_C=F_C\bigl(V_C,(Z_S)_{\varnothing\ne S\subseteq C}\bigr).
+\end{equation}
+Here equality uses the fixed flattened coordinate ordering. The map $F_C$
+is an ordinary computable map when the displayed secrets are supplied as
+additional inputs. No secret $Z_S$ with $S\nsubseteq C$ is an additional
+input. The number of free stream coordinates in $V_C$ is
+\begin{equation}\label{eq:freecount}
+                  q_C=|C|L-(2^{|C|}-1)\geq |C|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Examine the components separately.
+
+If $S\subseteq C$, all its shares are observed. Keep its $|S|-1$ raw masks
+as free coordinates. Reconstruct its last share using those masks and
+$Z_S$. When $|S|=1$, there is no free coordinate and the observed stream is
+just $Z_S$.
+
+If $\varnothing\ne S\cap C\ne S$, apply Lemma~\ref{lem:affine} to the
+proper set of observed positions. All observed shares become free
+coordinates of an invertible $P$-computable affine change of the component's
+masks. Their reconstruction needs no additional secret input: in the new
+coordinates the observed streams are copied verbatim. The unauthorized
+secret may enter the \emph{change of coordinates}, but after that change it
+is not an input to the reconstruction map.
+
+Components with $S\cap C=\varnothing$ make no observations. Private streams
+$T_i$ for $i\in C$ are kept as free coordinates. The affine changes for the
+different components act on disjoint groups of coordinates, so together
+with the identity on private streams they form one $P$-computable
+homeomorphism of the master product space. Project its output to all the
+chosen free coordinates. Lemma~\ref{lem:genericmaps} proves that the result
+$V_C$ is $1$-generic relative to $P$. It is a nonempty projection because
+$C$ contains at least one private stream.
+
+There is one parity constraint for each fully observed component, and no
+constraint for a proper observation. There are $2^{|C|}-1$ nonempty subsets
+of $C$, so the number of free coordinates is the total number $|C|L$ of
+observed streams minus this number of constraints. Each constraint belongs
+to a different component and removes exactly one coordinate; hence the
+constraints are independent. This proves~\eqref{eq:freecount}, including
+the lower bound from the private coordinates.
+\end{proof}
+
+The distinction between the coordinate change and the reconstruction map
+is central. The first is allowed to use the full presentation $P$ because
+its task is to establish relative genericity. The second will use only
+finitely much \emph{authorized} information. Giving the reconstruction map
+access to $P$ would make the core upper bound far too weak.
+
+\subsection{Truncating only authorized secrets}
+
+For $C\ne\varnothing$, define the finite authorized join
+\begin{equation}\label{eq:bcm}
+ B_{C,m}=\bigoplus_{\substack{\varnothing\ne S\subseteq C\\ k<m}}A_{S,k}.
+\end{equation}
+Every such $B_{C,m}$ belongs to $\I_C$ by monotonicity and closure under
+finite joins. Its lower cone increases with $m$, and
+\begin{equation}\label{eq:idealunion}
+                   \bigcup_m\Low(B_{C,m})=\I_C.
+\end{equation}
+For the reverse inclusion in~\eqref{eq:idealunion}, it is enough that the
+terms with $S=C$ already generate $\I_C$.
+
+Let $Z_S^{[m]}$ be the first-$m$-column truncation of $Z_S$. Define a map on
+the free generic tuple by
+\begin{equation}\label{eq:fcm}
+ F_{C,m}(V)=F_C\bigl(V,(Z_S^{[m]})_{\varnothing\ne S\subseteq C}\bigr).
+\end{equation}
+We identify its finite product domain with $\Cantor$. The map is total and
+$B_{C,m}$-computable. By Lemma~\ref{lem:density} it preserves coarse
+similarity in the variable $V$.
+
+\begin{lemma}[The quantitative approximation bound]\label{lem:approx}
+The normal form satisfies
+\begin{equation}\label{eq:approx}
+ \delta\bigl(X_C,F_{C,m}(V_C)\bigr)
+     \leq\frac{2^{|C|}-1}{|C|L}\,2^{-m}\leq2^{-m}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a fully observed component $S\subseteq C$, substituting
+$Z_S^{[m]}$ for $Z_S$ changes only its last reconstructed stream. The
+other $|S|-1$ streams are copied masks. The changed last stream differs on
+exactly $Z_S\bitsum Z_S^{[m]}$, which has upper density at most $2^{-m}$.
+This description includes singleton components, whose sole stream is the
+last stream. Properly observed components and private streams do not change.
+There are $2^{|C|}-1$ fully observed components among $|C|L$ output streams.
+Apply Lemma~\ref{lem:density}(c). The coefficient is at most one because
+each fully observed component contributes a distinct output stream.
+\end{proof}
+
+There is no appeal here to cancellation among different error sets. Each
+changed stream has its own deterministic upper bound, and only finitely
+many streams are involved. This is why a single truncation level works for
+all authorized components of a fixed finite coalition.
+
+\section{Proof of simultaneous realization}\label{sec:realization}
+
+\begin{proposition}[Every intended generator survives]\label{prop:lower}
+For the construction above, $\I_C\subseteq\Core(X_C)$ for every nonempty
+$C\subseteq[n]$.
+\end{proposition}
+\begin{proof}
+Fix a coarse description $D$ of $X_C$. Extract from it the streams belonging
+to the all-of-$C$ component. Each extracted stream is a coarse description
+of its exact share, by Lemma~\ref{lem:density}(a). The exclusive-or sum of
+these descriptions is a coarse description of $Z_C$, by
+Lemma~\ref{lem:density}(d) and~\eqref{eq:parity}. Theorem~\ref{thm:ideal}
+therefore implies that $D$ computes each member of $\I_C$. As this works
+for every $D$, the stated inclusion follows.
+\end{proof}
+
+\begin{proposition}[No unintended information survives]\label{prop:upper}
+For the same construction, $\Core(X_C)\subseteq\I_C$ for every nonempty
+$C\subseteq[n]$.
+\end{proposition}
+\begin{proof}
+Use the fixed generic tuple $V_C$ of Lemma~\ref{lem:normalform}, with
+backgrounds $B_{C,m}$ and maps $F_{C,m}$ from~\eqref{eq:fcm}. Since
+$B_{C,m}\leT P$, the tuple $V_C$ is $1$-generic relative to $B_{C,m}$.
+The maps are total, $B_{C,m}$-computable, and preserve coarse similarity.
+The approximation errors tend to zero by Lemma~\ref{lem:approx}.
+All hypotheses of Lemma~\ref{lem:transfer} are satisfied. Consequently,
+\[
+ \Core(X_C)\subseteq\bigcup_m\Low(B_{C,m})=\I_C.
+\]
+For clarity, the individual quantifier argument is this. Given
+$A\in\Core(X_C)$, choose its positive radius $\eta$, then choose $m$ with
+$2^{-m}<\eta$. For \emph{every} $D\approx V_C$, the output $F_{C,m}(D)$
+lies within that radius. Hence $A\leT B_{C,m}\join D$ for every such $D$.
+The relative generic-core theorem forces $A\leT B_{C,m}\in\I_C$.
+No index uniformly recovering $A$ from those different outputs is needed.
+\end{proof}
+
+\begin{proof}[Proof of the realization equivalence in Theorem~\ref{thm:main}]
+Necessity is Lemma~\ref{lem:necessity}. For sufficiency, choose the generator
+presentations, codes, masks, and private streams as in
+Section~\ref{sec:algebra}. Propositions~\ref{prop:lower} and~\ref{prop:upper}
+give every nonempty equality in~\eqref{eq:profile}. The empty equality holds
+by convention. The same single master generic works for all coalitions:
+there are only finitely many coordinate changes to consider, and each
+preserves genericity by a theorem rather than by an extra construction
+requirement. The remaining nonattainment and effectiveness clauses are
+proved in the next section.
+\end{proof}
+
+\subsection{A fully displayed three-participant example}
+
+For $n=3$, the prescribed data are
+\[
+ \I_1,\I_2,\I_3,\I_{12},\I_{13},\I_{23},\I_{123},
+\]
+subject only to the inclusions forced by subscripts. Let $Z_S$ code $\I_S$.
+Use masks $R_{12},R_{13},R_{23},U,V$ and private streams $T_1,T_2,T_3$,
+whose eight-way join is $1$-generic over $P$. Each participant has five
+streams:
+\begin{center}\small
+\begin{tabular}{@{}clllll@{}}
+\toprule
+Participant & Private & Singleton & First pair & Second pair & Triple\\
+\midrule
+1 & $T_1$ & $Z_1$ & $R_{12}$ & $R_{13}$ & $U$\\
+2 & $T_2$ & $Z_2$ & $Z_{12}\bitsum R_{12}$ & $R_{23}$ & $V$\\
+3 & $T_3$ & $Z_3$ & $Z_{13}\bitsum R_{13}$ & $Z_{23}\bitsum R_{23}$ & $Z_{123}\bitsum U\bitsum V$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Coalition $\{1,2\}$ fully observes the singleton components 1 and 2 and the
+pair component 12. Its observations of 13, 23, and 123 are proper, so the
+normal form treats them as generic coordinates. There are ten observed
+streams, three full-component parity relations, and seven free streams.
+Truncating the three authorized codes changes at most three streams,
+with density distance at most $(3/10)2^{-m}$. Thus its core is precisely
+$\I_{12}$, even when $\I_{123}$ contains substantially more information.
+
+The full coalition observes fifteen streams and seven independent parity
+relations, leaving eight free streams, exactly the original master masks
+and private streams. Its core is $\I_{123}$. Nothing in this calculation
+requires the three pair ideals to be equal or comparable with one another.
+
+For example, one may prescribe all singleton ideals as $\Comp$, prescribe
+$\I_{12}=\Low(A)$ and $\I_{13}=\Low(B)$ for arbitrary $A,B$, prescribe
+$\I_{23}=\Comp$, and take $\I_{123}$ to be any countable ideal containing
+$A\join B$. Every one of these choices is realized simultaneously.
+
+\section{Representative spectra, nonattainment, and jump bounds}\label{sec:bounds}
+
+\subsection{The spectrum criterion, with its short proof}
+
+For binary targets, write $X\leq_{\nc}Y$ if every coarse description of $Y$
+computes a coarse description of $X$. Write $X\leq_{\uc}Y$ if one Turing
+functional maps every coarse description of $Y$ to a coarse description of
+$X$. Mutual reducibility defines the respective equivalences. Let
+$\Spec_r(X)$ be the set of ordinary Turing degrees of representatives
+coarsely equivalent to $X$, where $r\in\{\nc,\uc\}$. These spectra should
+not be confused with the coarse degrees themselves.
+
+\begin{lemma}[Spectrum identity]\label{lem:spectrum}
+For every binary $X$,
+\begin{align}\label{eq:spectra}
+ \Spec_{\nc}(X)=\Spec_{\uc}(X)
+ &=\{\degT(D):D\approx X\}\\
+ &=\{\mathbf b:(\exists D\approx X)\ \degT(D)\leq\mathbf b\}.
+ \nonumber
+\end{align}
+The common lower cone of any of these spectra, expressed as a collection
+of sets, is $\Core(X)$.
+\end{lemma}
+\begin{proof}
+If $D\approx X$, then $D$ and $X$ have exactly the same coarse descriptions,
+so the identity functional gives uniform equivalence. Uniform equivalence
+implies nonuniform equivalence. If $Y\equiv_{\nc}X$, apply $X\leq_{\nc}Y$
+to $Y$ as a description of itself; it computes a $D\approx X$.
+These facts give all inclusions except upward closure of the description
+spectrum.
+
+For that closure, let $B$ compute a coarse description $D$ of $X$. Replace
+$D(2^k)$ by $B(k)$ for every $k$ and leave all other positions unchanged.
+The resulting $E$ still describes $X$ because the powers of two have density
+zero. Also $E\leT B$ and $B\leT E$ by reading those powers, so
+$\degT(E)=\degT(B)$. This proves~\eqref{eq:spectra}. Intersecting lower cones
+over the description spectrum is exactly the definition of the core.
+\end{proof}
+
+The lemma is included to make the later inference self-contained; the
+same spectrum identity is already in the repository synthesis
+\cite{RepoSynthesis}.
+
+\begin{proposition}[When a least representative exists]\label{prop:least}
+The common spectrum in~\eqref{eq:spectra} has a least degree if and only if
+some member of $\Core(X)$ computes a coarse description of $X$.
+\end{proposition}
+\begin{proof}
+If $A\in\Core(X)$ computes $D\approx X$, then $A\leT D$ by the core
+property, so $D\eqT A$. Every member of the common spectrum computes some
+description of $X$ and hence computes $A$. Thus $\degT(A)$ is attained and
+least. Conversely, let a least degree be represented by $D\approx X$ using
+Lemma~\ref{lem:spectrum}. Every other coarse description computes $D$ by
+leastness. Thus $D\in\Core(X)$ and $D$ itself is a description.
+\end{proof}
+
+\begin{remark}[Allowing natural-number-valued representatives]
+These conclusions do not change if the coarse classes contain arbitrary
+total functions $\N\to\N$. If the target is binary, convert a description
+$E$ to a binary one by assigning 1 exactly where $E$ is 1 and assigning 0
+elsewhere. This introduces no error at any previously correct position.
+The self-application argument still gives a binary description computable
+from every representative. Its degree can be represented by a set coding
+the graph of the function. The other inclusions and sparse coding are
+already witnessed by binary descriptions. Hence the same spectrum identity
+and the same leastness criterion hold in the larger universe.
+\end{remark}
+
+\subsection{Nonattainment in every nonempty coalition}
+
+\begin{theorem}[Simultaneous absence of a least representative]\label{thm:noleast}
+For the finite-profile construction, every nonempty $C\subseteq[n]$ has no
+$P$-computable coarse description and no least degree in any of the three
+spectra in~\eqref{eq:spectra}.
+\end{theorem}
+\begin{proof}
+Choose $i\in C$. The private stream $T_i$ is a periodic coordinate of
+$X_C$ and is $1$-generic relative to $P$. If a $P$-computable oracle
+coarsely described $X_C$, extracting this coordinate would give a
+$P$-computable coarse description of $T_i$, contradicting
+Lemma~\ref{lem:nodescription}.
+
+Every set in $\Core(X_C)=\I_C$ is computable in $P$: it is reducible to a
+finite join of generators from the presentation. Hence no core member can
+compute a coarse description of $X_C$. Proposition~\ref{prop:least}
+excludes a least degree. The natural-number-valued extension in the previous
+remark shows that enlarging the set of representatives cannot restore one.
+\end{proof}
+
+\begin{corollary}[Exact behavior of the infimum]\label{cor:infima}
+In the constructed profile, fix $C\ne\varnothing$.
+If $\I_C=\Low(B)$ is principal, the degree of $B$ is the greatest lower
+bound of the representative spectrum but is not in that spectrum.
+If $\I_C$ is nonprincipal, the spectrum has no greatest lower bound in the
+Turing degrees.
+\end{corollary}
+\begin{proof}
+The common lower cone of the spectrum is exactly $\I_C$ by
+Lemma~\ref{lem:spectrum}. A greatest lower bound is precisely a greatest
+Turing degree in that ideal. An ideal has such a degree exactly when it is
+principal. In the principal case that degree cannot be attained, because
+attainment would make it least, contrary to Theorem~\ref{thm:noleast}.
+\end{proof}
+
+The statement excludes a \emph{least} element, not necessarily a
+\emph{minimal} element. A minimal element need not be below the other
+elements. Nothing in the proof identifies the full spectrum closely enough
+to exclude minimal elements, and the repository's target C5 is not settled
+by this argument.
+
+\subsection{A common effective bound}
+
+\begin{theorem}[Relative lowness of the entire realization]\label{thm:effective}
+Choose the master generic $G\leT P'$ as in Lemma~\ref{lem:lowgeneric}.
+Then the full join $H=X_{[n]}$ satisfies
+\[
+                    H\eqT P\join G,
+\]
+and hence $P\ltT H\ltT P'$ and $H'\eqT P'$.
+For every nonempty $C$ there is also the relative bound
+\begin{equation}\label{eq:coalitionjump}
+ P\ltT P\join X_C\ltT P',\qquad (P\join X_C)'\eqT P'.
+\end{equation}
+\end{theorem}
+\begin{proof}
+All shares are computable from $P\join G$, so $H\leT P\join G$.
+Conversely, the full join contains every private stream and every raw mask:
+for an all-of-$S$ component the first $|S|-1$ shares are exactly its masks.
+Thus $H$ computes $G$. Taking the exclusive-or of the complete shares in
+each component recovers its exact code $Z_S$. Exact decoding of the columns
+of all these codes recovers the full array~\eqref{eq:presentation}
+uniformly. Hence $P\leT H$, proving $H\eqT P\join G$.
+Lemma~\ref{lem:lowgeneric} gives the stated full-join conclusions.
+
+For a nonempty coalition, $P\join X_C\leT P\join G\eqT H$, so
+$(P\join X_C)'\leT H'\eqT P'$. The reverse reduction follows from
+$P\leT P\join X_C$. The private stream of any member of $C$ shows
+$X_C\nleT P$, proving the lower strict inequality. If the upper one failed,
+$P\join X_C\eqT P'$ and jumping would again give $P''\eqT P'$.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+The realization equivalence was proved in Section~\ref{sec:realization}.
+Theorem~\ref{thm:noleast} supplies its simultaneous nonattainment clause,
+and Theorem~\ref{thm:effective} supplies~\eqref{eq:jumpbound}.
+All clauses refer to the same construction.
+\end{proof}
+
+\begin{remark}[What the effective bound does and does not provide]
+The argument is uniform at the level of the given presentation: a fixed
+$P'$-effective generic construction and fixed finite formulas produce the
+shares. This is not a computable algorithm that takes an arbitrary abstract
+ideal as a finite input. Also, $X_C$ need not compute $P$, so
+$X_C'\eqT P'$ is not claimed for every proper coalition. The precise
+uniform statement is~\eqref{eq:coalitionjump}, with the background joined in.
+\end{remark}
+
+\section{Access structures with genuinely generic unauthorized views}\label{sec:access}
+
+The general profile theorem permits different nontrivial ideals for many
+coalitions. An access structure is the useful special case where the only
+desired cores are $\Comp$ and one fixed secret ideal. There is then a
+stronger realization: unauthorized views themselves, before any corruption,
+can be $1$-generic relative to the entire secret presentation.
+
+\begin{definition}
+An \emph{access structure} on $[n]$ is an upward-closed family
+$\Acal\subseteq\mathcal P([n])$ with $\varnothing\notin\Acal$. Its members
+are called authorized. The empty family is allowed. Let
+$\min\Acal$ be its inclusion-minimal members.
+\end{definition}
+
+\begin{theorem}[Generic access-structure realization]\label{thm:access}
+Let $\I$ be a countable Turing ideal presented by $P$, and let $\Acal$ be a
+finite access structure. There are binary participant oracles $X_1,\ldots,X_n$
+such that, for every coalition $C$,
+\begin{equation}\label{eq:access}
+ \Core(X_C)=
+ \begin{cases}
+ \I,&C\in\Acal,\\
+ \Comp,&C\notin\Acal.
+ \end{cases}
+\end{equation}
+For each nonempty unauthorized $C$, the exact oracle $X_C$ is $1$-generic
+relative to $P$. In particular,
+\begin{equation}\label{eq:exactsecrecy}
+                  \Low(X_C)\cap\Low(P)=\Comp.
+\end{equation}
+Every nonempty coalition class has no least representative. All shares can
+be chosen computable in $P'$, with
+$(P\join X_C)'\eqT P'$ and $P\ltT P\join X_C\ltT P'$ for nonempty $C$.
+When $\Acal$ is nonempty, the full join itself satisfies
+$H\eqT P\join G$ and the sharper full-join bound~\eqref{eq:jumpbound}.
+\end{theorem}
+\begin{proof}
+Let $Z$ be the single code of the generators of $\I$, so $Z\eqT P$.
+For every $S\in\min\Acal$, create an all-of-$S$ component with the same
+secret stream $Z$, using disjoint mask coordinates for different components.
+Every participant receives at least one private generic stream.
+
+To keep all joins equally interleaved, let
+\[
+ d_i=|\{S\in\min\Acal:i\in S\}|,\qquad
+ L_*=1+\max_i d_i.
+\]
+Give participant $i$ its $d_i$ component streams and exactly $L_*-d_i$
+additional, distinct private generic streams. These counts are positive.
+All mask and private streams form one master tuple $G$, chosen $1$-generic
+relative to $P$. Participant $i$'s oracle is their $L_*$-way join.
+
+If $C$ is unauthorized, it contains no $S\in\min\Acal$. Its observations
+of every component are therefore proper. By the same affine changes as in
+Lemma~\ref{lem:normalform}, its entire flattened view is a nonempty
+coordinate projection of a $P$-computable homeomorphic image of $G$.
+There are no fully observed secrets to reconstruct. Thus $X_C$ itself is
+$1$-generic relative to $P$. Theorem~\ref{thm:genericcore} with computable
+background gives its ordinary core $\Comp$, and
+Lemma~\ref{lem:nobase} gives~\eqref{eq:exactsecrecy}.
+
+If $C$ is authorized, it contains at least one minimal authorized set $S$.
+The corresponding parity sum of coarse share descriptions yields a coarse
+description of $Z$. Thus $\I\subseteq\Core(X_C)$. For the reverse
+inclusion, form the same coalition normal form, with one copy of $Z$ for
+each fully observed component. Replace all those copies by $Z^{[m]}$.
+Only finitely many output streams change, each on a set of upper density at
+most $2^{-m}$. The reconstruction map is computable in
+$B_m=\bigoplus_{k<m}A_k$ and preserves coarse similarity in its generic
+coordinates. Lemma~\ref{lem:transfer} gives
+$\Core(X_C)\subseteq\bigcup_m\Low(B_m)=\I$.
+
+Every nonempty coalition contains a private generic stream and therefore
+has no $P$-computable description. All members of its core belong to
+$\Low(P)$, so Proposition~\ref{prop:least} excludes a least degree.
+Choose $G\leT P'$ for the bounds. We have $X_C\leT P\join G$, while a
+private stream forces $X_C\nleT P$. The proof of
+Theorem~\ref{thm:effective} yields the relative jump assertions.
+If $\Acal\ne\varnothing$, the full coalition sees a complete component,
+so recovers $Z\eqT P$, as well as all masks and private streams; hence
+$H\eqT P\join G$. If $\Acal$ is empty, all views are simply joins of
+private generic streams, and no recovery of $P$ from $H$ is claimed.
+\end{proof}
+
+\subsection{Thresholds and a worked example}
+
+For $1\leq t\leq n$, take $\Acal=\{C:|C|\geq t\}$.
+Its minimal members are exactly the $t$-element subsets. Thus any threshold
+pattern is realized, and each party receives
+$\binom{n-1}{t-1}$ component streams plus one private stream. This count
+measures the width of this particular construction, not an optimality claim.
+
+For a two-of-three structure, one can write the whole scheme as
+\[
+\begin{aligned}
+ X_1&=\operatorname{Join}_3(T_1,R_{12},R_{13}),\\
+ X_2&=\operatorname{Join}_3(T_2,Z\bitsum R_{12},R_{23}),\\
+ X_3&=\operatorname{Join}_3(T_3,Z\bitsum R_{13},Z\bitsum R_{23}).
+\end{aligned}
+\]
+The six-way join of the $T$ and $R$ streams is generic over $P\eqT Z$.
+Each singleton view is generic over $P$ and computes no noncomputable
+$P$-computable set. Each pair robustly recovers the ideal $\I$ through its
+complete pair component, and its core contains nothing else. The triple has
+the same core $\I$, even though it observes all three redundant copies.
+Every nonempty view lacks a least-degree coarse representative.
+
+\subsection{Why this is not a practical cryptographic claim}
+
+Equation~\eqref{eq:exactsecrecy} is a precise statement about exact Turing
+reductions, and~\eqref{eq:access} is a precise statement about information
+surviving arbitrary density-zero errors. They do not assert finite-key
+security, computational indistinguishability, Shannon secrecy of a sampled
+finite distribution, resistance to finite leakage models, or efficient
+share generation. The streams may be noncomputable, and the construction
+of a suitable generic uses a jump oracle. Its relevance is mathematical:
+it separates exact information, robust nonuniform information, and the
+finite combinatorics of cooperation.
+
+\section{A boundary: leastness cannot be prescribed arbitrarily}\label{sec:attainment}
+
+The main theorem realizes every monotone ideal profile while making all
+nonempty spectra unattained. Replacing that uniform negative requirement
+by arbitrary positive and negative leastness flags introduces genuine
+compatibility conditions.
+
+\begin{proposition}[Least representatives are closed under finite joining]\label{prop:leastjoin}
+Suppose the coarse spectra of $X$ and $Y$ have least degrees $\mathbf a$
+and $\mathbf b$. Then the coarse spectrum of $X\join Y$ has least degree
+$\mathbf a\join\mathbf b$, and
+\[
+            \Core(X\join Y)=\Low(A\join B)
+\]
+for representatives $A,B$ of those two degrees.
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:least}, choose coarse descriptions $D_X\approx X$
+and $D_Y\approx Y$ with $D_X\eqT A$ and $D_Y\eqT B$, where
+$A\in\Core(X)$ and $B\in\Core(Y)$. Their join is a coarse description of
+$X\join Y$ computable from $A\join B$.
+Every description of $X\join Y$ projects to descriptions of $X$ and $Y$,
+so it computes both $A$ and $B$, hence $A\join B$. The joined description
+therefore has least degree $\mathbf a\join\mathbf b$.
+The core is at least $\Low(A\join B)$ by this recovery and at most that
+ideal because this particular description has exactly that degree.
+\end{proof}
+
+For a participant family, let $\mathcal L$ contain exactly the coalitions
+whose spectra have a least degree. It contains the empty coalition. If
+$C,D\in\mathcal L$, then $C\cup D\in\mathcal L$: joining their views and
+then deleting duplicated coordinates is uniformly coarse-equivalent to the
+view of the union. Moreover, the least degree at the union must be the join
+of the two least degrees. Thus $\mathcal L$ must be union-closed, and its
+principal core labels must satisfy this join identity. These conditions are
+not imposed on coalitions outside $\mathcal L$.
+
+This explains why an example of arbitrary synergy cannot be obtained by
+using individually coarsely computable shares. A finite join of computable
+coarse descriptions is again computable. In the two-share construction the
+individual cores are computable, but no computable member of either core
+computes a description of its share. The gap between having a principal
+core and attaining its greatest degree is exactly what makes arbitrary
+joint information possible.
+
+\section{Proof audit and reproducible finite verification}\label{sec:audit}
+
+\subsection{Logical dependency chain}
+
+The main proof can be checked in the following order. The only external
+coarse-computability inputs are Theorems~\ref{thm:compact}
+and~\ref{thm:genericcore}. The first yields the robust-radius corollary.
+Finite counting gives the block and column calculations, establishing the
+single-ideal identity. The two inputs together yield the transfer lemma.
+Finite affine algebra and elementary genericity invariance yield the
+coalition normal form. That form and the explicit approximation bound feed
+the transfer lemma and give the upper inclusion. Decoding one fully observed
+component gives the lower inclusion independently. Private generic streams
+then give nonattainment, and exact access to the full array gives the jump
+bound.
+
+In particular, the proof of the upper inclusion does not use the main
+realization theorem, the desired ideal equality, the absence of a least
+representative, or any claim that the output is minimal. There is no
+self-reference through the intended conclusion.
+
+\begin{center}\small
+\begin{longtable}{@{}p{.29\textwidth}p{.64\textwidth}@{}}
+\toprule
+Potential failure & Check or repair used here\\
+\midrule
+\endhead
+Coarse information confused with exact information & $Z_S\eqT P_S$ is an exact statement; description decoding is only per-generator and nonuniform.\\
+Ordinary genericity used with an unauthorized oracle & The master tuple is generic relative to the entire presentation $P$; the reconstruction step uses only $B_{C,m}$.\\
+Separately generic masks assumed jointly generic & All masks and padding streams are projections of one master generic.\\
+Unauthorized secrets left in the final reduction oracle & They enter an affine coordinate change, not the truncated reconstruction map.\\
+Genericity assumed under arbitrary Turing equivalence & Only explicit homeomorphisms and finite open coordinate projections are used.\\
+A coarse description extracted from a zero-density channel & All extraction channels here have fixed positive periodic or dyadic density.\\
+An infinite union of zero-density error sets used & Every decoding or perturbation comparison uses only finitely many channels at once. Infinite columns are controlled by the explicit tail density $2^{-m}$.\\
+Finite majority correction treated as uniformly available & The correction is hard-coded separately for each description and generator; no uniform exact decoder is asserted.\\
+No least element confused with no minimal element & The proof uses the leastness criterion only. Minimal elements remain unclassified.\\
+Relative lowness confused with absolute lowness & The exact bounds are $H'\eqT P'$ and $(P\join X_C)'\eqT P'$.\\
+Finite testing advertised as theorem verification & The Python tests check only the finite algebra and counting listed below.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{The finite checks actually run}
+
+The archive contains \path{checks/verify_finite.py}, requiring only the
+Python standard library. It writes \path{checks/results.json}. The run
+included with this article passed all checks in the following table.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xp{.35\textwidth}@{}}
+\toprule
+Check & Executed scope\\
+\midrule
+All-of-$r$ exclusive-or reconstruction & $1\leq r\leq8$; 510 cases\\
+Proper observations have identical finite distributions for either secret bit & 502 observed-subset comparisons\\
+Coalition mask ranks and independent secret constraints & All 247 nonempty coalitions for $1\leq n\leq7$\\
+Affine normal-form reconstruction and inverse & 69,888 seeded cases, $n\leq6$\\
+Exact dyadic tail formula & 22,539 pairs $(N,m)$\\
+Column-index inversion & 50,000 positions\\
+Exclusive-or error inclusion & 5,460 exhaustive bit-tuple pairs\\
+Majority correctness and necessary error count & 131,628 cases; block length at most 16\\
+Recovery of finite monotone access families from minimal members & All 167 four-participant families with unauthorized empty coalition\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The rank test represents the masks as independent formal coordinates over
+$\mathbb F_2$. For each coalition it checks
+\[
+ \rk(\text{mask observation matrix})=|C|L-(2^{|C|}-1).
+\]
+It also checks that adjoining the formal secret coordinates makes the
+observation rows independent. Together these tests support the finite
+normal-form bookkeeping. They do not test genericity of an infinite
+sequence, recovery from every density-zero perturbation, or any oracle
+jump equality. Those are proved in the article, using the declared inputs.
+
+The fixed seed makes the non-exhaustive reconstruction checks reproducible;
+the distribution, rank, tail, majority, and access-family checks are
+exhaustive over their stated finite ranges. No statistical confidence
+claim is attached to the seeded checks.
+
+\subsection{A route to a genuine formalization}
+
+A faithful implementation should first define binary coarse descriptions,
+periodic joins, and dyadic column extraction over the repository's actual
+oracle semantics. The elementary density lemmas and the block decoder can
+then be formalized without any genericity machinery. The decoder's output
+should be an existential Turing reduction, with its finite correction
+visible; a uniform decoder theorem would be false.
+
+The ideal code should be represented by a two-parameter array, keeping the
+array oracle separate from the ideal generated by its finite joins. The
+finite affine part can be proved independently over vectors over
+$\mathbb F_2$, then lifted pointwise to streams. Useful intermediate theorem
+interfaces are: invertibility of the missing-mask replacement, preservation
+of genericity by an effective homeomorphism and a finite projection, and
+coarse-similarity preservation by reconstruction.
+
+The two published inputs can initially be explicit theorem parameters in a
+conditional development. Such a development would establish a correct
+implication from those inputs but would not be an assumption-free proof of
+the final theorem. A complete formalization must either prove the inputs or
+import already proved declarations whose dependencies have been audited.
+The last layers are the transfer lemma, finite coalition assembly,
+nonattainment criterion, and the ordinary generic jump calculation. The
+finite code shipped here can generate examples for this effort, but it is
+not itself a proof-producing formalizer.
+
+\section{Further research questions and topics}\label{sec:questions}
+
+The questions below are proposed continuations of this article. Unless a
+repository label is explicitly mentioned, they are not claimed to be
+published open problems. They separate issues actually settled above from
+those that require additional ideas.
+
+\subsection{Full proof verification and priority}
+
+\begin{question}[Formalize the finite-profile theorem]\label{q:formal}
+Can the complete theorem, including its two published inputs, be added to
+ProveIt's genuine oracle-semantics development with an explicit axiom audit
+and no admitted mathematical statements?
+\end{question}
+
+A useful first milestone is the complete finite affine and density layer;
+a second is the single-ideal identity; the critical third is the
+relative generic-core and compactness interface. A literature comparison
+should run in parallel, searching for equivalent ideal-valued or
+mass-problem formulations rather than only the terminology ``coarse core.''
+A successful priority search may reclassify the result as a synthesis; it
+would not invalidate the construction or its proofs.
+
+\subsection{Countably many participants}
+
+\begin{question}[A coherent countable realization theorem]\label{q:countable}
+Given countable Turing ideals assigned monotonically to all finite subsets
+of $\N$, with computable empty ideal, can they be realized by one countable
+family $(X_i)_{i\in\N}$? Which additional conditions are needed if ideals
+are also assigned to infinite coalitions?
+\end{question}
+
+Applying the finite theorem independently to initial segments does not
+answer this: the resulting shares need not agree on common participants.
+A countable construction has infinitely many incident components and no
+single finite mask rank. One possible route is to put components into
+shrinking positive-density columns and prove a tail approximation lemma
+that eliminates all but finitely many observed components. The main danger
+is unauthorized information in the infinite collection of coordinate
+changes. Infinite coalition joins introduce a further distinction between
+uniform access to all participants and individual nonuniform reductions.
+
+\subsection{Extending fixed shares rather than rebuilding them}
+
+\begin{question}[An extension property]\label{q:extension}
+Given already fixed $X_1,\ldots,X_n$, which monotone extensions of their
+core profile to $n+1$ participants are realizable while preserving those
+oracles exactly, or at least preserving their coarse-equivalence classes?
+\end{question}
+
+The present theorem rebuilds all shares from one master generic. It does
+not assert an amalgamation or extension property for arbitrary existing
+shares. Exact preservation may impose spectrum constraints invisible in
+the cores. Even the two-share question, with $X$ fixed and only $Y$ free,
+asks for more than Theorem~\ref{thm:two}. It would be useful to identify a
+class of extendible generic presentations and a precise obstruction outside
+that class.
+
+\subsection{Prescribing attainment together with the ideals}
+
+\begin{question}[Mixed leastness profiles]\label{q:attainment}
+Characterize the pairs consisting of a finite ideal profile $(\I_C)$ and
+a family $\mathcal L$ of coalitions whose spectra must have least degrees.
+Are principality on $\mathcal L$, union closure of $\mathcal L$, and the
+join identities of Proposition~\ref{prop:leastjoin} sufficient, or are
+there further compatibility conditions?
+\end{question}
+
+Our construction settles the case $\mathcal L=\{\varnothing\}$. Positive
+attainment cannot simply be enforced by adding a least-degree block code:
+that may expose information to larger coalitions and can conflict with
+prescribed nonattainment there. A promising finite starting case is three
+participants with only one singleton and one overlapping pair required to
+attain their cores.
+
+\subsection{The full spectra and the repository's C5}
+
+\begin{question}[Beyond common information]\label{q:spectrum}
+What are the complete coarse representative spectra of the two-share code
+and the finite-profile construction? Can the generic masks be chosen so
+that selected spectra have no minimal element, while preserving every core
+equality and the common jump bound?
+\end{question}
+
+This directly touches C5 of the repository plan \cite{RepoPlan}, but the
+present no-least theorem does not answer it. The core gives the common lower
+cone, not the collection of degrees which compute a description. Progress
+would require an effective description-building or description-lowering
+argument, not just a further common-information calculation. A first target
+is the two-share case for one principal ideal, where the intended infimum
+is completely explicit.
+
+\subsection{Degree bounds independent of a chosen enumeration}
+
+\begin{question}[Presentation-sensitive complexity]\label{q:bounds}
+For a fixed abstract countable ideal, what is the least possible complexity
+of a presentation admitting the bounds proved here? Can one characterize
+when a given oracle $Q$ bounds a realization with the required exact
+profile and nonattainment?
+\end{question}
+
+The theorem gives a uniform upper bound from $P'$, not an optimal bound
+for the ideal itself. Rearranging a generating sequence can add information
+to its presentation without changing the ideal. A useful invariant would
+separate the cost of presenting the ideal from the cost of producing a
+generic extension. Asking to construct these particular nonattained
+realizations below the same $P$ is impossible because they intentionally
+have no $P$-computable descriptions; meaningful improvements must alter the
+presentation bound or the construction requirements.
+
+\subsection{Uniform reductions and other description notions}
+
+\begin{question}[Uniform coarse structure of the profile]\label{q:uniform}
+Can one prescribe, along with the core profile, selected uniform coarse
+reducibilities among coalition views? Which finite patterns are compatible
+with the nonuniform recoveries used here?
+\end{question}
+
+Proposition~\ref{prop:uniformcore} settles only literal uniform
+\emph{exact} recovery. It says nothing comparable about uniform production
+of descriptions. The component parity maps are uniform at the description
+level, whereas block correction is not uniform at the exact-set level.
+Keeping these two interfaces separate may lead to a useful classification
+of uniform coarse access structures. Effective-dense descriptions, which
+permit explicit omissions but no wrong answers, require a separate study;
+the density-zero error argument cannot be transferred merely by changing
+terminology. This is relevant to C2 and C8 of \cite{RepoPlan} without
+claiming to resolve them.
+
+\subsection{Efficient finite architectures}
+
+\begin{question}[Stream complexity and linear sharing]\label{q:efficiency}
+For a prescribed finite ideal profile, what is the smallest number of
+positive-density streams per participant in a realization of this form?
+Can the all-subset construction be replaced by a smaller linear sharing
+architecture while preserving the generic normal form?
+\end{question}
+
+The construction uses $2^{n-1}+1$ streams per participant. That is an
+explicit bound, not a lower bound. For access structures, minimal authorized
+sets already reduce the number of components. More efficient finite linear
+schemes are candidates, but an adaptation must prove that an unauthorized
+observation is a projection of an effective homeomorphic change of masks,
+and must give a density-continuity estimate for reconstruction. Finite rank
+alone should not be substituted for these oracle-level assertions.
+
+\subsection{Other error ideals and higher reducibilities}
+
+\begin{question}[Replacing asymptotic density zero]\label{q:errors}
+For which ideals of allowed error sets does a finite monotone-profile
+realization theorem hold? What changes for upper Banach density zero,
+logarithmic density zero, or a fixed summable ideal?
+\end{question}
+
+The proof separates three required ingredients: a robust code on channels
+from which descriptions can be extracted; a finite-operation error
+calculus and controlled tails; and an analogue of the robust-radius plus
+generic-core mechanism. The finite sharing algebra survives unchanged,
+but the compactness and coding properties do not follow from abstract
+ideal closure. A carefully chosen error ideal may therefore supply either
+a generalization or a structural counterexample.
+
+\begin{question}[Hyperarithmetic profiles]\label{q:hyper}
+Can arbitrary finite monotone profiles of suitable countable
+hyperdegree ideals be realized as information common to all coarse
+descriptions, with hyperarithmetic rather than Turing reducibility?
+\end{question}
+
+The repository's report 10 discusses a failure of the corresponding
+hyperarithmetic robust-radius principle \cite{RepoHyper}. Consequently the
+transfer lemma must not simply be reprinted with $\leq_h$ in place of
+$\leT$. One needs a replacement for the step which turns recovery from all
+coarse descriptions into recovery from nearby truncated reconstructions.
+The finite affine normal form may still be useful, but it does not solve
+that missing higher-computability problem.
+
+\section{Conclusion}\label{sec:conclusion}
+
+The core records common robust information, not the difficulty of choosing
+a representative and not all information present in exact oracles.
+The finite realization theorem shows that its interaction with cooperation
+is as unrestricted as monotonicity permits: every finite monotone diagram
+of countable Turing ideals can be realized, even while every nonempty
+representative spectrum fails to attain a least degree.
+
+The key proof is the coalition upper bound. A generic normal form isolates
+all fully observed codes; their density truncations require only finitely
+many authorized generators. Cone-avoiding compactness and the relative
+generic-core theorem then remove the free coordinates. This proves an
+exact ideal equality rather than merely showing that some chosen secret
+is recoverable. The same construction has a common relative low jump,
+and the access-structure variant makes all unauthorized exact views generic
+over the entire presentation.
+
+The single-ideal theorem verifies the repository's C4 sketch rather than
+superseding its provenance. The proposed new contribution is the
+simultaneous finite classification and its refinements. Full spectra,
+minimal elements, coherent countable extensions, and mixed attainment
+patterns remain separate research targets. The proofs and finite checks
+here provide explicit objects and interfaces with which to attack them.
+
+\appendix
+\section{Notation and construction index}
+\begin{center}\small
+\begin{longtable}{@{}p{.26\textwidth}p{.67\textwidth}@{}}
+\toprule
+Notation & Meaning\\
+\midrule
+\endhead
+$X\bitsum Y$ & Symmetric difference / pointwise exclusive or.\\
+$X\join Y$ & Oracle join; throughout, a specified equal-density interleaving.\\
+$\delta(X,Y)$ & Upper asymptotic density of the disagreement set.\\
+$D\approx X$ & $\delta(D,X)=0$; $D$ is a coarse description of $X$.\\
+$\Core^B(X)$ & Sets computed by $B\join D$ for every $D\approx X$.\\
+$\Core(X)$ & The unrelativized core, with computable background.\\
+$\Low(B)$ & The Turing ideal $\{A:A\leT B\}$.\\
+$J(A)$ & Redundant block code, constant on $[2^j,2^{j+1})$.\\
+$R_k$ & Positive-density column $\{2^k(2t+1)-1:t\in\N\}$.\\
+$Z_S$ & Ideal code of the generator sequence $(A_{S,k})_k$.\\
+$Z_S^{[m]}$ & First-$m$-column truncation; the remaining columns are zero.\\
+$P$ & Oracle presenting all generator sequences; not assumed to belong to any prescribed ideal.\\
+$G$ & Single master tuple of masks and private streams, $1$-generic relative to $P$.\\
+$W_{S,i}$ & Participant $i$'s share in the all-of-$S$ component.\\
+$T_i$ & A private generic stream ensuring nonattainment.\\
+$X_C$ & View of coalition $C$, the finite join of its participant oracles.\\
+$V_C$ & Free generic coordinates of the coalition normal form.\\
+$B_{C,m}$ & Finite join of generators in authorized components $S\subseteq C$ with $k<m$.\\
+$F_{C,m}$ & Reconstruction with authorized secrets truncated to $m$ columns.\\
+$H$ & Full join $X_{[n]}$, equivalent to $P\join G$ in the main construction.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Source review and reproducibility details}\label{app:sources}
+
+The repository comparison used the pinned commit displayed in
+Section~\ref{sec:provenance}, not an unversioned assumption about future
+contents. The inspected core documents were the TuringDegrees README,
+the coarse research plan's C1--C8 discussion, the synthesis's core and
+spectrum sections and result inventory, and report 10's README. The
+literature comparison used the HTML text of the two arXiv papers in the
+bibliography, the author-hosted publication record for \cite{HJKS}, and
+the publisher record for \cite{ISN}. The latter was used for attribution
+of the classical access-structure architecture, not as an uninspected
+source for any computability theorem.
+
+The proof uses the theorem numbering of the cited arXiv versions. All
+newly derived claims are proved in this article. No claim is made that the
+repository was exhaustively audited file by file or that the literature
+search was exhaustive. Search results with no relevant mathematical
+content were not treated as evidence of originality.
+
+The source is a standalone \LaTeX{} file with an embedded bibliography.
+The build script runs pdf\LaTeX{} three times to resolve references and
+contents. It requires the New PX font packages and standard AMS,
+geometry, microtype, booktabs, enumitem, xurl, titlesec, and hyperref
+packages available in common TeX Live installations. No font binaries are
+included in the archive. Run the finite checks separately with
+\texttt{python3 checks/verify\_finite.py}. The supplied PDF was compiled
+from this source; document-layout checks are recorded in the accompanying
+proof audit rather than confused with mathematical verification.
+
+\begin{thebibliography}{99}
+
+\bibitem{HJKS}
+D.~R. Hirschfeldt, C.~G. Jockusch, Jr., R.~Kuyper, and P.~E. Schupp,
+\emph{Coarse reducibility and algorithmic randomness},
+Journal of Symbolic Logic \textbf{81} (2016), 1028--1046.
+Theorem 3.7 (cone-avoiding compactness) and Theorem 4.2 (generic core).
+Preprint: \url{https://arxiv.org/abs/1505.01707}.
+Text checked: \url{https://arxiv.org/html/1505.01707v1}.
+Publication record: \url{https://www.math.uchicago.edu/~drh/Papers/coarsereducibility.html}.
+
+\bibitem{HJS}
+D.~R. Hirschfeldt, C.~G. Jockusch, Jr., and P.~E. Schupp,
+\emph{Coarse computability, the density metric, Hausdorff distances between
+Turing degrees, perfect trees, and reverse mathematics},
+arXiv:2106.13118v1 (2021).
+Lemma 3.10 and the proof of Theorem 3.11(2).
+\url{https://arxiv.org/html/2106.13118v1}.
+
+\bibitem{ISN}
+M.~Ito, A.~Saito, and T.~Nishizeki,
+\emph{Secret sharing scheme realizing general access structure},
+Electronics and Communications in Japan (Part III: Fundamental Electronic
+Science) \textbf{72}, no.~9 (1989), 56--64.
+\url{https://doi.org/10.1002/ecjc.4430720906}.
+
+\bibitem{RepoPlan}
+V.~Reshetnikov, ProveIt repository,
+\emph{Turing Degrees: A Unified Research Report}, second edition,
+18 September 2026, Section ``Coarse and effective-dense representative
+spectra,'' especially target C4 and Proposition ``proposed.''
+Repository snapshot
+\texttt{1a1396d4d3a2ac6812692df520517d86ba3a4785}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1a1396d4d3a2ac6812692df520517d86ba3a4785/Computability/TuringDegrees/Research/CoarseDegrees/research-plan/turing_degrees_unified.tex}.
+
+\bibitem{RepoSynthesis}
+V.~Reshetnikov, ProveIt repository,
+\emph{Coarse Classes Without Least Turing Degrees: Deduplicated results of
+the nine research reports on target C1}, 18 September 2026.
+Same repository snapshot. Conventional research synthesis; status and
+provenance distinctions are retained in the present article.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1a1396d4d3a2ac6812692df520517d86ba3a4785/Computability/TuringDegrees/Research/CoarseDegrees/research-synthesis/Turing_Degrees_Synthesis.tex}.
+
+\bibitem{RepoReadme}
+V.~Reshetnikov, ProveIt repository,
+\emph{Turing degrees in Lean and Rocq}, project README, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1a1396d4d3a2ac6812692df520517d86ba3a4785/Computability/TuringDegrees/README.md}.
+
+\bibitem{RepoHyper}
+V.~Reshetnikov, ProveIt repository,
+\emph{Coarse Classes, Hyperdegrees, and the Cone Filter}, research report 10,
+README dated 18 September 2026 with additions of 19 September 2026,
+same snapshot. Cited only for its stated higher-computability research
+boundary; not used as an input to any theorem here.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1a1396d4d3a2ac6812692df520517d86ba3a4785/Computability/TuringDegrees/Research/CoarseDegrees/research-reports/10/README.md}.
+
+\end{thebibliography}
+\end{document}

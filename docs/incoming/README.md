@@ -135,24 +135,32 @@ different mathematics, and different titles can hide the same theorem.
 
 ### Destinations
 
-ProveIt holds external research reports in two collections. The delivery
-README usually names the ProveIt path it continues; verify that path against
-the current tree rather than trusting it.
+ProveIt holds external research reports in two collections and in research
+programmes. Choose the most appropriate place for each manuscript by its topic
+and content (Vladimir's direction for batch 37), and state the reason in the
+placement commit. The delivery README usually names the ProveIt path it
+continues; verify that path against the current tree rather than trusting it.
 
-| Collection | Destination | Holds |
+| Place | Destination | Holds |
 |---|---|---|
 | Surreal collection | `Algebra/SurrealNumbers/docs/<family>/<report>/` | reports on `No`, `No[i]`, omnific integers and related structures; families below |
-| Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | every other external report: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, the Jacobian conjecture, radicals and Galois theory, … |
+| Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | every other self-contained external report: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, the Jacobian conjecture, radicals and Galois theory, … |
+| Research programme | `Computability/TuringDegrees/Research/CoarseDegrees/research-reports/<NN>/`, `SetTheory/Cardinals/docs/cardinals/research-reports/` | numbered reports that continue a programme's own research plan and synthesis (plan targets, synthesis items) |
 
 - A manuscript that continues a report already in one of the collections goes
   to that report, whatever its subject.
-- A manuscript that continues a formal (Lean/Rocq) project outside the
-  surreal package still goes to the research-report collection, in the
-  category of its subject, and never into the project's own directory. The
-  project README gains a pointer to it in the catalogue step (section 5).
-  Batch 36 first placed five such reports in project `Research/`
-  directories (`1a1396d4d`); Vladimir directed that they belong in the
-  collection, and they were moved there before being written.
+- A manuscript that attacks a target of a research programme's plan, or an
+  item of its synthesis, becomes the programme's next numbered report
+  (numbered as its reports README prescribes; for CoarseDegrees, by archive
+  modification time). Several manuscripts on one spine are merged into one
+  numbered report. The programme's reports README gains a row, and amending
+  the synthesis is separate work.
+- Any other manuscript that continues a formal (Lean/Rocq) project goes to
+  the research-report collection, in the category of its subject, never into
+  the project's own directory. The project README gains a pointer to it in
+  the catalogue step (section 5). Batch 36 first placed five such reports in
+  project `Research/` directories (`1a1396d4d`); Vladimir directed that they
+  belong in the collection, and they were moved there before being written.
 - A report that continues a formal development gains no formal status from
   it. Its README says which of its statements, if any, the project has
   already formalized (by declaration name), and that the rest are not. It

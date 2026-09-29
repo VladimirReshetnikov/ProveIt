@@ -1,0 +1,1474 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=navy,
+  bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\usepackage{bookmark}
+\definecolor{navy}{RGB}{27,55,78}
+\definecolor{muted}{RGB}{80,91,99}
+\definecolor{pale}{RGB}{240,244,247}
+\hypersetup{pdftitle={Sparse Computable Erasures and Least-Degree Obstructions},
+ pdfauthor={Research draft prepared for Vladimir Reshetnikov},
+ pdfsubject={Effective-dense reducibility, low generic sets, and Turing-degree spectra}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=2em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Sparse erasures and effective-dense degrees}
+\fancyhead[R]{\small\color{muted}Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\ltT}{<_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\ned}{\mathrm{ned}}
+\newcommand{\ued}{\mathrm{ued}}
+\newcommand{\leN}{\leq_{\ned}}
+\newcommand{\leU}{\leq_{\ued}}
+\newcommand{\eqN}{\equiv_{\ned}}
+\newcommand{\eqU}{\equiv_{\ued}}
+\newcommand{\ED}{\operatorname{ED}}
+\newcommand{\Znull}{\mathcal Z_0}
+\newcommand{\Comp}{\operatorname{Comp}}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\Low}{\operatorname{Low}}
+\newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}
+\newcommand{\substar}{\subseteq^{*}}
+\newcommand{\symdiff}{\mathbin{\triangle}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\meetstr}{\preccurlyeq}
+\newcommand{\extends}{\succeq}
+\newcommand{\prefix}{\preccurlyeq}
+\newcommand{\pred}{\operatorname{Pred}}
+\newcommand{\jumpzero}{\emptyset'}
+\newcommand{\doublezero}{\emptyset''}
+\newcommand{\CA}{\mathsf{CA}}
+\newcommand{\DNR}{\mathsf{DNR}}
+\newcommand{\nn}[1]{\lvert#1\rvert}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\dom}{dom}
+\begin{document}
+\begin{titlepage}
+\vspace*{10mm}
+{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY\quad /\quad PROOF-FOCUSED RESEARCH\par}
+\vspace{13mm}
+{\Huge\bfseries\color{navy}Sparse Computable Erasures\par}
+\vspace{5mm}
+{\LARGE and Least-Degree Obstructions\par}
+\vspace{9mm}
+{\large Low counterexamples, finite meets, and descending chains\par
+in effective-dense equivalence classes\par}
+\vspace{12mm}
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{4mm}
+\noindent Research draft prepared for Vladimir Reshetnikov\\[3pt]
+28 September 2026
+\vspace{8mm}
+\begin{abstract}
+We give a negative answer to the effective-dense least-representative question
+C2 in the \repo\ research programme, in both its uniform and nonuniform
+versions. If a binary set $G$ is $1$-generic and computes no function eventually
+different from every computable function, neither equivalence class of $G$
+has an element of least ordinary Turing degree. Every $2$-generic satisfies
+the hypothesis. A classical highness characterization also supplies all
+non-high $1$-generics, including low $\Delta^0_2$ examples.
+
+The key step turns a density-zero omission set into a bounded choice function.
+An infinitely often computable agreement yields a decidable sparse mask that
+escapes that omission set. Genericity then prevents recovery of an
+effective-dense description from the erased oracle. For every unbounded
+computable order $b$, the mask can satisfy
+$|T\cap[0,N)|\leq b(N)$ at every prefix. We also identify the exact lattice
+of degrees arising from computable masks, prove a uniform countable
+simultaneous-avoidance theorem, and construct a strictly descending chain
+inside one uniform class, all within the same budget, with no lower bound
+belonging to the full nonuniform class. Every member of the chain can be low.
+
+The main erasure argument and the $2$-generic route are proved directly.
+The low-example refinement explicitly uses the classical
+Kjos-Hanssen--Merkle--Stephan characterization, rather than presenting it as
+new. The article records its source audit, formalization obligations, and
+further questions.
+\end{abstract}
+\vfill
+\noindent\small\color{muted}
+Status: complete conventional arguments are supplied for the stated results.
+This draft has not been independently refereed or checked in Lean.
+The literature audit is targeted, not a certification of priority.
+Finite tests in the companion archive do not certify the infinite theorems.
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The question and the results}
+\label{sec:overview}
+\subsection{A specific target, not a repetition of the coarse case}
+The \repo\ research plan distinguishes two problems that are easy to
+confuse. Its earlier coarse least-representative question, C1, is retired;
+its effective-dense counterpart, C2, is retained with a proposed genericity
+argument and an explicitly identified gap. The present paper addresses C2.
+The repository snapshot used here is commit
+\texttt{1a1396d4d3a2ac6812692df520517d86ba3a4785}; the relevant path and source
+locations are recorded in Appendix~\ref{app:sources}.\cite{ProveIt}
+
+An effective-dense description may withhold an answer on a density-zero set,
+but may never give a wrong numerical answer. Withholding is represented by
+an explicit symbol $\bot$, not by a computation that fails to halt. Thus
+arbitrary density-zero modifications do not automatically preserve the
+associated description problem. Our modifications have a \emph{computable}
+support, which makes two correct, uniform description transformations possible.
+
+For $r\in\{\ued,\ned\}$, let $[f]_r$ denote the $r$-equivalence class of
+$f$, and put
+\[
+ \Spec([f]_r)=\{\degT(g):g\in[f]_r\}.
+\]
+The target is the assertion
+\begin{equation}\label{eq:leastquestion}
+ (\forall f\in\Baire)(\exists g\in[f]_r)
+       (\forall h\in[f]_r)\;g\leT h.
+\end{equation}
+This is the effective-dense instance of Gerdes's Question~7. His question
+also asks more generally about the spectra of ordinary Turing degrees of
+representatives.\cite[Question~7]{Gerdes}
+The word ``ordinary'' matters: members of $[f]_r$ have one and the same
+asymptotic degree, but can have quite different Turing degrees.
+
+\subsection{A hypothesis separating prediction from computational strength}
+Say that an oracle $G$ has the \emph{computable-agreement property} if
+\begin{equation}\label{eq:CA}
+ \CA(G):\qquad
+ (\forall f\in\Baire)\bigl[f\leT G\ \Longrightarrow\
+    (\exists h\text{ total computable})(\exists^\infty n)\ f(n)=h(n)\bigr].
+\end{equation}
+This is simply the assertion that $G$ computes no function eventually
+different from every total computable function. The notation is local to
+this paper; the property itself is classical. Its highness-theoretic
+interpretation appears in Section~\ref{sec:agreement}.\cite{KMS,BBNN}
+
+\begin{theorem}[Least-degree obstruction]\label{thm:mainintro}
+Let $G\in\Cantor$ be $1$-generic and satisfy $\CA(G)$.
+Neither $\Spec([G]_{\ued})$ nor $\Spec([G]_{\ned})$ has a least element.
+The assertion remains true when the representatives are restricted to binary
+sets. Such $G$ can be chosen low and computable from $\jumpzero$.
+\end{theorem}
+
+Here ``low'' means $G'\eqT\jumpzero$. The hypotheses hold for every
+$2$-generic and, by a classical theorem cited explicitly below, every
+non-high $1$-generic. No assertion for \emph{all} $1$-generics is needed to
+refute~\eqref{eq:leastquestion}.
+
+For a computable set $T$, write
+\begin{equation}\label{eq:maskintro}
+ G_T(n)=\begin{cases}0,&n\in T,\\G(n),&n\notin T.\end{cases}
+\end{equation}
+The mask $T$ is a set of coordinates whose information is discarded.
+The output $G_T$ is still binary. If $T$ has density zero, then
+$G_T\eqU G$.
+
+\begin{theorem}[Arbitrarily sparse local avoidance]\label{thm:localintro}
+Let $G$ satisfy the hypotheses of Theorem~\ref{thm:mainintro}.
+Suppose $A\leT G$ computes an effective-dense description of $G$, and let
+$b:\N\to\N$ be computable, nondecreasing, and unbounded. There is an
+infinite computable density-zero set $T$ such that
+\[
+ |T\cap[0,N)|\leq b(N)\quad(N\in\N),\qquad
+ G_T\eqU G,\qquad G_T\ltT G,\qquad A\nleT G_T.
+\]
+In particular, $|(G\symdiff G_T)\cap[0,N)|\leq b(N)$ for every $N$.
+\end{theorem}
+
+The candidate $A$ need not itself be an equivalent representative: computing
+one effective-dense description is enough. The theorem is an existence
+statement for a computable mask, not a uniform algorithm which extracts its
+index from arbitrary oracle data.
+
+\begin{theorem}[Packed descending chains]\label{thm:chainintro}
+For the same $G$ and $b$, there are computable density-zero masks
+$C_0\subseteq C_1\subseteq\cdots$ such that, with $G_i=G_{C_i}$,
+\[
+ G_0>_{\mathrm T}G_1>_{\mathrm T}G_2>_{\mathrm T}\cdots,
+ \qquad G_i\eqU G,
+ \qquad |(G\symdiff G_i)\cap[0,N)|\leq b(N).
+\]
+There is no $g\in[G]_{\ned}$ with $g\leT G_i$ for every $i$.
+If $G$ is low, every $G_i$ is low.
+\end{theorem}
+
+A countable descending chain need not be coinitial in the entire class.
+Nor does the last assertion deny the existence of lower bounds outside that
+class: computable sets are always ordinary Turing lower bounds. Both
+qualifications are essential.
+
+\subsection{What is contributed and what is classical}
+The contribution developed here is the passage from computable agreement
+and generic nonprediction to least-degree obstructions for effective-dense
+representatives, together with its quantitative and countable refinements.
+The no-eventually-different-function fact about $2$-generics and the
+high-or-DNR characterization are classical.\cite{BBNN,KMS}
+We include a direct proof of the former and invoke the latter only for the
+low refinement. The finite-coordinate arguments and elementary density
+estimates are proved rather than treated as new background theorems.
+
+The audit located the explicit least-representative question in Gerdes's
+2025 preprint and the distinct quasiminimality statements in
+Astor--Hirschfeldt--Jockusch. Quasiminimality concerns a particular embedding
+of ordinary Turing degrees into asymptotic degrees; it is not the same
+statement as nonexistence of a least ordinary degree \emph{within} a fixed
+class.\cite[Theorem~5.9]{AHJ}
+No claim of first publication or exhaustive literature coverage is made.
+
+\section{Definitions and conventions}
+\label{sec:definitions}
+\subsection{Descriptions and their two reducibilities}
+We identify a set with its characteristic function. All ordinary functions
+under discussion are total unless explicitly called partial. A function
+oracle can equivalently be coded by its graph, so ordinary Turing
+reducibility between sets and functions is unambiguous.
+
+For $S\subseteq\N$ and $N\geq1$, put
+\[
+ \rho_N(S)=\frac{|S\cap[0,N)|}{N},\qquad
+ \Znull=\{S:\lim_{N\to\infty}\rho_N(S)=0\}.
+\]
+We write $S\substar T$ when $S\setminus T$ is finite. Finite unions of
+members of $\Znull$ belong to $\Znull$, since prefix counts are subadditive.
+
+\begin{definition}
+An \emph{effective-dense description} of $f\in\Baire$ is a total function
+$d:\N\to\N\cup\{\bot\}$ satisfying
+\[
+ d(n)\in\{f(n),\bot\}\quad(n\in\N),\qquad
+ S_d:=\{n:d(n)=\bot\}\in\Znull.
+\]
+Let $\ED(f)$ be the collection of all such descriptions.
+\end{definition}
+
+The explicit output $\bot$ can be coded by a distinguished natural number,
+with numerical answers shifted by one. This coding does not change degrees.
+The definition agrees with the strong-domain convention for effective dense
+computability.\cite[Definitions~1.4 and~3.1]{AHJ}
+In particular, $f$ itself is a member of $\ED(f)$, and if $d\leT A$ then
+$S_d\leT A$.
+
+\begin{definition}
+For $f,g\in\Baire$,
+\[
+ f\leN g\quad\Longleftrightarrow\quad
+ (\forall d\in\ED(g))(\exists e\in\ED(f))\ e\leT d.
+\]
+We have $f\leU g$ if there is one oracle Turing functional $\Phi$ such that
+$\Phi^d$ is total and belongs to $\ED(f)$ for every $d\in\ED(g)$.
+Equivalence means reduction in both directions.
+\end{definition}
+
+The uniform relation implies the nonuniform relation. Reflexivity is
+witnessed by copying a description. For transitivity, compose the two
+functional transformations in the uniform case; in the nonuniform case,
+choose a description at the intermediate step and use transitivity of
+$\leT$. Thus the indicated equivalence classes are well-defined.
+
+A key implication used repeatedly is
+\begin{equation}\label{eq:representativecomputes}
+ G\leN g\quad\Longrightarrow\quad
+ (\exists d\in\ED(G))\ d\leT g.
+\end{equation}
+It follows by using $g$ itself as the input description of $g$. It does not
+say that an arbitrary description of $G$, recoded as a total numerical
+function, must be an equivalent representative.
+
+\subsection{Finite oracle computations and genericity}
+Let $2^{<\N}$ be the finite binary strings. The relation
+$\sigma\prefix X$ means that $\sigma$ is an initial segment of $X$;
+$\tau\extends\sigma$ means extension. A computation
+$\Phi^\sigma(n)\downarrow=v$ is witnessed by a finite run using only
+coordinates below $|\sigma|$. It persists under extensions. Finite
+convergence is computably enumerable, and convergence within a specified
+number of steps is decidable.
+
+\begin{definition}
+A binary set $G$ is \emph{$1$-generic} if, for every computably enumerable
+$W\subseteq2^{<\N}$, either some $\sigma\prefix G$ belongs to $W$, or
+some $\sigma\prefix G$ has no extension in $W$.
+It is \emph{$2$-generic} if the same condition holds for every
+$\Sigma^0_2$ set of strings.
+\end{definition}
+
+Avoiding a set of strings always means the stronger, cylinder-wise
+alternative in this definition, not merely having no prefix in the set.
+The latter alone is insufficient for the arguments below. A $2$-generic is
+$1$-generic. If a c.e. set of strings is dense above a prefix of a $1$-generic,
+that generic must meet it.
+
+For fixed computable $T$, let $P_T(X)=X_T$ as in~\eqref{eq:maskintro};
+for a finite string, $P_T(\sigma)$ is the same-length string obtained by
+zeroing its $T$ coordinates. The map is computable, preserves extension,
+and ignores the actual input bits on $T$.
+
+\subsection{Least, minimal, and coinitial}
+For a class $\mathcal C$ of oracles, $g\in\mathcal C$ has least degree in
+$\mathcal C$ if $g\leT h$ for every $h\in\mathcal C$. It has minimal degree
+in $\mathcal C$ if no $h\in\mathcal C$ satisfies $h\ltT g$.
+Least implies minimal, but the converse need not hold. A subfamily
+$\mathcal A\subseteq\mathcal C$ is \emph{coinitial} if every member of
+$\mathcal C$ computes some member of $\mathcal A$.
+We shall exclude finite coinitial families and certain uniformly presented
+countable ones. We do not exclude arbitrary countable coinitial families.
+
+\section{Computable erasures and the generic mask lattice}
+\label{sec:erasures}
+\subsection{Two transformations that never give a wrong answer}
+\begin{lemma}[Computable-null erasure]\label{lem:equivalence}
+For every binary $X$ and computable $T\in\Znull$, we have
+$X_T\eqU X$ and $X_T\leT X$.
+\end{lemma}
+\begin{proof}
+Given $d\in\ED(X)$, define
+\[
+ F_T(d)(n)=\begin{cases}0,&n\in T,\\d(n),&n\notin T.\end{cases}
+\]
+This is an effective-dense description of $X_T$: it is correct on $T$,
+correct or $\bot$ elsewhere, and has omission set $S_d\setminus T$.
+Given $e\in\ED(X_T)$, define
+\[
+ H_T(e)(n)=\begin{cases}\bot,&n\in T,\\e(n),&n\notin T.\end{cases}
+\]
+It describes $X$, with omission set $T\cup S_e$. Both sets of omissions
+are null. The two transformations are single total oracle procedures with
+the decidable mask hard-coded; no search for a density-convergence rate is
+used. Finally, an oracle for $X$ computes $X_T$ directly.
+\end{proof}
+
+\subsection{A deleted coordinate cannot be predicted infinitely often}
+\begin{lemma}[Generic nonprediction]\label{lem:prediction}
+Let $G$ be $1$-generic and let $T$ be computable. Suppose a partial
+$G_T$-computable function $\psi$ has the property that, whenever
+$n\in T$ and $\psi(n)\downarrow$, its value is $G(n)$.
+Then $T\cap\dom\psi$ is finite.
+\end{lemma}
+\begin{proof}
+Fix an index $e$ with $\psi=\Phi_e^{G_T}$. Let $W$ be the c.e. set of
+strings $\sigma$ for which there are $n\in T$ below $|\sigma|$ and
+$b\in\{0,1\}$ such that
+\[
+ \Phi_e^{P_T(\sigma)}(n)\downarrow=b,
+ \qquad \sigma(n)=1-b.
+\]
+No prefix of $G$ is in $W$, since such a finite computation would persist
+on $G_T$ and give an incorrect prediction. By $1$-genericity, choose
+$\sigma_0\prefix G$ with no extension in $W$.
+
+Suppose $n\in T$, $n\geq|\sigma_0|$, and
+$\Phi_e^{G_T}(n)\downarrow=b$. Take a sufficiently long prefix $\tau$ of
+$G$ to witness this convergence and include coordinate $n$. Replace the
+$n$th bit of $\tau$ by $1-b$, obtaining $\widehat\tau$. This still extends
+$\sigma_0$, and
+$P_T(\widehat\tau)=P_T(\tau)$ because $n\in T$. Thus
+$\widehat\tau\in W$, a contradiction. All convergent inputs in $T$ are
+therefore below $|\sigma_0|$.
+\end{proof}
+
+\begin{corollary}[Forced omissions]\label{cor:omissions}
+If $G$ is $1$-generic, $T$ is computable, and
+$d\in\ED(G)$ satisfies $d\leT G_T$, then $T\substar S_d$.
+\end{corollary}
+\begin{proof}
+On input $n$, compute $d(n)$ and return its value if numerical; otherwise
+run forever. This gives a partial $G_T$-computable predictor that is always
+correct. Its convergent inputs in $T$ are exactly $T\setminus S_d$.
+Apply Lemma~\ref{lem:prediction}.
+\end{proof}
+
+\subsection{An exact order calculation}
+\begin{theorem}[Mask order]\label{thm:maskorder}
+For a $1$-generic $G$ and computable $C,D\subseteq\N$,
+\begin{equation}\label{eq:maskorder}
+ G_C\leT G_D\quad\Longleftrightarrow\quad D\substar C.
+\end{equation}
+Consequently $G_C\eqT G_D$ exactly when $C\symdiff D$ is finite.
+\end{theorem}
+\begin{proof}
+If $D\setminus C$ is finite, compute $G_C$ from $G_D$ by outputting zero
+on $C$, copying $G_D$ off $C\cup D$, and hard-coding the finitely many
+correct bits on $D\setminus C$.
+
+Conversely, suppose $G_C\leT G_D$ and $D\setminus C$ is infinite.
+On that infinite computable set, $G_C$ supplies the original bits of $G$.
+It would therefore be a partial $G_D$-computable predictor correct on an
+infinite subset of $D$, contrary to Lemma~\ref{lem:prediction}.
+\end{proof}
+
+In particular, every infinite computable mask strictly lowers the degree
+of a $1$-generic. If $C\subseteq D$ and $D\setminus C$ is infinite, then
+$G_D\ltT G_C$. This does not require $G_C$ itself to be generic.
+
+\begin{theorem}[Finite joins and actual greatest lower bounds]
+\label{thm:masklattice}
+For computable $C,D$ and a $1$-generic $G$,
+\[
+ G_C\oplus G_D\eqT G_{C\cap D},
+ \qquad
+ \Low(G_C)\cap\Low(G_D)=\Low(G_{C\cup D}),
+\]
+where $\Low(X)=\{A:A\leT X\}$. Thus the second identity gives a greatest
+lower bound in the full Turing degrees, not merely inside the mask family.
+\end{theorem}
+\begin{proof}
+The join identity is direct. Off $C\cap D$, at least one oracle retains
+the original bit; decidability of $C,D$ tells us which one to use.
+Conversely, $G_{C\cap D}$ computes both masked oracles by further zeroing.
+Also $G_{C\cup D}$ computes from either, so one inclusion in the lower-cone
+identity is immediate.
+
+For the other, fix a total function
+$A=\Phi^{G_C}=\Psi^{G_D}$. Let $W$ be the c.e. set of strings $\sigma$
+witnessing, at some input $n$,
+\[
+ \Phi^{P_C(\sigma)}(n)\downarrow\ne
+       \Psi^{P_D(\sigma)}(n)\downarrow.
+\]
+No prefix of $G$ lies in $W$. Choose $\sigma_0\prefix G$ such that no
+extension is in $W$. Put $H=G_{C\cup D}$.
+
+To compute $A(n)$ from $H$, search for a finite string $\tau$ extending
+$\sigma_0$ which agrees with $H$ at all coordinates outside $C\cup D$
+below $|\tau|$, and for which
+$\Phi^{P_C(\tau)}(n)\downarrow=v$. The compatibility test is decidable
+in $H$; the search halts because a sufficiently long actual prefix of $G$
+is a witness.
+
+We claim that every value found equals $A(n)$. Take a long actual prefix
+$\eta\prefix G$, extending $\sigma_0$, which witnesses
+$\Psi^{P_D(\eta)}(n)\downarrow=A(n)$. The private coordinates used by the
+first oracle are in $D\setminus C$; those used by the second are in
+$C\setminus D$. They are disjoint. On the shared coordinates outside
+$C\cup D$, the two strings agree by the compatibility test. On
+$C\cap D$, both projected oracles are zero. We may therefore amalgamate
+the two finite computations into one string $\nu\extends\sigma_0$,
+preserving the first computation from $\tau$ and the second from $\eta$.
+If $v\ne A(n)$, this gives $\nu\in W$, a contradiction. The search
+computes $A$ from $H$.
+\end{proof}
+
+It follows that
+\[
+ (\Comp\cap\Znull)/\Fin\ \longrightarrow\ \Spec([G]_{\ued}),
+ \qquad [C]\longmapsto\degT(G_C),
+\]
+is an order-reversing injection with union corresponding to meet and
+intersection to join. This is a precise lattice structure \emph{inside one}
+uniform effective-dense class. It has no least member: any computable null
+$C$ can be enlarged by an infinite computable null subset of its complement.
+For example, find successively a point outside $C$ beyond $2^n$ and the
+previous chosen point. Theorem~\ref{thm:maskorder} then supplies a strictly
+smaller member. This last observation by itself does not rule out a least
+representative lying outside the mask family; that is the purpose of the
+next sections.
+
+\section{Escaping a null set with a computable sparse selector}
+\label{sec:escape}
+\subsection{Packing prescribed capacities into every-prefix budgets}
+\begin{lemma}[Budgeted blocks]\label{lem:blocks}
+Let $b:\N\to\N$ be computable, nondecreasing, and unbounded, and let
+$(a_n)$ be a computable sequence of positive integers. Put
+$Q_n=\sum_{j\leq n}a_j$. There is a computable sequence $(m_n)$ such that
+\begin{gather}
+ m_n\geq4^{n+1},\qquad m_{n+1}\geq4m_n,\qquad m_n\geq2n+3,
+ \label{eq:blockspacing}\\
+ m_n\geq(n+1)Q_n,\qquad b(m_n)\geq Q_n.\label{eq:blockbudget}
+\end{gather}
+Let $I_n=[m_n,2m_n)$. Any set $T$ contained in $\bigcup_n I_n$ with
+$|T\cap I_n|\leq a_n$ satisfies
+\[
+ |T\cap[0,N)|\leq b(N)\quad(N\in\N),\qquad T\in\Znull.
+\]
+No computability of $T$ is needed for this last conclusion.
+\end{lemma}
+\begin{proof}
+Find $m_n$ successively by an ordinary search satisfying the finitely many
+lower bounds and $b(m_n)\geq Q_n$. Unboundedness of $b$ makes each search
+halt. The intervals are disjoint by~\eqref{eq:blockspacing}.
+For $N<m_0$ the count is zero. If $m_n\leq N<m_{n+1}$, then
+\[
+ |T\cap[0,N)|\leq Q_n\leq b(m_n)\leq b(N).
+\]
+Moreover, for $N\geq1$ in the same range,
+\[
+ \rho_N(T)\leq Q_n/m_n\leq1/(n+1).
+\]
+As $N$ tends to infinity, so does $n$, proving density zero. Notice that
+this estimate covers prefixes \emph{inside} a block as well as endpoints.
+\end{proof}
+
+\subsection{One missed point per interval}
+\begin{definition}
+For any sequence of blocks as in Lemma~\ref{lem:blocks} and any set $S$,
+define
+\begin{equation}\label{eq:choice}
+ f_S(n)=
+ \begin{cases}
+ \min\{k<m_n:m_n+k\notin S\},&I_n\nsubseteq S,\\
+ 0,&I_n\subseteq S.
+ \end{cases}
+\end{equation}
+For a total computable $h:\N\to\N$, define its selector
+\begin{equation}\label{eq:selector}
+ T_h=\{m_n+(h(n)\bmod m_n):n\in\N\}.
+\end{equation}
+\end{definition}
+
+The function $f_S$ is total and computable from $S$. It requires only a
+finite search on each input, even if $m_n$ is very large. The set $T_h$ is
+computable: find the unique block which could contain the proposed input,
+if one exists, and compute the one selected point in that block. It is not
+merely c.e. The total running time of $h(n)$ need not have been predicted
+when the interval endpoints were chosen.
+
+\begin{lemma}[Null covers imply eventual difference]\label{lem:cover}
+Suppose $S\in\Znull$. For all sufficiently large $n$, $I_n\nsubseteq S$.
+If $T_h\substar S$ for every total computable $h$, then $f_S$ is eventually
+different from every total computable function.
+\end{lemma}
+\begin{proof}
+If infinitely many $I_n$ were contained in $S$, then at the corresponding
+endpoints $\rho_{2m_n}(S)\geq1/2$, contradicting density zero.
+Fix computable $h$. For all sufficiently large $n$, the chosen point of
+$T_h$ belongs to $S$, whereas $m_n+f_S(n)$ is outside $S$.
+If $f_S(n)=h(n)$, then $h(n)<m_n$ and the two points coincide, a
+contradiction. Thus $f_S(n)\ne h(n)$ eventually.
+\end{proof}
+
+\begin{theorem}[Budgeted sparse escape]\label{thm:escape}
+If $\CA(G)$, $S\leT G$, and $S\in\Znull$, then for every unbounded
+computable order $b$ there is an infinite computable $T\in\Znull$ with
+\begin{equation}\label{eq:escapebudget}
+ |T\cap[0,N)|\leq b(N)\quad(N\in\N),\qquad |T\setminus S|=\infty.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use Lemma~\ref{lem:blocks} with $a_n=1$. The total function $f_S$ of
+\eqref{eq:choice} is computable from $G$. By $\CA(G)$, some total
+computable $h$ agrees with it infinitely often. On all sufficiently large
+agreement inputs, the corresponding point in $T_h$ is a genuine point
+outside $S$. Thus $T=T_h$ has infinitely many points outside $S$.
+It has exactly one point in each block, so it is infinite, is computable,
+and satisfies the budget and density conclusions of Lemma~\ref{lem:blocks}.
+\end{proof}
+
+\begin{remark}[What happened to the timing gap?]\label{rem:timing}
+The argument never attempts to enumerate a sparse set of potential witnesses
+and then infer that the enumeration has a computable membership test. It
+first uses $\CA(G)$ to obtain a \emph{total computable function} $h$, and
+then defines exactly one point in each computably located interval.
+Unbounded convergence times cause no difficulty for a membership algorithm
+which is permitted to wait for a guaranteed total computation. This is the
+specific replacement for the delayed-witness construction discussed in C2.
+\end{remark}
+
+A useful independent consequence is that any oracle computing a null set
+which almost contains every computable null set must compute an eventually
+different function. Indeed all the selectors in~\eqref{eq:selector} are
+computable and null. The choice function is even bounded by the computable
+function $m_n$. This observation explains why the existence of abstract
+null upper bounds does not settle an effective question about them.
+
+\section{Classical sources of computable agreement}
+\label{sec:agreement}
+\subsection{A direct proof for every \texorpdfstring{$2$}{2}-generic}
+The following fact is classical; it is consistent with the formulation in
+terms of weak meager engulfing recorded by Brendle--Brooke-Taylor--Ng--Nies.
+We supply the finite-extension proof needed here.\cite[Theorem~4.2 and
+Section~4, item~(5)]{BBNN}
+
+\begin{theorem}\label{thm:twoGenericCA}
+Every $2$-generic $G$ satisfies $\CA(G)$.
+\end{theorem}
+\begin{proof}
+Fix a functional $\Gamma$ with $f=\Gamma^G$ total. Consider
+\[
+ B_\Gamma=\{\sigma:(\exists n)(\forall\tau\extends\sigma)
+                         \Gamma^\tau(n)\uparrow\}.
+\]
+Here divergence of a finite-oracle computation means that no finite-time
+convergence witness exists. The displayed condition has the form
+$\exists n\,\forall(\tau,s)$ with a decidable matrix, so $B_\Gamma$ is
+$\Sigma^0_2$. No prefix of $G$ is in it, because $\Gamma^G$ is total.
+There is therefore $\sigma_0\prefix G$ such that no extension of
+$\sigma_0$ is in $B_\Gamma$. Equivalently,
+\begin{equation}\label{eq:densetotality}
+ (\forall\tau\extends\sigma_0)(\forall n)
+       (\exists\nu\extends\tau)\;\Gamma^\nu(n)\downarrow.
+\end{equation}
+
+Choose a computable sequence $(\tau_n)$ listing every finite extension of
+$\sigma_0$ infinitely often. On input $n$, search for an extension
+$\nu\extends\tau_n$ with $\Gamma^\nu(n)\downarrow$, and set $h(n)$ to
+the value found. Equation~\eqref{eq:densetotality} makes $h$ total and
+computable. The finite string $\sigma_0$ is hard-coded; it need not be
+computably selected from an index for $G$.
+
+For each $k$, the set
+\[
+ U_k=\{\nu:(\exists n\geq k)\;\Gamma^\nu(n)\downarrow=h(n)\}
+\]
+is c.e. and dense above $\sigma_0$. To see density, take any extension
+$\tau$ of $\sigma_0$, choose $n\geq k$ with $\tau_n=\tau$, and use the
+extension found while defining $h(n)$. Since $G$ is also $1$-generic, it
+meets $U_k$. Thus $f(n)=h(n)$ for some $n\geq k$, for every $k$.
+\end{proof}
+
+This theorem, together with the preceding sections and
+Section~\ref{sec:mainproof}, gives a proof of the negative least-degree
+answer without importing a highness classification or a basis theorem.
+
+\subsection{Non-high \texorpdfstring{$1$}{1}-generics and low examples}
+A total function $d:\N\to\N$ is \emph{diagonally nonrecursive}, or DNR,
+if $d(e)\ne\varphi_e(e)$ whenever the latter is defined. An oracle has
+DNR degree if it computes such a function. It is \emph{high} if its jump
+computes $\doublezero$.
+
+\begin{theorem}[Classical characterization; external input]
+\label{thm:KMS}
+An oracle computes a function eventually different from every total
+computable function if and only if it is high or has DNR degree.
+\end{theorem}
+
+This is Kjos-Hanssen--Merkle--Stephan, Theorem~5.1.\cite[Theorem~5.1]{KMS}
+We use its stated equivalence, not any of its Kolmogorov-complexity
+characterizations. The theorem is not a result of the present paper.
+
+\begin{lemma}[A standard genericity consequence]\label{lem:nodnr}
+No $1$-generic computes a DNR function.
+\end{lemma}
+\begin{proof}
+Suppose $d=\Gamma^G$ is total and DNR. The set
+\[
+ W=\{\sigma:(\exists e)\ \Gamma^\sigma(e)\downarrow
+                                  =\varphi_e(e)\downarrow\}
+\]
+is c.e. and has no prefix of $G$. Choose a prefix $\sigma_0$ of $G$ with
+no extension in $W$. Define $h(e)$ by searching for any extension
+$\tau\extends\sigma_0$ with $\Gamma^\tau(e)\downarrow$ and returning
+the value. Since $\Gamma^G$ is total, this is a total computable function.
+The choice of $\sigma_0$ guarantees that $h$ is DNR. But if $j$ is a
+computable index for $h$, then $\varphi_j(j)=h(j)$, a contradiction.
+\end{proof}
+
+\begin{corollary}\label{cor:nonhigh}
+Every non-high $1$-generic has $\CA$. In particular, every low $1$-generic
+has $\CA$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:nodnr} neither alternative in
+Theorem~\ref{thm:KMS} holds for a non-high $1$-generic.
+A low oracle is not high, by strictness of the Turing jump.
+\end{proof}
+
+For completeness, the low examples needed in the main theorem can be
+obtained explicitly relative to the halting set.
+
+\begin{proposition}[Low $\Delta^0_2$ generic witnesses]\label{prop:low}
+There is a $1$-generic $G\leT\jumpzero$. Every $1$-generic below
+$\jumpzero$ is low and noncomputable.
+\end{proposition}
+\begin{proof}
+Enumerate all c.e. sets of finite strings as $(W_e)$. Starting with the
+empty string, at stage $e$ use $\jumpzero$ to decide whether the current
+string has an extension in $W_e$. If yes, find such an extension by
+ordinary enumeration and adopt it; if not, keep the current string.
+Append a zero to ensure growth. The union $G$ is computable from
+$\jumpzero$ and meets or avoids each $W_e$.
+
+For any $1$-generic $G$, membership in $G'$ can be decided from
+$G\oplus\jumpzero$. For the computation $\Phi_e^G(e)$, search along
+prefixes of $G$ for either a convergence witness or a prefix having no
+extension on which the computation converges. The latter test is decidable
+in $\jumpzero$. Genericity guarantees one of these alternatives.
+Hence $G'\leT G\oplus\jumpzero$. If $G\leT\jumpzero$, it follows that
+$G'\eqT\jumpzero$. Finally, a computable $G$ would be a predictor of its
+own bits from the all-zero oracle $G_\N$, violating
+Lemma~\ref{lem:prediction} with $T=\N$.
+\end{proof}
+
+The generalized-low calculation in this proof is standard; it is also
+recalled in the discussion surrounding Proposition~5.5 of
+Astor--Hirschfeldt--Jockusch.\cite{AHJ}
+For our application the important point is the separation of dependencies:
+the direct $2$-generic route is elementary, whereas the sharper low-witness
+route uses Theorem~\ref{thm:KMS} in addition.
+
+\section{No least representative, even under an arbitrary sparse budget}
+\label{sec:mainproof}
+\subsection{The local theorem}
+\begin{theorem}\label{thm:local}
+Let $G$ be $1$-generic with $\CA(G)$. Let $A\leT G$ and suppose some
+$d\in\ED(G)$ is computable from $A$. For any unbounded computable order
+$b$, there is an infinite computable mask $T$ satisfying all conclusions of
+Theorem~\ref{thm:localintro}.
+\end{theorem}
+\begin{proof}
+Let $S=S_d$. Then $S\in\Znull$ and $S\leT A\leT G$. By
+Theorem~\ref{thm:escape}, choose an infinite computable null set $T$
+obeying the budget and with $T\setminus S$ infinite.
+If $A\leT G_T$, then $d\leT G_T$, so
+Corollary~\ref{cor:omissions} would imply $T\substar S$.
+This contradiction proves $A\nleT G_T$.
+
+Lemma~\ref{lem:equivalence} gives $G_T\eqU G$ and $G_T\leT G$.
+The inequality is strict by Theorem~\ref{thm:maskorder}, since $T$ is
+infinite. Finally $G\symdiff G_T\subseteq T$, so the same budget bounds
+the actual disagreements.
+\end{proof}
+
+\subsection{Checking the quantifiers of the original question}
+\begin{theorem}[Negative answer to C2]\label{thm:noleast}
+If $G$ is $1$-generic and has $\CA(G)$, neither $[G]_{\ned}$ nor
+$[G]_{\ued}$ has an element of least Turing degree, even if only binary
+representatives are allowed.
+\end{theorem}
+\begin{proof}
+Take any proposed representative $g\in[G]_{\ned}$.
+If $g\nleT G$, the representative $G$ already witnesses that $g$ is not
+least. In fact every $G_T\leT G$ also fails to compute $g$.
+
+Otherwise $g\leT G$. Since $G\leN g$, implication
+\eqref{eq:representativecomputes} supplies $d\in\ED(G)$ with $d\leT g$.
+Apply Theorem~\ref{thm:local} with $A=g$. The resulting binary
+representative $G_T\eqU G$ does not compute $g$. It belongs to the
+nonuniform class as well, so $g$ is not least there.
+
+If $g$ was proposed as a least member only of $[G]_{\ued}$, the same
+argument applies: this class is contained in $[G]_{\ned}$, and both
+comparison witnesses, $G$ and $G_T$, are in the uniform class. They are
+binary, so the proof also excludes a least degree in either binary
+subclass.
+\end{proof}
+
+Together with Corollary~\ref{cor:nonhigh} and
+Proposition~\ref{prop:low}, this proves Theorem~\ref{thm:mainintro},
+including the low $\Delta^0_2$ refinement.
+
+\begin{corollary}[A countable test family already has no in-class lower bound]
+\label{cor:testfamily}
+Fix $G$ as above and an unbounded computable order $b$. Let
+\[
+ \mathcal M_b(G)=\{G_T:T\text{ computable},\ T\in\Znull,
+                      \ (\forall N)\ |T\cap[0,N)|\leq b(N)\}.
+\]
+No member of $[G]_{\ned}$ is a Turing lower bound of
+$\mathcal M_b(G)$. In particular the nonuniform class has no least member
+even when leastness is tested only against this countable family of binary
+representatives in the uniform class.
+\end{corollary}
+\begin{proof}
+A lower bound $g$ is below $G$, since the empty mask is allowed. As above,
+$g$ computes a description of $G$. Theorem~\ref{thm:local} supplies a
+member of $\mathcal M_b(G)$ not computing $g$.
+\end{proof}
+
+\subsection{Finite simultaneous avoidance and a sharp budget boundary}
+\begin{corollary}[Finite targets]\label{cor:finite}
+For every finite family $g_0,\ldots,g_{k-1}\in[G]_{\ned}$ and every
+unbounded computable order $b$, one computable null mask $T$ within budget
+satisfies $g_i\nleT G_T$ for all $i<k$. Consequently neither the uniform
+nor the nonuniform class has a finite coinitial subset.
+\end{corollary}
+\begin{proof}
+Any $g_i\nleT G$ is automatically not below $G_T$. For each remaining
+$i$, choose $d_i\in\ED(G)$ with $d_i\leT g_i\leT G$.
+The finite union $S=\bigcup_i S_{d_i}$ is null and computable from $G$.
+Use Theorem~\ref{thm:escape} to make $T\setminus S$ infinite. Then
+$T\setminus S_{d_i}$ is infinite for each relevant $i$, and
+Corollary~\ref{cor:omissions} rules out $g_i\leT G_T$.
+If there are no relevant targets, any infinite budgeted selector suffices.
+An equivalent representative not computing any member of the proposed
+finite family disproves coinitiality.
+\end{proof}
+
+\begin{proposition}[Why unboundedness is necessary]\label{prop:bounded}
+If $|T\cap[0,N)|\leq M$ for all $N$, then $T$ is finite and
+$G_T\eqT G$. Such masks cannot witness $A\nleT G_T$ for any $A\leT G$.
+\end{proposition}
+\begin{proof}
+An infinite $T$ would have a prefix containing more than $M$ elements.
+Finite changes preserve ordinary Turing degree by hard-coding the changed
+bits.
+\end{proof}
+
+Thus the distinction between bounded and unbounded budgets is exact for
+this local erasure method. A fixed-budget neighborhood is not being called
+an equivalence class: budgets need not be preserved under composition.
+
+\section{Uniformly presented countable families}
+\label{sec:countable}
+\subsection{An effective version of the null-set P-ideal calculation}
+A countable family of null sets has a null upper bound modulo finite sets.
+For the present application the computational presentation of the family
+matters. The following direct construction needs a uniform membership
+procedure, but needs no density-convergence moduli and no extra jump.
+
+\begin{lemma}[Uniform null upper bounds]\label{lem:Pideal}
+Suppose $(S_i)_{i\in\N}$ is uniformly computable from an oracle $G$ and
+each $S_i$ is in $\Znull$. There is $S\leT G$ in $\Znull$ with
+$S_i\substar S$ for every $i$.
+\end{lemma}
+\begin{proof}
+Use the dyadic blocks $J_n=[2^n,2^{n+1})$. For $k\geq1$, define
+\[
+ r_k(n)=\frac{|(\bigcup_{i<k}S_i)\cap J_n|}{2^n}.
+\]
+For each fixed $k$, $r_k(n)\to0$, since the numerator is at most
+$|\bigcup_{i<k}S_i\cap[0,2^{n+1})|$. Let
+\[
+ k(n)=\max\bigl(\{0\}\cup
+     \{k:1\leq k\leq n+1\text{ and }r_k(n)\leq1/k\}\bigr).
+\]
+All tests here are finite rational comparisons, uniformly decidable in
+$G$. For each fixed $k$, that $k$ is eligible at all sufficiently large
+$n$. Hence $k(n)\to\infty$. Set
+\[
+ S\cap J_n=\left(\bigcup_{i<k(n)}S_i\right)\cap J_n,
+ \qquad 0\notin S.
+\]
+This defines $S\leT G$. Since $k(n)>i$ eventually, $S_i\substar S$.
+The fraction of $S$ in block $J_n$ is at most $1/k(n)$ when $k(n)>0$,
+and is zero otherwise; it therefore tends to zero.
+
+To pass from block fractions to full density, fix $\varepsilon>0$ and
+choose $n_0$ so that all later block fractions are at most $\varepsilon$.
+For $2^n\leq N<2^{n+1}$ with $n\geq n_0$,
+\[
+ |S\cap[0,N)|\leq 2^{n_0}
+       +\varepsilon\sum_{j=n_0}^{n}2^j
+ \leq 2^{n_0}+\varepsilon 2^{n+1}.
+\]
+Thus $\limsup_N\rho_N(S)\leq2\varepsilon$.
+As $\varepsilon$ was arbitrary, $S\in\Znull$.
+\end{proof}
+
+\subsection{One computable mask defeating countably many oracles}
+\begin{theorem}[Uniform countable simultaneous avoidance]
+\label{thm:countable}
+Let $G$ be $1$-generic with $\CA(G)$. Suppose $(d_i)_{i\in\N}$ is a
+uniformly $G$-computable sequence, each $d_i\in\ED(G)$. Let $A_i$ be
+any oracles with $d_i\leT A_i$ for every $i$; the latter reductions need
+not be uniform. For every unbounded computable order $b$, there is an
+infinite computable null mask $T$ within budget such that
+\[
+ (\forall i)\quad A_i\nleT G_T.
+\]
+\end{theorem}
+\begin{proof}
+The omission sets $S_i=S_{d_i}$ are uniformly $G$-computable and null.
+Lemma~\ref{lem:Pideal} supplies a null $S\leT G$ with $S_i\substar S$
+for every $i$. By Theorem~\ref{thm:escape}, choose a computable budgeted
+$T$ with $T\setminus S$ infinite. For each $i$, only finitely many of
+these escaping points can belong to $S_i\setminus S$, so
+$T\setminus S_i$ is infinite. If $A_i\leT G_T$, then
+$d_i\leT G_T$, contradicting Corollary~\ref{cor:omissions}.
+\end{proof}
+
+An immediate special case is that no uniformly $G$-computable family of
+effective-dense descriptions has the property that every computable-null
+erasure of $G$ computes one of those descriptions. Theorem~\ref{thm:countable}
+also excludes a countable coinitial family of representatives whenever
+suitable descriptions below its members have such a uniform presentation.
+
+\begin{remark}[The quantifier that cannot be discarded]\label{rem:uniform}
+A sequence of sets individually computable from $G$ need not be uniformly
+computable from $G$. Likewise, the assertion that each proposed
+representative computes some description does not uniformly select indices
+for correct total descriptions. Lemma~\ref{lem:Pideal} makes finitely many
+queries across the first $k$ rows on each block; it needs the uniform
+procedure for those rows. This paper therefore does not infer the absence
+of arbitrary countable coinitial families from Theorem~\ref{thm:countable}.
+\end{remark}
+
+\section{A packed descending chain with no in-class lower bound}
+\label{sec:chain}
+\subsection{A nonuniform enumeration is used openly}
+Fix an unbounded computable order $b$. Choose blocks $I_n=[m_n,2m_n)$
+from Lemma~\ref{lem:blocks} with
+\[
+ a_n=2(n+1),\qquad Q_n=(n+1)(n+2).
+\]
+Let $(h_i)_{i\in\N}$ list all total computable functions. This is a
+set-theoretic listing, \emph{not} a computable enumeration of total
+computable functions. For instance, list increasingly the indices in
+$\mathrm{TOT}$ and take their computed functions. Membership in
+$\mathrm{TOT}$ is decidable in $\doublezero$, so such a listing can be
+chosen $\doublezero$-computable at the level of indices. For each fixed
+$i$, the finite list $h_0,\ldots,h_i$ consists of ordinary computable
+functions whose indices may be hard-coded.
+
+Define for all $i,n$
+\[
+ p_i(n)=h_i(n)\bmod m_n.
+\]
+For $n\geq i$, define recursively in $i$
+\begin{equation}\label{eq:fresh}
+ q_i(n)=\min\left([0,m_n)\setminus
+      \left(\{p_i(n)\}\cup\{p_j(n),q_j(n):j<i\}\right)\right).
+\end{equation}
+At most $2i+1$ offsets are forbidden, while $m_n\geq2n+3>2i+1$.
+Thus this value exists. For fixed $i$, it is computable on $n\geq i$.
+Values on smaller $n$ are unused and may be set to zero.
+
+Let $C_i$ be empty outside the blocks and set
+\begin{equation}\label{eq:chainmask}
+ C_i\cap I_n=
+ \{m_n+p_j(n),\ m_n+q_j(n):0\leq j\leq\min(i,n)\}.
+\end{equation}
+Each $C_i$ is computable. To decide membership, locate the relevant block
+and run only the finitely many computable functions with indices at most
+$i$. There is no assertion that $i\mapsto$ an ordinary computable index
+for $C_i$ is itself computable.
+
+\subsection{The geometry and strict descent}
+\begin{lemma}\label{lem:chaingeometry}
+The masks satisfy $C_i\subseteq C_{i+1}$ and
+$|C_{i+1}\setminus C_i|=\infty$. Their union
+$C_\infty=\bigcup_i C_i$ is null and obeys the budget $b$ at every prefix.
+\end{lemma}
+\begin{proof}
+Inclusion is immediate from~\eqref{eq:chainmask}. For each $n\geq i+1$,
+the point $m_n+q_{i+1}(n)$ belongs to $C_{i+1}$ but not to $C_i$, by
+its freshness requirement. These points are distinct in different blocks.
+There are at most $2(n+1)$ points of $C_\infty$ in block $I_n$, so
+Lemma~\ref{lem:blocks} gives both its nullity and the budget. Every $C_i$
+inherits them. The union need not be computable.
+\end{proof}
+
+\begin{theorem}[Descending chain theorem]\label{thm:chain}
+Let $G$ be $1$-generic with $\CA(G)$. For the masks above, $G_i=G_{C_i}$
+satisfies all conclusions of Theorem~\ref{thm:chainintro}.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:equivalence} gives $G_i\eqU G$ and $G_i\leT G$.
+Theorem~\ref{thm:maskorder} and
+Lemma~\ref{lem:chaingeometry} give $G_{i+1}\ltT G_i$. The budget bounds
+actual disagreements because $G\symdiff G_i\subseteq C_i$.
+
+Suppose, toward a contradiction, that $g\in[G]_{\ned}$ and
+$g\leT G_i$ for every $i$. Then $g\leT G$. Choose
+$d\in\ED(G)$ with $d\leT g$, and let $S=S_d$. We have $S\leT G$ and
+$S\in\Znull$. For every $i$, $d\leT G_{C_i}$, so
+Corollary~\ref{cor:omissions} gives
+\begin{equation}\label{eq:covereachmask}
+ C_i\substar S.
+\end{equation}
+For the particular total computable function $h_i$, the selector
+$T_{h_i}$ from~\eqref{eq:selector} has all of its points on blocks $n\geq i$
+in $C_i$. Thus~\eqref{eq:covereachmask} implies $T_{h_i}\substar S$.
+Every total computable function appears in the list, so
+Lemma~\ref{lem:cover} makes $f_S\leT G$ eventually different from every
+computable function. This contradicts $\CA(G)$.
+
+If $G$ is low, monotonicity of the jump yields
+$\jumpzero\leT G_i'\leT G'\eqT\jumpzero$.
+Hence each $G_i$ is low.
+\end{proof}
+
+All these degrees are noncomputable. For example,
+Theorem~\ref{thm:maskorder}, with $D=\N$, would make
+$G_{C_i}\leT G_\N$ imply $\N\substar C_i$, impossible for a null mask.
+Thus, choosing the low generic from Proposition~\ref{prop:low}, the
+construction gives an infinite strictly descending chain of nonzero low
+Turing degrees in one uniform effective-dense class, without an in-class
+lower bound even in the larger nonuniform class.
+
+\subsection{Why the countable union does not give a counterargument}
+The union $C_\infty$ in Lemma~\ref{lem:chaingeometry} really is null; the
+argument does not exploit a failure of closure under arbitrary unions.
+But $C_\infty\nleT G$. Otherwise its containment of each selector tail
+would, by Lemma~\ref{lem:cover}, again give an eventually different
+function below $G$. Consequently one cannot apply the computable-mask
+transformation to $C_\infty$.
+
+There is no contradiction between this construction and
+Lemma~\ref{lem:Pideal}. The individual masks are computable, but the
+chosen listing of them is not asserted to be uniformly $G$-computable.
+The extra fresh points in~\eqref{eq:fresh} are also important: selector
+functions can coincide infinitely often, so merely adjoining the next
+selector need not make each consecutive degree drop strict.
+
+For a low $G\leT\jumpzero$, the entire displayed family of masks and
+masked sets has a uniform $\doublezero$ presentation using the index
+listing through $\mathrm{TOT}$. This is an upper bound on the presentation,
+not a claim that the bound is optimal.
+
+\section{Finite degree patterns and interpretation of the obstruction}
+\label{sec:interpretation}
+\subsection{Boolean intervals inside an arbitrarily small neighborhood}
+\begin{corollary}[Finite Boolean patterns]\label{cor:boolean}
+Let $G$ be $1$-generic, let $b$ be an unbounded computable order, and let
+$k\geq1$. Inside $[G]_{\ued}$ there are $2^k$ distinct ordinary degrees
+forming a Boolean lattice under the actual Turing joins and meets.
+All representatives can be chosen below $G$ and within disagreement budget
+$b$ of $G$. If $G$ is low, all these degrees are low.
+\end{corollary}
+\begin{proof}
+Choose an infinite computable null set $T$ within budget using one point per
+block. Split its computable increasing enumeration into $k$ infinite
+computable pieces $T_0,\ldots,T_{k-1}$ by the enumeration index modulo $k$.
+For $u\subseteq\{0,\ldots,k-1\}$, let $C_u=\bigcup_{i\in u}T_i$.
+All masks are subsets of $T$. Distinct $u$ give masks different on an
+infinite set, so their degrees are distinct by Theorem~\ref{thm:maskorder}.
+That theorem reverses inclusion, and Theorem~\ref{thm:masklattice} identifies
+union with meet and intersection with join. This is the dual Boolean
+lattice, which is itself Boolean. The low assertion follows by jump
+monotonicity as before.
+\end{proof}
+
+For $k=2$, the two intermediate degrees are incomparable, their join is
+$\degT(G)$, and their meet is $\degT(G_T)$. The meet is nonzero because
+$T$ is null. Thus these are not ordinary minimal pairs. The finite geometry
+is compatible with the complete lack of a least degree in the full class
+under the stronger hypotheses of Theorem~\ref{thm:noleast}.
+
+\subsection{The repository gap, resolved at the required quantifier level}
+The plan's C2 argument would make the omission set $S$ of a least
+representative almost contain every computable null set. The proposed
+contradiction there was not a purely set-theoretic one: null sets form a
+P-ideal, so abstract upper bounds exist.\cite{ProveIt}
+The present proof locates the missing computational obstruction:
+\[
+ \begin{gathered}
+ S\leT G,\quad S\in\Znull,\quad
+ (\forall T\text{ computable null})\ T\substar S\\[2pt]
+ \Longrightarrow\quad
+ \text{$G$ computes an eventually different function.}
+ \end{gathered}
+\]
+For $2$-generics, or non-high $1$-generics, that consequence is impossible.
+The general least-representative assertion is universal in the starting
+function, so this subclass is already sufficient for a negative answer.
+We have not silently completed the original sketch for every $1$-generic.
+
+Two logically distinct facts do the work. Genericity forbids a retained
+oracle from making infinitely many error-free predictions on deleted
+coordinates. Computable agreement prevents a $G$-computable null omission
+set from swallowing all computable sparse selectors. Neither fact alone is
+the least-representative theorem.
+
+\subsection{Six boundaries of the conclusion}
+The following distinctions prevent overstatements of what has been proved.
+
+\paragraph{Descriptions versus representatives.}
+A description is allowed to contain $\bot$; a representative is a numerical
+function in the equivalence class. The proof extracts a description from a
+representative by~\eqref{eq:representativecomputes}. It never identifies
+the entire representative spectrum with an upward closure of description
+degrees.
+
+\paragraph{Explicit omission versus an erroneous answer.}
+The erased sets use numerical zero, but the reverse description reduction
+\emph{explicitly} replaces every masked coordinate by $\bot$. No wrong
+answer is reclassified as an omission after the fact.
+
+\paragraph{Least versus minimal.}
+The mask family has no minimal element, and the full class has no least
+element. The existence of a minimal element of the \emph{full} class is
+not settled by these results. A representative outside the displayed
+family need not have a smaller displayed representative below it.
+
+\paragraph{Finite versus countable uniformity.}
+Finite unions of omission sets are $G$-computable when the constituent
+sets are. Countable unions do not enjoy that inference without a uniform
+presentation and a null-upper-bound construction. Section~\ref{sec:countable}
+states exactly the uniform hypothesis it uses.
+
+\paragraph{Actual degree order versus asymptotic degree order.}
+The strict inequalities in the chain are ordinary Turing inequalities.
+All chain members are equivalent for uniform effective-dense reducibility.
+There is no strict chain of effective-dense degrees in that assertion.
+
+\paragraph{Provability versus priority and formal certification.}
+The arguments constitute a conventional proof submission. They are not
+results certified by finite experiments, by repository inclusion, by peer
+review, or by a proof assistant. The low sharpening has the named classical
+input of Theorem~\ref{thm:KMS}; it is not an unproved assumption introduced
+to obtain the conclusion.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+Except where linked to a cited question, the following are questions raised
+by this development, not claims that a comprehensive search has established
+their open status. Their formulations separate plausible next lemmas from
+large classification problems.
+
+\subsection{Genericity and computational strength}
+\begin{question}[The high $1$-generic case]\label{q:high}
+Does $[G]_{\ned}$ have no least Turing degree for every high $1$-generic $G$?
+Does the same hold for $[G]_{\ued}$?
+\end{question}
+The present argument handles all non-high $1$-generics. In the remaining
+case $\CA(G)$ fails by Theorem~\ref{thm:KMS}. That failure only removes
+our obstruction; it does not construct a least representative. A possible
+next step is to use that a putative omission set is computable from
+\emph{every} computable-null erasure, a stronger demand than just $S\leT G$.
+
+\begin{question}[Computational strength of null upper bounds]\label{q:cover}
+Which degrees compute an $S\in\Znull$ such that $T\substar S$ for every
+computable $T\in\Znull$? Does the answer change if $T$ is restricted to
+one-point-per-block selectors for a fixed computable block layout?
+\end{question}
+Lemma~\ref{lem:cover} gives a necessary condition: such a degree computes
+a computably bounded eventually different function, and hence is high or
+DNR by Theorem~\ref{thm:KMS}. Sufficiency, the role of a fixed bound, and
+the difference between all null sets and selectors should be investigated
+separately. A proof for selectors alone would not automatically solve the
+full null-cover question.
+
+\begin{question}[How low can the starting object be?]\label{q:low}
+Which nonzero degrees bound a binary set whose effective-dense class has no
+least ordinary degree? Is there a c.e. binary counterexample? What effective
+bounds can be imposed on descriptions witnessing its nontriviality?
+\end{question}
+Low $\Delta^0_2$ examples now exist by Theorem~\ref{thm:noleast}, so merely
+asking for an arithmetical or halting-computable counterexample is no longer
+a useful target here. The c.e. restriction is a different structural demand.
+
+\subsection{Spectra and countable lower structure}
+\begin{question}[Minimal representatives]\label{q:minimal}
+Does either full class of a low $1$-generic contain a representative of
+minimal ordinary Turing degree within that class?
+\end{question}
+The mask lattice and packed chain show extensive descent, but not descent
+below an arbitrary representative. A promising restricted goal is to
+characterize when a representative below $G$ has an effective-dense
+equivalent strictly below it. Such a theorem would have to construct a new
+representative below that prescribed oracle, rather than only one that
+fails to compute it.
+
+\begin{question}[Arbitrary countable coinitiality]\label{q:coinitial}
+Can $[G]_{\ned}$ or $[G]_{\ued}$ have a countable coinitial family when $G$
+is a low $1$-generic? Can the uniformity hypothesis of
+Theorem~\ref{thm:countable} be removed or replaced by a weaker effective
+presentation condition?
+\end{question}
+The packed chain has no lower bound in the class, but it need not be
+coinitial. Theorem~\ref{thm:countable} eliminates uniformly supplied
+descriptions; it does not select correct descriptions from an arbitrary
+countable list of representatives. Pinning down that selection complexity
+is a concrete intermediate target.
+
+\begin{question}[The common lower cone of all computable erasures]
+\label{q:common}
+For a $1$-generic $G$, determine
+\[
+ \bigcap_{T\in\Comp\cap\Znull}\Low(G_T).
+\]
+When $G$ is low, is this ideal trivial? Can it be nonprincipal?
+\end{question}
+For two masks, Theorem~\ref{thm:masklattice} gives an exact answer.
+For the full intersection, the present paper only excludes members that
+compute an effective-dense description of $G$, under $\CA(G)$.
+A common lower bound may carry information without itself providing any
+such description.
+
+\begin{question}[Classifying classes with least degrees]\label{q:positive}
+Find intrinsic necessary and sufficient conditions for an effective-dense
+class to have a least ordinary Turing degree, separately for the uniform
+and nonuniform versions.
+\end{question}
+The criterion should distinguish genuine recoverability from every
+\emph{description} from lower-boundedness among \emph{representatives}.
+The repository's positive examples based on redundantly coded dyadic
+columns provide a comparison family, but its coarse characterization
+cannot simply be reused.\cite{ProveIt}
+
+\subsection{Quantitative, effective, and formal directions}
+\begin{question}[Effective presentations of descending chains]\label{q:chainindex}
+What is the least possible complexity of a sequence of computable masks
+whose erased oracles form a strict chain with no lower bound in the class?
+Can a uniformly $G$-computable presentation occur without yielding a
+uniformly $G$-computable sequence of descriptions?
+\end{question}
+Section~\ref{sec:chain} gives a $\doublezero$ presentation for the low
+witnesses and carefully separates it from individual computability.
+Determining the optimal bound requires an argument about presentations,
+not just the degree of each separate mask.
+
+\begin{question}[Other small-set ideals]\label{q:ideals}
+For which effectively presented ideals $\mathcal I$ of negligible sets
+can the sparse escape theorem and no-least argument be repeated, with
+$\mathcal Z_0$ replaced by $\mathcal I$?
+\end{question}
+The proof suggests explicit hypotheses: computable masks should allow the
+two description transformations; an $\mathcal I$-small omission set should
+miss a point in every sufficiently late block of a chosen layout; and
+computable selectors should lie in $\mathcal I$ with the desired budget.
+Weighted-density and summable ideals are natural tests, but these hypotheses
+must be checked rather than assumed.
+
+\begin{question}[Randomness instead of genericity]\label{q:random}
+Which randomness hypotheses give an analogue of
+Lemma~\ref{lem:prediction} for computable coordinate erasures, and which
+of those oracles also admit a suitable sparse escape theorem?
+\end{question}
+This separates a nonprediction problem from a highness problem.
+Quasiminimality results for random sets in asymptotic degree structures do
+not on their own settle this representative-spectrum question.\cite{AHJ}
+
+\begin{question}[Binary representative complexity]\label{q:binary}
+Can the description-selection machinery here contribute to a bound on the
+complexity of a binary representative of a numerical function already
+known to be nonuniformly effective-dense equivalent to some set?
+\end{question}
+This is a possible connection to Gerdes's Question~5 and repository C3,
+not a solution of either. The present counterexamples start with a binary
+set, so they avoid rather than solve that selection problem.\cite{Gerdes,ProveIt}
+
+\begin{question}[Formalization of the proof interface]\label{q:lean}
+Can generic nonprediction, budgeted sparse escape, and the class-level
+leastness argument be formalized as reusable modules over a common oracle
+computation interface in the repository?
+\end{question}
+A useful first milestone is a checked theorem taking $1$-genericity and
+$\CA(G)$ as explicit hypotheses and proving Theorem~\ref{thm:noleast}.
+The genericity constructions and the classical highness refinement should
+then be proved or imported with their dependencies audited separately.
+
+\section{Proof audit, formalization plan, and reproducibility}
+\label{sec:audit}
+\subsection{The dependency structure}
+The shortest independent route to C2 has the following structure:
+\[
+ \begin{array}{c}
+  2\text{-genericity}\Longrightarrow\CA(G)\\
+  \CA(G)+\text{null omission set}\Longrightarrow
+                   \text{computable sparse escape}\\
+  1\text{-genericity}+\text{description below }G_T
+                  \Longrightarrow T\substar S_d\\
+  \text{least representative}\Longrightarrow\text{contradiction}.
+ \end{array}
+\]
+A $2$-generic exists below $\doublezero$: enumerate the $\Sigma^0_2$ sets
+of strings and, using $\doublezero$ to decide whether an extension exists,
+meet the current set when possible and otherwise preserve an avoiding
+prefix. Append a bit at each stage. This is the same meet-or-avoid
+construction as in Proposition~\ref{prop:low}, one jump higher.
+Hence the direct route has actual witnesses without appealing to
+Theorem~\ref{thm:KMS}.
+
+The low route instead uses
+\[
+ \text{low $1$-generic}\Longrightarrow
+ \text{not high and not DNR}
+ \overset{\text{classical Theorem~\ref{thm:KMS}}}{\Longrightarrow}\CA(G).
+\]
+The only named external classification in this route is stated in full
+at its point of use. Neither route imports the repository's unrefereed
+coarse-spectrum theorems as black boxes.
+
+\subsection{A practical formalization boundary}
+An end-to-end formalization needs more than the quotient definition of
+Turing degrees. The essential interfaces are finite-use oracle
+computations with extension persistence; c.e. and $\Sigma^0_2$ predicates
+on strings; explicit meet-or-avoid genericity; coding of total descriptions
+with a distinguished omission symbol; and a density-zero library with
+finite unions and prefix-count bounds.
+
+The central theorem can first be proved for sets and total function
+oracles, postponing passage to the degree quotient. Generic nonprediction
+is a finite-computation argument. Budgeted blocks, selectors, and the
+uniform P-ideal calculation are arithmetic constructions with eventual
+bounds. The description-equivalence maps have direct pointwise proofs.
+Only after these components are available does the class-level theorem
+become a short composition of implications.
+
+Theorem~\ref{thm:twoGenericCA} additionally needs the complexity calculation
+for $B_\Gamma$ and the c.e. dense sets $U_k$. The low refinement needs
+jump monotonicity, the generalized-low computation, and the classical
+high-or-DNR characterization. Importing the latter as an axiom would make
+the low result conditional in the formal development, even though it is
+a published theorem in the mathematical argument. No Lean code in this
+archive is represented as compiled or certified.
+
+\subsection{What the accompanying finite checks do}
+The companion script \path{checks/check_finite.py} is deterministic and
+uses only the Python standard library. It checks the two pointwise
+correctness transformations for all small binary strings and masks;
+finite erasure independence under a changed deleted bit; the join and
+finite-amalgamation coordinate rules; capacity and freshness invariants of
+the packed masks; and every-prefix budgets for representative finite block
+layouts. It also checks finite instances of the dyadic-block inequality
+used in Lemma~\ref{lem:Pideal}.
+
+These checks are aimed at off-by-one, coordinate, and counting errors.
+They do not test that a finite string is generic, exhibit a noncomputable
+oracle in finite time, decide which programs are total, or verify an
+infinite density limit. The proof of each such assertion is the
+corresponding conventional argument above. The recorded output and a
+machine-readable summary are supplied separately; rerunning the script
+regenerates them.
+
+The document is built by \path{build.sh}, which runs the checks and compiles
+\path{article.tex} with pdfLaTeX. The archive contains the source, final
+PDF, build instructions, source ledger, and proof audit. Fonts are supplied
+by the user's TeX installation, not bundled in the archive.
+
+\appendix
+\section{Source provenance and novelty audit}
+\label{app:sources}
+\subsection{Repository snapshot}
+The task was anchored to \repo\ commit
+\begin{center}
+\texttt{1a1396d4d3a2ac6812692df520517d86ba3a4785}.
+\end{center}
+The primary repository document is
+\begin{quote}\small
+\path{Computability/TuringDegrees/Research/CoarseDegrees/}\allowbreak
+\path{research-plan/turing_degrees_unified.tex}.
+\end{quote}
+The fetched blob is
+\texttt{ebecd2e15f8e4a06ebd0b0333387d27ebe630375}.
+In that snapshot, source lines 552--573 include the established coarse
+tools, the C2 question, its genericity sketch, and the explicit gap.
+The C3--C8 follow-ups begin in the immediately following range.
+The source describes itself as the second edition of a research synthesis;
+it is not treated here as an externally refereed source.
+
+\subsection{Primary literature checked}
+Gerdes's arXiv record displayed version~1, submitted 9 August 2025, when
+consulted on 28 September 2026. Section~7, Question~7 is the precise
+least-representative question targeted here. The nearby questions about
+binary representatives and descriptive complexity concern different
+problems.\cite{Gerdes}
+
+The Astor--Hirschfeldt--Jockusch preprint was checked for the definition of
+effective-dense descriptions, the uniform and nonuniform reductions, and
+the distinction between quasiminimality and internal ordinary-degree
+structure. Its Theorem~5.9 is not cited as an internal least-degree theorem.
+The paper's minimal-pair results also concern distinct questions about
+asymptotic degrees.\cite{AHJ}
+
+The Brendle--Brooke-Taylor--Ng--Nies paper records the equivalence between
+computing an eventually different function and weak meager engulfing, and
+attributes the exclusion of $2$-generics from that class to Rupprecht.
+The direct proof in Section~\ref{sec:agreement} is included so that the
+main application does not depend on translating that terminology.\cite{BBNN}
+
+The high-or-DNR characterization was checked directly in
+Kjos-Hanssen--Merkle--Stephan, Theorem~5.1, rather than inferred only from a
+secondary reference. It is used solely for the non-high and low
+refinements.\cite{KMS}
+
+\subsection{What the audit does not establish}
+Targeted searches for the combination of effective-dense representatives,
+least ordinary Turing degrees, genericity, and eventually different
+functions did not establish a prior occurrence of the exact erasure
+application proved here. This is a limited search result, not evidence
+that no earlier proof exists. In particular, elementary applications of
+standard genericity may circulate in unpublished notes or use different
+terminology. The mathematical claim is the stated theorem with its proof;
+priority remains to be assessed independently.
+
+\section{A compact checklist of delicate proof obligations}
+\label{app:checklist}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Issue & Where and how it is handled\\
+\midrule
+\endhead
+Wrong values versus omissions & Lemma~\ref{lem:equivalence} gives two
+explicit transformations. The inverse discards the whole computable mask.\\[4pt]
+Full-class leastness & Theorem~\ref{thm:noleast} treats numerical
+representatives, including those not below $G$, and uses binary comparison
+witnesses in the uniform class.\\[4pt]
+Nonuniform hard-coded data & The generic avoiding prefix, the computable
+agreement index, and each finite list of total-function indices are
+allowed to depend on the instance. No uniform selector is asserted.\\[4pt]
+Decidable sparse mask & Equation~\eqref{eq:selector} gives one point in
+each decidable interval using a total computable function, not a delayed
+c.e. enumeration.\\[4pt]
+Density at intermediate prefixes & Lemma~\ref{lem:blocks} treats every
+$N\in[m_n,m_{n+1})$; Lemma~\ref{lem:Pideal} gives an explicit partial-block
+bound.\\[4pt]
+Bounded default in $f_S$ & Density zero makes the default branch in
+\eqref{eq:choice} occur only finitely often. Infinite agreement remains
+infinite after those exceptions are discarded.\\[4pt]
+Infinite strict drops & The offsets $q_i(n)$ are fresh from all previously
+inserted points; coincident selector functions cannot collapse a step.\\[4pt]
+Countable presentations & Section~\ref{sec:countable} requires a uniform
+$G$ procedure. Section~\ref{sec:chain} uses an explicitly nonuniform list
+of total computable functions.\\[4pt]
+Actual meet in the full degree order & The amalgamation argument of
+Theorem~\ref{thm:masklattice} handles any common lower oracle, not just
+another computable-mask oracle.\\[4pt]
+Low refinement & Theorem~\ref{thm:KMS} is a named published input.
+Generic non-DNR and generalized lowness are proved separately.\\[4pt]
+No overclaim about minimality & The full-class theorem excludes least
+elements; Question~\ref{q:minimal} keeps minimal elements separate.\\[4pt]
+No experimental certification & Finite checks validate finite invariants
+only. No independent review or proof-assistant verification is claimed.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{ProveIt}
+\repo\ repository,
+\emph{Turing Degrees: A Unified Research Report}, prepared for Vladimir Reshetnikov,
+research-plan source, second edition dated 18 September 2026,
+repository snapshot \texttt{1a1396d4d3a2ac6812692df520517d86ba3a4785}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1a1396d4d3a2ac6812692df520517d86ba3a4785/Computability/TuringDegrees/Research/CoarseDegrees/research-plan/turing_degrees_unified.tex}.
+Consulted 28 September 2026. Unrefereed research programme.
+
+\bibitem{Gerdes}
+Peter M. Gerdes,
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and
+$2^\omega$}, arXiv:2508.06925v1, 2025.
+\url{https://arxiv.org/abs/2508.06925v1}.
+In particular, Section~7, Questions~5 and~7.
+
+\bibitem{AHJ}
+Eric P. Astor, Denis R. Hirschfeldt, and Carl G. Jockusch, Jr.,
+\emph{Dense computability, upper cones, and minimal pairs},
+Computability \textbf{8} (2019), 155--177.
+DOI: \href{https://doi.org/10.3233/COM-180231}{10.3233/COM-180231}.
+Author-hosted preprint:
+\url{https://www.math.uchicago.edu/~drh/Papers/Papers/dense.pdf}.
+
+\bibitem{KMS}
+Bj\o rn Kjos-Hanssen, Wolfgang Merkle, and Frank Stephan,
+\emph{Kolmogorov complexity and the Recursion Theorem},
+Transactions of the American Mathematical Society \textbf{363} (2011),
+5465--5480. Preprint arXiv:0901.3933v2.
+\url{https://arxiv.org/abs/0901.3933v2}.
+Theorem~5.1 is the high-or-DNR characterization used here.
+
+\bibitem{BBNN}
+J\"org Brendle, Andrew Brooke-Taylor, Keng Meng Ng, and Andr\'e Nies,
+\emph{An analogy between cardinal characteristics and highness properties
+of oracles}, arXiv:1404.2839v2, 2014.
+\url{https://arxiv.org/abs/1404.2839v2}.
+See Section~3.2, Theorem~4.2, and the discussion of $2$-genericity
+in Section~4.
+\end{thebibliography}
+\end{document}

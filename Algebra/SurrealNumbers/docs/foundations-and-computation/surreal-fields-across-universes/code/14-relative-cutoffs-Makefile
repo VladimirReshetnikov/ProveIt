@@ -1,0 +1,12 @@
+.PHONY: all checks pdf clean
+
+all: checks pdf
+
+checks:
+	python3 verify_finite.py --output finite_checks.json
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex
