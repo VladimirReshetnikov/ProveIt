@@ -591,3 +591,4 @@ ProveIt-era batches (from this directory):
 | 42 | `3609d04` | `e9f425f`, `3815377`, `a835019`, `b1f5e8d`, `0e6632a` | "Catalogue batch 42" | — |
 | 43 | `faef2ed` (six archives from two arrival commits) | `b8e4607`, `fb60de0`, `22f7689`, `d252e2a` | "Catalogue batch 43" | — |
 | 44 | `2030160` | `ff9032b`, `b26d06011`, `6f09f41`; notes `21890f8` | "Catalogue batch 44" | — |
+| 45 | `13e4dc0` (six transseries packages filed whole under `Analysis/Transseries`; two arrival commits) | — (merge into the volumes deferred) | in the placement commit | — |
