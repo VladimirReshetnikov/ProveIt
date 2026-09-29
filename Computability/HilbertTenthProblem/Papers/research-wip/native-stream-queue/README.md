@@ -24,12 +24,16 @@ New research, without a change to the complete universal bound:
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
 | [One-field half mask](one_field_half_mask.md) | Exact bounded mask predicate in **51=30M+21A**, including power recovery and a positive-witness converse. The proof excludes its `F=q` boundary after the kernel. | A universal single-field compiler, input and acceptance are absent; 51 is a module count. |
+| [Base-four half mask](pell_kernel_base_four_half_mask.md) | The same **51=30M+21A** predicate with retained power `X=4^(2r+1)`; even masks work with the exact origin-parity condition. | Even exponent removes one stride obstruction but does not prove compiler alignment. |
+| [Native ternary selectors](native_controller_three_selector_53.md) | Exact three-label selector relation in **53=29M+24A**, with power geometry, typing, bounds and one-hot synchronization; 54 also exposes the repunit. | Controller, ordinary input, transport and acceptance remain unpaid. The first label is fixed to zero. |
+| [Interleaving refutation](interleaved_compiler_collapse_refutation.md) | New positive separated-field **74** and collapsed **75** sources admit every positive input for every admitted fixed compiler, including an empty-set compiler. | This rejects those specified sources, not either previously open75 candidate. The proof here uses an independent whole-cell stride. |
 | [Discriminant input-gap projection](input_bridge_discriminant_gap_projection.md) | Exact two-coset projection of a distinct **75=41M+34A** gap-deletion candidate, its fibers over genuine76 witnesses, and a certified bridge-only alias. | No full false input or soundness proof for that candidate. |
 | [Squared-congruence kernel repair](pell_kernel_squared_congruence.md) | The same-cost change `jc` to `jc^2` preserves completeness but still permits the wrong-index kernel family; a numerical input bridge also attaches. | The actual compiler/transport is not attached, so this does not refute full75. |
 | [Arithmetic-carry controller analysis](native_controller_carry_obstruction.md) | Exact carry compiler criterion, scoped affine/polynomial controller obstructions, and a nonuniversality theorem for a single-coordinate zero-absorbing affine-carry queue. | Powers/bounds remain external to the conditional 13-operation controller schedule; the multi-coordinate effectivity question is expressly unaudited. |
 
-The first three proof/source/receipt packages have independent scoped review
-passes. The controller's carry, scalar-queue and polynomial arguments also
+The mask, selector, interleaving, input-gap and squared-congruence packages
+have independent scoped proof/source/receipt review passes.
+The controller's carry, scalar-queue and polynomial arguments also
 have independent review; the separate parametric-Presburger application was
 checked against its primary theorem, without promoting algorithmic effectivity.
 These are mathematical proofs with symbolic and finite checks, not Lean
@@ -39,16 +43,20 @@ Fresh default checks for the new artifacts:
 
 ```sh
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_one_field_half_mask.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_base_four_half_mask.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_three_selector_53.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/interleaved_compiler_collapse_refutation.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_discriminant_gap_projection.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_squared_congruence.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/audit_native_controller_carry.py
 ```
 
-The immediate constructive target is a compiler that uses the single masked
-field without assuming a free interleaving or data-typing predicate. Reusing
-the existing sparse compiler without its separate input mask is not justified.
-The native-stream alternative needs additional typed/nonlinear witnesses or
-a different complete controller; larger affine state codes alone cannot
+The immediate constructive targets are a compiler using the single masked
+field and a native controller composed with the three typed selectors.
+The direct interleaving shortcut is now refuted, including strictly positive
+separate data and verification fields. The native alternative has paid
+typing for three choices, but its incidence and controller equations still
+need a complete implementation; larger affine state codes alone cannot
 encode the current erase/copy language.
 
 ## Preserved and runnable work

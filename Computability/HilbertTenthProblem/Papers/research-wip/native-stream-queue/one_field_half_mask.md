@@ -152,3 +152,20 @@ witnesses.
 Author checks and an independent full scoped proof/source/receipt review
 pass, including the pre-power endpoint argument and all twelve source maps.
 Fresh default replay matches the receipt. No Lean formalization is claimed.
+
+## 6. Even fixed masks and a free origin-parity condition
+
+The identical source also works for a positive **even** fixed m of population
+d/2, provided the specification (1) includes `F+m` odd. All pre-power bounds,
+power recovery and the endpoint exclusion are unchanged. The necessary
+[fixed-minus parity theorem](../../1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md)
+gives odd r. Since q is even and J is odd after decoding, (2) gives
+`r=F+m modulo 2`, hence the additional condition. Conversely that condition
+makes r odd and supplies exactly the positivity hypothesis used in Section 3.
+
+For odd m, the original mask already forces even F, so this extra condition
+is automatic. For even m it forces F odd at no new arithmetic cost. This
+allows an origin bit in a prospective computation field. It does not prove
+that an interleaved sum has independently typed components. The parallel
+[base-four module](pell_kernel_base_four_half_mask.md) includes focused
+checks of both mask parities; its generic parity argument is identical.
