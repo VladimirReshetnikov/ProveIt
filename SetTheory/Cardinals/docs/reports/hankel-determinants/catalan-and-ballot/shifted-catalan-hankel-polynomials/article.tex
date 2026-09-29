@@ -49,6 +49,17 @@
 \newcommand{\lc}{\operatorname{lc}}
 \newcommand{\sgn}{\operatorname{sgn}}
 \newcommand{\hyp}[4]{{}_2F_1\!\left(\begin{matrix}#1,#2\\#3\end{matrix};#4\right)}
+% Part II (batch 39, manuscript 03): the manuscript's macros; \Rzero renamed
+% from R_0 to avoid Part I's polynomial R_0(y).
+\newcommand{\bk}{\boldsymbol{k}}
+\newcommand{\bj}{\boldsymbol{j}}
+\newcommand{\by}{\boldsymbol{y}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\E}{\mathsf E}
+\newcommand{\V}{\mathcal V}
+\newcommand{\Rzero}{\mathcal R_0}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{muted},backgroundcolor=\color{lightblue},
  keepspaces=true,showstringspaces=false}
@@ -63,7 +74,10 @@
 {\Large Exact coefficients, sharp recurrences,\par and a denominator conjecture}\par
 \vspace{7mm}
 {A research note prepared with OpenAI ChatGPT}\par
-{19 September 2026}
+{19 September 2026}\par
+\vspace{3mm}
+{\small\color{muted}With Part~II (28 September 2026): root collisions and sharp
+recurrences for arbitrary polynomial multipliers}
 \end{center}
 \vspace{5mm}
 \begin{abstract}
@@ -82,6 +96,16 @@ with polynomial coefficients, a finite full asymptotic expansion, and an
 explicit first correction.  Independent integer and rational computations,
 including direct determinants and polynomial-identity certificates at fixed
 sizes, accompany the proofs.
+
+\emph{Addition of 28 September 2026 (batch 39).} Part~II, from a later
+manuscript, replaces $x^m(a+bx)$ by an arbitrary nonzero multiplier
+$q(x)=\gamma x^m(x-4)^\ell\prod_i(x-c_i)^{t_i}$.  Each exponential sector
+has a polynomial coefficient of exact degree
+$\binom m2+\binom{\ell+1}2+\sum_ik_i(t_i-k_i)$ with a nonzero product
+leading coefficient, so off resonance the minimal recurrence order is
+$\prod_i(t_i+1)\bigl(\binom m2+\binom{\ell+1}2+1+\frac16\sum_it_i(t_i-1)\bigr)$;
+a secondary Hankel determinant detects exactly when it drops, and a
+certified finite-prefix algorithm handles the resonances.
 \end{abstract}
 \vspace{3mm}
 \noindent\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
@@ -113,6 +137,7 @@ data.  No external mathematical software is needed to rerun the tests.
 \tableofcontents
 \endgroup
 \clearpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Shifted linear multipliers}
 
 \section{The problem and the contribution}\label{sec:problem}
 
@@ -1143,6 +1168,11 @@ CSV.  Rational polynomial coefficients are stored as strings such as
 \texttt{"8/3"}, in ascending power order, to avoid any loss of exactness
 when imported into other systems.  The included README documents every
 file and its indexing convention.
+[Added 28 September 2026, batch 39: the first command regenerates the
+shipped files in \texttt{data/}; in the repository, run it on a copy (see
+the report README).  Part~II's separate suite, and why its delivered
+commands must not be run in this directory, are described in
+Section~\ref{rc:app:reproduce}.]
 
 \section{What has been resolved, and what has not}\label{sec:status}
 
@@ -1175,6 +1205,1877 @@ new collision patterns.  A joint limit with growing $m$ or a parameter
 approaching $a=0$ would require uniform, rather than fixed-parameter,
 asymptotics.  None of these extensions is assumed in the present proofs.
 
+\noindent[Added 28 September 2026, batch 39: the preceding paragraph
+describes the report at the state \texttt{fbba58593} against which Part~II
+was written.  The extension to several distinct linear factors, and to
+repeated factors, is treated in Part~II: for every nonzero polynomial
+multiplier the exponential sectors, their exact degrees and nonzero
+leading coefficients (Theorems~\ref{rc:thm:main} and~\ref{rc:thm:leading}),
+the minimal order off resonance \eqref{rc:eq:R}, an exact detector of the
+parameters where it drops (Theorem~\ref{rc:thm:secondary}), and a certified
+finite algorithm on that resonance locus (Theorems~\ref{rc:thm:resonant}
+and~\ref{rc:thm:finite}).  Part~II gives no short closed classification of
+the resonant cancellations; it poses that as a research direction
+(Section~\ref{rc:sec:research}).  The other extensions named here remain
+open: Part~II does not address a combinatorial interpretation of
+$c_{N,m,k}$, a product formula for the minors $M_{m,\ell}(N)$, or joint
+limits with growing $m$; and its asymptotics
+(Section~\ref{rc:sec:asymptotics}) are for fixed parameters, so a
+parameter approaching $a=0$ (a root reaching the endpoint $0$) is among
+the uniform endpoint limits it poses, not solves.]
+
+%% ====================================================================
+%% Batch-39 addition (manuscript 03, "Root Collisions and Sharp
+%% Recurrences for Polynomially Weighted Catalan Hankel Determinants").
+%% All labels of Part II carry the prefix rc: (root collisions).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Root collisions: arbitrary polynomial multipliers}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Root collisions: arbitrary polynomial multipliers}
+
+\noindent\emph{Sections~\ref{sec:problem}--\ref{sec:status} and
+Appendices~\ref{app:barry}--\ref{app:reference} form the original report
+(Part~I) of 19 September 2026, unchanged except for dated pointers to this
+addition, a line on the title page, contents entries for the two parts,
+and two bibliography entries used only by Part~II.  Part~II was added on 28 September 2026 in batch~39 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Part~I.  It answers the extension that Part~I's
+Section~\ref{sec:status} named but left open, ``multiple distinct linear
+factors in the multiplier'' and their ``new collision patterns'':
+for every nonzero polynomial multiplier it determines the exponential
+sectors, their exact polynomial degrees and leading coefficients, the
+minimal recurrence off resonance, and a finite algorithm on the resonance
+locus.  Section~\ref{rc:sec:intro} records the provenance and fixes the
+notation of the addition.}
+
+\section{Provenance and conventions of Part~II}\label{rc:sec:intro}
+
+\subsection{One manuscript, one addition}\label{rc:sec:source}
+Part~II is batch-39 manuscript~03, \emph{Root Collisions and Sharp
+Recurrences for Polynomially Weighted Catalan Hankel Determinants}, a
+proof-focused research article prepared with OpenAI ChatGPT for Vladimir
+Reshetnikov's ProveIt research program and dated 28 September 2026
+(23 pages as delivered).  It arrived as the archive
+\nolinkurl{ProveIt_Catalan_Root_Collisions.zip} (inner directory
+\nolinkurl{ProveIt_Catalan_Root_Collisions/}, main file
+\nolinkurl{article.tex}) in ProveIt commit \texttt{74f7f5bdb} and was
+placed in \texttt{e2b1f016a}.  It was written against ProveIt commit
+\texttt{fbba58593dc0622aa914972896150d4848f935b5}, reading Part~I's
+\nolinkurl{article.tex} and \nolinkurl{README.md} at that commit
+(consulted 28 September 2026 through
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/fbba58593dc0622aa914972896150d4848f935b5/SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials}{the
+pinned repository tree}).  Part~I's files are unchanged between that
+commit and the placement commit, so every statement the manuscript makes
+about ``the repository report'' refers to Part~I as printed above.
+
+The manuscript's code and data are shipped beside Part~I's files with the
+prefix \texttt{02-root-collisions-} (Part~I's unprefixed files count
+as~01), and its provenance notes, delivered as
+\nolinkurl{notes/provenance.md}, as
+\nolinkurl{02-root-collisions-provenance.md} at the report root.  Its
+manuscript, delivery README and PDF are not shipped; they survive in the
+arrival commit.  Section~\ref{rc:app:reproduce} lists the shipped files.
+
+The manuscript contributes, in the order printed here: its research
+question and a statement of what is classical (Section~\ref{rc:sec:scope});
+the definitions and principal results, namely the exact sector-degree
+law, the minimal recurrence off resonance and the secondary-Hankel
+factorization (Section~\ref{rc:sec:main}); the orthogonal polynomials and
+the confluent Christoffel identity in its normalization
+(Section~\ref{rc:sec:classical}); the local jets at interior points and at
+both endpoints (Section~\ref{rc:sec:jets}); the determinant degree calculus
+(Section~\ref{rc:sec:degreecalculus}); the canonical sectors and the exact
+leading coefficient (Section~\ref{rc:sec:sharpness}); minimality, the order
+formula and the secondary factorization (Section~\ref{rc:sec:recurrences});
+resonance, finite-prefix certification and a root-free algorithm
+(Section~\ref{rc:sec:resonances}); worked examples, including the recovery
+of Part~I's theorem (Section~\ref{rc:sec:examples}); exact asymptotics
+(Section~\ref{rc:sec:asymptotics}); its verification record, implementation
+interface and a formalization route (Section~\ref{rc:sec:verification});
+eight research directions (Section~\ref{rc:sec:research}); a conclusion; a
+normalization and sign audit (Section~\ref{rc:app:audit}); and its
+reproduction instructions (Section~\ref{rc:app:reproduce}).  Every
+result, proof, example, remark, limitation and question of the manuscript
+is printed.  Where it re-derives something Part~I already proves, the
+overlap is marked in the text (Section~\ref{rc:sec:merge}).
+
+The manuscript's own abstract reads:
+\begin{quote}\small
+For a nonzero polynomial $q$, let $H_N(q)$ be the size-$N$ Hankel
+determinant of the Catalan moments multiplied by $q$.  General
+constant-coefficient recurrences for this family are classical.  We
+determine their sharp multiplicities.  Write
+$q(x)=\gamma x^m(x-4)^\ell\prod_i(x-c_i)^{t_i}$, with distinct
+$c_i\notin\{0,4\}$, and put $c_i=2+z_i+z_i^{-1}$.
+The branch-labelled exponential with rate
+$(-1)^{\ell+\sum t_i}\gamma\prod_i z_i^{2k_i-t_i}$ has a polynomial
+coefficient whose degree is exactly
+$\binom m2+\binom{\ell+1}2+\sum_i k_i(t_i-k_i)$.
+A nonvanishing confluent-Vandermonde product gives its leading coefficient.
+Consequently, when the rates are distinct, the minimal recurrence order is
+$\prod_i(t_i+1)\bigl(\binom m2+\binom{\ell+1}2+1
++\frac16\sum_i t_i(t_i-1)\bigr)$.
+We prove an exact secondary-Hankel factorization that detects every loss
+of this maximal order, and give a finite, root-free algorithm determining
+the minimal recurrence at all rational or algebraic specializations.
+For one repeated nonendpoint root the generic order is cubic in the
+multiplicity, rather than the classical exponential bound.  The example
+$q=(2x-9)^4$ has order $15$, while resonant fourth powers can have order $5$.
+The proofs extend the repository's linear-multiplier result to arbitrary
+root-multiplicity patterns, including both endpoints, and are accompanied
+by exact-arithmetic verification code.
+\end{quote}
+
+\begin{center}
+\fcolorbox{muted}{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{Status (manuscript~03).}
+This is an unrefereed, AI-assisted mathematical manuscript.  The universal
+results are proved in the text; the finite computations are an independent
+audit, not a substitute for those arguments.  No Lean formalization or
+claim of first discovery is made.  General polynomial-multiplier
+rationality, the Christoffel formula and its confluent form are classical
+and are not presented as new; the proposed contribution is the exact
+branch degree, its nonvanishing leading constant, the resulting minimality
+classification off resonance, and their assembled structural and
+algorithmic consequences.  No novelty is claimed for the secondary-Hankel
+identity of an arbitrary exponential polynomial
+(Lemma~\ref{rc:lem:secondarygeneral}), an elementary confluent-Vandermonde
+calculation.  The literature comparison was targeted (the sources cited in
+Section~\ref{rc:sec:scope}) and does not establish that the theorem has
+never appeared in another notation; Schur-function, Toeplitz/Hankel
+determinant and orthogonal-polynomial literature may contain equivalent
+specializations, and expert review and a broader priority search would be
+needed before any first-discovery claim.  No current global open-problem
+status is asserted for anything, including the eight research directions
+of Section~\ref{rc:sec:research}.  The theorems are over characteristic
+zero and are not to be transported unchanged to small positive
+characteristic.  Nothing in Part~II is formalized in any proof assistant,
+and its placement beside a Lean project confers no formal status.
+(Sources: the manuscript and its provenance notes,
+\nolinkurl{02-root-collisions-provenance.md}.)}}
+\end{center}
+
+\subsection{Reading conventions}\label{rc:sec:reading}
+Inside Sections~\ref{rc:sec:scope}--\ref{rc:app:reproduce}, ``this
+article'' and ``the present article'' mean manuscript~03 as printed in
+Part~II, ``the repository report'' and ``the ProveIt report'' mean Part~I
+at the pin \texttt{fbba58593}, and ``the archive'' or ``the package''
+means the delivered package, whose code and data are shipped under the
+prefixed names listed in Section~\ref{rc:app:reproduce}.  The manuscript's
+two appendices are printed as Sections~\ref{rc:app:audit}
+and~\ref{rc:app:reproduce}, so that Part~I's appendices keep their
+letters.  The manuscript cites Krattenthaler's Ramanujan Journal paper in
+its preprint form arXiv:2101.04225v5 (10 September 2021), and points to
+its Theorem~1, Proposition~5 and Section~8, Corollary~9; that is the same
+paper as Part~I's reference~\cite{Krattenthaler2023}.  The manuscript
+cites Barry's note~\cite{Barry2020} for the denominator-exponent
+assertion in its introduction and does not reassert the printed
+coefficient conjecture without the index correction of
+Appendix~\ref{app:barry}.
+
+\subsection{Notation of Part~II}\label{rc:sec:notation}
+Part~II uses the manuscript's symbols, which differ from Part~I's in many
+places.  Within Sections~\ref{rc:sec:scope}--\ref{rc:app:reproduce} every
+symbol has its Part~II meaning, except where a sentence names Part~I or
+cites one of its equations.  Part~I's parameters $a,b$ appear only where
+Part~I's multiplier $x^m(a+bx)$ is discussed: the first subsection of
+Section~\ref{rc:sec:scope} and the first subsection of
+Section~\ref{rc:sec:examples}.  Elsewhere $a$ and $b$ are local letters
+(roots, indices, block counts, a leading coefficient).
+Table~\ref{rc:tab:notation} lists the symbols that a reader of Part~I is
+likely to misread.  One symbol was renamed: the manuscript's maximal
+order $R_0$ is written $\Rzero$, because Part~I's $R_0(y)=1$ is the first
+of its polynomials \eqref{eq:R}.  No normalization changed.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright}p{0.19\textwidth}>{\raggedright}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\caption{Symbols of Part~II.  The last column gives Part~I's meaning of
+the same letter, or the tempting false reading.}\label{rc:tab:notation}\\
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$q(x)$; subscripts in $\Delta_q,\chi_q,\Psi_q,B_q$
+ & the nonzero multiplier polynomial \eqref{rc:eq:qfactor}
+ & Part~I's $q(t)=1-(a+2b)t+b^2t^2$ \eqref{eq:notation}, the quadratic
+   denominator; Part~II's generating-function variable is $u$, not $t$.\\
+$H_N(q)$
+ & the weighted Hankel determinant \eqref{rc:eq:HN}
+ & Part~I's $H_N^{(m)}=H_N(x^m)$ and $D_N^{(m)}(a,b)=H_N(x^m(a+bx))$ are
+   special cases; in Theorem~\ref{rc:thm:finite}, $h=(h_N)$ is an
+   arbitrary sequence, not Part~I's $h_m$.\\
+$m$ & multiplicity of the root $0$ of $q$
+ & agrees with Part~I's shift $m$ when $q=x^m(a+bx)$.\\
+$\ell$ & multiplicity of the root $4$ of $q$
+ & Part~I's column index in $M_{m,\ell}$ and $Q_m$.\\
+$s$; $s(z)$, $s_i$
+ & number of distinct roots outside $\{0,4\}$; the scalar
+   $1/(z-z^{-1})$ of \eqref{rc:eq:AandS}
+ & Part~I's sign $s_m$ in \eqref{eq:reciprocity}, and the source shift
+   $s$ of Appendix~\ref{app:barry}.\\
+$c_i$, $z_i$, $t_i$
+ & roots outside $\{0,4\}$, spectral parameters $c_i=2+z_i+z_i^{-1}$,
+   multiplicities
+ & Part~I's coefficients $c_{N,m,k}$ and its variable $t$; for
+   $q=x^m(a+bx)$, $-z^{\pm1}$ are Part~I's $r_\pm$.\\
+$T$, $D$ & $\sum_it_i$ and $\deg q$
+ & Part~I's $T_{n,k,s}$ (Appendix~\ref{app:barry}) and its determinant
+   $D_N^{(m)}$.\\
+$\mathcal K$, $\bk$, $\kappa$
+ & index set \eqref{rc:eq:Kset}, a label in it, and
+   $\binom m2+\binom{\ell+1}2$
+ & Part~I's numerator degree $K=(m-1)^2$.\\
+$\lambda_{\bk}$ & rate of the sector $\bk$ \eqref{rc:eq:lambda}
+ & for $q=x^m(a+bx)$ the two rates are Part~I's $\lambda_\pm$
+   \eqref{eq:lambda}.\\
+$d_{\bk}$, $r_{\bk}$
+ & exact sector degree \eqref{rc:eq:degree} and $d_{\bk}+1$
+ & Part~I's $d=\binom m2$ and $e=d+1$ (the linear case), its roots
+   $r_\pm$ and the variable $r$ of $Q_m(N;r)$.\\
+$\Rzero$ (renamed from $R_0$)
+ & the maximal recurrence order \eqref{rc:eq:R}
+ & Part~I's polynomial $R_0(y)=1$ \eqref{eq:R}; Part~II's plain $R$ is
+   another order or size (an assumed bound in Theorem~\ref{rc:thm:finite},
+   a matrix size in Lemma~\ref{rc:lem:secondarygeneral}, the root-free bound
+   \eqref{rc:eq:rootfreebound}).\\
+$P_{\bk}(N)$, $L_{\bk}$
+ & sector polynomial in the size $N$ \eqref{rc:eq:canonicalP}, and its
+   leading coefficient
+ & Part~I's numerator $P_m(t;a,b)$, a polynomial in $t$; Part~I's sector
+   polynomials are $B_\pm(N)$.\\
+$A_\pm(z)$, $A_{r,\pm}(n;z)$
+ & branch amplitudes and jet polynomials \eqref{rc:eq:offjets}
+ & Part~I's asymptotic constant $A_m$ \eqref{eq:A}.\\
+$B_0(m)$, $B_4(\ell)$, $B_z(k)$; $B_i$; $B_q(u)$
+ & local leading determinants \eqref{rc:eq:B04}, \eqref{rc:eq:Bi}; blocks
+   in Lemma~\ref{rc:lem:secondarygeneral}; the numerator in \eqref{rc:eq:GF}
+ & Part~I's $B_\pm(N)$ of Theorem~\ref{thm:asymp}.\\
+$M_N$; $M$
+ & the $D\times D$ Christoffel matrix \eqref{rc:eq:MN}; $\max_{\bk}d_{\bk}$
+   in Section~\ref{rc:sec:asymptotics}
+ & Part~I's minors $M_{m,\ell}(N)$ \eqref{eq:M}.\\
+$\E$ & forward shift, $(\E f)(N)=f(N+1)$
+ & Part~I's shift $E$ in Lemma~\ref{lem:minimal} and its endpoint
+   polynomial $E_m(N)$ \eqref{eq:E}.\\
+$\Lambda$, $Q_\lambda$
+ & set of distinct rates; grouped sector polynomial \eqref{rc:eq:grouped}
+ & Part~I's minor generating polynomial $Q_m(N;r)$ \eqref{eq:Q}.\\
+$(a_u,\nu_u)_{u\le b}$; $(w_a,u_a)_{a\le b}$; $b_t$
+ & the distinct roots of $q$, their multiplicities and number $b$
+   (Section~\ref{rc:sec:classical}); nodes and block sizes in
+   Lemma~\ref{rc:lem:V}; degree of the square-free factor $f_t$
+ & Part~I's parameters $a$, $b$, which Part~II uses only in the first
+   subsections of Sections~\ref{rc:sec:scope} and~\ref{rc:sec:examples}.\\
+$p_n$, $\mu$
+ & monic orthogonal polynomials \eqref{rc:eq:prec} and the Catalan measure
+ & they are Part~I's $p_n^{(0)}$ and $\mu_0$; Part~I's $p_N^{(m)}$ and
+   $\mu_m$ with $m\ge1$ are different.\\
+$\Delta_q$, $V$, $\V$
+ & cross-root product \eqref{rc:eq:delta}; Vandermonde (matrix);
+   confluent product \eqref{rc:eq:Vfunction}
+ & Part~I's Vandermonde $\Delta(x)$.\\
+$C$ (proof of Theorem~\ref{rc:thm:leading})
+ & a matrix of coefficient polynomials
+ & the Catalan numbers $C_n$.\\
+\end{longtable}
+\endgroup
+
+\subsection{Where the merge had to choose}\label{rc:sec:merge}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Placement.}  Part~II is printed after Part~I's
+ Section~\ref{sec:status} and before Part~I's appendices, so that no
+ section, equation, theorem or table number of Part~I moves (checked
+ against the \texttt{.aux} file of a build of the committed text).
+ Part~II's sections continue the numbering (Sections~\ref{rc:sec:intro}
+ to~\ref{rc:app:reproduce}); the manuscript's Sections~1--13 are
+ Sections~\ref{rc:sec:scope}--\ref{rc:sec:conclusion}, and its
+ Appendices~A and~B are Sections~\ref{rc:app:audit}
+ and~\ref{rc:app:reproduce}.
+\item \emph{Labels.}  Every label of Part~II carries the prefix
+ \texttt{rc:}; without it, the manuscript's \texttt{sec:main},
+ \texttt{thm:main}, \texttt{eq:R}, \texttt{eq:lambda},
+ \texttt{eq:measure}, \texttt{lem:Christoffel}, \texttt{eq:Christoffel}
+ and several others would have collided with Part~I's.
+\item \emph{Overlaps with Part~I.}  The manuscript re-derives, without
+ assuming Part~I correct, several things Part~I already proves.  Printed
+ with a pointer and kept: the orthogonality of the $p_n$ and
+ $\det(C_{i+j})=1$ (a second route; Section~\ref{rc:sec:classical}); the
+ Christoffel identity (Part~I's Lemma~\ref{lem:Christoffel} is its
+ special case $\gamma=1$, with Part~I's normalization $R_n$, and
+ Proposition~\ref{prop:confluent} its confluent case at the root~$0$); the binomial determinant \eqref{rc:eq:binomV}
+ (as in \eqref{eq:Taylorleading}); the minimal-annihilator lemma
+ (Lemma~\ref{rc:lem:annihilator} restates Lemma~\ref{lem:minimal}; the
+ manuscript's proof is kept as a second proof); and the recovery of
+ Part~I's sharp order and exceptional orders (a second proof by a
+ different route, Section~\ref{rc:sec:examples}).  No statement of Part~I
+ was changed.
+\item \emph{Bibliography.}  The manuscript's references to Barry and to
+ Krattenthaler's Ramanujan Journal paper are Part~I's
+ \cite{Barry2020,Krattenthaler2023}; its versions and pointers are
+ recorded in Section~\ref{rc:sec:reading}.  Its references to Cigler and
+ Krattenthaler and to Krattenthaler's Uvarov-formula preprint are added
+ to the common bibliography.  Its reference to the pinned repository
+ report is replaced by Part~I itself and the pin recorded in
+ Section~\ref{rc:sec:source}.
+\item \emph{File names.}  Sections~\ref{rc:sec:verification}
+ and~\ref{rc:app:reproduce} give the shipped names beside the delivered
+ ones.  The manuscript's reproduction commands are printed as delivered
+ but must not be run in place here; Section~\ref{rc:app:reproduce} gives
+ a recipe on a scratch copy.
+\item \emph{Front matter.}  The manuscript's title page, abstract, status
+ paragraph and archive paragraph are replaced by
+ Section~\ref{rc:sec:source}, which prints the abstract and the status.
+ The archive paragraph is not reprinted because the delivered source and
+ PDF are not shipped; the shipped code and data are listed in
+ Section~\ref{rc:app:reproduce}.
+\item \emph{Notation.}  The manuscript's symbols are kept, with the single
+ rename $R_0\to\Rzero$ and the scoping convention and
+ Table~\ref{rc:tab:notation} of Section~\ref{rc:sec:notation}.
+\end{enumerate}
+
+\section{The research question and its provenance}\label{rc:sec:scope}
+
+\subsection{A concrete extension of the ProveIt report}
+The starting point is the report \emph{Shifted Catalan Hankel Polynomials:
+Exact coefficients, sharp recurrences, and a denominator conjecture},
+dated 19 September 2026, in ProveIt, printed above as Part~I
+(\S\ref{rc:sec:source} records the pinned snapshot).  For
+\[
+ D_N^{(m)}(a,b)=\det_{0\le i,j<N}
+                  \bigl(aC_{i+j+m}+bC_{i+j+m+1}\bigr),
+ \qquad C_n=\frac1{n+1}\binom{2n}{n},
+\]
+it proves the sharp characteristic polynomial
+\begin{equation}\label{rc:eq:old}
+ \bigl(X^2-(a+2b)X+b^2\bigr)^{\binom m2+1}
+\end{equation}
+when $b\ne0$ and $a(a+4b)\ne0$ (this is \eqref{eq:charpoly} of
+Theorem~\ref{thm:main}).  Its concluding discussion
+(Section~\ref{sec:status}) explicitly leaves multiple linear factors and
+their collision patterns for further work.  That is the extension
+addressed here.
+
+The repository was inspected at commit
+\begin{center}\small\texttt{fbba58593dc0622aa914972896150d4848f935b5}.\end{center}
+The relevant source is under
+\begin{quote}\small\raggedright
+\nolinkurl{SetTheory/Cardinals/docs/reports/hankel-determinants/}\allowbreak
+\nolinkurl{catalan-and-ballot/shifted-catalan-hankel-polynomials/article.tex}.
+\end{quote}
+The present proof does not assume that an unrefereed repository manuscript
+is correct.  We rederive the determinant identity and the local degree
+calculus, then recover \eqref{rc:eq:old} as a specialization.
+
+The question is not merely whether another rational generating function
+exists.  It is this:
+\begin{quote}
+Given every root and its multiplicity in a polynomial multiplier, which
+exponential terms actually occur, what is the exact polynomial degree
+of each term, and precisely when does the minimal recurrence order drop?
+\end{quote}
+A repeated root is not equivalent to several independently chosen roots.
+The associated determinant forces cancellations within a repeated block.
+Those cancellations are the main subject of this article.
+
+\subsection{What is classical, and what is being added}
+The Christoffel determinant formula and its confluent form are classical;
+Krattenthaler's treatment~\cite{Krattenthaler2023} gives several proofs and explicitly
+handles coalescing evaluation points.  Its Section~8, Corollary~9, supplies
+a constant-coefficient recurrence of order at most $2^D$ for a multiplier
+of degree $D$, including Catalan moments.  That account also credits
+Elouafi's earlier proof of the Catalan recurrence assertion.  General
+rationality is therefore not a new conclusion of this article.
+
+Barry's note~\cite{Barry2020} motivates the shifted linear combination and
+its quadratic-denominator exponent.  The earlier work of Cigler and
+Krattenthaler~\cite{CiglerKratt2021} gives further context for polynomial
+linear combinations of moments.  Our comparison is with these particular
+sources and the pinned repository report, not with an exhaustive
+classification of the literature.
+
+The additions proved below are an exact degree law for every repeated-root
+block, its nonzero leading constant with endpoint factors included, the
+resulting sharp recurrence and a factorization detecting its exceptional
+locus.  A root-free finite procedure handles resonances without assuming
+that a generic formula remains minimal after specialization.  The
+underlying determinant techniques are familiar; the full multiplicity
+law and its assembled consequences are the proposed research contribution.
+An equivalent earlier formulation in the wider orthogonal-polynomial or
+symmetric-function literature has not been ruled out.
+
+\section{Definitions and principal results}\label{rc:sec:main}
+
+\subsection{The weighted determinant and its spectral parameters}
+For $q(x)=\sum_{r=0}^{D}q_rx^r\in\CC[x]\setminus\{0\}$, define
+\begin{equation}\label{rc:eq:HN}
+ H_N(q)=\det_{0\le i,j<N}\left(\sum_{r=0}^{D}q_r C_{i+j+r}\right),
+ \qquad N\in\NN,\qquad H_0(q)=1.
+\end{equation}
+Write its factorization as
+\begin{equation}\label{rc:eq:qfactor}
+ q(x)=\gamma x^m(x-4)^\ell\prod_{i=1}^{s}(x-c_i)^{t_i},
+\end{equation}
+where $\gamma\ne0$, $m,\ell\in\NN$, $t_i\ge1$, and the $c_i$ are pairwise
+distinct and avoid $0,4$.  Thus
+\[
+ T=\sum_{i=1}^{s}t_i,\qquad D=m+\ell+T.
+\]
+An empty product is $1$.  Constant multipliers are included by taking
+$m=\ell=s=0$.  The identically zero multiplier is excluded; its sequence
+would simply be $1,0,0,\ldots$.
+
+For each $i$ choose a solution of
+\begin{equation}\label{rc:eq:spectral}
+ c_i=2+z_i+z_i^{-1}.
+\end{equation}
+Then $z_i\in\CC^\times\setminus\{1,-1\}$.  Replacing $z_i$ by $z_i^{-1}$
+only relabels an index below.  No final recurrence depends on this choice.
+Define
+\begin{align}
+ \mathcal K&=\prod_{i=1}^{s}\{0,1,\ldots,t_i\},\label{rc:eq:Kset}\\
+ \kappa&=\binom m2+\binom{\ell+1}2,\label{rc:eq:kappa}\\
+ \lambda_{\bk}&=(-1)^{\ell+T}\gamma
+                       \prod_{i=1}^{s}z_i^{2k_i-t_i},\label{rc:eq:lambda}\\
+ d_{\bk}&=\kappa+\sum_{i=1}^{s}k_i(t_i-k_i),
+ \qquad r_{\bk}=d_{\bk}+1.\label{rc:eq:degree}
+\end{align}
+When $s=0$, the index set $\mathcal K$ has one element, the empty tuple.
+
+\begin{definition}[Resonance]
+The parameters are \emph{nonresonant} if the values
+$\lambda_{\bk}$, $\bk\in\mathcal K$, are pairwise distinct.
+Otherwise there is a \emph{resonance}.  Equivalently, a resonance is an
+identity
+\begin{equation}\label{rc:eq:resonance}
+ \prod_i z_i^{2(k_i-j_i)}=1
+ \quad\text{for some distinct }\bk,\bj\in\mathcal K.
+\end{equation}
+This is different from a repeated root of $q$: repeated roots have already
+been recorded by the $t_i$.
+\end{definition}
+
+\subsection{The exact multiplicity law}
+\begin{theorem}[Branch degrees and minimal recurrence]\label{rc:thm:main}
+For every multiplier \eqref{rc:eq:qfactor}, there are canonically
+branch-labelled polynomials $P_{\bk}\in\CC[N]$ such that
+\begin{equation}\label{rc:eq:sectors}
+ H_N(q)=\sum_{\bk\in\mathcal K}P_{\bk}(N)\lambda_{\bk}^{N}
+ \qquad(N\ge0),
+\end{equation}
+and
+\begin{equation}\label{rc:eq:exactdegree}
+ \deg P_{\bk}=d_{\bk}\quad\text{for every }\bk.
+\end{equation}
+Their leading coefficients are given by the nonzero product in
+Theorem~\ref{rc:thm:leading}.  These individual assertions remain valid at
+resonances, when different branch labels can have the same numerical rate.
+
+If the parameters are nonresonant, the minimal characteristic polynomial
+of the sequence is
+\begin{equation}\label{rc:eq:minchar}
+ \chi_q(X)=\prod_{\bk\in\mathcal K}
+                         (X-\lambda_{\bk})^{d_{\bk}+1}.
+\end{equation}
+Its degree is
+\begin{equation}\label{rc:eq:R}
+ \boxed{\quad
+ \Rzero=\prod_{i=1}^{s}(t_i+1)
+       \left(\kappa+1+\frac16\sum_{i=1}^{s}t_i(t_i-1)\right).
+ \quad}
+\end{equation}
+For arbitrary parameters, \eqref{rc:eq:minchar} is still an annihilating
+polynomial of degree $\Rzero$.  The true minimal order equals $\Rzero$
+if and only if the parameters are nonresonant.
+\end{theorem}
+
+A characteristic polynomial $g(X)=\sum_{j=0}^r g_jX^j$, with $g_r=1$,
+means the recurrence
+\begin{equation}\label{rc:eq:recconvention}
+ \sum_{j=0}^r g_jH_{N+j}(q)=0\qquad\text{for every }N\ge0.
+\end{equation}
+Thus the assertions concern the entire sequence, including its initial
+values, not only an eventual recurrence.  A polynomial of minimal degree
+with this property is unique.
+
+\begin{corollary}[One repeated nonendpoint root]\label{rc:cor:single}
+Let $q(x)=\gamma(x-c)^t$, where $c\notin\{0,4\}$ and
+$c=2+z+z^{-1}$.  If $z^{2h}\ne1$ for $1\le h\le t$, then
+\begin{equation}\label{rc:eq:singleorder}
+ \ord(H(q))=t+1+\binom{t+1}{3}.
+\end{equation}
+The exponential with rate $(-1)^t\gamma z^{2k-t}$ has polynomial degree
+$k(t-k)$.  In particular the first orders, for $t=1,\ldots,8$, are
+\[
+ 2,\ 4,\ 8,\ 15,\ 26,\ 42,\ 64,\ 93.
+\]
+\end{corollary}
+
+The order in \eqref{rc:eq:singleorder} is asymptotic to $t^3/6$, in contrast
+to the universal bound $2^t$.  The first strict improvement occurs at
+$t=4$.  This is a uniform family of exact minimality results, rather than
+an isolated fitted recurrence.
+
+\begin{corollary}[Simple factors and endpoints]\label{rc:cor:simple}
+If every $t_i=1$ and the parameters are nonresonant, the minimal order is
+\begin{equation}\label{rc:eq:simpleorder}
+ 2^s\left(\binom m2+\binom{\ell+1}2+1\right).
+\end{equation}
+If $s=0$, no nonresonance hypothesis is needed: $H_N(q)$ is
+$((-1)^\ell\gamma)^N$ times a polynomial of degree exactly $\kappa$.
+The minimal polynomial is
+$(X-(-1)^\ell\gamma)^{\kappa+1}$.
+\end{corollary}
+
+The asymmetry between $0$ and $4$ is essential.  A multiplicity $m$ at
+$0$ contributes $\binom m2$ degrees, whereas a multiplicity $\ell$ at
+$4$ contributes $\binom{\ell+1}2$.  Treating both endpoints as a generic
+collision of two equally weighted branches gives the wrong answer.
+
+\subsection{An exact detector for exceptional parameters}
+Put $L_{\bk}=\lc(P_{\bk})$, and choose any ordering of $\mathcal K$.
+\begin{theorem}[Secondary Hankel factorization]\label{rc:thm:secondary}
+With $\Rzero=\sum_{\bk}r_{\bk}$, one has
+\begin{align}
+ &\det_{0\le u,v<\Rzero}\bigl(H_{u+v}(q)\bigr)\nonumber\\
+ &\quad=(-1)^{\sum_{\bk}\binom{r_{\bk}}2}
+   \prod_{\bk}
+     \left((d_{\bk}!\,L_{\bk})^{r_{\bk}}
+                 \lambda_{\bk}^{r_{\bk}(r_{\bk}-1)}\right)
+   \prod_{\bk<\bj}
+     (\lambda_{\bj}-\lambda_{\bk})^{2r_{\bk}r_{\bj}}.
+ \label{rc:eq:secondary}
+\end{align}
+This identity holds at resonant as well as nonresonant parameters.
+All factors outside the final product are nonzero.  Consequently this
+secondary determinant vanishes exactly on the resonance locus.
+\end{theorem}
+
+The formula is stronger than a statement that a generic matrix has full
+rank.  It identifies every source of rank loss and its multiplicity in
+spectral coordinates.  Sections~\ref{rc:sec:recurrences} and
+\ref{rc:sec:resonances} prove this assertion and make it algorithmic.
+
+\section{Catalan orthogonality and the fixed-size determinant}\label{rc:sec:classical}
+
+This section proves the classical infrastructure with our normalization.
+It is included to make the signs, initial index and confluent factorials
+fully auditable.  The general identities are not claimed as new.
+
+\subsection{The orthogonal polynomials}
+Define monic polynomials by
+\begin{equation}\label{rc:eq:prec}
+ p_0(x)=1,\qquad p_1(x)=x-1,\qquad
+ p_{n+1}(x)=(x-2)p_n(x)-p_{n-1}(x)\quad(n\ge1).
+\end{equation}
+The Catalan probability measure is
+\begin{equation}\label{rc:eq:measure}
+ \dd\mu(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}}\,
+                       \mathbf1_{(0,4)}(x)\,\dd x.
+\end{equation}
+Substitution $x=4u$ and the beta integral give
+\[
+ \int x^n\,\dd\mu(x)
+ =\frac{2\cdot4^n}{\pi}B\left(n+\frac12,\frac32\right)
+ =\frac{(2n)!}{n!(n+1)!}=C_n.
+\]
+There is also an elementary trigonometric verification of the orthogonality.
+For $x=2+2\cos\theta$, $0<\theta<\pi$, the recurrence gives
+\begin{equation}\label{rc:eq:ptrig}
+ p_n(x)=\frac{\sin((n+\tfrac12)\theta)}{\sin(\theta/2)},
+ \qquad \dd\mu=\frac{1-\cos\theta}{\pi}\,\dd\theta.
+\end{equation}
+The product-to-sum formula then yields
+\begin{equation}\label{rc:eq:orthogonality}
+ \int p_n(x)p_j(x)\,\dd\mu(x)=\delta_{n,j}.
+\end{equation}
+Indeed, after cancellation of $\sin^2(\theta/2)$ the integral is
+$\frac2\pi\int_0^\pi\sin((n+\tfrac12)\theta)
+\sin((j+\tfrac12)\theta)\,\dd\theta$.
+The change from monomials to monic $p_n$ is triangular with determinant
+$1$.  Hence \eqref{rc:eq:orthogonality} also proves
+\begin{equation}\label{rc:eq:purehankel}
+ \det_{0\le i,j<N}(C_{i+j})=1.
+\end{equation}
+\noindent\emph{Relation to Part~I.}  The measure $\mu$ is Part~I's
+$\mu_0$ of \eqref{eq:measure}, and $p_n$ is Part~I's $p_n^{(0)}$, with the
+same recurrence \eqref{eq:p0rec}.  Part~I proves
+\eqref{rc:eq:purehankel}, $H_N^{(0)}=1$, from the constant squared norms
+of the $p_n^{(0)}$ (Section~\ref{sec:coeffproof}); the trigonometric
+orthogonality above is a second route, kept as the manuscript printed it.
+
+\subsection{Christoffel's determinant, including confluence}
+List the distinct roots in \eqref{rc:eq:qfactor} in the order
+$0,4,c_1,\ldots,c_s$, omitting endpoints whose multiplicities are zero.
+Write this list as $(a_1,\nu_1),\ldots,(a_b,\nu_b)$ and set
+\begin{equation}\label{rc:eq:delta}
+ \Delta_q=\prod_{1\le u<v\le b}(a_v-a_u)^{\nu_u\nu_v}.
+\end{equation}
+It is nonzero.  Let $M_N$ have rows indexed by $(a_u,r)$,
+$0\le r<\nu_u$, and columns indexed by $j=0,\ldots,D-1$, with entries
+\begin{equation}\label{rc:eq:MN}
+ (M_N)_{(a_u,r),j}=\frac{p_{N+j}^{(r)}(a_u)}{r!}.
+\end{equation}
+
+\begin{lemma}[Confluent Christoffel identity]\label{rc:lem:Christoffel}
+For all $N\ge0$,
+\begin{equation}\label{rc:eq:Christoffel}
+ H_N(q)=(-1)^{ND}\gamma^N\frac{\det M_N}{\Delta_q}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+First suppose all roots $a_1,\ldots,a_D$ are distinct.  For an ordered
+list $y$, write $V(y)=\prod_{i<j}(y_j-y_i)$.  Expanding two determinants
+under the integral and using the product measure proves the elementary
+integration identity
+\[
+ \int\det(f_i(x_j))_{i,j=1}^{N}\det(g_i(x_j))_{i,j=1}^{N}
+       \prod_j\dd\mu(x_j)
+ =N!\det\left(\int f_i(x)g_j(x)\,\dd\mu(x)\right)_{i,j=1}^{N}.
+\]
+Taking monomials with the multiplier included gives
+\[
+ H_N(q)=\frac1{N!}\int V(x_1,\ldots,x_N)^2
+                      \prod_{i=1}^N q(x_i)\,\dd\mu(x_i).
+\]
+Since
+\[
+ V(x,a)=V(x)V(a)\prod_{i,u}(a_u-x_i),
+\]
+we obtain
+\begin{equation}\label{rc:eq:mixedintegral}
+ H_N(q)=\frac{(-1)^{ND}\gamma^N}{N!V(a)}
+             \int V(x)V(x,a)\prod_i\dd\mu(x_i).
+\end{equation}
+Replace the monomials in both Vandermonde determinants by the monic
+polynomials $p_j$.  Expand $V(x,a)$ along its first $N$ rows.  On
+integration against $V(x)$, orthogonality kills every selected set of
+columns except $0,1,\ldots,N-1$.  That surviving integral is $N!$, and
+its complementary minor is $(p_{N+j}(a_u))_{u,j}$.  The Laplace sign is
+positive because the selected columns are the first $N$.  This proves
+\eqref{rc:eq:Christoffel} for distinct roots.
+
+Now let $\nu$ distinct roots tend to a common value $a$.  Taylor expansion
+shows that division by their internal Vandermonde replaces their
+successive evaluation rows by the rows $p_{N+j}^{(r)}(a)/r!$,
+$r=0,\ldots,\nu-1$.  Cross-block differences tend to the product
+\eqref{rc:eq:delta}.  Applying this separately to every block gives the
+stated formula.  Equivalently, both sides are polynomial identities in
+the root variables after the removable Vandermonde factors are canceled.
+Thus the limiting argument does not assume that any weighted Hankel
+determinant is nonzero.  At $N=0$, both the empty moment determinant and
+the normalized confluent Vandermonde equal $1$.
+\end{proof}
+
+The important computational consequence is that the determinant on the
+right has size $D$, independent of $N$.  The important theoretical
+consequence is different: all dependence on $N$ has been localized in
+jets of a two-branch orthogonal-polynomial sequence.
+
+\noindent\emph{Relation to Part~I.}  Lemma~\ref{lem:Christoffel} of
+Part~I is the case $\gamma=1$, roots $a_u=-y_u$, in the reversed
+normalization $R_n(y)=(-1)^np_n(-y)$ of \eqref{eq:R}; its proof follows
+the same integration-and-Laplace route for distinct roots.  Part~I then takes the
+confluent limit only for the $m$-fold root at $0$
+(Proposition~\ref{prop:confluent}).  Lemma~\ref{rc:lem:Christoffel} adds
+confluence at every root, both endpoints, and the leading coefficient
+$\gamma$ with its sign, so it is printed in full.
+
+\section{Local jet structure}\label{rc:sec:jets}
+
+\subsection{The two branches away from the endpoints}
+The characteristic equation of \eqref{rc:eq:prec}, at $x=2+z+z^{-1}$, has
+roots $z,z^{-1}$.  Matching the first two values gives
+\begin{equation}\label{rc:eq:branch}
+ p_n(2+z+z^{-1})=\frac{z^{n+1}-z^{-n}}{z-1}
+       =A_+(z)z^n+A_-(z)z^{-n},
+\end{equation}
+where
+\begin{equation}\label{rc:eq:AandS}
+ A_+(z)=\frac{z}{z-1},\qquad A_-(z)=-\frac1{z-1},\qquad
+ s(z)=\frac1{z-z^{-1}}.
+\end{equation}
+The letter $s(z)$ is a scalar function, not the number $s$ of distinct
+nonendpoint roots.  For clarity we often write $s_i=s(z_i)$.
+The inverse function theorem applies locally because $z\ne\pm1$, and
+\begin{equation}\label{rc:eq:logderivative}
+ \frac{\dd}{\dd x}\log z(x)=s(z),\qquad
+ \frac{\dd}{\dd x}=z\,s(z)\frac{\dd}{\dd z}.
+\end{equation}
+
+\begin{lemma}[Offendpoint jets]\label{rc:lem:offjets}
+For $c=2+z+z^{-1}\notin\{0,4\}$ and $r\ge0$,
+\begin{equation}\label{rc:eq:offjets}
+ \frac{p_n^{(r)}(c)}{r!}
+   =z^n A_{r,+}(n;z)+z^{-n}A_{r,-}(n;z),
+\end{equation}
+where $A_{r,\pm}(n;z)$ are polynomials of degree exactly $r$ in $n$.
+Their leading coefficients are
+\begin{equation}\label{rc:eq:offlc}
+ [n^r]A_{r,\pm}(n;z)=\frac{A_\pm(z)(\pm s(z))^r}{r!}.
+\end{equation}
+They can be constructed recursively from $A_{0,\pm}=A_\pm$ by
+\begin{equation}\label{rc:eq:Arec}
+ A_{r+1,\pm}(n;z)=\frac{z s(z)\,\partial_z A_{r,\pm}(n;z)
+                   \ \pm\ n s(z)A_{r,\pm}(n;z)}{r+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate \eqref{rc:eq:offjets} once and use \eqref{rc:eq:logderivative}.
+The normalization by $(r+1)!$ gives \eqref{rc:eq:Arec}.  The derivative
+term does not increase the degree in $n$, while multiplication by
+$\pm ns(z)$ increases it by one.  Induction gives \eqref{rc:eq:offlc}.
+All its factors are nonzero, so the degree is exact.
+\end{proof}
+
+\subsection{The two endpoint jets}
+From \eqref{rc:eq:prec},
+\begin{equation}\label{rc:eq:pGF}
+ \sum_{n\ge0}p_n(x)u^n=\frac{1+u}{1-(x-2)u+u^2}.
+\end{equation}
+Differentiation in $x$, normalized by $r!$, gives
+\begin{equation}\label{rc:eq:jetGF}
+ \sum_{n\ge0}\frac{p_n^{(r)}(x)}{r!}u^n
+       =\frac{(1+u)u^r}{(1-(x-2)u+u^2)^{r+1}}.
+\end{equation}
+
+\begin{lemma}[Endpoint degrees]\label{rc:lem:endjets}
+For all $n,r\ge0$,
+\begin{align}
+ \frac{p_n^{(r)}(0)}{r!}
+   &=(-1)^{n-r}\binom{n+r}{2r},\label{rc:eq:zerojet}\\
+ \frac{p_n^{(r)}(4)}{r!}
+   &=\frac{2n+1}{2r+1}\binom{n+r}{2r}.\label{rc:eq:fourjet}
+\end{align}
+After the common factor $(-1)^n$ is removed at $0$, the polynomial
+in $n$ has degree $2r$ and leading coefficient $(-1)^r/(2r)!$.
+At $4$ the degree is $2r+1$, with leading coefficient $2/(2r+1)!$.
+\end{lemma}
+\begin{proof}
+At $x=0$, \eqref{rc:eq:jetGF} becomes $u^r/(1+u)^{2r+1}$, which gives
+\eqref{rc:eq:zerojet}.  At $x=4$ it becomes
+$(1+u)u^r/(1-u)^{2r+2}$.  The coefficient is
+\[
+ \binom{n+r+1}{2r+1}+\binom{n+r}{2r+1}
+   =\frac{2n+1}{2r+1}\binom{n+r}{2r}.
+\]
+The assertions on leading coefficients follow immediately.  For $n<r$
+the binomial coefficient is zero, as it must be for a derivative whose
+order exceeds the polynomial degree.
+\end{proof}
+
+The same quadratic recurrence has two different endpoint amplitudes:
+$p_n(0)=(-1)^n$ but $p_n(4)=2n+1$.  This single extra degree at $4$ is
+what ultimately changes $\binom\ell2$ into $\binom{\ell+1}2$.
+
+\section{The determinant degree calculus}\label{rc:sec:degreecalculus}
+
+\subsection{Polynomial shifts and confluent exponential rows}
+The next two identities isolate the cancellation responsible for the
+sharp order.  If $f$ is a polynomial of degree $d$ with leading
+coefficient $a$, then
+\begin{equation}\label{rc:eq:shiftcoeff}
+ [j^h]f(N+j)\text{ has degree at most }d-h\text{ in }N,
+ \qquad
+ [N^{d-h}j^h]f(N+j)=a\binom dh.
+\end{equation}
+An expression with $h>d$ is interpreted as zero.
+
+For distinct nonzero numbers $w_1,\ldots,w_b$ and positive integers
+$u_1,\ldots,u_b$ summing to $D$, form the matrix
+\[
+ V_{(a,h),j}=w_a^j j^h,
+ \qquad 0\le h<u_a,\quad 0\le j<D.
+\]
+The convention $0^0=1$ is used only in the polynomial value $j^0$.
+
+\begin{lemma}[Confluent exponential Vandermonde]\label{rc:lem:V}
+In the indicated block order,
+\begin{equation}\label{rc:eq:V}
+ \det V=
+ \prod_{a=1}^{b}\left(w_a^{\binom{u_a}2}
+                         \prod_{h=0}^{u_a-1}h!\right)
+ \prod_{a<b}(w_b-w_a)^{u_a u_b}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Start with the ordinary Vandermonde determinant and coalesce $u_a$
+variables to each $w_a$.  The matrix of ordinary, unnormalized
+derivatives of $w^j$ then has determinant
+$\prod_a\prod_{h<u_a}h!\prod_{a<b}(w_b-w_a)^{u_a u_b}$.
+Within a block replace $\partial_w^h$ by $(w\partial_w)^h$.
+This is a triangular change of rows: the coefficient of
+$\partial_w^h$ is $w^h$, and all other terms have smaller derivative
+order.  The determinant is multiplied by
+$\prod_a w_a^{0+1+\cdots+(u_a-1)}$.  Since
+$(w\partial_w)^h w^j=j^h w^j$, the resulting matrix is $V$.
+\end{proof}
+
+\subsection{Three local leading determinants}
+For an endpoint block of size $u$, the leading matrices obtained from
+\eqref{rc:eq:shiftcoeff} have entries proportional to
+$\binom{2r}{h}$ or $\binom{2r+1}{h}$, $0\le r,h<u$.
+As a polynomial in its upper argument, $\binom{x}{h}$ has leading
+coefficient $1/h!$.  Consequently
+\begin{equation}\label{rc:eq:binomV}
+ \det_{0\le r,h<u}\binom{2r}{h}
+ =\det_{0\le r,h<u}\binom{2r+1}{h}
+ =2^{\binom u2}.
+\end{equation}
+Here the Vandermonde in $0,2,\ldots,2u-2$ or $1,3,\ldots,2u-1$
+contributes $2^{\binom u2}\prod_{h<u}h!$, canceling the column
+leading denominators.  (The first equality with $u=m$ is the
+determinant evaluated in \eqref{eq:Taylorleading} of Part~I, by the same
+argument.)
+
+For the nonendpoint calculation let $t=k+h$, and write
+$A_+=A_+(z)$, $A_-=A_-(z)$ and $s=s(z)$.  Consider the $t\times t$
+matrix with rows $r=0,\ldots,t-1$, followed first by $k$ plus columns
+and then by $h$ minus columns:
+\begin{equation}\label{rc:eq:localmatrix}
+ B_{r,(+,j)}=\frac{A_+s^r}{r!}\binom rj\quad(0\le j<k),
+ \qquad
+ B_{r,(-,j)}=\frac{A_-(-s)^r}{r!}\binom rj\quad(0\le j<h).
+\end{equation}
+
+\begin{lemma}[The mixed-block determinant]\label{rc:lem:mixed}
+The determinant in \eqref{rc:eq:localmatrix} equals
+\begin{equation}\label{rc:eq:Bi}
+ B_z(k)=
+ \frac{A_+^k A_-^h\,
+       s^{\binom k2}(-s)^{\binom h2}(-2s)^{kh}}
+      {\prod_{r=0}^{t-1}r!},\qquad h=t-k,
+\end{equation}
+and is nonzero.
+\end{lemma}
+\begin{proof}
+Remove the row factors $1/r!$ and the column factors $A_\pm$.
+Use
+\[
+ w^r\binom rj
+   =w^j\frac1{j!}\left(\frac{\dd}{\dd w}\right)^j w^r.
+\]
+The remaining normalized-derivative matrix is the transpose of a
+confluent Vandermonde at $w=s$ and $w=-s$.  Its determinant is
+$(-2s)^{kh}$.  The column powers supply
+$s^{\binom k2}(-s)^{\binom h2}$, proving \eqref{rc:eq:Bi}.
+Every factor is nonzero because $z\notin\{0,1,-1\}$.
+\end{proof}
+
+This lemma is the point at which a mere degree bound becomes an exact
+degree theorem.  It sums all competing assignments of the derivative
+rows to the two branches, including their determinant signs.  Ignoring
+those signs, or arguing that one assignment has a nonzero leading term,
+would not establish noncancellation of the whole sector.
+
+\section{Canonical sectors and the proof of sharpness}\label{rc:sec:sharpness}
+
+\subsection{A definition that still makes sense at resonance}
+Set
+\[
+ f_{0,r}(n)=(-1)^r\binom{n+r}{2r},\qquad
+ f_{4,r}(n)=\frac{2n+1}{2r+1}\binom{n+r}{2r}.
+\]
+Introduce independent marker variables $y_1,\ldots,y_s$.
+Let $\widetilde M(N;\by)$ be the $D\times D$ matrix whose column $j$
+contains the following rows, in the same root order as before:
+\begin{align}
+ &(-1)^j f_{0,r}(N+j),&&0\le r<m,\label{rc:eq:marked0}\\
+ &f_{4,r}(N+j),&&0\le r<\ell,\label{rc:eq:marked4}\\
+ &y_i z_i^j A_{r,+}(N+j;z_i)
+       +z_i^{-j}A_{r,-}(N+j;z_i),&&0\le r<t_i.
+ \label{rc:eq:markedoff}
+\end{align}
+Its determinant is a polynomial in $N$ and the markers.  Define
+\begin{equation}\label{rc:eq:canonicalP}
+ P_{\bk}(N)=\frac1{\Delta_q}
+                   [y_1^{k_1}\cdots y_s^{k_s}]
+                      \det\widetilde M(N;\by).
+\end{equation}
+This definition does not require distinct numerical rates.  It is the
+meaning of ``canonically branch-labelled'' in Theorem~\ref{rc:thm:main}.
+
+In the original matrix $M_N$, remove $(-1)^N$ from each of its $m$
+zero-endpoint rows and $z_i^{-N}$ from each of the $t_i$ rows at $c_i$.
+The remaining matrix is \eqref{rc:eq:marked0}--\eqref{rc:eq:markedoff} with
+$y_i=z_i^{2N}$.  Therefore \eqref{rc:eq:Christoffel} gives
+\[
+ H_N(q)=\left((-1)^{D+m}\gamma\prod_i z_i^{-t_i}\right)^N
+                \sum_{\bk}P_{\bk}(N)\prod_i z_i^{2Nk_i}.
+\]
+Since $D+m$ has the parity of $\ell+T$, this proves
+\eqref{rc:eq:sectors}, with the rates in \eqref{rc:eq:lambda}.
+
+\subsection{The leading coefficient in product form}
+For each label $\bk$, form an ordered list of spectral blocks
+\begin{equation}\label{rc:eq:Wlist}
+ \mathcal W_{\bk}=
+ \bigl((-1,m),(1,\ell),
+       (z_1,k_1),(z_1^{-1},t_1-k_1),\ldots,
+       (z_s,k_s),(z_s^{-1},t_s-k_s)\bigr),
+\end{equation}
+omitting all blocks of size zero.  Its nodes are pairwise distinct:
+an equality between a node from $c_i$ and a node from $c_j$ would imply
+$c_i=c_j$, and none is an endpoint node $\pm1$.
+For any such ordered list write
+\begin{equation}\label{rc:eq:Vfunction}
+ \V\bigl((w_a,u_a)_{a=1}^{b}\bigr)=
+ \prod_a\left(w_a^{\binom{u_a}2}\prod_{h=0}^{u_a-1}h!\right)
+ \prod_{a<b}(w_b-w_a)^{u_a u_b}.
+\end{equation}
+Finally define
+\begin{equation}\label{rc:eq:B04}
+ B_0(m)=\frac{(-2)^{\binom m2}}{\prod_{r=0}^{m-1}(2r)!},
+ \qquad
+ B_4(\ell)=\frac{2^{\binom{\ell+1}2}}
+                         {\prod_{r=0}^{\ell-1}(2r+1)!}.
+\end{equation}
+Both equal $1$ at multiplicity zero.
+
+\begin{theorem}[Exact leading coefficient]\label{rc:thm:leading}
+For $P_{\bk}$ defined by \eqref{rc:eq:canonicalP},
+\begin{equation}\label{rc:eq:leading}
+ \boxed{\quad
+ [N^{d_{\bk}}]P_{\bk}(N)=
+  \frac{B_0(m)B_4(\ell)\prod_{i=1}^{s}B_{z_i}(k_i)}{\Delta_q}
+                    \V(\mathcal W_{\bk})\ne0.
+ \quad}
+\end{equation}
+Here $B_{z_i}(k_i)$ is \eqref{rc:eq:Bi} with $t=t_i$.
+Moreover $P_{\bk}$ has no term of degree greater than $d_{\bk}$.
+\end{theorem}
+\begin{proof}
+Expand each row of $\widetilde M$ in the finite collection of basis
+rows
+\begin{equation}\label{rc:eq:basis}
+       (w^j j^h)_{j=0}^{D-1}.
+\end{equation}
+Only the finitely many $h$ up to the largest relevant polynomial degree
+are needed.  This factors $\widetilde M=C(N;\by)V$, with $C$ a matrix
+of coefficient polynomials and $V$ the matrix of basis rows.
+Cauchy--Binet expresses its determinant as a sum over selections of
+$D$ basis rows.
+
+A nonzero coefficient minor must select exactly $m$ rows associated
+with node $-1$, exactly $\ell$ with node $1$, and exactly $t_i$ rows
+from the two nodes $z_i,z_i^{-1}$ for each $i$.  Otherwise a root block
+of $C$, whose support is confined to its own nodes, cannot have full
+rank.  The coefficient of $\by^{\bk}$ selects precisely $k_i$ rows
+at $z_i$ and $t_i-k_i$ rows at $z_i^{-1}$.
+
+For a fixed node with $u$ selected basis rows, their $h$ indices must
+be distinct.  Their sum is therefore at least
+$0+1+\cdots+(u-1)=\binom u2$, with equality only for the set
+$\{0,\ldots,u-1\}$.  By \eqref{rc:eq:shiftcoeff}, selecting such an
+index $h$ subtracts $h$ from the maximum possible degree in $N$ of
+its coefficient.  Thus the zero-endpoint block contributes at most
+\[
+ \sum_{r=0}^{m-1}2r-\binom m2=\binom m2,
+\]
+the four-endpoint block contributes at most
+\[
+ \sum_{r=0}^{\ell-1}(2r+1)-\binom\ell2=\binom{\ell+1}2,
+\]
+and the $i$th nonendpoint block contributes at most
+\[
+ \sum_{r=0}^{t_i-1}r-\binom{k_i}2-\binom{t_i-k_i}2
+           =k_i(t_i-k_i).
+\]
+The sum of these bounds is $d_{\bk}$.
+
+There is exactly one selection of basis rows that can attain this
+total degree: at every node take $h=0,\ldots,u-1$.  The associated
+basis determinant is \eqref{rc:eq:Vfunction} for the list
+$\mathcal W_{\bk}$, by Lemma~\ref{rc:lem:V}.
+In its coefficient minor, the root blocks separate.  For the endpoint
+$0$, the leading row factors from Lemma~\ref{rc:lem:endjets}, followed by
+\eqref{rc:eq:binomV}, give $B_0(m)$.  At $4$ they give $B_4(\ell)$.
+At $c_i$ the leading coefficient matrix is exactly
+\eqref{rc:eq:localmatrix}, so Lemma~\ref{rc:lem:mixed} gives $B_{z_i}(k_i)$.
+Dividing by $\Delta_q$ proves \eqref{rc:eq:leading}.
+
+Every factor in \eqref{rc:eq:leading} is nonzero.  In particular, the
+unique maximal-degree basis selection cannot vanish or be canceled by
+another selection, because every other selection has strictly smaller
+degree.  This proves both exactness and noncancellation.
+\end{proof}
+
+\begin{remark}[Why the naive degree is too large]
+For a block of multiplicity $t$, multiplying row degrees without taking
+the determinant into account suggests $\binom t2$ degrees.  The
+$k$ plus-branch rows consume $\binom k2$ degrees, and the $t-k$ minus
+rows consume $\binom{t-k}2$.  The surviving degree is their difference,
+$k(t-k)$.  The consumption is forced by linear dependence of equal
+low-degree basis rows; it is not an accidental cancellation at special
+numerical parameters.
+\end{remark}
+
+\section{Minimal recurrences, order, and the secondary factorization}
+\label{rc:sec:recurrences}
+
+\subsection{Exponential polynomials and minimality}
+Let $(\E f)(N)=f(N+1)$ denote forward shift.
+
+\begin{lemma}[Minimal annihilators]\label{rc:lem:annihilator}
+Suppose $\lambda_1,\ldots,\lambda_b$ are distinct nonzero complex numbers
+and $Q_i$ are nonzero polynomials of degrees $d_i$.  Then
+$f(N)=\sum_i Q_i(N)\lambda_i^N$ has minimal characteristic polynomial
+\begin{equation}\label{rc:eq:expmin}
+ \prod_{i=1}^{b}(X-\lambda_i)^{d_i+1}.
+\end{equation}
+Its ordinary generating function has reduced denominator
+$\prod_i(1-\lambda_i u)^{d_i+1}$.
+\end{lemma}
+This is Lemma~\ref{lem:minimal} of Part~I, restated in Part~II's
+notation (Part~I writes $E$ for the shift and $t$ for the
+generating-function variable).  The manuscript proves it again; its
+proof isolates each block by annihilating the others instead of using
+Chinese-remainder projectors, and is kept as a second route.
+\begin{proof}[Second proof (manuscript~03)]
+On a term $Q(N)\lambda^N$, the operator $\E-\lambda$ gives
+$\lambda^{N+1}(Q(N+1)-Q(N))$.  It lowers the degree by exactly one
+until the polynomial is zero.  In contrast, $\E-\mu$, for
+$\mu\ne\lambda$, preserves the degree and multiplies the leading
+coefficient by $\lambda-\mu$.
+
+These observations also prove independence of distinct exponential
+blocks.  To isolate one block in a purported zero sum, annihilate all
+other blocks by their respective powers of $\E-\lambda_i$.
+The selected block remains nonzero unless it was zero initially.
+If a polynomial $g$ has a zero of multiplicity $e$ at $\lambda_i$,
+then its action on that block is nonzero for $e\le d_i$ and zero
+for $e>d_i$.  Hence each factor in \eqref{rc:eq:expmin} is necessary
+and their product suffices.
+
+For the generating function, apply powers of $u\,\dd/\dd u$ to
+$(1-\lambda_i u)^{-1}$.  A degree-$d_i$ polynomial multiplier yields
+a pole of order exactly $d_i+1$ at $u=\lambda_i^{-1}$.
+Distinct poles cannot cancel.  This gives the stated reduced denominator.
+\end{proof}
+
+Applying the lemma to Theorem~\ref{rc:thm:leading} proves
+\eqref{rc:eq:minchar} under nonresonance.  Without that hypothesis its
+labelled product still annihilates every term.  Summing its exponents
+uses
+\begin{equation}\label{rc:eq:ksum}
+ \sum_{k=0}^{t}k(t-k)=\frac{t(t+1)(t-1)}6,
+\end{equation}
+and gives \eqref{rc:eq:R}.  If two or more labels have the same rate,
+their sum has degree at most their largest degree, strictly less in
+order contribution than the sum of their separate $d+1$ values.
+Thus any resonance strictly lowers the order below $\Rzero$.
+This completes the proof of Theorem~\ref{rc:thm:main} and its corollaries.
+
+In the nonresonant case the ordinary generating function is therefore
+\begin{equation}\label{rc:eq:GF}
+ \sum_{N\ge0}H_N(q)u^N
+     =\frac{B_q(u)}{\prod_{\bk}(1-\lambda_{\bk}u)^{d_{\bk}+1}},
+ \quad \deg B_q<\Rzero,\quad B_q(0)=1,
+\end{equation}
+and the displayed fraction is reduced.  A limiting specialization of
+this numerator and denominator need not remain reduced.
+
+\subsection{Comparison with the classical exponential bound}
+There is a useful elementary consistency check on the sharp formula.
+For $0\le k\le t$,
+\begin{equation}\label{rc:eq:localbound}
+ 1+k(t-k)\le\binom tk.
+\end{equation}
+To see this, identify a $k$-subset of $\{1,\ldots,t\}$ with a partition
+inside a $k\times(t-k)$ rectangle.  Every size from $0$ to $k(t-k)$
+is attained: fill complete rows and then at most one partial row.
+There are therefore at least $k(t-k)+1$ different partitions.
+Also
+\[
+ 1+\binom m2\le2^m,\qquad
+ 1+\binom{\ell+1}2=1+\ell+\binom\ell2\le2^\ell.
+\]
+For nonnegative numbers $a_j$, $1+\sum_j a_j\le\prod_j(1+a_j)$.
+Combining these inequalities, label by label and then summing, proves
+\begin{equation}\label{rc:eq:universalbound}
+ \Rzero\le2^{m+\ell}\prod_i\sum_{k_i=0}^{t_i}\binom{t_i}{k_i}
+          =2^D.
+\end{equation}
+Thus the order bound here is compatible with the classical one, while
+retaining the determinant cancellations that the larger bound ignores.
+For a single repeated root, summing $1+k(t-k)$ gives
+$t+1+\binom{t+1}{3}$.  Strictness for $t\ge4$ already follows from
+$\binom t2>1+2(t-2)$ at $k=2$.
+
+\subsection{Proof of the secondary Hankel factorization}
+We prove a general identity, then substitute the explicit leading
+coefficients of our determinant sequence.
+
+\begin{lemma}[A finite Hankel determinant of exponential polynomials]
+\label{rc:lem:secondarygeneral}
+Suppose
+$f(N)=\sum_{i=1}^{b}Q_i(N)\lambda_i^N$, with
+$\deg Q_i=d_i$, leading coefficient $a_i$, and $r_i=d_i+1$.
+Put $R=\sum_i r_i$.  The rates may coincide.  Then
+\begin{equation}\label{rc:eq:secondarygeneral}
+ \det_{0\le u,v<R}f(u+v)
+ =(-1)^{\sum_i\binom{r_i}2}
+  \prod_i (d_i!a_i)^{r_i}\lambda_i^{r_i(r_i-1)}
+  \prod_{i<j}(\lambda_j-\lambda_i)^{2r_i r_j}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $Q_i(N)=\sum_{h=0}^{d_i}a_{i,h}N^h$.
+Let $U_{u,(i,h)}=\lambda_i^u u^h$, $0\le h\le d_i$, and let $B$ be
+block diagonal, with $i$th block
+\[
+ (B_i)_{h,j}=\begin{cases}
+     \binom{h+j}{h}a_{i,h+j},&h+j\le d_i,\\
+     0,&h+j>d_i.
+ \end{cases}
+\]
+The binomial expansion of $Q_i(u+v)$ gives the exact factorization
+$(f(u+v))=UBU^{\mathsf T}$.  Each $B_i$ is anti-triangular, so
+\[
+ \det B_i=(-1)^{\binom{r_i}2}
+                  a_i^{r_i}\prod_{h=0}^{d_i}\binom{d_i}{h}.
+\]
+Lemma~\ref{rc:lem:V} gives $\det U$.  The factorials simplify using
+\[
+ \left(\prod_{h=0}^{d_i}h!\right)^2
+       \prod_{h=0}^{d_i}\binom{d_i}{h}=(d_i!)^{r_i}.
+\]
+Taking determinants proves \eqref{rc:eq:secondarygeneral} for distinct
+rates.  The same identity holds for coincident rates by polynomial
+continuation in the $\lambda_i$, or directly because $U$ then has
+repeated columns and both sides vanish.
+\end{proof}
+
+Theorem~\ref{rc:thm:secondary} follows on taking the canonical labels
+$\bk$ as the blocks of Lemma~\ref{rc:lem:secondarygeneral} and inserting
+\eqref{rc:eq:leading}.  All its non-resonance factors are nonzero throughout
+the admissible root-multiplicity stratum.  In particular, no hidden
+amplitude-zero locus can lower the maximal recurrence order.
+
+Suppose, locally, exactly two rates meet, their difference vanishes to
+first order along a parameter curve, and no root itself reaches another
+root or an endpoint.  Formula~\eqref{rc:eq:secondary} then shows that the
+secondary determinant vanishes to exactly $2r_{\bk}r_{\bj}$ orders
+along that curve.  This is a quantitative statement about rank loss,
+not just a test that some exceptional parameter exists.
+
+\section{Resonance and a root-free exact algorithm}\label{rc:sec:resonances}
+
+\subsection{The exact cancellation rule}
+Let $\Lambda$ be the set of distinct numerical values among the rates.
+For $\lambda\in\Lambda$ define
+\begin{equation}\label{rc:eq:grouped}
+ Q_\lambda(N)=\sum_{\bk:\lambda_{\bk}=\lambda}P_{\bk}(N).
+\end{equation}
+Some of these sums may be identically zero even though every summand
+has a nonzero leading coefficient.
+
+\begin{theorem}[All-parameter minimality rule]\label{rc:thm:resonant}
+At every admissible parameter choice, the minimal characteristic
+polynomial is
+\begin{equation}\label{rc:eq:resminimal}
+ \chi_q(X)=\prod_{\substack{\lambda\in\Lambda\\Q_\lambda\ne0}}
+                    (X-\lambda)^{1+\deg Q_\lambda}.
+\end{equation}
+Before computing any cancellations, a valid smaller annihilator than
+the labelled product is
+\begin{equation}\label{rc:eq:groupbound}
+ \Psi_q(X)=\prod_{\lambda\in\Lambda}
+       (X-\lambda)^{1+\max\{d_{\bk}:\lambda_{\bk}=\lambda\}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Group \eqref{rc:eq:sectors} by numerical rate, discard zero polynomials,
+and apply Lemma~\ref{rc:lem:annihilator}.  The degree of a sum is at most
+the maximum degree of its summands, proving \eqref{rc:eq:groupbound}.
+\end{proof}
+
+Equation~\eqref{rc:eq:resminimal} is exact, but it is not a short classification
+of every possible resonant cancellation.  Such a classification would
+require a more detailed description of the polynomials $Q_\lambda$.
+The next theorem instead gives a terminating algebraic procedure for
+each exact input, without constructing any spectral roots.
+
+\subsection{Why a finite prefix can be a proof}
+\begin{theorem}[Certified finite-prefix recovery]\label{rc:thm:finite}
+Let $h=(h_N)_{N\ge0}$ be a nonzero sequence over a characteristic-zero
+field, known to satisfy a monic constant-coefficient recurrence of
+order at most $R$ from $N=0$ onward.  Its minimal recurrence can be
+recovered from $h_0,\ldots,h_{2R-1}$ as follows.
+For $r=1,\ldots,R$, solve
+\begin{equation}\label{rc:eq:finitesystem}
+ h_{n+r}+\sum_{j=0}^{r-1}g_j h_{n+j}=0,
+                  \qquad 0\le n<R.
+\end{equation}
+The first soluble system gives the unique minimal monic characteristic
+polynomial $X^r+\sum_{j<r}g_jX^j$.
+\end{theorem}
+\begin{proof}
+Let $A(\E)h=0$ be a known-to-exist monic annihilator of order $R$,
+padding a lower-order one by a power of $X$ if necessary.  For any
+candidate $g$ the residual sequence $u=g(\E)h$ also satisfies
+$A(\E)u=0$, because polynomials in shift commute.  If
+\eqref{rc:eq:finitesystem} holds, its first $R$ values are zero.  The
+monic recurrence then forces every subsequent value to be zero by
+induction.  Thus every soluble system gives a genuine all-index
+annihilator, not merely a fitted prefix.
+
+The actual minimal annihilator gives a solution for its order, so the
+first successful order is minimal.  Two different monic annihilators
+of that degree would differ by a nonzero annihilator of smaller degree,
+which is impossible.  The largest index used by the algorithm is
+$R-1+R=2R-1$.
+\end{proof}
+
+The prior order bound is indispensable.  Without it, an arbitrarily long
+matching prefix does not certify a recurrence for an arbitrary sequence.
+For \eqref{rc:eq:HN}, Theorem~\ref{rc:thm:main} supplies exactly the bound needed.
+
+\subsection{No factorization into individual roots is required}
+Suppose $q\in\QQ[x]\setminus\{0\}$.  Strip its powers of $x$ and $x-4$,
+and perform square-free decomposition on the remainder:
+\begin{equation}\label{rc:eq:squarefree}
+ q(x)=\gamma x^m(x-4)^\ell\prod_{t\ge1} f_t(x)^t,
+\end{equation}
+where the nonconstant $f_t$ are monic, square-free and pairwise coprime.
+Let $b_t=\deg f_t$.  Ordinary polynomial gcds with the derivative produce
+this decomposition; irreducible factorization and numerical root finding
+are unnecessary.  The bound becomes
+\begin{equation}\label{rc:eq:rootfreebound}
+ R=\prod_{t\ge1}(t+1)^{b_t}
+       \left(\kappa+1+\frac16\sum_{t\ge1}b_t t(t-1)\right).
+\end{equation}
+Compute the first $2R$ determinants directly from their rational moment
+matrices and apply Theorem~\ref{rc:thm:finite}.  This determines the true
+minimal polynomial even when the roots are complex, multiplicatively
+dependent, or not conveniently expressible by radicals.
+
+All recovered coefficients lie in $\QQ$.  More generally, if the input
+coefficients lie in an exactly computable algebraic number field, the
+same linear systems work over that field.  Solvability over its algebraic
+closure is equivalent to solvability over the field itself, by Gaussian
+elimination; uniqueness of the minimal monic polynomial gives descent.
+For arbitrary unspecified complex numbers, ``algorithm'' presupposes
+an exact representation with equality and field operations available.
+We do not assert an effective equality test for arbitrary complex oracles.
+
+The transparent root-free implementation uses $O(R^4)$ field operations
+for generating the determinants and searching all orders with naive
+Gaussian elimination, apart from polynomial preprocessing and moment
+generation.  This is an arithmetic-operation estimate, not a
+bit-complexity claim.  The included fixed-size Christoffel path is much
+faster when the roots are already given exactly.
+
+\subsection{Algebraic rank-drop loci}
+The finite-prefix proof also turns exceptional orders into explicit
+polynomial conditions.  Fix a degree $D\ge0$ and consider nonzero
+polynomial multipliers of exactly that degree.  The uniform all-index
+bound $S=2^D$ follows from \eqref{rc:eq:universalbound}.
+For $1\le r<S$, form
+\begin{equation}\label{rc:eq:rankmatrix}
+ \mathcal H_{S,r}(q)=\bigl(H_{n+j}(q)\bigr)_{
+                        0\le n<S,\ 0\le j\le r}.
+\end{equation}
+Then
+\begin{equation}\label{rc:eq:rankcriterion}
+ \ord(H(q))\le r\quad\Longleftrightarrow\quad
+                 \rank\mathcal H_{S,r}(q)\le r.
+\end{equation}
+For the forward direction, the recurrence gives a column dependence.
+For the reverse direction, take a nonzero dependence, normalize its
+highest nonzero coefficient, and apply the residual argument of
+Theorem~\ref{rc:thm:finite}.  Its degree is at most $r$.
+
+Every entry $H_n(q)$ is a polynomial in the coefficients of $q$.
+Consequently the order-at-most-$r$ locus is defined, within the degree-$D$
+coefficient space, by the vanishing of all $(r+1)$-minors of
+\eqref{rc:eq:rankmatrix}.  It is relatively Zariski closed.  On a fixed
+root-multiplicity stratum, $S$ may be replaced by the sharper $\Rzero$.
+Theorem~\ref{rc:thm:secondary} is an explicit factorization of the maximal-rank
+test on that stratum; lower-rank tests can involve further cancellation
+conditions after rates have already collided.
+
+\clearpage
+\section{Worked examples and checks against the repository}\label{rc:sec:examples}
+
+\subsection{Recovering the shifted linear multiplier}
+Take $q(x)=x^m(a+bx)$, with $b\ne0$ and $a(a+4b)\ne0$.
+Then $\gamma=b$, $\ell=0$, $s=1$, $t_1=1$ and $c_1=-a/b$.
+The two rates are $-bz$ and $-bz^{-1}$, so their sum and product are
+\[
+ -b(z+z^{-1})=-b(c_1-2)=a+2b,
+ \qquad (-bz)(-bz^{-1})=b^2.
+\]
+Their two degrees are both $\binom m2$.
+Theorem~\ref{rc:thm:main} gives exactly \eqref{rc:eq:old}.
+At $a=0$ the multiplier is $b x^{m+1}$, whose order is
+$\binom{m+1}2+1$.  At $a=-4b$ it is $b x^m(x-4)$, whose order is
+$\binom m2+2$.  These endpoint results follow from the same theorem,
+without taking a singular limit of the two nonendpoint amplitudes.
+
+\noindent\emph{Relation to Part~I.}  In this subsection $a$ and $b$ are
+Part~I's parameters, $q(x)=x^m(a+bx)$ is the multiplier of
+$D_N^{(m)}(a,b)=H_N(q)$, and $-z^{\pm1}$ are Part~I's roots $r_\pm$ of
+\eqref{eq:rroots}, so the two rates are Part~I's $\lambda_\pm$ of
+\eqref{eq:lambda}.  The paragraph is thus a second proof, by a different
+route, of the minimality in Theorem~\ref{thm:main} and of the rows
+$a=0$, $a=-4b$ and $a(a+4b)\ne0$ of Theorem~\ref{thm:exceptional}; the
+row $b=0$, $a\ne0$ is the case $s=0$ of Corollary~\ref{rc:cor:simple}
+(an observation of this merge).  It does not reprove Part~I's
+coefficient formula, numerator degree, reciprocity or asymptotic
+constant.  One further consistency check (an observation of this merge,
+not of the manuscript): for $q=x^m$, Theorem~\ref{rc:thm:leading} gives
+the leading coefficient $B_0(m)\,(-1)^{\binom m2}\prod_{h<m}h!
+=2^{\binom m2}\prod_{h<m}h!/\prod_{r<m}(2r)!$, which is Part~I's $h_m$
+of \eqref{eq:h}, the leading coefficient of $H_N^{(m)}$.
+
+\subsection{A repeated fourth power with order fifteen}
+For
+\begin{equation}\label{rc:eq:qexample}
+ q(x)=(2x-9)^4=16(x-\tfrac92)^4,
+\end{equation}
+choose $z=2$.  The five rates, their exact degrees and their leading
+coefficients are as follows.
+\begin{center}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k$ & $\lambda_k$ & $d_k$ & $\lc(P_k)$\\
+\midrule
+0 & 1   & 0 & $1/729$\\
+1 & 4   & 3 & $8/81$\\
+2 & 16  & 4 & $-64/27$\\
+3 & 64  & 3 & $-2048/81$\\
+4 & 256 & 0 & $65536/729$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact minimal characteristic polynomial is
+\begin{equation}\label{rc:eq:chi15}
+ \chi_q(X)=(X-1)(X-4)^4(X-16)^5(X-64)^4(X-256).
+\end{equation}
+The full expansion $H_N=\sum_{k=0}^{4}P_k(N)\lambda_k^N$ is
+\begin{align}
+ P_0(N)&=\frac1{729},\nonumber\\
+ P_1(N)&=\frac{24N^3+204N^2+572N+520}{243},\nonumber\\
+ P_2(N)&=-\frac{1728N^4+13824N^3+43344N^2+62784N+35648}{729},
+                    \label{rc:eq:examplepolys}\\
+ P_3(N)&=-\frac{6144N^3+21504N^2+23552N+10240}{243},\nonumber\\
+ P_4(N)&=\frac{65536}{729}.\nonumber
+\end{align}
+These polynomials may be obtained by \eqref{rc:eq:canonicalP}, or by exact
+interpolation after the theorem has established their degrees and
+nonvanishing.  The first determinant values are
+\[
+ 1,\quad3401,\quad2480745,\quad1026904425,\quad
+ 327789036905,\quad92503701028201.
+\]
+No polynomial of degree $14$ can annihilate this sequence: all five
+rates are distinct and every displayed top coefficient is nonzero.
+This nonexistence assertion is proved for the entire sequence, not
+inferred from the displayed six values.
+
+\subsection{Resonance can cancel an entire branch}
+For $q(x)=(x-2)^2$, choose $z=i$.  The three canonical sectors are
+\begin{equation}\label{rc:eq:squarecentral}
+ P_0(N)=\frac{i}{4},\qquad P_1(N)=N+1,\qquad
+ P_2(N)=-\frac{i}{4},
+\end{equation}
+with rates $-1,1,-1$.  The two nonzero constant sectors cancel exactly,
+so
+\[
+ H_N((x-2)^2)=N+1,\qquad \chi_q(X)=(X-1)^2.
+\]
+For completeness, the leading-coefficient formula gives the two constants
+and the coefficient $1$ of $N$ in $P_1$.  The condition $H_0=1$ then
+fixes its constant term.  This already proves \eqref{rc:eq:squarecentral}.
+Taking the maximum degree separately for each collided rate, without
+checking cancellation, would retain an unnecessary $X+1$ factor.
+
+A similar phenomenon need not involve repeated roots of $q$.  Take
+\begin{equation}\label{rc:eq:distinctresonance}
+ q(x)=(x-\tfrac92)(x+\tfrac12),\qquad z_1=2,\quad z_2=-2.
+\end{equation}
+The four canonical constants, in order $(0,0),(0,1),(1,0),(1,1)$,
+are $-1/15,-1/3,1/3,16/15$; their rates are
+$-1/4,-1,-1,-4$.  Hence
+\begin{equation}\label{rc:eq:distinctresresult}
+ H_N(q)=\frac{16}{15}(-4)^N-\frac1{15}(-\tfrac14)^N,
+ \qquad \chi_q(X)=X^2+\frac{17}{4}X+1.
+\end{equation}
+The multiplicity profile permits generic order $4$, the grouped
+annihilator has order $3$, and exact cancellation lowers the true order
+to $2$.  Thus root multiplicities alone cannot determine the order on
+the resonance locus.
+
+\subsection{A nine-value proof of a resonant fourth-power formula}
+For $q=(x-2)^4$ and $z=i$, the degree law and grouped annihilator give
+\begin{equation}\label{rc:eq:centreann}
+       (\E-1)^5(\E+1)^4H=0.
+\end{equation}
+The exact closed formula is
+\begin{equation}\label{rc:eq:centreproduct}
+ H_N((x-2)^4)=\frac{(N+1)(N+2)^2(N+3)}{12}.
+\end{equation}
+Here is a finite proof using the already established all-index bound,
+rather than an extrapolation from data.  The right side is a polynomial
+of degree $4$, so it satisfies \eqref{rc:eq:centreann}.  The first nine
+values of both sides are
+\begin{center}
+\begin{tabular}{@{}rrrrrrrrrr@{}}
+\toprule
+$N$ &0&1&2&3&4&5&6&7&8\\
+\midrule
+$H_N$&1&6&20&50&105&196&336&540&825\\
+\bottomrule
+\end{tabular}
+\end{center}
+These determinant values follow from the $4\times4$ formula
+\eqref{rc:eq:Christoffel}.  They can be reproduced using only integers:
+write $u_{n,r}=p_n^{(r)}(2)/r!$, start with
+\[
+ (u_{0,r})_{r=0}^{3}=(1,0,0,0),\qquad
+ (u_{1,r})_{r=0}^{3}=(1,1,0,0),
+\]
+and apply
+\[
+ u_{n+1,r}=u_{n,r-1}-u_{n-1,r},\qquad u_{n,-1}=0.
+\]
+Then $H_N=\det(u_{N+j,r})_{0\le r,j<4}$.
+The difference between the two sides of \eqref{rc:eq:centreproduct}
+satisfies a monic recurrence of order $9$ and has its first nine
+values zero.  Induction proves that it is identically zero.
+Since the product polynomial has degree $4$ and nonzero leading
+coefficient $1/12$, its minimal polynomial is $(X-1)^5$.
+The generic order $15$ has dropped to $5$.
+
+\subsection{An irreducible rational input}
+No spectral representation is needed to run the exact algorithm.
+For $q=x^2+1$, the square-free profile is $b_1=2$, so $R=4$.
+The root-free calculation gives
+\begin{equation}\label{rc:eq:irreducible}
+ \chi_q(X)=X^4-5X^3+4X^2-5X+1.
+\end{equation}
+For $q=(x^2+1)^2$ the profile is $b_2=2$, and the order is $15$.
+The archive records its full characteristic polynomial and exact input
+coefficients.  These examples illustrate the intended use of the
+algorithm: its input is a rational coefficient list, not approximate
+complex roots or guessed multiplicative relations among them.
+
+\section{Exact asymptotics and stability of the leading sector}\label{rc:sec:asymptotics}
+
+The expansion \eqref{rc:eq:sectors} is finite and exact.  Consequently it
+contains more information than a leading asymptotic equivalence.
+Suppose a label $\bk_*$ has strictly larger rate modulus than every
+other label.  Put $\lambda_* =\lambda_{\bk_*}$,
+$d_*=d_{\bk_*}$, and let $M=\max_{\bk}d_{\bk}$.
+Choose $\rho<|\lambda_*|$ no smaller than the other rate moduli.
+Then
+\begin{equation}\label{rc:eq:asymptotic}
+ H_N(q)=\lambda_*^N P_{\bk_*}(N)+O(\rho^N N^M).
+\end{equation}
+When there are no other labels the error term is zero.  In particular,
+\[
+ H_N(q)\sim L_{\bk_*}N^{d_*}\lambda_*^N.
+\]
+Every algebraic correction in inverse powers of $N$ can be read from the
+finite polynomial $P_{\bk_*}$; no infinite asymptotic series is needed
+for fixed parameters.
+
+\begin{corollary}[Repeated roots outside the interval]\label{rc:cor:outside}
+Suppose all nonendpoint roots satisfy $c_i>4$, and choose $z_i>1$.
+Then the unique largest-modulus sector is $k_i=t_i$ for every $i$.
+Thus
+\begin{equation}\label{rc:eq:outside}
+ H_N(q)\sim L_{(t_1,\ldots,t_s)}N^{\kappa}
+       \left((-1)^{\ell+T}\gamma\prod_i z_i^{t_i}\right)^N.
+\end{equation}
+No multiplicative-independence assumption is needed for this conclusion.
+\end{corollary}
+\begin{proof}
+Reducing any $k_i$ multiplies the modulus by a factor $z_i^{-2}<1$.
+Hence the maximal sector is unique even if some of the smaller sectors
+resonate.  At $k_i=t_i$ all $k_i(t_i-k_i)$ vanish, leaving degree
+$\kappa$.  Its leading coefficient is nonzero by
+Theorem~\ref{rc:thm:leading}.
+\end{proof}
+
+This separates two effects that are easy to conflate.  Repeating a root
+outside the support changes the exponential growth rate and can greatly
+increase the recurrence order.  It does \emph{not} increase the power of
+$N$ in the leading asymptotic term; that power comes entirely from the
+endpoint multiplicities.  The repeated offendpoint roots instead create
+higher polynomial degrees in intermediate, subdominant sectors.
+For \eqref{rc:eq:qexample}, for instance,
+\[
+ H_N((2x-9)^4)\sim\frac{65536}{729}\,256^N,
+\]
+even though its $16^N$ sector has degree $4$ and its recurrence has
+order $15$.
+
+The estimate is for fixed parameters.  As roots approach $0$, $4$ or
+each other, the spectral gaps and the constants need not be uniform.
+A double-scaling limit cannot be justified by simply using
+\eqref{rc:eq:asymptotic} with moving parameters.  That is one of the
+separate research directions listed below.
+
+\section{Verification, implementation, and formalization status}
+\label{rc:sec:verification}
+
+\subsection{Independent exact calculations}
+The archive contains a reference implementation in Python 3.10 or later,
+using only the standard library.  Every numerical calculation uses
+integers or exact rational numbers.  Gaussian elimination uses pivoting;
+there is no assumption that a signed or resonant moment matrix is
+positive definite.
+
+The implementation has two determinant paths.  The first constructs the
+original matrix in \eqref{rc:eq:HN} from Catalan numbers.  The second
+computes jets from the polynomial recurrence \eqref{rc:eq:prec} and uses
+the fixed-size Christoffel determinant.  The paths share the low-level elimination routine, but neither uses the
+explicit sector leading constants.  A third calculation interpolates sector
+polynomials at distinct rational spectral parameters and checks their
+degrees, leading constants and extra values.  The secondary-Hankel
+factorization is tested by yet another determinant, built from the
+already computed sequence values.
+
+The following are the actual results recorded by
+\texttt{code/verify.py} (shipped here as
+\nolinkurl{code/02-root-collisions-verify.py}; its recorded run is
+\nolinkurl{data/02-root-collisions-verification.json}, with console
+text \nolinkurl{data/02-root-collisions-verification.txt}).  Counts include simple and boundary instances;
+they measure executed identities, not independent universal theorems.
+\begin{center}
+\small\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{0.79\textwidth}r@{}}
+\toprule
+Executed check & Count\\
+\midrule
+Endpoint-jet identities & 304\\
+Original moment determinant versus Christoffel determinant & 1,554\\
+Summed sector orders versus the multiplicity formula & 12\\
+Secondary-Hankel product factorizations, including resonances & 15\\
+Exact sector degrees and leading coefficients & 48\\
+Full exponential-polynomial evaluations & 328\\
+Nonresonant recurrence residuals & 200\\
+Nonresonant minimal-recurrence recoveries & 9\\
+Resonant recurrence residuals & 204\\
+Resonant minimal-recurrence recoveries & 12\\
+Inter-root resonance recoveries & 3\\
+Root-free multiplicity profiles & 111\\
+Root-free recurrence recoveries & 3\\
+Central-root fourth-power product evaluations & 40\\
+\midrule
+\textbf{Total; all passed} & \textbf{2,843}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The original-matrix comparisons cover 222 multiplier/scale choices at
+sizes $N=0,\ldots,6$.  They include roots below the support, in its
+interior, at both endpoints and above the support; multiplicities up to
+five occur.  The sector checks use twelve nonresonant patterns, including
+mixed endpoint and repeated-root blocks, with recurrence orders up to
+$26$.  The central fourth-power formula is checked through $N=39$,
+although its finite proof in Section~\ref{rc:sec:examples} needs only the
+first nine values.
+
+The distinction between evidence and proof matters.  A successful
+interpolation for twelve parameter choices does not prove
+Theorem~\ref{rc:thm:leading}.  Its proof is the unique maximal-degree
+Cauchy--Binet selection and the three nonzero local determinants.
+Conversely, once a universal order bound is available, the finite
+certificate for a \emph{particular} specialization is a rigorous proof
+by Theorem~\ref{rc:thm:finite}.  The article uses both kinds of computation
+but does not conflate them.
+
+\subsection{The implementation interface}
+The module \texttt{code/catalan\_collisions.py} provides the following
+principal entry points.  (It is shipped here as
+\nolinkurl{code/02-root-collisions-catalan_collisions.py};
+\S\ref{rc:app:reproduce} explains how to import it.)  Polynomial arrays always use ascending powers.
+\begin{center}\small
+\begin{tabular}{@{}p{0.40\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Routine & Purpose\\
+\midrule
+\texttt{direct\_hankel} & Original moment determinant for rational coefficients.\\
+\texttt{christoffel\_values} & Fixed-size evaluation with rational roots and multiplicities.\\
+\texttt{sectors} & Rates, exact degrees and leading constants for rational $z_i$.\\
+\texttt{secondary\_hankel\_formula} & The product in \eqref{rc:eq:secondary}.\\
+\texttt{fit\_sectors} & Exact polynomial interpolation when rates are distinct.\\
+\texttt{multiplicity\_profile} & Endpoint multiplicities and square-free root counts.\\
+\texttt{minimal\_recurrence} & Recovery from a prefix, given a proved order bound.\\
+\texttt{recurrence\_from\_coefficients} & Root-free minimal recurrence for rational $q$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last routine is intentionally transparent, not optimized for large
+bounds.  Its optional \texttt{max\_bound} argument prevents an unexpected
+large computation.  The mathematical theorem permits all complex roots;
+the reference implementation uses rational inputs, and does not purport
+to implement a general algebraic-number package.
+
+\subsection{A feasible formalization route}
+No Lean source has been compiled or checked for this article.  The
+repository location does not confer formal status on the present proofs.
+A formalization should separate the argument into small algebraic layers.
+
+First formalize normalized jets of \eqref{rc:eq:prec} over a characteristic-zero
+field and their generating functions.  Next prove the confluent
+Vandermonde identity, including the Euler-derivative row change, and
+formalize the polynomial-shift coefficient bound \eqref{rc:eq:shiftcoeff}.
+The decisive reusable lemma is the maximal-degree Cauchy--Binet argument:
+it tracks one distinct list of derivative orders per spectral node and
+identifies the unique smallest such list.
+
+The orthogonality and integral proof of Christoffel may be formalized
+analytically, but an algebraic alternative is attractive.  One may define
+the moment functional by $L(x^n)=C_n$, prove its Gram identities for
+$p_n$ directly from generating functions, and prove Christoffel by
+determinant multilinearity.  This would avoid importing measure theory
+into the core recurrence theorem.
+
+Finally, the shift-operator minimality lemma, the $UBU^{\mathsf T}$
+secondary factorization and the finite-prefix recovery theorem are
+pure finite linear algebra over a field.  They should be reusable
+outside Catalan determinants.  An audit must distinguish imported
+classical facts from newly checked lemmas and must not replace a missing
+confluence proof with an admitted theorem hidden inside a computation.
+
+\section{Further research questions and proposed next steps}\label{rc:sec:research}
+
+The questions below are precise continuations of this article.  They
+are not all asserted to be unsolved in the published literature; a
+broader literature check is part of each proposed project.
+
+\subsection{Closed classification of cyclotomic resonances}
+For a single repeated root, classify the minimal recurrence as an
+explicit function of $t$ and the order of $z^2$ when $z$ is a root of
+unity other than $\pm1$.  The degree law reduces the task to finitely
+many grouped polynomials, but the cancellations can be substantial.
+The examples at $z=i$ show that counting distinct rates is not enough.
+A first target is a uniform closed form for $H_N((x-2)^t)$ for every
+$t$, together with a direct explanation of the parity effects, rather
+than a separate finite certificate for each $t$.
+
+\subsection{Pairwise resonance and cancellation order}
+Suppose exactly two labelled rates agree and all other rates are
+separate.  Determine when their leading coefficients cancel, and how
+many further coefficients can cancel.  Theorem~\ref{rc:thm:leading} makes
+the first test explicit, while \eqref{rc:eq:Arec} determines all later
+tests.  The aim is a structural criterion in the root parameters, not
+just the output of Gaussian elimination.  The distinct-root example
+\eqref{rc:eq:distinctresonance} is a small initial case.
+
+\subsection{Sector polynomials and symmetric functions}
+The degree $k(t-k)$ is the area of a $k\times(t-k)$ rectangle, and the
+proof uses a mixed confluent Vandermonde.  Seek a Schur-function or
+factorial-Schur description of the entire $P_{\bk}$, not only its
+leading coefficient.  Useful outputs would be exact factorizations,
+coefficient sign rules for real roots outside $[0,4]$, and formulas
+that remain stable as two parameters approach one another.  Such a
+description could also identify an earlier equivalent formulation of
+the multiplicity law.
+
+\subsection{Uniform endpoint and root-collision limits}
+A concrete endpoint scaling is
+\[
+ c_N=2+2\cosh(\tau/N),\qquad q_N(x)=(x-c_N)^t.
+\]
+Determine the limit, locally uniformly in $\tau$, of
+\[
+ \frac{H_N(q_N)}{(-1)^{tN}N^{t(t+1)/2}},
+\]
+including its value at $\tau=0$.  The analogous left-endpoint scaling
+$c_N=2-2\cosh(\tau/N)$ should use the exponent $t(t-1)/2$.
+For $t=1$ the branch formula already reduces these limits to elementary
+hyperbolic functions.  The general problem asks for a uniform confluent
+determinant limit and error bounds.  A second version lets two distinct
+nonendpoint roots approach at a rate of order $N^{-1}$.
+
+\subsection{Other eventually constant Jacobi recurrences}
+Krattenthaler's recurrence theorem covers many moment families beyond
+Catalan numbers~\cite{Krattenthaler2023}.  Extend the exact degree analysis to a
+three-term recurrence whose coefficients are eventually constant.
+Away from branch points, the main new issue is a zero of one branch
+amplitude caused by the finite initial perturbation.  Classify how its
+vanishing order changes the jet degrees and the noncancellation matrix.
+This would distinguish universal collision behavior from behavior tied
+to the Catalan boundary condition $p_1=x-1$.
+
+\subsection{Rational multipliers and finite poles}
+Replace $q(x)$ by a rational function whose poles avoid the support.
+The determinant identities underlying Uvarov transformations provide a
+starting point~\cite{Krattenthaler2021Uvarov}.  The target is an exact analogue of the
+sector-degree formula when evaluation and Cauchy-transform blocks occur
+together.  One must first specify which normalizing factors are removed
+and which recurrences hold from the initial index rather than only
+eventually.
+
+\subsection{Coefficient-space equations and arithmetic reductions}
+Eliminate the spectral variables from \eqref{rc:eq:secondary} to obtain
+small defining equations for maximal-order failure directly in the
+coefficients of $q$.  The finite minors in \eqref{rc:eq:rankmatrix} are
+correct but can be very large.  Seek sharper degrees, irreducible
+components and efficient membership tests.  For monic integral
+multipliers, a related problem is to classify primes at which the
+minimal recurrence drops after reduction.  The factorials in the
+leading constants show why characteristic-zero noncancellation cannot
+simply be reused unchanged in small characteristic.
+
+\subsection{Fast certified algorithms and formal verification}
+Combine the proved order bound with fast minimal-recurrence algorithms,
+but reduce the cost of obtaining the initial determinants as well.
+A useful target is an output-sensitive exact algorithm with bit-complexity
+bounds in $D$, the coefficient heights and the final recurrence order.
+Separately, formalize the maximal-degree determinant lemma and the
+finite-prefix certification theorem first: these are the shortest
+reusable path from the present article to a machine-checked result.
+
+\section{Conclusion}\label{rc:sec:conclusion}
+The selected repository extension has a uniform answer at the level of
+exponential sectors.  A root of multiplicity $t_i$ away from $0,4$
+contributes the exact degree $k_i(t_i-k_i)$ to its $k_i$th branch sector.
+The two endpoints contribute different triangular numbers.  The leading
+coefficient is a nonzero product, so distinct sectors cannot disappear
+at nonresonant parameters.  This proves the sharp order formula
+\eqref{rc:eq:R}, with cubic rather than exponential complexity for a single
+repeated root.
+
+The secondary-Hankel factorization identifies the maximal-order
+exceptional locus exactly.  Resonances may cause further cancellations,
+but they do not obstruct an exact answer for a specified rational or
+algebraic multiplier: a proved order bound turns finitely many determinant
+values into a complete minimal-recurrence certificate.  The remaining
+research questions concern structural descriptions of those cancellations,
+uniform collision limits, broader moment families and formalization,
+not gaps in the stated multiplicity proof.
+
+\section{Normalization and sign audit}\label{rc:app:audit}
+
+There are four easy ways to obtain an incorrect statement in this problem.
+This section (Appendix~A of the manuscript) records the conventions that
+prevent them.
+
+\paragraph{Size versus last index.}
+Throughout, $N$ is the determinant size.  In a convention that indexes
+rows by $0\le i,j\le n$, one must substitute $N=n+1$.  The initial
+term $H_0=1$ is part of the recurrence sequence used here.
+
+\paragraph{The Christoffel sign.}
+The product in the multiplier is $\prod(x-a_u)$, whereas the mixed
+Vandermonde supplies $\prod(a_u-x)$.  This contributes $(-1)^{ND}$.
+The $m$ zero-endpoint rows add $(-1)^{mN}$ when their factors are
+removed.  The remaining sign is therefore $(-1)^{(\ell+T)N}$,
+exactly the sign in \eqref{rc:eq:lambda}.
+
+\paragraph{Normalized versus unnormalized jets.}
+The rows of $M_N$ are $p_{N+j}^{(r)}(a)/r!$.  Thus $\Delta_q$ contains
+only cross-root differences.  Extra products of $r!$ in its denominator
+would double-count confluence.  The factorials appearing later in
+$B_0,B_4,B_z$ and $\V$ have separate origins and must not be removed
+by changing the jet convention halfway through the proof.
+
+\paragraph{Two different kinds of collision.}
+A collision of roots of $q$ changes the factorization profile and must
+be treated by normalized jets.  A collision of rates $\lambda_{\bk}$
+can occur even when all roots of $q$ are distinct, and must be treated
+by adding their polynomial coefficients.  These are logically different
+operations.  The first creates the degree law; the second can reduce
+the actual recurrence order.
+
+As a final check, $H_N(uq)=u^N H_N(q)$.  The determinant on the left
+of \eqref{rc:eq:secondary} therefore scales by $u^{\Rzero(\Rzero-1)}$.
+On its right, the rate powers and rate differences contribute
+\[
+ \sum_{\bk}r_{\bk}(r_{\bk}-1)
+    +2\sum_{\bk<\bj}r_{\bk}r_{\bj}=\Rzero(\Rzero-1),
+\]
+while the sector leading coefficients do not depend on the overall
+scale $\gamma$.  The scaling agrees exactly.
+
+
+\section{Reproducing the package}\label{rc:app:reproduce}
+
+This section is Appendix~B of the manuscript, adapted to the shipped file
+names.  As delivered, the package was reproduced from its top directory by
+\begin{lstlisting}
+python3 code/verify.py --out data
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command regenerates the recorded numerical outputs; the second
+builds the PDF.  There are no third-party Python dependencies.
+\emph{In this report these commands must not be run in place.}  Here
+\nolinkurl{code/verify.py} and \nolinkurl{data/} belong to Part~I, so the
+first command would run Part~I's suite and rewrite Part~I's data; the
+shipped verifier \nolinkurl{code/02-root-collisions-verify.py} still
+imports its sibling module under the delivered name
+\texttt{catalan\_collisions}, which is not importable under the shipped
+name, and its default output directory \nolinkurl{data} would overwrite
+Part~I's \nolinkurl{data/verification.json} and
+\nolinkurl{data/verification.txt}.  The delivered Makefile, shipped as
+\nolinkurl{code/02-root-collisions-Makefile}, has the same defect: its
+\texttt{check} target runs \nolinkurl{code/verify.py --out data}, which
+here is Part~I's verifier.
+Restore the delivered names in a scratch copy instead (POSIX shell, run
+from the report directory):
+\begin{lstlisting}
+W=/path/to/scratch/root-collisions
+mkdir -p "$W/code" "$W/recorded"
+for f in code/02-root-collisions-*.py; do
+  cp "$f" "$W/code/${f#code/02-root-collisions-}"; done
+for f in data/02-root-collisions-*; do
+  cp "$f" "$W/recorded/${f#data/02-root-collisions-}"; done
+cd "$W" && python3 code/verify.py --out data
+\end{lstlisting}
+The run writes seven files to \texttt{\$W/data}, which can be compared
+with the recorded copies in \texttt{\$W/recorded}; on 28 September 2026
+this recipe passed all 2,843 checks, and the seven files agreed with the
+recorded ones apart from Windows line endings.  The following
+root-free example, run in the same scratch directory, needs no spectral
+factorization:
+\begin{lstlisting}
+import sys
+sys.path.insert(0, "code")
+from catalan_collisions import recurrence_from_coefficients
+
+chi, bound = recurrence_from_coefficients([1, 0, 1], max_bound=16)
+print(bound)  # 4
+print(chi)    # ascending coefficients: 1, -5, 4, -5, 1
+\end{lstlisting}
+The main data files are shipped in \nolinkurl{data/} with the prefix
+\texttt{02-root-collisions-} (delivered without it):
+\begin{itemize}[itemsep=0pt,topsep=2pt]
+\item \nolinkurl{verification.json}, \nolinkurl{verification.txt}: the
+ recorded run of Section~\ref{rc:sec:verification};
+\item \nolinkurl{sectors.json}: the twelve nonresonant patterns, with
+ sector polynomials, leading constants and characteristic polynomials;
+\item \nolinkurl{resonances.json}: exact minimal recurrences at resonant
+ parameters;
+\item \nolinkurl{rational_input_examples.json}: root-free
+ rational-coefficient examples;
+\item \nolinkurl{central_root_certificate.json}: the nine-value
+ certificate of \eqref{rc:eq:centreproduct};
+\item \nolinkurl{fourth_power_sequence.csv}: exact values of
+ $H_N((2x-9)^4)$.
+\end{itemize}
+The code is shipped in \nolinkurl{code/} with the same prefix
+(\nolinkurl{verify.py}, \nolinkurl{catalan_collisions.py} and the
+delivered root \nolinkurl{Makefile}), and the provenance notes, delivered
+as \nolinkurl{notes/provenance.md}, as
+\nolinkurl{02-root-collisions-provenance.md} at the report root.
+Rational values are stored as
+exact strings, for example \texttt{"8/81"}.  Arrays representing
+polynomials use increasing powers.  Sector polynomials are polynomials
+in the determinant size $N$, not generating-function numerators.
+
+\clearpage
 \appendix
 \section{The precise correction to the printed conjecture}\label{app:barry}
 
@@ -1291,6 +3192,11 @@ $s$ in Appendix A & Source shift symbol, equal to actual shift plus one\\
 \bottomrule
 \end{tabular}
 \end{center}
+\noindent[Added 28 September 2026, batch 39: this table covers Part~I.
+Part~II reuses several of these letters with other meanings, among them
+$q$, $s$, $\ell$, $d$, $K$, $P$, $M$ and $r$; its symbols are listed in
+Table~\ref{rc:tab:notation}, and its data files in
+Section~\ref{rc:app:reproduce}.]
 
 The JSON files use ascending polynomial powers.  In
 \texttt{coefficient\_rows.json}, position $k$ is the coefficient of
@@ -1348,8 +3254,27 @@ OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
 A001519 and A001906 (Fibonacci subsequences).
 \url{https://oeis.org/A001519}; \url{https://oeis.org/A001906}.
 
+\bibitem{CiglerKratt2021}
+J.~Cigler and C.~Krattenthaler,
+Hankel determinants of linear combinations of moments of orthogonal
+polynomials,
+\emph{International Journal of Number Theory} \textbf{17} (2021), 341--369.
+Preprint arXiv:2003.01676.
+\url{https://arxiv.org/abs/2003.01676}.
+Cited in Part~II.
+
+\bibitem{Krattenthaler2021Uvarov}
+C.~Krattenthaler,
+A determinant identity for moments of orthogonal polynomials that
+implies Uvarov's formula for the orthogonal polynomials of rationally
+related densities, preprint arXiv:2103.03969.
+\url{https://arxiv.org/abs/2103.03969}.
+Cited in Part~II as a starting point for the rational-multiplier research
+direction, not as an input to its proofs.
+
 \end{thebibliography}
-\noindent\small\textit{Online sources checked on 19 September 2026.
+\noindent\small\textit{Online sources checked on 19 September 2026
+(Part~I) and 28 September 2026 (Part~II).
 All theorem numbering in the body refers to the present manuscript,
 unless a source is explicitly named.}
 \end{document}
