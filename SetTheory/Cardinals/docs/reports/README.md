@@ -75,7 +75,12 @@ threshold), the polyomino report (Part II: where the method saturates),
 [`insertion-degree-spectra`](automata-and-formal-languages/insertion-degree-spectra)
 (binary alphabets suffice) and
 [`nonreal-roots-in-iterative-equations`](log-concavity-and-unimodality/nonreal-roots-in-iterative-equations)
-(roots on several circles).
+(roots on several circles).  Batch 42 extended five reports again: cyclotomic
+resonances (shifted Catalan Hankel polynomials), decreasing maps (nonreal
+roots), NP-completeness of the height problem via uniquely restricted
+matchings (cofinal strata), cactus rigidity (preorder root polytopes), and
+depth certificates closing deficits 3 and 4 for A290268 (power-tower
+derivative term counts).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

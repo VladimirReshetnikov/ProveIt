@@ -18,7 +18,8 @@ a(2m - 1) = 2m^2 - floor(m/4).
 ```
 
 This directory retains the investigation notes and the exact Python generators
-behind the Lean development in `LeanProofs/A290268*.lean`.
+behind the Lean development, now in
+`Combinatorics/DerivativeExpansions/A290268/Lean/`.
 
 ## The exact model
 
@@ -205,9 +206,9 @@ organized as:
 | `A290268.ClosedForm` | `closedForm` satisfies the OEIS order-12 linear recurrence and the generating-function recurrence, and equals the piecewise quadratic form; the several conjectured shapes are interchangeable. | unconditional |
 | `A290268.Count` | The conjectured support set `S n ⊆ ℤ × ℤ` and `card_S : (S n).card = closedForm n` (pure finite combinatorics; the hole count equals `⌊(n+1)/8⌋`). | unconditional |
 | `A290268.Structural` | `coeff_negtop_eq_zero` (negative columns vanish at the triangle top) and `mem_S_of_coeff_ne_zero`: the structural inclusion `support ⊆ S n`, modulo a single hole-line hypothesis. | unconditional (mod hole) |
-| `A290268.Hole` | `hole_vanishing`: the coefficient of `w^(k+4D+1)` in `(2+w)^k φ^D` is `0` when `k+D` is even (the `e^u−1` parity). | unconditional |
-| `A290268.DepthOne` | The complete `D = 1` stratum: `gam1 k M = 0` (for `M ≥ 1`) iff `M = k+5` with `k` odd, via the Beta integral and `t ↦ 1−t`. | unconditional |
-| `A290268.Series` | The reduction `coeff n j k = n!/(k!D!)·gam(k,D,M)`; discharges the hole hypothesis so `support ⊆ S n` becomes unconditional. | in progress |
+| `A290268.Hole` | `hole_vanishing`: the coefficient of `w^(k+4D+1)` in `(2+w)^k φ^D` is `0` when `k+D` is even (the `e^u−1` parity). | **not in the repository** (planned, never committed; see note below) |
+| `A290268.DepthOne` | The complete `D = 1` stratum: `gam1 k M = 0` (for `M ≥ 1`) iff `M = k+5` with `k` odd, via the Beta integral and `t ↦ 1−t`. | **not in the repository** (planned, never committed) |
+| `A290268.Series` | The reduction `coeff n j k = n!/(k!D!)·gam(k,D,M)`; discharges the hole hypothesis so `support ⊆ S n` becomes unconditional. | **not in the repository** (planned, never committed) |
 | `A290268.Table` | Memoized table equal to `coeff`; `native_decide` verifies `a n = closedForm n` for every published term `n ≤ 53`. | unconditional |
 | `A290268.Main` | `a_eq_closedForm_of_support`: the conjecture `a n = closedForm n` follows from `support = S n`, isolating the open content into the single nonvanishing inclusion `(j,k) ∈ S n → coeff n j k ≠ 0`. | unconditional reduction |
 
@@ -216,6 +217,19 @@ generating function, via `A290268.ClosedForm`) is proved *unconditionally for
 all `n ≤ 53`* and, for general `n`, reduced to the single nonvanishing
 statement — with the two solved strata (`D = 1`, holes) and the structural
 inclusion already discharged.
+
+*Correction (29 September 2026).* The modules `A290268.Hole`,
+`A290268.DepthOne` and `A290268.Series` in the table above were never
+committed; git history has no such files. The tracked development is
+[`Combinatorics/DerivativeExpansions/A290268/Lean/`](../../Combinatorics/DerivativeExpansions/A290268/Lean/)
+(`Core`, `ClosedForm`, `Count`, `Structural`, `Table`, `Main`), in which the
+structural inclusion is conditional on the hole-line hypothesis and the
+`D = 1` stratum and hole vanishing are not formalized. On paper, the
+research-report collection's
+[`power-tower-derivative-term-counts`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/README.md)
+proves the depth-1 and depth-2 strata and bulk positivity, and its batch-42
+addition closes logarithmic deficits 3 and 4 for every `n`; none of that is
+formalized.
 
 ## Contents
 
