@@ -14,6 +14,7 @@
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage{hyperref}
 \usepackage{bookmark}
+\usepackage{shuffle}% [write]
 \definecolor{Ink}{HTML}{16374A}
 \definecolor{Accent}{HTML}{1E6274}
 \definecolor{Muted}{HTML}{58636B}
@@ -56,11 +57,17 @@
 \newcommand{\clog}[1]{\left\lceil\log_2 #1\right\rceil}
 \newcommand{\cfl}{\mathrm{CFL}}
 \newcommand{\poly}{\operatorname{poly}}
+% [write] shuffle symbol, only for the sibling report's operation.
+\newcommand{\sh}{\mathbin{\shuffle}}
+% [write] batch 44: marks text added when the manuscript became a report of
+% the ProveIt research-report collection (see Appendix D).
+\newcommand{\wtag}{\textup{[write]}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!20},
  xleftmargin=4pt,xrightmargin=4pt}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{0.35in}
@@ -106,14 +113,22 @@ Complete proofs, exact finite audits, and a research agenda are included.
 not Lean or Rocq certificates. A bounded literature search supports the
 connection to the stated open question, not a guarantee of first discovery
 for every structural lemma or consequence.
+
+\smallskip\noindent\wtag\ A report of the ProveIt research-report collection
+(category \texttt{automata-and-formal-languages}, report
+\texttt{constrained-crossover-closure}), written
+from batch-44 manuscript~02; text marked \wtag{} was added then. The sibling
+report on insertion-degree spectra is related in Section~\ref{ccc:sec:sibling};
+provenance is in Appendix~\ref{ccc:app:provenance}.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \begingroup\small\setlength{\parskip}{0pt}
 \tableofcontents
 \endgroup
 \clearpage
 
-\section{Problem, provenance, and principal results}\label{sec:intro}
+\section{Problem, provenance, and principal results}\label{ccc:sec:intro}
 
 \subsection{A specific question behind the repository}
 
@@ -131,6 +146,30 @@ contain concatenation. Our reduction does not try to restore concatenation.
 Instead, it makes every omitted word obtainable by a single aligned repair
 using a fresh guard letter. The decision problem is thereby settled directly.
 
+\wtag\ \emph{Where the question is posed.} Checked when this report was
+written (29 September 2026) against the 13-page PDF of
+arXiv:2608.27755v1, whose printed page numbers are its PDF page numbers.
+Hughes defines unconstrained crossover $\otimes_{\mathrm u}$ and constrained
+crossover $\otimes_{\mathrm c}$ (the same symbol $\cut$ as here) in Section~2 (``Definitions
+and Notations'', p.~2). The question is posed in Section~4 (``Foundational
+Results''), under ``Single step equality''. His Theorem~1 makes single-step
+equality $L\odot L=L$ at least as hard as universality for every operator
+$\odot$ with $L\cdot L\subseteq L\odot L$ (on a class of languages for
+which containment of every letter and of~$\eps$ is decidable but universality
+is not), and its Corollary applies this to
+simple insertion, shuffle and unconstrained crossover. The note after the
+Corollary (p.~3) observes that constrained crossover fails this subsumption
+criterion, so ``the complexity of the question, `does $L\cut L=L$?', is
+open.'' The list of open questions that follows repeats it as its second item,
+for a context-free~$L$ (top of p.~4). Theorem~\ref{ccc:thm:cfgclosure} answers
+that question: the problem is co-r.e.-complete ($\Pi^0_1$-complete), hence
+undecidable, already over a fixed three-letter alphabet. The first item of
+Hughes's list, whether the shuffle of two context-free languages is
+context-free, is not addressed here. Hughes's Section~14 (p.~12) also lists
+``Study constrained crossover'' among its open directions without posing a
+specific question; Section~\ref{ccc:sec:questions} records how the present
+results bear on his other Section~14 questions.
+
 The inspected ProveIt revision is
 \begin{center}\small
 \nolinkurl{9b24a3a8d545af9624f6ac455f5b548be62818b6}.
@@ -145,6 +184,10 @@ binary-profile Part~II. We do not reprove their arbitrary-spectrum realization
 as a claimed contribution, and we do not resolve their both-singleton
 insertion conjecture. No theorem in the present paper assumes the correctness
 of an unverified ProveIt mathematical claim.
+\wtag\ That source is the sibling report \texttt{insertion-degree-spectra} of
+the same collection category; its directory did not change between the pin
+and the placement of this report (commit \texttt{203016015}).
+Section~\ref{ccc:sec:sibling} states how the two reports relate.
 
 \subsection{What the theorems say}
 
@@ -162,25 +205,25 @@ closure is rational even when the resulting language is not context-free.
 \midrule
 Exact generation of a word &
 $\gen Lk=\{w:\rank_L(w)\leq2^k\}$; a no-gap rank spectrum &
-\ref{sec:rank}\\[3pt]
+\ref{ccc:sec:rank}\\[3pt]
 One-step equality for CFGs &
 Co-r.e.-complete over a fixed ternary alphabet &
-\ref{sec:undecidable}\\[3pt]
+\ref{ccc:sec:undecidable}\\[3pt]
 Eventual equality for CFGs &
 Undecidable over four letters; strictness witnesses at every stage &
-\ref{sec:amplification}\\[3pt]
+\ref{ccc:sec:amplification}\\[3pt]
 A fixed target and grammar &
 Exact rank and generation decidable in polynomial time &
-\ref{sec:membership}\\[3pt]
+\ref{ccc:sec:membership}\\[3pt]
 Regular-input decision problems &
 DFA polynomial one-step test; NFA PSPACE-completeness; decidable finite stabilization &
-\ref{sec:regular}\\[3pt]
+\ref{ccc:sec:regular}\\[3pt]
 Counting the full closure of a CFL &
 Effective rationality, including commuting letter weights &
-\ref{sec:counting}\\[3pt]
+\ref{ccc:sec:counting}\\[3pt]
 Closure need not be context-free &
 Explicit linear seed; exact counts and sharp recurrence orders &
-\ref{sec:family}\\
+\ref{ccc:sec:family}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -201,9 +244,73 @@ rational-growth consequences in this setting. Equivalent formulations in
 recombination, splicing, or genetic-algorithm literature have not been
 exhaustively excluded. The article gives proofs so that its mathematical
 content can be assessed independently of priority. The source search and
-verification boundary are recorded again in Section~\ref{sec:verification}.
+verification boundary are recorded again in Section~\ref{ccc:sec:verification}.
 
-\section{Conventions and the coordinate hull}\label{sec:definitions}
+\subsection{\texorpdfstring{\wtag\ }{}Relation to the sibling report on insertion-degree spectra}
+\label{ccc:sec:sibling}
+
+The sibling report \emph{Gaps in Bounded-Shuffle Hierarchies} (ProveIt path
+\nolinkurl{SetTheory/Cardinals/docs/reports/automata-and-formal-languages/insertion-degree-spectra/})
+and this report start from the same preprint of Hughes, but from different
+parts of it.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+\item The sibling's Part~I answers questions of Hughes's Sections~10--11. It
+ refutes the insertion-degree no-gap conjecture (every finite set containing~$1$
+ is a spectrum), answers the finite representation-erasure question with a
+ binary example, and proves an iteration-depth no-gap theorem (its
+ Theorem~8.2). Its Part~II realizes every finite spectrum containing~$1$ over a
+ binary alphabet with one inserted unary word. Its scope sentence, under its
+ abstract, says that it addresses ``the indicated no-gap questions, not the
+ surrounding undecidability results''. It never names the crossover question:
+ the word ``crossover'' occurs there only in the title of Hughes's preprint.
+\item This report answers the single-step question for constrained crossover
+ posed in Hughes's Section~4 (Section~\ref{ccc:sec:intro} above), one of those
+ surrounding decision problems, for an operation the sibling does not study.
+\item No theorem of either report is used by the other, and none is proved in
+ both. The no-gap theorem for aligned rank (Theorem~\ref{ccc:thm:nogap}) is an
+ analogue, for a different operation, of the sibling's iteration-depth no-gap
+ theorem; neither implies the other. The sibling iterates $X_{m+1}=A\sh X_m$
+ with the inserted language~$A$ held fixed. Its closest crossover counterpart
+ is therefore the frozen-source iteration of Theorem~\ref{ccc:thm:frozen}, not
+ the parallel iteration of Definition~\ref{ccc:def:crossover}.
+\item Nothing here bears on the questions the sibling leaves open, in
+ particular Hughes's singleton insertion-degree no-gap conjecture (his
+ Conjecture~2, the sibling's Question~21.1), as the paragraph after
+ Theorem~\ref{ccc:thm:nogap} already says.
+\end{itemize}
+The sibling report carries a dated remark, under its scope sentence, that
+points to this report.
+
+\subsection{\texorpdfstring{\wtag\ }{}Notation beside the neighbouring texts}
+\label{ccc:sec:notation}
+
+No symbol of the manuscript was renamed. The table lists the readings that
+Hughes's preprint or the sibling report could suggest.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.16\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\toprule
+\textbf{Here} & \textbf{Meaning here} & \textbf{Not to be confused with}\\
+\midrule
+$A\cut B$ & constrained one-point crossover (Definition~\ref{ccc:def:crossover}); the same operation and symbol as Hughes's $\otimes_{\mathrm c}$ &
+Hughes's unconstrained crossover $\otimes_{\mathrm u}$, which contains concatenation and is covered by his Theorem~1\\[3pt]
+$T(L)$, $\gen Lk$ & parallel self-crossover: both parents from generation $k$ &
+$Y_k$, with one parent frozen in~$L$ (Theorem~\ref{ccc:thm:frozen}). Hughes's iterated insertion starts from $B$ and applies $A$ on the left each time, and his iterated crossovers are defined ``as with other operations''; for $A=B=L$ that reading gives $Y_k$, not $\gen Lk$\\[3pt]
+$\rank_L(w)$ & aligned-fragment rank (Definition~\ref{ccc:def:rank}) &
+the sibling's insertion degree $d_{A,B}(w)$, a number of inserted pieces; and the unspecified ``rank condition'' of Hughes's Section~14\\[3pt]
+$d_L(w)$ & generation depth $\lceil\log_2\rank_L(w)\rceil$ \eqref{ccc:eq:depth} &
+the sibling's $d_{A,B}(w)$ (a degree, not a depth) and its iteration depth (a number of applications of $A\sh{}\cdot$)\\[3pt]
+``no gaps'' & the ranks on a slice form $\{1,\ldots,R_L(n)\}$ (Theorem~\ref{ccc:thm:nogap}) &
+the sibling's spectra $\mathcal D(A,B)$, which \emph{can} have gaps, and its iteration depths, which cannot\\[3pt]
+stabilization & some pair of consecutive generations is equal (Corollary~\ref{ccc:cor:stages}) &
+Hughes's ``adjacent equality''; by Lemma~\ref{ccc:lem:monotone} (and likewise for $Y_k$) adjacent equality here is already his ``fixed point''\\[3pt]
+co-r.e.\ & negative instances effectively enumerable; co-r.e.-complete means $\Pi^0_1$-complete &
+r.e.\ (the positive instances)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conventions and the coordinate hull}\label{ccc:sec:definitions}
 
 All alphabets are finite. Put $\N=\{0,1,2,\ldots\}$ and write $\eps$ for the
 empty word. For a word $w$ of length $n$ and $0\leq i\leq j\leq n$,
@@ -211,7 +318,7 @@ $w[i:j]$ denotes positions $i+1,\ldots,j$. Thus the indexing of boundaries is
 zero-based, but the indexing of letters is one-based. Write
 $L_n=L\cap\Sigma^n$.
 
-\begin{definition}[Constrained crossover]\label{def:crossover}
+\begin{definition}[Constrained crossover]\label{ccc:def:crossover}
 For languages $A,B\subseteq\Sigma^*$, define
 \[
  A\cut B=\{wz,yx:wx\in A,\ yz\in B,\ |w|=|y|,\ |x|=|z|\}.
@@ -228,12 +335,12 @@ length and that their cut positions agree. Cuts at either endpoint are
 allowed. On a fixed slice,
 \begin{equation}
  T(L)_n=\bigcup_{i=0}^{n}\pref_i(L_n)\,\suff_{n-i}(L_n).
- \label{eq:slicecrossover}
+ \label{ccc:eq:slicecrossover}
 \end{equation}
 The prefix and suffix in this product may come from different parents, but
 both parents must lie in $L_n$.
 
-\begin{lemma}\label{lem:monotone}
+\begin{lemma}\label{ccc:lem:monotone}
 The map $T$ is monotone and inflationary. Consequently the iterates increase,
 and equality at one pair of consecutive generations implies equality at all
 subsequent generations.
@@ -247,7 +354,7 @@ sides proves the next equality, and induction finishes the argument.
 
 \begin{remark}[Do not change the iteration rule]
 The iteration $X_{k+1}=L\cut X_k$, with one parent frozen in the original
-language, is not the iteration in Definition~\ref{def:crossover}. In
+language, is not the iteration in Definition~\ref{ccc:def:crossover}. In
 particular its resource accounting need not double each generation. The
 self-operation above is inflationary even though an iteration involving two
 different input languages can lose words of lengths absent from one input.
@@ -255,7 +362,16 @@ These distinctions remove any ambiguity suggested by general remarks about
 nonmonotone constrained crossover.
 \end{remark}
 
-\begin{definition}[Coordinate hull]\label{def:hull}
+\wtag\ The general remark meant is in Hughes's Section~2 (p.~2): the series
+produced by iterated constrained crossover, unlike that of unconstrained
+crossover, can drop earlier elements from later sets. With two different
+inputs, as in $X_{m+1}=A\cut X_m$ with $X_0=B\ne A$, it does happen: the words of
+$B$ whose length no word of~$A$ has are lost at the first step. For
+self-crossover it cannot happen under either clock: the parallel iterates
+increase by Lemma~\ref{ccc:lem:monotone}, and the frozen-source iterates of
+Theorem~\ref{ccc:thm:frozen} increase by its formula.
+
+\begin{definition}[Coordinate hull]\label{ccc:def:hull}
 For $n\geq1$ and $1\leq i\leq n$, let
 \[
  P_{n,i}(L)=\{u_i:u\in L_n\}.
@@ -274,11 +390,11 @@ Every crossover preserves membership in the coordinate hull, since it
 introduces no new letter at any position. The converse reachability statement
 will follow from a stronger exact-rank theorem.
 
-\section{Aligned fragments and exact generation depth}\label{sec:rank}
+\section{Aligned fragments and exact generation depth}\label{ccc:sec:rank}
 
 \subsection{The fragment invariant}
 
-\begin{definition}[Aligned fragment and rank]\label{def:rank}
+\begin{definition}[Aligned fragment and rank]\label{ccc:def:rank}
 Fix $w\in\Sigma^n$, $n\geq1$. A nonempty interval $[i,j)$ is
 \emph{$L$-compatible for $w$} if there is $u\in L_n$ with
 $u[i:j]=w[i:j]$.
@@ -286,7 +402,7 @@ The rank $\rank_L(w)$ is the least positive integer $r$ for which there is a
 partition
 \begin{equation}
  0=i_0<i_1<\cdots<i_r=n
- \label{eq:partition}
+ \label{ccc:eq:partition}
 \end{equation}
 whose $r$ intervals are $L$-compatible. If there is no such partition, put
 $\rank_L(w)=\infty$. Set $\rank_L(\eps)=1$ when $\eps\in L$, and $\infty$
@@ -303,11 +419,11 @@ at most $|w|$, because one may split any compatible partition into
 single-letter intervals. The existence of such a singleton partition is
 exactly membership in the coordinate hull.
 
-\begin{theorem}[Exact rank contraction]\label{thm:contraction}
+\begin{theorem}[Exact rank contraction]\label{ccc:thm:contraction}
 For every language $L$ and every word $w$,
 \begin{equation}
  \rank_{T(L)}(w)=\left\lceil\frac{\rank_L(w)}2\right\rceil,
- \label{eq:contraction}
+ \label{ccc:eq:contraction}
 \end{equation}
 where the right side is $\infty$ when $\rank_L(w)=\infty$.
 \end{theorem}
@@ -322,7 +438,7 @@ In particular finite $\rank_{T(L)}(w)$ implies finite $\rank_L(w)$ and
  \rank_{T(L)}(w)\geq\left\lceil\rank_L(w)/2\right\rceil.
 \]
 
-Conversely, take a shortest partition~\eqref{eq:partition} of size $r$.
+Conversely, take a shortest partition~\eqref{ccc:eq:partition} of size $r$.
 Group consecutive fragments in pairs. If two adjacent fragments are witnessed
 by $u,v\in L_n$, cross $u$ with $v$ at their common boundary. The resulting
 word agrees with $w$ throughout their union. A leftover final fragment already
@@ -333,24 +449,24 @@ is infinite. For $w=\eps$, crossover neither creates nor removes the empty
 word, so the convention gives the stated identity.
 \end{proof}
 
-\begin{theorem}[Generation formula and full closure]\label{thm:generation}
+\begin{theorem}[Generation formula and full closure]\label{ccc:thm:generation}
 For every $k\geq0$,
 \begin{equation}
  \gen Lk=\{w:\rank_L(w)\leq2^k\},
  \qquad
  \bigcup_{k\geq0}\gen Lk=\rec(L).
- \label{eq:generation}
+ \label{ccc:eq:generation}
 \end{equation}
 A reachable word of rank $r$ first occurs at generation
 \begin{equation}
  d_L(w)=\lceil\log_2 r\rceil.
- \label{eq:depth}
+ \label{ccc:eq:depth}
 \end{equation}
 Consequently $T(L)=L$ if and only if every nonempty slice $L_n$ is its full
 Cartesian product of coordinate projections.
 \end{theorem}
 \begin{proof}
-Iterating Theorem~\ref{thm:contraction} gives
+Iterating Theorem~\ref{ccc:thm:contraction} gives
 $\rank_{\gen Lk}(w)=\lceil\rank_L(w)/2^k\rceil$ for finite ranks. Membership
 in $\gen Lk$ is equivalent to rank one relative to that language, which proves
 the first formula and the depth formula. Finite rank is equivalent to
@@ -368,7 +484,7 @@ one efficient derivation.
 
 \subsection{There are no missing finite ranks}
 
-\begin{theorem}[No-gap theorem for aligned rank]\label{thm:nogap}
+\begin{theorem}[No-gap theorem for aligned rank]\label{ccc:thm:nogap}
 If $L_n\ne\varnothing$, the ranks attained on $\rec(L)_n$ form exactly
 $\{1,2,\ldots,R_L(n)\}$ for some $R_L(n)$. For $n\geq1$,
 $1\leq R_L(n)\leq n$; for the active zero slice, $R_L(0)=1$.
@@ -398,7 +514,7 @@ conjecture in the repository.
 
 \subsection{Sharp stabilization bounds}
 
-\begin{corollary}\label{cor:stages}
+\begin{corollary}\label{ccc:cor:stages}
 An active slice stabilizes at the exact stage
 \[
  h_L(n)=\lceil\log_2 R_L(n)\rceil.
@@ -411,12 +527,12 @@ least global stage is $\lceil\log_2 M\rceil$; the empty language has stage zero.
 \end{corollary}
 \begin{proof}
 A slice equals its hull exactly when the rank threshold $2^k$ covers its
-largest rank. If it equals its next generation, Lemma~\ref{lem:monotone} and
-Theorem~\ref{thm:generation} imply that it already equals the hull. The global
+largest rank. If it equals its next generation, Lemma~\ref{ccc:lem:monotone} and
+Theorem~\ref{ccc:thm:generation} imply that it already equals the hull. The global
 statement follows by taking the supremum of all finite ranks.
 \end{proof}
 
-\begin{example}[Sharpness with a regular seed]\label{ex:oneone}
+\begin{example}[Sharpness with a regular seed]\label{ccc:ex:oneone}
 Let $L=0^*\cup0^*10^*$, the binary words having at most one $1$. Its hull is
 all of $\{0,1\}^*$, and
 \[
@@ -430,9 +546,9 @@ Thus $R_L(n)=n$ for $n\geq1$, and the logarithmic slice bound is sharp.
 Nevertheless every global inclusion $\gen Lk\subsetneq\gen L{k+1}$ is strict.
 \end{example}
 
-\begin{corollary}[Shortest possible late word]\label{cor:lateword}
+\begin{corollary}[Shortest possible late word]\label{ccc:cor:lateword}
 Every word in $\gen L{k+1}\setminus\gen Lk$ has length at least $2^k+1$.
-For every $k\geq0$, Example~\ref{ex:oneone} attains this lower bound with
+For every $k\geq0$, Example~\ref{ccc:ex:oneone} attains this lower bound with
 $1^{2^k+1}$.
 \end{corollary}
 \begin{proof}
@@ -444,10 +560,10 @@ length. The example has rank equal to the number of $1$'s.
 \subsection{The frozen-source convention is also exactly solvable}
 
 For comparison, let $Y_0=L$ and $Y_{k+1}=L\cut Y_k$, using both children in
-Definition~\ref{def:crossover}. This convention keeps one parent in the seed
+Definition~\ref{ccc:def:crossover}. This convention keeps one parent in the seed
 at every step. It has the same full closure, but a different clock.
 
-\begin{theorem}[Frozen-source generation]\label{thm:frozen}
+\begin{theorem}[Frozen-source generation]\label{ccc:thm:frozen}
 For every $k\geq0$,
 \[
  Y_k=\{w:\rank_L(w)\leq k+1\}.
@@ -483,10 +599,10 @@ boundedness property. Statements about one convention should not silently be
 read as finite-stage statements about the other.
 
 \section{One-step equality is undecidable for context-free inputs}
-\label{sec:undecidable}
+\label{ccc:sec:undecidable}
 
 We use the classical fact that universality of a context-free grammar over a
-fixed binary alphabet is co-r.e.-complete. Appendix~\ref{app:universality}
+fixed binary alphabet is co-r.e.-complete. Appendix~\ref{ccc:app:universality}
 recalls the usual reduction from Post correspondence and explains the
 fixed-alphabet step. Here ``co-r.e.'' means that the negative instances can be
 effectively enumerated; completeness is under computable many-one reductions.
@@ -497,13 +613,13 @@ Let $\Sigma=\{0,1\}$, let $\guard$ be a fresh letter, and put
 $\Gamma=\{0,1,\guard\}$. For any $K\subseteq\Sigma^*$ define
 \begin{equation}
  G_K=(\Gamma^*\setminus 00\Sigma^*)\ \cup\ 00K.
- \label{eq:guardlanguage}
+ \label{ccc:eq:guardlanguage}
 \end{equation}
 This language contains every word involving $\guard$, every word of length
 less than two, and every word not beginning with $00$. The only potentially
 missing words are the words $00x$ with $x\notin K$.
 
-\begin{lemma}[One-cut repair]\label{lem:guard}
+\begin{lemma}[One-cut repair]\label{ccc:lem:guard}
 For every $K\subseteq\{0,1\}^*$,
 \[
  T(G_K)=\Gamma^*,\qquad
@@ -529,14 +645,14 @@ and automaton constructions.
 \end{proof}
 
 \begin{theorem}[Resolution of the one-step decision question]
-\label{thm:cfgclosure}
+\label{ccc:thm:cfgclosure}
 Given a context-free grammar over the fixed alphabet $\{0,1,\guard\}$,
 deciding whether its language satisfies $L\cut L=L$ is co-r.e.-complete.
 This remains true on the effective family in which the first crossover
 generation is the entire free monoid.
 \end{theorem}
 \begin{proof}
-By Lemma~\ref{lem:guard},
+By Lemma~\ref{ccc:lem:guard},
 \[
  T(G_K)=G_K
  \ \Longleftrightarrow\ G_K=\Gamma^*
@@ -556,7 +672,7 @@ internal repair cut. Without a length guard, a missing empty word or
 single-letter word cannot be created by aligned crossover from other words
 of the same length.
 
-\begin{corollary}\label{cor:nobound}
+\begin{corollary}\label{ccc:cor:nobound}
 There is no computable function of grammar-description size bounding the
 length of the shortest counterexample to one-step closure for all
 nonclosed context-free grammars over this fixed alphabet.
@@ -565,11 +681,11 @@ nonclosed context-free grammars over this fixed alphabet.
 Such a bound would allow a finite exhaustive search. For each word length
 below the bound, enumerate all equal-length parents and cuts and use grammar
 membership to test the resulting violations. If no violation were found, the
-bound would certify closure, contradicting Theorem~\ref{thm:cfgclosure}.
+bound would certify closure, contradicting Theorem~\ref{ccc:thm:cfgclosure}.
 \end{proof}
 
 \section{Finite stabilization and an exact block amplification}
-\label{sec:amplification}
+\label{ccc:sec:amplification}
 
 One-step undecidability does not by itself imply undecidability of eventual
 stabilization: the guarded examples above \emph{always} stabilize by stage
@@ -579,7 +695,7 @@ Introduce a fresh separator $\sep$ and put
 $\Delta=\{0,1,\guard,\sep\}$. Define
 \begin{equation}
  B_K=G_K(\sep G_K)^*.
- \label{eq:blocklanguage}
+ \label{ccc:eq:blocklanguage}
 \end{equation}
 Thus a word belongs to $B_K$ exactly when every block between successive
 separators belongs to $G_K$, including the initial and final blocks.
@@ -587,7 +703,7 @@ Empty blocks are allowed because $\eps\in G_K$.
 This construction preserves context-freeness effectively.
 
 \begin{theorem}[Exact rank of repeated forbidden blocks]
-\label{thm:amplification}
+\label{ccc:thm:amplification}
 Suppose $x\notin K$, put $w=00x$, and let $m=|w|\geq2$. For $r\geq1$ define
 \[
  W_r=w(\sep w)^{r-1}.
@@ -597,7 +713,7 @@ Then
  |W_r|=(m+1)r-1,\qquad
  \rank_{B_K}(W_r)=r+1,\qquad
  d_{B_K}(W_r)=\lceil\log_2(r+1)\rceil.
- \label{eq:blockrank}
+ \label{ccc:eq:blockrank}
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -632,7 +748,7 @@ least one position has been replaced, so every block contains a guard and
 belongs to $G_K$. The resulting full word lies in $B_K$ and matches the
 chosen fragment at the required position. Hence the partition is compatible
 and has $r+1$ pieces. The depth formula follows from
-Theorem~\ref{thm:generation}.
+Theorem~\ref{ccc:thm:generation}.
 \end{proof}
 
 The lower bound allows seed words with arbitrary separator placements outside
@@ -640,7 +756,7 @@ the chosen fragment. It does not quietly restrict the minimization to seeds
 with the same global block layout. The separators \emph{inside} an overlong
 fragment, together with the actual word endpoints, force the bad block.
 
-\begin{theorem}[Finite-stabilization undecidability]\label{thm:eventual}
+\begin{theorem}[Finite-stabilization undecidability]\label{ccc:thm:eventual}
 It is undecidable, given a context-free grammar over the fixed four-letter
 alphabet $\Delta$, whether its parallel self-crossover iterates eventually
 stabilize. This holds even under the promise that the language is either
@@ -651,12 +767,12 @@ $\gen Lk=\gen L{k+1}$ is co-r.e.-complete.
 \begin{proof}
 If $K=\{0,1\}^*$, then $G_K=\Gamma^*$ and $B_K=\Delta^*$, so stabilization
 occurs at stage zero. Otherwise fix $x\notin K$ and apply
-Theorem~\ref{thm:amplification}. For every $k\geq0$ the word $W_{2^k}$ has
+Theorem~\ref{ccc:thm:amplification}. For every $k\geq0$ the word $W_{2^k}$ has
 rank $2^k+1$, and therefore
 \begin{equation}
  W_{2^k}\in\gen{B_K}{k+1}\setminus\gen{B_K}k,
  \qquad |W_{2^k}|=(m+1)2^k-1.
- \label{eq:strictwitness}
+ \label{ccc:eq:strictwitness}
 \end{equation}
 Thus $B_K$ satisfies the promise and stabilizes if and only if $K$ is
 universal. This proves undecidability and co-r.e.-hardness for each fixed
@@ -666,24 +782,24 @@ For a fixed $k$, membership in either finite generation is decidable: for a
 candidate word of length $n$, one may enumerate the finite set of seed words
 of length $n$ using grammar membership, then compute crossover $k+1$ times.
 Enumerating words consequently semidecides a failure of the adjacent equality.
-Section~\ref{sec:membership} gives a much faster membership algorithm.
+Section~\ref{ccc:sec:membership} gives a much faster membership algorithm.
 \end{proof}
 
 
 \begin{corollary}[The same decision boundary with a frozen source]
-\label{cor:frozenundecidable}
+\label{ccc:cor:frozenundecidable}
 Finite stabilization is also undecidable for $Y_{k+1}=L\cut Y_k$, and every
 fixed adjacent equality problem $Y_k=Y_{k+1}$ is co-r.e.-complete for CFGs.
 On the nonuniversal side of the block construction, $W_{k+1}$ has frozen-source
 depth $k+1$ and therefore witnesses strictness at stage $k$.
 \end{corollary}
 \begin{proof}
-Theorem~\ref{thm:frozen} turns the exact block rank $r+1$ into depth $r$.
+Theorem~\ref{ccc:thm:frozen} turns the exact block rank $r+1$ into depth $r$.
 Use $r=k+1$ for a fixed-stage witness. The effective reduction and the
-semidecision of failures are the same as in Theorem~\ref{thm:eventual}.
+semidecision of failures are the same as in Theorem~\ref{ccc:thm:eventual}.
 \end{proof}
 
-\begin{proposition}[An arithmetical upper bound]\label{prop:arithmetical}
+\begin{proposition}[An arithmetical upper bound]\label{ccc:prop:arithmetical}
 The set of context-free grammars whose self-crossover sequence eventually
 stabilizes belongs to $\Sigma^0_2$ and is $\Pi^0_1$-hard. No completeness
 claim at level $\Sigma^0_2$ is made here.
@@ -695,17 +811,17 @@ The condition has the form
  \bigl(w\in\gen L{k+1}\Longrightarrow w\in\gen Lk\bigr),
 \]
 with a decidable matrix, uniformly in the grammar, $k$, and $w$.
-Theorem~\ref{thm:eventual} reduces the co-r.e.-complete universality problem
+Theorem~\ref{ccc:thm:eventual} reduces the co-r.e.-complete universality problem
 to this condition, proving $\Pi^0_1$-hardness.
 \end{proof}
 
 \section{Polynomial-time rank computation for a fixed target}
-\label{sec:membership}
+\label{ccc:sec:membership}
 
 Global undecidability is compatible with efficient local membership. The
 aligned-fragment invariant makes this particularly transparent.
 
-\begin{proposition}[Compatibility by constrained parsing]\label{prop:parsing}
+\begin{proposition}[Compatibility by constrained parsing]\label{ccc:prop:parsing}
 Let $G$ be a context-free grammar in Chomsky normal form, of size $g$, and let
 $w$ have length $n\geq1$. All interval-compatibility answers for $w$ can be
 computed in $O(gn^5)$ time. Consequently $\rank_{L(G)}(w)$ and its first
@@ -716,7 +832,7 @@ The bound is in the size after the usual polynomial-time grammar normalization.
 For $0\leq i<j\leq n$, compatibility is equivalent to
 \begin{equation}
  L(G)\cap\Sigma^i\{w[i:j]\}\Sigma^{n-j}\ne\varnothing.
- \label{eq:compatibilityquery}
+ \label{ccc:eq:compatibilityquery}
 \end{equation}
 Run CYK on a length-$n$ string whose positions inside $[i,j)$ are fixed to the
 corresponding letters of $w$ and whose other positions are wildcards. A
@@ -735,7 +851,7 @@ Equivalently,
  D[j]=1+\min\{D[i]:0\leq i<j,\ [i,j)\text{ compatible}\},
 \]
 with the minimum of the empty set equal to $\infty$. This last step takes
-$O(n^2)$ time. The depth is obtained from~\eqref{eq:depth}.
+$O(n^2)$ time. The depth is obtained from~\eqref{ccc:eq:depth}.
 \end{proof}
 
 This algorithm answers membership in $\gen Lk$ even when $k$ is given in
@@ -752,14 +868,14 @@ a context-free description of an intermediate generation. Such a description
 has not been assumed to exist.
 
 \section{Regular inputs: finite-state tests and limitedness}
-\label{sec:regular}
+\label{ccc:sec:regular}
 
 \subsection{One-step closure for deterministic automata}
 
 Let $\mathcal A=(Q,\Sigma,\delta,q_0,F)$ be a complete DFA with $s$ states.
 The completion convention includes a rejecting sink when necessary.
 
-\begin{theorem}[A cubic-state violation graph]\label{thm:dfa}
+\begin{theorem}[A cubic-state violation graph]\label{ccc:thm:dfa}
 One can decide $T(L(\mathcal A))=L(\mathcal A)$ in
 $O(s^3|\Sigma|^2)$ time by graph reachability. If closure fails, there is a
 counterexample word of length at most $2s^3-1$.
@@ -796,13 +912,13 @@ search, assigning zero to the phase change and one to letter transitions,
 finds a shortest child word. The graph tracks the two parents independently
 outside the inherited portions, which is essential for exact-length matching.
 
-\begin{theorem}[NFA complexity]\label{thm:nfa}
+\begin{theorem}[NFA complexity]\label{ccc:thm:nfa}
 For a language given by an NFA, one-step crossover closure is PSPACE-complete,
 already over a fixed three-letter alphabet.
 \end{theorem}
 \begin{proof}
 For hardness, apply the polynomial NFA construction in
-Lemma~\ref{lem:guard} to binary NFA universality. The latter problem is
+Lemma~\ref{ccc:lem:guard} to binary NFA universality. The latter problem is
 PSPACE-complete; fixed-alphabet hardness is classical, and is also available
 under stronger automaton restrictions~\cite{KMT}.
 
@@ -841,7 +957,7 @@ $V_i=\Pre(V_{i+1})$. An interval $w[i:j]$ is compatible exactly when reading
 it from some state in $U_i$ ends in $V_j$.
 
 \begin{theorem}[A finite-state representation of rank]
-\label{thm:distance}
+\label{ccc:thm:distance}
 From an $s$-state complete DFA for $L$ one can construct a distance automaton
 with at most $s4^s$ states, allowing a set of initial states, whose finite-word
 value is
@@ -892,19 +1008,19 @@ $q_0\in F$, agreeing with the rank convention.
 
 There are $2^s\cdot2^s\cdot s=s4^s$ states. Forgetting the weights yields an
 NFA recognizing the finite-rank domain, which is $\rec(L)$ by
-Theorem~\ref{thm:generation}.
+Theorem~\ref{ccc:thm:generation}.
 \end{proof}
 
 \begin{corollary}[Decidable regular-input stabilization]
-\label{cor:regularstability}
+\label{ccc:cor:regularstability}
 Finite stabilization of parallel self-crossover, and of frozen-source
 crossover, is decidable for regular languages. For complete DFA input, the preceding construction and the
 classical limitedness algorithm give an EXPSPACE upper bound in the DFA
 size. This is an upper bound, not a claimed optimal complexity.
 \end{corollary}
 \begin{proof}
-By Corollary~\ref{cor:stages} and Theorem~\ref{thm:frozen}, either form of
-stabilization is equivalent to bounded finite rank. Theorem~\ref{thm:distance} converts this into limitedness of a distance
+By Corollary~\ref{ccc:cor:stages} and Theorem~\ref{ccc:thm:frozen}, either form of
+stabilization is equivalent to bounded finite rank. Theorem~\ref{ccc:thm:distance} converts this into limitedness of a distance
 automaton. Its explicit state and transition description has size
 $2^{\poly(s+|\Sigma|)}$; polynomial space in that size is exponential space
 in the original description size.
@@ -919,21 +1035,21 @@ procedure on the bounded side. This gives an effective answer, not a practical
 implementation of an optimal limitedness solver.
 
 \section{Rational counting for the full closure of every CFL}
-\label{sec:counting}
+\label{ccc:sec:counting}
 
-The regularity conclusion of Theorem~\ref{thm:distance} does not extend to
+The regularity conclusion of Theorem~\ref{ccc:thm:distance} does not extend to
 context-free inputs. A weaker conclusion does, and it is stronger than
 rationality of the ordinary length series: all commuting letter weights may
 be retained.
 
 \subsection{Effective semilinear position supports}
 
-\begin{lemma}\label{lem:positions}
+\begin{lemma}\label{ccc:lem:positions}
 Let $L\subseteq\Sigma^*$ be context-free. For each $a\in\Sigma$, the set
 \begin{equation}
  E_a=\{(i,j)\in\N^2:\exists u\in\Sigma^i,\ v\in\Sigma^j,
                               \ uav\in L\}
- \label{eq:position-support}
+ \label{ccc:eq:position-support}
 \end{equation}
 is effectively semilinear, and hence effectively definable in Presburger
 arithmetic.
@@ -958,17 +1074,17 @@ $P_{n,i+1}(L)=S$ is a Boolean combination of effective Presburger predicates.
 Define the number of positions of each type by
 \begin{equation}
  A_S(n)=\#\{i:0\leq i<n,\ P_{n,i+1}(L)=S\}.
- \label{eq:position-count}
+ \label{ccc:eq:position-count}
 \end{equation}
 
 \begin{lemma}[Eventually affine counts on residue classes]
-\label{lem:affinecounts}
+\label{ccc:lem:affinecounts}
 There are an effectively obtainable period $p\geq1$ and, for each residue
 class, a starting length $N_r$ in that class such that simultaneously for all
 $S\subseteq\Sigma$,
 \begin{equation}
  A_S(N_r+pt)=b_{S,r}+d_{S,r}t\qquad(t\geq0),
- \label{eq:affinecounts}
+ \label{ccc:eq:affinecounts}
 \end{equation}
 with $b_{S,r},d_{S,r}\in\N$.
 Each such progression can also be chosen either entirely active
@@ -988,7 +1104,7 @@ constant first difference along the progression is an integer $d_{S,r}$.
 A negative first difference would eventually make the count negative, so
 $d_{S,r}\geq0$. These procedures are effective: Presburger quantifier
 elimination and the counting construction obtain a representation, and all
-subsequent finite refinements are effective. Appendix~\ref{app:counting}
+subsequent finite refinements are effective. Appendix~\ref{ccc:app:counting}
 also explains the one-parameter affine conclusion directly.
 
 The length set of a context-free language is effectively semilinear by
@@ -1006,7 +1122,7 @@ For commuting variables $\mathbf x=(x_a)_{a\in\Sigma}$ put
 \]
 The series counts distinct words, not derivations or seed representations.
 
-\begin{theorem}[Rational commutative growth]\label{thm:rational}
+\begin{theorem}[Rational commutative growth]\label{ccc:thm:rational}
 For every context-free language $L$, the series $\Phi_L(z,\mathbf x)$ is an
 effectively computable rational function. More precisely, it has a
 representation
@@ -1014,7 +1130,7 @@ representation
  \Phi_L(z,\mathbf x)=P(z,\mathbf x)
    +\sum_{r\in\mathcal R}
        \frac{z^{N_r}C_r(\mathbf x)}{1-z^p D_r(\mathbf x)},
- \label{eq:weightedrational}
+ \label{ccc:eq:weightedrational}
 \end{equation}
 where $P$ is a polynomial, $\mathcal R$ indexes the eventually active
 residue classes, and $C_r,D_r$ are products of powers of the nonzero linear
@@ -1022,7 +1138,7 @@ forms $\sum_{a\in S}x_a$ for $\varnothing\ne S\subseteq\Sigma$.
 In particular, along each sufficiently late active arithmetic progression,
 \begin{equation}
  |\rec(L)_{N_r+pt}|=C_r(\mathbf1)D_r(\mathbf1)^t,
- \label{eq:puregeometric}
+ \label{ccc:eq:puregeometric}
 \end{equation}
 where both constants are positive integers. Inactive progressions have count
 zero.
@@ -1035,9 +1151,9 @@ independent. Hence
  &=\prod_{i=1}^{n}\left(\sum_{a\in P_{n,i}(L)}x_a\right)\notag\\
  &=\prod_{\varnothing\ne S\subseteq\Sigma}
       \left(\sum_{a\in S}x_a\right)^{A_S(n)}.
- \label{eq:positionproduct}
+ \label{ccc:eq:positionproduct}
 \end{align}
-Insert~\eqref{eq:affinecounts}. For $n=N_r+pt$ this becomes
+Insert~\eqref{ccc:eq:affinecounts}. For $n=N_r+pt$ this becomes
 $C_r(\mathbf x)D_r(\mathbf x)^t$, with
 \[
  C_r(\mathbf x)=\prod_{S\ne\varnothing}
@@ -1046,13 +1162,13 @@ $C_r(\mathbf x)D_r(\mathbf x)^t$, with
        \left(\sum_{a\in S}x_a\right)^{d_{S,r}}.
 \]
 Summing this geometric series in $t$ gives its summand
-in~\eqref{eq:weightedrational}. The finitely many lengths before the chosen
+in~\eqref{ccc:eq:weightedrational}. The finitely many lengths before the chosen
 starts, including length zero, supply $P$. Their coordinate sets and activity
 are decidable, so this polynomial is effective. Specializing each $x_a$ to
-one yields~\eqref{eq:puregeometric}.
+one yields~\eqref{ccc:eq:puregeometric}.
 \end{proof}
 
-\begin{corollary}\label{cor:growthrate}
+\begin{corollary}\label{ccc:cor:growthrate}
 The ordinary length generating function of $\rec(L)$ is effectively rational.
 Its coefficients satisfy an effectively computable constant-coefficient
 linear recurrence. If $\rec(L)$ is infinite, its upper exponential growth
@@ -1077,7 +1193,7 @@ eventually affine \emph{number} of positions of each type. The next family
 shows why that distinction is substantive.
 
 \section{A linear context-free seed with a non-context-free closure}
-\label{sec:family}
+\label{ccc:sec:family}
 
 \subsection{Definition, grammar, and position geometry}
 
@@ -1086,18 +1202,18 @@ Fix an integer $q\geq3$ and define a binary seed
  S_q={}&0^*\notag\\
  &\cup\{0^i1\,0^j:j\geq(q-1)i+q-1\}\notag\\
  &\cup\{0^i1\,0^j:i\geq(q-1)j+q-1\}.
- \label{eq:sq}
+ \label{ccc:eq:sq}
 \end{align}
 Every seed has at most one $1$. The asymmetric inequalities allow that $1$
 only in an initial or final portion of the word.
 
-\begin{lemma}\label{lem:linear}
+\begin{lemma}\label{ccc:lem:linear}
 The language $S_q$ is linear context-free. If $n=qm+r$ with
 $0\leq r<q$, then the coordinate hull permits $1$ exactly in the first $m$
 and last $m$ positions.
 \end{lemma}
 \begin{proof}
-For the second language in~\eqref{eq:sq}, use
+For the second language in~\eqref{ccc:eq:sq}, use
 \[
  A\to0A0^{q-1}\mid1\,0^{q-1}Z,\qquad Z\to0Z\mid\eps.
 \]
@@ -1112,17 +1228,17 @@ $\lfloor n/q\rfloor=m$. The second inequality gives the symmetric last $m$
 positions. The all-zero seed allows $0$ everywhere.
 \end{proof}
 
-Write $K_q=\rec(S_q)$. Lemma~\ref{lem:linear} gives the exact description
+Write $K_q=\rec(S_q)$. Lemma~\ref{ccc:lem:linear} gives the exact description
 \begin{equation}
  K_q=\bigcup_{\substack{m\geq0\\0\leq r<q}}
        \{u\,0^{(q-2)m+r}v:u,v\in\{0,1\}^m\}.
- \label{eq:kq}
+ \label{ccc:eq:kq}
 \end{equation}
 For example, at length $10$ and $q=3$ the first and last three positions are
 free, while the middle four positions are zero. There are $2^6=64$ hull
 words, but only seven seed words.
 
-\begin{theorem}[The closure is not context-free]\label{thm:noncfl}
+\begin{theorem}[The closure is not context-free]\label{ccc:thm:noncfl}
 For every $q\geq3$, the language $K_q$ is not context-free, although its seed
 $S_q$ is linear context-free.
 \end{theorem}
@@ -1131,7 +1247,7 @@ Intersect $K_q$ with the regular language $1^+0^+1^+$. A word
 $1^a0^b1^c$ with $a,b,c\geq1$ lies in the intersection exactly when
 \begin{equation}
  (q-1)a\leq b+c,\qquad (q-1)c\leq a+b.
- \label{eq:pumpingconstraints}
+ \label{ccc:eq:pumpingconstraints}
 \end{equation}
 Indeed, the left block of ones fits in the first $\lfloor n/q\rfloor$
 positions exactly when $qa\leq n=a+b+c$, and similarly for the right block.
@@ -1152,7 +1268,7 @@ copies and up to two copies stays in the intersection. If either pumped word
 fails to have three nonempty blocks in the required order, this already is a
 contradiction. Otherwise let $\delta_a,\delta_b,\delta_c$ be the numbers of
 letters removed from the three original blocks by pumping down. The up-pumped
-word adds these same counts. Apply~\eqref{eq:pumpingconstraints} to both
+word adds these same counts. Apply~\eqref{ccc:eq:pumpingconstraints} to both
 pumped words and use equality for $z$. Opposite signs force
 \[
  (q-1)\delta_a=\delta_b+\delta_c,\qquad
@@ -1167,21 +1283,21 @@ The intersection is not context-free, hence neither is $K_q$.
 
 \subsection{Every rank, every generation, and exact counts}
 
-\begin{theorem}\label{thm:familyrank}
+\begin{theorem}\label{ccc:thm:familyrank}
 For $w\in K_q$,
 \begin{equation}
  \rank_{S_q}(w)=\max(1,|w|_1).
- \label{eq:familyrank}
+ \label{ccc:eq:familyrank}
 \end{equation}
 Consequently
 \begin{equation}
  \gen{S_q}k=K_q\cap\{w:|w|_1\leq2^k\}.
- \label{eq:familygeneration}
+ \label{ccc:eq:familygeneration}
 \end{equation}
 For $n=qm+r$, $0\leq r<q$,
 \begin{align}
- |(K_q)_n|&=4^m,\label{eq:familycount}\\
- |(\gen{S_q}k)_n|&=\sum_{j=0}^{2^k}\binom{2m}{j},\label{eq:levelcount}
+ |(K_q)_n|&=4^m,\label{ccc:eq:familycount}\\
+ |(\gen{S_q}k)_n|&=\sum_{j=0}^{2^k}\binom{2m}{j},\label{ccc:eq:levelcount}
 \end{align}
 where $\binom{2m}{j}=0$ for $j>2m$. The exact slice stabilization stage is
 $\lceil\log_2\max(1,2m)\rceil$.
@@ -1190,9 +1306,9 @@ $\lceil\log_2\max(1,2m)\rceil$.
 Any fragment matching a seed contains at most one $1$, so rank is at least
 $\max(1,|w|_1)$. Partition $w$ between its consecutive ones. Each fragment
 then has at most one $1$; if it has one, that position is seed-supported by
-Lemma~\ref{lem:linear}. Fill all other positions of the full word with zero
+Lemma~\ref{ccc:lem:linear}. Fill all other positions of the full word with zero
 to extend the fragment to a seed. A fragment with no ones extends to the
-all-zero seed. This proves~\eqref{eq:familyrank}, including the all-zero and
+all-zero seed. This proves~\eqref{ccc:eq:familyrank}, including the all-zero and
 empty cases under the stated convention.
 
 There are $2m$ free binary coordinates. Choosing which $j$ of them are one
@@ -1205,13 +1321,13 @@ Marking each $1$ by a variable $x$ yields
 \begin{equation}
  \sum_{w\in K_q}z^{|w|}x^{|w|_1}
    =\frac{1+z+\cdots+z^{q-1}}{1-(1+x)^2z^q}.
- \label{eq:familyweighted}
+ \label{ccc:eq:familyweighted}
 \end{equation}
 In particular,
 \begin{equation}
  \sum_{n\geq0}|(K_q)_n|z^n
    =\frac{1+z+\cdots+z^{q-1}}{1-4z^q}.
- \label{eq:familygf}
+ \label{ccc:eq:familygf}
 \end{equation}
 The rational series is exceptionally simple, even though the underlying
 language is not context-free.
@@ -1219,12 +1335,12 @@ language is not context-free.
 \subsection{Sharp recurrence orders of the finite generations}
 
 \begin{theorem}[Exponential growth of minimal recurrence order]
-\label{thm:recurrence}
+\label{ccc:thm:recurrence}
 Fix $q\geq3$ and $k\geq0$, and write $D=2^k$. The ordinary length generating
 function of $\gen{S_q}k$, in reduced form over $\mathbb Q$, has denominator
 \begin{equation}
  (1-z)(1-z^q)^D.
- \label{eq:denominator}
+ \label{ccc:eq:denominator}
 \end{equation}
 Its minimal eventual constant-coefficient recurrence has order $qD+1=q2^k+1$.
 For each fixed $k$, its coefficients grow polynomially of degree $D$, while
@@ -1260,7 +1376,7 @@ $b_D(\lfloor n/q\rfloor)\sim (2^D/(D!q^D))n^D$, whereas
 $|(K_q)_n|=4^{\lfloor n/q\rfloor}$ has exponential rate $4^{1/q}$.
 \end{proof}
 
-For the frozen-source sequence of Theorem~\ref{thm:frozen}, the same
+For the frozen-source sequence of Theorem~\ref{ccc:thm:frozen}, the same
 calculation holds with $D=k+1$ rather than $D=2^k$. Its generation-$k$
 minimal recurrence order is therefore $q(k+1)+1$.
 
@@ -1286,7 +1402,7 @@ $q$ & generation $k$ & rank threshold $2^k$ & polynomial growth degree & recurre
 \end{center}
 
 \section{Verification, reproducibility, and proof boundaries}
-\label{sec:verification}
+\label{ccc:sec:verification}
 
 \subsection{Executed exact audits}
 
@@ -1366,6 +1482,23 @@ implemented as explicit exception-raising checks and remain active under
 \texttt{python -O}. The LaTeX build uses commonly distributed packages,
 including \texttt{newtxtext} and \texttt{newtxmath}.
 
+\wtag\ \emph{Shipped layout.} In the collection the files live at the report
+root,
+\begin{quote}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/}\\
+\nolinkurl{automata-and-formal-languages/constrained-crossover-closure/}.
+\end{quote}
+There, \texttt{notes/provenance.md} and
+\texttt{notes/proof-audit.md} are shipped as \texttt{provenance.md} and
+\texttt{proof-audit.md}, and \texttt{Makefile} as \texttt{code/Makefile}; the
+other paths are unchanged, and all these files are byte-identical to the
+delivery. The delivered README and 23-page PDF are not shipped: the report's
+README replaces the former, and \texttt{article.pdf} is a build of this text.
+The verifier writes \texttt{../data/verification.json} relative to its own
+directory, so run in place it overwrites the shipped receipt; the README gives
+commands for a copy. The build now also uses the \texttt{shuffle} package, for
+the sibling report's operation in Section~\ref{ccc:sec:sibling}.
+
 \subsection{What was not verified or claimed}
 
 No Lean or Rocq kernel has checked the proofs. The external Parikh, Presburger,
@@ -1384,15 +1517,33 @@ Search coverage is not an exhaustive bibliography and is not a proof of
 priority. In particular, the product-hull observation and possible equivalent
 rank formulations deserve review by specialists in recombination systems.
 
+\wtag\ Placement in ProveIt, a repository with Lean and Rocq developments,
+confers no formal status on this report, and none of its statements is
+formalized. ProveIt has no formal development of crossover, aligned rank,
+context-free grammars, Post correspondence, Parikh images, Presburger
+counting or distance-automaton limitedness. The nearest formal neighbour is
+\texttt{Logic/PresburgerArithmetic}, whose Lean development proves Cooper
+quantifier elimination for Presburger arithmetic over~$\mathbb Z$
+(\texttt{PresburgerArithmetic.Formula.holds\_iff\_quantifierEliminate} and the
+decision procedure
+\texttt{PresburgerArithmetic.Formula.presburgerArithmetic\_decidable}, in
+\texttt{Lean/PresburgerArithmetic/Decision.lean}), with an independent Rocq
+proof of the one-variable Cooper step. The effectivity argument of
+Lemma~\ref{ccc:lem:affinecounts} and Appendix~\ref{ccc:app:counting} invokes
+quantifier elimination of this kind but is not connected to that development,
+and the counting theorem it needs is not formalized anywhere in ProveIt. The
+Lean plan of Section~\ref{ccc:sec:lean} is a plan, not an executed
+development.
+
 \section{Further research questions and a formalization plan}
-\label{sec:questions}
+\label{ccc:sec:questions}
 
 The following are proposed research tasks relative to the present results.
-Only the Hughes question identified in Section~\ref{sec:intro} is assigned a
+Only the Hughes question identified in Section~\ref{ccc:sec:intro} is assigned a
 specific published open-problem provenance. The rest are not asserted to be
 newly discovered or globally open without further literature review.
 
-\begin{question}[Exact arithmetical complexity]
+\begin{question}[Exact arithmetical complexity]\label{ccc:q:arithmetical}
 Is finite stabilization of a context-free seed $\Sigma^0_2$-complete? The
 present proof gives a $\Sigma^0_2$ upper bound and $\Pi^0_1$-hardness, not a
 matching lower bound. A stronger construction must encode a genuinely
@@ -1408,7 +1559,7 @@ whether the EXPSPACE upper bound is loose.
 \end{question}
 
 \begin{question}[Two-letter undecidability]
-Can Theorems~\ref{thm:cfgclosure} and~\ref{thm:eventual} be proved over a
+Can Theorems~\ref{ccc:thm:cfgclosure} and~\ref{ccc:thm:eventual} be proved over a
 binary alphabet? Fixed-length coding does not automatically preserve
 one-step crossover: a cut inside a codeword can create spurious children.
 A successful binary encoding must control such internal cuts, not merely
@@ -1432,7 +1583,7 @@ membership bit, so that crossover derivations can be independently checked.
 
 \begin{question}[Which rational counting series occur?]
 Characterize the commutative series realized by context-free recombination
-closures. Theorem~\ref{thm:rational} forces eventual products of linear forms
+closures. Theorem~\ref{ccc:thm:rational} forces eventual products of linear forms
 along arithmetic progressions. This is more restrictive than arbitrary
 rational nonnegative series. Which compatibility constraints on the
 semilinear position supports are necessary and sufficient for realization?
@@ -1459,7 +1610,28 @@ because the three components share one transition structure. Explicit lower
 bound families and state-complexity analyses would be informative.
 \end{question}
 
-\subsection{A realistic Lean development}
+\wtag\ \emph{Bearing on Hughes's Sections~13--14.} Hughes asks, for his
+insertion and shuffle iterations, for the exact arithmetical complexity of
+finite convergence, for restricted language families on which it becomes
+decidable, for whether the least stabilization index can be computed, and for
+a general ``rank condition'' behind his separator proofs; his Section~13 asks
+for which monotone operators eventual reaching of a fixed point is decidable.
+For constrained self-crossover, which is monotone and inflationary
+(Lemma~\ref{ccc:lem:monotone}), the results above give the following
+counterparts. Single-step and each fixed adjacent equality are
+co-r.e.-complete for grammars (Theorems~\ref{ccc:thm:cfgclosure}
+and~\ref{ccc:thm:eventual}); eventual stabilization is in $\Sigma^0_2$ and
+$\Pi^0_1$-hard (Proposition~\ref{ccc:prop:arithmetical}), and Question~\ref{ccc:q:arithmetical}
+asks for the exact level. Regular inputs make stabilization decidable, and
+the least stage is then computable (Corollary~\ref{ccc:cor:regularstability}
+and the paragraph after it); every slice stabilizes by stage
+$\lceil\log_2 n\rceil$ (Corollary~\ref{ccc:cor:stages}). Aligned-fragment rank
+with the separator amplification of Theorem~\ref{ccc:thm:amplification} is a
+rank-based separator argument for this one operation, not the general
+condition Hughes asks for. None of this answers his questions for insertion
+or shuffle.
+
+\subsection{A realistic Lean development}\label{ccc:sec:lean}
 
 A formal development can begin with fixed-length words as functions
 $\operatorname{Fin}(n)\to\Sigma$, avoiding casts between lists of different
@@ -1468,7 +1640,7 @@ parent before $i$ and the second afterwards. A compatible partition is a
 strictly increasing finite boundary list, with one seed witness per interval.
 
 The first milestones should be, in order, the two fragment-transfer lemmas
-used in Theorem~\ref{thm:contraction}, the exact iterate formula, the no-gap
+used in Theorem~\ref{ccc:thm:contraction}, the exact iterate formula, the no-gap
 prefix-replacement argument, and the block-boundary charging lemma. These are
 finite combinatorial statements independent of grammars and automata, and
 would establish the core trusted interface.
@@ -1511,10 +1683,10 @@ mechanisms. Independent proof review, priority checking, and formalization
 are the next steps before treating the draft as a settled research publication.
 
 \appendix
-\section{The classical universality input}\label{app:universality}
+\section{The classical universality input}\label{ccc:app:universality}
 
 For completeness, here is the standard route to the co-r.e.-completeness used
-in Section~\ref{sec:undecidable}. The foundational undecidable problem is Post
+in Section~\ref{ccc:sec:undecidable}. The foundational undecidable problem is Post
 correspondence~\cite{Post}. Take two morphisms $h,g:I^*\to A^*$ and ask whether
 some $x\in I^+$ satisfies $h(x)=g(x)$. The set of positive instances is
 recursively enumerable, and the usual effective computation-history reduction
@@ -1544,11 +1716,11 @@ over that alphabet, set
 where $A_0$ denotes the entire encoding alphabet. The image $c(H)$ is
 context-free and $c(A_0^*)$ is regular. The injective fixed-length code gives
 $H'=\{0,1\}^*$ exactly when $H=A_0^*$. This is a reduction for universality;
-as Section~\ref{sec:questions} emphasizes, it is \emph{not} automatically a
+as Section~\ref{ccc:sec:questions} emphasizes, it is \emph{not} automatically a
 reduction preserving crossover.
 
 \section{Why the positional counts are eventually affine}
-\label{app:counting}
+\label{ccc:app:counting}
 
 The special case of Presburger counting needed here also has a direct
 one-dimensional explanation. After quantifier elimination, a predicate in
@@ -1571,13 +1743,13 @@ count then is affine on a progression. Finite union and disjoint refinement
 preserve that property.
 
 This argument explains both effectivity and the degree-one conclusion of
-Lemma~\ref{lem:affinecounts}; the general counting theorem of Woods supplies a
+Lemma~\ref{ccc:lem:affinecounts}; the general counting theorem of Woods supplies a
 systematic framework. Since counts are nonnegative for all sufficiently large
 parameters and integer-valued, their progression increments are nonnegative
 integers. That final observation is what makes the geometric factors in
-Theorem~\ref{thm:rational} polynomials rather than Laurent expressions.
+Theorem~\ref{ccc:thm:rational} polynomials rather than Laurent expressions.
 
-\section{A compact proof-dependency map}\label{app:dependencies}
+\section{A compact proof-dependency map}\label{ccc:app:dependencies}
 
 \begin{center}\small
 \begin{tabular}{@{}p{.37\textwidth}p{.56\textwidth}@{}}
@@ -1607,6 +1779,38 @@ Exact binomial count; degree of a polynomial; reduced rational denominators.\\
 \end{tabular}
 \end{center}
 
+\section{\texorpdfstring{\wtag\ }{}Provenance of this report}\label{ccc:app:provenance}
+
+\paragraph{One manuscript.} This report is built from a single manuscript,
+manuscript~02 of batch~44 of ProveIt's incoming-report intake:
+\emph{Aligned Fragments and Constrained Crossover}, dated 29 September 2026,
+delivered as the archive \texttt{ProveIt\_Constrained\_Crossover.zip}, which
+arrived in commit \texttt{ae28ea2db} and was placed in commit
+\texttt{203016015}. Its pin is ProveIt commit
+\texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6} (Section~\ref{ccc:sec:intro}).
+The manuscript contributed everything outside the text marked \wtag: every
+result, proof, example, remark, question, limitation and the Lean plan, all
+printed. The package's audit notes and verifier are shipped unchanged beside
+this article (Section~10.2 lists the paths). Its 23-page US-letter PDF and its
+README are not shipped; they survive in the arrival commit.
+
+\paragraph{What the write added.} Everything marked \wtag: the title-page
+note; in Section~\ref{ccc:sec:intro}, where Hughes poses the question, the state
+of the sibling source, and Sections~\ref{ccc:sec:sibling}
+and~\ref{ccc:sec:notation}; the note after Remark~2.3; the notes on the
+shipped layout and on formal status in Section~\ref{ccc:sec:verification}; the
+note on Hughes's Sections~13--14 after the research questions; and this
+appendix. The locations in Hughes's preprint were checked against its
+arXiv~v1 PDF when the report was written.
+
+\paragraph{Choices.} There was no merge, so no result had to be chosen over
+another. Every label received the prefix \texttt{ccc:}, and every reference
+was updated with it. Labels were added only on new text and on
+Question~\ref{ccc:q:arithmetical} and Section~\ref{ccc:sec:lean}; no theorem,
+section or equation number of the manuscript changed. The page size stays US
+letter, as delivered. No symbol was renamed; the \texttt{shuffle} package was
+added for the symbol $\sh$ of the sibling report.
+
 \begin{thebibliography}{9}
 \small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
 \bibitem{Hughes}
@@ -1615,13 +1819,17 @@ Charles E. Hughes.
 Language Operations}.
 arXiv:2608.27755v1, 27 August 2026.
 Definition on printed p.~2; the constrained one-step question on printed p.~3.
+\wtag\ Section~2 (definition), Section~4 (the question, pp.~3--4),
+Section~14 (open directions, p.~12).
 \url{https://arxiv.org/abs/2608.27755v1}.
 
 \bibitem{Repo}
 Vladimir Reshetnikov and ProveIt contributors.
 \emph{ProveIt: Gaps in Bounded-Shuffle Hierarchies}, Parts~I--II.
 Inspected 29 September 2026 at the revision and path specified in
-Section~\ref{sec:intro}. AI-assisted research drafts.
+Section~\ref{ccc:sec:intro}. AI-assisted research drafts.
+\wtag\ The sibling report \texttt{insertion-degree-spectra} of this
+collection (Section~\ref{ccc:sec:sibling}).
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
 
 \bibitem{EGKL}
