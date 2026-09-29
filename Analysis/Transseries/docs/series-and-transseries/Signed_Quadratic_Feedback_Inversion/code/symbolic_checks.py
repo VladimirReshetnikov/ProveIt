@@ -26,5 +26,6 @@ checks['core_cubic_jet']=s.series(H-t,t,0,4).removeO().expand()==0
 checks['core_logarithmic_jet']=s.simplify(q3-c*c/2-(2*L1*w2+s.Rational(3,2)*w2*w2-w2*L2-w3))==0
 assert all(checks.values()),checks
 p=Path(__file__).resolve().parents[1]/'data'/'symbolic_checks.json'
-p.write_text(json.dumps(checks,indent=2))
+# ed. (2026-09-29): newline='\n' keeps LF on Windows (no final newline, as delivered)
+p.write_text(json.dumps(checks,indent=2),newline='\n')
 print(json.dumps(checks,indent=2))

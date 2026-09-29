@@ -168,10 +168,16 @@ def diag(c: list[int], model: Model, cores: dict, orders: list[int]):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--order',type=int,default=240)
-    ap.add_argument('--out',type=Path,default=Path(__file__).resolve().parent)
+    # ed. (2026-09-29): the default output used to be verification/ itself, which
+    # left stray outputs beside the script; a run without --out now writes to
+    # verification/rerun_a<a>/ and can never touch the recorded results_a1/,
+    # results_a2/. Pass --out explicitly to regenerate a recorded directory.
+    ap.add_argument('--out',type=Path,default=None)
     ap.add_argument('--a',type=int,default=1)
     ap.add_argument('--cores',type=int,nargs='*',default=[2,3])
     args=ap.parse_args()
+    if args.out is None:
+        args.out=Path(__file__).resolve().parent/f'rerun_a{args.a}'
     N=args.order
     if N<20: raise SystemExit('Use --order at least 20 for the standard audit')
     args.out.mkdir(parents=True,exist_ok=True)
@@ -199,18 +205,19 @@ def main():
     orders=[n for n in [20,40,80,120,160,240,300,400,600,800] if n<=N]
     if N not in orders: orders.append(N)
     rows=diag(c,model,cores,orders)
+    # ed. (2026-09-29): LF rows on every platform; LF JSON on Windows
     with (args.out/'diagnostics.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
     data={'normalization':'n! times ordinary coefficient','a':args.a,'order':N,
           'inverse':[str(x) for x in c],
           'cores':{str(M):{'Q':[str(x) for x in q],'linear_marker':[str(x) for x in h]} for M,(q,h) in cores.items()},
           'modified_model':{'slopes':list(pert.slopes),'weights':list(pert.weights),'inverse':[str(x) for x in cp]}}
-    (args.out/'exact_coefficients.json').write_text(json.dumps(data,indent=2)+'\n')
+    (args.out/'exact_coefficients.json').write_text(json.dumps(data,indent=2)+'\n',newline='\n')
     report={'exact_assertions_passed':assertions,'order':N,'models':2,
             'elapsed_seconds':round(perf_counter()-start,3),
             'all_inverse_coefficients_negative_from_2_through_N':all(x<0 for x in c[2:]),
             'note':'Finite checks are not proofs of asymptotic limits. Diagnostics use 70-digit mpmath, not intervals.'}
-    (args.out/'audit_report.json').write_text(json.dumps(report,indent=2)+'\n')
+    (args.out/'audit_report.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
     for row in rows: print(row)
 

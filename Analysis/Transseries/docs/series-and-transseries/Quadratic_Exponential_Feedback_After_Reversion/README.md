@@ -5,7 +5,7 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Contents
 
-- `article.pdf`: 24-page article, with complete conventional proofs and a research agenda.
+- `article.pdf`: 25-page article (24 pages as delivered; see "Editorial amendments"), with complete conventional proofs and a research agenda.
 - `article.tex`: standalone editable LaTeX source; bibliography is included in the source.
 - `verification/verify.py`: exact integer-normalized inverse and marked-core recurrences,
   independent partition-formula and rational-substitution checks, and decimal diagnostics.
@@ -14,7 +14,9 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 - `provenance/sources.json`: pinned repository source, bibliography, and dependency boundaries.
 - `provenance/validation.json`: actual computational and PDF-build checks.
 - `requirements.txt`: the decimal-diagnostic dependency. Exact arithmetic uses the standard library.
-- `SHA256SUMS.txt`: checksums for the packaged files (excluding the checksum file itself).
+- The delivered checksum ledger `SHA256SUMS.txt` was verified in full on
+  filing (batch 49) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 49 row).
 
 ## Main result
 
@@ -76,6 +78,11 @@ through every degree. Decimal ratios use 70-digit mpmath, not intervals.
 Wall-clock timings in audit reports depend on the runtime and may differ
 on rerun.
 
+The two commands above regenerate the recorded directories in place. Run
+without `--out`, the program writes to `verification/rerun_a<a>/` (for
+example `verification/rerun_a1/`), never into `results_a1/` or
+`results_a2/` (an editorial change of 2026-09-29; see below).
+
 ## Scope and dependencies
 
 The main inverse theorem, sharp core error, borderline slope constant, and
@@ -95,3 +102,47 @@ numerical universal starting index, growing-core uniformity, all-direction
 summability theorem, or evaluation of the divergent positive-argument
 feedback kernel is asserted. Eventual negativity is not negativity at
 every low order: for a=1, v_3=1/2.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 49 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: three visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs (an unnumbered environment, so the article's own numbering is
+  unchanged), each preceded by a `% ed. (2026-09-29)` comment. At the end
+  of Section 1.1: the proof is claimed and unreviewed; it answers, for the
+  inverse series, the negative-ray article's question "Signed coefficient
+  asymptotics and actual least error"
+  (`../Negative_Ray_Summation_Exponential_Feedback/article.tex`, lines
+  1372-1381), which it does not cite; and it is consistent with the later
+  weighted-type package `../Sharp_Weighted_Type_Formal_Reversion/`, whose
+  inverse limsup `4` for `lambda_j = j^2` the ratio law would upgrade to a
+  limit. After Theorem `thm:main`: a second, independent claimed proof of
+  the same conjecture is `../Signed_Quadratic_Feedback_Inversion/`
+  (signed exceptions, exact tail `a j^2`); neither set of hypotheses
+  contains the other, and the two packages' exact inverse coefficients
+  agree at every common degree (through 220 for `a = 1`, 180 for `a = 2`;
+  rechecked on filing). After Theorem `thm:borel`: its forward counterpart
+  is the regularity article's `thm:borelintro`
+  (`../Exponential_Feedback_Regularity_Classification/article.tex`, lines
+  288-303), which it does not cite. Four bibliography entries `ed:reg`,
+  `ed:nrs`, `ed:swt`, `ed:sqf` were added and the widest bibliography label
+  widened from `9` to `99`. No existing label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source (25 pages; the delivered
+  PDF had 24). Line numbers of `article.tex` after the first insertion
+  point differ from those of the delivered file.
+  `provenance/validation.json` describes the delivered 24-page build and
+  was left unchanged.
+- `verification/verify.py`: the default `--out` was the script's own
+  directory `verification/`, so a run without `--out` wrote stray outputs
+  beside the script; it is now `verification/rerun_a<a>/`, which cannot
+  touch the recorded runs. The CSV writer passes `lineterminator='\n'` and
+  the JSON writers `newline='\n'`, so reruns emit LF on every platform.
+  Both recorded commands were rerun on a copy (Windows, mpmath 1.3.0):
+  `diagnostics.csv` and `exact_coefficients.json` were byte-identical to
+  the filed files in both directories, and `audit_report.json` differed
+  only in `elapsed_seconds`.
+- `README.md`: the page count, the ledger bullet (below), the paragraph on
+  the default output directory, and this section.
+- The delivered `SHA256SUMS.txt` is not filed (see "Contents").

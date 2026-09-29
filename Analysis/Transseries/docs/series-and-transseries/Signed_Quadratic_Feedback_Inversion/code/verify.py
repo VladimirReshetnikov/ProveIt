@@ -160,16 +160,18 @@ def main():
                 row['minus_v_over_two_core_response']=mp.nstr(-mp.mpf(v[n])/L,20)
             rows.append(row)
         print(name,'computed through',args.order,'elapsed',round(time.time()-started,2),flush=True)
-    (args.output/'exact_coefficients.json').write_text(json.dumps(exact))
+    # ed. (2026-09-29): LF rows on every platform; LF JSON on Windows (the JSON files
+    # still end without a final newline, exactly as delivered)
+    (args.output/'exact_coefficients.json').write_text(json.dumps(exact),newline='\n')
     with (args.output/'diagnostics.csv').open('w',newline='') as f:
         fields=sorted({key for row in rows for key in row})
-        writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');writer.writeheader();writer.writerows(rows)
     report={'exact_checks':checks,'number_of_exact_checks':len(checks),
             'order':args.order,'scenarios':[s[0] for s in scenarios],
             'elapsed_seconds':round(time.time()-started,3),
             'note':'Exact checks are finite algebraic tests, not proofs of asymptotic theorems. '
                    'Asymptotic diagnostics use floating-point mpmath, not interval arithmetic.'}
-    (args.output/'verification.json').write_text(json.dumps(report,indent=2))
+    (args.output/'verification.json').write_text(json.dumps(report,indent=2),newline='\n')
     print(json.dumps(rows,indent=2))
 
 if __name__=='__main__':main()

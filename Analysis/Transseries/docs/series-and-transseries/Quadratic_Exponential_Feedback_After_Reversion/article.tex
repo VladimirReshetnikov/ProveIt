@@ -30,6 +30,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes, so that the article's own numbering is unchanged
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
 \newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
 \newcommand{\Uhat}{\widehat U}\newcommand{\Vhat}{\widehat V}
@@ -142,6 +144,28 @@ The source ranges inspected include its definitions, principal theorems,
 formal coefficient identity, reversion discussion, diagnostics, and precise
 conjecture. This is not an audit of every report, branch, or incoming archive
 in the repository.
+
+% ed. (2026-09-29): editorial note on status and on uncited or later repository material (negative-ray and regularity articles; weighted-type package)
+\begin{ednote}
+The claimed proof below has not been independently reviewed; a second,
+independent claimed proof of the same conjecture is \cite{ed:sqf} (see the
+note after Theorem~\ref{thm:main}). The inspected snapshot also contained
+two articles that this one does not cite. The negative-ray article
+\cite{ed:nrs} asks, in its research question ``Signed coefficient
+asymptotics and actual least error''
+(\path{Negative_Ray_Summation_Exponential_Feedback/article.tex},
+lines 1372--1381), for a signed asymptotic equivalent of the inverse
+coefficients in the quadratic case; Theorem~\ref{thm:main} answers that
+part for the inverse (its $\widehat Q$ is $\Vhat$ here, $a=1$), while the
+series $\widehat P$ and the actual least truncation error there are not
+treated. The regularity article \cite{ed:reg} proves the forward analogue
+of Theorem~\ref{thm:borel}; see the note after that theorem. The later
+weighted-type package \cite{ed:swt} (batch~48), which could not be seen
+from this snapshot, proves for $\lambda_j=j^2$ that the normalized
+roots $(\abs{v_n}\log(n+\ee)^{2n}/n!)^{1/n}$ have limsup $4$; the ratio
+law \eqref{eq:ratio} below is consistent with that value and would upgrade
+the limsup to a limit.
+\end{ednote}
 
 \subsection{Why an inverse-first argument is different}
 
@@ -260,6 +284,25 @@ leading equivalent. Neither do the individual finite slopes $\lambda_j$
 for $j\ge2$. Their effects appear at smaller orders. Finite changes to
 $\lambda_1$ or $w_2$ are exceptional because they change $\mu$.
 
+% ed. (2026-09-29): editorial note naming the second, independent claimed proof (batch 49) and the checked agreement
+\begin{ednote}
+A second, independent claimed proof of \eqref{eq:target} is
+\cite{ed:sqf}, Theorem~\texttt{thm:main}, written from the same snapshot
+without knowledge of this article (neither cites the other; neither
+has been independently reviewed). It resums an analytic inverse core and
+bounds the signed tail by an exact quadratic merger defect. Its hypotheses
+differ and neither set contains the other: it allows arbitrary real
+(possibly negative) changes of finitely many weights and slopes, but an
+exact tail $aj^2$, with factor $\exp(-(\lambda_1+w_2)r_n/a)$, which is
+\eqref{eq:main} at $d=0$. Its exact inverse coefficients equal those
+recorded here at every common degree (through $220$ for $a=1$ and $180$
+for $a=2$), and its positive-ray Borel equivalent is
+\eqref{eq:borel-main} at $d=0$. It also proves the one-action criterion
+($M=1$ suffices exactly when $w_2=0$) and a maximum-modulus equivalent for
+the Borel transform; the affine and borderline slope tails and the sharp
+error of every fixed core (Theorem~\ref{thm:sharp}) are proved only here.
+\end{ednote}
+
 \subsection{Finite cores and their sharp defects}
 
 For each fixed $M\ge1$ let $Q_M$ be the analytic solution near zero of
@@ -340,6 +383,23 @@ In particular it has infinite entire-function order and is not of
 exponential type on the positive ray. The ordinary positive-direction
 Borel--Laplace integral diverges for every positive Laplace parameter.
 \end{theorem}
+
+% ed. (2026-09-29): editorial note: forward analogue in the regularity article (uncited) and the later sibling results
+\begin{ednote}
+The forward counterpart is Theorem~\texttt{thm:borelintro} of the
+regularity article \cite{ed:reg}
+(\path{Exponential_Feedback_Regularity_Classification/article.tex},
+lines 288--303): for $\lambda_j=j^2$ its ordinary Borel transform
+satisfies $\log\log\Bcal_U(t)\sim2\sqrt t$. Since $R\sim\sqrt{at}$,
+\eqref{eq:borel-main} gives the same double-logarithmic rate
+$2\sqrt{at}$ for the inverse; the full equivalent, with its prefactor,
+is new here. The same equivalent at $d=0$ is
+Theorem~\texttt{thm:borel} of \cite{ed:sqf}, which adds that the maximum
+modulus on $\abs{z}=R$ has the same equivalent. The weighted-type package
+\cite{ed:swt} proves the corresponding maximum-modulus limsup
+$\limsup\log\log\max_{\abs{z}=r}\abs{\Bcal_V(z)}/\sqrt r=2$ for
+$\lambda_j=j^2$.
+\end{ednote}
 
 \section{Exact formal algebra before asymptotics}
 \label{sec:formal}
@@ -1747,7 +1807,8 @@ both the leading inverse equivalent and the much sharper error of a small
 explicit core. This separates the hard global cancellation step from the
 local algebra which determines the first neglected interaction.
 
-\begin{thebibliography}{9}
+% ed. (2026-09-29): widest label 9 -> 99, since the editorial entries bring the list to eleven
+\begin{thebibliography}{99}
 \bibitem{repo}
 Vladimir Reshetnikov, \emph{ProveIt}, transseries project and documentation,
 repository snapshot
@@ -1794,5 +1855,32 @@ G. A. Edgar, Transseries for beginners,
 \emph{Real Analysis Exchange} \textbf{35}(2) (2009--2010), 253--310.
 \href{https://people.math.osu.edu/edgar/preprints/trans_begin/}{Author's publication page}.
 \href{https://arxiv.org/abs/0801.4877}{arXiv:0801.4877}.
+
+% ed. (2026-09-29): editorial bibliography entries for the repository articles cited in the editorial notes
+\bibitem{ed:reg}
+[Editorial addition] \emph{A sharp regularity classification for
+countable exponential-feedback transseries}, research draft prepared for
+Vladimir Reshetnikov, ProveIt, filed in batch~45 (in the inspected
+snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}.
+
+\bibitem{ed:nrs}
+[Editorial addition] \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries}, research article prepared for Vladimir
+Reshetnikov, ProveIt, filed in batch~47 (in the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
+
+\bibitem{ed:swt}
+[Editorial addition] \emph{Sharp Weighted Type Under Formal Reversion},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~48 (after the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}.
+
+\bibitem{ed:sqf}
+[Editorial addition] \emph{Signed Quadratic-Feedback Inversion: A
+Finite-Core Resolution and Sharp Entire Borel Growth}, research draft
+prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/article.tex}.
+A second, independent claimed proof, not independently reviewed.
 \end{thebibliography}
 \end{document}

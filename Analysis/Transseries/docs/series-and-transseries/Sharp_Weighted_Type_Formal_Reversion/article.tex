@@ -30,6 +30,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes, so that the article's own numbering is unchanged
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
@@ -46,6 +48,8 @@
 \newcommand{\commit}{\nolinkurl{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}}
 \hypersetup{pdftitle={Sharp Weighted Type Under Formal Reversion},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Exact weighted type, formal inversion, feedback transseries, Borel growth, non-D-finiteness}}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, which removes the pre-existing duplicate destination page.1 (titlepage resets the page counter)
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{13mm}
@@ -99,6 +103,7 @@ publication priority, and a solution of a named longstanding conjecture,
 are not claimed.
 \end{minipage}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \setcounter{tocdepth}{1}
 \tableofcontents
 \vspace{9mm}
@@ -241,6 +246,30 @@ and the negative-ray report's summary were consulted. It was not a
 claim-by-claim audit of the full canonical volume or a complete publication
 priority search. The general theorem and its applications are proposed for
 independent mathematical review.
+
+% ed. (2026-09-29): editorial note on uncited repository material (the regularity article's own question, the finite-core package, thm:borelintro) and on the scope of "sharp"/"exact"
+\begin{ednote}
+(i) The gap closed here is also posed in \cite{feedback} itself, as its
+research question ``Exact type under compositional inversion''
+(\path{Exponential_Feedback_Regularity_Classification/article.tex},
+lines 1463--1468); this article cites only the corresponding README
+sentence. (ii) The inspected snapshot already contained the finite-core
+package \cite{ed:fcu} (filed in batch~47), which this article does not
+cite. For $\lambda_j=aj^p$ with $p>2$ its Theorem~\texttt{thm:explicit}
+proves $v_n\sim-u_n$ for the inverse coefficients, which already implies
+the inverse type of Theorem~\ref{thm:refinedfeedback} in that case
+($\beta=0$). The results here are new for $1<p\le2$, for $\beta\ne0$, and
+for nonnegative slopes without regular variation. The question
+``Full inverse asymptotics for quadratic feedback'' in
+Section~\ref{sec:questions} re-poses that package's Conjecture
+\texttt{conj:quadratic-inverse}; see the note there. (iii) For $\beta=0$
+the forward half of Theorem~\ref{thm:borelgrowth} is Theorem
+\texttt{thm:borelintro} of \cite{feedback}; see the note after it.
+(iv) ``Sharp'' and ``exact'' in the title and abstract refer to limsup
+($n$th-root) types, radii of convergence and maximum-modulus limsups.
+Limits, signs and subexponential factors of the inverse coefficients are
+not claimed here.
+\end{ednote}
 
 \section{Log-convex weights and coefficient type}
 \label{sec:weights}
@@ -1115,6 +1144,24 @@ where the same entire function grows much more slowly. This is
 consistent with the separate negative-direction result in
 \cite{negativeray}.
 
+% ed. (2026-09-29): editorial note: the forward half duplicates thm:borelintro of the regularity article; later claimed limits for the inverse (batch 49)
+\begin{ednote}
+For $\beta=0$ the forward half of Theorem~\ref{thm:borelgrowth} is
+Theorem~\texttt{thm:borelintro} of \cite{feedback}
+(\path{Exponential_Feedback_Regularity_Classification/article.tex},
+lines 288--303), with the same constant $K^{1/p}=a^{1/p}p/(p-1)$; for
+these positive coefficients that theorem even gives a limit along the
+positive ray, which is the maximum modulus. The new content is the inverse
+transform $B_{m,\Q}$ and the range $\beta\ne0$. For $\lambda_j=aj^2$ two
+later packages (batch~49) claim a limit for the inverse:
+\cite{ed:sqf}, Theorem~\texttt{thm:borel}, gives
+$-(\B\Q)(R)\sim\mathcal M_{\B\Q}(R)$ with an explicit equivalent and
+$\log\log\mathcal M_{\B\Q}(r)/\sqrt r\to2\sqrt a$ (the value $2$ of
+\eqref{eq:quadraticgrowth} when $a=1$), and \cite{ed:qef},
+Theorem~\texttt{thm:borel}, gives the same positive-ray equivalent. Both
+are unreviewed and consistent with the limsup proved here.
+\end{ednote}
+
 \section{Non-D-finiteness and analytic-normal-form obstructions}
 \label{sec:holonomic}
 
@@ -1396,6 +1443,26 @@ The two-sided inverse argument used here deliberately avoids that issue;
 a complete answer likely requires control of cancellation between
 Lagrange blocks.
 
+% ed. (2026-09-29): editorial note: this question is the finite-core package's conjecture, for which two claimed proofs were filed in batch 49
+\begin{ednote}
+The stronger target is Conjecture~\path{conj:quadratic-inverse} of
+\cite{ed:fcu}
+(\path{Finite_Core_Universality_Exponential_Feedback/article.tex},
+lines 1661--1667): $q_n\sim-S_n\exp(-(1+1/a)r_n)$ for $\lambda_j=aj^2$,
+with $r_n(1+r_n)\ee^{2r_n}=an$ and the explicit saddle quantity $S_n$
+defined there. This article neither proves nor
+contradicts it, since the factors separating it from the forward
+equivalent are $\ee^{o(n)}$. Two later packages (batch~49) each claim a
+proof, independently and under different hypotheses: \cite{ed:qef},
+Theorem~\texttt{thm:main}, and \cite{ed:sqf}, Theorem~\texttt{thm:main};
+neither has been independently reviewed. If correct, they answer both
+parts of this question for $\lambda_j=j^2$: the inverse coefficients are
+eventually negative with that equivalent, and \cite{ed:sqf},
+Corollary~\texttt{cor:gevrey}, gives
+$\log(|q_n|/n!)=-2n\log\log n+n\log(4a)+o(n)$, so the normalized roots
+in \eqref{eq:quadratic} converge to $4$.
+\end{ednote}
+
 \subsection{Angular Borel growth and summation}
 
 Determine the directional growth of $\B\Q(re^{i\theta})$ rather than
@@ -1581,7 +1648,8 @@ are Lagrange inversion, log-convex majorization, root tests, and D-finite
 coefficient translations. The proposed contribution is their zero-loss
 combination, the sharp weight threshold, and the feedback consequences.
 
-\begin{thebibliography}{9}
+% ed. (2026-09-29): widest label 9 -> 99, since the editorial entries bring the list to eleven
+\begin{thebibliography}{99}
 \small
 \addcontentsline{toc}{section}{References}
 
@@ -1633,5 +1701,27 @@ Matem\'aticas \textbf{110} (2016), no.~1, 17--32.
 David Sauzin, \emph{Introduction to 1-summability and resurgence},
 lecture notes, 2014, arXiv:1405.0356.
 \url{https://arxiv.org/abs/1405.0356}.
+
+% ed. (2026-09-29): editorial bibliography entries for the sibling packages cited in the editorial notes
+\bibitem{ed:fcu}
+[Editorial addition] \emph{Finite-Core Universality and Sharp Large Order
+for Countable Exponential-Feedback Transseries}, research article prepared
+for Vladimir Reshetnikov, ProveIt, filed in batch~47 (before this
+article's snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Finite_Core_Universality_Exponential_Feedback/article.tex}.
+
+\bibitem{ed:qef}
+[Editorial addition] \emph{Quadratic Exponential Feedback after Reversion:
+Cancellation, Finite-Core Universality, and Sharp Borel Growth}, research
+article prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Quadratic_Exponential_Feedback_After_Reversion/article.tex}.
+Claimed proof, not independently reviewed.
+
+\bibitem{ed:sqf}
+[Editorial addition] \emph{Signed Quadratic-Feedback Inversion: A
+Finite-Core Resolution and Sharp Entire Borel Growth}, research draft
+prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/article.tex}.
+Claimed proof, not independently reviewed.
 \end{thebibliography}
 \end{document}

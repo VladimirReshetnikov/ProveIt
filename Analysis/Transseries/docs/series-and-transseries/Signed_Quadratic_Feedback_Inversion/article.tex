@@ -30,6 +30,8 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes, so that the article's own numbering is unchanged
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
 \newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
 \newcommand{\U}{\widehat U}\newcommand{\V}{\widehat V}
@@ -120,13 +122,40 @@ series in $q$. A finite part of that series can be inverted analytically.
 Only the remaining large actions are expanded. This separates the
 cancellation-producing background from the combinatorial tail estimate.
 
-The inspected repository tree was
+% ed. (2026-09-29): "tree" -> "commit"; the identifier is a commit (the batch-47 catalogue commit), not a Git tree object
+The inspected repository commit was
 \path{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
 The relevant \texttt{article.tex} blob was
 \path{c2b6faf623003111e9d9e6bbb162a67429f3ce42}.
 The bibliography and package provenance file give the exact path. The
 inspection was targeted, not an exhaustive audit of all branches or incoming
 research archives.
+
+% ed. (2026-09-29): editorial note on status and on uncited or later repository material (negative-ray and regularity articles; weighted-type package)
+\begin{ednote}
+The claimed proof below has not been independently reviewed; a second,
+independent claimed proof of the same conjecture is \cite{ed:qef} (see the
+note after Theorem~\ref{thm:main}). The inspected snapshot also contained
+two articles that this one does not cite. The negative-ray article
+\cite{ed:nrs} asks, in its research question ``Signed coefficient
+asymptotics and actual least error''
+(\path{Negative_Ray_Summation_Exponential_Feedback/article.tex},
+lines 1372--1381), for a signed asymptotic equivalent of the inverse
+coefficients in the quadratic case; Theorem~\ref{thm:main} answers that
+part for the inverse (the case $a=1$ with no exceptions), while the series
+$\widehat P$ and the actual least truncation error there are not treated.
+The regularity article \cite{ed:reg}, Theorem~\texttt{thm:borelintro}
+(\path{Exponential_Feedback_Regularity_Classification/article.tex},
+lines 288--303), proves the forward analogue of Theorem~\ref{thm:borel},
+$\log\log B_{\mathcal U}(t)\sim2\sqrt t$ for $\lambda_j=j^2$, the same
+rate as \eqref{eq:Bgrowth} at $a=1$. The later weighted-type package
+\cite{ed:swt} (batch~48), which could not be seen from this snapshot,
+proves for $\lambda_j\sim aj^2$ that the normalized roots
+$(|v_n|\log(n+\ee)^{2n}/n!)^{1/n}$ have limsup $4a$ and that
+$\limsup\log\log\max_{|z|=R}|B(z)|/\sqrt R=2\sqrt a$ ($4$ and $2$ for
+$\lambda_j=j^2$); in the pure model Corollary~\ref{cor:gevrey} and
+\eqref{eq:Bgrowth} upgrade both limsups to limits with the same values.
+\end{ednote}
 
 \subsection{Established tools and the proposed contribution}
 Lagrange inversion is classical; we use its formal and parameter-dependent
@@ -219,6 +248,27 @@ The theorem concerns formal coefficients. For $t>0$ and $q\ne0$, the
 quadratic tail in \eqref{eq:direct} does not even tend to zero in modulus.
 Thus no claim about an ordinary positive-real inverse obtained by summing
 that kernel is implicit in the theorem.
+
+% ed. (2026-09-29): editorial note naming the other, independent claimed proof (batch 49) and the checked agreement
+\begin{ednote}
+A second, independent claimed proof of \eqref{eq:target} is
+\cite{ed:qef}, Theorem~\texttt{thm:main}, written from the same snapshot
+without knowledge of this article (neither cites the other; neither has
+been independently reviewed). It inverts the kernel first, groups the
+exact tree expansion by large actions and merges multiple large actions in
+a positive majorant. Its hypotheses differ and neither set contains the
+other: it requires nonnegative changes of finitely many weights and
+slopes, but allows eventual slopes $aj^2+dj+e$, with factor
+$\exp((d-\lambda_1-w_2)r_n/a)$, which is \eqref{eq:main} at $d=0$. Its
+exact inverse coefficients equal the ones recorded here at every common
+degree (through $220$ for $a=1$ and $180$ for $a=2$), and its positive-ray
+Borel equivalent is the one in Theorem~\ref{thm:borel}. It also proves the
+sharp relative error of every fixed core with at least two actions and
+the constant $\ee^{\kappa/(2a)}$ for a slope perturbation
+$\kappa j/\log j$; the signed exceptions, the one-action criterion of
+Theorem~\ref{thm:two} and the maximum-modulus equivalent are proved only
+here.
+\end{ednote}
 
 For a fixed $M\ge1$, define the analytic core and its inverse by
 \begin{equation}
@@ -1357,5 +1407,32 @@ arXiv:1405.0356 (2014).
 \bibitem{edgar}
 G. A. Edgar, \emph{Transseries for beginners}, arXiv:0801.4877 (2008).
 \url{https://arxiv.org/abs/0801.4877}.
+
+% ed. (2026-09-29): editorial bibliography entries for the repository articles cited in the editorial notes
+\bibitem{ed:qef}
+[Editorial addition] \emph{Quadratic Exponential Feedback after Reversion:
+Cancellation, Finite-Core Universality, and Sharp Borel Growth}, research
+article prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Quadratic_Exponential_Feedback_After_Reversion/article.tex}.
+A second, independent claimed proof, not independently reviewed.
+
+\bibitem{ed:nrs}
+[Editorial addition] \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries}, research article prepared for Vladimir
+Reshetnikov, ProveIt, filed in batch~47 (in the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
+
+\bibitem{ed:reg}
+[Editorial addition] \emph{A sharp regularity classification for
+countable exponential-feedback transseries}, research draft prepared for
+Vladimir Reshetnikov, ProveIt, filed in batch~45 (in the inspected
+snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}.
+
+\bibitem{ed:swt}
+[Editorial addition] \emph{Sharp Weighted Type Under Formal Reversion},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~48 (after the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}.
 \end{thebibliography}
 \end{document}

@@ -4,7 +4,8 @@
 
 Repository: VladimirReshetnikov/ProveIt.
 
-Observed root tree/commit identifier:
+Observed commit identifier (editorial correction, 2026-09-29: the delivered
+wording said "root tree/commit"; the identifier is a commit):
 `0c973d8f5e7ef4550f4df1bf486d890037fd9f14`.
 
 Inspected source path:

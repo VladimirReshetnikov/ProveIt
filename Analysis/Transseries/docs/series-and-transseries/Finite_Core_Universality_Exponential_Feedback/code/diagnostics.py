@@ -94,9 +94,10 @@ def main():
             print(f"p={p:g},n={n}: core ratio {row['u_over_finite_core']:.9g}, "
                   f"bare {row['u_over_bare']:.9g}, correction {row['u_over_first_correction']:.9g}",flush=True)
         np.savez_compressed(data/f'log_coefficients_p{p:g}.npz',n=np.arange(args.order+1),log_u=lu)
+    # ed. (2026-09-29): LF rows on every platform; LF JSON on Windows
     with (data/'saddle_diagnostics.csv').open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
     (data/'numerical_verification.json').write_text(json.dumps({'order':args.order,
         'powers':args.powers,'rows':rows,'runtime_seconds':time.perf_counter()-start,
-        'scope':'IEEE double precision, no interval arithmetic; asymptotic diagnostics only.'},indent=2)+'\n')
+        'scope':'IEEE double precision, no interval arithmetic; asymptotic diagnostics only.'},indent=2)+'\n',newline='\n')
 if __name__=='__main__':main()

@@ -3,7 +3,8 @@
 
 Research draft prepared for Vladimir Reshetnikov, 29 September 2026.
 
-This package contains a 20-page article, its self-contained LaTeX source,
+This package contains a 21-page article (20 pages as delivered; see
+"Editorial amendments"), its self-contained LaTeX source,
 exact-arithmetic verification programs, and recorded diagnostic data.
 
 ## Main result
@@ -45,7 +46,7 @@ growth at infinity, despite the absence of finite Borel singularities.
 
 ## Contents
 
-- `article.pdf`: final 20-page article.
+- `article.pdf`: the article, rebuilt with editorial notes (21 pages).
 - `article.tex`: complete source, including bibliography and numerical table.
 - `code/verify.py`: integer-normalized recurrence, independent finite
   composition checks, and numerical comparison values.
@@ -54,12 +55,15 @@ growth at infinity, despite the absence of finite Borel singularities.
 - `data/diagnostics.csv`: signed ratios to the asymptotic equivalent and,
   in the pure cases, to the exact two-action one-tail response.
 - `data/verification.json`, `data/symbolic_checks.json`: check results.
-- `data/run.log`: recorded coefficient/diagnostic run.
+- `data/run.log`: recorded standard output of `code/verify.py --order 220`
+  (a rerun differs only in its timing lines).
 - `PROOF_STATUS.md`: theorem scope, dependencies, and limitations.
 - `SOURCES.md`, `PROVENANCE.json`: source attribution and repository snapshot.
 - `BUILD_REPORT.json`: software versions and build/check summary.
 - `requirements.txt`, `build.sh`: reproduction aids.
-- `SHA256SUMS`: hashes of the delivered files other than the manifest itself.
+- The delivered checksum ledger `SHA256SUMS` was verified in full on
+  filing (batch 49) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 49 row).
 
 ## Reproduction
 
@@ -122,3 +126,50 @@ The article ends with twelve research questions, including sharp two-core
 remainders, full higher-order expansions, effective onset bounds,
 subquadratic feedback, complex Borel growth, acceleration, and Lean
 formalization. No ProveIt file, branch, issue, or pull request was modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 49 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: two visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs (an unnumbered environment, so the article's own numbering is
+  unchanged), each preceded by a `% ed. (2026-09-29)` comment. At the end
+  of Section 1.1: the proof is claimed and unreviewed; it answers, for the
+  inverse series, the negative-ray article's question "Signed coefficient
+  asymptotics and actual least error"
+  (`../Negative_Ray_Summation_Exponential_Feedback/article.tex`, lines
+  1372-1381); its Borel theorem parallels the regularity article's
+  `thm:borelintro` (`../Exponential_Feedback_Regularity_Classification/article.tex`,
+  lines 288-303), neither of which it cites; and `cor:gevrey` and
+  `eq:Bgrowth` upgrade to limits the two limsups of the later weighted-type
+  package `../Sharp_Weighted_Type_Formal_Reversion/`. After Theorem
+  `thm:main`: a second, independent claimed proof of the same conjecture is
+  `../Quadratic_Exponential_Feedback_After_Reversion/` (nonnegative
+  exceptions, affine and borderline slope tails); neither set of
+  hypotheses contains the other, and the two packages' exact inverse
+  coefficients agree at every common degree (through 220 for `a = 1`, 180
+  for `a = 2`; rechecked on filing). In Section 1.1 the sentence "The
+  inspected repository tree was ..." now says "commit": the identifier is a
+  commit, not a Git tree. Four bibliography entries `ed:qef`, `ed:nrs`,
+  `ed:reg`, `ed:swt` were added. No existing label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source with `build.sh`'s three
+  pdflatex passes (21 pages; the delivered PDF had 20). Line numbers of
+  `article.tex` after the first insertion point differ from those of the
+  delivered file. `BUILD_REPORT.json` describes the delivered 20-page build
+  and was left unchanged.
+- `SOURCES.md`: "Observed root tree/commit identifier" corrected to
+  "Observed commit identifier", with a note. `PROVENANCE.json` keeps its
+  delivered key `observed_root_tree`; its value is that same commit.
+- `code/verify.py`, `code/symbolic_checks.py`: the CSV writer passes
+  `lineterminator='\n'` and the JSON writers `newline='\n'`, so reruns emit
+  LF on every platform (the JSON files still end without a final newline,
+  as delivered). Rerun on a copy (`--order 220`, Windows, mpmath 1.3.0,
+  sympy 1.14.0): `exact_coefficients.json`, `diagnostics.csv` and
+  `symbolic_checks.json` were byte-identical to the filed files;
+  `verification.json` differed only in `elapsed_seconds`, and the standard
+  output only in the four timing lines of `data/run.log`. The default
+  output directory `data/` and default order 220 are those of the recorded
+  run, so a default rerun reproduces it.
+- `README.md`: the page count, the `data/run.log` and ledger bullets under
+  "Contents", and this section.

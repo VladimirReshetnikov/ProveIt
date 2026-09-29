@@ -113,3 +113,47 @@ preasymptotic behavior and does not use it to infer the limit.
 
 Neither the script nor this package accesses the network or modifies
 upstream repository files.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 48 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: three visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs (an unnumbered environment, so the article's own numbering is
+  unchanged), each preceded by a `% ed. (2026-09-29)` comment.
+  At the end of Section 1.4: the gap closed here is also the regularity
+  article's own research question "Exact type under compositional
+  inversion" (`../Exponential_Feedback_Regularity_Classification/article.tex`,
+  lines 1463-1468), cited here only through its README; the uncited
+  finite-core package `../Finite_Core_Universality_Exponential_Feedback/`
+  (filed in batch 47, before this article's snapshot) already implies the
+  inverse type of `thm:refinedfeedback` for `lambda_j = a j^p`, `p > 2`;
+  and "sharp" and "exact" refer to limsup types, radii and
+  maximum-modulus limsups. After Theorem `thm:borelgrowth`: its forward
+  half at `beta = 0` is the regularity article's `thm:borelintro`
+  (lines 288-303), with the same constant; for `lambda_j = a j^2` the two
+  batch-49 packages claim limits for the inverse. At the research question
+  "Full inverse asymptotics for quadratic feedback": it re-poses the
+  finite-core package's `conj:quadratic-inverse`, which this article
+  neither proves nor contradicts, and for which
+  `../Quadratic_Exponential_Feedback_After_Reversion/` and
+  `../Signed_Quadratic_Feedback_Inversion/` (batch 49) each claim a proof,
+  unreviewed. Three bibliography entries `ed:fcu`, `ed:qef`, `ed:sqf` were
+  added and the widest bibliography label widened from `9` to `99`. The
+  title page no longer creates a PDF page anchor (`pageanchor=false` around
+  it), which removes the delivered build's duplicate destination `page.1`.
+  No existing label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source (23 pages; the delivered
+  PDF had 22). Line numbers of `article.tex` after the first insertion
+  point differ from those of the delivered file.
+- `data/build_validation.json`: `pdf_sha256`, `source_sha256` and
+  `pdf_pages` were recomputed for the rebuilt `article.pdf` and the amended
+  `article.tex`, and match the filed files; an `editorial_rebuild` field
+  says so. Its other fields describe the delivered build. Any later PDF
+  rebuild (`make pdf`) makes the PDF digest stale again, since pdfTeX
+  embeds the build date.
+- `code/verify.py`: the CSV writers pass `lineterminator='\n'` and the
+  text writers `newline='\n'`, so a rerun on any platform emits LF, like
+  the filed files. Rerun on a copy (`--order 70`, Windows): all four
+  outputs were byte-identical to the filed files.
