@@ -125,14 +125,14 @@ following changes were made on 2026-09-29; everything else is as delivered.
   At the end of Section 1.4: the gap closed here is also the regularity
   article's own research question "Exact type under compositional
   inversion" (`../Exponential_Feedback_Regularity_Classification/article.tex`,
-  lines 1463-1468), cited here only through its README; the uncited
+  lines 1544-1549), cited here only through its README; the uncited
   finite-core package `../Finite_Core_Universality_Exponential_Feedback/`
   (filed in batch 47, before this article's snapshot) already implies the
   inverse type of `thm:refinedfeedback` for `lambda_j = a j^p`, `p > 2`;
   and "sharp" and "exact" refer to limsup types, radii and
   maximum-modulus limsups. After Theorem `thm:borelgrowth`: its forward
   half at `beta = 0` is the regularity article's `thm:borelintro`
-  (lines 288-303), with the same constant; for `lambda_j = a j^2` the two
+  (lines 301-316), with the same constant; for `lambda_j = a j^2` the two
   batch-49 packages claim limits for the inverse. At the research question
   "Full inverse asymptotics for quadratic feedback": it re-poses the
   finite-core package's `conj:quadratic-inverse`, which this article

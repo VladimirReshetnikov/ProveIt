@@ -139,9 +139,9 @@ following changes were made on 2026-09-29; everything else is as delivered.
   inverse series, the negative-ray article's question "Signed coefficient
   asymptotics and actual least error"
   (`../Negative_Ray_Summation_Exponential_Feedback/article.tex`, lines
-  1372-1381); its Borel theorem parallels the regularity article's
+  1423-1432); its Borel theorem parallels the regularity article's
   `thm:borelintro` (`../Exponential_Feedback_Regularity_Classification/article.tex`,
-  lines 288-303), neither of which it cites; and `cor:gevrey` and
+  lines 301-316), neither of which it cites; and `cor:gevrey` and
   `eq:Bgrowth` upgrade to limits the two limsups of the later weighted-type
   package `../Sharp_Weighted_Type_Formal_Reversion/`. After Theorem
   `thm:main`: a second, independent claimed proof of the same conjecture is

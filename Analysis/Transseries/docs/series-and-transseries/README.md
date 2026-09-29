@@ -3,8 +3,8 @@
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are thirty-four unmerged
-arrivals of 2026-09-29, each filed whole with its PDF (see "Arrivals of
-2026-09-29" below).
+arrivals of 2026-09-29, each filed whole with its PDF and then amended
+editorially (see "Arrivals of 2026-09-29" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -298,9 +298,23 @@ hyperbolic Fekete designs, answers a question of the Fabius report
 the "transseries" of its title are convergent elliptic and modular
 expansions.
 
+All thirty-five packages, the Fekete one included, were then amended in
+place by an editorial pass on 2026-09-29. Unnumbered "Editorial note
+(ProveIt, 2026-09-29)" blocks, which leave each article's own numbering
+unchanged, record corrections, related repository results that the author
+did not cite, and later packages that answer or overlap its questions. The
+verification programs now write LF line endings and keep partial reruns
+away from the recorded outputs, retired checksum ledgers are no longer
+listed, figures with Type 3 fonts were regenerated, and every PDF was
+rebuilt from its amended source. Every change to an article source is
+marked by a `% ed.` comment, each package README lists its amendments, and
+the delivered archives remain in the repository history
+(`docs/incoming/README.md`, batches 45 to 49). Page and line counts and line
+citations below refer to the amended files; the volumes are unchanged.
+
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
-Substitution Group* (23-page A4 PDF, 1,559-line source, an exact SymPy and
+Substitution Group* (25-page A4 PDF, 1,701-line source, an exact SymPy and
 100-digit mpmath check program). It continues the canonical volume's
 extension chapter and answers three of its open-problem remarks. For
 `plt:rmk:ext-open-burmann` (`transseries_and_inversion.tex:29941-29952`) it
@@ -319,18 +333,18 @@ read the pre-split `main` source on 2026-09-29.
 
 [`Critical_Transseries_Moving_Fold/`](Critical_Transseries_Moving_Fold/)
 holds *Critical Transseries at a Moving Fold: a uniform two-sheet atlas,
-large-sector crossover, and resonant action splitting* (24-page A4 PDF,
-1,661-line source, an exact SymPy and 100-digit check program). It
+large-sector crossover, and resonant action splitting* (25-page A4 PDF,
+1,737-line source, an exact SymPy and 100-digit check program). It
 continues the reversion article directly above, filed with it. It answers
 that article's Research question 11.8 ("Sharp complex transition near the
-core critical point", `reversion_and_one_exponential.tex:1459-1465`) for
+core critical point", `reversion_and_one_exponential.tex:1562-1568`) for
 `δ + log(1 + δ/w) + wz e^{−δ} = 0` in the independent-parameter local chart.
 The results are an exact holomorphic two-sheet atlas, the moving critical
 value `z_c(s) = s²/2 + s³/3 + 5s⁴/8 + ⋯` (`s = w + 1`), all-order profiles
 with a geometric error bound at the branch point, and the crossover
 `a_n(τ/n)/a_n(0) → e^{−2τ/3}`. For analytic folds driven by finitely many
 exponential actions (the article's question on several actions and
-resonances, `:1396-1404`) it gives a convergent, resonance-aware
+resonances, `:1448-1456`) it gives a convergent, resonance-aware
 representation with a finite positive support grid. The fixed-coupling
 specialization `z = e^{−w}/w` at its core critical point is explicitly not
 covered. It read the reversion article from Vladimir's library before
@@ -341,11 +355,11 @@ as related finite algebra only.
 
 [`Reversion_Beyond_Archimedean_Valuations/`](Reversion_Beyond_Archimedean_Valuations/)
 holds *Reversion Beyond Archimedean Valuations: strong Hahn convergence,
-sharp Newton depth, and minimal finite coefficient certificates* (28-page
-A4 PDF, 1,974-line source, an exact rational and SymPy check program with
+sharp Newton depth, and minimal finite coefficient certificates* (30-page
+A4 PDF, 2,082-line source, an exact rational and SymPy check program with
 its recorded output). It answers the reversion article's research question
 "Beyond Archimedean exponent groups"
-(`reversion_and_one_exponential.tex:1427-1437`) for Hahn power–logarithmic
+(`reversion_and_one_exponential.tex:1493-1502`) for Hahn power–logarithmic
 series over an arbitrary ordered exponent group, given a fixed positive
 shift `h` and an additive character `χ` with `χ(h) = 1` that define the
 derivative. "Non-Archimedean" refers to the exponent group, not to an
@@ -354,12 +368,13 @@ positive support word, which Higman's argument keeps finite without an
 Archimedean hypothesis. With it the article keeps the reversion article's
 ordinary Lagrange–Bürmann sum and its Newton recursion, now measured in
 word depth; that recursion is the reversion article's own rate
-(`:494-497`), which the article presents as sharper without citing it. New are the proof that the depth
+(`:524-527`), which the article presents as sharper without citing it;
+an editorial note now credits it. New are the proof that the depth
 `2^{n+1} − 1` is attained, by `u + z/(1 + u) = 0`, and the criterion that
 valuation convergence holds uniformly exactly when the multiples of the
 least support exponent are cofinal; strong Hahn convergence holds in every
 case. It also answers the algebraic part of that article's
-support-certificate question (`:1467-1472`): every finite coefficient
+support-certificate question (`:1589-1594`): every finite coefficient
 request factors through a minimal finite-rank quotient, and finite
 supports have rational weight certificates. A rank-two support of depth
 `n² + k + 1` has no positive real grading, and every superadditive depth
@@ -375,7 +390,8 @@ without logarithmic blocks, or its machine-checked word lemmas
 `Surreal.HahnSeries.finite_words_of_sum_eq` and
 `Surreal.HahnSeries.finite_wordsWithSum`
 (`Algebra/SurrealNumbers/Surreal/HahnSeries/Neumann.lean`,
-`NeumannWords.lean`). Derivations with monomial-dependent shifts, such as
+`NeumannWords.lean`). Editorial notes of 2026-09-29 in the article now
+record all of these. Derivations with monomial-dependent shifts, such as
 those of full logarithmic–exponential transseries fields, are not covered;
 nor are analytic realization, Borel summability or resurgence. It cites the
 Neumann declarations of
@@ -384,7 +400,7 @@ foundations only. It joins the reversion article's merge unit.
 
 [`Exponential_Feedback_Regularity_Classification/`](Exponential_Feedback_Regularity_Classification/)
 holds *A Sharp Regularity Classification for Countable Exponential-Feedback
-Transseries* (23-page A4 PDF, 1,659-line source, an exact standard-library
+Transseries* (25-page A4 PDF, 1,788-line source, an exact standard-library
 coefficient program with NumPy/SciPy envelope diagnostics). For
 `U(q) = Σ_{j≥1} q^j exp(λ_j U(q))` it proves the following: the solution
 converges exactly when `λ_j = O(j)`; there is an exact factorial-normalized
@@ -403,13 +419,13 @@ resurgence remarks (`:29986-30015`).
 [`Near_Linear_Boundary_Exponential_Feedback/`](Near_Linear_Boundary_Exponential_Feedback/)
 holds *The Near-Linear Boundary of Exponential Feedback: a self-consistent
 Lambert law, coefficient large deviations, and a cascade of Borel-growth
-resonances* (25-page A4 PDF, 1,574-line source, an exact-rational check
+resonances* (26-page A4 PDF, 1,624-line source, an exact-rational check
 program with 467 assertions and floating normalizer diagnostics). It
 answers the regularity article's question "The near-linear transition"
-(`Exponential_Feedback_Regularity_Classification/article.tex:1455-1461`)
+(`Exponential_Feedback_Regularity_Classification/article.tex:1519-1525`)
 for slopes `λ_j = jL(j)` with `L` slowly varying and unbounded, and with
 exponentially controlled positive amplitudes `c_j`, a restricted case of
-that article's amplitude question (`:1470-1483`). With
+that article's amplitude question (`:1569-1582`). With
 `b e^b = L(n/(1+b))` it proves `u_n^{1/n} ~ c_1 e^{b_n}`, zero factorial
 type at every Gevrey order, and a large-deviation principle for the
 Lagrange composition length with rate `r − 1 − log r`. Every
@@ -422,12 +438,12 @@ each such resonance. A multiplicative equivalent for `u_n` is not claimed.
 
 [`Finite_Core_Universality_Exponential_Feedback/`](Finite_Core_Universality_Exponential_Feedback/)
 holds *Finite-Core Universality and Sharp Large Order for Countable
-Exponential-Feedback Transseries* (26-page A4 PDF, 1,974-line source, exact
+Exponential-Feedback Transseries* (27-page A4 PDF, 2,098-line source, exact
 standard-library coefficient checks through order 300, NumPy/SciPy saddle
 diagnostics and a table program). The regularity article leaves open a
 local limit theorem, the fluctuation scale and a full multiplicative
-asymptotic (`article.tex:755-758`, `:1446-1453`), and its reversion theorem
-transfers only the Gevrey class (`:1463-1468`). For `λ_j = a j^p`, `p > 1`,
+asymptotic (`article.tex:768-771`, `:1488-1495`), and its reversion theorem
+transfers only the Gevrey class (`:1544-1549`). For `λ_j = a j^p`, `p > 1`,
 with finitely many nonnegative changes, this article keeps `M` actions in
 an analytic core and one further action by linear response. The resulting
 coefficients are asymptotic to `u_n` exactly when `M(p − 1) > 1`. A coupled
@@ -441,11 +457,11 @@ inverse law at `p = 2` is stated only as a conjecture. The data files hold
 
 [`Negative_Ray_Summation_Exponential_Feedback/`](Negative_Ray_Summation_Exponential_Feedback/)
 holds *Negative-Ray Summation of Countable Exponential-Feedback
-Transseries* (23-page A4 PDF, 1,591-line source, an exact-rational check
+Transseries* (24-page A4 PDF, 1,655-line source, an exact-rational check
 program with rational enclosures, and a majorant diagnostic). The
 regularity article proves neither a uniform Gevrey remainder nor a
 directional Borel summation (its `README.md`, and the questions at
-`article.tex:1426-1433` and `:1495-1507`). For unit amplitudes and any
+`article.tex:1445-1452` and `:1607-1619`). For unit amplitudes and any
 slopes `λ_j ≥ 0`, this article proves five equivalent conditions:
 `λ_j = O((j log j)²)`; `U` is Gevrey-1; its compositional inverse `Q` is
 Gevrey-1; `U` is finely Borel–Laplace summable in direction `π`; and so is
@@ -462,10 +478,10 @@ threshold agrees with the regularity article's Gevrey-type identity at
 
 [`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/`](Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/)
 holds *Beyond Finite-Action Folds: Critical Hahn Transseries, Stable
-Sector Asymptotics, and Sharp Action Budgets* (24-page A4 PDF, 1,700-line
+Sector Asymptotics, and Sharp Action Budgets* (25-page A4 PDF, 1,799-line
 source, exact checks, 75-digit constants and a probability recurrence
 through `n = 4096`). It extends the moving-fold article's finite-action
-critical inversion (`Critical_Transseries_Moving_Fold/article.tex:1045`)
+critical inversion (`Critical_Transseries_Moving_Fold/article.tex:1051`)
 to countably many actions, for the feedback kernel with linear slopes and
 power-law amplitudes `a_j = a j^{−1−α}`, `1 < α < 2`. At the critical
 coupling the boundary is not analytic, and its exponent is `1/α`, not a
@@ -478,17 +494,18 @@ the `n`-th coefficient asymptotically exactly when `M_n/n^{1/α} → ∞`; at th
 critical scale an explicit infinitely divisible profile gives the loss. It
 also computes the critical-value and curvature drift of the finite folds. It
 does not settle the moving-fold article's higher-multiplicity question
-(`:1453-1459`), and it does not cite the regularity article's amplitude
-question, of which it treats the case `λ_j = j`.
+(`:1490-1496`), and it does not cite the regularity article's amplitude
+question, of which it treats the case `λ_j = j`; an editorial note now
+records it.
 
 [`Microscopic_Condensation_Exponential_Feedback/`](Microscopic_Condensation_Exponential_Feedback/)
 holds *Microscopic Condensation in Exponential-Feedback Transseries: sharp
 coefficients, Gaussian–Poisson limits, finite-perturbation universality,
-and refined Borel growth* (22-page A4 PDF, 1,554-line source, an exact
+and refined Borel growth* (24-page A4 PDF, 1,647-line source, an exact
 integer-recurrence program with coefficients through degree 256 for four
 slope sequences, and mpmath ratio diagnostics). It answers the regularity
 article's question "Beyond logarithmic coefficient asymptotics"
-(`Exponential_Feedback_Regularity_Classification/article.tex:1446-1453`)
+(`Exponential_Feedback_Regularity_Classification/article.tex:1488-1495`)
 for slopes `λ_j = j² + αj + ηj/log j + o(j/log j)` with arbitrary
 nonnegative initial slopes. With `r_n(r_n+1)e^{2r_n} = n` and
 `b = 1 + λ_1` it proves
@@ -501,23 +518,24 @@ two-dimensional local limit and a central limit theorem for the number of
 factors. Changing only `λ_1` multiplies the coefficients by
 `exp((λ_1 − λ̃_1) r_n²)`. It also gives multiplicative equivalents for the
 positive-axis Borel transform and for the least term `min_n u_n tⁿ`. It was
-written before the finite-core article above was filed and does not cite
-it. For eventually exact `j²` its coefficient equivalent is the `p = 2`,
-`a = 1` case of that article's first-correction formula
-(`Finite_Core_Universality_Exponential_Feedback/article.tex:1077-1082`),
+written before the finite-core article above was filed; its author text
+does not cite it, and an editorial note now does. For eventually exact `j²`
+its coefficient equivalent is the `p = 2`, `a = 1` case of that article's
+first-correction formula
+(`Finite_Core_Universality_Exponential_Feedback/article.tex:1106-1111`),
 and its least-term index is that article's. New here are the `α` and `η`
 terms, the rate, the Poisson law of the twos at diverging intensity (which
-that article asks for at `:1699-1711`), the Borel equivalent and the value
+that article asks for at `:1773-1785`), the Borel equivalent and the value
 of the least term. Negative-direction summability, an analytic remainder
 theorem and the inverse series are not claimed.
 
 [`Poisson_Layers_Finite_Core_Boundary/`](Poisson_Layers_Finite_Core_Boundary/)
 holds *Poisson Layers at the Finite-Core Boundary of Exponential-Feedback
-Transseries* (20-page A4 PDF, 1,387-line source, an exact-rational check
+Transseries* (20-page A4 PDF, 1,433-line source, an exact-rational check
 program with 288 assertions, and NumPy/SciPy saddle and coefficient
 diagnostics). It continues the finite-core article's questions on the
 finite background cloud and on critical boundaries
-(`Finite_Core_Universality_Exponential_Feedback/article.tex:1681-1711`), for
+(`Finite_Core_Universality_Exponential_Feedback/article.tex:1746-1785`), for
 `λ_j = a j^p` outside a finite core of `M` actions. Marking each occurrence
 of the first omitted action `M + 1` by `s`, it proves
 `u_n(s) = w_{n,M} exp(s ν_{n,M})(1 + o(1))` throughout `(M+1)(p − 1) > 1`,
@@ -526,8 +544,8 @@ uniformly on compact parameter sets, with the core-independent intensity
 the boundary `p = 1 + 1/M` the missing factor is `exp(r_n^{M+1}/a^M)`,
 which grows like the exponential of `(log n)^{M+1}`. This agrees with the
 finite-core article's statement that the ratio tends to zero there
-(`:226-247`), and sums that article's one-occurrence lower bound
-(`:982-992`) exactly. A finite Poisson limit occurs only in the moving
+(`:228-245`), and sums that article's one-occurrence lower bound
+(`:1011-1021`) exactly. A finite Poisson limit occurs only in the moving
 window `p_n = 1 + 1/M + ((M+1) log log n + θ)/(M log n)`, above the
 boundary and outside that article's fixed-parameter theorem, with parameter
 `e^{−θ}/(a^M (M+1)^{M+1})`. The article also proves total-variation
@@ -543,11 +561,11 @@ above proves that for `λ_j = j²`.
 [`Sharp_Negative_Direction_Summability_Exponential_Feedback/`](Sharp_Negative_Direction_Summability_Exponential_Feedback/)
 holds *Sharp negative-direction summability for countable exponential
 feedback: a coefficient-to-remainder principle, optimal logarithmic
-scales, and sectorial inversion* (19-page A4 PDF, 1,287-line source, an
+scales, and sectorial inversion* (20-page A4 PDF, 1,365-line source, an
 exact standard-library program through degree 120 and mpmath finite-action
 diagnostics). It answers the regularity article's question on uniform
 Gevrey remainders for the sectorial solution
-(`Exponential_Feedback_Regularity_Classification/article.tex:1495-1507`)
+(`Exponential_Feedback_Regularity_Classification/article.tex:1607-1619`)
 for all slopes `λ_j ≥ 0`: for every `s > 0`,
 `|U(q) − Σ_{n<N} u_n qⁿ| ≤ C Aᴺ (N!)ˢ |q|ᴺ` holds on every proper left
 sector exactly when `λ_j = O((j log(j+1))^{s+1})`. After the change of
@@ -556,7 +574,7 @@ ties its Taylor coefficients to the Lagrange coefficients. For every
 `k > 1` a classical sectorial characterization, which the article imports,
 then gives `k`-summability in direction `π` exactly when
 `λ_j = O((j log(j+1))^{1+1/k})`, with sum the canonical solution; this
-answers the directional question (`:1426-1433`) in the subquadratic range.
+answers the directional question (`:1445-1452`) in the subquadratic range.
 For slopes comparable to `j^p (log(e+j))^β` it finds the optimal
 factorial–logarithmic weight and truncation-error bounds. The same holds
 for the compositional inverse. The Gevrey and convergence criteria are
@@ -564,18 +582,19 @@ proved again, independently of the regularity article. It leaves the
 quadratic case `k = 1` open and does not cite the negative-ray article
 above, which its snapshot contains and which proves fine Borel summability
 in direction `π` for `λ_j = O((j log j)²)`; it proposes that article's
-inversion-first method as future work. Neither article settles
-summability in an open sector of directions; for `λ_j = j²` the
-natural-boundaries article below shows that it fails. Sharp constants and lower
-bounds for the remainder are not claimed.
+inversion-first method as future work. Editorial notes now record the
+negative-ray article and the natural-boundaries article below. Neither
+article settles summability in an open sector of directions; for `λ_j = j²`
+the natural-boundaries article below shows that it fails. Sharp constants
+and lower bounds for the remainder are not claimed.
 
 [`Sharp_Weighted_Type_Formal_Reversion/`](Sharp_Weighted_Type_Formal_Reversion/)
 holds *Sharp Weighted Type Under Formal Reversion: zero-loss inversion,
 exact Borel radii, and non-D-finiteness in countable exponential feedback*
-(22-page A4 PDF, 1,637-line source, a standard-library exact-rational check
+(23-page A4 PDF, 1,727-line source, a standard-library exact-rational check
 program and floating-point diagnostics labelled as such). It answers the
 regularity article's question "Exact type under compositional inversion"
-(`Exponential_Feedback_Regularity_Classification/article.tex:1463-1468`),
+(`Exponential_Feedback_Regularity_Classification/article.tex:1544-1549`),
 citing only that package's README sentence that reversion transfers class
 membership, not the numerical type. Its core theorem does not depend on the
 kernel: for a positive log-convex weight `M` with `M_0 = 1`,
@@ -589,28 +608,29 @@ restates verbatim, and obtains the inverse Gevrey type
 `1/(4A)` with `A = limsup λ_j/(j log j)²`, and the refined inverse type
 `a(p/(p−1))^p` for `λ_j ~ a j^p (log j)^β` (`4` for `λ_j = j²`). For
 integer `p` it gives the growth of both Borel transforms, whose forward half
-is the regularity article's `thm:borelintro` (`:288-303`), and it proves
+is the regularity article's `thm:borelintro` (`:301-316`), and it proves
 that `U` and its inverse are not D-finite. The radius is consistent with
 the negative-ray article's continuation region `|ζ| + Re ζ < 1/(2A)`. It
 does not cite the finite-core article above, although its snapshot
-contains it. For `p > 2` that article's `v_n ~ −u_n`
-(`Finite_Core_Universality_Exponential_Feedback/article.tex:360-364`)
-already implies the refined inverse type. At `p = 2` the conjectured
-inverse equivalent (`:1662-1667`) differs from the forward one by a factor
+contains it; an editorial note now does. For `p > 2` that article's
+`v_n ~ −u_n`
+(`Finite_Core_Universality_Exponential_Feedback/article.tex:376-380`)
+already implies the refined inverse type. At `p = 2` the conjectured inverse
+equivalent (`:1705-1710`) differs from the forward one by a factor
 `e^{o(n)}`, so this article neither settles nor contradicts it; it does
 settle the exponential scale for `1 < p ≤ 2`, which that article leaves
-open. Limits (as opposed to limsups), coefficient signs, angular
-summability and differential transcendence are not claimed.
+open. Limits (as opposed to limsups), coefficient signs, angular summability
+and differential transcendence are not claimed.
 
 [`Logarithmic_Critical_Endpoint_Lambert_Charts/`](Logarithmic_Critical_Endpoint_Lambert_Charts/)
 holds *The Logarithmic Critical Endpoint: Convergent Lambert Charts,
-All-Order Sector Laws, and Sharp Action-Cutoff Corrections* (28-page A4
-PDF, 1,874-line source, exact symbolic checks, and floating-point
+All-Order Sector Laws, and Sharp Action-Cutoff Corrections* (29-page A4
+PDF, 1,950-line source, exact symbolic checks, and floating-point
 diagnostics through sector index `n = 65536` checked against an 80-digit
 recurrence). It treats the upper endpoint `α = 2` of the critical Hahn
 article above, weights `a_j = a j^{−3}` outside a finite prefix, and
 answers the fixed-endpoint half of that article's Question 4
-(`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1467-1472`);
+(`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1502-1507`);
 the joint limit `α ↑ 2` with `n` stays open. It read that article from
 Vladimir's library before it was filed. The pole of `Γ(−α)` cancels a
 divergent quadratic coefficient and leaves `x² log(1/x)`, and the critical
@@ -623,7 +643,7 @@ budget `√n` separate: the retained fraction tends to `exp(−1/(2s²))` at
 form a Poisson process with intensity `x^{−3} dx`. The finite-fold drift is
 given to all inverse-logarithmic orders, with an explicit condition for
 exponentiating it, which answers that article's Question 7 at this endpoint
-(`:1489-1494`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
+(`:1551-1556`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
 `r ≥ −1`. Its constants agree with the `α → 2` limits of the critical Hahn
 article's normal form, budget and fold drift. The Gaussian and
 extreme-value mechanism is credited to Janson. Numerical values are
@@ -632,36 +652,37 @@ is claimed.
 
 [`Marginal_Critical_Transseries_Action_Budgets/`](Marginal_Critical_Transseries_Action_Budgets/)
 holds *Marginal Critical Transseries: Convergent Lambert-W Charts,
-Universal Cutoff Corrections, and Certified Action Budgets* (25-page A4 PDF,
-1,700-line source, 111 finite exact checks and 50-digit floating-point
+Universal Cutoff Corrections, and Certified Action Budgets* (26-page A4 PDF,
+1,777-line source, 111 finite exact checks and 50-digit floating-point
 diagnostics). It studies the same endpoint `α = 2` as the article directly
 above, independently of it, and also read the critical Hahn article from
 Vladimir's library; it answers the same half of Question 4 without citing
-it by number. Its chart coefficients, fold series and inverse diagnostics
-coincide with those of the article above, and its sector constants and
-critical cutoff correction are that article's rewritten in another
-logarithmic normalization (`H_n = log B_n` in place of `ℓ_n`). It adds
-explicit contraction radii for the chart, a convergent three-generator
+it by number. An editorial note now names that question and compares the
+two endpoint articles. Its chart coefficients, fold series and inverse
+diagnostics coincide with those of the article above, and its sector
+constants and critical cutoff correction are that article's rewritten in
+another logarithmic normalization (`H_n = log B_n` in place of `ℓ_n`). It
+adds explicit contraction radii for the chart, a convergent three-generator
 logarithmic grid, a two-term formula for the minimal action budget, and a
-proved finite inequality that bounds the retained fraction from below on
-the sharp `√n` scale. Its "certified" budgets are that inequality; the
-recorded evaluations use no directed rounding. The all-order expansion is
-not claimed to converge, and prefix independence is claimed only at the
-displayed order.
+proved finite inequality that bounds the retained fraction from below on the
+sharp `√n` scale. Its "certified" budgets are that inequality; the recorded
+evaluations use no directed rounding. The all-order expansion is not claimed
+to converge, and prefix independence is claimed only at the displayed order.
 
 [`Confluent_Critical_Transseries_Exponent_Two_Boundary/`](Confluent_Critical_Transseries_Exponent_Two_Boundary/)
 holds *Confluent Critical Transseries Across the Exponent-Two Boundary: A
 Uniform Inverse Chart, Conditional Poisson Limits, and Sharp Action
-Budgets* (23-page A4 PDF, 1,664-line source, an exact SymPy check program
+Budgets* (24-page A4 PDF, 1,705-line source, an exact SymPy check program
 with 160-digit inverse-chart and floating-point coefficient diagnostics).
 It treats the joint limit that the two endpoint articles above leave open:
 the upper endpoint of the critical Hahn article's Question 4
-(`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1467-1472`)
+(`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1502-1507`)
 with `α = 2 − ε_n`, where `ε_n → 0` at any rate and from either side, for
 the exact tail `a_j = j^{−3+ε}/ζ(2−ε)`. This is also the
 logarithmic-endpoint article's Question 1
-(`Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex:1613-1619`),
-which it does not cite by number; it read both endpoint articles from
+(`Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex:1636-1642`),
+which it does not cite by number (an editorial note now does); it read
+both endpoint articles from
 Vladimir's library before they were filed. One convergent holomorphic
 chart in the three variables `r`, `ε` and `1/h_ε(1/r)`, with
 `h_ε(x) = (x^ε − 1)/ε`, covers the fractional, logarithmic and
@@ -681,11 +702,11 @@ Windows.
 
 [`Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/`](Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/)
 holds *Through the Stable–Gaussian Endpoint: Uniform Critical Transseries,
-Prefix-Independent Cutoff Corrections, and Conditional Extremes* (20-page
-A4 PDF, 1,474-line source, 17 exact SymPy checks with long-double
+Prefix-Independent Cutoff Corrections, and Conditional Extremes* (21-page
+A4 PDF, 1,518-line source, 17 exact SymPy checks with long-double
 recurrence and Fourier diagnostics). It answers the marginal article's
 Question 1 ("A uniform transition as the stable exponent approaches two",
-`Marginal_Critical_Transseries_Action_Budgets/Marginal_Critical_Transseries.tex:1534-1541`),
+`Marginal_Critical_Transseries_Action_Budgets/Marginal_Critical_Transseries.tex:1563-1570`),
 which it read in Vladimir's library, and so the same crossover as the
 confluent article directly above, independently of it. It works in the
 window `|2 − α| log n ≤ K`, on both sides, for tails
@@ -699,17 +720,18 @@ budget. At `α = 2` the correction is exactly that of the two endpoint
 articles. Conditioned large actions converge to a Poisson process, and on
 the finite-variance side the total variance need not give the central
 scale. It does not cite the logarithmic-endpoint article, whose Question 1
-is the same, or the confluent article. Its default run needs an
+is the same, or the confluent article; editorial notes now relate it to
+both. Its default run needs an
 extended-range `long double` and stopped with an error when rerun on
 Windows; its tables are typed into the article.
 
 [`Quadratic_Exponential_Feedback_After_Reversion/`](Quadratic_Exponential_Feedback_After_Reversion/)
 holds *Quadratic Exponential Feedback after Reversion: Cancellation,
-Finite-Core Universality, and Sharp Borel Growth* (24-page A4 PDF,
-1,798-line source, exact integer recurrences through degree 240 for
+Finite-Core Universality, and Sharp Borel Growth* (25-page A4 PDF,
+1,886-line source, exact integer recurrences through degree 240 for
 `a = 1` and 180 for `a = 2`, with 70-digit mpmath ratios). It claims a
 proof of the finite-core article's conjecture `conj:quadratic-inverse`
-(`Finite_Core_Universality_Exponential_Feedback/article.tex:1661-1667`):
+(`Finite_Core_Universality_Exponential_Feedback/article.tex:1704-1710`):
 for `U = Σ q^j exp(a j² U)` the inverse coefficients satisfy
 `v_n ~ −S_n exp(−(1 + 1/a) r_n)`, with that article's `r_n` and `S_n`.
 The proof inverts the kernel first, groups the exact tree expansion by
@@ -728,19 +750,21 @@ layer intensity divided by `r_n`) and the weighted-type article
 settles the `p = 2` inverse law that the weighted-type article neither
 settles nor contradicts. It does not cite the negative-ray article, whose
 question on signed inverse asymptotics
-(`Negative_Ray_Summation_Exponential_Feedback/article.tex:1372-1381`) it
-answers, or the regularity article. Its forward/inverse Borel comparison
+(`Negative_Ray_Summation_Exponential_Feedback/article.tex:1423-1432`) it
+answers, or the regularity article; editorial notes now relate it to
+these two and to the weighted-type and signed-inversion articles. Its
+forward/inverse Borel comparison
 uses the finite-core article's forward theorem. At `a = 1` its diagnostic
 ratio `v_n/L_n` is still 0.85 at `n = 240`; the finite checks are not
 evidence of the rate.
 
 [`Signed_Quadratic_Feedback_Inversion/`](Signed_Quadratic_Feedback_Inversion/)
 holds *Signed Quadratic-Feedback Inversion: A Finite-Core Resolution and
-Sharp Entire Borel Growth* (20-page A4 PDF, 1,361-line source, exact
+Sharp Entire Borel Growth* (21-page A4 PDF, 1,438-line source, exact
 integer recurrences through degree 220 in four models, 80-digit mpmath
 ratios and six SymPy identities). It is a second, independent claimed
 proof of the finite-core article's conjecture `conj:quadratic-inverse`,
-by the route that article proposes after it (`article.tex:1677-1679`):
+by the route that article proposes after it (`article.tex:1720-1722`):
 resum an analytic inverse core, then bound the remaining signed tail,
 here by an exact quadratic merger defect. Its exact coefficients are
 those of the quadratic-inverse article directly above, and its Borel
@@ -755,18 +779,19 @@ equivalent as its value on the positive ray, and the root and factorial
 laws `log(|v_n|/n!) = −2n log log n + n log(4a) + o(n)`, which match the
 weighted-type article's inverse type. The article above allows affine and
 borderline slope tails and gives the sharp error of every fixed core;
-this one allows signed exceptions. Neither cites the other, the
-negative-ray article or the regularity article. Its diagnostic ratio at
+this one allows signed exceptions. Neither author text cites the other,
+the negative-ray article or the regularity article; editorial notes in
+both now do. Its diagnostic ratio at
 `n = 220`, `a = 1`, is 0.845; it claims no onset.
 
 [`Natural_Boundaries_Quadratic_Exponential_Feedback/`](Natural_Boundaries_Quadratic_Exponential_Feedback/)
 holds *Natural Boundaries of Quadratic Exponential Feedback: an exact
 obstruction to angular Borel summation, analytic-curve rigidity, and a
-rational-amplitude dichotomy* (23-page A4 PDF, 1,606-line source, an exact
+rational-amplitude dichotomy* (23-page A4 PDF, 1,625-line source, an exact
 standard-library program through degree 16 with 120-digit mpmath
 diagnostics). It answers the negative-ray article's question "Angular
 summability of the quadratic model"
-(`Negative_Ray_Summation_Exponential_Feedback/article.tex:1349-1359`)
+(`Negative_Ray_Summation_Exponential_Feedback/article.tex:1370-1380`)
 negatively. For `λ_j = j²` the literal inverse `Q` on `|u| ≤ 1/32`,
 `Re u ≤ 0` is smooth up to the imaginary diameter, and every point `it`
 with `|t| < 1/32` is a natural-boundary point. Its Borel transform is
@@ -780,7 +805,7 @@ rational imaginary times. For rational amplitude series with eventually
 quadratic slopes, finite support, convergence, continuation through zero
 and angular summability are equivalent. It also gives an explicit bound
 for truncating the actions. It thereby answers the regularity article's
-directional question (`Exponential_Feedback_Regularity_Classification/article.tex:1426-1433`)
+directional question (`Exponential_Feedback_Regularity_Classification/article.tex:1445-1452`)
 in the angular sense, and the open-sector question that the
 sectorial-summability article leaves open. It does not determine the
 individual admissible rays or the growth in shrinking sectors, and it
@@ -814,8 +839,8 @@ inverse exponent is `(d − μ)/a` or `−b`), so a notation
 dictionary must come first.
 
 [`Uniform_q_Multinomial_Certified_Inversion/`](Uniform_q_Multinomial_Certified_Inversion/)
-holds *Uniform q-Multinomial Transseries and Certified Inversion* (24-page A4
-PDF, 1,521-line source, a 240-digit mpmath check program that also writes
+holds *Uniform q-Multinomial Transseries and Certified Inversion* (26-page A4
+PDF, 1,627-line source, a 240-digit mpmath check program that also writes
 the table the article inputs). It continues the companion's chapter "The
 singular transition `q → 1`" (`Combinatorial_Transseries_Inverses.tex:4076`).
 There, `t3:prop:double-A` (`:4103-4114`) holds only for `τ ≥ τ₀ > 0`, and
@@ -830,7 +855,7 @@ inverse enclosures that are not outward-rounded.
 [`Uniform_Resurgent_Crossover_Gaussian_Binomials/`](Uniform_Resurgent_Crossover_Gaussian_Binomials/)
 holds *Uniform Resurgent Crossover for Gaussian Binomial Coefficients: exact
 remainders, a sharp modular-visibility threshold, and certified inversion*
-(22-page A4 PDF, 1,495-line source, an exact SymPy and 110-digit check
+(23-page A4 PDF, 1,587-line source, an exact SymPy and 110-digit check
 program). It answers the same gap as the q-multinomial article directly
 above (`Combinatorial_Transseries_Inverses.tex:4103-4114`, `:4205`),
 for the central Gaussian coefficient only. Its interpolation is the
@@ -843,17 +868,19 @@ series about the Borel-summed carrier. The two articles share their method
 should be merged together into the companion's `q → 1` chapter. They also
 bear on the `τ ≥ τ₀` restriction of the Gaussian-binomial double scaling in
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
-(`q3:thm:double-scaling`), which neither article cites.
+(`q3:thm:double-scaling`), which neither article's author text cites;
+editorial notes now relate it (term by term for the q-multinomial
+article).
 
 [`Theta_Resolved_Optimal_Truncation_q_Multinomial/`](Theta_Resolved_Optimal_Truncation_q_Multinomial/)
 holds *Theta-Resolved Optimal Truncation of q-Multinomial Transseries*
-(26-page A4 PDF, 1,691-line source, a 75-digit check program, an
+(26-page A4 PDF, 1,760-line source, a 75-digit check program, an
 independent 150–400-digit endpoint check and a plotting script). It
 continues the q-multinomial article above, which it read from Vladimir's
 library before either was filed. It answers that article's questions Q1,
 the lattice-to-integral transition of the least remainder, and Q2, a
 uniform first hyperasymptotic correction
-(`uniform_q_multinomial_transseries.tex:1328-1343`). It proves an
+(`uniform_q_multinomial_transseries.tex:1375-1390`). It proves an
 all-order expansion of the exact positive remainder at bounded
 saddle-scaled mesh, governed by a Gaussian lattice (theta) sum in the
 lattice phase and order tilt. It optimizes over all integer orders, which
@@ -867,8 +894,8 @@ completion, complex sectors and a growing pole count are not claimed.
 
 [`Certified_Inversion_q_to_1_Transition/`](Certified_Inversion_q_to_1_Transition/)
 holds *Certified Inversion Through the q→1 Transition: signed remainders,
-optimal truncation, and a modular cancellation window* (24-page A4 PDF,
-1,714-line source, an exact-rational and 80-digit check program). It
+optimal truncation, and a modular cancellation window* (25-page A4 PDF,
+1,808-line source, an exact-rational and 80-digit check program). It
 answers the same gap of the companion (`t3:prop:double-A`,
 `Combinatorial_Transseries_Inverses.tex:4103-4114`; `:4205`) for the same
 central Gaussian interpolation as the Gaussian-binomial article above. It
@@ -888,8 +915,8 @@ not covered.
 
 [`Gamma_Core_q_to_1_Crossover/`](Gamma_Core_q_to_1_Crossover/)
 holds *A Gamma Core Across the q → 1 Crossover: uniform exponential
-accuracy, inverse stability, and arithmetic convergence* (30-page A4 PDF,
-1,435-line source, 100-digit main and supplementary check programs with
+accuracy, inverse stability, and arithmetic convergence* (31-page A4 PDF,
+1,510-line source, 100-digit main and supplementary check programs with
 exact SymPy coefficient audits). It answers the same gap for the same
 interpolation by a different truncation family: it keeps the Gamma
 quotient `Γ(2x+1)/Γ(x+1)²` exact and expands the rest in `h = log q`.
@@ -909,7 +936,7 @@ interpolation, so a notation dictionary must come first.
 
 [`Inverse_Harmonic_Stokes_Transport/`](Inverse_Harmonic_Stokes_Transport/)
 holds *Exponential Accuracy and Stokes Transport for Inverse Harmonic
-Transseries* (23-page A4 PDF, 1,119-line source, a 190-digit check program,
+Transseries* (24-page A4 PDF, 1,144-line source, a 190-digit check program,
 an exact-rational certificate program and a figure script). It continues
 the companion's harmonic-inverse section, `t2:thm:harmonic-inverse`
 (`Combinatorial_Transseries_Inverses.tex:4285-4303`), whose coefficient
@@ -928,7 +955,7 @@ increment `plt:lem:mot-harmonic`.
 [`Nonlinear_Stokes_Transport_Logarithmic_Inversion/`](Nonlinear_Stokes_Transport_Logarithmic_Inversion/)
 holds *Nonlinear Stokes Transport under Logarithmic Inversion: convergent
 sector expansions, exact-core resurgence, real reconstruction, and
-curvature-shifted fold scaling* (24-page A4 PDF, 1,103-line source, an
+curvature-shifted fold scaling* (25-page A4 PDF, 1,123-line source, an
 exact SymPy and 100-digit check program and a figure script). The canonical
 volume motivates it, and it answers questions it poses itself. It proves an
 inverse-transport theorem for an analytic map perturbed by finitely many
@@ -944,18 +971,19 @@ also recovers primitive amplitudes at nonlinear resonances and locates the
 real fold of the amplitude expansion near `e^{−1}` with its curvature
 shift. That model result bears on the reversion article's question on
 analytic subclasses stable under exact-core inversion
-(`reversion_and_one_exponential.tex:1406-1413`), and the fold on the
-moving-fold article; it cites neither. The real core
+(`reversion_and_one_exponential.tex:1472-1479`), and the fold on the
+moving-fold article; its author text cites neither, and editorial notes
+now do. The real core
 `aX + b log X` is machine-checked in
 `Analysis/FabiusFunction/Lean/FabiusFunction/LinLogCoreInversion.lean`.
 
 [`Direct_Optimal_Truncation_Inverse_Harmonic/`](Direct_Optimal_Truncation_Inverse_Harmonic/)
 holds *Direct Optimal Truncation of Inverse Harmonic Transseries:
-reflection, positive tail densities, and eventual enveloping* (24-page A4
-PDF, 1,706-line source, a 190-digit check program with six exact-rational
+reflection, positive tail densities, and eventual enveloping* (25-page A4
+PDF, 1,713-line source, a 190-digit check program with six exact-rational
 sign certificates, and a symbolic amplitude program). It answers the
 inverse-harmonic article's problem `prob:direct`
-(`inverse_harmonic_transseries.tex:966-970`) for the direct partial sums
+(`inverse_harmonic_transseries.tex:976-980`) for the direct partial sums
 `S_N` of the inverse series of `ψ(W + 1/2) = log X`. From an exterior
 dispersion representation with an eventually positive tail density and a
 retained convergent correction, it proves that `W` lies strictly between
@@ -972,7 +1000,7 @@ has `+π/12` in place of `−π/12`, so the two procedures differ by
 [`Inverse_Digamma_Spectral_Representation/`](Inverse_Digamma_Spectral_Representation/)
 holds *A Spectral Representation for the Inverse Digamma Function: direct
 optimal truncation, eventual enveloping, and inverse Borel boundary
-singularities* (24-page A4 PDF, 1,118-line source, an exact SymPy and
+singularities* (24-page A4 PDF, 1,125-line source, an exact SymPy and
 240-digit check program, a contour-quadrature check and a figure script).
 It answers the same `prob:direct` by the route that problem suggests: an
 exact spectral decomposition of `W(z) − z` with a positive density and a
@@ -984,29 +1012,29 @@ independent proofs of one theorem. It adds an inverse cosine
 representation of the Borel transform on `|Im ξ| < 2π`, the complete
 one-sided singular expansion at the nearest Borel singularities with every
 logarithmic coefficient (for the nearest points of the inverse-harmonic
-article's problem on local singularities, `:972-975`), and a general
+article's problem on local singularities, `:985-988`), and a general
 transfer theorem from a boundary-phase defect to such data. Continuation to
 further sheets is not claimed.
 
 [`Optimal_Truncation_After_Nonlinear_Reversion/`](Optimal_Truncation_After_Nonlinear_Reversion/)
 holds *Optimal Truncation after Nonlinear Reversion: a sharp cutoff-transfer
-theorem and the inverse harmonic function* (22-page A4 PDF, 1,094-line
+theorem and the inverse harmonic function* (23-page A4 PDF, 1,109-line
 source, a 312-digit numerical check program, a standard-library
 exact-rational program with six error enclosures, and a SymPy coefficient
 program). It is a third answer to the inverse-harmonic article's
-`prob:direct` (`inverse_harmonic_transseries.tex:966-970`), written before
-the two articles above were filed. Its general theorem (`article.tex:394`)
+`prob:direct` (`inverse_harmonic_transseries.tex:976-980`), written before
+the two articles above were filed. Its general theorem (`article.tex:403`)
 controls the difference between the root of a truncated logarithmic
 correction and the direct partial sum of its inverse, for any coefficients
 with a two-sided `Γ(2j)` envelope and no sign assumption, by a finite
 diagonal formula at every fixed relative order. For `ψ(W + 1/2) = log X` it
-gives the direct remainder at bounded `σ = M + 1 − πX` (`:583`); its `D_1`
+gives the direct remainder at bounded `σ = M + 1 − πX` (`:592`); its `D_1`
 and `D_2` agree term by term with `B_1`, `B_2` of both articles above, and
 its forward-minus-direct difference `π/6` with their comparison results.
 New are the second coefficient `σ²/6 − σ/4 + 25/144` of that difference,
 the explicit second forward coefficient, corrected adjacent-partial-sum
 averages that gain any fixed algebraic power (with
-`θ_1 = (1 − 4σ)/(8π)`, `:743`), and exact-rational error enclosures for
+`θ_1 = (1 − 4σ)/(8π)`, `:755`), and exact-rational error enclosures for
 partial sums and midpoints. Its enveloping result holds only on the window
 `|M − πX| ≤ K` and is weaker than the theorems above. Global enveloping,
 explicit thresholds and complex sectors are not claimed; its floating
@@ -1014,10 +1042,10 @@ checks are not interval computations.
 
 [`Resonance_Block_Summation_Transseries/`](Resonance_Block_Summation_Transseries/)
 holds *Resonance-Block Summation of Transseries: small divisors, coalescing
-Stokes actions, and nonlinear inversion* (25-page A4 PDF, 1,789-line
+Stokes actions, and nonlinear inversion* (26-page A4 PDF, 1,799-line
 source, 36 exact and 15 high-precision numerical checks). It continues the
 Stokes-transport article's countable inverse
-(`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:235-243`),
+(`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:241-249`),
 whose hypothesis is a finite sum of individual perturbation norms, for the
 Borel kernels `t^d / ∏ sin(π ω_j t)`. Their actions lie in a finitely
 generated, locally finite monoid, yet nearby poles of different lattices
@@ -1025,18 +1053,20 @@ have residues with small denominators. Grouping poles closer than a fixed
 threshold into blocks of at most `d` nodes, each block is a confluent
 divided difference with a bound independent of the internal separations;
 the block series equals the lateral Stokes jump, converges normally on the
-right half-plane and has an explicit action-cutoff tail (`article.tex:485`).
+right half-plane and has an explicit action-cutoff tail (`article.tex:495`).
 For two lattices the ungrouped residue series has absolute-convergence
-abscissa exactly `limsup (1/n) log(1/‖nα‖)` (`:645`), and an explicit
+abscissa exactly `limsup (1/n) log(1/‖nα‖)` (`:655`), and an explicit
 Liouville-type period makes it diverge everywhere while the series stays
-Gevrey one (`:714`). Finite-cut expansions stay valid and unique,
+Gevrey one (`:724`). Finite-cut expansions stay valid and unique,
 coalescing poles have a uniform divided-difference profile, and a finite
 single-base rational-exponential form exists exactly for rational period
 ratios. Its inverse theorem is the Stokes-transport article's contour
 inversion in core coordinates, with the block norm as its data, as it
-says. It answers, without citing it, the forward half of that article's
-problem on countably many resurgent input poles (`:1011-1013`); the
-resurgent structure of the inverse is not claimed. Its "resonances" are
+says. It answers, without citing it (an editorial note now records it),
+the forward half of that article's problem on countably many resurgent
+input poles
+(`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:1026-1028`);
+the resurgent structure of the inverse is not claimed. Its "resonances" are
 near-collisions of Borel poles, not the equal-action resonances of the
 Stokes-transport and moving-fold articles.
 
@@ -1055,7 +1085,7 @@ direct-truncation article's `σ` and index.
 [`Action_Accumulation_Nonlinear_Inversion/`](Action_Accumulation_Nonlinear_Inversion/)
 holds *Action Accumulation and Nonlinear Inversion: a Laplace–measure
 calculus, hidden oscillations, and limits of Hardy-field realization*
-(28-page A4 PDF, 1,247-line source, a 120-digit check program). It gives a
+(29-page A4 PDF, 1,272-line source, a 120-digit check program). It gives a
 composition and inversion calculus for exponentially weighted action
 measures, with the explicit inverse `−Σ s^{n−1}μ^{*n}/n!`, geometric
 remainders and no positive action gap required, and a rooted-tree bound
@@ -1069,17 +1099,18 @@ expansion yet is not its sum. It poses its own questions. It is an
 analytic counterpart to the companion's necklace frontier, where actions
 accumulate at `log q` (`Combinatorial_Transseries_Inverses.tex:2848-2852`,
 `:4971`), and to the inverse-harmonic article's problem on action
-accumulation (`inverse_harmonic_transseries.tex:994-997`). It does not
+accumulation (`inverse_harmonic_transseries.tex:1010-1013`). It does not
 retain divisibility indicators, so it does not supply the arithmetic
 algebra those passages ask for. It cites the Neumann well-basedness
 declarations of `Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean`
-(under their pre-split path) only to note that its supports lie outside
+(its bibliography now gives the current path beside the pre-split
+one) only to note that its supports lie outside
 them.
 
 [`Arithmetic_Transseries_Beyond_Accumulation_Cut/`](Arithmetic_Transseries_Beyond_Accumulation_Cut/)
 holds *Arithmetic Transseries Beyond an Accumulation Cut: divisibility,
-summable inversion, and curvature-lifted resonances* (25-page A4 PDF,
-1,758-line source, a check program with 964 exact assertions and 48
+summable inversion, and curvature-lifted resonances* (26-page A4 PDF,
+1,799-line source, a check program with 964 exact assertions and 48
 inverse-error checks at 400 digits). It answers the companion's third
 research direction, an arithmetic transseries algebra for divisor sums
 that retains the divisibility indicators, permits the action accumulation
@@ -1101,16 +1132,16 @@ is stated sheet by sheet. A canonical global interpolation, fractional
 shifts of the indicators, and resurgence are not claimed. It is the
 arithmetic algebra that the action-accumulation article above does not
 supply, and it also answers the inverse-harmonic article's problem on
-arithmetic action accumulation (`inverse_harmonic_transseries.tex:994-997`),
-which it does not cite. The two articles form one unit for the deferred
-merge into the companion's necklace chapter. It reads the Dickson and
-Neumann declarations of
-`Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean` as
-interfaces only; none of its theorems is formalized.
+arithmetic action accumulation (`inverse_harmonic_transseries.tex:1010-1013`),
+which it does not cite; an editorial note now records it. The two articles
+form one unit for the deferred merge into the companion's necklace chapter.
+It reads the Dickson and Neumann declarations of
+`Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean`
+as interfaces only; none of its theorems is formalized.
 
 [`Residue_Obstructions_Logarithmic_Depth_Promotion/`](Residue_Obstructions_Logarithmic_Depth_Promotion/)
 holds *Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
-Transseries* (26-page A4 PDF, 1,170-line source, an exact-rational block
+Transseries* (27-page A4 PDF, 1,196-line source, an exact-rational block
 and matrix check program). It extends
 `Analysis/Transseries/Lean/Transseries/TransseriesBlockAntiderivative.lean`
 (the canonical volume's `plt:lem:mot-block-antiderivative`) from
@@ -1125,123 +1156,146 @@ most `s − 1`, where `s` counts the distinct real roots. A Jordan-shift
 family attains both bounds. Its `m = 1` case sharpens the canonical
 volume's `plt:thm:ext-tower-strict`
 (`transseries_and_inversion.tex:29092`) to an exact sequence; the article
-does not cite that theorem. It concerns differential operators, not the
-compositional inverses of `plt:rmk:ext-open-depth` (`:29918-29938`).
+does not cite that theorem, and an editorial note now credits it. It
+concerns differential operators, not the compositional inverses of
+`plt:rmk:ext-open-depth` (`:29918-29938`).
 
 [`Hahn_Fuchsian_Resonance_Analytic_Normalization/`](Hahn_Fuchsian_Resonance_Analytic_Normalization/)
 holds *Finite Resonance Certificates and Sharp Analytic Normalization for
 Hahn–Fuchsian Systems: accumulating exponents, unavoidable logarithms, and
-a summability-threshold crossover* (24-page A4 PDF, 1,561-line source,
+a summability-threshold crossover* (24-page A4 PDF, 1,615-line source,
 exact SymPy gauge checks on finite systems and 85-digit crossover checks).
 It continues the residue-obstruction article directly above, which it knew
 through that package's README, from scalar operators to first-order
 systems `xY' = (A_0 + A_+(x))Y` over the log-free Hahn field with `log x`
 adjoined, with real-spectrum `A_0` and well-ordered positive exponents that
 need not be locally finite. A unique normalized gauge
-`Y = H x^S exp(B log x)` exists (`hahn_fuchsian.tex:416`); the solutions of
+`Y = H x^S exp(B log x)` exists (`hahn_fuchsian.tex:442`); the solutions of
 logarithmic degree at most `d` form a space of dimension `dim ker B^{d+1}`
-(`:500`); and the resonant matrix depends polynomially on finitely many
+(`:526`); and the resonant matrix depends polynomially on finitely many
 input coefficients even when infinitely many exponents lie below the
-largest resonance (`:603`). Every absolutely convergent semigroup-supported
+largest resonance (`:629`). Every absolutely convergent semigroup-supported
 input has an absolutely convergent normalized gauge exactly when the
 nonresonant exponents stay a uniform distance from the eigenvalue
-differences (`:726`); otherwise rank-one square-zero inputs give
+differences (`:780`); otherwise rank-one square-zero inputs give
 arbitrarily small counterexamples. For exponents `2 − 1/n` with weights
 `n^{−p}` the normalizer converges exactly when `p > 2`, although a
 renormalized solution realizes every finite prefix for `p > 1`. For its
-class and without citing them, it answers the article above's questions on
-recovering the logarithmic filtration from matrix ranks (homogeneous part)
-and on the invariant for matrix systems with Jordan chains
-(`residue_fredholm.tex:1031`, `:1050-1052`): it is the nilpotency index of
-`B = N + ΣR_ρ`. It is the depth-0 counterpart of that article, not its
-generalization: the article above needs depth `n ≥ 1`, and forced
-equations, iterated-logarithm coefficients and nonreal spectrum are not
-treated here. Its constants lemma is the depth-0 case of the canonical
-volume's `plt:thm:ext-tower-strict`
-(`transseries_and_inversion.tex:29092`), which it could not read. The two
-articles form one unit for the deferred merge, on linear differential
-equations over Hahn fields; their conventions (large variable there, small
-`x` here) need a dictionary first. It cites the Neumann declarations of
-`TransseriesWellBased.lean` and the module `TransseriesBlockAntiderivative.lean`
-as related only.
+class and without citing them (an editorial note now does), it answers the
+article above's questions on recovering the logarithmic filtration from
+matrix ranks (homogeneous part) and on the invariant for matrix systems with
+Jordan chains (`residue_fredholm.tex:1040`, `:1065-1067`): it is the
+nilpotency index of `B = N + ΣR_ρ`. It is the depth-0 counterpart of that
+article, not its generalization: the article above needs depth `n ≥ 1`, and
+forced equations, iterated-logarithm coefficients and nonreal spectrum are
+not treated here. Its constants lemma is the depth-0 case of the canonical
+volume's `plt:thm:ext-tower-strict` (`transseries_and_inversion.tex:29092`),
+which it could not read; an editorial note now cites it. The two articles
+form one unit for the deferred merge, on linear differential equations over
+Hahn fields; their conventions (large variable there, small `x` here) need a
+dictionary first. It cites the Neumann declarations of
+`TransseriesWellBased.lean` and the module
+`TransseriesBlockAntiderivative.lean` as related only.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
-theta-resolved, certified inversion, gamma core, inverse harmonic, the
-three direct-truncation articles and moving fold) are sharp instances of
+theta-resolved, certified inversion, gamma core, inverse harmonic and the
+three direct-truncation articles) are sharp instances of
 the canonical volume's `p0:thm:optimal-truncation`
 (`transseries_and_inversion.tex:39359`). Their inverse enclosures, and the
 residual-transport enclosure of the negative-ray article, use the
 mechanism that `Fabius.exists_eq_in_residual_interval`
 (`Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean`)
-machine-checks. None of them cites either. The truncation bounds of the
+machine-checks. None of their author texts cites either; editorial
+notes in the five `q → 1` articles and the inverse-harmonic article now
+cite both. The moving-fold article has no least-term truncation; an
+editorial note there cites the Lean lemma for the real monotone case of
+its residual transport, of which its complex fold statement is not a
+case. The truncation bounds of the
 negative-ray and sectorial-summability articles are majorants, and the
 microscopic-condensation article's least term is not a remainder estimate;
 none of these is a sharp instance.
 
-The packages retain their delivered layouts. Twenty-one checksum ledgers were
-verified in full and not filed. From the first delivery, these are the two
-`SHA256SUMS.txt` of the regularity and inverse-harmonic packages and the
-`SHA256SUMS` of the moving-fold package. From the second, they are the
-`SHA256SUMS` of the gamma-core package, the `MANIFEST.sha256` of the
-certified-inversion package, and the `SHA256SUMS.txt` of the
-Stokes-transport and action-accumulation packages. From the third, they are
-the `SHA256SUMS.txt` of the near-linear, direct-truncation, finite-core and
-critical Hahn packages. From the fourth, they are the `SHA256SUMS` of the
+Twenty-one checksum ledgers were verified in full on filing and not filed.
+From the first delivery, these are the two `SHA256SUMS.txt` of the
+regularity and inverse-harmonic packages and the `SHA256SUMS` of the
+moving-fold package. From the second, they are the `SHA256SUMS` of the
+gamma-core package, the `MANIFEST.sha256` of the certified-inversion
+package, and the `SHA256SUMS.txt` of the Stokes-transport and
+action-accumulation packages. From the third, they are the `SHA256SUMS.txt`
+of the near-linear, direct-truncation, finite-core and critical Hahn
+packages. From the fourth, they are the `SHA256SUMS` of the
 logarithmic-endpoint and optimal-truncation packages and the
 `SHA256SUMS.txt` of the marginal, resonance-block and Poisson-layer
 packages. From the fifth, they are the `SHA256SUMS` of the confluent,
-natural-boundaries and signed-inversion packages and the `SHA256SUMS.txt`
-of the quadratic-inverse and stable–Gaussian packages. The READMEs of the inverse-harmonic,
-moving-fold, certified-inversion, Stokes-transport, action-accumulation,
-near-linear, critical Hahn, all five fourth-delivery and all five
-fifth-delivery packages still mention them; those of the regularity,
-gamma-core, direct-truncation and finite-core packages do not. The build
-records of the Hahn–Fuchsian, microscopic-condensation and weighted-type
-packages carry digests of their own PDF and source; they match the filed
-files and are kept as data, and a rebuild would make them stale. Forty-four CSV
-tables written with CRLF line endings were normalized to LF on filing: the
-reversion package's `numeric_checks.csv`, the regularity package's
-`data/quadratic_*.csv`, the Stokes-transport package's
+natural-boundaries and signed-inversion packages and the `SHA256SUMS.txt` of
+the quadratic-inverse and stable–Gaussian packages. The READMEs of the
+inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
+action-accumulation, near-linear and critical Hahn packages, and of the five
+fourth-delivery and five fifth-delivery packages that had one, now record
+that retirement instead of listing the ledger; those of the regularity,
+gamma-core, direct-truncation and finite-core packages never mentioned
+theirs. The build records of the Hahn–Fuchsian, microscopic-condensation and
+weighted-type packages carry digests of their own PDF and source; they were
+recomputed for the amended source and the rebuilt PDF, match the filed files
+and are kept as data, and any later rebuild makes the PDF digest stale,
+since pdfTeX embeds the build date. The finite-core package's
+`data/build_quality.json` keeps the digests and page count of the delivered
+PDF and source, and other build and quality receipts, such as the
+direct-truncation package's `verification/pdf_audit.json`, likewise describe
+the delivered builds, as their package READMEs say.
+
+Forty-four CSV tables written with CRLF line endings were normalized to LF
+on filing: the reversion package's `numeric_checks.csv`, the regularity
+package's `data/quadratic_*.csv`, the Stokes-transport package's
 `figures/fold_scaling.csv`, the theta-resolved package's four `data/*.csv`,
 the spectral package's three `data/*.csv`, the negative-ray package's
 `data/majorant_diagnostics.csv`, the finite-core package's five
-`data/*.csv`, the critical Hahn package's five `data/*.csv`, the
-arithmetic package's two `verification/*.csv`, the optimal-truncation
-package's `results.csv`, the microscopic-condensation package's two
-`data/*.csv`, the Poisson-layer package's two `verification/results/*.csv`,
-the sectorial-summability package's five `data/*.csv`, the weighted-type
+`data/*.csv`, the critical Hahn package's five `data/*.csv`, the arithmetic
+package's two `verification/*.csv`, the optimal-truncation package's
+`results.csv`, the microscopic-condensation package's two `data/*.csv`, the
+Poisson-layer package's two `verification/results/*.csv`, the
+sectorial-summability package's five `data/*.csv`, the weighted-type
 package's two `data/*.csv`, the confluent package's two
 `data/*_diagnostics.csv`, the quadratic-inverse package's two
 `verification/results_a*/diagnostics.csv`, the stable–Gaussian package's
 three `data/*.csv`, and the signed-inversion package's
-`data/diagnostics.csv`. Their programs write CRLF again
-when rerun. The
-inverse-harmonic package's `verification/run.log` and
+`data/diagnostics.csv`. Since the editorial pass, every file that a package
+program writes itself is written with LF line endings on every platform, so
+a rerun no longer reintroduces CRLF.
+
+The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
 and `certificates.json`. The spectral package's `data/contour_check.log` and
 `data/verification.log` are recorded program output; the direct-truncation
 package's `verification/run.log` is recorded program output, its
 `verification/symbolic_run.log` is byte-identical to `amplitudes.json`, and
-its `verification/latex_build.log` is the pdfTeX log of its PDF. The
-optimal-truncation package's `exact_checks.log`, `symbolic_checks.log` and
-`verification.log` are recorded program output, as is the
-signed-inversion package's `data/run.log`. All eleven were added past
-the `*.log` ignore rule. The arithmetic package's `build.sh` rewrites its
-own article source (it splices the regenerated table into
-`arithmetic_transseries.tex`), and the `build.sh` scripts of the
-resonance-block and non-Archimedean reversion packages rerun their
-verification programs, rewriting the recorded outputs (for the
-resonance-block package, a table its article inputs), before building the
-PDF; the logarithmic-endpoint package's quick option writes shorter tables
-into its article's inputs. The confluent package's program always writes
-into its own `data/` (including both tables its article inputs), and a run
-of a single part adds a new `data/run_<part>.json`; the natural-boundaries
-program writes by default into its own directory, including both tables
-its article inputs; the quadratic-inverse program writes by default into
-`verification/` itself rather than into a `results_a*` directory; the
-stable–Gaussian program's default run needs an extended-range
-`long double`, and its recorded recipe writes its output over
-`data/run_summary.txt`. Run them
-only on a copy.
+its `verification/latex_build.log` is the pdfTeX log of its delivered PDF.
+The optimal-truncation package's `exact_checks.log`, `symbolic_checks.log`
+and `verification.log` are recorded program output, as is the
+signed-inversion package's `data/run.log`. All eleven were added past the
+`*.log` ignore rule.
+
+No `build.sh` reruns a verification program in place any more. Those of the
+arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
+packages write fresh output under an ignored `build/` directory, and the
+arithmetic package's script only compares the regenerated table with the one
+embedded in `arithmetic_transseries.tex` and stops if they differ, instead
+of splicing it into the source. Partial and nondefault runs no longer
+replace recorded outputs: the logarithmic-endpoint and stable–Gaussian
+programs write a run with another `--max-n` into `data/max-n-<N>/`, the
+natural-boundaries program writes by default into `rerun/`, the
+quadratic-inverse program without `--out` into `verification/rerun_a<a>/`,
+the quick, exact-only or other-precision runs of the moving-fold,
+sectorial-summability, Gaussian-binomial and direct-truncation programs
+into separate files or directories, and a bare run of the regularity
+program now uses the recorded order. The recorded commands themselves, and
+the `verify` targets of the Makefiles, still regenerate the recorded
+outputs in place; the confluent
+program writes into `data/` (including both tables its article inputs)
+unless given `--output-dir`, and a run of a single part adds a new
+`data/run_<part>.json`. The stable–Gaussian default run still needs an
+extended-range `long double`; it now writes `data/run_summary.txt` itself
+after a successful run, instead of having a redirection truncate it. Run the
+programs on a copy, or with an output directory where they offer one.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

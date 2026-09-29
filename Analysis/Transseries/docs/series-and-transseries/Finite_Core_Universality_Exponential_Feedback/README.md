@@ -131,5 +131,8 @@ following changes were made on 2026-09-29; everything else is as delivered.
   entries by one unit in the last place; the `.npz` archives also record
   the creating platform. The filed data files are the recorded run and were
   not replaced.
+- `data/build_quality.json` is unchanged and describes the delivered
+  build: its `pdf_pages` (26), `pdf_sha256` and `tex_sha256` are those of
+  the delivered `article.pdf` and `article.tex`, not of the filed files.
 - `README.md`: the page count (26 to 27), the parenthetical pointer after
   "Main results", and this section.

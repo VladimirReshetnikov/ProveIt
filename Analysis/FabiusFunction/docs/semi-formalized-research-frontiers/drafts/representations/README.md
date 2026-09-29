@@ -151,7 +151,8 @@ of an existing draft; semantic consolidation is deferred to the post-
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
   check program), filed on 2026-09-29 by a quick archival intake from the
-  repository-level `docs/incoming/` drop zone.  It answers the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It answers the
   equilibrium part of `question:design-limit` of
   [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
   the volume-maximizing hyperbolic node designs on `[0, L]` have an
