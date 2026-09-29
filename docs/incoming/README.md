@@ -135,25 +135,28 @@ different mathematics, and different titles can hide the same theorem.
 
 ### Destinations
 
-ProveIt holds external research reports in three kinds of place. The delivery
+ProveIt holds external research reports in two collections. The delivery
 README usually names the ProveIt path it continues; verify that path against
 the current tree rather than trusting it.
 
-| Kind | Destination | Holds |
+| Collection | Destination | Holds |
 |---|---|---|
 | Surreal collection | `Algebra/SurrealNumbers/docs/<family>/<report>/` | reports on `No`, `No[i]`, omnific integers and related structures; families below |
-| Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | unformalized reports on specific problems: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, … |
-| Project research | `<Topic>/<Project>/Research/<report>/` | reports continuing a Lean/Rocq project that has no report collection of its own, such as `Algebra/JacobianConjecture` or `Combinatorics/Polyominoes/KlarnerConstant` |
+| Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | every other external report: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, the Jacobian conjecture, radicals and Galois theory, … |
 
 - A manuscript that continues a report already in one of the collections goes
   to that report, whatever its subject.
-- A manuscript that continues a formal project goes to that project's
-  `Research/`, each report in its own subdirectory beside whatever the
-  directory already holds. The first report placed in a project states that
-  layout in the placement commit.
-- Placing a report beside a formal development confers no formal status on
-  it. Its README says which of its statements, if any, the project has already
-  formalized (by declaration name), and that the rest are not.
+- A manuscript that continues a formal (Lean/Rocq) project outside the
+  surreal package still goes to the research-report collection, in the
+  category of its subject, and never into the project's own directory. The
+  project README gains a pointer to it in the catalogue step (section 5).
+  Batch 36 first placed five such reports in project `Research/`
+  directories (`1a1396d4d`); Vladimir directed that they belong in the
+  collection, and they were moved there before being written.
+- A report that continues a formal development gains no formal status from
+  it. Its README says which of its statements, if any, the project has
+  already formalized (by declaration name), and that the rest are not. It
+  cites the project's files as repository paths, not as relative links.
 
 The Surreal collection's family directory follows the scalar system:
 
@@ -167,8 +170,9 @@ The Surreal collection's family directory follows the scalar system:
 
 The research-report collection's categories are listed in
 [its README](../../SetTheory/Cardinals/docs/reports/README.md). Neither list is
-closed. A new family, category or project `Research/` directory may be opened,
-but only in the placement commit and with the reason stated there. `d6eee04`
+closed. A new family or category may be opened, but only in the placement
+commit (or, as in batch 36, the move that corrects it) and with the reason
+stated there. `d6eee04`
 opened `surquaternions/` because its scalar system is new, and `physics/` to
 keep assessments apart from mathematics. `d7fc004` opened
 `foundations-and-computation/`.
@@ -400,7 +404,7 @@ earlier batches.
    It gives the title and provenance, a listing that matches the directory,
    and the label prefix. It says what is claimed and what is not, describes
    the relation to neighbouring reports and to any formal development
-   nearby, and gives build and rerun instructions. Check every number in it
+   it continues, and gives build and rerun instructions. Check every number in it
    against the build or the data.
 9. **Reciprocal notes.** Where a new result answers, sharpens or bears on
    another report, record it there in a short remark, in a commit of its own
@@ -433,12 +437,16 @@ Catalogue every destination the batch touched, in one commit titled
     archives), plus every count it spells out, including the `pdfsubject`,
     the Scope section and the directory-tree table. Then rebuild
     `manifest.pdf`.
-- **Project research:** the project README, and its `Research/README.md` if
-  it has one, list the new report with what it claims and its status.
+- **Formal projects continued:** a project whose work a new report continues
+  (the Jacobian-conjecture, polyomino and polynomial-formula projects in
+  batch 36) gets a short pointer in its README, and in its `Research/README.md`
+  if it has one: where the report is, what it claims, and that it is not
+  formalized. A result the report improves stays stated with its formal
+  status (section 4, item 5).
 - **Counts elsewhere.** The root `README.md`, the topic READMEs
-  (`Algebra/README.md`, `SetTheory/README.md`, …) and the Surreal package's
-  own README state collection sizes ("63 research reports", "104 research
-  reports"). Correct every count the batch changed.
+  (`Algebra/README.md`, `SetTheory/README.md`, …), `SetTheory/Cardinals/README.md`
+  and the Surreal package's own README state collection sizes ("63 research
+  reports", "104 research reports"). Correct every count the batch changed.
 - **Catalogue every report without a row**, not only this batch's. Take the
   count from the report directories, not by adding to the old total, and check
   the rows against `git ls-tree -d HEAD` of the collection.
@@ -481,7 +489,7 @@ Audit the written reports independently, with each auditor taking one lens:
 - notation;
 - non-claims;
 - whether a reader could believe more was verified than was, in particular
-  that a report placed beside a Lean or Rocq development is itself verified.
+  that a report continuing a Lean or Rocq development is itself verified.
 
 Commit the fixes as "Fix <count> defects found auditing batch <index>", for
 example `6048fb6`, "Fix twenty defects found auditing batch 13". Rebuild and
