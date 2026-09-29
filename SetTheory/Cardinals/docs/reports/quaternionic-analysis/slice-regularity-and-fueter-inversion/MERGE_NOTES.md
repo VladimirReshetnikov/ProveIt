@@ -175,3 +175,122 @@ kernels, and the disagreement cannot be settled from the manuscripts
 themselves; both loci are cited, and the merged text says that the question is
 unresolved rather than picking one silently.
 
+## 2026-09-28: source 11 added (Parts XII–XIII)
+
+An eleventh manuscript was added to the merged document on 28 September 2026.
+Unlike the ten, it was written *from* this report: it inspected the report's
+README at ProveIt commit `fbba58593` (nothing else in the repository) and
+extends the theory to every even ambient dimension. It answers open problem
+(O4).
+
+| id | archive | title | pp | pin | placed |
+|---|---|---|---:|---|---|
+| 11 | `ProveIt_Fueter_Polynomial_Periods.zip` (batch 39, manuscript 01; arrival `74f7f5bdb`) | Polynomial Periods and Sharp Residue Hierarchies for the Global Inverse Fueter Map | 25 | `fbba58593` | `e2b1f016a` |
+
+The ten earlier sources record no repository pin; they were delivered before
+pinning and merged in `1ef935074` (Cardinals history, 21 September 2026).
+
+Following this report's own convention, source 11 is kept verbatim as
+`sources/11-polynomial-periods.tex` with its delivery README as
+`sources/11-polynomial-periods-README.md`. Its program, outputs, and audit are
+`code/11-polynomial-periods-{verify.py,build.sh}`,
+`data/11-polynomial-periods-{verification.json,verification.log,requirements.txt}`
+and `11-polynomial-periods-PROOF_AUDIT.md`, all byte-identical to the delivery.
+Its PDF is not shipped.
+
+### What it contributes
+
+In ambient dimension `2h+2` (the Fueter–Sce map `Δ_{2h+2}^h` in `2h+1`
+spatial variables), on product domains `U ⊂ C⁺` and for axial targets with
+values in a real Clifford module `V`:
+
+- one polynomial-valued closed form `ϖ_h[g](t)` of degree `2h−1`, whose `2h`
+  coefficient forms are the family (O4) predicted; at `h = 1` it is exactly
+  `θ_g + t ω_g`;
+- the moving Hermite-polynomial identity `dΘ_F(z;t) = ϖ_h[Δ^h I(F)](t)`, proved
+  for all `h` by an exact finite-jet spanning argument, and from it the
+  polynomial kernel, the complete constructive inverse, and polynomial
+  monodromy;
+- the cokernel `P_{<2h}(V)^m` of real dimension `2h·d_V·m` (`8m` at `h = 1`,
+  `V = H`), logarithmic representatives, and the smallest inverse cover (no
+  finite cover supports an inverse when a period is nonzero);
+- at a punctured sphere, the residue polynomial and the exact filtration
+  `R_N(p) = Λ_p(t)^{h−N} P_{<2N}(V)`, of dimension `2N·d_V`;
+- sharp, attained axial-pair size constants and physical-energy divergence
+  constants for every level, and the classification of residue classes that
+  admit local `L^α` representatives (`α ≥ 1`);
+- worked six-dimensional examples and ten research questions.
+
+It is printed as two new parts, XII (global theory) and XIII (local theory),
+plus Appendices F (explicit Hermite interpolant) and G (radial coefficient
+formulas). Its reproduction appendix is folded into §15.8 with the shipped
+file names. All 26 of its theorem-like environments are kept; every non-claim
+of its README, article, and proof audit is kept (in §14.2 and §15.8).
+
+### How it meets Parts I–XI
+
+It reproves, by different routes, several results the ten sources already
+proved; each place is marked in the text:
+
+- the criterion of Theorem 3.7 (`b:thm:period`) and the affine kernel
+  (`b:cor:kernel`) at `h = 1` — the Hermite route never splits the stem into
+  the two potentials; the interpolant at `h = 1` is `tC + V`;
+- the `8m` cokernel (`c:thm:split`) at `h = 1`, under a stronger boundary
+  hypothesis (bounded, `C¹` Jordan boundary curves);
+- the energy lower bound `8R_p(a,b)²` (`e:eq:liminf`) at `h = 1`, by circle
+  Fourier extraction instead of the Bessel/Gram argument of source 07;
+- the axial-pair leading constant `R_p(a,b)/(πv)` (`d:thm:leading`(i)), now
+  as a lower bound for every target with no critical-growth hypothesis.
+
+It does **not** reach, for `h ≥ 2`: the reflection analysis of Part V, the
+`L¹` classification of Part VII, surface sources and conserved fluxes, the
+finite renormalized energy constant, or spherical-supremum constants. (O4) is
+therefore re-scoped in place ("answered in large part", with the remaining
+items listed), not deleted, and a boundary item (B9) records the limits.
+
+No mathematical conflict with the ten sources was found. Consistency checks
+made for this merge: `ϖ_1 = θ_g + tω_g`; `A_{1,p}(ta+b) = R_p(a,b)/(πv)`,
+giving `√2/π` at `p = ι, a = 1, b = i` (the axial-pair constant, not the
+spherical `2/π`); the `N = 1` energy constant `|S²|c_1²/(2π)·‖pa+b‖² =
+8R_p(a,b)²`; the `L^α` corollary agrees with `d:cor:Lp`. The source-11 suite
+was rerun on a copy (identical JSON except elapsed time), and an independent
+SymPy check, not shipped, confirmed the Hermite identity and `Θ_F(z;z) = F(z)`
+for `h = 1, 2, 3` on generic complex-coefficient stems, computing the
+Fueter–Sce image by iterated axial Laplacians rather than through the radial
+lemma.
+
+### Notation (the collisions with Parts 0–XI)
+
+Table 2 of the article (`g:tab:notation`) lists every renaming; in brief:
+`ii → ι`; `m = 2h+1` written out; holes `b → m`; module `E → V` (E is the
+Cauchy–Fueter kernel); `d → d_V` (d is the degree at infinity); Clifford
+operators `J_j → e_j` (sans-serif; J is not used); `D → U`; `F_h F → Δ^h_{2h+2}
+I(F)` (no single letter for the Fueter map); `κ_h → λ_h` (κ is the conjugation
+of H_C); `C_h → (−1)^h c_h²`; `Ω_h → ϖ_h` (Ω_U is a circularization);
+`R_t, Δ_p → Λ_z(t), Λ_p(t)`; `H_F → Θ_F` (H_u, H_g, H_1 are taken);
+`r = ord_p M → j_0` (r is a radius); `s → N` (as in Part VII; s is an `L^s`
+exponent there); `𝓡_s(p) → frak-R_N(p)` (𝓡_p is the residue norm);
+`A_{h,p,M} → 𝖠_{h,p}(M)`; `B_g → M^ax_g`; `γ_{h,r,p}, b_{h,r,p} → β_{h,j_0,p},
+|β|`; `𝓔(ρ) → Err(ρ)`; `σ_{2h} → |S^{2h}|`; generic `C → K, K′`. Three
+false readings are printed beside the true ones in §14.3: `𝒫` (script,
+polynomials in `t`) is not `𝓟_k` (entire axial polynomials of Part IX); the
+residue space `frak-R_N(p)` is not the principal-part space `𝓜_N/𝓜_0` of
+`d:thm:growth` (they agree only at `h = N = 1`); "sharp" always means the
+axial-pair norm.
+
+Labels: every new label begins `g:` (118 new labels; 462 → 580, none
+renamed or removed).
+
+### Bibliography
+
+Source 11 has five references. Four are works already listed (CPSS, CSS13,
+DDG — cited by 11 as its 2023 arXiv preprint — and Perottib); their
+"cited by" comments now include 11. The fifth is this report's own README at
+`fbba58593`, recorded in the provenance section (§14.1) rather than listed.
+While checking this, one pre-existing miscount surfaced: the entries
+`Perottib` and `Perotti` are the same paper (CMFT 24 (2024), 185–203), so the
+list's 26 entries name **25** distinct works, not the 26 stated in the
+Bibliography section above and in the original merge commit. The article now
+says so in a dated correction; the statement above is left as the record of
+the original merge.
+
