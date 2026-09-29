@@ -19,7 +19,8 @@ OUT = ROOT / 'results'
 OUT.mkdir(exist_ok=True)
 
 def dump(name: str, obj: Any) -> None:
-    (OUT / name).write_text(json.dumps(obj, indent=2) + '\n', encoding='utf-8')
+    # ed. (2026-09-29): LF line endings on every platform, like the filed files.
+    (OUT / name).write_text(json.dumps(obj, indent=2) + '\n', encoding='utf-8', newline='\n')
 
 def s(x: Any, digits: int = 35) -> str:
     return mp.nstr(x, digits)
@@ -226,7 +227,7 @@ def tables() -> None:
         vals=[mp.nstr(mp.mpf(v),8) for v in r['scaled_pair']]
         lines.append(' & '.join([r['lambda']]+vals+[mp.nstr(mp.mpf(r['limit']),8)])+r'\\')
     lines += [r'\bottomrule',r'\end{tabular}']
-    (OUT/'coalescence_table.tex').write_text('\n'.join(lines)+'\n')
+    (OUT/'coalescence_table.tex').write_text('\n'.join(lines)+'\n', newline='\n')
     print('Coalescence table generated.')
 
 def summary() -> None:
@@ -245,13 +246,19 @@ def summary() -> None:
     for r in num['contour_checks']:
         text.append(f"alpha={r['alpha']}: discrepancy={r['absolute_discrepancy']}; tail bound={r['proved_tail_bound_evaluated']}")
     text += ['', 'Cancellation demonstration:',json.dumps(num['cancellation_example'],indent=2)]
-    (OUT/'verification.txt').write_text('\n'.join(text)+'\n')
+    (OUT/'verification.txt').write_text('\n'.join(text)+'\n', newline='\n')
     print(f"Total assertions: {data['total_assertions_passed']}.")
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--stage',choices=['all','symbolic','numeric','tables'],default='all')
+    # ed. (2026-09-29): --outdir writes the outputs elsewhere than the recorded results/
+    # (build.sh uses build/results); the default is unchanged.
+    parser.add_argument('--outdir',type=Path,default=None)
     args=parser.parse_args()
+    if args.outdir is not None:
+        OUT=args.outdir.resolve()
+        OUT.mkdir(parents=True,exist_ok=True)
     for name,fn in [('symbolic',symbolic),('numeric',numeric),('tables',tables)]:
         if args.stage in ('all',name):
             fn()

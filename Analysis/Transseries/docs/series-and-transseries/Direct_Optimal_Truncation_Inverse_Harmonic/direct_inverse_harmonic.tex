@@ -66,6 +66,9 @@
 \newcommand{\ctail}{\mathcal E}
 \newcommand{\rising}[2]{(#1)_{#2}}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, which otherwise shares its page number with the
+% next page (pdfTeX "duplicate destination" warning); the same device the Stokes-transport package uses.
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{9mm}
 \noindent{\large\scshape Transseries and quantitative asymptotic inversion}\par
@@ -115,6 +118,7 @@ Priority beyond the inspected repository and the cited literature is not establi
 \noindent\small Pinned repository snapshot:
 \texttt{a795fcffa4b3ece22761d81fbed3c43be8b81795}.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
 \newpage
 
@@ -769,6 +773,9 @@ The first coefficients are
 Every further coefficient is determined by a finite algorithm using
 \eqref{eq:D}, gamma moments, and the shifted Stirling expansion.
 \end{theorem}
+
+% ed. (2026-09-29): cross-reference note (the same theorem proved independently in two sibling packages).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} One theorem, three independent proofs. The same result was proved, without sight of this article, in two other packages of this series (directory \path{Analysis/Transseries/docs/series-and-transseries/}): \path{Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex}, \texttt{thm:optimal}, from a spectral representation, with coefficients $B_j$; and \path{Optimal_Truncation_After_Nonlinear_Reversion/article.tex}, \texttt{thm:direct}, from a general cutoff-transfer theorem, with coefficients $D_j$. Both use the same $\sigma$, with $M$ in place of $N$. Their $B_1,B_2$ and $D_1,D_2$ agree with \eqref{eq:B1} and \eqref{eq:B2} term by term (checked symbolically on filing), and both re-derive the forward/direct separation of \cref{cor:comparison}. The spectral article's density coefficients through the fourth agree with those of \cref{thm:density} after the change of density normalization, and its \texttt{thm:enveloping} proves eventual enveloping of the same kind as \cref{thm:enveloping}; the third article proves enveloping only on windows $|M-\pi X|\le K$ (\texttt{cor:enveloping}) and recovers the half law of \cref{cor:half}. The truncation-ratio and square-root profiles and the six sign certificates of this article appear in neither. All three answer \texttt{prob:direct} of \path{Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}.\end{quote}
 
 \subsection{The gamma-expectation reduction}
 Set

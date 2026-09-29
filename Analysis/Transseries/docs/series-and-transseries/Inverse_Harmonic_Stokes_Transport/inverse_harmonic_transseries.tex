@@ -52,6 +52,9 @@
 \newcommand{\norm}[1]{\left\|#1\right\|}
 \newcommand{\statusline}[2]{\noindent\textbf{#1.} #2\par}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, which otherwise shares its page number with the
+% next page (pdfTeX "duplicate destination" warning); the same device the Stokes-transport package uses.
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{10mm}
 \noindent{\large\scshape Transseries and rigorous asymptotic inversion}\par
@@ -85,6 +88,7 @@ $u_M-W(X)=(-1)^M\sqrt X\,\ee^{-2\pi X}(1+\Oh(X^{-1}))$, including its first corr
 \noindent\small Repository snapshot: \texttt{04e06e032dff1966513bfba316966d52db3646b4}.\par
 \noindent\small Source, PDF, verification programs, exact certificates, and recorded outputs are included in the accompanying archive.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \begingroup
 \small
 \setlength{\parskip}{0pt}
@@ -525,6 +529,9 @@ The constants in the remainders may be chosen uniformly for $\sigma$ in any pres
 
 The leading constant in \eqref{eq:optimal-error} is one, whereas the magnitude of an inverse-series term in \eqref{eq:least-term} has leading constant two. These are statements about different objects; their difference is not a contradiction. The theorem identifies the actual error of the root of a truncated \emph{forward} equation.
 
+% ed. (2026-09-29): cross-reference note (canonical least-term theorem, Lean lemma, later re-derivations of B_1).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The canonical volume \path{Transseries_And_Inversion/transseries_and_inversion.tex} of this series (directory \path{Analysis/Transseries/docs/series-and-transseries/}) proves a general least-term theorem, \texttt{p0:thm:optimal-truncation}, whose second part bounds the error of the root of an optimally truncated forward equation by a constant times $x^{\beta-1/2}\ee^{-Ax}$ under a Gevrey-1 remainder hypothesis. \Cref{thm:optimal} is a sharp instance of that kind of statement for the present family: it identifies the leading constant and every algebraic correction. This article does not cite that theorem; the hypotheses were not matched constant by constant. The residual-to-root bracket behind the certificates of \cref{thm:cert} is related to the machine-checked lemma \texttt{Fabius.exists\_eq\_in\_residual\_interval} (\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}), which this article does not use. The three later packages cited in the note after \cref{prob:direct} re-derive the coefficient $B_1$ of \eqref{eq:B1}, with the sign $+\pi/12$, for the same forward-truncation root $u_M$.\end{quote}
+
 \subsection{Concentration of the exact remainder}
 \begin{lemma}[The transition at the least forward term]
 \label{lem:gamma-remainder}
@@ -851,6 +858,9 @@ Cauchy's estimate, with radii tending to $c/|w_0|$, yields
 $|A_n(L)|\le r(|w_0|/c)^n$. The geometric tail proves \eqref{eq:stokes-tail}. Substituting $z=q_0$ in \eqref{eq:auxiliary-implicit} recovers the exact equation $F_-(w_0+\delta)=L$, so the sum is the required inverse difference. Finally, $|q_0|=\exp(2\pi\Im w_0)$ decreases exponentially in the sector, whereas $|w_0|$ grows only algebraically. This proves the last assertion.
 \end{proof}
 
+% ed. (2026-09-29): cross-reference note (multi-action generalization in the Stokes-transport package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The later package \path{Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex} of this series (directory \path{Analysis/Transseries/docs/series-and-transseries/}) proves, independently and without citing this article, a multi-action form of the same Lagrange--B\"urmann inverse-sector expansion: its \texttt{thm:transport} gives every mixed coefficient of an analytic map perturbed by finitely many exponential terms, with a disk certificate and the tail bound $\rho\chi^{M+1}/((M+1)(1-\chi))$, and \texttt{cor:countable} extends it to weighted summable countable families. For one action it has the form of \cref{thm:stokes}. Both articles obtain inverse resurgence by verifying Sauzin's closure hypotheses.\end{quote}
+
 \subsection{The first three nonlinear sectors}
 Writing primes for derivatives with respect to $L$, \eqref{eq:An} gives
 \begin{align}
@@ -969,10 +979,16 @@ For $S_M(X)=X+\sum_{n=1}^Mh_nX^{1-2n}$, determine whether a useful domain admits
 \end{problem}
 The forward expansion is enveloping by positivity of an exact Stieltjes-type integral. That property does not automatically survive nonlinear inversion. Theorem~\ref{thm:optimal} therefore cannot be reused as a proof for $S_M$. A promising route is to derive a contour representation for the inverse displacement itself and analyze the discontinuities of its continuation. Enveloping results for reverted Airy and cylinder-zero expansions, proved in a different setting by Nemes \cite{nemes}, show that an analytic inverse representation can be decisive. They do not settle the present function. A counterexample to a global sign claim would also be useful: it would specify the right local or asymptotic formulation before attempting a general theorem.
 
+% ed. (2026-09-29): cross-reference note (three later answers to prob:direct).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} Three later packages of this series (directory \path{Analysis/Transseries/docs/series-and-transseries/}) answer the bounded-offset part of this problem, independently of one another and by three methods: \path{Direct_Optimal_Truncation_Inverse_Harmonic/direct_inverse_harmonic.tex} (\texttt{thm:sharp}, from an exterior dispersion representation with a positive tail density), \path{Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex} (\texttt{thm:optimal}, from a spectral representation, the route suggested above) and \path{Optimal_Truncation_After_Nonlinear_Reversion/article.tex} (\texttt{thm:direct}, from a general cutoff-transfer theorem). With $\sigma=M+1-\pi X$ in the normalization of this article, all three prove $S_M-W=(-1)^M\sqrt X\,\ee^{-2\pi X}\bigl(1+B_1(\sigma)/X+B_2(\sigma)/X^2+\Oh(X^{-3})\bigr)$ to every fixed order, with $B_1(\sigma)=(2\sigma^2-3\sigma+7/12)/(2\pi)-\pi/12$ and the same $B_2$; the three expressions for $B_2$ were checked to agree term by term. Hence $S_M-u_M=(-1)^{M+1}(\pi/6)X^{-1/2}\ee^{-2\pi X}(1+\Oh(X^{-1}))$. The first two also prove eventual strict enveloping, for all sufficiently large $X$ and $M$ with existential thresholds (\texttt{thm:enveloping} in each); the third proves it only on windows $|M-\pi X|\le K$ (\texttt{cor:enveloping}). A signed bound for every $M$ at a given $X$, and explicit thresholds, are established by none of them.\end{quote}
+
 \begin{problem}[Explicit local singularities of the inverse Borel transform]
 Determine the full local expansions of $\Borel(\widetilde W-X)$ at $\pm2\pi\ii$, including pole and logarithmic terms, and propagate them to subsequent lattice points on specified continuation sheets.
 \end{problem}
 The radius $2\pi$ and all inverse jump coefficients are already known here, but they do not constitute a complete description of local Borel singular germs on every sheet. The factorial asymptotics should constrain the nearest singular expansions, while \eqref{eq:An} supplies exact nonlinear consistency conditions. A constructive proof should match these two descriptions and state precisely which lattice points are actual singularities, rather than merely permitted singular locations.
+
+% ed. (2026-09-29): cross-reference note (partial answer in the spectral package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The later package \path{Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex} (directory \path{Analysis/Transseries/docs/series-and-transseries/}) answers the first part of this problem at the nearest points only: its \texttt{thm:borel} continues the Borel transform to the strip $|\Im\xi|<2\pi$ by an inverse cosine representation, and its \texttt{thm:boundary} gives the complete singular expansion at $\pm2\pi\ii$, with every logarithmic coefficient, for inward approach from that strip. Propagation to further lattice points and continuation sheets is not claimed there and remains open.\end{quote}
 
 \begin{problem}[A certified hyperasymptotic inverse]
 Use the exact gamma-expectation remainder to improve $u_M$ beyond its entire first exponential block, with a rigorously quantified next exponential scale.
@@ -995,6 +1011,9 @@ The proof of \cref{thm:endpoint} accommodates complex coefficients and does not 
 Construct a summable inverse calculus for divisor-dependent sectors whose positive actions have a finite accumulation point, as in the repository's necklace and irreducible-polynomial examples.
 \end{problem}
 This is a separate frontier explicitly identified in the companion \cite{repo}. The lattice $2\pi\ii\mathbb Z$ used here is closed and discrete, so the standard nonlinear resurgence closure theorem applies. A divisor-action set accumulating at a finite location violates that hypothesis. Finite divisor cutoffs are well defined, but an infinite calculus must specify a topology or summability condition, retain the divisibility indicators, and justify products and inverse operations in that setting. A formal Hahn-support condition alone is not an analytic convergence argument.
+
+% ed. (2026-09-29): cross-reference note (answer in the arithmetic package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The later package \path{Arithmetic_Transseries_Beyond_Accumulation_Cut/arithmetic_transseries.tex} (directory \path{Analysis/Transseries/docs/series-and-transseries/}) answers this problem, without citing it, in the form the companion's third research direction states: it retains the divisibility indicators, constructs a weighted Banach algebra over a faithful family of analytic sheets (\texttt{thm:banach}), characterizes which elementary blocks are admissible (\texttt{thm:admission}), and proves convergent inverses on each fixed arithmetic sheet (\texttt{thm:inverse}, \texttt{thm:range}). It proves no canonical global interpolation and no resurgence, Borel summation or Stokes automorphism in that setting. The package \path{Action_Accumulation_Nonlinear_Inversion/} gives a label-free analytic inversion calculus for accumulating actions that drops the divisibility indicators.\end{quote}
 
 \begin{problem}[Mechanization and bit complexity]
 Formalize the finite factorial estimates and the exact-rational certificate first; then obtain an explicit bit-complexity bound for a certified inverse evaluation to a prescribed accuracy.
@@ -1061,6 +1080,8 @@ The principal companion source is
 \begin{quote}\small
 \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
 \end{quote}
+% ed. (2026-09-29): current location of the companion (the pinned path no longer exists at the branch head).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The path above is correct at the commit shown. The series has since moved; the companion is now \path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.\end{quote}
 The relevant checkpoint source ranges were 4220--4500 for harmonic and generalized-harmonic inversion, 4500--4870 for certification and numerical distinctions, and 4870--5160 for support closure, status boundaries, and research questions. The group README and canonical transseries README were also inspected. These source ranges, paths, and commit identify a reproducible starting point; they are not a claim that every file in the repository was read.
 
 \subsection{What the verification does and does not establish}
@@ -1079,10 +1100,14 @@ Vladimir Reshetnikov, \emph{ProveIt}, companion manuscript
 \emph{Combinatorial Transseries and Their Inverses: Gamma quotients, finite exponential sums, moment sectors, moving saddles, arithmetic sheets, and $q$-products}, repository snapshot
 \texttt{04e06e032dff1966513bfba316966d52db3646b4}, inspected 29 September 2026. Exact path and inspected ranges in \cref{app:reproduction}.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Combinatorial_Transseries_Inverses}.
+% ed. (2026-09-29): current location added; the pinned URL above remains valid at its commit.
+\newline Editorial note (ProveIt, 2026-09-29): now at \path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/}.
 
 \bibitem{reporeadme}
 Vladimir Reshetnikov, \emph{ProveIt}, ``Series and transseries'' group README and ``Transseries: the polynomial--logarithmic calculus and its inversions'' README, same snapshot.\newline
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}.
+% ed. (2026-09-29): current locations added; the pinned URL above remains valid at its commit.
+\newline Editorial note (ProveIt, 2026-09-29): now at \path{Analysis/Transseries/docs/series-and-transseries/README.md} and \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions, Chapter 5, especially \S5.5 (functional relations), \S5.9 (integral representations), and \S5.11 (asymptotic expansions), accessed 29 September 2026.

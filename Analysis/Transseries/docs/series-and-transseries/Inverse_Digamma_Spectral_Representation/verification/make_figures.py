@@ -2,6 +2,10 @@
 """Plot recorded data without rerunning high-precision calculations."""
 import json
 from pathlib import Path
+import matplotlib
+# ed. (2026-09-29): embed TrueType (Type 42) fonts instead of Type 3 in the PDF figures.
+matplotlib.rcParams['pdf.fonttype']=42
+matplotlib.rcParams['ps.fonttype']=42
 import matplotlib.pyplot as plt
 ROOT=Path(__file__).resolve().parents[1]
 data=json.loads((ROOT/'data'/'results.json').read_text())

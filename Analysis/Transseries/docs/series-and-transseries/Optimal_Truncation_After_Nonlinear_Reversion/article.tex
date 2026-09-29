@@ -45,6 +45,9 @@
 \newcommand{\repo}{\textit{ProveIt}}
 \begin{document}
 \pagenumbering{roman}
+% ed. (2026-09-29): no page anchor on the title page, which otherwise shares its page number with the
+% next page (pdfTeX "duplicate destination" warning); the same device the Stokes-transport package uses.
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{8mm}
 \noindent{\large\scshape Transseries, asymptotic inversion, and exponential accuracy}\par
@@ -57,6 +60,8 @@
 \noindent 29 September 2026\par
 \vspace{7mm}\hrule\vspace{5mm}
 \begin{abstract}
+% ed. (2026-09-29): the abstract is the author's; see the editorial note after thm:direct: two sibling
+% packages filed earlier in the repository answer the same optimal-scale question independently.
 Inverting a truncated asymptotic expansion and truncating its formal inverse are different operations. The \repo\ article on inverse harmonic transseries explicitly leaves open the sharp error of the latter. We resolve that optimal-scale question by proving a general nonlinear cutoff-transfer theorem for factorially growing logarithmic corrections. A low/high coefficient decomposition isolates the contribution of the moving cutoff; at every relative algebraic order, only finitely many coefficients next to that cutoff contribute.
 
 For $\psi(W(X)+\tfrac12)=\log X$ and its direct inverse partial sum $S_M(X)$, put $\sigma=M+1-\pi X$. Uniformly for bounded $\sigma$, we obtain
@@ -75,6 +80,7 @@ We prove a complete, effectively computable expansion of its algebraic amplitude
 \noindent\small\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}.\par
 \noindent\small Standalone LaTeX, PDF, verification programs, and recorded results are supplied together.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \begingroup
 \small\setlength{\parskip}{0pt}
 \tableofcontents
@@ -96,6 +102,9 @@ of \repo\ \cite{prior,group}. Its problem labelled \texttt{prob:direct} asks for
 The present result answers the bounded-offset part of that question, including a signed first-omitted-term bound on that asymptotic window. It also supplies a reusable theorem explaining how nonlinear reversion interacts with a factorially moving cutoff. The proof does not assume that positivity of a forward integral survives inversion. Rather, it controls the difference between the two approximations and derives the sign afterward.
 
 The current repository places generic transseries work under \path{Analysis/Transseries}; some earlier articles still cite the old Fabius-based path. All repository references here use the inspected reference printed on the title page. A subsequent branch check showed that the repository had advanced; no claim is made that the pinned reference remains the current branch head.
+
+% ed. (2026-09-29): visible note: the "we resolve" of the abstract, the status line and this section is stale at the branch head.
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} This article was written at the reference printed on the title page, before two other answers to the same repository question were filed in \path{Analysis/Transseries/docs/series-and-transseries/}: \path{Direct_Optimal_Truncation_Inverse_Harmonic/direct_inverse_harmonic.tex} (\texttt{thm:sharp}) and \path{Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex} (\texttt{thm:optimal}). Its statement that it resolves the optimal-scale question is therefore a third, independent resolution; see the note after \cref{thm:direct}.\end{quote}
 
 \subsection{What is, and is not, new in the argument}
 The inverse-digamma coefficient problem has an established history. Issaka derives coefficient formulas and coefficient asymptotics for Ramanujan's inverse-digamma expansion \cite{issaka,thesis}. General formal Lagrange inversion is classical; Gessel provides a systematic account \cite{gessel}. Fabijonas and Olver emphasize the distinction between asymptotic reversion and actual error bounds \cite{fo}. These works are relevant antecedents, not results superseded by a new name.
@@ -654,6 +663,9 @@ Subtracting the second coefficient of \eqref{eq:cutoffharmonic2} yields \eqref{e
 At every higher fixed order, \cref{thm:cutoff} retains only finitely many $c_{M-k}$ and $\alpha_{M-k,\ell}$. The former have shifted Stirling expansions with an exponentially negligible eta factor, while the latter are explicit polynomials in $M$. Combine them with \eqref{eq:Bexp}. This proves \eqref{eq:directall}. The degree bound follows from the shifted Bernoulli polynomials and the finite coefficient formula: at relative order $j$, the gamma contribution has degree at most $2j$ in the bounded shift, and the additional diagonal operations preserve that bound.
 \end{proof}
 
+% ed. (2026-09-29): cross-reference note (the same theorem proved independently in two sibling packages).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} One theorem, three independent proofs. \Cref{thm:direct} was also proved, independently and by other methods, in \path{Direct_Optimal_Truncation_Inverse_Harmonic/direct_inverse_harmonic.tex}, \texttt{thm:sharp} (exterior dispersion with a positive tail density; $N$ for $M$, coefficients $B_j^-$), and \path{Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex}, \texttt{thm:optimal} (spectral representation; coefficients $B_j$), both in \path{Analysis/Transseries/docs/series-and-transseries/}. With the same $\sigma$, their first two coefficients equal $D_1$ and $D_2$ of the theorem term by term (checked symbolically on filing); their comparison results give the same forward/direct difference $\pi/6$, and the first of them has the half law \eqref{eq:half} and the order guide $\sigma=3/4$. Their enveloping theorems hold for all sufficiently large $X$ and truncation orders, so \cref{cor:enveloping} below, on windows $|M-\pi X|\le K$, is weaker. New here are the general \cref{thm:cutoff}, the second coefficient of the cutoff difference, the explicit forward $B_2$, the corrected averages of \cref{thm:corrected}, and the exact-rational error enclosures.\end{quote}
+
 \subsection{An effective all-orders construction}
 \label{sec:algorithm}
 The statement ``effectively computable'' in \cref{thm:direct} refers to finite rational and polynomial operations with $\pi$ adjoined, not to extracting coefficients from an unknown exact inverse. The following formulas specify the construction.
@@ -1022,6 +1034,9 @@ The repository inspection used the reference
 \texttt{04473354a0f3edff2d6c365caf26170ca6b88735}. The focused inputs were the transseries-group README, the canonical-volume README, and the predecessor's complete normalization, integral, forward optimal-truncation proof, and direct-partial-sum problem. The large canonical volume was not read exhaustively, and no exhaustive nonduplication audit of all repository documents is claimed.
 
 The precise predecessor targets are \texttt{prob:direct}, \texttt{thm:optimal}, \texttt{lem:fermi}, and its distinction between $S_M$ and $u_M$. The gap resolved is the bounded-offset sharp direct remainder and its associated eventual local enveloping law. The general global portion of \texttt{prob:direct} remains open here.
+
+% ed. (2026-09-29): visible note: the gap described here was resolved earlier by two sibling packages.
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} At the branch head the bounded-offset gap had been resolved twice before this article was filed; see the note after \cref{thm:direct}. The enveloping theorems of those articles (for all sufficiently large $X$ and truncation orders) answer part of research question~1 of \cref{sec:questions}; enveloping for every $M\ge0$ and explicit thresholds remain open.\end{quote}
 
 \begin{longtable}{p{0.30\textwidth}p{0.62\textwidth}}
 \toprule

@@ -124,6 +124,9 @@ series-and-transseries/Transseries\_And\_Inversion/
 \end{quote}
 and explicitly separates editorial consolidation from complete formalization \cite{repo}. Its stated topics include polynomial--logarithmic calculus, inversion around exact cores, Bell coefficients, analytic asymptotics, special-function inversion, and residual-to-error certificates. Named Lean modules include \texttt{LinLogCoreInversion.lean}, \texttt{RemainderTransport.lean}, \texttt{TransseriesFlat.lean}, and \texttt{UnitSeriesBellCoefficients.lean}.
 
+% ed. (2026-09-29): current locations (the pinned path no longer exists at the branch head).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The path above is correct at the commit shown. The series has since moved: the consolidated volume is now in \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}. Of the named Lean modules, \texttt{TransseriesFlat.lean} is now in \path{Analysis/Transseries/Lean/Transseries/}; the other three remain in \path{Analysis/FabiusFunction/Lean/FabiusFunction/}.\end{quote}
+
 The present work connects exact-core inversion to analytic Stokes transport. It does not reprove the repository's scale-uniqueness or Bell-normalization results as new results. The repository comparison is an inventory-level and statement-boundary comparison, not a claim of a line-by-line audit of the entire consolidated manuscript. In particular, absence of a theorem from the inventory is not evidence that it occurs nowhere in the repository.
 
 \subsection{What is established background and what is contributed here}
@@ -203,6 +206,9 @@ The multinomial expansion of $E^N$ proves \eqref{eq:transport}.
 
 For absolute convergence, do not estimate a differentiated expression. Estimate its contour representation instead. After taking the sum of the absolute values of the degree-$N$ monomials, the multinomial theorem bounds the numerator by $(\sum_j|\sigma_j|M_j)^N$. The contour has length $2\pi\rho$ and its denominator has modulus at least $m^N$. This proves \eqref{eq:homogeneous-bound}. Summation proves \eqref{eq:tail}. The same estimates justify every interchange and give local uniformity.
 \end{proof}
+
+% ed. (2026-09-29): cross-reference note (one-action instance and later restatement in sibling packages).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} Two sibling packages in \path{Analysis/Transseries/docs/series-and-transseries/} meet this theorem. \path{Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}, \texttt{thm:stokes}, proves the one-action case of the same Lagrange--B\"urmann sector expansion for the inverse harmonic function, with a geometric tail bound; this article, written without sight of it, generalizes that expansion to several actions with the explicit tail \eqref{eq:tail}, and both articles verify Sauzin's closure hypotheses for inverse resurgence. \path{Resonance_Block_Summation_Transseries/article.tex}, \texttt{thm:inverse}, restates this theorem in core coordinates with a block norm as its data (its coefficient formula agrees term by term, and its bound agrees for the identity core) and says so.\end{quote}
 
 \subsection{An easily evaluated sufficient certificate}
 \begin{corollary}[Derivative-disk certificate]
@@ -350,6 +356,9 @@ $(-1)^N(-1)^{N-1}=-1$.
 
 For $F(z)=z$, formula \eqref{eq:leading-sector} is exact, without its error factor. For one action its coefficients are
 $-(nA)^{n-1}/n!$, the familiar rooted-tree coefficients of Lambert inversion. This combinatorial appearance is classical; its use here makes the leading mixed Stokes sectors transparent. For perturbations $z^{\beta_j}\e^{-A_jz}$ on a fixed logarithm branch, the identical proof replaces the power $x^{aS}$ by $x^{aS+\sum_jn_j\beta_j}$.
+
+% ed. (2026-09-29): cross-reference note (tree coefficients in two sibling packages).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The same tree coefficients $n^{n-1}/n!$ appear in two sibling packages in \path{Analysis/Transseries/docs/series-and-transseries/}: the Cayley leading-block law \texttt{thm:cayley} of \path{Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex} and the compact-support certificate \texttt{thm:tree} of \path{Action_Accumulation_Nonlinear_Inversion/action_accumulation_and_inversion.tex}. Cross-reference only; none of the three cites the others.\end{quote}
 
 \section{An analytic Euler--logarithm family}
 \label{sec:euler}
@@ -518,6 +527,9 @@ $a\log(1+r/y)+\sum_jb_jU_{A_j,\theta}(y+r)$ when $y$ is large and $r$ is bounded
 \begin{remark}[What was imported]
 The deep continuation estimates behind the general resurgent implicit-function theorem are not new here. The contribution of \cref{thm:core} is the exact-core reduction and the explicit verification by \eqref{eq:kernel}. One must not replace this verification by an unsupported assertion that ordinary Borel summability automatically handles arbitrary power--logarithm substitutions.
 \end{remark}
+
+% ed. (2026-09-29): cross-reference note (model answer to a question of the reversion package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} \Cref{thm:core} is a model answer to the question ``Analytic subclasses stable under exact-core inversion'' of \path{Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex} (in \path{Analysis/Transseries/docs/series-and-transseries/}), which asks for coefficient-growth and continuation assumptions under which core-normalized Lagrange--B\"urmann inversion preserves Borel summability or a specified resurgent structure. For the finite-pole Euler--logarithm family around the core $y+a\log y=x$ it gives Gevrey-1 growth, $\Omega$-resurgence and $1$-summability off the positive ray. It is one model, not a general subclass; this article was written before that package was filed and does not cite it.\end{quote}
 
 \subsection{Explicit perturbative coefficients}
 For one Euler pole at $A=1$, write $b=b_1$. The beginning of the ordinary core correction is
@@ -780,6 +792,9 @@ Finally, on $|s|=1$, the derivative-disk certificate gives
 $|\psi_g(s)|\geq1-\vartheta_g$, while $|q\e^{-s}|\leq\e|q|$. Hence the branch is holomorphic for $|q|<(1-\vartheta_g)\e^{-1}$ by \cref{thm:transport}. This proves the lower bound and the asserted asymptotic radius.
 \end{proof}
 
+% ed. (2026-09-29): cross-reference note (uncited overlap with the moving-fold package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The sibling package \path{Critical_Transseries_Moving_Fold/article.tex} (in \path{Analysis/Transseries/docs/series-and-transseries/}) also studies a square-root fold of Lambert type near $w=-1$ whose branch point is displaced by a small perturbation (\texttt{thm:atlas}, a uniform two-sheet atlas with a moving branch value), and analytic folds perturbed by finitely many exponentials (\texttt{thm:actions}). Neither article cites the other. Their parametrizations differ, and the fold expansions have not been compared constant by constant.\end{quote}
+
 \subsection{Uniform inner scaling and the logarithmic shift}
 \begin{theorem}[Curvature-shifted square-root limit]
 \label{thm:inner}
@@ -1012,6 +1027,9 @@ The finite-action transport theorem is uniform under action coalescence as long 
 Find verifiable conditions on $(A_j,b_j)$ with $A_j\to\infty$ under which the countable analytic inverse of \cref{cor:countable} also has an exact-core resurgent correction. Normal convergence of the forward meromorphic Borel kernel and uniform parameter seminorm estimates are plausible starting hypotheses. They must be checked on lifted continuation paths, not just on the positive real axis.
 \end{problem}
 
+% ed. (2026-09-29): cross-reference note (forward half answered by the resonance-block package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} The later package \path{Resonance_Block_Summation_Transseries/article.tex} (in \path{Analysis/Transseries/docs/series-and-transseries/}) answers the forward half of this question for the Borel kernels $t^d/\prod_j\sin(\pi\omega_jt)$, without citing it. There the individual-residue weights of \cref{cor:countable} can sum to infinity: for two lattices the raw residue series has an exact abscissa of absolute convergence (\texttt{thm:arithmetic}) and diverges everywhere for an explicit Liouville-type period (\texttt{cor:counterexample}). Grouping near-colliding poles into blocks of at most $d$ nodes gives separation-free bounds, normal convergence on $\Re z>0$ and an action-cutoff tail (\texttt{thm:block}), and its \texttt{thm:inverse} applies \cref{thm:transport} with the block norm. The exact-core resurgent correction for countably many poles remains open there (its research question 6).\end{quote}
+
 \begin{problem}[Pre-existing critical points of the forward map]
 The amplitude fold in \cref{thm:radius} starts from $F'(g)>0$. Analyze inverse Stokes transport when the unperturbed forward map itself approaches a zero of $F'$. In that regime the linear certificate degenerates and exponentially small perturbations can become square-root or higher Puiseux effects. Construct a uniform multi-parameter model that separates a pre-existing forward critical point from the large-amplitude fold studied here.
 \end{problem}
@@ -1082,6 +1100,8 @@ For a general positive action $A$, replace the first term in parentheses by $A/F
 Vladimir Reshetnikov, \emph{ProveIt: Transseries---the polynomial--logarithmic calculus and its inversions}, repository inventory and formalization crosswalk, snapshot
 \texttt{04e06e032dff1966513bfba316966d52db3646b4}, accessed 29 September 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md}.
+% ed. (2026-09-29): current location added; the pinned URL above remains valid at its commit.
+\newline Editorial note (ProveIt, 2026-09-29): now at \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
 
 \bibitem{sauzin2015}
 David Sauzin, \emph{Nonlinear analysis with resurgent functions}, Annales scientifiques de l'\'Ecole Normale Sup\'erieure (4) \textbf{48} (2015), no.~3, 667--702. In particular Theorems~4 and~$4'$ and Section~3.5.

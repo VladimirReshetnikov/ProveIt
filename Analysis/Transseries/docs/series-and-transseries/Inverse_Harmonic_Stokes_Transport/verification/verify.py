@@ -141,7 +141,8 @@ def run() -> None:
         assert err<mp.mpf('1e-170')
         integral.append({'w':str(w),'absolute_error':mp.nstr(err,6)})
     results['fermi_integral_checks']=integral
-    (OUT/'results.json').write_text(json.dumps(results,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' so that a rerun on Windows writes LF, like the filed file.
+    (OUT/'results.json').write_text(json.dumps(results,indent=2)+'\n',newline='\n')
     print(json.dumps(results,indent=2))
 
 if __name__=='__main__':
