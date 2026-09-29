@@ -70,6 +70,8 @@
 \newcommand{\diver}{\mathord\uparrow}
 \newcommand{\snapshot}{\texttt{6c9175a54bcaad3bfc2d416257d2b7d3dff2c1e0}}
 \newcommand{\repobase}{https://github.com/VladimirReshetnikov/ProveIt}
+% [write] marks text added when the manuscript became report 13 (batch 37)
+\newcommand{\wtag}{\textup{[write]}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -101,10 +103,14 @@ Status: a conventional mathematical research manuscript, not a proof-assistant c
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \tableofcontents
+
+\medskip
+{\small\noindent
+\wtag\ \textbf{Research report~13 of the CoarseDegrees programme} (batch~37, manuscript~09). Text marked \wtag{} was added when it was filed; Sections~\ref{cr13:sec:wnotation}--\ref{cr13:sec:wtargets} give the notation against the plan and the other round-2 reports, the provenance, the formal status and the plan targets addressed. Nothing in this report is formalized. It is AI-assisted and unrefereed.\par}
 \newpage
 
 \section{Targets, contributions, and the status of the results}
-\label{sec:scope}
+\label{cr13:sec:scope}
 The question is not merely how complicated one representative of a coarse class can be. Sparse coding makes high-complexity representatives easy to obtain. The more structural question is how little information two representatives can share while remaining equal on a density-one set, and how much jump complexity is required to obtain such witnesses.
 
 This article examines the computability research in the ProveIt repository with source files verified at commit
@@ -123,13 +129,13 @@ The other component of C6, concerning exact partners of prescribed $\Delta^0_2$ 
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}X@{}}
 \toprule
 Ingredient & Status and use in this article\\\midrule
-Dyadic density coding & Classical; the coarse-description criterion is the relativization of Jockusch--Schupp's Theorem 2.19 \cite{JS}. Reproved in Section~\ref{sec:prelim}.\\
+Dyadic density coding & Classical; the coarse-description criterion is the relativization of Jockusch--Schupp's Theorem 2.19 \cite{JS}. Reproved in Section~\ref{cr13:sec:prelim}.\\
 C1 has a negative answer & Already recorded as retired in the plan. The published common-information results of Hirschfeldt--Jockusch--Kuyper--Schupp explain that status \cite{HJKS,Plan}. Not a novelty claim here.\\
 Guarded c.e. set and reservoirs & Present in the round-one synthesis \cite{Synthesis}. Their definitions and basic proofs are retained explicitly.\\
-Every countable ideal is a core & Proposed in C4 with a sketch. A full proof and strengthened witnesses appear in Sections~\ref{sec:master}--\ref{sec:ideals}.\\
+Every countable ideal is a core & Proposed in C4 with a sketch. A full proof and strengthened witnesses appear in Sections~\ref{cr13:sec:master}--\ref{cr13:sec:ideals}.\\
 Prescribed-oracle and joint jump control & The full countable-array theorem, with overlapping finite joins, is the main extension developed here.\\
-Classification of the guarded set & The concrete equivalence $X\equc\Rc(\TOT)$ is proved by two uniform algorithms in Section~\ref{sec:guarded}.\\
-Optimal first jump for C6 & Derived from the classification and the array theorem in Section~\ref{sec:optimal}.\\\bottomrule
+Classification of the guarded set & The concrete equivalence $X\equc\Rc(\TOT)$ is proved by two uniform algorithms in Section~\ref{cr13:sec:guarded}.\\
+Optimal first jump for C6 & Derived from the classification and the array theorem in Section~\ref{cr13:sec:optimal}.\\\bottomrule
 \end{tabularx}
 \end{center}
 
@@ -140,8 +146,59 @@ There are two independent strands. First, we classify the guarded diagonal set b
 
 The distinction is essential. An $H'$-effective construction can yield a very small common lower cone precisely because the decoding argument at a fixed stage uses only local information. Conversely, controlling each $D_i'$ separately would not control $(\bigoplus_iD_i)'$. We explicitly decide jump computations for the complete joined oracle.
 
+\subsection{\wtag\ Notation against the research plan and the other round-2 reports}
+\label{cr13:sec:wnotation}
+This article's objects agree with those of the research plan and the synthesis \cite{Plan,Synthesis}: $\Core$, $\Comp$, the coarse spectra, the columns $C_i$ with $c(i,t)=2^i(2t+1)-1$, the column index $\col(n)=\nu_2(n+1)$ (the Lean library's \texttt{col}), the dyadic code $\Rc$ (the plan's $\mathrm R$, Lean \texttt{Rc}), and the guarded set $X$ of \eqref{cr13:eq:guard}, which is the synthesis's Definition ``Guarded diagonal set'' and the set of the plan's (K5) and C6 (not the column-only variant of round-1 report~05). No symbol was renamed and no normalization changed when this report was written. The readings most likely to mislead:
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.14\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning here & Do not read it as\\\midrule
+$\Low(B)$ & the lower Turing cone $\{A:A\leT B\}$ & anything other than $\mathrm{Low}(B)$ of the plan, the synthesis and report~11; only the typeface differs\\
+$J$, $I_n$ & the block code on $I_n=[2^n-1,2^{n+1}-1)$, so $J(A)(t)$ is the plan's $J(A)(t+1)$ & the plan's $J$ and the Lean \texttt{blockCode}, whose blocks are $[2^n,2^{n+1})$\\
+$F$ (Section~\ref{cr13:sec:ideals}) & the robust column profile $F(c(i,t))=J(A_i)(t)$ of \eqref{cr13:eq:profile} & literally the plan's C4 set, which uses the plan's $J$; or report~11's $Z$\\
+$F$ (Sections~\ref{cr13:sec:reservoirs}--\ref{cr13:sec:master}) & any target with a layered presentation & the profile only\\
+$X$ & the guarded diagonal set \eqref{cr13:eq:guard} & an arbitrary many-one complete c.e.\ set; or report~11's participant oracles\\
+$Z$ & $\bigoplus_iD_i$, the join of the constructed descriptions & the ideal code, which is $F$ here (and $Z$ in report~11)\\
+$H$ & the presentation oracle; $H=X$ in Section~\ref{cr13:sec:optimal} & report~11's full join $H$\\
+$P_k$, $Q_k$ & protected regions and their complements & a presentation oracle (report~11's $P$)\\
+$\bigoplus_iD_i$ & the dyadic join $Z(c(i,t))=D_i(t)$; finite joins interleave periodically & a periodic interleaving of infinitely many sets\\
+``high spectrum'' & the set \eqref{cr13:eq:highspectrum}, with no bound $\mathbf d\le\zero'$ & the high degrees below $\zero'$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Report~12 uses $X_A$ for ideal codes different from both $F$ here and report~11's $Z$. Statements of the round-2 reports should be compared through their definitions, not through their letters.
+
+\subsection{\wtag\ Provenance of this report}
+\label{cr13:sec:wprov}
+The report is built from one manuscript: batch~37 manuscript~09, the archive \path{Exact_Ideals_and_Optimal_Jumps} (inner directory \path{exact_ideals_coarse/}, main file \texttt{article.tex}, 26-page PDF), which arrived in commit \texttt{37e61c1fd}. Its pin is the commit printed above, \texttt{6c9175a54bcaad3bfc2d416257d2b7d3dff2c1e0} (a batch-36 reciprocal-notes commit), and it was placed as report~13 in commit \texttt{0e53d1034}. Between the pin and the placement, \path{Computability/TuringDegrees/} changed only by the addition of the round-2 reports 11--14; the plan and synthesis blobs quoted in Appendix~\ref{cr13:app:sources} are those of the current tree. What the manuscript could not know is the rest of its round: reports~11 and~12 also prove C4, and report~14 takes up C2.
+
+When the report was written, every label received the prefix \texttt{cr13:}, and the note on the title page, these four subsections, and \wtag{} notes after Corollary~\ref{cr13:cor:allcores}, in Section~\ref{cr13:sec:diagnostics} and in Appendix~\ref{cr13:app:sources} were added. No statement of the manuscript was changed. Every numbered statement, equation and section keeps its number in the delivered PDF; that PDF is not shipped, and \texttt{article.pdf} is a build of this text.
+
+The delivered files are shipped under new paths: \path{checks/finite_checks.py} is \path{code/finite_checks.py}, \path{checks/results.json} is \path{data/results.json}, \path{audit/validation.json} is \path{data/validation.json}, \path{audit/PROOF_AUDIT.md} and \path{audit/SOURCES.md} are \path{PROOF_AUDIT.md} and \path{SOURCES.md}, and \path{build.sh} is \path{code/build.sh}. Line~8 of \path{SOURCES.md} records an ``initial discovery tree'' \texttt{1a1396d4d3a2ac6812692df520517d86ba3a4785}, and line~10 calls it ``a TREE object, not a commit''. That is false: \texttt{1a1396d4d} is a commit (the batch-36 placement commit, whose tree is \texttt{c3a58d9d35\dots}). The commit tree \texttt{246be5549\dots} recorded on line~7 is correct for the pin. The file is shipped unchanged.
+
+\subsection{\wtag\ Formal status and the Lean library}
+\label{cr13:sec:wformal}
+No statement of this report is formalized, in Lean or in Rocq; that it sits in the research programme of the Lean/Rocq project \path{Computability/TuringDegrees} gives it no formal status. The proofs use no published theorem as a black box, so the report relies on none of the eight statements that the project's Lean library \texttt{CoarseDegrees} (\path{Computability/TuringDegrees/Lean/CoarseDegrees}) admits. The library touches the report as follows.
+\begin{itemize}
+\item \emph{Proved in Lean, with nothing admitted, and reproved here.} The counts and density facts of Lemma~\ref{cr13:lem:columns}: the tail count is \path{card_tail} (\path{Columns.lean}, line 74), finitely many errors per column give density zero by \path{densityZero_of_bounded_columns} (line 85), and restriction to one column is \path{errCnt_div_tendsto} (\path{Majority.lean}, line 166). Proposition~\ref{cr13:prop:dyadic} is \path{description_iff_limit} (\path{Majority.lean}, line 297) and \path{spectrum_Rc} (\path{Spectrum.lean}, line 137) in limit form; the library has no jump operator, so the form ``$A\leT B'$'' and the limit lemma, Lemma~\ref{cr13:lem:limit}, are not stated. The sparse coding of Lemma~\ref{cr13:lem:spectra} is \path{exists_description_of_degree} (\path{BlockChar.lean}, line 42), which implants on $\{2^k-1\}$.
+\item \emph{Same argument, different code.} Lemma~\ref{cr13:lem:robust} is the majority argument of \path{blockCode_decode} (\path{Block.lean}, line 254), but for the shifted code $J$ above; that statement is not in Lean.
+\item \emph{Not formalized.} Everything else: the guarded set and Proposition~\ref{cr13:prop:guardbasic} (the library has no guarded set), Lemmas~\ref{cr13:lem:totfromX}--\ref{cr13:lem:domtoX}, Theorem~\ref{cr13:thm:classification}, the reservoir lemmas of Section~\ref{cr13:sec:reservoirs}, Theorem~\ref{cr13:thm:master}, the C4 results of Section~\ref{cr13:sec:ideals}, Theorem~\ref{cr13:thm:optimal}, Corollary~\ref{cr13:cor:noleastX} and the examples. The reservoir constructions need a use-bounded model of Turing functionals, which the library's README records as unavailable. Section~\ref{cr13:sec:implementation} is a plan: no Lean or Rocq code was delivered or is shipped. The ledger cited as \cite{Coverage} tracks the separate \texttt{TuringDegrees} library, not \texttt{CoarseDegrees}.
+\end{itemize}
+
+\subsection{\wtag\ Programme targets addressed, and what stays open}
+\label{cr13:sec:wtargets}
+Line numbers refer to \path{Computability/TuringDegrees/Research/CoarseDegrees/research-plan/turing_degrees_unified.tex} (``plan'') and \path{.../research-synthesis/Turing_Degrees_Synthesis.tex} (``synthesis''), identical at the pin and in the current tree.
+\begin{itemize}
+\item \emph{C6} (plan:603--604; plan:1647 names ``the $\emptyset''$ bound in C6'' among the quickest gains). For the prescribed guarded set, the plan proposes a partner $D\leT\emptyset''$ with $\Low(X)\cap\Low(D)$ computable and leaves ``whether $D$ can have $D'\leT\emptyset''$'' as a residual question. Theorem~\ref{cr13:thm:optimal} gives both, with $D_i'\eqT\emptyset''$ optimal by Theorem~\ref{cr13:thm:classification}. The plan's second residual question, what replaces $\emptyset''$ for a general approximable $X$, is answered only for targets with a layered presentation (Theorem~\ref{cr13:thm:master}: the bound $H'$) and stays open in general (Question~\ref{cr13:q:intrinsic}). The exploratory half, a prescribed $\Delta^0_2$ $1$-generic, stays open (Question~\ref{cr13:q:generic}).
+\item \emph{C4} (plan:585--598). Theorem~\ref{cr13:thm:profilecore} and Corollary~\ref{cr13:cor:allcores} prove the plan's core formula, for a code that differs from the plan's by the block shift noted above. The upper inclusion comes from the exactness clause of Theorem~\ref{cr13:thm:master}, not from the robust radius (HJKS Theorem~3.7) used by the plan's sketch and by report~11; this route uses no published black box. Of the tasks at plan:598: the sketch's conclusion is checked by a different route; this manuscript does not cite HJS~2021, which reports~11 and~12 identify as a close published antecedent of the column code; for which $(A_k)$ the class has a least degree is shown to depend on the presentation, not the ideal (Example~\ref{cr13:ex:presentation}), and stays open in general (Question~\ref{cr13:q:profilespectrum}); the uniform core is not addressed. The quantitative exact-pair consequence proposed at plan:598 is obtained for a pair and for a countable family inside one density-zero class (Corollaries~\ref{cr13:cor:finitepattern} and~\ref{cr13:cor:localexact}), not for the perfect family proposed there (Section~\ref{cr13:sec:density}).
+\item \emph{Classification} (synthesis:973). The ideal half is answered (Corollary~\ref{cr13:cor:allcores}; independently in reports~11 and~12). For spectra, Theorem~\ref{cr13:thm:classification} identifies the spectrum of the guarded set as the jump-cone $\{\mathbf d:\zero''\le\mathbf d'\}$, a shape the synthesis already realizes; the general spectra question stays open.
+\item \emph{Effectivity} (synthesis:972). For the guarded set, an exact partner is now bounded by $\emptyset''$ with jump $\emptyset''$, sharpening the synthesis's ``cannot be $\Delta^0_2$''. The $\Delta^0_2$ generic case, arithmetical bounds for the perfect families, and witnesses below $\zero'$ for the budget theorem stay open.
+\item \emph{Not addressed}: minimal elements (synthesis:970) and C5 (plan:600), Question~\ref{cr13:q:minimal}; C2 (plan:563, synthesis:969), Section~\ref{cr13:sec:ednot} and Question~\ref{cr13:q:c2}, the subject of report~14; C7 (plan:606), Question~\ref{cr13:q:c7}; C8 (plan:609, synthesis:971).
+\end{itemize}
+
 \section{Preliminaries: density, information cores, and coding}
-\label{sec:prelim}
+\label{cr13:sec:prelim}
 \subsection{Computability conventions}
 All sets are subsets of $\N=\{0,1,2,\ldots\}$, identified with their characteristic functions. Fix acceptable enumerations $(\varphi_e)$ of partial computable numerical functions and $(\Phi_e)$ of oracle functionals. A finite-oracle computation is declared convergent only when every oracle query is answered by the finite information supplied. Convergence therefore persists under extension. Numerical outputs are allowed in intermediate arguments; claims about sets concern total binary-valued outputs.
 
@@ -154,7 +211,7 @@ We freely use the elementary facts that $H'$ decides $\Sigma^0_1(H)$ questions, 
 
 A \emph{Turing ideal}, viewed here as a family of sets, is a nonempty family closed downward under $\leT$ and under finite joins. This is equivalent to an ideal of degrees. A countable ideal of degrees contains only countably many sets: below any one oracle there are only countably many functionals. We work classically; no effective enumeration of a countable ideal is assumed.
 
-\begin{lemma}[Relativized limit lemma]\label{lem:limit}
+\begin{lemma}[Relativized limit lemma]\label{cr13:lem:limit}
 For sets $A,B$, $A\leT B'$ if and only if there is a total $B$-computable binary function $a(n,s)$ such that $\lim_s a(n,s)=A(n)$ for every $n$. The translations are uniform in reduction indices, on oracles satisfying the relevant hypotheses.
 \end{lemma}
 \begin{proof}
@@ -178,25 +235,25 @@ Write $D\approx F$ when $\rho_N(D\sd F)\to0$, and let
                   \CD(F)=\{D\in\Cantor:D\approx F\}.
 \]
 The \emph{core} of $F$ is
-\begin{equation}\label{eq:core}
+\begin{equation}\label{cr13:eq:core}
              \Core(F)=\bigcap_{D\in\CD(F)}\Low(D).
 \end{equation}
 In the notation of Hirschfeldt--Jockusch--Kuyper--Schupp this is the common-information class $F^{\mathfrak c}$ \cite{HJKS}.
 
 The relation $F\leuc G$ means that one functional sends every coarse description of $G$ to a coarse description of $F$. The nonuniform relation $F\lenc G$ allows the functional to depend on the input description. Equivalence is denoted by $\equc$ or $\eqnc$. Since density-zero symmetric difference is transitive,
-\begin{equation}\label{eq:sameCD}
+\begin{equation}\label{cr13:eq:sameCD}
        D\approx F\quad\Longrightarrow\quad
        \CD(D)=\CD(F)\quad\Longrightarrow\quad D\equc F.
 \end{equation}
 
-\begin{lemma}[Necessary form of a core]\label{lem:coreideal}
+\begin{lemma}[Necessary form of a core]\label{cr13:lem:coreideal}
 For every $F$, $\Core(F)$ is a countable Turing ideal contained in $\Low(F)$.
 \end{lemma}
 \begin{proof}
 Every $D$ computes all computable sets. Downward closure and closure under joins hold separately inside each $\Low(D)$, hence in their intersection. Since $F\in\CD(F)$, the intersection is contained in $\Low(F)$, which is countable.
 \end{proof}
 
-\begin{lemma}[Sparse coding and spectra]\label{lem:spectra}
+\begin{lemma}[Sparse coding and spectra]\label{cr13:lem:spectra}
 The Turing-degree spectra of $\CD(F)$, $[F]_{\mathrm{uc}}$, and $[F]_{\mathrm{nc}}$ are identical. They are upward closed and equal to
 \[
  \{\deg_T(B): B\text{ computes a member of }\CD(F)\}.
@@ -205,27 +262,27 @@ The Turing-degree spectra of $\CD(F)$, $[F]_{\mathrm{uc}}$, and $[F]_{\mathrm{nc
 \begin{proof}
 Suppose $D\approx F$ and $D\leT B$. On the computable density-zero set $S=\{2^n:n\in\N\}$ replace $D(2^n)$ by $B(n)$, leaving all other bits unchanged. The result $E$ satisfies $E\approx F$, $E\leT B$, and $B\leT E$ by reading the marked positions. Thus every oracle computing a description has a description of exactly its own degree.
 
-Members of $\CD(F)$ are uniformly coarsely equivalent to $F$ by \eqref{eq:sameCD}. Conversely, if $Y\eqnc F$, apply $F\lenc Y$ to the exact description $Y$ itself. This gives a $Y$-computable description of $F$, and sparse coding produces one of degree $\deg_T(Y)$. The uniform class lies between the two inclusions. These arguments are also the spectrum argument in the repository synthesis \cite{Synthesis}.
+Members of $\CD(F)$ are uniformly coarsely equivalent to $F$ by \eqref{cr13:eq:sameCD}. Conversely, if $Y\eqnc F$, apply $F\lenc Y$ to the exact description $Y$ itself. This gives a $Y$-computable description of $F$, and sparse coding produces one of degree $\deg_T(Y)$. The uniform class lies between the two inclusions. These arguments are also the spectrum argument in the repository synthesis \cite{Synthesis}.
 \end{proof}
 
-\begin{lemma}[A necessary condition for a least degree]\label{lem:leastcore}
-If the common spectrum in Lemma~\ref{lem:spectra} has a least degree $\mathbf a$, then $\Core(F)$ is the principal ideal $\{B:\deg_T(B)\le\mathbf a\}$. In particular, a nonprincipal core precludes a least degree.
+\begin{lemma}[A necessary condition for a least degree]\label{cr13:lem:leastcore}
+If the common spectrum in Lemma~\ref{cr13:lem:spectra} has a least degree $\mathbf a$, then $\Core(F)$ is the principal ideal $\{B:\deg_T(B)\le\mathbf a\}$. In particular, a nonprincipal core precludes a least degree.
 \end{lemma}
 \begin{proof}
-Choose $D\approx F$ of degree $\mathbf a$. Every description computes $D$, so $\Low(D)\subseteq\Core(F)$. The reverse inclusion follows by including $D$ in the intersection \eqref{eq:core}.
+Choose $D\approx F$ of degree $\mathbf a$. Every description computes $D$, so $\Low(D)\subseteq\Core(F)$. The reverse inclusion follows by including $D$ in the intersection \eqref{cr13:eq:core}.
 \end{proof}
-The converse is false; a principal core need not give a least representative. Section~\ref{sec:examples} gives explicit presentations exhibiting this distinction.
+The converse is false; a principal core need not give a least representative. Section~\ref{cr13:sec:examples} gives explicit presentations exhibiting this distinction.
 
 \subsection{Dyadic columns and the limit code}
 Define
-\begin{equation}\label{eq:columns}
+\begin{equation}\label{cr13:eq:columns}
  c(i,t)=2^i(2t+1)-1,\qquad
  C_i=\{c(i,t):t\in\N\},\qquad
  T_k=\bigcup_{i\ge k}C_i.
 \end{equation}
 The map $c:\N^2\to\N$ is a computable bijection, and $\col(n)=\nu_2(n+1)$ is its first inverse coordinate.
 
-\begin{lemma}[Column estimates]\label{lem:columns}
+\begin{lemma}[Column estimates]\label{cr13:lem:columns}
 For $N\ge1$,
 \[
  |C_i\cap[0,N)|=\left\lfloor\frac N{2^i}\right\rfloor-
@@ -236,7 +293,7 @@ Thus $\rho(C_i)=2^{-i-1}$ and $\rho_N(T_k)\le2^{-k}$. If $E\cap C_i$ is finite f
 \end{lemma}
 \begin{proof}
 The first identities count divisibility of the integers $1,\ldots,N$. For finite errors per column, choose $M$ containing all errors in $C_0,\ldots,C_{k-1}$. Then
-\begin{equation}\label{eq:tailbound}
+\begin{equation}\label{cr13:eq:tailbound}
                        \rho_N(E)\le M/N+2^{-k}.
 \end{equation}
 First let $N\to\infty$, then $k\to\infty$. For restriction to one column, the first $s$ positions of $C_i$ lie below $2^{i+1}s$, so their error proportion is at most $2^{i+1}\rho_{2^{i+1}s}(E)$.
@@ -245,13 +302,13 @@ The tail estimate, rather than countability of the columns, justifies the limit.
 
 Put $\Rc(A)(c(i,t))=A(i)$. This code stores one bit on each positive-density column. It satisfies $\Rc(A)\eqT A$.
 
-\begin{proposition}[Description criterion for the dyadic code]\label{prop:dyadic}
+\begin{proposition}[Description criterion for the dyadic code]\label{cr13:prop:dyadic}
 An oracle $B$ computes a coarse description of $\Rc(A)$ if and only if $A\leT B'$. From a description $D$ there is a uniform $D$-computable limit approximation to $A$, and hence a uniform computation of $A$ from $D'$.
 \end{proposition}
 \begin{proof}
-Given $D\approx\Rc(A)$, let $a(i,s)$ be the majority of $D$ on the first $s+1$ elements of $C_i$, breaking ties in favor of $0$. By Lemma~\ref{lem:columns}, the relative error on this column tends to zero. Thus $a(i,s)\to A(i)$, and Lemma~\ref{lem:limit} applies.
+Given $D\approx\Rc(A)$, let $a(i,s)$ be the majority of $D$ on the first $s+1$ elements of $C_i$, breaking ties in favor of $0$. By Lemma~\ref{cr13:lem:columns}, the relative error on this column tends to zero. Thus $a(i,s)\to A(i)$, and Lemma~\ref{cr13:lem:limit} applies.
 
-Conversely, given a total $B$-computable approximation $a(i,s)\to A(i)$, define $D(n)=a(\col(n),n)$. In each fixed column all errors occur before stabilization. Lemma~\ref{lem:columns} implies $D\approx\Rc(A)$. This is the relativized classical argument \cite[Theorem 2.19]{JS}.
+Conversely, given a total $B$-computable approximation $a(i,s)\to A(i)$, define $D(n)=a(\col(n),n)$. In each fixed column all errors occur before stabilization. Lemma~\ref{cr13:lem:columns} implies $D\approx\Rc(A)$. This is the relativized classical argument \cite[Theorem 2.19]{JS}.
 \end{proof}
 
 \subsection{A robust code and countable repetition}
@@ -262,7 +319,7 @@ Let
 \]
 The length of $I_n$ is $2^n$. This code differs from $\Rc$ in that it stores successive bits on increasingly long consecutive intervals.
 
-\begin{lemma}[Robust block decoding]\label{lem:robust}
+\begin{lemma}[Robust block decoding]\label{cr13:lem:robust}
 If $D\approx J(A)$, then $A\leT D$. Also $J(A)\leT A$.
 \end{lemma}
 \begin{proof}
@@ -280,27 +337,27 @@ For a set $F$, define its countable repetition by
 \]
 For a sequence $(D_i)$ write $Z=\bigoplus_iD_i$ for $Z(c(i,t))=D_i(t)$.
 
-\begin{lemma}[Joining descriptions]\label{lem:joincoarse}
+\begin{lemma}[Joining descriptions]\label{cr13:lem:joincoarse}
 If $D_i\approx F$ for every $i$, then $\bigoplus_iD_i\approx\Rep(F)$ and $\Rep(F)\equc F$. Every nonempty finite join of the $D_i$ is also uniformly coarsely equivalent to $F$. Moreover, the degree of the full join is realized by a member of $\CD(F)$.
 \end{lemma}
 \begin{proof}
-For the countable join, fix $k$. Errors in each of the first $k$ columns have density zero; the remaining errors lie in $T_k$. Lemma~\ref{lem:columns} bounds their upper density by $2^{-k}$, and $k$ is arbitrary. No uniform rate of convergence for $(D_i)$ is needed.
+For the countable join, fix $k$. Errors in each of the first $k$ columns have density zero; the remaining errors lie in $T_k$. Lemma~\ref{cr13:lem:columns} bounds their upper density by $2^{-k}$, and $k$ is arbitrary. No uniform rate of convergence for $(D_i)$ is needed.
 
-Repeating an input description on all columns gives one reduction $\Rep(F)\leuc F$; restriction to $C_0$ gives $F\leuc\Rep(F)$. Both statements use the same density estimates. Finite interleaving works by finite additivity and restriction to a positive-density residue class. Finally, the full join computes $D_0\approx F$, so Lemma~\ref{lem:spectra} supplies a description of its exact degree.
+Repeating an input description on all columns gives one reduction $\Rep(F)\leuc F$; restriction to $C_0$ gives $F\leuc\Rep(F)$. Both statements use the same density estimates. Finite interleaving works by finite additivity and restriction to a positive-density residue class. Finally, the full join computes $D_0\approx F$, so Lemma~\ref{cr13:lem:spectra} supplies a description of its exact degree.
 \end{proof}
 
 \section{The guarded diagonal set has exactly the high spectrum}
-\label{sec:guarded}
+\label{cr13:sec:guarded}
 \subsection{The prescribed c.e. target}
 We use the precise guarded set from the repository synthesis, not an arbitrary complete c.e. set. For $n\in C_e$, define
-\begin{equation}\label{eq:guard}
+\begin{equation}\label{cr13:eq:guard}
  X(n)=1\quad\Longleftrightarrow\quad
  [\forall m\le n\ \varphi_e(m)\hal\in\{0,1\}]
  \ \text{ and }\ \varphi_e(n)=0.
 \end{equation}
 The condition has a finite positive witness, so $X$ is c.e.
 
-\begin{proposition}[Basic properties of the guarded set]\label{prop:guardbasic}
+\begin{proposition}[Basic properties of the guarded set]\label{cr13:prop:guardbasic}
 The set $X$ is many-one complete c.e., hence $X\eqT\emptyset'$. For each fixed $e$, $X\cap C_e$ is computable, although the indices need not be uniformly computable in $e$. No computable set is a coarse description of $X$.
 \end{proposition}
 \begin{proof}
@@ -318,28 +375,28 @@ The use of a guard is not cosmetic. Without it, a partial program can leave an a
 \subsection{Recovering totality in the limit}
 Let $\TOT=\{e:\varphi_e\text{ is total}\}$. We use the standard completeness fact $\TOT\eqT\emptyset''$. To recall why, totality has the form $\forall n\exists s$ with a computable matrix. Any such predicate can be reduced to totality by a program which, on input $n$, searches for witnesses for all requirements up to $n$. Thus $\TOT$ is $\Pi^0_2$-complete and has degree $\zero''$.
 
-\begin{lemma}[A uniform totality approximation]\label{lem:totfromX}
+\begin{lemma}[A uniform totality approximation]\label{cr13:lem:totfromX}
 There is a computable function $f$ such that, for every $e$, $X\cap C_{f(e)}$ is all of $C_{f(e)}$ when $e\in\TOT$ and is finite otherwise. Consequently every $D\approx X$ uniformly computes a total binary approximation $a_D(e,s)\to\TOT(e)$.
 \end{lemma}
 \begin{proof}
-Let $f(e)$ be an index for the program which, on input $n$, waits until $\varphi_e(m)$ has halted for every $m\le n$, then outputs $0$. If $\varphi_e$ is total, this new program is total zero. If not, it fails from the least divergent input onward. Apply \eqref{eq:guard} to the column with index $f(e)$.
+Let $f(e)$ be an index for the program which, on input $n$, waits until $\varphi_e(m)$ has halted for every $m\le n$, then outputs $0$. If $\varphi_e$ is total, this new program is total zero. If not, it fails from the least divergent input onward. Apply \eqref{cr13:eq:guard} to the column with index $f(e)$.
 
-Let $a_D(e,s)$ be the majority of $D$ on the first $s+1$ points of $C_{f(e)}$. In the total case the relative density of $1$'s tends to one; in the nontotal case it tends to zero. Restricting density-zero errors to that column is legitimate by Lemma~\ref{lem:columns}. The algorithm makes finitely many queries to $D$ and uses no totality oracle.
+Let $a_D(e,s)$ be the majority of $D$ on the first $s+1$ points of $C_{f(e)}$. In the total case the relative density of $1$'s tends to one; in the nontotal case it tends to zero. Restricting density-zero errors to that column is legitimate by Lemma~\ref{cr13:lem:columns}. The algorithm makes finitely many queries to $D$ and uses no totality oracle.
 \end{proof}
 In particular, $\emptyset''\leT D'$ for every $D\approx X$. This is a lower bound on every description, not just on descriptions produced by a particular method.
 
 \subsection{From a totality approximation to a dominating function}
-\begin{lemma}[Uniform domination from limit totality]\label{lem:domination}
+\begin{lemma}[Uniform domination from limit totality]\label{cr13:lem:domination}
 Suppose an oracle $B$ computes a total binary function $a(e,s)$ converging pointwise to $\TOT(e)$. Then $B$ uniformly computes a total numerical function $g$ which eventually strictly dominates every total computable numerical function.
 \end{lemma}
 \begin{proof}
 On input $n$, search for a stage $s\ge n$ with the following property:
-\begin{equation}\label{eq:searchdom}
+\begin{equation}\label{cr13:eq:searchdom}
   \text{for every }e\le n\text{ with }a(e,s)=1,
        \ \varphi_e(n)\text{ halts within }s\text{ steps}.
 \end{equation}
-For this fixed finite collection of indices, the approximation eventually stabilizes. The indices then marked $1$ are precisely the total ones in that collection, and all their computations at $n$ halt. A sufficiently large stage therefore satisfies \eqref{eq:searchdom}. At the first successful stage, put
-\begin{equation}\label{eq:g}
+For this fixed finite collection of indices, the approximation eventually stabilizes. The indices then marked $1$ are precisely the total ones in that collection, and all their computations at $n$ halt. A sufficiently large stage therefore satisfies \eqref{cr13:eq:searchdom}. At the first successful stage, put
+\begin{equation}\label{cr13:eq:g}
  g(n)=1+\max\bigl(\{n\}\cup
        \{\varphi_e(n):e\le n\text{ and }a(e,s)=1\}\bigr).
 \end{equation}
@@ -348,7 +405,7 @@ All values in the maximum have been found by the bounded simulations, so $g$ is 
 Fix a total $\varphi_e$. Choose $s_0$ so that $a(e,s)=1$ for all $s\ge s_0$. For every $n\ge\max(e,s_0)$, the selected stage satisfies $s\ge n\ge s_0$, so the maximum includes $\varphi_e(n)$. Hence $g(n)>\varphi_e(n)$ for all such $n$. Notice that the algorithm never needs to know $s_0$.
 \end{proof}
 
-\begin{lemma}[A dominating oracle computes a description of $X$]\label{lem:domtoX}
+\begin{lemma}[A dominating oracle computes a description of $X$]\label{cr13:lem:domtoX}
 There is one procedure which, from any total function $g$ eventually dominating every total computable function, computes a coarse description of $X$.
 \end{lemma}
 \begin{proof}
@@ -358,59 +415,59 @@ If $\varphi_e$ is not total binary, let $m$ be its least bad input. For $n\ge m$
 \[
  r_e(n)=\max\{\text{halting time of }\varphi_e(m):m\le n\}.
 \]
-Eventually $g(n)\ge r_e(n)$, and then the procedure agrees with the guard definition at $n$. Thus there are finitely many errors in each column. Lemma~\ref{lem:columns} proves density-zero total error.
+Eventually $g(n)\ge r_e(n)$, and then the procedure agrees with the guard definition at $n$. Thus there are finitely many errors in each column. Lemma~\ref{cr13:lem:columns} proves density-zero total error.
 \end{proof}
 
-\begin{theorem}[Uniform classification of the guarded set]\label{thm:classification}
-For the set $X$ in \eqref{eq:guard},
-\begin{equation}\label{eq:uniformclass}
+\begin{theorem}[Uniform classification of the guarded set]\label{cr13:thm:classification}
+For the set $X$ in \eqref{cr13:eq:guard},
+\begin{equation}\label{cr13:eq:uniformclass}
                            X\equc\Rc(\TOT).
 \end{equation}
 Its description spectrum, uniform coarse-class spectrum, and nonuniform coarse-class spectrum are all
-\begin{equation}\label{eq:highspectrum}
+\begin{equation}\label{cr13:eq:highspectrum}
                   \{\mathbf d:\zero''\leq\mathbf d'\}.
 \end{equation}
-Here the inequality in \eqref{eq:highspectrum} is not accompanied by a restriction $\mathbf d\leq\zero'$.
+Here the inequality in \eqref{cr13:eq:highspectrum} is not accompanied by a restriction $\mathbf d\leq\zero'$.
 \end{theorem}
 \begin{proof}
-Given $D\approx X$, use Lemma~\ref{lem:totfromX} to obtain $a_D(e,s)\to\TOT(e)$ and output $a_D(\col(n),n)$ on input $n$. The second half of Proposition~\ref{prop:dyadic} shows that this is a description of $\Rc(\TOT)$. The procedure is uniform in $D$.
+Given $D\approx X$, use Lemma~\ref{cr13:lem:totfromX} to obtain $a_D(e,s)\to\TOT(e)$ and output $a_D(\col(n),n)$ on input $n$. The second half of Proposition~\ref{cr13:prop:dyadic} shows that this is a description of $\Rc(\TOT)$. The procedure is uniform in $D$.
 
-Given $E\approx\Rc(\TOT)$, column majorities give an $E$-computable approximation to $\TOT$. Apply Lemma~\ref{lem:domination}, then Lemma~\ref{lem:domtoX}, to produce a description of $X$. These are fixed oracle procedures and hence establish the opposite uniform reduction. None of them queries $E'$ as an oracle.
+Given $E\approx\Rc(\TOT)$, column majorities give an $E$-computable approximation to $\TOT$. Apply Lemma~\ref{cr13:lem:domination}, then Lemma~\ref{cr13:lem:domtoX}, to produce a description of $X$. These are fixed oracle procedures and hence establish the opposite uniform reduction. None of them queries $E'$ as an oracle.
 
-Finally, Proposition~\ref{prop:dyadic} says that $B$ computes a description of $\Rc(\TOT)$ exactly when $\TOT\leT B'$, equivalently $\emptyset''\leT B'$. Combine the uniform equivalence with Lemma~\ref{lem:spectra}.
+Finally, Proposition~\ref{cr13:prop:dyadic} says that $B$ computes a description of $\Rc(\TOT)$ exactly when $\TOT\leT B'$, equivalently $\emptyset''\leT B'$. Combine the uniform equivalence with Lemma~\ref{cr13:lem:spectra}.
 \end{proof}
 \begin{remark}
-The phrase ``high spectrum'' is convenient, but terminology about high degrees is often used within the interval below $\zero'$. Formula \eqref{eq:highspectrum}, rather than that informal convention, is the assertion used here. In particular, the later exact partners are not below $\emptyset'$ even though their jumps equal $\emptyset''$.
+The phrase ``high spectrum'' is convenient, but terminology about high degrees is often used within the interval below $\zero'$. Formula \eqref{cr13:eq:highspectrum}, rather than that informal convention, is the assertion used here. In particular, the later exact partners are not below $\emptyset'$ even though their jumps equal $\emptyset''$.
 \end{remark}
 
 \section{Layered reservoirs and the finite-extension lemmas}
-\label{sec:reservoirs}
+\label{cr13:sec:reservoirs}
 \subsection{Two oracles with different jobs}
 Fix a presentation oracle $H$, a target $F\leT H$, and increasing sets
 \[
                   P_0\subseteq P_1\subseteq\cdots\subseteq\N.
 \]
 Assume that membership in $P_k$ is uniformly computable from $(H,k)$, and set $Q_k=\N\setminus P_k$. We require
-\begin{equation}\label{eq:smalltails}
+\begin{equation}\label{cr13:eq:smalltails}
                   Q_k\text{ infinite for every }k,
              \qquad\lim_{k\to\infty}\updens(Q_k)=0.
 \end{equation}
 Let $B_0\leT B_1\leT\cdots\leT H$ and define
-\begin{equation}\label{eq:idealchain}
+\begin{equation}\label{cr13:eq:idealchain}
                          \Ideal=\bigcup_k\Low(B_k).
 \end{equation}
 For each fixed $k$, assume that $P_k$ and $F\cap P_k$ are $B_k$-computable. The existence of these local computations is sufficient; no uniform list of their indices is part of the hypothesis. Finally assume
-\begin{equation}\label{eq:coreinclusion}
+\begin{equation}\label{cr13:eq:coreinclusion}
                                \Ideal\subseteq\Core(F).
 \end{equation}
-The task of a particular application is to verify \eqref{eq:coreinclusion}. It is not asserted for every reservoir presentation. For computable $B_k$ it is automatic; for arbitrary ideals it will follow from robust block decoding.
+The task of a particular application is to verify \eqref{cr13:eq:coreinclusion}. It is not asserted for every reservoir presentation. For computable $B_k$ it is automatic; for arbitrary ideals it will follow from robust block decoding.
 
 The oracle $H$ has enough information to decide finite admissibility uniformly. The smaller oracle $B_k$ is used only after a single stage and its finite data have been fixed, to compute a common output. Conflating these two uses would replace the desired ideal by an unnecessarily large lower cone.
 
 \subsection{Finite array conditions}
-\begin{definition}[Condition and reservoir]\label{def:condition}
+\begin{definition}[Condition and reservoir]\label{cr13:def:condition}
 A condition $p=(k,\boldsymbol\sigma)$ consists of a level $k$ and an array $(\sigma_i)_{i\in\N}$ of finite binary strings with only finitely many nonempty entries. Its reservoir $[p]$ is the set of all arrays $(Y_i)_{i\in\N}$ such that, for every $i$,
-\begin{equation}\label{eq:reservoir}
+\begin{equation}\label{cr13:eq:reservoir}
  Y_i\succeq\sigma_i,\qquad
  n\ge|\sigma_i|\ \&\ n\in P_k\quad\Longrightarrow\quad Y_i(n)=F(n).
 \end{equation}
@@ -425,7 +482,7 @@ Every reservoir is nonempty: extend each stem by $F$ on protected positions and 
 
 The joined finite oracle $Z_{\boldsymbol\tau}$ answers a query $c(i,t)$ precisely when $t<|\tau_i|$, with answer $\tau_i(t)$. For a finite set $S$ of indices, $W_S(\boldsymbol\tau)$ is the finite oracle obtained by interleaving the strings with indices in $S$, in increasing index order. Missing bits remain unanswered. Let $W_\varnothing$ denote the computable empty oracle.
 
-\begin{lemma}[Preservation and finite witnesses]\label{lem:preserve}
+\begin{lemma}[Preservation and finite witnesses]\label{cr13:lem:preserve}
 If $\boldsymbol\tau$ is admissible over $p=(k,\boldsymbol\sigma)$ and $\ell\ge k$, then
 \[
                       [\ell,\boldsymbol\tau]\subseteq[p].
@@ -440,9 +497,9 @@ A convergent oracle computation asks only finitely many questions. For every coo
 This lemma also proves persistence of a negative statement saying that no admissible witness exists. Such a statement is made about the entire current reservoir, and every later reservoir is a subset of it.
 
 \subsection{One side fixed: exactness against the presentation oracle}
-\begin{lemma}[Fixed-oracle disagreement lemma]\label{lem:fixed}
+\begin{lemma}[Fixed-oracle disagreement lemma]\label{cr13:lem:fixed}
 Fix $p=(k,\boldsymbol\sigma)$ and indices $e,j$. Consider the question
-\begin{equation}\label{eq:fixedtest}
+\begin{equation}\label{cr13:eq:fixedtest}
  \exists\boldsymbol\tau,n\quad
  \boldsymbol\tau\text{ admissible over }p\quad\&\quad
  \Phi_e^{Z_{\boldsymbol\tau}}(n)\hal
@@ -455,46 +512,46 @@ It is a $\Sigma^0_1(H)$ question. If the answer is yes, a witness permanently fo
 as total functions, then $A\leT B_k$.
 \end{lemma}
 \begin{proof}
-Finite admissibility is $H$-decidable, and both convergences in \eqref{eq:fixedtest} can be searched for using $H$. This proves the complexity assertion. A positive witness persists by Lemma~\ref{lem:preserve}.
+Finite admissibility is $H$-decidable, and both convergences in \eqref{cr13:eq:fixedtest} can be searched for using $H$. This proves the complexity assertion. A positive witness persists by Lemma~\ref{cr13:lem:preserve}.
 
-For the negative case, fix indices witnessing the $B_k$-computability of the protected set and protected values. On input $n$, enumerate all finite arrays admissible over $p$, dovetail the computations $\Phi_e^{Z_{\boldsymbol\tau}}(n)$, and return the first convergent value. This is a $B_k$-oracle algorithm with finitely many hard-coded parameters. It terminates because the actual computation $\Phi_e^Z(n)$ has a finite admissible witness. Every returned value equals $\Phi_j^H(n)=A(n)$; otherwise it would be a witness to \eqref{eq:fixedtest}. The algorithm never calls $H$ or $\Phi_j^H$ to check its answer.
+For the negative case, fix indices witnessing the $B_k$-computability of the protected set and protected values. On input $n$, enumerate all finite arrays admissible over $p$, dovetail the computations $\Phi_e^{Z_{\boldsymbol\tau}}(n)$, and return the first convergent value. This is a $B_k$-oracle algorithm with finitely many hard-coded parameters. It terminates because the actual computation $\Phi_e^Z(n)$ has a finite admissible witness. Every returned value equals $\Phi_j^H(n)=A(n)$; otherwise it would be a witness to \eqref{cr13:eq:fixedtest}. The algorithm never calls $H$ or $\Phi_j^H$ to check its answer.
 \end{proof}
 A separate totality test is unnecessary. Totality is a hypothesis only in the verification of a common lower bound. This avoids introducing a second jump over $H$.
 
 \subsection{Two finite joins with shared coordinates}
 The usual product disagreement lemma treats independent sides. Finite joins can overlap, so it must be used with care. If a coordinate occurs on both sides, it has one value in the underlying array; choosing incompatible values on the two sides would not witness any possible disagreement.
 
-\begin{lemma}[Overlap-preserving disagreement lemma]\label{lem:overlap}
+\begin{lemma}[Overlap-preserving disagreement lemma]\label{cr13:lem:overlap}
 Fix nonempty finite sets $S,T\subseteq\N$, put $U=S\cap T$, and fix $p=(k,\boldsymbol\sigma)$ and indices $e,j$. Ask whether
-\begin{equation}\label{eq:overlaptest}
+\begin{equation}\label{cr13:eq:overlaptest}
  \exists\boldsymbol\tau,n\quad
  \boldsymbol\tau\text{ admissible over }p\quad\&\quad
  \Phi_e^{W_S(\boldsymbol\tau)}(n)\hal
             \ne\Phi_j^{W_T(\boldsymbol\tau)}(n)\hal.
 \end{equation}
 This is $\Sigma^0_1(H)$. If no witness exists and an actual array in $[p]$ satisfies $\Phi_e^{W_S}=\Phi_j^{W_T}=A$ total, then
-\begin{equation}\label{eq:overlapout}
+\begin{equation}\label{cr13:eq:overlapout}
                              A\leT B_k\oplus W_U.
 \end{equation}
 \end{lemma}
 \begin{proof}
 The complexity and positive-witness assertions are as before. In the negative case, use $B_k\oplus W_U$ to search finite admissible extensions on the coordinates in $S$, requiring that all assigned bits in the shared coordinates $U$ agree with the actual oracle $W_U$. Dovetail $\Phi_e$ on these finite $S$-oracles and return the first convergent value. Old stems on all other coordinates are retained. Finite agreement with $W_U$ and admissibility are decidable in the stated oracle.
 
-An actual finite witness for $\Phi_e^{W_S}(n)$ is among the candidates, so the search halts. Suppose it returns $v\ne A(n)$. Take an actual finite witness for $\Phi_j^{W_T}(n)=A(n)$. Its strings on $U$ are compatible with those of the candidate, because both agree with the actual shared oracle. Amalgamate the two finite arrays: on $S\setminus T$ use the candidate strings, on $T\setminus S$ use the actual strings, on $U$ use the longer of the compatible strings, and elsewhere retain the old stems. The amalgam is admissible over $p$. Both convergences persist, contradicting the negative answer to \eqref{eq:overlaptest}. Thus every returned value is correct, proving \eqref{eq:overlapout}.
+An actual finite witness for $\Phi_e^{W_S}(n)$ is among the candidates, so the search halts. Suppose it returns $v\ne A(n)$. Take an actual finite witness for $\Phi_j^{W_T}(n)=A(n)$. Its strings on $U$ are compatible with those of the candidate, because both agree with the actual shared oracle. Amalgamate the two finite arrays: on $S\setminus T$ use the candidate strings, on $T\setminus S$ use the actual strings, on $U$ use the longer of the compatible strings, and elsewhere retain the old stems. The amalgam is admissible over $p$. Both convergences persist, contradicting the negative answer to \eqref{cr13:eq:overlaptest}. Thus every returned value is correct, proving \eqref{cr13:eq:overlapout}.
 \end{proof}
 The conclusion includes the genuinely independent case $U=\varnothing$, when the common output is $B_k$-computable. In the overlapping case it says that the only additional common information is already available on the shared coordinates.
 
 \subsection{Avoidance and jump decisions}
-\begin{lemma}[Avoiding a fixed oracle]\label{lem:avoid}
+\begin{lemma}[Avoiding a fixed oracle]\label{cr13:lem:avoid}
 Given $p=(k,\boldsymbol\sigma)$ and $i,e$, an $H'$-computable extension ensures that the eventual $i$th coordinate differs from $\Phi_e^H$ as a total binary function.
 \end{lemma}
 \begin{proof}
-Using $H$, find $n\ge|\sigma_i|$ with $n\in Q_k$. Such an $n$ exists by \eqref{eq:smalltails}. Use $H'$ to decide whether $\Phi_e^H(n)$ halts. If it diverges, the requirement is already satisfied. If it converges to $v$, extend $\sigma_i$ through $n$ and set the bit at $n$ to $1$ when $v=0$, and to $0$ otherwise. Fill all intermediate protected positions with $F$ and all other new positions arbitrarily, say with $0$. The position $n$ is unprotected, so the extension is admissible, and its bit differs from $v$ even if $v$ is nonbinary.
+Using $H$, find $n\ge|\sigma_i|$ with $n\in Q_k$. Such an $n$ exists by \eqref{cr13:eq:smalltails}. Use $H'$ to decide whether $\Phi_e^H(n)$ halts. If it diverges, the requirement is already satisfied. If it converges to $v$, extend $\sigma_i$ through $n$ and set the bit at $n$ to $1$ when $v=0$, and to $0$ otherwise. Fill all intermediate protected positions with $F$ and all other new positions arbitrarily, say with $0$. The position $n$ is unprotected, so the extension is admissible, and its bit differs from $v$ even if $v$ is nonbinary.
 \end{proof}
 
-\begin{lemma}[Deciding the full joined jump]\label{lem:jump}
+\begin{lemma}[Deciding the full joined jump]\label{cr13:lem:jump}
 For each $p=(k,\boldsymbol\sigma)$ and $e$, the question
-\begin{equation}\label{eq:jumptest}
+\begin{equation}\label{cr13:eq:jumptest}
  \exists\boldsymbol\tau\quad
  \boldsymbol\tau\text{ admissible over }p\quad\&\quad
                      \Phi_e^{Z_{\boldsymbol\tau}\oplus H}(e)\hal
@@ -502,31 +559,31 @@ For each $p=(k,\boldsymbol\sigma)$ and $e$, the question
 is $\Sigma^0_1(H)$. A positive answer can be forced by a finite extension; a negative answer implies divergence for every array in $[p]$.
 \end{lemma}
 \begin{proof}
-Enumerate finite arrays, check admissibility with $H$, and simulate using the finite array oracle together with the full fixed oracle $H$. This gives a positive-witness search relative to $H$. In the negative case any convergent computation on an array in $[p]$ would, by finite use, produce a witness to \eqref{eq:jumptest}.
+Enumerate finite arrays, check admissibility with $H$, and simulate using the finite array oracle together with the full fixed oracle $H$. This gives a positive-witness search relative to $H$. In the negative case any convergent computation on an array in $[p]$ would, by finite use, produce a witness to \eqref{cr13:eq:jumptest}.
 \end{proof}
 The fixed oracle in the jump test is $H$, not $H'$. The construction uses $H'$ to answer these $H$-c.e. questions. Dependence of earlier finite conditions on $H'$ does not increase their complexity: at each new stage those conditions are finite parameters, which can be inserted into an index for an $H$-oracle search.
 
 \section{The countable-array exact-ideal theorem}
-\label{sec:master}
+\label{cr13:sec:master}
 For finite $S\subseteq\N$ write $W_S=\bigoplus_{i\in S}D_i$, with $W_\varnothing=\emptyset$. For a finite $U$ define
-\begin{equation}\label{eq:relativeideal}
+\begin{equation}\label{cr13:eq:relativeideal}
                 \Ideal[W_U]=\bigcup_k\Low(B_k\oplus W_U).
 \end{equation}
-Thus $\Ideal[W_\varnothing]=\Ideal$. If $U\ne\varnothing$ and every $D_i$ is a description of $F$, hypothesis \eqref{eq:coreinclusion} implies $\Ideal[W_U]=\Low(W_U)$.
+Thus $\Ideal[W_\varnothing]=\Ideal$. If $U\ne\varnothing$ and every $D_i$ is a description of $F$, hypothesis \eqref{cr13:eq:coreinclusion} implies $\Ideal[W_U]=\Low(W_U)$.
 
-\begin{theorem}[Layered exact ideals with joint jump control]\label{thm:master}
-Assume all the hypotheses of Section~\ref{sec:reservoirs}: $F\leT H$, the protected sets $P_k$ are uniformly $H$-computable and increasing, \eqref{eq:smalltails} holds, $B_0\leT B_1\leT\cdots\leT H$, each $P_k$ and $F\cap P_k$ is $B_k$-computable, and $\Ideal=\bigcup_k\Low(B_k)\subseteq\Core(F)$.
+\begin{theorem}[Layered exact ideals with joint jump control]\label{cr13:thm:master}
+Assume all the hypotheses of Section~\ref{cr13:sec:reservoirs}: $F\leT H$, the protected sets $P_k$ are uniformly $H$-computable and increasing, \eqref{cr13:eq:smalltails} holds, $B_0\leT B_1\leT\cdots\leT H$, each $P_k$ and $F\cap P_k$ is $B_k$-computable, and $\Ideal=\bigcup_k\Low(B_k)\subseteq\Core(F)$.
 
 There is a sequence $(D_i)_{i\in\N}$, with $Z=\bigoplus_iD_i$, satisfying all of the following:
 \begin{align}
- D_i&\approx F &&\text{for every }i;\label{eq:masterdensity}\\
- \Low(Z)\cap\Low(H)&=\Ideal;\label{eq:masterfixed}\\
- D_i&\nleT H &&\text{for every }i;\label{eq:masternonH}\\
- (Z\oplus H)'&\eqT H',\qquad Z\leT H';\label{eq:masterjump}\\
+ D_i&\approx F &&\text{for every }i;\label{cr13:eq:masterdensity}\\
+ \Low(Z)\cap\Low(H)&=\Ideal;\label{cr13:eq:masterfixed}\\
+ D_i&\nleT H &&\text{for every }i;\label{cr13:eq:masternonH}\\
+ (Z\oplus H)'&\eqT H',\qquad Z\leT H';\label{cr13:eq:masterjump}\\
  \Low(W_S)\cap\Low(W_T)&=\Ideal[W_{S\cap T}]
-   &&\text{for all nonempty finite }S,T.\label{eq:masterfinite}
+   &&\text{for all nonempty finite }S,T.\label{cr13:eq:masterfinite}
 \end{align}
-In particular, the right side of \eqref{eq:masterfinite} is $\Ideal$ when $S\cap T=\varnothing$, and is $\Low(W_{S\cap T})$ otherwise. Each nonempty finite join, and also the degree of $Z$, is represented in the uniform coarse class of $F$. The degree of $Z$ has a representative in $\CD(F)$ itself.
+In particular, the right side of \eqref{cr13:eq:masterfinite} is $\Ideal$ when $S\cap T=\varnothing$, and is $\Low(W_{S\cap T})$ otherwise. Each nonempty finite join, and also the degree of $Z$, is represented in the uniform coarse class of $F$. The degree of $Z$ has a representative in $\CD(F)$ itself.
 \end{theorem}
 
 \begin{proof}
@@ -542,11 +599,11 @@ Finite subsets have computable codes, so the second family is effectively enumer
 
 \textbf{Stage construction.} Begin with $p_0=(0,\boldsymbol\varnothing)$. At stage $s$ the current condition is $p_s=(s,\boldsymbol\sigma^s)$. Process the $s$th requirement on the list.
 
-For $R_{e,j}$, use $H'$ to decide \eqref{eq:fixedtest}. If positive, search with $H$ for a witness and extend to it. If negative, leave the stems unchanged and retain the negative decision.
+For $R_{e,j}$, use $H'$ to decide \eqref{cr13:eq:fixedtest}. If positive, search with $H$ for a witness and extend to it. If negative, leave the stems unchanged and retain the negative decision.
 
-For $M_{S,T,e,j}$, do the same with \eqref{eq:overlaptest}, using a single finite array for both sides. For $N_{i,e}$, apply Lemma~\ref{lem:avoid}. For $J_e$, decide \eqref{eq:jumptest}; extend to a positive witness or retain the negative decision. Record the resulting bit as $b(e)$, using one designated occurrence if the schedule repeats a jump requirement.
+For $M_{S,T,e,j}$, do the same with \eqref{cr13:eq:overlaptest}, using a single finite array for both sides. For $N_{i,e}$, apply Lemma~\ref{cr13:lem:avoid}. For $J_e$, decide \eqref{cr13:eq:jumptest}; extend to a positive witness or retain the negative decision. Record the resulting bit as $b(e)$, using one designated occurrence if the schedule repeats a jump requirement.
 
-After the requirement has been processed, extend the stems in every coordinate $i\le s$ to length at least $s+1$. Use $F$ on protected positions and $0$ on free positions not already assigned. Then raise the level from $s$ to $s+1$, without changing the stems. This defines $p_{s+1}$. Each step is $H'$-computable, and Lemma~\ref{lem:preserve} gives $[p_{s+1}]\subseteq[p_s]$.
+After the requirement has been processed, extend the stems in every coordinate $i\le s$ to length at least $s+1$. Use $F$ on protected positions and $0$ on free positions not already assigned. Then raise the level from $s$ to $s+1$, without changing the stems. This defines $p_{s+1}$. Each step is $H'$-computable, and Lemma~\ref{cr13:lem:preserve} gives $[p_{s+1}]\subseteq[p_s]$.
 
 \textbf{Existence of the limit and its complexity.} Define
 \[
@@ -559,15 +616,15 @@ The strings in a fixed coordinate extend one another. Once $s\ge i$, the length 
              D_i\sd F\subseteq[0,\ell)\cup Q_k,
  \qquad \rho_N(D_i\sd F)\le\ell/N+\rho_N(Q_k).
 \]
-Taking a limsup in $N$ and then letting $k\to\infty$ proves \eqref{eq:masterdensity}. The cutoff $\ell$ can depend on both $i$ and $k$; a uniform density modulus is neither asserted nor needed.
+Taking a limsup in $N$ and then letting $k\to\infty$ proves \eqref{cr13:eq:masterdensity}. The cutoff $\ell$ can depend on both $i$ and $k$; a uniform density modulus is neither asserted nor needed.
 
-\textbf{Exactness against $H$.} Suppose $A\leT Z,H$. Choose indices $e,j$ computing its characteristic function. At the stage for $R_{e,j}$, a positive disagreement could not have occurred, because it would persist and contradict equality of the two actual functions. The decision was therefore negative. Lemma~\ref{lem:fixed} gives $A\leT B_k$ for the level $k$ used at that stage. Hence $A\in\Ideal$.
+\textbf{Exactness against $H$.} Suppose $A\leT Z,H$. Choose indices $e,j$ computing its characteristic function. At the stage for $R_{e,j}$, a positive disagreement could not have occurred, because it would persist and contradict equality of the two actual functions. The decision was therefore negative. Lemma~\ref{cr13:lem:fixed} gives $A\leT B_k$ for the level $k$ used at that stage. Hence $A\in\Ideal$.
 
-Conversely, if $A\in\Ideal$, then $A\leT H$ by \eqref{eq:idealchain}. By \eqref{eq:coreinclusion} and \eqref{eq:masterdensity}, every $D_i$ computes $A$, so $Z$ computes $A$. This proves \eqref{eq:masterfixed}. Lemma~\ref{lem:avoid}, at the stages for $N_{i,e}$, proves \eqref{eq:masternonH}.
+Conversely, if $A\in\Ideal$, then $A\leT H$ by \eqref{cr13:eq:idealchain}. By \eqref{cr13:eq:coreinclusion} and \eqref{cr13:eq:masterdensity}, every $D_i$ computes $A$, so $Z$ computes $A$. This proves \eqref{cr13:eq:masterfixed}. Lemma~\ref{cr13:lem:avoid}, at the stages for $N_{i,e}$, proves \eqref{cr13:eq:masternonH}.
 
-\textbf{Finite-join intersections.} Suppose $A\leT W_S,W_T$ for fixed nonempty finite $S,T$, and select reduction indices $e,j$. The stage for $M_{S,T,e,j}$ must have a negative answer, again because positive disagreement would persist. Lemma~\ref{lem:overlap} puts $A$ below $B_k\oplus W_{S\cap T}$ for that stage's $k$, proving the forward inclusion in \eqref{eq:masterfinite}.
+\textbf{Finite-join intersections.} Suppose $A\leT W_S,W_T$ for fixed nonempty finite $S,T$, and select reduction indices $e,j$. The stage for $M_{S,T,e,j}$ must have a negative answer, again because positive disagreement would persist. Lemma~\ref{cr13:lem:overlap} puts $A$ below $B_k\oplus W_{S\cap T}$ for that stage's $k$, proving the forward inclusion in \eqref{cr13:eq:masterfinite}.
 
-For the reverse inclusion, every $B_k$ is computed by every $D_i$, by \eqref{eq:coreinclusion}; since $S,T$ are nonempty, both joins compute $B_k$. They also both compute the shared join. Thus every set in $\Ideal[W_{S\cap T}]$ lies below both. When $S\cap T\ne\varnothing$, any one shared coordinate computes every $B_k$, so the union in \eqref{eq:relativeideal} equals $\Low(W_{S\cap T})$.
+For the reverse inclusion, every $B_k$ is computed by every $D_i$, by \eqref{cr13:eq:coreinclusion}; since $S,T$ are nonempty, both joins compute $B_k$. They also both compute the shared join. Thus every set in $\Ideal[W_{S\cap T}]$ lies below both. When $S\cap T\ne\varnothing$, any one shared coordinate computes every $B_k$, so the union in \eqref{cr13:eq:relativeideal} equals $\Low(W_{S\cap T})$.
 
 \textbf{The jump of the full join.} The recorded bit $b(e)$ is $H'$-computable: simulate the finite construction through the designated stage for $J_e$. If that bit is $1$, its convergence witness persists to the limit. If it is $0$ and the limit computation nevertheless converges, its finite use supplies an admissible witness over that stage's condition, contradicting the negative answer. Consequently
 \[
@@ -575,28 +632,28 @@ For the reverse inclusion, every $B_k$ is computed by every $D_i$, by \eqref{eq:
 \]
 This proves $(Z\oplus H)'\leT H'$. The reverse reduction follows from $H\leT Z\oplus H$ and monotonicity of the jump. In particular this is a decision procedure for the actual jump, not merely an enumeration of convergences found during the construction.
 
-Finally, Lemma~\ref{lem:joincoarse} proves the coarse-class and exact-degree realization claims.
+Finally, Lemma~\ref{cr13:lem:joincoarse} proves the coarse-class and exact-degree realization claims.
 \end{proof}
 
 \subsection{Consequences that must not be inferred from weaker statements}
 The theorem decides the jump of $Z\oplus H$ directly. It does not use a false distributivity principle for jumps, nor does it infer the complexity of a countable join from the separate complexities of its columns.
 
-The lowness statement in \eqref{eq:masterjump} is \emph{lowness over $H$}: after adjoining $H$, the constructed oracle adds no jump power beyond $H'$. It does not say that $Z$ is computable from $H$. Indeed, \eqref{eq:masternonH} implies $Z\nleT H$. It also does not, in general, say that $Z'\eqT H'$; only $Z'\leT H'$ follows immediately. Equality will require an independent lower bound in the C6 application.
+The lowness statement in \eqref{cr13:eq:masterjump} is \emph{lowness over $H$}: after adjoining $H$, the constructed oracle adds no jump power beyond $H'$. It does not say that $Z$ is computable from $H$. Indeed, \eqref{cr13:eq:masternonH} implies $Z\nleT H$. It also does not, in general, say that $Z'\eqT H'$; only $Z'\leT H'$ follows immediately. Equality will require an independent lower bound in the C6 application.
 
-\begin{corollary}[Order and meet pattern of finite joins]\label{cor:finitepattern}
-Under Theorem~\ref{thm:master}, for nonempty finite $S,T$,
+\begin{corollary}[Order and meet pattern of finite joins]\label{cr13:cor:finitepattern}
+Under Theorem~\ref{cr13:thm:master}, for nonempty finite $S,T$,
 \[
                          W_S\leT W_T\quad\Longleftrightarrow\quad S\subseteq T.
 \]
 Joins correspond to unions of index sets. If $S\cap T\ne\varnothing$, the greatest common lower degree is $\deg_T(W_{S\cap T})$. If $S\cap T=\varnothing$, the common lower cone is exactly $\Ideal$: it has a greatest degree precisely when $\Ideal$ is principal.
 \end{corollary}
 \begin{proof}
-Inclusion of index sets plainly gives the reduction. Conversely, choose $i\in S\setminus T$ if inclusion fails. Then $D_i\leT W_S\leT W_T$. Apply \eqref{eq:masterfinite} to $\{i\}$ and $T$ to obtain $D_i\in\Ideal\subseteq\Low(H)$, contradicting \eqref{eq:masternonH}. The meet assertions restate the exact lower-cone formula, using the definition of a principal ideal.
+Inclusion of index sets plainly gives the reduction. Conversely, choose $i\in S\setminus T$ if inclusion fails. Then $D_i\leT W_S\leT W_T$. Apply \eqref{cr13:eq:masterfinite} to $\{i\}$ and $T$ to obtain $D_i\in\Ideal\subseteq\Low(H)$, contradicting \eqref{cr13:eq:masternonH}. The meet assertions restate the exact lower-cone formula, using the definition of a principal ideal.
 \end{proof}
 For $\Ideal=\Comp$, adjoining the computable degree as the image of the empty set realizes the finite-subset lattice by these degrees and their ordinary Turing meets. For a nonprincipal ideal, disjoint joins have no meet at all; it would be wrong to call that case a lattice embedding. In both cases all nonempty joins belong to the same nontrivial uniform coarse class whenever $F$ is not coarsely computable.
 
-\begin{corollary}[A literal description exact against the prescribed target]\label{cor:literal}
-Under Theorem~\ref{thm:master}, there is $E\approx F$ such that
+\begin{corollary}[A literal description exact against the prescribed target]\label{cr13:cor:literal}
+Under Theorem~\ref{cr13:thm:master}, there is $E\approx F$ such that
 \[
   E\eqT Z,\qquad \Low(E)\cap\Low(H)=\Ideal,
   \qquad (E\oplus H)'\eqT H'.
@@ -604,25 +661,25 @@ Under Theorem~\ref{thm:master}, there is $E\approx F$ such that
 If moreover $F\eqT H$, then $F$ and $E$ are an exact pair for $\Ideal$ inside the single density-zero equality class $\CD(F)$.
 \end{corollary}
 \begin{proof}
-Overwrite $D_0$ on the powers of two with the bits of $Z$, as in Lemma~\ref{lem:spectra}. Since $D_0\leT Z$, the resulting $E$ has degree exactly that of $Z$ and still describes $F$. The other statements depend only on degrees.
+Overwrite $D_0$ on the powers of two with the bits of $Z$, as in Lemma~\ref{cr13:lem:spectra}. Since $D_0\leT Z$, the resulting $E$ has degree exactly that of $Z$ and still describes $F$. The other statements depend only on degrees.
 \end{proof}
 
 \section{Every countable Turing ideal is a core: target C4}
-\label{sec:ideals}
+\label{cr13:sec:ideals}
 \subsection{The proposed code, with all hypotheses checked}
 Let $(A_i)_{i\in\N}$ be any sequence of sets. No computability assumption is made on the sequence. Define
-\begin{equation}\label{eq:profile}
+\begin{equation}\label{cr13:eq:profile}
  H=\bigoplus_iA_i,\qquad B_k=\bigoplus_{i<k}A_i,
  \qquad F(c(i,t))=J(A_i)(t),
 \end{equation}
 with $B_0=\emptyset$. The associated ideal is
-\begin{equation}\label{eq:profileideal}
+\begin{equation}\label{cr13:eq:profileideal}
                          \Ideal=\bigcup_k\Low(B_k).
 \end{equation}
 This is the robust column profile proposed in C4 of the research plan \cite{Plan}.
 
-\begin{lemma}[Local information and robust lower inclusion]\label{lem:profile}
-For the profile in \eqref{eq:profile}, $F\eqT H$ and $\Ideal\subseteq\Core(F)$. With $P_k=\bigcup_{i<k}C_i$, all the hypotheses of Theorem~\ref{thm:master} hold.
+\begin{lemma}[Local information and robust lower inclusion]\label{cr13:lem:profile}
+For the profile in \eqref{cr13:eq:profile}, $F\eqT H$ and $\Ideal\subseteq\Core(F)$. With $P_k=\bigcup_{i<k}C_i$, all the hypotheses of Theorem~\ref{cr13:thm:master} hold.
 \end{lemma}
 \begin{proof}
 Given $H$, compute $A_i$ uniformly in $i$, and then compute the block code at any requested position. Thus $F\leT H$. Conversely,
@@ -631,14 +688,14 @@ Given $H$, compute $A_i$ uniformly in $i$, and then compute the block code at an
 \]
 so the full joined set $H$ is computable from $F$.
 
-Let $D\approx F$, and fix $i$. The column restriction $D_i^*(t)=D(c(i,t))$ is a coarse description of $J(A_i)$ by the final assertion of Lemma~\ref{lem:columns}. Lemma~\ref{lem:robust} gives $A_i\leT D_i^*\leT D$. For each finite $k$, combine these finitely many reductions to get $B_k\leT D$. Since $D$ was arbitrary, \eqref{eq:coreinclusion} follows. The reductions may depend on $i$ and $D$; only their existence for a fixed finite collection is needed.
+Let $D\approx F$, and fix $i$. The column restriction $D_i^*(t)=D(c(i,t))$ is a coarse description of $J(A_i)$ by the final assertion of Lemma~\ref{cr13:lem:columns}. Lemma~\ref{cr13:lem:robust} gives $A_i\leT D_i^*\leT D$. For each finite $k$, combine these finitely many reductions to get $B_k\leT D$. Since $D$ was arbitrary, \eqref{cr13:eq:coreinclusion} follows. The reductions may depend on $i$ and $D$; only their existence for a fixed finite collection is needed.
 
 The protected sets $P_k$ are uniformly computable, their complements are $T_k$, and $\rho_N(T_k)\le2^{-k}$. Every $T_k$ is infinite. On $P_k$, computing $F$ requires only $A_0,\ldots,A_{k-1}$, so $F\cap P_k$ is $B_k$-computable. Finally $B_k\leT H$ and the $B_k$ increase under Turing reducibility. Thus every hypothesis of the array theorem has been verified.
 \end{proof}
 
-\begin{theorem}[Exact core of a robust column profile]\label{thm:profilecore}
-For every sequence $(A_i)$ and $F$ defined by \eqref{eq:profile},
-\begin{equation}\label{eq:coreformula}
+\begin{theorem}[Exact core of a robust column profile]\label{cr13:thm:profilecore}
+For every sequence $(A_i)$ and $F$ defined by \eqref{cr13:eq:profile},
+\begin{equation}\label{cr13:eq:coreformula}
  \Core(F)=\bigcup_k\Low(A_0\oplus\cdots\oplus A_{k-1}).
 \end{equation}
 Furthermore, there are descriptions $(D_i)$ and $E$ of $F$ such that, with $Z=\bigoplus_iD_i$,
@@ -646,31 +703,33 @@ Furthermore, there are descriptions $(D_i)$ and $E$ of $F$ such that, with $Z=\b
  E\eqT Z,\qquad (Z\oplus H)'\eqT H',\qquad
  \Low(F)\cap\Low(E)=\Ideal,
 \]
-and the entire finite-join intersection pattern of Theorem~\ref{thm:master} holds.
+and the entire finite-join intersection pattern of Theorem~\ref{cr13:thm:master} holds.
 \end{theorem}
 \begin{proof}
-The previous lemma gives the inclusion $\Ideal\subseteq\Core(F)$ and allows us to apply Theorem~\ref{thm:master}. If $A\in\Core(F)$, then $A\leT F\eqT H$ because $F$ is its own description. Also $A\leT D_0\leT Z$. The exactness clause $\Low(Z)\cap\Low(H)=\Ideal$ therefore gives $A\in\Ideal$. This proves \eqref{eq:coreformula}. The additional assertions are the array theorem and Corollary~\ref{cor:literal}.
+The previous lemma gives the inclusion $\Ideal\subseteq\Core(F)$ and allows us to apply Theorem~\ref{cr13:thm:master}. If $A\in\Core(F)$, then $A\leT F\eqT H$ because $F$ is its own description. Also $A\leT D_0\leT Z$. The exactness clause $\Low(Z)\cap\Low(H)=\Ideal$ therefore gives $A\in\Ideal$. This proves \eqref{cr13:eq:coreformula}. The additional assertions are the array theorem and Corollary~\ref{cr13:cor:literal}.
 \end{proof}
 
-\begin{corollary}[Classification of all possible cores]\label{cor:allcores}
+\begin{corollary}[Classification of all possible cores]\label{cr13:cor:allcores}
 A family of sets is $\Core(F)$ for some binary set $F$ if and only if it is a countable Turing ideal. Equivalently, the possible degree ideals of common information in a coarse description class are exactly the countable Turing ideals.
 \end{corollary}
 \begin{proof}
-Necessity is Lemma~\ref{lem:coreideal}. For sufficiency, enumerate a countable ideal by sets $A_0,A_1,\ldots$, allowing repetitions. Because the ideal is closed under finite joins and downward reduction, it equals the union of the lower cones of their finite joins. Apply Theorem~\ref{thm:profilecore}.
+Necessity is Lemma~\ref{cr13:lem:coreideal}. For sufficiency, enumerate a countable ideal by sets $A_0,A_1,\ldots$, allowing repetitions. Because the ideal is closed under finite joins and downward reduction, it equals the union of the lower cones of their finite joins. Apply Theorem~\ref{cr13:thm:profilecore}.
 \end{proof}
 The enumeration in this proof is not asserted to be computable. Its full join is the presentation oracle $H$, and the effective bound is measured relative to that presentation. This qualification is particularly important when every individual $A_i$ is computable but the sequence of their indices is not.
 
+\noindent\wtag\ Corollary~\ref{cr13:cor:allcores} is proved independently in the other C4 reports of the same round. Report~11 (directory \path{../11}) proves it for the plan's literal code, with the plan's robust-radius sketch written out. Report~12 (directory \path{../12}), which merges three manuscripts, proves it for other codes and adds core-neutral joins and an order embedding of a Turing upper cone into the sets with one prescribed core. The proof here differs from both: its upper inclusion is the exactness clause of Theorem~\ref{cr13:thm:master}, not a robust-radius (cone-avoiding compactness) argument. Reports~11 and~12 identify the column-coding architecture as already present in Hirschfeldt--Jockusch--Schupp (2021, Theorem~3.11(2)), which this manuscript does not cite; the ``completion'' of C4 claimed in Section~\ref{cr13:sec:scope} is a proof of the plan's proposal, not a new phenomenon. None of these proofs is formalized (Section~\ref{cr13:sec:wformal}).
+
 \subsection{Localized exact pairs and absent greatest lower bounds}
-\begin{corollary}[Exact pairs within one density-zero class]\label{cor:localexact}
-Every countable Turing ideal $\Ideal$ is the common lower cone of two sets that differ on a density-zero set. They can be chosen as $F,E$ in Theorem~\ref{thm:profilecore}, with $F\eqT H$ and $(E\oplus F)'\eqT H'$.
+\begin{corollary}[Exact pairs within one density-zero class]\label{cr13:cor:localexact}
+Every countable Turing ideal $\Ideal$ is the common lower cone of two sets that differ on a density-zero set. They can be chosen as $F,E$ in Theorem~\ref{cr13:thm:profilecore}, with $F\eqT H$ and $(E\oplus F)'\eqT H'$.
 
 If $\Ideal$ is nonprincipal, these two degrees are incomparable and have no greatest lower bound. The same is true of any two disjoint nonempty finite joins of the constructed $D_i$.
 \end{corollary}
 \begin{proof}
-Both $F$ and $E$ describe $F$, so $E\approx F$, and the exact lower cone is \eqref{eq:profileideal}. A greatest common lower degree would generate that ideal, contrary to nonprincipality. If one degree were below the other, its principal lower cone would be their intersection, giving the same contradiction. The finite-join assertion follows from Corollary~\ref{cor:finitepattern}.
+Both $F$ and $E$ describe $F$, so $E\approx F$, and the exact lower cone is \eqref{cr13:eq:profileideal}. A greatest common lower degree would generate that ideal, contrary to nonprincipality. If one degree were below the other, its principal lower cone would be their intersection, giving the same contradiction. The finite-join assertion follows from Corollary~\ref{cr13:cor:finitepattern}.
 \end{proof}
 
-\begin{corollary}[Strict chains and nonexistence of a least upper bound]\label{cor:nolub}
+\begin{corollary}[Strict chains and nonexistence of a least upper bound]\label{cr13:cor:nolub}
 If the profile is chosen so that $B_0\ltT B_1\ltT\cdots$, the sequence $(\deg_T(B_k))$ has no least upper bound. It has exact upper bounds $F,E$ inside one density-zero equality class, and neither of those bounds equals any $B_k$.
 \end{corollary}
 \begin{proof}
@@ -679,24 +738,24 @@ Every $B_k$ lies below both $F$ and $E$. If a least upper bound $L$ existed, it 
 The order-theoretic consequence is classical once an exact pair is available. The extra content here is the placement of the pair in the prescribed coarse description class and the effective bound attached to the explicit profile.
 
 \section{Optimal exact partners of the guarded set: target C6}
-\label{sec:optimal}
-Apply Theorem~\ref{thm:master} with
-\begin{equation}\label{eq:guardapply}
+\label{cr13:sec:optimal}
+Apply Theorem~\ref{cr13:thm:master} with
+\begin{equation}\label{cr13:eq:guardapply}
  F=X,\qquad H=X\eqT\emptyset',\qquad
  P_k=\bigcup_{e<k}C_e,\qquad B_k=\emptyset\quad\text{for all }k.
 \end{equation}
-Every $X\cap P_k$ is computable by Proposition~\ref{prop:guardbasic}; a finite union of computable sections is computable. There need not be a computable sequence of indices for those sections. This does not obstruct the theorem: the construction decides finite admissibility with $H=X$, and the ordinary computable section indices are used only as finite constants in a fixed-stage decoding proof. The ideal is $\Comp$, which is contained in every core.
+Every $X\cap P_k$ is computable by Proposition~\ref{cr13:prop:guardbasic}; a finite union of computable sections is computable. There need not be a computable sequence of indices for those sections. This does not obstruct the theorem: the construction decides finite admissibility with $H=X$, and the ordinary computable section indices are used only as finite constants in a fixed-stage decoding proof. The ideal is $\Comp$, which is contained in every core.
 
-\begin{theorem}[Optimal first jump and joint lowness]\label{thm:optimal}
+\begin{theorem}[Optimal first jump and joint lowness]\label{cr13:thm:optimal}
 For the prescribed guarded c.e. set $X$ there is a countable sequence $(D_i)$ of binary sets, and $Z=\bigoplus_iD_i$, such that
 \begin{align}
- D_i&\approx X &&\text{for all }i;\label{eq:optimaldensity}\\
- \Low(Z)\cap\Low(\emptyset')&=\Comp;\label{eq:optimalfixed}\\
+ D_i&\approx X &&\text{for all }i;\label{cr13:eq:optimaldensity}\\
+ \Low(Z)\cap\Low(\emptyset')&=\Comp;\label{cr13:eq:optimalfixed}\\
  D_i'&\eqT Z'\eqT(Z\oplus\emptyset')'\eqT\emptyset''
-                                      &&\text{for all }i.\label{eq:optimaljumps}
+                                      &&\text{for all }i.\label{cr13:eq:optimaljumps}
 \end{align}
 Each $D_i\leT\emptyset''$ but $D_i\nleT\emptyset'$. For nonempty finite $S,T$,
-\begin{equation}\label{eq:optimalpattern}
+\begin{equation}\label{cr13:eq:optimalpattern}
  \Low(W_S)\cap\Low(W_T)=
  \begin{cases}
    \Comp,&S\cap T=\varnothing,\\
@@ -706,32 +765,32 @@ Each $D_i\leT\emptyset''$ but $D_i\nleT\emptyset'$. For nonempty finite $S,T$,
 Every nonempty finite join $W_S$ also has jump $\emptyset''$, is low over $\emptyset'$, and forms a minimal pair with $\emptyset'$. The degree of $Z$ is realized by a literal coarse description of $X$.
 \end{theorem}
 \begin{proof}
-The data \eqref{eq:guardapply} satisfy the array theorem. It gives $D_i\approx X$, the exact common lower cone \eqref{eq:optimalfixed}, and
+The data \eqref{cr13:eq:guardapply} satisfy the array theorem. It gives $D_i\approx X$, the exact common lower cone \eqref{cr13:eq:optimalfixed}, and
 \[
                    (Z\oplus\emptyset')'\eqT\emptyset''.
 \]
 Since $D_i\leT Z\leT Z\oplus\emptyset'$, monotonicity gives
-\begin{equation}\label{eq:upperjumpchain}
+\begin{equation}\label{cr13:eq:upperjumpchain}
               D_i'\leT Z'\leT(Z\oplus\emptyset')'\eqT\emptyset''.
 \end{equation}
-The opposite inequality $\emptyset''\leT D_i'$ holds for \emph{every} description of $X$ by Lemma~\ref{lem:totfromX}, or equivalently Theorem~\ref{thm:classification}. Hence all inequalities in \eqref{eq:upperjumpchain} are equalities. The construction yields $Z\leT\emptyset''$, and therefore $D_i\leT\emptyset''$.
+The opposite inequality $\emptyset''\leT D_i'$ holds for \emph{every} description of $X$ by Lemma~\ref{cr13:lem:totfromX}, or equivalently Theorem~\ref{cr13:thm:classification}. Hence all inequalities in \eqref{cr13:eq:upperjumpchain} are equalities. The construction yields $Z\leT\emptyset''$, and therefore $D_i\leT\emptyset''$.
 
-The array theorem already ensures $D_i\nleT\emptyset'$. Alternatively, if $D_i\leT\emptyset'$, then \eqref{eq:optimalfixed} and $D_i\leT Z$ would make $D_i$ computable, contradicting Proposition~\ref{prop:guardbasic}. In particular each $D_i$ is noncomputable, so the common-lower-cone statement with $\emptyset'$ is genuinely a minimal-pair assertion.
+The array theorem already ensures $D_i\nleT\emptyset'$. Alternatively, if $D_i\leT\emptyset'$, then \eqref{cr13:eq:optimalfixed} and $D_i\leT Z$ would make $D_i$ computable, contradicting Proposition~\ref{cr13:prop:guardbasic}. In particular each $D_i$ is noncomputable, so the common-lower-cone statement with $\emptyset'$ is genuinely a minimal-pair assertion.
 
-The finite-join intersection formula is \eqref{eq:masterfinite} with $B_k=\emptyset$. For a nonempty $S$, choose $i\in S$. Then
+The finite-join intersection formula is \eqref{cr13:eq:masterfinite} with $B_k=\emptyset$. For a nonempty $S$, choose $i\in S$. Then
 \[
  \emptyset''\eqT D_i'\leT W_S'\leT Z'\eqT\emptyset''.
 \]
-Similarly $\emptyset''\leT(W_S\oplus\emptyset')'\leT(Z\oplus\emptyset')'\eqT\emptyset''$. A common lower bound of $W_S$ and $\emptyset'$ is a common lower bound of $Z$ and $\emptyset'$, hence computable. Finally apply Corollary~\ref{cor:literal} to realize the joined degree inside $\CD(X)$.
+Similarly $\emptyset''\leT(W_S\oplus\emptyset')'\leT(Z\oplus\emptyset')'\eqT\emptyset''$. A common lower bound of $W_S$ and $\emptyset'$ is a common lower bound of $Z$ and $\emptyset'$, hence computable. Finally apply Corollary~\ref{cr13:cor:literal} to realize the joined degree inside $\CD(X)$.
 \end{proof}
 
 \subsection{In what sense the bound is optimal}
-The plan's first proposed upper bound was $D\leT\emptyset''$. The question whether $D'\leT\emptyset''$ remained separate. Theorem~\ref{thm:optimal} answers it affirmatively for the prescribed $X$, and strengthens it to
-\begin{equation}\label{eq:singlec6}
+The plan's first proposed upper bound was $D\leT\emptyset''$. The question whether $D'\leT\emptyset''$ remained separate. Theorem~\ref{cr13:thm:optimal} answers it affirmatively for the prescribed $X$, and strengthens it to
+\begin{equation}\label{cr13:eq:singlec6}
  D\approx X,\quad \Low(D)\cap\Low(X)=\Comp,
  \quad D'\eqT(D\oplus X)'\eqT\emptyset''.
 \end{equation}
-The first-jump lower bound is unavoidable: Theorem~\ref{thm:classification} gives $\emptyset''\leT D'$ for every description, whether or not it is an exact partner. Therefore no first jump strictly below $\zero''$ can work. This is an exact optimality statement, not merely an upper bound whose sharpness is guessed from the method.
+The first-jump lower bound is unavoidable: Theorem~\ref{cr13:thm:classification} gives $\emptyset''\leT D'$ for every description, whether or not it is an exact partner. Therefore no first jump strictly below $\zero''$ can work. This is an exact optimality statement, not merely an upper bound whose sharpness is guessed from the method.
 
 At the level of the set itself, the exact partner cannot lie below $\emptyset'$, as the proof shows. The assertions do not classify all degrees strictly between the two jumps, and they do not claim a least degree among the exact partners. They also do not say that every description of $X$ is outside $\Delta^0_2$: the set $X$ itself is a $\Delta^0_2$ description. It is the \emph{exactness with $X$} that excludes such a bound for our partner.
 
@@ -740,19 +799,19 @@ The class of $X$ contains $X$ of degree $\zero'$, the mutually independent $D_i$
 
 There is no contradiction in two high degrees having computable meet. A common jump lower bound is not a common lower bound of the original degrees. In this construction all nonempty finite joins have the same jump $\zero''$, but their original degrees retain the finite-subset order pattern.
 
-\begin{corollary}[A familiar negative answer, with stronger witnesses]\label{cor:noleastX}
+\begin{corollary}[A familiar negative answer, with stronger witnesses]\label{cr13:cor:noleastX}
 Neither the uniform nor the nonuniform coarse class of $X$ has a least Turing degree.
 \end{corollary}
 \begin{proof}
-If a least degree existed, it would be below both $\deg_T(X)=\zero'$ and $\deg_T(D_0)$. Their minimal-pair property would make it computable. Lemma~\ref{lem:spectra} would then give a computable coarse description of $X$, contrary to Proposition~\ref{prop:guardbasic}.
+If a least degree existed, it would be below both $\deg_T(X)=\zero'$ and $\deg_T(D_0)$. Their minimal-pair property would make it computable. Lemma~\ref{cr13:lem:spectra} would then give a computable coarse description of $X$, contrary to Proposition~\ref{cr13:prop:guardbasic}.
 \end{proof}
 This corollary is not presented as new: the bare failure of a least representative is the retired target C1. Its role is to show precisely what the stronger jump-controlled witnesses add to that known negative answer.
 
 \section{Examples, presentation dependence, and boundaries}
-\label{sec:examples}
+\label{cr13:sec:examples}
 \subsection{The arithmetic ideal as a common-information core}
 \begin{example}[All arithmetical sets, but no more]
-Take $A_i=\emptyset^{(i)}$, let $H=\bigoplus_i\emptyset^{(i)}$, and define $F$ by \eqref{eq:profile}. Then
+Take $A_i=\emptyset^{(i)}$, let $H=\bigoplus_i\emptyset^{(i)}$, and define $F$ by \eqref{cr13:eq:profile}. Then
 \[
               \Core(F)=\{A:(\exists n)\ A\leT\emptyset^{(n)}\}.
 \]
@@ -761,22 +820,22 @@ Thus the information shared by all descriptions of $F$ is exactly the ideal of a
 This example uses the explicit join of finite jumps; no claim about ordinal notations, admissibility, or a transfinite jump hierarchy is required.
 
 \subsection{The same core can occur with or without a least degree}
-\begin{example}[Two presentations of the computable ideal]\label{ex:presentation}
+\begin{example}[Two presentations of the computable ideal]\label{cr13:ex:presentation}
 If $A_i=\emptyset$ for every $i$, the profile $F$ is computable, and its spectrum has least degree $\zero$. Now let $K\subseteq\N$ be arbitrary and put
 \[
  A_i=\begin{cases}\N,&K(i)=1,\\ \emptyset,&K(i)=0.\end{cases}
 \]
-Every $A_i$ is individually computable, and every finite join is computable. But the full join has degree $\deg_T(K)$, and the profile is exactly $F=\Rc(K)$ because the block code of a constant set is constant. Theorem~\ref{thm:profilecore} gives $\Core(F)=\Comp$, while Proposition~\ref{prop:dyadic} gives spectrum
+Every $A_i$ is individually computable, and every finite join is computable. But the full join has degree $\deg_T(K)$, and the profile is exactly $F=\Rc(K)$ because the block code of a constant set is constant. Theorem~\ref{cr13:thm:profilecore} gives $\Core(F)=\Comp$, while Proposition~\ref{cr13:prop:dyadic} gives spectrum
 \[
                          \{\mathbf b:\deg_T(K)\le\mathbf b'\}.
 \]
-For $K=\TOT$, this spectrum has no least degree: apply Theorem~\ref{thm:profilecore} to obtain an exact pair for $\Comp$ in the description class, and note that $\Rc(\TOT)$ has no computable description by Proposition~\ref{prop:dyadic}.
+For $K=\TOT$, this spectrum has no least degree: apply Theorem~\ref{cr13:thm:profilecore} to obtain an exact pair for $\Comp$ in the description class, and note that $\Rc(\TOT)$ has no computable description by Proposition~\ref{cr13:prop:dyadic}.
 \end{example}
 There is no contradiction between the individual computability of every $A_i$ and the possible noncomputability of their full join. The missing information is a uniform selection of their characteristic-function indices. This example is also a direct warning against replacing the presentation oracle $H$ by an alleged computable list of local programs.
 
 More generally, a constant profile $A_i=A$ has $F\eqT A$ and core $\Low(A)$, so its spectrum has least degree $\deg_T(A)$. This is a fact about that particular uniform presentation, not about every profile generating the same principal ideal.
 
-\subsection{What the density proof does and does not control}
+\subsection{What the density proof does and does not control}\label{cr13:sec:density}
 The construction ensures, for every fixed $i,k$,
 \[
               D_i\sd F\subseteq[0,\ell_{i,k})\cup Q_k.
@@ -789,13 +848,13 @@ The cutoffs $\ell_{i,k}$ are computable in $H'$ from the construction, but need 
 
 A perfect family with every branch below one fixed oracle is also not asserted. There are only countably many sets below $H'$. The present theorem deliberately constructs a countable array; the reservoir synthesis's perfect-tree statements attach the branch parameter to their complexity bounds \cite{Synthesis}.
 
-\subsection{Why effective-dense reducibility is not substituted}
+\subsection{Why effective-dense reducibility is not substituted}\label{cr13:sec:ednot}
 An effective-dense description may explicitly omit a density-zero set of answers but may not give an incorrect answer anywhere. This is different from coarse description, which tolerates wrong values on a negligible set; see the systematic comparison in Astor--Hirschfeldt--Jockusch \cite{AHJ}.
 
 Our construction intentionally changes bits on newly selected free positions, and later protection leaves those finite errors untouched. Neither a description itself nor a reduction using it is supplied with a computable list of the erroneous positions. Therefore one cannot turn the present argument into an effective-dense proof by declaring its mistakes to be omissions. The resulting statement would require a new hypothesis or a new construction. In particular, the results here leave C2 open as a target of the repository plan.
 
 \section{Verification, effective content, and formalization}
-\label{sec:verification}
+\label{cr13:sec:verification}
 \subsection{Logical dependencies and the oracle budget}
 The mathematical dependency chain is explicit:
 \[
@@ -809,7 +868,7 @@ The mathematical dependency chain is explicit:
  \text{all countable cores and jump-controlled localized exact pairs}.
 \end{gathered}
 \]
-The optimal lower bound in C6 follows from the separate totality-decoding chain of Section~\ref{sec:guarded}. No category theorem, minimal-degree existence theorem, or jump-inversion theorem is invoked to obtain the main constructions.
+The optimal lower bound in C6 follows from the separate totality-decoding chain of Section~\ref{cr13:sec:guarded}. No category theorem, minimal-degree existence theorem, or jump-inversion theorem is invoked to obtain the main constructions.
 
 \begin{center}\small
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.18\textwidth}X@{}}
@@ -825,7 +884,7 @@ Obtain the density limit & No additional oracle assertion & Fix $k$, take the li
 \end{center}
 None of these operations asks whether a functional is total. The formulas in the disagreement tests search for two convergent, unequal values. This is the reason the upper bound remains at $H'$ rather than rising to $H''$.
 
-\subsection{A proposed implementation boundary}
+\subsection{A proposed implementation boundary}\label{cr13:sec:implementation}
 The repository's coverage ledger distinguishes actual degree-order infrastructure from existence theorems and from statements requiring explicit computational hypotheses \cite{Coverage}. This article does not claim that the new reservoir construction has been implemented or checked in Lean or Rocq. A faithful formalization would require the following layers.
 
 \textbf{Finite combinatorics.} Define the dyadic pairing and prove the exact cardinality formulas. Represent finite array conditions by finite maps from coordinate indices to binary lists. Prove that admissibility is preserved under compatible amalgamation and that raising the protection level shrinks the reservoir. This layer is independent of jumps.
@@ -838,21 +897,23 @@ The repository's coverage ledger distinguishes actual degree-order infrastructur
 
 A file containing assumed lemmas with the same names would not certify the theorem. In particular, postulating the fixed-oracle exact partner or the full jump bound would remove the principal mathematical content.
 
-\subsection{Finite diagnostic checks included in the package}
+\subsection{Finite diagnostic checks included in the package}\label{cr13:sec:diagnostics}
 The accompanying standard-library Python program checks exact dyadic counts, the block-majority error inequality, preservation of finite reservoir conditions, and a finite truth-table version of overlap-preserving amalgamation. The shared-coordinate diagnostic also checks a counterexample to treating shared coordinates as independent. The checks test the finite combinatorics used by the proofs; they cannot verify oracle-jump decisions, infinite convergence, or the Turing-degree assertions.
 
 The source is compiled independently of the checks. A successful PDF build validates document production, not the mathematical assertions. The manuscript includes full conventional proofs so that their validity can be assessed separately from the diagnostics and the typesetting.
 
+\noindent\wtag\ In report~13 the program is \path{code/finite_checks.py} and its recorded run is \path{data/results.json}. The program writes \path{results.json} beside itself, so it should be run on a copy (see the report's \path{README.md}). At intake a run on a copy passed and reproduced the recorded file apart from line endings.
+
 \section{Further research questions and a prioritized programme}
-\label{sec:future}
+\label{cr13:sec:future}
 The following questions are stated as directions left by this article. Some are repository targets; others are refinements motivated by the proved results. Except where a source target is identified, no claim is made that the exact formulation is an established literature-listed open problem.
 
-\begin{question}[Prescribed generic targets: the remaining part of C6]
+\begin{question}[Prescribed generic targets: the remaining part of C6]\label{cr13:q:generic}
 Let $G\leT\emptyset'$ be a prescribed $1$-generic set. Is there an arithmetical $D\approx G$ such that $\Low(D)\cap\Low(G)=\Comp$? Can a bound be expressed using finitely many jumps of $G$?
 \end{question}
 The present theorem requires increasingly large regions on which the target is computable in suitable local oracles. The guarded c.e. set has exactly that structure; a general $1$-generic target is not furnished with it. A useful next step is to isolate a replacement for local decidability of admissibility which still makes the no-disagreement search compute an ordinary computable output.
 
-\begin{question}[Sparse generic minimal pairs below the first jump: C7]
+\begin{question}[Sparse generic minimal pairs below the first jump: C7]\label{cr13:q:c7}
 For every computable nondecreasing unbounded $h:\N\to\N$, can one obtain $1$-generic $A,B\leT\emptyset'$ forming a minimal pair with
 \[
                    |(A\sd B)\cap[0,n)|\le h(n)
@@ -861,21 +922,21 @@ for all $n$?
 \end{question}
 The present construction neither proves $1$-genericity nor meets an arbitrary counting budget. Its reservoir tail bounds concern density rather than an a priori finite-error allowance. The repository's one-bit-reserve arguments are a more directly relevant starting point \cite{Plan,Synthesis}.
 
-\begin{question}[Intrinsic hypotheses for bounded exact partners]
+\begin{question}[Intrinsic hypotheses for bounded exact partners]\label{cr13:q:intrinsic}
 Which conditions on $F\leT H$ imply that there is $D\approx F$ with
 \[
   \Low(D)\cap\Low(H)=\Core(F),\qquad (D\oplus H)'\eqT H'?
 \]
-Can the layered-presentation hypotheses of Theorem~\ref{thm:master} be replaced by a condition stated solely in terms of the coarse description mass problem?
+Can the layered-presentation hypotheses of Theorem~\ref{cr13:thm:master} be replaced by a condition stated solely in terms of the coarse description mass problem?
 \end{question}
 The distinction between the target and its presentation is substantial: the local programs may exist nonuniformly. A promising formulation should preserve a small-oracle search for common values while allowing $H$ to decide admissibility effectively.
 
-\begin{question}[The spectrum of a general robust profile]
+\begin{question}[The spectrum of a general robust profile]\label{cr13:q:profilespectrum}
 For $F(c(i,t))=J(A_i)(t)$, what additional information about the sequence $(A_i)$, beyond its generated ideal, determines the full coarse-description spectrum or the uniform coarse degree of $F$?
 \end{question}
-Example~\ref{ex:presentation} shows that the core alone is insufficient: the same computable ideal occurs in a computable class and in a class with the unrestricted high spectrum. One can seek a classification in terms of uniform versus nonuniform access to the finite joins of the profile.
+Example~\ref{cr13:ex:presentation} shows that the core alone is insufficient: the same computable ideal occurs in a computable class and in a class with the unrestricted high spectrum. One can seek a classification in terms of uniform versus nonuniform access to the finite joins of the profile.
 
-\begin{question}[Minimal elements, not only least elements: C5]
+\begin{question}[Minimal elements, not only least elements: C5]\label{cr13:q:minimal}
 When does a coarse-description spectrum have a minimal Turing degree even though it has no least degree? Can the ideal and the presentation together provide an exact criterion for robust column profiles?
 \end{question}
 The constructions here produce many incomparable representatives and exact pairs, but that does not decide whether some other representative is minimal in the spectrum. A proof ruling out a least degree must not be promoted to a proof ruling out every minimal element.
@@ -890,18 +951,18 @@ Given a uniformly computable family of infinite coordinate sets $S_m\subseteq\N$
 \end{question}
 Finite-use computations still inspect only finitely many coordinates, suggesting that the overlap lemma may extend to suitable uniformly presented families. The statement must specify how each subjoin is encoded and how membership in the shared coordinate set is accessed; a nonuniform family of arbitrary masks introduces new information.
 
-\begin{question}[Effective-dense least representatives: C2]
+\begin{question}[Effective-dense least representatives: C2]\label{cr13:q:c2}
 Does every nonuniform effective-dense equivalence class have a representative of least Turing degree? Which versions survive when all functions are binary-valued?
 \end{question}
 Wrong answers cannot be used as omissions. A solution requires either an omission-aware analogue of the reservoir construction or a structural reason why a least representative always exists. The distinctions formalized in \cite{AHJ} are indispensable.
 
 \begin{question}[Relative guarded universality]
-For an oracle $V$, define the guarded set using $(\varphi_e^V)$ in place of $(\varphi_e)$. What is the sharp analogue of Theorem~\ref{thm:classification} when coarse reductions themselves are allowed the fixed oracle $V$? What remains true for ordinary, unrelativized coarse reductions between those same sets?
+For an oracle $V$, define the guarded set using $(\varphi_e^V)$ in place of $(\varphi_e)$. What is the sharp analogue of Theorem~\ref{cr13:thm:classification} when coarse reductions themselves are allowed the fixed oracle $V$? What remains true for ordinary, unrelativized coarse reductions between those same sets?
 \end{question}
 The first question is a natural relativization of the displayed algorithms. The second is different: an ordinary reduction may not call $V$ to simulate the guarded programs. Any theorem should state explicitly which oracle is available to the transformation, not only to the construction of the target.
 
 \begin{question}[A verified countable-array forcing library]
-Can the entire proof of Theorem~\ref{thm:master}, including its overlap and joined-jump clauses, be implemented in the repository's chosen proof assistant without adding an exact-pair axiom or assuming the jump bound?
+Can the entire proof of Theorem~\ref{cr13:thm:master}, including its overlap and joined-jump clauses, be implemented in the repository's chosen proof assistant without adding an exact-pair axiom or assuming the jump bound?
 \end{question}
 The smallest useful milestone is the finite witness and amalgamation API. The next is a verified translation of admissible-witness searches into $\Sigma^0_1(H)$ indices. Once these are available, the same infrastructure should support several existing reservoir and degree-construction projects.
 
@@ -916,7 +977,7 @@ The central gain over a bare existence argument is therefore simultaneous contro
 
 \appendix
 \section{An explicit proof audit}
-\label{app:audit}
+\label{cr13:app:audit}
 The following audit identifies the points at which an apparently similar argument can prove a different or false statement.
 
 \paragraph{Nonuniform section indices.}
@@ -944,13 +1005,13 @@ The jump requirements refer to $Z\oplus H$ itself. A list of separately bounded 
 The upper bound comes from the construction. The lower bound for C6 comes from totality coding in specially chosen columns of the prescribed $X$. It applies to every description of that exact set. The conclusion is not generalized to every complete c.e. set.
 
 \paragraph{Principal ideals and least degrees.}
-A least spectrum degree implies a principal core, but the converse fails. In a profile of individually computable sets, their full join may still be noncomputable because the presentation is not uniform. Example~\ref{ex:presentation} makes this failure explicit.
+A least spectrum degree implies a principal core, but the converse fails. In a profile of individually computable sets, their full join may still be noncomputable because the presentation is not uniform. Example~\ref{cr13:ex:presentation} makes this failure explicit.
 
 \paragraph{Verification status.}
 The article contains conventional proofs, a source comparison, and executed finite diagnostics. No Lean or Rocq build of these new results has been performed, and no independent referee assessment is represented. The precise novelty claims are relative to the inspected plan and synthesis, not to an exhaustive search of all computability literature.
 
-\section{Source provenance and reproducibility}
-The repository sources used for the mathematical target and dependency comparison are the research plan, the round-one synthesis, and the coverage ledger \cite{Plan,Synthesis,Coverage}. The source-file identities were checked at the commit printed in Section~\ref{sec:scope}. The relevant plan source blob is
+\section{Source provenance and reproducibility}\label{cr13:app:sources}
+The repository sources used for the mathematical target and dependency comparison are the research plan, the round-one synthesis, and the coverage ledger \cite{Plan,Synthesis,Coverage}. The source-file identities were checked at the commit printed in Section~\ref{cr13:sec:scope}. The relevant plan source blob is
 \begin{center}\small\texttt{ebecd2e15f8e4a06ebd0b0333387d27ebe630375},\end{center}
 and the synthesis source blob is
 \begin{center}\small\texttt{c88062125f64aa3e9323f3d3f39f5f7e108a6a7a}.\end{center}
@@ -965,6 +1026,8 @@ and the diagnostics with
 python3 checks/finite\_checks.py
 \end{quote}
 No external figures or distributed font binaries are required.
+
+\noindent\wtag\ Report~13 ships \texttt{article.tex} and a build of it as \texttt{article.pdf}, not the delivered 26-page PDF. The diagnostics are \path{code/finite_checks.py} with the recorded run \path{data/results.json}; the audit records are \path{PROOF_AUDIT.md}, \path{SOURCES.md} and \path{data/validation.json} (the last describes the delivered PDF). The delivered \path{build.sh}, shipped as \path{code/build.sh}, changes to its own directory and runs \path{checks/finite_checks.py} and \texttt{latexmk} there, so it does not work in the shipped layout; the report's \path{README.md} gives working commands.
 
 \begin{thebibliography}{99}
 \bibitem{JS}
