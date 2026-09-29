@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has seven live navigation targets:
+This theme has eight live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -21,6 +21,9 @@ This theme has seven live navigation targets:
 - [`Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/`](Gaussian_Confounding_Sharp_Recovery_Uniform_Factors/)
   — an archival arrival of 2026-09-29 on minimax rates for recovering
   uniform factors under Gaussian smoothing; unreviewed.
+- [`Flat_Boundaries_Sharp_Recovery_Uniform_Factors/`](Flat_Boundaries_Sharp_Recovery_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on sharp minimax rates for
+  recovering uniform factors without Gaussian smoothing; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -213,6 +216,21 @@ detecting any factor has critical scale `n^{−1/4}` or `n^{−1/8}`
 independently of `m`.  The key tool is a sharp inverse inequality for
 consecutive shifted power sums.  The unsmoothed up-law experiment, and so
 the finite-factor article's own statistical question, remains open.
+Unreviewed; no Lean statement.
+
+[`Flat_Boundaries_Sharp_Recovery_Uniform_Factors/`](Flat_Boundaries_Sharp_Recovery_Uniform_Factors/)
+holds *Flat Boundaries Preserve Information*, filed on 2026-09-29 by a
+quick archival intake (21-page A4 PDF, 1,554-line source, an exact SymPy
+check program with mpmath Hellinger diagnostics).  It removes the Gaussian
+smoothing of the Gaussian-confounding article above: over a known
+background that is an infinite sum of uniforms (for example the up law), it
+proves an all-order Hellinger expansion in which the flat support
+boundary costs no information, and from it the same global minimax rates
+as in the smoothed model, now with the Gaussian variance allowed to be zero:
+`n^{−1/(4m)}` for the half-lengths with known variance, `n^{−1/(4m+4)}` with
+unknown variance, `n^{−1/(2m+2)}` for the variance.  This settles the
+Gaussian-confounding article's first open problem for global rates; the
+finite-factor article's local rate at each collision pattern remains open.
 Unreviewed; no Lean statement.
 
 ## Formalization notes

@@ -1,0 +1,1632 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{25,53,75}
+\definecolor{muted}{RGB}{85,90,96}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Critical Cusps in Digital-Product Pressure},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Critical and subcritical Thue--Morse pressure; Jordan collision and finite-size scaling}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Critical cusps in digital-product pressure}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.2em}
+\setlist{itemsep=.25em,topsep=.5em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\Proj}{\Pi}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Holder}{C^\alpha(\TT)}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+{\small\sffamily\color{ink} PROVEIT\quad /\quad ANALYSIS AND DYNAMICAL SYSTEMS}\par
+\vspace{17mm}
+{\Huge\bfseries\color{ink} Critical Cusps in\\[3mm] Digital-Product Pressure\par}
+\vspace{8mm}
+{\Large A Jordan collision, square-root phase scaling,\\[2mm]
+and explicit subcritical response\par}
+\vspace{11mm}
+{\large Research draft prepared for Vladimir Reshetnikov\par}
+{Prepared with ChatGPT\quad\textbullet\quad 29 September 2026\par}
+\vspace{8mm}\hrule\vspace{4mm}
+\begin{abstract}
+For digital masks in every integer base $b\ge2$, we determine the leading
+phase singularity at the critical absolute-moment exponent $s=1$:
+\[
+ P_{b,1}(c)=\sqrt{2(b-1)\log b}\,|c|^{1/2}
+            +O_{b,\eta}(|c|^{1-\eta}),\qquad 0<\eta<\tfrac12.
+\]
+For the binary potential $\psi_c(x)=\log\cos^2\pi(x-c)$ this is the
+previously excluded pressure order $q=1/2$, since $s=2q$.
+The square root comes from a genuine size-two Jordan block of the atomic
+transfer operator. We construct the generalized eigenfunction explicitly
+with the digamma function and prove an exponential remainder on every
+$C^\alpha$, $0<\alpha<1$, by weighted quadrature rather than an assumed
+Perron theorem for a singular potential.
+
+The same reduction gives a uniform two-parameter law when
+$s-1=u\sqrt{|c|}$ and an operator-norm finite-size crossover on the scale
+$n\sqrt{|c|}$. Separately, for every fixed $1/2<s<1$, we prove the exact
+subcritical cusp
+\[
+ P_{b,s}(c)=(1-s)\log b+
+ (b-1)\pi s\tan(\pi s/2)|c|+o(|c|).
+\]
+Its coefficient follows from a universal singular-translation integral.
+Together these results distinguish the critical square root, the
+subcritical linear cusp, and the repository's supercritical fractional
+response. Full proofs, numerical diagnostics, a proof-dependency audit,
+and a further-research agenda are included.
+\end{abstract}
+\vfill
+{\small\color{muted} Status: unrefereed research draft with ordinary mathematical proofs;
+not Lean/Rocq verified. Numerical checks are not rigorous spectral enclosures.
+Priority has not been independently established.}
+\end{titlepage}
+
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{The research target and the scope of the answer}
+\label{sec:intro}
+
+\subsection{The published question and the repository gap}
+Gohlke, Kesseb\"ohmer, and Schindler study generalized Thue--Morse
+measures and establish a spectral description of their pressure, including
+an analytic order-two case \cite{GKS}. Gohlke, Lamprinakis, and Schmeling
+prove continuity in the phase for all nonnegative orders and explicitly
+ask about stronger regularity at other positive orders
+\cite[Theorems~2.2--2.3 and the following discussion]{GLS}.
+Their sine convention places the exceptional atomic phase at $1/2$;
+our equivalent cosine convention places it at zero.
+
+The ProveIt repository contains two immediate predecessors. The
+integer-pressure report develops finite-dimensional methods at integer
+orders \cite{IntegerRepo}. The fractional-pressure report proves a
+sharp atomic-phase normal form for all absolute-moment exponents $s>1$
+and explicitly leaves the critical and subcritical ranges untreated
+\cite{FractionalRepo}. The present article addresses that excluded range.
+It does not repeat the integer-order optimization theorem or the
+supercritical regularity classification.
+
+Our main target is not merely continuity at $s=1$. We determine its exact
+leading singularity, its constant, its spectral mechanism, and its
+finite-size transition. A second argument determines the leading phase
+response for every fixed $1/2<s<1$. These are local answers at the atomic
+phase, not a claim to settle phase regularity everywhere.
+
+\subsection{What is proved here}
+The principal results are the critical square-root law
+(\cref{thm:critical}), the detuned spectral and operator crossover
+(\cref{thm:crossover}), and the subcritical linear cusp
+(\cref{thm:subcritical}). Their proofs include two structural results of
+independent use: an explicit Jordan decomposition with an exponential
+remainder (\cref{thm:jordan}), and a universal response formula for
+translated simple zeros (\cref{lem:translation}).
+
+The arguments rederive every repository-specific analytic ingredient
+needed for these results. No unverified repository theorem is used as an
+axiom. Standard facts about holomorphic functions, special functions, and
+Riesz projections are identified where used; the particular perturbation
+lemma needed here is proved as well.
+
+\begin{center}
+\begin{tabular}{@{}p{.25\textwidth}p{.68\textwidth}@{}}
+\toprule
+\textbf{Boundary} & \textbf{Precise status}\\
+\midrule
+Proved in this draft & Critical and detuned asymptotics in all bases;
+operator finite-size scaling; subcritical response for $1/2<s<1$.\\[1.5mm]
+Prior work & Atomic pressure at zero phase; positive-order continuity;
+order-two analyticity; the repository's $s>1$ phase analysis.\\[1.5mm]
+Not established & The phase asymptotic for $0<s\le1/2$; a global phase
+regularity classification; full two-point endpoint H\"older regularity;
+worldwide priority; formal verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Provenance and novelty limits}
+The repository was inspected on 29 September 2026. The pinned head used
+for provenance is
+\begin{center}\small
+\nolinkurl{06bcc37a82383ce99cebfec18f958487a5b3c6d4}.
+\end{center}
+The fractional predecessor's inspected source has Git blob identifier
+\nolinkurl{83498d9ee7caa6f44b3a26b726cbb00c4b5a1a99}.
+The contemporary papers \cite{GKS,GLS}, the predecessor manuscripts,
+and targeted searches did not reveal a matching critical or subcritical
+formula. This is a bounded provenance check, not a guarantee that these
+results have never appeared elsewhere. The mathematical claim is the
+proved statement below; a claim of an independently validated
+``breakthrough'' would require additional scrutiny.
+
+\section{Definitions and main theorems}
+\label{sec:main}
+
+\subsection{Masks, transfer operators, and pressure}
+Fix an integer $b\ge2$ and let $T_bx=bx\pmod1$ on $\TT=\RR/\ZZ$.
+Set
+\begin{equation}
+ d_b(x)=\frac1b\sum_{r=0}^{b-1}e^{2\pi i r x},\qquad
+ m_b(x)=|d_b(x)|=
+ \left|\frac{\sin\pi bx}{b\sin\pi x}\right|,
+ \label{eq:mask}
+\end{equation}
+with the removable values at integers. For $s>0$ define
+\begin{equation}
+ (\Lop_{s,c}f)(x)=\sum_{k=0}^{b-1}
+ m_b\left(\frac{x+k}{b}-c\right)^s f\left(\frac{x+k}{b}\right).
+ \label{eq:transfer}
+\end{equation}
+The base is suppressed in $\Lop$ but not in the pressure.
+There is \emph{no factor $1/b$} in this transfer operator.
+
+Let $\mathcal D_{b,n}$ be the $b^n$ equal closed subintervals of $[0,1]$.
+Writing $N=b^n$, put
+\begin{align}
+ F_{s,n,c}(x)&=\prod_{j=0}^{n-1}m_b(b^jx-c)^s,\\
+ M_{s,n}(c)&=\int_0^1F_{s,n,c}(x)\dd x,\\
+ Z_{s,n}(c)&=\sum_{I\in\mathcal D_{b,n}}\sup_{x\in I}F_{s,n,c}(x),\\
+ P_{b,s}(c)&=\lim_{n\to\infty}\frac1n\log Z_{s,n}(c).
+ \label{eq:pressure}
+\end{align}
+We prove existence of this last limit in all the neighborhoods under
+consideration. A change of variables gives the exact normalization
+\begin{equation}
+ \int_0^1\Lop_{s,c}^{\,n}1\dd x=b^nM_{s,n}(c).
+ \label{eq:moment}
+\end{equation}
+For the binary potential $\psi_c(x)=\log\cos^2\pi(x-c)$,
+\begin{equation}
+ P(q\psi_c)=P_{2,2q}(c).
+ \label{eq:binary}
+\end{equation}
+In particular the critical exponent $s=1$ means $q=1/2$, not $q=1$.
+
+For $0<\alpha<1$, $C^\alpha(\TT)$ has norm
+$\norm f_\alpha=\norm f_\infty+[f]_\alpha$, with the circle distance
+in its H\"older seminorm. Spectral assertions refer to its complexification.
+We repeatedly use the constants
+\begin{equation}
+ L=\log b,\quad a_b=2\log b,\quad d=b-1,\quad
+ \kappa_b=\sqrt{a_bd}=\sqrt{2(b-1)\log b},\quad
+ H(x)=\frac{|\sin\pi x|}{\pi}.
+ \label{eq:constants}
+\end{equation}
+Here $H$ is periodic, $H(x)\sim\dist(x,\ZZ)$, and
+$\int_0^1H=2/\pi^2$.
+
+\subsection{The critical square root}
+\begin{theorem}[Critical phase law]
+\label{thm:critical}
+For every integer $b\ge2$ and every $0<\eta<1/2$, the pressure is defined
+for all sufficiently small $|c|$ and
+\begin{equation}
+ P_{b,1}(c)=\kappa_b\sqrt{|c|}
+             +O_{b,\eta}(|c|^{1-\eta}).
+ \label{eq:critical}
+\end{equation}
+On $C^\eta$, the two eigenvalues near one are real and simple for small
+$c\ne0$ and satisfy
+\begin{equation}
+ \lambda_\pm(c)=1\pm\kappa_b\sqrt{|c|}
+                   +O_{b,\eta}(|c|^{1-\eta}).
+ \label{eq:critical-eigenvalues}
+\end{equation}
+The remaining spectrum is in a fixed disk of radius less than one, and
+$P_{b,1}(c)=\log\lambda_+(c)$.
+\end{theorem}
+
+\begin{corollary}[Sharp pointwise regularity]
+\label{cor:holder}
+The even function $c\mapsto P_{b,1}(c)$ has exact pointwise H\"older
+exponent $1/2$ at zero. It is not Lipschitz there and has no finite
+first derivative there. Its right and left difference quotients tend to
+$+\infty$ and $-\infty$, respectively.
+\end{corollary}
+The word \emph{pointwise} is essential: this corollary asserts a bound
+against the value at zero and its optimality. It does not by itself prove
+a two-point $C^{0,1/2}$ bound throughout a neighborhood.
+
+\subsection{Detuning and finite size}
+Define, for $u\in\RR$,
+\begin{equation}
+ \omega_b(u)=\sqrt{\frac{u^2L^2}{4}+\kappa_b^2},\qquad
+ r_\pm(u)=-\frac{uL}{2}\pm\omega_b(u).
+ \label{eq:crossover-functions}
+\end{equation}
+Let $\delta_0(f)=f(0)$; the rank-one operator $H\otimes\delta_0$ sends
+$f$ to $Hf(0)$.
+
+\begin{theorem}[Uniform spectral and finite-size crossover]
+\label{thm:crossover}
+Fix $0<\alpha<1/2$. Let $t>0$, $s=1+ut$, and $c=\sigma t^2$, where
+$\sigma\in\{-1,1\}$. Uniformly for $u$ in any fixed compact subset of
+$\RR$, as $t\downarrow0$,
+\begin{align}
+ \lambda_\pm(s,c)&=1+t r_\pm(u)+o(t),\\
+ \frac{P_{b,1+ut}(\sigma t^2)}{t}&\longrightarrow r_+(u).
+ \label{eq:pressure-crossover}
+\end{align}
+More strongly, uniformly for $(u,\tau)$ in a compact subset of
+$\RR\times[0,\infty)$, with $n=\lfloor\tau/t\rfloor$,
+\begin{equation}
+ t\Lop_{1+ut,\sigma t^2}^{\,n}\ \longrightarrow\
+ \frac{a_b e^{-uL\tau/2}\sinh(\omega_b(u)\tau)}{\omega_b(u)}
+ H\otimes\delta_0
+ \label{eq:operator-crossover}
+\end{equation}
+in operator norm on $C^\alpha$. Consequently,
+\begin{equation}
+ t b^nM_{1+ut,n}(\sigma t^2)\ \longrightarrow\
+ \frac{4\log b}{\pi^2}
+ e^{-uL\tau/2}\frac{\sinh(\omega_b(u)\tau)}{\omega_b(u)}.
+ \label{eq:moment-crossover}
+\end{equation}
+\end{theorem}
+This identifies $n\asymp |c|^{-1/2}$ as the finite-size transition scale.
+The uniformity is on compact $u$ and $\tau$ sets; divergent detuning or
+divergent rescaled time is not included in the statement.
+
+\subsection{The fixed subcritical range}
+\begin{theorem}[Explicit subcritical response]
+\label{thm:subcritical}
+For every fixed integer $b\ge2$ and every fixed $1/2<s<1$,
+\begin{equation}
+ P_{b,s}(c)=(1-s)\log b+
+ (b-1)\pi s\tan\left(\frac{\pi s}{2}\right)|c|+o(|c|).
+ \label{eq:subcritical}
+\end{equation}
+Thus the two one-sided derivatives at the atomic phase are nonzero and
+opposite. In the usual binary pressure order, the range covered is
+$1/4<q<1/2$ and the coefficient is
+$2\pi q\tan(\pi q)$.
+\end{theorem}
+The restriction $s>1/2$ is a rigorously identified boundary of the present
+perturbation estimate. It is \emph{not} a claim that an additional
+thermodynamic transition occurs at $s=1/2$.
+
+\section{Connecting cylinder pressure to spectral growth}
+\label{sec:comparison}
+A transfer eigenvalue need not automatically equal a cylinder-supremum
+pressure for a potential with zeros. We close that gap with a direct
+polynomial argument, valid even for $0<s<1$.
+
+\begin{lemma}[A uniform polynomial sampling inequality]
+\label{lem:sampling}
+Let $Q$ be a complex polynomial of degree at most $N-1$, $N\ge2$, and
+let $\mathcal I_N$ be the $N$ equal cells of the circle. For every $s>0$
+there is a constant $C_s$, independent of $N$ and $Q$, such that
+\begin{equation}
+ N\int_0^1|Q(e^{2\pi ix})|^s\dd x
+ \le\sum_{I\in\mathcal I_N}\sup_I |Q(e^{2\pi ix})|^s
+ \le C_sN\int_0^1|Q(e^{2\pi ix})|^s\dd x.
+ \label{eq:sampling}
+\end{equation}
+The constants can be bounded uniformly when $s$ ranges over a compact
+subset of $(0,\infty)$.
+\end{lemma}
+\begin{proof}
+The lower bound follows by integrating on each cell. For the upper bound,
+choose a maximizing point $\theta_I$ in every cell and set $R=1+1/N$.
+Since $|Q|^s$ is subharmonic for every $s>0$, the Poisson inequality on
+the disk of radius $R$ gives, using angles in radians,
+\[
+ |Q(e^{i\theta_I})|^s\le
+ \int_0^{2\pi}P_{1/R}(\theta_I-\phi)|Q(Re^{i\phi})|^s
+ \frac{\dd\phi}{2\pi}.
+\]
+The Poisson kernel satisfies
+\[
+ P_{1/R}(\theta)\le
+ \frac{C N}{1+N^2\dist(\theta,2\pi\ZZ)^2}.
+\]
+There are only a bounded number of chosen points in each annular band
+of angular width $1/N$ about a fixed $\phi$. This remains true if
+neighboring cells choose their common endpoint. Summing the convergent
+series $\sum_{j\ge0}(1+j^2)^{-1}$ yields
+$\sum_I P_{1/R}(\theta_I-\phi)\le C'N$.
+
+For $D=\deg Q$, consider the reversed polynomial
+$Q^*(z)=z^D\overline{Q(1/\overline z)}$.
+On each circle,
+$|Q(Re^{i\phi})|=R^D|Q^*(R^{-1}e^{i\phi})|$.
+The integral means of the subharmonic function $|Q^*|^s$ are increasing
+with radius. Hence
+\[
+ \int|Q(Re^{i\phi})|^s\frac{\dd\phi}{2\pi}
+ \le R^{Ds}\int|Q(e^{i\phi})|^s\frac{\dd\phi}{2\pi}
+ \le e^s\int|Q(e^{i\phi})|^s\frac{\dd\phi}{2\pi}.
+\]
+Combining the two estimates proves the upper bound with $C_s=C'e^s$.
+The zero polynomial is immediate.
+\end{proof}
+
+In our setting,
+\begin{equation}
+ Q_{n,c}(z)=b^{-n}\prod_{j=0}^{n-1}
+ \left(\sum_{r=0}^{b-1}e^{-2\pi i r c}z^{r b^j}\right)
+ \label{eq:digital-polynomial}
+\end{equation}
+has degree exactly $b^n-1$, and $F_{s,n,c}(x)=|Q_{n,c}(e^{2\pi ix})|^s$.
+Consequently,
+\begin{equation}
+ b^n M_{s,n}(c)\le Z_{s,n}(c)\le C_s b^nM_{s,n}(c).
+ \label{eq:pressure-comparison}
+\end{equation}
+Whenever the logarithmic growth rate of the integral in \cref{eq:moment}
+exists, so does the pressure, and their rates agree.
+
+At zero phase the product telescopes:
+\begin{equation}
+ F_{s,n,0}(x)=\left|\frac{\sin\pi b^n x}{b^n\sin\pi x}\right|^s.
+ \label{eq:telescoping}
+\end{equation}
+Splitting into the $N=b^n$ cells and comparing distance from the two
+endpoints gives
+\begin{equation}
+ NM_{s,n}(0)\asymp_s
+ \begin{cases}
+ N^{1-s},&0<s<1,\\
+ 1+\log N,&s=1,\\
+ 1,&s>1.
+ \end{cases}
+ \label{eq:atomic-growth}
+\end{equation}
+For example, the cells at distance comparable to $k/N$ contribute,
+after multiplication by $N$, quantities comparable to $k^{-s}$;
+on a fixed positive fraction of each cell the numerator is bounded away
+from zero. Summing the resulting power series proves both bounds.
+It follows that
+\begin{equation}
+ P_{b,s}(0)=\max\{(1-s)\log b,0\}.
+ \label{eq:atomic-pressure}
+\end{equation}
+The binary version is already explicit in \cite{GKS}; this derivation
+fixes the normalization and is not claimed as a new result.
+
+\section{The atomic operator has a genuine Jordan block}
+\label{sec:jordan}
+
+\subsection{An eigenfunction and its generalized companion}
+Let $\psi=\Gamma'/\Gamma$ be the digamma function, and define on $(0,1)$
+\begin{equation}
+ G(x)=-H(x)\bigl(\psi(x)+\psi(1-x)\bigr),\qquad G(0)=1.
+ \label{eq:G}
+\end{equation}
+The endpoint expansion $\psi(x)=-x^{-1}-\gamma+O(x)$ shows that
+$G(x)=1+2\gamma x+O(x^2)$ near zero; reflection gives the corresponding
+expansion near one. Thus $G$ is a periodic Lipschitz function.
+
+The following analytic family explains both the generalized eigenvector
+and the detuning parameter. Put
+\begin{equation}
+ H_s=H^s,\quad \beta_s=b^{1-s},\quad
+ a_s=\frac{2(1-\beta_s)}{s-1},\quad a_1=2\log b,
+ \label{eq:family-constants}
+\end{equation}
+and, initially for $s\ne1$ close to one,
+\begin{equation}
+ G_s(x)=H(x)^s\left(\zeta(s,x)+\zeta(s,1-x)-\frac{2}{s-1}\right).
+ \label{eq:Gs}
+\end{equation}
+Here $\zeta(s,x)$ is the Hurwitz zeta function. Its pole at $s=1$ has
+residue one, and its constant term is $-\psi(x)$, so $G_1=G$.
+The standard special-function identities used here are recorded in
+\cite{DLMF}; their role is restricted to these explicit formulas.
+
+\begin{lemma}[Exact two-dimensional atomic family]
+\label{lem:atomic-family}
+Fix $0<\alpha<1$. In a sufficiently small complex neighborhood of $s=1$,
+$H_s$ and $G_s$ are analytic $C^\alpha$-valued functions, with
+$H_s(0)=0$ and $G_s(0)=1$. Moreover,
+\begin{equation}
+ \Lop_{s,0}H_s=\beta_sH_s,\qquad
+ \Lop_{s,0}G_s=G_s+a_sH_s.
+ \label{eq:atomic-family}
+\end{equation}
+For real $s$ the formulas use the usual nonnegative powers.
+\end{lemma}
+\begin{proof}
+The coboundary identity
+\begin{equation}
+ m_b(y)=\frac{H(T_by)}{bH(y)}
+ \label{eq:coboundary}
+\end{equation}
+away from the zeros immediately gives the first eigenfunction equation.
+For $\Re s>1$, the periodization
+$S_s(x)=\sum_{j\in\ZZ}|x+j|^{-s}$ equals
+$\zeta(s,x)+\zeta(s,1-x)$ on $(0,1)$. Reindexing an absolutely convergent
+sum gives
+\[
+ \sum_{k=0}^{b-1}S_s\left(\frac{x+k}{b}\right)=b^sS_s(x).
+\]
+Thus $\Lop_{s,0}(H_sS_s)=H_sS_s$. Subtracting
+$2H_s/(s-1)$ and using the first equation gives the second equation in
+\cref{eq:atomic-family}.
+
+For completeness, the analytic continuation is valid in the stated
+Banach space, not only pointwise. Near zero, write
+$S_s(x)=x^{-s}+A_s(x)$, with the pole $2/(s-1)$ removed from $A_s$.
+The regularized $A_s$ is smooth in $x$ on a one-sided neighborhood and
+analytic in $s$. The first part
+$(H(x)/x)^s$ is smooth up to the endpoint and equals one there.
+The remaining terms are $x^s$ times smooth analytic factors. For $s$
+near one and $\Re s>\alpha$, these terms and all parameter derivatives
+are in $C^\alpha$, uniformly on a smaller parameter disk. Factors
+$(\log x)^j$ from differentiation cause no loss because
+$\Re s-\alpha$ is bounded away from zero. The same argument works near
+one and for $H_s$. Analytic continuation proves the identities across
+$s=1$ and supplies the endpoint values.
+\end{proof}
+
+At $s=1$, \cref{eq:atomic-family} reads
+\begin{equation}
+ \Lop_{1,0}H=H,\qquad (\Lop_{1,0}-\Id)G=a_bH.
+ \label{eq:jordan-chain}
+\end{equation}
+The nonzero second equation is the source of the square root.
+
+\subsection{Dual coordinates and the exact projection}
+For $s$ close enough to one, define
+\begin{equation}
+ \ell_s(f)=\int_0^1\frac{f(x)-f(0)G_s(x)}{H_s(x)}\dd x,
+ \qquad \ell_0(f)=f(0).
+ \label{eq:ell-s}
+\end{equation}
+The notation $\ell_0$ denotes evaluation, not the parameter value $s=0$.
+We write $\ell=\ell_1$ at the critical exponent.
+These are bounded functionals on $C^\alpha$: the numerator vanishes at
+zero and one, and the integrand is $O(d^{\alpha-\Re s})$, where
+$d=\dist(x,\ZZ)$. Choose $\Re s<1+\alpha$.
+The same estimates with powers of $\log d$ prove analyticity in $s$.
+
+By direct calculation,
+\begin{equation}
+ \ell_s(H_s)=1,\quad \ell_s(G_s)=0,\quad
+ \ell_0(H_s)=0,\quad \ell_0(G_s)=1.
+ \label{eq:dual-basis}
+\end{equation}
+Also $\ell_0\Lop_{s,0}=\ell_0$, since at $x=0$ all inverse-branch
+weights except the branch at zero vanish. If $f(0)=0$, a change of
+variables using \cref{eq:coboundary} gives
+$\ell_s(\Lop_{s,0}f)=\beta_s\ell_s(f)$. Applying this to
+$f-f(0)G_s$ yields
+\begin{equation}
+ \ell_s\Lop_{s,0}=\beta_s\ell_s+a_s\ell_0.
+ \label{eq:dual-invariance}
+\end{equation}
+Therefore
+\begin{equation}
+ \Proj_sf=H_s\ell_s(f)+G_sf(0)
+ \label{eq:projection}
+\end{equation}
+is a commuting rank-two projection. On its range, in the ordered basis
+$(H_s,G_s)$, the atomic operator is exactly
+\begin{equation}
+ A_s=\begin{pmatrix}\beta_s&a_s\\0&1\end{pmatrix}.
+ \label{eq:atomic-matrix}
+\end{equation}
+
+\subsection{Weighted quadrature and the rest of the spectrum}
+It remains to show that this finite-dimensional part captures the whole
+spectrum near one. A general spectral-gap theorem for a positive weight
+with zeros would need hypotheses not yet checked. The explicit product
+allows a direct proof instead.
+
+\begin{lemma}[Critical weighted quadrature]
+\label{lem:quadrature}
+If $0<\alpha<1$, $f\in C^\alpha$, and $f(0)=0$, then
+\begin{equation}
+ \left\|\Lop_{1,0}^{\,n}f-
+ H\int_0^1\frac{f(y)}{H(y)}\dd y\right\|_\infty
+ \le C_{b,\alpha}(1+n)b^{-\alpha n}\norm f_\alpha.
+ \label{eq:quadrature}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $N=b^n$. Telescoping the weights gives, for $0<x<1$,
+\begin{equation}
+ \Lop_{1,0}^{\,n}f(x)=H(x)\frac1N
+ \sum_{k=0}^{N-1}\frac{f((x+k)/N)}{H((x+k)/N)}.
+ \label{eq:riemann-critical}
+\end{equation}
+Set $F=f/H$. Since $f(0)=0$, one has
+$|F(y)|\le C\norm f_\alpha d(y)^{\alpha-1}$.
+The first and last cells have integral $O(N^{-\alpha})$.
+Their sampled terms, after multiplication by $H(x)$, have the same
+uniform bound: for instance the first is at most a constant times
+$N^{-\alpha}H(x)x^{\alpha-1}$, and this factor of $x$ is bounded.
+
+On an interior cell of length $1/N$, whose distance to an endpoint is
+comparable to $d\ge1/N$, the difference of two values of $F$ is bounded by
+\begin{equation}
+ C\norm f_\alpha
+ \left(N^{-\alpha}d^{-1}+N^{-1}d^{\alpha-2}\right).
+ \label{eq:cell-error}
+\end{equation}
+The first term uses H\"older continuity of $f$ and the second uses
+$|H'|\le1$ together with $|f|\le C\norm f_\alpha d^\alpha$.
+Multiplying by the cell length and summing gives
+$O(\norm f_\alpha N^{-\alpha}(1+\log N))$.
+Since $H$ is bounded, this proves the claimed uniform estimate.
+At $x=0$ both sides of the main approximation are zero, so continuity
+covers the endpoint as well.
+\end{proof}
+
+\begin{theorem}[Exact critical Jordan decomposition]
+\label{thm:jordan}
+On every $C^\alpha$, $0<\alpha<1$, there are commuting finite-rank
+operators
+\[
+ \Proj=H\otimes\ell+G\otimes\ell_0,
+ \qquad \mathcal N=a_bH\otimes\ell_0
+\]
+and an operator $R$ such that
+\begin{equation}
+ \Lop_{1,0}=\Proj+\mathcal N+R,\quad
+ \mathcal N^2=0,\quad \Proj\mathcal N=\mathcal N\Proj=\mathcal N,
+ \quad \Proj R=R\Proj=\mathcal NR=R\mathcal N=0.
+ \label{eq:decomposition}
+\end{equation}
+For every $r$ with $b^{-\alpha}<r<1$ there is $C_r<\infty$ such that
+$\norm{R^n}_{\alpha\to\alpha}\le C_rr^n$ for $n\ge1$.
+Consequently, for $n\ge1$,
+\begin{equation}
+ \Lop_{1,0}^{\,n}f=
+ H\bigl(\ell(f)+na_bf(0)\bigr)+Gf(0)+R^nf.
+ \label{eq:atomic-iterate}
+\end{equation}
+The generalized eigenspace at one has dimension exactly two, and its
+Jordan block has size exactly two.
+\end{theorem}
+\begin{proof}
+All algebraic assertions follow from \cref{eq:jordan-chain,eq:dual-invariance}.
+The invariant complement is
+\[
+ Y=\ker\Proj=\{f:f(0)=0,\ \ell(f)=0\}.
+\]
+On $Y$, \cref{lem:quadrature} gives sup-norm decay
+$O((1+n)b^{-\alpha n})$. To upgrade to the full H\"older norm, first
+observe from \cref{eq:jordan-chain} and the same quadrature estimate
+applied to $1-G$ that
+\begin{equation}
+ \norm{\Lop_{1,0}^{\,m}1}_\infty\le C(1+m).
+ \label{eq:linear-bound}
+\end{equation}
+For each fixed $m$, pairing inverse branches in the circle gives
+\begin{equation}
+ [\Lop_{1,0}^{\,m}f]_\alpha
+ \le b^{-\alpha m}\norm{\Lop_{1,0}^{\,m}1}_\infty[f]_\alpha
+       +B_m\norm f_\infty.
+ \label{eq:LY}
+\end{equation}
+Indeed, the variation of $f$ gains the inverse-branch contraction
+$b^{-\alpha m}$. The remaining term is bounded because the finitely
+many product weights are Lipschitz. For points across a circle cut, the
+branches are relabeled cyclically; for points separated by a fixed
+positive distance, the sup norm gives the same type of bound.
+
+Given $b^{-\alpha}<r<1$, choose $m$ large enough that
+$C(1+m)b^{-\alpha m}<r^m$. Iterate \cref{eq:LY} on $Y$, inserting
+\cref{eq:quadrature} into its last term. The resulting scalar convolution
+of geometric sequences, with the harmless factor $1+jm$, is bounded by
+a constant times $r^{jm}$. The finitely many remaining residues of $n$
+modulo $m$ are absorbed into the constant. This proves the strong-norm
+bound for $R^n$.
+
+The complement therefore has spectral radius at most $b^{-\alpha}<1$.
+On the range of $\Proj$, the matrix is
+$\left(\begin{smallmatrix}1&a_b\\0&1\end{smallmatrix}\right)$,
+with $a_b\ne0$. No additional generalized eigenvector at one can occur
+in the complement. This proves the last assertion.
+\end{proof}
+
+\subsection{An exact critical normalization check}
+The functional on the constant function can also be evaluated:
+\begin{equation}
+ \ell(1)=\int_0^1\left(
+ \frac{\pi}{\sin\pi x}+\psi(x)+\psi(1-x)\right)\dd x
+ =2\log\frac2\pi.
+ \label{eq:ell-one}
+\end{equation}
+To verify the cancellation, integrate from $\varepsilon$ to
+$1-\varepsilon$. The cosecant integral is
+$-2\log\tan(\pi\varepsilon/2)$, while the digamma terms give
+$2(\log\Gamma(1-\varepsilon)-\log\Gamma(\varepsilon))$.
+The endpoint expansions give \cref{eq:ell-one}.
+Integrating \cref{eq:atomic-iterate} at $f=1$ yields
+\begin{equation}
+ b^nM_{1,n}(0)=\frac{4\log b}{\pi^2}n+C_*+O(r^n),
+ \quad
+ C_*=\int_0^1G+\frac4{\pi^2}\log\frac2\pi.
+ \label{eq:critical-atomic-moment}
+\end{equation}
+This linear growth is the finite-size signature of the Jordan block.
+Its leading coefficient also agrees with the classical logarithmic
+integral of the telescoped Dirichlet-type kernel.
+
+\section{Perturbing the Jordan block}
+\label{sec:perturbation}
+
+\subsection{The norm of a phase translation}
+\begin{lemma}[Phase perturbation bounds]
+\label{lem:translation-norm}
+For fixed $b$ and $0<\alpha<1$,
+\begin{equation}
+ \norm{\Lop_{1,c}-\Lop_{1,0}}_{\alpha\to\alpha}
+ =O(|c|^{1-\alpha}).
+ \label{eq:critical-norm}
+\end{equation}
+For fixed $0<s<1$ and $0<\alpha<s$,
+\begin{equation}
+ \norm{\Lop_{s,c}-\Lop_{s,0}}_{\alpha\to\alpha}
+ =O(|c|^{s-\alpha}).
+ \label{eq:subcritical-norm}
+\end{equation}
+If $s=1+ut$, $c=\pm t^2$, and $u$ stays bounded, then uniformly
+\begin{equation}
+ \norm{\Lop_{s,c}-\Lop_{s,0}}_{\alpha\to\alpha}
+ =O(t^{2-2\alpha}).
+ \label{eq:window-norm}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The mask is Lipschitz. Its translation difference has sup norm $O(|c|)$
+and bounded Lipschitz seminorm. Interpolation gives a $C^\alpha$ bound
+$O(|c|^{1-\alpha})$. For $0<s<1$, the weight $m_b^s$ is $s$-H\"older;
+the corresponding interpolation between the sup norm and the
+$s$-H\"older seminorm gives $O(|c|^{s-\alpha})$.
+Multiplication is bounded on $C^\alpha$, as is composition with each
+inverse branch, so these weight estimates imply the operator estimates.
+For $s\ge1$ near one, the Lipschitz constants are uniformly bounded.
+For $s<1$ in the stated window,
+$t^{2(s-\alpha)}=t^{2-2\alpha}\exp(2ut\log t)$, and the final
+exponential factor is bounded uniformly for bounded $u$.
+\end{proof}
+
+\subsection{A second-order reduction lemma}
+We need the quadratic remainder in the following standard spectral
+reduction; merely a first-order error would not determine the critical
+coefficient. Riesz projection methods are treated systematically in
+\cite{Kato}. We give the particular calculation to fix the coordinate
+convention and its error.
+
+\begin{lemma}[Compression in a Riesz-projection chart]
+\label{lem:compression}
+Let a bounded operator $B_0$ on a complex Banach space have a finite-rank
+commuting spectral projection $P$ for an isolated spectral cluster.
+Write $E=\operatorname{ran}P$, and let $A_0=B_0|_E$ in a fixed basis.
+For $B=B_0+\Delta$ with $\norm\Delta$ small, let $P_\Delta$ be the Riesz
+projection defined by the same contour. The map
+$U=P_\Delta|_E:E\to\operatorname{ran}P_\Delta$ is an isomorphism, and
+in this chart
+\begin{equation}
+ U^{-1}BU=A_0+P\Delta|_E+O(\norm\Delta^2).
+ \label{eq:compression}
+\end{equation}
+The constants are uniform in a compact norm-continuous family with
+uniformly separated contours and uniformly bounded resolvents.
+\end{lemma}
+\begin{proof}
+The resolvent identity and a Neumann series on the contour give
+$P_\Delta-P=O(\norm\Delta)$. The identity $P_\Delta^2=P_\Delta$, or
+its linearization, shows that
+\[
+ P(P_\Delta-P)P=O(\norm\Delta^2).
+\]
+Thus $PU=\Id_E+O(\norm\Delta^2)$ and $U$ is invertible onto the nearby
+spectral subspace. If $A=U^{-1}BU$, then
+\[
+ (PU)A=PBU=A_0(PU)+P\Delta U.
+\]
+Here $PB_0=B_0P$ and $P\Delta U=P\Delta|_E+O(\norm\Delta^2)$.
+Multiplication by $(PU)^{-1}$ gives \cref{eq:compression}.
+Uniform bounds follow from the same contour estimates.
+\end{proof}
+
+The usual separation of the complementary spectrum also follows
+directly from these estimates. A circle surrounding that spectrum and
+excluding the finite cluster remains a resolvent contour for small
+perturbations. Its resolvent integral bounds the powers of the
+complementary part uniformly by $Cr^n$ for some $r<1$ in our critical
+application.
+
+\subsection{The matrix entry that fixes the square root}
+Let $\Delta_{s,c}=\Lop_{s,c}-\Lop_{s,0}$.
+Evaluation at zero gives the following exact identity:
+\begin{equation}
+ \ell_0(\Delta_{s,c}H_s)=
+ \left|\frac{\sin\pi bc}{b\pi}\right|^s
+ \sum_{k=1}^{b-1}
+ \left(\frac{\sin(\pi k/b)}{|\sin\pi(k/b-c)|}\right)^s.
+ \label{eq:lower-left-exact}
+\end{equation}
+The branch $k=0$ contributes zero because $H_s(0)=0$.
+The denominators in the displayed finite sum are nonzero for small $c$.
+Reflection $k\mapsto b-k$ makes the sum even in $c$, so, uniformly for
+real $s$ near one,
+\begin{equation}
+ \ell_0(\Delta_{s,c}H_s)
+ =(b-1)|c|^s\bigl(1+O(c^2)\bigr).
+ \label{eq:lower-left}
+\end{equation}
+In particular at $s=1$ this is $d|c|+O(|c|^3)$.
+It is the \emph{lower-left} entry in the ordered basis $(H,G)$.
+The nonzero upper-right entry $a_b$ already exists at zero phase.
+
+\subsection{Proof of the critical theorem}
+\begin{proof}[Proof of \cref{thm:critical}]
+Work on $C^\alpha$ with $\alpha=\eta\in(0,1/2)$, and write
+$\varepsilon=|c|^{1-\alpha}$.
+By \cref{thm:jordan}, a small circle about one encloses exactly its
+two-dimensional generalized eigenspace. Apply \cref{lem:compression}
+with the projection \cref{eq:projection}. Its two coordinates are
+$(\ell,\ell_0)$, so \cref{eq:lower-left} gives the central matrix
+\begin{equation}
+ A(c)=
+ \begin{pmatrix}
+ 1+O(\varepsilon)&a_b+O(\varepsilon)\\
+ d|c|+O(\varepsilon^2+|c|^3)&1+O(\varepsilon)
+ \end{pmatrix}.
+ \label{eq:critical-matrix}
+\end{equation}
+The $O(\varepsilon^2)$ in the lower-left entry is the chart correction.
+All entries are real for real $c$: the contour projection can be chosen
+conjugation invariant.
+
+Putting $z=\lambda-1$, the characteristic equation is
+\begin{equation}
+ z^2-T(c)z-\kappa_b^2|c|
+       +O(\varepsilon^2+|c|^3)=0,
+ \qquad T(c)=O(\varepsilon).
+ \label{eq:critical-characteristic}
+\end{equation}
+Because $\varepsilon=o(\sqrt{|c|})$ and
+$\varepsilon^2=o(|c|)$, the discriminant is positive for small
+$c\ne0$. The quadratic formula yields two distinct real roots.
+The error in their leading square roots is
+$O(\varepsilon^2/\sqrt{|c|}+|c|^{5/2})$, which is
+$O(\varepsilon)$ when $\alpha<1/2$. This proves
+\cref{eq:critical-eigenvalues}. The complementary spectrum and its
+powers remain uniformly inside a disk of radius less than one.
+
+We must still show that the larger eigenvalue actually controls the
+integral of $\Lop^n1$. Let $P_\pm(c)$ be the two simple eigenprojections.
+The two-dimensional formula
+\[
+ P_+(c)|_{\mathrm{central}}=
+ \frac{A(c)-\lambda_-(c)\Id}{\lambda_+(c)-\lambda_-(c)}
+\]
+and its minus counterpart, together with the chart
+$U=\Id+O(\varepsilon)$, give
+\begin{equation}
+ \int_0^1P_\pm(c)1\dd x
+ \sim \pm\frac{a_b}{\pi^2\kappa_b\sqrt{|c|}}.
+ \label{eq:critical-amplitudes}
+\end{equation}
+Indeed the coordinate of $1$ along $G$ tends to $1$, the upper-right
+matrix entry tends to $a_b$, and $\int H=2/\pi^2$.
+The coefficient for the larger eigenvalue is positive, not zero.
+For each fixed small $c\ne0$, it follows that
+\[
+ \int\Lop_{1,c}^{\,n}1
+ =\left(\int P_+(c)1\right)\lambda_+(c)^n
+ +\left(\int P_-(c)1\right)\lambda_-(c)^n+O(r^n).
+\]
+Thus its logarithmic growth rate is $\log\lambda_+(c)$.
+The sampling comparison \cref{eq:pressure-comparison} identifies this
+rate with the defined pressure. At $c=0$ use \cref{eq:atomic-pressure}.
+Finally $\log(1+z)=z+O(z^2)$ supplies \cref{eq:critical}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{cor:holder}]
+Reflection $f(x)\mapsto f(-x)$ conjugates the operators at $c$ and $-c$;
+the cylinder definition has the same symmetry. Thus the pressure is
+even. Since $P_{b,1}(0)=0$ and $\kappa_b>0$, \cref{eq:critical} gives
+$P_{b,1}(c)/\sqrt{|c|}\to\kappa_b$. This proves all assertions,
+including failure of every pointwise H\"older exponent greater than
+$1/2$.
+\end{proof}
+
+\section{The two-parameter collision and its finite-time law}
+\label{sec:crossover}
+
+\subsection{Why an analytic parameter basis matters}
+A direct comparison of $\Lop_{1+ut,c}$ with $\Lop_{1,0}$ has an
+$O(t)$ exponent perturbation. Squaring this error would be of the same
+size as the decisive $t^2$ lower-left entry. The exact $s$-dependent
+basis in \cref{lem:atomic-family} avoids that loss: all exponent
+variation is treated exactly before the phase is perturbed.
+
+Fix $0<\alpha<1/2$ and a small neighborhood of $s=1$ with
+$\alpha<\Re s<1+\alpha$. The family $s\mapsto\Lop_{s,0}$ is analytic
+on $C^\alpha$. To see this, differentiate the scalar weights
+$m_b^s$ in $s$; terms $m_b^s(\log m_b)^j$ remain in $C^\alpha$ on a
+smaller parameter disk because $\Re s>\alpha$.
+The projection $\Proj_s$ in \cref{eq:projection} is also analytic and
+commuting. Its complementary part has spectrum in a fixed disk
+$|z|<r<1$ for $s$ sufficiently close to one, by the gap proved at one
+and a resolvent Neumann series. Hence it is precisely the nearby
+central spectral projection.
+
+\subsection{The effective generator}
+Set $s=1+ut$, $c=\sigma t^2$, with bounded $u$.
+By \cref{lem:translation-norm}, the phase perturbation has norm
+$O(\varepsilon_t)$, where
+$\varepsilon_t=t^{2-2\alpha}=o(t)$.
+The compression lemma now applies relative to $\Proj_s$, uniformly in
+this window. In the ordered basis $(H_s,G_s)$ the matrix is
+\begin{equation}
+ A_{s,c}=A_s+
+ \begin{pmatrix}
+ \ell_s(\Delta_{s,c}H_s)&\ell_s(\Delta_{s,c}G_s)\\
+ \ell_0(\Delta_{s,c}H_s)&\ell_0(\Delta_{s,c}G_s)
+ \end{pmatrix}+O(\varepsilon_t^2).
+ \label{eq:window-matrix}
+\end{equation}
+In addition to the norm estimate, the exact lower-left formula gives
+\begin{equation}
+ \ell_0(\Delta_{s,c}H_s)
+ =d t^2\exp(2ut\log t)(1+O(t^4))=dt^2+o(t^2)
+ \label{eq:window-lower-left}
+\end{equation}
+uniformly for bounded $u$. Notice that
+$\varepsilon_t^2=o(t^2)$ is exactly where $\alpha<1/2$ is used.
+
+Introduce the singular coordinate scaling
+$D_t=\operatorname{diag}(t,1)$. Since
+$\beta_{1+ut}=1-uLt+O(t^2)$ and $a_{1+ut}=a_b+O(t)$, equations
+\cref{eq:window-matrix,eq:window-lower-left} imply
+\begin{equation}
+ D_tA_{s,c}D_t^{-1}=\Id+tJ_b(u)+o(t),\qquad
+ J_b(u)=\begin{pmatrix}-uL&a_b\\d&0\end{pmatrix}.
+ \label{eq:generator}
+\end{equation}
+All errors are uniform on compact $u$ sets. The characteristic
+polynomial of $J_b(u)$ is
+\begin{equation}
+ z^2+uLz-\kappa_b^2,
+ \label{eq:generator-polynomial}
+\end{equation}
+so its eigenvalues are $r_\pm(u)$ from
+\cref{eq:crossover-functions}. They are distinct for every real $u$;
+one is positive and the other negative.
+
+\begin{proof}[Proof of the spectral assertions in \cref{thm:crossover}]
+The two eigenvalues of \cref{eq:generator} are
+$1+tr_\pm(u)+o(t)$, uniformly on compact $u$ sets. The cluster is real
+and simple because its rescaled limiting roots are distinct and real.
+The same projection-amplitude calculation as in
+\cref{eq:critical-amplitudes} gives
+\begin{equation}
+ t\int P_+(s,c)1\ \longrightarrow\
+ \frac{a_b}{\pi^2\omega_b(u)}>0.
+ \label{eq:window-amplitude}
+\end{equation}
+The rest of the spectrum stays uniformly below one in modulus, while
+$\lambda_+>1$ and $\lambda_-<1$ for small $t$ and bounded $u$.
+It follows from \cref{eq:pressure-comparison} that the pressure equals
+$\log\lambda_+$, and division by $t$ proves
+\cref{eq:pressure-crossover}.
+\end{proof}
+
+\subsection{An operator, not only an eigenvalue, limit}
+\begin{proof}[Proof of the finite-size assertions in \cref{thm:crossover}]
+Let $n=\lfloor\tau/t\rfloor$. From \cref{eq:generator}, elementary
+matrix product estimates give
+\begin{equation}
+ \bigl(D_tA_{s,c}D_t^{-1}\bigr)^n
+ \longrightarrow e^{\tau J_b(u)}
+ \label{eq:matrix-semigroup}
+\end{equation}
+uniformly for $(u,\tau)$ in compact subsets of
+$\RR\times[0,\infty)$. One proof compares with
+$(\Id+tJ_b(u))^n$ by a telescoping sum: the one-step error is $o(t)$,
+there are $O(1/t)$ steps, and both matrix products are uniformly bounded
+on a compact time interval. The usual exponential approximation then
+finishes the argument.
+
+For an input $f$, its coordinates on the perturbed central space are
+$(\ell_s(f),f(0))+O(\varepsilon_t\norm f_\alpha)$.
+After multiplication by $D_t$, these converge in operator norm to
+$(0,f(0))$. On output, the map from the rescaled coordinates back to
+$t$ times the original function converges to
+$(v_1,v_2)\mapsto H v_1$. Indeed its columns are
+$H_s+O(\varepsilon_t)$ and $tG_s+O(t\varepsilon_t)$.
+Thus the limiting operator is the upper-right entry of
+$e^{\tau J_b(u)}$ multiplied by $H\otimes\delta_0$.
+
+Since
+\[
+ \left(J_b(u)+\frac{uL}{2}\Id\right)^2=\omega_b(u)^2\Id,
+\]
+that entry is
+\[
+ \bigl(e^{\tau J_b(u)}\bigr)_{12}
+ =a_b e^{-uL\tau/2}\frac{\sinh(\omega_b(u)\tau)}{\omega_b(u)}.
+\]
+The complementary part contributes at most $Ct r^n$ in operator norm,
+which tends to zero uniformly even when $n=0$ (then use its uniformly
+bounded projection). This proves \cref{eq:operator-crossover}.
+Applying the limit to $1$, integrating, and using
+$\int H=2/\pi^2$ proves \cref{eq:moment-crossover}.
+\end{proof}
+
+At exact criticality $u=0$, the moment law reduces to
+\begin{equation}
+ t b^{\lfloor\tau/t\rfloor}
+ M_{1,\lfloor\tau/t\rfloor}(\pm t^2)
+ \longrightarrow
+ \frac{4\log b}{\pi^2\kappa_b}\sinh(\kappa_b\tau).
+ \label{eq:critical-sinh}
+\end{equation}
+For small rescaled time its right side is
+$(4\log b/\pi^2)\tau+O(\tau^3)$, in agreement with the atomic linear
+law \cref{eq:critical-atomic-moment}. For larger fixed rescaled time it
+contains both exponentials coming from the split Jordan block. This
+explains why replacing the whole finite-size behavior by only its
+largest eigenvalue misses the crossover near the atomic phase.
+
+\section{Subcritical response from translated zeros}
+\label{sec:subcritical}
+
+\subsection{The dominant atomic eigenvalue is simple below one}
+For $0<s<1$, the eigenvalue $\beta_s=b^{1-s}>1$ has right eigenfunction
+$H_s$ and a particularly simple dual functional:
+\begin{equation}
+ \nu_s(f)=\int_0^1\frac{f(x)}{H_s(x)}\dd x,
+ \qquad \nu_s(H_s)=1.
+ \label{eq:subcritical-dual}
+\end{equation}
+The integral is finite because $s<1$, even for $f(0)\ne0$.
+By a change of variables, $\nu_s\Lop_{s,0}=\beta_s\nu_s$.
+
+\begin{lemma}[Simple subcritical spectral gap]
+\label{lem:subcritical-gap}
+Let $0<s<1$ and $0<\alpha<s$. On $C^\alpha$,
+\begin{equation}
+ \beta_s^{-n}\Lop_{s,0}^{\,n}
+ \longrightarrow H_s\otimes\nu_s
+ \label{eq:subcritical-gap}
+\end{equation}
+exponentially in operator norm. In particular $\beta_s$ is a simple
+isolated eigenvalue and all other spectrum has strictly smaller modulus.
+\end{lemma}
+\begin{proof}
+For $0<x<1$, telescoping gives
+\begin{equation}
+ \beta_s^{-n}\Lop_{s,0}^{\,n}f(x)
+ =H_s(x)\frac1N\sum_{k=0}^{N-1}
+ \frac{f((x+k)/N)}{H_s((x+k)/N)},\qquad N=b^n.
+ \label{eq:subcritical-riemann}
+\end{equation}
+The corresponding integral is $H_s\nu_s(f)$.
+Splitting into the endpoint cells and the interior cells, as in
+\cref{lem:quadrature}, yields the uniform estimate
+\begin{equation}
+ \left\|\beta_s^{-n}\Lop_{s,0}^{\,n}f-H_s\nu_s(f)\right\|_\infty
+ \le C(1+n)b^{-n\min\{\alpha,1-s\}}\norm f_\alpha.
+ \label{eq:subcritical-sup}
+\end{equation}
+Here is the difference from the critical calculation. The endpoint
+singularity is now $d^{-s}$, which is integrable without subtracting
+$f(0)$. Its endpoint contribution is $O(N^{s-1})$ after multiplication
+by $H_s(x)$, uniformly in $x$. The interior variation of the numerator
+contributes at most $CN^{-\alpha}\int_{1/N}^{1/2}y^{-s}\dd y$;
+the denominator variation contributes at most
+$CN^{-1}\int_{1/N}^{1/2}y^{-s-1}\dd y=O(N^{s-1})$.
+At $x=0$, the normalized iterate is
+$\beta_s^{-n}f(0)=N^{s-1}f(0)$, so the same bound holds there.
+The extra factor $1+n$ in \cref{eq:subcritical-sup} is harmless and
+allows one bound for all estimates.
+
+The normalized iterates of $1$ are consequently uniformly bounded in
+sup norm. For each fixed $m$, the analogue of \cref{eq:LY} has leading
+seminorm coefficient at most $Cb^{-\alpha m}$ and a finite sup-norm
+coefficient. The weights are $s$-H\"older, hence $\alpha$-H\"older;
+this is sufficient for that estimate. On $\ker\nu_s$, combine the
+seminorm recurrence with \cref{eq:subcritical-sup}. Choose $r<1$
+larger than both $b^{-\alpha}$ and $b^{-(1-s)}$, and then choose $m$
+large. The same geometric convolution argument as in
+\cref{thm:jordan} proves exponential convergence in the full norm.
+The limit is the rank-one commuting projection in
+\cref{eq:subcritical-gap}, proving the spectral assertions.
+\end{proof}
+
+\subsection{A universal singular-translation integral}
+The coefficient below is independent of the slopes of the zeros.
+This fact is what turns the digital-mask calculation into a simple
+multiple of the number of zeros.
+
+\begin{lemma}[Response of finitely many simple zeros]
+\label{lem:translation}
+Let $m$ be a nonnegative periodic function, positive and $C^2$ away from
+$N_z$ zeros. Near each zero $z_j$, assume that
+$m(z_j+x)=|x|a_j(x)$ with $a_j$ positive and $C^2$.
+For every $0<s<1$,
+\begin{equation}
+ \int_0^1\left[\left(\frac{m(x-c)}{m(x)}\right)^s-1\right]\dd x
+ =N_zJ_s|c|+o(|c|),
+ \label{eq:translation-integral}
+\end{equation}
+where
+\begin{align}
+ J_s&=\int_0^\infty
+ u^{-s}\bigl((u+1)^s+|u-1|^s-2u^s\bigr)\dd u
+ \label{eq:J-integral}\\
+ &=\pi s\tan\left(\frac{\pi s}{2}\right)>0.
+ \label{eq:J-value}
+\end{align}
+Values assigned at the finitely many zero denominators do not affect
+the integral, whose singularities are integrable.
+\end{lemma}
+\begin{proof}
+Choose small disjoint symmetric neighborhoods of the zeros, with their
+closures still inside the stated local charts. On the complement,
+ordinary Taylor expansion gives the first-order integral
+$-sc\int (\log m)' +o(|c|)$.
+
+In a neighborhood $[-r,r]$ of a zero, write
+\[
+ \left(\frac{m(x-c)}{m(x)}\right)^s
+ =\frac{|x-c|^s}{|x|^s}
+ \left(\frac{a(x-c)}{a(x)}\right)^s.
+\]
+Uniformly on this fixed neighborhood,
+\[
+ \left(\frac{a(x-c)}{a(x)}\right)^s
+ =1-sc\frac{a'(x)}{a(x)}+O(c^2).
+\]
+The ratios $|x-c|^s/|x|^s$ have bounded integrals and converge to one in
+$L^1([-r,r])$. Hence the local contribution is
+\begin{equation}
+ \int_{-r}^{r}\left(\frac{|x-c|^s}{|x|^s}-1\right)\dd x
+ -sc\int_{-r}^{r}\frac{a'(x)}{a(x)}\dd x+o(|c|).
+ \label{eq:local-translation}
+\end{equation}
+In the first integral substitute $x=|c|u$ and pair positive and negative
+$u$. The result divided by $|c|$ tends to \cref{eq:J-integral}.
+The paired integrand is $O(u^{-s})$ near zero and $O(u^{-2})$ at
+infinity, so its integral converges throughout the stated range.
+The sign of $c$ does not change this paired model integral.
+
+All the regular first-order contributions cancel. Indeed, in a local
+chart $(\log m)'=1/x+a'/a$, and the principal value of $1/x$ on a
+symmetric interval is zero. Periodicity gives
+\[
+ \PV\int_0^1(\log m)'\dd x=0.
+\]
+More explicitly, after deleting symmetric intervals of radius
+$\varepsilon$ around the zeros, the sum of endpoint logarithms has
+terms $\log(\varepsilon a_j(-\varepsilon))-
+\log(\varepsilon a_j(\varepsilon))$, each tending to zero.
+Combining \cref{eq:local-translation} with the complement thus proves
+\cref{eq:translation-integral} with coefficient $N_zJ_s$.
+
+To evaluate the coefficient, substitute $u=1/v$ in
+\cref{eq:J-integral}, and integrate by parts. Both endpoint terms
+vanish, yielding
+\begin{equation}
+ \frac{J_s}{s}=
+ \int_0^\infty
+ \frac{(1+v)^{s-1}+\operatorname{sgn}(v-1)|v-1|^{s-1}}{v}\dd v.
+ \label{eq:J-parts}
+\end{equation}
+The divergent pieces at zero must remain paired. In the first positive
+piece use $t=v/(1+v)$, and pair it with the negative piece on $(0,1)$.
+Their sum is
+\[
+ \int_0^1\frac{(1-t)^{-s}-(1-t)^{s-1}}{t}\dd t
+ =\psi(s)-\psi(1-s)=-\pi\cot(\pi s).
+\]
+The remaining positive piece is
+\[
+ \int_1^\infty\frac{(v-1)^{s-1}}{v}\dd v
+ =B(s,1-s)=\pi\csc(\pi s).
+\]
+The last identities are the beta and digamma reflection identities
+\cite[\S5.5]{DLMF}. Therefore
+$J_s=\pi s(\csc\pi s-\cot\pi s)
+=\pi s\tan(\pi s/2)$, proving \cref{eq:J-value}.
+\end{proof}
+
+\subsection{Converting the integral response to pressure}
+\begin{proof}[Proof of \cref{thm:subcritical}]
+Fix $1/2<s<1$ and choose
+\begin{equation}
+ 0<\alpha<s-\tfrac12.
+ \label{eq:subcritical-alpha}
+\end{equation}
+The simple eigenvalue in \cref{lem:subcritical-gap} can be perturbed on
+$C^\alpha$. The rank-one case of \cref{lem:compression}, together with
+\cref{eq:subcritical-norm}, gives
+\begin{equation}
+ \lambda_s(c)=\beta_s+
+ \nu_s\bigl((\Lop_{s,c}-\Lop_{s,0})H_s\bigr)
+ +O(|c|^{2(s-\alpha)}).
+ \label{eq:simple-response}
+\end{equation}
+The exponent in the error is greater than one by
+\cref{eq:subcritical-alpha}.
+
+Using the coboundary \cref{eq:coboundary} and changing variables over
+the inverse branches, one obtains the exact response identity
+\begin{equation}
+ \nu_s\bigl((\Lop_{s,c}-\Lop_{s,0})H_s\bigr)
+ =\beta_s\int_0^1
+ \left[\left(\frac{m_b(y-c)}{m_b(y)}\right)^s-1\right]\dd y.
+ \label{eq:response-exact}
+\end{equation}
+All singularities in this integral are integrable because $s<1$.
+The mask $m_b$ has exactly $b-1$ simple zeros on the circle, at
+$1/b,\ldots,(b-1)/b$. Its absolute-value local form has positive smooth
+factors, so \cref{lem:translation} applies. Consequently
+\begin{equation}
+ \lambda_s(c)=\beta_s\bigl(1+(b-1)J_s|c|+o(|c|)\bigr).
+ \label{eq:subcritical-eigenvalue}
+\end{equation}
+The spectral projection of the constant function has positive integral
+at $c=0$, namely $\nu_s(1)\int H_s>0$, and retains this property for
+small $c$. All other spectrum stays strictly smaller in modulus.
+Therefore the logarithmic growth rate of $\int\Lop_{s,c}^{\,n}1$ is
+$\log\lambda_s(c)$. The pressure comparison identifies this with
+$P_{b,s}(c)$. Taking logarithms in
+\cref{eq:subcritical-eigenvalue}, using
+$\log\beta_s=(1-s)\log b$ and \cref{eq:J-value}, proves the theorem.
+\end{proof}
+
+\subsection{Why this proof stops at \texorpdfstring{$s=1/2$}{s = 1/2}}
+The scalar translation integral \cref{eq:translation-integral} remains
+valid for every $0<s<1$. The missing step for $s\le1/2$ is not the
+integral's evaluation, nor the simple atomic spectral gap. It is the
+comparison of the quadratic operator remainder with the proposed linear
+term. On $C^\alpha$ the available bound is
+$O(|c|^{2(s-\alpha)})$, and no positive $\alpha$ makes this $o(|c|)$
+when $s\le1/2$.
+
+This isolates a concrete research problem: replace the generic norm-square
+remainder by a sharper estimate that retains the localization of the
+translated zeros. The present paper does not infer a linear response
+below the threshold merely from its formally correct first-order
+coefficient. In particular, the formula at $q=1/4$ is not claimed.
+
+\section{The phase diagram and what the crossover explains}
+\label{sec:interpretation}
+
+\subsection{Three different responses at the same phase}
+The results can be compared without changing conventions:
+\begin{center}
+\begin{tabular}{@{}p{.18\textwidth}p{.47\textwidth}p{.27\textwidth}@{}}
+\toprule
+\textbf{Exponent} & \textbf{Leading local information} & \textbf{Source/status}\\
+\midrule
+$1/2<s<1$ &
+$P(c)-P(0)\sim(b-1)\pi s\tan(\pi s/2)|c|$ &
+\Cref{thm:subcritical}.\\[2mm]
+$s=1$ &
+$P(c)\sim\sqrt{2(b-1)\log b}\sqrt{|c|}$ &
+\Cref{thm:critical}.\\[2mm]
+$s>1$ &
+$P(c)=s\log D_b(c)+2(b^s-1)\zeta(s)|c|^s+o(|c|^s)$ &
+Repository predecessor \cite{FractionalRepo}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $D_b(c)=\sin(\pi bc)/(b\sin\pi c)$ is positive near zero.
+In the third row the analytic term must not be dropped: when $s>2$ it
+can dominate the displayed fractional term, and at even integer $s$
+coefficient cancellations are important. That row records the
+predecessor's statement, not a theorem newly reproved in this article.
+
+The atomic spectral picture distinguishes the first two rows.
+Below one, $\beta_s>1$ is a simple dominant eigenvalue with integrable
+dual density $H^{-s}$. At one, that density reaches its integrability
+threshold and a generalized eigenvector is required instead. The two
+central eigenvalues $\beta_s$ and $1$ coalesce, while the upper-right
+entry has the nonzero limit $2\log b$. Opening a phase creates a
+lower-left entry of size $(b-1)|c|$. Their product produces the
+quadratic equation $z^2\sim2(b-1)\log b\,|c|$.
+
+\subsection{Matching the singular coefficients}
+As $s\uparrow1$,
+\begin{equation}
+ (b-1)\pi s\tan(\pi s/2)\sim\frac{2(b-1)}{1-s}.
+ \label{eq:subcritical-divergence}
+\end{equation}
+The predecessor's coefficient has the corresponding pole from above:
+\begin{equation}
+ 2(b^s-1)\zeta(s)\sim\frac{2(b-1)}{s-1}
+ \qquad(s\downarrow1).
+ \label{eq:supercritical-divergence}
+\end{equation}
+These divergent fixed-exponent coefficients signal that those
+asymptotics cannot be uniform across the critical point.
+The crossover function has the consistent tails
+\begin{align}
+ r_+(u)&\sim\frac{2(b-1)}{u}&& (u\to+\infty),\\
+ r_+(u)&=-u\log b+\frac{2(b-1)}{-u}+O(|u|^{-3})
+ &&(u\to-\infty).
+ \label{eq:matching}
+\end{align}
+This is an algebraic consistency check between the formulas. It is not
+an interchange-of-limits theorem: \cref{thm:crossover} was proved only
+for bounded $u$. Establishing a uniform overlap region with $u\to\infty$
+would require additional remainder estimates.
+
+\subsection{Which part is universal?}
+Two constants have transparent origins. The factor $b-1$ counts the
+simple zeros that feed the atomic fixed-point branch when the mask is
+translated. The factor $2\log b$ is the nilpotent coupling in the
+critical Jordan chain. The subcritical constant $J_s$ is a local
+translation invariant independent of the slopes of those zeros.
+
+This does not establish universality for arbitrary masks: a different
+mask need not possess the coboundary \cref{eq:coboundary}, the same
+critical exponent, or a two-dimensional Jordan block. What the proof
+provides is a testable mechanism. If an analogous isolated Jordan chain,
+a sufficiently small perturbation remainder, and a nonzero lower-left
+response can be proved for another model, the same finite-dimensional
+calculation determines its leading splitting.
+
+\section{Reproducible numerical diagnostics}
+\label{sec:verification}
+
+\subsection{What the code does and does not verify}
+The accompanying \code{code/verify.py} has four roles. It checks explicit
+special-function identities at high precision; verifies the exact
+characteristic polynomial of the $2\times2$ generator with symbolic
+algebra; computes transfer-matrix collocation diagnostics; and tests the
+finite-size crossover by direct matrix iteration. Its actual output is
+included as \code{data/verification.json} and \code{data/run.log}.
+
+The collocation matrix uses a uniform periodic grid and piecewise-linear
+interpolation of inverse-branch evaluations. It is sparse and
+nonnegative. Leading eigenvalues are computed by ARPACK with a fixed
+starting vector, with residuals recorded. The main critical grid has
+$65\,536$ points. Subcritical rows with $|c|=10^{-5}$ use $262\,144$
+points because dividing a pressure difference by $|c|$ amplifies grid
+error substantially.
+
+\emph{These are diagnostics, not certified enclosures of the spectrum of
+an infinite-dimensional operator.} A small matrix residual certifies
+neither interpolation accuracy nor a limiting theorem. None of the
+analytic proofs depends on the output of this program.
+
+\subsection{Critical scaled pressure}
+The values in the third column below approximate
+$P_{b,1}(c)/\sqrt{|c|}$. The last column is the theorem's predicted limit.
+\begin{center}
+\small\input{data/critical_table.tex}
+\end{center}
+The approach to the limit is visibly slow, especially at larger base.
+This is compatible with the proved error but does not measure its
+implicit constant. The data are reported as computed, rather than
+extrapolated values presented as certified constants.
+
+\subsection{Subcritical linear response}
+For the binary base, the corresponding diagnostic is
+$(P_{2,s}(c)-(1-s)\log2)/|c|$:
+\begin{center}
+\small\input{data/subcritical_table.tex}
+\end{center}
+The $s=0.6$ row at the smallest phase slightly overshoots its limit;
+this can reflect finite-phase corrections and grid error. Near $s=1$
+the fixed-exponent coefficient is large, and the critical crossover
+makes convergence slower. These observations are precisely why the
+numerical data are not used as a substitute for the integral and
+perturbation proofs.
+
+\subsection{Identity checks and finite-size behavior}
+At 70-digit working precision, the run checked
+\cref{eq:atomic-family} at 120 combinations of base, exponent, and
+position, including points close to the endpoints. The maximum absolute
+residual was below $1.3\times10^{-67}$. The independent cutoff integral
+for \cref{eq:ell-one} differed from $2\log(2/\pi)$ by about
+$2.31\times10^{-15}$, consistent with its endpoint cutoff of $10^{-15}$.
+The beta/digamma representation of $J_s$ was checked at $s=0.6,0.75,0.9$;
+raw quadrature becomes less accurate near its integrability boundary,
+and the largest observed absolute discrepancy was about
+$3.18\times10^{-7}$. The exact symbolic identity checked was
+$\det(z\Id-J_b(u))=z^2+uLz-a_bd$.
+
+For $b=2$, $u=0$, and $\tau=1$, the finite-size limit in
+\cref{eq:critical-sinh} is approximately $0.3504791$.
+Using $c=1/n^2$, the computed values of
+$n^{-1}2^nM_{1,n}(1/n^2)$ at $n=50,100,200,400$ were approximately
+$0.3443066$, $0.3421737$, $0.3435866$, and $0.3458026$.
+The sequence need not approach its limit monotonically. The full output
+also contains detunings $u=-1,1$, pressure crossover checks at
+$u=-2,-1,0,1,2$, and mesh-doubling comparisons.
+
+A representative mesh comparison at phase $10^{-5}$ changes the
+computed pressure by a few $10^{-7}$. Such a change becomes a few
+hundredths after division by $|c|$. Therefore many displayed digits are
+useful for reproducing the computation but should not be interpreted as
+proven digits of the limiting continuum pressure.
+
+\subsection{Rebuilding the diagnostics}
+From the package root, a full run is
+\begin{verbatim}
+python -m pip install -r requirements.txt
+OPENBLAS_NUM_THREADS=1 python code/verify.py --full
+\end{verbatim}
+The second line is a POSIX shell example; on Windows set the environment
+variable using the shell's own syntax or omit it. The variable limits
+linear-algebra threading, not mathematical precision. Omitting
+\code{--full} runs a smaller diagnostic set. The script records library
+versions in its JSON output and regenerates the two numerical TeX tables.
+
+\section{A further-research agenda}
+\label{sec:questions}
+
+\begin{question}[The remaining subcritical interval]
+Does \cref{eq:subcritical} remain valid for $0<s\le1/2$?
+The translation integral is already known there from
+\cref{lem:translation}; the task is to estimate the spectral remainder
+using localization rather than its global operator norm. A useful first
+goal is an $o(|c|)$ bound for the second reduced-resolvent term. A
+counterexample would also be informative, since the present proof does
+not predict a transition at $s=1/2$.
+\end{question}
+
+\begin{question}[The next critical term]
+Determine the next term after $\kappa_b\sqrt{|c|}$. Is there a
+$|c|\log|c|$ correction, an ordinary $|c|$ correction, or both?
+This requires resolving the other central matrix entries beyond the
+coarse H\"older translation bound and retaining the second-order chart
+correction. An explicit coefficient would explain the slow approach in
+the critical numerical table.
+\end{question}
+
+\begin{question}[A uniform matching region]
+Extend \cref{thm:crossover} from bounded $u$ to a quantitatively
+controlled region $|u|\le U(t)$ with $U(t)\to\infty$.
+The factor $\exp(2ut\log t)$ in
+\cref{eq:window-lower-left} indicates one of the natural restrictions.
+A theorem of this kind would turn \cref{eq:matching} from a consistency
+check into a rigorous matched asymptotic expansion.
+\end{question}
+
+\begin{question}[Two-point endpoint regularity]
+Is $P_{b,1}$ actually $C^{0,1/2}$ on a whole neighborhood of zero?
+\Cref{cor:holder} only compares $P(c)$ with $P(0)$. Similarly, for fixed
+$1/2<s<1$, can one prove local Lipschitz regularity and smoothness away
+from the cusp, rather than only the one-sided first-order expansion?
+Control of translated singularities at two nearby nonzero phases is
+needed to answer these stronger questions.
+\end{question}
+
+\begin{question}[Nonatomic phases]
+Classify phase regularity near nonzero rational phases and near
+irrational phases. The fixed-point evaluation that exposes
+\cref{eq:lower-left-exact} is special to the atomic phase. Periodic
+orbits of zeros may lead to different finite-dimensional obstructions,
+while recurrent nonperiodic zero orbits may require a different
+functional setting.
+\end{question}
+
+\begin{question}[Beyond consecutive digital masks]
+Find hypotheses on a trigonometric mask that imply an isolated Jordan
+chain at a critical moment exponent. If its nilpotent coupling is $a$
+and the leading lower-left perturbation is $d|c|^\rho$, the finite
+matrix predicts a leading $\sqrt{ad}|c|^{\rho/2}$. The research task is
+to derive those hypotheses and prove the required spectral separation
+for actual masks, rather than infer it from the matrix alone.
+\end{question}
+
+\begin{question}[Long rescaled times and higher-order semigroups]
+Obtain error bounds in \cref{eq:operator-crossover} that remain useful
+for $\tau$ growing with $1/t$. Determine a next-order effective matrix
+and whether it produces a uniform correction to both the pressure and
+the finite-size moment. This would connect the compact-time sinh law to
+the single-eigenvalue regime quantitatively.
+\end{question}
+
+\begin{question}[Eigenfunctions, eigenmeasures, and equilibrium measures]
+The eigenprojection amplitudes diverge like $|c|^{-1/2}$, while their
+combination has a finite rescaled operator limit. Determine normalized
+weak limits and boundary layers of the individual left and right
+eigenvectors, and translate them into statements about equilibrium
+measures. The operator limit alone does not establish a variational
+classification of such measures.
+\end{question}
+
+\begin{question}[Certified spectral numerics]
+Replace the collocation diagnostics by explicit operator bounds and
+interval arithmetic. Useful deliverables would be rigorous enclosures
+for $P_{b,s}(c)$ at nonzero phases, certified constants in the error of
+\cref{eq:critical}, and mesh-independent upper and lower pressure
+bounds. Non-normality near the Jordan point makes residual-only
+certification especially inadequate.
+\end{question}
+
+\begin{question}[A staged Lean or Rocq formalization]
+Formalize first the digital-mask coboundary, the finite-dimensional
+Jordan algebra, the exact evaluation
+\cref{eq:lower-left-exact}, and the matrix exponential calculation.
+Then formalize the weighted quadrature estimates, bounded projections,
+and the resolvent compression lemma. Only after these analytic bridges
+are present should the pressure theorem be declared formally verified.
+This route fits ProveIt's existing separation between executable checks
+and proved semantic connections.
+\end{question}
+
+\section{Conclusion}
+The atomic phase is not merely a point where a fractional exponent
+formula needs a limiting interpretation. At the critical exponent the
+spectral geometry changes: a simple dominant branch and an atomic
+branch form a defective eigenvalue. The phase perturbation opens a
+coupling in the missing matrix direction, forcing a square-root
+splitting with the exact constant $\sqrt{2(b-1)\log b}$.
+
+The argument supplies more than a scalar asymptotic. It gives an explicit
+Jordan chain, a directly proved complementary gap, a two-parameter
+collision law, and an operator finite-size crossover. Below the critical
+exponent, a different but compatible calculation yields an explicit
+linear cusp for $1/2<s<1$. The remaining interval is reduced to a
+specific localized perturbation problem rather than hidden inside an
+unsupported extrapolation.
+
+\appendix
+\section{Proof-dependency and claim audit}
+\label{app:audit}
+The logical dependencies are as follows. The sampling inequality links
+integrals to cylinder pressure independently of any spectral claim.
+The special-function identity constructs the critical invariant plane.
+Weighted quadrature and a fixed-iterate H\"older estimate prove its
+complementary gap; no general Perron theorem is used to assume that gap.
+A Riesz-projection chart then reduces the small-phase problem to a
+matrix with a controlled quadratic remainder. The exact fixed-point
+response determines the missing entry. Only after a nonzero positive
+moment amplitude is proved is the leading eigenvalue identified with
+pressure.
+
+For the subcritical theorem, the order is separate: prove a simple
+atomic gap, identify its dual functional, evaluate a translated-zero
+integral, bound the operator remainder by $o(|c|)$, and then pass to
+pressure. The scalar first-order integral is not used as a substitute
+for the remainder estimate.
+
+\begin{center}
+\begin{tabular}{@{}p{.38\textwidth}p{.54\textwidth}@{}}
+\toprule
+\textbf{Potential failure mode} & \textbf{How it is excluded here}\\
+\midrule
+Confusing moment order and pressure order & $s=2q$ is fixed in
+\cref{eq:binary}; the critical order is $q=1/2$.\\[1.5mm]
+Using a normalized transfer operator & \Cref{eq:transfer,eq:moment}
+state the unnormalized operator and its exact integral factor.\\[1.5mm]
+Assuming a gap despite zeros of the weight & The gap is proved by
+weighted quadrature and a H\"older recurrence.\\[1.5mm]
+Losing the decisive perturbation coefficient & The compression lemma
+has an explicit norm-square error, and the lower-left entry is
+computed exactly.\\[1.5mm]
+Confusing spectral radius with pressure & A polynomial sampling bound
+and a nonzero positive moment amplitude supply the bridge.\\[1.5mm]
+Extrapolating the subcritical formula too far & The theorem is restricted
+to $s>1/2$, precisely where the norm-square error is $o(|c|)$.\\[1.5mm]
+Treating numerics as a proof & All infinite statements have analytic
+proofs; collocation is labeled diagnostic throughout.\\[1.5mm]
+Claiming full H\"older regularity from a pointwise law & The regularity
+corollary explicitly states only pointwise optimality at zero.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Reproduction and package contents}
+The package contains \code{article.tex}, its compiled
+\code{article.pdf}, the verification program, the actual numerical output,
+two generated numerical tables, a requirements file, a Makefile, and
+separate source and validation notes. No external paper or font file is
+redistributed. The document uses ordinary installed TeX packages,
+including Libertinus for typesetting.
+
+To rebuild the article without rerunning the diagnostics, execute
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The bibliography is embedded in the TeX source; no BibTeX download is
+needed. The source depends on the two included table files in
+\code{data/}. A full diagnostic rerun regenerates those tables before
+compilation. All new results in this package remain unrefereed and
+unformalized, regardless of the formal status of other ProveIt projects.
+
+\clearpage
+\phantomsection\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\bibitem{GKS}
+P.~Gohlke, M.~Kesseb\"ohmer, and T.~I.~Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+arXiv:2509.22109v1, 26 September 2025.
+\url{https://arxiv.org/abs/2509.22109}.
+The inspected version includes the atomic pressure calculation and
+Theorem~2.7 on order-two analyticity.
+
+\bibitem{GLS}
+P.~Gohlke, G.~Lamprinakis, and J.~Schmeling,
+\emph{On a family of singular potentials: Parameter dependence of
+thermodynamic characteristics}, arXiv:2603.19001v1, 19 March 2026.
+\url{https://arxiv.org/abs/2603.19001}.
+Theorems~2.2--2.3 and the following discussion motivate the regularity
+question addressed locally here.
+
+\bibitem{Repo}
+V.~Reshetnikov, \emph{ProveIt}, repository snapshot
+\nolinkurl{06bcc37a82383ce99cebfec18f958487a5b3c6d4},
+inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{IntegerRepo}
+\emph{Integer Pressure and a Missing Taylor Coefficient},
+research draft in ProveIt, September 2026.
+Repository-relative path:
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}.
+Unrefereed repository predecessor; no theorem from it is assumed in the
+new critical or subcritical proofs.
+
+\bibitem{FractionalRepo}
+\emph{Fractional Cusps at the Atomic Phase: Sharp noninteger regularity
+of Thue--Morse pressure and sharp relaxation for digital products in
+every base}, research draft prepared with ChatGPT for V.~Reshetnikov,
+29 September 2026.
+Repository-relative path:
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Fractional_Pressure/article.tex}.
+Inspected blob:
+\nolinkurl{83498d9ee7caa6f44b3a26b726cbb00c4b5a1a99}.
+This predecessor explicitly excludes critical and subcritical phase
+asymptotics.
+
+\bibitem{Kato}
+T.~Kato, \emph{Perturbation Theory for Linear Operators},
+Classics in Mathematics, Springer, 1995, reprint of the second edition.
+\url{https://doi.org/10.1007/978-3-642-66282-9}.
+
+\bibitem{DLMF}
+F.~W.~J. Olver et al., editors,
+\emph{NIST Digital Library of Mathematical Functions},
+\S5.5 (gamma and digamma reflection identities) and
+\S25.11 (Hurwitz zeta function), accessed 29 September 2026.
+\url{https://dlmf.nist.gov/5.5};
+\url{https://dlmf.nist.gov/25.11}.
+\end{thebibliography}
+\end{document}
