@@ -49,8 +49,11 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\repo}{\texttt{ProveIt}}
 \newcommand{\dd}{\mathrm d}
+\newcommand{\wtag}{\textup{[write]}}% text added when the report was written into ProveIt
+\newcommand{\rpath}[1]{\nolinkurl{#1}}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \noindent{\color{inkblue}\large RESEARCH REPORT}\par
@@ -95,7 +98,18 @@ not a Lean/Rocq formalization or a peer-reviewed publication. The results
 extend the inspected repository statements, but publication priority is not
 established. This report does not claim a new counterexample to the Jacobian
 conjecture or a classification of unrestricted Keller maps.
+
+\smallskip
+\noindent\wtag{} Batch~36, manuscript~01, placed in \texttt{1a1396d4d}: a
+report of ProveIt's research-report collection that continues the formal
+project \rpath{Algebra/JacobianConjecture}. AI-assisted, unrefereed, not
+formalized; labels carry the prefix \texttt{wkr:}. The weighted
+determinant identity and the collision mechanism are the project's own
+(Section~\ref{wkr:sub:project}); Gao's three-dimensional map has
+\emph{geometric} degree four (Section~\ref{wkr:sub:gao}). Provenance:
+Appendix~\ref{wkr:app:report}.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \begingroup
 \footnotesize
@@ -105,7 +119,7 @@ conjecture or a classification of unrestricted Keller maps.
 \newpage
 
 \section{Research question, provenance, and contribution}
-\label{sec:intro}
+\label{wkr:sec:intro}
 
 A useful research question should distinguish a structural theorem from a
 large but finite search. The Jacobian component of \repo\ provides a
@@ -128,14 +142,14 @@ The relevant files are the Jacobian project README, its research README, and
 in the bibliography \cite{repo-main,repo-research,repo-sparsity}.
 
 The repository's three-variable map can be written
-\begin{equation}\label{eq:original}
+\begin{equation}\label{wkr:eq:original}
 \begin{gathered}
 u=1+xy,\qquad h=u^2z+y^2(1+3u),\\
 F_0(x,y,z)=\bigl(uh,\ y+3xh,\ x(5-3u-x^2z)\bigr).
 \end{gathered}
 \end{equation}
 Its Jacobian determinant is $-2$, and
-\begin{equation}\label{eq:oldcollision}
+\begin{equation}\label{wkr:eq:oldcollision}
 F_0(-1,1,5)=F_0(0,-2,-16)=(0,-2,0).
 \end{equation}
 These identities, their formal verification, and their provenance are
@@ -153,18 +167,18 @@ identify the entire coefficient scheme as the dual numbers
 
 \subsection{What this article establishes}
 
-The main result, Theorem~\ref{thm:classification}, removes the ordinary
+The main result, Theorem~\ref{wkr:thm:classification}, removes the ordinary
 degree restriction from that structural class. It also handles constant
 $r$ and proves that the two one-term nonconstant cases are impossible. The
 proof forces the normalized nonconstant map outright, so it proves
 $q_{40}=0$ rather than imposing it.
 
-Theorem~\ref{thm:triangular} extends the result beyond affine $r$ by an
+Theorem~\ref{wkr:thm:triangular} extends the result beyond affine $r$ by an
 explicit triangular normal form. Its degree-spectrum corollary determines
 all possible maximum degrees in that larger class.
-Theorem~\ref{thm:plane} describes the reduced two-parameter closure and its
-invertible boundary. Theorem~\ref{thm:double} strengthens uniqueness in the
-fixed normalized degree-seven slice to an exact scheme presentation, and Theorem~\ref{thm:torusdouble} identifies the full
+Theorem~\ref{wkr:thm:plane} describes the reduced two-parameter closure and its
+invertible boundary. Theorem~\ref{wkr:thm:double} strengthens uniqueness in the
+fixed normalized degree-seven slice to an exact scheme presentation, and Theorem~\ref{wkr:thm:torusdouble} identifies the full
 scheme on the nonconstant-parameter open locus. These results connect
 three levels of information:
 \begin{center}
@@ -200,8 +214,74 @@ bibliographic review. Nothing in the proofs depends on accepting a new
 external claim about the general Jacobian problem: the particular map,
 its determinant, and its collisions are explicit.
 
+\subsection{What the project already contains}\label{wkr:sub:project}
+\wtag{} This subsection and the next were added when the manuscript was
+written into ProveIt. Two ingredients that the manuscript presents in its
+own words are already recorded in the project's research notes
+\cite{repo-research}, \rpath{Algebra/JacobianConjecture/Research/README.md},
+lines 188--224, at the pin and unchanged at the placement commit:
+\begin{itemize}
+\item the lift $F=(p(t,v)/x^2,\,q(t,v)/x,\,x\,r(t,v))$ with $t=xy$,
+$v=x^2z$, the polynomiality conditions of \eqref{wkr:eq:polynomiality}
+in their general form, \emph{the same determinant identity}
+\eqref{wkr:eq:J} with the same chain-rule proof in the localization at
+$x$ (Proposition~\ref{wkr:prop:jacobian}), and the normalization
+\eqref{wkr:eq:normalization} with determinant $-1$ (lines 188--208);
+\item the collision mechanism: with $\alpha=[t^2]p$ (the notes write $a$,
+which is a family parameter here), $F(0,y,z)=(\alpha y^2+z,y,0)$ and
+$F(1,t_0,v_0)=F(0,q(t_0,v_0),p(t_0,v_0)-\alpha q(t_0,v_0)^2)$ whenever
+$r(t_0,v_0)=0$ (lines 210--224). The collision \eqref{wkr:eq:newcollision}
+is this mechanism at $t_0=0$, $v_0=-1/\gamma$.
+\end{itemize}
+The manuscript cites the research notes for its baseline but not at these
+two points; they are credited here. What is new relative to the project is
+the all-degree classification and everything after it: the project's
+sparsity certificate (\rpath{verify_equivariant_sparsity.py}, described in
+lines 240--248 of the notes) covers ordinary degree at most seven with $q_{40}=0$ left as
+the ``remaining branch'', and says it is ``deliberately not advertised as a
+global sixteen-monomial theorem''. Corollary~\ref{wkr:cor:support} proves
+$q_{40}=0$ and the support profile in all degrees, inside the class only.
+For constant $r$ the notes invoke Moh's plane theorem through degree~100
+(lines 232--238), in a class that allows $v^2$ terms; case~\ref{wkr:case:tame}
+proves tameness in all degrees without Moh, but only for $p,q$ affine in
+$v$, so the two statements sit side by side.
+
+\emph{Formal status.} The project's Lean and Rocq/Coq developments
+formalize the map $F_0$ (Lean \texttt{counterexample},
+\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean},
+lines 95--101), its determinant $-2$ (\texttt{jacobianDet\_counterexample}),
+the collision \eqref{wkr:eq:oldcollision} (\texttt{collision}), the
+weight-$(-1,1,2)$ torus action (\texttt{counterexample\_scaling},
+\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Scaling.lean}), the mirror symmetry and the refutation of the
+three-dimensional conjecture; the Coq development proves the
+corresponding statements. None of the weighted determinant identity,
+the normalization \eqref{wkr:eq:originalnormalization}, the family
+$F_{a,b}$ or any theorem of this report is formalized.
+
+\subsection{Gao's three-dimensional map has geometric degree four}\label{wkr:sub:gao}
+\wtag{} The ``three-dimensional map of degree four'' of \cite{gao} cited
+above and in Section~\ref{wkr:sec:future} is Gao's map $G$ of his
+Theorem~3.5, and its \emph{degree four is the geometric degree}, the
+number of preimages of a generic point, the sense of ``degree'' defined
+in his abstract. Its three components have ordinary degrees $4$, $11$ and
+$12$ and its Jacobian determinant is $2$: this was read from his
+Section~3.5 at the write and checked there with SymPy~1.14.0 from his
+printed formulas (component degrees $4,11,12$ and $\det J_G=2$ as
+polynomial identities). So $G$ is \emph{not} a three-dimensional Keller
+map of lower ordinary degree than seven. The sentence ``our forced degree
+seven is compatible with examples outside this class of lower degree''
+remains true as a compatibility statement, but $G$ is not such an example;
+for Alp\"oge's map Gao's Theorem~3.3 gives geometric degree three. The
+project's framing is unaffected: its notes say that the finite searches
+``do not prove that ordinary degree seven or sixteen monomials is globally
+minimal in dimension three'' and that a simpler three-variable map would
+have degree at least four and, below seven, would break the weighted
+symmetry (\rpath{Algebra/JacobianConjecture/Research/README.md}, lines
+12--15 and 262--269). Whether such a map exists is not settled by any
+source cited here.
+
 \section{Weighted coordinates and the exact determinant reduction}
-\label{sec:coordinates}
+\label{wkr:sec:coordinates}
 
 Throughout the classification, $K$ is an arbitrary field of characteristic
 zero. All polynomial equalities are formal equalities over $K$.
@@ -220,12 +300,12 @@ respectively.
 \subsection{Invariant numerators}
 
 Set
-\begin{equation}\label{eq:invariants}
+\begin{equation}\label{wkr:eq:invariants}
 t=xy,\qquad v=x^2z.
 \end{equation}
 Both are invariant under the source action. Every equivariant polynomial
 map has a unique expression in the localization at $x$ of the form
-\begin{equation}\label{eq:lift}
+\begin{equation}\label{wkr:eq:lift}
 F=\mathcal L(p,q,r)
  :=\left(\frac{p(t,v)}{x^2},\frac{q(t,v)}x,xr(t,v)\right),
 \qquad p,q,r\in K[t,v].
@@ -240,16 +320,16 @@ For general numerators, polynomiality requires that every monomial $t^iv^j$
 in $p$ satisfy $i+2j\ge2$, and every such monomial in $q$ satisfy
 $i+2j\ge1$. In the class studied here, $\deg_vp,\deg_vq\le1$, so these
 conditions reduce exactly to
-\begin{equation}\label{eq:polynomiality}
+\begin{equation}\label{wkr:eq:polynomiality}
 p(0,0)=p_t(0,0)=q(0,0)=0.
 \end{equation}
 There is no additional restriction on $r$ for polynomiality. The apparent
-fractions in \eqref{eq:lift} are therefore polynomial expressions whenever
-\eqref{eq:polynomiality} holds in our class.
+fractions in \eqref{wkr:eq:lift} are therefore polynomial expressions whenever
+\eqref{wkr:eq:polynomiality} holds in our class.
 
-\begin{proposition}[Weighted determinant identity]\label{prop:jacobian}
-For a polynomial lift \eqref{eq:lift},
-\begin{equation}\label{eq:J}
+\begin{proposition}[Weighted determinant identity]\label{wkr:prop:jacobian}
+For a polynomial lift \eqref{wkr:eq:lift},
+\begin{equation}\label{wkr:eq:J}
 \det J_F=\J(p,q,r):=
 \det\begin{pmatrix}
 -2p&p_t&p_v\\
@@ -269,21 +349,23 @@ $(x^{-2}p,x^{-1}q,xr)$ with respect to $(x,t,v)$ has rows
 (r,xr_t,xr_v).
 \]
 Factoring $x^{-2},x^{-1},x$ from its rows and $x^{-1}$ from its first column
-leaves the matrix in \eqref{eq:J} and contributes $x^{-3}$. The chain rule
+leaves the matrix in \eqref{wkr:eq:J} and contributes $x^{-3}$. The chain rule
 cancels this with $x^3$. Localization is injective on $K[x,y,z]$, so the
 identity holds as a polynomial identity, including on $x=0$.
 \end{proof}
+\wtag{} This identity, with this proof, and the normalization below are
+already in the project's research notes (Section~\ref{wkr:sub:project}).
 
 \subsection{Normalization is exhaustive}
 
-Suppose that \eqref{eq:polynomiality} holds and $\J$ is a nonzero constant.
+Suppose that \eqref{wkr:eq:polynomiality} holds and $\J$ is a nonzero constant.
 Evaluating at $(t,v)=(0,0)$ gives
-\begin{equation}\label{eq:originJ}
+\begin{equation}\label{wkr:eq:originJ}
 \J(0,0)=-p_v(0,0)q_t(0,0)r(0,0).
 \end{equation}
 All three factors are therefore nonzero. Dividing the three target
 coordinates by these factors normalizes
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{wkr:eq:normalization}
 p_v(0,0)=q_t(0,0)=r(0,0)=1.
 \end{equation}
 For a Keller map, the resulting constant determinant is $-1$.
@@ -291,45 +373,45 @@ This operation preserves the structural restrictions on $p,q,r$, ordinary
 degrees, support sizes, and invertibility or noninvertibility. Thus a
 classification in this normalization classifies the unnormalized maps up
 to independent nonzero target scalings. We can write
-\begin{equation}\label{eq:r}
+\begin{equation}\label{wkr:eq:r}
 r=1+\beta t+\gamma v.
 \end{equation}
 The word \emph{normalized} below always includes
-\eqref{eq:polynomiality} and \eqref{eq:normalization}; it does not implicitly
+\eqref{wkr:eq:polynomiality} and \eqref{wkr:eq:normalization}; it does not implicitly
 assume $\beta=\gamma=1$.
 
 \section{The complete all-degree classification}
-\label{sec:main}
+\label{wkr:sec:main}
 
 Define the following polynomials over $\Q[a,b,t,v]$:
-\begin{subequations}\label{eq:family}
+\begin{subequations}\label{wkr:eq:family}
 \begin{align}
 p_{a,b}={}&v-\frac{8a}{9}t^2-2ab\,tv
  +\frac{28a^2b}{27}t^3+\frac{4a^2b^2}{3}t^2v \notag\\
  &\hspace{1.2em}-\frac{8a^3b^2}{27}t^4-\frac{8a^3b^3}{27}t^3v,
- \label{eq:familyp}\\
+ \label{wkr:eq:familyp}\\
 q_{a,b}={}&t+9bv-8ab\,t^2-12ab^2tv
- +4a^2b^2t^3+4a^2b^3t^2v,\label{eq:familyq}\\
-r_{a,b}={}&1+ab\,t+ab^2v.\label{eq:familyr}
+ +4a^2b^2t^3+4a^2b^3t^2v,\label{wkr:eq:familyq}\\
+r_{a,b}={}&1+ab\,t+ab^2v.\label{wkr:eq:familyr}
 \end{align}
 \end{subequations}
 Let $F_{a,b}=\mathcal L(p_{a,b},q_{a,b},r_{a,b})$.
 
-\begin{theorem}[All-degree classification]\label{thm:classification}
+\begin{theorem}[All-degree classification]\label{wkr:thm:classification}
 Let $p,q,r\in K[t,v]$ satisfy $\deg_vp,\deg_vq\le1$, let $r$ be affine in
 $(t,v)$, and suppose that their lift is polynomial and normalized as in
-\eqref{eq:normalization}. Then $\J(p,q,r)=-1$ if and only if exactly one
+\eqref{wkr:eq:normalization}. Then $\J(p,q,r)=-1$ if and only if exactly one
 of the following descriptions applies.
 \begin{enumerate}[label=\textup{(\Alph*)}]
-\item\label{case:tame} $r=1$ and, for unique $\lambda\in K$ and
+\item\label{wkr:case:tame} $r=1$ and, for unique $\lambda\in K$ and
 $B\in t^2K[t]$,
-\begin{equation}\label{eq:tamepq}
+\begin{equation}\label{wkr:eq:tamepq}
 p=v+B(t),\qquad q=t+\lambda\bigl(v+B(t)\bigr).
 \end{equation}
 Its lift is a tame polynomial automorphism.
-\item\label{case:nonconstant} $r$ is nonconstant, both $\beta$ and $\gamma$
-in \eqref{eq:r} are nonzero, and
-\begin{equation}\label{eq:abrecover}
+\item\label{wkr:case:nonconstant} $r$ is nonconstant, both $\beta$ and $\gamma$
+in \eqref{wkr:eq:r} are nonzero, and
+\begin{equation}\label{wkr:eq:abrecover}
 (p,q,r)=(p_{a,b},q_{a,b},r_{a,b}),\qquad
  a=\frac{\beta^2}{\gamma},\quad b=\frac{\gamma}{\beta}.
 \end{equation}
@@ -340,11 +422,11 @@ In particular, there are no normalized Keller maps in this class with
 exactly one of $\beta,\gamma$ nonzero. No ordinary degree bound is assumed.
 \end{theorem}
 
-We prove the classification in Sections~\ref{sec:lemmas}--\ref{sec:proof}.
+We prove the classification in Sections~\ref{wkr:sec:lemmas}--\ref{wkr:sec:proof}.
 The invertibility, collisions, and support assertions are proved in
-Section~\ref{sec:consequences}. The forward direction is the substantive
+Section~\ref{wkr:sec:consequences}. The forward direction is the substantive
 rigidity statement; the reverse direction follows either from the formulas
-there or by substitution into \eqref{eq:J}.
+there or by substitution into \eqref{wkr:eq:J}.
 
 \subsection{The normalized representative}
 
@@ -354,8 +436,8 @@ p_*&=v-\frac89t^2-2tv+\frac{28}{27}t^3
        +\frac43t^2v-\frac8{27}t^4-\frac8{27}t^3v,\\
 q_*&=t+9v-8t^2-12tv+4t^3+4t^2v,\qquad r_*=1+t+v.
 \end{align*}
-It is exactly a normalization of \eqref{eq:original}:
-\begin{equation}\label{eq:originalnormalization}
+It is exactly a normalization of \eqref{wkr:eq:original}:
+\begin{equation}\label{wkr:eq:originalnormalization}
 F_*=\diag\left(-\frac12,-\frac32,\frac12\right)
 \circ F_0\circ\diag\left(1,-\frac23,-2\right).
 \end{equation}
@@ -363,15 +445,15 @@ Thus the nonconstant part of the classification identifies a known
 representative rather than producing an unrelated counterexample.
 
 \section{One-variable rigidity lemmas}
-\label{sec:lemmas}
+\label{wkr:sec:lemmas}
 
 The decisive step is that constant weighted Wronskians control degree even
 when arbitrarily high-degree polynomials are allowed initially.
 
 \begin{lemma}[A degree bound from a constant weighted Wronskian]
-\label{lem:wronskian}
+\label{wkr:lem:wronskian}
 Let $B,D\in K[t]$ satisfy
-\begin{equation}\label{eq:wronskian}
+\begin{equation}\label{wkr:eq:wronskian}
 DB'-2BD'=\kappa,\qquad \kappa\in K^\times.
 \end{equation}
 Then $D\ne0$, $\deg D\le1$, and $\deg B\le2$. More precisely, either $D$
@@ -380,7 +462,7 @@ $B=\eta D^2+\mu$ for some $\eta,\mu\in K$, with
 $-2\mu D'=\kappa$.
 \end{lemma}
 \begin{proof}
-Neither $B$ nor $D$ can be zero. If $D$ is constant, \eqref{eq:wronskian}
+Neither $B$ nor $D$ can be zero. If $D$ is constant, \eqref{wkr:eq:wronskian}
 gives $B'=\kappa/D$, so $B$ has degree one.
 
 Now put $n=\deg D\ge1$ and $m=\deg B$. Unless $m=2n$, the leading term
@@ -388,7 +470,7 @@ on the left has degree $m+n-1$ and nonzero coefficient proportional to
 $m-2n$. This uses characteristic zero. If $m>2n$, it contradicts the
 constant right-hand side. If $m=2n$, subtract from $B$ the unique scalar
 multiple of $D^2$ that cancels its leading coefficient. This changes
-neither side of \eqref{eq:wronskian}. The resulting polynomial $B_0$ is
+neither side of \eqref{wkr:eq:wronskian}. The resulting polynomial $B_0$ is
 nonzero and has degree $m_0<2n$. If initially $m<2n$, just take $B_0=B$.
 
 The leading term calculation for $B_0$ now gives $m_0+n-1=0$. As
@@ -396,14 +478,14 @@ $m_0\ge0$ and $n\ge1$, we obtain $n=1$ and $m_0=0$. Hence
 $B=\eta D^2+\mu$, and substitution gives $-2\mu D'=\kappa$.
 \end{proof}
 
-\begin{lemma}[A cubic--square relation]\label{lem:powers}
+\begin{lemma}[A cubic--square relation]\label{wkr:lem:powers}
 Suppose $A,C\in K[t]$ are nonzero and
-\begin{equation}\label{eq:powers}
+\begin{equation}\label{wkr:eq:powers}
 2CA'-3AC'=0,\qquad A(0)=1.
 \end{equation}
 Then there are unique $E\in K[t]$ with $E(0)=1$ and $c\in K^\times$ such
 that
-\begin{equation}\label{eq:EC}
+\begin{equation}\label{wkr:eq:EC}
 A=E^3,\qquad C=cE^2.
 \end{equation}
 \end{lemma}
@@ -424,23 +506,23 @@ No extraction of a scalar root or extension of $K$ is necessary.
 Uniqueness follows from the factorization and the value at zero.
 \end{proof}
 
-\begin{lemma}[The remaining common factor is linear]\label{lem:Edegree}
+\begin{lemma}[The remaining common factor is linear]\label{wkr:lem:Edegree}
 Suppose that $A(0)=1$, $B(0)=-1$, and
 \begin{align}
-DB'-2BD'&=-1,\label{eq:E0}\\
-DA'+2CB'-3AD'-2BC'&=0,\label{eq:E1}\\
-2CA'-3AC'&=0.\label{eq:E2}
+DB'-2BD'&=-1,\label{wkr:eq:E0}\\
+DA'+2CB'-3AD'-2BC'&=0,\label{wkr:eq:E1}\\
+2CA'-3AC'&=0.\label{wkr:eq:E2}
 \end{align}
-If $C\ne0$, then in \eqref{eq:EC} the polynomial $E$ has degree at most
+If $C\ne0$, then in \eqref{wkr:eq:EC} the polynomial $E$ has degree at most
 one.
 \end{lemma}
 \begin{proof}
-Lemma~\ref{lem:wronskian} bounds $\deg D\le1$ and $\deg B\le2$.
-Lemma~\ref{lem:powers} gives $A=E^3$, $C=cE^2$. Suppose $m=\deg E\ge2$.
+Lemma~\ref{wkr:lem:wronskian} bounds $\deg D\le1$ and $\deg B\le2$.
+Lemma~\ref{wkr:lem:powers} gives $A=E^3$, $C=cE^2$. Suppose $m=\deg E\ge2$.
 
 If $D$ has degree one, the leading coefficient of $DA'-3AD'$ in degree
 $3m$ is $3(m-1)$ times the leading coefficient of $D$ times the cube of
-that of $E$. It is nonzero. The other part $2CB'-2BC'$ of \eqref{eq:E1}
+that of $E$. It is nonzero. The other part $2CB'-2BC'$ of \eqref{wkr:eq:E1}
 has degree at most $2m+1<3m$, a contradiction.
 
 If $D$ is constant, it is nonzero and $B$ has degree one. The term $DA'$
@@ -456,12 +538,12 @@ arguments and to the assertion about rational functions with zero derivative.
 \end{remark}
 
 \section{Proof of the classification, including exceptional cases}
-\label{sec:proof}
+\label{wkr:sec:proof}
 
 \subsection{\texorpdfstring{The case $\gamma\ne0$: a moving coordinate}{The case gamma nonzero: a moving coordinate}}
 
 First reduce $r=1+\beta t+\gamma v$ to coefficient one on $v$. Replace
-\begin{equation}\label{eq:gammachange}
+\begin{equation}\label{wkr:eq:gammachange}
 \widetilde p(t,v)=\gamma p(t,v/\gamma),\quad
 \widetilde q(t,v)=q(t,v/\gamma),\quad
 \widetilde r(t,v)=r(t,v/\gamma).
@@ -470,75 +552,75 @@ The determinant and normalization are unchanged, while
 $\widetilde r=1+\beta t+v$. We temporarily omit the tildes.
 
 Set $s=1+\beta t+v$ and write uniquely
-\begin{equation}\label{eq:ABCD}
+\begin{equation}\label{wkr:eq:ABCD}
 p=A(t)s+B(t),\qquad q=C(t)s+D(t),\qquad r=s.
 \end{equation}
-Substitution into \eqref{eq:J} gives
-\begin{equation}\label{eq:threeidentities}
+Substitution into \eqref{wkr:eq:J} gives
+\begin{equation}\label{wkr:eq:threeidentities}
 \J=E_0+E_1s+E_2s^2,
 \end{equation}
 where the expressions $E_0,E_1,E_2$ are the left sides of
-\eqref{eq:E0}--\eqref{eq:E2}. For clarity, differentiation at fixed $v$
+\eqref{wkr:eq:E0}--\eqref{wkr:eq:E2}. For clarity, differentiation at fixed $v$
 gives $p_t=A's+A\beta+B'$, $q_t=C's+C\beta+D'$, and $r_t=\beta$.
 Expanding the determinant cancels the $\beta$ terms and yields
-\eqref{eq:threeidentities}. Since $(t,s)$ are independent polynomial
+\eqref{wkr:eq:threeidentities}. Since $(t,s)$ are independent polynomial
 coordinates, the Keller equation is exactly
-\eqref{eq:E0}--\eqref{eq:E2}.
+\eqref{wkr:eq:E0}--\eqref{wkr:eq:E2}.
 
 The boundary conditions become
-\begin{equation}\label{eq:boundaryABCD}
+\begin{equation}\label{wkr:eq:boundaryABCD}
 \begin{gathered}
 A(0)=1,\quad B(0)=-1,\quad A'(0)+\beta+B'(0)=0,\\
 C(0)+D(0)=0,\qquad C'(0)+\beta C(0)+D'(0)=1.
 \end{gathered}
 \end{equation}
 We must not divide by $C$ before excluding $C=0$. If $C$ were zero, the
-fourth condition would give $D(0)=0$. Equation~\eqref{eq:E0} at zero would
-then give $D'(0)=-1/2$, while \eqref{eq:E1} at zero would give
+fourth condition would give $D(0)=0$. Equation~\eqref{wkr:eq:E0} at zero would
+then give $D'(0)=-1/2$, while \eqref{wkr:eq:E1} at zero would give
 $-3D'(0)=0$. This is impossible.
 
 The rigidity lemmas now apply. Write
-\begin{equation}\label{eq:linearforms}
+\begin{equation}\label{wkr:eq:linearforms}
 \begin{gathered}
 E=1+kt,\quad A=E^3,\quad C=cE^2,\qquad c\ne0,\\
 D=dt-c,\qquad B=-1+b_1t+b_2t^2.
 \end{gathered}
 \end{equation}
-The first derivative condition in \eqref{eq:boundaryABCD} gives
-\begin{equation}\label{eq:b1}
+The first derivative condition in \eqref{wkr:eq:boundaryABCD} gives
+\begin{equation}\label{wkr:eq:b1}
 b_1=-\beta-3k.
 \end{equation}
-After dividing \eqref{eq:E1} by the nonzero polynomial $E$, it reads
-\begin{equation}\label{eq:keylinear}
+After dividing \eqref{wkr:eq:E1} by the nonzero polynomial $E$, it reads
+\begin{equation}\label{wkr:eq:keylinear}
 2c(EB'-2kB)=3(kc+d)E.
 \end{equation}
-Its constant and linear coefficients, together with \eqref{eq:b1}, give
-\begin{equation}\label{eq:bd}
+Its constant and linear coefficients, together with \eqref{wkr:eq:b1}, give
+\begin{equation}\label{wkr:eq:bd}
 b_2=-\beta k-2k^2,\qquad
 \frac dc=-\frac{2\beta+5k}{3}.
 \end{equation}
-The final condition in \eqref{eq:boundaryABCD} is
+The final condition in \eqref{wkr:eq:boundaryABCD} is
 $c(\beta+2k)+d=1$, which therefore simplifies to
-\begin{equation}\label{eq:ck}
+\begin{equation}\label{wkr:eq:ck}
 c(\beta+k)=3.
 \end{equation}
-The coefficient of $t$ in \eqref{eq:E0} is $-db_1-2cb_2$. Its vanishing,
-using \eqref{eq:b1} and \eqref{eq:bd}, is
+The coefficient of $t$ in \eqref{wkr:eq:E0} is $-db_1-2cb_2$. Its vanishing,
+using \eqref{wkr:eq:b1} and \eqref{wkr:eq:bd}, is
 \[
 \frac c3(\beta+k)(2\beta+3k)=0.
 \]
-Equation~\eqref{eq:ck} permits cancellation of the first factors. Hence
-\begin{equation}\label{eq:endpoint}
+Equation~\eqref{wkr:eq:ck} permits cancellation of the first factors. Hence
+\begin{equation}\label{wkr:eq:endpoint}
 k=-\frac{2\beta}{3},\qquad
 \beta\ne0,\qquad c=\frac9\beta,\qquad d=4,
 \qquad b_1=\beta,\qquad b_2=-\frac{2\beta^2}{9}.
 \end{equation}
-The remaining constant coefficient of \eqref{eq:E0} is indeed $-1$:
+The remaining constant coefficient of \eqref{wkr:eq:E0} is indeed $-1$:
 $-cb_1+2d=-9+8=-1$. All three equations hold for these values. We have proved
 uniqueness and existence, including the exclusion of $\beta=0$.
 
-More compactly, before undoing \eqref{eq:gammachange}, the answer is
-\begin{equation}\label{eq:compactendpoint}
+More compactly, before undoing \eqref{wkr:eq:gammachange}, the answer is
+\begin{equation}\label{wkr:eq:compactendpoint}
 \begin{gathered}
 E=1-\frac{2\beta}{3}t,\qquad s=1+\beta t+v,\\
 p=E^3s-1+\beta t-\frac{2\beta^2}{9}t^2,\qquad
@@ -546,27 +628,27 @@ q=\frac9\beta E^2s+4t-\frac9\beta.
 \end{gathered}
 \end{equation}
 Replace $v$ by $\gamma v$ and divide $p$ by $\gamma$. Expansion yields
-\eqref{eq:family} with $a=\beta^2/\gamma$ and $b=\gamma/\beta$.
+\eqref{wkr:eq:family} with $a=\beta^2/\gamma$ and $b=\gamma/\beta$.
 This proves the nonconstant branch whenever $\gamma\ne0$.
 
 \subsection{\texorpdfstring{The case $\gamma=0$, $\beta\ne0$: no solutions}{The case gamma zero, beta nonzero: no solutions}}
 
 Write $p=A(t)v+B(t)$, $q=C(t)v+D(t)$, and $r=1+\beta t$. The normalization
 implies $A(0)=1$ and $B(0)=B'(0)=D(0)=0$. The coefficient of $v$ in
-\eqref{eq:J} is
-\begin{equation}\label{eq:gamma0v}
+\eqref{wkr:eq:J} is
+\begin{equation}\label{wkr:eq:gamma0v}
 \beta AC+r(A'C-AC')=0.
 \end{equation}
 If $C\ne0$, this says that $(rA/C)'=0$, so $C=\lambda rA$ for some
 $\lambda\in K^\times$. When $C=0$, the same expression holds with
 $\lambda=0$. The constant coefficient of the determinant then becomes
-\begin{equation}\label{eq:gamma0const}
+\begin{equation}\label{wkr:eq:gamma0const}
 A\left(\lambda(r^2B)'-(rD)'\right)=-1.
 \end{equation}
 A product of two polynomials is a nonzero constant only when both are
-constants. Thus $A=1$. Integrating \eqref{eq:gamma0const} and using
+constants. Thus $A=1$. Integrating \eqref{wkr:eq:gamma0const} and using
 $B(0)=D(0)=0$ gives
-\begin{equation}\label{eq:impossible}
+\begin{equation}\label{wkr:eq:impossible}
 \lambda r^2B-rD=-t.
 \end{equation}
 Evaluate at $t=-1/\beta$. The left side is zero and the right side is
@@ -582,27 +664,27 @@ A(\lambda B'-D')=-1.
 \]
 Consequently $A=1$ and $D=t+\lambda B$, using $B(0)=D(0)=0$.
 Polynomiality and normalization give $B(0)=B'(0)=0$, hence $B\in t^2K[t]$.
-This is precisely \eqref{eq:tamepq}. Conversely, these formulas give
+This is precisely \eqref{wkr:eq:tamepq}. Conversely, these formulas give
 $\J=-1$ directly. Together with the preceding two cases, this completes
-the algebraic classification in Theorem~\ref{thm:classification}.
+the algebraic classification in Theorem~\ref{wkr:thm:classification}.
 
 \section{Invertibility, diagonal equivalence, and sharp support}
-\label{sec:consequences}
+\label{wkr:sec:consequences}
 
 \subsection{An inverse for every constant-third-numerator map}
 
-Write $B(t)=t^2H(t)$. The lift of \eqref{eq:tamepq} is
-\begin{equation}\label{eq:tameF}
+Write $B(t)=t^2H(t)$. The lift of \eqref{wkr:eq:tamepq} is
+\begin{equation}\label{wkr:eq:tameF}
 F(x,y,z)=\bigl(P,\ y+\lambda xP,\ x\bigr),\qquad
 P=z+y^2H(xy).
 \end{equation}
 For output coordinates $(U,V,W)$, define
-\begin{equation}\label{eq:tameinverse}
+\begin{equation}\label{wkr:eq:tameinverse}
  x=W,\qquad y=V-\lambda WU,\qquad
  z=U-(V-\lambda WU)^2H\bigl(W(V-\lambda WU)\bigr).
 \end{equation}
 Substitution in both directions is immediate from $P=U$. This proves
-polynomial invertibility. More precisely, \eqref{eq:tameF} is the
+polynomial invertibility. More precisely, \eqref{wkr:eq:tameF} is the
 composition of the elementary shear
 $z\mapsto z+y^2H(xy)$, the elementary shear $y\mapsto y+\lambda xz$ in the
 updated coordinates, and the coordinate permutation
@@ -611,8 +693,8 @@ $\deg H$: arbitrarily large degrees occur on the invertible branch.
 
 \subsection{Every nonconstant map is in the same diagonal orbit}
 
-For $a,b\ne0$, inspection of \eqref{eq:family} gives
-\begin{equation}\label{eq:diagonal}
+For $a,b\ne0$, inspection of \eqref{wkr:eq:family} gives
+\begin{equation}\label{wkr:eq:diagonal}
 F_{a,b}=\diag\bigl((ab^2)^{-1},(ab)^{-1},1\bigr)
 \circ F_*\circ\diag(1,ab,ab^2).
 \end{equation}
@@ -620,20 +702,20 @@ The product of the two diagonal determinants is one, consistently with
 $\det J_{F_{a,b}}=-1$. Thus there are two parameters before taking this
 source--target equivalence, and no parameter after taking it. The scalar
 parameters are uniquely recoverable from either $r$ or two coefficients:
-\begin{equation}\label{eq:coeffrecover}
+\begin{equation}\label{wkr:eq:coeffrecover}
 a=-\frac98\coeff{t^2}{p},\qquad
 b=\frac19\coeff{v}{q}.
 \end{equation}
 
-\begin{corollary}[Sharp all-degree support rigidity]\label{cor:support}
-Within the class of Theorem~\ref{thm:classification}, every noninvertible
+\begin{corollary}[Sharp all-degree support rigidity]\label{wkr:cor:support}
+Within the class of Theorem~\ref{wkr:thm:classification}, every noninvertible
 map has ordinary maximum degree seven and exactly sixteen expanded
 monomials. After ordering coordinates by their prescribed weights, its
 degree profile is $(7,6,4)$ and its support profile is $(7,6,3)$.
 \end{corollary}
 \begin{proof}
-Only branch~\ref{case:nonconstant} can be noninvertible. For $a,b\ne0$,
-all coefficients displayed in \eqref{eq:family} are nonzero. Different
+Only branch~\ref{wkr:case:nonconstant} can be noninvertible. For $a,b\ne0$,
+all coefficients displayed in \eqref{wkr:eq:family} are nonzero. Different
 monomials in a numerator lift to different monomials. The degree of a lifted
 $t^iv^j$ is $2i+3j-2$ in the first coordinate, $2i+3j-1$ in the second,
 and $2i+3j+1$ in the third. The asserted profiles follow. Noninjectivity of
@@ -649,12 +731,12 @@ statement about minimum degree or support outside the class.
 
 Let $\gamma=ab^2$ and $\ell=9b$. Direct evaluation on the plane $x=0$
 gives
-\begin{equation}\label{eq:xzero}
+\begin{equation}\label{wkr:eq:xzero}
 F_{a,b}(0,y,z)=\left(z-\frac{8a}{9}y^2,y,0\right).
 \end{equation}
 At $t=0$, the numerators simplify to $p=v$, $q=\ell v$, and
 $r=1+\gamma v$. Therefore
-\begin{equation}\label{eq:newcollision}
+\begin{equation}\label{wkr:eq:newcollision}
 F_{a,b}\left(1,0,-\frac1\gamma\right)
 =F_{a,b}\left(0,-\frac\ell\gamma,\frac{71}\gamma\right)
 =\left(-\frac1\gamma,-\frac\ell\gamma,0\right).
@@ -669,7 +751,7 @@ without passing to an algebraic closure. It also gives a rational
 certificate when $a,b\in\Q^\times$.
 
 Equivariance propagates this to every $\rho\in K^\times$:
-\begin{equation}\label{eq:collisionfamily}
+\begin{equation}\label{wkr:eq:collisionfamily}
 \begin{aligned}
 F_{a,b}\left(\rho,0,-\frac1{\gamma\rho^2}\right)
 &=F_{a,b}\left(0,-\frac\ell{\gamma\rho},
@@ -680,6 +762,11 @@ F_{a,b}\left(\rho,0,-\frac1{\gamma\rho^2}\right)
 These are explicit certificates in the coordinates of this report. They
 are consequences of the classified family, not a claim that the collision
 mechanism of the original map was unknown.
+\wtag{} The mechanism is the project's
+(\rpath{Algebra/JacobianConjecture/Research/README.md}, lines 210--224):
+\eqref{wkr:eq:newcollision} is its case $t_0=0$, $v_0=-1/\gamma$, and the
+second point $(0,q,p-\alpha q^2)$ with $\alpha=[t^2]p_{a,b}=-8a/9$ (the
+notes' $a$) is the one displayed. For $a=b=1$ this was checked at the write by exact evaluation.
 
 \begin{example}[The normalized rational witness]
 For $a=b=1$, the points $(1,0,-1)$ and $(0,-9,71)$ have common image
@@ -689,17 +776,17 @@ are genuinely different conditions in the displayed family.
 \end{example}
 
 \subsection{A larger class: arbitrary dependence on the first invariant}
-\label{sec:triangular}
+\label{wkr:sec:triangular}
 
 The affine restriction on $r$ can be relaxed substantially without changing
 its essential normal form. The relevant source automorphisms are
-\begin{equation}\label{eq:source-shear}
+\begin{equation}\label{wkr:eq:source-shear}
 T_h(x,y,z)=\bigl(x,y,z+y^2h(xy)\bigr),\qquad h\in K[t].
 \end{equation}
 They preserve the weights, have Jacobian one, and induce
 $(t,v)\mapsto(t,v+t^2h(t))$. Their inverses are $T_{-h}$.
 
-\begin{theorem}[All-degree triangular extension]\label{thm:triangular}
+\begin{theorem}[All-degree triangular extension]\label{wkr:thm:triangular}
 Let $p,q$ be affine in $v$ and let
 \[
 r=R(t)+\gamma v,\qquad R\in K[t],\quad \gamma\in K,
@@ -709,9 +796,9 @@ $R(0)=1$. Then the normalized lift is Keller if and only if one of the
 following holds.
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $\gamma=0$, $R=1$, and the map is a tame map
-\eqref{eq:tameF}.
+\eqref{wkr:eq:tameF}.
 \item $\gamma\ne0$, $\beta:=R'(0)\ne0$, and the map is
-\begin{equation}\label{eq:triangular-normal}
+\begin{equation}\label{wkr:eq:triangular-normal}
 F=F_{a,b}\circ T_h,\qquad
  a=\frac{\beta^2}{\gamma},\quad b=\frac{\gamma}{\beta},\quad
  h(t)=\frac{R(t)-1-\beta t}{\gamma t^2}.
@@ -729,12 +816,12 @@ two at zero. Composing the source with $T_{-h}$ replaces $v$ by
 $v-t^2h(t)$ and changes the third numerator to $1+\beta t+\gamma v$.
 The first two numerators remain affine in $v$; polynomiality and all
 normalized origin coefficients are preserved. The source shear has
-Jacobian one. Theorem~\ref{thm:classification} therefore applies: it
+Jacobian one. Theorem~\ref{wkr:thm:classification} therefore applies: it
 forces $\beta\ne0$ and identifies $F\circ T_{-h}$ with $F_{a,b}$.
-This is \eqref{eq:triangular-normal}. The converse follows from the same
+This is \eqref{wkr:eq:triangular-normal}. The converse follows from the same
 composition, and collision points are transported by $T_{-h}$.
 
-When $\gamma=0$, use the proof of Section~\ref{sec:proof} with
+When $\gamma=0$, use the proof of Section~\ref{wkr:sec:proof} with
 $r=R(t)$ instead of $1+\beta t$. The coefficient of $v$ is
 $r'AC+r(A'C-AC')=0$, whence $C=\lambda rA$, including $C=0$.
 The constant equation is still
@@ -745,11 +832,11 @@ forces $r$ to be constant and hence $r=1$. The already proved tame
 classification finishes this case.
 \end{proof}
 
-\begin{corollary}[An exact degree spectrum]\label{cor:degreespectrum}
-In the noninvertible branch of Theorem~\ref{thm:triangular}, $h=0$ gives
+\begin{corollary}[An exact degree spectrum]\label{wkr:cor:degreespectrum}
+In the noninvertible branch of Theorem~\ref{wkr:thm:triangular}, $h=0$ gives
 coordinate degrees $(7,6,4)$. If $h\ne0$ has degree $m$, the coordinate
 degrees are exactly
-\begin{equation}\label{eq:extendeddegrees}
+\begin{equation}\label{wkr:eq:extendeddegrees}
 (2m+8,\ 2m+7,\ 2m+5).
 \end{equation}
 Consequently the possible maximum ordinary degrees in this noninvertible
@@ -762,7 +849,7 @@ for $a,b\ne0$. The substitution $z\mapsto z+y^2h(xy)$ adds terms of
 degrees $6+(2+2m)$, $5+(2+2m)$, and $3+(2+2m)$. These are all strictly
 larger than the original coordinate degrees, so they cannot cancel against
 an original term. Their leading coefficients are nonzero, proving
-\eqref{eq:extendeddegrees}. Every $m\ge0$ occurs by taking $h=t^m$.
+\eqref{wkr:eq:extendeddegrees}. Every $m\ge0$ occurs by taking $h=t^m$.
 \end{proof}
 
 The first invariant coefficient is the important distinction here. The
@@ -771,15 +858,15 @@ nonconstant polynomial in $t$. No assertion is made for
 $r=R(t)+G(t)v$ with nonconstant $G$.
 
 \section{Reduced parameter geometry and invertible degenerations}
-\label{sec:geometry}
+\label{wkr:sec:geometry}
 
-The formulas \eqref{eq:family} contain no negative powers of $a$ or $b$.
+The formulas \eqref{wkr:eq:family} contain no negative powers of $a$ or $b$.
 They therefore define a polynomial family on the entire parameter plane,
-not just on its torus. The diagonal formula \eqref{eq:diagonal} should not
+not just on its torus. The diagonal formula \eqref{wkr:eq:diagonal} should not
 be used on the axes, where its individual scaling matrices are undefined.
 The polynomial formulas are the correct extension there.
 
-\begin{theorem}[The parameter plane and its boundary]\label{thm:plane}
+\begin{theorem}[The parameter plane and its boundary]\label{wkr:thm:plane}
 In the finite coefficient space of normalized weighted maps of ordinary
 degree at most seven with $p,q$ affine in $v$ and $r$ affine in $(t,v)$,
 the following statements hold over $K$.
@@ -791,29 +878,29 @@ Its reduced Zariski closure is the entire embedded affine plane.
 \item The invertible members of this plane are exactly its two coordinate
 axes $V(ab)$. Explicitly,
 \begin{align}
-F_{0,b}(x,y,z)&=(z,\ y+9bxz,\ x),\label{eq:axisA}\\
+F_{0,b}(x,y,z)&=(z,\ y+9bxz,\ x),\label{wkr:eq:axisA}\\
 F_{a,0}(x,y,z)&=\left(z-\frac{8a}{9}y^2,\ y,\ x\right).
-\label{eq:axisB}
+\label{wkr:eq:axisB}
 \end{align}
 \item Inside this plane, the scheme-theoretic condition $r=1$ cuts out the
 reduced nodal union $\Spec K[a,b]/(ab)$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-The coefficients \eqref{eq:coeffrecover} recover $a,b$ by linear functions
+The coefficients \eqref{wkr:eq:coeffrecover} recover $a,b$ by linear functions
 on the ambient coefficient space. Every other coefficient is a polynomial
-in those two functions by \eqref{eq:family}. Thus the image is the graph of
+in those two functions by \eqref{wkr:eq:family}. Thus the image is the graph of
 polynomial functions, a closed embedding.
 
 The determinant is $-1$ on the torus by the classification and its explicit
 solution. It is a polynomial in $a,b,t,v$, so the identity holds on the
 whole plane. Equivalently, it can be checked directly from
-\eqref{eq:family}. The torus is dense, and the classification identifies all
+\eqref{wkr:eq:family}. The torus is dense, and the classification identifies all
 its field-valued nonconstant-$r$ points. This proves the closure statement.
 
-On the axes, the formulas reduce to \eqref{eq:axisA} and \eqref{eq:axisB},
+On the axes, the formulas reduce to \eqref{wkr:eq:axisA} and \eqref{wkr:eq:axisB},
 which are tame maps of the already classified constant branch. Off the
-axes, \eqref{eq:newcollision} excludes invertibility. Finally, imposing
+axes, \eqref{wkr:eq:newcollision} excludes invertibility. Finally, imposing
 $r=1$ on the parameter ring imposes $(ab,ab^2)=(ab)$. The ideal $(ab)$ is
 radical: it is the intersection $(a)\cap(b)$ in $K[a,b]$.
 \end{proof}
@@ -824,12 +911,12 @@ The Jacobian determinant stays $-1$ throughout this degeneration. The
 ordinary degrees and the collision coordinates do not stay bounded in the
 same manner. Fixing $b=1$ and letting $a$ approach zero over $\mathbb R$ or
 $\mathbb C$, the coefficients tend to the automorphism $F_{0,1}$, whereas
-the two source points in \eqref{eq:newcollision} have coordinates with
+the two source points in \eqref{wkr:eq:newcollision} have coordinates with
 poles in $a$. In this explicit sense the displayed collisions escape to
 infinity. No bounded limiting pair of distinct colliding points is asserted.
 
 There are many other constant-$r$ maps, because $B\in t^2K[t]$ in
-\eqref{eq:tamepq} is arbitrary. Only the two axes described above lie in the
+\eqref{wkr:eq:tamepq} is arbitrary. Only the two axes described above lie in the
 closure of the nonconstant branch in this coefficient space. In particular,
 passing from the nonconstant branch to its closure does not recover the
 entire infinite-dimensional tame family.
@@ -839,7 +926,7 @@ entire infinite-dimensional tame family.
 Field-valued uniqueness can be strengthened without any degree cap on the
 numerators.
 
-\begin{corollary}[All-degree reduced rigidity]\label{cor:reduced}
+\begin{corollary}[All-degree reduced rigidity]\label{wkr:cor:reduced}
 Let $R$ be a reduced $\Q$-algebra. Suppose $p,q\in R[t,v]$ are affine in
 $v$, satisfy the normalization and polynomiality conditions, and satisfy
 $\J(p,q,1+t+v)=-1$. Then $p=p_*$ and $q=q_*$.
@@ -847,7 +934,7 @@ $\J(p,q,1+t+v)=-1$. Then $p=p_*$ and $q=q_*$.
 \begin{proof}
 For every prime ideal $\mathfrak p$ of $R$, pass to the fraction field of
 $R/\mathfrak p$. It is a characteristic-zero field, so
-Theorem~\ref{thm:classification} forces $a=b=1$. Every coefficient of
+Theorem~\ref{wkr:thm:classification} forces $a=b=1$. Every coefficient of
 $p-p_*$ and $q-q_*$ therefore belongs to every prime ideal of $R$, hence to
 its nilradical. That nilradical is zero because $R$ is reduced.
 \end{proof}
@@ -858,7 +945,7 @@ families over nonreduced bases. We now determine one such coefficient
 scheme exactly.
 
 \section{The normalized coefficient scheme is a double point}
-\label{sec:scheme}
+\label{wkr:sec:scheme}
 
 The preceding proof used degree arguments over fields. Nilpotent leading
 coefficients need not satisfy those arguments. Scheme structure must
@@ -871,16 +958,16 @@ Fix $r=1+t+v$ and ordinary degree at most seven. The most general normalized
 numerators in our class are
 \begin{align}
 p={}&v+p_{20}t^2+p_{11}tv+p_{30}t^3+p_{21}t^2v
-       +p_{40}t^4+p_{31}t^3v,\label{eq:scheme-p}\\
+       +p_{40}t^4+p_{31}t^3v,\label{wkr:eq:scheme-p}\\
 q={}&t+q_{01}v+q_{20}t^2+q_{11}tv+q_{30}t^3
-       +q_{21}t^2v+q_{40}t^4.\label{eq:scheme-q}
+       +q_{21}t^2v+q_{40}t^4.\label{wkr:eq:scheme-q}
 \end{align}
-The degree formulas in the proof of Corollary~\ref{cor:support} show that
+The degree formulas in the proof of Corollary~\ref{wkr:cor:support} show that
 this list is exhaustive. In particular, the $q_{40}$ term is allowed and
 must not be set to zero beforehand.
 
 Let the coefficient vector, in the following fixed order, be
-\begin{equation}\label{eq:coordorder}
+\begin{equation}\label{wkr:eq:coordorder}
 c=(p_{20},p_{11},p_{30},p_{21},p_{40},p_{31},
        q_{01},q_{20},q_{11},q_{30},q_{21},q_{40}).
 \end{equation}
@@ -890,27 +977,27 @@ Their complete expressions, ordering, and derivative matrix are supplied
 in \texttt{verification.json}; the article fixes enough data below to
 reconstruct and check the certificates independently.
 
-\begin{theorem}[Exact double-point presentation]\label{thm:double}
+\begin{theorem}[Exact double-point presentation]\label{wkr:thm:double}
 The full coordinate algebra of this coefficient problem is
-\begin{equation}\label{eq:dualnumbers}
+\begin{equation}\label{wkr:eq:dualnumbers}
 \Q[c]/I\ \simeq\ \Q[\eps]/(\eps^2).
 \end{equation}
 Under this isomorphism $\eps=q_{21}-4$ and
-\begin{equation}\label{eq:pointplus}
+\begin{equation}\label{wkr:eq:pointplus}
 c=\cstar+u\eps,
 \end{equation}
 where
-\begin{equation}\label{eq:cstar}
+\begin{equation}\label{wkr:eq:cstar}
 \cstar=\left(-\frac89,-2,\frac{28}{27},\frac43,-\frac8{27},-\frac8{27},
                      9,-8,-12,4,4,0\right)
 \end{equation}
 and
-\begin{equation}\label{eq:u}
+\begin{equation}\label{wkr:eq:u}
 u=\frac1{144}(-7,-18,18,24,-8,-8,162,-198,-324,144,144,0).
 \end{equation}
 In particular, the entire ideal, not merely its radical, is generated by
 $\eps^2$ and the eleven linear relations obtained from
-\eqref{eq:pointplus} by omitting the tautological $q_{21}$ relation.
+\eqref{wkr:eq:pointplus} by omitting the tautological $q_{21}$ relation.
 \end{theorem}
 
 The proof has three components: uniqueness of geometric points, a rank
@@ -921,23 +1008,23 @@ second-order lift. None requires a Gr\"obner-basis computation.
 
 Write the coefficient equations as $f_1,\ldots,f_{18}$ in the order of the
 monomials
-\begin{equation}\label{eq:monomialorder}
+\begin{equation}\label{wkr:eq:monomialorder}
 \begin{gathered}
 t^7,\ t^6v,\ t^6,\ t^5v,\ t^5,\ t^4v,\ t^4,\ t^3v^2,\ t^3v,\ t^3,\\
 t^2v^2,\ t^2v,\ t^2,\ tv^2,\ tv,\ t,\ v^2,\ v.
 \end{gathered}
 \end{equation}
 Let
-\begin{equation}\label{eq:M}
+\begin{equation}\label{wkr:eq:M}
 M=\left(\frac{\partial f_i}{\partial c_j}(\cstar)\right)_{i,j}.
 \end{equation}
 Direct rational calculation gives $Mu=0$. Delete the column corresponding
 to $q_{21}$ and select the rows corresponding to
-\begin{equation}\label{eq:minorrowmonomials}
+\begin{equation}\label{wkr:eq:minorrowmonomials}
 t^7,\ t^6,\ t^5,\ t^4v,\ t^4,\ t^3,\ t^2v,\ t^2,\ tv^2,\ t,\ v.
 \end{equation}
 The determinant of that $11\times11$ submatrix is
-\begin{equation}\label{eq:minorvalue}
+\begin{equation}\label{wkr:eq:minorvalue}
 -18\,874\,368\ne0.
 \end{equation}
 Thus $\operatorname{rank}M=11$ and $\ker M=\Q u$. This proves that the
@@ -953,28 +1040,28 @@ not merely a redundant parametrization of a reduced point.
 \subsection{A nonzero obstruction at second order}
 
 Define the quadratic residual vector
-\begin{equation}\label{eq:H}
+\begin{equation}\label{wkr:eq:H}
 H=\bigl([\eps^2]f_i(\cstar+u\eps)\bigr)_{i=1}^{18}.
 \end{equation}
 Consider a possible lift to $\Q[\eps]/(\eps^3)$ of the form
 $c=\cstar+u\eps+w\eps^2$. Its second-order equation is
-\begin{equation}\label{eq:lift-obstruction}
+\begin{equation}\label{wkr:eq:lift-obstruction}
 Mw+H=0.
 \end{equation}
 There is an explicit row functional
-\begin{equation}\label{eq:ell}
+\begin{equation}\label{wkr:eq:ell}
 L=(-205,0,-46,0,-40,24,-8,0,4,0,0,0,0,0,0,0,0,0)
 \end{equation}
 satisfying
-\begin{equation}\label{eq:obstructionpairing}
+\begin{equation}\label{wkr:eq:obstructionpairing}
 LM=0,\qquad LH=-\frac1{72}.
 \end{equation}
-Applying $L$ to \eqref{eq:lift-obstruction} produces a contradiction.
+Applying $L$ to \eqref{wkr:eq:lift-obstruction} produces a contradiction.
 For a nonzero scalar multiple $\eta u$, the obstruction pairing is
 $-\eta^2/72$, which is again nonzero over every characteristic-zero field.
 There is therefore no second-order lift of any nonzero first-order tangent
 direction. The matrix, vector, and pairing in
-\eqref{eq:M}--\eqref{eq:obstructionpairing} are checked exactly by the
+\eqref{wkr:eq:M}--\eqref{wkr:eq:obstructionpairing} are checked exactly by the
 included script.
 
 \subsection{From tangent obstruction to the entire scheme}
@@ -983,7 +1070,7 @@ We record the small algebraic fact that turns these certificates into a
 scheme-theoretic theorem.
 
 \begin{lemma}[An isolated point with one obstructed tangent]
-\label{lem:doublecriterion}
+\label{wkr:lem:doublecriterion}
 Let $k$ be algebraically closed and let $A$ be a finitely generated
 $k$-algebra with exactly one geometric point and residue field $k$.
 Suppose its tangent space has dimension one and no nonzero tangent
@@ -1011,12 +1098,12 @@ $k[\eps]/(\eps^3)$ with nonzero first-order part, contrary to the
 hypothesis. Hence $N=2$.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:double}]
+\begin{proof}[Proof of Theorem~\ref{wkr:thm:double}]
 Work first over $\overline\Q$. The classification with $\beta=\gamma=1$
 forces $a=b=1$, so the coefficient scheme has exactly one geometric point,
-$\cstar$. Equations~\eqref{eq:minorvalue} and $Mu=0$ give tangent
-dimension one, and \eqref{eq:obstructionpairing} excludes every nonzero
-second-order lift. Lemma~\ref{lem:doublecriterion} gives a two-dimensional
+$\cstar$. Equations~\eqref{wkr:eq:minorvalue} and $Mu=0$ give tangent
+dimension one, and \eqref{wkr:eq:obstructionpairing} excludes every nonzero
+second-order lift. Lemma~\ref{wkr:lem:doublecriterion} gives a two-dimensional
 coordinate algebra over $\overline\Q$.
 
 Already over $\Q$, substitution $c=\cstar+u\eps$ defines a surjection
@@ -1026,7 +1113,7 @@ Already over $\Q$, substitution $c=\cstar+u\eps$ defines a surjection
 After extension to $\overline\Q$, this is a surjection between
 vector spaces of dimension two and is an isomorphism. Field extension is
 faithful, so its kernel over $\Q$ was zero. This proves
-\eqref{eq:dualnumbers} with the specified coordinates.
+\eqref{wkr:eq:dualnumbers} with the specified coordinates.
 
 The kernel of the explicit substitution map from the polynomial ring
 $\Q[c]$ is the ideal generated by $\eps^2$ and the eleven affine-linear
@@ -1037,9 +1124,9 @@ with $I$, proving the exact ideal assertion.
 \subsection{The universal meaning of the answer}
 
 \begin{corollary}[Solutions over arbitrary coefficient algebras]
-\label{cor:functor}
+\label{wkr:cor:functor}
 For every $\Q$-algebra $R$, the solutions of
-\eqref{eq:scheme-p}--\eqref{eq:scheme-q} with $\J=-1$ are in bijection with
+\eqref{wkr:eq:scheme-p}--\eqref{wkr:eq:scheme-q} with $\J=-1$ are in bijection with
 \[
 \{e\in R:e^2=0\}.
 \]
@@ -1047,7 +1134,7 @@ The corresponding solution is $c=\cstar+ue$, and $e=q_{21}-4$.
 \end{corollary}
 \begin{proof}
 Apply $\operatorname{Hom}_{\Q\text{-alg}}(-,R)$ to
-\eqref{eq:dualnumbers}.
+\eqref{wkr:eq:dualnumbers}.
 \end{proof}
 
 In particular, every solution over a reduced ring is the constant one, but
@@ -1062,12 +1149,12 @@ of one Gr\"obner-basis presentation.
 
 The nonconstant coefficient parameters can also be restored without
 losing control of nilpotents. Let $\mathcal X^{\times}$ denote the
-coefficient scheme obtained by using \eqref{eq:scheme-p}--\eqref{eq:scheme-q},
+coefficient scheme obtained by using \eqref{wkr:eq:scheme-p}--\eqref{wkr:eq:scheme-q},
 putting $r=1+\beta t+\gamma v$, and inverting $\beta\gamma$.
 
-\begin{theorem}[Torus times the double point]\label{thm:torusdouble}
+\begin{theorem}[Torus times the double point]\label{wkr:thm:torusdouble}
 There is an explicit isomorphism
-\begin{equation}\label{eq:torusdouble}
+\begin{equation}\label{wkr:eq:torusdouble}
 \mathcal X^{\times}\simeq
 \Spec\Q[\beta^{\pm1},\gamma^{\pm1},\eps]/(\eps^2).
 \end{equation}
@@ -1077,7 +1164,7 @@ $\eps=q_{21}/(\beta\gamma)-4$.
 \end{theorem}
 \begin{proof}
 Over any $\Q$-algebra where $\beta,\gamma$ are units, define
-\begin{equation}\label{eq:scheme-normalization}
+\begin{equation}\label{wkr:eq:scheme-normalization}
 \bar p(t,v)=\gamma p(t/\beta,v/\gamma),\qquad
 \bar q(t,v)=\beta q(t/\beta,v/\gamma).
 \end{equation}
@@ -1088,9 +1175,9 @@ formulas over the Laurent coefficient ring. They preserve the determinant
 condition: the row scalings contribute $\beta\gamma$ and the derivative
 column scalings contribute $(\beta\gamma)^{-1}$.
 
-Thus \eqref{eq:scheme-normalization} identifies the coefficient functor
+Thus \eqref{wkr:eq:scheme-normalization} identifies the coefficient functor
 with a choice of two units and a solution of the fixed normalized scheme.
-Apply Theorem~\ref{thm:double} to that fixed scheme. The coefficient of
+Apply Theorem~\ref{wkr:thm:double} to that fixed scheme. The coefficient of
 $t^2v$ in $\bar q$ is $q_{21}/(\beta\gamma)$, giving the stated
 square-zero coordinate. All formulas are valid with nilpotent
 coefficients, so this proves the scheme isomorphism.
@@ -1103,8 +1190,8 @@ The remaining boundary problem is how this structure meets the axes,
 where the Laurent normalization is no longer available.
 
 \begin{remark}[The degree boundary matters]
-Corollary~\ref{cor:reduced} is an all-degree statement. In contrast,
-Theorem~\ref{thm:double} fixes the ordinary degree-seven coefficient space.
+Corollary~\ref{wkr:cor:reduced} is an all-degree statement. In contrast,
+Theorem~\ref{wkr:thm:double} fixes the ordinary degree-seven coefficient space.
 We have not proved that allowing higher-degree coefficients over
 nonreduced rings introduces no extra tangent directions or higher-order
 nilpotents. The field-valued classification alone does not imply that
@@ -1112,7 +1199,7 @@ stronger assertion.
 \end{remark}
 
 \section{Decision procedure, reproducibility, and formalization}
-\label{sec:verification}
+\label{wkr:sec:verification}
 
 \subsection{A classification-based recognition procedure}
 
@@ -1122,31 +1209,31 @@ procedure for the Keller condition, together with an inverse or collision
 certificate.
 
 First check the prescribed weights monomial by monomial and extract the
-unique invariant numerators as in Section~\ref{sec:coordinates}. Check
+unique invariant numerators as in Section~\ref{wkr:sec:coordinates}. Check
 $\deg_vp,\deg_vq\le1$ and that $r$ is affine. Inputs outside these
 restrictions are \emph{outside the procedure's scope}; they are not
 rejected as non-Keller maps.
 
 Within this scope, compute $p_v(0),q_t(0),r(0)$. If one is zero, the map
-is not Keller by \eqref{eq:originJ}. Otherwise normalize the target
+is not Keller by \eqref{wkr:eq:originJ}. Otherwise normalize the target
 coordinates. Write $r=1+\beta t+\gamma v$. If $\beta=\gamma=0$, take
 $B=p-v$ and $\lambda=\coeff{v}{q}$, and test the exact identities
-\eqref{eq:tamepq} with $B\in t^2K[t]$. If exactly one of $\beta,\gamma$
+\eqref{wkr:eq:tamepq} with $B\in t^2K[t]$. If exactly one of $\beta,\gamma$
 is nonzero, the map is not Keller. If both are nonzero, recover $a,b$ from
-\eqref{eq:abrecover} and compare with the fixed formula
-\eqref{eq:family}. The classification proves both soundness and completeness
+\eqref{wkr:eq:abrecover} and compare with the fixed formula
+\eqref{wkr:eq:family}. The classification proves both soundness and completeness
 of these comparisons inside the stated scope.
 
 For a positive result, return either the inverse
-\eqref{eq:tameinverse} or the pair of source points in
-\eqref{eq:newcollision}. To undo target normalization, compose an inverse
+\eqref{wkr:eq:tameinverse} or the pair of source points in
+\eqref{wkr:eq:newcollision}. To undo target normalization, compose an inverse
 with the inverse target scaling; collision source points remain collision
 source points, with their common target rescaled. This avoids a search over
 all possible inverses or collision pairs.
 
-The larger class of Theorem~\ref{thm:triangular} is recognized by first
+The larger class of Theorem~\ref{wkr:thm:triangular} is recognized by first
 computing its unique source shear. For $\gamma\ne0$, compute $h$ from
-\eqref{eq:triangular-normal}, compose the source with $T_{-h}$, and apply
+\eqref{wkr:eq:triangular-normal}, compose the source with $T_{-h}$, and apply
 the affine-$r$ procedure. For $\gamma=0$, a nonconstant $R(t)$ is excluded
 by that theorem. Inputs with nonconstant $v$-coefficient in $r$ remain
 outside the classified scope.
@@ -1159,8 +1246,9 @@ large rational coefficients. An implementation should retain that distinction.
 
 \subsection{What the companion script checks}
 
-The file \texttt{verify\_results.py} works in exact rational and symbolic
-arithmetic. It reconstructs the equations rather than trusting a stored
+The file \texttt{verify\_results.py} (\wtag{} shipped as
+\rpath{code/verify_results.py}, with its record in \rpath{data/}) works in
+exact rational and symbolic arithmetic. It reconstructs the equations rather than trusting a stored
 matrix. Its thirteen groups of checks cover:
 \begin{enumerate}[label=\arabic*.]
 \item The two-parameter determinant in both invariant coordinates and the
@@ -1222,7 +1310,7 @@ their expanded coefficients. Such certificates could isolate the formal
 scheme result from a large commutative-algebra library.
 
 \section{Further research questions and proposed next steps}
-\label{sec:future}
+\label{wkr:sec:future}
 
 The following questions are proposed by the present results. Unless
 explicitly attributed, they are research directions formulated here, not
@@ -1239,13 +1327,13 @@ The highest coefficient should impose a weighted differential relation on
 the leading coefficients, but the lower equations can couple several
 common factors. The first concrete task is to derive the complete
 coefficient system and identify whether an analogue of
-Lemma~\ref{lem:wronskian} gives an a priori degree bound. A finite search
+Lemma~\ref{wkr:lem:wronskian} gives an a priori degree bound. A finite search
 would be useful evidence, but an all-degree conclusion needs such a bound
 or another structural argument.
 
 \subsection{\texorpdfstring{Allow a nonconstant second-invariant coefficient in $r$}{Allow a nonconstant second-invariant coefficient in r}}
 
-Theorem~\ref{thm:triangular} settles arbitrary polynomial $t$-dependence
+Theorem~\ref{wkr:thm:triangular} settles arbitrary polynomial $t$-dependence
 when the coefficient of $v$ in $r$ is constant. The next case is
 $r=R(t)+G(t)v$ with nonconstant $G(t)$. Must $G$ be constant under suitable
 Keller and polynomiality hypotheses, or do genuinely new normal forms
@@ -1258,7 +1346,7 @@ analogue. Allowing a quadratic term in $v$ is a further, distinct extension.
 
 For each $d\ge7$, form the normalized coefficient scheme with
 $r=1+t+v$, $p,q$ affine in $v$, and lifted ordinary degree at most $d$.
-Its reduced scheme is a point by Corollary~\ref{cor:reduced}. Is the full
+Its reduced scheme is a point by Corollary~\ref{wkr:cor:reduced}. Is the full
 scheme always the same double point? Or can high-degree coefficients
 support new nilpotent directions invisible at degree seven? A first step
 is to linearize the three identities in $(A,B,C,D)$ around the explicit
@@ -1268,13 +1356,13 @@ This is a particularly well-targeted extension of the present work.
 
 \subsection{Scheme-theoretic gluing at the invertible boundary}
 
-Theorem~\ref{thm:torusdouble} settles the full degree-seven coefficient
+Theorem~\ref{wkr:thm:torusdouble} settles the full degree-seven coefficient
 scheme on $\beta\gamma\ne0$: it is the parameter torus times a double
 point. Determine how this thickening meets the constant-$r$ tame locus
 where that normalization ceases to be invertible. Does its scheme-theoretic
 closure acquire embedded components or higher nilpotent order on either
 axis or at their intersection? The reduced affine-plane closure and the
-nodal boundary in Theorem~\ref{thm:plane} do not decide this gluing problem.
+nodal boundary in Theorem~\ref{wkr:thm:plane} do not decide this gluing problem.
 A concrete first step is to saturate the coefficient ideal by
 $\beta\gamma$, then study its specialization on each axis with explicit
 ideal-membership certificates.
@@ -1295,7 +1383,10 @@ of equivariant maps.
 
 The current literature already includes a three-dimensional degree-four
 example \cite{gao}; the existence of such an example is therefore not
-posed as a new open problem here. Instead, extract its invariant or
+posed as a new open problem here. (\wtag{} Gao's degree is the geometric
+degree; the ordinary degrees of his map are $4,11,12$, see
+Section~\ref{wkr:sub:gao}. A three-variable Keller map of \emph{ordinary}
+degree below seven is not known from the sources cited here.) Instead, extract its invariant or
 geometric structure and determine precisely which hypothesis of our
 classification fails. Compare support size, rational coefficient height,
 and the cost of a formal collision certificate. This would help replace a
@@ -1315,7 +1406,7 @@ rational parameters.
 \subsection{Direct ideal certificates and kernel verification}
 
 Generate explicit membership certificates for the twelve simple generators
-in Appendix~\ref{app:presentation}, and check them with polynomial
+in Appendix~\ref{wkr:app:presentation}, and check them with polynomial
 normalization in Lean or Rocq. This would turn the deformation theorem into
 a compact finite certificate after the all-degree classification has been
 formalized. The target should be a transparent theorem boundary: no hidden
@@ -1336,9 +1427,9 @@ is not sufficient to claim the same unrestricted classification.
 
 The repository's finite sparsity problem admits a stronger structural
 answer in its affine-invariant class. Constant third numerator gives all
-and only the explicit tame maps \eqref{eq:tamepq}. Nonconstant third
+and only the explicit tame maps \eqref{wkr:eq:tamepq}. Nonconstant third
 numerator forces both invariant coefficients to be nonzero and forces the
-entire map into the diagonal orbit \eqref{eq:family}, with degree seven and
+entire map into the diagonal orbit \eqref{wkr:eq:family}, with degree seven and
 sixteen terms. An explicit source shear extends the classification to
 $r=R(t)+\gamma v$ and gives the exact degree spectrum
 $\{7,8,10,12,\ldots\}$. The proof is an all-degree argument, not an
@@ -1355,12 +1446,12 @@ both for further searches and for a trustworthy formalization.
 
 \appendix
 \section{An explicit presentation of the coefficient ideal}
-\label{app:presentation}
+\label{wkr:app:presentation}
 
 For readers who prefer generators to the vector formula
-\eqref{eq:pointplus}, Theorem~\ref{thm:double} says that $I$ is exactly
+\eqref{wkr:eq:pointplus}, Theorem~\ref{wkr:thm:double} says that $I$ is exactly
 the ideal generated by
-\begin{equation}\label{eq:idealexplicit}
+\begin{equation}\label{wkr:eq:idealexplicit}
 \begin{aligned}
 &q_{40},\qquad (q_{21}-4)^2,\\
 &144p_{20}+7q_{21}+100,\\
@@ -1377,12 +1468,12 @@ the ideal generated by
 \end{equation}
 These equations apply over every $\Q$-algebra, not just over fields.
 Over a field the square forces $q_{21}=4$, and all remaining coefficients
-are the point \eqref{eq:cstar}. Over the dual numbers, $q_{21}=4+\eps$
-produces exactly the tangent vector \eqref{eq:u}.
+are the point \eqref{wkr:eq:cstar}. Over the dual numbers, $q_{21}=4+\eps$
+produces exactly the tangent vector \eqref{wkr:eq:u}.
 
 As a useful independent check of the equation reconstruction, the
 coefficients corresponding to the last three monomials $t,v^2,v$ in
-\eqref{eq:monomialorder} are, respectively,
+\eqref{wkr:eq:monomialorder} are, respectively,
 \begin{align*}
 f_{16}&=-p_{11}+2p_{20}q_{01}-2q_{20}-2,\\
 f_{17}&=2p_{11}q_{01}-3q_{11},\\
@@ -1397,14 +1488,14 @@ The remaining equations are recovered by the same determinant expansion;
 the complete list is included in the JSON certificate.
 
 \section{Small exact certificates for the deformation calculation}
-\label{app:certificates}
+\label{wkr:app:certificates}
 
 The primitive integral tangent vector is $n=144u$. To keep the second-order
 residual integral, define
 \[
 \widehat H_i=[e^2]f_i(\cstar+en)=144^2 H_i.
 \]
-In the ordering \eqref{eq:monomialorder}, the nonzero data and the
+In the ordering \eqref{wkr:eq:monomialorder}, the nonzero data and the
 cokernel functional are as follows. Zeros are included to make the ordering
 unambiguous.
 \begin{center}
@@ -1439,7 +1530,7 @@ The obstruction is visible in four integer products:
 \]
 Dividing by $144^2$ gives $LH=-1/72$.
 
-For the nonzero minor in \eqref{eq:minorvalue}, the zero-based row indices
+For the nonzero minor in \eqref{wkr:eq:minorvalue}, the zero-based row indices
 in the JSON matrix are
 \[
 (0,2,4,5,6,9,11,12,13,15,17),
@@ -1454,7 +1545,7 @@ $Mu$ and $LM$. The companion JSON stores the matrix itself as rational
 strings for convenient cross-checking.
 
 \section{Reproduction and source ledger}
-\label{app:reproduction}
+\label{wkr:app:reproduction}
 
 The supplied archive contains the following files:
 \begin{center}
@@ -1475,8 +1566,16 @@ File & Purpose\\
 Build the article with two runs of \texttt{pdflatex article.tex}, or with
 \texttt{latexmk -pdf article.tex}. Run the checks with
 \begin{quote}\ttfamily
-python verify\_results.py --output verification.json
+python verify\_results.py -{}-output verification.json
 \end{quote}
+\wtag{} In ProveIt the script is \rpath{code/verify_results.py}; the
+records and \rpath{requirements.txt} are in \rpath{data/}; the delivered
+PDF is not shipped (\rpath{article.pdf} is a build of this text); the
+delivered README is replaced by the report README. The command above is
+the delivery's; its default output \rpath{verification.json} is relative
+to the working directory, so in ProveIt pass an output path outside the
+report (Appendix~\ref{wkr:app:rerun}).
+
 The verification does not download or execute any repository code. The
 repository is a cited mathematical source; its original map and the
 relevant formulas are reconstructed in the script. The source ledger is:
@@ -1496,6 +1595,88 @@ and the full degree-seven coefficient-algebra identification.\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\section{Provenance of this report}\label{wkr:app:report}
+
+\subsection{One manuscript}\label{wkr:app:onesource}
+\wtag{} This report is built from \emph{one} manuscript: manuscript~01 of
+batch~36 of ProveIt's incoming reports, the archive
+\texttt{ProveIt\_Weighted\_Keller\_Rigidity} (inner directory of the same
+name, main file \texttt{article.tex}, a 23-page PDF dated 24~September
+2026, PDF metadata author ``ChatGPT; prepared for Vladimir Reshetnikov''),
+pinned to ProveIt commit
+\nolinkurl{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}. The archive arrived in
+commit \texttt{e13affd32} and was placed in \texttt{1a1396d4d} as a new
+report. Nothing was merged and nothing was selected away: every result,
+proof, example, table, question and limitation of the manuscript is
+printed. The manuscript contributed everything except the text marked
+\wtag.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{wkr:}. The source's 96 labels
+are kept, unchanged after the prefix. Six were added:
+\texttt{wkr:sub:project}, \texttt{wkr:sub:gao}, \texttt{wkr:app:report},
+\texttt{wkr:app:onesource}, \texttt{wkr:app:pinned} and
+\texttt{wkr:app:rerun}.
+\item Sections~\ref{wkr:sub:project} and~\ref{wkr:sub:gao} are new and
+end Section~\ref{wkr:sec:intro}, so no source number moved. They credit
+the project's weighted determinant identity and collision mechanism,
+state the project's formal status, and correct the reading of Gao's
+``degree four''.
+\item Notes marked \wtag{} were added on the title page, after the proof
+of Proposition~\ref{wkr:prop:jacobian}, after the collision family
+\eqref{wkr:eq:collisionfamily}, in Sections~\ref{wkr:sec:verification}
+and~\ref{wkr:sec:future}, and in Appendix~\ref{wkr:app:reproduction}; this
+appendix is new. The PDF bookmark of the title page was fixed (no
+duplicate page anchor), and the command-line option
+\texttt{-{}-output} in Appendix~\ref{wkr:app:reproduction} is now typeset
+with two hyphens (the delivered PDF showed one dash).
+\end{enumerate}
+No mathematical statement of the manuscript was changed and no symbol was
+renamed; the added notes write $\alpha$ for the project's coefficient
+$a=[t^2]p$, because $a$ is a family parameter here. The report's $t=xy$
+agrees with the project's research notes but not with the sibling report
+on arithmetic fibers, where $t=y+1/x$.
+
+\subsection{Repository statements at the pin}\label{wkr:app:pinned}
+\wtag{} The source read the project README, its research notes and
+\rpath{verify_equivariant_sparsity.py} at its pin. The project did not
+change between the pin and the placement commit. Its statements about the
+project are accurate: the map, determinant and collision are the
+project's (and formalized, Section~\ref{wkr:sub:project}); the sparsity
+script proves that eleven coefficients cannot vanish and identifies the
+branch $q_{40}=0$ (script lines 110--127 and 164--167); its certificate
+contains $(q_{21}-4)^2$ with the comment that the square ``records a
+harmless nonreduced structure'' (lines 129--132), and neither README
+identifies the scheme as a double point. The one omission, the credit for
+the determinant identity and the collision mechanism, is repaired in
+Section~\ref{wkr:sub:project}. Shaska \cite{shaska} and the Stacks Project
+references were not checked at the write; Gao \cite{gao} was checked for
+Theorems~3.3 and~3.5 (Section~\ref{wkr:sub:gao}).
+
+At the write, the ideal statement of Theorem~\ref{wkr:thm:double} was also
+checked in both directions, which the shipped script does not do: with
+SymPy~1.14.0 the eighteen coefficient equations and the twelve generators
+of \eqref{wkr:eq:idealexplicit} have the same reduced Gr\"obner basis
+(grevlex), and each set lies in the ideal of the other. The normalization
+\eqref{wkr:eq:originalnormalization} was rechecked the same way.
+
+\subsection{Rerunning the checks}\label{wkr:app:rerun}
+\wtag{} The script writes its JSON record to \texttt{-{}-output}, default
+\rpath{verification.json} in the current directory. Run it from the report
+with an output path outside the repository, so that neither the report
+root nor \rpath{data/} is written:
+\begin{quote}\ttfamily
+python code/verify\_results.py -{}-output <scratch>/verification.json
+\end{quote}
+It needs Python~3.10 or later and SymPy (\rpath{data/requirements.txt}
+pins \texttt{sympy==1.14.0}). At the write it was run so with Python~3.13.5
+and SymPy~1.14.0: all thirteen check groups passed, the JSON record equals
+\rpath{data/verification.json} apart from line endings, and the printed
+output equals \rpath{data/verification.txt} apart from line endings and the
+certificate path in its last line. The record embeds the Python version, so
+a run under another version differs in that field.
 
 \begin{thebibliography}{9}
 \small
