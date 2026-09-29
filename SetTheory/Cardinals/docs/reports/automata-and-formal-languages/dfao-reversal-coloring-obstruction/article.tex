@@ -175,7 +175,9 @@ Part~II (\cref{tor:sec:intro} onwards, added 28 September 2026) proves the
 exact three-output maximum $R_2(n,3)$ for every $n\ge7$. Part~III
 (\cref{evo:sec:intro} onwards, added 29 September 2026) proves it for
 $4\le k\le7$ and every $n\ge\max(7,k+1)$, and for every $k\ge4$ beyond an explicit
-threshold.
+threshold. Part~IV (\cref{fo:sec:intro} onwards, added 29 September 2026)
+gives a second proof of the case $k=4$, analytic from $n=26$, with stability
+theorems, the missing-orbit inventory and a minimal recurrence.
 \end{resultbox}
 \newpage
 
@@ -4111,7 +4113,9 @@ This second assertion uses the finite exact-integer verification of
 The threshold is defined in \cref{evo:sec:eventual}; for example $N(4)=212$,
 $N(5)=240$, $N(6)=954$ and $N(7)=840$. These are sufficient thresholds, not
 claims about the smallest possible ones, and the finite closure shows that
-they are very conservative in these four cases. Two points make the statement
+they are very conservative in these four cases. [Added 29 September 2026,
+batch~43: at $k=4$ Part~IV's second route is analytic from $n=26$
+(\cref{fo:sec:tail,fo:rem:threshold}).] Two points make the statement
 stronger than a leading-order estimate. First, the entire integer optimum is
 determined, including the additive $a_nb_n$ term. Second, the range
 $n\ge3k^4$ permits $k$ to vary with $n$: the theorem applies simultaneously to
@@ -7103,7 +7107,10 @@ Manuscript~01 had noted that the union bound \eqref{evo:et:eq:ontoestimate}
 and the elementary order bound are both quantitative, and that the missing
 work was a usable uniform separation between the finite palette terms, with a
 controlled treatment of components whose smaller part has not reached the
-asymptotic regime. The sharper form stays open. Manuscript~06: the current
+asymptotic regime. The sharper form stays open. [Added 29 September 2026,
+batch~43: at $k=4$ Part~IV lowers the analytic threshold from $N(4)=212$ to
+$26$ (\cref{fo:rem:threshold}); for general $k$ the question stays open.]
+Manuscript~06: the current
 losses have identifiable sources, namely the crude multinomial remainder
 $k^23^k\mu^n$, the conversion of many small graph components into a factor
 $2^{d+r}$, and the elementary permutation-order bound; sharper palette tails
@@ -7238,7 +7245,10 @@ $D^*_k(n)<\Bip_k(a_n,b_n)<(3\hat C/2)\lambda_k^n$, these give an explicit
 $c(k)>0$ for those structural types, for instance $c(k)=(\hat C-4)/(6\hat C)$
 for nonfull graphs. The wrong-split, extra-kernel-pair and
 incomplete-saturation mechanisms are not quantified in this form (for extra
-kernel pairs see \cref{evo:prop:firstmatching}).
+kernel pairs see \cref{evo:prop:firstmatching}). [Added 29 September 2026,
+batch~43: at $k=4$ Part~IV quantifies the wrong-split and extra-kernel-pair
+mechanisms (\cref{fo:as:thm:stability,fo:fo:thm:stability}); incomplete
+saturation stays unquantified.]
 
 \begin{question}[Sharpness of the matching hierarchy; manuscript~06]\label{evo:q:matching}
 For fixed $a,b,k,t$, when can the bound $k^{a+b}-W_{k,t}(a,b)+ab$ be attained?
@@ -7316,7 +7326,10 @@ once the exact threshold question is separated from the tail formula. (For
 $3\le k\le7$ the values are now known from $n=\max(7,k+1)$ on, by Part~II and
 \cref{evo:thm:smallk}, so for those $k$ only the minimality question
 remains; at $k=3$ Part~II's \cref{tor:cor:recurrence} gives the denominator
-$(1-4z^4)(1-z^4)^2$.)
+$(1-4z^4)(1-z^4)^2$.) [Added 29 September 2026, batch~43: answered at $k=4$
+by Part~IV: the order-$15$ recurrence of \cref{fo:as:thm:recurrence} is minimal
+in $n$, and the annihilator of \cref{evo:et:thm:recurrence} is minimal on each
+residue class (\cref{fo:rem:residueminimal}).]
 
 \begin{question}[Formal verification of the proof chain; manuscripts~06, 01 and~03]\label{evo:q:formal}
 Can the graph reduction, strict balancing, effective estimates, finite
@@ -7747,6 +7760,8 @@ spectrum; sharpness of the matching hierarchy; minimal recurrences; formal
 verification; noncyclic permutation groups and several singular letters.
 \Cref{evo:sec:questions} formulates the corresponding questions. Davies's
 Problem~1, the nonattainment question of Part~I, is not affected by Part~III.
+[Added 29 September 2026, batch~43: at $k=4$ Part~IV settles the minimal
+recurrence and quantifies stability (\cref{fo:sec:audit}).]
 
 \subsection{Where the merge had to choose}\label{evo:sec:merge}
 \begin{itemize}
@@ -7817,6 +7832,2330 @@ Problem~1, the nonattainment question of Part~I, is not affected by Part~III.
  (\cref{evo:da:tab:finite}) is input verbatim from the shipped data file
  named in its caption; its delivered article read it from
  \texttt{results/\allowbreak finite\_table.tex}.
+\end{itemize}
+\endgroup
+%% ====================================================================
+%% Batch 43 addition: Part IV, merged from two manuscripts
+%% (batch-43 manuscript 05 = base, "AS", file prefix 07-all-state-;
+%% batch-43 manuscript 03, "FO", file prefix 06-four-output-).
+%% All labels of Part IV carry the prefix fo: ("four outputs"); material
+%% taken from manuscript AS uses fo:as:, material only in manuscript FO
+%% uses fo:fo:, and statements proved by both (or added in the merge) use
+%% plain fo:.
+%% ====================================================================
+\clearpage
+\begingroup
+% Part IV only: let file paths also break after hyphens.
+\renewcommand{\UrlBreaks}{\do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]\do\)\do\,\do\?\do\'\do+\do\=\do\#\do\-}
+\phantomsection\part*{Part IV.\quad Four outputs: an all-state route, stability and the missing orbits}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Four outputs: an all-state route, stability and the missing orbits}
+
+\noindent\emph{Part~IV was added on 29 September 2026 in batch~43 of
+ProveIt's incoming-report intake, from two manuscripts written before
+Part~III was printed. Both prove the four-output formula
+$R_2(n,4)=4^n-\Bip_4(a_n,b_n)+a_nb_n$ for every $n\ge7$, which is already
+Part~III's \cref{evo:thm:main} at $k=4$; their proofs of it are printed here
+as a second route, not as a new theorem. What Part~IV adds is a much smaller
+analytic threshold at $k=4$ ($26$, against Part~III's $N(4)=212$), explicit
+stability theorems, the exact inventory of the missing cyclic orbits, the
+number of extremal output maps on the standard witness, and a recurrence of
+proved minimal order~$15$ for the optimal deficit.
+\Cref{fo:sec:intro} records the provenance and fixes the notation.}
+
+\section{Provenance, conventions and the statement}\label{fo:sec:intro}
+
+\subsection{Two manuscripts, one addition}\label{fo:sec:source}
+
+Part~IV merges two AI-assisted research manuscripts prepared for Vladimir
+Reshetnikov and dated 29 September 2026. They prove the same theorem with the
+same architecture and in the same order (coloring orbits, collision reduction,
+four-color counts and balancing, the upper bound, a finite certificate,
+attainment, rigidity, stability, the missing-orbit inventory, asymptotics and
+a recurrence), so they form one part. In this report's local file sequence
+(Part~I's unprefixed files count as~01, Part~II's are~02, Part~III's are~03
+to~05) they are~06 and~07. Both archives arrived in \texttt{06bcc37a8} and
+were placed in \texttt{faef2ed2a}; despite their similar archive names they
+are different packages with no file in common.
+
+\begin{itemize}
+\item \emph{Manuscript~05 of batch~43}, the \emph{base}, called \emph{AS}
+(``all states'') below; file prefix \texttt{07-all-state-}. \emph{Exact
+Binary Reversal with Four Outputs: An all-state formula, quantitative
+rigidity, and the structure of the missing reversal states}, 21 pages as
+delivered. Archive
+\texttt{ProveIt\_\allowbreak Four\_\allowbreak Output\_\allowbreak Reversal\allowbreak\ (1).zip}
+(inner directory \texttt{four\_\allowbreak output\_\allowbreak reversal/}).
+Pinned to ProveIt commit \texttt{8315d24e3}, with this report's
+\texttt{article.tex} blob \texttt{84923bc5} and the blob \texttt{f93f98bb} of
+\path{03-eventual-SOURCE_AUDIT.md}.
+\item \emph{Manuscript~03 of batch~43}, called \emph{FO} (``four outputs'')
+below; file prefix \texttt{06-four-output-}. \emph{Exact Four-Output Binary
+Reversal: Optimal state complexity, collision rigidity, and secondary
+asymptotics}, 21 pages as delivered. Archive
+\texttt{ProveIt\_\allowbreak Four\_\allowbreak Output\_\allowbreak Reversal.zip}
+(inner directory of the same name). Pinned to ProveIt commit
+\texttt{c130dba62}.
+\end{itemize}
+
+AS is the base because it has the weaker hypothesis and proves more: its
+theorem covers every $n\ge4$ (FO's every $n\ge7$), it proves the recurrence
+minimal (FO only proves annihilation), and it counts the extremal output maps
+on the standard transition pair. FO keeps, under its own hypotheses, a
+second-collision penalty that needs no properness assumption, a stability
+theorem at the scale $3^{n/2}$ with an explicit imbalance bound, three exact
+residue formulas, a literal C++ breadth-first witness search through $n=12$,
+and a regression sweep through $n=200$. ``Manuscript~03'' and
+``manuscript~06'' keep their Part~III meanings (batch~40's manuscript~03 and
+batch~41's manuscript~06); the two batch-43 sources are always called AS and
+FO.
+
+\emph{What the two manuscripts knew.} At both pins this report's
+\texttt{article.tex} had blob \texttt{84923bc5}: Parts~I and~II were printed,
+Part~III was not (it was written in \texttt{18634ca66}, after both pins),
+although its files were already staged. FO read Part~I, Part~II (including
+\cref{tor:q:four}, which it answers for $k=4$), the README and
+\texttt{code/reversal.py}. AS read Part~I, Part~II, the README and Part~III's
+staged \path{03-eventual-SOURCE_AUDIT.md}, which records ``no established
+explicit fixed-$k$ threshold''. Neither knew Part~III's explicit threshold
+$N(k)$ or its all-$n$ closure of $4\le k\le7$. Both therefore re-derive
+Part~III's $k=4$ case; this part credits Part~III wherever that happens.
+
+\begin{resultbox}
+\textbf{Status (both manuscripts).} AI-assisted, unrefereed research
+manuscripts with complete proposed proofs and reproducible finite
+certificates, not refereed or proof-assistant-checked publications. Nothing in
+Part~IV is checked in Lean, Rocq or any other proof assistant, no Lean or
+Rocq file is supplied, and the repository's formal developments in other
+directories confer no formal status on these results. The upper bound is
+analytic for $n\ge26$ and computer-assisted below (AS: $2{,}082$ integer
+comparisons for $4\le n\le25$; FO: $2{,}059$ for $7\le n\le25$), with the
+ordinary execution and integer-arithmetic trust boundary. Attainment for
+$n\ge7$ imports the Holzer--K\"onig two-generation theorem in the form stated
+by Davies; it is cited, not reproved. The claimed resolution is the
+four-output slice of Davies's exact binary reversal problem, not the
+variable-output problem or the largest two-generated transformation-monoid
+problem. A targeted literature check found no later resolution, but does not
+establish priority; publication priority has not been established.
+\end{resultbox}
+
+\subsection{Notation of Part~IV}\label{fo:sec:notation}
+
+Parts~I--III's symbols keep their meanings; in particular $\Bip_k(a,b)$,
+$(a_n,b_n)$, $\delta_n$, $D_k(n)=k^n-R_2(n,k)$, $D^*_k(n)$ and $\defi$ are
+Part~III's (\cref{evo:tab:notation}), $P_G(k)$, $C_L(k)$, $H_r(t)$, $M(n,k)$
+and $L(n,k)$ are Part~I's, and $J(r)$ and $P_2(d)$ are Part~II's. The two
+manuscripts use Part~II's letters $A,B$ and $D_n$ for four-output objects, and
+several letters that Parts~I--III already use. Part~IV therefore fixes the
+convention of \cref{fo:tab:notation}, used throughout, including in FO's
+material. No normalization changed. As in the manuscripts, the output
+alphabet is $\D=\{0,1,2,3\}$ and states are numbered from zero.
+
+{\small
+\begin{longtable}{>{\raggedright}p{.15\linewidth}>{\raggedright}p{.21\linewidth}>{\raggedright}p{.26\linewidth}>{\raggedright\arraybackslash}p{.26\linewidth}}
+\caption{Symbols of Part~IV. The second column gives the manuscripts' own
+symbols. The last column prints the tempting false reading.}\label{fo:tab:notation}\\
+\toprule
+Symbol here & Manuscripts' symbols & Meaning & Not to be confused with\\
+\midrule\endfirsthead
+\toprule
+Symbol here & Manuscripts' symbols & Meaning & Not to be confused with\\
+\midrule\endhead
+\midrule\multicolumn{4}{r}{\footnotesize Continued on next page}\\\endfoot
+\bottomrule\endlastfoot
+$(a_n,b_n)$, $a,b$ & AS: $(A_n,B_n)$, $A,B$; FO: $(A_n,B_n)$ & the closest
+ coprime split \eqref{evo:eq:split} (both manuscripts' own formula
+ \eqref{fo:eq:split}) & Part~II's $(A_n,B_n)$ is the same split; the
+ manuscripts' $A,B$ are \emph{not} the cycles $X,Y$.\\
+$X$, $Y$ & AS: $X,Y$; FO: $L,R$ & the two cycles (sets) of a two-cycle
+ permutation & Part~I's $L(n,k)$; $R_2$.\\
+$\Bip_4(a,b)$ & AS, FO: $\mathcal B(a,b)$; FO also $P_{K_{a,b}}(4)$ & proper
+ four-colorings of $K_{a,b}$, \eqref{evo:eq:k4P} & Part~II's $\Bip=\Bip_3$,
+ printed with the same letter.\\
+$D^*_4(n)$ & AS, FO: $D_n$ ($n\ge7$) & $\Bip_4(a_n,b_n)-a_nb_n$, the witness
+ deficit & Part~II's $D_n=D^*_3(n)$, the \emph{three}-output deficit.\\
+$D_4(n)$ & AS: $D_n$ ($n\ge4$) & $4^n-R_2(n,4)$, the optimal deficit; AS
+ defines it by cases, the theorem proves the cases optimal & Part~I's
+ $D(n,k)$, the minimum of its finite collection.\\
+$\defi(\tau;s,t)$ & FO: $\delta(\tau;s,t)$ & $4^n-|\tau\langle s,t\rangle|$
+ for one machine & $\delta_n=(b_n-a_n)/2$.\\
+$\tau\langle s,t\rangle$ & FO: $\mathcal O(\tau;s,t)$; AS: $\tau\langle s,t\rangle$ &
+ the reachable coloring set & Part~I's $\mathcal O_r$, a set of orders.\\
+$\delta_n$ & AS: $\delta_r$; FO: $t$ (in one proof) & $(b_n-a_n)/2\in\{\tfrac12,1,2\}$
+ & ---\\
+$\psi(t)$ & AS: $h(t)$; FO: $g(t)=4\psi(t)$ & $3^t-3\cdot2^t$ & Part~III's
+ $h=\lfloor k/2\rfloor$; Landau's $g(k)$ of \cref{thm:main}.\\
+$\mathcal F_4(a,b)$ & AS, FO: $F(a,b)$ & $\Bip_4(a,b)-ab$ & Part~III's residue
+ sequences $F_r(t)$.\\
+$\mathcal K^{\mathrm{AS}}_n$, $\mathcal K^{\mathrm{FO}}_n$ & AS: $\mathcal L_n$; FO:
+ a script $D_n$ & the finite certificate lists & Part~I's $L(n,k)$, Part~III's
+ $\mathcal L_k(s,\delta)$; deficits $D$.\\
+$C_L(4)$ & AS: $3^L+(-1)^L3$; FO: $C_L$ & proper four-colorings of an
+ $L$-cycle (Part~I's \eqref{eq:cyclepoly}) & residue constants $c_n$.\\
+$\Omega^{\mathrm e}_4(a,b)$ & FO: $E(a,b)$ & four-colorings of $K_{a,b}$ with
+ exactly one monochromatic edge & Part~III's $\Omega_{4,1}(a,b)$, which counts
+ all colorings with matching number one.\\
+$\mathcal C_{u,v}$ & AS: $E(u,v)$; FO: $uvN_{u,v}$ & proper colorings of
+ $K_{a,b}$ with least periods $u,v$ on $X,Y$ & $C_L(k)$; Part~III's range
+ $\mathcal E$.\\
+$o_{u,v}$ & FO: $N_{u,v}$ & $\mathcal C_{u,v}/(uv)$, the number of such
+ $p$-orbits & Part~III's threshold $N(k)$.\\
+$P_q(m)$ & AS: $P_q(m)$ & words of length $m$ over $q$ letters with least
+ cyclic period $m$ (Part~II's $P_2$) & $P_G(k)$.\\
+$\operatorname{prim}_j(m)$, $\sur_j(m)$ & FO: $\operatorname{Prim}_j(m)$,
+ $\operatorname{Surj}_j(m)$ & primitive, respectively all, length-$m$ words
+ using every one of $j$ fixed colors ($\sur_j$ is Part~III's) & ---\\
+$c_n,d_n,e_n$ & FO: $c_n,d_n,e_n$; AS: $C_r$, $-E_r$, $12+\delta_r^2$ &
+ residue-periodic coefficients \eqref{fo:eq:scales} & Part~III's $C_0$, $C_1$,
+ $\hat C$.\\
+$\chi_4(x)$ & AS: $\chi_D(x)$; FO: $\mathcal A(E)$ & the order-15
+ characteristic polynomial \eqref{fo:eq:chi} & Part~III's $\mathcal A_k(\mathsf E)$,
+ an annihilator in the step $t$ of a residue class; not a chromatic count.\\
+$\mathsf S$ & AS: $S$; FO: $E$ & the forward shift in $n$ & Part~III's
+ $\mathsf E$, the shift in $t$ ($n=4t+r$).\\
+$\mathcal Q_4(z)$, $\mathcal N_4(z)$ & AS: denominator, $N(z)$; FO: $Q(z)$,
+ $N(z)$ & denominator and numerator of the tail generating function & the
+ state set $Q$; $N(k)$.\\
+$\kappa$ & FO: $C$ & a positive constant in \cref{fo:fo:thm:stability} &
+ $C_L(k)$, $c_n$.\\
+$\bbone$ & AS: $\mathbf 1$ & indicator & ---\\
+\end{longtable}}
+
+Where the manuscripts write $M_n$ for the balanced multinomial coefficient
+(FO) it is Part~I's $M(n,4)$; AS's residual-order function $H_r(t)$ is Part~I's
+\eqref{eq:H}; both manuscripts' $P_G$ is Part~I's $P_G(4)$. AS's letters $s,t$
+for an arbitrary pair and $p,s$ for a permutation and a singular map keep
+their meaning, as in Parts~II and~III. A \emph{primitive cyclic word} of length
+$m$ is one whose least positive rotation period is $m$.
+
+\subsection{The statement}\label{fo:sec:answer}
+
+Both manuscripts write the split directly: for $n\ge7$, with
+$h=\lfloor n/2\rfloor$,
+\begin{equation}\label{fo:eq:split}
+ (a_n,b_n)=
+ \begin{cases}
+ (h,h+1),&n=2h+1,\\
+ (h-1,h+1),&n=2h,\ h\text{ even},\\
+ (h-2,h+2),&n=2h,\ h\text{ odd};
+ \end{cases}
+\end{equation}
+this is Part~III's \eqref{evo:eq:split} and Part~II's \eqref{tor:eq:split}.
+Then $3\le a_n<b_n$, $a_n+b_n=n$, $\gcd(a_n,b_n)=1$, $b_n\ge4$,
+$a_nb_n\ge12$ and $b_n-a_n\le4$. At $k=4$, Part~III's palette formula
+\eqref{evo:eq:k4P} is
+\begin{equation}\label{fo:eq:B4}
+ \Bip_4(a,b)=6\cdot2^{a+b}+4(3^a+3^b)-12(2^a+2^b)+12\qquad(a,b\ge1),
+\end{equation}
+and $D^*_4(n)=\Bip_4(a_n,b_n)-a_nb_n$ for $n\ge7$.
+
+AS defines $R_2(n,4)$ as the maximum reversal complexity of a minimal
+$n$-state DFAO with at most two input letters and four used output values,
+FO as the maximum over minimal $n$-state binary DFAOs with four output
+symbols. These are the readings of $R_2$ discussed in Part~III's
+\cref{evo:sec:answer}; both manuscripts prove the upper bound for the
+unrestricted maximum of $|\tau\langle s,t\rangle|$ over all transformation
+pairs and output maps, without accessibility, minimality or surjectivity, and
+witnesses that are accessible, minimal and use all four outputs.
+
+\begin{theorem}[Four outputs at every $n\ge4$; Part~III and Part~I, second route by AS and FO]\label{fo:thm:main}
+For every $n\ge4$, all maps $s,t:Q\to Q$ and every $\tau:Q\to\D$,
+\begin{equation}\label{fo:eq:upper}
+ |\tau\langle s,t\rangle|\le
+ \begin{cases}
+ 176,&n=4,\\
+ 826,&n=5,\\
+ 3526,&n=6,\\
+ 4^n-D^*_4(n),&n\ge7.
+ \end{cases}
+\end{equation}
+For each $n\ge4$ equality is attained by an accessible, minimal $n$-state
+DFAO using two input letters and all four output values. Consequently
+\begin{equation}\label{fo:eq:main}
+ R_2(n,4)=4^n-6\cdot2^n-4(3^{a_n}+3^{b_n})+12(2^{a_n}+2^{b_n})-12+a_nb_n
+ \qquad(n\ge7),
+\end{equation}
+and $R_2(4,4)=176$, $R_2(5,4)=826$, $R_2(6,4)=3526$; equivalently
+$D_4(n)=80,198,570$ for $n=4,5,6$ and $D_4(n)=D^*_4(n)$ for $n\ge7$.
+\end{theorem}
+
+\emph{Status of the statement.} For $n\ge7$ this is Part~III's
+\cref{evo:thm:main} at $k=4$ (analytic for $n\ge N(4)=212$,
+computer-assisted for $7\le n\le211$ in \cref{evo:thm:smallk}), with the
+closed form of \cref{evo:ex:k4formula}. For $n=4,5,6$ the three values are
+Part~I's: its table of small cases in \cref{sec:finite} records equality of
+the structural upper bound and an explicit witness at $176$, $826$ and
+$3526$, with the witnesses of \cref{app:witnesses}; the value $176$ is also
+among Davies's previously verified maxima (\cref{sec:instances}). AS's
+witnesses for $n=4,5,6$ (\cref{fo:sec:attainment}) are exactly Part~I's arrays.
+What AS and FO add to the theorem is its proof: a second, self-contained route
+whose analytic part starts at $n=26$ and whose finite part is a certificate of
+about two thousand integer comparisons, printed in
+\cref{fo:sec:reduction,fo:sec:tail,fo:sec:finite,fo:sec:attainment}. AS's
+contribution at $n=4,5,6$ is the uniform certificate, not the numbers.
+
+\subsection{What is new and what is re-derived}\label{fo:sec:new}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.60\textwidth}@{}}
+\toprule
+Item & Status relative to Parts~I--III\\
+\midrule
+Orbit reduction, collision graphs, four-color counts, unmixed cases &
+Part~I (and Part~III's recollection in \cref{evo:sec:imported}); reproved by
+both manuscripts; recalled in \cref{fo:sec:reduction}.\\[2pt]
+Balancing at $k=4$ & Part~III's \cref{evo:thm:balance,evo:cor:split}; AS and
+FO give an elementary $k=4$ identity, and AS a quantitative gap
+(\cref{fo:lem:balance}).\\[2pt]
+The formula for $n\ge7$ & Part~III, \cref{evo:thm:main} at $k=4$; second
+route here.\\[2pt]
+The values for $n=4,5,6$ & Part~I's finite table and witnesses.\\[2pt]
+Analytic threshold $26$ & New at $k=4$ (Part~III: $N(4)=212$); like $N(4)$, a
+sufficient threshold only (\cref{fo:sec:tail}).\\[2pt]
+Finite certificates ($2{,}082$ and $2{,}059$ entries) & New as certificates;
+their range lies inside Part~I's $7\le n\le30$ and Part~III's $7\le n\le211$
+(\cref{fo:sec:rowcheck}).\\[2pt]
+Attainment & Part~III's \cref{evo:et:prop:witness} at $k=4$ (saturation given
+the imported generation theorem); AS and FO give their own witnesses.\\[2pt]
+Rigidity (i)--(iv) & Specializes Part~III's \cref{evo:thm:rigidity}; adds the
+exact $2+2$ primitive palettes and the converse (\cref{fo:thm:rigidity}).\\[2pt]
+Second-collision penalty & Part~III's \cref{evo:thm:matching} with
+\eqref{evo:eq:oneedgepenalty} at $k=4$, $t=2$; FO proves it under a weaker
+hypothesis, AS's $24ab$ form is weaker (\cref{fo:sec:penalty}).\\[2pt]
+Stability (radius $a_nb_n/2$; scale $3^{n/2}$) & New
+(\cref{fo:as:thm:stability,fo:fo:thm:stability}).\\[2pt]
+Missing-orbit inventory, extremal output count & New at $k=4$ (Part~II has the
+$k=3$ inventory, \cref{tor:thm:inventory}); \cref{fo:sec:inventory}.\\[2pt]
+Residue formulas and asymptotics & Refine Part~III's
+\cref{evo:thm:evenasymptotic} at $k=4$ to exact identities.\\[2pt]
+Order-15 recurrence, minimal & New (Part~III's $k=4$ annihilator is of order
+$6$ in the step $t$, order $24$ in $n$, minimality not asserted);
+\cref{fo:sec:recurrence}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The reduction at four outputs}\label{fo:sec:reduction}
+
+\subsection{What Part~IV takes from Parts~I--III}\label{fo:sec:imported}
+
+Both manuscripts reprove the orbit reduction and the collision machinery,
+with Part~I's composition convention ($(u\circ v)(q)=u(v(q))$, letters act on
+colorings by $c\mapsto c\circ t$, and the monoid contains the identity).
+These statements are printed once, in Part~I, and recalled with credit.
+\begin{itemize}
+\item \emph{Orbit reduction.} For an accessible DFAO with transitions $s,t$,
+ initial state $q_0$ and output $\tau$, the reversal has
+ $|\tau\langle s,t\rangle|$ states (\cref{prop:orbit}; Davies's
+ Propositions~3--4). AS (Proposition~2.1) and FO (Proposition~2.1) reprove
+ it by the same argument, to fix the composition convention. FO notes that
+ only the lower witness uses accessibility, and calls a map $Q\to\D$ a
+ coloring without requiring that all four colors occur.
+\item \emph{Collision obstruction.} For a permutation $p$, a singular $s$ and
+ a collision pair $\{x,y\}$ of $s$, let $G=G(p;x,y)$ have edge set
+ $\{\{p^j(x),p^j(y)\}:j\in\Z\}$. Writing a word with its rightmost
+ occurrence of $s$ as $u\circ s\circ p^j$ shows that it identifies
+ $p^{-j}(x),p^{-j}(y)$, the endpoints of an edge of $G$, so only pure powers
+ of $p$ can reach a proper coloring (\cref{lem:rightmost}). Since $p$ is an
+ automorphism of $G$, its pure orbit on $\tau$ is either wholly proper or
+ wholly improper, and
+ \begin{equation}\label{fo:eq:sharpgraph}
+ |\tau\langle p,s\rangle|\le4^n-P_G(4)+
+ \begin{cases}|\tau\langle p\rangle|,&\tau\text{ proper for }G,\\
+ 0,&\tau\text{ improper for }G,\end{cases}
+ \end{equation}
+ with $|\tau\langle p\rangle|\le\ord(p)$ (\cref{prop:chromatic}; AS's
+ Lemma~2.2, FO's Lemma~3.2). AS stresses that the lemma does \emph{not}
+ assert that every improper coloring is reachable; that is needed for an
+ equality witness and is proved separately (\cref{fo:sec:attainment}).
+ FO's proof, like AS's, uses the \emph{rightmost} occurrence; FO's audit
+ notes that this direction of composition is essential and that the
+ collapsed edge uses $p^{-j}$, which is legitimate because $G$ contains all
+ translates.
+\item \emph{Classification.} A same-cycle pair on an $m$-cycle with
+ displacement $e$ gives $d=\gcd(m,e)$ cycles of length $L=m/d\ge2$ (a
+ $2$-cycle is one edge) and $r=n-m$ isolates,
+ $P_G(4)=C_L(4)^d4^r$ with $C_L(4)=3^L+(-1)^L3$ (\eqref{eq:samecount},
+ \eqref{eq:cyclepoly}); a cross pair on cycles of lengths $a,b$ gives
+ $d=\gcd(a,b)$ copies of $K_{a/d,b/d}$ and $r=n-a-b$ isolates,
+ $P_G(4)=\Bip_4(a/d,b/d)^d4^r$ (\eqref{eq:diffcount}). AS (Lemma~2.3) and FO
+ (Lemma~3.3) reprove this with the Chinese remainder criterion. AS proves
+ the cycle count as the trace of the $L$th power of the $4\times4$ matrix
+ with zero diagonal and ones elsewhere (eigenvalues $3,-1,-1,-1$), which is
+ Part~I's argument; both manuscripts also give the path recurrence of
+ \cref{fo:sec:algorithms}, which Part~II's \cref{tor:sec:small} spells out
+ for three colors. FO remarks that the classification does not make the
+ monoid small; it gives a short list of obstructions whose proper-coloring
+ counts can be compared exactly.
+\item \emph{The four-color biclique count.} Formula \eqref{fo:eq:B4} is
+ Part~III's \eqref{evo:eq:k4P} (manuscripts~06 and~01 of Part~III), and
+ Part~I's $B_4(a,b)$. AS (Lemma~3.1) and FO (Lemma~4.1) prove it from the
+ palette sum $\sum_j\binom4jj!\,S(a,j)(4-j)^b$, substituting
+ $2!\,S(a,2)=2^a-2$ and $3!\,S(a,3)=3^a-3\cdot2^a+3$; the contributions of
+ $j=1,2,3$ are $4\cdot3^b$, $6(2^a-2)2^b$ and $4(3^a-3\cdot2^a+3)$, the
+ $j=4$ term vanishes because $b>0$, and the result is symmetric in $a,b$,
+ as it must be. FO notes that it is also the four-color specialization of
+ the count in Davies's Theorem~3.
+\item \emph{Residual orders.} AS's $H_r(t)=\max_{\lambda\vdash r}\lcm(t,\lambda_1,\ldots)$,
+ with $H_0(t)=t$, is Part~I's \eqref{eq:H}, an exact maximum; FO uses Part~II's
+ product bound $J(r)$ (\eqref{tor:eq:J}, \cref{tor:lem:product}).
+\end{itemize}
+
+\subsection{Unmixed letters and permutation orders}\label{fo:sec:unmixed}
+
+\begin{lemma}[Unmixed and nonsurjective cases; AS and FO]\label{fo:lem:easy}
+Let $n\ge2$.
+\begin{enumerate}[label=(\roman*)]
+\item If both letters are permutations, the deficit is at least
+$4^n-M(n,4)\ge3\cdot4^{n-1}$.
+\item If both letters are singular, the deficit is at least $9\cdot4^{n-2}-1$.
+\item \textup{(FO)} If $\tau$ is not surjective, the deficit is at least
+$4^n-3^n\ge4^{n-1}$.
+\end{enumerate}
+For $n\ge7$ each of these bounds exceeds $7\cdot2^n$ \textup{(FO)}.
+\end{lemma}
+
+These are Part~III's \cref{evo:lem:easy} at $k=4$ and Part~I's
+\eqref{eq:Dnon}--\eqref{eq:Dsing}; (iii) is also Part~III's
+\cref{evo:et:rem:unmixed}. The manuscripts' proofs of the multinomial bound
+differ from Part~III's restriction argument and are kept.
+
+\begin{proof}[Proofs of the bound $M(n,4)\le4^{n-1}$]
+\emph{AS.} Permutations preserve the four color-class sizes, so an orbit lies
+in one class of size at most $M(n,4)$; the multinomial recurrence gives
+$M(n,4)\le4M(n-1,4)$ and $M(1,4)=1$. \emph{FO.} The maximum occurs when the
+multiplicities differ by at most one (replacing $u,v$ by $u-1,v+1$ when
+$u\ge v+2$ reduces the factorial denominator by the factor $(v+1)/u<1$).
+Normalize all multinomial coefficients at level $n$ by $4^n$: each
+normalized coefficient is the average of four at level $n-1$ (nonexistent
+entries read as zero), so the maximum is nonincreasing; it is $1/4$ at level
+one.
+
+For (ii), choose a collision pair of each letter; a nonidentity word ends on
+the right with one of them and makes its pair monochromatic, so no proper
+coloring of the graph formed by these one or two edges is reachable except
+possibly $\tau$ itself; two distinct edges have exactly $9\cdot4^{n-2}$ proper
+four-colorings whether or not they meet, one edge has $12\cdot4^{n-2}$.
+For (iii), a color absent from $\tau$ is absent from every orbit element.
+FO's comparison with $7\cdot2^n$: $4^n-3^n\ge4^{n-1}$ and
+$4^n-M(n,4)\ge3\cdot4^{n-1}$, and all three exceed $7\cdot2^n$ at $n=7$ and
+remain larger as $n$ grows.
+\end{proof}
+
+\begin{lemma}[Permutation orders]\label{fo:lem:order}
+\textup{(AS)} A permutation on $n\ge1$ points has order at most $2^{n-1}$.
+\textup{(FO)} A permutation on $r$ points has order at most $J(r)$, and
+\begin{equation}\label{fo:eq:period}
+ J(r)\le3^{r/3}<(3/2)^r<2^r\qquad(r>0).
+\end{equation}
+In the same-cycle case $\ord(p)\le mJ(r)$, and in the cross-cycle case
+$\ord(p)\le\lcm(a,b)J(r)=\tfrac{ab}{d}J(r)$ \textup{(FO)}; exactly,
+$\ord(p)\le H_{n-m}(m)$, respectively $H_{n-a-b}(\lcm(a,b))$ \textup{(AS)}.
+\end{lemma}
+
+\begin{proof}
+\emph{AS.} If the cycle lengths are $m_1,\ldots,m_c$, the order divides
+$\prod m_i$, and $m\le2^{m-1}$ for every positive integer $m$ by induction;
+so $\ord(p)\le2^{n-c}\le2^{n-1}$. \emph{FO.} The first two inequalities are
+Part~II's \cref{tor:lem:product} and Part~III's \cref{evo:lem:order}. FO
+derives the closed form of $J$ as Part~II does and proves $m\le3^{m/3}$ by
+checking $m=1,\ldots,4$ and using $(m+1)^3/m^3<3$ for $m\ge4$; the strict
+comparisons follow from $\sqrt[3]3<3/2<2$. Keeping the one or two active
+cycles separate and bounding the order on the remaining $r$ states gives the
+local bounds. FO calls the Landau function unnecessary here: the simpler
+$J(r)$ bound makes the proof and the certificate easier to audit.
+\end{proof}
+
+\subsection{Uniform four-color bounds}\label{fo:sec:bounds}
+
+Put $\psi(t)=3^t-3\cdot2^t$ (AS's $h(t)$; FO's $g(t)=4\psi(t)$). Then
+\begin{equation}\label{fo:eq:psi}
+ \Bip_4(a,b)=6\cdot2^{a+b}+4\bigl(\psi(a)+\psi(b)\bigr)+12,\qquad
+ \psi(1)=\psi(2)=-3,\ \psi(3)=3,
+\end{equation}
+and $\psi$ is increasing from $t=2$ on, since $\psi(t+1)-\psi(t)=2\cdot3^t-3\cdot2^t>0$
+for $t\ge2$; in FO's form $\Delta g(t)=8\cdot3^t-12\cdot2^t$ and
+$\Delta^2g(t)=16\cdot3^t-12\cdot2^t>0$, and $\psi\ge-3$ throughout.
+
+\begin{lemma}[Uniform exponential lower bounds; AS and FO]\label{fo:lem:counts}
+For positive integers $a,b$ with $w=a+b$ and every $L\ge2$:
+\begin{enumerate}[label=(\alph*)]
+\item $\Bip_4(a,b)\ge6\cdot2^w-12\ge3\cdot2^w$ \textup{(FO; AS proves the outer bound)};
+\item if $w\ge5$, then $\Bip_4(a,b)\ge6\cdot2^w+12>6\cdot2^w$ \textup{(AS; FO states the strict form)};
+\item $C_L(4)=3^L+(-1)^L3\ge(8/3)^L$ \textup{(FO)}, hence $\ge(5/2)^L$ \textup{(AS)}.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) By \eqref{fo:eq:psi} and $\psi\ge-3$; $w\ge2$ gives the second inequality.
+AS's proof of $\Bip_4\ge3\cdot2^w$ is different: choose a two-color palette for
+the left side and the complementary palette for the right; the six choices
+give $6\cdot2^w$ palette-coloring pairs, and a proper coloring occurs in at
+most two of them (two exactly when both sides are monochromatic).
+(b) If $w\ge5$ one side is at least three, so its $\psi$-value is at least
+$3$ while the other is at least $-3$; hence $\psi(a)+\psi(b)\ge0$.
+(c) \emph{FO:} $C_2=12>(8/3)^2$, and for $L\ge3$,
+$C_L\ge3^L-3\ge\frac89\,3^L\ge(\frac89)^L3^L$. \emph{AS:} $L=2$ is direct,
+$3^3-3=24>(5/2)^3$, and $3^{L+1}-3=3(3^L-3)+6$ gives $3^L-3\ge(5/2)^L$ for
+$L\ge3$ by induction; the even-$L$ expression is larger still.
+\end{proof}
+
+\subsection{Balancing at four outputs}\label{fo:sec:balance}
+
+The closest coprime split \eqref{fo:eq:split} is the unique coprime pair
+$a<b$, $a+b=n$, with least $b-a$: both manuscripts prove this as Part~II
+(\cref{tor:lem:optimize}) and Part~III (\cref{evo:cor:split}) do (for odd
+$n$ consecutive integers; for $n=2h$ with $h$ even the odd pair $h\pm1$ has
+gcd dividing two; for odd $h\ge5$ that pair is even, and the odd pair $h\pm2$
+has gcd dividing four; the equal split is not coprime).
+
+\begin{lemma}[Balancing the period-corrected count; AS and FO]\label{fo:lem:balance}
+Put $\mathcal F_4(a,b)=\Bip_4(a,b)-ab$. For positive integers $b\ge a+2$,
+\begin{equation}\label{fo:eq:balance}
+ \mathcal F_4(a,b)-\mathcal F_4(a+1,b-1)
+ =8(3^{b-1}-3^a)-12(2^{b-1}-2^a)+(b-a-1)>0.
+\end{equation}
+Hence, among coprime pairs with sum $n\ge7$, $\mathcal F_4$ is uniquely
+minimized at $(a_n,b_n)$, with value $D^*_4(n)$. \textup{(AS)} Every other
+coprime pair $a<b$ with sum $n$ satisfies
+\begin{equation}\label{fo:as:eq:balancegap}
+ \mathcal F_4(a,b)>D^*_4(n)+a_nb_n.
+\end{equation}
+\end{lemma}
+
+The first assertion is the case $k=4$ of Part~III's \cref{evo:cor:split}
+(via \cref{evo:thm:balance}, or quantitatively \cref{evo:et:thm:balance});
+the manuscripts' proof is a direct $k=4$ identity.
+
+\begin{proof}
+Subtract two instances of \eqref{fo:eq:B4}; the product term contributes
+$b-a-1$. In FO's form the difference is $\Delta g(b-1)-\Delta g(a)+(b-a-1)$.
+The function $8\cdot3^t-12\cdot2^t$ is strictly increasing for $t\ge1$ (its
+increment is $16\cdot3^t-12\cdot2^t>0$), which gives strict balancing; the
+intermediate splits need not be coprime, since strict balancing holds for
+all positive splits. So the closest admissible split is the unique minimum.
+
+\emph{The gap (AS).} Order the other pair as $a<b$; then $a<a_n$, and the
+inward moves from $(a,b)$ to $(a_n,b_n)$ include the last move from
+$(a_n-1,b_n+1)$, whose loss is at least
+\[
+ 16\cdot3^{a_n-1}-12\cdot2^{a_n-1}+1>4\cdot3^{a_n-1}>(a_n+2)^2\ge n^2/4\ge a_nb_n.
+\]
+The first strict inequality uses $a_n-1\ge2$; the second holds at $a_n=3$ and
+persists by induction, since multiplying by three dominates the ratio
+$(a_n+3)^2/(a_n+2)^2$; finally $n\le2a_n+4$. Summing the positive inward
+losses proves \eqref{fo:as:eq:balancegap}.
+\end{proof}
+
+Both manuscripts explain why four outputs are especially tractable. A proper
+three-coloring of a biclique is constant on one side (Part~II); with four
+colors both sides can carry primitive nonconstant words on disjoint two-color
+palettes, so the proper orbit can have length $ab$ rather than $\max(a,b)$
+(FO). The leading term of $\Bip_4(a,b)$ is $6\cdot2^{a+b}$, independent of the
+imbalance of the split; a nonspanning or disconnected graph has a strictly
+larger leading coefficient, a same-cycle graph a larger exponential base, and
+the optimal split is selected by a smaller, strictly convex correction (AS
+and FO).
+
+\section{An effective tail: every \texorpdfstring{$n\ge26$}{n >= 26}}\label{fo:sec:tail}
+
+This section proves the upper bound of \cref{fo:thm:main} for $n\ge26$ twice,
+by AS's and by FO's elementary estimates. Neither uses asymptotic notation;
+both reduce to one integer inequality at $n=26$ and a decreasing ratio.
+
+\subsection{AS's exclusion}
+
+\begin{lemma}[An upper estimate on the witness deficit; AS]\label{fo:as:lem:target}
+For all $n\ge26$, $D^*_4(n)<7\cdot2^n$.
+\end{lemma}
+
+\begin{proof}
+Write $a_n=n/2-\delta_n$, $b_n=n/2+\delta_n$ with $0<\delta_n\le2$. Since
+$a_nb_n\ge12$,
+\[
+ D^*_4(n)\le6\cdot2^n+4(3^{\delta_n}+3^{-\delta_n})3^{n/2}
+ \le6\cdot2^n+\frac{328}{9}3^{n/2}.
+\]
+At $n=26$ the last term is strictly less than $2^n$, by the integer inequality
+\begin{equation}\label{fo:as:eq:threshold26}
+ 328\cdot3^{13}<9\cdot4^{13}.
+\end{equation}
+The ratio $3^{n/2}/2^n=(\sqrt3/2)^n$ decreases, so the inequality persists.
+\end{proof}
+
+\begin{proposition}[Structural exclusion beyond the threshold; AS]\label{fo:as:prop:tail}
+Let $n\ge26$. In the complete case split of \cref{fo:sec:imported} and
+\cref{fo:lem:easy}, every case except one spanning coprime biclique has
+deficit greater than $8\cdot2^n$. A spanning coprime biclique with cycle
+lengths $a,b$ has deficit at least $\mathcal F_4(a,b)$. Consequently the upper
+bound \eqref{fo:eq:upper} holds for every $n\ge26$, and every structural case
+other than the spanning biclique with cycle lengths $(a_n,b_n)$ has deficit
+strictly greater than $D^*_4(n)+a_nb_n$.
+\end{proposition}
+
+\begin{proof}
+A cross-cycle collision with $d=\gcd(a,b)\ge2$ and $r=n-a-b$ has, by
+\cref{fo:lem:counts}(a), $P_G(4)=\Bip_4(a/d,b/d)^d4^r\ge3^d2^{a+b}4^r=3^d2^{n+r}\ge9\cdot2^n$;
+subtracting $\ord(p)\le2^{n-1}$ (\cref{fo:lem:order}) leaves more than
+$(17/2)2^n>8\cdot2^n$. If $d=1$ but $r\ge2$, the same estimate gives
+$P_G(4)\ge3\cdot2^{n+r}\ge12\cdot2^n$; if $r=1$, then $a+b=n-1\ge5$ and
+\cref{fo:lem:counts}(b) gives $P_G(4)\ge(6\cdot2^{n-1}+12)4>12\cdot2^n$; the
+deficit is at least $(23/2)2^n$. A same-cycle collision has
+$P_G(4)\ge(5/2)^{n-r}4^r\ge(5/2)^n$ by \cref{fo:lem:counts}(c); already at
+$n=10$, $(5/4)^n>17/2$ (that is, $2\cdot5^{10}>17\cdot4^{10}$), and this
+persists, so $P_G(4)-\ord(p)>8\cdot2^n$ for $n\ge26$. The two bounds of
+\cref{fo:lem:easy}(i)--(ii) also exceed $8\cdot2^n$. This leaves $d=1$,
+$r=0$: $p$ has exactly two cycles of coprime lengths $a,b$, its order is
+$ab$, and the graph bound is $\Bip_4(a,b)-ab=\mathcal F_4(a,b)$, minimized
+at $(a_n,b_n)$ by \cref{fo:lem:balance}.
+
+For the margin, the excluded cases have deficit
+$>8\cdot2^n>D^*_4(n)+2^n>D^*_4(n)+a_nb_n$, since
+$a_nb_n\le n^2/4<2^n$ for $n\ge26$ (true at $26$ and preserved by induction);
+every other spanning coprime split has the margin by
+\eqref{fo:as:eq:balancegap}.
+\end{proof}
+
+AS: the threshold $26$ is sufficient for this particular collection of simple
+estimates, not a claimed optimal analytic threshold; no conclusion about
+smaller $n$ is drawn by continuity or extrapolation, and the next section
+handles them exactly.
+
+\subsection{A second route: FO's exclusion}
+
+\begin{lemma}[Eliminating nonoptimal graph types; FO]\label{fo:fo:lem:eliminate}
+For $n\ge7$, a same-cycle collision forces $\defi>7\cdot2^n$, and a
+cross-cycle collision with $\gcd(a,b)\ge2$ or $a+b<n$ forces
+$\defi>8\cdot2^n$.
+\end{lemma}
+
+\begin{proof}
+For a same-cycle collision, $P_G(4)=C_{m/d}(4)^d4^r\ge(8/3)^n$ by
+\cref{fo:lem:counts}(c), and $\ord(p)<(3/2)^n$ by \eqref{fo:eq:period}, so
+$\defi/2^n>(4/3)^n-(3/4)^n>7$ for $n\ge7$; the middle expression increases
+with $n$, and at $n=7$ the claim is the integer inequality
+$4^{14}-3^{14}>7\cdot12^7$. For a cross-cycle collision with
+$d=\gcd(a,b)\ge2$, $P_G(4)=\Bip_4(a/d,b/d)^d4^r\ge3^d2^{n+r}\ge9\cdot2^n$, and
+$\ord(p)<2^n$. If $d=1$ and $r\ge1$: when $a+b\ge5$,
+$P_G(4)>6\cdot2^{a+b}4^r=6\cdot2^{n+r}\ge12\cdot2^n$; when $a+b\le4$, $n\ge7$
+forces $r\ge3$ and $P_G(4)\ge3\cdot2^{n+r}\ge24\cdot2^n$. Again subtracting an
+order below $2^n$ suffices.
+\end{proof}
+
+\begin{lemma}[The optimal candidate is below the separating threshold; FO]\label{fo:fo:lem:threshold}
+For every $n\ge26$,
+\begin{equation}\label{fo:fo:eq:threshold}
+ D^*_4(n)<6\cdot2^n+40\cdot3^{n/2}<7\cdot2^n.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+With $a_n=n/2-\delta_n$, $b_n=n/2+\delta_n$, $0\le\delta_n\le2$, one has
+$3^{\delta_n}+3^{-\delta_n}\le9+1/9<10$, so $4(3^{a_n}+3^{b_n})<40\cdot3^{n/2}$;
+the remaining correction $-12(2^{a_n}+2^{b_n})+12-a_nb_n$ is negative. For
+the second inequality the ratio $40\cdot3^{n/2}/2^n$ decreases, and at $n=26$
+the comparison is $40\cdot3^{13}=63{,}772{,}920<67{,}108{,}864=2^{26}$.
+\end{proof}
+
+\begin{proposition}[Analytic upper bound and strictness; FO]\label{fo:fo:prop:large}
+For $n\ge26$, every orbit has deficit at least $D^*_4(n)$. Equality requires
+one permutation and one singular generator, the permutation having exactly
+two cycles, of lengths $a_n,b_n$, and every collision pair of the singular
+generator joins those two cycles.
+\end{proposition}
+
+\begin{proof}
+The easy regimes have deficit greater than $7\cdot2^n$
+(\cref{fo:lem:easy}), so they cannot attain the candidate of
+\cref{fo:fo:lem:threshold}. In the mixed regime choose any collision pair;
+\cref{fo:fo:lem:eliminate} rules out a same-cycle collision and every
+cross-cycle graph with $d>1$ or $r>0$. Only two full coprime cycles of
+lengths $a,b$ remain; their order is $ab$, so $\defi\ge\Bip_4(a,b)-ab\ge D^*_4(n)$,
+with equality in the second step only at $(a_n,b_n)$
+(\cref{fo:lem:balance}). Since the argument applies to \emph{any} collision
+pair, every collision joins the two cycles in an equality case.
+\end{proof}
+
+\begin{remark}[Comparison with Part~III's threshold; added in the merge]\label{fo:rem:threshold}
+Part~III's analytic threshold at $k=4$ is $N(4)=212$ (\cref{evo:eq:Ndef},
+\cref{evo:tab:closure}); below it, Part~III closes $7\le n\le211$ by
+$180{,}964$ exact comparisons in $205$ rows per implementation. AS and FO
+reach $26$ because at $k=4$ the leading term $6\cdot2^n$ of every spanning
+coprime biclique does not depend on the split, so the competing graph types
+are separated by a whole multiple of $2^n$; Part~III's $N(k)$ comes from an
+argument uniform in $k$, which the manuscripts' estimates are not. Neither
+$26$ nor $212$ is claimed to be least: both are sufficient thresholds, and the
+formula already holds from $n=7$ by the finite closures. The first part of
+\cref{evo:q:threshold} (a smaller explicit threshold) is thereby improved at
+$k=4$ only. (For comparison: $D^*_4(n)<7\cdot2^n$ first holds at $n=15$ and
+fails again at $n=16$, $18$ and $22$; FO's intermediate bound
+$6\cdot2^n+40\cdot3^{n/2}<7\cdot2^n$ first holds at $n=26$. The write phase
+checked both by exact arithmetic.)
+\end{remark}
+
+\section{Finite certificates below the threshold}\label{fo:sec:finite}
+
+\subsection{Two complete finite lists}
+
+For each $n$ both manuscripts form a finite list of integers, one for every
+structural case left by the reduction, and check that its minimum is the
+claimed deficit. Neither enumerates transformation monoids or automata; the
+finite objects are cycle lengths, divisors and residual integer partitions.
+AS calls this the essential reduction that makes the finite proof small and
+independently checkable.
+
+\emph{AS's list.} For $n\ge4$, $\mathcal K^{\mathrm{AS}}_n$ consists of
+\begin{align}
+ &3\cdot4^{n-1},\qquad 9\cdot4^{n-2}-1,\label{fo:as:eq:listeasy}\\
+ &C_{m/d}(4)^d\,4^{n-m}-H_{n-m}(m),
+ &&2\le m\le n,\ d\mid m,\ d<m,\label{fo:as:eq:listsame}\\
+ &\Bip_4(a/d,b/d)^d\,4^{n-a-b}-H_{n-a-b}(\lcm(a,b)),
+ &&1\le a\le b,\ a+b\le n,\ d=\gcd(a,b).\label{fo:as:eq:listcross}
+\end{align}
+
+\emph{FO's list.} For $n\ge7$, $\mathcal K^{\mathrm{FO}}_n$ consists of the
+three easy entries $4^n-3^n$, $4^n-M(n,4)$, $9\cdot4^{n-2}-1$, the same-cycle
+entries $C_{m/d}(4)^d4^{n-m}-mJ(n-m)$ over the same range, and the cross-cycle
+entries $\Bip_4(a/d,b/d)^d4^r-\frac{ab}{d}J(r)$, $r=n-a-b$, over the same
+range. Entries keep their structural tags even when numerical values
+coincide.
+
+\begin{lemma}[Completeness; AS and FO]\label{fo:lem:complete}
+Every pair of transformations on $n$ points and every output map have
+deficit at least $\min\mathcal K^{\mathrm{AS}}_n$, and at least
+$\min\mathcal K^{\mathrm{FO}}_n$.
+\end{lemma}
+
+\begin{proof}
+The easy entries handle two permutations, two singular letters and (FO) a
+nonsurjective output (\cref{fo:lem:easy}). In the mixed case choose any
+collision pair. For a same-cycle pair the containing cycle has length $m$ and
+the other cycles partition $n-m$, so $\ord(p)\le H_{n-m}(m)\le mJ(n-m)$; for a
+cross pair on cycles of lengths $a,b$ the other cycles partition $n-a-b$, so
+$\ord(p)\le H_{n-a-b}(\lcm(a,b))\le\lcm(a,b)J(n-a-b)$
+(\cref{fo:lem:order}). The classification covers every possible pair, and
+taking the minimum over the list only weakens the bound.
+\end{proof}
+
+Both lists are variants of Part~I's structural collection
+\eqref{eq:Dnon}--\eqref{eq:Dbip} at $k=4$: AS's drops the nonsurjective entry
+(not needed, since the collision bound holds for every $\tau$) and weakens the
+multinomial entry to $3\cdot4^{n-1}$, keeping Part~I's exact order sets; FO's
+keeps all three easy entries and replaces the exact order sets by Part~II's
+product bound $J$. At $k=4$ Part~I's period term $T_{r,4}(a,b)$ is
+$H_r(\lcm(a,b))$ (\eqref{eq:periodimprove}), so AS's cross entries are
+Part~I's.
+
+\begin{proposition}[Finite certificates; AS and FO]\label{fo:prop:finite}
+\textup{(AS)} For every $4\le n\le25$, $\min\mathcal K^{\mathrm{AS}}_n=D_4(n)$ of
+\cref{fo:thm:main}, attained by a unique entry: the same-cycle entry
+$(m,d,r)=(4,1,0)$ at $n=4$, the cross-cycle entry $(a,b,r)=(2,3,0)$ at $n=5$,
+the same-cycle entry $(6,2,0)$ at $n=6$, and the cross-cycle entry
+$(a_n,b_n,0)$ for $7\le n\le25$, where every other entry exceeds
+$D^*_4(n)+a_nb_n$. \textup{(FO)} For every $7\le n\le25$, the unique minimizing
+tagged entry of $\mathcal K^{\mathrm{FO}}_n$ is the cross-cycle entry
+$(a,b,d,r)=(a_n,b_n,1,0)$, with value $D^*_4(n)$.
+\end{proposition}
+
+\begin{proof}[Finite computational proofs]
+\emph{AS.} Enumerate the ranges and all integer partitions exactly, and
+evaluate all powers and least common multiples as integers. The resulting
+$2{,}082$ entries, their parameters and the $22$ minima are in
+\path{data/07-all-state-finite_certificate.json};
+\cref{fo:tab:finite} displays the minimum and the next-smallest entry, so
+uniqueness and the gap can be checked from the summary
+(\path{data/07-all-state-finite_summary.csv}). The producer
+\path{code/07-all-state-verify.py} enumerates nondecreasing partitions and
+uses \eqref{fo:eq:B4}; the independent checker
+\path{code/07-all-state-independent_check.py} imports no producer code,
+enumerates partitions in the reverse direction, evaluates biclique counts by
+the Stirling-number formula and cycle counts by the path recurrence, and
+re-enumerates every structural entry instead of trusting the reported
+minimum. Both completed successfully on all $2{,}082$ entries.
+
+\emph{FO.} Evaluate the list with the integer formulas \eqref{fo:eq:B4},
+$C_L(4)$, $M(n,4)$ and the closed form of $J$. There are $2{,}059$ entries in
+total; the complete rows, including the runner-up tag, are in
+\path{data/06-four-output-base_certificate.csv}. The primary implementation
+\path{code/06-four-output-verify.py} uses the closed forms; the independent
+implementation \path{code/06-four-output-independent_check.py} computes
+biclique counts by Stirling numbers, cycle counts by the transfer recurrence
+and $J$ by the dynamic program $J(r)=\max_{1\le j\le r}jJ(r-j)$, enumerates
+cross-cycle cases by total occupied size rather than by first cycle length,
+and verifies every delivered table field. Both returned the stated unique
+minima; all arithmetic is exact, and all checks remain active under Python's
+optimization flag.
+
+Each is a finite computational proof, with the ordinary execution and
+integer-arithmetic trust boundary (\cref{fo:sec:verification}).
+\end{proof}
+
+{\small
+\begin{longtable}{@{}rcrrrrrr@{}}
+\caption{The two finite certificates (AS: $4\le n\le25$; FO: $7\le n\le25$).
+The runner-up is AS's next-smallest entry; the margin is the runner-up minus
+the minimum, which both manuscripts report and which agrees on the common
+range; for $n\ge7$ it exceeds $a_nb_n$. The last two columns count every
+entry of $\mathcal K^{\mathrm{AS}}_n$ and $\mathcal K^{\mathrm{FO}}_n$; FO's
+extra entry is the nonsurjective bound $4^n-3^n$.}\label{fo:tab:finite}\\
+\toprule
+$n$ & $(a_n,b_n)$ & $D_4(n)$ & Runner-up & Margin & $|\mathcal K^{\mathrm{AS}}_n|$ & $|\mathcal K^{\mathrm{FO}}_n|$ & $R_2(n,4)$\\
+\midrule\endfirsthead
+\toprule
+$n$ & $(a_n,b_n)$ & $D_4(n)$ & Runner-up & Margin & $|\mathcal K^{\mathrm{AS}}_n|$ & $|\mathcal K^{\mathrm{FO}}_n|$ & $R_2(n,4)$\\
+\midrule\endhead
+\bottomrule\endfoot
+4 & --- & 80 & 93 & 13 & 10 & --- & 176\\
+5 & --- & 198 & 235 & 37 & 13 & --- & 826\\
+6 & --- & 570 & 726 & 156 & 19 & --- & 3\,526\\
+7 & $(3,4)$ & 912 & 1\,346 & 434 & 23 & 24 & 15\,472\\
+8 & $(3,5)$ & 2\,133 & 3\,684 & 1\,551 & 30 & 31 & 63\,403\\
+9 & $(4,5)$ & 3\,784 & 8\,577 & 4\,793 & 36 & 37 & 258\,360\\
+10 & $(3,7)$ & 13\,359 & 15\,196 & 1\,837 & 44 & 45 & 1\,035\,217\\
+11 & $(5,6)$ & 15\,006 & 19\,616 & 4\,610 & 50 & 51 & 4\,179\,298\\
+12 & $(5,7)$ & 32\,353 & 60\,114 & 27\,761 & 61 & 62 & 16\,744\,863\\
+13 & $(6,7)$ & 58\,482 & 72\,884 & 14\,402 & 68 & 69 & 67\,050\,382\\
+14 & $(5,9)$ & 171\,447 & 234\,054 & 62\,607 & 78 & 79 & 268\,264\,009\\
+15 & $(7,8)$ & 226\,948 & 685\,923 & 458\,975 & 88 & 89 & 1\,073\,514\,876\\
+16 & $(7,9)$ & 472\,965 & 907\,960 & 434\,995 & 100 & 101 & 4\,294\,494\,331\\
+17 & $(8,9)$ & 882\,132 & 1\,017\,494 & 135\,362 & 109 & 110 & 17\,178\,987\,052\\
+18 & $(7,11)$ & 2\,264\,023 & 3\,528\,744 & 1\,264\,721 & 123 & 124 & 68\,717\,212\,713\\
+19 & $(9,10)$ & 3\,442\,146 & 3\,852\,836 & 410\,690 & 133 & 134 & 274\,874\,464\,798\\
+20 & $(9,11)$ & 7\,047\,969 & 12\,577\,577 & 5\,529\,608 & 148 & 149 & 1\,099\,504\,579\,807\\
+21 & $(10,11)$ & 13\,490\,734 & 18\,884\,980 & 5\,394\,246 & 161 & 162 & 4\,398\,033\,020\,370\\
+22 & $(9,13)$ & 31\,517\,295 & 53\,963\,266 & 22\,445\,971 & 175 & 176 & 17\,592\,154\,527\,121\\
+23 & $(11,12)$ & 53\,092\,152 & 56\,834\,426 & 3\,742\,274 & 187 & 188 & 70\,368\,691\,085\,512\\
+24 & $(11,13)$ & 107\,626\,165 & 212\,369\,004 & 104\,742\,839 & 206 & 207 & 281\,474\,869\,084\,491\\
+25 & $(12,13)$ & 209\,682\,048 & 220\,945\,730 & 11\,263\,682 & 220 & 221 & 1\,125\,899\,697\,160\,576\\
+\midrule
+\multicolumn{5}{r}{Total} & 2\,082 & 2\,059 & \\
+\end{longtable}}
+
+FO's comments on the table: at $n=7$ the minimizing entry is
+$\Bip_4(3,4)-12=924-12=912$ and the closest competitor is
+$\Bip_4(2,5)-10=1346$, giving margin $434$; at $n=10$ the optimum is the less
+balanced coprime pair $(3,7)$ and the runner-up is a $(4,5)$ collision with
+one isolated state. So the finite check includes the potentially dangerous
+arithmetic exceptions instead of assuming that all best candidates are
+balanced full-support bicliques.
+
+\begin{corollary}[Universal upper bound and structural margin; AS and FO]\label{fo:cor:universal}
+The upper bound \eqref{fo:eq:upper} holds for every $n\ge4$. For every $n\ge7$,
+all structural entries other than the spanning coprime biclique with cycle
+lengths $(a_n,b_n)$ have deficit strictly greater than $D^*_4(n)+a_nb_n$
+\textup{(AS)}; in particular, if equality is possible, every selected
+collision yields the unique minimizing graph type, and the cycle structure and
+cross-collision restrictions of \cref{fo:fo:prop:large} hold for every $n\ge7$
+\textup{(FO)}.
+\end{corollary}
+
+\begin{proof}
+Combine \cref{fo:prop:finite} with \cref{fo:as:prop:tail} (AS), respectively
+with \cref{fo:fo:prop:large} (FO); the intervals $4\le n\le25$ (or
+$7\le n\le25$) and $n\ge26$ cover the domain.
+\end{proof}
+
+\subsection{Comparison with Parts~I and~III; added in the merge}\label{fo:sec:rowcheck}
+
+The write phase compared the closed form \eqref{fo:eq:main} with the recorded
+data of every part, in exact integers: it equals Part~III's
+$4^n-\Bip_4(a_n,b_n)+a_nb_n$ with the closest-coprime split for $7\le n\le400$;
+the \texttt{upper} and \texttt{lower} columns of all $24$ rows $k=4$
+($7\le n\le30$) of Part~I's \path{data/finite_range_bounds.csv}; all $94$
+rows $k=4$ of \path{data/03-eventual-finite_certificates.csv}; the split and
+the target deficit of all $205$ rows of
+\path{data/05-quartic-threshold-finite_k4.csv} ($7\le n\le211$); all $213$
+rows of FO's \path{data/06-four-output-base_certificate.csv} and
+\path{..._structural_sweep.csv}; and AS's $22$ rows, including $176$, $826$ and
+$3526$ at $n=4,5,6$. There were no mismatches. On $7\le n\le25$ the two
+certificates have identical margins (FO's \texttt{margin} equals AS's
+\texttt{gap}); FO has exactly one more entry per $n$ (its nonsurjective
+entry), $2{,}059$ against AS's $2{,}040$ on the common range. Part~III's
+margins at $k=4$ are different numbers (its smallest excluded margin is
+$1265$ at $n=7$), because its list compresses component sizes and bounds
+residual orders by $\lfloor3^{r/3}\rfloor$. So the range $7\le n\le25$ of
+the two new certificates was already covered by Part~I's
+\cref{prop:finite} ($n\le30$) and by Part~III's closure ($n\le211$); what is
+new is that, with the threshold $26$, a certificate of about two thousand
+comparisons suffices for the whole four-output slice.
+
+\section{Attainment and the small witnesses}\label{fo:sec:attainment}
+
+\subsection{The imported generation theorem}
+
+Both manuscripts import, for attainment only, the Holzer--K\"onig
+two-generation theorem \cite[Theorem~8]{HolzerKoenig2004} in the form stated
+by Davies \cite[Section~3, printed p.~7]{Davies2017}, who attributes the
+displayed generators to Krawetz \cite{Krawetz2003}. This is Part~III's
+\cref{evo:et:def:U} and the imported theorem of \cref{evo:sec:witness}: for
+$1<a<b$, $\gcd(a,b)=1$, $Q=X\sqcup Y$ with $X=\{0,\ldots,a-1\}$,
+$Y=\{a,\ldots,n-1\}$ and
+\begin{equation}\label{fo:eq:generators}
+ p=(0\ 1\ \cdots\ a-1)(a\ a+1\ \cdots\ n-1),\qquad
+ s(0)=a,\ s(n-1)=0,\ \text{and, if $a$ is odd, }s(1)=2,\ s(2)=1,
+\end{equation}
+with $s$ fixing every other state, the monoid $U_{a,b}$ of powers of $p$ and
+maps $t$ with $t(X)\cap t(Y)\ne\varnothing$, $Y\not\subseteq t(Q)$ is
+generated by $p$ and $s$. (AS calls the parity rule the four-output
+specialization of Davies's displayed generators; FO writes it as
+$(s(1),s(2))=(2,1)$ for odd $a$ and $(1,2)$ for even $a$.) The map $s$ has the
+unique collision pair $\{0,a\}$, omits $n-1$ from its image and has rank $n-1$
+(FO); in the range $a\ge3$ all listed points exist (AS). Neither manuscript
+reproves the generation theorem, and both say that finite breadth-first
+searches do not replace it; AS: all universal lower-bound claims depend on
+this published theorem, and neither a few searches nor the repository's
+presence replaces that dependency. The upper bound does not use it (FO).
+
+\subsection{Saturating the improper colorings}
+
+The saturation step is Part~III's \cref{evo:et:lem:saturation}, and the
+witness Part~III's \cref{evo:et:prop:witness} at $k=4$ (which gives $X$ and $Y$
+two colors each). AS and FO prove it for their own output words.
+
+\begin{proposition}[All-state lower witness; AS]\label{fo:as:prop:attainment}
+For $n\ge7$, $a=a_n$, $b=b_n$ and the generators \eqref{fo:eq:generators}, the
+output word $\tau=0^{a-1}1\,2^{b-1}3$ has orbit size
+$4^n-\Bip_4(a,b)+ab$. The DFAO with initial state $0$ is accessible and
+minimal.
+\end{proposition}
+
+\begin{proof}
+The graph of the cross collision is $K_{a,b}$, and $\tau$ is proper for it
+(disjoint palettes). Each block word has full cyclic period, because it
+contains a symbol occurring exactly once, so the combined period is
+$\lcm(a,b)=ab$ and exactly $ab$ proper colorings lie in $\tau\langle p\rangle$.
+Let $c$ be any improper coloring, so $c(x)=c(y)$ for some $x\in X$, $y\in Y$.
+Choose $y_0\in Y$ labelled $2$ by $\tau$; since $b\ge4$ this label occurs at
+another point of $Y$, so there are representatives $r_i\in Q\setminus\{y_0\}$
+with $\tau(r_i)=i$ for every $i\in\D$. The map $t(q)=r_{c(q)}$ identifies
+$x,y$ and omits $y_0$, so $t\in U_{a,b}$, and $\tau\circ t=c$. By the imported
+theorem every improper coloring is reachable; there are $4^n-\Bip_4(a,b)$ of
+them, and by \eqref{fo:eq:sharpgraph} the only reachable proper colorings are
+the $ab$ pure powers. The $p$-cycle reaches $X$ from $0$, $s(0)=a$ enters $Y$,
+and powers of $p$ reach $Y$, so the DFAO is accessible. Points on different
+cycles have different palettes, and two points on one cycle are separated by
+a power of $p$ because the cyclic output word is primitive; so the DFAO is
+minimal, and \cref{prop:orbit} converts the orbit count into reversal
+complexity.
+\end{proof}
+
+\noindent\emph{Second proof, with another output (FO).} For $3\le a<b$
+coprime, FO takes $\tau|_X=(0,1,\ldots,1)$ and $\tau|_Y=(2,3,\ldots,3)$ and
+proves $|\tau U_{a,b}|=4^{a+b}-\Bip_4(a,b)+ab$. Properness and the period
+$ab$ are as above (a unique occurrence of the first color prevents a
+nonidentity rotation from fixing a word). Every nonpermutation in $U_{a,b}$
+has a cross-block collision, so no other proper coloring occurs. Conversely,
+for an improper $c$ choose, for each color, one state carrying it under
+$\tau$, and send each $q$ to the representative of $c(q)$: this map $u$ has
+$\tau\circ u=c$ and a cross-block collision, and its image contains at most
+two states of $Y$ (the representatives of colors $2$ and $3$), so, as
+$b\ge4$, it omits a state of $Y$ and lies in $U_{a,b}$. Accessibility and
+minimality are proved as above. FO remarks that although its count is a
+specialization of Davies's lower construction, the representative-map proof
+makes the four-color count and the accessibility requirements explicit.
+
+\begin{example}[Seven states; FO]\label{fo:fo:ex:n7}
+The optimal split is $(3,4)$. In zero-based image-list notation
+$p=(1,2,0,4,5,6,3)$, $s=(3,2,1,3,4,5,0)$, $\tau=(0,1,1,2,3,3,3)$. Here
+$\Bip_4(3,4)=924$, $\ord(p)=12$ and $R_2(7,4)=4^7-924+12=15{,}472$. (These $p$
+and $s$ are Part~II's arrays of \cref{tor:sec:witnesses}.) FO: this lower-bound
+value already appears in Davies's table (it is also Part~I's, \cref{sec:finite});
+the new assertion is the general upper bound and the all-state theorem.
+\end{example}
+
+\subsection{The three small cases}
+
+For $n=4,5,6$ AS gives the following zero-based arrays (images of
+$0,\ldots,n-1$, not cycle notation); every row uses all four output labels.
+They are exactly Part~I's witnesses of \cref{app:witnesses}.
+\begin{center}
+\small
+\begin{tabular}{@{}cllll@{}}
+\toprule
+$n$ & $p$ & $s$ & $\tau$ & Reverse states\\
+\midrule
+4 & $(1,2,3,0)$ & $(0,0,3,2)$ & $(0,1,2,3)$ & $176$\\
+5 & $(1,0,3,4,2)$ & $(2,1,2,3,0)$ & $(0,1,2,3,3)$ & $826$\\
+6 & $(1,2,3,4,5,0)$ & $(0,3,0,4,5,1)$ & $(0,0,1,1,2,3)$ & $3526$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=4$ the collision graph is $C_4$, with $84$ proper colorings and a
+four-element proper orbit; at $n=5$ it is $K_{2,3}$, with $204$ and a
+six-element proper orbit; at $n=6$ it is \emph{two triangles}, not a single
+six-cycle: the collision pair $\{0,2\}$ under the six-cycle has $d=2$,
+$L=3$, giving $24^2=576$ proper colorings and a six-element proper orbit
+(Part~I makes the same observation after its table in \cref{sec:finite}).
+These give the upper deficits $80$, $198$, $570$. Full breadth-first
+enumeration of the coloring orbits gives the counts in the table, once with
+tuples of colors and once, independently, with integer base-four encodings;
+both exhaust the reachable set under both transitions. These are finite
+lower-bound certificates, not samples of words. Accessibility is immediate
+from the cycles (and the cross transition at $n=5$); minimality follows from
+the primitive cyclic words (and the disjoint palettes at $n=5$) and is also
+checked by partition refinement. The arrays and results are in
+\path{data/07-all-state-bfs_witnesses.json}.
+
+\begin{proof}[Proof of \cref{fo:thm:main}]
+\Cref{fo:cor:universal} supplies the upper bound, \cref{fo:as:prop:attainment}
+(or FO's variant) minimal equality witnesses for $n\ge7$, and the three
+arrays above equality for $n=4,5,6$. So both the algebraic orbit maximum and
+the automaton reversal maximum are $4^n-D_4(n)$ for every admissible $n$.
+\end{proof}
+
+\begin{remark}[What the small values establish; AS]\label{fo:as:rem:small}
+The values displayed by Davies and the finite repository comparisons are not
+claimed as new numerical discoveries. Their role is to complete a single
+rigorously specified all-state statement and to make its lower witnesses
+directly reproducible. In particular, the special behaviour at $n=6$ is kept
+separate rather than forced into the coprime-split formula.
+\end{remark}
+
+\section{Rigidity, a second collision and stability}\label{fo:sec:rigidity}
+
+Throughout this section $n\ge7$, $a=a_n$, $b=b_n$ and $R=R_2(n,4)$.
+
+\begin{theorem}[Necessary structure of every extremizer; AS and FO]\label{fo:thm:rigidity}
+If $|\tau\langle s,t\rangle|=R$ for arbitrary maps $s,t$ and output $\tau$,
+then after interchanging the letters:
+\begin{enumerate}[label=(\roman*)]
+\item one letter $p$ is a permutation with exactly two cycles $X,Y$, of
+lengths $a,b$;
+\item the other letter $s$ has rank $n-1$; its only nonsingleton fiber has
+size two, with one point in each cycle (in particular $s$ is injective on
+each cycle);
+\item $\tau$ is proper for $K_{a,b}$, uses exactly two colors on each cycle,
+with disjoint palettes, and both cyclic output words are primitive;
+\item the reachable coloring set consists of every improper coloring of
+$K_{a,b}$ together with one proper $p$-orbit of length $ab$.
+\end{enumerate}
+Conversely, \textup{(i)--(iv)} imply that the orbit has size $R$ \textup{(AS)}.
+Conditions \textup{(i)--(iii)} alone are not asserted to imply \textup{(iv)} for
+an arbitrary singular generator.
+\end{theorem}
+
+This specializes Part~III's \cref{evo:thm:rigidity} at $k=4$, whose (iii)
+says $\tau(X)\cap\tau(Y)=\varnothing$ with pure orbit of size $ab$ and whose
+(iv) says every improper coloring is reached; at $k=4$ these force the
+$2+2$ palette split and the primitive words, and (iv) becomes an equality of
+sets. It is the four-output counterpart of Part~II's
+\cref{tor:thm:rigidity}.
+
+\begin{proof}[Proof (AS)]
+The structural margin of \cref{fo:cor:universal} rules out two permutations
+and two singular letters. Write the mixed pair as $p,s$. Any collision pair of
+$s$ must give the unique optimal graph entry, so $p$ has precisely two cycles
+of lengths $a,b$, and $s$ is injective on each: a same-cycle collision would
+give a strictly worse bound. Fix a cross-cycle collision. If $\tau$ were
+improper for $K_{a,b}$, \eqref{fo:eq:sharpgraph} would give an orbit at most
+$R-ab$; so $\tau$ is proper, its $p$-orbit has size at most $ab$, and equality
+in $4^n-\Bip_4(a,b)+ab$ forces a full proper orbit of length $ab$ and
+reachability of every improper coloring. With word periods $u\mid a$, $v\mid b$
+(coprime), the combined period is $uv$, so $u=a$, $v=b$; both words are
+nonconstant, the palettes are disjoint, and four colors split as two and two.
+This proves (iii) and (iv), given that there is only one collision pair.
+
+All nonsingleton fibers of $s$ are cross pairs, and distinct ones are
+disjoint. If there were at least two, consider a coloring with exactly one
+cross equality: choose $x\in X$, $y\in Y$ and distinct colors
+$\alpha,\beta,\gamma$, color $x,y$ by $\alpha$, $X\setminus\{x\}$ by $\beta$ and
+$Y\setminus\{y\}$ by $\gamma$. A composition with a rightmost $s$ collapses
+at least two distinct cross pairs after a common rotation by $p$, so it cannot
+produce this coloring; nor can a pure power of $p$, which is proper. This
+contradicts reachability of every improper coloring. So there is exactly one
+cross double fiber and $s$ has rank $n-1$. Finally (iv) supplies
+$4^n-\Bip_4(a,b)+ab=R$ distinct reachable colorings, and the upper bound
+excludes more; this is the converse.
+\end{proof}
+
+\noindent\emph{Second proof (FO).} The strict comparisons, including the
+finite certificate, give (i) and show that every collision of $s$ joins the
+two cycles, so $s$ is injective on each cycle, every nonsingleton fiber has
+size two and is a cross pair. If there were two such pairs,
+\cref{fo:fo:prop:penalty} below would make the orbit strictly smaller than
+$R$; since $s$ is singular there is at least one, which proves (ii). By
+\eqref{fo:eq:sharpgraph} the reachable proper colorings lie in the $p$-orbit
+of $\tau$, of size at most $ab$; equality requires all improper colorings and
+exactly $ab$ proper ones, and since $p$ preserves properness, $\tau$ is proper
+with orbit length $ab$. The periods $u\mid a$, $v\mid b$ are coprime with
+$uv=ab$, so $u=a$, $v=b$; each primitive word of length at least two uses at
+least two colors, properness makes the palettes disjoint, and four colors
+force exactly two each. This proves (iii), and the equality count proves (iv).
+
+AS states the equality conditions in two layers on purpose: the cycle, fiber
+and output conditions are concrete necessities, while full improper
+saturation is a separate dynamical property of the generated monoid. The
+standard pair of \cref{fo:sec:attainment} has that property by the published
+generation theorem and the representative argument; a complete
+classification of the other transition pairs with this property is not
+provided.
+
+\begin{remark}[Necessary is not sufficient; FO]\label{fo:fo:rem:notsufficient}
+Statements (i)--(iii) alone do not characterize extremizers. At $n=7$ take
+FO's $p$ and $\tau$ of \cref{fo:fo:ex:n7}, but let $s$ send $0$ to $3$ and fix
+every other state: $s$ has rank six and the unique cross collision $\{0,3\}$,
+the machine is accessible and minimal, and the output words are primitive on
+disjoint palettes. Yet on the four-state cycle $Y$, $s$ acts as the identity
+and $p$ only rotates, so the restriction of every reachable coloring to $Y$
+has at most four possibilities, and its restriction to the other three states
+at most $4^3$; the orbit has at most $4\cdot4^3=256$ states, far fewer than
+$15{,}472$. FO's breadth-first search finds exactly $212$
+(\path{data/06-four-output-bfs.json}); the bound $256$ already proves the
+failure of sufficiency. This parallels Part~III's
+\cref{evo:ex:nonsaturation} ($564$ states, with the invariant block on the
+shorter cycle) and Part~II's \cref{tor:ex:nonsufficient}.
+\end{remark}
+
+\subsection{A second collision}\label{fo:sec:penalty}
+
+Part~III prices extra kernel pairs by its matching hierarchy
+(\cref{evo:thm:matching}): if $p$ has two coprime cycles and the nontrivial
+kernel classes of $s$ are $t\ge2$ disjoint cross pairs, then
+$|\tau\langle p,s\rangle|\le k^{a+b}-W_{k,2}(a,b)+ab$ with
+$W_{k,2}=\Bip_k+\Omega_{k,1}$ and $\Omega_{k,1}(a,b)\ge kab\,\Bip_{k-1}(a-1,b-1)$
+(\cref{evo:prop:firstmatching}, \eqref{evo:eq:oneedgepenalty}), the last term
+counting exactly the colorings with one monochromatic cross edge. At $k=4$ FO
+proves the same penalty with a direct count, under a weaker hypothesis on $s$,
+and AS proves a weaker form.
+
+\begin{lemma}[Exactly one monochromatic cross edge; FO]\label{fo:fo:lem:oneedge}
+For $a,b\ge2$, the number of four-colorings of $K_{a,b}$ with exactly one
+monochromatic edge is
+\begin{equation}\label{fo:fo:eq:oneedge}
+ \Omega^{\mathrm e}_4(a,b)=12ab\bigl(2^{a-1}+2^{b-1}-2\bigr)=4ab\,\Bip_3(a-1,b-1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose the edge in $ab$ ways and its color in four. No other vertex can have
+that color (it would create a second monochromatic edge with the opposite
+chosen endpoint), so the remaining vertices form a proper three-coloring of
+$K_{a-1,b-1}$. For positive $u,v$ the three-color biclique count is
+$3(2^u+2^v-2)$: if the left side uses one color there are $3\cdot2^v$
+possibilities, and if it uses two, $3(2^u-2)$, the right side then being
+constant in the remaining color (Part~II's $\Bip$). Each coloring has a unique
+counted edge.
+\end{proof}
+
+\begin{proposition}[A second-collision penalty; FO]\label{fo:fo:prop:penalty}
+Let $p$ consist of two coprime cycles of lengths $a,b\ge2$. If $s$ has at
+least two distinct cross-cycle collision pairs, then for every output map
+$\tau$,
+\begin{equation}\label{fo:fo:eq:penalty}
+ |\tau\langle p,s\rangle|\le4^{a+b}-\Bip_4(a,b)-\Omega^{\mathrm e}_4(a,b)+ab.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+A word containing $s$ is $u\circ s\circ p^j$ after isolating its rightmost
+singular letter. Its coloring has a monochromatic edge for each of the two
+distinct translated collision pairs, and these remain distinct cross edges.
+So neither a proper coloring nor a coloring with exactly one monochromatic
+cross edge arises from such a word. There are $\Bip_4(a,b)+\Omega^{\mathrm e}_4(a,b)$
+colorings of those two types, and at most $ab$ of them can be reached by the
+remaining words, the powers of $p$. No properness assumption on $\tau$ is
+used.
+\end{proof}
+
+This is Part~III's bound at $k=4$, $t=2$ with the one-edge term; FO's
+hypothesis allows $s$ to have further collisions of any kind, whereas
+\cref{evo:thm:matching} assumes that all nontrivial kernel classes are
+disjoint cross pairs.
+
+\begin{proposition}[A $24ab$ penalty; AS]\label{fo:as:prop:penalty}
+Suppose $p$ has cycles $X,Y$ of lengths $a,b$, $s$ is injective on each cycle
+and has at least two cross-cycle double fibers, and $\tau$ is proper for
+$K_{a,b}$. Then $|\tau\langle p,s\rangle|\le R-24ab$.
+\end{proposition}
+
+\begin{proof}
+Use the colorings of the rigidity proof with exactly one cross equality:
+$ab$ choices of the equal pair and $4\cdot3\cdot2=24$ ordered choices of its
+three colors give $24ab$ distinct colorings (the equal pair and the colors of
+the two nonempty complements can be recovered). Each is unreachable by the
+rightmost-singular-factor argument, and, $\tau$ being proper, not a pure
+power. So at most $4^n-\Bip_4(a,b)-24ab$ improper colorings and at most $ab$
+proper ones are reachable.
+\end{proof}
+
+AS: the properness hypothesis matters, because without it pure permutation
+powers need not avoid the particular improper family counted, and the
+proposition is not claimed to be sharp; it supplies a uniform explicit loss
+sufficient for the stability theorem. (Added in the merge: since
+$\Bip_3(a-1,b-1)\ge6$ for $a,b\ge2$, $\Omega^{\mathrm e}_4(a,b)\ge24ab$, so
+\cref{fo:fo:prop:penalty} implies \cref{fo:as:prop:penalty} without its
+properness and injectivity hypotheses; the family AS counts consists of
+the one-edge colorings whose two complements are monochromatic.)
+
+\subsection{Stability near the maximum}
+
+\begin{theorem}[Quantitative stability; AS]\label{fo:as:thm:stability}
+If $|\tau\langle s,t\rangle|>R-ab/2$, then after interchanging the letters
+conditions \textup{(i)--(iii)} of \cref{fo:thm:rigidity} hold: the permutation
+has the optimal two-cycle split, the singular letter has one cross-cycle
+double fiber, and the output words are primitive on disjoint two-color
+palettes. No assertion of complete improper saturation is required or
+inferred.
+\end{theorem}
+
+\begin{proof}
+An excluded letter type or collision graph has deficit $>D^*_4(n)+ab$
+(\cref{fo:cor:universal}), hence orbit $<R-ab$. So one letter is a permutation
+with cycles of lengths $a,b$, the other is singular, and it has no
+within-cycle collision. If $\tau$ is improper the orbit is at most $R-ab$. For
+proper $\tau$, a nonfull $p$-orbit has size a proper divisor of $ab$, at most
+$ab/2$, and the chromatic bound gives at most $R-ab/2$; so the period is full,
+forcing the primitive disjoint $2+2$ palettes. If $s$ had more than one cross
+double fiber, \cref{fo:as:prop:penalty} would give the loss $24ab$. So it has
+exactly one, and rank $n-1$.
+\end{proof}
+
+AS: this is a stability statement with a certified, but not necessarily
+optimal, radius; it concerns the structure of an individual nearly maximal
+automaton, not merely the asymptotic size of the maximum.
+
+\begin{theorem}[Stability at the $3^{n/2}$ scale; FO]\label{fo:fo:thm:stability}
+Let $n\ge26$ and let $\defi$ be an orbit deficit. If $\defi<7\cdot2^n$, then,
+after naming the generators appropriately, one is a permutation $p$ with
+exactly two full coprime cycles of lengths $a'\le b'$, $a'+b'=n$, the other is
+singular, and all its collisions are cross-cycle collisions. Moreover
+\begin{equation}\label{fo:fo:eq:stabilitylower}
+ \defi\ge6\cdot2^n+3^{b'}-\frac{n^2}{4}.
+\end{equation}
+Consequently, if $\kappa>0$ and
+\begin{equation}\label{fo:fo:eq:stabilityhyp}
+ \kappa\,3^{n/2}<2^n,\qquad \defi\le6\cdot2^n+\kappa\,3^{n/2},
+\end{equation}
+then
+\begin{equation}\label{fo:fo:eq:imbalance}
+ b'-a'\le2\log_3\Bigl(\kappa+\frac{n^2}{4\cdot3^{n/2}}\Bigr).
+\end{equation}
+For fixed $\kappa$ the cycle imbalance of such machines is therefore bounded
+independently of sufficiently large $n$.
+\end{theorem}
+
+\begin{proof}
+\Cref{fo:lem:easy,fo:fo:lem:eliminate} eliminate every structure except two
+full coprime cycles, using only $\defi<7\cdot2^n$, and the argument applies to
+every collision pair. Now $b'\ge n/2\ge13$, and for $b'\ge4$,
+$4\psi(b')=4\cdot3^{b'}-12\cdot2^{b'}\ge3^{b'}$ because $(3/2)^{b'}\ge4$; also
+$4\psi(a')\ge-12$. So $\Bip_4(a',b')\ge6\cdot2^n+3^{b'}$ by \eqref{fo:eq:psi};
+subtracting the period bound $a'b'\le n^2/4$ gives
+\eqref{fo:fo:eq:stabilitylower}. The hypotheses \eqref{fo:fo:eq:stabilityhyp}
+imply $\defi<7\cdot2^n$; combining the two estimates gives
+$3^{b'}\le\kappa3^{n/2}+n^2/4$; divide by $3^{n/2}$, take base-three logarithms,
+and use $b'-n/2=(b'-a')/2$.
+\end{proof}
+
+FO: this is a necessary structural stability statement, not a distance
+estimate between transition tables; a nearly optimal orbit might still be
+generated by many different rank-$(n-1)$ maps on the same two cycles, and
+describing that freedom is a separate problem.
+
+\emph{Relation to Parts~II and~III (added in the merge).} Part~III's
+\cref{evo:q:stability} asks for explicit separations of nearly extremal
+automata and records that the wrong-split, extra-kernel-pair and
+incomplete-saturation mechanisms are not quantified there. At $k=4$,
+\cref{fo:as:thm:stability} quantifies the first two for every $n\ge7$ (radius
+$a_nb_n/2$ below the maximum, via the margin $>a_nb_n$ and the $24ab$ loss), and
+\cref{fo:fo:thm:stability} bounds the split imbalance on the scale
+$3^{n/2}$ for $n\ge26$. Incomplete saturation remains unquantified, and
+neither manuscript determines the second-largest value
+(\cref{evo:q:second}, Part~II's \cref{tor:q:second}).
+
+\section{The missing orbits and the extremal output maps}\label{fo:sec:inventory}
+
+\Cref{fo:thm:rigidity} identifies the missing states set-theoretically: they
+are the proper colorings of $K_{a,b}$ with one full cyclic orbit removed. This
+permits an exact orbit inventory, not just a cardinality (AS); an extremizer
+misses $D^*_4(n)$ colorings, all proper, and their organization into cyclic
+orbits can be determined exactly (FO). Part~II's \cref{tor:thm:inventory} is
+the three-output counterpart. Throughout, $a,b$ are coprime and $p$ rotates
+the two blocks $X,Y$.
+
+\subsection{Primitive words and least periods}
+
+For $q,m\ge1$ let $P_q(m)=\sum_{d\mid m}\mu(m/d)q^d$ (AS), the number of words
+of length $m$ over a fixed $q$-letter alphabet with least cyclic period $m$
+(Part~II's $P_2$ is \eqref{tor:eq:primitive}): every word of length $m$ has a
+unique least period dividing $m$, so $q^m=\sum_{d\mid m}P_q(d)$, and divisor
+inversion gives the formula. For $m>1$ such words are nonconstant; a primitive
+binary word of length greater than one uses both symbols. FO counts instead,
+for a fixed set of $j$ colors, the words using all of them,
+$\sur_j(m)=\sum_{i=0}^j(-1)^i\binom ji(j-i)^m$ (Part~III's $\sur_j$), and the
+primitive ones among them,
+$\operatorname{prim}_j(m)=\sum_{d\mid m}\mu(m/d)\sur_j(d)$: every surjective
+word is a repetition of a unique primitive word with the same palette. For
+$m>1$, $\operatorname{prim}_2(m)=P_2(m)=\sum_{d\mid m}\mu(d)2^{m/d}$.
+
+For $u\mid a$ and $v\mid b$ let $\mathcal C_{u,v}$ be the number of proper
+colorings of $K_{a,b}$ whose restrictions to $X,Y$ have least periods $u,v$,
+and $o_{u,v}=\mathcal C_{u,v}/(uv)$.
+
+\begin{lemma}[Counting exact component periods; AS and FO]\label{fo:lem:periods}
+Every coloring counted by $\mathcal C_{u,v}$ has $p$-orbit length $uv$, and
+\begin{equation}\label{fo:as:eq:C}
+ \mathcal C_{u,v}=
+ \begin{cases}
+ 12,&u=v=1,\\
+ 4P_3(v),&u=1<v,\\
+ 4P_3(u),&v=1<u,\\
+ 6P_2(u)P_2(v),&u>1,\ v>1
+ \end{cases}
+ \qquad\textup{(AS)},
+\end{equation}
+\begin{equation}\label{fo:as:eq:Cmobius}
+ \mathcal C_{u,v}=\sum_{d\mid u}\sum_{e\mid v}\mu(u/d)\mu(v/e)\Bip_4(d,e)
+ \qquad\textup{(AS)},
+\end{equation}
+\begin{equation}\label{fo:fo:eq:Cpalette}
+ \mathcal C_{u,v}=
+ \sum_{\substack{i,j\ge1\\i+j\le4}}\frac{4!}{i!\,j!\,(4-i-j)!}\,
+ \operatorname{prim}_i(u)\operatorname{prim}_j(v)
+ \qquad\textup{(FO)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\emph{AS.} If both periods are one, choose two distinct constant colors
+($4\cdot3=12$). If only the left side is constant, choose its color in four
+ways and a primitive length-$v$ word from the remaining three colors; the
+repetition determines the length-$b$ word. If both sides are nonconstant,
+properness and the four-color limit force a disjoint $2+2$ palette split: six
+choices of the left palette and $P_2(u)P_2(v)$ primitive words. Since
+$\gcd(a,b)=1$, $\gcd(u,v)=1$ and the simultaneous rotation has period
+$\lcm(u,v)=uv$. Alternatively, colorings with periods dividing $u,v$ are the
+repetitions of proper colorings of $K_{u,v}$, so there are $\Bip_4(u,v)$ of
+them; inverting this divisor sum in both variables gives
+\eqref{fo:as:eq:Cmobius}.
+\emph{FO.} Choose disjoint used palettes of sizes $i,j$ in
+$4!/(i!\,j!\,(4-i-j)!)$ ways, then a primitive surjective $i$-color word of
+length $u$ and a primitive surjective $j$-color word of length $v$, and repeat
+them to lengths $a,b$; this counts every proper coloring with the specified
+periods once.
+\end{proof}
+
+\begin{theorem}[Exact missing-orbit inventory; AS and FO]\label{fo:thm:inventory}
+For coprime $a,b$, the proper colorings of $K_{a,b}$ form $o_{u,v}$ orbits of
+length $uv$ for each $u\mid a$, $v\mid b$, and
+\begin{equation}\label{fo:eq:inventorysum}
+ \sum_{u\mid a}\sum_{v\mid b}uv\,o_{u,v}=\Bip_4(a,b)\qquad\textup{(FO)}.
+\end{equation}
+For any extremizer at $n\ge7$, with $(a,b)=(a_n,b_n)$, the number of missing
+$p$-orbits of length $uv$ is $o_{u,v}-\bbone_{(u,v)=(a,b)}$; every missing
+orbit occurs this way, and
+\begin{equation}\label{fo:eq:inventoryD}
+ \sum_{u\mid a}\sum_{v\mid b}uv\bigl(o_{u,v}-\bbone_{(u,v)=(a,b)}\bigr)=D^*_4(n)
+ \qquad\textup{(AS)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The proper-coloring set is invariant under $p$, and \cref{fo:lem:periods}
+partitions it by exact component periods, all orbits in one part having size
+$uv$; summing orbit sizes counts all proper colorings. \Cref{fo:thm:rigidity}(iv)
+removes exactly one reachable proper orbit, of full size $ab$, and no others.
+Since $a,b$ are coprime, the length $uv$ determines the two divisors, so no
+length is counted ambiguously between different pairs (AS).
+\end{proof}
+
+For $a,b\ge3$ full periods need at least two colors on each side, so only
+$i=j=2$ contributes to $o_{a,b}$ (FO):
+\begin{equation}\label{fo:fo:eq:fullinventory}
+ o_{a,b}=\frac{6\,P_2(a)P_2(b)}{ab}.
+\end{equation}
+FO's audit adds that the inventory assumes coprime cycle lengths (so that
+each joint orbit has size $uv$), and that the full-period count loses one
+\emph{orbit}, not one coloring.
+
+\begin{example}[Seven states; AS and FO]\label{fo:ex:inventory7}
+At $n=7$, $(a,b)=(3,4)$ and $D^*_4(7)=912$:
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+$(u,v)$ & $(1,1)$ & $(1,2)$ & $(3,1)$ & $(1,4)$ & $(3,2)$ & $(3,4)$ & Total\\
+Orbit length $uv$ & $1$ & $2$ & $3$ & $4$ & $6$ & $12$ & \\
+\midrule
+Proper orbits $o_{u,v}$ (FO) & 12 & 12 & 32 & 72 & 12 & 36 & 176\\
+Missing orbits (AS) & 12 & 12 & 32 & 72 & 12 & 35 & 175\\
+\bottomrule
+\end{tabular}
+\end{center}
+Weighting by orbit lengths gives $12+24+96+288+72+432=924=\Bip_4(3,4)$
+proper colorings, of which an extremizer keeps one orbit of length $12$ and
+misses $924-12=912$. FO: this is more information than the missing-state count
+alone. AS: complete four-color orbit enumeration at $n=7$ and $n=8$
+reproduces the corresponding inventories independently of the period-counting
+formulas (\path{data/07-all-state-bfs_witnesses.json}); AS's
+\path{data/07-all-state-orbit_inventories.json} records the algebraic
+inventories for $7\le n\le100$, FO's \path{data/06-four-output-inventory.json}
+those for $(a,b)=(3,4)$ and $(3,5)$.
+\end{example}
+
+\subsection{All extremal outputs on the standard pair}
+
+\begin{theorem}[Extremal output maps for the published witness; AS]\label{fo:as:thm:outputmaps}
+Fix the transition pair \eqref{fo:eq:generators} at $n\ge7$ with
+$(a,b)=(a_n,b_n)$. Exactly $6P_2(a)P_2(b)$ output maps $\tau:Q\to\D$ attain
+$R_2(n,4)$; modulo simultaneous rotation by $p$ there are
+$6P_2(a)P_2(b)/(ab)$ of them.
+\end{theorem}
+
+\begin{proof}
+Necessity follows from \cref{fo:thm:rigidity}: the palettes split as $2+2$
+and both block words are primitive, giving six left palettes and
+$P_2(a)P_2(b)$ pairs of words. Conversely, such a map is proper, surjective and
+has full $p$-period $ab$; since $b\ge4$ and only two colors are used on $Y$,
+some color on $Y$ has at least two representatives, so a redundant point
+$y_0\in Y$ can be chosen, and the representative argument of
+\cref{fo:as:prop:attainment} (Part~III's \cref{evo:et:lem:saturation})
+realizes every improper coloring by a map in $U_{a,b}$ omitting $y_0$, which
+the imported theorem makes reachable by the fixed pair. The action on these
+maps has full orbit size $ab$.
+\end{proof}
+
+FO makes the same observation: there are $6P_2(a)P_2(b)$ full-period proper
+output maps on the fixed labelled cycles, and in the monoid $U_{a,b}$ each
+attains the same orbit size as its witness, because each uses two colors on
+$Y$, whose size exceeds two. At $n=7$ there are $6\cdot6\cdot12=432$ such maps
+in $36$ rotation classes, the $36$ full-period orbits of
+\cref{fo:ex:inventory7}. AS: the theorem classifies output maps for one fixed,
+known saturating pair; it does not classify all singular generators that work
+with the optimal permutation, nor identify output maps under arbitrary state
+or color relabelings, which are different equivalence problems.
+
+\section{Exact sequences, asymptotics and a minimal recurrence}\label{fo:sec:recurrence}
+
+The following are consequences of the all-state formula, not independent
+claims that residue-class asymptotics or primitive-word techniques are new
+methods (AS). For $n\ge7$ they concern $D_4(n)=D^*_4(n)$.
+
+\subsection{Exact residue formulas}
+
+Substituting \eqref{fo:eq:split} into $D^*_4(n)$ gives, with
+$h=\lfloor n/2\rfloor$ (FO),
+\begin{equation}\label{fo:fo:eq:residue}
+ D^*_4(n)=
+ \begin{cases}
+ 6\cdot2^n+16\cdot3^h-36\cdot2^h+12-h(h+1),&n=2h+1,\\
+ 6\cdot2^n+40\cdot3^{h-1}-60\cdot2^{h-1}+13-h^2,&n=2h,\ h\text{ even},\\
+ 6\cdot2^n+328\cdot3^{h-2}-204\cdot2^{h-2}+16-h^2,&n=2h,\ h\text{ odd},
+ \end{cases}
+\end{equation}
+and, in AS's form without square roots, for $4j+r\ge7$,
+\begin{align}
+ D^*_4(4j)&=6\cdot16^j+\tfrac{40}{3}9^j-30\cdot4^j+13-4j^2,\label{fo:as:eq:res0}\\
+ D^*_4(4j+1)&=12\cdot16^j+16\cdot9^j-36\cdot4^j+12-4j^2-2j,\label{fo:as:eq:res1}\\
+ D^*_4(4j+2)&=24\cdot16^j+\tfrac{328}{3}9^j-102\cdot4^j+15-4j^2-4j,\label{fo:as:eq:res2}\\
+ D^*_4(4j+3)&=48\cdot16^j+48\cdot9^j-72\cdot4^j+10-4j^2-6j.\label{fo:as:eq:res3}
+\end{align}
+These are exact identities for $n\ge7$, not asymptotic expansions (FO); the
+write phase checked all seven against the closed form for $7\le n\le399$.
+
+\begin{proposition}[Exact separated-scale expression; AS and FO]\label{fo:prop:scales}
+Let $c_n,d_n,e_n$ have period four, given in residue order $0,1,2,3$ by
+\[
+ (c_n)=\Bigl(\tfrac{40}{3},\tfrac{16}{\sqrt3},\tfrac{328}{9},\tfrac{16}{\sqrt3}\Bigr),\quad
+ (d_n)=\bigl(-30,-18\sqrt2,-51,-18\sqrt2\bigr),\quad
+ (e_n)=\bigl(13,\tfrac{49}{4},16,\tfrac{49}{4}\bigr).
+\]
+Then for every $n\ge7$
+\begin{equation}\label{fo:eq:scales}
+ D^*_4(n)=6\cdot2^n+c_n3^{n/2}+d_n2^{n/2}-\frac{n^2}{4}+e_n,
+\end{equation}
+with $c_n=4(3^{\delta_n}+3^{-\delta_n})$, $d_n=-12(2^{\delta_n}+2^{-\delta_n})$
+and $e_n=12+\delta_n^2$. Consequently
+\begin{gather}
+ \frac{D_4(n)}{2^n}\to6,\qquad
+ \frac{R_2(n,4)}{4^n}=1-6\cdot2^{-n}+O\bigl((\sqrt3/4)^n\bigr),\notag\\
+ \frac{D_4(n)-6\cdot2^n}{3^{n/2}}\to
+ \begin{cases}16/\sqrt3,&n\text{ odd},\\40/3,&n\equiv0\pmod4,\\328/9,&n\equiv2\pmod4.\end{cases}
+ \label{fo:eq:asymptotic}
+\end{gather}
+\end{proposition}
+
+\begin{proof}
+Substitute $a_n=n/2-\delta_n$, $b_n=n/2+\delta_n$ into $D^*_4(n)$, using
+$a_nb_n=n^2/4-\delta_n^2$ (AS's constants $C_r=c_n$, $E_r=-d_n$). Divide by
+the indicated scales; the remaining exponential bases and polynomial terms
+are smaller, and $3^{n/2}=o(2^n)$.
+\end{proof}
+
+In particular the leading deficit is $6\cdot2^n$ with no leading residue-class
+oscillation; the oscillation first appears at the smaller scale $3^{n/2}$,
+and the fraction of the coloring space that is missed is asymptotic to
+$6\cdot2^{-n}$ (AS). The oscillation is arithmetic, not a numerical artifact:
+odd $n$ permits adjacent cycle lengths, while for even $n$ the closest
+coprime split alternates between offsets one and two from the midpoint, and
+these bounded offsets have no effect on $6\cdot2^n$ but survive in the
+$3^{n/2}$ correction (FO). Despite the radicals in \eqref{fo:eq:scales}, the
+integer formulas are preferable for exact computation (FO).
+
+\emph{Relation to Part~III (added in the merge).} This is Part~III's
+\cref{evo:thm:evenasymptotic} at $h=2$, made exact: there $C_0=6$, $C_1=4$,
+$\mu_1=\sqrt3$ and $2C_1\cosh(\delta_n\log3)=4(3^{\delta_n}+3^{-\delta_n})=c_n$,
+with an error $O(\xi_1^n)=O(2^{n/2})$, which \eqref{fo:eq:scales} replaces by
+the explicit term $d_n2^{n/2}-n^2/4+e_n$. Part~III's
+\cref{evo:ex:k4formula} already notes that the first residue-dependent term
+has base $\sqrt3$.
+
+\subsection{A minimal recurrence and the generating function}
+
+Let $\mathsf S$ be the forward shift in $n$ and
+\begin{equation}\label{fo:eq:chi}
+ \chi_4(x)=(x-2)(x^4-9)(x^4-4)(x-1)^2(x^4-1)
+ =(x-2)(x^4-9)(x^4-4)(x-1)^3(x+1)(x^2+1).
+\end{equation}
+The first form is AS's $\chi_D$, the second FO's operator $\mathcal A(E)$; they
+are the same polynomial of degree~$15$ (checked in the write phase).
+
+\begin{theorem}[Minimal constant-coefficient recurrence; AS, annihilation also FO]\label{fo:as:thm:recurrence}
+The sequence $(D_4(n))_{n\ge7}$ satisfies $\chi_4(\mathsf S)D_4=0$ from every
+starting index $n\ge7$, and $\chi_4$ is its minimal characteristic
+polynomial: the minimal order is $15$. The tail $(R_2(n,4))_{n\ge7}$ has
+minimal characteristic polynomial $(x-4)\chi_4(x)$ and minimal order $16$.
+\end{theorem}
+
+\begin{proof}
+\emph{Annihilation (AS and FO).} In \eqref{fo:eq:scales}, $2^n$ is annihilated by
+$\mathsf S-2$, a period-four coefficient times $3^{n/2}$ by $\mathsf S^4-9$, and
+times $2^{n/2}$ by $\mathsf S^4-4$; the quadratic polynomial and the remaining
+period-four term are jointly annihilated by $(\mathsf S-1)^2(\mathsf S^4-1)$,
+which has a triple root at $1$ and simple roots $-1,\pm i$ (FO: a quadratic by
+$(\mathsf S-1)^3$, a period-four sequence by $\mathsf S^4-1=(\mathsf S-1)(\mathsf S+1)(\mathsf S^2+1)$).
+Since $R_2(n,4)=4^n-D_4(n)$, one more factor $\mathsf S-4$ suffices.
+
+\emph{Minimality (AS).} Expand each period-four coefficient in its four
+Fourier modes. For a coefficient vector $(c_0,c_1,c_2,c_1)$ the two
+imaginary-frequency coefficients equal $(c_0-c_2)/4$, the alternating one is
+$(c_0+c_2-2c_1)/4$ and the constant one $(c_0+c_2+2c_1)/4$. For both $(c_n)$
+and $(d_n)$ all four are nonzero: for $c$ the alternating numerator is
+$448/9-32/\sqrt3>0$ and $40/3\ne328/9$; for $-d$ it is $81-36\sqrt2>0$ and
+$30\ne51$; the constant coefficients are positive. So all four roots of
+$x^4-9$ and of $x^4-4$ are needed. The period-four vector
+$\delta_n^2=(1,\frac14,4,\frac14)$ has alternating coefficient $9/8$ and
+imaginary-frequency coefficients $-3/4$, all nonzero; the term $-n^2/4$ needs
+multiplicity three at the root $1$; the coefficient of $2^n$ is $6\ne0$.
+Exponential-polynomial sequences with distinct bases are linearly independent,
+also on an infinite tail (apply shift differences $\mathsf S-\lambda$ to
+eliminate all but one base, then use the nonvanishing leading coefficient of
+the remaining polynomial), so no factor or multiplicity can be removed. The
+base $4$ enters $R_2(n,4)$ with coefficient one and needs exactly one more
+factor.
+\end{proof}
+
+FO proves the annihilation and says that no minimal-order claim is needed;
+its audit states that no minimal recurrence order is claimed. Its supplementary
+checks use exact integers. The write phase confirmed, independently of both
+manuscripts, that $\chi_4(\mathsf S)$ annihilates the closed form from
+every starting index $7\le n\le384$ and that removing any single linear factor of $\chi_4$ (over
+$\mathbb C$) destroys the annihilation.
+
+\begin{corollary}[Rational generating function; AS and FO]\label{fo:as:cor:gf}
+\begin{equation}\label{fo:eq:gf}
+ \sum_{n\ge7}D_4(n)z^{n-7}=\frac{\mathcal N_4(z)}{\mathcal Q_4(z)},\qquad
+ \mathcal Q_4(z)=(1-2z)(1-9z^4)(1-4z^4)(1-z)^2(1-z^4),
+\end{equation}
+where
+\begin{align*}
+ \mathcal N_4(z)={}&912-1515z-188z^2+7064z^3-36544z^4+52766z^5-19986z^6
+ -29624z^7\\
+ &+146416z^8-210575z^9+89558z^{10}+22752z^{11}-111168z^{12}
+ +159804z^{13}-69624z^{14}.
+\end{align*}
+The displayed denominator is reduced \textup{(AS)}; FO shows that the
+denominator divides $\mathcal Q_4(z)$, written as
+$(1-2z)(1-9z^4)(1-4z^4)(1-z)^3(1+z)(1+z^2)$.
+\end{corollary}
+
+\begin{proof}
+The recurrence gives a denominator of this form, and multiplication by the
+initial series determines $\mathcal N_4$: with the ascending coefficients
+\[
+(q_0,\ldots,q_{15})=(1,-4,5,-2,-14,56,-70,28,49,-196,245,-98,-36,144,-180,72)
+\]
+of $\mathcal Q_4$, $n_i=\sum_{j\le i}q_jD_4(7+i-j)$ for $0\le i<15$, and all
+later coefficients vanish by the recurrence (FO). If numerator and denominator
+shared a nonconstant factor, cancellation would give a smaller-order eventual
+recurrence, contrary to \cref{fo:as:thm:recurrence} (AS).
+\end{proof}
+
+Explicitly, $\sum_{j=0}^{15}q_jD_4(n-j)=0$ for $n\ge22$ (AS), equivalently
+$\sum_{j=0}^{15}\alpha_jD_4(n+j)=0$ for $n\ge7$ with FO's advance coefficients
+\[
+(\alpha_0,\ldots,\alpha_{15})=(72,-180,144,-36,-98,245,-196,49,28,-70,56,-14,-2,5,-4,1),
+\]
+the $q_j$ in reverse order (FO's $a_j$, renamed because of $a_n$). The first
+fifteen values, from $D_4(7)$, are
+\[
+\begin{aligned}
+&912,\ 2133,\ 3784,\ 13359,\ 15006,\ 32353,\ 58482,\ 171447,\ 226948,\ 472965,\\
+&882132,\ 2264023,\ 3442146,\ 7047969,\ 13490734.
+\end{aligned}
+\]
+These coefficients and values are also in
+\path{data/07-all-state-recurrence.json} and
+\path{data/06-four-output-recurrence.json}; they can be recomputed from the
+closed formula, and were not used to infer the theorem from a guessed
+recurrence (AS). Providing a factored operator and exact coefficients avoids
+any reliance on numerical root identification (FO). FO adds that the
+recurrence permits evaluation modulo a supplied integer with
+$O(\log n)$ ring operations by polynomial powering; this is not a claim of
+logarithmic bit complexity for the exact integer $D_4(n)$, whose binary length
+grows linearly with $n$.
+
+\begin{remark}[Residue classes; added in the merge]\label{fo:rem:residueminimal}
+Part~III's \cref{evo:et:thm:recurrence} annihilates each residue sequence
+$F_r(t)=D_4(4t+r)$ by $(\mathsf E-1)^3(\mathsf E-4)(\mathsf E-9)(\mathsf E-16)$
+in the step $t$, and does not assert minimality. By
+\eqref{fo:as:eq:res0}--\eqref{fo:as:eq:res3}, every residue sequence is a
+combination of $16^t$, $9^t$, $4^t$ and a quadratic in $t$ with leading
+coefficient $-4$, all with nonzero coefficients; by the linear-independence
+argument above, that annihilator is therefore minimal for each of the four
+residue classes, from the first $t$ with $4t+r\ge7$. (The write phase also
+checked this by exact arithmetic.) Its order-$24$ interleaving in $n$ is not
+minimal: $\chi_4$ has order $15$. This answers Part~III's
+\cref{evo:q:recurrence} at $k=4$.
+\end{remark}
+
+\section{Reproducible checks and their limits}\label{fo:sec:verification}
+
+\subsection{What each manuscript ran}
+
+Both packages use Python's standard library with exact integer arithmetic;
+FO adds a standalone C++17 program. The recorded runs of FO used
+Python~3.13.5. Both packages ship their recorded outputs, not merely code that
+has not been run (AS).
+
+\emph{AS.} The checks have different logical roles:
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright}p{0.30\textwidth}>{\raggedright}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+Check & Executed range & Role in the argument\\
+\midrule
+Complete structural collection & $4\le n\le25$; $2{,}082$ entries & Finite
+upper-bound proof and strict structural margin; re-enumerated by an
+independent implementation.\\[2pt]
+Reachable coloring orbits & $4\le n\le9$ (producer); $4\le n\le8$ (checker) &
+Finite lower-bound proof for $n=4,5,6$; regression tests at larger sizes.\\[2pt]
+Accessibility and minimality & six witnesses, $4\le n\le9$ & Confirms the
+original machines have the stated number of states.\\[2pt]
+Missing-state orbit inventory & complete coloring space, $n=7,8$ & Checks the
+orbit formulas against actual reachable and missing sets.\\[2pt]
+Primitive-period formulas & $7\le n\le100$ & Compares the palette formula with
+double M\"obius inversion and checks all weighted inventory sums.\\[2pt]
+Order-15 recurrence & $22\le n\le500$ & Regression test, not the proof of the
+recurrence or of its minimality.\\[2pt]
+Threshold inequalities & exact integers at $26$ and $10$ & Checks the numerical
+anchors of the infinite-tail induction.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The producer and checker use different data representations and independent
+implementations of the principal counting formulas; that protects against
+coding errors, but both rely on the same graph classification, so their
+agreement is not logical independence of two proofs, nor a replacement for
+auditing \cref{fo:lem:complete} (AS).
+
+\emph{FO.} The following checks completed successfully:
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright}p{0.55\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+Check & Completed scope\\
+\midrule
+Finite proof certificate & $n=7,\ldots,25$; $2{,}059$ entries\\
+Primary structural regression & $n=7,\ldots,200$; $752{,}291$ entries\\
+Independent structural implementation & $n=7,\ldots,100$; $101{,}568$ entries\\
+Brute-force graph-coloring checks & 17 graphs; $180{,}128$ colorings\\
+Inventory and unique-edge counts & $(3,4)$, $(3,5)$; $81{,}920$ colorings\\
+Explicit witness accessibility and minimality & $n=7,\ldots,200$\\
+Split and residue-formula comparisons & $n=7,\ldots,1000$\\
+Order-15 recurrence checks & starting indices $n=7,\ldots,300$\\
+Full witness-orbit breadth-first searches & $n=7,\ldots,12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The largest complete breadth-first search reached $16{,}744{,}863$ colorings;
+the six exact witness counts were
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$n$ & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+$|\tau\langle p,s\rangle|$ & 15\,472 & 63\,403 & 258\,360 & 1\,035\,217 & 4\,179\,298 & 16\,744\,863\\
+\bottomrule
+\end{tabular}
+\end{center}
+(\path{data/06-four-output-bfs.json}, with the $212$-state non-extremal example
+of \cref{fo:fo:rem:notsufficient}). They also check the interpretation of
+composition and the odd-$a$ swap in the published witness; they do not verify
+its generation theorem for unbounded $a,b$. (FO's regression count $752{,}291$
+is the size of the structural enumeration for $7\le n\le200$, which does not
+depend on the number of outputs; Part~II's verifier reports the same count at
+$k=3$.) FO on independence: two programs derived from the same recurrence are
+not two proofs of it; here the two certificate implementations share the
+mathematically proved reduction but use distinct formulas for each principal
+count (the symmetric closed form, the cycle chromatic formula and the explicit
+$J$, against Stirling surjection counting, the two-coordinate transfer
+recurrence and a partition-product dynamic program), and the independent code
+imports no primary code. This detects transcription and implementation errors;
+it does not certify the graph reduction, which is argued in
+\cref{fo:sec:reduction}, and the agreement of the residue formulas and of the
+recurrence checks is arithmetic consistency, not the extremal theorem from
+which the sequence is derived. The Python checks use explicit error
+conditions, not removable \texttt{assert} statements, and neither program
+downloads code or data. The C++ program restricts its endpoint to at most $12$
+(its memory guard); the largest run needs roughly $85$\,MB for its coloring
+mask and queue.
+
+\subsection{The dependency boundary}
+
+AS: the graph classification, coloring inequalities, balancing theorem,
+threshold-$26$ exclusion, rigidity, orbit inventories and recurrence arguments
+are proved in the manuscript. The finite comparison is a computer-assisted
+proof with an explicitly bounded domain; trusting it requires the correctness
+of the short enumeration algorithms, the Python runtime and integer
+arithmetic, and the recorded execution. The lower construction for all $n\ge7$
+additionally uses the published two-generator theorem, which the package does
+not prove. No independent referee has reviewed the arguments. These
+qualifications do not alter the mathematical scope of the proposed theorem:
+the proof addresses every $n\ge4$, with no unbounded computational search left
+implicit. FO: the certificate is part of the proof for nineteen specified
+indices; the larger sweeps and breadth-first searches are supplementary checks,
+not arguments for an infinite range.
+
+\subsection{The finite algorithms}\label{fo:sec:algorithms}
+
+This subsection prints AS's appendix on finite algorithms and FO's compact
+enumerator.
+
+\emph{Partitions and residual orders (AS).} To enumerate nondecreasing
+partitions of $r$, choose a first part $i$ between a lower bound and $r$ and
+recurse on partitions of $r-i$ with parts at least $i$; $r=0$ contributes the
+empty partition. Every partition has a unique first part and a unique
+remaining partition with this constraint, so induction proves completeness and
+absence of duplicates. Least common multiples of the parts are exactly the
+possible orders of permutations on $r$ points; repeated values may be
+deduplicated because only their maximum after combination with $t$ is needed.
+The independent checker uses nonincreasing partitions (choose the largest part
+up to a bound and recurse with that bound equal to the chosen part; the same
+induction proves completeness) and computes $\lcm(t,\lambda_1,\ldots,\lambda_j)$
+directly for each partition.
+
+\emph{The structural enumerator (AS).} All variables are integers and all
+endpoints inclusive:
+\begin{quote}\small\ttfamily
+For n = 4,...,25:\\
+\hspace*{1em}Insert the two homogeneous-letter bounds.\\
+\hspace*{1em}For m = 2,...,n:\\
+\hspace*{2em}For each proper positive divisor d of m:\\
+\hspace*{3em}Insert the same-cycle bound with r = n-m.\\
+\hspace*{1em}For a = 1,...,n-1:\\
+\hspace*{2em}For b = a,...,n-a:\\
+\hspace*{3em}Insert the cross-cycle bound with d = gcd(a,b).\\
+\hspace*{1em}Compare every entry with the proposed minimum.\\
+\hspace*{1em}Check uniqueness and, for n >= 7, the strict AB margin.
+\end{quote}
+The checker instead groups cases by the residual size $r$, then enumerates
+$m=n-r$, divisors $L\mid m$ and splits $a+b=m$, and compares the entire
+multiset of triples (case type, parameters, integer value) with the supplied
+certificate. This detects missing, extra and repeated cases and incorrect
+integer evaluations, not just an incorrect displayed minimum.
+
+\emph{A second derivation of the cycle count (AS and FO).} Fix the first color
+of a path, and let $S_L$ and $T_L$ count proper length-$L$ words ending,
+respectively, in the first color and in a different color. Then
+$(S_1,T_1)=(1,0)$, $S_{L+1}=T_L$, $T_{L+1}=3S_L+2T_L$; closing the path into a
+cycle requires a different last color, so $C_L(4)=4T_L$. Solving this
+two-term transfer recurrence gives $3^L+(-1)^L3$ (FO, whose $x_L,y_L$ are
+$S_L,T_L$); it is the independent formula used by both checkers.
+
+\emph{Breadth-first orbit closure (AS).} Starting with $\{\tau\}$, repeatedly
+add $c\circ p$ and $c\circ s$ for each newly discovered coloring $c$. Every
+inserted coloring is reachable by induction on its discovery, and every
+reachable coloring is eventually inserted by induction on word length; since
+there are only $4^n$ colorings the algorithm terminates with exactly the orbit.
+The tuple implementation stores $(c(0),\ldots,c(n-1))$; the independent one
+stores $\sum_ic(i)4^i$, extracts colors by bit shifts and marks visited integers
+in a byte array. Both use the same mathematical transition; the different
+encodings protect against implementation mistakes but are not different
+mathematics.
+
+\emph{FO's compact enumerator.} FO prints the whole finite comparison in
+deliberately small form (its production checker additionally writes the full
+CSV, reports coverage and performs the supplementary checks). The code keeps
+FO's variable names ($A$ is $a_n$, $B(a,b)$ is $\Bip_4(a,b)$):
+\begin{lstlisting}[language=Python]
+from math import gcd, factorial
+
+def B(a, b):
+    return (6*2**(a+b) + 4*(3**a + 3**b)
+            - 12*(2**a + 2**b) + 12)
+
+def J(r):
+    if r < 2:
+        return 1
+    q, t = divmod(r, 3)
+    if t == 0:
+        return 3**q
+    return 4*3**(q-1) if t == 1 else 2*3**q
+
+for n in range(7, 26):
+    A = max(a for a in range(1, n//2 + 1)
+            if gcd(a, n-a) == 1)
+    target = B(A, n-A) - A*(n-A)
+    q, z = divmod(n, 4)
+    M = factorial(n)//(factorial(q)**(4-z)
+                       * factorial(q+1)**z)
+    entries = [(4**n-3**n, None), (4**n-M, None),
+               (9*4**(n-2)-1, None)]
+    for m in range(2, n+1):
+        for d in range(1, m):
+            if m % d == 0:
+                L, r = m//d, n-m
+                P = (3**L + (-1)**L*3)**d * 4**r
+                entries.append((P-m*J(r), None))
+    for a in range(1, n):
+        for b in range(a, n-a+1):
+            d, r = gcd(a, b), n-a-b
+            P = B(a//d, b//d)**d * 4**r
+            entries.append((P-(a*b//d)*J(r),
+                            (a, b, d, r)))
+    least = min(value for value, tag in entries)
+    tags = [tag for value, tag in entries
+            if value == least]
+    if least != target or tags != [(A, n-A, 1, 0)]:
+        raise RuntimeError((n, least, target, tags))
+print("PASS: all nineteen finite comparisons")
+\end{lstlisting}
+The loops exhaust $\mathcal K^{\mathrm{FO}}_n$, including two-vertex edges,
+singleton cycles, arbitrary residual states and $J(0)=1$; none of these
+boundary cases may be dropped (FO).
+
+\subsection{Commands and files}\label{fo:sec:commands}
+
+The shipped programs are byte-identical to the deliveries and still use the
+delivered layout: each computes its package root as the parent of its own
+directory and reads and writes \texttt{data/}\ldots\ there under the
+delivered, unprefixed names. Run in this report's directory,
+\path{code/07-all-state-verify.py} would therefore \emph{overwrite Part~I's}
+\path{data/bfs_witnesses.json} and \path{data/verification_summary.json}, and
+\path{code/07-all-state-independent_check.py} would then read Part~I's file;
+\path{code/06-four-output-verify.py} would write five stray files, and
+\path{code/06-four-output-independent_check.py} would fail on the missing
+\path{data/base_certificate.csv}; both Makefiles name the delivered scripts,
+which do not exist here, and their \texttt{pdf} and \texttt{clean} targets act
+on the merged \texttt{article.tex} in place. The report's README gives a recipe
+that restores the delivered names in a scratch copy; there the commands are
+\begin{lstlisting}
+python code/verify.py                # AS (07-all-state-)
+python code/independent_check.py
+python -O code/verify.py             # FO (06-four-output-)
+python -O code/independent_check.py
+g++ -O3 -std=c++17 -Wall -Wextra -pedantic code/witness_bfs.cpp -o witness_bfs
+./witness_bfs 12 > data/bfs.json
+\end{lstlisting}
+each group in its own copy (FO's scripts are meant to run under
+\texttt{python -O}; they use no assertions, so the flag does not disable any
+check). The write phase ran them so on 29 September 2026 (Python~3.14.4, and
+the WinLibs \texttt{g++}; about $2$\,s each): all passed. Every CSV is
+byte-identical to the shipped one; every JSON record equals the shipped one
+apart from Windows line endings, except that FO's \texttt{verification.json}
+and \texttt{independent\_check.json} record the Python version
+(\texttt{3.14.4} instead of the delivered \texttt{3.13.5}); the C++ output
+equals \path{data/06-four-output-bfs.json} apart from line endings.
+
+\subsection{What the checks do not establish}
+
+No finite enumeration proves the universal statements; they rest on the
+analytic tail of \cref{fo:sec:tail}, whose sufficiency for the finite
+reduction is proved in the text. Breadth-first searches are not exhaustive
+enumerations of all $n$-state automata; universality comes from the
+structural bounds (AS). Agreement between two programs written in one
+investigation is implementation independence, not logical independence of the
+shared reduction, and not external review. No Lean, Rocq or other
+proof-assistant verification was carried out for Part~IV, and none of its
+statements is formalized anywhere in ProveIt.
+
+\subsection{Routes to formal certification}\label{fo:sec:formal}
+
+\emph{AS.} A formalization decomposes into a small finite part and a reusable
+graph-theoretic part: define coloring orbits on a finite state type and prove
+the rightmost-singular-factor lemma by induction on words; prove the two graph
+descriptions with finite cyclic groups and the generalized Chinese remainder
+theorem; check the four-color formulas by surjection counting or short
+recurrences. For the finite proof no sophisticated solver is needed: a
+verified integer-partition enumerator, a verified divisor enumerator and closed
+arithmetic evaluation recompute the $2{,}082$ inequalities, and the same
+framework would serve larger output alphabets. The small lower witnesses can be
+certified by a verified reachability closure on $\{0,1,2,3\}^Q$: a list of
+states closed under both transitions, with predecessor words, supplies both
+directions of the equality between the certificate set and the reachable set.
+The infinite tail needs only elementary inequalities for powers, finite
+permutation orders and exact polynomial identities. The substantial remaining
+external formalization is the Holzer--K\"onig theorem; a useful intermediate
+formal theorem would expose it as an explicit hypothesis while proving all
+upper bounds, finite cases and conditional attainment without further
+assumptions.
+
+\emph{FO.} The proof separates into finite graph theory, integer arithmetic
+and the external monoid-generation input. A Lean or Rocq development could
+first encode transformations, the rightmost-singular factorization and the two
+collision-graph forms; then prove the coloring counts by finite combinatorial
+sums, including the special two-vertex cycle convention; the whole small-state
+certificate can then be a finite reflection theorem over
+$\mathcal K^{\mathrm{FO}}_n$, with an explicit checker whose soundness follows
+from the reduction. The analytic comparison avoids most real analysis: the
+threshold is one integer inequality propagated by a fixed ratio, balancing is a
+strict integer finite difference, period estimates can be expressed with cubed
+inequalities, and parity splitting removes the square roots of the
+presentation. One can either formalize the $U_{a,b}$ generation theorem or
+expose it as a named dependency while proving all upper-bound and
+conditional-attainment statements. No such formalization is supplied, and no
+kernel-checked status is claimed.
+
+\section{Further research questions}\label{fo:sec:questions}
+
+AS and FO close with eight questions each. Where both ask the same question it
+is printed once, with both sources' comments; where Part~III (or Part~II)
+already asks it, the counterpart is named; questions that Part~III has
+answered are printed with the answer, not as open. AS states its questions as
+directions arising from its manuscript (apart from Davies's cited
+variable-output problem), not as claims that a comprehensive search has
+verified their open status; FO says the first three concern the remaining
+mathematical obstruction rather than a computational limit.
+
+\begin{question}[The next fixed output alphabet; AS and FO. Answered by Part~III]\label{fo:q:next}
+Can the exact binary reversal maximum with five outputs be determined for all
+$n\ge7$, and can non-effective fixed-$k$ thresholds be replaced by explicit
+thresholds and bounded certificates (AS)? For every fixed $k\ge5$, is Davies's
+coprime two-cycle lower bound optimal for all $n\ge7$ with $k<n$, and can
+equality be proved uniformly in $n$ and $k$ (FO)?
+\end{question}
+\emph{Answered, except for the uniform part:} Part~III proves the formula for
+$k=5,6,7$ and every $n\ge\max(7,k+1)$ (\cref{evo:thm:smallk}) and, for every
+$k\ge4$, with the explicit threshold $N(k)\le3k^4$ (\cref{evo:thm:eventual});
+the full two-parameter statement is \cref{evo:q:complete}, open for $k\ge8$
+below $N(k)$ outside the certified finite ranges. AS had observed that for four
+outputs the dominant palette split $2+2$ contributes the split-independent
+$6\cdot2^n$, whereas for five outputs the competing $2+3$ and $3+2$ terms
+depend on the imbalance of the cycles, so the leading palette terms should be
+separated from a uniformly controlled remainder before residual vertices and
+multiple components are treated, without assuming that the $k=4$ estimates
+transfer unchanged. FO had observed that its proof works because the
+biclique count splits into a split-independent leading term and one strictly
+convex correction, that for larger $k$ several palette splits compete, and that
+a first step is a uniform balancing inequality for $\Bip_k(a,b)-ab$ with
+structural gaps for repeated bicliques and isolated cycles; Part~III's
+\cref{evo:thm:balance,evo:cor:split} supply that balancing.
+
+\begin{question}[Uniformity when the number of outputs grows; AS]\label{fo:as:q:growing}
+For which functions $k=k(n)$ can the published coprime two-cycle construction be
+proved optimal, and what inequalities would settle Davies's full Problem~2?
+\end{question}
+This is Part~III's \cref{evo:q:growing}, partly answered there ($4\le
+k\le(n/3)^{1/4}$). AS: it needs uniform control of proper-coloring counts and
+available cyclic periods; an estimate valid for each fixed $k$ may lose all
+strength as $k$ grows, so explicit dependence on $k$ is an essential part of
+the question, not an afterthought.
+
+\begin{question}[Which singular generators saturate the improper set? AS and FO]\label{fo:q:saturate}
+Fix the optimal two-cycle permutation and a singular map with exactly one
+cross-cycle double fiber; characterize the maps for which every improper
+four-coloring is reachable from a primitive proper $2+2$ output map (AS). For
+the optimal cycles and a primitive disjoint two-palette output map, which
+rank-$(n-1)$ cross-collision transformations reach every improper coloring
+(FO)?
+\end{question}
+This is Part~III's \cref{evo:q:classify} at $k=4$. AS: a complete answer would
+upgrade the necessary conditions to a classification of transition pairs; it
+is not enough to classify kernels, since the placement of the image and the
+permutations induced away from the double fiber affect the generated monoid.
+FO: \cref{fo:thm:rigidity} reduces the problem to this reachability question and
+\cref{fo:fo:rem:notsufficient} shows why the reduction is not yet a
+classification; one could first classify these transformations modulo the
+centralizer of the two-cycle permutation, then seek a graph or semigroup
+criterion; requiring the monoid to equal $U_{a,b}$ is sufficient but may be
+stronger than necessary for its four-color projection.
+
+\begin{question}[Stability radius, second maximum and the singular generator; AS and FO]\label{fo:q:stability}
+What is the smallest deficit below $R_2(n,4)$ that can occur without the
+structure of \cref{fo:as:thm:stability}, and what is the exact second-largest
+orbit size (AS)? Does a deficit within $o(2^n)$ of the optimum force the
+singular generator to have exactly one cross collision, and under stronger
+near-optimality can one bound a natural distance from the family of
+extremizing transition tables (FO)?
+\end{question}
+These are the $k=4$ cases of Part~III's \cref{evo:q:second,evo:q:stability}
+(Part~II's \cref{tor:q:second}). AS: the radius $a_nb_n/2$ separates structural
+failures from saturation failures but is not proved best possible;
+determining the first failed saturation examples among pairs satisfying
+(i)--(iii) could be more informative than optimizing the exponential
+estimates. FO: the penalty $\Omega^{\mathrm e}_4(a,b)$ is of order
+$ab\,2^{\max(a,b)}$ for balanced parts, so it isolates one intermediate scale
+but does not settle an $o(2^n)$ criterion; a sharper hierarchy of obstruction
+counts may distinguish the number and arrangement of several collisions.
+
+\begin{question}[Several collisions; AS and FO]\label{fo:q:collisions}
+If the singular letter is injective on both optimal cycles and has $q\ge2$
+cross-cycle double fibers, what is the sharp loss in reachable colorings (AS)?
+For $r\ge2$ distinct cross collisions, what is the sharp number of colorings
+excluded beyond the one-collision obstruction (FO)?
+\end{question}
+Part~III's matching hierarchy (\cref{evo:thm:matching}) already gives, for $t$
+disjoint cross kernel pairs, the upper bound $4^{a+b}-W_{4,t}(a,b)+ab$ with the
+exact count \eqref{evo:eq:matchingegf}; its sharpness is \cref{evo:q:matching}.
+AS: the $24ab$ obstruction counts only colorings with exactly one equal cross
+pair; counting colorings whose equality pattern is a small bipartite graph
+could give penalties depending on $q$ and on the relative rotation positions
+of the pairs, and the rightmost-singular-factor argument gives the precise
+compatibility condition to exploit. FO: counting colorings with fewer than $r$
+monochromatic cross edges gives an immediate lower bound, but the orbit of the
+whole kernel pattern under $p$ keeps positional information that an edge count
+loses; exact formulas for small kernel patterns could improve both stability
+and classification.
+
+\begin{question}[Constructive word bounds; AS]\label{fo:as:q:words}
+For the standard optimal pair, how long a word is needed to reach an arbitrary
+improper coloring? Can such a word be found without exploring $4^n$ colorings
+or the entire transition monoid?
+\end{question}
+AS: the representative proof gives a target transformation in $U_{a,b}$ but no
+bound on its word length in the two generators; a constructive refinement of
+the generation theorem would turn saturation into an efficient synthesis
+algorithm and give stronger finite certificates. (Compare Part~III's
+\cref{evo:q:recognize}.)
+
+\begin{question}[Enumerating inequivalent extremizers; AS]\label{fo:as:q:enumerate}
+How many extremal transition-output triples exist modulo state relabeling,
+input-letter interchange and output relabeling?
+\end{question}
+AS: \cref{fo:as:thm:outputmaps} counts output maps on one fixed pair only;
+a classification of saturating singular generators and their centralizer
+actions would be needed before an orbit-counting formula could be applied.
+
+\begin{question}[Removing the computational boundary; AS and FO]\label{fo:q:computation}
+Can the structural comparisons be proved uniformly already for $n\ge7$, leaving
+only the three small equality witnesses, or can the certificate be checked by
+a small proof-assistant kernel (AS)? Can the inequalities of
+\cref{fo:sec:tail} be strengthened enough to cover $7\le n\le25$ without a
+finite certificate (FO)?
+\end{question}
+AS: either outcome would strengthen confidence; the first needs tighter
+small-$n$ inequalities, the second is directly actionable because the
+certificate has just $2{,}082$ integer comparisons, not a search over automata.
+FO: this would simplify the trust boundary rather than change the theorem; the
+difficulty is genuine, since small $n\equiv2\pmod4$ have an optimal split
+farther from the midpoint and a graph with isolated states can become the
+closest competitor, and the recorded runner-up tags identify the cases a
+uniform proof must dominate.
+
+\begin{question}[Four-color projections versus whole transformation monoids; FO]\label{fo:fo:q:monoids}
+Can a two-generated monoid different from $U_{a_n,b_n}$ attain the maximum
+four-color orbit, and how small can such a monoid be?
+\end{question}
+This is the last part of Part~III's \cref{evo:q:classify} (manuscript~01) at
+$k=4$. FO: a positive answer would show explicitly that extremal coloring
+orbits and extremal monoid sizes are different optimization problems; neither
+\cref{fo:thm:main} nor \cref{fo:thm:rigidity} settles the
+largest-two-generated-transformation-monoid question.
+
+\begin{question}[Attainable near-maximum sizes; FO]\label{fo:fo:q:spectrum}
+Which values immediately below $R_2(n,4)$ occur as reversal complexities of
+minimal $n$-state binary DFAOs with four outputs?
+\end{question}
+This is Part~III's \cref{evo:q:spectrum} at $k=4$. FO: the missing proper-orbit
+inventory describes one structured source of gaps, incomplete reachability
+among improper colorings another; it would be valuable to distinguish the two
+mechanisms and decide whether they force intervals of unattainable sizes near
+the maximum.
+
+\begin{question}[A complete formal theorem; FO]\label{fo:fo:q:formal}
+Can the collision classification, certificate checker, strict comparison and
+the two-generator monoid theorem be formalized together, so that both sides of
+\eqref{fo:eq:main} are kernel-checked without admitted inputs?
+\end{question}
+This is Part~III's \cref{evo:q:formal} at $k=4$; the two manuscripts' plans are
+in \cref{fo:sec:formal}. FO: the short upper-bound reduction is a natural first
+milestone, and the published generation theorem likely the more substantial
+algebraic component; separating the tasks allows a formally verified universal
+upper bound before the attainment formalization is complete.
+
+\section{Conclusion of Part~IV}\label{fo:sec:conclusion}
+
+\emph{AS.} The four-output problem separates completely into a chromatic upper
+bound and an existing monoid construction that attains it. The identity for
+$\Bip_4(a,b)$ makes the universal comparison explicit: beyond $n=25$ every
+collision structure except a spanning coprime biclique has a strictly larger
+exponential deficit, and strict balancing selects the closest coprime split;
+the finite certificate covers every smaller state count. Equality forces not
+only the best cycle sizes but also a single cross collision and primitive
+disjoint binary output words. The result is more than a collection of matching
+numerical values: an all-state formula, an explicit proof boundary, a
+quantitative structural theorem for near-extremizers and an exact description
+of the missing states. Its claims are confined to four outputs; the uniform
+variable-output conjecture and the classification of all saturating
+transition pairs remain separate tasks.
+
+\emph{FO.} The four-output problem has an exact all-state answer because one
+collision already forces a very restricted graph, and four-color biclique
+counts separate its possible shapes sharply enough; after this reduction only
+the closest coprime two-cycle split survives. Published generation results
+attain the bound, while strictness yields necessary extremizer rigidity and a
+meaningful stability theorem. The result resolves the four-output slice of the
+optimality problem, relative to the proof and finite certificate given; it does
+not resolve the variable-output question or classify every extremizing
+singular map, and these remaining issues are isolated as explicit structural
+and reachability problems rather than an undifferentiated search over automata.
+
+\emph{The merge.} Both conclusions were written before Part~III: the
+four-output slice of Davies's Problem~2 is Part~III's (\cref{evo:thm:main}), and
+what Part~IV contributes to it is the second route with threshold $26$, the
+stability theorems, the orbit inventory, the output count and the minimal
+recurrence.
+
+\section{Sources, dependency boundaries and provenance}\label{fo:sec:audit}
+
+This section follows the two manuscripts' audits, dated 29 September 2026 and
+shipped verbatim: AS's \path{07-all-state-SOURCE_AUDIT.md} and
+\path{07-all-state-PROOF_AUDIT.md} (delivered in \texttt{notes/}), and FO's
+\path{06-four-output-SOURCE_AUDIT.md} and \path{06-four-output-PROOF_AUDIT.md}.
+
+\subsection{Repository evidence the manuscripts inspected}
+
+Both read this report through the GitHub connector, at the pins
+\begin{quote}\small\ttfamily
+8315d24e33a0f4901ca85f0e330ed1d5e19b1ae2\hfill\normalfont(AS)\\
+c130dba623c420551d90db41dae7b3d9cff72dfd\hfill\normalfont(FO)
+\end{quote}
+At both, \texttt{article.tex} had blob
+\texttt{84923bc50f6233d63fd1a7341a0e16801cd715b8} (AS records it and checked
+it explicitly at its pin) and \texttt{README.md} blob \texttt{1716ad6b}: the
+text of Parts~I and~II, with Part~III's files staged but Part~III not yet
+written. \emph{AS} inspected the article (orbit reduction, rightmost-singular
+argument, graph forms, structural collection, three-output extension), the
+README (the exact three-output theorem, the finite-range result and the
+article's explicit limits), \path{03-eventual-SOURCE_AUDIT.md} (blob
+\texttt{f93f98bb9d992ffc7cbc5396c9e06cbba287dde7}), and the repository root
+README and research-report manifest, used to choose the topic; unrelated claims
+there are not dependencies. It inspected the eventual audit, not every proof of
+its companion manuscript, and does not rely on that eventual theorem. \emph{FO}
+inspected the repository overview and research-report manifest, then the
+README, the full article source and \texttt{code/reversal.py}; a GitHub code
+search for ``four-output'' in ProveIt returned one unrelated
+Hilbert-tenth-problem file and no relevant reversal continuation. Both say
+that the inspected repository papers are research drafts, not formal proof
+certificates, and both reprove every part of the upper-bound argument they use
+instead of treating an unrefereed repository statement as an axiom.
+
+\emph{Stale text in the shipped audits and the unshipped manuscripts.} FO
+writes that Part~II ``explicitly leaves the four-or-more-output cases open''
+and that the contribution relative to the snapshot is the all-state
+four-output upper bound; its source audit lists the exact result for $k\ge4$
+as ``explicitly left open there''. AS writes that the eventual audit records
+``no established explicit fixed-$k$ threshold'' and that its conclusions ``make
+[the repository's] fixed-four-output eventual analysis effective at every state
+count''. Both were true of the text at the pins; Part~III, written in
+\texttt{18634ca66} after both pins, proves the four-output formula for every
+$n\ge7$ with an explicit threshold (\cref{evo:thm:main,evo:thm:smallk}), so in
+the current report the four-output formula is Part~III's and AS's and FO's
+proofs are a second route (\cref{fo:sec:answer}). The shipped audits are kept
+verbatim.
+
+\subsection{Primary published sources}
+
+Both inspected Davies's arXiv version~2 of 17 October 2017 \cite{Davies2017}.
+AS: HTML and PDF, with the relevant PDF pages, including the small-value table
+and the concluding problems, visually inspected; Propositions~3--4, Section~3
+($U_{a,b}$, the two-generation theorem, the generators attributed to Krawetz),
+Theorem~3 and Corollary~3, Section~5 Problem~2 (printed p.~17; only the
+four-output slice is claimed), and Table~3 (prior small values, and the
+distinction between established and candidate optima; small numerical values
+are not new). FO: the full parsed article and the displayed open-question page;
+printed pp.~5--6 (Propositions~3--4), p.~7 ($U_{a,b}$ and the parity-adjusted
+generators), p.~9 (Theorem~3), p.~12 (Corollary~3) and p.~17 (Problem~2 and the
+small-value table); the version inspected has 18 printed pages. Neither claims
+the generator, the orbit interpretation or the small lower-bound numbers as
+new.
+
+Holzer and K\"onig \cite{HolzerKoenig2004}: both import Theorem~8 through
+Davies's statement; the original 2004 proof was not reconstructed or
+independently audited, and FO checked the official publisher metadata. The
+larger question of the maximum size of an arbitrary two-generated
+transformation monoid is neither assumed nor resolved (FO). Davies's
+attribution of the explicit generators to Krawetz \cite{Krawetz2003} is
+retained; the thesis was not read in full (AS).
+
+\subsection{Literature-search scope}
+
+AS searched DFAO reversal, Davies's paper, the binary exact maximum and later
+resolutions, and searched the repository for four-output follow-up work. FO
+searched the full Davies title, ``DFAO reversal four'', and combinations of
+``Davies'', ``reversal'', ``optimal'' and ``output''. Neither located a later
+resolution. Neither is a systematic citation-index review, a survey of all
+theses or unindexed manuscripts, or correspondence with the authors; a missing
+search hit does not establish priority or prove the absence of a later
+result, and neither manuscript makes a verified global-priority claim. FO's
+claim of extension is specifically relative to the inspected repository
+version.
+
+\subsection{Dependency ledgers}
+
+\emph{AS} (contribution claimed by its package): the exact four-output optimum
+for every $n\ge4$, with the formula for $n\ge7$; an explicit elementary
+structural exclusion for $n\ge26$ plus a complete certificate for
+$4\le n\le25$; a strict structural margin greater than $ab$, an $ab/2$
+stability radius and the specialized $24ab$ penalty; the exact missing-orbit
+inventory and the extremal output-map count on the standard transition pair;
+specialized exact sequence consequences, including the minimal order-15
+recurrence. General ideas of asymptotics, recurrence extraction and
+primitive-word enumeration are not claimed as new methods; the repository's
+finite comparisons including four outputs are not claimed as new computations
+of previously unknown numbers. AS's proof audit lists its boundary checks: the
+closest-split formula is used only for $n\ge7$; the $n=6$ witness has two
+triangular components, not one $C_6$; proper-orbit bounds do not imply generic
+improper saturation; the $24ab$ penalty assumes injectivity on both cycles and
+a proper initial output and is not claimed sharp; the count
+$6P_2(a)P_2(b)$ concerns one fixed transition pair; a reverse-state search is
+not an enumeration of all automata; and the two implementations are
+independent only at the implementation level.
+
+\emph{FO} (boundary against the predecessor): already present at its pin were
+the coloring-orbit reduction, the collision-graph method and classification, a
+universal structural upper bound, finite equality with Davies's construction
+for $7\le n\le30$, $3\le k<n$, and the all-state three-output result with its
+rigidity. FO's contribution relative to that snapshot: the all-state
+four-output upper bound, the strict comparison selecting the nearest coprime
+split, four-output rigidity, the four-color second-collision penalty,
+secondary-scale stability, and the derived orbit inventory and exact
+asymptotics. Graph coloring, the orbit reduction, primitive-word counting, the
+biclique chromatic polynomial and the lower witness are not claimed as new;
+the three-output proof is not used as an admitted premise. FO's proof audit
+records that the certificate subtracts $mJ(r)$ or $\lcm(a,b)J(r)$, conservative
+upper bounds on the permutation order, not a product of unrelated coloring
+periods, and that $J(0)=J(1)=1$.
+
+\subsection{Claims and nonclaims}
+
+Part~IV's new contributions are the threshold-$26$ route with its
+$2{,}082$- and $2{,}059$-entry certificates, the structural margin, the two
+stability theorems, the missing-orbit inventory, the count of extremal output
+maps, and the minimal order-15 recurrence with its reduced generating function.
+The following are \emph{not} claimed:
+\begin{itemize}
+\item The four-output formula as a new theorem: it is Part~III's
+ \cref{evo:thm:main} at $k=4$ for $n\ge7$, and Part~I's finite table for
+ $n=4,5,6$; AS and FO give a second proof.
+\item Anything for five or more outputs, the variable-output problem, growing
+ $k$, or the diagonal: both manuscripts' claims are confined to four outputs.
+\item A least threshold: $26$ is sufficient for the particular estimates, not
+ optimal, and no conclusion below it is drawn by continuity or extrapolation
+ (AS).
+\item A new proof of Davies's lower construction or of the Holzer--K\"onig
+ two-generation theorem; finite breadth-first searches do not replace it.
+\item A classification of extremizers: \cref{fo:thm:rigidity} gives necessary
+ conditions, (i)--(iii) are not sufficient
+ (\cref{fo:fo:rem:notsufficient}); no classification of saturating singular
+ generators or of extremal monoids (orbit extremality is weaker than
+ monoid-size extremality); \cref{fo:as:thm:outputmaps} concerns one fixed
+ transition pair and no other equivalence problem.
+\item Sharpness of the penalties or of the stability radius; a second-largest
+ value; a distance estimate between transition tables (FO); the near-maximum
+ spectrum.
+\item Novelty for the orbit reduction, the collision-graph method, the lower
+ witness, primitive-word counting, standard Stirling and palette identities,
+ or the small values $176$, $826$, $3526$ and $15{,}472$ (Part~I's tables,
+ Davies's Table~3).
+\item That the finite tables, sweeps or breadth-first searches prove any
+ infinite statement.
+\item Independent refereeing, priority, or machine-checked formalization.
+\end{itemize}
+
+\subsection{What remains open}
+
+At $k=4$: the least analytic threshold and a computation-free proof for
+$7\le n\le25$ (\cref{fo:q:computation}); a classification of saturating
+singular letters (\cref{fo:q:saturate,fo:fo:q:monoids}); the optimal stability
+radius, the second-largest value and the near-maximum spectrum
+(\cref{fo:q:stability,fo:fo:q:spectrum}); sharp penalties for several
+collisions (\cref{fo:q:collisions}); word-length bounds for saturation and the
+enumeration of inequivalent extremizers (\cref{fo:as:q:words,fo:as:q:enumerate});
+formal verification (\cref{fo:fo:q:formal}). Beyond $k=4$ the open questions
+are Part~III's.
+
+\subsection{Where the merge had to choose}\label{fo:sec:merge}
+\begin{itemize}
+\item \emph{Role.} Both manuscripts re-derive Part~III's $k=4$ case, which
+ neither had read. Part~IV therefore prints the formula as Part~III's (and
+ Part~I's for $n\le6$) and the manuscripts' proofs of it as a second route
+ (\cref{fo:thm:main} and \cref{fo:sec:answer}), instead of as a new theorem;
+ the batch-43 placement (\texttt{faef2ed2a}) records the same decision.
+\item \emph{Placement.} Part~IV follows Part~III's last section and precedes
+ Part~I's appendices, which contain no numbered equations, tables, figures or
+ theorem-like items; no number of Parts~I--III changed (compared in the
+ \texttt{.aux} files of the committed and the new build).
+\item \emph{Base.} AS (weaker hypothesis $n\ge4$, proved minimality of the
+ recurrence, the output count); its order of sections is kept, and FO's
+ material is inserted where it belongs. FO's proofs that differ from AS's are
+ kept as marked second routes (\cref{fo:fo:lem:eliminate,fo:fo:lem:threshold,fo:fo:prop:large},
+ the second proof of \cref{fo:thm:rigidity}, FO's witness); FO-only results
+ keep FO's hypotheses (\cref{fo:fo:prop:penalty} without properness,
+ \cref{fo:fo:thm:stability} for $n\ge26$). FO's proofs were re-read for hidden
+ uses of properness, the hypothesis AS's penalty needs: none was found; its penalty uses only the
+ two cross pairs, and its stability theorem only $\defi<7\cdot2^n$.
+\item \emph{Duplicates, printed once.} The orbit reduction, the collision
+ obstruction, the classification, the cycle and biclique counts (both
+ manuscripts; Part~I, Part~III); the unmixed cases (both; Part~I, Part~III's
+ \cref{evo:lem:easy}); the closest split and balancing (both; Part~III's
+ \cref{evo:cor:split}); the upper bound for $n\ge7$ and its witness (both;
+ Part~III); the rigidity theorem (both, and Part~III's \cref{evo:thm:rigidity}
+ in weaker form); the one-edge count (FO; Part~III); the inventory (AS's and
+ FO's formulas, one theorem); the output-map count (AS's theorem, FO's remark);
+ the residue asymptotics (both; Part~III's \cref{evo:thm:evenasymptotic} as an
+ expansion); the order-15 operator (both: AS proves minimality, FO annihilation);
+ the generating-function data (both, identical numbers).
+\item \emph{Tables.} AS's and FO's certificate tables are printed as one
+ (\cref{fo:tab:finite}; the margins agree, the entry counts differ by FO's
+ nonsurjective entry); the column $R_2(n,4)$ is AS's \texttt{maximum} field
+ of \path{data/07-all-state-finite_summary.csv}. AS's and FO's $n=7$
+ inventories are printed as one table (\cref{fo:ex:inventory7}).
+\item \emph{Questions.} The $16$ questions are printed as $11$, merged where
+ they ask the same thing, with both sources' comments;
+ \cref{fo:q:next} is printed as answered by Part~III (except its uniform
+ part), and each question names its Part~III counterpart.
+\item \emph{Order and pieces.} AS's verification section and appendix on
+ finite algorithms, and FO's reproducibility section and compact enumerator,
+ are merged into \cref{fo:sec:verification}; the two formalization plans are
+ \cref{fo:sec:formal}; FO's literature check and the four audits are this
+ section; AS's appendix on generating-function data is in
+ \cref{fo:sec:recurrence}; the two title-page status statements are the
+ status box of \cref{fo:sec:source}; the two conclusions are
+ \cref{fo:sec:conclusion}.
+\item \emph{Notation.} All renamings are in \cref{fo:tab:notation}; in
+ particular $A,B\to a_n,b_n$ (or $a,b$), $D_n\to D^*_4(n)$ and $D_4(n)$ (Part~II's
+ $D_n$ is the three-output deficit), $\mathcal B(a,b)\to\Bip_4(a,b)$, FO's cycles $L,R\to
+ X,Y$, $h(t),g(t)\to\psi(t),4\psi(t)$, FO's $E(a,b)\to\Omega^{\mathrm e}_4$ and
+ AS's $E(u,v)\to\mathcal C_{u,v}$ (the two manuscripts' $E$ collide with each
+ other), FO's $N_{u,v}\to o_{u,v}$, $\chi_D,\mathcal A(E)\to\chi_4(\mathsf S)$,
+ FO's advance coefficients $a_j\to\alpha_j$, FO's constant $C\to\kappa$. No
+ normalization changed.
+\item \emph{References to Parts~I--III.} The manuscripts cite the report as a
+ repository package (AS: \emph{RepoMain}, \emph{RepoEventual}; FO:
+ \emph{ProveIt}); here those citations are internal cross-references, and
+ their bibliography entries for Davies and for Holzer and K\"onig are Part~I's
+ \cite{Davies2017,HolzerKoenig2004}.
+\item \emph{Added in the merge.} The status paragraph after
+ \cref{fo:thm:main}, \cref{fo:sec:new}, \cref{fo:rem:threshold},
+ \cref{fo:sec:rowcheck}, the relation paragraphs after
+ \cref{fo:thm:rigidity,fo:fo:prop:penalty,fo:as:prop:penalty,fo:fo:thm:stability,fo:prop:scales},
+ \cref{fo:rem:residueminimal}, the counterparts named in
+ \cref{fo:sec:questions}, and dated pointers in Part~I's reading-routes box
+ and in Part~III's \cref{evo:sec:answer}, \cref{evo:q:threshold,evo:q:stability,evo:q:recurrence}
+ and its list of open problems.
 \end{itemize}
 \endgroup
 

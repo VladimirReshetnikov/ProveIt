@@ -1,24 +1,31 @@
 # A cyclic-coloring obstruction to maximal binary DFAO reversal
 
-**Nonattainment of the full coloring space for every 3 ≤ k ≤ n, the exact three-output maximum for every n ≥ 7, and the exact maximum for four and more outputs**
+**Nonattainment of the full coloring space for every 3 ≤ k ≤ n, the exact three-output maximum for every n ≥ 7, the exact maximum for four and more outputs, and a second four-output route with stability and the missing orbits**
 
-This is a research report in three parts. Part I is the original report of
+This is a research report in four parts. Part I is the original report of
 20 September 2026, itself the merge of two independently prepared packages.
 Part II was added on 28 September 2026 in batch 39 of ProveIt's
 incoming-report intake, from a later manuscript that answers, for three
 outputs, the question Part I left open: the exact value of `R_2(n,k)` beyond
 its finite range `7 ≤ n ≤ 30`. Part III was added on 29 September 2026 in
 batches 40–41, merged from three further manuscripts that answer the same
-question for four and more outputs (Part II's Question 23.1). All sources were
-prepared for Vladimir Reshetnikov and are AI-assisted.
+question for four and more outputs (Part II's Question 23.1). Part IV was added
+on 29 September 2026 in batch 43, merged from two manuscripts that, written
+before Part III was printed, re-derive its `k = 4` case with a much smaller
+analytic threshold (26 against `N(4) = 212`) and add stability theorems, the
+missing-orbit inventory, the count of extremal output maps and a recurrence of
+proved minimal order 15. All sources were prepared for Vladimir Reshetnikov and
+are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | two Cardinals-collection packages of 20 Sep 2026, `dfao-reversal-cyclic-coloring` (the spine) and `dfao-reversal-coloring-bound`, merged into one report | `dfao_reversal_research.zip` + `binary_dfao_reversal_research.zip` (as the collection manifest records them) | (none) | merged `8374aaa79` (Cardinals repository), in ProveIt since `dc54c3cb3` | Part I: Sections 1–12 (pp. 1–29), Appendices A–D (pp. 106–109); Section 1.3 records what each package contributed |
+| 01 (original) | two Cardinals-collection packages of 20 Sep 2026, `dfao-reversal-cyclic-coloring` (the spine) and `dfao-reversal-coloring-bound`, merged into one report | `dfao_reversal_research.zip` + `binary_dfao_reversal_research.zip` (as the collection manifest records them) | (none) | merged `8374aaa79` (Cardinals repository), in ProveIt since `dc54c3cb3` | Part I: Sections 1–12 (pp. 1–29), Appendices A–D (pp. 138–141); Section 1.3 records what each package contributed |
 | 02 | batch 39, manuscript 06 (*Exact Binary Reversal with Three Outputs: An all-state solution and rigidity of extremizers*, 28 Sep 2026, 19-page PDF as delivered) | `ProveIt_Three_Output_Reversal.zip` (inner `three_output_reversal/`, main file `article.tex`) | `fbba58593` | `e2b1f016a` (prefix `02-three-output-`) | Part II: Sections 13–27 (pp. 30–51) |
-| 03 | batch 40, manuscript 01 (*Eventual Optimality in Binary DFAO Reversal: Closest coprime cycles, a parity-sensitive defect law, and exact finite certificates*, 28 Sep 2026, 22-page PDF) | `ProveIt_DFAO_Eventual_Optimality.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` (with Part I's blobs `e6dbd47b` article, `13166e22` README) | `afb2d1227` (prefix `03-eventual-`) | Part III (pp. 52–105), label sub-prefix `evo:et:`: Sections 30, 35, 36, parts of 31–32, 38, 41, 44–47 |
+| 03 | batch 40, manuscript 01 (*Eventual Optimality in Binary DFAO Reversal: Closest coprime cycles, a parity-sensitive defect law, and exact finite certificates*, 28 Sep 2026, 22-page PDF) | `ProveIt_DFAO_Eventual_Optimality.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` (with Part I's blobs `e6dbd47b` article, `13166e22` README) | `afb2d1227` (prefix `03-eventual-`) | Part III (pp. 52–106), label sub-prefix `evo:et:`: Sections 30, 35, 36, parts of 31–32, 38, 41, 44–47 |
 | 04 | batch 40, manuscript 03 (*Binary DFAO Reversal: Exact Three-Output Complexity, Odd-Output Rigidity, and Sharp Deficit Asymptotics*, 28 Sep 2026, 21-page PDF) | `ProveIt_Binary_DFAO_Reversal.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` | `afb2d1227` (prefix `04-deficit-asymptotics-`) | Part III, label sub-prefix `evo:da:`: Sections 37, 38, 42, parts of 29, 32, 41, 43–47 |
 | 05 (base of Part III) | batch 41, manuscript 06 (*Eventual Exactness in Binary DFAO Reversal: Balanced coprime cycles, a uniform quartic threshold, and rank-sensitive obstructions*, 28 Sep 2026, 22-page PDF) | `ProveIt_Binary_Reversal_Exactness.zip` (inner `binary_reversal_eventual_exactness/`), arrived `9754e8360` | `e2b1f016a` | `eaf787d50` (prefix `05-quartic-threshold-`) | Part III, labels `evo:`: Sections 28–29, 31–34, 39–41, 43–47 |
+| 06 | batch 43, manuscript 03, called FO in Part IV (*Exact Four-Output Binary Reversal: Optimal state complexity, collision rigidity, and secondary asymptotics*, 29 Sep 2026, 21-page PDF) | `ProveIt_Four_Output_Reversal.zip` (inner directory of the same name), arrived `06bcc37a8` | `c130dba62` | `faef2ed2a` (prefix `06-four-output-`) | Part IV (pp. 107–138), label sub-prefix `fo:fo:` and shared `fo:` labels: the second routes of Sections 50–53, the penalty and stability of Section 53, parts of 49, 51, 54–59 |
+| 07 (base of Part IV) | batch 43, manuscript 05, called AS in Part IV (*Exact Binary Reversal with Four Outputs: An all-state formula, quantitative rigidity, and the structure of the missing reversal states*, 29 Sep 2026, 21-page PDF) | `ProveIt_Four_Output_Reversal (1).zip` (inner `four_output_reversal/`; a download-name collision, not a re-ship of 06), arrived `06bcc37a8` | `8315d24e3` (with this report's blobs `84923bc5` article, `f93f98bb` `03-eventual-SOURCE_AUDIT.md`) | `faef2ed2a` (prefix `07-all-state-`) | Part IV, labels `fo:as:` and shared `fo:`: Sections 48–59 |
 
 The pins in full: `fbba58593dc0622aa914972896150d4848f935b5` (Part II),
 `2cdcd74f3abcbbff7bd47c6c4265522395def609` (batch-40 manuscripts 01 and 03)
@@ -28,13 +35,18 @@ all three pins Part I's `article.tex` had blob `e6dbd47b…` and its
 statement the manuscripts make about Part I refers to the text printed here.
 None of the three Part III manuscripts knew Part II's text: 01 and 03 were
 pinned before it was placed, and 06 was pinned at its placement commit, where
-only its files (and its source audit, which 06 read) existed. The manuscripts,
-PDFs and delivery READMEs of Parts II and III are not shipped and survive in
+only its files (and its source audit, which 06 read) existed. The batch-43 pins in full are
+`8315d24e33a0f4901ca85f0e330ed1d5e19b1ae2` (AS) and
+`c130dba623c420551d90db41dae7b3d9cff72dfd` (FO); at both, `article.tex` had
+blob `84923bc5…` (Parts I–II printed, Part III staged but written only in
+`18634ca66`, after both pins), so neither Part IV manuscript knew Part III's
+threshold `N(k)` or its all-`n` closure of `4 ≤ k ≤ 7`. The manuscripts,
+PDFs and delivery READMEs of Parts II–IV are not shipped and survive in
 the arrival commits. Each part prints every result, proof, example, remark,
 limitation and question of its manuscripts; what a manuscript re-derives from
 an earlier part is printed once and credited, and genuinely different proofs
-are kept as marked second routes. Sections 27.6 and 47.7 of the article list
-where the merges had to choose.
+are kept as marked second routes. Sections 27.6, 47.7 and 59.7 of the article
+list where the merges had to choose.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The finite
@@ -44,7 +56,8 @@ Part I's finite optimality result) rests on published external theorems:
 Davies's Theorem 3 / Corollary 3, and, in Part III's second route, the
 Holzer–König two-generation theorem for the monoid `U_{a,b}`; they are cited,
 not reproved. Part III's closure of `4 ≤ k ≤ 7` below its analytic threshold
-is computer-assisted.
+is computer-assisted, and so are Part IV's certificates below `n = 26`; Part
+IV's attainment imports the Holzer–König theorem.
 
 ## Results
 
@@ -149,6 +162,64 @@ manuscript 06's rows agree with the formula in all 1,025 rows with `n ≤ 300`
 that were recomputed; the 13 threshold rows were recomputed from their
 definition; manuscript 03's 25 rows equal Part II's.
 
+**Part IV** (batch 43) works at `k = 4`. Both manuscripts (called AS and FO in
+the article) were written before Part III was printed and re-derive its
+`k = 4` case; the formula is printed as Part III's (and Part I's for `n ≤ 6`),
+with their proofs as a second route.
+
+1. **Second route to `R_2(n,4) = 4^n − 6·2^n − 4(3^a + 3^b) + 12(2^a + 2^b) − 12 + ab`**
+   (`(a,b) = (a_n,b_n)`, every `n ≥ 7`) and `R_2(4,4) = 176`,
+   `R_2(5,4) = 826`, `R_2(6,4) = 3526` (Theorem 48.1). Not new: the formula is
+   Part III's Theorem 28.1 at `k = 4` (Theorem 34.1 for `7 ≤ n ≤ 211`,
+   `N(4) = 212`), and the three small values are in Part I's small-case table
+   (Section 10.2) with the same witness arrays (Appendix A). New: the upper
+   bound is **analytic for every `n ≥ 26`** (AS, Proposition 50.2; FO,
+   Proposition 50.5), against Part III's `N(4) = 212`, and below 26 a finite
+   certificate of **2,082** integer comparisons for `4 ≤ n ≤ 25` (AS) or
+   **2,059** for `7 ≤ n ≤ 25` (FO) suffices (Proposition 51.2, Table 13);
+   every structural case other than the optimal biclique has deficit larger by
+   more than `a_n b_n` (Corollary 51.3). Like `N(4)`, 26 is only sufficient
+   (Remark 50.6).
+2. Rigidity at `k = 4` (Theorem 53.1): the output uses exactly two colors on
+   each cycle with primitive words, and the reachable set is every improper
+   coloring of `K_{a,b}` plus one proper orbit of length `ab`, with the
+   converse; this specializes Part III's Theorem 39.1. The second-collision
+   penalty `4^{a+b} − 𝓑_4(a,b) − 12ab(2^{a−1}+2^{b−1}−2) + ab` (FO, for every
+   output map; Proposition 53.4) is Part III's Theorem 40.1 with (40.7) at
+   `k = 4, t = 2`, under a weaker hypothesis on the singular letter; AS's
+   `R_2(n,4) − 24ab` (Proposition 53.5, proper outputs only) is weaker.
+   Necessary is not sufficient: FO's 7-state example has 212 reverse states
+   (Remark 53.2).
+3. **Stability** (new): an orbit larger than `R_2(n,4) − a_n b_n/2` forces the
+   optimal split, one cross double fiber and primitive `2+2` palettes (AS,
+   Theorem 53.6); for `n ≥ 26`, a deficit below `7·2^n` forces two full coprime
+   cycles `a' ≤ b'` with deficit at least `6·2^n + 3^{b'} − n²/4`, and a deficit
+   at most `6·2^n + κ3^{n/2}` (with `κ3^{n/2} < 2^n`) bounds
+   `b' − a' ≤ 2 log_3(κ + n²/(4·3^{n/2}))` (FO, Theorem 53.7).
+4. **The missing orbits** (new at `k = 4`): an extremizer misses
+   `o_{u,v} − [(u,v)=(a,b)]` orbits of length `uv` for `u | a`, `v | b`, with
+   `o_{u,v}` given by primitive-word counts (Theorem 54.2; at `n = 7`, 175
+   missing orbits, 912 colorings, Example 54.3); on the standard witness
+   exactly `6P_2(a)P_2(b)` output maps are extremal (AS, Theorem 54.4; 432 at
+   `n = 7`).
+5. **A minimal recurrence** (new): from `n = 7`, `D_4(n) = 4^n − R_2(n,4)`
+   satisfies the recurrence with characteristic polynomial
+   `(x−2)(x⁴−9)(x⁴−4)(x−1)²(x⁴−1)`, of proved minimal order 15 (AS; FO proves
+   that the same operator annihilates), and `R_2(n,4)` one of minimal order 16;
+   the tail generating function has this reduced denominator (Theorem 55.2,
+   Corollary 55.3). Exact residue formulas make Part III's Theorem 41.2 exact
+   at `k = 4`: `(D_4(n) − 6·2^n)/3^{n/2} → 16/√3, 40/3, 328/9` for `n` odd,
+   `≡ 0`, `≡ 2 (mod 4)` (Proposition 55.1).
+
+Added in that merge (not stated by the manuscripts): Section 51.2 compares the
+closed form with Part I's 24 rows `k = 4`, manuscript 01's 94 rows, the 205
+rows of `data/05-quartic-threshold-finite_k4.csv` (split and target) and the
+two new certificates (213 FO rows, 22 AS rows): no mismatch, and identical
+margins on `7 ≤ n ≤ 25`; Remark 55.4 shows that Part III's `k = 4` annihilator
+`(E−1)³(E−4)(E−9)(E−16)` is minimal on each residue class (answering Part
+III's Question 44.15 at `k = 4`); Remark 50.6 compares the thresholds; and
+Proposition 53.4 is shown to imply Proposition 53.5.
+
 ## Not claimed
 
 - Davies's Problem 2 in full: the exact maximum for `k ≥ 8` with
@@ -159,7 +230,8 @@ definition; manuscript 03's 25 rows equal Part II's.
   (Question 44.1). None of the parts settles Davies's other Section 5
   questions or the largest-two-generated-transformation-monoid problem.
 - No least thresholds: `N(k)` is sufficient, not optimal; manuscripts 01 and
-  03 prove only that some threshold exists. Every asymptotic statement of
+  03 prove only that some threshold exists. Part IV's `26` at `k = 4` is also
+  only sufficient for its particular estimates. Every asymptotic statement of
   Part III is for fixed `k`; the only uniform statement is the threshold
   `n ≥ 3k^4`. Manuscript 03's plateau theorem is first order and concerns the
   witness family; it does not say that every split in the interval is exactly
@@ -168,8 +240,14 @@ definition; manuscript 03's 25 rows equal Part II's.
   two-generation theorem; Part III's Section 30 proves only the saturation
   step given generation. Finite breadth-first searches do not replace that
   dependency.
-- No classification of extremizers: the rigidity theorems (Parts II and III)
-  give necessary conditions only (Examples 19.3 and 39.3); the `6AB` penalty
+- Part IV's four-output formula is not a new theorem: it is Part III's
+  Theorem 28.1 at `k = 4` (and Part I's table for `n = 4, 5, 6`, values 176,
+  826, 3526); Part IV prints the manuscripts' proofs as a second route. Its
+  claims are confined to four outputs; its penalties and stability radius are
+  not claimed sharp, no second-largest value or distance between transition
+  tables is given, and its output-map count concerns one fixed transition pair.
+- No classification of extremizers: the rigidity theorems (Parts II–IV)
+  give necessary conditions only (Examples 19.3 and 39.3, Remark 53.2); the `6AB` penalty
   and the matching bounds are proved only under their stated hypotheses; no
   classification of extremal transformation monoids (orbit extremality is
   weaker than monoid-size extremality); no second-best value or near-maximum
@@ -182,14 +260,15 @@ definition; manuscript 03's 25 rows equal Part II's.
   method. The threshold `n ≥ 7` is essential: at five states the coprime
   two-cycle construction is not optimal.
 - No priority. All literature checks were targeted (Part I on
-  20 September 2026, Parts II and III on 28 September 2026); none is an
+  20 September 2026, Parts II and III on 28 September 2026, Part IV on
+  29 September 2026); none is an
   exhaustive citation-index review, a survey of theses, or correspondence with
   the author. A missing search hit is not evidence that no earlier or later
   result exists.
 - No claim that random tests, finite enumerations or finite tables establish a
   universal theorem, that a finite region plus an unspecified tail covers
   every intervening `n`, or that all improper colorings are reachable in
-  arbitrary cases (Parts II and III prove it only for extremizers).
+  arbitrary cases (Parts II–IV prove it only for extremizers).
 
 ## Labels
 
@@ -198,12 +277,19 @@ Part I's 90 labels are bare (`sec:`, `eq:`, `thm:`, `lem:`, `prop:`, `cor:`,
 ("three-output reversal"); Part III added **201** labels, all with the prefix
 `evo:` ("eventual optimality"): manuscript 06's material uses plain `evo:`,
 manuscript 01's `evo:et:` and manuscript 03's `evo:da:` ("deficit
-asymptotics"). Total: 373 (pattern `\\label(\[[^]]*\])?\{`; 172 before
-Part III). No label was renamed or removed. Part III starts at Section 28; its
-tables continue the numbering (Tables 6–11) and its figure is Figure 2. In the
+asymptotics"). Part IV added **106** labels, all with the prefix `fo:` ("four
+outputs"): material only in manuscript AS uses `fo:as:` (23), material only in
+FO `fo:fo:` (20), and statements of both, or added in the merge, plain `fo:`
+(63). Total: 479 (pattern `\\label(\[[^]]*\])?\{`; 373 before Part IV, 172
+before Part III). No label was renamed or removed. Part III starts at Section 28; its
+tables continue the numbering (Tables 6–11) and its figure is Figure 2. Part IV
+starts at Section 48 and has Tables 12–13. In the
 `.aux` files of the committed and the new build every label of Parts I and II
 has the same number (page numbers after Part I's Section 1.4 moved, because of
-the dated pointers). Part I's appendices come after Part III and contain no
+the dated pointers). Comparing the `.aux` files of the committed three-part
+build and the four-part build, every one of the 373 earlier labels keeps its
+number; only pages in Part III (dated pointers) and in the appendices moved.
+Part I's appendices come after Part IV and contain no
 numbered equations, tables, figures or theorem-like items.
 
 As recorded for Part II, the theorem-like environments are declared through
@@ -227,6 +313,15 @@ reading. The most important points:
   threshold of manuscripts 01 and 03 (their `N(k)`).
 - `G_k(a,b)` is Part I's period term (01's `T_k`, 03's `γ_k`), not Part I's
   residual-order bound `T_{r,k}`.
+- Part IV (Table 12, Section 48.2): the manuscripts' `A, B` and `D_n` are
+  written `a_n, b_n`, `D*_4(n)` (formula, `n ≥ 7`) and `D_4(n)` (optimum,
+  `n ≥ 4`) — Part II's `D_n` is the **three**-output deficit; their `𝓑(a,b)` is
+  `𝓑_4(a,b)`; FO's cycles `L, R` are `X, Y`; the two manuscripts' clashing
+  `E` are renamed `Ω^e_4(a,b)` (FO: one-monochromatic-edge colorings) and
+  `𝓒_{u,v}` (AS: proper colorings with exact periods `u, v`); FO's `N_{u,v}`
+  is `o_{u,v}`; the order-15 polynomial is `χ_4`, with shift `𝖲` in `n`
+  (Part III's `𝖤` shifts the residue step `t`); `ψ(t) = 3^t − 3·2^t` is AS's
+  `h(t)` and a quarter of FO's `g(t)`. No normalization changed.
 - Manuscript 06's threshold constants are hatted: `Ĥ, M̂, Ĉ, B̂, L̂, Ŝ, Û` are
   its `H, M, C, B, L, S, U` (the keys of
   `data/05-quartic-threshold-thresholds.json`), renamed because of Part I's
@@ -243,9 +338,10 @@ reading. The most important points:
 ```
 article.tex                            the report, standalone LaTeX with an internal bibliography; \inputs
                                        data/04-deficit-asymptotics-finite_table.tex
-article.pdf                            the compiled report, 114 pages (title page, contents pp. i–iii,
-                                       Part I pp. 1–29, Part II pp. 30–51, Part III pp. 52–105,
-                                       Part I's appendices pp. 106–109, bibliography pp. 109–110)
+article.pdf                            the compiled report, 147 pages (title page, contents pp. i–iv,
+                                       Part I pp. 1–29, Part II pp. 30–51, Part III pp. 52–106,
+                                       Part IV pp. 107–138, Part I's appendices pp. 138–141,
+                                       bibliography pp. 141–142)
 README.md                              this guide
 Makefile                               Part I: build, check and audit targets (build in place; see below)
 source_audit.md                        Part I: locations inspected in Davies v2, attribution, dependency boundary
@@ -257,6 +353,10 @@ LITERATURE_SEARCH.md                   Part I: that source's literature-search r
 04-deficit-asymptotics-STATUS.md       Part III, batch-40 03: theorem-by-theorem status (delivered as STATUS.md)
 05-quartic-threshold-SOURCE_AUDIT.md   Part III, batch-41 06: sources, scope, provenance (delivered as SOURCE_AUDIT.md)
 05-quartic-threshold-RESEARCH_STATUS.md  Part III, batch-41 06: research status (delivered as RESEARCH_STATUS.md)
+06-four-output-SOURCE_AUDIT.md         Part IV, FO: source and novelty audit (delivered as SOURCE_AUDIT.md)
+06-four-output-PROOF_AUDIT.md          Part IV, FO: proof audit and verification boundaries (delivered as PROOF_AUDIT.md)
+07-all-state-SOURCE_AUDIT.md           Part IV, AS: source and novelty audit (delivered as notes/SOURCE_AUDIT.md)
+07-all-state-PROOF_AUDIT.md            Part IV, AS: proof and verification audit (delivered as notes/PROOF_AUDIT.md)
 code/reversal.py                       Part I: primary implementation (composition, orbits, missing
                                        colorings, CRT membership, chromatic counts, structural bound, u_witness)
 code/run_checks.py                     Part I: primary Python suite and the finite-range CSV
@@ -282,6 +382,13 @@ code/05-quartic-threshold-theorem_checks.py  Part III (06): primary finite closu
 code/05-quartic-threshold-independent_check.py  Part III (06): independent closure (delivered as code/independent_check.py)
 code/05-quartic-threshold-supplementary_checks.py  Part III (06): regression checks; imports theorem_checks (delivered as code/supplementary_checks.py)
 code/05-quartic-threshold-Makefile     Part III (06): the delivered root Makefile (all/pdf/check/clean)
+code/06-four-output-verify.py          Part IV (FO): certificate, n ≤ 200 sweep, inventories, recurrence (delivered as code/verify.py)
+code/06-four-output-independent_check.py  Part IV (FO): independent re-derivation (delivered as code/independent_check.py)
+code/06-four-output-witness_bfs.cpp    Part IV (FO): C++17 packed-color BFS of the witness, n = 7..12 (delivered as code/witness_bfs.cpp)
+code/06-four-output-Makefile           Part IV (FO): the delivered root Makefile (all/check/independent/bfs/pdf/clean)
+code/07-all-state-verify.py            Part IV (AS): the 2,082-entry certificate, BFS witnesses, inventories, recurrence (delivered as code/verify.py)
+code/07-all-state-independent_check.py Part IV (AS): independent re-enumeration and integer BFS (delivered as code/independent_check.py)
+code/07-all-state-Makefile             Part IV (AS): the delivered root Makefile (all/pdf/check/clean)
 data/finite_range_bounds.csv           Part I: 372 rows of exact upper and lower values, split, minimizing graph
 data/verification_summary.json         Part I: primary check counts and recorded seed
 data/independent_bounds_check.json     Part I: independent arithmetic-verifier result
@@ -335,6 +442,22 @@ data/05-quartic-threshold-thresholds.json     Part III (06): threshold constants
 data/05-quartic-threshold-sample_values.csv   Part III (06): R_2(n,k) for n = 7..12, k = 4..7 (CRLF)
 data/05-quartic-threshold-environment.txt     Part III (06): Python and pdfTeX versions
 data/05-quartic-threshold-pdf_audit.json      Part III (06): rendering audit of the delivered (unshipped) 22-page PDF
+data/06-four-output-base_certificate.csv  Part IV (FO): the 2,059-entry certificate summary, n = 7..25, with runner-up tags (CRLF)
+data/06-four-output-structural_sweep.csv  Part IV (FO): the same fields for n = 7..200 (194 rows, CRLF)
+data/06-four-output-verification.json     Part IV (FO): primary run record (PASS)
+data/06-four-output-independent_check.json  Part IV (FO): independent run record (PASS)
+data/06-four-output-inventory.json        Part IV (FO): orbit inventories and one-edge counts for (a,b) = (3,4), (3,5)
+data/06-four-output-recurrence.json       Part IV (FO): recurrence, denominator and numerator coefficients
+data/06-four-output-bfs.json              Part IV (FO): C++ BFS counts n = 7..12 and the 212-state example
+data/06-four-output-pdf_audit.json        Part IV (FO): rendering audit of the delivered (unshipped) 21-page PDF
+data/07-all-state-finite_certificate.json Part IV (AS): all 2,082 certificate entries, n = 4..25
+data/07-all-state-finite_summary.csv      Part IV (AS): minima, runner-up values, gaps and maxima, 22 rows (CRLF)
+data/07-all-state-bfs_witnesses.json      Part IV (AS): witness arrays n = 4..9, orbit sizes, inventories at n = 7, 8
+data/07-all-state-orbit_inventories.json  Part IV (AS): period inventories for n = 7..100
+data/07-all-state-recurrence.json         Part IV (AS): denominator, numerator and initial deficits
+data/07-all-state-verification_summary.json  Part IV (AS): producer record (PASS)
+data/07-all-state-independent_check.json  Part IV (AS): independent record (PASS)
+data/07-all-state-PDF_AUDIT.json          Part IV (AS): rendering audit of the delivered (unshipped) 21-page PDF (delivered as notes/PDF_AUDIT.json)
 results/certificates.json              Part I: four certificates in the second schema
 results/exhaustive.json                Part I: per-row counts, maxima and one maximizer per row for n ≤ 4
 results/examples.json                  Part I: the four worked examples
@@ -346,11 +469,13 @@ results/pdf_checks.json                Part I: rendering audit of a 19-page pred
 ```
 
 The prefixed files were staged in the placement commits (`e2b1f016a` for
-`02-`, `afb2d1227` for `03-` and `04-`, `eaf787d50` for `05-`), byte-identical
-to the deliveries. Eight of them are all-CRLF CSVs as delivered (written by
-`csv.writer`): Part II's `structural_checks.csv`, manuscript 01's
-`finite_certificates.csv` and `asymptotic_ratios.csv`, and manuscript 06's
-four `finite_k*.csv` and `sample_values.csv`; each is protected by a `-text`
+`02-`, `afb2d1227` for `03-` and `04-`, `eaf787d50` for `05-`, `faef2ed2a` for
+`06-` and `07-`), byte-identical to the deliveries. Eleven of them are all-CRLF
+CSVs as delivered (written by `csv.writer`): Part II's `structural_checks.csv`,
+manuscript 01's `finite_certificates.csv` and `asymptotic_ratios.csv`,
+manuscript 06's four `finite_k*.csv` and `sample_values.csv`, FO's
+`base_certificate.csv` and `structural_sweep.csv`, and AS's
+`finite_summary.csv`; each is protected by a `-text`
 line in `SetTheory/Cardinals/.gitattributes`. The manuscripts' delivered
 `README.md`, `article.tex` and `article.pdf` are not shipped.
 
@@ -364,7 +489,7 @@ cd "$W" && latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 or run `pdflatex article.tex` three times there. Build in a scratch copy, so
 that no auxiliary files land here: Part I's `make pdf` and the `pdf` targets
-of the four prefixed Makefiles all run LaTeX on `article.tex` in place (and
+of the six prefixed Makefiles all run LaTeX on `article.tex` in place (and
 `code/03-eventual-Makefile`'s and `code/05-quartic-threshold-Makefile`'s
 `clean` targets run `latexmk -c` in place, and
 `code/04-deficit-asymptotics-Makefile`'s deletes `article.aux`, `.log`,
@@ -376,10 +501,10 @@ listings, aliascnt, hyperref, cleveref. No bibliography processor, font file
 or downloaded paper is needed. The shipped PDF was built with MiKTeX (pdfTeX
 1.40.26) with no errors, no warnings, no undefined or multiply defined
 references, no duplicate destinations and no overfull or underfull boxes
-(as was the build of the committed two-part text). The title page still fits
-one page; Part III's dated pointer is in the reading-routes box on the next
-page instead, because one more line on the title page would push it onto a
-second page.
+(as was the build of the committed three-part text). The title page still fits
+one page; the dated pointers of Parts III and IV are in the reading-routes box
+after the contents instead, because one more line on the title page would push
+it onto a second page.
 
 ## Rerun the checks
 
@@ -432,7 +557,7 @@ Transformations are tuples whose `q`-th entry is the image of `q`;
 `compose(a,b)` means `a∘b`; a word `ab` in a reverse-orbit record means
 `τ∘a∘b` (pull back by `a`, then by `b`).
 
-**Parts II and III.** Their scripts still use the delivered names. Each takes
+**Parts II–IV.** Their scripts still use the delivered names. Each takes
 its package root as `parents[1]` of its own path. Run in this directory:
 
 - Part II's verifier leaves two stray unprefixed files in `data/`, its
@@ -455,21 +580,33 @@ its package root as `parents[1]` of its own path. Run in this directory:
   into `results/` by default (`--out` changes it); `supplementary_checks.py`
   does `from theorem_checks import …` and stops with `ModuleNotFoundError`
   under its shipped name.
-- The four prefixed Makefiles name the delivered scripts (`code/verify.py`,
+- Part IV, AS: `07-all-state-verify.py` writes `data/finite_certificate.json`,
+  `finite_summary.csv`, `orbit_inventories.json`, `recurrence.json` and
+  **`data/bfs_witnesses.json` and `data/verification_summary.json`, which would
+  overwrite Part I's shipped files of those names**; `07-all-state-independent_check.py`
+  then reads `data/finite_certificate.json` and `data/bfs_witnesses.json` (in
+  place, Part I's file) and writes `data/independent_check.json`.
+- Part IV, FO: `06-four-output-verify.py` writes `data/base_certificate.csv`,
+  `structural_sweep.csv`, `recurrence.json`, `inventory.json` and
+  `verification.json` (strays); `06-four-output-independent_check.py` reads
+  `data/base_certificate.csv` (a `FileNotFoundError` in place) and writes
+  `data/independent_check.json`; the Makefile's `bfs` target writes
+  `./witness_bfs` and `data/bfs.json`, and `clean` also removes `code/__pycache__`.
+- The six prefixed Makefiles name the delivered scripts (`code/verify.py`,
   `code/independent_check.py`, `code/check_certificates.py`,
-  `code/theorem_checks.py`, `code/supplementary_checks.py`), which do not exist
-  here; their `pdf` and `clean` targets act on the merged `article.tex` in
+  `code/theorem_checks.py`, `code/supplementary_checks.py`,
+  `code/witness_bfs.cpp`), which do not exist here; their `pdf` and `clean` targets act on the merged `article.tex` in
   place.
 
-No output name collides with a shipped Part I file, but every output would be
-a stray. Restore the delivered layouts in scratch copies instead (Git Bash or
+Apart from AS's two files above, no output name collides with a shipped
+file, but every output would be a stray. Restore the delivered layouts in scratch copies instead (Git Bash or
 another POSIX shell, from this directory):
 
 ```sh
 W=/path/to/scratch
-for P in 02-three-output 03-eventual 04-deficit-asymptotics 05-quartic-threshold; do
+for P in 02-three-output 03-eventual 04-deficit-asymptotics 05-quartic-threshold 06-four-output 07-all-state; do
   mkdir -p "$W/$P/code" "$W/$P/data" "$W/$P/results"
-  for f in code/$P-*.py; do cp "$f" "$W/$P/code/${f#code/$P-}"; done
+  for f in code/$P-*.py code/$P-*.cpp; do [ -e "$f" ] && cp "$f" "$W/$P/code/${f#code/$P-}"; done
   cp code/$P-Makefile "$W/$P/Makefile"
 done
 cd "$W/02-three-output"
@@ -485,6 +622,13 @@ cd "$W/05-quartic-threshold"
 py code/theorem_checks.py > results/primary_console.txt            # writes results/finite_k*.csv, primary_k*.json, thresholds.json
 py code/independent_check.py > results/independent_console.txt    # writes results/independent.json
 py code/supplementary_checks.py > results/supplementary_console.txt  # writes supplementary.json, rank_matching_enumerations.json, sample_values.csv
+cd "$W/06-four-output"
+py -O code/verify.py                    # writes data/base_certificate.csv, structural_sweep.csv, recurrence.json, inventory.json, verification.json
+py -O code/independent_check.py         # writes data/independent_check.json
+g++ -O3 -std=c++17 -Wall -Wextra -pedantic code/witness_bfs.cpp -o witness_bfs && ./witness_bfs 12 > data/bfs.json
+cd "$W/07-all-state"
+py code/verify.py                       # writes data/finite_certificate.json, finite_summary.csv, bfs_witnesses.json, orbit_inventories.json, recurrence.json, verification_summary.json
+py code/independent_check.py            # writes data/independent_check.json
 ```
 
 (In the delivered layouts the `results/` or `data/` names correspond to the
@@ -507,6 +651,17 @@ its console copy, which record the Python version (`3.14.4` instead of the
 delivered `3.13.5`). Manuscript 03's delivered records also include runs with
 `python -O` (the `optimized_*` consoles), which were not repeated.
 
+The two Part IV runs were made on 29 September 2026 in this way (Python 3.14.4
+and the WinLibs `g++`; about 2 s each): all passed. The three CSVs are
+byte-identical to the shipped ones; every JSON equals the shipped one apart
+from Windows line endings, except FO's `verification.json` and
+`independent_check.json`, which record the Python version (`3.14.4` instead of
+the delivered `3.13.5`); the C++ output equals `data/06-four-output-bfs.json`
+apart from line endings (orbits 15,472 … 16,744,863 for `n = 7..12`, and 212).
+AS certifies 2,082 entries for `n = 4..25` and FO 2,059 for `n = 7..25`, with
+the 752,291-entry sweep for `n ≤ 200` and 101,568 independently checked
+entries for `n ≤ 100`.
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** The Part II and Part III scripts, Makefiles and some
@@ -518,11 +673,24 @@ delivered `3.13.5`). Manuscript 03's delivered records also include runs with
   corresponding prefixed files. The article quotes the shipped names.
 - **Unshipped PDFs.** `data/02-three-output-pdf_audit.json`,
   `data/03-eventual-pdf_layout_audit.json`,
-  `data/04-deficit-asymptotics-pdf_audit.json` and
-  `data/05-quartic-threshold-pdf_audit.json` describe the manuscripts'
-  delivered PDFs (19, 22, 21 and 22 pages), which are not shipped;
-  `results/pdf_checks.json` describes a 19-page predecessor of Part I.
-  `article.pdf` here is a new build of the merged text (114 pages).
+  `data/04-deficit-asymptotics-pdf_audit.json`,
+  `data/05-quartic-threshold-pdf_audit.json`,
+  `data/06-four-output-pdf_audit.json` and `data/07-all-state-PDF_AUDIT.json`
+  describe the manuscripts' delivered PDFs (19, 22, 21, 22, 21 and 21 pages),
+  which are not shipped; so do the sentences of `06-four-output-PROOF_AUDIT.md`
+  on the compiled PDF and on limitations "stated in the manuscript and README"
+  (FO's delivery README is not shipped). `results/pdf_checks.json` describes a
+  19-page predecessor of Part I. `article.pdf` here is a new build of the
+  merged text (147 pages).
+- **Part IV delivery names.** The two Part IV Makefiles and scripts use the
+  delivered names (`code/verify.py`, `code/independent_check.py`,
+  `code/witness_bfs.cpp`, `data/…` without prefixes); the docstring of
+  `code/06-four-output-independent_check.py` ("does not import verify.py"),
+  `data/06-four-output-independent_check.json` (`"imports_primary_checker":
+  false`) and `data/07-all-state-independent_check.json`
+  (`"no_import_from_producer": true`) refer to the delivered names;
+  `07-all-state-PROOF_AUDIT.md`'s "The JSON records in data/" means the shipped
+  `data/07-all-state-*.json`. AS's audits were delivered in `notes/`.
 - **Duplicates.** Part II's console captures, manuscript 01's two console
   captures, manuscript 03's independent console (and its `-O` copy) and
   manuscript 06's supplementary console are byte-identical to the JSON they
@@ -550,6 +718,18 @@ delivered `3.13.5`). Manuscript 03's delivered records also include runs with
   23.6 (re-scoped: answered for `k ≤ 7`, eventually for every `k ≥ 4`, open
   for `k ≥ 8` below `N(k)`; the growing-`k` question partly touched), and
   Section 27.5.
+- **Stale text of Part IV's sources.** Both manuscripts were pinned before
+  Part III was written: FO's `06-four-output-SOURCE_AUDIT.md` lists the exact
+  result for `k ≥ 4` as "explicitly left open", and AS's
+  `07-all-state-SOURCE_AUDIT.md` repeats the eventual audit's "no established
+  explicit fixed-k threshold" and claims the exact four-output optimum as its
+  contribution. Part III now proves the four-output formula with an explicit
+  threshold, so Part IV prints it as Part III's with the manuscripts' proofs as
+  a second route (Section 48.3); the audits are kept verbatim. The small values
+  176, 826, 3526 that AS's package reports are Part I's (Section 10.2), with
+  identical witness arrays (Appendix A). Part III's text now carries dated
+  pointers to Part IV in Section 28.3, Questions 44.2, 44.10 and 44.15 and
+  Section 47.6, and Part I's reading-routes box one more.
 - **Base of Part III.** The batch-40 placement (`afb2d1227`) named manuscript
   01 as the base of a two-manuscript Part III; batch 41's manuscript 06
   proves more for `k ≥ 4` and is the base of the three-manuscript part, as the
@@ -561,15 +741,17 @@ delivered `3.13.5`). Manuscript 03's delivered records also include runs with
 ## Relation to neighbouring reports and to the formal project
 
 No other report in the research-report collection treats DFAO reversal, and
-the Part III manuscripts name no report other than this one, so no reciprocal
-note was written. The report sits in the research-report collection of the
+the Part III and Part IV manuscripts name no report other than this one, so no
+reciprocal note was written. The report sits in the research-report collection of the
 `SetTheory/Cardinals` Lean project. That placement confers no formal status:
 no Lean or Rocq declaration anywhere in ProveIt formalizes any statement of
-Parts I–III (a search of the tracked `.lean` and `.v` files for DFAOs,
+Parts I–IV (a search of the tracked `.lean` and `.v` files for DFAOs,
 automata with output or Davies finds none). Section 26 records the
 formalization plan Part II's manuscript proposes, and Question 44.16 the
 Part III manuscripts' proposals (a verified checker for the finite
-obligations first); none has been started.
+obligations first), Section 56.6 the Part IV manuscripts' plans (a verified
+partition and divisor enumerator for the 2,082 inequalities, with the
+Holzer–König theorem as an explicit hypothesis); none has been started.
 
 ## Sources and attribution
 
