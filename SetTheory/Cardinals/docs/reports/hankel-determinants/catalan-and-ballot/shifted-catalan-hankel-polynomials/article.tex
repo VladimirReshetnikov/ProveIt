@@ -60,6 +60,12 @@
 \newcommand{\E}{\mathsf E}
 \newcommand{\V}{\mathcal V}
 \newcommand{\Rzero}{\mathcal R_0}
+% Part III (batch 42, manuscript 01): the manuscript's macros; \E, \lc and
+% \ord above already have the manuscript's definitions.
+\newcommand{\cH}[2]{H_{#1}^{(#2)}}
+\newcommand{\Rgen}{R_{\mathrm{gen}}}
+\newcommand{\Rgrp}{R_{\mathrm{grp}}}
+\newcommand{\ind}{\mathbf 1}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{muted},backgroundcolor=\color{lightblue},
  keepspaces=true,showstringspaces=false}
@@ -68,7 +74,7 @@
 \thispagestyle{empty}
 \begin{center}
 {\small\sffamily\bfseries\color{muted}EXACT ENUMERATION \quad / \quad GENERATING FUNCTIONS \quad / \quad ASYMPTOTICS}\par
-\vspace{10mm}
+\vspace{7mm}
 {\LARGE\bfseries\color{inkblue}Shifted Catalan Hankel Polynomials}\par
 \vspace{3mm}
 {\Large Exact coefficients, sharp recurrences,\par and a denominator conjecture}\par
@@ -77,7 +83,9 @@
 {19 September 2026}\par
 \vspace{3mm}
 {\small\color{muted}With Part~II (28 September 2026): root collisions and sharp
-recurrences for arbitrary polynomial multipliers}
+recurrences for arbitrary polynomial multipliers,\par
+and Part~III (29 September 2026): cyclotomic resonances of one repeated
+root}
 \end{center}
 \vspace{5mm}
 \begin{abstract}
@@ -106,6 +114,11 @@ leading coefficient, so off resonance the minimal recurrence order is
 $\prod_i(t_i+1)\bigl(\binom m2+\binom{\ell+1}2+1+\frac16\sum_it_i(t_i-1)\bigr)$;
 a secondary Hankel determinant detects exactly when it drops, and a
 certified finite-prefix algorithm handles the resonances.
+
+\emph{Addition of 29 September 2026 (batch 42).} Part~III gives every
+characteristic multiplicity for one repeated root $(x-c)^t$,
+$c=2+z+z^{-1}\notin\{0,4\}$; it depends on the sign of $z^L$, not only
+on $t$ and $L=\ord(z^2)$.
 \end{abstract}
 \vspace{3mm}
 \noindent\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
@@ -1223,6 +1236,12 @@ limits with growing $m$; and its asymptotics
 (Section~\ref{rc:sec:asymptotics}) are for fixed parameters, so a
 parameter approaching $a=0$ (a root reaching the endpoint $0$) is among
 the uniform endpoint limits it poses, not solves.]
+
+\noindent[Added 29 September 2026, batch 42: for a single repeated root
+away from the endpoints, Part~III gives that classification
+(Theorems~\ref{cyc:thm:main}, \ref{cyc:thm:central}
+and~\ref{cyc:thm:rootfree}); resonant cancellations among several distinct
+roots, or with endpoint factors, remain unclassified.]
 
 %% ====================================================================
 %% Batch-39 addition (manuscript 03, "Root Collisions and Sharp
@@ -2402,6 +2421,12 @@ require a more detailed description of the polynomials $Q_\lambda$.
 The next theorem instead gives a terminating algebraic procedure for
 each exact input, without constructing any spectral roots.
 
+\noindent[Added 29 September 2026, batch 42: for a single repeated root
+$q=\gamma(x-c)^t$, $c\notin\{0,4\}$, Part~III describes the grouped
+polynomials exactly (Section~\ref{cyc:sec:proofmain}): after grouping, at
+most one group loses further multiplicity, and exactly one, except at
+$c=2$ (Theorems~\ref{cyc:thm:main} and~\ref{cyc:thm:central}).]
+
 \subsection{Why a finite prefix can be a proof}
 \begin{theorem}[Certified finite-prefix recovery]\label{rc:thm:finite}
 Let $h=(h_N)_{N\ge0}$ be a nonzero sequence over a characteristic-zero
@@ -2655,6 +2680,11 @@ Since the product polynomial has degree $4$ and nonzero leading
 coefficient $1/12$, its minimal polynomial is $(X-1)^5$.
 The generic order $15$ has dropped to $5$.
 
+\noindent[Added 29 September 2026, batch 42: \eqref{rc:eq:squarecentral}
+and \eqref{rc:eq:centreproduct} are the cases $t=2,4$ of a known product
+of Cigler for every~$t$, printed with a condensation proof as
+Theorem~\ref{cyc:thm:central} in Part~III.]
+
 \subsection{An irreducible rational input}
 No spectral representation is needed to run the exact algorithm.
 For $q=x^2+1$, the square-free profile is $b_1=2$, so $R=4$.
@@ -2854,7 +2884,7 @@ The questions below are precise continuations of this article.  They
 are not all asserted to be unsolved in the published literature; a
 broader literature check is part of each proposed project.
 
-\subsection{Closed classification of cyclotomic resonances}
+\subsection{Closed classification of cyclotomic resonances}\label{cyc:x:rcq1}
 For a single repeated root, classify the minimal recurrence as an
 explicit function of $t$ and the order of $z^2$ when $z$ is a root of
 unity other than $\pm1$.  The degree law reduces the task to finitely
@@ -2864,7 +2894,19 @@ A first target is a uniform closed form for $H_N((x-2)^t)$ for every
 $t$, together with a direct explanation of the parity effects, rather
 than a separate finite certificate for each $t$.
 
-\subsection{Pairwise resonance and cancellation order}
+\noindent[Added 29 September 2026, batch 42: answered by Part~III for one
+repeated root away from the endpoints, with a correction to the question
+itself: $t$ and the order $L$ of $z^2$ do not determine the minimal
+recurrence, and the sign of $z^L$ is also needed (for $t=3$, $c=1$ and
+$c=3$ both have $L=3$ but orders $7$ and $6$).  Theorem~\ref{cyc:thm:main}
+gives every characteristic multiplicity for $c\ne2$ in terms of $t$, $L$
+and $z^L$, and Theorem~\ref{cyc:thm:rootfree} computes it from $c$
+without roots.  The uniform central formula is a known product of Cigler,
+credited and re-proved in Theorem~\ref{cyc:thm:central}; the parity
+effects come from the single tied pair of Lemma~\ref{cyc:lem:tie}.  The
+endpoint cases $c=0,4$ are outside Part~III.]
+
+\subsection{Pairwise resonance and cancellation order}\label{cyc:x:rcq2}
 Suppose exactly two labelled rates agree and all other rates are
 separate.  Determine when their leading coefficients cancel, and how
 many further coefficients can cancel.  Theorem~\ref{rc:thm:leading} makes
@@ -2872,6 +2914,14 @@ the first test explicit, while \eqref{rc:eq:Arec} determines all later
 tests.  The aim is a structural criterion in the root parameters, not
 just the output of Gaussian elimination.  The distinct-root example
 \eqref{rc:eq:distinctresonance} is a small initial case.
+
+\noindent[Added 29 September 2026, batch 42: partly answered.  Within the
+rate groups of one repeated root, Part~III's
+Section~\ref{cyc:sec:proofmain} gives the structural criterion: only the
+tied pair $k_\pm=(t\mp L)/2$ can cancel at the leading order, it cancels
+exactly when the sign $\rho$ of \eqref{cyc:eq:rho} is $-1$, and then
+exactly one further degree is lost unless $c=2$.  Collisions between
+distinct roots, including the example above, remain open.]
 
 \subsection{Sector polynomials and symmetric functions}
 The degree $k(t-k)$ is the area of a $k\times(t-k)$ rectangle, and the
@@ -3075,6 +3125,1979 @@ exact strings, for example \texttt{"8/81"}.  Arrays representing
 polynomials use increasing powers.  Sector polynomials are polynomials
 in the determinant size $N$, not generating-function numerators.
 
+%% ====================================================================
+%% Batch-42 addition (manuscript 01, "A One-Defect Law for Cyclotomic
+%% Catalan Hankel Recurrences").  All labels of Part III carry the prefix
+%% cyc: (cyclotomic).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Cyclotomic resonances of one repeated root}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Cyclotomic resonances of one repeated root}
+
+\noindent\emph{Part~III was added on 29 September 2026 in batch~42 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Parts~I and~II.  It answers Part~II's research question
+``Closed classification of cyclotomic resonances''
+(Section~\ref{cyc:x:rcq1}) for a single repeated
+root away from the endpoints: at every parameter it determines the minimal
+recurrence, every characteristic multiplicity, and a root-free
+factorization, and it shows that the question's proposed parameters, the
+multiplicity~$t$ and the order of~$z^2$, do not determine the answer.
+Parts~I and~II are unchanged except for dated pointers to this addition
+(Sections~\ref{sec:status}, \ref{rc:sec:resonances}, \ref{rc:sec:examples}
+and~\ref{rc:sec:research}), a line on the title page (whose top space was
+reduced by 3\,mm so that it still fits on one page) and a paragraph of the
+abstract, a contents entry, one bibliography entry used only by Part~III
+and a clause in the closing note on source dates, and two new labels on
+Part~II's research subsections.
+Section~\ref{cyc:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance and conventions of Part~III}\label{cyc:sec:intro}
+
+\subsection{One manuscript, one addition}\label{cyc:sec:source}
+Part~III is batch-42 manuscript~01, \emph{A One-Defect Law for Cyclotomic
+Catalan Hankel Recurrences}, subtitled \emph{Complete single-root
+classification, a necessary sign parameter, and the central exception}, a
+research article prepared with OpenAI ChatGPT for Vladimir Reshetnikov's
+ProveIt research program and dated 29 September 2026 (22 A4 pages as
+delivered).  It arrived as the archive
+\nolinkurl{ProveIt_Cyclotomic_Catalan_Recurrences.zip} (inner directory
+\nolinkurl{cyclotomic_catalan/}, main file \nolinkurl{article.tex}) in
+ProveIt commit \texttt{8315d24e3} and was placed in \texttt{3609d0473}.  It
+was written against ProveIt commit
+\texttt{9754e83603e223811b7515eb892f22c847144593}, reading this report's
+combined \nolinkurl{article.tex} (Git blob
+\texttt{b29ea42fc5bba69d23c3b036bee25357e202f356}), its provenance notes
+and the directory listing at that commit; its source notes add that the
+standalone Part~II manuscript was read as well.  The report's files are
+unchanged between the pin and the placement commit (the same blob), so
+every statement the manuscript makes about ``the repository report'' or
+``the prior report'' refers to Parts~I and~II as printed above.
+
+The manuscript's code and data are shipped beside the earlier files with
+the prefix \texttt{03-cyclotomic-} (Part~I's unprefixed files count as~01,
+Part~II's as~02), and its source and comparison notes, delivered as
+\nolinkurl{SOURCES.md}, as \nolinkurl{03-cyclotomic-SOURCES.md} at the
+report root.  Its manuscript, delivery README and PDF are not shipped;
+they survive in the arrival commit.  Section~\ref{cyc:sec:verification}
+lists the shipped files.
+
+The manuscript contributes, in the order printed here: the repository
+question, what is already known, and why grouping equal rates is not
+enough (Section~\ref{cyc:sec:scope}); the definitions, the complete
+noncentral classification with its elementary sign test, and the central
+theorem (Section~\ref{cyc:sec:main}); a self-contained derivation of the
+confluent Christoffel identity in its normalization
+(Section~\ref{cyc:sec:orthogonal}); an exact subset expansion of every
+canonical sector (Section~\ref{cyc:sec:sectors}); the leading coefficient,
+the first centred correction and an exact reflection of the sector
+polynomials (Section~\ref{cyc:sec:coefficients}); the one-defect proof
+(Section~\ref{cyc:sec:proofmain}); closed orders, the exceptional locus
+and its count, the reflection $c\mapsto4-c$ and quadratic growth in the
+multiplicity (Section~\ref{cyc:sec:orders}); the central exception via
+Cigler's known product, with a self-contained condensation proof
+(Section~\ref{cyc:sec:central}); a root-free factorization
+(Section~\ref{cyc:sec:algorithm}); worked examples and the classification
+of all rational roots (Section~\ref{cyc:sec:examples}); its verification
+record and rebuild instructions (Section~\ref{cyc:sec:verification});
+eight research directions (Section~\ref{cyc:sec:future}); a conclusion; a
+normalization and proof audit (Section~\ref{cyc:app:audit}); and a source
+and package concordance (Section~\ref{cyc:app:concordance}).  Every result,
+proof, example, remark, limitation and question of the manuscript is
+printed.  Where it re-derives something Parts~I or~II already prove, the
+overlap is marked (Section~\ref{cyc:sec:merge}).
+
+The manuscript's own abstract reads:
+\begin{quote}\small
+Let $H_N^{(t)}(c)$ be the size-$N$ Hankel determinant of the Catalan
+moments multiplied by $(x-c)^t$, with $c\ne0,4$.  Write
+$c=2+z+z^{-1}$ and let $L$ be the order of $z^2$, possibly infinite.
+The nonresonant minimal order $t+1+\binom{t+1}{3}$ is already established
+in the ProveIt report that motivates this work.  We determine the
+minimal recurrence at every remaining specialization.
+
+For $3\le L\le t$, put $\eta=\ind_{t\equiv L\pmod2}$.  The exact order is
+\[
+ \boxed{\qquad R(t,c)=\frac{L(3t^2-L^2+13-3\eta)}{12}-\delta,
+                    \qquad \delta\in\{0,1\}.\qquad}
+\]
+The defect occurs precisely when $\eta=1$ and
+$(-1)^{L(t+1)/2}z^{Lt}=-1$.  We determine the multiplicity of every
+characteristic root, not only their total.  The proof isolates the
+first two coefficients of each canonical exponential sector using an
+exact signed-Vandermonde identity.  A collided sector can lose just
+one degree away from $c=2$; at $c=2$ an entire group can disappear.
+The latter case is governed by a product formula already proved by
+Cigler for middle-binomial Hankel determinants, which we credit and
+rederive with the required normalization.
+
+The answer cannot depend on $t$ and $L$ alone: for $t=3$, $c=1$ and
+$c=3$ both have $L=3$, but their minimal orders are $7$ and $6$.
+Consequences include a complete rational-parameter classification,
+an exact count of exceptional parameters, an eventual quadratic
+quasipolynomial law in $t$, and a root-free factorization computed with
+$O(t)$ scalar field operations.  A standard-library Python audit supplies
+22,124 successful exact checks, including independent determinant
+computations in cyclotomic integer rings.
+\end{quote}
+
+\begin{center}
+\fcolorbox{muted}{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{Status (manuscript~01).}
+This is an unrefereed, AI-assisted manuscript with ordinary mathematical
+proofs, not a Lean formalization.  The proposed extension is the
+noncentral cancellation classification and its coefficient mechanism:
+the explicit first centred sector coefficient, the noncentral one-defect
+theorem, the minimal characteristic polynomial at every cyclotomic
+specialization and the resulting sign-sensitive order laws, with the
+exceptional-parameter count, the reflection law and the rational-input
+classification as corollaries.  Classical determinant identities (the
+Christoffel formula and its confluent form, Andr\'eief's identity,
+Desnanot--Jacobi condensation), general rationality and the
+order-at-most-$2^t$ construction~\cite{Krattenthaler2023}, Part~II's generic
+degree law and finite recurrence-recovery algorithm, and Cigler's central
+product~\cite{Cigler2021} are not presented as new; the signed Vandermonde
+evaluation and the shift-operator minimality lemma are elementary uses of
+established techniques, not standalone priority claims.  First-discovery
+priority has not been established: a specialized equivalent result may
+exist in Wronskian, orthogonal-polynomial or symmetric-function notation,
+the targeted searches that returned unrelated results do not establish
+absence from the literature, and independent expert review and a broader
+priority audit are still appropriate.  The comparison with this report is
+targeted, not a proof audit of every report in ProveIt.  The manuscript
+does not solve multi-root resonance, does not claim uniform collision
+asymptotics, and does not transfer its characteristic-zero minimality
+theorem unchanged to positive characteristic; the endpoints $c=0,4$ are
+outside its theorems.  Its 22,124 exact assertions are finite supporting
+checks, not a universal proof.  No proof assistant was run, nothing in
+Part~III is formalized, and its placement beside a Lean project confers no
+formal status.  (Sources: the manuscript, its delivery README and its
+source notes, \nolinkurl{03-cyclotomic-SOURCES.md}.)}}
+\end{center}
+
+\subsection{Reading conventions}\label{cyc:sec:reading}
+Inside Sections~\ref{cyc:sec:scope}--\ref{cyc:app:concordance}, ``this
+article'' and ``the present paper'' mean manuscript~01 as printed in
+Part~III; ``the repository report'', ``the ProveIt report'', ``the prior
+report'' and ``the preceding repository work'' mean Parts~I and~II at the
+pin \texttt{9754e8360}; and ``the older root-collisions manuscript'' is
+Part~II.  The manuscript cites Part~II's standalone section numbers:
+its Section~12.1 and Section~12.2 are Sections~\ref{cyc:x:rcq1}
+and~\ref{cyc:x:rcq2} here (``Closed classification of cyclotomic
+resonances'' and ``Pairwise resonance and cancellation order'').  ``The
+archive'' or ``the package'' means the delivered package, whose code and
+data are shipped under the prefixed names listed in
+Section~\ref{cyc:sec:verification}.  The manuscript's two appendices are
+printed as Sections~\ref{cyc:app:audit} and~\ref{cyc:app:concordance}, so
+that Part~I's appendices keep their letters.  The manuscript cites
+Krattenthaler's Ramanujan Journal paper through arXiv:2101.04225,
+version~5 of 10 September 2021, and points to its Theorem~1, its
+confluence discussion and Section~8; that is Part~I's
+reference~\cite{Krattenthaler2023}.  Its Barry reference is Part~I's
+\cite{Barry2020}, cited as background only.  Bracketed paragraphs
+beginning ``Merge note'' are this merge's, not the manuscript's.
+
+\subsection{Notation of Part~III}\label{cyc:sec:notation}
+Part~III keeps the manuscript's symbols.  Within
+Sections~\ref{cyc:sec:scope}--\ref{cyc:app:concordance} every symbol has
+its Part~III meaning, except in merge notes and where a sentence names
+Part~I or~II or cites one of their equations.  The single multiplier is
+$(x-c)^t$ with one root $c\notin\{0,4\}$; in Part~II's notation this is
+$q=\gamma x^m(x-4)^\ell\prod_i(x-c_i)^{t_i}$ with $\gamma=1$, $m=\ell=0$,
+$s=1$, $t_1=t$, $c_1=c$, $z_1=z$, and the manuscript's
+$\cH Nt(c)$ is Part~II's $H_N((x-c)^t)$ \eqref{rc:eq:HN}.
+Table~\ref{cyc:tab:notation} lists the symbols that a reader of Parts~I
+and~II is likely to misread, and the notions that need care.  No
+symbol was renamed and no normalization changed: the manuscript's rates
+$\lambda_k$ are Part~II's $\lambda_{\bk}$ for one root, and its canonical
+sector polynomials $P_{t,k}$ have Part~II's normalization
+(Section~\ref{cyc:sec:merge}).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright}p{0.19\textwidth}>{\raggedright}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\caption{Symbols and notions of Part~III.  The last column gives the
+meaning of the same letter in Part~I or~II, or the tempting false
+reading.}\label{cyc:tab:notation}\\
+\toprule
+Symbol or notion & Meaning in Part~III & Not to be confused with\\
+\midrule
+\endfirsthead
+\toprule
+Symbol or notion & Meaning in Part~III & Not to be confused with\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\cH Nt(c)$
+ & $H_N((x-c)^t)$, the superscript being the multiplicity~$t$
+   \eqref{cyc:eq:Hdef}
+ & Part~I's $H_N^{(m)}=\det(C_{i+j+m})$, whose superscript is the shift;
+   formally $\cH Nt(0)=H_N^{(t)}$, but $c=0$ is outside the theorems.\\
+\emph{resonance}; \emph{exceptional}; the ``resonant range''
+ & for one root, Part~II's resonance (two equal rates) happens exactly when
+   $L\le t$, and Corollary~\ref{cyc:cor:locus} shows that this is exactly
+   when $R(t,c)<\Rgen(t)$ (``exceptional''); the manuscript's
+   ``resonant range'' $3\le L\le t$ omits the central case $L=2$, $c=2$
+ & reading ``resonant range'' as all resonances: the central root is
+   resonant for $t\ge2$ but is treated separately
+   (Theorem~\ref{cyc:thm:central}).\\
+\emph{one defect}; $\delta$
+ & further loss \emph{after} grouping equal rates, $0$ or $1$; the baseline
+   $\Rgrp=\sum_r(d_r+1)$ is the degree of Part~II's grouped annihilator
+   $\Psi_q$ \eqref{rc:eq:groupbound}
+ & a loss of at most one from the generic order $\Rgen(t)$, which is false
+   (Remark~\ref{cyc:rem:onedefect}).\\
+$t$, $c$, $z$, $\gamma$
+ & multiplicity, root, spectral parameter $c=2+z+z^{-1}$, scale
+ & Part~II's $t_i,c_i,z_i,\gamma$ (agreeing for one root); Part~I's
+   generating-function variable $t$ and coefficients $c_{N,m,k}$.\\
+$L=\ord(z^2)$
+ & the order of $z^2$, possibly infinite
+ & Part~II's sector leading coefficients $L_{\bk}$.\\
+$\lambda_k=(-1)^tz^{2k-t}$
+ & rate of the $k$th sector \eqref{cyc:eq:lambda}
+ & equal to Part~II's $\lambda_{\bk}$ for one root with $\gamma=1$; Part~I's
+   $\lambda_\pm$.\\
+$R(t,c)$, $\chi_{t,c}$, $\Rgen(t)$, $\Rgrp$
+ & minimal order, minimal polynomial, generic order \eqref{cyc:eq:generic}
+   (Part~II's $\Rzero$ for one root, \eqref{rc:eq:singleorder}), grouped
+   order \eqref{cyc:eq:grouporder}
+ & Part~I's polynomials $R_n(y)$ \eqref{eq:R}; Part~II's plain $R$ (a bound
+   or a size).\\
+$I_r$, $d_r$, $e_r$, $G_r(N)$
+ & residue classes of sector indices, their maximal degree, exponents, and
+   grouped sector polynomials \eqref{cyc:eq:groupP}
+ & Part~I's $d=\binom m2$ and $e=d+1$; Part~II's $d_{\bk}$; $G_r$ is
+   Part~II's $Q_\lambda$ \eqref{rc:eq:grouped}.\\
+$\eta$, $k_\pm$, $r_*$, $d_*$, $\rho$, $\lambda_*$
+ & parity indicator, tied indices, their class, tied degree, leading ratio,
+   defect root
+ & ---\\
+$T=\binom t2$ (Section~\ref{cyc:sec:sectors} onward)
+ & a triangular number
+ & Part~II's $T=\sum_it_i$ (which is $t$ here); Part~I's $T_{n,k,s}$.\\
+$A_u=\prod_{j<u}j!$, $K_t(z)$
+ & superfactorial and the common sector factor \eqref{cyc:eq:TK}
+ & Part~II's amplitudes $A_\pm(z)$; Part~I's constant $A_m$ and
+   $K=(m-1)^2$; Part~II's index set $\mathcal K$.\\
+$J$, $S$, $S^c$, $\sigma(S)$, $\Delta(S)$
+ & $\{0,\ldots,t-1\}$, a subset, its complement, its sum, its Vandermonde
+   magnitude \eqref{cyc:eq:subsetnotation}
+ & $\sigma=z^L$ without argument (Section~\ref{cyc:sec:algorithm});
+   $S_a$ in \eqref{cyc:eq:Srec}; Part~II's $S=2^D$ and $\Delta_q$;
+   $\Delta_N(x)$ in Section~\ref{cyc:sec:orthogonal} is a Vandermonde.\\
+$F_{t,k}$, $P_{t,k}(N;z)$
+ & raw and canonical sector polynomials \eqref{cyc:eq:rawsector},
+   \eqref{cyc:eq:Psector}
+ & $P_{t,k}$ is Part~II's $P_{\bk}$ for one root; Part~I's numerator
+   $P_m(t)$.\\
+$q$
+ & a multiplier in \eqref{cyc:eq:andreief}, but an indeterminate in
+   Lemma~\ref{cyc:lem:W} and $q=z^2$ in the proof of
+   Theorem~\ref{cyc:thm:two}
+ & Part~II's multiplier $q(x)$; Part~I's denominator $q(t)$.\\
+$h=t-k$, $d=kh$, $w=N+t/2$
+ & complementary index, sector degree, centred size variable
+ & Part~I's $h_m$ and $d=\binom m2$; Part~II's nodes $w_a$.\\
+$\ell_{t,k}(z)$, $b_{t,k}(z)$, $Q_{t,k}(w)$
+ & leading coefficient \eqref{cyc:eq:ell}, first centred correction
+   \eqref{cyc:eq:b}, remainder of degree at most $d-2$
+ & Part~II's multiplicity $\ell$ of the root~$4$; Part~I's parameter $b$;
+   $Q_a(X)$ below; Part~II's $Q_\lambda$ and Part~I's $Q_m(N;r)$.\\
+$B(S)$, $\overline B$; $B_{a,b}(N)$
+ & offset sum and its weighted mean \eqref{cyc:eq:offsetsum}; the
+   rectangular product \eqref{cyc:eq:rectangle} with integers $a,b$
+ & Part~I's $B_\pm(N)$ and parameters $a,b$; Part~II's $B_0,B_4,B_z,B_i$
+   and $B_q(u)$.\\
+$\mu$; $\mu_n$; $\alpha$
+ & the Catalan measure; centred moments \eqref{cyc:eq:centeredmoments};
+   the arcsine measure
+ & Part~I's shifted measures $\mu_m$ ($\mu$ is Part~I's $\mu_0$ and
+   Part~II's $\mu$); Part~III's $\mu_n$ is a number, not a measure.\\
+$D_t(N)$; $h_N^{(t)}$
+ & Cigler's middle-binomial Hankel determinant; $\det(\mu_{i+j+t})$
+   (Section~\ref{cyc:sec:central})
+ & Part~I's $D_N^{(m)}(a,b)$ and $h_m$; Part~II's $D=\deg q$.\\
+$s_N=(-1)^{N(N+1)/2}$
+ & a period-four sign
+ & Part~I's sign $s_m$; Part~II's $s$ and $s(z)$.\\
+$v$, $U_a$, $S_a$, $\sigma$, $Q_a(X)$, $E_a$
+ & $c-2$; Chebyshev values; $z^a+z^{-a}$; $z^L$; quadratic factors and
+   their exponents (Section~\ref{cyc:sec:algorithm})
+ & Part~II's matrix $U$ in $UBU^{\mathsf T}$; the shift operator $\E$
+   (as in Part~II); Part~I's $E_m(N)$.\\
+$M$, $\Phi_M$, $\varphi$, $\mathcal E_t$
+ & primitive order of $z$ in the audit ring (so $L=M/\gcd(M,2)$),
+   cyclotomic polynomial, Euler's function, the exceptional set
+   \eqref{cyc:eq:exceptionalset}
+ & Part~II's $M_N$ and $M$; Part~I's $M_{m,\ell}$; $\E$ the shift.\\
+\end{longtable}
+\endgroup
+
+\subsection{What Part~III answers, and how it corrects the question}\label{cyc:sec:answers}
+Part~II's first research question (Section~\ref{cyc:x:rcq1}) asked, for a single repeated root, for the minimal recurrence
+``as an explicit function of $t$ and the order of $z^2$'', with a uniform
+closed form for $H_N((x-2)^t)$ and an explanation of the parity effects.
+Part~III answers it for one repeated root away from the endpoints:
+Theorem~\ref{cyc:thm:main} gives every characteristic multiplicity for
+$c\ne2$, Theorem~\ref{cyc:thm:central} the central root (a known product
+of Cigler, credited), and Theorem~\ref{cyc:thm:rootfree} a root-free
+factorization.  It also shows that the question's framing was incomplete:
+$t$ and $L=\ord(z^2)$ do \emph{not} determine the answer in odd parity,
+and the sign of $z^L$ is a necessary further datum.  The smallest
+instance is $t=L=3$, where $c=1$ and $c=3$ have minimal orders $7$ and $6$
+(Corollary~\ref{cyc:cor:c-reflect} and \eqref{cyc:eq:c1c3a}--\eqref{cyc:eq:c1c3b}).
+The corrected statement of the answer is therefore a function of $t$, $L$
+and $z^L\in\{1,-1\}$, and the parity effects are explained by the tied
+pair of Lemma~\ref{cyc:lem:tie} and the sign $\rho$ of \eqref{cyc:eq:rho}.
+Part~II's second question (``Pairwise resonance and cancellation order'')
+is answered only for the tied groups of one repeated root
+(Section~\ref{cyc:sec:proofmain}); collisions between distinct roots, and
+endpoint factors, remain open (Section~\ref{cyc:sec:future}).
+
+\emph{Consistency with Part~II's data} (an observation of this merge,
+checked by a separate exact computation not shipped with the report).
+Part~II's \nolinkurl{data/02-root-collisions-resonances.json} records
+twelve single-root cases, $c=1,2,3$ with $t=1,\ldots,4$, each with its
+minimal order, full characteristic polynomial and initial values.  All
+twelve characteristic polynomials, not only the orders, coincide with
+those given by Theorems~\ref{cyc:thm:main}, \ref{cyc:thm:central}
+and~\ref{cyc:thm:rootfree}, and the orders coincide with the rows $t\le4$
+of \nolinkurl{data/03-cyclotomic-orders_c1_c2_c3.csv}: $0$ mismatches.
+Seven of the twelve lie below the generic order ($c=1,3$ at $t=3,4$ and
+$c=2$ at $t=2,3,4$); the other five ($t=1$ for all three roots, and $t=2$
+for $c=1,3$) have $L>t$, so they are nonresonant by
+Corollary~\ref{cyc:cor:locus} and have the generic order, although that
+file is described as recording resonant parameters.  The case $(x-2)^3$ of
+\nolinkurl{data/02-root-collisions-rational_input_examples.json}, with
+characteristic polynomial $(X^2+1)^3$, is the case $m=1$ of
+\eqref{cyc:eq:centraloddchar}.  The central products at $t=2,4$ are
+$B_{1,1}(N)=N+1$ and $B_{2,2}(N)=(N+1)(N+2)^2(N+3)/12$, which are
+\eqref{rc:eq:squarecentral} and \eqref{rc:eq:centreproduct}; the
+manuscript's residue-class formulas \eqref{cyc:eq:c3residues} and the
+table for $c=1$ in Section~\ref{cyc:sec:examples} agree with direct
+determinant evaluation.
+
+\subsection{Where the merge had to choose}\label{cyc:sec:merge}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Placement.}  Part~III is printed after Part~II and before
+ Part~I's appendices, so that no section, equation, theorem or table
+ number of Parts~I and~II moves (checked against the \texttt{.aux} file of
+ a build of the committed text).  Its sections continue the numbering
+ (Sections~\ref{cyc:sec:intro} to~\ref{cyc:app:concordance}); the
+ manuscript's Sections~1--13 are
+ Sections~\ref{cyc:sec:scope}--\ref{cyc:sec:conclusion}, and its
+ Appendices~A and~B are Sections~\ref{cyc:app:audit}
+ and~\ref{cyc:app:concordance}.
+\item \emph{Labels.}  Every label of Part~III carries the prefix
+ \texttt{cyc:}; without it, eight of the manuscript's labels,
+ \texttt{sec:main}, \texttt{sec:examples}, \texttt{thm:main},
+ \texttt{lem:Christoffel}, \texttt{lem:minimal}, \texttt{eq:Christoffel},
+ \texttt{eq:lambda} and \texttt{eq:measure}, would have collided with
+ Part~I's bare labels.  Two labels were added to Part~II's research subsections so that
+ they can be cited; no existing label was changed.
+\item \emph{Overlaps with Parts~I and~II.}  The manuscript re-derives,
+ without assuming the repository report correct, several things already
+ proved there.  Printed with a pointer and kept: the Catalan measure,
+ orthogonality and $\det(C_{i+j})=1$ (a third route, after Part~I's
+ Section~\ref{sec:coeffproof} and Part~II's Section~\ref{rc:sec:classical});
+ the confluent Christoffel identity (Lemma~\ref{cyc:lem:Christoffel} is
+ Part~II's \eqref{rc:eq:Christoffel} for $q=(x-c)^t$, and Part~I's
+ Lemma~\ref{lem:Christoffel} and Proposition~\ref{prop:confluent} are
+ other special cases); the minimal-annihilator lemma
+ (Lemma~\ref{cyc:lem:minimal} restates Part~I's Lemma~\ref{lem:minimal} and
+ Part~II's Lemma~\ref{rc:lem:annihilator}, with a third proof and the
+ generating-function statement); the exact sector degree $k(t-k)$ and the
+ generic order (Part~II's Theorem~\ref{rc:thm:main} and
+ Corollary~\ref{rc:cor:single}, re-proved here by the subset expansion and
+ the explicit leading coefficient \eqref{cyc:eq:ell}, a different route
+ from Part~II's Cauchy--Binet argument); and the central examples at
+ $t=2,4$, which the central product of Theorem~\ref{cyc:thm:central}
+ contains.  As an observation of this merge, the leading coefficients
+ \eqref{cyc:eq:ell} reproduce all five leading coefficients of Part~II's
+ order-fifteen example (the table before \eqref{rc:eq:chi15}, at $z=2$)
+ and the two constants of \eqref{rc:eq:squarecentral}: the two sector
+ normalizations agree.  No statement of Parts~I or~II was changed.
+\item \emph{A third route to half of the central product} (an observation
+ of this merge).  The neighbouring report
+ \nolinkurl{cigler-conjecture-8-schur} (same directory) proves, for
+ Cigler's polynomials $b_m(t)$ with $b_m(1)=\binom m{\lfloor m/2\rfloor}$,
+ an even-shift Hankel--Schur identity (its Theorem~3.1) and, at $t=1$, the
+ dimension product $\prod_{i,j\le k}(n+i+j-1)/(i+j-1)$ (its
+ Proposition~7.2).  Together they give $D_{2k}(n)=B_{k,k}(n)$, the even case
+ of Cigler's product used in Section~\ref{cyc:sec:central}, by a
+ Schur-function route; the odd case is not covered there.  That report and
+ its two siblings concern conjectures of the same Cigler
+ paper~\cite{Cigler2021}; Part~III uses its proved Theorem~1, not a
+ conjecture.
+\item \emph{Bibliography.}  The manuscript's references to Krattenthaler and
+ Barry are Part~I's \cite{Krattenthaler2023,Barry2020}; its reference to
+ Cigler's middle-binomial paper is added to the common bibliography as
+ \cite{Cigler2021}.  Its reference to the pinned repository report is
+ replaced by Parts~I and~II themselves and the pin recorded in
+ Section~\ref{cyc:sec:source}; the sentence that cited it now points to
+ Section~\ref{cyc:sec:source}.
+\item \emph{File names.}  Section~\ref{cyc:sec:verification} gives the
+ shipped names beside the delivered ones.  The manuscript's rebuild
+ commands are printed as delivered but must not be run in place here;
+ a recipe on a scratch copy follows them.
+\item \emph{Front matter.}  The manuscript's title page, abstract, status
+ paragraph and package paragraph are replaced by
+ Section~\ref{cyc:sec:source}, which prints the abstract and the status.
+ The package paragraph is not reprinted because the delivered source and
+ PDF are not shipped; the shipped code and data are listed in
+ Section~\ref{cyc:sec:verification}.
+\item \emph{Notation.}  The manuscript's symbols are kept, with the scoping
+ convention and Table~\ref{cyc:tab:notation} of
+ Section~\ref{cyc:sec:notation}; nothing was renamed.  One evident index
+ slip in \eqref{cyc:eq:distinctChristoffel} is corrected, with a merge note
+ after Lemma~\ref{cyc:lem:Christoffel}.
+\end{enumerate}
+
+\section{The repository question and the scope of the answer}\label{cyc:sec:scope}
+
+The relevant ProveIt package is \emph{Shifted Catalan Hankel
+Polynomials}, whose Part~II incorporates \emph{Root Collisions and
+Sharp Recurrences for Polynomially Weighted Catalan Hankel
+Determinants} (Parts~I and~II above; the manuscript's bibliography
+entry for this repository report is replaced by
+Section~\ref{cyc:sec:source}).  The selected source was checked against
+repository commit
+\begin{center}\small\texttt{9754e83603e223811b7515eb892f22c847144593}.\end{center}
+Its directory is
+\begin{quote}\small\ttfamily\raggedright
+SetTheory/Cardinals/docs/reports/hankel-determinants/\allowbreak
+catalan-and-ballot/\allowbreak shifted-catalan-hankel-polynomials/.
+\end{quote}
+The combined \texttt{article.tex} has Git blob identifier
+\texttt{b29ea42fc5bba69d23c3b036bee25357e202f356}.
+
+For a single nonendpoint root of multiplicity $t$, that report gives a
+canonical expansion into $t+1$ exponential sectors, of respective
+polynomial degrees $k(t-k)$ for $0\le k\le t$.  Distinct exponential
+rates therefore give the exact order
+\begin{equation}\label{cyc:eq:generic}
+ \Rgen(t)=\sum_{k=0}^{t}\bigl(k(t-k)+1\bigr)
+         =t+1+\binom{t+1}{3}.
+\end{equation}
+At resonances it provides a finite exact algorithm, but its research
+agenda asks for a structural classification when $z$ is a root of
+unity.  It also asks for a uniform central-root formula and an
+explanation of parity, beyond its separately certified examples at
+multiplicities two and four.  These are the local research questions
+addressed here.
+
+\noindent[Merge note: in this report the canonical expansion and its
+degrees are Part~II's Theorem~\ref{rc:thm:main}, the generic order
+\eqref{cyc:eq:generic} is its Corollary~\ref{rc:cor:single}, the finite
+exact algorithm is Theorems~\ref{rc:thm:resonant} and~\ref{rc:thm:finite},
+the research agenda is Section~\ref{rc:sec:research}, and the certified
+central examples at multiplicities two and four are
+\eqref{rc:eq:squarecentral} and \eqref{rc:eq:centreproduct}.]
+
+There are two distinct conclusions.  First, the noncentral cyclotomic
+problem admits a closed answer: at most one collided rate has a
+leading cancellation, and that cancellation loses exactly one
+multiplicity.  Second, the suggested input ``multiplicity and order of
+$z^2$'' is insufficient in odd parity.  The sign of $z^L$ is necessary.
+Thus the result both completes a classification and corrects the
+parameter list needed to state it.
+
+\subsection{What is already known}
+The Christoffel determinant formula, its confluent version, and general
+constant-coefficient recurrences for polynomially modified Catalan
+moments are classical.  Krattenthaler~\cite{Krattenthaler2023} treats these
+identities and, in Section~8, gives the familiar order-at-most-$2^t$
+recurrence construction.  Barry's note~\cite{Barry2020} is part of the
+background for the repository's shifted-linear-multiplier work.
+Neither rationality alone nor the existence of an exponential expansion
+is a novelty claim here.
+
+The central product used in Section~\ref{cyc:sec:central} is also not new.
+Cigler's Theorem~1, equation~(23), in~\cite{Cigler2021} evaluates the
+shifted Hankel determinants of $\binom n{\lfloor n/2\rfloor}$.
+A translation and a row--column sign change give exactly the
+$c=2$ product required here.  His proof also uses condensation.
+Recognizing this prior result closes the repository's central subproblem
+without assigning it new priority.
+
+The additional content is the explicit first centered sector
+coefficient, the noncentral one-defect theorem, the minimal
+characteristic polynomial at every cyclotomic specialization, and the
+resulting sign-sensitive order laws.  These statements are not present
+in the selected repository source.  A broader literature equivalence
+in different orthogonal-polynomial or symmetric-function notation has
+not been ruled out.  The comparison is not a proof audit of every report
+in ProveIt.
+
+\subsection{Why the problem is not solved by identifying equal rates}
+An exponential polynomial
+$\sum_k P_k(N)\lambda_k^N$ must first be grouped by equal numerical
+values of $\lambda_k$.  The largest degree within one group is only an
+upper bound for the degree of its sum.  Equal leading coefficients can
+cancel, and symmetry can make the whole sum zero.  The prior report's
+central square already illustrates the latter phenomenon
+[\eqref{rc:eq:squarecentral}].
+
+The main proof computes one more coefficient than the degree law.
+That additional coefficient is sufficient everywhere except at the
+single central value $c=2$.  This is what turns a finite procedure for
+each example into a uniform classification.
+
+\section{Definitions and the complete classification}\label{cyc:sec:main}
+
+Write $\NN=\{0,1,2,\ldots\}$ and
+\begin{equation}\label{cyc:eq:Hdef}
+ C_n=\frac1{n+1}\binom{2n}{n},\qquad
+ \cH Nt(c)=\det_{0\le i,j<N}
+ \left(\sum_{a=0}^{t}\binom ta(-c)^{t-a}C_{i+j+a}\right),
+ \qquad \cH0t(c)=1.
+\end{equation}
+Throughout the main classification, $t\ge1$ and $c\in\CC\setminus\{0,4\}$.
+Choose a root $z$ of
+\begin{equation}\label{cyc:eq:zparam}
+ z+z^{-1}=c-2.
+\end{equation}
+Then $z\ne0,1,-1$.  The two choices are reciprocal and give the same
+answers after relabeling.
+
+A monic polynomial $g(X)=\sum_{j=0}^{R}g_jX^j$ is an annihilator when
+\begin{equation}\label{cyc:eq:annihilate}
+ \sum_{j=0}^{R}g_j\cH{N+j}t(c)=0\qquad\text{for every }N\ge0.
+\end{equation}
+The least possible degree is denoted $R(t,c)$, and the monic polynomial
+of that degree by $\chi_{t,c}$.  All characteristic roots occurring below
+are nonzero; consequently the same minimal polynomial is necessary even
+for recurrences required only after a finite initial segment.
+
+Let $L=\ord(z^2)\in\{2,3,\ldots\}\cup\{\infty\}$.  Define
+\begin{equation}\label{cyc:eq:lambda}
+ \lambda_k=(-1)^t z^{2k-t}\qquad(0\le k\le t).
+\end{equation}
+If $L<\infty$, equality of these rates means exactly equality of the
+indices modulo $L$.
+
+\begin{theorem}[Minimal recurrence at every noncentral parameter]
+\label{cyc:thm:main}
+Assume $c\notin\{0,2,4\}$.
+
+If $L>t$, including $L=\infty$, then
+\begin{equation}\label{cyc:eq:nonreschar}
+ \chi_{t,c}(X)=\prod_{k=0}^{t}(X-\lambda_k)^{k(t-k)+1},
+ \qquad R(t,c)=\Rgen(t).
+\end{equation}
+
+If $3\le L\le t$, define, for $0\le r<L$,
+\begin{equation}\label{cyc:eq:resclasses}
+ I_r=\{k:0\le k\le t,\ k\equiv r\pmod L\},\qquad
+ d_r=\max_{k\in I_r}k(t-k),\qquad \eta=\ind_{t\equiv L\pmod2}.
+\end{equation}
+When $\eta=1$, also put
+\begin{equation}\label{cyc:eq:tieparams}
+ k_-=(t-L)/2,\qquad k_+=(t+L)/2,\qquad r_*\equiv k_-\pmod L,
+ \quad 0\le r_*<L,
+\end{equation}
+and set
+\begin{equation}\label{cyc:eq:defect}
+ \delta=
+ \begin{cases}
+  1,&\eta=1\ \text{and }(-1)^{L(t+1)/2}z^{Lt}=-1,\\
+  0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+The exponent $L(t+1)/2$ is an integer whenever it is used.  Then
+\begin{equation}\label{cyc:eq:mainchar}
+ \boxed{\quad
+ \chi_{t,c}(X)=\prod_{r=0}^{L-1}(X-\lambda_r)^{e_r},\qquad
+ e_r=d_r+1-\delta\ind_{r=r_*}.
+ \quad}
+\end{equation}
+When $\eta=0$, the subtracted term means zero and no $r_*$ is needed.
+A factor with exponent zero is omitted.  In particular,
+\begin{equation}\label{cyc:eq:mainorder}
+ \boxed{\qquad
+ R(t,c)=\frac{L(3t^2-L^2+13-3\eta)}{12}-\delta.
+ \qquad}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[The meaning of one defect]\label{cyc:rem:onedefect}
+The baseline in~\eqref{cyc:eq:mainorder} is
+$\Rgrp=\sum_r(d_r+1)$, not the larger generic order
+$\Rgen(t)$.  Merging many rates can already cause a large decrease
+from $\Rgen$.  The theorem says that \emph{further cancellation after
+this grouping} decreases the order by either zero or one.
+\end{remark}
+
+\begin{corollary}[An elementary version of the defect test]\label{cyc:cor:sign}
+In the resonant range $3\le L\le t$, the defect is one exactly in one
+of the following two disjoint cases:
+\begin{equation}\label{cyc:eq:signcases}
+ \begin{aligned}
+ &t,L\text{ even},\qquad L\equiv2\pmod4;\\
+ &t,L\text{ odd},\qquad z^L=(-1)^{(t-1)/2}.
+ \end{aligned}
+\end{equation}
+There is no defect when $t$ and $L$ have different parity.
+\end{corollary}
+
+The proof of the theorem occupies Sections~\ref{cyc:sec:orthogonal}--\ref{cyc:sec:orders}.
+The remaining parameter is governed by a known product.
+
+\begin{theorem}[Central root; Cigler's product with Catalan normalization]
+\label{cyc:thm:central}
+For $a,b\in\NN$ put
+\begin{equation}\label{cyc:eq:rectangle}
+ B_{a,b}(N)=\prod_{i=1}^{a}\prod_{j=1}^{b}
+                    \frac{N+i+j-1}{i+j-1}.
+\end{equation}
+Every empty product is one.  For $m\in\NN$,
+\begin{align}
+ \cH N{2m}(2)&=B_{m,m}(N),\label{cyc:eq:centraleven}\\
+ \cH N{2m+1}(2)&=(-1)^{N(N+1)/2}B_{m,m+1}(N).
+ \label{cyc:eq:centralodd}
+\end{align}
+Their minimal polynomials are
+\begin{align}
+ \chi_{2m,2}(X)&=(X-1)^{m^2+1},\label{cyc:eq:centralevenchar}\\
+ \chi_{2m+1,2}(X)&=(X^2+1)^{m(m+1)+1}.
+ \label{cyc:eq:centraloddchar}
+\end{align}
+The even formula includes the trivial multiplier $t=0$.
+\end{theorem}
+
+Together these results classify every single repeated nonendpoint
+root, not only rational roots or a bounded list of multiplicities.
+The endpoints $c=0,4$ are intentionally outside the theorem; they
+require endpoint jets and have different triangular degree laws.
+
+\subsection{Immediate generating-function and scaling consequences}
+If the distinct characteristic roots and their exponents are
+$(\lambda_r,e_r)$, the reduced denominator of
+$\sum_{N\ge0}\cH Nt(c)u^N$ is exactly
+\begin{equation}\label{cyc:eq:GFden}
+ \prod_r(1-\lambda_r u)^{e_r}.
+\end{equation}
+There is a numerator of degree less than $R(t,c)$ and constant term one.
+Thus the theorem determines all poles and their exact orders as well
+as the recurrence.  For the multiplier $\gamma(x-c)^t$, $\gamma\ne0$,
+all determinants are multiplied by $\gamma^N$.  Its monic minimal
+polynomial is $\gamma^{R(t,c)}\chi_{t,c}(X/\gamma)$.
+
+\section{Catalan orthogonality and the confluent determinant}\label{cyc:sec:orthogonal}
+
+We derive the needed determinant identity rather than assuming the
+correctness of an unrefereed repository lemma.  These are classical
+arguments; their role here is normalization and self-containment.
+
+\subsection{A convenient monic orthonormal family}
+Define
+\begin{equation}\label{cyc:eq:measure}
+ \dd\mu(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}}\,\dd x\qquad(0<x<4).
+\end{equation}
+Its moments are $C_n$.  For example, the substitution $x=4v$
+gives a beta integral; integration by parts gives successive moment
+ratio $2(2n+1)/(n+2)$, with zeroth moment one, exactly the Catalan ratio.
+
+Let
+\begin{equation}\label{cyc:eq:prec}
+ p_0(x)=1,\quad p_1(x)=x-1,\quad
+ p_{n+1}(x)=(x-2)p_n(x)-p_{n-1}(x)\quad(n\ge1).
+\end{equation}
+All $p_n$ are monic.  At $x=2+2\cos\theta$, $0<\theta<\pi$,
+\begin{equation}\label{cyc:eq:ptrig}
+ p_n(x)=\frac{\sin((n+\tfrac12)\theta)}{\sin(\theta/2)},\qquad
+ \dd\mu=\frac2\pi\sin^2(\theta/2)\,\dd\theta,
+\end{equation}
+where the orientation of the integral is reversed as necessary.
+The elementary sine orthogonality integral therefore gives
+\begin{equation}\label{cyc:eq:orthonormal}
+ \int_0^4p_n(x)p_m(x)\,\dd\mu(x)=\ind_{n=m}.
+\end{equation}
+A triangular monic change of polynomial basis has determinant one.
+Consequently the unweighted size-$N$ Catalan Hankel determinant is one.
+
+\subsection{The determinant formula and its sign}
+For variables $x_1,\ldots,x_N$ set
+$\Delta_N(x)=\prod_{i<j}(x_j-x_i)$.
+Expansion of two determinants and integration term by term gives
+\begin{equation}\label{cyc:eq:andreief}
+ \det\left(\int x^{i+j}q(x)\,\dd\mu(x)\right)_{0\le i,j<N}
+ =\frac1{N!}\int\Delta_N(x)^2\prod_{j=1}^{N}q(x_j)\,\dd\mu(x_j).
+\end{equation}
+This is the usual Andr\'eief identity in the particular form needed here.
+It follows directly because the double sum over permutations contains
+$N!$ equal copies of the determinant on the left.
+
+Take distinct $a_1,\ldots,a_t$ and $q(x)=\prod_{i=1}^t(x-a_i)$.
+The mixed Vandermonde obeys
+\begin{equation}\label{cyc:eq:mixedV}
+ \Delta_{N+t}(x,a)=\Delta_N(x)\Delta_t(a)
+                   \prod_{j=1}^{N}\prod_{i=1}^{t}(a_i-x_j).
+\end{equation}
+Replace its monomial columns by the monic $p_0,\ldots,p_{N+t-1}$
+without changing the determinant.  In its Laplace expansion along the
+first $N$ rows, integrate against
+$\det(p_{i-1}(x_j))_{j,i=1}^N$.  Orthogonality kills every choice of
+$N$ columns other than $p_0,\ldots,p_{N-1}$.  That choice contributes
+$N!$ times the remaining evaluation determinant, with positive Laplace
+sign.  Combining~\eqref{cyc:eq:andreief} and~\eqref{cyc:eq:mixedV} yields
+\begin{equation}\label{cyc:eq:distinctChristoffel}
+ \det\left(\int x^{i+j}\prod_{u=1}^t(x-a_u)\,\dd\mu(x)\right)
+ =(-1)^{Nt}\frac{\det(p_{N+j}(a_i))_{1\le i\le t,\ 0\le j<t}}
+                         {\Delta_t(a)}.
+\end{equation}
+The sign is caused by $x-a$ in the multiplier and $a-x$ in the mixed
+Vandermonde.  The left side is polynomial in all $a_i$, so the quotient
+has a well-defined confluent limit.
+
+\begin{lemma}[Confluent Christoffel identity]\label{cyc:lem:Christoffel}
+For every $N,t\in\NN$ and every $c\in\CC$,
+\begin{equation}\label{cyc:eq:Christoffel}
+ \cH Nt(c)=(-1)^{Nt}
+       \det_{0\le r,j<t}\left(\frac{p_{N+j}^{(r)}(c)}{r!}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+In~\eqref{cyc:eq:distinctChristoffel}, let $a_i=c+\varepsilon_i$ and expand
+each evaluation row by Taylor's formula.  The least possible distinct
+Taylor orders are $0,1,\ldots,t-1$.  Their determinant is
+$\Delta_t(\varepsilon)$ times the determinant of the normalized
+jets $p_{N+j}^{(r)}(c)/r!$.  All higher Taylor terms vanish after division
+by the Vandermonde and passage to the common limit.  This proves the
+formula, including the empty determinant cases.
+\end{proof}
+
+No division by $\cH Nt(c)$ occurred.  Some of those weighted
+determinants can be zero; the proof and the classification remain valid.
+
+\noindent[Merge note: Lemma~\ref{cyc:lem:Christoffel} is Part~II's
+\eqref{rc:eq:Christoffel} for $q=(x-c)^t$, derived here a second time;
+Part~I's Lemma~\ref{lem:Christoffel} and Proposition~\ref{prop:confluent}
+are further special cases, and the measure and orthogonality above repeat
+Part~I's Section~\ref{sec:coeffproof} and Part~II's
+Section~\ref{rc:sec:classical}.  The recursion \eqref{cyc:eq:prec} is
+Part~II's \eqref{rc:eq:prec}.  In \eqref{cyc:eq:distinctChristoffel} the
+manuscript prints the multiplier as $\prod_{a=1}^t(x-a_a)$; the product
+index is written $u$ here (as in Part~II), since $i$ is a row index.]
+
+\section{An exact subset expansion for every sector}\label{cyc:sec:sectors}
+
+Fix $t\ge1$ and abbreviate
+\begin{equation}\label{cyc:eq:TK}
+ T=\binom t2,\qquad A_u=\prod_{j=0}^{u-1}j!,\qquad
+ K_t(z)=\frac{(z/(z^2-1))^T}{(z-1)^tA_t}.
+\end{equation}
+For a subset $S\subseteq J:=\{0,\ldots,t-1\}$ define
+\begin{equation}\label{cyc:eq:subsetnotation}
+ \sigma(S)=\sum_{j\in S}j,\qquad
+ \Delta(S)=\prod_{\substack{i,j\in S\\i<j}}(j-i),\qquad S^c=J\setminus S.
+\end{equation}
+Empty products equal one.
+
+\begin{theorem}[Canonical sector formula]\label{cyc:thm:subset}
+For $0\le k\le t$, put $h=t-k$ and define
+\begin{align}
+ F_{t,k}(N;z)
+ &=\sum_{\substack{S\subseteq J\\|S|=k}}
+ (-1)^{T+h-\sigma(S)}z^{2\sigma(S)+k-T}\Delta(S)\Delta(S^c)
+ \prod_{\substack{i\in S\\j\in S^c}}(2N+i+j+1),
+ \label{cyc:eq:rawsector}\\
+ P_{t,k}(N;z)&=K_t(z)F_{t,k}(N;z).
+ \label{cyc:eq:Psector}
+\end{align}
+Then the all-index identity
+\begin{equation}\label{cyc:eq:sectorH}
+ \cH Nt(c)=\sum_{k=0}^{t}P_{t,k}(N;z)\lambda_k^N\qquad(N\ge0)
+\end{equation}
+holds.  Each $P_{t,k}$ is polynomial in $N$ of degree at most $k(t-k)$.
+The definition remains meaningful when the numerical rates coincide.
+\end{theorem}
+
+\begin{proof}
+Locally write $z=e^u$ and $x=2+2\cosh u$.  Formula~\eqref{cyc:eq:prec} gives
+\begin{equation}\label{cyc:eq:pexp}
+ p_n(x)=\frac{z^{n+1}-z^{-n}}{z-1}
+ =g(u)\bigl(e^{(n+1/2)u}-e^{-(n+1/2)u}\bigr),\qquad
+ g(u)=\frac1{z^{1/2}-z^{-1/2}}.
+\end{equation}
+Also $\dd u/\dd x=z/(z^2-1)$.  For a Wronskian of $t$ functions,
+change of variable multiplies its determinant by $(\dd u/\dd x)^T$:
+row $r$ has leading derivative term $(\dd u/\dd x)^r\partial_u^r$,
+and all other terms are combinations of earlier rows.  A common
+factor $g$ in all functions similarly multiplies the Wronskian by
+$g^t$, by the Leibniz rule and a triangular row transformation.
+The normalization of row $r$ by $r!$ contributes $A_t^{-1}$.
+
+Set $v_j=N+j+\tfrac12$.  After these row transformations the
+Wronskian in~\eqref{cyc:eq:Christoffel} has columns
+\[
+ \bigl(v_j^r e^{v_ju}-(-v_j)^r e^{-v_ju}\bigr)_{r=0}^{t-1}.
+\]
+Expand each column by its two summands.  Let $S$ be the plus columns
+and $S^c$ the minus columns.  The exponential factor is
+$z^{(2k-t)N+2\sigma(S)-T+(2k-t)/2}$.
+The remaining determinant is the Vandermonde in the signed $v_j$.
+Within each sign block its magnitude is $\Delta(S)\Delta(S^c)$;
+between the blocks it contributes
+$\prod_{i\in S,j\in S^c}(v_i+v_j)$.
+
+There are $h$ signs from choosing the minus summand, $\binom h2$
+from pairs of minus columns, and one for each plus column preceding a
+minus column.  The number of the latter pairs is
+$k(t-1)-\sigma(S)-\binom k2$.  Their total is exactly
+$T+h-\sigma(S)$.  Finally $g(u)^t=z^{t/2}/(z-1)^t$ cancels all
+half-integral powers, leaving $z^{2\sigma(S)+k-T}$ outside
+$z^{(2k-t)N}$.  The sign $(-1)^{Nt}$ in the Christoffel identity
+is absorbed into $\lambda_k^N$.
+This proves~\eqref{cyc:eq:rawsector}--\eqref{cyc:eq:sectorH}.
+There are $kh$ linear factors in each product, giving the stated bound.
+\end{proof}
+
+\begin{remark}[No branch choice in the final formula]
+The auxiliary local logarithm and square root in the proof disappear
+from~\eqref{cyc:eq:rawsector}.  Only integer powers of $z$ remain.
+Since the result is a rational identity in $z$, valid off $0,\pm1$,
+no global logarithm or continuation convention is required.
+\end{remark}
+
+This expression is useful computationally: $F_{t,k}$ has Laurent
+polynomial coefficients in $z$ with integer coefficients.  In a
+cyclotomic integer ring it can be evaluated without any division.
+The common nonzero factor $K_t(z)$ has no effect on degrees or on
+cancellation among sectors.
+
+\section{The first two sector coefficients and reflection}\label{cyc:sec:coefficients}
+
+The exact degree law alone is inherited from the preceding repository
+work.  The additional coefficient calculated here distinguishes a
+one-degree loss from an arbitrarily long cancellation.
+[Merge note: the degree law is Part~II's Theorem~\ref{rc:thm:main};
+Theorem~\ref{cyc:thm:two} below re-proves it for one root, and its
+leading coefficient \eqref{cyc:eq:ell} is the one-root case of Part~II's
+Theorem~\ref{rc:thm:leading} (Section~\ref{cyc:sec:merge}).]
+
+\subsection{A signed finite Vandermonde identity}
+\begin{lemma}\label{cyc:lem:W}
+For $h=t-k$ and an indeterminate $q$,
+\begin{equation}\label{cyc:eq:W}
+ W_{t,k}(q):=
+ \sum_{\substack{S\subseteq J\\|S|=k}}
+ (-1)^{\sigma(S)}\Delta(S)\Delta(S^c)q^{\sigma(S)}
+ =(-1)^{\binom k2}A_kA_h q^{\binom k2}(1-q)^{kh}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Take the $t\times t$ matrix with rows indexed by $j=0,\ldots,t-1$.
+Its first $k$ columns are $j^a q^j$, $0\le a<k$, and its last $h$
+columns are $j^b$, $0\le b<h$.  The convention $j^0=1$ includes $j=0$.
+Laplace expansion along the first $k$ columns gives the left side
+of~\eqref{cyc:eq:W} multiplied by $(-1)^{\binom k2}$.
+
+To compute the same determinant, start with columns of derivatives
+of $w^j$ at the two nodes $q,1$.  The ordinary confluent Vandermonde
+is $A_kA_h(1-q)^{kh}$.  Replacing $\partial_w^a$ by
+$(w\partial_w)^a$ is triangular in the derivative order and multiplies
+the determinant by $q^{0+1+\cdots+(k-1)}$ in the first block and one
+in the second.  Its columns are exactly those of our matrix.
+Equating the two evaluations proves the identity.
+\end{proof}
+
+For $q\ne0,1$, logarithmic differentiation gives
+\begin{equation}\label{cyc:eq:Wmean}
+ \frac{qW_{t,k}'(q)}{W_{t,k}(q)}
+ =\binom k2-\frac{khq}{1-q}.
+\end{equation}
+This is an algebraic weighted mean of $\sigma(S)$, not a positivity
+or probability assertion.  The weights have signs and can be complex.
+
+\subsection{Leading coefficient and the decisive correction}
+\begin{theorem}[Exact degree and first centered correction]\label{cyc:thm:two}
+Let $h=t-k$, $d=kh$, and $w=N+t/2$.  The leading coefficient of
+$P_{t,k}$ is
+\begin{equation}\label{cyc:eq:ell}
+ \ell_{t,k}(z)=
+ (-1)^{h(h+1)/2}
+ \frac{2^{kh}A_kA_h z^{k^2}}
+ {A_t(z-1)^t(z^2-1)^{\binom k2+\binom h2}},
+ \qquad \ell_{t,k}(z)\ne0.
+\end{equation}
+In particular $\deg_N P_{t,k}=kh$.  If $d\ge1$, then
+\begin{equation}\label{cyc:eq:twocoeffs}
+ P_{t,k}(N;z)=\ell_{t,k}(z)
+ \left(w^d+\frac{kh(h-k)(z^2+1)}{4(z^2-1)}w^{d-1}\right)
+       +Q_{t,k}(w),
+ \qquad \deg Q_{t,k}\le d-2.
+\end{equation}
+A polynomial of degree at most $-1$ means zero.  If $d=0$, the sector
+is the constant $\ell_{t,k}(z)$.
+\end{theorem}
+
+\begin{proof}
+Every product in~\eqref{cyc:eq:rawsector} has leading coefficient $2^d$.
+Its weighted sum is, by~\eqref{cyc:eq:W},
+\[
+ [N^d]F_{t,k}
+ =(-1)^{T+h+\binom k2}2^d A_kA_h
+       z^{k^2-T}(1-z^2)^d.
+\]
+Multiply by $K_t(z)$.  Since
+$T=\binom k2+\binom h2+kh$, collecting the signs and powers gives
+exactly~\eqref{cyc:eq:ell}.  All factors are nonzero under the standing
+hypotheses, proving the exact degree.
+
+For the next coefficient, rewrite the mixed factor as
+\[
+ 2N+i+j+1=2w+i+j+1-t.
+\]
+For a fixed subset $S$, the sum of its $d$ offsets equals
+\begin{align}
+ B(S)&=\sum_{i\in S,j\in S^c}(i+j+1-t)\notag\\
+     &=(h-k)\sigma(S)+kT-kh(t-1).
+ \label{cyc:eq:offsetsum}
+\end{align}
+Indeed $\sum_{j\in S^c}j=T-\sigma(S)$, which proves the second line
+by direct summation.  The relative coefficient of $w^{d-1}$ in this
+product is $B(S)/2$.
+
+The weighted sum uses the same weights as $W_{t,k}(z^2)$.
+By~\eqref{cyc:eq:Wmean}, its mean offset is
+\begin{align}
+ \overline B
+ &=(h-k)\left(\binom k2-\frac{khq}{1-q}\right)
+       +kT-kh(t-1)\notag\\
+ &=\frac{kh(h-k)(q+1)}{2(q-1)},\qquad q=z^2.
+ \label{cyc:eq:Bmean}
+\end{align}
+Dividing by two gives the coefficient in~\eqref{cyc:eq:twocoeffs}.
+Only lower powers remain, proving the assertion.
+\end{proof}
+
+It is useful to isolate the correction as
+\begin{equation}\label{cyc:eq:b}
+ b_{t,k}(z)=\frac{k(t-k)(t-2k)(z^2+1)}{4(z^2-1)}.
+\end{equation}
+Then $b_{t,t-k}=-b_{t,k}$.  Except for the trivial factors
+$k=0,t$ or $k=t/2$, its only zero away from the endpoints is
+$z^2=-1$, namely $c=2$.
+
+\subsection{An exact reflection of the whole sector polynomial}
+\begin{proposition}[Centered sector reflection]\label{cyc:prop:reflection}
+For every $0\le k\le t$, with $h=t-k$,
+\begin{equation}\label{cyc:eq:reflection}
+ P_{t,h}(N;z)=(-1)^{t(t+1)/2}z^{(h-k)t}P_{t,k}(-N-t;z).
+\end{equation}
+Consequently,
+\begin{equation}\label{cyc:eq:ellratio}
+ \frac{\ell_{t,h}(z)}{\ell_{t,k}(z)}
+ =(-1)^{(h-k)(t+1)/2}z^{(h-k)t}.
+\end{equation}
+The exponent in the sign is always an integer.
+\end{proposition}
+\begin{proof}
+In the subset formula replace $S$ by the complement of
+$\{t-1-j:j\in S\}$.  This new subset has size $h$ and sum
+$T-k(t-1)+\sigma(S)$.  Its two Vandermonde magnitudes are unchanged,
+its power of $z$ gains $(h-k)t$, and replacing $N$ by $-N-t$
+changes the sign of every one of the $kh$ mixed linear factors.
+The remaining sign simplifies to $(-1)^{t(t+1)/2}$.
+This is a termwise bijection of the two sums and proves
+\eqref{cyc:eq:reflection}.  Alternatively the same reflection comes from
+$p_{-n-1}=-p_n$ and reversal of the columns of the Wronskian.
+
+Comparison of the leading coefficients gives
+$(-1)^{t(t+1)/2+kh}z^{(h-k)t}$.  Its sign equals the one
+in~\eqref{cyc:eq:ellratio}; the difference of the two exponents is even.
+One can also obtain~\eqref{cyc:eq:ellratio} immediately by dividing the
+products in~\eqref{cyc:eq:ell}.
+\end{proof}
+
+The center $-t/2$ is therefore natural, rather than a convenient
+numerical fit.  At a colliding symmetric pair, the two leading terms
+are either equal or opposite, and the first centered corrections have
+opposite relative signs.  That is the algebraic source of the
+classification.
+
+\section{Why the noncentral cancellation has exactly one defect}\label{cyc:sec:proofmain}
+
+\subsection{Minimal annihilators of exponential polynomials}
+\begin{lemma}\label{cyc:lem:minimal}
+Suppose $f(N)=\sum_{j=1}^{b}Q_j(N)\alpha_j^N$, where the
+$\alpha_j$ are distinct and nonzero and each $Q_j$ is a nonzero
+polynomial of degree $d_j$.  The minimal annihilator of $f$ is
+\begin{equation}\label{cyc:eq:minlemma}
+ \prod_{j=1}^{b}(X-\alpha_j)^{d_j+1}.
+\end{equation}
+The same conclusion holds for eventual annihilators.  Its generating
+function has reduced denominator $\prod_j(1-\alpha_j u)^{d_j+1}$.
+\end{lemma}
+\begin{proof}
+On $Q(N)\alpha^N$, the operator $\E-\alpha$, where
+$(\E f)(N)=f(N+1)$, gives
+$\alpha^{N+1}(Q(N+1)-Q(N))$.  It lowers the polynomial degree by
+exactly one until the term becomes zero.  In contrast, $\E-\beta$
+with $\beta\ne\alpha$ preserves the degree and has a nonzero leading
+coefficient.  Distinct exponential blocks are independent: applying
+the annihilators of all but one block isolates a nonzero polynomial
+multiple of the remaining exponential.  A nonzero polynomial cannot
+vanish at every sufficiently large integer.  It follows that any
+annihilator, even an eventual one, must contain every factor in
+\eqref{cyc:eq:minlemma} to the displayed multiplicity.  Their product
+clearly suffices.
+
+For generating functions, $(u\,\dd/\dd u)^a(1-\alpha u)^{-1}$
+is the series of $N^a\alpha^N$.  A polynomial multiplier of degree
+$d$ therefore gives a pole of exact order $d+1$ at $u=\alpha^{-1}$.
+Distinct poles cannot cancel.  This proves the denominator assertion.
+\end{proof}
+
+\noindent[Merge note: Lemma~\ref{cyc:lem:minimal} restates Part~I's
+Lemma~\ref{lem:minimal} and Part~II's Lemma~\ref{rc:lem:annihilator};
+the manuscript's proof is kept as a third proof.]
+
+The nonresonant case of Theorem~\ref{cyc:thm:main} now follows from
+Theorems~\ref{cyc:thm:subset} and~\ref{cyc:thm:two}.  It remains to determine
+the degree of each grouped polynomial
+\begin{equation}\label{cyc:eq:groupP}
+ G_r(N)=\sum_{k\in I_r}P_{t,k}(N;z).
+\end{equation}
+
+\subsection{The geometry of a residue class}
+\begin{lemma}[The unique possible top tie]\label{cyc:lem:tie}
+Assume $2\le L\le t$.  In every class $I_r$, the maximum of
+$k(t-k)$ has a unique maximizer except possibly in one class.
+A tied class exists exactly when $t\equiv L\pmod2$.  Its two
+maximizers are $k_-,k_+$ from~\eqref{cyc:eq:tieparams}; they are consecutive
+members of that class, separated by $L$, and
+\begin{equation}\label{cyc:eq:tiedegree}
+ d_*:=k_-(t-k_-)=k_+ (t-k_+)=(t^2-L^2)/4.
+\end{equation}
+Any other index in that class has degree at most $d_*-2L^2$.
+\end{lemma}
+\begin{proof}
+The identity
+\begin{equation}\label{cyc:eq:parabola}
+ k(t-k)=\frac{t^2-(2k-t)^2}{4}
+\end{equation}
+shows that one must choose the members of the arithmetic progression
+$I_r$ nearest $t/2$.  There are at most two.  A tie requires two
+consecutive members to be symmetric about $t/2$, so their difference
+is $L$ and their sum is $t$.  They are consequently the two indices
+in~\eqref{cyc:eq:tieparams}, and exist exactly under the parity condition.
+Their values $2k-t$ are $-L,L$.  Any further index in that same class
+has $|2k-t|\ge3L$, so~\eqref{cyc:eq:parabola} decreases its degree by at
+least $((3L)^2-L^2)/4=2L^2$.
+\end{proof}
+
+A group with a unique maximizer has degree $d_r$, since its unique
+leading coefficient is nonzero by~\eqref{cyc:eq:ell}.  Thus the only
+remaining issue is the one tied group.
+
+\subsection{The tied group and the nonvanishing next term}
+Assume the parity condition and use $k=k_-$, $h=k_+$, so $h-k=L$.
+By~\eqref{cyc:eq:ellratio}, the ratio of their leading coefficients is
+\begin{equation}\label{cyc:eq:rho}
+ \rho=(-1)^{L(t+1)/2}z^{Lt}.
+\end{equation}
+Since $(z^L)^2=1$, this is either $1$ or $-1$.  When $\rho=1$,
+the leading coefficient of $G_{r_*}$ is $2\ell_{t,k}\ne0$ and
+there is no defect.
+
+Suppose $\rho=-1$.  If $d_*=0$, then $t=L$, the two indices are
+$0,t$, and they are the only indices in their class.  Their sectors
+are opposite constants, so $G_{r_*}=0$.  The class contributes no
+characteristic factor rather than the naive exponent one.
+
+If $d_*>0$, apply~\eqref{cyc:eq:twocoeffs} in the centered variable
+$w=N+t/2$.  The leading terms cancel, while the coefficient of
+$w^{d_*-1}$ in their sum is
+\begin{equation}\label{cyc:eq:nextsurvives}
+ \ell_{t,k}b_{t,k}+(-\ell_{t,k})(-b_{t,k})
+ =\frac{\ell_{t,k}\,d_*L(z^2+1)}{2(z^2-1)}.
+\end{equation}
+It is nonzero when $c\ne2$.  The lower members of the same residue
+class cannot affect this coefficient, by Lemma~\ref{cyc:lem:tie}.
+Therefore $\deg G_{r_*}=d_*-1$ exactly.
+
+We have now proved all the exponents in~\eqref{cyc:eq:mainchar}, including
+the disappearing constant case.  Applying Lemma~\ref{cyc:lem:minimal}
+proves their minimality and the generating-function assertion.  The
+total order formula will follow from a finite sum of squares.
+
+\begin{corollary}[Only a real characteristic root can lose multiplicity]
+\label{cyc:cor:realdefect}
+Whenever the noncentral defect occurs, its characteristic root is
+\begin{equation}\label{cyc:eq:defectroot}
+ \lambda_*=(-1)^t z^{-L}=(-1)^t z^L\in\{1,-1\}.
+\end{equation}
+No other characteristic root loses multiplicity beyond grouping.
+\end{corollary}
+\begin{proof}
+Substitute $2k_--t=-L$ into~\eqref{cyc:eq:lambda} and use $z^{2L}=1$.
+The degree proof above excludes every other group.
+\end{proof}
+
+\section{Closed orders, exceptional parameters, and reflection}\label{cyc:sec:orders}
+
+\subsection{Summing the grouped degrees}
+For each residue $r$, select a nearest centered value
+$a_r=2k-t$ at a maximizer.  In a tie either choice gives the same square.
+When $t$ and $L$ have different parity, their squares are the squares
+of the complete list
+\[
+ -(L-1),\;-(L-3),\;\ldots,\;L-3,\;L-1.
+\]
+When the parities agree, they are the squares of
+\[
+ -L,\;-L+2,\;\ldots,\;L-4,\;L-2.
+\]
+The finite interval $[-t,t]$ contains all chosen representatives
+because $t\ge L$.  Summing squares in these arithmetic progressions
+gives
+\begin{equation}\label{cyc:eq:squares}
+ \sum_{r=0}^{L-1}a_r^2=\frac{L(L^2-1)}3+L\eta.
+\end{equation}
+Using~\eqref{cyc:eq:parabola},
+\begin{align}
+ \Rgrp(t,L)
+ &=\sum_{r=0}^{L-1}(d_r+1)
+  =L+\frac{Lt^2-\sum_r a_r^2}{4}\notag\\
+ &=\frac{L(3t^2-L^2+13-3\eta)}{12}.
+ \label{cyc:eq:grouporder}
+\end{align}
+The loss established in the preceding section is exactly $\delta$,
+proving~\eqref{cyc:eq:mainorder}.
+
+For completeness, Corollary~\ref{cyc:cor:sign} follows without any complex
+arithmetic.  If $t,L$ are even, $z^{Lt}=1$ and the parity of
+$L(t+1)/2$ is that of $L/2$.  If both are odd, $z^{Lt}=z^L$ and
+the condition $\rho=-1$ is equivalent to
+$z^L=(-1)^{(t-1)/2}$.  This proves all the sign cases.
+
+\subsection{An exact finite exceptional locus}
+\begin{corollary}[Every nongeneric nonendpoint parameter]\label{cyc:cor:locus}
+For fixed $t\ge1$, the parameters $c\ne0,4$ at which
+$R(t,c)<\Rgen(t)$ are exactly
+\begin{equation}\label{cyc:eq:exceptionalset}
+ \mathcal E_t=
+ \left\{2+2\cos\frac{\pi a}{L}:
+       2\le L\le t,\quad 1\le a<L,\quad \gcd(a,L)=1\right\}.
+\end{equation}
+In particular all exceptional parameters are real and lie in $(0,4)$,
+and
+\begin{equation}\label{cyc:eq:exceptionalcount}
+ |\mathcal E_t|=\sum_{L=2}^{t}\varphi(L),
+\end{equation}
+where $\varphi(L)$ is the number of integers $1\le a<L$ coprime to $L$.
+At the parameter represented by $a/L$, one has $z^L=(-1)^a$.
+\end{corollary}
+\begin{proof}
+A collision of two rates means $z^{2(k-j)}=1$ with
+$1\le|k-j|\le t$.  This is equivalent to finite $L\le t$.
+Then $z$ is a root of unity, so $c=2+z+z^{-1}$ is real in $(0,4)$.
+Choose the reciprocal of $z$ as needed to write
+$z=e^{\pi ia/L}$ with $1\le a<L$ and $\gcd(a,L)=1$.
+Conversely any such parameter has exactly the stated order $L$.
+
+At a collision, grouping replaces at least two positive contributions
+$d_k+1$ by at most their maximum, strictly decreasing the total generic
+order.  Further cancellations cannot undo that decrease.  In the
+absence of collisions, the nonzero leading coefficients give the
+full generic order, including $t=1,c=2$.
+Finally $\cos\theta$ is injective on $(0,\pi)$, and the fractions
+$a/L$ in~\eqref{cyc:eq:exceptionalset} are reduced.  No two listed
+parameters coincide.  Counting them proves~\eqref{cyc:eq:exceptionalcount}.
+\end{proof}
+
+Thus the algebraic position of a root, not its numerical proximity to
+another parameter, determines whether an exact recurrence drops order.
+There is no open interval of exceptional values.
+
+\subsection{The missing sign datum and reflection of the root}
+\begin{corollary}[Order under $c\mapsto4-c$]\label{cyc:cor:c-reflect}
+For $c\ne0,2,4$, the orders at $c$ and $4-c$ differ exactly when
+$L\le t$ and $L,t$ are both odd.  In that case they differ by one:
+\begin{equation}\label{cyc:eq:c-reflect}
+ R(t,4-c)-R(t,c)=2\delta-1.
+\end{equation}
+In every other case they are equal.
+\end{corollary}
+\begin{proof}
+The replacement $z\mapsto-z$ sends $c$ to $4-c$ without changing
+$z^2$ or $L$.  For odd $L$ it changes the sign of $z^L$; for even
+$L$ it does not.  Corollary~\ref{cyc:cor:sign} shows that the two defects
+are complementary precisely when $t,L$ are odd and $L\le t$.
+Their grouped orders are identical.  In the nonresonant case both
+orders are generic.
+\end{proof}
+
+The example $t=L=3$, $z=e^{2\pi i/3}$ versus $z=e^{\pi i/3}$,
+is the smallest instance.  The two input roots are $c=1$ and $c=3$.
+The orders $7$ and $6$ show that $t$ and $\ord(z^2)$ alone cannot
+parametrize the answer.  The additional sign is invariant under the
+allowed choice $z\leftrightarrow z^{-1}$, so it is genuine information
+about $c$, not an artifact of a branch convention.
+
+\subsection{Quadratic quasipolynomial growth in the multiplicity}
+\begin{corollary}\label{cyc:cor:quasipoly}
+Fix a noncentral cyclotomic parameter with $L\ge3$.  For $t\ge L$,
+$R(t,c)$ is a quadratic quasipolynomial in $t$, with period dividing
+four and leading coefficient $L/4$.  In particular,
+\begin{equation}\label{cyc:eq:quadratic}
+ R(t,c)=\frac L4t^2+O_L(1),
+\end{equation}
+whereas the nonresonant order is $t^3/6+O(t)$.
+\end{corollary}
+\begin{proof}
+In~\eqref{cyc:eq:mainorder}, $\eta$ depends only on parity and $\delta$
+depends only on $t$ modulo four once $L$ and $z^L$ are fixed.
+The remaining term is $Lt^2/4$ plus a constant depending on $L$.
+Equation~\eqref{cyc:eq:generic} gives the comparison.
+\end{proof}
+
+Here the asymptotic variable is the root multiplicity $t$, not the
+Hankel size $N$.  This distinction matters: the determinant itself is
+an exact quasipolynomial in $N$ at a cyclotomic parameter, but its
+recurrence order is a different function.
+
+\section{The central exception and the known product}\label{cyc:sec:central}
+
+\subsection{Reduction to middle-binomial moments}
+Set $y=x-2$ in~\eqref{cyc:eq:measure}.  Then
+\begin{equation}\label{cyc:eq:arcsine}
+ \dd\mu=(1-y/2)\,\dd\alpha(y),\qquad
+ \dd\alpha(y)=\frac{\dd y}{\pi\sqrt{4-y^2}},\quad -2<y<2.
+\end{equation}
+The arcsine moments are zero in odd degree and
+$\int y^{2r}\,\dd\alpha=\binom{2r}{r}$, as follows from
+$y=2\cos\theta$.  Consequently the centered Catalan moments are
+\begin{equation}\label{cyc:eq:centeredmoments}
+ \mu_n:=\int(x-2)^n\,\dd\mu(x)
+ =(-1)^n\binom n{\lfloor n/2\rfloor}.
+\end{equation}
+Indeed the odd moment is
+$-\frac12\binom{2r+2}{r+1}=-\binom{2r+1}{r}$.
+
+A monic translation of the polynomial basis leaves the determinant
+unchanged, giving $\cH Nt(2)=\det(\mu_{i+j+t})$.  If
+\[
+ D_t(N)=\det_{0\le i,j<N}\binom{i+j+t}{\lfloor(i+j+t)/2\rfloor},
+\]
+row and column signs yield
+\begin{equation}\label{cyc:eq:Ciglertranslation}
+ \cH Nt(2)=(-1)^{Nt}D_t(N).
+\end{equation}
+Cigler's Theorem~1~\cite{Cigler2021} states
+$D_t(N)=(-1)^{t\binom N2}B_{\lfloor t/2\rfloor,\lceil t/2\rceil}(N)$.
+Equation~\eqref{cyc:eq:Ciglertranslation} is therefore precisely
+\eqref{cyc:eq:centraleven}--\eqref{cyc:eq:centralodd}.  In particular, the
+uniform central formula requested by the repository
+[Section~\ref{cyc:x:rcq1}] is already a
+result established in a 2021 preprint after this change of normalization.
+
+\subsection{A self-contained condensation proof}
+We include the proof to keep the classification independent of an
+external determinant evaluation.  It uses the same classical
+condensation mechanism as Cigler's argument, not a new method.
+Write $h_N^{(t)}=\det(\mu_{i+j+t})$ and set $h_0^{(t)}=1$.
+The Desnanot--Jacobi determinant identity gives, for $N\ge2$,
+\begin{equation}\label{cyc:eq:condensation}
+ h_N^{(t)}h_{N-2}^{(t+2)}
+ =h_{N-1}^{(t)}h_{N-1}^{(t+2)}-(h_{N-1}^{(t+1)})^2.
+\end{equation}
+It is a polynomial determinant identity and does not require any
+minor to be nonzero.
+
+We verify the proposed products in~\eqref{cyc:eq:centraleven} and
+\eqref{cyc:eq:centralodd}, and then induct on $N$ simultaneously for all
+$t\ge0$.  At $N=0$ the products equal one.  At $N=1$, cancellation
+in~\eqref{cyc:eq:rectangle} gives
+\begin{equation}\label{cyc:eq:B1}
+ B_{a,b}(1)=\prod_{i=1}^{a}\frac{i+b}{i}=\binom{a+b}{a},
+\end{equation}
+so the products give exactly the moments~\eqref{cyc:eq:centeredmoments}.
+
+For the induction put $n=N-1\ge1$.  Four ratios suffice.  Direct
+cancellation of the rectangular products yields
+\begin{align}
+ \frac{B_{m,m}(n)B_{m+1,m+1}(n)}{B_{m,m+1}(n)^2}
+ &=\frac{n+2m+1}{2m+1},\label{cyc:eq:rat-even1}\\
+ \frac{B_{m,m}(n+1)B_{m+1,m+1}(n-1)}{B_{m,m+1}(n)^2}
+ &=\frac{n}{2m+1},\label{cyc:eq:rat-even2}\\
+ \frac{B_{m,m+1}(n)B_{m+1,m+2}(n)}{B_{m+1,m+1}(n)^2}
+ &=\frac{n+2m+2}{2(n+m+1)},\label{cyc:eq:rat-odd1}\\
+ \frac{B_{m,m+1}(n+1)B_{m+1,m+2}(n-1)}{B_{m+1,m+1}(n)^2}
+ &=\frac{n}{2(n+m+1)}.\label{cyc:eq:rat-odd2}
+\end{align}
+For example, adding the last column of a rectangle gives
+\begin{equation}\label{cyc:eq:addcol}
+ \frac{B_{a,b+1}(n)}{B_{a,b}(n)}
+ =\prod_{i=1}^{a}\frac{n+i+b}{i+b},
+\end{equation}
+and increasing $n$ telescopes within each row:
+\begin{equation}\label{cyc:eq:addN}
+ \frac{B_{a,b}(n+1)}{B_{a,b}(n)}
+ =\prod_{i=1}^{a}\frac{n+i+b}{n+i}.
+\end{equation}
+Applying~\eqref{cyc:eq:addcol} and~\eqref{cyc:eq:addN}, or their inverses,
+to the four ratios cancels all interior factors and gives the displayed
+right sides.  These identities also cover $m=0$.
+
+For even $t=2m$, divide the product version of
+\eqref{cyc:eq:condensation} by $B_{m,m+1}(n)^2$.  The squared odd sign
+is one, and the identity becomes
+\[
+ \frac n{2m+1}=\frac{n+2m+1}{2m+1}-1.
+\]
+For odd $t=2m+1$, write $s_N=(-1)^{N(N+1)/2}$.
+One has $s_Ns_{N-2}=-1$ and $s_{N-1}^2=1$.  Division by
+$B_{m+1,m+1}(n)^2$ reduces the same identity to
+\[
+ -\frac n{2(n+m+1)}=\frac{n+2m+2}{2(n+m+1)}-1.
+\]
+Thus the proposed products satisfy the condensation equation.
+
+By the induction hypothesis, the actual denominator
+$h_{N-2}^{(t+2)}$ in solving~\eqref{cyc:eq:condensation} for $h_N^{(t)}$
+is the proposed signed product, which is nonzero at nonnegative
+integer $N-2$.  Solving is therefore legitimate.  It proves the product
+at size $N$ for every $t$, completing the induction.  The nonzero
+denominator is a conclusion established earlier in this induction,
+not an assumption about arbitrary weighted Hankel minors.
+
+\subsection{Minimality and why the one-defect law excludes this point}
+The product $B_{a,b}(N)$ has degree $ab$ and nonzero leading
+coefficient.  The even product therefore has minimal polynomial
+$(X-1)^{m^2+1}$ by Lemma~\ref{cyc:lem:minimal}.  In the odd case,
+\begin{equation}\label{cyc:eq:signexp}
+ s_N=\frac{1+i}{2}\,i^N+\frac{1-i}{2}\,(-i)^N.
+\end{equation}
+Both coefficients are nonzero.  Multiplication by $B_{m,m+1}(N)$
+gives both characteristic roots $i,-i$ with multiplicity
+$m(m+1)+1$, proving Theorem~\ref{cyc:thm:central} in full.
+
+For $t=2m\ge2$, the two grouped rates at $z=i$ are $1,-1$.
+Their uncorrected exponents would be $m^2+1$ and $m^2$, so
+$\Rgrp=2m^2+1$.  The exact product has only the rate $1$: the
+entire $-1$ group vanishes, and the actual order is $m^2+1$.
+The additional loss is $m^2$, not one.  Formula~\eqref{cyc:eq:nextsurvives}
+correctly signals the problem because $z^2+1=0$ here.
+
+For odd $t$, $L=2$ has different parity from $t$, so there is no tied
+maximum at all.  The unique-maximum argument already gives the correct
+odd central order.  The product evaluation provides much more: all
+values and the exact period-four sign.
+
+\section{A root-free minimal-recurrence algorithm}\label{cyc:sec:algorithm}
+
+The classification need not be implemented by factoring the quadratic
+for $z$, recognizing a root of unity, or computing Hankel determinants.
+There is a direct exact algorithm over the coefficient field of $c$.
+
+\subsection{Detecting a resonance by a short scalar recurrence}
+Put $v=c-2$ and define
+\begin{equation}\label{cyc:eq:Urec}
+ U_0=1,\qquad U_1=v,\qquad U_{a+1}=vU_a-U_{a-1}.
+\end{equation}
+These are scalar values of the Chebyshev polynomials of the second
+kind, $U_a(v/2)$; we suppress the argument to emphasize computation.
+From the recurrence,
+\begin{equation}\label{cyc:eq:Uspectral}
+ U_a=\frac{z^{a+1}-z^{-a-1}}{z-z^{-1}}.
+\end{equation}
+Since $z\ne\pm1$, the first zero $U_{L-1}=0$ occurs exactly at
+$L=\ord(z^2)$, if that order is finite.  Moreover,
+\begin{equation}\label{cyc:eq:sigmarootfree}
+ \sigma:=z^L=-U_{L-2}\in\{1,-1\}.
+\end{equation}
+Indeed $U_L=(z^{L+1}-z^{-L-1})/(z-z^{-1})=z^L$, while the
+recurrence at the zero gives $U_L=-U_{L-2}$.
+
+Testing $U_1,\ldots,U_{t-1}$ therefore decides whether the recurrence
+is resonant at the given multiplicity.  There is no need to decide
+whether $z$ has some much larger finite order: all $L>t$ have the same
+nonresonant formula.  This requires $O(t)$ exact field operations and
+zero tests.
+
+\subsection{Linear and quadratic factors in the original coefficient field}
+Define another scalar sequence
+\begin{equation}\label{cyc:eq:Srec}
+ S_0=2,\qquad S_1=v,\qquad S_{a+1}=vS_a-S_{a-1},
+ \qquad S_a=z^a+z^{-a},
+\end{equation}
+and set
+\begin{equation}\label{cyc:eq:Qfactor}
+ Q_a(X)=X^2-(-1)^tS_aX+1,\qquad
+ E_a=\frac{t^2-a^2}{4}+1\quad(a\equiv t\pmod2).
+\end{equation}
+These factors have coefficients in $\QQ(c)$, or in any characteristic-zero
+coefficient field containing $c$.
+
+\begin{theorem}[Root-free factorization]\label{cyc:thm:rootfree}
+For $c\ne0,4$, test~\eqref{cyc:eq:Urec} through $U_{t-1}$.
+If no zero occurs, then
+\begin{equation}\label{cyc:eq:rootfreegeneric}
+ \chi_{t,c}(X)=
+ (X-1)^{\ind_{2\mid t}(t^2/4+1)}
+ \prod_{\substack{1\le a\le t\\a\equiv t\ (2)}}Q_a(X)^{E_a}.
+\end{equation}
+The first factor is omitted when $t$ is odd.
+If the first zero occurs at $L-1$ with $L=2$, use
+\eqref{cyc:eq:centralevenchar}--\eqref{cyc:eq:centraloddchar}.
+If $3\le L\le t$, compute $\sigma$ by~\eqref{cyc:eq:sigmarootfree} and
+$\delta$ by~\eqref{cyc:eq:defect}, replacing $z^{Lt}$ by $\sigma^t$.
+Then
+\begin{equation}\label{cyc:eq:rootfreeresonant}
+ \boxed{\quad
+ \chi_{t,c}(X)=
+ (X-1)^{\ind_{2\mid t}(t^2/4+1)}
+ \prod_{\substack{1\le a<L\\a\equiv t\ (2)}}Q_a(X)^{E_a}
+ \cdot (X-(-1)^t\sigma)^{\eta(E_L-\delta)}.
+ \quad}
+\end{equation}
+The last factor is omitted when $\eta=0$ or its exponent is zero;
+$E_L$ is only used when $\eta=1$.
+The nonconstant displayed factors have pairwise disjoint roots, and
+each displayed quadratic has distinct roots.
+\end{theorem}
+\begin{proof}
+In the nonresonant case, pair the sectors $k,t-k$ and put
+$a=|2k-t|$.  Their rates are $(-1)^tz^a$ and $(-1)^tz^{-a}$,
+whose quadratic is~\eqref{cyc:eq:Qfactor}.  Their common exponent is $E_a$.
+When $t$ is even, the unpaired sector $k=t/2$ has rate one and
+exponent $t^2/4+1$.  Distinctness follows from $L>t$.
+
+In the resonant case, use the centered representatives in
+Section~\ref{cyc:sec:orders}.  The pairs $\pm a$ with $0<a<L$ give
+exactly the quadratics in~\eqref{cyc:eq:rootfreeresonant}.  The possible
+center $a=0$ gives the first linear factor.  The tied endpoints
+$a=\pm L$ occur exactly when $\eta=1$ and give the single rate
+$(-1)^t\sigma$, with its one-defect exponent.
+No two different interior pairs coincide: equality of rates would
+force their corresponding $k$ indices to agree modulo $L$, contrary
+to the choice of distinct centered representatives.  An interior
+quadratic cannot have a double root because that would require
+$z^{2a}=1$ with $0<a<L$.
+If both linear factors occur, $L$ is even, whence $z^L=-1$; they are
+therefore also distinct.  Theorem~\ref{cyc:thm:main} supplies minimality.
+\end{proof}
+
+The theorem outputs $O(t)$ linear or quadratic factors with integer
+exponents after $O(t)$ scalar field operations.  This is an arithmetic
+operation count for the \emph{factored} answer; it is not a bit-complexity
+bound and not the cost of expanding a degree-$\Theta(t^3)$ polynomial.
+Exact equality tests in the input field are essential.  Approximate
+floating-point tests cannot reliably detect an exact resonance.
+
+This improves the task-specific route considerably over building a
+long prefix of large Hankel determinants and solving for an unknown
+recurrence.  It does not replace the repository's more general
+algorithm for a multiplier with several different roots
+[Theorem~\ref{rc:thm:finite} with the bound \eqref{rc:eq:rootfreebound}].
+
+\section{Worked examples and a complete rational-parameter corollary}
+\label{cyc:sec:examples}
+
+\subsection{Two cubic multipliers with the same cyclotomic order}
+For $t=3,c=1$, choose $z=e^{2\pi i/3}$.  Then $L=3$, $z^L=1$,
+and $\delta=0$.  The tied constant sectors retain the rate $-1$.
+For $t=3,c=3$, choose $z=e^{\pi i/3}$.  Then $L=3$, $z^L=-1$,
+and $\delta=1$.  The tied constant sectors at rate $1$ cancel entirely.
+The root-free factors are particularly simple:
+\begin{align}
+ \chi_{3,1}(X)&=(X+1)(X^2-X+1)^3,
+                  &R(3,1)&=7,\label{cyc:eq:c1c3a}\\
+ \chi_{3,3}(X)&=(X^2+X+1)^3,
+                  &R(3,3)&=6.\label{cyc:eq:c1c3b}
+\end{align}
+For both inputs the generic order would be eight.
+
+There are concise formulas for the determinants themselves.  For
+$n\ge0$,
+\begin{equation}\label{cyc:eq:c3residues}
+ \begin{aligned}
+ \cH{3n}{3}(3)&=2n+1,\\
+ \cH{3n+1}{3}(3)&=-(n+1)(18n+13),\\
+ \cH{3n+2}{3}(3)&=(n+1)(18n+23).
+ \end{aligned}
+\end{equation}
+For $c=1$, the six formulas are
+\begin{center}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}clrrr@{}}
+\toprule
+$r$&$\cH{6n+r}{3}(1)$&$n=0$&$n=1$&$n=2$\\
+\midrule
+0&$(4n+1)^2$&1&25&81\\
+1&$(2n+1)(4n+1)$&1&15&45\\
+2&$-(2n+1)(4n+3)$&-3&-21&-55\\
+3&$-(4n+3)^2$&-9&-49&-121\\
+4&$-2(n+1)(4n+3)$&-6&-28&-66\\
+5&$2(n+1)(4n+5)$&10&36&78\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are exact identities, not extrapolations.  The sector theorem
+shows that each displayed progression is a polynomial of degree at
+most two: the rates have periods three and six, respectively, and all
+sector degrees are at most two.  The first three values in each
+progression determine its quadratic.  Evaluating them from
+\eqref{cyc:eq:Christoffel} gives the displayed formulas.  The accompanying
+code additionally verifies each identity through $N=59$.
+
+For reference, their first twelve values are
+\begin{align*}
+ \cH N3(1):&\quad 1,1,-3,-9,-6,10,25,15,-21,-49,-28,36,\ldots,\\
+ \cH N3(3):&\quad 1,-13,23,3,-62,82,5,-147,177,7,-268,308,\ldots.
+\end{align*}
+The difference between their minimal orders persists even though
+both are low-degree quasipolynomial sequences.
+
+\subsection{A noncentral loss below a positive degree}
+Take $c=2+\sqrt3$, $z=e^{\pi i/6}$, $L=6$, and $t=8$.
+The tied indices are $1,7$, of degree seven, at rate $-1$.
+Since $L\equiv2\pmod4$, their leading terms cancel.  Here
+$z^2+1\ne0$, so~\eqref{cyc:eq:nextsurvives} proves that the grouped
+polynomial has degree six, not less.  The full answer is
+\begin{equation}\label{cyc:eq:largeexample}
+ \chi_{8,\,2+\sqrt3}(X)
+ =(X-1)^{17}(X+1)^7
+   (X^2+X+1)^{13}(X^2-X+1)^{16}.
+\end{equation}
+Its order is $82$, compared with grouped order $83$ and generic
+order $93$.  This example illustrates the genuinely positive-degree
+part of the one-defect theorem, rather than just cancellation of
+two constants.  The same recurrence holds at $c=2-\sqrt3$.
+
+\subsection{All rational nonendpoint roots}
+\begin{corollary}\label{cyc:cor:rational}
+If $c\in\QQ\setminus\{0,1,2,3,4\}$, then
+$R(t,c)=\Rgen(t)$ for every $t\ge1$.
+For $c=1$ and $c=3$, $R(1,c)=2$.  For $t\ge2$ their orders are
+\begin{equation}\label{cyc:eq:rationalorders}
+ \begin{array}{c|cc}
+ &c=1&c=3\\ \hline
+ t\text{ even}&3t^2/4+1&3t^2/4+1\\[1mm]
+ t\text{ odd}&(3t^2+1)/4-\ind_{t\equiv1\ (4)}
+             &(3t^2+1)/4-\ind_{t\equiv3\ (4)}.
+ \end{array}
+\end{equation}
+For $c=2$, the exact orders are
+\begin{equation}\label{cyc:eq:centralorders}
+ R(t,2)=
+ \begin{cases}t^2/4+1,&t\text{ even},\\(t^2+3)/2,&t\text{ odd}.
+ \end{cases}
+\end{equation}
+\end{corollary}
+\begin{proof}
+If $z$ is a root of unity, $z+z^{-1}$ is an algebraic integer.
+A rational algebraic integer is an integer: substitution of a reduced
+fraction into its monic integer equation forces its denominator to be
+one.  Also $-2<z+z^{-1}<2$ when $c\ne0,4$ is real and cyclotomic.
+Thus the only rational possibilities are $c=1,2,3$.  Every other
+rational nonendpoint input is nonresonant.  At $c=1,3$ use $L=3$
+and $z^L=1,-1$, respectively, in~\eqref{cyc:eq:mainorder}.  The case
+$t=1$ precedes the resonant range and is stated separately.
+The central formula is Theorem~\ref{cyc:thm:central}.
+\end{proof}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$t$&$R(t,1)$&$R(t,2)$&$R(t,3)$&$\Rgen(t)$\\
+\midrule
+1&2&2&2&2\\
+2&4&2&4&4\\
+3&7&6&6&8\\
+4&13&5&13&15\\
+5&18&14&19&26\\
+6&28&10&28&42\\
+7&37&26&36&64\\
+8&49&17&49&93\\
+9&60&42&61&130\\
+10&76&26&76&176\\
+11&91&62&90&232\\
+12&109&37&109&299\\
+\bottomrule
+\end{tabular}
+\end{center}
+All entries follow from the proved formulas.  The machine-readable
+version extends through $t=20$.
+
+\section{Exact verification and reproducibility}\label{cyc:sec:verification}
+
+The universal results above follow from the displayed proofs.  The
+verification suite is an independent finite audit of formulas, signs,
+normalizations, and algorithmic implementations.  No assertion of
+universality is inferred merely from the number of successful tests.
+
+\subsection{Arithmetic models and independent routes}
+The program \texttt{code/verify.py} (shipped here as
+\nolinkurl{code/03-cyclotomic-verify.py}) uses Python's standard library only.
+Cyclotomic arithmetic takes place in
+\begin{equation}\label{cyc:eq:ring}
+ \ZZ[z]/(\Phi_M(z)),
+\end{equation}
+with coefficient vectors in the usual basis of degree less than
+$\deg\Phi_M$.  The monic polynomials $\Phi_M$ are constructed by exact
+successive division of $x^M-1$ by the previously constructed factors
+for its proper divisors.  All arithmetic is integral; comparisons do
+not use tolerances or approximate complex roots.  Negative powers of
+$z$ are reduced using $z^M=1$.
+
+The raw sector formula~\eqref{cyc:eq:rawsector} is evaluated as an exact
+polynomial in $N$.  Its degree, leading coefficient, first centered
+correction, and reflected polynomial are compared with the theorems.
+The sectors are then added according to equal rates, and their actual
+polynomial degrees are compared with every predicted characteristic
+multiplicity.  The root-free algorithm is tested separately: it does
+not access the cyclotomic order or the spectral generator when
+constructing its factors from $c$.  Its factors are checked against the
+actual grouped rates and multiplicities.
+
+The original small Hankel determinants in the same rings are computed
+by the Leibniz permutation formula, not by the sector determinant.
+To compare with the rational sector expression, the test clears the
+common denominator.  Explicitly it checks
+\begin{multline}\label{cyc:eq:divisionfreecheck}
+ \cH Nt(c)(z^2-1)^T(z-1)^tA_t\\
+ =(-1)^{Nt}z^T\sum_{k=0}^{t}F_{t,k}(N;z)z^{(2k-t)N}.
+\end{multline}
+Thus no inversion in a number field is needed even in this independent
+comparison.
+
+For integer $c$, a second route evaluates the original moment matrix
+by pivoted fraction-free Bareiss elimination and compares it with the
+$t\times t$ normalized-jet determinant.  The jets are generated from
+\eqref{cyc:eq:prec}: if $u_{n,r}=p_n^{(r)}(c)/r!$, then
+\begin{equation}\label{cyc:eq:jetcode}
+ u_{n+1,r}=(c-2)u_{n,r}+u_{n,r-1}-u_{n-1,r},\qquad u_{n,-1}=0,
+\end{equation}
+with $u_{0,0}=1$, $u_{1,0}=c-1$, $u_{1,1}=1$, and other initial
+jets zero.  This is independent of the subset expansion.
+
+\subsection{Parameter ranges and the recorded run}
+The principal cyclotomic grid uses primitive orders $3\le M\le24$
+and root multiplicities $1\le t\le12$.  A computation in
+$\ZZ[z]/\Phi_M$ is exact at a primitive root and respects all its
+Galois conjugates, rather than sampling a floating-point angle.
+The original cyclotomic determinant comparisons use $M\le14$,
+$t\le8$, and sizes $N=0,\ldots,4$.
+
+The integer determinant comparison uses
+$c\in\{-2,0,1,2,3,4,5\}$, $t=1,\ldots,10$, and $N=0,\ldots,10$.
+The endpoint values here only audit the classical determinant identity;
+they are not applications of the nonendpoint classification.
+The central product is checked for $t=0,\ldots,16$ and
+$N=0,\ldots,16$.  The scalar sign and square-sum identities are checked
+on an additional grid with $M\le60$ and $t\le100$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact assertion category&Checks passed\\
+\midrule
+Canonical sector degrees&1,980\\
+Product leading coefficients&1,980\\
+First centered corrections&1,452\\
+Full sector reflections&1,980\\
+Grouped minimal multiplicities&1,569\\
+Closed total-order formula&264\\
+Root-free detection, factor degrees, and multiplicities&2,097\\
+Independent cyclotomic Hankel determinants&480\\
+Original integer matrices versus jet determinants&770\\
+Central product evaluations&289\\
+Four condensation ratio identities&252\\
+Centered residue-class square sums&4,495\\
+Simplified defect signs&4,396\\
+Worked residue-class formulas&120\\
+\midrule
+\textbf{Total}&\textbf{22,124}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The run completed successfully.  The individual counts and the
+parameter-by-parameter recurrence orders are stored as JSON, and the
+rational examples are also stored as CSV.  A check is one explicit
+assertion as counted in the program; the number is not a measure of
+proof strength or a substitute for peer review.
+
+\noindent[Merge note: the recorded run is shipped as
+\nolinkurl{data/03-cyclotomic-verification_summary.json} (status
+\texttt{PASS} and the twenty counts behind the table; the table's
+condensation row adds four counts of $63$, and its root-free row adds
+$264+264+1{,}569$) and
+\nolinkurl{data/03-cyclotomic-verification_run.txt} (the console
+transcript); the parameter-by-parameter orders, the $264$ principal cases
+with their multiplicities by residue class, as
+\nolinkurl{data/03-cyclotomic-cyclotomic_orders.json}; and the rational
+examples, the orders at $c=1,2,3$ and the generic order for
+$t=1,\ldots,20$, as \nolinkurl{data/03-cyclotomic-orders_c1_c2_c3.csv}
+(all-CRLF as written by Python's \texttt{csv} module).  All four were
+delivered in \nolinkurl{data/} without the prefix.]
+
+\subsection{Rebuilding the article and the audit}
+From the package directory, run
+\begin{lstlisting}
+python3 code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command regenerates the data files.  A smaller main grid is
+available with \texttt{--quick}; it is explicitly marked as such in
+its output.  The supplied full-run transcript is
+\texttt{data/verification\_run.txt}.  The \LaTeX\ source uses ordinary
+TeX Live packages, including \texttt{newtxtext} and \texttt{newtxmath}.
+The source bibliography is embedded, so no separate bibliography
+processor or network access is needed.
+
+\emph{In this report these commands must not be run in place.}  Here
+\nolinkurl{code/verify.py} is Part~I's verifier, and the shipped
+\nolinkurl{code/03-cyclotomic-verify.py} writes by default into the
+report's \nolinkurl{data/}, adding the three unprefixed files
+\nolinkurl{verification_summary.json}, \nolinkurl{cyclotomic_orders.json}
+and \nolinkurl{orders_c1_c2_c3.csv} beside the shipped ones; the
+transcript is its console output, not a file it writes.  The delivered
+Makefile, shipped as \nolinkurl{code/03-cyclotomic-Makefile}, has the same
+defect when run from the report directory: its \texttt{verify} target runs
+Part~I's \nolinkurl{code/verify.py}, which rewrites Part~I's data files;
+its \texttt{quick} target passes that
+verifier options it does not know, and its \texttt{pdf} and
+\texttt{clean} targets build and clean the merged \nolinkurl{article.tex}
+in place.  The article is built as described in the report's README.
+Restore the delivered layout in a scratch copy instead (POSIX shell, run
+from the report directory):
+\begin{lstlisting}
+W=/path/to/scratch/cyclotomic
+mkdir -p "$W/code" "$W/recorded"
+cp code/03-cyclotomic-verify.py "$W/code/verify.py"
+for f in data/03-cyclotomic-*; do
+  cp "$f" "$W/recorded/${f#data/03-cyclotomic-}"; done
+cd "$W" && python3 code/verify.py --output data > verification_run.txt
+\end{lstlisting}
+The run writes three files to \texttt{\$W/data} and the transcript to
+\texttt{\$W/verification\_run.txt}; compare them with the copies in
+\texttt{\$W/recorded}.  Run this way on 29 September 2026 (Python 3.14.4,
+about 30~s), it passed; the CSV was byte-identical and the two JSON files
+and the transcript agreed with the recorded ones apart from Windows line
+endings.  The quick grid is \texttt{python3 code/verify.py --quick
+--output data\_quick}.  The delivery README's example of the root-free
+routine, run in the same scratch directory, reproduces
+\eqref{cyc:eq:largeexample}:
+\begin{lstlisting}
+import sys
+sys.path.insert(0, "code")
+from verify import CyclotomicRing, root_free_factors
+
+ring = CyclotomicRing(12)
+c = ring.add(ring.integer(2), ring.add(ring.zp(1), ring.zp(-1)))
+L, factors = root_free_factors(8, c, ring)   # c = 2 + sqrt(3)
+assert L == 6
+assert sum((len(p) - 1) * e for p, e in factors) == 82
+\end{lstlisting}
+It returns pairs (polynomial coefficients in ascending order, exponent),
+and reads neither the spectral generator nor the cyclotomic order.  The
+subset expansion in the program is deliberately exponential in~$t$ and
+serves testing; the root-free routine is the compact algorithm.
+
+\section{Further research questions and proposed next steps}\label{cyc:sec:future}
+
+The following are precise continuations of the present results.  They
+are research tasks relative to this article; they are not all asserted
+to be globally unsolved problems in the published literature.
+
+\subsection{Several distinct repeated roots}
+For $q(x)=\prod_i(x-c_i)^{t_i}$, equal rates are described by
+multiplicative relations among several $z_i$.  The degree function is
+$\sum_i k_i(t_i-k_i)$, so maximizing labels lie on a higher-dimensional
+lattice rather than a single arithmetic progression.  Can one classify
+when several maximal labels cancel, and bound the additional loss in
+terms of the dimension or shape of that maximizing set?  The
+one-dimensional proof shows exactly which ingredient is missing:
+a tractable sum of leading and first surviving coefficients over all
+maximal labels.
+
+\subsection{Endpoint factors coupled to a cyclotomic interior root}
+Investigate $x^a(x-4)^b(x-c)^t$.  The repository's degree law already
+[Theorem~\ref{rc:thm:main}] adds fixed endpoint triangular contributions.  The open structural
+issue is how those endpoint blocks alter the ratio of two tied
+interior leading coefficients and the first centered correction.
+Determine which endpoint multiplicities preserve a one-defect law and
+which produce higher-order cancellation.
+
+\subsection{Higher centered coefficients and a symmetric-function formula}
+The first correction arose from a logarithmic derivative of a signed
+Vandermonde.  Higher corrections involve elementary symmetric
+functions of the mixed offsets $i+j+1-t$.  Find a closed differential
+or symmetric-function expression for all centered coefficients of
+$P_{t,k}$.  A particularly useful target is a formula exposing their
+parity under~\eqref{cyc:eq:reflection} and their factors at $z^2=-1$.
+The goal is structural information, not merely a larger interpolation.
+
+\subsection{Uniform limits near a disappearing characteristic factor}
+The present formulas are exact at fixed parameters.  They do not
+provide a uniform large-$N$ approximation as $c$ approaches a
+cyclotomic value, especially the center where whole sectors vanish.
+Determine the correct scaling of $c-c_0$ with $N$ near a defect and
+identify the transition between the generic and specialized
+exponential-polynomial expansions.  The exact subset formula is a
+finite starting point with no asymptotic error to hide.
+
+\subsection{Degrees and zeros on individual size progressions}
+At a cyclotomic parameter, restrict $H_N^{(t)}(c)$ to one residue
+class of $N$ modulo a common rate period.  Different characteristic
+rates now become the same, so additional cancellations can occur:
+\eqref{cyc:eq:c3residues} has a linear progression alongside two quadratic
+ones.  Classify the exact degree and leading coefficient on each
+progression, and determine which progressions can vanish identically.
+This would lead to a precise description of the zero set of the
+Hankel determinant at cyclotomic parameters.
+
+\subsection{Other eventually constant Jacobi recurrences}
+Replace~\eqref{cyc:eq:prec} by a family with a different finite initial
+Jacobi segment and the same constant tail.  The exponential branches
+survive, but their amplitudes change.  Determine a condition on those
+amplitudes under which only one extra multiplicity can be lost at a
+single-root cyclotomic resonance.  Such a theorem would separate the
+universal lattice mechanism from the special Catalan boundary
+condition.
+
+\subsection{Effective arithmetic and reduction modulo primes}
+The root-free algorithm uses exact characteristic-zero equality.
+Determine a bit-complexity bound for algebraic inputs, including the
+cost of field arithmetic and coefficient growth, and study which
+primes preserve the characteristic-zero minimal polynomial on
+reduction.  In positive characteristic, finite differences may lower
+polynomial degree abnormally and factorial factors may vanish, so
+neither the degree lemma nor the minimality theorem transports
+unchanged.
+
+\subsection{A focused formalization in Lean}
+The shortest reusable formalization targets are the exponential-block
+minimality lemma, the nearest-representative and square-sum lemmas,
+and the purely algebraic implication from the two sector coefficients
+to the one-defect law.  These can be separated from integration and
+orthogonal polynomials.  A second stage would formalize the signed
+confluent Vandermonde and the Christoffel identity, replacing the
+coefficient hypotheses by proved formulas.  This staged plan must
+keep imported hypotheses visible rather than labeling the entire
+analytic argument formalized after only its final combinatorics has
+been checked.
+
+\section{Conclusion}\label{cyc:sec:conclusion}
+
+The single repeated nonendpoint-root problem admits a complete
+sign-sensitive answer.  When the rates are distinct, their nonzero
+sector leading coefficients give the known cubic generic order.
+At a cyclotomic resonance, the parabolic sector-degree function has
+at most one tied maximizing pair.  Its leading ratio is a sign; when
+that sign is negative, the first centered correction proves that the
+loss is exactly one, except at the central root.  The latter is an
+entire-group cancellation controlled by Cigler's known product.
+
+This yields the minimal characteristic polynomial at every such
+parameter, not merely an annihilating bound.  It also explains why
+$t$ and the order of $z^2$ alone do not suffice, counts the exceptional
+parameters, and gives a root-free factorization computed directly from
+$c$ by two short scalar recurrences.  The proofs and exact audit are
+provided for independent checking.  They establish the claims made
+here within ordinary mathematics; they do not establish priority or
+machine-checked formal status.
+
+\section{Normalization, boundary, and proof audit}\label{cyc:app:audit}
+
+This section is Appendix~A of the manuscript.
+
+\paragraph{Size rather than last index.}
+$N$ is the matrix size.  An indexing convention with rows
+$0,\ldots,n$ requires $N=n+1$.  The value at $N=0$ is part of the
+sequence and equals one.
+
+\paragraph{Multiplier sign.}
+The multiplier is $(x-c)^t$, not $(c-x)^t$.
+This is the source of $(-1)^{Nt}$ in the Christoffel determinant and
+$(-1)^t$ in every characteristic root.  Reversing the multiplier sign
+would scale the entire sequence by $(-1)^{Nt}$.
+
+\paragraph{Jet factorials.}
+The determinant uses $p_n^{(r)}(c)/r!$.  Accordingly $A_t$ appears
+once, in $K_t$, and not a second time in the confluence denominator.
+The subset Vandermondes use actual index differences, with their
+products of factorials kept explicitly.
+
+\paragraph{Two different orders of a root of unity.}
+The theorem uses $L=\ord(z^2)$, while the audit ring uses a primitive
+$M$th root $z$, so $L=M/\gcd(M,2)$.  For odd $L$, $z$ can have
+order $L$ or $2L$.  These give opposite signs of $z^L$ and can give
+different recurrence orders.  This distinction is essential.
+
+\paragraph{Tied constants.}
+When $t=L$ and the defect sign is negative, $d_*=0$.
+There is no degree $-1$ nonzero polynomial; the whole constant group
+is zero and its characteristic exponent is zero.  This case is not
+covered by dividing the correction by $d_*$ and must be handled
+separately, as in Section~\ref{cyc:sec:proofmain}.
+
+\paragraph{What the computation does not prove.}
+Finite success at $t\le12$ does not prove an unbounded-multiplicity
+claim.  The general mechanism is the explicit coefficient identity
+and the maximizing-pair lemma.  Likewise, inspecting a finite set of
+sources does not prove historical novelty.
+
+\paragraph{No unsupported nonvanishing assumptions.}
+The Christoffel derivation divides only by a Vandermonde before
+confluence, not by weighted Hankel minors.  The central condensation
+proof divides by a smaller minor only after its nonzero product
+formula has been established by induction.  Minimality uses the
+nonzero coefficients actually calculated, not genericity by analogy.
+
+\section{Source and package concordance}\label{cyc:app:concordance}
+
+This section is Appendix~B of the manuscript.
+
+The older root-collisions manuscript is now Part~II of the repository
+article cited in Section~\ref{cyc:sec:scope}.  Its standalone Section~12.1
+is the cyclotomic-classification question answered here; its
+Section~12.2 asks for structural cancellation criteria, addressed here
+for the single repeated root.  The generic degree law and finite
+recurrence-recovery algorithm belong to that prior work.  Its
+certified central fourth-power example is subsumed by the already
+known general product.
+
+\noindent[Merge note: the standalone Sections~12.1 and~12.2 are
+Sections~\ref{cyc:x:rcq1} and~\ref{cyc:x:rcq2} here; the generic degree
+law and the recovery algorithm are Theorems~\ref{rc:thm:main}
+and~\ref{rc:thm:finite}; the certified central fourth-power example is
+\eqref{rc:eq:centreproduct}.]
+
+The present paper does not claim a general solution of multi-root
+resonance, uniform collision asymptotics, or positive-characteristic
+minimality.  Those remain separate tasks.  No code was added to the
+ProveIt repository and no Lean compiler was run for this article.
+[Merge note: this describes the manuscript at its pin.  Its code and data
+have since been placed in this report, byte-identical, under the prefix
+\texttt{03-cyclotomic-} (placement commit \texttt{3609d0473}); nothing has
+been formalized.]
+
+The archive contains \nolinkurl{article.tex}, \nolinkurl{article.pdf},
+\nolinkurl{README.md}, \nolinkurl{SOURCES.md}, \nolinkurl{Makefile},
+\nolinkurl{code/verify.py}, and the generated data directory.  The JSON
+records distinguish actual grouped minimal multiplicities from generic
+order bounds.  No external source PDFs or font files are included.
+
+\noindent[Merge note: of these, \nolinkurl{article.tex},
+\nolinkurl{article.pdf} and \nolinkurl{README.md} are not shipped here;
+they survive in the arrival commit \texttt{8315d24e3}.
+\nolinkurl{SOURCES.md}, \nolinkurl{Makefile}, \nolinkurl{code/verify.py}
+and the four data files are shipped with the prefix \texttt{03-cyclotomic-}
+(the Makefile in \nolinkurl{code/}), as listed in
+Section~\ref{cyc:sec:verification}.]
+
 \clearpage
 \appendix
 \section{The precise correction to the printed conjecture}\label{app:barry}
@@ -3272,9 +5295,21 @@ related densities, preprint arXiv:2103.03969.
 Cited in Part~II as a starting point for the rational-multiplier research
 direction, not as an input to its proofs.
 
+\bibitem{Cigler2021}
+J.~Cigler,
+Hankel determinants of middle binomial coefficients and conjectures for
+some polynomial extensions and modifications, preprint arXiv:2111.14492
+(2021).
+\url{https://arxiv.org/abs/2111.14492}.
+Cited in Part~III: its Theorem~1, equation~(23), supplies the known
+central product after \eqref{cyc:eq:Ciglertranslation}; its proof also
+uses condensation.  Part~III's manuscript does not state which arXiv
+version it read.
+
 \end{thebibliography}
 \noindent\small\textit{Online sources checked on 19 September 2026
-(Part~I) and 28 September 2026 (Part~II).
+(Part~I) and 28 September 2026 (Part~II); Part~III's manuscript is dated
+29 September 2026, and its source notes do not date its checks.
 All theorem numbering in the body refers to the present manuscript,
 unless a source is explicitly named.}
 \end{document}
