@@ -58,24 +58,30 @@
 \newcommand{\wtag}{\textsf{\small[write]}}
 % [write] Lean declaration and file names, breakable at any character (xurl).
 \DeclareUrlCommand\lean{\urlstyle{tt}}
+% Part II (batch 40, manuscript 05): the manuscript's one-argument
+% coefficient operators, its defect tail R_N, and its norm.
+\newcommand{\strunc}[1]{[\xi^{\le #1}]}
+\newcommand{\shigh}[1]{[\xi^{>#1}]}
+\newcommand{\satR}{\mathcal R}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=0.6pt,arc=1mm,left=2.5mm,right=2.5mm,top=2mm,bottom=2mm}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!40},showstringspaces=false}
-\hypersetup{pdftitle={Finite-Prefix Corrections and Dual Certificates for Polyomino Growth},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={An exact 4.498 upper bound and certificates for convolution recurrences}}
+\hypersetup{pdftitle={Finite-Prefix Corrections and Dual Certificates for Polyomino Growth},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={An exact 4.498 upper bound and certificates for convolution recurrences; Part II: spectral saturation of the exact-prefix hierarchy}}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
-\vspace*{9mm}
+\vspace*{0mm}
 \noindent{\color{Accent}\large\scshape ProveIt research series}\par
-\vspace{11mm}
+\vspace{5mm}
 \noindent{\color{Ink}\Huge\bfseries Finite-Prefix Corrections\par and Dual Certificates\par for Polyomino Growth}\par
-\vspace{7mm}
+\vspace{4mm}
 \noindent{\LARGE An exact bound $\lambda\leq 4.498$\par and a certificate theorem for convolution recurrences}\par
-\vspace{10mm}
+\vspace{5mm}
 \noindent{\large Research report prepared for Vladimir Reshetnikov}\par
 \noindent September 2026 \quad $\cdot$ \quad AI-assisted research draft\par
-\vspace{9mm}
+\vspace{4mm}
 \begin{abstract}
 We develop two extensions of the seventeen-neighborhood polyomino project in
 \repo. First, exact small-size occurrence counts are incorporated into a
@@ -116,6 +122,14 @@ proves Bui's Lemma~4 recurrences for the actual marked counts
 bound is $\lambda\leq 9047/2000=4.5235$. The bound $\lambda\leq 2249/500=4.498$
 of this report is computer-assisted and is \emph{not} formalized. See
 \cref{kfp:sec:formal-status}.
+
+\smallskip
+[Added 29 September 2026, batch 40:] Part~II (\cref{kfp:sat:sec:source}),
+also unformalized, proves that no exact prefix takes the fixed map's
+majorant growth below $4.3149$: a limit of the method, \emph{not} a lower
+bound on $\lambda$ and \emph{not} an improvement on $4.498$.
+\emph{Tempting false readings:} ``$\lambda\geq4.3149$''; ``$4.3149<4.498$ is
+a better bound''. Both are false.
 \end{resultbox}
 \end{titlepage}
 
@@ -125,6 +139,7 @@ of this report is computer-assisted and is \emph{not} formalized. See
 \clearpage
 \pagenumbering{arabic}
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Finite-prefix corrections and dual certificates}
 \section{Problem selection, sources, and main contributions}
 \label{kfp:sec:scope}
 
@@ -204,6 +219,11 @@ point where the linearized system at the true series has spectral radius
 less than one. Conversely, a supercritical linearization obstructs the
 whole hierarchy under a mild nonzero-tail condition. A scalar example has
 true growth $1$ but corrected-majorant growth tending to $3$.
+[Added 29 September 2026, batch 40: Part~II classifies the equality case
+for an irreducible true-profile Jacobian, identifies the limiting radius of
+the hierarchy, and proves that for the fixed Bui map every corrected
+majorant has growth at least $4.3149$ (\cref{kfp:sat:thm:critical,kfp:sat:thm:limit,kfp:sat:thm:bui}).
+That number is a limit of the method, not a lower bound on $\lambda$.]
 
 \subsection{Novelty and dependency boundaries}
 The proposed research contributions are the explicit $4.498$ polyomino bound,
@@ -344,6 +364,8 @@ Nothing new in this report is formalized: not \cref{kfp:lem:formal},
 \cref{kfp:thm:majorant,kfp:thm:upper,kfp:thm:nested}, not the size-$\leq18$
 table, not \cref{kfp:thm:main} ($\lambda\leq2249/500=4.498$, which is
 computer-assisted), and none of \cref{kfp:sec:dual,kfp:sec:complete,kfp:sec:dual-example,kfp:sec:stability}.
+[Added 29 September 2026, batch 40: nor anything in Part~II, including the
+$4.3149$ barrier of \cref{kfp:sat:thm:bui}.]
 The project's endpoint theorems cannot simply be re-instantiated: they are
 hard-wired to $\zeta=2000/9047$ (\lean{certificateZeta}) in
 \lean{PrefixRecurrence.g_le_certificate} and \lean{g_lt_one}
@@ -1396,6 +1418,12 @@ all later levels. Therefore no earlier one exists either.
 \end{proof}
 
 The equality case $\spr(J)=1$ is deliberately not classified in general.
+[Added 29 September 2026, batch 40: Part~II classifies it when $J$ is
+irreducible: then, as for every $\spr(J)\geq1$, a certificate at $\zeta$
+exists at level $N$ exactly when the full defect $\Phi(\xi,\bA)-\bA$ has no
+coefficients above degree $N$ (\cref{kfp:sat:thm:critical}), so a nonzero
+full-defect tail excludes every level even when every $J_N$ is subcritical.
+The reducible critical case remains open (\cref{kfp:sat:sec:exceptions}).]
 The nonzero forcing and irreducibility conditions in the obstruction are
 not decorative: without them a critical linear map can have supersolutions.
 For the Bui map, positive prefix coordinates make the dependency pattern
@@ -1465,6 +1493,10 @@ The same barrier is visible directly in \cref{kfp:thm:stability}:
 crosses one at $t=1/3$, well before the true singularity at $t=1$.
 Every finite coefficient of $B_N$ eventually agrees with $A$, but radii of
 convergence do not pass continuously through this coefficientwise limit.
+[Added 29 September 2026, batch 40: Part~II proves that this is the general
+mechanism (\cref{kfp:sat:thm:limit}) and gives the rate for this example,
+$\frac13-\rho_N\sim\frac29\sqrt{2N-1}\,3^{-N/2}$
+(\cref{kfp:sat:sec:scalar}).]
 
 This counterexample is not a disproof of Bui's separate Question~1 about
 increasing neighborhood size with improved geometric recurrences. Here the
@@ -1668,6 +1700,11 @@ bounds on the true marked generating functions. Determine whether the
 prefix hierarchy's limiting obstruction lies substantially below the true
 polyomino radius. The strict criteria in \cref{kfp:thm:stability} give concrete
 sufficient tests, while the equality case remains open.
+[Added 29 September 2026, batch 40: Part~II closes the irreducible equality
+case (\cref{kfp:sat:thm:critical}) and proves that the limiting majorant
+growth of the fixed map is at least $4.3149$ (\cref{kfp:sat:thm:bui}); where
+the barrier actually lies, and whether it is below the true radius, remain
+open (\cref{kfp:sat:sec:future}).]
 
 \item \textbf{Optimize which geometric deficiencies to repair.}
 Use Perron-weighted sensitivities as a search heuristic, but accept a repair
@@ -1699,6 +1736,11 @@ For selected corrected systems, prove uniqueness of the relevant positive
 critical point, nondegeneracy, and the resulting coefficient asymptotics.
 Such a result would justify numerical critical continuation as mathematics,
 not merely as a source of candidate certificates.
+[Added 29 September 2026, batch 40: Part~II proves general radius, height
+and local-amplitude asymptotics as $N\to\infty$ at an interior nonlinear
+crossing (\cref{kfp:sat:thm:sharp,kfp:sat:thm:branch}). It proves no
+coefficient asymptotics and does not verify its hypotheses for the Bui
+system, so this project stays open.]
 
 \item \textbf{Transfer the method to other lattice animals and local grammars.}
 Identify an existing positive recurrence system on a different lattice,
@@ -1708,6 +1750,7 @@ once properness and the underlying combinatorial domination are proved.
 \end{enumerate}
 
 \section{Conclusion}
+\label{kfp:sec:conclusion}
 The repository's polyomino project supports more than a small numerical
 retuning. Incorporating exact marked prefixes changes the majorant itself,
 and the resulting rational certificate proves $\lambda\leq4.498$.
@@ -1718,9 +1761,12 @@ structural correction. Finally, the spectral analysis identifies why this
 successful improvement must not be extrapolated automatically to asymptotic
 exactness. The central next step is independent verification, especially
 formal certification of the finite marked enumeration.
+[Added 29 September 2026, batch 40: Part~II, which follows the appendices
+of Part~I, makes that limitation exact.]
 
 \appendix
 \clearpage
+\phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
 \section{Complete marked profiles through size eighteen}
 \label{kfp:app:data}
 
@@ -1826,7 +1872,9 @@ recurrences. Based on classical geometric-programming ideas.\\[0.4em]
 Numerical critical values & Exploratory estimates only; not certified optimal values and
 not used to establish the accepted inequalities.\\[0.4em]
 Stability theorem and gap & Written proofs in \cref{kfp:sec:stability}. The case of limiting
-spectral radius exactly one is not classified generally.\\[0.4em]
+spectral radius exactly one is not classified generally.
+[Added 29 September 2026, batch 40: classified for irreducible $J$ in
+Part~II, \cref{kfp:sat:thm:critical}; written proof, not formalized.]\\[0.4em]
 Sensitivity formula & Conditional on an already justified differentiable critical
 family. Not used for the headline bound.\\[0.4em]
 Novelty & The explicit bound and application were not found in the inspected sources.
@@ -1858,6 +1906,16 @@ audit table in \cref{kfp:app:audit}, and four bibliography entries
 (\cite{repobound,eden,klarnerrivest,barequetshalah}). All labels carry the
 prefix \texttt{kfp:} except \texttt{eq:map}, which the delivered, generated
 \texttt{tex/dual\_table.tex} cites by that name.
+
+[Added 29 September 2026, batch 40:] The report now has a second source.
+Batch-40 manuscript~05 (archive \texttt{ProveIt\_Spectral\_Saturation},
+arrived in \texttt{017e6c0d8}, placed in \texttt{afb2d1227}, pinned to
+\texttt{74f7f5bdb}) is printed as Part~II, with its own provenance in
+\cref{kfp:sat:sec:source}; its labels carry the prefix \texttt{kfp:sat:}.
+The Part~I text above changed only by dated ``Added 29 September 2026''
+pointers, the entries for Part~I and its appendices in the contents, the
+label \texttt{kfp:sec:conclusion}, four macros for Part~II in the preamble,
+and the PDF subject line.
 
 \subsection{Intake verification}
 \begin{itemize}
@@ -1910,6 +1968,9 @@ Every limitation stated by the delivered text is kept; collected:
  connected, nonlinear systems with rational data; it gives no uniform bound
  on certificate bit length and does not cover maximum or signed recurrences.
 \item The case $\spr(J)=1$ of \cref{kfp:thm:stability} is not classified.
+ [Added 29 September 2026, batch 40: re-scoped. Part~II classifies it for
+ irreducible $J$ (\cref{kfp:sat:thm:critical}); the reducible case is still
+ not classified.]
 \item The counterexample of \cref{kfp:thm:gap} does not disprove Bui's
  Question~1.
 \item The sensitivity formula \eqref{kfp:eq:sensitivity} is conditional and
@@ -1925,6 +1986,1782 @@ only relative to the transcription of Bui's diagrams into
 and the project's Lean-verified bound remains $9047/2000$; (W3) the earlier
 bounds of \cref{kfp:sec:scope} were not re-examined, and their sources were
 not read beyond their bibliographic data.
+
+%% ====================================================================
+%% Batch-40 addition (manuscript 05, "When Exact Prefixes Stop
+%% Improving"). All labels of Part II carry the prefix kfp:sat:
+%% (spectral saturation).
+%% ====================================================================
+\clearpage
+% Part II follows Part I's appendices so that no Part I number changes; its
+% sections continue Part I's arabic numbering.
+\setcounter{section}{11}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{partII.\arabic{section}}
+\phantomsection\part*{Part II.\quad Spectral saturation of the exact-prefix hierarchy}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Spectral saturation of the exact-prefix hierarchy}
+
+\noindent\emph{Sections~\ref{kfp:sec:scope}--\ref{kfp:sec:conclusion} and
+Appendices~\ref{kfp:app:data}--\ref{kfp:app:provenance} form the original
+report (Part~I), written into \repo\ in batch~36, unchanged except for dated
+pointers to this addition. Part~II was added on 29 September 2026 in
+batch~40 of \repo's incoming-report intake, from one manuscript written
+against the state of Part~I printed here. It classifies the equality case
+$\spr(J)=1$ that Part~I left unclassified after \cref{kfp:thm:stability}
+(limitation N9 of \cref{kfp:app:provenance}), \emph{for an irreducible
+true-profile Jacobian only}, determines the limiting radius of the whole
+prefix hierarchy, and proves that no exact prefix can take the fixed Bui
+map's majorant growth below $4.3149$. \Cref{kfp:sat:sec:source} records
+the provenance and fixes the notation of the addition.}
+
+\section{Provenance, conventions and claim boundary of Part~II}
+\label{kfp:sat:sec:source}
+
+\subsection{One manuscript, one addition}
+Part~II is batch-40 manuscript~05, \emph{When Exact Prefixes Stop
+Improving: Spectral saturation, sharp square-root laws, and a certified
+barrier for convolution majorants}, an AI-assisted mathematical draft
+prepared for Vladimir Reshetnikov and dated 28 September 2026 (27 pages as
+delivered). It arrived as the archive
+\texttt{ProveIt\_Spectral\_Saturation.zip} (inner directory
+\texttt{ProveIt\_Spectral\_Saturation/}) in \repo\ commit
+\texttt{017e6c0d8} and was placed in \texttt{afb2d1227}. It was written
+against \repo\ commit \texttt{74f7f5bdb}, at which Part~I's
+\texttt{article.tex} had the Git blob \texttt{4a021fb3}. That blob is
+unchanged at the placement commit, and so are the project
+\texttt{Combinatorics/Polyominoes/KlarnerConstant} and Part~I's
+\texttt{code/model.py} and \texttt{data/profiles\_18.csv}; every statement
+the manuscript makes about Part~I therefore refers to the text printed above.
+
+Its code, data and audit files are shipped beside Part~I's with the prefix
+\path{02-spectral-saturation-} (Part~I's unprefixed files count as~01):
+three Python scripts and a build script in \texttt{code/}, five data files
+in \texttt{data/}, and
+\path{02-spectral-saturation-PROOF_STATUS.md} and
+\path{02-spectral-saturation-SOURCES.md} at the root, all byte-identical to
+the delivery. Its manuscript, README and PDF are not shipped and survive in
+the arrival commit. Its \texttt{data/profiles\_18.csv} is not shipped
+either: the manuscript copied it from Part~I, and it is byte-identical to
+Part~I's \texttt{data/profiles\_18.csv} (blob \texttt{82648328}), which is
+the file every mention of it in Part~II now means.
+
+The manuscript contributes, in the order printed here: its own
+introduction and claim boundary (\cref{kfp:sat:sec:intro}); a restatement
+of the prefix construction (\cref{kfp:sat:sec:setup}); the critical
+alternative, which classifies the irreducible case $\spr(J)\ge1$
+(\cref{kfp:sat:sec:critical}); the exact limiting radius of the hierarchy
+(\cref{kfp:sat:sec:saturation}); a tail estimate without coefficient
+regularity (\cref{kfp:sat:sec:tails}); the square-root law at an interior
+nonlinear crossing (\cref{kfp:sat:sec:sharp}); the scaled branch and the
+quarter-power amplitude (\cref{kfp:sat:sec:branch}); sharp equivalents for
+Part~I's scalar example (\cref{kfp:sat:sec:scalar}); four examples that
+delimit the hypotheses (\cref{kfp:sat:sec:exceptions}); the all-prefix
+$4.3149$ barrier for the fixed Bui map (\cref{kfp:sat:sec:bui}); its
+reproducibility and proof audit (\cref{kfp:sat:sec:audit}); ten research
+projects (\cref{kfp:sat:sec:future}); its conclusion; and, as the last three
+sections of Part~II, its three appendices (the map, a replay algorithm, and
+the source ledger). Every result, proof, example, remark, limitation and
+question of the manuscript is printed. Its bibliography is merged into the
+report's; the entries it shares with Part~I (Bui's paper) are printed once.
+
+\paragraph{Material already in Part~I.} The manuscript restates, to be
+self-contained, Part~I's formal comparison lemma, prefix-corrected majorant,
+certificate theorem, monotonicity, strict subcritical criterion and scalar
+limit~$3$, and says so itself. These restatements are kept where Part~II's
+proofs cite them in its own formulation, each followed by a \wtag\ note
+naming the Part~I result; where the manuscript's proof differs from Part~I's
+it is kept as a second proof. The manuscript's display of the $53$-monomial
+map duplicates \eqref{eq:map} and is printed once, there
+(\cref{kfp:sat:app:map}).
+
+\paragraph{The manuscript's abstract.}
+\begin{quote}\small
+Exact initial coefficients can strengthen a positive convolution recurrence
+without changing its combinatorial proof. They need not, however, make its
+majorant asymptotically exact. We study this limitation for a proper
+nonnegative polynomial system $A\preceq\Phi(\xi,A)$, its defect
+$D=\Phi(\xi,A)-A$, and the corrected equations
+$B_N=\Phi(\xi,B_N)-[\xi^{\le N}]D$.
+
+First, at any convergent evaluation where the true-profile Jacobian is
+irreducible and has spectral radius at least one, a level-$N$ upper
+certificate exists \emph{if and only if} the defect tail vanishes. This
+settles the irreducible critical case left open in the repository's
+finite-prefix report. It also identifies the exact limiting radius of the
+hierarchy: the first Perron crossing, or the true radius if no earlier
+crossing occurs.
+
+Second, at an interior nonlinear crossing $r_*$, put
+$\eta_N=\ell^T(D-[\xi^{\le N}]D)(r_*)$. With explicitly defined positive
+constants $\kappa$ and $\beta$, we prove
+\[
+ r_*-\rho_N\sim\frac{2\sqrt\beta}{\kappa}\sqrt{\eta_N},
+ \qquad
+ B_N(\rho_N)-A(\rho_N)
+ \sim u\sqrt{\eta_N/\beta}.
+\]
+A universal scaled branch and a quarter-power law for its local singular
+amplitude follow. No regular variation or nonlacunarity assumption on the
+defect coefficients is needed.
+
+Finally, using the repository's size-$18$ marked polyomino profile, an
+exact rational vector proves that every member of its fixed-map prefix
+hierarchy has growth at least $4.3149$. This is a lower bound on the
+\emph{majorants}, not on polyomino growth. The package includes a
+standard-library arithmetic checker, exact scalar root brackets, source
+provenance, and a research agenda. The proofs are unrefereed and not
+Lean-verified; the size-$18$ enumeration is inherited rather than rerun.
+\end{quote}
+(``The repository's finite-prefix report'' is Part~I. The size-$18$ table
+was not rerun for the manuscript, but Part~I's intake regenerated it from
+the final enumerator source; see \cref{kfp:app:provenance}.)
+
+\begin{resultbox}
+\textbf{Status of Part~II.} Its analytic theorems have written proofs; it is
+an AI-assisted, unrefereed draft, and independent review of the uniform fold
+argument (\cref{kfp:sat:lem:localization} and \cref{kfp:sat:sec:sharp}) is
+recommended before correctness or novelty is treated as settled. Novelty is
+a bounded assessment against the sources inspected, not a priority claim.
+\textbf{Nothing in Part~II is formalized} in any proof assistant; the
+project's Lean-verified bound remains $\lambda\le9047/2000=4.5235$
+(\cref{kfp:sec:formal-status}). Its arithmetic checker proves finitely many
+rational inequalities, not the analytic theorems; its size-$18$ input is
+Part~I's enumeration, which is not kernel-checked.
+
+\smallskip
+\textbf{What $4.3149$ is.} \Cref{kfp:sat:thm:bui} proves that every
+exact-prefix majorant of the fixed seventeen-variable Bui map has growth
+$\mu_N\ge4.3149$: a limit of this \emph{method}. \emph{Tempting false
+reading:} ``$\lambda\ge4.3149$'', a lower bound on Klarner's constant. It is
+not; the true counts lie \emph{below} the majorants. \emph{Tempting false
+reading:} ``$4.3149$ improves on $4.498$''. It does not; it is not an upper
+bound at all, but a floor under every upper bound this method can certify.
+Part~I's $4.498$ (computer-assisted) and the Lean-verified $4.5235$ stand
+unchanged above it.
+
+\smallskip
+\textbf{What N9 now is.} The equality case $\spr(J)=1$ is classified for
+\emph{irreducible} $J$ (\cref{kfp:sat:thm:critical}); the reducible critical
+case, the crossing at the true singularity, and the exact fixed-map
+saturation constant remain open (\cref{kfp:sat:sec:exceptions,kfp:sat:sec:future}).
+\end{resultbox}
+
+\subsection{Notation of Part~II}
+\label{kfp:sat:sec:notation}
+Part~II keeps the manuscript's notation with two changes, made so that it
+reads consistently with Part~I:
+\begin{itemize}
+\item the manuscript's formal size variable $z$ (its Sections~1--8) is
+written $\xi$, as in Part~I and as the manuscript itself does from its
+Section~9 on, where $z$ is a coordinate of \eqref{eq:map};
+\item the manuscript's Perron eigenvalue $\lambda$, $\lambda(t)=\spr(J(t))$
+(proof of \cref{kfp:sat:thm:critical}, \cref{kfp:sat:lem:positive-constants}
+with \eqref{kfp:sat:eq:lambda-expansion}, \cref{kfp:sat:lem:localization}),
+is written $\Lambda$, because $\lambda$ is Klarner's constant in Part~I.
+\end{itemize}
+No normalization changed. Macro-level spellings (the manuscript's
+$\mathcal R_N$, $[z^{\le N}]$, $[z^{>N}]$, $\mathbf 1$) are typeset as
+$\satR_N$, $\strunc N$, $\shigh N$, $\bone$. The delivered, generated table
+\path{data/02-spectral-saturation-scalar_table.tex} (\cref{kfp:sat:tab:scalar})
+heads its gap column $\rho_*-\rho_N$; that $\rho_*$ is the crossing $r_*$
+of the text, here $1/3$.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\caption{Symbols of Part~II against Part~I.}\label{kfp:sat:tab:notation}\\
+\toprule
+Symbol & Meaning in Part~II & In Part~I\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning in Part~II & In Part~I\\
+\midrule
+\endhead
+$\xi$ & formal size variable (the manuscript's $z$ in its Sections 1--8) & the same\\
+$A$, $A_i$ & the true series (a general subsolution $A\preceq\Phi(\xi,A)$) & $\bA$; $A_n$ is the polyomino count\\
+$t$, $t_0$ & a positive evaluation point; $t_0=10000/43149$ & $\zeta$; $\zeta=500/2249$ for $4.498$, $\zeta_{\rm dual}$\\
+$a$ & $A(t)$; also the constants of \cref{kfp:sat:lem:tail-flatness} ($0<a<r<b$) and of the fold argument, and $a_N$ the singular amplitude & $a=\bA(\zeta)$ in \cref{kfp:sec:stability}; $a_{i,n}$ counts\\
+$D$, $D_N$ & full defect $\Phi(\xi,A)-A$; $D_N=\strunc N D$ & $D_N$ the same; $D$ also the defect polynomial of \eqref{kfp:eq:sensitivity}; $D$ a coordinate\\
+$\satR_N$ & the defect tail $D-D_N$ & $\tail{N}{\cdot}$ is the operator $[\xi^{>N}]$\\
+$b_N(t)$ & $(\shigh N\Phi(\xi,P_N))(t)$, finite forcing & the same $b_N$ (\cref{kfp:sec:stability}); not the project's $b_N$\\
+$P_N$, $Y_N$, $B_N$, $\Psi_N$ & prefix, tail, majorant, tail map & the same\\
+$J$, $J(t)$, $J_*$ & $\Phi_X$ at the \emph{true} profile $A(t)$; $J_*$ at $r_*$ & $J$ the same; $J_N$ at the prefix\\
+$\Lambda$, $\Lambda(t)$ & Perron value of $J$, $J(t)$ (the manuscript's $\lambda$) & $\lambda$ is Klarner's constant\\
+$R$ & system radius of $A$ & required offset set; radii $R_i$\\
+$\rho_N$, $\mu_N$ & system radius of $B_N$, $\mu_N=1/\rho_N$ & $\rho_N$ as in \cref{kfp:thm:gap}; $\mu_{\rm original}$ is the growth of the uncorrected recurrence\\
+$r_*$ & first Perron crossing \eqref{kfp:sat:eq:barrier} & ---\\
+$\ell$, $u$ & left and right Perron vectors, $\ell^Tu=1$ & $\ell$ as in \eqref{kfp:eq:sensitivity}; $u$ a coordinate\\
+$\kappa$, $\beta$, $\eta_N$, $\varepsilon_N$ & invariants \eqref{kfp:sat:eq:constants}; $\varepsilon_N=\sqrt{\eta_N}$ (also $\sqrt{H_N(r)}$ in \cref{kfp:sat:lem:tail-flatness}) & $\varepsilon$ a small parameter\\
+$h$ & $v-a$ or $B_N(t)-A(t)$ & $h=(I-J)^{-1}\bone$\\
+$Q_t(h)$ & nonlinear remainder \eqref{kfp:sat:eq:key} & $Q$ a coordinate\\
+$G(t,h,r)$ & the map \eqref{kfp:sat:eq:G} & $G$ the coordinate whose counts dominate $A_n$\\
+$F_N$, $F$ & scaled reduced function \eqref{kfp:sat:eq:scaled-reduction}; $F$ also a generic vector series & $F(X)=\Phi(\zeta,X)$; $F$ a coordinate\\
+$K$, $K(t)$ & scaled distance $\delta/\varepsilon_N$ and a bound in \cref{kfp:sat:lem:tail-flatness}; $K(t)=\sum_{k<d}J(t)^k$ & ---\\
+$S$, $S_c$, $S_-$ & a subsolution (\cref{kfp:sat:lem:graded}); scaled height & sets $S$, $S_K$; $S$ a coordinate\\
+$H$, $H_N$ & a scalar series and its tail (\cref{kfp:sat:lem:tail-flatness}); $H_N(t)$ also the scalar sign oracle (\cref{kfp:sat:app:algorithm}) & $H$ the nonlinear part of $\Phi$\\
+$T(\xi,Y)$ & a generic proper map & $T_N=\strunc N\Phi(\xi,P_N)$\\
+$w$ & witness vector (\cref{kfp:sat:tab:witness}); direction in \cref{kfp:sat:prop:quadratic-test}; complement component $h-su$ & coordinate $w$; $w=v-P_N(\zeta)$\\
+$r$, $r_N$ & a point, a vector parameter in \eqref{kfp:sat:eq:G}, an index; $r_N=\|\satR_N(t)\|_\infty$ & $r$ a coordinate; row sums $r_i$\\
+$\gamma$ & $1000001/1000000$ & ---\\
+$e_M$ & the $e$-coefficient of size $M$ & $a_{E,M}$\\
+\bottomrule
+\end{longtable}
+
+\section{The question, the answer, and the claim boundary}
+\label{kfp:sat:sec:intro}
+
+\subsection{Why a better prefix may still be the wrong limit}
+Suppose a combinatorial counting problem gives a vector of generating
+functions $A(\xi)$ and a componentwise upper recurrence
+\[
+ A(\xi)\preceq\Phi(\xi,A(\xi)),
+\]
+where $\Phi$ is a polynomial with nonnegative coefficients. The equality
+solution is an upper bound, but its recurrence can overcount. A natural
+repair is to compute exact coefficients through size $N$ and subtract the
+corresponding overcounts. The resulting majorant agrees with the true
+series through size $N$ and improves as $N$ increases.
+
+There are two very different possible conclusions. One is that every
+fixed coefficient eventually becomes correct. The other is that the
+exponential growth becomes correct. The first follows directly from the
+construction. The second can fail because small residual errors are
+amplified by an unstable feedback loop in the recurrence. The Jacobian of
+that loop, evaluated at the \emph{true} generating function, is the
+quantity that decides the limiting obstruction.
+
+This article develops that observation into a precise theorem, a sharp
+asymptotic law, and a small exact certificate applicable to a concrete
+polyomino recurrence. The contribution is not a further decimal improvement
+to the existing upper bound; it explains both the power and the ultimate
+limitation of continuing that particular improvement strategy.
+
+\subsection{The repository problem being continued}
+The inspected \repo\ snapshot contains the report \emph{Finite-Prefix
+Corrections and Dual Certificates for Polyomino Growth} \cite{satprefix}.
+It builds on the formal project
+\texttt{Combinatorics/Polyominoes/}\allowbreak\texttt{KlarnerConstant}. The report's Section~8
+proves eventual certificate existence when
+\[
+ \spr\bigl(\Phi_X(t,A(t))\bigr)<1,
+\]
+and an obstruction under strict supercriticality and additional finite-prefix
+conditions. It explicitly leaves the equality case unclassified. It also
+shows, in a scalar example, that prefix-majorant growth can tend to $3$
+while true growth is $1$.
+
+The same report lists locating the actual fixed-map stability barrier and
+obtaining certified critical asymptotics among its proposed research
+projects. These are the specific continuation points addressed here.
+The numerical bounds reported by that source have distinct statuses:
+$4.5235$ is the endpoint of its cited Lean development, whereas $4.498$ is
+the source report's computer-assisted, nonformalized upper bound. We do not
+reprove either endpoint in this article \cite{satprefix,satformal}.
+
+\wtag\ The report meant here is Part~I above, read at the pin
+\texttt{74f7f5bdb}, where its \texttt{article.tex} is the blob now printed:
+its Section~8 is \cref{kfp:sec:stability}, the equality case is the sentence
+after the proof of \cref{kfp:thm:stability}, the scalar example is
+\cref{kfp:thm:gap}, and the two research projects are questions~4 and~9 of
+\cref{kfp:sec:questions}. The Lean-verified bound is $\lambda\le9047/2000$
+(\cref{kfp:sec:formal-status}); nothing in Part~II changes it.
+
+\subsection{Results proved here}
+The main results are as follows. The theorem numbers give the precise
+hypotheses; in particular, irreducibility and nonlinearity must not be
+silently discarded.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.20\linewidth}p{.48\linewidth}p{.22\linewidth}@{}}
+\toprule
+Question & Answer & Location\\
+\midrule
+Critical certificates & At an irreducible Perron value $\ge1$, a certificate
+exists exactly when the omitted defect is zero. & Theorem~\ref{kfp:sat:thm:critical}\\[4pt]
+Limiting accuracy & The prefix radii tend to the first spectral crossing,
+or the true radius when there is no earlier crossing. & Theorem~\ref{kfp:sat:thm:limit}\\[4pt]
+Rate of approach & At an interior nonlinear crossing, the radius gap is
+asymptotic to an explicit constant times the square root of the omitted
+defect. & Theorem~\ref{kfp:sat:thm:sharp}\\[4pt]
+Local branch shape & The scaled solution has a quadratic universal profile;
+its square-root singular amplitude has a quarter-power law. &
+Theorem~\ref{kfp:sat:thm:branch}\\[4pt]
+Concrete limitation & The fixed $17$-variable polyomino map cannot yield
+prefix-majorant growth below $4.3149$, whatever the prefix length. &
+Theorem~\ref{kfp:sat:thm:bui}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Relation to prior methods and novelty}
+Bui's convolutional approach supplies the polyomino recurrence and a
+finite-parameter method for certifying its growth \cite{bui}. We checked
+version~2, revised May~6, 2026, rather than relying on the differently
+titled first version. The exact-prefix construction, its monotonicity, the
+strict stability criterion, and the scalar limit $3$ are already in the
+repository report \cite{satprefix}. They are restated and proved below to
+make the extension self-contained, not presented as discoveries here.
+
+Inductive upper bounds and Perron-directed certificate searches are also
+established techniques for positive polynomial systems. In particular,
+Winkler and Katoen characterize strict inductive upper bounds using the
+Jacobian at a least fixed point \cite{satwk}; Newton methods for monotone
+polynomial systems have a substantial independent literature \cite{satsey}.
+Square-root singularities of positive functional systems are classical
+\cite{satdrmota}. Neither Perron--Frobenius theory nor the local fold mechanism
+is claimed as new.
+
+The proposed contribution is their precise application to \emph{a moving
+family of exact-prefix corrections}: the full-defect critical alternative,
+the exact spectral saturation theorem, the sharp normalization in terms of
+the omitted defect without a regularity assumption on its coefficient
+sequence, the accompanying amplitude law, and the explicit all-prefix
+polyomino obstruction. We did not find these statements in the inspected
+repository continuation or the primary sources reviewed. This is a bounded
+novelty assessment, not an exhaustive priority claim.
+
+\subsection{What is not being claimed}
+This article does not determine Klarner's constant, improve the source's
+$4.498$ upper bound, establish a lower bound $4.3149$ for the true constant,
+or resolve Bui's separate question about enlarging the geometric
+neighborhood system. It does not certify the repository's entire
+mathematical corpus. Its analytic results have ordinary written proofs;
+its numerical application has an exact arithmetic checker, but the marked
+enumeration and the new theorems are not kernel-checked here.
+
+\section{Positive systems and exact-prefix corrections}
+\label{kfp:sat:sec:setup}
+
+\subsection{Standing definitions}
+For vectors, inequalities are componentwise. For power series,
+$F\preceq G$ means that every coefficient of every component of $G-F$ is
+nonnegative. A series has zero constant term unless stated otherwise.
+
+Fix a dimension $d\ge1$ and
+\[
+ \Phi(\xi,X)\in\R_{\ge0}[\xi,X_1,\ldots,X_d]^d,
+ \qquad \Phi(0,0)=0.
+\]
+We call the system \emph{proper} when
+\begin{equation}\label{kfp:sat:eq:proper}
+ L=\Phi_X(0,0)\quad\text{is nilpotent}.
+\end{equation}
+This condition allows acyclic zero-size linear dependencies; it is weaker
+than requiring every monomial to contain $\xi$. Throughout, let
+\begin{equation}\label{kfp:sat:eq:subsolution}
+ A\in \xi\R_{\ge0}[[\xi]]^d,
+ \qquad A\preceq\Phi(\xi,A).
+\end{equation}
+The \emph{full defect} and its prefix and tail are
+\begin{equation}\label{kfp:sat:eq:defects}
+ D=\Phi(\xi,A)-A\succeq0,\qquad
+ D_N=\strunc N D,\qquad
+ \satR_N=D-D_N.
+\end{equation}
+The exact profile prefix is $P_N=\strunc N A$.
+Since all substituted series have zero constant term,
+\begin{equation}\label{kfp:sat:eq:finite-computation}
+ D_N=\strunc N\Phi(\xi,P_N)-P_N.
+\end{equation}
+Thus $D_N$ can be computed from the prefix alone; no infinite-series
+oracle is required to construct a finite correction.
+
+Define the positive tail map
+\begin{align}
+ \Psi_N(\xi,Y)
+ &=\Phi(\xi,P_N+Y)-\strunc N\Phi(\xi,P_N)\label{kfp:sat:eq:psi}\\
+ &=\Phi(\xi,P_N+Y)-P_N-D_N.\nonumber
+\end{align}
+Although the second line uses subtraction, the polynomial $\Psi_N$ has
+nonnegative coefficients. Indeed, its terms involving $Y$ are positive
+terms of the polynomial expansion, and its constant-in-$Y$ part is
+$\shigh N\Phi(\xi,P_N)$.
+
+\subsection{Formal fixed points and comparison}
+\begin{lemma}[Graded convergence]\label[lemma]{kfp:sat:lem:graded}
+A proper nonnegative polynomial map $T(\xi,Y)$ with $T(0,0)=0$ has a unique
+zero-constant formal fixed point $Y$. Iteration from any zero-constant
+formal vector converges coefficient by coefficient to $Y$, with every
+coefficient eventually constant. Iteration from zero is nondecreasing.
+If $S\succeq0$ has zero constant term and $S\preceq T(\xi,S)$, then
+$S\preceq Y$. If $S\succeq T(\xi,S)$, then $S\succeq Y$.
+\end{lemma}
+\begin{proof}
+Suppose two zero-constant vectors agree below degree $m$. The degree-$m$
+part of the difference of their images under $T$ is $L$ times the
+corresponding difference, where $L=T_Y(0,0)$. All other contributions
+contain either a positive power of $\xi$ or another positive-degree series
+factor, so they only involve lower-degree differences. If $L^q=0$,
+$q$ iterations remove the degree-$m$ difference once lower degrees agree.
+Induction on $m$ gives eventual agreement, uniqueness, and coefficientwise
+stabilization of iteration. The stabilized coefficients solve the equation.
+
+Nonnegative coefficients make $T$ monotone. Thus its iterates from zero
+increase. For a subsolution, $S\preceq T^k(S)$ for every $k$, so passage
+to the stabilized coefficients gives $S\preceq Y$. The reversed argument
+applies to a supersolution. This last argument is important: a formal
+subsolution need not lie below a particular \emph{finite} iterate from zero.
+\end{proof}
+
+\noindent\wtag\ \emph{Restatement.} Existence, uniqueness, stabilization and
+subsolution comparison are Part~I's \cref{kfp:lem:formal}; the convergence
+from an arbitrary zero-constant start and the supersolution comparison are
+the manuscript's additions. The proof above, by degree-wise contraction
+rather than by inverting $I-L$, is kept as a second proof.
+
+\begin{proposition}[Prefix majorants; prior construction]\label[proposition]{kfp:sat:prop:prefix}
+Let $Y_N$ be the formal fixed point of $\Psi_N$ and put $B_N=P_N+Y_N$.
+Then
+\begin{equation}\label{kfp:sat:eq:corrected}
+ B_N=\Phi(\xi,B_N)-D_N,
+ \qquad
+ A\preceq B_{N+1}\preceq B_N,
+ \qquad \strunc N B_N=P_N.
+\end{equation}
+In particular, $B_N\to A$ coefficientwise.
+\end{proposition}
+\begin{proof}
+The linear part of $\Psi_N$ at $(0,0)$ is $L$, so
+Lemma~\ref{kfp:sat:lem:graded} applies. Its forcing begins above degree $N$;
+iteration from zero therefore shows that $Y_N$ begins above degree $N$.
+Equation~\eqref{kfp:sat:eq:corrected} follows from the definition.
+
+The true tail $S=A-P_N$ satisfies
+\[
+ \Psi_N(\xi,S)=S+\satR_N\succeq S,
+\]
+so $A\preceq B_N$. Hence $B_N-P_{N+1}\succeq0$, and
+\[
+ \Psi_{N+1}(\xi,B_N-P_{N+1})
+ =B_N-P_{N+1}-(D_{N+1}-D_N)
+ \preceq B_N-P_{N+1}.
+\]
+Formal supersolution comparison gives $B_{N+1}\preceq B_N$.
+The prefix identity gives coefficientwise convergence.
+\end{proof}
+
+\noindent\wtag\ \emph{Restatement.} This is Part~I's
+\cref{kfp:thm:majorant,kfp:thm:nested}, as the manuscript's title
+``prior construction'' says; the monotonicity proof above, by supersolution
+comparison instead of degree induction, is kept as a second proof.
+
+\subsection{Numeric certificates and the relevant radius}
+For a nonnegative vector series $F$, define its \emph{system radius} as the
+minimum of its component radii of convergence. This convention is useful
+without first proving that all radii coincide. Let $R$ be the system radius
+of $A$ and $\rho_N$ that of $B_N$, and write
+\[
+ \mu_N=1/\rho_N
+ =\max_i\limsup_{n\to\infty}\bigl([\xi^n]B_{N,i}\bigr)^{1/n}.
+\]
+The conventions $1/\infty=0$ and $1/0=\infty$ apply.
+
+\begin{definition}[Upper certificate]
+A real upper certificate at a positive evaluation $t$ and level $N$ is a
+finite vector $v$ satisfying
+\begin{equation}\label{kfp:sat:eq:certificate}
+ v\ge P_N(t),\qquad v\ge\Phi(t,v)-D_N(t).
+\end{equation}
+The tail condition $v\ge P_N(t)$ is part of the definition.
+\end{definition}
+
+\begin{lemma}[Exact numeric meaning]\label[lemma]{kfp:sat:lem:numeric}
+A certificate at $(N,t)$ exists if and only if $B_N(t)$ is finite
+coordinatewise. Every such certificate dominates $B_N(t)$ and hence
+$A(t)$ whenever the latter is finite. When $B_N(t)$ is finite, it is itself
+a certificate. Existence at level $N$ implies existence at every later
+level, at the same evaluation point.
+\end{lemma}
+\begin{proof}
+Write $y=v-P_N(t)\ge0$. Condition~\eqref{kfp:sat:eq:certificate} is
+$\Psi_N(t,y)\le y$. Numeric iteration from zero stays below $y$ and
+increases. Evaluation commutes with the nonnegative coefficientwise limit:
+this follows by interchanging two increasing suprema, over iteration number
+and coefficient cutoff. Therefore the limit is the finite sum $Y_N(t)$.
+Polynomial continuity gives its fixed-point identity. Conversely a finite
+sum $Y_N(t)$ satisfies that identity by evaluation, and so supplies a
+certificate. The domination of $A$ and persistence at later levels follow
+from Proposition~\ref{kfp:sat:prop:prefix}.
+\end{proof}
+
+\noindent\wtag\ \emph{Restatement.} The ``if'' direction with its
+domination and the persistence are Part~I's
+\cref{kfp:thm:upper,kfp:thm:nested} (whose certificate conditions
+\eqref{kfp:eq:upper-conditions} are \eqref{kfp:sat:eq:certificate}, with
+$\zeta$ written $t$); the converse, that a finite $B_N(t)$ is itself a
+certificate, is not stated in Part~I.
+
+A certificate consequently yields
+$[\xi^n]B_{N,i}\le v_i t^{-n}$. Failure of a certificate at $t$ implies
+$\rho_N\le t$, but does not by itself imply the strict inequality
+$\rho_N<t$: a series can diverge exactly at its radius. This distinction
+will matter in the linear example of Section~\ref{kfp:sat:sec:exceptions}.
+
+\section{The critical spectral case: an exact alternative}
+\label{kfp:sat:sec:critical}
+
+Fix $t>0$ for which $A(t)$ is finite, and abbreviate
+\[
+ a=A(t),\qquad J=\Phi_X(t,a).
+\]
+A nonnegative matrix is called irreducible when its directed dependency
+graph is strongly connected. We use the Perron--Frobenius theorem in its
+standard finite-dimensional form: an irreducible nonnegative matrix has
+strictly positive left and right eigenvectors for its spectral radius,
+and that eigenvalue is algebraically simple \cite{satwk}.
+
+\begin{lemma}[The full-defect inequality]\label[lemma]{kfp:sat:lem:full-defect}
+Every certificate $v$ gives $h=v-a\ge0$ satisfying
+\begin{equation}\label{kfp:sat:eq:key}
+ h\ge Jh+Q_t(h)+\satR_N(t),
+ \qquad
+ Q_t(h)=\Phi(t,a+h)-\Phi(t,a)-Jh\ge0.
+\end{equation}
+If $v=B_N(t)$, equality holds.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{kfp:sat:lem:numeric} gives $v\ge a$. Also
+$\Phi(t,a)=a+D(t)$. Subtracting $a$ from the certificate inequality and
+expanding at $a$ gives~\eqref{kfp:sat:eq:key}. The remainder is nonnegative
+because the polynomial has nonnegative coefficients and $a,h\ge0$.
+\end{proof}
+
+\begin{theorem}[Critical and supercritical alternative]\label{kfp:sat:thm:critical}
+Suppose $J$ is irreducible and $\spr(J)\ge1$. For each $N$, the following
+are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=2pt]
+\item a real upper certificate exists at $(N,t)$;
+\item $\satR_N(t)=0$;
+\item $D=D_N$ as formal series;
+\item $B_N=A$ as formal series.
+\end{enumerate}
+Thus an infinite full defect rules out every finite-prefix certificate at
+an irreducible critical evaluation, not merely at a strictly supercritical
+one.
+\end{theorem}
+\begin{proof}
+Let $\ell>0$ be a left Perron vector, with eigenvalue $\Lambda\ge1$.
+Multiplying~\eqref{kfp:sat:eq:key} by $\ell^T$ gives
+\begin{equation}\label{kfp:sat:eq:perron-contradiction}
+ (1-\Lambda)\ell^Th
+ \ge\ell^TQ_t(h)+\ell^T\satR_N(t).
+\end{equation}
+The left side is nonpositive and both terms on the right are nonnegative.
+Because $\ell>0$, a nonzero defect tail makes the right side strictly
+positive. Hence (i) implies (ii).
+
+All coefficients of $\satR_N$ are nonnegative and $t>0$, so its value
+vanishes exactly when every coefficient vanishes. This proves (ii)$\Leftrightarrow$(iii).
+When $D=D_N$, the series $A-P_N$ is a fixed point of $\Psi_N$.
+Formal uniqueness gives $B_N=A$, proving (iii)$\Rightarrow$(iv).
+Conversely, the equations for $A$ and $B_N$ give $D=D_N$ if $A=B_N$.
+Finally, (iv) and finiteness of $A(t)$ give (i) by
+Lemma~\ref{kfp:sat:lem:numeric}.
+\end{proof}
+
+\begin{corollary}[Uniqueness at a nonlinear critical point]\label[corollary]{kfp:sat:cor:unique}
+Under Theorem~\ref{kfp:sat:thm:critical}, assume also $a>0$ and that $\Phi(t,X)$
+contains a monomial of total $X$-degree at least two. Whenever a certificate
+exists, the only one is $v=a$. In particular a rational certificate at this
+critical or supercritical evaluation exists exactly when $D=D_N$ and
+$a\in\Q^d$.
+\end{corollary}
+\begin{proof}
+If $h\ne0$ in~\eqref{kfp:sat:eq:key}, then $h\ge Jh$ and irreducibility imply
+$h>0$: a positive coordinate propagates along paths of powers of $J$.
+The stated nonlinear monomial then makes $Q_t(h)$ nonzero. Thus
+$\ell^TQ_t(h)>0$, contradicting~\eqref{kfp:sat:eq:perron-contradiction} even
+when $\satR_N=0$. Consequently $h=0$.
+\end{proof}
+
+\begin{remark}[Why this is stronger than a prefix-Jacobian test]
+The repository's earlier obstruction uses
+$J_N=\Phi_X(t,P_N(t))$. At a true critical point, every finite $J_N$ can
+still be strictly subcritical. The key improvement is to first establish
+$v\ge A(t)$ and expand at the \emph{full} profile. This replaces the
+finite-prefix forcing by the uncorrected full defect. No limit interchange
+at a singularity is needed.
+\end{remark}
+
+\section{Exact spectral saturation of the hierarchy}
+\label{kfp:sat:sec:saturation}
+
+\subsection{Subcritical existence with explicit slack}
+For $0<t<R$, set $a(t)=A(t)$ and $J(t)=\Phi_X(t,a(t))$.
+
+\begin{proposition}[Quantitative supersolution test]\label[proposition]{kfp:sat:prop:quadratic-test}
+Suppose $w>0$, $\alpha>0$, and $C\ge0$ satisfy
+\[
+ (I-J(t))w\ge\alpha\bone,
+\]
+and, for $0\le s\le s_0$,
+\[
+ \Phi(t,a+sw)-\Phi(t,a)-sJ(t)w\le Cs^2\bone.
+\]
+Let $r_N=\norm{\satR_N(t)}_\infty$. If
+\begin{equation}\label{kfp:sat:eq:quadratic-test}
+ 0<s\le s_0,\qquad r_N+Cs^2<\alpha s,
+\end{equation}
+then $v=a+sw$ is a strict upper certificate. If $\Phi,D_N,t$ have rational
+data, a sufficiently close rational vector is also a certificate.
+\end{proposition}
+\begin{proof}
+The right side of the corrected equation at $a+sw$, minus $a+sw$, is
+\[
+ \satR_N(t)-s(I-J(t))w+Q_t(sw)
+ \le (r_N-\alpha s+Cs^2)\bone<0.
+\]
+Also $a+sw>P_N(t)$, so both inequalities have strict slack. Polynomial
+continuity preserves them in a small neighborhood, which contains rational
+vectors.
+\end{proof}
+
+For $C>0$, the quadratic budget has maximum $\alpha^2/(4C)$, reached at
+$s=\alpha/(2C)$ when this value is allowed by $s_0$. This gives an explicit
+reason to compare the remaining defect with the \emph{square} of the
+spectral gap. The test is analytic as stated: $a(t)$ need not be known
+exactly. A directly computable version replaces $a,J(t),\satR_N(t)$ by
+$P_N(t),\Phi_X(t,P_N(t)),b_N(t)$, where
+\begin{equation}\label{kfp:sat:eq:finite-forcing}
+ b_N(t)=\bigl(\shigh N\Phi(\xi,P_N(\xi))\bigr)(t).
+\end{equation}
+The same proof then constructs $P_N(t)+sw$ using finite polynomial data.
+
+\begin{corollary}[Eventual subcritical certificates; prior strict criterion]
+\label[corollary]{kfp:sat:cor:subcritical}
+If $0<t<R$ and $\spr(J(t))<1$, all sufficiently large $N$ admit a strict
+certificate at $t$. If $\Phi$ and $t$ are rational, and the profile
+coefficients are rational, the certificate may be chosen rational.
+\end{corollary}
+\begin{proof}
+Take $w=(I-J(t))^{-1}\bone=\sum_{k\ge0}J(t)^k\bone>0$ and $\alpha=1$.
+A polynomial Taylor remainder provides a finite $C$ for $0\le s\le1$.
+Choose a fixed small $s>0$ with $Cs^2<s/2$. Since the nonnegative series
+$D$ converges at $t$, its tail $r_N$ tends to zero. For large $N$, $r_N<s/2$, giving the strict
+inequality~\eqref{kfp:sat:eq:quadratic-test}. Rationality follows from strict slack.
+\end{proof}
+
+\noindent\wtag\ \emph{Restatement.} This is Part~I's
+\cref{kfp:thm:stability}(a), as the manuscript's title ``prior strict
+criterion'' says. The proof above, through
+Proposition~\ref{kfp:sat:prop:quadratic-test} and expansion at the true
+profile, is kept as a second proof; Part~I expands at the prefix profile.
+
+\subsection{The exact limiting radius}
+\begin{theorem}[Spectral saturation]\label{kfp:sat:thm:limit}
+Assume $R>0$, $D$ is not a polynomial, and $J(t)$ is irreducible for
+$0<t<R$. Define
+\begin{equation}\label{kfp:sat:eq:barrier}
+ r_* = \sup\{t\in(0,R):\spr(J(t))<1\},
+\end{equation}
+with $r_*=R$ if the spectral radius remains below one throughout $(0,R)$.
+Then
+\begin{equation}\label{kfp:sat:eq:radius-limit}
+ \rho_N\uparrow r_*,\qquad \mu_N\downarrow1/r_*.
+\end{equation}
+If $r_*<R$, then $\spr(J(r_*))=1$ and no finite-prefix series converges
+coordinatewise at $r_*$. In particular, exact coefficient stabilization
+does not force the limiting growth to equal the growth of $A$.
+\end{theorem}
+\begin{proof}
+All entries of $J(t)$ are nonnegative power series, so $J(t)$ and its
+spectral radius are nondecreasing in $t$. At zero the Jacobian is
+nilpotent, hence its spectral radius is zero. Continuity shows that the
+subcritical set is a nonempty initial interval. If its supremum is
+interior to $(0,R)$, continuity also gives the value one there.
+
+For every $t<r_*$, Corollary~\ref{kfp:sat:cor:subcritical} gives a certificate for
+large $N$. Thus $\liminf\rho_N\ge t$, and then
+$\liminf\rho_N\ge r_*$. Proposition~\ref{kfp:sat:prop:prefix} makes the radii
+nondecreasing and bounds them by $R$. If $r_*=R$, this proves the claim.
+If $r_*<R$, the full defect has a nonzero tail at every level, so
+Theorem~\ref{kfp:sat:thm:critical} and Lemma~\ref{kfp:sat:lem:numeric} give
+$\rho_N\le r_*$ and nonconvergence at $r_*$. This proves the result in
+the remaining case.
+\end{proof}
+
+\begin{remark}[The finite-defect exception is exact]
+If $D$ is a polynomial, then $B_N=A$ for all sufficiently large $N$,
+regardless of the Jacobian farther along the real axis. This is not a
+small technical exception to Theorem~\ref{kfp:sat:thm:limit}; it is a genuinely
+different regime with finite termination.
+\end{remark}
+
+\section{Tail flatness without coefficient regularity}
+\label{kfp:sat:sec:tails}
+
+A sharp rate theorem must control how the omitted defect changes when the
+evaluation point moves with $N$. A naive argument might assume that its
+coefficients have a smooth asymptotic form or are not lacunary. Neither
+assumption is needed.
+
+\begin{lemma}[A square-root tail estimate]\label[lemma]{kfp:sat:lem:tail-flatness}
+Let $H(\xi)=\sum_{n\ge0}h_n\xi^n$ have nonnegative coefficients and radius of
+convergence greater than $r>0$. Assume $H$ is not a polynomial, and write
+\[
+ H_N(\xi)=\sum_{n>N}h_n\xi^n,\qquad \varepsilon_N=\sqrt{H_N(r)}.
+\]
+For every fixed $K<\infty$, uniformly on $|t-r|\le K\varepsilon_N$,
+\begin{equation}\label{kfp:sat:eq:tail-flat}
+ \frac{H_N(t)}{H_N(r)}\longrightarrow1,
+ \qquad H_N'(t)=o(\varepsilon_N),
+ \qquad H_N''(t)=o(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose $0<a<r<b$ inside the convergence disk. For $t\in[a,b]$,
+Cauchy--Schwarz gives
+\begin{align}
+ H_N'(t)
+ &=t^{-1}\sum_{n>N}n h_nt^n\nonumber\\
+ &\le a^{-1}\sqrt{H_N(t)}
+       \sqrt{\sum_{n>N}n^2h_nb^n}.
+ \label{kfp:sat:eq:tail-cs}
+\end{align}
+The final sum tends to zero because the power series is analytic beyond
+$b$. Every tail is strictly positive on $(0,\infty)$, so
+\[
+ \left|\frac{d}{dt}\sqrt{H_N(t)}\right|
+ \le \frac1{2a}\sqrt{\sum_{n>N}n^2h_nb^n}=c_N\longrightarrow0.
+\]
+For $|t-r|\le K\varepsilon_N$, it follows that
+\[
+ \left|\frac{\sqrt{H_N(t)}}{\varepsilon_N}-1\right|
+ \le Kc_N\longrightarrow0.
+\]
+This proves the first assertion. Substitution in~\eqref{kfp:sat:eq:tail-cs}
+gives the second. Finally,
+\[
+ 0\le H_N''(t)
+ \le a^{-2}\sum_{n>N}n(n-1)h_nb^n\longrightarrow0.
+\]
+All estimates are uniform on the specified shrinking interval.
+\end{proof}
+
+\begin{corollary}[Vector version]\label[corollary]{kfp:sat:cor:vector-tails}
+Let $D$ be a nonnegative vector series analytic beyond $r$, let $\ell>0$,
+and set
+\[
+ \eta_N=\ell^T\satR_N(r)>0,\qquad \varepsilon_N=\sqrt{\eta_N}.
+\]
+Uniformly for $|t-r|\le K\varepsilon_N$,
+\[
+ \ell^T\satR_N(t)=\eta_N(1+o(1)),\quad
+ \norm{\satR_N(t)}=O(\eta_N),\quad
+ \norm{\satR_N'(t)}=o(\varepsilon_N),\quad
+ \norm{\satR_N''(t)}=o(1).
+\]
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{kfp:sat:lem:tail-flatness} to $H=\ell^TD$. Each component and
+its nonnegative derivatives are bounded by a fixed multiple of the
+corresponding weighted scalar sum. Norm equivalence in finite dimension
+finishes the argument.
+\end{proof}
+
+The vector directions $\satR_N(r)/\eta_N$ need not converge. The proof
+below only uses their boundedness and their fixed Perron projection. Thus
+oscillating component contributions and arbitrarily long coefficient gaps
+are allowed.
+
+\section{Sharp convergence at an interior nonlinear crossing}
+\label{kfp:sat:sec:sharp}
+
+\subsection{Hypotheses and invariant constants}
+Assume the hypotheses of Theorem~\ref{kfp:sat:thm:limit}, and suppose $r_*<R$.
+Assume also $a_*=A(r_*)>0$ and that $\Phi$ contains a monomial of total
+$X$-degree at least two. Put
+\[
+ J_*=\Phi_X(r_*,a_*),\qquad J_*u=u,\qquad \ell^TJ_*=\ell^T,
+ \qquad u,\ell>0,\qquad \ell^Tu=1.
+\]
+Define
+\begin{equation}\label{kfp:sat:eq:constants}
+ \kappa=\ell^TJ'(r_*)u,
+ \qquad
+ \beta=\frac12\ell^T\Phi_{XX}(r_*,a_*)[u,u],
+ \qquad
+ \eta_N=\ell^T\satR_N(r_*).
+\end{equation}
+The derivative $J'$ is the \emph{total} derivative along the true profile:
+\begin{equation}\label{kfp:sat:eq:Jderivative}
+ J'(t)=\Phi_{\xi X}(t,A(t))+
+       \Phi_{XX}(t,A(t))[A'(t),\,\cdot\,].
+\end{equation}
+For a vector-valued Hessian, the bracket means componentwise evaluation of
+its bilinear form.
+
+\begin{lemma}[Nondegeneracy is automatic here]\label[lemma]{kfp:sat:lem:positive-constants}
+Under these assumptions, $\kappa>0$, $\beta>0$, and $\eta_N>0$ for every
+$N$. If $\Lambda(t)=\spr(J(t))$ near $r_*$, then
+\begin{equation}\label{kfp:sat:eq:lambda-expansion}
+ 1-\Lambda(t)=\kappa(r_*-t)+O((r_*-t)^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The nonnegative analytic matrix $J(t)$ has nonnegative derivative. Some
+entry is nonconstant: otherwise $J_*$ would equal the nilpotent $J(0)$,
+contradicting its Perron value one. A nonconstant power series with
+nonnegative coefficients has strictly positive derivative at every positive
+point of convergence. Since $u,\ell>0$, this gives $\kappa>0$.
+
+A nonlinear monomial evaluated at positive $r_*,a_*,u$ contributes
+positively to at least one component of the Hessian evaluation; all other
+contributions are nonnegative. Hence $\beta>0$. The infinite nonnegative
+defect gives $\eta_N>0$. The simple Perron eigenvalue varies analytically
+near $r_*$, and differentiation of its eigenvalue equation gives
+$\Lambda'(r_*)=\ell^TJ'(r_*)u=\kappa$.
+\end{proof}
+
+Rescaling $u$ to $cu$ and $\ell$ to $\ell/c$ changes $\beta$ to $c\beta$
+and $\eta_N$ to $\eta_N/c$. All the formulas below are invariant under
+this change. Thus the normalization $\ell^Tu=1$ leaves no ambiguity in
+any observable prediction.
+
+\subsection{Statement of the sharp law}
+\begin{theorem}[Square-root saturation law]\label{kfp:sat:thm:sharp}
+Under the assumptions just stated,
+\begin{equation}\label{kfp:sat:eq:sharp-radius}
+ \boxed{\displaystyle
+ r_*-\rho_N\sim\frac{2\sqrt\beta}{\kappa}\sqrt{\eta_N}.}
+\end{equation}
+For all sufficiently large $N$, $\rho_N<r_*$, $B_N(\rho_N)$ is finite,
+and
+\begin{equation}\label{kfp:sat:eq:sharp-height}
+ \boxed{\displaystyle
+ B_N(\rho_N)-A(\rho_N)
+ =u\sqrt{\eta_N/\beta}+o(\sqrt{\eta_N}).}
+\end{equation}
+The vector error is in any fixed finite-dimensional norm. Consequently
+\begin{equation}\label{kfp:sat:eq:sharp-growth}
+ \mu_N-\frac1{r_*}
+ \sim \frac{2\sqrt\beta}{\kappa r_*^2}\sqrt{\eta_N}.
+\end{equation}
+\end{theorem}
+
+The proof has two parts. A local reduction identifies the fold. A separate
+localization argument proves that it is the actual convergence boundary,
+not a spurious branch of the polynomial equations. Omitting the second
+part would leave a genuine gap.
+
+\subsection{Uniform localization of every possible certificate}
+\begin{lemma}[No remote fixed point can evade the fold]\label[lemma]{kfp:sat:lem:localization}
+There exist constants $C,\delta_0>0$, independent of $N$, such that, for
+$r_*-\delta_0<t<r_*$, every certificate at $(N,t)$ implies
+\begin{equation}\label{kfp:sat:eq:localization}
+ \norm{B_N(t)-A(t)}\le C(r_*-t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $h=B_N(t)-A(t)\ge0$. The full-defect equality gives
+\begin{equation}\label{kfp:sat:eq:h-equation}
+ h=J(t)h+Q_t(h)+\satR_N(t),
+\end{equation}
+so $h\ge J(t)h$. Irreducibility persists near $r_*$. The matrix
+\[
+ K(t)=I+J(t)+\cdots+J(t)^{d-1}
+\]
+has every entry bounded below by a positive constant on a sufficiently
+small closed neighborhood of $r_*$. Since $K(t)h\le dh$, there is $c>0$
+such that
+\begin{equation}\label{kfp:sat:eq:h-comparable}
+ h_i\ge c\norm h_1\quad(1\le i\le d)
+\end{equation}
+for every such $h$. This argument also covers $d=1$.
+
+Let $\ell(t)>0$ be a continuous normalized left Perron vector. Its
+coordinates are uniformly bounded above and below. The positive nonlinear
+monomial in $\Phi$, together with positivity of $A(t)$, ensures that at
+least one coefficient in the quadratic part of $Q_t$ is uniformly positive.
+Using~\eqref{kfp:sat:eq:h-comparable}, we obtain
+\[
+ \ell(t)^TQ_t(h)\ge c_1\norm h_1^2
+\]
+after decreasing the neighborhood if needed. This bound holds for all
+$h\ge0$ satisfying~\eqref{kfp:sat:eq:h-comparable}, not just for small $h$:
+higher-degree terms of the expansion are nonnegative.
+
+Multiplying~\eqref{kfp:sat:eq:h-equation} by $\ell(t)^T$ now gives
+\[
+ (1-\Lambda(t))\ell(t)^Th
+ \ge c_1\norm h_1^2.
+\]
+Since $\ell(t)^Th\le c_2\norm h_1$ and
+$1-\Lambda(t)=O(r_*-t)$, division when $h\ne0$ proves the bound. If
+$h=0$, the bound is immediate (and a nonzero residual would in fact rule
+that case out).
+\end{proof}
+
+\subsection{Reduction to a scalar equation}
+Set $\delta=r_*-t$ and write
+\[
+ h=su+w,\qquad \ell^Tw=0,\qquad
+ \Pi=I-u\ell^T.
+\]
+On the subspace $\ell^Tw=0$, the map $I-J_*$ is invertible. Indeed,
+$J_*$ preserves this subspace and its only eigenvector with eigenvalue
+one is a multiple of $u$. Other peripheral eigenvalues, including $-1$,
+are harmless; primitivity is not required.
+
+For an independent vector parameter $r$, consider
+\begin{equation}\label{kfp:sat:eq:G}
+ G(t,h,r)=h-\Phi(t,A(t)+h)+\Phi(t,A(t))-r.
+\end{equation}
+The analytic implicit function theorem applied to $\Pi G=0$ gives
+\[
+ w=W(\delta,s,r),\qquad W(0,0,0)=0,
+\]
+with
+\begin{equation}\label{kfp:sat:eq:W-bound}
+ \norm{W(\delta,s,r)}
+ =O\bigl(|\delta s|+s^2+\norm r\bigr).
+\end{equation}
+To see the absence of a term proportional to $\delta$ alone, note that
+$G(t,0,0)=0$ identically. The absence of a term linear in $s$ at
+$\delta=0$ follows from $(I-J_*)u=0$.
+
+Substitute $r=\satR_N(r_*-\delta)$ and define the scalar reduced equation
+\begin{equation}\label{kfp:sat:eq:g}
+ g_N(\delta,s)=
+ \ell^TG\bigl(r_*-\delta,
+ su+W(\delta,s,\satR_N(r_*-\delta)),
+ \satR_N(r_*-\delta)\bigr).
+\end{equation}
+The local fixed points are exactly its zeros.
+
+Put $\varepsilon_N=\sqrt{\eta_N}$. On bounded sets of $K,S$, set
+$\delta=\varepsilon_NK$ and $s=\varepsilon_NS$. Taylor expansion,
+\eqref{kfp:sat:eq:W-bound}, and Corollary~\ref{kfp:sat:cor:vector-tails} give
+\begin{equation}\label{kfp:sat:eq:scaled-reduction}
+ F_N(K,S):=\frac{g_N(\varepsilon_NK,\varepsilon_NS)}{\varepsilon_N^2}
+ \longrightarrow F(K,S):=\kappa KS-\beta S^2-1
+\end{equation}
+in $C^2$ on every bounded rectangle.
+
+Here are the terms responsible for the limit. The projected linear part is
+\[
+ \ell^T(I-J(r_*-\delta))su
+ =\kappa\delta s+O(\delta^2|s|).
+\]
+The leading nonlinear part is $-\beta s^2$. Contributions involving $W$
+are $O(\varepsilon_N^3)$ in this scaling, because
+$W=O(\varepsilon_N^2)$ and $\ell^T(I-J_*)W=0$. Finally the projected
+forcing is $-\eta_N(1+o(1))$. For the first and second scaled derivatives,
+Corollary~\ref{kfp:sat:cor:vector-tails} gives exactly the needed bounds
+$\satR_N'=o(\varepsilon_N)$ and $\satR_N''=o(1)$. This verifies the
+$C^2$ assertion, including the moving forcing; a fixed-parameter Taylor
+expansion alone would not suffice.
+
+\subsection{The fold and its identification with the true radius}
+The limiting equations $F=0$ and $F_S=0$ have the unique solution with
+$K,S>0$
+\begin{equation}\label{kfp:sat:eq:fold-limit}
+ K_c=\frac{2\sqrt\beta}{\kappa},\qquad S_c=\frac1{\sqrt\beta}.
+\end{equation}
+At this point the Jacobian of $(F,F_S)$ with respect to $(K,S)$ is
+\[
+ \begin{pmatrix}\kappa/\sqrt\beta&0\\ \kappa&-2\beta\end{pmatrix},
+\]
+which is invertible. The $C^2$ convergence in~\eqref{kfp:sat:eq:scaled-reduction}
+and the implicit function theorem give a nearby fold
+$(K_N,S_N)\to(K_c,S_c)$ for every sufficiently large $N$. At that fold,
+\begin{equation}\label{kfp:sat:eq:fold-derivatives}
+ (g_N)_\delta=\kappa\varepsilon_N/\sqrt\beta+o(\varepsilon_N)>0,
+ \qquad (g_N)_{ss}=-2\beta+o(1)<0.
+\end{equation}
+The associated $h=\varepsilon_NS_Nu+O(\varepsilon_N^2)$ is strictly
+positive and solves the corrected equation, hence gives a certificate.
+
+We must show that this fold is the boundary of all certificates. Fix a
+small $a>0$. At $K=K_c+a$, the limiting polynomial $F(K,S)$ has two
+positive simple roots. The implicit function theorem gives nearby roots
+of $F_N$, and their vectors $h$ are positive; thus a certificate exists.
+At $K=K_c-a>0$, no limiting positive root exists. If certificates existed
+there along a subsequence, Lemma~\ref{kfp:sat:lem:localization} would make their
+scaled $h$ bounded. The complementary equation forces $w=O(\varepsilon_N^2)$;
+a convergent subsequence of $S$ would then solve $F(K_c-a,S)=0$, a
+contradiction.
+
+The convergence boundary is therefore trapped in an arbitrarily small
+fixed scaled neighborhood of $K_c$. In that neighborhood every possible
+fixed point is localized by Lemma~\ref{kfp:sat:lem:localization}, and every
+localized solution lies near $S_c$. The reduced function is strictly
+concave in $s$ there by~\eqref{kfp:sat:eq:fold-derivatives}; its unique local maximum
+crosses zero at $(K_N,S_N)$. Its derivative with respect to $K$ at this
+crossing is positive. Consequently local roots exist on the larger-$K$
+side and none on the smaller-$K$ side. No other roots can supply a
+certificate by the localization just proved. Thus
+\[
+ \rho_N=r_*-\varepsilon_NK_N.
+\]
+At the fold the fixed point is finite. Lemma~\ref{kfp:sat:lem:numeric} identifies
+it with $B_N(\rho_N)$, since no other localized nonnegative fixed point
+exists there. Its height is
+$\varepsilon_NS_Nu+O(\varepsilon_N^2)$.
+Together with~\eqref{kfp:sat:eq:fold-limit}, these facts prove
+\eqref{kfp:sat:eq:sharp-radius} and~\eqref{kfp:sat:eq:sharp-height}. The reciprocal
+expansion proves~\eqref{kfp:sat:eq:sharp-growth}, completing the proof of
+Theorem~\ref{kfp:sat:thm:sharp}.
+
+\section{Universal branch shape and a quarter-power amplitude}
+\label{kfp:sat:sec:branch}
+
+\begin{theorem}[Scaled branch and local singular amplitude]\label{kfp:sat:thm:branch}
+Under Theorem~\ref{kfp:sat:thm:sharp}, put
+\[
+ S_-(K)=\frac{\kappa K-\sqrt{\kappa^2K^2-4\beta}}{2\beta}
+ \quad\left(K>\frac{2\sqrt\beta}{\kappa}\right).
+\]
+Uniformly on compact subsets of this interval,
+\begin{equation}\label{kfp:sat:eq:branch-shape}
+ \frac{B_N(r_*-K\varepsilon_N)-A(r_*-K\varepsilon_N)}{\varepsilon_N}
+ \longrightarrow uS_-(K).
+\end{equation}
+For each sufficiently large fixed $N$, the minimal branch has a local
+expansion as real $t\uparrow\rho_N$,
+\begin{equation}\label{kfp:sat:eq:local-sqrt}
+ B_N(t)=B_N(\rho_N)-a_N\sqrt{1-t/\rho_N}
+                  +O(1-t/\rho_N),\qquad a_N>0,
+\end{equation}
+and
+\begin{equation}\label{kfp:sat:eq:amplitude}
+ \boxed{\displaystyle
+ a_N=u\sqrt{r_*\kappa}\,\beta^{-3/4}\eta_N^{1/4}
+       +o(\eta_N^{1/4}).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For fixed $K>K_c$, the two roots of the limiting reduced equation are
+simple and positive. The corresponding local solution vectors are ordered
+componentwise: their derivative with respect to $s$ is
+$u+O(\varepsilon_N)>0$. The minimal fixed point selects the smaller
+root. Localization excludes any other candidate, proving
+\eqref{kfp:sat:eq:branch-shape}; compactness gives uniformity away from the fold.
+
+For fixed $N$, the reduction is analytic in a neighborhood of its fold.
+Since $(g_N)_\delta>0$ and $(g_N)_{ss}<0$, the analytic implicit function
+theorem applied with the square-root parameter gives
+\[
+ s=s_N-
+ \sqrt{\frac{2(g_N)_\delta}{-(g_N)_{ss}}}\,
+        \sqrt{\rho_N-t}+O(\rho_N-t).
+\]
+The sign is negative on the minimal branch. The vector derivative with
+respect to $s$ is $u+O(\varepsilon_N)$; all other changes are analytic in
+$\rho_N-t$. Therefore
+\[
+ a_N=(u+O(\varepsilon_N))
+     \sqrt{\frac{2\rho_N(g_N)_\delta}{-(g_N)_{ss}}}.
+\]
+Substitution of~\eqref{kfp:sat:eq:fold-derivatives}, $\rho_N\to r_*$, and
+$\varepsilon_N=\eta_N^{1/2}$ proves~\eqref{kfp:sat:eq:amplitude}.
+\end{proof}
+
+The local singularity is a genuine singularity in every component because
+$a_N>0$. The theorem deliberately does not claim an unqualified global
+coefficient asymptotic $c_N\rho_N^{-n}n^{-3/2}$. Such a statement requires
+control of other singularities on the circle of convergence and the
+appropriate analytic continuation or periodicity hypotheses. A real
+positive-axis expansion alone does not establish those conditions.
+
+\subsection{Consequences for data requirements}
+If a particular system has
+\[
+ \eta_N\sim C N^p\theta^N,\qquad 0<\theta<1,
+\]
+then Theorem~\ref{kfp:sat:thm:sharp} gives
+\[
+ r_*-\rho_N\sim\frac{2\sqrt{\beta C}}{\kappa}
+                 N^{p/2}\theta^{N/2}.
+\]
+The exponential rate is halved. To make the radius gap of size
+$\epsilon$, the leading required prefix length is
+\[
+ N=\frac{2\log(1/\epsilon)}{|\log\theta|}
+       +O(\log\log(1/\epsilon)),
+\]
+when the displayed tail equivalent holds. The quarter-power amplitude
+also quantifies how the singularity becomes weaker while its location
+approaches the barrier. These are conditional consequences of a tail law,
+not assumptions used to prove the general theorem.
+
+\section{An exact scalar model: limit, rate, and certificates}
+\label{kfp:sat:sec:scalar}
+
+\subsection{The previously known limit}
+Take
+\begin{equation}\label{kfp:sat:eq:scalar-model}
+ A(\xi)=\frac \xi{1-\xi},\qquad \Phi(\xi,X)=\xi+X^2.
+\end{equation}
+The inequality $A\preceq \xi+A^2$ holds because the coefficient of $\xi^n$
+in $A^2$ is $n-1$ for $n\ge2$. The defect is
+\begin{equation}\label{kfp:sat:eq:scalar-defect}
+ D(\xi)=\frac{\xi^3}{(1-\xi)^2}
+     =\sum_{n\ge3}(n-2)\xi^n.
+\end{equation}
+The true radius is $1$, but
+\[
+ J(t)=\frac{2t}{1-t}
+\]
+first reaches one at $r_*=1/3$. Thus the corrected radii tend to $1/3$
+and their growth tends to $3$. This limit and its interpretation were
+already established in the repository \cite{satprefix}.
+\wtag\ It is Part~I's \cref{kfp:thm:gap}, whose proof is not
+repeated here; what follows is new in the manuscript.
+
+For $N\ge2$, the corrected equation and its selected root are
+\begin{equation}\label{kfp:sat:eq:scalar-root}
+ B_N=\xi+B_N^2-D_N(\xi),\qquad
+ B_N(\xi)=\frac{1-\sqrt{1-4\xi+4D_N(\xi)}}2.
+\end{equation}
+The branch is the one with zero constant term. The positive-tail
+construction, rather than the signed appearance of the radicand,
+guarantees nonnegative coefficients.
+
+\subsection{A sharp equivalent and an exact root equation}
+Here $u=\ell=1$, $\beta=1$, and
+\[
+ \kappa=J'(1/3)=\frac92.
+\]
+A direct geometric-series computation gives
+\begin{equation}\label{kfp:sat:eq:scalar-tail}
+ \satR_N(t)=
+ \frac{t^{N+1}\bigl((N-1)-(N-2)t\bigr)}{(1-t)^2},
+ \qquad
+ \eta_N=\satR_N(1/3)=\frac{2N-1}{4\cdot3^N}.
+\end{equation}
+Therefore the new sharp equivalents specialize to
+\begin{equation}\label{kfp:sat:eq:scalar-rate}
+ \boxed{\displaystyle
+ \frac13-\rho_N\sim\frac29\sqrt{2N-1}\,3^{-N/2},
+ \qquad
+ \mu_N-3\sim2\sqrt{2N-1}\,3^{-N/2}.}
+\end{equation}
+The singular amplitude satisfies
+\begin{equation}\label{kfp:sat:eq:scalar-amplitude}
+ a_N\sim\sqrt{\frac32}\left(\frac{2N-1}{4\cdot3^N}\right)^{1/4}.
+\end{equation}
+
+These constants can also be checked without the general theorem. Since
+\[
+ 1-4t+4D(t)=\frac{(1-3t)^2}{(1-t)^2},
+\]
+the exact root equation for $\rho_N$ is
+\begin{equation}\label{kfp:sat:eq:scalar-polynomial}
+ (1-3\rho_N)^2
+ =4\rho_N^{N+1}\bigl((N-1)-(N-2)\rho_N\bigr).
+\end{equation}
+For $N\ge3$ there is exactly one root in $(1/4,1/3)$.
+Indeed, $c_N(t)=t-D_N(t)$ is strictly increasing on $[1/4,1/3]$:
+$D_N'(t)<D'(t)\le1$ there. Also $c_N(1/4)<1/4$ and
+$c_N(1/3)>1/4$. The root is where $c_N=1/4$.
+At that point $v=1/2>P_N(\rho_N)$ is a valid certificate.
+Immediately to its right the quadratic has no real root, proving that
+this is exactly the radius.
+
+To extract the equivalent directly, first the root equation gives
+$\rho_N\to1/3$. Its positive square root gives
+\[
+ \frac13-\rho_N
+ =\frac23\rho_N^{(N+1)/2}
+       \sqrt{(N-1)-(N-2)\rho_N}.
+\]
+The right side is $O(\sqrt N\,3^{-N/2})$, so
+$N(1/3-\rho_N)\to0$. It follows that
+$(3\rho_N)^{(N+1)/2}\to1$. Substitution now yields exactly the first
+formula in~\eqref{kfp:sat:eq:scalar-rate}; the second follows by reciprocation.
+This is an independent derivation of the leading constants.
+
+\subsection{Exact computation and numerical illustration}
+The supplied checker brackets the root of~\eqref{kfp:sat:eq:scalar-polynomial}
+by rational bisection, using exact integer arithmetic in every sign test.
+It performs $260$ bisections for each displayed $N$. Both rational
+endpoints and their exact width are saved in
+\path{data/02-spectral-saturation-verification.json}. The entries below are rounded displays
+of those brackets; the last column divides the gap by the proposed leading
+term in~\eqref{kfp:sat:eq:scalar-rate}.
+
+\begin{table}[htbp]
+\centering\small
+\input{data/02-spectral-saturation-scalar_table.tex}
+\caption{The scalar radius approaches its barrier at the predicted half-rate.
+The exact brackets, not the rounded decimal display, are the certificates.}
+\label{kfp:sat:tab:scalar}
+\end{table}
+
+For $N=64$ and $128$, the rounded radius visually equals $1/3$, but the
+positive gap is separately displayed. No equality with $1/3$ is being
+asserted. The asymptotic theorem is proved analytically; agreement at six
+finite values is a consistency check, not a proof for all $N$.
+
+\section{Examples that delimit the hypotheses}
+\label{kfp:sat:sec:exceptions}
+
+\subsection{A supercritical system that becomes exact in finitely many steps}
+Let $A(\xi)=\xi$ and $\Phi(\xi,X)=\xi+X^2$. Then $D=\xi^2$, so $B_N=A$ for
+$N\ge2$. Nevertheless $\Phi_X(t,A(t))=2t$ is critical at $t=1/2$ and
+supercritical afterward. The positive tail map is
+\[
+ \Psi_N(t,y)=2ty+y^2\qquad(N\ge2),
+\]
+whose least fixed point is zero even when its derivative exceeds one.
+This is precisely the zero-forcing exception in
+Theorem~\ref{kfp:sat:thm:critical}. It disproves any formulation that rules out
+all supercritical certificates without examining the residual defect.
+
+\subsection{Irreducibility cannot be removed}
+Consider the independent two-component system
+\[
+ \Phi_1(\xi,X)=\xi+X_1^2,\qquad
+ \Phi_2(\xi,X)=\xi+\xi X_2,
+\]
+with
+\[
+ A_1(\xi)=\xi,\qquad A_2(\xi)=\frac \xi{1-\xi/2}.
+\]
+The defects are
+\[
+ D_1=\xi^2,\qquad D_2=\frac{\xi^2}{2(1-\xi/2)}.
+\]
+At $t=1/2$ the true-profile Jacobian is
+$\operatorname{diag}(1,1/2)$ and has spectral radius one. For every
+$N\ge2$, the first component is already exact, while the second corrected
+series is finite because its linear denominator is $1-\xi$. Thus
+certificates exist although the total defect tail is nonzero. The critical
+block receives no residual forcing. A reducible extension must track
+which blocks are forced and how they feed one another.
+
+\subsection{Linearity gives a different convergence regime}
+The scalar second component of the preceding example has true radius $2$
+and Jacobian $J(t)=t$, hence spectral barrier $1$. Its corrected equation is
+\[
+ B_N=\xi+\xi B_N-D_N(\xi).
+\]
+Subtracting the true equation gives the exact identity
+\[
+ B_N(\xi)-A(\xi)=\frac{\satR_N(\xi)}{1-\xi}.
+\]
+Every finite level has a nonzero positive residual at $\xi=1$, so every
+radius is \emph{exactly} $1$ and the boundary value diverges. There is no
+nonzero square-root radius gap. Here $\beta=0$; the nonlinear hypothesis
+of Theorem~\ref{kfp:sat:thm:sharp} is essential.
+
+\subsection{Primitivity is not required}
+Let $A_1=A_2=\xi/(1-\xi)$ and
+\[
+ \Phi_1=\xi+X_2^2,\qquad \Phi_2=\xi+X_1^2.
+\]
+The minimal branch remains symmetric and equals the scalar example in
+both coordinates. At $t=1/3$ the Jacobian is
+$\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$, with
+eigenvalues $1$ and $-1$. The complement of the Perron direction remains
+invertible for $I-J$. Thus the sharp law applies despite period two in
+the dependency matrix. This matrix issue is separate from possible
+periodicity of generating-function coefficients.
+
+\section{An exact all-prefix barrier for the polyomino map}
+\label{kfp:sat:sec:bui}
+
+\subsection{The finite input and the infinite conclusion}
+The repository report supplies a $17$-component marked profile and a
+$53$-monomial positive map, transcribed in Section~\ref{kfp:sat:app:map}.
+The variables are ordered
+\[
+ (c,d,e,f,g,h,p,q,r,s,t,u,v,w,x,y,z).
+\]
+In this section and the appendix, the \emph{size variable} is $\xi$,
+so it is not confused with the last coordinate $z$.
+\wtag\ (In Part~II as printed, $\xi$ is the size variable throughout;
+see \cref{kfp:sat:sec:notation}. The profile is Part~I's
+\cref{kfp:app:data} and \texttt{data/profiles\_18.csv}; the map is
+\eqref{eq:map}.)
+The source data list all marked coefficients through size $18$
+\cite{satprofile,satmap}. We use those values as input. The checker replays their
+partition and recurrence consistency identities, but does not independently
+enumerate size-$18$ polyominoes.
+\wtag\ (Part~I's intake regenerated that table through size~$18$ from the
+final enumerator source, and through size~$10$ with an independent
+enumerator; see \cref{kfp:app:provenance}. It is still not kernel-checked.)
+
+A finite lower bound on the Jacobian already suffices to rule out
+\emph{every} longer prefix. The following elementary lemma makes the
+certificate format explicit and avoids any reliance on a floating-point
+eigenvalue.
+
+\begin{lemma}[A rational spectral obstruction]\label[lemma]{kfp:sat:lem:finite-obstruction}
+Let $J\ge0$ be irreducible, let $b\ge0$ be nonzero, and suppose there
+exist $w>0$ and $\gamma>1$ with $Jw\ge\gamma w$. There is no $y\ge0$
+satisfying $y\ge b+Jy$.
+\end{lemma}
+\begin{proof}
+Iteration gives
+$y\ge\sum_{k=0}^{d-1}J^kb$. Strong connectivity and $b\ne0$ make this
+sum strictly positive, so $y>0$. Put $m=\min_i y_i/w_i>0$ and choose an
+index $i$ attaining the minimum. Then
+\[
+ (Jy)_i\ge m(Jw)_i\ge m\gamma w_i>mw_i=y_i,
+\]
+contradicting $y\ge Jy$. Every ingredient is a finite matrix or graph
+inequality.
+\end{proof}
+
+\subsection{The certified witness}
+Set
+\begin{equation}\label{kfp:sat:eq:bui-t}
+ t_0=\frac{10000}{43149},\qquad
+ \gamma=\frac{1000001}{1000000},\qquad
+ J_{18}=\Phi_X(t_0,P_{18}(t_0)).
+\end{equation}
+The positive integer vector in Table~\ref{kfp:sat:tab:witness} satisfies
+\begin{equation}\label{kfp:sat:eq:bui-check}
+ \boxed{J_{18}w\ge\gamma w>w.}
+\end{equation}
+The $17$ inequalities are checked using exact rational arithmetic. A
+second implementation evaluates the directional derivative by dual-number
+multiplication and agrees exactly with the matrix-vector product. The
+smallest ratio $(J_{18}w)_i/w_i-1$, rounded only for display, is
+$0.000004934886683313896$, safely greater than the certified
+$0.000001$.
+
+\begin{table}[htbp]
+\centering\small
+\input{data/02-spectral-saturation-witness_table.tex}
+\caption{An integer witness for~\eqref{kfp:sat:eq:bui-check}. The column headed
+$w_i$ is a vector entry, not the map coordinate named $w$.}
+\label{kfp:sat:tab:witness}
+\end{table}
+
+\begin{theorem}[A $4.3149$ barrier for every prefix]\label{kfp:sat:thm:bui}
+For the repository's fixed $17$-variable map and its true marked profile,
+with the size-$18$ profile taken as the supplied enumerative input, no
+finite-prefix upper certificate exists at $t_0=10000/43149$.
+Every corrected system has growth at least
+\begin{equation}\label{kfp:sat:eq:bui-wall}
+ \mu_N\ge\frac{43149}{10000}=4.3149.
+\end{equation}
+The same radius bound applies to its $g$ component, which is the component
+used to majorize the unmarked fixed-polyomino counts.
+\end{theorem}
+\begin{proof}
+For $M\ge18$, nonnegativity of the true coefficients gives
+$P_M(t_0)\ge P_{18}(t_0)$, hence
+\[
+ J_Mw\ge J_{18}w\ge\gamma w,
+ \qquad J_M=\Phi_X(t_0,P_M(t_0)).
+\]
+All prefix coordinates are positive, and the map's dependency graph is
+strongly connected. The checker verifies this graph directly; positivity
+means its edges coincide with those of $J_M$.
+
+The first row of the map is $\Phi_c=\xi+\xi e$. For every size $M$, the
+vertical column of $M$ cells has an $e$-pattern occurrence at its bottom
+cell. In the source definition of $e$, the anchor is occupied while its
+horizontal neighbors and the three positions immediately below are absent;
+the vertical column has exactly this local configuration. Thus the true
+coefficient $e_M\ge1$. It follows that the finite-prefix forcing
+\[
+ b_M(t_0)=\bigl([\xi^{>M}]\Phi(\xi,P_M(\xi))\bigr)(t_0)
+\]
+has a strictly positive $c$ coordinate, containing $e_Mt_0^{M+1}$.
+
+A certificate would yield a tail $y\ge0$ with
+$y\ge\Psi_M(t_0,y)\ge b_M(t_0)+J_My$.
+Lemma~\ref{kfp:sat:lem:finite-obstruction} rules this out. Hence no level
+$M\ge18$ has a certificate. An earlier certificate would persist to level
+$18$ by Lemma~\ref{kfp:sat:lem:numeric}, so every earlier level is excluded too.
+This proves the system-radius and growth assertions.
+
+For completeness, when $M\ge18$ the linear-in-$Y$ part of the positive
+tail map is the formal matrix $\Phi_X(\xi,P_M(\xi))$. Each dependency
+edge contains a positive monomial $c\xi^kY_j$. Therefore
+$Y_{M,i}\succeq c\xi^kY_{M,j}$ along every edge. Strong connectivity
+forces all nonzero tail components to have the same radius, and the
+positive forcing propagates to every component. In particular the $g$
+component has the system radius. For earlier levels, componentwise
+nesting with $B_{18}$ gives the same upper bound on the $g$ radius.
+\end{proof}
+
+\subsection{What this numerical result means}
+The theorem is an obstruction to an entire infinite hierarchy, obtained
+from one finite profile and one short rational witness. It shows that,
+even with arbitrarily long exact prefixes and arbitrarily sophisticated
+supersolution searches, the \emph{unchanged} map cannot certify an upper
+growth constant below $4.3149$ by this method.
+
+It does not say that the true polyomino growth is at least $4.3149$.
+The logical direction is
+\[
+ \text{true counts}\ \preceq\ \text{corrected majorants},
+\]
+so a lower bound for the majorants cannot be reversed into a lower bound
+for the true counts. Nor does it locate the actual saturation constant
+exactly: $4.3149$ is only a certified lower bound on the limiting majorant
+growth. The true fixed-map barrier could be higher.
+
+\wtag\ \emph{Tempting false readings.} (i) ``$\lambda\ge4.3149$'': false as
+a reading of \cref{kfp:sat:thm:bui}, which bounds the growth $\mu_N$ of the
+majorants $B_N$ from below, while $\lambda$ lies below every $\mu_N$.
+(ii) ``$4.3149<4.498$, so Part~II improves Part~I's bound'': false; $4.3149$
+is not an upper bound on anything. It is a floor under every upper bound that
+this fixed map and exact prefixes can certify. Part~I's certificates
+$4.5233,\ldots,4.498$ (\cref{kfp:tab:progress}) and the Lean-verified
+$4.5235$ all lie above it, as they must. The upper bounds on $\lambda$ in
+\repo\ remain $4.498$ (computer-assisted, \cref{kfp:thm:main}) and
+$9047/2000$ (Lean-verified).
+
+The calculation also does not assume that the full marked profile
+converges at $t_0$. It uses only finite prefixes, a uniform nonzero-forcing
+construction, and certificate persistence. This makes it valid even before
+the hypotheses needed to apply the sharp interior-crossing theorem to the
+actual polyomino profile have been established.
+
+\subsection{Discovery and replay are separate}
+The optional script \path{code/02-spectral-saturation-discover.py} finds a numerical positive
+eigenvector, scales and rounds it to integers, and exports the witness.
+That procedure is not trusted by the proof. The replay script
+\path{code/02-spectral-saturation-verify.py} imports no numerical library and ignores all
+floating-point discovery fields. It recomputes the exact rational Jacobian
+from the supplied coefficient profile and the displayed monomial map.
+
+The verifier additionally checks nilpotence of the zero-size linear part
+(the index is $3$), the $53$-monomial count, strong connectivity, all
+$323$ component/degree defect checks through degree $18$ including degree
+zero, and $95$ checks for the five partition identities including degree
+zero. These are useful transcription checks, not a substitute for the
+combinatorial recurrence proof or the marked enumeration.
+
+\section{Reproducibility and proof audit}
+\label{kfp:sat:sec:audit}
+
+\subsection{What is in the package}
+\wtag\ The file names below are those shipped in \repo; the delivered
+package used the same names without the prefix
+\path{02-spectral-saturation-}. The manuscript's own \texttt{article.tex},
+\texttt{article.pdf} and \texttt{README.md} are not shipped (Part~II is
+their text), and neither is its copy of \texttt{data/profiles\_18.csv}, which
+is byte-identical to Part~I's file of that name and is replaced by it.
+The two small TeX tables in \texttt{data/} are
+included by the source. The other retained files are:
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \path{code/02-spectral-saturation-bui_model.py}, the transcribed map
+and rational Jacobian; \path{code/02-spectral-saturation-verify.py}, the
+exact checker; and optional \path{code/02-spectral-saturation-discover.py},
+the numerical witness search.
+\item \texttt{data/profiles\_18.csv}, the inherited marked profile (Part~I's
+file); \path{data/02-spectral-saturation-bui_spectral_certificate.json}, the
+integer witness; and \path{data/02-spectral-saturation-verification.json}
+and \path{data/02-spectral-saturation-verification.txt}, the recorded replay
+results, including exact scalar brackets. \emph{Not to be confused with}
+Part~I's own \texttt{data/verification.json} and
+\texttt{data/verification.txt}, which record the $4.498$ replay.
+\item \path{02-spectral-saturation-SOURCES.md},
+\path{02-spectral-saturation-PROOF_STATUS.md}, and a build script
+\path{code/02-spectral-saturation-build.sh}.
+\end{itemize}
+
+To replay the checks without changing retained outputs, run
+\begin{lstlisting}
+python3 code/verify.py
+\end{lstlisting}
+To regenerate the verification record and table inputs, run
+\begin{lstlisting}
+python3 code/verify.py --write
+\end{lstlisting}
+\wtag\ These two commands are the delivered ones and assume the delivered
+layout. In \repo\ they must not be run in place: the renamed scripts import
+\texttt{bui\_model}, which is shipped as
+\path{code/02-spectral-saturation-bui_model.py}, and \texttt{--write} writes
+\texttt{data/verification.json}, which is Part~I's record. The report's
+README gives a recipe that rebuilds the delivered layout in a scratch copy;
+there the checker's output equals the shipped record and tables.
+Only the optional discovery script needs NumPy. The exact checker uses
+Python's standard library, principally arbitrary-precision integers and
+\texttt{fractions.Fraction}. Failure of any required check raises an
+exception; it does not silently downgrade to a floating-point comparison.
+
+\subsection{Dependency structure of the mathematical claims}
+The critical theorem depends only on formal comparison, positivity of the
+full defect, and finite-dimensional Perron--Frobenius theory. The spectral
+limit additionally uses eventual subcritical supersolutions and convergence
+of nonnegative tails. The sharp law adds analyticity at an interior
+crossing, a nonlinear positive Hessian direction, the tail-flatness lemma,
+a finite-dimensional implicit-function reduction, and the global
+localization lemma.
+
+The numerical all-prefix obstruction follows a different chain:
+\[
+ \begin{gathered}
+ \text{supplied marked prefix}\ +\ \text{displayed polynomial map}\\
+ \Longrightarrow\ \text{exact rational matrix witness}\\
+ \Longrightarrow\ \text{no certificate at every level }M\ge18\\
+ \Longrightarrow\ \text{no certificate at any level, by persistence}.
+ \end{gathered}
+\]
+The nonzero forcing at arbitrary size is proved by the vertical-column
+construction, not extrapolated from the finite data. The checker verifies
+arithmetic at size $18$; the infinite-level conclusion is the accompanying
+mathematical argument.
+
+\subsection{Adversarial checks on the argument}
+Several potential failure modes have explicit safeguards. The tail budget
+in~\eqref{kfp:sat:eq:certificate} is mandatory. The expansion at $A(t)$ is used
+only after proving that every certificate dominates $A(t)$. Nonzero
+forcing is distinguished from finite exact termination. Irreducibility
+cannot be replaced by an unsupported claim that every nonnegative
+Perron vector is strictly positive. The rate theorem uses the total
+derivative~\eqref{kfp:sat:eq:Jderivative}, not the partial derivative in the size
+variable alone. The local fold is identified with the actual radius using
+Lemma~\ref{kfp:sat:lem:localization}. Tail-flatness is proved rather than inferred
+from a guessed coefficient asymptotic. No global coefficient transfer
+principle is invoked from the real-axis singularity alone.
+
+These safeguards reduce identifiable risks; they do not constitute
+independent refereeing or machine verification. In particular the
+analytic implicit-function and localization arguments should receive
+independent mathematical review before any publication-level novelty or
+correctness claim is treated as settled.
+
+\subsection{A feasible formalization sequence}
+A Lean continuation can be divided into three independent layers. The
+first layer formalizes the polynomial prefix identity, positivity of
+$\Psi_N$, formal comparison, and persistence of numeric supersolutions.
+It can reuse the existing recurrence and growth interfaces described in
+the repository report \cite{satprefix,satformal}.
+
+The second layer formalizes Lemma~\ref{kfp:sat:lem:finite-obstruction} and checks
+the rational vector in Table~\ref{kfp:sat:tab:witness}. That lemma needs neither
+complex analysis nor numerical eigenvalues. Its remaining combinatorial
+input is a verified marked prefix, together with the simple vertical-column
+occurrence lemma. The checker included here is not such a formal
+enumerator.
+
+The third layer develops the analytic saturation theorem and the sharp
+fold analysis. Its reusable targets include a theorem for nonnegative
+power-series tail square roots, Perron eigenvector perturbation, and a
+one-dimensional kernel reduction with uniform parameters. It is
+substantially larger than the finite rational check and need not block
+formalizing the numerical obstruction first. No unfinished Lean file is
+included under the appearance of a completed proof.
+
+\section{Further research questions and projects}
+\label{kfp:sat:sec:future}
+
+\subsection{Locate the actual fixed-map polyomino saturation constant}
+Theorem~\ref{kfp:sat:thm:bui} proves an obstruction but not its sharp location.
+A natural next target is a rigorous interval for
+$\spr(\Phi_X(t,A(t)))$ using upper and lower bounds on the marked
+profile. Exact lower prefixes give one side; a validated majorant for the
+remaining marked tail is needed for the other. Determine whether the
+crossing is interior to the true marked radius, and hence whether
+Theorem~\ref{kfp:sat:thm:sharp} applies to this particular map.
+
+\subsection{Replace enumeration length by a better recurrence}
+The $4.3149$ obstruction makes a concrete distinction between two research
+investments: longer exact prefixes versus modifying the geometric
+recurrence. A structural repair must change the map or its available
+coefficient inequalities, not merely find a new supersolution of the old
+corrected map. Identify which local overcounts most affect the Perron
+crossing, prove a repair, and repeat the certificate audit.
+
+\subsection{Resolve the reducible critical case}
+The example in Section~\ref{kfp:sat:sec:exceptions} shows why the scalar value
+$\spr(J)=1$ is insufficient in a reducible system. Seek a necessary and
+sufficient block criterion involving residual forcing, reachability of
+critical blocks, and nonlinear feedback within each block. Distinguish a
+critical block that is already exact from one receiving arbitrarily small
+forcing from downstream dependencies. This is a genuine extension beyond
+the irreducible theorem proved here.
+
+\subsection{Classify crossings at the true singularity}
+Our sharp theorem assumes $r_*<R$. When $r_*=R$, the derivatives of $A$
+may diverge and $\kappa$ need not be finite. Determine how the singular
+behavior of $A$, the defect tail, and the Perron gap combine. One should
+expect different exponents, not automatic reuse of the interior
+square-root law.
+
+\subsection{Obtain second-order truncation asymptotics}
+The present leading law depends only on $\kappa$, $\beta$, and $\eta_N$.
+A second-order expansion should involve the complementary inverse
+$(I-J_*)^{-1}$ on $\ell^Tw=0$, higher derivatives of $\Phi$ and $A$,
+and the vector direction of the tail. Characterize when oscillating tail
+directions prevent a single second-order constant even though the leading
+law remains universal.
+
+\subsection{Uniform coefficient asymptotics in two limits}
+For fixed $N$, an additional aperiodicity and continuation analysis may
+turn~\eqref{kfp:sat:eq:local-sqrt} into a coefficient asymptotic. A more delicate
+problem lets both $n$ and $N$ tend to infinity. The amplitude shrinks as
+$\eta_N^{1/4}$ while the radius gap shrinks as $\eta_N^{1/2}$, suggesting a
+transition when $n\sqrt{\eta_N}$ is of order one. Prove a uniform transfer
+law and determine its relation to exact prefix agreement for $n\le N$.
+
+\subsection{Certified optimization of the omitted defect}
+For a fixed data budget, is prefix truncation the best verified correction,
+or can a sparse collection of rigorously proved higher-degree defects be
+more effective? The leading sensitivity is Perron-weighted, so unweighted
+coefficient size is not the right objective. Extend the theory from
+consecutive prefixes to arbitrary finite certified defect polynomials and
+characterize the optimal allocation problem.
+
+\subsection{Bit complexity of near-critical certificates}
+The existence of a rational vector follows from strict slack, but the
+smallest required denominator may deteriorate near the fold. Derive an
+explicit bit-length bound in terms of the input map, an enclosure of its
+Perron data, and the separation from $\rho_N$. Separate the cost of finding
+a witness from the cost of checking it. The practical integer witness here
+is an example, not a worst-case complexity theorem.
+
+\subsection{Formal marked-profile certification}
+A verified enumerator or compact enumeration certificate would remove the
+main inherited computational assumption in the numerical application.
+The size-$18$ profile contains much more information than the unmarked
+polyomino sequence; matching unmarked totals is insufficient. A first
+formal target could be a smaller prefix and a weaker but nontrivial
+all-prefix spectral barrier, followed by an incremental extension.
+
+\subsection{The distinct neighborhood-refinement question}
+Bui's question about increasing the geometric neighborhood size remains
+separate \cite{bui}. The fixed-map theorem does not rule out convergence
+of a sequence of increasingly accurate maps. Formulate conditions on
+$\Phi^{(k)}$ under which their spectral barriers tend to the true radius,
+and construct a counterexample when those conditions fail. This would
+connect the present negative limitation with a positive convergence theory
+for genuinely improving geometric descriptions.
+
+\section{Conclusion}
+The exact-prefix method has an exact spectral boundary. In an irreducible
+system, a nonzero uncorrected defect cannot be sustained at or beyond
+Perron value one, even if every finite-prefix Jacobian remains below one.
+This resolves the missing critical case and identifies the limiting radius
+of the entire hierarchy.
+
+At an interior nonlinear crossing the boundary is quantitative:
+its distance is asymptotic to a square root of the omitted defect, with
+an explicit invariant constant. The solution height, scaled branch, and
+singular amplitude have compatible universal laws. The tail estimate
+shows why coefficient gaps do not invalidate this conclusion.
+
+For the concrete polyomino map, an exact finite certificate proves a
+$4.3149$ limit on what prefix refinement alone can accomplish. The useful
+conclusion is methodological: to cross that threshold, one must improve
+the recurrence information itself, not merely compute a longer initial
+segment of the same profile. The abstract theorems are proved here; the
+remaining work is independent validation, formal certification, and the
+geometric refinement needed to move the spectral barrier.
+
+\section{The complete polynomial map used in the certificate}
+\label{kfp:sat:app:map}
+
+\wtag\ This section is the manuscript's Appendix~A. Its display of the
+$53$ monomials, transcribed from Part~I's \texttt{code/model.py}
+\cite{satmap}, agrees row for row with \eqref{eq:map}, and is printed once,
+there. The manuscript names each row by its lowercase output coordinate
+($\Phi_c,\ldots,\Phi_z$), where \eqref{eq:map} uses the uppercase type name
+($\Phi_C,\ldots,\Phi_Z$); the size variable is $\xi$, the lowercase $z$ is a
+profile coordinate, and every coefficient is one.
+
+The five linear partition identities in the supplied profile are
+\[
+ f=g+p,\qquad g=e+q,\qquad h=d+s,\qquad r=y+w,\qquad t=x+v.
+\]
+The checker verifies these coefficientwise through size $18$. The
+nonnegative defects for the remaining rows are checked as well.
+
+The file \texttt{data/profiles\_18.csv} retains the complete input rather
+than just a floating-point value of $P_{18}(t_0)$. As a result, the reader
+can reconstruct every exact rational entry of $J_{18}$ directly from the
+map and the coefficient table. The unmarked total column is retained for
+provenance, but is not an input to the spectral inequality.
+
+\section{A minimal replay algorithm}
+\label{kfp:sat:app:algorithm}
+
+The numerical core can be expressed as the following exact computation.
+For each map monomial $\xi^kX_{i_1}\cdots X_{i_m}$, its contribution to
+$\Phi_X(t_0,a)w$ is
+\[
+ t_0^k\sum_{r=1}^m w_{i_r}\prod_{s\ne r}a_{i_s}.
+\]
+Repeated variables occur repeatedly in the sum, giving the correct
+multiplicity. For example the derivative of $\xi e^2$ contributes
+$2t_0a_e w_e$, not merely $t_0a_e w_e$.
+
+\begin{lstlisting}
+t0 = Fraction(10000, 43149)
+factor = Fraction(1000001, 1000000)
+a = [horner(profile, t0) for profile in profiles]
+J = exact_jacobian(t0, a)
+image = exact_matrix_vector_product(J, witness)
+assert all(image[i] >= factor*witness[i] for i in range(17))
+assert all(witness[i] > 0 for i in range(17))
+assert strongly_connected(J)
+\end{lstlisting}
+
+The actual checker uses explicit exceptions rather than relying on Python
+\texttt{assert}, which can be disabled by an optimization flag. The
+pseudocode above only describes the mathematical test. The exact
+arithmetic result is independent of the floating-point approximation used
+to discover the witness.
+
+For the scalar example, the polynomial sign oracle is
+\[
+ H_N(t)=(1-3t)^2-4t^{N+1}\bigl((N-1)-(N-2)t\bigr).
+\]
+The proved uniqueness of its root in $[1/4,1/3]$ turns rational bisection
+into a root certificate. The program checks both endpoint signs again
+before recording each bracket. It also evaluates the identity
+\[
+ H_N(t)=(1-t)^2\bigl(1-4t+4D_N(t)\bigr)
+\]
+at three independent rational points for every displayed $N$. Those
+finite identity checks are safeguards against transcription errors;
+the all-$t$ identity is the algebraic derivation in
+Section~\ref{kfp:sat:sec:scalar}.
+
+\section{Source snapshot and evidence ledger}
+\label{kfp:sat:app:sources}
+
+The repository snapshot inspected for this continuation is
+\begin{center}\small\texttt{74f7f5bdba1aa728b340509701a0fa4e45e8dbf3}\end{center}
+The main source directory is
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/\\
+polyomino-growth-finite-prefix-corrections/
+\end{quote}
+Its \texttt{article.tex}, especially Section~8 and the proposed research
+questions in Section~10, is the mathematical continuation source. Its
+\texttt{code/model.py} supplies the map and local pattern convention;
+\texttt{data/profiles\_18.csv} supplies the finite marked counts.
+The complete paths, blob identifiers returned by the connector, and
+review boundaries are retained in \path{02-spectral-saturation-SOURCES.md}.
+\wtag\ That directory is this report, and its \texttt{article.tex} at the
+pin (blob \texttt{4a021fb3}) is Part~I as printed here: Section~8 is
+\cref{kfp:sec:stability} and Section~10 is \cref{kfp:sec:questions}. The
+blobs recorded for \texttt{code/model.py} (\texttt{97b241bd}) and
+\texttt{data/profiles\_18.csv} (\texttt{82648328}) are also those of the
+placement commit.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}p{.59\linewidth}@{}}
+\toprule
+Evidence & What it establishes here\\
+\midrule
+Repository article and README & The exact continuation target and prior
+results; not blanket verification of the repository.\\[3pt]
+Repository monomial map & The finite algebraic system used by the checker;
+its combinatorial interpretation is an inherited source input.\\[3pt]
+Repository marked CSV & The size-$18$ coefficients used in the arithmetic
+certificate; not freshly enumerated here.\\[3pt]
+Exact checker output & The stated rational inequalities, graph properties,
+finite consistency identities, and scalar root brackets.\\[3pt]
+Written proofs & The infinite-level implications, critical classification,
+spectral limit, and sharp analytic laws.\\[3pt]
+Primary literature review & Context and attribution for the recurrence,
+positive-system certificates, Newton theory, and singularity methods;
+not an exhaustive novelty search.\\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \clearpage
 \begin{thebibliography}{20}
@@ -2012,5 +3849,52 @@ S. Boyd, S.-J. Kim, L. Vandenberghe, and A. Hassibi,
 S. Boyd and L. Vandenberghe, \emph{Convex Optimization},
 Cambridge University Press, 2004.
 \url{https://web.stanford.edu/~boyd/cvxbook/}.
+
+% Part II (batch 40, manuscript 05). Its entry for Bui's paper is the
+% entry bui above.
+\bibitem{satprefix}
+\repo\ research collection,
+\emph{Finite-Prefix Corrections and Dual Certificates for Polyomino Growth},
+September 2026, unrefereed AI-assisted report, especially Sections 3 and 8--10.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/74f7f5bdba1aa728b340509701a0fa4e45e8dbf3/SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections}{Pinned repository report}.
+\wtag\ This is Part~I of the present report.
+
+\bibitem{satformal}
+\repo, \emph{KlarnerConstant formal project},
+\texttt{Combinatorics/Polyominoes/}\allowbreak\texttt{KlarnerConstant}.
+Formal status used here is the status documented by the source report;
+no fresh Lean build was performed for this article.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/74f7f5bdba1aa728b340509701a0fa4e45e8dbf3/Combinatorics/Polyominoes/KlarnerConstant}{Pinned project directory}.
+
+\bibitem{satmap}
+\repo\ finite-prefix report, \texttt{code/model.py},
+exact sparse map and pattern definitions, inspected at the above snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/74f7f5bdba1aa728b340509701a0fa4e45e8dbf3/SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections/code/model.py}{Pinned source file}.
+
+\bibitem{satprofile}
+\repo\ finite-prefix report, \texttt{data/profiles\_18.csv},
+marked and unmarked counts through size 18.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/74f7f5bdba1aa728b340509701a0fa4e45e8dbf3/SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections/data/profiles_18.csv}{Pinned data file}.
+
+\bibitem{satwk}
+T. Winkler and J.-P. Katoen,
+\emph{Certificates for Probabilistic Pushdown Automata via Optimistic Value
+Iteration}, arXiv:2301.08657v2, February 26, 2023, especially Sections 2--3.
+\href{https://arxiv.org/html/2301.08657v2}{Full text}.
+
+\bibitem{satsey}
+A. Stewart, K. Etessami, and M. Yannakakis,
+\emph{Upper bounds for Newton's method on monotone polynomial systems,
+and P-time model checking of probabilistic one-counter automata},
+arXiv:1302.3741.
+\href{https://arxiv.org/abs/1302.3741}{Author preprint record}.
+Used as background attribution, not as an unproved input to our rate theorem.
+
+\bibitem{satdrmota}
+M. Drmota, \emph{Systems of functional equations},
+Random Structures \& Algorithms \textbf{10} (1997), 103--124.
+\href{https://doi.org/10.1002/(SICI)1098-2418(199701/03)10:1/2<103::AID-RSA5>3.0.CO;2-Z}{Publisher record}.
+Bibliographic context for classical positive-system singularity theory;
+the local analysis needed here is proved in the text.
 \end{thebibliography}
 \end{document}
