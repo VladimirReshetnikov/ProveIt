@@ -572,4 +572,4 @@ ProveIt-era batches (from this directory):
 
 | Batch | Place | Write or merge | Catalogue | Audit |
 |---|---|---|---|---|
-| 36 | | | | |
+| 36 | `1a1396d`; moved into the collection by `d5e1fb3` | `3a15f34`, `b3d0c1b`, `2becd30`, `bb501ab`, `c69841a`, `d532b65`, `a10e9be`; notes `6c9175a`, `a20a47c` | "Catalogue batch 36" | — |

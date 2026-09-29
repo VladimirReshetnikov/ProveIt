@@ -213,13 +213,15 @@ requirement to build Lean one module at a time.
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
-- A [collection of 104 research reports](SetTheory/Cardinals/docs/reports/README.md)
+- A [collection of 110 research reports](SetTheory/Cardinals/docs/reports/README.md)
   without Lean counterparts, most of them attacking a specific conjecture from
   the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
   determinants, supercongruences, tetration and digit stabilization,
   log-concavity, graphs, automata and formal languages, enumerative
-  combinatorics, generating-function asymptotics, and quaternionic analysis;
-  about a quarter are counterexamples rather than proofs.
+  combinatorics, generating-function asymptotics, quaternionic analysis, the
+  Jacobian conjecture, and radicals and Galois theory; about a quarter are
+  counterexamples rather than proofs.  New external reports reach it through
+  [`docs/incoming`](docs/incoming/README.md).
 
 ## Lean workspace
 

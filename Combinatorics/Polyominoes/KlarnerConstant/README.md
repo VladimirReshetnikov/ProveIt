@@ -14,6 +14,18 @@ The `4.5235` bound appears to be new based on the dated public-source search
 recorded in the research report; that novelty assessment is separate from the
 proof.
 
+A later external report, `polyomino-growth-finite-prefix-corrections` in the
+research-report collection
+([`SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections`](../../../SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections/README.md)),
+improves the bound to `λ ≤ 2249/500 = 4.498` by correcting Bui's system with
+an exact marked-occurrence table through size 18 (regenerated from scratch
+when the report was placed).  That bound is computer-assisted and **not
+formalized**: it rests on the enumeration and on a finite-prefix correction
+theorem that this project does not prove, and the Lean endpoint theorems here
+are specific to `ζ = 2000/9047`.  `4.5235` remains the formally verified
+bound.  The report builds on this project's Lean recurrences
+(`geometricPublishedBuiRecurrences`) and names what they cover.
+
 The improvement changes no geometric recurrence.  It replaces Bui's rational
 supersolution at `ζ = 1/4.5238` by a new, exact supersolution at
 `ζ = 1/4.5235 = 2000/9047`.  Its seventeen coordinates have the common

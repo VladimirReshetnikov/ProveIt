@@ -159,6 +159,28 @@ particular, the Coq complex interpretation transparently inherits
 Coquelicot's standard real-number and functional-extensionality assumptions;
 there are no admitted results.
 
+## Research reports continuing this project
+
+Three external research reports in ProveIt's research-report collection
+continue this project.  None of their theorems is formalized; each README
+names the declarations here that it builds on.
+
+- [`arithmetic-local-global-fibers`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/arithmetic-local-global-fibers/README.md):
+  integral, `p`-adic and 2-adic fibers of the three-variable map above,
+  including integral targets with a preimage in every `Z_p^3` but none in
+  `Z^3`, and the exact 2-adic fiber law `(21,7,3,1)/32`.  It also records
+  that the fiber over the collision value `(0,-2,0)` contains a third
+  integral point, `(1,-2,8)`.
+- [`weighted-keller-rigidity`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity/README.md):
+  classifies the Keller maps of weights `(-1,1,2)` in every degree; every
+  noninvertible one in its class is this map up to the diagonal action and
+  tame composition, so it sharpens the degree-seven sparsity search of
+  [`Research/README.md`](Research/README.md) to all degrees.  It does not show
+  that degree seven is minimal in dimension three.
+- [`gao-f6-fiber-geometry`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/gao-f6-fiber-geometry/README.md):
+  the fiber geometry of Gao's five-dimensional six-sheeted Keller map `F6`,
+  a different map from the dimension-five stable map verified here.
+
 ## Checking
 
 From the repository root:

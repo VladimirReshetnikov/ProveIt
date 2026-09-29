@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and four independent mathematical research packages, unpacked
+One hundred and ten independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and four reports, names the problem each one attacks
+numbers all one hundred and ten reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -17,8 +17,8 @@ records what each report claims rather than verifying it.
 
 | Category | Reports |
 |---|---:|
-| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites, ideals, lattice congruences | 20 |
-| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions | 21 |
+| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 21 |
+| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth | 22 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
@@ -27,7 +27,37 @@ records what each report claims rather than verifying it.
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **104** |
+| [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
+| [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts | 1 |
+| **Total** | **110** |
+
+## Later deliveries
+
+After the move into ProveIt, new reports arrive through
+[`docs/incoming`](../../../../docs/incoming/README.md), whose procedure places
+every external report outside the surreal package in this collection.  Its
+batch 36 (September 2026) added six reports and extended a seventh:
+
+- [`frechet-bounded-character-sites`](ordinals-and-order-types/frechet-bounded-character-sites),
+  merged from two manuscripts, continues the non-claim of
+  [`frechet-two-valued-obstruction`](ordinals-and-order-types/frechet-two-valued-obstruction)
+  about other filter sites;
+- [`cofinal-strata-of-finitary-powersets`](ordinals-and-order-types/wqo-powersets-and-statures/cofinal-strata-of-finitary-powersets)
+  gained Parts II and III, merged from four manuscripts that all prove the
+  nonuniform height formula it had left open;
+- the new category [`jacobian-conjecture/`](jacobian-conjecture) holds three
+  reports continuing the Lean/Rocq project `Algebra/JacobianConjecture`
+  (one of them merged from two manuscripts on Gao's map `F6`);
+- the new category [`galois-theory-and-radicals/`](galois-theory-and-radicals)
+  holds one report continuing `Algebra/PolynomialFormulas`;
+- [`polyomino-growth-finite-prefix-corrections`](enumerative-combinatorics/polyomino-growth-finite-prefix-corrections)
+  continues `Combinatorics/Polyominoes/KlarnerConstant`, whose Lean-verified
+  bound on Klarner's constant is `4.5235`; its own bound `4.498` is
+  computer-assisted and not formalized.
+
+A report that continues a formal project gains no formal status from it:
+each README names the project declarations it builds on and says that its
+own theorems are not formalized.
 
 ## Rebuilding the manifest
 

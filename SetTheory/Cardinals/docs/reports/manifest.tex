@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 104 independent mathematical research packages}}
+  pdfsubject={Catalogue of 110 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,18 +53,22 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and four independent mathematical research packages,\\
+  {\large One hundred and ten independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 20 September 2026}
+  {\normalsize 28 September 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and four research packages stored
-under \dir{docs/reports}.  The seven surreal-number reports that this catalogue
+This document catalogues the one hundred and ten research packages stored
+under \dir{docs/reports}.  One hundred and four of them came with the
+collection; the other six, and an extension of a seventh, came from twelve
+archives of batch~36 of ProveIt's incoming-reports procedure
+(\dir{docs/incoming}), whose archives remain in the repository's history.
+The next paragraphs describe the first one hundred and four.  The seven surreal-number reports that this catalogue
 used to carry were moved out to a repository of their own, with their history,
 and are no longer listed here.  They arrived as one hundred and twenty-five ZIP
 archives, in seven deliveries, which have been unpacked and grouped into the
@@ -108,7 +112,9 @@ the precise limits of the claim.
 
 Two cautions apply uniformly and are therefore not repeated in the individual
 entries.  First, these are AI-assisted research drafts: none has been
-independently refereed, and none has been checked in a proof assistant.  Second,
+independently refereed, and none has been checked in a proof assistant.
+Several continue a Lean or Rocq project elsewhere in ProveIt; that confers no
+formal status on them, and their entries say which project they continue.  Second,
 the descriptions below record \emph{what each report sets out to settle and what
 it claims to prove}.  Compiling this manifest involved reading each package's
 statement of its problem and result; it did not involve checking any proof.
@@ -132,14 +138,14 @@ original archive names are recorded with every entry.
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
-\dir{enumerative-combinatorics} & --- & 21\\
+\dir{enumerative-combinatorics} & --- & 22\\
 \midrule
 \dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 4\\
  & \dir{wqo-powersets-and-statures} & 4\\
  & \dir{friendly-order-types} & 3\\
  & \dir{games-on-ordinals} & 3\\
  & \dir{transfinite-words} & 2\\
- & (top level) & 4\\
+ & (top level) & 5\\
 \midrule
 \dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 8\\
  & \dir{binary-product-coefficient-counts} & 3\\
@@ -164,7 +170,11 @@ original archive names are recorded with every entry.
 \midrule
 \dir{quaternionic-analysis} & --- & 1\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{104}\\
+\dir{jacobian-conjecture} & --- & 3\\
+\midrule
+\dir{galois-theory-and-radicals} & --- & 1\\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{110}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -242,14 +252,24 @@ powersets} (arXiv:2312.14587v2), and on the corresponding topological invariant.
 
 \entry{Cofinal strata and ordinal absorption}
 {ordinals-and-order-types/wqo-powersets-and-statures/cofinal-strata-of-finitary-powersets}
-{article.pdf}{cofinal\_strata\_ordinal\_powersets.zip}
+{article.pdf}{cofinal\_strata\_ordinal\_powersets.zip; batch~36:
+ProveIt\_Nonuniform\_Powerset\_Heights.zip, ProveIt\_Persistent\_Frontier\_Heights.zip,
+persistent\_frontier\_heights.zip, ProveIt\_Ordinal\_Heights\_Research.zip}
 {For $S_\alpha(Q)$, a finite poset $Q$ with each point replaced by a chain
 $\alpha=\omega^\rho$, proves
 $o(K(S_\alpha(Q)))=\sum_k \omega^{\rho\otimes k}c_k(Q)$ and
 $h(K(S_\alpha(Q)))=\alpha\cdot\mathrm{height}(M(Q))$, where $c_k$ counts size-$k$
 maximal antichains not dominated by a larger one.  The maximal-order-type
 theorem allows nonuniform pure well-partial-order fibers and is proved by a
-finite cofinal-stratification argument.}
+finite cofinal-stratification argument.  Parts~II and~III, merged in batch~36
+from four manuscripts that each prove it, supply the nonuniform height formula
+the original left open: for every finite lexicographic sum of ordinal chains,
+$h(K)$ is the largest ordinary ordinal sum, along a chain of maximal frontiers,
+of the largest fiber leaving the frontier at each step plus the largest fiber
+of the last frontier; finite and successor fibers enter by Cantor-normal-form
+refinement.  Adds exact point ranks, a finite dynamic program with NP
+membership of the threshold problem, and a separate part for
+well-partial-order fibers with $h(K(P_q))$ a positive pure power.}
 
 \entry{Intrinsic ordinal approximations for finitary powersets}
 {ordinals-and-order-types/wqo-powersets-and-statures/intrinsic-ordinal-approximations}
@@ -414,8 +434,9 @@ singleton and $\lceil\log_2(h+2)\rceil$ otherwise.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
-Two reports whose objects sit outside every subcategory above: the minor order
-on finite graphs, and a site of filters on $\omega$.
+Five reports whose objects sit outside every subcategory above: the minor order
+on finite graphs, two on sites of filters on $\omega$, congruences of finite
+lattices, and a translation-invariant ideal.
 
 \entry{Ordinal complexity of graph minors}
 {ordinals-and-order-types/graph-minor-ordinals}
@@ -444,6 +465,27 @@ between the number of sieve generators and the size of the full sieve is
 essential to it.  The question is Massas, \emph{A Semi-Constructive Approach to
 the Hyperreal Line} (2023), p.~517 after Fact~5.10, repeated in the 2024
 dissertation \emph{Duality and Infinity}, p.~249.}
+
+\entry{Bounded-character Fr\'echet filter sites}
+{ordinals-and-order-types/frechet-bounded-character-sites}
+{article.pdf}{filter\_complexity\_research.zip, Frechet\_Cardinal\_Boundaries.zip}
+{Continues the previous entry's non-claim about other filter sites.  For the
+site $P_\kappa$ of free filters on $\omega$ generated by fewer than $\kappa$
+sets modulo the cofinite filter, represents the Booleanization $C_\kappa$ as a
+regular-open algebra on the free ultrafilters and proves that
+$P(\omega)/\mathrm{Fin}$ is order dense in it exactly for $\kappa\le
+\mathfrak p$; above $\mathfrak p$ no complete Boolean homomorphism preserving
+the modulo-finite events exists in either direction.  The atoms are the
+ultrafilters of character below $\kappa$, so $C_\kappa$ is atomless exactly for
+$\kappa\le\mathfrak u$; $\mathfrak h$ is the first size of a family of events
+that cannot be decided jointly on a dense set of regions.  Computes the
+associated sheaf by Boolean mixtures, with full Boolean-valued transfer,
+countable saturation of ultrafilter specializations, and sizes
+$\mathfrak c$, $2^{\mathfrak c}$, $2^{2^{\mathfrak c}}$ for the raw power and
+the two sheafifications.  A three-stage example uses Mill\'an's forcing model
+as an imported input.  Merged from two manuscripts whose indexings differ by a
+successor shift; the second one's closure-based results are stated at
+successor stages only.}
 
 \entry{A sharp cover bound for congruences of finite lattices}
 {ordinals-and-order-types/lattice-congruence-cover-bound}
@@ -1337,6 +1379,22 @@ period~3, so eventual polynomiality fails.  Every rational in $(1,2]$ is
 realized, denominators are unbounded, and for $d=p/q>1$ in lowest terms the
 least eventual period is exactly $p$.  Both bounds are proved by hand.}
 
+\entry{Finite-prefix corrections for polyomino growth}
+{enumerative-combinatorics/polyomino-growth-finite-prefix-corrections}
+{article.pdf}{ProveIt\_Polyomino\_Research.zip}
+{Continues the formal project \dir{Combinatorics/Polyominoes/KlarnerConstant},
+whose Lean-verified bound is $\lambda\le 9047/2000=4.5235$ for Klarner's
+constant.  Proves a finite-prefix correction theorem for proper positive
+polynomial recurrences and applies it to Bui's seventeen-neighbourhood system
+with an exact marked-occurrence table through size~18, giving the
+computer-assisted, unformalized bound $\lambda\le2249/500=4.498$ and
+$A_n\le(927884613/10^9)(2249/500)^n$.  A second theorem gives balanced
+integer-monomial divergence certificates, complete for productive strongly
+connected systems, and yields $4.52349\le\mu_{\mathrm{original}}\le4.5235$
+for the original recurrence --- a statement about the recurrence, not a lower
+bound on~$\lambda$.  The size-18 table was regenerated from scratch at intake
+and matched exactly.}
+
 \section{Generating functions and asymptotics}
 
 \subsection{Coefficient counts of binary products}
@@ -1568,5 +1626,89 @@ or unproved conjecture enters.  Adds rational error bounds, numerator and
 denominator recurrences, a three-term recurrence along every shifted diagonal,
 and sharp fixed-offset asymptotic constants.  Merged from two reports whose
 boxed identities were character-identical up to macro names.}
+
+\section{The Jacobian conjecture and Keller maps}
+
+Three reports continuing the formal project \dir{Algebra/JacobianConjecture},
+which verifies in Lean and Rocq Alpöge's three-variable counterexample, a
+lower-degree stable representative and exact reductions.  None of the three
+reports' own theorems is formalized; each README names the project
+declarations it builds on.  Two study the project's three-variable map; the
+third studies a different map, Gao's five-dimensional~$F_6$.
+
+\entry{The fiber geometry of Gao's Keller map $F_6$}
+{jacobian-conjecture/gao-f6-fiber-geometry}
+{article.pdf}{ProveIt\_Six\_Sheets\_Research.zip, ProveIt\_Keller\_Fibers\_Research.zip}
+{For Gao's five-dimensional six-sheeted Keller map $F_6$
+(arXiv:2608.00222v1, \S4.5.1), classifies every geometric fiber: the
+cardinalities are exactly $0,1,2,3,4,6$, all seven root-multiplicity
+patterns occur, and off the hyperplane $c=0$ the inverse points are the simple
+roots of an explicit sextic.  The omitted set is a smooth closed surface
+isomorphic to $\mathbb{G}_m\times\mathbb{A}^1$, of codimension three, with the
+single effective omitted parameter $(21/32,5/32,25/128)$.  Gives an explicit
+finite normalization of rank six, the two-component nonproperness locus, the
+discriminant's normalization and local analytic types, global monodromy $S_6$
+with two arithmetic certificates, no proper intermediate field, real fiber
+cardinalities $\{0,1,2,3,4\}$, and an obstruction to equivalence with a
+stabilization of a map in at most three variables.  The map is Gao's; the
+fiber theory is the reports'.  Merged from two manuscripts proving the same
+core in identical normalizations; the second one's different proofs are kept
+as marked second routes.  Not to be confused with the project's formally
+verified dimension-five stable map.}
+
+\entry{Arithmetic local--global dichotomies for the three-variable Keller map}
+{jacobian-conjecture/arithmetic-local-global-fibers}
+{article.pdf}{ProveIt\_Arithmetic\_Local\_Global.zip}
+{For the project's three-variable Keller map, gives an explicit infinite
+family of integral targets with a preimage in every $\mathbb{Z}_p^3$ but none
+in $\mathbb{Z}^3$ (each fiber is three rational points, so these are not
+rational Hasse failures); classifies the split integer-root plane $C=2$ by a
+gcd condition, with locally soluble parameter density $27/(4\pi^2)$ surviving
+the removal of $S$-integral fibers; proves the exact integral 2-adic fiber law
+$(21,7,3,1)/32$ for fiber sizes $0,1,2,3$, determined modulo~8; and contrasts
+it with a rational Hasse principle over every number field.  The complex
+stratification is credited to Gao and the finite-field histograms to an
+external note.  An intake remark records an integral triple collision over the
+project's own collision value.  Not a new disproof of the Jacobian
+conjecture.}
+
+\entry{All-degree rigidity of a weighted Keller class}
+{jacobian-conjecture/weighted-keller-rigidity}
+{article.pdf}{ProveIt\_Weighted\_Keller\_Rigidity.zip}
+{For polynomial maps of weights $(-1,1,2)$ written through $t=xy$ and
+$v=x^2z$, classifies the Keller maps in every degree over any field of
+characteristic zero: those with $p,q$ affine in $v$ and $r$ affine in $(t,v)$
+are an explicit tame family and a two-parameter diagonal orbit of the known
+map, so every noninvertible member has coordinate degrees $(7,6,4)$ and
+sixteen monomials, with no input degree bound.  Extends to
+$r=R(t)+\gamma v$, where the possible maximum degrees are exactly $7$ and every
+even integer at least $8$, and shows that the fixed degree-seven coefficient
+scheme is the double point $\mathbb{Q}[\varepsilon]/(\varepsilon^2)$, with an
+explicitly obstructed tangent.  Sharpens to all degrees the project's
+degree-seven sparsity search; it does not show degree seven minimal in
+dimension three.}
+
+\section{Galois theory and radicals}
+
+One report continuing the formal project \dir{Algebra/PolynomialFormulas}
+(Lean and Rocq root formulas through degree four, Abel--Ruffini, and Lazard's
+quintic solver); none of its theorems is formalized.
+
+\entry{Specialization-safe radical solvers}
+{galois-theory-and-radicals/specialization-safe-radical-solvers}
+{article.pdf}{ProveIt\_Radical\_Solvers\_Research.zip}
+{Gives an exact cyclotomic-resultant criterion for the characteristics in which
+equal-cardinality subset sums of the roots of an irreducible prime-degree
+polynomial can collide, and evaluates it: the bad characteristics are $\{5\}$
+for quintic pairs, $\{2,7\}$ for septic pairs and $\{2,7,29\}$ for septic
+triples.  Classifies the collisions completely in characteristic~29 (exactly
+the cyclic polynomials $(X-\eta)^7-b$) and in characteristic~2 (translated
+$Z^7+aZ^3+bZ+d$, realizing the nonsolvable $\mathrm{GL}_3(\mathbb{F}_2)$).
+Constructs separating subset invariants in every characteristic, reconstructs
+all roots from one coherent $p$-th radical on each Fourier chart (generalizing
+Lazard's pivot-one scheme for quintics), realizes every Fourier support by
+rational polynomials with full affine Galois group, and shows the Picard group
+of the cyclic configuration quotient is $\mathbb{Z}/p$, so no single global
+Kummer coordinate exists.  The Picard result has a written proof only.}
 
 \end{document}

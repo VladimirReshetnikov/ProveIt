@@ -267,3 +267,11 @@ through degree three
 Thus any genuinely simpler three-variable counterexample has degree at least
 four and, if its degree is below seven, must break the symmetry above.  The
 two-variable Jacobian problem remains a separate open problem.
+
+The research-report collection's
+[`weighted-keller-rigidity`](../../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity/README.md)
+(unformalized) extends the exact rigidity above to every degree for its
+weighted class.  Gao's arXiv:2608.00222 describes a three-dimensional
+counterexample of *geometric* degree four (four preimages of a generic
+point); its ordinary coordinate degrees are `(4,11,12)`, so it does not
+lower the ordinary degree below seven.

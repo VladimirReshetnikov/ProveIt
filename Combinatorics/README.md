@@ -6,7 +6,10 @@ and exact growth-rate bounds for square-lattice polyominoes.
 - [`Polyominoes/KlarnerConstant/`](Polyominoes/KlarnerConstant/) contains the
   exact rational certificate improving the upper bound for Klarner's
   polyomino growth constant from `4.5238` to `4.5235`, its finite recurrence
-  proof, square-lattice geometry, and independent Python/Wolfram audits.
+  proof, square-lattice geometry, and independent Python/Wolfram audits.  A
+  computer-assisted, unformalized improvement to `4.498` is a report in the
+  research-report collection
+  ([`polyomino-growth-finite-prefix-corrections`](../SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections/README.md)).
 
 - [`ExpressionEnumeration/PowerTowers/`](ExpressionEnumeration/PowerTowers/)
   contains the common parenthesization semantics and A000081, A002845,
