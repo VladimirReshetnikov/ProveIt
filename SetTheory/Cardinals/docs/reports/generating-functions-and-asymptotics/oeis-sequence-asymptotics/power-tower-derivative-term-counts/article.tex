@@ -111,7 +111,10 @@ but the principal closed formula needs a nonvanishing statement that is isolated
 and left open; separately, the recurrence printed in the entry with the range
 $n>6$ is \emph{disproved} at $n=8$.  For $x^{x^2}$ the conjectured expression is
 proved to be an upper bound, every predicted cancellation is explained, and
-$a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not.
+$a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not;
+a later addition to that part (Section~\ref{xxb:dc:sec:intro}) proves the
+missing nonvanishing statement at logarithmic deficits three and four, leaving
+deficits five and above open.
 For $x^{x^x}$ two explicit polynomial bounds give $a(n)=\Theta(n^3)$
 unconditionally, while the sharper equivalent $a(n)\sim\tfrac23n^3$ is not
 proved --- and there, unlike the other two, the obstruction is not a
@@ -160,6 +163,12 @@ has been dropped, weakened or strengthened in the merge.
  own; those sections are now instances of Part~\ref{fw:sec} rather than
  independent developments, and are flagged as such where they begin.
 \item \textbf{Part~\ref{syn:sec}} compares the three.
+\item \textbf{Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}}, at
+ the end of Part~\ref{xxb:part}, were added on 29 September 2026 from a later
+ manuscript on A290268, which closes that part's missing step at logarithmic
+ deficits three and four.  They follow the part they extend, so that no number
+ elsewhere in the article moved, and they use their own coordinates
+ (Table~\ref{xxb:dc:tab:notation}).
 \end{itemize}
 
 The parts keep the notation of their sources, which is not uniform across them.
@@ -546,6 +555,15 @@ who is skimming will go wrong.
  Lehmer--Comtet numbers are defined, through $\Phi(z)=(1+z)\log(1+z)$ and
  $b(m,r)=\tfrac{m!}{r!}[z^m]\Phi(z)^r$.
 \end{enumerate}
+
+\noindent
+A third warning concerns only the later
+Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance} at the end of
+Part~\ref{xxb:part}: they use the depth coordinates of their source and of the
+Lean development, in which \textbf{$k$ is the exponent of $\log x$} and $j$ the
+exponent of $x$ --- the reverse of the rest of that part --- and in which $d$
+is the logarithmic deficit.  Table~\ref{xxb:dc:tab:notation} gives the full
+dictionary with the false readings.
 
 \noindent
 Beyond these, the letters $u$, $v$, $t$, $q$, $U$, $Z$, $E$ and $\Delta$ all
@@ -1481,6 +1499,14 @@ compare Part~\ref{xxc:part}, where $z$ is $\log x$.  See
 Section~\ref{fw:notation}.  Throughout this part $a(n)$ denotes the term count
 for $x^{x^2}$.
 
+\smallskip
+\textbf{Later addition (29 September 2026).}  Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance},
+at the end of this part, add a later manuscript that closes the missing
+nonvanishing step at logarithmic deficits $m=3,4$ and improves the lower bound
+$\Lambda(n)$ below.  They use depth coordinates in which the roles of $j$ and $k$
+differ from this part's (Table~\ref{xxb:dc:tab:notation}).  The text of the
+original report is unchanged; dated notes like this one point forward.
+
 \medskip
 \textbf{Abstract of the original report.}\itshape
 Let $a(n)$ be the number of nonzero monomials in the fully collected $n$th
@@ -1551,6 +1577,12 @@ The upper bound is proved in Section~\ref{xxb:sec:counting}; the lower bound is
 proved in Section~\ref{xxb:sec:positivity}. Section~\ref{xxb:sec:computation} gives a
 reproducible finite certification of the stronger equality through $3000$.
 The exact outstanding assertion appears in Section~\ref{xxb:sec:remaining}.
+
+\emph{Update (29 September 2026).}  The lower bound $\Lambda(n)$ is improved by
+Corollary~\ref{xxb:dc:cor:lower} to $(3n^2+26n-72)/8$ for even $n\ge8$ and
+$(3n^2+28n-111)/8$ for odd $n\ge17$ (Remark~\ref{xxb:dc:rem:improve}), a
+linear-term gain of $2n-10$, respectively $2n-14$; the leading constant $3/8$
+is unchanged.  Theorem~\ref{xxb:thm:main-bounds} stands as stated.
 
 
 \subsection{A canonical polynomial expansion}\label{xxb:sec:canonical}
@@ -2073,6 +2105,13 @@ $(0,1)$. Thus positivity of the weight, or pairing $t$ with $1-t$, no
 longer excludes cancellation. This is a concrete obstruction to simply
 extending the proofs above. It is not a counterexample to the conjecture.
 
+\emph{Update (29 September 2026).}  At $m=3$ and $m=4$ the obstruction has
+since been overcome by a different route: the kernel is written for every
+deficit as $R_m/m!$ (Remark~\ref{xxb:dc:rem:beta}), its sign change is
+controlled by monotone likelihood-ratio comparisons, and a finite certificate
+finishes the proof (Theorem~\ref{xxb:dc:thm:four}).  The obstruction as stated
+remains for $m\ge5$.
+
 \subsection{Generating functions and equivalent formulas for the upper bound}
 \label{xxb:sec:gf}
 All identities in this section are proved identities for $\U(n)$.
@@ -2282,6 +2321,17 @@ region:
 away from the reflection zeros. All other regions have been handled by
 the preceding analytic theorems.
 
+\emph{Update (29 September 2026).}  For $m=3$ and $m=4$ the converse is now
+proved, for every $n$: Theorem~\ref{xxb:dc:thm:four} shows that on those two
+deficits the only zeros are the reflection zeros.  The region still unproved
+is therefore
+\[
+ m=k-j\ge5,\qquad n\ge2k+2,
+\]
+away from the reflection zeros; the full conjecture remains open.  At every
+fixed $m\ge3$ the region is also reduced to finitely many cells by
+Theorem~\ref{xxb:dc:thm:finite}, but with bounds too large to compute.
+
 \begin{theorem}[Exact reduction of the OEIS conjecture]\label{xxb:thm:equivalence}
 The equality $a(n)=\U(n)$ for every $n\ge0$ is equivalent to
 Conjecture~\ref{xxb:conj:support}. It is also equivalent to proving the
@@ -2322,7 +2372,8 @@ is nonzero for $m\ge3$, except when $d=2m$ and $k$ is even. The
 reflection case is transparent because the series then becomes even;
 the remaining finite-difference cancellations are the essential issue.
 Equation~\eqref{xxb:eq:gap-transform} is an equivalent residual lemma, not an
-additional theorem claimed by this article.
+additional theorem claimed by this article.  (Since the update above it is
+needed only for $m\ge5$.)
 
 \subsection{Conclusion}
 The proposed formula has a rigorous structural explanation. The obvious
@@ -2340,7 +2391,9 @@ explicit residual nonvanishing problem \eqref{xxb:eq:gap-transform}.
 Exact finite computations settle every derivative order through $3000$.
 The global equality is not proved here: its remaining obligation is the
 nonvanishing statement in \eqref{xxb:eq:gap-region}, not any of the counting
-or generating-function manipulations.
+or generating-function manipulations.  (Update, 29 September 2026: that
+statement is now proved at deficits $m=3,4$, Theorem~\ref{xxb:dc:thm:four};
+it remains open for $m\ge5$.)
 
 \subsection{Reproducing the computations}\label{xxb:app:reproduce}
 The archive needs Python 3.10 or later and a C++17 compiler for the
@@ -2396,6 +2449,1554 @@ File or directory & Purpose\\
 \texttt{data/sample\_coefficients.json} & Fully collected low-order coefficient arrays and cancellation examples.\\
 \bottomrule
 \end{longtable}
+
+% ---------------------------------------------------------------------------
+% Batch 42, manuscript 06 (ProveIt_A290268_Finite_Certificates), written into
+% this part on 29 September 2026.  Every label below carries the prefix xxb:dc:.
+% The subsections are appended after the last subsection of Part 3, so that no
+% existing section, theorem or equation number moves.
+% ---------------------------------------------------------------------------
+
+\subsection{Depth certificates: deficits three and four}\label{xxb:dc:sec:intro}
+
+\begin{quote}\small
+\textbf{What this addition is.}  Subsections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}
+were written into this part on 29 September 2026 from a later manuscript,
+\emph{From Infinite Nonvanishing to Finite Certificates: Bulk positivity,
+fixed-depth finiteness, and a four-depth solution for OEIS A290268}
+(batch~42, manuscript~06; provenance in
+Section~\ref{xxb:dc:sec:provenance}).  It closes the region
+$m=k-j\in\{3,4\}$ of the precise missing step \eqref{xxb:eq:gap-region}:
+at logarithmic deficits three and four, for every $n$, the only vanishing
+coefficients are the reflection zeros of
+Theorem~\ref{xxb:thm:reflection-zeros}.  The unproved region is now
+$m\ge5$, $n\ge2k+2$.  The full A290268 conjecture is \emph{not} proved.
+
+\smallskip
+\textbf{Written without this part.}  The manuscript was prepared against the
+repository notes \texttt{Oeis/A290268/README.md} and the conditional Lean
+reduction, and never read this report.  Several of its results therefore
+re-derive results printed above.  They are printed here once more because
+their proofs are different, and each is marked as a second route with the
+earlier result credited:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item its all-depth bulk positivity (Theorem~\ref{xxb:dc:thm:bulk}) is
+ Theorem~\ref{xxb:thm:positive} restricted to $m\ge1$;
+\item its symmetry holes (Theorem~\ref{xxb:dc:thm:holes}) are the reflection
+ zeros of Theorem~\ref{xxb:thm:reflection-zeros};
+\item its depths one and two are Theorems~\ref{xxb:thm:m1}
+ and~\ref{xxb:thm:m2};
+\item its upper bound \eqref{xxb:dc:eq:upper} is Theorem~\ref{xxb:thm:upper};
+\item its exact depth bridge (Proposition~\ref{xxb:dc:prop:bridge}) is
+ Proposition~\ref{xxb:prop:egf} re-indexed, and its branch-cut formula
+ (Proposition~\ref{xxb:dc:prop:integral}) is Lemma~\ref{xxb:lem:beta} with its
+ $\varepsilon$-coefficient evaluated in closed form
+ (Remark~\ref{xxb:dc:rem:beta}).
+\end{itemize}
+Its finite rectangles reach only derivative orders $N\le359$, inside the range
+$n\le3000$ that Proposition~\ref{xxb:prop:finite} already certifies.  What is
+new is the reduction that makes finitely many cells suffice for \emph{every}
+$n$; see Remark~\ref{xxb:dc:rem:inside}.
+
+\smallskip
+\textbf{Notation.}  These subsections use the \emph{depth coordinates} of the
+manuscript, which are also the coordinates of the Lean development.  In them
+\textbf{$k$ is the exponent of $\log x$} --- the index called $j$ everywhere
+else in this part --- and $d$ is the logarithmic deficit $m$, not the $d$ of
+\eqref{xxb:eq:d}.  Table~\ref{xxb:dc:tab:notation} is binding for everything
+from here to the end of the part.
+
+\medskip
+\textbf{Abstract of manuscript 06.}\itshape
+OEIS A290268 counts the terms in the fully expanded derivatives of
+$x^{x^2}$. Its conjectured quasipolynomial reduces to a nonvanishing problem
+for $\gamma(k,d,M)=[w^M](2+w)^k((1+w)^2\log(1+w))^d$.
+The ProveIt investigation identifies symmetry-forced zeros and leaves the
+higher-depth nonvanishing problem open. We prove positivity throughout the
+whole bulk $d\le M\le k+2d+1$, uniformly in every depth $d\ge1$.
+We then prove an effective finiteness theorem: at each fixed depth, every
+possible additional zero is confined to an explicitly bounded finite
+rectangle in two integer parameters. The proof combines a centered
+Meixner--Pollaczek factorization, a branch-cut integral, and monotone
+likelihood-ratio comparisons on a half interval.
+At depths three and four the bounds sharpen to rectangles of 494 and
+15,540 cells. Two independent integer recurrences, supplemented by modular
+nonzero witnesses, verify these rectangles exactly. Consequently, for
+$1\le d\le4$ and $M\ge d$, the only zeros are
+$M=k+4d+1$ with $k+d$ even. This is an infinite-parameter result, not a
+finite derivative-order experiment. We also bound the number of real
+zeros of an interpolating Mellin transform by at most $d$, derive an
+unconditional term-count lower bound, and formulate concrete next research
+targets. The full A290268 formula is not proved here: the remaining
+nonvanishing problem lies at depths $d\ge5$. The proofs are conventional
+and computer-assisted where indicated; no Lean kernel certification or
+independent refereeing is claimed.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  ``The ProveIt investigation'' is the note
+\texttt{Oeis/A290268/README.md}.  The bulk positivity claimed in the abstract
+was already Theorem~\ref{xxb:thm:positive} of this part; the manuscript's
+proof of it is a second route.
+\end{quote}
+
+\subsubsection{Notation: depth coordinates}\label{xxb:dc:sec:notation}
+
+The manuscript writes the $N$th derivative in the lattice of monomials
+$x^{x^2+j}(\log x)^k$.  That is the lattice of the Lean development
+(\texttt{coeff n j k}, Section~\ref{xxb:dc:sec:formal}) and of the shipped
+data files, whose columns are named \texttt{d}, \texttt{k}, \texttt{q}.  The
+subsections below keep those letters rather than translate some four hundred
+lines of indices, and the price is the table below.  Its first four rows are
+the places where a reader coming from the rest of this part will go wrong.
+
+\begin{table}[ht]
+\centering\small
+\caption{Depth coordinates (Subsections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance})
+against the rest of Part~\ref{xxb:part}.  Throughout, $c_{n,k,j}$ is the
+coefficient of \eqref{xxb:eq:c-def}.}\label{xxb:dc:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}
+ >{\raggedright\arraybackslash}p{0.30\textwidth}
+ >{\raggedright\arraybackslash}p{0.19\textwidth}
+ >{\raggedright\arraybackslash}p{0.30\textwidth}@{}}
+\toprule
+Here & Meaning & Elsewhere in Part~\ref{xxb:part} & Tempting false reading\\
+\midrule
+$k$ & exponent of $\log x$ & $j$ &
+ \textbf{false:} the power of $z=x^2$, the $k$ of $c_{n,k,j}$\\
+$j$ & exponent of $x$ in $x^{x^2+j}(\log x)^k$ & $2k-n$ &
+ \textbf{false:} the exponent of $\log x$\\
+$d$ & depth, $d=(N+j)/2-k$ & $m=k-j$ &
+ \textbf{false:} $d=n-2k-1$ of \eqref{xxb:eq:d}\\
+$q$ & $M-k-2d-1=N-2k-2d-1$ & $d=n-2k-1$ of \eqref{xxb:eq:d} &
+ \textbf{false:} the exponent in $(1-u)^{-q}$ in the proof of
+ Theorem~\ref{xxb:thm:positive}\\
+\midrule
+$N$ & derivative order & $n$ & ---\\
+$M$ & coefficient index $N-k$ & $n-j$ & the moduli $M_1,M_2$ of \eqref{xxb:eq:moduli}\\
+$c_N(j,k)$ & coefficient of $x^{x^2+j}(\log x)^k$ & $c_{N,(N+j)/2,k}$ & ---\\
+$\varphi(w)$ & $(1+w)^2\log(1+w)$ & $B(w)$ of \eqref{xxb:eq:AB} & ---\\
+$\gamma(k,d,M)$ & $[w^M](2+w)^k\varphi(w)^d$ & $[t^{M+k}]A(t)^kB(t)^d$ & ---\\
+$H_{d,k,q}$ & the integer \eqref{xxb:dc:eq:q} &
+ --- & $H(u)=\atanh(u)/u$ of \eqref{xxb:eq:H}, which is unrelated\\
+$r$ & $M-k$ & --- & $r$ in $n=2r$, $n=2r+1$\\
+$K_d,Q_d$,\newline $A_d,C_d,E_d$ & constants \eqref{xxb:dc:eq:constants} & --- &
+ $A(t)$ of \eqref{xxb:eq:AB}, $Q_{n,j}$ of Section~\ref{xxb:sec:formulas}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two index translations follow from the table and are used repeatedly:
+\[
+ c_N(j,k)=c_{N,\,k+d,\,k},\qquad
+ N=2k+2d+1+q\iff n=2(j_{\mathrm{III}}+m)+1+d_{\mathrm{III}},
+\]
+where the subscript $\mathrm{III}$ marks the letters of the rest of this part.
+In particular the tail line $q=0$ is the borderline $n=2k+1$ of
+Theorem~\ref{xxb:thm:positive}, and the region $q\ge1$ is the region
+$n\ge2k+2$ of \eqref{xxb:eq:gap-region}.
+
+\emph{Renamed symbols.}  Where the manuscript's letter names a different object
+of this part, the object is renamed here, with no change of normalization:
+the manuscript's residual polynomial $P_d(z)$ is $\Pi_d(\zeta)$ (this part's
+$P_n$ is the canonical polynomial); its centered polynomial $Q_k^{(r)}$ is
+$\mathcal Q_k^{(r)}$; its $A_{M,k}(s)$ is $\mathcal A_{M,k}(s)$; its base moment
+$B_d(r)$ is $\mathcal B_d(r)$ and its bulk count $B(N)$ is $\beta(N)$; its
+half-interval logarithm $L=\log(t/(1-t))$ is $\tau$ (this part's $L$ is
+$\log x$); its hole indicator $h_d(N)$ is $\chi_d(N)$ (the manuscript also used
+$h_d$ for a second object, kept below as $h_d(\tau)$); its
+$m=\lfloor(d-1)/2\rfloor$ is $\nu_d$ and the $m$ of its count formulas is
+$\rho$ (this part's $m$ is the deficit); its Mellin transform $F_{d,k}$ is
+$\mathcal F_{d,k}$ (this part's $F_n$ is the falling factorial); its generating
+variable $z$ is $\xi$; the auxiliary combination $h(t)$ in the proof of
+Lemma~\ref{xxb:dc:lem:mellin} is $\psi(t)$; and product indices written $j$ in
+the manuscript are $\ell$.  The manuscript's falling factorial
+$(s)_{\underline r}$ is printed $\fall{s}{r}$, as in the rest of this article.
+The letters $s$, $t$, $u$, $w$, $y$ are local to the paragraph in which they
+are introduced; as in the manuscript, $y$ is a centered variable in
+Subsection~\ref{xxb:dc:sec:models} and $1-t$ in
+Subsection~\ref{xxb:dc:sec:integral}, and $s$ is both a polynomial variable and
+$2t-1$.
+
+\subsubsection{Main results of the addition}
+
+Put
+\begin{equation}\label{xxb:dc:eq:gamma}
+ \varphi(w)=(1+w)^2\log(1+w),\qquad
+ \gamma(k,d,M)=[w^M](2+w)^k\varphi(w)^d.
+\end{equation}
+The depth is $d$, the logarithmic degree is $k$, and $M$ is a coefficient
+index.  All three are nonnegative integers.
+
+\begin{theorem}[Bulk positivity; second route to Theorem~\ref{xxb:thm:positive}]\label{xxb:dc:thm:bulk}
+For every $d\ge1$ and $k\ge0$,
+\[
+ d\le M\le k+2d+1\quad\Longrightarrow\quad\gamma(k,d,M)>0.
+\]
+\end{theorem}
+
+In the coordinates of this part the hypothesis reads $m\ge1$, $k\le n\le2k+1$,
+so the theorem is exactly the case $m\ge1$ of
+Theorem~\ref{xxb:thm:positive}; with \eqref{xxb:dc:eq:d0} below, which is
+Proposition~\ref{xxb:prop:top}, it is all of it.  The manuscript's proof in
+Subsection~\ref{xxb:dc:sec:bulk} goes through a centered factorization instead
+of the transformation \eqref{xxb:eq:mobius}.
+
+For the remaining region it is useful to put
+\begin{equation}\label{xxb:dc:eq:q}
+ q=M-k-2d-1\ge0,
+ \qquad H_{d,k,q}=\frac{(k+2d+1+q)!}{d!}\gamma(k,d,k+2d+1+q).
+\end{equation}
+The number $H_{d,k,q}$ is an integer.  The $q=0$ line overlaps the already
+positive boundary of the bulk.
+
+\begin{theorem}[Effective fixed-depth finiteness]\label{xxb:dc:thm:finite}
+For each $d\ge3$ there are explicit positive integers $K_d,Q_d$, given in
+Subsection~\ref{xxb:dc:sec:effective}, such that whenever $k\ge K_d$ or
+$q\ge Q_d$,
+\[
+ H_{d,k,q}=0\quad\Longleftrightarrow\quad q=2d\ \text{and}\ k+d\equiv0\pmod2.
+\]
+Thus the complete fixed-depth nonvanishing conjecture is equivalent to a
+finite, effectively specified collection of integer nonzero tests.
+\end{theorem}
+
+\begin{theorem}[Complete first-four-depth classification]\label{xxb:dc:thm:four}
+For $1\le d\le4$, $k\ge0$, and $M\ge d$,
+\begin{equation}\label{xxb:dc:eq:classification}
+ \gamma(k,d,M)=0
+ \quad\Longleftrightarrow\quad
+ M=k+4d+1\ \text{and}\ k+d\equiv0\pmod2.
+\end{equation}
+For $d=1,2$ the proof is entirely analytic.  For $d=3,4$ it uses finite
+exact-integer certificates after a proved infinite-to-finite reduction.
+\end{theorem}
+
+In the coordinates of this part: for $1\le m\le4$ and every $n\ge k$, the
+coefficient $c_{n,k,j}$ vanishes if and only if $k$ is even and $n=4k-2j+1$.
+For $m=1,2$ this is Theorems~\ref{xxb:thm:positive}, \ref{xxb:thm:m1}
+and~\ref{xxb:thm:m2}; for $m=3,4$ it is new, and it removes $m=3,4$ from the
+region \eqref{xxb:eq:gap-region}.
+
+The practical exceptional rectangles for this theorem are
+\begin{equation}\label{xxb:dc:eq:rectangles}
+ \begin{array}{ll}
+ d=3:&0\le k\le12,\quad0\le q\le37,\\
+ d=4:&0\le k\le83,\quad0\le q\le184.
+ \end{array}
+\end{equation}
+They contain 48 symmetry zeros and 15,986 nonzero entries in total.
+Subsection~\ref{xxb:dc:sec:certificates} explains every finite obligation and
+its verification.  Subsection~\ref{xxb:dc:sec:zero-count} gives a separate
+all-depth bound on the number of zeros for each fixed $k$.
+
+\subsubsection{What is and is not new here}
+
+The manuscript's own assessment, relative to the repository notes it read:
+the support reduction, the target quasipolynomial, the reflection idea, and
+the first two depths are prior repository material \cite{xxbdc-notes}.
+Meixner--Pollaczek polynomials are classical \cite{xxbdc-dlmf}; no new
+orthogonal-polynomial family is proposed.  The contribution is their use to
+prove all-depth bulk positivity, the effective uniform fixed-depth reduction,
+and its rigorous completion at depths three and four.  The real-zero bound and
+term-count lower bound are additional consequences.
+
+\emph{Relative to this part} the assessment is narrower.  All-depth bulk
+positivity is Theorem~\ref{xxb:thm:positive}, and the reflection zeros, the
+deficit-one and deficit-two classification and the upper bound are all proved
+above; the manuscript's proofs of them are second routes.  New relative to this
+part are: the centered factorization (Proposition~\ref{xxb:dc:prop:factor}); the
+closed form of the branch-cut kernel for every depth and its folding
+(Subsection~\ref{xxb:dc:sec:integral}); the monotone comparisons and the
+effective finite reduction at every fixed depth $d\ge3$
+(Theorem~\ref{xxb:dc:thm:finite}); the completion at deficits three and four
+(Theorem~\ref{xxb:dc:thm:four}); the zero-count bound
+(Theorem~\ref{xxb:dc:thm:zero-count}); and the lower bound of
+Corollary~\ref{xxb:dc:cor:lower}, which improves $\Lambda(n)$ of
+Theorem~\ref{xxb:thm:main-bounds}.
+
+The manuscript's literature and repository checks support it as a continuation
+beyond the inspected A290268 notes, not an assertion of absolute historical
+priority.  Related results on generalized Bernoulli polynomials, including
+integer interlacing in the order-equals-degree family, appear in
+\v{S}tampach's work \cite{xxbdc-stampach}.  Those results concern a different
+parameter regime and do not by themselves settle the coefficient nonvanishing
+considered here.  The addition is a research draft with explicit proof and
+computation boundaries, not an announcement that the entire OEIS conjecture has
+been solved.
+
+\subsection{Depth coordinates: exact coefficient and polynomial models}\label{xxb:dc:sec:models}
+
+\subsubsection{The lattice recurrence and the depth reduction}
+For $x>0$, write
+\begin{equation}\label{xxb:dc:eq:lattice}
+ \frac{d^N}{dx^N}x^{x^2}
+ =x^{x^2}\sum_{j\in\Z}\sum_{k\ge0}c_N(j,k)x^j(\log x)^k.
+\end{equation}
+Only finitely many coefficients are nonzero, and all are integers.  The
+sequence in question is $a(N)=\#\{(j,k):c_N(j,k)\ne0\}$.  The OEIS entry,
+proposed by Reshetnikov in 2017 and subsequently given alternative forms by
+Luschny, records the conjecture
+\begin{equation}\label{xxb:dc:eq:countconj}
+ a(2\rho)=2\rho^2+2\rho+1,\qquad
+ a(2\rho-1)=2\rho^2-\lfloor \rho/4\rfloor\quad(\rho\ge1),
+\end{equation}
+which is \eqref{xxb:eq:U-parity} with $\rho=r+1$ in the odd case.  The
+equivalent rational generating function remained labeled conjectural in the
+entry accessed for the manuscript on 29 September 2026 \cite{oeis290268}.
+The precise coefficient model is used rather than the output conventions of
+any computer algebra system.
+
+The functions $x^j(\log x)^k$ appearing in a finite expansion are linearly
+independent; this is Lemma~\ref{xxb:lem:unique}, and the manuscript's
+argument is the same one.  After setting $x=e^t$, a putative relation becomes a
+finite sum of exponentials $\exp(jt)$ times polynomials in $t$.  Divide by the
+largest exponential and let $t\to+\infty$; the corresponding polynomial must
+vanish.  Repeat.  Thus the coefficient support is an intrinsic object within
+this normal form.
+
+The repository notes already reduce the support problem to a three-parameter
+coefficient and prove or discuss several initial strata \cite{xxbdc-notes}.
+The Lean module \texttt{Main.lean} explicitly consumes the support
+characterization as a hypothesis in its support-to-count theorem
+\cite{xxbdc-main}; that conditional theorem is not treated as an existing
+proof of the conjecture (Section~\ref{xxb:dc:sec:formal}).
+
+Differentiating a basis term in \eqref{xxb:dc:eq:lattice} yields
+\begin{align}\label{xxb:dc:eq:rec-lattice}
+ c_{N+1}(j,k)={}&2c_N(j-1,k-1)+c_N(j-1,k)\\
+ &+(j+1)c_N(j+1,k)+(k+1)c_N(j+1,k+1),\notag
+\end{align}
+with $c_0(0,0)=1$ and all other initial coefficients zero.  Negative
+logarithmic indices are interpreted as zero.  This is the recurrence
+\eqref{xxb:eq:c-recurrence} re-indexed, and it is verbatim the definition of
+\texttt{coeff} in the Lean development.  In particular,
+\[
+ |j|\le N,\quad j\equiv N\pmod2,\quad 0\le k\le(N+j)/2
+\]
+are necessary for a nonzero coefficient.
+
+\begin{proposition}[Exact depth bridge]\label{xxb:dc:prop:bridge}
+For an integer pair $(j,k)$ in this support window, set
+$d=(N+j)/2-k$ and $M=N-k$.  Then
+\begin{equation}\label{xxb:dc:eq:bridge}
+ c_N(j,k)=\frac{N!}{k!d!}\gamma(k,d,M).
+\end{equation}
+If $d\ge1$ and $j\le-1$, so that $q=-j-1\ge0$, this becomes the
+integer identity
+\begin{equation}\label{xxb:dc:eq:integer-bridge}
+ c_N(j,k)=\binom Nk H_{d,k,q},\qquad
+ N=2k+2d+1+q.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Taylor expansion gives
+\[
+ \sum_{N\ge0}\frac{\xi^N}{N!}x^{-x^2}\frac{d^N}{dx^N}x^{x^2}
+ =\exp\bigl((2x\xi+\xi^2)\log x\bigr)
+  \exp\bigl((x+\xi)^2\log(1+\xi/x)\bigr).
+\]
+Set $w=\xi/x$.  The contribution of logarithmic degree $k$ in the first
+exponential and degree $d$ in the second is
+\[
+ \frac{x^{2k+2d}}{k!d!}\,w^k(2+w)^k\varphi(w)^d(\log x)^k.
+\]
+Extracting $\xi^N$ introduces $x^{-N}$, so $j=2k+2d-N$ and the remaining
+coefficient index is $N-k=M$.  This proves \eqref{xxb:dc:eq:bridge}.
+Substitution of \eqref{xxb:dc:eq:q} gives \eqref{xxb:dc:eq:integer-bridge}.
+\end{proof}
+
+Since $A(t)^kB(t)^d=t^k(2+t)^k\varphi(t)^d$, the bridge
+\eqref{xxb:dc:eq:bridge} is \eqref{xxb:eq:coefficient-AB} re-indexed, and the
+proof above is essentially the Taylor-expansion proof of
+Proposition~\ref{xxb:prop:egf}.
+
+For completeness,
+\begin{equation}\label{xxb:dc:eq:d0}
+ \gamma(k,0,M)=
+ \begin{cases}2^{k-M}\binom{k}{M},&0\le M\le k,\\0,&M>k,\end{cases}
+\end{equation}
+which is Proposition~\ref{xxb:prop:top}.  Also $\gamma(k,d,M)=0$ for $M<d$,
+since $\varphi$ has order one at the origin.
+
+\subsubsection{A parameter derivative}
+Define
+\[
+ \mathcal A_{M,k}(s)=[w^M](2+w)^k(1+w)^s.
+\]
+This is a polynomial in $s$.  Differentiation with respect to $s$ gives
+\begin{equation}\label{xxb:dc:eq:param}
+ \gamma(k,d,M)=\left.\frac{\partial^d}{\partial s^d}\mathcal A_{M,k}(s)\right|_{s=2d}.
+\end{equation}
+Thus the question is about Taylor coefficients of explicit polynomials,
+not the cancellation of numerical transcendental values.  (This is the
+depth-coordinate form of the finite-difference formula
+\eqref{xxb:eq:difference}.)
+
+\begin{definition}[Centered polynomial]\label{xxb:dc:def:Q}
+For an integer $r\ge0$, define $\mathcal Q_k^{(r)}(y)$ by
+\begin{equation}\label{xxb:dc:eq:Qgf}
+ \sum_{k\ge0}\frac{\mathcal Q_k^{(r)}(y)}{k!}\xi^k
+ =(1-\xi^2)^{-(r+1)/2}\exp\bigl(2y\atanh \xi\bigr).
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Centered factorization]\label{xxb:dc:prop:factor}
+If $M\ge k$ and $r=M-k$, then
+\begin{equation}\label{xxb:dc:eq:factor}
+ M!\,\mathcal A_{M,k}(s)=\fall{s}{r}\,
+ \mathcal Q_k^{(r)}\!\left(s-\frac{r-1}{2}\right).
+\end{equation}
+The polynomial $\mathcal Q_k^{(r)}$ has degree $k$, leading coefficient $2^k$,
+nonnegative coefficients, and parity $k$.  It satisfies
+\begin{equation}\label{xxb:dc:eq:Qrec}
+ \mathcal Q_0^{(r)}=1,\quad \mathcal Q_1^{(r)}=2y,\quad
+ \mathcal Q_{k+1}^{(r)}=2y\mathcal Q_k^{(r)}+k(k+r)\mathcal Q_{k-1}^{(r)}\quad(k\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expanding $(2+w)^k$ and factoring the common falling factorial gives
+\[
+ M!\,\mathcal A_{M,k}(s)
+ =\fall{s}{r}\sum_{\ell=0}^k\binom k\ell2^\ell
+       \frac{(r+k)!}{(r+\ell)!}\fall{(s-r)}{\ell}.
+\]
+The sum divided by $k!$ is
+\[
+ [t^k](1+t)^{r+k}(1+2t)^{s-r}.
+\]
+Under the formal residue substitution $t=\xi/(1-\xi)$, this coefficient is
+\[
+ [\xi^k](1+\xi)^{s-r}(1-\xi)^{-s-1}.
+\]
+With $y=s-(r-1)/2$, the last generating function is exactly
+\eqref{xxb:dc:eq:Qgf}.  This proves the factorization.
+Both $(1-\xi^2)^{-(r+1)/2}$ and $\atanh \xi=\xi+\xi^3/3+\cdots$ have nonnegative
+coefficients.  Expansion of the exponential proves coefficient
+nonnegativity and parity, and its top $y$-degree term gives $2^ky^k$.
+Finally, if $G$ is the generating function in \eqref{xxb:dc:eq:Qgf}, then
+\[
+ (1-\xi^2)G'(\xi)=(2y+(r+1)\xi)G(\xi).
+\]
+Coefficient comparison gives \eqref{xxb:dc:eq:Qrec}.
+\end{proof}
+
+In the standard normalization of the classical Meixner--Pollaczek
+polynomials $P_k^{(\lambda)}(x;\phi)$ (classical notation, unrelated to the
+$P_n$ of this part), the generating function in \cite[Eq.~18.23.7]{xxbdc-dlmf}
+gives
+\begin{equation}\label{xxb:dc:eq:MP}
+ \mathcal Q_k^{(r)}(y)=k!\,i^kP_k^{((r+1)/2)}(-iy;\pi/2).
+\end{equation}
+All uses of this family in the proof follow directly from
+Proposition~\ref{xxb:dc:prop:factor}, so no orthogonality theorem is an
+unstated dependency.
+
+\begin{corollary}[Mixed real and imaginary zeros]\label{xxb:dc:cor:imaginary}
+The zeros of $\mathcal Q_k^{(r)}$ are simple and purely imaginary.  More
+precisely, for positive numbers $\eta_1,\ldots,\eta_{\lfloor k/2\rfloor}$,
+\[
+ \mathcal Q_k^{(r)}(y)=2^ky^{k\bmod2}
+ \prod_{\ell=1}^{\lfloor k/2\rfloor}(y^2+\eta_\ell^2).
+\]
+Thus \eqref{xxb:dc:eq:factor} separates the consecutive real roots of the
+falling factorial from a centered imaginary-root factor.
+\end{corollary}
+\begin{proof}
+The monic polynomials $p_k(x)=2^{-k}i^{-k}\mathcal Q_k^{(r)}(ix)$ satisfy
+\[
+ p_{k+1}(x)=xp_k(x)-\frac{k(k+r)}4p_{k-1}(x).
+\]
+They are the characteristic polynomials of real symmetric tridiagonal
+matrices with zero diagonal and positive off-diagonal entries
+$\sqrt{\ell(\ell+r)}/2$.  The eigenvalues are real.  They are simple because an
+eigenvector is determined by its first coordinate through the tridiagonal
+recurrence, and a zero first coordinate would force the entire vector to
+vanish.  The zero diagonal and alternating sign conjugation make the
+spectrum symmetric about zero.  Transform back to $\mathcal Q_k^{(r)}$.
+\end{proof}
+
+\subsection{Depth coordinates: bulk positivity and symmetry holes}\label{xxb:dc:sec:bulk}
+
+Both results of this subsection were proved earlier in this part, by other
+means: the bulk is Theorem~\ref{xxb:thm:positive} and the holes are
+Theorem~\ref{xxb:thm:reflection-zeros}.  The manuscript's proofs are printed
+as second routes.
+
+\begin{proof}[Second proof of Theorem~\ref{xxb:thm:positive} for $m\ge1$
+(manuscript~06): proof of Theorem~\ref{xxb:dc:thm:bulk}]
+First suppose $M\ge k$ and put $r=M-k$.  The stated range implies
+$r\le2d+1$.  In \eqref{xxb:dc:eq:factor}, set $s=2d+u$.  Every factor of
+\[
+ \fall{(2d+u)}{r}=\prod_{\ell=0}^{r-1}(u+2d-\ell)
+\]
+has nonnegative constant term.  At most one has constant term zero.  If no
+factor vanishes at $u=0$, all coefficients through degree $r$ are positive;
+if one vanishes, all coefficients of degrees $1$ through $r$ are positive.
+The empty product is one.
+
+The argument of $\mathcal Q_k^{(r)}$ is $u+y_0$ with
+$y_0=2d-(r-1)/2\ge d>0$.  Its coefficients through degree $k$ are all
+positive: the leading term $2^k(u+y_0)^k$ already has that property, and
+all remaining contributions are nonnegative.  Since $1\le d\le r+k=M$,
+the coefficient of $u^d$ in the product is strictly positive.  Equation
+\eqref{xxb:dc:eq:param} proves the claim in this case.
+
+To handle $M<k$, induct on $k$ for the entire claimed range, using
+\begin{equation}\label{xxb:dc:eq:pascalgamma}
+ \gamma(k,d,M)=2\gamma(k-1,d,M)+\gamma(k-1,d,M-1).
+\end{equation}
+The $k=0$ case has already been proved.  When $M<k$ and $M\ge d$, the first
+term on the right is positive by induction.  The second is positive when
+$M-1\ge d$ and is zero otherwise.  Both indices lie in the preceding bulk
+range.  This completes the induction.
+\end{proof}
+
+\begin{corollary}[Positive derivative columns]\label{xxb:dc:cor:positivecols}
+Within the structural support window, every coefficient with $j\ge0$ is
+positive.  In the $j=-1$ column every coefficient with $d\ge1$ is positive,
+while the $d=0$ coefficient is zero.
+\end{corollary}
+\begin{proof}
+For $d\ge1$, the condition $M\le k+2d+1$ is exactly $j\ge-1$ by
+Proposition~\ref{xxb:dc:prop:bridge}.  For $d=0$, use \eqref{xxb:dc:eq:d0};
+its nonzero condition $M\le k$ is exactly $j\ge0$.
+\end{proof}
+
+In the coordinates of this part, $j\ge0$ is $n\le2k$ and $j=-1$ is $n=2k+1$,
+so the corollary restates Theorem~\ref{xxb:thm:positive} together with
+Proposition~\ref{xxb:prop:top}.
+
+\begin{theorem}[All-depth symmetry holes; second route to Theorem~\ref{xxb:thm:reflection-zeros}]\label{xxb:dc:thm:holes}
+For $d\ge1$ and $k\ge0$,
+\[
+ k+d\equiv0\pmod2\quad\Longrightarrow\quad
+ \gamma(k,d,k+4d+1)=0.
+\]
+\end{theorem}
+\begin{proof}
+Here $r=4d+1$ and the center $(r-1)/2$ is $2d$.  With $s=2d+u$,
+\[
+ \fall{s}{r}=u\prod_{\ell=1}^{2d}(u^2-\ell^2)
+\]
+is odd, whereas $\mathcal Q_k^{(r)}(u)$ has parity $k$.  The product has parity
+$k+1$.  Its $u^d$ coefficient therefore vanishes if $k+d$ is even.  Apply
+\eqref{xxb:dc:eq:param}.
+\end{proof}
+
+This proves the hole direction without relying on the analytic integral
+below.  The polynomial proof also distinguishes the symmetry statement
+from the separate assertion that there are no other zeros.  Translated,
+$M=k+4d+1$ is $q=2d$, that is $n=2k+2m+1=4k-2j+1$ in this part's letters, and
+$k+d$ even is ``$k$ even'' there; so the hole family is exactly the reflection
+family of Theorem~\ref{xxb:thm:reflection-zeros}, and the proof above is the
+odd-falling-factorial parity argument that Section~\ref{syn:share} identifies
+as common to all three parts.
+
+\subsection{Depth coordinates: the branch-cut integral and its folding}\label{xxb:dc:sec:integral}
+
+\subsubsection{An exact integral valid in the negative region}
+Let
+\begin{equation}\label{xxb:dc:eq:Rd}
+ R_d(v)=\frac{\operatorname{Im}(v+i\pi)^d}{\pi}.
+\end{equation}
+It is a real polynomial of degree $d-1$ with leading coefficient $d$.
+
+\begin{proposition}[Branch-cut formula]\label{xxb:dc:prop:integral}
+For $d\ge1$, $k\ge0$, and $M=k+2d+1+q$ with integer $q\ge0$,
+\begin{equation}\label{xxb:dc:eq:cut}
+ \gamma(k,d,M)=(-1)^{M+1}
+ \int_0^1 t^q(1-t)^{2d}(2t-1)^k
+ R_d\!\left(\log\frac{1-t}{t}\right)dt.
+\end{equation}
+The integral is absolutely convergent.
+\end{proposition}
+\begin{proof}
+Apply Cauchy's coefficient formula to
+$(2+w)^k(1+w)^{2d}\log^d(1+w)$, using the principal logarithm and deforming
+the circle to the cut $(-\infty,-1]$.  The small circle about $-1$ gives
+zero in the limit because its contribution is bounded by a constant times
+$\varepsilon^{2d+1}(1+|\log\varepsilon|^d)$.  The large circle vanishes
+because $M>k+2d$, with bound $O(R^{k+2d-M}\log^d R)$.
+
+At $w=-x$, $x>1$, the upper and lower logarithms are
+$\log(x-1)\pm i\pi$.  Their jump divided by $2\pi i$ is
+$R_d(\log(x-1))$.  The factor $w^{-M-1}$ contributes $(-1)^{M+1}$.
+Consequently the coefficient is
+\[
+ (-1)^{M+1}\int_1^\infty
+ \frac{(2-x)^k(x-1)^{2d}}{x^{M+1}}R_d(\log(x-1))\,dx.
+\]
+The substitution $t=1/x$ gives \eqref{xxb:dc:eq:cut}.  At $t=0$ and $t=1$ the
+integrand is bounded by a constant times a nonnegative integral power
+of the distance to the endpoint, multiplied by a fixed power of its
+logarithm.  This is integrable.
+\end{proof}
+
+\begin{remark}[Relation to Lemma~\ref{xxb:lem:beta}; editorial]\label{xxb:dc:rem:beta}
+Formula \eqref{xxb:dc:eq:cut} is the $\varepsilon$-expansion of
+Lemma~\ref{xxb:lem:beta} carried out for every deficit.  Indeed
+$\frac{\sin(\pi\varepsilon)}{\pi}\bigl(\tfrac{t}{1-t}\bigr)^{\varepsilon}
+=\operatorname{Im}\exp\bigl((\sigma+i\pi)\varepsilon\bigr)/\pi$ with
+$\sigma=\log\frac{t}{1-t}$, whose coefficient of $\varepsilon^m$ is
+$R_m(\sigma)/m!$.  Hence \eqref{xxb:eq:beta-c} reads
+\[
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!\,m!}\int_0^1t^{2m}(1-t)^{d}(2t-1)^j
+ R_m\Bigl(\log\frac{t}{1-t}\Bigr)dt
+\]
+in the letters of this part, and the substitution $t\mapsto1-t$ together with
+the dictionary of Table~\ref{xxb:dc:tab:notation} turns it into
+\eqref{xxb:dc:eq:integer-bridge} with \eqref{xxb:dc:eq:cut}.  For $m=1,2,3$ the
+kernel $R_m/m!$ is $1$, $\sigma$ and
+$\tfrac12\sigma^2-\tfrac{\pi^2}{6}$: the integrands
+\eqref{xxb:eq:m1-integral}, \eqref{xxb:eq:m2-integral} and
+\eqref{xxb:eq:m3-kernel}.  What is new below is the treatment of the sign change
+that Section~\ref{xxb:sec:small-m} identified as the obstruction at $m=3$.
+\end{remark}
+
+\subsubsection{The residual polynomial}
+For $d\ge1$, put
+\[
+ \nu_d=\left\lfloor\frac{d-1}{2}\right\rfloor,\qquad
+ h_d(\tau)=\begin{cases}1,&d\text{ odd},\\ \tau,&d\text{ even},\end{cases}
+\]
+and define the monic polynomial
+\begin{equation}\label{xxb:dc:eq:Pd}
+ \Pi_d(\zeta)=\prod_{\ell=1}^{\nu_d}\left(\zeta-\pi^2\cot^2\frac{\ell\pi}{d}\right).
+\end{equation}
+The empty product is one.  Factoring the imaginary part in
+\eqref{xxb:dc:eq:Rd} gives
+\begin{equation}\label{xxb:dc:eq:Rfactor}
+ R_d(-\tau)=(-1)^{d-1}d\,h_d(\tau)\Pi_d(\tau^2)\qquad(\tau>0).
+\end{equation}
+Indeed, the roots of $R_d$ are the distinct numbers
+$\pi\cot(\ell\pi/d)$ for $1\le \ell\le d-1$; pairing opposite roots proves the
+identity, including its leading coefficient.
+
+The initial cases are
+\begin{align}\label{xxb:dc:eq:Pinitial}
+ \Pi_1(\zeta)&=\Pi_2(\zeta)=1,\notag\\
+ \Pi_3(\zeta)&=\zeta-\pi^2/3,\qquad \Pi_4(\zeta)=\zeta-\pi^2,\\
+ \Pi_5(\zeta)&=\zeta^2-2\pi^2\zeta+\pi^4/5,\notag\\
+ \Pi_6(\zeta)&=\zeta^2-\tfrac{10}{3}\pi^2\zeta+\pi^4.\notag
+\end{align}
+Thus the first two depths have no residual sign change.  At depths three
+and four the residual polynomial is increasing.  At higher depths that
+last property fails and cannot be silently reused.
+
+\subsubsection{Positive measures on the half interval}
+For $1/2<t<1$, abbreviate
+\[
+ y=1-t,\quad s=2t-1,\quad \tau=\log(t/y),\quad p=2d,\quad
+ \delta=q-p,\quad b_d(t)=(ty)^p h_d(\tau).
+\]
+Reflect the part $0<t<1/2$ in \eqref{xxb:dc:eq:cut}.  Apart from the sign and
+positive factor $(-1)^{d-1}d$, the result is
+\begin{equation}\label{xxb:dc:eq:fold}
+ \int_{1/2}^1 b_d(t)s^k\Pi_d(\tau^2)
+ \bigl(t^\delta+(-1)^{k+d-1}y^\delta\bigr)dt.
+\end{equation}
+When $k+d$ is odd, the bracket is the positive sum
+$S_\delta(t)=t^\delta+y^\delta$.  When $k+d$ is even, it is the difference
+$D_\delta(t)=t^\delta-y^\delta$; it is identically zero for $\delta=0$ and
+otherwise has constant sign $\sgn\delta$.
+
+For a sum case, define a probability measure by normalizing
+$b_ds^kS_\delta\,dt$.  For a nonzero difference case, normalize
+$b_ds^k|D_\delta|\,dt$.  Write $\mathcal E_{d,k,q}$ for expectation with
+respect to the relevant measure.  The following sign rule is exact:
+\begin{equation}\label{xxb:dc:eq:sign-rule}
+ \sgn H_{d,k,q}=
+ \begin{cases}
+ (-1)^q\sgn\mathcal E_{d,k,q}[\Pi_d(\tau^2)],&k+d\text{ odd},\\
+ (-1)^{q+1}\sgn(q-2d)\sgn\mathcal E_{d,k,q}[\Pi_d(\tau^2)],
+      &k+d\text{ even},\ q\ne2d.
+ \end{cases}
+\end{equation}
+At a symmetry hole $H_{d,k,2d}=0$ by Theorem~\ref{xxb:dc:thm:holes}.
+All the measures above have finite logarithmic moments of every fixed
+order.
+
+\subsection{Depth coordinates: monotone comparisons}\label{xxb:dc:sec:monotone}
+
+\begin{lemma}[Covariance comparison]\label{xxb:dc:lem:covariance}
+Let $\mu$ be a probability measure on an interval, and let $f,g$ be
+nondecreasing functions with the needed integrability, $g>0$.  Then
+\[
+ \frac{\int fg\,d\mu}{\int g\,d\mu}\ge\int f\,d\mu.
+\]
+In particular, multiplying a positive density by a nondecreasing function
+can only increase expectations of nondecreasing functions.
+\end{lemma}
+\begin{proof}
+The covariance equals
+\[
+ \frac12\iint(f(u)-f(v))(g(u)-g(v))\,d\mu(u)\,d\mu(v)\ge0.
+\]
+Truncation proves the same conclusion for integrable unbounded functions.
+\end{proof}
+
+\begin{lemma}[Radial likelihood ratios]\label{xxb:dc:lem:ratios}
+On $(1/2,1)$ the following assertions hold.
+\begin{enumerate}[label=(\roman*),nosep]
+\item For every integer $\delta$, $S_\delta$ is nondecreasing.  The cases
+$\delta=0,1$ are constant.
+\item For every nonzero integer $\delta$, $|D_\delta|/s$ is positive and
+nondecreasing.  The positive cases $\delta=1,2$ are constant.
+\item If $\delta\ge1$ is an integer, both
+$S_{\delta+1}/S_\delta$ and $D_{\delta+1}/D_\delta$ are nondecreasing.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Write $v=\frac12\log(t/y)>0$, so
+$t=e^v/(2\cosh v)$ and $y=e^{-v}/(2\cosh v)$.  Direct calculation gives
+\begin{align}\label{xxb:dc:eq:ratios}
+ \frac{S_{\delta+1}}{S_\delta}
+ &=\frac12\bigl(1+\tanh v\tanh(\delta v)\bigr),\notag\\
+ \frac{D_{\delta+1}}{D_\delta}
+ &=\frac12\bigl(1+\tanh v\coth(\delta v)\bigr).
+\end{align}
+The first expression is nondecreasing for $\delta\ge0$.  For $\delta\ge1$,
+\[
+ \frac{d}{dv}\log\bigl(\tanh v\coth(\delta v)\bigr)
+ =\frac{2}{\sinh(2v)}-\frac{2\delta}{\sinh(2\delta v)}\ge0,
+\]
+using $\sinh(\delta x)\ge\delta\sinh x$ for $\delta\ge1$, $x>0$.
+This proves (iii).  Products of these ratios, starting at $S_1=1$ and
+$D_1=s$, prove (i) and (ii) for positive $\delta$.  For a negative integer
+$\delta=-a$, use
+\[
+ S_{-a}=(ty)^{-a}S_a,\qquad |D_{-a}|=(ty)^{-a}D_a.
+\]
+The extra factor is nondecreasing because $ty$ decreases on the half
+interval.  The stated constant cases are immediate.
+\end{proof}
+
+For real $r\ge0$, let $\mu_{d,r}$ denote the probability measure obtained
+by normalizing $b_d(t)s^r\,dt$, and set
+\begin{equation}\label{xxb:dc:eq:base-moment}
+ \mathcal B_d(r)=\mathbb E_{\mu_{d,r}}[\tau^2].
+\end{equation}
+
+\begin{proposition}[Uniform comparison with a symmetric base]\label{xxb:dc:prop:base}
+For every integer $q\ge0$ outside a symmetry hole,
+\begin{align}\label{xxb:dc:eq:basecmp}
+ \mathcal E_{d,k,q}[\tau^2]&\ge \mathcal B_d(k),&&k+d\text{ odd},\notag\\
+ \mathcal E_{d,k,q}[\tau^2]&\ge \mathcal B_d(k+1),&&k+d\text{ even}.
+\end{align}
+The function $\mathcal B_d(r)$ is nondecreasing in $r$.  Within either parity
+class of $k$, the expectations of every increasing function of $\tau^2$
+increase when $k$ increases by two.  They also increase when $q$ increases by
+one in the region $q\ge2d+1$.
+\end{proposition}
+\begin{proof}
+For a sum measure, its ratio to the base density with exponent $k$ is
+$S_\delta$, which is nondecreasing by Lemma~\ref{xxb:dc:lem:ratios}.  For a
+difference measure, its ratio to the base with exponent $k+1$ is
+$|D_\delta|/s$, again nondecreasing.  Apply Lemma~\ref{xxb:dc:lem:covariance}.
+Increasing $r$ multiplies a base density by a positive power of $s$.
+Increasing $k$ by two multiplies either type of density by $s^2$.
+The assertion about $q$ follows from the adjacent ratios in
+\eqref{xxb:dc:eq:ratios}, with $\delta\ge1$.
+\end{proof}
+
+\begin{remark}[The role of integer parameters]\label{xxb:dc:rem:integer}
+The global base comparison uses integer $\delta$.  For noninteger
+$0<\delta<1$, the sum $S_\delta$ has different monotonicity.  No conclusion
+about that interval is being smuggled into the integer coefficient
+problem.  The real-zero theorem in Subsection~\ref{xxb:dc:sec:zero-count} uses
+a separate argument and does not depend on the integer comparison.
+\end{remark}
+
+\subsection{Depth coordinates: an explicit finite reduction at every depth}\label{xxb:dc:sec:effective}
+
+This subsection proves Theorem~\ref{xxb:dc:thm:finite} with deliberately crude
+but fully explicit bounds.  Their purpose is decidability of a fixed-depth
+stratum, not efficient computation.  The next subsection replaces them by
+small bounds at depths three and four.
+
+\subsubsection{A monotone lower bound for every residual polynomial}
+For $d\ge3$, put
+\begin{equation}\label{xxb:dc:eq:constants}
+ \begin{split}
+ \nu_d&=\lfloor(d-1)/2\rfloor,\qquad
+ C_d=[3(d^2+1)]^{\nu_d}+d^2+1,\\
+ A_d&=4C_d+2,\qquad E_d=(2d+1)A_d+6d+2,\\
+ K_d&=2^{A_d}(E_d+A_d+2),\\
+ Q_d&=2d+2^{A_d+1}(E_d+A_d+6).
+ \end{split}
+\end{equation}
+These are positive integers constructed by elementary integer operations
+and exponentiation.
+
+\begin{lemma}[Affine minorant]\label{xxb:dc:lem:minorant}
+For all $\zeta\ge0$,
+\begin{equation}\label{xxb:dc:eq:minorant}
+ \Pi_d(\zeta)\ge\tfrac12\zeta-C_d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every root $\beta$ of $\Pi_d$ satisfies $0<\beta<d^2$, because
+$\pi\cot(\pi/d)<d$.  For $\zeta\ge2(d^2+1)$, each factor $\zeta-\beta$ is at
+least $\zeta/2$, and $\nu_d\ge1$ implies $\Pi_d(\zeta)\ge(\zeta/2)^{\nu_d}\ge\zeta/2$.
+For $0\le\zeta\le2(d^2+1)$, the absolute value of the product is at most
+$[3(d^2+1)]^{\nu_d}$.  Meanwhile $\zeta/2-C_d$ is at most the negative of that
+quantity.  This proves the inequality on both ranges.
+\end{proof}
+
+\subsubsection{Explicit concentration of the base measure}
+Write $A=A_d$, $E=E_d$, and choose rational points
+\[
+ t_0=1-2^{-A},\quad t_1=1-2^{-A-1},\quad t_2=1-2^{-A-2}.
+\]
+On $t\ge t_0$,
+\begin{equation}\label{xxb:dc:eq:largeL}
+ \tau^2\ge\log^2(2^A-1)>\frac{(A-1)^2}{4}>4C_d,
+\end{equation}
+where $\log2>1/2$ and $A=4C_d+2$ were used.
+Below $t_0$, the base factor $b_d$ has integral at most $A$: use
+$(t(1-t))^{2d}\le1$ and, when $d$ is even, $\tau<A$.
+On $[t_1,t_2]$, the interval length is $2^{-A-2}$,
+$t(1-t)\ge2^{-A-3}$, and $h_d(\tau)\ge1$.  Therefore
+\begin{equation}\label{xxb:dc:eq:base-mass}
+ \int_{t_1}^{t_2}b_d(t)\,dt\ge2^{-E}.
+\end{equation}
+
+\begin{lemma}[Large base exponent]\label{xxb:dc:lem:largek}
+If $r\ge K_d$, then $\mathcal B_d(r)>2C_d$.
+\end{lemma}
+\begin{proof}
+Let $s_0=2t_0-1=1-2^{1-A}$ and
+$s_1=2t_1-1=1-2^{-A}$.  The ratio of the unnormalized mass below $t_0$ to
+the mass on $[t_1,t_2]$ is at most
+\[
+ A2^E(s_0/s_1)^r\le A2^E\exp(-2^{-A}r)<1.
+\]
+For the last inequality, substitute $r\ge2^A(E+A+2)$ and use
+$\log A<A$, $\log2<1$.  Thus the normalized mass above $t_0$ exceeds
+one half.  Equation~\eqref{xxb:dc:eq:largeL} gives $\mathcal B_d(r)>2C_d$.
+\end{proof}
+
+\subsubsection{Explicit concentration in the tail parameter}
+\begin{lemma}[Large coefficient tail]\label{xxb:dc:lem:largeq}
+If $q\ge Q_d$, then in both parity types and for every $k\ge0$,
+\[
+ \mathcal E_{d,k,q}[\tau^2]>2C_d.
+\]
+\end{lemma}
+\begin{proof}
+Within each parity type it suffices, by
+Proposition~\ref{xxb:dc:prop:base}, to use its smallest possible $k$, either
+zero or one.  Put $\delta=q-2d\ge1$.  On the part below $t_0$, the bracket
+$S_\delta$ or $D_\delta$ is at most $2t_0^\delta$, so the unnormalized
+mass is at most $2At_0^\delta$.
+On $[t_1,t_2]$, the factor $s^k$ is at least $1/2$.  Both brackets are at
+least $t_1^\delta/2$: for the difference use
+$D_\delta=t^\delta(1-(y/t)^\delta)$ and $y/t<1/2$ there.
+The interval mass is consequently at least $2^{-E}t_1^\delta/4$.
+The ratio of the bad mass to this interval mass is at most
+\[
+ 8A2^E(t_0/t_1)^\delta
+ \le8A2^E\exp(-2^{-A-1}\delta)<1,
+\]
+by $\delta\ge2^{A+1}(E+A+6)$.  Once again, more than half of the
+probability lies above $t_0$, and \eqref{xxb:dc:eq:largeL} finishes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{xxb:dc:thm:finite}]
+If $k\ge K_d$, the base comparison and Lemma~\ref{xxb:dc:lem:largek} imply
+$\mathcal E_{d,k,q}[\tau^2]>2C_d$ for every nonhole $q\ge0$.  If $q\ge Q_d$,
+Lemma~\ref{xxb:dc:lem:largeq} gives the same conclusion for every $k$.
+In either case, Lemma~\ref{xxb:dc:lem:minorant} gives
+\[
+ \mathcal E_{d,k,q}[\Pi_d(\tau^2)]
+ \ge\tfrac12\mathcal E_{d,k,q}[\tau^2]-C_d>0.
+\]
+The sign rule \eqref{xxb:dc:eq:sign-rule} proves nonvanishing outside the
+stated symmetry holes.  The holes themselves were proved independently.
+Combined with bulk positivity and the structural zeros, this confines every
+possible extra zero to $0\le k<K_d$, $0\le q<Q_d$.
+\end{proof}
+
+\begin{corollary}[A terminating fixed-depth decision algorithm]\label{xxb:dc:cor:decision}
+Given $d\ge1$, there is an algorithm that decides whether
+\eqref{xxb:dc:eq:classification} holds for every pair of integer parameters
+$(k,M)$ at that depth.  For $d\ge3$, it computes the finite rectangle
+specified by \eqref{xxb:dc:eq:constants} using integer polynomial recurrences.
+If the answer is negative, it returns an exact counterexample.
+\end{corollary}
+
+\begin{remark}[The bound depends on the depth]\label{xxb:dc:rem:depthdependent}
+The bound is uniform in both $k$ and $q$, but depends on $d$.  It is not a
+finite verification of the full conjecture over all depths.  Nor do the
+enormous universal constants justify a practical exhaustive computation.
+Their value is the proved reduction; efficient certificates need sharper
+analysis, as the next subsection demonstrates.
+\end{remark}
+
+\subsection{Depth coordinates: completing depths one through four}\label{xxb:dc:sec:four}
+
+\subsubsection{The first two depths}
+For $d=1,2$, the residual polynomial $\Pi_d$ is identically one.  Every
+positive-weight expectation in \eqref{xxb:dc:eq:sign-rule} is strictly
+positive.  Together with bulk positivity and the symmetry theorem, this proves
+\eqref{xxb:dc:eq:classification} at the first two depths.  In particular, no
+higher Peano-kernel argument is needed for depth two.  (This is a second route
+to the zero classification of Theorems~\ref{xxb:thm:m1} and~\ref{xxb:thm:m2},
+which prove more: the complete sign pattern.  The manuscript's folding
+\eqref{xxb:dc:eq:fold} is the pairing $t\leftrightarrow1-t$ used in their
+proofs.)
+
+\subsubsection{A small-certificate criterion for depths three and four}
+At these depths, $\Pi_d(\tau^2)$ is an increasing affine function of $\tau^2$.
+The comparisons in Proposition~\ref{xxb:dc:prop:base} apply to its expectation
+itself, not merely to a lower bound.
+
+\begin{proposition}[Three signs and a finite rectangle]\label{xxb:dc:prop:smallcert}
+Let $d\in\{3,4\}$.  Choose $R\ge2$ of parity $d-1$ and an integer
+$Q\ge2d+1$.  Put $k_s=(d-1)\bmod2$ and $k_a=d\bmod2$.
+Suppose
+\begin{equation}\label{xxb:dc:eq:seeds}
+ H_{d,R,2d}>0,\qquad
+ (-1)^QH_{d,k_s,Q}>0,\qquad
+ (-1)^{Q+1}H_{d,k_a,Q}>0.
+\end{equation}
+Then every nonhole entry with $k\ge R-1$ or $q\ge Q$ is nonzero.
+Consequently the full depth is settled by testing
+$0\le k\le R-2$, $0\le q\le Q-1$.
+\end{proposition}
+\begin{proof}
+Since $R+d$ is odd and $2d$ is even, the first sign in
+\eqref{xxb:dc:eq:seeds} says exactly that the base expectation
+$\mathbb E_{\mu_{d,R}}\Pi_d(\tau^2)$ is positive.  In a sum case with
+$k\ge R-1$, parity forces $k\ge R$.  In a difference case the comparison base
+has exponent $k+1\ge R$.  Thus all nonhole entries in this $k$-range have
+positive reduced expectation.
+
+The remaining two signs are exactly positive reduced expectations for
+the smallest sum and difference parity classes at $q=Q$; here
+$Q>2d$.  Increasing $k$ by two and increasing $q$ by one preserves that
+positivity by Proposition~\ref{xxb:dc:prop:base}.  This covers every $q\ge Q$.
+\end{proof}
+
+For $d=3$, take $(R,Q)=(14,38)$.  For $d=4$, take $(R,Q)=(85,185)$.
+The six seed signs and the two rectangles are verified in the next
+subsection.  This proves Theorem~\ref{xxb:dc:thm:four}.
+
+\subsubsection{What the result says about individual coefficients}
+At depth three the only holes have
+\[
+ q=6,\quad k\text{ odd};\qquad
+ j=-7,\quad N=2k+13.
+\]
+At depth four they have
+\[
+ q=8,\quad k\text{ even};\qquad
+ j=-9,\quad N=2k+17.
+\]
+(In this part's letters: $m=3$, $j$ odd, $n=2j+13$; and $m=4$, $j$ even,
+$n=2j+17$ --- in both cases $k=j+m$ even and $n=4k-2j+1$.)
+All other entries at those depths are nonzero, regardless of derivative
+order.  Above the practical $k$ or $q$ thresholds their signs are the
+explicit signs in \eqref{xxb:dc:eq:sign-rule} with the reduced expectation
+replaced by a positive number.
+
+Nonzero does not mean positive.  For example, in the $d=3,k=0$ row the
+reduced expectation is positive at $q=0$, negative for $1\le q\le37$,
+and positive for all $q\ge38$.  These sign changes explain why a naive
+one-sign induction can fail without producing an integer zero.  The exact
+finite sign data are shipped as
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak sign\_thresholds.csv}.
+
+\subsection{Depth coordinates: the integer certificates and independent checks}\label{xxb:dc:sec:certificates}
+
+\subsubsection{First recurrence: fixed tail column}
+Set $r=2d+1+q$ and work in $\Z[u]/(u^{d+1})$.  From
+\eqref{xxb:dc:eq:factor},
+\begin{equation}\label{xxb:dc:eq:Hjet}
+ H_{d,k,q}=[u^d]\fall{(2d+u)}{r}\,
+ \mathcal Q_k^{(r)}\!\left(u+\frac{2d-q}{2}\right).
+\end{equation}
+Although the displayed center may be half-integral, the recurrence only
+uses the integer linear polynomial $2u+2d-q$.  If $V_k(u)$ denotes the
+product on the right, truncated after degree $d$, then
+\begin{equation}\label{xxb:dc:eq:Vrec}
+ \begin{split}
+ V_0(u)&=\fall{(2d+u)}{r}\pmod{u^{d+1}},\\
+ V_1(u)&=(2u+2d-q)V_0(u)\pmod{u^{d+1}},\\
+ V_{k+1}(u)&=(2u+2d-q)V_k(u)+k(k+r)V_{k-1}(u)
+                 \pmod{u^{d+1}}.
+ \end{split}
+\end{equation}
+The required integer is the coefficient of $u^d$ in $V_k$.
+Multiplication by each linear factor of $V_0$ and every recurrence step
+are implemented directly on lists of integers.  Induction proves that
+truncation cannot affect any coefficient being tested.
+
+\subsubsection{Second recurrence: Pascal propagation}
+Equation~\eqref{xxb:dc:eq:pascalgamma} gives the independent array recurrence
+\begin{equation}\label{xxb:dc:eq:Hpascal}
+ H_{d,k+1,q}=2H_{d,k,q+1}+(k+2d+2+q)H_{d,k,q},
+\end{equation}
+with
+\[
+ H_{d,0,q}=[u^d]\fall{(2d+u)}{2d+1+q}.
+\]
+To compute $0\le k\le K$, $0\le q\le Q$, initialize the $k=0$ row
+through $q=Q+K$ and shorten it at each step.  This recurrence comes from
+multiplying by $(2+w)$, rather than from the centered-polynomial
+three-term recurrence.  Every entry of both finite rectangles was
+recomputed by both methods and compared as an exact integer.
+
+\subsubsection{Finite obligations and results}
+\begin{center}
+\begin{tabular}{crrrrr}
+\toprule
+Depth & $k$ maximum & $q$ maximum & Cells & Symmetry zeros & Nonzero\\
+\midrule
+3 & 12 & 37 & 494 & 6 & 488\\
+4 & 83 & 184 & 15,540 & 42 & 15,498\\
+\midrule
+Total &&&16,034&48&15,986\\
+\bottomrule
+\end{tabular}
+\end{center}
+No additional zero occurs in either rectangle.  Every nonzero integer
+also has a nonzero residue modulo at least one of $1009$ and $1013$.
+The first modulus suffices for every nonzero depth-three entry; nineteen
+depth-four entries require the second modulus.  Primality is not needed
+for this particular witness rule: a nonzero residue modulo any integer
+greater than one already proves the original integer is nonzero.
+
+The necessary seed signs are
+\begin{center}
+\begin{tabular}{crrrl}
+\toprule
+$d$ & $k$ & $q$ & $\sgn H_{d,k,q}$ & Role\\
+\midrule
+3&14&6&$+$&central base\\
+3&0&38&$+$&sum tail\\
+3&1&38&$-$&difference tail\\
+4&85&8&$+$&central base\\
+4&1&185&$-$&sum tail\\
+4&0&185&$+$&difference tail\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example,
+\[
+ H_{3,14,6}=9707604961443840000>0,
+ \qquad H_{3,12,6}=-14670288691200000<0.
+\]
+The exact larger seed integers, rather than floating-point
+approximations, are stored in
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak verification.json}.
+The preceding central values at $k=12$ and $k=83$ are negative, so the
+chosen central exponents are the first positive ones in their relevant
+parity classes.  This observation is not needed for validity of the
+certificates.
+
+\begin{remark}[The rectangles lie inside the range certified in this part; editorial]\label{xxb:dc:rem:inside}
+By $N=2k+2d+1+q$, the depth-three rectangle reaches derivative order
+$N\le2\cdot12+7+37=68$ and the depth-four rectangle $N\le2\cdot83+9+184=359$;
+the six seeds sit at $N=41,45,47$ ($d=3$) and $N=187,194,196$ ($d=4$).  All of these lie inside the range $n\le3000$ of
+Proposition~\ref{xxb:prop:finite}, whose modular certificate already shows
+that every rectangle cell outside the reflection family is nonzero.  The
+nonvanishing half of the manuscript's finite computation is therefore a second,
+independent confirmation of cells this part had already certified; what
+Proposition~\ref{xxb:prop:finite} does not supply is the six seed
+\emph{signs} \eqref{xxb:dc:eq:seeds}, which the reduction needs and which the
+manuscript computes.  The contribution of the addition is the proved reduction
+(Proposition~\ref{xxb:dc:prop:smallcert}) that makes a finite set of cells
+decide every $n$, not the finite range itself.
+\end{remark}
+
+\subsubsection{Additional cross-check against differentiation}
+The shipped program independently generates the original lattice using
+\eqref{xxb:dc:eq:rec-lattice} through $N=80$.  It checks:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Exact test & Number of cells\\
+\midrule
+Positive bulk cells & 69,701\\
+Identity $c_N(j,k)=\binom NkH_{d,k,-j-1}$ & 21,320\\
+First-four-depth zero classification in that lattice & 5,780\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are consistency checks on implementation and index translation.
+They are not the justification for the infinite theorem; that
+justification is Proposition~\ref{xxb:dc:prop:smallcert} together with the
+finite obligations just listed.
+
+\subsubsection{Reproduction and trust boundary}
+From the report directory, on a copy (see below), run
+\begin{lstlisting}
+python3 code/02-depth-certificates-minimal_verify.py
+python3 code/02-depth-certificates-verify.py
+\end{lstlisting}
+The first prints \texttt{PASS}; the second prints a JSON report with
+\texttt{"status": "PASS"} and writes nothing.  The manuscript's regeneration
+command, \texttt{verify.py --write-data}, writes the unprefixed files
+\texttt{finite\_certificate.csv}, \texttt{sign\_thresholds.csv} and
+\texttt{verification.json} into \texttt{data/} beside the shipped prefixed
+copies, so it should be run only on a copy of the report directory.
+The code uses only Python's standard library and arbitrary-precision
+integers.  It uses no floating point, symbolic algebra library, random
+search, external service, or precomputed presumed support formula.
+Failures raise explicit exceptions, even if Python assertions are
+disabled.  The CSV file supplies the sign and both modular residues for
+every rectangle cell.
+
+The finite checks were run for the manuscript and returned \texttt{PASS}; they
+were rerun on a copy during the intake and passed again, with byte-identical
+CSV files.  Ordinary program execution is still not a proof-assistant kernel
+check.  A formal version would need the polynomial-model bridge, correctness
+of one recurrence, and a proved modular checker; the analytic lemmas would
+also need formalization.  No such formalization is claimed.  The two exact
+recurrences reduce the risk of implementation or indexing error, but do not
+replace independent mathematical review.
+
+\subsection{Depth coordinates: an all-depth bound on the number of zeros}\label{xxb:dc:sec:zero-count}
+
+The branch-cut formula also controls how often cancellation can occur,
+without any fixed-depth classification assumption.
+For fixed $d\ge1$ and $k\ge0$, define for real $q>-1$
+\begin{equation}\label{xxb:dc:eq:Mellin}
+ \mathcal F_{d,k}(q)=\int_0^1 t^q(1-t)^{2d}(2t-1)^k
+ R_d\!\left(\log\frac{1-t}{t}\right)dt.
+\end{equation}
+For integer $q\ge0$, its zeros are precisely those of $H_{d,k,q}$.
+
+\begin{lemma}[Mellin zero bound from sign changes]\label{xxb:dc:lem:mellin}
+Let $W$ be a nonzero continuous real weight on $(0,1)$ with finitely
+many zeros and exactly $J$ sign changes.  Assume that $t^qW(t)$ is
+integrable for every $q>-1$.  Then
+$F(q)=\int_0^1t^qW(t)\,dt$ has at most $J$ distinct real zeros in
+$(-1,\infty)$.  Here a sign change refers to a crossing of sign, not an
+even-multiplicity zero of the weight.
+\end{lemma}
+\begin{proof}
+Suppose $q_0<\cdots<q_J$ are zeros.  There is a nonzero linear combination
+$\psi(t)=\sum_{i=0}^Ja_it^{q_i}$ vanishing at the $J$ sign-change points of
+$W$: solve the corresponding homogeneous system of $J$ linear equations.
+A nonzero linear combination of $J+1$ distinct real powers has at most
+$J$ positive zeros, counting multiplicities.  This follows inductively by
+dividing by the smallest power, differentiating, and applying Rolle's
+theorem.  It also establishes linear independence of the powers.
+
+Hence the prescribed zeros of $\psi$ are simple and there are no others.
+After changing the overall sign, $\psi W$ is nonnegative throughout the
+interval and positive on a set of positive measure.  Therefore
+\[
+ 0<\int_0^1\psi(t)W(t)\,dt=\sum_{i=0}^Ja_iF(q_i)=0,
+\]
+a contradiction.  Continuity and the finite zero set ensure strict
+positivity of $\psi W$ on an interval, as needed above.
+\end{proof}
+
+\begin{theorem}[At most $d$ cancellations in a fixed row]\label{xxb:dc:thm:zero-count}
+The number of distinct real zeros of $\mathcal F_{d,k}$ on $(-1,\infty)$ is at
+most
+\begin{equation}\label{xxb:dc:eq:J}
+ J(d,k)=
+ \begin{cases}
+ d-1,&k\text{ even},\\
+ d,&k\text{ odd and }d\text{ odd},\\
+ d-2,&k\text{ odd and }d\text{ even}.
+ \end{cases}
+\end{equation}
+In particular, for fixed $k,d$ there are at most $d$ integer zeros in the
+entire negative-region tail.  If a symmetry zero is present, it consumes
+one of these permitted zeros.
+\end{theorem}
+\begin{proof}
+The polynomial $R_d$ has $d-1$ distinct real roots.  The logarithmic
+argument in \eqref{xxb:dc:eq:Mellin} is strictly decreasing from $+\infty$ to
+$-\infty$, so these initially give $d-1$ sign changes.
+If $k$ is even, $(2t-1)^k$ adds no sign change.  If $k$ is odd and $d$ is
+odd, $R_d(0)\ne0$, and the factor adds one sign change at $t=1/2$.
+If $k$ is odd and $d$ is even, $R_d$ has a simple zero at zero; its sign
+change at $t=1/2$ is canceled by the odd power of $2t-1$, leaving $d-2$.
+The remaining factors are positive.  Apply Lemma~\ref{xxb:dc:lem:mellin}.
+\end{proof}
+
+The theorem is a zero-count statement, not an assertion that all zeros
+are simple or that the upper bound is always attained.  It also does not
+rule out an integer zero by locating nearby real zeros; the finite
+certificates are what supply that additional information at depths three
+and four.  In this part's letters, it bounds by $J(m,j)$ the number of $n$ at
+which a fixed $(j,m)$ diagonal can vanish with $n\ge2k+1$.
+
+\subsection{Depth coordinates: consequences for the term count}\label{xxb:dc:sec:counts}
+
+\subsubsection{An unconditional upper bound (second route to Theorem~\ref{xxb:thm:upper})}
+The triangular support window and \eqref{xxb:dc:eq:d0} imply that, in negative
+columns, the top $d=0$ term is absent.  Removing those structural zeros,
+the number of remaining cells is
+$2\rho^2+2\rho+1$ when $N=2\rho$ and $2\rho^2$ when $N=2\rho-1$.
+For even $N$ no symmetry hole is possible.  For odd $N=2\rho-1$, a hole has
+\[
+ k=\rho-2d-1\ge0,\qquad d\equiv \rho-1\pmod2.
+\]
+Counting these depths gives $\lfloor \rho/4\rfloor$ holes (or check the four
+residue classes of $\rho$).  Thus, independently of unknown nonvanishing,
+\begin{equation}\label{xxb:dc:eq:upper}
+ a(2\rho)\le2\rho^2+2\rho+1,\qquad
+ a(2\rho-1)\le2\rho^2-\lfloor \rho/4\rfloor.
+\end{equation}
+The conjecture is exactly equality in these bounds.  This is
+Theorem~\ref{xxb:thm:upper} and its equality clause, with the hole count
+$\lfloor\rho/4\rfloor=\lfloor(n+1)/8\rfloor$ of
+Lemma~\ref{xxb:lem:reflection-count} counted by depth instead of by $k$.
+
+\subsubsection{A certified lower bound from the proved regions}
+Let $\beta(N)$ count the proved positive bulk cells, including $d=0$
+where it is nonzero.  Direct summation gives
+\begin{equation}\label{xxb:dc:eq:B}
+ \beta(2\rho)=\frac{(\rho+1)(3\rho+2)}2,\qquad
+ \beta(2\rho-1)=\frac{3\rho^2+3\rho-2}2\quad(\rho\ge1).
+\end{equation}
+These are exactly the two cases of $\Lambda(N)$ in \eqref{xxb:eq:bounds}: the
+bulk is the region of Theorem~\ref{xxb:thm:positive}, and
+Corollary~\ref{xxb:cor:lower} counts the same cells.
+For a fixed depth $1\le d\le4$, the cells outside this bulk have $q\ge1$.
+The identity $N=2k+2d+1+q$ shows that their number before holes is
+$\max(0,\lfloor N/2\rfloor-d)$.  Define
+\begin{equation}\label{xxb:dc:eq:hd}
+ \chi_d(N)=\mathbf 1\{N\ge4d+1\text{ and }N\equiv2d+1\pmod4\}.
+\end{equation}
+This is exactly the number, zero or one, of symmetry holes at that depth
+and derivative order.
+
+\begin{corollary}[Explicit unconditional lower bound]\label{xxb:dc:cor:lower}
+For all $N\ge0$,
+\begin{equation}\label{xxb:dc:eq:lower}
+ a(N)\ge \beta(N)+\sum_{d=1}^4\max(0,\lfloor N/2\rfloor-d)
+                  -\sum_{d=1}^4\chi_d(N).
+\end{equation}
+In particular, the lower bound has leading term $3N^2/8$, whereas the
+conjectured upper bound has leading term $N^2/2$.
+\end{corollary}
+\begin{proof}
+Count the positive bulk and the disjoint first-four-depth cells with
+$q\ge1$.  By Theorem~\ref{xxb:dc:thm:four}, only the indicated holes must be
+removed.  The counts give \eqref{xxb:dc:eq:lower}.
+\end{proof}
+
+For example, for even $N=2\rho$ with $\rho\ge4$, the lower bound simplifies to
+$(3\rho^2+13\rho-18)/2$.  It agrees with the conjectured value at $N=8,10$ and is
+84 at $N=12$, compared with the conjectured upper value 85.  The unresolved
+cell there has depth five.  These examples illustrate the precise
+boundary of the argument; they are not evidence that depth five fails.
+No asymptotic equivalence $a(N)\sim N^2/2$ is deduced here.
+
+\begin{remark}[How much this improves $\Lambda$; editorial]\label{xxb:dc:rem:improve}
+Since $\beta=\Lambda$, the gain of \eqref{xxb:dc:eq:lower} over
+Theorem~\ref{xxb:thm:main-bounds} is the sum of the last two terms.  For even
+$N\ge8$ no hole occurs and every maximum is attained by
+$N/2-d\ge0$; for odd $N\ge17$ each maximum is $(N-1)/2-d>0$ and exactly two
+indicators equal one (at $d=1,3$ if $N\equiv3$, at $d=2,4$ if $N\equiv1\pmod4$).
+Hence
+\[
+ a(N)\ge
+ \begin{cases}
+ \Lambda(N)+2N-10=\dfrac{3N^2+26N-72}{8},&N\text{ even},\ N\ge8,\\[8pt]
+ \Lambda(N)+2N-14=\dfrac{3N^2+28N-111}{8},&N\text{ odd},\ N\ge17.
+ \end{cases}
+\]
+The leading constant $3/8$ is unchanged; the linear term improves.  Below these thresholds the gain is read off
+\eqref{xxb:dc:eq:lower} directly; the bound equals $\U(N)$ for every $N\le11$.  Of the even gain
+$2N-10$, the part $N-3$ from depths one and two already followed from
+Theorems~\ref{xxb:thm:m1}--\ref{xxb:thm:m2}, although Part~\ref{xxb:part} did
+not add it to $\Lambda$; the part $N-7$ from depths three and four is new.  At
+odd $N\ge17$ the split is $(N-5)+(N-9)$.  The two closed forms were checked
+against a direct count of the proved cells for every $N<400$.  $\Lambda(n)$
+remains the lower bound stated in Theorem~\ref{xxb:thm:main-bounds}; the
+certified range $n\le3000$ of Proposition~\ref{xxb:prop:finite} makes both
+bounds irrelevant there, since $a(n)=\U(n)$ is known for those $n$.
+\end{remark}
+
+\subsection{Depth coordinates: further research questions}\label{xxb:dc:sec:future}
+
+\subsubsection{Depths five and six: a stronger moment criterion}
+The explicit quadratics in \eqref{xxb:dc:eq:Pinitial} suggest a practical next
+step.  Since $\mathbb E[Z^2]\ge(\mathbb E Z)^2$, where $Z=\tau^2$, sufficient
+conditions for positive reduced expectation are
+\begin{align}\label{xxb:dc:eq:nextcriteria}
+ d=5:&\qquad \mathbb E Z>\pi^2(1+2/\sqrt5),\notag\\
+ d=6:&\qquad \mathbb E Z>3\pi^2.
+\end{align}
+These follow by applying the variance inequality to the two quadratic
+polynomials and placing the mean above their largest root.  Unlike the
+crude affine minorant, these criteria retain the exact quadratic
+structure.  Their usefulness is that $\mathbb E Z$ is monotone under all the
+proved likelihood-ratio comparisons even though $\Pi_5$ and $\Pi_6$ are not
+monotone on the entire positive axis.
+
+\textbf{Question 1.}  Determine certified practical $k$ and $q$ cutoffs
+from \eqref{xxb:dc:eq:nextcriteria}, and settle the resulting finite rectangles
+at depths five and six.  A successful computation must be accompanied by
+the mean-moment bounds; an unbounded inference from a numerical scan
+would not suffice.  (Editorial: the range $n\le3000$ of
+Proposition~\ref{xxb:prop:finite} already certifies nonvanishing of every
+depth-five and depth-six cell with $n\le3000$; what is missing is the
+reduction, and the seed signs it will require.)
+
+\subsubsection{Sharpening the fixed-depth reduction}
+\textbf{Question 2.}  How small can uniform fixed-depth cutoffs be made as
+functions of $d$?  The constants in \eqref{xxb:dc:eq:constants} are
+intentionally wasteful.  The largest residual root is $\pi^2\cot^2(\pi/d)$, of
+order $d^2$, so endpoint concentration on a logarithmic scale is a natural
+quantity to analyze.  This observation does not yet prove an optimal
+cutoff growth rate.
+
+\textbf{Question 3.}  Can lower bounds involving the first few moments of
+$\tau^2$, or positivity in an orthogonal-polynomial basis adapted to
+$\mu_{d,r}$, replace the affine minorant for all depths?  The target is a
+small finite certificate rather than an enormous merely terminating
+algorithm.
+
+\subsubsection{The remaining full conjecture}
+\textbf{Question 4.}  Prove that every fixed-depth rectangle has only the
+symmetry zeros, uniformly in depth, or exhibit the first exact
+counterexample.  The present results show where additional zeros must be
+searched for at each depth, but they do not supply an induction in $d$.
+The polynomial $\Pi_d$ acquires additional oscillations, which must be
+addressed rather than ignored.  (This is Conjecture~\ref{xxb:conj:support}
+restricted to $m\ge5$.)
+
+\textbf{Question 5.}  Can the real-zero bound \eqref{xxb:dc:eq:J} be combined
+with arithmetic separation to exclude integer zeros uniformly?  The Mellin
+argument limits the number of candidates in each row, but integer
+nonvanishing needs a second ingredient.  An effective distance-from-integers
+theorem for its zeros would be particularly valuable.
+
+\textbf{Question 6.}  Establish the conjectured leading term
+$a(N)\sim N^2/2$ without first proving every individual nonvanishing
+claim.  This would require bounding the total number of extra zeros
+across growing depths.  The fixed-row bound alone does not give such a
+bound after summing over the whole triangular array.
+
+\subsubsection{Formal proof and symbolic computation}
+\textbf{Question 7.}  Formalize the polynomial factorization, bulk theorem,
+and integer certificate in the existing A290268 Lean development.
+The algebraic route has a small interface: coefficient extraction,
+falling factorials, the recurrence \eqref{xxb:dc:eq:Qrec}, and a finite modular
+nonzero checker.  The branch-cut and likelihood-ratio proofs are a
+separate analytic layer.  Keeping these layers explicit would avoid
+confusing a verified finite table with a verified infinite theorem.
+(Section~\ref{xxb:dc:sec:formal} lists what that development has and which
+of its hypotheses these results would discharge.)
+
+\textbf{Question 8.}  Extend the method to derivative expansions of
+$x^{x^r}$ for integer $r\ge3$, or to other exponential-logarithmic
+families.  The correct depth generating function and the symmetry center
+must first be rederived.  The success of the square-exponent case does
+not justify assuming an analogous support quasipolynomial elsewhere.
+
+\subsubsection{Suggested order of work}
+The most direct continuation is to formalize the bulk factorization while
+independently implementing certified moment bounds for depths five and
+six.  After those bounds determine practical finite rectangles, the
+existing integer recurrence can generate exact certificates immediately.
+Only then should one search for a depth-uniform induction or arithmetic
+zero-separation theorem.  This separates achievable finite obligations
+from the genuinely new ingredient needed for the complete conjecture.
+
+\subsection{Depth coordinates: conclusion, verifier and source audit}\label{xxb:dc:sec:conclusion}
+
+\subsubsection{Conclusion of the addition}
+The obstruction in A290268 is not merely the existence of a few symbolic
+cancellations.  Its coefficients combine a consecutive-root factor with
+an imaginary-root factor, and their tail values are signed Mellin
+moments of an explicitly oscillating logarithmic polynomial.  Making both
+structures visible yields three concrete advances in the manuscript's
+account: positivity in the whole bulk at every depth, an explicit finite
+decision problem at every fixed depth, and a complete nonvanishing
+classification at depths three and four, supplementing the first two depths.
+Of these, the first was already Theorem~\ref{xxb:thm:positive} of this part,
+and the second and third are new.
+
+The 16,034-cell verification is logically effective because the manuscript
+first proves that it is exhaustive for those two infinite-parameter
+strata.  It is not extrapolation from a finite sample.  The full counting
+formula remains a separate target at depths five and higher, with the
+remaining questions and the precise proof boundary now substantially
+narrowed.
+
+\subsubsection{A compact standalone finite verifier}\label{xxb:dc:sec:verifier}
+The following standalone version verifies the two exact rectangles and six seed
+signs; it is shipped, byte for byte, as
+\texttt{code/02-depth-\allowbreak certificates-\allowbreak minimal\_verify.py} (whose docstring calls
+this listing ``Appendix A of article.tex'', the manuscript's numbering).  The
+fuller program \texttt{code/02-depth-\allowbreak certificates-\allowbreak verify.py} additionally
+checks the independent Pascal recurrence, produces the CSV witnesses, and
+cross-checks the original differentiation lattice.
+
+\begin{lstlisting}[language=Python]
+def must(test):
+    if not test:
+        raise ArithmeticError("certificate failure")
+
+def column(d, q, K):
+    r = 2*d + 1 + q
+    a = [1] + [0]*d
+    for j in range(r):
+        a = [(2*d-j)*a[i] + (a[i-1] if i else 0)
+             for i in range(d+1)]
+    out = [a[d]]
+    if K == 0:
+        return out
+    b = [(2*d-q)*a[i] + (2*a[i-1] if i else 0)
+         for i in range(d+1)]
+    out.append(b[d])
+    for k in range(1, K):
+        c = [(2*d-q)*b[i] + (2*b[i-1] if i else 0)
+             + k*(k+r)*a[i] for i in range(d+1)]
+        out.append(c[d])
+        a, b = b, c
+    return out
+
+for d, R, Q in [(3, 14, 38), (4, 85, 185)]:
+    for q in range(Q):
+        for k, value in enumerate(column(d, q, R-2)):
+            hole = (q == 2*d and (k+d) % 2 == 0)
+            must((value == 0) == hole)
+            if not hole:
+                must(value % 1009 != 0 or value % 1013 != 0)
+    must(column(d, 2*d, R)[R] > 0)
+    ks, ka = (d-1) % 2, d % 2
+    must((-1)**Q * column(d, Q, ks)[ks] > 0)
+    must((-1)**(Q+1) * column(d, Q, ka)[ka] > 0)
+print("PASS")
+\end{lstlisting}
+
+The loop bounds are conclusions of the analytic reduction, not values
+chosen merely because the program happened to finish.  Each arithmetic
+step is the recurrence \eqref{xxb:dc:eq:Vrec} in the ring $\Z[u]/(u^{d+1})$.
+(The Python variable \texttt{j} in \texttt{column} is a loop index over the
+factors of the falling factorial, not either meaning of $j$ in
+Table~\ref{xxb:dc:tab:notation}.)  Thus the program is a finite, reproducible
+arithmetic certificate with a fully specified mathematical meaning.
+
+\subsubsection{Source audit}\label{xxb:dc:sec:audit}
+The manuscript's inspected repository snapshot is
+\texttt{afb2d1227d8bc5df\allowbreak 3beffc1463e958db\allowbreak 3544960b}.  At that snapshot the
+A290268 research note explicitly identified higher-depth negative-region
+nonvanishing and the general-$k$ bulk as open parts of its analysis; the
+general-$k$ bulk was in fact already Theorem~\ref{xxb:thm:positive} of this
+report, which the manuscript did not inspect.  The \texttt{Main.lean} file
+makes the support characterization a hypothesis.  The proof in the manuscript
+does not depend on uninspected formal claims or on the consistency of
+unrelated parts of the repository.
+
+The manuscript's scoped directory listing contains the core, closed-form,
+counting, structural, table, and main modules.  The research note also
+discusses other module names and development intentions.  Those descriptions
+are not treated as evidence that every discussed file is present or that every
+corresponding theorem is kernel-certified.  (At the intake, the three module
+names that note lists beyond these six, \texttt{A290268.Hole},
+\texttt{A290268.DepthOne} and \texttt{A290268.Series}, were confirmed absent
+from the repository's entire history.)
+
+External checks included the live OEIS entry, the NIST generating
+function, and the primary paper by \v{S}tampach, whose bibliographic data the
+manuscript cross-checked against a paper of R.~B.~Paris (bibliographic
+verification only, recorded in \texttt{02-depth-\allowbreak certificates-\allowbreak SOURCE\_AUDIT.md}).
+Search results did not supply a prior published proof of the specific
+fixed-depth statements proved here.  That limited search is not a proof of
+universal novelty.
+
+\subsection{Depth certificates: provenance, files and formal status}\label{xxb:dc:sec:provenance}
+
+\subsubsection{Provenance}
+Subsections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance} were built from
+\textbf{one} manuscript: batch~42, manuscript~06, archive
+\texttt{ProveIt\_A290268\_Finite\_Certificates.zip} (22 pages, dated 29
+September 2026), pinned to ProveIt commit
+\texttt{afb2d1227d8bc5df\allowbreak 3beffc1463e958db\allowbreak 3544960b}, and placed in this report
+by commit \texttt{3609d0473}.  Its Section~1 is split between
+Subsection~\ref{xxb:dc:sec:intro} (main results, novelty) and the opening of
+Subsection~\ref{xxb:dc:sec:models} (the conjecture, linear independence); its
+Sections~2--11 map one for one onto
+Subsections~\ref{xxb:dc:sec:models}--\ref{xxb:dc:sec:future}; its Section~12
+and its two appendices form Subsection~\ref{xxb:dc:sec:conclusion}.  Every theorem, proposition, lemma, corollary,
+definition, remark and question of the manuscript is printed; none was
+weakened or strengthened.  The editorial choices were these.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item It is placed as subsections at the end of Part~\ref{xxb:part} rather than
+ as a new part, so that no existing section, theorem or equation number moves.
+\item Its bulk positivity, symmetry holes, depths one and two, upper bound,
+ depth bridge, linear independence and branch-cut formula are marked as second
+ routes to, or re-indexings of, results of this part, which the manuscript did
+ not read.  The editorial Remarks~\ref{xxb:dc:rem:beta}, \ref{xxb:dc:rem:inside}
+ and~\ref{xxb:dc:rem:improve} and the parenthetical translations are additions
+ of the intake, not of the manuscript.
+\item The manuscript's letters are kept, with the renamings of
+ Subsection~\ref{xxb:dc:sec:notation}; its reproduction commands are rewritten
+ to the shipped file names; its archive table is replaced by the file list
+ below; its OEIS citation is merged with this part's.
+\item Its statement that the finite checks ``have actually been run'' is kept,
+ with the intake's rerun recorded beside it.
+\end{itemize}
+Not shipped: the manuscript's \texttt{article.tex}, \texttt{article.pdf},
+\texttt{README.md} and \texttt{SHA256SUMS.txt} (verified at placement, 10 of 10
+entries); the archive itself survives in the history of commit
+\texttt{8315d24e3}.
+
+\subsubsection{Files}
+The manuscript's code and data are shipped with the prefix
+\texttt{02-depth-\allowbreak certificates-\allowbreak }, byte-identical to the delivery:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Shipped path (delivery name) & Purpose\\
+\midrule
+\endhead
+\texttt{code/02-depth-\allowbreak certificates-\allowbreak verify.py} (\texttt{code/verify.py}) & Full exact verifier: both recurrences, the lattice cross-check, and data generation.\\
+\texttt{code/02-depth-\allowbreak certificates-\allowbreak minimal\_verify.py} (\texttt{code/minimal\_verify.py}) & The standalone verifier of Subsection~\ref{xxb:dc:sec:verifier}.\\
+\texttt{code/02-depth-\allowbreak certificates-\allowbreak Makefile} (\texttt{Makefile}) & The delivery's make targets; see the README before using it.\\
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak finite\_certificate.csv} (\texttt{data/finite\_certificate.csv}) & All 16,034 rectangle cells with signs and residues modulo 1009 and 1013.\\
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak sign\_thresholds.csv} (\texttt{data/sign\_thresholds.csv}) & Observed sign transitions of the reduced expectation in each tested row.\\
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak verification.json} (\texttt{data/verification.json}) & Executed-check summary and the exact seed integers.\\
+\texttt{02-depth-\allowbreak certificates-\allowbreak SOURCE\_AUDIT.md} (\texttt{SOURCE\_AUDIT.md}) & Source identity, inspected scope, and limitations.\\
+\bottomrule
+\end{longtable}
+The two CSV files keep the delivered CRLF line endings.
+
+\subsubsection{Formal status}\label{xxb:dc:sec:formal}
+Nothing in this addition is formalized, and its placement beside a Lean
+development confers no formal status.  The Lean development
+\texttt{Combinatorics/\allowbreak DerivativeExpansions/\allowbreak A290268/\allowbreak Lean} (library
+\texttt{A290268}, namespace \texttt{LeanProofs.A290268}, imported by the root
+\texttt{ProveIt.lean}) relates to it as follows.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \texttt{coeff n j k} (\texttt{Core.lean}) is the recurrence
+ \eqref{xxb:dc:eq:rec-lattice} in the same coordinates; \texttt{S n}
+ (\texttt{Count.lean}) is the conjectured support, and \texttt{card\_S} proves
+ $|S_n|$ equal to the closed form unconditionally.
+\item The manuscript relies on the \emph{statements} of the three conditional
+ theorems of \texttt{Main.lean}: \texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak support}
+ (hypothesis: the support of \texttt{coeff n} is \texttt{S n}),
+ \texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak two\_\allowbreak sided} (the structural and nonvanishing
+ inclusions as separate hypotheses) and
+ \texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak support\_\allowbreak all} (the support hypothesis at every
+ order).  It reads them, correctly, as conditional.
+\item \texttt{Structural.mem\_\allowbreak S\_\allowbreak of\_\allowbreak coeff\_\allowbreak ne\_\allowbreak zero} proves the structural
+ inclusion from a hypothesis \texttt{hhole}: vanishing on the line $N$ odd,
+ $-j\equiv N\pmod4$, $-j\ge3$, $2(-j)-1\le N$, $2k=N+2j+1$.  With $-j=2d+1$
+ that line is exactly the hole family of Theorem~\ref{xxb:dc:thm:holes}, and
+ so of Theorem~\ref{xxb:thm:reflection-zeros}; either proof would discharge
+ \texttt{hhole} on paper.  Neither is formalized, and the module
+ \texttt{A290268.Hole} that the declaration's docstring names as the discharge
+ does not exist in the repository.
+\item Theorem~\ref{xxb:dc:thm:four} would discharge the nonvanishing inclusion
+ only on cells of depth at most four; depths $d\ge5$ remain, so the
+ \texttt{Main.lean} theorems stay conditional.
+\item The only unconditional statement about the sequence itself is
+ \texttt{Table.a\_\allowbreak values\_\allowbreak le\_\allowbreak 53}, $a(n)$ equal to the closed form for
+ $n\le53$, a \texttt{native\_decide} certificate.
+\end{itemize}
 
 \clearpage
 \section{\texorpdfstring{$x^{x^x}$}{x^(x^x)}: OEIS A281434}\label{xxc:part}
@@ -3377,6 +4978,15 @@ Settled &
 \end{tabular}
 \end{center}
 
+\emph{Update (29 September 2026).}  For $x^{x^2}$ the table records Part~\ref{xxb:part}
+as first written.  Its later Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}
+add to the settled column the complete zero classification on the third and
+fourth deficit diagonals, and improve the lower bound to $(3n^2+26n-72)/8$ for
+even $n\ge8$ and $(3n^2+28n-111)/8$ for odd $n\ge17$
+(Remark~\ref{xxb:dc:rem:improve}); the leading constant $\tfrac12$ is still not
+settled, and Conjecture~\ref{xxb:conj:support} is still needed, now only on
+deficits $m\ge5$.
+
 \subsection{Why the orders differ}\label{syn:orders}
 
 The growth orders line up with the number of variables in the frame, and
@@ -3501,7 +5111,8 @@ this article can settle, and it does not claim to.
  Coefficients do vanish in bulk outside the reflection family alone; it is the
  union that is conjecturally complete.  Theorem~\ref{xxb:thm:equivalence} shows
  the statement is exactly equivalent to the OEIS conjecture, so nothing weaker
- will do.
+ will do.  Since the later addition to that part it is proved on deficits
+ $m\le4$ (Theorem~\ref{xxb:dc:thm:four}); what remains is $m\ge5$.
 \item \textbf{$x^{x^x}$ (Part~\ref{xxc:part}).}  A uniform bound
  $\Delta(n)=o(n^3)$ would give the equivalent $a(n)\sim\tfrac23n^3$; the
  stronger $\Delta(n)=O(n)$, conjectured not in A281434 itself but in the
@@ -3619,6 +5230,33 @@ NIST Digital Library of Mathematical Functions,
 Accessed September 20, 2026.
 \url{https://dlmf.nist.gov/5.12.E1}.
 
+% Cited by the batch-42 addition (Sections xxb:dc:*); manuscript 06's OEIS
+% entry is merged into oeis290268 above.
+\bibitem{xxbdc-notes}
+V.~Reshetnikov, \emph{ProveIt: A290268 investigation notes},
+\texttt{Oeis/A290268/README.md}, snapshot
+\texttt{afb2d1227d8bc5df3beffc1463e958db3544960b}, accessed 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/afb2d1227d8bc5df3beffc1463e958db3544960b/Oeis/A290268/README.md}.
+
+\bibitem{xxbdc-main}
+V.~Reshetnikov, \emph{ProveIt: A290268 support-to-count reduction},
+\texttt{Combinatorics/DerivativeExpansions/A290268/Lean/A290268/Main.lean},
+same snapshot, accessed 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/afb2d1227d8bc5df3beffc1463e958db3544960b/Combinatorics/DerivativeExpansions/A290268/Lean/A290268/Main.lean}.
+
+\bibitem{xxbdc-dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Hahn class: generating functions}, Section 18.23,
+Eq.~18.23.7 (Meixner--Pollaczek generating function),
+accessed 29 September 2026.
+\url{https://dlmf.nist.gov/18.23.E7}.
+
+\bibitem{xxbdc-stampach}
+F.~\v{S}tampach,
+\emph{Asymptotic behavior and zeros of the Bernoulli polynomials of the
+second kind}, Journal of Approximation Theory \textbf{262} (2021),
+article 105517. Preprint arXiv:2011.13808 (2020).
+\url{https://arxiv.org/abs/2011.13808}.
 \end{thebibliography}
 
 \end{document}
