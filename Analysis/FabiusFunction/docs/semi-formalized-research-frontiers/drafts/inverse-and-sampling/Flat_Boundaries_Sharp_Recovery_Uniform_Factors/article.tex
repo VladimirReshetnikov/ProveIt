@@ -1,0 +1,1554 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,fancyhdr,xurl,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.22em}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Law}{Law}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\TV}{TV}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\ind}{\mathbf 1}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Flat boundaries and uniform-factor recovery}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\hypersetup{pdftitle={Flat Boundaries Preserve Information: Uniform-Factor Recovery without Gaussian Smoothing},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Fabius--Rvachev density, Hellinger asymptotics, minimax estimation}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{15mm}
+{\Large\scshape ProveIt research continuation\par}
+\vspace{13mm}
+{\huge\bfseries Flat Boundaries Preserve Information\par}
+\vspace{5mm}
+{\Large Sharp recovery of uniform convolution factors\par
+without Gaussian smoothing\par}
+\vspace{12mm}
+{\large Research report prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{29 September 2026\par}
+\vspace{13mm}
+\begin{minipage}{0.92\textwidth}
+\begin{abstract}
+A preceding ProveIt report established total-variation stability for finite
+uniform-factor deconvolution but left statistical lower bounds unresolved.
+A companion report obtained sharp rates under a strictly positive Gaussian
+variance floor and explicitly asked whether that floor could be removed for
+the Fabius--Rvachev density. We supply the missing analytic argument.
+For every infinite summable convolution of positive-width centered uniforms,
+and every pair of perturbation laws having all absolute moments finite, a
+first unmatched moment of order $r$ gives an exact squared Hellinger
+asymptotic of order $h^{2r}$, with constant
+$\Delta_r^2\int (f^{(r)})^2/f\,/\bigl(4(r!)^2\bigr)$.
+Finite uniform prefixes, conditional-score contraction, and convergence of
+higher-order information provide a proof that controls the moving support
+rather than ignoring it.
+
+Consequently the sharp scale-recovery rate is $n^{-1/(4m)}$ with known
+Gaussian variance, including variance zero. With unknown variance in
+$[0,V]$, the scale and variance rates are $n^{-1/(4m+4)}$ and
+$n^{-1/(2m+2)}$; matching hard pairs approach the zero-noise boundary and
+one member has exactly zero Gaussian variance. We also prove a finite-prefix
+boundary trichotomy, including an explicit logarithmic critical case, and
+exhibit identifiable perturbations whose Hellinger separation is smaller than
+every power of their amplitude. The article includes full conventional
+proofs, reproducible checks, and a research agenda. No proof-assistant
+verification or worldwide publication-priority claim is made.
+\end{abstract}
+\end{minipage}
+\vfill
+{\small Repository snapshot:\par
+\texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6}\par}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Research target, provenance, and contribution boundary}
+\label{sec:scope}
+
+The question is not whether moment cancellation occurs. It does. The question
+is whether cancellation survives division by a density that vanishes to all
+orders at the endpoints of its support. This is the step needed to turn an
+algebraic inverse modulus into a statistically sharp lower bound.
+
+\subsection{The specific gap being continued}
+At the pinned repository snapshot, the report \emph{Sharp Stability Strata
+for Finite Fabius--Rvachev Deconvolution} proves local total-variation inverse
+exponents, exact density expansions, and a sampling upper bound
+\cite{repo-strata}. Its source, lines 1190--1234, explicitly declines to call
+that upper bound statistically minimax and identifies Hellinger or relative
+entropy control as the missing ingredient. The global scale upper bound has
+exponent $1/(4m)$ when the capacity is $m$.
+
+A separate, earlier-today companion manuscript, \emph{Gaussian Confounding
+and Sharp Recovery of Uniform Convolution Factors}, proves corresponding
+statistical rates with a strictly positive Gaussian variance floor
+\cite{companion}. Its Research Question 1, page 17, asks for the unsmoothed
+up-law lower bound and specifically for control of
+$\int (g^{(k)})^2/g$ and the changing support. That manuscript was read from
+the user's Library, not asserted to be a file in the pinned repository.
+
+The present article resolves this question for the up density and, more
+generally, for every infinite summable positive-width uniform convolution.
+It also proves that the unknown-variance lower-bound obstruction persists
+arbitrarily close to zero Gaussian variance. This last assertion is stronger
+than a global lower bound obtained merely by restricting to a positive-noise
+submodel. It is not a claim that every mixed collision stratum is classified.
+
+\subsection{What is classical and what is developed here}
+The Fabius--Rvachev infinite-product construction is classical; see Arias de
+Reyna \cite{arias}. Higher-order Fisher information is also classical.
+Bobkov's treatment \cite{bobkov} discusses its origin, convolution
+monotonicity, and sufficient conditions for finiteness. In particular,
+all-order information finiteness for an infinite uniform convolution is not
+presented here as a newly invented functional or an isolated breakthrough.
+We give the elementary spline proof needed by our argument.
+
+Moment matching and singular moment inversion have substantial statistical
+precedents, including the mixture-estimation work of Heinrich--Kahn and
+Wu--Yang \cite{heinrich-kahn,wu-yang}. Our parameters describe a
+\emph{convolution of independent factors}, not a mixture with free weights.
+Those papers provide context, not substitute proofs for this model. The
+shifted-power-sum inequality in \cref{sec:algebra} is credited to the companion
+manuscript and reproduced to make the statistical conclusions self-contained.
+
+The main development here is the exact all-order Hellinger theorem at a flat
+moving boundary, its finite-prefix boundary trichotomy, and the resulting
+zero-noise statistical lower bounds. The proofs are mathematical arguments
+in this article, not kernel-checked results. The literature comparison is
+focused; it establishes a precise continuation of the identified reports,
+not exhaustive worldwide novelty.
+
+\section{Definitions and main results}
+\label{sec:main}
+
+Let $(U_j)_{j\ge1}$ be independent uniforms on $[-1,1]$. Fix
+\begin{equation}
+ b_j>0,\qquad S=\sum_{j\ge1}b_j<\infty,\qquad
+ B=\sum_{j\ge1}b_jU_j.
+ \label{eq:background}
+\end{equation}
+All infinite sums here converge absolutely for every outcome. Write $f$ for
+the density of $B$, and $f_N$ for that of
+$B_N=\sum_{j=1}^N b_jU_j$. We will prove the smoothness and positivity facts
+used below. The Fabius--Rvachev specialization is
+\begin{equation}
+ b_j=2^{-j},\qquad S=1,\qquad f=\up.
+ \label{eq:up}
+\end{equation}
+With the characteristic-function convention $\E e^{itB}$, it has product
+$\prod_{j\ge1}\sinc(2^{-j}t)$.
+
+Our Hellinger normalization, throughout, is
+\begin{equation}
+ H^2(p,q)=\int_\R(\sqrt p-\sqrt q)^2\,dx,
+ \qquad \rho(p,q)=\int_\R\sqrt{pq}\,dx=1-\tfrac12H^2(p,q).
+ \label{eq:hellinger}
+\end{equation}
+Thus $0\le H^2\le2$ and $\TV(p,q)=\frac12\int|p-q|\le H(p,q)$.
+For a probability law $\nu$, let $\nu_h$ denote the law of $hZ$ when
+$Z\sim\nu$, with $h>0$. A law is \emph{all-moment} if
+$\int |z|^k\,d\nu(z)<\infty$ for every integer $k\ge1$. An exponential
+moment is not required.
+
+\begin{theorem}[Exact Hellinger moment asymptotic]
+\label{thm:main-hellinger}
+Let $f$ be defined by \eqref{eq:background}. For every integer $r\ge1$,
+\begin{equation}
+ 0<J_r(f):=\int_{f>0}\frac{(f^{(r)}(x))^2}{f(x)}\,dx<\infty.
+ \label{eq:J}
+\end{equation}
+Suppose $\nu,\eta$ are all-moment laws whose moments of orders
+$0,\ldots,r-1$ agree, and set
+$\Delta_r=\int z^r\,d\nu-\int z^r\,d\eta$. Then
+\begin{equation}
+ H^2(f*\nu_h,f*\eta_h)
+ =\frac{\Delta_r^2}{4(r!)^2}J_r(f)h^{2r}+o(h^{2r}).
+ \label{eq:main-H}
+\end{equation}
+More precisely, in $L^2(\R)$,
+\begin{equation}
+ \frac{\sqrt{f*\nu_h}-\sqrt{f*\eta_h}}{h^r}
+ \longrightarrow
+ \frac{(-1)^r\Delta_r}{2r!}\frac{f^{(r)}}{\sqrt f},
+ \label{eq:main-root}
+\end{equation}
+where the right side is zero outside $(-S,S)$. The statement includes
+$\Delta_r=0$, in which case \eqref{eq:main-H} is a little-oh assertion.
+\end{theorem}
+
+For the statistical model, fix $m\ge1$ and set
+\begin{equation}
+ \cA_m=\{a\in[0,1]^m:a_1\le\cdots\le a_m\},\qquad
+ X_{a,v}=B+\sum_{i=1}^m a_i V_i+\sqrt v\,G,
+ \label{eq:model}
+\end{equation}
+where the $V_i$ are fresh uniforms on $[-1,1]$, $G$ is standard normal, and
+all variables are independent. Let $P_{a,v}=\Law(X_{a,v})$.
+Zeros pad the factor list to a fixed capacity; they are not observable
+positive factors. The background law is known.
+
+\begin{theorem}[Sharp estimation, including the zero-noise boundary]
+\label{thm:minimax}
+For $n$ independent observations, define minimax expected loss using
+$\norm{\widehat a-a}_\infty$ for scales and $|\widehat v-v|$ for variance.
+With known fixed $v_0\ge0$,
+\begin{equation}
+ \inf_{\widehat a}\sup_{a\in\cA_m}
+ \E_{a,v_0}\norm{\widehat a-a}_\infty\asymp n^{-1/(4m)}.
+ \label{eq:known-rate}
+\end{equation}
+With unknown $v\in[0,V]$, for fixed $V>0$,
+\begin{align}
+ \inf_{\widehat a}\sup_{a\in\cA_m,\,0\le v\le V}
+ \E_{a,v}\norm{\widehat a-a}_\infty&\asymp n^{-1/(4m+4)},
+ \label{eq:unknown-rate}\\
+ \inf_{\widehat v}\sup_{a\in\cA_m,\,0\le v\le V}
+ \E_{a,v}|\widehat v-v|&\asymp n^{-1/(2m+2)}.
+ \label{eq:variance-rate}
+\end{align}
+The constants may depend on $m$, the fixed background, and $v_0$ or $V$.
+The lower bounds in \eqref{eq:unknown-rate}--\eqref{eq:variance-rate} hold
+already on every fixed relative neighborhood of $(a,v)=(0,0)$, using pairs
+for which one variance is exactly zero. In \eqref{eq:known-rate}, hard pairs
+approach $a=0$, also when $v_0=0$.
+\end{theorem}
+
+The last clause is a local \emph{minimax} statement. It does not assert that
+the risk of every estimator at the single parameter $(0,0)$ has a lower
+bound: the identically zero estimator has zero loss at that one point.
+
+\begin{theorem}[Detection thresholds]
+\label{thm:detection-main}
+Test no positive factors, $a=0$, against $a_m\ge h$, with fixed capacity
+$m$. With known $v_0\ge0$, the critical separation order is $n^{-1/4}$:
+consistent testing is possible if $nh^4\to\infty$, and the optimal sum of
+worst-case type-I and type-II errors tends to one if $nh^4\to0$.
+With unknown $v\in[0,V]$, replace $nh^4$ by $nh^8$; the critical order is
+$n^{-1/8}$. Both assertions include alternatives having exactly zero
+Gaussian variance.
+\end{theorem}
+
+\section{Uniform prefixes and higher-order information}
+\label{sec:information}
+
+\subsection{Smoothness, support, and the endpoint polynomial}
+Let $A_N=\sum_{j\le N}b_j$ and $s_N=S-A_N$. Repeated integration of interval
+indicators shows that $f_N$ is a compactly supported spline of degree
+$N-1$, is positive on $(-A_N,A_N)$, and belongs to $C^{N-2}$ for $N\ge2$.
+These claims can also be read directly from the formula
+\begin{equation}
+ f_N(x)=\frac{1}{(N-1)!\prod_{j=1}^N2b_j}
+ \sum_{E\subseteq\{1,\ldots,N\}}(-1)^{|E|}
+ \left(x+A_N-2\sum_{j\in E}b_j\right)_+^{N-1}.
+ \label{eq:spline}
+\end{equation}
+For $N=1$ the power zero means an interval step, with its value at a knot
+irrelevant. The formula follows inductively from convolution with
+$(2b_N)^{-1}\ind_{[-b_N,b_N]}$. Positivity follows by integrating a positive
+previous density over the nonempty overlap of the two support intervals.
+
+For later use the endpoint has the particularly simple expression
+\begin{equation}
+ f_N(A_N-d)=f_N(-A_N+d)=C_Nd^{N-1},\quad
+ C_N=\frac{1}{(N-1)!\prod_{j=1}^N2b_j},
+ \quad 0<d<2\min_{j\le N}b_j.
+ \label{eq:endpoint}
+\end{equation}
+Indeed, the deficits $b_j-b_jU_j$ are uniform on $[0,2b_j]$; at such small
+total deficit their convolution is the unconstrained simplex-volume
+formula.
+
+\begin{lemma}[Regularity of the infinite background]
+\label{lem:smooth}
+The law in \eqref{eq:background} has a $C^\infty$ density $f$, supported on
+$[-S,S]$, positive on $(-S,S)$. For every fixed $k\ge0$,
+$f_N^{(k)}\to f^{(k)}$ uniformly once $N$ is large enough for these classical
+derivatives to exist. All derivatives of $f$ vanish at both endpoints.
+\end{lemma}
+\begin{proof}
+Fix $L\ge k+2$. Convolution of $f_L$ with the law of the remaining infinite
+sum gives a density with bounded continuous derivatives through order $k$.
+This represents the same law for each $k$, so gives $f\in C^\infty$.
+Couple the finite and infinite tails after $L$ with the same uniforms.
+Their difference is bounded by $s_N$. Uniform continuity of $f_L^{(k)}$
+therefore bounds $\norm{f_N^{(k)}-f^{(k)}}_\infty$ by its modulus of
+continuity at $s_N$, which tends to zero.
+
+For $|x|<S$, choose $N$ so large that $|x|+s_N<A_N$. Every shift of $x$ by
+an element of the tail support is then inside the positive interval of
+$f_N$. Thus $f(x)=\E f_N(x-(B-B_N))>0$. Support inclusion follows directly
+from $|B|\le S$; positivity proves equality of the support. Smoothness and
+identical vanishing outside the support force every endpoint derivative to
+vanish.
+\end{proof}
+
+\subsection{A conditional-score inequality}
+For integer $r\ge1$ and real $q\ge2$, put
+\begin{equation}
+ J_{r,q}(g)=\int_{g>0}\left|\frac{g^{(r)}}g\right|^qg,
+ \qquad J_r(g)=J_{r,2}(g).
+ \label{eq:Jrq}
+\end{equation}
+We apply this only to densities whose indicated weak derivative is an
+integrable function and is zero almost everywhere on their zero set.
+All sufficiently long prefixes satisfy these conditions.
+
+\begin{lemma}[Convolution contraction]
+\label{lem:score}
+For such a density $g$ and any probability law $\mu$,
+\begin{equation}
+ J_{r,q}(g*\mu)\le J_{r,q}(g)
+ \label{eq:contraction-J}
+\end{equation}
+whenever the right side is finite.
+\end{lemma}
+\begin{proof}
+Write $X\sim g$, $Y\sim\mu$, independently. Differentiating the convolution
+in the weak sense gives $(g*\mu)^{(r)}=g^{(r)}*\mu$. The ratio of this
+identity to $g*\mu$ says, for almost every $z$ of positive density,
+\[
+ \frac{(g*\mu)^{(r)}(z)}{(g*\mu)(z)}
+ =\E\left[\frac{g^{(r)}(X)}{g(X)}\,\middle|\,X+Y=z\right].
+\]
+Conditional Jensen followed by expectation proves the claim.
+\end{proof}
+This is the standard score-contraction mechanism; its use here does not
+claim a new general information inequality.
+
+\begin{proposition}[All-order finiteness and convergence of prefixes]
+\label{prop:Jconvergence}
+For every $r\ge1$, $q\ge2$, $J_{r,q}(f)<\infty$. Moreover,
+\begin{equation}
+ J_r(f_N)\downarrow J_r(f)\quad\text{as }N\to\infty,
+ \label{eq:Jlimit}
+\end{equation}
+where the sequence is considered from any index $N>2r$ onward. The limit
+is strictly positive.
+\end{proposition}
+\begin{proof}
+If $N>rq$, the endpoint formula gives
+\[
+ \left|\frac{f_N^{(r)}(A_N-d)}{f_N(A_N-d)}\right|^q
+ f_N(A_N-d)=O(d^{N-1-rq}).
+\]
+This is integrable; away from the endpoints the density is bounded below
+and its indicated derivatives are bounded. Thus $J_{r,q}(f_N)<\infty$.
+Convolution with the infinite tail and \cref{lem:score} prove finiteness for
+$f$. Convolution with one further uniform proves monotonicity of $J_r(f_N)$.
+
+To identify its limit, fix $q>2$ and a prefix $L>rq$. For all $N\ge L$,
+$J_{r,q}(f_N)\le K:=J_{r,q}(f_L)$. On every compact interval inside
+$(-S,S)$ the integrands defining $J_r(f_N)$ converge uniformly to that of
+$J_r(f)$, by \cref{lem:smooth}. On the complementary endpoint region
+$E_\delta=\{x:|x|>S-\delta\}$, H\"older's inequality gives
+\begin{equation}
+ \int_{E_\delta}\frac{(f_N^{(r)})^2}{f_N}
+ \le K^{2/q}\Prob(|B_N|>S-\delta)^{1-2/q}.
+ \label{eq:uniform-integrability}
+\end{equation}
+When $s_N<\delta$, the probability is at most
+$\Prob(|B|>S-2\delta)$ by the deterministic coupling bound
+$|B_N-B|\le s_N$. This tends to zero as $\delta\downarrow0$, since $B$
+has no endpoint atoms. The same estimate applies to $f$. Interior convergence
+and these tail estimates prove \eqref{eq:Jlimit}.
+
+If $J_r(f)=0$, then $f^{(r)}$ is zero throughout $(-S,S)$ by continuity.
+It is zero outside as well, so $f$ is a polynomial of degree at most $r-1$
+on $\R$. A compactly supported polynomial is zero, contradicting integral
+one. Hence $J_r(f)>0$.
+\end{proof}
+
+\section{The finite-prefix Hellinger expansion}
+\label{sec:finite-expansion}
+
+The following lemma isolates the analytic issue. It deliberately requires
+more uniform factors than twice the first potentially unmatched moment
+order; \cref{sec:phase} will show why the threshold is sharp.
+
+\begin{lemma}[A sufficiently long finite prefix]
+\label{lem:finite-H}
+Let $g$ be the density of a sum of $M$ independent positive-width centered
+uniforms, with $M>2r$. If all-moment laws $\nu,\eta$ agree in moments
+$0,\ldots,r-1$, then
+\begin{equation}
+ H^2(g*\nu_h,g*\eta_h)
+ =\frac{\Delta_r^2}{4(r!)^2}J_r(g)h^{2r}+o(h^{2r}).
+ \label{eq:finite-H}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $[-A,A]$ for the support. First suppose the laws are supported on
+$[-L,L]$, and let $p_h=g*\nu_h$, $q_h=g*\eta_h$.
+On a fixed compact subinterval of $(-A,A)$, Taylor expansion and moment
+cancellation give
+\begin{equation}
+ h^{-r}(p_h-q_h)\longrightarrow
+ \frac{(-1)^r\Delta_r}{r!}g^{(r)}.
+ \label{eq:pointwise-finite}
+\end{equation}
+The available smoothness is sufficient since $M>2r$ implies $g\in C^r$.
+Both densities tend to $g$, giving the claimed pointwise square-root limit.
+
+Consider a small endpoint collar and write $d=A-|x|$. On the interior part
+$d\ge2hL$, all shifted arguments stay inside the polynomial endpoint collar
+provided its fixed width is reduced once. There the endpoint formula and
+Taylor's integral remainder yield
+\begin{equation}
+ p_h(x)+q_h(x)\ge c d^{M-1},\qquad
+ |p_h(x)-q_h(x)|\le C h^r d^{M-1-r}.
+ \label{eq:collar-bound}
+\end{equation}
+Constants may depend on the fixed laws and prefix. Consequently
+\begin{equation}
+ h^{-2r}(\sqrt{p_h}-\sqrt{q_h})^2
+ \le C d^{M-1-2r}.
+ \label{eq:collar-domination}
+\end{equation}
+The exponent is greater than $-1$. On the remaining fixed interior the same
+quantity is bounded, because $g$ is bounded below and its $r$th derivative
+is bounded. Dominated convergence is therefore valid away from the shrinking
+boundary band. That band, including the new support outside $[-A,A]$, has
+width $O(h)$ and total $p_h+q_h$ mass $O(h^M)$. Its Hellinger contribution
+is at most that mass, and $h^M=o(h^{2r})$.
+
+We give the extension to unbounded all-moment laws explicitly. Choose
+$\varepsilon>0$ with $M(1-\varepsilon)>2r$ and put $L_h=h^{-\varepsilon}$.
+Condition each law on $|Z|\le L_h$ to obtain $\nu^{[h]},\eta^{[h]}$.
+For every prescribed $K$, the discarded mass and each of the finitely many
+discarded moments through order $r$ are $O(h^K)$: apply Markov's inequality
+with a sufficiently high absolute moment. The same holds for the effect of
+normalization. In particular, their moment discrepancies of orders $j<r$
+are $O(h^K)$, and their discrepancy at order $r$ tends to $\Delta_r$.
+
+Replacing a law by this conditioning changes the Hellinger distance after
+any convolution by $O(h^{K/2})$. To see this, couple the original variable
+and its conditional version so that they differ with probability at most
+the discarded mass, and use $H^2\le2\TV$. Choose $K>2r$, so the change
+in the Hellinger distance is $o(h^r)$.
+
+For the conditioned densities use the band of width $2hL_h$. Its mass is
+$O((hL_h)^M)=o(h^{2r})$. On the remaining endpoint collar the term coming
+from the $r$th remainder is still bounded as in
+\eqref{eq:collar-domination}, with a uniform constant: the bound uses the
+uniformly bounded $r$th absolute moments, not $L_h^r$. A residual moment
+of order $j<r$ contributes at most
+$C h^{j+K}d^{M-1-j}$ to the density difference. After division by a
+square-root lower bound and by $h^r$, its $L^2$ norm is at most
+\[
+ C h^{j+K-r}
+ \left(\int_0^{d_0}d^{M-1-2j}\,dd\right)^{1/2}=o(1).
+\]
+The fixed interior has the same bound without the endpoint weight. Thus the
+residual moments do not affect the limiting norm. The $r$th term is handled
+by dominated convergence exactly as before. Finally the triangle inequality
+for $H$, and its $o(h^r)$ conditioning error, transfer the expansion to the
+original laws.
+\end{proof}
+
+The proof does not suppose that $p_h/g$ is bounded everywhere. Such a
+supposition would fail even for a single added uniform, because its support
+extends beyond that of $g$.
+
+\section{Passing from prefixes to the infinite convolution}
+\label{sec:infinite}
+
+\subsection{A lower bound and a matching upper bound}
+\begin{proof}[Proof of \cref{thm:main-hellinger}]
+Finiteness and positivity of $J_r(f)$ are \cref{prop:Jconvergence}. Smoothness,
+bounded derivatives, and the $(r+1)$st absolute moments give, at every fixed
+$x$,
+\[
+ (f*\nu_h-f*\eta_h)(x)
+ =\frac{(-1)^r\Delta_r}{r!}h^rf^{(r)}(x)+O(h^{r+1}).
+\]
+For $|x|<S$, division by
+$\sqrt{f*\nu_h(x)}+\sqrt{f*\eta_h(x)}\to2\sqrt{f(x)}$
+and Fatou's lemma imply
+\begin{equation}
+ \liminf_{h\downarrow0}h^{-2r}H^2(f*\nu_h,f*\eta_h)
+ \ge\frac{\Delta_r^2}{4(r!)^2}J_r(f).
+ \label{eq:Fatou}
+\end{equation}
+
+For the upper bound fix $N>2r$ and let $\tau_N$ be the law of the infinite
+tail after $N$, so $f=f_N*\tau_N$. Hellinger distance contracts under a
+common convolution:
+\begin{equation}
+ H^2(f*\nu_h,f*\eta_h)\le H^2(f_N*\nu_h,f_N*\eta_h).
+ \label{eq:Hcontract}
+\end{equation}
+Indeed, pointwise Cauchy--Schwarz gives
+$\sqrt{(p*\tau)(q*\tau)}\ge\sqrt{pq}*\tau$, and integration shows that
+affinity cannot decrease. Applying \cref{lem:finite-H} gives
+\[
+ \limsup_{h\downarrow0}h^{-2r}H^2(f*\nu_h,f*\eta_h)
+ \le\frac{\Delta_r^2}{4(r!)^2}J_r(f_N).
+\]
+Now send $N$ to infinity and apply \eqref{eq:Jlimit}. This matches
+\eqref{eq:Fatou} and proves the exact norm limit.
+
+For completeness the stronger $L^2$ conclusion follows too. The scaled
+square-root differences converge pointwise inside the support to the stated
+function. Outside it, for any fixed positive distance $d$ from the support,
+\[
+ (f*\nu_h)(x)\le\norm f_\infty\Prob(|Z|\ge d/h)=O(h^K)
+\]
+for every $K$, and similarly for $\eta$. Thus the scaled functions converge
+almost everywhere on $\R$. Their $L^2$ norms are bounded and converge to
+the norm of the pointwise limit. Boundedness and almost-everywhere convergence
+imply weak $L^2$ convergence: first test against bounded functions of compact
+support, using uniform integrability in $L^1$ on that support, then approximate
+an arbitrary $L^2$ test function. Weak convergence plus convergence of norms
+in a Hilbert space gives strong convergence, proving \eqref{eq:main-root}.
+\end{proof}
+
+The order of limits matters. We first take $h\downarrow0$ at a fixed finite
+prefix, then send the prefix length to infinity. No uniform estimate in both
+variables has been silently assumed.
+
+\subsection{What happens to the new support?}
+\begin{proposition}[Leakage is smaller than every power]
+\label{prop:leakage}
+For any all-moment perturbation $Z$, independent of $B$, and every integer
+$K\ge1$,
+\begin{equation}
+ \Prob(|B+hZ|>S)=O(h^K).
+ \label{eq:leakage}
+\end{equation}
+Nevertheless, for a nonzero uniform perturbation,
+$\chi^2(f*\Law(hU),f)=\infty$ for every $h>0$.
+\end{proposition}
+\begin{proof}
+If $B>S-d$, then $B_N>A_N-d$, since the tail is at most $s_N$.
+The finite-prefix simplex bound gives
+$\Prob(B_N>A_N-d)\le C_N' d^N$ for small $d$, and increasing the constant
+makes this valid for every $d\ge0$. Reflection gives the other endpoint.
+Conditioning on $Z$ therefore bounds the leakage by
+$C_N' h^N\E|Z|^N$. Set $N=K$.
+
+For an added uniform the convolution is positive on $(-S-h,S+h)$, including
+sets outside $[-S,S]$ of positive measure, while $f$ is zero there. It is not
+absolutely continuous relative to the law with density $f$, so the indicated
+chi-square divergence is infinite.
+\end{proof}
+Small leakage is not zero leakage. The exact Hellinger theorem is therefore
+not a disguised finite-chi-square argument.
+
+\subsection{An identifiable, beyond-all-powers consequence}
+\begin{corollary}[All moments may hide every algebraic scale]
+\label{cor:allmoments}
+If distinct all-moment laws $\nu,\eta$ have the same moments of every
+nonnegative integer order, then, for every $K\ge1$,
+\begin{equation}
+ H(f*\nu_h,f*\eta_h)=o(h^K).
+ \label{eq:superpoly}
+\end{equation}
+The two convolved laws are nonetheless distinct for every $h>0$.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:main-hellinger} with $r=K$ and $\Delta_r=0$.
+For distinctness, the characteristic function of the compactly supported
+background extends to an entire function and equals one at zero. Its real
+zeros are therefore isolated. Equality of the convolved characteristic
+functions would force those of $\nu_h,\eta_h$ to agree off that discrete
+zero set, and then everywhere by continuity. Uniqueness of characteristic
+functions would give $\nu=\eta$, a contradiction.
+\end{proof}
+An explicit standard moment-indeterminate construction uses the lognormal
+density
+\[
+ \ell(z)=\frac{e^{-(\log z)^2/2}}{z\sqrt{2\pi}},\quad z>0,
+ \qquad \ell_\theta(z)=\ell(z)\bigl(1+\theta\sin(2\pi\log z)\bigr),
+ \quad 0<|\theta|<1.
+\]
+Both are positive probability densities with all moments. For $Y$ standard
+normal and every integer $k\ge0$,
+\[
+ \E[e^{kY}\sin(2\pi Y)]
+ =\operatorname{Im} e^{(k+2\pi i)^2/2}
+ =e^{k^2/2-2\pi^2}\sin(2\pi k)=0.
+\]
+This verifies the construction directly; moment-indeterminate lognormal
+families are classical, with further context in \cite{kleiber}.
+At any amplitude $h_n=n^{-\alpha}$, $\alpha>0$, the two $n$-sample laws
+have total variation tending to zero, by \eqref{eq:superpoly} and
+$H^2(P^n,Q^n)\le nH^2(P,Q)$. This does not contradict the finite-uniform-factor
+rates: these lognormal perturbations are outside that finite-dimensional
+model.
+
+\section{A sharp finite-boundary phase diagram}
+\label{sec:phase}
+
+An infinite uniform convolution has arbitrarily long finite prefixes.
+A finite convolution does not. The resulting distinction can be quantified
+exactly, including the borderline logarithm.
+
+Let $g_M$ be the density of $\sum_{i=1}^M b_iU_i$, now with $M$ fixed, and
+let $A=\sum_{i=1}^M b_i$ and $C_M$ be as in \eqref{eq:endpoint}. Suppose
+$\nu,\eta$ are symmetric all-moment laws whose first unmatched moment has
+even order $r\ge2$, so $\Delta_r\ne0$. Define
+\begin{equation}
+ \Psi_{\nu,M}(t)=\int (z-t)_+^{M-1}\,d\nu(z),\qquad
+ D_M(t)=\sqrt{\Psi_{\nu,M}(t)}-\sqrt{\Psi_{\eta,M}(t)}.
+ \label{eq:profiles}
+\end{equation}
+For $M=1$, $(z-t)_+^0$ means $\ind_{\{z>t\}}$.
+
+\begin{theorem}[Finite-uniform boundary trichotomy]
+\label{thm:phase}
+Under these hypotheses, as $h\downarrow0$:
+\begin{align}
+ M<2r:\quad
+ H^2(g_M*\nu_h,g_M*\eta_h)
+ &\sim 2C_M A_M h^M,
+ \label{eq:phase-sub}\\
+ M=2r:\quad
+ H^2(g_M*\nu_h,g_M*\eta_h)
+ &\sim \frac{C_M\Delta_r^2}{2}
+ \binom{2r-1}{r}^{\!2}h^{2r}\log(1/h),
+ \label{eq:phase-critical}\\
+ M>2r:\quad
+ H^2(g_M*\nu_h,g_M*\eta_h)
+ &\sim\frac{\Delta_r^2}{4(r!)^2}J_r(g_M)h^{2r}.
+ \label{eq:phase-regular}
+\end{align}
+Here $A_M=\int_\R D_M(t)^2\,dt\in(0,\infty)$ when $M<2r$.
+In that case the leading constant depends on the full endpoint
+profiles, not merely on $\Delta_r$.
+\end{theorem}
+\begin{proof}
+The third case is \cref{lem:finite-H}. We prove the other two and justify
+that no interior spline knot contributes at leading order.
+
+\paragraph{Endpoint reduction.}
+Choose a fixed collar width $d_0>0$ small enough that the two endpoint
+collars are disjoint and \eqref{eq:endpoint} holds on a collar twice as
+wide. At the right edge write $x=A+ht$. Replacing $g_M(y)$ by
+$C_M(A-y)_+^{M-1}$ gives exactly
+\[
+ (g_M*\nu_h)(A+ht)=C_Mh^{M-1}\Psi_{\nu,M}(t)
+\]
+when the shifted argument is in that polynomial collar. The error for
+$|x-A|\le d_0$ only involves $|Z|\ge d_0/h$, after reducing $d_0$ if
+necessary. All absolute moments imply that its $L^1$ norm on the collar
+is $O(h^K)$ for every prescribed $K$; the extra polynomial factor of degree
+$M-1$ is absorbed by taking a higher moment. The same statement holds for
+$\eta$. Since $\norm{\sqrt p-\sqrt q}_2^2\le\norm{p-q}_1$ for
+nonnegative functions, these errors are negligible to any prescribed
+algebraic order in the Hellinger calculation.
+
+Thus the right collar contributes, to the required accuracy,
+\begin{equation}
+ C_Mh^M\int_{-d_0/h}^{d_0/h}D_M(t)^2\,dt.
+ \label{eq:collar-profile}
+\end{equation}
+The left collar has the same value by symmetry. Outside both the support
+and the collars, the total density mass is smaller than every power of
+$h$, again by a high-moment tail estimate.
+
+\paragraph{Asymptotics of the profiles.}
+Put $k=M-1$ and let $u\to\infty$. Replacing $(u+Z)_+^k$ by
+$(u+Z)^k$ creates an error $O(u^{-K})$ for every prescribed $K$, by the
+all-moment assumption. If $k\ge r$, binomial expansion and matching of
+moments below $r$ give
+\begin{equation}
+ D_M(-u)\sim\frac{\Delta_r}{2}\binom{M-1}{r}
+ u^{(M-1)/2-r}.
+ \label{eq:profile-tail}
+\end{equation}
+If $k<r$, all polynomial terms cancel and $D_M(-u)$ decays faster than
+any inverse power, after division by its denominator of order $u^{k/2}$.
+For $t\to+\infty$, each profile itself decays faster than any inverse
+power, since
+$\E (Z-t)_+^k\le t^{-K}\E|Z|^{k+K}$ for $t>0$.
+
+Consequently $D_M^2$ is integrable when $M<2r$. Its integral is positive:
+if the profiles agreed almost everywhere, their $M$th distributional
+derivatives would agree, whereas
+\[
+ \frac{d^M}{dt^M}\Psi_{\nu,M}
+ =(-1)^M(M-1)!\,\nu
+\]
+as distributions. This would imply $\nu=\eta$, contrary to
+$\Delta_r\ne0$. This proves the constant in \eqref{eq:phase-sub}.
+When $M=2r$, \eqref{eq:profile-tail} instead gives
+\[
+ D_M(-u)^2\sim\frac{\Delta_r^2}{4}
+ \binom{2r-1}{r}^{\!2}\frac1u.
+\]
+Integrating to $d_0/h$ in \eqref{eq:collar-profile}, and adding the two
+endpoints, gives \eqref{eq:phase-critical}.
+
+\paragraph{The interior.}
+On a compact subinterval of $(-A,A)$ the two convolved densities are bounded
+below for small $h$. If $M\ge r+1$, the spline belongs to
+$W^{r,\infty}$; Taylor's integral bound and moment cancellation give a
+uniform density difference $O(h^r)$ there. Its Hellinger contribution is
+$O(h^{2r})$, which is negligible in the first two regimes.
+
+If $2\le M\le r$, use the finite truncated-power representation
+\eqref{eq:spline}. Since all moments through degree $M-1$ match, the
+difference produced by a single knot $\tau$ is $h^{M-1}$ times a profile
+in $(x-\tau)/h$ that decays faster than any inverse power in both
+directions. Its squared $L^2$ integral is $O(h^{2M-1})$.
+There are finitely many knots, even when subset sums coincide; the squared
+norm of their sum has the same order up to a fixed constant. Division by
+the interior density lower bound preserves this estimate. As
+$2M-1>M$ for $M\ge2$, it is negligible compared with $h^M$.
+For $M=1$ there are no interior knots and the density is constant in the
+interior; only high-moment tails can affect that fixed interior region.
+This completes the proof.
+\end{proof}
+
+\begin{corollary}[Simple testing scales for a finite prefix]
+\label{cor:finite-testing}
+For the simple pair in \cref{thm:phase}, the critical amplitude orders are
+\begin{equation}
+ \begin{cases}
+ n^{-1/M},&M<2r,\\
+ (n\log n)^{-1/(2r)},&M=2r,\\
+ n^{-1/(2r)},&M>2r.
+ \end{cases}
+ \label{eq:finite-testing}
+\end{equation}
+Precisely, the product affinity tends to one when $nH^2\to0$, to zero
+when $nH^2\to\infty$, and to $e^{-\lambda/2}$ when $nH^2\to\lambda$.
+\end{corollary}
+\begin{proof}
+Independence gives
+$\rho(P^n,Q^n)=(1-H^2(P,Q)/2)^n$. Insert the three asymptotics.
+The inequalities $\TV\le H$ and $1-\TV\le\rho$ identify the
+indistinguishable and distinguishable regimes.
+\end{proof}
+These are simple-pair testing scales. They are not a blanket minimax theorem
+for all finite-prefix parameter models. In particular, boundary information
+can improve a specific testing problem even though moment fitting alone
+does not use that information.
+
+\section{Two explicit boundary transitions}
+\label{sec:transitions}
+
+First compare $\nu=\Law(U)$ with $\eta=\delta_0$. The first unmatched
+moment is $r=2$, with $\Delta_2=1/3$. For $M$ background uniforms all of
+half-length one,
+\begin{equation}
+ C_M=\frac1{2^M(M-1)!}.
+ \label{eq:equal-C}
+\end{equation}
+At $M=1$, direct integration of the two linear edge ramps gives, for
+$0<h<1$,
+\begin{equation}
+ H^2(g_1*\Law(hU),g_1)
+ =\frac{2(\sqrt2-1)}3h.
+ \label{eq:M1}
+\end{equation}
+At the critical number $M=4$,
+\begin{equation}
+ H^2(g_4*\Law(hU),g_4)
+ \sim\frac1{192}h^4\log(1/h).
+ \label{eq:M4}
+\end{equation}
+For every $M>4$, the asymptotic is $J_2(g_M)h^4/144$.
+For the infinite up density, it is likewise
+\begin{equation}
+ H^2(\up*\Law(hU),\up)\sim\frac{J_2(\up)}{144}h^4.
+ \label{eq:up-single}
+\end{equation}
+Thus a nonzero added support does not force an $h$-scale Hellinger
+contribution: the order of boundary vanishing controls its importance.
+
+Second compare a uniform perturbation with a variance-matched Gaussian:
+$\nu=\Law(U)$ and $\eta=N(0,1/3)$. The first unmatched moment is $r=4$,
+\begin{equation}
+ \Delta_4=\frac15-\frac13=-\frac2{15}.
+ \label{eq:delta4-single}
+\end{equation}
+The critical finite prefix now has $M=8$ factors, and
+\begin{equation}
+ H^2(g_8*\Law(hU),g_8*N(0,h^2/3))
+ \sim\frac7{829440}h^8\log(1/h).
+ \label{eq:M8}
+\end{equation}
+The infinite up-law counterpart is
+\begin{equation}
+ H^2(\up*\Law(hU),\up*N(0,h^2/3))
+ \sim\frac{J_4(\up)}{129600}h^8.
+ \label{eq:up-confounded}
+\end{equation}
+These constants use the normalization \eqref{eq:hellinger}. Halving the
+definition of squared Hellinger distance would halve every displayed
+Hellinger constant, but would not change any rate exponent.
+
+\section{The finite algebra needed for recovery}
+\label{sec:algebra}
+
+\subsection{Cumulants of a uniform factor}
+Let $p_k(x)=\sum_{i=1}^m x_i^k$, with $x_i=a_i^2$. Cumulants are
+coefficients in
+$\log\E e^{tX}=\sum_{j\ge1}\kappa_j(X)t^j/j!$ near zero.
+For $U$ uniform on $[-1,1]$,
+\begin{equation}
+ c_k:=\kappa_{2k}(U)
+ =\frac{2^{2k}B_{2k}}{2k}
+ =\frac{(-1)^{k+1}(2k)!\zeta(2k)}{k\pi^{2k}}\ne0.
+ \label{eq:cumulants}
+\end{equation}
+For example, $c_1=1/3$, $c_2=-2/15$, $c_3=16/63$.
+One verification is to take logarithms in
+$\sinh t/t=\prod_{j\ge1}(1+t^2/(\pi^2j^2))$ for $|t|<\pi$
+and compare coefficients. Cumulant additivity and scaling give
+\begin{align}
+ \kappa_2(X_{a,v})-\kappa_2(B)&=v+\tfrac13p_1(x),
+ \label{eq:kappa2}\\
+ \kappa_{2k}(X_{a,v})-\kappa_{2k}(B)&=c_kp_k(x),\quad k\ge2.
+ \label{eq:kappahigher}
+\end{align}
+Known variance reveals $p_1,\ldots,p_m$ through cumulant order $2m$.
+Unknown variance conceals $p_1$ and reveals the consecutive window
+$p_2,\ldots,p_{m+1}$ through order $2m+2$.
+
+For the background \eqref{eq:up}, the explicit formulas are
+\begin{equation}
+ \kappa_{2k}(B)=\frac{c_k}{2^{2k}-1},\qquad
+ \Var(B)=\frac19,\qquad \kappa_4(B)=-\frac2{225}.
+ \label{eq:up-cumulants}
+\end{equation}
+More generally replace $(2^{2k}-1)^{-1}$ by $\sum_jb_j^{2k}$.
+Absolute summability justifies differentiation of the logarithmic moment
+product in a neighborhood of zero.
+
+\subsection{A credited shifted-power-sum inequality}
+The following result and its counting-function proof are reproduced from
+\cite[Theorem 4.1]{companion}. They are not counted as a new theorem of this
+article.
+
+\begin{lemma}[Consecutive shifted power sums]
+\label{lem:moments}
+For ordered $x,y\in[0,1]^m$, integer $s\ge0$, and
+\[
+ E_s(x,y)=\max_{s+1\le k\le s+m}|p_k(x)-p_k(y)|,
+\]
+one has
+\begin{equation}
+ \norm{x-y}_\infty\le8E_s(x,y)^{1/(m+s)},\qquad
+ \norm{\sqrt x-\sqrt y}_\infty
+ \le\sqrt8 E_s(x,y)^{1/(2m+2s)}.
+ \label{eq:moment-inverse}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Define $C(t)=\#\{i:x_i\le t\}-\#\{i:y_i\le t\}$ on $(0,1)$.
+The nonzero sign of this integer-valued step function changes at most
+$m-1$ times. Indeed, resolve its jumps into $m$ unit up-steps and $m$
+unit down-steps. The resulting walk starts and ends at zero and has at most
+$m$ excursions; combining consecutive excursions of the same sign can only
+reduce the number of sign blocks. Intermediate steps at a common atom have
+zero interval length and create no extra sign block of $C$.
+
+Choose $z_1,\ldots,z_q$ between opposite-sign blocks, $q\le m-1$, and
+choose the sign of $Q(t)=\pm\prod_{j=1}^q(t-z_j)$ so that $QC\ge0$
+almost everywhere. The sum of the absolute monomial coefficients of $Q$
+is at most $2^q$.
+
+Put $d=\norm{x-y}_\infty>0$. Interchanging the vectors if necessary,
+some $y_i-x_i=d$. On $(x_i,y_i)$, $C\ge1$, so no sign-change point
+lies in that interval. On its middle half, $t\ge d/4$ and
+$|t-z_j|\ge d/4$. Hence
+\begin{equation}
+ \int_0^1t^sQ(t)C(t)\,dt\ge\frac d2\left(\frac d4\right)^{s+q}.
+ \label{eq:moment-lower}
+\end{equation}
+Direct integration of the counting functions gives
+\[
+ p_k(x)-p_k(y)=-k\int_0^1t^{k-1}C(t)\,dt.
+\]
+Expanding $Q$ therefore bounds the left side of
+\eqref{eq:moment-lower} above by $2^q E_s/(s+1)$.
+Since $d\le1$ and $q\le m-1$,
+\[
+ d^{m+s}\le\frac{2^{2s+3m-2}}{s+1}E_s
+ \le8^{m+s}E_s.
+\]
+This proves the first inequality; the second follows from
+$|\sqrt u-\sqrt v|\le\sqrt{|u-v|}$ for nonnegative $u,v$.
+\end{proof}
+Equal unit multiplicities and nonnegative nodes are essential hypotheses of
+this proof. Arbitrary signed or unequal-weight moment inversion is a
+different problem.
+
+\subsection{Exact moment-preserving pairs}
+The construction below, also used in \cite{companion}, supplies fixed
+algebraic shapes. Our new analytic theorem will determine the Hellinger
+distance between their scaled statistical realizations.
+
+\begin{lemma}[Hard shapes]
+\label{lem:hard-shapes}
+For every $m\ge1$ there exist distinct positive ordered vectors $u,w$ in
+$(0,1)^m$ such that
+\begin{equation}
+ p_1(u)=p_1(w),\ldots,p_{m-1}(u)=p_{m-1}(w),\qquad
+ p_m(u)\ne p_m(w).
+ \label{eq:known-shapes}
+\end{equation}
+There also exist such vectors with
+\begin{equation}
+ \begin{split}
+ p_2(u)&=p_2(w),\ldots,p_m(u)=p_m(w),\\
+ p_1(u)&\ne p_1(w),\qquad p_{m+1}(u)\ne p_{m+1}(w).
+ \end{split}
+ \label{eq:unknown-shapes}
+\end{equation}
+Empty strings of equalities, when $m=1$, impose no constraint.
+\end{lemma}
+\begin{proof}
+Start at distinct $0<u_1<\cdots<u_m<1$, let
+$P(z)=\prod_i(z-u_i)$, and define the tangent
+\[
+ \beta_i=\frac1{u_i^sP'(u_i)},\quad s\in\{0,1\}.
+\]
+Lagrange interpolation of monomials of degrees at most $m-1$ gives
+\[
+ \sum_i\frac{u_i^j}{P'(u_i)}=
+ \begin{cases}0,&0\le j<m-1,\\1,&j=m-1.\end{cases}
+\]
+Thus the differentials of $p_{s+1},\ldots,p_{s+m-1}$ annihilate $\beta$,
+whereas $Dp_{s+m}(u)\beta=s+m$. The constraint differentials have rank
+$m-1$, by the rectangular Vandermonde matrix after scaling nonzero rows
+and columns. The implicit function theorem gives a local one-dimensional
+curve preserving those moments, with tangent $\beta$; another sufficiently
+nearby point gives the required change in the final moment. The coordinates
+stay distinct, positive, and less than one.
+
+For $s=1$, partial fractions of $1/P$ evaluated at zero also give
+\[
+ Dp_1(u)\beta=\sum_i\frac1{u_iP'(u_i)}
+ =\frac{(-1)^{m+1}}{\prod_i u_i}\ne0.
+\]
+Choose the second point close enough that both this moment and $p_{m+1}$
+change. This proves the additional assertion in \eqref{eq:unknown-shapes}.
+\end{proof}
+
+\section{A feasible estimator and the upper bounds}
+\label{sec:upper}
+
+\begin{proposition}[Finite-grid moment fitting]
+\label{prop:estimator}
+There are measurable estimators attaining the upper bounds in
+\cref{thm:minimax}, uniformly over the stated parameter sets.
+\end{proposition}
+\begin{proof}
+For each required raw moment order $j$ form the sample average of $X^j$.
+Clip it to a fixed interval containing every true raw moment of that order
+in the model. All absolute moments of $X_{a,v}$ of any fixed order are
+uniformly bounded: the background and uniform factors are bounded, and the
+Gaussian variance is bounded. Consequently the clipped raw-moment estimates
+have uniformly bounded mean squared error $C_j/n$.
+
+Cumulants through any fixed order are polynomials in raw moments. On the
+fixed clipping box these polynomials are Lipschitz. Hence the resulting
+cumulant estimates satisfy
+\begin{equation}
+ \E|\widehat\kappa_j-\kappa_j(X_{a,v})|^2\le C_j'/n.
+ \label{eq:kappa-MSE}
+\end{equation}
+With known variance, use \eqref{eq:kappa2}--\eqref{eq:kappahigher} to
+estimate $p_1,\ldots,p_m$. With unknown variance, estimate
+$p_2,\ldots,p_{m+1}$. Write $s=0$ or $s=1$ respectively, and
+$\widehat p_k$ for these estimates. Their maximum error $D_n$ has
+$\E D_n\le Cn^{-1/2}$.
+
+On the finite ordered grid
+\[
+ \cX_{m,n}=\{x\in\{0,1/n,\ldots,1\}^m:x_1\le\cdots\le x_m\},
+\]
+minimize $\max_{s+1\le k\le s+m}|p_k(x)-\widehat p_k|$,
+breaking ties lexicographically. The true squared vector has an ordered
+rounded grid point within $1/n$ coordinatewise; its power-sum discrepancy
+is at most $C/n$. Thus the chosen $\widehat x$ satisfies
+\begin{equation}
+ E_s(\widehat x,x)\le2D_n+C/n.
+ \label{eq:fit-error}
+\end{equation}
+Set $\widehat a_i=\sqrt{\widehat x_i}$. Apply \cref{lem:moments}, then
+Jensen's inequality for the concave positive powers involved, to obtain
+\begin{align}
+ \E\norm{\widehat x-x}_\infty&\le Cn^{-1/(2m+2s)},
+ \label{eq:x-rate}\\
+ \E\norm{\widehat a-a}_\infty&\le Cn^{-1/(4m+4s)}.
+ \label{eq:a-upper}
+\end{align}
+
+In the unknown-variance case define
+\[
+ \widehat v=\Pi_{[0,V]}
+ \left(\widehat\kappa_2-\kappa_2(B)-\tfrac13p_1(\widehat x)\right),
+\]
+where $\Pi$ is clipping to the interval. Since clipping cannot increase
+distance to the true $v$,
+\[
+ \E|\widehat v-v|
+ \le Cn^{-1/2}+\frac m3\E\norm{\widehat x-x}_\infty
+ \le C'n^{-1/(2m+2)}.
+\]
+All minimizations were over finite fixed sets, so measurability is explicit.
+\end{proof}
+The grid has $\binom{n+m}{m}$ points. This is a proof of an attainable
+statistical rate for fixed $m$, not a proposed scalable implementation.
+Exact data also determine the parameters uniquely by \cref{lem:moments}
+and the variance identity; no density inversion or use of empirical total
+variation is needed.
+
+\section{Lower bounds at vanishing factors and zero variance}
+\label{sec:lower}
+
+\subsection{Known variance}
+Choose $u,w$ from \eqref{eq:known-shapes}. Let
+\[
+ Z_u=\sum_i\sqrt{u_i}V_i,\qquad Z_w=\sum_i\sqrt{w_i}V_i,
+ \qquad a(h)=h\sqrt u,\quad a'(h)=h\sqrt w.
+\]
+Both perturbations are symmetric. Their cumulants through order $2m-1$
+agree, and the difference in their $2m$th cumulants is
+$c_m(p_m(u)-p_m(w))\ne0$. Raw moments are triangular polynomials in
+cumulants with coefficient one on the highest cumulant; therefore raw
+moments agree through order $2m-1$, and
+\begin{equation}
+ \Delta_{2m}=c_m\bigl(p_m(u)-p_m(w)\bigr).
+ \label{eq:delta-known}
+\end{equation}
+At zero Gaussian variance, \cref{thm:main-hellinger} now gives
+\begin{equation}
+ H^2(P_{a(h),0},P_{a'(h),0})
+ \sim\frac{\Delta_{2m}^2}{4((2m)!)^2}J_{2m}(f)h^{4m}.
+ \label{eq:H-known}
+\end{equation}
+At any fixed known $v_0>0$, a common Gaussian convolution contracts
+Hellinger distance, so the same pair has $H^2=O(h^{4m})$.
+Its scale separation is a fixed positive multiple of $h$.
+
+\subsection{Unknown variance: one member exactly unsmoothed}
+Choose $u,w$ from \eqref{eq:unknown-shapes}, and define
+\begin{equation}
+ t_u=\max\{0,(p_1(w)-p_1(u))/3\},\qquad
+ t_w=\max\{0,(p_1(u)-p_1(w))/3\}.
+ \label{eq:compensation}
+\end{equation}
+Exactly one of these numbers is zero and the other is strictly positive.
+Their purpose is the identity
+$t_u+p_1(u)/3=t_w+p_1(w)/3$. Let
+\[
+ Z_u=\sum_i\sqrt{u_i}V_i+\sqrt{t_u}G,
+ \qquad Z_w=\sum_i\sqrt{w_i}V_i+\sqrt{t_w}G.
+\]
+The second cumulants agree by construction, cumulants $4,6,\ldots,2m$
+agree by the power-sum constraints, and odd cumulants vanish. The first
+unmatched raw moment is therefore
+\begin{equation}
+ \Delta_{2m+2}=c_{m+1}\bigl(p_{m+1}(u)-p_{m+1}(w)\bigr)\ne0.
+ \label{eq:delta-unknown}
+\end{equation}
+Both noise laws are all-moment, so \cref{thm:main-hellinger} applies even
+though only one contains a Gaussian. With
+\[
+ a(h)=h\sqrt u,\quad v(h)=h^2t_u,\qquad
+ a'(h)=h\sqrt w,\quad v'(h)=h^2t_w,
+\]
+we obtain
+\begin{equation}
+ H^2(P_{a(h),v(h)},P_{a'(h),v'(h)})
+ \sim\frac{\Delta_{2m+2}^2}{4((2m+2)!)^2}
+ J_{2m+2}(f)h^{4m+4}.
+ \label{eq:H-unknown}
+\end{equation}
+The scale separation is comparable to $h$ and the variance separation to
+$h^2$. All parameters tend to $(0,0)$, and for sufficiently small $h$ lie
+in $\cA_m\times[0,V]$. One variance is exactly zero at every $h$.
+
+\subsection{The statistical conclusion}
+\begin{proof}[Completion of \cref{thm:minimax}]
+For any pair of laws, tensorization yields
+\begin{equation}
+ H^2(P^n,Q^n)=2\left[1-\left(1-\tfrac12H^2(P,Q)\right)^n\right]
+ \le nH^2(P,Q).
+ \label{eq:tensorization}
+\end{equation}
+If two parameter values have metric separation $d$, any estimator has
+maximum expected loss at least
+\begin{equation}
+ \frac d4\bigl(1-\TV(P^n,Q^n)\bigr).
+ \label{eq:two-point}
+\end{equation}
+Indeed, deciding which parameter is nearer to the estimate incurs loss at
+least $d/2$ whenever the resulting test errs; the sum of its two error
+probabilities is at least $1-\TV$.
+
+In the known-variance pair choose $h=\gamma n^{-1/(4m)}$, with a fixed
+sufficiently small $\gamma>0$. Then \eqref{eq:H-known}, contraction if
+needed, and \eqref{eq:tensorization} give product total variation at most
+$1/2$ for all sufficiently large $n$. Equation \eqref{eq:two-point} gives
+the lower bound $cn^{-1/(4m)}$.
+
+For the unknown-variance pair choose
+$h=\gamma n^{-1/(4m+4)}$. The same argument using
+\eqref{eq:H-unknown} gives lower bounds of order $h$ for scale loss and
+$h^2$ for variance loss. These are exactly
+\eqref{eq:unknown-rate}--\eqref{eq:variance-rate}. The pairs eventually
+lie in every fixed relative neighborhood of $(0,0)$, proving the local
+minimax clause. \Cref{prop:estimator} supplied all upper bounds.
+\end{proof}
+
+\subsection{Sharp deterministic Hellinger inverse exponents}
+\begin{corollary}[Inverse moduli]
+\label{cor:H-inverse}
+On the parameter sets in \cref{thm:minimax},
+\begin{align}
+ \norm{a-a'}_\infty&\le C H(P_{a,v_0},P_{a',v_0})^{1/(2m)}
+ &&\text{for known }v_0,\label{eq:mod-known}\\
+ \norm{a-a'}_\infty&\le C H(P_{a,v},P_{a',v'})^{1/(2m+2)},
+ \label{eq:mod-unknown}\\
+ |v-v'|&\le C H(P_{a,v},P_{a',v'})^{1/(m+1)}.
+ \label{eq:mod-var}
+\end{align}
+None of the three exponents can be increased in a uniform inequality,
+even locally near the corresponding all-zero factor configuration.
+\end{corollary}
+\begin{proof}
+For densities $p,q$, Cauchy--Schwarz gives
+\[
+ \left|\int x^j(p-q)\,dx\right|
+ \le H(p,q)\left(2\E_p|X|^{2j}+2\E_q|X|^{2j}\right)^{1/2}.
+\]
+The uniform moment bounds and Lipschitz cumulant polynomials therefore
+control each relevant power-sum discrepancy by $CH$. Apply
+\cref{lem:moments}; for variance also use \eqref{eq:kappa2}.
+The scaled pairs above have parameter gaps of order $h$ or $h^2$ and
+Hellinger distances bounded above by order $h^{2m}$ or $h^{2m+2}$.
+They exclude every larger exponent.
+\end{proof}
+
+\section{Detecting a factor is easier than recovering every factor}
+\label{sec:detection}
+
+Let $\mathcal T_n(h)$ be the infimum over tests of the sum of their
+worst-case null and alternative errors, with null $a=0$ and alternative
+$a_m\ge h$. In the unknown-variance model the supremum over $v\in[0,V]$
+is taken separately under the two hypotheses. This is essential: the
+null and alternative need not have the same nuisance variance.
+
+\begin{proof}[Proof of \cref{thm:detection-main}]
+With known $v_0$, define the estimated variance deficit
+\[
+ \widehat D_2=\widehat\kappa_2-\kappa_2(B)-v_0.
+\]
+Its true value is zero under the null and at least $h^2/3$ under the
+alternative. Reject when $\widehat D_2>h^2/6$. The moment-estimation
+bound \eqref{eq:kappa-MSE} and Markov's inequality applied to squared
+error give
+\begin{equation}
+ \mathcal T_n(h)\le\frac{C}{nh^4}.
+ \label{eq:test-upper-known}
+\end{equation}
+With unknown variance instead use
+$\widehat D_4=\widehat\kappa_4-\kappa_4(B)$. Its true value is zero
+under the null and at most $-2h^4/15$ under the alternative, because
+$\kappa_4(X)-\kappa_4(B)=-(2/15)\sum_i a_i^4$.
+Reject when $\widehat D_4<-h^4/15$. The same argument gives
+\begin{equation}
+ \mathcal T_n(h)\le\frac{C}{nh^8}.
+ \label{eq:test-upper-unknown}
+\end{equation}
+
+For the known-variance lower bound, compare no factor with just one factor
+of half-length $h$. At $v_0=0$, \eqref{eq:up-single} with $f$ in place
+of $\up$ gives Hellinger squared asymptotic $J_2(f)h^4/144$.
+For $v_0>0$, use common-convolution contraction. If $nh^4\to0$,
+\eqref{eq:tensorization} implies that product total variation tends to
+zero, forcing the error sum to be at least $1-o(1)$.
+
+For the unknown-variance lower bound, use the null with $a=0$, $v=h^2/3$
+and the alternative with one half-length $h$, $v=0$. Both lie in the
+parameter set for small $h$. The perturbations have matching variance and
+first differ in their fourth moment, so
+\begin{equation}
+ H^2(P_{(0,\ldots,0,h),0},P_{0,h^2/3})
+ \sim\frac{J_4(f)}{129600}h^8.
+ \label{eq:test-hard-pair}
+\end{equation}
+If $nh^8\to0$, product total variation again tends to zero. The trivial
+always-accept test has error sum one, so in both lower-bound regimes the
+optimal sum tends exactly to one. Together with
+\eqref{eq:test-upper-known}--\eqref{eq:test-upper-unknown}, this proves
+the threshold statements.
+\end{proof}
+
+For $m>1$, the worst-case recovery rate is strictly slower than the
+corresponding detection threshold. The hard recovery pairs use several
+coordinated small factors whose low cumulants cancel between the two
+models. In a test against no factors, all contributions to the first
+unconfounded even power sum have the same sign. There is no such
+cancellation to exploit.
+
+\section{Concrete two-factor hard pairs}
+\label{sec:examples}
+
+The implicit-function construction proves existence for every capacity.
+For $m=2$ the following exact rational shapes make both mechanisms
+transparent. These examples use squared half-lengths.
+
+\subsection{Known variance}
+Take
+\begin{equation}
+ u=(1/4,3/4),\qquad w=(1/8,7/8).
+ \label{eq:example-known}
+\end{equation}
+Their first power sums agree and
+$p_2(u)-p_2(w)=-5/32$. Hence their scaled uniform noises have first
+unmatched raw moment coefficient
+$\Delta_4=(-2/15)(-5/32)=1/48$. At zero Gaussian variance,
+\begin{equation}
+ H^2(P_{h\sqrt u,0},P_{h\sqrt w,0})
+ \sim\frac{J_4(f)}{5308416}h^8.
+ \label{eq:example-known-H}
+\end{equation}
+The two scale vectors differ by a fixed positive multiple of $h$, giving
+the $n^{-1/8}$ two-factor recovery obstruction.
+
+\subsection{Unknown variance, one exactly zero}
+Keep $u=(1/4,3/4)$ and take
+\begin{equation}
+ w=(39/404,317/404).
+ \label{eq:example-unknown}
+\end{equation}
+Direct calculation gives
+\[
+ p_2(u)=p_2(w)=5/8,\qquad p_1(u)=1,\qquad p_1(w)=89/101.
+\]
+Thus choose $t_u=0$, $t_w=4/101$. The second cumulants of the two
+unscaled perturbations are both $1/3$, their fourth cumulants agree,
+and their sixth raw-moment difference is
+\begin{equation}
+ \Delta_6=\frac{16}{63}\bigl(p_3(u)-p_3(w)\bigr)
+ =-\frac{85164}{7212107}.
+ \label{eq:example-delta6}
+\end{equation}
+Therefore
+\begin{equation}
+ H^2(P_{h\sqrt u,0},P_{h\sqrt w,(4/101)h^2})
+ \sim\frac{\Delta_6^2}{4(6!)^2}J_6(f)h^{12}.
+ \label{eq:example-unknown-H}
+\end{equation}
+This is a zero-noise-boundary realization of the $n^{-1/12}$ scale and
+$n^{-1/6}$ variance obstructions for capacity two, not an appeal to a
+positive variance floor.
+
+\section{Computational checks and their limits}
+\label{sec:verification}
+
+The package includes \texttt{verification.py}, using SymPy 1.14.0 and
+mpmath 1.3.0. The executed run passed 2,100 exact rational instances of
+\eqref{eq:moment-inverse} for $1\le m\le7$ and $0\le s\le2$, using
+seed 20260929; it also passed 16 exact tangent identities for
+$1\le m\le8$, $s=0,1$. It verifies the first six uniform cumulants,
+the displayed hard-pair equalities, and the rational Hellinger constants.
+These checks independently test algebraic ingredients and transcription;
+they do not replace the all-parameter proofs.
+
+The numerical part uses 60-decimal arithmetic and piecewise integration at
+every relevant spline knot. It computes squared Hellinger distances for
+$g_M*\Law(hU)$ versus $g_M$, with $M=1,3,4,5$ and
+$h=2^{-3},\ldots,2^{-7}$. There are twenty diagnostic rows. The finite
+spline formula is \eqref{eq:spline}; convolution with the added uniform is
+obtained by integrating each truncated power exactly before quadrature.
+The full data are in \path{data/hellinger_diagnostics.csv}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$M$ & Quantity at $h=1/128$ & Computed value & Predicted limit\\
+\midrule
+1 & $H^2/h$ & $0.276142374915$ & $0.276142374915$\\
+3 & $H^2/h^3$ & $0.017668468430$ & $0.017661491088$\\
+4 & logarithmic slope $L(h)$ & $0.005208430349$ & $1/192$\\
+5 & $H^2/h^4$ & $0.007795167122$ & $0.007819937017$\\
+\bottomrule
+\end{tabular}
+\caption{Finite-prefix diagnostics; numerical quadrature, not interval
+certificates. Here $L(h)=[H^2(h)/h^4-H^2(2h)/(2h)^4]/\log2$.}
+\label{tab:diagnostics}
+\end{table}
+
+For $M=3$, the predicted limit is $2C_3A_3=A_3/8$ and the independently
+integrated profile is
+\[
+ A_3\approx0.141291928707536383107313127009.
+\]
+For $M=5$ the computation gives
+\[
+ J_2(g_5)\approx1.126070930490470658853603770783,
+ \qquad J_2(g_5)/144\approx0.00781993701729493513.
+\]
+The critical $M=4$ ratio $H^2/(h^4\log(1/h))$ converges slowly because
+of the next constant term. The slope $L(h)$ removes that leading constant
+and is a more informative finite-$h$ diagnostic of the coefficient $1/192$.
+The one-uniform formula \eqref{eq:M1} is also checked numerically against
+its exact value at every tested amplitude.
+
+No interval enclosure of an information integral is claimed. In particular,
+none of the displayed finite-prefix numbers is described as a computed
+$J_r(\up)$. The package does not simulate a minimax risk, fit the enormous
+moment grid, or certify an asymptotic statement by finite sampling.
+The exact asymptotic constants for the up law remain the rigorously finite,
+positive integrals in the theorems.
+
+\section{Proof audit and formalization route}
+\label{sec:audit}
+
+The dependency chain is short enough to audit structurally:
+\[
+ \begin{gathered}
+ \text{finite spline endpoints and conditional Jensen}\\
+ \Downarrow\\
+ \text{finite information, prefix information convergence}\\
+ \Downarrow\\
+ \text{finite Hellinger expansion + contraction + Fatou}\\
+ \Downarrow\\
+ \text{exact infinite-background Hellinger asymptotic}\\
+ \Downarrow\\
+ \text{moment-matched pairs + tensorization + two-point risk}.
+ \end{gathered}
+\]
+The statistical upper bounds use a separate branch: uniform moment bounds,
+finite cumulant polynomials, and the credited inverse inequality.
+
+Three distinctions are essential. First, $C^\infty$ smoothness alone is
+not used as a theorem that a weighted likelihood expansion must hold.
+The uniform-prefix representation supplies the missing quantitative control.
+Second, passing to the infinite convolution uses convergence of information,
+not just its lower semicontinuity; the higher-score moment bound in
+\eqref{eq:uniform-integrability} is what establishes the required direction.
+Third, no upper bound on chi-square divergence relative to the unsmoothed
+law is asserted. It is actually infinite in a central example.
+
+A useful proof-assistant implementation would separate four interfaces.
+The first is the finite uniform-convolution density, support, and endpoint
+formula. The second is weak differentiation of convolution, conditional
+Jensen, and weighted uniform integrability. The third is Hellinger affinity,
+its contraction, tensorization, and the prefix-limit argument. The fourth
+is finite moment algebra and the statistical decision bound. A certified
+checker for rational tangent identities could accompany the final interface,
+but cannot replace the analytic interfaces.
+
+No Lean or Rocq files are delivered as verified proofs. Nothing inherits
+formal status merely from its association with the ProveIt repository.
+Likewise, the article does not establish a full local asymptotic normality
+theorem: the $L^2$ square-root expansion compares prescribed perturbation
+curves, and identifying an entire limiting statistical experiment needs
+additional uniformity.
+
+\section{Further research questions and concrete success criteria}
+\label{sec:questions}
+
+\begin{question}[Mixed collision strata at the zero-noise boundary]
+At a base factor configuration with positive squared-scale multiplicities
+$m_1,\ldots,m_s$ and $m_0$ zero slots, determine the exact local pairwise
+Hellinger inverse exponent with unknown variance. The companion manuscript
+proposes the denominator
+\[
+ \max\bigl(\{m_1,\ldots,m_s\}\cup
+ \{2(m_0+1):m_0>0\}\bigr).
+\]
+The present paper proves the fully vanishing case, not this entire formula.
+A solution should supply both a local upper modulus and moment-matched
+likelihood pairs for every dominant cluster, including $v=0$.
+\end{question}
+
+\begin{question}[Singular limiting experiments and optimal constants]
+Describe the limiting experiments when
+$a=n^{-1/(4m)}u$ with known zero variance, or
+$(a,v)=(n^{-1/(4m+4)}u,n^{-1/(2m+2)}t)$ with unknown variance.
+The exact Hellinger constants identify candidate information coefficients,
+but do not alone identify the likelihood-ratio process or efficient risk
+constant. A useful result would include convergence uniform over compact
+sets of shape parameters and an attainable optimal constant.
+\end{question}
+
+\begin{question}[Certified up-information constants and their growth]
+Develop interval-certified algorithms for $J_r(\up)$, beginning with
+$r=2,4,6$. Monotone prefix values give upper bounds; interior integrals and
+controlled endpoint estimates can give lower bounds. Prove an effective
+error bound, then determine the growth of $J_r(\up)$ as $r\to\infty$.
+Without such control, the fixed-capacity rates cannot be read uniformly in
+an increasing number of factors.
+\end{question}
+
+\begin{question}[The finite-to-infinite crossover]
+Let the available background prefix length $M=M(h)$ grow while $h\to0$,
+or let the geometric ratio of $b_j$ vary with $h$. Determine when the
+finite-boundary term, the critical logarithm, and the full information
+constant dominate. A solution must track the width of the exact endpoint
+collar and the size of the information constants; substituting a varying
+$M$ into a fixed-$M$ asymptotic is not valid.
+\end{question}
+
+\begin{question}[Minimal tail hypotheses]
+All absolute moments suffice in \cref{thm:main-hellinger}; sub-Gaussian
+or exponential tails are unnecessary. For a prescribed order $r$, determine
+the weakest finite-moment or tail condition ensuring the same expansion.
+The truncation proof suggests a tradeoff between available prefix length
+and available noise moments. Find sharp sufficient conditions and a
+heavy-tail counterexample at the threshold.
+\end{question}
+
+\begin{question}[Beyond-all-powers separation]
+For the explicit lognormal pair in \cref{cor:allmoments}, determine the
+actual first nonzero asymptotic scale of the Hellinger distance. It is
+smaller than every power of $h$, but nonzero. Does a logarithmic-square
+scale analogous to the lognormal tail govern its leading behavior, and
+how does the background enter the coefficient? This question lies beyond
+finite-order moment methods by construction.
+\end{question}
+
+\begin{question}[Adaptation and honest uncertainty quantification]
+Construct an estimator that adapts to unknown collision multiplicities,
+vanishing slots, and positive versus zero variance. Determine whether
+confidence sets can be simultaneously honest and rate-adaptive on all
+these strata. Separate an impossibility caused by nearly indistinguishable
+strata from inefficiency of a particular algorithm.
+\end{question}
+
+\begin{question}[Efficient certified moment fitting]
+Replace the $\binom{n+m}{m}$ grid by an algorithm with explicit dependence
+on $m$ and optimization tolerance. A successful certificate should guarantee
+an objective gap $O(n^{-1/2})$, which is sufficient for the proved rates,
+even when roots coincide or vanish. Hyperbolic-polynomial coefficient
+methods and interval branch-and-bound are plausible starting points, not
+implemented solutions in this package.
+\end{question}
+
+\begin{question}[Multivariate uniform directions]
+Replace $a_iV_i$ by $V_i a_i$ with vectors $a_i\in\R^d$, and permit an
+unknown Gaussian covariance matrix. Higher cumulants become sums of even
+tensor powers. Determine identifiable parameter classes up to signs and
+permutations, and then prove a multivariate finite-boundary phase diagram
+that includes faces of different codimensions. The one-dimensional
+counting-function inverse inequality does not extend automatically.
+\end{question}
+
+\begin{question}[Characterize admissible compact backgrounds]
+Find a useful intrinsic condition on a compactly supported density $g$
+that is equivalent, or close to equivalent, to the all-order Hellinger
+moment-matching property. Is finite $J_r(g)$ together with an appropriate
+translation-uniform integrability condition sufficient at each fixed $r$?
+The present uniform-prefix representation is a strong, checkable sufficient
+condition, but not claimed necessary.
+\end{question}
+
+\section{Conclusion}
+
+For the unsmoothed Fabius--Rvachev law, a moving compact-support boundary
+does not change the finite-order moment-based Hellinger exponent. The
+reason is specific and quantitative: sufficiently long uniform prefixes
+have enough endpoint vanishing to make the relevant score square
+integrable, their information converges to the infinite-background
+information, and common-convolution contraction transfers the sharp
+asymptotic upper bound. Fatou supplies the matching lower bound.
+
+This closes the identified unsmoothed statistical gap for every fixed
+finite capacity and extends the lower-bound constructions to the boundary
+of unknown Gaussian variance. Finite prefixes show why this conclusion
+was not automatic: too few uniform factors produce a different power,
+and the exact critical number produces a logarithm. The result is a
+proved continuation of a specific research program, with its classical
+algebra and information ingredients distinguished from the analytic and
+zero-noise conclusions developed here.
+
+\begin{thebibliography}{9}
+\bibitem{arias}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, arXiv:1702.05442 (2017), English translation
+of the 1982 article in Rev. Real Acad. Ciencias Madrid \textbf{76}, 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{bobkov}
+S. G. Bobkov,
+\emph{Fisher-type information involving higher order derivatives},
+arXiv:2412.10200v1 (2024), especially Sections 1, 2, and 10.
+\url{https://arxiv.org/abs/2412.10200}.
+
+\bibitem{heinrich-kahn}
+P. Heinrich and J. Kahn,
+\emph{Optimal rates for finite mixture estimation},
+arXiv:1507.04313 (2015).
+\url{https://arxiv.org/abs/1507.04313}.
+
+\bibitem{wu-yang}
+Y. Wu and P. Yang,
+\emph{Optimal estimation of Gaussian mixtures via denoised method of moments},
+arXiv:1807.07237v2 (2019).
+\url{https://arxiv.org/abs/1807.07237v2}.
+
+\bibitem{kleiber}
+C. Kleiber,
+\emph{The generalized lognormal distribution and the Stieltjes moment problem},
+arXiv:1301.1277 (2013).
+\url{https://arxiv.org/abs/1301.1277}.
+
+\bibitem{repo-strata}
+ProveIt research collection,
+\emph{Sharp Stability Strata for Finite Fabius--Rvachev Deconvolution:
+Colliding scales, vanishing factors, and optimal recovery exponents},
+report dated 28 September 2026.
+Read at commit \texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+Path: \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/article.tex}.
+The sampling proposition and explicit lower-bound limitation are in source
+lines 1190--1234 at that snapshot. This is an unreviewed research report,
+not a cited formal theorem.
+
+\bibitem{companion}
+\emph{Gaussian Confounding and Sharp Recovery of Uniform Convolution Factors:
+Shifted power sums, minimax estimation, and detection above a
+Fabius--Rvachev background}, research report prepared for Vladimir
+Reshetnikov, 29 September 2026, 19 pages.
+Read from the user's Library as \path{article(20260929-161307).pdf}, version 1.
+Theorem 4.1 supplies the credited shifted-moment inequality; Research
+Question 1 on page 17 explicitly asks for the unsmoothed up-law extension.
+Its own repository comparison is pinned to
+\texttt{c130dba623c420551d90db41dae7b3d9cff72dfd}, not the snapshot used
+here. No publication or independent review is implied.
+\end{thebibliography}
+\end{document}

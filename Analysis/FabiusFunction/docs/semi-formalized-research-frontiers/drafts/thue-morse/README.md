@@ -95,6 +95,22 @@ eigenfunction and a sharp Hölder-space relaxation estimate.  Nonzero phases
 and `q ≤ 1/2` are not settled.  Unreviewed; its numerics are diagnostics,
 not certificates; no Lean statement.
 
+## Critical and subcritical pressure (arrival, 2026-09-29)
+
+[`Thue_Morse_Critical_Pressure/`](Thue_Morse_Critical_Pressure/) holds
+*Critical Cusps in Digital-Product Pressure* (22-page A4 PDF, 1,632-line
+source, a mixed high-precision/collocation diagnostic program), filed on
+2026-09-29 by a quick archival intake.  It takes up the critical and
+subcritical questions left open by the fractional pressure article above.
+At the critical exponent (`q = 1/2` in the binary convention) the two
+central eigenvalues of the atomic transfer operator collide in a size-two
+Jordan block, and the pressure has a square-root cusp
+`√(2(b−1) log b)·√|c|` in every base `b`; a detuned crossover joins it to
+the supercritical cusp; and for `1/4 < q < 1/2` the pressure has an
+explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` and
+nonzero phases are not settled.  Unreviewed; its numerics are
+diagnostics, not certificates; no Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
