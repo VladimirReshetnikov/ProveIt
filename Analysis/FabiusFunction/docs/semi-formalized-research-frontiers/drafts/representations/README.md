@@ -132,6 +132,21 @@ of an existing draft; semantic consolidation is deferred to the post-
   endpoint asymptotics of `docs/ASYMPTOTIC_COMPLETION_AUDIT.md` and the
   rotating endpoint laws above.  Unreviewed; its numerics are not
   certificates; no Lean statement.
+- [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
+  *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
+  1,782-line source, a SymPy/SciPy check and Monte Carlo program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It proves the variance-fraction threshold of
+  the lacunary article above for **every** positive summable weight
+  sequence (a block is unaffected by the small-sum conditioning exactly when
+  its share of the tilted variance vanishes), with the same limiting
+  total-variation profile, an entropy limit and a local limit theorem; for
+  geometric weights, including the Fabius law, a phase-dependent boundary
+  law, a Brownian bridge with independent exponential slack, and an exact
+  lazy rejection sampler.  It was written before the lacunary article was
+  filed and does not cite it; the two are to be compared, and possibly
+  merged, after review.  Unreviewed; its numerics are not certificates; no
+  Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

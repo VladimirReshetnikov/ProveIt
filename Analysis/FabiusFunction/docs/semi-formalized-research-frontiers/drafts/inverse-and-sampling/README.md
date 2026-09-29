@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has five live navigation targets:
+This theme has six live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -15,6 +15,9 @@ This theme has five live navigation targets:
 - [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
   — an archival arrival of 2026-09-28 on the stability of recovering the
   uniform-factor spectrum from the law; unreviewed.
+- [`Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/`](Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/)
+  — an archival arrival of 2026-09-29 on optimal Hölder exponents for
+  recovering finitely many uniform factors; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -179,6 +182,20 @@ Billey–Swanson.  The exact dyadic-scale identifiability of
 `GeneralizedRvachevIdentifiability.lean` and the factor classification of
 `../spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/`
 are related and not cited.  Unreviewed; no Lean statement.
+
+[`Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/`](Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/)
+holds *Sharp Stability Strata for Finite Fabius–Rvachev Deconvolution*,
+filed on 2026-09-29 by a quick archival intake (22-page A4 PDF, 1,502-line
+source, an exact SymPy check program with 100-digit Fourier diagnostics).
+It is the finite-capacity counterpart of the uniform-factor article above:
+with a known smooth background (for example the up law) and at most `r`
+unknown uniform factors, the optimal local Hölder exponent for recovering
+the factors in total variation is `1/M`, where `M` is the largest
+positive-scale multiplicity or twice the number of vanishing factors; it
+is 1 or `1/2` when one of the two configurations is the fixed base point.
+Sharpness again comes from Chebyshev constructions.  It was written before
+the uniform-factor article was filed and does not cite it.  Unreviewed; no
+Lean statement.
 
 ## Formalization notes
 

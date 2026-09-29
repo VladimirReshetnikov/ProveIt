@@ -1,0 +1,14 @@
+.PHONY: all pdf check clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	python3 code/theorem_checks.py
+	python3 code/independent_check.py
+	python3 code/supplementary_checks.py
+
+clean:
+	latexmk -c article.tex

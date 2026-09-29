@@ -1,0 +1,1666 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Finite Separators and Discriminant Factorizations for Sextic Block Resolvents},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Finite sextic separators}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\lc}{lc}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\Ptwo}{\mathcal P_2}
+\newcommand{\Pthree}{\mathcal P_3}
+\newcommand{\Edges}{\mathcal E}
+\newcommand{\Rtwo}{R_{2,f}}
+\newcommand{\Rthree}{R_{3,f}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\src}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\snapshot}{\texttt{e2b1f016a94102663f12b970e6dd434229f90d01}}
+\newtcolorbox{resultbox}{enhanced,breakable,colback=MidnightBlue!3,
+ colframe=MidnightBlue!50,boxrule=0.5pt,arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.35in}
+{\color{MidnightBlue}\large\scshape Algebra \; / \; Invariant theory \; / \; Verified computation\par}
+\vspace{0.25in}
+{\Huge\bfseries Finite Separators and\par Discriminant Factorizations\par for Sextic Block Resolvents\par}
+\vspace{0.25in}
+{\Large A sharp 196-point guarantee and a bounded replacement\par for ProveIt's separating-invariant search\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large September 28, 2026\par}
+\vspace{0.28in}
+\begin{abstract}
+The sextic radical-solvability development in \repo\ uses terminating but
+unbounded search to specialize two block-partition descriptors. We replace
+that search, at the level of an ordinary mathematical proof, by a single
+explicit parameter range. For every separable sextic in characteristic zero,
+one of the integers $1,\ldots,196$ separates all fifteen pair partitions and
+all ten triple partitions simultaneously. The underlying descriptors compress
+to quadratics and linears. Their collisions are controlled by three invariant
+polynomials $Q_f,U_f,L_f$, with degrees at most $30,120,45$, and we prove
+\[
+ \disc_Z\Rtwo=\disc(f)^6Q_f^6U_f^2,
+ \qquad
+ \disc_Z\Rthree=\disc(f)^3L_f^2.
+\]
+For the generic sextic, the three factors are irreducible and have the stated
+exact degrees. Consequently 196 is optimal for a guarantee valid for every
+set of distinct nonzero complex test parameters, although optimality of the
+initial integer interval is not established. A split integer example gives a
+lower bound of eight for that latter problem. We derive a coefficient-only
+primitive-recursive decision architecture, a height-only separator requiring
+no search, a precise repository integration plan, and further research
+questions. Exact symbolic checks and a modular B\'ezout certificate accompany
+the proofs.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Status and scope.} This is an unrefereed research article with complete
+written proofs and reproducible exact checks. The new results have not been
+formalized or run in Lean. General decidability, including polynomial-time
+decidability of solvability by radicals, is classical; it is not claimed as a
+new discovery. The specific separator and collision-factorization results are
+proposed contributions relative to the inspected repository. Historical
+priority is not certified by the literature check.
+\end{resultbox}
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{The repository question and the contribution}
+\label{sec:scope}
+
+The starting point is a concrete implementation boundary, not an assertion
+that sextic solvability is an unsolved problem. In the pinned \repo\ snapshot,
+\src{SexticRadicalDecision.lean} proves a total recursive criterion for integer
+sextics. Its introductory comment explicitly does not claim primitive
+recursiveness, because the separating-invariant search uses unbounded
+minimization. The supporting file \src{SexticIrreducibleDecision.lean}
+constructs pair and triple parameters using \src{Nat.find}. The file
+\src{SexticSeparatingInvariants.lean} proves that suitable parameters exist by
+representing each block by its root polynomial and each partition by the
+polynomial of those block polynomials \cite{repo,repo-decision,repo-search,repo-invariants}.
+
+That is a particularly useful research target: the existing semantic
+architecture already identifies the right invariant and its correctness
+condition. What is missing from this route is a small explicit bound and a
+sufficiently transparent explanation of the exceptional specializations.
+Our answer is stronger than merely bounding an enumeration of pairs of
+natural numbers. A one-dimensional curve works for every distinct root
+tuple, its failure set has three explicit components, and its generic number
+of failures can be determined exactly.
+
+\subsection{What is classical, inherited, and proved here}
+
+The equivalence between radical solvability and solvability of the Galois
+group is classical. So is the sextic criterion using the two imprimitive
+wreath-product groups of degrees fifteen and ten in the corresponding
+coset actions; see, for example, Boswell and Glasser \cite{boswell-glasser}.
+Landau and Miller proved polynomial-time decidability of radical solvability
+in 1985 \cite{landau-miller}. Thus even a primitive-recursive decision for
+sextics is not, as an abstract existence theorem, new.
+
+The partition descriptors and the strategy of separating their specialized
+values are inherited from the inspected \repo\ source. More broadly, the
+construction and use of relative invariants are central to computational
+Galois theory; Fieker and Kl\"uners discuss general methods and the practical
+importance of structured invariants \cite{fieker-klueners}.
+
+The claims established in this article are the explicit compression,
+the special curve $(u,v)=(t,2t^2)$, the $196$-point uniform bound, the
+three-factor description of its obstruction, the exact discriminant
+identities, and generic irreducibility and sharpness. Their proofs are given
+below rather than inferred from computations. The bounded decision
+architecture is an application to the repository's mathematical gap, not a
+replacement claim for the stronger classical complexity theorem.
+
+The literature check consulted the primary sources just cited and the
+pinned source files. It does not establish that no equivalent identity has
+appeared elsewhere under different coordinates or resolvent conventions.
+Accordingly, ``contribution'' here means a result developed and proved for
+this report, with a demonstrated use relative to this repository; it does
+not mean a certified first-in-literature result.
+
+\subsection{Main results at a glance}
+
+The root tuple is always assumed distinct. The polynomials $h_P$ and $k_T$
+are defined explicitly in \cref{sec:compression}; their resolvents have degrees
+fifteen and ten in $Z$.
+
+\begin{resultbox}
+\textbf{Uniform separator.} Among any 196 distinct nonzero elements of a
+characteristic-zero field containing the roots, there is a parameter $t$
+for which both maps $P\mapsto h_P(t)$ and $T\mapsto k_T(t)$ are injective.
+In particular, testing $1,\ldots,196$ always succeeds.
+
+\textbf{Exact obstruction.} There is a nonzero polynomial
+$E_f=Q_fU_fL_f$ of degree at most 195, with coefficients polynomially
+expressible in the sextic coefficients, such that $E_f(t)\ne0$ is exactly
+simultaneous separation. Its three factors have generic degrees $30,120,45$
+and are generically irreducible.
+
+\textbf{Sharpness and implementation.} The number 196 is optimal for
+arbitrary complex test sets. For the initial integer interval the proven
+bounds are $8\le N_{\mathrm{int}}\le196$. The explicit finite range removes
+unbounded minimization from a coefficient-only sextic decision architecture.
+\end{resultbox}
+
+\section{Notation and complete partition descriptors}
+\label{sec:descriptors}
+
+Let $K$ be a field of characteristic zero, let
+$\alpha_1,\ldots,\alpha_6\in K$ be distinct, and put
+\begin{equation}
+ f(X)=\prod_{i=1}^6(X-\alpha_i)
+     =X^6-e_1X^5+e_2X^4-e_3X^3+e_4X^2-e_5X+e_6.
+ \label{eq:sextic}
+\end{equation}
+If the coefficients originally lie in a smaller field, take $K$ to contain
+a splitting field. Our arguments are algebraic and do not depend on an
+ordering, numerical approximation, or choice of complex branches.
+
+Write $[6]=\{1,\ldots,6\}$ and
+$\Edges=\binom{[6]}2$. Let $\Ptwo$ be the set of partitions of $[6]$ into
+three unordered two-element blocks, and let $\Pthree$ be the set of
+partitions into two unordered three-element blocks. Their cardinalities are
+\begin{equation}
+ |\Ptwo|=\frac{6!}{(2!)^3 3!}=15,
+ \qquad |\Pthree|=\frac{\binom63}{2}=10.
+\end{equation}
+We call members of $\Ptwo$ \emph{matchings}. When two matchings have no common
+block, we call them \emph{block-disjoint}; they still use the same six roots.
+
+For a block $B\subseteq[6]$, define its root polynomial and the complete
+partition descriptor by
+\begin{equation}
+ p_B(u)=\prod_{i\in B}(u-\alpha_i),
+ \qquad D_{\mathcal B}(u,v)=\prod_{B\in\mathcal B}(v-p_B(u)).
+ \label{eq:descriptor}
+\end{equation}
+These are the ordinary polynomial counterparts of the descriptors in
+\src{SexticSeparatingInvariants.lean} \cite{repo-invariants}. The distinction
+between the variables $u$ and $v$ matters: $u$ enters the root polynomials,
+whereas $v$ records the unordered collection of blocks.
+
+\begin{lemma}[A descriptor determines the partition]
+\label{lem:complete}
+For distinct roots, the map $\mathcal B\mapsto D_{\mathcal B}(u,v)$ is
+injective on either partition family.
+\end{lemma}
+\begin{proof}
+First, the map $B\mapsto p_B(u)$ is injective. Indeed, the roots of $p_B$
+among $\alpha_1,\ldots,\alpha_6$ are precisely the roots indexed by $B$.
+Next regard $D_{\mathcal B}$ as a monic polynomial in $v$ over the field
+$K(u)$. Its distinct linear factors are $v-p_B(u)$. Equality of two such
+products implies equality of their sets of roots in $K(u)$, so it implies
+equality of the sets of block polynomials. Their injectivity recovers the
+blocks and hence the partition. This proof also explains why repeated
+sextic roots must be excluded at this stage.
+\end{proof}
+
+The descriptors therefore solve the information-loss problem before
+specialization. The remaining task is to evaluate them at a pair $(u,v)$
+without causing two distinct descriptors to become equal. Arbitrary fixed
+evaluations need not preserve injectivity. We next expose the unusually
+small amount of partition-dependent data in the sextic case.
+
+\section{Compression to quadratics and linears}
+\label{sec:compression}
+
+\subsection{Pair partitions}
+
+For a pair $b=\{i,j\}$, write
+$s_b=\alpha_i+\alpha_j$ and $p_b=\alpha_i\alpha_j$. For a matching $P$, set
+\begin{align}
+ A_P&=\sum_{b\in P}p_b,\notag\\
+ B_P&=\sum_{\substack{b,c\in P\\b\ne c}}s_b p_c,\notag\\
+ C_P&=\sum_{\{b,c\}\in\binom P2}p_b p_c,
+ &h_P(t)&=A_Pt^2+B_Pt-C_P.
+ \label{eq:h}
+\end{align}
+The sum defining $B_P$ is over ordered pairs of different blocks, so it has
+six summands before expanding the $s_b$.
+
+\begin{proposition}[Pair descriptor expansion]
+\label{prop:pair-expansion}
+For every matching $P$,
+\begin{align}
+ D_P(u,v)={}&v^3-(3u^2-e_1u+A_P)v^2\notag\\
+ &+\bigl(3u^4-2e_1u^3+(e_2+A_P)u^2-B_Pu+C_P\bigr)v-f(u).
+ \label{eq:pair-descriptor}
+\end{align}
+Consequently, if $K_2(t)=2t^6+2e_2t^4-f(t)$, then
+\begin{equation}
+ D_P(t,2t^2)=K_2(t)-2t^2h_P(t).
+ \label{eq:pair-curve}
+\end{equation}
+The map $P\mapsto h_P(t)$ is injective as a map into $K[t]$.
+\end{proposition}
+\begin{proof}
+Each block polynomial is $u^2-s_bu+p_b$. Their sum is
+$3u^2-e_1u+A_P$. The sum of their pairwise products has leading coefficients
+$3,-2e_1$, and its coefficient of $u^2$ is
+$2A_P+\sum_{b<c}s_bs_c$. Since the global $e_2$ is
+$A_P+\sum_{b<c}s_bs_c$, that coefficient is $e_2+A_P$.
+The remaining two coefficients are $-B_P$ and $C_P$. The product of all
+three block polynomials is $f(u)$. Expanding the monic cubic in $v$ gives
+\cref{eq:pair-descriptor}; substituting $u=t,v=2t^2$ gives
+\cref{eq:pair-curve}.
+
+If two $h$ polynomials agree, their coefficients give equality of $A,B,C$.
+The displayed descriptor formula then gives equal descriptors. Apply
+\cref{lem:complete}.
+\end{proof}
+
+\subsection{Triple partitions}
+
+For a three-element block $B$, let $e_j(B)$ denote the elementary symmetric
+polynomial of degree $j$ in its three roots. For $T\in\Pthree$, define
+\begin{equation}
+ a_T=\sum_{B\in T}e_2(B),\qquad
+ b_T=\sum_{B\in T}e_3(B),\qquad
+ k_T(t)=a_Tt-b_T.
+ \label{eq:k}
+\end{equation}
+
+\begin{proposition}[Triple descriptor expansion]
+\label{prop:triple-expansion}
+For every triple partition $T$,
+\begin{equation}
+ D_T(u,v)=v^2-(2u^3-e_1u^2+a_Tu-b_T)v+f(u).
+ \label{eq:triple-descriptor}
+\end{equation}
+On $(u,v)=(t,2t^2)$ this has the form
+\begin{equation}
+ D_T(t,2t^2)=K_3(t)-2t^2k_T(t),
+ \quad K_3(t)=4t^4-4t^5+2e_1t^4+f(t).
+ \label{eq:triple-curve}
+\end{equation}
+The map $T\mapsto k_T(t)$ into $K[t]$ is injective.
+\end{proposition}
+\begin{proof}
+The sum of the two monic cubic block polynomials is
+$2u^3-e_1u^2+a_Tu-b_T$, and their product is $f(u)$. Expanding their
+quadratic descriptor proves the formula. Equality of $k$ polynomials gives
+equality of the two descriptor-dependent coefficients, and then
+\cref{lem:complete} proves injectivity.
+\end{proof}
+
+In particular every difference $h_P-h_Q$ for $P\ne Q$ is a nonzero
+polynomial of degree at most two; every difference $k_T-k_{T'}$ is nonzero
+of degree at most one. A first root-counting bound would therefore allow
+$2\binom{15}{2}+\binom{10}{2}=255$ bad parameters. The next two sections
+remove repeated collision factors and reduce this to 195.
+
+\begin{remark}[The zero parameter and the source coordinate order]
+The compressed families make sense and may separate at $t=0$, but the
+original descriptors on the curve all collapse within each family there,
+because the multiplier $2t^2$ vanishes. We use positive integer tests when
+transferring results to the repository. In its \src{Fin 2} convention,
+\src{X 0} is the outer descriptor variable $v$ and \src{X 1} is $u$.
+Thus the required parameter is $x(0)=2t^2$, $x(1)=t$, not the reverse
+\cite{repo-invariants}.
+\end{remark}
+
+\section{The two types of pair-partition collision}
+\label{sec:pair-collisions}
+
+Two different matchings can share at most one block, since two common pairs
+force the remaining pair to agree. There are exactly 45 unordered pairs of
+matchings sharing a block: choose the common pair in 15 ways, then choose
+two of the three matchings on the four remaining indices. The other
+$\binom{15}{2}-45=60$ pairs are block-disjoint. Their union is a single
+alternating six-cycle, since a cycle of length two would be a common block.
+
+For a root pair $e=\{i,j\}$, define
+\begin{equation}
+ q_e(t)=t^2+s_et-p_e
+       =t^2+(\alpha_i+\alpha_j)t-\alpha_i\alpha_j.
+ \label{eq:q}
+\end{equation}
+
+\begin{lemma}[Common-block collision factor]
+\label{lem:shared}
+If distinct matchings $P,Q$ share the pair $e$, then
+\begin{equation}
+ h_P(t)-h_Q(t)=(A_P-A_Q)q_e(t),\qquad A_P-A_Q\ne0.
+ \label{eq:shared}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let the four remaining roots be $a,b,c,d$. Their two-block pairing affects
+$A$ through one of
+\[
+ z_1=ab+cd,\qquad z_2=ac+bd,\qquad z_3=ad+bc.
+\]
+The products of the two remaining pair products are always $abcd$.
+The contribution to $B$ involving only those two blocks is always the
+third elementary symmetric function of $a,b,c,d$. Therefore changing the
+pairing changes $B$ by $s_e$ times the change in $A$, and changes $C$ by
+$p_e$ times the change in $A$. Substitution in \cref{eq:h} proves the
+factorization.
+
+The three differences are
+\begin{equation}
+ z_1-z_2=(a-d)(b-c),\quad
+ z_1-z_3=(a-c)(b-d),\quad
+ z_2-z_3=(a-b)(c-d).
+ \label{eq:four-root-differences}
+\end{equation}
+Distinctness of the roots makes every one nonzero.
+\end{proof}
+
+Thus the 45 shared-block comparisons do not contribute 90 unrelated
+exceptional parameters: they contribute roots of only fifteen quadratics.
+The 60 block-disjoint comparisons each still contribute a quadratic.
+There are at most $2(15+60)=150$ pair-family failures. Some of these
+quadratics can have lower degree or share roots after specializing the
+sextic, so this is a uniform upper bound rather than a claim about every
+input.
+
+\section{Triple collisions as exchanges of two roots}
+\label{sec:triple-collisions}
+
+For disjoint root pairs $e,e'$, set
+\begin{equation}
+ \ell_{e,e'}(t)=(s_e-s_{e'})t-(p_e-p_{e'}).
+ \label{eq:ell}
+\end{equation}
+Interchanging $e,e'$ changes only the sign. There are
+$\binom64\cdot3=45$ unordered choices of two disjoint pairs.
+
+\begin{lemma}[Exchange identity]
+\label{lem:exchange}
+For the triple partitions
+\[
+T=\{\{a,b,c\},\{d,e,f\}\},\qquad
+T'=\{\{a,b,d\},\{c,e,f\}\},
+\]
+where letters now denote root values,
+\begin{equation}
+ k_T(t)-k_{T'}(t)
+   =(c-d)\bigl((a+b-e-f)t-(ab-ef)\bigr).
+ \label{eq:exchange}
+\end{equation}
+Every unordered pair of distinct triple partitions occurs exactly once in
+this manner, up to the irrelevant orientations, from an unordered pair of
+disjoint root pairs $\{\{a,b\},\{e,f\}\}$.
+\end{lemma}
+\begin{proof}
+Subtracting the internal pair sums gives
+$a_T-a_{T'}=(c-d)(a+b-e-f)$, while subtracting the two triple products gives
+$b_T-b_{T'}=(c-d)(ab-ef)$. This proves the formula.
+
+For the combinatorial assertion, two distinct partitions can be oriented so
+that one block from each has two elements in common. Call these $a,b$;
+call the exchanged elements $c,d$; the other two elements are $e,f$.
+Conversely, two disjoint pairs and their two complementary elements specify
+exactly the two partitions in the display. Simultaneously switching the
+chosen blocks or reversing the exchange does not change the unordered data.
+This establishes the bijection, with 45 elements on either side.
+\end{proof}
+
+\begin{lemma}[No identically vanishing exchange factor]
+\label{lem:ell-nonzero}
+For disjoint pairs of distinct roots, $\ell_{e,e'}$ is not the zero
+polynomial.
+\end{lemma}
+\begin{proof}
+If it vanished identically, the two pair sums and the two pair products
+would agree. The two monic quadratics $X^2-s_eX+p_e$ and
+$X^2-s_{e'}X+p_{e'}$ would agree, contradicting their disjoint root sets.
+\end{proof}
+
+The triple-family failure set is therefore the union of the roots of 45
+nonzero linears, and has cardinality at most 45. A nonzero constant factor
+simply contributes no root.
+
+\section{Three invariant obstruction polynomials}
+\label{sec:obstruction}
+
+Fix total orders on the matchings and on the root pairs, solely to orient
+differences in products. Define
+\begin{align}
+ Q_f(t)&=\prod_{e\in\Edges}q_e(t),\label{eq:Q}\\
+ U_f(t)&=\prod_{\substack{P<Q\\P\cap Q=\varnothing}}(h_P(t)-h_Q(t)),
+ \label{eq:U}\\
+ L_f(t)&=\prod_{\substack{e<e'\\e\cap e'=\varnothing}}
+             \ell_{e,e'}(t),\label{eq:L}\\
+ E_f(t)&=Q_f(t)U_f(t)L_f(t).\label{eq:E}
+\end{align}
+Here $P\cap Q=\varnothing$ refers to their block collections. Reversing a
+chosen orientation can multiply $U_f$ or $L_f$ by $-1$, which changes
+neither the zero set nor any squared identity below.
+
+It is not automatic that an oriented product of differences is symmetric;
+the ordinary Vandermonde product is the familiar warning. The following
+simple sign argument proves what is needed here.
+
+\begin{lemma}[Graph-product sign test]
+\label{lem:graph-sign}
+Let a finite group act on a finite graph's vertices, permuting quantities
+$w_v$. Form an oriented product $\prod_{\{v,w\}\in E}(w_v-w_w)$, with one
+orientation for each edge. For a group element $\tau$ of order two, its
+sign on this product is $(-1)^r$, where $r$ is the number of edges whose
+endpoints are interchanged by $\tau$.
+\end{lemma}
+\begin{proof}
+Edges exchanged with other edges occur in two-element orbits. The two
+orientation signs in each such orbit multiply to $+1$, since applying
+$\tau$ twice fixes each oriented difference. A fixed edge contributes $+1$
+if its endpoints are individually fixed, and $-1$ if they are interchanged.
+Multiplying these contributions gives the claim.
+\end{proof}
+
+\begin{proposition}[Symmetry, integrality, and exact failure test]
+\label{prop:obstruction}
+The expressions $Q_f,U_f,L_f$ are symmetric polynomials with integer
+coefficients in the six roots and $t$. They are nonzero for every distinct
+root tuple and satisfy
+\begin{equation}
+ \deg Q_f=30,\qquad \deg U_f\le120,\qquad \deg L_f\le45.
+ \label{eq:degree-bounds}
+\end{equation}
+Their coefficients are universal integer polynomials in $e_1,\ldots,e_6$.
+For every $t\in K$,
+\begin{equation}
+ E_f(t)\ne0
+ \quad\Longleftrightarrow\quad
+ \bigl(P\mapsto h_P(t)\bigr)\text{ and }
+ \bigl(T\mapsto k_T(t)\bigr)\text{ are both injective}.
+ \label{eq:exact-test}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The product $Q_f$ is visibly symmetric. For $U_f$, use the graph with
+matchings as vertices and block-disjoint pairs as edges. A transposition
+of two root labels sends any matching either to itself or to a matching
+sharing its untouched third block. Hence it interchanges the endpoints of
+no edge in this graph. By \cref{lem:graph-sign}, it fixes $U_f$. Root
+transpositions generate $S_6$, so $U_f$ is symmetric.
+
+For $L_f$ use the graph on two-element subsets, joined when they are
+disjoint, with vertex quantity $s_et-p_e$. A root transposition sends a
+pair either to itself or to a pair sharing one root. It therefore reverses
+no disjointness edge, so the same argument proves symmetry of $L_f$.
+The fundamental theorem of symmetric polynomials over $\ZZ[t]$ now yields
+the integer coefficient expressions in the $e_i$.
+
+Every factor of $Q_f$ is monic quadratic. Every factor of $U_f$ is nonzero
+by \cref{prop:pair-expansion}, and every factor of $L_f$ is nonzero by
+\cref{lem:ell-nonzero}. This proves nonvanishing and the degree bounds.
+Finally, \cref{lem:shared} accounts for all shared-block collisions,
+\cref{eq:U} accounts for all block-disjoint ones, and
+\cref{lem:exchange} accounts for all triple collisions. Their scalar
+root-difference factors are nonzero. This proves \cref{eq:exact-test}.
+\end{proof}
+
+\begin{remark}[Homogeneity and scaling]
+Assign weight one to every root and to $t$. Then $h_P,k_T,q_e,\ell_{e,e'}$
+have respective total degrees $4,3,2,2$. Consequently $Q_f,U_f,L_f,E_f$
+have total degrees $30,240,90,360$. Scaling all roots and $t$ by $c$
+multiplies $E_f(t)$ by $c^{360}$. These are homogeneous degrees in the
+roots and parameter together, not the parameter degrees in
+\cref{eq:degree-bounds}.
+\end{remark}
+
+\section{Exact discriminant factorizations}
+\label{sec:discriminants}
+
+Define the compressed resolvents
+\begin{equation}
+ \Rtwo(Z,t)=\prod_{P\in\Ptwo}(Z-h_P(t)),\qquad
+ \Rthree(Z,t)=\prod_{T\in\Pthree}(Z-k_T(t)).
+ \label{eq:resolvents}
+\end{equation}
+Their coefficients are symmetric integer polynomials in the roots, so they
+are coefficient-only constructions just as $E_f$ is. Let
+\begin{equation}
+ \Delta_f=\disc(f)=\prod_{1\le i<j\le6}(\alpha_i-\alpha_j)^2.
+\end{equation}
+For a monic polynomial with roots $z_1,\ldots,z_m$, we use the convention
+$\disc=\prod_{i<j}(z_i-z_j)^2$.
+
+\begin{theorem}[Discriminant identities]
+\label{thm:discriminants}
+As polynomial identities in the roots and $t$,
+\begin{align}
+ \disc_Z\Rtwo(Z,t)&=\Delta_f^6Q_f(t)^6U_f(t)^2,
+ \label{eq:disc-pair}\\
+ \disc_Z\Rthree(Z,t)&=\Delta_f^3L_f(t)^2.
+ \label{eq:disc-triple}
+\end{align}
+In particular the formulas remain valid at nonseparating parameter values.
+\end{theorem}
+\begin{proof}
+The pair-resolvent discriminant is the product of all 105 squared matching
+differences. The 60 block-disjoint differences give $U_f^2$ directly.
+Fix a common pair $e$. The three unordered comparisons between matchings
+containing $e$ give, by \cref{lem:shared},
+\[
+ q_e(t)^6\prod_{1\le i<j\le3}(z_i-z_j)^2.
+\]
+By \cref{eq:four-root-differences}, the second factor is exactly the
+discriminant of the monic quartic whose roots are the other four roots.
+Multiplying over the fifteen choices of $e$ gives $Q_f^6$ times the
+product of these fifteen quartic discriminants. A fixed root difference
+$(\alpha_i-\alpha_j)^2$ occurs in precisely six of those quartics: choose
+the excluded pair among the four other roots. Their product is therefore
+$\Delta_f^6$, proving \cref{eq:disc-pair}.
+
+For triples, \cref{lem:exchange} gives one squared linear factor for each
+unordered pair of disjoint root pairs, producing $L_f^2$. The two leftover
+roots are the exchanged roots. For a fixed exchanged pair there are three
+pairings of the other four roots, so its squared difference appears three
+times. The product of the root-difference factors is $\Delta_f^3$.
+This proves \cref{eq:disc-triple}. No division was used, so these are
+polynomial identities, not merely identities on the open set of good
+parameters.
+\end{proof}
+
+\begin{corollary}[Discriminant square classes]
+\label{cor:squareclass}
+Over any characteristic-zero coefficient field, the pair-resolvent
+discriminant is a square. If both $f$ and the triple resolvent are
+separable, the triple-resolvent discriminant has the same square class
+as $\Delta_f$.
+\end{corollary}
+\begin{proof}
+The two formulas read
+\[
+ \disc_Z\Rtwo=(\Delta_f^3Q_f^3U_f)^2,
+ \qquad
+ \disc_Z\Rthree=\Delta_f(\Delta_f L_f)^2.
+\]
+In the second assertion all displayed factors are nonzero.
+\end{proof}
+
+There is a useful independent permutation explanation. A transposition of
+root labels fixes three of the fifteen matchings and interchanges the
+other twelve in six pairs; it acts evenly. It fixes four triple partitions
+and interchanges the other six in three pairs; it acts oddly. Thus the
+fifteen-point action has trivial sign character and the ten-point action
+has the ordinary six-point sign character. The explicit factorizations
+identify much more than this parity information: they also isolate every
+collision factor and its multiplicity.
+
+\section{Generic irreducibility of the three components}
+\label{sec:irreducibility}
+
+The degree bound is not merely the result of an inefficient factor count.
+Generically all its factors are needed. In this section take
+$x_1,\ldots,x_6,t$ to be algebraically independent over $\QQ$ and put
+$S=\QQ[x_1,\ldots,x_6,t]$. Its symmetric subring is
+\[
+ S^{S_6}=\QQ[e_1,\ldots,e_6,t].
+\]
+The symbols $Q,U,L$ now denote the universal polynomials in this ring,
+prior to any specialization of the sextic coefficients.
+
+\subsection{Irreducibility of the individual root-coordinate factors}
+
+\begin{lemma}[Primitive linear-polynomial test]
+\label{lem:primitive}
+Let $R$ be a unique factorization domain. If $A,B\in R$ are coprime and
+$A\ne0$, then $Ay+B$ is irreducible in $R[y]$.
+\end{lemma}
+\begin{proof}
+The polynomial is primitive, and is linear, hence irreducible, over the
+fraction field of $R$. Gauss's lemma gives irreducibility over $R$.
+\end{proof}
+
+\begin{lemma}[The three kinds of factor are irreducible]
+\label{lem:individual-irred}
+In $S$, each $q_e$, each $\ell_{e,e'}$ for disjoint pairs, and each
+$h_P-h_Q$ for block-disjoint matchings is irreducible.
+\end{lemma}
+\begin{proof}
+For $q_e$, rename its two roots $a,b$ and write
+\[
+ q_e=a(t-b)+t(t+b).
+\]
+The coefficients as a linear polynomial in $a$ are coprime: substituting
+$t=b$ in the second gives $2b^2\ne0$. Apply \cref{lem:primitive}.
+For a linear exchange factor, rename its disjoint pairs $\{a,b\}$ and
+$\{c,d\}$. Then
+\[
+ \ell=a(t-b)+(b-c-d)t+cd.
+\]
+Substituting $t=b$ in its constant coefficient gives
+$(b-c)(b-d)\ne0$, so the same test applies. Adjoining unused independent
+variables preserves these irreducibilities.
+
+For the third type, all block-disjoint matching pairs are related by a
+root permutation, because their union is an alternating six-cycle. It
+suffices to consider
+\[
+ P=(ab)(cd)(ef),\qquad Q=(ac)(be)(df).
+\]
+Write $h_P-h_Q=aA+B$, where $A,B\in\QQ[b,c,d,e,f,t]$. This is linear in
+$a$ because every monomial in \cref{eq:h} uses each root at most once.
+It is homogeneous of total degree four; hence $A$ is homogeneous of
+degree three and $B$ of degree four. At $t=0$, direct expansion gives
+\begin{align}
+ A_0&=-bcd+bce-bef+cdf,\notag\\
+ B_0&=def(b-c).
+ \label{eq:primitive-specialization}
+\end{align}
+The polynomial $A_0$ is divisible by none of $d,e,f,b-c$. Indeed its
+respective substitutions at zero or at $b=c$ are
+\[
+ be(c-f),\quad cd(f-b),\quad bc(e-d),\quad c(e-d)(c-f),
+\]
+all nonzero. Therefore $\gcd(A_0,B_0)=1$.
+
+Suppose an irreducible nonconstant polynomial $H$ divided both $A$ and
+$B$. A factor of a homogeneous polynomial can be chosen homogeneous, so
+$H$ is homogeneous. If $H|_{t=0}$ is nonzero, it has the same positive
+total degree and divides both $A_0$ and $B_0$, a contradiction. If it is
+zero, then $t$ divides $H$, so irreducibility makes $H$ associated to $t$;
+but $A_0\ne0$. Thus $A,B$ are coprime. Apply
+\cref{lem:primitive} with variable $a$ to finish the proof.
+\end{proof}
+
+The homogeneity in the last argument is essential: without it, coprime
+specializations need not imply coprimality of the original polynomials.
+Here it prevents a nonconstant common homogeneous factor from specializing
+to a nonzero constant.
+
+\subsection{Descent from root coordinates to coefficients}
+
+\begin{lemma}[One-orbit product lemma]
+\label{lem:orbit-product}
+Let a finite group act on a polynomial ring over a field. Suppose a finite
+collection of pairwise nonassociate irreducible polynomials forms a single
+orbit up to units, and its product $F$ is invariant. Then $F$ is
+irreducible in the invariant subring.
+\end{lemma}
+\begin{proof}
+A factorization $F=AB$ in the invariant subring is also a factorization in
+the ambient unique factorization domain. The irreducible factors of $A$
+therefore form a subset of the factors of $F$. Invariance makes this subset
+stable under the group. Transitivity forces it to be empty or the whole
+set. In the first case $A$ is a unit, and in the second $B$ is a unit.
+\end{proof}
+
+\begin{theorem}[Generic three-factor theorem]
+\label{thm:generic}
+The universal polynomials $Q,U,L$ are pairwise nonassociate irreducible
+polynomials in $\QQ[e_1,\ldots,e_6,t]$, and are irreducible in
+$\QQ(e_1,\ldots,e_6)[t]$. Their degrees in $t$ are respectively
+$30,120,45$. Their product $E$ is squarefree over the generic coefficient
+field and has degree 195 and nonzero constant coefficient.
+\end{theorem}
+\begin{proof}
+The individual factors are irreducible by \cref{lem:individual-irred}.
+The symmetric group is transitive on root pairs, on unordered pairs of
+disjoint root pairs, and on unordered pairs of block-disjoint matchings.
+In each collection the individual factors are pairwise nonassociate.
+For $q_e$, this follows from its monic leading term and its two root
+indices. For $\ell_{e,e'}$, the coefficient of $t$ specifies the two
+pairs with opposite signs, up to their interchange. For $h_P-h_Q$, the
+coefficient of $t^2$ is $A_P-A_Q$: its six distinct root-product monomials,
+with coefficients $+1$ or $-1$, specify the two block-disjoint matchings
+up to interchange. Thus no further associations occur.
+
+Each product is invariant by \cref{prop:obstruction}. The one-orbit
+product lemma proves irreducibility in the symmetric subring. The leading
+coefficient in $t$ of each individual $q$ is one, of each individual $h$
+difference is a nonzero $A_P-A_Q$, and of each individual $\ell$ is a
+nonzero difference of pair sums. The ambient ring is a domain, so the
+three parameter degrees are exactly $30,120,45$. They are consequently
+pairwise nonassociate. Their irreducibility and positive parameter degree
+also imply that they are primitive over $\QQ[e_1,\ldots,e_6]$.
+Gauss's lemma proves irreducibility over its fraction field.
+
+In characteristic zero every irreducible polynomial of positive degree is
+separable. The three are pairwise coprime there, so $E$ is squarefree and
+has degree 195. Its constant coefficient is nonzero: every $q_e(0)$ and
+$\ell_{e,e'}(0)$ is a nonzero polynomial, and every block-disjoint $h$
+difference at zero is nonzero by the representative calculation
+\cref{eq:primitive-specialization} and root permutation.
+\end{proof}
+
+This theorem is a statement about the generic coefficient field, not about
+every numerical sextic. After specialization a factor can become
+reducible, lose degree, or share roots with another factor. None of these
+possibilities threatens the uniform separator theorem; they only reduce
+the number of bad parameters. On the open coefficient locus
+$\Delta_f\ne0$, the three polynomials describe the three irreducible
+families of bad specializations over $\QQ$. The constructive factor proofs
+also work after extending the constant field to any characteristic-zero
+field.
+
+\section{The finite separator theorem and its sharpness}
+\label{sec:bound}
+
+\begin{theorem}[Uniform simultaneous separation]
+\label{thm:196}
+For any six distinct roots in a characteristic-zero field, at most 195
+parameters cause a collision in either compressed family. Therefore any
+196 distinct nonzero test parameters contain a simultaneous separator.
+The integers $1,\ldots,196$ always contain one, and this same parameter
+separates both original descriptors on $(u,v)=(t,2t^2)$.
+\end{theorem}
+\begin{proof}
+By \cref{prop:obstruction}, the bad parameters are exactly the roots of the
+nonzero polynomial $E_f$, which has degree at most $30+120+45=195$.
+A nonzero polynomial over a field has at most its degree many distinct
+roots. Characteristic zero makes the positive integers $1,\ldots,196$
+distinct and nonzero. Finally use \cref{eq:pair-curve,eq:triple-curve},
+whose common multiplier is nonzero at these parameters.
+\end{proof}
+
+The same proof gives 151 test values for the pair family alone and 46 for
+the triple family alone. A common parameter is preferable when a single
+uniform interface is wanted; separate searches can stop sooner on some
+inputs. There is no requirement that the least good pair parameter agree
+with the least good triple parameter.
+
+\begin{theorem}[Sharpness for arbitrary test sets]
+\label{thm:sharp}
+The constant 196 in the assertion about \emph{every} set of distinct
+nonzero complex test parameters cannot be lowered. There are separable
+sextics with exactly 195 distinct nonzero bad parameters. Such a sextic
+can even be chosen split with integer roots.
+\end{theorem}
+\begin{proof}
+Over the generic coefficient field, \cref{thm:generic} gives a degree-195
+squarefree polynomial with nonzero constant coefficient. Thus its leading
+coefficient, constant coefficient, and discriminant in $t$ are all nonzero.
+Multiply these coefficient polynomials by $\Delta_f$ and substitute the
+elementary symmetric functions of six independent root variables. The
+result is still a nonzero polynomial in those variables, because the
+symmetric-polynomial substitution is injective.
+
+The integer lattice is Zariski dense in affine six-space: a nonzero
+polynomial over $\QQ$ cannot vanish on all integer tuples, as follows by
+induction on the number of variables and the one-variable root bound.
+Choose an integer tuple where the displayed product is nonzero. Its roots
+are distinct, and its $E_f$ has degree 195, no zero root, and no repeated
+root. Over $\CC$ it has exactly 195 distinct nonzero roots. These are all
+bad by \cref{eq:exact-test}; taking them as the test set disproves any
+195-point guarantee of the stated kind.
+\end{proof}
+
+\subsection{An explicit sharpness certificate}
+
+The existence proof above is entirely algebraic. The accompanying code also
+gives a concrete witness with roots
+\begin{equation}
+ 1,\ 4,\ 10,\ 23,\ 51,\ 109.
+ \label{eq:sharp-roots}
+\end{equation}
+For the orientation used in the verifier, reduction modulo
+$p=1{,}000{,}003$ gives
+\begin{equation}
+ \deg\overline E_f=195,\qquad
+ \overline E_f(0)=521291,\qquad
+ \lc(\overline E_f)=670728.
+\end{equation}
+The file \src{checks/sharpness_certificate.json} stores the coefficients of
+$\overline E_f$ and polynomials $A,B$ satisfying the exact identity
+\begin{equation}
+ A\overline E_f+B\overline E_f'=1\quad\text{in }\mathbb F_p[t].
+ \label{eq:bezout}
+\end{equation}
+The verifier checks primality of $p$ by trial division and checks this
+identity by finite polynomial arithmetic. Degree preservation, the nonzero
+constant coefficient, and \cref{eq:bezout} imply that the integer
+polynomial $E_f$ has degree 195 and 195 distinct nonzero complex roots.
+This is a reproducible computational certificate, not a Lean-checked one.
+It is supplementary: \cref{thm:sharp} does not rely on its execution.
+
+\subsection{The initial integer interval is a different problem}
+
+Define $N_{\mathrm{int}}$ to be the least positive integer $N$ such that
+$1,\ldots,N$ contains a simultaneous separator for every distinct complex
+root tuple. The sharpness proof using complex roots of $E_f$ does
+\emph{not} prove $N_{\mathrm{int}}=196$.
+
+\begin{proposition}[An eight-point lower bound]
+\label{prop:integer-lower}
+For this initial-interval problem,
+\begin{equation}
+ 8\le N_{\mathrm{int}}\le196.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The upper bound is \cref{thm:196}. For the lower bound use the distinct
+integer roots $(-3,0,1,2,3,4)$, whose polynomial is
+\[
+ X^6-7X^5+5X^4+55X^3-126X^2+72X.
+\]
+Direct substitution in \cref{eq:h,eq:k} gives the following exact numbers
+of distinct values:
+\begin{center}
+\begin{tabular}{c*{8}{r}}
+\toprule
+$t$&1&2&3&4&5&6&7&8\\
+\midrule
+$|\{h_P(t)\}|$&12&13&13&14&15&15&15&15\\
+$|\{k_T(t)\}|$&10&8&9&10&9&8&9&10\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus none of $1,\ldots,7$ works. For additional explicit checks, the sorted
+pair values at $t=8$ are
+\[
+\begin{gathered}
+-1128,-1044,-870,-792,-724,-486,-432,-424,\\
+72,90,192,396,776,816,936,
+\end{gathered}
+\]
+and the sorted triple values are
+\[
+ -32,-28,-22,-20,-14,1,32,46,92,160.
+\]
+They are all distinct within their respective families.
+\end{proof}
+
+\begin{proposition}[No universal single positive parameter]
+\label{prop:no-single}
+For each fixed positive integer $t_0$, there is a split separable integer
+sextic for which $t_0$ fails to separate the pair family.
+\end{proposition}
+\begin{proof}
+Take roots $0,t_0,2t_0,3t_0,4t_0,5t_0$. For the common pair
+$\{2t_0,3t_0\}$, its quadratic satisfies
+$q(t_0)=t_0^2+5t_0^2-6t_0^2=0$. Any two different matchings containing
+that pair collide by \cref{lem:shared}.
+\end{proof}
+The example is reducible. It does not establish that a fixed parameter
+must fail on some irreducible rational sextic; that is a separate question.
+
+\section{Why the separated resolvents decide an irreducible sextic}
+\label{sec:galois}
+
+The group-theoretic criterion in this section is classical. We include its
+proof to show exactly what the new separator supplies and what it does not.
+It is the criterion underlying the degree-fifteen and degree-ten sextic
+resolvents in the literature and the repository
+\cite{boswell-glasser,repo-search}. Let $f\in\QQ[X]$ now be irreducible of
+degree six, let $M$ be its splitting field, and view
+$G=\Gal(M/\QQ)$ as a transitive subgroup of $S_6$.
+
+\begin{lemma}[Solvable primitive groups have prime-power degree]
+\label{lem:primitive-group}
+A finite solvable group acting faithfully and primitively on a set with
+more than one element has degree $p^r$ for some prime $p$.
+\end{lemma}
+\begin{proof}
+Choose a minimal nontrivial normal subgroup $N$ of $G$. Because $G$ is
+solvable, $N$ is elementary abelian. Here is the standard short justification:
+a last nontrivial term of the derived series of $N$ is an abelian
+characteristic subgroup of $N$, hence normal in $G$, so minimality makes
+$N$ abelian. Its primary components are characteristic, so only one prime
+$p$ occurs. The characteristic subgroup of elements killed by $p$ is
+nontrivial and hence all of $N$.
+
+The orbits of a normal subgroup form a $G$-invariant partition. Primitivity
+and faithfulness force $N$ to be transitive: otherwise its orbits are
+singletons, making $N$ act trivially. An abelian transitive permutation
+group is regular. Indeed, an element fixing one point fixes every point
+by commuting with all elements that carry it to another point. Faithfulness
+then makes the stabilizer trivial. Thus the degree is $|N|=p^r$.
+\end{proof}
+
+\begin{proposition}[The two block systems are complete]
+\label{prop:blocks-galois}
+For a transitive subgroup $G\le S_6$, the following are equivalent:
+$G$ is solvable; $G$ is imprimitive; $G$ preserves a partition in $\Ptwo$
+or in $\Pthree$.
+\end{proposition}
+\begin{proof}
+A solvable primitive group cannot have degree six by
+\cref{lem:primitive-group}. Thus solvability implies imprimitivity.
+For a transitive action, the blocks in a nontrivial block system have a
+common size properly dividing six, so that size is two or three.
+This proves the next implication.
+
+The full stabilizer of a pair partition is $S_2\wr S_3$, an extension of
+$S_2^3$ by $S_3$. The full stabilizer of a triple partition is
+$S_3\wr S_2$, an extension of $S_3^2$ by $S_2$. Both are solvable,
+since finite direct products and extensions of solvable groups are
+solvable. Any subgroup preserving the corresponding partition is a
+subgroup of its stabilizer and is therefore solvable.
+\end{proof}
+
+\begin{theorem}[Separated rational-root criterion]
+\label{thm:criterion}
+Let $f\in\QQ[X]$ be an irreducible monic sextic, and let $t\in\QQ$ be a
+simultaneous separator. Then $f$ is solvable by radicals if and only if
+at least one of $\Rtwo(Z,t)$ and $\Rthree(Z,t)$ has a rational root.
+\end{theorem}
+\begin{proof}
+For a matching $P$ and $\sigma\in G$, coefficient equivariance gives
+$\sigma(h_P(t))=h_{\sigma P}(t)$, since $t$ is rational. If $P$ is fixed
+by $G$, then $h_P(t)$ is fixed by $G$ and lies in $\QQ$. Conversely,
+if $h_P(t)$ is rational, then
+$h_{\sigma P}(t)=h_P(t)$ for every $\sigma$, and separation gives
+$\sigma P=P$. A rational root of the pair resolvent is one of its
+explicit values, so it is equivalent to a $G$-fixed pair partition.
+The same proof applies to $k_T$ and the triple resolvent.
+Now use \cref{prop:blocks-galois} and the classical equivalence between
+solvability by radicals and solvability of the Galois group.
+\end{proof}
+
+Separation is not a cosmetic condition in the converse. Without it,
+$h_{\sigma P}(t)=h_P(t)$ would not imply $\sigma P=P$. A specialized value
+could be fixed while its underlying partition moves among colliding
+partitions. This is precisely the logical failure prevented by the
+nonvanishing certificate $E_f(t)\ne0$.
+
+For a monic integer sextic, both resolvents are monic integer polynomials
+in $Z$. Any rational root is therefore an integer, so the final condition
+can be decided using a finite integer interval. No splitting field or
+numerical root approximation needs to occur in the returned-data algorithm.
+
+\section{A bounded coefficient-only decision architecture}
+\label{sec:algorithm}
+
+\subsection{Computing the invariant coefficients without roots}
+
+A root-coordinate definition can hide a computational oracle unless the
+coefficient bridge is made explicit. Here the bridge is the constructive
+fundamental theorem of symmetric polynomials. For each fixed power of $Z$
+in \cref{eq:resolvents}, its coefficient is a fixed symmetric polynomial
+in six roots with coefficients in $\ZZ[t]$. It can be reduced to a fixed
+polynomial in $e_1,\ldots,e_6,t$ using integer arithmetic only.
+
+For completeness, the reduction is finite in a particularly elementary
+sense. Order root monomials lexicographically with
+$x_1>\cdots>x_6$. The leading exponent vector of a symmetric polynomial
+has the form $\lambda_1\ge\cdots\ge\lambda_6$. The product
+\begin{equation}
+ e_1^{\lambda_1-\lambda_2}e_2^{\lambda_2-\lambda_3}
+ \cdots e_5^{\lambda_5-\lambda_6}e_6^{\lambda_6}
+ \label{eq:symmetric-reduction}
+\end{equation}
+has exactly that leading root monomial, with coefficient one. Subtract its
+multiple by the leading coefficient, which is a polynomial in $t$.
+The leading monomial strictly decreases and the total root degree never
+increases. There are only finitely many root monomials within the original
+degree bound, so the process terminates with an expression over
+$\ZZ[e_1,\ldots,e_6,t]$. This proof gives a finite symbolic construction,
+not a choice of an unspecified algebraic root.
+
+For the coefficient of $Z^{15-j}$ in $\Rtwo$, the root degree is at most
+$4j$ and parameter degree at most $2j$. For the coefficient of $Z^{10-j}$
+in $\Rthree$, they are at most $3j$ and $j$. Hence degrees at most 60 and
+30 in the root variables suffice for the two complete coefficient tables.
+These are fixed bounds, independent of the input height. The analogous
+bound for $E$ is 360 in the root variables and 195 in $t$.
+
+The article does not distribute expanded versions of these potentially
+large universal tables. Their construction and their evaluation are
+mathematically specified by the fixed finite products and the reduction
+above. The supplied executable code is instead a verifier on exact root
+tuples. This distinction is important when assessing what has and has not
+been implemented.
+
+\subsection{Monicization and bounded factor search}
+
+Let the input be an integer polynomial
+$g(X)=a_6X^6+\cdots+a_0$, with $a_6\ne0$. Define
+\begin{equation}
+ f(Y)=a_6^5g(Y/a_6)
+     =Y^6+\sum_{i=0}^5 a_i a_6^{5-i}Y^i.
+ \label{eq:monicization}
+\end{equation}
+This is monic integral, and its roots are $a_6$ times those of $g$.
+Multiplication and division by the nonzero rational $a_6$ preserve the
+radical closure of $\QQ$, so this transformation preserves all-root
+radical solvability. The repository already provides this semantic bridge
+\cite{repo-semantics}.
+
+Write $H$ for the maximum absolute value of the six lower coefficients of
+$f$, and let $R=1+H$. Every complex root of $f$ has absolute value at most
+$R$. For example, if $|z|>1+H$, the geometric sum estimate gives
+\[
+ H\sum_{i=0}^5|z|^i<|z|^6,
+\]
+so the leading term cannot be canceled by the others.
+If a monic degree-$d$ integer polynomial divides $f$, its roots are a
+submultiset of these roots, and the coefficient at distance $j$ below its
+leading term has absolute value at most
+\begin{equation}
+ \binom dj R^j.\label{eq:factor-bound}
+\end{equation}
+Gauss's lemma implies that rational reducibility of a monic integer
+polynomial has a monic integer factor. Any proper factorization of a
+sextic has a factor of degree at most three. Thus enumeration of the
+finite coefficient boxes in \cref{eq:factor-bound}, for $d=1,2,3$,
+completely decides reducibility.
+
+A degree-two or degree-three factor leaves a quotient of degree at most
+four; then every root is radical. A degree-one factor leaves a quintic,
+whose radical solvability must actually be tested. In particular, one
+must not accept every reducible sextic: a nonsolvable quintic multiplied
+by a linear factor is the basic counterexample. The existing
+primitive-recursive quintic decision can be reused
+\cite{repo,repo-reducible}. Repeated factors are handled by these reducible
+branches; the irreducible branch is automatically separable in
+characteristic zero.
+
+\subsection{The algorithm}
+
+The following is a mathematical specification of a finite coefficient
+algorithm. A default return on malformed input makes it a total Boolean
+on seven encoded integers; the target predicate includes exact degree six.
+
+\begin{resultbox}
+\textbf{Bounded sextic radical criterion.}
+
+\textbf{1.} Reject if $a_6=0$. Otherwise form the monic integer polynomial
+$f$ in \cref{eq:monicization} and the root bound $R$.
+
+\textbf{2.} Search the explicit boxes for a monic factor of degree two or
+three. If one exists, accept.
+
+\textbf{3.} Search the explicit interval for a linear factor. If one
+exists, choose the first in a fixed order, form its quintic quotient,
+and return the existing primitive-recursive quintic criterion.
+
+\textbf{4.} The remaining input is irreducible. For $t=1,\ldots,196$,
+evaluate the universal coefficient polynomials of the two compressed
+resolvents. Choose the first $t$ for which both are squarefree, or,
+equivalently, for which $E_f(t)\ne0$.
+
+\textbf{5.} Accept exactly when one of the two resulting monic integer
+resolvents has an integer root. For each resolvent, test all integers in
+its Cauchy interval $[-(1+H_R),1+H_R]$, where $H_R$ is the maximum absolute
+value of its lower coefficients.
+\end{resultbox}
+
+Squarefreeness in step 4 can be tested by a rational polynomial gcd with
+the derivative, by a fixed-size resultant determinant, or by the
+obstruction value itself. For an especially direct primitive-recursive
+implementation, the fixed-size determinant avoids any concern about a
+hidden unbounded gcd loop. The resolvent degrees are always fifteen and
+ten.
+
+\begin{theorem}[Bounded architecture and correctness]
+\label{thm:primrec}
+The coefficient procedure above has a primitive-recursive Boolean
+realization and accepts exactly the integer inputs of degree six whose
+complex roots are all expressible by radicals over $\QQ$.
+\end{theorem}
+\begin{proof}
+Monicization is integer arithmetic with fixed exponents. The factor boxes
+have primitive-recursive bounds, and polynomial division for their fixed
+degrees is a finite coefficient computation. The correctness of their
+branches follows from \cref{eq:factor-bound} and the degree arguments
+above. The quintic subroutine is the established primitive-recursive
+criterion, not an unbounded search for radical expressions.
+
+On the irreducible branch, \cref{thm:196} guarantees that step 4 finds a
+parameter. Each coefficient is the evaluation of a fixed integer
+polynomial. Evaluation, fixed-size determinants, a loop of length 196,
+and bounded selection are primitive recursive under the usual effective
+encodings of integers and finite tuples. Step 5 is a bounded integer
+search, and is complete because the resolvents are monic and the Cauchy
+bound includes all their integer roots. Its correctness is
+\cref{thm:criterion}. Composing these primitive-recursive operations proves
+the claim.
+\end{proof}
+
+This theorem concerns a mathematical realization. It does not assert that
+the existing Lean function has already been changed, that a \src{Primrec}
+proof has been accepted by the kernel, or that the attached verifier is
+this coefficient solver. A source-level integration must additionally
+supply the coefficient-evaluation lemmas and bounded-selector code
+discussed in \cref{sec:integration}.
+
+Nor does the naive factor and integer-root enumeration above claim
+polynomial bit complexity. Its bounds depend polynomially on coefficient
+\emph{magnitudes}, which can still give exponential running time in their
+bit lengths. The stronger general polynomial-time theorem is classical
+\cite{landau-miller}; our objective is a small, transparent invariant
+search with a tractable verification boundary.
+
+\section{A separator determined by coefficient height alone}
+\label{sec:height}
+
+The finite search has only 196 candidates, but it is also possible to give
+one coefficient-dependent parameter that is guaranteed to work without
+any separation test. It is useful as a termination certificate or a
+comparison construction, not as a recommendation for practical evaluation.
+
+For a polynomial $P(t)=\sum c_it^i$ over $\CC$, write
+$\|P\|_1=\sum|c_i|$. This norm is submultiplicative. Let $f\in\ZZ[X]$ be
+monic and separable, put $R=1+H$ as above, and use $|\alpha_i|\le R$.
+Then
+\begin{align}
+ \|q_e\|_1&\le1+2R+R^2\le4R^2,\notag\\
+ \|h_P-h_Q\|_1&\le6R^2+24R^3+6R^4\le36R^4,\notag\\
+ \|\ell_{e,e'}\|_1&\le4R+2R^2\le6R^2.
+ \label{eq:norms}
+\end{align}
+For the middle estimate, $|A_P|\le3R^2$, $|B_P|\le12R^3$, and
+$|C_P|\le3R^4$; subtracting two such quantities doubles each bound.
+Multiplying the bounds for fifteen, sixty, and forty-five factors gives
+\begin{equation}
+ \|E_f\|_1\le4^{15}6^{165}R^{360}=:M(H).
+ \label{eq:height-bound}
+\end{equation}
+
+\begin{theorem}[A search-free height separator]
+\label{thm:height}
+The positive integer
+\begin{equation}
+ t_\ast=4^{15}6^{165}(1+H)^{360}+2
+ \label{eq:height-separator}
+\end{equation}
+separates both compressed families and both original descriptors on the
+curve.
+\end{theorem}
+\begin{proof}
+The nonzero polynomial $E_f$ has integer coefficients, so its leading
+coefficient has absolute value at least one. Its Cauchy root bound is at
+most $1+M(H)$ by \cref{eq:height-bound}. Hence $E_f(t_\ast)\ne0$.
+Apply \cref{eq:exact-test} and the nonzero-multiplier identities.
+\end{proof}
+
+Although $t_\ast$ is numerically enormous, its bit length is $O(1+\log(1+H))$
+with a large absolute constant. Its role is to show that even separator
+selection itself can be replaced by an explicit arithmetic expression.
+The first successful candidate in $1,\ldots,196$ will generally be much
+smaller and avoid unnecessary coefficient growth.
+
+\section{Exact checks, certificates, and their limits}
+\label{sec:checks}
+
+The attached computations are designed to test local algebra, combinatorial
+counts, discriminant multiplicities, symmetry signs, and explicit examples.
+They are not used as evidence that an unproved general statement should be
+accepted. Each general theorem above has a written argument, including the
+irreducibility and arbitrary-test-set sharpness results.
+
+\subsection{Local symbolic identities}
+
+The script \src{code/verify.py} uses SymPy to expand and check four universal
+identities: the pair and triple descriptor expansions, the common-block
+factorization, and the triple exchange factorization. These checks involve
+independent root symbols, rather than approximate roots of sample
+polynomials. They therefore test the precise signs and coefficients in
+\cref{eq:pair-descriptor,eq:triple-descriptor,eq:shared,eq:exchange}.
+
+\subsection{Integer arithmetic checks}
+
+The same script enumerates the fifteen matchings and ten triple partitions
+without a stored table. It checks the $45+60$ decomposition of matching
+comparisons and the 45 disjoint-root-pair comparisons. For each root
+transposition it checks that no edge of the block-disjoint matching graph
+is reversed, matching the sign argument in \cref{lem:graph-sign}.
+
+For four distinct integer root tuples and every $t=0,\ldots,16$, the
+script checks both discriminant identities using exact integer products,
+and verifies the compressed-to-descriptor identities and the exact
+obstruction test. This yields 68 parameter cases, each testing both
+resolvent discriminants. It also checks invariance of the three factors
+under all fifteen root transpositions for those four tuples, giving
+60 exact symmetry cases.
+
+It exhausts all $\binom{11}{6}=462$ six-element subsets of
+$\{-3,-2,\ldots,7\}$ and computes their first positive simultaneous
+separator. The resulting distribution is
+\begin{center}
+\begin{tabular}{c*{8}{r}}
+\toprule
+First separator&1&2&3&4&5&6&7&8\\
+\midrule
+Number of tuples&93&83&89&125&48&15&8&1\\
+\bottomrule
+\end{tabular}
+\end{center}
+These finite data do not support a claim that eight works universally.
+They provide reproducible examples, including the lower-bound witness in
+\cref{prop:integer-lower}. Twenty scaled examples additionally check the
+failure of fixed parameters described in \cref{prop:no-single}.
+
+\subsection{A modular certificate for the sharp example}
+
+The independent standard-library script
+\src{code/sharpness_certificate.py} constructs $E_f$ modulo $1{,}000{,}003$
+for \cref{eq:sharp-roots}. It uses only its 120 explicit factors, computes
+an extended Euclidean identity with its derivative, and checks
+\cref{eq:bezout}. The certificate stores every coefficient in ascending
+order, so an independent implementation can verify the identity by
+multiplication and addition without repeating the Euclidean algorithm.
+
+Because reduction preserves the degree and gives gcd one, the
+characteristic-zero polynomial is squarefree. Equivalently, the resultant
+with its derivative is nonzero modulo the prime, hence is a nonzero
+integer. This proves that the example reaches 195 distinct nonzero
+complex failures for this parameterization. It does not imply that any of
+those failures, let alone the first 195 positive integers, are all
+integers or all real.
+
+\subsection{Verification status}
+
+Both scripts were executed successfully for this report. The package
+records the exact results, the complete modular identity, and the scripts
+needed to reproduce them. There was no Lean or Rocq execution for the new
+results, no rebuild of the repository, and no benchmark against production
+Galois software. The code supplied is an exact verifier and root-level
+prototype, not a completed coefficient-only radical solver.
+
+\section{A precise route back into ProveIt}
+\label{sec:integration}
+
+All repository statements here refer to snapshot \snapshot. The relevant
+source directory is
+\src{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/}.
+A subsequent repository version may have changed its interfaces or already
+closed some of these obligations.
+
+\subsection{Reusable existing boundaries}
+
+The source already provides descriptor injectivity and evaluated-resolvent
+separability equivalences in \src{SexticSeparatingInvariants.lean}; the
+irreducible decision combines the chosen parameters with the Galois
+criterion in \src{SexticIrreducibleDecision.lean}. The final all-roots
+predicate and both computable and primitive-recursive criterion interfaces
+are in \src{SexticRadicalComputability.lean}. Monicization is separated
+cleanly into \src{SexticRadicalSemantics.lean}
+\cite{repo-invariants,repo-search,repo-computability,repo-semantics}.
+
+The reducible branch also contains a smaller search issue:
+\src{linearTotalCode} uses \src{Nat.find}, even though a finite symmetric
+integer-code bound is already present in \src{linearWitnessB}. A complete
+primitive-recursive integration must replace or bound that selector as
+well, not stop after fixing the pair and triple search
+\cite{repo-reducible}.
+
+\subsection{Suggested module sequence}
+
+A useful first module, tentatively
+\src{SexticCompressedDescriptors.lean}, would define $A,B,C,a,b,h,k$ and
+prove \cref{eq:pair-descriptor,eq:triple-descriptor}. These are finite ring
+identities, followed by short applications of the existing descriptor
+injectivity theorem. Its main public result should identify the current
+parameter $x(0)=2t^2,x(1)=t$ with the compressed values through the common
+nonzero affine transformation.
+
+A second module, \src{SexticCollisionFactors.lean}, would formalize the
+shared-block/exchange identities and the $45/60/45$ finite partition
+counts. It can obtain the $195$ bad-value bound directly from a product
+over the finite factors, without first formalizing generic irreducibility
+or the full discriminant formulas. Thus the shortest route to the bounded
+selector is substantially smaller than the whole article.
+
+A third module, \src{SexticBoundedSeparatingSearch.lean}, would prove that
+one of $1,\ldots,196$ works and implement a fixed-length list scan. Its
+return specification should establish simultaneous injectivity, followed
+by the existing resolvent correctness bridge. A total fallback value can
+be present in the definition, but its unreachable status on separable
+inputs must be proved rather than assumed.
+
+The computational module should then prove primitive recursiveness of
+each fixed universal coefficient evaluation, of the squarefreeness test,
+and of the bounded selector. One legitimate shortcut is to specialize at
+each of the 196 constant parameters and unroll the finite search, provided
+the coefficient evaluators themselves have primitive-recursive proofs.
+Merely replacing \src{Nat.find} by a bounded loop around a function known
+only to be computable would not establish \src{Primrec}.
+
+Finally, replace the linear-factor selector by its existing bounded
+interval, reuse the primitive-recursive quintic branch, and compose the
+final criterion. The independent Rocq route can use the same mathematical
+bound and compact collision products, but no claim of a completed port is
+made here.
+
+\subsection{Separate proof products from optional refinements}
+
+The exact discriminant identities, generic irreducibility, and the
+195-failure sharpness example deserve their own modules. They make the
+mathematical story stronger, but they are not prerequisites for a correct
+bounded sextic decision. Keeping them separate would preserve a small
+trusted dependency chain for the computational endpoint.
+
+A sensible audit should report four distinct endpoints: the universal
+mathematical separator theorem; the correctness of the bounded returned
+parameter; a primitive-recursive coefficient function; and the final
+all-roots radical predicate. Exact sample evaluations are a fifth product,
+not a substitute for any of the first four.
+
+\section{A reusable general finite-separation principle}
+\label{sec:general}
+
+The sextic construction is special in its low degrees and factorization,
+but the idea of converting polynomial descriptors to a finite hitting set
+has an elementary general form. The following statement explains why an
+existence proof by avoiding finitely many polynomial equalities often
+admits an explicit bounded counterpart.
+
+\begin{proposition}[Kronecker-curve separation]
+\label{prop:kronecker}
+Let $F_1(u,v),\ldots,F_m(u,v)$ be distinct polynomials over a
+characteristic-zero field, each having $u$-degree at most $a$ and
+$v$-degree at most $b$. Put
+\[
+ G_i(t)=F_i(t,t^{a+1}),\qquad D=a+b(a+1).
+\]
+Then the $G_i$ are distinct, have degree at most $D$, and among any
+$D\binom m2+1$ distinct parameter values there is one at which all their
+values are different.
+\end{proposition}
+\begin{proof}
+A monomial $u^iv^j$ becomes $t^{i+(a+1)j}$. For $0\le i\le a$, the
+exponent uniquely determines $i,j$ by division with remainder by $a+1$.
+Thus the substitution is injective on the stated polynomial space and
+preserves nonzero differences. The product of the $\binom m2$ differences
+is nonzero of degree at most $D\binom m2$, and the root bound applies.
+\end{proof}
+
+This is a standard monomial-encoding argument, not a novelty claim. Its
+contrast with the sextic result is instructive. A general curve must
+preserve all descriptor coefficients. Here we first subtract the
+partition-independent part, use the coefficient relations to compress
+the family, and then recognize common collision factors. The result is a
+quadratic curve, a low-degree obstruction, and an exact generic factor
+count rather than a large undifferentiated degree estimate.
+
+For other resolvent actions the promising order of work is therefore:
+identify a complete descriptor; isolate its varying coefficients; find a
+low-degree curve faithful to those coefficients; organize collision
+pairs by group orbits; and only then use a root bound. The graph-product
+sign test and the one-orbit product lemma can be reused independently of
+the sextic setting.
+
+\section{Further research questions and priorities}
+\label{sec:questions}
+
+The results leave several concrete problems. They fall into three groups:
+sharp arithmetic separation, the geometry of the obstruction, and
+certified implementation. The distinction between the solved arbitrary-set
+bound and the unresolved integer-interval bound should be retained in
+all follow-up work.
+
+\begin{question}[The optimal initial integer interval]
+Determine $N_{\mathrm{int}}$, currently bracketed by $8\le
+N_{\mathrm{int}}\le196$ in this report. A proof that eight suffices would
+require new control over simultaneous integer roots of the three factors,
+not just an improvement in generic complex root counting. Conversely,
+construct a distinct root tuple for which $1,\ldots,8$ all fail.
+\end{question}
+A practical first experiment is an exact search over larger integer and
+rational root sets, recording which factor accounts for each failed
+parameter. The combinatorial pattern of overlaps may be more informative
+than the maximum alone. Any proposed universal improvement should be
+proved independently of a finite sample.
+
+\begin{question}[Short fixed test sets not forming an interval]
+What is the smallest cardinality of a fixed set
+$S\subset\ZZ_{>0}$ that separates every distinct complex root tuple?
+The sharpness theorem for arbitrary input-dependent complex test sets
+does not answer this question. Can a sparse integer set outperform an
+initial interval substantially?
+\end{question}
+
+\begin{question}[Irreducible rational inputs]
+Do the best uniform bounds decrease when $f$ is required to be
+irreducible over $\QQ$? For a prescribed positive integer $t_0$, can one
+construct an irreducible rational sextic with $E_f(t_0)=0$? The split
+counterexamples in this article deliberately do not settle this.
+\end{question}
+A route through rational points on the three collision hypersurfaces
+would have to preserve irreducibility of the sextic, rather than merely
+produce a generic point in root coordinates.
+
+\begin{question}[Alternative low-degree curves]
+Can a different scalar compression or a different curve in descriptor
+space lower the maximum number of exceptional parameters below 195?
+The proof of sharpness applies to the particular $h,k$ parameterization,
+not to every possible separating invariant.
+\end{question}
+The common-block factorization suggests looking for a curve that collapses
+more repeated comparisons without making an entire family identical.
+Any such proposal must still distinguish all partitions for every distinct
+root tuple, including special symmetric configurations.
+
+\begin{question}[Geometry of the three components]
+Describe the intersections, singularities, and branching of the three
+irreducible hypersurfaces $Q=0$, $U=0$, and $L=0$ over the separable-sextic
+coefficient locus. Which specializations cause degree loss, repeated
+parameter roots, or intersections between the components?
+\end{question}
+The generic irreducibility theorem reduces this from an unspecified
+collision locus to three explicit orbit products. Their normalizations
+and projection monodromy are natural next invariants.
+
+\begin{question}[Galois groups of the obstruction factors]
+Determine the Galois groups over $\QQ(e_1,\ldots,e_6)$ of the degree-30,
+degree-120, and degree-45 parameter polynomials. Their factorizations into
+quadratics and linears over the generic sextic splitting field provide
+strong constraints, but do not by themselves determine the full groups.
+\end{question}
+
+\begin{question}[Compact coefficient circuits]
+Construct certified straight-line programs for the two resolvents or for
+$E_f(t)$ that avoid expanding large symmetric-polynomial tables. Compare
+Newton identities, traces in finite algebras, and modular reconstruction,
+with exact operation counts and coefficient-height estimates.
+\end{question}
+A useful first target is not the entire final solver but an independently
+checkable evaluator for the obstruction at a supplied integer parameter.
+
+\begin{question}[End-to-end formal primitive recursiveness]
+Implement the module sequence in \cref{sec:integration}, close the bounded
+linear-selector issue, and obtain a kernel-checked \src{Primrec} theorem
+for the complete coefficient criterion. Port the same bounded search to
+the independent Rocq development.
+\end{question}
+The decisive artifact would be a verified executable Boolean and its
+all-complex-roots specification, not only a classical existence theorem
+for a suitable natural number.
+
+\begin{question}[Modular certificates and practical performance]
+Can a small collection of finite-field evaluations certify good
+parameters and rational-root decisions substantially faster than direct
+integer expansion? Establish explicit reconstruction bounds and fallback
+conditions so that modular success is a certificate rather than a
+probabilistic guess.
+\end{question}
+
+\begin{question}[Positive characteristic and field size]
+Determine the precise characteristics and finite-field sizes for which
+analogues hold. The compressed formulas and many collision identities
+survive algebraically, but the multiplier $2t^2$, the distinctness of
+integer parameters, and generic irreducibility arguments must be
+revisited. Extension-field parameters may be necessary.
+\end{question}
+
+\begin{question}[Higher-degree block systems]
+For partitions into equal-sized blocks in higher degrees, classify
+collision orbits and search for compressed descriptors with similarly
+small invariant products. Which actions admit a graph-product
+factorization and irreducible orbit factors of manageable degree?
+\end{question}
+
+\begin{question}[From a decision to explicit radical expressions]
+Use a certified rational resolvent root to recover a fixed block system
+and then construct branch-compatible radical expressions. A Boolean
+solvability certificate is not yet an explicit all-roots formula; the
+recovery and radical-tower interfaces require separate proofs.
+\end{question}
+
+\section{Conclusion}
+
+The repository's unbounded separating search can be replaced by a
+mathematically explicit finite mechanism. The central reason is not a
+general computability theorem, but a small amount of partition-dependent
+information: three coefficients for pair partitions, two for triple
+partitions, and a quadratic curve that preserves them. The resulting
+collision factors have enough structure to yield an exact discriminant
+factorization and a generic irreducibility theorem.
+
+This resolves the bounded-search obligation at the written-proof level
+and identifies a precise next formalization target. It also settles a
+sharpness question for arbitrary complex test sets while leaving the more
+arithmetic positive-integer problem genuinely open. Keeping these scopes
+separate is necessary both for mathematical accuracy and for a useful
+research program.
+
+\appendix
+\section{Reproducibility and package contents}
+\label{app:package}
+
+The archive contains the self-contained source \src{article.tex}, its
+compiled \src{article.pdf}, \src{README.md}, a build script, two Python
+scripts, the exact verification report, and the modular B\'ezout
+certificate. Bibliographic entries are embedded in the TeX source; no
+separate bibliography tool is required. A checksum file records the
+packaged artifacts.
+
+Compile the document by running
+\begin{verbatim}
+./build.sh
+\end{verbatim}
+from the package directory. The script uses \src{pdflatex} three times and
+writes the PDF in the same directory. The source uses commonly available
+TeX Live packages, including \src{newtx}, \src{microtype}, and
+\src{tcolorbox}.
+
+Run the checks with
+\begin{verbatim}
+python code/verify.py
+python code/sharpness_certificate.py
+\end{verbatim}
+The first script needs SymPy for its four local symbolic identities. The
+second uses only the Python standard library and the combinatorial and
+integer-arithmetic functions defined in \src{verify.py}; importing that
+module does not import SymPy or run its test suite. The certificate
+polynomials use ascending coefficient order. The default scripts use
+assertions for test failures and should be run without Python's
+optimization flag.
+
+\section{Source and claim ledger}
+\label{app:ledger}
+
+The following ledger separates historical dependencies, inspected source
+status, written results, and executed checks.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Claim or artifact & Basis and status\\
+\midrule
+\endhead
+General radical-solvability decidability & Classical; Landau--Miller proves
+polynomial-time decidability. Not a new result of this article.\\[5pt]
+Sextic pair/triple group criterion & Classical; proved again in
+\cref{sec:galois} to expose the exact role of separation.\\[5pt]
+Complete block descriptors & Inherited from the inspected repository;
+injectivity reproved in \cref{lem:complete}.\\[5pt]
+Quadratic/linear compression & Written proof in \cref{sec:compression};
+local identities checked symbolically.\\[5pt]
+Three invariant factors and discriminants & Written proofs in
+\cref{sec:obstruction,sec:discriminants}; exact integer tests supplied.\\[5pt]
+Generic irreducibility and 196 sharpness & Written proofs in
+\cref{sec:irreducibility,sec:bound}; explicit sharp example additionally
+has a modular certificate.\\[5pt]
+Initial interval optimum & Not determined; this report proves only
+$8\le N_{\mathrm{int}}\le196$.\\[5pt]
+Primitive-recursive coefficient criterion & Mathematical construction and
+proof in \cref{sec:algorithm}; not an executed Lean development or a
+packaged extracted solver.\\[5pt]
+Executable checks & Both attached scripts executed successfully; exact
+outputs in \src{checks/}. No floating-point evidence is used.\\[5pt]
+Historical novelty & Specific contributions are relative to the inspected
+repository and consulted sources; no exhaustive priority certification.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{landau-miller}
+Susan Landau and Gary L. Miller,
+\emph{Solvability by radicals is in polynomial time},
+Journal of Computer and System Sciences \textbf{30}(2) (1985), 179--208.
+DOI: \href{https://doi.org/10.1016/0022-0000(85)90013-3}{10.1016/0022-0000(85)90013-3}.
+Author's bibliographic record:
+\url{https://www.cs.cmu.edu/~glmiller/Publications/b2hd-LaMi85.html}.
+
+\bibitem{boswell-glasser}
+C. Boswell and M. L. Glasser,
+\emph{Solvable sextic equations}, 2005 preprint,
+arXiv:math-ph/0504001.
+\url{https://arxiv.org/abs/math-ph/0504001}.
+The two imprimitive subgroup types are described on page 3.
+
+\bibitem{fieker-klueners}
+Claus Fieker and J\"urgen Kl\"uners,
+\emph{Computation of Galois groups of rational polynomials},
+LMS Journal of Computation and Mathematics \textbf{17} (2014), 141--158.
+DOI: \href{https://doi.org/10.1112/S1461157013000302}{10.1112/S1461157013000302}.
+\url{https://arxiv.org/abs/1211.3588}.
+
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt: Polynomial formulas and the
+Abel--Ruffini obstruction}, repository documentation, snapshot
+\snapshot, inspected September 28, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/README.md}.
+
+\bibitem{repo-decision}
+Vladimir Reshetnikov, \emph{SexticRadicalDecision.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticRadicalDecision.lean}.
+
+\bibitem{repo-search}
+Vladimir Reshetnikov, \emph{SexticIrreducibleDecision.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticIrreducibleDecision.lean}.
+
+\bibitem{repo-invariants}
+Vladimir Reshetnikov, \emph{SexticSeparatingInvariants.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticSeparatingInvariants.lean}.
+
+\bibitem{repo-semantics}
+Vladimir Reshetnikov, \emph{SexticRadicalSemantics.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticRadicalSemantics.lean}.
+
+\bibitem{repo-computability}
+Vladimir Reshetnikov, \emph{SexticRadicalComputability.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticRadicalComputability.lean}.
+
+\bibitem{repo-reducible}
+Vladimir Reshetnikov, \emph{SexticReducibleDecision.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticReducibleDecision.lean}.
+
+\end{thebibliography}
+\end{document}

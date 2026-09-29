@@ -1,0 +1,1502 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{aliascnt}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{176B70}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Sharp Stability Strata for Finite Fabius--Rvachev Deconvolution},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Optimal inverse stability, convolution scales, cumulants, polynomial roots}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite Fabius--Rvachev deconvolution}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollarys}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Research question}
+\aliascntresetthe{problem}
+\crefname{problem}{Research question}{Research questions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\coef}{\operatorname{coef}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\kap}{\kappa}
+\newcommand{\sr}{\mathcal S_r}
+\newcommand{\stirling}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\err}{\mathcal E_r}
+\newcommand{\base}{a^{\circ}}
+\title{\textbf{Sharp Stability Strata for Finite\\Fabius--Rvachev Deconvolution}\\[0.6em]
+\large Colliding scales, vanishing factors, and optimal recovery exponents}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{28 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Consider an independent sum of a known smooth compactly supported random variable
+and at most $r$ unknown centered uniform factors.  The Rvachev up distribution is
+an important special background, connecting the problem directly to the infinite
+sinc products and exact arithmetic developed in the ProveIt repository.  We prove
+a complete local classification of the optimal inverse H\"older exponent in total
+variation distance.  At a configuration with positive squared-scale multiplicities
+$m_1,\ldots,m_s$ and $m_0$ zero slots, the optimal exponent for two varying nearby
+configurations is
+\[
+ \frac1M,\qquad M=\max\bigl(\{m_1,\ldots,m_s\}\cup
+             \{2m_0:m_0>0\}\bigr).
+\]
+The estimate uses only the first $r$ even cumulants for its upper bound.  Sharpness
+is proved by explicit Chebyshev level-set constructions whose low-order power
+sums cancel.  A vanishing $m$-factor cluster has a nonzero, explicitly identified
+leading density difference of order $t^{2m}$.
+
+A distinct theorem concerns comparison with the fixed base configuration: its
+optimal exponent is $1$ at a simple positive configuration and $1/2$ at every
+singular configuration, regardless of multiplicity.  Thus pointwise stability
+at a singular point is substantially stronger than uniform pairwise stability
+near it.  We also give exact moment reconstruction, deterministic optimal-recovery
+consequences, noise-safe feasible fitting, an elementary sampling upper bound,
+and a formalization roadmap.  Classical cumulant identities, Newton identities,
+and polynomial-root perturbation are distinguished from the classification
+proved here.  The package contains exact algebraic checks and high-precision
+Fourier diagnostics; it does not claim a Lean verification, a statistical
+minimax lower bound, or worldwide priority.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The research question and the contribution boundary}
+\label{sec:scope}
+
+\subsection{From exact identifiability to quantitative recovery}
+A product of sinc functions remembers its convolution factors.  Exact recovery,
+however, is not the same question as stable recovery from inexact data.  If two
+unknown factors have almost the same scale, or if several factors are becoming
+invisible because their scales approach zero, arbitrarily small changes in the
+observed law can conceal much larger changes in its factorization.  The purpose
+of this article is to determine the exact power law of that loss of information
+when the number of unknown factors is bounded.
+
+The ProveIt Fabius development supplies a particularly natural setting.  Its
+module \path{GeneralizedRvachevIdentifiability.lean} recovers admissible dyadic
+exponent sequences from analytic orders at dyadic points and establishes
+injectivity of the corresponding entire products \cite{RepoIdent}.  That theorem
+uses zero multiplicities, not a noise metric on probability laws.  The present
+problem allows finitely many arbitrary nonnegative scales, places them above a
+known smooth background, and asks for optimal stability in total variation.
+These are different hypotheses and different conclusions; the result below is
+not advertised as a replacement for the repository's dyadic theorem.
+
+The finite box convolutions and the infinite up product also occur in the
+repository's holonomic study \cite{RepoHolonomic}.  The smooth compactly supported
+function and its probabilistic interpretation have a much older literature,
+including Arias de Reyna's account \cite{Arias}.  We will establish directly all
+properties of the up background required by our proofs.
+
+\subsection{What is classical and what is proved here}
+The reduction from cumulants to power sums, and then to a polynomial by Newton's
+identities, is classical algebra.  Collision singularities in moment inversion,
+Vieta maps, and Prony systems are extensively studied; Batenkov and Yomdin give
+a relevant geometric treatment \cite{Prony}.  The $n$th-root scale in degree-$n$
+polynomial-root perturbation is also classical; see Sch\"atzle \cite{Schaetzle}.
+Our root-matching lemma is deliberately proved below rather than imported with
+an unspecified constant or an ambiguous treatment of multiplicities.
+
+The principal result developed here is the combined classification for the
+\emph{full output-law metric}: positive collisions contribute their multiplicity,
+zero clusters contribute twice their multiplicity, and the largest contribution
+controls the optimal local pairwise exponent.  The fixed-base exponent has a
+different classification.  Explicit smooth-density sharpness constructions and
+an exact vanishing-cluster leading term make both statements two-sided results,
+not merely condition-number heuristics.
+
+This is a focused research contribution, not a claim to have settled all
+infinite-product inverse problems or a named longstanding conjecture.  The source
+comparison comprised selected repository documents and targeted code searches,
+not an exhaustive audit of every report.  No claim of worldwide novelty is made.
+The mathematical claims labeled theorems have proofs in this article; those
+proofs have not been independently refereed or checked by a proof assistant.
+
+\subsection{A precise repository snapshot}
+The pinned repository tree used for the principal source comparison was
+\begin{center}
+\small\texttt{0e0368b216b302d5822890b48bd19f2337af4d04}.
+\end{center}
+The identifiability module and the holonomic report were read at that tree.
+Some search-index results referred to a different indexed tree, so search
+hits were used for discovery rather than as evidence that all files had the
+same version.  The accompanying \texttt{SOURCE\_AUDIT.md} records the scope and
+bibliographic checks.  No repository files were changed.
+
+\section{Model, metrics, and the principal theorems}
+\label{sec:main}
+
+\subsection{The fixed-background finite-factor model}
+Throughout, $r\ge1$ is a fixed integer.  Let $B$ be a known random variable,
+independent of independent variables $U_1,\ldots,U_r$, each uniform on $[-1,1]$.
+Assume initially that $B$ has a probability density
+\begin{equation}
+ g\in C_c^\infty(\R),\qquad \supp g\subseteq[-L,L].
+ \label{eq:background}
+\end{equation}
+Symmetry of $g$ is not required.  Define the closed ordered parameter cone
+\begin{equation}
+ \sr=\{a\in\R^r:0\le a_1\le\cdots\le a_r\},\qquad
+ X_a=B+\sum_{i=1}^r a_iU_i,
+ \quad \mu_a=\Law(X_a).
+ \label{eq:model}
+\end{equation}
+Its density is
+\begin{equation}
+ f_a(x)=\E g\left(x-\sum_i a_iU_i\right).
+ \label{eq:density}
+\end{equation}
+A zero coordinate contributes the deterministic value zero.  Thus $r$ is a
+\emph{capacity}: the model contains all sums with at most $r$ positive uniform
+factors, padded to length $r$.  There is no attempt to identify how many additional
+formal zero factors someone may have written outside this fixed representation.
+Ordering removes permutation ambiguity.  Restricting to nonnegative amplitudes
+removes the sign ambiguity of a centered uniform distribution.
+
+For $a,b\in\sr$, put
+\begin{equation}
+ d(a,b)=\max_i|a_i-b_i|,
+ \qquad \TV(\mu_a,\mu_b)=\frac12\norm{f_a-f_b}_{L^1}.
+ \label{eq:metrics}
+\end{equation}
+The first metric is the bottleneck matching distance on the two multisets.  For
+real ordered lists, matching in increasing order minimizes the largest matching
+distance: whenever two matched pairs cross, uncrossing them cannot increase that
+largest distance.  Repeating this operation proves the assertion.
+
+We use squared amplitudes and their power sums:
+\begin{equation}
+ p_i=a_i^2,\qquad s_k(a)=\sum_{i=1}^r p_i^k,\qquad
+ \err(a,b)=\max_{1\le k\le r}|s_k(a)-s_k(b)|.
+ \label{eq:power-metric}
+\end{equation}
+The normalization of this finite-data error assumes a fixed unit of scale;
+rescaling the physical variables changes the constants in our estimates.
+
+\subsection{Collision multiplicities}
+Fix $\base\in\sr$.  Its squared coordinates have distinct positive values
+$c_1<\cdots<c_s$, with respective multiplicities $m_1,\ldots,m_s$.
+Let $m_0$ be the number of zero coordinates.  Thus
+$m_0+\sum_{j=1}^s m_j=r$.  Define
+\begin{equation}
+ M(\base)=\max\left(\{m_j:1\le j\le s\}\cup
+                  \{2m_0:m_0>0\}\right).
+ \label{eq:M}
+\end{equation}
+The set in this maximum is nonempty, including when all coordinates vanish.
+
+\begin{definition}[Pairwise versus anchored exponents]
+A pairwise exponent $\alpha>0$ is valid near $\base$ if some relative neighborhood
+$\mathcal U\subseteq\sr$ and constant $C$ satisfy
+\[
+ d(a,b)\le C\TV(\mu_a,\mu_b)^\alpha\quad(a,b\in\mathcal U).
+\]
+An anchored exponent is valid at $\base$ if the analogous estimate is required
+only with $b=\base$.  ``Optimal'' means the largest valid exponent.
+\end{definition}
+
+\begin{theorem}[Complete local pairwise classification]
+\label{thm:pairwise}
+Under \eqref{eq:background}, the optimal pairwise exponent near $\base$ is
+$1/M(\base)$.  More precisely, there are a relative neighborhood $\mathcal U$ and
+positive constants $C_1,C_2$ such that
+\begin{equation}
+ d(a,b)\le C_1\err(a,b)^{1/M(\base)}
+         \le C_2\TV(\mu_a,\mu_b)^{1/M(\base)}
+ \quad(a,b\in\mathcal U).
+ \label{eq:main-bound}
+\end{equation}
+In every relative neighborhood of $\base$, a bound for $d(a,b)$ by a constant
+times either $\err(a,b)^\alpha$ or $\TV(\mu_a,\mu_b)^\alpha$ fails for every
+$\alpha>1/M(\base)$.
+\end{theorem}
+
+\begin{theorem}[Complete anchored classification]
+\label{thm:anchored}
+The optimal anchored exponent is $1$ when all coordinates of $\base$ are positive
+and pairwise distinct.  In every other case it is $1/2$.  In particular, if there
+is a repeated positive scale or at least one zero slot, then
+\begin{equation}
+ d(a,\base)\le C\TV(\mu_a,\mu_{\base})^{1/2}
+ \label{eq:anchored}
+\end{equation}
+for all sufficiently nearby $a$, and no larger anchored exponent is valid.
+\end{theorem}
+
+\begin{theorem}[Uniform bounds on bounded parameter sets]
+\label{thm:global}
+For every $A>0$, there is a constant $C$ such that
+\begin{equation}
+ d(a,b)\le C\TV(\mu_a,\mu_b)^{1/(2r)}
+ \quad\text{whenever }0\le a_1\le\cdots\le a_r\le A.
+ \label{eq:global}
+\end{equation}
+The exponent $1/(2r)$ is optimal on this set.  On the smaller set
+$a_*\le a_1\le\cdots\le a_r\le A$, where $0<a_*<A$, the optimal uniform exponent
+is $1/r$.  If in addition the squared coordinates have a fixed positive minimum
+separation, the inverse is uniformly Lipschitz on that separated set.
+\end{theorem}
+
+\subsection{Interpretation and an example table}
+The exponent measures a loss of resolution.  With error level $\varepsilon$ in
+the observed law, a cluster of $m$ positive factors can force amplitude uncertainty
+of order $\varepsilon^{1/m}$.  A cluster of $m$ factors disappearing at zero can
+force uncertainty of order $\varepsilon^{1/(2m)}$.  These orders are attained by
+explicit pairs of probability densities, not by arbitrary coefficient vectors
+that might fail to correspond to real nonnegative scales.
+
+\begin{center}
+\begin{tabular}{@{}p{0.48\textwidth}ccc@{}}
+\toprule
+Configuration with capacity $r=3$ & $M$ & Pairwise & Anchored\\
+\midrule
+Three distinct positive scales & 1 & $1$ & $1$\\
+A repeated positive pair and a different positive scale & 2 & $1/2$ & $1/2$\\
+Three equal positive scales & 3 & $1/3$ & $1/2$\\
+One zero and two distinct positive scales & 2 & $1/2$ & $1/2$\\
+Two zeros and one positive scale & 4 & $1/4$ & $1/2$\\
+Three zeros & 6 & $1/6$ & $1/2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a mixed example with three equal positive scales and two zero slots,
+$M=\max(3,4)=4$.  Vanishing factors, rather than the positive collision, control
+the pairwise exponent.  Constants depend on the background, the base
+configuration, the neighborhood, and the capacity; the theorems do not suppress
+this dependence.
+
+\section{The Fabius--Rvachev background and exact cumulants}
+\label{sec:fabius}
+
+\subsection{A self-contained construction of the required background}
+Let $V_1,V_2,\ldots$ be independent uniform variables on $[-1,1]$ and define
+\begin{equation}
+ B_{\up}=\sum_{j=1}^{\infty}2^{-j}V_j.
+ \label{eq:up-series}
+\end{equation}
+The series converges absolutely on every outcome and lies in $[-1,1]$.  We use
+the radian convention $\sinc t=\sin(t)/t$, continued by $\sinc0=1$.
+The characteristic function is
+\begin{equation}
+ \phi_{\up}(t)=\E e^{itB_{\up}}
+       =\prod_{j=1}^{\infty}\sinc(2^{-j}t).
+ \label{eq:up-product}
+\end{equation}
+Independence gives the finite products, and bounded convergence gives their limit.
+For fixed $N$ and nonzero real $t$,
+\begin{equation}
+ |\phi_{\up}(t)|\le
+ \prod_{j=1}^N\min(1,2^j/|t|)
+ \le 2^{N(N+1)/2}|t|^{-N}.
+ \label{eq:rapid-decay}
+\end{equation}
+Consequently $t^k\phi_{\up}(t)$ is integrable for every fixed $k$.  Fourier inversion
+and differentiation under the integral give a $C^\infty$ density $\up$.  The
+support restriction of the random series gives $\supp\up\subseteq[-1,1]$.
+It is therefore a $C_c^\infty$ probability density, exactly the regularity needed
+in \eqref{eq:background}.  This is the normalization of the up distribution used
+in the cited repository report \cite{RepoHolonomic}; the construction above also
+fixes it independently of notation in any other source.
+
+In the convention $\widehat g(\xi)=\int e^{-2\pi i\xi x}g(x)\dd x$, the same
+formula is $\widehat{\up}(\xi)=\prod_{h=0}^\infty\sinc(\pi\xi/2^h)$.
+The shift of index and the factor $2\pi$ account for the apparent difference
+between the two product displays.
+
+\subsection{Uniform cumulants are nonzero in every even order}
+For a compactly supported real random variable $Y$, define its cumulants by
+\[
+ \log\E e^{zY}=\sum_{n\ge1}\kap_n(Y)\frac{z^n}{n!}
+\]
+in a neighborhood of zero.  The logarithm is well defined there because the
+moment generating function has value one at zero.  Independence adds cumulants,
+and scaling by $a$ multiplies the $n$th cumulant by $a^n$.
+
+\begin{lemma}[Uniform cumulants]
+\label{lem:uniform}
+If $U$ is uniform on $[-1,1]$, then its odd cumulants vanish and
+\begin{equation}
+ \gamma_{2k}:=\kap_{2k}(U)
+ =\frac{2^{2k}B_{2k}}{2k}
+ =(-1)^{k+1}\frac{(2k)!\,\zeta(2k)}{k\pi^{2k}}\ne0.
+ \label{eq:uniform-cumulants}
+\end{equation}
+In particular, $\gamma_2=1/3$, $\gamma_4=-2/15$, and $\gamma_6=16/63$.
+\end{lemma}
+\begin{proof}
+Direct integration gives $\E e^{zU}=\sinh z/z$.  Its logarithmic derivative is
+$\coth z-1/z$.  The Bernoulli generating identity
+$w/(e^w-1)=\sum_{n\ge0}B_nw^n/n!$ gives
+\[
+ \coth z-\frac1z
+ =\sum_{k\ge1}\frac{2^{2k}B_{2k}}{(2k)!}z^{2k-1}.
+\]
+Integration with zero constant term and comparison with the cumulant expansion
+prove the first expression.  Alternatively, the classical product
+$\sinh z/z=\prod_{n\ge1}(1+z^2/(\pi^2n^2))$ gives
+\[
+ \log\frac{\sinh z}{z}
+ =\sum_{k\ge1}\frac{(-1)^{k+1}\zeta(2k)}{k\pi^{2k}}z^{2k}
+ \quad(|z|<\pi),
+\]
+by absolutely convergent logarithmic expansion.  This proves the second
+expression and its nonvanishing, since $\zeta(2k)>0$.
+\end{proof}
+
+\begin{proposition}[Power-sum decoder]
+\label{prop:decoder}
+In the model \eqref{eq:model},
+\begin{equation}
+ s_k(a)=\frac{\kap_{2k}(\mu_a)-\kap_{2k}(B)}{\gamma_{2k}}.
+ \label{eq:decoder}
+\end{equation}
+For the up background,
+\begin{equation}
+ \kap_{2k}(B_{\up})=\frac{\gamma_{2k}}{4^k-1},\qquad
+ s_k(a)=\frac{\kap_{2k}(\mu_a)}{\gamma_{2k}}-\frac1{4^k-1}.
+ \label{eq:up-decoder}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Cumulant additivity and scaling give \eqref{eq:decoder}.  For the finite prefix
+of \eqref{eq:up-series}, the $2k$th cumulant is
+$\gamma_{2k}\sum_{j=1}^N2^{-2kj}$.  Its moments converge to those of $B_{\up}$
+by uniform boundedness and almost sure convergence.  Cumulants are polynomials
+in finitely many moments, so they also converge.  Summing the geometric series
+gives \eqref{eq:up-decoder}.
+\end{proof}
+In particular, $\operatorname{Var}(B_{\up})=1/9$.  This normalization check is
+useful: confusing the up variance with the variance $1/3$ of a single uniform
+factor would give an incorrect decoder at its first step.
+
+\section{Exact reconstruction and quantitative algebraic reduction}
+\label{sec:algebra}
+
+\subsection{Newton reconstruction}
+For $p_i=a_i^2$, write
+\begin{equation}
+ P_a(z)=\prod_{i=1}^r(z-p_i)
+       =z^r-e_1z^{r-1}+e_2z^{r-2}-\cdots+(-1)^re_r.
+ \label{eq:poly}
+\end{equation}
+The elementary symmetric functions are recovered recursively from the power sums:
+\begin{equation}
+ e_0=1,\qquad
+ e_j=\frac1j\sum_{k=1}^j(-1)^{k-1}e_{j-k}s_k
+ \quad(1\le j\le r).
+ \label{eq:newton}
+\end{equation}
+For completeness, define $E(t)=\prod_i(1+p_it)=\sum_j e_jt^j$.
+Logarithmic differentiation gives
+\[
+ E'(t)=E(t)\sum_{k\ge1}(-1)^{k-1}s_kt^{k-1}.
+\]
+Equating coefficients proves \eqref{eq:newton}.
+
+\begin{proposition}[Finite exact identifiability]
+\label{prop:exact}
+The first $r$ even cumulants of $\mu_a$, together with the known background
+cumulants, determine $a\in\sr$ uniquely.  The same is true of the raw moments
+through order $2r$.  The reconstruction is: decode $s_1,\ldots,s_r$, compute
+\eqref{eq:newton}, form \eqref{eq:poly}, list its roots with multiplicity, and take
+their nonnegative square roots in increasing order.
+\end{proposition}
+\begin{proof}
+\Cref{prop:decoder} supplies the power sums.  Newton's identities supply all
+coefficients of $P_a$.  A monic polynomial determines its complex root multiset,
+and in this model all those roots are real and nonnegative.  Nonnegative square
+root and ordering therefore determine $a$.  Cumulants through order $2r$ are
+polynomials in the raw moments through that order, proving the final assertion.
+\end{proof}
+No division by the observed characteristic function is used.  In particular,
+zeros of the known up characteristic function cause no obstruction to this
+exact finite-dimensional decoder.
+
+\subsection{Total variation controls the required finite data}
+Suppose temporarily that $a_r,b_r\le A$ and set $R=\max(1,L+rA)$.
+All observed laws are supported on $[-R,R]$.  If
+$\varepsilon=\TV(\mu_a,\mu_b)$, then their raw moments satisfy
+\begin{equation}
+ |m_n(\mu_a)-m_n(\mu_b)|\le2R^n\varepsilon.
+ \label{eq:raw-bound}
+\end{equation}
+
+\begin{lemma}[An explicit cumulant bound]
+\label{lem:cumulant-bound}
+Let
+$F_n=\sum_{q=1}^n q!\,\stirling{n}{q}$, where $\stirling{n}{q}$ is a Stirling number
+of the second kind.  Then
+\begin{equation}
+ |\kap_n(\mu_a)-\kap_n(\mu_b)|
+ \le2R^nF_n\varepsilon.
+ \label{eq:cumulant-bound}
+\end{equation}
+Consequently
+\begin{equation}
+ \err(a,b)\le C_{r,R}\varepsilon,\qquad
+ C_{r,R}=\max_{1\le k\le r}\frac{2R^{2k}F_{2k}}{|\gamma_{2k}|}.
+ \label{eq:E-TV}
+\end{equation}
+The same bound holds through any other fixed finite cumulant order.
+\end{lemma}
+\begin{proof}
+The moment--cumulant formula is
+\[
+ \kap_n(\mu)=\sum_{\pi\in\Pi_n}
+ (-1)^{|\pi|-1}(|\pi|-1)!\prod_{D\in\pi}m_{|D|}(\mu),
+\]
+where $\Pi_n$ is the set of partitions of $\{1,\ldots,n\}$.
+For a partition with $q$ blocks, telescope the difference of the two products.
+Each of its $q$ terms is bounded by $2R^n\varepsilon$, by
+\eqref{eq:raw-bound} and $|m_j|\le R^j$.  Multiplication by $(q-1)!$ and summation
+over the $\stirling{n}{q}$ partitions gives \eqref{eq:cumulant-bound}.  The known
+background cancels in differences in \eqref{eq:decoder}; division by the nonzero
+$\gamma_{2k}$ gives \eqref{eq:E-TV}.
+\end{proof}
+These constants are explicit and conservative, not asserted to be numerically
+optimal.  Their purpose is to make every finite-order continuity assertion
+quantitative.
+
+\subsection{Power-sum error controls polynomial-coefficient error}
+For monic degree-$r$ polynomials, let $\norm{P-Q}_{\coef}$ be the largest absolute
+difference between their nonleading coefficients.  Put $H_0=A^2$.
+If $\delta=\err(a,b)$, then
+\begin{equation}
+ \norm{P_a-P_b}_{\coef}\le K_{r,A}\delta.
+ \label{eq:coef-bound}
+\end{equation}
+One explicit choice is $K_{r,A}=\max_{1\le j\le r}K_j$, where
+\begin{equation}
+ K_0=0,\qquad
+ K_j=\frac1j\sum_{k=1}^j
+ \left(rH_0^kK_{j-k}+\binom r{j-k}H_0^{j-k}\right).
+ \label{eq:K}
+\end{equation}
+Indeed, $|s_k|\le rH_0^k$ and $|e_j|\le\binom rjH_0^j$.  Subtracting the two
+Newton recurrences, telescoping each product $e_{j-k}s_k$, and inducting on $j$
+proves \eqref{eq:coef-bound} with exactly \eqref{eq:K}.
+
+\subsection{The regular locus and its Jacobian}
+The power-sum map in squared coordinates has Jacobian
+\begin{equation}
+ \frac{\partial s_k}{\partial p_i}=kp_i^{k-1},\qquad
+ \det\left(\frac{\partial s_k}{\partial p_i}\right)_{k,i=1}^r
+ =r!\prod_{i<j}(p_j-p_i).
+ \label{eq:jacobian-p}
+\end{equation}
+The determinant follows by factoring $k$ from row $k$ and using the Vandermonde
+determinant.  Passing to amplitude coordinates gives
+\begin{equation}
+ \det\left(\frac{\partial s_k}{\partial a_i}\right)_{k,i=1}^r
+ =2^rr!\left(\prod_i a_i\right)\prod_{i<j}(a_j^2-a_i^2).
+ \label{eq:jacobian-a}
+\end{equation}
+Thus the regular positive locus is precisely the locus of distinct positive
+scales.  The determinant detects where local Lipschitz inversion can fail, but
+by itself does not give the optimal exponent on the singular locus.  That is
+the additional content of the main theorems.
+
+\section{Root matching with multiplicities and separated cluster factors}
+\label{sec:roots}
+
+\subsection{A quantitative root-matching lemma}
+A bound saying that each root is close to \emph{some} root of the other polynomial
+is insufficient: it can ignore multiplicities.  We need a matching that counts
+every root.
+
+\begin{lemma}[Root matching on a bounded real interval]
+\label{lem:root-match}
+Let $P,Q$ be monic degree-$n$ polynomials with all roots in $[0,H_0]$.
+There is a constant $C_{n,H_0}$ such that their ordered root lists $p,q$ satisfy
+\begin{equation}
+ \max_i|p_i-q_i|\le C_{n,H_0}\norm{P-Q}_{\coef}^{1/n}.
+ \label{eq:root-match}
+\end{equation}
+For sufficiently small $\eta=\norm{P-Q}_{\coef}>0$, one may take
+$C_{n,H_0}=4n(2H)^{1/n}$, with
+$H=\sum_{\ell=0}^{n-1}(H_0+1)^\ell$.
+\end{lemma}
+\begin{proof}
+For $|z|\le H_0+1$,
+$|P(z)-Q(z)|\le H\eta$.  Set $\rho=(2H\eta)^{1/n}$ and suppose $\rho<1/2$.
+Take the union of the disks of radius $\rho'$ centered at the roots of $P$, where
+$\rho\le\rho'<2\rho$ is chosen to avoid tangencies of boundary circles.  All
+boundary points satisfy $|z|\le H_0+1$ and have distance at least $\rho'$ from
+every root of $P$.  Hence on that boundary,
+\[
+ |P(z)|=\prod_i|z-p_i|\ge(\rho')^n\ge2H\eta>|P(z)-Q(z)|.
+\]
+Rouch\'e's theorem, applied to the oriented boundary of each component, gives
+the same number of zeros of $P$ and $Q$ in that component, with multiplicity.
+Piecewise circular boundaries can equivalently be perturbed slightly before
+applying the argument principle.  The total count is $n$, so every root of $Q$
+is in one of these components.
+
+A component contains at most $n$ disks and its disk-intersection graph is
+connected.  Joining centers along this graph shows that its diameter is at most
+$2n\rho'<4n\rho$.  Match equal numbers of roots within each component.  This gives
+a full matching with displacement at most $4n\rho$.  Sorting the two real lists
+cannot worsen the largest displacement, proving the displayed bound for small
+$\eta$.  If $\eta=0$, the polynomials coincide.  For the remaining $\eta$, enlarge
+the constant using the trivial bound $\max_i|p_i-q_i|\le H_0$ and the fixed
+positive threshold for $\eta$.
+\end{proof}
+
+\subsection{Separated clusters depend Lipschitz-continuously on the coefficients}
+\begin{lemma}[Lipschitz extraction of an isolated factor]
+\label{lem:cluster}
+Let $P^{\circ}$ be monic with distinct root clusters separated by disjoint
+circles $\Gamma_0,\ldots,\Gamma_s$.  For nearby monic polynomials whose roots
+remain inside the corresponding circles with the same cluster counts, the
+monic factor belonging to any one circle is Lipschitz in the full coefficient
+vector.  Its degree is the number of roots in that circle, counted with
+multiplicity.
+\end{lemma}
+\begin{proof}
+For a circle $\Gamma_j$ and $k\ge1$, the cluster power sum is
+\begin{equation}
+ t_{j,k}(P)=\frac1{2\pi i}\oint_{\Gamma_j}z^k\frac{P'(z)}{P(z)}\dd z.
+ \label{eq:cluster-integral}
+\end{equation}
+The residue at a root of multiplicity $m$ is $m$ times the corresponding $k$th
+power, so the formula includes all multiplicities.  Shrink the coefficient
+neighborhood so that $|P|$ is uniformly bounded below on the fixed circles.
+The numerators and derivatives are uniformly bounded there.  The identity
+\[
+ \frac{P'}P-\frac{Q'}Q=\frac{P'Q-Q'P}{PQ}
+\]
+then bounds the integrand difference by a constant times
+$\norm{P-Q}_{\coef}$.  Integration gives a Lipschitz bound for the finitely many
+cluster sums $t_{j,1},\ldots,t_{j,m_j}$.  Applying the finite Newton recurrences
+to these sums gives the coefficients of the monic degree-$m_j$ factor and
+preserves Lipschitz dependence on this bounded neighborhood.
+\end{proof}
+The use of a fixed contour is important.  The roots \emph{within} a cluster may
+collide, but the cluster as a whole remains separated from the other clusters.
+We are not assuming differentiable or Lipschitz individual roots at a collision.
+
+\section{Upper bounds: proof of the pairwise and global estimates}
+\label{sec:upper}
+
+\begin{proof}[Proof of the upper bound in \cref{thm:pairwise}]
+Choose small disjoint disks around $0$ when $m_0>0$ and around each positive
+$c_j$.  Choose a relative parameter neighborhood $\mathcal U$ of $\base$ so that
+exactly the prescribed coordinate block stays in each disk.  All parameters
+in this neighborhood are bounded by some $A$.
+
+Let $\delta=\err(a,b)$.  By \eqref{eq:coef-bound}, the coefficient vectors of
+$P_a$ and $P_b$ differ by at most a constant times $\delta$.
+\Cref{lem:cluster} gives the same type of estimate for the monic factor belonging
+to cluster $j$.  Applying \cref{lem:root-match} to that degree-$m_j$ factor yields
+\begin{equation}
+ \max_{i\text{ in cluster }j}|a_i^2-b_i^2|
+ \le C_j\delta^{1/m_j}.
+ \label{eq:squared-cluster}
+\end{equation}
+Near a positive center $c_j$, both square roots are bounded away from zero.
+The identity
+\[
+ |a_i-b_i|=\frac{|a_i^2-b_i^2|}{a_i+b_i}
+\]
+therefore preserves the exponent $1/m_j$.
+
+For the zero cluster, the same argument in squared coordinates gives exponent
+$1/m_0$.  For nonnegative $u,v$,
+\begin{equation}
+ |\sqrt u-\sqrt v|\le\sqrt{|u-v|},
+ \label{eq:sqrt}
+\end{equation}
+so that cluster gives amplitude exponent $1/(2m_0)$.  Taking the maximum of
+these bounds, and first treating $0\le\delta\le1$, gives exponent $1/M(\base)$.
+An enlargement of the constant handles the remaining bounded range of $\delta$.
+Finally, \cref{lem:cumulant-bound} gives
+$\delta\le C_{r,R}\TV(\mu_a,\mu_b)$.
+\end{proof}
+
+\begin{proof}[Proof of the upper estimates in \cref{thm:global}]
+On the full bounded parameter set, \eqref{eq:coef-bound} followed by
+\cref{lem:root-match} in degree $r$ yields squared-scale exponent $1/r$.
+Applying \eqref{eq:sqrt} gives amplitude exponent $1/(2r)$, and
+\eqref{eq:E-TV} converts to total variation.  If all amplitudes are at least
+$a_*>0$, the denominator $a_i+b_i\ge2a_*$ preserves exponent $1/r$ instead.
+
+For a uniform squared-scale separation $\Delta>0$, sufficiently small
+coefficient perturbations place each matched root $q_i$ within $\Delta/2$ of
+$p_i$.  This follows uniformly from \cref{lem:root-match}.  Since $Q(q_i)=0$,
+\[
+ |P(q_i)|=|P(q_i)-Q(q_i)|\le H_1\norm{P-Q}_{\coef}
+\]
+for a fixed $H_1$ on the bounded interval.  Every factor
+$|q_i-p_j|$, $j\ne i$, is at least $\Delta/2$, giving
+\begin{equation}
+ |q_i-p_i|\le H_1(2/\Delta)^{r-1}\norm{P-Q}_{\coef}.
+ \label{eq:separated}
+\end{equation}
+Take square roots using the positive lower bound $a_*$, then use
+\eqref{eq:coef-bound} and \eqref{eq:E-TV}.  Large coefficient perturbations are
+covered by enlarging the constant, using the bounded parameter diameter and the
+fixed threshold separating the small and large cases.  For $r=1$, the empty
+product in \eqref{eq:separated} is one and no separation condition is needed.
+\end{proof}
+
+\begin{remark}[How much background regularity is used so far?]
+The upper estimates use only that the known background law has bounded support.
+They do not require a density or smoothness.  Smoothness becomes essential to
+the sharpness constructions below, where high-order cancellation must persist
+in the strong $L^1$ metric.  Thus the stated classification is a theorem for the
+smooth-background model, while its upper half applies more widely.
+\end{remark}
+
+\section{Explicit moment-canceling clusters}
+\label{sec:chebyshev}
+
+The sharpness proof must stay inside the real nonnegative scale model.  Generic
+perturbations of a polynomial with a repeated root often produce complex roots,
+so they would not suffice.  Chebyshev level sets give suitable real configurations
+at every multiplicity.
+
+\begin{lemma}[Two real multisets with maximal initial cancellation]
+\label{lem:cheb}
+For $m\ge1$, let $x_1^+<\cdots<x_m^+$ and $x_1^-<\cdots<x_m^-$ be the roots of
+$T_m(x)=1/2$ and $T_m(x)=-1/2$, respectively.  Both lists consist of simple roots
+in $(-1,1)$ and have no root in common.  Their power sums satisfy
+\begin{align}
+ \sum_i(x_i^+)^k&=\sum_i(x_i^-)^k\quad(1\le k<m),
+ \label{eq:cheb-cancel}\\
+ D_m:=\sum_i(x_i^+)^m-\sum_i(x_i^-)^m&=m\,2^{1-m}>0.
+ \label{eq:Dm}
+\end{align}
+The shifted lists $u_i^\pm=2+x_i^\pm\in(1,3)$ obey the same initial equalities
+and the same $m$th-power difference $D_m$.
+\end{lemma}
+\begin{proof}
+The identity $T_m(\cos\theta)=\cos(m\theta)$ shows that each horizontal level
+in $(-1,1)$ meets the graph in exactly $m$ simple points of $(-1,1)$.  Simplicity
+also follows because at such a point $\sin(m\theta)\ne0$ and
+$T_m'(\cos\theta)=m\sin(m\theta)/\sin\theta\ne0$.
+
+The monic polynomials of the two root lists are
+\begin{equation}
+ Q_\pm(z)=2^{1-m}\bigl(T_m(z)\mp1/2\bigr).
+ \label{eq:cheb-poly}
+\end{equation}
+They have identical nonconstant coefficients.  The constant coefficient of
+$Q_+$ minus that of $Q_-$ equals $-2^{1-m}$.  Newton's recurrence in coefficient form
+says, for $1\le k\le m$,
+\[
+ s_k+c_1s_{k-1}+\cdots+c_{k-1}s_1+kc_k=0,
+\]
+where $c_j$ is the coefficient of $z^{m-j}$.  Thus the sums agree for $k<m$, and
+at $k=m$ their difference is $-m(-2^{1-m})=D_m$.  The root sets are disjoint
+because a number cannot simultaneously satisfy $T_m(x)=1/2$ and $T_m(x)=-1/2$.
+Finally, expanding $(2+x)^k$ binomially proves both assertions for $u_i^\pm$.
+\end{proof}
+
+\begin{example}[A triple collision]
+For $m=3$, the two monic polynomials are
+\[
+ Q_+(z)=z^3-\frac34z-\frac18,\qquad
+ Q_-(z)=z^3-\frac34z+\frac18.
+\]
+Both root lists have sum zero and sum of squares $3/2$, but their sums of cubes
+differ by $3/4$.  This produces two nearby three-factor configurations with
+exactly the same second and fourth output cumulants, while the first differing
+cumulant is sixth order.  A perturbation near a positive squared scale makes
+that difference order $t^3$; a perturbation from zero in amplitude coordinates
+makes it order $t^6$.
+\end{example}
+
+\section{Smoothness, cancellation, and leading density terms}
+\label{sec:smoothness}
+
+\subsection{Translation Taylor expansion in \texorpdfstring{$L^1$}{L1}}
+\begin{lemma}[A uniform translation expansion]
+\label{lem:translation}
+Let $k\in C_c^\infty(\R)$ and let $Z$ be a bounded random variable.  For every
+integer $n\ge1$,
+\begin{equation}
+ \E k(\,\cdot-tZ)
+ =\sum_{\ell=0}^n\frac{(-t)^\ell\E Z^\ell}{\ell!}k^{(\ell)}
+   +o_{L^1}(t^n)\quad(t\to0).
+ \label{eq:translation}
+\end{equation}
+If two bounded variables have identical moments through order $n-1$, the
+difference of their expansions starts with their $n$th-moment difference.
+\end{lemma}
+\begin{proof}
+The integral Taylor formula for translation is
+\[
+ k(\,\cdot-h)-\sum_{\ell=0}^{n-1}\frac{(-h)^\ell}{\ell!}k^{(\ell)}
+ =\frac{(-h)^n}{(n-1)!}\int_0^1(1-v)^{n-1}k^{(n)}(\,\cdot-vh)\dd v.
+\]
+Translations are continuous in $L^1$.  Replacing the translated $k^{(n)}$ in the
+integral by $k^{(n)}$ therefore changes the expression by $o_{L^1}(|h|^n)$,
+uniformly for $|h|$ in a shrinking interval.  Substitute $h=tZ$.  Boundedness of
+$Z$ makes the remainder uniform over its possible values; taking expectations
+proves \eqref{eq:translation}.
+\end{proof}
+
+Convolving $g$ with any fixed collection of finite uniform factors gives another
+smooth compactly supported density $k$, with
+$\norm{k^{(n)}}_1\le\norm{g^{(n)}}_1$.  Moreover,
+\begin{equation}
+ \norm{k^{(n)}}_1>0\qquad(n\ge1).
+ \label{eq:nonzero-derivative}
+\end{equation}
+Otherwise $k^{(n)}=0$ everywhere by continuity, so $k$ is a polynomial of degree
+less than $n$ on $\R$.  A compactly supported polynomial vanishes identically,
+contradicting $\int k=1$.
+
+\subsection{Smooth symmetric dependence on positive squared scales}
+\begin{lemma}[Positive-cluster Taylor cancellation]
+\label{lem:positive-Taylor}
+For a fixed smooth compactly supported density $k$ and a fixed $c>0$, define
+\[
+ \mathcal F(p_1,\ldots,p_m)(x)
+ =\E k\left(x-\sum_{i=1}^m\sqrt{p_i}U_i\right)
+ \quad(p_i>0).
+\]
+This is a symmetric $C^\infty$ map into $L^1(\R)$.  If two direction vectors
+$v,w\in\R^m$ have the same power sums through order $m-1$, then
+\begin{equation}
+ \mathcal F(c\mathbf1+tv)-\mathcal F(c\mathbf1+tw)
+ =t^m H+o_{L^1}(t^m)
+ \label{eq:positive-expansion}
+\end{equation}
+for some $H\in L^1$.
+\end{lemma}
+\begin{proof}
+On a compact subset of the positive orthant, every derivative of $\sqrt p$ is
+bounded.  Differentiating the displayed expectation produces finite sums of
+bounded functions of the $U_i$ times translated derivatives $k^{(j)}$.  Their
+$L^1$ norms have uniform integrable bounds.  Translation continuity and
+differentiation under the expectation give $C^\infty$ dependence into $L^1$.
+Permutation symmetry follows from the identical independent laws of the $U_i$.
+
+Expand the map at $c\mathbf1$ through total degree $m$.  Its homogeneous term of
+degree $\ell$ is a symmetric polynomial in the direction coordinates, with
+coefficients in $L^1$.  Every symmetric polynomial of degree $\ell$ is a
+polynomial in the elementary symmetric functions $e_1,\ldots,e_\ell$ with their
+usual weights, hence in the power sums $s_1,\ldots,s_\ell$ by Newton's identities.
+This algebraic statement also holds for vector-valued coefficients: their span
+in this finite Taylor polynomial is finite dimensional, and one applies the
+scalar identity in a basis of that span.  One elementary proof of the scalar
+statement successively subtracts the product
+$e_1^{\lambda_1-\lambda_2}e_2^{\lambda_2-\lambda_3}\cdots e_m^{\lambda_m}$
+corresponding to the leading ordered monomial $z_1^{\lambda_1}\cdots z_m^{\lambda_m}$;
+the leading monomial decreases until none remains.  The weighted degree is
+preserved throughout.
+
+Consequently all Taylor terms of degrees below $m$ agree for $v$ and $w$.
+The difference of their degree-$m$ terms is $H$, and the Banach-space Taylor
+remainder is $o_{L^1}(t^m)$, proving \eqref{eq:positive-expansion}.
+\end{proof}
+
+\section{Sharpness at positive collisions}
+\label{sec:positive-sharp}
+
+Fix a positive squared-scale cluster of size $m$ at $c>0$, and hold all other
+coordinates equal to their values at $\base$.  Let $k$ be the density of the
+known background convolved with these fixed factors.  For the Chebyshev lists
+from \cref{lem:cheb}, replace the cluster by
+\begin{equation}
+ p_i^\pm(t)=c+t x_i^\pm,\qquad
+ a_i^\pm(t)=\sqrt{c+t x_i^\pm},\qquad t>0.
+ \label{eq:positive-paths}
+\end{equation}
+For small $t$, all scales remain positive and in their original isolated cluster.
+The full configurations converge to $\base$ and satisfy
+\begin{equation}
+ d(a^+(t),a^-(t))\sim
+ \frac{t}{2\sqrt c}\max_i|x_i^+-x_i^-|.
+ \label{eq:positive-distance}
+\end{equation}
+The coefficient on the right is positive because the two ordered root lists
+differ.
+
+By binomial expansion and \cref{lem:cheb}, the cluster power sums agree through
+order $m-1$, while their order-$m$ difference is exactly $D_mt^m$.
+The fixed coordinates do not change those differences.  Therefore
+\begin{equation}
+ \kap_{2m}(\mu_{a^+(t)})-\kap_{2m}(\mu_{a^-(t)})
+ =\gamma_{2m}D_mt^m\ne0,
+ \label{eq:positive-kappa}
+\end{equation}
+and all lower-order cumulants of the output laws agree.  Odd cumulants, even
+when the background is not symmetric, agree because the uniform factors have
+zero odd cumulants and the background is the same.
+
+\begin{proposition}[Positive-collision sharpness in total variation]
+\label{prop:positive-sharp}
+For the paths \eqref{eq:positive-paths}, there is a nonzero compactly supported
+$H_{c,m,k}\in L^1(\R)$ such that
+\begin{align}
+ f_{a^+(t)}-f_{a^-(t)}
+ &=t^mH_{c,m,k}+o_{L^1}(t^m),
+ \label{eq:positive-density}\\
+ \TV(\mu_{a^+(t)},\mu_{a^-(t)})
+ &\sim\frac12\norm{H_{c,m,k}}_1t^m.
+ \label{eq:positive-TV}
+\end{align}
+In addition, $\err(a^+(t),a^-(t))\asymp t^m$.
+\end{proposition}
+\begin{proof}
+\Cref{lem:positive-Taylor} gives the first expansion.  All densities along these
+paths have support in one fixed compact interval; the Taylor coefficients,
+being derivatives of such densities, have support there as well.
+Since all lower cumulants agree, the moment--cumulant polynomial implies that
+the raw moments of order $2m$ differ by the cumulant difference
+\eqref{eq:positive-kappa}.  Dividing the $L^1$ expansion by $t^m$ and integrating
+against $x^{2m}$ on that fixed compact interval gives
+\[
+ \int x^{2m}H_{c,m,k}(x)\dd x=\gamma_{2m}D_m\ne0.
+\]
+Thus $H_{c,m,k}$ is nonzero.  Taking $L^1$ norms proves
+\eqref{eq:positive-TV}.  Finally, the $m$th power-sum gap is $D_mt^m$, while
+for every fixed $k\ge m$ the binomial expansion makes its gap $O(t^m)$.
+As $m\le r$, the maximum over $1\le k\le r$ is bounded above and below by
+positive constants times $t^m$.
+\end{proof}
+
+By \eqref{eq:positive-distance} and \eqref{eq:positive-TV}, a putative pairwise
+bound with exponent $\alpha>1/m$ would require
+$t\le C't^{m\alpha}$ along these paths, which is impossible as $t\downarrow0$.
+This proves the positive-cluster sharpness half of \cref{thm:pairwise}.
+The argument includes $m=1$ and therefore also proves that a regular exponent
+larger than one cannot hold.
+
+\section{Vanishing factors: an exact leading law and doubled exponents}
+\label{sec:zero-sharp}
+
+The zero cluster has an extra degeneracy: the law of $aU$ is even as a function
+of the amplitude $a$, so its first detectable change occurs in $a^2$, not $a$.
+The next theorem quantifies how this interacts with an $m$-fold collision.
+
+\begin{theorem}[Exact vanishing-cluster leading term]
+\label{thm:zero-leading}
+Suppose $\base$ has a zero cluster of size $m\ge1$.  Hold all other scales fixed,
+and let $k$ be the smooth compactly supported density of the background plus
+those fixed factors.  Set $u_i^\pm=2+x_i^\pm$ using \cref{lem:cheb}, and turn the
+zero cluster into
+\begin{equation}
+ a_i^\pm(t)=t\sqrt{u_i^\pm},\qquad t>0.
+ \label{eq:zero-paths}
+\end{equation}
+Then
+\begin{equation}
+ f_{a^+(t)}-f_{a^-(t)}
+ =\frac{\gamma_{2m}D_m}{(2m)!}\,t^{2m}k^{(2m)}
+   +o_{L^1}(t^{2m}),
+ \label{eq:zero-leading}
+\end{equation}
+and in particular
+\begin{equation}
+ \TV(\mu_{a^+(t)},\mu_{a^-(t)})
+ \sim\frac{|\gamma_{2m}D_m|}{2(2m)!}
+       \norm{k^{(2m)}}_1\,t^{2m}.
+ \label{eq:zero-TV}
+\end{equation}
+The constant is strictly positive.  Meanwhile,
+\begin{equation}
+ d(a^+(t),a^-(t))
+ =t\max_i|\sqrt{u_i^+}-\sqrt{u_i^-}|>0,
+ \label{eq:zero-distance}
+\end{equation}
+and $\err(a^+(t),a^-(t))\asymp t^{2m}$.
+\end{theorem}
+\begin{proof}
+Define bounded symmetric random variables
+$Z_\pm=\sum_i\sqrt{u_i^\pm}U_i$.  Their even cumulants are
+$\gamma_{2j}\sum_i(u_i^\pm)^j$.  By \cref{lem:cheb}, these agree for $j<m$,
+and their order-$2m$ difference is $\gamma_{2m}D_m$.  Odd cumulants vanish.
+The moment--cumulant identities therefore give equal raw moments through order
+$2m-1$ and
+\[
+ \E Z_+^{2m}-\E Z_-^{2m}=\gamma_{2m}D_m.
+\]
+The two output densities are $\E k(\cdot-tZ_+)$ and $\E k(\cdot-tZ_-)$.
+Apply \cref{lem:translation} with $n=2m$ and subtract.  The sign $(-1)^{2m}$ is
+positive, giving exactly \eqref{eq:zero-leading}.
+
+Both $\gamma_{2m}$ and $D_m$ are nonzero, and
+$\norm{k^{(2m)}}_1>0$ by \eqref{eq:nonzero-derivative}.  Norm convergence gives
+\eqref{eq:zero-TV}.  The amplitude formula is immediate.  In squared coordinates
+$p_i^\pm=t^2u_i^\pm$, the sums agree through order $m-1$ and differ at order
+$m$ by $D_mt^{2m}$.  Higher fixed orders have differences $O(t^{2m+2})$ or
+smaller, proving the final assertion.
+\end{proof}
+
+For $m=3$, the signed coefficient in \eqref{eq:zero-leading} is
+\[
+ \frac{(16/63)(3/4)}{6!}=\frac1{3780}.
+\]
+Thus a vanishing triple has density difference
+$t^6k^{(6)}/3780+o_{L^1}(t^6)$ and total variation asymptotic
+$t^6\norm{k^{(6)}}_1/7560$.  The amplitude separation is proportional to $t$.
+This is an explicit sixth-order obstruction, not merely a qualitative
+non-Lipschitz example.
+
+\begin{proof}[Completion of \cref{thm:pairwise,thm:global}]
+Choose a cluster attaining $M(\base)$.  If it is positive, use
+\cref{prop:positive-sharp}; if it is zero, use \cref{thm:zero-leading}.  In either
+case the two configurations tend to $\base$, their amplitude separation is
+comparable to $t$, and both their finite-data error and their total variation
+are comparable to $t^{M(\base)}$.  Every neighborhood therefore contains pairs
+excluding every exponent greater than $1/M(\base)$.  Together with
+\cref{sec:upper}, this proves \cref{thm:pairwise} in full.
+
+For the full box $0\le a_i\le A$, use a zero cluster of size $r$ at the origin.
+For the positive box $a_*\le a_i\le A$, choose all coordinates equal to any
+value strictly between $a_*$ and $A$, and use a positive cluster of size $r$.
+These constructions remain inside their boxes for small $t$ and prove the
+claimed optimal global exponents in \cref{thm:global}.
+\end{proof}
+
+\section{Anchored recovery and why its exponent is different}
+\label{sec:anchored}
+
+\subsection{A nonnegative polynomial certificate}
+The poor pairwise examples compare two moving, highly correlated clusters.
+When one configuration is held exactly at the singular base, a nonnegative
+polynomial blocks this cancellation.
+
+\begin{proof}[Upper bound in \cref{thm:anchored}]
+The simple positive case follows from \cref{thm:pairwise}.  For the other cases,
+let $c_1,\ldots,c_s$ be the distinct positive squared centers of the base.
+Define
+\begin{equation}
+ Q(x)=
+ \begin{cases}
+ \displaystyle\prod_{j=1}^s(x-c_j)^2,&m_0=0,\\[0.4em]
+ \displaystyle x\prod_{j=1}^s(x-c_j)^2,&m_0>0.
+ \end{cases}
+ \label{eq:anchor-certificate}
+\end{equation}
+The empty product is one, so if all coordinates vanish then $Q(x)=x$.
+This polynomial is nonnegative for $x\ge0$ and vanishes at every base squared
+coordinate.  If $Q(x)=\sum_{\ell=0}^d q_\ell x^\ell$, then
+\begin{equation}
+ 0\le\sum_i Q(a_i^2)
+ =\sum_{\ell=1}^d q_\ell\bigl(s_\ell(a)-s_\ell(\base)\bigr)
+ \le C\TV(\mu_a,\mu_{\base}).
+ \label{eq:anchor-certificate-bound}
+\end{equation}
+The constant terms cancel because both lists have length $r$.  The last
+inequality uses the decoder and \cref{lem:cumulant-bound} through the fixed
+finite order $2d$; it does not assume $d\le r$.
+
+Near a positive center $c_j$, the ratio $Q(x)/(x-c_j)^2$ is continuous and
+strictly positive.  Hence $Q(x)\ge b_j(x-c_j)^2$ there for some $b_j>0$.
+When there is a zero cluster, $Q(x)/x=\prod_j(x-c_j)^2$ is strictly positive
+near zero, so $Q(x)\ge b_0x$ for small $x\ge0$.  Shrink the parameter
+neighborhood so its coordinate blocks stay near their prescribed centers.
+Every summand in \eqref{eq:anchor-certificate-bound} is nonnegative.
+It follows that
+\[
+ |a_i^2-c_j|\le C\sqrt\varepsilon\quad\text{in a positive block},
+ \qquad a_i^2\le C\varepsilon\quad\text{in the zero block},
+\]
+where $\varepsilon=\TV(\mu_a,\mu_{\base})$.  The positive-block square-root map
+is Lipschitz, while in the zero block taking square roots gives
+$a_i\le C\sqrt\varepsilon$.  Combining the blocks proves
+\eqref{eq:anchored}.
+\end{proof}
+
+\subsection{Optimality of the square-root anchored exponent}
+\begin{proof}[Sharpness and completion of \cref{thm:anchored}]
+If a zero coordinate is present, change just that amplitude from zero to $t$,
+leaving all other coordinates fixed and sorting afterward.  Let $k$ be the density
+of the background and those fixed factors.  Since $\E U=0$ and $\E U^2=1/3$,
+\cref{lem:translation} gives
+\begin{equation}
+ f_t-k=\frac{t^2}{6}k''+o_{L^1}(t^2),\qquad
+ \TV(\mu_t,\mu_{\base})\sim\frac{\norm{k''}_1}{12}t^2.
+ \label{eq:anchored-zero}
+\end{equation}
+The parameter distance is $t$.  The positive leading constant excludes every
+anchored exponent greater than $1/2$.
+
+If there is no zero but a repeated positive squared scale $c$, replace two
+copies of $c$ by $c+t$ and $c-t$.  The first cluster power sum stays equal to
+$2c$, while the second increases by $2t^2$.  Positive-coordinate smoothness
+shows that the density has an $L^1$ Taylor expansion.  Its linear term cancels
+by symmetry in the two chosen coordinates, so the difference from the base is
+$t^2H+o_{L^1}(t^2)$.  The output fourth cumulant changes by
+$2\gamma_4t^2\ne0$, whereas all lower cumulants agree.  Integrating the expansion
+against $x^4$ on a common compact support gives $\int x^4H=2\gamma_4\ne0$.
+Thus total variation is comparable to $t^2$, while amplitude distance is
+comparable to $t$.  Again an exponent greater than $1/2$ is impossible.
+
+Finally, at a simple positive base, change one squared scale from $c$ to $c+t$.
+Smooth dependence gives an $O(t)$ upper bound in total variation, and the
+variance change $\gamma_2t$ gives a matching lower bound by
+\cref{lem:cumulant-bound}.  Parameter distance is comparable to $t$, excluding
+anchored exponents greater than one.  The previously proved upper bounds
+complete all cases.
+\end{proof}
+
+\begin{remark}[There is no contradiction between the two classifications]
+At an $m$-fold positive collision, each Chebyshev configuration is generally
+at law distance of order $t^2$ from the singular base, while their distance
+from each other can be of order $t^m$.  At a zero cluster, each configuration
+has a variance change of order $t^2$ from the base, even though the two output
+laws can differ only at order $t^{2m}$.  Anchoring removes the possibility that
+their common low-order changes cancel against one another.
+\end{remark}
+
+\section{Deterministic recovery, feasible fitting, and sampling}
+\label{sec:recovery}
+
+\subsection{A forward continuity bound}
+Using the same uniforms to couple two models and the translation bound
+$\norm{g(\cdot-u)-g(\cdot-v)}_1\le\norm{g'}_1|u-v|$, we obtain
+\begin{equation}
+ \TV(\mu_a,\mu_b)
+ \le\frac{\norm{g'}_1}{4}\sum_{i=1}^r|a_i-b_i|
+ \le\frac{r\norm{g'}_1}{4}d(a,b).
+ \label{eq:forward}
+\end{equation}
+Here $\E|U_i|=1/2$ supplies the factor $1/4$ after the total-variation
+normalization.  This bound ensures continuity of the forward map on compact
+parameter sets.  It need not be sharp at singular points.
+
+\subsection{Optimal deterministic ambiguity radii}
+Take a compact relative neighborhood $K$ of $\base$ small enough that
+\eqref{eq:main-bound} holds.  Suppose an observed probability law $\nu$ obeys
+$\TV(\nu,\mu_a)\le\varepsilon$ for an unknown $a\in K$.  Minimize
+$\TV(\nu,\mu_b)$ over $b\in K$; continuity and compactness ensure a minimizer
+$\widehat a$.  It satisfies
+\[
+ \TV(\mu_{\widehat a},\mu_a)\le2\varepsilon,
+ \qquad d(\widehat a,a)\le C(2\varepsilon)^{1/M(\base)}.
+\]
+An exact minimizer is used to state the information-theoretic bound, not to
+claim an efficient numerical algorithm.
+
+Conversely, take either sharpness pair $\mu_+(t),\mu_-(t)$ and let
+$\nu_t=(\mu_+(t)+\mu_-(t))/2$.  Each model is at total-variation distance
+$\TV(\mu_+(t),\mu_-(t))/2$ from $\nu_t$.  Every single output of an estimator
+on this common observation is at parameter distance at least
+$d(a^+(t),a^-(t))/2$ from one of the two models.  With
+$t=c\varepsilon^{1/M}$ and a sufficiently small fixed $c$, both models lie
+in the allowed $\varepsilon$-ball for all sufficiently small $\varepsilon$.
+Therefore the worst-case deterministic recovery error is bounded below by a
+positive constant times $\varepsilon^{1/M}$.  Together with the upper bound,
+this proves the optimal deterministic rate near the base.
+
+\subsection{Exact finite-data reconstruction is not automatically noise-safe}
+For exact data, the decoder in \cref{prop:exact} is sufficient.  Noisy data
+require an additional feasibility step.  A polynomial formed by blindly
+applying Newton's identities to perturbed sums may have negative or nonreal
+roots, even when the perturbation is tiny.  Taking real parts of its roots is
+not justified by the theorems in this article.
+
+A mathematically safe alternative is the following finite-dimensional fit.
+Given approximate sums $\widetilde s_1,\ldots,\widetilde s_r$ and a compact
+parameter set $K$, minimize
+\begin{equation}
+ \rho(b)=\max_{1\le k\le r}|s_k(b)-\widetilde s_k|
+ \quad\text{over }b\in K.
+ \label{eq:feasible-fit}
+\end{equation}
+A minimizer exists.  If the true parameter $a\in K$ has
+$\max_k|s_k(a)-\widetilde s_k|\le\eta$, then every minimizer $\widehat a$ has
+\begin{equation}
+ \err(\widehat a,a)\le2\eta,
+ \qquad d(\widehat a,a)\le C(2\eta)^{1/M}
+ \label{eq:moment-fit-bound}
+\end{equation}
+when $K$ is a local neighborhood as above.  On the global box, the corresponding
+exponent is $1/(2r)$; on a positive box it is $1/r$.  An approximate minimizer
+with objective at most $\inf\rho+\tau$ gives $2\eta+\tau$ in place of $2\eta$.
+
+For certified computation one may work in squared coordinates
+$0\le p_1\le\cdots\le p_r\le A^2$ and use interval subdivision or polynomial
+inequality methods to enclose the feasible set.  This is a valid route to a
+certificate, but a fast implementation and tight complexity analysis are not
+provided here.  The included executable code validates the exact algebraic
+stage, not a complete certified nonlinear optimizer.
+
+\subsection{A sampling upper bound, with its limits made explicit}
+The total variation distance between a continuous law and its finitely supported
+empirical distribution is one.  Consequently the deterministic TV estimate
+must \emph{not} be applied directly to empirical TV distance.  Bounded moments
+provide a different route.
+
+\begin{proposition}[Elementary sampling upper bound]
+\label{prop:sampling}
+Assume independent samples $Y_1,\ldots,Y_N$ from $\mu_a$, all supported on
+$[-R,R]$, and a known compact parameter neighborhood $K$ as in
+\eqref{eq:main-bound}.  There is a constant $C$ such that a feasible moment fit
+satisfies, with probability at least $1-\beta$,
+\begin{equation}
+ d(\widehat a,a)\le
+ C\left(\frac{\log(4r/\beta)}{N}\right)^{1/(2M(\base))},
+ \label{eq:sampling}
+\end{equation}
+for sufficiently large $N$.  Without a known local neighborhood, the global
+bounded-box version gives exponent $1/(4r)$ in $N$.
+\end{proposition}
+\begin{proof}
+For each $1\le n\le2r$, the sample average of $Y_j^n$ has expectation
+$m_n(\mu_a)$.  Normalize by $R^n$, so the summands lie in $[-1,1]$.
+A bounded-variable exponential estimate gives
+\[
+ \Pr\left(|\widetilde m_n-m_n|>R^n u\right)
+ \le2e^{-Nu^2/2}.
+\]
+For clarity, this follows by bounding the centered moment generating function
+of a variable in an interval of length two by $e^{\lambda^2/2}$, applying
+Markov's inequality to the sum, and optimizing at $\lambda=u$; apply the same
+argument to the negative sum.  To justify the moment-generating-function bound,
+let $h(\lambda)=\log\E e^{\lambda(W-\E W)}$.  Then $h(0)=h'(0)=0$ and
+$h''(\lambda)$ is the variance under an exponential tilt.  A distribution
+supported on an interval of length two has variance at most one, since its
+mean minimizes mean squared distance and its distance from the interval
+midpoint is at most one.  Thus $h''\le1$; integrating twice yields
+$h(\lambda)\le\lambda^2/2$.  A union bound over $2r$ moments and the choice
+$u=\sqrt{2\log(4r/\beta)/N}$ give simultaneous moment bounds.
+
+The finite cumulant polynomials are Lipschitz on the bounded set containing
+both the true and sample moment vectors.  Dividing by the fixed nonzero
+$\gamma_{2k}$ and subtracting the known background cumulants gives sum error
+$\eta\le C_0u$.  Apply \eqref{eq:moment-fit-bound}.  The global statement follows
+from the global exponent $1/(2r)$ for finite-data error.
+\end{proof}
+We do not claim that \eqref{eq:sampling} is statistically minimax.  A sharp
+statistical lower bound needs control of testing distances such as Hellinger
+distance or relative entropy, not merely the TV expansions between smooth
+densities established here.  Endpoint flatness can matter to that stronger
+problem.
+
+\subsection{Rank is not continuously detectable at zero}
+Within capacity $r$, a zero factor can be replaced by an arbitrarily small
+positive one, changing the law by order $t^2$ while changing the number of
+positive factors by one.  Thus the exact positive-factor count is not a
+continuous function of the observed law at a configuration with a zero slot.
+A positive lower scale bound or a thresholded notion of effective rank is
+necessary for robust rank reporting.  This does not contradict exact recovery
+of the padded multiset from exact moments.
+
+\section{Verification record and reproducible computations}
+\label{sec:verification}
+
+\subsection{Exact checks}
+The accompanying \texttt{verification.py} was executed with Python 3.13.5,
+SymPy 1.14.0, and mpmath 1.3.0.  The exact checks use rational polynomial
+arithmetic.  For every $m=1,\ldots,12$, they verify the monic Chebyshev polynomial
+pair, equality of power sums through $m-1$, the formula $D_m=m2^{1-m}$,
+the corresponding shifted-list equalities, simplicity of each polynomial,
+and disjointness of the two root sets.  These are finite tests of identities
+already proved for all $m$ in \cref{lem:cheb}.
+
+For capacities $r=1,\ldots,8$, exact examples containing zero, repeated, and
+distinct rational squared scales were converted to output cumulants over the
+up background.  The code then converts cumulants to raw moments, recovers
+cumulants from those moments, decodes the power sums, and reconstructs the
+monic polynomial.  Each reconstructed polynomial equals the original exactly.
+For example, squared scales $(0,3/5,1/5,1/5)$ give
+\begin{equation}
+ P(z)=z^4-z^3+\frac7{25}z^2-\frac3{125}z.
+ \label{eq:checked-poly}
+\end{equation}
+Sorting the scale list does not change this polynomial.
+
+\subsection{High-precision Fourier diagnostics}
+A separate numerical diagnostic evaluates characteristic-function differences
+at the single frequency $\xi=0.9$.  It uses 100 decimal digits of precision,
+Chebyshev clusters of orders $3$ and $5$, and $t=2^{-\ell}$ for
+$\ell=3,\ldots,12$.  The fixed up multiplier is approximated by its first 220
+sinc factors.  At this frequency the omitted logarithmic tail is less than
+$10^{-132}$ in absolute value: for $|x|\le1/2$ one can bound
+$|\log\sinc x|\le x^2$, and the resulting tail is a geometric sum.
+This multiplier is common to the two configurations, so it does not control
+the observed cancellation order.
+
+If $G(t)$ is the absolute Fourier difference, the diagnostic reports
+$\log_2(G(2t)/G(t))$.  Its last computed values are:
+\begin{center}
+\begin{tabular}{@{}lcrr@{}}
+\toprule
+Regime & Cluster size & Predicted power & Last halving slope\\
+\midrule
+Positive collision & 3 & 3 & 2.999999999868\\
+Vanishing cluster & 3 & 6 & 5.999999916416\\
+Positive collision & 5 & 5 & 4.999999999813\\
+Vanishing cluster & 5 & 10 & 9.999999863296\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are pointwise Fourier diagnostics, \emph{not} numerical evaluations of
+total variation.  They do not prove the analytical theorems, their $L^1$
+remainders, or the optimality statements.  Those conclusions follow from the
+proofs above.  The explicit distinction prevents a cancellation plot at one
+frequency from being mistaken for a strong-metric convergence certificate.
+
+\subsection{How to reproduce and what was not checked}
+From the unpacked directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verification.py --output-dir .
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The script writes \texttt{verification\_results.json} and two CSV tables under
+\texttt{data/}.  The assertions test exact identities and the stated numerical
+slopes.  No infinite family is certified merely by passing a finite range,
+and the Python program is not part of a theorem-prover trusted boundary.
+No Lean or Rocq build was performed for this article.  In particular, the
+repository's existing formal identifiability result must not be interpreted
+as already formalizing the different stability theorems proved here.
+
+\section{A concrete formalization roadmap}
+\label{sec:formalization}
+
+A useful implementation should keep the algebraic and analytic boundaries
+separate.  The algebraic core is smaller than the full probability-theoretic
+classification and admits independent testing.
+
+\paragraph{Finite symmetric algebra.}
+Formalize sorted nonnegative lists, squared-coordinate multisets, power sums,
+Newton reconstruction, and the coefficient recurrence.  The initial endpoint
+is equality of multisets from the first $r$ power sums over a characteristic-zero
+field.  This should not depend on Fabius-specific analysis.
+
+\paragraph{Quantitative root matching.}
+Formalize an actual multiplicity-preserving bijection of roots, not a
+Hausdorff-set approximation.  A complex-analytic route follows
+\cref{lem:root-match}; a real-root-specific alternative might reduce dependencies.
+The isolated-factor lemma can then be proved by logarithmic contour integrals
+or an algebraic implicit-function argument at coprime factors.  Neither route
+is represented here as already implemented.
+
+\paragraph{Probability and finite cumulants.}
+Connect the actual law of $B+\sum a_iU_i$ to finite raw moments and cumulants.
+Prove the uniform coefficient formula, nonvanishing, the known-background
+subtraction, and the explicit TV-to-moment bounds.  The known up construction
+then becomes a specialization rather than part of every argument.
+
+\paragraph{Smooth \texorpdfstring{$L^1$}{L1} parameter dependence.}
+The hardest analytic bridge is a reusable translation Taylor theorem in $L^1$,
+followed by parameter differentiation of finite uniform convolutions.  The
+Banach-valued symmetric Taylor argument must be connected to actual densities,
+not merely to formal characteristic-function series.
+
+\paragraph{Two independent sharpness paths.}
+Encode the Chebyshev level polynomials and their Newton sums.  For positive
+collisions, identify a nonzero leading density coefficient using a compactly
+supported moment functional.  For zero clusters, prove the exact coefficient
+in \cref{thm:zero-leading}.  These produce genuine counterexamples to stronger
+exponents.  A proof of an upper bound alone is not a formalization of optimality.
+
+\paragraph{Anchored positivity certificates.}
+The polynomial $Q$ in \eqref{eq:anchor-certificate} gives a separate, comparatively
+elementary route to fixed-base stability.  It is a good intermediate target:
+it captures the conceptual difference between anchored and pairwise inversion
+without requiring the entire Chebyshev family.
+
+The desired final ledger should distinguish exact algebraic proofs, analytic
+bridges, imported background results, executable numerical tests, and remaining
+obligations.  This article supplies theorem statements and conventional proofs,
+not untested code presented as machine-checked mathematics.
+
+\section{Further research questions and proposed projects}
+\label{sec:questions}
+
+The following are proposed directions beyond the theorems proved here.  Their
+status is a research agenda, not a verified claim that each is a previously
+published open problem.
+
+\begin{problem}[The optimal statistical experiment near collisions]
+For the same smooth-background model, determine the local minimax rate from
+$N$ independent samples at each collision pattern.  Does the rate
+$N^{-1/(2M)}$ from the moment upper bound hold sharply under natural conditions
+on the background?  The concrete first target is to compute the Hellinger
+asymptotic of the Chebyshev pairs, including the contribution near the support
+boundary.  An $L^1$ expansion alone does not justify squaring its leading term
+and dividing by a possibly flat density.
+\end{problem}
+
+\begin{problem}[The exact smoothing threshold]
+Replace $C_c^\infty$ by finite Sobolev regularity, or remove the background
+altogether.  Determine which collision patterns still have TV exponent $1/M$.
+The upper bounds already hold for any compactly supported known background.
+The missing issue is whether insufficient regularity exposes low-order moving
+knots before the moment-canceling mechanism reaches order $m$ or $2m$.
+\end{problem}
+
+\begin{problem}[Unbounded capacity and tail-controlled infinite products]
+Let the unknown scale multiset be infinite with a prescribed summability or
+geometric-tail bound.  Identify a metric on scale multisets and the sharp
+modulus of recovery.  The finite-capacity exponent $1/(2r)$ degenerates with $r$,
+so no rank-independent positive power law can be inferred from this article.
+A useful first problem is to combine a certified tail truncation bound with the
+finite theorem and optimize the truncation depth as a function of noise.
+\end{problem}
+
+\begin{problem}[Unknown background parameters]
+Allow the background to belong to a known finite-dimensional family rather
+than being fixed.  Determine when its cumulant directions can be separated
+from the unknown uniform-factor directions.  Merely subtracting an estimated
+background is not enough if the two parameter families share tangent or
+higher-order cumulant directions.  A concrete target is a known smooth kernel
+with an additional unknown scale and a finite collection of uniform factors.
+\end{problem}
+
+\begin{problem}[Certified feasible fitting with sharp constants]
+Design an efficient certified algorithm for \eqref{eq:feasible-fit} or for
+its interval-data feasibility version.  Quantify bit complexity in capacity,
+separation, requested amplitude precision, and distance to the nonnegative
+boundary.  The theorem supplies optimal exponents, but the explicit general
+constants in \cref{lem:cumulant-bound} are deliberately coarse.
+\end{problem}
+
+\begin{problem}[Arithmetic scale restrictions]
+Study how the inverse problem changes when scales lie on a known dyadic or
+other discrete geometric grid.  The repository's analytic-order decoder
+suggests a different source of rigidity from unrestricted real-scale moment
+inversion.  Determine noise thresholds for exact grid-scale recovery and compare
+zero-divisor measurements with finite cumulant measurements on the same model.
+\end{problem}
+
+\begin{problem}[Multivariate segment convolutions]
+Replace scalar amplitudes by unknown vectors and consider sums of uniform
+segments in $\R^d$ over a known smooth background.  Even cumulants become
+symmetric tensors.  Classify identifiability and stability modulo permutation
+and segment reversal, distinguishing collinear collisions from genuinely
+multidimensional degeneracies.  The scalar Chebyshev obstruction embeds in every
+dimension, but need not exhaust the singularities.
+\end{problem}
+
+\begin{problem}[First complete formal classification]
+Formalize both \cref{thm:pairwise,thm:anchored}, including explicit sharpness
+paths, in a proof assistant.  An attractive staged project is first exact
+finite recovery, then anchored positivity certificates, then global root
+matching, and finally the smooth $L^1$ sharpness arguments.
+\end{problem}
+
+\section{Conclusion}
+The finite unknown-factor problem has a precise answer once its metric,
+capacity, background, and symmetries are fixed.  Cumulants remove the known
+background and turn the unknown factors into a real-root polynomial.  Positive
+root collisions determine one family of exponents; the square-root map at the
+nonnegative boundary doubles the zero-cluster multiplicity.  Smoothness ensures
+that explicit moment cancellation survives in total variation, making the
+result sharp for actual probability laws.
+
+The same analysis shows why the quantifiers matter.  Uniform pairwise recovery
+near a singular configuration has exponent $1/M$, whereas recovery relative
+to that exact base has exponent $1/2$, except at the regular positive locus where
+it is Lipschitz.  Confusing these two questions would obscure the strongest
+instability and simultaneously underestimate anchored stability.
+
+The result is a finite-rank stability theorem with complete conventional proofs
+and reproducible algebraic checks.  Infinite capacity, optimal statistical
+rates, weaker smoothing, and a full formal implementation remain separate
+research tasks rather than consequences asserted without proof.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{Arias}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition
+and properties}, arXiv:1702.05442 (2017), English translation of the 1982 paper
+in \emph{Rev. Real Acad. Ciencias Madrid} \textbf{76}, 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{Prony}
+D.~Batenkov and Y.~Yomdin,
+\emph{Geometry and Singularities of the Prony mapping},
+Journal of Singularities \textbf{10} (2014), 1--25.
+DOI: \href{https://doi.org/10.5427/jsing.2014.10a}{10.5427/jsing.2014.10a}.
+\url{https://journalofsingularities.org/volume10/article1.html}.
+
+\bibitem{Schaetzle}
+R.~Sch\"atzle,
+\emph{On the perturbation of the zeros of complex polynomials},
+IMA Journal of Numerical Analysis \textbf{20}(2) (2000), 185--202.
+DOI: \href{https://doi.org/10.1093/imanum/20.2.185}{10.1093/imanum/20.2.185}.
+
+\bibitem{RepoIdent}
+V.~Reshetnikov, \emph{ProveIt},
+\path{GeneralizedRvachevIdentifiability.lean}, under
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}.
+Pinned tree \texttt{0e0368b216b302d5822890b48bd19f2337af4d04}, inspected
+28 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0e0368b216b302d5822890b48bd19f2337af4d04/Analysis/FabiusFunction/Lean/FabiusFunction/GeneralizedRvachevIdentifiability.lean}.
+
+\bibitem{RepoHolonomic}
+\emph{Holonomic Rank, Exact Overlaps, and Non-P-Recursiveness in the
+Fabius--Rvachev System}, repository research report prepared for
+Vladimir Reshetnikov, dated 30 August 2026.
+In \emph{ProveIt}, under
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/fabius_holonomic_frontiers_report/}.
+File \texttt{fabius\_holonomic\_frontiers.tex}, pinned tree
+\texttt{0e0368b216b302d5822890b48bd19f2337af4d04}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\end{document}
