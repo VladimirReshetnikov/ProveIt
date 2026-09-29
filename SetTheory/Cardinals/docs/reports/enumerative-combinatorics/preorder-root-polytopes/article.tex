@@ -23,7 +23,8 @@
   pdftitle={A Reflexive Root-Polytope Model for Preorder h-Polynomials},
   pdfauthor={Research manuscript prepared with ChatGPT},
   pdfsubject={Proposed proof of the simplicial-polytopal realization conjecture for finite preorders;
-    Part II: height-two preorders, matching supports, nonreal roots and crown obstructions}}
+    Part II: height-two preorders, matching supports, nonreal roots and crown obstructions;
+    Part III: cactus rigidity for matching-support determinants}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -78,6 +79,12 @@
   xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=8pt,belowskip=8pt}
 \newtcolorbox{statusbox}{colback=Pale,colframe=Accent,boxrule=.5pt,
  arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt}% Part II (batch 39)
+% Part III (batch 42): macros of manuscript 05
+\newcommand{\F}{\mathbb F}
+\newcommand{\epsstar}{\varepsilon_*}
+\newcommand{\Ecore}{\mathsf E}\newcommand{\Dcore}{\mathsf D}\newcommand{\Tcore}{\mathsf T}
+\newcommand{\zv}{\mathbf z}
+\newcommand{\normsq}[1]{\left|#1\right|^2}
 
 \begin{document}
 \thispagestyle{empty}
@@ -91,6 +98,9 @@ for Preorder $h$-Polynomials}\par
 \vspace{5pt}
 {\normalsize\color{Ink} With Part~II (added 28 September 2026): height-two preorders ---
 matching supports, nonreal-root families, and crown obstructions}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~III (added 29 September 2026): cactus rigidity for
+matching-support determinants}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -130,6 +140,14 @@ proves an exact real-root count for an infinite family extending it. It shows
 that an induced crown on $2r\geq6$ elements forces a minimal nonface of size
 $r$ in every lattice triangulation of $C_\tau$; Conjecture~5.1(d) itself
 remains open.
+
+\emph{Addition of 29 September 2026 (batch 42).} Part~III, from a further
+manuscript, proves that a bipartite graph carries a complex matrix on its
+edges whose square minors have squared modulus exactly the
+perfect-matchability indicator if and only if it is a cactus, and that this
+is strictly stronger than real stability of the signed matching-support
+polynomial; noncacti miss the exact model by the sharp universal defect
+$(\sqrt{17}-3)/2$.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -147,7 +165,8 @@ counterexamples to real-rootedness (the first credited to prior work), and
 obstructs flag lattice triangulations of $C_\tau$; see
 Section~\ref{htwo:sec:answers}.]
 \end{tcolorbox}
-\newpage
+% Part III (batch 42): the page break that stood here was removed; the
+% longer abstract pushes this box to page 2, where the contents now follow it.
 \tableofcontents
 \vspace{8pt}
 \begin{tcolorbox}[colback=Pale,colframe=Pale,arc=1mm]
@@ -159,7 +178,10 @@ proof of the known higher-dimensional identity; Appendix~\ref{app:audit}
 records the proof dependencies and the main normalization checks.
 Part~II (Sections~\ref{htwo:sec:intro}--\ref{htwo:sec:conclusion}), added
 on 28 September 2026, treats height-two preorders; it precedes the
-appendices of Part~I.
+appendices of Part~I. Part~III
+(Sections~\ref{cac:sec:prov}--\ref{cac:sec:ledger}), added on
+29 September 2026, answers Part~II's question on exact cactus-style
+matrices; it follows Part~II.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -2355,6 +2377,14 @@ is the stable object. We are not claiming that the unsigned polynomial
 $\sum_W\prod_{v\in W}z_v$ is stable; already $1+z_az_b$ for a single edge
 vanishes at $z_a=z_b=i$.
 
+[Added 29 September 2026, batch 42: Part~III shows that this construction is
+exhaustive. Only cacti carry a matrix satisfying~\eqref{htwo:eq:unitminor},
+and on a cactus every such matrix is gauge-equivalent to one of
+$2^{\beta(G)}$ sixth-root matrices, the choice $(-1)^r\overline\zeta$ being
+allowed on each cycle as well (Theorems~\ref{cac:thm:classification}
+and~\ref{cac:thm:gauge}). Real stability of the signed polynomial extends
+beyond cacti (Theorem~\ref{cac:thm:stable23}).]
+
 \subsection{Positive weights and a probabilistic consequence}
 
 Given positive vertex weights $w_v$, replace $K$ by
@@ -2866,8 +2896,13 @@ intersections?
 The precise boundary between one shared vertex and a shared path is worth
 studying. The present examples do not imply that every noncactus graph
 fails real-rootedness.
+[Added 29 September 2026, batch 42: indeed not every noncactus fails.
+Part~III shows that $K_{2,3}$ and every graph obtained from it by attaching
+trees have a real stable $\Phi_G$, hence a real-rooted $p_G$
+(Corollary~\ref{cac:cor:trees}, Section~\ref{cac:sec:preorders}). The
+question itself remains open; see Section~\ref{cac:sec:answers}.]
 
-\begin{question}[Beyond the sixth-root cactus matrices]
+\begin{question}[Beyond the sixth-root cactus matrices]\label{cac:q:beyond}
 Which bipartite graphs admit a complex matrix supported on their edges
 whose square-minor norms are exactly the matchability indicators? Is
 this condition equivalent to a useful multivariate stability property,
@@ -2876,6 +2911,12 @@ or strictly stronger?
 A positive answer for a class immediately gives positive-weight
 real-rootedness through Cauchy--Binet. The theta counterexamples show that
 such representations cannot exist for all bipartite graphs.
+[Added 29 September 2026, batch 42: answered in Part~III. Exactly the cacti
+admit such a matrix (Theorem~\ref{cac:thm:classification}), and the
+condition is strictly stronger than real stability of $\Phi_G$: $K_{2,3}$
+and all its tree attachments are real stable without it
+(Theorem~\ref{cac:thm:stable23}, Corollary~\ref{cac:cor:trees}). See
+Section~\ref{cac:sec:answers}.]
 
 \begin{question}[Asymptotic zero geometry for $\Theta_m$]
 The real-root count is exact, but how are the nonreal roots distributed
@@ -2951,6 +2992,1165 @@ different mathematical mechanisms and require different constructions.
 The accompanying proofs and exact certificates are intended to make those
 mechanisms, and the limits of the novelty claims, available for direct
 independent review.
+
+%% ====================================================================
+%% Batch-42 addition (manuscript 05, "Cactus Rigidity for
+%% Matching-Support Determinants"). All labels of Part III carry the
+%% prefix cac: (cactus). Manuscript section k is printed here as
+%% Section k+26; its Appendices A and B are Sections 44 and 45.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Cactus rigidity: exact square-minor models and stability}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Cactus rigidity for matching-support determinants}
+
+\noindent\emph{Part~III was added on 29 September 2026 in batch~42 of
+ProveIt's incoming-report intake, from one manuscript written against
+Parts~I and~II as printed above. It answers Part~II's Research
+question~\ref{cac:q:beyond}, ``Beyond the sixth-root cactus matrices'': the
+bipartite graphs that admit a complex matrix on their edges whose
+square-minor norms are exactly the matchability indicators are precisely the
+cacti, and this property is strictly stronger than real stability of the
+signed matching-support polynomial. Parts~I and~II are unchanged except for
+dated pointers to this addition. Section~\ref{cac:sec:prov} records the
+provenance, fixes the notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~III answers}
+\label{cac:sec:prov}
+
+\subsection{One manuscript, one addition}
+\label{cac:sec:source}
+Part~III is batch-42 manuscript~05, \emph{Cactus Rigidity for
+Matching-Support Determinants: Exact classification, a sharp approximation
+gap, and stability beyond vertex determinants}, an AI-assisted research
+manuscript prepared for Vladimir Reshetnikov and dated 29 September 2026
+(24 US-Letter pages as delivered). It arrived as the archive
+\nolinkurl{ProveIt_Cactus_Rigidity.zip} (inner directory
+\nolinkurl{ProveIt_Cactus_Rigidity/}) in ProveIt commit \texttt{8315d24e3}
+and was placed in \texttt{3609d0473}. It is pinned to ProveIt commit
+\texttt{9754e8360} (the full hash is printed in
+Section~\ref{cac:sec:intro}) and records the Git blob
+\texttt{8739a224fa8956adab5d\allowbreak 8df9f2d5012a6a220959} of this
+report's \texttt{article.tex}. That blob is Parts~I and~II exactly as printed
+above: the file was last changed by the batch-39 write \texttt{6a354f52f}
+and is unchanged at the pin and at the placement commit. The manuscript
+therefore cites Part~II in its printed numbering; its ``Section~19'',
+``Section~24'' and ``Theorem~13.2'' are Section~\ref{htwo:sec:cactus},
+Section~\ref{htwo:sec:future} and Theorem~\ref{htwo:thm:main}, and are
+replaced here by cross-references. The manuscript's program, recorded
+outputs, build file and notes are shipped beside Part~I's files with the
+prefix \texttt{03-cactus-} (Part~I's unprefixed files count as~01, Part~II's
+are~\texttt{02-}); Section~\ref{cac:sec:build} lists them. Its manuscript,
+delivery README and PDF are not shipped and survive in the arrival commit;
+its checksum list \texttt{SHA256SUMS.txt} was verified (10/10) at placement
+and retired.
+
+The manuscript is printed here as Sections~\ref{cac:sec:intro}
+to~\ref{cac:sec:ledger}: its Section~$k$ is Section~$k+26$ here, its
+Appendices~A and~B are Sections~\ref{cac:app:Dexact}
+and~\ref{cac:sec:ledger}, and its theorem numbers shift accordingly (its
+Theorem~3.1 is Theorem~\ref{cac:thm:classification}); its equations,
+numbered (1)--(26) consecutively there, are numbered by section here, as in
+the rest of this report. Its
+nine research questions continue Part~II's numbering as Research
+questions~11--19. Every result, proof, remark, limitation, question and
+non-claim of the manuscript is printed; three displays that repeat Part~II's
+formulas are printed once, in Part~II (Section~\ref{cac:sec:merge}). Its
+title-page abstract and status note are reproduced as delivered.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of manuscript~05 (as delivered).}
+For a finite bipartite graph, can one assign unit complex numbers to its
+edges so that every square minor has squared absolute value equal to the
+indicator that its vertex support is perfectly matchable? The ProveIt
+preorder-polytope report constructs such assignments for cactus graphs and
+explicitly asks for the exact boundary of the construction. We prove that
+the boundary is precisely the cactus class. Equivalently, the
+matching-support polynomial has a Hermitian vertex-diagonal determinant
+representation exactly for cacti; equivalently, the graph is the support
+pattern of a matrix over $\F_3$ with no vanishing structurally nonzero
+minor. A cactus of cycle rank $\beta$ has exactly $2^\beta$ phase-gauge
+classes of complex certificates.
+
+The obstruction is quantitative. Every unit-phase matrix on every noncactus
+has a matchable minor whose squared absolute value differs from one by at
+least
+\[
+ \epsstar=\frac{\sqrt{17}-3}{2},
+\]
+and this constant is attained on $K_{2,3}$. We obtain the classification
+and the uniform gap by reducing induced theta graphs to three explicit
+matrices. In contrast, the five-variable matching-support polynomial of
+$K_{2,3}$ is real stable, as certified by three exact sums-of-squares
+identities. Attaching arbitrary trees produces infinitely many connected
+stable examples without a Hermitian vertex determinant. We also prove that
+bounded-order minor tests cannot recognize exact representability, even on
+subcubic graphs of treewidth two.
+\end{tcolorbox}
+
+\begin{statusbox}
+\small\textbf{Status (manuscript~05, as delivered).} Complete ordinary
+mathematical proofs are supplied for the stated results. This AI-assisted
+manuscript is unrefereed and has not been verified in Lean or another proof
+assistant. The cactus construction and its established real-rootedness
+consequences are prior work, not claimed here. The classification answers a
+specified repository question; worldwide priority for its formulations and
+refinements is not asserted.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (from the manuscript's status and
+source notes).} The cactus sixth-root construction, its determinant
+factorization and cactus stability are Part~II's
+(Section~\ref{htwo:sec:cactus}); univariate cactus real-rootedness is
+Ohsugi--Tsuchiya's~\cite[Theorem~7.2]{OT21}; the height-two
+matching-support transform is Part~II's Theorem~\ref{htwo:thm:main}. The
+binary (forest) observation and the general phenomenon of stability without
+a determinant representation are not claimed as new; the latter is
+established elsewhere, for example for V\'amos-type
+polynomials~\cite{BVY}. A related earlier characterization of binary
+fundamental transversal matroids~\cite{Nakamura} was located (publisher
+abstract only; its full text was not available); possible connections to
+older fundamental-transversal-matroid characterizations deserve further
+literature review. The source audit was targeted, not exhaustive, and does
+not establish the absence of an older equivalent theorem; no worldwide
+publication priority is claimed for the classification, the finite-field
+reformulations, the gauge count, the quantitative refinements or the
+stability formulations. The only specialized external theorem used is
+Br\"and\'en's multiaffine Rayleigh criterion~\cite[Theorem~5.6]{Branden},
+for the stability of $K_{2,3}$.
+\end{statusbox}
+
+\subsection{Notation of Part~III}
+\label{cac:sec:notation}
+Part~III uses Part~II's graph conventions: $G=(A\sqcup B,E)$ is a finite
+simple bipartite graph with $p=|A|$, $q=|B|$, $n=p+q$; a cactus is a graph in
+which every edge lies on at most one simple cycle; $p_G$ and $\PM_k(G)$ count
+perfectly matchable \emph{vertex sets}; $\zeta=e^{\pi i/3}$; $\nu$ is the
+matching number and $\lambda_j$ are the positive eigenvalues of $KK^*$.
+Table~\ref{cac:tab:notation} lists the symbols Part~III adds or uses
+differently. One symbol of the manuscript was renamed: its theta graph
+$\Theta(a,b,c)$ with three paths of lengths $a,b,c$ is written
+$\vartheta(a,b,c)$ here, because Part~II's $\Theta_m$ is a different family
+with $m$ paths. No normalization was changed.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~III. The last column prints the tempting false
+reading, usually a Part~I or Part~II symbol with the same letter.}
+\label{cac:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.36\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~III & Not to be confused with\\
+\midrule
+$\vartheta(a,b,c)$ & a theta: three internally disjoint paths of lengths
+ $a,b,c$ between two common endpoints; one length may be~$1$ (renamed from
+ the manuscript's $\Theta(a,b,c)$) & Part~II's $\Theta_m$, which has $m$
+ paths, all of length three. Only $\Theta_3=\vartheta(3,3,3)=\Tcore$
+ is both; $\Theta_m$ for $m\ne3$ is no $\vartheta(a,b,c)$. Part~II's
+ ``theta family'' means $\Theta_m$.\\
+$\Ecore$, $\Dcore$, $\Tcore$ & the three cores
+ $\vartheta(2,2,2)=K_{2,3}$, $\vartheta(1,3,3)$, $\vartheta(3,3,3)$ &
+ the edge set $E$; Part~II's polytope $D_G$ and its positive part
+ $T_G$.\\
+$\Phi_G(\zv)$ & the signed complementary-support polynomial~\eqref{cac:eq:Phi},
+ defined for \emph{every} bipartite $G$ & Part~II
+ defines $\Phi_G:=\det(\diag(\mathbf z)-H_G)$ for cacti; the two agree
+ there~\eqref{htwo:eq:multistable}. For a noncactus, $\Phi_G$ is
+ \emph{no} such determinant (Theorem~\ref{cac:thm:classification}).\\
+$\Phi_G(s,\ldots,s)$ & $s^np_G(-s^{-2})$, for every $G$ & Part~II's $q_G(s)$
+ of~\eqref{htwo:eq:qG}, stated there for cacti only.\\
+$K$, faithful, $H$, $H_K$ & a phase matrix; faithful if
+ \eqref{cac:eq:faithful} holds; a Hermitian vertex-indexed matrix; the
+ bipartite Hermitian matrix of $K$ & Part~II's $K$ is \emph{one} faithful
+ certificate (choice $(-1)^r\zeta$ on every cycle) and its $H_G$ is
+ $H_K$ for it; Part~II's bipartite graph $H=(X\sqcup Y,E)$; Part~I's
+ triangulation $K$.\\
+$D_A$, $D_B$, gauge & diagonal unitary row and column scalings & Part~II's
+ $D_G$; Part~I's neighbourhoods $D_i$.\\
+$T$ & a spanning forest & Part~II's $T_G$; Part~I's $\tau$.\\
+$\beta(G)$, $c(G)$ & cycle rank $|E|-|A|-|B|+c(G)$; number of components &
+ ---\\
+$\delta_G(K)$, $d(G)$, $\epsstar$, $d_0$ & minor defect of $K$, its minimum
+ over phases, the constant $(\sqrt{17}-3)/2$, the constant $(\sqrt5-1)/2$ &
+ the vertex $d$ of $\Theta_m$; Part~I's diagonal vertices $d_i$.\\
+$p,q,r$ in Lemma~\ref{cac:lem:Tgap}; $q$ in
+ Proposition~\ref{cac:prop:K2m} & negated real inner products of unit
+ vectors; a field size ($\F_q$) & the shore sizes $p=|A|$, $q=|B|$.\\
+$I$, $J$ & a row set and a column set of a square minor & Part~I's order
+ ideals $I\in\J$; Part~II's independent sets.\\
+$U,V,W$ in~\eqref{cac:eq:SOSaa} & the monomials $xy,xz,yz$ & $W$ as a
+ perfectly matchable set elsewhere.\\
+$L$ in Theorem~\ref{cac:thm:bounded} & an odd path length & Part~I's shore
+ index $i_L$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~III answers in Part~II}
+\label{cac:sec:answers}
+Status after Part~III, as of 29 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Research question~\ref{cac:q:beyond} (``Beyond the sixth-root
+cactus matrices'') is answered.} A bipartite graph has a complex matrix on
+its edges whose square-minor norms are exactly the matchability indicators
+if and only if it is a cactus; equivalently, $\Phi_G$ is a Hermitian
+vertex-diagonal determinant, or $G$ carries a support-exact matrix
+over~$\F_3$ (Theorem~\ref{cac:thm:classification}). Part~II's sixth-root
+matrices are therefore all there is: every such matrix is gauge-equivalent
+to one of $2^{\beta(G)}$ sixth-root matrices
+(Theorem~\ref{cac:thm:gauge}). The condition is \textbf{strictly stronger}
+than real stability of $\Phi_G$, the multivariate property Part~II proves
+for cacti (Theorem~\ref{htwo:thm:stability}): $\Phi_{K_{2,3}}$ and $\Phi_G$
+for every tree attachment to $K_{2,3}$ are real stable with no such matrix
+(Theorem~\ref{cac:thm:stable23}, Corollary~\ref{cac:cor:trees}). The
+obstruction is quantitative, with the sharp constant $\epsstar$
+(Theorem~\ref{cac:thm:gap}). Graphs with real stable $\Phi_G$ are not
+classified (Research question~11 below).
+\item \textbf{Part~II's remark after that question} (``the theta
+counterexamples show that such representations cannot exist for all
+bipartite graphs'') is consistent with Part~III and gives a second,
+non-quantitative route for one core. \emph{Merge note, not in
+manuscript~05:} a faithful matrix gives $p_G(u)=\det(I+uKK^*)$
+(Section~\ref{cac:sec:preorders}), which is real-rooted, whereas
+$h_{P_{\Theta_3}}$, and hence $p_{\Theta_3}$
+(Proposition~\ref{htwo:prop:roottransfer}), is not real-rooted
+(Theorem~\ref{htwo:thm:thetaintro}); so $\Tcore=\Theta_3$ has no faithful
+matrix. Every $\Theta_m$ with $m\ge3$ contains $\Theta_3$ as an induced
+subgraph. Part~III's Lemma~\ref{cac:lem:Tgap} gives the quantitative form,
+and Lemma~\ref{cac:lem:theta} explains why some core occurs in every
+noncactus.
+\item \textbf{Research question~3 (which structures preserve
+real-rootedness) is re-scoped, not answered.} Its remark notes that the
+examples of Part~II do not imply that every noncactus fails
+real-rootedness. Part~III supplies such noncacti: $K_{2,3}$, with
+$p_{K_{2,3}}(u)=1+6u+3u^2$, and every connected graph obtained from it by
+attaching trees has a real stable $\Phi_G$ and hence a real-rooted $p_G$
+(Section~\ref{cac:sec:preorders}). The question of useful hereditary
+classes stays open.
+\item Research question~1 (a $\gamma$-interpretation beyond height two)
+remains open; Research question~18 below proposes stable signed-support
+methods as one route.
+\end{itemize}
+Part~III refutes no statement of Parts~I and~II, and nothing in them is
+retracted.
+
+\subsection{Where the merge had to choose}
+\label{cac:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Placement.} Part~III follows Part~II and precedes Part~I's
+appendices, whose letters and numbers are unchanged. The manuscript's own
+Appendices~A and~B are printed as the ordinary
+Sections~\ref{cac:app:Dexact} and~\ref{cac:sec:ledger} of Part~III.
+\item \emph{Self-citation.} The manuscript cites this report as an external
+repository report (its reference ``Repo'', with the pinned commit, Sections
+19 and~24 and Theorem~13.2). Here those citations are replaced by
+references to Part~II, and ``the repository('s)'' by ``Part~II('s)'' where
+it means this report in running text; two headings, in
+Sections~\ref{cac:sec:intro} and~\ref{cac:sec:preorders}, keep the
+manuscript's wording. The pin itself is kept in
+Section~\ref{cac:sec:intro}.
+\item \emph{Duplicates.} The manuscript's cactus factorization
+(Lemma~\ref{cac:lem:cactus}) is Part~II's Lemma~\ref{htwo:lem:unitminor},
+by the same route; it is printed as the manuscript states it because it
+displays both admissible phases on each cycle, which
+Theorem~\ref{cac:thm:gauge} needs. The manuscript's height-two formula,
+Cauchy--Binet identity and two spectral factorizations (its displays
+(23)--(26), in its Section~13) are Theorem~\ref{htwo:thm:main} and
+Theorem~\ref{htwo:thm:cactus}; they are printed once, in Part~II, and cited
+in Section~\ref{cac:sec:preorders}. The manuscript's recall of the cactus
+stability argument (Section~\ref{cac:sec:stable}) is the proof of
+Theorem~\ref{htwo:thm:stability} and is kept as a short recall.
+\item \emph{Notation.} $\Theta(a,b,c)$ is renamed $\vartheta(a,b,c)$
+(Table~\ref{cac:tab:notation}); nothing else is renamed.
+\item \emph{File names.} The delivered names (\texttt{code/verify.py},
+\texttt{data/verification.json}, the \texttt{Makefile}) are replaced by the
+shipped names in Section~\ref{cac:sec:verification}, because
+\texttt{code/verify.py} in this directory is Part~I's verifier; the build
+commands are replaced by commands that run on a copy.
+\item \emph{Bibliography.} The manuscript's entries for Ohsugi--Tsuchiya's
+matching-generating-polynomial paper and for Davis--Kohl are Part~II's
+references~\cite{OT21} and~\cite{DK}; its five other external entries are
+appended.
+\item \emph{Labels and front matter.} Labels carry the prefix \texttt{cac:}.
+The conclusion and the dependency ledger received labels, and Part~II's
+Research question~4 received the label \texttt{cac:q:beyond} so that
+Part~III can cite it. The manuscript's title page, abstract and status note
+are printed in this section; its table of contents is dropped.
+\end{itemize}
+
+\section{The question, its provenance, and the answer}
+\label{cac:sec:intro}
+
+\subsection{The repository question being resolved}
+The starting point is Part~II of this report, \emph{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}, whose height-two extension is entitled \emph{Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions}. Section~\ref{htwo:sec:cactus} of Part~II constructs a sixth-root-of-unity matrix for each bipartite cactus. Its Section~\ref{htwo:sec:future} asks, under the heading ``Beyond the sixth-root cactus matrices'' (Research question~\ref{cac:q:beyond}), which bipartite graphs admit a matrix whose square-minor norms reproduce the matchability indicators, and whether this requirement is equivalent to multivariate stability.
+
+This article answers both parts, with the precise meaning of the representation fixed below:
+\[
+ \boxed{\text{Exact minor representation}\ \Longleftrightarrow\
+        \text{cactus graph}\ \Longrightarrow\ \text{real stability},}
+\]
+where the last implication is strict. The necessity direction is the main extension of Part~II's result. In particular, adding arbitrary complex phases does not extend the exact model to a larger graph class than the existing sixth-root construction.
+
+The source is pinned to commit
+\begin{center}\small\ttfamily 9754e83603e223811b7515eb892f22c847144593.\end{center}
+The relevant \texttt{article.tex} has Git blob
+\begin{center}\small\ttfamily 8739a224fa8956adab5d8df9f2d5012a6a220959.\end{center}
+The main branch may subsequently change. All references to the source's sections concern this pinned version, not an unspecified current checkout. [Merge note: that blob is this report's \texttt{article.tex} before Part~III was added, so the cited sections are those of Part~II above; see Section~\ref{cac:sec:source}.]
+
+\subsection{Why exact support matters}
+For an ordinary matrix, a determinant is a signed sum over perfect matchings. The invariant studied here counts a vertex set once whenever at least one perfect matching exists. It must not count the number of such matchings. These two tasks agree on forests but diverge on cycles. Phases can correct the overcount on isolated cycles; the question is whether they can do so consistently when cycles overlap.
+
+This is a concrete obstruction problem with implications for determinant proofs of stability, weighted real-rootedness, and exact certificate design. It does not settle general $\gamma$-positivity or flag realization questions for preorders. Nor does it characterize all graphs with real-rooted univariate support polynomials.
+
+\subsection{A map of the contributions}
+The results are organized around four statements. Theorem~\ref{cac:thm:classification} gives the exact graph classification, including its Hermitian and ternary versions. Theorem~\ref{cac:thm:gauge} classifies all complex certificates up to diagonal phase changes. Theorem~\ref{cac:thm:gap} gives the sharp universal separation from noncacti. Theorem~\ref{cac:thm:stable23} and Corollary~\ref{cac:cor:trees} separate real stability from the exact vertex determinant property. Theorem~\ref{cac:thm:bounded} shows why testing a fixed collection of minor orders cannot substitute for the structural theorem.
+
+The proofs of the classification and approximation gap use only finite graph arguments, determinants, and elementary geometry of unit complex numbers. The stability example uses Br\"and\'en's established multiaffine Rayleigh criterion~\cite[Theorem 5.6]{Branden}. This is the only specialized external theorem needed for the new stability conclusion.
+
+\section{Definitions and distinctions}
+\label{cac:sec:definitions}
+Throughout, $G=(A\sqcup B,E)$ is a finite simple bipartite graph with a specified bipartition. Write $p=|A|$, $q=|B|$, $n=p+q$, and let $c(G)$ count connected components, including isolated vertices. Its cycle rank is
+\[
+ \beta(G)=|E|-|A|-|B|+c(G).
+\]
+Empty shores and isolated vertices cause no difficulty. A cactus is a graph in which every edge belongs to at most one simple cycle. Equivalently, every nontrivial block is an edge or a cycle. We allow disconnected cacti.
+
+\begin{definition}[Matching supports]
+A vertex set $W\subseteq A\sqcup B$ is \emph{perfectly matchable} when the induced graph $G[W]$ has a perfect matching. The empty set is perfectly matchable. Let $\PM_k(G)$ be the set of such $W$ with $|W|=2k$. Define
+\begin{align}
+ p_G(u)&=\sum_{k\geq0}|\PM_k(G)|u^k,\label{cac:eq:p}\\
+ \Phi_G(\zv)&=\sum_{k\geq0}\ \sum_{W\in\PM_k(G)}
+          (-1)^k\prod_{v\notin W}z_v.\label{cac:eq:Phi}
+\end{align}
+\end{definition}
+The polynomial $p_G$ is a classical perfectly matchable set polynomial; relevant prior work includes Ohsugi--Tsuchiya and Davis--Kohl~\cite{OT21,DK}. Our symbol $\Phi_G$ agrees with the signed multivariate refinement used in Section~\ref{htwo:sec:cactus} of Part~II, equation~\eqref{htwo:eq:multistable}, on the cacti treated there; here it is defined for every bipartite graph. Every monomial in~\eqref{cac:eq:Phi} has coefficient $1$ or $-1$, regardless of the number of matchings on its omitted vertex set.
+
+\begin{definition}[Faithful phase certificate]
+A matrix $K\in\C^{A\times B}$ is a \emph{phase matrix on $G$} if
+\[
+ K_{ab}=0\quad(ab\notin E),\qquad |K_{ab}|=1\quad(ab\in E).
+\]
+It is \emph{faithful} if, for every $I\subseteq A$, $J\subseteq B$ with $|I|=|J|$,
+\begin{equation}
+ \normsq{\det K_{I,J}}
+ =\mathbf1\{G[I\sqcup J]\text{ has a perfect matching}\}.
+ \label{cac:eq:faithful}
+\end{equation}
+The empty determinant is one.
+\end{definition}
+There is no extra restriction in calling the edge entries phases: the one-by-one instances of~\eqref{cac:eq:faithful} force precisely these moduli and this zero pattern. A nonmatchable square submatrix has determinant zero for every choice of entries on its pattern, since every permutation product contains a zero.
+
+\begin{definition}[Support-exact matrices over a field]
+For a field $F$, a matrix $L\in F^{A\times B}$ is \emph{support-exact} for $G$ if its nonzero entries occur precisely on $E$ and every square submatrix whose support has a perfect matching is nonsingular.
+\end{definition}
+This is the pattern-sensitive notion often called superregularity: structurally zero minors are permitted, but no other minor may vanish~\cite{ANP}. We use ``support-exact'' to avoid confusion with the different convention that a superregular matrix has \emph{every} square minor nonzero.
+
+\begin{remark}[Two weaker conditions are not the same problem]
+Requiring merely that every nonzero complex minor have modulus one permits matchable minors to vanish. That weaker requirement belongs to the theory of complex unimodular and sixth-root-of-unity matrices~\cite{BDZ}; it is not~\eqref{cac:eq:faithful}. Likewise, an univariate identity $p_G(u)=\det(I+uM)$ alone forgets the individual vertex supports and does not imply faithfulness.
+\end{remark}
+
+\section{The classification theorem}
+\label{cac:sec:main}
+
+\begin{theorem}[Exact boundary of the determinant model]
+\label{cac:thm:classification}
+For a finite simple bipartite graph $G$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $G$ is a cactus.
+\item $G$ has a faithful complex phase certificate.
+\item $G$ has a faithful certificate all of whose nonzero entries are sixth roots of unity.
+\item There is an $n\times n$ Hermitian matrix $H$, indexed by $V(G)$, for which
+\begin{equation}
+ \Phi_G(\zv)=\det\bigl(\diag(z_v:v\in V(G))-H\bigr).
+ \label{cac:eq:vertexdet}
+\end{equation}
+\item $G$ has a support-exact matrix over $\F_3$.
+\end{enumerate}
+No zero pattern for $H$ is assumed in (iv); the polynomial identity forces the required bipartite pattern.
+\end{theorem}
+
+The implication (i)$\Rightarrow$(iii) is the construction already present in Part~II (Theorem~\ref{htwo:thm:cactusintro} and Lemma~\ref{htwo:lem:unitminor}). We reproduce its proof in Section~\ref{cac:sec:cactus} to keep the argument self-contained and to prepare the classification of all certificates. Sections~\ref{cac:sec:theta}--\ref{cac:sec:cores} prove the converse. Section~\ref{cac:sec:hermitian} proves the precise Hermitian equivalence, and Section~\ref{cac:sec:finitefields} proves the finite-field characterization.
+
+\begin{remark}[The strength and the limit of the answer]
+The theorem rules out every Hermitian matrix of the form~\eqref{cac:eq:vertexdet}, not only the matrix chosen by Part~II's construction. It does \emph{not} rule out arbitrary larger determinantal pencils, substitutions involving auxiliary variables, sums of determinants, or representations of powers of a polynomial. Those are different questions.
+\end{remark}
+
+\section{Cactus certificates and their complete phase freedom}
+\label{cac:sec:cactus}
+
+Set $\zeta=e^{\pi i/3}$. Thus $\zeta^2-\zeta+1=0$ and
+\[
+ |1-\zeta|=|1-\overline\zeta|=1.
+\]
+Choose a spanning forest $T$ of a cactus. Each cycle has exactly one edge outside $T$, and no edge belongs to two cycles. Put $K_{ab}=1$ on the forest edges. On the remaining edge of each cycle of length $2r$, put
+\begin{equation}
+ K_{ab}=(-1)^r\zeta \quad\text{or}\quad (-1)^r\overline\zeta,
+ \label{cac:eq:cyclephase}
+\end{equation}
+independently from cycle to cycle. All nonedges have entry zero.
+
+\begin{lemma}[The cactus factorization; prior construction]
+\label{cac:lem:cactus}
+Every matrix constructed by~\eqref{cac:eq:cyclephase} is faithful.
+\end{lemma}
+\begin{proof}
+Fix a square induced support admitting a perfect matching $M$. The symmetric difference of $M$ with any other perfect matching consists of vertex-disjoint $M$-alternating cycles. In a cactus, any two $M$-alternating cycles are themselves vertex-disjoint: if they met at a vertex, its unique edge of $M$ would have to belong to both cycles, contradicting the cactus condition.
+
+Consequently all perfect matchings on the support are obtained by independently flipping a subset of its $M$-alternating cycles. A flip on a cycle of length $2r$ changes the permutation sign by $(-1)^{r-1}$. The ratio of the products of edge entries in the two alternating halves is $(-1)^r\zeta$ or $(-1)^r\overline\zeta$, depending on the orientation of the comparison. Therefore, after factoring out the unit contribution of $M$, the determinant is a product of factors $1-\zeta$ and $1-\overline\zeta$. Its modulus is one. If the support has no perfect matching, every determinant term is zero.
+\end{proof}
+This is the content of Part~II's cactus minor lemma (Lemma~\ref{htwo:lem:unitminor}, which uses the choice $(-1)^r\zeta$ on every cycle), now with both allowed choices on each cycle displayed. The proof does not invoke any general matrix representability theorem.
+
+\begin{definition}[Phase gauge]
+Two phase matrices on the same labeled bipartite graph are gauge-equivalent if
+\[
+ K'=D_AKD_B
+\]
+for diagonal matrices $D_A,D_B$ whose diagonal entries have modulus one. No row permutation, column permutation, pivot, or complex conjugation is included in this equivalence.
+\end{definition}
+Such changes preserve all square-minor moduli. They are also precisely the relevant diagonal unitary changes of the corresponding bipartite Hermitian matrix, after conjugating the column-side factor as appropriate.
+
+\begin{theorem}[Rigidity and moduli of faithful certificates]
+\label{cac:thm:gauge}
+For a cactus $G$, every faithful certificate is gauge-equivalent to exactly one of the matrices~\eqref{cac:eq:cyclephase}, relative to a fixed spanning forest. There are exactly $2^{\beta(G)}$ gauge classes. In particular, arbitrary unit complex phases produce no additional classes beyond sixth-root phases.
+\end{theorem}
+\begin{proof}
+On each tree component, select a root. Choose row and column phases successively away from the root so that every tree edge becomes one. A residual gauge preserving all forest entries uses a common phase on the row vertices of a component and its reciprocal on the column vertices; it changes no edge entry anywhere in that component. Thus normalization gives a unique representative of each gauge class.
+
+A simple cycle in a cactus is induced. In its normalized square submatrix, all entries are one except for the single non-tree entry $t$, and there are exactly two perfect matchings. Up to a unit sign, its determinant is
+\[
+ 1+(-1)^{r-1}t.
+\]
+Faithfulness and $|t|=1$ imply
+\[
+ \operatorname{Re}\bigl((-1)^{r-1}t\bigr)=-\tfrac12.
+\]
+The only possibilities are $t=(-1)^r\zeta$ and $t=(-1)^r\overline\zeta$. This proves necessity of every listed cycle choice. Lemma~\ref{cac:lem:cactus} shows that the choices are independent and sufficient. A cactus has $\beta(G)$ cycles, proving the count.
+\end{proof}
+
+\begin{corollary}[When real phases suffice]
+\label{cac:cor:real}
+A bipartite graph has a faithful real matrix if and only if it is a forest. For a forest, every assignment of signs to the edges is faithful and all assignments are gauge-equivalent.
+\end{corollary}
+\begin{proof}
+A forest has at most one perfect matching on each vertex support, because the symmetric difference of two would contain a cycle. Hence every nonzero determinant is a signed product of edge entries. Conversely, a faithful real matrix would be a faithful complex matrix and hence have cactus support. On any cycle the required normalized entry~\eqref{cac:eq:cyclephase} is nonreal. One can also argue directly on a shortest induced cycle: its two determinant terms are $\pm1$, so the determinant is $0$ or $\pm2$, never of modulus one.
+\end{proof}
+
+\section{Why every noncactus contains the right obstruction}
+\label{cac:sec:theta}
+
+A \emph{theta} consists of three internally vertex-disjoint paths with common distinct endpoints. Our convention permits one of the paths to have length one; at most one can do so in a simple graph. An \emph{induced theta} has no edges besides those in the three paths. This convention matters: excluding the length-one case would miss two cycles sharing an edge.
+
+\begin{lemma}[Induced-theta lemma for bipartite graphs]
+\label{cac:lem:theta}
+Every finite noncactus bipartite graph contains an induced theta. The three path lengths have the same parity.
+\end{lemma}
+\begin{proof}
+A noncactus has a two-connected block $B$ that is not a cycle or an edge. To see the relevant block fact, two cycles sharing an edge lie in a common two-connected subgraph, and a maximal such block is not a single cycle. Choose a shortest cycle $C$ of $B$. It is induced, and $B$ has vertices outside $C$; otherwise an extra edge would be a chord contradicting shortestness.
+
+First suppose that a vertex $v\notin C$ has at least two neighbors on $C$. If it has exactly two, $C\cup\{v\}$ is an induced theta. If it has at least three, take three consecutive neighbors $x,y,z$ in their cyclic order. Retain $v$ and the arc of $C$ from $x$ through $y$ to $z$ having no further neighbors of $v$ in its interior. The three paths from $v$ to $y$ are the edge $vy$ and the two paths through $x$ and $z$. The arc has no chord, and its endpoints $x,z$ are in the same bipartition class, so there is no extra edge $xz$. This is again an induced theta.
+
+We may therefore assume that each vertex outside $C$ has at most one neighbor on $C$. Some component of $B-V(C)$ has at least two distinct attachment vertices on $C$: if it had only one, that vertex would disconnect $B$. Choose a shortest path with distinct endpoints on $C$ and all internal vertices outside $C$. It has no chord. It also has no additional edge from an internal vertex to $C$. Such an edge would produce a shorter path of the same kind to one of the two endpoints; at the first or last internal vertex, the assumed uniqueness of its neighbor on $C$ excludes the only exceptional adjacency. The union of this path with $C$ is therefore an induced theta.
+
+In a bipartite graph, every path between two fixed vertices has parity determined by the shores of its endpoints. Hence all three lengths have the same parity.
+\end{proof}
+
+The lemma is tailored to induced subgraphs because deleting arbitrary edges from a phase matrix need not preserve any minor identity. Our proof never makes that invalid inference. The only graph reductions used below are restriction to an induced subgraph and a precisely controlled path replacement.
+
+\section{A path-compression identity that preserves all supports}
+\label{cac:sec:compression}
+
+Consider a path
+\[
+ a-v-u-b,
+ \qquad a,u\in A,\quad v,b\in B,
+\]
+whose internal vertices $v,u$ have degree two. Assume that $a$ and $b$ are not adjacent. Delete $u,v$ and replace the three-edge path by the edge $ab$. For a matrix supported on the original graph, define the new entry by
+\begin{equation}
+ K'_{ab}=-\frac{K_{av}K_{ub}}{K_{uv}},
+ \label{cac:eq:pivotentry}
+\end{equation}
+and leave the other surviving entries unchanged. This operation shortens one path by two while preserving bipartiteness.
+
+\begin{lemma}[Compression preserves support and determinant magnitude]
+\label{cac:lem:compress}
+Suppose $K_{uv}\ne0$. For every equally sized pair $I,J$ of surviving row and column sets,
+\begin{equation}
+ \det K_{I\cup\{u\},\,J\cup\{v\}}
+   =\pm K_{uv}\det K'_{I,J}.
+ \label{cac:eq:Schur}
+\end{equation}
+Moreover, the two induced supports in~\eqref{cac:eq:Schur} are perfectly matchable simultaneously. If all edge entries of $K$ have modulus one, the same is true for $K'$, and the squared determinant magnitudes in~\eqref{cac:eq:Schur} are equal.
+\end{lemma}
+\begin{proof}
+Put row $u$ and column $v$ last. The block determinant identity gives the factor $K_{uv}$ times the determinant of the Schur complement. The column at $v$ has only one other possible nonzero entry, in row $a$, and the row at $u$ has only one other possible nonzero entry, in column $b$. Thus the only altered surviving entry is~\eqref{cac:eq:pivotentry}. Restoring the original order contributes only a sign.
+
+For matchings there is an explicit bijection. A matching on the compressed support not using $ab$ lifts by adding $uv$. A matching using $ab$ lifts by replacing it with $av$ and $ub$. Conversely, a matching of the augmented original support either uses $uv$, or must match $v$ to $a$ and $u$ to $b$. These alternatives also cover the cases in which $I$ or $J$ omits one of the endpoints. Finally,~\eqref{cac:eq:pivotentry} is a quotient of unit complex numbers with a minus sign, hence has modulus one.
+\end{proof}
+
+\begin{corollary}[Preservation of exactness]
+\label{cac:cor:compress}
+Faithful complex certificates and support-exact matrices over any field descend through this compression. Both properties also descend to induced subgraphs.
+\end{corollary}
+
+Repeated compression of an induced theta produces one of the following three graphs:
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Parity and short path & Final path lengths & Name used here\\\midrule
+Even & $(2,2,2)$ & $\Ecore=K_{2,3}$\\
+Odd, a length-one path present & $(1,3,3)$ & $\Dcore$\\
+Odd, no length-one path & $(3,3,3)$ & $\Tcore$\\\bottomrule
+\end{tabular}
+\end{center}
+In the even case shorten only paths of length at least four. In the odd case shorten only paths of length at least five. Consequently no parallel edge is created. At each step the internal vertices have degree two, and the replacement edge does not already exist. These details are why the Schur-complement identity applies throughout.
+
+\section{Three finite phase obstructions}
+\label{cac:sec:cores}
+
+We now exclude a faithful matrix for each core. Row and column phase changes normalize a spanning tree to ones. Every remaining parameter below has modulus one.
+
+\subsection{The even core \texorpdfstring{$\Ecore=K_{2,3}$}{E = K2,3}}
+A normalized matrix is
+\begin{equation}
+ K_{\Ecore}=\begin{pmatrix}1&1&1\\1&z&w\end{pmatrix}.
+ \label{cac:eq:E}
+\end{equation}
+Its three two-by-two supports are all matchable, so faithfulness requires
+\[
+ |1-z|=|1-w|=|z-w|=1.
+\]
+The first two equalities imply $z,w\in\{\zeta,\overline\zeta\}$. Their distance is then either zero or $\sqrt3$, contradicting the last equality. Geometrically, three points on the unit circle cannot have all three chord lengths equal to one.
+
+\subsection{Two squares sharing an edge: \texorpdfstring{$\Dcore$}{D}}
+A normalized matrix is
+\begin{equation}
+ K_{\Dcore}=\begin{pmatrix}
+ 1&1&1\\x&1&0\\y&0&1
+ \end{pmatrix}.
+ \label{cac:eq:D}
+\end{equation}
+The two cycle minors have determinants $1-x$ and $1-y$. They force $x,y\in\{\zeta,\overline\zeta\}$. The full determinant is $1-x-y$, with squared modulus zero if the phases are conjugate and three if they are equal. The full support is matchable, so both possibilities are forbidden.
+
+\subsection{Three odd paths: \texorpdfstring{$\Tcore$}{T}}
+A normalized matrix is
+\begin{equation}
+ K_{\Tcore}=\begin{pmatrix}
+ 0&1&1&1\\x_1&1&0&0\\x_2&0&1&0\\x_3&0&0&1
+ \end{pmatrix}.
+ \label{cac:eq:T}
+\end{equation}
+Every pair of arms gives a three-by-three cycle minor with determinant $-(x_i+x_j)$. Faithfulness would imply
+\[
+ \operatorname{Re}(x_i\overline{x_j})=-\tfrac12
+ \qquad(i\ne j).
+\]
+But the full determinant is $-(x_1+x_2+x_3)$, and these equalities give
+\[
+ |x_1+x_2+x_3|^2
+ =3+2\sum_{i<j}\operatorname{Re}(x_i\overline{x_j})=0.
+\]
+Its support has a perfect matching, a contradiction.
+
+\begin{proof}[Proof of (ii)$\Rightarrow$(i) in Theorem~\ref{cac:thm:classification}]
+If $G$ were a noncactus with a faithful matrix, Lemma~\ref{cac:lem:theta} would give an induced theta. Restrict the matrix to it, and apply Lemma~\ref{cac:lem:compress} until one of the three cores remains. The resulting faithful matrix contradicts the corresponding calculation above.
+\end{proof}
+
+\section{The Hermitian representation has no hidden extra freedom}
+\label{cac:sec:hermitian}
+
+For a phase matrix $K$, put
+\[
+ H_K=\begin{pmatrix}0&K\\K^*&0\end{pmatrix}.
+\]
+On a balanced vertex set $W=I\sqcup J$, with $|I|=|J|=k$, its principal determinant is
+\begin{equation}
+ \det (H_K)_W=(-1)^k|\det K_{I,J}|^2.
+ \label{cac:eq:principal}
+\end{equation}
+On an unbalanced vertex set the principal determinant vanishes: one of the two off-diagonal rectangular blocks has more rows than columns and hence produces a kernel vector.
+
+\begin{proposition}[Coefficient recovery]
+\label{cac:prop:hermitian}
+Identity~\eqref{cac:eq:vertexdet} holds for a Hermitian $H$ if and only if $H=H_K$ for a faithful phase matrix $K$, with vertices ordered by the two shores.
+\end{proposition}
+\begin{proof}
+The diagonal expansion is
+\begin{equation}
+ \det(\diag\zv-H)
+ =\sum_{W\subseteq V}(-1)^{|W|}\det H_W
+                         \prod_{v\notin W}z_v.
+ \label{cac:eq:diagexpansion}
+\end{equation}
+If $K$ is faithful,~\eqref{cac:eq:principal} and the vanishing of unbalanced minors make this exactly~\eqref{cac:eq:Phi}.
+
+Conversely, compare coefficients for omitted singleton sets. They give $H_{vv}=0$. For an omitted pair $\{v,w\}$, the coefficient is
+\[
+ \det H_{\{v,w\}}=-|H_{vw}|^2.
+\]
+The coefficient in $\Phi_G$ is $-1$ for an edge and zero otherwise. Therefore $H_{vw}=0$ on nonedges and $|H_{vw}|=1$ on edges. In particular its same-shore blocks vanish, so $H=H_K$. Comparing all remaining balanced coefficients using~\eqref{cac:eq:principal} yields faithfulness.
+\end{proof}
+
+This proves (ii)$\Leftrightarrow$(iv). It also explains exactly which information disappears under diagonal specialization. For example, $K_{2,3}$ has
+\[
+ p_{K_{2,3}}(u)=1+6u+3u^2
+ =(1+(3+\sqrt6)u)(1+(3-\sqrt6)u).
+\]
+Thus its univariate polynomial has a positive-semidefinite two-by-two determinant representation using a diagonal matrix. Nevertheless, there is no representation~\eqref{cac:eq:vertexdet} for its five-variable polynomial. A one-variable factorization is not a counterexample to the classification.
+
+\section{The same boundary over the smallest fields}
+\label{cac:sec:finitefields}
+
+\begin{theorem}[Binary and ternary support patterns]
+\label{cac:thm:fields}
+A finite bipartite graph admits a support-exact matrix over $\F_2$ exactly when it is a forest, and over $\F_3$ exactly when it is a cactus. A cactus has a unique support-exact $\F_3$ gauge class under independent nonzero row and column scalings.
+\end{theorem}
+\begin{proof}
+Over $\F_2$, all edge entries are one. A shortest cycle is induced, and its two perfect-matching terms sum to zero. Conversely, a forest has at most one perfect matching on any support, so every structurally nonzero determinant is one.
+
+For $\F_3$, first consider a cactus. Normalize a spanning forest to ones. On the remaining edge of a cycle of length $2r$, choose
+\[
+ t=(-1)^{r+1}\in\F_3.
+\]
+The flip ratio including its determinant sign is $(-1)^{r-1}t=1$. The same independent-cycle factorization as in Lemma~\ref{cac:lem:cactus} expresses every structurally nonzero determinant as a nonzero matching term times a product of factors $1+1=2$. It cannot vanish in $\F_3$.
+
+For necessity, induced restriction and path compression are valid over every field. Normalize each of the three cores as above, now with all parameters in $\F_3^*=\{1,-1\}$. In~\eqref{cac:eq:E}, three column ratios cannot all be distinct, so some two-by-two minor vanishes. In~\eqref{cac:eq:D}, nonvanishing of $1-x$ and $1-y$ forces $x=y=-1$, but $1-x-y=3=0$. In~\eqref{cac:eq:T}, nonvanishing of every $x_i+x_j$ forces the three parameters to be equal, but their sum is again zero. No core is support-exact, so the graph must be a cactus.
+
+Finally, on a normalized cactus cycle, $1+(-1)^{r-1}t$ is nonzero for precisely the choice $t=(-1)^{r+1}$. The spanning-forest gauge is unique as in Theorem~\ref{cac:thm:gauge}, proving uniqueness.
+\end{proof}
+
+Together with the preceding sections, this completes every equivalence in Theorem~\ref{cac:thm:classification}.
+
+\begin{remark}[Reduction of the complex certificate]
+The ring homomorphism $\Z[\zeta]\to\F_3$ sending $\zeta$ to $-1$ is well-defined because $(-1)^2-(-1)+1=3$. It sends both complex cycle choices to the unique ternary choice. This provides another explanation of why the $2^{\beta}$ complex classes collapse to one ternary class. The determinant factorization, rather than just entrywise reduction, ensures that no required minor is lost.
+\end{remark}
+
+\begin{proposition}[A first larger-field contrast]
+\label{cac:prop:K2m}
+For $m\ge1$ and a finite field $\F_q$, the complete bipartite graph $K_{2,m}$ admits a support-exact matrix over $\F_q$ if and only if $m\le q-1$.
+\end{proposition}
+\begin{proof}
+Scale the columns so that the first row is all ones. The second row consists of nonzero elements $t_1,\ldots,t_m$. The two-by-two determinants are $t_j-t_i$, so support-exactness is equivalent to the $t_i$ being pairwise distinct. There are exactly $q-1$ available elements.
+\end{proof}
+This elementary observation shows that the cactus classification is genuinely tied to the ternary field in its finite-field formulation; it is not a field-independent prohibition on overlapping cycles. Broader finite-field classifications are not asserted.
+
+\section{A sharp universal approximation gap}
+\label{cac:sec:gap}
+
+Exact equality can be fragile in numerical experiments. Here the obstruction is not merely that some equations cannot hold simultaneously: they cannot all be approximately correct beyond an explicit dimension-independent threshold.
+
+\begin{definition}[Minor defect]
+For a phase matrix $K$ on $G$, let
+\begin{equation}
+ \delta_G(K)=\max_{\substack{I\subseteq A,\ J\subseteq B,\ |I|=|J|\\
+                  G[I\sqcup J]\text{ perfectly matchable}}}
+                 \left|\normsq{\det K_{I,J}}-1\right|,
+ \qquad
+ d(G)=\min_{K}\delta_G(K).
+ \label{cac:eq:defect}
+\end{equation}
+The minimum is over unit phases on all edges. It exists because the phase torus is compact and the maximum is over finitely many continuous functions. The empty minor guarantees a nonempty indexing set, even for an edgeless graph.
+\end{definition}
+Nonmatchable minors always have their exact target value zero and need not be included. The normalization $|K_{ab}|=1$ is essential: allowing unrestricted edge magnitudes would define a different optimization problem.
+
+\begin{lemma}[Defect is monotone under the reductions]
+\label{cac:lem:defectmonotone}
+Induced restriction and the path compression of Lemma~\ref{cac:lem:compress} cannot increase the defect of a phase matrix.
+\end{lemma}
+\begin{proof}
+Restriction only removes minors from the maximum. Every minor of a compressed matrix is, by~\eqref{cac:eq:Schur}, equal in squared modulus to an augmented minor of the original matrix, and the two supports are matchable simultaneously. Thus every quantity tested after compression already occurs before it.
+\end{proof}
+
+\begin{theorem}[Sharp universal noncactus gap]
+\label{cac:thm:gap}
+Put
+\[
+ \epsstar=\frac{\sqrt{17}-3}{2}=0.5615528128\ldots.
+\]
+For every finite bipartite noncactus $G$ and every phase matrix $K$ on it,
+\begin{equation}
+ \delta_G(K)\ge\epsstar.
+ \label{cac:eq:universalgap}
+\end{equation}
+The constant is optimal over all noncactus graphs: $d(K_{2,3})=\epsstar$. In particular,
+\[
+ G\text{ cactus}\ \Longleftrightarrow\ d(G)=0,
+ \qquad
+ \inf_{G\text{ noncactus}}d(G)=\epsstar.
+\]
+\end{theorem}
+
+The proof occupies the next two subsections. It yields more information than the exact classification: a phase fit with all matchable minor squared moduli in $(1-\epsstar,1+\epsstar)$ certifies that the graph is a cactus. This statement concerns all minors, not a sampled subset.
+
+\subsection{The exact optimization on \texorpdfstring{$K_{2,3}$}{K2,3}}
+
+\begin{proposition}[Three-chord minimax problem]
+\label{cac:prop:Esharp}
+For the even core, $d(\Ecore)=\epsstar$. A minimizing normalized matrix is
+\begin{equation}
+ K_*=
+ \begin{pmatrix}1&1&1\\ e^{-i\varphi}&1&e^{i\varphi}\end{pmatrix},
+ \qquad
+ \cos\varphi=\frac{\sqrt{17}-1}{4}.
+ \label{cac:eq:Kstar}
+\end{equation}
+Its three nontrivial minor squared moduli are $1-\epsstar$, $1-\epsstar$, and $1+\epsstar$.
+\end{proposition}
+\begin{proof}
+After column normalization, the second-row entries are three unit complex numbers. Every nontrivial determinant is their pairwise difference, so the problem is to approximate one by all three squared chord lengths.
+
+Suppose first that the defect $\delta$ is less than one; otherwise the desired lower bound is immediate. All squared chord lengths are then less than two, so all pairwise real inner products are positive. The three points lie in an arc of angular length $\theta<\pi/2$. To justify this, rotate one point to angle zero and represent the other two angles in $(-\pi/2,\pi/2)$. Their difference is in $(-\pi,\pi)$, and positivity of their mutual inner product forces its absolute value below $\pi/2$. Thus the interval between the extreme angles has the asserted length.
+
+Order the points on that arc. At least one of the two successive gaps is at most $\theta/2$. Write $c=\cos(\theta/2)$, so $\sqrt2/2<c\le1$. The smallest squared chord length is at most $2-2c$, whereas the largest is exactly $2-2\cos\theta=4(1-c^2)$. It follows that
+\begin{equation}
+ \delta\ge\max\{2c-1,\ 3-4c^2\}.
+ \label{cac:eq:chordbound}
+\end{equation}
+The first expression increases with $c$ and the second decreases. Their unique intersection in the indicated interval occurs at
+\[
+ c_*=(\sqrt{17}-1)/4,
+ \qquad 2c_*-1=3-4c_*^2=\epsstar.
+\]
+Therefore~\eqref{cac:eq:chordbound} gives $\delta\ge\epsstar$.
+
+For~\eqref{cac:eq:Kstar}, the consecutive gaps are equal to $\varphi$. The corresponding squared chord lengths are $2-2c_*=1-\epsstar$ and $4(1-c_*^2)=1+\epsstar$. Thus the lower bound is attained. The argument also shows that any minimizing triple has equal consecutive gaps, up to rotation, reflection, and permutation of its points.
+\end{proof}
+
+\subsection{The other two cores are separated by at least \texorpdfstring{$3/5$}{3/5}}
+
+\begin{lemma}[A stronger-than-needed bound for $\Dcore$]
+\label{cac:lem:Dgap}
+Every phase matrix on $\Dcore$ has defect at least $3/5$.
+\end{lemma}
+\begin{proof}
+Use~\eqref{cac:eq:D} and suppose the defect is less than $3/5$. The two cycle minors imply
+\[
+ a=\operatorname{Re}x,\quad b=\operatorname{Re}y\in(1/5,4/5).
+\]
+Depending on whether the imaginary parts have the same or opposite signs, the squared modulus of the full determinant is
+\[
+ g_\pm(a,b)=3-2a-2b+2ab
+              \pm2\sqrt{1-a^2}\sqrt{1-b^2}.
+\]
+On the closed rectangle $[1/5,4/5]^2$, $g_-$ is convex in each variable separately and $g_+$ is concave in each variable separately. Indeed the second derivative with respect to $a$ is respectively
+\[
+ \frac{2\sqrt{1-b^2}}{(1-a^2)^{3/2}}
+ \quad\text{or its negative},
+\]
+and the same holds with the variables exchanged. Hence the maximum of $g_-$ and the minimum of $g_+$ occur at corners. The corner values give
+\[
+ g_-\le\frac9{25},\qquad g_+\ge\frac95.
+\]
+For the off-diagonal corners the respective values are $(33-12\sqrt6)/25$ and $(33+12\sqrt6)/25$, so these bounds follow by direct comparison. Both alternatives are outside the interval $(2/5,8/5)$ required for a full minor of defect less than $3/5$. This is a contradiction.
+\end{proof}
+
+\begin{lemma}[A planar Gram obstruction for $\Tcore$]
+\label{cac:lem:Tgap}
+Every phase matrix on $\Tcore$ has defect at least $3/5$.
+\end{lemma}
+\begin{proof}
+Use~\eqref{cac:eq:T}. Suppose its defect is less than $3/5$ and put
+\[
+ p=-\operatorname{Re}(x_1\overline{x_2}),\quad
+ q=-\operatorname{Re}(x_1\overline{x_3}),\quad
+ r=-\operatorname{Re}(x_2\overline{x_3}).
+\]
+The three pair-cycle minors imply $p,q,r\in(1/5,4/5)$. As three unit vectors in the real plane, the $x_i$ have a singular real Gram matrix. Expanding its determinant yields
+\begin{equation}
+ p^2+q^2+r^2+2pqr=1.
+ \label{cac:eq:Gram}
+\end{equation}
+Write $s=p+q+r$. The full minor has squared modulus $3-2s$, so its lower bound $3-2s>2/5$ implies $s<13/10$.
+
+For each $t\in[1/5,4/5]$, the inequality $(t-1/5)(t-4/5)\le0$ gives $t^2\le t-4/25$. Also $pqr\le(s/3)^3$ by the arithmetic--geometric mean inequality. Therefore
+\[
+ 1=p^2+q^2+r^2+2pqr
+ \le s-\frac{12}{25}+2(s/3)^3
+ <\frac{13}{10}-\frac{12}{25}+2(13/30)^3
+ =\frac{13267}{13500}<1,
+\]
+a contradiction.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{cac:thm:gap}]
+Take an induced theta in $G$ and compress it to a core. The defect cannot increase by Lemma~\ref{cac:lem:defectmonotone}. On $\Ecore$ it is at least $\epsstar$ by Proposition~\ref{cac:prop:Esharp}; on the other cores it is at least $3/5>\epsstar$ by Lemmas~\ref{cac:lem:Dgap} and~\ref{cac:lem:Tgap}. Formula~\eqref{cac:eq:Kstar} attains $\epsstar$ on the noncactus $K_{2,3}$, proving optimality. Cacti have defect zero by Lemma~\ref{cac:lem:cactus}.
+\end{proof}
+
+\begin{remark}[Why a weaker four-minor bound is not sharp]
+On $\Tcore$, let $a_{ij}=|x_i+x_j|^2-1$ and $b=|x_1+x_2+x_3|^2-1$. Then $b=a_{12}+a_{13}+a_{23}-1$, so the triangle inequality alone gives $\delta\ge1/4$. It loses the fact that the three complex phases live in a real plane. The Gram identity~\eqref{cac:eq:Gram} restores that constraint and makes the sharp universal theorem possible.
+\end{remark}
+
+\section{Real stability is strictly more general}
+\label{cac:sec:stable}
+
+A nonzero polynomial with real coefficients is \emph{real stable} if it does not vanish when every variable has strictly positive imaginary part. For a cactus certificate,~\eqref{cac:eq:vertexdet} immediately gives stability: if $(\diag\zv-H)u=0$ for a nonzero vector $u$, then
+\[
+ 0=\operatorname{Im}\bigl(u^*(\diag\zv-H)u\bigr)
+   =\sum_v\operatorname{Im}(z_v)|u_v|^2>0,
+\]
+a contradiction. This determinant argument is already used in Part~II, as the proof of Theorem~\ref{htwo:thm:stability}.
+
+The converse fails on only five vertices. Denote the variables on the two shores of $K_{2,3}$ by $a,b$ and $x,y,z$. Direct support enumeration gives
+\begin{equation}
+ f=\Phi_{K_{2,3}}
+   =abxyz-(a+b)(xy+xz+yz)+(x+y+z).
+ \label{cac:eq:stablepoly}
+\end{equation}
+The size-four supports are the three choices of two vertices on the larger shore together with both vertices on the smaller shore, explaining the last three terms.
+
+\begin{theorem}[A stable polynomial without a Hermitian vertex determinant]
+\label{cac:thm:stable23}
+Polynomial~\eqref{cac:eq:stablepoly} is real stable, but there is no Hermitian $5\times5$ matrix $H$ with $f=\det(\diag(a,b,x,y,z)-H)$.
+\end{theorem}
+\begin{proof}
+Nonrepresentability follows from Theorem~\ref{cac:thm:classification}, or directly from the three-chord obstruction~\eqref{cac:eq:E}. For stability, use Br\"and\'en's criterion: a nonzero real multiaffine polynomial $f$ is real stable if and only if
+\[
+ \Delta_{ij}f=(\partial_i f)(\partial_j f)-f\,\partial_i\partial_j f\ge0
+\]
+for all real choices of all variables and all distinct pairs~\cite[Theorem 5.6]{Branden}. Symmetry leaves only three types of pairs.
+
+For the pair on the smaller shore, put $U=xy$, $V=xz$, $W=yz$. Direct differentiation gives
+\begin{align}
+ \Delta_{a,b}f
+ &=U^2+V^2+W^2+UV+UW+VW\notag\\
+ &=\tfrac12\bigl((U+V+W)^2+U^2+V^2+W^2\bigr)\ge0.
+ \label{cac:eq:SOSaa}
+\end{align}
+For two variables on the larger shore,
+\begin{align}
+ \Delta_{x,y}f
+ &=(a^2+ab+b^2)z^2-(a+b)z+1\notag\\
+ &=\left(1-\frac{a+b}{2}z\right)^2
+       +\frac{3a^2+2ab+3b^2}{4}z^2\ge0.
+ \label{cac:eq:SOSbb}
+\end{align}
+For a cross-shore pair,
+\begin{align}
+ \Delta_{a,x}f
+ &=(byz)^2-byz(y+z)+y^2+yz+z^2\notag\\
+ &=\left(byz-\frac{y+z}{2}\right)^2
+       +\frac{3y^2+2yz+3z^2}{4}\ge0.
+ \label{cac:eq:SOSab}
+\end{align}
+The remaining quadratic forms are nonnegative because $3u^2+2uv+3v^2=2(u^2+v^2)+(u+v)^2$. The three identities cover all ten pairs by shore symmetries. The criterion proves stability.
+\end{proof}
+
+This is not a claim that stability without determinant representations is new as a general phenomenon. Such separations are established in other settings, including work on V\'amos-type polynomials~\cite{BVY}. The result here answers Part~II's specific question (Research question~\ref{cac:q:beyond}) for its particular matching-support refinement, with a small explicit example and elementary certificates.
+
+\subsection{Leaf extension and an infinite connected family}
+
+\begin{lemma}[Exact leaf recurrence]
+\label{cac:lem:leaf}
+Let $G+\ell$ be obtained by adding a new leaf $\ell$ adjacent only to a vertex $v$. Then
+\begin{equation}
+ \Phi_{G+\ell}=z_\ell\Phi_G-\Phi_{G-v}
+             =z_\ell\Phi_G-\partial_{z_v}\Phi_G.
+ \label{cac:eq:leaf}
+\end{equation}
+\end{lemma}
+\begin{proof}
+A matchable support omitting $\ell$ gives the first term. A support containing $\ell$ must also contain $v$, and its perfect matching must use $\ell v$. Removing these two vertices gives a unique perfectly matchable support in $G-v$, with the opposite sign in~\eqref{cac:eq:Phi}. Finally, differentiation with respect to $z_v$ retains exactly the supports omitting $v$ and removes that variable from their monomials.
+\end{proof}
+
+\begin{lemma}[Stability of the leaf operation]
+\label{cac:lem:leafstable}
+If a real multiaffine polynomial $f$ is stable, then $wf-\partial_{z_v}f$, where $w$ is a new variable, is stable.
+\end{lemma}
+\begin{proof}
+Fix all variables other than $z_v$ in the upper half-plane. Write $f=Az_v+B$ at these fixed values. It is not the zero polynomial, since stability would otherwise fail. If $A=0$, then $f=B\ne0$ and the claimed expression is $wB\ne0$. If $A\ne0$, its root $\rho=-B/A$ has imaginary part at most zero. For $z_v$ in the upper half-plane,
+\[
+ \frac{\partial_{z_v}f}{f}=\frac1{z_v-\rho}
+\]
+has strictly negative imaginary part. It cannot equal $w$ in the upper half-plane. Multiplying by the nonzero $f$ proves the claim.
+\end{proof}
+
+\begin{corollary}[Infinitely many connected examples]
+\label{cac:cor:trees}
+Every graph obtained from $K_{2,3}$ by attaching finite trees at its vertices has a real stable polynomial $\Phi_G$ and has no Hermitian vertex determinant representation~\eqref{cac:eq:vertexdet}. These examples can be arbitrarily large and connected.
+\end{corollary}
+\begin{proof}
+Construct the attached trees by successive leaf additions and apply Theorem~\ref{cac:thm:stable23} and Lemmas~\ref{cac:lem:leaf}--\ref{cac:lem:leafstable}. The original $K_{2,3}$ remains an induced subgraph, so the result is still a noncactus. The classification excludes the representation.
+\end{proof}
+
+\section{No fixed minor order can test exact representability}
+\label{cac:sec:local}
+
+The classification has a finite structural obstruction mechanism, but not a bounded matrix-size obstruction. Compression may require adjoining many eliminated rows and columns before a core minor becomes a minor of the original matrix.
+
+\begin{theorem}[Unbounded order of minor witnesses]
+\label{cac:thm:bounded}
+For every positive integer $r$, there is a connected bipartite noncactus $G$ of maximum degree three and treewidth at most two such that \emph{every} phase matrix on $G$ satisfies~\eqref{cac:eq:faithful} for every square minor of order at most $r$. Nevertheless no phase matrix on $G$ satisfies all orders.
+\end{theorem}
+\begin{proof}
+Choose an odd integer $L>r$, $L\ge3$, and take three internally disjoint paths of length $L$ between two endpoints. This theta is bipartite, subcubic, connected, and not a cactus. Every simple cycle consists of two of the three paths, so its girth is $2L>2r$.
+
+A square minor of order at most $r$ uses at most $2r$ vertices. Its induced graph therefore has no cycle. Such a forest has at most one perfect matching; its determinant is zero when there is none and a unit product when there is one, for every phase assignment. Thus all the small-minor tests pass. Theorem~\ref{cac:thm:classification} rules out a faithful matrix globally.
+
+For completeness, a width-two tree decomposition is explicit. Let the common endpoints be $s,t$ and write the internal vertices of path $i$ as $v_{i,1},\ldots,v_{i,L-1}$. Use a central bag $\{s,t\}$. Along path $i$ use the chain of bags
+\[
+ \{s,v_{i,1},v_{i,2}\},\ldots,
+ \{s,v_{i,L-2},v_{i,L-1}\},
+ \{s,v_{i,L-1},t\},
+\]
+attaching its last bag to the central bag. Every edge is covered and the bags containing any given vertex are connected. Each bag has at most three vertices.
+\end{proof}
+
+\begin{corollary}[Failure of uniform low-order numerical testing]
+For every $r$, unit-phase matrices can pass all minor tests through order $r$ exactly while some higher-order matchable minor has defect at least $\epsstar$.
+\end{corollary}
+\begin{proof}
+Combine Theorem~\ref{cac:thm:bounded} with Theorem~\ref{cac:thm:gap}.
+\end{proof}
+Thus the approximation gap does not justify replacing the complete minor maximum by a fixed-order sample. Even zero observed error on all two-by-two, three-by-three, or any other bounded range of minors can be misleading.
+
+\section{Consequences for the repository's preorder program}
+\label{cac:sec:preorders}
+
+For a height-two poset $P_G$ with comparability graph $G$ on $n$ vertices, Part~II establishes the height-two formula $h_{P_G}(t)=(1+t)^n p_G\bigl(t/(1+t)^2\bigr)$ with a precise lattice-support interpretation (Theorem~\ref{htwo:thm:main}). We use this as a prior bridge rather than reprove it or claim its $\gamma$-positivity conclusion.
+
+For a faithful matrix, the principal-minor expansion and Cauchy--Binet give $p_G(u)=\det(I+uKK^*)$. Indeed, the coefficient of $u^k$ is the sum of $|\det K_{I,J}|^2$ over all $k$-element row and column sets, hence counts $\PM_k(G)$. If $\lambda_1,\ldots,\lambda_\nu$ are the positive eigenvalues of $KK^*$, where $\nu$ is the matching number, the factorizations \eqref{htwo:eq:pmcactus} and~\eqref{htwo:eq:hcactus} of Part~II's Theorem~\ref{htwo:thm:cactus} follow; that proof uses only faithfulness, so it applies to every certificate of Theorem~\ref{cac:thm:gauge}. [Merge note: manuscript~05 printed these four formulas again as displays; they are printed once, in Part~II.] These cactus formulas and their real-rootedness consequences are old relative to this article; univariate cactus real-rootedness is also contained in Ohsugi--Tsuchiya~\cite[Theorem 7.2]{OT21}. Our contribution identifies the exact boundary of this \emph{support-by-support} determinant route.
+
+For the stable noncactus $K_{2,3}$, the diagonal specialization of~\eqref{cac:eq:stablepoly} is
+\[
+ \Phi_{K_{2,3}}(s,s,s,s,s)=s^5-6s^3+3s
+ =s\bigl(s^2-(3+\sqrt6)\bigr)\bigl(s^2-(3-\sqrt6)\bigr),
+\]
+and Theorem~\ref{htwo:thm:main} gives
+\[
+ h_{P_{K_{2,3}}}(t)=1+11t+31t^2+31t^3+11t^4+t^5.
+\]
+The graph is not excluded from real-rootedness; only its exact vertex determinant is excluded. More generally, stable $\Phi_G$ implies real-rooted $p_G$: for $s\ne0$,
+\[
+ \Phi_G(s,\ldots,s)=s^n p_G(-s^{-2}).
+\]
+The left-hand side has only real zeros. Any nonzero zero of $p_G$ would otherwise give a nonreal zero on the left after solving $u=-s^{-2}$. Since $p_G$ has positive coefficients and constant term one, its zeros must consequently be negative. This applies to all the tree-attached examples of Corollary~\ref{cac:cor:trees}.
+
+There are three logically different classes: faithful support determinants, stable signed support polynomials, and real-rooted univariate support polynomials. We prove the first is properly contained in the second. The second is contained in the third by specialization. We do not assert a classification of the latter two classes or strictness of that second containment.
+
+\section{Exact verification and reproducibility}
+\label{cac:sec:verification}
+
+The included verifier, shipped as \nolinkurl{code/03-cactus-verify.py} (delivered as \texttt{code/verify.py}), uses only the Python standard library and exact arithmetic. Its checks were executed with Python 3.13.5. The full output is saved in \nolinkurl{data/03-cactus-verification.json} (delivered as \texttt{data/verification.json}). The tests supplement the proofs; in particular, checking sixth-root assignments does not by itself exclude arbitrary complex phases.
+
+\subsection{Independent combinatorial and algebraic representations}
+Graphs with fixed labeled shores are encoded by binary edge masks. Cactus recognition enumerates simple cycles and checks that no edge belongs to two of them. This recognition routine does not use determinants. A separate spanning-forest procedure identifies the free normalized edge entries.
+
+For each support pattern, the verifier enumerates every normalized assignment over $\F_3^*$, or over the six complex sixth roots, as appropriate. Structurally nonzero determinant terms are obtained by permutation expansion. Minors with one matching term automatically have unit magnitude; ambiguous minors are evaluated exactly. Complex values are pairs of integers $a+b\zeta$, with
+\[
+ (a+b\zeta)(c+d\zeta)=(ac-bd)+(ad+bc+bd)\zeta,
+ \qquad |a+b\zeta|^2=a^2+ab+b^2.
+\]
+
+The canonical cactus certificates are checked again by evaluating \emph{all} square minors, including empty minors. Their expected zero-or-one values come from a separate covered-shore dynamic program that merges different matchings with the same covered vertices. Thus the determinant checker is compared with a support-set enumeration, not with its own permutation count.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}\toprule
+Check & Recorded count\\\midrule
+All labeled $3$-by-$3$ bipartite graphs & 512\\
+Cacti among those graphs & 460\\
+Normalized sixth-root assignments tested & 5,872\\
+Ambiguous minors evaluated in that search & 7,792\\
+All labeled $3$-by-$4$ bipartite graphs & 4,096\\
+Cacti among those graphs & 3,122\\
+Normalized ternary assignments tested & 10,576\\
+Ambiguous minors evaluated in that search & 14,717\\
+Canonical cactus minor checks, both graph families & 118,470\\
+Compression: augmented-minor norm/support comparisons & 100\\
+Rayleigh identity classes checked symbolically & 3\\
+Independent leaf-attachment support enumerations & 5\\\bottomrule
+\end{tabularx}
+\end{center}
+All checks passed. In a separate check, each of the three small cores has zero valid assignments among its 36 normalized sixth-root assignments and four normalized ternary assignments. The $3$-by-$3$ cacti consist of 328 forests and 132 one-cycle graphs. The $3$-by-$4$ cacti consist of 1,856 forests, 1,248 one-cycle graphs, and 18 two-cycle graphs. The exhaustive normalized counts agree with $2^{\beta}$ complex classes and one ternary class on every tested cactus, and zero on every tested noncactus.
+
+\subsection{Symbolic and compression checks}
+A small rational multivariate polynomial implementation expands and compares the three Rayleigh identities~\eqref{cac:eq:SOSaa}--\eqref{cac:eq:SOSab}; by symmetry they cover all ten pairs. The polynomial~\eqref{cac:eq:stablepoly} is independently reconstructed from matchable supports. Each of the five possible leaf attachments is enumerated directly and compared with~\eqref{cac:eq:leaf}.
+
+The compression checker uses theta path lengths $(2,2,4)$, $(1,3,5)$, and $(3,3,5)$ with deterministic, nonconstant sixth-root phases. For all compressed square minors it compares the augmented original determinant norm and matching-support indicator. Exact arithmetic in $\mathbb Q(\sqrt{17})$ also verifies the two algebraic equalities defining the extremal constant. None of these finite checks proves the compactness, geometric minimax, or all-graph statements by extrapolation; those are proved in the text.
+
+\Needspace{11\baselineskip}
+\subsection{Build and rerun}
+\label{cac:sec:build}
+The manuscript's own commands, run from its package root, were
+\texttt{python3 code/verify.py} followed by two \texttt{pdflatex} runs on
+its \texttt{article.tex}; its \texttt{Makefile} offered the same. In this
+report every delivered file name carries the prefix \texttt{03-cactus-}:
+\begin{itemize}[leftmargin=1.4em,itemsep=0pt]\raggedright
+\item program and build file: \nolinkurl{code/03-cactus-verify.py} and
+ \nolinkurl{code/03-cactus-Makefile};
+\item recorded outputs: \nolinkurl{data/03-cactus-verification.json} (the
+ recorded run), \nolinkurl{data/03-cactus-verification_log.txt} (its console
+ output, byte-identical to the JSON) and
+ \nolinkurl{data/03-cactus-build_status.json} (the manuscript's record of its
+ own PDF build);
+\item notes: \nolinkurl{03-cactus-STATUS.md} and
+ \nolinkurl{03-cactus-SOURCES.md}.
+\end{itemize}
+The program still uses the delivered names. Run in this directory, it would
+write a new unprefixed \nolinkurl{data/verification.json} beside Part~I's
+files; the Makefile's \texttt{verify} target would run Part~I's
+\texttt{code/verify.py}, which without an output option rewrites Part~I's
+shipped data; and its default target would rebuild this whole article in
+place. Rerun the program only in a scratch copy with the delivered names
+restored, from this report's directory:
+\begin{lstlisting}
+W=/path/to/scratch; mkdir -p "$W/03/code" "$W/03/data"
+for f in code/03-cactus-*; do cp "$f" "$W/03/code/${f#code/03-cactus-}"; done
+for f in data/03-cactus-*; do cp "$f" "$W/03/data/${f#data/03-cactus-}"; done
+mv "$W/03/code/Makefile" "$W/03/Makefile"; cd "$W/03"
+python3 code/verify.py      # rewrites data/verification.json of the copy
+\end{lstlisting}
+The program needs Python 3.10 or later and only its standard library; no
+network access or repository checkout is needed, and its elapsed-time field
+differs from run to run. This article is rebuilt as described in the
+report's README; Part~III needs no package beyond those of Parts~I and~II.
+
+\section{Proof audit, priority, and formalization boundary}
+\label{cac:sec:audit}
+
+\subsection{The parts most worth independent scrutiny}
+The decisive combinatorial step is the induced-theta lemma, especially the length-one path case. The decisive algebraic step is~\eqref{cac:eq:Schur}, together with its exact matching bijection. Deleting arbitrary edges or suppressing arbitrary degree-two vertices would not be a valid substitute. In the Hermitian equivalence, the singleton and pair coefficients must be compared before concluding that the matrix has the graph's support. In the quantitative theorem, unit moduli of the pivot entries are essential for preserving the defect.
+
+The sharp constant is not inferred from optimization software. Proposition~\ref{cac:prop:Esharp} proves the lower bound and constructs an extremizer. The other cores are bounded away by $3/5$, a strictly larger rational number. The final step uses induced restriction and compression, not a supposition that every noncactus literally contains an induced copy of one of the three \emph{small} cores.
+
+For stability, all ten Rayleigh inequalities are covered by symmetry, and the input theorem applies to nonhomogeneous multiaffine polynomials as well as homogeneous ones. The leaf-preservation proof is independent of a general classification of stability-preserving operators.
+
+\subsection{What is and is not claimed to be new}
+The following separation of status is part of the mathematical result, not a bibliographic afterthought.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.41\textwidth}X@{}}\toprule
+Statement & Status in this report\\\midrule
+Cactus sixth-root construction and its determinant factorization & Prior result of Part~II; reproduced and credited.\\
+Cactus univariate real-rootedness & Prior literature and Part~II result; not claimed.\\
+Height-two preorder matching-support transform & Prior result of Part~II; used only for consequences.\\
+Cactus necessity, full gauge classification, and ternary support characterization & Proved here as answers/extensions to Part~II's Research question~\ref{cac:q:beyond}; absolute priority not established.\\
+Sharp universal defect $\epsstar$ and the extremal $K_{2,3}$ phases & Proved here; no global publication-priority claim.\\
+Explicit stable $K_{2,3}$ separation and its tree extensions & Proved here in Part~II's signed-support setting; general stability/determinant separation is prior.\\
+Failure of all fixed minor-order tests on subcubic width-two graphs & Proved here as a consequence of high-girth theta supports.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The targeted source audit inspected the pinned repository discussion (Part~II), the perfectly matchable set literature~\cite{OT21,DK}, Br\"and\'en's stability criterion~\cite{Branden}, pattern-sensitive superregularity~\cite{ANP}, and sixth-root-of-unity matrix terminology~\cite{BDZ}. Related fundamental-transversal-matroid literature was also located, including an earlier binary characterization~\cite{Nakamura}; the present report does not claim novelty for the elementary binary corollary. This audit is not a complete survey of representable transversal matroids or every equivalent formulation of the support-pattern problem. A literature-priority determination would require that broader comparison. The proofs and the resolution of the identified repository question do not depend on a claim that no prior equivalent theorem exists.
+
+\subsection{A feasible formalization decomposition}
+A formal development should begin with finite bipartite graphs on two finite types and supports encoded by pairs of finite subsets. One layer proves that a forest support has at most one perfect matching and that symmetric differences decompose into alternating cycles. A second layer proves the exact compression bijection. A third proves the block determinant identity and the three core obstructions.
+
+The graph-theoretic necessity can then be isolated from analysis. The ternary version needs only finite graph arguments and algebra over $\F_3$. The complex classification additionally needs elementary norm identities and the two allowed unit-circle solutions. The sharp gap adds real inequalities, the compact phase torus, and the planar Gram identity; the existence of the minimizer can be omitted if one first states the theorem for every phase assignment and gives the explicit extremizer.
+
+Finally, the stability example can be represented as exact polynomial identities plus a separately imported or formalized Rayleigh criterion. This separation prevents the external analytic theorem from entering the trust boundary of the cactus classification. No uncompiled Lean files are supplied or described as checked. The Python verifier is executable evidence for finite cases, not a substitute for these formal layers.
+
+\section{Further research questions and topics}
+\label{cac:sec:questions}
+
+The original determinant-classification question is answered under the precise hypotheses stated here. The following directions remain outside the proved results. Except where attributed, they are questions generated by this investigation, not assertions that no answer is known anywhere in the literature.
+
+\begin{question}[Classify real-stable signed support polynomials]
+Which bipartite graphs have real stable $\Phi_G$? The class contains all cacti and all tree attachments to $K_{2,3}$, but the determinant classification shows that no purely faithful-phase characterization can cover it. Determine a useful structural description, at least for graphs of treewidth two.
+\end{question}
+The three Rayleigh identities suggest searching for graph decompositions that preserve nonnegative Rayleigh differences without preserving a vertex determinant. A first target is a stable gluing theorem more general than leaf attachment.
+
+\begin{question}[Determine the remaining core optimization exactly]
+Compute $d(\Tcore)$ exactly and classify its minimizing phase configurations. The present bound $d(\Tcore)\ge3/5$ suffices for the sharp universal theorem but is not claimed optimal. Determine how the value changes when individual minors receive prescribed positive penalties.
+\end{question}
+The constraints reduce to three unit vectors and their rank-two real Gram matrix. This gives a small semialgebraic problem, but a numerical stationary point alone is not an exact certificate.
+
+\begin{question}[Describe graphwise sharp defects]
+Which noncactus graphs satisfy $d(G)=\epsstar$? Having an induced or compressed $K_{2,3}$ gives a lower bound, not an extension of its optimal phases to every other edge and minor. Characterize when the three-point extremizer can be extended without introducing a larger defect.
+\end{question}
+This asks for more than the universal infimum, which Theorem~\ref{cac:thm:gap} already determines. Additional cycles can impose new norm constraints not visible in one chosen theta.
+
+\begin{question}[Larger finite fields and prescribed support]
+For $q\ge4$, characterize useful classes of bipartite support patterns admitting a support-exact $\F_q$ matrix. Proposition~\ref{cac:prop:K2m} gives a first field-size obstruction. Can the general question be expressed by a manageable family of induced-and-compressed obstructions?
+\end{question}
+Any proposed characterization must distinguish a fixed zero pattern from unrestricted representability of an associated abstract matroid. Changing the presentation can change the support question.
+
+\begin{question}[Larger determinantal models]
+For the stable polynomial $\Phi_{K_{2,3}}$, determine the smallest useful Hermitian pencil representation allowing auxiliary dimensions or structured substitutions. How does that size grow under the tree attachments of Corollary~\ref{cac:cor:trees}?
+\end{question}
+Theorem~\ref{cac:thm:classification} addresses only the vertex-indexed diagonal pencil. A no-go result for that form should not be used as an obstruction to every possible determinant construction.
+
+\begin{question}[Quantitative obstructions with variable edge magnitudes]
+Replace the unit-phase constraint by $1-\eta\le |K_{ab}|^2\le1+\eta$ on edges. Find an explicit lower bound on the largest support-minor defect, in terms of $\eta$, for noncacti. Does a useful dimension-independent gap persist for all sufficiently small $\eta$?
+\end{question}
+Path compression now multiplies and divides magnitudes, so the proof of Lemma~\ref{cac:lem:defectmonotone} no longer gives an exact contraction. Long subdivisions are the natural stress test.
+
+\begin{question}[Short checkable obstruction certificates]
+Design an algorithm that, given a noncactus graph and edge phases in an exact number field, outputs a matchable minor with defect at least $\epsstar$, together with a compact certificate. Optimize the number of rows and columns of the output witness.
+\end{question}
+The constructive proof finds a theta and traces a failing core minor back through augmented minors. Theorem~\ref{cac:thm:bounded} proves that no constant bound on witness order is possible; it does not determine the best bound in terms of girth, cycle overlap, or input size.
+
+\begin{question}[Transfer beyond height-two posets]
+Can stable signed-support methods, rather than faithful matrices, extend Part~II's $\gamma$-interpretation (Theorem~\ref{htwo:thm:main}; compare Research question~1) to height-three posets or nontrivial preorder-equivalence blocks? Identify an explicit intermediate class where the combinatorial support model remains valid.
+\end{question}
+Neither the cactus theorem nor the $K_{2,3}$ example answers general $\gamma$-positivity or existential flag-polytope realization. Those questions require an additional bridge beyond Theorem~\ref{htwo:thm:main}.
+
+\begin{question}[Kernel-checked certificate theory]
+Formalize the ternary support-pattern classification first, then extend it to the complex phase and sharp-gap theorems. Can the induced-theta reduction and the augmented-minor map be packaged as a reusable verified obstruction framework?
+\end{question}
+A successful implementation would convert a structural nonexistence proof into independently checkable finite witnesses while leaving the harder stability theory in a separate module.
+
+\section{Conclusion}\label{cac:sec:conclusion}
+The phase construction for cactus matching supports is not merely one successful family among many exact vertex determinant models: it exhausts them. Cycle overlaps produce induced theta obstructions, and a support-preserving Schur compression reduces every such obstruction to one of three small matrices. The same reduction determines the ternary support boundary and yields an optimal, dimension-independent approximation threshold.
+
+At the same time, real stability survives beyond that boundary. The explicit $K_{2,3}$ sums of squares and their leaf extensions show why searching only for a Hermitian vertex determinant would miss valid stability phenomena. The next stage of this report's program should therefore distinguish structural determinant certificates from more general stability certificates, and should distinguish both from one-variable real-rootedness tests.
+
+\section{A sharper calculation for the shared-edge core}
+\label{cac:app:Dexact}
+\noindent\emph{(Appendix~A of manuscript~05.)}
+Although the bound $3/5$ is enough for the universal theorem, the other small core $\Dcore$ also has an exact elementary minimax value.
+
+\begin{proposition}[The exact defect of two squares sharing an edge]
+\label{cac:prop:Dexact}
+For $\Dcore=\vartheta(1,3,3)$,
+\[
+ d(\Dcore)=d_0:=\frac{\sqrt5-1}{2}.
+\]
+\end{proposition}
+\begin{proof}
+In~\eqref{cac:eq:D}, every ambiguous proper square minor is one of the two cycle minors $1-x$, $1-y$; the only remaining ambiguous minor is the full determinant $1-x-y$. Thus these three norms determine the defect.
+
+Assume a defect $\delta<d_0$. The real parts $a,b$ lie strictly inside the rectangle $[l,h]^2$, where
+\[
+ l=(1-d_0)/2,\qquad h=(1+d_0)/2,\qquad l+h=1.
+\]
+Use the separately convex/concave functions $g_-,g_+$ from Lemma~\ref{cac:lem:Dgap}. The two equal-coordinate corners of $g_-$ have value $d_0^2=1-d_0$. At an off-diagonal corner,
+\[
+ g_-(l,h)=\bigl(\sqrt{1-l^2}-\sqrt{1-h^2}\bigr)^2
+ =\frac{(h-l)^2}{(\sqrt{1-l^2}+\sqrt{1-h^2})^2}
+ \le d_0^2.
+\]
+The denominator is at least one: $l+h=1$ gives
+$(1-l^2)+(1-h^2)=1+2lh\ge1$. Therefore opposite imaginary signs force $|1-x-y|^2\le1-d_0<1-\delta$, impossible.
+
+For the same-sign case, the equal-coordinate corners of $g_+$ have values $3-2d_0$ and $3+2d_0$. Both exceed $1+d_0$, since $d_0<2/3$. For the off-diagonal corner, $lh=d_0/4$ and
+\[
+ g_+(l,h)=1+\frac{d_0}{2}
+                +2\sqrt{\frac{d_0}{2}+\frac{d_0^2}{16}}
+ >1+d_0.
+\]
+The last strict inequality follows from $\sqrt{d_0/2+d_0^2/16}>d_0/4$. Separate concavity therefore forces $|1-x-y|^2>1+d_0>1+\delta$, another contradiction. Hence $d(\Dcore)\ge d_0$.
+
+For attainment, take $x=e^{i\alpha}$ and $y=e^{-i\alpha}$ with $\cos\alpha=(1+d_0)/2$. The two cycle squared norms are $1-d_0$, while the full squared norm is $d_0^2=1-d_0$. Each has defect $d_0$, and all other nonzero minors have norm one. This proves equality.
+\end{proof}
+This additional calculation is not needed for the main classification or for the sharp universal constant. It leaves the three-odd-path core as the remaining small exact optimization target.
+
+\Needspace{26\baselineskip}
+\section{A compact dependency ledger}
+\label{cac:sec:ledger}
+\noindent\emph{(Appendix~B of manuscript~05.)}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.33\textwidth}Y@{}}\toprule
+Result & Inputs\\\midrule
+Cactus sufficiency & Symmetric differences of matchings; independent cycle flips; sixth-root norm identity.\\
+Cactus necessity & Induced-theta lemma; support-preserving Schur compression; three core calculations.\\
+Hermitian equivalence & Diagonal coefficient expansion; singleton and pair recovery; bipartite block determinant.\\
+Ternary classification & Same graph reduction; three computations in $\F_3$; independent cycle factors.\\
+Gauge count & Spanning-forest normalization; two possible normalized phases per cycle.\\
+Sharp universal gap & Defect monotonicity; exact three-chord minimax; rational bounds on $\Dcore,\Tcore$.\\
+Stable noncactus family & Three Rayleigh identities; Br\"and\'en's criterion; direct leaf-preservation argument.\\
+No bounded minor-order test & High-girth odd theta; uniqueness of a forest perfect matching; classification.\\\bottomrule
+\end{tabularx}
+\end{center}
 
 \clearpage
 \appendix
@@ -3187,6 +4387,37 @@ consulted 28 September 2026.
 \url{https://mathdb.com/p/374962/real-rootedness-conjecture-for-preorder-polytope-h-polynomia}.
 The page displayed a relative posting date and marked the claim unverified;
 the explicit example, not the site's historical metadata, is credited here.
+
+% Part III (batch 42): references of manuscript 05 not already cited above.
+\bibitem{Branden}
+P. Br\"and\'en,
+\emph{Polynomials with the half-plane property and matroid theory},
+\emph{Advances in Mathematics} \textbf{216} (2007), no.~1, 302--320.
+doi:10.1016/j.aim.2007.05.011; \arxiv{math/0605678v4}.
+Theorem~5.6 is the multiaffine Rayleigh criterion used in
+Section~\ref{cac:sec:stable}.
+
+\bibitem{ANP}
+P.~J. Almeida, D. Napp, and R. Pinto,
+\emph{Superregular matrices and applications to convolutional codes},
+\emph{Linear Algebra and its Applications} \textbf{499} (2016), 1--25.
+\arxiv{1601.02960}.
+
+\bibitem{BDZ}
+M. Baker, C. Ding, and X. Zhuang,
+\emph{The Jacobian of a Sixth-Root-of-Unity Matroid},
+\arxiv{2308.11760v2}, 2023.
+
+\bibitem{BVY}
+S. Burton, C. Vinzant, and Y. Youm,
+\emph{A real stable extension of the V\'amos matroid polynomial},
+\arxiv{1411.2038}, 2014.
+
+\bibitem{Nakamura}
+M. Nakamura,
+\emph{A note on binary fundamental transversal matroids},
+\emph{Graphs and Combinatorics} \textbf{5} (1989), 371--372.
+doi:10.1007/BF01788693.
 
 \end{thebibliography}
 \end{document}
