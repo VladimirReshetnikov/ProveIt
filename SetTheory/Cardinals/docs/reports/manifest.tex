@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 110 independent mathematical research packages}}
+  pdfsubject={Catalogue of 112 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,21 +53,22 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and ten independent mathematical research packages,\\
+  {\large One hundred and twelve independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 28 September 2026}
+  {\normalsize 29 September 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and ten research packages stored
+This document catalogues the one hundred and twelve research packages stored
 under \dir{docs/reports}.  One hundred and four of them came with the
-collection; the other six, and an extension of a seventh, came from twelve
-archives of batch~36 of ProveIt's incoming-reports procedure
-(\dir{docs/incoming}), whose archives remain in the repository's history.
+collection; the other eight came through ProveIt's incoming-reports procedure
+(\dir{docs/incoming}) --- six in batch~36 and one each in batches~40
+and~41 --- whose archives remain in the repository's history.  Later batches
+also extended existing reports; their entries name the batch.
 The next paragraphs describe the first one hundred and four.  The seven surreal-number reports that this catalogue
 used to carry were moved out to a repository of their own, with their history,
 and are no longer listed here.  They arrived as one hundred and twenty-five ZIP
@@ -147,7 +148,7 @@ original archive names are recorded with every entry.
  & \dir{transfinite-words} & 2\\
  & (top level) & 5\\
 \midrule
-\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 8\\
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 9\\
  & \dir{binary-product-coefficient-counts} & 3\\
  & (top level) & 5\\
 \midrule
@@ -172,9 +173,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{jacobian-conjecture} & --- & 3\\
 \midrule
-\dir{galois-theory-and-radicals} & --- & 1\\
+\dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{110}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{112}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -536,7 +537,7 @@ kept.}}
 
 \entry{A coloring obstruction to maximal binary DFAO reversal}
 {automata-and-formal-languages/dfao-reversal-coloring-obstruction}
-{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip}
 {For transformations $a,b$ on an $n$-element set and an output map to $k$
 labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
 with $g(k)$ the largest order of a permutation of $k$ symbols --- the
@@ -550,7 +551,14 @@ three-case argument, and both a qualitative short proof and the counting proof
 are kept.}  Part~II, added in batch~39, settles three outputs exactly:
 $R_2(n,3)=3^n-3(2^A+2^B-2)+B$ for every $n\ge7$, with $(A,B)$ the closest
 coprime split of $n$, together with rigidity of the extremizers; the formula
-matches all twenty-four $k=3$ rows of the finite table.  $k\ge4$ stays open.}
+matches all twenty-four $k=3$ rows of the finite table.  Part~III, merged in
+batches~40--41 from three manuscripts, settles every $k\ge4$ past an explicit
+threshold: $R_2(n,k)=k^n-\mathrm{Bip}_k(a_n,b_n)+a_nb_n$ once $n\ge N(k)\le3k^4$,
+and for all $n\ge\max(7,k+1)$ when $k=4,\dots,7$ (computer-assisted below
+$N(k)$), with the lower construction imported from Davies; a non-effective
+eventual route for every $k\ge3$, 919 finite certificates and a second proof of
+the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ at small $n$ stays
+open.}
 
 \entry{Synchronizing D\.zyga's automata by a cyclic retract}
 {automata-and-formal-languages/dzyga-synchronizing-retract}
@@ -568,7 +576,7 @@ $\tau(q_0)\ge4k+8$ is not proved.}
 
 \entry{Gaps in bounded-shuffle hierarchies}
 {automata-and-formal-languages/insertion-degree-spectra}
-{article.pdf}{shuffle\_spectra\_research.zip}
+{article.pdf}{shuffle\_spectra\_research.zip; batch~41: ProveIt\_Binary\_Insertion\_Spectra.zip}
 {A counterexample to the insertion-degree No-Gap Conjecture of Hughes,
 arXiv:2608.27755v1, Section~11, followed by positive results: every finite set
 of positive integers containing~1 is the insertion-degree spectrum of two
@@ -578,7 +586,11 @@ ternary pair has spectrum $\{1,3\}$ with sole difficult output \texttt{abcba},
 whose length~5 is the minimum possible for a gap witness; a binary pair has
 spectrum $\{1,2,4\}$ while all 18 singleton source-pair spectra are initial
 intervals, so source-pair ambiguity can erase a degree.  The separate
-iteration-depth no-gap conjecture is proved for arbitrary languages.}
+iteration-depth no-gap conjecture is proved for arbitrary languages.  Part~II,
+added in batch~41, fixes the alphabet: every finite set containing~1 is the
+spectrum of finite \emph{binary} languages with the single inserted word $a^m$,
+so two letters always suffice; its $m^2$ length bound holds in its
+full-coverage class only.}
 
 \entry{A cut-sensitive attack on the first open MIX grammar case}
 {automata-and-formal-languages/mix-grammar-cut-sensitive}
@@ -1033,13 +1045,17 @@ in arXiv:1510.05390, Section~8.}
 
 \entry{Nonreal roots survive in polynomial iterative equations}
 {log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}
-{article.pdf}{nonreal\_roots\_research.zip}
+{article.pdf}{nonreal\_roots\_research.zip; batch~41: ProveIt\_Increasing\_Spectral\_Core.zip}
 {Here $P[f]=\sum_ja_jf^{\circ j}$ means a combination of \emph{iterates}, not a
 polynomial in pointwise values.  Gives a negative answer to Problem~6.1 of
 Draga--Morawiec (arXiv:1503.00570), which proposed deleting nonreal
 maximal-modulus characteristic roots: an explicit odd, strictly increasing,
 globally bi-Lipschitz homeomorphism realises a cubic whose nonreal root cannot
-be discarded.  Adds a classification of the circular root spectra that occur.}
+be discarded.  Adds a classification of the circular root spectra that occur.
+Part~II, added in batch~41, classifies the minimal iterative polynomials of
+increasing homeomorphisms with roots on several circles, through a universal
+spectral core and an affine rigidity theorem; decreasing maps are not
+covered.}
 
 \entry{Canonical binomial decomposition does not preserve real roots}
 {log-concavity-and-unimodality/binomial-decomposition-real-roots}
@@ -1406,7 +1422,7 @@ least eventual period is exactly $p$.  Both bounds are proved by hand.}
 
 \entry{Finite-prefix corrections for polyomino growth}
 {enumerative-combinatorics/polyomino-growth-finite-prefix-corrections}
-{article.pdf}{ProveIt\_Polyomino\_Research.zip}
+{article.pdf}{ProveIt\_Polyomino\_Research.zip; batch~40: ProveIt\_Spectral\_Saturation.zip}
 {Continues the formal project \dir{Combinatorics/Polyominoes/KlarnerConstant},
 whose Lean-verified bound is $\lambda\le 9047/2000=4.5235$ for Klarner's
 constant.  Proves a finite-prefix correction theorem for proper positive
@@ -1419,7 +1435,10 @@ connected, nonlinear systems, and yields $4.52349\le\mu_{\mathrm{original}}\le4.
 for the original recurrence --- a statement about the recurrence, not a lower
 bound on~$\lambda$.  At intake, a fresh build of the delivered enumerator (the
 same program, not an independent one) regenerated the size-18 table and matched
-it exactly.}
+it exactly.  Part~II, added in batch~40, shows where the method stops: exact
+spectral saturation in the irreducible critical case, a square-root law, and an
+all-prefix barrier $\mu_N\ge4.3149$ for Bui's map --- a limit of this method,
+not a lower bound on $\lambda$ and not an improvement on $4.498$.}
 
 \section{Generating functions and asymptotics}
 
@@ -1506,6 +1525,20 @@ $C\gamma^n$ prefactor.  The rigorous lower bounds rest on a uniform injectivity
 theorem: any finite alphabet of representable values can serve as nested-radical
 digits, via an odd valuation at a prime above~2.  No closed form for $\gamma$ is
 claimed, and terms 22--28 get certified intervals rather than exact values.}
+
+\entry{Dyadic scaling rigidity of 3AP-free permutations}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity}
+{article.pdf}{ProveIt\_Dyadic\_Scaling\_Rigidity.zip (batch~40)}
+{For $\theta(n)$, the number of permutations of $[n]$ with no three-term
+arithmetic progression (OEIS A003407), studies the dyadic scaling of
+$\theta(n)$: a continuous log-periodic growth profile with its exact
+fundamental period, rigidity of the profile under real rescaling, explicit
+losses and gains of the 2:1 gluing, and the empirical and sampling laws; the
+adjacent ratios $\theta(n+1)/\theta(n)$ have no limit.  The parity recurrences and Sharma's
+Theorem~2.8, which the manuscript imports, are already proved in Lean in
+\dir{Combinatorics/Ramsey} (the table $\theta(1..20)$ there rests on a
+\texttt{native\_decide} certificate); the report's own theorems are not
+formalized.}
 
 \entry{An exact coefficient formula for Ramanujan's theta function}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260306-formula-proof}
@@ -1720,7 +1753,7 @@ dimension three.}
 
 \section{Galois theory and radicals}
 
-One report continuing the formal project \dir{Algebra/PolynomialFormulas}
+Two reports continuing the formal project \dir{Algebra/PolynomialFormulas}
 (Lean and Rocq root formulas through degree four, Abel--Ruffini, and Lazard's
 quintic solver); none of its theorems is formalized.
 
@@ -1741,5 +1774,15 @@ scheme for quintics; a coefficient-only solver is left as further work), realize
 rational polynomials with full affine Galois group, and shows the Picard group
 of the cyclic configuration quotient is $\mathbb{Z}/p$, so no single global
 Kummer coordinate exists.  The Picard result has a written proof only.}
+
+\entry{Finite separating ranges for sextic block resolvents}
+{galois-theory-and-radicals/sextic-block-resolvent-separators}
+{article.pdf}{ProveIt\_Finite\_Sextic\_Separators.zip (batch~41)}
+{The project finds parameters separating the sextic pair and triple
+block-resolvent descriptors by an unbounded \texttt{Nat.find} search.  This
+report proves in writing that on the curve $(t,2t^2)$ one of $t=1,\dots,196$
+always separates both families, sharply for arbitrary complex test sets, by
+orbit counting.  The bound is not formalized; formalizing it would make that
+search bounded, and two further unbounded searches of the project remain.}
 
 \end{document}

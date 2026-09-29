@@ -18,6 +18,14 @@ and exact growth-rate bounds for square-lattice polyominoes.
   contains the radical-expression semantics, exact certificates through size
   15, their Wolfram generator, and proof-engineering reports.
 
+- [`Ramsey/`](Ramsey/) contains Lean formalizations of papers on
+  3AP-free permutations and Ramsey-type counting (Davis–Entringer–Graham–Simmons
+  1977, LeSaulnier–Vijay 2010 and 2011, Sharma 2012, Gowers–Szemerédi), with
+  the source papers.  The research-report collection's
+  [`a003407-dyadic-scaling-rigidity`](../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity/README.md)
+  builds on its parity recurrences and Sharma's Theorem 2.8; its own
+  theorems are not formalized.
+
 The A198683 research corpus is preserved under
 `PowerTowers/Research/A198683`; its wave-5 ledger is the authoritative account
 of proved, conditional, data-certified, and heuristic claims about `a(12)`.

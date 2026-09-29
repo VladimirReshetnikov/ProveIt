@@ -585,3 +585,5 @@ ProveIt-era batches (from this directory):
 | 37 | `0e53d10` | `e2f896d`, `ac07b4c`, `3f47574`, `f0fc69f`, `b6ef9e5`; notes `15c5658` | "Catalogue batches 37-38" | — |
 | 38 | `938b2f7` (five packages filed in the Fabius drafts tree by its quick intake) | `fa77d9e` | "Catalogue batches 37-38" | — |
 | 39 | `e2b1f01` (four collection additions; two packages filed in the Fabius drafts tree) | `a30b1c5`, `6a354f5`, `ed123c7`, `0e0368b` | "Catalogue batch 39" | — |
+| 40 | `afb2d12` | `d607838`, with batch 41: `8d936ee`, `18634ca` | "Catalogue batches 40-41" | — |
+| 41 | `eaf787d` | `18634ca` (DFAO Part III, with batch 40), `ac9107d`, `c130dba`, `ccc29b9`; notes `e489bd5` | "Catalogue batches 40-41" | — |

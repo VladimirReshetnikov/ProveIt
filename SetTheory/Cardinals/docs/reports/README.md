@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and ten independent mathematical research packages, unpacked
+One hundred and twelve independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and ten reports, names the problem each one attacks
+numbers all one hundred and twelve reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -23,13 +23,13 @@ records what each report claims rather than verifying it.
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 16 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 17 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
-| [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts | 1 |
-| **Total** | **110** |
+| [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
+| **Total** | **112** |
 
 ## Later deliveries
 
@@ -65,7 +65,17 @@ a Part II proving `E_m -> 2 log pi`, and batch 39 added parts to
 [`shifted-catalan-hankel-polynomials`](hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials)
 (root collisions for arbitrary multipliers) and
 [`dfao-reversal-coloring-obstruction`](automata-and-formal-languages/dfao-reversal-coloring-obstruction)
-(the exact three-output maximum).
+(the exact three-output maximum).  Batches 40 and 41 added two reports,
+[`a003407-dyadic-scaling-rigidity`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity)
+(continuing the Lean project `Combinatorics/Ramsey`) and
+[`sextic-block-resolvent-separators`](galois-theory-and-radicals/sextic-block-resolvent-separators)
+(continuing `Algebra/PolynomialFormulas`), and extended four: the DFAO report
+(Part III: exact binary reversal for every `k >= 4` past an explicit
+threshold), the polyomino report (Part II: where the method saturates),
+[`insertion-degree-spectra`](automata-and-formal-languages/insertion-degree-spectra)
+(binary alphabets suffice) and
+[`nonreal-roots-in-iterative-equations`](log-concavity-and-unimodality/nonreal-roots-in-iterative-equations)
+(roots on several circles).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

@@ -25,7 +25,10 @@ formalized**: it rests on the enumeration and on a finite-prefix correction
 theorem that this project does not prove, and the Lean endpoint theorems here
 are specific to `ζ = 2000/9047`.  `4.5235` remains the formally verified
 bound.  The report builds on this project's Lean recurrences
-(`geometricPublishedBuiRecurrences`) and names what they cover.
+(`geometricPublishedBuiRecurrences`) and names what they cover.  Its Part II
+shows where this finite-prefix method saturates (an all-prefix barrier
+`4.3149` for Bui's map, a limit of the method and not a lower bound on
+`λ`).
 
 The improvement changes no geometric recurrence.  It replaces Bui's rational
 supersolution at `ζ = 1/4.5238` by a new, exact supersolution at
