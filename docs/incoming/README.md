@@ -147,6 +147,7 @@ continues; verify that path against the current tree rather than trusting it.
 | Research-report collection | `SetTheory/Cardinals/docs/reports/<category>/[<subcategory>/]<report>/` | every other self-contained external report: ordinals and wqos, enumerative combinatorics, Hankel determinants, congruences, asymptotics, automata, graphs, the Jacobian conjecture, radicals and Galois theory, … |
 | Research programme | `Computability/TuringDegrees/Research/CoarseDegrees/research-reports/<NN>/`, `SetTheory/Cardinals/docs/cardinals/research-reports/` | numbered reports that continue a programme's own research plan and synthesis (plan targets, synthesis items) |
 | Fabius frontier drafts | `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/<group>/<Document_Name>/` | Fabius, Rvachev up-function and Thue–Morse work continuing that tree's volumes; filed by the tree's own quick-intake procedure (its `drafts/incoming/README.md`): delivered package kept whole with its PDF, `MANIFEST.md` row and group-README mention, no SHAs in the records, claim review deferred (batch 38) |
+| Transseries | `Analysis/Transseries/docs/series-and-transseries/<Document_Name>/` | transseries work of every kind (reversion, inversion, resurgence, regularity, transseries of special functions or sequences); **never under FabiusFunction** (Vladimir, 2026-09-29, after the split `277c782b8`). Filed like the Fabius drafts: the package kept whole with its PDF beside the volume it continues, a mention in `docs/series-and-transseries/README.md` naming that volume and the passage continued, no SHAs; merging into the volumes is deferred (batch 45) |
 
 - A manuscript that continues a report already in one of the collections goes
   to that report, whatever its subject.
@@ -589,3 +590,4 @@ ProveIt-era batches (from this directory):
 | 41 | `eaf787d` | `18634ca` (DFAO Part III, with batch 40), `ac9107d`, `c130dba`, `ccc29b9`; notes `e489bd5` | "Catalogue batches 40-41" | — |
 | 42 | `3609d04` | `e9f425f`, `3815377`, `a835019`, `b1f5e8d`, `0e6632a` | "Catalogue batch 42" | — |
 | 43 | `faef2ed` (six archives from two arrival commits) | `b8e4607`, `fb60de0`, `22f7689`, `d252e2a` | "Catalogue batch 43" | — |
+| 44 | `2030160` | `ff9032b`, `b26d06011`, `6f09f41`; notes `21890f8` | "Catalogue batch 44" | — |

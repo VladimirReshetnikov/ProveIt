@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and twelve independent mathematical research packages, unpacked
+One hundred and thirteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and twelve reports, names the problem each one attacks
+numbers all one hundred and thirteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -24,12 +24,12 @@ records what each report claims rather than verifying it.
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
 | [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 17 |
-| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
+| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| **Total** | **112** |
+| **Total** | **113** |
 
 ## Later deliveries
 
@@ -83,7 +83,11 @@ depth certificates closing deficits 3 and 4 for A290268 (power-tower
 derivative term counts).  Batch 43 extended four: product entropy (Bernoulli
 entropy quasiconcavity), the largest jump near the boundary (adjacency-bounded
 132-avoiders), nonholonomicity of A003407, and a four-output Part IV of the
-DFAO report.
+DFAO report.  Batch 44 added
+[`constrained-crossover-closure`](automata-and-formal-languages/constrained-crossover-closure)
+and extended two reports: gamma-positivity for every finite preorder (preorder
+root polytopes, Part IV) and the whole affine-in-`z` weighted Keller class
+(weighted Keller rigidity, Part II).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

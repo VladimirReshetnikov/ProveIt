@@ -176,7 +176,9 @@ names the declarations here that it builds on.
   components are affine in `v = x^2 z` (with `r` affine in `(t,v)`, extended
   to `r = R(t) + γv`); every noninvertible one in that class is this map up
   to the diagonal action and tame composition.  Unrestricted weighted maps
-  are not covered.  The report sharpens the degree-seven sparsity search of
+  are not covered.  Its Part II (batch 44) extends the classification to the
+  whole class affine in `v`, with the coefficient of `v` in `r` forced to be
+  constant.  The report sharpens the degree-seven sparsity search of
   [`Research/README.md`](Research/README.md) to all degrees.  It does not show
   that degree seven is minimal in dimension three.
 - [`gao-f6-fiber-geometry`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/gao-f6-fiber-geometry/README.md):
