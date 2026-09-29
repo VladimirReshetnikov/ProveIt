@@ -596,3 +596,4 @@ ProveIt-era batches (from this directory):
 | 47 | `e87ca20` (seven transseries packages filed whole under `Analysis/Transseries`; two arrival commits) | — (merge into the volumes deferred) | in the placement commit | — |
 | 48 | `2fc8325` (ten transseries packages filed whole under `Analysis/Transseries`) | — (merge into the volumes deferred) | in the placement commit | — |
 | 49 | `140860b` (five transseries packages filed whole under `Analysis/Transseries`; one Fabius-zonoid continuation filed under `Analysis/FabiusFunction/…/representations`; two arrival commits) | — (merge into the volumes deferred) | in the placement commit | — |
+| 50 | `88a2647` (five transseries packages filed whole under `Analysis/Transseries`; one Fabius-jet correction filed under `Analysis/FabiusFunction/…/representations`, after the retraction `7cf49f7` of the zonoid report's jet small-ball conjecture) | — (merge into the volumes deferred) | in the placement commit | — |
