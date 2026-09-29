@@ -247,7 +247,17 @@ declarations, each named at its point of use in the article:
   (`Algebra/PolynomialFormulas/LazardPaperClaimCrosswalk.md:150-158`);
   Faggal–Lazard 2014 is cited in no other tracked file.
 
-No other report of the collection shares a theorem with this one.
+No other report of the collection shares a theorem with this one. The
+sibling report
+[`sextic-block-resolvent-separators`](../sextic-block-resolvent-separators/README.md)
+(batch 41, written without knowledge of this one) bounds, on paper, the
+Lean parameter search built on the sextic descriptors above: one of
+`t = 1, …, 196` on the curve `(u, v) = (t, 2t²)` separates both partition
+families, sharply for arbitrary complex test sets. It is a sextic-partition
+counterpart of Theorem 7.2, obtained by the orbit counting that Research
+question 14.3 asks for, but it answers no question of this report (14.3 is
+about septic triples). A dated `[write]` note after Theorem 7.2 points to
+it (added 29 September 2026; the PDF is still 32 pages).
 
 ## Building
 
