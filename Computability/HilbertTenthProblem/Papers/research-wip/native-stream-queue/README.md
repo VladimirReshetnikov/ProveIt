@@ -27,6 +27,9 @@ New research, without a change to the complete universal bound:
 | [Base-four half mask](pell_kernel_base_four_half_mask.md) | The same **51=30M+21A** predicate with retained power `X=4^(2r+1)`; even masks work with the exact origin-parity condition. | Even exponent removes one stride obstruction but does not prove compiler alignment. |
 | [Native ternary selectors](native_controller_three_selector_53.md) | Exact three-label selector relation in **53=29M+24A**, with power geometry, typing, bounds and one-hot synchronization; 54 also exposes the repunit. | Controller, ordinary input, transport and acceptance remain unpaid. The first label is fixed to zero. |
 | [Native gate routing](native_controller_nand_composition.md) | Complete **66** cyclic NAND relation and **67** finite three-state variants; paid routing also proves Boolean input typing. | Commuting NAND wiring collapses. The richer rule family has no universality, raw-input or acceptance proof; the Rule110 search is explicitly bounded. |
+| [Noncommuting native routing](native_controller_noncommuting73.md) | Exact **73=37M+36A** NAND relation with a paid tail route, positive converse and an admitted noncommuting example. A finite-defect lemma bounds deviation from an ordinary rotation. | Universal wiring, input and acceptance remain absent. Removing the tail bound gives a refuted72 source. |
+| [Selector/FIFO composition](input_bridge_selector_queue.md) | At most **69** operations for the complete finite three-row FIFO relation, with paid power geometry and bounds. A shared **63** specialization accepts exactly positive ternary repunits. | The established loader requires more read rows and a different origin treatment; the finite controller remains unpaid. |
+| [Stateless FIFO regularity](native_stateless_fifo_regular.md) | Every fixed finite stateless table with this equal-length transport accepts a regular language of ordinary inputs, even with padding, a fixed first row and positivity flags. | This excludes a universal stateless replacement, not the existing synchronized controller or a redesigned transport. |
 | [Interleaving refutation](interleaved_compiler_collapse_refutation.md) | New positive separated-field **74** and collapsed **75** sources admit every positive input for every admitted fixed compiler, including an empty-set compiler. | This rejects those specified sources, not either previously open75 candidate. The proof here uses an independent whole-cell stride. |
 | [Main-power interleaving refutation](interleaved_compiler_main_power_refutation.md) | A new **74=41M+33A** source remains false when the stride is twice the actual main Pell power. All inputs still have positive witnesses. | Reusing the packed index does not repair this specified interleaving source; the two older75 candidates remain open. |
 | [Elementary prime padding](pell_kernel_prime_padding.md) | Boolean unit-cell subsets attain every residue modulo an arbitrary fixed odd factor times a growing padding length, while preserving reserved endpoint bits. | A mathematical witness-selection lemma; no extra arithmetic operation or universal compiler is supplied for free. |
@@ -50,6 +53,9 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_base_four_half_mask.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_three_selector_53.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nand_composition.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_noncommuting73.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_selector_queue.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_stateless_fifo_regular.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/interleaved_compiler_collapse_refutation.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/interleaved_compiler_main_power_refutation.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_prime_padding.py
@@ -64,11 +70,14 @@ field and a native controller composed with the three typed selectors.
 The direct interleaving shortcut is now refuted, including strictly positive
 separate data and verification fields and reuse of twice the actual main
 Pell power. The native alternative has paid typing for three choices and
-two cyclic Boolean routing ports. Its uniform NAND form has a proved
-structural collapse; its three-state form has no universal computation
-compiler. Larger affine state codes alone cannot encode the current
-erase/copy language. A useful next construction must supply richer routing,
-a proved universal local relation, or a different computation model, with
+two Boolean routing ports, including a paid noncommuting tail route.
+Its uniform NAND form has a proved structural collapse; its three-state
+form has no universal computation compiler. The native FIFO now composes
+with the selectors with paid powers and bounds, but any fixed stateless
+table accepts only a regular input language. Larger affine state codes
+alone cannot encode the current erase/copy language. A useful next
+construction must supply a synchronized controller, a proved universal
+local relation with routing, or a different computation model, with
 ordinary input and acceptance included in its full ledger.
 
 ## Preserved and runnable work
