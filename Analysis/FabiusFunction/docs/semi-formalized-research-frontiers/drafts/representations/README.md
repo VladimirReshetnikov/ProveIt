@@ -172,6 +172,26 @@ of an existing draft; semantic consolidation is deferred to the post-
   `d → ∞`, `h ↓ 0` asymptotic stay open.  Its "transseries" are
   convergent elliptic and modular expansions.  Unreviewed; its numerics
   are not certificates; no Lean statement.
+- [`Polynomial_Geometric_Small_Deviations_Fabius_Jets/`](Polynomial_Geometric_Small_Deviations_Fabius_Jets/),
+  *Polynomial–Geometric Small Deviations: A Corrected Fabius-Jet
+  Conjecture* (24-page A4 PDF, 1,139-line source, an mpmath/SciPy/SymPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone.  It shows that the jet
+  small-ball conjecture `conj:jet-small-ball` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/)
+  is false whenever `q ≠ 1/e`: the logarithm of the small-ball
+  probability of `Σ_{n≥1} n^m q^n U_n` contains a term
+  `((m+1)² log λ/λ) log log(1/x)`, `λ = −log q`, which the conjectured
+  shape omits.  It replaces the conjecture by an all-order expansion in
+  an exact Lambert coordinate, with periodic coefficients whose leading
+  one is independent of `m` and has an explicit Gamma–zeta Fourier
+  series, and adds a comparison law for perturbed weights and an
+  inverse-quantile theorem.  For the Fabius law itself (`m = 0`,
+  `q = 1/2`) the expansion is the one already machine-checked in
+  `Analysis/FabiusFunction/Lean` (the corrected Lambert-phase and
+  explicit "Wikipedia" forms of the small-argument asymptotic), which the
+  article does not cite.  Unreviewed; its numerics are not certificates;
+  no Lean statement for the general case.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

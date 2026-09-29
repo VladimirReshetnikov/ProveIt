@@ -1,0 +1,1441 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Slowly Varying Critical Transseries},pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Slowly varying critical transseries}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}\newcommand{\ii}{\mathrm i}
+\newcommand{\bc}{\beta_{\mathrm c}}\newcommand{\rhoc}{\rho_{\mathrm c}}
+\newcommand{\G}{\Gamma(-\alpha)}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\F}{\mathcal F^{-1}}
+\newcommand{\asyminv}{\leftarrow}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\title{\vspace{-12mm}\textbf{Slowly Varying Critical Transseries}\\[4mm]
+\Large Universal action budgets, convergent Lambert charts,\\
+and an effective-index expansion}
+\author{Research article prepared for Vladimir Reshetnikov}
+\date{September 29, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Consider the countable exponential-feedback equation
+$U=\beta A(qe^U)$ with nonnegative coefficients
+$a_j\sim a j^{-1-\alpha}\ell(j)$, where $1<\alpha<2$ and $\ell$ is slowly
+varying. The ProveIt critical-Hahn manuscript explicitly asks whether its
+exact-power-tail theory extends to this class. We give a fixed-interior-exponent
+answer. The critical inverse is described by an asymptotic inverse of
+$y^\alpha/\ell(y)$; the same normalization controls the large coefficients
+and the sharp scale of asymptotically sufficient action cutoffs. A compensated
+stable density supplies a universal coupling--cutoff profile, independent
+of $\ell$ after normalization, and a conditional point-process formula
+identifies the entire cloud of large actions.
+
+The representation question has a genuine obstruction: an explicit positive,
+slowly varying oscillatory tail yields no leading monomial in any finite
+iterated power--log scale. For the exact tails
+$j^{-1-\alpha}(\log j)^m$, $m\ge1$, this obstruction disappears. We construct
+an absolutely convergent three-coordinate analytic chart over a
+$W_{-1}$ core, with explicit first coefficients and a geometric tail bound.
+We also prove all-order inverse-logarithmic expansions for coefficients
+and cutoff probabilities. Their first correction is exactly the derivative
+obtained by replacing $\alpha$ by $\alpha-m/\log b_n$ while holding the
+normalized coordinates fixed. A positive derivative formula for the cutoff
+profile turns this into a two-term minimal-budget law.
+
+The stable-limit and regular-variation mechanisms are classical. This article supplies explicit inverse charts, differential correction
+operators, and action-budget formulas, with proofs connecting them to that
+classical theory. No
+claim of historical priority, endpoint uniformity, or Lean formalization
+is made. The package contains 552 exact algebra checks and separately
+labelled floating-point diagnostics.
+\end{abstract}
+\vspace{2mm}
+\noindent\textbf{Keywords.} Transseries; Lagrange inversion; regular variation;
+stable local limits; action truncation; Lambert $W$; logarithmic asymptotics.
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The question being answered and the limits of the answer}
+\label{sec:position}
+
+\subsection{Repository provenance}
+The repository was inspected at commit
+\begin{center}\small\texttt{ebd8344bca77d8352cd745b7df374618a290a029}.\end{center}
+The primary predecessor is \emph{Beyond Finite-Action Folds: Critical Hahn
+Transseries, Stable Sector Asymptotics, and Sharp Action Budgets}, located
+under the transseries documentation directory in
+\texttt{Critical\_Hahn\_Transseries\_Beyond\_Finite\_Action\_Folds/}
+\cite{repo-critical}. Its research Question~1, ``Slowly varying action tails,''
+asks for the implicit stable scale, the cutoff profile, an inverse notation
+when de Bruijn conjugates are necessary, and hypotheses preserving a finite
+positive support grid. That question is the direct target of this article.
+
+The predecessor already treats exact power tails, a bounded coupling window,
+and the conditional-Poisson interpretation of action truncation. These are
+not claimed as new here. The repository index also records upper-endpoint
+articles involving cubic tails and logarithmic modifications
+\cite{repo-index}. Our exponent stays in $(1,2)$; neither an $\alpha\to2$
+limit nor the Gaussian endpoint is being repeated or asserted. The repository
+index warns that its recent research arrivals are unmerged and not formally
+verified. We therefore prove the mathematical statements needed below rather
+than use those arrivals as unexamined analytic axioms.
+
+\subsection{Results and their logical scope}
+For arbitrary positive slowly varying $\ell$, we prove a critical real inverse
+law, a stable local limit, a two-parameter cutoff profile, and the exact
+criterion $M_n/b_n\to\infty$ for asymptotically lossless truncation in a bounded
+critical window. These conclusions require no complex continuation of $\ell$.
+An oscillatory example shows why they cannot automatically be upgraded to a
+power--logarithmic transseries representation.
+
+For the smaller, analytically controlled class with eventual exact weights
+$a j^{-1-\alpha}(\log j)^m$, we prove much more: a convergent local inverse
+chart, all fixed orders of a coefficient expansion, the corresponding
+cutoff expansion, and an asymptotic minimal-budget formula. The coefficient
+expansion is asymptotic, not asserted to converge; the local inverse chart
+really does converge. Confusing those two statements would erase the main
+analytic distinction of the paper.
+
+\subsection{Classical input and novelty discipline}
+Regular variation, asymptotic inversion, and de Bruijn conjugacy are part of
+the classical theory developed in \cite{bgt}. The relation between generating
+functions, conditioned allocations, stable limits, and largest components
+is classical as well; Janson's survey is a detailed reference
+\cite{janson}. Our probability proof is a direct Fourier proof for this
+specific compound-Poisson model, not a claim to have invented a stable local
+limit theorem. The convergent special-function expansion used for exact
+logarithmic tails is the parameter-differentiated polylogarithm expansion
+in \cite{dlmf-polylog}; the Lambert branch is standard \cite{dlmf-lambert}.
+Transseries terminology and the difference between formal operations and
+analytic realization are discussed in \cite{edgar}.
+
+The principal synthesis developed here is the following: the same slowly
+varying normalization controls inverse singularities and action budgets;
+logarithmic tails give an explicit convergent inverse atlas; and logarithmic
+perturbations of the L\'evy measure induce a common differential correction
+on the density, the retained fraction, and its quantiles. These are results
+proved in this article, not independently certified claims of publication
+priority. The literature comparison is targeted rather than exhaustive.
+
+\section{Model, normalization, and exact coefficient identities}
+\label{sec:model}
+
+Fix $1<\alpha<2$, $a>0$, and a sequence $(a_j)_{j\ge1}$ satisfying
+\begin{equation}\label{eq:assumptions}
+ a_j\ge0,\qquad a_1>0,\qquad
+ a_j\sim a j^{-1-\alpha}\ell(j),
+\end{equation}
+where $\ell$ is eventually positive, measurable, locally bounded, and slowly
+varying at infinity:
+\[
+ \frac{\ell(cy)}{\ell(y)}\longrightarrow1
+ \quad\text{for every fixed }c>0.
+\]
+Values of $\ell$ on an initial bounded interval are immaterial. Set
+\begin{equation}\label{eq:constants}
+ A(t)=\sum_{j\ge1}a_jt^j,\quad d_0=A(1),\quad
+ d_1=\sum_{j\ge1}j a_j,\quad
+ \bc=d_1^{-1},\quad \rho_\beta=e^{-\beta d_0}.
+\end{equation}
+Both $d_0$ and $d_1$ are finite and positive. The second moment is infinite.
+For $\beta>0$ define
+\begin{equation}\label{eq:feedback}
+ U_\beta(q)=\beta A(qe^{U_\beta(q)})
+           =\sum_{n\ge1}u_n(\beta)q^n.
+\end{equation}
+A formal coefficient recursion and the analytic implicit-function theorem
+at $(q,U)=(0,0)$ give the same unique analytic germ. Nonnegativity and $a_1>0$
+give $u_n(\beta)>0$ for all $n\ge1$.
+
+For a positive integer $M$ replace $A$ by
+$A_M(t)=\sum_{j\le M}a_jt^j$ and write $u_{n,M}(\beta)$ for the resulting
+coefficients. This is a literal removal of actions, without renormalizing
+the remaining weights or changing $\beta$.
+
+\begin{proposition}[Exact coefficient and conditioning identities]
+\label{prop:exact}
+For $n\ge1$,
+\begin{equation}\label{eq:lagrange}
+ u_n(\beta)=\frac1n[t^n]e^{n\beta A(t)}.
+\end{equation}
+Let $N_{n,j}$ be independent Poisson variables of means $n\beta a_j$ and
+$K_n=\sum_{j\ge1}jN_{n,j}$. Then
+\begin{align}
+ u_n(\beta)&=\frac{\rho_\beta^{-n}}n\Prob(K_n=n),\label{eq:poisson}\\
+ \frac{u_{n,M}(\beta)}{u_n(\beta)}
+ &=\Prob(N_{n,j}=0\text{ for every }j>M\mid K_n=n).\label{eq:ratio}
+\end{align}
+The ratio is nondecreasing in $M$, belongs to $[0,1]$, and equals $1$ for
+$M\ge n$.
+\end{proposition}
+\begin{proof}
+Put $t=qe^{U_\beta}$, so $t=q e^{\beta A(t)}$ and $U_\beta=\beta A(t)$.
+Lagrange inversion gives
+\[
+ [q^n]U_\beta=\frac1n[t^{n-1}]\beta A'(t)e^{n\beta A(t)}
+             =\frac1n[t^n]e^{n\beta A(t)}.
+\]
+The total Poisson intensity is $n\beta d_0<\infty$, so only finitely many
+$N_{n,j}$ are nonzero almost surely. Its generating function is
+$\E t^{K_n}=\exp(n\beta(A(t)-d_0))$, proving \eqref{eq:poisson}.
+On the no-large-action event, independence leaves
+$\exp(n\beta(A_M(t)-d_0))$. Comparing its coefficient with the full one
+proves \eqref{eq:ratio}. Its remaining properties follow from nested events.
+\end{proof}
+
+\begin{definition}[Critical scale and coupling coordinate]
+\label{def:scale}
+Let $\beta_n\to\bc$ and choose $b_n\to\infty$ such that
+\begin{equation}\label{eq:bscale}
+ n\beta_n a\,\ell(b_n)b_n^{-\alpha}\longrightarrow1.
+\end{equation}
+Define
+\begin{equation}\label{eq:lambdan}
+ \lambda_n=\frac{n(1-\beta_n d_1)}{b_n}.
+\end{equation}
+Unless stated otherwise, the coupling coordinate is confined to a fixed
+compact subset of $\R$.
+\end{definition}
+Such a scale exists by asymptotic inversion of a regularly varying function
+of positive index. It is unique up to asymptotic equivalence and has index
+$1/\alpha$ as a function of $n$. In particular $b_n=o(n)$. Replacing it by an
+asymptotically equivalent scale changes neither the leading laws nor the
+criterion for a lossless cutoff. Higher-order laws will require a more
+precise normalization.
+
+\section{The critical inverse for an arbitrary slowly varying tail}
+\label{sec:inverse-rv}
+
+Write $t=e^{-x}$ and let $q=t e^{-\bc A(t)}$. The exact real boundary
+coordinate and inverse value are
+\begin{align}
+ \varepsilon&=\log(\rhoc/q)
+       =x+\bc\bigl(A(e^{-x})-d_0\bigr),\label{eq:epsilon}\\
+ U_{\bc}(q)&=\bc d_0+\varepsilon-x.\label{eq:Uinverse}
+\end{align}
+Here $x\downarrow0$ as $q\uparrow\rhoc$. The derivative of the right side
+of \eqref{eq:epsilon} is
+$1-\bc\sum j a_j e^{-jx}>0$ for $x>0$. Thus the positive inverse exists
+and is unique near the boundary.
+
+\begin{lemma}[Compensated Abelian limit]\label{lem:abelian}
+Under \eqref{eq:assumptions},
+\begin{equation}\label{eq:abelian}
+ A(e^{-x})-d_0+d_1x
+ \sim a\Gamma(-\alpha)x^\alpha\ell(1/x)
+ \qquad(x\downarrow0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $h(v)=e^{-v}-1+v$. The expression on the left is
+$\sum a_jh(jx)$. On $v$ in a compact subinterval of $(0,\infty)$,
+regular variation converts its normalization by
+$a x^\alpha\ell(1/x)$ into the Riemann sum for
+$\int h(v)v^{-1-\alpha}\dd v$. The uniform convergence theorem and Potter
+bounds for slowly varying functions justify the passage from compact
+subintervals to the full half-line \cite{bgt}. For completeness, choose
+$0<\eta<\min(2-\alpha,\alpha-1)$. Near zero use $h(v)\le v^2/2$ and the
+bound $C v^{-1-\alpha-\eta}$ for the normalized weight; near infinity use
+$h(v)\le v$ and $C v^{-1-\alpha+\eta}$. The two dominating functions are
+integrable. An initial finite prefix contributes $O(x^2)$, which is
+$o(x^\alpha\ell(1/x))$. Two integrations by parts give
+\[
+ \int_0^\infty h(v)v^{-1-\alpha}\dd v
+ =\frac{\Gamma(2-\alpha)}{\alpha(\alpha-1)}
+ =\Gamma(-\alpha)>0.
+\]
+All boundary terms vanish by $1<\alpha<2$.
+\end{proof}
+
+Let $R(y)=y^\alpha/\ell(y)$. We use $R^\asyminv$ to denote any asymptotic
+inverse, not necessarily the ordinary inverse of the original possibly
+nonmonotone representative. One can first replace $R$ by an asymptotically
+equivalent increasing function.
+
+\begin{theorem}[Critical inverse and conjugate notation]\label{thm:rv-inverse}
+Put $C=\bc a\Gamma(-\alpha)$. The solution of \eqref{eq:epsilon} satisfies
+\begin{equation}\label{eq:inverse-rv}
+ \boxed{\quad x(\varepsilon)\sim
+ \frac1{R^\asyminv(C/\varepsilon)}.\quad}
+\end{equation}
+In particular $x$ is regularly varying at zero with index $1/\alpha$.
+If $k(y)=\ell(y)^{-1/\alpha}$ and $k^\#$ is a de Bruijn conjugate, then,
+with $z=(C/\varepsilon)^{1/\alpha}$,
+\begin{equation}\label{eq:conjugate}
+ x(\varepsilon)\sim\frac1{z k^\#(z)},\qquad
+ b_n\sim(n\beta_n a)^{1/\alpha}
+ k^\#\bigl((n\beta_n a)^{1/\alpha}\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{lem:abelian}, $\varepsilon\sim C/R(1/x)$. Asymptotic inversion
+of a regularly varying function with positive index proves
+\eqref{eq:inverse-rv}. The conjugacy relations are
+\[
+ k(y)k^\#(yk(y))\to1,\qquad
+ k^\#(y)k(yk^\#(y))\to1.
+\]
+Since $R(y)=(yk(y))^\alpha$, the second relation implies
+$R(zk^\#(z))\sim z^\alpha$. This proves the first formula in
+\eqref{eq:conjugate}, and the same argument applied to \eqref{eq:bscale}
+proves the second. Existence of a conjugate and uniqueness up to asymptotic
+equivalence are the standard conjugacy theorem of \cite{bgt}.
+\end{proof}
+
+\begin{corollary}[Reciprocal matching]\label{cor:reciprocal}
+At $\beta_n=\bc$,
+\[
+ \varepsilon(1/b_n)\sim\frac{\Gamma(-\alpha)}n.
+\]
+Thus the inverse singularity scale and the large-coefficient fluctuation
+scale are reciprocal, with the displayed gamma normalization.
+\end{corollary}
+\begin{proof}
+Substitute $x=1/b_n$ into \cref{lem:abelian} and use \eqref{eq:bscale}.
+\end{proof}
+
+This theorem is a real asymptotic statement. Slow variation alone does not
+supply analytic continuation of $A$ across its unit-circle boundary, a
+complex inverse atlas, or a convergent Hahn expansion. The following
+counterexample shows that even the leading monomial can fail.
+
+\section{A genuine obstruction to power--logarithmic representation}
+\label{sec:obstruction}
+
+\begin{theorem}[A slowly varying tail without a power--log leading monomial]
+\label{thm:obstruction}
+Take, for all sufficiently large $j$,
+\begin{equation}\label{eq:oscillating}
+ a_j=a j^{-1-\alpha}\bigl(2+\sin(\log\log j)\bigr),
+\end{equation}
+and choose any nonnegative finite prefix with $a_1>0$. Its positive critical
+inverse $x(\varepsilon)$ is not asymptotic to any expression
+\begin{equation}\label{eq:plmonomial}
+ c\,\varepsilon^r
+ \prod_{h=1}^d\bigl(\log_h(1/\varepsilon)\bigr)^{s_h},
+ \qquad c>0,\quad r,s_h\in\R,\quad d<\infty,
+\end{equation}
+where $\log_h$ denotes the $h$-fold iterated logarithm. Consequently it has
+no convergent well-based expansion in these monomials whose first nonzero
+term is asymptotically dominant. In particular no ordinary finite Puiseux
+chart exists.
+\end{theorem}
+\begin{proof}
+The factor $\ell(y)=2+\sin(\log\log y)$ is positive and slowly varying:
+for fixed $c>0$, the change in its sine argument is $O(1/\log y)$, and
+$\ell(y)\ge1$. By \cref{thm:rv-inverse}, any monomial equivalent must have
+$r=1/\alpha$. The inequalities $1\le\ell\le3$ and
+\cref{lem:abelian} imply that $x(\varepsilon)/\varepsilon^{1/\alpha}$
+is bounded above and below by positive constants. In a finite product of
+iterated logarithmic powers, the first nonzero exponent decides whether
+the product tends to zero or infinity. Therefore all $s_h$ in
+\eqref{eq:plmonomial} must vanish.
+
+It remains to disprove convergence to a constant. Let
+\[
+ x_k=\exp\{-\exp(2\pi k+\pi/2)\},\qquad
+ y_k=\exp\{-\exp(2\pi k+3\pi/2)\}.
+\]
+Along these two sequences $\ell(1/x_k)=3$ and $\ell(1/y_k)=1$. With
+$C=\bc a\Gamma(-\alpha)$, \cref{lem:abelian} yields
+\[
+ \frac{x_k}{\varepsilon(x_k)^{1/\alpha}}\to(3C)^{-1/\alpha},\qquad
+ \frac{y_k}{\varepsilon(y_k)^{1/\alpha}}\to C^{-1/\alpha}.
+\]
+The limits differ. A well-based expansion with a dominant leading term
+would provide the forbidden monomial equivalent.
+\end{proof}
+
+\begin{remark}[What the obstruction does not say]
+The theorem concerns the specified finite iterated power--log scales and
+expansions with their usual leading-term meaning. It does not exclude a
+calculus enlarged by oscillatory slow blocks, and it is not a theorem that
+all possible generalized transseries fields fail. It does show that
+``slowly varying'' is not a sufficient hypothesis for the repository's
+finite positive power--log grid to survive unchanged.
+\end{remark}
+
+\section{Stable local limits from a direct Fourier argument}
+\label{sec:local}
+
+The normalization throughout is the L\'evy measure
+\begin{equation}\label{eq:levy}
+ \nu_\alpha(\dd x)=x^{-1-\alpha}\mathbf1_{x>0}\dd x.
+\end{equation}
+Define
+\begin{align}
+ J_\alpha(t)
+ &=\int_0^\infty(e^{\ii tx}-1-\ii tx)x^{-1-\alpha}\dd x
+   =\Gamma(-\alpha)(-\ii t)^\alpha,\label{eq:J}\\
+ g_\alpha(y)&=\frac1{2\pi}\int_\R
+              e^{-\ii ty+J_\alpha(t)}\dd t.\label{eq:g}
+\end{align}
+The complex power uses the principal branch. Since
+$\cos(\pi\alpha/2)<0$, the Fourier integral converges absolutely and
+remains so after multiplication by any polynomial in $t$ or $\log|t|$.
+The corresponding probability law can be constructed directly: compensate
+the Poisson jumps on $(0,1]$ and pass to their $L^2$ limit, using
+$\int_0^1 x^2\nu_\alpha(\dd x)<\infty$; then add the independent,
+finite-intensity jumps on $(1,\infty)$ and subtract their finite mean.
+Its characteristic exponent is $J_\alpha$. The same construction with an
+upper jump cutoff defines the bounded-jump laws used below.
+At zero,
+\begin{equation}\label{eq:g0}
+ g_\alpha(0)=\frac{\Gamma(-\alpha)^{-1/\alpha}}
+ {\alpha\Gamma(1-1/\alpha)}
+ =\frac{\Gamma(-\alpha)^{-1/\alpha}}{|\Gamma(-1/\alpha)|}.
+\end{equation}
+One obtains this directly by integrating
+$\exp\{-z t^\alpha\}$ on $t>0$ with
+$z=-\Gamma(-\alpha)e^{-\ii\pi\alpha/2}$ and applying the reflection formula.
+
+\begin{lemma}[Scaled measure convergence and Fourier damping]
+\label{lem:fourier}
+Let \eqref{eq:bscale} hold and put
+$\nu_n=n\beta_n\sum_{j\ge1}a_j\delta_{j/b_n}$. Then
+\begin{equation}\label{eq:measurelimit}
+ \int(e^{\ii tx}-1-\ii tx)\nu_n(\dd x)\longrightarrow J_\alpha(t)
+\end{equation}
+uniformly for $t$ in compact sets. If $\phi_n(t)$ is the exponential of
+the left side, its restriction to $[-\pi b_n,\pi b_n]$ has uniformly
+integrable tails. More explicitly, for sufficiently small fixed $\eta>0$
+there are $c,C,T>0$ such that in the small-frequency region, for
+$T\le |t|\le\theta_0 b_n$,
+\begin{equation}\label{eq:damping}
+ |\phi_n(t)|\le C e^{-c|t|^{\alpha-\eta}},
+\end{equation}
+and the remaining fixed-angle region contributes $O(b_n e^{-cn})$.
+The same estimates hold after retaining only jumps $j\le M_n$, uniformly
+when $M_n/b_n$ lies in a compact subset of $(0,\infty)$.
+\end{lemma}
+\begin{proof}
+Vague convergence $\nu_n\to\nu_\alpha$ follows from regular variation
+and Riemann sums. For
+$0<\eta<\min(2-\alpha,\alpha-1)$, Potter bounds give uniformly
+\[
+ \int_{(0,r]}x^2\nu_n(\dd x)\le C r^{2-\alpha-\eta}+o(1),\qquad
+ \int_{[R,\infty)}x\nu_n(\dd x)\le C R^{1-\alpha+\eta}.
+\]
+The initial finite prefix contributes $O(n/b_n^2)=o(1)$.
+These inequalities and the bounds on the compensated exponential used
+in \cref{lem:abelian} prove \eqref{eq:measurelimit}.
+
+For damping, write $\theta=t/b_n$. The negative logarithm of the modulus
+is $n\beta_n\sum a_j(1-\cos(j\theta))$. For small nonzero $\theta$,
+restrict $j$ to $1/|\theta|\le j\le2/|\theta|$. On this interval
+$1-\cos(j\theta)$ is bounded below by a positive constant. The sum is at
+least $c|\theta|^\alpha\ell(1/|\theta|)$. Dividing by the normalization at
+$b_n$ and applying a lower Potter bound gives $c|t|^{\alpha-\eta}$ when
+$1/|\theta|$ is sufficiently large. For all remaining angles bounded away
+from zero, $a_1>0$ gives
+$n\beta_n a_1(1-\cos\theta)\ge cn$ on $[-\pi,\pi]$.
+
+For a cutoff with $M_n/b_n\ge s_->0$, the same block of indices is retained
+once $|t|\ge2/s_-$. The finite interval of smaller $t$ does not affect
+tail integrability. The $j=1$ term is retained eventually as well.
+\end{proof}
+
+\begin{theorem}[Uniform stable coefficient law]\label{thm:local}
+Under \eqref{eq:assumptions} and \eqref{eq:bscale},
+\begin{equation}\label{eq:llt}
+ \sup_{k\in\mathbb Z}
+ \left|b_n\Prob(K_n=k)
+ -g_\alpha\!\left(\frac{k-n\beta_n d_1}{b_n}\right)\right|\to0.
+\end{equation}
+In particular, in every bounded coupling window,
+\begin{equation}\label{eq:coeffleading}
+ \boxed{\quad u_n(\beta_n)=\frac{\rho_{\beta_n}^{-n}}{n b_n}
+ \bigl(g_\alpha(\lambda_n)+o(1)\bigr).\quad}
+\end{equation}
+The error is relative $o(1)$ uniformly when $\lambda_n$ stays in a compact
+set.
+\end{theorem}
+\begin{proof}
+Fourier inversion on the integer lattice gives
+\[
+ b_n\Prob(K_n=k)=\frac1{2\pi}\int_{-\pi b_n}^{\pi b_n}
+ e^{-\ii t(k-n\beta_n d_1)/b_n}\phi_n(t)\dd t.
+\]
+By \cref{lem:fourier}, the integrands without the unit-modulus phase
+converge in $L^1(\R)$ after extension by zero. This proves the supremum
+statement independently of $k$. The stable density is strictly positive
+on $\R$; a direct positivity argument is included in the next section.
+Its positive minimum on each compact set upgrades the result to relative
+error there. Equation \eqref{eq:poisson} completes the proof.
+\end{proof}
+
+The exponential factor $\rho_{\beta_n}^{-n}$ must not be replaced by
+$\rhoc^{-n}$ merely because $\beta_n\to\bc$. Their ratio can be exponentially
+large or small on the critical scale. Likewise, $\lambda_n$ is the actual
+normalized mean defect, not a coordinate that may be dropped prematurely.
+
+\section{The universal cutoff profile and the whole large-action cloud}
+\label{sec:cutoff}
+
+For $s>0$ define
+\begin{align}
+ \Psi_{\alpha,s}(t)
+ &=J_\alpha(t)-\int_s^\infty e^{\ii tx}x^{-1-\alpha}\dd x,
+ \label{eq:Psi}\\
+ H_{\alpha,s}(y)&=\frac1{2\pi}\int_\R
+                    e^{-\ii ty+\Psi_{\alpha,s}(t)}\dd t,
+ \qquad
+ \Phi_\alpha(s,y)=\frac{H_{\alpha,s}(y)}{g_\alpha(y)}.
+ \label{eq:Phi}
+\end{align}
+The function $H$ is a subprobability density. The uncompensated integral
+removed in \eqref{eq:Psi} is essential: replacing it by a compensated
+integral would incorrectly renormalize the truncated model.
+
+An equivalent useful expression is
+\begin{equation}\label{eq:Hs}
+ H_{\alpha,s}(y)=e^{-s^{-\alpha}/\alpha}
+ g_{\alpha,s}\!\left(y+\frac{s^{1-\alpha}}{\alpha-1}\right),
+\end{equation}
+where $g_{\alpha,s}$ is the probability density with characteristic
+exponent $\int_0^s(e^{\ii tx}-1-\ii tx)x^{-1-\alpha}\dd x$.
+This separates the probability of no large jump from the mean shift caused
+by removing those jumps.
+
+\begin{theorem}[Universal coupling--cutoff law]\label{thm:cutoff}
+If $s_n=M_n/b_n$ remains in a compact subset of $(0,\infty)$, then
+\begin{equation}\label{eq:cutofflimit}
+ \boxed{\quad
+ \frac{u_{n,M_n}(\beta_n)}{u_n(\beta_n)}
+ =\Phi_\alpha(s_n,\lambda_n)+o(1),\quad}
+\end{equation}
+uniformly on compact sets of $(s_n,\lambda_n)$. No slowly varying factor
+appears in the profile itself; all its leading influence is in $b_n$,
+$\beta_n$, and $\rho_{\beta_n}$.
+\end{theorem}
+\begin{proof}
+Let $B_{n,M}$ be the no-jump-above-$M$ event. Its centered Fourier transform is
+\[
+ \E\left[e^{\ii t(K_n-n\beta_n d_1)/b_n}\mathbf1_{B_{n,M}}\right]
+ =\exp\left\{\int(e^{\ii tx}-1-\ii tx)\nu_n(\dd x)
+              -\int_{(M/b_n,\infty)}e^{\ii tx}\nu_n(\dd x)\right\}.
+\]
+The exponent converges to \eqref{eq:Psi}. Convergence is uniform for
+$s=M/b_n$ in compact subsets of $(0,\infty)$: regular variation controls
+the tails, and the limiting measure has no atom at a moving cutoff.
+The truncated damping in \cref{lem:fourier} gives $L^1$ convergence of the
+Fourier integrands. Consequently
+\[
+ b_n\Prob(K_n=n,B_{n,M_n})=H_{\alpha,s_n}(\lambda_n)+o(1).
+\]
+Divide by \eqref{eq:llt} and use \eqref{eq:ratio}.
+\end{proof}
+
+\begin{proposition}[Positivity, a derivative identity, and endpoint values]
+\label{prop:profile}
+For all $s>0$ and $y\in\R$,
+\begin{equation}\label{eq:strict}
+ 0<\Phi_\alpha(s,y)<1,
+ \qquad
+ \partial_s\Phi_\alpha(s,y)
+ =s^{-1-\alpha}\frac{H_{\alpha,s}(y-s)}{g_\alpha(y)}>0.
+\end{equation}
+Moreover
+\begin{equation}\label{eq:ends}
+ \Phi_\alpha(s,y)\to0\quad(s\downarrow0),\qquad
+ \Phi_\alpha(s,y)\to1\quad(s\to\infty),
+\end{equation}
+locally uniformly in $y$. All these functions are smooth in $s,y,\alpha$
+for $s>0$ and $1<\alpha<2$.
+\end{proposition}
+\begin{proof}
+The bounded-jump characteristic function has decay $e^{-c|t|^\alpha}$
+for large $|t|$, by the continuum version of the damping proof. Its density
+therefore extends to an entire function of $y$. The same is true with half
+the L\'evy intensity. That latter density is nonnegative, not identically
+zero, and real analytic, so its positive set is open and dense on the real
+line. The convolution of this density with itself is consequently strictly
+positive at every real point. This proves $g_{\alpha,s}(y)>0$. The full
+stable law is its convolution with the independent compensated large-jump
+law, so $g_\alpha(y)>0$ too. Equation \eqref{eq:Hs} gives $H>0$.
+
+The full density decomposes according to the number of jumps above $s$.
+Its zero-jump term is $H_{\alpha,s}(y)$; its one-jump term is
+$\int_s^\infty H_{\alpha,s}(y-x)x^{-1-\alpha}\dd x$, which is strictly
+positive. Hence $H<g$. Differentiating \eqref{eq:Psi} gives
+$\partial_s\Psi_{\alpha,s}(t)=e^{\ii ts}s^{-1-\alpha}$. Differentiation
+under the Fourier integral is justified locally by its exponential
+majorant and gives \eqref{eq:strict}.
+
+As $s\to\infty$, the removed integral in \eqref{eq:Psi} has absolute value
+at most $s^{-\alpha}/\alpha$. Dominated Fourier convergence proves $H\to g$.
+For the other endpoint, exponentially tilt the bounded-jump density by
+$z=c/s$, with a sufficiently small fixed $c>0$. Its tilted characteristic
+function has modulus bounded by the untilted one, since its jump intensity
+is multiplied by $e^{zx}\ge1$. Splitting its Fourier integral at $1/s$
+therefore bounds its density by $C/s$ for $s\le1$. With
+\[
+ I(c)=\int_0^1(e^{cv}-1-cv)v^{-1-\alpha}\dd v=O(c^2),
+\]
+\eqref{eq:Hs} yields, uniformly for $y$ in a compact set,
+\[
+ H_{\alpha,s}(y)\le\frac Cs
+ \exp\left\{s^{-\alpha}\left(-\frac1\alpha-\frac c{\alpha-1}+I(c)\right)
+                 -\frac{cy}s\right\}.
+\]
+The coefficient of $s^{-\alpha}$ is negative for small $c$. Because
+$\alpha>1$, this dominates the $O(s^{-1})$ term and proves $H\to0$.
+Local uniformity and smoothness follow from the same Fourier bounds,
+including logarithmic factors generated by $\alpha$ derivatives.
+\end{proof}
+
+\begin{theorem}[Sharp action budget]\label{thm:budget}
+For any integer sequence $M_n\ge1$ in a bounded coupling window,
+\begin{equation}\label{eq:budgetiff}
+ \frac{u_{n,M_n}(\beta_n)}{u_n(\beta_n)}\longrightarrow1
+ \quad\Longleftrightarrow\quad \frac{M_n}{b_n}\longrightarrow\infty.
+\end{equation}
+If $M_n/b_n\to0$, the retained fraction tends to zero. If
+$M_n/b_n\to s\in(0,\infty)$ and $\lambda_n\to\lambda$, it tends to
+$\Phi_\alpha(s,\lambda)\in(0,1)$.
+\end{theorem}
+\begin{proof}
+The finite positive limit follows from \cref{thm:cutoff}. If $M_n/b_n\to
+\infty$, compare from below with $\lfloor s b_n\rfloor$ for a fixed large
+$s$, use monotonicity from \cref{prop:exact}, and then let $s\to\infty$ in
+\cref{prop:profile}. The same comparison from above with a fixed small $s$
+proves the zero-budget statement. If $M_n/b_n$ does not tend to infinity,
+a subsequence has bounded ratios; take a further subsequence on which
+those ratios and $\lambda_n$ converge. The zero and finite positive cases
+give a limit strictly below one, a contradiction.
+\end{proof}
+
+\subsection{A marked point-process formulation}
+The maximum action is only one observable. Let
+$\Xi_n=\sum_jN_{n,j}\delta_{j/b_n}$. For a continuous $f\ge0$ with compact
+support in $(0,\infty)$, put
+\begin{align}
+ \Psi_{\alpha,f}(t)&=J_\alpha(t)
+ +\int_0^\infty(e^{-f(x)}-1)e^{\ii tx}x^{-1-\alpha}\dd x,\label{eq:markexp}\\
+ H_{\alpha,f}(y)&=\frac1{2\pi}\int_\R
+                   e^{-\ii ty+\Psi_{\alpha,f}(t)}\dd t.\label{eq:markdensity}
+\end{align}
+
+\begin{theorem}[Conditioned large-action cloud]\label{thm:cloud}
+If $\lambda_n\to\lambda$, then
+\begin{equation}\label{eq:cloud}
+ \E\left[e^{-\langle f,\Xi_n\rangle}\mid K_n=n\right]
+ \longrightarrow\frac{H_{\alpha,f}(\lambda)}{g_\alpha(\lambda)}.
+\end{equation}
+The right side is the Laplace functional of the Poisson jump measure
+$\nu_\alpha$, conditioned on its compensated stable total being $\lambda$,
+with conditioning defined through these continuous densities.
+\end{theorem}
+\begin{proof}
+Poisson marking multiplies the intensity at jump $j/b_n$ by
+$e^{-f(j/b_n)}$ in the exponential formula, giving exactly the discrete
+version of \eqref{eq:markexp}. The extra integral is over a compact set away
+from zero. All sufficiently small jumps remain unmarked, so the Fourier
+damping proof is unchanged. Fourier inversion and division by the local
+limit prove \eqref{eq:cloud}. To identify the limit, split the Poisson
+measure at any level below the support of $f$. Its small-jump component
+has a strictly positive density; integrating the independent marked
+large-jump law against that density gives precisely \eqref{eq:markdensity}.
+This also defines the conditional law at every real $\lambda$, not just
+almost everywhere. Standard Laplace-functional characterization then
+identifies the locally finite point-process limit away from zero.
+\end{proof}
+
+This is a conditioned, not an unconditioned, Poisson cloud. At $1<\alpha<2$
+the large jumps live on the same scale as the stable total, so conditioning
+does not become negligible. In particular the retained fraction is generally
+not the elementary no-jump factor $e^{-s^{-\alpha}/\alpha}$.
+
+\section{Exact logarithmic tails and a convergent Lambert chart}
+\label{sec:chart}
+
+From this point until \cref{sec:computations}, strengthen the tail assumption
+to
+\begin{equation}\label{eq:logmodel}
+ A(t)=a(-\partial_\alpha)^m\Li_{1+\alpha}(t)+P(t),
+ \qquad m\in\{1,2,\ldots\},
+\end{equation}
+where $P$ is a real polynomial with zero constant term, and the resulting
+$a_j$ are nonnegative with $a_1>0$. Thus the eventual tail is exactly
+$a j^{-1-\alpha}(\log j)^m$. The polynomial changes any finite prefix.
+Its coefficients need not themselves be nonnegative.
+
+Define
+\begin{equation}\label{eq:dklog}
+ d_k=a(-1)^m\zeta^{(m)}(1+\alpha-k)+\sum_j [t^j]P(t)\,j^k.
+\end{equation}
+For $k=0,1$ these agree with \eqref{eq:constants}. For $k\ge2$ they are
+analytic expansion coefficients, not convergent moments.
+Parameter differentiation of the convergent polylogarithm identity
+\cite[Eq.~25.12.12]{dlmf-polylog} gives, for $|x|<2\pi$ on a slit branch,
+\begin{equation}\label{eq:lognormal}
+ A(e^{-x})=d_0-d_1x+a\Gamma(-\alpha)x^\alpha Q_m(\log(1/x))
+                  +\sum_{k\ge2}\frac{d_k(-x)^k}{k!},
+\end{equation}
+where
+\begin{equation}\label{eq:Q}
+ Q_m(L)=\sum_{r=0}^m p_r L^{m-r},\qquad
+ p_r=\binom mr\frac{\Gamma^{(r)}(-\alpha)}{\Gamma(-\alpha)},\qquad p_0=1.
+\end{equation}
+For example, $p_1=m\psi(-\alpha)$ and
+$p_2=\binom m2(\psi(-\alpha)^2+\psi_1(-\alpha))$.
+The sign of $p_1$ matters; the differentiation operator is
+$-\partial_\alpha$, not $\partial_\alpha$.
+
+At $\beta=\bc$, put $C=\bc a\Gamma(-\alpha)$ and
+\[
+ H(x)=\bc\sum_{k\ge2}\frac{d_k(-1)^k x^{k-2}}{k!}.
+\]
+The exact critical normal form is
+\begin{equation}\label{eq:exactnormal}
+ \boxed{\quad\varepsilon=Cx^\alpha Q_m(\log(1/x))+x^2H(x).\quad}
+\end{equation}
+This is an identity of analytic functions on the slit neighborhood, not
+merely an asymptotic expansion.
+
+\subsection{A Lambert core that keeps the leading logarithm exact}
+Let $T=e^{-L}$ be the small positive solution of
+\begin{equation}\label{eq:core}
+ T^\alpha L^m=\varepsilon/C,\qquad L>m/\alpha.
+\end{equation}
+Its exact expression is
+\begin{equation}\label{eq:Lambertcore}
+ L=-\frac m\alpha W_{-1}\!\left(
+      -\frac\alpha m(\varepsilon/C)^{1/m}\right),\qquad T=e^{-L}.
+\end{equation}
+The $W_{-1}$ branch is forced by $L\to\infty$ as $\varepsilon\to0$.
+The other real branch would not describe the critical boundary.
+
+\begin{theorem}[Absolutely convergent three-coordinate inverse chart]
+\label{thm:chart}
+There is a holomorphic function $V(u,T,R)$ near $(0,0,0)$ with
+$V(0,0,0)=1$ such that the positive critical inverse, and its local complex
+continuation on compatible branches, is exactly
+\begin{equation}\label{eq:chart}
+ x=T V\left(\frac1L,T,\frac{T^{2-\alpha}}{L^m}\right).
+\end{equation}
+It is characterized by
+\begin{equation}\label{eq:Veq}
+ V^\alpha\sum_{r=0}^m p_r u^r(1-u\log V)^{m-r}
+       +\frac RC V^2H(TV)=1.
+\end{equation}
+Its Taylor series converges absolutely on a sufficiently small polydisc.
+After substitution, its monomials are contained in the finite-generator
+scale
+\begin{equation}\label{eq:chartgrid}
+ \left\{T^{1+j+(2-\alpha)k}L^{-i-mk}:i,j,k\in\N_0\right\}.
+\end{equation}
+There is no finite Puiseux chart in $\varepsilon$ for $m\ge1$.
+\end{theorem}
+\begin{proof}
+Substitute $x=TV$ into \eqref{eq:exactnormal} and divide by
+$C T^\alpha L^m$. Since $\log(1/x)=L-\log V$, the result is
+\eqref{eq:Veq} after setting $u=1/L$ and $R=T^{2-\alpha}L^{-m}$.
+At $(u,T,R,V)=(0,0,0,1)$ the left side minus one vanishes and its derivative
+in $V$ is $\alpha\ne0$. The holomorphic implicit-function theorem yields
+$V$. Its Taylor series has the usual absolute convergence on smaller
+polydiscs, and substitution yields \eqref{eq:chartgrid}.
+
+These are a finite set of small generators over the exact Lambert core.
+At a fixed power of $T$, there may be an entire convergent inverse-logarithmic
+block; the claim is not local finiteness with respect to the $T$ exponent
+alone. In the lexicographically ordered power--log scale the support is
+well based. If $\alpha$ is irrational, the positive $T$-power generators
+still have only finitely many pairs $(j,k)$ below any fixed bound.
+
+Finally, $x\sim T$ and
+$T=\varepsilon^{1/\alpha}$ times a nonconstant logarithmic factor tending
+to zero. Thus $x$ is not asymptotic to a constant times a rational power
+of $\varepsilon$, excluding a finite Puiseux chart even when $\alpha$
+is rational.
+\end{proof}
+
+\begin{proposition}[First chart coefficients]\label{prop:chartcoeff}
+With $p_2=0$ for $m=1$,
+\begin{align}
+ V(u,0,0)
+ &=1-\frac{p_1}{\alpha}u
+ +\left(\frac{(\alpha+1)p_1^2}{2\alpha^2}
+        -\frac{mp_1}{\alpha^2}-\frac{p_2}{\alpha}\right)u^2+O(u^3),
+ \label{eq:Vtwo}\\
+ [R]V(0,0,R)&=-\frac{H(0)}{\alpha C}.\label{eq:VR}
+\end{align}
+\end{proposition}
+\begin{proof}
+Write $V=1+v_1u+v_2u^2+\cdots$. Up to order $u^2$,
+\[
+ \sum_{r=0}^m p_r u^r(1-u\log V)^{m-r}
+ =1+p_1u+(p_2-mv_1)u^2+O(u^3).
+\]
+Multiplying by the binomial expansion of $V^\alpha$ and setting the first
+two coefficients equal to zero gives \eqref{eq:Vtwo}. Differentiation of
+\eqref{eq:Veq} in $R$ at the origin gives \eqref{eq:VR}.
+\end{proof}
+
+\subsection{A genuine geometric error bound}
+Suppose $V$ is bounded by $K_0$ on a polydisc with radii $u_0,T_0,R_0$,
+and let $V_{\le N}$ be its Taylor polynomial of total degree at most $N$.
+At the physical coordinates put
+\[
+ \theta=\max\left\{\frac1{|L| u_0},\frac{|T|}{T_0},
+              \frac{|T|^{2-\alpha}|L|^{-m}}{R_0}\right\}<1.
+\]
+Cauchy's estimate gives
+\begin{equation}\label{eq:geometric}
+ \left|x-T V_{\le N}(L^{-1},T,T^{2-\alpha}L^{-m})\right|
+ \le |T|K_0\binom{N+3}{2}\frac{\theta^{N+1}}{(1-\theta)^3}.
+\end{equation}
+Indeed, degree $k$ contains $\binom{k+2}{2}$ three-variable monomials;
+summing their geometric majorant proves the bound.
+
+The radii can be chosen by a finite analytic inequality. On
+$|v-1|=1/4$, let $m_\alpha=\min|v^\alpha-1|>0$, with powers and logarithms
+on their branches near one. Choose $T_0$ so $|Tv|$ remains inside a disc
+of analyticity of $H$, and choose $u_0,R_0$ so the difference between the
+left side of \eqref{eq:Veq} and $v^\alpha$ has modulus less than
+$m_\alpha/2$ on that circle. Rouch\'e's theorem gives a unique simple zero
+inside it, uniformly in the parameters. Slightly shrinking the radii then
+makes $K_0=5/4$ a valid Cauchy bound. Numerical evaluation with directed
+rounding would turn these inequalities into explicit interval certificates;
+the supplied diagnostic program does not claim to do that step.
+
+\section{All-order logarithmic coefficient and cutoff expansions}
+\label{sec:allorders}
+
+For the exact logarithmic model, choose the scale by the exact equation
+\begin{equation}\label{eq:exactscale}
+ b_n^\alpha=n\beta_n a(\log b_n)^m,\qquad b_n>e^{m/\alpha},
+ \qquad L_n=\log b_n.
+\end{equation}
+The large solution is unique for sufficiently large $n$ and is
+\begin{equation}\label{eq:bnLambert}
+ L_n=-\frac m\alpha W_{-1}\!\left(
+    -\frac\alpha m(n\beta_n a)^{-1/m}\right).
+\end{equation}
+In particular
+\begin{equation}\label{eq:bnleading}
+ b_n\sim(n\beta_n a)^{1/\alpha}
+       \left(\frac{\log(n\beta_n a)}\alpha\right)^{m/\alpha}.
+\end{equation}
+Replacing \eqref{eq:exactscale} by \eqref{eq:bnleading} is valid at leading
+order but generally invalid for the correction formulas below.
+
+For either $Q_\alpha(t)=J_\alpha(t)$ or
+$Q_\alpha(t)=\Psi_{\alpha,s}(t)$, define
+\begin{equation}\label{eq:Bbell}
+ B_k[Q](t)=
+ \sum_{\substack{r_1,\ldots,r_m\ge0\\\sum_{h=1}^m h r_h=k}}
+ \prod_{h=1}^m\frac{\left(\binom mh(-\partial_\alpha)^h Q_\alpha(t)
+                      \right)^{r_h}}{r_h!},
+ \qquad B_0[Q]=1.
+\end{equation}
+Derivatives in this section always hold $t$, $s$, and the normalized
+coordinate $y$ fixed. They do not differentiate $b_n$, $\beta_n$, $d_1$,
+or $\lambda_n$.
+Write
+\begin{align}
+ D_k(y)&=\frac1{2\pi}\int_\R e^{-\ii ty+J_\alpha(t)}B_k[J](t)\dd t,
+ \label{eq:Dk}\\
+ N_k(s,y)&=\frac1{2\pi}\int_\R
+                 e^{-\ii ty+\Psi_{\alpha,s}(t)}B_k[\Psi_s](t)\dd t.
+ \label{eq:Nk}
+\end{align}
+The letter $D_k$ here denotes a correction function, not the analytic
+coefficient $d_k$ in \eqref{eq:dklog}. In particular $D_0=g_\alpha$ and
+$N_0=H_{\alpha,s}$.
+
+\begin{theorem}[All fixed orders]\label{thm:allorders}
+For every fixed nonnegative integer $K$, the exact logarithmic model has
+\begin{align}
+ n b_n\rho_{\beta_n}^{n}u_n(\beta_n)
+ &=\sum_{k=0}^K\frac{D_k(\lambda_n)}{L_n^k}+O(L_n^{-K-1}),
+ \label{eq:allfull}\\
+ n b_n\rho_{\beta_n}^{n}u_{n,M_n}(\beta_n)
+ &=\sum_{k=0}^K\frac{N_k(s_n,\lambda_n)}{L_n^k}+O(L_n^{-K-1}),
+ \label{eq:allcut}
+\end{align}
+uniformly for $s_n=M_n/b_n$ and $\lambda_n$ in compact subsets of
+$(0,\infty)$ and $\R$, respectively. Finite-prefix changes enter the
+normalization and algebraically smaller corrections but not the displayed
+coefficient functions.
+\end{theorem}
+\begin{proof}
+We give the error analysis, since a fixed-frequency formal expansion alone
+would not prove the theorem. Parameter differentiation of
+\eqref{eq:lognormal}, with $x=-\ii t/b_n$, gives the centered exponent
+\begin{equation}\label{eq:exponentexp}
+ \log\phi_n(t)=J_\alpha(t)
+ +\sum_{h=1}^m\binom mh L_n^{-h}(-\partial_\alpha)^hJ_\alpha(t)
+ +E_n(t),
+\end{equation}
+where, for $|t|\le\theta_0b_n$,
+\begin{equation}\label{eq:analyticerror}
+ |E_n(t)|\le C\frac n{b_n^2}|t|^2.
+\end{equation}
+To see the powers of $L_n$, note that the singular part is
+$(-\partial_\alpha)^m\{b_n^{-\alpha}J_\alpha(t)\}$ with $b_n$ held
+fixed during this algebraic differentiation; Leibniz's rule and
+\eqref{eq:exactscale} give \eqref{eq:exponentexp}.
+The analytic remainder follows from the convergent analytic series in
+\eqref{eq:lognormal}. Since $\alpha<2$,
+\[
+ \frac n{b_n^2}=\frac{b_n^{\alpha-2}}{\beta_n a L_n^m}
+              =o(L_n^{-r})\quad\text{for every fixed }r.
+\]
+
+For the cutoff exponent, subtract
+$n\beta_n\sum_{j>M_n}a_je^{\ii tj/b_n}$. For large $n$ all indices here
+are beyond the finite prefix. The normalized weights on the mesh $j/b_n$
+are exactly
+\[
+ \frac1{b_n}(j/b_n)^{-1-\alpha}
+       \left(1+\frac{\log(j/b_n)}{L_n}\right)^m.
+\]
+On $s_n\ge s_->0$, comparison with its integral over $(s_n,\infty)$
+gives an error $O((1+|t|)/b_n)$. This follows by bounding the integral of
+the absolute derivative of
+$e^{\ii tx}x^{-1-\alpha}(1+\log x/L_n)^m$; its logarithmic moments at
+infinity are finite, uniformly for $L_n\ge1$. Expanding the finite
+polynomial in $L_n^{-1}$ shows that \eqref{eq:exponentexp} becomes
+\begin{equation}\label{eq:cutexponentexp}
+ \Psi_{\alpha,s_n}(t)+
+ \sum_{h=1}^m\binom mhL_n^{-h}(-\partial_\alpha)^h\Psi_{\alpha,s_n}(t)
+ +O\left(\frac n{b_n^2}t^2+\frac{1+|t|}{b_n}\right).
+\end{equation}
+The identity $(-\partial_\alpha)^h x^{-1-\alpha}
+=(\log x)^h x^{-1-\alpha}$ proves that the same differential operator
+acts on both the retained and removed parts, including the killing and
+centering terms.
+
+Choose a small $\kappa>0$, for example $\kappa<1/(4\alpha)$, and split the
+Fourier integral at $|t|=L_n^\kappa$. Beyond this interval,
+\cref{lem:fourier} bounds the actual Fourier tails by
+$\exp(-cL_n^{\kappa(\alpha-\eta)})$, smaller than every inverse power of
+$L_n$. The tails of every proposed coefficient integral have the same
+property. On $1\le|t|\le L_n^\kappa$, the perturbation in
+\eqref{eq:exponentexp} is $o(1)$ relative to the magnitude of the negative
+real part of $J_\alpha(t)$. For the truncated exponent, the difference
+from $J_\alpha(t)$ and its fixed $\alpha$ derivatives is bounded uniformly
+in $s$ on compact sets; the same conclusion holds for sufficiently large
+$|t|$. On $|t|\le1$, the quantities
+$|t|^\alpha(1+|\log|t||^m)$ are bounded, so the perturbations are $O(1/L_n)$
+uniformly. The analytic errors in \eqref{eq:analyticerror} and
+\eqref{eq:cutexponentexp} are smaller than every inverse-logarithmic order
+on the retained frequency interval.
+
+Taylor expansion of the exponential through total order $K$ now has an
+integrable remainder bounded by $C_K L_n^{-K-1}$ times a polynomial in
+$|t|$ and $|\log|t||$, multiplied by $e^{-c|t|^\alpha}$ outside a fixed
+interval. Its coefficients are exactly \eqref{eq:Bbell}. Integration
+proves \eqref{eq:allfull} and \eqref{eq:allcut}. The phase
+$e^{-\ii t\lambda_n}$ has unit modulus, so compact uniformity in
+$\lambda_n$ presents no further error. This also explains why finite
+prefixes contribute only below all fixed inverse-logarithmic orders once
+their effect on $d_0,d_1,\bc$ has been retained.
+\end{proof}
+
+\begin{remark}[Uniformity in the exponent]
+The same argument is uniform for $\alpha$ in any fixed compact subinterval
+of $(1,2)$, for a correspondingly controlled family of prefixes. It is not
+uniform as $\alpha$ approaches either endpoint. The factors controlling
+small jumps, large compensated jumps, and $n/b_n^2$ degenerate there.
+\end{remark}
+
+\subsection{The effective-index law}
+Since $B_1[Q]=-m\partial_\alpha Q$, differentiation under the Fourier
+integral gives
+\begin{equation}\label{eq:firstDN}
+ D_1(y)=-m\partial_\alpha g_\alpha(y),\qquad
+ N_1(s,y)=-m\partial_\alpha H_{\alpha,s}(y).
+\end{equation}
+Dividing the two expansions yields the next result.
+
+\begin{corollary}[A common first correction]\label{cor:effective}
+For the exact logarithmic model,
+\begin{align}
+ n b_n\rho_{\beta_n}^{n}u_n(\beta_n)
+ &=g_\alpha(\lambda_n)-\frac m{L_n}\partial_\alpha g_\alpha(\lambda_n)
+   +O(L_n^{-2}),\label{eq:firstfull}\\
+ \frac{u_{n,M_n}(\beta_n)}{u_n(\beta_n)}
+ &=\Phi_\alpha(s_n,\lambda_n)
+   -\frac m{L_n}\partial_\alpha\Phi_\alpha(s_n,\lambda_n)
+   +O(L_n^{-2}).\label{eq:firstPhi}
+\end{align}
+Equivalently the two leading profiles may be evaluated at
+\begin{equation}\label{eq:effectivealpha}
+ \alpha_{\mathrm{eff},n}=\alpha-\frac m{\log b_n},
+\end{equation}
+with an $O((\log b_n)^{-2})$ error, provided $b_n$, $s_n$, and $\lambda_n$
+are held fixed in this evaluation.
+\end{corollary}
+\begin{proof}
+The quotient expansion gives
+\[
+ \frac{-m\partial_\alpha H}{g}
+ -\frac{H(-m\partial_\alpha g)}{g^2}
+ =-m\partial_\alpha(H/g).
+\]
+Taylor's theorem in $\alpha$ proves the last interpretation.
+\end{proof}
+
+The effective index has a direct interpretation at the intensity level:
+\[
+ x^{-1-\alpha}\left(1+\frac{\log x}{L_n}\right)^m
+ =x^{-1-\alpha}\left(1+\frac m{L_n}\log x+O(L_n^{-2}\log^2x)\right).
+\]
+Its first perturbation is the same as that of
+$x^{-1-(\alpha-m/L_n)}$. This explanation is not a substitute for the
+Fourier proof: the latter handles the nonuniform logarithms near zero
+and infinity, the lattice, and the coefficient conditioning.
+
+\subsection{Higher orders are not just an index shift}
+At the next order,
+\begin{equation}\label{eq:secondB}
+ B_2[Q]=\binom m2\partial_\alpha^2Q
+             +\frac{m^2}{2}(\partial_\alpha Q)^2.
+\end{equation}
+For example,
+\[
+ D_2=\frac{m^2}{2}\partial_\alpha^2g_\alpha
+ -\frac m2\F\bigl[e^{J_\alpha}\partial_\alpha^2J_\alpha\bigr].
+\]
+The second term would be missed by blindly replacing $\alpha$ everywhere
+by $\alpha-m/L_n$. For arbitrary order, the quotient coefficients $R_k$
+of the retained fraction are computed by the finite recursion
+\begin{equation}\label{eq:ratiorec}
+ R_0=\Phi_\alpha,\qquad
+ R_k(s,y)=\frac{N_k(s,y)-\sum_{j=1}^kD_j(y)R_{k-j}(s,y)}{g_\alpha(y)}.
+\end{equation}
+Thus $\sum_{k\le K}R_k L_n^{-k}$ has the same fixed-order uniform error as
+in \cref{thm:allorders}. No convergence in $K$ is claimed.
+
+\section{Two-term minimal action budgets}
+\label{sec:quantiles}
+
+Fix a desired retained fraction $p\in(0,1)$. By \cref{prop:profile}, the
+equation
+\begin{equation}\label{eq:quantile}
+ \Phi_\alpha(s_p(\alpha,y),y)=p
+\end{equation}
+has exactly one solution $s_p(\alpha,y)>0$. The derivative formula
+\eqref{eq:strict} and the implicit-function theorem show that $s_p$ is
+smooth and
+\begin{equation}\label{eq:quantilederivative}
+ \partial_\alpha s_p(\alpha,y)
+ =-\frac{\partial_\alpha\Phi_\alpha(s_p(\alpha,y),y)}
+         {\partial_s\Phi_\alpha(s_p(\alpha,y),y)}.
+\end{equation}
+
+Let $M_n^*(p)$ be the smallest integer $M$ for which
+$u_{n,M}(\beta_n)/u_n(\beta_n)\ge p$. It exists because the ratio equals
+one at $M=n$.
+
+\begin{theorem}[An explicit two-term asymptotic budget]\label{thm:minbudget}
+In the exact logarithmic model and a bounded coupling window,
+\begin{align}
+ \frac{M_n^*(p)}{b_n}
+ &=s_p(\alpha,\lambda_n)
+ +\frac m{L_n}
+ \frac{\partial_\alpha\Phi_\alpha(s_p(\alpha,\lambda_n),\lambda_n)}
+      {\partial_s\Phi_\alpha(s_p(\alpha,\lambda_n),\lambda_n)}
+ +O(L_n^{-2}+b_n^{-1})\label{eq:minbudget}\\
+ &=s_p\!\left(\alpha-\frac m{L_n},\lambda_n\right)
+ +O(L_n^{-2}+b_n^{-1}).\label{eq:minbudgeteff}
+\end{align}
+The denominator in \eqref{eq:minbudget} is explicitly positive by
+\eqref{eq:strict}. The integer ambiguity is at most the indicated
+$O(1)$ in $M_n^*(p)$.
+\end{theorem}
+\begin{proof}
+For $y$ in a compact set the quantiles stay in a compact subinterval of
+$(0,\infty)$, by local uniformity of \eqref{eq:ends}. On a slightly larger
+compact rectangle, $\partial_s\Phi_\alpha$ has a positive lower bound.
+Insert
+$s=s_p+(m/L_n)(\partial_\alpha\Phi/\partial_s\Phi)$ into
+\eqref{eq:firstPhi}; its order-$L_n^{-1}$ terms cancel. The remaining
+error is $O(L_n^{-2})$ uniformly. Moving $s$ by a sufficiently large
+constant times $L_n^{-2}$ brackets the target value by the derivative
+lower bound. Monotonicity of the actual retained fraction then brackets
+its smallest integer crossing, and rounding changes $s$ by at most
+$1/b_n$. Equation \eqref{eq:quantilederivative} gives the second form.
+\end{proof}
+
+This is an asymptotic selection rule, not an unconditional finite-$n$
+certificate. A theorem with an unspecified $O(L_n^{-2})$ constant cannot
+by itself promise a particular retained fraction at a stated finite $n$.
+A proof-producing selector would additionally enclose the Fourier integrals,
+provide effective constants for the error analysis, and round outward.
+
+\section{Reproducible calculations and what they actually verify}
+\label{sec:computations}
+
+\subsection{Exact checks}
+The supplied \texttt{verification/verify.py} performs 552 exact assertions.
+It compares direct feedback recursion with Lagrange extraction for three
+rational couplings through order 16, checks finite-cutoff monotonicity and
+agreement through the cutoff, verifies the first two chart coefficients
+symbolically, and checks a Bell-polynomial coefficient recurrence through
+degree six. These are finite exact algebra checks. They do not certify
+an infinite Fourier integral or an asymptotic remainder.
+
+\subsection{A logarithmic-tail example}
+The numerical example is
+\begin{equation}\label{eq:numericalmodel}
+ \alpha=\tfrac32,\qquad a=1,\qquad m=1,\qquad
+ A(t)=t-\left.\partial_s\Li_s(t)\right|_{s=5/2}.
+\end{equation}
+Thus $a_1=1$ and $a_j=(\log j)/j^{5/2}$ for $j\ge2$. The constants are
+\begin{align*}
+ d_0&=1-\zeta'(5/2)=1.38734195032620997271\ldots,\\
+ d_1&=1-\zeta'(3/2)=4.93223973743110151071\ldots,\\
+ \bc&=0.20274764675588095470\ldots.
+\end{align*}
+At the critical coupling, $\lambda_n=0$. The first correction constants are
+\begin{align*}
+ D_0(0)&= 0.14026098237322958073\ldots,\\
+ D_1(0)&=-0.22110216101538913083\ldots,\\
+ D_2(0)&=-0.13928691395372795423\ldots,\\
+ D_3(0)&= 0.70330022056722715680\ldots,\\
+ D_4(0)&= 0.48955185500793247479\ldots.
+\end{align*}
+For $m=1$ these are computed from
+\[
+ D_k(0)=\frac1{2\pi k!}\int_\R e^{J_\alpha(t)}
+ \left[J_\alpha(t)\bigl(\psi(-\alpha)-\log(-\ii t)\bigr)\right]^k\dd t.
+\]
+The expression at $t=0$ is interpreted by continuity.
+
+\input{verification/coefficient_table.tex}
+
+The convergence is logarithmically slow. Additional terms need not improve
+an approximation monotonically at modest $n$: the signs and sizes of
+$D_k$ matter, and the smaller analytic and lattice corrections have not
+been included in this table. The theorem is a fixed-order asymptotic law,
+not a finite-$n$ alternation or enveloping theorem.
+
+\input{verification/cutoff_table.tex}
+
+The leading profile can be visibly inaccurate even at a large index.
+The first derivative correction substantially improves the displayed
+$s\approx1$ values. At smaller $s$ and modest $n$, a truncated correction
+can even be negative, although the true probability never is. Such a
+negative approximation is evidence that the selected truncation is not
+useful there, not a violation of the probability identity or a certified
+error estimate.
+
+\subsection{Inverse-chart diagnostics}
+For \eqref{eq:numericalmodel}, take $L$ as the independent core coordinate,
+$T=e^{-L}$, and $\varepsilon=C T^{3/2}L$. Solve the exact normal form using
+65-digit arithmetic and compare $x/T$ with \eqref{eq:Vtwo}. Here
+$p_1=\psi(-3/2)$ and $p_2=0$.
+\input{verification/inverse_table.tex}
+
+The exact equation is evaluated through a parameter derivative of the
+polylogarithm, not through a truncated inverse series. This separates the
+numerical check from the formula it is checking.
+
+\subsection{Numerical method and independent cross-checks}
+The coefficient computations use the exact finite-degree dependence of
+\eqref{eq:lagrange}. A Fourier transform evaluates
+$\exp(n\bc(A_n(re^{\ii\theta})-d_0))$ with $r=e^{-2/n}$ and transform
+length at least $32n$. The coefficient at degree $n$, divided by $r^n$,
+gives $\Prob(K_n=n)$ up to numerical quadrature and roundoff errors.
+For a cutoff the constant remains the full $d_0$, in accordance with the
+joint no-large-jump event. A separate positive recurrence,
+\[
+ P_0=e^{-n\bc d_0},\qquad
+ P_k=\frac{n\bc}{k}\sum_{j=1}^k j a_j P_{k-j},
+\]
+checks the full coefficient at $n=256$ using 65-digit arithmetic.
+The measured relative discrepancy is recorded in \texttt{results.json}.
+
+Cutoff densities are evaluated by Fourier quadrature, with a Gauss--Jacobi
+rule for the compensated small-jump integral. Repeating with 96 and 160
+nodes checks numerical stability. The derivative in \eqref{eq:firstPhi}
+is approximated by a centered difference in $\alpha$, with normalized
+$s$ and $y$ held fixed. These calculations use ordinary floating-point
+arithmetic and are not interval enclosures. All numerical tables are
+generated from the retained machine-readable outputs; no empirical value
+is used as a lemma in the proofs.
+
+\section{Consequences for a transseries implementation}
+\label{sec:implementation}
+
+\subsection{Three distinct kinds of representation}
+An implementation should distinguish the following objects instead of
+forcing them into a single unchecked datatype. First, an asymptotic-inverse
+object may specify $R^\asyminv$ and its regular-variation laws without an
+explicit monomial series. This is the appropriate representation for
+arbitrary $\ell$ in \cref{thm:rv-inverse}. Second, a convergent local chart
+has a finite tuple of small coordinates, an analytic defining equation,
+Cauchy radii, and a majorant such as \eqref{eq:geometric}. Third, a
+coefficient-asymptotic object has correction operators and fixed-order
+remainder statements but need not have a convergent infinite expansion.
+
+The oscillatory example belongs to the first class. Exact logarithmic tails
+belong to both the second and third. Keeping these distinctions explicit
+prevents a formal closure claim from being mistaken for an analytic
+realization theorem.
+
+\subsection{A practical coefficient pipeline}
+For the logarithmic model, a symbolic front end can compute the polynomial
+$Q_m$ from gamma derivatives, generate the Taylor jet of \eqref{eq:Veq},
+and obtain $B_k$ by the finite recurrence
+\[
+ B_0=1,\qquad k B_k=\sum_{r=1}^{\min(k,m)}r\binom mr
+                      (-\partial_\alpha)^rQ\,B_{k-r}.
+\]
+A numerical back end then evaluates $D_k$ and $N_k$ with Fourier integrals.
+The ratio recurrence \eqref{eq:ratiorec} and the positive derivative
+\eqref{eq:strict} produce cutoff approximations and well-conditioned
+quantile inversion on compact rectangles.
+
+The physical scale must be obtained from \eqref{eq:exactscale} or the exact
+Lambert formula, not from a rough $n^{1/\alpha}(\log n)^{m/\alpha}$
+approximation when subleading accuracy is wanted. Similarly, all finite
+prefix effects on $d_0$ and $d_1$ must be retained before applying the
+universal normalized profile.
+
+\subsection{A realistic formalization boundary}
+No Lean file is included or claimed to compile. A useful formalization
+sequence would begin with finite formal-power-series algebra: Lagrange
+coefficient identities, the cutoff dependence, and the Bell recurrence.
+The next layer is the analytic implicit-function theorem with an explicit
+polydisc majorant. Those statements can be expressed without formalizing
+stable probability laws.
+
+The probabilistic layer needs independent Poisson sums, the exact generating
+function, and Fourier inversion with an $L^1$ majorant. Only after those
+interfaces are available should one assemble the regular-variation limits
+and the triangular-array local theorem. Finally, a directed-rounding
+quadrature checker could certify profile values and error bounds.
+Existing repository results on formal support or finite recurrences are
+useful ingredients, but none is a substitute for these analytic hypotheses.
+
+\section{Further research questions and concrete targets}
+\label{sec:research}
+
+\paragraph{1. Second-order slow variation beyond exact logarithmic powers.}
+Suppose
+$\ell(bx)/\ell(b)=1+A(b)\log x+o(A(b))$ with a weighted uniform remainder.
+Determine the weakest domination assumptions under which
+$\Phi_\alpha-A(b)\partial_\alpha\Phi_\alpha$ remains the correct first
+cutoff approximation. Pointwise second-order variation alone is not an
+integrable error estimate; the small- and large-jump tails must be controlled.
+The logarithmic model proves the target identity in one fully specified
+class, not in this unrestricted second-order class.
+
+\paragraph{2. Noninteger logarithmic powers and convergent charts.}
+For $a_j=a j^{-1-\alpha}(\log j)^r$ with real noninteger $r$, the leading
+regular-variation and cutoff theorems already apply. Determine whether the
+inverse admits an absolutely convergent finite-coordinate chart, or only
+an asymptotic chart, under a suitable analytic continuation of the tail.
+Integer parameter differentiation is no longer an exact finite operation.
+
+\paragraph{3. Effective finite-$n$ error constants.}
+Make the constants in \cref{thm:allorders} explicit on a prescribed compact
+rectangle. Combine interval evaluation of $D_k,N_k$ with the positive
+profile derivative to produce a genuinely certified $M_n^*(p)$ enclosure.
+The current two-term formula is asymptotic and the supplied numerical
+outputs are not outward-rounded certificates.
+
+\paragraph{4. Expanding coupling windows.}
+Find the largest growing range of $|\lambda_n|$ on which the logarithmic
+expansion remains relatively accurate, and match it to one-large-jump and
+exponential-tilt regimes. The uniform absolute local theorem does not
+supply relative accuracy where $g_\alpha(\lambda_n)$ becomes very small.
+
+\paragraph{5. Joint endpoint and slow-variation limits.}
+Let $\alpha\uparrow2$ or $\alpha\downarrow1$ while the logarithmic tail and
+$n$ vary. Derive a common normalization and an error theorem covering the
+interaction of the endpoint singularity with $m/\log b_n$. Substitution
+of an endpoint in \eqref{eq:effectivealpha} is not justified by this paper.
+
+\paragraph{6. Large order of the inverse-logarithmic expansion.}
+Determine the growth of $D_k,N_k$ as $k\to\infty$, the optimal truncation
+index, and whether a Borel or accelerated summation reconstructs the
+coefficient law. The convergent inverse chart does not imply convergence
+of this outer expansion. Its complex saddle structure may encode a second
+level of transseries information.
+
+\paragraph{7. Oscillatory slow blocks as a symbolic language.}
+Develop a representation that includes
+$2+\sin(\log\log y)$ without falsely asserting membership in a
+nonoscillatory power--log scale. A first target is an algebra of periodic
+functions of $\log\log y$ with explicit asymptotic inversion rules and
+error control. Decide which coefficient and cutoff computations remain
+algorithmically tractable in that enlarged language.
+
+\paragraph{8. Perturbed slopes.}
+Replace the exact slopes $j$ in \eqref{eq:feedback} by $j+r_j$.
+Even $r_j=o(j)$ can exponentially reweight the boundary amplitudes through
+$e^{r_jU}$, so a naive claim that the present theorem is stable under every
+sublinear perturbation would be false. Identify a correctly normalized
+perturbation class preserving the slow tail, then determine the new chart
+generators and correction operators.
+
+\paragraph{9. Multiple marked clouds and functional limits.}
+The Laplace functional in \cref{thm:cloud} determines the limiting point
+measure away from zero. Develop quantitative joint laws for ordered actions,
+small-jump compensation, and the induced tree or allocation structures.
+Prove metric error bounds rather than only convergence of Laplace
+functionals, and track their sensitivity to the coupling coordinate.
+
+\paragraph{10. Minimal symbolic and analytic certificates.}
+Implement separate checkers for a coefficient identity, a support claim,
+a convergent analytic chart, and an asymptotic error bound. A robust
+ProveIt integration should make the distinction visible in its interface:
+a verified finite coefficient must not silently stand in for a verified
+infinite asymptotic statement.
+
+\section{Conclusion}
+The slowly varying extension has a positive and a negative side. The inverse
+scale and action budget remain rigid after the correct regular-variation
+normalization: the same stable density and the same conditional cutoff
+profile apply. But slow variation alone does not force a power--logarithmic
+inverse representation. The explicit oscillatory example separates those
+two conclusions.
+
+Exact logarithmic tails occupy a useful intermediate class. They admit a
+convergent Lambert-based chart and also a computable all-order expansion
+for large coefficients and action retention. At first order, the common
+correction is an effective shift of the stable index. The strict derivative
+formula for the cutoff profile makes that correction actionable as a
+minimal-budget law. This resolves the fixed-interior-exponent part of the
+repository's slowly-varying-tail question, while leaving endpoint
+uniformity, unrestricted analytic realization, and fully certified
+finite-$n$ computation as explicit further problems.
+
+\clearpage
+\appendix
+\section{Normalization and sign audit}
+\label{app:audit}
+The following checks summarize the convention-sensitive points.
+\begin{longtable}{p{0.27\textwidth}p{0.66\textwidth}}
+\toprule
+Object & Convention and consequence\\\midrule
+\endhead
+L\'evy measure & $x^{-1-\alpha}\dd x$, with no gamma factor. Thus
+$J_\alpha(t)=\Gamma(-\alpha)(-\ii t)^\alpha$.\\[2mm]
+Stable scale & $n\beta a\ell(b)/b^\alpha\to1$. A scale that absorbs
+$\Gamma(-\alpha)$ requires a correspondingly rescaled density and cutoff.\\[2mm]
+Coupling coordinate & $\lambda_n=(n-n\beta_nd_1)/b_n$; positive values
+are targets above the mean.\\[2mm]
+No-large-jump exponent & $\Psi_s=J-\int_s^\infty e^{\ii tx}\nu(\dd x)$.
+The removed term is not compensated.\\[2mm]
+Mean shift after removal & $H_s(y)=e^{-s^{-\alpha}/\alpha}
+ g_s(y+s^{1-\alpha}/(\alpha-1))$. The shift has a plus sign inside $g_s$.\\[2mm]
+Logarithmic tail & $(-\partial_\alpha)^m\Li_{1+\alpha}$, giving
+$(\log j)^m j^{-1-\alpha}$.\\[2mm]
+First profile correction & $-(m/\log b)\partial_\alpha\Phi_\alpha$ at
+fixed normalized coordinates.\\[2mm]
+Quantile correction & $+(m/\log b)(\partial_\alpha\Phi/\partial_s\Phi)$,
+or equivalently $s_p(\alpha-m/\log b,y)$.\\[2mm]
+Critical inverse & $\varepsilon=x+\bc(A(e^{-x})-d_0)$;
+$U=\bc d_0+\varepsilon-x$.\\[2mm]
+Lambert branch & $W_{-1}$, since both the inverse-core $L$ and the
+coefficient-scale $\log b$ tend to $+\infty$.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction instructions}
+\label{app:reproduce}
+The package is self-contained apart from standard LaTeX packages and the
+Python dependencies listed in \texttt{requirements.txt}. From the package
+root, run
+\begin{verbatim}
+python verification/verify.py
+python verification/make_tables.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The full verification writes \texttt{results.json}, three CSV files, and
+prints its exact-check count and diagnostics. The table generator turns
+those retained outputs into the three small TeX table fragments input by
+the article. A quicker run uses \texttt{--quick} and stops the coefficient
+diagnostics at $n=4096$; it should not be used to regenerate the full tables
+without restoring the full data afterward.
+
+The supplied PDF was built from the supplied TeX and table fragments.
+The exact algebra checks were run; the numerical diagnostics were run;
+the article's analytic proofs were not checked by a proof assistant.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{repo-critical}
+V. Reshetnikov, ProveIt repository, research manuscript
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, especially research Question~1.
+Snapshot \texttt{ebd8344bca77d8352cd745b7df374618a290a029}, inspected
+September 29, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}{Pinned manuscript source}.
+
+\bibitem{repo-index}
+V. Reshetnikov, ProveIt, \emph{Series and transseries} documentation index,
+same snapshot. The index records provenance, scope, overlap, and
+formalization boundaries of the recent research packages.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries/docs/series-and-transseries/README.md}{Pinned documentation index}.
+
+\bibitem{bgt}
+N. H. Bingham, C. M. Goldie, and J. L. Teugels,
+\emph{Regular Variation}, Encyclopedia of Mathematics and its
+Applications 27, Cambridge University Press, 1987.
+See Chapter~1 for uniform convergence, Potter bounds, asymptotic inversion,
+and conjugacy; Appendix~5 for calculating de Bruijn conjugates.
+\url{https://doi.org/10.1017/CBO9780511721434}.
+
+\bibitem{janson}
+S. Janson, \emph{Simply generated trees, conditioned Galton--Watson trees,
+random allocations and condensation}, Probability Surveys \textbf{9}
+(2012), 103--252. The arXiv version has different section numbering from
+the published version.
+\url{https://doi.org/10.1214/11-PS188};
+\url{https://arxiv.org/abs/1112.0510}.
+
+\bibitem{dlmf-polylog}
+NIST Digital Library of Mathematical Functions,
+\S25.12, especially Eq.~25.12.12, \emph{Polylogarithms}.
+\url{https://dlmf.nist.gov/25.12.E12}.
+Accessed September 29, 2026.
+
+\bibitem{dlmf-lambert}
+NIST Digital Library of Mathematical Functions,
+\S4.13, \emph{Lambert $W$-Function}.
+\url{https://dlmf.nist.gov/4.13}.
+Accessed September 29, 2026.
+
+\bibitem{edgar}
+G. A. Edgar, \emph{Transseries for beginners},
+arXiv:0801.4877, 2008.
+\url{https://arxiv.org/abs/0801.4877}.
+\end{thebibliography}
+\end{document}

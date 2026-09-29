@@ -1,0 +1,1843 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\makeatletter
+\renewcommand\l@subsection{\@dottedtocline{2}{1.5em}{3.1em}}
+\makeatother
+\definecolor{ink}{RGB}{24,49,69}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Amplitude--slope compensation in feedback transseries}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=4pt,topsep=5pt,leftmargin=1.8em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\U}{\widehat U}
+\newcommand{\Q}{\widehat Q}
+\newcommand{\Gev}{\mathcal G}
+\newcommand{\B}{\mathcal B_0}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\Imm}{\operatorname{Im}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\inv}{\langle-1\rangle}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calD}{\mathcal D}
+\hypersetup{pdftitle={Amplitude-Slope Compensation in Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Weighted exponential feedback: convergence, Gevrey classes, fine summability, exact type, and condensation}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} Amplitude--Slope Compensation\par in Feedback Transseries\par}
+\vspace{0.8em}
+{\large Sharp regularity, negative-ray summation,\par and damping-induced condensation\par}
+\vspace{1em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+
+\begin{abstract}
+Consider the formal equation
+\[
+ \U(q)=\sum_{j\ge1}c_jq^j\exp(\lambda_j\U(q)),\qquad
+ c_1=1,\quad 0<c_j\le1,\quad\lambda_j\ge0,
+\]
+and let $d_j=\log(1/c_j)$. We prove that its solution converges precisely
+when $\lambda_j=O(j+d_j)$. For every $s>0$, the solution and its
+compositional inverse are Gevrey--$s$ precisely when
+\[
+ \lambda_j^{1/(s+1)}=O\bigl(j\log(j+1)+d_j\bigr).
+\]
+The same condition characterizes a uniform Gevrey--$s$ expansion of the
+literal inverse on a closed left half-disc. At $s=1$ it is also equivalent
+to fine Borel--Laplace summability of both series in the negative direction;
+the sums are inverse functions and satisfy the original convergent kernel.
+Under strong damping, $d_j/(j\log(j+1))\to\infty$, the exact
+factorial-normalized type is
+\[
+ T_s(\U)=(s+1)^{s+1}\limsup_{j\to\infty}
+                          \frac{\lambda_j}{d_j^{s+1}}.
+\]
+For $d_j\sim b j^\beta$, $\lambda_j\sim a j^p$, $p>\beta>1$, the type
+is an actual coefficient-root limit, and the dominant action has size
+$((p/\beta)n/b)^{1/\beta}$ in probability. These results answer the
+repository's weighted-amplitude question for positive, exponentially
+bounded amplitudes. The package includes exact finite verification,
+a rational inverse certificate, numerical diagnostics, and further
+research questions.
+\end{abstract}
+
+\noindent\textbf{Status and scope.} These are conventional proofs, not
+Lean-verified statements. Global publication priority has not been established.
+The contribution claimed is a precise extension of the inspected ProveIt
+research, not a solution of an unrelated named conjecture. Fine summability
+means a fixed-width neighborhood of one Borel ray; angular summability and
+resurgence are not asserted.
+
+\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+
+\section{The question addressed and the contribution}
+\label{sec:context}
+
+\subsection{Repository provenance}
+The source snapshot inspected for this article is
+\begin{center}\small\ttfamily
+ebd8344bca77d8352cd745b7df374618a290a029.
+\end{center}
+The relevant project is \texttt{Analysis/Transseries/}. Its directory
+README describes the recent research packages as unmerged and not
+formalized \cite{project}. We use their mathematical questions and
+methods as starting points, not their presence in a repository as a
+certificate of correctness.
+
+Two specific source passages motivate the work. The regularity article
+asks for an amplitude-dependent analogue of its unit-amplitude results
+\cite[lines 1470--1483]{regularity}. The negative-ray article asks for a
+sharp joint condition on amplitudes and slopes, including very rapidly
+decaying amplitudes \cite[section ``Weighted actions and joint
+amplitude--slope thresholds'']{negative}. The latter source proves a
+unit-amplitude fine-summation theorem. The present paper treats an
+arbitrary positive amplitude sequence with an exponential upper bound.
+It does not change the action exponents from the integers $j$.
+
+The focused review included the project and document-directory READMEs,
+the relevant regularity questions, and the negative-ray article's
+statements, inverse representation, continuation argument, and open
+questions. It was not an exhaustive audit of the canonical volume or of
+every concurrent research arrival. Reproducible source pointers are
+recorded in \texttt{SOURCE\_NOTES.md}.
+
+\subsection{Why amplitudes change the problem}
+For unit amplitudes, a large slope $\lambda_j$ can be used repeatedly
+through the exponential expansion without paying an initial suppression
+cost. A small amplitude $c_j$ changes the balance. Entering action $j$
+now costs $d_j=-\log c_j$ in the logarithm of a positive coefficient.
+The cost can be larger than the combinatorial penalty associated with
+its action index. It can even compensate for slopes growing faster than
+any polynomial.
+
+Three separate questions must therefore be distinguished. First, does the
+formal solution have a nonzero ordinary convergence radius? Second, which
+factorial growth bounds do its coefficients satisfy? Third, does an
+analytic realization recover those coefficients with uniform remainders
+and a canonical directional summation rule? Our results address all
+three, but the analytic remainder statement for arbitrary $s$ is made
+for the inverse. Fine summability of the forward series follows at
+$s=1$ from a separate nonlinear argument.
+
+\subsection{What is new relative to the inspected sources}
+The principal additions are the joint necessary-and-sufficient criteria,
+the weighted uniform remainder theorem, and the exact type identity in
+the strong-damping regime. The stretched-exponential specialization
+exhibits a dominant-action scale $n^{1/\beta}$ and a nonzero critical
+factorial type that differ from the unit-amplitude behavior. No
+monotonicity or regular variation is needed for the joint criteria or
+for the strong-damping \emph{limsup} identity.
+
+The algebraic tools are classical. Lagrange inversion is used in its
+standard coefficient form \cite{gessel}. The Borel kernels are modified
+Bessel functions, with an elementary integral representation
+\cite{dlmf}. The distinction between fine and angular summability, and
+the convolution approach to nonlinear operations, are standard
+\cite{sauzin}. The new input is the quantitative use of the amplitude
+cost throughout those constructions. We prove the specialized estimates
+needed here rather than appealing to a generic analytic implicit-function
+theorem for a kernel that may not be analytic at the origin.
+
+\section{Definitions and the main results}
+\label{sec:main}
+
+\subsection{Normalization and formal series}
+Throughout the main proofs assume
+\begin{equation}
+ c_1=1,\qquad 0<c_j\le1,\qquad \lambda_j\ge0,\qquad
+ d_j=-\log c_j\ge0.
+ \label{eq:normalization}
+\end{equation}
+All individual slopes are finite. Define
+\begin{equation}
+ \Phi(q,u)=\sum_{j\ge1}c_jq^j\e^{\lambda_j u},\qquad
+ \U=\Phi(q,\U),\qquad
+ \U(q)=\sum_{n\ge1}u_nq^n,
+ \quad \Q=\U^{\inv}=\sum_{n\ge1}v_nu^n.
+ \label{eq:model}
+\end{equation}
+Here $u$ is the argument of $\Q$, not a coefficient. Since $u_1=1$, the
+formal compositional inverse exists. For any fixed degree, every sum
+used in the formal equation is finite.
+
+\begin{definition}[Gevrey order and type]
+For $s>0$, a formal series $f(z)=\sum f_nz^n$ belongs to $\Gev_s$ if
+$|f_n|\le CH^n(n!)^s$ for some $C,H>0$. Its exact
+factorial-normalized type is
+\begin{equation}
+ T_s(f)=\limsup_{n\to\infty}
+                  \left(\frac{|f_n|}{(n!)^s}\right)^{1/n}
+                  \in[0,\infty].
+ \label{eq:type}
+\end{equation}
+Thus $f\in\Gev_s$ if and only if $T_s(f)<\infty$. The convention uses
+$(n!)^s$, not $\Gamma(1+sn)$; the normalization matters for exact constants.
+\end{definition}
+
+Set
+\begin{equation}
+ L_j=j\log(j+1),\qquad H_j=L_j+d_j.
+ \label{eq:Hj}
+\end{equation}
+A uniform Gevrey expansion of $Q$ on a closed left half-disc means that,
+for some $r_0,C,A>0$ and every $N\ge1$,
+\begin{equation}
+ \left|Q(u)-\sum_{n=1}^{N-1}v_nu^n\right|
+ \le CA^N(N!)^s|u|^N,
+ \qquad \Ree u\le0,\quad |u|\le r_0.
+ \label{eq:uniform-G}
+\end{equation}
+Boundary values on the imaginary axis are furnished by the convergent
+block construction, not by analytic continuation across that axis.
+
+\begin{theorem}[Joint convergence and regularity classification]
+\label{thm:classification}
+Under \eqref{eq:normalization}, the formal solution converges in a
+neighborhood of zero if and only if
+\begin{equation}
+ \sup_{j\ge1}\frac{\lambda_j}{j+d_j}<\infty.
+ \label{eq:analytic-criterion}
+\end{equation}
+For every fixed $s>0$, the following assertions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+ \item $\displaystyle\sup_j\lambda_j^{1/(s+1)}/H_j<\infty$;
+ \item $\U\in\Gev_s$;
+ \item $\Q\in\Gev_s$;
+ \item the literal inverse branch $u=\Phi(Q(u),u)$ satisfies
+       \eqref{eq:uniform-G} on a sufficiently small closed left half-disc.
+\end{enumerate}
+The literal inverse branch exists on the left independently of these
+growth conditions. No monotonicity hypothesis is required.
+\end{theorem}
+
+\begin{definition}[Fine Borel summability]
+Let
+\[
+ \B f(\zeta)=\sum_{n\ge0}\frac{f_n}{n!}\zeta^n,
+ \qquad
+ \Omega^-_\delta=\{\zeta:\dist(\zeta,(-\infty,0])<\delta\}.
+\]
+A formal series is finely Borel summable in direction $\pi$ when its
+Borel germ extends holomorphically to some $\Omega^-_\delta$ and is bounded
+there by $C\e^{A|\zeta|}$. Its sum at $u=-r$ is
+\begin{equation}
+ \mathcal S_\pi f(-r)=\frac1r\int_0^\infty
+                 \e^{-t/r}\B f(-t)\,\dd t.
+ \label{eq:laplace}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Sharp weighted negative-ray summability]
+\label{thm:fine}
+Under \eqref{eq:normalization}, each of the four conditions of
+Theorem~\ref{thm:classification} at $s=1$ is also equivalent to each of
+\[
+ \U\text{ is finely summable in direction }\pi,
+ \qquad
+ \Q\text{ is finely summable in direction }\pi.
+\]
+The sums are compositional inverses near the negative real axis. They
+satisfy the literal kernel equation on their sufficiently small common
+left-side domain, with an absolutely convergent sum over $j$.
+\end{theorem}
+
+\begin{theorem}[Exact type under strong amplitude damping]
+\label{thm:type}
+Suppose additionally that
+\begin{equation}
+ \frac{d_j}{j\log(j+1)}\longrightarrow\infty.
+ \label{eq:strong}
+\end{equation}
+Then for every $s>0$, with values in $[0,\infty]$,
+\begin{equation}
+ \boxed{\quad
+ T_s(\U)=(s+1)^{s+1}
+       \limsup_{j\to\infty}\frac{\lambda_j}{d_j^{s+1}}.
+ \quad}
+ \label{eq:exact-type}
+\end{equation}
+This is a forward-series type theorem. It does not assert equality of
+forward and inverse exact types.
+\end{theorem}
+
+\begin{theorem}[Dense power costs: root limit and dominant action]
+\label{thm:condensation}
+Assume
+\begin{equation}
+ d_j\sim b j^\beta,\qquad \lambda_j\sim a j^p,
+ \qquad a,b>0,\quad p>\beta>1.
+ \label{eq:powers}
+\end{equation}
+Put $r=p/\beta>1$ and $s=r-1$. Then
+\begin{equation}
+ \lim_{n\to\infty}\left(\frac{u_n}{(n!)^s}\right)^{1/n}
+     =a\left(\frac r b\right)^r.
+ \label{eq:root-limit}
+\end{equation}
+Give each ordered composition $(j_1,\ldots,j_k)$ of $n$ probability
+proportional to its nonnegative Lagrange weight in
+\eqref{eq:ordered-Lagrange}. If $K=k$, $D=\sum_i d_{j_i}$, and
+$J_{\max}=\max_i j_i$, then
+\begin{equation}
+ \frac K n\to1,\qquad \frac D n\to r,\qquad
+ \frac{\max_i d_{j_i}}{D}\to1,\qquad
+ \frac{J_{\max}}{n^{1/\beta}}\to\left(\frac r b\right)^{1/\beta}
+ \label{eq:prob-limits}
+\end{equation}
+in probability. The ratio involving $D$ is defined arbitrarily when
+$D=0$, an event whose probability tends to zero.
+\end{theorem}
+
+\subsection{Positive amplitudes with an exponential upper bound}
+The normalization $c_j\le1$ does not exclude the usual exponentially
+bounded case. Suppose $c_1=1$, $c_j>0$, and
+$\sup_{j\ge2}c_j^{1/(j-1)}<\infty$. Choose $R\ge1$ such that
+$c_jR^{1-j}\le1$ and set
+\begin{equation}
+ V(z)=R\U(z/R),\qquad
+ \widetilde c_j=c_jR^{1-j},\qquad
+ \widetilde\lambda_j=\lambda_j/R.
+ \label{eq:rescaling}
+\end{equation}
+Then $V$ satisfies the normalized model. With
+$d_j^+=\max(0,-\log c_j)$, one has
+\[
+ d_j^+\le\widetilde d_j\le d_j^++(j-1)\log R.
+\]
+Consequently the analytic and Gevrey criteria hold for the original model
+with $d_j$ replaced by $d_j^+$. Fine summability and uniform remainder
+properties survive this positive real rescaling. The strong-damping
+type formula transforms back to exactly \eqref{eq:exact-type}.
+
+\section{Finite algebra and the necessary estimates}
+\label{sec:formal}
+
+\subsection{Existence, positivity, and Lagrange coefficients}
+If $V,W\in q\R[[q]]$ agree through degree $n-1$, then
+$\Phi(q,V)$ and $\Phi(q,W)$ agree through degree $n$. Iterating from zero
+therefore constructs the unique formal solution. All coefficients are
+nonnegative, and the coefficient of $q$ is $c_1=1$.
+
+Apply Lagrange inversion to $V=t\Phi(q,V)$ in the auxiliary variable
+$t$. Substitution $t=1$ is legitimate coefficientwise because $\Phi$ has
+positive $q$-order. The coefficient formula is
+\begin{equation}
+ u_n=\sum_{k=1}^{n}\frac1{k!}
+     \sum_{\substack{j_1+\cdots+j_k=n\\j_i\ge1}}
+        \left(\prod_{i=1}^k c_{j_i}\right)
+        \left(\sum_{i=1}^k\lambda_{j_i}\right)^{k-1}.
+ \label{eq:ordered-Lagrange}
+\end{equation}
+For $k=1$ the last factor is interpreted as one, even if its base is zero.
+Grouping equal parts gives the equivalent finite expression
+\begin{equation}
+ u_n=\sum_{\sum j m_j=n}
+      \frac{\prod_j c_j^{m_j}}{\prod_j m_j!}
+            \left(\sum_jm_j\lambda_j\right)^{\sum m_j-1}.
+ \label{eq:unordered-Lagrange}
+\end{equation}
+These formulas are identities in finitely many variables at each degree;
+no analytic convergence is being used.
+
+The term with one part $j\ge2$ and $m$ parts equal to one proves
+\begin{equation}
+ u_{j+m}\ge c_j\frac{(\lambda_j+m\lambda_1)^m}{m!}
+              \ge \e^{-d_j}\frac{\lambda_j^m}{m!}.
+ \label{eq:one-large}
+\end{equation}
+Retaining the amplitude in this inequality is essential.
+
+\subsection{Necessity of the joint Gevrey budget}
+Suppose $u_n\le CH^n(n!)^s$, enlarging $C,H$ to be at least one. For
+$j\ge2$ set $m=\lceil L_j+d_j\rceil$. From \eqref{eq:one-large},
+\begin{equation}
+ \lambda_j\le C^{1/m}H^{1+j/m}\e^{d_j/m}
+                  (m!)^{1/m}((j+m)!)^{s/m}.
+ \label{eq:necessary-estimate}
+\end{equation}
+The factors $C^{1/m}$, $H^{1+j/m}$, and $\e^{d_j/m}$ are bounded.
+Also $j+m\le2m$ and
+\[
+ ((j+m)!)^{s/m}\le(j+m)^s
+                \exp\!\left(s\frac j m\log(j+m)\right).
+\]
+The last exponential is uniformly bounded. Indeed $m\ge j\log(j+1)$,
+and $\log(2m)/m$ is decreasing once $m$ is sufficiently large; its
+maximum in that range is attained, up to finitely many cases, at the
+lower endpoint. Thus $\lambda_j\le C_s m^{s+1}$, which is exactly the
+necessary bound in Theorem~\ref{thm:classification}. The finitely many
+small indices are absorbed into the constant.
+
+\subsection{Gevrey membership is invariant under formal reversion}
+\begin{lemma}
+\label{lem:reversion}
+For $s>0$ and $f(z)=z+O(z^2)$, one has
+$f\in\Gev_s$ if and only if $f^{\inv}\in\Gev_s$.
+\end{lemma}
+\begin{proof}
+Write $f(z)=z(1+h(z))$. The inverse coefficient is
+$n^{-1}[z^{n-1}](1+h(z))^{-n}$. A term with $\ell$ factors is indexed by
+positive integers $i_1+\cdots+i_\ell=n-1$. Their factorials satisfy
+\[
+ \prod_{a=1}^{\ell}(i_a+1)!
+ \le2^{\ell-1}(n-\ell+1)!\le2^n n!.
+\]
+To prove this, move units from smaller parts exceeding one to a largest
+part; the product cannot decrease, and eventually all but one part equal
+one. Raising the estimate to $s$, bounding the binomial coefficient from
+the negative-power expansion by $4^n$, and the number of compositions by
+$2^n$, gives $|[z^n]f^{\inv}|\le E^n(n!)^s$. The bounds on the input
+coefficients contribute only another exponential factor. Apply the same
+argument to the inverse for the reverse implication.
+\end{proof}
+This deliberately proves only class membership. None of the constants
+in this lemma are sharp enough to prove an exact type identity.
+
+\section{The exact convergence criterion}
+\label{sec:convergence}
+
+Suppose first that $\U$ converges. Choose $q_0>0$ within its radius.
+Since every coefficient is nonnegative, Tonelli's theorem applied to the
+formal identity gives an equality of nonnegative sums
+\[
+ \U(q_0)=\sum_j c_jq_0^j\e^{\lambda_j\U(q_0)}<\infty.
+\]
+Writing $t=\U(q_0)>0$, each summand is bounded by $t$, so
+\[
+ t\lambda_j\le d_j+j\log(1/q_0)+\log t.
+\]
+This yields $\lambda_j=O(j+d_j)$.
+
+Conversely, suppose $\lambda_j\le K(j+d_j)$ with $K>0$. On a small
+polydisc with $|u|<1/(2K)$,
+\begin{equation}
+ c_j|q|^j\e^{\lambda_j|u|}
+ \le(|q|\e^{1/2})^j\e^{-d_j/2}.
+ \label{eq:analytic-majorant}
+\end{equation}
+The right side is summable when $|q|<\e^{-1/2}$. Thus $\Phi$ is
+holomorphic in a neighborhood of $(0,0)$. The analytic implicit-function
+theorem applies to $u-\Phi(q,u)$ because its $u$-derivative at the origin
+is one. Its Taylor series must be the unique formal solution.
+
+This establishes \eqref{eq:analytic-criterion}. It also shows why the
+$j\log j$ term must not be inserted into the convergence criterion.
+For example, $c_j=1$ and $\lambda_j=j\log(j+1)$ give a divergent solution
+that belongs to every positive Gevrey class. Ordinary convergence is a
+strictly different endpoint problem.
+
+\section{The weighted exponential-block inverse}
+\label{sec:blocks}
+
+\subsection{Explicit blocks}
+For fixed $u$, first invert $q\mapsto\Phi(q,u)$ with an independent
+target variable $w$. Lagrange inversion and a negative-binomial expansion
+give, after setting $w=u$,
+\begin{equation}
+ Q(u)=\sum_{k\ge1}u^k
+       \sum_{\substack{\mathbf m=(m_1,\ldots,m_\ell)\\
+                        m_i\ge1,\ \sum_i m_i=k-1}}
+                 \omega_{k,\ell}\e^{-D_{\mathbf m}}
+                                    \e^{b_{k,\mathbf m}u},
+ \label{eq:blocks}
+\end{equation}
+where the empty composition is used when $k=1$, and
+\begin{align}
+ \omega_{k,\ell}&=\frac{(-1)^\ell}{k}\binom{k+\ell-1}{\ell},\label{eq:weight}\\
+ D_{\mathbf m}&=\sum_i d_{m_i+1},\label{eq:cost}\\
+ b_{k,\mathbf m}&=\sum_i\lambda_{m_i+1}-(k+\ell)\lambda_1.
+ \label{eq:frequency}
+\end{align}
+In particular, the first block is $u\e^{-\lambda_1u}$. Each block starts
+at ordinary degree $k$, so \eqref{eq:blocks} also makes sense formally.
+It is exactly $\Q$, by uniqueness of formal compositional inversion.
+
+Let $C_k=\sum_{\mathbf m}|\omega_{k,\ell}|$. For $k\ge2$,
+\begin{equation}
+ C_k=\frac1k\sum_{\ell=1}^{k-1}
+           \binom{k+\ell-1}{\ell}\binom{k-2}{\ell-1}
+       \le8^k,
+ \label{eq:mass}
+\end{equation}
+and $C_1=1$. The last bound follows directly from
+$\binom{k+\ell-1}{\ell}\le4^k$ and the total number $2^{k-2}$ of
+compositions of $k-1$. We use this simple bound rather than an optimized
+Schr\"oder-number estimate.
+
+\subsection{A literal inverse for every slope sequence}
+Every frequency satisfies
+\begin{equation}
+ b_{k,\mathbf m}\ge-2k\lambda_1.
+ \label{eq:negative-frequency}
+\end{equation}
+Consequently the absolute value of block $k$ on $\Ree u\le0$ is at most
+\[
+ \bigl(8|u|\e^{2\lambda_1|u|}\bigr)^k.
+\]
+Choose $r_0>0$ such that
+$8r_0\e^{2\lambda_1r_0}<1/3$. The block series converges uniformly on the
+closed left half-disc of radius $r_0$, and normally in its interior.
+The same calculation with $w$ in place of the factor $u^k$ proves a
+uniform convergence radius for the inverse in the independent variable
+$w$. Since it agrees near $w=0$ with the analytic inverse of
+$q\mapsto\Phi(q,u)$, substitution $w=u$ is valid there. The bound also
+keeps $|Q(u)|<1/2$, where the literal kernel converges absolutely.
+
+We have therefore constructed, with no slope-growth assumption,
+\begin{equation}
+ u=\sum_{j\ge1}c_jQ(u)^j\e^{\lambda_j u},\qquad
+ Q(u)=u+O(u^2).
+ \label{eq:literal-inverse}
+\end{equation}
+The latter estimate is uniform on the half-disc. On every smaller closed
+sector strictly inside the left half-plane, Cauchy's estimate gives
+$Q'(u)=1+O(u)$, so the analytic forward inverse exists near the negative
+axis. Uniform Gevrey control is an additional assertion, proved next.
+
+\subsection{A finite block certificate}
+Let $Q_{\le K}$ denote the first $K$ blocks. For $u=-r$ with $r\le r_0$,
+put $t=8r\e^{2\lambda_1r}<1$. Then
+\begin{equation}
+ |Q(-r)-Q_{\le K}(-r)|\le\frac{t^{K+1}}{1-t}.
+ \label{eq:block-certificate}
+\end{equation}
+This certificate does not use Gevrey regularity, and it remains valid
+for slopes too large for any finite Gevrey class. Only finitely many
+amplitudes and slopes are needed to evaluate the first $K$ blocks.
+
+\section{Sufficiency and uniform Gevrey remainders}
+\label{sec:sufficiency}
+
+Fix $s>0$ and write $r=s+1>1$. Assume
+$\lambda_j^{1/r}\le K(L_j+d_j)$ for all $j$. Constants in this section
+may depend on the model and on $s$, but never on a coefficient order or
+a particular composition.
+
+\subsection{A weighted block-moment estimate}
+In a composition belonging to block $k$, let $D=\sum_i d_{m_i+1}$ and
+put $A_k=k\log(k+1)$. Since $\sum_i(m_i+1)\le2k$ and every $m_i+1\le k$,
+\[
+ \sum_i L_{m_i+1}\le 2k\log(k+1)=2A_k.
+\]
+For nonnegative numbers and $r\ge1$, $\sum x_i^r\le(\sum x_i)^r$.
+Consequently
+\[
+ \sum_i\lambda_{m_i+1}\le K^r(2A_k+D)^r.
+\]
+The subtraction in \eqref{eq:frequency} has magnitude at most
+$2k\lambda_1$. Increasing a constant also covers block $k=1$, and gives
+\begin{equation}
+ |b_{k,\mathbf m}|\le C_s(A_k+D)^r.
+ \label{eq:weighted-frequency}
+\end{equation}
+For every integer $m\ge1$,
+\begin{align}
+ \e^{-D}\frac{|b|^m}{m!}
+ &\le \frac{C_s^m}{m!}\e^{-D}(A_k+D)^{rm}\notag\\
+ &\le\frac{E_s^m}{m!}
+       \left(A_k^{rm}+\left(\frac{rm}{\e}\right)^{rm}\right).
+ \label{eq:moment-budget}
+\end{align}
+Here we used $(x+y)^{rm}\le2^{rm}(x^{rm}+y^{rm})$ and
+$\sup_{D\ge0}\e^{-D}D^{rm}=(rm/\e)^{rm}$. The case $m=0$ is bounded by
+one. Thus amplitude damping converts a possibly unbounded frequency into
+a factorially controlled moment. Bounding frequencies alone would miss
+this mechanism.
+
+\begin{lemma}[Factorial budget]
+\label{lem:factorial-budget}
+For each $s>0$ there is $B_s\ge1$ such that, for $k\ge1$, $m\ge0$, and
+$n=k+m$,
+\begin{equation}
+ \frac{[k\log(k+1)]^{(s+1)m}}{m!}
+ +\frac{m^{(s+1)m}}{m!}
+ \le B_s^n(n!)^s.
+ \label{eq:factorial-budget}
+\end{equation}
+In the case $m=0$, powers with exponent zero are interpreted as one.
+\end{lemma}
+\begin{proof}
+Write $r=s+1$. The second summand follows at once from
+$m!\ge(m/\e)^m$ and $n!\ge(n/\e)^n$, since
+$m^{rm}/m!\le\e^m m^{sm}\le\e^{(s+1)n}(n!)^s$.
+
+For the first summand assume $m\ge1$, and use
+$\log h!\ge h\log h-h$. Its logarithm after division by $(n!)^s$ is
+at most
+\[
+ rm\log(A_k/n)-sk\log n-m\log(m/n)+m+sn.
+\]
+The last three terms other than $-sk\log n$ are $O_s(n)$, because
+$-x\log x$ is bounded on $[0,1]$. Put
+$x=(k/n)\log(n+1)$. Then $A_k/n\le x$, and
+$k\log n\ge nx/2$ for $n\ge2$. The remaining expression is at most
+\[
+ n\left(r\log^+x-\frac{s}{2}x+O_s(1)\right).
+\]
+The function $r\log^+x-sx/2$ is bounded above on $[0,\infty)$ because
+$s>0$. Exponentiation proves the assertion. The finitely many omitted
+cases are absorbed into $B_s$.
+\end{proof}
+
+\subsection{Coefficient sufficiency}
+Extracting the ordinary coefficient of $u^n$ from \eqref{eq:blocks}
+uses $k\le n$ and $m=n-k$. Apply \eqref{eq:moment-budget}, then
+Lemma~\ref{lem:factorial-budget}, and finally the mass bound $8^k$.
+The sum over the $n$ possible blocks is at most $C H^n(n!)^s$.
+It follows that $\Q\in\Gev_s$. Lemma~\ref{lem:reversion} gives
+$\U\in\Gev_s$. This proves sufficiency for both formal series without
+using any asymptotic formula for individual coefficients.
+
+\subsection{The same budget controls an actual analytic remainder}
+For every complex $z$ and integer $m\ge1$, the integral form of the
+exponential Taylor remainder gives
+\begin{equation}
+ \left|\e^z-\sum_{h=0}^{m-1}\frac{z^h}{h!}\right|
+ \le\frac{|z|^m}{m!}\e^{\max(0,\Ree z)}.
+ \label{eq:exp-remainder}
+\end{equation}
+For $\Ree u\le0$ and a real block frequency $b$, the exponential factor
+on the right is at most one if $b\ge0$. If $b<0$, it is at most
+$\e^{2k\lambda_1r_0}$. This latter factor is merely exponential in $k$.
+
+In every block $k<N$, truncate $\e^{bu}$ before degree $N-k$.
+The resulting finite sum is exactly $\sum_{n<N}v_nu^n$. By
+\eqref{eq:exp-remainder} the error in block $k$ is bounded by $|u|^N$
+times the same moment in \eqref{eq:moment-budget}, with $m=N-k$,
+and an extra fixed exponential in $k$. The factorial budget and mass
+bound therefore give a total at most $C H^N(N!)^s|u|^N$.
+
+For the blocks $k\ge N$, choose $r_0$ as in Section~\ref{sec:blocks}.
+Their geometric tail is bounded by $C H_0^N|u|^N$. Adding the two
+bounds proves \eqref{eq:uniform-G}, including its boundary values.
+The case $N=1$ follows directly from the geometric series.
+
+Conversely, if \eqref{eq:uniform-G} holds, its order-$N+1$ version
+shows along the negative ray that
+\[
+ \frac{Q(u)-\sum_{n<N}v_nu^n}{u^N}\longrightarrow v_N.
+\]
+Its order-$N$ version then gives $|v_N|\le CA^N(N!)^s$.
+Thus a uniform expansion implies $\Q\in\Gev_s$, and the necessity
+argument of Section~\ref{sec:formal} applies after reversion.
+This completes the Gevrey part of Theorem~\ref{thm:classification}.
+
+\begin{remark}[Why the analytic criterion is different]
+The proof of Lemma~\ref{lem:factorial-budget} uses $s>0$ in an essential
+way. Setting $s=0$ removes the term that offsets $k\log(k+1)$.
+Accordingly, the convergence budget is $j+d_j$, not the result of
+formally putting $s=0$ in the positive-Gevrey budget. There are divergent
+series belonging to every $\Gev_s$, $s>0$.
+\end{remark}
+
+\section{Bessel kernels and fine negative-ray summation}
+\label{sec:summation}
+
+\subsection{One exact Borel kernel}
+For an integer $k\ge1$ and a real number $b$, define the entire function
+\begin{equation}
+ K_{k,b}(\zeta)=\sum_{m\ge0}
+       \frac{b^m\zeta^{k+m}}{m!(k+m)!}
+       =\B(u^k\e^{bu})(\zeta).
+ \label{eq:bessel-kernel}
+\end{equation}
+These are Bessel kernels in elementary power-series normalization.
+Their relation to the standard $I_k$ and the Poisson integral for $J_k$
+can be read from the formulas in \cite{dlmf}. The following direct
+version supplies exactly the estimates we need.
+
+Let $\nu_k$ be the probability measure on $[-1,1]$ with density
+proportional to $(1-t^2)^{k-1/2}$. Its odd moments vanish and the beta
+integral gives
+\[
+ \int t^{2m}\,\dd\nu_k(t)
+ =\frac{(2m)!k!}{4^m m!(k+m)!}.
+\]
+Expanding the exponential, and integrating on this compact interval,
+therefore proves
+\begin{equation}
+ K_{k,b}(\zeta)=\frac{\zeta^k}{k!}
+       \int_{-1}^1\exp(2\sqrt{b\zeta}\,t)\,\dd\nu_k(t).
+ \label{eq:bessel-integral}
+\end{equation}
+The expression is independent of the square-root choice. Put
+\[
+ h(\zeta)=|\Ree\sqrt\zeta|,
+ \qquad \widetilde h(\zeta)=|\Imm\sqrt\zeta|,
+ \qquad h(\zeta)^2=\frac{|\zeta|+\Ree\zeta}{2}.
+\]
+Equation~\eqref{eq:bessel-integral} implies
+\begin{equation}
+ |K_{k,b}(\zeta)|\le\frac{|\zeta|^k}{k!}
+ \begin{cases}
+  \exp(2h(\zeta)\sqrt b),&b\ge0,\\
+  \exp(2\widetilde h(\zeta)\sqrt{|b|}),&b<0.
+ \end{cases}
+ \label{eq:bessel-bound}
+\end{equation}
+In particular, for $t\ge0$ and $b\ge0$, oscillation gives
+$|K_{k,b}(-t)|\le t^k/k!$.
+
+For one fixed $b$ and $r>0$, termwise Laplace integration is justified
+absolutely and yields
+\begin{equation}
+ \frac1r\int_0^\infty\e^{-t/r}K_{k,b}(-t)\,\dd t
+       =(-r)^k\e^{-br}.
+ \label{eq:one-block-laplace}
+\end{equation}
+With an absolute value inside the integral, its value is at most $r^k$
+for $b\ge0$, by the oscillatory bound, and is $r^k\e^{|b|r}$ for $b<0$,
+by the positive Taylor series. This stronger distinction will justify an
+infinite exchange that termwise absolute Taylor expansion would not.
+
+\subsection{The all-slope ray transform is not automatically a Borel germ}
+Write the internal block sums as in \eqref{eq:blocks} and set
+\begin{equation}
+ \mathfrak B_Q(-t)=\sum_{k\ge1}\sum_{\mathbf m}
+       \omega_{k,\ell}\e^{-D_{\mathbf m}}
+                         K_{k,b_{k,\mathbf m}}(-t).
+ \label{eq:ray-transform}
+\end{equation}
+The absolute contribution of block $k$ is bounded by
+\[
+ 8^k\frac{t^k}{k!}\exp(2\sqrt{2k\lambda_1t}).
+\]
+Young's inequality bounds the last exponent by $\eta k+C_\eta t$.
+Summing the resulting exponential series proves continuity on the ray
+and a bound $C\e^{Ht}$. Moreover,
+\eqref{eq:one-block-laplace} bounds the integrated absolute contribution
+of block $k$ by $8^kr^k\e^{2k\lambda_1r}$. Hence Fubini's theorem gives
+\begin{equation}
+ Q(-r)=\frac1r\int_0^\infty
+                    \e^{-t/r}\mathfrak B_Q(-t)\,\dd t
+ \label{eq:all-slope-recovery}
+\end{equation}
+for sufficiently small $r$.
+This construction works for every slope sequence. Without further growth
+control, however, $\mathfrak B_Q$ need not extend to a holomorphic germ
+at the origin. Equation~\eqref{eq:all-slope-recovery} alone is not a
+Borel-summability theorem.
+
+\subsection{Amplitude damping gives a complex neighborhood}
+Now assume the joint criterion with $s=1$.
+Equation~\eqref{eq:weighted-frequency} gives, for positive frequencies,
+\[
+ \sqrt b\le C(A_k+D),\qquad A_k=k\log(k+1).
+\]
+Combining this with \eqref{eq:bessel-bound} retains the amplitude cost:
+\begin{equation}
+ \e^{-D}|K_{k,b}(\zeta)|
+ \le\frac{|\zeta|^k}{k!}
+    \e^{2Ch(\zeta)A_k}\e^{-(1-2Ch(\zeta))D},\qquad b\ge0.
+ \label{eq:cost-borel}
+\end{equation}
+For negative frequencies use $|b|\le2k\lambda_1$ instead. On any compact
+set with $2Ch<1$, the absolute mass of block $k$ is consequently at most
+\begin{equation}
+ \frac{8^k|\zeta|^k}{k!}
+ \exp\left(2Ch(\zeta)k\log(k+1)
+                 +2\sqrt{2\lambda_1}\widetilde h(\zeta)\sqrt k\right).
+ \label{eq:general-borel-majorant}
+\end{equation}
+Its logarithm is $-(1-\theta)k\log k+O(k)+O(\sqrt k)$ for a fixed
+$\theta<1$ on that compact set. The series
+\begin{equation}
+ B_Q(\zeta)=\sum_{k\ge1}\sum_{\mathbf m}
+       \omega_{k,\ell}\e^{-D_{\mathbf m}}
+                            K_{k,b_{k,\mathbf m}}(\zeta)
+ \label{eq:borel-series}
+\end{equation}
+therefore converges normally on $\{2Ch<1\}$. Its Taylor coefficient of
+order $n$ uses only blocks $k\le n$ and equals $v_n/n!$. Thus it is
+indeed the analytic continuation of the Borel germ of $\Q$.
+
+\subsection{Growth on a fixed-width tube}
+Choose $\delta>0$ so small that the closure of $\Omega^-_{2\delta}$ is
+contained in $\{2Ch<1\}$. For $\zeta=-t+iy$, $t\ge1$, $|y|\le\delta$,
+\[
+ h(\zeta)\le\frac{\delta}{2\sqrt t},\qquad
+ \widetilde h(\zeta)\le\sqrt{t+\delta},\qquad
+ |\zeta|\le t+\delta.
+\]
+The logarithm of \eqref{eq:general-borel-majorant} is bounded by
+\begin{equation}
+ k\log(8(t+\delta))-\log k!
+       +\frac{C_1}{\sqrt t}k\log(k+1)+C_2\sqrt{kt}.
+ \label{eq:tube-log}
+\end{equation}
+If $k\le t^2$, the third term is $o(k)$ as $t\to\infty$ and
+$C_2\sqrt{kt}\le k+C_3t$. Summing these terms gives a bound
+$C\e^{H_1t}$. If $k>t^2$, then
+$\log(t+\delta)\le\tfrac12\log k+o(1)$. For sufficiently large $t$,
+$C_1/\sqrt t<1/8$ and $C_2\sqrt{t/k}$ is small. The factorial estimate
+$\log k!\ge k\log k-k$ then bounds \eqref{eq:tube-log} by
+$-\tfrac14 k\log k$. This tail is uniformly bounded.
+The remaining bounded part of the tube is compactly contained in the
+normal-convergence domain. It follows that
+\begin{equation}
+ |B_Q(\zeta)|\le C\e^{H|\zeta|},\qquad\zeta\in\Omega^-_\delta.
+ \label{eq:weighted-fine-bound}
+\end{equation}
+This proves fine summability of $\Q$ and identifies its sum with the
+literal $Q$ by \eqref{eq:all-slope-recovery}.
+
+\subsection{Passing from the inverse to the forward series}
+Fine summability is closed under compositional inversion for a series
+with linear coefficient one. Because fine and angular summability are
+different hypotheses, Appendix~\ref{app:inverse} proves the precise
+fixed-tube version used here. Its proof is a convolution argument in
+the Borel plane, following the classical framework in \cite{sauzin}.
+It shows simultaneously that summation commutes with inversion.
+
+Applying that result to $\Q$ proves fine summability of $\U$ and the
+identity between the two summed inverse functions. The literal equation
+follows from \eqref{eq:literal-inverse}, on the small common domain where
+the dependent variable has negative real part. Conversely, fine
+summability implies a holomorphic Borel germ and therefore Gevrey--1
+coefficients. Theorem~\ref{thm:classification} then gives the joint
+budget. This completes Theorem~\ref{thm:fine}.
+
+\section{Exact forward type in the strong-damping regime}
+\label{sec:type}
+
+The next argument is independent of the Borel construction. It uses
+positivity of the forward Lagrange weights, and it controls their
+exponential scale sharply enough to compute an exact type.
+
+\subsection{A universal upper-type lemma}
+\begin{lemma}[A power bound on slopes in cost coordinates]
+\label{lem:type-upper}
+Fix $r>1$, put $s=r-1$, and suppose, for some $a>0$ and $C\ge0$, that
+\begin{equation}
+ \lambda_j\le a d_j^r+C\qquad(j\ge1).
+ \label{eq:cost-power-bound}
+\end{equation}
+Then $T_s(\U)\le ar^r$. The same upper bound applies to the sum of any
+subcollection of the nonnegative Lagrange terms satisfying the analogous
+bound $\sum_i\lambda_{j_i}\le aD^r+CK$.
+\end{lemma}
+\begin{proof}
+For a length-$k$ composition of $n$ let $D=\sum_i d_{j_i}$ and
+$\Lambda=\sum_i\lambda_{j_i}$. Since
+$\sum_i d_{j_i}^r\le D^r$, we have $\Lambda\le aD^r+Ck$.
+Increasing $C$ to a positive constant permits the harmless bound
+\[
+ \frac{\e^{-D}\Lambda^{k-1}}{k!}
+ \le\frac1{k!}\e^{-D}(aD^r+Cn)^k.
+\]
+There are $\binom{n-1}{k-1}$ ordered compositions. Define
+\[
+ M_{n,k}=\frac1{k!}\sup_{D\ge0}\e^{-D}(aD^r+Cn)^k.
+\]
+A first, deliberately coarse estimate follows from
+$(x+y)^k\le2^k(x^k+y^k)$:
+\begin{equation}
+ M_{n,k}\le\frac{2^k}{k!}
+   \left(a^k(rk)^{rk}\e^{-rk}+(Cn)^k\right).
+ \label{eq:coarse-type}
+\end{equation}
+The logarithm of the first summand is at most
+$s k\log k+O(n)$, uniformly for $1\le k\le n$; the second is at most
+$\e^{O(n)}$, since $(Cn)^k/k!\le\e^{Cn}$. After multiplying by at most
+$2^n$ compositions and summing over $k\le(1-\delta)n$, division by
+$(n!)^s$ therefore leaves
+\begin{equation}
+ \exp\bigl(-s\delta n\log n+O(n)\bigr)
+ \label{eq:length-loss}
+\end{equation}
+for every fixed $\delta\in(0,1)$.
+
+For $k\ge(1-\delta)n$, with $\delta<1/2$, set $D=kx$. Then
+\begin{align*}
+ \sup_D\e^{-D}(aD^r+Cn)^k
+ &=k^{rk}\left[\sup_{x\ge0}
+          \e^{-x}\left(ax^r+\frac{Cn}{k^r}\right)\right]^k\\
+ &\le k^{rk}\left(a(r/\e)^r+o(1)\right)^k,
+\end{align*}
+where $o(1)$ is uniform in this range of $k$, since $r>1$.
+Stirling's estimate now gives
+\begin{equation}
+ M_{n,k}\le\e^{o(n)}(ar^r+o(1))^k(k!)^s.
+ \label{eq:sharp-type}
+\end{equation}
+The sum of the numbers of compositions in this range is at most
+$\e^{n\mathfrak h(\delta)+o(n)}$, where
+$\mathfrak h(\delta)=-\delta\log\delta-(1-\delta)\log(1-\delta)$.
+Using $k!\le n!$, the $n$th root of the normalized contribution is at
+most
+\[
+ \e^{\mathfrak h(\delta)}
+      \max_{1-\delta\le t\le1}(ar^r)^t+o(1).
+\]
+First let $n\to\infty$ and then $\delta\downarrow0$.
+Together with \eqref{eq:length-loss}, this proves $T_s(\U)\le ar^r$.
+All the estimates are upper bounds on positive summands and therefore
+remain valid for a restricted subcollection.
+\end{proof}
+
+The loss in \eqref{eq:length-loss} is stronger than exponential. The
+sharp type comes from compositions whose length is $n-o(n)$; their
+entropy has vanishing rate. This is why replacing every composition
+count by $2^n$ throughout would destroy the exact constant.
+
+\subsection{A matching one-action lower bound}
+Suppose \eqref{eq:strong} holds. We first record the implication
+\begin{equation}
+ j=o(d_j),\qquad j\log d_j=o(d_j).
+ \label{eq:strong-implication}
+\end{equation}
+Indeed write $d_j=M_jj\log(j+1)$ with $M_j\to\infty$. Since
+$\log x/x$ is decreasing for large $x$, or directly from this expression,
+\[
+ \frac{j\log d_j}{d_j}
+ =\frac{\log M_j+\log j+\log\log(j+1)}{M_j\log(j+1)}\longrightarrow0.
+\]
+
+Fix $r=s+1$ and put $A=\limsup_j\lambda_j/d_j^r$.
+For every $a>A$ when $A<\infty$, the finite exceptions can be included
+in a constant $C$ so that \eqref{eq:cost-power-bound} holds.
+Lemma~\ref{lem:type-upper} proves $T_s(\U)\le ar^r$; taking $a\downarrow A$
+also covers $A=0$.
+
+For the lower bound take any $B>0$ smaller than $A$, or any $B>0$ if
+$A=\infty$. There are arbitrarily large $j$ with
+$\lambda_j\ge B d_j^r$. Put
+$n_j=\lfloor d_j/r\rfloor$ and $m_j=n_j-j$. Equations
+\eqref{eq:strong-implication} ensure $m_j\ge0$ eventually,
+$m_j/n_j\to1$, and $j\log n_j/n_j\to0$. The one-action term gives
+\[
+ \frac{u_{n_j}}{(n_j!)^{r-1}}
+ \ge\frac{\e^{-d_j}(B d_j^r)^{m_j}}
+                 {m_j!(n_j!)^{r-1}}.
+\]
+Stirling's estimate, $d_j/n_j\to r$, and
+$j\log n_j/n_j\to0$ imply
+\begin{equation}
+ \frac1{n_j}\log\left(
+ \frac{\e^{-d_j}(B d_j^r)^{m_j}}
+                       {m_j!(n_j!)^{r-1}}\right)
+       =\log B+r\log r+o(1).
+ \label{eq:lower-type}
+\end{equation}
+Thus $T_s(\U)\ge Br^r$. Letting $B\uparrow A$ proves
+Theorem~\ref{thm:type} for finite positive $A$, and arbitrary $B$ proves
+it when $A=\infty$. When $A=0$ the upper bound already gives equality.
+No density assumption on the sequence of costs was used: a subsequence
+is enough for a limsup.
+
+\subsection{What the type identity does and does not say}
+The identity allows isolated large slopes and arbitrarily irregular
+costs. In particular, finite changes to amplitudes or slopes do not
+change this exact type, although they do change the coefficients and
+can change subexponential factors substantially. A type theorem gives
+only
+$\limsup (u_n/(n!)^s)^{1/n}$; it need not give a limit and never by
+itself gives a multiplicative equivalent for $u_n$. Signed reversion
+coefficients require a different argument, so no inverse-type identity
+is inferred here.
+
+\section{Dense power costs and a dominant-action limit}
+\label{sec:condensation}
+
+Assume \eqref{eq:powers}. Let $r=p/\beta$, $s=r-1$, and
+$A=a/b^r$. Then $d_j/(j\log(j+1))\to\infty$ and
+$\lambda_j/d_j^r\to A$. Theorem~\ref{thm:type} already gives an upper
+coefficient-root limit $Ar^r$.
+
+\subsection{Obtaining the lower bound at every degree}
+For each large $n$, choose an integer $j_n$ nearest to
+$(rn/b)^{1/\beta}$. Since $\beta>1$,
+\[
+ j_n=o(n),\qquad j_n\log n=o(n),\qquad
+ d_{j_n}/n\to r,\qquad \lambda_{j_n}/d_{j_n}^r\to A.
+\]
+The one-action lower bound with $m=n-j_n$ now applies at every degree
+$n$. The calculation in \eqref{eq:lower-type} gives
+\[
+ \liminf_n\left(\frac{u_n}{(n!)^s}\right)^{1/n}\ge Ar^r.
+\]
+This proves \eqref{eq:root-limit}. Equivalently,
+\begin{equation}
+ \log u_n=s\log(n!)+n\log(Ar^r)+o(n).
+ \label{eq:log-coefficient}
+\end{equation}
+It is not the assertion $u_n\sim(Ar^r)^n(n!)^s$.
+
+\subsection{The probability space and the length concentration}
+For an ordered composition $\mathbf j=(j_1,\ldots,j_k)$ of $n$, define
+\begin{equation}
+ \mathbb P_n(\mathbf j)=\frac{1}{u_n k!}
+       \e^{-\sum_i d_{j_i}}
+       \left(\sum_i\lambda_{j_i}\right)^{k-1}.
+ \label{eq:probability}
+\end{equation}
+Formula~\eqref{eq:ordered-Lagrange} says these probabilities sum to one.
+A term with zero weight has zero probability. The variable $K$ is the
+number of parts, and $D$ is their total amplitude cost.
+
+For every fixed $\delta>0$, \eqref{eq:length-loss} and the all-degree
+lower bound \eqref{eq:log-coefficient} imply
+\begin{equation}
+ \mathbb P_n\{K\le(1-\delta)n\}
+ \le\exp\bigl(-s\delta n\log n+O(n)+o(n)\bigr)\longrightarrow0.
+ \label{eq:length-concentration}
+\end{equation}
+Hence $K/n\to1$. This does not say there is only one nonunit part;
+it says the aggregate loss in the number of parts is sublinear.
+
+\subsection{Total cost is concentrated at the unique variational maximum}
+The scalar function
+\begin{equation}
+ x\longmapsto \e^{-x}x^r
+ \label{eq:cost-profile}
+\end{equation}
+has its unique maximum $(r/\e)^r$ at $x=r$. For every fixed
+$\varepsilon>0$, its supremum on $|x-r|\ge\varepsilon$ is strictly
+smaller. This remains a strict gap after adding a quantity tending
+uniformly to zero, as in the proof of \eqref{eq:sharp-type}.
+
+Fix a tolerance $\varepsilon>0$ for $D/n$. Restrict to
+$K/n\ge1-\delta$, with $\delta$ sufficiently small. If
+$|D/n-r|\ge\varepsilon$, then $|D/K-r|\ge\varepsilon/2$ after possibly
+shrinking $\delta$; this follows separately for the upper and lower
+inequalities. In the sharp-type proof, the supremum over $x=D/K$ is
+therefore restricted away from $r$. It loses a fixed exponential factor.
+Use a slope bound with coefficient $a_+>A$ as close to $A$ as needed,
+and then take $\delta$ so small that the composition entropy
+$\mathfrak h(\delta)$ is smaller than that loss. The contribution has
+normalized coefficient-root upper limit strictly below $Ar^r$.
+Equation~\eqref{eq:log-coefficient} makes its probability tend to zero.
+The excluded range $K/n<1-\delta$ is negligible by
+\eqref{eq:length-concentration}. Thus $D/n\to r$ in probability.
+
+For clarity, the two choices are compatible: the continuous function
+in \eqref{eq:cost-profile} has a positive gap for the fixed tolerance;
+choose $a_+-A$ first small compared with that gap and then choose
+$\delta$ small compared with both the gap and the tolerance. The tail
+$x\to\infty$ causes no difficulty because \eqref{eq:cost-profile}
+tends to zero.
+
+\subsection{A single part carries asymptotically all the cost}
+Let $M=\max_i d_{j_i}$. On the event $M\le(1-\varepsilon)D$,
+\begin{equation}
+ \sum_i d_{j_i}^r\le M^{r-1}D
+                     \le(1-\varepsilon)^{r-1}D^r.
+ \label{eq:strict-convexity-loss}
+\end{equation}
+Write $\gamma=(1-\varepsilon)^{r-1}<1$.
+Since $\lambda_j\le a_+d_j^r+C$ for every $a_+>A$, the slopes on this
+event satisfy $\Lambda\le a_+\gamma D^r+CK$.
+The restricted-sum version of Lemma~\ref{lem:type-upper} gives an upper
+type $a_+\gamma r^r$. Choose $a_+$ close enough to $A$ that
+$a_+\gamma<A$. The all-degree root limit then shows that the probability
+of the event tends to zero exponentially. As $D/n\to r>0$, the event
+$D=0$ is negligible. Therefore $M/D\to1$ in probability.
+
+It follows that $M/n\to r$. The asymptotic $d_j\sim bj^\beta$ implies
+$M/(bJ_{\max}^\beta)\to1$ whenever $J_{\max}\to\infty$: finite initial
+indices contribute a bounded cost, and the asymptotic bounds apply
+uniformly to all larger indices. Since $M/n\to r$, that divergence
+holds in probability. Consequently
+\[
+ J_{\max}/n^{1/\beta}\to(r/b)^{1/\beta}.
+\]
+This completes every assertion of Theorem~\ref{thm:condensation}.
+
+\begin{remark}[Meaning of condensation here]
+The proved concentration concerns a probability distribution on the
+positive Lagrange contributions, not a random solution of the feedback
+equation. One action carries almost all amplitude cost and hence almost
+all of the power-law slope budget. The theorem gives neither its local
+limit law nor the distribution of the remaining small actions. Those
+would be needed for a sharp multiplicative coefficient asymptotic.
+\end{remark}
+
+\section{A sharper Borel region under strong damping}
+\label{sec:sharp-borel}
+
+\begin{proposition}[Damping-controlled inverse continuation]
+\label{prop:sharp-borel}
+Assume \eqref{eq:strong} and let
+$A=\limsup_j\lambda_j/d_j^2<\infty$. If $A>0$, the explicit inverse
+Borel series \eqref{eq:borel-series} converges normally on
+\begin{equation}
+ \mathcal P_A=\left\{\zeta:\ |\zeta|+\Ree\zeta<\frac1{2A}\right\}.
+ \label{eq:sharp-parabola}
+\end{equation}
+If $A=0$, it defines an entire function. In both cases it has at most
+exponential growth on a sufficiently thin fixed-width tube around the
+negative ray. When $0<A<\infty$, the forward Borel transform has radius
+of convergence exactly $1/(4A)$ and has a singularity at the positive
+point $1/(4A)$. Also $T_1(\Q)\le4A$; equality and a singularity of the
+inverse at the same point are not asserted.
+\end{proposition}
+\begin{proof}
+For every $a>A$ there is a constant $C$ with
+$\lambda_j\le a d_j^2+C$. Hence every positive inverse-block frequency
+satisfies $b\le aD^2+Ck$ and
+$\sqrt b\le\sqrt a\,D+\sqrt{Ck}$. Equation~\eqref{eq:bessel-bound}
+now gives
+\[
+ \e^{-D}|K_{k,b}(\zeta)|
+ \le\frac{|\zeta|^k}{k!}
+    \e^{-(1-2\sqrt a\,h(\zeta))D}
+    \e^{2\sqrt C\,h(\zeta)\sqrt k}.
+\]
+On compact sets with $2\sqrt a\,h<1$, the first exponential is at most
+one. Negative frequencies contribute at most
+$\exp(2\sqrt{2\lambda_1}\widetilde h\sqrt k)$ instead. The mass bound
+and the factorial in the denominator prove normal convergence. Taking
+the union over $a>A$ gives \eqref{eq:sharp-parabola}; for $A=0$, every
+compact subset of the plane is permitted by taking $a$ small enough.
+
+On a fixed tube, $h$ is bounded and $\widetilde h=O(\sqrt{1+|\zeta|})$.
+Young's inequality absorbs the remaining square-root terms into
+$C_1k+C_2(1+|\zeta|)$, and the sum over $k$ is exponentially bounded.
+This argument is simpler than \eqref{eq:tube-log}, because the strong
+cost estimate has removed $k\log k$ from the positive-frequency bound.
+
+Theorem~\ref{thm:type} at $s=1$ gives $T_1(\U)=4A$, hence the stated
+forward Borel radius. A positive-coefficient power series of finite
+radius $R$ cannot be analytic at $R$: if it were, take a real $x<R$
+close enough to $R$ that its Taylor expansion about $x$ converges at
+some $y>R$. Its Taylor coefficients at $x$ are nonnegative. Interchanging
+the resulting nonnegative double sum would show that the original
+power series converges at $y$, a contradiction. This classical
+positive-coefficient argument proves the forward singularity.
+Finally, \eqref{eq:sharp-parabola} contains every disc of radius less
+than $1/(4A)$, so the inverse Borel radius is at least $1/(4A)$.
+\end{proof}
+
+The positive intercept of the guaranteed inverse parabola is therefore
+exactly the forward Borel radius. This is a useful alignment of two
+independent calculations, but it does not prove that the boundary of
+\eqref{eq:sharp-parabola} is a natural boundary, or even that every
+point on it is singular for the inverse. Normal convergence regions
+and maximal continuation domains must not be identified.
+
+\section{Phase diagrams and explicit examples}
+\label{sec:examples}
+
+\subsection{Power-law slopes and stretched-exponential amplitudes}
+Suppose $d_j\sim b j^\beta$ and $\lambda_j\sim a j^p$, with
+$a,b,\beta,p>0$, and keep the normalization at $j=1$. Put
+$B=\max(1,\beta)$. The sharp classification reads
+\begin{center}
+\begin{tabular}{@{}p{0.54\linewidth}p{0.38\linewidth}@{}}
+\toprule
+Property & Necessary and sufficient condition\\
+\midrule
+Ordinary convergence & $p\le B$\\[3pt]
+Gevrey--$s$, for fixed $s>0$ & $p\le(s+1)B$\\[3pt]
+Fine summability in direction $\pi$ & $p\le2B$\\[3pt]
+Least Gevrey order when $p>B$ & $s_*=p/B-1$, attained\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\beta\le1$, the logarithm in $j\log(j+1)$ makes every equality
+case in the Gevrey row permissible. For $\beta>1$ the damping cost
+dominates that logarithm. In the divergent range $p>\beta>1$,
+\begin{equation}
+ T_{p/\beta-1}(\U)
+ =a\left(\frac{p}{b\beta}\right)^{p/\beta},
+ \qquad
+ J_{\max}\sim_{\mathbb P}
+       \left(\frac{p}{b\beta}n\right)^{1/\beta}.
+ \label{eq:power-summary}
+\end{equation}
+The notation $\sim_{\mathbb P}$ denotes a ratio tending to one in
+probability under \eqref{eq:probability}.
+
+\begin{example}[Quadratic costs and cubic slopes]
+Let $c_j=2^{-j^2}$ and $\lambda_j=j^3$ for $j\ge2$, with $c_1=1$ and
+$\lambda_1=1$. Here $\beta=2$, $b=\log2$, $p=3$. The formal solution
+is divergent, has least Gevrey order $1/2$, and satisfies
+\[
+ \lim_n\left(\frac{u_n}{\sqrt{n!}}\right)^{1/n}
+       =\left(\frac{3}{2\log2}\right)^{3/2}.
+\]
+Both series are finely summable in the negative direction, since they
+are in particular Gevrey--1. Their ordinary Borel transforms are entire
+in this case: for the forward series this follows from its order-$1/2$
+bound, and for the inverse from Proposition~\ref{prop:sharp-borel} with
+$A=0$. Entire does not imply exponential growth in every direction.
+\end{example}
+
+\begin{example}[A nonzero critical Borel scale]
+For $j\ge2$, take $c_j=\exp(-b j^\beta)$ and
+$\lambda_j=a j^{2\beta}$, where $\beta>1$ and $a,b>0$.
+The least Gevrey order is one, with exact forward type $4a/b^2$.
+The forward Borel transform has its first positive singularity at
+$\zeta=b^2/(4a)$. The inverse has the guaranteed continuation region
+\[
+ |\zeta|+\Ree\zeta<\frac{b^2}{2a}.
+\]
+It is finely summable on the negative ray. Nothing in this argument
+classifies the singularity at the positive point or its Stokes data.
+\end{example}
+
+\subsection{Logarithmic boundary factors}
+The budgets also settle endpoints not visible in a pure power diagram.
+Suppose, for $j\to\infty$,
+\[
+ d_j\sim b j^\beta(\log j)^\gamma,\qquad
+ \lambda_j\sim a j^p(\log j)^\eta,
+ \quad a,b,\beta,p>0,\quad\gamma,\eta\in\R.
+\]
+Order pairs lexicographically. Let
+\[
+ (B_0,G_0)=\max_{\rm lex}\{(1,0),(\beta,\gamma)\},\qquad
+ (B_1,G_1)=\max_{\rm lex}\{(1,1),(\beta,\gamma)\}.
+\]
+Comparison of positive monomials gives the complete tests
+\begin{align}
+ \U\text{ converges}
+ &\iff (p,\eta)\le_{\rm lex}(B_0,G_0),\label{eq:log-analytic}\\
+ \U,\Q\in\Gev_s
+ &\iff \left(\frac p{s+1},\frac\eta{s+1}\right)
+                       \le_{\rm lex}(B_1,G_1).
+ \label{eq:log-gevrey}
+\end{align}
+The second test at $s=1$ is also the fine-summability test. For example,
+when $d_j\sim b j^\beta$ with $\beta>1$ and $p>\beta$, the infimal
+positive order is $p/\beta-1$. At that order a factor
+$(\log j)^\eta$ in the slopes is permitted exactly when $\eta\le0$.
+Thus an infimal Gevrey order need not be attained in the general
+logarithmic setting. The main criterion records that distinction.
+
+\subsection{Superpolynomial slopes can still be summable}
+\begin{example}[Exponential slopes, exact Gevrey--1]
+For $j\ge2$ set
+\[
+ c_j=\exp(-\e^{j/2}),\qquad \lambda_j=\e^j,
+\]
+and set $c_1=1$, $\lambda_1=1$. Then $d_j=\e^{j/2}$ and
+$\lambda_j=d_j^2$. The convergence criterion fails, but the least Gevrey
+order is exactly one and $T_1(\U)=4$. The forward Borel radius is
+$1/4$; the inverse has the guaranteed region
+$|\zeta|+\Ree\zeta<1/2$; both series are finely summable in direction
+$\pi$. The geometric spacing of these costs does not meet the power-cost
+hypothesis of Theorem~\ref{thm:condensation}, so no all-degree root limit
+is claimed by that theorem.
+\end{example}
+
+\begin{example}[Damping sufficient for ordinary convergence]
+Let $\lambda_j\ge0$ be any sequence, however fast it grows, and take
+$c_j=\exp(-\lambda_j)$ for $j\ge2$, with $c_1=1$.
+Then $d_j=\lambda_j$ for $j\ge2$, so
+$\lambda_j/(j+d_j)\le1$. The formal solution is genuinely convergent.
+The amplitude cost can therefore restore ordinary analyticity, not just
+a weaker factorial regularity. Finitely many initial slopes do not
+affect this conclusion.
+\end{example}
+
+\begin{example}[A divergent series in every positive Gevrey class]
+Let $c_j=1$ and $\lambda_j=j\log(j+1)$. Then
+$\lambda_j/j\to\infty$, so the solution diverges. For every $s>0$,
+$\lambda_j^{1/(s+1)}/(j\log(j+1))$ is bounded. Thus the solution and
+its inverse belong to every positive Gevrey class and are finely
+summable in direction $\pi$. This is an illustration of the distinction
+between the two budgets, not a new unit-amplitude theorem.
+\end{example}
+
+\section{Why the hypotheses and the direction matter}
+\label{sec:boundaries}
+
+\subsection{Exponential amplitude control is a substantive assumption}
+The joint fine-summability equivalence is not a theorem for arbitrary
+positive amplitudes. Take $\lambda_j=0$ for all $j$ and
+\[
+ c_j=j!\bigl(2+(-1)^j\bigr),\qquad j\ge1.
+\]
+Then $c_1=1$ and the equation is simply $\U(q)=\sum c_jq^j$.
+The series is Gevrey--1, but its integrated Borel transform is
+\begin{equation}
+ \B\U(\zeta)=\frac{2\zeta}{1-\zeta}
+                         -\frac{\zeta}{1+\zeta}.
+ \label{eq:amplitude-counterexample}
+\end{equation}
+The pole at $\zeta=-1$ prevents fine summability in the negative
+direction. The amplitudes are not exponentially bounded, so this does
+not contradict Theorem~\ref{thm:fine}. It shows exactly where the
+geometric block mass used in the proof can fail.
+
+\subsection{Positivity is not just a convenient estimate}
+The one-action lower bound, the exact-type lower bound, and the
+probability interpretation use nonnegative Lagrange terms. Signed or
+complex amplitudes can cancel those terms. A theorem for such models
+would need a noncancellation condition or different invariants.
+Similarly, negative or complex slopes destroy the common damping
+half-plane used to sum the literal kernel and to control Bessel
+frequencies. The present necessity-and-sufficiency statements should
+not be extended to those settings by taking absolute values in their
+conclusions.
+
+\subsection{Why positive-ray summation fails for divergent positive series}
+The asymmetry between positive and negative directions is intrinsic.
+Suppose $\U$ has nonnegative coefficients, is divergent, and is
+Gevrey--1. If its Borel transform has finite radius, the
+positive-coefficient argument in Proposition~\ref{prop:sharp-borel}
+puts a singularity on the positive ray. If its Borel transform is entire
+and had an exponential bound $\B\U(t)\le C\e^{Ht}$ for $t\ge0$,
+positivity would give
+\[
+ \frac{u_n}{n!}\le\frac{C\e^{Ht}}{t^n}.
+\]
+Taking $t=n/H$ (and increasing $H$ to be positive if necessary) and
+using Stirling's estimate would yield
+$u_n\le C'\sqrt n\,H^n$, forcing ordinary convergence. This is a
+contradiction. Thus a divergent positive solution cannot be finely
+Borel summable in the positive direction, even in cases where its
+Borel transform is entire.
+
+\subsection{Remaining distinctions}
+The literal inverse is analytic in a small open left half-disc and has
+continuous boundary values supplied by its blocks. The uniform
+Gevrey--$s$ remainder theorem is proved for that inverse. For $s=1$,
+fine summation gives a canonical value in its summation class and an
+inverse forward sum. These statements do not imply a common open arc
+of summation directions, resurgent continuation along arbitrary paths,
+a sharp least-truncation error, or a Stokes formula.
+
+For $s\ne1$ the factorial remainder theorem does not, by itself, prove
+summability with a moment kernel of order $s$. In particular, the
+all-slope continuous ray transform in \eqref{eq:ray-transform} is not
+to be relabeled as a holomorphic Borel transform when its germ fails
+to exist. The separation of these assertions is part of the theorem.
+
+\section{Exact checks, numerical diagnostics, and reproducibility}
+\label{sec:verification}
+
+\subsection{Independent finite identities}
+The package's primary verification script, \texttt{code/verify.py},
+uses exact rational arithmetic from Python's standard library. Its
+recorded run completed \textbf{1,353 assertions} at coefficient order
+12 across twelve models. The models combine several integer-power
+slope sequences with unit, geometric, quadratic-cost, and irregular
+positive rational amplitudes. The checks compare two independent
+forward constructions: the exponential coefficient recurrence and the
+ordered Lagrange formula. The inverse is constructed from the signed
+exponential blocks, after which both compositions $\U\circ\Q$ and
+$\Q\circ\U$ are checked coefficientwise.
+
+For reference, the recurrence used independently of Lagrange inversion
+is as follows. Write
+\[
+ E_j(q)=\exp(\lambda_j\U(q))=\sum_{k\ge0}e_{j,k}q^k.
+\]
+Differentiation and coefficient comparison give
+\begin{equation}
+ e_{j,0}=1,\qquad
+ e_{j,k}=\frac{\lambda_j}{k}\sum_{m=1}^k m u_m e_{j,k-m},
+ \qquad
+ u_n=\sum_{j=1}^n c_j e_{j,n-j}.
+ \label{eq:algorithm}
+\end{equation}
+Every $e_{j,n-j}$ on the right uses only previously computed $u_m$.
+No nonlinear numerical root finder is needed. The other exact checks
+cover the one-action lower bound and the block mass bound through block
+100. The certificate below uses explicit rational exponential
+enclosures together with checks on its domain and final width. Exact finite checks test identities and implementation consistency;
+they are not proofs of the asymptotic statements.
+
+\subsection{A rational certificate for a literal inverse value}
+For the cubic-slope, quadratic-cost model
+\[
+ c_1=1,\quad c_j=2^{-j^2}\ (j\ge2),\qquad \lambda_j=j^3,
+\]
+the script encloses the first ten inverse blocks at $u=-1/100$ using
+rational exponential Taylor bounds and adds the geometric tail
+\eqref{eq:block-certificate}. It produces the following outward-rounded
+decimal enclosure:
+\begin{equation}
+ -0.010106452308614
+ < Q(-0.01) <
+ -0.010106452306282.
+ \label{eq:certificate-value}
+\end{equation}
+The file \path{data/exact_checks.json} records the exact rational
+endpoints. Their interval has width less than $2.331\times10^{-12}$;
+the displayed decimals are rounded outward. This certifies the literal
+implicit branch, rather than agreement between two floating-point
+implementations. The tail bound ignores cancellation and is not optimized.
+
+An independent interval evaluation of the literal kernel, using its first
+15 actions and a geometric tail, confirms opposite residual signs at
+these rational endpoints. On $|q|\le1/50$, its derivative is bounded below by
+\[
+ 1-\frac1{100}-\left((1-1/50)^{-2}-1\right)>0.
+\]
+Thus the same interval contains a unique literal root by a second route.
+The endpoint sign enclosures and derivative bound are recorded alongside
+the block certificate.
+
+
+\subsection{Coefficient-root diagnostics}
+The separate script \texttt{code/diagnostics.py} evaluates
+\eqref{eq:algorithm} in logarithmic floating-point arithmetic, using
+NumPy and SciPy. It was first compared with exact rational coefficients
+through degree 20; the largest discrepancy between logarithms was
+$4.27\times10^{-14}$ after upward rounding. The subsequent calculations
+through degree 512 are diagnostics, not interval certificates.
+
+The table uses $c_j=2^{-j^2}$ for $j\ge2$, $c_1=1$,
+$\lambda_j=j^p$, and
+\[
+ R_n=\frac{(u_n/(n!)^{p/2-1})^{1/n}}
+                {(p/(2\log2))^{p/2}}.
+\]
+Theorem~\ref{thm:condensation} gives $R_n\to1$.
+\begin{center}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$n$ & $p=3$ & $p=4$ & $p=5$\\
+\midrule
+64  & 0.592248 & 0.305540 & 0.149857\\
+128 & 0.658251 & 0.384842 & 0.213325\\
+256 & 0.719314 & 0.468507 & 0.290177\\
+512 & 0.773542 & 0.551826 & 0.376472\\
+\bottomrule
+\end{tabular}
+\end{center}
+Convergence is visibly slow at these degrees. The discrepancy is not an
+error bar for the theorem and is not evidence for a multiplicative
+coefficient equivalent. The recorded diagnostic file additionally
+contains large-degree one-action lower bounds, which are inexpensive to
+compute but are not the full coefficients. Keeping those two outputs
+separate prevents a lower-bound calculation from being mistaken for an
+exact coefficient evaluation.
+
+\subsection{Reproduction commands and dependencies}
+The article is self-contained LaTeX and uses standard packages. From
+the package directory, run
+\begin{quote}\small\ttfamily\raggedright
+python code/verify.py --order 12\\
+python code/diagnostics.py\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The supplied \texttt{build.sh} runs the three document passes. The exact
+script needs no third-party Python dependency; only the diagnostic
+script needs NumPy and SciPy. The scripts make no network requests.
+The package contains the scripts, their recorded outputs, source notes,
+and build instructions. No source or branch in ProveIt was modified.
+
+\section{Formalization targets and proof dependencies}
+\label{sec:formalization}
+
+The repository already has formal infrastructure for asymptotic scales,
+flatness, well-based supports, and differential blocks \cite{project}.
+Those declarations do not automatically formalize this article's
+infinite analytic constructions. A useful implementation should separate
+four layers and record the exact theorem supplied by each.
+
+\subsection{Finite coefficient algebra}
+The first layer should define weighted compositions and the finite
+Lagrange coefficients over a commutative algebra, prove the recurrence
+\eqref{eq:algorithm}, and identify the signed inverse blocks. Rational
+specializations can then produce kernel-checked finite identities.
+Positivity and the one-action injection give a particularly small
+initial target. These lemmas have no dependence on Borel summation,
+asymptotic estimates, or numerical special functions.
+
+\subsection{Real estimates and the factorial budget}
+The next layer should establish the block mass estimate, the cost-moment
+bound, factorial inequalities, and the uniform exponential Taylor
+remainder. The compact statement of Lemma~\ref{lem:factorial-budget}
+would be a reusable library result. A theorem about a family of finite
+moments must be distinguished from a theorem about a function remainder;
+the geometric tail and uniform-limit arguments connect them.
+
+\subsection{Analytic realization and summation}
+The analytic layer needs uniform convergence on closed half-discs,
+normal convergence in open domains, the fixed-parameter inverse theorem,
+and the beta-measure kernel identity. The two Laplace exchanges have
+different hypotheses: absolute Taylor integration for one frequency,
+and an oscillatory absolute-integral bound for infinitely many blocks.
+Formalizing them as separate lemmas would guard against a common invalid
+exchange. A general fine-summability algebra should then package the
+convolution and inverse theorem in Appendix~\ref{app:inverse}.
+
+\subsection{Sharp asymptotics and probability}
+The final layer contains the entropy estimate, the two length ranges in
+Lemma~\ref{lem:type-upper}, and the conversion of exponential losses
+into probability concentration. The statement must distinguish a limsup
+type, an all-degree root limit, and a multiplicative equivalent.
+The current argument establishes the first two in their respective
+hypotheses, not the third. It should likewise distinguish concentration
+of the largest cost from any unproved local central limit theorem.
+No Lean files are supplied or claimed to have been checked in this
+package; this section is an implementation roadmap.
+
+\section{Further research questions}
+\label{sec:research}
+
+The following are proposed next tasks for this weighted model. They are
+not blanket assertions that every analogous question is open throughout
+the literature; comparison with general type-preservation and summation
+theorems should precede a publication-priority claim.
+
+\subsection{Sharp signed inverse coefficients}
+Determine the exact type and, more ambitiously, signed coefficient
+asymptotics for $\Q$ under strong damping. The parabolic construction
+already gives $T_1(\Q)\le T_1(\U)$ in the finite positive-type case.
+A general exact-type-preservation theorem, if applicable with this
+normalization, should be used rather than rediscovered. Even such a
+theorem would not settle the signs, cancellation scale, or multiplicative
+prefactor of the inverse coefficients.
+
+\subsection{A full multiplicative forward asymptotic}
+For $d_j=bj^\beta$ and $\lambda_j=aj^p$, refine
+\eqref{eq:log-coefficient} to a multiplicative equivalent. The dominant
+large action has size $n^{1/\beta}$, but small nonunit parts, the cost of
+using fewer than $n$ parts, and lattice rounding all contribute below
+order $n$. Determine how many small actions must be retained to obtain
+relative error $o(1)$, and whether a finite-core threshold depends on
+both $p$ and $\beta$ rather than on their ratio alone.
+
+\subsection{Local fluctuations and a conditional ensemble}
+Prove a local limit theorem for $J_{\max}$ and a fluctuation theorem for
+$K$ under \eqref{eq:probability}. A formal quadratic expansion of the
+cost profile suggests a first scale, but it does not account for the
+constraint that total action is exactly $n$. The first objective is a
+correct centering, including the drift from the sea of small actions;
+a Gaussian formula with the wrong center is not a local limit theorem.
+
+\subsection{Lacunary cost spectra and log-periodic behavior}
+For geometrically spaced costs, such as $d_j=\e^{\theta j}$, the type
+proof obtains a sharp limsup by choosing degrees matched to individual
+costs. Determine the lower root envelope at unmatched degrees, whether
+several expensive actions can compensate for a gap, and whether the
+normalized logarithms have periodic limit profiles in $\log n$.
+The dense power-cost theorem does not decide this question.
+
+\subsection{Actual inverse Borel singularities}
+In the finite positive-type regime, determine the maximal continuation
+domain of $B_Q$, beginning with the positive intercept of
+\eqref{eq:sharp-parabola}. Does the first forward singularity survive
+reversion at the same Borel location? Determine its local form and any
+lateral summation discontinuity in specific power-cost models. Normal
+convergence of a chosen kernel representation gives only one side of
+this problem.
+
+\subsection{Angular and generalized moment summation}
+Strengthen fine negative-ray summability to an open arc of directions
+where possible, and identify obstructions where it fails. For $s\ne1$,
+construct moment kernels appropriate to $(n!)^s$ or
+$\Gamma(1+sn)$, keeping the exact conversion of types visible.
+The target should identify the sum with the literal inverse, not merely
+prove the existence of some function with the same asymptotic expansion.
+Uniform Gevrey remainders are a starting point, not the entire summation
+argument.
+
+\subsection{Amplitudes beyond exponential growth}
+The counterexample \eqref{eq:amplitude-counterexample} shows that slope
+control alone cannot handle rapidly growing positive amplitudes. Seek a
+joint criterion in terms of the amplitude generating function's Borel
+continuation and the cost of its interaction with the slopes. Even the
+zero-slope model forces directional singularity information into such
+a criterion. This suggests separating an amplitude summation class from
+a feedback stability condition.
+
+\subsection{Complex phases and vector feedback}
+For signed amplitudes or complex slopes, identify usable
+noncancellation or sectorial-damping conditions. For a vector equation,
+replace the scalar exponential feedback by linear forms in several
+unknowns and ask whether a matrix or convex-geometric budget controls
+regularity. A countable-tail condition must be explicit; a finite-dimensional
+implicit-function theorem cannot control an unbounded family of
+coefficients by itself.
+
+\subsection{General actions and missing action one}
+Replace $q^j$ by $q^{a_j}$ for integer or well-based real actions.
+Determine which version of the budget survives after replacing the
+index $j$ by action size. The present lower bound uses arbitrarily many
+action-one factors and the present inverse uses an ordinary nonzero
+linear coefficient. When the smallest action is different, ramification
+or a different formal inverse object must be specified before an
+analytic statement can be formulated.
+
+\subsection{Certified algorithms with adaptive costs}
+The universal factor $8^k$ is simple but wasteful. Develop certified
+weighted mass generating functions and choose adaptively between exact
+block truncation, Taylor truncation, and Borel quadrature. The amplitude
+cost is available before a frequency is evaluated and can guide
+pruning of negligible compositions. A useful deliverable would combine
+a formally checked finite certificate with an explicit analytic tail
+bound, rather than rely on floating cancellation at high order.
+
+\section{Conclusion}
+The positive weighted feedback model admits a sharp and explicit answer
+to the amplitude--slope question. Ordinary analyticity is governed by
+$j+d_j$, while every positive Gevrey order is governed by
+$j\log(j+1)+d_j$. The same latter budget controls an actual uniform
+left-side inverse remainder; at order one it also characterizes fine
+negative-direction summability and identifies the summed equation.
+
+Strong damping produces a sharper theorem: an exact type controlled by
+$\lambda_j/d_j^{s+1}$, and, for dense power costs, an all-degree root
+limit and concentration of one dominant action. These are model-specific
+results with complete arguments and reproducible finite checks. They do
+not rely on accepting an unreviewed repository draft as a proof, and
+they leave the multiplicative asymptotics, signed inverse behavior,
+maximal Borel continuation, and stronger summation questions explicitly
+separate.
+
+\appendix
+\section{Compositional inversion in the fine-summable class}
+\label{app:inverse}
+
+This appendix proves the nonlinear result used in
+Theorem~\ref{thm:fine}. It is included because a theorem stated for an
+open angular sector cannot silently be applied to a fixed-width tube.
+The proof specializes the classical convolution method described in
+\cite{sauzin}.
+
+\subsection{The Borel minor at infinity}
+For $\varphi(z)=\sum_{n\ge1}\varphi_n z^{-n}$ define
+\[
+ \mathscr B\varphi(\xi)=\sum_{n\ge1}
+                \frac{\varphi_n}{(n-1)!}\xi^{n-1}.
+\]
+Let $\Omega^+_\delta=-\Omega^-_\delta$, which is convex. Suppose a minor
+$\widehat\varphi$ is holomorphic there and
+$|\widehat\varphi(\xi)|\le M\e^{H|\xi|}$. Products of formal series
+correspond to convolution along the segment from zero to $\xi$.
+The convolution simplex has volume $1/(k-1)!$, and convexity keeps
+all its arguments in the tube. Thus
+\begin{equation}
+ |\widehat\varphi^{*k}(\xi)|
+ \le M^k\frac{|\xi|^{k-1}}{(k-1)!}\e^{H|\xi|}.
+ \label{eq:convolution-bound}
+\end{equation}
+The sum of the lengths of the collinear arguments is $|\xi|$, which
+explains the single exponential on the right.
+
+If $F(w)=\sum F_kw^k$ is convergent near zero, with
+$|F_k|\le C R^{-k}$, \eqref{eq:convolution-bound} proves normal convergence
+of the minor of $F(\varphi)-F(0)$ and an exponential bound. In particular,
+reciprocals of formal series with nonzero constant term are permitted.
+Multiplication by $z$, after removal of the new constant term, is
+differentiation of the minor and preserves its exponential bound on a
+narrower tube by Cauchy's estimate. Division by $z$ is integration.
+Translation $z\mapsto z+c$ multiplies the minor by $\e^{-c\xi}$.
+All these operations preserve this fine-summable class.
+
+Laplace summation
+\[
+ \mathcal S\varphi(z)=\int_0^\infty
+                  \e^{-z\xi}\widehat\varphi(\xi)\,\dd\xi,
+ \qquad \Ree z>H,
+\]
+commutes with the stated operations. For products this is the
+absolutely convergent convolution integral and Fubini's theorem; for
+analytic scalar substitution it follows from the same exponential
+majorant. Multiplication by $z$ follows by integration by parts, and
+translation follows directly from its multiplier. These arguments also
+give the estimates $|\mathcal S\varphi(z)|\le M/(\Ree z-H)$ and
+$|\partial_z\mathcal S\varphi(z)|\le M/(\Ree z-H)^2$.
+
+\subsection{An explicit inverse minor}
+\begin{lemma}[Fine inversion at infinity]
+\label{lem:fine-inverse-infinity}
+Let $f(z)=z+c+\varphi(z)$, where $\varphi=O(z^{-1})$ has a minor
+holomorphic with an exponential bound on some $\Omega^+_\delta$.
+Its formal inverse has the form $g(z)=z-c+\chi(z)$ with $\chi=O(z^{-1})$
+in the same class, possibly on a narrower tube. Their Laplace sums are
+analytic inverses on sufficiently far right half-planes and their
+corresponding images.
+\end{lemma}
+\begin{proof}
+First take $c=0$. Formal Lagrange inversion gives
+\begin{equation}
+ \chi(z)=\sum_{k\ge1}\frac{(-1)^k}{k!}
+                       \partial_z^{k-1}\bigl(\varphi(z)^k\bigr).
+ \label{eq:inverse-operator}
+\end{equation}
+For example, apply coefficient Lagrange inversion to
+$w=-t\varphi(z+w)$ and then put $t=1$; the $z^{-1}$-order of the
+$k$th summand tends to infinity. Differentiation corresponds to
+multiplication of a Borel minor by $-\xi$, so the proposed inverse minor
+is
+\begin{equation}
+ \widehat\chi(\xi)=-\sum_{k\ge1}\frac{\xi^{k-1}}{k!}
+                                     \widehat\varphi^{*k}(\xi).
+ \label{eq:inverse-minor}
+\end{equation}
+Equation~\eqref{eq:convolution-bound} bounds its absolute value by
+\[
+ \e^{H|\xi|}\sum_{k\ge1}
+       \frac{M^k|\xi|^{2k-2}}{k!(k-1)!}
+ \le M\e^{(H+2\sqrt M)|\xi|}.
+\]
+The last inequality follows, for $t\ge0$, from
+$\sum_{\ell\ge0}t^{2\ell}/(\ell!(\ell+1)!)\le\e^{2t}$,
+using $\binom{2\ell}{\ell}\le4^\ell$.
+This also proves normal convergence and identifies the formal
+coefficients.
+
+It remains to identify the analytic sum, rather than just its formal
+inverse coefficients. On a far right half-plane, the Laplace sum
+$\phi(z)=\mathcal S\varphi(z)$ is uniformly small and has uniformly
+small derivative. The equation $w=-t\phi(z+w)$ has a holomorphic
+solution for $|t|$ in a disc of radius greater than one: choose a fixed
+small disc for $w$ and move the half-plane sufficiently far right to
+make the map a strict contraction there. Classical analytic Lagrange
+inversion yields \eqref{eq:inverse-operator} with $\phi$ in place of
+$\varphi$, evaluated at $t=1$.
+
+The Laplace integral of the absolute $k$th minor is at most
+\[
+ \frac{M^k(2k-2)!}{k!(k-1)!(\Ree z-H)^{2k-1}},
+\]
+which is summable when $\Ree z-H>2\sqrt M$.
+Thus summation of \eqref{eq:inverse-minor} commutes with its Laplace
+integral and gives exactly that analytic Lagrange series.
+The sum $z+\mathcal S\chi(z)$ is the analytic inverse. Injectivity on
+a far right half-plane also follows by integrating the derivative
+bound $|\phi'|<1/2$ along line segments in that convex domain.
+For general $c$, invert $f_0(z)=z+\varphi(z)$ first and then translate:
+$f^{-1}(z)=f_0^{-1}(z-c)$. Translation preserves all the established
+properties.
+\end{proof}
+
+\subsection{Returning to series tangent to the identity at zero}
+Let $Q(u)=u+O(u^2)$ be a fine-summable formal series in direction $\pi$.
+Conjugate it by $T(z)=-1/z$:
+\[
+ F(z)=T\circ Q\circ T(z)=-\frac1{Q(-1/z)}=z+c+\varphi(z).
+\]
+Changing the sign of the Borel variable moves the negative tube to the
+positive one. The minor at infinity differs from the integrated Borel
+transform only by differentiation, and the reciprocal and multiplication
+operations used to form $F$ are permitted by the preceding algebra.
+Lemma~\ref{lem:fine-inverse-infinity} constructs $G=F^{-1}$ in the same
+class and identifies its sum. Conjugating back gives
+\[
+ T\circ G\circ T=Q^{\inv},
+\]
+which is finely summable in direction $\pi$. Summation commutes with the
+conjugation operations, so the sums are inverse functions on their
+small common domains. This is the exact closure result used in the
+main text; no angular-sector hypothesis has been inserted.
+
+\section{Notation and the logical dependency map}
+\label{app:notation}
+
+\begin{center}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.69\linewidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$c_j$, $d_j$ & Positive amplitude and its cost $-\log c_j$\\
+$\lambda_j$ & Nonnegative feedback slope at action $j$\\
+$u_n$, $v_n$ & Forward and inverse ordinary coefficients\\
+$L_j$, $H_j$ & $j\log(j+1)$ and $j\log(j+1)+d_j$\\
+$s$, $r$ & Gevrey order $s>0$ and $r=s+1$\\
+$T_s$ & Type using the normalization $(n!)^s$\\
+$k$, $D$, $b$ & Inverse block number, composition cost, frequency\\
+$K$, $D$, $J_{\max}$ & Lagrange-ensemble length, cost, largest action\\
+$\B$, $\mathscr B$ & Integrated Borel transform at zero; minor at infinity\\
+$h$, $\widetilde h$ & Absolute real and imaginary parts of $\sqrt\zeta$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The repeated letter $D$ always denotes a sum of amplitude costs; its
+indexing composition is clear from the context. The inverse block index
+$k$ is not the length $\ell$ of its internal composition. The Lagrange
+length $K$ belongs instead to the forward probability ensemble.
+
+The proof dependencies can be summarized without identifying unlike
+statements. Finite Lagrange algebra gives positivity and the necessary
+budget. Weighted inverse blocks, the moment estimate, and the factorial
+lemma give sufficient Gevrey bounds and uniform inverse remainders.
+Bessel kernels plus the weighted tube estimate give fine inverse
+summation, and the nonlinear lemma transfers it to the forward series.
+Separately, a positive variational upper bound and a one-action lower
+bound give the exact strong-damping type. Dense power costs make the
+lower bound available at every degree and then turn strict variational
+losses into probability concentration. None of these arrows uses the
+finite computational checks as a substitute for an infinite proof.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{project}
+Vladimir Reshetnikov, \emph{ProveIt: Transseries project and document
+inventory}, repository snapshot
+\texttt{ebd8344bca77d8352cd745b7df374618a290a029}, inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries}.
+The project README and
+\texttt{docs/series-and-transseries/README.md} supply the provenance and
+formalization-status context.
+
+\bibitem{regularity}
+\emph{A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries}, research draft in ProveIt, same snapshot, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}.
+The amplitude question is at source lines 1470--1483; other nearby
+questions concern exact inverse type and uniform remainders.
+
+\bibitem{negative}
+\emph{Negative-Ray Summation of Countable Exponential-Feedback Transseries},
+research draft in ProveIt, same snapshot, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
+The weighted-amplitude question and the distinction between fine and
+angular summation are the immediate analytic starting points.
+
+\bibitem{gessel}
+Ira M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\url{https://doi.org/10.1016/j.jcta.2016.06.018}.
+Preprint: \url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{sauzin}
+David Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356, 2014.
+\url{https://arxiv.org/abs/1405.0356}.
+Sections 7 and 9 distinguish fine summation from summation in an arc of
+directions; the convolution framework provides the background for the
+specialized nonlinear proof in Appendix~\ref{app:inverse}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Bessel functions}, Sections 10.9 and 10.25, accessed 29 September 2026.
+\url{https://dlmf.nist.gov/10.9} and
+\url{https://dlmf.nist.gov/10.25}.
+The Poisson integral and modified Bessel power series underlie the
+normalization proved directly in \eqref{eq:bessel-integral}.
+\end{thebibliography}
+\end{document}
