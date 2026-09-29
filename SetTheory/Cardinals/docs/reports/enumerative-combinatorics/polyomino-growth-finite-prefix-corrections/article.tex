@@ -10,6 +10,7 @@
 \usepackage{enumitem,fancyhdr,titlesec}
 \usepackage{listings}
 \usepackage[most]{tcolorbox}
+\usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \definecolor{Ink}{HTML}{18324C}
@@ -52,6 +53,11 @@
 \newcommand{\tail}[2]{[\xi^{>#1}]#2}
 \newcommand{\repo}{\texttt{ProveIt}}
 \newcommand{\sha}{\texttt{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}}
+% [write] Marker for text added when this manuscript was written into ProveIt
+% (batch 36, manuscript 06); everything unmarked is the delivered text.
+\newcommand{\wtag}{\textsf{\small[write]}}
+% [write] Lean declaration and file names, breakable at any character (xurl).
+\DeclareUrlCommand\lean{\urlstyle{tt}}
 \newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=0.6pt,arc=1mm,left=2.5mm,right=2.5mm,top=2mm,bottom=2mm}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!40},showstringspaces=false}
 \hypersetup{pdftitle={Finite-Prefix Corrections and Dual Certificates for Polyomino Growth},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={An exact 4.498 upper bound and certificates for convolution recurrences}}
@@ -102,6 +108,14 @@ The geometric recurrence lemma is imported from Bui and the pinned repository.
 The work has not been independently refereed. General geometric-programming
 duality and polyomino enumeration algorithms are prior tools, not claimed
 inventions of this report.
+
+\smallskip
+\wtag\ In \repo\ the geometric recurrence lemma is more than imported: Lean
+proves Bui's Lemma~4 recurrences for the actual marked counts
+(\lean{geometricPublishedBuiRecurrences}), and the project's Lean-verified
+bound is $\lambda\leq 9047/2000=4.5235$. The bound $\lambda\leq 2249/500=4.498$
+of this report is computer-assisted and is \emph{not} formalized. See
+\cref{kfp:sec:formal-status}.
 \end{resultbox}
 \end{titlepage}
 
@@ -112,7 +126,7 @@ inventions of this report.
 \pagenumbering{arabic}
 
 \section{Problem selection, sources, and main contributions}
-\label{sec:scope}
+\label{kfp:sec:scope}
 
 \subsection{Why this repository thread}
 The \repo\ repository contains a concrete project on fixed square-lattice
@@ -139,18 +153,34 @@ This is a particularly suitable target: the geometric inequalities are
 already available, the numerical improvement can have an exact proof
 boundary, and the certificate question has a precise published formulation.
 
+\paragraph{\wtag\ Earlier upper bounds.}
+The delivered text compares its bound only with Bui's $4.5238$ and the
+repository's $4.5235$. For context, the repository's research note on the
+$4.5235$ bound \cite{repobound} records the upper-bound history as follows:
+Eden obtained $6.75$ \cite{eden}; Klarner and Rivest successively obtained
+$5$, $4.83$ and $4.649551$, the last by the procedure of \cite{klarnerrivest};
+Barequet and Shalah reached $4.5252$ using over twenty-three trillion local
+configurations \cite{barequetshalah}; Bui's seventeen neighborhood types then
+gave $4.5238$ \cite{bui}, and the repository's exact supersolution for Bui's
+unchanged system gave $9047/2000=4.5235$, which is kernel-checked in Lean
+(\cref{kfp:sec:formal-status}). The bound $4.498$ of \cref{kfp:thm:main}
+continues this list, but it is computer-assisted and not formalized.
+None of the earlier methods used exact marked prefixes of the kind
+introduced here; this is a statement about the cited sources, not a priority
+search.
+
 \subsection{What is proved here}
 The first result concerns actual polyominoes. If $A_n$ is the number of
 translation classes of $n$-cell polyominoes, then the data and certificate in
 this report give
-\begin{equation}\label{eq:headline}
+\begin{equation}\label{kfp:eq:headline}
  A_n\leq\frac{927884613}{10^9}\left(\frac{2249}{500}\right)^n
  \quad(n\geq1),\qquad
  \lambda\leq\frac{2249}{500}.
 \end{equation}
 The factor $927884613/10^9$ is the $G$ coordinate of the supplied rational
 supersolution. No numerical eigenvalue or floating-point root appears in the
-verification of \eqref{eq:headline}.
+verification of \eqref{kfp:eq:headline}.
 
 The second result concerns the equality recurrences used as majorants.
 We give a theorem of alternatives: under explicit productivity,
@@ -159,12 +189,12 @@ supersolution exists or a balanced integer-monomial certificate disproves its
 existence. The two alternatives cannot occur together. This supplies the
 requested type of lower-growth certificate for a class containing Bui's
 seventeen-variable system. The explicit example proves
-\begin{equation}\label{eq:original-bracket}
+\begin{equation}\label{kfp:eq:original-bracket}
  4.52349\leq\mu_{\rm original}\leq4.5235.
 \end{equation}
 Here $\mu_{\rm original}$ is the exponential growth of the \emph{uncorrected
 equality recurrence}, not the polyomino growth constant $\lambda$.
-In particular, the lower inequality in \eqref{eq:original-bracket} is
+In particular, the lower inequality in \eqref{kfp:eq:original-bracket} is
 \emph{not} a lower bound on $\lambda$.
 
 The third result describes both the power and a limitation of exact-prefix
@@ -197,12 +227,145 @@ explicit in the recurrence setting.
 The geometric recurrence theorem is an imported mathematical input.
 The new prefix and dual-certificate theorems have written proofs here.
 The headline numerical bound additionally uses the finite enumeration in
-Appendix~\ref{app:data}, whose source programs and exact outputs are supplied.
+Appendix~\ref{kfp:app:data}, whose source programs and exact outputs are supplied.
 Arithmetic verification is not a substitute for verifying enumeration.
+
+\smallskip
+\wtag\ In \repo\ the first level is stronger than ``imported'': it is a
+kernel-checked Lean theorem about the actual counts
+(\cref{kfp:sec:formal-status}). The second and third levels are not
+formalized.
 \end{resultbox}
 
+\subsection{\wtag\ Notation conventions}
+\label{kfp:sec:notation}
+This subsection was added when the manuscript was written into \repo. No
+delivered symbol was renamed and no normalization was changed; the
+conventions below only fix how the delivered symbols are to be read.
+
+\paragraph{Coordinate letters.} The seventeen upper-case letters of
+\eqref{kfp:eq:order} name the marked neighborhood types and their counting
+sequences ($C_n,\ldots,Z_n$, also written $a_{i,n}$ with $i\in\mathcal I$);
+the matching lower-case letters $c,\ldots,z$ are the coordinates of the
+vector $\bX$ in \eqref{eq:map} and the row names of \cref{kfp:tab:dual}. A
+coordinate is always a bare letter or a subscript index ($v_G$, $a_{D,7}$,
+$\Phi_P$). Many of these letters are reused for other objects, which are
+recognized by a subscript $N$, by calligraphic type, or by the local context
+listed here:
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.76\textwidth}@{}}
+\toprule
+Letter & Other meanings in this report\\
+\midrule
+$P$ & $P_N=\trunc{N}{\bA}$, the exact prefix; a polyomino $P$ (\cref{kfp:sec:system,kfp:prop:enumeration})\\
+$D$ & $D_N$, the finite defect; the defect polynomial $D$ in \eqref{kfp:eq:sensitivity}\\
+$T$, $Y$ & $T_N=\trunc{N}{\Phi(\xi,P_N)}$; $Y_N=B_N-P_N$\\
+$E$ & forbidden offset set; the enumerator's excluded set; the defect improvement in \eqref{kfp:eq:sensitivity}\\
+$R$, $S$ & required offset set, radii $R_i$; the enumerator's occupied set, the sets $S_K$ of \cref{kfp:lem:compact}\\
+$U$ & the enumerator's frontier; $U=\bA-P_N$ and a generic subsolution (\cref{kfp:lem:formal,kfp:thm:majorant})\\
+$H$ & the nonlinear part in $\Phi=L\bX+H$; the half-plane $\mathcal H$\\
+$B$ & the offset sets $B$, $B_4$; the majorants $B_N$; a least fixed point $B$ (\cref{kfp:sec:dual})\\
+$C$ & the dual product $\mathcal C$; a constant $C$ (\cref{kfp:thm:stability}); the normalizer $C=\sum_i\ell_i\tau_i$\\
+$h$, $q$ & $h(y)$ of \eqref{kfp:eq:h}, $h=(I-J)^{-1}\bone$, a row index; the argument of $\log q$, a degree $q\geq2$\\
+$v,w,y,p$, $t,u,x,e$, $c,g,r$ & certificate vector $v$, $w=v-P_N(\zeta)$, log-coordinates $y$, $p_N=P_N(\zeta)$, reals $t,u$, scalar unknown $x$, unit vectors $e_i$, coefficients $c_{ik}$, a nearest point $g$, row sums $r_i$\\
+$b$ & $b_n$ (proof of \cref{kfp:lem:formal}); exponents $b_{ik}$ in \eqref{kfp:eq:general-map}; forcing vector $b_N$ (\cref{kfp:sec:stability})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Collisions with the \repo\ project.} The project's research note
+\cite{repobound} and its Lean files use the same $\lambda$, the same
+$A(n)=A_n$, the same seventeen upper-case sequence names with lower-case
+coordinates, and the same evaluation point $\zeta$; its numeric map $\Phi_\zeta$
+is $\Phi(\zeta,\cdot)$ here. Two symbols differ:
+\begin{itemize}
+\item The project writes $b_N=(c_N,\ldots,z_N)$ for the \emph{$\zeta$-weighted
+ prefix profile} and $\mathcal S_N=\sum_{n\leq N}S(n)\zeta^n$ for one sequence.
+ That profile is $p_N=P_N(\zeta)$ here. \emph{Tempting false reading:} the
+ $b_N$ of \cref{kfp:sec:stability} is the project's $b_N$. It is not; it is
+ the high-degree forcing vector $\bigl(\tail{N}{\Phi(\xi,P_N)}\bigr)(\zeta)$.
+\item The project writes $a$ for its rational supersolution; that is $v$ here,
+ while $a=\bA(\zeta)$ in \cref{kfp:sec:stability}.
+\end{itemize}
+The symbol $\mu$ (the growth of an equality recurrence, $\mu_{\rm original}$
+for Bui's uncorrected system) occurs only in this report. \emph{Tempting false
+reading:} $\mu_{\rm original}\geq4.52349$ is a lower bound on $\lambda$. It is
+not (\cref{kfp:sec:dual}). The convention $A_0=0$ of \cref{kfp:sec:system}
+differs from the value $a(0)=1$ of OEIS A001168; positive-size terms agree.
+
+\subsection{\wtag\ What \repo\ has formalized, and what it has not}
+\label{kfp:sec:formal-status}
+This report belongs to \repo's research-report collection and continues the
+formal project \texttt{Combinatorics/Polyominoes/KlarnerConstant/}; being
+filed next to, or citing, a Lean development confers no formal status on it.
+That project proves the following in Lean (namespace
+\lean{LeanProofs.KlarnerConstant}; files under
+\lean{Combinatorics/Polyominoes/KlarnerConstant/Lean/KlarnerConstant/}, cited
+below by file name), with no \texttt{sorry}, project axiom or
+\texttt{native\_decide}; its assumption audit is \texttt{Audit.lean}. Line
+numbers are those of the pin; the project's files are unchanged between the
+pin and the placement commit.
+\begin{itemize}
+\item \emph{Bui's Lemma~4 for the actual counts.}
+ \lean{geometricPublishedBuiRecurrences} (\lean{GeometricComplete.lean:63})
+ proves \lean{PublishedBuiRecurrences} for
+ \lean{geometricCoefficientProfile}: the
+ seventeen recurrences for $n\geq2$, the published degree-one values,
+ nonnegativity and vanishing at zero, for the finite marked-occurrence counts
+ of the patterns in \texttt{Patterns.lean}. Coefficient by coefficient this is
+ the inequality \eqref{kfp:eq:imported}, which the delivered text calls
+ imported; reading the Lean structure as \eqref{kfp:eq:imported} in
+ formal-series notation is not itself a formal step.
+\item \emph{The five partitions \eqref{kfp:eq:partitions}} as equalities:
+ \lean{buiF_occurrenceCount_eq_g_add_p}, \lean{buiG_occurrenceCount_eq_e_add_q},
+ \lean{buiH_occurrenceCount_eq_d_add_s}, \lean{buiR_occurrenceCount_eq_y_add_w}
+ and \lean{buiT_occurrenceCount_eq_x_add_v}
+ (\lean{GeometricLinear.lean:279-312}).
+\item \emph{$G$-domination} $A_n\leq G_n$:
+ \lean{fixedPolyominoCount_le_geometricCoefficientProfile_g}
+ (\lean{GeometricProfile.lean:371}). The other half $G_n\leq nA_n$ of
+ \eqref{kfp:eq:gdom} is not formalized; the upper bound does not need it.
+\item \emph{Supermultiplicativity and Fekete} \eqref{kfp:eq:lambda}:
+ \lean{fixedPolyominoCount_supermultiplicative} and
+ \lean{tendsto_realNthRoot_fixedPolyominoCount_growthSup}
+ (\lean{GeometricComplete.lean:97}).
+\item \emph{The Lean-verified bound $\lambda\leq9047/2000=4.5235$}:
+ \lean{certificate_isSupersolution} (\lean{Certificate.lean:232}),
+ \lean{fixedPolyominoCount_le_9047_div_2000_pow} (\lean{GeometricComplete.lean:69}),
+ its real cast (\lean{:76}) and
+ \lean{growthSup_fixedPolyominoCount_le_9047_div_2000} (\lean{:88}).
+\end{itemize}
+The one human boundary of that development is the transcription of Bui's
+page-15 diagrams into the offset tables of \texttt{Patterns.lean}.
+
+Nothing new in this report is formalized: not \cref{kfp:lem:formal},
+\cref{kfp:thm:majorant,kfp:thm:upper,kfp:thm:nested}, not the size-$\leq18$
+table, not \cref{kfp:thm:main} ($\lambda\leq2249/500=4.498$, which is
+computer-assisted), and none of \cref{kfp:sec:dual,kfp:sec:complete,kfp:sec:dual-example,kfp:sec:stability}.
+The project's endpoint theorems cannot simply be re-instantiated: they are
+hard-wired to $\zeta=2000/9047$ (\lean{certificateZeta}) in
+\lean{PrefixRecurrence.g_le_certificate} and \lean{g_lt_one}
+(\lean{Recurrence.lean:321, 327}),
+\lean{CoefficientProfile.g_lt_9047_div_2000_pow} (\lean{:457}) and
+\lean{dominatedCoefficient_le_9047_div_2000_pow} (\lean{:477}). Only
+\lean{buiIterate_le_supersolution} (\lean{:283}) and
+\lean{PrefixRecurrence.le_supersolution} (\lean{:309}) are generic in
+$\zeta$. A formal $4.498$ bound therefore needs, beyond the plan of
+\cref{kfp:sec:verification}, a prefix-corrected variant of that
+weighted-prefix engine and a computable bridge to the noncomputable
+\lean{BuiNeighborhood.occurrenceCount} (\lean{Patterns.lean:140}).
+As a formalization target, not a claim: the certificates for $N=7,\ldots,10$
+in \cref{kfp:tab:progress} ($4.5233$ down to $4.5194$) already improve on
+$4.5235$ and need exact marked counts only through size $7$ to $10$.
+
+The trust boundary of \cref{kfp:thm:main} is thus: Lean-proved recurrences
+(relative to \texttt{Patterns.lean}), plus an exhaustive enumeration that is
+not kernel-checked (regenerated at intake, \cref{kfp:app:provenance}), plus
+exactly replayed rational arithmetic (Python, not Lean), plus the written and
+unrefereed proofs of \cref{kfp:sec:prefix}.
+
 \section{Polyomino counts and the positive polynomial system}
-\label{sec:system}
+\label{kfp:sec:system}
 
 \subsection{Counting conventions}
 A polyomino is a nonempty finite edge-connected subset of $\Z^2$.
@@ -215,7 +378,7 @@ term $A_0=1$ in some sequence tables; positive-size terms are unchanged.
 
 The standard concatenation argument gives $A_{m+n}\geq A_mA_n$ for positive
 $m,n$. Fekete's lemma then gives
-\begin{equation}\label{eq:lambda}
+\begin{equation}\label{kfp:eq:lambda}
  \lambda=\lim_{n\to\infty}A_n^{1/n}=\sup_{n\geq1}A_n^{1/n}.
 \end{equation}
 These are background inputs also implemented in the repository's
@@ -233,7 +396,7 @@ polyominoes of the given size. Counting occurrences, rather than merely
 polyominoes which have an occurrence, is essential.
 
 Write $C_n,D_n,\ldots,Z_n$ for the seventeen counts, in the coordinate order
-\begin{equation}\label{eq:order}
+\begin{equation}\label{kfp:eq:order}
  \mathcal I=(C,D,E,F,G,H,P,Q,R,S,T,U,V,W,X,Y,Z).
 \end{equation}
 To avoid confusing a coordinate name with a function, the polynomial map
@@ -245,7 +408,7 @@ Let
  B=\{(-1,-1),(0,-1),(1,-1)\},\qquad
  B_4=B\cup\{(2,-1)\}.
 \]
-In \cref{tab:patterns}, $1,2,3$ in the required column mean respectively
+In \cref{kfp:tab:patterns}, $1,2,3$ in the required column mean respectively
 $\{(0,0)\}$, $\{(0,0),(1,0)\}$, and
 $\{(0,0),(1,0),(2,0)\}$. A blank lattice position imposes no condition.
 These coordinate sets agree with the repository's pattern table and Bui's
@@ -277,12 +440,12 @@ $Z$ & 2 & $B_4\cup\{(-1,1),(2,1),(-1,0),(2,0)\}$\\
 \bottomrule
 \end{tabular}
 \caption{The seventeen marked neighborhood patterns.}
-\label{tab:patterns}
+\label{kfp:tab:patterns}
 \end{table}
 
 Every polyomino has a $G$ occurrence at the leftmost cell of its bottom row.
 There are at most $n$ possible marked cells. Consequently
-\begin{equation}\label{eq:gdom}
+\begin{equation}\label{kfp:eq:gdom}
  A_n\leq G_n\leq nA_n.
 \end{equation}
 The first six size-one counts equal one; the other eleven equal zero.
@@ -309,20 +472,20 @@ $\bX=(c,d,e,f,g,h,p,q,r,s,t,u,v,w,x,y,z)$. Define
 \end{equation}
 There are $53$ monomials, each with coefficient one. The order displayed
 within each row is also the order of the dual weights in
-\cref{tab:dual}. In the first two displayed lines, each coordinate has its
+\cref{kfp:tab:dual}. In the first two displayed lines, each coordinate has its
 own two-term row.
 
 For the true generating series
 $\bA_i(\xi)=\sum_{n\geq1}a_{i,n}\xi^n$, Bui's geometric lemma is the
 coefficientwise inequality
-\begin{equation}\label{eq:imported}
+\begin{equation}\label{kfp:eq:imported}
  \bA\preceq\Phi(\xi,\bA).
 \end{equation}
 All products in this equation are formal Cauchy products. Thus convergence is
 not part of the statement. Equations with a factor $\xi^2$, for example,
 encode a two-cell shift in the corresponding convolution index.
 
-The geometric proof of \eqref{eq:imported} uses occupancy partitions,
+The geometric proof of \eqref{kfp:eq:imported} uses occupancy partitions,
 injective leaf deletions, and decompositions into connected marked pieces.
 We import that lemma rather than silently treating a numerical recurrence
 fit as a geometric proof. For example, the $C$ row deletes its marked cell,
@@ -330,18 +493,26 @@ whose only possible neighbor is above it. The $P$ and $U$ rows encode
 multi-piece decompositions; these are not inferred from the finite table.
 The repository supplies their separate finite-injection modules
 \cite{bui,repocomplete}.
+\wtag\ Those modules prove the lemma in Lean for the actual counts
+(\lean{geometricPublishedBuiRecurrences}); so, within \repo, the input
+\eqref{kfp:eq:imported} is a kernel-checked theorem relative to the offset
+tables of \texttt{Patterns.lean}, not an imported assumption
+(\cref{kfp:sec:formal-status}).
 
 The five same-size partitions are in fact exact:
-\begin{equation}\label{eq:partitions}
+\begin{equation}\label{kfp:eq:partitions}
  F=G+P,\quad G=E+Q,\quad H=D+S,\quad R=Y+W,\quad T=X+V.
 \end{equation}
 For example, a type-$G$ anchor either has no right neighbor, yielding type
 $E$, or has a right neighbor, yielding type $Q$. Similar left/right occupancy
 splits give the other identities. They will serve as independent consistency
 checks on the occurrence table.
+\wtag\ The five identities are Lean theorems in \repo\
+(\lean{GeometricLinear.lean:279-312}); the table's agreement with them is
+checked by the Python verifier, not by Lean.
 
 \section{Exact-prefix correction: the general theorem}
-\label{sec:prefix}
+\label{kfp:sec:prefix}
 
 \subsection{Proper positive polynomial systems}
 \begin{definition}
@@ -355,7 +526,7 @@ is nilpotent. Here and below vector inequalities are coordinatewise.
 \end{definition}
 
 Nilpotence handles same-size linear dependencies. In \eqref{eq:map}, the
-only such dependencies are the five rows in \eqref{eq:partitions}; their
+only such dependencies are the five rows in \eqref{kfp:eq:partitions}; their
 directed graph has no cycle. All remaining occurrences of an unknown are
 multiplied either by a positive power of $\xi$ or by another unknown.
 Thus the system is proper. One possible degree-by-degree evaluation order is
@@ -364,7 +535,7 @@ Thus the system is proper. One possible degree-by-degree evaluation order is
 \]
 The formal development does not require this particular order.
 
-\begin{lemma}[Formal fixed points and comparison]\label{lem:formal}
+\begin{lemma}[Formal fixed points and comparison]\label[lemma]{kfp:lem:formal}
 A proper positive polynomial system has a unique fixed point in
 $\xi\R[[\xi]]^d$. Its coefficients are nonnegative, and the iterates from
 zero increase coefficientwise and stabilize at each finite degree.
@@ -400,8 +571,8 @@ the least nonnegative fixed point of $x\mapsto x^2$.
 
 \subsection{The finite defect and the nonnegative tail map}
 Suppose $\bA\in\xi\R_{\geq0}[[\xi]]^d$ is a true counting series satisfying
-\eqref{eq:imported}. For $N\geq1$, set
-\begin{equation}\label{eq:prefix-def}
+\eqref{kfp:eq:imported}. For $N\geq1$, set
+\begin{equation}\label{kfp:eq:prefix-def}
  P_N=\trunc{N}{\bA},\qquad
  T_N=\trunc{N}{\Phi(\xi,P_N)},\qquad
  D_N=T_N-P_N.
@@ -411,13 +582,13 @@ $P_N$, so $D_N\succeq0$. It is precisely the finite prefix of the true
 recurrence defect $\Phi(\xi,\bA)-\bA$.
 
 The signed equation
-\begin{equation}\label{eq:signed}
+\begin{equation}\label{kfp:eq:signed}
  B_N=\Phi(\xi,B_N)-D_N
 \end{equation}
 is a convenient shorthand, but its right-hand side is not a positive
 polynomial in $\xi$. The correct positivity argument uses $Y_N=B_N-P_N$
 and the map
-\begin{equation}\label{eq:psi}
+\begin{equation}\label{kfp:eq:psi}
 \begin{split}
  \Psi_N(\xi,Y)
  &=\Phi(\xi,P_N+Y)-T_N\\
@@ -430,7 +601,7 @@ Indeed, in the difference on the second line, the terms independent of $Y$
 cancel, leaving only monomials containing at least one $Y$.
 Moreover, $\Psi_N(0,0)=0$ and $(\Psi_N)_Y(0,0)=L$.
 
-\begin{theorem}[Prefix-corrected majorant]\label{thm:majorant}
+\begin{theorem}[Prefix-corrected majorant]\label{kfp:thm:majorant}
 The map $\Psi_N$ has a unique fixed point
 $Y_N\in\xi\R_{\geq0}[[\xi]]^d$. Its coefficients through degree $N$ vanish.
 The series $B_N=P_N+Y_N$ satisfies
@@ -438,10 +609,10 @@ The series $B_N=P_N+Y_N$ satisfies
  \bA\preceq B_N,\qquad
  \trunc{N}{B_N}=P_N,
 \]
-and solves \eqref{eq:signed}.
+and solves \eqref{kfp:eq:signed}.
 \end{theorem}
 \begin{proof}
-The fixed-point statement follows from \cref{lem:formal}. The constant-in-$Y$
+The fixed-point statement follows from \cref{kfp:lem:formal}. The constant-in-$Y$
 part of $\Psi_N$ begins above degree $N$, so degree induction gives
 $[\xi^n]Y_N=0$ for $n\leq N$.
 Put $U=\bA-P_N\succeq0$. The low-degree part of
@@ -451,12 +622,12 @@ nonnegative. Therefore
  U\preceq\Phi(\xi,P_N+U)-T_N=\Psi_N(\xi,U).
 \]
 Formal comparison yields $U\preceq Y_N$. Adding $P_N$ proves domination.
-Substituting the fixed-point equation for $Y_N$ yields \eqref{eq:signed}.
+Substituting the fixed-point equation for $Y_N$ yields \eqref{kfp:eq:signed}.
 \end{proof}
 
-\begin{theorem}[Rational upper certificate]\label{thm:upper}
+\begin{theorem}[Rational upper certificate]\label{kfp:thm:upper}
 Let $\zeta>0$. Suppose a vector $v\in\R^d$ satisfies
-\begin{equation}\label{eq:upper-conditions}
+\begin{equation}\label{kfp:eq:upper-conditions}
  v\geq P_N(\zeta),\qquad
  v\geq\Phi(\zeta,v)-D_N(\zeta).
 \end{equation}
@@ -468,11 +639,11 @@ Then all coordinates of $B_N$ converge at $\zeta$, and
 For the polyomino system this implies
 $A_n\leq v_G\zeta^{-n}$ and $\lambda\leq\zeta^{-1}$.
 When the input prefix, $\zeta$, and $v$ are rational, verification of
-\eqref{eq:upper-conditions} requires rational arithmetic only.
+\eqref{kfp:eq:upper-conditions} requires rational arithmetic only.
 \end{theorem}
 \begin{proof}
-Let $w=v-P_N(\zeta)\geq0$. Equations \eqref{eq:prefix-def} and
-\eqref{eq:psi} show that \eqref{eq:upper-conditions} is equivalent to
+Let $w=v-P_N(\zeta)\geq0$. Equations \eqref{kfp:eq:prefix-def} and
+\eqref{kfp:eq:psi} show that \eqref{kfp:eq:upper-conditions} is equivalent to
 \[
  \Psi_N(\zeta,w)\leq w.
 \]
@@ -481,14 +652,14 @@ $w^{(j+1)}=\Psi_N(\zeta,w^{(j)})$ therefore stay between $0$ and $w$.
 The corresponding formal iterates are polynomials with nonnegative
 coefficients. Their evaluation at $\zeta$ is exactly $w^{(j)}$.
 For every fixed degree $M$, a sufficiently late formal iterate agrees with
-$Y_N$ through degree $M$ by \cref{lem:formal}. Hence
+$Y_N$ through degree $M$ by \cref{kfp:lem:formal}. Hence
 \[
  \sum_{n=0}^M[\xi^n]Y_N\,\zeta^n\leq w.
 \]
 Monotone convergence of these bounded finite sums proves
 $Y_N(\zeta)\leq w$. Adding $P_N(\zeta)$ proves the asserted bound for $B_N$.
 Every nonnegative term of a bounded series is bounded by its sum, yielding
-the coefficient estimate. Now use \eqref{eq:gdom} and \eqref{eq:lambda}.
+the coefficient estimate. Now use \eqref{kfp:eq:gdom} and \eqref{kfp:eq:lambda}.
 \end{proof}
 
 \begin{remark}[The tail condition is essential]
@@ -499,7 +670,7 @@ proof and is checked explicitly by the verifier.
 \end{remark}
 
 \subsection{Monotonicity of the hierarchy}
-\begin{theorem}[More exact data never worsens the majorant]\label{thm:nested}
+\begin{theorem}[More exact data never worsens the majorant]\label{kfp:thm:nested}
 For every $N\geq1$,
 \[
  \bA\preceq B_{N+1}\preceq B_N.
@@ -510,7 +681,7 @@ Any real upper certificate for prefix $N$ is also an upper certificate for
 prefix $N+1$ at the same evaluation point.
 \end{theorem}
 \begin{proof}
-The first inequality is \cref{thm:majorant}. Through degree $N$, the two
+The first inequality is \cref{kfp:thm:majorant}. Through degree $N$, the two
 majorants agree. At degree $N+1$, $B_{N+1}$ has the true coefficient and
 $B_N$ has a coefficient at least as large. Above that degree, both obey the
 same positive coefficient recurrence, because the defect polynomials have
@@ -525,8 +696,8 @@ Both certificate conditions for $N+1$ follow.
 \end{proof}
 
 For the present system the defect is zero through size $6$. Its size-$7$
-coefficient, in the order \eqref{eq:order}, is
-\begin{equation}\label{eq:first-defect}
+coefficient, in the order \eqref{kfp:eq:order}, is
+\begin{equation}\label{kfp:eq:first-defect}
  [\xi^7]D_7=(0,1,2,0,0,0,0,0,0,1,0,0,0,0,0,1,2).
 \end{equation}
 For example, $a_{D,7}=260$, whereas the deletion bound uses
@@ -535,20 +706,20 @@ This first discrepancy explains why prefix lengths $1$ through $6$ do not
 improve the original equality system.
 
 \section{An exact upper bound below 4.5}
-\label{sec:numeric}
+\label{kfp:sec:numeric}
 
 \subsection{The certificate}
 Take $N=18$ and
 \[
  \zeta=\frac{500}{2249}.
 \]
-Use the exact marked counts in Appendix~\ref{app:data} to construct
-$P_{18},T_{18},D_{18}$ by \eqref{eq:prefix-def}.
-The vector $v$ is given in \cref{tab:upper}; every numerator in its second
+Use the exact marked counts in Appendix~\ref{kfp:app:data} to construct
+$P_{18},T_{18},D_{18}$ by \eqref{kfp:eq:prefix-def}.
+The vector $v$ is given in \cref{kfp:tab:upper}; every numerator in its second
 column has common denominator $10^9$.
 
 Define the residual and tail budget by
-\begin{equation}\label{eq:slacks}
+\begin{equation}\label{kfp:eq:slacks}
  \sigma_i=v_i-\Phi_i(\zeta,v)+D_{18,i}(\zeta),\qquad
  \eta_i=v_i-P_{18,i}(\zeta).
 \end{equation}
@@ -565,11 +736,11 @@ no printed decimal approximation is being used to decide a sign.
 \input{tex/upper_table.tex}
 \caption{The rational size-$18$ upper certificate and exact lower bounds on
 its margins. All vector entries have denominator $10^9$.}
-\label{tab:upper}
+\label{kfp:tab:upper}
 \end{table}
 
-\begin{theorem}[Computer-assisted polyomino bound]\label{thm:main}
-For the fixed-polyomino counting convention in \cref{sec:system},
+\begin{theorem}[Computer-assisted polyomino bound]\label{kfp:thm:main}
+For the fixed-polyomino counting convention in \cref{kfp:sec:system},
 \[
  A_n\leq\frac{927884613}{10^9}
           \left(\frac{2249}{500}\right)^n\quad(n\geq1),
@@ -578,15 +749,15 @@ For the fixed-polyomino counting convention in \cref{sec:system},
 \end{theorem}
 \begin{proof}
 The finite enumeration described below produces the true coefficients of
-$P_{18}$ in Appendix~\ref{app:data}. Bui's recurrence lemma gives
-\eqref{eq:imported}. Exact integer polynomial convolution constructs $D_{18}$.
-Substituting the rational vector of \cref{tab:upper} into
-\eqref{eq:slacks} gives
+$P_{18}$ in Appendix~\ref{kfp:app:data}. Bui's recurrence lemma gives
+\eqref{kfp:eq:imported}. Exact integer polynomial convolution constructs $D_{18}$.
+Substituting the rational vector of \cref{kfp:tab:upper} into
+\eqref{kfp:eq:slacks} gives
 \[
  \min_i\sigma_i\geq\frac{99}{10^9}>0,\qquad
  \min_i\eta_i\geq\frac{14724}{10^6}>0.
 \]
-Thus \cref{thm:upper} applies. Its $G$ coordinate is
+Thus \cref{kfp:thm:upper} applies. Its $G$ coordinate is
 $v_G=927884613/10^9$, yielding the claimed inequalities.
 \end{proof}
 
@@ -607,9 +778,9 @@ equation with a small positive residual in every coordinate, then rounded the
 candidate to denominator $10^9$. Such a solver may converge to an undesired
 branch or misestimate a threshold. Neither event can invalidate an accepted
 certificate: the verifier checks the two inequalities in
-\eqref{eq:upper-conditions} independently from scratch.
+\eqref{kfp:eq:upper-conditions} independently from scratch.
 
-\Cref{tab:progress} records the observed progression. The middle column
+\Cref{kfp:tab:progress} records the observed progression. The middle column
 contains numerical critical-point estimates, not proved optimal values or
 certified lower bounds. Every entry in the last column has a separate
 exact rational certificate in the archive.
@@ -619,12 +790,12 @@ exact rational certificate in the archive.
 \input{tex/progress_table.tex}
 \caption{Progress under exact-prefix correction. Numerical estimates and
 rigorous upper certificates are deliberately separated.}
-\label{tab:progress}
+\label{kfp:tab:progress}
 \end{table}
 
 The original recurrence's growth is already within $10^{-5}$ of the
-repository's bound, as \cref{sec:dual-example} will prove. Consequently,
-\cref{thm:main} does not arise from finding a better supersolution for the
+repository's bound, as \cref{kfp:sec:dual-example} will prove. Consequently,
+\cref{kfp:thm:main} does not arise from finding a better supersolution for the
 unchanged system. The correction changes the equality envelope while
 preserving its validity as an upper bound on the true counts.
 
@@ -643,7 +814,7 @@ After that branch returns, remove $p$ and exclude it for all later branches
 of the same call. The exclusions introduced by a call are removed when that
 call returns. No quotient by rotations or reflections is performed.
 
-\begin{proposition}[Enumeration correctness]\label{prop:enumeration}
+\begin{proposition}[Enumeration correctness]\label[proposition]{kfp:prop:enumeration}
 The include/exclude frontier procedure records each nonempty finite
 edge-connected subset of $\mathcal H$ containing $(0,0)$ exactly once, up to
 the specified size limit. Thus its totals are precisely the fixed-polyomino
@@ -676,7 +847,7 @@ nearby positions:
  (-1,-1),(0,-1),(1,-1),(2,-1).
 \]
 These are encoded by a ten-bit mask. All $2^{10}$ masks are preclassified
-against the required and forbidden sets of \cref{tab:patterns}.
+against the required and forbidden sets of \cref{kfp:tab:patterns}.
 The direct implementation scans all occupied anchors whenever an object is
 recorded. The faster implementation maintains the pattern totals under cell
 insertion and deletion. Inserting $p$ changes only the contribution of $p$
@@ -735,12 +906,31 @@ execution. The recurrence inequalities themselves are not learned from this
 table. Five exact partition identities and all nonnegative recurrence defects
 are checked again by the rational verifier.
 
+\wtag\ \emph{Regeneration at intake.} The delivered validation record says
+that no fresh size-$18$ run was made after the enumerators' final
+command-line changes. When the manuscript was received by \repo, the
+delivered \texttt{code/enumerate.cpp} was compiled afresh
+(\texttt{c++ -O3 -std=c++17}, g++ 16.1.0) and run as \texttt{enumerate 18}
+(8\,min\,23\,s on one core of the intake machine); after CSV parsing its
+output equals the shipped \texttt{data/profiles\_18.csv} in all $19$ columns
+of all $18$ rows (the files differ only in line endings). Fresh runs through
+sizes $11$--$14$, $16$ and $17$ matched as well, and an independent set-based
+Python enumerator, with pattern coordinates taken from the project's
+\texttt{Patterns.lean} rather than from this package, matched all $10$
+unmarked and $170$ marked entries through size $10$. So the size-$18$ table is
+now reproduced from the final source. This does not change the boundary
+stated above: the regeneration uses the same program and algorithm, the
+rational verifier checks arithmetic and necessary consistency conditions
+only, and the correctness of the enumeration rests on
+\cref{kfp:prop:enumeration} and the incremental-update argument together
+with this regeneration.
+
 \section{Balanced-monomial certificates of divergence}
-\label{sec:dual}
+\label{kfp:sec:dual}
 
 \subsection{The certificate format}
 Consider a finite positive polynomial system
-\begin{equation}\label{eq:general-map}
+\begin{equation}\label{kfp:eq:general-map}
  \Phi_i(\xi,X)=\sum_{k\in K_i}c_{ik}\xi^{b_{ik}}X^{\alpha_{ik}},
  \quad c_{ik}\in\Q_{>0},\quad b_{ik}\in\N,
  \quad \alpha_{ik}\in\N^d.
@@ -754,11 +944,11 @@ and define row sums
  r_i=\sum_{k\in K_i}m_{ik}.
 \]
 The weights are \emph{balanced} if
-\begin{equation}\label{eq:balance}
+\begin{equation}\label{kfp:eq:balance}
  \sum_{i,k}m_{ik}\alpha_{ik,j}=r_j\qquad(1\leq j\leq d).
 \end{equation}
 Define the positive rational product
-\begin{equation}\label{eq:dual-product}
+\begin{equation}\label{kfp:eq:dual-product}
  \mathcal C(\zeta,m)=
  \prod_{i,k:m_{ik}>0}
  \left(\frac{c_{ik}\zeta^{b_{ik}}r_i}{m_{ik}}\right)^{m_{ik}}.
@@ -767,8 +957,8 @@ A row of weight zero contributes no factor. The entire certificate consists
 of $\zeta$, the integer weights, and a verification that
 $\mathcal C(\zeta,m)>1$.
 
-\begin{theorem}[Balanced-monomial obstruction]\label{thm:dual}
-If \eqref{eq:balance} holds and $\mathcal C(\zeta,m)>1$, then no positive
+\begin{theorem}[Balanced-monomial obstruction]\label{kfp:thm:dual}
+If \eqref{kfp:eq:balance} holds and $\mathcal C(\zeta,m)>1$, then no positive
 supersolution of $\Phi(\zeta,X)\leq X$ exists.
 \end{theorem}
 \begin{proof}
@@ -813,7 +1003,7 @@ series can be evaluated, giving
  B(\zeta)=\Phi(\zeta,B(\zeta)).
 \]
 If the system is productive in the sense defined in the next section, this
-fixed point is strictly positive. Therefore \cref{thm:dual} implies that at
+fixed point is strictly positive. Therefore \cref{kfp:thm:dual} implies that at
 least one coordinate fails to converge at $\zeta$.
 
 Define the system's exponential growth by
@@ -822,7 +1012,7 @@ Define the system's exponential growth by
 \]
 Equivalently, $1/\mu$ is the minimum of the coordinate radii of convergence.
 Cauchy--Hadamard then gives
-\begin{equation}\label{eq:dual-growth}
+\begin{equation}\label{kfp:eq:dual-growth}
  \mu\geq\zeta^{-1}.
 \end{equation}
 We use the limsup formulation so that no unproved assertion about periodicity
@@ -845,7 +1035,7 @@ the recurrence-growth question, not for reversing this implication.
 \end{resultbox}
 
 \section{Completeness of the certificate alternative}
-\label{sec:complete}
+\label{kfp:sec:complete}
 
 \subsection{The hypotheses}
 For this section fix $\zeta>0$ and write $F(X)=\Phi(\zeta,X)$.
@@ -867,7 +1057,7 @@ excluded. All three conditions are finite structural checks on the monomial
 list; they hold for \eqref{eq:map} and are replayed by the verifier.
 
 \subsection{Compactness of bounded multiplicative residuals}
-\begin{lemma}\label{lem:compact}
+\begin{lemma}\label[lemma]{kfp:lem:compact}
 If $F$ is productive, strongly connected, and nonlinear, then, for every
 $K>0$, the set
 \[
@@ -906,7 +1096,7 @@ compact box.
 
 \subsection{An elementary convex proof}
 Put $X_j=e^{y_j}$ and define
-\begin{equation}\label{eq:h}
+\begin{equation}\label{kfp:eq:h}
  f_i(y)=\log F_i(e^y)-y_i,
  \qquad h(y)=\max_i f_i(y).
 \end{equation}
@@ -914,21 +1104,21 @@ Each $f_i$ is a log-sum-exp of affine functions and is convex. For
 completeness, its Hessian is the covariance matrix of the monomial exponent
 vectors under their positive softmax probabilities, and is therefore
 positive semidefinite. Sublevel sets of $h$ correspond to the sets $S_K$ of
-\cref{lem:compact}. Hence $h$ attains its global minimum.
+\cref{kfp:lem:compact}. Hence $h$ attains its global minimum.
 
-\begin{theorem}[Complete rational certificate alternative]\label{thm:alternative}
+\begin{theorem}[Complete rational certificate alternative]\label{kfp:thm:alternative}
 Suppose $F$ has rational coefficients and is productive, strongly connected,
 and nonlinear. Exactly one of the following holds:
 \begin{enumerate}[label=(\roman*)]
  \item there is $X>0$ with $F(X)\leq X$;
  \item there are balanced nonnegative integer monomial weights, not all zero,
-       for which the product \eqref{eq:dual-product} is greater than one.
+       for which the product \eqref{kfp:eq:dual-product} is greater than one.
 \end{enumerate}
 Here the coefficient $c_{ik}\zeta^{b_{ik}}$ in
-\eqref{eq:dual-product} is simply the corresponding coefficient of $F$.
+\eqref{kfp:eq:dual-product} is simply the corresponding coefficient of $F$.
 \end{theorem}
 \begin{proof}
-Mutual exclusion is \cref{thm:dual}. Suppose (i) fails. Let $y^*$ minimize
+Mutual exclusion is \cref{kfp:thm:dual}. Suppose (i) fails. Let $y^*$ minimize
 $h$, and put $\delta=h(y^*)$. Since a minimum is attained and no point has
 $h\leq0$, we have $\delta>0$.
 
@@ -985,11 +1175,11 @@ positivity. This proves (ii).
 
 \subsection{What this settles, and what it does not}
 A positive numerical supersolution bounds the zero iterates and hence all
-formal partial sums, by the same argument as in \cref{thm:upper}. Thus it
+formal partial sums, by the same argument as in \cref{kfp:thm:upper}. Thus it
 forces convergence at the evaluation point. For a proper productive system
 in the stated class, divergence at a rational point therefore has a finite
 balanced-monomial obstruction, and a finite obstruction
-implies the lower-growth bound \eqref{eq:dual-growth}. Thus there is a
+implies the lower-growth bound \eqref{kfp:eq:dual-growth}. Thus there is a
 certificate alternative, not just a test based on watching a floating-point
 iteration grow. This answers the certificate-existence aspect of Bui's
 Question~2 for this class, including his seventeen-variable system.
@@ -1004,16 +1194,16 @@ programming, here specialized and proved in an arithmetic certificate form
 \cite{duffin,boyd,bv}.
 
 \section{A compact dual certificate for the original recurrence}
-\label{sec:dual-example}
+\label{kfp:sec:dual-example}
 
 \subsection{The integer weights}
 For the uncorrected map \eqref{eq:map}, take
 \[
  \zeta_{\rm dual}=\frac{100000}{452349}.
 \]
-Use the weights in \cref{tab:dual}. There are $53$ positive integers, with
+Use the weights in \cref{kfp:tab:dual}. There are $53$ positive integers, with
 sum $1,000,000$ and largest entry $150,463$. Direct integer addition verifies
-all seventeen balance equations \eqref{eq:balance}.
+all seventeen balance equations \eqref{kfp:eq:balance}.
 
 \begin{table}[htbp]
 \centering\small
@@ -1021,7 +1211,7 @@ all seventeen balance equations \eqref{eq:balance}.
 \caption{An explicit balanced-monomial certificate. The coefficient of every
 monomial is one. Within each coordinate row, weights follow the term order
 in \eqref{eq:map}.}
-\label{tab:dual}
+\label{kfp:tab:dual}
 \end{table}
 
 For example, the incoming $C$ exponent is contributed only by the
@@ -1031,7 +1221,7 @@ with multiplicity: the $z^2$ in row $U$ contributes twice its weight to the
 incoming $Z$ exponent.
 
 Exact rational interval evaluation proves
-\begin{equation}\label{eq:dual-interval}
+\begin{equation}\label{kfp:eq:dual-interval}
  \frac{1000668023141660979}{10^{18}}
  \leq \log\mathcal C(\zeta_{\rm dual},m)
  \leq \frac{1000668023155325499}{10^{18}}.
@@ -1040,7 +1230,7 @@ In particular, $1<\log\mathcal C<1001/1000$, so
 $\mathcal C>1$. The slightly generous unit-sized lower margin is merely a
 convenient verification statement; scaling all weights scales the logarithm.
 
-\begin{theorem}[Certified limitation of the original system]\label{thm:bracket}
+\begin{theorem}[Certified limitation of the original system]\label{kfp:thm:bracket}
 The growth $\mu_{\rm original}$ of the original equality recurrence satisfies
 \[
  \frac{452349}{100000}\leq\mu_{\rm original}\leq\frac{9047}{2000}.
@@ -1049,8 +1239,8 @@ Consequently, no supersolution of the original system can establish a growth
 upper bound smaller than $4.52349$.
 \end{theorem}
 \begin{proof}
-Balance and \eqref{eq:dual-interval} give the lower bound by
-\cref{thm:dual} and \eqref{eq:dual-growth}. The repository's rational
+Balance and \eqref{kfp:eq:dual-interval} give the lower bound by
+\cref{kfp:thm:dual} and \eqref{kfp:eq:dual-growth}. The repository's rational
 supersolution at $\zeta=2000/9047$, replayed by our verifier without a defect
 correction, gives the upper bound. Finally, a supersolution at a smaller
 claimed growth value would imply a radius larger than
@@ -1064,7 +1254,7 @@ certificate forbids. This is an exact obstruction, not a conclusion drawn
 from a numerical optimizer failing to improve the bound.
 
 \subsection{Exact verification without enormous integer products}
-Computing the rational product \eqref{eq:dual-product} literally is possible
+Computing the rational product \eqref{kfp:eq:dual-product} literally is possible
 in principle, but raising many rational factors to large integer weights is
 unnecessary. Instead, enclose its logarithm using rational arithmetic.
 For $1\leq q\leq2$, let $u=(q-1)/(q+1)$, so $0\leq u\leq1/3$. The identity
@@ -1073,7 +1263,7 @@ For $1\leq q\leq2$, let $u=(q-1)/(q+1)$, so $0\leq u\leq1/3$. The identity
 \]
 follows by integrating the geometric series for $2/(1-u^2)$ from $0$ to $u$.
 The remainder after $M$ terms satisfies
-\begin{equation}\label{eq:log-error}
+\begin{equation}\label{kfp:eq:log-error}
  0\leq \log q-2\sum_{k=0}^{M-1}\frac{u^{2k+1}}{2k+1}
  \leq\frac{2u^{2M+1}}{(2M+1)(1-u^2)}.
 \end{equation}
@@ -1081,7 +1271,7 @@ All endpoints are rational when $q$ is rational.
 
 For a general positive rational $q$, write $q=2^e w$ with integer $e$ and
 $1\leq w<2$. Evaluate $\log w$ and $\log2$ by
-\eqref{eq:log-error}; multiply the interval for $\log2$ by $e$, reversing
+\eqref{kfp:eq:log-error}; multiply the interval for $\log2$ by $e$, reversing
 endpoint roles when $e<0$. This gives a rational enclosure for $\log q$.
 
 The supplied verifier uses $M=16$. Each individual logarithm interval is
@@ -1089,7 +1279,7 @@ rounded outward to denominator $10^{18}$ before multiplication by its
 integer weight. This optional outward rounding prevents huge denominators
 when intervals from many factors are added. It cannot invalidate enclosure.
 Adding the resulting weighted intervals gives exactly
-\eqref{eq:dual-interval}. The same cached enclosure of $\log2$ can be reused;
+\eqref{kfp:eq:dual-interval}. The same cached enclosure of $\log2$ can be reused;
 there are at most $54\times16$ short series terms to evaluate.
 
 The verification cost depends on the bit sizes of the rational monomial
@@ -1124,11 +1314,11 @@ weights. This is how the displayed certificate was found.
 
 The approximate critical point and eigenvector are not inputs to the final
 verifier. Only the resulting integers and rational evaluation point are.
-The completeness proof in \cref{sec:complete} also does not require that a
+The completeness proof in \cref{kfp:sec:complete} also does not require that a
 numerical critical point be correct or even available.
 
 \section{The limits of the exact-prefix hierarchy}
-\label{sec:stability}
+\label{kfp:sec:stability}
 
 \subsection{A spectral criterion}
 Fix a positive evaluation point $\zeta$ at which the true series $\bA$
@@ -1143,7 +1333,7 @@ and define the nonnegative forcing vector
  b_N=\bigl(\tail{N}{\Phi(\xi,P_N(\xi))}\bigr)(\zeta).
 \]
 At this evaluation point,
-\begin{equation}\label{eq:tail-numeric}
+\begin{equation}\label{kfp:eq:tail-numeric}
  \Psi_N(\zeta,y)=b_N+
        \Phi(\zeta,p_N+y)-\Phi(\zeta,p_N).
 \end{equation}
@@ -1151,7 +1341,7 @@ We have $p_N\uparrow a$ and $J_N\to J$. Moreover, $b_N\to0$:
 coefficientwise $\Phi(\xi,P_N)\preceq\Phi(\xi,\bA)$, and the latter
 series converges at $\zeta$. Its high-degree tail bounds $b_N$.
 
-\begin{theorem}[Strict stability and obstruction]\label{thm:stability}
+\begin{theorem}[Strict stability and obstruction]\label{kfp:thm:stability}
 Assume the preceding setup.
 \begin{enumerate}[label=(\alph*)]
 \item If $\spr(J)<1$, then all sufficiently large $N$ admit a real upper
@@ -1178,7 +1368,7 @@ nonnegative direction $\varepsilon h$ gives, uniformly for $0\leq p_N\leq a$,
 \]
 for some finite $C\geq0$. Choose $\varepsilon$ with
 $C\varepsilon^2\leq\varepsilon/4$, and then $N$ sufficiently large that
-$b_N\leq(\varepsilon/4)\bone$. Equation \eqref{eq:tail-numeric} yields
+$b_N\leq(\varepsilon/4)\bone$. Equation \eqref{kfp:eq:tail-numeric} yields
 \[
  \Psi_N(\zeta,\varepsilon h)
  \leq\varepsilon h-(\varepsilon/2)\bone.
@@ -1199,7 +1389,7 @@ which is impossible.
 
 For (c), continuity of spectral radius gives $\spr(J_N)>1$ for all
 sufficiently large $N$. Part (b) rules out certificates at all those levels.
-By \cref{thm:nested}, an earlier certificate would remain a certificate at
+By \cref{kfp:thm:nested}, an earlier certificate would remain a certificate at
 all later levels. Therefore no earlier one exists either.
 \end{proof}
 
@@ -1211,7 +1401,7 @@ irreducible, and the $C$ row already supplies a nonzero high-degree forcing
 term whenever the top $E$ coefficient is positive.
 
 \subsection{An exact counterexample to asymptotic exactness}
-\begin{theorem}[All finite prefixes may retain a growth gap]\label{thm:gap}
+\begin{theorem}[All finite prefixes may retain a growth gap]\label{kfp:thm:gap}
 There is a scalar proper positive convolution inequality with a true series
 of growth $1$ for which the exact-prefix majorants have growth tending to
 $3$, not $1$.
@@ -1229,7 +1419,7 @@ The exact-prefix defect is
  D_N(\xi)=\sum_{n=3}^N(n-2)\xi^n,
 \]
 with an empty sum for $N<3$. The corrected equality equation is
-\begin{equation}\label{eq:toy}
+\begin{equation}\label{kfp:eq:toy}
  B_N=\xi+B_N^2-D_N(\xi).
 \end{equation}
 Let $c_N(t)=t-D_N(t)$ for real $t$.
@@ -1246,7 +1436,7 @@ There is a unique
 \[
  \rho_N\in[1/4,1/3)\quad\hbox{with}\quad c_N(\rho_N)=1/4.
 \]
-At $t=\rho_N$, the value $v=1/2$ solves \eqref{eq:toy}, and
+At $t=\rho_N$, the value $v=1/2$ solves \eqref{kfp:eq:toy}, and
 \[
  P_N(\rho_N)<A(\rho_N)<1/2.
 \]
@@ -1266,7 +1456,7 @@ Thus $\rho_N\to1/3$, and the corrected growth tends to $3$.
 The true series has radius $1$ and growth $1$.
 \end{proof}
 
-The same barrier is visible directly in \cref{thm:stability}:
+The same barrier is visible directly in \cref{kfp:thm:stability}:
 \[
  \Phi_x(t,A(t))=\frac{2t}{1-t}
 \]
@@ -1294,7 +1484,7 @@ satisfying
 At $\varepsilon=0$, let $\ell^TJ=\ell^T$ for
 $J=\Phi_{\bX}(\rho,\tau)$. Differentiating and multiplying by $\ell^T$
 cancels the unknown derivative of $\tau$, yielding
-\begin{equation}\label{eq:sensitivity}
+\begin{equation}\label{kfp:eq:sensitivity}
  \rho'(0)=
  \frac{\ell^TE(\rho)}
       {\ell^T\bigl(\Phi_\xi(\rho,\tau)-D'(\rho)\bigr)},
@@ -1305,13 +1495,13 @@ also equals $\ell^T\Psi_\xi(\rho,y)$, because the difference is
 $\ell^T(J-I)P'(\rho)=0$. It is nonnegative, and is positive when some
 size-dependent monomial contributes positively.
 
-Formula \eqref{eq:sensitivity} suggests prioritizing verified defect
+Formula \eqref{kfp:eq:sensitivity} suggests prioritizing verified defect
 improvements by their Perron-weighted value. It is conditional on the stated
-smooth critical family; it is not used in \cref{thm:main}. In particular,
+smooth critical family; it is not used in \cref{kfp:thm:main}. In particular,
 it never authorizes subtracting an unproved or merely guessed defect.
 
 \section{Verification, formalization, and reproducibility}
-\label{sec:verification}
+\label{kfp:sec:verification}
 
 \subsection{The proof dependency chain}
 The mathematical chain behind the new upper bound is
@@ -1383,9 +1573,25 @@ for either enumeration or certificate checking.
 
 The numerical discovery scripts require NumPy, SciPy, and SymPy. They are
 provided for further experimentation, but are outside the proof boundary.
-The figures in the numerical-estimate column of \cref{tab:progress} should
+The figures in the numerical-estimate column of \cref{kfp:tab:progress} should
 not be promoted to exact assertions merely because those scripts print a
 small residual or a successful solver status.
+
+\wtag\ \emph{Layout in \repo.} The report directory keeps the delivered
+\texttt{code/}, \texttt{data/} and \texttt{tex/} layout, so the commands above
+run from the report root under the shipped names. Two files moved: the
+delivered \texttt{Makefile} is \texttt{code/Makefile} (its recipes still use
+root-relative paths, so run it as \texttt{make -f code/Makefile verify} from
+the report root), and \texttt{requirements-discovery.txt} is
+\texttt{data/requirements-discovery.txt}. The delivered PDF was replaced by a
+build of this text, and the delivered checksum manifest is not shipped. On
+the intake machine \texttt{python3} is spelled \texttt{py}. Because
+\texttt{verify.py --report} rewrites \texttt{data/verification.json},
+\texttt{make\_tables.py} rewrites \texttt{tex/*.tex}, and
+\texttt{discover\_certificates.py} overwrites \texttt{data/upper\_N*.json} and
+\texttt{data/dual\_original.json}, run them on a copy of the directory. At
+intake, \texttt{verify.py} passed on such a copy and its output equalled
+\texttt{data/verification.txt}.
 
 \subsection{A focused Lean extension plan}
 The most direct formal extension reuses
@@ -1396,17 +1602,24 @@ weighted-prefix inequality, and the new rational vector.
 
 A practical route can avoid formalizing complex singularity theory entirely.
 First prove the finite convolution identity underlying
-\eqref{eq:prefix-def}. Next prove a weighted-tail version of the repository's
+\eqref{kfp:eq:prefix-def}. Next prove a weighted-tail version of the repository's
 monotone-prefix certificate theorem. Instantiate it with the new vector,
 using ordinary exact rational reduction for every inequality. The existing
 growth endpoint can then carry the pointwise exponential bound to $\lambda$.
 The expensive part is a formally verified enumeration or a small proof object
 certifying the marked prefix, not the seventeen final inequalities.
+\wtag\ In the Lean files at the pin, the ``monotone-prefix certificate
+theorem'' exists in $\zeta$-generic form only as
+\lean{buiIterate_le_supersolution} and \lean{PrefixRecurrence.le_supersolution};
+the endpoint theorems that carry a supersolution to a pointwise bound are
+specialized to $\zeta=2000/9047$ (\cref{kfp:sec:formal-status}). The final
+passage to $\lambda$ can use the generic \lean{growthSup_le_of_le_pow}
+(\lean{Growth.lean:38}), since $v_G<1$ gives $A_n\leq(2249/500)^n$.
 
 For dual certificates, the balance identity is finite integer arithmetic.
 One can either formalize weighted arithmetic--geometric mean directly or
 expand rational weights into an unweighted finite product argument. A
-logarithmic checker with the remainder bound \eqref{eq:log-error} avoids
+logarithmic checker with the remainder bound \eqref{kfp:eq:log-error} avoids
 large powers and is a natural reusable component. The abstract completeness
 theorem need not be formalized before the particular $53$-weight certificate
 can be checked.
@@ -1417,7 +1630,7 @@ confused with a Lean proof of the new finite-prefix theorem or of the
 size-$18$ data.
 
 \section{Proposed research questions and next projects}
-\label{sec:questions}
+\label{kfp:sec:questions}
 
 The following projects are intended as concrete continuations, not claims
 already established in this report.
@@ -1429,6 +1642,10 @@ polyomino enumerator, or design a compact reflective certificate for its
 output. The target should be an unconditional endpoint with precisely the
 same counting conventions as \texttt{GeometricComplete.lean}. This is the
 highest-priority validation project.
+\wtag\ \Cref{kfp:sec:formal-status} lists the Lean pieces that exist, the
+$\zeta$-specialization that must be generalized, and a smaller first target
+(the $N=7$ certificate, $\lambda\leq4.5233$, needs counts only through size
+$7$).
 
 \item \textbf{Generate longer marked prefixes without listing every object.}
 Adapt a transfer-matrix or connectivity-state enumeration to accumulate all
@@ -1440,14 +1657,14 @@ without changing the imported geometric proof.
 \item \textbf{Certify lower bounds for the corrected envelopes.}
 Expand or represent the positive maps $\Psi_N$ and construct balanced-monomial
 certificates for them. This would replace the middle column of
-\cref{tab:progress} by narrow rigorous two-sided brackets. Sparsity or an
+\cref{kfp:tab:progress} by narrow rigorous two-sided brackets. Sparsity or an
 arithmetic-circuit representation may avoid a large explicit expansion.
 
 \item \textbf{Locate the actual stability barrier of the fixed Bui map.}
 Bound $\spr(\Phi_{\bX}(\zeta,\bA(\zeta)))$ using certified lower and upper
 bounds on the true marked generating functions. Determine whether the
 prefix hierarchy's limiting obstruction lies substantially below the true
-polyomino radius. The strict criteria in \cref{thm:stability} give concrete
+polyomino radius. The strict criteria in \cref{kfp:thm:stability} give concrete
 sufficient tests, while the equality case remains open.
 
 \item \textbf{Optimize which geometric deficiencies to repair.}
@@ -1503,10 +1720,10 @@ formal certification of the finite marked enumeration.
 \appendix
 \clearpage
 \section{Complete marked profiles through size eighteen}
-\label{app:data}
+\label{kfp:app:data}
 
 The tables give the exact occurrence counts for the patterns in
-\cref{tab:patterns}. All omitted size-zero entries are zero. The row $A_n$
+\cref{kfp:tab:patterns}. All omitted size-zero entries are zero. The row $A_n$
 counts translation classes; every other row counts marked occurrences.
 These data, together with \eqref{eq:map}, determine every coefficient of
 $D_{18}$ by finite integer convolution. The JSON and CSV forms contain the
@@ -1530,7 +1747,7 @@ same integers without typographical formatting.
 \clearpage
 
 \section{A minimal exact certificate checker}
-\label{app:checker}
+\label{kfp:app:checker}
 The following core is sufficient to check an upper candidate once the map
 and true prefix are supplied. The full verifier also checks the input
 conventions, all intermediate certificates, the dual weights, and its
@@ -1566,14 +1783,14 @@ Because all numbers involved are integers before evaluation, this step is
 particularly suitable for independent implementations or proof-assistant
 reflection.
 
-For the dual checker, \eqref{eq:balance} is a sum of integer vectors.
+For the dual checker, \eqref{kfp:eq:balance} is a sum of integer vectors.
 The $j$th entry of a monomial exponent vector is counted with its full
 multiplicity. Omitting the factor two for a square, for example, would
 invalidate the certificate. The supplied verifier iterates over repeated
 variable indices, so this multiplicity is explicit in its sparse format.
 
 \section{Source audit and claim classification}
-\label{app:audit}
+\label{kfp:app:audit}
 
 \begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
 \toprule
@@ -1581,16 +1798,24 @@ Claim or ingredient & Status and evidence\\
 \midrule
 \endhead
 Geometric inequalities & Imported from Bui v2, Lemma~4 and Appendix~B; corresponding
-repository endpoint source inspected at the pinned commit.\\[0.4em]
+repository endpoint source inspected at the pinned commit.
+\wtag\ In \repo\ a Lean theorem for the actual counts,
+\lean{geometricPublishedBuiRecurrences} (\cref{kfp:sec:formal-status}).\\[0.4em]
 Old $4.5235$ upper bound & Existing repository result; rational vector independently
-replayed in the new verifier. No new Lean build was performed.\\[0.4em]
-Prefix-corrected majorant & Proved in \cref{sec:prefix}, including the nonnegative tail
+replayed in the new verifier. No new Lean build was performed.
+\wtag\ Kernel-checked in \repo; the project's Lean-verified bound.\\[0.4em]
+Prefix-corrected majorant & Proved in \cref{kfp:sec:prefix}, including the nonnegative tail
 map and the known-prefix lower-budget condition.\\[0.4em]
 New $4.498$ bound & Computer-assisted theorem: exact marked enumeration plus a rational
-certificate, with the detailed dependency chain in \cref{sec:verification}.\\[0.4em]
+certificate, with the detailed dependency chain in \cref{kfp:sec:verification}.\\[0.4em]
 Marked table through $18$ & Generated by exhaustive C++ enumeration. Python agrees through
 $11$; direct and incremental C++ scans agree through $16$; standard unmarked
-totals agree through $18$. Not kernel-checked.\\[0.4em]
+totals agree through $18$. Not kernel-checked.
+\wtag\ Regenerated through $18$ at intake from the final source, and
+through $10$ by an independent enumerator
+(\cref{kfp:app:provenance}).\\[0.4em]
+\wtag\ New $4.498$ bound in Lean & Not formalized; the Lean endpoints are
+specialized to $\zeta=2000/9047$ (\cref{kfp:sec:formal-status}).\\[0.4em]
 Dual obstruction & Elementary weighted AM--GM proof; particular integer balance and
 strict log inequality replayed exactly.\\[0.4em]
 Certificate completeness & Proved for productive, strongly connected, nonlinear positive
@@ -1598,7 +1823,7 @@ polynomial systems with rational data. Not claimed for all maximum or signed
 recurrences. Based on classical geometric-programming ideas.\\[0.4em]
 Numerical critical values & Exploratory estimates only; not certified optimal values and
 not used to establish the accepted inequalities.\\[0.4em]
-Stability theorem and gap & Written proofs in \cref{sec:stability}. The case of limiting
+Stability theorem and gap & Written proofs in \cref{kfp:sec:stability}. The case of limiting
 spectral radius exactly one is not classified generally.\\[0.4em]
 Sensitivity formula & Conditional on an already justified differentiable critical
 family. Not used for the headline bound.\\[0.4em]
@@ -1606,6 +1831,98 @@ Novelty & The explicit bound and application were not found in the inspected sou
 No claim of an exhaustive priority search or independent refereeing.\\
 \bottomrule
 \end{longtable}
+
+\section{\wtag\ Provenance, intake verification and non-claims}
+\label{kfp:app:provenance}
+
+\subsection{Provenance}
+This report was built from one manuscript: manuscript~06 of \repo's
+incoming-reports batch~36, the archive \texttt{ProveIt\_Polyomino\_Research}
+(delivered in commit \texttt{e13affd32}, placed in commit
+\texttt{1a1396d4d}). It was written against the pin \sha; the project it
+continues is unchanged between that pin and the placement commit, so its
+statements about the project are current except where the delivered text
+undersells the formal status of the geometric lemma
+(\cref{kfp:sec:formal-status}). As a single source it required no merge
+choices. Its whole text is printed; passages marked \wtag\ were added when it
+was written into \repo:
+\cref{kfp:sec:notation,kfp:sec:formal-status}, this appendix, the paragraph
+on earlier upper bounds in \cref{kfp:sec:scope}, notes in the title-page box
+and the ``three levels'' box, after \eqref{kfp:eq:partitions} and the
+geometric-lemma paragraph of \cref{kfp:sec:system}, on intake regeneration in
+\cref{kfp:sec:numeric}, on layout and on the Lean plan in
+\cref{kfp:sec:verification}, after research question~1, three rows of the
+audit table in \cref{kfp:app:audit}, and four bibliography entries
+(\cite{repobound,eden,klarnerrivest,barequetshalah}). All labels carry the
+prefix \texttt{kfp:} except \texttt{eq:map}, which the delivered, generated
+\texttt{tex/dual\_table.tex} cites by that name.
+
+\subsection{Intake verification}
+\begin{itemize}
+\item The arithmetic verifier \texttt{code/verify.py} passed on a copy of the
+ package (4.3\,s) and printed exactly \texttt{data/verification.txt}; the
+ profile checker accepted \texttt{data/profiles\_18.csv}.
+\item The size-$18$ table was regenerated from scratch by a fresh build of
+ \texttt{code/enumerate.cpp} and matched in every entry
+ (\cref{kfp:sec:numeric}); fresh runs through sizes $11$--$14$, $16$ and $17$
+ and a direct-scan run through $12$ matched too.
+\item An independent set-based Python enumerator, with coordinates from the
+ project's \texttt{Patterns.lean}, matched all entries through size $10$.
+ An independent transcription of \eqref{eq:map} from the project's research
+ note \cite{repobound} reproduced \eqref{kfp:eq:first-defect}, the size-$18$
+ margins and $v_G$, and confirmed the old $4.5235$ vector as a supersolution.
+\item The seventeen offset sets of \cref{kfp:tab:patterns} were compared
+ entry by entry with \texttt{Patterns.lean}, and the unmarked column with OEIS
+ A001168 through $18$.
+\item A $50$-digit evaluation of $\log\mathcal C(\zeta_{\rm dual},m)$ gave
+ $1.00066802314520877\ldots$, inside \eqref{kfp:eq:dual-interval}.
+\end{itemize}
+These checks do not verify the written proofs, and no independent proof review
+was performed. At intake the proofs of \cref{kfp:lem:formal},
+\cref{kfp:thm:majorant,kfp:thm:upper,kfp:thm:nested,kfp:thm:dual,kfp:thm:alternative,kfp:thm:gap}
+were checked and that of \cref{kfp:thm:stability} was read; no gap was found.
+
+\subsection{What this report does not claim}
+Every limitation stated by the delivered text is kept; collected:
+\begin{enumerate}[label=N\arabic*.,leftmargin=2.6em]
+\item The lower bound $\mu_{\rm original}\geq452349/100000$ concerns the
+ uncorrected equality recurrence and is \emph{not} a lower bound on
+ $\lambda$ (\cref{kfp:sec:dual}).
+\item No new Lean formalization. The Lean proof of $4.5235$ in \repo\ is not a
+ proof of $4.498$, of the finite-prefix theorem, or of the size-$18$ data.
+\item The arithmetic checker does not prove that the table enumerates the
+ stated objects; its partition, defect and $G$-domination checks are
+ necessary conditions only.
+\item The enumeration cross-checks are not a formal certificate that every
+ size-$18$ object was generated exactly once. The delivered record made no
+ fresh size-$18$ run after the final command-line changes; the intake
+ regeneration closes that gap only with the same program, and the two C++
+ implementations share one generation strategy.
+\item The report is an AI-assisted draft and has not been independently
+ refereed.
+\item Novelty is assessed only against the inspected repository snapshot and
+ sources; there was no exhaustive priority search.
+\item Geometric programming, weighted AM--GM and Redelmeier-style enumeration
+ are prior tools, not claimed inventions.
+\item The certificate alternative is proved only for productive, strongly
+ connected, nonlinear systems with rational data; it gives no uniform bound
+ on certificate bit length and does not cover maximum or signed recurrences.
+\item The case $\spr(J)=1$ of \cref{kfp:thm:stability} is not classified.
+\item The counterexample of \cref{kfp:thm:gap} does not disprove Bui's
+ Question~1.
+\item The sensitivity formula \eqref{kfp:eq:sensitivity} is conditional and
+ not used in \cref{kfp:thm:main}.
+\item The numerical critical estimates in \cref{kfp:tab:progress} are not
+ certified values or bounds.
+\item The OEIS comparison is a consistency check, not an input to the proof or
+ the checker.
+\end{enumerate}
+Added in the write: (W1) the geometric lemma is kernel-checked in \repo, but
+only relative to the transcription of Bui's diagrams into
+\texttt{Patterns.lean}; (W2) the bound $4.498$ remains unverified by Lean,
+and the project's Lean-verified bound remains $9047/2000$; (W3) the earlier
+bounds of \cref{kfp:sec:scope} were not re-examined, and their sources were
+not read beyond their bibliographic data.
 
 \clearpage
 \begin{thebibliography}{20}
@@ -1641,6 +1958,31 @@ and forbidden offset sets.
 \repo, \texttt{Lean/KlarnerConstant/GeometricComplete.lean}, composition of
 the geometric recurrences and the existing growth endpoint.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Combinatorics/Polyominoes/KlarnerConstant/Lean/KlarnerConstant/GeometricComplete.lean}.
+
+\bibitem{repobound}
+\repo, \emph{An exact improvement to $\lambda\leq4.5235$ for Klarner's
+constant}, research note dated 12 August 2026,
+\lean{Combinatorics/Polyominoes/KlarnerConstant/Research/klarner-bound-4.5235.md}.
+\wtag\ Added in the write; its Sections~1 and~3 give the upper-bound history
+and the weighted-prefix notation compared in \cref{kfp:sec:scope}.
+
+\bibitem{eden}
+M.~Eden, \emph{A two-dimensional growth process}, in: Proceedings of the
+Fourth Berkeley Symposium on Mathematical Statistics and Probability,
+Vol.~4, University of California Press, Berkeley, 1961, 223--239.
+\wtag\ Added in the write.
+
+\bibitem{klarnerrivest}
+D.~A. Klarner and R.~L. Rivest, \emph{A procedure for improving the upper
+bound for the number of $n$-ominoes}, Canadian Journal of Mathematics
+\textbf{25} (1973), 585--602.
+\wtag\ Added in the write.
+
+\bibitem{barequetshalah}
+Gill Barequet and Mira Shalah, \emph{Improved upper bounds on the growth
+constants of polyominoes and polycubes}, Algorithmica \textbf{84} (2022),
+3559--3586. \url{https://doi.org/10.1007/s00453-022-00948-6}.
+\wtag\ Added in the write.
 
 \bibitem{redelmeier}
 D.~Hugh Redelmeier, \emph{Counting polyominoes: Yet another attack},
