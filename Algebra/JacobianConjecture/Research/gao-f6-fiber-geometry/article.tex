@@ -1,0 +1,1496 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=24mm,headheight=15pt,footskip=27pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,tabularx}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl,hyperref,bookmark,listings}
+\definecolor{Ink}{HTML}{182B38}
+\definecolor{Accent}{HTML}{125B70}
+\definecolor{Pale}{HTML}{EFF5F7}
+\definecolor{Rule}{HTML}{CCDCE2}
+\hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Six Sheets, Three Escapes: Complete Fiber Geometry and Explicit Normalization of a Five-Dimensional Keller Map},
+ pdfauthor={Research prepared with ChatGPT for the ProveIt project},
+ pdfsubject={Exact fibers, normalization, discriminants, nonproperness, and Galois groups}}
+\urlstyle{same}
+\titleformat{\section}{\Large\bfseries\color{Accent}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Six Sheets, Three Escapes}
+\fancyhead[R]{\small ProveIt research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\A}{\mathbb A}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Ram}{\operatorname{Ram}}
+\newcommand{\simp}{\operatorname{simp}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\F}{\mathcal F}
+\newcommand{\base}{\mathcal A}
+\newcommand{\normal}{\mathcal N}
+\newcommand{\ord}{\mathcal O}
+\newcommand{\kk}{\kappa}
+\newcommand{\wt}{\widetilde}
+\newcommand{\code}[1]{\texttt{\nolinkurl{#1}}}
+\newtcolorbox{claimbox}{breakable,colback=Pale,colframe=Rule,boxrule=0.5pt,
+ arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{Rule},
+ backgroundcolor=\color{Pale},aboveskip=8pt,belowskip=8pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{Ink}
+\vspace*{12mm}
+{\small\sffamily\bfseries\color{Accent} ALGEBRAIC GEOMETRY \; / \; GALOIS THEORY \; / \; EXACT CERTIFICATES\par}
+\vspace{17mm}
+{\Huge\bfseries Six Sheets,\par Three Escapes\par}
+\vspace{8mm}
+{\LARGE Complete Fiber Geometry and Explicit Normalization\par}
+\vspace{3mm}
+{\Large of a Five-Dimensional Keller Map\par}
+\vspace{14mm}
+{\large A research extension of the Jacobian-conjecture\par direction in the ProveIt repository\par}
+\vspace{7mm}
+{24 September 2026\par}
+\vfill
+\begin{claimbox}
+\textbf{Principal result.} We determine every geometric fiber of Gao's map
+$F_6$, including the previously untreated degeneration at its first target
+coordinate zero. We construct its finite normalization with an explicit
+six-element free basis, identify its omitted surface and its two-component
+nonproperness locus, and prove geometric and arithmetic $S_6$ results.
+
+\textbf{Status.} The map and its generic degree are prior work. The extensions
+are proved here with supplementary exact computer-algebra checks. This is an
+AI-assisted research draft prepared with ChatGPT, not a peer-reviewed paper
+or a Lean/Rocq-certified development. Priority beyond the inspected sources
+has not been established.
+\end{claimbox}
+\vspace{6mm}
+{\small Prepared for the ProveIt research program. Source, PDF, reproducibility
+scripts, sparse coefficient data, and a verification report accompany this article.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+Gao's five-dimensional polynomial map $F_6$ has constant Jacobian determinant
+$-290$ and generic geometric degree six. Its published construction provides
+a sextic controlling fibers away from a degenerating target hyperplane,
+but leaves the complete fiber stratification to further work. We resolve
+the fiber-cardinality problem for this particular map and give additional
+structural results.
+
+The decisive identity is that the sweep parameter is the derivative of the
+fiber sextic on its zero set. After a rescaling, this produces a uniform
+root chart valid even on the exceptional hyperplane: the source open set
+$x\ne0$ is exactly a simple-root locus. The remaining source hyperplane
+maps isomorphically to the target hyperplane. Consequently the only
+geometric fiber cardinalities are $0,1,2,3,4,6$, all of which occur. The
+omitted set is an explicitly parametrized smooth closed surface isomorphic
+to $\Gm\times\A^1$.
+
+We then normalize the monogenic sextic order by adjoining one explicit
+fraction. The resulting algebra is free of rank six, with three short
+multiplication rules, and its spectrum is smooth. The original affine
+space is the complement of the ramification locus and three unramified
+boundary components in this finite model. Its nonproperness locus is
+$V(cH)$, where $H$ is an irreducible normalized discriminant satisfying
+$H|_{c=0}=-108(A^2+4B)$. A one-parameter Morse slice proves geometric
+monodromy $S_6$; reductions modulo $3,13,37$ certify an explicit rational
+specialization with the same Galois group. We also determine the possible
+real fiber sizes, extract a general normalization lemma, and give an
+exact inversion procedure and a proposed formalization and research agenda.
+
+\medskip
+\noindent\textbf{Keywords.} Keller map; polynomial fiber; normalization;
+nonproperness; discriminant; monodromy; sextic; radical obstruction.
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\Needspace{6\baselineskip}
+\section{The research target and the main conclusions}
+\label{sec:intro}
+
+\Needspace{5\baselineskip}
+\subsection{Relation to ProveIt and to the published problem}
+The Jacobian-conjecture project in ProveIt contains explicit polynomial
+maps, exact collision certificates, symmetry arguments, and stable
+reductions of degree. Its research README studies degree and sparsity
+questions for the three-dimensional example. The repository walkthrough
+also points to Gao's account of the subsequent higher-dimensional
+constructions \cite{ProveIt,Gao}. These give a natural opportunity to pass
+from individual collision witnesses to the full geometry of an explicit
+map.
+
+We focus on the map denoted $F_6$ in \cite[\S4.5.1, Theorem 4.5]{Gao}.
+The subscript labels the example; its \emph{ambient dimension is five}.
+The map, its determinant, its sextic elimination equation, and the
+four-point fibers over its nonzero distinguished axis are prior results.
+Gao's concluding discussion and Appendix A.3 explicitly leave the
+complete higher-dimensional stratifications, including that of $F_6$,
+unresolved in version 1. We do not claim to have constructed a new
+counterexample to the Jacobian conjecture. Our object is the full fiber
+geometry and finite algebraic model of this existing example.
+
+The source audit was scoped, not repository-wide. It covered the root
+README, the Jacobian project and its research README, the relevant
+walkthrough search result, and the cited primary paper. The exact
+repository revision and inspected file hashes are recorded in
+Appendix~\ref{app:sources}. No claim is made that every research artifact
+in this large repository has been searched for equivalent results.
+
+\Needspace{5\baselineskip}
+\subsection{Conventions}
+Unless indicated otherwise, $k$ is a field of characteristic zero. Equations
+and chart isomorphisms are defined over $\Q$ and extend to $k$. A
+\emph{geometric fiber} means the fiber after passage to an algebraic
+closure of its residue field, and its cardinality counts distinct points,
+not multiplicities. Statements about complex nonproperness and monodromy
+use $k=\C$. Real and rational fibers are treated separately.
+
+Write a source point as $(x,y,z_1,z_2,z_3)$ and a target point as
+\[
+ b=(c,A,B,D,E).
+\]
+The use of $D$ rather than $C$ for the fourth coordinate avoids confusion
+with the field $\C$. Put
+\begin{equation}\label{eq:TL}
+ \kk=E+B^2-AD,\qquad T=-A+2cB-c^3\kk,\qquad L=B-cD.
+\end{equation}
+The coordinate change from $E$ to $\kk$ is a polynomial automorphism of
+target affine space.
+
+\Needspace{5\baselineskip}
+\subsection{A precise statement of what is proved}
+Define
+\begin{align}
+ g(w)&=2w^4-2w^3-w+1=(w-1)(2w^3-1),\label{eq:g}\\
+ J(w)&=g(w)+cA,\label{eq:J}\\
+ P_b(w)&=w^2J(w)-cTw-c^2L,\label{eq:P}\\
+ q_b(v)&=v^2J(cv)-Tv-L.\label{eq:qcompact}
+\end{align}
+Thus $P_b(cv)=c^2q_b(v)$. Expanded, the uniform polynomial is
+\begin{align}
+ q_b(v)={}&2c^4v^6-2c^3v^5-cv^3+(1+cA)v^2\notag\\
+ &+(c^3\kk-2cB+A)v+cD-B.\label{eq:q}
+\end{align}
+
+\begin{theorem}[Main conclusions]\label{thm:main}
+For Gao's map $\F=F_6$ the following hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The source open set $x\ne0$ is isomorphic over target space to
+\[
+ \{(b,v):q_b(v)=0,\ q_b'(v)\ne0\}.
+\]
+The source hyperplane $x=0$ maps isomorphically onto $c=0$.
+\item Every geometric fiber has
+\[
+ \#\F^{-1}(b)=\#\{\text{simple roots of }q_b\}+\mathbf1_{c=0}.
+\]
+For $c=0$ this equals $3$ when $A^2+4B\ne0$ and $1$ otherwise.
+The complete set of attained cardinalities is $\{0,1,2,3,4,6\}$.
+\item The omitted set over an algebraically closed field is the smooth
+closed surface $M\simeq\Gm\times\A^1$ defined by
+\begin{align}
+ cA&=-\frac{11}{32},\notag\\
+ c^3D-c^2B&=\frac{25}{128},\label{eq:M}\\
+ c^4\kk-2c^2B+cA&=\frac{5}{32}.\notag
+\end{align}
+In particular, $\F(\A^5)=\A^5\setminus M$ on geometric points.
+\item The integral closure of the target coordinate ring in the source
+function field is free of rank six with basis
+\[
+ 1,w,w^2,w^3,w^4,\zeta.
+\]
+Its spectrum is smooth. Its multiplication is determined by
+\begin{align}
+ 2w^5&=c\zeta+2w^4+w^2-(1+cA)w,\notag\\
+ w\zeta&=Tw+cL,\label{eq:rules}\\
+ \zeta^2&=T\zeta+LJ(w).\notag
+\end{align}
+\item Let $H=\Disc_w(P_b)/c^2$. This is an irreducible polynomial, and
+\[
+ H(0,A,B,D,E)=-108(A^2+4B).
+\]
+The finite model's discriminant in the displayed basis is $H/256$.
+The complex nonproperness locus of $\F$ is precisely $V(cH)$.
+\item The geometric monodromy of the six-sheeted cover is $S_6$.
+The rational target $(1,0,0,1,0)$ gives an irreducible sextic with Galois
+group $S_6$ over $\Q$, so a full inverse vector there cannot be expressed
+using radicals over $\Q$.
+\end{enumerate}
+\end{theorem}
+
+The theorem will be proved in components. In particular, the displayed
+sextic is \emph{not} itself the finite normalization: at $c=0$ it collapses
+two branches to $w=0$. Ignoring this distinction gives wrong exceptional
+fiber counts and an artificial discriminant component.
+
+\Needspace{6\baselineskip}
+\section{The polynomial map, without its large expansion}
+\label{sec:map}
+
+\Needspace{5\baselineskip}
+\subsection{A compact definition}
+We reproduce the construction needed to identify the map unambiguously
+\cite[\S4.5.1]{Gao}. Set
+\[
+ a_1=xy,\quad a_2=x^2z_1,\quad a_3=x^3z_2,\quad a_4=x^4z_3,
+\]
+and apply the polynomial stage
+\begin{align}
+ \gamma&=1-29a_1+999a_1^2+355a_1a_2-41553a_1^3+a_4,\notag\\
+ u_1&=1+27a_1-5a_2,\label{eq:stage}\\
+ u_2&=a_1-12a_2+\frac{2128}{5}a_1^2+a_3,\notag\\
+ u_3&=-4a_1-10a_2.\notag
+\end{align}
+Introduce sweep variables
+\[
+ w_1=\gamma u_1,\qquad w_2=\gamma^3u_2,\qquad w_3=\gamma^4u_3.
+\]
+Define potentials and one scalar polynomial by
+\begin{align}
+ G_2&=w_2+w_1w_3+w_1^2-w_1^3,\notag\\
+ G_3&=2w_1G_2+w_2,\notag\\
+ G_4&=w_3-G_2^2+2w_1^4-2w_1^5,\label{eq:potentials}\\
+ X_1&=-w_3+2w_2-2w_1+2w_1w_3+5w_1^2-2w_1^3
+                +8w_1^4-10w_1^5.\notag
+\end{align}
+Put
+\begin{align*}
+ S_1&=X_1+\gamma,& S_2&=G_2+w_1S_1,\\
+ S_3&=G_3+w_1^2S_1,& S_4&=G_4+w_2S_1.
+\end{align*}
+With $c=x\gamma$, the map is
+\begin{equation}\label{eq:map}
+ \F(x,y,z_1,z_2,z_3)=
+ \left(c,\frac{S_1}{c},\frac{S_2}{c^2},\frac{S_3}{c^3},\frac{S_4}{c^4}\right).
+\end{equation}
+All quotients in \eqref{eq:map} cancel \emph{as polynomials}. This
+cancellation is part of the construction, not a restriction to $c\ne0$.
+
+\begin{proposition}[Prior polynomiality, with an independent certificate]
+\label{prop:keller}
+The expression \eqref{eq:map} defines a polynomial map over $\Q$, of
+coordinate degrees $(7,38,40,42,44)$, and
+$\det J_{\F}=-290$. The expanded coordinates contain respectively
+$6,342,421,507,904$ nonzero monomials.
+\end{proposition}
+\begin{proof}
+Polynomiality and the degree profile are established by the stage and
+weighted-divisibility construction in \cite[Theorem 4.5]{Gao}.
+For an independent finite check, the accompanying script first substitutes
+$(w_1,w_2,w_3)=(\gamma u_1,\gamma^3u_2,\gamma^4u_3)$ into each $S_i$
+and divides each monomial by $\gamma^i$. It then substitutes
+\eqref{eq:stage}, verifies that each resulting monomial has $x$-exponent
+at least $i$, and divides by $x^i$. Thus no rational evaluation or
+numerical cancellation is used. Counting the resulting sparse terms gives
+the stated data.
+
+For the determinant, the monomial change to the $a_i$ has determinant
+$x^{10}$. The stage has determinant $-290$; its inverse is displayed
+below. The change to the $w_i$ has determinant $\gamma^8$. Direct
+four-variable differentiation gives
+\[
+ \det\frac{\partial(S_1,S_2,S_3,S_4)}
+               {\partial(\gamma,w_1,w_2,w_3)}=\gamma.
+\]
+Padding the sweep with $c=x\gamma$ contributes another $\gamma$.
+Finally the target rescaling has determinant $c^{-10}$. On
+$x\gamma\ne0$ their product is
+\[
+ x^{10}(-290)\gamma^8\gamma^2c^{-10}=-290.
+\]
+Both sides are polynomials, so the identity holds everywhere. The small
+stage and sweep determinants are also independently checked in the
+certificate.
+\end{proof}
+
+\Needspace{5\baselineskip}
+\subsection{The stage inverse and the source hyperplane}
+The stage inverse is particularly useful. Given
+$(\gamma,u_1,u_2,u_3)$, recover
+\begin{align}
+ a_1&=\frac{2u_1-2-u_3}{58},&
+ a_2&=\frac{27a_1-u_1+1}{5},\notag\\
+ a_3&=u_2-a_1+12a_2-\frac{2128}{5}a_1^2,&
+ a_4&=\gamma-1+29a_1-999a_1^2-355a_1a_2+41553a_1^3.
+ \label{eq:stageinverse}
+\end{align}
+Substitution proves both compositions are the identity.
+
+The polynomial restriction of $\F$ to $x=0$ is
+\begin{align}
+ c&=0,\notag\\
+ A&=y,\notag\\
+ B&=-\frac{4636}{5}y^2+29z_1,\label{eq:section}\\
+ D&=\frac{6039}{5}y^3-1041yz_1+5z_2,\notag\\
+ E&=\frac{74000249}{25}y^4-\frac{92717}{5}y^2z_1
+       +5yz_2-1041z_1^2-2z_3.\notag
+\end{align}
+This identity can be obtained by taking the coefficients of $x^i$ before
+the final divisions; the accompanying polynomial construction checks all
+five coordinates independently. The diagonal coefficients $1,29,5,-2$
+are nonzero, so \eqref{eq:section} is a triangular polynomial isomorphism.
+It provides exactly one source point on $x=0$ over every target on $c=0$.
+Its determinant $-290$ also checks the global determinant normalization.
+
+\Needspace{6\baselineskip}
+\section{The derivative identity and the uniform inverse chart}
+\label{sec:chart}
+
+\Needspace{5\baselineskip}
+\subsection{Eliminating the sweep variables}
+For a target $b$ set
+\[
+ Y_1=cA,\qquad Y_2=c^2B,\qquad Y_3=c^3D,\qquad Y_4=c^4E.
+\]
+Write $w=w_1$. The equations $S_i=Y_i$ and
+\eqref{eq:potentials} give
+\begin{align}
+ w_2&=Y_3-2wY_2+w^2Y_1=:V_Y(w),\label{eq:V}\\
+ w_3&=Y_4+Y_2^2-Y_1Y_3+2w^5-2w^4=:W_Y(w).\label{eq:W}
+\end{align}
+Indeed $G_2=Y_2-wY_1$, and eliminating $G_3$ first gives
+\eqref{eq:V}; eliminating $G_4$ next gives \eqref{eq:W}.
+Substitution into $G_2=w_2+ww_3+w^2-w^3$ leaves
+\begin{align}
+ R_Y(w)={}&2w^6-2w^5-w^3+(Y_1+1)w^2\notag\\
+ &+(Y_4+Y_2^2-Y_1Y_3-2Y_2+Y_1)w+Y_3-Y_2=0.
+ \label{eq:RY}
+\end{align}
+This is Gao's sextic. Substituting the scaled target gives exactly $P_b$.
+
+\begin{lemma}[Derivative identity]\label{lem:derivative}
+As a polynomial identity in $Y$ and $w$,
+\begin{equation}\label{eq:derivative}
+ Y_1-X_1\bigl(w,V_Y(w),W_Y(w)\bigr)=R_Y'(w)-2R_Y(w).
+\end{equation}
+Consequently, on the fiber equation, $\gamma=R_Y'(w)$.
+\end{lemma}
+\begin{proof}
+Insert \eqref{eq:V} and \eqref{eq:W} into the displayed expression for
+$X_1$ in \eqref{eq:potentials} and collect coefficients in $w$. The result
+is $R_Y'-2R_Y$. This is an identity before imposing $R_Y=0$, so it
+also specifies the exact ideal membership, not just agreement at selected
+roots. Finally $S_1=Y_1$ says $\gamma=Y_1-X_1$.
+\end{proof}
+
+For $c\ne0$, the relation $c=x\gamma$ forces $\gamma\ne0$.
+Thus exactly the \emph{simple} sextic roots survive. A multiple root is
+not a multiple point of the original fiber: it produces no source point.
+The distinction matters because $\F$ itself is everywhere \'etale.
+
+\Needspace{5\baselineskip}
+\subsection{A rescaling that retains the exceptional fibers}
+On $x\ne0$ use the regular source function
+\begin{equation}\label{eq:vforward}
+ v=\frac{u_1}{x}=\frac1x+27y-5xz_1.
+\end{equation}
+When $c\ne0$ this is $w/c$. The identities $P_b(cv)=c^2q_b(v)$ and
+$P_b'(cv)=cq_b'(v)$ suggest that the derivative of $q_b$, rather than
+a quotient by $c$, is the correct denominator for inversion.
+
+\begin{theorem}[Uniform simple-root chart]\label{thm:chart}
+Let
+\[
+ \mathcal U=\Spec k[c,A,B,D,E,v,1/q_b'(v)]/(q_b(v)).
+\]
+There is an isomorphism over target space
+\[
+ \A^5_{x\ne0}\ \simeq\ \mathcal U.
+\]
+In one direction use \eqref{eq:vforward}. Conversely, for a simple root
+$v$ set $\delta=q_b'(v)$ and define
+\begin{align}
+ x&=\delta^{-1},& \gamma&=c\delta,\notag\\
+ u_1&=v/\delta,&
+ u_2&=(D-2vB+v^2A)/\delta^3,\label{eq:inversechart}\\
+ u_3&=(\kk+2cv^5-2v^4)/\delta^4.&&\notag
+\end{align}
+Recover $a_i$ using \eqref{eq:stageinverse}, and then put
+\begin{equation}\label{eq:sourceinverse}
+ y=a_1\delta,\quad z_1=a_2\delta^2,\quad
+ z_2=a_3\delta^3,\quad z_3=a_4\delta^4.
+\end{equation}
+No division by $c$ occurs.
+\end{theorem}
+\begin{proof}
+First work on $c\ne0$. Lemma~\ref{lem:derivative} gives
+$\gamma=P_b'(cv)=c\delta$, hence $x=1/\delta$.
+Equations \eqref{eq:V}--\eqref{eq:W} give
+\[
+ w_2=c^3(D-2vB+v^2A),\qquad
+ w_3=c^4(\kk+2cv^5-2v^4).
+\]
+Dividing by $\gamma^3$ and $\gamma^4$, respectively, gives
+\eqref{eq:inversechart}. The stage inverse and monomial inverse now give
+\eqref{eq:sourceinverse}. These steps reverse the elimination, so they
+prove both compositions on $c\ne0$.
+
+We justify extension across $c=0$, rather than assuming it. The polynomial
+$q_b$ is irreducible in $k[c,A,B,D,E,v]$: as a polynomial in $E$ it is
+linear with coefficient $c^3v$, and that coefficient is coprime to its
+constant term. To see the coprimality, specialize $c=0$ and $v=0$:
+\[
+ q_b|_{c=0}=v^2+Av-B,\qquad q_b|_{v=0}=cD-B.
+\]
+Neither $c$ nor $v$ divides the constant term. Gauss's lemma applied to
+the fraction field of the other variables proves irreducibility. Thus
+$\mathcal U$ is integral and its $c\ne0$ locus is dense.
+
+On the source open set $x\ne0$, the functions in \eqref{eq:vforward}
+and $\F$ are regular. The relations $q_b(v)=0$ and
+$q_b'(v)=1/x$ hold on the dense open set $c\ne0$, so they hold throughout.
+Consequently the forward map lands in $\mathcal U$. All inverse formulas
+are regular on $\mathcal U$, and the two composition identities extend
+from its dense $c\ne0$ locus. This proves the isomorphism everywhere.
+\end{proof}
+
+\begin{corollary}[All geometric fibers]\label{cor:count}
+For every target,
+\begin{equation}\label{eq:count}
+ \#\F^{-1}(b)=\#\{v:q_b(v)=0,\ q_b'(v)\ne0\}+\mathbf1_{c=0}.
+\end{equation}
+For $c=0$,
+\begin{equation}\label{eq:c0count}
+ \#\F^{-1}(0,A,B,D,E)=
+ \begin{cases}3,&A^2+4B\ne0,\\1,&A^2+4B=0.\end{cases}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Partition the source into $x\ne0$ and $x=0$. Apply
+Theorem~\ref{thm:chart} to the first part and \eqref{eq:section} to the
+second. At $c=0$, the polynomial is $v^2+Av-B$, with derivative $2v+A$.
+A nonzero discriminant gives two simple roots. A zero discriminant gives
+one double root, which is deleted; it contributes no point.
+\end{proof}
+
+\Needspace{6\baselineskip}
+\section{Every fiber cardinality and the omitted surface}
+\label{sec:fibers}
+
+\Needspace{5\baselineskip}
+\subsection{A finite algebraic test at every target}
+For a nonzero characteristic-zero polynomial $f$ define its simple-root
+factor by
+\begin{equation}\label{eq:simplepart}
+ G=\gcd(f,f'),\qquad S=f/G,\qquad
+ \simp(f)=\frac{S}{\gcd(S,G)},
+\end{equation}
+with gcds and final polynomials normalized to be monic. A root of
+multiplicity $m$ occurs in $G$ with multiplicity $m-1$, and in $S$ with
+multiplicity one. The second gcd removes it precisely when $m\ge2$.
+Hence
+\[
+ \#\{\text{simple geometric roots of }f\}=\deg\simp(f).
+\]
+Together with \eqref{eq:count}, this is an exact complete fiber-count
+criterion, including singular discriminant strata. It does not require
+factorization over an algebraic closure, and it is not limited to generic
+points of a discriminant component.
+
+\begin{theorem}[Cardinality spectrum]\label{thm:spectrum}
+The geometric fiber cardinalities of $\F$ are exactly
+\[
+ \boxed{\{0,1,2,3,4,6\}.}
+\]
+\end{theorem}
+\begin{proof}
+For $c\ne0$, $P_b$ has degree six. Exactly five simple roots are
+impossible: the remaining degree one would have to be another simple
+root. Thus its number of simple roots belongs to
+$\{0,1,2,3,4,6\}$. For $c=0$, \eqref{eq:c0count} gives only $1$ and $3$.
+Table~\ref{tab:witness} supplies exact witnesses for every listed value.
+For nonzero $c$ in the table, $c=1$, so $P_b=q_b$ with the variable
+renamed. The displayed factorizations and elementary gcds give the
+counts; the six-point row has discriminant $-993580\ne0$.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{0.32\textwidth}X@{}}
+\toprule
+Size & Target $(c,A,B,D,E)$ & Exact fiber polynomial or criterion\\
+\midrule
+$0$ & $(1,-11/32,0,25/128,1773/4096)$ &
+$2(w^3-w^2/2-w/8-5/16)^2$\\
+$1$ & $(0,0,0,0,0)$ & $q(v)=v^2$; only the section remains\\
+$2$ & $(1,-11/8,0,-1/16,171/128)$ &
+$(w^2+1/4)^2(2w^2-2w-1)$\\
+$3$ & $(1,-8,0,-7,79)$ &
+$(w-1)^3(2w^3+4w^2+6w+7)$\\
+$4$ & $(1,0,0,0,0)$ & $w^2(w-1)(2w^3-1)$\\
+$6$ & $(1,0,0,1,0)$ & $2w^6-2w^5-w^3+w^2+1$\\
+\bottomrule
+\end{tabularx}
+\caption{Exact witnesses for the entire geometric cardinality spectrum.}
+\label{tab:witness}
+\end{table}
+
+\Needspace{5\baselineskip}
+\subsection{Classifying all sextics with no surviving root}
+The empty-fiber case can be solved in closed form, not merely by the gcd
+criterion. Divide $P_b$ by $2$. Its three leading nontrivial coefficient
+constraints are
+\begin{equation}\label{eq:fixedcoeff}
+ \frac{P_b(w)}2=w^6-w^5+0w^4-\frac12w^3+	ext{terms of degree at most two}.
+\end{equation}
+A sextic with no simple root has multiplicity partition
+$6$, $4+2$, $3+3$, or $2+2+2$.
+
+\begin{lemma}[Unique all-multiple member]\label{lem:square}
+A polynomial of the form \eqref{eq:fixedcoeff} has no simple root if and
+only if
+\begin{equation}\label{eq:uniquesquare}
+ P_b(w)=2\left(w^3-\frac12w^2-\frac18w-\frac5{16}\right)^2.
+\end{equation}
+The cubic in parentheses has three distinct roots.
+\end{lemma}
+\begin{proof}
+For multiplicity $6$, write $(w-r)^6$. The $w^5$ coefficient forces
+$r=1/6$, whereas the $w^4$ coefficient is then $15r^2\ne0$.
+
+For multiplicity $4+2$, write $(w-r)^4(w-s)^2$. The $w^5$ coefficient
+forces $s=1/2-2r$. The next two required equations are
+\[
+ -\frac{24r^2-8r-1}{4}=0,
+ \qquad \frac{8r^3+4r^2-2r+1}{2}=0.
+\]
+The remainder of the second polynomial on division by the first is
+$(10r+23)/36$. Thus $r=-23/10$, but
+$24r^2-8r-1=3609/25\ne0$, a contradiction.
+
+For multiplicity $3+3$, write $(w^2-sw+p)^3$. Matching $w^5$ and $w^4$
+gives $s=1/3$ and $p=-1/9$. Its $w^3$ coefficient is then $5/27$, not
+$-1/2$.
+
+The remaining case is a square of a monic cubic. Write
+$(w^3+aw^2+bw+d)^2$ and compare $w^5,w^4,w^3$ in that order. This gives
+$a=-1/2$, $b=-1/8$, $d=-5/16$, proving uniqueness. Conversely its square
+has no simple root. The cubic discriminant is $-401/128\ne0$, so the
+three roots are distinct and all have multiplicity exactly two in $P_b$.
+\end{proof}
+
+\begin{theorem}[Exact omitted locus]\label{thm:omitted}
+Over an algebraically closed field, $\A^5\setminus\F(\A^5)$ is exactly
+the surface $M$ of \eqref{eq:M}. It is closed, smooth, irreducible, and
+isomorphic to $\Gm\times\A^1$. An explicit parametrization, with
+$c\ne0$ and $t\in k$, is
+\begin{align}
+ A&=-\frac{11}{32c},& B&=\frac{t}{c^2},\notag\\
+ D&=\frac{t+25/128}{c^3},&
+ E&=\frac{-t^2+(53/32)t+1773/4096}{c^4}.
+ \label{eq:Mparam}
+\end{align}
+\end{theorem}
+\begin{proof}
+There are no empty fibers on $c=0$ by \eqref{eq:section}. For $c\ne0$,
+Lemma~\ref{lem:square} applies. The coefficients of $w^2,w,1$ in its
+right-hand side are $21/32,5/32,25/128$. Comparing these with
+\eqref{eq:P} gives exactly \eqref{eq:M}.
+
+The first equation of \eqref{eq:M} forces $c$ to be invertible even
+scheme-theoretically: $c(-32A/11)=1$ in the coordinate ring. With
+$t=c^2B$, the other equations solve uniquely to \eqref{eq:Mparam}.
+Thus the coordinate ring is $k[c,c^{-1},t]$. This proves all assertions,
+including closedness in $\A^5$, dimension two, and codimension three.
+\end{proof}
+
+\begin{remark}[Geometric image versus rational image]
+The equality $\F(\A^5)=\A^5\setminus M$ is a statement about geometric
+points. Over $\Q$, a surviving simple root need not be rational. There are
+many rational targets outside $M$ with no rational preimage; the explicit
+$S_6$ specialization in Section~\ref{sec:galois} is one of them.
+\end{remark}
+
+\Needspace{6\baselineskip}
+\section{An explicit finite normalization}
+\label{sec:normalization}
+
+\Needspace{5\baselineskip}
+\subsection{The monogenic order is not normal}
+Let
+\[
+ \base=k[c,A,B,D,E],\qquad
+ \ord=\base[w]/(P_b(w)).
+\]
+Since $2$ is a unit, $\ord$ is free of rank six over $\base$.
+The polynomial $P_b$ is irreducible: as a polynomial in $E$, its leading
+coefficient is $c^4w$, and its constant term is divisible by neither $c$
+nor $w$. Gauss's lemma gives the assertion, as in the proof of
+Theorem~\ref{thm:chart}. Thus $\ord$ is a domain.
+
+The source function field is its fraction field. Indeed, away from $c=0$
+the root chart identifies $w=cv$ and gives the full source coordinates
+rationally in $b,w$. Nevertheless, $\ord$ is not normal along its
+collapsed locus $c=w=0$. At $c=0$ its defining equation is
+\[
+ P_b(w)=w^2g(w),
+\]
+independent of $A,B,D,E$. That single double root has forgotten the
+quadratic $v^2+Av-B$ which controls the two additional source branches.
+
+\Needspace{5\baselineskip}
+\subsection{One fraction and six basis elements}
+Inside $\operatorname{Frac}(\ord)$ put
+\begin{equation}\label{eq:zeta}
+ \zeta=\frac{wJ(w)}{c},\qquad \normal=\base[w,\zeta].
+\end{equation}
+The polynomial relation $P_b=0$ gives the symmetric identities
+\begin{equation}\label{eq:rankone}
+ wJ=c\zeta,\qquad w(\zeta-T)=cL,\qquad
+ \zeta(\zeta-T)=LJ.
+\end{equation}
+They are exactly the multiplication rules \eqref{eq:rules}.
+
+\begin{theorem}[Finite free normalization]\label{thm:normalization}
+The algebra $\normal$ is the integral closure of both $\ord$ and $\base$
+in the source function field. It is free over $\base$ with basis
+\[
+ \mathcal B=(1,w,w^2,w^3,w^4,\zeta).
+\]
+The affine variety $Z=\Spec\normal$ is smooth over $k$, and
+$\pi:Z\to\A^5$ is finite flat of degree six.
+\end{theorem}
+\begin{proof}
+\emph{Finite freeness.} The $\base$-span of $\mathcal B$ contains $1,w$
+and $\zeta$. It is stable under multiplication by $w$ and by $\zeta$:
+use the three rules \eqref{eq:rules}, reducing $w^5$, $w\zeta$, and
+$\zeta^2$. This span is therefore the whole algebra $\normal$.
+The six elements are independent, because relative to
+$1,w,\ldots,w^5$ the last element has coefficient $2/c$ on $w^5$.
+The degree-six irreducibility of $P_b$ gives independence over
+$\operatorname{Frac}(\base)$, and hence over $\base$.
+Thus $\normal$ is finite free of rank six. The same reduction and
+independence show that the three displayed relations form a presentation:
+any polynomial in $w,\zeta$ reduces to the basis span, and no additional
+relation can remain there. In particular its elements are integral over
+$\base$.
+
+\emph{Three useful charts.} On $c\ne0$ we have
+$\normal[1/c]=\ord[1/c]$. On $w\ne0$, the second relation in
+\eqref{eq:rankone} gives $\zeta=T+cL/w$, so
+$\normal[1/w]=\ord[1/w]$. On $J\ne0$ put $v=\zeta/J$. The first
+relation gives $w=cv$, and the third gives
+\[
+ v^2J(cv)-Tv-L=0.
+\]
+Conversely $w=cv$ and $\zeta=vJ(cv)$ satisfy all three relations. Therefore
+\begin{equation}\label{eq:Jchart}
+ \normal[1/J]\simeq
+ \base[v,1/J(cv)]/(q_b(v)).
+\end{equation}
+The three opens cover $Z$: a point with $c=w=0$ has $J=1$.
+
+\emph{Smoothness on those charts.} On $c\ne0$, work in the hypersurface
+$P_b=0$. Its derivative with respect to $E$ is $c^4w$. If that derivative
+vanishes, then $w=0$, and the derivative with respect to $D$ is $c^3$,
+which is nonzero. Thus this open is smooth. At a point with $c=0,w\ne0$,
+the equation forces $g(w)=0$ and
+\[
+ \frac{\partial P_b}{\partial w}=w^2g'(w)\ne0,
+\]
+since $g=(w-1)(2w^3-1)$ has four distinct nonzero roots.
+Finally, at a point with $c=w=0$, chart \eqref{eq:Jchart} applies and
+$\partial q_b/\partial B=-1$. These checks prove smoothness everywhere.
+
+A smooth integral algebra over a characteristic-zero field is normal.
+The finite integral algebra $\normal$ has the same fraction field as
+$\ord$. Any element of that field integral over $\ord$ is integral over
+$\normal$ and therefore belongs to $\normal$. This proves that
+$\normal$ is its integral closure. Since $\ord$ is itself integral over
+$\base$, it is also the integral closure of $\base$ in that field.
+\end{proof}
+
+\Needspace{5\baselineskip}
+\subsection{The exact fiber of the finite model at \texorpdfstring{$c=0$}{c=0}}
+Reducing \eqref{eq:rankone} modulo $c$ gives
+\[
+ wg(w)=0,\qquad w(\zeta+A)=0,\qquad
+ \zeta(\zeta+A)=Bg(w).
+\]
+As $g(0)=1$, the zero locus of $w$ and the zero locus of $g$ are disjoint.
+The Chinese remainder decomposition is
+\begin{equation}\label{eq:CRT}
+ \normal/(c)\simeq
+ k[A,B,D,E,\zeta]/(\zeta^2+A\zeta-B)
+ \ \times\ k[A,B,D,E,w]/(g(w)).
+\end{equation}
+On the second factor $\zeta=-A$; on the first $w=0$.
+The fiber has length two from the quadratic factor and length four from
+the residual quartic factor. This accounts for all six sheets, even where
+the quadratic becomes nonreduced.
+
+\begin{theorem}[The source as an open part of its finite model]
+\label{thm:boundary}
+The map $\F$ factors as an open immersion followed by the finite map:
+\[
+ \A^5\ \xhookrightarrow{\ j\ } Z\ \xrightarrow{\ \pi\ }\A^5.
+\]
+Over an algebraically closed field, let $\rho_1,\rho_2,\rho_3$ be the
+three roots of $2w^3=1$, and let
+\[
+ E_i=\{c=0,\ w=\rho_i,\ \zeta=-A\}\subset Z.
+\]
+Each $E_i$ is isomorphic to $\A^4$, and $\pi$ maps it isomorphically onto
+$c=0$. The exact complement of the source is
+\begin{equation}\label{eq:boundary}
+ Z\setminus j(\A^5)=\Ram(\pi)\ \cup\ E_1\cup E_2\cup E_3.
+\end{equation}
+The three $E_i$ are unramified and disjoint from $\Ram(\pi)$.
+\end{theorem}
+\begin{proof}
+On the source define $w=\gamma u_1$. The rational function $\zeta$ of
+\eqref{eq:zeta} is regular there. On $x\ne0$ it equals $vJ(cv)$ by the
+root chart. On $w\ne0$ it equals $T+cL/w$. These opens cover the source,
+because $x=0$ implies $\gamma=u_1=w=1$. Thus they give a morphism
+$j:\A^5\to Z$ over the target.
+
+For $c\ne0$, $\pi$ is the sextic root cover. Its unramified points are
+exactly the simple roots, and Theorem~\ref{thm:chart} identifies all of
+these with source points. For $c=0,w=0$, decomposition
+\eqref{eq:CRT} and chart \eqref{eq:Jchart} identify the unramified points
+with the simple roots of $v^2+Av-B$; all of these are again source points.
+The root $w=1$ at $c=0$ is unramified, and is precisely the image of the
+source hyperplane under \eqref{eq:section}. The other three quartic roots
+are also unramified, but cannot come from the source: $x=0$ gives $w=1$,
+whereas $x\ne0$ and $c=0$ give $\gamma=0$ and $w=0$.
+
+This proves the asserted set-theoretic image and shows that $j$ is
+injective on geometric points. It lands in the \'etale locus of $\pi$.
+Both its source and that locus are \'etale over the target; a morphism
+between such schemes is \'etale \cite[Tag 02GH]{StacksEtale}. Geometric
+injectivity makes it universally injective. An \'etale universally
+injective morphism is an open immersion \cite[Tag 025G]{StacksOpen}.
+Finally the four nonzero roots of $g$ are simple everywhere over $c=0$,
+so all three removed components are unramified and disjoint from the
+ramification locus. The description of each $E_i$ follows directly from
+\eqref{eq:CRT}.
+\end{proof}
+
+The phrase ``three escapes'' refers precisely to these three missing,
+unramified sheets over the generic point of $c=0$. At a generic point of
+the other exceptional component, the mechanism is different: two sheets
+meet at one ramification point, and that point is removed from the source.
+
+\Needspace{6\baselineskip}
+\section{The discriminant and the nonproperness locus}
+\label{sec:discriminant}
+
+\Needspace{5\baselineskip}
+\subsection{Removing a spurious discriminant factor}
+Let
+\begin{equation}\label{eq:universaldisc}
+ \Delta(a,b,d)=\Disc_w(2w^6-2w^5-w^3+aw^2+bw+d).
+\end{equation}
+It is unnecessary to print its full expansion. The target substitution is
+\begin{equation}\label{eq:discsub}
+ a=1+cA,\qquad b=-cT=c^4\kk-2c^2B+cA,
+ \qquad d=-c^2L=c^3D-c^2B.
+\end{equation}
+
+\begin{theorem}[Normalized discriminant]\label{thm:H}
+The expression
+\begin{equation}\label{eq:H}
+ H=\frac{\Delta(1+cA,-cT,-c^2L)}{c^2}
+\end{equation}
+is a polynomial, irreducible over every algebraically closed field of
+characteristic zero, and
+\begin{equation}\label{eq:H0}
+ H|_{c=0}=-108(A^2+4B).
+\end{equation}
+In the basis $\mathcal B$ of Theorem~\ref{thm:normalization}, the trace
+pairing of $\normal/\base$ has determinant $H/256$.
+\end{theorem}
+\begin{proof}
+The discriminant of the power basis of the monic polynomial $P_b/2$ is
+$\Disc(P_b)/2^{10}$. The change from that power basis to $\mathcal B$
+has determinant $2/c$. A trace discriminant changes by the square of
+the basis determinant. Therefore
+\begin{equation}\label{eq:discbasis}
+ \Disc(\mathcal B)=\frac{4}{c^2}\frac{\Disc(P_b)}{2^{10}}
+                 =\frac{H}{256}.
+\end{equation}
+The left-hand side belongs to $\base$ because all multiplication rules
+have polynomial coefficients. This proves polynomiality of $H$.
+
+For its value at $c=0$, first assume $A^2+4B\ne0$. The two roots of $P_b$
+near zero have the form $cv_++O(c^2)$ and $cv_-+O(c^2)$, where
+$v_\pm$ are the two roots of $v^2+Av-B$. Their squared difference
+contributes $c^2(A^2+4B)$ to first order. The other four roots tend to
+the distinct roots of $g$. The leading-coefficient factors and all
+cross-differences combine to $\Disc(g)=-108$: explicitly, the product
+of the four roots of $g$ is $1/2$, the cross-difference contribution is
+$(1/2)^4$, and the leading-coefficient ratio is $2^{10}/2^6=16$.
+Thus the coefficient of $c^2$ in $\Disc(P_b)$ is
+$-108(A^2+4B)$. This formal expansion is valid on a dense open set and
+therefore gives the polynomial identity \eqref{eq:H0}. It also follows
+by direct substitution into the exact resultant.
+
+For irreducibility, the double-root incidence of the polynomial in
+\eqref{eq:universaldisc} is parametrized by $(r,a)$:
+\begin{align}
+ b&=-12r^5+10r^4+3r^2-2ar,\notag\\
+ d&=10r^6-8r^5-2r^3+ar^2.\label{eq:incidence}
+\end{align}
+Its image is exactly the discriminant hypersurface; hence that
+hypersurface is irreducible. The discriminant is reduced, not a higher
+power: at $(a,b,d)=(1,0,0)$ the polynomial is
+$w^2(w-1)(2w^3-1)$ with one ordinary double root, and varying $d$ gives
+a simple zero of the discriminant. For example the coefficient of $d$
+in $\Delta(1,0,d)$ is $432\ne0$.
+
+After inverting $c$, substitution \eqref{eq:discsub} is a coordinate
+isomorphism
+\[
+ (c,A,B,D,\kk)\longleftrightarrow(c,B,a,b,d).
+\]
+Therefore $H$ is irreducible after inverting $c$. Any additional factor
+before localization would have to be a power of $c$. Equation
+\eqref{eq:H0} excludes such a factor. This proves irreducibility.
+\end{proof}
+
+For a finite locally free algebra in characteristic zero, the trace
+pairing is nondegenerate precisely on the \'etale locus
+\cite[Tag 0BJF]{StacksDisc}. Thus $V(H)$ is the branch locus of the
+finite normalization, while the factor $c^2$ in the unnormalized sextic
+discriminant records its nonnormal collapse. The supplied sparse file
+stores $H$ with $179$ monomials in $(c,A,B,D,\kk)$.
+
+\Needspace{5\baselineskip}
+\subsection{Two components of nonproperness}
+\begin{definition}
+For a polynomial map $f:\C^n\to\C^n$, its nonproperness set consists
+of targets $b$ for which no neighborhood $V$ of $b$ has
+$f^{-1}(V)\to V$ proper. Equivalently, there exists an unbounded sequence
+of source points whose images converge to $b$.
+\end{definition}
+
+\begin{theorem}[Exact nonproperness locus]\label{thm:nonproper}
+For $\F:\C^5\to\C^5$,
+\begin{equation}\label{eq:nonproper}
+ \mathcal N_{\F}=V(cH)=V(c)\cup V(H).
+\end{equation}
+These are two distinct irreducible hypersurfaces. Their intersection is
+\[
+ c=0,\qquad A^2+4B=0.
+\]
+The generic fiber on $V(c)$ has three points; the generic fiber on
+$V(H)$ has four points; every point of their intersection has one point
+in its original fiber.
+\end{theorem}
+\begin{proof}
+If $cH\ne0$, the sextic has six distinct roots and the original map has
+six points over the target. Since $\F$ has nonzero Jacobian, choose six
+disjoint local inverse neighborhoods. On a sufficiently small common
+target neighborhood they supply six inverse branches. There can be no
+additional branch, because every fiber has at most six points. After
+shrinking to a closed ball inside this neighborhood, the preimage is
+a finite union of compact continuous images of that ball. Thus $\F$ is
+proper near the target.
+
+At a target on $V(cH)$, the fiber has fewer than six points by
+Corollary~\ref{cor:count}. Suppose the map were proper over a small
+connected neighborhood. A proper local homeomorphism with finite fibers
+is a covering onto a union of components; its fiber cardinality is
+locally constant. Nearby points with $cH\ne0$ have six preimages, a
+contradiction. This proves \eqref{eq:nonproper}.
+
+Irreducibility and the intersection statement follow from
+Theorem~\ref{thm:H}. At a generic point of the discriminant there is one
+double root and four simple roots, so the original fiber has four
+points. The hyperplane and intersection counts are
+\eqref{eq:c0count}.
+\end{proof}
+
+There is an equivalent finite-model explanation. The image under $\pi$
+of the ramification locus is $V(H)$, whereas the three deleted
+unramified components all map to $V(c)$. Equation \eqref{eq:boundary}
+therefore describes exactly which points of the finite cover have to be
+added to restore properness. The omitted surface $M$ is much smaller
+than the nonproperness set: points of $M$ lose every sheet, while a
+generic nonproper target retains several sheets.
+
+\Needspace{6\baselineskip}
+\section{A general quadratic-contraction normalization lemma}
+\label{sec:general}
+The short normalization proof is not peculiar to the large coefficients
+in the stage. Its algebraic core applies to a wider class of degenerating
+root covers. The following lemma records that mechanism without claiming
+that every such cover is a Keller map.
+
+\begin{theorem}[Quadratic-contraction algebra]\label{thm:general}
+Let $A_0$ be a domain, let $c\in A_0$ be nonzero, and let
+$J(w)\in A_0[w]$ have degree $m\ge1$ and leading coefficient
+$a_m\in A_0^\times$. Choose $T,L\in A_0$ and suppose
+\[
+ P(w)=w^2J(w)-cTw-c^2L
+\]
+is irreducible over $\operatorname{Frac}(A_0)$. In its root field define
+$\zeta=wJ(w)/c$ and $N=A_0[w,\zeta]$. Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $N$ is finite free of rank $m+2$ over $A_0$, with basis
+$1,w,\ldots,w^m,\zeta$ and relations
+\[
+ wJ=c\zeta,\qquad w\zeta=Tw+cL,\qquad
+ \zeta^2=T\zeta+LJ.
+\]
+\item Its trace discriminant in that basis equals
+\[
+ \frac{\Disc(P)}{a_m^{2m}c^2}.
+\]
+\item On $c\ne0$ or $w\ne0$ the algebra equals the original monogenic
+order. On $J\ne0$ it has the chart
+\[
+ A_0[v,1/J(cv)]/(v^2J(cv)-Tv-L).
+\]
+If $c$ and $J(0)$ generate the unit ideal, these three opens cover
+$\Spec N$. If their rings are normal, $N$ is the integral closure of
+the monogenic order in its fraction field.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The three relations follow by multiplying $P=0$ by suitable powers of
+$J/c$ and cancelling in the fraction field. They show that the span of
+the displayed basis is closed under multiplication by $w$ and $\zeta$;
+the leading coefficient $a_m$ is a unit, so $w^{m+1}$ reduces using
+$wJ=c\zeta$. Independence follows from the coefficient $a_m/c$ of
+$w^{m+1}$ in $\zeta$. This proves (i).
+
+The monic power-basis discriminant is
+$\Disc(P)/a_m^{2m+2}$. The basis determinant is $a_m/c$, giving (ii).
+The chart calculations are the same elementary substitutions as in
+\eqref{eq:Jchart}. If $c=w=J=0$, then $c=J(0)=0$, which is excluded by
+the unit-ideal assumption. Thus the charts cover. Normality is local;
+a finite normal algebra in the same fraction field is the integral
+closure. This proves (iii).
+\end{proof}
+
+For $F_6$, take $m=4$, $a_m=2$, and $J(0)=1+cA$.
+The smoothness checks in Theorem~\ref{thm:normalization} supply the
+normality hypotheses. For a general $J,T,L$, those hypotheses must be
+checked: the finite free algebra in this lemma is not automatically
+normal. This distinction is important when attempting degree-twelve or
+higher analogues.
+
+The lemma explains the otherwise mysterious square factor $c^2$ in a
+root discriminant: one basis vector must be divided by $c$ to separate
+the two collapsed directions. It also provides a practical alternative
+to normalizing a large graph ideal in all source and target variables.
+
+\Needspace{6\baselineskip}
+\section{Geometric monodromy and an arithmetic radical obstruction}
+\label{sec:galois}
+
+\Needspace{5\baselineskip}
+\subsection{A Morse slice with full symmetric monodromy}
+Set
+\[
+ p(w)=2w^6-2w^5-w^3+w^2.
+\]
+On the target line $(c,A,B,D,E)=(1,0,0,t,0)$, the fiber polynomial is
+$p(w)+t$. Its discriminant is
+\begin{equation}\label{eq:morsedisc}
+ \Disc_w(p(w)+t)
+ =-4t(32t+3)(11664t^3-5680t^2+1149t-36).
+\end{equation}
+The polynomial on the right is squarefree. This can be checked by the
+Euclidean algorithm, and is independently verified in the code.
+
+\begin{theorem}[Geometric $S_6$]\label{thm:geometricS6}
+The six-sheeted cover over $\C^5\setminus V(cH)$ has monodromy group
+$S_6$. Equivalently, $P_b$ has Galois group $S_6$ over
+$\C(c,A,B,D,E)$.
+\end{theorem}
+\begin{proof}
+For a polynomial $p$ of degree six, the discriminant of $p(w)+t$ is a
+nonzero constant times the product of $t+p(r)$ over the five critical
+points $r$ of $p$, counted with multiplicity. The squarefreeness of
+\eqref{eq:morsedisc} implies that all five critical points are simple
+and their critical values are distinct.
+
+Remove the five critical values from the target $t$-line. The inverse
+image under $t=-p(w)$ is the complex $w$-line with finitely many points
+removed, hence is connected. Its degree-six covering therefore has
+transitive monodromy. A small loop around a simple critical value
+interchanges exactly two sheets, because the local map has a nonzero
+quadratic term. The fundamental group of the punctured line is generated
+by these small loops. Thus its monodromy is a transitive permutation
+group generated by transpositions.
+
+Place an edge between two sheet labels whenever a generating
+transposition exchanges them. Transitivity makes this graph connected.
+Transpositions along a connected graph generate all permutations, so
+the group is $S_6$. Restricting the full target cover to this line cannot
+enlarge its monodromy. Since the restricted group is already $S_6$, the
+full group is exactly $S_6$.
+\end{proof}
+
+\Needspace{5\baselineskip}
+\subsection{An explicit rational certificate}
+Consider the rational target
+\[
+ b_*=(1,0,0,1,0),\qquad
+ f(w)=P_{b_*}(w)=2w^6-2w^5-w^3+w^2+1.
+\]
+Its discriminant is $-993580$. The following factorizations are in the
+indicated finite fields:
+\begin{align}
+ f&\equiv2(w^6-w^5+w^3-w^2-1)&&\pmod3,\label{eq:mod3}\\
+ f&\equiv2(w-4)(w^5+3w^4-w^3+2w^2+2w-5)&&\pmod{13},\label{eq:mod13}\\
+ f&\equiv2(w+14)(w-16)(w-7)(w-5)(w^2+13w+14)&&\pmod{37}.
+ \label{eq:mod37}
+\end{align}
+The sextic in \eqref{eq:mod3}, the quintic in \eqref{eq:mod13}, and the
+quadratic in \eqref{eq:mod37} are irreducible in their respective fields.
+The supplied verifier proves this with modular exponentiation and gcds,
+not by accepting a black-box Galois-group output. Specifically, for a
+monic polynomial $h$ of degree $n$ over $\mathbb F_p$, it checks
+\[
+ X^{p^n}\equiv X\pmod h,
+ \qquad
+ \gcd(h,X^{p^{n/\ell}}-X)=1
+ \quad(\ell\text{ prime},\ \ell\mid n).
+\]
+These conditions are equivalent to irreducibility, by the factorization
+of $X^{p^r}-X$ into the monic irreducibles whose degrees divide $r$.
+
+\begin{theorem}[Arithmetic $S_6$ and inverse obstruction]
+\label{thm:arithmeticS6}
+The polynomial $f$ is irreducible over $\Q$ and has Galois group $S_6$.
+No one of its roots is expressible by radicals over $\Q$. In particular,
+no full source point of $\F^{-1}(b_*)$ has all five coordinates expressible
+by radicals over $\Q$.
+\end{theorem}
+\begin{proof}
+Irreducibility modulo $3$ implies irreducibility over $\Q$, and hence a
+transitive Galois action. At the three displayed primes the reductions
+are squarefree and the leading coefficient remains a unit. The
+factorization-cycle theorem gives a $5$-cycle from $13$ and a
+transposition from $37$ \cite[Theorem 4.28]{Milne}. To fit the monic
+integer formulation exactly, apply it to $2^5f(W/2)$; at these odd
+primes the change of variable preserves factor degrees.
+
+A transitive subgroup of $S_6$ containing a $5$-cycle has a point
+stabilizer transitive on the other five labels, and is therefore
+$2$-transitive. Conjugating the transposition gives every transposition.
+Hence the group is $S_6$, in agreement with the standard group criterion
+\cite[Lemma 4.31]{Milne}.
+
+An irreducible polynomial with nonsolvable splitting group cannot have
+a root expressible by radicals: all conjugates of such a root would
+belong to a common solvable normal radical extension after adjoining
+suitable roots of unity, contradicting nonsolvability of $S_6$
+\cite[\S5, solvability theorem]{Milne}.
+Finally $w=\gamma u_1$ is a polynomial in the source coordinates with
+rational coefficients. If an entire inverse vector had radical
+coordinates, its corresponding root $w$ would be radical as well.
+\end{proof}
+
+This result does not forbid an exact inverse expressed by algebraic
+numbers or by a root-isolation representation. It forbids a radical-only
+inverse vector in this explicit fiber. It is therefore directly relevant
+to the repository's distinction between exact algebraic solving and
+radical-solvability certificates.
+
+\Needspace{6\baselineskip}
+\section{Real fibers and arithmetic inversion}
+\label{sec:real}
+
+\begin{theorem}[Real cardinalities]\label{thm:real}
+For the real polynomial map $\F:\R^5\to\R^5$, the possible fiber
+cardinalities are exactly $\{0,1,2,3,4\}$. If $c\ne0$, the possible
+values are contained in $\{0,1,2,4\}$. If $c=0$, the count is $3$ for
+$A^2+4B>0$ and $1$ for $A^2+4B\le0$.
+\end{theorem}
+\begin{proof}
+For $c\ne0$ the real source points correspond to the real simple roots
+of $P_b$. Suppose all six roots $r_i$ were real, counted with
+multiplicity. Newton's identities applied to \eqref{eq:fixedcoeff} give
+\[
+ \sum_i r_i=1,\qquad \sum_i r_i^2=1,\qquad
+ \sum_i r_i^3=\frac52.
+\]
+But
+\[
+ \left|\sum_i r_i^3\right|\le\sum_i|r_i|^3
+ \le\left(\sum_i r_i^2\right)^{3/2}=1,
+\]
+a contradiction. Five simple real roots would force the remaining root
+to be real as well. Exactly three simple real roots would leave a
+real cubic factor with no additional simple real root. Its odd degree
+forces a real root, and that root must be triple; otherwise a further
+simple real root remains. This would again make all six roots real.
+Thus only $0,1,2,4$ simple real roots can occur.
+
+For $c=0$, use $q_b=v^2+Av-B$ and the one-point section. Two distinct
+real roots give three points; a double root is deleted, and nonreal
+roots give no real points. This proves the stated criterion.
+
+All five global values occur. Zero occurs at $b_*$: write
+$p(w)=w^2(w-1)(2w^3-1)$. It is nonnegative outside
+$(2^{-1/3},1)$, while on that interval $-1<p(w)<0$. Thus $p(w)+1>0$
+on all of $\R$. One occurs at the origin, two at $(1,0,0,0,0)$, and
+three at $(0,0,1,0,0)$. Four occurs at $(1,-8,0,-6,70)$, whose sextic is
+\[
+ 2w^6-2w^5-w^3-7w^2+14w-6.
+\]
+It has the simple root $1$, and sign changes on
+$(-2,-1)$, $(0,9/10)$, and $(11/10,2)$. These give four distinct real
+roots; the preceding bound proves there are no others. Exact Sturm
+counts independently verify all five examples.
+\end{proof}
+
+A particularly instructive target is therefore $b_*$. Its geometric
+fiber has six points, its real fiber is empty, and its rational fiber is
+empty. These statements coexist without contradiction: geometric
+surjectivity onto $\A^5\setminus M$ does not assert real or rational
+surjectivity.
+
+\Needspace{5\baselineskip}
+\subsection{An exact inversion procedure over a computable field}
+The results give a compact algorithm which never expands or eliminates
+all $2180$ monomials of the original map.
+\begin{enumerate}[label=\textbf{Step \arabic*.}]
+\item Form $\kk,T,L$ and $q_b$ by \eqref{eq:TL}--\eqref{eq:q}. For geometric
+cardinality, compute the gcds in \eqref{eq:simplepart} and take the degree,
+adding one when $c=0$.
+\item For inverse points, factor or isolate the roots of $\simp(q_b)$ in
+the desired field. Over $\Q$, degree-one factors are exactly the rational
+roots; higher-degree factors represent algebraic inverse points.
+\item At each simple root evaluate \eqref{eq:inversechart},
+\eqref{eq:stageinverse}, and \eqref{eq:sourceinverse}. The only variable
+denominator is a power of $q_b'(v)$, whose nonvanishing has already been
+certified.
+\item If $c=0$, also solve the triangular equations \eqref{eq:section}.
+This supplies the unique point not represented by the $x\ne0$ chart.
+\end{enumerate}
+Polynomial degree is at most six throughout the root computation, and
+drops to two on $c=0$. The formula handles multiplicities exactly; a
+near-zero numerical derivative must never be substituted for a gcd test.
+The accompanying Python module exposes the root polynomial, simple-part
+calculation, rational reconstruction, and section inverse as reusable
+functions.
+
+\Needspace{6\baselineskip}
+\section{Verification, proof boundaries, and formalization}
+\label{sec:verification}
+
+\Needspace{5\baselineskip}
+\subsection{What the reproducibility package checks}
+The package contains a sparse rational construction of $\F$, a separate
+verification driver, two coefficient files, and a saved verification log.
+The driver completed \textbf{63 exact checks} under Python 3.13.5 and
+SymPy 1.14.0. No floating-point arithmetic or network access is used.
+
+The checks include cancellation of the apparent denominators, degree and
+term counts, the entire $x=0$ section, the stage inverse, the stage and
+sweep determinants, the derivative identity, the rescaled root equation,
+the three normalization relations, the exceptional quadratic, the exact
+$c^2$ discriminant factor and its leading coefficient, exclusion of the
+other all-multiple partitions, every cardinality witness, exact inverse
+round trips including $\gamma=0$, the Morse discriminant, finite-field
+irreducibility certificates, and real Sturm counts.
+
+The saved log is a reproducibility record, not an independent proof
+assistant certificate. In particular, a finite selection of inverse
+round trips cannot establish a chart isomorphism. That is why
+Theorem~\ref{thm:chart} proves the identities on a dense open set and
+then explicitly proves that they extend over the exceptional locus.
+Likewise, normality, openness of the embedding, and the monodromy
+argument are proved mathematically; they are not inferred from a
+computer-algebra ``PASS'' message.
+
+\Needspace{5\baselineskip}
+\subsection{A suitable Lean development boundary}
+A formalization should begin with the small algebra, not with a giant
+five-variable graph ideal. The natural dependency order is:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Prove the elimination and derivative identities in a polynomial
+ring. These are finite ring equalities with rational coefficients.
+\item Formalize the multiplicity-one factor construction
+\eqref{eq:simplepart}, including the zero-characteristic hypotheses and
+constant-polynomial edge case. This yields a reusable exact fiber-count
+checker.
+\item Establish the six-element algebra and its multiplication rules.
+Prove spanning by closure under the two generators and independence by
+the degree-six field relation. Then derive the discriminant basis change.
+\item Formalize the source chart and its exceptional section, either as
+localized coordinate-ring isomorphisms or first as field-valued point
+bijections with explicit nonvanishing hypotheses.
+\item Add the geometric layer: normality of the three charts, the open
+immersion criterion, and the branch/nonproperness interpretation. This
+stage needs substantially more algebraic-geometric infrastructure than
+the finite polynomial certificates.
+\end{enumerate}
+No Lean source is supplied as if it were checked. A future kernel audit
+should report separately which finite identities, pointwise statements,
+and scheme-theoretic conclusions have actually been formalized.
+
+\Needspace{5\baselineskip}
+\subsection{Why the argument is not a numerical discovery claim}
+The important transitions are algebraic. A root is deleted because an
+exact derivative is zero. An entire fiber is empty because an exhaustive
+list of multiplicity partitions reduces to one square. The finite model
+is normal because its charts are smooth, not because sample fibers look
+correct. The Galois group is $S_6$ because of exact permutations forced
+by finite-field factorizations and a connected Morse cover. These
+arguments continue to hold at targets which numerical root solvers
+would find highly ill-conditioned.
+
+\Needspace{6\baselineskip}
+\section{Further research questions and proposed projects}
+\label{sec:future}
+The following questions are specific continuations of the results above.
+They are proposed directions, not additional theorems established here.
+
+\Needspace{5\baselineskip}
+\subsection{Complete the adjacent higher-dimensional fiber problems}
+\textbf{1. The degree-twelve map $F_7$.} Gao supplies a univariate
+fiber polynomial of degree twelve \cite[\S4.6]{Gao}. Determine whether
+its exceptional degeneration is resolved by successive versions of
+Theorem~\ref{thm:general}. A concrete first deliverable is an integral
+basis and a factorization of its normalized discriminant, followed by
+an exhaustive empty-fiber classification. The $F_6$ analysis suggests
+that the exceptional hyperplane must be treated independently of the
+generic elimination equation.
+
+\textbf{2. The maps $F_4$ and $F_5$.} Their published quintic tangency
+and degree-ten resultant descriptions leave related fiber problems
+\cite[Appendix A.3]{Gao}. Derive a derivative or subresultant criterion
+that distinguishes an actual source point from a deleted tangency
+parameter. The main risk is that a resultant introduces extraneous
+solutions; each proposed root representation should be accompanied by
+an explicit inverse chart.
+
+\Needspace{5\baselineskip}
+\subsection{Refine the geometry of the sextic example}
+\textbf{3. Singular strata of $H$.} The simple-root gcd criterion gives
+the correct count at every point, but does not constitute a Whitney
+stratification. Determine the singular locus of the discriminant via
+\eqref{eq:incidence}, separating triple roots, two double roots, and
+higher coincidences. Describe their intersections with $c=0$ and the
+omitted surface $M$. An attractive deliverable is a small set of
+parametrizations or subresultant ideals rather than a large expanded
+elimination basis.
+
+\textbf{4. Quantitative escape rates.} For each deleted component $E_i$,
+construct explicit Laurent-series source arcs whose images tend to a
+prescribed point of $c=0$. Compute the leading pole orders of all five
+source coordinates. Repeat near a generic ramification point and near
+the triple-double locus $M$. This would distinguish the unramified and
+ramified mechanisms dynamically, not just set-theoretically.
+
+\textbf{5. The smooth affine normalization $Z$.} Determine its divisor
+class group, Picard group, and algebraic automorphisms. Is the explicit
+six-generator order monogenic after a target automorphism or after a
+smaller localization? Any answer must respect the quadratic-plus-quartic
+special fiber \eqref{eq:CRT}; the naive power basis cannot do so.
+
+\Needspace{5\baselineskip}
+\subsection{Extend the algebraic and arithmetic methods}
+\textbf{6. Higher contractions.} Replace $w^2J-cTw-c^2L$ by a family
+whose leading degeneration contains $w^r$, with $r\ge3$. Find hypotheses
+under which $r-1$ explicit divided basis elements suffice to normalize
+it. The desired theorem should state a finite-free basis, multiplication
+rules, discriminant correction, and checkable normality conditions.
+
+\textbf{7. Arithmetic image and solvable fibers.} Classify rational
+parameter subvarieties on which the sextic Galois group drops to a
+solvable subgroup. Distinguish those with a rational source point from
+those with only nonrational radical inverse points. The explicit $S_6$
+certificate is a starting obstruction, not a classification of all
+specializations. This problem connects directly to ProveIt's
+radical-solvability and exact polynomial-solving projects.
+
+\textbf{8. Good reduction.} Analyze the root chart and normalization in
+positive characteristic, separating primes excluded by the map's
+coefficients or determinant from primes affecting discriminants such as
+$401$. The characteristic-zero proof must not simply be reduced modulo
+an arbitrary prime: derivative multiplicities, separability, and the
+stage determinant require independent checks.
+
+\Needspace{5\baselineskip}
+\subsection{Formal and structural questions}
+\textbf{9. A certified root-chart toolkit.} Build a reusable library that
+takes a polynomial identity for a graph, a reconstruction tuple, and
+nonvanishing certificates, and returns a checked fiber bijection. Add
+support for exceptional source components instead of silently localizing
+them away. This would serve the Jacobian, radical-expression, and
+algebraic-number parts of ProveIt simultaneously.
+
+\textbf{10. Rigidity versus finite-cover complexity.} Gao's middle-branch
+rigidity questions concern when a higher-dimensional construction is
+only a suspension of a lower-dimensional one \cite[\S4.5.2]{Gao}.
+Investigate whether normalized-cover invariants, especially monodromy
+and the number of unramified boundary components, obstruct such
+suspensions. The present $S_6$ computation alone is not a proof of a
+new rigidity theorem; a comparison theorem for finite normalizations
+would be needed.
+
+\Needspace{6\baselineskip}
+\section{Conclusion}
+The central open task selected from the repository's surrounding research
+program was not the existence of another collision, but the exact
+behavior of every fiber of an already explicit high-degree map.
+The derivative identity makes that task accessible. The uniform chart
+then exposes the exceptional quadratic, and one divided basis element
+repairs the finite model. These steps determine the image, all geometric
+and real cardinalities, the branch and nonproperness loci, and a concrete
+radical obstruction.
+
+The resulting model is small: a sextic, a quartic, a quadratic exceptional
+fiber, and three multiplication rules. It retains the geometry hidden by
+the large expanded map and provides a practical target for independent
+review, further generalization, and formal verification.
+
+\appendix
+\Needspace{6\baselineskip}
+\section{Reproducing the calculations}
+\label{app:reproduce}
+From the extracted archive directory, run
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error Six_Sheets_Three_Escapes.tex
+pdflatex -interaction=nonstopmode -halt-on-error Six_Sheets_Three_Escapes.tex
+\end{lstlisting}
+The Python scripts do not require a LaTeX installation. The article
+compiles independently of Python: the mathematical expressions and
+proofs are contained directly in the TeX source.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.43\textwidth}X@{}}
+\toprule
+File & Purpose\\
+\midrule
+\code{code/build_map.py} & Sparse rational construction and exact denominator cancellation.\\
+\code{code/verify.py} & The 63-check certificate and reusable rational inverse functions.\\
+\code{data/map_coefficients.json} & All five polynomial coordinates; monomial exponent order is $(x,y,z_1,z_2,z_3)$.\\
+\code{data/normalized_discriminant.json} & Sparse $H$ in coordinate order $(c,A,B,D,\kk)$; $\kk=E+B^2-AD$.\\
+\code{data/verification_report.txt} & Saved output of the completed exact run.\\
+\code{SOURCE_AUDIT.md} & Repository revision, source scope, and novelty boundary.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every coefficient in the JSON files is a rational string; no precision
+parameter is needed. The verifier regenerates the coefficient files
+from the formulas rather than accepting them as trusted input.
+A failure raises an exception and prevents the final all-checks-passed
+message. There are no random checks in the verifier.
+
+\Needspace{6\baselineskip}
+\section{Source audit and attribution}
+\label{app:sources}
+The repository reference observed during the audit was
+\begin{center}\small
+\code{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}.
+\end{center}
+The main directly inspected project files were
+\begin{center}\small
+\code{Algebra/JacobianConjecture/README.md}\\
+\code{Algebra/JacobianConjecture/Research/README.md}.
+\end{center}
+Their returned blob hashes were respectively
+\begin{center}\small
+\code{67e25dcb94cb7a38fb508ea65e3a35455df859ac}\\
+\code{f0605a788b98bed23df91318aa2069e6802fc66e}.
+\end{center}
+The root README and a walkthrough search result were used for orientation.
+The root README's general formalization claims were not independently
+rebuilt in this work, and none is used as a substitute for the specific
+algebraic proofs above.
+
+The main external mathematical source was Gao's version 1, dated
+31 July 2026, particularly \S4.5.1, Theorem 4.5, the concluding remarks,
+and Appendix A.3. Its definition of $F_6$, determinant, generic degree,
+and elimination polynomial are explicitly credited. The derivative
+identity, uniform chart, complete cardinality criterion, exact omitted
+surface, six-element normalization, normalized discriminant and boundary,
+and the geometric and arithmetic $S_6$ proofs are the extensions developed
+in this article. This describes their relation to the inspected sources,
+not a guarantee that no equivalent result exists elsewhere.
+
+The primary literature search checked the cited paper's available version
+and searches combining its identifier or author with $F_6$, fiber,
+normalization, and Jacobian terminology. No directly matching extension
+was identified in that bounded search. It was not an exhaustive review
+of all unpublished work, repository branches, or later inaccessible
+material. The Stacks Project and Milne are cited for the standard
+geometric and Galois-theoretic facts used in the proofs.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{ProveIt}
+Vladimir Reshetnikov, \emph{ProveIt}, GitHub repository, Jacobian-conjecture
+project and research README; revision
+\code{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{Gao}
+Shuhong Gao, \emph{Counterexamples to the Jacobian conjecture in dimensions
+greater than two}, arXiv:2608.00222v1, 31 July 2026.
+\url{https://arxiv.org/abs/2608.00222v1}.
+In particular \S4.5.1, Theorem 4.5, and Appendix A.3.
+
+\bibitem{StacksEtale}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 02GH,
+``\'Etale morphisms,'' including the lemma that a morphism between
+schemes \'etale over a common base is \'etale.
+\url{https://stacks.math.columbia.edu/tag/02GH}.
+
+\bibitem{StacksOpen}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 025G,
+Theorem 41.14.1: universally injective \'etale morphisms are open immersions.
+\url{https://stacks.math.columbia.edu/tag/025G}.
+
+\bibitem{StacksDisc}
+The Stacks Project Authors, \emph{The Stacks Project}, Tag 0BJF,
+Lemma 49.3.1: the discriminant of a finite locally free morphism and
+its \'etale locus.
+\url{https://stacks.math.columbia.edu/tag/0BJF}.
+
+\bibitem{Milne}
+James S. Milne, \emph{Fields and Galois Theory}, version 5.10,
+September 2022, 144 pp. Theorem 4.28, Lemma 4.31, and Chapter 5.
+\url{https://www.jmilne.org/math/}.
+\end{thebibliography}
+\end{document}

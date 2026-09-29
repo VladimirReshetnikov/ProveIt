@@ -1,0 +1,1997 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,tabularx}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{3pt}
+\usepackage{listings,xurl,hyperref,bookmark}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{245D83}
+\definecolor{pale}{HTML}{F2F5F8}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Specialization-Safe Radical Solvers},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact bad characteristics, subset resolvents, Fourier-Kummer charts, and a global obstruction}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Specialization-safe radical solvers}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{pale},
+ frame=single,rulecolor=\color{black!20},breaklines=true,
+ columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\AGL}{\operatorname{AGL}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\charac}{\operatorname{char}}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\disc}{\operatorname{disc}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\snapshot}{\nolinkurl{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{accent} PROVEIT RESEARCH COMPANION\par}
+\vspace{0.45cm}
+{\LARGE\bfseries\color{ink} Specialization-Safe Radical Solvers\par}
+\vspace{0.25cm}
+{\large Exact Bad Characteristics for Subset-Sum Resolvents,\par
+ a Fourier--Kummer Atlas, and a Global Obstruction\par}
+\vspace{0.5cm}
+{Research prepared for Vladimir Reshetnikov\par}
+{September 2026\par}
+\end{center}
+\begin{abstract}
+A separable polynomial can have an inseparable auxiliary resolvent; a correct
+radical identity can become unusable on a nonempty exceptional locus; and
+separately chosen radical branches need not reconstruct one compatible root
+tuple. We study these three problems in the prime-degree setting of the
+ProveIt polynomial-formula project.
+
+For equal-cardinality subset sums of the roots of an irreducible prime-degree
+polynomial, we give an exact, finite cyclotomic-resultant criterion for the
+characteristics in which collisions are possible. It yields the complete
+exceptional sets $\{5\}$ for quintic pair sums, $\{2,7\}$ for septic pair sums,
+and $\{2,7,29\}$ for septic triple sums. In particular, over $\F_{29}(t)$ the
+separable irreducible polynomial $X^7-t$ has triple-sum resolvent
+\[
+ (Y^7-12t)^2(Y^7-t)(Y^7-17t)(Y^7-28t).
+\]
+In characteristic $29$, collisions occur precisely for translated pure
+septics; in characteristic two they characterize quotients of additive
+degree-eight polynomials, up to translation. The explicit example supplies
+a concrete obstruction to an unrestricted distinct-factor
+reading of a published septic factor-pattern assertion. A polynomial
+separating-invariant construction repairs the specialization problem over
+any sufficiently large field; for septic triples, 1191 distinct parameter
+values always suffice.
+
+We then prove a branch-coherent Fourier--Kummer reconstruction using one
+$p$th root on each nonvanishing Fourier chart. Every nonempty Fourier support
+occurs for an irreducible rational polynomial with full affine Galois group.
+Finally, the cyclic quotient of the ordered distinct-root configuration space
+has Picard group $\Z/p\Z$, and its universal cyclic cover has no global regular
+Kummer generator. Thus local formulas are not merely an artifact of a poor
+choice of coordinates. Complete arguments, finite integer certificates,
+reproducible exact checks, a repository integration plan, and further
+research questions are included.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status.} This is a mathematical research article with exact
+computational certificates, not a newly kernel-checked Lean development.
+The basic Fourier, Galois, resultant, and descent tools are classical. The
+specific classifications, examples, and synthesis below are proved here;
+priority over all existing literature has not been established. No claim to
+have solved the general problem of finding new radical formulas in every
+degree is made.
+
+\clearpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research target, provenance, and contribution boundary}
+\label{sec:boundary}
+
+\subsection{Why this problem arises in ProveIt}
+
+The repository snapshot used for the investigation is commit
+\begin{center}\snapshot.\end{center}
+The root README identifies the audit of Lazard's solvable-quintic algorithm
+as an active direction. The polynomial-formula report distinguishes raw
+invariant equations from root-origin or Fourier evidence, and explicitly
+records exceptional denominators and the need for coherent radical choices
+\cite{repoReadme,repoReport,repoCrosswalk}. These are mathematical issues, not
+only proof-assistant engineering issues.
+
+The inspected source \code{LazardGeneralFourier.lean} already proves
+arbitrary-degree character orthogonality, cyclic-shift covariance, and
+Fourier inversion. It deliberately stops before branch-sensitive recovery
+of modes from invariants \cite{repoFourier}. Accordingly, ordinary discrete
+Fourier inversion is not presented below as a new result. Our reconstruction
+uses that existing interface and adds a pivot chart, invariant ratios,
+and a proof that every choice of the one remaining radical changes only the
+cyclic ordering of the roots.
+
+Three precise research problems guide the article. First, determine exactly
+when a standard subset-sum resolvent can fail to separate subsets despite
+separability and irreducibility of the original polynomial. Second, replace
+an unsafe invariant by one with a proved specialization guarantee. Third,
+understand whether one can eliminate exceptional radical charts globally,
+or whether there is a structural obstruction. These are the questions
+formulated and answered here; they are not attributed to an existing issue
+or to a named open-problem list.
+
+\subsection{Relation to the published formulas}
+
+Lazard's 2004 chapter gives explicit formulas for solvable quintics
+\cite{Lazard2004}. Faggal and Lazard's 2014 article also treats septics, using
+sums of three roots and their factorization patterns; its specialized septic
+construction assumes characteristic different from $2,3,7$
+\cite{FaggalLazard2014}. Thus the existence of a radical treatment of solvable
+septics is not a new claim of this article.
+
+Our characteristic-$29$ example concerns the distinction between an orbit
+product and a squarefree resolvent with distinct conjugate values. It does
+not, on its own, disprove an abstract radical-solvability theorem. In
+particular, we do not infer that every later identity in that article fails.
+Section~\ref{sec:published} states the precise implication and its limits.
+
+\subsection{What is established, and by what kind of evidence}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.26\textwidth}XL{0.22\textwidth}@{}}
+\toprule
+Result & Mathematical content & Evidence here \\
+\midrule
+Exact bad-characteristic criterion & Necessary and sufficient cyclotomic norm
+condition, with irreducible witnesses & General proof \\
+Small-degree classification & Complete exceptional sets for $(p,k)=(5,2),(7,2),(7,3)$
+& Proof plus finite integer tables \\
+Characteristic-$29$ witness & Explicit repeated-factor triple-sum resolvent
+& Direct field calculation \\
+Septic collision rigidity & Complete root-configuration classification in
+characteristics $2$ and $29$ & General proof and finite norm certificate \\
+Separating repair & Characteristic-independent subset descriptors and a
+finite parameter bound & General proof \\
+One-radical charts & Coherent reconstruction and transition functions
+& General proof \\
+Support realization & Every nonempty support with full affine Galois group
+& Explicit rational construction \\
+Global obstruction & $\Pic(A^{C_p})\cong\Z/p\Z$ and no eigenunit
+& Algebraic descent and unit calculation \\
+Lean integration & Proposed declarations and dependencies
+& Plan only; no new Lean build \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The universal theorems do not depend on numerical experiments. The three
+small-degree classifications use a fully explicit finite calculation: all
+850 unordered pairs are checked by exact resultants, and the 29 affine-orbit
+representatives are checked independently by integer determinants. The
+provided standard-library auditor checks the finite certificates without
+SymPy. This is still an ordinary computational proof boundary, not a
+proof-assistant kernel boundary.
+
+\section{Subset-sum resolvents and the correct notion of separation}
+\label{sec:subset}
+
+Let $p$ be an odd prime and let $f\in K[X]$ be monic, separable, and
+irreducible of degree $p$. In its splitting field choose a numbering
+$x_0,\ldots,x_{p-1}$ of its roots. For $1\leq k\leq p-1$ put
+\[
+ \mathcal S_{p,k}=\{A\subseteq\{0,\ldots,p-1\}:|A|=k\},\qquad
+ s_A=\sum_{i\in A}x_i,
+\]
+and define the \emph{orbit product}
+\begin{equation}
+ R_{p,k,f}(Y)=\prod_{A\in\mathcal S_{p,k}}(Y-s_A).
+ \label{eq:resolvent}
+\end{equation}
+Galois automorphisms permute the subsets, so this monic polynomial belongs
+to $K[Y]$. Its degree, with multiplicity, is always $\binom pk$.
+
+\begin{definition}
+The $k$-subset sums of $f$ \emph{separate} if $s_A\neq s_B$ for every two
+distinct members of $\mathcal S_{p,k}$. Equivalently,
+$R_{p,k,f}$ is separable, or $\gcd(R_{p,k,f},R'_{p,k,f})=1$.
+\end{definition}
+
+This is stronger than separability of $f$. The latter distinguishes the
+individual $x_i$, not all sums made from them. It is also important not to
+call \eqref{eq:resolvent} the minimal polynomial of a single value without
+qualification. If the Galois group has several orbits on subsets, then even
+a separating orbit product is reducible. If distinct subsets have the same
+value, the product has repeated factors.
+
+\begin{lemma}[Orbit-to-factor principle]\label{lem:orbitfactor}
+Let a finite Galois group $G$ act on a finite set $\mathcal S$, and let
+$A\mapsto v_A$ be a $G$-equivariant map into the Galois extension. If this
+map is injective, the irreducible factors over the fixed field of
+$\prod_{A\in\mathcal S}(Y-v_A)$ are indexed by the $G$-orbits on
+$\mathcal S$, and their degrees equal the orbit sizes.
+\end{lemma}
+\begin{proof}
+The conjugates of $v_A$ are exactly $v_{gA}$ for $g\in G$. Injectivity
+identifies its stabilizer with that of $A$. Its minimal polynomial is
+therefore the product over the orbit of $A$, with distinct roots. Different
+orbits have disjoint value sets, and multiplication gives the assertion.
+\end{proof}
+
+Without injectivity, two different subset orbits can produce the same
+irreducible factor. This is exactly the mechanism in the characteristic-$29$
+example, not a loss of separability of the original degree-seven equation.
+
+Complementation gives a useful symmetry:
+\[
+ s_{A^c}=\operatorname{Tr}(x_0)-s_A,
+ \qquad \operatorname{Tr}(x_0)=\sum_{i=0}^{p-1}x_i.
+\]
+Consequently separation for $k$ is equivalent to separation for $p-k$.
+The cases $k=1,p-1$ always separate. The interesting cases are
+$2\leq k\leq p-2$.
+
+\section{An exact cyclotomic criterion for bad characteristics}
+\label{sec:criterion}
+
+For distinct $A,B\in\mathcal S_{p,k}$ define
+\begin{equation}
+ q_{A,B}(T)=\sum_{i\in A}T^i-\sum_{i\in B}T^i,
+ \qquad \Phi_p(T)=1+T+\cdots+T^{p-1},
+ \label{eq:q}
+\end{equation}
+and the positive integer
+\begin{equation}
+ N_{A,B}=\left|\Res_T(\Phi_p,q_{A,B})\right|.
+ \label{eq:norm}
+\end{equation}
+Equivalently, $N_{A,B}$ is the absolute norm of $q_{A,B}(\zeta)$ from
+$\Q(\zeta)$, for a primitive $p$th root of unity $\zeta$.
+
+\begin{lemma}\label{lem:normnonzero}
+Every integer $N_{A,B}$ in \eqref{eq:norm} is nonzero. It is divisible by $p$.
+\end{lemma}
+\begin{proof}
+The polynomial $q=q_{A,B}$ is nonzero, has degree at most $p-1$, and
+$q(1)=0$. If $q$ were divisible by $\Phi_p$ over $\Q$, it would equal
+$c\Phi_p$ for some constant $c$, and $0=q(1)=cp$ would force $c=0$.
+Irreducibility of $\Phi_p$ over $\Q$ therefore gives a nonzero resultant.
+Modulo $p$, $\Phi_p=(T-1)^{p-1}$ and $q(1)=0$, so the reductions have a
+common root. Their resultant is zero modulo $p$.
+\end{proof}
+
+\begin{definition}
+For $2\leq k\leq p-2$, let $\mathcal B_{p,k}$ be the set of prime divisors
+of the integers $N_{A,B}$, as $\{A,B\}$ runs over all unordered pairs of
+distinct $k$-subsets. It is a finite, effectively computable set.
+\end{definition}
+
+\begin{theorem}[Exact universal separation criterion]\label{thm:bad}
+Let $p$ be an odd prime and $2\leq k\leq p-2$.
+\begin{enumerate}[label=(\roman*)]
+\item In characteristic zero, the $k$-subset sums of every separable
+irreducible degree-$p$ polynomial separate.
+\item In characteristic $\ell\neq p$, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item for every field $K$ of characteristic $\ell$ and every separable
+irreducible degree-$p$ polynomial over $K$, the $k$-subset sums separate;
+\item $\ell\notin\mathcal B_{p,k}$.
+\end{enumerate}
+\item In characteristic $p$, universal separation fails.
+\end{enumerate}
+Thus $\mathcal B_{p,k}$ is exactly the set of characteristics in which a
+counterexample can exist.
+\end{theorem}
+
+\subsection{Proof of the safe direction}
+
+Let $L/K$ be the splitting field of $f$, and $G=\Gal(L/K)$. Irreducibility
+makes the root action transitive, so $p$ divides $|G|$. Cauchy's theorem
+supplies an element of order $p$. A nonidentity order-$p$ permutation on
+$p$ letters is a $p$-cycle. We may consequently number the roots so that
+\[
+ \sigma(x_i)=x_{i+1},\qquad i\pmod p.
+\]
+All pairs of subsets occur in the definition of $\mathcal B_{p,k}$, so
+changing the numbering does not change the criterion.
+
+Suppose that $s_A=s_B$, and write $q=q_{A,B}$. Then
+\[
+ q(\sigma)x_0=0.
+\]
+In characteristic zero, Lemma~\ref{lem:normnonzero} gives
+$\gcd(q,\Phi_p)=1$ in $\Q[T]$. In characteristic
+$\ell\notin\mathcal B_{p,k}$, the resultant is nonzero modulo $\ell$, so
+the same coprimality holds in $\F_\ell[T]$. In either case, over the prime
+field there are polynomials $a,b$ with
+\[
+ a(T)q(T)+b(T)\Phi_p(T)=1.
+\]
+Apply the corresponding operator identity to $(\sigma-1)x_0$. Both terms
+on the left vanish: the first because $q(\sigma)x_0=0$, and the second
+because
+\[
+ \Phi_p(\sigma)(\sigma-1)=\sigma^p-1=0.
+\]
+Hence $(\sigma-1)x_0=0$, contradicting $x_1\neq x_0$. This proves (i) and
+the implication (b)$\Rightarrow$(a) of (ii).
+
+Notice that no irreducibility assertion about $\Phi_p$ over $K$ was used.
+In particular, the safe direction remains valid when $K$ already contains
+all $p$th roots of unity.
+
+\subsection{Proof that every bad prime really occurs}
+
+Suppose $\ell\neq p$ divides $N_{A,B}$. The reductions of $\Phi_p$ and
+$q_{A,B}$ have a common root $\zeta$ in $\overline{\F}_\ell$. Since
+$\ell\neq p$, this is a primitive $p$th root of unity. Put
+\[
+ K=\F_\ell(\zeta)(t),\qquad f(X)=X^p-t,
+\]
+where $t$ is transcendental. The polynomial is Eisenstein at $t$ in
+$\F_\ell(\zeta)[t][X]$, hence irreducible over $K$. Its derivative is
+$pX^{p-1}$, so it is separable. If $\alpha^p=t$, its roots are
+$x_i=\alpha\zeta^i$, and
+\[
+ s_A-s_B=\alpha q_{A,B}(\zeta)=0.
+\]
+Moreover, $K(\alpha)/K$ is already its splitting field and has cyclic
+Galois group of order $p$. Thus the unsafe characteristic is witnessed even
+by a very simple solvable polynomial. This proves the converse in (ii).
+
+For (iii), use the Artin--Schreier polynomial
+\[
+ f(X)=X^p-X-t\in\F_p(t)[X].
+\]
+It is separable. To see its irreducibility, first note that
+$t\neq b^p-b$ for any $b\in\F_p(t)$: a pole of $b^p-b$ has order divisible
+by $p$, whereas $t$ has a pole of order one at infinity. If $\alpha$ is a
+root, all its roots $\alpha+i$ lie in $\F_p(t)(\alpha)$; the Galois group
+embeds into the additive group $\F_p$ and therefore has order one or $p$.
+The absence of a root in the base field rules out order one.
+
+For a $k$-subset $A$, its sum is
+\[
+ k\alpha+\sum_{i\in A}i.
+\]
+There are at most $p$ such values, but $\binom pk>p$ in the stated range of
+$k$. Some distinct subsets have equal sums. This finishes the proof of
+Theorem~\ref{thm:bad}. \hfill$\square$
+
+\begin{remark}[The exact logical scope]
+A prime in $\mathcal B_{p,k}$ does not mean that every polynomial in that
+characteristic has a collision. It means that a collision is possible and
+that a characteristic-only universal guarantee is false. A particular
+resolvent can still be tested for separability by a gcd computation.
+\end{remark}
+
+\subsection{A general relation-space interpretation}
+
+The same proof applies to a prescribed coefficient vector
+$c=(c_0,\ldots,c_{p-1})\in\Z^p$ with $\sum c_i=0$ and
+$q_c(T)=\sum c_iT^i\neq0$. Outside the prime divisors of
+$\Res(\Phi_p,q_c)$, the relation
+$\sum c_i x_i=0$ is impossible for a separable irreducible degree-$p$
+polynomial. Conversely, every non-$p$ prime divisor gives a pure-binomial
+witness for that relation after adjoining the necessary roots of unity.
+Thus the subset-sum theorem is one instance of an exact integral
+relation-obstruction method, not merely a collection of examples.
+
+For a fixed characteristic different from $p$, relations among the
+cyclically ordered roots form a module over
+$\F_\ell[T]/(T^p-1)$. The cyclotomic component
+$\F_\ell[T]/(\Phi_p)$ detects the nonconstant part. Our resultant test asks
+whether a prescribed small coefficient vector can vanish on this component.
+This viewpoint suggests extensions to cyclic codes and more general
+weighted resolvents, discussed in Section~\ref{sec:questions}.
+
+\section{Complete classifications in degrees five and seven}
+\label{sec:tables}
+
+\begin{theorem}[Small-degree exceptional sets]\label{thm:small}
+The exact exceptional characteristics are
+\[
+ \boxed{\mathcal B_{5,2}=\{5\}},\qquad
+ \boxed{\mathcal B_{7,2}=\{2,7\}},\qquad
+ \boxed{\mathcal B_{7,3}=\{2,7,29\}}.
+\]
+The complementary subset sizes have the same exceptional sets.
+\end{theorem}
+
+We give the finite certificate behind this theorem explicitly. It is useful
+both for independent review and for a future formalization.
+
+\subsection{Reduction by the affine group}
+
+The affine group $\AGL_1(\F_p)$ acts on subset labels by
+$i\mapsto ai+b$, where $a\neq0$. For a primitive $p$th root $\zeta$,
+\[
+ q_{aA+b,aB+b}(\zeta)=\zeta^b q_{A,B}(\zeta^a).
+\]
+The cyclotomic field automorphism $\zeta\mapsto\zeta^a$ preserves absolute
+norms, and $\zeta^b$ has norm one. Interchanging $A$ and $B$ changes only a
+sign. Therefore $N_{A,B}$ is constant on affine orbits of unordered pairs.
+
+For each pair, choose the lexicographically smallest representative of its
+affine orbit. In the following tables, $012$ denotes $\{0,1,2\}$, and
+similarly for other strings. The orbit sizes add to the number of all
+unordered pairs; disjointness is checked by the displayed normalization rule.
+Each norm can be computed as an integer determinant without algebraic
+number arithmetic.
+
+\subsection{The determinant certificate}
+
+Write
+\[
+ q(T)T^j\equiv\sum_{i=0}^{p-2}m_{ij}T^i\pmod{\Phi_p(T)},
+ \qquad 0\leq j\leq p-2.
+\]
+Multiplication by $q$ in $\Z[T]/(\Phi_p)$ has matrix $M_q=(m_{ij})$.
+Its determinant is $\Res(\Phi_p,q)$. Reduction uses only
+\[
+ T^p=1,\qquad T^{p-1}=-(1+T+\cdots+T^{p-2}).
+\]
+These identities supply a particularly small exact certificate.
+
+For the exceptional septic pair $A=012$, $B=346$, the matrix is
+\begin{equation}
+ M_q=\begin{pmatrix}
+ 2&-1&1&0&-2&0\\
+ 2&1&0&1&-2&-2\\
+ 2&1&2&0&-1&-2\\
+ 0&1&2&2&-2&-1\\
+ 0&-1&2&2&0&-2\\
+ 1&-1&0&2&0&0
+ \end{pmatrix},\qquad |\det M_q|=203=7\cdot29.
+ \label{eq:matrix203}
+\end{equation}
+The integer matrices for every other row are included in
+\code{certificates/cyclotomic_norm_certificates.json}.
+
+\begin{center}
+\begin{tabular}{@{}ccrr@{}}
+\toprule
+$A$ & $B$ & Orbit size & $N_{A,B}$\\
+\midrule
+01&02&20&5\\
+01&04&10&5\\
+01&23&10&5\\
+01&24&5&25\\
+\midrule
+\multicolumn{2}{l}{Total, quintic pairs}&45&\\
+\bottomrule
+\end{tabular}
+\qquad
+\begin{tabular}{@{}ccrr@{}}
+\toprule
+$A$ & $B$ & Orbit size & $N_{A,B}$\\
+\midrule
+01&02&42&7\\
+01&03&42&7\\
+01&06&21&7\\
+01&23&21&7\\
+01&24&42&56\\
+01&26&21&49\\
+01&34&21&7\\
+\midrule
+\multicolumn{2}{l}{Total, septic pairs}&210&\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{longtable}{@{}rccrr@{}}
+\caption{All affine orbits of unordered pairs of septic triples.}\label{tab:triples}\\
+\toprule
+Row&$A$&$B$&Orbit size&$N_{A,B}$\\
+\midrule\endfirsthead
+\toprule Row&$A$&$B$&Orbit size&$N_{A,B}$\\\midrule\endhead
+1&012&013&42&7\\
+2&012&014&42&7\\
+3&012&015&42&7\\
+4&012&016&21&7\\
+5&012&023&42&7\\
+6&012&034&42&7\\
+7&012&035&42&56\\
+8&012&045&42&7\\
+9&012&046&42&49\\
+10&012&056&21&7\\
+11&012&134&42&56\\
+12&012&136&21&49\\
+13&012&345&21&7\\
+14&012&346&42&203\\
+15&013&015&21&7\\
+16&013&026&42&56\\
+17&013&046&21&7\\
+18&013&245&7&343\\
+\midrule
+\multicolumn{3}{l}{Total}&595&\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\begin{proof}[Proof of Theorem~\ref{thm:small}]
+The tables exhaust the pair sets of sizes
+$\binom{10}{2}=45$, $\binom{21}{2}=210$, and $\binom{35}{2}=595$.
+The norms occurring in the three cases are, respectively,
+\[
+ \{5,25\},\qquad \{7,49,56\},\qquad
+ \{7,49,56,203,343\}.
+\]
+Their prime divisors are exactly the displayed exceptional sets.
+Theorem~\ref{thm:bad} supplies both the universal safe conclusion and the
+existence of counterexamples in every exceptional characteristic.
+\end{proof}
+
+As an additional checksum on the finite enumeration, the complete norm
+multiplicities are
+\begin{align*}
+ (5,2):&\quad 5^{[40]},\ 25^{[5]},\\
+ (7,2):&\quad 7^{[147]},\ 49^{[21]},\ 56^{[42]},\\
+ (7,3):&\quad 7^{[357]},\ 49^{[63]},\ 56^{[126]},\ 203^{[42]},\ 343^{[7]}.
+\end{align*}
+Here $n^{[m]}$ means that norm $n$ occurs $m$ times, not an exponentiation.
+The independent auditor regenerates the orbits and multiplication matrices,
+checks every determinant, and verifies that their union is exactly the full
+pair set. No inference from a sample of pairs is being made.
+
+\section{Explicit exceptional-characteristic witnesses}
+\label{sec:witnesses}
+
+\subsection{The characteristic-29 septic}
+
+Let $K=\F_{29}(t)$, where $t$ is transcendental, and let $\alpha^7=t$.
+Take $\zeta=23\in\F_{29}$. Its successive powers are
+\[
+ (1,23,7,16,20,25,24),\qquad \zeta^7=1.
+\]
+They are distinct, so $\zeta$ is primitive. The polynomial
+\[
+ f(X)=X^7-t
+\]
+is irreducible by Eisenstein, is separable because its derivative is
+$7X^6$, and has splitting field $K(\alpha)$ with cyclic group $C_7$.
+Its roots are $x_i=\alpha\zeta^i$.
+
+The following equality is entirely explicit:
+\[
+ 1+23+7\equiv16+20+24\equiv2\pmod{29}.
+\]
+Thus
+\begin{equation}
+ x_0+x_1+x_2=x_3+x_4+x_6.
+ \label{eq:collision29}
+\end{equation}
+The roots in the two triples are all different. This is not a collision
+caused by an overlap or by a repeated root of $f$.
+
+\begin{theorem}[Exact repeated-factor resolvent]\label{thm:29}
+Over $\F_{29}(t)$,
+\begin{align}
+ R_{7,3,X^7-t}(Y)
+ &= (Y^7-12t)^2(Y^7-t)(Y^7-17t)(Y^7-28t)\notag\\
+ &= (Y^7-12t)(Y^{28}-t^4).
+ \label{eq:29factor}
+\end{align}
+Every displayed degree-seven binomial is irreducible. The orbit product
+has degree $35$, but its squarefree part has degree $28$.
+\end{theorem}
+\begin{proof}
+There are five translation orbits on the $35$ triples. For a representative
+$A$, set
+\[
+ c_r(A)=e_r(\zeta^i:i\in A),\qquad r=1,2,3.
+\]
+The representative values and their seventh powers are as follows; the
+second and third coordinates will also be used for the repair below.
+\begin{center}
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+$A$&$c_1$&$c_2$&$c_3$&$c_1^7$\\
+\midrule
+012&2&17&16&12\\
+013&11&1&20&12\\
+014&15&10&25&17\\
+015&20&14&24&1\\
+024&28&22&24&28\\
+\bottomrule
+\end{tabular}
+\end{center}
+Translation by $b$ multiplies the sum $c_1\alpha$ by $\zeta^b$.
+The product for one orbit is therefore $Y^7-c_1^7t$. Multiplying the five
+orbit products gives the first line of \eqref{eq:29factor}. The four
+constants $1,12,17,28$ are the fourth roots of unity in $\F_{29}$, which
+gives the second line. Each nonzero binomial $Y^7-ct$ is Eisenstein at $t$,
+hence irreducible. The four constants are distinct, so the asserted
+squarefree degree follows.
+\end{proof}
+
+\subsection{Characteristic two: the Fano-plane degeneration}
+
+Let $K=\F_8(t)$, let $\zeta$ generate $\F_8^\times$, and again let
+$\alpha^7=t$. The polynomial $X^7-t$ is separable and irreducible over $K$.
+Its seven nonzero root coefficients are all of $\F_8^\times$.
+
+A triple of distinct nonzero field elements has sum zero precisely when it
+is $\{a,b,a+b\}$. There are $7\cdot6/6=7$ such triples, the lines of the
+Fano plane. Multiplication by $\F_8^\times$ permutes the other triples and
+acts transitively on their nonzero sums. The remaining $28$ triples are
+therefore distributed equally, four per nonzero sum. Hence
+\begin{equation}
+ R_{7,3,X^7-t}(Y)=Y^7(Y^7-t)^4\quad\text{over }\F_8(t).
+ \label{eq:char2}
+\end{equation}
+The auxiliary product has only eight distinct roots, even though the
+original polynomial has seven distinct roots and a cyclic Galois group.
+
+For septic pair sums in characteristic two, the same field gives
+$\zeta^a+\zeta^b=\zeta^c+\zeta^d$ for suitable distinct pairs, in agreement
+with $2\in\mathcal B_{7,2}$. For instance, in
+$\F_2[z]/(z^3+z+1)$, the pairs of field elements $\{1,z\}$ and
+$\{z^2,1+z+z^2\}$ have equal sum.
+
+\subsection{Characteristic seven: an Artin--Schreier degeneration}
+
+Over $\F_7(t)$, let $f=X^7-X-t$ and choose a root $\alpha$.
+The irreducibility argument in Section~\ref{sec:criterion} applies, and the
+roots are $\alpha+i$ for $i\in\F_7$. A triple sum is $3\alpha+c$.
+Translation of a triple by $b$ changes $c$ by $3b$, so each of the seven
+values occurs exactly five times. Moreover,
+\[
+ (3\alpha)^7-3\alpha=3t.
+\]
+It follows that
+\begin{equation}
+ R_{7,3,X^7-X-t}(Y)=(Y^7-Y-3t)^5.
+ \label{eq:char7}
+\end{equation}
+Likewise,
+\begin{equation}
+ R_{5,2,X^5-X-t}(Y)=(Y^5-Y-2t)^2
+ \quad\text{over }\F_5(t).
+ \label{eq:char5}
+\end{equation}
+These identities make the exceptional prime-degree characteristic
+concrete, rather than merely noting that Fourier inversion cannot divide
+by $p$.
+
+\section{The exact implication for published septic factor patterns}
+\label{sec:published}
+
+Proposition 7 and the subsequent specialized discussion in
+Faggal--Lazard describe a cyclic septic case using five degree-seven
+factors; Section 5.2 permits characteristic $29$ under its stated
+exclusions \cite{FaggalLazard2014}. Equation~\eqref{eq:29factor} shows that
+one cannot universally interpret those factors as five \emph{distinct}
+irreducible factors attached to five distinguishable subset orbits.
+Two orbit products coincide.
+
+If factors are counted with multiplicity, our example still has five
+irreducible factors in that weaker sense. The failure is therefore stated
+precisely: the unqualified separation needed to identify different subset
+orbits from different scalar factors is false. Also, the degree-$35$
+orbit product is not a minimal polynomial of any one triple sum; in this
+example each individual triple sum has degree seven.
+
+The sharp repair for this particular separation step is now known:
+\[
+ \charac K\notin\{2,7,29\}.
+\]
+This assertion follows for \emph{every} irreducible separable septic from
+Theorem~\ref{thm:small}, without a solvability assumption. When retaining
+the separate characteristic restrictions of a radical construction, one
+must take their union with these restrictions. Conversely, an
+input-specific squarefreeness check is sufficient for the orbit-to-factor
+principle even in a bad characteristic.
+
+This is not a complete audit of all matching predicates or denominator
+conditions used in the published algorithm. Additional root relations can
+have different cyclotomic norm obstructions. Excluding $29$ repairs the
+triple-sum separation claim; it does not by itself certify every subsequent
+formula. The next section offers a repair that avoids relying on a
+characteristic-only exclusion at all.
+
+\section{A uniform separating-invariant repair}
+\label{sec:repair}
+
+Let $x_1,\ldots,x_n$ be pairwise distinct elements of a field extension of
+$K$. Fix $1\leq k<n$, and set $N=\binom nk$. For each $k$-subset $A$ let
+\[
+ E(A)=(e_1(x_A),\ldots,e_k(x_A)),
+\]
+where $e_r$ is the $r$th elementary symmetric function of the elements
+whose indices lie in $A$.
+
+\begin{lemma}[Subset descriptors]\label{lem:descriptor}
+The map $A\mapsto E(A)$ is injective in every characteristic.
+\end{lemma}
+\begin{proof}
+Its coordinates determine the monic polynomial
+\[
+ \prod_{i\in A}(Z-x_i)
+ =Z^k-e_1(x_A)Z^{k-1}+\cdots+(-1)^k e_k(x_A).
+\]
+Equal coordinate vectors give equal polynomials and therefore equal sets of
+roots. Pairwise distinctness of the original $x_i$ then gives equal index
+subsets.
+\end{proof}
+
+Introduce a parameter $u$ and compress this vector to the scalar
+\begin{equation}
+ h_A(u)=\sum_{r=1}^k u^{r-1}e_r(x_A).
+ \label{eq:descriptor}
+\end{equation}
+For different subsets $A,B$, the difference $h_A-h_B$ is a nonzero
+polynomial in $u$ of degree at most $k-1$.
+
+\begin{theorem}[Finite separating family]\label{thm:repair}
+At most
+\begin{equation}
+ B_{n,k}=(k-1)\binom{N}{2},\qquad N=\binom nk,
+ \label{eq:bound}
+\end{equation}
+values of $u$ in an algebraic closure of the field containing the $x_i$
+can cause two of the $h_A(u)$ to
+coincide. Consequently, any $B_{n,k}+1$ distinct values in $K$ include one
+for which all the $h_A(u)$ are distinct.
+
+If the $x_i$ are the roots of a separable polynomial over $K$, then
+\begin{equation}
+ H_u(Y)=\prod_{|A|=k}(Y-h_A(u))\in K[Y]
+ \label{eq:repaired}
+\end{equation}
+for every $u\in K$. At a separating parameter, its irreducible factors
+recover the exact Galois orbit sizes on $k$-subsets.
+\end{theorem}
+\begin{proof}
+Each of the $\binom N2$ nonzero difference polynomials has at most $k-1$
+roots. Taking their union gives \eqref{eq:bound}, with no restriction on
+characteristic. The product \eqref{eq:repaired} is invariant under every
+permutation of the $x_i$, so its coefficients are symmetric polynomials in
+the roots and hence belong to $K$. At a separating parameter,
+Lemma~\ref{lem:orbitfactor} applies.
+\end{proof}
+
+For septics and triples,
+\[
+ N=35,\qquad B_{7,3}=2\binom{35}{2}=1190.
+\]
+Thus 1191 \emph{distinct} parameters always suffice whenever the base field
+has at least that many elements. Over $\Q$ one may use $0,1,\ldots,1190$.
+In characteristic $29$, those same integer numerals would repeat and would
+not constitute a valid hitting set. Over $\F_{29}(t)$ one can instead use
+$1,t,t^2,\ldots,t^{1190}$.
+
+Over a finite field with fewer elements, the theorem does not assert the
+existence of a separating parameter in that field. Passing to a sufficiently
+large finite extension, or keeping $u$ transcendental, supplies distinct
+parameters; the associated change of base field must then be recorded when
+interpreting Galois factor patterns.
+
+\subsection{How to compute the repaired product without knowing the roots}
+
+Regard $x_1,\ldots,x_n$ first as indeterminates. The product
+\eqref{eq:repaired} is a symmetric polynomial in them, with coefficients
+in $\Z[u,Y]$. The fundamental theorem of symmetric polynomials expresses
+it as a polynomial in the elementary symmetric functions of the full root
+set. Substitution of the coefficients of the original monic polynomial
+therefore computes $H_u$ over its coefficient field. This is an algebraic
+construction; it does not require numerical roots or a pre-existing
+radical solution.
+
+A deterministic specialization procedure is consequently available:
+compute $H_u$ for each chosen parameter, test
+$\gcd(H_u,H'_u)=1$, and stop at the first success. Theorem~\ref{thm:repair}
+proves termination within the stated number of distinct candidates. It is
+a correctness and termination bound, not a claim of good asymptotic
+complexity. Expanding the universal symmetric polynomial can be expensive.
+
+\subsection{Power-sum variants and their characteristic restriction}
+
+When $1,\ldots,k$ are invertible in $K$, Newton identities show that the
+vector
+\[
+ \left(\sum_{i\in A}x_i,\sum_{i\in A}x_i^2,\ldots,
+ \sum_{i\in A}x_i^k\right)
+\]
+also distinguishes subsets. Then one may use
+\[
+ \sum_{i\in A}\bigl(x_i+ux_i^2+\cdots+u^{k-1}x_i^k\bigr).
+\]
+This has the appealing form of an ordinary subset sum after a common
+polynomial transformation of the roots. The elementary-symmetric version
+\eqref{eq:descriptor}, however, avoids division by $2,\ldots,k$ and works
+in every characteristic. These two versions should not be silently
+identified in small characteristic.
+
+\subsection{Repairing the characteristic-29 example explicitly}
+
+For $X^7-t$ over $\F_{29}(t)$, use $u=1$. Then
+\[
+ h_A(1)=c_1(A)\alpha+c_2(A)\alpha^2+c_3(A)\alpha^3.
+\]
+The $35$ triples have distinct coefficient vectors
+$(c_1,c_2,c_3)$ by Lemma~\ref{lem:descriptor}, applied to the seven distinct
+powers of $\zeta$. Since $1,\alpha,\ldots,\alpha^6$ are linearly
+independent over $\F_{29}(t)$, all $35$ displayed values are distinct.
+Thus one nonzero parameter already repairs this particular example.
+
+The five now-distinct irreducible factors have the following compact exact
+specification. For each of the five rows $(c_1,c_2,c_3)$ in the table in
+Theorem~\ref{thm:29}, take
+\begin{equation}
+ Q_A(Y)=\Res_Z\bigl(Z^7-t,
+           Y-c_1Z-c_2Z^2-c_3Z^3\bigr).
+ \label{eq:repairfactors}
+\end{equation}
+Each $Q_A$ is monic of degree seven, and
+$H_1=\prod_A Q_A$. They are distinct and irreducible by
+Lemma~\ref{lem:orbitfactor}. This is a coefficient-level description of
+the repaired factors, not merely a statement that some repair exists.
+
+For completeness, the affine solvable septic groups give the following
+orbit patterns, now valid for any separating equivariant descriptor:
+\begin{center}
+\begin{tabular}{@{}cl@{}}
+\toprule
+Group & Factor degrees\\
+\midrule
+$C_7$ & $7,7,7,7,7$\\
+$C_7\rtimes C_2$ & $7,7,7,14$\\
+$C_7\rtimes C_3$ & $7,7,21$\\
+$C_7\rtimes C_6$ & $14,21$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These counts follow directly by acting on the 35 triples with
+$i\mapsto ai+b$, where the allowed multipliers form the indicated subgroup
+of $\F_7^\times$. The verifier also checks these four finite actions.
+
+\section{One-radical Fourier--Kummer reconstruction}
+\label{sec:atlas}
+
+We now address a different failure mode: reconstructing roots from modes
+without incompatible radical branches. Assume throughout this section that
+$\charac E\neq p$, that $\zeta\in E$ is a primitive $p$th root of unity,
+and that $\sigma\in\operatorname{Aut}(E)$ has order $p$ and fixes $\zeta$.
+Let $B=E^{\langle\sigma\rangle}$ and suppose that
+\[
+ \sigma(x_i)=x_{i+1},\qquad i\pmod p.
+\]
+We use the Fourier convention
+\begin{equation}
+ u_j=\sum_{i=0}^{p-1}\zeta^{-ij}x_i,
+ \qquad
+ x_i=\frac1p\sum_{j=0}^{p-1}\zeta^{ij}u_j.
+ \label{eq:fourier}
+\end{equation}
+This differs by an index sign from the positive-exponent forward convention
+in the inspected Lean module. Substituting its character by its inverse
+aligns the conventions exactly; no mathematical change is involved.
+
+The finite geometric-sum identity gives
+\[
+ \sigma(u_j)=\zeta^j u_j,
+ \qquad u_0\in B.
+\]
+If the $x_i$ are not all equal, at least one $u_j$ with $j\neq0$ is nonzero.
+This is the only existence condition needed for a pivot chart.
+
+For $j\in\{1,\ldots,p-1\}$ define $e_j(k)$ to be the unique integer in
+$\{1,\ldots,p-1\}$ satisfying
+\[
+ j e_j(k)\equiv k\pmod p,\qquad 1\leq k\leq p-1.
+\]
+
+\begin{theorem}[Coherent one-radical chart]\label{thm:chart}
+Assume $u_j\neq0$. Put
+\begin{equation}
+ a_j=u_j^p,\qquad
+ c_{j,k}=\frac{u_k}{u_j^{e_j(k)}}\quad(1\leq k\leq p-1).
+ \label{eq:ratios}
+\end{equation}
+Then $a_j\in B^\times$, $c_{j,k}\in B$, and $c_{j,j}=1$.
+For \emph{any} root $\rho$ of $T^p-a_j$ in an algebraic closure of $E$,
+define
+\begin{equation}
+ y_i=\frac1p\left(u_0+
+       \sum_{k=1}^{p-1}\zeta^{ik}c_{j,k}\rho^{e_j(k)}\right).
+ \label{eq:reconstruct}
+\end{equation}
+There exists $r\in\F_p$ such that
+\begin{equation}
+ y_i=x_{i+rj^{-1}}\quad\text{for every }i\in\F_p.
+ \label{eq:branchshift}
+\end{equation}
+In particular, all branches give the same unordered root set, with no
+additional independent $p$th-root choices.
+\end{theorem}
+\begin{proof}
+The covariance formula gives
+\[
+ \sigma(a_j)=a_j,\qquad
+ \sigma(c_{j,k})=\zeta^{k-je_j(k)}c_{j,k}=c_{j,k}.
+\]
+The nonzero denominator is part of the hypothesis, not a convention about
+division by zero. Since $E$ already contains $u_j$ and all $p$th roots of
+unity, every root of $T^p-a_j$ is $\rho=\zeta^r u_j$ for some $r$.
+Substitution in \eqref{eq:reconstruct} yields
+\[
+ c_{j,k}\rho^{e_j(k)}
+ =\zeta^{r e_j(k)}u_k
+ =\zeta^{rj^{-1}k}u_k.
+\]
+Fourier inversion now gives \eqref{eq:branchshift} simultaneously for all
+$i$. Thus coherence is derived, not assumed separately for each mode.
+\end{proof}
+
+\begin{corollary}[Cyclic extension generated by a pivot]\label{cor:generator}
+Under the hypotheses of Theorem~\ref{thm:chart},
+$[B(u_j):B]=p$. If $E/B$ is the cyclic extension of degree $p$, then
+$E=B(u_j)$ and $T^p-a_j$ is the minimal polynomial of $u_j$ over $B$.
+\end{corollary}
+\begin{proof}
+The $p$ values $\sigma^r(u_j)=\zeta^{rj}u_j$ are distinct. Thus its
+minimal polynomial over $B$ has at least $p$ roots, while $T^p-a_j$ gives
+an upper bound of $p$ on its degree. The remaining assertion follows by
+the degree formula.
+\end{proof}
+
+This is a relative minimality statement: the cyclic degree-$p$ step really
+is nontrivial, and one $p$th radical suffices over $B$. It is \emph{not} a
+claim that an entire radical expression over the original coefficient field
+uses the smallest possible number of radicals. The repository's warnings
+about stronger optimality assertions remain relevant.
+
+\subsection{Transition maps on overlaps}
+
+Suppose $u_j,u_h\neq0$, and set $e=e_j(h)$. Then
+\[
+ u_h=c_{j,h}u_j^e,\qquad
+ a_h=c_{j,h}^{\,p}a_j^e.
+\]
+A branch $\rho_j^p=a_j$ determines the compatible branch
+\begin{equation}
+ \rho_h=c_{j,h}\rho_j^e,
+ \qquad \rho_h^p=a_h.
+ \label{eq:transition}
+\end{equation}
+It gives the same reconstructed ordered tuple when the chart coordinate
+conventions are matched. More explicitly, if
+$\rho_j=\zeta^r u_j$, then
+$\rho_h=\zeta^{re}u_h$, and the shift in the $h$-chart is
+$re\,h^{-1}=rj^{-1}$ modulo $p$.
+
+For the invariant coefficients, let $f=e_h(k)$ and $g=e_j(k)$. The integer
+\[
+ m=\frac{ef-g}{p}
+\]
+is well defined. Direct substitution gives the exact transition rule
+\begin{equation}
+ c_{h,k}=c_{j,k}c_{j,h}^{-f}a_j^{-m}.
+ \label{eq:transitioncoeff}
+\end{equation}
+This exhibits an actual atlas, with compatible local coordinates, rather
+than unrelated formulas whose radical branches must be guessed anew.
+
+\subsection{What the chart theorem does not compute}
+
+The input to Theorem~\ref{thm:chart} includes the invariant data
+$u_0,a_j,c_{j,k}$ over $B$. Constructing these efficiently from the original
+polynomial coefficients is a separate invariant-theoretic task. The theorem
+does not hide that task inside a claim of an executable coefficient-only
+solver. Its immediate use in ProveIt is as a small correctness theorem
+between an invariant-recovery stage and an already formalized Fourier
+reconstruction stage.
+
+\section{Solvable prime-degree groups and the coefficient-field tower}
+\label{sec:groups}
+
+We record the precise field-theoretic setting in which the cyclic chart
+arises from a solvable prime-degree equation. The group-theoretic argument
+is included to make the dependence explicit.
+
+\begin{lemma}[Solvable transitive groups of prime degree]\label{lem:affine}
+A solvable transitive subgroup $G\leq S_p$ is conjugate to
+$C_p\rtimes C_d\leq\AGL_1(\F_p)$ for some $d\mid p-1$.
+\end{lemma}
+\begin{proof}
+A transitive action of prime degree is primitive: every block size divides
+$p$. Choose a minimal nontrivial normal subgroup $N$ of $G$. Solvability
+implies that $N$ is elementary abelian: its commutator subgroup is
+characteristic in $N$ and normal in $G$, so minimality and solvability make
+it trivial. The primary subgroups of the resulting finite abelian group
+are characteristic, forcing a single prime; multiplication by that prime
+has characteristic image and cannot be surjective, so this image is zero.
+Its orbits form a block system,
+so $N$ is transitive; otherwise every orbit would be a singleton, contrary
+to faithfulness and $N\neq1$.
+
+An abelian transitive permutation group is regular. Indeed, an element
+fixing one point fixes every point by commuting with a transitive group.
+Thus $|N|=p$ and $N\cong C_p$. Numbering the points by $\F_p$ identifies
+$N$ with the translations. Its normalizer in $S_p$ is the affine group:
+a normalizing permutation is determined by the image of $0$ and the
+nonzero multiplier by which it conjugates a generator of translations.
+Hence $G$ lies in that normalizer. Its multiplier image is a subgroup of
+$\F_p^\times$, therefore cyclic of order $d\mid p-1$. Since all
+translations are present, subtracting the translation part of each affine
+element gives the asserted semidirect product.
+\end{proof}
+
+Now let $f\in K[X]$ be separable irreducible of degree $p$ in characteristic
+zero, with solvable Galois group $G=C_p\rtimes C_d$, and let $L$ be its
+splitting field. Write
+\[
+ B_0=L^{C_p},\qquad E=L(\zeta),\qquad B=B_0(\zeta).
+\]
+Then $B_0/K$ is cyclic of degree $d$, and $B/K$ is an abelian Galois
+extension, as the compositum of $B_0/K$ with a cyclotomic extension.
+Moreover,
+\[
+ [B:K]\leq d(p-1)\leq(p-1)^2.
+\]
+Because $[B:B_0]$ divides $p-1$, it is relatively prime to
+$[L:B_0]=p$. Thus $L\cap B=B_0$ and
+\[
+ [E:B]=p.
+\]
+The cyclic generator on $L/B_0$ extends to $E$ fixing $B$, so all the
+hypotheses of the Fourier--Kummer chart theorem are available after
+numbering the roots by this generator.
+
+\begin{corollary}[Field-theoretic solver decomposition]\label{cor:tower}
+In characteristic zero, a solvable irreducible prime-degree equation admits
+the following decomposition: construct the abelian field $B$ of degree at
+most $(p-1)^2$ over $K$, select a nonzero Fourier mode, and perform the
+single cyclic $p$th-radical reconstruction of Theorem~\ref{thm:chart}.
+For $p=5$ the displayed bound is $16$; for $p=7$ it is $36$.
+\end{corollary}
+
+These are field-degree bounds, not optimal radical-count bounds. The
+abelian stage itself is solvable by radicals by the classical Galois
+construction after adjoining suitable roots of unity. A fast implementation
+must exploit the smaller actual Galois group and its invariants rather than
+blindly realize the worst-case degree bound.
+
+In positive characteristic, the same cyclic $p$-chart remains valid when
+$\charac K\neq p$ and the stated cyclic extension and root-of-unity data
+are supplied. The equivalence between solvable groups and ordinary radical
+towers needs its own characteristic hypotheses and is not inferred merely
+from group solvability here.
+
+\section{Every nonempty Fourier support really occurs}
+\label{sec:support}
+
+A formula that works for generic tuples need not survive vanishing Fourier
+modes. The following construction shows that no nonempty pattern can be
+excluded solely from rational irreducibility or from maximal solvable
+Galois group.
+
+\begin{theorem}[Full support realization]\label{thm:support}
+Let $p$ be an odd prime, let
+$\varnothing\neq S\subseteq\{1,\ldots,p-1\}$, and choose nonzero rational
+numbers $c_k$ for $k\in S$. Let $\alpha=2^{1/p}$ and let $\zeta$ be a
+primitive $p$th root of unity. Put
+\begin{equation}
+ P(Z)=\sum_{k\in S}c_k Z^k,\qquad
+ x_i=P(\alpha\zeta^i),\quad 0\leq i\leq p-1.
+ \label{eq:supportfamily}
+\end{equation}
+The $x_i$ are the roots of an irreducible rational polynomial of degree $p$.
+Its splitting field has Galois group $\AGL_1(\F_p)$. Relative to the
+indicated cyclic numbering, its Fourier modes are
+\begin{equation}
+ u_0=0,\qquad
+ u_k=\begin{cases}p c_k\alpha^k,&k\in S,\\0,&k\notin S.
+ \end{cases}
+ \label{eq:supportmodes}
+\end{equation}
+Thus all $2^{p-1}-1$ nonempty supports occur.
+\end{theorem}
+\begin{proof}
+The polynomial $Z^p-2$ is Eisenstein at $2$, so
+$[\Q(\alpha):\Q]=p$. Linear independence of
+$1,\alpha,\ldots,\alpha^{p-1}$ shows that $P(\alpha)\notin\Q$.
+Since $p$ is prime, the tower formula forces
+\[
+ \Q(P(\alpha))=\Q(\alpha).
+\]
+Therefore $P(\alpha)$ has degree $p$, and its images under the $p$
+embeddings of $\Q(\alpha)$ are exactly the displayed distinct $x_i$.
+The normal closures of $\Q(P(\alpha))$ and $\Q(\alpha)$ coincide.
+
+For completeness, $[\Q(\zeta):\Q]=p-1$ and $\alpha\notin\Q(\zeta)$:
+otherwise the degree $p$ would divide $p-1$. Over $\Q(\zeta)$, adjoining
+$\alpha$ gives the splitting field of $Z^p-2$; its Galois group embeds in
+$\mu_p$, and nontriviality forces degree $p$. Hence the full normal closure
+has degree $p(p-1)$ and its natural affine permutation action is all of
+$\AGL_1(\F_p)$.
+
+Finally, substitute \eqref{eq:supportfamily} into \eqref{eq:fourier}.
+The geometric sum
+$\sum_i\zeta^{i(k-j)}$ equals $p$ when $k=j$ and zero otherwise,
+giving \eqref{eq:supportmodes}.
+\end{proof}
+
+\begin{corollary}[Sharpness of the coordinate-pivot cover]\label{cor:charts}
+For a fixed primitive root of unity and a fixed cyclic numbering, none of
+the $p-1$ charts $u_j\neq0$ can be omitted if the chart family is required
+to cover every irreducible rational degree-$p$ example with full affine
+Galois group.
+\end{corollary}
+\begin{proof}
+Use Theorem~\ref{thm:support} with $S=\{j\}$. Only the $j$th chart is
+available.
+\end{proof}
+
+The qualifiers matter. This is a minimality statement for this specific
+coordinate-pivot cover, not a lower bound for every conceivable nonlinear
+cover. Relabelling the cyclic generator permutes the nonzero Fourier
+indices; choosing such a relabelling adaptively is another form of chart
+selection, not a contradiction.
+
+\subsection{Concrete rational examples}
+
+Taking every $c_k=1$, elimination of $Z$ from
+$Z^p-2=0$ and $Y-P(Z)=0$ gives the following monic polynomials:
+\begin{align*}
+ p=5,\ S=\{1,2\}:&\quad Y^5-10Y^2-10Y-6,\\
+ p=5,\ S=\{2,3\}:&\quad Y^5-10Y^3+20Y-12,\\
+ p=5,\ S=\{1,2,3,4\}:&\quad Y^5-20Y^3-60Y^2-70Y-30,\\
+ p=7,\ S=\{1,2\}:&\quad Y^7-14Y^3-28Y^2-14Y-6,\\
+ p=7,\ S=\{2,3\}:&\quad Y^7-14Y^4-28Y^2+28Y-12,\\
+ p=7,\ S=\{1,\ldots,6\}:&\quad
+ Y^7-42Y^5-210Y^4-490Y^3\\
+ &\hspace{1.8em}{}-630Y^2-434Y-126.
+\end{align*}
+Their irreducibility and Galois groups follow from
+Theorem~\ref{thm:support}, not from numerical root matching. The exact
+resultants are also regenerated by the verifier.
+
+For example, in the first septic case, $u_1=7\alpha$ and
+$u_2=7\alpha^2$, while all other nonconstant modes vanish. In the $j=1$
+chart,
+\[
+ a_1=7^7\cdot2,\qquad c_{1,1}=1,\qquad c_{1,2}=\frac17.
+\]
+The formula becomes
+\[
+ y_i=\frac17\left(\zeta^i\rho+
+                       \frac{\zeta^{2i}}7\rho^2\right),
+ \qquad \rho^7=7^7\cdot2.
+\]
+Choosing $\rho=7\alpha\zeta^r$ recovers
+$x_{i+r}=\alpha\zeta^{i+r}+\alpha^2\zeta^{2(i+r)}$ exactly.
+
+\section{Rigidity of the exceptional septic configurations}
+\label{sec:rigidity}
+
+The bad-prime calculation can say more than where counterexamples exist.
+In characteristics $29$ and $2$, the small number of surviving cyclotomic
+characters forces the entire root configuration into a special form.
+
+\subsection{Characteristic 29: precisely the translated binomial locus}
+
+\begin{theorem}[Complete characteristic-29 collision classification]
+\label{thm:29rigidity}
+Let $K$ be any field of characteristic $29$, and let $f\in K[X]$ be monic,
+separable, and irreducible of degree seven. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item Two different triples of roots of $f$ have the same sum.
+\item For some $\eta,b\in K$ with $b\neq0$,
+\[
+ f(X)=(X-\eta)^7-b.
+\]
+\end{enumerate}
+Whenever these conditions hold, the Galois group of $f$ is $C_7$, and
+\begin{equation}
+ R_{7,3,f}(Y)=
+ \bigl((Y-3\eta)^7-12b\bigr)
+ \bigl((Y-3\eta)^{28}-b^4\bigr).
+ \label{eq:29rigidfactor}
+\end{equation}
+In particular, every noncyclic irreducible septic over a field of
+characteristic $29$ has separating triple sums.
+\end{theorem}
+\begin{proof}
+The primitive seventh root $\zeta=23$ lies in the prime field, hence in
+$K$. Choose a Galois seven-cycle $\sigma$ and number the roots by it.
+Suppose a collision gives $q(\sigma)x_0=0$, with
+$q=q_{A,B}$ as in \eqref{eq:q}. The nonzero-character part of $q$ must
+have a zero: otherwise the B\'ezout argument in
+Theorem~\ref{thm:bad} would rule out the collision.
+
+Table~\ref{tab:triples} shows that a pair with a resultant divisible by
+$29$ is affine-equivalent to $A=012$, $B=346$. For the representative
+\[
+ q_*(T)=1+T+T^2-T^3-T^4-T^6,
+\]
+its values at the six nontrivial seventh roots are
+\[
+ \bigl(q_*(\zeta),q_*(\zeta^2),\ldots,q_*(\zeta^6)\bigr)
+   =(0,14,18,25,17,20)\quad\text{in }\F_{29}.
+\]
+There is exactly one zero. An affine change of the subset labels
+multiplies values by a nonzero root of unity and permutes the nontrivial
+characters, so every potentially colliding pair has exactly one such zero.
+Call its index $j$.
+
+Project the relation $q(\sigma)x_0=0$ to the $r$th character by applying
+$\sum_{i=0}^6\zeta^{-ir}\sigma^i$. Since $\sigma$ fixes $\zeta$, the
+result is
+\[
+ q(\zeta^r)u_r=0.
+\]
+Thus every nonconstant Fourier mode except possibly $u_j$ vanishes.
+At least one is nonzero, so $u_j\neq0$. Fourier inversion gives
+\[
+ x_i=\eta+\beta\zeta^{ij},\qquad
+ \eta=\frac{u_0}{7},\quad\beta=\frac{u_j}{7}.
+\]
+The trace shows $\eta\in K$. The full root product is
+$(X-\eta)^7-\beta^7$, and its coefficients show that
+$b=\beta^7\in K$. This proves (i)$\Rightarrow$(ii).
+
+Conversely, all roots of a polynomial in (ii) are
+$\eta+\beta\zeta^i$. The characteristic-$29$ equality
+\eqref{eq:collision29} persists after adding $\eta$ to each root, since
+both sides contain three roots. Hence there is a triple-sum collision.
+The original polynomial is irreducible, and $K$ contains $\mu_7$, so
+$K(\beta)$ is its cyclic degree-seven splitting field. Finally, translating
+each root adds $3\eta$ to each triple sum. The five-orbit calculation in
+Theorem~\ref{thm:29}, with $t$ replaced by $b$, gives
+\eqref{eq:29rigidfactor}.
+\end{proof}
+
+The conclusion is stronger than adding $29$ to a blanket list of excluded
+characteristics. An exact solver in that characteristic can first test
+whether its input becomes a pure binomial after removing the trace. If it
+does, the equation has an immediate Kummer solution and the repeated-factor
+resolvent is understood completely. If it does not, the ordinary triple-sum
+resolvent separates. Cyclicity alone is not sufficient for a collision;
+the specific primitive element must give the translated binomial form.
+
+\subsection{Characteristic two: affine Fano configurations}
+
+A polynomial $L(Z)=\sum_i a_iZ^{2^i}$ in characteristic two is
+\emph{additive}: $L(v+w)=L(v)+L(w)$. Its roots, when distinct, form a
+vector space over $\F_2$. This standard structure is exactly the one forced
+by a septic subset-sum collision.
+
+\begin{theorem}[Complete characteristic-two collision classification]
+\label{thm:2rigidity}
+Let $K$ have characteristic two, and let $f\in K[X]$ be monic, separable,
+and irreducible of degree seven. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item Two different pairs of roots have equal sums.
+\item Two different triples of roots have equal sums.
+\item For some $\eta,a,b,d\in K$, with $d\neq0$,
+\begin{equation}
+ f(X)=F(X-\eta),\qquad F(Z)=Z^7+aZ^3+bZ+d.
+ \label{eq:additivequotient}
+\end{equation}
+\end{enumerate}
+In this case the roots are $\eta+(W\setminus\{0\})$, where $W$ is a
+three-dimensional $\F_2$-subspace of the splitting field. The center
+$\eta$ is the trace of a root, and
+\begin{equation}
+ R_{7,2,f}(Y)=F(Y)^3,\qquad
+ R_{7,3,f}(Y)=(Y-\eta)^7f(Y)^4.
+ \label{eq:Fanoresolvents}
+\end{equation}
+Its Galois group embeds in $\operatorname{GL}_3(\F_2)$.
+\end{theorem}
+\begin{proof}
+Adjoin a primitive seventh root $\zeta$. This extends the base field by
+degree one or three, relatively prime to seven, so $f$ remains
+irreducible: for a root field $M/K$ of degree seven, the degree of
+$M K(\zeta)/K$ is divisible by both $7$ and $[K(\zeta):K]$ and is at most
+their product, forcing equality. Its splitting-field group over
+$K(\zeta)$ consequently contains a seven-cycle $\sigma$ fixing $\zeta$.
+
+Assume (i) or (ii). The collision yields a nonzero polynomial
+$q\in\F_2[T]$ with $\deg q\leq6$, $q(1)=0$, and
+$q(\sigma)x_0=0$. In characteristic two,
+\[
+ \Phi_7(T)=(T^3+T+1)(T^3+T^2+1),
+\]
+with both cubic factors irreducible. The gcd of $q$ and $\Phi_7$ cannot
+be one, by the safe-direction proof of Theorem~\ref{thm:bad}. It cannot
+be all of $\Phi_7$ either: degree at most six would give $q=\Phi_7$,
+contradicting $q(1)=0$ and $\Phi_7(1)=1$. Therefore it is exactly one of
+the two cubic factors.
+
+The primitive roots in either factor have indices
+$\{1,2,4\}$ or $\{3,5,6\}$. Reversing the cyclic numbering interchanges
+these sets. Character projection as in Theorem~\ref{thm:29rigidity}
+therefore shows that, after such a reversal if necessary, the roots have
+form
+\[
+ x_i=\eta+v_1\zeta^i+v_2\zeta^{2i}+v_4\zeta^{4i},
+ \qquad \eta=\frac{u_0}{7}=u_0\in K.
+\]
+On the eight-element subfield generated by $\zeta$, the map
+\[
+ \psi(z)=v_1z+v_2z^2+v_4z^4
+\]
+is $\F_2$-linear. It is injective: a nonzero kernel element $h$ would
+make $\psi(z)=\psi(z+h)$ for distinct nonzero $z,z+h$, contradicting
+distinctness of the seven roots. Hence $W=\psi(\F_8)$ has dimension three,
+and the roots are exactly $\eta+(W\setminus\{0\})$.
+
+For a finite $\F_2$-vector space $W$ in a field, its monic root polynomial
+$L_W(Z)=\prod_{w\in W}(Z-w)$ is additive. One elementary proof is induction
+on the dimension. If $W=V\oplus\F_2 h$, then
+\[
+ L_W(Z)=L_V(Z)L_V(Z-h)
+       =L_V(Z)^2-L_V(h)L_V(Z),
+\]
+which is additive whenever $L_V$ is. Since $|W|=8$ here,
+\[
+ L_W(Z)=Z^8+aZ^4+bZ^2+dZ.
+\]
+But $L_W(Z)=Zf(Z+\eta)$ belongs to $K[Z]$, so its displayed coefficients
+lie in $K$. Its distinct roots force $d\neq0$. This proves (iii).
+
+Conversely, under (iii), $ZF(Z)$ is an additive polynomial of degree eight
+with derivative $d\neq0$. Its eight roots form a three-dimensional
+$\F_2$-space $W$, and the nonzero roots are exactly the roots of $F$.
+For each nonzero $w\in W$, exactly three unordered pairs of distinct
+nonzero elements sum to $w$. Exactly seven unordered triples sum to zero,
+and exactly four sum to each nonzero $w$. These counts follow respectively
+by choosing one summand outside $\{0,w\}$, and by the seven Fano lines
+and the remaining $28$ triples. After translation by $\eta$, pair sums
+are unchanged and triple sums acquire $\eta$. This proves both collisions
+and the identities \eqref{eq:Fanoresolvents}.
+
+Finally, every Galois automorphism fixes $\eta$ and permutes $W$ while
+preserving addition. Its action on $W$ is faithful because the roots
+generate the splitting field. Thus the Galois group embeds in
+$\operatorname{GL}_3(\F_2)$.
+\end{proof}
+
+\begin{corollary}[A nonsolvable colliding configuration]
+There are separable irreducible septics in characteristic two with
+colliding pair and triple sums and with Galois group of order $168$,
+isomorphic to $\operatorname{GL}_3(\F_2)$.
+\end{corollary}
+\begin{proof}
+Let $z_1,z_2,z_3$ be algebraically independent over $\F_2$, put
+$L=\F_2(z_1,z_2,z_3)$, and let $G=\operatorname{GL}_3(\F_2)$ act by
+invertible linear substitutions. Set $K=L^G$. The fixed-field theorem
+for a finite group of field automorphisms gives
+$\Gal(L/K)=G$. The seven nonzero linear forms
+$v_1z_1+v_2z_2+v_3z_3$ with $v\in\F_2^3\setminus\{0\}$ are distinct,
+form one $G$-orbit, and generate $L$. Their monic root polynomial is
+therefore separable irreducible of degree seven over $K$, with splitting
+field $L$, and its nonzero root set is an additive three-space minus zero.
+Theorem~\ref{thm:2rigidity} applies.
+
+The group has order $(8-1)(8-2)(8-4)=168$. It is nonsolvable: it is
+generated by elementary transvections, and for distinct $i,j,k$ each
+transvection $I+E_{ij}$ is the commutator of $I+E_{ik}$ and $I+E_{kj}$.
+Thus the nontrivial group is perfect and cannot be solvable.
+\end{proof}
+
+The two exceptional characteristics therefore have markedly different
+geometry. In characteristic $29$, a collision forces a single
+nonconstant Fourier character and a cyclic binomial equation. In
+characteristic two, a three-character Frobenius orbit survives and produces
+an affine Fano configuration, which can support a nonsolvable Galois group.
+The exceptional characteristic seven remains a separate unipotent problem,
+since its cyclic action cannot be diagonalized by seventh roots of unity.
+
+\section{A global obstruction: the universal cyclic cover is not one Kummer equation}
+\label{sec:global}
+
+The local pivot formulas work, but could a more ingenious single regular
+radical coordinate work on the entire distinct-root locus? The answer is
+negative in a precise algebraic sense. We prove it, rather than infer it
+from the zeros of a few familiar formulas.
+
+\subsection{The universal ordered configuration}
+
+Let $k$ be algebraically closed of characteristic zero and contain a
+primitive $p$th root of unity. Put
+\begin{equation}
+ A=k[x_0,\ldots,x_{p-1},\Delta^{-1}],\qquad
+ \Delta=\prod_{i<j}(x_i-x_j)^2.
+ \label{eq:configuration}
+\end{equation}
+Thus $\Spec A$ parametrizes ordered tuples of pairwise distinct roots.
+Let $C_p=\langle\sigma\rangle$ act by cyclically permuting the variables,
+and write $B=A^{C_p}$.
+
+No nonidentity cyclic shift fixes a geometric point: since $p$ is prime,
+such a fixed point would have all coordinates equal. The quotient
+\[
+ \Spec A\longrightarrow\Spec B
+\]
+is therefore a finite \'etale $C_p$-torsor. The term \emph{torsor} means that
+a geometric fiber has a free transitive $C_p$-action; it is the algebraic
+version of a covering with that deck group.
+
+A global regular Kummer presentation would be a $C_p$-equivariant
+isomorphism
+\begin{equation}
+ A\cong B[T]/(T^p-a),\qquad a\in B^\times,
+ \label{eq:globalKummer}
+\end{equation}
+where a generator acts by $T\mapsto\zeta^jT$ for some $j\neq0$.
+The unit condition expresses the absence of ramification on the already
+separable locus. It is not an arbitrary strengthening: a Kummer equation
+with a zero radicand would fail to be \'etale at that zero.
+
+The general Kummer framework distinguishes torsors given by a unit from
+those encoded by a line bundle whose $p$th tensor power is trivial
+\cite{StacksKummer}. We now compute the obstruction in this particular
+configuration explicitly.
+
+\subsection{The complete unit group}
+
+For $1\leq a\leq(p-1)/2$ and $j\in\F_p$, define the oriented difference
+\[
+ \delta_{a,j}=x_j-x_{j+a}.
+\]
+Every unordered pair occurs exactly once among these factors, up to a
+constant sign. Since the polynomial ring is a unique factorization domain,
+localizing at $\Delta$ gives
+\begin{equation}
+ A^\times=
+ \left\{c\prod_{a=1}^{(p-1)/2}\prod_{j\in\F_p}
+          \delta_{a,j}^{n_{a,j}}:
+       c\in k^\times,\ n_{a,j}\in\Z\right\}.
+ \label{eq:units}
+\end{equation}
+The representation is unique once the chosen orientations are fixed.
+The cyclic action simply sends $\delta_{a,j}$ to $\delta_{a,j+1}$, without
+an additional sign. In multiplicative-module notation,
+\begin{equation}
+ A^\times\cong k^\times\times
+                \Z[C_p]^{(p-1)/2}.
+ \label{eq:unitmodule}
+\end{equation}
+
+\begin{theorem}[No nontrivial eigenunit]\label{thm:eigenunit}
+If $u\in A^\times$ and $\sigma(u)=\zeta^r u$, then $r=0$ in $\F_p$.
+Consequently the universal cyclic cover has no presentation
+\eqref{eq:globalKummer}.
+\end{theorem}
+\begin{proof}
+Write $u$ as in \eqref{eq:units}. Equality up to a nonzero constant does
+not change its exponents along the irreducible difference factors.
+Therefore $n_{a,j}=n_{a,j-1}$ for all $a,j$. For each $a$, the exponent is
+constant around its full cyclic orbit. The product
+$\prod_j\delta_{a,j}$ is itself invariant, and the constant $c$ is fixed.
+Thus $\sigma(u)=u$. Since $u\neq0$, this forces $\zeta^r=1$.
+
+In \eqref{eq:globalKummer}, the image of $T$ would be a unit, because
+$T^p=a\in B^\times$, and would have a nontrivial eigencharacter. This is
+impossible by the first assertion. Even an initially unequivariant
+$B$-algebra presentation of this form would yield such an eigenunit:
+$\sigma(T)^p=T^p$ forces $\sigma(T)/T\in\mu_p$, and this character
+must be nontrivial because $T$ generates the extension.
+\end{proof}
+
+This rules out a single everywhere-regular Kummer coordinate on the
+cyclic quotient, even though rational Kummer coordinates exist over its
+function field. It does not rule out piecewise formulas, formulas on a
+dense open subset, or a nontrivial line-bundle formulation. Nor is it a
+claim about an unrestricted language of nested algebraic expressions with
+arbitrary case distinctions.
+
+\subsection{The Picard group of the cyclic quotient}
+
+Recall that $\Pic B$ is the abelian group of isomorphism classes of
+invertible $B$-modules, with tensor product as its operation. Such modules
+are the algebraic counterparts of line bundles. Since $A$ is a localization
+of a polynomial unique factorization domain, every invertible $A$-module
+is free of rank one; in particular, $\Pic A=0$.
+
+\begin{lemma}[Descent calculation]\label{lem:descent}
+For the above torsor,
+\[
+ \Pic B\cong H^1(C_p,A^\times).
+\]
+\end{lemma}
+\begin{proof}
+An invertible $B$-module becomes free of rank one over $A$.
+Choose a generator after this base change. Transport of the generator
+under $g\in C_p$ is multiplication by a unit $a_g\in A^\times$.
+Compatibility of the action is exactly the cocycle equation
+$a_{gh}=a_g\,g(a_h)$. Changing the chosen generator changes the cocycle
+by a coboundary.
+
+Conversely, a unit-valued cocycle gives a semilinear action on the free
+rank-one $A$-module. Faithfully flat descent along the finite \'etale torsor
+recovers an invertible $B$-module. These constructions are inverse and
+respect tensor products. The use of $\Pic A=0$ is precisely what permits
+one generator after base change for every class.
+\end{proof}
+
+\begin{theorem}[Picard group and the intrinsic chart obstruction]\label{thm:picard}
+For odd prime $p$,
+\begin{equation}
+ \Pic\bigl(k[x_0,\ldots,x_{p-1},\Delta^{-1}]^{C_p}\bigr)
+ \cong\Z/p\Z.
+ \label{eq:picard}
+\end{equation}
+The nonzero Fourier-character eigenspaces of $A$ are invertible
+$B$-modules representing the nonzero powers of a generator of this group.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:unitmodule} and Lemma~\ref{lem:descent}, it suffices to
+compute first cohomology of the factors. The action on $k^\times$ is
+trivial, so a cocycle is just a character. Thus
+\[
+ H^1(C_p,k^\times)=\operatorname{Hom}(C_p,k^\times)=\mu_p\cong\Z/p\Z.
+\]
+For the additive regular module $M=\Z[C_p]$, a cocycle is determined by
+$v\in M$ satisfying
+\[
+ (1+\sigma+\cdots+\sigma^{p-1})v=0.
+\]
+In coordinates this says that the sum of the $p$ coefficients of $v$ is
+zero. Every such vector is a cyclic difference $(\sigma-1)w$: solve for
+the coefficients of $w$ by successive partial sums, whose consistency
+around the cycle is exactly the zero-sum condition. Hence
+$H^1(C_p,\Z[C_p])=0$. Equation~\eqref{eq:picard} follows.
+
+For each $r\in\F_p$, let
+\[
+ L_r=\{a\in A:\sigma(a)=\zeta^r a\}.
+\]
+A $C_p$-torsor becomes the regular permutation representation after a
+faithfully flat base change. Its character pieces therefore have rank
+one, and multiplication gives isomorphisms
+$L_r\otimes_B L_s\cong L_{r+s}$. Descent identifies these modules with
+the corresponding character cocycles, up to the harmless choice of which
+character is called a generator. Thus $L_r$ has class $r$ times that
+generator. For $r\neq0$, the class is nonzero and has order $p$.
+\end{proof}
+
+This also explains why $p$th powers can be invariant without their chosen
+$p$th roots fitting into one global regular coordinate. The obstruction is
+not a failure of Kummer theory; it is exactly the line-bundle alternative
+allowed by Kummer theory.
+
+\subsection{The Fourier charts trivialize the obstruction locally}
+
+Define universal modes $u_j$ by \eqref{eq:fourier} in $A$, and let
+$a_j=u_j^p\in B$. The basic opens
+\[
+ D(a_j)\subseteq\Spec B,\qquad j=1,\ldots,p-1,
+\]
+cover $\Spec B$. Indeed, a point missing all of them lifts to a geometric
+point of $\Spec A$ with every nonconstant Fourier mode zero; inversion
+would make all its coordinates equal, contradicting $\Delta\neq0$.
+
+On $D(a_j)$, $u_j$ is a unit and is a generator of $L_j$. Every other
+character component can be divided by the corresponding power of $u_j$
+to become invariant. Consequently
+\begin{equation}
+ A[a_j^{-1}]\cong
+ B[a_j^{-1}][T]/(T^p-a_j),\qquad T\longmapsto u_j.
+ \label{eq:localKummer}
+\end{equation}
+To see that there are no missing elements, decompose an element into its
+$p$ character components by averaging with powers of $\zeta$; each
+component is an invariant multiple of one of $1,u_j,\ldots,u_j^{p-1}$.
+These powers are independent by their distinct characters, and the monic
+relation is exactly $u_j^p-a_j$.
+
+The overlap formulas \eqref{eq:transition}--\eqref{eq:transitioncoeff}
+are the concrete local gluing data for this nontrivial torsor. Theorem~
+\ref{thm:eigenunit} says that no single chart of the same global regular
+kind can replace the cover. Corollary~\ref{cor:charts} makes the narrower
+coordinate-cover bound sharp even on rational examples.
+
+\section{A practical proof architecture for ProveIt}
+\label{sec:formalization}
+
+The article suggests a modular extension rather than a monolithic new
+formula. Existing Fourier inversion can remain unchanged. Each added
+module should expose the assumptions needed by its consumers and avoid a
+statement whose hypotheses already contain the desired factorization.
+
+\subsection{Separating the four certificates}
+
+A coefficient-level solver should keep four logically different objects:
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Root and Galois data:} a separable irreducible polynomial, its
+splitting field, and a justified permutation action on its roots.
+\item \textbf{Separation data:} an injective equivariant invariant on the
+relevant finite set, or a proved squarefreeness test for its orbit product.
+\item \textbf{Invariant recovery data:} exact equalities connecting computed
+coefficients to $u_0,a_j,c_{j,k}$ in a specified intermediate field.
+\item \textbf{Branch data:} one nonzero pivot and one equation
+$\rho^p=a_j$; coherence of all reconstructed modes then follows from
+Theorem~\ref{thm:chart}.
+\end{enumerate}
+The second item is not implied by the first. The fourth need not contain
+$p-1$ independent radical choices. These distinctions address two different
+ways an otherwise plausible solver can be unsound.
+
+\subsection{Suggested declaration-level milestones}
+
+The following are proposed names and statement boundaries, not purported
+existing Lean identifiers.
+\begin{center}
+\small
+\begin{longtable}{@{}L{0.40\textwidth}L{0.54\textwidth}@{}}
+\toprule
+Proposed declaration & Essential conclusion\\
+\midrule\endfirsthead
+\toprule Proposed declaration & Essential conclusion\\\midrule\endhead
+\code{subsetSum_injective_of_resultant_ne_zero} &
+A root $p$-cycle and nonzero cyclotomic resultants imply injectivity of
+$k$-subset sums.\\
+\code{badCharacteristic_binomial_witness} &
+A common primitive cyclotomic root gives an Eisenstein binomial
+counterexample over a rational function field.\\
+\code{septicTriple_badPrimes} &
+Finite determinant/orbit certificate yields exactly $\{2,7,29\}$.\\
+\code{elementarySubsetDescriptor_injective} &
+Subset elementary symmetric vectors distinguish subsets in every
+characteristic.\\
+\code{separatingParameter_exists} &
+A union-of-root-sets argument proves the finite hitting bound.\\
+\code{fourierPivot_ratios_fixed} &
+The pivot ratios and pivot power lie in the fixed field.\\
+\code{fourierPivot_allBranches_shift} &
+Every branch of the single $p$th radical gives a cyclic shift of the
+original root tuple.\\
+\code{fourierSupport_pureExtension_realization} &
+The rational family realizes each prescribed nonempty support.\\
+\code{cyclicConfiguration_noEigenunit} &
+The explicit unit group has no nontrivial character unit.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The first cluster needs finite group actions, polynomial resultants,
+splitting fields, and finite sets. The atlas cluster needs only field
+algebra, finite sums, a primitive character, and a nonzero pivot. It is
+therefore a natural small next target, close to the inspected repository
+module. The global Picard calculation is conceptually stronger but needs
+substantially more algebraic geometry and descent infrastructure; it should
+not block the elementary solver improvements.
+
+\subsection{Eliminating hidden circularity}
+
+A theorem saying that a returned vector is correct \emph{provided} it
+satisfies the full root factorization is not an invariant-recovery theorem.
+Likewise, testing numerical roots against a target polynomial is not an
+exact construction of the intermediate-field coefficients. A useful audit
+should trace every exported root theorem backward to coefficient data,
+nonzero tests, and explicit field operations.
+
+For the finite classification, a checker can accept integer matrices,
+verify their determinants by a fraction-free algorithm, verify affine orbit
+coverage, and infer the prime set. It should not trust a table solely
+because a computer algebra system printed it. The bundled auditor is an
+ordinary executable model of that boundary; a verified Lean or Rocq checker
+would be a separate deliverable.
+
+For the branch theorem, no polynomial coefficient expansion is necessary.
+The short proof works for every odd prime at once. Keeping this theorem
+generic avoids large quintic- or septic-specific ring-normalization goals
+and makes exceptional support cases explicit rather than leaving them to a
+generic nonvanishing assumption.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+The questions below are proposed follow-on research problems. Their status
+as previously published open problems has not been asserted. Each has a
+specific target and a natural first test.
+
+\begin{question}[Bad characteristics in higher prime degrees]
+Determine $\mathcal B_{p,k}$ for $p=11,13$ and the middle subset sizes.
+Can the affine-orbit computation be replaced by a structural description
+of the prime divisors of cyclotomic norms of balanced $\{0,\pm1\}$ vectors?
+\end{question}
+Theorem~\ref{thm:bad} makes this a finite exact problem with guaranteed
+counterexamples for every reported bad prime. A useful first deliverable is
+an independently checked table, followed by explanations of unusually
+large prime divisors. Complementation, cancellation of common subset
+elements, and cyclotomic automorphisms should reduce the search.
+
+\begin{question}[One bad prime, different Galois groups]
+For higher $p$ and $\ell\in\mathcal B_{p,k}$, which transitive
+Galois groups can occur for colliding examples? Can the characteristic-$2$
+and characteristic-$29$ rigidity classifications for septics be extended
+to a complete classification in characteristic seven?
+\end{question}
+Theorems~\ref{thm:29rigidity} and~\ref{thm:2rigidity} already answer two
+of the septic cases: characteristic $29$ forces a cyclic binomial
+configuration, whereas characteristic two permits a nonsolvable group of
+order $168$. For higher primes, the number and arrangement of common
+cyclotomic roots should impose analogous Fourier-support constraints.
+Characteristic $p$ instead requires a unipotent cyclic-operator analysis.
+
+\begin{question}[Smaller deterministic separating families]
+For $(n,k)=(7,3)$, replace the bound 1191 by a substantially smaller uniform
+number for a specified family of separating invariants. Can one exploit
+the Galois action to count entire collision orbits at once?
+\end{question}
+The present bound simply adds the degrees of all pair differences, often
+counting the same exceptional parameter many times. It is not claimed to
+be sharp. A good improvement must still handle finite characteristic and
+must distinguish the existence of one good parameter from a fixed short
+hitting set over the original field.
+
+\begin{question}[An exact characteristic audit for matching predicates]
+For the additional root relations used to match invariant factors in
+septic formulas, determine the corresponding balanced or unbalanced
+coefficient vectors and their cyclotomic obstructions. Is there one finite
+set of excluded characteristics that certifies every matching step?
+\end{question}
+This is more precise than assuming that the prime divisors of $p(p-1)$
+are the only possible problems. The characteristic-$29$ calculation shows
+that auxiliary invariants can introduce other primes. Unbalanced
+relations require separately treating their constant-character component.
+
+\begin{question}[Minimal nonlinear covers of the cyclic configuration]
+What is the smallest number of regular Kummer charts needed to cover
+$\Spec B$ when arbitrary nontrivial character sections are allowed?
+\end{question}
+We prove that one global chart is impossible and that the standard Fourier
+coordinate cover needs all $p-1$ of its members. These facts do not settle
+the optimum among nonlinear choices. This question links radical formulas
+to the number of generators of the nontrivial invertible modules $L_j$.
+
+\begin{question}[Other permutation subgroups and their unit characters]
+Compute $\Pic(A^H)$ and its radical-coordinate obstructions for other
+subgroups $H\leq S_n$ acting freely on ordered distinct-root
+configurations, beginning with the affine prime-degree groups.
+\end{question}
+The descent method still reduces the problem to $H^1(H,A^\times)$.
+However, permutations can reverse orientations of difference factors, so
+the clean cyclic splitting \eqref{eq:unitmodule} can acquire character
+corrections. Those signs must be derived rather than discarded.
+
+\begin{question}[Coefficient-efficient invariant ratios]
+For quintics and septics, construct small exact expressions for the
+chart data $a_j,c_{j,k}$ in a computationally convenient presentation of
+the abelian intermediate field, and compare them with existing large
+invariant formulas.
+\end{question}
+The atlas theorem guarantees that only one $p$th radical is necessary once
+these invariants are known. The unresolved algorithmic issue is computing
+them without already knowing an ordered root tuple. Modular reconstruction,
+trace pairings, and carefully chosen resolvents are plausible approaches.
+
+\begin{question}[Verified finite certificates and branch reconstruction]
+Can the 29 norm determinants, the affine orbit partitions, and the generic
+one-radical chart theorem be formally verified with a small trusted kernel
+boundary and without native computation assumptions?
+\end{question}
+The provided certificates are deliberately small. A realistic first
+milestone is the septic triple classification and the one-radical theorem,
+followed by a coefficient-level example and a full audit of its dependency
+graph. This is a formalization target, not a claim that such a proof is
+already included.
+
+\begin{question}[Numerically stable exact chart selection]
+Among nonzero Fourier charts, which selection criterion minimizes
+intermediate coefficient growth and numerical conditioning while remaining
+compatible with exact certification?
+\end{question}
+The algebraic theorem only distinguishes zero from nonzero. A practical
+hybrid solver could use approximate information to propose a pivot and
+exact arithmetic to certify it. The mathematical output must remain
+independent of the heuristic and preserve the transition identities.
+
+\section{Conclusion}
+
+Two kinds of exceptional behavior have different causes. Subset-sum
+collisions are arithmetic: they are controlled exactly, away from the
+prime degree itself, by cyclotomic norm divisibility. The exceptional
+characteristic $29$ for septic triple sums is a concrete manifestation,
+with a separable irreducible cyclic witness and a complete repeated-factor
+resolvent. The collision locus is even rigid: characteristic $29$ forces
+a translated pure binomial, while characteristic two forces an affine
+Fano configuration and an additive-polynomial quotient. A separating
+vector compressed to a scalar supplies a uniform
+repair with an explicit finite search bound.
+
+Exceptional radical coordinates are geometric as well as arithmetic.
+Every nonempty Fourier support occurs even for rational examples with full
+affine Galois group. A nonzero pivot gives a coherent one-radical local
+formula, but the universal cyclic cover carries a nontrivial order-$p$
+line-bundle class and admits no single global regular Kummer generator.
+The right object is therefore an atlas with certified transitions, not a
+formula whose denominators are assumed never to vanish.
+
+For ProveIt, the immediate gain is a sharper proof architecture: separate
+root separability from resolvent separation, separate invariant recovery
+from Fourier inversion, and derive branch coherence from one shared
+radical. The results here supply exact mathematical statements and small
+certificates for those interfaces, while leaving coefficient optimization
+and kernel formalization as explicit next tasks.
+
+\appendix
+\section{Reproducibility and the finite proof boundary}
+\label{app:repro}
+
+\subsection{Files in the archive}
+
+The archive contains this source and compiled PDF, a README, two checking
+programs, and generated certificate files. The principal program is
+\code{verify_results.py}; it uses exact SymPy integer and rational
+arithmetic, not floating-point roots. The independent program
+\code{audit_certificates.py} uses only the Python standard library to check
+the orbit and determinant certificates.
+
+Typical commands are
+\begin{lstlisting}
+python -m pip install sympy
+python verify_results.py --out certificates
+python audit_certificates.py --cert certificates/cyclotomic_norm_certificates.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The source uses common LaTeX packages and has no external figure or
+bibliography-file dependency.
+
+\subsection{Recorded checks}
+
+The executed full verification run used Python 3.13.5 and SymPy 1.14.0.
+The report \code{certificates/verification_report.json} records a passing
+result for:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Count\\
+\midrule
+Exact pairwise cyclotomic resultants & 850\\
+Independent orbit-representative integer determinants & 29\\
+Finite-field counterexample families & 4\\
+Distinct repaired characteristic-$29$ coefficient vectors & 35\\
+Nonempty Fourier supports, degrees five and seven & 78\\
+Exact Fourier-mode identities & 516\\
+Nonzero pivot charts & 224\\
+Reconstructed root entries over all branches in those charts & 10,208\\
+Exact worked minimal polynomials & 6\\
+Solvable affine septic orbit patterns & 4\\
+Finite-field character-root patterns for septic rigidity & 1,400\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Fourier test algebra is
+\[
+ \Q[\alpha,\zeta]/(\alpha^p-2,\Phi_p(\zeta)).
+\]
+Its elements are stored with exact rational coefficients in the basis
+$\alpha^a\zeta^b$, $0\leq a<p$, $0\leq b<p-1$.
+The field degree calculation in Theorem~\ref{thm:support} justifies this
+basis. The tests run through every nonempty support with coefficient one,
+every available pivot, all $p$ choices of the radical branch, and all $p$
+reconstructed roots. General rational coefficients are covered by the
+proof, not exhaustively by this finite test.
+
+The checks do not prove that the cited repository modules compile in a
+fresh environment, and no Lean or Rocq process was run for this article.
+Nor do these checks verify the Picard calculation: that part is the written
+descent proof in Section~\ref{sec:global}. Keeping these boundaries explicit
+prevents an exact computation from being mistaken for an unrelated formal
+verification claim.
+
+\section{A compact dependency map}
+
+The central results have the following logical dependencies:
+\begin{align*}
+ &\text{Cauchy theorem + cyclic operator B\'ezout identity}\\
+ &\hspace{2em}\Longrightarrow\text{safe resultant criterion},\\[3pt]
+ &\text{cyclotomic common root + Eisenstein binomial}\\
+ &\hspace{2em}\Longrightarrow\text{necessity at every non-$p$ bad prime},\\[3pt]
+ &\text{finite norm tables + exact criterion + Artin--Schreier witness}\\
+ &\hspace{2em}\Longrightarrow\text{complete small-degree classification},\\[3pt]
+ &\text{septic norm table + characteristic-$29$ character projection}\\
+ &\hspace{2em}\Longrightarrow\text{translated-binomial rigidity},\\[3pt]
+ &\text{two cubic cyclotomic factors in characteristic two}\\
+ &\hspace{2em}\Longrightarrow\text{affine Fano and additive-quotient rigidity},\\[3pt]
+ &\text{subset polynomial identity + finite root bound}\\
+ &\hspace{2em}\Longrightarrow\text{uniform separating repair},\\[3pt]
+ &\text{Fourier covariance + one nonzero mode + inversion}\\
+ &\hspace{2em}\Longrightarrow\text{all-branch coherent reconstruction},\\[3pt]
+ &\text{prime-degree pure extension + geometric sums}\\
+ &\hspace{2em}\Longrightarrow\text{all support patterns},\\[3pt]
+ &\text{factorial configuration ring + explicit units + descent}\\
+ &\hspace{2em}\Longrightarrow\Pic B\cong\Z/p\Z\text{ and no global eigenunit}.
+\end{align*}
+There is no dependence of the arithmetic classification on the geometric
+Picard theorem, and no dependence of the Fourier chart theorem on the
+finite norm table. The three strands can be independently reviewed and
+formalized.
+
+\begin{thebibliography}{9}
+
+\bibitem{Lazard2004}
+Daniel Lazard,
+\emph{Solving Quintics by Radicals},
+in \emph{The Legacy of Niels Henrik Abel}, Springer, 2004, pp.~207--225.
+DOI: \href{https://doi.org/10.1007/978-3-642-18908-1_6}{10.1007/978-3-642-18908-1\_6}.
+
+\bibitem{FaggalLazard2014}
+Mohammed A. Faggal and Daniel Lazard,
+\emph{Solving Quintics and Septics by Radicals},
+International Journal of Scientific and Research Publications,
+4(12), December 2014, pp.~1--10.
+\url{https://www.ijsrp.org/research-paper-1214/ijsrp-p3679.pdf}.
+Especially Proposition~7 and Section~5.2. The conclusions drawn in
+Section~\ref{sec:published} concern separation and distinct factors, not an
+unqualified refutation of radical solvability.
+
+\bibitem{StacksKummer}
+The Stacks Project Authors,
+\emph{Kummer theory}, Section~59.28, Tag~03PK.
+\url{https://stacks.math.columbia.edu/tag/03PK}.
+Used for the standard line-bundle interpretation of Kummer torsors; the
+unit and Picard-group calculations for the present configuration are
+proved in this article.
+
+\bibitem{repoReadme}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt}, root README, inspected snapshot
+\snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/README.md}.
+
+\bibitem{repoReport}
+ProveIt project,
+\emph{A Lean Transcription of the Corrected Lazard Formula for Solvable
+Quintics}, report checkpoint dated 13 August 2026, inspected in the pinned
+snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/LazardQuinticFormalization.tex}.
+
+\bibitem{repoCrosswalk}
+ProveIt project,
+\emph{Lazard paper claim crosswalk}, inspected in the pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/LazardPaperClaimCrosswalk.md}.
+
+\bibitem{repoFourier}
+ProveIt project,
+\emph{Arbitrary-degree Fourier reconstruction in Lazard's convention},
+\code{LazardGeneralFourier.lean}, inspected in the pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardGeneralFourier.lean}.
+
+\end{thebibliography}
+\end{document}
