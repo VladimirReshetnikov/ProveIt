@@ -11,7 +11,10 @@
 \usepackage{enumitem}
 \usepackage{titlesec,fancyhdr}
 \usepackage{listings}
+\usepackage{tikz,needspace}% Part II (batch 39)
 \usepackage{hyperref}
+% Part II (batch 39): let long shipped file names break at hyphens.
+\makeatletter\g@addto@macro\UrlBreaks{\do\-}\makeatother
 \definecolor{Ink}{HTML}{233C53}
 \definecolor{Accent}{HTML}{1F6C6A}
 \definecolor{Pale}{HTML}{F0F5F6}
@@ -19,7 +22,8 @@
 \hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
   pdftitle={A Reflexive Root-Polytope Model for Preorder h-Polynomials},
   pdfauthor={Research manuscript prepared with ChatGPT},
-  pdfsubject={Proposed proof of the simplicial-polytopal realization conjecture for finite preorders}}
+  pdfsubject={Proposed proof of the simplicial-polytopal realization conjecture for finite preorders;
+    Part II: height-two preorders, matching supports, nonreal roots and crown obstructions}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -40,6 +44,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}% Part II (batch 39)
 \newcommand{\R}{\mathbb R}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb Z_{\geq0}}
@@ -59,11 +64,20 @@
 \newcommand{\ee}{\mathbf e}
 \newcommand{\ff}{\mathbf f}
 \newcommand{\down}{\mathord\downarrow}
+% Part II (batch 39): macros of manuscript 02
+\newcommand{\C}{\mathbb C}
+\newcommand{\PM}{\mathcal M}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Qp}{\mathcal Q(P)}
+\newcommand{\hP}{h_P}
 \newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
   backgroundcolor=\color{Pale},frame=single,rulecolor=\color{Pale},
   xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=8pt,belowskip=8pt}
+\newtcolorbox{statusbox}{colback=Pale,colframe=Accent,boxrule=.5pt,
+ arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt}% Part II (batch 39)
 
 \begin{document}
 \thispagestyle{empty}
@@ -74,6 +88,9 @@
 for Preorder $h$-Polynomials}\par
 \vspace{9pt}
 {\large Simplicial-polytopal realization, palindromicity, and unimodality}\par
+\vspace{5pt}
+{\normalsize\color{Ink} With Part~II (added 28 September 2026): height-two preorders ---
+matching supports, nonreal-root families, and crown obstructions}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -101,6 +118,18 @@ higher-dimensional root-polytope identity and preorder duality are already
 results of Dai, Hou, Liu, Thawinrak, and Wang, and are not claimed as new here.
 A separate hypertree argument reconstructs that known identity. Exact
 verification code and complete small-case data accompany the manuscript.
+
+\emph{Addition of 28 September 2026 (batch 39).} Part~II, from a later
+manuscript, proves that for a poset of height at most two with bipartite
+comparability graph $G$ the support polynomial is
+$(1+t)^np_G\bigl(t/(1+t)^2\bigr)$, where $p_G$ counts perfectly matchable
+vertex sets; this gives $\gamma$-positivity (Conjecture~5.2) in height two.
+It records that real-rootedness (Conjecture~5.3) fails, crediting the first
+counterexample, an eight-element poset, to a posting by Shivam Patel, and
+proves an exact real-root count for an infinite family extending it. It shows
+that an induced crown on $2r\geq6$ elements forces a minimal nonface of size
+$r$ in every lattice triangulation of $C_\tau$; Conjecture~5.1(d) itself
+remains open.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -112,6 +141,11 @@ are identified explicitly. The manuscript has not been independently refereed
 or checked by a proof assistant. The finite
 computations test the constructions; they do not replace the proof. Flag
 realizability, $\gamma$-positivity, and real-rootedness are not proved.
+[Added 28 September 2026, batch 39: this sentence describes Part~I. Part~II
+proves $\gamma$-positivity for posets of height at most two, records
+counterexamples to real-rootedness (the first credited to prior work), and
+obstructs flag lattice triangulations of $C_\tau$; see
+Section~\ref{htwo:sec:answers}.]
 \end{tcolorbox}
 \newpage
 \tableofcontents
@@ -123,8 +157,12 @@ check. Sections~\ref{sec:examples}--\ref{sec:limits} provide examples, exact
 experiments, and limitations. Appendix~\ref{app:hypertrees} gives an alternative
 proof of the known higher-dimensional identity; Appendix~\ref{app:audit}
 records the proof dependencies and the main normalization checks.
+Part~II (Sections~\ref{htwo:sec:intro}--\ref{htwo:sec:conclusion}), added
+on 28 September 2026, treats height-two preorders; it precedes the
+appendices of Part~I.
 \end{tcolorbox}
 \newpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
 
 \section{The problem and the result}\label{sec:problem}
 
@@ -831,6 +869,11 @@ Six-element crown & 6 & $(1,12,48,75,48,12,1)$ & 197\\
 The crown has minimal elements $a,b,c$ and maximal elements $A,B,C$, with
 $a,b<A$, $b,c<B$, and $c,a<C$. Every row of the table is recomputed by the
 supplied verifier; no floating-point root finder is involved.
+[Added 28 September 2026, batch 39: the crown is the case $r=3$ of Part~II's
+crown family. Its support polynomial has the closed form~\eqref{htwo:eq:crownh}
+and only simple negative zeros (Proposition~\ref{htwo:prop:crownroots}), yet
+no lattice triangulation of its $C_\tau$, pulling or not, is flag
+(Theorem~\ref{htwo:thm:crownintro}).]
 
 \subsection{Why arbitrary reflexive relations are not enough}
 
@@ -926,6 +969,13 @@ is determined by its edges: every collection of pairwise adjacent vertices
 must form a face. Neither a pulling triangulation nor a general simplicial
 polytope automatically has that property. Therefore Conjecture~5.1(d) is not
 settled by the argument.
+[Added 28 September 2026, batch 39: Part~II shows more. If $\tau$ contains
+an induced crown on $2r\geq6$ elements, every lattice triangulation of
+$C_\tau$ or of $\partial C_\tau$ has a minimal nonface of size $r$
+(Theorem~\ref{htwo:thm:crownintro}); so the polytope $S_\tau$ of
+Theorem~\ref{thm:main} is then never flag. Conjecture~5.1(d), which asks for
+\emph{some} flag polytope, remains open; see
+Section~\ref{htwo:sec:answers}.]
 
 Likewise, palindromic unimodality and the $g$-theorem do not establish
 $\gamma$-positivity or real-rootedness. The manuscript proves neither the
@@ -936,6 +986,14 @@ nonnegativity of all coefficients in
 \]
 nor the assertion that every zero of $h_\tau$ is real. Accordingly it does
 not claim to settle Conjectures~5.2 or~5.3 of~\cite{AC}.
+[Added 28 September 2026, batch 39: the two preceding sentences describe
+Part~I at its state of 20 September 2026. Conjecture~5.3 is false: the first
+counterexample known here is an eight-element height-two poset posted by
+Shivam Patel~\cite{Patel}, which Part~II checks and extends to the family of
+Theorem~\ref{htwo:thm:thetaintro}. Conjecture~5.2 holds for posets of height at
+most two, with $\gamma_k$ the number of perfectly matchable vertex sets of
+size $2k$ in the comparability graph (Theorem~\ref{htwo:thm:main}), and is
+open in general. See Section~\ref{htwo:sec:answers}.]
 
 For independent mathematical review, the shortest audit is to verify four
 links: the identification of the draconian vectors with $P_\tau$;
@@ -951,7 +1009,1952 @@ support, not as a claim of community acceptance. The distinction between the
 known August 2026 result and the additional construction developed here is
 part of the mathematical claim, not a bibliographic afterthought.
 
+%% ====================================================================
+%% Batch-39 addition (manuscript 02, "Height-Two Preorder Polynomials").
+%% All labels of Part II carry the prefix htwo: (height two).
+%% Manuscript section k is printed here as Section k+11.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Height-two preorders: matching supports, nonreal roots, crown obstructions}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Height-two preorders and crown obstructions}
+
+\noindent\emph{Sections~\ref{sec:problem}--\ref{sec:limits} and the
+appendices form the original report (Part~I) of 20 September 2026,
+unchanged except for dated pointers to this addition. Part~II was added on
+28 September 2026 in batch~39 of ProveIt's incoming-report intake, from one
+manuscript written against Part~I as printed above. It addresses the three
+questions Part~I left open in Section~\ref{sec:limits}: Conjectures~5.3,
+5.2 and~5.1(d) of Athanasiadis and Chapoton~\cite{AC}. Its headline
+counterexample to Conjecture~5.3 is \textbf{not new}: it was posted earlier
+by Shivam Patel on MathDB~\cite{Patel}, and the manuscript says so.
+Section~\ref{htwo:sec:intro} records the provenance, fixes the notation and
+states what is answered.}
+
+\section{Provenance, conventions and what Part~II answers}
+\label{htwo:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{htwo:sec:source}
+Part~II is batch-39 manuscript~02, \emph{Height-Two Preorder Polynomials:
+Matching supports, nonreal-root families, and crown obstructions. With a
+spectral treatment of bipartite cactus graphs}, a research manuscript
+developed with ChatGPT for Vladimir Reshetnikov and dated 28 September 2026
+(26 pages as delivered). It arrived as the archive
+\nolinkurl{ProveIt_Height_Two_Preorder_Research.zip} (inner directory
+\nolinkurl{Preorder_Matching_Research/}) in ProveIt commit
+\texttt{74f7f5bdb} and was placed in \texttt{e2b1f016a}. It names no ProveIt
+commit; it records the Git blob
+\texttt{4c350f5652096b7db91d\allowbreak 4a10075eb7905910f647} of Part~I's
+\texttt{article.tex} as the file it consulted. That blob is Part~I exactly as
+printed above (it is unchanged at the placement commit), so every statement
+the manuscript makes about ``the ProveIt report'' refers to Part~I. The
+manuscript's code and data are shipped beside Part~I's files with the prefix
+\texttt{02-height-two-} (Part~I's unprefixed files count as~01), and its
+status and source notes as \texttt{02-height-two-STATUS.md} and
+\texttt{02-height-two-sources.md}. Its manuscript, delivery README and PDF are
+not shipped and survive in the arrival commit; its checksum list was verified
+at placement and retired.
+
+The manuscript is printed here as Sections~\ref{htwo:sec:target}
+to~\ref{htwo:sec:conclusion}: its Section~$k$ is Section~$k+11$ here, and its
+theorem and equation numbers shift accordingly (its Theorem~2.2 is
+Theorem~\ref{htwo:thm:main}); its two figures and ten research questions
+keep their numbers.
+Every result, proof, example, remark, limitation, question and non-claim of
+the manuscript is printed. For the reader's convenience, its abstract is
+reproduced here as delivered.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of manuscript~02 (as delivered).}
+For a finite poset $P$, let $h_P(t)$ enumerate the integer points of
+its preorder polytope by support size. If $P$ has height at most two and $G$ is
+its bipartite comparability graph, we prove
+\[
+ h_P(t)=(1+t)^{|P|}p_G\!\left(\frac{t}{(1+t)^2}\right),
+ \qquad
+ p_G(u)=\sum_{\substack{W\subseteq V(G)\\G[W]\text{ has a perfect matching}}}
+ u^{|W|/2}.
+\]
+Thus the $\gamma$-coefficients count distinct matchable vertex sets, not
+matchings, proving the height-two case of Athanasiadis--Chapoton
+Conjecture~5.2. For the graph $\Theta_m$ formed by $m$ internally disjoint
+three-edge paths with common endpoints, we obtain an explicit polynomial
+and a complete real-root count. For $m\ge3$, the associated height-two
+support polynomial has exactly two real roots when $m$ is even and four
+when $m$ is odd. Consequently its proportion of nonreal roots tends to
+one, even though the graph has treewidth two. The eight-element case was
+previously posted by Shivam Patel; we verify it and extend it rather than
+claiming its discovery. A separate 17-element construction transfers the
+classical Stembridge--Ohsugi--Tsuchiya example.
+
+An orthant argument proves the height-two instance of the repository's
+root-polytope identity. For bipartite cactus graphs, a sixth-root-of-unity
+matrix gives a determinantal formula and a multivariate stability
+refinement, with univariate real-rootedness credited to prior work.
+Induced crowns force arbitrarily large minimal nonfaces in every lattice
+triangulation of the canonical root polytope and indispensable toric
+relations of arbitrarily large degree. Exact Python and C++ certificates
+accompany the proofs.
+\end{tcolorbox}
+
+\begin{statusbox}
+\small\textbf{Status and scope (manuscript~02).} The proposed contributions are the general
+height-two connection, the complete root-distribution theorem for
+$\Theta_m$, and the geometric and spectral refinements. The first
+counterexample to Conjecture~5.3 is \emph{not} claimed as new: a smaller
+posted example was found during the source audit. Two classical
+root-polytope results are imported explicitly. The manuscript has not been
+independently refereed or checked in Lean. General flag realizability and
+$\gamma$-positivity beyond height two remain unsettled here; absolute
+publication priority is not certified.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority of the counterexample.} The first known counterexample
+to Conjecture~5.3 of~\cite{AC} printed in this report is the eight-element
+height-two poset $P_{\Theta_3}$ of Section~\ref{htwo:sec:theta}. It is due to
+Shivam Patel, whose posted solution on MathDB~\cite{Patel} specifies the graph
+$\Theta_3$ and both polynomials. The manuscript found that posting during its
+own source audit, after its 17-element example had been developed, and
+revised its claims accordingly; it reproduces and independently checks
+Patel's example and claims only the all-$m$ extension. The exact calendar
+date of the posting was not established: the page showed a relative date
+(about one month before 28 September 2026) and labelled the claim unverified.
+A withdrawn SSRN listing (abstract 7385158) for an eight-element
+counterexample was also found; its full text was unavailable, and it is not
+used as evidence for any mathematical or priority claim. The 17-element
+counterexample of Section~\ref{htwo:sec:counter} is a transfer of the
+classical Stembridge--Ohsugi--Tsuchiya graph polynomial~\cite{Stembridge,OT20},
+neither a first disproof nor a minimum-size example. Univariate
+real-rootedness for bipartite cacti is Ohsugi--Tsuchiya's~\cite[Theorem~7.2]{OT21},
+and the even-cycle (crown) formula is Davis--Kohl's~\cite{DK}. The source audit
+behind these statements does not prove the absence of other publications,
+preprints or postings containing any of Part~II's proposed extensions.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Shortest audit (manuscript~02).} Read the counting lemma in
+Section~\ref{htwo:sec:count}, the Boolean summation in
+Section~\ref{htwo:sec:gamma}, and the explicit graph and exact certificate in
+Section~\ref{htwo:sec:counter}. Together with Section~\ref{htwo:sec:theta}, these establish the root-distribution
+results without assuming any unrefereed theorem in ProveIt (in particular,
+without Part~I's general theorem). Sections
+\ref{htwo:sec:root}--\ref{htwo:sec:obstructions} develop its geometric and spectral
+context. The companion programs provide independent finite checks rather
+than substitutes for the infinite-family proofs.
+\end{statusbox}
+
+\subsection{Notation of Part~II}
+\label{htwo:sec:notation}
+Part~II works with \emph{posets} of height at most two, which are preorders;
+for $\tau=P$ its $\mathcal J(P)$, $\Qp$, $h_P$ and $C_P$ are exactly Part~I's
+$\J$, $\Qt$, $h_\tau$ and $C_\tau$ (compare \eqref{htwo:eq:preorderpoly} and
+\eqref{htwo:eq:supportpoly} with the two displays opening
+Section~\ref{sec:problem}, and
+Theorem~\ref{htwo:thm:crownintro} with~\eqref{eq:C}). Its $\gamma$-coefficients
+are taken in the basis $t^k(1+t)^{n-2k}$ of Section~\ref{sec:limits}, and
+$\Vol$ is the normalized volume of~\eqref{eq:vol}. Several letters mean
+different things in the two parts; Table~\ref{htwo:tab:notation} fixes them.
+No symbol of the manuscript was renamed and no normalization was changed.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~II. The last column prints the tempting false
+reading, usually a Part~I symbol with the same letter.}
+\label{htwo:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.36\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$P$, $P_G$, $P_0$, $P_{\Theta_m}$, $P_r$ & finite posets: $P_G$ has $a<b$
+ exactly for the edges $ab$ of $G$; $P_0=P_{G_0}$; $P_r$ is the crown &
+ Part~I's lattice-point set $P_\tau=\Qt\cap\Z^n$, which Part~II writes
+ $\Qp\cap\Z^V$. $P_r$ is not ``$P_\tau$ at $\tau=r$''.\\
+$V$, $n=|V|$ & ground set of $P$ & Part~I's ground set $E=[n]$.\\
+$G=(A\sqcup B,E)$ & bipartite comparability graph of a height-two poset on
+ its $n$ elements; $E$ its edge set & Part~I's doubled graph $G_\tau$ on $2n$
+ vertices $i_L,j_R$ (edge iff $j\le_\tau i$, loops $i_Li_R$ included) and its
+ augmentation $\widehat G_\tau$; Part~I's ground set $E$.\\
+$p=|A|$, $q=|B|$ & shore sizes (Section~\ref{htwo:sec:definitions}) &
+ Part~I's functions $p(y)$, $q(y)$ of~\eqref{eq:pq}; the polynomial $q_G(x)$
+ of~\eqref{htwo:eq:qG}.\\
+$p_G(u)$, $\PM_k(G)$ & perfectly matchable \emph{vertex sets} of $G$; $p_G$ is
+ the $\gamma$-polynomial of $h_{P_G}$ & the matching polynomial
+ $M_G(u)=\sum_km_k(G)u^k$; also $p_{G_\tau}$ of Part~I's doubled graph, which
+ is $h_\tau$ itself (Remark~\ref{htwo:rem:doubled}).\\
+$H=(X\sqcup Y,E)$, $\widehat H$, $B_{\widehat H}$, $\mathcal R_H$ & any
+ bipartite graph, its augmentation by $x_0,y_0$, its edge polytope, its demand
+ vectors & Part~I's $B_\tau$, which is $B_{\widehat H}$ for $H=G_\tau$ (same
+ augmentation, same lattice); Part~I's hyperplanes $H_1$, $H_m$. Hypertrees
+ here are \emph{right} hypertrees; Appendix~\ref{app:hypertrees} uses left
+ ones.\\
+$\Theta_m$, $p_m$, $R_m(y)$, $k=m-2$ & $m$ parallel three-edge paths, its
+ matchable-set polynomial & Part~I's dilation $m$. The vertex $d$ of
+ $\Theta_m$ is not a diagonal vertex $d_i$ of~\eqref{eq:diagonal}.\\
+$G_0$, $p_0$, $F_{i,j}(u)$ & the 17-element example, its $\gamma$-polynomial,
+ the board recurrence & ---\\
+$D_G$, $T_G$, $g_T$, $g_D$ & one-sided root polytope lattice-equivalent to
+ $C_{P_G}$, its positive part, their gauges & Part~I's gauge $g_\tau$ on
+ $C_\tau$; $g_D$ is $g_\tau$ after negating the $A$-coordinates. Part~I's
+ neighbourhoods $D_i$.\\
+$\mathcal I(G)$, $I$ in Section~\ref{htwo:sec:root} & independent vertex sets &
+ order ideals $I\in\J$ (also written $I$ in Section~\ref{htwo:sec:gamma});
+ the toric ideal $I_{\mathcal A}$.\\
+$K$, $\zeta$, $H_G$, $\Phi_G$, $q_G$, $\lambda_j$ & cactus matrix, sixth root of
+ unity, Hermitian block matrix, stable polynomial, its diagonal specialization,
+ eigenvalues of $KK^*$ & Part~I's triangulation $K$ in~\eqref{eq:triangEhr}.\\
+$S$ & a subset of $B$ or $Y$; in~\eqref{htwo:eq:variance} the support size of
+ a uniformly random lattice point & Part~I's simplicial polytope $S_\tau$.\\
+$F$, $U$, $W$, $v_i$, $w_i$, $\mathcal A$ & the exposed circuit face of a
+ crown and its Radon halves & $W$ also denotes a perfectly matchable set
+ elsewhere in Part~II; $F_{i,j}$ is the board recurrence.\\
+$\nu(G)$ & maximum matching size & ---\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{remark}[Merge note: Part~I's input and Part~II's input agree]
+\label{htwo:rem:doubled}
+This remark is the merge's own and is not in manuscript~02. Part~I's
+augmented polytope $B_\tau$ of~\eqref{eq:B} is the edge polytope
+$B_{\widehat H}$ of Section~\ref{htwo:sec:count} for $H=G_\tau$, with the same
+lattice. Proposition~\ref{prop:known} and the imported
+identity~\eqref{htwo:eq:OTinput} therefore give, for every finite preorder,
+\[
+ h_\tau(t)=h^*(B_\tau;t)=p_{G_\tau}(t):
+\]
+the support polynomial is itself the perfectly-matchable-set polynomial of
+the doubled graph $G_\tau$. This is a consequence of two cited theorems, not a
+new result, and it is a different statement from
+Theorem~\ref{htwo:thm:main}, in which $p_G$ of the $n$-vertex comparability
+graph is the $\gamma$-polynomial of $h_{P_G}$. As a normalization check, both
+sides were compared by direct enumeration (ideal inequalities against
+induced perfect matchings of $G_\tau$) for all $390$ labeled preorders with
+$n\le4$; they agree. That check is a scratch computation of the write phase
+and is not shipped.
+\end{remark}
+
+\subsection{What Part~II answers in Section~\ref{sec:limits}}
+\label{htwo:sec:answers}
+Section~\ref{sec:limits} of Part~I leaves three statements of~\cite{AC}
+unsettled. Their status after Part~II, as of 28 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Conjecture~5.3 (real-rootedness of $h_\tau$) is false.} The
+first counterexample known to this report is Patel's eight-element poset
+$P_{\Theta_3}$~\cite{Patel}, \emph{not} a discovery of Part~II. Part~II proves
+that $h_{P_{\Theta_m}}$ has exactly $2m$ ($m$ even) or $2m-2$ ($m$ odd)
+nonreal zeros for every $m\ge3$ (Theorem~\ref{htwo:thm:thetaintro},
+Corollary~\ref{htwo:cor:nonreal}), and transfers the classical
+17-element example (Theorem~\ref{htwo:thm:counter}). Part~I never asserted
+real-rootedness, so nothing in it is retracted.
+\item \textbf{Conjecture~5.2 ($\gamma$-positivity) holds for posets of height
+at most two} (Theorem~\ref{htwo:thm:main}: $\gamma_k=|\PM_k(G)|$). It remains
+open for general preorders, including height-two posets whose elements are
+blown up into nontrivial equivalence classes (Research question~1).
+\item \textbf{Conjecture~5.1(d) (a flag simplicial polytope) remains open.}
+Part~II shows that no lattice triangulation of $C_\tau$ or of its boundary is
+flag when $\tau$ contains an induced crown on $2r\ge6$ elements
+(Theorem~\ref{htwo:thm:crownintro}). A pulling triangulation of
+$\partial C_\tau$ uses only vertices of $C_\tau$, so for such $\tau$ the
+simplicial polytope $S_\tau$ of Theorem~\ref{thm:main} is never flag; the
+smallest case is Part~I's six-element crown (Section~\ref{sec:examples}).
+This does not disprove Conjecture~5.1(d), which asks for \emph{some} flag
+polytope with $h$-polynomial $h_\tau$.
+\end{itemize}
+Part~II also reproves, for height two, three statements of Part~I by
+different routes: the identity $h^*(C_{P_G})=h_{P_G}$ and reflexivity by an
+orthant decomposition (Theorem~\ref{htwo:thm:rootidentity}, compare
+Corollary~\ref{cor:numerators} and Proposition~\ref{prop:reflexive}),
+invariance under reversal (Corollary~\ref{htwo:cor:small}, compare
+Section~\ref{sec:consequences}), and $h_1=n+|E|$ (compare~\eqref{eq:h1}).
+Its hypertree identification in Section~\ref{htwo:sec:count} is the argument
+of Lemma~\ref{lem:hypertrees} for a general bipartite graph and right
+hypertrees. These are printed as the manuscript gives them, as second routes.
+
+\subsection{Where the merge had to choose}
+\label{htwo:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Placement.} Part~II follows Section~\ref{sec:limits} and precedes
+Part~I's appendices, whose letters and numbers are unchanged.
+\item \emph{Self-citation.} The manuscript cites Part~I as an external
+repository report (its reference ``RepoRoot'', with the blob above). Here
+those citations are replaced by references to Part~I's sections, and the
+phrases ``the ProveIt report'' and ``the repository's construction'' by
+``Part~I''.
+\item \emph{File names.} The manuscript's delivered names
+(\texttt{code/verify.py}, \nolinkurl{data/board_certificate.csv}, \dots) are
+replaced by the shipped names in Section~\ref{htwo:sec:computations}, because
+\texttt{code/verify.py} in this directory is Part~I's different verifier. Its
+build commands are replaced by commands that run on a copy.
+\item \emph{Bibliography.} The manuscript's entries for Athanasiadis--Chapoton
+and K\'alm\'an--Postnikov are Part~I's references~\cite{AC} and~\cite{KP} (the
+manuscript adds the DOI 10.1112/plms.12015 for the latter); its other five
+entries are appended.
+\item \emph{Labels and front matter.} Labels carry the prefix
+\texttt{htwo:}. Two unlabelled corollaries, the conclusion and the build
+subsection received labels so that this section can cite them. The manuscript's title page, abstract, status box and
+audit box are printed in this section.
+\end{itemize}
+
+\section{The research target and the distinction from prior work}\label{htwo:sec:target}
+
+Part~I, the ProveIt report \emph{A Reflexive Root-Polytope Model for Preorder
+$h$-Polynomials}, constructs a canonical root polytope for every finite
+preorder and gives a proposed proof of simplicial-polytopal realization of
+its support polynomial (Theorem~\ref{thm:main}). Its final section,
+Section~\ref{sec:limits}, explicitly leaves
+flag realizability, $\gamma$-positivity, and real-rootedness unresolved. These
+are different properties, and separating them is essential here.
+
+The underlying questions are Conjectures~5.1(d), 5.2, and 5.3 of
+Athanasiadis and Chapoton~\cite{AC}. The first asks for \emph{some} flag
+simplicial polytope with the prescribed $h$-vector. The second asks for a
+nonnegative expansion in the basis $t^k(1+t)^{n-2k}$. The third asserts that
+all zeros of the support polynomial are real. We focus on posets of height
+at most two: they are preorders, but unlike arbitrary preorders they admit
+a direct bipartite-graph description.
+
+The graph polynomial needed for this description is classical. The
+perfectly matchable set polynomial is studied by Davis and Kohl~\cite{DK};
+its root-polytope realization originates in Ohsugi and
+Tsuchiya~\cite{OT20}. The nonreal-rooted example used below comes from
+Stembridge's naturally labeled, width-two counterexample to the
+Neggers conjecture~\cite{Stembridge}, as translated into a graph polynomial
+by Ohsugi and Tsuchiya~\cite[Example~3.7]{OT20}. It is important not to
+confuse that older \emph{width-two} poset with the new \emph{height-two}
+poset obtained by orienting its bipartite incomparability graph.
+
+\subsection{What the article proves}
+
+The height-two matching-support identity is the central theorem. It proves
+the relevant $\gamma$-positivity conjecture for an entire class and converts
+real-root questions into graph enumeration. The principal negative-family
+result concerns $\Theta_m$: a complete real-root count shows that almost
+all zeros become nonreal while graph treewidth stays two.
+
+The source audit found an earlier eight-element counterexample posted by
+Shivam Patel on MathDB~\cite{Patel}. It is exactly $P_{\Theta_3}$.
+The source labels the posting unverified; our independent finite
+calculation agrees with it, and the general proof below includes it.
+Consequently a claim to have first disproved Conjecture~5.3 would be
+inappropriate. The site's exact posting date was not available, and its
+broad historical metadata is not used as evidence. The 17-element
+construction is retained as an independent bridge to classical literature,
+not as the smallest or first counterexample.
+
+A second theme concerns a limitation of the canonical root-polytope
+construction. Every induced crown of size $2r$, $r\ge3$, forces a minimal
+nonface of size $r$ in any lattice triangulation. This rules out obtaining a
+flag complex by choosing a more clever lattice triangulation of that
+particular polytope. It does \emph{not} rule out another flag polytope with
+the same $h$-vector.
+
+\subsection{A provenance ledger}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.36\textwidth}Y@{}}
+\toprule
+Statement & Provenance and status\\
+\midrule
+$h^*(T_G;u)=p_G(u)$ for bipartite $G$ & Established input;
+Ohsugi--Tsuchiya, reformulated by Davis--Kohl.\\
+Hypertrees count normalized root-polytope volume & Established input from
+K\'alm\'an--Postnikov; used at $u=1$.\\
+Height-two formula $h_P=(1+t)^n p_G(t/(1+t)^2)$ & Proved here by a support
+partition and a counting lemma.\\
+Nonreal-rooted degree-eight graph polynomial & Classical
+Stembridge--Ohsugi--Tsuchiya example, independently recomputed here.\\
+Eight-element counterexample to AC Conjecture~5.3 & Previously posted by
+Patel; independently checked here, not claimed as new.\\
+Complete root count for $P_{\Theta_m}$ & Proved here for every $m$, extending
+the eight-element case to a connected treewidth-two family.\\
+17-element counterexample & Independent transfer of the classical graph
+example; no claim of first disproof or minimality.\\
+Cactus $p_G$ is real-rooted & Already follows from
+Ohsugi--Tsuchiya~\cite[Theorem~7.2]{OT21}; not claimed anew.\\
+Sixth-root matrix and multivariate refinement & Explicit proof supplied
+here; no absolute novelty claim for the matrix technique.\\
+Induced-crown obstruction in the ProveIt root model of Part~I & Proved here, including
+a nonregular-triangulation obstruction and a toric degree lower bound.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Definitions and main statements}\label{htwo:sec:definitions}
+
+For a finite poset $P$ on a ground set $V$ of size $n$, let $\mathcal J(P)$
+be its order ideals, including $\varnothing$ and $V$. Write
+$x(S)=\sum_{v\in S}x_v$. Its preorder polytope and support polynomial are
+\begin{align}
+ \Qp&=\{x\in\R_{\ge0}^{V}:x(I)\le |I|\text{ for all }I\in\mathcal J(P)\},
+ \label{htwo:eq:preorderpoly}\\
+ h_P(t)&=\sum_{x\in\Qp\cap\Z^V}t^{|\supp(x)|}.\label{htwo:eq:supportpoly}
+\end{align}
+The full-set inequality makes the sum finite. Its constant and leading
+coefficients are both one: the all-zero and all-one vectors are the unique
+points with support sizes zero and $n$, respectively.
+
+Here height at most two means that every chain has at most two elements;
+we consider ordinary posets, not arbitrary equivalence-class blowups of them.
+Such a poset can be written $P=P_G$ for a bipartite graph
+$G=(A\sqcup B,E)$: the only strict comparisons are $a<b$ for $ab\in E$.
+Isolated elements may be assigned to either shore. Put $p=|A|$, $q=|B|$,
+$n=p+q$, and denote by $N_G(S)\subseteq A$ the neighborhood of
+$S\subseteq B$.
+
+\begin{definition}
+A subset $W\subseteq V(G)$ is \emph{perfectly matchable} if the induced
+graph $G[W]$ has a perfect matching. The empty set is perfectly matchable.
+Let
+\[
+ \PM_k(G)=\{W\subseteq V(G):|W|=2k,\ G[W]\text{ has a perfect matching}\},
+ \qquad p_G(u)=\sum_{k\ge0}|\PM_k(G)|u^k.
+\]
+For comparison, $M_G(u)=\sum_k m_k(G)u^k$ counts individual $k$-edge
+matchings. These two polynomials are generally different.
+\end{definition}
+
+\begin{theorem}[Height-two matching-support formula]\label{htwo:thm:main}
+For every finite bipartite graph $G$ on $n$ vertices,
+\begin{equation}
+ \boxed{\displaystyle
+ h_{P_G}(t)=\sum_{k\ge0}|\PM_k(G)|t^k(1+t)^{n-2k}
+          =(1+t)^n p_G\!\left(\frac{t}{(1+t)^2}\right).}
+ \label{htwo:eq:main}
+\end{equation}
+In particular, every height-at-most-two poset has a $\gamma$-positive
+support polynomial, with $\gamma_k(P_G)=|\PM_k(G)|$.
+\end{theorem}
+The rational substitution in~\eqref{htwo:eq:main} denotes its polynomial
+expansion; it is not an instruction to evaluate an undefined expression at
+$t=-1$.
+
+\begin{theorem}[A complete root-distribution family]\label{htwo:thm:thetaintro}
+Let $\Theta_m$ have lower elements $d,a_1,\ldots,a_m$, upper elements
+$b_0,b_1,\ldots,b_m$, and edges $a_ib_0$, $a_ib_i$, $db_i$.
+For $m\ge2$,
+\begin{equation}
+ p_{\Theta_m}(u)=(1+u)^{m-2}
+ \bigl(1+(2m+3)u+(m^2+m+3)u^2+u^3\bigr)-u.
+ \label{htwo:eq:thetapoly}
+\end{equation}
+The support polynomial of $P_{\Theta_m}$ is real-rooted exactly when
+$m\le2$ (for $m\ge1$). For $m\ge3$, it has precisely two real roots if
+$m$ is even, and four if $m$ is odd; these real roots are simple and negative.
+Its graph is connected and has treewidth at most two.
+\end{theorem}
+
+\begin{theorem}[An explicit negative answer to real-rootedness]\label{htwo:thm:counter}
+Let $G_0$ have shores $A=\{a_1,\ldots,a_9\}$ and
+$B=\{b_1,\ldots,b_8\}$, with neighborhoods
+\begin{equation}
+\begin{array}{c|cccccccc}
+ j&1&2&3&4&5&6&7&8\\\hline
+ N(b_j)&[1,1]&[1,2]&[1,3]&[1,4]&[1,5]&[2,6]&[3,8]&[4,9]
+\end{array}\label{htwo:eq:board}
+\end{equation}
+where $[l,r]$ means $\{a_l,a_{l+1},\ldots,a_r\}$.
+Then the height-two poset $P_{G_0}$ is a counterexample to
+Conjecture~5.3 of~\cite{AC}. Its $\gamma$-polynomial is
+\begin{align}
+ p_0(u)={}&1+32u+336u^2+1420u^3+2534u^4\notag\\
+         &\quad+1946u^5+658u^6+86u^7+3u^8.\label{htwo:eq:p0}
+\end{align}
+Its support polynomial is $\gamma$-positive despite having nonreal zeros.
+\end{theorem}
+
+\begin{theorem}[Cactus matrix representation]\label{htwo:thm:cactusintro}
+For every bipartite cactus graph $G=(A\sqcup B,E)$ there is an explicitly
+constructible complex matrix $K$, supported exactly on $E$, such that
+\begin{equation}
+ p_G(u)=\det(I_{|A|}+uKK^*).\label{htwo:eq:detintro}
+\end{equation}
+The nonzero entries of $K$ are sixth roots of unity, and each square minor
+has squared absolute value either zero or one, according as its support
+has no perfect matching or has one. Consequently $h_{P_G}$ is real-rooted.
+A multivariate stable determinant and a vertex-deletion interlacing theorem
+are given in Section~\ref{htwo:sec:cactus}.
+\end{theorem}
+
+\begin{theorem}[Induced-crown obstruction]\label{htwo:thm:crownintro}
+Let $P$ be a finite preorder containing an induced height-two crown on
+$2r$ distinct elements, $r\ge3$. The canonical root polytope
+\[
+ C_P=\conv\bigl(\{\pm\ee_v:v\in P\}\cup
+        \{\ee_b-\ee_a:a\ne b,\ a\le_P b\}\bigr)
+\]
+uses all nonzero roots for distinct comparable elements; for equivalent
+elements both directions are included. Every lattice triangulation of
+$C_P$ or of its boundary has a minimal nonface of cardinality $r$.
+The toric ideal on $C_P\cap\Z^n$ has an indispensable binomial of degree
+$r$, and every initial ideal has a minimal generator of degree $r$.
+\end{theorem}
+For preorders, all distinct pairs $a\le_P b$ are used, including both
+directions within an equivalence class.
+
+\section{A matching--polymatroid counting lemma}\label{htwo:sec:count}
+
+For a bipartite graph $H=(X\sqcup Y,E)$, define the finite set
+\begin{equation}
+ \mathcal R_H=\{c\in\N^Y:c(S)\le|N_H(S)|\text{ for every }S\subseteq Y\}.
+ \label{htwo:eq:RH}
+\end{equation}
+This set describes nonnegative integer demands that can be supplied by
+unit-capacity vertices in $X$, with adjacency specifying allowable supply.
+
+\begin{lemma}[Counting demands by matching supports]\label{htwo:lem:count}
+For every finite bipartite graph $H$,
+\begin{equation}
+ |\mathcal R_H|=p_H(1)
+ =\#\{W\subseteq V(H):H[W]\text{ has a perfect matching}\}.\label{htwo:eq:count}
+\end{equation}
+\end{lemma}
+
+We give the reduction to two established root-polytope statements in full.
+This avoids treating~\eqref{htwo:eq:count} as an experimental identity or as an
+unexplained application of a lattice-point package.
+
+\subsection{The two classical inputs}
+
+Adjoin $x_0$ and $y_0$ to the shores of $H$, joining $x_0$ to every old
+right vertex, $y_0$ to every old left vertex, and $x_0$ to $y_0$. Write
+$\widehat H$ for this connected augmented bipartite graph. Its edge polytope
+is
+\[
+ B_{\widehat H}=\conv\{\ee_x+\ff_y:xy\in E(\widehat H)\}.
+\]
+A \emph{right hypertree} is a vector $(\deg_T(y)-1)_{y\in Y\cup\{y_0\}}$
+realized by a spanning tree $T$ of $\widehat H$. Multiple spanning trees
+with the same vector count only once.
+
+We use the following published facts, with the full affine integer lattice
+on the edge polytope:
+\begin{align}
+ \Vol(B_{\widehat H})
+   &=\#\{\text{right hypertrees of }\widehat H\},\label{htwo:eq:KPinput}\\
+ h^*(B_{\widehat H};u)&=p_H(u).\label{htwo:eq:OTinput}
+\end{align}
+The first is the evaluation at $u=1$ of the interior-polynomial/root-polytope
+theorem of K\'alm\'an and Postnikov~\cite{KP}. The second is
+Ohsugi--Tsuchiya's matching-support interpretation, stated explicitly in
+Davis--Kohl~\cite[Theorem~3.10]{DK}. Recall that $h^*(B;1)=\Vol(B)$.
+No result about preorder real-rootedness is an input to either statement.
+
+\subsection{Explicit identification of the hypertrees}
+
+Let $s=|X|$, $r=|Y|$. A spanning tree of $\widehat H$ has $s+r+1$ edges.
+Its right degree-minus-one vector has total $s$. Write it as
+$(c_0,(c_y)_{y\in Y})$. For nonempty $S\subseteq Y$, the tree edges
+incident with $S$ form a forest on
+$S\cup N_{\widehat H}(S)$. Their number is $|S|+c(S)$, so
+\[
+ |S|+c(S)\le |S|+|N_{\widehat H}(S)|-1
+            =|S|+|N_H(S)|.
+\]
+Thus $c\in\mathcal R_H$, and $c_0=s-c(Y)$.
+
+Conversely, take $c\in\mathcal R_H$ and replace each $y\in Y$ by $c_y$
+clones, each with neighborhood $N_H(y)\subseteq X$. A set of clones with
+labels in $S$ has at most $c(S)\le|N_H(S)|$ members. Hall's criterion
+therefore matches all clones to distinct vertices of $X$. One can prove
+this form of Hall's criterion directly by augmenting paths: failure to
+match a clone produces an alternating-reachable set of clones with fewer
+neighbors than members, contradicting the stated inequality.
+
+Start a spanning tree with the star joining $x_0$ to every vertex of
+$Y\cup\{y_0\}$. Attach each old $x\in X$ as a leaf to the label of its
+matched clone, or to $y_0$ if no clone was assigned to it. The resulting
+graph is a tree and has right degree-minus-one vector
+\[
+ (s-c(Y),(c_y)_{y\in Y}).
+\]
+Hence hypertree vectors correspond bijectively to $\mathcal R_H$.
+Combining this bijection with~\eqref{htwo:eq:KPinput} and~\eqref{htwo:eq:OTinput}
+proves Lemma~\ref{htwo:lem:count}. This argument also handles an empty shore:
+$\mathcal R_H$ then contains only the zero demand and $p_H=1$.
+
+\begin{remark}
+The lemma equates two cardinalities; it does not provide a canonical
+bijection between demand vectors and perfectly matchable vertex sets.
+The tree construction is a bijection with \emph{hypertree vectors}, not
+with their realizing trees. Counting matchings or spanning trees with
+multiplicity at this step would invalidate the main formula.
+\end{remark}
+
+\section{The height-two formula and its consequences}\label{htwo:sec:gamma}
+
+\subsection{Partitioning lattice points by zeros and support}
+
+Write a lattice point of $\mathcal Q(P_G)$ as $(a,b)$ on the two shores.
+Each singleton in $A$ is an ideal, so $a_i\in\{0,1\}$. Let
+\[
+ Z=\{i\in A:a_i=0\},\qquad S=\{j\in B:b_j>0\}.
+\]
+An ideal is $U\sqcup T$ with $T\subseteq B$ and $N_G(T)\subseteq U\subseteq A$.
+Its inequality is
+\[
+ b(T)\le |T|+|U\cap Z|.
+\]
+For fixed $T$, the strongest choice is $U=N_G(T)$. Thus all ideal
+inequalities are equivalent to
+\begin{equation}
+ b(T)\le |T|+|N_G(T)\cap Z|\qquad(T\subseteq B).\label{htwo:eq:heightHall}
+\end{equation}
+On $S$ put $b_j=1+c_j$, with $c_j\ge0$, and put $b_j=0$ elsewhere.
+For $T\subseteq S$, equation~\eqref{htwo:eq:heightHall} becomes
+\[
+ c(T)\le|N_G(T)\cap Z|.
+\]
+These inequalities also imply~\eqref{htwo:eq:heightHall} for arbitrary
+$T\subseteq B$, by applying them to $T\cap S$. Therefore the possible
+$c$ are exactly $\mathcal R_{G[Z\sqcup S]}$.
+
+Every point in this part has support size $p-|Z|+|S|$. Lemma~\ref{htwo:lem:count}
+gives
+\begin{equation}
+ h_{P_G}(t)=\sum_{Z\subseteq A}\sum_{S\subseteq B}
+ t^{p-|Z|+|S|}
+ \sum_{W\in\PM(G[Z\sqcup S])}1,\label{htwo:eq:double}
+\end{equation}
+where $\PM(H)$ denotes all perfectly matchable vertex sets of $H$.
+
+\subsection{The Boolean summation}
+
+Fix a perfectly matchable set $W=X\sqcup Y$ of $G$, with $X\subseteq A$,
+$Y\subseteq B$, and $|X|=|Y|=k$. It is counted in~\eqref{htwo:eq:double} exactly
+when $X\subseteq Z$ and $Y\subseteq S$. Its total contribution is
+\begin{align*}
+ \left(\sum_{Z\supseteq X}t^{p-|Z|}\right)
+ \left(\sum_{S\supseteq Y}t^{|S|}\right)
+ &=(1+t)^{p-k}\,t^k(1+t)^{q-k}\\
+ &=t^k(1+t)^{n-2k}.
+\end{align*}
+Summing over $W$ proves Theorem~\ref{htwo:thm:main}. In particular, the
+$\gamma$-positivity conclusion is not deduced from an assumed flag complex;
+it follows from an explicit nonnegative counting interpretation.
+
+\subsection{Roots, matching number, and small coefficients}
+
+Let $\nu(G)$ be the maximum matching size. Then $\deg p_G=\nu(G)$, and
+all its coefficients from degree zero through $\nu(G)$ are positive:
+a maximum matching has submatchings of every smaller size.
+
+\begin{proposition}[Exact transfer of real-rootedness]\label{htwo:prop:roottransfer}
+For a bipartite graph $G$, the polynomial $h_{P_G}$ is real-rooted if and
+only if $p_G$ is real-rooted. If $p_G$ has only real roots, they are strictly
+negative. In all cases, the root $-1$ of $h_{P_G}$ has multiplicity
+$n-2\nu(G)$. In the real-rooted case, its other roots occur in reciprocal
+negative pairs.
+\end{proposition}
+\begin{proof}
+Write $p_G(u)=\prod_{j=1}^{\nu}(1+\lambda_j u)$ over $\C$, with
+$\lambda_j\ne0$. Formula~\eqref{htwo:eq:main} gives
+\begin{equation}
+ h_{P_G}(t)=(1+t)^{n-2\nu}
+          \prod_{j=1}^{\nu}\bigl((1+t)^2+\lambda_jt\bigr).
+ \label{htwo:eq:factortransfer}
+\end{equation}
+If $p_G$ is real-rooted, its positive coefficients and constant term one
+exclude nonnegative roots. Hence every $\lambda_j>0$, and each quadratic
+$t^2+(2+\lambda_j)t+1$ has two distinct negative reciprocal roots.
+Its value at $-1$ is $-\lambda_j\ne0$, proving the stated multiplicity.
+
+Conversely, if $u_0$ is a nonreal zero of $p_G$, then
+$u_0(1+t)^2-t=0$ has two roots different from $-1$. Neither is real, since
+$t/(1+t)^2$ is real for real $t\ne-1$. Both are zeros of $h_{P_G}$.
+Thus real-rootedness of $h_{P_G}$ forces that of $p_G$.
+\end{proof}
+
+\begin{corollary}\label{htwo:cor:small}
+The height-two polynomial is unchanged by reversing the poset, and it is
+multiplicative under disjoint unions. Its first coefficients satisfy
+\[
+ \gamma_0=1,\quad \gamma_1=|E|,\quad
+ \gamma_2=\binom{|E|}{2}-\sum_{v\in V}\binom{\deg(v)}2-c_4(G),
+ \qquad h_1=n+|E|,
+\]
+where $c_4(G)$ is the number of four-cycles, each counted once.
+\end{corollary}
+\begin{proof}
+Reversing the order exchanges the shores of $G$, leaving $p_G$ unchanged.
+Perfectly matchable subsets split independently across components. For
+$\gamma_2$, subtract adjacent pairs of edges from all edge pairs to obtain
+$m_2(G)$. A four-vertex bipartite subgraph has two perfect matchings exactly
+when it is a four-cycle; otherwise it has at most one. Thus
+$\gamma_2=m_2-c_4$. Finally, the coefficient of $t$ in~\eqref{htwo:eq:main} is
+$n+\gamma_1$.
+\end{proof}
+
+For a forest, every perfectly matchable induced subgraph has a unique
+perfect matching: the symmetric difference of two perfect matchings would
+contain a cycle. Hence $p_G=M_G$. More generally,
+$|\PM_k(G)|\le m_k(G)$, and equality for all $k$ holds for a bipartite graph
+exactly when it is a forest. An even cycle supplies two distinct matchings
+with the same covered set, proving the converse.
+
+\section{A complete nonreal-root family at treewidth two}\label{htwo:sec:theta}
+
+This section strengthens a single counterexample to a uniform theorem with
+an exact count of real roots. The mechanism is distinct from taking disjoint
+unions: every graph in the family is connected, and its treewidth is bounded.
+
+\subsection{Parallel paths and the matching-support polynomial}
+
+Let $\Theta_m$ be the union of the $m$ paths
+\[
+ d-b_i-a_i-b_0\qquad(1\le i\le m),
+\]
+whose only common vertices are the endpoints $d,b_0$. Its bipartition is
+$A=\{d,a_1,\ldots,a_m\}$ and $B=\{b_0,b_1,\ldots,b_m\}$.
+For $m=1$ this is a four-vertex path; for $m=2$ it is a six-cycle.
+For $m=3$ the corresponding height-two poset is the previously posted
+counterexample of Patel~\cite{Patel}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=.92,every node/.style={font=\small}]
+\node[circle,draw=Ink,fill=Pale,inner sep=3pt] (d) at (0,0) {$d$};
+\node[circle,draw=Ink,fill=Pale,inner sep=3pt] (b0) at (6,0) {$b_0$};
+\foreach \i/\y in {1/1.35,2/0,3/-1.35}{
+ \node[circle,draw=Ink,fill=white,inner sep=3pt] (b\i) at (2,\y) {$b_\i$};
+ \node[circle,draw=Ink,fill=white,inner sep=3pt] (a\i) at (4,\y) {$a_\i$};
+ \draw[Ink] (d)--(b\i)--(a\i)--(b0);
+}
+\end{tikzpicture}
+\caption{The graph $\Theta_3$. To obtain its height-two poset, orient every
+edge from the shore $\{d,a_1,a_2,a_3\}$ to the other shore. The horizontal
+layout shows paths, not increasing order in the poset.}
+\label{htwo:fig:theta}
+\end{figure}
+
+\begin{proposition}\label{htwo:prop:thetaformula}
+For $m\ge2$, the perfectly matchable set polynomial of $\Theta_m$ is
+\eqref{htwo:eq:thetapoly}. For $m=1$, it is $1+3u+u^2$.
+\end{proposition}
+\begin{proof}
+Partition matchable vertex sets according to the presence of $d,b_0$.
+If neither endpoint is present, each branch contributes either its two
+internal vertices or neither; the contribution is $(1+u)^m$.
+
+If $d$ alone is present, it must be matched to a unique included vertex
+$b_i$ whose partner $a_i$ is absent. Every other included branch is a
+complete internal pair. There are $m$ choices of $i$, giving
+$mu(1+u)^{m-1}$. The case with $b_0$ alone has the same contribution.
+
+Suppose both endpoints are present. If some branch contributes just $b_i$,
+then $d$ must match it. There must be exactly one different branch
+contributing just $a_j$, to be matched to $b_0$; all other branches are
+empty or complete internal pairs. This gives
+$m(m-1)u^2(1+u)^{m-2}$. In the remaining case all selected branches are
+complete pairs. At least one such branch is needed to match the endpoints,
+and the selected vertex set is counted once, regardless of how many of its
+branches could be used for this purpose. This gives
+$u((1+u)^m-1)$.
+
+Thus the sum is
+\begin{align*}
+ &(1+u)^m+2mu(1+u)^{m-1}
+     +m(m-1)u^2(1+u)^{m-2}+u((1+u)^m-1)\\
+ &\hspace{1em}=(1+u)^{m-2}
+       \bigl(1+(2m+3)u+(m^2+m+3)u^2+u^3\bigr)-u.
+\end{align*}
+The four-vertex path is counted directly. Notice that replacing matchable
+sets by matchings would overcount the case where both endpoints and several
+complete branches are present; that distinction is essential to the formula.
+\end{proof}
+
+\subsection{A positive interval with no roots}
+
+Write $p_m=p_{\Theta_m}$. For $m\ge3$, put $k=m-2\ge1$.
+A useful rearrangement, valid for $0<x<1$, is
+\begin{align}
+ p_m(-x)={}&(1-x)^k\bigl(1-(m+1)x\bigr)^2\notag\\
+ &+x\left[1-(1-x)^k(1+kx+x^2)\right].\label{htwo:eq:thetapositive}
+\end{align}
+The second line is strictly positive. Indeed, the binomial series gives
+\[
+ (1-x)^{-k}
+ =1+kx+\frac{k(k+1)}2x^2+\sum_{j\ge3}\binom{k+j-1}{j}x^j
+ >1+kx+x^2.
+\]
+All terms are real and positive on this interval; the inequality holds also
+for $k=1$ because the tail is then nonzero. Moreover, $p_m(0)=p_m(-1)=1$.
+We have proved the particularly strong exclusion
+\begin{equation}
+ p_m(u)>0\qquad(-1\le u\le0,\quad m\ge3).\label{htwo:eq:excludedinterval}
+\end{equation}
+The coefficients of $p_m$ are nonnegative by their interpretation as counts,
+so there are no nonnegative real roots either.
+
+Already this disproves real-rootedness: $p_m$ is monic with constant term
+one. If all its roots were real, \eqref{htwo:eq:excludedinterval} would put them
+strictly below $-1$, making the absolute value of their product larger than
+one. We next obtain the exact count, rather than just this contradiction.
+
+\subsection{Exact root counts by two sign changes}
+
+Set $u=-1-y$ with $y>0$ and define
+\[
+ R_m(y)=m(m-1)+2m^2y+m(m+1)y^2-y^3.
+\]
+An exact change of variables gives
+\begin{equation}
+ p_m(-1-y)=1+y+(-1)^{m-2}y^{m-2}R_m(y).\label{htwo:eq:thetashift}
+\end{equation}
+We use Descartes' elementary rule of signs: the number of positive roots,
+counted with multiplicity, is at most the number of changes in the sequence
+of nonzero coefficients. One way to prove the needed bound is to factor
+out positive linear factors successively; multiplying a real polynomial
+by $y-a$, $a>0$, increases the number of sign changes by a positive odd
+integer. Factoring over $\R$ then yields the bound.
+
+If $m$ is even, $m\ge4$, the polynomial on the right of
+\eqref{htwo:eq:thetashift} has positive coefficients except for its leading
+coefficient, which is negative. It has one sign change, is positive at
+$y=0$, and tends to $-\infty$. It consequently has exactly one positive
+root, and that root is simple.
+
+If $m$ is odd, $m\ge3$, its coefficients have signs
+\[
+ +,\ \underbrace{-\,,\ldots,\,-}_{\text{nonzero middle block}},\ +
+\]
+when zero coefficients are omitted; for $m>3$ there is an additional
+initial positive coefficient, which does not change the count of two sign
+changes. For $m=3$, the merged coefficient of $y$ is $1-m(m-1)<0$.
+At $y=0$ the value is one, at $y=1$ it is
+\[
+ 2-(4m^2-1)=3-4m^2<0,
+\]
+and it tends to $+\infty$ as $y\to\infty$. There is a root in $(0,1)$
+and another in $(1,\infty)$. The sign bound makes these the only positive
+roots, both simple.
+
+By \eqref{htwo:eq:excludedinterval}, these exhaust the real roots of $p_m$.
+It has degree $m+1$, so it has $m$ nonreal roots when $m$ is even and
+$m-1$ when $m$ is odd, counted with multiplicity. The substitution in
+Proposition~\ref{htwo:prop:roottransfer} sends each negative root to two distinct
+negative reciprocal roots of $h_{P_{\Theta_m}}$ and each nonreal root to
+two nonreal roots. There is no root at $-1$, because
+$n=2m+2=2\deg p_m$. This proves the root count in
+Theorem~\ref{htwo:thm:thetaintro}. The cases $m=1,2$ are a path and a cycle,
+respectively, and are real-rooted by the independent cactus proof in
+Section~\ref{htwo:sec:cactus}.
+
+For completeness, a width-two tree decomposition is explicit. Use bags
+$\{d,b_0,a_i\}$ and $\{d,a_i,b_i\}$ for each $i$, connect the first bags
+in a path, and attach each second bag to its corresponding first bag.
+Every edge is covered; bags containing any fixed vertex form a connected
+subtree. All bags have size three. Thus the asserted treewidth bound
+requires no general graph-minor theorem.
+
+\begin{corollary}[Most roots nonreal in a bounded-treewidth family]\label{htwo:cor:nonreal}
+The connected height-two posets $P_{\Theta_m}$ satisfy
+\[
+ \#\{\text{nonreal zeros of }h_{P_{\Theta_m}}\}
+ =\begin{cases}2m,&m\text{ even},\\2m-2,&m\text{ odd},\end{cases}
+ \qquad(m\ge3),
+\]
+with multiplicities. Their proportion among all $2m+2$ zeros tends to one.
+Thus bounded treewidth, even together with height two and connectedness,
+does not force real-rootedness or even a positive limiting proportion of
+real roots.
+\end{corollary}
+
+\subsection{The eight-element specialization and its status}
+
+The specialization $m=3$ gives
+\[
+ p_3(u)=1+9u+24u^2+16u^3+u^4,
+\]
+\[
+ h_{P_{\Theta_3}}(t)=1+17t+106t^2+303t^3+427t^4
+                    +303t^5+106t^6+17t^7+t^8.
+\]
+These are the polynomials in Patel's posting~\cite{Patel}, not newly
+claimed examples. Our direct enumeration from the ideal inequalities
+finds $1281$ lattice points and reproduces every coefficient. Exact
+arithmetic also verifies the posted Laguerre obstruction
+\[
+ (p_3'(-1/4))^2-p_3(-1/4)p_3''(-1/4)=-95/1024<0.
+\]
+The additional result here is the all-$m$ formula and complete root count,
+not a priority claim for this specialization.
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & Poset size & Real roots of $p_m$ & Real roots of $h$ & Nonreal roots of $h$\\
+\midrule
+3&8&2&4&4\\
+4&10&1&2&8\\
+5&12&2&4&8\\
+6&14&1&2&12\\
+7&16&2&4&12\\
+8&18&1&2&16\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The 17-element counterexample in exact arithmetic}\label{htwo:sec:counter}
+
+\subsection{A complete graph specification}
+
+Use the graph $G_0$ of~\eqref{htwo:eq:board}; there are no other edges. Orient
+each edge from $a_i$ to $b_j$ to define $P_0=P_{G_0}$. Since all strict
+comparisons go from $A$ to $B$, the relation is automatically transitive
+and antisymmetric, and has height two. There are
+$1+2+3+4+5+5+6+6=32$ strict comparisons.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=.43cm,y=.43cm]
+\foreach \i in {0,...,9} \draw[gray!50] (\i,0)--(\i,8);
+\foreach \j in {0,...,8} \draw[gray!50] (0,\j)--(9,\j);
+\foreach \j/\l/\r in {1/1/1,2/1/2,3/1/3,4/1/4,5/1/5,6/2/6,7/3/8,8/4/9}{
+ \foreach \i in {\l,...,\r} \fill[Accent] (\i-.5,8.5-\j) circle (2.1pt);
+ \node[left] at (0,8.5-\j) {$b_{\j}$};
+}
+\foreach \i in {1,...,9} \node[below] at (\i-.5,0) {$a_{\i}$};
+\end{tikzpicture}
+\caption{The complete $8\times9$ incidence board of the counterexample.
+A dot means $a_i<b_j$. Increasing pairs of dots give the canonical matching
+of any matchable support. The diagram is drawn from the exact interval list,
+not inferred from a numerical polynomial.}\label{htwo:fig:board}
+\end{figure}
+
+\subsection{Why an increasing matching suffices}
+
+\begin{lemma}[Uncrossing on a monotone interval board]\label{htwo:lem:uncross}
+Suppose $N(b_j)=[\ell_j,r_j]$ with both $(\ell_j)$ and $(r_j)$ nondecreasing.
+For sorted subsets $X=\{a_{i_1},\ldots,a_{i_k}\}$ and
+$Y=\{b_{j_1},\ldots,b_{j_k}\}$, the induced graph on $X\sqcup Y$ has a
+perfect matching if and only if every $a_{i_s}b_{j_s}$ is an edge.
+\end{lemma}
+\begin{proof}
+The backward implication is immediate. In a matching with an inversion,
+suppose $j<j'$ and $i<i'$ but the matching uses $a_i b_{j'}$ and
+$a_{i'}b_j$. Then
+\[
+ \ell_j\le\ell_{j'}\le i<i'\le r_j\le r_{j'}.
+\]
+Therefore $a_i b_j$ and $a_{i'}b_{j'}$ are also edges. Swap the inverted
+pair. Choosing an adjacent inversion in the permutation of matched row
+indices reduces the inversion number; iteration gives the unique sorted
+matching. Thus existence is equivalent to the sorted-edge test.
+\end{proof}
+
+Let $F_{i,j}(u)$ count increasing matched pairs in the first $i$ vertices
+of $A$ and first $j$ vertices of $B$, by their number of pairs. With
+$\varepsilon_{i,j}=1$ for an edge and zero otherwise,
+\begin{equation}
+\begin{split}
+ F_{i,0}(u)&=F_{0,j}(u)=1,\\
+ F_{i,j}(u)&=F_{i-1,j}(u)+F_{i,j-1}(u)
+       +(u\varepsilon_{i,j}-1)F_{i-1,j-1}(u).
+\end{split}\label{htwo:eq:DP}
+\end{equation}
+Indeed, those objects omitting the last row or the last column are counted
+by inclusion--exclusion. An object using both must pair them with each
+other and leave an arbitrary increasing matching on the smaller board.
+Lemma~\ref{htwo:lem:uncross} implies $F_{9,8}=p_{G_0}$.
+
+For a convenient hand-checkable summary, the last row of this polynomial
+recurrence is as follows. The complete 90-cell table, including boundary
+cells, is in \nolinkurl{data/02-height-two-board_certificate.csv}.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}rY@{}}
+\toprule
+$j$ & $F_{9,j}(u)$\\\midrule
+0 & $1$\\
+1 & $1+u$\\
+2 & $1+3u+u^2$\\
+3 & $1+6u+6u^2+u^3$\\
+4 & $1+10u+20u^2+10u^3+u^4$\\
+5 & $1+15u+50u^2+50u^3+15u^4+u^5$\\
+6 & $1+20u+105u^2+175u^3+105u^4+21u^5+u^6$\\
+7 & $1+26u+205u^2+595u^3+665u^4+301u^5+49u^6+2u^7$\\
+8 & $1+32u+336u^2+1420u^3+2534u^4+1946u^5+658u^6+86u^7+3u^8$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Thus the coefficient formula~\eqref{htwo:eq:p0} is an exact finite recurrence
+calculation, not a fit to sampled values. There are $p_0(1)=7016$
+perfectly matchable sets.
+
+\subsection{An elementary obstruction to real-rootedness}
+
+\begin{lemma}[Laguerre inequality]\label{htwo:lem:laguerre}
+If a nonzero real polynomial $f$ has only real zeros, then
+\begin{equation}
+ (f'(x))^2-f(x)f''(x)\ge0\qquad(x\in\R).\label{htwo:eq:laguerre}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $f(x)=c\prod_i(x-r_i)$ with $r_i\in\R$, repeated according to
+multiplicity. Away from the roots,
+\[
+ \frac{(f')^2-ff''}{f^2}
+    =-\left(\frac{f'}f\right)'=\sum_i\frac1{(x-r_i)^2}\ge0.
+\]
+Continuity extends the inequality to the roots.
+\end{proof}
+
+Direct substitution into~\eqref{htwo:eq:p0} gives
+\begin{equation}
+ p_0(-2)=65,\qquad p_0'(-2)=-560,\qquad p_0''(-2)=4912.
+\end{equation}
+Consequently
+\begin{equation}
+ \boxed{\ (p_0'(-2))^2-p_0(-2)p_0''(-2)
+       =313600-319280=-5680<0.\ }\label{htwo:eq:exactcertificate}
+\end{equation}
+By Lemma~\ref{htwo:lem:laguerre}, $p_0$ has nonreal roots.
+Proposition~\ref{htwo:prop:roottransfer} proves Theorem~\ref{htwo:thm:counter}.
+This proof requires no isolation of a complex root and no trust in a
+floating-point solver.
+
+Expanding the height-two formula gives
+\begin{align}
+ h_{P_0}(t)={}&1+49t+952t^2+9828t^3+61302t^4+248816t^5\notag\\
+ &+688516t^6+1337738t^7+1857081t^8+1857081t^9\notag\\
+ &+1337738t^{10}+688516t^{11}+248816t^{12}+61302t^{13}\notag\\
+ &+9828t^{14}+952t^{15}+49t^{16}+t^{17}.\label{htwo:eq:h0}
+\end{align}
+Its coefficient sum is $8\,408\,566$. An independent C++ enumeration of
+\emph{all} these lattice points, based only on integer capacity allocations,
+reproduces~\eqref{htwo:eq:h0}; see Section~\ref{htwo:sec:computations}.
+
+For orientation only, a nonreal pair of $p_0$ is approximately
+$-1.8588440\pm0.1497675\,i$. Its images yield two nonreal reciprocal pairs
+of $h_{P_0}$, approximately
+\[
+ -2.0461493\pm0.0565649\,i,
+ \qquad -0.4883497\pm0.0135002\,i.
+\]
+The exact negative Laguerre value, rather than these approximations, is
+the certificate used in the proof. The accompanying exact computation does
+not need numerical roots.
+
+\subsection{What is old, what is transferred, and what is not settled}
+
+Polynomial~\eqref{htwo:eq:p0} is the normalized descent polynomial in the older
+Stembridge example, and its interpretation as a bipartite matching-support
+polynomial is recorded in~\cite[Example~3.7]{OT20}. We independently
+recompute it from the interval board so that the counterexample is specified
+without relying on a figure or a prior decimal root calculation.
+
+For an explicit comparison, the older poset has chains
+$1<3<\cdots<17$ and $2<4<\cdots<16$, together with the relations
+\[
+ 2<3,\ 4<5,\ 6<7,\ 8<9,\ 10<11,\ 12<13,\ 14<17,
+ \qquad 1<12,\ 3<14,\ 5<16.
+\]
+Its cross-chain incomparable pairs have precisely the neighborhoods
+in~\eqref{htwo:eq:board}, under $a_i=2i-1$, $b_j=2j$. In the present
+counterexample these incomparable pairs are made into \emph{new}
+comparabilities, all oriented from $A$ to $B$; the old chain comparisons
+are discarded. The two posets are therefore not the same object.
+
+This transfer supplies an independent negative answer to the assertion about
+the support polynomial of \emph{every preorder}; the existence of such
+counterexamples was already claimed in the smaller example~\cite{Patel}. It does not contradict
+$\gamma$-positivity, palindromic unimodality, or simplicial-polytopal
+realizability. The 17-element construction is not smallest: the preceding family
+already gives an eight-element example. Adding isolated elements multiplies the support polynomial by
+$(1+t)$, so counterexamples exist in every size $n\ge17$; this operation
+alone says nothing about connected counterexamples of every size.
+
+\section{The canonical root polytope by orthant decomposition}\label{htwo:sec:root}
+
+Part~I's construction~\eqref{eq:C} has a particularly concrete form in height
+two. Negate the coordinates in the lower shore $A$. This unimodular map
+sends the roots $\ee_b-\ee_a$ to $\ee_b+\ee_a$ and preserves the collection
+of signed coordinate vectors. Thus $C_{P_G}$ is lattice equivalent to
+\begin{equation}
+ D_G=\conv\bigl(\{\pm\ee_v:v\in V\}\cup
+                     \{\ee_a+\ee_b:ab\in E\}\bigr).
+ \label{htwo:eq:DG}
+\end{equation}
+Only the positive sums are added; the polytope is not generally centrally
+symmetric. Also put
+\begin{equation}
+ T_G=\conv\bigl(\{0\}\cup\{\ee_v:v\in V\}\cup
+                     \{\ee_a+\ee_b:ab\in E\}\bigr).
+ \label{htwo:eq:TG}
+\end{equation}
+The full coordinate simplex is present, so both polytopes have dimension
+$n=|V|$, with the zero-dimensional empty case understood separately.
+
+\subsection{An integral gauge from a capacitated matching problem}
+
+For $y\in\R_{\ge0}^V$, let $g_T(y)$ be the least $s\ge0$ for which
+$y\in sT_G$. Write $\mathcal I(G)$ for the independent vertex sets of $G$.
+
+\begin{lemma}\label{htwo:lem:gaugeT}
+For every bipartite graph $G$ and nonnegative $y$,
+\begin{equation}
+ g_T(y)=\max_{I\in\mathcal I(G)}y(I).
+ \label{htwo:eq:gaugeT}
+\end{equation}
+Consequently $g_T$ is coordinatewise monotone and takes integer values on
+nonnegative integer vectors.
+\end{lemma}
+\begin{proof}
+Represent $y$ as a nonnegative combination of coordinate vectors and
+edge-sum vectors. If an edge receives weight $w_{ab}$, it supplies that
+amount at each endpoint, reducing the total coefficient mass by
+$w_{ab}$ compared with using only coordinate vectors. The minimum total
+mass is therefore
+\[
+ |y|-\max\left\{\sum_{ab\in E}w_{ab}:w_{ab}\ge0,
+                   \sum_{e\ni v}w_e\le y_v\right\}.
+\]
+The maximum is the value of a flow from a source through $A$, then $B$,
+to a sink, with vertex capacities $y_a,y_b$ and across-edge capacities
+larger than $|y|$. A minimum cut never cuts an across-edge arc. Such cuts
+correspond exactly to vertex covers $C$, with capacity $y(C)$: the cover
+consists of lower-shore vertices on the sink side and upper-shore vertices
+on the source side. Max-flow/min-cut gives the maximum as
+$\min_C y(C)$. Complements of vertex covers are independent sets, proving
+\eqref{htwo:eq:gaugeT}. This argument is valid for real capacities; compactness
+and the usual residual-path proof give max-flow/min-cut in this finite
+network. The two final conclusions follow directly from the displayed
+maximum over independent sets.
+\end{proof}
+
+For $x\in\R^V$, let $x_v^+=\max(x_v,0)$ and
+$x_v^-=\max(-x_v,0)$. Since $D_G=\conv(T_G,\{-\ee_v\})$, its gauge is
+\begin{equation}
+ g_D(x)=g_T(x^+)+|x^-|.
+ \label{htwo:eq:gaugeD}
+\end{equation}
+Indeed, any representation $x=y-z$ with $y,z\ge0$ has coefficient mass at
+least $g_T(y)+|z|$. Necessarily $y\ge x^+$ and $z\ge x^-$, so the lower
+bound in \eqref{htwo:eq:gaugeD} follows from monotonicity. Taking $y=x^+$ and
+$z=x^-$ achieves it.
+
+This also proves reflexivity without a triangulation. The gauge can be
+written as the finite maximum of integer linear forms
+\begin{equation}
+ g_D(x)=\max_{\substack{I\in\mathcal I(G)\,,\ R\subseteq V\setminus I}}
+          \left(\sum_{v\in I}x_v-\sum_{v\in R}x_v\right).
+ \label{htwo:eq:integernormals}
+\end{equation}
+Every form is bounded by the right side of \eqref{htwo:eq:gaugeD}; equality is
+obtained by taking a maximizing independent subset of the positive
+coordinates and all negative coordinates in $R$. Thus $D_G$ is cut out
+by integer inequalities with right side one. The origin is interior
+because $D_G$ contains the crosspolytope. Its polar is the convex hull of
+the integer normals in \eqref{htwo:eq:integernormals}, hence a lattice polytope.
+
+\subsection{Counting the lattice points in every orthant}
+
+The augmented edge polytope $B_{\widehat G}$ from
+Section~\ref{htwo:sec:count} is lattice equivalent to $T_G$. Project away the
+two added coordinates. The inverse recovers them as
+\[
+ x_0=1-\sum_{a\in A}x_a,\qquad y_0=1-\sum_{b\in B}y_b
+\]
+on the affine span of $B_{\widehat G}$. These formulas preserve the full
+affine integer lattice. The projected vertices are exactly
+$0$, the coordinate vectors, and the edge sums. Therefore the established
+identity \eqref{htwo:eq:OTinput} gives
+\begin{equation}
+ h^*(T_G;t)=p_G(t).
+ \label{htwo:eq:hstarT}
+\end{equation}
+
+For an integral gauge $g$ of a bounded polytope containing the origin,
+\[
+ \Ehr(t)=\frac1{1-t}\sum_{x\in\Z^n}t^{g(x)};
+\]
+a lattice point of least dilation $g(x)$ occurs in every subsequent
+integer dilation. For $T_G$, the sum is over nonnegative lattice points.
+All series here are formal series with finitely many contributions to
+each coefficient.
+
+Partition the lattice points $x$ of $\R^V$ by the set $R$ of strictly
+negative coordinates, and put $S=V\setminus R$. The negative coordinates
+contribute $(t/(1-t))^{|R|}$. The nonnegative coordinates contribute
+$(1-t)\Ehr_{T_{G[S]}}(t)$, since independent sets restricted to $S$
+give precisely the gauge of the induced graph. Using \eqref{htwo:eq:gaugeD},
+\begin{align}
+ \Ehr_{D_G}(t)
+ &=\frac1{1-t}\sum_{R\subseteq V}
+       \left(\frac{t}{1-t}\right)^{|R|}
+       (1-t)\Ehr_{T_{G[V\setminus R]}}(t)\notag\\
+ &=\frac{\displaystyle\sum_{R\subseteq V}t^{|R|}
+                       p_{G[V\setminus R]}(t)}{(1-t)^{n+1}}.
+ \label{htwo:eq:orthantEhr}
+\end{align}
+In the numerator, a fixed matchable set $W$ of size $2k$ occurs once for
+each $R\subseteq V\setminus W$. Its contribution is
+$t^k(1+t)^{n-2k}$. Hence:
+
+\begin{theorem}[Height-two root identity]\label{htwo:thm:rootidentity}
+For every bipartite graph $G$, $D_G$ is reflexive and
+\begin{equation}
+ h^*(C_{P_G};t)=h^*(D_G;t)
+ =\sum_{k\ge0}|\PM_k(G)|t^k(1+t)^{n-2k}=h_{P_G}(t).
+ \label{htwo:eq:rootidentity}
+\end{equation}
+This is a direct height-two proof of the corresponding identity in
+Part~I (Corollary~\ref{cor:numerators}), independent of its general
+preorder fiber argument.
+\end{theorem}
+
+\begin{remark}[A normalization trap]
+The symmetric edge polytope of type B in Ohsugi--Tsuchiya includes all
+signed edge sums. Its $\gamma$-polynomial is $p_G(4u)$~\cite{OT20,OT21}.
+Our $D_G$ has only the positive edge sums, and its $\gamma$-polynomial is
+$p_G(u)$. These are different polytopes. The quick check is
+$h_1(P_G)=n+|E|$, not $n+4|E|$.
+\end{remark}
+
+\section{Cactus graphs: matrices, stability, and interlacing}\label{htwo:sec:cactus}
+
+A cactus graph is one in which every edge belongs to at most one simple
+cycle. Distinct cycles may meet in a vertex, but not in an edge; isolated
+vertices and disconnected components are allowed. In the bipartite case
+every cycle has even length. Univariate real-rootedness of $p_G$ for these
+graphs is already contained in Ohsugi--Tsuchiya~\cite[Theorem~7.2]{OT21}.
+The purpose here is a concrete matrix proof that retains a multivariate
+and weighted structure.
+
+\subsection{A unit-modulus certificate for every matchable minor}
+
+Let $\zeta=e^{\pi i/3}$, so $\zeta^2-\zeta+1=0$ and
+$|1-\zeta|=|1-\overline\zeta|=1$. Form an $A$-by-$B$ matrix $K$ supported
+on the edges of $G$. Initially every edge entry is one. For each cycle of
+length $2r$, choose one of its edges and replace that entry by
+$(-1)^r\zeta$. These choices do not conflict because cycles are
+edge-disjoint. All nonzero entries are sixth roots of unity.
+
+\begin{lemma}[The minor identity]\label{htwo:lem:unitminor}
+For $X\subseteq A$ and $Y\subseteq B$ with $|X|=|Y|$,
+\begin{equation}
+ |\det K_{X,Y}|^2=
+ \begin{cases}
+ 1,&G[X\cup Y]\text{ has a perfect matching},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{htwo:eq:unitminor}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If there is no perfect matching, every term in the determinant is zero.
+Otherwise fix a perfect matching $M_0$ of the induced subgraph. The
+symmetric difference of $M_0$ with another perfect matching is a disjoint
+union of $M_0$-alternating cycles. In a cactus, all $M_0$-alternating cycles
+are vertex-disjoint: if two shared a vertex, the unique matching edge
+there would have to belong to both cycles, contrary to edge-disjointness.
+Conversely, flipping any chosen subcollection of these alternating cycles
+gives a perfect matching. Thus all determinant terms are indexed by
+independent choices of cycle flips.
+
+For an alternating cycle of length $2r$, the ratio of the products of
+edge entries in its two matching halves is
+$\Gamma=(-1)^r\zeta$ or $(-1)^r\overline\zeta$. There is exactly one
+modified entry on that cycle; modifications on other cycles are not on
+its edges. The permutation sign changes by $(-1)^{r-1}$ when the cycle
+is flipped. Factoring out the unit-modulus term for $M_0$, the determinant
+therefore factors as
+\[
+ \text{a complex unit}\ \prod_{\text{alternating cycles}}
+       \bigl(1+(-1)^{r-1}\Gamma\bigr).
+\]
+Each factor is $1-\zeta$ or $1-\overline\zeta$, hence has absolute value
+one. The determinant has absolute value one, proving the claim.
+\end{proof}
+
+\begin{theorem}[Determinant and spectral factorization]\label{htwo:thm:cactus}
+Let $\nu$ be the maximum matching size of a bipartite cactus graph, and
+let $\lambda_1,\ldots,\lambda_\nu$ be the positive eigenvalues of $KK^*$,
+with multiplicities. Then
+\begin{align}
+ p_G(u)&=\det(I+uKK^*)=\prod_{j=1}^{\nu}(1+\lambda_j u),
+ \label{htwo:eq:pmcactus}\\
+ h_{P_G}(t)&=(1+t)^{n-2\nu}
+             \prod_{j=1}^{\nu}\bigl((1+t)^2+\lambda_jt\bigr).
+ \label{htwo:eq:hcactus}
+\end{align}
+In particular, all roots of $p_G$ and $h_{P_G}$ are real and negative.
+\end{theorem}
+\begin{proof}
+The principal-minor expansion and Cauchy--Binet give
+\[
+ \det(I+uKK^*)
+ =\sum_{k\ge0}u^k\sum_{\substack{X\subseteq A,\ Y\subseteq B\\|X|=|Y|=k}}
+                         |\det K_{X,Y}|^2.
+\]
+Lemma~\ref{htwo:lem:unitminor} turns its coefficients into $|\PM_k(G)|$.
+The largest nonzero minor has size $\nu$, so $\rank K=\nu$.
+The Hermitian positive-semidefinite matrix $KK^*$ has exactly $\nu$
+positive eigenvalues, proving \eqref{htwo:eq:pmcactus}. Substitute in
+Theorem~\ref{htwo:thm:main} to get \eqref{htwo:eq:hcactus}. Each quadratic factor
+has discriminant $\lambda_j(\lambda_j+4)>0$ and two negative roots.
+\end{proof}
+
+The distinction between a cactus and a general series-parallel graph is
+now sharp in a useful sense: the connected graphs $\Theta_m$ still have
+treewidth two, but for $m\ge3$ their cycles overlap along paths and their
+support polynomials fail real-rootedness dramatically.
+
+\subsection{A stable multivariate refinement}
+
+Let
+\[
+ H_G=\begin{pmatrix}0&K\\K^*&0\end{pmatrix}.
+\]
+This is an $n$-by-$n$ Hermitian matrix indexed by all vertices. For a
+vertex set $W$, its principal minor is zero if the two shores have
+unequal sizes. When $|W\cap A|=|W\cap B|=k$, it equals
+$(-1)^k|\det K_{W\cap A,W\cap B}|^2$. Expanding a determinant along its
+diagonal entries therefore proves
+\begin{equation}
+ \Phi_G(\mathbf z):=\det\bigl(\diag(z_v)-H_G\bigr)
+ =\sum_{W\text{ perfectly matchable}}(-1)^{|W|/2}
+                       \prod_{v\notin W}z_v.
+ \label{htwo:eq:multistable}
+\end{equation}
+In particular, the right side has real coefficients and does not depend
+on the particular chosen edges or phases in the construction.
+
+\begin{theorem}[Stability and deletion interlacing]\label{htwo:thm:stability}
+For a bipartite cactus graph, $\Phi_G$ is real stable: it is nonzero whenever
+$\operatorname{Im}z_v>0$ for every $v$. Its diagonal specialization
+\begin{equation}
+ q_G(x):=x^n p_G(-x^{-2})=\det(xI-H_G)
+ \label{htwo:eq:qG}
+\end{equation}
+is real-rooted, and $q_{G-v}$ interlaces $q_G$ for every vertex $v$.
+\end{theorem}
+\begin{proof}
+If $(\diag(\mathbf z)-H_G)w=0$ for $w\ne0$, taking the imaginary part
+of its scalar product with $w$ would give
+\[
+ 0=\sum_v\operatorname{Im}(z_v)|w_v|^2>0,
+\]
+because $w^*H_Gw$ is real. This proves stability. The diagonal identity
+follows from \eqref{htwo:eq:multistable}; it denotes a polynomial even at
+$x=0$. Deleting $v$ gives the principal submatrix of $H_G$. Its
+characteristic polynomial is $q_{G-v}$ by the same minor identity,
+regardless of whether a previously modified edge survives as a bridge.
+The eigenvalues of a Hermitian principal submatrix interlace those of the
+whole matrix: the variational characterization of the $j$th eigenvalue,
+restricted to the coordinate hyperplane omitting $v$, gives the two
+inequalities between consecutive eigenvalues. This proves the stated
+polynomial interlacing.
+\end{proof}
+
+The signed complementary-support polynomial in \eqref{htwo:eq:multistable}
+is the stable object. We are not claiming that the unsigned polynomial
+$\sum_W\prod_{v\in W}z_v$ is stable; already $1+z_az_b$ for a single edge
+vanishes at $z_a=z_b=i$.
+
+\subsection{Positive weights and a probabilistic consequence}
+
+Given positive vertex weights $w_v$, replace $K$ by
+$K_w=\diag(\sqrt{w_a})K\diag(\sqrt{w_b})$. The minor identity gives
+\begin{equation}
+ \sum_{W\text{ perfectly matchable}}u^{|W|/2}\prod_{v\in W}w_v
+ =\det(I+uK_wK_w^*).
+ \label{htwo:eq:weighted}
+\end{equation}
+Thus the weighted polynomial is real-rooted as well, and its
+$\gamma$-transform has the same negative-root factorization. This is a
+weighted graph refinement; no weighted preorder-polytope interpretation
+is presumed.
+
+For the original unweighted preorder polytope, choose a lattice point
+uniformly and let $S$ be its support size. Its probability generating
+function is $h_{P_G}(t)/h_{P_G}(1)$. Equation~\eqref{htwo:eq:hcactus} identifies
+its distribution with a sum of $n-2\nu$ independent Bernoulli variables
+of parameter $1/2$ and $\nu$ independent variables $Y_j\in\{0,1,2\}$ with
+\[
+ \Pr(Y_j=0)=\Pr(Y_j=2)=\frac1{4+\lambda_j},\qquad
+ \Pr(Y_j=1)=\frac{2+\lambda_j}{4+\lambda_j}.
+\]
+Hence
+\begin{equation}
+ \mathbb E S=\frac n2,\qquad
+ \operatorname{Var}(S)=\frac{n-2\nu}{4}
+                         +\sum_{j=1}^{\nu}\frac2{4+\lambda_j}.
+ \label{htwo:eq:variance}
+\end{equation}
+This is an equality in distribution, not a claimed bijection assigning
+independent coordinates to individual lattice points.
+
+\section{Crowns: explicit formulas with simple negative roots}\label{htwo:sec:crownroots}
+
+Let the crown $P_r$ have lower elements $a_1,\ldots,a_r$ and upper
+elements $b_1,\ldots,b_r$, with comparisons
+$a_i<b_i$ and $a_{i+1}<b_i$, where indices are cyclic. For $r\ge2$,
+its comparability graph is $C_{2r}$. The graph polynomial formula below
+is known~\cite[Corollaries~3.4 and 3.14]{DK}; we derive it to identify
+precisely the polynomials in the geometric obstruction that follows.
+
+A proper induced subgraph of a cycle is a forest, so each of its matchable
+vertex sets has a unique perfect matching. The whole even cycle has two
+perfect matchings, but contributes only one vertex set. Therefore
+\begin{equation}
+ p_{C_{2r}}(u)=M_{C_{2r}}(u)-u^r
+ =\sum_{k=0}^{r}\frac{2r}{2r-k}\binom{2r-k}{k}u^k-u^r.
+ \label{htwo:eq:crownpoly}
+\end{equation}
+To check the matching coefficient, distinguish one of the $k$ selected
+edges. There are $2r$ choices of its position and
+$\binom{2r-k-1}{k-1}$ choices of positive intervening gap lengths; divide
+by $k$ to forget the distinction. The $k=0$ case contributes one.
+The top matching coefficient is two and becomes one after the correction.
+
+Put
+\[
+ L_\pm(t)=\frac{1+t\pm\sqrt{1+6t+t^2}}2.
+\]
+The cycle matching recurrence, or the two characteristic roots of the
+path recurrence, gives
+\begin{equation}
+ h_{P_r}(t)=L_+(t)^{2r}+L_-(t)^{2r}-t^r.
+ \label{htwo:eq:crownh}
+\end{equation}
+The radical expression is a polynomial: its conjugate terms cancel all
+odd powers of the square root. In particular,
+\begin{equation}
+ |\mathcal Q(P_r)\cap\Z^{2r}|
+ =(1+\sqrt2)^{2r}+(1-\sqrt2)^{2r}-1.
+ \label{htwo:eq:crownvolume}
+\end{equation}
+For $r=3$, this gives the six-element crown vector
+$(1,12,48,75,48,12,1)$ and total $197$ of Part~I's table in
+Section~\ref{sec:examples}.
+
+\begin{proposition}[Explicit location of every crown root]\label{htwo:prop:crownroots}
+For $r\ge2$, all $r$ roots of $p_{C_{2r}}$ are simple and less than $-1/4$.
+They are
+\begin{equation}
+ u=-\frac1{4\cos^2\theta},\qquad
+ 0<\theta<\frac\pi2,\qquad
+ \cos(2r\theta)=\frac{(-1)^r}{2}.
+ \label{htwo:eq:crownangles}
+\end{equation}
+All $2r$ roots of $h_{P_r}$ are simple and belong to
+\[
+ (-3-2\sqrt2,-1)\ \cup\ (-1,-3+2\sqrt2).
+\]
+\end{proposition}
+\begin{proof}
+The roots of $z^2-z-u=0$ are
+$z_\pm=(1\pm\sqrt{1+4u})/2$, and
+$M_{C_{2r}}(u)=z_+^{2r}+z_-^{2r}$. Under the substitution in
+\eqref{htwo:eq:crownangles}, these become
+$z_\pm=e^{\pm i\theta}/(2\cos\theta)$. Hence
+\[
+ M_{C_{2r}}(u)/u^r=2(-1)^r\cos(2r\theta).
+\]
+The correction in \eqref{htwo:eq:crownpoly} gives exactly the angle equation.
+As $2r\theta$ traverses $(0,r\pi)$, each interval
+$(j\pi,(j+1)\pi)$ contains one solution. Thus there are exactly $r$
+distinct roots, all strictly below $-1/4$. Each gives two negative
+reciprocal roots through
+\[
+ t=\frac{1-2u\pm\sqrt{1-4u}}{2u}.
+\]
+This map has no double root for $u<0$. Its endpoint behavior as
+$u\to-1/4$ and $u\to-\infty$ gives the two asserted open intervals.
+No roots from different $u$ can coincide, because $u=t/(1+t)^2$ recovers
+the original value.
+\end{proof}
+
+\section{Induced crowns obstruct every lattice triangulation}\label{htwo:sec:obstructions}
+
+A simplicial complex is \emph{flag} if every set of pairwise adjacent
+vertices is a face. A \emph{minimal nonface} is a set that is not a face
+although all its proper subsets are faces. Flagness is equivalent to all
+minimal nonfaces having size two. We show that the canonical root model
+has forced minimal nonfaces of unbounded size, even when its $h^*$-polynomial
+has only simple negative roots.
+
+\subsection{An exposed circuit face}
+
+Let a finite preorder $P$ contain an induced crown on distinct elements
+$a_i,b_i$ ($1\le i\le r$), $r\ge3$. Thus the only distinct-element
+comparisons among these $2r$ points are the crown comparisons. Consider
+$C_P$ as in Theorem~\ref{htwo:thm:crownintro}. Give a linear functional the
+coordinate values $-1/2$ at the $a_i$, $1/2$ at the $b_i$, and zero on
+all other elements. Every coordinate root has value at most $1/2$, and
+every difference root has value at most one. Equality occurs precisely
+at the crown roots
+\begin{equation}
+ v_i=\ee_{b_i}-\ee_{a_i},\qquad
+ w_i=\ee_{b_i}-\ee_{a_{i+1}}.
+ \label{htwo:eq:circuitvertices}
+\end{equation}
+They therefore span an exposed face $F$ of $C_P$.
+
+The coordinate equations show that the unique affine dependence, up to
+scale, is
+\begin{equation}
+ \sum_{i=1}^{r}v_i=\sum_{i=1}^{r}w_i.
+ \label{htwo:eq:circuitrelation}
+\end{equation}
+Indeed, a dependence among the cycle edge vectors forces consecutive
+coefficients alternately equal and opposite. There is one free scalar,
+and the coefficients sum to zero. Hence $F$ has dimension $2r-2$, its
+$2r$ vertices form an affine circuit, and its Radon partition consists
+of $U=\{v_1,\ldots,v_r\}$ and $W=\{w_1,\ldots,w_r\}$.
+
+After negating the $a_i$ coordinates, the vertices of $F$ are $0$--$1$
+edge-incidence vectors. A convex combination of $0$--$1$ vectors can be
+integral only if all vectors with positive coefficient agree in every
+coordinate: an integer coordinate in $[0,1]$ is an endpoint, forcing
+agreement. Thus
+\begin{equation}
+ F\cap\Z^n=\{v_1,\ldots,v_r,w_1,\ldots,w_r\}.
+ \label{htwo:eq:emptycircuit}
+\end{equation}
+There are no additional lattice points with which to subdivide this face.
+
+\subsection{The nonflag obstruction does not assume regularity}
+
+\begin{lemma}\label{htwo:lem:circuitmissing}
+Every triangulation of $F$ using its vertices has a minimal nonface of
+size $r$.
+\end{lemma}
+\begin{proof}
+Every proper subset $T$ of $U$ spans a simplex face of $F$. To see this,
+assign height zero to $T$, height $-r$ to $U\setminus T$, and height
+$-(r-|T|)$ to $W$. The sums of the assigned heights on the two halves
+are equal, so the unique affine relation \eqref{htwo:eq:circuitrelation}
+is respected. There is consequently an affine functional with exactly
+these values on the vertices. Its maximum face is precisely $T$.
+The vertices in $T$ are affinely independent because a proper subset of
+an affine circuit is independent. The same argument works for proper
+subsets of $W$.
+
+On the other hand, $\conv(U)$ and $\conv(W)$ meet in their relative
+interiors at the common average in \eqref{htwo:eq:circuitrelation}. They
+cannot both be simplices of one triangulation: simplices with disjoint
+vertex sets may not intersect in a point which is not a common face.
+At least one of $U,W$ is therefore missing. All of its proper subsets
+are forced simplex faces, so it is a minimal nonface of size $r$.
+\end{proof}
+
+A lattice triangulation of $C_P$, or of its boundary, restricts to a
+triangulation of its exposed face $F$. By \eqref{htwo:eq:emptycircuit} the
+restriction has no extra vertices. Every proper subset used in the lemma
+is already a simplex face of $C_P$ and cannot disappear under such a
+triangulation. A missing half cannot occur elsewhere as a simplex, since
+its geometric simplex lies in $F$. This proves the triangulation part
+of Theorem~\ref{htwo:thm:crownintro} for \emph{all} lattice triangulations,
+not merely coherent, pulling, or regular ones. Since $r\ge3$, the
+missing half is a clique in the one-skeleton, so the triangulation is
+not flag.
+
+For a height-two graph, the hypothesis is exactly an induced cycle of
+length at least six in the bipartite comparability graph. Thus chordal
+bipartiteness (absence of such induced cycles) is a necessary condition
+for a flag lattice triangulation of $D_G$. Sufficiency for this particular
+root model is not proved here. Results about a fully signed symmetric
+edge polytope cannot be substituted without checking the different
+configuration.
+
+\subsection{An indispensable degree-$r$ toric relation}
+
+Fix any field $\Bbbk$. Let $\mathcal A=C_P\cap\Z^n$, and consider the
+toric homomorphism
+\[
+ \Bbbk[X_a:a\in\mathcal A]\longrightarrow
+ \Bbbk[s,z_1^{\pm1},\ldots,z_n^{\pm1}],\qquad
+ X_a\longmapsto s z^a.
+\]
+Its kernel $I_{\mathcal A}$ is homogeneous in total degree. Define
+\[
+ M_U=\prod_{i=1}^rX_{v_i},\qquad
+ M_W=\prod_{i=1}^rX_{w_i}.
+\]
+Equation~\eqref{htwo:eq:circuitrelation} gives $M_U-M_W\in I_{\mathcal A}$.
+
+\begin{proposition}\label{htwo:prop:indispensable}
+The binomial $M_U-M_W$ occurs, up to a nonzero scalar, in every binomial
+generating set of $I_{\mathcal A}$. For every monomial order, its leading
+monomial is a minimal generator of the corresponding initial ideal.
+Consequently neither a quadratic binomial generating set nor a quadratic
+Gr\"obner basis is possible when $r\ge3$.
+\end{proposition}
+\begin{proof}
+Consider the monomial fiber with total degree $r$ and vector sum
+$\sum_i v_i$. The exposing functional of $F$ has value $r$ on this
+sum, and every lattice point of $C_P$ has value at most one. Every
+factor of any monomial in the fiber must therefore be a point of $F$.
+By \eqref{htwo:eq:emptycircuit}, only its cycle vertices may occur. After the
+coordinate sign change, the required sum has a one at every cycle
+vertex. Its decompositions into edges are exactly the two perfect
+matchings of the cycle. Thus the fiber contains only $M_U$ and $M_W$.
+
+Moreover, every proper divisor of either monomial has a singleton fiber.
+The same face-functional argument restricts any competing factorization
+to cycle edges, while its endpoint set is a proper subset of the cycle.
+The induced subgraph is a forest and has at most one perfect matching.
+No proper divisor can therefore be a term of a nonzero toric binomial.
+
+A binomial generating set connects each monomial fiber by multiplying its
+generators by monomials. In this two-element fiber, a connection cannot
+come from a generator of smaller degree, because that would require a
+proper divisor with another monomial in its fiber. The binomial itself
+is therefore indispensable. For an initial ideal, the leading monomial
+of this binomial has no proper divisor in the initial ideal by the same
+singleton-fiber argument. It is a minimal generator of degree $r$.
+\end{proof}
+
+\begin{corollary}[A spectral--triangulation separation]
+For every $r\ge3$ there is a height-two poset on $2r$ elements whose
+canonical root polytope has a real-rooted $h^*$-polynomial with simple
+zeros, but every lattice triangulation has a minimal nonface of size
+$r$ and every toric initial ideal has a minimal generator of degree $r$.
+\end{corollary}
+\begin{proof}
+Take the crown $P_r$ and combine Theorem~\ref{htwo:thm:rootidentity},
+Proposition~\ref{htwo:prop:crownroots}, and the preceding results.
+\end{proof}
+
+\begin{statusbox}
+\small\textbf{The existential flag question is different.} These obstructions
+apply to triangulations and the toric configuration of the canonical
+$C_P$. Athanasiadis--Chapoton Conjecture~5.1(d) asks whether \emph{some}
+flag simplicial polytope has $h$-polynomial $h_P$. A different polytope
+might do so even when every lattice triangulation of $C_P$ fails.
+The present result does not disprove that conjecture.
+\end{statusbox}
+
+\section{Exact verification and reproducibility}\label{htwo:sec:computations}
+
+Part~II ships three source programs and their recorded outputs, under the
+names given in Section~\ref{htwo:sec:build}; below they are called by their
+delivered names \texttt{verify.py}, \texttt{verify\_theta.py} and
+\texttt{direct\_counterexample.cpp}. (Part~I's own verifier,
+\texttt{code/verify.py} in this directory, is a different program; see
+Section~\ref{sec:computations}.)
+No numerical root finder is used by the certificate programs. Python
+computations use integers, rational numbers, or pairs of integers in
+$\Z[\zeta]$; the C++ program uses exact finite state sets and integer
+counts. The proofs establish the infinite-family results. The programs
+check finite instances and offer independent routes to the explicit
+counterexamples.
+
+\subsection{Independent representations, not repeated substitutions}
+
+The program \texttt{verify.py} represents a bipartite graph by the
+bitmask neighborhood of each upper vertex. It computes $p_G$ by adding
+upper vertices one at a time and keeping a set of pairs of covered-shore
+masks. Different matchings with the same covered vertices are merged.
+For the 17-element graph it independently runs the ordered-board
+recurrence from Section~\ref{htwo:sec:counter}; the entire $10$-by-$9$
+polynomial table is saved in
+\nolinkurl{data/02-height-two-board_certificate.csv}.
+
+For every one of the $512$ labeled bipartite graphs with three vertices
+on each shore, the program directly enumerates lattice points from the
+ideal inequalities and compares their support polynomial with the
+matching-support transform. It independently compares the cardinality of
+$\mathcal R_G$ with $p_G(1)$. A further $24$ graphs with shores of sizes
+four and three use the fixed seed $20260928$.
+
+The cactus tests do not infer determinants from matching counts. They
+compute determinants in $\Z[\zeta]$ by subset-memoized Laplace expansion,
+using $\zeta^2=\zeta-1$. If $z=a+b\zeta$, its exact squared modulus is
+$a^2+ab+b^2$. The code compares that value with an independently enumerated
+matching-support indicator for every square minor. The tested graphs
+are cycles of lengths $4,6,8,10$, a square and a hexagon sharing a vertex,
+and that cactus with a two-edge bridge extension. There are $936$
+square minors in total, including empty minors.
+
+\subsection{The theta-family audit}
+
+The separate program \texttt{verify\_theta.py} computes
+\eqref{htwo:eq:thetapoly} by binomial expansion and compares it with the
+covered-shore enumeration for $1\le m\le9$. For $1\le m\le4$, it also
+enumerates the original lattice points directly from the ideal
+inequalities. In particular, the eight-element specialization has exactly
+$1281$ lattice points with the coefficients displayed in
+Section~\ref{htwo:sec:theta}.
+
+A rational-arithmetic Sturm implementation independently checks the
+number of real roots of $p_m$ for $1\le m\le20$. Its polynomial remainders
+use exact fractions, normalized only by positive factors. The variations
+at $-\infty$ and $+\infty$ are stored alongside every polynomial. These
+checks agree with the theorem, but the theorem does not extrapolate from
+them: \eqref{htwo:eq:thetapositive} and the two sign-change arguments prove the
+count for all $m$. The small example's exact Laguerre defect is also
+recomputed.
+
+\subsection{All 8,408,566 points of the larger example}
+
+The C++17 program \texttt{direct\_counterexample.cpp} is a third
+route, not a translation of the polynomial transform. For each lower-zero
+set $Z$, each upper coordinate has its own optional private unit, and
+there is one optional unit for each element of $Z$, assignable only to
+an adjacent upper coordinate. The set of resulting upper-load vectors
+is deduplicated.
+
+This is exact because the upper-demand inequalities
+\[
+ b(T)\le |T|+|N(T)\cap Z|
+\]
+are precisely Hall's conditions for assigning demand clones to the upper
+private resources and the lower resources. Integral demand vectors are
+therefore realizable by these allocations if and only if they satisfy
+the original ideal inequalities. Counting the positive coordinates and
+the fixed lower support gives $h_P$ directly.
+
+Each of the eight upper coordinates is encoded in three bits. Its
+maximum load is at most its degree plus one, at most seven in this graph,
+so the encoding is injective and never overflows a digit. A generation
+array deduplicates states without hash-dependent behavior. The resulting
+coefficient vector agrees exactly with \eqref{htwo:eq:h0}, and its sum is
+$8\,408\,566$. The source is included; a precompiled executable is not.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.35\textwidth}Y@{}}
+\toprule
+Certificate & Recorded verification\\
+\midrule
+All labeled $3$-by-$3$ graphs & $512$ direct support-polynomial and demand-count comparisons.\\
+Additional $4$-by-$3$ graphs & $24$ direct comparisons with a recorded seed.\\
+Crown graphs & Formula checks for $2\le r\le8$; direct lattice checks for $r\le4$.\\
+Cactus matrix certificate & $936$ exact square-minor norm comparisons.\\
+Theta family & Support enumeration through $m=9$, direct lattice enumeration through
+$m=4$, exact Sturm counts through $m=20$.\\
+17-element example & Two graph-polynomial algorithms and a separate direct enumeration
+of all $8\,408\,566$ lattice points.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+All the listed checks passed in the supplied run. None is a Lean proof
+or a substitute for independent mathematical review.
+
+\Needspace{11\baselineskip}
+\subsection{Build commands}
+\label{htwo:sec:build}
+
+The manuscript's own build commands, run from its package directory, were
+\texttt{python3} on \nolinkurl{code/verify.py} and then on
+\nolinkurl{code/verify_theta.py}, the compiled C++ program, and
+\texttt{latexmk} for the PDF. In this report every delivered file name
+carries the prefix \texttt{02-height-two-}:
+\begin{itemize}[leftmargin=1.4em,itemsep=0pt]\raggedright
+\item programs: \nolinkurl{code/02-height-two-verify.py},
+ \nolinkurl{code/02-height-two-verify_theta.py},
+ \nolinkurl{code/02-height-two-direct_counterexample.cpp} and
+ \nolinkurl{code/02-height-two-Makefile};
+\item recorded outputs: \nolinkurl{data/02-height-two-verification.json},
+ \nolinkurl{data/02-height-two-theta_verification.json},
+ \nolinkurl{data/02-height-two-direct_counterexample.json} and
+ \nolinkurl{data/02-height-two-board_certificate.csv}.
+\end{itemize}
+The programs still use the delivered names internally: \texttt{verify\_theta.py} imports a module
+\texttt{verify}, which in this directory would be Part~I's verifier, and the
+Makefile's \texttt{verify} target would run Part~I's verifier and overwrite
+Part~I's data. Therefore rerun them only in a scratch copy with the delivered
+names restored, from this report's directory:
+\begin{lstlisting}
+W=/path/to/scratch; mkdir -p "$W/02/code" "$W/02/data"
+for f in code/02-height-two-*; do cp "$f" "$W/02/code/${f#code/02-height-two-}"; done
+for f in data/02-height-two-*; do cp "$f" "$W/02/data/${f#data/02-height-two-}"; done
+mv "$W/02/code/Makefile" "$W/02/Makefile"; cd "$W/02"
+python3 code/verify.py
+python3 code/verify_theta.py
+c++ -O3 -std=c++17 -Wall -Wextra -pedantic code/direct_counterexample.cpp \
+    -o direct_counterexample
+./direct_counterexample > data/direct_counterexample.json
+\end{lstlisting}
+The Python programs require Python 3.10 or later and only its standard
+library. The C++ program needs a C++17 compiler. This article is rebuilt as
+described in the report's README; its preamble adds TikZ to Part~I's
+packages. No external image or font files are required.
+
+\section{Proof dependencies and a formalization plan}\label{htwo:sec:audit}
+
+The main route has a short dependency structure:
+\begin{align*}
+ &\text{two published root-polytope inputs}
+   \Longrightarrow \text{counting lemma}\\
+ &\hspace{2em}\Longrightarrow \text{height-two formula}
+   \Longrightarrow \text{theta root distribution}.
+\end{align*}
+The canonical root identity is proved separately by orthants. The cactus
+minor proof and the crown circuit proof are independent of one another.
+The crown toric result depends only on an explicit exposed lattice face,
+not on the general root-polytope theorem of Part~I.
+
+The following checks are particularly important in an independent audit.
+First, all matching counts concern \emph{covered vertex sets}; confusing
+these with individual matchings destroys both the theta and crown
+formulas. Second, a height-two poset here has singleton elements, not
+nontrivial preorder-equivalence blocks. Third, $h_P$ counts support sizes
+of lattice points; it is not initially the Ehrhart numerator of
+$\mathcal Q(P)$. The identity with an Ehrhart numerator concerns the
+different polytope $C_P$. Fourth, a nonflag triangulation obstruction for
+$C_P$ does not preclude an unrelated flag polytope having the same
+$h$-vector.
+
+A staged formalization could begin with finite graphs on two finite types,
+covered-shore pairs, and the elementary theta-support classification.
+The polynomial identity \eqref{htwo:eq:thetapoly}, the positive-interval
+rearrangement, and the Descartes/interval root count then form a compact
+algebraic project once the required real-polynomial lemmas are available.
+This would verify the entire graph-family theorem without any polytope
+formalization.
+
+Transferring that theorem to preorder support polynomials requires either
+formalizing Lemma~\ref{htwo:lem:count} and its classical inputs, or finding a
+direct combinatorial bijection. A finite-only route to the eight-element
+counterexample is different: certify its bounded ideal-inequality
+enumeration, then verify its polynomial and negative Laguerre value.
+That route need not formalize the general graph-to-polytope bridge, but it
+also does not establish the all-height-two theorem.
+
+For the cactus result, exact sixth-root arithmetic can be implemented as
+a quadratic extension with relation $z^2-z+1=0$. The combinatorial
+symmetric-difference lemma is a natural intermediate target. The analytic
+stability proof can then be isolated as a general Hermitian determinant
+lemma. For the crown obstruction, the finite affine dependence and the
+two-monomial fiber give a clean algebraic certificate before tackling
+full triangulation definitions. No uncompiled Lean source is presented
+as if it had been checked.
+
+\section{Further research questions and topics}\label{htwo:sec:future}
+
+The results replace an undifferentiated real-rootedness question with
+several sharper problems. The following questions are proposed directions,
+not assertions that they have been settled by this article. Except for
+explicitly attributed conjectures, they are directions arising from these
+proofs, not claims that no answer exists anywhere in the literature.
+
+\begin{question}[Extend the matching-support interpretation]
+Does the $\gamma$-vector of a larger class of posets admit a similarly
+concrete nonnegative interpretation? Height three and preorders with
+nontrivial equivalence classes are natural next cases. Determine exactly
+which step of the lower-zero-set argument survives weighted blocks.
+\end{question}
+A successful extension must account for the fact that a coordinate in a
+nontrivial equivalence block need not be individually bounded by one.
+Simply replacing the preorder by its quotient poset loses information.
+
+\begin{question}[A purely combinatorial bridge]
+Construct an explicit bijection between $\mathcal R_G$ and perfectly
+matchable vertex subsets, or an equally elementary proof of their equal
+cardinality. Can the choice be made compatible with induced subgraphs,
+vertex deletion, or positive weights?
+\end{question}
+Such a construction would remove the two root-polytope inputs from the
+height-two theorem and substantially reduce its formalization burden.
+The hypertree-vector bijection in Section~\ref{htwo:sec:count} does not itself
+solve this problem.
+
+\begin{question}[Which graph structures preserve real-rootedness?]
+Characterize useful hereditary classes of bipartite graphs for which
+$p_G$ is real-rooted. Cacti are a positive class, while the treewidth-two
+family $\Theta_m$ shows that series-parallel structure alone is inadequate.
+What happens under vertex sums, edge subdivisions, or controlled cycle
+intersections?
+\end{question}
+The precise boundary between one shared vertex and a shared path is worth
+studying. The present examples do not imply that every noncactus graph
+fails real-rootedness.
+
+\begin{question}[Beyond the sixth-root cactus matrices]
+Which bipartite graphs admit a complex matrix supported on their edges
+whose square-minor norms are exactly the matchability indicators? Is
+this condition equivalent to a useful multivariate stability property,
+or strictly stronger?
+\end{question}
+A positive answer for a class immediately gives positive-weight
+real-rootedness through Cauchy--Binet. The theta counterexamples show that
+such representations cannot exist for all bipartite graphs.
+
+\begin{question}[Asymptotic zero geometry for $\Theta_m$]
+The real-root count is exact, but how are the nonreal roots distributed
+as $m\to\infty$? Determine their limiting curves and scaling regimes,
+including the roots near zero and the large negative real root. What
+is the corresponding distribution after $u=t/(1+t)^2$?
+\end{question}
+Formula~\eqref{htwo:eq:thetapoly} gives a concrete exponential-versus-polynomial
+equation from which such asymptotics may be developed; the present paper
+does not assert a limiting measure.
+
+\begin{question}[Flag triangulations of the canonical model]
+For height-two posets, does chordal bipartiteness suffice for $D_G$ to
+admit a flag unimodular triangulation? More generally, characterize which
+induced configurations obstruct flagness beyond the crown circuits.
+\end{question}
+The necessity of chordal bipartiteness follows here. Sufficiency is a
+separate problem for $D_G$, even if related statements hold for other
+signed root configurations.
+
+\begin{question}[Existential flag realizations]
+Can the crown polynomial $h_{P_r}$ be realized as the $h$-polynomial of a
+flag simplicial polytope by a construction unrelated to lattice
+triangulations of $C_{P_r}$? Can one do this for all height-two posets?
+\end{question}
+This is the distinction needed to make progress on AC
+Conjecture~5.1(d), rather than only testing one canonical construction.
+
+\begin{question}[Exact toric degree bounds]
+How much of the largest indispensable degree of $I_{C_P\cap\Z^n}$ is
+controlled by induced crowns? Is there an upper bound in terms of the
+largest such crown, or do other faces produce independent unbounded
+obstructions?
+\end{question}
+The theorem supplies a lower bound, not a characterization. Additional
+coordinate roots may change global toric relations while leaving the
+exposed-face obstruction intact.
+
+\begin{question}[Minimum counterexamples with checkable completeness]
+Give a fully reproducible exhaustive certificate for the smallest
+counterexample to preorder support real-rootedness, including nontrivial
+preorder blocks. The eight-element example is explicit, while
+Athanasiadis--Chapoton report successful tests through size seven~\cite{AC};
+a complete independent certificate for that lower bound is not supplied here.
+\end{question}
+A smaller search space restricted to height-two posets may be practical
+for identifying every minimal forbidden example and testing structural
+conjectures about their bipartite graphs.
+
+\begin{question}[Efficient exact enumeration and formal certificates]
+Develop a tree-decomposition algorithm for matchable \emph{vertex-set}
+counts that avoids counting matching multiplicities. Can it output a
+small certificate that a proof assistant can check independently of the
+search procedure?
+\end{question}
+The theta family gives a useful stress test: treewidth is small, yet root
+behavior is not controlled by real-rootedness. Enumeration and spectral
+regularity should therefore be treated as distinct algorithmic issues.
+
+\section{Conclusion}\label{htwo:sec:conclusion}
+
+The height-two identity identifies the $\gamma$-coefficients of preorder
+support polynomials with a classical graph invariant. Its value is not
+merely that it reproduces an isolated counterexample: it exposes a
+complete root-distribution family, a determinantal positive class, and a
+sharp distinction between root behavior and canonical triangulations.
+
+The negative examples do not destroy $\gamma$-positivity in height two;
+that property is guaranteed by the matching-support formula. Likewise,
+real-rooted crown polynomials do not rescue flag lattice triangulations
+of the canonical root polytope. The remaining questions therefore have
+different mathematical mechanisms and require different constructions.
+The accompanying proofs and exact certificates are intended to make those
+mechanisms, and the limits of the novelty claims, available for direct
+independent review.
+
+\clearpage
 \appendix
+\phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
 \section{A hypertree proof of the known root identity}\label{app:hypertrees}
 
 This appendix reconstructs Proposition~\ref{prop:known} without using the
@@ -1096,6 +3099,10 @@ A polynomial is stored as coefficients from degree zero upward. The JSON
 report also records explicit edge sets for matching certificates and complete
 Ehrhart counts for the independently tested instances.
 
+[Added 28 September 2026, batch 39: this appendix describes Part~I's
+package; Part~II's programs and how to rerun them are in
+Section~\ref{htwo:sec:build}.]
+
 The calculations in the supplied report completed without failed assertions.
 Their runtime is recorded separately as an observation from this environment,
 not as a performance guarantee. No claim of formal verification is made.
@@ -1138,6 +3145,48 @@ J. Combin. Theory Ser. A \textbf{114} (2007), 65--76;
 K. Menon,
 \emph{Gamma-positivity for octopuses: a bijective proof},
 \arxiv{2608.13247v1}, 13 August 2026.
+
+% Part II (batch 39): references of manuscript 02 not already cited by Part I.
+\bibitem{DK}
+R. Davis and F. Kohl,
+\emph{Perfectly Matchable Set Polynomials and $h^*$-polynomials for Stable
+Set Polytopes of Complements of Graphs},
+\arxiv{2207.14759}, 2022; published in \emph{Discrete Mathematics}, 2024.
+Theorem 3.10 and the cycle formulas are used as identified in the text.
+
+\bibitem{OT20}
+H. Ohsugi and A. Tsuchiya,
+\emph{Reflexive polytopes arising from bipartite graphs with
+$\gamma$-positivity associated to interior polynomials},
+\emph{Selecta Mathematica (New Series)} \textbf{26} (2020), Paper 59.
+\arxiv{1810.12258v4}. In particular, Example 3.7 records the older
+nonreal-rooted graph polynomial used in Section~\ref{htwo:sec:counter}.
+
+\bibitem{OT21}
+H. Ohsugi and A. Tsuchiya,
+\emph{Symmetric edge polytopes and matching generating polynomials},
+\emph{Combinatorial Theory} \textbf{1} (2021), Paper 9.
+\arxiv{2008.08621v2}; doi:10.5070/C61055371.
+Theorem 7.2 gives the prior univariate cactus result.
+
+\bibitem{Stembridge}
+J.~R. Stembridge,
+\emph{Counterexamples to the poset conjectures of Neggers, Stanley,
+and Stembridge},
+\emph{Transactions of the American Mathematical Society}
+\textbf{359} (2007), 1115--1128.
+doi:10.1090/S0002-9947-06-04271-1.
+Author's accompanying data:
+\url{https://websites.umich.edu/~jrs/data/pocon/}.
+
+\bibitem{Patel}\raggedright
+S. Patel,
+\emph{An eight-element counterexample}, posted solution on MathDB,
+``Real-rootedness conjecture for preorder-polytope $h$-polynomials,''
+consulted 28 September 2026.
+\url{https://mathdb.com/p/374962/real-rootedness-conjecture-for-preorder-polytope-h-polynomia}.
+The page displayed a relative posting date and marked the claim unverified;
+the explicit example, not the site's historical metadata, is credited here.
 
 \end{thebibliography}
 \end{document}
