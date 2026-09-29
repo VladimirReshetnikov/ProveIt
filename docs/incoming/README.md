@@ -581,4 +581,6 @@ ProveIt-era batches (from this directory):
 
 | Batch | Place | Write or merge | Catalogue | Audit |
 |---|---|---|---|---|
-| 36 | `1a1396d`; moved into the collection by `d5e1fb3` | `3a15f34`, `b3d0c1b`, `2becd30`, `bb501ab`, `c69841a`, `d532b65`, `a10e9be`; notes `6c9175a`, `a20a47c` | "Catalogue batch 36" | — |
+| 36 | `1a1396d`; moved into the collection by `d5e1fb3` | `3a15f34`, `b3d0c1b`, `2becd30`, `bb501ab`, `c69841a`, `d532b65`, `a10e9be`; notes `6c9175a`, `a20a47c` | `de4ac5a` | `821f699` (29 defects, three lenses) |
+| 37 | `0e53d10` | `e2f896d`, `ac07b4c`, `3f47574`, `f0fc69f`, `b6ef9e5`; notes `15c5658` | "Catalogue batches 37-38" | — |
+| 38 | `938b2f7` (five packages filed in the Fabius drafts tree by its quick intake) | `fa77d9e` | "Catalogue batches 37-38" | — |

@@ -24,6 +24,19 @@ witnesses they construct and in the method:
 | `08` | `coarse_degree_attack` | Baire category; Kuratowski–Ulam + Mycielski | Cone dichotomy and exact partners; cone-avoiding compactness recovered; explicit jump-complete c.e. set with trivial core; Cantor family of pairwise exact partners; principal-core classes `I(A) ⊕ X_A` with no least representative | `coarse_degree_attack.zip` : `coarse_degree_attack` |
 | `09` | `coarse_degree_attack` | Baire category; direct ball fusion | Perfect exact-pair family with exact intersections against any countable family of oracles; approximability bounds the core (external-centre proof); many-one complete c.e. example; no countable coinitial family of representative degrees; arbitrary principal cores | `coarse_degree_attack (1).zip` : `coarse_degree_attack` |
 | `10` | `coarse_hyperdegrees` | Forcing over L_{ω₁^CK} with budget conditions; elementary | Follow-up to plan Section 12, written in this repository: coarse classes with no least *hyperdegree* (hyperdegree minimal pairs `A ≈ B`, both Cohen generic, `ω₁ = ω₁^CK`); dyadic codes do have least hyperdegrees, so cone-avoiding compactness fails for `≤_h`; Martin's cone theorem fails for the coarse degrees (a `Π¹₁` invariant set splitting every cone) | — (not an archive) |
+| `11` | `article` | HJKS compactness + relative generic core; affine sharing | Finite monotone coalition-core profiles; two-share synergy; generic access structures; verifies plan target C4 | `Coarse_Information_Profiles.zip` : `coarse_information_profiles` |
+| `12` | `article` | Robust radius (Baire); row-finite normal form; ideal-protected fusion; dyadic insertion + Friedberg inversion | Merged from three manuscripts: every countable Turing ideal is a core (plan target C4, antecedent HJS 2021 Thm 3.11); whole-row spectrum; core-neutral joins; an upper cone in every core fibre; prescribed-jump exact pairs | `ProveIt_Coarse_Ideal_Realization.zip` (base), `ProveIt_Coarse_Core_Realization.zip`, `coarse_core_realization.zip` |
+| `13` | `article` | Layered reservoirs; domination | Guarded set `≡_uc R(TOT)`; optimal exact partners with `D' ≡ ∅''` (plan target C6, guarded-set half); exact ideals with joint jump control | `Exact_Ideals_and_Optimal_Jumps.zip` : `exact_ideals_coarse` |
+| `14` | `article` | Computable erasures; computable agreement | Plan target C2 answered negatively for 1-generics with computable agreement (all 2-generics, non-high 1-generics, low `Δ⁰₂` examples); the plan's route for high 1-generics stays open | `proveit_effective_dense_research.zip` : `proveit_effective_dense` |
+
+Reports `11`–`14` are the programme's second round: six manuscripts that arrived through
+ProveIt's [`docs/incoming`](../../../../../docs/incoming/README.md) as batch 37 and attack
+plan targets C2, C4 and C6.  Three of them prove the same C4 spine and are merged into `12`.
+These four follow the intake layout — `article.tex`, `article.pdf`, `README.md`, delivered
+scripts in `code/` and recorded outputs in `data/` (prefixed by source in `12/`) — and each
+README gives the provenance, what is and is not claimed, and the Lean declarations the report
+builds on; none of their new theorems is formalized.  The synthesis has not yet been amended
+for them.  The housekeeping note below concerns reports `01`–`09` only.
 
 Housekeeping applied on extraction: the single top-level folder of each archive was flattened
 into its numbered directory; five byte-identical copies of the research plan

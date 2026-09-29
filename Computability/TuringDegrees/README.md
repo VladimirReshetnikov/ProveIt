@@ -80,7 +80,7 @@ route through dyadic codes, `not_C1_dyadic`. It also formalizes the dyadic-code
 criterion `description_iff_limit`, the block-code characterization of the
 classes that do have a least degree, and research report 10 on coarse
 hyperdegrees and the failure of Martin's cone theorem for the coarse degrees.
-The research plan, ten reports and the synthesis it follows are in
+The research plan, fourteen reports and the synthesis it follows are in
 [`Research/CoarseDegrees/`](Research/CoarseDegrees/).
 
 **Admitted statements.** This library, unlike `TuringDegrees` and the rest of
