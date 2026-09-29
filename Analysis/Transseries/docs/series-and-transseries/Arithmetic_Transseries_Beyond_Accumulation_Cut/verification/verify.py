@@ -245,16 +245,25 @@ def numerical_audits():
     return records,resonance_records
 
 def main():
+    # ProveIt edit (2026-09-29): --outdir (default: this directory, as in the
+    # recorded run) lets a rerun write elsewhere, and every output is written
+    # with LF line endings on every platform.
+    import argparse
+    parser=argparse.ArgumentParser(description='Exact audits and high-precision diagnostics.')
+    parser.add_argument('--outdir',type=Path,default=OUT,
+                        help='directory for the four outputs (default: the verification directory)')
+    out=parser.parse_args().outdir
+    out.mkdir(parents=True,exist_ok=True)
     exact=exact_audits()
     rows,resonance=numerical_audits()
-    with (OUT/'inverse_error_checks.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=rows[0].keys());writer.writeheader();writer.writerows(rows)
-    with (OUT/'resonance_checks.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=resonance[0].keys());writer.writeheader();writer.writerows(resonance)
+    with (out/'inverse_error_checks.csv').open('w',newline='') as f:
+        writer=csv.DictWriter(f,fieldnames=rows[0].keys(),lineterminator='\n');writer.writeheader();writer.writerows(rows)
+    with (out/'resonance_checks.csv').open('w',newline='') as f:
+        writer=csv.DictWriter(f,fieldnames=resonance[0].keys(),lineterminator='\n');writer.writeheader();writer.writerows(resonance)
     report={'status':'all checks passed','exact':exact,'working_decimal_digits':400,
             'numerical_error_bound_checks':len(rows),'post_accumulation_checks':resonance,
             'qualification':'Finite exact audits and non-interval high-precision diagnostics, not general formal verification.'}
-    (OUT/'results.json').write_text(json.dumps(report,indent=2)+'\n')
+    (out/'results.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     # Small table consumed by the article. Generated values, not manually typed.
     selected=[r for r in rows if r['kind']=='necklace' and r['q']==2 and r['n'] in (20,60,120) and r['M'] in (1,2,4)]
     def texnum(s):
@@ -262,7 +271,7 @@ def main():
         if not v: return '0'
         e=int(mp.floor(mp.log10(abs(v)))); mant=v/mp.power(10,e)
         return mp.nstr(mant,4)+r'\times10^{'+str(e)+'}'
-    with (OUT/'table.tex').open('w') as f:
+    with (out/'table.tex').open('w',encoding='utf-8',newline='\n') as f:
         for r in selected:
             f.write(f"{r['n']} & {r['M']} & ${texnum(r['abs_error'])}$ & ${texnum(r['cauchy_bound'])}$ \\\\\n")
     print(json.dumps({k:v for k,v in report.items() if k!='post_accumulation_checks'},indent=2))

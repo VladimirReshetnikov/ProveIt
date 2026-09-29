@@ -28,6 +28,9 @@
 \newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Q}{\mathbb Q}
@@ -120,6 +123,40 @@ volume was not exhaustively audited. The immutable source addresses in the
 bibliography and the accompanying provenance file identify the exact
 materials used. We make no claim to have compared every statement against
 every document in the repository.
+
+% ed. (2026-09-29): scope note on "We resolve" and "sharper", with the
+% repository antecedents the article could not see or did not cite.
+\begin{ednote}\label{ed:scope}
+\emph{Scope.} ``We resolve'' in the abstract means: this article answers the research
+question ``Beyond Archimedean exponent groups'' of
+\path{Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex}
+for fixed-shift Hahn power--logarithmic derivations, as stated in this
+section. It is not the first non-Archimedean Hahn
+reversion in the repository: Lemma \texttt{e:lem-reversion} of the
+surcomplex analysis volume \cite{EdSurcomplex}
+(\path{Algebra/SurrealNumbers/docs/surcomplex/analysis/article.tex})
+already proves existence, uniqueness and the same positive-integer
+Lagrange sum for Hahn sections over a non-Archimedean exponent group, by
+the finite-word form of Neumann's lemma, without logarithmic blocks,
+characters or depth bounds; and the all-word lemma is checked in Lean
+(see the note after Lemma~\ref{lem:words}).
+\emph{Priority of the Newton rate.} The law $r\mapsto2r+1$,
+$r_n=2^{n+1}-1$, called ``sharper'' in the abstract, is for $\Gamma\subseteq\R$ and
+$h=1$ exactly the rate $e_{k+1}\ge2e_k+\alpha+2$,
+$e_k\ge(2^{k+1}-1)\delta-1$ of Theorem~4.1 (\texttt{thm:newton},
+equation \texttt{eq:newtonrate}) of that reversion article, expressed in
+units of $\delta$; the article does not cite it. New here are its
+validity without cofinality, its attainment (Theorem~\ref{thm:sharp}),
+the valuation and cut criteria, the minimal quotients and the rank-two
+depth profiles.
+\emph{Uncited canonical remarks.} Remark
+\texttt{plt:rmk:ext-archimedean} of the canonical volume
+(\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex})
+shows the phenomenon of Section~\ref{sec:sharp} for lexicographic
+$\Z^2$ and $S=\{(0,1)\}$, and Remark \texttt{plt:rmk:ext-neumann-general}
+there quotes, without proof, the all-word clause of Neumann's lemma for
+non-Archimedean groups that Lemma~\ref{lem:words} proves.
+\end{ednote}
 
 \subsection{What is classical and what is established here}
 Higman's word theorem and the associated positive-support summability
@@ -280,6 +317,28 @@ would also be a bad sequence. This proves the finite-word assertion.
 The combinatorial mechanism is the classical Higman--Neumann support
 principle \cite{Higman}. The proof makes clear why no real-valued lower bound
 on word length is required.
+
+% ed. (2026-09-29): the repository already has this lemma in Lean; the
+% article's formalization plan (sec:formalization) lists it as a first layer.
+\begin{ednote}\label{ed:words-lean}
+Both assertions of Lemma~\ref{lem:words} are already formalized in the
+repository's Lean library for surreal Hahn series, over an arbitrary
+linearly ordered cancellative abelian group with no Archimedean
+hypothesis \cite{EdSurrealLean}. The finite-word assertion is
+\path{Surreal.HahnSeries.finite_words_of_sum_eq}
+(\path{Algebra/SurrealNumbers/Surreal/HahnSeries/Neumann.lean}: all
+finite lists over a positive partially well-ordered $S$ with a given sum
+form a finite set, proved by Higman's lemma) and, in monoid form,
+\path{Surreal.HahnSeries.finite_wordsWithSum}
+(\path{Algebra/SurrealNumbers/Surreal/HahnSeries/NeumannWords.lean}).
+Well-ordering of $M(S)$ is
+\path{Surreal.HahnSeries.isPWO_closure_of_pos} in the same file, and
+\path{Surreal.HahnSeries.neumann_positive} in \texttt{Neumann.lean}
+combines it with finiteness of nondecreasing words. These declarations
+were not visible to this article's targeted inspection, which read only
+\texttt{Analysis/Transseries}; the ``All-word support'' layer of
+Section~\ref{sec:formalization} can import them.
+\end{ednote}
 
 \begin{corollary}[Anchored words]\label{cor:anchored}
 For well-ordered $T\subseteq\Gamma$ and positive well-ordered $S$, the set
@@ -482,6 +541,20 @@ $r_{n+1}=2r_n+1$, $r_0=1$, has solution $r_n=2^{n+1}-1$.
 The resulting errors and increments form Hahn-summable families, and each
 coefficient eventually agrees with $U_*$. This proves strong convergence.
 \end{proof}
+
+% ed. (2026-09-29): credits the identical rate of the predecessor article.
+\begin{ednote}\label{ed:newton-rate}
+Applied to reversion (Section~\ref{sec:sharp}), where the normalized
+correction is $U=t^hC$, with $\Gamma\subseteq\R$ and $h=1$,
+\eqref{eq:newtondepth} gives $v(C_n-C_*)\ge(2^{n+1}-1)\delta-1$,
+$\delta=\min S$, and the step
+$r\mapsto2r+1$ becomes $e\mapsto2e+\alpha+2$ with $\delta=\alpha+1$: this is
+equation \texttt{eq:newtonrate} of Theorem~4.1 (\texttt{thm:newton}) in
+\path{Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex},
+which this article does not cite. The depth formulation extends that rate
+to groups in which the multiples of $\delta$ are not cofinal;
+Theorem~\ref{thm:sharp} shows it cannot be improved.
+\end{ednote}
 
 \begin{corollary}[Exact Newton round count]\label{cor:rounds}
 For a finite nonempty set of requested exponents $E\subseteq M$, all those
@@ -838,6 +911,25 @@ sum solves \eqref{eq:normalinverse}; uniqueness identifies it with $U$.
 Finally, no normalized $n$th term can contribute at $\alpha$ for
 $n>\depth_S(\alpha)$.
 \end{proof}
+
+% ed. (2026-09-29): names the other proofs of the same Lagrange sum.
+\begin{ednote}\label{ed:reversion-other-proofs}
+At $\Gamma\subseteq\R$, $h=1$, $\chi=\Id$, \eqref{eq:LB} is Theorem~3.2
+(\texttt{thm:LB}, equation \texttt{eq:LB}) of the predecessor reversion
+article
+(\path{Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex}),
+whose $A$ and $B$ are the $B$ and $C$ here, and Corollary~\ref{cor:EulerLB}
+agrees term by term with its block formula \texttt{eq:blockLB}. Over a
+non-Archimedean exponent group, existence, uniqueness and the same sum
+without logarithmic blocks are Lemma \texttt{e:lem-reversion} of the
+surcomplex analysis volume
+(\path{Algebra/SurrealNumbers/docs/surcomplex/analysis/article.tex}),
+proved by the same auxiliary-parameter specialization. What this theorem
+adds is the power--logarithmic block calculus over a non-Archimedean group
+with fixed shift data $(h,\chi)$; its outer-order bound
+$n\le\depth_S(\alpha)$ replaces the real-valued bound \texttt{eq:rbound}
+of the predecessor.
+\end{ednote}
 
 \subsection{A normalized Euler formula}
 The derivative formula can be kept entirely inside the generated support
@@ -1969,6 +2061,22 @@ I.~M.~Gessel, Lagrange inversion,
 212--249.
 \href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
 \url{https://arxiv.org/abs/1609.05988}.
+
+% ed. (2026-09-29): two bibliography entries for the editorial notes.
+\bibitem{EdSurcomplex}
+ProveIt research corpus, \emph{Surcomplex Analysis: germs, coherent Hahn
+sections, and infinitesimal zero geometry}, September 2026,
+Lemma \texttt{e:lem-reversion} (Hahn reversion).
+Repository path
+\path{Algebra/SurrealNumbers/docs/surcomplex/analysis/article.tex}.
+Added by the ProveIt editors, 2026-09-29.
+
+\bibitem{EdSurrealLean}
+ProveIt contributors, \emph{Surreal.HahnSeries.Neumann} and
+\emph{Surreal.HahnSeries.NeumannWords}, Lean sources
+\path{Algebra/SurrealNumbers/Surreal/HahnSeries/Neumann.lean} and
+\path{Algebra/SurrealNumbers/Surreal/HahnSeries/NeumannWords.lean}.
+Added by the ProveIt editors, 2026-09-29.
 \end{thebibliography}
 \endgroup
 \end{document}

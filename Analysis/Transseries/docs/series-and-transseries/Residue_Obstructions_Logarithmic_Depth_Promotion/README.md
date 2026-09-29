@@ -83,3 +83,40 @@ block-antiderivative file has blob SHA
 No repository files were changed. A natural location for a future intake is
 under `Analysis/Transseries/docs/series-and-transseries/`; this is a suggestion,
 not an upload that has been performed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed unedited in batch 46 (see `docs/incoming/README.md`).
+The following changes were made afterwards; each change to the article is
+marked in the source by a `% ed. (2026-09-29)` comment, and every visible
+addition is an unnumbered "Editorial note (ProveIt, 2026-09-29)", so no
+theorem, section or equation number changed. Its repository paths were
+already current (the snapshot postdates the move to `Analysis/Transseries`),
+so none needed updating.
+
+- `residue_fredholm.tex`:
+  - Preamble: the unnumbered `ednote` environment.
+  - After Theorem 3.1 (`thm:residue`): the identity `Res_n ∘ D = 0` and the
+    non-membership of `log_{n+1} x` are the canonical volume's
+    `plt:thm:ext-tower-strict` (with `𝔫_n^{-1} = ρ_n`), which the article
+    re-derives without citing; the article strengthens it to exactness of
+    the residue sequence, with the explicit primitive `I_n`, and to `D^m`
+    (Theorem 4.1). Neither bears on `plt:rmk:ext-open-depth`.
+  - Section 11, "The exact minimal power of the promoted logarithm" and
+    "Matrix systems and nonreal indicial roots": the later package
+    `../Hahn_Fuchsian_Resonance_Analytic_Normalization/` answers the
+    homogeneous half of the first and the Jordan-chain part of the second
+    for first-order real-spectrum systems at depth 0 (`dim ker B^{d+1}`;
+    the nilpotency index of `B = N + ΣR_ρ`); forced equations, depth
+    `n ≥ 1`, higher-order matrix polynomials and nonreal roots stay open.
+  - Section 11, "Other ordered exponent groups": the non-Archimedean
+    reversion package `../Reversion_Beyond_Archimedean_Valuations/` draws
+    the analogous separation for reversion; the operator question stays
+    open.
+- `residue_fredholm.pdf`: rebuilt from the amended source (`latexmk -pdf`):
+  27 pages (26 as delivered), no errors, undefined references, multiply
+  defined labels, duplicate destinations or overfull boxes.
+- `verification/verify.py`: `verification/results.json` is written as UTF-8
+  with `newline="\n"`, so a rerun on Windows no longer produces CRLF. A
+  rerun of the amended program (Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0)
+  on a copy reproduced the filed JSON byte for byte.

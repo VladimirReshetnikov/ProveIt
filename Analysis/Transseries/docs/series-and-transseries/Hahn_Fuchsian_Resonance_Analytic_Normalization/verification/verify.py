@@ -191,6 +191,11 @@ def run() -> dict:
         target = -1 if j == 1 else 0 if j == 2 else sp.Rational(1,(j-2)*sp.factorial(j-1))
         assert H[sp.Rational(j)][1,0] == target
     assert B == sp.Matrix([[0,0],[1,0]])
+    # ProveIt edit (2026-09-29): record this checked system too; the delivered
+    # program checked it but did not list it, so exact_cases had 32 entries
+    # while exact_gauge_systems was the literal 33.
+    cases.append({'name':'induced-log example a=c=1, b=d=e=0', 'B':matrix_json(B),
+                  'series_coefficients_checked_through_exponent':10})
     # Finite versions of the accumulating counterexample have exactly the
     # claimed coefficients. Their convergence/divergence is proved in the paper.
     for j in range(2,21):
@@ -230,7 +235,7 @@ def run() -> dict:
                     'predicted_t4_limit':mp.nstr(f3/720,16),'terms':terms})
     return {'status':'all checks passed', 'seed':20260929,
         'environment':{'python':platform.python_version(),'sympy':sp.__version__,'mpmath':mp.__version__},
-        'exact_gauge_systems':33,'exact_coefficient_checks_including_counterexample':checks,
+        'exact_gauge_systems':len(cases),'exact_coefficient_checks_including_counterexample':checks,
         'crossover_cases':len(numerics),'exact_cases':cases,'crossover':numerics,
         'scope':'Finite exact rational/symbolic checks and non-interval numerical illustrations; not a proof of the general theorems.'}
 
@@ -238,7 +243,8 @@ def run() -> dict:
 if __name__ == '__main__':
     result = run()
     output = Path(__file__).with_name('results.json')
-    output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    # ProveIt edit (2026-09-29): write LF on every platform.
+    output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({k:result[k] for k in ['status','exact_gauge_systems',
           'exact_coefficient_checks_including_counterexample','crossover_cases','environment']},indent=2))
     print(f'Results written to {output}')

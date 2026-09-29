@@ -158,8 +158,9 @@ def numeric_checks(b: list[sp.Expr]) -> None:
                          'inverse_value':mp.nstr(W+delta,45),
                          'absolute_error':mp.nstr(error,14),
                          'proved_bound':mp.nstr(bound,14)})
+    # ProveIt edit (2026-09-29): explicit LF terminator; the csv default is CRLF.
     with (OUT/'numeric_checks.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]))
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(rows)
     checks.append('PASS: 100-digit numerical tests at w=4,5,8,12 and N=1..6 satisfy the proved bound')
 
@@ -176,7 +177,8 @@ def main() -> None:
     report += ['', 'These finite checks do not replace the proofs in the article.',
                'No Lean, Coq, or other proof-assistant verification is claimed.']
     text='\n'.join(report)+'\n'
-    (OUT/'verification_report.txt').write_text(text)
+    # ProveIt edit (2026-09-29): write LF on every platform.
+    (OUT/'verification_report.txt').write_text(text,encoding='utf-8',newline='\n')
     print(text)
 
 if __name__ == '__main__':

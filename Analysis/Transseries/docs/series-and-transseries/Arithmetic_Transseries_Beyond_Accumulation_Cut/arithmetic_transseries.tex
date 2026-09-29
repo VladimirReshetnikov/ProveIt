@@ -33,6 +33,9 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\N}{\mathbb N}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Q}{\mathbb Q}
@@ -52,6 +55,9 @@
 \newcommand{\coeff}[2]{[#1^{#2}]}
 \newcommand{\snapshot}{\texttt{db68f0853c3c69cd930caedab6f6ad9addb11eaf}}
 \begin{document}
+% ed. (2026-09-29): no hyperref page anchor on the title page, whose page
+% number 1 recurs after it (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 \noindent\textsc{Transseries \; / \; Arithmetic asymptotics \; / \; Nonlinear inversion}
@@ -102,6 +108,8 @@ Classical ingredients and proposed extensions are distinguished in
 Section~\ref{sec:scope}. The repository snapshot, reproducibility instructions,
 and formalization boundaries are recorded explicitly.
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
 
@@ -134,6 +142,39 @@ states that it does not preserve the divisibility indicators and therefore
 does not provide the arithmetic algebra requested by the companion
 \cite{repoindex}. The present construction addresses that missing
 arithmetic component rather than repeating the measure-valued theory.
+
+% ed. (2026-09-29): records the second repository question this article
+% answers without citing it, and the relation to the action-measure article,
+% which the article knew only from a catalogue line.
+\begin{ednote}\label{ed:siblings}
+\emph{A second question answered.} The same construction answers the
+problem ``Arithmetic action accumulation rather than a discrete Borel
+lattice'' of the inverse-harmonic package
+(\path{Analysis/Transseries/docs/series-and-transseries/Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}),
+which asks for a summable inverse calculus for divisor-dependent sectors
+whose actions accumulate at a finite point, with a specified topology or
+summability condition, retained divisibility indicators, and justified
+products and inverse operations. Theorems~\ref{thm:banach} and
+\ref{thm:admission} supply the topology and the products,
+Corollary~\ref{cor:funcalc} the scalar operations, and
+Theorems~\ref{thm:inverse} and \ref{thm:range} the inverses, within the
+limits stated in this article: inverses on each fixed arithmetic sheet, no
+canonical global interpolation, and no resurgence, Borel summation or
+Stokes automorphism. This article does not cite that problem.
+\emph{The action-measure article.} The ``catalogue entry'' cited above is
+the repository's description of
+\path{Analysis/Transseries/docs/series-and-transseries/Action_Accumulation_Nonlinear_Inversion/},
+not a statement of that article itself, and this article did not read it.
+That article gives an analytic inversion calculus for exponentially
+weighted action measures with the explicit inverse
+$-\sum_{n\ge1}s^{n-1}\mu^{*n}/n!$ and no action-gap hypothesis, a
+Poisson--Bessel resolution of $\sum_j j^{-2}\ee^{-x/j}$, and Hardy-field
+and o-minimal obstructions. It is label-free and analytic; this article is
+fixed-label and arithmetic. No theorem of either is a theorem of the
+other, and neither supersedes the other: they approach the same
+accumulation frontier from opposite sides and form one unit for the
+deferred merge into the companion's necklace chapter.
+\end{ednote}
 
 \subsection{What is established}
 

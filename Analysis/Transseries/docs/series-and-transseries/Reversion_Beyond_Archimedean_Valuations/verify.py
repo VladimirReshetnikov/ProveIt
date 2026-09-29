@@ -277,7 +277,8 @@ def main()->None:
              "finite_quotient_certificate":finite_certificate_check(),
              "infinite_support_depth":infinite_support_check(),
              "factorial_profile_depth":factorial_profile_check()}
-    Path(args.output).write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8')
+    # ProveIt edit (2026-09-29): write LF on every platform.
+    Path(args.output).write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(results['status'])
     print('Scalar Newton depths:',[r['first_error_degree'] for r in results['sharp_scalar_newton']['rows']])
     print('Power-log blocks:',results['resonant_power_log']['nonzero_blocks'])
