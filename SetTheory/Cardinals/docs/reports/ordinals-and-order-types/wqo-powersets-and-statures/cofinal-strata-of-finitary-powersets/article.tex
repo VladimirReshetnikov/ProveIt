@@ -83,6 +83,16 @@
 \newcommand{\Tz}{\mathsf T^{0}}
 \newcommand{\Vz}{\mathsf V^{0}}
 \newcommand{\lxsi}{\mathop{\textstyle\sum}\nolimits^{\mathrm{lex}}}
+% Macros of the batch-42 addition (Part IV)
+\newcommand{\Qlo}{Q_{\mathrm{lo}}}
+\newcommand{\Qup}{Q_{\mathrm{up}}}
+\newcommand{\Qiso}{Q_{\mathrm{iso}}}
+\newcommand{\Qhi}{Q_{\mathrm{hi}}}
+\newcommand{\Nb}{\mathcal N}
+\newcommand{\nuur}{\nu_{\mathrm{ur}}}
+\newcommand{\rtop}{\rho_{\top}}
+\newcommand{\ncl}{\operatorname{ncl}}
+\newcounter{nhurSavedEq}
 \DeclareMathOperator{\depth}{depth}
 \allowdisplaybreaks[2]
 \emergencystretch=1em
@@ -92,9 +102,9 @@
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{10mm}
+\vspace*{2mm}
 {\small\sffamily\color{Olive}ORDER THEORY\quad /\quad ORDINAL COMBINATORICS}
-\vspace{12mm}
+\vspace{8mm}
 
 {\Huge\bfseries\color{Ink}Cofinal strata and\par ordinal absorption\par}
 \vspace{6mm}
@@ -138,6 +148,10 @@ independently established.
 from four later manuscripts, determine the height for nonuniform fibres:
 a coordinate is charged, by ordinary ordinal addition, only when its
 vertex leaves the frontier.
+
+\emph{Addition of 29 September 2026 (batch 42).} Part~IV shows, via uniquely
+restricted matchings, that the height problem is NP-complete already for
+height-two skeletons with every fibre $\omega$.
 \end{abstract}
 \vfill
 \begin{resultbox}
@@ -2371,6 +2385,9 @@ Theorem~\ref{nh:thm:persistence}.
 This is an upper bound, not an NP-completeness claim, and it refers to the
 pure-block encoding: unary expansion of a succinct coefficient is not silently
 counted as polynomial preprocessing.
+[Added 29 September 2026, batch 42: the problem is NP-complete; hardness holds
+already for height-two skeletons with every fibre $\omega$
+(Theorem~\ref{nh:ur:thm:np} and Remark~\ref{nh:ur:rem:partII}).]
 
 \section{The compressed formula for positive pure fibres}\label{nh:sec:frontier}
 
@@ -4364,6 +4381,13 @@ $\omega^3+\omega^2+\omega$ with the terminal term, and the shipped certificate
 \path{data/03-wpo-height_two_overlap_certificate.json} establishes
 optimality. This is a concrete finite set-system scheduling problem; its
 computational complexity is not classified here.
+[Added 29 September 2026, batch 42: Part~IV classifies it. With all weights
+equal, the largest number of nonempty groups is the maximum uniquely
+restricted matching number of the incidence graph, and deciding the height
+threshold is NP-complete already when every fibre is $\omega$
+(Theorems~\ref{nh:ur:thm:productive}, \ref{nh:ur:thm:uniform}
+and~\ref{nh:ur:thm:np}); for unequal weights \eqref{nh:wpo:eq:heighttwo} is
+an ordered-matching maximum (Theorem~\ref{nh:ur:thm:weighted}).]
 
 \section{Implementation, verification and foundations of Part~III}
 \label{nh:wpo:sec:verification}
@@ -4558,6 +4582,15 @@ lexicographically significant coefficient vector) are known ordered-set or
 set-system optimization problems, and to separate input-comparison cost from
 combinatorial cost before any hardness claim. Any hardness claim needs a separate
 reduction, not supplied here.
+[Added 29 September 2026, batch 42: the two preceding sentences describe the
+state before Part~IV, which \textbf{answers} this item for the hardness
+alternative and supplies the reduction. The threshold problem is NP-complete
+for height-two skeletons with every fibre $\omega$, one scale
+(Theorem~\ref{nh:ur:thm:np}), hence for the pure-block encoding of
+Corollary~\ref{nh:cor:NP} (Remark~\ref{nh:ur:rem:partII}); 09's uniform case
+is a uniquely restricted matching number, its mixed case an ordered-matching
+objective, and 07's leading-coefficient threshold is NP-complete at one scale
+(Section~\ref{nh:ur:sec:questions}).]
 \item \emph{The report's own next target} (Section~\ref{nh:sec:remainedopen}):
 \textbf{answered}, by Theorems~\ref{nh:thm:frontier}, \ref{nh:thm:arbitrary}
 and~\ref{nh:wpo:thm:main}.
@@ -4594,6 +4627,15 @@ rather than the number of frontiers; a proof must identify which partial-state
 information permits safe merging of histories under noncommutative ordinal addition
 (12). The present solvers are polynomial in an explicit state graph that may be
 exponentially larger than the input (11).
+[Added 29 September 2026, batch 42: for height-two skeletons Part~IV gives
+algorithms of the form $2^aN^{O(1)}$ in the number $a$ of distinct
+upper-neighbour sets, and FPT algorithms in the number of distinct upper
+neighbourhoods and in the vertex-cover number
+(Corollaries~\ref{nh:ur:cor:rowtypes}, \ref{nh:ur:cor:types}
+and~\ref{nh:ur:cor:vc}); the number of distinct exponent priorities admits no
+FPT or XP algorithm unless $\mathsf P=\mathsf{NP}$
+(Corollary~\ref{nh:ur:cor:priorityhard}). The problem stays open for the other
+parameters and for taller skeletons.]
 
 \begin{problem}[Ordinal width and maximal linear-extension type; 12 Problem~10.4, 07 Question~5, 09 \S14.8, 11 Problem~12.2]
 \label{nh:prob:width}
@@ -4723,7 +4765,10 @@ components and finite or successor WPO components are not covered, and replacing
 $\hgt(\K(P_q))$ by $\hgt(P_q)$, a maximal linear-extension type or a width is not
 justified. Complexity statements count ordinal operations on explicit state graphs;
 none is a polynomial-time bound in the skeleton size or in a binary encoding of
-Cantor coefficients, and NP membership is not NP-completeness. There is no bound on
+Cantor coefficients, and NP membership is not NP-completeness.
+[Added 29 September 2026, batch 42: Part~IV proves NP-completeness
+(Theorem~\ref{nh:ur:thm:np} and Remark~\ref{nh:ur:rem:partII}); the rest of
+the preceding sentence stands.] There is no bound on
 lengths of controlled executions, and no claim that the first rank maps of
 Theorem~\ref{nh:thm:persistence} are pointwise exact. The executable notations stop
 below $\eps$ (07's code takes positive integer exponents and is ``not a general
@@ -4824,6 +4869,1834 @@ non-pure general fibres and infinite skeletons remain separate research tasks. T
 manuscripts are unrefereed; independent checking and a fuller priority search remain
 necessary before the addition is treated as a refereed or historically certified
 contribution.
+
+%% ====================================================================
+%% Batch-42 addition (manuscript 04). All labels: nh:ur:...
+%% Equations of Part IV are numbered within sections, so that the
+%% continuous equation numbers of Parts I--III and of Part I's
+%% appendices do not move; the counter is restored at the end.
+%% ====================================================================
+\clearpage
+\setcounter{nhurSavedEq}{\value{equation}}
+\let\nhurSavedTheequation\theequation
+\let\nhurSavedTheHequation\theHequation
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\def\theHequation{nhur.\thesection.\arabic{equation}}
+\phantomsection\part*{Part IV.\quad Uniquely restricted matchings: the height-two problem is NP-complete}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Uniquely restricted matchings: the height-two problem is NP-complete}
+
+\noindent\emph{This part is batch-42 manuscript 04, added on 29 September
+2026. It answers the complexity item of Section~\ref{nh:sec:questions} and
+the remark closing Section~\ref{nh:wpo:sec:examples}, and partly answers
+Problem~\ref{nh:prob:fpt}. Its uniform theorem is proved without any theorem
+of Parts~I--III; its nonuniform transfinite readings rest on
+Theorem~\ref{nh:wpo:thm:heighttwo}. Equations of this part are numbered
+within sections, so that no equation number of Parts~I--III or of Part~I's
+appendices moves.}
+
+\section{Provenance, conventions and the answer}\label{nh:ur:sec:intro}
+\setcounter{equation}{0}
+
+\subsection{The question}\label{nh:ur:sec:question}
+
+Theorem~\ref{nh:wpo:thm:heighttwo} (Part~III) expresses the height for a
+height-two skeleton as an optimization over first upper neighbours, and the
+text after it said that the computational complexity of this finite
+set-system scheduling problem was ``not classified here''. The complexity
+item of Section~\ref{nh:sec:questions} asked whether the uniform and
+nonuniform problems correspond to established ordered-set or set-system
+optimization problems, and asked for a polynomial-time algorithm or an
+NP-hardness result, even for two positive scales.
+Problem~\ref{nh:prob:fpt} asks for fixed-parameter algorithms in structural
+parameters, including the number of distinct upper-neighbour sets.
+
+The answer of this part (manuscript 04) is that the uniform optimization is
+exactly a classical matching invariant. Thus the hoped-for unrestricted
+polynomial algorithm would imply $\mathsf P=\mathsf{NP}$. The obstruction
+does not require complicated ordinal notation, many scales, large
+coefficients, or a tall skeleton: it already occurs with a $0$--$1$
+incidence matrix and fibres all equal to $\omega$. At the same time, the
+weighted problem has additional structure not captured by one
+maximum-cardinality matching. Its lower ordinal terms can distinguish
+maximum matchings that are indistinguishable at the leading scale.
+
+\begin{resultbox}
+\small\textbf{Main results (04).} For a finite nonempty skeleton $Q$ of
+height at most two, with bipartite incidence graph $G_Q$, and a uniform
+fibre $\alpha=\omega^\rho$, $\rho>0$,
+\[
+ \hgt\bigl(\K(S_\alpha(Q))\bigr)=\alpha\cdot\bigl(\nuur(G_Q)+1\bigr)
+ \qquad\text{(Theorem~\ref{nh:ur:thm:uniform})},
+\]
+where $\nuur$ is the maximum uniquely restricted matching number. The proof
+is a direct ranking and an attaining chain. With the published
+NP-completeness of bipartite uniquely restricted matching \cite{GHL2001},
+deciding $\hgt(\K(S_\omega(Q)))\ge\omega\cdot(k+1)$ is NP-complete
+(Theorem~\ref{nh:ur:thm:np}). For nonuniform pure priorities the finite
+objective of Theorem~\ref{nh:wpo:thm:heighttwo} is an ordered-matching
+maximum (Theorem~\ref{nh:ur:thm:weighted}) and obeys an exact
+priority-layer recurrence (Theorem~\ref{nh:ur:thm:layers}).
+\end{resultbox}
+
+\subsection{Contribution and dependency ledger}\label{nh:ur:sec:ledger}
+
+The logical boundaries of this part are as important as the formulas.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.29\linewidth}X@{}}
+\toprule
+Result & What is proved or imported\\
+\midrule
+Uniform height formula & A direct ranking and an explicit chain are proved here;
+no appeal to the report's general height theorems.\\
+Matching characterization & The classical alternating-cycle characterization is
+reproved. Its application to retirement schedules is made explicit.\\
+NP-completeness & The reduction to ordinal height is proved here. Bipartite
+uniquely restricted matching NP-completeness is the published input of
+Golumbic--Hirst--Lewenstein.\\
+Weighted ordered matchings and priority layers & Finite combinatorial theorems
+proved here, with no transfinite assumption.\\
+Nonuniform height interpretation & Uses Theorem~\ref{nh:wpo:thm:heighttwo},
+restated precisely in Remark~\ref{nh:ur:rem:import}.\\
+Algorithms and certificates & Exact finite correctness proofs plus executed
+Python tests; no proof-assistant certification.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These distinctions prevent two misleading conclusions. First, identifying a
+repository question with a known NP-complete problem is not a new proof of the
+historical NP-completeness theorem itself. Second, tests of finite schedules do
+not verify transfinite ranks. The uniform rank proof below supplies its own
+mathematical justification; the more general weighted application has the
+separate inherited dependency just stated.
+
+\subsection{Literature and novelty positioning}\label{nh:ur:sec:literature}
+
+Golumbic, Hirst and Lewenstein introduced and studied uniquely restricted
+matchings, including their bipartite NP-completeness and their relation to
+matrix-rank bounds~\cite{GHL2001}. Legal set-covering sequences and the Grundy
+covering number are also established notions; Bre\v{s}ar, Henning and Rall
+explain their connection with dominating sequences~\cite{BHR2016}. The
+unweighted set-system parameter below is therefore not proposed as a new
+invariant.
+
+The contribution of 04 is a proof-level connection to this report's ordinal
+height problem, a direct uniform transfinite proof, the ordered rather than
+unordered weighted formulation, and the residual priority calculus. These are
+continuations of the inspected report. A targeted literature search does
+not establish that every formulation is unprecedented. The claim is a
+resolution of the identified repository question with fully stated
+dependencies, ``not a claim of a previously unrecognized historical
+breakthrough'' (04), and ``not an unspecified famous open problem in matching
+theory'' (04's proof audit).
+
+\subsection{Source, pin and placement}\label{nh:ur:sec:source}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.27\linewidth}l@{}}
+\toprule
+No. & Manuscript (date) & Archive & Prefix\\
+\midrule
+04 & \emph{Ordinal Heights and Uniquely Restricted Matchings:
+NP-completeness, priority layers, and exact certificates} (29 Sep.\ 2026)
+& \texttt{ProveIt\_Ordinal\_\allowbreak Heights\_\allowbreak Matchings} &
+\texttt{06-ur-matchings-}\\
+\bottomrule
+\end{tabularx}
+\caption{The manuscript of Part~IV. The number is its batch-42 manuscript
+number; the prefix continues this report's local file sequence after the
+\texttt{02-}--\texttt{05-} of the batch-36 addition. The manuscript is an
+AI-assisted research manuscript prepared for Vladimir Reshetnikov.}
+\label{nh:ur:tab:source}
+\end{table}
+
+Part~IV was written from one manuscript (Table~\ref{nh:ur:tab:source}).
+It is pinned to ProveIt commit
+\texttt{9754e83603e223811b7515eb892f22c847144593} (abbreviated
+\texttt{9754e8360}) and names the Git blob
+\texttt{c48fb7fea57f8efd4c705d858c33e58bdbd9a867} of the \texttt{article.tex}
+it read; that blob is the report as it stood when this part was added
+(Parts~I--III), and the directory then differed from the pinned one only by
+the $27$ files staged at placement. 04 read this directory's \texttt{README.md} and
+\texttt{article.tex}, in particular Theorem~\ref{nh:wpo:thm:heighttwo}
+(its ``Theorem 35.1''), the complexity discussion of
+Section~\ref{nh:sec:questions} (its ``Section 37'') and
+Problem~\ref{nh:prob:fpt}; its references to those numbers are replaced here
+by cross-references. The archive arrived in commit \texttt{8315d24e3} and
+was placed in commit \texttt{3609d0473}, which staged its code, data, proof
+audit and source record under the prefix \texttt{06-ur-matchings-}. Its
+manuscript, delivery README, PDF and bibliography files
+(\texttt{references.tex}, \texttt{references.bib}) are not shipped; they
+survive in the arrival commit, and the three literature entries of its
+bibliography were merged into this report's list. 04 notes that the pinned
+snapshot also contained newly arrived report archives that it did not unpack
+or compare, and that absence of a keyword (``uniquely restricted'') from an
+indexed repository search is not proof that no related material exists
+elsewhere. 04 states that it changed nothing in the repository.
+
+\subsection{Notation}\label{nh:ur:sec:notation}
+
+Symbols follow Part~I and Theorem~\ref{nh:wpo:thm:heighttwo}. Every symbol
+renamed from 04 is listed in Table~\ref{nh:ur:tab:notation}, together with
+the meaning it must not be confused with elsewhere in this report. All
+ordinal sums and products without a special symbol are ordinary ordinal
+operations; $\ns$ is the natural (Hessenberg) sum, which 04 prints as a
+circled plus, and $\bigns$ its finite iterate.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.22\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.12\linewidth}@{}}
+\toprule
+Part~IV & Meaning; \emph{not to be confused with} & 04\\
+\midrule
+$\Qlo$, $\Qup$, $\Qiso$ & nonmaximal minimal, nonminimal maximal and isolated
+vertices of a height-two skeleton, as in Theorem~\ref{nh:wpo:thm:heighttwo};
+\emph{not} Part~II's label set $U$ or terminal region $Z$ & $L$, $U$, $Z$\\
+$\Nb(\ell)$, $\Nb(X)$ & upper neighbours of a lower vertex; lower neighbours
+of a set $X\subseteq\Qup$; \emph{not} the $N$-poset, and not the input length
+$N$ & $N(\ell)$, $N(S)$\\
+$X$, $X'$ & sets of upper vertices; \emph{not} the lexicographic sums
+$S_\alpha(Q)$ (Part~I) and $S$ (Part~III) & $S$, $S'$\\
+$S_\alpha(Q)$ & the uniform lexicographic sum $\lxsi_{q\in Q}\alpha$ of
+Part~I & $P$\\
+$\nuur(G)$ & maximum uniquely restricted matching number; \emph{not} 07's
+normalization map $\nu$ of Section~\ref{nh:sec:frontier} & $\nuur(G)$\\
+$\rtop$ & terminal exponent, $\omega^{\rtop}=\Tz(Q)$; \emph{not} Part~II's
+terminal cost $\tau_Q$ (an ordinal), $\tau(q)$ of Appendix~\ref{sec:lex}, or
+the retirement time $\tau_\pi(q)$ of Part~III & $\tau$\\
+$\Psi(G,\boldsymbol\rho;\rtop)$ & finite weighted objective; equals
+$\Phi(Q;\boldsymbol h)$ when $G=G_Q$, $h_q=\omega^{\rho_q}$
+(Remark~\ref{nh:ur:rem:import}) & $\Psi(G,\boldsymbol\rho;\tau)$\\
+$\ncl(X)$ & neighbourhood closure of $X\subseteq\Qup$; \emph{not} $\mcl(A)$,
+07's minimal completion of an antichain & $\operatorname{cl}(S)$\\
+$\operatorname{prog}(X)$ & finite progress function; \emph{not} $d_\Lambda$
+(Part~II) or $\mathsf d^0$ (Part~III) & $d(S)$\\
+$\Theta(D)$, $\theta_q(D)$ & rank map and cuts of a downset $D$; $D$ is a
+downset of the lexicographic sum, \emph{not} Part~I's predecessor set $D(A)$
+& $R(D)$, $\theta_q(D)$\\
+$\Qhi$, $G_{\mathrm{hi}}$, $k_{\mathrm{hi}}$, $\mathscr S_{\mathrm{hi}}$ &
+highest-priority rows, their subgraph, its $\nuur$, and the upper endpoint
+sets of its maximum uniquely restricted matchings; \emph{not} $\HH(T)$ of
+Part~II & $H$, $G_H$, $K_H$, $\mathscr S_H$\\
+$\Qlo^{(X)}$, $G^{(X)}$ & residual rows and residual graph & $L_S$, $G_S$\\
+$\mathfrak f(X)$, $\mathfrak c(C)$ & subset and covered-row dynamic
+programs; \emph{not} $\Fdp$ (Part~II) & $F(S)$, $D(C)$\\
+$\mathfrak v(X)$, $\mathfrak p(X)$ & certificate table and selected last
+column; \emph{not} $\mathsf p(t)$ (Part~II) & $V(S)$, $p(S)$\\
+$M$ & a matching; \emph{not} the frontier poset $\M(Q)$ & $M$\\
+$\K$, $\hgt$, $\M(Q)$ & finitary powerset, height, frontier poset, as in
+Part~I & $\mathsf K$, $\operatorname{h}$, $\mathcal M(Q)$\\
+\bottomrule
+\end{tabularx}
+\caption{Symbols of Part~IV. Every symbol of 04 not listed keeps its name;
+in particular $\Gamma_i(\sigma)$ has the same meaning as in
+Theorem~\ref{nh:wpo:thm:heighttwo}, and $N$ is an input length, as in
+Problem~\ref{nh:prob:fpt}.}
+\label{nh:ur:tab:notation}
+\end{table}
+
+\subsection{A placement-time consistency check}\label{nh:ur:sec:crosscheck}
+
+Before this part was written, the uniform objective of
+Theorem~\ref{nh:wpo:thm:heighttwo} (the largest number of nonempty
+first-neighbour groups over all orders of the upper vertices) was compared
+by brute force with the maximum uniquely restricted matching number, computed
+directly from the definition (a matching whose saturated vertices induce a
+subgraph with exactly one perfect matching). All $4{,}056$ bipartite
+incidence matrices with one to three lower rows and one to four upper
+vertices, every lower row nonempty, were enumerated: the two values agreed in
+every case, with $0$ mismatches. This is Theorem~\ref{nh:ur:thm:productive}
+on those instances, computed independently of 04's programs. The check was
+run during placement; its script is not shipped.
+
+\section{Ordinals, fibres and first-neighbour schedules}\label{nh:ur:sec:setup}
+\setcounter{equation}{0}
+
+\subsection{Height and finite generation}
+For a well-founded partially ordered set $P$ put
+\[
+ \rk_P(x)=\sup\{\rk_P(y)+1:y<x\},\qquad
+ \hgt(P)=\sup_{x\in P}(\rk_P(x)+1),
+\]
+as in Section~\ref{sec:tools}. In particular, the empty order has height $0$
+and a one-element order has height $1$. $\K(P)$ is the set of finitely
+generated downsets of $P$, including $\varnothing$, ordered by inclusion;
+thus $\K(\varnothing)$ is a singleton. The following elementary facts are
+used repeatedly.
+
+\begin{lemma}[04]\label{nh:ur:lem:ordinalfacts}
+Let $\alpha=\omega^\rho$ with $\rho>0$.
+\begin{enumerate}[label=(\roman*),nosep]
+\item A natural sum of finitely many ordinals less than $\alpha$ is less than
+$\alpha$ and is strictly increasing in each coordinate.
+\item Ordinary addition is weakly increasing in each argument.
+\item A finite sum of monomials with exponents strictly below $\rho$ is less
+than $\omega^\rho$ and is absorbed when $\omega^\rho$ is added on its right.
+\item Every final segment of $\alpha$ starting below $\alpha$ has order type
+$\alpha$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Cantor normal form proves the first and third assertions: a finite collection of
+exponents below $\rho$ has a largest member below $\rho$. The second follows
+from the recursive definition of ordinal addition. For the fourth, if
+$\alpha=\beta+\gamma$ with $\beta<\alpha$, then $\gamma\le\alpha$; if also
+$\gamma<\alpha$, additive indecomposability would imply
+$\beta+\gamma<\alpha$. Hence $\gamma=\alpha$.
+\end{proof}
+
+\subsection{Height-at-most-two skeletons}
+Let $Q$ be a finite nonempty poset with no chain of three distinct elements.
+There is a canonical decomposition
+\[
+ Q=\Qlo\sqcup\Qup\sqcup\Qiso,
+\]
+where $\Qlo$ consists of nonmaximal minimal elements, $\Qup$ of nonminimal
+maximal elements, and $\Qiso$ of isolated elements. Every strict relation has
+the form $\ell<u$ with $\ell\in\Qlo$ and $u\in\Qup$, and both endpoints of
+every edge have a neighbour. Set
+\[
+ G_Q=(\Qlo,\Qup,E),\qquad \ell u\in E\ \Longleftrightarrow\ \ell<u,
+ \qquad \Nb(\ell)=\{u\in\Qup:\ell u\in E\}.
+\]
+$\Nb$ also denotes the usual neighbourhood of a set on the other side: for
+$X\subseteq\Qup$, $\Nb(X)=\bigcup_{u\in X}\Nb(u)\subseteq\Qlo$. For a general
+finite bipartite graph $G$ the two sides are still called lower rows and
+upper columns, and the same letters are used.
+
+For ordinals $(\alpha_q)_{q\in Q}$ the lexicographic sum
+$\lxsi_{q\in Q}\alpha_q$ has elements $(q,\beta)$ with $\beta<\alpha_q$.
+Elements in one fibre are ordered by their ordinal coordinates; elements in
+different fibres are ordered exactly when their indices are ordered in $Q$.
+No relation is added between incomparable fibres.
+
+\subsection{The finite weighted objective}
+Give each lower vertex a positive ordinal exponent $\rho_\ell$ and give a
+positive terminal exponent $\rtop$. For a permutation
+$\sigma=(u_1,\ldots,u_s)$ of $\Qup$ define the retirement groups
+\begin{equation}\label{nh:ur:eq:groups}
+ \Gamma_i(\sigma)=
+ \{\ell\in\Qlo:u_i\in\Nb(\ell),\ \Nb(\ell)\cap\{u_1,\ldots,u_{i-1}\}=\varnothing\},
+\end{equation}
+exactly as in Theorem~\ref{nh:wpo:thm:heighttwo}. The groups are disjoint and
+their union is $\Qlo$. An index is \emph{productive} when its group is
+nonempty. Set
+\begin{equation}\label{nh:ur:eq:objective}
+ b_i(\sigma)=\max_{\ell\in\Gamma_i(\sigma)}\omega^{\rho_\ell},\qquad
+ \Psi(G,\boldsymbol\rho;\rtop)=
+ \max_\sigma\left(b_1(\sigma)+\cdots+b_s(\sigma)+\omega^{\rtop}\right),
+\end{equation}
+with an empty maximum equal to $0$ (the convention of Part~III). The empty
+permutation has value $\omega^{\rtop}$. Columns with no neighbours are allowed
+for this finite objective; they simply contribute $0$.
+
+The terminal term is a permanent boundary condition, not an extra lower
+vertex. When passing to a residual graph later, it must be retained
+unchanged, including when the residual graph has no vertices.
+
+\begin{remark}[Theorem~\ref{nh:wpo:thm:heighttwo} in this notation]
+\label{nh:ur:rem:import}
+For a nonempty height-at-most-two skeleton $Q$ let
+$\alpha_q=\omega^{\rho_q}$ with $\rho_q>0$ for every $q\in Q$, and put
+$\rtop=\max\{\rho_q:q\in\Qup\cup\Qiso\}$. Since $\hgt(\K(\omega^{\rho}))=\omega^\rho$
+for $\rho>0$, these fibres satisfy the hypotheses of Part~III with
+$h_q=\alpha_q$, and Theorem~\ref{nh:wpo:thm:heighttwo} states
+\begin{equation}\label{nh:ur:eq:import}
+ \hgt\Bigl(\K\Bigl(\lxsi_{q\in Q}\alpha_q\Bigr)\Bigr)
+ =\Phi(Q;\boldsymbol h)=\Psi\bigl(G_Q,(\rho_\ell)_{\ell\in\Qlo};\rtop\bigr).
+\end{equation}
+This is the precise inherited result that 04 uses for nonuniform transfinite
+heights. It is an unformalized and unrefereed theorem of this report. The
+finite results about $\Psi$ in this part are independent of it. The uniform
+instance of \eqref{nh:ur:eq:import}, and hence the ordinal-height
+NP-completeness result, is proved directly in
+Section~\ref{nh:ur:sec:uniform}.
+\end{remark}
+
+\begin{remark}[Encoding versus mathematics]\label{nh:ur:rem:encoding}
+The mathematical results allow arbitrary set-sized positive ordinal
+exponents. The executable input uses positive integers in binary. More
+generally a finite list of exponent labels with a supplied correct total
+order suffices for the finite optimization. No algorithm deciding the order
+of arbitrary ordinal descriptions is assumed. The empty skeleton is excluded
+from \eqref{nh:ur:eq:import}; its powerset height is $1$, not an empty
+maximum.
+\end{remark}
+
+\section{Triangular matchings and productive schedules}\label{nh:ur:sec:matching}
+\setcounter{equation}{0}
+
+\begin{definition}\label{nh:ur:def:ur}
+A matching $M$ in a finite graph is \emph{uniquely restricted} if the
+subgraph induced by its saturated vertices has $M$ as its unique perfect
+matching. Write $\nuur(G)$ for the largest cardinality of such a matching,
+the empty matching allowed. In a bipartite graph, an ordered matching
+$((\ell_1,u_1),\ldots,(\ell_k,u_k))$ is \emph{admissible} or
+\emph{triangular} if
+\begin{equation}\label{nh:ur:eq:triangular}
+ \ell_i u_j\notin E\quad\text{whenever }j<i.
+\end{equation}
+\end{definition}
+An ordinary maximum matching need not be uniquely restricted. The distinction
+is precisely the possibility of switching along an alternating cycle.
+
+\begin{lemma}[Classical characterization, with proof; 04]\label{nh:ur:lem:ur}
+For a bipartite matching $M$ the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $M$ is uniquely restricted;
+\item $G$ contains no $M$-alternating cycle;
+\item $M$ admits a triangular ordering.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+An alternating cycle permits exchanging its matched and unmatched edges,
+producing another perfect matching on the same saturated vertices. Conversely,
+the symmetric difference of two different perfect matchings on those vertices
+is a disjoint union of alternating cycles. This proves (i)$\Leftrightarrow$(ii).
+
+Make a directed graph whose vertices are the matched edges
+$e_i=(\ell_i,u_i)$, putting $e_i\to e_j$ for $i\ne j$ when
+$\ell_i u_j\in E$. A directed cycle gives an alternating cycle by inserting
+the matching edges between its cross-edges. Every alternating cycle gives a
+directed cycle in this way, after choosing its orientation. Thus (ii) is
+equivalent to acyclicity of this directed graph. A topological ordering has no
+cross-edge from a later row to an earlier column, which is exactly
+\eqref{nh:ur:eq:triangular}. Conversely such an ordering forbids a directed
+cycle.
+\end{proof}
+The characterization is part of the classical theory~\cite{GHL2001}; the
+proof is included to fix the orientation used in all subsequent
+constructions.
+
+\begin{theorem}[Productive schedules are uniquely restricted matchings; 04]
+\label{nh:ur:thm:productive}
+The maximum number of productive indices in a permutation of $\Qup$ equals
+$\nuur(G)$.
+\end{theorem}
+\begin{proof}
+Given a schedule, keep its productive columns in their original order. From each
+corresponding group choose one lower vertex. Distinct groups give distinct lower
+vertices, and freshness says that a chosen row is adjacent to none of the
+earlier chosen columns. The resulting matching is triangular. Thus every
+schedule has at most $\nuur(G)$ productive indices.
+
+Conversely, order a uniquely restricted matching triangularly, schedule its
+upper endpoints first in that order, and then schedule the remaining upper
+vertices arbitrarily. Each matched row is fresh when its own upper endpoint is
+scheduled. Hence the schedule has at least $|M|$ productive indices. Maximize
+over $M$ and use the first inequality.
+\end{proof}
+
+\begin{lemma}[Coverage by a maximum matching's upper endpoints; 04]
+\label{nh:ur:lem:coverage}
+Suppose every lower vertex has a neighbour. If $M$ is a maximum uniquely
+restricted matching and $X$ is its set of upper endpoints, then
+$\Nb(X)=\Qlo$.
+\end{lemma}
+\begin{proof}
+If $\ell\notin\Nb(X)$, choose $u\in\Nb(\ell)$. Necessarily $u\notin X$, and
+$\ell$ is not a matched row. Append $(\ell,u)$ to a triangular ordering of
+$M$. The new row is adjacent to no previous matched column, so this is a larger
+triangular matching, a contradiction.
+\end{proof}
+
+\subsection{The established set-system interpretation}\label{nh:ur:sec:grundy}
+Consider the family of subsets $(\Nb(u))_{u\in\Qup}$ of $\Qlo$. A legal
+covering sequence chooses sets, each of which introduces a new element, until
+their union is $\Qlo$. Its maximum possible length is the Grundy covering
+number in the terminology of~\cite{BHR2016}. Removing nonproductive steps
+from a full permutation leaves such a sequence; a legal sequence can be
+extended until it covers all of $\Qlo$. Thus
+Theorem~\ref{nh:ur:thm:productive} identifies this covering number with
+$\nuur(G)$. This answers the request of the complexity item of
+Section~\ref{nh:sec:questions} (09's ``largest number of nonempty retirement
+groups'') for a connection with an established finite optimization problem,
+rather than introducing a new name for an old unweighted parameter.
+
+\section{Closure systems and maximal frontiers}\label{nh:ur:sec:closure}
+\setcounter{equation}{0}
+
+The matching identification also explains the finite frontier height in
+Part~I's uniform formula (Theorem~\ref{thm:height}). The correspondence is
+explicit. For $X\subseteq\Qup$ put
+\begin{equation}\label{nh:ur:eq:closure}
+ \ncl(X)=\{u\in\Qup:\Nb(u)\subseteq\Nb(X)\}.
+\end{equation}
+This is a closure operator: it is extensive and monotone, and
+$\Nb(\ncl(X))=\Nb(X)$ proves idempotence. In this section $G=G_Q$ has no
+isolated upper vertices, so $\ncl(\varnothing)=\varnothing$.
+
+\begin{theorem}[04]\label{nh:ur:thm:frontiers}
+The closed subsets of $\Qup$, ordered by inclusion, are isomorphic to the
+inclusion-maximal antichains of $Q$, ordered by Hoare domination. The
+isomorphism is
+\begin{equation}\label{nh:ur:eq:frontier}
+ X\longmapsto A_X=(\Qlo\setminus\Nb(X))\cup X\cup\Qiso.
+\end{equation}
+Consequently, for the frontier poset $\M(Q)$,
+\begin{equation}\label{nh:ur:eq:frontierheight}
+ \hgt(\M(Q))=\nuur(G_Q)+1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The set in \eqref{nh:ur:eq:frontier} is an antichain. An omitted lower vertex
+is comparable with a member of $X$. An omitted upper vertex can be added
+precisely when all its neighbours are in $\Nb(X)$, that is, when it belongs to
+$\ncl(X)$. Thus $A_X$ is maximal exactly when $X$ is closed. Conversely, a
+maximal antichain with upper part $X$ must contain every isolated vertex and
+every lower vertex outside $\Nb(X)$, and no other lower vertex; the same
+observation forces closure.
+
+Recall that $A\preceq B$ in the Hoare order means that every element of $A$
+is below or equal to some element of $B$. If $A_X\preceq A_{X'}$, every
+maximal upper vertex of $X$ must itself belong to $X'$, so $X\subseteq X'$.
+If $X\subseteq X'$, a lower vertex in $A_X$ either remains in $A_{X'}$ or
+acquires a neighbour in $X'$; all upper and isolated elements of $A_X$
+remain. This proves the order isomorphism.
+
+A productive sequence of length $k$ gives $k+1$ strictly increasing closed sets
+by taking the closures of its successive prefixes, including the empty prefix.
+Freshness makes the neighbourhood unions strictly increase. For the converse,
+extend a longest chain of closed sets to include bottom and top, and write it
+as $X_0\subsetneq\cdots\subsetneq X_k$. For each $i\ge1$ choose
+$u_i\in X_i\setminus X_{i-1}$. Since $X_{i-1}$ is closed, $u_i$ has a
+neighbour outside $\Nb(X_{i-1})$, hence outside the union of the
+neighbourhoods of the previously chosen columns. The sequence is productive.
+Theorem~\ref{nh:ur:thm:productive} now gives
+\eqref{nh:ur:eq:frontierheight}; for a finite poset the rank height is the
+largest number of elements in a chain.
+\end{proof}
+
+The result is compatible with Part~I's uniform identity
+$\hgt(\K(S_\alpha(Q)))=\alpha\cdot\hgt(\M(Q))$ (Theorem~\ref{thm:height}).
+For the $N$-poset, a path on four vertices, $\nuur=2$ and
+\eqref{nh:ur:eq:frontierheight} recovers the three-element frontier chain
+\eqref{eq:Nfrontiers}. The next section does not use Part~I's identity: it
+supplies a separate proof from the actual downsets.
+
+\begin{remark}[A second route through Part~I; merge]\label{nh:ur:rem:secondroute}
+Theorem~\ref{thm:height} and \eqref{nh:ur:eq:frontierheight} together give
+the formula of Theorem~\ref{nh:ur:thm:uniform} at once. 04 deliberately does
+not take this route, so that its uniform theorem, and with it the
+NP-completeness of Theorem~\ref{nh:ur:thm:np}, depends on no unrefereed
+theorem of this report. The two routes are independent proofs of the same
+statement; the observation that they combine is the merge's own.
+\end{remark}
+
+\section{A direct proof of the uniform height}\label{nh:ur:sec:uniform}
+\setcounter{equation}{0}
+
+\begin{theorem}[Uniform height, independently proved; 04]\label{nh:ur:thm:uniform}
+Let $Q$ be finite, nonempty and of height at most two. For every
+$\alpha=\omega^\rho$, $\rho>0$,
+\begin{equation}\label{nh:ur:eq:uniform}
+ \boxed{\displaystyle
+ \hgt\bigl(\K(S_\alpha(Q))\bigr)
+   =\alpha\cdot\bigl(\nuur(G_Q)+1\bigr).}
+\end{equation}
+The multiplication on the right is ordinary multiplication by a positive
+finite ordinal on the right.
+\end{theorem}
+
+\subsection{Profiles of finitely generated downsets}
+For $D\in\K(S_\alpha(Q))$ let
+\[
+ X(D)=\{u\in\Qup:D\text{ meets the }u\text{-fibre}\}.
+\]
+Every lower fibre in $\Nb(X(D))$ is wholly included in $D$. Every other
+lower fibre, every isolated fibre and every upper fibre is either empty or a
+principal initial segment, because a finite collection of generators inside
+an ordinal chain has a largest member. No upper or isolated fibre can be
+wholly included: $\alpha$ is a limit ordinal and has no finite cofinal
+subset. A lower fibre not below $X(D)$ cannot be wholly included either.
+
+The active coordinates are therefore
+\[
+ A(X)=(\Qlo\setminus\Nb(X))\cup X\cup\Qiso .
+\]
+For $q\in A(X(D))$ let $\theta_q(D)<\alpha$ be the order type of the initial
+segment of its fibre present in $D$. It is $0$ or a successor; for
+$q\in X(D)$ it is positive. This gives a complete profile of $D$. Notice
+that $A(X)$ need not be a maximal antichain when $X$ is not closed. The rank
+argument must use all actual supports, not merely the maximal frontiers.
+
+\subsection{A finite progress function}
+For $X\subseteq\Qup$ let $\operatorname{prog}(X)$ be the greatest number of
+productive steps in an ordering of $X$ alone, with freshness still measured
+against all lower rows. Then $\operatorname{prog}(\varnothing)=0$ and
+\begin{align}
+ \operatorname{prog}(X)&\le\nuur(G_Q),\label{nh:ur:eq:d1}\\
+ X\subseteq X'&\Longrightarrow \operatorname{prog}(X)\le\operatorname{prog}(X'),\label{nh:ur:eq:d2}\\
+ X\subseteq X',\ \Nb(X')\ne\Nb(X)&\Longrightarrow
+ \operatorname{prog}(X')\ge\operatorname{prog}(X)+1.
+ \label{nh:ur:eq:d3}
+\end{align}
+The first statement follows by extending an ordering to all of $\Qup$ and
+applying Theorem~\ref{nh:ur:thm:productive}. For the other two, take an
+optimal ordering of $X$ and append the columns in $X'\setminus X$. If a new
+lower neighbour is acquired, at least one appended step must be productive.
+
+\subsection{The ordinal ranking}
+Define
+\begin{equation}\label{nh:ur:eq:rankmap}
+ \Theta(D)=\alpha\cdot\operatorname{prog}(X(D))+
+       \bigns_{q\in A(X(D))}\theta_q(D).
+\end{equation}
+The natural-sum part is less than $\alpha$ by
+Lemma~\ref{nh:ur:lem:ordinalfacts}. Thus
+$\Theta(D)<\alpha\cdot(\nuur(G_Q)+1)$.
+
+We claim that $D\subsetneq D'$ implies $\Theta(D)<\Theta(D')$. Write
+$X=X(D)$ and $X'=X(D')$. Necessarily $X\subseteq X'$. If
+$\Nb(X')\setminus\Nb(X)$ is nonempty, \eqref{nh:ur:eq:d3} gives
+\[
+ \Theta(D)<\alpha\cdot(\operatorname{prog}(X)+1)\le
+ \alpha\cdot\operatorname{prog}(X')\le\Theta(D').
+\]
+Otherwise no old active coordinate disappears. The old cuts weakly increase,
+and the new upper coordinates, if any, are positive. If
+$\operatorname{prog}(X')>\operatorname{prog}(X)$ the same ordinal block
+comparison works. If $\operatorname{prog}(X')=\operatorname{prog}(X)$, strict
+inclusion of the profiles forces either a strict increase of an existing cut
+or a newly positive upper cut. Strict monotonicity of the finite natural sum
+proves $\Theta(D)<\Theta(D')$.
+
+A strictly increasing map into the ordinals proves well-foundedness.
+Moreover, transfinite induction in the definition of rank gives
+$\rk_{\K(S_\alpha(Q))}(D)\le\Theta(D)$: every predecessor has rank plus one at
+most $\Theta(D)$. Taking suprema proves
+\begin{equation}\label{nh:ur:eq:upper}
+ \hgt\bigl(\K(S_\alpha(Q))\bigr)\le\alpha\cdot(\nuur(G_Q)+1).
+\end{equation}
+This proof uses neither a maximal-chain theorem for well-partial-orders nor
+the persistence theorems of Parts~II--III.
+
+\subsection{An attaining chain}
+Let $k=\nuur(G_Q)$ and choose a productive sequence $(u_1,\ldots,u_k)$ of
+maximum length, with fresh witnesses $\ell_1,\ldots,\ell_k$. It covers all
+lower vertices: otherwise it could be extended by a column meeting an
+uncovered row. For $1\le i\le k$ and $\beta<\alpha$ let
+\[
+ D_{i,\beta}={\downarrow}\{(u_j,0):j<i\}
+              \ \cup\ {\downarrow}\{(\ell_i,\beta)\}.
+\]
+For fixed $i$ these downsets form a strict chain of order type $\alpha$.
+Freshness ensures that the $\ell_i$-fibre is not already full. Every member
+of block $i$ is strictly below every member of block $i+1$: the newly
+inserted upper generator $(u_i,0)$ completes the previous witness's whole
+fibre and is itself absent from every member of block $i$.
+
+After the last block, start with the downset generated by all $(u_j,0)$.
+Choose any maximal vertex $q\in\Qup\cup\Qiso$ and increase the cut in its
+fibre through principal initial segments above its current cut. This is
+another strict chain of type $\alpha$, by
+Lemma~\ref{nh:ur:lem:ordinalfacts}(iv), and all its members can be chosen
+strictly above all preceding blocks. If $k=0$, the skeleton is an antichain
+and this final block alone supplies the construction. The union of these
+$k+1$ blocks is a chain of type $\alpha\cdot(k+1)$.
+
+For completeness, if $(x_\xi)_{\xi<\delta}$ is a strictly increasing chain in
+a well-founded order, induction gives $\rk(x_\xi)\ge\xi$, so its height is at
+least $\delta$. The constructed chain and \eqref{nh:ur:eq:upper} prove
+Theorem~\ref{nh:ur:thm:uniform}.
+
+\begin{remark}[The terminal block and the missing empty case; 04]
+\label{nh:ur:rem:terminal}
+The final $+1$ inside the finite coefficient records a genuinely unbounded
+maximal fibre, not the empty downset as a separate successor. This is why a
+nonempty antichain has height $\alpha$, while a single relation has height
+$\alpha\cdot2$. For an empty skeleton the height is instead $1$.
+\end{remark}
+
+\section{NP-completeness with one exponent scale}\label{nh:ur:sec:complexity}
+\setcounter{equation}{0}
+
+\begin{definition}\label{nh:ur:def:problem}
+The decision problem \textsc{Uniform-Height-Two} takes a finite nonempty
+height-at-most-two poset $Q$ and a nonnegative integer $k$, and asks whether
+\[
+ \hgt\bigl(\K(S_\omega(Q))\bigr)\ge\omega\cdot(k+1).
+\]
+The order relation is given explicitly, or equivalently by its bipartite
+incidence graph and its isolated vertices. The integer $k$ may be binary
+encoded.
+\end{definition}
+
+\begin{theorem}[04]\label{nh:ur:thm:np}
+\textsc{Uniform-Height-Two} is NP-complete. The same holds with any fixed
+positive pure ordinal $\omega^\rho$ replacing $\omega$, when the threshold is
+specified by its finite coefficient.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{nh:ur:thm:uniform} the answer is yes exactly when
+$\nuur(G_Q)\ge k$. A certificate is a list of $k$ disjoint incidence edges
+with a triangular order. Distinctness, incidence and all forbidden earlier
+cross-edges can be checked in polynomial time. A yes-instance has
+$k\le\min(|\Qlo|,|\Qup|)$, so the certificate is polynomial in the input
+length.
+
+For hardness, use the established NP-completeness of the bipartite uniquely
+restricted matching threshold problem~\cite{GHL2001}. Given its instance
+$(G,k)$, form the poset with one element per vertex and the relation
+$\ell<u$ exactly on its edges. Isolated graph vertices are isolated elements
+of the poset and do not affect $\nuur$. Add one isolated element if necessary
+to guarantee a nonempty poset; adding such an element does not affect the
+matching number. Assign the single fixed fibre $\omega$ to every element and
+ask the displayed height question with coefficient $k+1$. This is a
+polynomial transformation, and Theorem~\ref{nh:ur:thm:uniform} proves
+equivalence of the answers. The same reduction works for a fixed
+$\omega^\rho$.
+\end{proof}
+
+This is an explicit reduction from an established NP-complete problem, not a
+claim to reproduce the original reduction establishing the matching problem's
+hardness. It suffices to close the complexity question of
+Section~\ref{nh:sec:questions} and is independent of
+Theorem~\ref{nh:wpo:thm:heighttwo}.
+
+\begin{corollary}[04]\label{nh:ur:cor:priorityhard}
+The number of distinct exponent priorities alone cannot yield an FPT or even
+an XP algorithm for the unrestricted height-two problem unless
+$\mathsf P=\mathsf{NP}$. In particular the leading-coefficient threshold
+problem is NP-complete at one scale.
+\end{corollary}
+\begin{proof}
+Both an FPT bound $f(d)N^c$ and an XP bound $N^{f(d)}$ become polynomial at the
+fixed parameter value $d=1$, contrary to Theorem~\ref{nh:ur:thm:np} unless
+$\mathsf P=\mathsf{NP}$.
+\end{proof}
+
+\begin{proposition}[04]\label{nh:ur:prop:weightednp}
+With positive integer exponents in binary and a threshold in finite Cantor
+normal form, deciding whether $\Psi$ is at least that threshold is
+NP-complete. Under Theorem~\ref{nh:wpo:thm:heighttwo} this is also the
+corresponding nonuniform pure-fibre ordinal-height threshold problem.
+\end{proposition}
+\begin{proof}
+A permutation of the upper vertices is a polynomial-size certificate. Compute
+its groups, their maximum exponents, and the ordinary sum with the terminal
+monomial. A sum of at most $|\Qlo|+1$ nonzero monomials has at most that many
+surviving units in its coefficient sum. Exponents are copied from the input,
+never numerically expanded. Standard comparisons and additions of binary
+integers therefore give polynomial-time verification, including comparison
+with the supplied finite threshold. Hardness is the one-scale restriction in
+Theorem~\ref{nh:ur:thm:np}.
+\end{proof}
+
+\begin{remark}[The threshold problem of Part~II; merge]\label{nh:ur:rem:partII}
+\textsc{Uniform-Height-Two} is a special case of the threshold problem of
+Corollary~\ref{nh:cor:NP}: every fibre $\omega$ is a pure block, there is one
+exponent scale, and $\omega\cdot(k+1)$ is a threshold in Cantor normal form.
+Hence that problem, which Corollary~\ref{nh:cor:NP} (12) places in
+$\mathrm{NP}$ for the explicit pure-block encoding, is NP-complete already for
+height-two skeletons and one scale. The hardness half rests on
+Theorem~\ref{nh:ur:thm:np} and~\cite{GHL2001}; the membership half for general
+skeletons rests on Corollary~\ref{nh:cor:NP} and so on
+Theorem~\ref{nh:thm:persistence}. This combination is the merge's
+observation; 04 states NP-completeness for height-two skeletons only.
+\end{remark}
+
+\section{An exact ordered-matching formula for all priorities}\label{nh:ur:sec:weighted}
+\setcounter{equation}{0}
+
+The unweighted identification is only the first layer. To preserve
+lower-order terms one must retain an admissible \emph{order} of the matching
+edges.
+
+\begin{theorem}[Weighted ordered-matching variational principle; 04]
+\label{nh:ur:thm:weighted}
+For every finite instance of \eqref{nh:ur:eq:objective},
+\begin{equation}\label{nh:ur:eq:matchingweighted}
+ \boxed{\displaystyle
+ \Psi(G,\boldsymbol\rho;\rtop)=
+ \max_{\substack{M\text{ uniquely restricted}\\
+                 ((\ell_1,u_1),\ldots,(\ell_k,u_k))\text{ admissible order of }M}}
+ \left(\omega^{\rho_{\ell_1}}+\cdots+
+       \omega^{\rho_{\ell_k}}+\omega^{\rtop}\right).}
+\end{equation}
+The empty matching contributes $\omega^{\rtop}$.
+\end{theorem}
+\begin{proof}
+Given a full schedule, discard its nonproductive columns and choose, in every
+productive group, a lower row of maximum exponent. The chosen edges form a
+triangular matching by freshness. Their ordered monomials are exactly the
+nonzero summands of the schedule, so the schedule value occurs on the right
+side of \eqref{nh:ur:eq:matchingweighted}.
+
+Conversely, start with an admissibly ordered matching. Schedule its columns
+first in that order. Each corresponding matched row is still fresh, so the
+maximum exponent of that retirement group is at least the matched row's
+exponent. Weak monotonicity of ordinary addition in each argument shows that
+the value of this prefix is at least the sum of the matched-row monomials.
+Append all remaining columns. Adding their monomials before the terminal term
+cannot decrease the result: $\eta+\xi\ge\eta$ and hence
+$(\eta+\xi)+\omega^{\rtop}\ge\eta+\omega^{\rtop}$. The full schedule is
+therefore at least the candidate matching value. Taking maxima in both
+directions proves equality.
+\end{proof}
+
+\begin{corollary}[Coefficient budget and priority invariance; 04]\label{nh:ur:cor:budget}
+Every exponent in $\Psi$ is one of the lower exponents or the terminal
+exponent; its total Cantor coefficient sum is at most $|\Qlo|+1$. Strictly
+increasing relabellings of the finite ordered set of exponent values preserve
+the coefficient vector and the set of maximizing schedules and ordered
+matchings.
+\end{corollary}
+\begin{proof}
+Every candidate has at most $|\Qlo|+1$ monomials. Ordinary addition deletes
+smaller trailing exponents and merges equal terminal exponents; it introduces
+neither new exponents nor additional coefficient units. The deletion, merging
+and lexicographic comparison rules depend only on equality and order among
+the exponents, so commute with a strictly increasing relabelling.
+\end{proof}
+The invariance also follows from the report's exponent-order invariance
+(Theorem~\ref{nh:wpo:thm:chambers}; compare Corollary~\ref{nh:cor:scale} and
+Proposition~\ref{nh:wpo:prop:budget}); here it is immediate from the matching
+formula. A short output does not imply a short search, as
+Theorem~\ref{nh:ur:thm:np} shows.
+
+\subsection{Why natural-sum edge weights are wrong}
+\begin{example}[Forced absorption; 04]\label{nh:ur:ex:forced}
+Let $\Qlo=\{a,b\}$, $\Qup=\{c,d\}$ and
+\[
+ \Nb(a)=\{c\},\qquad \Nb(b)=\{c,d\},\qquad
+ (\rho_a,\rho_b)=(2,1),\qquad\rtop=1.
+\]
+The two-edge matching $\{(a,c),(b,d)\}$ is uniquely restricted. Its only
+admissible order puts $(b,d)$ before $(a,c)$, since scheduling $c$ first
+retires $b$. Its value is
+\[
+ \omega+\omega^2+\omega=\omega^2+\omega.
+\]
+Both full schedules attain that value. In contrast, replacing the ordered sum
+by the natural sum of matched weights and then adding the terminal term gives
+$\omega^2+\omega\cdot2$, a false answer.
+\end{example}
+The skeleton is this report's $N$-poset $a<c$, $b<c$, $b<d$, with the same
+labels. The Part~III formula for it,
+$\Phi=h_b+h_a+\max(h_c,h_d)$ (Section~\ref{nh:wpo:sec:examples}), gives the
+same value $\omega+\omega^2+\omega=\omega^2+\omega$.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.6cm,y=1.35cm,every node/.style={font=\small}]
+\node[circle,draw,inner sep=2.5pt,label=left:{$a:\omega^2$}] (a) at (0,0) {$a$};
+\node[circle,draw,inner sep=2.5pt,label=left:{$b:\omega$}] (b) at (0,1) {$b$};
+\node[circle,draw,inner sep=2.5pt] (c) at (2,0) {$c$};
+\node[circle,draw,inner sep=2.5pt] (d) at (2,1) {$d$};
+\draw[very thick] (a)--(c) (b)--(d);
+\draw[dashed] (b)--(c);
+\node[align=center] at (1,-0.85) {The cross-edge forces $d$ before $c$.\\
+The earlier $\omega$ is absorbed by $\omega^2$.};
+\end{tikzpicture}
+\caption{Example~\ref{nh:ur:ex:forced} (04). The thick edges are a uniquely
+restricted matching. The dashed edge is not in the matching but imposes the
+order that determines the ordinal sum.}
+\label{nh:ur:fig:forced}
+\end{figure}
+
+The example is deliberately small: a weighted cardinality objective or a
+maximum natural-sum matching loses precisely the precedence information on
+which lower ordinal terms depend. The directed graph in
+Lemma~\ref{nh:ur:lem:ur} is therefore not just a recognition device; it
+records an essential part of the weighted problem.
+
+\section{Priority layers and residual optimization}\label{nh:ur:sec:layers}
+\setcounter{equation}{0}
+
+\subsection{The recurrence}
+The leading term is simpler than the whole ordinal. It depends only on the
+highest-priority rows. The lower terms record what can be saved after
+choosing the high-priority endpoints.
+
+Suppose $\Qlo\ne\varnothing$, let $p=\max_{\ell\in\Qlo}\rho_\ell$, and put
+\[
+ \Qhi=\{\ell\in\Qlo:\rho_\ell=p\},\qquad
+ G_{\mathrm{hi}}=G[\Qhi,\Qup],\qquad k_{\mathrm{hi}}=\nuur(G_{\mathrm{hi}}).
+\]
+Let $\mathscr S_{\mathrm{hi}}$ be the family of upper endpoint sets of maximum
+uniquely restricted matchings in $G_{\mathrm{hi}}$. Thus every
+$X\in\mathscr S_{\mathrm{hi}}$ has cardinality $k_{\mathrm{hi}}$. For each
+such $X$ define
+\begin{equation}\label{nh:ur:eq:residual}
+ \Qlo^{(X)}=\{\ell\in\Qlo\setminus\Qhi:\Nb(\ell)\cap X=\varnothing\},
+ \qquad G^{(X)}=G[\Qlo^{(X)},\Qup\setminus X].
+\end{equation}
+Every row in $G^{(X)}$ still has a nonempty neighbourhood. The terminal
+exponent remains $\rtop$; it is not recomputed from the residual columns.
+
+\begin{theorem}[Exact priority-layer calculus; 04]\label{nh:ur:thm:layers}
+The following rules determine $\Psi$ recursively.
+\begin{enumerate}[label=(\roman*)]
+\item If $\Qlo=\varnothing$ or $p<\rtop$, then $\Psi=\omega^{\rtop}$.
+\item If $p=\rtop$, then
+\begin{equation}\label{nh:ur:eq:layer-equal}
+ \Psi=\omega^{\rtop}\cdot(k_{\mathrm{hi}}+1).
+\end{equation}
+\item If $p>\rtop$, then
+\begin{equation}\label{nh:ur:eq:layer-main}
+ \boxed{\displaystyle
+ \Psi(G,\boldsymbol\rho;\rtop)=
+ \omega^p\cdot k_{\mathrm{hi}}+
+ \max_{X\in\mathscr S_{\mathrm{hi}}}
+ \Psi\bigl(G^{(X)},\boldsymbol\rho|_{\Qlo^{(X)}};\rtop\bigr).}
+\end{equation}
+Each residual value on the right is strictly below $\omega^p$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+If there are no lower rows the definition gives the terminal term. If all row
+exponents are below $\rtop$, every finite sum of their monomials is absorbed
+by that term, proving (i).
+
+For an arbitrary full schedule, the steps at which at least one row of $\Qhi$
+retires are exactly the productive steps of the same upper order applied to
+$G_{\mathrm{hi}}$. Their maximum number is $k_{\mathrm{hi}}$ by
+Theorem~\ref{nh:ur:thm:productive}. If $p=\rtop$, all smaller intervening
+terms are absorbed by subsequent $\omega^{\rtop}$ terms, including the final
+one. The value is therefore $\omega^{\rtop}$ times one plus the number of high
+productive steps, proving (ii).
+
+Now suppose $p>\rtop$. Every schedule has at least one high productive step.
+If it has $k$ such steps, its Cantor normal form is
+\[
+ \omega^p\cdot k+\eta,\qquad \eta<\omega^p;
+\]
+all lower terms before the last high step are absorbed. Schedules with
+$k_{\mathrm{hi}}$ high steps exist, so an optimal schedule must have exactly
+$k_{\mathrm{hi}}$. Choose a maximum-priority witness at each productive step
+of such a schedule, as in Theorem~\ref{nh:ur:thm:weighted}. The high
+witnesses alone form a maximum uniquely restricted matching in
+$G_{\mathrm{hi}}$, with some upper endpoint set
+$X\in\mathscr S_{\mathrm{hi}}$.
+
+Consider the witness edges strictly after the last high step. Their rows have
+lower priority and are adjacent to no earlier chosen high column; thus they
+lie in $\Qlo^{(X)}$. Their columns lie outside $X$. In their inherited order
+they form a triangular matching in $G^{(X)}$. Applying
+Theorem~\ref{nh:ur:thm:weighted} to the residual graph bounds their ordered
+sum plus the unchanged terminal term by
+$\Psi(G^{(X)},\boldsymbol\rho|_{\Qlo^{(X)}};\rtop)$. Earlier lower terms were
+absorbed. This proves the upper bound in \eqref{nh:ur:eq:layer-main}. This
+argument deliberately uses the matching witnesses: simply moving all low
+columns to a later position could introduce unwanted retirements and is not a
+valid substitute.
+
+For the reverse bound, fix $X\in\mathscr S_{\mathrm{hi}}$ and triangularly
+order a maximum high matching with upper endpoints $X$. Schedule those columns
+first. Every one retires a fresh high row and contributes $\omega^p$. By
+Lemma~\ref{nh:ur:lem:coverage} applied to $G_{\mathrm{hi}}$, these columns
+cover all high rows. They also retire exactly the low rows adjacent to $X$.
+The remaining live rows are precisely $\Qlo^{(X)}$, so following with an
+optimal schedule on $\Qup\setminus X$ gives the value
+\[
+ \omega^p\cdot k_{\mathrm{hi}}+\Psi\bigl(G^{(X)},\boldsymbol\rho|_{\Qlo^{(X)}};\rtop\bigr).
+\]
+All residual exponents, including $\rtop$, are below $p$, so this tail is
+strictly below $\omega^p$. Maximize over $X$ to prove the theorem.
+\end{proof}
+
+\begin{corollary}[Highest coefficient; 04]\label{nh:ur:cor:leading}
+If the largest lower exponent $p$ exceeds $\rtop$, the coefficient of
+$\omega^p$ in $\Psi$ is exactly $\nuur(G_{\mathrm{hi}})$. If $p=\rtop$, its
+coefficient is $\nuur(G_{\mathrm{hi}})+1$. If $p<\rtop$, the only surviving
+coefficient is the terminal coefficient $1$.
+\end{corollary}
+This gives an exact answer to the leading-coefficient part of the complexity
+item of Section~\ref{nh:sec:questions} (07's question whether the leading
+coefficient exceeds a threshold). The answer is graph-theoretic and
+independent of the magnitudes of the ordinal exponents, but it remains
+computationally hard in general (Corollary~\ref{nh:ur:cor:priorityhard}).
+
+\subsection{Why a maximum high matching is not enough}
+\begin{example}[A tie requiring lower-priority lookahead; 04]\label{nh:ur:ex:tie}
+Let
+\[
+ \Nb(h)=\{u,v\},\qquad \Nb(\ell)=\{u\},\qquad
+ \rho_h=3,\quad\rho_\ell=2,\quad\rtop=1.
+\]
+The high graph has maximum uniquely restricted matching size $1$ and two
+possible upper endpoint sets. Choosing $X=\{u\}$ also retires the low row, so
+its residual value is $\omega$ and the resulting value is $\omega^3+\omega$.
+Choosing $X=\{v\}$ leaves the low row alive, so the residual is a single edge
+of weight $\omega^2$ and the result is
+\[
+ \Psi=\omega^3+\omega^2+\omega.
+\]
+Both high matchings are optimal at the leading scale. Only one is globally
+optimal. Thus arbitrary tie-breaking in a maximum high matching is incorrect.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.65cm,y=1.15cm,every node/.style={font=\small}]
+\node[circle,draw,label=left:{$\omega^3$}] (h) at (0,1) {$h$};
+\node[circle,draw,label=left:{$\omega^2$}] (l) at (0,0) {$\ell$};
+\node[circle,draw] (u) at (2,0) {$u$};
+\node[circle,draw] (v) at (2,1) {$v$};
+\draw (h)--(u) (h)--(v) (l)--(u);
+\node[align=left,anchor=west] at (2.8,0.5)
+{$u$ first: $\omega^3+\omega$\\[4pt]
+ $v$ first: $\omega^3+\omega^2+\omega$};
+\end{tikzpicture}
+\caption{Example~\ref{nh:ur:ex:tie} (04). The residual graph, not just the
+cardinality of the high matching, determines the lower coefficients.}
+\label{nh:ur:fig:tie}
+\end{figure}
+
+\subsection{What the recurrence does and does not simplify}
+The recursion decreases the number of distinct lower priorities until the
+terminal scale absorbs everything left. It identifies exactly which residual
+information controls the next coefficient: the low rows whose neighbourhoods
+avoid the selected high columns, together with their remaining incidence
+data. Different admissible orders of the \emph{same} high endpoint set need
+not be retained at this stage; their lower terms occur before the final high
+term and are erased. Distinct endpoint sets, however, need not be equivalent.
+
+This is a structural reduction, not a polynomial-time algorithm. Enumerating
+all maximum uniquely restricted matchings can be exponential, and even
+finding their maximum cardinality is NP-hard. The recurrence is nevertheless
+useful for proofs, exact branch-and-bound designs, and testing a different
+implementation against the subset dynamic program. It also suggests that
+equivalence classes of residual graphs, rather than arbitrary matching
+witnesses, are the right objects for further compression.
+
+\section{Exact dynamic programming and finite certificates}\label{nh:ur:sec:algorithm}
+\setcounter{equation}{0}
+
+\subsection{A subset recurrence}
+Let $r=|\Qlo|$ and $s=|\Qup|$. For a processed subset $X\subseteq\Qup$ and a
+new column $u\notin X$ put
+\begin{equation}\label{nh:ur:eq:stepweight}
+ b(X,u)=\max\{\omega^{\rho_\ell}:u\in\Nb(\ell),\ \Nb(\ell)\cap X=\varnothing\},
+\end{equation}
+with value $0$ when the set is empty. This depends on the processed
+\emph{set}, not its order. Let $\mathfrak f(X)$ be the greatest ordinary sum
+of retirement monomials over orderings of $X$, without a terminal term.
+
+\begin{theorem}[Bellman recurrence; 04]\label{nh:ur:thm:dp}
+The exact values satisfy
+\begin{equation}\label{nh:ur:eq:dp}
+ \mathfrak f(\varnothing)=0,\qquad
+ \mathfrak f(X)=\max_{u\in X}\Bigl(\mathfrak f(X\setminus\{u\})+b(X\setminus\{u\},u)\Bigr),
+ \qquad \Psi=\mathfrak f(\Qup)+\omega^{\rtop}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Partition the orderings of $X$ according to their last column $u$. The
+preceding retirement history has processed exactly $X\setminus\{u\}$, so the
+last summand is \eqref{nh:ur:eq:stepweight}, regardless of its earlier order.
+Ordinary addition by this fixed right summand is weakly increasing in the
+prefix value. The largest preceding value is attained because the set of
+orderings is finite. Thus its addition gives the maximum for this last column.
+Maximize over $u$. The final terminal addition is handled by the same
+monotonicity and attainment argument.
+\end{proof}
+
+Strict monotonicity in the left argument is not required and would be false
+for ordinary addition. Weak monotonicity suffices. This is exactly the
+distinction that permits a scalar state value $\mathfrak f(X)$ despite
+ordinal absorption. On a height-two skeleton this is the specialization of
+Part~III's support-ideal program \eqref{nh:wpo:eq:dp} (09) to the ideals
+$\Qlo\cup\Qiso\cup X$, whose value differs only by the placement of the
+terminal weight; the proof above does not use Part~III.
+
+\subsection{Representation and complexity}
+A finite result is stored as a list
+\[
+ [(e_1,c_1),\ldots,(e_d,c_d)],\qquad e_1>\cdots>e_d>0,
+\]
+representing $\omega^{e_1}c_1+\cdots+\omega^{e_d}c_d$. Appending $\omega^e$
+deletes the trailing entries of exponent below $e$, then increments the last
+coefficient if its exponent is $e$, or appends $(e,1)$ otherwise. The empty
+list represents $0$. Lexicographic comparison of these lists gives ordinal
+comparison.
+
+Computing a step weight directly scans the $r$ lower rows. With at most $d$
+distinct priorities, a straightforward implementation takes
+\begin{equation}\label{nh:ur:eq:time}
+ O\!\left(2^s s(r+d)\right)
+\end{equation}
+elementary operations and $O(2^s d)$ stored ordinal entries, apart from the
+incidence input. This expression treats a bit-mask intersection or exponent
+comparison as an elementary operation. In a bit-cost model, multiply by the
+appropriate polynomial factor in mask length, exponent bit length and
+$\log(r+1)$ for coefficients. In particular the problem is fixed-parameter
+tractable in $s$ with ordinary binary integer input.
+
+The program's default guard is $s\le22$. It is a protection against
+accidental state-space explosion, not a theorem restriction or a promise that
+every 22-column instance is inexpensive. The implementation stores full
+certificates; this can dominate memory long before arithmetic becomes
+difficult.
+
+\subsection{A dual dynamic program on covered rows}
+A second state representation is useful when the lower side is smaller. For
+$C\subseteq\Qlo$ retain the maximum prefix value among productive sequences
+covering exactly $C$; unreachable states have no value. Start with
+$\mathfrak c(\varnothing)=0$ and, for every column $u$ with
+$\Nb(u)\setminus C\ne\varnothing$, relax the transition
+\begin{equation}\label{nh:ur:eq:covered-dp}
+ C\longrightarrow C\cup\Nb(u),\qquad
+ \mathfrak c(C)+\max_{\ell\in\Nb(u)\setminus C}\omega^{\rho_\ell}.
+\end{equation}
+The target state's value is the maximum of its incoming candidates.
+
+\begin{proposition}[Covered-row state sufficiency; 04]\label{nh:ur:prop:covered}
+The recurrence \eqref{nh:ur:eq:covered-dp} has exact final value
+$\mathfrak c(\Qlo)+\omega^{\rtop}=\Psi$. It takes $O(2^r s(r+d))$ elementary
+operations in a straightforward implementation.
+\end{proposition}
+\begin{proof}
+A previously used column has its whole neighbourhood inside the current
+covered set. It can never again make a productive transition. Thus every
+productive transition allowed by the covered set automatically uses a
+previously unused column, without needing to store the used-column set.
+Conversely every productive sequence traces these transitions. Delete all
+zero steps from a full schedule, or extend a productive sequence covering
+$\Qlo$ by the remaining zero steps, to pass between the two representations
+without changing the value. The transition strictly increases $|C|$, so
+induction and weak monotonicity of ordinal addition prove the maximization
+recurrence. There are $2^r$ states and at most $s$ transitions per state,
+with at most $r$ rows scanned per weight.
+\end{proof}
+The delivered function \texttt{solve\_by\_covered\_rows} implements this
+value-only variant; it does not emit the upper-subset certificate. The
+verification suite compares it with the production optimizer. Choosing the
+smaller side gives an exponential dependence on $\min(r,s)$, with polynomial
+factors in the full input length, before any twin compression.
+
+\subsection{A certificate of optimality, not just a good schedule}
+A schedule certifies a lower bound but generally does not certify optimality.
+The program therefore emits, for every $X\subseteq\Qup$, a proposed value
+$\mathfrak v(X)$ and, for nonempty $X$, one selected last column
+$\mathfrak p(X)\in X$.
+
+\begin{theorem}[Bellman certificate soundness; 04]\label{nh:ur:thm:certificate}
+Suppose a finite table satisfies $\mathfrak v(\varnothing)=0$, and for every
+nonempty $X$ and every $u\in X$,
+\begin{align}
+ \mathfrak v(X\setminus\{u\})+b(X\setminus\{u\},u)&\le\mathfrak v(X),\label{nh:ur:eq:certbound}\\
+ \mathfrak v(X\setminus\{\mathfrak p(X)\})+b(X\setminus\{\mathfrak p(X)\},\mathfrak p(X))&=\mathfrak v(X).
+ \label{nh:ur:eq:certattain}
+\end{align}
+Then $\mathfrak v(X)=\mathfrak f(X)$ for all $X$, and
+$\mathfrak v(\Qup)+\omega^{\rtop}=\Psi$.
+\end{theorem}
+\begin{proof}
+Induct on $|X|$. The already verified predecessor values are the true maxima.
+The inequalities bound every candidate in \eqref{nh:ur:eq:dp} above, while
+the selected equality exhibits one candidate equal to the proposed value.
+Hence the proposed value is the maximum. The base case and final terminal
+addition complete the proof.
+\end{proof}
+
+The supplied checker does not call the optimizer. It validates the instance,
+the entire state table, every Bellman inequality, each selected equality, the
+terminal value, and an explicit attaining schedule with its claimed
+retirement groups. It does share the program's exact ordinal arithmetic and
+input representation. It is an independent checking path, not an independent
+trusted formal kernel. These certificates can be exponentially large; their
+existence does not put the threshold problem in a stronger complexity class.
+Part~III's support certificates (09) have the same shape over ideals of $Q$.
+
+\subsection{Running the delivered implementation}\label{nh:ur:sec:running}
+The package uses only the Python standard library and requires Python~3.10 or
+later. Its solver is shipped as
+\path{code/06-ur-matchings-ordinal_matchings.py} and needs no sibling module.
+A complete input is, for example,
+\begin{lstlisting}
+{
+  "upper_count": 2,
+  "neighbours": [[0, 1], [0]],
+  "priorities": [3, 2],
+  "terminal": 1
+}
+\end{lstlisting}
+Rows are indexed by their position, and upper columns by
+$0,\ldots,\texttt{upper\_count}-1$. Every row must have a nonempty list of
+neighbours. Duplicate indices, out-of-range indices, zero priorities, and
+Boolean values used as integer priorities are rejected. The terminal priority
+is explicit, even for an empty residual graph. Exponents and terminal
+priorities must be positive integers; zero means an empty group internally,
+not $\omega^0$. Empty lower and upper lists with a terminal represent a
+nonempty terminal antichain, not the empty skeleton. From this report's
+directory, with the output written outside the repository:
+\begin{lstlisting}
+py code/06-ur-matchings-ordinal_matchings.py solve \
+  data/06-ur-matchings-tie_requires_lookahead.json --output /scratch/certificate.json
+py code/06-ur-matchings-ordinal_matchings.py check \
+  data/06-ur-matchings-tie_requires_lookahead.json /scratch/certificate.json
+\end{lstlisting}
+The first command reports \texttt{omega\^{}3 + omega\^{}2 + omega}. The
+second checks the finite optimum. Neither command checks a transfinite height
+theorem. The solver returns the exact Cantor normal form as decreasing
+\texttt{[exponent, coefficient]} pairs (an empty list is zero), a maximizing
+upper order, its retirement groups and a full Bellman table. It is a
+pure-positive-priority solver, not an implementation for finite or successor
+fibres, and it keeps the terminal priority fixed when residual graphs or twin
+quotients are formed. The function \texttt{compress\_twins} applies
+equality-only weighted compression; the command line does not silently
+transform inputs. The test script \path{code/06-ur-matchings-verify.py}
+imports its sibling under the delivered name \texttt{ordinal\_matchings} and
+rewrites its examples and ledgers; it must be run on a copy that recreates the
+delivered layout (see the README).
+
+\section{Safe compression and structural parameters}\label{nh:ur:sec:compression}
+\setcounter{equation}{0}
+
+Problem~\ref{nh:prob:fpt} asks for algorithms avoiding the full frontier
+expansion when neighbourhood data have few types. The following weighted
+compression rules provide one answer for height-two skeletons.
+
+\begin{theorem}[Weighted twin compression; 04]\label{nh:ur:thm:twins}
+The value of $\Psi$ is preserved by the following operations, with the
+terminal exponent kept unchanged.
+\begin{enumerate}[label=(\roman*)]
+\item Replace all lower rows with the same upper-neighbour set by one row
+whose exponent is the maximum exponent of the class.
+\item Replace all upper columns with the same lower-neighbour set by one
+column.
+\item Delete columns with no lower neighbours.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Rows with equal neighbourhoods retire at exactly the same first column in
+every schedule. Their only contribution to that group's maximum is the
+largest of their exponents, proving (i).
+
+For columns with equal neighbourhoods, only the first scheduled member of the
+class can retire any rows. Every later member has an empty group. Delete
+those later members from a schedule; the first member represents the class
+and all nonzero groups are unchanged. Conversely, a schedule on the quotient
+expands by inserting all other members of each class after its
+representative, where they contribute zero. This proves (ii). A column with
+no neighbours contributes zero in every position, proving (iii).
+\end{proof}
+
+In the transfinite interpretation, removing an upper or isolated fibre must
+not silently lower the terminal maximum. It is enough to retain that maximum
+as the separate terminal parameter. Alternatively one can keep a virtual
+isolated fibre of height $\omega^{\rtop}$ in the represented skeleton.
+
+\begin{corollary}[Few distinct upper neighbourhoods; 04]\label{nh:ur:cor:types}
+Let $t$ be the number of distinct nonempty neighbourhoods of upper vertices,
+after safe row compression if desired. The weighted height-two objective is
+computable in $f(t)N^{O(1)}$ bit operations, for example by the subset
+dynamic program on the $t$ retained columns. The number and binary sizes of
+the priorities are part of the input length $N$, not additional fixed
+parameters.
+\end{corollary}
+\begin{proof}
+Hashing or sorting incidence rows and columns computes the quotient in
+polynomial time. Theorem~\ref{nh:ur:thm:twins} preserves the answer and
+Theorem~\ref{nh:ur:thm:dp} uses $2^t$ states; the remaining work and bit costs
+are polynomial in the input length.
+\end{proof}
+
+\begin{corollary}[Few distinct upper-neighbour sets of lower rows; 04]\label{nh:ur:cor:rowtypes}
+Let $a$ be the number of distinct sets $\Nb(\ell)\subseteq\Qup$ as $\ell$
+ranges over the lower rows. The weighted objective is computable in
+$2^aN^{O(1)}$ bit operations.
+\end{corollary}
+\begin{proof}
+Merge equal lower neighbourhoods, retaining their largest priority. This
+leaves $a$ rows without changing the objective. Apply the covered-row dynamic
+program of Proposition~\ref{nh:ur:prop:covered}; all other costs are
+polynomial in the encoded input.
+\end{proof}
+This distinguishes the two possible orientations of ``neighbourhood types''.
+Both are tractable parameters: distinct neighbourhoods of upper vertices use
+the upper-subset program, and distinct upper-neighbour sets of lower rows use
+the covered-row program. The latter is the direct height-two answer to the
+upper-neighbour-set parameter of Problem~\ref{nh:prob:fpt}.
+
+\begin{corollary}[Vertex-cover parameter; 04]\label{nh:ur:cor:vc}
+If the incidence graph has a vertex cover of size $k$, the weighted objective
+is fixed-parameter tractable in $k$.
+\end{corollary}
+\begin{proof}
+Let the cover be $C=C_{\mathrm{lo}}\sqcup C_{\mathrm{up}}$. Every upper vertex
+outside $C_{\mathrm{up}}$ has all its neighbours in $C_{\mathrm{lo}}$, so there
+are at most $2^{|C_{\mathrm{lo}}|}-1$ nonempty neighbourhood types outside the
+cover and at most $|C_{\mathrm{up}}|$ additional types. Consequently
+\[
+ t\le |C_{\mathrm{up}}|+2^{|C_{\mathrm{lo}}|}-1\le k+2^k.
+\]
+Apply Corollary~\ref{nh:ur:cor:types}. If a cover is not supplied, the
+standard edge-branching search chooses one endpoint of an uncovered edge at
+each step and finds a cover of size at most $k$, if one exists, in
+$2^kN^{O(1)}$ time. Thus no unmentioned cover oracle is needed. The resulting
+double-exponential parameter dependence is a simple bound, not an optimality
+claim.
+\end{proof}
+
+These positive results concern height-two skeletons. They do not answer
+Problem~\ref{nh:prob:fpt} for arbitrary finite skeletons. They also do not
+contradict Corollary~\ref{nh:ur:cor:priorityhard}: a bound on incidence types
+controls combinatorial structure, whereas a bound on priorities alone does
+not.
+
+\begin{example}[Containment is not a safe deletion rule; 04]\label{nh:ur:ex:containment}
+Return to the path-shaped graph $\Nb(a)=\{c\}$, $\Nb(b)=\{c,d\}$ of
+Example~\ref{nh:ur:ex:forced} (the $N$-poset), but give every fibre weight
+$\omega$. It has a two-edge uniquely restricted matching and uniform height
+$\omega\cdot3$. Deleting $a$ merely because $\Nb(a)\subseteq\Nb(b)$ leaves a
+one-row graph with matching number $1$ and height $\omega\cdot2$. Thus
+neighbourhood \emph{equality} is safe, but replacing it with containment in
+the compression proof is false, already on a four-vertex path.
+\end{example}
+
+\section{Exact classes and algebraic upper certificates}\label{nh:ur:sec:classes}
+\setcounter{equation}{0}
+
+\subsection{Components, forests and degree two}
+\begin{proposition}[04]\label{nh:ur:prop:components}
+For disjoint graph components $G_1,\ldots,G_m$,
+\[
+ \nuur(G_1\sqcup\cdots\sqcup G_m)=\sum_{i=1}^m\nuur(G_i).
+\]
+If $G$ is a forest, then $\nuur(G)$ is its ordinary maximum matching number.
+\end{proposition}
+\begin{proof}
+Every alternating cycle lies inside one component. Thus a matching is
+uniquely restricted exactly when its restrictions to the components are, and
+component optima may be united. A forest has no cycle at all, so every
+matching is uniquely restricted.
+\end{proof}
+
+\begin{corollary}[04]\label{nh:ur:cor:degree2}
+For a path $P_n$ on $n$ vertices and a bipartite cycle $C_{2m}$,
+\[
+ \nuur(P_n)=\lfloor n/2\rfloor,\qquad
+ \nuur(C_{2m})=m-1\quad(m\ge2).
+\]
+Hence for a nonempty skeleton whose incidence graph has maximum degree at
+most two, the uniform height is
+\begin{equation}\label{nh:ur:eq:degree2height}
+ \alpha\cdot\Bigl(1+
+   \sum_{P_n\text{ component}}\lfloor n/2\rfloor+
+   \sum_{C_{2m}\text{ component}}(m-1)\Bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+A path is a forest and has a matching of size $\lfloor n/2\rfloor$, which is
+also the trivial vertex-count upper bound. A cycle has two perfect matchings,
+so a matching of size $m$ is not uniquely restricted. Removing one edge from
+one perfect matching gives a matching of size $m-1$. Its saturated induced
+subgraph is a proper induced subgraph of the cycle, hence a forest, so this
+matching is uniquely restricted. Apply component additivity and
+Theorem~\ref{nh:ur:thm:uniform}.
+\end{proof}
+
+For a general forest, an ordinary maximum matching can also be found directly
+by repeatedly matching a leaf to its neighbour and deleting their endpoints.
+An exchange argument proves that some maximum matching contains that edge: if
+its neighbour is matched elsewhere, exchange the incident matching edge; if
+both are unmatched, add the leaf edge. This gives a simple polynomial
+algorithm and makes the forest consequence independent of a
+matching-algorithm citation.
+
+Beyond these elementary classes, published algorithms transfer without a new
+ordinal argument. For example, Francis, Jacob and Jana give a linear-time
+algorithm for maximum uniquely restricted matching in bipartite permutation
+graphs~\cite{FJJ2018}; it therefore computes the uniform height coefficient
+for that incidence class. Such a transfer concerns the uniform objective only.
+An algorithm maximizing matching cardinality is not automatically an
+algorithm for the ordered weighted objective of
+Theorem~\ref{nh:ur:thm:weighted}.
+
+\subsection{Field-rank bounds}
+Let $A_G$ be the $0$--$1$ matrix with lower rows and upper columns,
+interpreted over any chosen field $F$.
+\begin{proposition}[04]\label{nh:ur:prop:rank}
+For every field $F$,
+\[
+ \nuur(G)\le\operatorname{rank}_F(A_G).
+\]
+More generally the same bound holds for any matrix over $F$ with exactly the
+same zero--nonzero pattern as $G$.
+\end{proposition}
+\begin{proof}
+An admissibly ordered matching of size $k$ selects a $k\times k$ submatrix
+whose diagonal entries are nonzero and whose entries below the diagonal
+vanish, by \eqref{nh:ur:eq:triangular}. Its determinant is the product of its
+nonzero diagonal entries, so it is nonsingular. Therefore the full matrix has
+rank at least $k$. Maximize over the matching.
+\end{proof}
+This is the matrix-rank connection motivating the established matching
+notion~\cite{GHL2001}, restated as an upper certificate for an ordinal
+height. A triangular matching of size $k$, together with a rank-$k$
+factorization of a matrix with the required zero--nonzero pattern, certifies
+equality $\nuur(G)=k$ using only finite algebra and incidence checks. It need
+not exist for an arbitrary graph at its optimum; no general equality with
+matrix rank is claimed.
+
+\begin{example}[A characteristic-dependent certificate; 04]\label{nh:ur:ex:cycle}
+For the six-cycle incidence matrix
+\[
+ A=\begin{pmatrix}1&1&0\\0&1&1\\1&0&1\end{pmatrix},
+\]
+the first two rows are independent over $\mathbb F_2$ and the third is their
+sum. Hence $\operatorname{rank}_{\mathbb F_2}(A)=2$. A two-edge triangular
+matching gives the opposite bound, so the corresponding uniform height is
+$\alpha\cdot3$. Over $\mathbb Q$ the determinant is $2$, and the same matrix
+has rank $3$, which gives a weaker upper certificate. Choice of field can
+therefore matter.
+\end{example}
+
+\section{Worked weighted examples}\label{nh:ur:sec:examples}
+\setcounter{equation}{0}
+
+The example inputs and their complete Bellman tables are shipped
+(Table~\ref{nh:ur:tab:examples}). The following values can also be checked by
+hand.
+
+\subsection{A weighted six-cycle}
+Take lower rows $0,1,2$ and upper columns $0,1,2$ with
+\[
+ \Nb(0)=\{0,1\},\quad \Nb(1)=\{1,2\},\quad \Nb(2)=\{0,2\},
+ \quad (\rho_0,\rho_1,\rho_2)=(3,2,1),\quad\rtop=1.
+\]
+The order $(0,2,1)$ retires rows $\{0,2\}$, then $\{1\}$, then nothing,
+producing $\omega^3+\omega^2+\omega$. To see optimality from the layers, the
+unique high row can be matched to column $0$ or $1$. The former leaves the
+priority-$2$ row alive; the latter retires it immediately. The best residual
+is therefore $\omega^2+\omega$. Unlike the uniform cycle example, the proof
+must consider which high endpoint is selected, not only the high matching
+size. This is the example following Theorem~\ref{nh:wpo:thm:heighttwo}
+(09's \path{data/03-wpo-height_two_overlap.json}), with the upper vertices
+$3,4,5$ there renamed $0,1,2$; both manuscripts obtain the same value by
+different certificates.
+
+\subsection{Independent edges and terminal absorption}
+For three disjoint edges with lower priorities $3,1,2$ and terminal priority
+$1$, schedule the priorities in decreasing order to obtain
+\[
+ \omega^3+\omega^2+\omega\cdot2.
+\]
+Any order with a smaller term before a larger one erases that smaller term,
+so this is optimal. More generally, for disjoint edges the optimal prefix is
+the natural sum of their monomials, followed by the ordinary addition of the
+terminal monomial (compare \eqref{nh:wpo:eq:parallel}). This statement is
+special to unconstrained independent edges; Example~\ref{nh:ur:ex:forced}
+explains why it fails for general incidence.
+
+With two disjoint edges of priorities $1,2$ but terminal priority $3$, the
+answer is simply $\omega^3$. The entire lower schedule is absorbed. An
+isolated maximal fibre can thus change which lower information survives, even
+though it has no effect on the unweighted matching number.
+
+\subsection{Summary of shipped examples}
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Input (shipped as \texttt{data/06-ur-matchings-}\emph{name}\texttt{.json}) & Exact value\\
+\midrule
+\texttt{antichain} & $\omega^3$\\
+\texttt{single\_edge} & $\omega\cdot2$\\
+\texttt{six\_cycle} & $\omega\cdot3$\\
+\texttt{weighted\_cycle} & $\omega^3+\omega^2+\omega$\\
+\texttt{forced\_absorption} & $\omega^2+\omega$\\
+\texttt{tie\_requires\_lookahead} & $\omega^3+\omega^2+\omega$\\
+\texttt{terminal\_absorption} & $\omega^3$\\
+\texttt{weighted\_twins} & $\omega^4+\omega^3+\omega$\\
+\texttt{parallel\_edges} & $\omega^3+\omega^2+\omega\cdot2$\\
+\bottomrule
+\end{tabularx}
+\caption{04's nine example inputs and their exact values; each input ships
+with its full certificate \texttt{\ldots\_certificate.json} (delivered in
+\texttt{examples/}).}
+\label{nh:ur:tab:examples}
+\end{table}
+The antichain input has no lower or upper vertices in the finite objective and
+an explicit terminal parameter. It represents a nonempty antichain of pure
+fibres through their maximum height, not the empty skeleton.
+
+\section{Verification, reproducibility and limits}\label{nh:ur:sec:verification}
+\setcounter{equation}{0}
+
+\subsection{Executed checks}
+The recorded run used Python~3.13.5 with pseudorandom seed $20260929$. It
+performed the following exhaustive families. For every $0\le r,s\le3$ it
+enumerated every $r\times s$ binary incidence matrix with no zero lower row,
+every assignment of lower priorities from $\{1,2,3\}$, and each terminal
+priority in $\{1,2,3\}$. This yields $31{,}755$ weighted instances. Zero
+columns are permitted. For each one the subset program was compared against
+all permutations, the covered-row program, all admissibly ordered matchings,
+and the priority-layer recurrence, and its certificate and twin compression
+were checked.
+
+The run also enumerated all $15^4=50{,}625$ nonzero-row $4\times4$ incidence
+matrices with every priority equal to $1$, comparing the program against all
+upper permutations. This is an exhaustive incidence-matrix test, not an
+enumeration of unlabelled graphs and not a check of every weighted $4\times4$
+case. An additional $120$ seeded weighted instances used up to five vertices
+per side, with lower priorities selected from $1,2,5,9,10^{12}$ and terminal
+priorities from $1,3,8$. The large-priority tests check that no expansion
+proportional to the numerical exponent occurs.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Recorded assertion category & Count\\
+\midrule
+Subset program versus all upper permutations, weighted suite & 31,884\\
+Subset program versus covered-row program & 31,884\\
+Subset program versus all admissibly ordered matchings & 31,884\\
+Subset program versus the priority-layer recurrence & 31,884\\
+Full Bellman certificate verification & 31,884\\
+Twin-compression invariance & 31,884\\
+Maximum high endpoints cover the high rows & 33,245\\
+Closure-system height versus matching number & 445\\
+Uniform $4\times4$ program versus all permutations & 50,625\\
+Tampered terminal-value rejection & 9\\
+Malformed mathematical input rejection & 5\\
+\midrule
+Total recorded assertions & \textbf{275,633}\\
+\bottomrule
+\end{tabularx}
+\caption{04's recorded assertion counts, from
+\texttt{data/\allowbreak 06-ur-matchings-verification.json}.}
+\label{nh:ur:tab:assertions}
+\end{table}
+The counts $31{,}884$ include the $31{,}755$ exhaustive weighted instances,
+the $120$ seeded instances and the nine named examples. The exact ledger is
+\path{data/06-ur-matchings-verification.json}; the console record
+\path{data/06-ur-matchings-verification_console.txt} prints two count lines
+followed by the same ledger. Not every category is run on every family.
+
+\subsection{Independence and what was not checked}
+The brute schedule evaluator locates each row's first neighbour by a position
+map, rather than by the production program's incremental group rule. Its
+ordinal normalizer scans the monomial word from right to left, rather than
+using the production left-to-right ordinal adder. The ordered-matching
+evaluator checks all forbidden earlier cross-edges directly. The priority
+recurrence independently enumerates maximum high matchings and residuals.
+These comparisons reduce implementation-specific error risk; they are not a
+substitute for the proofs.
+
+Some components remain shared: the instance representation and the basic
+matching enumeration are reused by validation paths, and the certificate
+checker shares ordinal arithmetic with the optimizer. The counts are numbers
+of assertions, not measures of proof strength. No finite test establishes a
+transfinite theorem, exhausts arbitrary graphs, verifies an arbitrary ordinal
+notation system, or establishes historical novelty. No Lean or Rocq source was
+compiled as part of this work. The finite graph results hold for arbitrary
+allowed priorities; the tests do not establish that extension.
+
+\subsection{Formalization roadmap (04)}
+A small formal development can be organized without importing the report's
+entire transfinite theory. First formalize finite bipartite incidence,
+triangular matchings and the productive-witness equivalence. Next formalize
+ordinal words as finite priority--coefficient lists, prove their
+normalization semantics, and verify the Bellman checker. Then prove the
+priority recurrence over the finite set of occurring priorities, using the
+coverage lemma and the ordered-matching principle as separate dependencies.
+
+For the transfinite endpoint, formalize the support-profile description and
+the strict map \eqref{nh:ur:eq:rankmap}; the attaining-chain construction then
+proves the uniform theorem directly. This separates the graph-theoretic layer,
+the finite ordinal-algorithm layer and the set-sized rank layer. The
+nonuniform height application should be enabled only after
+Theorem~\ref{nh:wpo:thm:heighttwo} is itself proved or explicitly assumed. A
+future formalization should report its axioms and assumptions rather than
+labelling Python execution as kernel checking.
+
+\subsection{A compact proof-dependency map (04)}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.30\linewidth}X@{}}
+\toprule
+Endpoint & Essential dependencies\\
+\midrule
+Productive count $=\nuur$ & Fresh witnesses; triangular order;
+alternating-cycle characterization, reproved.\\
+Uniform transfinite height & Finite progress function
+$\operatorname{prog}(X)$; exact downset profiles; natural-sum rank map;
+explicit $\alpha$-blocks.\\
+Uniform NP-completeness & Uniform height theorem; published bipartite
+uniquely restricted matching NP-completeness; explicit polynomial reduction.\\
+Weighted matching formula & Fresh maximum-priority witnesses; weak
+monotonicity of ordinary addition.\\
+Priority-layer recurrence & Weighted formula; high-subgraph matching bound;
+coverage lemma; residual low-row characterization.\\
+Weighted height conclusions & Above finite theorems plus
+Theorem~\ref{nh:wpo:thm:heighttwo}.\\
+Bellman certificate soundness & Finite subset induction; all candidate
+inequalities; one attaining predecessor.\\
+Structural FPT bounds & Equal-neighbourhood compression; subset program;
+elementary vertex-cover type count.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The part contains conventional mathematical proofs for these arrows, not
+formal proof terms. It is suitable for external review and for the staged
+formalization described above.
+
+\section{Research questions of Part~IV}\label{nh:ur:sec:questions}
+\setcounter{equation}{0}
+
+\subsection{Questions of Parts~II--III answered or partly answered here}
+
+\begin{itemize}
+\item \emph{Complexity} (07 Question~4; 09 \S14.4; 12 Problem~10.3; the item
+of Section~\ref{nh:sec:questions} and the closing sentence of
+Section~\ref{nh:wpo:sec:examples}): \textbf{answered} for the NP-hardness
+alternative. The threshold problem is NP-complete already for height-two
+skeletons with every fibre $\omega$, one exponent scale
+(Theorem~\ref{nh:ur:thm:np}); with Corollary~\ref{nh:cor:NP} the threshold
+problem for the explicit pure-block encoding is NP-complete
+(Remark~\ref{nh:ur:rem:partII}). 09's uniform case (largest number of nonempty
+retirement groups) is the maximum uniquely restricted matching number and the
+Grundy covering number of the neighbourhood family
+(Theorem~\ref{nh:ur:thm:productive}, Section~\ref{nh:ur:sec:grundy}); 09's mixed
+case is the ordered-matching objective of Theorem~\ref{nh:ur:thm:weighted},
+which 04 does not identify with a previously named problem. 07's
+leading-coefficient threshold is NP-complete at one scale
+(Corollary~\ref{nh:ur:cor:priorityhard}), and the leading coefficient is a
+uniquely restricted matching number (Corollary~\ref{nh:ur:cor:leading}).
+Input-comparison cost is separated from combinatorial cost as 09 asked:
+exponents are binary labels copied, never expanded
+(Proposition~\ref{nh:ur:prop:weightednp}). The ``separate reduction'' that
+item called for is Theorem~\ref{nh:ur:thm:np}, from the published
+NP-completeness of bipartite uniquely restricted matching \cite{GHL2001}.
+Nothing here gives a polynomial algorithm, which would imply
+$\mathsf P=\mathsf{NP}$.
+\item \emph{Structural parameters} (Problem~\ref{nh:prob:fpt}):
+\textbf{partly answered} for height-two skeletons. The number of distinct
+upper-neighbour sets of lower rows gives a $2^aN^{O(1)}$ algorithm
+(Corollary~\ref{nh:ur:cor:rowtypes}); the number of distinct neighbourhoods
+of upper vertices and the vertex-cover number are also FPT parameters
+(Corollaries~\ref{nh:ur:cor:types} and~\ref{nh:ur:cor:vc}). The number of
+distinct exponent priorities is \emph{not} an FPT or even an XP parameter
+unless $\mathsf P=\mathsf{NP}$ (Corollary~\ref{nh:ur:cor:priorityhard}).
+Width parameters, decomposition widths and all skeletons of height three or
+more remain open.
+\end{itemize}
+
+\subsection{Further questions (04)}
+
+The complexity question and the height-two neighbourhood-type parameter have
+been addressed above. The following are further targets relative to these
+results; 04 does not assert that all of them are previously unstudied in the
+literature.
+
+\begin{problem}[Weighted forests; 04]\label{nh:ur:prob:forests}
+Determine the complexity of the ordered ordinal objective on incidence
+forests. Can the priority-layer recurrence be implemented in polynomial time
+without enumerating all maximum high matchings? A successful tree dynamic
+program must remember enough boundary information to distinguish the two
+residual outcomes in Example~\ref{nh:ur:ex:tie}.
+\end{problem}
+The unweighted forest problem is elementary because every matching is
+uniquely restricted. That fact does not resolve the weighted precedence and
+residual selection problem. A first milestone is a complete algorithm for
+paths with arbitrary binary priority labels and an explicit proof that local
+state merging preserves all surviving lower coefficients.
+
+\begin{problem}[Weighted decomposition-width algorithms; 04]\label{nh:ur:prob:width}
+Find exact algorithms parameterized by an incidence-graph decomposition width,
+with priorities part of the input. Seek substantially better dependence than
+the double-exponential vertex-cover bound of Corollary~\ref{nh:ur:cor:vc}.
+Specify whether the algorithm handles the whole ordinal or only its leading
+coefficient.
+\end{problem}
+An algorithm for maximum-cardinality uniquely restricted matching alone is
+insufficient: one needs either ordered boundary data or a compositional form of
+the residual priority theorem. The number of priorities by itself is excluded
+as a tractable parameter by Corollary~\ref{nh:ur:cor:priorityhard}. This is
+the height-two case of the decomposition-width clause of
+Problem~\ref{nh:prob:fpt}.
+
+\begin{problem}[Compression of maximum high endpoint sets; 04]\label{nh:ur:prob:endpoints}
+For fixed $\Qhi$, characterize when two sets in $\mathscr S_{\mathrm{hi}}$
+produce equivalent residual objectives. Can one enumerate only a small
+representative family, perhaps parameterized by the number of low
+neighbourhood types or by a separator?
+\end{problem}
+The recurrence proves that the internal ordering of a chosen high matching is
+irrelevant after that layer, but its upper endpoint set may be indispensable.
+A useful certificate would describe equivalence of residual objectives without
+solving each residual instance independently.
+
+\begin{problem}[Succinct Cantor coefficients; 04]\label{nh:ur:prob:succinct}
+Extend the algorithms to ordinal-chain capacities specified by binary Cantor
+coefficients, without replacing a coefficient $c$ by $c$ separate pure blocks.
+Handle finite tails and successor corrections explicitly.
+\end{problem}
+This is Problem~\ref{nh:prob:compression}, which stays open. The present
+binary priority representation does not answer it: storing the exponent
+$10^{12}$ as a label is different from processing a fibre
+$\omega^\rho\cdot10^{12}$ without expansion. A fixed skeleton with two
+repeated interacting chains is an appropriate first test, as 12 also
+suggested.
+
+\begin{problem}[Beyond height two; 04]\label{nh:ur:prob:beyond}
+Identify a finite combinatorial object playing the role of a triangular
+matching for general finite skeletons. It must record vertices that can be
+both newly activated and later retired, not merely a single lower-to-upper
+incidence.
+\end{problem}
+The height-two reduction depends on every nonmaximal vertex retiring at a
+first maximal neighbour. Intermediate levels create multiple lifetimes and
+precedence constraints. Any proposed generalization should reduce to the
+present matching formula and preserve the retirement-path formulas already
+known in this report (Theorems~\ref{nh:thm:frontier}
+and~\ref{nh:wpo:thm:main}).
+
+\begin{problem}[Nonpure non-chain components; 04]\label{nh:ur:prob:nonpure}
+For lexicographic sums of well-partial-orders whose finitary powersets have
+nonpure heights, find the local rank information needed in place of a single
+pure monomial per fibre.
+\end{problem}
+The current finite calculus assumes one pure contribution at each retirement.
+The report's ordinal-chain block expansion does not automatically transfer to
+arbitrary non-chain components. A small counterexample to scalar-height
+substitution, or a provably sufficient finite profile invariant, would be a
+substantive next step rather than another application of the pure formula.
+This is the nonpure clause of the non-chain item of
+Section~\ref{nh:sec:questions} (09 \S14.2), which stays open.
+
+\begin{problem}[Short upper certificates; 04]\label{nh:ur:prob:certificates}
+Determine useful graph classes on which a matching lower witness and a
+low-rank matrix with the same zero--nonzero pattern always certify the
+optimum. More generally, find polynomial-size upper certificates for
+structured priority-layer residuals that avoid a full $2^s$ Bellman table.
+\end{problem}
+The field can matter, as Example~\ref{nh:ur:ex:cycle} shows. Matrix-rank
+bounds are sound but not asserted to be complete. Any general certificate
+claim should be reconciled with the NP-completeness result, rather than
+inferred from successful small examples.
+
+\begin{problem}[Counting and stability; 04]\label{nh:ur:prob:counting}
+Count optimal upper schedules or optimal high endpoint sets in tractable
+incidence classes, and classify how these sets change when two adjacent
+priority levels exchange order.
+\end{problem}
+Strictly increasing relabelling preserves all maximizers, but changing the
+weak-order pattern can erase or restore lower terms. A chamber-by-chamber
+analysis could expose combinatorial structure hidden by the single optimum
+coefficient vector. Compare the chamber questions of
+Problem~\ref{nh:prob:presentations} (09).
+
+\begin{problem}[Certified integration; 04]\label{nh:ur:prob:formal}
+Formalize the finite matching and Bellman layers, then connect the checker to
+the direct uniform ordinal rank theorem. Extend the trust boundary to the
+nonuniform case only after its transfinite scheduling theorem is checked.
+\end{problem}
+This is a concrete route to a machine-checked answer to the original
+complexity question, and a height-two instance of
+Problem~\ref{nh:prob:formal}. It avoids making the finite computation depend
+on an unnecessarily large library while preserving a precise theorem-level
+connection to the actual finitely generated downsets.
+
+\section{What Part~IV does not claim, and choices made in writing it}
+\label{nh:ur:sec:nonclaims}
+\setcounter{equation}{0}
+
+\subsection{Non-claims}
+Every limitation stated by 04, in its article, delivery README and proof
+audit, is kept. The manuscript is AI-assisted and unrefereed; it is not a Lean
+or Rocq formalization and no proof-assistant source was compiled. No
+historical priority is claimed; the unweighted matching and covering-sequence
+notions are classical and credited, and the targeted literature search does
+not establish that every formulation is unprecedented. The NP-hardness is
+imported from Golumbic--Hirst--Lewenstein; 04 does not reproduce or claim a new
+proof of the original matching hardness reduction. The nonuniform transfinite
+readings import Theorem~\ref{nh:wpo:thm:heighttwo}, which 04 neither re-proves
+nor formally checks; only the uniform height theorem, and the finite weighted
+theorems, are proved independently. There is no polynomial-time general
+solver, no approximation ratio for an ordinal objective, and no proof that
+matrix-rank bounds are always tight. Arbitrary higher-skeleton scheduling,
+nonpure WPO substitution and binary Cantor-coefficient compression are not
+solved. The solver is a pure-positive-priority solver, not an implementation
+for finite or successor fibres; its guard of $22$ upper vertices is not a
+performance guarantee, and the certificate checker certifies the finite
+optimum, not the transfinite interpretation. The finite tests are
+implementation checks, not proofs of transfinite statements and not evidence
+of historical novelty. 04 did not exhaustively compare the report archives
+that had newly arrived at its pin, and states that it resolves an identified
+repository question, not an unspecified famous open problem in matching
+theory.
+
+\subsection{Choices made in writing Part~IV}
+\begin{enumerate}
+\item \emph{Placement.} 04 continues Part~III's height-two theorem and
+Section~\ref{nh:sec:questions}, so it is added to this report as a fourth
+part, after the closing part of Parts~II--III and before Part~I's appendices.
+\item \emph{Numbering.} Equations of Part~IV are numbered within sections, and
+the equation counter is restored after this part, so that no section,
+theorem or equation number of Parts~I--III or of the appendices moves;
+in particular \eqref{eq:truncation}, which already moved once in batch~36,
+keeps its number.
+\item \emph{Notation.} 04's symbols were renamed as in
+Table~\ref{nh:ur:tab:notation}: its $L$, $U$, $Z$, $N(\ell)$ follow Part~III's
+renaming of the same sets; $S$, $\tau$, $H$, $K_H$, $d$, $R$, $F$, $D(C)$, $V$,
+$p$ and $\operatorname{cl}$ were renamed because each already names something
+else in this report. No normalization changed: every sum is ordinary unless
+written $\ns$, and empty maxima are $0$, as in Part~III.
+\item \emph{Repository input.} 04's ``Theorem (repository input)'' is printed
+as Remark~\ref{nh:ur:rem:import}, a restatement of
+Theorem~\ref{nh:wpo:thm:heighttwo}, not as a new theorem; 04's citations of
+``Theorem~35.1'', ``Section~37'' and the pinned article became
+cross-references.
+\item \emph{Editorial additions.} Remarks~\ref{nh:ur:rem:secondroute}
+and~\ref{nh:ur:rem:partII}, the identification of 04's examples with this
+report's $N$-poset and with 09's height-two example, the relations to
+Part~III's support-ideal program, and the placement-time check of
+Section~\ref{nh:ur:sec:crosscheck} are the merge's own.
+\item \emph{Stale sentences.} Sentences of Parts~II--III that said the
+complexity was not classified, that a hardness claim needed a separate
+reduction, or that NP membership is not NP-completeness, were kept as
+provenance of the pinned state and given dated pointers to this part. The
+abstract on the title page gained one dated sentence, and the title page's
+top spacing was reduced by $12$\,mm so that it still fits on one page.
+\item \emph{Bibliography.} 04's entries for Golumbic--Hirst--Lewenstein,
+Bre\v{s}ar--Henning--Rall and Francis--Jacob--Jana were added to the report's
+list; its entry for this report itself became internal cross-references.
+\item \emph{Files.} 04's code, data, examples, proof audit and source record
+are shipped byte-identical under the prefix \texttt{06-ur-matchings-}; its
+examples, delivered in \texttt{examples/}, are in \texttt{data/}. The shipped
+text still uses the delivered names; the README maps them and gives a rerun
+recipe that works on a copy.
+\end{enumerate}
+
+\section{Conclusion of Part~IV}\label{nh:ur:sec:conclusion}
+\setcounter{equation}{0}
+
+For height-two skeletons, uniform finitary-powerset height is governed by a
+classical graph invariant:
+\[
+ \begin{aligned}
+ \text{height coefficient}-1
+   &=\text{maximum productive schedule length}\\
+   &=\text{maximum uniquely restricted matching size}.
+ \end{aligned}
+\]
+The equivalence supplies an NP-completeness proof with only the fibre
+$\omega$, and the explicit ordinal ranking establishes that conclusion
+independently of the inherited weighted height theorem. It also identifies
+the finite maximal frontier height and gives immediate exact formulas for
+forests and cycles.
+
+For unequal priorities, the correct object is an admissibly ordered matching.
+The leading coefficient comes from the highest-priority incidence subgraph;
+all lower coefficients are optimized in residual graphs selected by maximum
+high matchings. This separates what is determined by matching cardinality
+from what depends on preserving low-priority rows. Safe twin compression,
+structural parameter bounds and finite Bellman certificates turn the theory
+into an exact computational continuation, while leaving the genuinely new
+transfinite and succinct-encoding questions visible.
+
+% End of Part IV: restore the continuous equation numbering of Parts I--III.
+\setcounter{equation}{\value{nhurSavedEq}}
+\let\theequation\nhurSavedTheequation
+\let\theHequation\nhurSavedTheHequation
 
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}

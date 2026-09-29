@@ -1,21 +1,26 @@
 # Cofinal strata and ordinal absorption
 
-**Finitary powersets of finite lexicographic sums: maximal order types, uniform and nonuniform heights, and exact point ranks**
+**Finitary powersets of finite lexicographic sums: maximal order types, uniform and nonuniform heights, exact point ranks, and the NP-completeness of the height-two case**
 
-This is a research report in three parts. Part I is the original article of
+This is a research report in four parts. Part I is the original article of
 19 September 2026. Parts II and III were added on 28 September 2026 in batch 36
 of ProveIt's incoming-report intake, merged from four later manuscripts that
 answer the question Part I left open: the height of the finitary powerset when
-the fibres are not all equal. Every manuscript was prepared for Vladimir
-Reshetnikov with ChatGPT.
+the fibres are not all equal. Part IV was added on 29 September 2026 in batch
+42, from one manuscript that answers the complexity question of Parts II–III:
+for height-two skeletons the height is governed by maximum uniquely restricted
+matchings, and deciding it is NP-complete. The five manuscripts of Parts I–III
+were prepared for Vladimir Reshetnikov with ChatGPT; manuscript 04 (Part IV)
+is an AI-assisted research manuscript prepared for him and names no model.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 19 Sep 2026 | *Cofinal strata and ordinal absorption* | (none) | unpacked `a3fe9660e`, filed here `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–14, Appendices A–B (pp. 1–16, 68–70) |
+| 01 (original) | Cardinals-collection report, 19 Sep 2026 | *Cofinal strata and ordinal absorption* | (none) | unpacked `a3fe9660e`, filed here `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–14, Appendices A–B (pp. 1–16, 95–97) |
 | 07 | batch 36, manuscript 07 | `ProveIt_Nonuniform_Powerset_Heights` (*Retirement paths and exact heights of nonuniform finitary powersets*) | `e21766d04` | `1a1396d4d` (prefix `02-retire-`) | in Part II, notably the second proof of Theorem 21.1 (Section 21.3), examples in Section 23, Sections 24 and 25 |
 | 09 | batch 36, manuscript 09 | `ProveIt_Persistent_Frontier_Heights` (*Persistent frontiers and exact heights: a pure-height substitution theorem, a limit-ordinal calculus, and finite certificates*) | `e21766d04` | `1a1396d4d` (prefix `03-wpo-`) | Part III: Sections 26–36 (pp. 50–61) |
 | 11 | batch 36, manuscript 11 | `persistent_frontier_heights` (*Persistent frontiers and exact ordinal heights ... with exact local ranks*) | `e21766d04` | `1a1396d4d` (prefix `04-peel-`) | in Part II, notably the second proof of Theorem 17.4 (Section 17.4), Sections 18–19, 22, examples in Section 23, Section 25 |
 | 12 | batch 36, manuscript 12 | `ProveIt_Ordinal_Heights_Research` (*Exact ordinal heights of finitely generated downsets: persistent coordinates, mixed ordinal fibers, and a finite-state rank calculus*) | `e21766d04` | `1a1396d4d` (prefix `05-ranks-`) | base of Part II: Sections 15–25 (pp. 17–49) |
+| 04 | batch 42, manuscript 04 | `ProveIt_Ordinal_Heights_Matchings` (*Ordinal Heights and Uniquely Restricted Matchings: NP-completeness, priority layers, and exact certificates*, 29 Sep 2026) | `9754e8360` | `3609d0473` (prefix `06-ur-matchings-`) | Part IV: Sections 41–56 (pp. 68–94) |
 
 The pin `e21766d04` is ProveIt commit
 `e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9`; at that commit this directory was
@@ -26,6 +31,17 @@ survive in the arrival commit. Archives 09 and 11 wrap inner directories of the
 same name (`persistent_frontier_heights/`) but are different packages. The
 "Closing the addition" part (Sections 37–40, pp. 62–67) gathers the questions,
 non-claims and merge provenance of all four sources.
+
+The pin `9754e8360` of manuscript 04 is ProveIt commit
+`9754e83603e223811b7515eb892f22c847144593`; 04 names the blob `c48fb7fe…` of
+the `article.tex` it read, which is exactly Parts I–III as they stood when Part
+IV was added, and between the pin and the addition this directory changed only
+by the 27 files staged at placement. The archive arrived in `8315d24e3` and was
+placed in `3609d0473`. Its manuscript, delivery README, PDF and bibliography
+files (`references.tex`, `references.bib`) are not shipped; they survive in the
+arrival commit. Its three literature entries were merged into this report's
+bibliography. Section 41 of the article records this provenance, and Section 55
+its non-claims and the choices made in writing Part IV.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean or
 any other proof assistant, and no source claims otherwise. The computations
@@ -82,6 +98,44 @@ Part III also proves that local stratum heights leave unbounded ambiguity
 (Theorem 34.3), a height-two scheduling formula (Theorem 35.1), a pure-height
 congruence and exponent-chamber invariance.
 
+**Part IV** (04). For a finite nonempty skeleton `Q` of height at most two,
+with bipartite incidence graph `G_Q` (lower vertices joined to the upper
+vertices above them), and a uniform fibre `alpha = omega^rho`, `rho > 0`
+(Theorem 45.1):
+
+    h(K(S_alpha(Q))) = alpha * (nu_ur(G_Q) + 1),
+
+where `nu_ur` is the maximum size of a uniquely restricted matching (one whose
+saturated vertices induce a subgraph with exactly one perfect matching). The
+proof is a direct ordinal ranking and an attaining chain; it uses no theorem
+of Parts I–III. The largest number of nonempty first-neighbour groups in
+Theorem 35.1 is `nu_ur(G_Q)` (Theorem 43.3), equivalently the Grundy covering
+number of the neighbourhood family. With the published NP-completeness of
+bipartite uniquely restricted matching (Golumbic–Hirst–Lewenstein 2001),
+deciding `h(K(S_omega(Q))) >= omega * (k+1)` is **NP-complete** already with
+every fibre `omega` (Theorem 46.2); the number of distinct exponent priorities
+is therefore not an FPT or XP parameter unless P = NP (Corollary 46.3).
+Combined with Part II's NP membership (Corollary 20.4), the threshold problem
+for the explicit pure-block encoding is NP-complete (Remark 46.5, the merge's
+observation). For unequal pure priorities, the finite objective of Theorem
+35.1 is a maximum over admissibly ordered uniquely restricted matchings
+(Theorem 47.1) and obeys an exact priority-layer recurrence whose leading
+coefficient is `nu_ur` of the highest-priority rows and whose lower
+coefficients need all maximum high matchings (Theorem 48.1); reading these as
+transfinite heights uses Theorem 35.1. Part IV also proves the frontier-poset
+height `h(M(Q)) = nu_ur(G_Q) + 1` (Theorem 44.1), Bellman certificates
+(Theorem 49.3), safe twin compression and FPT algorithms in three structural
+parameters, including `2^a N^O(1)` for `a` distinct upper-neighbour sets
+(Section 50), exact classes and field-rank upper bounds (Section 51).
+
+**Placement-time check.** Before Part IV was written, a brute force over all
+4,056 bipartite incidence matrices with one to three lower rows and one to
+four upper vertices (every lower row nonempty) compared the uniform objective
+of Theorem 35.1, the largest number of nonempty first-neighbour groups over all
+orders of the upper vertices, with the maximum uniquely restricted matching
+number computed from the definition: 0 mismatches (Section 41.6). The script is
+not shipped.
+
 ## Not claimed
 
 No formula for ordinal width, for maximal order type or maximal
@@ -90,12 +144,27 @@ finitary powersets, or for infinite skeletons or infinite state systems. No
 large-cardinal conclusion. Part III does not cover nonpure, finite or
 successor WPO components, and `h(P_q)` alone does not suffice. No complexity
 statement is polynomial in the skeleton size or in binary Cantor
-coefficients; NP membership is not NP-completeness. No bound on lengths of
-controlled executions. No priority: every source's literature search was
-targeted, and non-discovery is not evidence of novelty. The uniform formula
-and the persistent counterexample are Part I's and are credited, not claimed
-anew. Section 38 lists every non-claim of the four sources; Section 39 lists
-where the merge had to choose.
+coefficients. Parts II–III said that NP membership is not NP-completeness;
+that sentence (Section 38) now carries a dated pointer to Part IV, which
+proves NP-completeness. No bound on lengths of controlled executions. No
+priority: every source's literature search was targeted, and non-discovery is
+not evidence of novelty. The uniform formula and the persistent
+counterexample are Part I's and are credited, not claimed anew. Section 38
+lists every non-claim of the four batch-36 sources; Section 39 lists where
+that merge had to choose.
+
+Part IV does not reprove the NP-completeness of bipartite uniquely restricted
+matching; it imports it from Golumbic–Hirst–Lewenstein and gives the
+reduction to ordinal height. Its nonuniform transfinite readings rest on
+Theorem 35.1, which it neither reproves nor formally checks; only the uniform
+height theorem and the finite weighted theorems are proved independently. No
+polynomial-time general solver, no approximation ratio for an ordinal
+objective, no claim that matrix-rank bounds are tight, nothing for skeletons of
+height three or more, for nonpure WPO components or for binary Cantor
+coefficients (Problem 37.1 stays open). The unweighted matching and
+covering-sequence notions are classical and credited; no historical priority
+is claimed. Section 55 lists every non-claim of manuscript 04 and the choices
+made in writing Part IV.
 
 ## Labels
 
@@ -111,6 +180,15 @@ continuously and Part I's appendices now come after Parts II–III, so it moved
 from (24) to (83). The commit that wrote Parts II–III (`3a15f3421`) said no
 number changed; that was wrong for this equation. Section 39 of the article
 records the move.
+
+Part IV (batch 42) added 97 labels, all with the sub-prefix `nh:ur:`
+("uniquely restricted"). Total: 334. No label was renamed or removed, and this
+time no number of Parts I–III moved: Part IV's equations are numbered within
+its sections (45.1, 46.1, …) and the continuous equation counter is restored
+after it, so `eq:truncation` is still (83), and every section, theorem, table
+and figure number of Parts I–III and of Appendices A–B is as before (checked
+against the `.aux` of a build of the previous text). Part IV adds Sections
+41–56, Tables 11–14 and Figures 5–6.
 
 ## Notation
 
@@ -134,14 +212,37 @@ source. Watch in particular for:
   examples (drawn `a<c, a<d, b<d`) were transcribed by `a<->b, c<->d`. The
   delivered data files keep their own labels.
 
+Part IV follows Theorem 35.1's names for the height-two sets, `Q_lo`, `Q_up`,
+`Q_iso`, `N(l)` (calligraphic) and `Gamma_i(sigma)`; Table 12 (Section 41.5)
+lists every symbol renamed from 04 with the meaning it must not be confused
+with. In particular:
+
+- **`X`, not `S`.** 04's `S` (a set of upper vertices) is `X` in Part IV,
+  because `S_alpha(Q)` (Part I) and `S` (Part III) are lexicographic sums;
+  04's lexicographic sum `P` is Part I's `S_alpha(Q)`.
+- **Terminal exponent.** 04's `tau` is `rho_top`, with
+  `omega^rho_top = T^0(Q)`; it is not Part II's terminal cost `tau_Q` (an
+  ordinal), the `tau(q)` of Appendix A or Part III's retirement time
+  `tau_pi(q)`.
+- **Others.** 04's `H`, `K_H`, `S_H`, `L_S`, `G_S` are `Q_hi`, `k_hi`,
+  `S_hi`, `Q_lo^(X)`, `G^(X)`; its closure `cl(S)` is `ncl(X)` (not 07's
+  minimal completion `cl(A)`); its `d(S)` and `R(D)` are `prog(X)` and
+  `Theta(D)`; its programs `F`, `D(C)`, `V`, `p` are fraktur `f`, `c`, `v`, `p`.
+  No normalization changed: every sum is ordinary unless written `#`, and
+  empty maxima are 0, as in Part III.
+- **Same examples, other names.** 04's forced-absorption example is this
+  report's N-poset with the same labels, and its weighted six-cycle is 09's
+  `height_two_overlap` example with the upper vertices `3, 4, 5` renamed
+  `0, 1, 2`; the values agree. 04's data files number rows and columns from 0.
+
 ## Files
 
 ```
 README.md                                   this guide
-article.tex                                 the report (Parts I-III); \inputs references.tex
-article.pdf                                 73 pages: unnumbered title page, contents i-ii, pages 1-70
-references.tex                              bibliography included by article.tex (9 entries)
-references.bib                              the same 9 entries in BibTeX, for reuse
+article.tex                                 the report (Parts I-IV); \inputs references.tex
+article.pdf                                 101 pages: unnumbered title page, contents i-iii, pages 1-97
+references.tex                              bibliography included by article.tex (12 entries)
+references.bib                              the same 12 entries in BibTeX, for reuse
 build.py                                    Part I's build helper (runs code/verify.py, then latexmk)
 PROOF_AUDIT.md                              Part I's proof-dependency and scope audit
 SOURCES.md                                  Part I's literature and status record
@@ -203,10 +304,23 @@ data/05-ranks-quality_assurance.json        12's delivery record (delivered at i
 data/05-ranks-{complete_two_levels,finite_top,mixed_CNF,persistent,point_rank,
       transfinite_exponent,weighted_N,weighted_N_three_terms}.json   12's eight inputs (delivered in examples/)
 data/05-ranks-{same eight names}_certificate.json                     12's eight certificates (delivered in examples/)
+06-ur-matchings-PROOF_AUDIT.md              04's proof and scope audit, as delivered
+06-ur-matchings-SOURCES.md                  04's source record, as delivered
+code/06-ur-matchings-Makefile               04's Makefile (calls python3; builds its unshipped article.tex; do not use)
+code/06-ur-matchings-ordinal_matchings.py   04's exact solver, certificate checker, twin compression, covered-row program
+code/06-ur-matchings-verify.py              04's suite (275,633 assertions recorded; imports ordinal_matchings)
+data/06-ur-matchings-verification.json      04's recorded run
+data/06-ur-matchings-verification_console.txt  04's console output: two count lines, then the previous file
+data/06-ur-matchings-examples_summary.json  04's example values
+data/06-ur-matchings-quality_assurance.json 04's delivery record (see "Discrepancies")
+data/06-ur-matchings-{antichain,forced_absorption,parallel_edges,single_edge,six_cycle,
+      terminal_absorption,tie_requires_lookahead,weighted_cycle,weighted_twins}.json   04's nine inputs (delivered in examples/)
+data/06-ur-matchings-{same nine names}_certificate.json                              04's nine certificates (delivered in examples/)
 ```
 
-The directory holds 112 files: 24 of Part I and 18, 22, 23 and 25 staged from
-07, 09, 11 and 12. Every staged file is byte-identical to its delivery.
+The directory holds 139 files: 24 of Part I and 18, 22, 23, 25 and 27 staged
+from 07, 09, 11, 12 and 04. Every staged file is byte-identical to its
+delivery.
 
 ## Build the article
 
@@ -216,10 +330,13 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 or run `pdflatex article.tex` three times; build in a scratch copy so that no
 auxiliary files land here. BibTeX is not needed: `article.tex` inputs
-`references.tex`, and `references.bib` repeats the same nine entries for
+`references.tex`, and `references.bib` repeats the same twelve entries for
 reuse; keep the two consistent when editing. The shipped PDF was built with
-MiKTeX with no errors, no undefined or multiply defined references and no
-overfull boxes. `build.py --verify` first runs Part I's `code/verify.py` in
+MiKTeX (pdfLaTeX, 29 September 2026) with no errors, no warnings of any kind
+(no undefined or multiply defined references or citations, no duplicate PDF
+destinations) and no overfull or underfull boxes. In batch 42 the title
+page's top spacing was reduced by 12 mm so that the abstract's added sentence
+still fits on one page. `build.py --verify` first runs Part I's `code/verify.py` in
 place, which rewrites `data/verification.json` and `data/poset_census.csv`;
 use it only on a copy.
 
@@ -311,6 +428,44 @@ Makefile targets or the `build.py` helpers of 09 and 11: they build the
 delivered manuscripts, which are not shipped (11's helper would also write
 `_build/` and `article.pdf` in its directory).
 
+**Manuscript 04 (`06-ur-matchings-`).** Never run 04's `verify.py` in this
+directory: under its shipped name it cannot import its sibling
+(`from ordinal_matchings import …` fails), and in the delivered layout it
+writes `examples/*.json`, `data/examples_summary.json` and
+`data/verification.json`, which here would overwrite **Part I's**
+`data/verification.json`. Its Makefile's `verify` target runs Part I's
+`code/verify.py`, and its `pdf`, `all` and `clean` targets run `latexmk` on
+this report's `article.tex` in place. Run the suite on a copy with the
+delivered layout (the output directories must exist; the script does not
+create them):
+
+```sh
+mkdir -p "$W/04/code" "$W/04/data" "$W/04/examples"
+cp code/06-ur-matchings-Makefile "$W/04/Makefile"
+cp code/06-ur-matchings-ordinal_matchings.py "$W/04/code/ordinal_matchings.py"
+cp code/06-ur-matchings-verify.py "$W/04/code/verify.py"
+for f in data/06-ur-matchings-*; do
+  n=${f#data/06-ur-matchings-}
+  case "$n" in
+    examples_summary.json|quality_assurance.json|verification.json|verification_console.txt)
+      cp "$f" "$W/04/data/$n";;
+    *) cp "$f" "$W/04/examples/$n";;
+  esac
+done
+(cd "$W/04" && py code/verify.py)
+```
+
+This recipe was run on 29 September 2026 (Python 3.14.4, 55 s): the suite
+passed with 275,633 assertions; the nine inputs, nine certificates and
+`examples_summary.json` it regenerated equal the shipped files apart from
+Windows line endings, and `verification.json` differs only in interpreter
+version and elapsed time. The solver itself needs no sibling module and can
+be run in place if its output goes elsewhere, for example
+`py code/06-ur-matchings-ordinal_matchings.py solve data/06-ur-matchings-weighted_cycle.json --output "$W/certificate.json"`
+(prints `omega^3 + omega^2 + omega`) and
+`py code/06-ur-matchings-ordinal_matchings.py check data/06-ur-matchings-tie_requires_lookahead.json data/06-ur-matchings-tie_requires_lookahead_certificate.json`
+(prints `VALID: omega^3 + omega^2 + omega`); `check` writes nothing.
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** The staged scripts, Makefiles, audits and source records
@@ -338,7 +493,27 @@ delivered manuscripts, which are not shipped (11's helper would also write
   the largest coordinate persists". These predate the addition and stay
   byte-identical; Parts II–III now give that formula. Likewise
   `data/quality_assurance.json` records the original 20-page PDF; the
-  current `article.pdf` has 73 pages.
+  current `article.pdf` has 101 pages.
+- **04's delivery names.** `code/06-ur-matchings-verify.py` imports
+  `ordinal_matchings` and writes `examples/`, `data/examples_summary.json` and
+  `data/verification.json` under their delivered names (see the rerun
+  section); `code/06-ur-matchings-Makefile` names `code/verify.py` and the
+  delivered `article.tex`. `06-ur-matchings-PROOF_AUDIT.md` and
+  `06-ur-matchings-SOURCES.md` speak of "the article", meaning 04's unshipped
+  manuscript, now Part IV. They cite this report's "Theorem 35.1" and
+  "Section 37"; those numbers still hold. The article itself quotes the
+  shipped names.
+- **04's delivery record describes an unshipped PDF.**
+  `data/06-ur-matchings-quality_assurance.json` records 04's 26-page PDF, its
+  SHA-256 and word count, three underfull boxes in its bibliography, and the
+  command-line checks of the nine examples; that PDF is not shipped.
+- **04's duplicate.** `data/06-ur-matchings-verification_console.txt` is two
+  count lines followed by a byte-identical copy of
+  `data/06-ur-matchings-verification.json`.
+- **04's examples.** Delivered in `examples/`, shipped in `data/`. The
+  weighted-six-cycle input equals 09's `height_two_overlap` instance with the
+  upper vertices renumbered (09 numbers them 3, 4, 5; 04 numbers columns
+  0, 1, 2 separately from rows).
 - **Label conventions in data.** The inputs number vertices from 0. 09's
   `nonuniform_N` input has edges `0<2, 0<3, 1<3`, its own labelling of the
   N-poset (`a<c, a<d, b<d`), the mirror image of the article's `a<c, b<c, b<d`
@@ -346,10 +521,14 @@ delivered manuscripts, which are not shipped (11's helper would also write
   orientation (`0<2, 1<2, 1<3`).
 - **Cross-check not shipped.** The placement commit reports a 152-instance
   comparison of all four programs with no disagreement; that script is not in
-  this directory.
+  this directory. Likewise the 4,056-matrix check of Part IV (Section 41.6)
+  was run at placement and its script is not shipped.
 - **Bibliography.** 11 cited Vialard's lexicographic-product paper by the
   author's publication page only; the article uses Part I's published record
-  with its DOI.
+  with its DOI. 04's bibliography cited this report itself (at its pin) as
+  `ProveIt`; those citations became cross-references. Its entries `GHL`,
+  `BHR` and `FJJ` are `GHL2001`, `BHR2016` and `FJJ2018` here, with the same
+  bibliographic data.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -366,7 +545,15 @@ delivered manuscripts, which are not shipped (11's helper would also write
 - [`hoare-powerspace-statures`](../hoare-powerspace-statures/) concerns
   topological statures of Noetherian spaces; 09 inspected it and found it a
   different subject (Problem 37.8 asks whether a topological version exists).
+- [`preorder-root-polytopes`](../../../enumerative-combinatorics/preorder-root-polytopes/)
+  also studies height-two posets through their bipartite graphs and matchings
+  (its Parts II–III: matching supports and cactus rigidity of matching-support
+  determinants), but its invariants are h-polynomials of preorder root
+  polytopes, not ordinal heights of finitary powersets, and it shares no
+  theorem with Part IV; its README says the same.
 - The report sits in the research-report collection of the `SetTheory/Cardinals`
   Lean project. That placement confers no formal status: no Lean declaration
-  anywhere in ProveIt formalizes any statement of Parts I–III. Sections 25 and
-  36 record the formalization routes the sources propose; none has been started.
+  anywhere in ProveIt formalizes any statement of Parts I–IV (a search of the
+  repository's `.lean` files for "uniquely restricted" finds nothing).
+  Sections 25, 36 and 53.3 record the formalization routes the sources
+  propose; none has been started.
