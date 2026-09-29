@@ -13,6 +13,7 @@
 \usetikzlibrary{positioning}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{aliascnt}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \definecolor{Olive}{HTML}{4F6147}
 \definecolor{PaleOlive}{HTML}{F0F3EA}
@@ -36,15 +37,20 @@
 \setlist{nosep,leftmargin=1.7em,topsep=4pt}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
+% Batch 39: the theorem-like environments share the theorem counter through
+% alias counters, so that cleveref names a lemma ``lemma'' rather than
+% ``theorem''; the shared numbering is unchanged.
+\newcommand{\sharedtheorem}[2]{%
+  \newaliascnt{#1}{theorem}\newtheorem{#1}[#1]{#2}\aliascntresetthe{#1}}
+\sharedtheorem{lemma}{Lemma}
+\sharedtheorem{proposition}{Proposition}
+\sharedtheorem{corollary}{Corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{question}[theorem]{Question}
+\sharedtheorem{definition}{Definition}
+\sharedtheorem{example}{Example}
+\sharedtheorem{question}{Question}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\sharedtheorem{remark}{Remark}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\D}{\Delta}
@@ -59,6 +65,11 @@
 \newcommand{\TQ}{\operatorname{T}(Q)}
 \newcommand{\fall}[2]{(#1)_{#2}}
 \newcommand{\stirling}[2]{\left\{\!\begin{matrix}#1\\#2\end{matrix}\!\right\}}
+% Part II (batch 39): the manuscript's biclique count and indicator.
+\newcommand{\Bip}{\mathcal B}
+\newcommand{\bbone}{\mathbf 1}
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=PaleOlive,colframe=Olive,
   boxrule=0.6pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
@@ -66,21 +77,24 @@
   backgroundcolor=\color{PaleOlive!55},showstringspaces=false}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{12mm}
+% Spacing reduced on 28 September 2026 (batch 39) so that the title page,
+% which overflowed onto a second page, fits on one.
+\vspace*{-8mm}
 {\color{Olive}\rule{\textwidth}{1.2pt}}\par
-\vspace{7mm}
+\vspace{4mm}
 {\LARGE\bfseries A cyclic-coloring obstruction to\par
 maximal binary DFAO reversal\par}
-\vspace{6mm}
+\vspace{4mm}
 {\large A proposed solution to Davies's nonattainment conjecture,\par
 with two independent proofs, constructive certificates,\par
 exhaustive small-state enumeration, and finite optimality bounds\par}
-\vspace{10mm}
+\vspace{2mm}
 {\large ChatGPT}\par
 {Research note prepared for Vladimir Reshetnikov}\par
 {20 September 2026}
-\vspace{10mm}
+\vspace{2mm}
 \begin{abstract}
 An $n$-state deterministic finite automaton with $k$ output values admits a
 reversal construction with $k^n$ states. We investigate whether this bound can
@@ -112,11 +126,14 @@ $7\le n\le30$, $3\le k<n$. This finite optimality statement is distinct from
 the unrestricted theorem. Source, verification programs, explicit automata,
 certificates, and numerical records accompany the article.
 \end{abstract}
+\small
 
 \noindent\textbf{Scope.} The primary target is the nonattainment question,
 not the exact maximum number of reverse states for every pair $(n,k)$.
 The latter remains undetermined by the methods of this article outside the
 finite range checked in \cref{sec:finite}.
+[Added 28 September 2026, batch 39: for $k=3$, Part~II determines it for
+every $n\ge7$ (\cref{tor:thm:main}).]
 
 \vspace{0.4em}
 \noindent\textbf{Keywords.} Finite automata with output; reversal; state
@@ -135,6 +152,7 @@ a self-contained proposed proof}, not an independently certified result.
 The principal obstruction theorem does not depend on the computations.
 \end{resultbox}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \pagenumbering{roman}
 
 \tableofcontents
@@ -150,10 +168,13 @@ their finite verification, and \cref{sec:verification} the computational
 audit. \Cref{app:words} proves one orbit size by hand, with no program;
 \cref{app:audit} lists the places where the argument could go wrong.
 The archive's \texttt{README.md} gives build and reproduction commands.
+Part~II (\cref{tor:sec:intro} onwards, added 28 September 2026) proves the
+exact three-output maximum $R_2(n,3)$ for every $n\ge7$.
 \end{resultbox}
 \newpage
 
 \pagenumbering{arabic}
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A cyclic-coloring obstruction to maximal binary DFAO reversal}
 \section{The problem and the result}\label{sec:introduction}
 
 A deterministic finite automaton normally gives a binary answer: accept or
@@ -307,6 +328,9 @@ different dress, and it is proved here exactly once, in
 complementary, and is kept. Where the two packages stated the status of a
 source or of the literature differently, the more cautious statement is the
 one retained.
+[Added 28 September 2026, batch 39: this paragraph describes Part~I. Part~II
+was added from a third, later manuscript; its provenance is in
+\cref{tor:sec:source,tor:sec:audit}.]
 
 \subsection{What is and is not established}
 
@@ -322,6 +346,11 @@ collision graphs. Exact evaluation gives the same number as the published
 coprime-block lower bound for $7\le n\le30$ and $3\le k<n$. This is a
 finite, computer-assisted optimality result. We do not prove equality with
 that lower bound for all $n$.
+[Added 28 September 2026, batch 39: the preceding sentences describe the
+report at the state \texttt{fbba58593} against which Part~II was written. For
+$k=3$, Part~II proves equality with the lower bound for every $n\ge7$
+(\cref{tor:thm:main}), and with it $U(n,3)=L(n,3)$ (\cref{tor:rem:UL}). For
+$k\ge4$ nothing changes, and the list below still holds for general $n,k$.]
 
 The following are \emph{not} claimed. No proof of the exact optimal binary
 reversal complexity for arbitrary $n,k$, and no resolution of Davies's other
@@ -1653,6 +1682,11 @@ Exact evaluation of \eqref{eq:lower} and \eqref{eq:structural} gives
 Consequently these values equal $R_2(n,k)$ throughout that finite range.
 There are $\sum_{n=7}^{30}(n-3)=372$ parameter pairs.
 \end{proposition}
+\noindent[Added 28 September 2026, batch 39: for $k=3$ the equality
+$L(n,3)=U(n,3)=R_2(n,3)$ holds for every $n\ge7$
+(\cref{tor:thm:main,tor:rem:UL}), and the splits listed above are the optimal
+ones (\cref{tor:lem:optimize}). Part~II's closed form reproduces all $24$ rows
+$k=3$ of the table described next (\cref{tor:sec:rowcheck}).]
 
 The complete exact-integer table is supplied as
 \texttt{data/finite\_range\_bounds.csv}. Each row gives the upper and lower
@@ -2086,6 +2120,11 @@ original exact-optimum conjecture. The graph bound is only an upper bound;
 a minimizing graph need not be realized by a two-generated monoid that
 reaches every coloring not excluded by the graph. The gap at $(5,5)$ already
 illustrates this distinction.
+[Added 28 September 2026, batch 39: for $k=3$ this equality is now proved for
+every $n\ge7$ (\cref{tor:rem:UL}), with the eliminations described above
+(\cref{tor:sec:same,tor:sec:cross}), and every extremizer is shown to reach
+all improper colorings (\cref{tor:thm:rigidity}). For $k\ge4$ the problem
+remains open (\cref{tor:q:four}).]
 
 \subsection{Using more than one collision}
 
@@ -2118,6 +2157,14 @@ formula for $R_2(n,k)$, and outside the finite range of \cref{prop:finite}
 this article does not establish the optimality of previously proposed
 lower-bound families or settle the remaining open questions in
 \cite[Section~5]{Davies2017}.
+[Added 28 September 2026, batch 39: this paragraph describes the report at
+the state \texttt{fbba58593} against which Part~II was written. For $k=3$,
+Part~II proves the formula
+$R_2(n,3)=3^n-3(2^{A_n}+2^{B_n}-2)+B_n$ for every $n\ge7$, where
+$(A_n,B_n)$ is the closest coprime split of $n$ (\cref{tor:thm:main}), using
+Davies's lower construction for attainment; this settles the $k=3$ slice of
+Davies's Section~5, Problem~2. For $k\ge4$ the paragraph stands, and
+Davies's other open questions remain open.]
 
 The chromatic estimate suggests a concrete refinement program in three
 steps: optimize over collision pairs, count proper colorings for their
@@ -2125,6 +2172,11 @@ unions, and analyze when all improper colorings are in fact reachable. The
 first two steps produce obstructions; the third is a constructive saturation
 problem of a different nature. Confusing them would turn a valid upper bound
 into an unjustified equality claim.
+[Added 28 September 2026, batch 39: Part~II carries out the second and third
+steps partly, for $k=3$: two cross collisions cost at least $6A_nB_n$ further
+states (\cref{tor:prop:rankpenalty}), and equality forces saturation
+(\cref{tor:thm:rigidity}), which is necessary but not sufficient
+(\cref{tor:ex:nonsufficient}).]
 
 A different question is whether the uniform additive deficit can be
 strengthened in $n$ as well as in $k$. At fixed $k$ the quantity $k!-g(k)$ is
@@ -2172,6 +2224,1564 @@ orbit, gives the stronger structural bound. That bound establishes the
 reported finite optimality results when combined with the published lower
 construction. The unrestricted exact binary maximum remains a separate
 question beyond what is proved here.
+[Added 28 September 2026, batch 39: for three outputs Part~II answers it for
+every $n\ge7$ (\cref{tor:thm:main}); for $k\ge4$ it remains open.]
+
+%% ====================================================================
+%% Batch-39 addition (manuscript 06, "Exact Binary Reversal with Three
+%% Outputs"). All labels of Part II carry the prefix tor: (three-output
+%% reversal).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad The exact three-output maximum for all $n\ge7$}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } The exact three-output maximum for all \texorpdfstring{$n\ge7$}{n >= 7}}
+
+\noindent\emph{Sections~\ref{sec:introduction}--\ref{sec:conclusion} and
+Appendices~\ref{app:witnesses}--\ref{app:audit} form the original report
+(Part~I) of 20 September 2026, unchanged except for dated pointers to this
+addition and a layout fix of its title page. Part~II was added on
+28 September 2026 in batch~39 of ProveIt's incoming-report intake, from one
+manuscript written against the state of Part~I printed above. It answers,
+for three outputs, the question Part~I left open in \cref{sec:conclusion}:
+it determines $R_2(n,3)$ for every $n\ge7$, where Part~I had established
+it only for $7\le n\le30$ (\cref{prop:finite}). \Cref{tor:sec:intro} records
+the provenance and fixes the notation of the addition.}
+
+\section{Provenance, conventions and the exact answer}\label{tor:sec:intro}
+
+\subsection{One manuscript, one addition}\label{tor:sec:source}
+
+Part~II is batch-39 manuscript~06, \emph{Exact Binary Reversal with Three
+Outputs: An all-state solution and rigidity of extremizers}, an AI-assisted
+research article prepared for Vladimir Reshetnikov and dated 28 September
+2026 (19 pages as delivered). It arrived as the archive
+\texttt{ProveIt\_Three\_Output\_Reversal.zip} (inner directory
+\texttt{three\_output\_reversal/}) in ProveIt commit \texttt{74f7f5bdb} and was
+placed in \texttt{e2b1f016a}. It was written against ProveIt commit
+\texttt{fbba58593}, at which Part~I's \texttt{article.tex} had the Git blob
+\texttt{e6dbd47b}; that blob is unchanged at the placement commit, so every
+statement the manuscript makes about Part~I refers to the text printed above.
+Its code, data and source audit are shipped beside Part~I's files with the
+prefix \texttt{02-three-output-} (Part~I's unprefixed files count as~01); its
+manuscript, README and PDF are not shipped and survive in the arrival commit.
+
+The manuscript contributes, in the order printed here: an all-state upper
+bound for three outputs, obtained by eliminating every collision graph except
+the complete bipartite graph on the optimal coprime two cycles
+(\cref{tor:sec:graphs,tor:sec:unmixed,tor:sec:same,tor:sec:cross}); the
+optimization of the surviving graph and, with Davies's published lower
+construction, the exact value of $R_2(n,3)$ for every $n\ge7$
+(\cref{tor:sec:mainproof}); the necessary structure of every extremizer
+(\cref{tor:sec:rigidity}); the orbit inventory of the missing colorings
+(\cref{tor:sec:inventory}); asymptotics and recurrences
+(\cref{tor:sec:asymptotics}); its finite checks and their limits
+(\cref{tor:sec:verification}); eight research questions
+(\cref{tor:sec:questions}); its conclusion (\cref{tor:sec:conclusion}); the
+fully displayed finite base table (\cref{tor:sec:small}); a formalization plan
+(\cref{tor:sec:formal}); and its source audit (\cref{tor:sec:audit}). Every
+result, proof, example, remark, limitation and question of the manuscript is
+printed. The manuscript re-derives the coloring-orbit description, the
+collision-coloring bound, and the two graph counts of Part~I; those are printed
+once, in Part~I, and credited where Part~II uses them (\cref{tor:sec:imported}).
+Its different proof of the three-color biclique count is kept as a second
+proof. \Cref{tor:rem:UL} and the finite comparison of \cref{tor:sec:rowcheck}
+were added in the merge.
+
+\begin{resultbox}
+\textbf{Status (manuscript 06).} This is a research draft with complete
+conventional proofs of its new upper-bound and rigidity statements. It has not
+been independently refereed or checked in a proof assistant. Novelty is
+assessed relative to the sources inspected, not asserted as an established
+priority claim. The result concerns exactly three outputs; it does not settle
+the full variable-output conjecture or the largest-two-generated-monoid
+problem. Nothing in Part~II is formalized in any proof assistant.
+\end{resultbox}
+
+\subsection{Notation of Part~II}\label{tor:sec:notation}
+
+Part~I's symbols keep their meanings: $Q$, $\D$, $\tau$, $q_0$, $M$,
+$\tau M$, $\statecomplex$, $G(p;x,y)$, $\operatorname{Col}_k(G)$, $P_G(k)$,
+$C_L(k)$, $B_k(u,v)$, $H_r(t)$, $T_{r,k}(a,b)$, $D(n,k)$, $U(n,k)$, $L(n,k)$,
+$G_k(\ell,m)$, $M(n,k)$ and $R_2(n,k)$. Part~II works at $k=3$ throughout,
+except in \cref{tor:q:four,tor:sec:questions}, and its new symbols, and the
+ones renamed from the manuscript, are listed in \cref{tor:tab:notation}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~II. ``Renamed'' gives the manuscript's own symbol.
+The last column prints the tempting false reading.}
+\label{tor:tab:notation}
+\begin{tabular}{>{\raggedright}p{.20\linewidth}>{\raggedright}p{.36\linewidth}>{\raggedright\arraybackslash}p{.36\linewidth}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$(A_n,B_n)$, or $(A,B)$ & the closest coprime split of $n$,
+ \eqref{tor:eq:split} & Part~I's split $(\ell,m)$ of \eqref{eq:lower}; at
+ $k=3$ the optimal $(\ell,m)$ is $(A_n,B_n)$. $B_n$ (one index, an integer) is
+ not a chromatic count.\\
+$\Bip(u,v)$ & $3(2^u+2^v-2)$, the proper three-colorings of $K_{u,v}$ &
+ equal to Part~I's $B_3(u,v)$ of \eqref{eq:threebip}; not $B_n$.\\
+$\Bip_k(a,b)$ & Part~I's $B_k(a,b)$ of \eqref{eq:bipoly}, used only in
+ \cref{tor:q:four} & ---\\
+$D_n$ (one index) & $\Bip(A_n,B_n)-B_n$, the deficit $3^n-R_2(n,3)$ &
+ Part~I's $D(n,k)$, the minimum of the collection
+ \eqref{eq:Dnon}--\eqref{eq:Dbip}. By definition they differ; that
+ $D(n,3)=D_n$ for $n\ge7$ is a theorem (\cref{tor:rem:UL}).\\
+$C_L$, $C_*(m)$ & $C_L=C_L(3)=2^L+2(-1)^L$; $C_*(m)$ its minimum in
+ \cref{tor:sec:small} & Part~I's $C_L(k)$ at general $k$.\\
+$P_G$ & $P_G(3)=|\operatorname{Col}_3(G)|$ & Part~I's $P_G(k)$; not
+ $P_2(d)$.\\
+$\operatorname{Col}_3(G)$ (renamed from $\operatorname{Prop}(G)$) & proper
+ three-colorings of $G$ & ---\\
+$\Orb_p(c)$ (renamed from $\mathcal O_p(c)$) & $\{c\circ p^j:j\ge0\}$ &
+ Part~I's $\Orb_\tau=\Orb_p(\tau)$ of \eqref{eq:orbnotation}; not Part~I's
+ order set $\mathcal O_r$ of \eqref{eq:H}.\\
+$J(r)$ & the largest product of the parts of a partition of $r$,
+ \eqref{tor:eq:J} & Landau's $g(r)$ (a least common multiple, $g(r)\le J(r)$)
+ and Part~I's $H_r(t)$; $H_r(t)\le tJ(r)$.\\
+$E_n$ & the finite same-cycle minimum \eqref{tor:eq:smallcyclebound} & ---\\
+$P_2(d)$ & primitive binary words of length $d$, \eqref{tor:eq:primitive} &
+ $P_G$.\\
+$X$, $Y$ & the two cycles of an extremal permutation & ---\\
+$h$ & a cyclic displacement (\cref{tor:sec:graphs}) or $\lfloor n/2\rfloor$
+ (\eqref{tor:eq:split} and later) & ---\\
+$d$ & a gcd (\cref{tor:sec:graphs,tor:sec:same,tor:sec:cross}) or an orbit
+ size (\cref{tor:sec:inventory}) & ---\\
+$s,t$ in \cref{tor:thm:main} & two arbitrary transformations & Part~I's
+ letters $a,b$ of \cref{thm:main}; in Part~II $a,b$ are cycle lengths.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the object the
+manuscript denotes, and $\Bip$, $C_L$, $P_G$ are Part~I's $B_3$, $C_L(3)$,
+$P_G(3)$ under the names the manuscript uses. As in Part~I, ``binary''
+always describes the \emph{input} alphabet: there are two input letters but
+three output values.
+
+\subsection{The exact answer}\label{tor:sec:answer}
+
+A deterministic finite automaton with output (DFAO) returns one of finitely
+many labels after reading its input word. Reversal asks how much memory is
+needed to compute the same function with the input read in the opposite
+order. Davies's lower construction and her question about its optimality are
+the published starting point \cite[Corollary~3 and Section~5,
+Problem~2]{Davies2017}. Part~I supplies a collision-coloring upper-bound
+method and verifies agreement with that lower construction for
+$7\le n\le30$, $3\le k<n$ (\cref{prop:finite}). The purpose of Part~II is to
+remove the finite-range restriction for $k=3$, and to determine what
+equality forces.
+
+For $n\ge7$, define $(A_n,B_n)$ by
+\begin{equation}\label{tor:eq:split}
+ (A_n,B_n)=
+ \begin{cases}
+ (h,h+1),&n=2h+1,\\
+ (h-1,h+1),&n=2h,\ h\text{ even},\\
+ (h-2,h+2),&n=2h,\ h\text{ odd}.
+ \end{cases}
+\end{equation}
+The last case has $h\ge5$. In each case $1<A_n<B_n$ and the two integers are
+coprime. When $n$ is fixed we abbreviate them to $A,B$. These are the splits
+Part~I lists after \eqref{eq:lower} to show that admissible splits exist;
+\cref{tor:lem:optimize} shows that they are the optimal ones.
+
+\begin{theorem}[Exact three-output reversal]\label{tor:thm:main}
+For every integer $n\ge7$,
+\begin{equation}\label{tor:eq:main}
+ \boxed{\quad R_2(n,3)=3^n-D_n,\qquad
+ D_n=3(2^{A_n}+2^{B_n}-2)-B_n.\quad}
+\end{equation}
+The same maximum is obtained whether the original automaton is required to be
+accessible with $n$ states or to be minimal with exactly $n$ states.
+Moreover, for arbitrary transformations $s,t$ of an $n$-element set and any
+three-valued map $\tau$, even without accessibility or surjectivity,
+\begin{equation}\label{tor:eq:algebraicmain}
+ |\tau\langle s,t\rangle|\le3^n-D_n.
+\end{equation}
+\end{theorem}
+
+Here $\langle s,t\rangle$ includes the identity. Thus the initially supplied
+output coloring is counted among the reachable reverse states. The deficit
+has the explicit form
+\begin{equation}\label{tor:eq:deficitpiece}
+ D_n=
+ \begin{cases}
+ 9\cdot2^h-h-7,&n=2h+1,\\
+ \dfrac{15}{2}\,2^h-h-7,&n=2h,\ h\text{ even},\\[1mm]
+ \dfrac{51}{4}\,2^h-h-8,&n=2h,\ h\text{ odd}.
+ \end{cases}
+\end{equation}
+In particular,
+\begin{equation}\label{tor:eq:benchmark}
+ 0<D_n<\frac{51}{4}\,2^{n/2}\qquad(n\ge7).
+\end{equation}
+Positivity follows at once from the expression for $D_n$ in
+\eqref{tor:eq:main}; the upper estimate follows from
+\eqref{tor:eq:deficitpiece}. This single benchmark will dispose of several
+nonextremal graph families.
+
+The proof classifies the orbit graph of a collision pair, controls the period
+of a proper three-coloring, and excludes every graph except the complete
+bipartite graph on the optimal two cycles. Elementary product bounds replace
+enumeration of residual permutation orders. The inequalities also yield
+rigidity: every extremizer has one permutation letter with the specified two
+cycles and one rank-$(n-1)$ singular letter with exactly one cross-cycle
+collision. Its reachable colorings are all improper colorings of that complete
+bipartite graph together with one maximal cyclic orbit of proper colorings.
+Part~II also gives the complete orbit inventory of the missing colorings and a
+quantitative penalty for additional collisions.
+
+\begin{resultbox}
+\textbf{Proof map of Part~II.} \Cref{tor:sec:graphs} fixes conventions,
+recalls Part~I's collision-graph bound, and adds the residual product bound.
+The all-state comparison is in
+\cref{tor:sec:unmixed,tor:sec:same,tor:sec:cross,tor:sec:mainproof}. Equality
+is analyzed in \cref{tor:sec:rigidity,tor:sec:inventory}. The verification
+record and the explicit finite base table are in
+\cref{tor:sec:verification,tor:sec:small}.
+\end{resultbox}
+
+\subsection{What is inherited and what is proved here}\label{tor:sec:inherited}
+
+The following division of responsibility is important. The lower
+construction and the collision-graph method are not presented as new.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.43\textwidth}p{0.51\textwidth}@{}}
+\toprule
+Ingredient & Attribution and role\\
+\midrule
+Reversal as an orbit of colorings & Davies, Proposition~4; proved in Part~I
+(\cref{prop:orbit}) and reproved in the manuscript with the same composition
+convention (\cref{tor:sec:imported}).\\[2mm]
+Coprime two-cycle lower construction & Davies, Theorem~3 and Corollary~3;
+used as a published theorem, not reproved at the semigroup-generation
+level.\\[2mm]
+Collision-orbit graphs and their chromatic bound & Part~I
+(\cref{sec:graph,sec:structural}); reproved in the manuscript and recalled in
+\cref{tor:sec:imported}.\\[2mm]
+All-$n$ elimination for three outputs & The comparisons in
+\cref{tor:sec:unmixed,tor:sec:same,tor:sec:cross}, including the delicate
+one-residual-state case.\\[2mm]
+Exact formula and necessary extremal structure &
+\Cref{tor:thm:main,tor:thm:rigidity}; the all-state conclusion and equality
+analysis extend Part~I.\\[2mm]
+Additional-collision penalty and missing-orbit inventory &
+\Cref{tor:prop:rankpenalty,tor:thm:inventory}; consequences developed in
+Part~II.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In Part~I the manuscript inspected the README, the article's structural
+bound and finite-optimality sections, its research-status record, and the
+\texttt{u\_witness} implementation of \texttt{code/reversal.py}. Part~I
+explicitly separates its finite agreement from an all-$n$ proof. The proof in
+Part~II needs no unproved claim elsewhere in the repository.
+
+The numerical values $24,67,218,699$ at $n=3,4,5,6$ are already recorded as
+exact in Davies's Table~3 \cite{Davies2017}, and Part~I reproduces them
+(\cref{sec:finite}). They are not new results of Part~II. The threshold
+$n\ge7$ is essential to the formula: at five states the coprime two-cycle
+construction is not the optimum.
+
+\section{Coloring orbits, collision graphs and residual products}\label{tor:sec:graphs}
+
+\subsection{What Part~II takes from Part~I}\label{tor:sec:imported}
+
+Automata, composition and the reversal construction are as in
+\cref{sec:orbit}: letters act by transformations $t_a:Q\to Q$, a word
+$w=a_1\cdots a_m$ acts by $t_w=t_{a_m}\circ\cdots\circ t_{a_1}$, the computed
+function is $f(w)=\tau(t_w(q_0))$, an automaton is accessible if every state
+is $t_w(q_0)$ for some word $w$, and $f^R(w)=f(w^R)$. Here
+$\D=\{0,1,2\}$. The state complexity $\statecomplex(f)$ is the least number
+of states in a DFAO computing $f$. Part~II defines $R_2(n,3)$ using accessible
+$n$-state automata with two input letters whose output map uses all three
+labels; the equality with the convention $\statecomplex(f)=n$ is proved
+separately in \cref{tor:thm:main} rather than assumed. (Part~I states
+$R_2(n,k)$ once for accessible and once for minimal $n$-state DFAOs,
+\cref{sec:finite,sec:conclusion}; at $k=3$ \cref{tor:thm:main} shows the two
+readings agree.)
+
+\emph{Coloring-orbit description.} For $M=\langle t_a:a\in\Sigma\rangle$ the
+reversal has a realization with reachable state set
+$\tau M=\{\tau\circ t:t\in M\}\subseteq\D^Q$, transition
+$c\mapsto c\circ t_a$, initial state $\tau$ and output $c(q_0)$; if the
+original automaton is accessible, these reachable states are pairwise
+distinguishable, so $\statecomplex(f^R)=|\tau M|$. This is \cref{prop:orbit}
+and the construction preceding it; the manuscript proves it again with the
+same argument (after reading $a_1\cdots a_m$ the coloring is
+$\tau\circ t_{w^R}$; distinct colorings are separated by the reverse of a word
+reaching a state where they differ), and notes that removing unreachable
+states therefore yields a minimal reversal automaton.
+
+\begin{remark}[The meaning of a word]\label{tor:rem:word}
+When a reverse search applies letter $a$ and then letter $b$, it replaces
+$c$ by $c\circ t_a\circ t_b$. This is the pullback action, not the forward
+state action on the same two-letter word. The order of composition in the
+collision lemma depends on this convention. Part~I states the same
+convention for its word certificates (\cref{app:words}).
+\end{remark}
+
+For $c:Q\to\D$ and a permutation $p$, write
+\[
+ \Orb_p(c)=\{c\circ p^j:j\ge0\}.
+\]
+Its size is the least positive $j$ with $c\circ p^j=c$ and divides
+$\ord(p)$. A nonbijective transformation is called \emph{singular}. A pair
+$x\ne y$ with $s(x)=s(y)$ is a \emph{collision} of $s$.
+
+\emph{Collision-coloring bound.} Suppose that the two generators are a
+permutation $p$ and a singular map $s$, choose a collision $\{x,y\}$ of $s$,
+and form the collision-orbit graph $G=G(p;x,y)$ of \eqref{eq:orbitgraph}. A
+coloring is \emph{proper} if it assigns different labels to both ends of
+every edge; $\operatorname{Col}_3(G)$ is the set of proper three-colorings
+and $P_G=|\operatorname{Col}_3(G)|$. Every element of $\tau\langle p,s\rangle$
+represented by a word containing $s$ is improper for $G$
+(\cref{lem:rightmost}), and consequently, by \cref{prop:chromatic} at $k=3$,
+\begin{equation}\label{tor:eq:graphbound}
+ |\tau\langle p,s\rangle|
+ \le 3^n-P_G+
+ \begin{cases}
+ |\Orb_p(\tau)|,&\tau\text{ is proper},\\
+ 0,&\tau\text{ is improper}.
+ \end{cases}
+\end{equation}
+The manuscript reproves this with the same rightmost-singular-factor argument
+and the observation that $p$, an automorphism of $G$, preserves properness.
+As Part~I stresses after \cref{rem:twochromatic}, the inequality makes no
+claim that all improper colorings are reachable. Such saturation is an extra
+property. In Part~II it will be forced by equality for an extremizer
+(\cref{tor:thm:rigidity}), not assumed in proving the upper bound.
+
+\emph{The two graph types.} If $x,y$ lie in one $p$-cycle of length $m$ with
+cyclic displacement $h$, put $d=\gcd(m,h)$, $L=m/d$ and $r=n-m$. The
+nonisolated graph is $d$ disjoint cycles of length $L$ (for $L=2$ each
+component is a single edge) and, by \eqref{eq:samecount} at $k=3$,
+\begin{equation}\label{tor:eq:samecount}
+ P_G=C_L^d3^r,\qquad C_L=2^L+2(-1)^L,\qquad L\ge2.
+\end{equation}
+If $x,y$ lie in distinct cycles of lengths $a\le b$, put $d=\gcd(a,b)$,
+$u=a/d$, $v=b/d$ and $r=n-a-b$. Then $G\cong dK_{u,v}\sqcup rK_1$ and, by
+\eqref{eq:diffcount} and \eqref{eq:threebip},
+\begin{equation}\label{tor:eq:crosscount}
+ P_G=\Bip(u,v)^d3^r,
+ \qquad \Bip(u,v)=3(2^u+2^v-2).
+\end{equation}
+The manuscript proves both counts again. Its cycle count is Part~I's (the trace
+of the $L$th power of the $3\times3$ matrix with zero diagonal and all other
+entries one, whose eigenvalues are $2,-1,-1$; at $L=2$ the count is $6$, the
+number for a single edge), and its edge criterion for two cycles is Part~I's
+Chinese remainder criterion $i\equiv j\pmod d$. Its derivation of the
+biclique count differs from Part~I's specialization of the Stirling sum
+\eqref{eq:bipoly}, and is kept.
+
+\begin{proof}[Second proof of \eqref{eq:threebip} (manuscript 06)]
+A proper three-coloring of a complete bipartite graph uses disjoint palettes
+on its two nonempty sides, so at least one side is monochromatic. There are
+$3\cdot2^v$ colorings with the left side monochromatic and $3\cdot2^u$ with
+the right side monochromatic. The six colorings with both sides monochromatic
+were counted twice. This gives $\Bip(u,v)$.
+\end{proof}
+
+\subsection{A safe bound on residual orders}\label{tor:sec:residual}
+
+Let $J(r)$ be the largest product of the positive parts in a partition of
+$r$, with the empty-product convention $J(0)=1$. Then
+\begin{equation}\label{tor:eq:J}
+ J(0)=J(1)=1,\qquad
+ J(r)=
+ \begin{cases}
+ 3^q,&r=3q,\\
+ 4\cdot3^{q-1},&r=3q+1\ge4,\\
+ 2\cdot3^q,&r=3q+2.
+ \end{cases}
+\end{equation}
+
+\begin{lemma}[Residual product bound]\label{tor:lem:product}
+Every permutation on $r$ points has order at most $J(r)$, and
+$J(r)\le3^{r/3}$. In the same-cycle case,
+\begin{equation}\label{tor:eq:sameperiod}
+ |\Orb_p(\tau)|\le mJ(r).
+\end{equation}
+In the two-cycle case,
+\begin{equation}\label{tor:eq:crossperiod}
+ |\Orb_p(\tau)|\le
+ \begin{cases}
+ bJ(r),&d=1\text{ and }\tau\text{ is proper},\\
+ duvJ(r),&\text{in general}.
+ \end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The order of a permutation is the least common multiple of its cycle lengths,
+which is at most their product. A maximal product partition has no part
+$\ell\ge5$, since replacing it by $3$ and $\ell-3$ increases the product. A
+part $1$ is absorbed into another part, except when $r=1$; parts $4$ may be
+replaced by two parts $2$. Three parts $2$ are inferior to two parts $3$.
+This gives \eqref{tor:eq:J}. Also every positive integer $\ell$ satisfies
+$\ell\le3^{\ell/3}$: check $1,2,3,4$, and use the same replacement for
+$\ell\ge5$. Multiplying proves $J(r)\le3^{r/3}$.
+
+Distinguished cycles of total order $t$ and the residual cycles have combined
+order at most $tJ(r)$. This gives $mJ(r)$ and $\lcm(a,b)J(r)=duvJ(r)$.
+
+If $d=1$, the nonisolated graph is the connected $K_{a,b}$. In a proper
+three-coloring one side is monochromatic, so that side has period one. The
+period on the other side divides its length. Hence the period on the two
+distinguished cycles is at most $b$, not merely at most $ab$. Combining with
+the residual period gives the improved bound.
+\end{proof}
+
+The last paragraph is Part~I's three-color period improvement
+\eqref{eq:periodimprove}. This argument avoids a potentially invalid shortcut:
+the residual order maximizing an ordinary integer need not maximize its least
+common multiple with a fixed distinguished order (Part~I makes the same point
+after \eqref{eq:H}). A product upper bound is used, for which no such issue
+arises. The price is that $J(r)$ is coarser than Part~I's exact order sets:
+$H_r(t)\le tJ(r)$. The improvement for proper three-colorings is the reason
+the proof is specialized to three outputs.
+
+\section{Eliminating the unmixed generator cases}\label{tor:sec:unmixed}
+
+\begin{lemma}[Large deficits without a mixed pair]\label{tor:lem:unmixed}
+For $n\ge7$, none of the following can attain $3^n-D_n$: a nonsurjective
+output map, two permutation generators, or two singular generators.
+\end{lemma}
+\begin{proof}
+A nonsurjective output map has an orbit of size at most $2^n$, so its
+deficit is at least $3^n-2^n$.
+
+Two permutation generators preserve the number of occurrences of each color.
+Thus their orbit lies in a single multinomial class. Every multinomial
+coefficient of degree $n$ in three variables is at most $3^{n-1}$. To see
+this, the assertion holds in degree one; each coefficient in the next degree
+is the sum of at most three coefficients in the previous degree. The deficit
+is therefore at least $2\cdot3^{n-1}$.
+
+For two singular generators choose one collision edge for each. There are at
+least $4\cdot3^{n-2}$ colorings proper for both edges. If the edges are
+distinct this is exact, whether they meet or are disjoint; if the edges
+coincide the count is $2\cdot3^{n-1}$, which is larger. Any nonempty
+composition collapses the chosen edge of its rightmost factor. Hence only the
+initial coloring could be reachable among the colorings proper for both
+edges. The deficit is at least $4\cdot3^{n-2}-1$.
+
+Each of the first two deficits is no smaller than this last one. For the
+first, use $5\cdot3^{n-2}+1\ge2^n$, true for $n=2$ and preserved on
+increasing $n$; the second comparison is immediate. Finally,
+\[
+ 4\cdot3^{n-2}-1>\frac{51}{4}\,2^{n/2}\qquad(n\ge7).
+\]
+At $n=7$ the left side is $971$, while the right side is $102\sqrt2<153$. On
+increasing $n$, the left side grows by a factor greater than three and the
+right side by $\sqrt2$. The comparison with \eqref{tor:eq:benchmark}
+completes the proof.
+\end{proof}
+
+These are the entries \eqref{eq:Dnon}--\eqref{eq:Dsing} of Part~I at $k=3$,
+with the balanced multinomial $M(n,3)$ replaced by the cruder bound
+$3^{n-1}$. We can consequently assume that the output map is surjective and
+the generators are a permutation $p$ and a singular transformation $s$. No
+hypothesis about the rank of $s$ is being imposed at this stage.
+
+\section{Eliminating collisions within one cycle}\label{tor:sec:same}
+
+\begin{lemma}[Cycle graphs have excessive deficit]\label{tor:lem:sameexclude}
+For every $n\ge7$, a mixed pair with any collision of $s$ lying within one
+$p$-cycle has orbit size strictly less than $3^n-D_n$.
+\end{lemma}
+\begin{proof}
+Use the parameters of \eqref{tor:eq:samecount}. For $L\ge2$,
+\begin{equation}\label{tor:eq:Clower}
+ C_L=2^L+2(-1)^L\ge6^{L/3}.
+\end{equation}
+For even $L$, this follows from $2^L\ge6^{L/3}$. For odd $L$, equality holds
+at $L=3$, and $C_{L+2}=4C_L+6$ with $4>6^{2/3}$ proves the induction. Thus
+$P_G\ge6^{m/3}3^r$.
+
+For $m\ge3$ we have $m/6^{m/3}\le1/2$: equality holds at three, and the ratio
+decreases since $(m+1)/m\le4/3<6^{1/3}$. Therefore
+\[
+ \frac{mJ(r)}{P_G}\le\frac12\,3^{-2r/3}\le\frac12.
+\]
+When $m=2$, the exact value $C_2=6$ gives the same conclusion, with $1/3$ in
+place of $1/2$. The collision bound consequently gives a deficit at least
+\begin{equation}\label{tor:eq:samedeficit}
+ P_G-mJ(r)\ge\frac12P_G\ge\frac12\,6^{n/3}.
+\end{equation}
+The last inequality uses $3\ge6^{1/3}$.
+
+For $n\ge13$,
+\[
+ \frac12\,6^{n/3}>\frac{51}{4}\,2^{n/2}.
+\]
+The ratio of the exponential terms increases with $n$; its value at thirteen
+is certified by the integer inequality
+\begin{equation}\label{tor:eq:threshold}
+ 9^{13}2^6>51^6 2^{13},
+\end{equation}
+which is equivalent to $(9/2)^{13}>(51/2)^6$. This proves strict exclusion
+for all $n\ge13$.
+
+For the six remaining values we use the exact finite bound
+\begin{equation}\label{tor:eq:smallcyclebound}
+ E_n=\min_{\substack{2\le m\le n\\ d\mid m,\ d<m}}
+ \left[\bigl(2^{m/d}+2(-1)^{m/d}\bigr)^d3^{n-m}
+       -mJ(n-m)\right].
+\end{equation}
+Its values and minimizing parameters are
+\begin{center}
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$n$ & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+$E_n$ & 102 & 250 & 207 & 639 & 1926 & 1284\\
+$(m,d)$ & $(6,2)$ & $(8,1)$ & $(9,3)$ & $(9,3)$ & $(9,3)$ & $(12,4)$\\
+$D_n$ & 62 & 109 & 133 & 395 & 276 & 467\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry has $E_n>D_n$. The complete short arithmetic reduction of this
+table is displayed in \cref{tor:sec:small}, so it is not an inference from
+random tests or from an unbounded computation.
+\end{proof}
+
+\section{Eliminating disconnected graphs and residual states}\label{tor:sec:cross}
+
+We now suppose that a chosen collision joins distinct cycles. Throughout this
+section use $a\le b$, $d=\gcd(a,b)$, $u=a/d$, $v=b/d$, and $r=n-a-b$.
+
+\subsection{Two elementary estimates for a biclique}
+
+\begin{lemma}\label{tor:lem:Bbounds}
+For positive integers $u,v$,
+\begin{align}
+ \Bip(u,v)&\ge3(u+v)\ge6\sqrt{uv},\label{tor:eq:Blinear}\\
+ \Bip(u,v)&\ge3\cdot2^{(u+v)/2}.\label{tor:eq:Bsqrt}
+\end{align}
+If $u+v\ge3$, the second estimate improves to
+\begin{equation}\label{tor:eq:Bstrong}
+ \Bip(u,v)\ge3\sqrt2\,2^{(u+v)/2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The inequality $2^j\ge j+1$ gives \eqref{tor:eq:Blinear}. Writing
+$T=2^{(u+v)/2}\ge2$, arithmetic--geometric mean gives $2^u+2^v\ge2T$, hence
+\[
+ \frac{\Bip(u,v)}{T}\ge3\left(2-\frac2T\right)\ge3.
+\]
+For $u+v=3$, direct evaluation at $(1,2)$ gives the stronger constant
+$3\sqrt2$. For $u+v\ge4$, $T\ge4$, and the last display is at least
+$9/2>3\sqrt2$.
+\end{proof}
+
+\subsection{Disconnected bicliques: the case \texorpdfstring{$d\ge2$}{d >= 2}}
+
+\begin{lemma}\label{tor:lem:disconnected}
+If $d\ge2$ and $n\ge7$, the deficit is strictly greater than $D_n$.
+\end{lemma}
+\begin{proof}
+Put $P=\Bip(u,v)^d3^r$. By \eqref{tor:eq:Blinear} and $12d\le6^d$ for
+$d\ge2$,
+\[
+ \Bip(u,v)^d\ge6^d(uv)^{d/2}\ge12duv.
+\]
+Since $J(r)\le3^r$, the general period estimate yields
+\begin{equation}\label{tor:eq:disconnectedratio}
+ \frac{duvJ(r)}P\le\frac1{12}.
+\end{equation}
+We claim also that
+\begin{equation}\label{tor:eq:disconnectedP}
+ P\ge18\cdot2^{n/2}.
+\end{equation}
+When $d\ge3$, \eqref{tor:eq:Bsqrt} gives $P/2^{n/2}\ge3^d(3/\sqrt2)^r\ge27$.
+When $d=2$ and $u+v\ge3$, \eqref{tor:eq:Bstrong} gives the lower bound
+$(3\sqrt2)^2(3/\sqrt2)^r\ge18$. The only other case is $d=2$, $u=v=1$. Here
+$n=4+r$, so $r\ge3$, and $P/2^{n/2}=9(3/\sqrt2)^r>18$.
+
+Combining \eqref{tor:eq:disconnectedratio} and \eqref{tor:eq:disconnectedP},
+the missing-coloring count is at least
+\[
+ P-duvJ(r)\ge\frac{11}{12}P
+ \ge\frac{33}{2}\,2^{n/2}
+ >\frac{51}{4}\,2^{n/2}>D_n.
+\]
+\end{proof}
+
+\subsection{Connected bicliques with at least two residual states}
+
+\begin{lemma}\label{tor:lem:residualmany}
+If $d=1$ and $r\ge2$, the deficit is strictly greater than $D_n$.
+\end{lemma}
+\begin{proof}
+Here $P=\Bip(a,b)3^r$. From \eqref{tor:eq:Blinear} and $J(r)\le3^{r/3}$,
+\[
+ \frac{bJ(r)}P\le\frac13\,3^{-2r/3}<\frac19.
+\]
+We next show $P\ge(27/\sqrt2)2^{n/2}$. If $a+b\ge3$, \eqref{tor:eq:Bstrong}
+gives
+\[
+ \frac{P}{2^{n/2}}
+ \ge3\sqrt2\left(\frac3{\sqrt2}\right)^r
+ \ge\frac{27}{\sqrt2}.
+\]
+If $a+b=2$, then $a=b=1$ and $r\ge5$ since $n\ge7$. Now
+$P/2^{n/2}=3(3/\sqrt2)^r$, which is larger still. Therefore the deficit is at
+least
+\[
+ P-bJ(r)\ge\frac89P
+ \ge12\sqrt2\,2^{n/2}
+ >\frac{51}{4}\,2^{n/2}>D_n.
+\]
+The numerical comparison is exact: $48\sqrt2>51$, as follows on squaring.
+\end{proof}
+
+\subsection{The delicate case of one residual state}
+
+\begin{lemma}\label{tor:lem:residualone}
+If $d=1$ and $r=1$, the deficit is strictly greater than $D_n$.
+\end{lemma}
+\begin{proof}
+The residual permutation is the identity, so $J(1)=1$. The missing-coloring
+count is at least
+\begin{equation}\label{tor:eq:oneleft}
+ 9(2^a+2^b-2)-b,\qquad a+b=n-1.
+\end{equation}
+For a lower estimate we may ignore the coprimality restriction. At a fixed
+sum, moving $(a,b)$ to $(a+1,b-1)$ when $b\ge a+2$ decreases this expression
+by
+\[
+ 9(2^{b-1}-2^a)-1>0.
+\]
+It is consequently minimized by the most balanced pair.
+
+For $n=2h+1$, this pair is $(h,h)$, and \eqref{tor:eq:oneleft} is at least
+$18\cdot2^h-h-18$. Subtracting the target deficit from
+\eqref{tor:eq:deficitpiece} leaves $9\cdot2^h-11>0$.
+
+For $n=2h$, the pair is $(h-1,h)$ and the lower estimate is
+$(27/2)2^h-h-18$. If $h$ is even, its difference from $D_n$ is
+$6\cdot2^h-11>0$. If $h$ is odd, its difference is $(3/4)2^h-10$, which is at
+least fourteen since $h\ge5$.
+\end{proof}
+
+The last comparison explains why a uniform but coarser exponential estimate
+would not be enough. The worst residue class for the target deficit has
+coefficient $51/4$, while the one-residual-state competitor has leading
+coefficient $27/2$. The proof must retain this gap rather than discard it in
+a loose period estimate.
+
+\section{Optimizing the surviving graph and proving the formula}\label{tor:sec:mainproof}
+
+After the strict exclusions, the only possible extremal collision graph is
+$K_{a,b}$, with $a+b=n$ and $\gcd(a,b)=1$. There are no residual states. The
+graph bound gives
+\begin{equation}\label{tor:eq:surviving}
+ 3^n-|\tau\langle p,s\rangle|
+ \ge\Bip(a,b)-b=3(2^a+2^b-2)-b.
+\end{equation}
+
+\begin{lemma}[Closest coprime split]\label{tor:lem:optimize}
+For $n\ge7$, among positive $a\le b$ with $a+b=n$ and $\gcd(a,b)=1$, the right
+side of \eqref{tor:eq:surviving} has the unique minimum $D_n$, attained at
+$(A_n,B_n)$ in \eqref{tor:eq:split}.
+\end{lemma}
+\begin{proof}
+For $b\ge a+2$, replacing $(a,b)$ by $(a+1,b-1)$ decreases $3(2^a+2^b-2)-b$
+by
+\[
+ 3(2^{b-1}-2^a)-1>0.
+\]
+Thus the optimum is the admissible pair closest to equality, and is unique.
+For $n=2h+1$, the neighboring pair $(h,h+1)$ is coprime. For $n=2h$, the
+equal pair is not coprime because $h\ge4$. If $h$ is even, $h-1$ and $h+1$
+are odd and their gcd divides two, hence is one. If $h$ is odd, $h-1$ and
+$h+1$ are both even, while $h-2$ and $h+2$ are odd with gcd dividing four,
+hence are coprime. These are exactly \eqref{tor:eq:split}.
+\end{proof}
+
+\begin{proposition}[Published lower construction, specialized]\label{tor:prop:lower}
+For $1<a<b$ with $\gcd(a,b)=1$ and $n=a+b$, there is an accessible $n$-state
+DFAO with two input letters and three output values whose reversal has
+$3^n-\Bip(a,b)+b$ states.
+\end{proposition}
+
+This proposition is the $k=3$ specialization of Davies's Theorem~3 and
+Corollary~3 \cite{Davies2017}, the lower bound $L(n,3)$ of
+\eqref{eq:lower} with $G_3(\ell,m)=m$. Its existence assertion is an external
+theorem used here, as it is in Part~I's \cref{prop:finite}. It is not replaced
+by the finite computations below. The underlying two-generated monoid
+construction is discussed by Holzer and K\"onig \cite{HolzerKoenig2004}. No
+assertion that this monoid is the largest two-generated monoid is needed.
+
+\begin{proof}[Proof of \cref{tor:thm:main}]
+The algebraic inequality follows from the exhaustive cases: nonsurjective
+outputs and the two unmixed generator cases are strictly smaller by
+\cref{tor:lem:unmixed}; same-cycle collisions are strictly smaller by
+\cref{tor:lem:sameexclude}; cross-cycle collisions with $d\ge2$ or $r\ge1$ are
+strictly smaller by
+\cref{tor:lem:disconnected,tor:lem:residualmany,tor:lem:residualone}. The
+remaining case is bounded by \cref{tor:lem:optimize}.
+
+For attainability choose $a=A_n$, $b=B_n$ in \cref{tor:prop:lower}. All its
+hypotheses hold: in particular $A_n>1$, $A_n<B_n$, and the lengths are
+coprime. By \cref{prop:orbit}, its reversal state complexity is $3^n-D_n$.
+
+It remains to verify that an attaining original function really has state
+complexity $n$. Since $A,B\ge2$, the graph $K_{A,B}$ contains two disjoint
+edges. Therefore
+\[
+ \Bip(A,B)\le4\cdot3^{n-2},
+\]
+by counting colorings proper for just these two edges. The attaining reversal
+has more than
+\[
+ 3^n-4\cdot3^{n-2}=5\cdot3^{n-2}>3^{n-1}
+\]
+states. A function representable by at most $n-1$ original states would have
+a reversal with at most $3^{n-1}$ states by the coloring construction. This
+contradiction establishes original minimality, proving both conventions have
+the same maximum.
+\end{proof}
+
+The minimality step is Part~I's argument after \cref{prop:finite} at $k=3$.
+
+\begin{remark}[The $k=3$ slice of Part~I's remaining extremal inequality;
+added in the merge]\label{tor:rem:UL}
+Part~I asks in \cref{sec:conclusion} to prove or refute
+$U(n,k)=L(n,k)$ for $n\ge7$, $3\le k<n$. For $k=3$ it holds for every $n\ge7$:
+\[
+ D(n,3)=D_n,\qquad U(n,3)=L(n,3)=R_2(n,3)=3^n-D_n.
+\]
+Indeed, $L(n,3)=3^n-\min[\Bip(\ell,m)-m]$ over coprime $1<\ell<m$ with
+$\ell+m=n$, which is $3^n-D_n$ by \cref{tor:lem:optimize}. Part~I's collection
+\eqref{eq:Dnon}--\eqref{eq:Dbip} contains the entry
+$\Bip(A_n,B_n)-T_{0,3}(A_n,B_n)=\Bip(A_n,B_n)-B_n=D_n$, so $D(n,3)\le D_n$.
+Conversely every entry is at least the corresponding quantity bounded in
+Part~II: \eqref{eq:Dnon} and \eqref{eq:Dsing} are the first and third
+deficits of \cref{tor:lem:unmixed}, and \eqref{eq:Dperm} is at least the
+second, since $M(n,3)\le3^{n-1}$; in \eqref{eq:Dcycle},
+$H_{n-m}(m)\le mJ(n-m)$; in \eqref{eq:Dbip}, $T_{r,3}(a,b)\le bJ(r)$ when
+$d=1$ and $T_{r,3}(a,b)=H_r(\lcm(a,b))\le duvJ(r)$ when $d\ge2$, because
+$\lcm(t,o)\le to$ and every permutation order on $r$ points is at most $J(r)$
+(\cref{tor:lem:product}). The proofs of
+\cref{tor:lem:unmixed,tor:lem:sameexclude,tor:lem:disconnected,tor:lem:residualmany,tor:lem:residualone}
+bound exactly these relaxed quantities from below by numbers exceeding $D_n$,
+and \cref{tor:lem:optimize} handles the remaining entries ($d=1$, $r=0$), so
+$D(n,3)\ge D_n$. This remark is the merge's reading of the manuscript's
+comparisons against Part~I's definitions; the manuscript does not state it.
+For $k\ge4$ the equality remains open.
+\end{remark}
+
+\subsection{Explicit witnesses and examples}\label{tor:sec:witnesses}
+
+Here is the zero-based parity version of the published two-cycle witness, as
+also implemented in Part~I's \texttt{code/reversal.py} (\texttt{u\_witness}).
+Put
+\[
+ Q=\{0,\ldots,a+b-1\},\quad
+ p=(0\ 1\ \cdots\ a-1)(a\ a+1\ \cdots\ a+b-1).
+\]
+Start $s$ as the identity and set
+\[
+ s(0)=a,\qquad s(a+b-1)=0.
+\]
+When $a$ is odd, also set $s(1)=2$ and $s(2)=1$; for even $a$ leave these two
+values unchanged. Take
+\begin{equation}\label{tor:eq:witnesstau}
+ \tau=0^a\,1\,2^{b-1}.
+\end{equation}
+The initial state is zero. Powers of $p$ visit the first cycle; applying $s$
+at zero enters the second, whose states are then visited by $p$. The pure-$p$
+orbit of \eqref{tor:eq:witnesstau} has size $b$, since the unique occurrence
+of label one rotates around the second cycle.
+
+The general attainment assertion for this witness is part of the cited lower
+construction. The programs of \cref{tor:sec:verification} independently
+explore its full coloring orbit for the displayed small instances; they do not
+prove the all-state semigroup-generation theorem.
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $(A,B)$ & $\Bip(A,B)$ & $D_n$ & $R_2(n,3)$ & $3^n$\\
+\midrule
+7 & $(3,4)$ & 66 & 62 & 2125 & 2187\\
+8 & $(3,5)$ & 114 & 109 & 6452 & 6561\\
+9 & $(4,5)$ & 138 & 133 & 19550 & 19683\\
+10 & $(3,7)$ & 402 & 395 & 58654 & 59049\\
+11 & $(5,6)$ & 282 & 276 & 176871 & 177147\\
+12 & $(5,7)$ & 474 & 467 & 530974 & 531441\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, the seven-state arrays are
+\[
+ p=(1,2,0,4,5,6,3),\quad s=(3,2,1,3,4,5,0),\quad
+ \tau=(0,0,0,1,2,2,2).
+\]
+Exactly four proper colorings are reached, and all $3^7-66=2121$ improper
+colorings are reached. The total is $2125$. Notice that the \emph{deficit} is
+not monotone in $n$: $D_{10}=395>D_{11}=276$. This reflects the arithmetic
+constraint on the closest coprime split, not an error in the exponential
+asymptotics. The rows $n=7,8,9,10$ are the $k=3$ rows of Part~I's table in
+\cref{sec:finite}.
+
+\subsection{Comparison with Part~I's finite table}\label{tor:sec:rowcheck}
+
+In the write phase the closed form \eqref{tor:eq:main} was compared with the
+$24$ rows $k=3$, $7\le n\le30$, of Part~I's
+\path{data/finite_range_bounds.csv}. In every row it equals both the recorded
+upper value $U(n,3)$ and the recorded lower value $L(n,3)$, and the recorded
+maximizing split $(\ell,m)$ is $(A_n,B_n)$. The same $24$ values and splits
+appear in the rows $7\le n\le30$ of
+\path{data/02-three-output-structural_checks.csv}. This is a consistency check
+of two independently written computations, not part of the proof.
+
+\section{Rigidity of every extremizer}\label{tor:sec:rigidity}
+
+A triple $(p,s,\tau)$ is called \emph{extremal} if its coloring orbit has size
+$3^n-D_n$. This algebraic definition does not require an initial state. The
+next theorem therefore applies in particular to every accessible extremal
+DFAO.
+
+\begin{theorem}[Necessary extremal structure]\label{tor:thm:rigidity}
+Let $n\ge7$ and let a two-generator, three-valued coloring orbit be extremal.
+After interchanging the two generators, one generator is a permutation $p$
+and the other is singular, say $s$. There is a partition $Q=X\sqcup Y$ with
+$|X|=A_n$ and $|Y|=B_n$ such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $p$ consists of one cycle on $X$ and one cycle on $Y$.
+\item $s$ has rank $n-1$ and exactly one nonsingleton fiber. That fiber has
+two elements, one in $X$ and one in $Y$.
+\item $\tau$ is constant on $X$, and on $Y$ it is a word in the other two
+labels with least rotational period exactly $B_n$.
+\item Writing $G=K_{X,Y}$, the entire reachable coloring set is
+\begin{equation}\label{tor:eq:saturated}
+ \tau\langle p,s\rangle
+ =\bigl(\D^Q\setminus\operatorname{Col}_3(G)\bigr)\ \sqcup\ \Orb_p(\tau),
+ \qquad |\Orb_p(\tau)|=B_n.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The strict inequalities in the proof of \cref{tor:thm:main} force the mixed
+case. Choose any collision of $s$. Its graph cannot be a same-cycle graph, a
+disconnected union of bicliques, or a graph with residual vertices. The only
+remaining possibility is a connected biclique on two coprime cycles covering
+$Q$. The strict optimization in \cref{tor:lem:optimize} forces the cycle
+lengths to be $A,B$. This proves (i).
+
+The same exclusion applies to \emph{every} collision of $s$. In particular,
+there can be no collision internal to $X$ or internal to $Y$. Thus $s$ is
+injective on each of these two sets. Every nonsingleton fiber has exactly two
+elements and is a cross pair; distinct such fibers give disjoint pairs.
+
+Use one such pair in the graph bound. If $\tau$ were improper, its orbit would
+have size at most $3^n-\Bip(A,B)$, less than the claimed maximum. So $\tau$ is
+proper. In
+\[
+ |\tau\langle p,s\rangle|
+ \le3^n-\Bip(A,B)+|\Orb_p(\tau)|
+ \le3^n-\Bip(A,B)+B
+\]
+both inequalities must be equalities. Hence every improper coloring is
+reachable, and the proper reachable states form exactly a $B$-element pure
+orbit. This proves (iv).
+
+At least one side of a proper three-coloring is monochromatic. If $Y$ were
+monochromatic, its total period would be at most $A<B$. Therefore $X$ is
+monochromatic and the word on $Y$ has period $B$. It must use both of the
+other labels, since a constant word has period one. This proves (iii).
+
+Suppose finally that $s$ had at least two cross-collision pairs. Every
+composition containing $s$, considered at its rightmost occurrence, would
+collapse at least two distinct cross pairs, translated by the same power of
+$p$. Choose $x\in X$, $y\in Y$ and define a coloring by assigning zero to
+$x,y$, one to $X\setminus\{x\}$, and two to $Y\setminus\{y\}$. Its only
+monochromatic cross pair is $\{x,y\}$. It cannot be represented by a word
+containing $s$, and it cannot be in the pure orbit, whose colorings are
+proper. This contradicts saturation of all improper colorings in (iv). Thus
+$s$ has exactly one double fiber, proving (ii).
+\end{proof}
+
+The theorem is stronger than identification of a numerical maximum. It reduces
+the search for all extremizers from arbitrary pairs of transformations to a
+fixed two-cycle permutation, a rank-$(n-1)$ map with a single specified type
+of kernel pair, and a primitive binary word on the larger cycle. It does not
+identify all possible images of the singular letter, and does not assert that
+these necessary conditions are sufficient. For three outputs and $n\ge7$ it
+settles, for extremizers, the saturation question that Part~I separates from
+the graph bound (\cref{sec:structural,app:audit}): equality forces every
+improper coloring to be reached.
+
+\subsection{An exact penalty for more than one collision}
+
+\begin{proposition}[Additional-collision penalty]\label{tor:prop:rankpenalty}
+Suppose $p$ has the optimal cycles $X,Y$, $s$ is injective on each cycle but
+has at least two cross-collision fibers, and $\tau$ is proper for $K_{X,Y}$.
+Then
+\begin{equation}\label{tor:eq:penalty}
+ |\tau\langle p,s\rangle|\le R_2(n,3)-6A_nB_n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each $(x,y)\in X\times Y$, choose a common label for $x,y$ in three ways
+and assign the two remaining labels to $X\setminus\{x\}$ and
+$Y\setminus\{y\}$ in two ways. These give $6AB$ distinct colorings with
+exactly one monochromatic cross pair. They are distinct because that unique
+pair recovers $(x,y)$ and the labels then recover the remaining choices.
+
+In fact these are all colorings with exactly one monochromatic cross pair:
+its common label cannot occur elsewhere on either side, and the nonempty
+remaining sides must use disjoint subsets of the two remaining labels, forcing
+one label on each side. Every such coloring is unreachable by the
+rightmost-singular argument, while the pure orbit is proper.
+
+The ordinary graph bound misses at least $\Bip(A,B)-B=D_n$ proper colorings.
+The $6AB$ additional missing colorings are improper and hence disjoint from
+this set. Adding the two deficits gives \eqref{tor:eq:penalty}.
+\end{proof}
+
+This is a stability statement under its stated structural assumptions. It is
+not asserted for an arbitrary singular map and arbitrary improper output
+coloring, where the pure orbit can meet the additional forbidden family. It is
+also an instance of the refinement Part~I proposes in \cref{sec:conclusion},
+using more than one collision of the singular letter.
+
+\subsection{Why the necessary structure is not sufficient}
+
+\begin{example}[A rank-one defect without saturation]\label{tor:ex:nonsufficient}
+Let $p$ have the optimal cycles and let $s$ send a single $x_0\in X$ to a
+single $y_0\in Y$, fixing every other state. Take $\tau$ as in
+\eqref{tor:eq:witnesstau}. Then (i)--(iii) of \cref{tor:thm:rigidity} hold,
+and the automaton is accessible from $x_0$.
+
+Nevertheless $Y$ is invariant under both letters. Consequently no reachable
+coloring takes label zero at any point of $Y$. In particular the constant zero
+coloring, which is improper, is absent. Thus (iv) fails, and the machine is
+not extremal. More quantitatively, its orbit is contained in
+$\D^X\times\{1,2\}^Y$, a set of size $3^A2^B$.
+\end{example}
+
+An exact classification of extremizers must therefore include an image or
+generation condition beyond the cycle structure, kernel pair, and output
+period. This is a concrete remaining problem, rather than an unproved
+sufficiency assertion hidden inside the rigidity theorem.
+
+\section{The complete orbit inventory of missing colorings}\label{tor:sec:inventory}
+
+The forbidden proper colorings have more structure than their cardinality
+alone reveals. Consider two cycles of lengths $a,b$, with a proper
+three-coloring of $K_{a,b}$, and let the permutation rotate both cycles.
+
+Define $P_2(d)$ to be the number of binary words of length $d$ whose least
+rotational period is $d$. Equivalently,
+\begin{equation}\label{tor:eq:primitive}
+ P_2(d)=\sum_{e\mid d}\mu(d/e)2^e,
+\end{equation}
+where $\mu$ is the M\"obius function on positive integers. This identity
+follows by partitioning all $2^d$ binary words according to their least
+period and applying divisor inversion. The case $d=1$ gives $P_2(1)=2$.
+
+\begin{theorem}[Proper-coloring orbit inventory]\label{tor:thm:inventory}
+There are exactly six proper-coloring orbits of size one. For each $d>1$, the
+number of proper-coloring orbits of size $d$ is
+\begin{equation}\label{tor:eq:inventory}
+ \frac{3P_2(d)}d
+ \left(\bbone_{d\mid a}+\bbone_{d\mid b}\right).
+\end{equation}
+For an extremizer at $n\ge7$, the missing colorings consist of this inventory
+with $(a,b)=(A_n,B_n)$ after deleting precisely one orbit of size $B_n$.
+\end{theorem}
+\begin{proof}
+The six fixed colorings assign distinct constant labels to the two sides.
+Every other proper coloring has exactly one monochromatic side, since three
+labels cannot be split into two disjoint palettes both of size two.
+
+Suppose the $a$-side is monochromatic. Choose its label in three ways. The
+other side is a nonconstant binary word of length $b$. For $d>1$ dividing $b$,
+there are $P_2(d)$ words of least period $d$ on that side: repeat a primitive
+word of length $d$ exactly $b/d$ times. Rotation partitions them into orbits of
+size $d$, giving $3P_2(d)/d$ orbits. The argument with the sides interchanged
+gives the second term. These two nonconstant families are disjoint, and
+exhaust all nonfixed proper colorings.
+
+For an extremizer, \cref{tor:thm:rigidity} says that the only reachable proper
+colorings form one $B_n$-element orbit, proving the last assertion.
+\end{proof}
+
+As a consistency check, weighting the orbit inventory by orbit sizes gives
+\[
+ 6+3\sum_{\substack{d\mid a\\d>1}}P_2(d)
+  +3\sum_{\substack{d\mid b\\d>1}}P_2(d)
+ =6+3(2^a-2)+3(2^b-2)=\Bip(a,b).
+\]
+For $(A,B)=(3,4)$, the full proper inventory contains six orbits of size one,
+three of size two, six of size three, and nine of size four. The extremal
+machine reaches one of the size-four orbits, leaving
+\[
+ 6\cdot1+3\cdot2+6\cdot3+8\cdot4=62
+\]
+missing colorings. This describes their cyclic organization, not just the
+number missing.
+
+\section{Asymptotics and exact recurrences}\label{tor:sec:asymptotics}
+
+\begin{corollary}[Three residue-class asymptotics]\label{tor:cor:asymptotic}
+Along the indicated subsequences,
+\begin{equation}\label{tor:eq:limits}
+ \frac{3^n-R_2(n,3)}{2^{n/2}}\longrightarrow
+ \begin{cases}
+ 9/\sqrt2,&n\text{ odd},\\
+ 15/2,&n\equiv0\pmod4,\\
+ 51/4,&n\equiv2\pmod4.
+ \end{cases}
+\end{equation}
+In particular,
+\[
+ \lim_{n\to\infty}\frac{\log(3^n-R_2(n,3))}{n}
+ =\frac{\log2}{2},\qquad
+ 1-\frac{R_2(n,3)}{3^n}
+ =\Theta\!\left(\left(\frac{\sqrt2}{3}\right)^n\right).
+\]
+\end{corollary}
+\begin{proof}
+Divide \eqref{tor:eq:deficitpiece} by $2^{n/2}$. Its linear terms tend to
+zero on this scale. The three positive finite limiting constants imply the
+uniform two-sided $\Theta$ estimate and the logarithmic limit.
+\end{proof}
+
+Thus the maximal reversal occupies asymptotically almost every coloring, even
+though full occupancy is impossible and the absolute number missing grows
+exponentially. The residue-class constants arise from the nearest coprime
+split; they are not a feature of a numerical fitting procedure. Compare
+Part~I's remark in \cref{sec:conclusion} that a collision-orbit graph can
+exclude a number of colorings growing exponentially in $n$, whereas the
+uniform deficit $k!-g(k)$ of \cref{thm:main} is independent of $n$: at $k=3$
+the exact growth rate of the deficit is $2^{n/2}$.
+
+\begin{corollary}[Recurrence for the deficit]\label{tor:cor:recurrence}
+For all $n\ge7$,
+\begin{align}
+ D_{n+4}&=4D_n+3\lfloor n/2\rfloor+19
+              +3\bbone_{n\equiv2\ (\mathrm{mod}\ 4)},\label{tor:eq:recurrence4}\\
+ D_{n+12}-6D_{n+8}+9D_{n+4}-4D_n&=0.\label{tor:eq:recurrence12}
+\end{align}
+Consequently the ordinary generating function of the tail $(D_n)_{n\ge7}$ is
+rational, with denominator dividing $(1-4z^4)(1-z^4)^2$.
+\end{corollary}
+\begin{proof}
+The split in \eqref{tor:eq:split} changes from $(A,B)$ to $(A+2,B+2)$ when $n$
+increases by four. Hence
+\[
+ D_{n+4}=4D_n+3B_n+16.
+\]
+Substituting the three formulas for $B_n$ yields \eqref{tor:eq:recurrence4}.
+On each residue class modulo four the inhomogeneous term is linear in the step
+number. Applying a second forward difference annihilates it, giving
+\eqref{tor:eq:recurrence12}. The generating-function assertion is the usual
+coefficient calculation for a constant-coefficient recurrence.
+\end{proof}
+
+\section{Reproducible finite checks and their limits}\label{tor:sec:verification}
+
+Manuscript~06 ships two standard-library Python programs,
+\path{code/02-three-output-verify.py} and
+\path{code/02-three-output-independent_check.py}. They share no project
+imports, and neither imports any of Part~I's code. The first performs direct
+structural comparisons and literal breadth-first exploration of coloring
+orbits; the second uses a transfer recurrence for cycle colorings and a
+max-product composition recurrence for residual products. All comparisons use
+exact integers.
+
+\subsection{What was actually run}
+
+\begin{center}
+\begin{tabular}{@{}p{0.56\textwidth}r@{}}
+\toprule
+Check & Completed scope\\
+\midrule
+Conservative structural upper bound and unique minimizer & $7\le n\le200$\\
+Distinct values of $n$ in that comparison & 194\\
+Structural candidates evaluated & 752291\\
+Full witness-orbit searches & $7\le n\le11$\\
+Largest fully explored witness orbit & 176871 states\\
+Proper-orbit inventory comparisons & $(3,4),(3,5),(4,5)$\\
+Unique-cross-pair forbidden colorings checked & 72\\
+Independent closest-coprime formula comparisons & $7\le n\le1000$\\
+Independent recurrence comparisons & 982\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All checks passed. For every structural comparison, the minimum deficit was
+$D_n$, and the unique minimizing graph parameters were
+$(a,b,d,r)=(A_n,B_n,1,0)$. These comparisons use $J(r)$, a coarser estimate
+than exact residual permutation-order sets; agreement therefore checks the
+specific relaxed inequalities used in this proof. (Part~I's
+\path{data/finite_range_bounds.csv} evaluates the exact order sets for
+$n\le30$; see \cref{tor:sec:rowcheck}.)
+
+For each breadth-first witness search, the program also enumerated the full
+three-coloring universe and checked that every missing coloring is proper,
+that every improper coloring is reached, and that the proper reached set is
+exactly the pure permutation orbit. Thus those searches check
+\eqref{tor:eq:saturated}, not merely a total count.
+
+The additional-collision experiment used the $n=7$ optimal permutation and a
+map with two cross collisions. It checked all $6\cdot3\cdot4=72$
+unique-cross-pair colorings and found every one missing. This is a finite
+regression check of \cref{tor:prop:rankpenalty}, not its proof.
+
+\subsection{Commands and files}
+
+The two programs are shipped byte-identical to the delivery and still use the
+delivered layout: each computes the report root from its own location and
+reads or writes \path{data/verification.json},
+\path{data/structural_checks.csv} and \path{data/independent_check.json}.
+Run in this report's directory, the first would therefore write two stray
+unprefixed files beside Part~I's data, and the second fails unless the first
+has run there. The report's README gives a recipe that restores the delivered
+names in a scratch copy; there the commands are
+\begin{lstlisting}
+python code/verify.py --max-n 200 --bfs-max-n 11
+python code/independent_check.py
+\end{lstlisting}
+The first command writes \texttt{data/structural\_checks.csv} and
+\texttt{data/verification.json}. The second reads the small table from that
+JSON record only to compare outputs; it imports no implementation from the
+first program and writes \texttt{data/independent\_check.json}. The recorded
+outputs are shipped as \path{data/02-three-output-structural_checks.csv},
+\path{data/02-three-output-verification.json} and
+\path{data/02-three-output-independent_check.json}, and the recorded console
+output as \path{data/02-three-output-console.txt} and
+\path{data/02-three-output-independent_console.txt}.
+
+The breadth-first search has an explicit state limit and raises an error
+rather than returning a partial orbit count. Validation uses explicit
+exceptions, not Python \texttt{assert} statements that disappear under
+optimization. The supplied parameter limits guard against accidental
+exponential searches much larger than those reported.
+
+\subsection{What the checks do not establish}
+
+No finite enumeration proves the universal quantifier in \cref{tor:thm:main}.
+That quantifier is supplied by the analytical eliminations and the exact
+coprime optimization. The six small same-cycle cases are ordinary finite
+integer calculations fully displayed in \cref{tor:sec:small}. The larger
+computer checks are supplementary.
+
+No Lean, Rocq, Isabelle, or other proof-assistant verification was carried out
+for Part~II. The published lower theorem is cited, not formally reconstructed.
+The independent scripts are independent implementations of particular
+arithmetic tasks, not independent mathematical proofs and not proof-assistant
+certificates.
+
+\section{Further research questions and concrete next steps}\label{tor:sec:questions}
+
+\begin{question}[Four outputs, then arbitrary output count]\label{tor:q:four}
+For $n\ge7$ and $4\le k<n$, is
+\[
+ R_2(n,k)=\max_{\substack{1<a<b,\ a+b=n\\\gcd(a,b)=1}}
+ \left[k^n-\Bip_k(a,b)+ab\right],
+\]
+where
+\[
+ \Bip_k(a,b)=\sum_{i=1}^{\min(a,k)}
+ \frac{k!}{(k-i)!}\stirling{a}{i}(k-i)^b?
+\]
+\end{question}
+This is the remaining range of the same published optimality question, and
+the right side is Part~I's $L(n,k)$ of \eqref{eq:lower}. A first target is
+$k=4$: both sides of a proper biclique coloring can now be nonconstant, so
+the useful period contribution becomes $ab$ rather than $b$. More
+importantly, there is no longer the two-term expression $3(2^a+2^b-2)$ to
+control all graph types. A promising route is to derive uniform palette-size
+inequalities for $\Bip_k$ before attempting the full structural minimization.
+\Cref{tor:thm:main} does not supply those inequalities. Part~I's finite
+equality $U(n,k)=L(n,k)$ for $7\le n\le30$ (\cref{prop:finite}) remains the
+only evidence for $k\ge4$ in this report.
+
+\begin{question}[Classify the singular letter]\label{tor:q:singular}
+For the fixed optimal two-cycle permutation $p$, which rank-$(n-1)$ maps $s$
+with one cross-cycle double fiber, together with which primitive output words
+on the larger cycle, satisfy the saturation identity
+\eqref{tor:eq:saturated}?
+\end{question}
+\Cref{tor:ex:nonsufficient} shows that kernel data alone do not answer this.
+The useful additional information should concern the image omitted by $s$ and
+the permutations induced on the noncollapsed part. A necessary-and-sufficient
+criterion here would classify all numerical extremizers, not just one
+construction. It should distinguish coloring saturation from generation of a
+particular large transformation monoid.
+
+\begin{question}[Recognizing saturation efficiently]\label{tor:q:recognize}
+Can saturation for the reduced class in \cref{tor:q:singular} be decided in
+time polynomial in $n$, or verified by a polynomial-size certificate?
+\end{question}
+Literal exploration has an exponential state space. The rigidity theorem
+removes almost all arbitrary transformation parameters, making an algebraic
+criterion plausible. A negative complexity result would also be valuable, but
+would require a reduction that preserves the optimal two-cycle and
+rank-$(n-1)$ restrictions.
+
+\begin{question}[Second-best values and stability]\label{tor:q:second}
+What is the largest attainable reversal size strictly below $R_2(n,3)$? Can a
+near-extremal orbit be forced to have nearly the structure in
+\cref{tor:thm:rigidity}?
+\end{question}
+The exclusions in the proof give quantitative gaps for several graph types,
+and \cref{tor:prop:rankpenalty} supplies an exact $6AB$ penalty under
+fixed-cycle proper-output assumptions. These bounds do not identify the
+second-best value: a rank-$(n-1)$ map with incomplete saturation may lose
+fewer states than a different graph type. The first step is to compare these
+mechanisms rather than equate the smallest displayed bound with an attainable
+second maximum.
+
+\begin{question}[The near-maximum spectrum]\label{tor:q:spectrum}
+For fixed $n$, which integers between a useful lower threshold and
+$R_2(n,3)$ occur as reversal complexities of minimal $n$-state binary DFAOs?
+\end{question}
+The missing-orbit inventory suggests divisibility restrictions when the only
+losses are proper permutation orbits. Additional losses among improper
+colorings need not respect the same inventory. Separating these two kinds of
+loss may clarify the near-maximum ``magic number'' problem mentioned by
+Davies, without presupposing that every intermediate integer is attainable.
+
+\begin{question}[Growing output alphabets]\label{tor:q:growing}
+As $k=k(n)$ grows, when do the extremizing cycle split and the extremizing
+collision graph cease to resemble the fixed-three-output answer?
+\end{question}
+The diagonal $k=n$ encodes the size of a two-generated transformation monoid
+when the output map is bijective (compare Part~I, \cref{sec:finite}). That
+objective is not the same as maximizing a coloring orbit for fixed small $k$.
+The present proof gives an exact fixed-$k$ anchor point from which a genuine
+transition in behavior can be investigated.
+
+\begin{question}[Formal certification]\label{tor:q:formal}
+Can the upper bound and rigidity theorem be formalized with no admitted
+combinatorial lemmas, while keeping the lower construction as a separately
+visible dependency until its semigroup-generation proof is available?
+\end{question}
+The proof breaks naturally into finite-set counting, permutation-cycle
+analysis, elementary exponential inequalities, and the six explicit base
+cases. A proof assistant should first certify the universal algebraic
+inequality \eqref{tor:eq:algebraicmain}; importing a lower bound is not
+necessary for that milestone. \Cref{tor:sec:formal} gives a more precise
+dependency plan.
+
+\begin{question}[Beyond one cyclic permutation group]\label{tor:q:groups}
+Which permutation groups and collision configurations admit an analogous
+sharp coloring-deficit theorem, rather than only nonattainment of the full
+coloring space?
+\end{question}
+Part~I already develops qualitative extensions with abelian permutation groups
+(\cref{sec:abelian}). A sharper theory would need to replace the two-cycle
+classification by an analysis of orbital graphs and proper-coloring periods
+under a general group action. Even restricted families could connect exact
+state complexity with finite permutation-group structure.
+
+\section{Conclusion of Part~II}\label{tor:sec:conclusion}
+
+The three-output case permits an exact answer because proper colorings of a
+connected biclique have one monochromatic side. This reduces the allowable
+permutation contribution to the longer cycle length. Once that period is kept
+in the estimate, disconnected collision graphs, unused states, and same-cycle
+collisions all have strictly larger deficits. The only surviving optimization
+is the closest coprime split, yielding \eqref{tor:eq:main} for all $n\ge7$.
+
+Equality is informative: it forces the singular letter to have a single cross
+collision and forces saturation of every improper coloring. The missing states
+form a completely described family of cyclic orbits. These conclusions extend
+Part~I's finite-range result while leaving a clear distinction between the
+solved three-output problem, the published lower-bound dependency, and the
+genuinely remaining questions.
+
+\section{The finite same-cycle base table}\label{tor:sec:small}
+
+This section exposes all ingredients in the small arithmetic comparison of
+\cref{tor:lem:sameexclude}, so that the six base cases can be checked without
+accepting the output of a large search. Define
+\[
+ C_*(m)=\min_{\substack{d\mid m\\d<m}}
+ \bigl(2^{m/d}+2(-1)^{m/d}\bigr)^d.
+\]
+Direct evaluation gives
+\begin{center}
+\begin{tabular}{@{}rrrrrrrrrrrr@{}}
+\toprule
+$m$ & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+$C_*(m)$ & 6 & 6 & 18 & 30 & 36 & 126 & 258 & 216 & 900 & 2046 & 1296\\
+A minimizing $d$ & 1 & 1 & 1 & 1 & 2 & 1 & 1 & 3 & 2 & 1 & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+For instance, at $m=6$ the possible counts are $C_6=66$, $C_3^2=36$, and
+$C_2^3=216$, so the minimum is $36$. At $m=12$, the five possibilities for
+$d=1,2,3,4,6$ are
+\[
+ 4098,\quad4356,\quad5832,\quad1296,\quad46656,
+\]
+so the minimum is $1296$. Prime values of $m$ have only $d=1$. The remaining
+composite values $4,8,9,10$ require respectively two, three, two, and three
+divisor evaluations.
+
+The required residual products are
+\[
+ (J(0),\ldots,J(10))=(1,1,2,3,4,6,9,12,18,27,36).
+\]
+For each $n=7,\ldots,12$, calculate
+\begin{equation}\label{tor:eq:basecalc}
+ E_n=\min_{2\le m\le n}\bigl[C_*(m)3^{n-m}-mJ(n-m)\bigr].
+\end{equation}
+For clarity, here is every entry in that last minimization. A dash means
+$m>n$.
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$m\backslash n$ & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+2 & 1446 & 4356 & 13098 & 39330 & 118044 & 354222\\
+3 & 474 & 1440 & 4347 & 13086 & 39312 & 118017\\
+4 & 474 & 1442 & 4350 & 13086 & 39318 & 118026\\
+5 & 260 & 795 & 2410 & 7260 & 21825 & 65550\\
+6 & 102 & 312 & 954 & 2892 & 8712 & 26190\\
+7 & 119 & 371 & 1120 & 3381 & 10178 & 30576\\
+8 & -- & 250 & 766 & 2306 & 6942 & 20866\\
+9 & -- & -- & 207 & 639 & 1926 & 5805\\
+10 & -- & -- & -- & 890 & 2690 & 8080\\
+11 & -- & -- & -- & -- & 2035 & 6127\\
+12 & -- & -- & -- & -- & -- & 1284\\
+\bottomrule
+\end{tabular}
+\end{center}
+Taking the minimum in each column gives $102,250,207,639,1926,1284$,
+respectively, all strictly above the target deficits in
+\cref{tor:lem:sameexclude}.
+
+The program \path{code/02-three-output-independent_check.py} recomputes the
+cycle counts without the closed exponential formula. With the first color
+fixed, let $S_j,T_j$ count paths of $j$ vertices ending in that color or one
+of the other colors. Then
+\[
+ (S_1,T_1)=(1,0),\qquad
+ S_{j+1}=T_j,\quad T_{j+1}=2S_j+T_j,
+\]
+and closing the cycle gives $C_j=3T_j$. It computes $J$ by the independent
+composition recurrence
+\[
+ J(0)=1,\qquad J(r)=\max_{1\le t\le r}tJ(r-t).
+\]
+It then enumerates all nonzero displacements rather than all divisors. These
+differences make the agreement a useful implementation check, while
+\eqref{tor:eq:basecalc} remains the transparent mathematical calculation.
+(The local $S_j,T_j$ here are unrelated to Part~I's $T_{r,k}$.)
+
+\section{Formalization and trust-boundary plan}\label{tor:sec:formal}
+
+A formal development can be staged without treating executable searches as
+mathematical axioms. The following modules describe a dependency plan; they
+are not claims that corresponding files have been written or checked, and
+none has been started in ProveIt.
+
+\par\medskip\noindent\textbf{Finite coloring semantics.} For a finite type
+$Q$, define transformations, generated monoids, and the right action on
+$Q\to\mathrm{Fin}(3)$ by composition. Prove the reversal realization and
+accessibility-based distinguishability lemma. This module has no asymptotics
+or graph theory.
+
+\par\medskip\noindent\textbf{Collision graphs.} Define the orbit of an
+unordered pair under the cyclic subgroup generated by a permutation. Prove the
+rightmost-singular factorization by induction on words. Establish that every
+singular-containing word produces an improper coloring. This is the principal
+semantic lemma connecting graph counts to an automaton theorem.
+
+\par\medskip\noindent\textbf{Graph classification and counting.} Use
+permutation cycles to show that the graph is either a union of cycles with
+isolates or a union of complete bipartite graphs with isolates. Prove the two
+exact coloring counts and the monochromatic-side period bound. The treatment
+of a two-vertex cycle as a simple edge should be explicit (compare
+\cref{app:audit}).
+
+\par\medskip\noindent\textbf{Arithmetic comparison.} Prove $J(r)\le3^{r/3}$
+and the linear/exponential estimates on $C_L$ and $\Bip(u,v)$. Real powers in
+the displayed exposition can be removed from a formal proof by raising
+positive quantities to suitable integer powers. The threshold
+\eqref{tor:eq:threshold} and the finite base table can then be checked by
+kernel arithmetic. Separate the one-residual-state case rather than hide it
+in a numerical bound.
+
+\par\medskip\noindent\textbf{Universal upper bound and equality.} Assemble
+the exhaustive generator cases to prove $|\tau\langle s,t\rangle|\le3^n-D_n$
+for arbitrary arrays. Track strictness in every excluded case. Equality then
+yields the two-cycle structure, proper period, saturation, and
+rank-$(n-1)$ conclusion. The unique-cross-pair coloring gives a small finite
+witness inside a universally quantified proof.
+
+\par\medskip\noindent\textbf{Lower bound as a separate obligation.} Formalize
+the particular two-generated monoid and the saturation theorem behind
+Davies's lower construction. Until that development is complete, expose it as
+a named hypothesis of the \emph{equality} theorem, not as an axiom silently
+attached to the upper bound. The conventional article uses the published
+result; a future kernel-certified equality theorem must account for its proof
+explicitly.
+
+\par\medskip\noindent\textbf{No certification by executable coincidence.}
+The CSV of bounds, the breadth-first counts, and the Python inventory checks
+are useful test vectors. They do not establish the semantic graph lemma or
+universal inequalities. A formal trust ledger should distinguish accepted
+finite certificates, proved checkers, and external theorems, rather than
+label all three simply ``verified.''
+
+\section{Sources, dependency boundaries and provenance}\label{tor:sec:audit}
+
+This section follows the manuscript's source audit, shipped verbatim as
+\path{02-three-output-SOURCE_AUDIT.md}, dated 28 September 2026 (Pacific
+time).
+
+\subsection{Repository evidence the manuscript inspected}
+
+The manuscript read Part~I at ProveIt commit
+\begin{quote}\small\ttfamily
+fbba58593dc0622aa914972896150d4848f935b5
+\end{quote}
+in the directory
+\begin{quote}\small\ttfamily\raggedright
+SetTheory/Cardinals/docs/reports/\allowbreak
+automata-and-formal-languages/\allowbreak
+dfao-reversal-coloring-obstruction/
+\end{quote}
+through the GitHub connector: the README (explicitly retrieved), the article,
+the research-status record and the relevant implementation. It checked the
+following distinctions. Part~I's headline $k^n-k!+g(k)$ theorem is a
+nonattainment result, not an exact all-$n$ optimization formula. Its graph
+bound distinguishes proper and improper initial colorings. Its structural
+formula accounts for same-cycle and cross-cycle collision graphs, isolated
+residual states, and residual permutation orders. Its proper-period
+improvement for $k=3$ applies to a connected biclique. Its equality with
+Davies's lower bound is reported for $7\le n\le30$ and $3\le k<n$, $372$
+finite parameter pairs, and it explicitly distinguishes that statement from an
+all-$n$ theorem. The function \texttt{u\_witness} in \texttt{code/reversal.py}
+gives the zero-based parity-version arrays used for the independent orbit
+experiments. The broad repository tree was inspected for topic selection; the
+manuscript makes no claim to have audited every document or every Lean proof
+in the repository. Its main upper-bound proof is self-contained and does not
+rely on assuming Part~I's candidate theorems are correct.
+
+\subsection{Primary published source}
+
+For Davies \cite{Davies2017} (the abstract page, the version-2 HTML and the
+PDF) the manuscript inspected the coloring-orbit formulation
+(Proposition~4), the coprime two-cycle construction and parity generators,
+Theorem~3 and Corollary~3, the three-output period contribution, Table~3, and
+Section~5's optimality question (Problem~2). The PDF pages containing
+Corollary~3 (printed page~12) and the open question and small-case table
+(printed page~17) were inspected as page images in addition to parsed text.
+The exact lower-bound existence theorem is a published dependency. Part~II
+proves the new universal upper bound and equality restrictions, then uses the
+lower theorem for attainability. It does not claim a new proof of the
+two-generator monoid-generation theorem. Finite breadth-first tests do not
+replace that dependency.
+
+Holzer and K\"onig \cite{HolzerKoenig2004} is background; the manuscript
+checked its publisher metadata. The operative lower-bound theorem is cited
+through Davies, rather than attributed to an uninspected proof in the journal
+paper.
+
+\subsection{Literature-search scope}
+
+The searches included the exact Davies title; combinations of DFAO, reversal,
+three outputs, optimality, and 2026; and the exact Holzer--K\"onig title. The
+broad acronym queries produced substantial unrelated material, which was not
+used as mathematical evidence. The primary Davies text and Part~I's explicit
+status statement were the substantive sources. No later complete solution was
+located by these searches. This is not an exhaustive citation-index review, a
+survey of theses or unpublished work, or correspondence with the author. It is
+not evidence sufficient to establish priority or to assert that no earlier
+solution exists. Novelty claims are limited to the inspected sources, in
+particular the concrete extension of Part~I's finite result to all $n$ for
+three outputs.
+
+\subsection{Claims and nonclaims}
+
+The principal new contribution is the all-$n$ comparison proving the exact
+three-output formula and forcing the optimal two-cycle graph. The rank
+rigidity, $6AB$ collision penalty, and missing-orbit inventory are developed as
+further results. \Cref{tor:thm:main} settles the complete $k=3$ slice of
+Davies's Problem~2, not the full problem for variable $k$, and it does not
+settle the largest-two-generated-transformation-monoid conjecture.
+
+The lower witness, the reversal-orbit reduction, the graph classification
+method, standard primitive-word counting, and the small known values are not
+claimed as inventions. The missing-orbit inventory applies primitive-word
+counting to the extremal forbidden family. \Cref{tor:ex:nonsufficient}, showing
+that necessary conditions are not sufficient, is included to prevent an
+overstatement of the rigidity theorem.
+
+Part~II is not externally refereed and has no proof-assistant certification.
+The all-$n$ proof is a conventional proof with a fully displayed finite base
+table. The exact finite experiments are implementation checks and regression
+tests. They are not an independently certified proof of the infinite theorem.
+
+\subsection{What remains open}
+
+Four and more outputs; a necessary-and-sufficient classification of the
+singular letter for saturation; efficient saturation recognition; second-best
+values and stability; the near-maximum attainable spectrum; output counts
+growing with $n$; proof-assistant formalization; sharp general-group
+analogues. \Cref{tor:sec:questions} formulates the eight corresponding
+research questions with specific obstacles and next steps. Davies's
+Problem~1, the nonattainment question of Part~I, is not affected by Part~II.
+
+\subsection{Where the merge had to choose}\label{tor:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~II follows Part~I's last main section and
+ precedes Part~I's appendices, which contain no numbered equations, tables,
+ figures or theorem-like items; no number of Part~I changed.
+\item \emph{Duplicates.} The coloring-orbit description, the
+ collision-coloring bound, the two graph counts and the Chinese remainder
+ edge criterion (the manuscript's Proposition~2.1, Lemmas~3.1--3.3) are
+ printed once, in Part~I, and recalled with credit in
+ \cref{tor:sec:imported}; the manuscript's proofs of them are Part~I's
+ arguments, except its biclique count, which is kept as a second proof. The
+ manuscript's Remark~2.2 is kept as \cref{tor:rem:word}. The manuscript's
+ minimality argument is printed in the proof of \cref{tor:thm:main}, with a
+ pointer to Part~I's identical argument.
+\item \emph{Order.} The manuscript's two appendices are printed as
+ \cref{tor:sec:small,tor:sec:formal}, after its conclusion, and its source
+ audit as this section; its title-page status box is the status box of
+ \cref{tor:sec:source}.
+\item \emph{Notation.} $\operatorname{Prop}(G)\to\operatorname{Col}_3(G)$ and
+ $\mathcal O_p(c)\to\Orb_p(c)$, to use Part~I's notation and keep
+ $\mathcal O_r$ for Part~I's order sets; $s,t$ keep their meaning
+ (\cref{tor:tab:notation}). No normalization changed.
+\item \emph{References to Part~I.} The manuscript cites Part~I as a
+ repository report; here those citations are internal cross-references, and
+ its bibliography entries for Davies and for Holzer and K\"onig are Part~I's
+ \cite{Davies2017,HolzerKoenig2004}.
+\item \emph{Added in the merge.} \Cref{tor:rem:UL} (the $k=3$ case of
+ $U(n,k)=L(n,k)$), \cref{tor:sec:rowcheck}, the sentences relating Part~II's
+ statements to Part~I's (after \cref{tor:lem:unmixed,tor:thm:rigidity,tor:prop:rankpenalty,tor:cor:asymptotic} and
+ in \cref{tor:q:four,tor:q:groups}), and the dated pointers in Part~I's title
+ page, reading-routes box and \cref{sec:introduction,sec:finite,sec:conclusion}.
+ Part~I's title page was also respaced (smaller gaps, the text after the
+ abstract in a smaller size) because it already overflowed onto a second page
+ before this addition; its wording is unchanged apart from the pointer.
+\item \emph{Cross-reference names.} Part~I declared its lemmas, propositions,
+ corollaries, remarks and other theorem-like environments on the shared
+ theorem counter, and \texttt{cleveref} named every one of them
+ ``theorem'' (``theorem~3.3'' for \cref{lem:rightmost}). The preamble now
+ declares them through alias counters, as the manuscript did, so each
+ reference carries its own name; the shared numbering, and every number of
+ Part~I, is unchanged.
+\end{itemize}
 
 \appendix
 \section{Explicit small witnesses}\label{app:witnesses}
