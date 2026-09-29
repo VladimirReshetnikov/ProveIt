@@ -62,8 +62,8 @@ New standalone intake members:
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
   All 24 non-ledger payloads were covered by its submitted ledger; six CSV
   hashes were refreshed after repository CRLF-to-LF normalization. The ledger
-  is now retired and recoverable from Git history. Its current 2,092-line,
-  89,360-byte source has SHA-256
+  is now retired and recoverable from Git history. Its 2026-09-04 2,092-line,
+  89,360-byte source had SHA-256
   `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
   Three serial halt-on-error passes from absent auxiliaries produced
   34 pages/1,152,987 bytes, 36 pages/1,171,153 bytes, and a final 36-page,
@@ -72,6 +72,10 @@ New standalone intake members:
   The final log, metadata, A4/rotation-zero, all-page render/text, and
   representative visual gates passed; all 27 font rows are embedded/subset,
   five are Libertinus, none is Type 3, and generated sidecars are absent.
+  On 2026-09-29 an editorial note under `conj:jet-small-ball` marked that
+  conjecture false for `q ≠ 1/e` (see the report README's erratum and
+  `Polynomial_Geometric_Small_Deviations_Fabius_Jets/`); the source is now
+  2,120 lines/90,982 bytes and the rebuilt PDF 36 pages/1,295,227 bytes.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle

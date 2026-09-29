@@ -29,14 +29,26 @@ absent from all prior literature.  Classical ingredients such as zonotope
 volume formulas, Schur/Littlewood identities, the hyperbolic-secant measure,
 and Meixner-Pollaczek orthogonality are cited in the report.
 
+**Erratum (2026-09-29).** The report's conjecture `conj:jet-small-ball`
+(subsection "Jet small balls and Lambert phases") is false as stated
+whenever `q ≠ 1/e`: the small-ball logarithm contains the unbounded term
+`((m+1)² log λ/λ) log log(1/x)`, `λ = −log q`, which its shape omits.
+For `m = 0`, `q = 1/2` this term is already part of the machine-checked
+Fabius small-argument expansion
+(`Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO`, whose main
+term `fabiusWikipediaElementaryMain` contains `(log log 2/log 2) log L`).
+An editorial note under the conjecture, marked `% ed.` in the source,
+records the correct form; the conjecture itself is kept unchanged and
+unrenumbered.  The general proof is the unreviewed draft
+`../Polynomial_Geometric_Small_Deviations_Fabius_Jets/` (filed
+2026-09-29).
+
 ## Archive contents
 
-- `common_digit_fabius_zonoids.tex` — complete 2,092-line, 89,360-byte
-  LaTeX source; SHA-256
-  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
-- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,171,153-byte
-  report; SHA-256
-  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
+- `common_digit_fabius_zonoids.tex` — complete 2,120-line, 90,982-byte
+  LaTeX source (2,092 lines before the editorial note of 2026-09-29).
+- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,295,227-byte
+  report, rebuilt on 2026-09-29.
 - `code/experiments.py` — fully commented symbolic/numerical experiment script.
 - `generated/*.csv` — numerical and exact-symbolic verification tables.
 - `generated/legendre_coefficients.tex` — exact symbolic coefficient table.
@@ -74,6 +86,14 @@ citation, rerun request, or overfull box; its two underfull notices are a
 status-table cell and the long repository URL. Title, author, subject, and
 keywords metadata are present. Representative title, body, table, figure, and
 final pages passed visual inspection; generated sidecars were removed.
+
+After the editorial note of 2026-09-29 under `conj:jet-small-ball`, the PDF
+was rebuilt by the same three-pass procedure with MiKTeX pdfTeX 1.40.29:
+36 pages, 1,295,227 bytes; the final log has no warning, error,
+unresolved reference, rerun request, or overfull box, and the page
+carrying the note was rendered and inspected.  The SHA-256 values that
+earlier versions of this README recorded described the 2026-09-04 build;
+the repository no longer keeps checksum receipts.
 
 ## Reproduce the experiments and figures
 
