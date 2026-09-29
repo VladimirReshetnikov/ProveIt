@@ -58,6 +58,13 @@
 \newcommand{\code}[1]{{\small\nolinkurl{#1}}}
 \newcommand{\snapshot}{\nolinkurl{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+% [write] Unnumbered notes added when this manuscript was written into the
+% ProveIt research-report collection (batch 36).  They use no theorem counter,
+% so every theorem, equation and table number of the delivered text is kept.
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newcommand{\repo}[1]{\code{#1}}
 
 \begin{document}
 \begin{center}
@@ -70,6 +77,13 @@
 \vspace{0.5cm}
 {Research prepared for Vladimir Reshetnikov\par}
 {September 2026\par}
+\vspace{0.3cm}
+{\footnotesize ProveIt research-report collection, continuing the formal
+project \code{Algebra/PolynomialFormulas}. Batch~36, manuscript~04
+(archive \code{ProveIt_Radical_Solvers_Research}); pinned to ProveIt
+\code{e21766d04}. AI-assisted, unrefereed, not formalized.
+Notes marked \textbf{[write]} were added when the manuscript was written into
+the collection; see Section~\ref{rss:sec:provenance}.\par}
 \end{center}
 \begin{abstract}
 A separable polynomial can have an inseparable auxiliary resolvent; a correct
@@ -123,7 +137,7 @@ degree is made.
 \clearpage
 
 \section{Research target, provenance, and contribution boundary}
-\label{sec:boundary}
+\label{rss:sec:boundary}
 
 \subsection{Why this problem arises in ProveIt}
 
@@ -144,6 +158,47 @@ Fourier inversion is not presented below as a new result. Our reconstruction
 uses that existing interface and adds a pivot chart, invariant ratios,
 and a proof that every choice of the one remaining radical changes only the
 cyclic ordering of the roots.
+
+\begin{writenote}[Repository context the manuscript did not cite]
+Checked against the tree, which is unchanged in
+\code{Algebra/PolynomialFormulas} between the pin and batch~36.
+\begin{itemize}
+\item \emph{The Rocq twin.} Beside the Lean module
+\repo{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardGeneralFourier.lean}
+(\code{character_orthogonality}, l.~49; \code{dft_shift}, l.~57;
+\code{invDFT_dft}, l.~98; the scope boundary quoted above is its docstring,
+l.~18--21) the project has
+\repo{Algebra/PolynomialFormulas/Coq/LazardGeneralFourier.v}, proving the
+same arbitrary-degree core over any MathComp field:
+\code{lazard_general_character_orthogonality} (l.~96),
+\code{lazard_general_dft_shift} (l.~128) and
+\code{lazard_general_invDFT_dft} (l.~207), with the coordinatewise
+\code{lazard_general_invDFT_dft_coordinate} (l.~179)
+\cite{repoFourierRocq}. The claim crosswalk
+(\repo{Algebra/PolynomialFormulas/LazardPaperClaimCrosswalk.md}, l.~199) records both focused modules
+as kernel-green with their public aggregate/audit pending, and states the
+same boundary: arbitrary-degree branch-sensitive invariant recovery is
+deliberately outside the general Fourier modules, while the quintic
+invariant recovery is covered by a separate five-coordinate chain.
+\item \emph{Lazard's own one-radical scheme.} The pivot chart and invariant
+ratios are not new in the quintic case. The project report
+\repo{Algebra/PolynomialFormulas/LazardQuinticFormalization.tex}
+(l.~606--612) records Lazard's
+invariants $S_1=s_1^5$, $S_2=s_2s_1^3$, $S_3=s_3s_1^2$, $S_4=s_4s_1$ and his
+reconstruction ``once $P_1^5=S_1$ is chosen with $P_1\neq0$'', with
+$P_2=S_2/P_1^3$, $P_3=S_3/P_1^2$, $P_4=S_4/P_1$ \cite{repoReport}. This is
+the case $p=5$, pivot $j=1$ of Theorem~\ref{rss:thm:chart}: with
+$\zeta=\omega^{-1}$ one has $u_k=s_k$, $a_1=S_1$, $c_{1,k}a_1=S_k$ and
+$\rho=P_1$ (dictionary in Section~\ref{rss:sec:notation}). What the chart
+theorem adds is the arbitrary odd prime $p$, the arbitrary pivot $j$, the
+statement that \emph{every} branch of the one radical yields the cyclic
+shift $x_{i+rj^{-1}}$, the transition rules on overlaps, and
+Corollary~\ref{rss:cor:generator}. A name search of the Lean quintic modules
+at the write (for \code{shift} and \code{rotate}) found no theorem that every
+fifth-root choice gives a cyclic shift; that search is not a proof of
+absence.
+\end{itemize}
+\end{writenote}
 
 Three precise research problems guide the article. First, determine exactly
 when a standard subset-sum resolvent can fail to separate subsets despite
@@ -167,7 +222,7 @@ Our characteristic-$29$ example concerns the distinction between an orbit
 product and a squarefree resolvent with distinct conjugate values. It does
 not, on its own, disprove an abstract radical-solvability theorem. In
 particular, we do not infer that every later identity in that article fails.
-Section~\ref{sec:published} states the precise implication and its limits.
+Section~\ref{rss:sec:published} states the precise implication and its limits.
 
 \subsection{What is established, and by what kind of evidence}
 
@@ -207,8 +262,148 @@ provided standard-library auditor checks the finite certificates without
 SymPy. This is still an ordinary computational proof boundary, not a
 proof-assistant kernel boundary.
 
+\subsection{[write] Conventions and notation}
+\label{rss:sec:notation}
+
+No symbol of the delivered manuscript was renamed and no normalization was
+changed. Several letters carry more than one meaning, inside the article or
+between the article and the formal project it continues; each is
+unambiguous in context, and the table fixes the readings.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.14\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning here & Not to be confused with\\
+\midrule
+$u_j$, $\zeta$ &
+Fourier mode $u_j=\sum_i\zeta^{-ij}x_i$ (negative exponent),
+\eqref{rss:eq:fourier} &
+Lazard's $s_k=\sum_j\omega^{kj}x_j$ (positive exponent), in the project
+report and in \code{LazardGeneralFourier.lean}, whose character is called
+$\psi$. \emph{True:} with $\zeta=\omega^{-1}$, $u_k=s_k$.
+\emph{False reading:} $u_k=s_k$ for $\zeta=\omega$; then $u_k=s_{p-k}$.\\
+$a_j$, $c_{j,k}$, $\rho$ &
+Pivot power $u_j^p$, invariant ratios $u_k/u_j^{e_j(k)}$, a root of
+$T^p-a_j$ (Theorem~\ref{rss:thm:chart}) &
+For $p=5$, $j=1$: $a_1=S_1$, $c_{1,k}a_1=S_k$, $\rho=P_1$ in Lazard's
+notation \cite{repoReport}; $c_{1,k}$ itself is \emph{not} $S_k$.\\
+$e_j(k)$ &
+The integer in $\{1,\dots,p-1\}$ with $je_j(k)\equiv k$ (Section~\ref{rss:sec:atlas}) &
+$e_r$, the $r$th elementary symmetric function (Sections~\ref{rss:sec:witnesses}, \ref{rss:sec:repair}).\\
+$\mathcal B_{p,k}$ &
+Set of bad primes (Section~\ref{rss:sec:criterion}) &
+$B_{n,k}=(k-1)\binom N2$, an integer bound \eqref{rss:eq:bound}.\\
+$A$, $B$ &
+Subsets of indices (Sections~\ref{rss:sec:subset}--\ref{rss:sec:repair}) &
+$B$: the fixed field $E^{\langle\sigma\rangle}$ (Section~\ref{rss:sec:atlas}),
+$B_0$, $B$ in Section~\ref{rss:sec:groups}; $A$, $B=A^{C_p}$: rings in
+Section~\ref{rss:sec:global}.\\
+$E$ &
+A field (Sections~\ref{rss:sec:atlas}, \ref{rss:sec:groups}); $E(A)$: the
+descriptor vector (Section~\ref{rss:sec:repair}) &
+Lazard's invariant denominator $E$ in the project report.\\
+$k$ &
+Subset size (Sections~\ref{rss:sec:subset}--\ref{rss:sec:repair}); mode index
+in $c_{j,k}$; algebraically closed field (Section~\ref{rss:sec:global}) & ---\\
+$N$ &
+Norm $N_{A,B}$ \eqref{rss:eq:norm}; $N=\binom nk$ (Section~\ref{rss:sec:repair});
+a minimal normal subgroup (Lemma~\ref{rss:lem:affine}) & ---\\
+$f$, $g$, $m$ &
+The polynomial; but $f=e_h(k)$, $g=e_j(k)$ and $m=(ef-g)/p$ in
+\eqref{rss:eq:transitioncoeff} &
+$m_{ij}$, entries of the multiplication matrix $M_q$.\\
+$T$ &
+Polynomial variable (Sections~\ref{rss:sec:criterion}, \ref{rss:sec:tables}),
+Kummer variable in $T^p-a_j$ &
+Lazard's quadratic-stage quantity $T$ in the project report.\\
+$\psi$ &
+The $\F_2$-linear map in the proof of Theorem~\ref{rss:thm:2rigidity} &
+The additive character $\psi$ of \code{LazardGeneralFourier.lean}.\\
+$L$ &
+Splitting field; $L_W$ additive root polynomial; $L_r$ character
+eigenspace modules (Section~\ref{rss:sec:global}) & ---\\
+$\Delta$ &
+Discriminant $\prod_{i<j}(x_i-x_j)^2$ \eqref{rss:eq:configuration} & ---\\
+$c$ &
+$c_r(A)$ (Theorem~\ref{rss:thm:29}); $c_{j,k}$; $c_k$ (Theorem~\ref{rss:thm:support});
+coefficient vector (Section~\ref{rss:sec:criterion}); a constant in \eqref{rss:eq:units} & ---\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{[write] Provenance of this report}
+\label{rss:sec:provenance}
+
+This report is built from \textbf{one} manuscript: batch~36, manuscript~04 of
+ProveIt's incoming-reports intake, delivered as the archive
+\code{ProveIt_Radical_Solvers_Research} in commit \code{e13affd32}, pinned to
+ProveIt commit \code{e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9}, and placed in
+commit \code{1a1396d4d}. It is filed in ProveIt's research-report collection
+and continues the formal project \code{Algebra/PolynomialFormulas}; it shares
+no theorem with any other report. Every statement, proof, table, example,
+remark, question and limitation of the delivered text is printed. No merge
+choice arose.
+
+The write changed only the following. Every label carries the prefix
+\code{rss:}. The title-page provenance line, Sections~\ref{rss:sec:notation},
+\ref{rss:sec:provenance} and~\ref{rss:sec:nonclaims}, the unnumbered
+\textbf{[write]} notes, and the bibliography entries \cite{repoFourierRocq},
+\cite{repoSextic}, \cite{repoKummer} and \cite{repoCounterexamples} were
+added. The notes use no theorem counter, so every theorem, equation and
+table number is that of the delivered 29-page PDF. The delivered text names
+the delivery layout: its files \code{certificates/}\emph{X} are shipped as
+\code{data/}\emph{X}, its two scripts as \code{code/verify_results.py} and
+\code{code/audit_certificates.py}, and its \code{requirements.txt} as
+\code{data/requirements.txt}; the delivered PDF and README are not shipped.
+Appendix~\ref{rss:app:repro} gives commands that work with the shipped names.
+
+\subsection{[write] Formal status and what is not claimed}
+\label{rss:sec:nonclaims}
+
+\begin{itemize}
+\item \textbf{Not formalized.} No statement of this report is formalized in
+Lean or Rocq, and no \code{rss:} label has a Lean or Rocq counterpart. That
+the report continues the \code{Algebra/PolynomialFormulas} development
+confers no formal status on it. The project's own nearby declarations are named where they are used:
+the arbitrary-degree Fourier core in Lean and Rocq (Section~\ref{rss:sec:boundary}),
+sextic descriptor separation (Section~\ref{rss:sec:repair}), the cyclic Kummer
+generator (Section~\ref{rss:sec:atlas}) and two positive-characteristic
+counterexamples (Section~\ref{rss:sec:criterion}). None of them states a
+theorem of this report.
+\item \textbf{Integration plan.} Section~\ref{rss:sec:formalization} is a
+plan. None of it is formalized, and no Lean or Rocq code is delivered or
+shipped; its declaration names are proposals.
+\item \textbf{Evidence.} The general theorems rest on written proofs. The
+finite tables rest on exact computations by an ordinary Python program and an
+independent standard-library auditor, not a proof-assistant kernel. The
+Fourier checks cover coefficient-one supports only. Nothing computational
+checks the Picard-group and eigenunit section (Section~\ref{rss:sec:global}),
+the transition rule \eqref{rss:eq:transitioncoeff}, the Galois groups
+$\AGL_1(\F_p)$, or the rigidity theorems beyond their finite character-pattern
+counts.
+\item \textbf{The source's own non-claims} stand as printed: the Status
+paragraph after the abstract (not a kernel-checked development; classical
+tools are not new; priority over the literature not established; no general
+radical formulas in every degree); the limits of Section~\ref{rss:sec:published}
+(distinct-factor separation only, not a complete audit of the published
+algorithm); the assumed invariant data of Theorem~\ref{rss:thm:chart}
+(Section~\ref{rss:sec:atlas}); relative minimality only in
+Corollary~\ref{rss:cor:generator}; minimality of the coordinate-pivot cover
+only in Corollary~\ref{rss:cor:charts}; what Theorem~\ref{rss:thm:eigenunit}
+does not rule out; and the status of the research questions
+(Section~\ref{rss:sec:questions}).
+\item \textbf{Review.} The report is AI-assisted and unrefereed. At the intake
+the proofs were read, the headline computations were repeated by a separate
+script, and both delivered suites were rerun on a copy; this is not an
+independent proof review. Parts of Section~\ref{rss:sec:criterion} (the
+relation-module viewpoint and characteristic-zero separation) may be close
+to the classical literature on linear relations among conjugates; this was
+not checked, and no priority is claimed.
+\end{itemize}
+
 \section{Subset-sum resolvents and the correct notion of separation}
-\label{sec:subset}
+\label{rss:sec:subset}
 
 Let $p$ be an odd prime and let $f\in K[X]$ be monic, separable, and
 irreducible of degree $p$. In its splitting field choose a numbering
@@ -220,7 +415,7 @@ $x_0,\ldots,x_{p-1}$ of its roots. For $1\leq k\leq p-1$ put
 and define the \emph{orbit product}
 \begin{equation}
  R_{p,k,f}(Y)=\prod_{A\in\mathcal S_{p,k}}(Y-s_A).
- \label{eq:resolvent}
+ \label{rss:eq:resolvent}
 \end{equation}
 Galois automorphisms permute the subsets, so this monic polynomial belongs
 to $K[Y]$. Its degree, with multiplicity, is always $\binom pk$.
@@ -233,12 +428,12 @@ $R_{p,k,f}$ is separable, or $\gcd(R_{p,k,f},R'_{p,k,f})=1$.
 
 This is stronger than separability of $f$. The latter distinguishes the
 individual $x_i$, not all sums made from them. It is also important not to
-call \eqref{eq:resolvent} the minimal polynomial of a single value without
+call \eqref{rss:eq:resolvent} the minimal polynomial of a single value without
 qualification. If the Galois group has several orbits on subsets, then even
 a separating orbit product is reducible. If distinct subsets have the same
 value, the product has repeated factors.
 
-\begin{lemma}[Orbit-to-factor principle]\label{lem:orbitfactor}
+\begin{lemma}[Orbit-to-factor principle]\label{rss:lem:orbitfactor}
 Let a finite Galois group $G$ act on a finite set $\mathcal S$, and let
 $A\mapsto v_A$ be a $G$-equivariant map into the Galois extension. If this
 map is injective, the irreducible factors over the fixed field of
@@ -266,24 +461,24 @@ The cases $k=1,p-1$ always separate. The interesting cases are
 $2\leq k\leq p-2$.
 
 \section{An exact cyclotomic criterion for bad characteristics}
-\label{sec:criterion}
+\label{rss:sec:criterion}
 
 For distinct $A,B\in\mathcal S_{p,k}$ define
 \begin{equation}
  q_{A,B}(T)=\sum_{i\in A}T^i-\sum_{i\in B}T^i,
  \qquad \Phi_p(T)=1+T+\cdots+T^{p-1},
- \label{eq:q}
+ \label{rss:eq:q}
 \end{equation}
 and the positive integer
 \begin{equation}
  N_{A,B}=\left|\Res_T(\Phi_p,q_{A,B})\right|.
- \label{eq:norm}
+ \label{rss:eq:norm}
 \end{equation}
 Equivalently, $N_{A,B}$ is the absolute norm of $q_{A,B}(\zeta)$ from
 $\Q(\zeta)$, for a primitive $p$th root of unity $\zeta$.
 
-\begin{lemma}\label{lem:normnonzero}
-Every integer $N_{A,B}$ in \eqref{eq:norm} is nonzero. It is divisible by $p$.
+\begin{lemma}\label{rss:lem:normnonzero}
+Every integer $N_{A,B}$ in \eqref{rss:eq:norm} is nonzero. It is divisible by $p$.
 \end{lemma}
 \begin{proof}
 The polynomial $q=q_{A,B}$ is nonzero, has degree at most $p-1$, and
@@ -300,7 +495,7 @@ of the integers $N_{A,B}$, as $\{A,B\}$ runs over all unordered pairs of
 distinct $k$-subsets. It is a finite, effectively computable set.
 \end{definition}
 
-\begin{theorem}[Exact universal separation criterion]\label{thm:bad}
+\begin{theorem}[Exact universal separation criterion]\label{rss:thm:bad}
 Let $p$ be an odd prime and $2\leq k\leq p-2$.
 \begin{enumerate}[label=(\roman*)]
 \item In characteristic zero, the $k$-subset sums of every separable
@@ -333,7 +528,7 @@ Suppose that $s_A=s_B$, and write $q=q_{A,B}$. Then
 \[
  q(\sigma)x_0=0.
 \]
-In characteristic zero, Lemma~\ref{lem:normnonzero} gives
+In characteristic zero, Lemma~\ref{rss:lem:normnonzero} gives
 $\gcd(q,\Phi_p)=1$ in $\Q[T]$. In characteristic
 $\ell\notin\mathcal B_{p,k}$, the resultant is nonzero modulo $\ell$, so
 the same coprimality holds in $\F_\ell[T]$. In either case, over the prime
@@ -390,7 +585,7 @@ For a $k$-subset $A$, its sum is
 \]
 There are at most $p$ such values, but $\binom pk>p$ in the stated range of
 $k$. Some distinct subsets have equal sums. This finishes the proof of
-Theorem~\ref{thm:bad}. \hfill$\square$
+Theorem~\ref{rss:thm:bad}. \hfill$\square$
 
 \begin{remark}[The exact logical scope]
 A prime in $\mathcal B_{p,k}$ does not mean that every polynomial in that
@@ -398,6 +593,28 @@ characteristic has a collision. It means that a collision is possible and
 that a characteristic-only universal guarantee is false. A particular
 resolvent can still be tested for separability by a gcd computation.
 \end{remark}
+
+\begin{writenote}[Related positive-characteristic material in the project]
+Two formal developments of \code{Algebra/PolynomialFormulas} concern
+neighbouring phenomena at the prime~$3$ \cite{repoCounterexamples}; neither
+states a theorem of this section.
+\begin{itemize}
+\item \code{LazardAlternatingResolventCounterexample} (Lean and Rocq; claim
+crosswalk l.~202) refutes the assertion that the alternating resolvent
+$X^2-\Delta$ of an irreducible polynomial is always separable: over
+$\F_3(t)$ the cubic $X^3-t$ is irreducible but \emph{inseparable}
+(derivative zero), its discriminant vanishes, and its alternating resolvent
+is $X^2$. There the source polynomial itself is inseparable. The
+characteristic-$29$ phenomenon of Theorem~\ref{rss:thm:29} is different: the
+septic $X^7-t$ is separable, and only the auxiliary resolvent acquires
+repeated factors.
+\item \code{LazardArtinSchreierRadicalCounterexample} (Lean and Rocq;
+crosswalk l.~200) uses the Artin--Schreier cubic $X^3-X-t$, the case $p=3$ of
+the witness $X^p-X-t$ in part~(iii) above, to show that a cyclic, hence
+solvable, Galois group in characteristic~$3$ need not give solvability by
+radicals. It concerns radical towers, not subset-sum collisions.
+\end{itemize}
+\end{writenote}
 
 \subsection{A general relation-space interpretation}
 
@@ -417,12 +634,12 @@ $\F_\ell[T]/(T^p-1)$. The cyclotomic component
 $\F_\ell[T]/(\Phi_p)$ detects the nonconstant part. Our resultant test asks
 whether a prescribed small coefficient vector can vanish on this component.
 This viewpoint suggests extensions to cyclic codes and more general
-weighted resolvents, discussed in Section~\ref{sec:questions}.
+weighted resolvents, discussed in Section~\ref{rss:sec:questions}.
 
 \section{Complete classifications in degrees five and seven}
-\label{sec:tables}
+\label{rss:sec:tables}
 
-\begin{theorem}[Small-degree exceptional sets]\label{thm:small}
+\begin{theorem}[Small-degree exceptional sets]\label{rss:thm:small}
 The exact exceptional characteristics are
 \[
  \boxed{\mathcal B_{5,2}=\{5\}},\qquad
@@ -477,10 +694,11 @@ For the exceptional septic pair $A=012$, $B=346$, the matrix is
  0&-1&2&2&0&-2\\
  1&-1&0&2&0&0
  \end{pmatrix},\qquad |\det M_q|=203=7\cdot29.
- \label{eq:matrix203}
+ \label{rss:eq:matrix203}
 \end{equation}
 The integer matrices for every other row are included in
-\code{certificates/cyclotomic_norm_certificates.json}.
+\code{certificates/cyclotomic_norm_certificates.json}.\footnote{[write] Shipped
+in this report as \code{data/cyclotomic_norm_certificates.json}.}
 
 \begin{center}
 \begin{tabular}{@{}ccrr@{}}
@@ -515,7 +733,7 @@ $A$ & $B$ & Orbit size & $N_{A,B}$\\
 
 \begin{center}
 \begin{longtable}{@{}rccrr@{}}
-\caption{All affine orbits of unordered pairs of septic triples.}\label{tab:triples}\\
+\caption{All affine orbits of unordered pairs of septic triples.}\label{rss:tab:triples}\\
 \toprule
 Row&$A$&$B$&Orbit size&$N_{A,B}$\\
 \midrule\endfirsthead
@@ -544,7 +762,7 @@ Row&$A$&$B$&Orbit size&$N_{A,B}$\\
 \end{longtable}
 \end{center}
 
-\begin{proof}[Proof of Theorem~\ref{thm:small}]
+\begin{proof}[Proof of Theorem~\ref{rss:thm:small}]
 The tables exhaust the pair sets of sizes
 $\binom{10}{2}=45$, $\binom{21}{2}=210$, and $\binom{35}{2}=595$.
 The norms occurring in the three cases are, respectively,
@@ -553,7 +771,7 @@ The norms occurring in the three cases are, respectively,
  \{7,49,56,203,343\}.
 \]
 Their prime divisors are exactly the displayed exceptional sets.
-Theorem~\ref{thm:bad} supplies both the universal safe conclusion and the
+Theorem~\ref{rss:thm:bad} supplies both the universal safe conclusion and the
 existence of counterexamples in every exceptional characteristic.
 \end{proof}
 
@@ -570,7 +788,7 @@ checks every determinant, and verifies that their union is exactly the full
 pair set. No inference from a sample of pairs is being made.
 
 \section{Explicit exceptional-characteristic witnesses}
-\label{sec:witnesses}
+\label{rss:sec:witnesses}
 
 \subsection{The characteristic-29 septic}
 
@@ -594,18 +812,18 @@ The following equality is entirely explicit:
 Thus
 \begin{equation}
  x_0+x_1+x_2=x_3+x_4+x_6.
- \label{eq:collision29}
+ \label{rss:eq:collision29}
 \end{equation}
 The roots in the two triples are all different. This is not a collision
 caused by an overlap or by a repeated root of $f$.
 
-\begin{theorem}[Exact repeated-factor resolvent]\label{thm:29}
+\begin{theorem}[Exact repeated-factor resolvent]\label{rss:thm:29}
 Over $\F_{29}(t)$,
 \begin{align}
  R_{7,3,X^7-t}(Y)
  &= (Y^7-12t)^2(Y^7-t)(Y^7-17t)(Y^7-28t)\notag\\
  &= (Y^7-12t)(Y^{28}-t^4).
- \label{eq:29factor}
+ \label{rss:eq:29factor}
 \end{align}
 Every displayed degree-seven binomial is irreducible. The orbit product
 has degree $35$, but its squarefree part has degree $28$.
@@ -633,7 +851,7 @@ $A$&$c_1$&$c_2$&$c_3$&$c_1^7$\\
 \end{center}
 Translation by $b$ multiplies the sum $c_1\alpha$ by $\zeta^b$.
 The product for one orbit is therefore $Y^7-c_1^7t$. Multiplying the five
-orbit products gives the first line of \eqref{eq:29factor}. The four
+orbit products gives the first line of \eqref{rss:eq:29factor}. The four
 constants $1,12,17,28$ are the fourth roots of unity in $\F_{29}$, which
 gives the second line. Each nonzero binomial $Y^7-ct$ is Eisenstein at $t$,
 hence irreducible. The four constants are distinct, so the asserted
@@ -653,7 +871,7 @@ acts transitively on their nonzero sums. The remaining $28$ triples are
 therefore distributed equally, four per nonzero sum. Hence
 \begin{equation}
  R_{7,3,X^7-t}(Y)=Y^7(Y^7-t)^4\quad\text{over }\F_8(t).
- \label{eq:char2}
+ \label{rss:eq:char2}
 \end{equation}
 The auxiliary product has only eight distinct roots, even though the
 original polynomial has seven distinct roots and a cyclic Galois group.
@@ -667,7 +885,7 @@ $\{z^2,1+z+z^2\}$ have equal sum.
 \subsection{Characteristic seven: an Artin--Schreier degeneration}
 
 Over $\F_7(t)$, let $f=X^7-X-t$ and choose a root $\alpha$.
-The irreducibility argument in Section~\ref{sec:criterion} applies, and the
+The irreducibility argument in Section~\ref{rss:sec:criterion} applies, and the
 roots are $\alpha+i$ for $i\in\F_7$. A triple sum is $3\alpha+c$.
 Translation of a triple by $b$ changes $c$ by $3b$, so each of the seven
 values occurs exactly five times. Moreover,
@@ -677,25 +895,25 @@ values occurs exactly five times. Moreover,
 It follows that
 \begin{equation}
  R_{7,3,X^7-X-t}(Y)=(Y^7-Y-3t)^5.
- \label{eq:char7}
+ \label{rss:eq:char7}
 \end{equation}
 Likewise,
 \begin{equation}
  R_{5,2,X^5-X-t}(Y)=(Y^5-Y-2t)^2
  \quad\text{over }\F_5(t).
- \label{eq:char5}
+ \label{rss:eq:char5}
 \end{equation}
 These identities make the exceptional prime-degree characteristic
 concrete, rather than merely noting that Fourier inversion cannot divide
 by $p$.
 
 \section{The exact implication for published septic factor patterns}
-\label{sec:published}
+\label{rss:sec:published}
 
 Proposition 7 and the subsequent specialized discussion in
 Faggal--Lazard describe a cyclic septic case using five degree-seven
 factors; Section 5.2 permits characteristic $29$ under its stated
-exclusions \cite{FaggalLazard2014}. Equation~\eqref{eq:29factor} shows that
+exclusions \cite{FaggalLazard2014}. Equation~\eqref{rss:eq:29factor} shows that
 one cannot universally interpret those factors as five \emph{distinct}
 irreducible factors attached to five distinguishable subset orbits.
 Two orbit products coincide.
@@ -712,7 +930,7 @@ The sharp repair for this particular separation step is now known:
  \charac K\notin\{2,7,29\}.
 \]
 This assertion follows for \emph{every} irreducible separable septic from
-Theorem~\ref{thm:small}, without a solvability assumption. When retaining
+Theorem~\ref{rss:thm:small}, without a solvability assumption. When retaining
 the separate characteristic restrictions of a radical construction, one
 must take their union with these restrictions. Conversely, an
 input-specific squarefreeness check is sufficient for the orbit-to-factor
@@ -726,7 +944,7 @@ formula. The next section offers a repair that avoids relying on a
 characteristic-only exclusion at all.
 
 \section{A uniform separating-invariant repair}
-\label{sec:repair}
+\label{rss:sec:repair}
 
 Let $x_1,\ldots,x_n$ be pairwise distinct elements of a field extension of
 $K$. Fix $1\leq k<n$, and set $N=\binom nk$. For each $k$-subset $A$ let
@@ -736,7 +954,7 @@ $K$. Fix $1\leq k<n$, and set $N=\binom nk$. For each $k$-subset $A$ let
 where $e_r$ is the $r$th elementary symmetric function of the elements
 whose indices lie in $A$.
 
-\begin{lemma}[Subset descriptors]\label{lem:descriptor}
+\begin{lemma}[Subset descriptors]\label{rss:lem:descriptor}
 The map $A\mapsto E(A)$ is injective in every characteristic.
 \end{lemma}
 \begin{proof}
@@ -753,16 +971,16 @@ subsets.
 Introduce a parameter $u$ and compress this vector to the scalar
 \begin{equation}
  h_A(u)=\sum_{r=1}^k u^{r-1}e_r(x_A).
- \label{eq:descriptor}
+ \label{rss:eq:descriptor}
 \end{equation}
 For different subsets $A,B$, the difference $h_A-h_B$ is a nonzero
 polynomial in $u$ of degree at most $k-1$.
 
-\begin{theorem}[Finite separating family]\label{thm:repair}
+\begin{theorem}[Finite separating family]\label{rss:thm:repair}
 At most
 \begin{equation}
  B_{n,k}=(k-1)\binom{N}{2},\qquad N=\binom nk,
- \label{eq:bound}
+ \label{rss:eq:bound}
 \end{equation}
 values of $u$ in an algebraic closure of the field containing the $x_i$
 can cause two of the $h_A(u)$ to
@@ -772,19 +990,43 @@ for which all the $h_A(u)$ are distinct.
 If the $x_i$ are the roots of a separable polynomial over $K$, then
 \begin{equation}
  H_u(Y)=\prod_{|A|=k}(Y-h_A(u))\in K[Y]
- \label{eq:repaired}
+ \label{rss:eq:repaired}
 \end{equation}
 for every $u\in K$. At a separating parameter, its irreducible factors
 recover the exact Galois orbit sizes on $k$-subsets.
 \end{theorem}
 \begin{proof}
 Each of the $\binom N2$ nonzero difference polynomials has at most $k-1$
-roots. Taking their union gives \eqref{eq:bound}, with no restriction on
-characteristic. The product \eqref{eq:repaired} is invariant under every
+roots. Taking their union gives \eqref{rss:eq:bound}, with no restriction on
+characteristic. The product \eqref{rss:eq:repaired} is invariant under every
 permutation of the $x_i$, so its coefficients are symmetric polynomials in
 the roots and hence belong to $K$. At a separating parameter,
-Lemma~\ref{lem:orbitfactor} applies.
+Lemma~\ref{rss:lem:orbitfactor} applies.
 \end{proof}
+
+\begin{writenote}[Existing formal counterparts]
+The project already formalizes this strategy for sextic block systems in
+\repo{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticSeparatingInvariants.lean}
+\cite{repoSextic}, whose docstring starts from the same observation that
+scalar pair and triple invariants can collide after specialization.
+\code{rootPolynomial_injective} (l.~115) is the argument of
+Lemma~\ref{rss:lem:descriptor} for six roots and arbitrary index subsets,
+over any commutative domain (no characteristic hypothesis).
+\code{exists_nat_eval_injective} (l.~1048) separates a finite injective
+family of multivariate polynomials by one natural-number evaluation point,
+via the combinatorial Nullstellensatz, over a \emph{characteristic-zero}
+domain, and \code{exists_pairDescriptor_separating_evaluation} and
+\code{exists_tripleDescriptor_separating_evaluation} (l.~1074, 1083) apply it
+to the sextic block descriptors. The resulting ``proved terminating unbounded
+search'' is described in \repo{Algebra/PolynomialFormulas/Decidability.md}
+(l.~284--290). These are analogues of the declarations
+\code{elementarySubsetDescriptor_injective} and
+\code{separatingParameter_exists} proposed in
+Section~\ref{rss:sec:formalization}. What
+Lemma~\ref{rss:lem:descriptor} and Theorem~\ref{rss:thm:repair} add is the
+general $(n,k)$ setting, the one-parameter compression $h_A(u)$, and an
+explicit hitting bound $B_{n,k}$ valid in every characteristic.
+\end{writenote}
 
 For septics and triples,
 \[
@@ -805,7 +1047,7 @@ interpreting Galois factor patterns.
 \subsection{How to compute the repaired product without knowing the roots}
 
 Regard $x_1,\ldots,x_n$ first as indeterminates. The product
-\eqref{eq:repaired} is a symmetric polynomial in them, with coefficients
+\eqref{rss:eq:repaired} is a symmetric polynomial in them, with coefficients
 in $\Z[u,Y]$. The fundamental theorem of symmetric polynomials expresses
 it as a polynomial in the elementary symmetric functions of the full root
 set. Substitution of the coefficients of the original monic polynomial
@@ -815,7 +1057,7 @@ radical solution.
 
 A deterministic specialization procedure is consequently available:
 compute $H_u$ for each chosen parameter, test
-$\gcd(H_u,H'_u)=1$, and stop at the first success. Theorem~\ref{thm:repair}
+$\gcd(H_u,H'_u)=1$, and stop at the first success. Theorem~\ref{rss:thm:repair}
 proves termination within the stated number of distinct candidates. It is
 a correctness and termination bound, not a claim of good asymptotic
 complexity. Expanding the universal symmetric polynomial can be expensive.
@@ -834,7 +1076,7 @@ also distinguishes subsets. Then one may use
 \]
 This has the appealing form of an ordinary subset sum after a common
 polynomial transformation of the roots. The elementary-symmetric version
-\eqref{eq:descriptor}, however, avoids division by $2,\ldots,k$ and works
+\eqref{rss:eq:descriptor}, however, avoids division by $2,\ldots,k$ and works
 in every characteristic. These two versions should not be silently
 identified in small characteristic.
 
@@ -845,22 +1087,22 @@ For $X^7-t$ over $\F_{29}(t)$, use $u=1$. Then
  h_A(1)=c_1(A)\alpha+c_2(A)\alpha^2+c_3(A)\alpha^3.
 \]
 The $35$ triples have distinct coefficient vectors
-$(c_1,c_2,c_3)$ by Lemma~\ref{lem:descriptor}, applied to the seven distinct
+$(c_1,c_2,c_3)$ by Lemma~\ref{rss:lem:descriptor}, applied to the seven distinct
 powers of $\zeta$. Since $1,\alpha,\ldots,\alpha^6$ are linearly
 independent over $\F_{29}(t)$, all $35$ displayed values are distinct.
 Thus one nonzero parameter already repairs this particular example.
 
 The five now-distinct irreducible factors have the following compact exact
 specification. For each of the five rows $(c_1,c_2,c_3)$ in the table in
-Theorem~\ref{thm:29}, take
+Theorem~\ref{rss:thm:29}, take
 \begin{equation}
  Q_A(Y)=\Res_Z\bigl(Z^7-t,
            Y-c_1Z-c_2Z^2-c_3Z^3\bigr).
- \label{eq:repairfactors}
+ \label{rss:eq:repairfactors}
 \end{equation}
 Each $Q_A$ is monic of degree seven, and
 $H_1=\prod_A Q_A$. They are distinct and irreducible by
-Lemma~\ref{lem:orbitfactor}. This is a coefficient-level description of
+Lemma~\ref{rss:lem:orbitfactor}. This is a coefficient-level description of
 the repaired factors, not merely a statement that some repair exists.
 
 For completeness, the affine solvable septic groups give the following
@@ -882,7 +1124,7 @@ $i\mapsto ai+b$, where the allowed multipliers form the indicated subgroup
 of $\F_7^\times$. The verifier also checks these four finite actions.
 
 \section{One-radical Fourier--Kummer reconstruction}
-\label{sec:atlas}
+\label{rss:sec:atlas}
 
 We now address a different failure mode: reconstructing roots from modes
 without incompatible radical branches. Assume throughout this section that
@@ -897,7 +1139,7 @@ We use the Fourier convention
  u_j=\sum_{i=0}^{p-1}\zeta^{-ij}x_i,
  \qquad
  x_i=\frac1p\sum_{j=0}^{p-1}\zeta^{ij}u_j.
- \label{eq:fourier}
+ \label{rss:eq:fourier}
 \end{equation}
 This differs by an index sign from the positive-exponent forward convention
 in the inspected Lean module. Substituting its character by its inverse
@@ -917,12 +1159,12 @@ $\{1,\ldots,p-1\}$ satisfying
  j e_j(k)\equiv k\pmod p,\qquad 1\leq k\leq p-1.
 \]
 
-\begin{theorem}[Coherent one-radical chart]\label{thm:chart}
+\begin{theorem}[Coherent one-radical chart]\label{rss:thm:chart}
 Assume $u_j\neq0$. Put
 \begin{equation}
  a_j=u_j^p,\qquad
  c_{j,k}=\frac{u_k}{u_j^{e_j(k)}}\quad(1\leq k\leq p-1).
- \label{eq:ratios}
+ \label{rss:eq:ratios}
 \end{equation}
 Then $a_j\in B^\times$, $c_{j,k}\in B$, and $c_{j,j}=1$.
 For \emph{any} root $\rho$ of $T^p-a_j$ in an algebraic closure of $E$,
@@ -930,12 +1172,12 @@ define
 \begin{equation}
  y_i=\frac1p\left(u_0+
        \sum_{k=1}^{p-1}\zeta^{ik}c_{j,k}\rho^{e_j(k)}\right).
- \label{eq:reconstruct}
+ \label{rss:eq:reconstruct}
 \end{equation}
 There exists $r\in\F_p$ such that
 \begin{equation}
  y_i=x_{i+rj^{-1}}\quad\text{for every }i\in\F_p.
- \label{eq:branchshift}
+ \label{rss:eq:branchshift}
 \end{equation}
 In particular, all branches give the same unordered root set, with no
 additional independent $p$th-root choices.
@@ -949,18 +1191,18 @@ The covariance formula gives
 The nonzero denominator is part of the hypothesis, not a convention about
 division by zero. Since $E$ already contains $u_j$ and all $p$th roots of
 unity, every root of $T^p-a_j$ is $\rho=\zeta^r u_j$ for some $r$.
-Substitution in \eqref{eq:reconstruct} yields
+Substitution in \eqref{rss:eq:reconstruct} yields
 \[
  c_{j,k}\rho^{e_j(k)}
  =\zeta^{r e_j(k)}u_k
  =\zeta^{rj^{-1}k}u_k.
 \]
-Fourier inversion now gives \eqref{eq:branchshift} simultaneously for all
+Fourier inversion now gives \eqref{rss:eq:branchshift} simultaneously for all
 $i$. Thus coherence is derived, not assumed separately for each mode.
 \end{proof}
 
-\begin{corollary}[Cyclic extension generated by a pivot]\label{cor:generator}
-Under the hypotheses of Theorem~\ref{thm:chart},
+\begin{corollary}[Cyclic extension generated by a pivot]\label{rss:cor:generator}
+Under the hypotheses of Theorem~\ref{rss:thm:chart},
 $[B(u_j):B]=p$. If $E/B$ is the cyclic extension of degree $p$, then
 $E=B(u_j)$ and $T^p-a_j$ is the minimal polynomial of $u_j$ over $B$.
 \end{corollary}
@@ -977,6 +1219,15 @@ claim that an entire radical expression over the original coefficient field
 uses the smallest possible number of radicals. The repository's warnings
 about stronger optimality assertions remain relevant.
 
+\begin{writenote}[An abstract counterpart in Rocq]
+\repo{Algebra/PolynomialFormulas/Coq/LazardCyclicKummerGenerator.v} proves
+\code{cyclic_kummer_generator} (l.~32): if $F/E$ is cyclic Galois of degree
+$n$ and $E$ contains a primitive $n$th root of unity, there is a nonzero
+$x\in F$ with $x^n\in E$ and $F=E(x)$ \cite{repoKummer}. It is the abstract
+existence form of Corollary~\ref{rss:cor:generator}; the corollary adds that
+any nonzero Fourier mode $u_j$ is such a generator.
+\end{writenote}
+
 \subsection{Transition maps on overlaps}
 
 Suppose $u_j,u_h\neq0$, and set $e=e_j(h)$. Then
@@ -988,7 +1239,7 @@ A branch $\rho_j^p=a_j$ determines the compatible branch
 \begin{equation}
  \rho_h=c_{j,h}\rho_j^e,
  \qquad \rho_h^p=a_h.
- \label{eq:transition}
+ \label{rss:eq:transition}
 \end{equation}
 It gives the same reconstructed ordered tuple when the chart coordinate
 conventions are matched. More explicitly, if
@@ -1003,14 +1254,14 @@ For the invariant coefficients, let $f=e_h(k)$ and $g=e_j(k)$. The integer
 is well defined. Direct substitution gives the exact transition rule
 \begin{equation}
  c_{h,k}=c_{j,k}c_{j,h}^{-f}a_j^{-m}.
- \label{eq:transitioncoeff}
+ \label{rss:eq:transitioncoeff}
 \end{equation}
 This exhibits an actual atlas, with compatible local coordinates, rather
 than unrelated formulas whose radical branches must be guessed anew.
 
 \subsection{What the chart theorem does not compute}
 
-The input to Theorem~\ref{thm:chart} includes the invariant data
+The input to Theorem~\ref{rss:thm:chart} includes the invariant data
 $u_0,a_j,c_{j,k}$ over $B$. Constructing these efficiently from the original
 polynomial coefficients is a separate invariant-theoretic task. The theorem
 does not hide that task inside a claim of an executable coefficient-only
@@ -1019,13 +1270,13 @@ between an invariant-recovery stage and an already formalized Fourier
 reconstruction stage.
 
 \section{Solvable prime-degree groups and the coefficient-field tower}
-\label{sec:groups}
+\label{rss:sec:groups}
 
 We record the precise field-theoretic setting in which the cyclic chart
 arises from a solvable prime-degree equation. The group-theoretic argument
 is included to make the dependence explicit.
 
-\begin{lemma}[Solvable transitive groups of prime degree]\label{lem:affine}
+\begin{lemma}[Solvable transitive groups of prime degree]\label{rss:lem:affine}
 A solvable transitive subgroup $G\leq S_p$ is conjugate to
 $C_p\rtimes C_d\leq\AGL_1(\F_p)$ for some $d\mid p-1$.
 \end{lemma}
@@ -1074,11 +1325,11 @@ The cyclic generator on $L/B_0$ extends to $E$ fixing $B$, so all the
 hypotheses of the Fourier--Kummer chart theorem are available after
 numbering the roots by this generator.
 
-\begin{corollary}[Field-theoretic solver decomposition]\label{cor:tower}
+\begin{corollary}[Field-theoretic solver decomposition]\label{rss:cor:tower}
 In characteristic zero, a solvable irreducible prime-degree equation admits
 the following decomposition: construct the abelian field $B$ of degree at
 most $(p-1)^2$ over $K$, select a nonzero Fourier mode, and perform the
-single cyclic $p$th-radical reconstruction of Theorem~\ref{thm:chart}.
+single cyclic $p$th-radical reconstruction of Theorem~\ref{rss:thm:chart}.
 For $p=5$ the displayed bound is $16$; for $p=7$ it is $36$.
 \end{corollary}
 
@@ -1095,14 +1346,14 @@ towers needs its own characteristic hypotheses and is not inferred merely
 from group solvability here.
 
 \section{Every nonempty Fourier support really occurs}
-\label{sec:support}
+\label{rss:sec:support}
 
 A formula that works for generic tuples need not survive vanishing Fourier
 modes. The following construction shows that no nonempty pattern can be
 excluded solely from rational irreducibility or from maximal solvable
 Galois group.
 
-\begin{theorem}[Full support realization]\label{thm:support}
+\begin{theorem}[Full support realization]\label{rss:thm:support}
 Let $p$ be an odd prime, let
 $\varnothing\neq S\subseteq\{1,\ldots,p-1\}$, and choose nonzero rational
 numbers $c_k$ for $k\in S$. Let $\alpha=2^{1/p}$ and let $\zeta$ be a
@@ -1110,7 +1361,7 @@ primitive $p$th root of unity. Put
 \begin{equation}
  P(Z)=\sum_{k\in S}c_k Z^k,\qquad
  x_i=P(\alpha\zeta^i),\quad 0\leq i\leq p-1.
- \label{eq:supportfamily}
+ \label{rss:eq:supportfamily}
 \end{equation}
 The $x_i$ are the roots of an irreducible rational polynomial of degree $p$.
 Its splitting field has Galois group $\AGL_1(\F_p)$. Relative to the
@@ -1119,7 +1370,7 @@ indicated cyclic numbering, its Fourier modes are
  u_0=0,\qquad
  u_k=\begin{cases}p c_k\alpha^k,&k\in S,\\0,&k\notin S.
  \end{cases}
- \label{eq:supportmodes}
+ \label{rss:eq:supportmodes}
 \end{equation}
 Thus all $2^{p-1}-1$ nonempty supports occur.
 \end{theorem}
@@ -1142,20 +1393,20 @@ $\mu_p$, and nontriviality forces degree $p$. Hence the full normal closure
 has degree $p(p-1)$ and its natural affine permutation action is all of
 $\AGL_1(\F_p)$.
 
-Finally, substitute \eqref{eq:supportfamily} into \eqref{eq:fourier}.
+Finally, substitute \eqref{rss:eq:supportfamily} into \eqref{rss:eq:fourier}.
 The geometric sum
 $\sum_i\zeta^{i(k-j)}$ equals $p$ when $k=j$ and zero otherwise,
-giving \eqref{eq:supportmodes}.
+giving \eqref{rss:eq:supportmodes}.
 \end{proof}
 
-\begin{corollary}[Sharpness of the coordinate-pivot cover]\label{cor:charts}
+\begin{corollary}[Sharpness of the coordinate-pivot cover]\label{rss:cor:charts}
 For a fixed primitive root of unity and a fixed cyclic numbering, none of
 the $p-1$ charts $u_j\neq0$ can be omitted if the chart family is required
 to cover every irreducible rational degree-$p$ example with full affine
 Galois group.
 \end{corollary}
 \begin{proof}
-Use Theorem~\ref{thm:support} with $S=\{j\}$. Only the $j$th chart is
+Use Theorem~\ref{rss:thm:support} with $S=\{j\}$. Only the $j$th chart is
 available.
 \end{proof}
 
@@ -1180,7 +1431,7 @@ $Z^p-2=0$ and $Y-P(Z)=0$ gives the following monic polynomials:
  &\hspace{1.8em}{}-630Y^2-434Y-126.
 \end{align*}
 Their irreducibility and Galois groups follow from
-Theorem~\ref{thm:support}, not from numerical root matching. The exact
+Theorem~\ref{rss:thm:support}, not from numerical root matching. The exact
 resultants are also regenerated by the verifier.
 
 For example, in the first septic case, $u_1=7\alpha$ and
@@ -1199,7 +1450,7 @@ Choosing $\rho=7\alpha\zeta^r$ recovers
 $x_{i+r}=\alpha\zeta^{i+r}+\alpha^2\zeta^{2(i+r)}$ exactly.
 
 \section{Rigidity of the exceptional septic configurations}
-\label{sec:rigidity}
+\label{rss:sec:rigidity}
 
 The bad-prime calculation can say more than where counterexamples exist.
 In characteristics $29$ and $2$, the small number of surviving cyclotomic
@@ -1208,7 +1459,7 @@ characters forces the entire root configuration into a special form.
 \subsection{Characteristic 29: precisely the translated binomial locus}
 
 \begin{theorem}[Complete characteristic-29 collision classification]
-\label{thm:29rigidity}
+\label{rss:thm:29rigidity}
 Let $K$ be any field of characteristic $29$, and let $f\in K[X]$ be monic,
 separable, and irreducible of degree seven. The following are equivalent:
 \begin{enumerate}[label=(\roman*)]
@@ -1223,7 +1474,7 @@ Whenever these conditions hold, the Galois group of $f$ is $C_7$, and
  R_{7,3,f}(Y)=
  \bigl((Y-3\eta)^7-12b\bigr)
  \bigl((Y-3\eta)^{28}-b^4\bigr).
- \label{eq:29rigidfactor}
+ \label{rss:eq:29rigidfactor}
 \end{equation}
 In particular, every noncyclic irreducible septic over a field of
 characteristic $29$ has separating triple sums.
@@ -1232,11 +1483,11 @@ characteristic $29$ has separating triple sums.
 The primitive seventh root $\zeta=23$ lies in the prime field, hence in
 $K$. Choose a Galois seven-cycle $\sigma$ and number the roots by it.
 Suppose a collision gives $q(\sigma)x_0=0$, with
-$q=q_{A,B}$ as in \eqref{eq:q}. The nonzero-character part of $q$ must
+$q=q_{A,B}$ as in \eqref{rss:eq:q}. The nonzero-character part of $q$ must
 have a zero: otherwise the B\'ezout argument in
-Theorem~\ref{thm:bad} would rule out the collision.
+Theorem~\ref{rss:thm:bad} would rule out the collision.
 
-Table~\ref{tab:triples} shows that a pair with a resultant divisible by
+Table~\ref{rss:tab:triples} shows that a pair with a resultant divisible by
 $29$ is affine-equivalent to $A=012$, $B=346$. For the representative
 \[
  q_*(T)=1+T+T^2-T^3-T^4-T^6,
@@ -1269,13 +1520,13 @@ $b=\beta^7\in K$. This proves (i)$\Rightarrow$(ii).
 
 Conversely, all roots of a polynomial in (ii) are
 $\eta+\beta\zeta^i$. The characteristic-$29$ equality
-\eqref{eq:collision29} persists after adding $\eta$ to each root, since
+\eqref{rss:eq:collision29} persists after adding $\eta$ to each root, since
 both sides contain three roots. Hence there is a triple-sum collision.
 The original polynomial is irreducible, and $K$ contains $\mu_7$, so
 $K(\beta)$ is its cyclic degree-seven splitting field. Finally, translating
 each root adds $3\eta$ to each triple sum. The five-orbit calculation in
-Theorem~\ref{thm:29}, with $t$ replaced by $b$, gives
-\eqref{eq:29rigidfactor}.
+Theorem~\ref{rss:thm:29}, with $t$ replaced by $b$, gives
+\eqref{rss:eq:29rigidfactor}.
 \end{proof}
 
 The conclusion is stronger than adding $29$ to a blanket list of excluded
@@ -1294,7 +1545,7 @@ vector space over $\F_2$. This standard structure is exactly the one forced
 by a septic subset-sum collision.
 
 \begin{theorem}[Complete characteristic-two collision classification]
-\label{thm:2rigidity}
+\label{rss:thm:2rigidity}
 Let $K$ have characteristic two, and let $f\in K[X]$ be monic, separable,
 and irreducible of degree seven. The following are equivalent:
 \begin{enumerate}[label=(\roman*)]
@@ -1303,7 +1554,7 @@ and irreducible of degree seven. The following are equivalent:
 \item For some $\eta,a,b,d\in K$, with $d\neq0$,
 \begin{equation}
  f(X)=F(X-\eta),\qquad F(Z)=Z^7+aZ^3+bZ+d.
- \label{eq:additivequotient}
+ \label{rss:eq:additivequotient}
 \end{equation}
 \end{enumerate}
 In this case the roots are $\eta+(W\setminus\{0\})$, where $W$ is a
@@ -1312,7 +1563,7 @@ $\eta$ is the trace of a root, and
 \begin{equation}
  R_{7,2,f}(Y)=F(Y)^3,\qquad
  R_{7,3,f}(Y)=(Y-\eta)^7f(Y)^4.
- \label{eq:Fanoresolvents}
+ \label{rss:eq:Fanoresolvents}
 \end{equation}
 Its Galois group embeds in $\operatorname{GL}_3(\F_2)$.
 \end{theorem}
@@ -1331,14 +1582,14 @@ $q(\sigma)x_0=0$. In characteristic two,
  \Phi_7(T)=(T^3+T+1)(T^3+T^2+1),
 \]
 with both cubic factors irreducible. The gcd of $q$ and $\Phi_7$ cannot
-be one, by the safe-direction proof of Theorem~\ref{thm:bad}. It cannot
+be one, by the safe-direction proof of Theorem~\ref{rss:thm:bad}. It cannot
 be all of $\Phi_7$ either: degree at most six would give $q=\Phi_7$,
 contradicting $q(1)=0$ and $\Phi_7(1)=1$. Therefore it is exactly one of
 the two cubic factors.
 
 The primitive roots in either factor have indices
 $\{1,2,4\}$ or $\{3,5,6\}$. Reversing the cyclic numbering interchanges
-these sets. Character projection as in Theorem~\ref{thm:29rigidity}
+these sets. Character projection as in Theorem~\ref{rss:thm:29rigidity}
 therefore shows that, after such a reversal if necessary, the roots have
 form
 \[
@@ -1377,7 +1628,7 @@ and exactly four sum to each nonzero $w$. These counts follow respectively
 by choosing one summand outside $\{0,w\}$, and by the seven Fano lines
 and the remaining $28$ triples. After translation by $\eta$, pair sums
 are unchanged and triple sums acquire $\eta$. This proves both collisions
-and the identities \eqref{eq:Fanoresolvents}.
+and the identities \eqref{rss:eq:Fanoresolvents}.
 
 Finally, every Galois automorphism fixes $\eta$ and permutes $W$ while
 preserving addition. Its action on $W$ is faithful because the roots
@@ -1400,7 +1651,7 @@ $v_1z_1+v_2z_2+v_3z_3$ with $v\in\F_2^3\setminus\{0\}$ are distinct,
 form one $G$-orbit, and generate $L$. Their monic root polynomial is
 therefore separable irreducible of degree seven over $K$, with splitting
 field $L$, and its nonzero root set is an additive three-space minus zero.
-Theorem~\ref{thm:2rigidity} applies.
+Theorem~\ref{rss:thm:2rigidity} applies.
 
 The group has order $(8-1)(8-2)(8-4)=168$. It is nonsolvable: it is
 generated by elementary transvections, and for distinct $i,j,k$ each
@@ -1417,7 +1668,7 @@ The exceptional characteristic seven remains a separate unipotent problem,
 since its cyclic action cannot be diagonalized by seventh roots of unity.
 
 \section{A global obstruction: the universal cyclic cover is not one Kummer equation}
-\label{sec:global}
+\label{rss:sec:global}
 
 The local pivot formulas work, but could a more ingenious single regular
 radical coordinate work on the entire distinct-root locus? The answer is
@@ -1431,7 +1682,7 @@ primitive $p$th root of unity. Put
 \begin{equation}
  A=k[x_0,\ldots,x_{p-1},\Delta^{-1}],\qquad
  \Delta=\prod_{i<j}(x_i-x_j)^2.
- \label{eq:configuration}
+ \label{rss:eq:configuration}
 \end{equation}
 Thus $\Spec A$ parametrizes ordered tuples of pairwise distinct roots.
 Let $C_p=\langle\sigma\rangle$ act by cyclically permuting the variables,
@@ -1450,7 +1701,7 @@ A global regular Kummer presentation would be a $C_p$-equivariant
 isomorphism
 \begin{equation}
  A\cong B[T]/(T^p-a),\qquad a\in B^\times,
- \label{eq:globalKummer}
+ \label{rss:eq:globalKummer}
 \end{equation}
 where a generator acts by $T\mapsto\zeta^jT$ for some $j\neq0$.
 The unit condition expresses the absence of ramification on the already
@@ -1476,7 +1727,7 @@ localizing at $\Delta$ gives
  \left\{c\prod_{a=1}^{(p-1)/2}\prod_{j\in\F_p}
           \delta_{a,j}^{n_{a,j}}:
        c\in k^\times,\ n_{a,j}\in\Z\right\}.
- \label{eq:units}
+ \label{rss:eq:units}
 \end{equation}
 The representation is unique once the chosen orientations are fixed.
 The cyclic action simply sends $\delta_{a,j}$ to $\delta_{a,j+1}$, without
@@ -1484,23 +1735,23 @@ an additional sign. In multiplicative-module notation,
 \begin{equation}
  A^\times\cong k^\times\times
                 \Z[C_p]^{(p-1)/2}.
- \label{eq:unitmodule}
+ \label{rss:eq:unitmodule}
 \end{equation}
 
-\begin{theorem}[No nontrivial eigenunit]\label{thm:eigenunit}
+\begin{theorem}[No nontrivial eigenunit]\label{rss:thm:eigenunit}
 If $u\in A^\times$ and $\sigma(u)=\zeta^r u$, then $r=0$ in $\F_p$.
 Consequently the universal cyclic cover has no presentation
-\eqref{eq:globalKummer}.
+\eqref{rss:eq:globalKummer}.
 \end{theorem}
 \begin{proof}
-Write $u$ as in \eqref{eq:units}. Equality up to a nonzero constant does
+Write $u$ as in \eqref{rss:eq:units}. Equality up to a nonzero constant does
 not change its exponents along the irreducible difference factors.
 Therefore $n_{a,j}=n_{a,j-1}$ for all $a,j$. For each $a$, the exponent is
 constant around its full cyclic orbit. The product
 $\prod_j\delta_{a,j}$ is itself invariant, and the constant $c$ is fixed.
 Thus $\sigma(u)=u$. Since $u\neq0$, this forces $\zeta^r=1$.
 
-In \eqref{eq:globalKummer}, the image of $T$ would be a unit, because
+In \eqref{rss:eq:globalKummer}, the image of $T$ would be a unit, because
 $T^p=a\in B^\times$, and would have a nontrivial eigencharacter. This is
 impossible by the first assertion. Even an initially unequivariant
 $B$-algebra presentation of this form would yield such an eigenunit:
@@ -1523,7 +1774,7 @@ are the algebraic counterparts of line bundles. Since $A$ is a localization
 of a polynomial unique factorization domain, every invertible $A$-module
 is free of rank one; in particular, $\Pic A=0$.
 
-\begin{lemma}[Descent calculation]\label{lem:descent}
+\begin{lemma}[Descent calculation]\label{rss:lem:descent}
 For the above torsor,
 \[
  \Pic B\cong H^1(C_p,A^\times).
@@ -1544,18 +1795,18 @@ respect tensor products. The use of $\Pic A=0$ is precisely what permits
 one generator after base change for every class.
 \end{proof}
 
-\begin{theorem}[Picard group and the intrinsic chart obstruction]\label{thm:picard}
+\begin{theorem}[Picard group and the intrinsic chart obstruction]\label{rss:thm:picard}
 For odd prime $p$,
 \begin{equation}
  \Pic\bigl(k[x_0,\ldots,x_{p-1},\Delta^{-1}]^{C_p}\bigr)
  \cong\Z/p\Z.
- \label{eq:picard}
+ \label{rss:eq:picard}
 \end{equation}
 The nonzero Fourier-character eigenspaces of $A$ are invertible
 $B$-modules representing the nonzero powers of a generator of this group.
 \end{theorem}
 \begin{proof}
-By \eqref{eq:unitmodule} and Lemma~\ref{lem:descent}, it suffices to
+By \eqref{rss:eq:unitmodule} and Lemma~\ref{rss:lem:descent}, it suffices to
 compute first cohomology of the factors. The action on $k^\times$ is
 trivial, so a cocycle is just a character. Thus
 \[
@@ -1570,7 +1821,7 @@ In coordinates this says that the sum of the $p$ coefficients of $v$ is
 zero. Every such vector is a cyclic difference $(\sigma-1)w$: solve for
 the coefficients of $w$ by successive partial sums, whose consistency
 around the cycle is exactly the zero-sum condition. Hence
-$H^1(C_p,\Z[C_p])=0$. Equation~\eqref{eq:picard} follows.
+$H^1(C_p,\Z[C_p])=0$. Equation~\eqref{rss:eq:picard} follows.
 
 For each $r\in\F_p$, let
 \[
@@ -1592,7 +1843,7 @@ allowed by Kummer theory.
 
 \subsection{The Fourier charts trivialize the obstruction locally}
 
-Define universal modes $u_j$ by \eqref{eq:fourier} in $A$, and let
+Define universal modes $u_j$ by \eqref{rss:eq:fourier} in $A$, and let
 $a_j=u_j^p\in B$. The basic opens
 \[
  D(a_j)\subseteq\Spec B,\qquad j=1,\ldots,p-1,
@@ -1607,7 +1858,7 @@ to become invariant. Consequently
 \begin{equation}
  A[a_j^{-1}]\cong
  B[a_j^{-1}][T]/(T^p-a_j),\qquad T\longmapsto u_j.
- \label{eq:localKummer}
+ \label{rss:eq:localKummer}
 \end{equation}
 To see that there are no missing elements, decompose an element into its
 $p$ character components by averaging with powers of $\zeta$; each
@@ -1615,19 +1866,35 @@ component is an invariant multiple of one of $1,u_j,\ldots,u_j^{p-1}$.
 These powers are independent by their distinct characters, and the monic
 relation is exactly $u_j^p-a_j$.
 
-The overlap formulas \eqref{eq:transition}--\eqref{eq:transitioncoeff}
+The overlap formulas \eqref{rss:eq:transition}--\eqref{rss:eq:transitioncoeff}
 are the concrete local gluing data for this nontrivial torsor. Theorem~
-\ref{thm:eigenunit} says that no single chart of the same global regular
-kind can replace the cover. Corollary~\ref{cor:charts} makes the narrower
+\ref{rss:thm:eigenunit} says that no single chart of the same global regular
+kind can replace the cover. Corollary~\ref{rss:cor:charts} makes the narrower
 coordinate-cover bound sharp even on rational examples.
 
 \section{A practical proof architecture for ProveIt}
-\label{sec:formalization}
+\label{rss:sec:formalization}
 
 The article suggests a modular extension rather than a monolithic new
 formula. Existing Fourier inversion can remain unchanged. Each added
 module should expose the assumptions needed by its consumers and avoid a
 statement whose hypotheses already contain the desired factorization.
+
+\begin{writenote}[Status of this section]
+This section is a plan. None of it is formalized, and no Lean or Rocq code
+was delivered with the manuscript or is shipped with this report. Two facts
+about the tree should be weighed before acting on it. First, descriptor
+separation already exists for sextics in
+\repo{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticSeparatingInvariants.lean}
+(note after Theorem~\ref{rss:thm:repair}); the proposed
+\code{elementarySubsetDescriptor_injective} and
+\code{separatingParameter_exists} would generalize it rather than start from
+nothing. Second, the arbitrary-degree Fourier core has a Rocq twin,
+\repo{Algebra/PolynomialFormulas/Coq/LazardGeneralFourier.v} (note in
+Section~\ref{rss:sec:boundary}), so
+the atlas cluster could be built on either prover. The plan proposes Lean
+only.
+\end{writenote}
 
 \subsection{Separating the four certificates}
 
@@ -1641,7 +1908,7 @@ relevant finite set, or a proved squarefreeness test for its orbit product.
 coefficients to $u_0,a_j,c_{j,k}$ in a specified intermediate field.
 \item \textbf{Branch data:} one nonzero pivot and one equation
 $\rho^p=a_j$; coherence of all reconstructed modes then follows from
-Theorem~\ref{thm:chart}.
+Theorem~\ref{rss:thm:chart}.
 \end{enumerate}
 The second item is not implied by the first. The fourth need not contain
 $p-1$ independent radical choices. These distinctions address two different
@@ -1715,7 +1982,7 @@ and makes exceptional support cases explicit rather than leaving them to a
 generic nonvanishing assumption.
 
 \section{Further research questions and topics}
-\label{sec:questions}
+\label{rss:sec:questions}
 
 The questions below are proposed follow-on research problems. Their status
 as previously published open problems has not been asserted. Each has a
@@ -1726,7 +1993,7 @@ Determine $\mathcal B_{p,k}$ for $p=11,13$ and the middle subset sizes.
 Can the affine-orbit computation be replaced by a structural description
 of the prime divisors of cyclotomic norms of balanced $\{0,\pm1\}$ vectors?
 \end{question}
-Theorem~\ref{thm:bad} makes this a finite exact problem with guaranteed
+Theorem~\ref{rss:thm:bad} makes this a finite exact problem with guaranteed
 counterexamples for every reported bad prime. A useful first deliverable is
 an independently checked table, followed by explanations of unusually
 large prime divisors. Complementation, cancellation of common subset
@@ -1738,7 +2005,7 @@ Galois groups can occur for colliding examples? Can the characteristic-$2$
 and characteristic-$29$ rigidity classifications for septics be extended
 to a complete classification in characteristic seven?
 \end{question}
-Theorems~\ref{thm:29rigidity} and~\ref{thm:2rigidity} already answer two
+Theorems~\ref{rss:thm:29rigidity} and~\ref{rss:thm:2rigidity} already answer two
 of the septic cases: characteristic $29$ forces a cyclic binomial
 configuration, whereas characteristic two permits a nonsolvable group of
 order $168$. For higher primes, the number and arrangement of common
@@ -1783,7 +2050,7 @@ configurations, beginning with the affine prime-degree groups.
 \end{question}
 The descent method still reduces the problem to $H^1(H,A^\times)$.
 However, permutations can reverse orientations of difference factors, so
-the clean cyclic splitting \eqref{eq:unitmodule} can acquire character
+the clean cyclic splitting \eqref{rss:eq:unitmodule} can acquire character
 corrections. Those signs must be derived rather than discarded.
 
 \begin{question}[Coefficient-efficient invariant ratios]
@@ -1848,7 +2115,7 @@ and kernel formalization as explicit next tasks.
 
 \appendix
 \section{Reproducibility and the finite proof boundary}
-\label{app:repro}
+\label{rss:app:repro}
 
 \subsection{Files in the archive}
 
@@ -1871,10 +2138,29 @@ pdflatex -interaction=nonstopmode -halt-on-error article.tex
 The source uses common LaTeX packages and has no external figure or
 bibliography-file dependency.
 
+\begin{writenote}[Shipped names]
+The commands above use the delivery layout. In this report the scripts are
+\code{code/verify_results.py} and \code{code/audit_certificates.py}, the
+certificate files are in \code{data/} (not \code{certificates/}), and the
+delivered PDF is not shipped. Run from the report directory, writing fresh
+outputs to a scratch directory so that the shipped records are never
+overwritten:
+\begin{lstlisting}
+uv run --no-project --with sympy==1.14.0 python code/verify_results.py --out <tmpdir>
+py code/audit_certificates.py --cert data/cyclotomic_norm_certificates.json
+\end{lstlisting}
+The auditor is read-only without \code{--out} and prints its report, which
+equals \code{data/independent_audit_report.json}. At the intake the fresh
+outputs of the verifier equalled the files in \code{data/} after removing
+carriage returns; the \code{"python"} field of
+\code{verification_report.json} records the interpreter and may differ.
+\end{writenote}
+
 \subsection{Recorded checks}
 
 The executed full verification run used Python 3.13.5 and SymPy 1.14.0.
-The report \code{certificates/verification_report.json} records a passing
+The report \code{certificates/verification_report.json}\footnote{[write]
+Shipped in this report as \code{data/verification_report.json}.} records a passing
 result for:
 \begin{center}
 \begin{tabular}{@{}lr@{}}
@@ -1902,7 +2188,7 @@ The Fourier test algebra is
 \]
 Its elements are stored with exact rational coefficients in the basis
 $\alpha^a\zeta^b$, $0\leq a<p$, $0\leq b<p-1$.
-The field degree calculation in Theorem~\ref{thm:support} justifies this
+The field degree calculation in Theorem~\ref{rss:thm:support} justifies this
 basis. The tests run through every nonempty support with coefficient one,
 every available pivot, all $p$ choices of the radical branch, and all $p$
 reconstructed roots. General rational coefficients are covered by the
@@ -1911,7 +2197,7 @@ proof, not exhaustively by this finite test.
 The checks do not prove that the cited repository modules compile in a
 fresh environment, and no Lean or Rocq process was run for this article.
 Nor do these checks verify the Picard calculation: that part is the written
-descent proof in Section~\ref{sec:global}. Keeping these boundaries explicit
+descent proof in Section~\ref{rss:sec:global}. Keeping these boundaries explicit
 prevents an exact computation from being mistaken for an unrelated formal
 verification claim.
 
@@ -1943,7 +2229,7 @@ Picard theorem, and no dependence of the Fourier chart theorem on the
 finite norm table. The three strands can be independently reviewed and
 formalized.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 
 \bibitem{Lazard2004}
 Daniel Lazard,
@@ -1958,7 +2244,7 @@ International Journal of Scientific and Research Publications,
 4(12), December 2014, pp.~1--10.
 \url{https://www.ijsrp.org/research-paper-1214/ijsrp-p3679.pdf}.
 Especially Proposition~7 and Section~5.2. The conclusions drawn in
-Section~\ref{sec:published} concern separation and distinct factors, not an
+Section~\ref{rss:sec:published} concern separation and distinct factors, not an
 unqualified refutation of radical solvability.
 
 \bibitem{StacksKummer}
@@ -1992,6 +2278,35 @@ ProveIt project,
 \emph{Arbitrary-degree Fourier reconstruction in Lazard's convention},
 \code{LazardGeneralFourier.lean}, inspected in the pinned snapshot.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardGeneralFourier.lean}.
+
+% [write] The four entries below were added when the manuscript was written
+% into the collection.  The cited files are identical at the pin and at
+% batch 36, so the pinned URLs are used.
+\bibitem{repoFourierRocq}
+ProveIt project, [write]
+\code{Algebra/PolynomialFormulas/Coq/LazardGeneralFourier.v}, the Rocq
+counterpart of \code{LazardGeneralFourier.lean}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/Coq/LazardGeneralFourier.v}.
+
+\bibitem{repoSextic}
+ProveIt project, [write]
+\code{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticSeparatingInvariants.lean}
+and \code{Algebra/PolynomialFormulas/Decidability.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticSeparatingInvariants.lean}.
+
+\bibitem{repoKummer}
+ProveIt project, [write]
+\code{Algebra/PolynomialFormulas/Coq/LazardCyclicKummerGenerator.v}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/PolynomialFormulas/Coq/LazardCyclicKummerGenerator.v}.
+
+\bibitem{repoCounterexamples}
+ProveIt project, [write]
+\code{LazardAlternatingResolventCounterexample} and
+\code{LazardArtinSchreierRadicalCounterexample}, in
+\code{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/} (\code{.lean}) and
+\code{Algebra/PolynomialFormulas/Coq/} (\code{.v}); status in
+\code{Algebra/PolynomialFormulas/LazardPaperClaimCrosswalk.md}, rows at
+l.~200 and~202.
 
 \end{thebibliography}
 \end{document}
