@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has four live navigation targets:
+This theme has five live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -12,6 +12,9 @@ This theme has four live navigation targets:
 - [`Geometric_Uniform_Entropic_Edgeworth/`](Geometric_Uniform_Entropic_Edgeworth/)
   — an archival arrival of 2026-09-28 that claims a proof of the
   information frontier's `conj:entropic-edgeworth`; unreviewed.
+- [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
+  — an archival arrival of 2026-09-28 on the stability of recovering the
+  uniform-factor spectrum from the law; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -160,6 +163,22 @@ all-orders expansion of the entropy deficit of the geometric uniform law as
 finite-prefix extensions.  It does not address `conj:deficit-monotone`.
 The claim has not been reviewed, the information frontier still states the
 conjecture as open, and no Lean statement exists.
+
+[`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
+holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
+Instability Near the Fabius–Rvachev Law*, filed on 2026-09-28 by a quick
+archival intake (20-page A4 PDF, 1,438-line source, an exact SymPy check
+program with 90-digit diagnostics).  It asks how reliably the half-lengths
+`a_j` of `Σ_j a_j U_j` can be recovered from the law near the dyadic
+spectrum: finitely many moments never suffice (an analytic isomoment curve
+through the dyadic spectrum), and explicit Chebyshev pairs with
+polynomially separated spectra but exponentially close laws rule out any
+Hölder inverse and give a `(log 1/ε)^{−2}` modulus and a `(log N)^{−2}`
+minimax lower bound.  Full-law identifiability is credited to
+Billey–Swanson.  The exact dyadic-scale identifiability of
+`GeneralizedRvachevIdentifiability.lean` and the factor classification of
+`../spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/`
+are related and not cited.  Unreviewed; no Lean statement.
 
 ## Formalization notes
 

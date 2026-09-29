@@ -116,6 +116,22 @@ of an existing draft; semantic consolidation is deferred to the post-
   or logarithmic carrier, and dense Liouville families with
   `t^{2−1/k}` Laplace corrections.  Unreviewed; the matrix-dilated report
   still states both conjectures; no Lean statement.
+- [`Sharp_Conditioning_Laws_Fabius_Lacunary_Series/`](Sharp_Conditioning_Laws_Fabius_Lacunary_Series/),
+  *Sharp Conditioning Laws for Fabius and Lacunary Random Series*
+  (23-page US Letter PDF, 1,655-line source, a NumPy/SciPy check and
+  Monte Carlo program), filed on 2026-09-28 by a quick archival intake from
+  the repository-level `docs/incoming/` drop zone.  It describes the whole
+  random-series configuration conditioned on a small sum `S ≤ x`, for every
+  uniformly lacunary weight sequence and in particular for the Fabius law:
+  a full-product total-variation approximation by a Dirichlet simplex, a
+  tilted tail and an exponential slack; the exact variance-fraction
+  threshold for how many summands can be observed before the conditioning
+  becomes detectable; a Brownian bridge, Gumbel extremes and a
+  phase-dependent boundary layer for geometric weights.  The finite-i.i.d.
+  phenomenon is credited to Diaconis–Freedman.  It complements the scalar
+  endpoint asymptotics of `docs/ASYMPTOTIC_COMPLETION_AUDIT.md` and the
+  rotating endpoint laws above.  Unreviewed; its numerics are not
+  certificates; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

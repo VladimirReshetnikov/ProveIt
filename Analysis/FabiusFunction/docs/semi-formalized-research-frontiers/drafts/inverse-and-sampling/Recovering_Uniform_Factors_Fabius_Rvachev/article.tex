@@ -1,0 +1,1438 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Recovering Uniform Factors: Exact Moment Fibres and Logarithmic Instability Near the Fabius--Rvachev Law},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Inverse problems for infinite convolutions of uniform distributions}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Recovering uniform factors}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Law}{Law}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\A}{\mathcal A}
+\newcommand{\K}{\mathcal K}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\sort}{\operatorname{sort}_{\downarrow}}
+\newcommand{\repoSHA}{74f7f5bdba1aa728b340509701a0fa4e45e8dbf3}
+
+\title{\textbf{Recovering Uniform Factors}\\[4pt]
+\large Exact Moment Fibres and Logarithmic Instability\\
+Near the Fabius--Rvachev Law}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical draft; proofs and reproducible checks included}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $X_a=\sum_{j\ge1}a_jU_j$, where the $U_j$ are independent uniform random
+variables on $[-1,1]$ and $a$ is a decreasing, nonnegative, summable sequence.
+The distribution of $X_a$ determines $a$ uniquely; this is an established
+identifiability theorem, not a new claim of this article. We investigate how
+much information survives finite moments and small errors in the distribution.
+
+First, for every $M$, we construct a nonconstant real-analytic family through
+the dyadic Fabius--Rvachev spectrum that preserves its exact support and all
+moments through degree $2M+1$. Second, Chebyshev level sets give explicit
+pairs $a_n^+,a_n^-$ whose laws have equal moments through degree $2n-1$ but
+satisfy
+\[
+ d_\infty(a_n^+,a_n^-)\ge\frac1{48n^2},\qquad
+ \TV(\Law(X_{a_n^+}),\Law(X_{a_n^-}))
+ \le 40n(6/7)^{2n-1}.
+\]
+The laws converge in total variation to the Fabius--Rvachev law. A common
+normalization fixes their variance at $1/9$, keeps support inside $[-3,3]$,
+and preserves uniform bounds on every derivative of their densities; the
+spectral lower bound then becomes $1/(96n^2)$.
+Consequently the inverse is not pairwise H\"older on any total-variation
+neighborhood of that law. Its local modulus is bounded below by a constant
+times $(\log(1/\eps))^{-2}$, and estimation from $N$ independent observations
+has a corresponding minimax lower bound of order $(\log N)^{-2}$.
+We give complete proofs, positive recovery results under finite-dimensional
+separation assumptions, and a reproducible exact-arithmetic verification
+suite. The exponent is a lower-bound exponent, not a proved optimal rate.
+\end{abstract}
+
+\noindent\textbf{Status.} The quantitative construction is presented as a proposed
+research contribution. Its priority has not been established by an exhaustive
+literature search. No claim to solve a named, previously published open
+conjecture is made. The proofs below are conventional and unrefereed; neither
+they nor the accompanying computations constitute a Lean formalization.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The inverse question and its relation to ProveIt}
+\label{sec:intro}
+
+\subsection{From a forward construction to an inverse problem}
+
+The Fabius-function part of ProveIt develops the Rvachev up-function,
+infinite products of sinc functions, geometric-uniform sums, and their
+moment identities. Its project documentation explicitly identifies the two
+papers of Arias de Reyna as foundational sources
+\cite{ProveIt,AriasDefinition,AriasArithmetic}. The natural forward question
+is to determine a distribution, its transform, or its moments from the
+lengths of its independent uniform summands. Here we reverse that direction:
+\emph{how reliably can those lengths be recovered from the distribution?}
+
+This question has three different meanings. With the entire distribution
+known exactly, identifiability is already understood. With only finitely
+many exact moments, there can be infinitely many different answers. With
+an approximately known entire distribution, an inverse can be continuous
+and nevertheless fail every power-law error bound. The article separates
+these issues rather than using the word ``recoverable'' for all three.
+
+Billey and Swanson prove identifiability for generalized uniform sums in a
+larger square-summable parameter space; see their Theorem~3.13 and
+Lemma~3.11 \cite{BilleySwanson}. Their Theorem~1.15 gives a compact
+homeomorphic parametrization after allowing a Gaussian component in a
+suitable standardized space. We do not claim those results as new. The
+specific contribution here is an explicit, quantitatively ill-conditioned
+family inside the compact-support uniform-convolution class, localized near
+a distinguished smooth law already central to ProveIt.
+
+Classical moment inversion is also known to be ill-conditioned. For example,
+Gerth, Hofmann, Hofmann, and Kindermann analyze conditional stability and
+failure of H\"older stability for the Hausdorff moment problem
+\cite{GerthEtAl}. That general theory does not by itself produce the objects
+needed here: every parameter must be a genuine multiset of positive uniform
+half-lengths, the observable is the full probability law rather than just a
+sequence of noisy moments, and the laws must remain uniformly smooth.
+Our construction meets those constraints directly.
+
+\subsection{Notation and the main conclusion}
+
+Let $U_1,U_2,\ldots$ be independent and uniform on $[-1,1]$. For $L>0$ set
+\[
+ \A_L=\left\{a=(a_j)_{j\ge1}:a_1\ge a_2\ge\cdots\ge0,
+                 \quad\sum_{j\ge1}a_j\le L\right\}.
+\]
+Define
+\[
+ X_a=\sum_{j\ge1}a_jU_j,\qquad \mu_a=\Law(X_a),\qquad
+ d_\infty(a,b)=\sup_{j\ge1}|a_j-b_j|.
+\]
+Zero coefficients are padding, not additional identifiable factors. The sum
+converges absolutely for every outcome. We use
+\[
+ \TV(\mu,\nu)=\sup_{B\text{ Borel}}|\mu(B)-\nu(B)|
+             =\frac12\norm{f-g}_1
+\]
+when densities $f,g$ exist. All logarithms without a subscript are natural.
+Write
+\[
+ a^0=(2^{-1},2^{-2},\ldots),\qquad \mu_0=\mu_{a^0},\qquad f=\up
+\]
+for the density of $\mu_0$. In this normalization the support is $[-1,1]$,
+$f(0)=1$, and $\Var(X_{a^0})=1/9$; these facts are proved in
+\cref{sec:fabius}.
+
+\begin{definition}\label{def:K}
+Let $\K$ be the subset of $\A_3$ consisting of spectra whose laws have
+variance $1/9$ and a density $g\in C_c^\infty(\R)$ satisfying, for every
+integer $r\ge0$,
+\[
+ \norm{g^{(r)}}_\infty\le 2^{r+1}\norm{f^{(r)}}_\infty.
+\]
+Thus $\K$ imposes a common support bound, an exact variance, and a fixed
+bound for each derivative order. It contains $a^0$.
+\end{definition}
+
+\begin{theorem}[Quantitative instability near the dyadic law]
+\label{thm:main}
+For every $n\ge2$ there are explicit spectra $\widetilde a_n^\pm\in\K$
+with the following properties:
+\begin{align}
+ d_\infty(\widetilde a_n^+,\widetilde a_n^-)&\ge\frac1{96n^2},
+                                                    \label{eq:main-gap}\\
+ \TV(\mu_{\widetilde a_n^+},\mu_{\widetilde a_n^-})
+     &\le \eps_n:=\min\{1,40n(6/7)^{2n-1}\},          \label{eq:main-tv}\\
+ \TV(\mu_{\widetilde a_n^\pm},\mu_0)
+     &\le \sqrt{\frac5{12n}}+\frac{45}{16n}.           \label{eq:main-near}
+\end{align}
+The two laws have identical moments through degree $2n-1$ and different
+moments in degree $2n$.
+
+For every $r>0$ and every $C,\alpha>0$, the estimate
+\[
+ d_\infty(a,b)\le C\TV(\mu_a,\mu_b)^\alpha
+\]
+fails for some $a,b\in\K$ with both laws in the total-variation $r$-ball
+about $\mu_0$. Moreover, for all sufficiently small $\eps>0$, the local
+inverse modulus in that ball is at least
+\[
+ \frac{1}{11616[\log(100/\eps)]^2}.
+\]
+\end{theorem}
+
+The proof occupies \cref{sec:chebyshev,sec:fourier,sec:fixed,sec:consequences}.
+The important feature is not the numerical constant. It is the contrast
+between a polynomial separation of parameters and an exponentially small
+separation of full laws, under simultaneous smoothness and variance control.
+
+\subsection{What is established, proposed, and left unresolved}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.31\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Statement & Status in this article\\
+\midrule
+Cumulants and exact identifiability & Established background; re-derived with
+attribution to Billey--Swanson.\\
+Finite moment fibres through $a^0$ & A proved local construction; not advertised
+as a named open-conjecture solution.\\
+Chebyshev pairs and explicit TV bound & Proposed quantitative contribution;
+proved for every $n$, independently of numerical tests.\\
+Fixed-variance, uniformly smooth instability & Consequence of the explicit
+construction, with all normalization constants given.\\
+Logarithmic statistical obstruction & A lower bound proved by a two-point
+argument, not an optimal minimax rate.\\
+Optimal inverse modulus and pointwise stability at $a^0$ & Not settled here;
+precise questions appear in \cref{sec:questions}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository review was targeted, not an exhaustive audit of ProveIt.
+The source reference is pinned to the observed commit
+\texttt{\repoSHA}; the accompanying source notes identify which documentation
+and outside literature were consulted.
+
+\section{Transforms, cumulants, and qualitative recovery}
+\label{sec:background}
+
+\subsection{Support and the power-sum encoding}
+
+\begin{proposition}\label{prop:cumulants}
+For $a\in\A_L$, put $S(a)=\sum_j a_j$ and $p_k(a)=\sum_j a_j^{2k}$.
+Then
+\begin{align}
+ \supp\mu_a&=[-S(a),S(a)],                            \label{eq:support}\\
+ \phi_a(t):=\E e^{itX_a}&=\prod_{j\ge1}\sinc(a_jt),  \label{eq:char}\\
+ \kappa_{2k}(X_a)&=\frac{2^{2k}B_{2k}}{2k}p_k(a)
+       \quad(k\ge1),                                \label{eq:cumulants}\\
+ \kappa_{2k+1}(X_a)&=0\quad(k\ge0).                  \label{eq:odd}
+\end{align}
+Here $\sinc z=\sin z/z$, with its removable value at zero, and $B_m$
+are the Bernoulli numbers with $B_2=1/6$ and $B_4=-1/30$.
+For $|t|<\pi/a_1$ when $a_1>0$,
+\begin{equation}\label{eq:log-sinc}
+ \log\phi_a(t)
+ =-\sum_{k\ge1}\frac{\zeta(2k)}{k\pi^{2k}}p_k(a)t^{2k}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The map from the product cube $[-1,1]^{\N}$ to $\R$ given by
+$(u_j)\mapsto\sum_j a_ju_j$ is continuous: its tails are bounded uniformly
+by $\sum_{j>N}a_j$. Its image is the entire interval in
+\eqref{eq:support}, since the constant sequence $u_j=x/S(a)$ realizes any
+point of that interval when $S(a)>0$. Product uniform measure gives positive
+measure to every nonempty basic open cylinder. Continuity therefore implies
+that every point of the image is in the support of its pushforward. The
+case $S(a)=0$ is immediate.
+
+Independence gives \eqref{eq:char} first for partial sums and then by
+bounded convergence. Euler's product for sine yields
+\[
+ \log\sinc z=-\sum_{k\ge1}\frac{\zeta(2k)}{k\pi^{2k}}z^{2k},
+                  \qquad |z|<\pi.
+\]
+For $|t|<\pi/a_1$, the double series is absolutely convergent. Indeed,
+$p_k(a)\le a_1^{2k-2}p_1(a)$, so after extracting $t^2p_1(a)$ the
+remaining series is geometrically dominated. This justifies summation over
+$j$ and gives \eqref{eq:log-sinc}.
+
+Alternatively expand
+$\log(\sinh z/z)=\sum_{k\ge1}2^{2k}B_{2k}z^{2k}/(2k(2k)!)$
+near zero and use additivity of log moment-generating functions. The
+coefficient of $z^{2k}/(2k)!$ is \eqref{eq:cumulants}. Symmetry gives
+\eqref{eq:odd}. In particular, $\Var(X_a)=p_1(a)/3$.
+\end{proof}
+
+Moment and cumulant lists determine each other triangularly. Thus equality
+of $p_1,\ldots,p_M$ is equivalent to equality of even cumulants through
+order $2M$, and it implies equality of all moments through degree $2M+1$.
+The extra odd degree uses symmetry. Since every $B_{2k}$ is nonzero, no
+even power sum disappears from the full cumulant sequence.
+
+\subsection{The known uniqueness theorem}
+
+\begin{theorem}[Identifiability; a summable special case of Billey--Swanson]
+\label{thm:unique}
+If $a,b\in\A_L$ and $\mu_a=\mu_b$, then $a=b$.
+\end{theorem}
+
+\begin{proof}
+Equal laws have equal cumulants and hence equal $p_k$. For any nonzero
+spectrum let $A=a_1>0$. Then
+\[
+ A^{2k}\le p_k(a)\le A^{2k-2}p_1(a),
+\]
+so $p_k(a)^{1/(2k)}\to A$. Its multiplicity is finite and equals
+\[
+ \lim_{k\to\infty}\frac{p_k(a)}{A^{2k}}
+ =\sum_j\lim_{k\to\infty}(a_j/A)^{2k}
+ =\#\{j:a_j=A\}.
+\]
+Dominated convergence is justified by the summable majorant $(a_j/A)^2$.
+Remove these largest equal entries from both spectra and subtract their
+contribution from every power sum. Repeat. Every positive coefficient at a
+fixed rank is reached after finitely many such removals. If a remaining
+power-sum sequence vanishes, all its coefficients vanish. This recovers the
+whole padded decreasing sequence.
+\end{proof}
+
+The proof is included to specify exactly what the inverse means.
+It does not turn the already known theorem into a new result. Nor is its
+limit procedure a robust numerical algorithm: taking high cumulants and
+successive deflations can amplify observational errors severely.
+
+\subsection{Continuity without a useful power-law modulus}
+
+\begin{proposition}\label{prop:compact}
+The space $\A_L$ is compact in $\ell^2$. Its map to laws is continuous in
+the quadratic Wasserstein distance $W_2$, with
+\begin{equation}\label{eq:forward-w2}
+ W_2(\mu_a,\mu_b)\le\frac{\norm{a-b}_2}{\sqrt3}.
+\end{equation}
+It is a homeomorphism onto its image in $W_2$ and, equivalently on this
+bounded-support image, in the weak topology.
+\end{proposition}
+
+\begin{proof}
+Monotonicity implies $a_j\le L/j$. Consequently
+$\sum_{j>N}a_j^2\le L^2\sum_{j>N}j^{-2}\le L^2/N$, uniformly in
+$a\in\A_L$. A coordinatewise diagonal subsequence therefore converges in
+$\ell^2$. Its limit is decreasing and nonnegative, and has sum at most $L$
+by Fatou's lemma. This proves compactness.
+
+Couple both random series with the same $U_j$. Independence and centering
+give $\E|X_a-X_b|^2=\norm{a-b}_2^2/3$, which proves
+\eqref{eq:forward-w2}. By \cref{thm:unique}, the continuous map is
+injective. A continuous injection from a compact space into a Hausdorff
+space is a homeomorphism onto its image. Finally, all supports are in
+$[-L,L]$, where weak convergence implies convergence of second moments
+and hence $W_2$ convergence.
+\end{proof}
+
+In particular an inverse modulus tending to zero exists. The main theorem
+concerns its \emph{rate}. There is no contradiction between a compact
+homeomorphism and a failure of every H\"older estimate. We make no claim that
+the forward map is globally continuous in total variation: approaching a
+point mass is an elementary obstruction to such a statement.
+
+\begin{proposition}[A largest-factor certificate]\label{prop:largest}
+If $a\in\A_L$, $L>0$, and $k\ge1$, then
+\begin{equation}\label{eq:largest}
+ \left(\frac{p_k(a)}L\right)^{1/(2k-1)}
+       \le a_1\le p_k(a)^{1/(2k)}.
+\end{equation}
+The length of this interval is at most $L/(2k)$.
+\end{proposition}
+
+\begin{proof}
+The upper estimate uses $a_1^{2k}\le p_k$; the lower uses
+$p_k\le a_1^{2k-1}\sum_j a_j\le La_1^{2k-1}$.
+Put $q=p_k/L^{2k}\in[0,1]$. The interval length divided by $L$ is
+$q^{1/(2k)}-q^{1/(2k-1)}$. Its maximum on $[0,1]$ is
+\[
+ \frac1{2k}\left(\frac{2k-1}{2k}\right)^{2k-1}\le\frac1{2k},
+\]
+by differentiation, including the endpoint values zero.
+\end{proof}
+
+If a certified measurement satisfies $|\widehat p_k-p_k|\le\delta$, the
+same proof gives the enclosing interval
+\[
+ \left[
+  \left(\frac{\max\{0,\widehat p_k-\delta\}}{L}\right)^{1/(2k-1)},
+  (\widehat p_k+\delta)^{1/(2k)}
+ \right]\cap[0,L].
+\]
+This is a statement about a \emph{certified power-sum error}. It does not
+supply such an error from raw empirical moments, and it does not establish
+a rate for recovery of the entire spectrum.
+
+\section{The smooth dyadic reference law}
+\label{sec:fabius}
+
+\begin{proposition}\label{prop:base}
+The random variable $X_0=\sum_{j\ge1}2^{-j}U_j$ has an even, unimodal
+density $f\in C_c^\infty(\R)$ with
+\[
+ \supp f=[-1,1],\qquad f(0)=1,\qquad
+ \norm{f'}_1=2,\qquad \Var(X_0)=\frac19.
+\]
+This is the usual Rvachev up-density in the normalization of
+\cite{AriasDefinition}.
+\end{proposition}
+
+\begin{proof}
+Support and variance follow from \cref{prop:cumulants} and
+$\sum_{j\ge1}4^{-j}=1/3$. For any fixed $m$, retaining the first $m$
+factors in the characteristic product gives
+\[
+ |\phi_0(t)|\le \prod_{j=1}^m\min\{1,2^j/|t|\}
+               \le C_m(1+|t|)^{-m}.
+\]
+Thus $t^r\phi_0(t)$ is integrable for every $r$. Fourier inversion and
+differentiation under the integral give a $C^\infty$ density, necessarily
+compactly supported.
+
+For completeness, even unimodality is preserved by convolution with a
+centered uniform density. If $g$ is even and nonincreasing on $[0,\infty)$,
+then the derivative of $(2a)^{-1}\int_{x-a}^{x+a}g(u)\dd u$ is
+$(g(x+a)-g(x-a))/(2a)\le0$ for $x\ge0$, wherever the derivative exists.
+Induction applies to finite convolutions. Their characteristic functions
+are dominated, from the second convolution onward, by an integrable
+multiple of $(1+|t|)^{-2}$. Fourier inversion therefore gives uniform
+convergence of their densities to $f$. Even unimodality passes to the limit.
+
+Write $X_0=U_1/2+Y$, where $Y$ is supported in $[-1/2,1/2]$ and has no
+atoms, because it itself has an independent nondegenerate uniform summand.
+The first summand has density $1$ on $[-1/2,1/2]$. Its convolution with
+$Y$ gives $f(0)=1$. Smoothness, evenness, monotonicity, and compact support
+then yield $\norm{f'}_1=2f(0)=2$.
+\end{proof}
+
+\begin{lemma}[Translation and smoothing estimates]\label{lem:smoothing}
+If $Y$ is independent of $X_0$ and integrable, then
+\begin{equation}\label{eq:translation}
+ \TV(\Law(X_0+Y),\mu_0)\le \E|Y|.
+\end{equation}
+If $Y$ is centered and square-integrable, the right side is at most
+$\sqrt{\Var Y}$. For an arbitrary probability measure $\nu$,
+\begin{equation}\label{eq:smooth-bound}
+ \norm{(f*\nu)^{(r)}}_\infty\le\norm{f^{(r)}}_\infty
+            \qquad(r\ge0).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The fundamental theorem of calculus and Fubini give
+$\norm{f(\cdot-y)-f}_1\le |y|\norm{f'}_1=2|y|$.
+Average this inequality over $Y$ and divide by two. Cauchy--Schwarz gives
+the variance bound. Differentiation under convolution with a probability
+measure proves \eqref{eq:smooth-bound}.
+\end{proof}
+
+The role of the common Fabius factor is now clear. It makes every
+constructed law smooth without demanding that the perturbing finite sum
+be smooth to all orders, and it provides explicit total-variation control
+of convergence back to the reference law.
+
+\section{Exact finite-moment fibres with fixed support}
+\label{sec:fibres}
+
+\subsection{A rank argument that preserves positivity}
+
+\begin{lemma}[Generalized Vandermonde rank]\label{lem:vander}
+For distinct positive $t_1,\ldots,t_d$ and distinct nonnegative integers
+$e_1<\cdots<e_d$, the matrix $(t_j^{e_i})_{i,j=1}^d$ is invertible.
+\end{lemma}
+
+\begin{proof}
+A nonzero linear combination of $d$ distinct monomials has at most $d-1$
+distinct positive zeros. Prove this by induction on $d$: divide by the
+smallest power of $t$ without changing positive zeros, differentiate, and
+apply Rolle's theorem. The derivative has at most $d-1$ nonzero monomials,
+so has at most $d-2$ positive zeros. If a linear combination of the rows
+vanished at all $d$ nodes, this zero bound would be contradicted.
+\end{proof}
+
+\begin{theorem}[A curve of laws invisible to any prescribed finite moment list]
+\label{thm:fibres}
+For every integer $M\ge1$, there are $\delta>0$ and a nonconstant
+real-analytic curve $\theta\mapsto a(\theta)\in\A_1$, $|\theta|<\delta$,
+such that $a(0)=a^0$ and:
+\begin{enumerate}[label=(\roman*)]
+\item only the first $M+2$ coefficients change;
+\item $\supp\mu_{a(\theta)}=[-1,1]$ exactly;
+\item all moments through degree $2M+1$ are independent of $\theta$;
+\item the cumulant of order $2M+2$ has a nonzero derivative at zero after
+      a suitable local parametrization;
+\item the laws have $C_c^\infty$ densities and tend to $\mu_0$ in total
+      variation as $\theta\to0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Set $r=M+2$ and let $t=(t_1,\ldots,t_r)$ denote the changing half-lengths.
+Consider the analytic map
+\[
+ F(t)=\left(\sum_{j=1}^r t_j,\ \sum_{j=1}^r t_j^2,
+                 \ \sum_{j=1}^r t_j^4,\ldots,
+                    \sum_{j=1}^r t_j^{2M}\right).
+\]
+At $t^0=(2^{-1},\ldots,2^{-r})$, its Jacobian has full row rank $M+1$.
+After nonzero row factors are removed, any square maximal minor is a
+matrix from \cref{lem:vander}, with exponents
+$0,1,3,\ldots,2M-1$.
+
+The analytic implicit function theorem gives a one-dimensional analytic
+level manifold through $t^0$. Positivity, strict decreasing order, and the
+gap above the unchanged coefficient $2^{-r-1}$ are open conditions, so a
+sufficiently short curve in this manifold remains a valid spectrum.
+Constancy of its first coordinate preserves $\sum_j a_j=1$, proving (ii).
+Constancy of the other coordinates preserves $p_1,\ldots,p_M$ and hence
+(iii).
+
+Append $G(t)=\sum_j t_j^{2M+2}$ to $F$. The resulting square Jacobian is
+invertible by the same lemma, now with exponents
+$0,1,3,\ldots,2M+1$. Thus $\dd G$ does not vanish on the one-dimensional
+kernel of $\dd F$. We may use $G-G(t^0)$ itself as a local parameter on
+the level manifold. Since $B_{2M+2}\ne0$, \eqref{eq:cumulants} proves (iv).
+In particular, the laws are genuinely different; this is not a
+reordering of identical factors.
+
+The unchanged tail is distributed as $2^{-r}X_0$. It has a smooth compact
+support density $g(x)=2^r f(2^rx)$. All laws on the curve are convolutions
+with this common density. Couple the finite changing prefixes with the
+same $U_1,\ldots,U_r$. Their difference tends to zero in $L^1$, and
+$\norm{g(\cdot-y)-g}_1\le |y|\norm{g'}_1$ proves total-variation
+convergence. Smoothness follows by convolution, completing (v).
+\end{proof}
+
+More generally, changing $r$ distinct positive coefficients while fixing
+the support radius and the first $M$ even power sums gives a local
+manifold of dimension $r-M-1$ whenever $r\ge M+1$. In particular, $M+2$
+is the smallest number of distinct changing coefficients for which this
+regular local argument gives a nonconstant curve. This is a local rank
+statement, not a global classification of all moment fibres.
+
+\subsection{A completely explicit fixed-variance example}
+
+\begin{example}\label{ex:curve}
+For $M=1$, leave $a_j=2^{-j}$ for $j\ge4$ and set
+\begin{align*}
+ a_1(\theta)&=(7+5\cos\theta-\sqrt3\sin\theta)/24,\\
+ a_2(\theta)&=(7-\cos\theta+3\sqrt3\sin\theta)/24,\\
+ a_3(\theta)&=(7-4\cos\theta-2\sqrt3\sin\theta)/24.
+\end{align*}
+For sufficiently small $|\theta|$ these entries are positive, strictly
+decreasing, and greater than $1/16$. Direct calculation gives
+\[
+ \sum_{j=1}^3a_j(\theta)=\frac78,\qquad
+ \sum_{j=1}^3a_j(\theta)^2=\frac{21}{64}.
+\]
+The full support is exactly $[-1,1]$ and the variance remains $1/9$.
+Nevertheless
+\[
+ \left.\frac{\dd}{\dd\theta}\kappa_4(X_{a(\theta)})\right|_{\theta=0}
+       =\frac{7\sqrt3}{3840}\ne0.
+\]
+Thus even exact support and exact variance do not identify the Fabius
+spectrum. The verification script checks these identities symbolically.
+\end{example}
+
+The finite-fibre theorem and the quantitative theorem below answer
+\emph{different} questions. The former fixes the exact support endpoints
+and agrees with $\mu_0$ on a chosen finite moment list. The latter compares
+two laws that are exponentially close to one another in total variation;
+it imposes a common support bound, not exact support endpoints $\pm1$.
+Neither statement should be silently substituted for the other.
+
+\section{Chebyshev pairs of genuine uniform-factor spectra}
+\label{sec:chebyshev}
+
+\subsection{Two root sets with exactly matching initial power sums}
+
+Let $T_n$ be the Chebyshev polynomial characterized by
+$T_n(\cos\theta)=\cos(n\theta)$. For $n\ge2$, list in decreasing order
+\[
+ y_0^+>\cdots>y_{n-1}^+,\qquad
+ y_0^->\cdots>y_{n-1}^-
+\]
+the roots of $T_n(y)=1/2$ and $T_n(y)=-1/2$, respectively. Every root is
+simple and in $(-1,1)$. On the $j$th interval of monotonicity in angular
+coordinates, the two angles are
+\begin{equation}\label{eq:angles}
+ \theta_j^\pm=\frac{j\pi+\alpha_j^\pm}{n},\qquad
+ \alpha_j^+=
+ \begin{cases}\pi/3&j\text{ even},\\2\pi/3&j\text{ odd},\end{cases}
+ \qquad \alpha_j^-=\pi-\alpha_j^+.
+\end{equation}
+Then $y_j^\pm=\cos\theta_j^\pm$.
+
+\begin{lemma}\label{lem:cheby-powers}
+For $1\le k<n$,
+\begin{equation}\label{eq:equal-powers}
+ \sum_{j=0}^{n-1}(3+y_j^+)^k
+ =\sum_{j=0}^{n-1}(3+y_j^-)^k.
+\end{equation}
+At the first unmatched order,
+\begin{equation}\label{eq:leading-defect}
+ \sum_{j=0}^{n-1}(3+y_j^+)^n
+ -\sum_{j=0}^{n-1}(3+y_j^-)^n=n2^{1-n}.
+\end{equation}
+Both first power sums in \eqref{eq:equal-powers} are $3n$.
+\end{lemma}
+
+\begin{proof}
+The monic polynomials
+\[
+ P_\pm(y)=2^{1-n}(T_n(y)\mp1/2)
+\]
+differ only in their constant coefficient, with
+$[y^0](P_+-P_-)=-2^{1-n}$. Newton's identities say that their root power
+sums agree in degrees $1,\ldots,n-1$; at degree $n$ the difference is
+$-n$ times this constant-coefficient difference, namely $n2^{1-n}$.
+The binomial theorem transports both assertions from $y$ to $3+y$:
+all lower-degree differences cancel. The coefficient of $y^{n-1}$ in
+$T_n$ vanishes, so the root sum is zero, giving $3n$ after translation.
+\end{proof}
+
+The translated roots lie in $(2,4)$. Taking their positive square roots
+therefore produces actual uniform half-lengths, not a signed measure or
+formal perturbation. This positivity is essential to the inverse problem.
+
+\subsection{Insertion into an empty dyadic scale interval}
+
+Define
+\begin{equation}\label{eq:eta}
+ k_n=\lceil\log_2 n\rceil,\qquad
+ \eta_n=2^{-k_n-1},\qquad
+ \frac1{4n}\le\eta_n\le\frac1{2n}.
+\end{equation}
+Let all uniforms in the following expression be independent, and independent
+of $X_0$:
+\begin{equation}\label{eq:S}
+ S_n^\pm=
+ \sum_{j=0}^{n-1}\sqrt{3+y_j^\pm}\,U_j
+          +\sum_{\ell=1}^{2n}V_\ell,
+ \qquad X_n^\pm=X_0+\eta_n S_n^\pm.
+\end{equation}
+Let $a_n^\pm$ be the decreasing rearrangement of the multiset
+\begin{equation}\label{eq:spectra}
+ \{2^{-j}:j\ge1\}
+ \ \cup\ \{\eta_n\sqrt{3+y_j^\pm}:0\le j<n\}
+ \ \cup\ \{\eta_n\text{ repeated }2n\text{ times}\}.
+\end{equation}
+The last $2n$ identical factors are not cosmetic. They suppress the
+large-frequency part of the Fourier transform, where moment matching
+alone would not control total variation.
+
+\begin{proposition}\label{prop:pairs}
+The spectra in \eqref{eq:spectra} belong to $\A_3$ and satisfy
+\begin{align}
+ \Var(X_n^\pm)&=\frac19+\frac{5n\eta_n^2}{3},             \label{eq:variance}\\
+ \TV(\Law(X_n^\pm),\mu_0)&\le\sqrt{5n/3}\,\eta_n
+                                    \le\sqrt{5/(12n)}. \label{eq:base-close}
+\end{align}
+Their densities $f_n^\pm$ are smooth, supported in $[-3,3]$, and satisfy
+$\norm{(f_n^\pm)^{(r)}}_\infty\le\norm{f^{(r)}}_\infty$ for all $r$.
+The laws agree in moments through degree $2n-1$, whereas
+\begin{equation}\label{eq:cumulant-defect}
+ \kappa_{2n}(X_n^+)-\kappa_{2n}(X_n^-)
+         =2^n B_{2n}\eta_n^{2n}\ne0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Each of the $n$ variable half-lengths before scaling is less than $2$,
+so the added sum of half-lengths is at most $4n\eta_n\le2$. The base
+contributes $1$. Their total squared half-length before scaling is
+$3n+2n=5n$ by \cref{lem:cheby-powers}, proving \eqref{eq:variance}.
+Apply \cref{lem:smoothing} with $Y=\eta_nS_n^\pm$ to obtain
+\eqref{eq:base-close} and all smoothness bounds.
+
+The first $n-1$ even power sums agree by \eqref{eq:equal-powers}; the base
+and the repeated factors are common. Hence all moments through degree
+$2n-1$ agree. Multiplying \eqref{eq:leading-defect} by
+$\eta_n^{2n}2^{2n}B_{2n}/(2n)$ gives \eqref{eq:cumulant-defect}.
+The first different cumulant is also the first different moment, since
+the moment--cumulant relation is triangular.
+\end{proof}
+
+\subsection{A middle coordinate gives a quadratic, not cubic, separation}
+
+\begin{lemma}[Ordered spectral separation]\label{lem:gap}
+For all $n\ge2$,
+\begin{equation}\label{eq:gap}
+ d_\infty(a_n^+,a_n^-)\ge\frac1{48n^2}.
+\end{equation}
+More precisely, put $j_n=\lfloor(n-1)/2\rfloor$. A witnessing coordinate
+is $k_n+1+j_n$, whose absolute difference is
+\begin{equation}\label{eq:actual-gap}
+ \Delta_n=\eta_n\left|
+    \sqrt{3+y_{j_n}^+}-\sqrt{3+y_{j_n}^-}\right|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+All inserted variable half-lengths lie strictly between $\eta_n$ and
+$2\eta_n$. There are exactly $k_n$ base dyadic factors at least
+$2\eta_n$, and no base factors strictly between these endpoints.
+All repeated factors equal the lower endpoint. Therefore the ordered
+positions $k_n+1,\ldots,k_n+n$ consist exactly of the inserted variable
+factors, in their displayed order. Sorting does not erase the difference.
+
+The two angles at position $j_n$ have distance $\pi/(3n)$ and midpoint
+\[
+ m_n=\frac{(j_n+1/2)\pi}{n}\in[\pi/4,\pi/2].
+\]
+Consequently
+\[
+ |y_{j_n}^+-y_{j_n}^-|
+ =2\sin m_n\sin\frac{\pi}{6n}
+ \ge 2\cdot\frac12\cdot\frac1{3n}
+ =\frac1{3n},
+\]
+where $\sin x\ge2x/\pi$ for $0\le x\le\pi/2$. Rationalizing the square
+roots in \eqref{eq:actual-gap}, their denominator is at most $4$.
+Thus $\Delta_n\ge\eta_n/(12n)\ge1/(48n^2)$.
+\end{proof}
+
+Using only the largest inserted factor would yield a weaker $n^{-3}$
+bound, because cosine is flat at its endpoint. The middle coordinate
+avoids that loss. Along $n=2^m$, elementary expansion of
+\eqref{eq:actual-gap} even gives
+\[
+ \Delta_n\sim\frac{\pi}{12\sqrt3}\,n^{-2}.
+\]
+This is an asymptotic for the displayed witnessing coordinate, not an
+assertion that the full $d_\infty$ distance equals that coordinate.
+
+\section{From moment matching to exponential total-variation closeness}
+\label{sec:fourier}
+
+The next theorem is the analytic core. It does not use an asymptotic
+approximation to the density. In particular, its very small bounds are
+not obtained by subtracting nearly equal floating-point density values.
+
+\begin{theorem}[A uniform Fourier certificate]\label{thm:tv}
+For $n\ge2$ and $S_n^\pm$ as in \eqref{eq:S},
+\begin{equation}\label{eq:TV-S}
+ \TV(\Law(S_n^+),\Law(S_n^-))
+       \le40n(6/7)^{2n-1}.
+\end{equation}
+The same bound holds for $X_n^\pm$.
+\end{theorem}
+
+\begin{proof}
+Put $\rho=6/7$, $q=4/\pi^2<1/2$, and let
+\[
+ F_\pm(t)=\left(\prod_{j=0}^{n-1}
+       \sinc\bigl(\sqrt{3+y_j^\pm}\,t\bigr)\right)\sinc(t)^{2n},
+ \qquad D(t)=F_+(t)-F_-(t).
+\]
+We estimate the Fourier $H^1$ norm, treating small and large frequencies
+separately.
+
+\paragraph{Small frequencies: $|t|\le1$.}
+Every sinc argument has magnitude at most $2<\pi$, so all factors are
+positive. Let $L_\pm(t)=\log F_\pm(t)\le0$ and
+$H=L_+-L_-$. The common factors cancel from $H$.
+For any $k\ge1$ the difference between the variable power sums has
+absolute value at most $2n4^k$; for $k<n$ it is zero. Hence
+\begin{align*}
+ |H(t)|
+ &\le4n\sum_{k\ge n}\frac{q^k|t|^{2k}}{k}
+ \le\frac4{1-q}q^n|t|^{2n}
+ \le8q^n|t|^{2n},\\
+ |H'(t)|
+ &\le8n\sum_{k\ge n}q^k|t|^{2k-1}
+ \le16nq^n|t|^{2n-1}.
+\end{align*}
+We used $\zeta(2k)<2$ and the convergent log-sinc expansion; termwise
+differentiation is justified by geometric domination on this interval.
+
+For $|s|\le2$, $\sinc(s)\ge1/3$. Indeed sinc decreases on $[0,2]$,
+and the alternating sine series gives $\sin2\ge2-2^3/6=2/3$.
+Also $|\sinc'(s)|\le\E|U|=1/2$, by differentiating the characteristic
+function of $U\sim\mathrm{Unif}[-1,1]$. A variable factor therefore
+contributes at most $3$ to $|L_\pm'|$, and a common unit factor at most
+$3/2$. Thus $|L_\pm'|\le6n$.
+
+The identity
+\[
+ D=H\int_0^1 e^{(1-u)L_-+uL_+}\dd u
+\]
+is useful because the exponential is at most $1$, avoiding any unstable
+division by $F_\pm$. Its derivative gives
+\begin{equation}\label{eq:low-bounds}
+ |D(t)|\le8q^n|t|^{2n},\qquad
+ |D'(t)|\le64nq^n|t|^{2n-1}.
+\end{equation}
+Integrating the squares, even the coarse estimate by interval length gives
+\begin{equation}\label{eq:low-int}
+ \int_{|t|\le1}(|D(t)|^2+|D'(t)|^2)\dd t
+       \le8320n^2q^{2n}.
+\end{equation}
+
+\paragraph{Large frequencies: $|t|\ge1$.}
+Let $h(t)=|\sinc t|\le1$. All the other sinc factors have modulus at
+most $1$. The product rule, used without dividing by any factor, gives
+\[
+ |F_\pm(t)|\le h(t)^{2n},\qquad
+ |F_\pm'(t)|\le n h(t)^{2n}+n h(t)^{2n-1}
+                     \le2n h(t)^{2n-1}.
+\]
+Therefore
+\begin{equation}\label{eq:high-bounds}
+ |D(t)|^2+|D'(t)|^2\le20n^2h(t)^{4n-2}.
+\end{equation}
+On $1\le |t|\le2$, sinc is positive in magnitude and bounded by
+$\sin1<6/7$. For an exact elementary bound, use
+$\sin1\le1-1/6+1/120=101/120<6/7$.
+On $|t|\ge2$, use $h(t)\le1/|t|$. It follows that
+\begin{align*}
+ \int_{|t|\ge1}h(t)^{4n-2}\dd t
+ &\le2\rho^{4n-2}
+             +\frac{2^{-(4n-4)}}{4n-3}
+ \le4\rho^{4n-2}.
+\end{align*}
+The last inequality holds for $n\ge2$, for example by comparing
+$(1/2)^{4n-2}$ to $\rho^{4n-2}$. Combining this with
+\eqref{eq:high-bounds} gives
+\begin{equation}\label{eq:high-int}
+ \int_{|t|\ge1}(|D(t)|^2+|D'(t)|^2)\dd t
+       \le80n^2\rho^{4n-2}.
+\end{equation}
+Since $q^{2n}\le\rho^{4n-2}$,
+\begin{equation}\label{eq:H1}
+ \int_\R(|D|^2+|D'|^2)\dd t
+       \le8400n^2\rho^{4n-2}.
+\end{equation}
+
+\paragraph{Conversion to total variation.}
+Let $g$ be the difference of the densities of $S_n^+$ and $S_n^-$. These
+finite sums have bounded compactly supported densities, so $g,xg\in L^2$.
+For the Fourier convention $\widehat g(t)=\int e^{itx}g(x)\dd x=D(t)$,
+Cauchy--Schwarz and Plancherel yield
+\begin{align*}
+ \norm{g}_1
+ &\le\left(\int_\R\frac{\dd x}{1+x^2}\right)^{1/2}
+       \left(\int_\R(1+x^2)|g(x)|^2\dd x\right)^{1/2}\\
+ &=\frac1{\sqrt2}
+       \left(\int_\R(|D(t)|^2+|D'(t)|^2)\dd t\right)^{1/2}.
+\end{align*}
+Dividing by two and using \eqref{eq:H1} proves
+\[
+ \TV(\Law(S_n^+),\Law(S_n^-))
+ \le\frac{\sqrt{8400}}{2\sqrt2}\,n\rho^{2n-1}
+ <40n\rho^{2n-1}.
+\]
+Total variation is invariant under a common nonzero dilation and contracts
+under convolution with a common probability measure. Apply these facts
+first with dilation $\eta_n$ and then convolution by $\mu_0$ to obtain
+the assertion for $X_n^\pm$.
+\end{proof}
+
+\begin{remark}[Why both frequency ranges are necessary]
+Equal low-order moments alone control only a neighborhood of frequency
+zero. A proof that stopped with \eqref{eq:low-bounds} would not establish
+closeness of densities in $L^1$. The common $2n$ unit factors create the
+large-frequency estimate \eqref{eq:high-int}. Keeping a derivative of the
+Fourier difference is also essential to the particular weighted
+Cauchy--Schwarz argument used here. These two features explain the
+architecture of the construction.
+\end{remark}
+
+\section{Fixing the variance without sacrificing smoothness}
+\label{sec:fixed}
+
+Define the common scale
+\begin{equation}\label{eq:cn}
+ c_n=(1+15n\eta_n^2)^{-1/2},\qquad
+ \widetilde X_n^\pm=c_nX_n^\pm,\qquad
+ \widetilde a_n^\pm=c_na_n^\pm.
+\end{equation}
+
+\begin{proposition}\label{prop:normalized}
+The spectra $\widetilde a_n^\pm$ belong to $\K$ and satisfy all the
+quantitative assertions of \cref{thm:main} preceding its non-H\"older
+conclusion. Their first unmatched cumulant is
+\[
+ \kappa_{2n}(\widetilde X_n^+)-\kappa_{2n}(\widetilde X_n^-)
+        =c_n^{2n}2^n B_{2n}\eta_n^{2n}\ne0.
+\]
+\end{proposition}
+
+\begin{proof}
+Equation \eqref{eq:variance} shows that the common variance becomes $1/9$.
+Since $15n\eta_n^2\le15/(4n)\le15/8$, we have $1/2<c_n\le1$.
+Supports remain in $[-3,3]$, and the scaled densities satisfy
+\[
+ \norm{(\widetilde f_n^\pm)^{(r)}}_\infty
+ =c_n^{-r-1}\norm{(f_n^\pm)^{(r)}}_\infty
+ \le2^{r+1}\norm{f^{(r)}}_\infty.
+\]
+The spectral distance is multiplied by $c_n$, proving
+\eqref{eq:main-gap}. Total variation between the pair is unchanged,
+proving \eqref{eq:main-tv}. Equal moments remain equal under common
+scaling, and cumulants scale homogeneously, giving the displayed defect.
+
+It remains to control the distance to the original reference law rather
+than to its dilation. Write $f_c(x)=c^{-1}f(x/c)$. Direct differentiation
+and a change of variables give
+\[
+ \norm{\partial_c f_c}_1
+ =c^{-1}\int_\R|f(u)+uf'(u)|\dd u
+ \le \frac3c,
+\]
+because $\norm{f}_1=1$, $|u|\le1$ on the support, and $\norm{f'}_1=2$.
+Therefore
+\[
+ \TV(\Law(cX_0),\mu_0)\le\frac32\log(1/c),\qquad0<c\le1.
+\]
+Using common-dilation invariance in the first term of the triangle
+inequality,
+\begin{align*}
+ \TV(\Law(c_nX_n^\pm),\mu_0)
+ &\le\TV(\Law(X_n^\pm),\mu_0)
+                +\frac32\log(1/c_n)\\
+ &\le\sqrt{\frac5{12n}}
+                +\frac34\log(1+15n\eta_n^2)\\
+ &\le\sqrt{\frac5{12n}}+\frac{45}{16n}.
+\end{align*}
+This proves \eqref{eq:main-near}.
+\end{proof}
+
+Thus instability is not explained by increasing variance, expanding
+support, or loss of smoothness. All three potential explanations have
+been removed. The theorem does allow an increasing number of small
+factors in one dyadic scale interval; it is this growing unresolved block
+that the inverse must disentangle.
+
+\section{Inverse moduli and statistical lower bounds}
+\label{sec:consequences}
+
+\subsection{The exact local statement}
+
+For $r>0$ define
+\begin{equation}\label{eq:modulus}
+ \omega_r(\eps)=\sup\left\{d_\infty(a,b):
+ \begin{array}{l}
+ a,b\in\K,\quad\TV(\mu_a,\mu_0)<r,\quad\TV(\mu_b,\mu_0)<r,\\
+ \TV(\mu_a,\mu_b)\le\eps
+ \end{array}\right\}.
+\end{equation}
+
+\begin{corollary}\label{cor:modulus}
+For every $r>0$, for all sufficiently small $\eps>0$,
+\begin{equation}\label{eq:modulus-lower}
+ \omega_r(\eps)\ge\frac1{11616[\log(100/\eps)]^2}.
+\end{equation}
+In particular no pairwise H\"older inverse estimate holds on the indicated
+neighborhood, for any positive exponent.
+\end{corollary}
+
+\begin{proof}
+The non-H\"older assertion already follows by substituting the pairs:
+$1/(96n^2)$ eventually exceeds
+$C[40n(6/7)^{2n-1}]^\alpha$, whereas both laws approach $\mu_0$.
+For the explicit modulus take
+\[
+ n=\left\lceil10\log(100/\eps)\right\rceil,\qquad0<\eps\le1.
+\]
+The elementary bound $2\log(7/6)>0.3$ implies
+\[
+ (6/7)^{2n-1}\le(7/6)e^{-0.3n}
+                   \le(7/6)(\eps/100)^3.
+\]
+Also $n\le51/\eps$, since $\log(100/\eps)\le5/\eps$ on this range.
+It follows that $40n(6/7)^{2n-1}\le0.00238\eps^2\le\eps$.
+For sufficiently small $\eps$, \eqref{eq:main-near} puts both laws in
+the required $r$-ball. Finally
+$n\le11\log(100/\eps)$, so \eqref{eq:main-gap} gives
+\eqref{eq:modulus-lower}.
+\end{proof}
+
+\begin{remark}[Pairwise local versus pointwise at the reference law]
+\label{rem:pointwise}
+The conclusion rules out a bound that must hold for \emph{every pair}
+in a neighborhood. It does not rule out a pointwise estimate
+\[
+ d_\infty(a,a^0)\le C\TV(\mu_a,\mu_0)^\alpha.
+\]
+Our construction makes $\mu_{\widetilde a_n^+}$ and
+$\mu_{\widetilde a_n^-}$ exponentially close to each other, but the
+proved bound on their individual distances to $\mu_0$ is only
+polynomial. Those are different comparisons.
+\end{remark}
+
+\subsection{A lower bound for recovery from samples}
+
+An estimator based on $N$ observations is a measurable function of
+$(Z_1,\ldots,Z_N)$ with values in the space of bounded real sequences.
+The loss is $d_\infty(\widehat a,a)$. We do not require the estimator's
+output to be a valid uniform-factor spectrum, so the lower bound also
+applies to constrained estimators.
+
+\begin{lemma}[Two-point testing bound]\label{lem:two-point}
+If parameters $a,b$ have distance $d$ and observation laws $P,Q$, then
+for every estimator,
+\[
+ \max\{\E_Pd_\infty(\widehat a,a),\E_Qd_\infty(\widehat a,b)\}
+       \ge\frac d4(1-\TV(P,Q)).
+\]
+For product laws, $\TV(P^{\otimes N},Q^{\otimes N})\le N\TV(P,Q)$.
+\end{lemma}
+
+\begin{proof}
+Choose the parameter closer to the estimator's output as a binary test.
+On a testing error the estimation loss is at least $d/2$, by the triangle
+inequality. The sum of the two testing error probabilities is at least
+$1-\TV(P,Q)$, as follows directly by writing the test's acceptance set
+in the definition of total variation. The larger risk is at least half
+their sum, proving the first assertion. For the second, expand the
+difference of product measures as a telescoping sum and use that taking
+a product with a probability measure does not change total variation.
+\end{proof}
+
+\begin{theorem}[Logarithmic minimax obstruction]\label{thm:statistics}
+Let $N\ge1$ and put $n_N=\lceil10\log(100N)\rceil$. Then
+\begin{equation}\label{eq:risk}
+ \inf_{\widehat a}\ \sup_{a\in\K}
+   \E_{\mu_a^{\otimes N}}d_\infty(\widehat a,a)
+      \ge\frac1{768n_N^2}.
+\end{equation}
+For every fixed $r>0$, the same lower bound holds for all sufficiently
+large $N$ when the supremum is restricted to
+$\{a\in\K:\TV(\mu_a,\mu_0)<r\}$.
+Consequently no uniform bound of order $N^{-\beta}$ with $\beta>0$ is
+possible on any such local class.
+\end{theorem}
+
+\begin{proof}
+Use the two normalized spectra of degree $n_N$. The estimate from the
+previous proof gives
+\[
+ N\cdot40n_N(6/7)^{2n_N-1}
+ \le\frac{(40)(7/6)(51)}{10^6N}<\frac12,
+\]
+where $n_N\le51N$. Thus the product observation laws have total
+variation at most $1/2$. Substitute their spectral gap $1/(96n_N^2)$
+into \cref{lem:two-point}, obtaining $1/(768n_N^2)$.
+The local assertion follows from \eqref{eq:main-near}. Since
+$n_N=O(\log N)$, the stated exclusion of algebraic rates follows.
+\end{proof}
+
+This is an information-theoretic obstruction. It applies before any
+restriction on running time, numerical precision, or model architecture.
+It is also only a lower bound: the article does not construct an estimator
+attaining the logarithmic rate, nor prove that its exponent is optimal.
+
+\section{Where stable recovery does become possible}
+\label{sec:positive}
+
+The negative theorem should not be read as saying that every finite
+uniform-convolution problem is equally difficult. Its bad pairs use an
+increasing number of unknown, closely spaced factors. Fixing their number
+and separating their squared lengths changes the situation.
+
+\subsection{Known tails and a finite set of unknown factors}
+
+\begin{proposition}[Finite-factor analytic inversion]\label{prop:finite}
+Suppose the entire tail is known and the unknown part consists of exactly
+$r$ distinct positive half-lengths $a_1,\ldots,a_r$. After subtracting
+the tail contributions, the first $r$ even power sums determine the
+unordered unknown multiset exactly. The inverse is locally real-analytic
+at every configuration with distinct squared half-lengths.
+\end{proposition}
+
+\begin{proof}
+Write $x_j=a_j^2$ and $s_k=\sum_{j=1}^r x_j^k$. Newton's recursion
+\[
+ e_0=1,\qquad
+ k e_k=\sum_{i=1}^k(-1)^{i-1}e_{k-i}s_i\quad(1\le k\le r)
+\]
+constructs the coefficients of
+\[
+ P(z)=\prod_{j=1}^r(z-x_j)
+     =z^r-e_1z^{r-1}+e_2z^{r-2}-\cdots+(-1)^re_r.
+\]
+Its roots give the multiset. The Jacobian of
+$(x_1,\ldots,x_r)\mapsto(s_1,\ldots,s_r)$ has determinant
+\[
+ r!\prod_{1\le i<j\le r}(x_j-x_i),
+\]
+up to the harmless sign determined by ordering. It is nonzero at distinct
+nodes. The inverse function theorem, followed by positive square roots,
+gives the local analytic inverse.
+\end{proof}
+
+\begin{proposition}[An explicit root-location certificate]\label{prop:rouche}
+Suppose the squared half-lengths satisfy
+$m^2\le x_i\le A^2$ and $|x_i-x_j|\ge\gamma>0$ for $i\ne j$.
+Let
+\[
+ P(z)=z^r+\sum_{j=0}^{r-1}c_jz^j,\qquad
+ Q(z)=z^r+\sum_{j=0}^{r-1}\widehat c_jz^j.
+\]
+Choose $0<h<\min\{\gamma/2,m^2/2\}$. If
+\begin{equation}\label{eq:rouche}
+ \sum_{j=0}^{r-1}|\widehat c_j-c_j|(A^2+h)^j
+           <h(\gamma-h)^{r-1},
+\end{equation}
+then $Q$ has exactly one root, counting multiplicity, in each disk
+$|z-x_i|<h$. If its coefficients are real, all these roots are real
+and positive. The corresponding half-lengths are within $h/m$ of the
+true ones after matching.
+\end{proposition}
+
+\begin{proof}
+On $|z-x_i|=h$, one factor of $P$ has modulus $h$ and all others have
+modulus at least $\gamma-h$. The left side of \eqref{eq:rouche} bounds
+$|Q-P|$ on that circle. Rouch\'e's theorem gives one root of $Q$ in each
+of the disjoint disks. Real coefficients force nonreal roots to occur
+in conjugate pairs; a disk centered on the real axis containing just
+one root cannot contain a nonreal pair. Its real root is positive since
+$h<m^2/2$. If $\widehat x_i$ is that root, then
+\[
+ |\sqrt{\widehat x_i}-\sqrt{x_i}|
+ =\frac{|\widehat x_i-x_i|}{\sqrt{\widehat x_i}+\sqrt{x_i}}
+ <\frac hm.
+\]
+\end{proof}
+
+These are standard finite-dimensional mechanisms, included as a contrast
+rather than as new root-perturbation theory. Their constants deteriorate
+when nodes collide or their number grows. Both problems are present in
+the bad Chebyshev blocks.
+
+\subsection{What a certified computation would need}
+
+A defensible finite-factor recovery procedure first specifies the number
+of unknown factors, a lower bound on their lengths, a separation
+condition, and a quantitative tail model. It then converts certified
+moment intervals to cumulant intervals, subtracts the tail power-sum
+intervals, applies Newton recursion with outward error bounds, and proves
+root localization by a condition such as \eqref{eq:rouche}. Merely finding
+numerical roots of a polynomial is not a certificate.
+
+A useful elementary tail estimate is available without a detailed tail
+formula. If its largest half-length is at most $\eta$ and its total
+half-length is at most $L$, then
+\begin{equation}\label{eq:tail-noise}
+ \sum_{j\text{ in tail}}a_j^{2k}\le L\eta^{2k-1}.
+\end{equation}
+The proof factors out $\eta^{2k-1}$ and sums $a_j$. This can be treated
+as an additional nonnegative uncertainty interval. It is not legitimate
+to discard the tail because it contributes little variance: high-order
+root recovery can remain sensitive to its structured contribution.
+
+There is also a distinction between a fixed number of large factors and
+the whole ordered sequence. The witnessing index in \cref{lem:gap} tends
+to infinity. Consequently our lower bound does not, by itself, rule out
+much better rates for estimating the first fixed $r$ half-lengths under
+suitable tail assumptions.
+
+\section{Reproducible verification and proof boundaries}
+\label{sec:verification}
+
+\subsection{What the included program actually verifies}
+
+The package contains \texttt{code/verify.py}, requiring only Python,
+SymPy, and mpmath. It uses integer Chebyshev recurrences and rational
+Newton identities, avoiding numerical root finding for all algebraic
+claims. A completed run records:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.63\textwidth}r@{}}
+\toprule
+Check & Count\\
+\midrule
+Exact matching root power sums, before and after translation, $2\le n\le80$ & 6,320\\
+Exact first unmatched power sums in both coordinates & 158\\
+Exact Bernoulli cumulant defects, $2\le n\le40$ & 39\\
+Exact Jacobian rank cases and augmented determinant cases, $1\le M\le8$ & 8 each\\
+Explicit analytic curve invariants and fourth-cumulant derivative & passed\\
+90-digit Chebyshev root residual diagnostics, $2\le n\le100$ & 10,098\\
+90-digit middle-coordinate gap diagnostics & 99\\
+90-digit small-frequency inequality diagnostics & 360\\
+\bottomrule
+\end{tabular}
+\end{center}
+The output files record software versions and the distinction between exact
+checks and floating-point diagnostics. They deliberately do not describe
+90-digit arithmetic as interval certification.
+
+The finite tests do not prove an assertion for all $n$. Those proofs are
+\cref{lem:cheby-powers,lem:gap,thm:tv}; the program is a reproducibility
+and regression aid. In particular, the very small TV bounds are evaluated
+from a proved formula rather than estimated by numerical quadrature of a
+near-zero difference.
+
+\subsection{Numerical scale of the construction}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Witness $\Delta_n$ & Fixed-variance witness $c_n\Delta_n$
+    & Proved TV upper bound\\
+\midrule
+% The following rows are generated from data/verification.json and embedded
+% so that this TeX file compiles without additional data files.
+% Generated by code/verify.py; TV entries are analytic upper bounds.
+16 & $5.781\times 10^{-4}$ & $5.204\times 10^{-4}$ & $1$ \\
+32 & $1.462\times 10^{-4}$ & $1.384\times 10^{-4}$ & $7.755\times 10^{-2}$ \\
+64 & $3.674\times 10^{-5}$ & $3.571\times 10^{-5}$ & $8.054\times 10^{-6}$ \\
+128 & $9.206\times 10^{-6}$ & $9.074\times 10^{-6}$ & $4.343\times 10^{-14}$ \\
+256 & $2.304\times 10^{-6}$ & $2.287\times 10^{-6}$ & $6.317\times 10^{-31}$ \\
+
+\bottomrule
+\end{tabular}
+\caption{Witnessing coordinate gaps, not claimed exact $d_\infty$ distances.
+The gap columns are rounded evaluations of explicit expressions; the last
+column is the rounded value of the analytic upper bound $\eps_n$, not an
+estimate of the actual total-variation distance.}
+\label{tab:numeric}
+\end{table}
+
+For instance, the degree-$256$ fixed-variance pair has a displayed
+coordinate separation about $2.29\times10^{-6}$ while the theorem bounds
+its total variation by about $6.32\times10^{-31}$. This does not mean
+that the actual total variation has been computed to that accuracy. It
+means that an exact analytic estimate certifies an upper bound of that
+size. The constants were chosen for a transparent proof, not numerical
+sharpness.
+
+\subsection{A possible Lean formalization route}
+
+The results do not inherit formal status from the repository's existing
+Fabius theory. A future formalization can nevertheless be decomposed into
+clear interfaces. The first layer is finite algebra: Chebyshev recurrence,
+the level-set root description, Newton identities, translated power sums,
+and the middle-coordinate separation. These lemmas can be developed
+without probability or infinite products.
+
+The second layer represents the finite perturbations as product-measure
+random variables and proves their moment and cumulant identities. The
+third layer isolates the Fourier estimate as a statement about two finite
+products, with separate small- and large-frequency lemmas and a
+Plancherel-to-$L^1$ conversion. Only then is the common Fabius factor
+introduced through a theorem interface giving its density, support,
+variance, and derivative norms. The final layer is purely metric and
+statistical: convolution contraction, dilation, local moduli, and the
+two-point bound.
+
+This dependency order keeps a large imported Fabius development out of
+the finite algebraic core. It also makes the actual trust boundary
+visible. No Lean source or uncompiled skeleton is supplied here, and no
+machine-checking claim is made for the article.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{question}[The sharp local inverse modulus]
+Determine the asymptotic order of $\omega_r(\eps)$ in
+\eqref{eq:modulus}. Does a logarithmic upper bound hold under the present
+support, variance, and derivative constraints, and what exponent is
+optimal? Our result proves only
+$\omega_r(\eps)\gtrsim(\log(1/\eps))^{-2}$. Compactness gives convergence
+to zero without a quantitative formula. A useful next step is to combine
+truncated power-sum inversion with a uniform bound on the number of
+coefficients above a chosen threshold.
+\end{question}
+
+\begin{question}[Pointwise recovery of the exact dyadic spectrum]
+Decide whether a power-law estimate relative to the single reference
+parameter $a^0$ can hold on a natural restricted class. The dyadic
+spectrum has a strong separation pattern that the inserted Chebyshev
+blocks destroy. A proof or counterexample must compare one law directly
+to $\mu_0$, not merely compare two laws that separately approach it;
+\cref{rem:pointwise} explains why the present argument is insufficient.
+\end{question}
+
+\begin{question}[Exact support endpoints together with quantitative instability]
+Construct explicit exponentially close pairs that retain
+$\supp\mu=[-1,1]$ and variance $1/9$, approach $\mu_0$, and have a
+quantified spectral separation. \Cref{thm:fibres} preserves the exact
+support but does not give an exponentially small pairwise TV bound;
+\cref{thm:main} gives that bound but only a common support containment.
+A promising route is a small Chebyshev tail block with two compensating
+large-factor adjustments, while controlling the errors those adjustments
+introduce into low-order cumulants.
+\end{question}
+
+\begin{question}[Geometrically separated classes]
+Assume $a_{j+1}\le q a_j$ for some fixed $q<1$, perhaps together with
+bounds on the leading scale. Determine whether the inverse has a
+substantially better modulus. The present construction is excluded,
+since many factors are packed into one scale interval. Exact
+identifiability by successive largest-power limits suggests an approach,
+but converting it into certified finite-noise bounds requires controlling
+every deflation error.
+\end{question}
+
+\begin{question}[Fixed leading factors versus the complete sequence]
+For fixed $r$, find sharp rates for the loss
+$\max_{1\le j\le r}|\widehat a_j-a_j|$, with explicit assumptions on
+the remaining tail. The middle-coordinate witness here occurs at a
+rank growing with $n$, so it does not settle that finite-prefix question.
+It is important to distinguish a separated finite-dimensional parameter
+from an unknown infinite tail that can imitate its cumulants.
+\end{question}
+
+\begin{question}[Matching statistical upper bounds]
+Construct a regularized estimator with a proved risk bound over a
+specified infinite-factor class, and compare it to
+\cref{thm:statistics}. Empirical high moments become unreliable quickly;
+a characteristic-function estimator with low-frequency regularization
+may be more natural. Any proposed upper rate must account for both
+moment cancellation and the number of unresolved small factors.
+\end{question}
+
+\begin{question}[Gaussian components and square-summable spectra]
+Extend the quantitative question to the larger generalized-uniform and
+Gaussian-convolution parameter spaces studied by Billey--Swanson.
+Their topology records the possibility that variance escapes into a
+Gaussian component \cite{BilleySwanson}. Without an $\ell^1$ support
+bound, new scale choices are possible, so the exponent and even the most
+appropriate parameter metric may change. Establishing uniqueness alone
+would repeat known work; a useful extension must supply quantitative
+stability or instability information.
+\end{question}
+
+\begin{question}[Exact certificates for numerical inversion]
+Implement a validated finite-prefix recovery algorithm based on
+\cref{prop:largest,prop:rouche} and \eqref{eq:tail-noise}, then formalize
+its algebraic certificate checker. The key engineering target is an
+explicit statement of the measurement error model and tail assumptions,
+not simply a high-precision reconstruction on selected examples. This
+would turn the negative theorem into a practical guide for what a
+reliable ProveIt inverse API must require.
+\end{question}
+
+\section{Conclusion}
+
+The complete law of a summable uniform convolution uniquely encodes its
+ordered factor lengths. That qualitative fact coexists with two strong
+obstructions. A prescribed finite list of moments leaves nontrivial
+analytic families even when the support is fixed exactly. More
+quantitatively, a growing block of Chebyshev-derived positive factors can
+hide polynomial parameter differences behind exponentially small errors
+in the full probability law.
+
+The construction retains fixed variance, compact support bounds, and
+uniform control of every density derivative. Its instability therefore
+lies in the factorization, not merely in rough densities or uncontrolled
+scaling. The explicit proofs and algebraic checks support independent
+review and eventual formalization. Sharp moduli, pointwise stability at
+the dyadic law, and matching statistical algorithms remain the central
+next questions.
+
+\clearpage
+\appendix
+\section{A compact audit of the main constants}
+\label{app:constants}
+
+The following chain contains all numerical losses used in the main
+construction:
+\begin{align*}
+ &\frac1{4n}\le\eta_n\le\frac1{2n},\qquad
+   |y_{j_n}^+-y_{j_n}^-|\ge\frac1{3n},\\
+ &\Delta_n\ge\frac{\eta_n}{12n}\ge\frac1{48n^2},
+   \qquad\frac12<c_n\le1,\\
+ &\int_{|t|\le1}(|D|^2+|D'|^2)\dd t\le8320n^2q^{2n},\\
+ &\int_{|t|\ge1}(|D|^2+|D'|^2)\dd t\le80n^2\rho^{4n-2},\\
+ &q=4/\pi^2<1/2,\quad\rho=6/7,\quad
+   q^{2n}\le\rho^{4n-2},\\
+ &\TV\le\frac{\sqrt{8400}}{2\sqrt2}n\rho^{2n-1}
+                       <40n\rho^{2n-1}.
+\end{align*}
+The normalization changes the gap lower bound by at most a factor of two
+and leaves the TV bound unchanged. The statistical argument loses a
+further factor of eight: four from the testing reduction and two from
+the product-TV bound $1-\TV\ge1/2$. Thus its denominator is
+$96\cdot8=768$.
+
+The local-modulus denominator is $96\cdot11^2=11616$. Its threshold in
+$\eps$ depends on the prescribed neighborhood radius only through the
+explicit convergence estimate \eqref{eq:main-near}. None of these
+constants is claimed to be optimal.
+
+\begin{thebibliography}{9}
+\small\raggedright
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov and contributors.
+\emph{ProveIt}, especially \texttt{Analysis/FabiusFunction/README.md}
+and its Fabius/Rvachev documentation.
+Repository snapshot reference:
+\texttt{\repoSHA}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/74f7f5bdba1aa728b340509701a0fa4e45e8dbf3/Analysis/FabiusFunction/README.md}{Project overview at the inspected snapshot}.
+Targeted documentation review, not a complete repository proof audit.
+
+\bibitem{AriasDefinition}
+Juan Arias de Reyna.
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}.
+arXiv:1702.05442, 2017. English translation of
+``Definici\'on y estudio de una funci\'on indefinidamente diferenciable de
+soporte compacto,'' \emph{Rev. Real Acad. Ciencias} \textbf{76} (1982),
+21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{AriasArithmetic}
+Juan Arias de Reyna.
+\emph{Arithmetic of the Fabius function}.
+arXiv:1702.06487, version 3.
+\url{https://arxiv.org/abs/1702.06487}.
+Used as repository context rather than as an input to the instability proof.
+
+\bibitem{BilleySwanson}
+Sara C. Billey and Joshua P. Swanson.
+\emph{The metric space of limit laws for $q$-hook formulas}.
+\emph{Combinatorial Theory} \textbf{2}(2), 2022.
+DOI: \href{https://doi.org/10.5070/C62257868}{10.5070/C62257868}.
+The theorem numbering cited here is that of
+arXiv:2010.12701v2, 2023, especially Lemma~3.11,
+Theorem~3.13, and Theorem~1.15.
+\url{https://arxiv.org/abs/2010.12701v2}.
+
+\bibitem{GerthEtAl}
+Daniel Gerth, Bernd Hofmann, Christopher Hofmann, and Stefan Kindermann.
+\emph{The Hausdorff Moment Problem in the light of ill-posedness of type I}.
+arXiv:2104.06029v2, 2021.
+\url{https://arxiv.org/abs/2104.06029v2}.
+Cited for related moment-inversion context; no theorem of that paper is
+used as a substitute for the explicit uniform-factor construction.
+
+\end{thebibliography}
+\end{document}
