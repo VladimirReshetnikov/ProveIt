@@ -32,7 +32,7 @@ The stretched-logarithmic family `L(j) = exp((log j)^gamma)` yields a finite exp
 - `data/envelope_table.tex`, `data/resonance_table.tex`: generated tables used in the paper.
 - `SOURCES.md`: repository snapshot, primary references, and comparison boundaries.
 - `requirements.txt`, `Makefile`: reproduction instructions.
-- `SHA256SUMS.txt`: checksums for the archive contents other than this ledger itself.
+- The delivered checksum ledger `SHA256SUMS.txt` was verified in full on filing (batch 47) and not kept; the delivered archive remains in the repository history (see `docs/incoming/README.md`, batch 47 row).
 
 ## Reproduce
 
@@ -58,3 +58,34 @@ The coefficient result is an equivalent for the nth root, **not** a multiplicati
 Floating-point tables are **not outward-rounded interval certificates**. Resonance diagnostics evaluate the proved implicit asymptotic normalizer, not the infinite Borel function. Moderate-size envelopes can converge very slowly. The positive-ray obstruction does not rule out useful summation in other directions or a separately constructed compatible acceleration.
 
 The work answers the inspected repository question under the stated hypotheses. External publication priority has not been established by an exhaustive literature search. No repository branch was modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 47 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `near_linear_feedback.tex`: an unnumbered "Editorial note (ProveIt,
+  2026-09-29)" environment was added to the preamble. Editorial notes were
+  added after three further-research questions: "Growth away from the
+  positive Borel ray" (partly answered, for unit amplitudes, by the later
+  negative-ray package, where this class has `A = 0`, and by the
+  sectorial-summability package for every order `k > 1`), "Compatible
+  acceleration and optimal truncation" (its uniform-remainder part answered by
+  the sectorial-summability package; acceleration and optimal truncation
+  still open) and "Inversion and parameter limits beyond fixed resonances"
+  (a cross-link to the weighted-type package's zero-loss theorem, which does
+  not settle it). In Appendix A the first pinned identifier, which the
+  delivered text called a "repository root tree", is now called a commit,
+  with an editorial note recording the correction. Every change is marked in
+  the source by a `% ed. (2026-09-29)` comment. No label, theorem or number
+  changed.
+- `near_linear_feedback.pdf`: rebuilt from the amended source (26 pages; the
+  delivered PDF had 25). `data/build_report.json` describes the delivered
+  build and was not updated.
+- `SOURCES.md`: the same identifier is labelled as a commit.
+- `README.md`: the retired checksum ledger is no longer listed as a package
+  file (see "Files").
+- `code/verify.py`: the JSON and table writers emit LF line endings on every
+  platform. A rerun on a copy reproduced `data/verification.json` and both
+  tables byte for byte. The program rewrites the two tables the article
+  inputs; run it on a copy.

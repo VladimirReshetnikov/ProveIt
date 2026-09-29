@@ -61,3 +61,36 @@ The article does not claim to resolve a named longstanding conjecture. Independe
 mathematical review and further literature comparison are recommended.
 
 No files or branches in the ProveIt repository were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 45 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `article.tex`: an unnumbered "Editorial note (ProveIt, 2026-09-29)"
+  environment was added to the preamble. The quoted directory of the canonical
+  volume in Section 1 now gives its current location,
+  `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`,
+  and an editorial note records the pre-split path of the pinned snapshot; the
+  bibliography entry `repo` gains the same current path (its pinned link is
+  unchanged). Editorial notes were added after the end of Section 3 (the
+  missing local limit and multiplicative asymptotic) and after six of the
+  further-research questions, naming the later packages of this series that
+  answer them and how far: directional summability (the negative-ray,
+  natural-boundaries and sectorial-summability packages), beyond logarithmic
+  coefficient asymptotics (the finite-core, microscopic-condensation and
+  Poisson-layer packages), the near-linear transition (the near-linear
+  package), exact type under compositional inversion (the weighted-type
+  package; the finite-core package and the two batch-49 quadratic-inverse
+  packages for multiplicative inverse laws), amplitudes (partly, the
+  near-linear, critical Hahn and natural-boundaries packages) and uniform
+  Gevrey remainders (the sectorial-summability package; the negative-ray
+  package for the quadratic inverse). Every change is marked in the source by
+  a `% ed. (2026-09-29)` comment. No label, theorem or number changed.
+- `article.pdf`: rebuilt from the amended source.
+- `SOURCES.md`: the relevant path now gives the current location and records
+  the pre-split path of the pinned snapshot.
+- `code/verify.py`: the default `--order` is now 120, the order of the recorded
+  run, so a bare run no longer overwrites the degree-120 tables with shorter
+  ones; the CSV and JSON writers emit LF line endings on every platform. A
+  bare rerun on a copy reproduced the three filed `data/` files byte for byte.

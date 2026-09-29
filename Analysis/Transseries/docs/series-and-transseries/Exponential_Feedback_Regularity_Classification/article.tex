@@ -48,6 +48,9 @@
 \newcommand{\Uhat}{\widehat U}
 \newcommand{\Qhat}{\widehat Q}
 \DeclareMathOperator*{\argmax}{arg\,max}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \hypersetup{pdftitle={A sharp regularity classification for countable exponential-feedback transseries},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Convergence, exact Gevrey type, condensation, Borel growth and sectorial realization}}
 \begin{document}
 \begin{center}
@@ -123,11 +126,21 @@ Lambert coefficients.
 
 The repository snapshot consulted is commit
 \texttt{04e06e032dff1966513bfba316966d52db3646b4}.  The relevant directory is
+% ed. (2026-09-29): the pre-split directory quoted here is dead at the time of filing;
+% replaced by its current location (the snapshot path is kept in the editorial note).
 \begin{quote}\small\ttfamily
-Analysis/FabiusFunction/docs/\\
-semi-formalized-research-frontiers/drafts/\\
+Analysis/Transseries/docs/\\
 series-and-transseries/Transseries\_And\_Inversion/.
 \end{quote}
+% ed. (2026-09-29): current path of the canonical volume; the pinned snapshot's path recorded.
+\begin{ednote}
+The directory is given at its current location. At the pinned snapshot it was
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/};
+the transseries material has since moved to \nolinkurl{Analysis/Transseries/}
+(see \nolinkurl{docs/incoming/README.md}, batch 45). Packages filed later
+beside this one in \nolinkurl{Analysis/Transseries/docs/series-and-transseries/}
+answer several questions of Section~\ref{sec:future}; see the editorial notes there.
+\end{ednote}
 We use its documented program as motivation.  None of the proofs below
 requires accepting an unverified frontier theorem from that repository.
 Nor do we assert that the particular classification problem formulated here
@@ -756,6 +769,12 @@ Together these propositions finish Theorem~\ref{thm:regular}.  They justify
 the one-large-action mechanism at exponential precision.  They do
 \emph{not} give a local limit theorem, a fluctuation scale about the true
 finite-$n$ center, or a full multiplicative asymptotic for $u_n$.
+% ed. (2026-09-29): cross-reference to later packages that close these gaps.
+\begin{ednote}
+For power slopes these gaps are closed by later packages in this series;
+see the editorial note after the question ``Beyond logarithmic coefficient
+asymptotics'' in Section~\ref{sec:future}.
+\end{ednote}
 
 \section{The exact Gevrey-type identity}
 \label{sec:gevrey}
@@ -1431,6 +1450,29 @@ $\pi$?  A successful proof must establish the required sectorial Borel
 growth and compare the Laplace sum with the literal fixed point.
 The coefficient Gevrey bound and Poincar\'e realization alone do not imply
 this comparison.  Cancellation in $B_1(-t)$ is the central new issue.
+% ed. (2026-09-29): answered by later sibling packages (negative-ray, natural-boundaries, sectorial-summability).
+\begin{ednote}
+Later packages in \nolinkurl{Analysis/Transseries/docs/series-and-transseries/}
+answer this question in three senses; none of them has been independently
+reviewed. (i)~\emph{Fine sense, answered positively.}
+\nolinkurl{Negative_Ray_Summation_Exponential_Feedback/} proves
+(its Theorem~\texttt{thm:threshold}) that, for these unit amplitudes, $\Uhat$ and
+$\Qhat$ are finely (fixed-width half-strip) Borel--Laplace summable in
+direction $\pi$ exactly when $\lambda_j=O((j\log j)^2)$, which includes the
+quadratic model, with sums that satisfy the literal kernel near the
+negative axis; its Theorem~\texttt{thm:borel} continues the inverse Borel transform
+to $|\zeta|+\Re\zeta<1/(2A)$, $A=\limsup\lambda_j/(j\log j)^2$.
+(ii)~\emph{Angular sense, answered negatively for $\lambda_j=j^2$.}
+\nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/} proves
+(its Theorem~\texttt{thm:main}) that the Borel transform of $\Qhat$ is entire and
+exponentially bounded on every tube around the negative ray but in no
+wedge around it, so neither $\Qhat$ nor $\Uhat$ is $1$-summable in an open
+arc of directions containing $\pi$. (iii)~\emph{Orders $k>1$.}
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}
+(its Theorems~\texttt{thm:headline} and \texttt{thm:ksum}) proves $k$-summability in
+direction $\pi$, with sum the canonical left-sectorial solution, exactly
+when $\lambda_j=O((j\log(j+1))^{1+1/k})$; it leaves $k=1$ open.
+\end{ednote}
 
 \subsection{Acceleration and the choice of analytic equation}
 The law $\log\log B_1(t)\sim2\sqrt t$ suggests that ordinary Laplace
@@ -1451,6 +1493,28 @@ relevant below order $n$.  Establish a local limit theorem for $K$ and
 $J_{\max}$ with a correctly centered fluctuation law.  The exponential
 concentration proved here supplies localization, but not the necessary
 subleading analysis.
+% ed. (2026-09-29): answered for power slopes by the finite-core and microscopic-condensation packages.
+\begin{ednote}
+Answered for two slope classes by later packages. For $\lambda_j=aj^p$,
+$p>1$, after finitely many nonnegative changes,
+\nolinkurl{Finite_Core_Universality_Exponential_Feedback/} proves a
+multiplicative saddle equivalent with its determinant prefactor
+(Theorem~\texttt{thm:saddle} there), a conditional local Gaussian law and an
+unconditional central limit theorem for the largest action
+(Theorem~\texttt{thm:clt}), and an explicit first correction for $p>3/2$
+(Proposition~\texttt{prop:first-correction}). For
+$\lambda_j=j^2+\alpha j+\eta j/\log j+o(j/\log j)$,
+\nolinkurl{Microscopic_Condensation_Exponential_Feedback/} proves a full
+multiplicative equivalent (Theorem~\texttt{thm:coefficient}), which for eventually
+exact $j^2$ is the $p=2$, $a=1$ case of the finite-core first-correction
+formula, joint total-variation Gaussian--Poisson laws for the largest
+action and the number of twos, a two-dimensional local limit, and a
+central limit theorem for $K$ (Theorem~\texttt{thm:probability},
+Corollaries~\texttt{cor:local} and \texttt{cor:K}).
+\nolinkurl{Poisson_Layers_Finite_Core_Boundary/} adds the first omitted
+action as an explicit Poisson layer. Slopes $aj^p(\log j)^\beta$ with
+$\beta\ne0$ are not treated in these packages.
+\end{ednote}
 
 \subsection{The near-linear transition}
 Analyze slopes such as $j(\log j)^\beta$ with $\beta>0$ and
@@ -1459,6 +1523,23 @@ already proves divergence together with membership in every positive
 Gevrey class.  What are the sharp coefficient asymptotics and the natural
 summation scales in this zero-index, nonconvergent regime?  The saddle
 balance changes because the $(p-1)n\log n$ term disappears at $p=1$.
+% ed. (2026-09-29): answered at n-th-root precision by the near-linear package; negative direction by two others.
+\begin{ednote}
+Answered at $n$-th-root precision by
+\nolinkurl{Near_Linear_Boundary_Exponential_Feedback/} for
+$\lambda_j=jL(j)$ with $L$ positive, nondecreasing, $C^1$ and unbounded,
+of elasticity tending to zero, with $xL(x)$ convex, and with exponentially
+controlled positive amplitudes: $u_n^{1/n}\sim c_1e^{b_n}$ where
+$b_ne^{b_n}=L(n/(1+b_n))$ (its Theorem~\texttt{thm:main}), with an explicit law for
+$j(\log j)^\beta$; every factorial-normalized Borel transform is entire but
+grows too fast for Laplace summation in the positive direction
+(Theorem~\texttt{thm:borel}, Corollary~\texttt{cor:no-laplace}). A multiplicative equivalent
+for $u_n$ is not claimed there. In the negative direction this class has
+$A=0$ in the negative-ray package (fine summability and an entire inverse
+Borel transform, for unit amplitudes), and the sectorial-summability
+package gives strong Gevrey-$s$ remainders for every $s>0$ and
+$k$-summability for every $k>1$.
+\end{ednote}
 
 \subsection{Exact type under compositional inversion}
 For $\Qhat=\Uhat^{\langle-1\rangle}$, determine whether the exact type
@@ -1466,6 +1547,24 @@ $T_s$ is preserved and under which hypotheses.  We have proved only class
 membership and equality of the least Gevrey index.  A proof of a sharper
 claim must control cancellations in the reversion formula rather than
 import the positive-weight argument unchanged.
+% ed. (2026-09-29): answered by the weighted-type package; multiplicative inverse laws by the finite-core and batch-49 packages.
+\begin{ednote}
+Answered by \nolinkurl{Sharp_Weighted_Type_Formal_Reversion/}. Its
+kernel-independent zero-loss theorem (Theorem~\texttt{thm:zeroloss} there) shows
+that tangent-to-identity reversion preserves the weighted type for
+log-convex weights with $M_n^{1/n}\to\infty$; combined with
+\eqref{eq:exacttype}, which it imports from this article and restates but
+does not re-prove, it gives $T_s(\Qhat)=T_s(\Uhat)$ for every $s>0$
+(Theorem~\texttt{thm:inversefeedback}), the inverse Borel radius $1/(4A)$
+(Corollary~\texttt{cor:borelradius}) and a refined inverse type for
+$\lambda_j\sim aj^p(\log j)^\beta$ (Theorem~\texttt{thm:refinedfeedback}).
+Multiplicative inverse asymptotics are proved for $\lambda_j=aj^p$,
+$p>2$, in the finite-core package (its Theorem~\texttt{thm:explicit}); at $p=2$
+that package states a conjecture (\texttt{conj:quadratic-inverse}), of which
+\nolinkurl{Quadratic_Exponential_Feedback_After_Reversion/} and
+\nolinkurl{Signed_Quadratic_Feedback_Inversion/} claim independent,
+not yet reviewed, proofs.
+\end{ednote}
 
 \subsection{Amplitudes, general actions, and multiple scales}
 Replace the unit amplitudes and integer actions by
@@ -1481,6 +1580,19 @@ For true multilevel transseries, one must also state which filtration is
 used for formal summability and which parameter controls the analytic
 normalization.  A weight estimate in the wrong filtration is not an
 analytic certificate.
+% ed. (2026-09-29): partly answered for special amplitude classes (near-linear, critical Hahn, natural-boundaries packages).
+\begin{ednote}
+Partly answered for special amplitude classes. The near-linear package
+allows positive amplitudes with $e^{-D(j-1)}\le c_j/c_1^j\le e^{D(j-1)}$.
+\nolinkurl{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/}
+treats $U=\beta\sum_ja_jq^je^{jU}$ with $a_j=aj^{-1-\alpha}$ outside a
+finite set, $1<\alpha<2$, at the critical coupling (a convergent Hahn
+chart, stable-density sector asymptotics and action budgets); it does not
+cite this question. The natural-boundaries package relates rational
+amplitude generating functions with eventually quadratic slopes to angular
+summability (its Theorem~\texttt{thm:rational-main}). None of them states an
+analogue of \eqref{eq:exacttype} in terms of $c_j$, $a_j$ and $\lambda_j$.
+\end{ednote}
 
 \subsection{Signed and vector-valued feedback}
 For complex amplitudes or slopes, positivity no longer identifies the
@@ -1505,6 +1617,19 @@ on proper sectors.  The sharp coefficient criterion is necessary for
 such a statement, but its sufficiency for this particular realization
 requires a new argument.  This is the most direct bridge to the Gevrey
 implicit-function and summability literature.
+% ed. (2026-09-29): answered by the sectorial-summability package; quadratic inverse remainder in the negative-ray package.
+\begin{ednote}
+Answered by
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}
+(its Theorem~\texttt{thm:headline}): for every $s>0$ the displayed estimate holds on
+every proper left sector, for the canonical left-sectorial solution that
+package reconstructs (Proposition~\texttt{prop:existence}), exactly when
+$\lambda_j=O((j\log(j+1))^{s+1})$, and likewise for the compositional
+inverse (Theorem~\texttt{thm:inverse}). Its constants depend on the sector; no
+estimate up to the boundary rays is claimed. For $\lambda_j=j^2$ the
+negative-ray package proves, for $P=e^uQ$, a uniform remainder with an
+explicit majorant on a closed left half-disc (its Theorem~\texttt{thm:remainder}).
+\end{ednote}
 
 \subsection{Formalization and certified computation}
 A useful Lean development can be staged without first formalizing all of
@@ -1612,6 +1737,10 @@ commit \texttt{04e06e032dff1966513bfba316966d52db3646b4},
 consulted 29 September 2026.
 \newblock
 \href{https://github.com/VladimirReshetnikov/ProveIt/tree/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion}{Pinned transseries directory on GitHub}.
+% ed. (2026-09-29): current location of the pinned directory added.
+\newblock Editorial note (ProveIt, 2026-09-29): the pinned link above is
+valid at that commit; the directory is now
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
 
 \bibitem{vdh}
 J. van der Hoeven,

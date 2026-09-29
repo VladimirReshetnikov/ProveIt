@@ -8,11 +8,17 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from fractions import Fraction
 from math import comb, factorial
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Editorial amendment (ProveIt, 2026-09-29): outputs go to OUT. A full run keeps
+# writing data/ (the recorded run); --exact-only now writes data/exact_only/, so
+# it no longer replaces the recorded verification.json with a shorter report.
+# Every writer emits LF line endings on every platform.
+OUT = ROOT / 'data'
 
 
 def coefficients(slopes: list[int], order: int) -> list[int]:
@@ -64,7 +70,7 @@ def kernel_coefficient(slopes: list[int], n: int, B=Fraction(1)) -> Fraction:
 
 
 def exact_checks(order: int) -> dict:
-    data = ROOT / 'data'
+    data = OUT
     data.mkdir(exist_ok=True)
     report = {'order': order, 'partition_checks': 0,
               'kernel_lower_bound_checks': 0, 'analytic_benchmark_checks': 0,
@@ -92,7 +98,7 @@ def exact_checks(order: int) -> dict:
                 report['analytic_benchmark_checks'] += 1
         report['first_coefficients'][name] = [str(x) for x in u[1:9]]
         with (data / f'{name}_coefficients.csv').open('w', newline='') as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, lineterminator='\n')
             writer.writerow(['n', 'n_factorial_times_u_n', 'u_n_numerator',
                              'u_n_denominator'])
             for n in range(1, order+1):
@@ -149,8 +155,8 @@ def numerical_checks() -> dict:
                          'analytic_error_bound': mp.nstr(bound, 10),
                          'comparison_difference': mp.nstr(abs(U-Uref), 10),
                          'actions': L, 'iterations': steps})
-    with (ROOT/'data'/'sectorial_diagnostics.csv').open('w', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=rows[0].keys())
+    with (OUT/'sectorial_diagnostics.csv').open('w', newline='') as f:
+        w = csv.DictWriter(f, fieldnames=rows[0].keys(), lineterminator='\n')
         w.writeheader(); w.writerows(rows)
     return {'precision_decimal_digits': 100, 'interval_arithmetic': False,
             'kernel_remainder_checks': count, 'finite_solver_comparisons': len(rows),
@@ -158,16 +164,22 @@ def numerical_checks() -> dict:
 
 
 def main():
+    global OUT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--order', type=int, default=120)
     parser.add_argument('--exact-only', action='store_true')
     args = parser.parse_args()
     if not 12 <= args.order <= 500:
         parser.error('--order must be between 12 and 500')
+    if args.exact_only:
+        OUT = ROOT / 'data' / 'exact_only'
+    OUT.mkdir(parents=True, exist_ok=True)
     report = {'exact': exact_checks(args.order)}
     if not args.exact_only:
         report['numerical'] = numerical_checks()
-    (ROOT/'data'/'verification.json').write_text(json.dumps(report, indent=2)+'\n')
+    (OUT/'verification.json').write_text(json.dumps(report, indent=2)+'\n', newline='\n')
+    # LF stdout too, so the README recipe's redirect to data/run_output.txt stays LF.
+    sys.stdout.reconfigure(newline='\n')
     print(json.dumps(report, indent=2))
 
 if __name__ == '__main__':

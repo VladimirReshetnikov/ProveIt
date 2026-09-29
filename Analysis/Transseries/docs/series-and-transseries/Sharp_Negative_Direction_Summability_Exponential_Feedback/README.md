@@ -64,8 +64,10 @@ python -m pip install -r requirements.txt
 python code/verify.py --order 120
 ```
 
-A run replaces the JSON report; `--exact-only` omits the numerical section.
-The full run restores it. To record terminal output as supplied here:
+A full run replaces the recorded files in `data/`. `--exact-only` omits the
+numerical section; since the editorial amendment of 2026-09-29 (below) it
+writes its tables and its shorter report to `data/exact_only/` instead of
+replacing the recorded ones. To record terminal output as supplied here:
 
 ```sh
 python code/verify.py --order 120 > data/run_output.txt
@@ -105,3 +107,41 @@ not presented as a new general theorem. The model-specific bridge and sharp
 summability application are proposed contributions; global originality and
 priority have not been independently certified. No named longstanding
 conjecture is claimed solved. No ProveIt repository files were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 48 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `article.tex`: an unnumbered "Editorial note (ProveIt, 2026-09-29)"
+  environment was added to the preamble. Editorial notes record that this
+  article's snapshot already contained the negative-ray package
+  (`Negative_Ray_Summation_Exponential_Feedback/`), which it does not cite and
+  which proves fine Borel summability in direction `pi` for
+  `lambda_j = O((j log j)^2)`, including the quadratic case listed here as
+  open (note in Section 1.1); that "Sharp" holds for the summability
+  statements only for `k > 1` (note after Theorem 1.1); that the quadratic
+  `k = 1` question is settled in the fine sense by the negative-ray package
+  and negatively in the angular sense by the later natural-boundaries package
+  (note in the section on the critical aperture); that the inversion-first
+  method proposed as future work is the negative-ray package's (note after
+  question 1); and that coefficient-type invariance under inversion is proved
+  by the weighted-type package (note after question 2). Three bibliography
+  entries (`ed:negativeray`, `ed:naturalboundaries`, `ed:weightedtype`) were
+  added. The title page no longer carries a hyperref page anchor, which
+  removes a duplicate destination (`page.1`). Every change is marked in the
+  source by a `% ed. (2026-09-29)` comment. No author label, theorem or number
+  changed.
+- `article.pdf`: rebuilt from the amended source (20 pages; the delivered PDF
+  had 19).
+- `PROOF_STATUS.md`: an editorial note gives the repository status of the
+  "Deliberately unresolved" items.
+- `code/verify.py`: `--exact-only` now writes to `data/exact_only/`, so it no
+  longer replaces the recorded `data/verification.json` (and its identical
+  copy `data/run_output.txt`) with a report lacking the numerical section; a
+  full run still writes `data/`. The CSV, JSON and standard-output writers
+  emit LF line endings on every platform. The full recipe
+  (`--order 120 > data/run_output.txt`) rerun on a copy reproduced all seven
+  filed `data/` files byte for byte. `data/run_output.txt` is the program's
+  standard output and is byte-identical to `data/verification.json` by
+  design.

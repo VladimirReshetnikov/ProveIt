@@ -29,7 +29,13 @@
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ee}{\mathrm e}
 \DeclareMathOperator{\Rea}{Re}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,showstringspaces=false}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, removing the duplicate
+% hyperref destination page.1 (the contents page is also numbered 1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}\centering
 \vspace*{12mm}
 {\small\scshape Research article\par}\vspace{9mm}
@@ -76,6 +82,8 @@ claimed as inventions. Global novelty and priority have not been
 certified. No named longstanding conjecture is claimed solved.
 \end{minipage}
 \end{titlepage}
+% ed. (2026-09-29): page anchors on again after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents\clearpage
 
 \section{The research gap and the main conclusions}
@@ -108,6 +116,24 @@ draft develops multiplicative coefficient asymptotics and finite-core
 condensation \cite{finitecore}. We do not repeat its saddle analysis.
 The present question is to control the actual error of a sectorial
 solution and identify which summation procedures reconstruct it.
+% ed. (2026-09-29): missing citation: the negative-ray package was in this article's snapshot but is not cited.
+\begin{ednote}
+The snapshot used here already contained a third package, \nolinkurl{Negative_Ray_Summation_Exponential_Feedback/}~\cite{ed:negativeray}, which the directory README described
+and which this article does not cite. It proves, for $s=1$ and unit
+amplitudes, that $\Uhat$ and its compositional inverse are \emph{finely}
+(fixed-width half-strip) Borel--Laplace summable in direction $\pi$
+exactly when $\lambda_j=O((j\log j)^2)$ (its Theorem~\texttt{thm:threshold}),
+including the quadratic model, by inverting the kernel before taking Borel
+transforms; it also continues the inverse Borel transform explicitly and,
+for $\lambda_j=j^2$, bounds the inverse remainder uniformly on a closed
+left half-disc (its Theorems~\texttt{thm:borel} and \texttt{thm:remainder}). The two
+articles are complementary: this one covers every $s>0$ and sectorial
+$k$-summability for $k>1$; that one covers the fine case $k=1$; both prove
+the Gevrey-$1$ class equivalence. The ordinary (angular) case $k=1$ for
+$\lambda_j=j^2$ is settled negatively by the later package \nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/}~\cite{ed:naturalboundaries}.
+All three packages are in
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/}.
+\end{ednote}
 
 \subsection{Principal statements}
 \begin{theorem}[Sharp sectorial Gevrey and summability classification]
@@ -134,6 +160,15 @@ inverses of $U$.
 \end{theorem}
 The summability conclusion deliberately assumes $k>1$; the case $k=1$
 is not settled here. The remainder assertion holds for every $s>0$.
+% ed. (2026-09-29): scope of "Sharp" in the title: the summability iff holds for k > 1 only.
+\begin{ednote}
+Scope: the word ``Sharp'' in the title refers to these equivalences. For
+summability they hold for $k>1$ only, that is for subquadratic slope
+classes; the quadratic model, which is the regularity article's directional
+question, is not decided here. Its fine $k=1$ summability is proved in
+\nolinkurl{Negative_Ray_Summation_Exponential_Feedback/}~\cite{ed:negativeray}, and its angular $1$-summability fails for $\lambda_j=j^2$
+by \nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/}~\cite{ed:naturalboundaries}.
+\end{ednote}
 
 \begin{theorem}[Optimal logarithmic scale]
 \label{thm:logheadline}
@@ -834,6 +869,16 @@ relevant, but its geometric and uniformity hypotheses have not been
 established here \cite{sokal}. Thus ordinary negative-direction Borel
 summability for $\lambda_j=j^2$ remains a stated research question, not
 an implicit corollary.
+% ed. (2026-09-29): the stated research question is settled by two sibling packages.
+\begin{ednote}
+This question is settled for $\lambda_j=j^2$ by two other packages of
+the series. In the fine (half-strip) sense the answer is positive: \nolinkurl{Negative_Ray_Summation_Exponential_Feedback/}~\cite{ed:negativeray}, Theorem~\texttt{thm:threshold}, available at this article's snapshot. In
+the ordinary (angular) sense it is negative: \nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/}~\cite{ed:naturalboundaries}, Theorem~\texttt{thm:main},
+proves that the literal inverse has a natural boundary on the imaginary
+diameter and that neither $\Uhat$ nor its inverse is $1$-summable in any
+open arc of directions containing $\pi$. Uniform estimates for $U$ up to
+the boundary rays are not provided by either.
+\end{ednote}
 
 \subsection{The literal positive-real obstruction}
 \begin{proposition}
@@ -1145,12 +1190,27 @@ feedback. The missing step is uniform control on an appropriate boundary
 domain, not another coefficient-growth estimate. Inverse coordinates,
 where the literal kernel is analytic for $\Rea U<0$, may help construct
 a Nevanlinna--Sokal domain after returning to $q$.
+% ed. (2026-09-29): the proposed method is that of the negative-ray package; the angular question is answered negatively.
+\begin{ednote}
+The inversion-first method proposed here is the method of \nolinkurl{Negative_Ray_Summation_Exponential_Feedback/}~\cite{ed:negativeray},
+which uses it to prove fine summability in direction $\pi$ for
+$\lambda_j=O((j\log j)^2)$. Ordinary (angular) summability for
+$\lambda_j=j^2$ fails by \nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/}~\cite{ed:naturalboundaries}.
+\end{ednote}
 
 \paragraph{2. Sharp numerical remainder types.}
 Compare the infimal geometric constant in strong remainders with the
 coefficient type. A no-loss argument could sharpen the exponential
 constant in \eqref{eq:quadraticactual} and determine whether precise type
 is invariant under the inverse. Our proof establishes class equality only.
+% ed. (2026-09-29): coefficient-type invariance answered by the weighted-type package.
+\begin{ednote}
+For coefficient types this is answered by
+\nolinkurl{Sharp_Weighted_Type_Formal_Reversion/}~\cite{ed:weightedtype}:
+the exact Gevrey type is invariant under the inverse (its
+Theorem~\texttt{thm:inversefeedback}). The sharp constant in the remainder bounds
+remains open.
+\end{ednote}
 
 \paragraph{3. Curved boundary layers.}
 Since $U=q+u_2q^2+\cdots$ with $u_2>0$, the boundary $\Rea U=0$ need
@@ -1282,6 +1342,24 @@ summability}, Journal of Mathematical Physics \textbf{21} (1980),
 no.~2, 261--263. \url{https://doi.org/10.1063/1.524408}.
 Cited as a possible boundary-domain route, not an already verified
 hypothesis for this model.
+% ed. (2026-09-29): three bibliography entries added for the editorial notes.
+\bibitem{ed:negativeray}
+[Editorial addition, ProveIt, 2026-09-29.] \emph{Negative-Ray Summation of
+Countable Exponential-Feedback Transseries}, research article prepared for
+V. Reshetnikov, 29 September 2026. In \cite{repo}, directory
+\path{Negative_Ray_Summation_Exponential_Feedback/}; present at the
+snapshot used by this article.
+\bibitem{ed:naturalboundaries}
+[Editorial addition, ProveIt, 2026-09-29.] \emph{Natural Boundaries of
+Quadratic Exponential Feedback}, research draft prepared for
+V. Reshetnikov, 29 September 2026. Directory
+\path{Natural_Boundaries_Quadratic_Exponential_Feedback/} of the same
+series; filed after this article.
+\bibitem{ed:weightedtype}
+[Editorial addition, ProveIt, 2026-09-29.] \emph{Sharp Weighted Type Under
+Formal Reversion}, research article prepared for V. Reshetnikov,
+29 September 2026. Directory \path{Sharp_Weighted_Type_Formal_Reversion/}
+of the same series; filed with this article.
 \end{thebibliography}
 \endgroup
 \end{document}

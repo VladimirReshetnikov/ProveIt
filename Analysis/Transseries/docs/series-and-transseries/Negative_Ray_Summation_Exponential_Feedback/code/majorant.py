@@ -21,6 +21,8 @@ for N in Ns:
     logM=mx+math.log(math.fsum(math.exp(v-mx) for v in vals))
     rows.append([N,logM,(logM-N*math.log(N)+2*N*math.log(math.log(N)))/N,
                  ks[i],ks[i]*math.log(N)/N])
-with (ROOT/'data'/'majorant_diagnostics.csv').open('w') as f:
-    w=csv.writer(f);w.writerow(['N','log_M_N','centered_per_N','maximizing_block_k','k_logN_over_N']);w.writerows(rows)
+# Editorial amendment (ProveIt, 2026-09-29): LF line endings on every platform
+# (the delivered open('w') wrote CR CR LF on Windows).
+with (ROOT/'data'/'majorant_diagnostics.csv').open('w',newline='') as f:
+    w=csv.writer(f,lineterminator='\n');w.writerow(['N','log_M_N','centered_per_N','maximizing_block_k','k_logN_over_N']);w.writerows(rows)
 for row in rows:print(row)

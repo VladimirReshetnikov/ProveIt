@@ -50,6 +50,9 @@
 \newcommand{\coeff}[2]{[#1^{#2}]}
 \newcommand{\sh}{\mathsf C}
 \hypersetup{pdftitle={Negative-Ray Summation of Countable Exponential-Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Fine Borel summability, inverse Bessel kernels, logarithmic-Gevrey remainders, certified inversion}}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \begin{document}
 \begin{center}
 {\LARGE\bfseries\color{ink} Negative-Ray Summation of Countable\par Exponential-Feedback Transseries\par}
@@ -324,6 +327,24 @@ Here and below, ``optimal'' in a theorem label refers to the leading-order
 optimization of our proved majorant.  It does not assert a matching lower
 bound for the actual truncation error.  Cancellation can make that error
 smaller.  No Stokes constant is inferred from the number $1/4$.
+% ed. (2026-09-29): scope note on thm:optimal (an upper bound from the majorant, not a sharp optimal-truncation result).
+\begin{ednote}
+As the preceding paragraph states, Theorem~\ref{thm:optimal} is an upper
+bound derived from the majorant $M_N$; despite its label it is not a sharp
+optimal-truncation theorem, and the repository does not count it among
+sharp instances of optimal truncation. Later packages in
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/} meet the same
+scale for other quantities:
+\nolinkurl{Microscopic_Condensation_Exponential_Feedback/} (its
+Theorem~\texttt{thm:least}) gives the value of the least term of the \emph{forward}
+series, $\exp(-(1+o(1))L^2/(4t))$ at an index $\sim L^2/(4t)$ with
+$L=\log(1/t)$, and
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}
+(its equation \texttt{eq:quadraticactual}) bounds the actual truncation error of
+$U$ on proper left sectors by $C\exp[-c\log^2(1/|q|)/|q|]$ with an
+unspecified constant. No matching lower bound for the actual error is
+known.
+\end{ednote}
 
 \section{Formal existence and the necessary growth condition}
 \label{sec:formal}
@@ -1357,6 +1378,22 @@ of an open arc would have to exploit cancellation or a different exact
 representation.  A proof that no such arc exists would identify a genuine
 boundary between fine and angular summability in a concrete nonlinear
 implicit model.
+% ed. (2026-09-29): open-arc question answered negatively by the later natural-boundaries package.
+\begin{ednote}
+Answered negatively for $\lambda_j=j^2$ by the later package
+\nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/} (its
+Theorem~\texttt{thm:main}), which cites this subsection. The literal inverse $Q$ on
+$|u|\le1/32$, $\Ree u\le0$ is smooth up to the imaginary diameter, every
+point $it$ with $|t|<1/32$ is a natural-boundary point, and $\B\Q$ is
+entire and exponentially bounded on every fixed-width tube around the
+negative ray (re-proving the fine result here in this case) but in no
+wedge around it; hence neither $\Q$ nor $\U$ is angularly $1$-summable in
+direction $\pi$. For rational amplitude generating functions with
+eventually quadratic slopes, angular summability holds exactly when the
+action support is finite (its Theorem~\texttt{thm:rational-main}). The set of
+admissible individual rays and the growth in shrinking sectors remain
+open. That package has not been independently reviewed.
+\end{ednote}
 
 \subsection{The actual Borel boundary at critical slope growth}
 For $\lambda_j\sim a(j\log j)^2$, $a>0$, determine the singularities of
@@ -1368,6 +1405,20 @@ relation to the forward type.  Class membership is invariant under
 reversion, but the elementary proof here does not establish a numerical
 type identity.  This is a useful place for a more detailed literature
 comparison before asserting novelty of any type-preservation theorem.
+% ed. (2026-09-29): type part answered by the later weighted-type package; boundary part only at the vertex (editorial deduction).
+\begin{ednote}
+The type part is answered by the later package
+\nolinkurl{Sharp_Weighted_Type_Formal_Reversion/}, which cites this
+package's README: $T_s(\Q)=T_s(\U)$ for every $s>0$ (its
+Theorem~\texttt{thm:inversefeedback}, using the regularity article's forward type
+identity as an imported input), and the radius of convergence of $\B\Q$
+is exactly $1/(4A)$ (its Corollary~\texttt{cor:borelradius}). Since every point of
+the circle $|\zeta|=1/(4A)$ other than $\zeta=1/(4A)$ lies in the region
+\eqref{eq:parabola}, the two results together imply, for $0<A<\infty$,
+that the vertex $\zeta=1/(4A)$ is a singular point of $\B\Q$. This
+deduction is editorial and is stated in neither package; the rest of the
+boundary is not decided.
+\end{ednote}
 
 \subsection{Signed coefficient asymptotics and actual least error}
 Find an asymptotic equivalent, including signs and prefactors, for the
@@ -1379,6 +1430,19 @@ The stronger analytic target is a matching lower bound for the best
 Taylor-truncation error, or a full description of its exceptional zeros.
 Only then would it be legitimate to interpret a constant such as $1/4$
 as the actual least-error action rather than a certificate constant.
+% ed. (2026-09-29): coefficient part claimed by two batch-49 packages (unreviewed); least-error part open.
+\begin{ednote}
+The coefficient part is claimed, without citing this subsection, by two
+independent later packages that have not been reviewed:
+\nolinkurl{Quadratic_Exponential_Feedback_After_Reversion/} and
+\nolinkurl{Signed_Quadratic_Feedback_Inversion/} (Theorem~\texttt{thm:main} in
+each) prove, for $\lambda_j=aj^2$, the signed equivalent
+$v_n\sim-S_n\exp(-(1+1/a)r_n)$ (with changed constants under finitely
+many exceptional weights and slopes) conjectured in
+\nolinkurl{Finite_Core_Universality_Exponential_Feedback/}
+(\texttt{conj:quadratic-inverse}), with that package's $r_n$ and $S_n$. A matching
+lower bound for the best truncation error is not claimed by any package.
+\end{ednote}
 
 \subsection{Other powers and generalized summation kernels}
 For regularly varying slopes $\lambda_j\sim a j^p$ with $p>1$, construct

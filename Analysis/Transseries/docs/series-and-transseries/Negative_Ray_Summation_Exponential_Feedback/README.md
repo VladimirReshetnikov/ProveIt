@@ -102,3 +102,35 @@ or global publication-priority claim is represented. The article does not claim
 angular summability, a maximal Borel domain, a general resurgence theorem, or a
 matching lower bound for the actual least truncation error. Eight further
 research questions and a staged formalization roadmap are included.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 47 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `article.tex`: an unnumbered "Editorial note (ProveIt, 2026-09-29)"
+  environment was added to the preamble. Editorial notes were added
+  (1) after the author's remark following Theorem 2.6 (`thm:optimal`): despite
+  its label, the theorem is an upper bound from the majorant, not a sharp
+  optimal-truncation result, with the related scales of the later
+  microscopic-condensation (forward least term) and sectorial-summability
+  (actual error, unspecified constant) packages; (2) after the question
+  "Angular summability of the quadratic model": answered negatively for
+  `lambda_j = j^2`, and for rational amplitudes with eventually quadratic
+  slopes, by the later natural-boundaries package; (3) after "The actual
+  Borel boundary at critical slope growth": the type part is answered by the
+  weighted-type package (`T_s(Q) = T_s(U)`, exact Borel radius `1/(4A)`), and
+  the note records the editorial deduction that the parabola's vertex
+  `zeta = 1/(4A)` is then a singular point for `0 < A < oo`; (4) after "Signed
+  coefficient asymptotics and actual least error": the coefficient part is
+  claimed by the two batch-49 quadratic-inverse packages (not reviewed); the
+  least-error part stays open. Every change is marked in the source by a
+  `% ed. (2026-09-29)` comment. No label, theorem or number changed.
+- `article.pdf`: rebuilt from the amended source (24 pages; the delivered PDF
+  had 23). `data/build_validation.json` describes the delivered build and was
+  not updated.
+- `code/verify.py`, `code/majorant.py`: every writer emits LF line endings on
+  every platform (the delivered `majorant.py` wrote CR CR LF on Windows). A
+  rerun on a copy (`verify.py --order 24`, `majorant.py`) reproduced all six
+  written `data/` files byte for byte. The programs rewrite the recorded
+  `data/` files in place; run them on a copy.

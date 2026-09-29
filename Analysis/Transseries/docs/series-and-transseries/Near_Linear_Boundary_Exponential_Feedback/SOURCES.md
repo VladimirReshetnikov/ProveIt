@@ -4,7 +4,8 @@
 
 Repository: https://github.com/VladimirReshetnikov/ProveIt
 
-Initial survey root **tree** SHA (not a commit SHA):
+Initial survey **commit** SHA (the delivered file called this a root tree SHA;
+it names a commit, corrected editorially by ProveIt on 2026-09-29):
 `a795fcffa4b3ece22761d81fbed3c43be8b81795`
 
 Initial `Analysis/Transseries` project tree SHA:

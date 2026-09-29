@@ -65,7 +65,9 @@ further-research directions are proposed.
 - `VALIDATION.md`: build, inspection, and verification record.
 - `requirements.txt`: Python numerical dependency.
 - `build.sh`: optional build helper.
-- `SHA256SUMS`: checksums of the delivered files except itself.
+- The delivered checksum ledger `SHA256SUMS` was verified in full on filing
+  (batch 49) and not kept; the delivered archive remains in the repository
+  history (see `docs/incoming/README.md`, batch 49 row).
 
 ## Reproduce
 
@@ -79,7 +81,10 @@ The default complete run also needs mpmath for numerical diagnostics.
 The script makes no network requests. Its default exact degree is 16.
 Use `--max-order N` with 8 <= N <= 20 to change the degree; independent
 composition enumeration has exponential cost. `--output-dir PATH` places
-outputs in a different directory.
+outputs in a different directory. Since the editorial amendment of
+2026-09-29 (below) the default output directory is `rerun/` beside the
+script; `--output-dir .` regenerates the recorded files, including the two
+tables the article inputs, in place.
 
 The supplied tables already exist, so Python is not needed merely to compile
 or read the article. With a standard TeX Live or MiKTeX installation:
@@ -111,3 +116,33 @@ An entire Borel transform is endlessly continuable in the finite plane.
 Accordingly, failure of angular summability here must not be paraphrased as
 failure of resurgence without specifying an additional growth convention.
 No repository files or branches were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 49 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `article.tex`: an unnumbered "Editorial note (ProveIt, 2026-09-29)"
+  environment was added to the preamble, and an editorial note at the end of
+  Section 1.1 relates the article to packages filed after its snapshot: the
+  sectorial-summability package
+  (`Sharp_Negative_Direction_Summability_Exponential_Feedback/`) leaves the
+  quadratic case `k = 1` open, and Theorem 2.3 here settles it negatively in
+  the angular sense (and so the regularity article's directional question in
+  that sense); the inverse coefficients of the two batch-49 quadratic-inverse
+  packages at `a = 1` agree with those computed here through degree 16. The
+  change is marked in the source by a `% ed. (2026-09-29)` comment. No label,
+  theorem or number changed.
+- `article.pdf`: rebuilt from the amended source (still 23 pages).
+  `VALIDATION.md` describes the delivered build.
+- `README.md`: the retired checksum ledger is no longer listed as a package
+  file (see "Contents"), and "Reproduce" describes the new default output
+  directory.
+- `verify.py`: the default `--output-dir` is now `rerun/` beside the script,
+  so a default run no longer rewrites `exact_checks.json`,
+  `numerical_checks.json` or the two tables the article inputs; every writer
+  emits LF line endings on every platform. A default rerun on a copy wrote
+  four files into `rerun/` that are byte-identical to the recorded ones, left
+  the recorded files untouched, and printed the text of
+  `verification_output.txt` (the captured standard output, written by no
+  script).

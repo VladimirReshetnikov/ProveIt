@@ -203,8 +203,9 @@ def boundary_saddles() -> list[dict]:
 
 
 def save_csv(path:Path, rows:list[dict]) -> None:
+    # Editorial amendment (ProveIt, 2026-09-29): LF line endings on every platform.
     with path.open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
 
 
 def main() -> None:
@@ -225,7 +226,7 @@ def main() -> None:
     exact['floating_crosschecks']=len(log_errors)
     exact['maximum_log_discrepancy']=max(log_errors)
     exact['python']=platform.python_version()
-    (out/'exact_checks.json').write_text(json.dumps(exact,indent=2)+'\n')
+    (out/'exact_checks.json').write_text(json.dumps(exact,indent=2)+'\n',newline='\n')
     print(json.dumps(exact,indent=2))
     if not args.exact_only:
         rows=diagnostics(); save_csv(out/'coefficient_diagnostics.csv',rows)
