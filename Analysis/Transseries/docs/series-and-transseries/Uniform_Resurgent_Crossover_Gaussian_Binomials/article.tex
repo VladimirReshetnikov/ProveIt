@@ -160,6 +160,58 @@ and the explicitly certified inverse construction. The source comparison
 identifies a genuine extension of the inspected chapter; it is not a claim
 that no equivalent theorem exists elsewhere.
 
+% ed. (2026-09-29): editorial note added by ProveIt (sibling packages,
+% a duplicate principal theorem, uncited repository results); not part of
+% the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).}
+\emph{Sibling packages.} This article is one of five packages that answer
+the same gap of the companion for the same interpolation and are to be merged
+into its chapter on the singular transition $q\to1$ \cite{ed:siblings}: the
+$q$-multinomial article (every positive ray; its interpolation at $r=2$,
+$\boldsymbol a=(1,1)$ is \eqref{eq:H}, and its sharp $h=0$ equivalent
+$m_*(2\pi\sqrt{a_*x})^{-1}\e^{-2\pi a_*x}$ with $m_*=2$, $a_*=1$ is
+\eqref{eq:optimal} at $\tau=0$), this article, and the certified-inversion,
+gamma-core and theta-resolved articles. The five write the interpolation in different normalizations ($q=\e^h$ or $Q=\e^{-h}$; remainders $R_K$, $r_K$, $R_M$ or $L_h-F_{h,K}$; smallest ray parameter $a_*$, $\alpha$ or $a_{\min}$); a normalization dictionary is left to the merge.
+The $q$-multinomial article's resonance obstruction concerns fixed
+$h=2\pi/m$, so $hx\to\infty$; it is consistent with \cref{thm:optimal},
+which requires $hx\le T$.
+
+\emph{Duplicate principal theorem.} The certified-inversion package
+re-derives \cref{thm:optimal,thm:visibility} independently, from a
+repository snapshot that predates this package, without citing it. Its
+\texttt{thm:optimal} gives the optimal remainder
+$(-1)^{M+1}\e^{-2\pi x}/(\pi\sqrt x)\,(1+C_1(d)/(2\pi x)+\cdots)$ for
+$M=\pi x+O(1)$: \eqref{eq:optimal} with its first relative correction. Its
+window coordinate $s_{\mathrm{CI}}=2\pi x-4\pi^2/h+\frac12\log x+\log\pi$
+(\texttt{eq:swindow}), for which the optimal remainder divided by the
+modular term is exactly $\e^{-s_{\mathrm{CI}}}$, is the $s$ of
+\eqref{eq:boundary} shifted by $\log\pi$: $s_{\mathrm{CI}}=s+\log\pi+o(1)$,
+so $\e^{-s_{\mathrm{CI}}}$ is the limit $\e^{-s}/\pi$ of
+\eqref{eq:boundarylimit}. Its balance point
+$hx_c=2\pi+(h\log h)/(4\pi)-h\log(\pi\sqrt{2\pi})/(2\pi)+O(h^2|\log h|)$
+agrees with \eqref{eq:equalboundary}. Its hypothesis, $hx$ in a compact
+subset of $(0,\infty)$, is narrower than $0\le hx\le T$ here. These are one
+theorem with two independent proofs; that article adds the relative
+correction, Stieltjes--Pad\'e bounds and a parity-sensitive inverse window.
+
+\emph{Gaussian Coefficient Calculus.} Theorem \texttt{q3:thm:double-scaling}
+of the Fabius tree's Gaussian-coefficient volume \cite{ed:gcc} expands
+$\log\bigl[\begin{smallmatrix}n\\k\end{smallmatrix}\bigr]_{\e^{-\tau/n}}$ to
+all orders only for $0<\tau_0\le\tau\le\tau_1$, the restriction of
+\texttt{t3:prop:double-A}. Its central case $k/n=\frac12$ is this
+interpolation at integers, with $n=2x$ and its $\tau$ equal to $2hx$;
+\cref{thm:uniform} covers $0\le hx\le T$. This article does not cite that
+volume.
+
+\emph{Canonical volume and Lean.} \Cref{thm:optimal} is an explicit, sharp
+instance of the canonical volume's general least-term theorem
+\texttt{p0:thm:optimal-truncation} \cite{ed:tai}. The residual certificates
+of \cref{thm:slope} use the residual-to-root step that the Lean theorem
+\path{Fabius.exists_eq_in_residual_interval} \cite{ed:lean} checks in
+abstract form. This article cites neither.
+\end{quote}
+
 \section{Normalization and the two small scales}
 \label{sec:normalization}
 For $h>0$ put $Q=\e^{-h}$ and define
@@ -1446,7 +1498,8 @@ LaTeX source is the editable mathematical record; the numerical script is
 supplementary evidence and an implementation of the displayed positive
 sum, not a replacement for the proofs.
 
-\begin{thebibliography}{9}
+% ed. (2026-09-29): label width 9 -> 99 for the added editorial entries.
+\begin{thebibliography}{99}
 \bibitem{repo}
 V.~Reshetnikov, \emph{ProveIt: Combinatorial Transseries and Their Inverses},
 chapter ``The singular transition $q\to1$,'' source labels
@@ -1455,11 +1508,17 @@ chapter ``The singular transition $q\to1$,'' source labels
 Repository snapshot 29 September 2026, commit
 \texttt{04e06e032dff1966513bfba316966d52db3646b4}.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+% ed. (2026-09-29): current path added by ProveIt.
+Editorial note (ProveIt, 2026-09-29): pre-split path; the companion is now
+\path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
 
 \bibitem{reporeadme}
 V.~Reshetnikov, \emph{ProveIt: Series and transseries}, group README and
 \emph{Transseries and Inversion} package README, same snapshot.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/README.md}.
+% ed. (2026-09-29): current path added by ProveIt.
+Editorial note (ProveIt, 2026-09-29): pre-split path; the group README is now
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
 
 \bibitem{costingaroufalidis}
 O.~Costin and S.~Garoufalidis, Resurgence of the Euler--MacLaurin summation
@@ -1491,5 +1550,38 @@ $q$-Gamma and $q$-Beta Functions.
 NIST Digital Library of Mathematical Functions, \S23.18,
 Modular Transformations, including Dedekind's eta transformation.
 \url{https://dlmf.nist.gov/23.18}. Accessed 29 September 2026.
+% ed. (2026-09-29): editorial bibliography entries added by ProveIt.
+\bibitem{ed:siblings}
+[Editorial addition, ProveIt, 2026-09-29.] The five packages of the
+$q\to1$ merge unit in the ProveIt series-and-transseries collection,
+\path{Analysis/Transseries/docs/series-and-transseries/}:
+\path{Uniform_q_Multinomial_Certified_Inversion/uniform_q_multinomial_transseries.tex};
+\path{Uniform_Resurgent_Crossover_Gaussian_Binomials/article.tex};
+\path{Certified_Inversion_q_to_1_Transition/q_transition.tex};
+\path{Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex};
+\path{Theta_Resolved_Optimal_Truncation_q_Multinomial/article.tex}.
+Filed in batches 45 and 46 of \path{docs/incoming/README.md}; unrefereed.
+
+\bibitem{ed:gcc}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Gaussian
+Coefficient Calculus},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/Gaussian_Coefficient_Calculus.tex},
+Theorem \texttt{q3:thm:double-scaling} (line 3942) and its domain
+\texttt{q3:eq:double-scaling-domain}.
+
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Theorem \texttt{p0:thm:optimal-truncation} (line 39360).
+
+\bibitem{ed:lean}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt Lean library:
+\path{Fabius.exists_eq_in_residual_interval} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}
+and \path{Fabius.transport_bound} (the crosswalk of the canonical volume's
+\texttt{p0:eq:transport-bound}) in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RemainderTransport.lean}.
 \end{thebibliography}
 \end{document}

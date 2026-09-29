@@ -149,7 +149,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   Lean statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
-  Fekete Designs* (26-page A4 PDF, 1,823-line source, a SymPy/mpmath/SciPy
+  Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
   check program), filed on 2026-09-29 by a quick archival intake from the
   repository-level `docs/incoming/` drop zone.  It answers the
   equilibrium part of `question:design-limit` of

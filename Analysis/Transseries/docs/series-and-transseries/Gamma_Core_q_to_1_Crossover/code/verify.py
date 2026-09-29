@@ -130,5 +130,6 @@ def main():
         out['inverse'].append({'h':'1','target_root':xs,'approximate_root':fmt(root),'absolute_error':fmt(abs(root-xx)),'bound':fmt(bound)})
     out['tests']['all_passed']=True
     path=ROOT/'data'/('verification_quick.json' if args.quick else 'verification.json')
-    path.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))
+    # ed. (ProveIt, 2026-09-29): newline='\n' so that reruns write LF on Windows too.
+    path.write_text(json.dumps(out,indent=2)+'\n',newline='\n');print(json.dumps(out,indent=2))
 if __name__=='__main__': main()

@@ -32,5 +32,6 @@ for xi in [10,30,60]:
                  'difference_times_z_squared':mp.nstr((normalized-predicted)*x*x,16),
                  'working_digits':mp.mp.dps})
 with (ROOT/'data'/'endpoint_independent.csv').open('w',newline='') as f:
-    w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+    # ed. (ProveIt, 2026-09-29): lineterminator='\n'; csv defaults to CRLF.
+    w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
 print(rows)

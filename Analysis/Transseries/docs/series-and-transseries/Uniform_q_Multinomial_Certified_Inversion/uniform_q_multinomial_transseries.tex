@@ -151,6 +151,53 @@ statements below are mathematical claims with proofs; the assertion that this
 package resolves the stated repository gap is narrower than an assertion of
 worldwide priority.
 
+% ed. (2026-09-29): editorial note added by ProveIt (sibling packages,
+% uncited repository results); not part of the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).}
+\emph{Sibling packages.} This article is one of five packages that answer
+the same gap of the companion for the same interpolation and are to be merged
+into its chapter on the singular transition $q\to1$ \cite{ed:siblings}: this
+article, the central Gaussian-binomial article, the certified-inversion
+article, the gamma-core article, and the theta-resolved article, which
+continues this one (see the note after Q2 in Section~\ref{sec:questions}).
+The five write the interpolation in different normalizations ($q=\e^h$ or $Q=\e^{-h}$; remainders $R_K$, $r_K$, $R_M$ or $L_h-F_{h,K}$; smallest ray parameter $a_*$, $\alpha$ or $a_{\min}$); a normalization dictionary is left to the merge.
+Checked agreements: the central article's $F_h$ is \eqref{eq:exact-F} at
+$r=2$, $\avec=(1,1)$, and its sharp minimum $\e^{-2\pi x}/(\pi\sqrt x)$ at
+$\tau=0$ is \eqref{eq:sharp} with $m_*=2$, $a_*=1$; the certified-inversion
+article's shortest-block law has the constant of \eqref{eq:sharp}.
+Theorem~\ref{thm:resonance} (fixed $h=2\pi/m$, so $hx\to\infty$) is
+consistent with the central article's uniform law, which is stated only for
+$0\le hx\le T$.
+
+\emph{Gaussian Coefficient Calculus.} Theorem \texttt{q3:thm:double-scaling}
+of the Fabius tree's Gaussian-coefficient volume \cite{ed:gcc} expands
+$\log\bigl[\begin{smallmatrix}n\\k\end{smallmatrix}\bigr]_{\e^{-\tau/n}}$ to
+all orders only for $0<\tau_0\le\tau\le\tau_1$ and
+$\varepsilon\le k/n\le1-\varepsilon$: the restriction of
+\texttt{t3:prop:double-A}. At $r=2$, $\avec=(\alpha,1-\alpha)$, $x=n$,
+$\alpha n=k$, that logarithm is $F_h(n)-\kappa hn^2$ with $h=\tau/n$, so its
+$\tau$ is $hx$ here. Its coefficients are $C_1=D_1-\tau/24$ (the term
+$-dh/24$ of \eqref{eq:core}) and $C_{2k-1}=D_k$ for $k\ge2$, with $D_k$ from
+\eqref{eq:D}; ProveIt checked this at 40 digits for $k\le4$,
+$\alpha\in\{\frac15,\frac13,\frac12\}$ and $\tau\in\{0.3,1.5,4\}$, and it
+follows from $\frac{\mathrm d}{\mathrm du}\Li_s(\e^{-u})=-\Li_{s-1}(\e^{-u})$.
+Since $E_K$ depends on the ray only through $\sum_ja_j^{-2K-1}$,
+Theorem~\ref{thm:uniform}, with the flat term $dM(h)$ kept, gives that
+expansion with a signed remainder for every $h\ge0$, uniformly for
+$\varepsilon\le\alpha\le1-\varepsilon$. This article does not cite that
+volume.
+
+\emph{Canonical volume and Lean.} The least-term bounds of
+Section~\ref{sec:optimal} are explicit, sharp instances of the canonical
+volume's general theorem \texttt{p0:thm:optimal-truncation} \cite{ed:tai}:
+$E_K$ is a Gevrey-1 remainder bound with action $2\pi a_*$ per power of
+$1/x$. The residual-to-root step of Theorem~\ref{thm:certificate} is, in
+abstract form, the Lean theorem \path{Fabius.exists_eq_in_residual_interval}
+\cite{ed:lean}; the special-function hypotheses (Theorem~\ref{thm:slope} and
+the forward bound) are not formalized. This article cites neither.
+\end{quote}
+
 \section{The family and the endpoint-uniform expansion}
 \label{sec:definitions}
 
@@ -1342,6 +1389,25 @@ $2\amin$, the second-smallest ray parameter, and off-axis Borel poles.
 A proof should distinguish those mechanisms instead of taking the minimum
 of a guessed list of exponents.
 
+% ed. (2026-09-29): editorial note added by ProveIt (Q1 and Q2 are taken
+% up by a sibling package); not part of the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).} Q1 and Q2 are taken up by the
+theta-resolved package \cite{ed:siblings}, written from a saved copy of
+this article. For Q1, its theorems \texttt{thm:theta} and
+\texttt{thm:optimal} give an all-order theta-lattice expansion of the exact
+remainder and its minimum over all orders, uniformly for $h\ge0$ with
+$h\sqrt{a_*x}$ bounded, including the lattice phase $\{2\pi/h\}$;
+\texttt{thm:fixed} and \texttt{thm:overlap} give the fixed nonresonant-mesh
+law and match it to the theta law. For Q2, its \texttt{thm:hierarchy}
+resolves the first $L$ partial-fraction pole components exactly (the whole
+weight, not only the smallest-ray term) and moves the critical-mesh action
+to $2\pi(L+1)a_*x$. Both answers are for a fixed ray and a fixed number of
+resolved poles; that package does not claim general resurgent completion,
+complex sectors, a growing pole count or a complete resonance boundary
+layer, and the questions are not marked resolved beyond that scope.
+\end{quote}
+
 \item \textbf{Growing or degenerating rays.}
 The theorem fixes $r$ and the positive $a_j$. Determine useful uniform
 statements when $r\to\infty$, when $a_*\to0$, or when several parameters
@@ -1479,12 +1545,19 @@ Their Inverses}, source
 Full repository path and inspected labels are recorded in
 \texttt{source\_provenance.md}. Repository:
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+% ed. (2026-09-29): current path added by ProveIt.
+Editorial note (ProveIt, 2026-09-29): the path in \texttt{source\_provenance.md}
+is the pre-split one; the companion is now
+\path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
 
 \bibitem{repo-readme}
 Vladimir Reshetnikov, \emph{ProveIt repository: Series and transseries},
 \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/}
 \path{drafts/series-and-transseries/README.md}, inspected 29 September 2026,
 source blob \texttt{516aaa30e84cb0036a00f803cb6e8e3026febb8e}.
+% ed. (2026-09-29): current path added by ProveIt.
+Editorial note (ProveIt, 2026-09-29): that path no longer exists; the group
+README is now \path{Analysis/Transseries/docs/series-and-transseries/README.md}.
 
 \bibitem{costin-garoufalidis}
 Ovidiu Costin and Stavros Garoufalidis,
@@ -1517,5 +1590,38 @@ NIST Digital Library of Mathematical Functions,
 NIST Digital Library of Mathematical Functions,
 \S5.11, \emph{Asymptotic Expansions}.
 \url{https://dlmf.nist.gov/5.11}.
+% ed. (2026-09-29): editorial bibliography entries added by ProveIt.
+\bibitem{ed:siblings}
+[Editorial addition, ProveIt, 2026-09-29.] The five packages of the
+$q\to1$ merge unit in the ProveIt series-and-transseries collection,
+\path{Analysis/Transseries/docs/series-and-transseries/}:
+\path{Uniform_q_Multinomial_Certified_Inversion/uniform_q_multinomial_transseries.tex};
+\path{Uniform_Resurgent_Crossover_Gaussian_Binomials/article.tex};
+\path{Certified_Inversion_q_to_1_Transition/q_transition.tex};
+\path{Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex};
+\path{Theta_Resolved_Optimal_Truncation_q_Multinomial/article.tex}.
+Filed in batches 45 and 46 of \path{docs/incoming/README.md}; unrefereed.
+
+\bibitem{ed:gcc}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Gaussian
+Coefficient Calculus},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/Gaussian_Coefficient_Calculus.tex},
+Theorem \texttt{q3:thm:double-scaling} (line 3942) and its domain
+\texttt{q3:eq:double-scaling-domain}.
+
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Theorem \texttt{p0:thm:optimal-truncation} (line 39360).
+
+\bibitem{ed:lean}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt Lean library:
+\path{Fabius.exists_eq_in_residual_interval} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}
+and \path{Fabius.transport_bound} (the crosswalk of the canonical volume's
+\texttt{p0:eq:transport-bound}) in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RemainderTransport.lean}.
 \end{thebibliography}
 \end{document}

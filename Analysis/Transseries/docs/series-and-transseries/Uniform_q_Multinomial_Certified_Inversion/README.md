@@ -51,3 +51,47 @@ This is an unrefereed mathematical research draft. The results are supported by 
 The article resolves a specific gap in the inspected repository source. The Bose partial fractions, modular identity, Binet formulas, and general resurgence framework are established mathematics. A targeted primary-literature check was performed; worldwide publication-level novelty and priority are not established. The draft does not claim to settle a named general transseries conjecture or to give a complete global Stokes theory.
 
 No repository files were modified. The package contains no copied repository volumes and no bundled font files.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Changes made after filing (batch 45 of `docs/incoming/README.md`), file by
+file. Every change to the article source is marked with a
+`% ed. (2026-09-29)` comment; visible additions are labelled "Editorial
+note (ProveIt, 2026-09-29)" or "[Editorial addition, ProveIt, 2026-09-29.]".
+
+- `uniform_q_multinomial_transseries.tex`:
+  - an editorial note at the end of Section 1 naming the four sibling
+    packages of the same `q → 1` merge unit
+    (`../Uniform_Resurgent_Crossover_Gaussian_Binomials/`,
+    `../Certified_Inversion_q_to_1_Transition/`,
+    `../Gamma_Core_q_to_1_Crossover/`,
+    `../Theta_Resolved_Optimal_Truncation_q_Multinomial/`) with the checked
+    agreements of constants; relating Theorem `q3:thm:double-scaling` of
+    `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
+    to Theorem 2.1 (at `r = 2`, `a = (α, 1−α)`, `x = n` its coefficients are
+    `C_1 = D_1 − τ/24` and `C_{2k−1} = D_k`, checked at 40 digits for
+    `k ≤ 4`); and naming the canonical volume's
+    `p0:thm:optimal-truncation` and the Lean theorem
+    `Fabius.exists_eq_in_residual_interval`, which the article does not
+    cite;
+  - an editorial note after research question Q2 saying that Q1 and Q2 are
+    taken up by `../Theta_Resolved_Optimal_Truncation_q_Multinomial/`, and
+    within which scope;
+  - the current paths of the companion and of the group README in the
+    bibliography entries `repo-companion` and `repo-readme` (the recorded
+    paths are the pre-split ones);
+  - four editorial bibliography entries (`ed:siblings`, `ed:gcc`, `ed:tai`,
+    `ed:lean`).
+- `uniform_q_multinomial_transseries.pdf`: rebuilt with `build.sh` (three
+  pdfLaTeX passes); 26 pages (24 as delivered); no errors, undefined
+  references or duplicate destinations.
+- `verify.py`: both outputs are written with `newline='\n'`, so a rerun on
+  Windows no longer emits CRLF. A rerun on a copy (Python 3.13.5,
+  `mpmath==1.3.0`) reproduced `verification_results.json` and
+  `numerical_table.tex` byte for byte. The default run still writes both
+  files into this directory (the article inputs the table); since it
+  reproduces them exactly this is harmless, and `--out <dir>` writes
+  elsewhere.
+- `source_provenance.md`: an editorial note giving the current paths; the
+  recorded pre-split paths are kept.
+- `README.md`: this section.

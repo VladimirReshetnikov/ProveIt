@@ -2,8 +2,13 @@
 """Figures only: double-precision visualization, not theorem verification."""
 from pathlib import Path
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
+# ed. (ProveIt, 2026-09-29): embed TrueType (Type 42) fonts instead of the
+# Type 3 fonts that Matplotlib writes by default.
+matplotlib.rcParams['pdf.fonttype']=42
+matplotlib.rcParams['ps.fonttype']=42
 ROOT=Path(__file__).resolve().parents[1]
 (ROOT/'figures').mkdir(exist_ok=True)
 

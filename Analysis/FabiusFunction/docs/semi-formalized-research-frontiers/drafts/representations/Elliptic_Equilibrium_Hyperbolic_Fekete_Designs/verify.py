@@ -198,14 +198,20 @@ def run(outdir: Path, figures: bool=False):
                              three_correction_energy=app,
                              residual_times_n4=(E-app)*n**4,stationarity=gres))
     results.update(fixed_interval=fixed,finite_certificates=finite,critical=critical)
-    (outdir/'verification.json').write_text(json.dumps(results,indent=2)+'\n')
+    # ed. (ProveIt, 2026-09-29): newline='\n' here and lineterminator='\n' in the
+    # CSV writer (csv defaults to CRLF) keep reruns LF on every platform.
+    (outdir/'verification.json').write_text(json.dumps(results,indent=2)+'\n',newline='\n')
     for key in ['boundary','fixed_interval','finite_certificates','critical','equilibrium','products']:
         rows=results[key]
         with (outdir/(key+'.csv')).open('w',newline='') as f:
-            w=csv.DictWriter(f,fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
+            w=csv.DictWriter(f,fieldnames=rows[0].keys(),lineterminator='\n'); w.writeheader(); w.writerows(rows)
     if figures:
         import matplotlib
         matplotlib.use('Agg')
+        # ed. (ProveIt, 2026-09-29): embed TrueType (Type 42) fonts instead of the
+        # Type 3 fonts that Matplotlib writes by default.
+        matplotlib.rcParams['pdf.fonttype']=42
+        matplotlib.rcParams['ps.fonttype']=42
         import matplotlib.pyplot as plt
         x=np.linspace(.002,.998,1400)
         fig,ax=plt.subplots(figsize=(6.3,3.7))
@@ -230,7 +236,22 @@ def run(outdir: Path, figures: bool=False):
     print('All assertions passed. Numerical outputs are diagnostics, not interval certificates.')
 
 if __name__=='__main__':
+    # ed. (ProveIt, 2026-09-29): the default output is now a scratch directory
+    # verification_rerun/ beside this script, and writing into the recorded
+    # verification/ directory (whose floating-point values differ in their last
+    # digits between platforms, and whose figures the article includes) needs the
+    # explicit flag --overwrite-recorded. Standard output is written with LF so a
+    # redirected log matches the recorded verification.log line endings.
+    import sys
+    sys.stdout.reconfigure(newline='\n')
+    here=Path(__file__).resolve().parent
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--output',type=Path,default=Path('verification'))
+    p.add_argument('--output',type=Path,default=here/'verification_rerun')
     p.add_argument('--figures',action='store_true')
-    args=p.parse_args();run(args.output,args.figures)
+    p.add_argument('--overwrite-recorded',action='store_true',
+                   help='allow writing into the recorded verification/ directory')
+    args=p.parse_args()
+    if args.output.resolve()==(here/'verification').resolve() and not args.overwrite_recorded:
+        p.error('refusing to overwrite the recorded verification/ directory; '
+                'pass --overwrite-recorded or choose another --output')
+    run(args.output,args.figures)

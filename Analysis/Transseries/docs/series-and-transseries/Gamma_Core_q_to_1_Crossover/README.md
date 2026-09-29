@@ -3,7 +3,8 @@
 **Uniform exponential accuracy, inverse stability, and arithmetic convergence**
 
 Research manuscript prepared for Vladimir Reshetnikov, September 29, 2026.
-The PDF contains 30 pages, including the title page and two-page contents.
+The PDF contains 30 pages, including the title page and two-page contents
+(31 pages since the editorial rebuild of 2026-09-29; see the last section).
 
 ## Files
 
@@ -112,3 +113,46 @@ Relevant companion:
 The endpoint qualification appears after `t3:eq:Ssmall` and `t3:eq:Slarge`,
 around source lines 4195–4210. Full provenance and source labels appear in
 Appendix A and `SOURCE_MANIFEST.json`.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Changes made after filing (batch 46 of `docs/incoming/README.md`), file by
+file. Every change to the article source is marked with a
+`% ed. (2026-09-29)` comment; visible additions are labelled "Editorial
+note (ProveIt, 2026-09-29)" or "[Editorial addition, ProveIt, 2026-09-29.]".
+
+- `Gamma_Core_Transseries.tex`:
+  - an editorial note at the end of Section 1 naming the four sibling
+    packages of the same `q → 1` merge unit
+    (`../Uniform_q_Multinomial_Certified_Inversion/`,
+    `../Uniform_Resurgent_Crossover_Gaussian_Binomials/`,
+    `../Certified_Inversion_q_to_1_Transition/`,
+    `../Theta_Resolved_Optimal_Truncation_q_Multinomial/`) and saying that
+    this article is complementary to them (Gamma quotient kept exact,
+    expansion in `h`, action `4π²` of the modular term, against their
+    `e^{−2π a_* x}` least remainders); relating Theorem
+    `q3:thm:double-scaling` of
+    `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
+    (same `τ ≥ τ₀` restriction; its central case, with its `τ` equal to
+    `2hx`; a term-by-term comparison is left to the merge); and naming the
+    canonical volume's `p0:thm:optimal-truncation` and the Lean theorems
+    `Fabius.exists_eq_in_residual_interval` and `Fabius.transport_bound`
+    (related, not relied on: they assume the positive derivative bound that
+    Theorem 7.3's endpoint argument avoids); the article cites none of them;
+  - Appendix A: "at the pinned tree" corrected to "at the pinned commit"
+    (the pin is a commit);
+  - `\hypersetup{pageanchor=false}` around the title page, which removes a
+    duplicate `page.1` hyperlink destination;
+  - four editorial bibliography entries (`ed:siblings`, `ed:gcc`, `ed:tai`,
+    `ed:lean`).
+- `Gamma_Core_Transseries.pdf`: rebuilt with `build.sh` (three pdfLaTeX
+  passes); 31 pages; no errors, undefined references, overfull boxes or
+  duplicate destinations (one underfull bibliography line, as delivered).
+  `SOURCE_MANIFEST.json` (`pdf_pages: 30`) and `AUDIT.md` ("All 30 pages")
+  describe the delivered PDF and are kept unchanged as its record.
+- `code/verify.py`, `code/verify_supplement.py`: JSON written with
+  `newline='\n'` (LF on Windows too). Reruns on a copy (Python 3.13.5,
+  `mpmath==1.3.0`, `sympy==1.14.0`) of `code/verify.py --quick` and
+  `code/verify_supplement.py` reproduced `data/verification_quick.json` and
+  `data/verification_supplement.json` byte for byte.
+- `README.md`: the page-count note and this section.

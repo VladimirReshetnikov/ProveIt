@@ -264,7 +264,8 @@ def run(out: Path):
             'peak_moment_checks':peak_checks,'worst_error_over_uniform_bound':mp.nstr(worst_ratio,14),
             'status':'All checks passed; high-precision numerical checks, not interval proofs.',
             'optimal_examples':optimal,'sharpness_examples':sharp,'inverse_examples':inverse,'resonance_examples':resonant}
-    (out/'verification_results.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (ProveIt, 2026-09-29): newline='\n' so that reruns write LF on Windows too.
+    (out/'verification_results.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     table=['\\begin{tabular}{rrrrr}','\\toprule','$h$ & $x$ & $K$ & $|F-T_K|$ & $E_K(x)$ \\\\','\\midrule']
     def texnum(s):
         v=mp.mpf(s)
@@ -276,7 +277,7 @@ def run(out: Path):
     for v in chosen:
         table.append(f"{v['h']} & {v['x']} & {v['K']} & ${texnum(v['abs_error'])}$ & ${texnum(v['analytic_bound'])}$ \\\\")
     table+=['\\bottomrule','\\end{tabular}']
-    (out/'numerical_table.tex').write_text('\n'.join(table)+'\n')
+    (out/'numerical_table.tex').write_text('\n'.join(table)+'\n',newline='\n')
     print(json.dumps({k:v for k,v in report.items() if not isinstance(v,list)},indent=2))
 
 if __name__=='__main__':

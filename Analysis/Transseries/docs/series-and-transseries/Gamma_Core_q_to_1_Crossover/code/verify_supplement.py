@@ -117,7 +117,8 @@ def main() -> None:
                                               'bound':text(bound)})
     output['all_passed'] = True
     destination = ROOT/'data'/'verification_supplement.json'
-    destination.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8')
+    # ed. (ProveIt, 2026-09-29): newline='\n' so that reruns write LF on Windows too.
+    destination.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(output,indent=2))
 
 if __name__ == '__main__':

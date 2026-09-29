@@ -43,6 +43,9 @@
 \newcommand{\repoid}{\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}}
 
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which removes the
+% duplicate hyperref destination page.1 (pdfTeX warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 \noindent{\small\scshape ProveIt research continuation \hfill 29 September 2026}
@@ -87,6 +90,7 @@ checks, not a Lean formalization or an independently refereed paper. Claims
 of worldwide priority are not made. The main new-development target is the
 uniform finite-design boundary analysis, not the classical elliptic formulas.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \setcounter{tocdepth}{1}
 \tableofcontents
@@ -1374,6 +1378,19 @@ To reproduce the computations and regenerate the figures, run
 \begin{verbatim}
 python verify.py --output verification --figures
 \end{verbatim}
+% ed. (2026-09-29): editorial note added by ProveIt (changed rerun
+% behaviour of verify.py, regenerated figures); not part of the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).} In the filed package,
+\texttt{verify.py} writes by default into a scratch directory
+\texttt{verification\_rerun/}; writing into the recorded
+\texttt{verification/} directory, as the command above does, also needs
+\texttt{-{}-overwrite-recorded}, because a rerun on another platform changes
+the last digits of the double-precision values recorded there. The two
+figures were regenerated with TrueType instead of Type~3 fonts, from the same
+code and data, and the requirements are pinned to the recorded versions
+(Matplotlib 3.10.8, which wrote the delivered figures).
+\end{quote}
 The program performs exact rational coefficient checks with SymPy,
 80-decimal-digit quadrature and small-dimensional Newton calculations with
 mpmath, and double-precision convex optimization for larger designs.
