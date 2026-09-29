@@ -48,9 +48,20 @@
 \newcommand{\wtag}{\textup{[write]}}
 % [write] breakable monospace for long Lean names and paths
 \newcommand{\lean}[1]{\nolinkurl{#1}}
+% [write] Part II (batch 43): the manuscript's own macros and environment
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\tht}{\theta}
+\newcommand{\logp}{\log^{+}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\partref}[1]{\textup{[}Part~I, #1\textup{]}}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{plain}
 
 \title{\bfseries Dyadic Scaling Rigidity and\newline
-Log-Periodic Growth of\newline 3AP-Free Permutations}
+Log-Periodic Growth of\newline 3AP-Free Permutations\\[4pt]
+\large\mdseries Part~II: Non-holonomicity of the counts}
 \author{Research article prepared for Vladimir Reshetnikov}
 \date{September 28, 2026}
 
@@ -102,9 +113,17 @@ in \repo; Section~\ref{dsr:sec:formal} names the declarations and says what
 they do and do not cover. Placement of this report near a Lean development
 gives it no formal status. Text added when the report was written is marked
 \wtag.
+[Added 29 September 2026, batch~43: that manuscript is now Part~I.
+Part~II (Sections~\ref{dsr:nh:sec:provenance}--\ref{dsr:nh:sec:conclusion},
+Appendices~\ref{dsr:nh:app:compact}--\ref{dsr:nh:app:notation}), from a
+second manuscript, proves that $\theta(n)$ and every arithmetic section
+$\theta(qn+r)$ are not P-recursive and that neither generating function is
+D-finite; it is not formalized either
+(Subsection~\ref{dsr:nh:sec:formal}).]
 \newpage
 \tableofcontents
 \newpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Dyadic scaling rigidity and log-periodic growth}
 
 \section{The question and the contribution}
 \label{dsr:sec:intro}
@@ -1154,6 +1173,12 @@ statement is not formalized. The upper side of
 Proposition~\ref{dsr:prop:ratio} is also improved in Lean, to
 $\theta(n+1)\le\lfloor(n+3)/2\rfloor\,\theta(n)$.
 \end{remark}
+\noindent[Added 29 September 2026, batch~43: the deletion bound at the end
+of Proposition~\ref{dsr:prop:ratio} is the one local estimate that Part~II
+needs (Lemma~\ref{dsr:nh:lem:deletion}). Together with Ho's nonconvergence
+it shows that $\theta(n)$ is not P-recursive
+(Theorem~\ref{dsr:nh:thm:main}); the binary-descent identity is reused
+there as Lemma~\ref{dsr:nh:lem:ratios}.]
 
 \section{Reproducible verification and a formalization route}
 \label{dsr:sec:verification}
@@ -1346,6 +1371,84 @@ are checked by a Python program only, from published counts that \repo\ does
 not certify. Placement of this report beside the Lean development
 gives none of these statements formal status.
 
+\subsection{Part~II, added in batch~43}
+\label{dsr:nh:sec:formal}
+[Added 29 September 2026.] Part~II was checked against the same Lean files.
+They are unchanged under \lean{Combinatorics/Ramsey/Lean/} between Part~I's
+pin \lean{74f7f5bdb}, Part~II's pin \lean{8d936ee23} and the current tree,
+so the names, paths and line numbers above apply. Again no Lean build and
+no axiom audit were run.
+
+\medskip\noindent\textbf{Lean theorems whose statements Part~II uses.}
+\begin{itemize}[leftmargin=*,itemsep=3pt]\raggedright
+\item \lean{Sharma2012.theorem_2_8_holds}, the upper splitting bound for
+ $n\ge3$ (Proposition~\ref{dsr:nh:prop:split}; its case $n=2$ is the
+ evaluation $\theta(2)=2$). Part~II relies on this statement twice: through
+ $\theta(n)\le21^{n-1}$ (Lemma~\ref{dsr:nh:lem:exponential}), which is the
+ exponential bound that the G-function input needs, and through the factor
+ $21$ in Ho's separation $(2\theta(64))^{75}>(21\theta(75))^{64}$, which
+ enters as the upper enclosure of $\ell_{75}$ in
+ Lemma~\ref{dsr:nh:lem:dyadic}. The manuscript imports the published
+ theorem and does not cite the Lean proof as evidence; the Lean proof is a
+ formal proof of that statement, not of anything Part~II derives from it.
+\item \lean{DavisEntringerGrahamSimmons1977.even_count_recurrence_holds}
+ and \lean{odd_count_recurrence_holds}, the lower splitting bound (the
+ lower halves of Proposition~\ref{dsr:nh:prop:split} and
+ Lemma~\ref{dsr:nh:lem:exponential}, and the lower enclosure of
+ $\ell_{64}$); \lean{Sharma2012.theorem_1_1_holds}, $2^{n-1}\le\theta(n)$;
+ and \lean{Sharma2012.theta_eq_davis_count}, which identifies the counts.
+\end{itemize}
+
+\medskip\noindent\textbf{A stronger Lean form of Part~II's local estimate.}
+\lean{DavisEntringerGrahamSimmons1977.insertion_count_upper_bound_holds}
+proves $\theta(n+1)\le\lfloor(n+3)/2\rfloor\,\theta(n)$ for $n\ge1$. This is
+stronger than the deletion bound $\theta(n+1)\le(n+1)\theta(n)$ of
+Lemma~\ref{dsr:nh:lem:deletion}: the two agree at $n=1$, and the Lean
+factor is strictly smaller for every $n\ge2$. Iterating it gives the
+window bound \eqref{dsr:nh:eq:forwardwindow} as well. Part~II needs only
+some polynomial bound on $\theta(n+1)/\theta(n)$, so nothing in it
+changes; the point is that the one local estimate its main theorem uses has
+a machine-checked, sharper counterpart in \repo.
+
+\medskip\noindent\textbf{Counts that nothing in ProveIt certifies.}
+The two counts $\theta(64)$ and $\theta(75)$ of
+\eqref{dsr:nh:eq:largecounts}, from which Part~II reproduces Ho's
+nonconvergence (Theorem~\ref{dsr:nh:thm:ho}) and on which its theorems
+about $\theta$ therefore rest, are published counts (Ho; Correll--Ho;
+OEIS). The general lemmas of Section~\ref{dsr:nh:sec:window} do not use
+them. No Lean or Rocq development in \repo\
+certifies them, and no Lean declaration mentions them: the Lean count table
+\lean{table_1_holds} stops at $\theta(1),\ldots,\theta(20)$, behind the
+\lean{native_decide}/\lean{implemented_by} trust boundary described above.
+Part~II's Python verifier recomputes $\theta(n)$ only for $n\le32$ and
+checks the integer comparison, not the counts. The two values agree with
+rows $64$ and $75$ of Part~I's \lean{data/counts.txt} (checked when Part~II
+was written), but that file holds the same published OEIS data, so the
+agreement is not an independent confirmation. Part~I's own route to
+$p_-<p_+$ uses other published counts, equally uncertified.
+
+\medskip\noindent\textbf{Open problems.} Ho's theorem, reproduced as
+Theorem~\ref{dsr:nh:thm:ho}, is again the negative answer to
+\lean{Sharma2012.open_problem_2}; it is not formalized. Part~II does not
+decide \lean{open_problem_1} (monotonicity;
+Question~\ref{dsr:nh:q:monotone}). The Ramsey development states nothing
+about P-recursiveness or D-finiteness.
+
+\medskip\noindent\textbf{What is not formalized.} None of Part~II's results
+is formalized: rational descent (Lemma~\ref{dsr:nh:lem:descent}), the
+imported G-function input (Theorem~\ref{dsr:nh:thm:ginput}), finite-window
+noncancellation, local-growth rigidity and the jump corollary, the
+section-limit lemma, the main theorem, robustness, rounded powers,
+positive polynomial observables, the Nilsson-layer exclusion, the
+generating-function and transcendence corollaries, the profile obstruction,
+perturbed sampling, the soundness of the subset-state enumeration, and the
+two determinant certificates, which a Python program checks. The deep
+imported input, the arithmetic theory of G-functions, has no counterpart in
+\repo. The manuscript's formalization plan
+(Section~\ref{dsr:nh:sec:audit}) is a plan, not an executed
+formalization. Placement of Part~II beside the Lean development gives it
+no formal status.
+
 \section{Further research questions and topics}
 \label{dsr:sec:questions}
 The results narrow several questions without resolving all of the fine
@@ -1419,7 +1522,22 @@ again be read from finite data. For $\sum\theta(n)z^n$, investigate what the
 nonconstant exponential profile implies about analytic continuation or
 algebraic/differential equations. No non-D-finiteness or natural-boundary
 claim is proved here.
+[Added 29 September 2026, batch~43: the non-D-finiteness half is answered
+in Part~II. Neither $\sum\theta(n)z^n$ nor $\sum\theta(n)z^n/n!$ is
+D-finite, and no arithmetic section of $\theta$ is P-recursive
+(Theorem~\ref{dsr:nh:thm:main}); the ordinary generating function is
+transcendental (Corollary~\ref{dsr:nh:cor:transcendence}); and a
+continuous nonconstant log-periodic profile, such as $P$, excludes
+P-recursiveness by itself (Proposition~\ref{dsr:nh:prop:profileobstruction}).
+Still open: whether $\sum\theta(n)z^n$ has a natural boundary, and if
+not, how it continues (Question~\ref{dsr:nh:q:boundary}), and nonlinear polynomial differential
+equations (Question~\ref{dsr:nh:q:dalg}).]
 \end{enumerate}
+[Added 29 September 2026, batch~43: Part~II proposes nine further
+questions (Section~\ref{dsr:nh:sec:future}). Three of them approach items
+of this list from Part~II's side: Question~\ref{dsr:nh:q:profile} (items~1
+and~2), Question~\ref{dsr:nh:q:monotone} (item~5) and
+Question~\ref{dsr:nh:q:certified} (item~7).]
 
 \section{Conclusion}
 A nonexistent growth constant need not signal unstructured behavior. For
@@ -1440,6 +1558,10 @@ them inside an unsupported asymptotic ansatz.
 \section{Provenance and place in the collection \wtag}
 \label{dsr:sec:provenance}
 \subsection{Source}
+[Updated 29 September 2026, batch~43: this section describes Part~I. The
+report now has two parts, built from two manuscripts; Part~II's source,
+the changes made to it and the choices of that merge are in
+Section~\ref{dsr:nh:sec:provenance}.]
 This report was built from \textbf{one} manuscript: manuscript~06 of the
 fortieth intake batch of \repo's incoming reports, delivered as the archive
 \lean{ProveIt_Dyadic_Scaling_Rigidity.zip} (arrival commit
@@ -1473,6 +1595,1512 @@ proved to exist; here none exists, and the periodic profile $P$ takes its
 place. The formal neighbour is the Lean development under
 \lean{Combinatorics/Ramsey/Lean/} described in
 Section~\ref{dsr:sec:formal}.
+
+%% ====================================================================
+%% Batch-43 addition (manuscript 06, "Non-holonomicity of 3AP-Free
+%% Permutation Counts").  All labels of Part II carry the prefix dsr:nh:
+%% (non-holonomicity).  Text marked [write] was added when Part II was
+%% written into the report.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Non-holonomicity of the counts}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Non-holonomicity of the counts}
+
+\noindent\emph{Sections~\ref{dsr:sec:intro}--\ref{dsr:sec:provenance}
+and Appendix~A form the original report (Part~I)
+of 28 September 2026. Part~I is unchanged except for dated pointers to
+this addition (in the collection note, after
+Remark~\ref{dsr:rem:ratio}, in Section~\ref{dsr:sec:questions} and in
+Section~\ref{dsr:sec:provenance}), a
+new Subsection~\ref{dsr:nh:sec:formal} of its formal-status
+Section~\ref{dsr:sec:formal}, a line in the title, contents entries for the
+two parts, Part~II's macros in the preamble, four bibliography entries used
+only by Part~II and two notes in Part~I's entries for Ho and OEIS. No
+number of Part~I moves. Part~II was added on 29 September 2026 in batch~43 of
+\textup{\repo}'s incoming-report intake, from one manuscript written against the
+pinned state of Part~I. It answers the non-D-finiteness half of Part~I's
+research item~8 (Section~\ref{dsr:sec:questions}), which ended ``No
+non-D-finiteness or natural-boundary claim is proved here'': $\theta(n)$ is
+not P-recursive, nor is any arithmetic section $\theta(qn+r)$, and neither
+generating function is D-finite. The natural-boundary half remains open.
+Section~\ref{dsr:nh:sec:provenance} records the provenance and fixes the
+notation of the addition; Sections~\ref{dsr:nh:sec:intro}--\ref{dsr:nh:sec:conclusion}
+and Appendices~\ref{dsr:nh:app:compact}--\ref{dsr:nh:app:notation} are the
+manuscript.}
+
+\medskip
+\begin{center}
+{\Large\bfseries Non-holonomicity of 3AP-Free Permutation Counts\par}
+\medskip
+{\large Finite-window rigidity, arithmetic sections,\\
+and stable obstructions to polynomial recurrences\par}
+\medskip
+Prepared for Vladimir Reshetnikov\quad$\cdot$\quad 29 September 2026
+\end{center}
+
+\begin{quote}
+\textbf{Main conclusion.}
+Let $\tht(n)$ count permutations of $[n]$ containing no three-term
+arithmetic progression as a subsequence. Then $\tht(n)$ is not
+P-recursive over $\C$. Neither is $\tht(qn+r)$ for any integers
+$q\ge1$, $r\ge0$. The obstruction survives positive polynomial
+combinations of finitely many shifted counts and every
+subexponential multiplicative perturbation with suitable arithmetic
+coefficients.
+
+\smallskip
+\textbf{Proof status.} Conventional mathematical proofs using published
+G-function theorems and published enumerative inputs. AI-assisted research
+draft; not refereed and not formalized in Lean or Rocq. Exact verification
+code and its recorded output accompany the article. The new application
+was not found in the sources inspected; exhaustive priority is not certified.
+\end{quote}
+
+\begin{quote}\small
+\textbf{Abstract of Part II.}
+We establish non-P-recursiveness of the number $\tht(n)$ of
+three-term-arithmetic-progression-free permutations, OEIS A003407, and of
+every arithmetic section $\tht(qn+r)$. This answers the non-D-finiteness
+question explicitly left outside the conclusions of \repo's recent report
+on dyadic scaling rigidity. The missing implication is not simply that
+oscillatory exponential growth contradicts a polynomial recurrence: even
+positive integer sequences with rational generating functions can have
+nonconvergent $n$th roots. We instead prove a finite-window rigidity lemma.
+A nonzero leading Nilsson expansion has a fixed-length window whose maximum
+is bounded above and below by one exponential scale times a power-logarithmic
+factor. Consequently, a positive, exponentially bounded, integer P-recursive
+sequence with subexponential forward increases must have an exponential
+growth rate. For $\tht$, deleting the largest entry gives the required
+one-sided local estimate, whereas Boon Suan Ho's 2026 theorem supplies
+nonconvergence. We reproduce its dyadic separation from two published counts
+and verify the comparison by exact integers. We then prove persistence under
+arithmetic sampling, positive polynomial observables, and multiplicative
+errors $\exp(o(n))$. Both ordinary and exponential generating functions are
+non-D-finite. We distinguish these results from natural-boundary and
+differential-transcendence questions, give an independently checked
+small-count computation, and propose a focused research programme.
+\end{quote}
+
+\section{Provenance and conventions of Part~II \wtag}
+\label{dsr:nh:sec:provenance}
+
+\subsection{One manuscript, one addition}
+\label{dsr:nh:sec:source}
+Part~II is batch-43 manuscript~06, \emph{Non-holonomicity of 3AP-Free
+Permutation Counts}, subtitled \emph{Finite-window rigidity, arithmetic
+sections, and stable obstructions to polynomial recurrences}, a research
+article ``prepared for Vladimir Reshetnikov'' and dated 29 September 2026
+(21 A4 pages as delivered); its delivery README calls it AI-assisted and
+unrefereed. It arrived as the archive
+\lean{ProveIt_3AP_Nonholonomicity.zip} (inner directory of the same name,
+main file \lean{article.tex}) in \repo\ commit \lean{acf39bd6d}, the
+second arrival commit of batch~43, and was placed in \lean{faef2ed2a}. It
+was written against \repo\ commit
+\lean{8d936ee2357f9decf78c2ecc7d9baf3100a6787d}, reading Part~I's
+\lean{article.tex} and \lean{README.md} at that commit. Both files are
+unchanged between the pin and the placement commit (the same Git blobs), so
+every statement the manuscript makes about ``the prior report'' or ``the
+repository report'' refers to Part~I as printed above, before the dated
+pointers were added.
+
+{\raggedright The manuscript's code, data and audit are shipped beside Part~I's files
+with the prefix \lean{02-nonholonomicity-} (Part~I's unprefixed files count
+as~01): its verifier and unit tests as
+\lean{code/02-nonholonomicity-verify.py} and
+\lean{code/02-nonholonomicity-test_verify.py}, its package-root build script
+as \lean{code/02-nonholonomicity-build.sh}, its recorded outputs as
+\lean{data/02-nonholonomicity-verification.json} and
+\lean{data/02-nonholonomicity-unit-tests.txt}, and its source and proof
+audit as \lean{02-nonholonomicity-SOURCE_AND_PROOF_AUDIT.md}, all
+byte-identical to the delivery. The manuscript, its delivery README and its
+PDF are not shipped; they survive in the arrival commit. The package had no
+checksum ledger. The report's README maps the delivery names to the shipped
+paths and gives rerun instructions that do not touch Part~I's files.\par}
+
+The manuscript contributes everything in
+Sections~\ref{dsr:nh:sec:intro}--\ref{dsr:nh:sec:conclusion} and
+Appendices~\ref{dsr:nh:app:compact}--\ref{dsr:nh:app:notation}, apart from
+text marked \wtag, and the title block and abstract printed at the head of
+this part: the finite-window rigidity lemma and local-growth rigidity
+theorem (Section~\ref{dsr:nh:sec:window}); non-P-recursiveness of
+$\theta$ and of every arithmetic section (Section~\ref{dsr:nh:sec:mainproof});
+the robust, rounded-power, polynomial-observable and Nilsson-layer
+extensions (Section~\ref{dsr:nh:sec:stable}); non-D-finiteness of both
+generating functions and transcendence of the ordinary one, with their
+limits (Section~\ref{dsr:nh:sec:functions}); the abstract profile
+obstruction and perturbed linear sampling
+(Section~\ref{dsr:nh:sec:profile}); an exact verification suite with two
+finite recurrence-exclusion determinants (Section~\ref{dsr:nh:sec:verification});
+a dependency audit and formalization plan (Section~\ref{dsr:nh:sec:audit});
+and nine research questions (Section~\ref{dsr:nh:sec:future}).
+
+\subsection{What was changed in the manuscript's text}
+\label{dsr:nh:sec:changes}
+Every one of the manuscript's 65 labels received the prefix
+\lean{dsr:nh:}, and every \texttt{\textbackslash ref} and \texttt{\textbackslash eqref} was updated.
+Its title page and abstract are printed above as the front matter of this
+part; its table of contents is merged into the report's. Its sections and
+theorems are renumbered by their position (its Section~1 is
+Section~\ref{dsr:nh:sec:intro} here, its Theorem~1.2 is
+Theorem~\ref{dsr:nh:thm:main}), and its Appendices~A and~B are
+Appendices~\ref{dsr:nh:app:compact} and~\ref{dsr:nh:app:notation}. Its
+bibliography is merged into the report's: its entries for Davis et al.,
+Sharma, Correll--Ho, Ho, Hwang--Janson--Tsai and OEIS A003407 are the
+same works as Part~I's entries and are cited under Part~I's numbers, with
+the details only the manuscript gives (the journal DOI of Ho's paper and
+its own consultation date of the OEIS entry) added to those entries; the
+entries for Stanley, Garoufalidis (two), and Andr\'e are new. The
+manuscript's entry for the prior report, the present Part~I (``\repo\
+research-report collection, \emph{Dyadic scaling rigidity and log-periodic
+growth of 3AP-free permutations}, report dated 28 September 2026, article
+and README''), is printed as a bracketed reference to Part~I with the
+section or theorem that the sentence means; that entry's caveat stays in
+force: Part~I is unrefereed and unformalized, and no result unique to it is
+needed for Part~II's main proof. The macro for the pinned hash is expanded,
+and the manuscript's colour title page is set in the report's style.
+Labels were added to its conclusion, its second appendix and five of its
+research questions, so that Part~I can point to them. The notes marked
+\wtag\ in Part~II cross-reference Part~I and the Lean development. No
+statement, proof, number, limitation or non-claim of the manuscript was
+removed or changed, and no symbol was renamed.
+
+\subsection{Notation across the two parts}
+\label{dsr:nh:sec:notation}
+Part~II keeps the manuscript's symbols. Most agree with Part~I:
+$\theta$ (Part~II also writes it $\tht$, the same symbol), $a_n=\log\theta(n)$,
+$L=\log2$, $U=\log21$, $D=\log(21/2)$, $\gamma=\log_2(21/2)$, the
+piecewise-affine interpolation $A(x)$, the profile $P$, the bounded
+correction $Q$ and the subset-state count $C(S)$ mean the same thing in
+both parts, with the same normalization:
+Part~II's \eqref{dsr:nh:eq:actualprofile} is Part~I's
+\eqref{dsr:eq:profile-real} at integers. The following letters differ.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning in Part~II & In Part~I; tempting false reading\\
+\midrule
+$\tau_n$ & the toll $a_n-a_{\lfloor n/2\rfloor}-a_{\lceil n/2\rceil}$,
+ \eqref{dsr:nh:eq:toll} & Part~I writes this toll $r_n$
+ \eqref{dsr:eq:toll}; Part~I's $\tau$ (proof of
+ Theorem~\ref{dsr:thm:period}) is a hypothetical irrational period\\
+$r$, $q$ & residue and step of the arithmetic section $\theta(qn+r)$,
+ integers with $q\ge1$, $r\ge0$ ($r$ need not be $<q$); in
+ Corollary~\ref{dsr:nh:cor:perturbedsampling}, $q>0$ is real &
+ $r$ is not Part~I's toll $r_n$; Part~I's $q$ is a period denominator
+ (Theorem~\ref{dsr:thm:period}) or a geometric ratio
+ (Theorem~\ref{dsr:thm:geometric})\\
+$T(x)$ & interpolated toll (Section~\ref{dsr:nh:sec:profile}) &
+ Part~I's $R(x)$ \eqref{dsr:eq:R}; not the published counts
+ $T_{64}=\theta(64)$, $T_{75}=\theta(75)$ of
+ \eqref{dsr:nh:eq:largecounts}\\
+$H(x)$, $H_n$ & $H(x)=\lim2^{-k}A(2^kx)$ \eqref{dsr:nh:eq:H}; in the
+ proof of Lemma~\ref{dsr:nh:lem:window}, $H_n=R^nn^\alpha(\log n)^\beta$ &
+ $H(x)$ is Part~I's $F(x)$ \eqref{dsr:eq:F}\\
+$F(z)$, $E(z)$ & ordinary and exponential generating functions
+ \eqref{dsr:nh:eq:generating} & not Part~I's profile limit $F(x)$, nor its
+ gain and loss sets $E_c^\pm$ (Theorem~\ref{dsr:thm:scales})\\
+$R$ & exponential scale of a hypothetical Nilsson layer
+ \eqref{dsr:nh:eq:leading}, ``not a radius'' & not Part~I's interpolated
+ toll $R(x)$ nor its certificate ratios $R_\pm$\\
+$\Phi$ & a polynomial in $\Z_{\ge0}[N,X_0,\ldots,X_s]$
+ (Theorem~\ref{dsr:nh:thm:polyintro}) & Part~I's
+ $\Phi(s)=P(\log_2s)$ is the phase function on $[1,2]$\\
+$b_n$ & a local name with four meanings: a least common denominator
+ (Section~\ref{dsr:nh:sec:window}), $\log\theta(qn+r)$ (proof of
+ Theorem~\ref{dsr:nh:thm:robustintro}), $\theta(qn+r)$ (proof of
+ Theorem~\ref{dsr:nh:thm:polyintro}), $\theta(n)/n!$
+ (Section~\ref{dsr:nh:sec:functions}) & Part~I's $b_n=a_n/n$ throughout\\
+$\Delta_n$; $d$ & $\Delta_n=a_{n+1}-a_n$; $d$ is a recurrence order
+ \eqref{dsr:nh:eq:prec}, a real exponent (Theorem~\ref{dsr:nh:thm:robustintro}),
+ a common difference \eqref{dsr:nh:eq:allowed}, or an $X$-degree &
+ Part~I writes $\Delta_n$ as $d_n$ \eqref{dsr:eq:d-rec}\\
+$\ell_m$ & $\lim_t a_{m2^t}/(m2^t)$, equal to $P(\log_2m)$ &
+ an exponential rate, not a Lean name\\
+$s$ & number of dominant frequencies (Section~\ref{dsr:nh:sec:window});
+ elsewhere a fixed shift bound & Part~I's $s\in[1,2]$ is a phase-ray
+ parameter \eqref{dsr:eq:phase-ray}\\
+$M_{n,(j,k)}$ & row entries $n^k\theta(n+j)$ of a recurrence-exclusion
+ matrix (Section~\ref{dsr:nh:sec:verification}) & not Part~I's Ces\`aro
+ limit $M(x)$, nor the Lean count \lean{M n}\\
+$\mathcal A(S)$ & admissible next values \eqref{dsr:nh:eq:allowed} &
+ Part~I's test \eqref{dsr:eq:DP-test}, written there for a value $y$;
+ not the interpolation $A(x)$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The terms ``P-recursive'' (with an arbitrary starting index), ``D-finite''
+and ``Nilsson layer'' are Part~II's only; they are defined in
+Section~\ref{dsr:nh:sec:intro} and \eqref{dsr:nh:eq:leading}.
+
+\subsection{Relation to Part~I}
+\label{dsr:nh:sec:relation}
+Part~II uses Part~I's objects and, as its own text says, re-derives some of
+Part~I's material as inputs; the credit is Part~I's (and, before it, the
+literature's):
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item the deletion bound of Lemma~\ref{dsr:nh:lem:deletion} is the last
+ assertion of Proposition~\ref{dsr:prop:ratio}, with the same injection;
+\item the splitting estimates of Proposition~\ref{dsr:nh:prop:split} are
+ Part~I's \eqref{dsr:eq:lower} and \eqref{dsr:eq:upper}, the parity
+ construction being the same argument, and the exponential bounds of
+ Lemma~\ref{dsr:nh:lem:exponential} are Part~I's \eqref{dsr:eq:rough};
+\item the binary-descent Lemma~\ref{dsr:nh:lem:ratios} is
+ Proposition~\ref{dsr:prop:ratio}, plus the fixed-shift consequence
+ \eqref{dsr:nh:eq:shiftflat};
+\item the profile of Section~\ref{dsr:nh:sec:profile} is
+ Theorem~\ref{dsr:thm:profile}, reproved by the same interpolation, and
+ $\ell_m=P(\log_2m)$ is the exact-dyadic-ray case of
+ Theorem~\ref{dsr:thm:spectrum};
+\item the subset-state recurrence of Proposition~\ref{dsr:nh:prop:dp} is
+ Part~I's \eqref{dsr:eq:DP}, with a separately written proof and program.
+\end{itemize}
+Ho's nonconvergence (Theorem~\ref{dsr:nh:thm:ho}) is reproduced from
+$\theta(64)$ and $\theta(75)$; within this report it also follows from
+Part~I's Theorems~\ref{dsr:thm:spectrum} and~\ref{dsr:thm:period}, whose
+certificate uses $\theta(128)$ and $\theta(n)$ for $152\le n\le182$. Both
+routes rest on published counts that \repo\ does not certify
+(Subsection~\ref{dsr:nh:sec:formal}). The new content is the passage from
+nonconvergence plus the deletion bound to non-P-recursiveness, and its
+extensions.
+
+\subsection{Where the merge had to choose}
+\label{dsr:nh:sec:choices}
+Part~II is printed after Part~I's closing Section~\ref{dsr:sec:provenance}
+and before Part~I's appendix, so no section, theorem or equation number of
+Part~I moves; the manuscript's appendices follow Part~I's as
+Appendices~\ref{dsr:nh:app:compact} and~\ref{dsr:nh:app:notation}. The
+formal status of Part~II is recorded in Part~I's formal-status section, as
+the new Subsection~\ref{dsr:nh:sec:formal}, so that one section of the
+report says what \repo\ has and has not proved; the manuscript's own
+dependency audit (Section~\ref{dsr:nh:sec:audit}) is kept and points
+there. Where the manuscript and Part~I print the same fact
+(Subsection~\ref{dsr:nh:sec:relation}), both statements and both proofs
+are kept, since the manuscript's versions are the inputs its proofs cite.
+Part~I's question on generating functions is re-scoped, not deleted: its
+non-D-finiteness half is answered, and its natural-boundary half is
+Question~\ref{dsr:nh:q:boundary} of Part~II.
+
+\section{The question and the contribution}
+\label{dsr:nh:sec:intro}
+A permutation $\pi=(\pi_1,\ldots,\pi_n)$ of $[n]=\{1,\ldots,n\}$ is
+\emph{3AP-free} if no indices $i<j<k$ satisfy
+\begin{equation}
+\pi_i+\pi_k=2\pi_j.
+\label{dsr:nh:eq:avoid}
+\end{equation}
+The positions need not be consecutive, and progressions in both numerical
+directions are forbidden. Let $\tht(n)$ count these permutations, with
+$\tht(0)=1$. The first values are
+\[
+1,1,2,4,10,20,48,104,282,496,1066,2460,6128,\ldots.
+\]
+This is OEIS A003407 \cite{OEIS}.
+
+The distinction between understanding a sequence's growth and understanding
+its exact generating function is particularly sharp here. Ho proved that
+$\tht(n)^{1/n}$ has no limit \cite{Ho}. The recent \repo\ report
+\emph{Dyadic Scaling Rigidity and Log-Periodic Growth of 3AP-Free
+Permutations} develops a continuous periodic growth profile and its
+consequences, but explicitly makes no non-D-finiteness or natural-boundary
+claim \partref{Section~\ref{dsr:sec:questions}, item~8}. We resolve the former issue, not the latter.
+
+\subsection{Precise statements}
+\begin{definition}
+A sequence $(u_n)$ is \emph{P-recursive over a field $K$} if there are
+polynomials $p_0,\ldots,p_d\in K[n]$, not all zero, such that
+\begin{equation}
+\sum_{j=0}^{d}p_j(n)u_{n+j}=0
+\label{dsr:nh:eq:prec}
+\end{equation}
+for every sufficiently large integer $n$. A formal power series is
+\emph{D-finite over $K(z)$} if it satisfies a nonzero homogeneous linear
+differential equation with coefficients in $K[z]$.
+\end{definition}
+Allowing an arbitrary starting index in \eqref{dsr:nh:eq:prec} is important:
+non-P-recursiveness below excludes eventual recurrences, not merely
+recurrences valid from $n=0$.
+
+\begin{theorem}[Main result]
+\label{dsr:nh:thm:main}
+For every pair of integers $q\ge1$ and $r\ge0$, the sequence
+\[
+\bigl(\tht(qn+r)\bigr)_{n\ge0}
+\]
+is not P-recursive over $\C$. In particular, neither
+\begin{equation}
+F(z)=\sum_{n\ge0}\tht(n)z^n,
+\qquad
+E(z)=\sum_{n\ge0}\tht(n)\frac{z^n}{n!}
+\label{dsr:nh:eq:generating}
+\end{equation}
+is D-finite over $\C(z)$.
+\end{theorem}
+The ordinary generating function has positive finite radius of convergence;
+the exponential generating function is entire. Thus their non-D-finiteness
+concerns two rather different analytic regimes.
+
+\begin{theorem}[Robustness under approximation]
+\label{dsr:nh:thm:robustintro}
+Fix integers $q\ge1$, $r\ge0$ and a real number $d>0$.
+There is no eventually positive, integer-valued P-recursive sequence $(v_n)$
+for which
+\begin{equation}
+\log v_n=d\log\tht(qn+r)+o(n).
+\label{dsr:nh:eq:proxy}
+\end{equation}
+The same conclusion holds for positive rational $v_n$ if the least common
+denominator of $v_0,\ldots,v_n$ is at most $C^{n+1}$ for some fixed $C$.
+\end{theorem}
+The approximation condition is pointwise as $n\to\infty$, not an average
+condition or a condition on selected subsequences. It rules out, for example,
+a P-recursive positive integer surrogate within a polynomial factor of the
+counts. It does not rule out approximations with unrestricted real
+coefficients or uncontrolled rational denominators.
+
+\begin{theorem}[Positive polynomial observables]
+\label{dsr:nh:thm:polyintro}
+Let $q\ge1$, $r,s\ge0$ be integers, and let
+\[
+\Phi\in\Z_{\ge0}[N,X_0,\ldots,X_s]
+\]
+be a polynomial that depends on at least one $X_j$. Then
+\begin{equation}
+v_n=\Phi\bigl(n,\tht(qn+r),\tht(qn+r+1),\ldots,\tht(qn+r+s)\bigr)
+\label{dsr:nh:eq:observable}
+\end{equation}
+is not P-recursive over $\C$.
+\end{theorem}
+This includes powers of the counts, products of finitely many shifted
+counts, and positive polynomially weighted finite sums. Nonnegative
+coefficients are a genuine hypothesis: the argument does not control
+cancellation in signed combinations.
+
+\subsection{What is new here, and what is imported}
+The intended contribution is the application of finite-window asymptotic
+rigidity to A003407, including its sections and stable transformations.
+The nonexistence of a growth constant is Ho's theorem \cite{Ho}; it is not a
+new result of this article. The periodic-profile construction belongs to
+existing divide-and-conquer theory \cite{HJT} and the prior repository report
+\partref{Theorem~\ref{dsr:thm:profile}}. The arithmetic regularity and Nilsson asymptotics of
+G-functions are established theory \cite{Gar09,Gar11,Andre}. We use them as
+explicit inputs, not as conjectures or newly proved foundations.
+
+A targeted search for A003407 and 3AP-free permutations together with
+``P-recursive'', ``holonomic'', and ``D-finite'', and inspection of the
+papers cited here, did not locate the present application. Some searches
+returned unrelated material, so this is not evidence of exhaustive coverage.
+The claim of progress is precise: the stated repository gap is filled by
+a complete argument from identified published results. Priority beyond
+that assessment remains subject to specialist checking.
+
+\section{The enumerative inputs}
+\label{dsr:nh:sec:counts}
+We record the ingredients independently of the later analytic argument.
+Unless a base is displayed, logarithms are natural.
+
+\subsection{A local estimate needing no structural classification}
+\begin{lemma}[Deletion bound]
+\label{dsr:nh:lem:deletion}
+For every $n\ge0$,
+\begin{equation}
+\tht(n+1)\le(n+1)\tht(n).
+\label{dsr:nh:eq:deletion}
+\end{equation}
+Consequently, for fixed $j\ge0$ and $n\ge1$,
+\begin{equation}
+\tht(n+j)\le (n+j)^j\tht(n).
+\label{dsr:nh:eq:forwardwindow}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Delete the largest entry $n+1$ from a 3AP-free permutation of $[n+1]$.
+The remaining permutation of $[n]$ is still 3AP-free, because deleting an
+entry cannot create a previously absent subsequence. The original
+permutation is determined by the remaining permutation and the position at
+which $n+1$ was inserted. There are at most $n+1$ positions. This is an
+injection into a set of cardinality $(n+1)\tht(n)$. Iterating the estimate
+proves \eqref{dsr:nh:eq:forwardwindow}.
+\end{proof}
+No monotonicity assertion is used. In particular, we do not assume
+$\tht(n+1)\ge\tht(n)$.
+
+\wtag\ This is the deletion bound at the end of Part~I's
+Proposition~\ref{dsr:prop:ratio}. \repo\ proves the stronger bound
+$\tht(n+1)\le\lfloor(n+3)/2\rfloor\,\tht(n)$, $n\ge1$, in Lean as
+\lean{insertion_count_upper_bound_holds}
+(Subsection~\ref{dsr:nh:sec:formal}); the argument below needs only the
+weaker one.
+
+\subsection{The balanced splitting inequalities}
+\begin{proposition}[Classical splitting estimates]
+\label{dsr:nh:prop:split}
+For every integer $n\ge2$,
+\begin{equation}
+2\tht(\lfloor n/2\rfloor)\tht(\lceil n/2\rceil)
+\le \tht(n)
+\le21\tht(\lfloor n/2\rfloor)\tht(\lceil n/2\rceil).
+\label{dsr:nh:eq:split}
+\end{equation}
+\end{proposition}
+The lower estimate is the parity construction of Davis, Entringer, Graham,
+and Simmons \cite{DEGS}. For completeness, order the even entries and the
+odd entries separately by affine copies of smaller 3AP-free permutations,
+and concatenate the blocks in either order. The endpoints of an integer
+three-term progression have the same parity. They either lie in a common
+3AP-free block with their midpoint, or their midpoint lies in the other
+block and cannot occur between them. The two block orders give disjoint
+families, proving the factor $2$.
+
+The upper estimate for $n\ge3$ is Sharma's Theorem~2.8 \cite{Sharma}; its
+proof is imported. At $n=2$ it follows from $\tht(2)=2$. We do not infer
+this upper estimate from a fit to finite data.
+
+\wtag\ Proposition~\ref{dsr:nh:prop:split} is Part~I's
+\eqref{dsr:eq:lower} and \eqref{dsr:eq:upper}. In \repo\ both halves are
+Lean theorems: the upper one for $n\ge3$ is
+\lean{LeanProofs.Sharma2012.theorem_2_8_holds}, the lower one is
+\lean{even_count_recurrence_holds} and \lean{odd_count_recurrence_holds}
+(Remark~\ref{dsr:rem:inputs-formal}). Nothing derived from them below is
+formalized (Subsection~\ref{dsr:nh:sec:formal}).
+
+Write
+\begin{equation}
+a_n=\log\tht(n),\quad L=\log2,\quad U=\log21,\quad D=U-L,
+\label{dsr:nh:eq:constants}
+\end{equation}
+and, for $n\ge2$, define
+\begin{equation}
+\tau_n=a_n-a_{\lfloor n/2\rfloor}-a_{\lceil n/2\rceil}.
+\label{dsr:nh:eq:toll}
+\end{equation}
+Thus $L\le\tau_n\le U$.
+
+\begin{lemma}[Exponential bounds]
+\label{dsr:nh:lem:exponential}
+For $n\ge1$,
+\begin{equation}
+2^{n-1}\le\tht(n)\le21^{n-1}.
+\label{dsr:nh:eq:rough}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The logarithmic version holds at $n=1$. In a strong induction step, the
+two smaller indices sum to $n$, so their lower bounds sum to $(n-2)L$.
+Adding $\tau_n\ge L$ gives $(n-1)L$. The upper bound is identical with
+$U$ in place of $L$.
+\end{proof}
+The much sharper published upper bound $\tht(n)\le2.7^n/21$ for $n\ge11$
+\cite{Sharma} is unnecessary for our argument. The deliberately weak
+bound \eqref{dsr:nh:eq:rough} already provides all the arithmetic growth control
+needed below.
+
+\subsection{A two-sided shift estimate for the stronger corollaries}
+The main non-P-recursiveness theorem needs only
+Lemma~\ref{dsr:nh:lem:deletion}. Positive polynomial observables will also use
+a lower comparison for nearby counts.
+
+\begin{lemma}[Binary descent for adjacent logarithms]
+\label{dsr:nh:lem:ratios}
+Put $\Delta_n=a_{n+1}-a_n$ for $n\ge1$, and
+$\gamma=D/\log2=\log_2(21/2)$. Then
+\begin{equation}
+\abs{\Delta_n-\log2}\le D\lfloor\log_2 n\rfloor,
+\qquad
+2n^{-\gamma}\le\frac{\tht(n+1)}{\tht(n)}\le2n^{\gamma}.
+\label{dsr:nh:eq:twosided}
+\end{equation}
+For each fixed integer $s\ge0$,
+\begin{equation}
+\max_{0\le j\le s}\abs{a_{n+j}-a_n}=O_s(\log(n+1)).
+\label{dsr:nh:eq:shiftflat}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $m\ge1$, subtracting two consecutive instances of
+\eqref{dsr:nh:eq:toll} gives
+\begin{align}
+\Delta_{2m}&=\Delta_m+\tau_{2m+1}-\tau_{2m},\\
+\Delta_{2m+1}&=\Delta_m+\tau_{2m+2}-\tau_{2m+1}.
+\end{align}
+Thus $\Delta_n=\Delta_{\lfloor n/2\rfloor}+\varepsilon_n$ for $n\ge2$,
+where $|\varepsilon_n|\le D$. Iterating reaches $\Delta_1=\log2$ after
+$\lfloor\log_2 n\rfloor$ steps. Exponentiation and summation over a fixed
+number of adjacent differences give the remaining statements.
+\end{proof}
+The same descent identity appears in the prior repository report
+\partref{Proposition~\ref{dsr:prop:ratio}}; it is restated and reproved here as an input, not
+claimed as a new result.
+
+\section{The two distinct exponential scales}
+\label{dsr:nh:sec:separation}
+The only numerical facts used in the infinite nonconvergence argument are
+the two published counts displayed below. The deduction from them is exact.
+
+\begin{lemma}[Dyadic limits and their enclosures]
+\label{dsr:nh:lem:dyadic}
+For every $m\ge1$, the sequence
+\[
+\frac{a_{m2^t}}{m2^t}\quad(t\ge0)
+\]
+converges to a finite number $\ell_m$, and
+\begin{equation}
+\frac{\log(2\tht(m))}{m}\le\ell_m
+\le\frac{\log(21\tht(m))}{m}.
+\label{dsr:nh:eq:dyadicbounds}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At even indices the recurrence is $a_{2k}=2a_k+\tau_{2k}$, so
+\[
+\frac{a_{m2^{t+1}}}{m2^{t+1}}
+-\frac{a_{m2^t}}{m2^t}
+=\frac{\tau_{m2^{t+1}}}{m2^{t+1}}.
+\]
+The increments form an absolutely summable series. Summing their lower and
+upper bounds gives respectively $L/m$ and $U/m$, proving
+\eqref{dsr:nh:eq:dyadicbounds}.
+\end{proof}
+
+The published values used by Ho \cite{Ho}, also in the Correll--Ho/OEIS
+data \cite{CorrellHo,OEIS}, are
+\begin{align}
+T_{64}:=\tht(64)&=39911512393313043466768,\\
+T_{75}:=\tht(75)&=30235147387260979648843264.
+\label{dsr:nh:eq:largecounts}
+\end{align}
+They yield the exact strict comparison
+\begin{equation}
+(2T_{64})^{75}>(21T_{75})^{64}.
+\label{dsr:nh:eq:exactsep}
+\end{equation}
+Equivalently,
+\begin{equation}
+\ell_{64}\ge\frac{\log(2T_{64})}{64}
+>\frac{\log(21T_{75})}{75}\ge\ell_{75}.
+\label{dsr:nh:eq:logsep}
+\end{equation}
+For a short rational certificate, the accompanying program verifies
+\begin{align}
+(2T_{64})1000^{64}&>2279^{64},\\
+(21T_{75})500^{75}&<1139^{75}.
+\end{align}
+Hence $e^{\ell_{64}}>2.279$ and $e^{\ell_{75}}<2.278$. In particular,
+\begin{equation}
+\ell_{64}-\ell_{75}>
+\log\frac{2279}{2278}>\frac1{2279}.
+\label{dsr:nh:eq:rationalgap}
+\end{equation}
+The last strict inequality follows by integrating $1/t$ on
+$[1,1+1/2278]$, or from $\log(1+x)>x/(1+x)$ for $x>0$.
+
+\begin{theorem}[Ho's growth nonconvergence]
+\label{dsr:nh:thm:ho}
+The sequence $\tht(n)^{1/n}$ has no limit.
+\end{theorem}
+\begin{proof}
+The subsequences $n=64\cdot2^t$ and $n=75\cdot2^t$ converge to the
+distinct limits $e^{\ell_{64}}$ and $e^{\ell_{75}}$ by
+Lemma~\ref{dsr:nh:lem:dyadic} and \eqref{dsr:nh:eq:logsep}.
+\end{proof}
+This is a reproduction of the published mechanism \cite{Ho}, not a new
+claim of nonconvergence. The decimal separation between the two enclosure
+endpoints is approximately $0.00109603287135$ on the logarithmic scale.
+The exact inequalities, not that decimal, are the proof certificates.
+
+\begin{remark}[Enumeration boundary]
+The present package independently enumerates $\tht(n)$ only for $0\le n\le32$.
+It does not re-enumerate \eqref{dsr:nh:eq:largecounts}. Thus the displayed numerical
+route imports those two established counts. Alternatively, one may take
+Theorem~\ref{dsr:nh:thm:ho} directly from the published paper. These are two
+presentations of the same dependency, not two independent verifications of
+the large enumeration.
+\end{remark}
+\wtag\ Nothing in \repo\ certifies $\tht(64)$ or $\tht(75)$: the Lean
+count certificate stops at $\tht(20)$ (Subsection~\ref{dsr:nh:sec:formal}).
+The two values equal rows $64$ and $75$ of Part~I's published table
+\lean{data/counts.txt}, and the displayed comparison and brackets were
+rechecked from those rows when Part~II was written; that is the same
+published data, not a second source. Part~I reaches $p_-<p_+$, and hence
+Theorem~\ref{dsr:nh:thm:ho}, from other published counts
+(Theorem~\ref{dsr:thm:period}).
+
+\section{From a polynomial recurrence to a finite-window law}
+\label{dsr:nh:sec:window}
+This section contains the central inference. We separate the published
+asymptotic input from the finite-dimensional argument that uses it.
+
+\subsection{Descending complex recurrence coefficients}
+\begin{lemma}[Rational descent]
+\label{dsr:nh:lem:descent}
+A rational-valued sequence that is P-recursive over $\C$ is P-recursive
+over $\Q$.
+\end{lemma}
+\begin{proof}
+Fix the order $d$, a coefficient degree bound $e$, and a starting index
+$N$ for a complex recurrence. Its coefficients form a nonzero vector
+in $\C^{(d+1)(e+1)}$ annihilated by every rational row
+\[
+\bigl(n^k u_{n+j}\bigr)_{0\le j\le d,\;0\le k\le e},
+\qquad n\ge N.
+\]
+The rational span of these rows has a basis consisting of finitely many
+rows. Their matrix has the same rank over $\Q$ and $\C$, since rank is
+characterized by nonzero minors. Its complex kernel is nonzero, so its
+rational kernel is nonzero. A nonzero rational vector in that kernel
+annihilates every original row, producing the required rational recurrence.
+\end{proof}
+This also makes clear why no restriction to rational recurrence
+coefficients is hidden in Theorem~\ref{dsr:nh:thm:main}.
+
+\subsection{The arithmetic asymptotic input}
+For a rational sequence $(u_n)$, let $b_n$ be the least positive integer
+such that $b_nu_0,\ldots,b_nu_n$ are all integers. We say that its
+\emph{common denominators grow exponentially} if $b_n\le C^{n+1}$ for some
+$C$. For integer sequences this holds with $b_n=1$.
+
+\begin{theorem}[Published G-function input]
+\label{dsr:nh:thm:ginput}
+Suppose $(u_n)$ is rational-valued, not eventually zero, and P-recursive
+over $\Q$, with $|u_n|\le C^{n+1}$ and exponentially growing common
+denominators. Then its generating series is a G-function. Its coefficients
+have a nonzero leading asymptotic layer of the form
+\begin{equation}
+u_n=R^n n^\alpha(\log n)^\beta
+\left(\sum_{j=1}^{s}c_j\zeta_j^n+o(1)\right),
+\label{dsr:nh:eq:leading}
+\end{equation}
+where $R>0$, $\alpha\in\Q$, $\beta\in\Z_{\ge0}$, the $\zeta_j$ are distinct
+complex numbers of modulus $1$, and the $c_j$ are nonzero complex constants.
+\end{theorem}
+The G-function criterion and coefficient expansion are the relevant parts
+of Garoufalidis's Theorem~3 and Proposition~2.5 \cite{Gar09}; the precise
+nonzero leading-layer convention is explained in \cite{Gar11}. The underlying
+arithmetic theorem makes the minimal differential operator regular singular
+with rational exponents \cite{Andre}. These are the deep imported results.
+We do not appeal to a conjectural geometric origin of G-functions.
+
+To clarify the reduction to \eqref{dsr:nh:eq:leading}, start with the finite
+power-logarithmic families at the dominant singularities, collect equal
+frequencies, and choose the largest power of $n$ having a nonzero
+coefficient, then the largest logarithmic power within it. The remaining
+terms are $o(1)$ after the displayed normalization. Contributions from
+singularities farther away are exponentially smaller. Regular singularity
+is essential to this explanation: quasi-unipotent monodromy alone, without
+control of singular growth, would not justify such a local form.
+
+\subsection{Why cancellation cannot persist through a whole window}
+\begin{lemma}[Finite-window noncancellation]
+\label{dsr:nh:lem:window}
+Suppose a complex sequence satisfies \eqref{dsr:nh:eq:leading}. There are constants
+$c,C>0$ and $n_0$ such that, for $n\ge n_0$,
+\begin{equation}
+cR^n n^\alpha(\log n)^\beta
+\le \max_{0\le k<s}|u_{n+k}|
+\le CR^n n^\alpha(\log n)^\beta.
+\label{dsr:nh:eq:window}
+\end{equation}
+In particular,
+\begin{equation}
+\lim_{n\to\infty}
+\left(\max_{0\le k<s}|u_{n+k}|\right)^{1/n}=R.
+\label{dsr:nh:eq:windowroot}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $H_n=R^n n^\alpha(\log n)^\beta$. For each fixed $k$,
+\[
+\frac{H_{n+k}}{H_n}=R^k(1+o(1)).
+\]
+Since there are only $s$ values of $k$, the errors are uniform for
+$0\le k<s$. Define the $s\times s$ matrix
+\[
+V_{kj}=(R\zeta_j)^k,
+\qquad 0\le k<s,\quad1\le j\le s,
+\]
+and the column vector $w_n=(c_j\zeta_j^n)_{j=1}^{s}$. Then
+\begin{equation}
+\left(\frac{u_{n+k}}{H_n}\right)_{k=0}^{s-1}=Vw_n+o(1)
+\label{dsr:nh:eq:vector}
+\end{equation}
+in the maximum norm. The Vandermonde determinant is
+\[
+\det V=\prod_{1\le i<j\le s}(R\zeta_j-R\zeta_i)\ne0.
+\]
+Moreover, $\|w_n\|_\infty=c_*:=\max_j|c_j|>0$ for every $n$. Thus
+\[
+\|Vw_n\|_\infty\ge\frac{c_*}{\|V^{-1}\|_\infty}>0,
+\qquad
+\|Vw_n\|_\infty\le\|V\|_\infty c_*.
+\]
+After increasing $n_0$, the error in \eqref{dsr:nh:eq:vector} is less than half
+of the lower constant. This proves \eqref{dsr:nh:eq:window}. Finally,
+$H_n^{1/n}\to R$, because $\log n/n$ and $\log\log n/n$ tend to zero.
+\end{proof}
+The phases may be roots of unity, algebraic points with irrational
+arguments, or arbitrary distinct unit complex numbers in this lemma.
+No equidistribution or Diophantine lower bound for a single oscillating
+sum is required.
+
+\subsection{One-sided local growth is enough}
+\begin{definition}
+An eventually positive sequence has \emph{subexponential forward
+increases} if
+\begin{equation}
+\logp\frac{u_{n+1}}{u_n}=o(n),
+\qquad \logp x=\max\{0,\log x\}.
+\label{dsr:nh:eq:local}
+\end{equation}
+\end{definition}
+This is a one-sided condition. It permits downward jumps, and is weaker
+than $\log(u_{n+1}/u_n)=o(n)$.
+
+\begin{theorem}[Local-growth rigidity]
+\label{dsr:nh:thm:rigidity}
+Let $(u_n)$ be eventually positive, rational-valued, exponentially bounded,
+and have exponentially growing common denominators. If it is P-recursive
+over $\C$ and satisfies \eqref{dsr:nh:eq:local}, then
+\begin{equation}
+\lim_{n\to\infty}u_n^{1/n}=R
+\label{dsr:nh:eq:rootlimit}
+\end{equation}
+exists in $(0,\infty)$. In particular, the assertion applies to positive
+integer sequences with $u_{n+1}/u_n\le Cn^A$ for fixed $C,A>0$.
+\end{theorem}
+\begin{proof}
+Rational descent and Theorem~\ref{dsr:nh:thm:ginput} give a leading layer
+\eqref{dsr:nh:eq:leading}. Set $W_n=\max_{0\le k<s}u_{n+k}$. If
+$h_n=\logp(u_{n+1}/u_n)$, then for every $k<s$,
+\[
+\log u_{n+k}\le\log u_n+\sum_{i=0}^{k-1}h_{n+i}.
+\]
+The finite sum is $o(n)$, uniformly over these $k$. Since $u_n\le W_n$,
+\[
+0\le\log W_n-\log u_n\le o(n).
+\]
+Lemma~\ref{dsr:nh:lem:window} gives $\log W_n/n\to\log R$, so
+$\log u_n/n\to\log R$ as well. Exponentiation proves
+\eqref{dsr:nh:eq:rootlimit}.
+\end{proof}
+
+\begin{corollary}[A necessary jump phenomenon]
+\label{dsr:nh:cor:jumps}
+If an eventually positive, exponentially bounded, integer P-recursive
+sequence has no $n$th-root limit, then there is $\varepsilon>0$ such that
+\[
+\frac{u_{n+1}}{u_n}>e^{\varepsilon n}
+\]
+for infinitely many $n$.
+\end{corollary}
+\begin{proof}
+Otherwise the nonnegative sequence in the left side of
+\eqref{dsr:nh:eq:local}, divided by $n$, tends to zero, contradicting
+Theorem~\ref{dsr:nh:thm:rigidity}.
+\end{proof}
+This is the appropriate obstruction: persistent exponential-scale
+oscillation in an arithmetic P-recursive sequence requires exponentially
+large upward transitions somewhere. The deletion estimate prevents them
+for the permutation counts.
+
+\section{Proof of non-P-recursiveness and all arithmetic sections}
+\label{dsr:nh:sec:mainproof}
+\subsection{The base sequence}
+Suppose $\tht(n)$ were P-recursive over $\C$. It is positive and integral,
+and Lemma~\ref{dsr:nh:lem:exponential} bounds it exponentially. Furthermore,
+\eqref{dsr:nh:eq:deletion} implies
+\[
+\logp\frac{\tht(n+1)}{\tht(n)}\le\log(n+1)=o(n).
+\]
+Theorem~\ref{dsr:nh:thm:rigidity} would force $\tht(n)^{1/n}$ to converge,
+contradicting Theorem~\ref{dsr:nh:thm:ho}. This proves the base case of
+Theorem~\ref{dsr:nh:thm:main}.
+
+\subsection{A bounded-gap interpolation principle}
+The all-sections assertion is stronger than the base case: a
+non-P-recursive sequence may have P-recursive sections. Here the local
+estimate prevents that escape.
+
+\begin{lemma}[A growth rate on one arithmetic section forces a global rate]
+\label{dsr:nh:lem:sectionlimit}
+Let $(u_m)$ be positive and exponentially bounded, with subexponential
+forward increases. Fix integers $q\ge1$, $r\ge0$. If
+\[
+\lim_{n\to\infty}u_{qn+r}^{1/n}=B\in(0,\infty),
+\]
+then $u_m^{1/m}\to B^{1/q}$ as $m\to\infty$.
+\end{lemma}
+\begin{proof}
+For large $m$, choose $n$ with $x=qn+r\le m<y=q(n+1)+r$.
+Let $h_k=\logp(u_{k+1}/u_k)=o(k)$. At most $q$ consecutive terms occur
+in either of the following sums, so
+\[
+\log u_m\le\log u_x+\sum_{k=x}^{m-1}h_k
+=\log u_x+o(m),
+\]
+and
+\[
+\log u_m\ge\log u_y-\sum_{k=m}^{y-1}h_k
+=\log u_y-o(m).
+\]
+Now $n/m\to1/q$, and the two bounding logarithms, divided by $m$,
+both tend to $(\log B)/q$. The conclusion follows by squeezing.
+\end{proof}
+
+\begin{proof}[Proof of the arithmetic-section part of Theorem~\ref{dsr:nh:thm:main}]
+Fix $q,r$ and write $v_n=\tht(qn+r)$. This is a positive integer sequence
+bounded above by $21^{qn+r}$. Repeated deletion yields
+\[
+\frac{v_{n+1}}{v_n}
+\le\prod_{j=1}^{q}(qn+r+j)
+\le(qn+r+q)^q.
+\]
+If $v_n$ were P-recursive, Theorem~\ref{dsr:nh:thm:rigidity} would give a finite
+positive limit for $v_n^{1/n}$. Lemma~\ref{dsr:nh:lem:sectionlimit} would then give
+a global $n$th-root limit for $\tht(n)$, contradicting
+Theorem~\ref{dsr:nh:thm:ho}.
+\end{proof}
+Notice that neither the continuous phase profile nor the two-sided
+estimate \eqref{dsr:nh:eq:twosided} is needed for this proof. The stronger
+all-sections conclusion already follows from one-sided insertion control.
+
+\subsection{Explicit separated limits within every section}
+For later applications it is useful to see the two scales directly.
+For large $t$, let
+\[
+n_t^{(m)}=\left\lfloor\frac{m2^t-r}{q}\right\rfloor,
+\qquad m\in\{64,75\}.
+\]
+The number $qn_t^{(m)}+r$ differs from $m2^t$ by less than $q$.
+By Lemma~\ref{dsr:nh:lem:ratios}, their logarithmic counts differ by $O_q(t+1)$.
+Therefore
+\begin{equation}
+\frac{\log\tht(qn_t^{(m)}+r)}{n_t^{(m)}}\longrightarrow q\ell_m.
+\label{dsr:nh:eq:sectionphases}
+\end{equation}
+The two limiting logarithmic rates are separated by more than
+$q/2279$. This construction provides explicit infinite subsequences;
+it does not rely on identifying the global extrema of the phase profile.
+
+\section{Stable non-holonomicity}
+\label{dsr:nh:sec:stable}
+\subsection{Subexponential multiplicative perturbations}
+\begin{proof}[Proof of Theorem~\ref{dsr:nh:thm:robustintro}]
+Assume a sequence $v_n$ as in the statement exists, and put
+$b_n=\log\tht(qn+r)$ and $e_n=\log v_n-db_n$. Then $e_n=o(n)$.
+The exponential bound for $\tht$ shows $v_n\le C^{n+1}$ after increasing
+$C$ to absorb a finite prefix. Repeated deletion gives
+$b_{n+1}-b_n\le q\log(qn+r+q)$. Hence
+\[
+\log\frac{v_{n+1}}{v_n}
+=d(b_{n+1}-b_n)+e_{n+1}-e_n
+\le O(\log n)+|e_{n+1}|+|e_n|=o(n).
+\]
+Thus $v_n$ has subexponential forward increases. Its assumed integrality,
+or its rationality and common-denominator bound, lets us apply
+Theorem~\ref{dsr:nh:thm:rigidity}. Consequently $\log v_n/n$ converges.
+But \eqref{dsr:nh:eq:proxy}, with $d>0$, then forces $b_n/n$ to converge,
+contradicting Lemma~\ref{dsr:nh:lem:sectionlimit} and
+Theorem~\ref{dsr:nh:thm:ho}.
+\end{proof}
+
+\begin{corollary}
+\label{dsr:nh:cor:powers}
+For every real $d>0$ and integers $q\ge1$, $r\ge0$, the integer sequence
+\[
+\left\lfloor\tht(qn+r)^d\right\rfloor
+\]
+is not P-recursive. In particular, every positive integral power of every
+arithmetic section is non-P-recursive.
+\end{corollary}
+\begin{proof}
+The lower bound \eqref{dsr:nh:eq:rough} makes $\tht(qn+r)^d$ exponentially large.
+Taking its floor changes its logarithm by $o(1)$; apply
+Theorem~\ref{dsr:nh:thm:robustintro}.
+\end{proof}
+Rounding is used only to produce integer coefficients. The assertion does
+not require $d$ to be computable or algebraic, although an arbitrary real
+$d$ need not furnish an effective algorithm for its rounded sequence.
+
+\subsection{Positive polynomial observables}
+\begin{proof}[Proof of Theorem~\ref{dsr:nh:thm:polyintro}]
+Let $d\ge1$ be the largest total degree in the $X$-variables of a monomial
+occurring in $\Phi$. Put $b_n=\tht(qn+r)$. For each fixed $j\le s$,
+Lemma~\ref{dsr:nh:lem:ratios} gives
+\[
+\tht(qn+r+j)=b_n\exp(O(\log n)).
+\]
+A monomial $cN^k\prod_{j=0}^{s}X_j^{m_j}$ with
+$h=\sum_jm_j$ and $c>0$ therefore evaluates to
+\[
+b_n^h\exp(O(\log n)).
+\]
+For $n\ge1$, every factor is positive. Select one occurring monomial of
+$X$-degree $d$. It gives a lower bound $b_n^dn^{-A}$ for a sufficiently
+large constant $A$. Since $b_n\ge1$, every occurring monomial is at most
+$b_n^dn^A$ after enlarging $A$; summing the finitely many monomials gives
+an upper bound of the same form. Thus
+\begin{equation}
+\log v_n=d\log b_n+O(\log n).
+\label{dsr:nh:eq:polyscale}
+\end{equation}
+The sequence is eventually positive and integer-valued. Apply
+Theorem~\ref{dsr:nh:thm:robustintro}.
+\end{proof}
+For example,
+\[
+\tht(n)^2+7n^3\tht(n+1),\qquad
+\tht(3n+2)\tht(3n+5),\qquad
+\sum_{j=0}^{s}(n+1)^j\tht(n+j)
+\]
+are all non-P-recursive. In the first expression the term of $X$-degree
+$2$ determines the exponential scale; in the second, missing intermediate
+shifts simply mean that their exponents in the polynomial are zero.
+
+\subsection{The same obstruction excludes a leading Nilsson description}
+\begin{corollary}
+\label{dsr:nh:cor:notnilsson}
+For every $q\ge1$, $r\ge0$, the sequence $\tht(qn+r)$ cannot have a
+nonzero leading layer of the form \eqref{dsr:nh:eq:leading}. The same holds for
+the sequences in Theorem~\ref{dsr:nh:thm:polyintro}.
+\end{corollary}
+\begin{proof}
+A leading layer alone, without any P-recursive hypothesis, gives the
+window law by Lemma~\ref{dsr:nh:lem:window}. The local-growth part of the proof of
+Theorem~\ref{dsr:nh:thm:rigidity} would then force an $n$th-root limit. For sections
+this contradicts \eqref{dsr:nh:eq:sectionphases}. For polynomial observables,
+\eqref{dsr:nh:eq:polyscale} gives two limits $dq\ell_{64}$ and $dq\ell_{75}$,
+and also gives subexponential forward increases.
+\end{proof}
+Thus replacing a hoped-for exact recurrence by a finite dominant
+power-logarithmic asymptotic ansatz does not remove the obstruction.
+
+\section{Generating-function consequences and their limits}
+\label{dsr:nh:sec:functions}
+\subsection{Ordinary and exponential generating functions}
+The standard coefficient--differential-equation equivalence says that
+$\sum u_nz^n$ is D-finite exactly when $(u_n)$ is P-recursive
+\cite[Theorem~1.5]{Stanley}. Theorem~\ref{dsr:nh:thm:main} therefore proves
+non-D-finiteness of $F$ and of the ordinary generating function of every
+section and every positive polynomial observable above.
+
+For the exponential generating function, write $b_n=\tht(n)/n!$.
+Multiplying a recurrence for $b_n$ by $(n+d)!$ gives
+\[
+\sum_{j=0}^{d}p_j(n)\frac{(n+d)!}{(n+j)!}\tht(n+j)=0,
+\]
+whose coefficients are polynomials. Conversely, a recurrence for $\tht(n)$
+can be divided by $n!$ to give one for $b_n$, because
+$(n+j)!/n!$ is a polynomial in $n$. These transformations preserve
+nontriviality. Hence $E$ is D-finite if and only if $F$ is D-finite,
+which completes the proof of \eqref{dsr:nh:eq:generating}'s assertion.
+
+The bounds \eqref{dsr:nh:eq:rough} show that $F$ has radius in $[1/21,1/2]$.
+They also give absolute convergence of $E$ everywhere, since
+$|E(z)|\le\sum21^n|z|^n/n!=e^{21|z|}$. The latter bound is deliberately
+nonoptimal.
+
+\begin{corollary}
+\label{dsr:nh:cor:transcendence}
+The ordinary generating function of every sequence in
+Theorems~\ref{dsr:nh:thm:main} and~\ref{dsr:nh:thm:polyintro} is transcendental over
+$\C(z)$.
+\end{corollary}
+\begin{proof}
+An algebraic germ $f$ belongs to the finite extension $\C(z,f)$ of
+$\C(z)$. In characteristic zero, differentiation preserves that extension:
+implicit differentiation of a separable minimal polynomial expresses $f'$
+in the same field, and iteration does so for every derivative. Finitely
+many derivatives must therefore be linearly dependent over $\C(z)$.
+Thus an algebraic germ is D-finite, contrary to the established results.
+\end{proof}
+
+\subsection{Why nonconvergence by itself was insufficient}
+\begin{example}[A positive rational counterexample to the naive argument]
+\label{dsr:nh:ex:parity}
+Let
+\[
+u_n=3^n+(-3)^n+2^n.
+\]
+For even $n$, $u_n=2\cdot3^n+2^n$; for odd $n$, $u_n=2^n$.
+The sequence is positive and integral, its $n$th roots tend to $3$ on even
+indices and to $2$ on odd indices, and yet its generating function is
+\[
+\frac1{1-3z}+\frac1{1+3z}+\frac1{1-2z}.
+\]
+It satisfies a constant-coefficient recurrence. The ratio from an odd index
+to the next even index is exponentially large, exactly as
+Corollary~\ref{dsr:nh:cor:jumps} requires. A two-term window cannot remain small.
+\end{example}
+The finite-window argument is consequently not a cosmetic addition. It
+eliminates a real counterexample mechanism that a bare appeal to
+oscillatory growth would miss.
+
+\subsection{No natural-boundary claim}
+A non-D-finite function need not have a natural boundary. For a direct
+example, the meromorphic function $1/\cos z$ has isolated poles at
+$\pi/2+k\pi$, and it can be continued around each of them. It is not
+D-finite, since a polynomial-coefficient linear differential equation has
+only finitely many possible finite singularities, whereas these poles are
+infinite in number. Thus non-D-finiteness does not say that continuation
+fails across every point of a convergence circle.
+
+Our result also does not prove differential transcendence: nonlinear
+polynomial differential equations are not excluded. The radius of $F$
+has not been shown transcendental or irrational. Nor does the argument
+prove that $F$ has infinitely many singularities. What it excludes, in
+particular, is the finite regular-singular arithmetic configuration that
+would be forced by a G-function.
+
+\section{The periodic profile as a reusable obstruction}
+\label{dsr:nh:sec:profile}
+The proof of the main theorem was deliberately independent of the prior
+report's stronger profile results. This section connects the new criterion
+to that report without treating its established construction as new.
+
+\subsection{The abstract profile criterion}
+\begin{proposition}[Continuous nonconstant phase obstruction]
+\label{dsr:nh:prop:profileobstruction}
+Let $(u_n)$ be positive integers and suppose, for some $b>1$ and a
+continuous nonconstant $1$-periodic function $P$, that
+\begin{equation}
+\log u_n=nP(\log_b n)+o(n).
+\label{dsr:nh:eq:abstractprofile}
+\end{equation}
+Then $(u_n)$ is not P-recursive over $\C$. The same conclusion holds for
+positive rational coefficients with exponentially growing common
+denominators.
+\end{proposition}
+\begin{proof}
+Periodicity and continuity make $P$ bounded and uniformly continuous, so
+\eqref{dsr:nh:eq:abstractprofile} bounds $u_n$ exponentially. Writing $e_n=o(n)$,
+\begin{align*}
+\log u_{n+1}-\log u_n
+={}&P(\log_b(n+1))\\
+&+n\bigl(P(\log_b(n+1))-P(\log_b n)\bigr)+e_{n+1}-e_n
+=o(n).
+\end{align*}
+Thus subexponential forward increases hold. For any fixed $t\in\R$,
+take $n_k=\lfloor b^{k+t}\rfloor$. Then
+$\log_b n_k-k\to t$, and
+$\log u_{n_k}/n_k\to P(t)$. Two distinct values of $P$ give two distinct
+logarithmic root limits, contradicting Theorem~\ref{dsr:nh:thm:rigidity} under
+P-recursiveness.
+\end{proof}
+Only continuity is required, not differentiability, Lipschitz regularity,
+or identification of the fundamental period. In particular, the unresolved
+fine regularity questions in the prior report do not obstruct this
+application.
+
+\subsection{Recovering the repository's bounded-error law}
+Here is a short independent specialization of the existing interpolation
+method \cite{HJT}\,\partref{Theorem~\ref{dsr:thm:profile}}. Let $A(x)$ be the affine interpolation of
+$a_n$ for $x\ge1$, and put $T(x)=A(x)-2A(x/2)$ for $x\ge2$.
+At even and odd integers respectively,
+\[
+2A(n/2)=2a_{n/2},\qquad
+2A(n/2)=a_{(n-1)/2}+a_{(n+1)/2}.
+\]
+On every unit interval $T$ is affine, because a breakpoint of $A(x/2)$
+can only occur at an even integer. Hence $T$ interpolates $\tau_n$ and
+$L\le T(x)\le U$.
+
+The series
+\begin{equation}
+H(x)=A(x)+\sum_{j\ge1}2^{-j}T(2^jx),\qquad x\ge1,
+\label{dsr:nh:eq:H}
+\end{equation}
+converges uniformly. Equivalently, $H(x)=\lim_{k\to\infty}2^{-k}A(2^kx)$,
+so $H$ is continuous and $H(2x)=2H(x)$. Defining
+$P(t)=2^{-t}H(2^t)$ for $t\ge0$ and extending periodically gives
+\begin{equation}
+a_n=nP(\log_2 n)-Q(n),\qquad L\le Q(n)\le U.
+\label{dsr:nh:eq:actualprofile}
+\end{equation}
+The dyadic limits satisfy $\ell_m=P(\log_2 m)$, so
+\eqref{dsr:nh:eq:logsep} proves that this $P$ is nonconstant. Proposition
+\ref{dsr:nh:prop:profileobstruction} is therefore a second route to the base
+non-P-recursiveness theorem. The profile construction and the conclusion
+that it is nonconstant are not additional novelty claims here.
+
+\wtag\ In Part~I's notation $T$ is $R$ \eqref{dsr:eq:R}, $H$ is $F$
+\eqref{dsr:eq:F}, and \eqref{dsr:nh:eq:actualprofile} is
+Theorem~\ref{dsr:thm:profile} at integers, with the same $P$ and~$Q$.
+Part~I's Lemma~\ref{dsr:lem:phase-gap} gives a second proof that $P$ is
+nonconstant, from other published counts.
+
+\subsection{Perturbed linear sampling}
+\begin{corollary}
+\label{dsr:nh:cor:perturbedsampling}
+Fix a real $q>0$, and let $m_n$ be positive integers satisfying
+\[
+m_n=qn+o\left(\frac{n}{\log(n+1)}\right).
+\]
+Then $(\tht(m_n))$ is not P-recursive over $\C$.
+\end{corollary}
+\begin{proof}
+The two-sided adjacent bound gives
+\[
+\abs{a_{m_n}-a_{\lfloor qn\rfloor}}
+=O\bigl((|m_n-\lfloor qn\rfloor|+1)\log(n+1)\bigr)=o(n).
+\]
+Using \eqref{dsr:nh:eq:actualprofile} and continuity,
+\[
+\log\tht(m_n)
+=n\,qP(\log_2 n+\log_2 q)+o(n).
+\]
+The function $t\mapsto qP(t+\log_2 q)$ is continuous, periodic, and
+nonconstant. Apply Proposition~\ref{dsr:nh:prop:profileobstruction}.
+\end{proof}
+The indices need not themselves satisfy a recurrence, and the statement
+is an obstruction, not an enumeration algorithm. It shows that the
+phenomenon is not an artefact of choosing a single residue class.
+
+\section{Exact verification and reproducibility}
+\label{dsr:nh:sec:verification}
+The package contains a standard-library Python program, not a symbolic
+recurrence guesser masquerading as a proof. Its output separates four roles:
+independent enumeration, arithmetic separation, finite diagnostic recurrence
+certificates, and the limitations of each check.
+
+\subsection{A subset-state enumeration with a proved transition}
+For a subset $S\subseteq[n]$, regard $S$ as the set of entries already placed.
+If $x\notin S$ is placed next, then for every integer $d>0$ with
+$x-d,x+d\in[n]$, the two endpoints must either both belong to $S$ or both
+lie outside $S$. Define
+\begin{equation}
+\mathcal A(S)=\{x\notin S:\
+\mathbf1_S(x-d)=\mathbf1_S(x+d)
+\text{ whenever }x-d,x+d\in[n]\}.
+\label{dsr:nh:eq:allowed}
+\end{equation}
+The continuation recurrence is
+\begin{equation}
+C([n])=1,\qquad
+C(S)=\sum_{x\in\mathcal A(S)}C(S\cup\{x\}).
+\label{dsr:nh:eq:dp}
+\end{equation}
+
+\begin{proposition}
+\label{dsr:nh:prop:dp}
+The value $C(\varnothing)$ in \eqref{dsr:nh:eq:dp} equals $\tht(n)$.
+\end{proposition}
+\begin{proof}
+In any completed ordering, a forbidden progression occurs exactly when its
+midpoint is placed with one endpoint earlier and the other endpoint later.
+Condition \eqref{dsr:nh:eq:allowed} excludes precisely that event at the step when
+the midpoint is placed. If all steps obey it, no midpoint can lie between
+its endpoints, so the completed permutation is 3AP-free. Conversely,
+every 3AP-free permutation obeys the condition at each step. The condition
+for future steps depends only on $S$, not on the internal order of an
+already valid prefix. Therefore memoization by the subset is sound, and
+\eqref{dsr:nh:eq:dp} counts every valid completion exactly once.
+\end{proof}
+This subset-state approach is consistent with the dynamic-programming
+viewpoint in Correll--Ho \cite{CorrellHo}. The present implementation and
+its short transition proof are provided for independent reproducibility,
+not as a new faster enumeration method.
+\wtag\ Part~I's Section~\ref{dsr:sec:verification} proves the same
+recurrence \eqref{dsr:eq:DP}, and its own verifier, a different program,
+also recomputes $\tht(n)$ for $n\le32$.
+
+\subsection{Executed checks}
+The supplied run independently computed all counts for $0\le n\le32$
+and matched the published table. A second implementation directly iterated
+through all permutations for $0\le n\le8$ and tested
+\eqref{dsr:nh:eq:avoid}. The two algorithms agree on their overlap. The program
+also checked the finite instances of \eqref{dsr:nh:eq:split} through $32$ and
+all integer inequalities in Section~\ref{dsr:nh:sec:separation}.
+
+\begin{center}
+\begin{tabular}{@{}rr@{\qquad}rr@{}}
+\toprule
+$n$ & $\tht(n)$ & $n$ & $\tht(n)$\\
+\midrule
+0&1&8&282\\
+1&1&12&6128\\
+2&2&16&212728\\
+3&4&20&2937136\\
+4&10&24&96547832\\
+5&20&28&2181990978\\
+6&48&30&14765405996\\
+7&104&32&121728075232\\
+\bottomrule
+\end{tabular}
+\end{center}
+All integer assertions remain active under \code{python -O}; the program
+uses explicit checks rather than optimizable \code{assert} statements.
+Its decimal logarithms are diagnostic only.
+
+\subsection{Finite recurrence exclusion certificates}
+For proposed order $d$ and coefficient degree $e$, form rows
+\[
+M_{n,(j,k)}=n^k\tht(n+j),\qquad0\le j\le d,\quad0\le k\le e.
+\]
+A recurrence valid on these rows gives a nonzero vector in the kernel of
+$M$. The script uses fraction-free Bareiss elimination to compute exact
+integer determinants and obtains nonzero determinants for the following
+square matrices:
+\begin{center}
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+Order $d$ & Degree $e$ & First row $n$ & Size & Count indices required\\
+\midrule
+5&3&0&24&$0,\ldots,28$\\
+4&3&8&20&$8,\ldots,31$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full signed determinant integers are in \code{data/verification.json}.
+A nonzero determinant excludes every recurrence in the indicated
+order-degree rectangle on those rows, because smaller rectangles embed
+by adding zero coefficients.
+
+These are \emph{finite diagnostics}. They do not rule out a recurrence
+starting after the tested interval, a larger order, or a larger degree.
+Theorem~\ref{dsr:nh:thm:main}, not matrix fitting, excludes all such possibilities.
+
+\subsection{Build and run instructions}
+From the package root:
+\begin{verbatim}
+python3 code/verify.py
+sh build.sh
+\end{verbatim}
+The verifier defaults to the independent bound $32$ and brute-force bound
+$8$. For a quick test:
+\begin{verbatim}
+python3 code/verify.py --max-n 12 --brute-n 7 \
+  --output data/quick-check.json
+\end{verbatim}
+The full run took about eleven seconds in the construction environment;
+this is a machine-dependent observation, not a complexity claim. The
+build script changes to its own directory before running pdfLaTeX, so it
+works even when invoked by an absolute path from another directory.
+
+{\raggedright\wtag\ These are the delivered names. In the collection the verifier is
+\lean{code/02-nonholonomicity-verify.py}, its tests are
+\lean{code/02-nonholonomicity-test_verify.py}, the build script is
+\lean{code/02-nonholonomicity-build.sh}, and the records are
+\lean{data/02-nonholonomicity-verification.json} and
+\lean{data/02-nonholonomicity-unit-tests.txt}. Do not run them in place:
+the verifier's default output is \lean{data/verification.json} under the
+report root, which is Part~I's record; the renamed test file imports
+Part~I's \lean{code/verify.py} instead of the verifier it tests; and the
+build script looks for \lean{article.tex} in \lean{code/}. The report's
+README gives commands for a scratch copy with the delivered names. A rerun
+made that way when Part~II was written passed, and its record differed
+from the shipped one only in the timing field.\par}
+
+\section{Repository placement, dependency audit, and formalization}
+\label{dsr:nh:sec:audit}
+\subsection{The inspected scope}
+The repository's current main revision was resolved during this work as
+\begin{center}\small\texttt{8d936ee2357f9decf78c2ecc7d9baf3100a6787d}.\end{center}
+The prior report is under
+\begin{quote}\small\raggedright
+\path{SetTheory/Cardinals/docs/reports/}\par
+\path{generating-functions-and-asymptotics/}\par
+\path{oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity/}.
+\end{quote}
+Its README explicitly distinguishes its unformalized research from the
+proved Ramsey-theoretic inputs \partref{README; Section~\ref{dsr:sec:formal}}. The present article is
+a continuation of its non-D-finiteness boundary, not a replacement of its
+profile, period, empirical-law, or gluing results. No repository files have
+been changed.
+
+\subsection{A claim-by-claim dependency map}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}
+ >{\raggedright\arraybackslash}X@{}}
+\toprule
+Claim & Input and status\\
+\midrule
+Deletion bound & Elementary injection, proved here.\\
+Balanced splitting & Parity lower bound proved here; Sharma upper bound imported.\\
+Dyadic nonconvergence & Published Ho result; reproduced using two published large counts.\\
+Arithmetic regularity & Established G-function theorems, not proved from scratch here.\\
+Finite-window rigidity & Complete Vandermonde proof in Section~\ref{dsr:nh:sec:window}.\\
+All arithmetic sections & Rigidity plus bounded-gap interpolation; complete proof.\\
+Stable approximations & Complete logarithmic-error argument; arithmetic hypotheses explicit.\\
+Positive observables & Complete proof using the existing two-sided shift estimate.\\
+Continuous profile & Existing method, reproved as a short specialization; no novelty claim.\\
+Small counts & Independently recomputed through $32$, direct check through $8$.\\
+Lean/Rocq status & None of this article's new results is formalized.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The prior report identifies formal versions of Sharma's upper splitting
+bound and the two Davis et al. parity recurrences. Exact declaration names
+are recorded in the accompanying source audit. That report also identifies
+a native-computation trust boundary for the small count table
+\partref{Section~\ref{dsr:sec:formal}}. We did not run a Lean build or axiom audit. A
+conventional proof here does not acquire formal status by proximity to
+those declarations.
+
+\wtag\ The declaration names are in Part~I's
+Section~\ref{dsr:sec:formal}; Subsection~\ref{dsr:nh:sec:formal} says which
+of them Part~II uses and records that the Lean
+\lean{insertion_count_upper_bound_holds} is stronger than
+Lemma~\ref{dsr:nh:lem:deletion}.
+
+\subsection{A feasible formalization boundary}
+A useful first formal target is the implication from a supplied leading
+layer \eqref{dsr:nh:eq:leading} to the finite-window law and then to local-growth
+rigidity. It separates into the invertibility of a Vandermonde matrix,
+operator-norm inequalities, finite uniform $o(1)$ estimates, and elementary
+limits of powers and logarithms. This is a genuine theorem about supplied
+asymptotic data; it is not yet a formalization of the G-function theorem.
+
+A second target is the purely discrete part: deletion, bounded-gap
+interpolation, binary descent, the rational power certificate, and the
+subset-state counting invariant. The main result would then be a formally
+checked conditional theorem with the G-function asymptotic input explicitly
+named. A full unconditional formal proof would additionally require an
+appropriate development or formal import of arithmetic differential
+equations and their coefficient asymptotics. That missing infrastructure
+must not be concealed by naming an assumption as a theorem.
+
+\wtag\ Parts of the second target already exist in \repo: the permutation
+definition, both splitting inequalities and a stronger insertion bound
+are Lean theorems (Subsection~\ref{dsr:nh:sec:formal}). Bounded-gap
+interpolation, binary descent, the power certificate, the subset-state
+invariant and
+everything in the first target are not formalized, and nothing of this
+plan has been executed.
+
+\section{Further research questions and topics}
+\label{dsr:nh:sec:future}
+The following questions are proposed targets, not results asserted by this
+article. Their status is relative to the inspected sources and repository.
+
+\begin{question}[Analytic continuation and a natural boundary]
+\label{dsr:nh:q:boundary}%
+Does the ordinary generating function $F$ have a natural boundary on its
+circle of convergence? If not, determine a nontrivial continuation domain
+and describe the singularities encountered there.
+\end{question}
+The present argument removes D-finite models but does not supply the
+functional equation or singularity propagation needed for a natural-boundary
+proof. A productive first step would be to derive a generating-function
+identity from a refined state decomposition of the permutation class,
+rather than infer complex singularities from a real growth plot.
+
+\begin{question}[Differential algebraicity]
+\label{dsr:nh:q:dalg}%
+Can $F$, or its entire exponential generating function $E$, satisfy a
+nonlinear polynomial differential equation over $\C(z)$?
+\end{question}
+The distinction is substantive: all linear equations have been excluded,
+while nonlinear equations can support much richer singular behavior. Any
+proposed equation should first be tested against exact coefficients and
+then against the two separated dyadic exponential scales.
+
+\begin{question}[Geometry and regularity of the growth profile]
+\label{dsr:nh:q:profile}%
+Determine the optimal modulus of continuity of $P$ in
+\eqref{dsr:nh:eq:actualprofile}, and decide where it is differentiable. Locate its
+global extrema and determine whether a maximum occurs at a dyadic phase.
+\end{question}
+The non-holonomicity proof needs only continuity and two unequal values.
+Finer profile information could instead guide sharp asymptotic algorithms,
+rigorous integration of the phase distribution, and extremal growth bounds.
+Existing period and modulus results in \partref{Theorem~\ref{dsr:thm:period}, Proposition~\ref{dsr:prop:modulus}} should be kept as
+the baseline rather than rediscovered.
+\wtag\ These are items~1 and~2 of Part~I's Section~\ref{dsr:sec:questions}.
+
+\begin{question}[Monotonicity and sharp adjacent ratios]
+\label{dsr:nh:q:monotone}%
+Is $\tht(n+1)\ge\tht(n)$ always true? What is the smallest possible growth
+scale of the largest adjacent ratios?
+\end{question}
+Monotonicity is left open in the inspected enumerative sources. Our argument
+does not use it. The gap between a weak polynomial lower estimate and
+combinatorial positivity suggests investigating insertion positions and
+parity traces directly, rather than strengthening the analytic argument by
+an unsupported monotonicity assumption.
+\wtag\ This is item~5 of Part~I's Section~\ref{dsr:sec:questions} and
+Sharma's open problem~(1), stated without proof in \repo\ as
+\lean{Sharma2012.open_problem_1}; the Lean
+\lean{insertion_count_upper_bound_holds} bounds the adjacent ratio above
+by $\lfloor(n+3)/2\rfloor$.
+
+\begin{question}[Signed observables and cancellation]
+Classify nonzero signed polynomials in finitely many shifted counts whose
+values remain positive or nonzero. Which of these evaluated sequences are
+P-recursive, if any?
+\end{question}
+The positivity proof of \eqref{dsr:nh:eq:polyscale} does not extend to subtraction.
+An identically zero signed observable would of course be P-recursive, so a
+meaningful classification must separate exact identities from cancellation
+that changes the exponential scale. Even the asymptotic size of
+$\tht(n+1)-\tht(n)$ is relevant here.
+
+\begin{question}[An elementary substitute for the arithmetic theorem]
+For the particular splitting class \eqref{dsr:nh:eq:split}, can non-P-recursiveness
+be proved directly from a hypothetical polynomial recurrence, without using
+the arithmetic regularity theorem for G-functions?
+\end{question}
+Such a proof could be more accessible to formalization. A plausible route is
+a rigorous classification of the pure-exponential portion of a rational
+coefficient difference system, with all possible factorial scales and
+cancellations controlled. A formal asymptotic ansatz alone would not suffice.
+
+\begin{question}[Certified large enumeration]
+\label{dsr:nh:q:certified}%
+Produce independently auditable certificates for $\tht(64)$ and $\tht(75)$,
+or replace them by a smaller structural separation that does not import a
+large count table.
+\end{question}
+The integer comparison in \eqref{dsr:nh:eq:exactsep} is cheap; obtaining its inputs
+is the harder verification task. A certificate-producing subset-state
+algorithm with a small trusted checker would strengthen the computational
+boundary of both Ho's theorem and the present application.
+\wtag\ Still open in \repo: its Lean count table
+\lean{table_1_holds} stops at $\tht(1),\ldots,\tht(20)$, behind a native trust
+boundary (Subsection~\ref{dsr:nh:sec:formal}). Item~7 of Part~I's
+Section~\ref{dsr:sec:questions} asks the same for the counts
+$100\le n\le200$ that Part~I's certificates use.
+
+\begin{question}[Effective recurrence obstructions]
+Given prescribed order, coefficient degree, and starting index, bound an
+interval of coefficients sufficient to disprove a recurrence for this
+sequence. Can such bounds be obtained from a quantitative finite-window
+argument rather than growing matrix searches?
+\end{question}
+The analytic contradiction is uniform over all hypothetical recurrences but
+does not supply a universal finite certificate size: its Vandermonde
+constants and asymptotic thresholds depend on that recurrence. Bridging
+this qualitative--effective gap is a separate problem.
+
+\begin{question}[Other hereditary enumerations with phase-dependent growth]
+Find other exponentially bounded, integer counting sequences with a
+polynomial insertion bound and a nonconstant logarithmic exponential
+profile, and apply Theorem~\ref{dsr:nh:thm:rigidity} or
+Proposition~\ref{dsr:nh:prop:profileobstruction}.
+\end{question}
+The new criterion is not restricted to arithmetic-progressions. Its useful
+search signature is an exponential-scale phase oscillation together with
+local insertion control. Ordinary bounded multiplicative periodic factors
+are not enough: they leave $n$th-root growth unchanged.
+
+\section{Conclusion}
+\label{dsr:nh:sec:conclusion}
+The obstruction to holonomicity is not oscillation by itself, but the
+combination of two incompatible structures. Arithmetic P-recursive
+sequences of exponential size have a dominant finite-frequency
+power-logarithmic layer. A Vandermonde matrix forces that layer to be
+visible in every sufficiently late fixed-length window. The 3AP-free
+permutation counts, on the other hand, cannot rise by an exponential factor
+in a bounded number of steps, yet they exhibit two different limiting
+exponential rates along dyadic scales.
+
+This contradiction proves non-P-recursiveness of A003407 and every
+arithmetic section, non-D-finiteness of both generating functions, and
+stable versions for positive polynomial observables and subexponential
+multiplicative approximations. The established enumerative and G-function
+theorems remain visible dependencies. Natural boundaries, nonlinear
+differential equations, sharper profile structure, and full formalization
+remain distinct research targets.
+
 
 \appendix
 \section{Minimal arithmetic certificate and reproducibility}
@@ -1512,7 +3140,66 @@ printed decimals are supplementary to the strict rational enclosures.
 scripts are in \lean{code/}, so run them on a copy as the report's README
 describes; running \lean{code/verify.py} in place fails to find its data.
 
-\begin{thebibliography}{9}
+%% ====================================================================
+%% Part II appendices (batch 43, manuscript 06): labels dsr:nh:
+%% ====================================================================
+\section{A compact proof certificate at the mathematical level}
+\label{dsr:nh:app:compact}
+\noindent\wtag\ Appendices~\ref{dsr:nh:app:compact}
+and~\ref{dsr:nh:app:notation} belong to Part~II; they are the
+manuscript's Appendices~A and~B.
+
+The base theorem can be checked from the following chain without the
+profile construction or the two-sided shift estimate:
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=5pt]
+\item The sequence is positive and integral, and
+$\tht(n)\le21^{n-1}$.
+\item Deleting the largest entry gives
+$\tht(n+j)\le(n+j)^j\tht(n)$ for every fixed $j$.
+\item Ho's two dyadic scales show that $\tht(n)^{1/n}$ does not converge.
+\item A complex polynomial recurrence would descend to a rational one.
+Exponential size and integrality would make $F$ a G-function.
+\item Its nonzero leading Nilsson layer would imply, for some fixed $s$,
+$\max_{0\le j<s}\tht(n+j)=R^n\exp(o(n))$.
+\item By item 2, that same maximum lies between $\tht(n)$ and
+$(n+s)^{s-1}\tht(n)$. Therefore $\tht(n)^{1/n}\to R$, contradicting item 3.
+\end{enumerate}
+The only deep analytic step is the stated G-function input in item 5.
+The finite-window passage within that step is fully proved in
+Lemma~\ref{dsr:nh:lem:window}. The original question is thereby reduced to a
+short contradiction, without silently replacing a limsup by a limit.
+
+\section{Notation and index conventions}
+\label{dsr:nh:app:notation}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\tht(n)$ & 3AP-free permutations of $[n]$; $\tht(0)=1$.\\
+$a_n$ & $\log\tht(n)$, used only for $n\ge1$.\\
+$\tau_n$ & Exact logarithmic splitting toll, $n\ge2$.\\
+$L,U,D$ & $\log2$, $\log21$, and $\log(21/2)$.\\
+$\Delta_n$ & $a_{n+1}-a_n$; it is not assumed nonnegative.\\
+$\ell_m$ & Limit of $a_{m2^t}/(m2^t)$ as $t\to\infty$.\\
+$R$ & Exponential scale of a hypothetical Nilsson layer, not a radius.\\
+$\zeta_j$ & Distinct phases of modulus one in that layer.\\
+$s$ & Number of its nonzero dominant frequencies in Section~\ref{dsr:nh:sec:window};
+ elsewhere an explicitly fixed shift bound.\\
+$q,r$ & Arithmetic-section step and residue parameter; $r$ need not be $<q$.\\
+$P$ & Continuous $1$-periodic logarithmic growth profile.\\
+$C(S)$ & Number of valid completions from subset state $S$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Finite alterations of initial values do not affect P-recursiveness. All
+limits and logarithmic estimates concerning a zero or small initial index
+are understood on the eventually positive tail.
+\wtag\ Section~\ref{dsr:nh:sec:notation} lists where these symbols differ
+from Part~I's.
+
+
+\begin{thebibliography}{99}
 \raggedright
 \bibitem{DEGS}
 J.~A.~Davis, R.~C.~Entringer, R.~L.~Graham, and G.~J.~Simmons,
@@ -1544,6 +3231,8 @@ B.~S.~Ho,
 \emph{3AP-free permutations have no exponential growth rate},
 arXiv:2602.13617v1 (February 14, 2026).
 \url{https://arxiv.org/abs/2602.13617}.
+\wtag\ Journal DOI, as given by Part~II:
+\url{https://doi.org/10.1016/j.disc.2026.115237}.
 
 \bibitem{HJT}
 H.-K.~Hwang, S.~Janson, and T.-H.~Tsai,
@@ -1559,6 +3248,7 @@ terms through $90$ from B.~Correll, Jr., and R.~W.~Ho.
 \url{https://oeis.org/A003407}; data:
 \url{https://oeis.org/A003407/b003407.txt}.
 Accessed September 28, 2026, Pacific time.
+\wtag\ Part~II consulted the entry and its b-file on September 29, 2026.
 
 \bibitem{ProveIt}
 V.~Reshetnikov, \emph{ProveIt}, GitHub repository.
@@ -1567,5 +3257,29 @@ Inspected revision
 \code{74f7f5bdba1aa728b340509701a0fa4e45e8dbf3};
 Ramsey statement catalogues and repository overview. Targeted inspection only;
 no full repository build or exhaustive novelty audit.
+
+% [write] The remaining entries are cited only by Part II (batch 43).
+\bibitem{Stanley}
+R.~P.~Stanley, \emph{Differentiably finite power series},
+European Journal of Combinatorics \textbf{1} (1980), 175--188.
+\url{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}.
+
+\bibitem{Gar09}
+S.~Garoufalidis, \emph{G-functions and multisum versus holonomic sequences},
+Advances in Mathematics \textbf{220} (2009), 1945--1955.
+\url{https://arxiv.org/abs/0708.4354}.
+Theorem~3 and Proposition~2.5 are the inputs used here.
+
+\bibitem{Gar11}
+S.~Garoufalidis, \emph{What is a sequence of Nilsson type?},
+Contemporary Mathematics \textbf{541} (2011), 145--157.
+\url{https://arxiv.org/abs/1009.0276}.
+
+\bibitem{Andre}
+Y.~Andr\'e, \emph{G-functions, motives, and unlikely intersections---old
+and new}, arXiv:2501.09867v1 (2025), Section~1.2.
+\url{https://arxiv.org/abs/2501.09867}.
+For the full background: \emph{G-functions and Geometry},
+Aspects of Mathematics E13, Vieweg, 1989.
 \end{thebibliography}
 \end{document}
